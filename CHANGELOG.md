@@ -13,4 +13,5 @@
 - 147 fragile ornaments (figurines, plates and vases) on shelves, the dining table and the kitchen counter; any real hit shatters one and costs a fine of 20.
 - The grandpa: follows the nearest cop around the house on a baked navigation mesh, complains out loud, and fills the complaint meter at the top of the screen; at 100 he calls his lawyer and the case is lost.
 - Holding E on the grandpa makes him tell a long story: he stands still for up to 20 s (30 s rest between stories) and the listening cop can't do anything else.
+- Patrol car in front of the grandpa's house: E gets in the seat by the nearest door (front left drives) and out again; the driver drives with WASD, Space handbrake and H siren, up to 60 km/h. Low poly placeholder model from tools/modelgen.
 - Design docs: decisions, case catalog and working rules.

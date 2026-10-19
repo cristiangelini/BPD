@@ -20,3 +20,6 @@ HUD_COMPLAINT,Denuncia,Complaint,Denúncia
 CASE_FAILED_LAWYER,El abuelo llamó a su abogado. Caso perdido.,The grandpa called his lawyer. Case lost.,O vovô ligou para o advogado. Caso perdido.
 GRANDPA_STORY,"Cuando yo tenía tu edad, la leche venía en botella y los policías tocaban el timbre...","When I was your age, milk came in bottles and the police rang the bell...","Quando eu tinha a sua idade, o leite vinha em garrafa e a polícia tocava a campainha..."
 GRANDPA_STORY_TIRED,"Ya te conté esa, jovencito.","I already told you that one, young man.","Já te contei essa, rapaz."
+HINT_CAR_DRIVER,"Manejas tú: WASD, Espacio freno de mano, H sirena, E para bajarte.","You're driving: WASD, Space handbrake, H siren, E to get out.","Você dirige: WASD, Espaço freio de mão, H sirene, E para descer."
+HINT_CAR_PASSENGER,Vas de acompañante. E para bajarte.,You're riding along. E to get out.,Você vai de carona. E para descer.
+HINT_CAR_FULL,El patrullero está lleno.,The patrol car is full.,A viatura está cheia.

@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/levels/grandpa_house.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/player/cop.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/props/front_door.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/tools/ram_pickup.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/npc/grandpa.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/vehicles/patrol_car.tscn" id="6"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
 sky_top_color = Color(0.32, 0.56, 0.9, 1)
@@ -120,3 +121,6 @@ theme_override_constants/outline_size = 10
 theme_override_font_sizes/font_size = 40
 text = "CASE_FAILED_LAWYER"
 horizontal_alignment = 1
+
+[node name="PatrolCar" parent="." instance=ExtResource("6")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -6, 0.05, 12.5)

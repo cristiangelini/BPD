@@ -17,6 +17,7 @@ const HOLE_WEST := 0.2
 
 const FLOOR_WOOD := Color(0.66, 0.44, 0.28)
 const GRASS := Color(0.45, 0.72, 0.3)
+const ROAD := Color(0.32, 0.33, 0.36)
 const OUTSIDE := Color(1.0, 0.84, 0.55)
 const INSIDE_DOWN := Color(0.62, 0.92, 0.84)
 const INSIDE_UP := Color(1.0, 0.74, 0.8)
@@ -153,6 +154,8 @@ func _on_ornament_broken(at: Vector3) -> void:
 func _build() -> void:
 	var up := GameScale.FLOOR_HEIGHT
 	_box(Vector3(0, -0.1, 0), Vector3(40, 0.2, 40), GRASS)
+	# The street in front of the house, where the patrol car waits (visual only, flat on the grass).
+	_mesh_box(Vector3(0, 0.005, 12.5), Vector3(40, 0.01, 6), ROAD)
 	_box(Vector3(0, 0.01, 0), Vector3(HALF_X * 2, 0.02, HALF_Z * 2), FLOOR_WOOD)
 	# Upstairs floor, with the hole over the stairs.
 	var hole_east := STAIR_X + GameScale.STAIR_WIDTH / 2

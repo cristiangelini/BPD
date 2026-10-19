@@ -41,6 +41,9 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
 ## Patrullero
 - Auto de 4 asientos: chofer, acompañante y dos atrás. Se sube y se baja con E al lado de una puerta.
 - **Chofer:** W acelera, S frena y da marcha atrás, A y D doblan, Espacio es el freno de mano y H la sirena. Velocidad máxima de 60 km/h, manejo de juego (arcade), sin daño **(propuesta)**.
+  - Al subir, cada uno toma el asiento libre con la puerta más cercana: la delantera izquierda es la del chofer. Al bajar, aparece al lado de esa puerta. Mientras va sentado no camina ni agarra cosas.
+  - Marcha atrás hasta 18 km/h. A toda velocidad las ruedas doblan un 35% de lo que doblan paradas, así que un volantazo derrapa en vez de volcar **(propuesta)**.
+  - Por ahora el patrullero espera en la calle frente a la casa; la ruta desde la comisaría viene con la comisaría.
 - **Los demás:** miran con el mouse y pueden asomarse por la ventana. El que lleva la radio ve el mapa con la casa marcada.
 - **Ruta:** de la comisaría a la casa del abuelo hay unos 400 m de calles grises con algunas curvas y autos estacionados **(propuesta)**.
 - **Baúl:** el auto tiene un baúl atrás donde se deja la evidencia (ver "Entrega"). Si el auto vuelca, la evidencia que está en el baúl recibe el golpe.
