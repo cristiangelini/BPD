@@ -9,6 +9,7 @@ func test_menu_texts_are_translation_keys() -> void:
 		assert_true(label.text.begins_with("MENU_"), "%s should use a tr() key" % label.name)
 
 
-func test_play_is_disabled_until_the_first_case_exists() -> void:
+func test_play_points_to_an_existing_scene() -> void:
 	var menu: Control = add_child_autofree(MENU_SCENE.instantiate())
-	assert_true(menu.get_node("%PlayButton").disabled)
+	assert_false(menu.get_node("%PlayButton").disabled)
+	assert_true(ResourceLoader.exists(MainMenu.PLAY_SCENE), "the Play scene should exist")
