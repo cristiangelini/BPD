@@ -26,8 +26,8 @@ HINT_CAR_FULL,El patrullero está lleno.,The patrol car is full.,A viatura está
 CASE_FAILED_BROKEN,Se rompió la lata de galletas. Caso fallado.,The cookie tin broke. Case failed.,A lata de biscoitos quebrou. Caso fracassado.
 CASE_SOLVED,¡Caso resuelto! La evidencia va en el baúl.,Case solved! The evidence is in the trunk.,Caso resolvido! A evidência está no porta-malas.
 PROMPT_GRAB,Mantén clic izquierdo: agarrar,Hold left click: grab,Segure o clique esquerdo: pegar
-PROMPT_HOLDING,"Suelta el clic: soltar · Clic derecho: tirar · Rueda: acercar o alejar","Release click: drop · Right click: throw · Wheel: closer or farther","Solte o clique: soltar · Clique direito: jogar · Roda: aproximar ou afastar"
-PROMPT_RAM,"Mantén clic izquierdo: cargar el golpe · G: soltar el ariete","Hold left click: charge the hit · G: drop the battering ram","Segure o clique esquerdo: carregar o golpe · G: soltar o aríete"
+PROMPT_HOLDING,Suelta el clic: soltar · Clic derecho: tirar · Rueda: acercar o alejar,Release click: drop · Right click: throw · Wheel: closer or farther,Solte o clique: soltar · Clique direito: jogar · Roda: aproximar ou afastar
+PROMPT_RAM,Mantén clic izquierdo: cargar el golpe · G: soltar el ariete,Hold left click: charge the hit · G: drop the battering ram,Segure o clique esquerdo: carregar o golpe · G: soltar o aríete
 PROMPT_TAKE_RAM,E: agarrar el ariete,E: take the battering ram,E: pegar o aríete
 PROMPT_POT,E: revisar la maceta,E: search the pot,E: revistar o vaso
 PROMPT_DOOR_LOCKED,Cerrada: busca la llave en las macetas o usa el ariete,Locked: find the key in the pots or use the battering ram,Trancada: procure a chave nos vasos ou use o aríete
@@ -38,16 +38,18 @@ BRIEF_SPEAKER,Comisario,Commissioner,Comissário
 BRIEF_CONTINUE,E: seguir,E: continue,E: continuar
 BRIEF_1_1_A,"¡Novatos! Atención, que no lo voy a repetir.","Rookies! Listen up, I won't say it twice.","Novatos! Atenção, que eu não vou repetir."
 BRIEF_1_1_B,Hace meses que alguien organiza un bingo clandestino para todos los jubilados del barrio. Los vecinos dicen que es el abuelo de la casa amarilla.,For months someone has been running an illegal bingo for every retiree in the neighborhood. The neighbors say it's the grandpa in the yellow house.,Faz meses que alguém organiza um bingo clandestino para todos os aposentados do bairro. Os vizinhos dizem que é o vovô da casa amarela.
-BRIEF_1_1_C,Tenemos orden de allanamiento. El abuelo guarda la libreta de apuestas en una lata de galletas. Tráiganla en el baúl del patrullero: sin eso no hay caso.,We have a search warrant. The grandpa keeps the betting book in a cookie tin. Bring it back in the patrol car's trunk: without it there's no case.,Temos um mandado de busca. O vovô guarda o caderno de apostas numa lata de biscoitos. Tragam no porta-malas da viatura: sem isso não tem caso.
-BRIEF_1_1_D,"Si encuentran la caja fuerte con la recaudación, mejor. La puerta está cerrada: la llave suele estar en alguna maceta, y si no, usen el ariete.","If you find the safe with the takings, even better. The door is locked: the key is usually in one of the pots, and if not, use the battering ram.","Se acharem o cofre com a arrecadação, melhor. A porta está trancada: a chave costuma estar em algum vaso, e se não, usem o aríete."
+BRIEF_1_1_C,Tenemos orden de allanamiento. Traigan la libreta de apuestas en el baúl del patrullero: sin eso no hay caso.,We have a search warrant. Bring back the betting book in the patrol car's trunk: without it there's no case.,Temos um mandado de busca. Tragam o caderno de apostas no porta-malas da viatura: sem isso não tem caso.
+BRIEF_1_1_D,"Si encuentran el bolillero, la caja fuerte con la recaudación o los cartones, mejor: todo suma. La puerta está cerrada: la llave suele estar en alguna maceta, y si no, usen el ariete.","If you find the bingo cage, the safe with the takings or the bingo cards, even better: it all adds up. The door is locked: the key is usually in one of the pots, and if not, use the battering ram.","Se acharem o globo do bingo, o cofre com a arrecadação ou as cartelas, melhor: tudo soma. A porta está trancada: a chave costuma estar em algum vaso, e se não, usem o aríete."
 BRIEF_1_1_E,"Y no rompan nada, que el abuelo tiene abogado: cada adorno roto se los descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.","And don't break anything, the grandpa has a lawyer: every broken ornament comes out of your pay. Press Q to see the checklist of what to do.","E não quebrem nada, que o vovô tem advogado: cada enfeite quebrado sai do salário de vocês. Com Q vocês veem a planilha do que fazer."
 HUD_CHECKLIST_HINT,Q: planilla,Q: checklist,Q: planilha
 OBJ_TITLE,Planilla del caso,Case checklist,Planilha do caso
 OBJ_ENTER,Entrar a la casa (llave en una maceta o ariete),Get into the house (key in a pot or battering ram),Entrar na casa (chave num vaso ou aríete)
-OBJ_FIND,Encontrar la lata de galletas con la libreta de apuestas,Find the cookie tin with the betting book,Achar a lata de biscoitos com o caderno de apostas
+OBJ_FIND,Encontrar la libreta de apuestas,Find the betting book,Achar o caderno de apostas
 OBJ_TRUNK,Dejarla en el baúl del patrullero,Put it in the patrol car's trunk,Deixar no porta-malas da viatura
 OBJ_LEAVE,Subir todos al patrullero,Everyone gets in the patrol car,Todos entram na viatura
-OBJ_EXTRA,Extra: llevar la caja fuerte con la recaudación (hacen falta dos),Extra: take the safe with the takings (needs two),Extra: levar o cofre com a arrecadação (precisa de dois)
 OBJ_BROKEN,Adornos rotos: %d (multa: %d),Broken ornaments: %d (fine: %d),Enfeites quebrados: %d (multa: %d)
 OBJ_COMPLAINT,Denuncia del abuelo: %d%%,Grandpa's complaint: %d%%,Denúncia do vovô: %d%%
 PROMPT_DRAWER,Mantén clic: agarra el cajón y tira despacio (agáchate para no arrancarlo),Hold click: grab the drawer and pull slowly (crouch so you don't rip it out),Segure o clique: pegue a gaveta e puxe devagar (agache para não arrancar)
+OBJ_EXTRA_CAGE,Extra: el bolillero (hacen falta dos),Extra: the bingo cage (needs two),Extra: o globo do bingo (precisa de dois)
+OBJ_EXTRA_SAFE,Extra: la caja fuerte con la recaudación (hacen falta dos),Extra: the safe with the takings (needs two),Extra: o cofre com a arrecadação (precisa de dois)
+OBJ_EXTRA_CARDS,"Extra: cartones de bingo (%d de %d), en los cajones","Extra: bingo cards (%d of %d), in the drawers","Extra: cartelas de bingo (%d de %d), nas gavetas"
