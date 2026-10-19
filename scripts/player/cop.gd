@@ -27,6 +27,8 @@ var ram: BatteringRam
 var _stagger_left := 0.0
 ## While holding E on the grandpa he tells a story; this cop can't do anything else (allanamiento.md).
 var listening_to: Grandpa
+## The patrol car this cop sits in, if any: the body rides the seat and doesn't walk or collide.
+var vehicle: PatrolCar
 
 @onready var _shape: CollisionShape3D = $Shape
 @onready var _head: Node3D = $Head
@@ -69,9 +71,29 @@ func is_staggered() -> bool:
 	return _stagger_left > 0.0
 
 
-## Busy: staggered or listening to the grandpa. No walking, grabbing or ramming.
+## Busy: staggered, listening to the grandpa or sitting in the car. No walking, grabbing or ramming.
 func is_busy() -> bool:
-	return is_staggered() or listening_to != null
+	return is_staggered() or listening_to != null or vehicle != null
+
+
+## Rides `seat` of `car`, facing forward, until stand_up(). Lets go of whatever it was holding.
+func sit_in(car: PatrolCar, seat: Node3D) -> void:
+	$Grabber.release()
+	vehicle = car
+	velocity = Vector3.ZERO
+	_shape.disabled = true
+	reparent(seat, false)
+	transform = Transform3D.IDENTITY
+	_head.rotation.x = 0.0
+
+
+## Gets out of the car and stands at `at` (world position), turned to `yaw`.
+func stand_up(at: Vector3, yaw: float) -> void:
+	var world := vehicle.get_parent()
+	vehicle = null
+	reparent(world, false)
+	global_transform = Transform3D(Basis(Vector3.UP, yaw), at + Vector3.UP * 0.1)
+	_shape.disabled = false
 
 
 ## Shows a short line at the bottom of this cop's screen. `key` is a tr() key.
@@ -109,14 +131,17 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event is InputEventMouseButton and event.pressed:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	elif event.is_action_pressed("use"):
-		use()
+		if vehicle:
+			vehicle.exit(self)
+		else:
+			use()
 	elif event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
 func _physics_process(delta: float) -> void:
 	# Without local input someone else drives this cop through step() (tests, later the network).
-	if not input_enabled:
+	if not input_enabled or vehicle:
 		return
 	if listening_to and not Input.is_action_pressed("use"):
 		listening_to.end_story()
