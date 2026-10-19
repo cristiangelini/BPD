@@ -6,7 +6,7 @@ extends RefCounted
 
 
 ## Facts: door_open, found, delivered, all_in_car, cage_delivered, safe_delivered (bools), cards_delivered, cards_total,
-## broken, fines, complaint (numbers).
+## broken, fines, complaint (numbers), clues (lines of found clues).
 ## Returns rows {text: tr() key or formatted text, done: bool, optional: bool, status: bool}, in play order.
 static func rows(facts: Dictionary) -> Array[Dictionary]:
 	var list: Array[Dictionary] = []
@@ -18,6 +18,11 @@ static func rows(facts: Dictionary) -> Array[Dictionary]:
 	list.append(_extra("OBJ_EXTRA_SAFE", facts.safe_delivered))
 	list.append(_extra(TranslationServer.translate("OBJ_EXTRA_CARDS") % [facts.cards_delivered, facts.cards_total],
 		facts.cards_total > 0 and facts.cards_delivered == facts.cards_total))
+	var clues: Array = facts.get("clues", [])
+	if not clues.is_empty():
+		list.append({"text": "OBJ_CLUES", "done": false, "optional": false, "status": true, "clue": true})
+	for clue: String in clues:
+		list.append({"text": "- " + clue, "done": false, "optional": false, "status": true, "clue": true})
 	list.append({"text": TranslationServer.translate("OBJ_BROKEN") % [facts.broken, facts.fines],
 		"done": false, "optional": false, "status": true})
 	list.append({"text": TranslationServer.translate("OBJ_COMPLAINT") % roundi(facts.complaint),

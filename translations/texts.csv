@@ -53,3 +53,34 @@ PROMPT_DRAWER,Mantén clic: agarra el cajón y tira despacio (agáchate para no 
 OBJ_EXTRA_CAGE,Extra: el bolillero (hacen falta dos),Extra: the bingo cage (needs two),Extra: o globo do bingo (precisa de dois)
 OBJ_EXTRA_SAFE,Extra: la caja fuerte con la recaudación (hacen falta dos),Extra: the safe with the takings (needs two),Extra: o cofre com a arrecadação (precisa de dois)
 OBJ_EXTRA_CARDS,"Extra: cartones de bingo (%d de %d), en los cajones","Extra: bingo cards (%d of %d), in the drawers","Extra: cartelas de bingo (%d de %d), nas gavetas"
+PROMPT_NOTE,E: leer la nota,E: read the note,E: ler o bilhete
+OBJ_CLUES,Pistas:,Clues:,Pistas:
+CLUE_FOOTPRINTS,Huellas de barro desde la puerta del fondo,Mud footprints from the back door,Pegadas de barro desde a porta dos fundos
+CLUE_CRUMBS,Migas de galleta desde la cocina,Cookie crumbs from the kitchen,Migalhas de biscoito desde a cozinha
+NOTE_ITEM_book,La libreta,The betting book,O caderno
+NOTE_ITEM_cage,El bolillero,The bingo cage,O globo do bingo
+NOTE_ITEM_safe,La plata del bingo,The bingo money,O dinheiro do bingo
+NOTE_SPOT_under_sofa,"«%s, abajo del sillón, donde miro la tele.»","“%s: under the sofa, where I watch TV.”","“%s: embaixo do sofá, onde eu vejo TV.”"
+NOTE_SPOT_behind_picture,"«%s, detrás del cuadro del living. Que no se caiga.»",“%s: behind the living room picture. Don't let it fall.”,“%s: atrás do quadro da sala. Que não caia.”
+NOTE_SPOT_in_oven,"«%s, en el horno. ¡NO PRENDERLO!»",“%s: in the oven. DO NOT TURN IT ON!”,“%s: no forno. NÃO LIGAR!”
+NOTE_SPOT_in_cupboard,"«%s, en la alacena, atrás de los frascos.»","“%s: in the cupboard, behind the jars.”","“%s: no armário da cozinha, atrás dos potes.”"
+NOTE_SPOT_under_table,"«%s, abajo de la mesa del comedor.»",“%s: under the dining table.”,“%s: embaixo da mesa da sala de jantar.”
+NOTE_SPOT_in_bathtub,"«%s, en la bañera de abajo. Bañarse arriba.»",“%s: in the downstairs bathtub. Shower upstairs.”,“%s: na banheira de baixo. Tomar banho em cima.”
+NOTE_SPOT_under_stairs,"«%s, abajo de la escalera, al fondo.»","“%s: under the stairs, at the back.”","“%s: embaixo da escada, no fundo.”"
+NOTE_SPOT_under_desk,"«%s, abajo del escritorio del estudio.»",“%s: under the desk in the study.”,“%s: embaixo da escrivaninha do escritório.”
+NOTE_SPOT_in_washer,"«%s, en el lavarropas. No lavar hasta el jueves.»",“%s: in the washing machine. No laundry until Thursday.”,“%s: na máquina de lavar. Não lavar até quinta.”
+NOTE_SPOT_under_bed,"«%s, abajo de la cama del cuarto chico.»",“%s: under the bed in the small bedroom.”,“%s: embaixo da cama do quarto pequeno.”
+NOTE_SPOT_in_attic,"«%s, en el altillo, entre las cajas.»","“%s: in the attic, among the boxes.”","“%s: no sótão, entre as caixas.”"
+NOTE_SPOT_in_wardrobe,"«%s, en el ropero del cuarto grande.»",“%s: in the wardrobe of the big bedroom.”,“%s: no guarda-roupa do quarto grande.”
+NOTE_VAGUE_under_sofa,"«%s, en el living... creo.»",“%s: in the living room... I think.”,“%s: na sala... acho.”
+NOTE_VAGUE_behind_picture,"«%s, en el living, mirando a la pared.»","“%s: in the living room, facing the wall.”","“%s: na sala, olhando para a parede.”"
+NOTE_VAGUE_in_oven,"«%s, en la cocina, donde hace calor.»","“%s: in the kitchen, where it's warm.”","“%s: na cozinha, onde é quente.”"
+NOTE_VAGUE_in_cupboard,"«%s, en la cocina, ¿o era el lavadero?»","“%s: in the kitchen, or was it the laundry?”","“%s: na cozinha, ou era a lavanderia?”"
+NOTE_VAGUE_under_table,"«%s, cerca de donde comemos.»",“%s: near where we eat.”,“%s: perto de onde comemos.”
+NOTE_VAGUE_in_bathtub,"«%s, donde me baño. El de abajo.»",“%s: where I bathe. The one downstairs.”,“%s: onde eu tomo banho. O de baixo.”
+NOTE_VAGUE_under_stairs,"«%s, cerca de la escalera.»",“%s: near the stairs.”,“%s: perto da escada.”
+NOTE_VAGUE_under_desk,"«%s, en el estudio, con los papeles.»","“%s: in the study, with the papers.”","“%s: no escritório, com os papéis.”"
+NOTE_VAGUE_in_washer,"«%s, donde se lava la ropa.»",“%s: where the clothes get washed.”,“%s: onde se lava a roupa.”
+NOTE_VAGUE_under_bed,"«%s, arriba, donde duermen las visitas.»","“%s: upstairs, where the guests sleep.”","“%s: em cima, onde as visitas dormem.”"
+NOTE_VAGUE_in_attic,"«%s, arriba de todo, con los trastos.»","“%s: at the very top, with the junk.”","“%s: lá em cima, com as tralhas.”"
+NOTE_VAGUE_in_wardrobe,"«%s, arriba, con mi ropa.»","“%s: upstairs, with my clothes.”","“%s: em cima, com as minhas roupas.”"

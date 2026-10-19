@@ -31,6 +31,14 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
 - **Planilla (Q):** abre y cierra la lista de lo que hay que hacer, en orden: entrar a la casa, encontrar la lata, dejarla en el baúl y subir todos al patrullero. El paso que sigue se ve en amarillo y los hechos en verde con [x]. Abajo dice el extra (la caja fuerte), los adornos rotos con la multa y la denuncia del abuelo. Se abre sola al terminar la charla y, cerrada, queda el recordatorio "Q: planilla" arriba a la derecha.
 - La caja fuerte pasa a ser evidencia: vale 600 y cuenta al dejarla en el baúl.
 
+## Pistas
+- Cada evidencia escondida tiene 2 pistas ([investigacion.md](investigacion.md)), sorteadas con la semilla:
+  - Una **nota** del abuelo para cada una, que dice dónde está. Se lee con E y queda anotada en la planilla.
+  - Para la caja fuerte, un camino de **migas de galleta** desde la mesada de la cocina.
+  - Para la libreta o el bolillero, **huellas de barro** desde el fondo del pasillo. El otro de los dos tiene una segunda nota, más vaga ("en la cocina, ¿o era el lavadero?").
+- Las notas aparecen en 4 de 12 lugares (mesas, camas, el lavarropas, el piso). Las huellas y las migas siguen el camino de la malla de navegación hasta la evidencia, y quedan en la planilla cuando un policía pasa a menos de 2,5 m **(propuesta)**.
+- Faltan el calendario con la combinación de la caja fuerte y lo que cuenta el abuelo al interrogarlo.
+
 ## Sin tiempo límite
 - El caso no tiene reloj (pedido de Cristian). La presión la pone el abuelo (ver "El abuelo").
 
