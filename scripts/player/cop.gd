@@ -35,6 +35,7 @@ var _stagger_left := 0.0
 
 
 func _ready() -> void:
+	add_to_group("cops")
 	InputSetup.ensure_actions()
 	camera.fov = GameScale.FOV
 	_apply_height(GameScale.COP_HEIGHT)

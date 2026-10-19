@@ -81,12 +81,20 @@ var broken_ornaments := 0
 ## Money taken off the case pay for broken ornaments.
 var fines := 0
 
+## The grandpa called his lawyer: the warrant is cancelled and the case is lost.
+var case_failed := false
+
 var _materials := {}
 @onready var _built: Node3D = $Built
+@onready var grandpa: Grandpa = $Grandpa
 
 
 func _ready() -> void:
 	_build()
+	_bake_navigation()
+	grandpa.complaint_changed.connect(func(value: float) -> void: %ComplaintBar.value = value)
+	grandpa.lawyer_called.connect(_on_lawyer_called)
+	$FrontDoor.broken.connect(func() -> void: grandpa.door_broken($FrontDoor.global_position))
 	if case_seed == 0:
 		case_seed = randi() | 1
 	var spot_heavy := SPOTS.map(func(s: Dictionary) -> bool: return s.heavy)
@@ -109,7 +117,22 @@ func _ready() -> void:
 	ornaments_total = $Ornaments.get_child_count()
 
 
+func _on_lawyer_called() -> void:
+	case_failed = true
+	%CaseFailed.show()
+
+
+## The grandpa walks on a navigation mesh baked from the built house when the scene loads.
+func _bake_navigation() -> void:
+	var nav: NavigationRegion3D = $Navigation
+	NavigationServer3D.map_set_cell_size(get_world_3d().navigation_map, nav.navigation_mesh.cell_size)
+	NavigationServer3D.map_set_cell_height(get_world_3d().navigation_map, nav.navigation_mesh.cell_height)
+	_built.add_to_group("navigation_source")
+	nav.bake_navigation_mesh(false)
+
+
 func _on_ornament_broken(at: Vector3) -> void:
+	grandpa.saw_break(at)
 	broken_ornaments += 1
 	fines += Ornament.FINE
 	# Placeholder feedback until the HUD exists: the fine floats up where it broke.

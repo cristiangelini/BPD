@@ -28,10 +28,10 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
 - El caso no tiene reloj (pedido de Cristian). La presión la pone el abuelo (ver "El abuelo").
 
 ## El abuelo
-- Es un NPC (una cápsula gris con sombrero) que vive en la casa. Camina despacio entre los ambientes y sigue al policía que tenga más cerca, quejándose con ruiditos y frases cortas (decisión 45).
+- Es un NPC (el cuerpo pera del abuelo, decisión 72) que vive en la casa. Camina despacio (1,4 m/s) y sigue al policía que tenga más cerca, a menos de 15 m, quejándose con frases cortas cada 6 s (decisión 45) **(propuesta)**.
 - **Medidor de denuncia (0 a 100)**, visible para todos arriba de la pantalla **(propuesta)**:
   - +10 por cada adorno que ve romperse (a menos de 8 m y con línea de vista).
-  - +15 si lo empujan, lo tiran o le pega algo.
+  - +15 si lo empujan, lo tiran o le pega algo (un policía o un objeto a más de 2 m/s, o el ariete), una vez por segundo como mucho.
   - +5 por cada puerta que tiran abajo con él cerca.
   - Baja 1 punto cada 5 s mientras no pase nada.
 - Si el medidor llega a 100, llama al abogado: la orden se cancela y el caso se pierde.

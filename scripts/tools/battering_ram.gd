@@ -63,6 +63,8 @@ func swing() -> Object:
 	var door := (target as Node).get_parent() as FrontDoor
 	if door and power >= MIN_CHARGE:
 		door.ram_hit()
+	elif target is Grandpa:
+		(target as Grandpa).struck()
 	elif target is RigidBody3D:
 		(target as RigidBody3D).apply_impulse(-cop.camera.global_transform.basis.z * PUSH * power, hit.position - (target as Node3D).global_position)
 	return target
