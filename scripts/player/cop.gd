@@ -169,6 +169,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	elif event.is_action_pressed("drop"):
 		drop_ram()
+	elif event.is_action_pressed("ask"):
+		ask()
 	elif event.is_action_pressed("use"):
 		if vehicle:
 			vehicle.exit(self)
@@ -201,6 +203,14 @@ func use() -> bool:
 		return false
 	target.use(self)
 	return true
+
+
+## Asks what the camera points at a question (R), if it can be asked (the grandpa). Returns true if it answered.
+func ask() -> bool:
+	var target := _usable_target()
+	if is_busy() or not target or not target.has_method("ask"):
+		return false
+	return target.ask(self)
 
 
 ## What the camera points at within reach that can be used with E (a door's body is a child of the door).
