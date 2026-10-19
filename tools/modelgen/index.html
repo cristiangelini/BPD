@@ -51,7 +51,7 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
 
-// spec: {items:[{name, pos:[x,y,z], rotY}], cam:{pos, target, fov}, bg}
+// spec: {items:[{name, pos:[x,y,z], rotY, scale}], cam:{pos, target, fov}, bg}
 window.renderView = (spec) => {
 	const scene = new THREE.Scene();
 	scene.background = new THREE.Color(spec.bg ?? 0x8ec5e8);
@@ -71,6 +71,7 @@ window.renderView = (spec) => {
 		const o = model(it.name).clone();
 		o.position.set(...(it.pos ?? [0, 0, 0]));
 		o.rotation.y = it.rotY ?? 0;
+		if (it.scale) o.scale.setScalar(it.scale);
 		o.traverse((m) => { if (m.isMesh) m.castShadow = m.receiveShadow = true; });
 		scene.add(o);
 	}
