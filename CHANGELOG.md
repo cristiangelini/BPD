@@ -15,4 +15,5 @@
 - Holding E on the grandpa makes him tell a long story: he stands still for up to 20 s (30 s rest between stories) and the listening cop can't do anything else.
 - Patrol car in front of the grandpa's house: E gets in the seat by the nearest door (front left drives) and out again; the driver drives with WASD, Space handbrake and H siren, up to 60 km/h. Low poly placeholder model from tools/modelgen.
 - Patrol car trunk: evidence dropped in it counts as delivered (taking it out or breaking it undoes that). The tin in the trunk with every cop aboard solves the case; a broken tin fails it.
+- End of shift screen: case result, salary, evidence, fines, total against the 800 quota ("¡Turno aprobado!" or "Suspendidos") and three joke awards; "Otro turno" restarts and "Volver al menú" goes back.
 - Design docs: decisions, case catalog and working rules.

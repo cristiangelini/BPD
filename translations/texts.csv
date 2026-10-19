@@ -25,3 +25,20 @@ HINT_CAR_PASSENGER,Vas de acompañante. E para bajarte.,You're riding along. E t
 HINT_CAR_FULL,El patrullero está lleno.,The patrol car is full.,A viatura está cheia.
 CASE_FAILED_BROKEN,Se rompió la lata de galletas. Caso fallado.,The cookie tin broke. Case failed.,A lata de biscoitos quebrou. Caso fracassado.
 CASE_SOLVED,¡Caso resuelto! La evidencia va en el baúl.,Case solved! The evidence is in the trunk.,Caso resolvido! A evidência está no porta-malas.
+SHIFT_TITLE,Fin del turno,End of shift,Fim do turno
+SHIFT_CASE_SOLVED,Caso resuelto,Case solved,Caso resolvido
+SHIFT_CASE_FAILED,Caso fallado,Case failed,Caso fracassado
+SHIFT_SALARY,Sueldo del caso,Case salary,Salário do caso
+SHIFT_EVIDENCE,Evidencia entregada,Evidence delivered,Evidência entregue
+SHIFT_FINES,Multas (%d adornos rotos),Fines (%d ornaments broken),Multas (%d enfeites quebrados)
+SHIFT_TOTAL,Total,Total,Total
+SHIFT_QUOTA,Cuota del turno,Shift quota,Cota do turno
+SHIFT_APPROVED,¡Turno aprobado!,Shift approved!,Turno aprovado!
+SHIFT_SUSPENDED,Suspendidos,Suspended,Suspensos
+SHIFT_AWARDS,Premios del turno,Shift awards,Prêmios do turno
+SHIFT_AGAIN,Otro turno,Another shift,Outro turno
+SHIFT_MENU,Volver al menú,Back to menu,Voltar ao menu
+AWARD_RAM_MISSES,Más golpes al aire con el ariete: %s (%d),Most battering ram swings at thin air: %s (%d),Mais golpes no ar com o aríete: %s (%d)
+AWARD_STORY_SECONDS,Mejor oyente del abuelo: %s (%d s),The grandpa's best listener: %s (%d s),Melhor ouvinte do vovô: %s (%d s)
+AWARD_METERS_DRIVEN,Chofer del año: %s (%d m),Driver of the year: %s (%d m),Motorista do ano: %s (%d m)
+COP_NAME,Policía %d,Officer %d,Policial %d

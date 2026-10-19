@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/levels/grandpa_house.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/player/cop.tscn" id="2"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/tools/ram_pickup.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/npc/grandpa.tscn" id="5"]
 [ext_resource type="PackedScene" path="res://scenes/vehicles/patrol_car.tscn" id="6"]
+[ext_resource type="PackedScene" path="res://scenes/ui/shift_screen.tscn" id="7"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
 sky_top_color = Color(0.32, 0.56, 0.9, 1)
@@ -144,3 +145,5 @@ horizontal_alignment = 1
 
 [node name="PatrolCar" parent="." instance=ExtResource("6")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -6, 0.05, 12.5)
+
+[node name="ShiftScreen" parent="." instance=ExtResource("7")]

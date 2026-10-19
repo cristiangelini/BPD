@@ -57,6 +57,7 @@ func swing() -> Object:
 	tween.tween_property(self, "position", REST, 0.25)
 	var hit := cop.aim_hit(REACH)
 	if hit.is_empty():
+		cop.stats["ram_misses"] += 1
 		cop.stagger(STAGGER_TIME)
 		return null
 	var target: Object = hit.collider

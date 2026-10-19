@@ -64,6 +64,7 @@ func test_missing_staggers_the_cop() -> void:
 	await wait_physics_frames(2)
 	assert_null(await _charged_swing(cop, 0.2))
 	assert_true(cop.is_staggered())
+	assert_eq(cop.stats["ram_misses"], 1, "counts for the joke award")
 	var start := cop.global_position
 	for i in 20:
 		cop.step(TICK, Vector2(0, -1), false, false, false)

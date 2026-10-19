@@ -65,9 +65,11 @@ func test_getting_out_stands_beside_the_door() -> void:
 func test_the_driver_drives_and_tops_out_at_60() -> void:
 	var car := _car()
 	await wait_physics_frames(30)
-	car.enter(_cop(Vector3(2, 0.1, 0.5)))
+	var cop := _cop(Vector3(2, 0.1, 0.5))
+	car.enter(cop)
 	car.drive(1.0, 0.0, false)
 	await wait_seconds(6.0)
+	assert_gt(cop.stats["meters_driven"], 20.0, "counts for the driver of the year award")
 	assert_gt(car.forward_speed(), PatrolCar.MAX_SPEED * 0.8, "gets close to top speed")
 	assert_lt(car.forward_speed(), PatrolCar.MAX_SPEED + 1.0, "but no faster")
 	assert_gt(car.global_position.z, 20.0, "moved forward")

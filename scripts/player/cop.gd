@@ -27,6 +27,8 @@ var ram: BatteringRam
 var _stagger_left := 0.0
 ## While holding E on the grandpa he tells a story; this cop can't do anything else (allanamiento.md).
 var listening_to: Grandpa
+## Silly numbers for the joke awards at the end of the shift (decision 41).
+var stats := {"ram_misses": 0, "story_seconds": 0.0, "meters_driven": 0.0}
 ## The patrol car this cop sits in, if any: the body rides the seat and doesn't walk or collide.
 var vehicle: PatrolCar
 
