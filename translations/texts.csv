@@ -25,3 +25,12 @@ HINT_CAR_PASSENGER,Vas de acompañante. E para bajarte.,You're riding along. E t
 HINT_CAR_FULL,El patrullero está lleno.,The patrol car is full.,A viatura está cheia.
 CASE_FAILED_BROKEN,Se rompió la lata de galletas. Caso fallado.,The cookie tin broke. Case failed.,A lata de biscoitos quebrou. Caso fracassado.
 CASE_SOLVED,¡Caso resuelto! La evidencia va en el baúl.,Case solved! The evidence is in the trunk.,Caso resolvido! A evidência está no porta-malas.
+PROMPT_GRAB,Mantén clic izquierdo: agarrar,Hold left click: grab,Segure o clique esquerdo: pegar
+PROMPT_HOLDING,"Suelta el clic: soltar · Clic derecho: tirar · Rueda: acercar o alejar","Release click: drop · Right click: throw · Wheel: closer or farther","Solte o clique: soltar · Clique direito: jogar · Roda: aproximar ou afastar"
+PROMPT_RAM,"Mantén clic izquierdo: cargar el golpe · G: soltar el ariete","Hold left click: charge the hit · G: drop the battering ram","Segure o clique esquerdo: carregar o golpe · G: soltar o aríete"
+PROMPT_TAKE_RAM,E: agarrar el ariete,E: take the battering ram,E: pegar o aríete
+PROMPT_POT,E: revisar la maceta,E: search the pot,E: revistar o vaso
+PROMPT_DOOR_LOCKED,Cerrada: busca la llave en las macetas o usa el ariete,Locked: find the key in the pots or use the battering ram,Trancada: procure a chave nos vasos ou use o aríete
+PROMPT_DOOR,E: abrir o cerrar la puerta,E: open or close the door,E: abrir ou fechar a porta
+PROMPT_GRANDPA,Mantén E: escuchar una historia del abuelo (lo distrae),Hold E: listen to one of the grandpa's stories (distracts him),Segure E: ouvir uma história do vovô (distrai ele)
+PROMPT_CAR,E: subir al patrullero,E: get in the patrol car,E: entrar na viatura

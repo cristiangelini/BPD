@@ -8,6 +8,10 @@ signal searched(found_key: bool)
 var has_key := false
 
 
+func prompt_key(_cop: Cop) -> String:
+	return "PROMPT_POT"
+
+
 func use(cop: Cop) -> void:
 	var found := has_key
 	if found:

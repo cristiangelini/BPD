@@ -16,4 +16,5 @@
 - Patrol car in front of the grandpa's house: E gets in the seat by the nearest door (front left drives) and out again; the driver drives with WASD, Space handbrake and H siren, up to 60 km/h. Low poly placeholder model from tools/modelgen.
 - Fix: walls with two doors no longer cover the first one; the living room, the bathroom and the upstairs west rooms were sealed, so the grandpa was stuck in the living room.
 - Patrol car trunk: evidence dropped in it counts as delivered (taking it out or breaking it undoes that). The tin in the trunk with every cop aboard solves the case; a broken tin fails it.
+- G drops the battering ram (E picks it up again), and the key for what you can do shows under the crosshair.
 - Design docs: decisions, case catalog and working rules.

@@ -52,6 +52,10 @@ func _ready() -> void:
 
 
 ## E on him starts a story; the cop has to keep holding E to keep him talking.
+func prompt_key(_cop: Cop) -> String:
+	return "" if listener else "PROMPT_GRANDPA"
+
+
 func use(cop: Cop) -> void:
 	start_story(cop)
 

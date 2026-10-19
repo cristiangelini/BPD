@@ -78,6 +78,10 @@ func seat_of(cop: Cop) -> int:
 	return seated.find(cop)
 
 
+func prompt_key(_cop: Cop) -> String:
+	return "PROMPT_CAR"
+
+
 func use(cop: Cop) -> void:
 	if seat_of(cop) >= 0:
 		exit(cop)
