@@ -105,6 +105,7 @@ const CARD_SCENE := preload("res://scenes/props/bingo_card.tscn")
 const CARDS := 5
 
 const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+const CAT_SCENE := preload("res://scenes/npc/cat.tscn")
 const TIN_SCENE := preload("res://scenes/props/cookie_tin_clue.tscn")
 const CALENDAR_SCENE := preload("res://scenes/props/wall_calendar.tscn")
 ## The kitchen calendar hangs on the kitchen's south wall, facing north.
@@ -159,6 +160,7 @@ var notes: Array[ClueNote] = []
 ## The safe's combination, like "4-7-1", written on the calendar and inside the cookie tin.
 var combination := ""
 var calendar: WallCalendar
+var michi: Cat
 var cookie_tin: ClueNote
 ## Clues the cops found, as checklist lines (already translated).
 var clues_found: Array[String] = []
@@ -199,6 +201,7 @@ func _ready() -> void:
 	_place_notes()
 	_place_combination()
 	_give_slips()
+	_place_michi()
 	_place_trails()
 	(evidence[0] as Evidence).broken.connect(_fail.bind("CASE_FAILED_BROKEN"))
 	car.evidence_delivered.connect(_on_evidence_delivered)
@@ -300,6 +303,16 @@ func _give_slips() -> void:
 	for item: int in order:
 		grandpa.slips.append(tr("GRANDPA_SLIP") % tr("LOC_" + SPOTS[evidence_spots[item]].id))
 	grandpa.slipped.connect(_on_clue)
+
+
+## Michi sleeps on top of the betting book's hiding spot.
+func _place_michi() -> void:
+	michi = CAT_SCENE.instantiate()
+	michi.position = SPOTS[evidence_spots[0]].at + Vector3.UP * (EVIDENCE[0].half_height * 2 + 0.05)
+	michi.rotation.y = case_seed % 4 * PI / 2
+	michi.meowed.connect(grandpa.cat_upset)
+	michi.tripped.connect(func(cop: Cop) -> void: grandpa.cat_upset(cop.global_position))
+	$Evidence.add_child(michi)
 
 
 func _on_clue(text: String) -> void:

@@ -54,6 +54,11 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
 - Se lo puede distraer: si un policía se le para enfrente y mantiene E, el abuelo le cuenta una historia larga y se queda quieto mientras dure (hasta 20 s, con 30 s de espera entre una y otra). El que lo distrae no puede hacer otra cosa.
 - No se desmaya ni se lo puede detener: es inocente (decisión 5). Si se cae, se levanta solo a los 3 s.
 
+## Michi, el gato del abuelo
+- Duerme arriba de la libreta de apuestas, así que para llevarse la libreta primero hay que sacarlo (decisión 77).
+- Se agarra con E como cualquier objeto (4 kg). La primera vez que lo levantan maúlla y se despierta. Cada maullido sube 5 la denuncia si el abuelo está a menos de 12 m, porque lo oye aunque no lo vea **(propuesta)**.
+- Despierto, camina a 1,6 m/s y se cruza entre las piernas del policía más cercano (a menos de 10 m). Si un policía pasa corriendo a menos de 0,55 m (a más de 2,5 m/s), tropieza y queda 1,2 s sin poder moverse, y Michi maúlla. Puede volver a hacer tropezar a alguien cada 4 s **(propuesta)**.
+
 ## Patrullero
 - Auto de 4 asientos: chofer, acompañante y dos atrás. Se sube y se baja con E al lado de una puerta.
 - **Chofer:** W acelera, S frena y da marcha atrás, A y D doblan, Espacio es el freno de mano y H la sirena. Velocidad máxima de 60 km/h, manejo de juego (arcade), sin daño **(propuesta)**.
