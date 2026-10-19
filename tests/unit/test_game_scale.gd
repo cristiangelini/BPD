@@ -4,8 +4,8 @@ extends GutTest
 
 
 func test_cop_body() -> void:
-	assert_eq(GameScale.COP_HEIGHT, 1.8)
-	assert_eq(GameScale.EYE_HEIGHT, 1.65)
+	assert_eq(GameScale.COP_HEIGHT, 1.55)
+	assert_eq(GameScale.EYE_HEIGHT, 1.35)
 	assert_eq(GameScale.CROUCH_HEIGHT, 1.1)
 
 
