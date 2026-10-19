@@ -34,3 +34,19 @@ PROMPT_DOOR_LOCKED,Cerrada: busca la llave en las macetas o usa el ariete,Locked
 PROMPT_DOOR,E: abrir o cerrar la puerta,E: open or close the door,E: abrir ou fechar a porta
 PROMPT_GRANDPA,Mantén E: escuchar una historia del abuelo (lo distrae),Hold E: listen to one of the grandpa's stories (distracts him),Segure E: ouvir uma história do vovô (distrai ele)
 PROMPT_CAR,E: subir al patrullero,E: get in the patrol car,E: entrar na viatura
+BRIEF_SPEAKER,Comisario,Commissioner,Comissário
+BRIEF_CONTINUE,E: seguir,E: continue,E: continuar
+BRIEF_1_1_A,"¡Novatos! Atención, que no lo voy a repetir.","Rookies! Listen up, I won't say it twice.","Novatos! Atenção, que eu não vou repetir."
+BRIEF_1_1_B,Hace meses que alguien organiza un bingo clandestino para todos los jubilados del barrio. Los vecinos dicen que es el abuelo de la casa amarilla.,For months someone has been running an illegal bingo for every retiree in the neighborhood. The neighbors say it's the grandpa in the yellow house.,Faz meses que alguém organiza um bingo clandestino para todos os aposentados do bairro. Os vizinhos dizem que é o vovô da casa amarela.
+BRIEF_1_1_C,Tenemos orden de allanamiento. El abuelo guarda la libreta de apuestas en una lata de galletas. Tráiganla en el baúl del patrullero: sin eso no hay caso.,We have a search warrant. The grandpa keeps the betting book in a cookie tin. Bring it back in the patrol car's trunk: without it there's no case.,Temos um mandado de busca. O vovô guarda o caderno de apostas numa lata de biscoitos. Tragam no porta-malas da viatura: sem isso não tem caso.
+BRIEF_1_1_D,"Si encuentran la caja fuerte con la recaudación, mejor. La puerta está cerrada: la llave suele estar en alguna maceta, y si no, usen el ariete.","If you find the safe with the takings, even better. The door is locked: the key is usually in one of the pots, and if not, use the battering ram.","Se acharem o cofre com a arrecadação, melhor. A porta está trancada: a chave costuma estar em algum vaso, e se não, usem o aríete."
+BRIEF_1_1_E,"Y no rompan nada, que el abuelo tiene abogado: cada adorno roto se los descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.","And don't break anything, the grandpa has a lawyer: every broken ornament comes out of your pay. Press Q to see the checklist of what to do.","E não quebrem nada, que o vovô tem advogado: cada enfeite quebrado sai do salário de vocês. Com Q vocês veem a planilha do que fazer."
+HUD_CHECKLIST_HINT,Q: planilla,Q: checklist,Q: planilha
+OBJ_TITLE,Planilla del caso,Case checklist,Planilha do caso
+OBJ_ENTER,Entrar a la casa (llave en una maceta o ariete),Get into the house (key in a pot or battering ram),Entrar na casa (chave num vaso ou aríete)
+OBJ_FIND,Encontrar la lata de galletas con la libreta de apuestas,Find the cookie tin with the betting book,Achar a lata de biscoitos com o caderno de apostas
+OBJ_TRUNK,Dejarla en el baúl del patrullero,Put it in the patrol car's trunk,Deixar no porta-malas da viatura
+OBJ_LEAVE,Subir todos al patrullero,Everyone gets in the patrol car,Todos entram na viatura
+OBJ_EXTRA,Extra: llevar la caja fuerte con la recaudación (hacen falta dos),Extra: take the safe with the takings (needs two),Extra: levar o cofre com a arrecadação (precisa de dois)
+OBJ_BROKEN,Adornos rotos: %d (multa: %d),Broken ornaments: %d (fine: %d),Enfeites quebrados: %d (multa: %d)
+OBJ_COMPLAINT,Denuncia del abuelo: %d%%,Grandpa's complaint: %d%%,Denúncia do vovô: %d%%

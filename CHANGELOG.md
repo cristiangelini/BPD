@@ -18,3 +18,4 @@
 - Patrol car trunk: evidence dropped in it counts as delivered (taking it out or breaking it undoes that). The tin in the trunk with every cop aboard solves the case; a broken tin fails it.
 - G drops the battering ram (E picks it up again), and the key for what you can do shows under the crosshair.
 - Design docs: decisions, case catalog and working rules.
+- The comisario gives case 1.1 (an illegal bingo) before the raid, and Q opens the case checklist; the safe now counts as evidence worth 600.

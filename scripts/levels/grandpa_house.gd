@@ -63,6 +63,11 @@ const POTS := [Vector3(-2.5, 0.0, 5.8), Vector3(2.5, 0.0, 5.8), Vector3(4.5, 0.0
 
 const POT_SCENE := preload("res://scenes/props/key_pot.tscn")
 
+## What the comisario says before the raid, one tr() key per line.
+const BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_1_1_B", "BRIEF_1_1_C", "BRIEF_1_1_D", "BRIEF_1_1_E"]
+## The open checklist redraws this often, in seconds.
+const CHECKLIST_REFRESH := 0.2
+
 ## Evidence placed this week: the main one (cookie tin) and the small safe. Album and figurine come later.
 const EVIDENCE := [
 	{"scene": preload("res://scenes/props/cookie_tin.tscn"), "heavy": false, "half_height": 0.085},
@@ -86,6 +91,12 @@ var fines := 0
 var case_failed := false
 ## The main evidence is in the trunk and every cop got in the car (allanamiento.md, "Entrega").
 var case_solved := false
+## Some cop already picked up the main evidence (checklist row "find it").
+var main_found := false
+
+var briefing: CaseBriefing
+var checklist: CaseChecklist
+var _refresh_left := 0.0
 
 var _materials := {}
 @onready var _built: Node3D = $Built
@@ -123,6 +134,43 @@ func _ready() -> void:
 	car.evidence_delivered.connect(_on_evidence_delivered)
 	car.evidence_delivered.connect(_check_solved.unbind(1))
 	car.seats_changed.connect(_check_solved)
+	checklist = CaseChecklist.new()
+	add_child(checklist)
+	briefing = CaseBriefing.new()
+	add_child(briefing)
+	briefing.finished.connect(checklist.set_open.bind(true))
+	# Only a cop with a player at the keys hears the comisario; tests drive cops without input.
+	for cop in get_tree().get_nodes_in_group("cops"):
+		if (cop as Cop).input_enabled:
+			briefing.start(BRIEFING)
+			break
+
+
+func _process(delta: float) -> void:
+	if not main_found and main_evidence().is_held():
+		main_found = true
+	_refresh_left -= delta
+	if checklist.is_open() and _refresh_left <= 0.0:
+		_refresh_left = CHECKLIST_REFRESH
+		checklist.show_rows(CaseObjectives.rows(objective_facts()))
+
+
+## What the checklist needs to know about the case right now.
+func objective_facts() -> Dictionary:
+	var door: FrontDoor = $FrontDoor
+	var all_in := true
+	for cop in get_tree().get_nodes_in_group("cops"):
+		all_in = all_in and (cop as Cop).vehicle == car
+	return {
+		"door_open": door.is_open or door.is_broken,
+		"found": main_found,
+		"delivered": car.is_delivered(main_evidence()),
+		"all_in_car": all_in,
+		"extra_delivered": car.is_delivered(evidence[1] as Evidence),
+		"broken": broken_ornaments,
+		"fines": fines,
+		"complaint": grandpa.complaint,
+	}
 
 
 ## The cookie tin, the evidence the case is about.
