@@ -23,7 +23,6 @@ const INSIDE_UP := Color(1.0, 0.74, 0.8)
 const ROOF := Color(0.86, 0.32, 0.26)
 const FURNITURE := Color(0.55, 0.36, 0.62)
 const WHITE := Color(0.92, 0.92, 0.88)
-const POT := Color(0.85, 0.45, 0.25)
 
 ## [axis, fixed, from, to, level, door centers, color]. Axis "x" runs along x at z = fixed; "z" along z at x = fixed.
 const WALLS := [
@@ -61,6 +60,8 @@ const SPOTS := [
 ## The door key hides in one of these pots by the front door.
 const POTS := [Vector3(-2.5, 0.0, 5.8), Vector3(2.5, 0.0, 5.8), Vector3(4.5, 0.0, 6.6)]
 
+const POT_SCENE := preload("res://scenes/props/key_pot.tscn")
+
 ## Evidence placed this week: the main one (cookie tin) and the small safe. Album and figurine come later.
 const EVIDENCE := [
 	{"scene": preload("res://scenes/props/cookie_tin.tscn"), "heavy": false, "half_height": 0.085},
@@ -74,6 +75,7 @@ const EVIDENCE := [
 var evidence_spots: Array = []
 var evidence: Array[Node3D] = []
 var key_pot := 0
+var pots: Array[KeyPot] = []
 
 var _materials := {}
 @onready var _built: Node3D = $Built
@@ -88,6 +90,7 @@ func _ready() -> void:
 	var result := HidingDraw.draw(case_seed, spot_heavy, item_heavy, POTS.size())
 	evidence_spots = result.spots
 	key_pot = result.key_pot
+	pots[key_pot].has_key = true
 	for i in EVIDENCE.size():
 		var item: Node3D = EVIDENCE[i].scene.instantiate()
 		item.position = SPOTS[evidence_spots[i]].at + Vector3.UP * (EVIDENCE[i].half_height + 0.02)
@@ -119,7 +122,10 @@ func _build() -> void:
 	_stairs()
 	_furniture()
 	for p: Vector3 in POTS:
-		_box(p + Vector3(0, 0.2, 0), Vector3(0.4, 0.4, 0.4), POT)
+		var pot: KeyPot = POT_SCENE.instantiate()
+		pot.position = p
+		_built.add_child(pot)
+		pots.append(pot)
 	_lights()
 
 

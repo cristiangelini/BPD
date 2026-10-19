@@ -19,19 +19,39 @@ var is_running := false
 var is_crouching := false
 ## After running out of stamina, running waits until half of it is back.
 var exhausted := false
+## Found in one of the pots by the grandpa's front door.
+var has_key := false
 
 @onready var _shape: CollisionShape3D = $Shape
 @onready var _head: Node3D = $Head
 @onready var camera: Camera3D = $Head/Camera
 @onready var model: Node3D = $Model
+@onready var _hint: Label = $Hud/Hint
+@onready var _hint_timer: Timer = $Hud/Hint/Timer
 
 
 func _ready() -> void:
 	InputSetup.ensure_actions()
 	camera.fov = GameScale.FOV
 	_apply_height(GameScale.COP_HEIGHT)
+	_hint_timer.timeout.connect(_hint.hide)
 	if input_enabled:
 		_hide_from_own_camera()
+
+
+## What the camera points at within reach (empty if nothing), ignoring the cop's own body.
+func aim_hit(reach: float) -> Dictionary:
+	var eye := camera.global_transform
+	var query := PhysicsRayQueryParameters3D.create(eye.origin, eye.origin - eye.basis.z * reach)
+	query.exclude = [get_rid()]
+	return get_world_3d().direct_space_state.intersect_ray(query)
+
+
+## Shows a short line at the bottom of this cop's screen. `key` is a tr() key.
+func show_hint(key: String) -> void:
+	_hint.text = key
+	_hint.show()
+	_hint_timer.start()
 
 
 ## Swaps the body for the skin of player `index` (0 to 3).
@@ -61,6 +81,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		look(event.relative * MOUSE_SENSITIVITY)
 	elif event is InputEventMouseButton and event.pressed:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	elif event.is_action_pressed("use"):
+		use()
 	elif event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
@@ -72,6 +94,21 @@ func _physics_process(delta: float) -> void:
 	var wish := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	step(delta, wish, Input.is_action_pressed("run"), Input.is_action_pressed("crouch"),
 		Input.is_action_just_pressed("jump"))
+
+
+## Uses what the camera points at (a pot, a door...), if it can be used. Returns true if something was used.
+func use() -> bool:
+	var hit := aim_hit(GameScale.GRAB_REACH)
+	if hit.is_empty():
+		return false
+	# A door's body is a child of the door itself.
+	var target: Node = hit.collider
+	if not target.has_method("use"):
+		target = target.get_parent()
+	if not target.has_method("use"):
+		return false
+	target.use(self)
+	return true
 
 
 ## Rotates the view: x turns the body, y tilts the head.

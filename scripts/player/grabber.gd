@@ -41,9 +41,7 @@ func hold_point() -> Vector3:
 ## Grabs the object in front of the camera within reach. Returns true if it got one.
 func try_grab() -> bool:
 	var eye := _cop.camera.global_transform
-	var query := PhysicsRayQueryParameters3D.create(eye.origin, eye.origin - eye.basis.z * GameScale.GRAB_REACH)
-	query.exclude = [_cop.get_rid()]
-	var hit := _cop.get_world_3d().direct_space_state.intersect_ray(query)
+	var hit := _cop.aim_hit(GameScale.GRAB_REACH)
 	if hit.is_empty() or not hit.collider is Grabbable:
 		return false
 	held = hit.collider

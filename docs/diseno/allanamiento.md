@@ -15,7 +15,7 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
 - Hay unos 150 adornos frágiles (figuritas de porcelana, platos, jarrones), repartidos en estantes, mesas y vitrinas. Son el chiste del caso: cualquier golpe los rompe.
 - **Plano (propuesta):** abajo, la entrada es un pasillo en el medio que va de la puerta al fondo, con la escalera contra la pared este; a la izquierda el living y el baño, a la derecha el comedor y la cocina. Arriba, el dormitorio chico y el altillo a la izquierda y el dormitorio grande a la derecha.
 - **Los 10 escondites (propuesta):** abajo del sillón, detrás del cuadro, en el horno, en la alacena, abajo de la mesa, en la bañera, abajo de la escalera, abajo de la cama, en el altillo y en el ropero. La caja fuerte de 40 kg solo entra en 5: abajo de la mesa, en la bañera, abajo de la escalera, en el altillo y en el ropero.
-- La puerta de entrada está cerrada. Se abre con el **ariete** (3 golpes) o buscando la llave escondida en una de 3 macetas de afuera, elegida al azar.
+- La puerta de entrada está cerrada. Se abre con el **ariete** (3 golpes) o buscando la llave escondida en una de 3 macetas de afuera, elegida al azar. Cada maceta se revisa con E; con la llave, E abre y cierra la puerta. El ariete la tira abajo hacia adentro.
 
 ## La evidencia
 - **Evidencia principal:** una lata de galletas llena de "cosas sospechosas". Pesa 3 kg y vale 1000.

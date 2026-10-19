@@ -4,3 +4,7 @@ MENU_SUBTITLE,Cuatro policías. Cero ideas.,Four cops. Zero clues.,Quatro polici
 MENU_PLAY,Jugar,Play,Jogar
 MENU_TEST_ROOM,Sala de pruebas,Test room,Sala de testes
 MENU_QUIT,Salir,Quit,Sair
+HINT_KEY_FOUND,¡Encontraste la llave!,You found the key!,Você encontrou a chave!
+HINT_POT_EMPTY,Solo hay tierra.,Just dirt.,Só tem terra.
+HINT_DOOR_LOCKED,Está cerrada. Busca la llave o usa el ariete.,It's locked. Find the key or use the battering ram.,Está trancada. Procure a chave ou use o aríete.
+HINT_DOOR_UNLOCKED,Abriste la puerta con la llave.,You unlocked the door.,Você destrancou a porta.
