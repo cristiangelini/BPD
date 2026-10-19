@@ -22,7 +22,7 @@ to it (rule + why) in the same PR.
 - Every new feature adds at least one GUT test. CI must be green before asking for review; never skip or disable a test.
 - Every new feature adds its shortcut to the debug panel (once it exists).
 - Never claim something works or looks right without a screenshot or test output.
-- Placeholders stay grey boxes until the game is fun; AI art is never final; final art needs Cristian's approval.
+- Placeholders are procedural low poly models (`tools/modelgen`), not grey boxes; AI art is never final; final art needs Cristian's approval.
 - No HTML pages for mechanics, maps, effects or HUD: try it in Godot.
 - Don't create repos, push to `main` or make builds unless Cristian asks.
 - Files in UTF-8 without BOM. `.ps1` and `.bat` files in ASCII with CRLF (PowerShell 5.1 breaks accents).
@@ -31,6 +31,7 @@ to it (rule + why) in the same PR.
 - Import (after adding assets or translations): `godot --headless --path . --import`
 - Tests (GUT 9.7.1 in `addons/gut`, config in `.gutconfig.json`): `godot --headless --path . -s res://addons/gut/gut_cmdln.gd`
 - Play: `godot --path .`
+- Placeholder models (GLBs into `assets/models/`, previews optional): `cd tools/modelgen && npm install && node run.mjs [--shots <dir>]`
 
 ## Where things are
 - `scenes/` and `scripts/` mirror each other by area (`ui/` for now). `translations/texts.csv` for all game text.

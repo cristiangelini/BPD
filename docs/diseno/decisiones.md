@@ -76,7 +76,7 @@ Fuente de verdad del diseño. Cada decisión lleva un número que no cambia. Si 
 51. Voz por proximidad con la voz de Steam. (M5)
 
 ## Arte y negocio
-52. Cajas y formas simples hasta que el juego sea divertido. Después se suma arte con aprobación de Cristian, y el arte de IA nunca es el final. (N1)
+52. ~~Cajas y formas simples hasta que el juego sea divertido. Después se suma arte con aprobación de Cristian, y el arte de IA nunca es el final. (N1)~~ Reemplazada por la 71.
 53. Meta: vender en Steam. Precio y demo para Next Fest quedan por decidir. (O1 a O3)
 54. Pensado para streamers (momentos para clips), sin botón para que el chat moleste. (O4)
 
@@ -101,3 +101,4 @@ Fuente de verdad del diseño. Cada decisión lleva un número que no cambia. Si 
 68. La voz es pulsar para hablar, con la opción de dejarla siempre abierta. (allanamiento · 3)
 69. Allanamiento de la semana 1: sueldo de 500, cuota de 800 y multa de 20 por adorno roto. (allanamiento · 4)
 70. El abuelo entra en la semana 1 como NPC de la casa. (allanamiento · 5)
+71. Los modelos provisorios no son cajas grises: son low poly con caras planas y colores fuertes (decisión 12), hechos por código en `tools/modelgen`, para ver la jugabilidad y que se vea lindo. No son el arte final: el final lo aprueba Cristian y el arte de IA nunca es el final. (pedido de Cristian, 19/10)

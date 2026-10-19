@@ -4,6 +4,13 @@ extends CharacterBody3D
 ## First person cop: walk, run with stamina, crouch and jump (docs/diseno/escala.md).
 
 const MOUSE_SENSITIVITY := 0.0025
+## Render layer of the cop's own body: hidden from its own camera, but it still casts a shadow.
+const OWN_BODY_LAYER := 20
+## One uniform color per player so friends tell each other apart (placeholder models from tools/modelgen).
+const UNIFORMS: Array[PackedScene] = [
+	preload("res://assets/models/cop_0.glb"), preload("res://assets/models/cop_1.glb"),
+	preload("res://assets/models/cop_2.glb"), preload("res://assets/models/cop_3.glb"),
+]
 
 @export var input_enabled := true
 
@@ -16,12 +23,35 @@ var exhausted := false
 @onready var _shape: CollisionShape3D = $Shape
 @onready var _head: Node3D = $Head
 @onready var camera: Camera3D = $Head/Camera
+@onready var model: Node3D = $Model
 
 
 func _ready() -> void:
 	InputSetup.ensure_actions()
 	camera.fov = GameScale.FOV
 	_apply_height(GameScale.COP_HEIGHT)
+	if input_enabled:
+		_hide_from_own_camera()
+
+
+## Swaps the body for the uniform of player `index` (0 to 3).
+func set_uniform(index: int) -> void:
+	var old: Node3D = get_node("Model")
+	var fresh: Node3D = UNIFORMS[index % UNIFORMS.size()].instantiate()
+	fresh.transform = old.transform
+	remove_child(old)
+	old.queue_free()
+	fresh.name = "Model"
+	add_child(fresh)
+	model = fresh
+	if input_enabled and is_node_ready():
+		_hide_from_own_camera()
+
+
+func _hide_from_own_camera() -> void:
+	for mesh in model.find_children("*", "VisualInstance3D", true, false):
+		(mesh as VisualInstance3D).layers = 1 << (OWN_BODY_LAYER - 1)
+	camera.cull_mask &= ~(1 << (OWN_BODY_LAYER - 1))
 
 
 func _unhandled_input(event: InputEvent) -> void:
