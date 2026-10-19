@@ -28,6 +28,7 @@ the number in brackets is the decision there.
 - Keep BPD's own style (low poly, R.E.P.O. / PEAK), not wgt's comic cel shading with ink outlines. [12, 71] Cristian corrected it when wgt's look was proposed.
 - Every character uses the pear body; cops all wear the blue uniform and only the skin color tells players apart; NPCs differ by outfit and props, with softer skins. [72] Cristian wanted non-humanoid PEAK / R.E.P.O. bodies and police in police blue.
 - For a new look, show a few variants as images and let Cristian pick before putting it in the game. [72] He asked for 5 body options to approve.
+- In first person the player sees blue sleeves and mitten hands in their skin color (variant B). Cristian picked them on 19/10 out of 5 options (ball, mitten, fingers, cartoon, noodle).
 - Placeholder art is never final: final art needs Cristian's approval, AI art is never final. [71]
 
 ## Cases
