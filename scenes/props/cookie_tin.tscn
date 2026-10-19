@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/props/evidence.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/models/cookie_tin.glb" id="2"]
+
+[sub_resource type="CylinderShape3D" id="Shape"]
+height = 0.17
+radius = 0.18
+
+[node name="CookieTin" type="RigidBody3D"]
+collision_layer = 4
+collision_mask = 7
+mass = 3.0
+script = ExtResource("1")
+full_value = 1000.0
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+shape = SubResource("Shape")
+
+[node name="Model" parent="." instance=ExtResource("2")]
+
+[node name="ValueLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+billboard = 1
+no_depth_test = true
+pixel_size = 0.004
+outline_size = 8
+text = "1000"

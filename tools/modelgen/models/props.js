@@ -28,11 +28,23 @@ export function buildSafe() {
 	return b.build();
 }
 
-export const models = { crate: buildCrate, safe: buildSafe };
+// Cookie tin: the main evidence of case 1.1 (3 kg, 1000). Round, 0.36 m wide and 0.16 m tall, centered.
+export function buildCookieTin() {
+	const tin = mat('tin', 0xd8343c), lid = mat('tin_lid', 0x2a5bd8), gold = mat('gold', 0xf2c84b, { emissive: 0x3a2a05 }), label = mat('label', 0xf6f0dc);
+	const b = new Builder('cookie_tin');
+	b.add('tin', tin, new THREE.CylinderGeometry(0.17, 0.17, 0.13, 12), { pos: V(0, -0.015, 0) });
+	b.add('tin', lid, new THREE.CylinderGeometry(0.18, 0.18, 0.04, 12), { pos: V(0, 0.06, 0) });
+	b.add('tin', gold, new THREE.CylinderGeometry(0.182, 0.182, 0.012, 12), { pos: V(0, 0.04, 0) });
+	b.add('tin', gold, new THREE.CylinderGeometry(0.06, 0.06, 0.012, 8), { pos: V(0, 0.083, 0) });
+	b.add('tin', label, new THREE.BoxGeometry(0.16, 0.07, 0.02), { pos: V(0, -0.02, 0.165) });
+	return b.build();
+}
+
+export const models = { crate: buildCrate, safe: buildSafe, cookie_tin: buildCookieTin };
 
 export const views = {
 	props: {
-		items: [{ name: 'crate', pos: [-0.5, 0.25, 0], rotY: 0.4 }, { name: 'safe', pos: [0.5, 0.32, 0], rotY: -0.4 }, { name: 'cop_0', pos: [1.6, 0, -0.5], rotY: -0.3 }],
+		items: [{ name: 'crate', pos: [-0.5, 0.25, 0], rotY: 0.4 }, { name: 'safe', pos: [0.5, 0.32, 0], rotY: -0.4 }, { name: 'cookie_tin', pos: [-0.2, 0.08, 0.6], rotY: 0.3 }, { name: 'cop_0', pos: [1.6, 0, -0.5], rotY: -0.3 }],
 		cam: { pos: [0.3, 1.5, 4.2], target: [0.3, 0.6, 0], fov: 32 },
 	},
 };
