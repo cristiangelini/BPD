@@ -7,4 +7,5 @@
 - Low poly placeholder look: procedural cops, crate and safe from tools/modelgen; colored test room with sky and shadows.
 - Pear body for every character: four cops in blue with player skin colors, and ten NPC models (comisario, abuelo, sospechoso, vecina, periodista, asuntos internos, carcelero, preso, abogado, político).
 - Fragile evidence: the cookie tin (3 kg, worth 1000) loses value on hits above 3 m/s and breaks at 0.
+- Grandpa's house (case 1.1): two floors, 8 rooms, stairs and 10 hiding spots; the tin and the safe hide in a seeded random spot each match. Play opens it; the grey room moved to "Sala de pruebas".
 - Design docs: decisions, case catalog and working rules.

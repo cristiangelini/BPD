@@ -3,20 +3,27 @@ extends Control
 
 ## Placeholder main menu. Every visible text goes through tr() keys in translations/texts.csv.
 
-const PLAY_SCENE := "res://scenes/levels/grey_room.tscn"
+const PLAY_SCENE := "res://scenes/levels/grandpa_house.tscn"
+const TEST_ROOM_SCENE := "res://scenes/levels/grey_room.tscn"
 
 @onready var _play_button: Button = %PlayButton
+@onready var _test_room_button: Button = %TestRoomButton
 @onready var _quit_button: Button = %QuitButton
 
 
 func _ready() -> void:
-	# Until the first case exists, Play opens the grey test room.
+	# Until the station and the patrol car exist, Play opens the grandpa's house directly.
 	_play_button.pressed.connect(_on_play_pressed)
+	_test_room_button.pressed.connect(_on_test_room_pressed)
 	_quit_button.pressed.connect(_on_quit_pressed)
 
 
 func _on_play_pressed() -> void:
 	get_tree().change_scene_to_file(PLAY_SCENE)
+
+
+func _on_test_room_pressed() -> void:
+	get_tree().change_scene_to_file(TEST_ROOM_SCENE)
 
 
 func _on_quit_pressed() -> void:

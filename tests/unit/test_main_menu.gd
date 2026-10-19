@@ -13,3 +13,7 @@ func test_play_points_to_an_existing_scene() -> void:
 	var menu: Control = add_child_autofree(MENU_SCENE.instantiate())
 	assert_false(menu.get_node("%PlayButton").disabled)
 	assert_true(ResourceLoader.exists(MainMenu.PLAY_SCENE), "the Play scene should exist")
+
+
+func test_test_room_points_to_an_existing_scene() -> void:
+	assert_true(ResourceLoader.exists(MainMenu.TEST_ROOM_SCENE), "the test room scene should exist")

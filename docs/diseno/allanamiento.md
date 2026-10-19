@@ -13,6 +13,8 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
 ## La casa del abuelo
 - Casa de dos pisos, de unos 12 × 10 m de planta, con 8 ambientes: entrada, living, cocina, comedor y baño abajo, y dos dormitorios y un altillo arriba. La escalera es angosta (1,0 m).
 - Hay unos 150 adornos frágiles (figuritas de porcelana, platos, jarrones), repartidos en estantes, mesas y vitrinas. Son el chiste del caso: cualquier golpe los rompe.
+- **Plano (propuesta):** abajo, la entrada es un pasillo en el medio que va de la puerta al fondo, con la escalera contra la pared este; a la izquierda el living y el baño, a la derecha el comedor y la cocina. Arriba, el dormitorio chico y el altillo a la izquierda y el dormitorio grande a la derecha.
+- **Los 10 escondites (propuesta):** abajo del sillón, detrás del cuadro, en el horno, en la alacena, abajo de la mesa, en la bañera, abajo de la escalera, abajo de la cama, en el altillo y en el ropero. La caja fuerte de 40 kg solo entra en 5: abajo de la mesa, en la bañera, abajo de la escalera, en el altillo y en el ropero.
 - La puerta de entrada está cerrada. Se abre con el **ariete** (3 golpes) o buscando la llave escondida en una de 3 macetas de afuera, elegida al azar.
 
 ## La evidencia

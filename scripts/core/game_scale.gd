@@ -26,6 +26,13 @@ const STAMINA_RESUME := 0.5
 # A fall higher than this knocks the cop out (meters)
 const KNOCKOUT_FALL := 4.0
 
+# Buildings (meters)
+const DOOR_WIDTH := 1.2
+const DOOR_HEIGHT := 2.1
+const FLOOR_HEIGHT := 2.7
+const STEP_HEIGHT := 0.18
+const STAIR_WIDTH := 1.0
+
 # Camera
 const FOV := 80.0
 const FOV_MIN := 70.0
