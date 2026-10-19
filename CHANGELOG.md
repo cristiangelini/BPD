@@ -30,3 +30,4 @@
 - The vecina chismosa watches from the house next door: bring her the tupperware the grandpa kept (in a drawer) and she tells where she saw him hide something.
 - First person hands: the player sees blue sleeves and mittens in their skin color; they sway while walking, reach for what you hold and hide behind the battering ram.
 - Raid stories as data: the bingo (briefing, evidence and drawer cards) moved from the house code to a CaseStory resource, with no change in play. It is the first step to draw a different story each match.
+- The house draws its story from the seed (or `--story=<id>`), and the bingo's own pieces (safe combination, crumbs, cards) live in a story rig, so a new story only brings its own.

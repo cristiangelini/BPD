@@ -104,8 +104,6 @@ const CAT_SCENE := preload("res://scenes/npc/cat.tscn")
 const TUPPER_SCENE := preload("res://scenes/props/tupperware.tscn")
 ## The vecina's house, west of the grandpa's, its window toward the front yard (propuesta).
 const NEIGHBOR_AT := Vector3(-17.5, 0.0, 8.0)
-const TIN_SCENE := preload("res://scenes/props/cookie_tin_clue.tscn")
-const CALENDAR_SCENE := preload("res://scenes/props/wall_calendar.tscn")
 ## The kitchen calendar hangs on the kitchen's south wall, facing north.
 const CALENDAR_AT := Vector3(9.0, 1.5, 2.91)
 ## Surfaces where the grandpa's notes can lie (one note per place at most).
@@ -118,16 +116,20 @@ const NOTE_PLACES := [
 const FOOTPRINTS_FROM := Vector3(0.0, 0.0, -9.3)
 const CRUMBS_FROM := Vector3(6.4, 0.0, -2.0)
 const FOOTPRINT_STEP := 0.6
-const CRUMB_STEP := 0.35
 ## A cop this close to a trail has seen it (propuesta).
 const SEE_TRAIL := 2.5
 const MUD := Color(0.36, 0.24, 0.14)
-const CRUMB := Color(0.86, 0.66, 0.36)
 
 ## 0 draws a new seed. Online, the host will send it to everyone.
 @export var case_seed := 0
-## The story this raid tells (historias.md). The clues, Michi and the safe still follow the bingo's evidence order.
-@export var story: CaseStory = BINGO
+## The stories this house can tell (historias.md). One is drawn with the seed unless `story` is set or the game runs
+## with --story=<id>.
+const STORIES: Array[CaseStory] = [BINGO]
+
+## The story this raid tells; null draws one from STORIES.
+@export var story: CaseStory
+## What only this story adds (see StoryRig).
+var rig: StoryRig
 
 ## Spot index of each placed evidence, in story.evidence order.
 var evidence_spots: Array = []
@@ -156,18 +158,14 @@ var shift_over := false
 var _materials := {}
 var _drawer_ornaments := 0
 var dressers: Array[Dresser] = []
-## The bingo cards, one in each of story.drawer_count drawers drawn from the seed.
-var cards: Array[Evidence] = []
+## The story's small evidence, one in each of story.drawer_count drawers drawn from the seed (the bingo cards).
+var drawer_evidence: Array[Evidence] = []
 var clue_plan := {}
 var notes: Array[ClueNote] = []
-## The safe's combination, like "4-7-1", written on the calendar and inside the cookie tin.
-var combination := ""
-var calendar: WallCalendar
 var michi: Cat
 var neighbor: Neighbor
 ## The vecina's tupperware, in the drawer after the bingo cards' ones.
 var tupperware: RigidBody3D
-var cookie_tin: ClueNote
 ## Clues the cops found, as checklist lines (already translated).
 var clues_found: Array[String] = []
 ## Trail marks (footprints, crumbs) and the checklist line each trail gives when a cop sees it.
@@ -180,6 +178,9 @@ var trails := {}
 func _ready() -> void:
 	if case_seed == 0:
 		case_seed = randi() | 1
+	if story == null:
+		story = pick_story(case_seed, OS.get_cmdline_user_args())
+	rig = story.rig.new() if story.rig != null else StoryRig.new()
 	_build()
 	_place_dressers()
 	_bake_navigation()
@@ -203,8 +204,8 @@ func _ready() -> void:
 		ornament.broken.connect(_on_ornament_broken)
 		$Ornaments.add_child(ornament)
 	ornaments_total = $Ornaments.get_child_count() + _drawer_ornaments
+	rig.setup(self)
 	_place_notes()
-	_place_combination()
 	_give_slips()
 	_place_michi()
 	_place_neighbor()
@@ -270,13 +271,11 @@ func objective_facts() -> Dictionary:
 		all_in = all_in and (cop as Cop).vehicle == car
 	return {
 		"door_open": door.is_open or door.is_broken,
+		"find": story.find_key,
 		"found": main_found,
 		"delivered": car.is_delivered(main_evidence()),
 		"all_in_car": all_in,
-		"cage_delivered": car.is_delivered(evidence[1] as Evidence),
-		"safe_delivered": car.is_delivered(safe()) or (safe().bundle != null and car.is_delivered(safe().bundle)),
-		"cards_delivered": cards.filter(func(c: Evidence) -> bool: return car.is_delivered(c)).size(),
-		"cards_total": cards.size(),
+		"extras": rig.extras(self),
 		"tupper_asked": neighbor.was_asked,
 		"tupper_returned": neighbor.returned,
 		"clues": clues_found,
@@ -286,41 +285,26 @@ func objective_facts() -> Dictionary:
 	}
 
 
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(case_seed: int, args: PackedStringArray) -> CaseStory:
+	for arg: String in args:
+		if arg.begins_with("--story="):
+			for candidate: CaseStory in STORIES:
+				if candidate.id == arg.trim_prefix("--story="):
+					return candidate
+	return STORIES[case_seed % STORIES.size()]
+
+
 func _place_notes() -> void:
-	clue_plan = CluePlan.draw(case_seed, NOTE_PLACES.size())
+	clue_plan = CluePlan.draw(case_seed, NOTE_PLACES.size(), story.evidence.size(), rig.trail_item())
 	for entry: Dictionary in clue_plan.notes:
 		var note: ClueNote = NOTE_SCENE.instantiate()
-		note.text = CluePlan.note_text(entry.item, SPOTS[evidence_spots[entry.item]].id, entry.precise)
+		note.text = CluePlan.note_text(story.item_keys[entry.item], SPOTS[evidence_spots[entry.item]].id, entry.precise)
 		note.position = NOTE_PLACES[entry.place] + Vector3.UP * 0.01
 		note.rotation.y = entry.place * 0.7
 		note.read.connect(_on_clue)
 		$Evidence.add_child(note)
 		notes.append(note)
-
-
-## The calendar on the kitchen wall; the cookie tin goes at the end of the crumbs, by the safe (see _place_trails).
-func _place_combination() -> void:
-	var rng := RandomNumberGenerator.new()
-	rng.seed = case_seed * 7 + 3
-	combination = "%d-%d-%d" % [rng.randi_range(1, 9), rng.randi_range(0, 9), rng.randi_range(0, 9)]
-	calendar = CALENDAR_SCENE.instantiate()
-	calendar.text = tr("CLUE_CALENDAR") % combination
-	calendar.position = CALENDAR_AT
-	calendar.rotation.y = PI
-	calendar.read.connect(_on_code_found)
-	_built.add_child(calendar)
-	cookie_tin = TIN_SCENE.instantiate()
-	cookie_tin.text = tr("CLUE_TIN") % combination
-	cookie_tin.read.connect(_on_code_found)
-
-
-func safe() -> SafeBox:
-	return evidence[2]
-
-
-func _on_code_found(text: String) -> void:
-	_on_clue(text)
-	safe().code_known = true
 
 
 ## What the grandpa lets slip when asked: where each hidden item is, in an order drawn from the seed.
@@ -361,11 +345,17 @@ func _place_neighbor() -> void:
 
 
 func _on_clue(text: String) -> void:
+	add_clue(text)
+
+
+## Adds a found clue to the checklist, once.
+func add_clue(text: String) -> void:
 	if not clues_found.has(text):
 		clues_found.append(text)
 
 
-## Mud footprints and cookie crumbs follow the navigation path to their item; the map is ready a few frames after baking.
+## Mud footprints and the story's own trail follow the navigation path to their item; the map is ready a few frames
+## after baking.
 func _place_trails() -> void:
 	var map := get_world_3d().navigation_map
 	for i in 30:
@@ -373,17 +363,12 @@ func _place_trails() -> void:
 		if NavigationServer3D.map_get_path(map, FOOTPRINTS_FROM, CRUMBS_FROM, true).size() > 1:
 			break
 	var mud: int = clue_plan.footprints
-	var crumbs: int = clue_plan.crumbs
-	trails[tr("CLUE_FOOTPRINTS")] = _trail(map, FOOTPRINTS_FROM, evidence[mud].global_position, FOOTPRINT_STEP, true)
-	var crumb_marks := _trail(map, CRUMBS_FROM, evidence[crumbs].global_position, CRUMB_STEP, false)
-	trails[tr("CLUE_CRUMBS")] = crumb_marks
-	var tin_at: Vector3 = crumb_marks[crumb_marks.size() - 1].global_position if not crumb_marks.is_empty() else CRUMBS_FROM
-	cookie_tin.position = tin_at + Vector3.UP * 0.1
-	$Evidence.add_child(cookie_tin)
+	trails[tr("CLUE_FOOTPRINTS")] = trail(map, FOOTPRINTS_FROM, evidence[mud].global_position, FOOTPRINT_STEP, true, MUD)
+	rig.place_trails(self, map)
 
 
 ## Marks every `step` meters along the path; footprints alternate left and right and point along the way.
-func _trail(map: RID, from: Vector3, to: Vector3, step: float, feet: bool) -> Array[Node3D]:
+func trail(map: RID, from: Vector3, to: Vector3, step: float, feet: bool, color: Color) -> Array[Node3D]:
 	var path := NavigationServer3D.map_get_path(map, from, to, true)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = case_seed
@@ -401,7 +386,7 @@ func _trail(map: RID, from: Vector3, to: Vector3, step: float, feet: bool) -> Ar
 			var box := BoxMesh.new()
 			box.size = Vector3(0.11, 0.004, 0.26) if feet else Vector3(0.04, 0.01, 0.04)
 			mark.mesh = box
-			mark.material_override = _material(MUD if feet else CRUMB)
+			mark.material_override = _material(color)
 			var jitter := Vector3(rng.randf_range(-0.1, 0.1), 0, rng.randf_range(-0.1, 0.1))
 			mark.position = at + (side * (0.12 if marks.size() % 2 == 0 else -0.12) if feet else jitter) + Vector3.UP * 0.012
 			$Evidence.add_child(mark)
@@ -471,7 +456,7 @@ func _place_dressers() -> void:
 					(item as Ornament).broken.connect(_on_ornament_broken)
 					_drawer_ornaments += 1
 				elif item is Evidence:
-					cards.append(item)
+					drawer_evidence.append(item)
 				elif item.is_in_group("tupperware"):
 					tupperware = item
 

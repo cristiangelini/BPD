@@ -69,8 +69,8 @@ func test_she_calls_cops_that_come_close() -> void:
 
 
 func test_the_errand_row_only_shows_once_she_asked() -> void:
-	var facts := {"door_open": false, "found": false, "delivered": false, "all_in_car": false, "cage_delivered": false,
-		"safe_delivered": false, "cards_delivered": 0, "cards_total": 5, "broken": 0, "fines": 0, "complaint": 0.0}
+	var facts := {"door_open": false, "found": false, "delivered": false, "all_in_car": false,
+		"broken": 0, "fines": 0, "complaint": 0.0}
 	var texts := CaseObjectives.rows(facts).map(func(r: Dictionary) -> String: return r.text)
 	assert_does_not_have(texts, "OBJ_EXTRA_TUPPER")
 	facts.tupper_asked = true

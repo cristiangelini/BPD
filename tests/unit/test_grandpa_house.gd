@@ -91,7 +91,7 @@ func test_every_room_is_reachable_from_the_front_door() -> void:
 func test_the_bingo_cards_hide_in_drawers() -> void:
 	var house := _house(31)
 	await wait_physics_frames(5)
-	assert_eq(house.cards.size(), house.story.drawer_count)
+	assert_eq(house.drawer_evidence.size(), house.story.drawer_count)
 	var drawers_with_cards := 0
 	for dresser in house.dressers:
 		for drawer in dresser.drawers:
