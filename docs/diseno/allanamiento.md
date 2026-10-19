@@ -40,6 +40,11 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
 - **La caja fuerte tiene combinación** (3 números de la semilla). Está anotada en el calendario de la cocina y en un papelito adentro de la lata de galletas, que espera al final del camino de migas, al lado de la caja. Sabiéndola, E abre la caja: la recaudación sale como un fajo de billetes de 1 kg (vale 800) que lleva uno solo, y la caja vacía no vale nada. Sin abrirla, la caja cerrada vale lo mismo, pero hacen falta dos para llevarla **(propuesta)**.
 - **Interrogar al abuelo (R):** cada pregunta sube 5 la denuncia y se le escapa dónde está una de las 3 evidencias escondidas («¡Yo nunca escondí nada en el lavarropas!... Digo, no sé de qué me hablan.»). Contesta 3 veces por partida, con 5 s entre preguntas; después se ofende y no habla más sin su abogado **(propuesta)**. Lo que dice queda en la planilla. Mantener E sigue siendo escuchar una historia, que lo distrae. La propuesta era elegir Escuchar o Preguntar al mantener E; queda en dos teclas para que sea más rápido.
 
+## La vecina chismosa
+- Vive en la casa de al lado, al oeste, y se asoma por la ventana que da al jardín de adelante (decisión 77). Mientras nadie le hable, llama a los policías que pasan a menos de 9 m («¡Psst! ¡Oficial!») cada 8 s **(propuesta)**.
+- E en la ventana: pide el táper que el abuelo nunca le devolvió (celeste, con su nombre en cinta) y la planilla suma el extra «devolverle el táper». El táper está en uno de los cajones, sorteado con la semilla.
+- Si el táper llega a su ventana (dejado en el alféizar o tirado adentro), lo agarra y cuenta dónde vio al abuelo esconder una de las 3 evidencias (sorteada con la semilla), y lo del bingo de los jueves. La pista queda en la planilla.
+
 ## Sin tiempo límite
 - El caso no tiene reloj (pedido de Cristian). La presión la pone el abuelo (ver "El abuelo").
 

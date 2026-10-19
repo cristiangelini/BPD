@@ -6,7 +6,7 @@ extends RefCounted
 
 
 ## Facts: door_open, found, delivered, all_in_car, cage_delivered, safe_delivered (bools), cards_delivered, cards_total,
-## broken, fines, complaint (numbers), clues (lines of found clues).
+## broken, fines, complaint (numbers), clues (lines of found clues), tupper_asked, tupper_returned (optional bools).
 ## Returns rows {text: tr() key or formatted text, done: bool, optional: bool, status: bool}, in play order.
 static func rows(facts: Dictionary) -> Array[Dictionary]:
 	var list: Array[Dictionary] = []
@@ -18,6 +18,8 @@ static func rows(facts: Dictionary) -> Array[Dictionary]:
 	list.append(_extra("OBJ_EXTRA_SAFE", facts.safe_delivered))
 	list.append(_extra(TranslationServer.translate("OBJ_EXTRA_CARDS") % [facts.cards_delivered, facts.cards_total],
 		facts.cards_total > 0 and facts.cards_delivered == facts.cards_total))
+	if facts.get("tupper_asked", false):
+		list.append(_extra("OBJ_EXTRA_TUPPER", facts.get("tupper_returned", false)))
 	var clues: Array = facts.get("clues", [])
 	if not clues.is_empty():
 		list.append({"text": "OBJ_CLUES", "done": false, "optional": false, "status": true, "clue": true})

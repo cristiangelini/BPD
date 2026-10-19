@@ -106,6 +106,9 @@ const CARDS := 5
 
 const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
 const CAT_SCENE := preload("res://scenes/npc/cat.tscn")
+const TUPPER_SCENE := preload("res://scenes/props/tupperware.tscn")
+## The vecina's house, west of the grandpa's, its window toward the front yard (propuesta).
+const NEIGHBOR_AT := Vector3(-17.5, 0.0, 8.0)
 const TIN_SCENE := preload("res://scenes/props/cookie_tin_clue.tscn")
 const CALENDAR_SCENE := preload("res://scenes/props/wall_calendar.tscn")
 ## The kitchen calendar hangs on the kitchen's south wall, facing north.
@@ -161,6 +164,9 @@ var notes: Array[ClueNote] = []
 var combination := ""
 var calendar: WallCalendar
 var michi: Cat
+var neighbor: Neighbor
+## The vecina's tupperware, in the drawer after the bingo cards' ones.
+var tupperware: RigidBody3D
 var cookie_tin: ClueNote
 ## Clues the cops found, as checklist lines (already translated).
 var clues_found: Array[String] = []
@@ -202,6 +208,7 @@ func _ready() -> void:
 	_place_combination()
 	_give_slips()
 	_place_michi()
+	_place_neighbor()
 	_place_trails()
 	(evidence[0] as Evidence).broken.connect(_fail.bind("CASE_FAILED_BROKEN"))
 	car.evidence_delivered.connect(_on_evidence_delivered)
@@ -246,6 +253,8 @@ func objective_facts() -> Dictionary:
 		"safe_delivered": car.is_delivered(safe()) or (safe().bundle != null and car.is_delivered(safe().bundle)),
 		"cards_delivered": cards.filter(func(c: Evidence) -> bool: return car.is_delivered(c)).size(),
 		"cards_total": cards.size(),
+		"tupper_asked": neighbor.was_asked,
+		"tupper_returned": neighbor.returned,
 		"clues": clues_found,
 		"broken": broken_ornaments,
 		"fines": fines,
@@ -313,6 +322,18 @@ func _place_michi() -> void:
 	michi.meowed.connect(grandpa.cat_upset)
 	michi.tripped.connect(func(cop: Cop) -> void: grandpa.cat_upset(cop.global_position))
 	$Evidence.add_child(michi)
+
+
+## The vecina saw the grandpa hide one of the three items, drawn from the seed.
+func _place_neighbor() -> void:
+	neighbor = Neighbor.new()
+	neighbor.position = NEIGHBOR_AT
+	neighbor.rotation.y = PI / 2
+	var where := tr("LOC_" + SPOTS[evidence_spots[case_seed % EVIDENCE.size()]].id)
+	neighbor.clue = tr("CLUE_NEIGHBOR") % where
+	neighbor.clue_speech = tr("NEIGHBOR_CLUE") % where
+	neighbor.told.connect(_on_clue)
+	_built.add_child(neighbor)
 
 
 func _on_clue(text: String) -> void:
@@ -397,6 +418,7 @@ func _place_dressers() -> void:
 		order[i] = order[j]
 		order[j] = swap
 	var with_card := order.slice(0, CARDS)
+	var with_tupper: int = order[CARDS]
 	var n := 0
 	for place: Dictionary in DRESSERS:
 		var dresser := Dresser.new()
@@ -405,6 +427,8 @@ func _place_dressers() -> void:
 			var items := [CLUTTER_SCENE]
 			if with_card.has(n):
 				items.append(CARD_SCENE)
+			elif n == with_tupper:
+				items.append(TUPPER_SCENE)
 			elif rng.randf() < DRAWER_ORNAMENT:
 				items.append(OrnamentLayout.KINDS[rng.randi_range(0, OrnamentLayout.KINDS.size() - 1)])
 			else:
@@ -424,6 +448,8 @@ func _place_dressers() -> void:
 					_drawer_ornaments += 1
 				elif item is Evidence:
 					cards.append(item)
+				elif item.is_in_group("tupperware"):
+					tupperware = item
 
 
 ## The betting book, the evidence the case is about.

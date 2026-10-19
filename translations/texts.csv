@@ -111,3 +111,10 @@ PROMPT_CAT,Clic: agarrar a Michi,Click: grab Michi,Clique: pegar o Michi
 CAT_MEOW,¡MIAU!,MEOW!,MIAU!
 HINT_TRIPPED_CAT,¡Pisaste a Michi!,You stepped on Michi!,Você pisou no Michi!
 GRANDPA_CAT,«¡¿Qué le hacen a Michi?!»,“What are you doing to Michi?!”,“O que estão fazendo com o Michi?!”
+PROMPT_NEIGHBOR,E: hablar con la vecina,E: talk to the neighbor,E: falar com a vizinha
+NEIGHBOR_PSST,"«¡Psst! ¡Oficial! ¡Aquí, en la ventana!»","“Psst! Officer! Over here, at the window!”","“Psiu! Policial! Aqui, na janela!”"
+NEIGHBOR_ASK,"«Ese viejo me debe mi táper desde hace tres años. Celeste, con mi nombre en cinta. Tráemelo y te cuento lo que vi.»","“That old man has had my tupperware for three years. Light blue, my name on a piece of tape. Bring it to me and I'll tell you what I saw.”","“Esse velho está com meu pote há três anos. Azul-claro, com meu nome numa fita. Traga ele e eu conto o que eu vi.”"
+NEIGHBOR_WAITING,"«¿Y mi táper? Seguro lo tiene en algún cajón, ese ladrón de tápers.»","“And my tupperware? He's got it in some drawer, that tupperware thief.”","“E o meu pote? Deve estar em alguma gaveta, aquele ladrão de potes.”"
+NEIGHBOR_CLUE,"«¡Mi táper! Bueno, te cuento: anoche lo vi meter algo %s. Y los jueves vienen veinte viejitas a gritar ¡BINGO! a las tres de la mañana.»","“My tupperware! All right, here goes: last night I saw him put something %s. And on Thursdays twenty old ladies come over and shout BINGO! at three in the morning.”","“Meu pote! Bom, vou contar: ontem à noite eu vi ele colocar algo %s. E às quintas vêm vinte velhinhas gritar BINGO! às três da manhã.”"
+CLUE_NEIGHBOR,La vecina vio al abuelo esconder algo %s,The neighbor saw the grandpa hide something %s,A vizinha viu o avô esconder algo %s
+OBJ_EXTRA_TUPPER,"Extra: devolverle el táper a la vecina (está en un cajón; llévalo a su ventana)","Extra: return the neighbor's tupperware (it's in a drawer; take it to her window)","Extra: devolver o pote da vizinha (está numa gaveta; leve até a janela dela)"
