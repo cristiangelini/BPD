@@ -13,7 +13,7 @@ Esto es un borrador para que tachés, cambies o sumes. Marcá con ✗ lo que no 
 ---
 
 ## 1. Allanamiento
-Llegan con una orden judicial y tiempo límite, entran, encuentran la evidencia y la cargan hasta el patrullero sin romperla.
+Llegan con una orden judicial (sin tiempo límite, decisión 66), entran, encuentran la evidencia y la cargan hasta el patrullero sin romperla.
 
 1. **La casa del abuelo:** casa de dos pisos llena de adornos frágiles. La evidencia está escondida entre cientos de figuritas de porcelana.
 2. **Fábrica de muñecos:** la evidencia es un muñeco igual a otros 200 y la cinta transportadora no para.

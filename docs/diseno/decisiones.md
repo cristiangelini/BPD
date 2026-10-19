@@ -35,7 +35,7 @@ Fuente de verdad del diseño. Cada decisión lleva un número que no cambia. Si 
 22. La comisaría se mejora de a poco (patrulleros, celdas, café). (E3)
 
 ## Momentos
-23. **Allanamiento:** es un tipo de caso. Llegan con orden judicial y tiempo límite, tiran la puerta, buscan la evidencia y la cargan entre todos hasta el patrullero sin romperla. (F1)
+23. **Allanamiento:** es un tipo de caso. Llegan con orden judicial ~~y tiempo límite~~ (sin tiempo límite, ver 66), tiran la puerta, buscan la evidencia y la cargan entre todos hasta el patrullero sin romperla. (F1)
 24. **Persecución:** los 4 van en el mismo patrullero y cada uno tiene una tarea (manejar, radio y mapa, red o pinchos por la ventana, sirena y megáfono). (F2)
 25. La persecución es las dos cosas: un tipo de caso propio y también el final de cualquier caso en el que el sospechoso se escapa. (F3)
 26. **Detective:** en la escena del crimen buscan pistas físicas, las llevan al tablero y acusan a un sospechoso. Si se equivocan, el comisario se enoja. (F4)
