@@ -24,7 +24,9 @@ the number in brackets is the decision there.
 
 ## Look
 - First person, simple low poly 3D with strong colors and floppy ragdoll characters; a mix of R.E.P.O., PEAK and Dear Passengers. [11, 12, 14]
-- Grey boxes until the game is fun. [52]
+- Placeholders are not grey boxes: procedural low poly models (flat facets, strong colors, soft sky light) from `tools/modelgen`, so playtests look nice. [71] Cristian asked for it: grey boxes looked too poor, and wgt showed procedural models are cheap.
+- Keep BPD's own style (low poly, R.E.P.O. / PEAK), not wgt's comic cel shading with ink outlines. [12, 71] Cristian corrected it when wgt's look was proposed.
+- Placeholder art is never final: final art needs Cristian's approval, AI art is never final. [71]
 
 ## Cases
 - Every case type needs at least 10 variants (own map and twist), picked at random each match; inside each variant the evidence, culprit, suspects, neighbours and escape route also change. [19] Cristian wants no two matches alike.

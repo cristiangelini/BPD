@@ -1,0 +1,9 @@
+{
+  "name": "bpd-modelgen",
+  "private": true,
+  "type": "module",
+  "description": "Procedural placeholder models for BPD: builds GLBs and preview screenshots",
+  "scripts": { "build": "node run.mjs" },
+  "dependencies": { "three": "0.170.0" },
+  "devDependencies": { "playwright-core": "1.56.1" }
+}

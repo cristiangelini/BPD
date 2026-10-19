@@ -4,4 +4,5 @@
 - Project base: Godot 4.7.2 project, placeholder main menu, translations (es, en, pt), GUT tests and CI.
 - First person cop (walk, run with stamina, crouch, jump) in a grey test room; Play opens it.
 - Grab, carry together and throw physics props; crates (3 kg) and a safe (40 kg, needs two cops) in the grey room.
+- Low poly placeholder look: procedural cops (4 uniforms), crate and safe from tools/modelgen; colored test room with sky and shadows.
 - Design docs: decisions, case catalog and working rules.
