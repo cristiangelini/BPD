@@ -56,13 +56,35 @@ export function buildBingoCard() {
 	return b.build();
 }
 
-export const models = { betting_book: buildBettingBook, bingo_cage: buildBingoCage, bingo_card: buildBingoCard };
+// The takings (recaudación): a stack of bills with a paper band, 0.16 x 0.06 x 0.08 m, 1 kg.
+export function buildCashBundle() {
+	const bills = mat('bills', 0x6fbf73), edge = mat('bills_edge', 0x4e9a55), band = mat('band', 0xf6f0dc);
+	const b = new Builder('cash_bundle');
+	for (let i = 0; i < 3; i++) b.add('cash', i % 2 ? edge : bills, new THREE.BoxGeometry(0.16, 0.02, 0.08), { pos: V(0, -0.02 + i * 0.02, 0) });
+	b.add('cash', band, new THREE.BoxGeometry(0.03, 0.065, 0.085));
+	b.add('cash', gold, new THREE.BoxGeometry(0.02, 0.002, 0.02), { pos: V(0.05, 0.031, 0) });
+	return b.build();
+}
+
+// Wall calendar: 0.36 x 0.5 m, 2 cm thick, hung on its back (-Z). Bingo day circled in red.
+export function buildWallCalendar() {
+	const paper = mat('paper', 0xf6f0dc), top = mat('calendar_red', 0xd8343c), grid = mat('calendar_grid', 0x9aa3b2), ring = mat('calendar_ring', 0xff4d6d);
+	const b = new Builder('wall_calendar');
+	b.add('calendar', paper, new THREE.BoxGeometry(0.36, 0.5, 0.02));
+	b.add('calendar', top, new THREE.BoxGeometry(0.36, 0.14, 0.022), { pos: V(0, 0.18, 0.001) });
+	for (let r = 0; r < 4; r++) for (let c = 0; c < 7; c++) b.add('calendar', grid, new THREE.BoxGeometry(0.035, 0.035, 0.004), { pos: V(-0.135 + c * 0.045, 0.06 - r * 0.06, 0.011) });
+	b.add('calendar', ring, new THREE.TorusGeometry(0.03, 0.006, 4, 10), { pos: V(0.0, 0.0, 0.014) });
+	return b.build();
+}
+
+export const models = { betting_book: buildBettingBook, bingo_cage: buildBingoCage, bingo_card: buildBingoCard, cash_bundle: buildCashBundle, wall_calendar: buildWallCalendar };
 
 export const views = {
 	bingo: {
 		items: [{ name: 'bingo_cage', pos: [0, 0.3, 0], rotY: -0.5 }, { name: 'betting_book', pos: [0.55, 0.015, 0.4], rotY: 0.3 },
 			{ name: 'bingo_card', pos: [-0.5, 0.003, 0.45], rotY: -0.2 }, { name: 'bingo_card', pos: [-0.3, 0.003, 0.6], rotY: 0.5 },
-			{ name: 'safe', pos: [1.2, 0.32, -0.2], rotY: -0.4 }, { name: 'cop_0', pos: [-1.3, 0, -0.4], rotY: 0.4 }],
+			{ name: 'safe', pos: [1.2, 0.32, -0.2], rotY: -0.4 }, { name: 'cash_bundle', pos: [0.95, 0.04, 0.5], rotY: 0.6 },
+			{ name: 'wall_calendar', pos: [-0.9, 0.6, -0.6], rotY: 0.3 }, { name: 'cookie_tin', pos: [0.9, 0.08, 0.9], rotY: 0.3 }, { name: 'cop_0', pos: [-1.3, 0, -0.4], rotY: 0.4 }],
 		cam: { pos: [0, 1.4, 3.2], target: [0, 0.4, 0], fov: 32 },
 	},
 };
