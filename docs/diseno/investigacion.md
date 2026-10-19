@@ -1,6 +1,6 @@
 # BPD · Investigar en el allanamiento (propuesta, 19/10)
 
-Es la respuesta a la primera prueba de Cristian (19/10): "no puede ser solo buscar una caja de galletas". Todo lo de este documento es **(propuesta)** hasta que Cristian lo apruebe. Vale para el caso 1.1 "La casa del abuelo". Las otras 9 variantes y los otros tipos de caso usan las mismas piezas más adelante.
+Es la respuesta a la primera prueba de Cristian (19/10): "no puede ser solo buscar una caja de galletas". Cristian aprobó la historia, la revisión de muebles con las manos y que Michi y la vecina entren ya (decisiones 75 a 77, ver "Respuestas de Cristian"). Los números siguen siendo **(propuesta)**. Vale para el caso 1.1 "La casa del abuelo". Las otras 9 variantes y los otros tipos de caso usan las mismas piezas más adelante.
 
 ## La historia que cuenta el comisario
 Al empezar, el comisario da el caso en la comisaría (o por radio, hasta que exista la comisaría):
@@ -35,7 +35,7 @@ La planilla de objetivos (Q) anota las pistas que ya encontraron, como una libre
 
 ## Por qué se rompen las cosas (los policías son torpes)
 Hoy casi nada se rompe, porque nada obliga a pasar cerca de los adornos. Propuesta:
-- **Revisar un mueble** (E en un placard, cajón o estante) tira afuera lo que hay adentro: ropa, cajas y a veces un adorno. Buscar con apuro rompe cosas.
+- **Revisar un mueble con las manos** (decisión 76): el policía agarra el cajón o la puerta del placard con clic izquierdo y la abre tirando despacio, para atrás con S o de costado, como en R.E.P.O. No hay botón para abrir. Si tira fuerte o corriendo, el cajón sale entero y lo que hay adentro (ropa, cajas, a veces un adorno) sale volando.
 - **Los muebles tiemblan:** si un policía choca un estante corriendo o con algo en la mano, los adornos de ese estante se tambalean y algunos se caen.
 - **Lo que se carga golpea:** el bolillero y la caja fuerte rozan todo al pasar por pasillos angostos.
 - **El gato del abuelo (Michi):** se cruza entre las piernas; si se lo pisa, el policía tropieza y el abuelo se enoja.
@@ -45,8 +45,8 @@ Hoy casi nada se rompe, porque nada obliga a pasar cerca de los adornos. Propues
 - **Michi, el gato:** duerme arriba de un escondite y no se quiere mover; si se lo levanta, maúlla y el abuelo viene.
 - **La vecina chismosa:** mira por la ventana de al lado. Si se le habla, da una pista a cambio de algo (que le devuelvan el táper que el abuelo nunca le devolvió, escondido en la casa).
 
-## Preguntas para Cristian
-1. ¿La historia del bingo clandestino va, u otra?
-2. ¿Revisar muebles tira cosas afuera?
-3. ¿Michi y la vecina entran ya, o van a "Para después"?
-4. ¿Todo esto entra en la meta de esta semana, o solo una parte?
+## Respuestas de Cristian (19/10)
+1. La historia del bingo clandestino va, y las historias bizarras así valen para todo el juego.
+2. Los muebles se revisan agarrando el cajón con las manos y tirando despacio, no con un botón.
+3. Michi y la vecina entran ya.
+4. No hay meta semanal: se avanza lo que se pueda (decisión 78).

@@ -3,7 +3,7 @@
 Copia de las reglas de Steam 2 (Dread Warden) adaptada a BPD. Si algo choca con una costumbre de wgt o de Dread Warden, gana este archivo. Solo Cristian puede cambiarlo. Las tarjetas son issues de GitHub en el repo de BPD, sin Jira (decisión 62).
 
 ## Alcance
-- **Una meta jugable por semana**, elegida por Cristian el lunes y congelada. Una idea nueva a mitad de semana va a "Para después". Claude pregunta una sola vez si entra en la meta de la semana; si no hay respuesta, va a "Para después".
+- **Sin meta semanal congelada** (decisión 78): cada semana se avanza lo que se pueda. Las ideas que no se hacen ahora van al issue "Para después".
 - **Documento antes de programar:** ningún sistema grande se programa sin su `docs/diseno/<sistema>.md`, con reglas, números, cómo se gana, cómo se pierde y una referencia visual si hace falta. Claude hace las preguntas clave y anota las respuestas. Si algo es ambiguo, pregunta y no inventa.
 - Las decisiones van numeradas en [decisiones.md](decisiones.md).
 
