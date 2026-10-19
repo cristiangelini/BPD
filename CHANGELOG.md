@@ -8,4 +8,5 @@
 - Pear body for every character: four cops in blue with player skin colors, and ten NPC models (comisario, abuelo, sospechoso, vecina, periodista, asuntos internos, carcelero, preso, abogado, político).
 - Fragile evidence: the cookie tin (3 kg, worth 1000) loses value on hits above 3 m/s and breaks at 0.
 - Grandpa's house (case 1.1): two floors, 8 rooms, stairs and 10 hiding spots; the tin and the safe hide in a seeded random spot each match. Play opens it; the grey room moved to "Sala de pruebas".
+- Locked front door: E searches the pots for the key and opens the door with it; three battering ram hits knock it down (the ram itself comes next). Short hints at the bottom of the screen.
 - Design docs: decisions, case catalog and working rules.

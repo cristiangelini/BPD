@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/props/front_door.gd" id="1"]
+
+[sub_resource type="BoxShape3D" id="Shape"]
+size = Vector3(1.2, 2.1, 0.08)
+
+[sub_resource type="BoxMesh" id="Mesh"]
+size = Vector3(1.2, 2.1, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="Red"]
+albedo_color = Color(0.82, 0.22, 0.2, 1)
+roughness = 0.8
+
+[sub_resource type="SphereMesh" id="Knob"]
+radius = 0.05
+height = 0.1
+radial_segments = 8
+rings = 4
+
+[sub_resource type="StandardMaterial3D" id="Gold"]
+albedo_color = Color(1, 0.8, 0.25, 1)
+metallic = 0.6
+roughness = 0.4
+
+[node name="FrontDoor" type="Node3D"]
+script = ExtResource("1")
+
+[node name="Panel" type="AnimatableBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, 0)
+
+[node name="Shape" type="CollisionShape3D" parent="Panel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
+shape = SubResource("Shape")
+
+[node name="Mesh" type="MeshInstance3D" parent="Panel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
+mesh = SubResource("Mesh")
+surface_material_override/0 = SubResource("Red")
+
+[node name="KnobOut" type="MeshInstance3D" parent="Panel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 1.0, 0.07)
+mesh = SubResource("Knob")
+surface_material_override/0 = SubResource("Gold")
+
+[node name="KnobIn" type="MeshInstance3D" parent="Panel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 1.0, -0.07)
+mesh = SubResource("Knob")
+surface_material_override/0 = SubResource("Gold")
