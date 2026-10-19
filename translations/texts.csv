@@ -25,6 +25,99 @@ HINT_CAR_PASSENGER,Vas de acompañante. E para bajarte.,You're riding along. E t
 HINT_CAR_FULL,El patrullero está lleno.,The patrol car is full.,A viatura está cheia.
 CASE_FAILED_BROKEN,Se rompió la lata de galletas. Caso fallado.,The cookie tin broke. Case failed.,A lata de biscoitos quebrou. Caso fracassado.
 CASE_SOLVED,¡Caso resuelto! La evidencia va en el baúl.,Case solved! The evidence is in the trunk.,Caso resolvido! A evidência está no porta-malas.
+PROMPT_GRAB,Mantén clic izquierdo: agarrar,Hold left click: grab,Segure o clique esquerdo: pegar
+PROMPT_HOLDING,Suelta el clic: soltar · Clic derecho: tirar · Rueda: acercar o alejar,Release click: drop · Right click: throw · Wheel: closer or farther,Solte o clique: soltar · Clique direito: jogar · Roda: aproximar ou afastar
+PROMPT_RAM,Mantén clic izquierdo: cargar el golpe · G: soltar el ariete,Hold left click: charge the hit · G: drop the battering ram,Segure o clique esquerdo: carregar o golpe · G: soltar o aríete
+PROMPT_TAKE_RAM,E: agarrar el ariete,E: take the battering ram,E: pegar o aríete
+PROMPT_POT,E: revisar la maceta,E: search the pot,E: revistar o vaso
+PROMPT_DOOR_LOCKED,Cerrada: busca la llave en las macetas o usa el ariete,Locked: find the key in the pots or use the battering ram,Trancada: procure a chave nos vasos ou use o aríete
+PROMPT_DOOR,E: abrir o cerrar la puerta,E: open or close the door,E: abrir ou fechar a porta
+PROMPT_GRANDPA,Mantén E: escuchar una historia (lo distrae) · R: preguntarle (se enoja un poco),Hold E: listen to a story (distracts him) · R: question him (annoys him a bit),Segure E: ouvir uma história (distrai ele) · R: interrogar (ele se irrita um pouco)
+PROMPT_CAR,E: subir al patrullero,E: get in the patrol car,E: entrar na viatura
+BRIEF_SPEAKER,Comisario,Commissioner,Comissário
+BRIEF_CONTINUE,E: seguir,E: continue,E: continuar
+BRIEF_1_1_A,"¡Novatos! Atención, que no lo voy a repetir.","Rookies! Listen up, I won't say it twice.","Novatos! Atenção, que eu não vou repetir."
+BRIEF_1_1_B,Hace meses que alguien organiza un bingo clandestino para todos los jubilados del barrio. Los vecinos dicen que es el abuelo de la casa amarilla.,For months someone has been running an illegal bingo for every retiree in the neighborhood. The neighbors say it's the grandpa in the yellow house.,Faz meses que alguém organiza um bingo clandestino para todos os aposentados do bairro. Os vizinhos dizem que é o vovô da casa amarela.
+BRIEF_1_1_C,Tenemos orden de allanamiento. Traigan la libreta de apuestas en el baúl del patrullero: sin eso no hay caso.,We have a search warrant. Bring back the betting book in the patrol car's trunk: without it there's no case.,Temos um mandado de busca. Tragam o caderno de apostas no porta-malas da viatura: sem isso não tem caso.
+BRIEF_1_1_D,"Si encuentran el bolillero, la caja fuerte con la recaudación o los cartones, mejor: todo suma. La puerta está cerrada: la llave suele estar en alguna maceta, y si no, usen el ariete.","If you find the bingo cage, the safe with the takings or the bingo cards, even better: it all adds up. The door is locked: the key is usually in one of the pots, and if not, use the battering ram.","Se acharem o globo do bingo, o cofre com a arrecadação ou as cartelas, melhor: tudo soma. A porta está trancada: a chave costuma estar em algum vaso, e se não, usem o aríete."
+BRIEF_1_1_E,"Y no rompan nada, que el abuelo tiene abogado: cada adorno roto se los descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.","And don't break anything, the grandpa has a lawyer: every broken ornament comes out of your pay. Press Q to see the checklist of what to do.","E não quebrem nada, que o vovô tem advogado: cada enfeite quebrado sai do salário de vocês. Com Q vocês veem a planilha do que fazer."
+HUD_CHECKLIST_HINT,Q: planilla,Q: checklist,Q: planilha
+OBJ_TITLE,Planilla del caso,Case checklist,Planilha do caso
+OBJ_ENTER,Entrar a la casa (llave en una maceta o ariete),Get into the house (key in a pot or battering ram),Entrar na casa (chave num vaso ou aríete)
+OBJ_FIND,Encontrar la libreta de apuestas,Find the betting book,Achar o caderno de apostas
+OBJ_TRUNK,Dejarla en el baúl del patrullero,Put it in the patrol car's trunk,Deixar no porta-malas da viatura
+OBJ_LEAVE,Subir todos al patrullero,Everyone gets in the patrol car,Todos entram na viatura
+OBJ_BROKEN,Adornos rotos: %d (multa: %d),Broken ornaments: %d (fine: %d),Enfeites quebrados: %d (multa: %d)
+OBJ_COMPLAINT,Denuncia del abuelo: %d%%,Grandpa's complaint: %d%%,Denúncia do vovô: %d%%
+PROMPT_DRAWER,Mantén clic: agarra el cajón y tira despacio (agáchate para no arrancarlo),Hold click: grab the drawer and pull slowly (crouch so you don't rip it out),Segure o clique: pegue a gaveta e puxe devagar (agache para não arrancar)
+OBJ_EXTRA_CAGE,Extra: el bolillero (hacen falta dos),Extra: the bingo cage (needs two),Extra: o globo do bingo (precisa de dois)
+OBJ_EXTRA_SAFE,Extra: la recaudación (ábrela con la combinación o lleven la caja fuerte entre dos),"Extra: the takings (open the safe with the combination, or two of you carry it)",Extra: a arrecadação (abra o cofre com a combinação ou levem o cofre entre dois)
+OBJ_EXTRA_CARDS,"Extra: cartones de bingo (%d de %d), en los cajones","Extra: bingo cards (%d of %d), in the drawers","Extra: cartelas de bingo (%d de %d), nas gavetas"
+PROMPT_NOTE,E: leer la nota,E: read the note,E: ler o bilhete
+OBJ_CLUES,Pistas:,Clues:,Pistas:
+CLUE_FOOTPRINTS,Huellas de barro desde la puerta del fondo,Mud footprints from the back door,Pegadas de barro desde a porta dos fundos
+CLUE_CRUMBS,Migas de galleta desde la cocina,Cookie crumbs from the kitchen,Migalhas de biscoito desde a cozinha
+NOTE_ITEM_book,La libreta,The betting book,O caderno
+NOTE_ITEM_cage,El bolillero,The bingo cage,O globo do bingo
+NOTE_ITEM_safe,La plata del bingo,The bingo money,O dinheiro do bingo
+NOTE_SPOT_under_sofa,"«%s, abajo del sillón, donde miro la tele.»","“%s: under the sofa, where I watch TV.”","“%s: embaixo do sofá, onde eu vejo TV.”"
+NOTE_SPOT_behind_picture,"«%s, detrás del cuadro del living. Que no se caiga.»",“%s: behind the living room picture. Don't let it fall.”,“%s: atrás do quadro da sala. Que não caia.”
+NOTE_SPOT_in_oven,"«%s, en el horno. ¡NO PRENDERLO!»",“%s: in the oven. DO NOT TURN IT ON!”,“%s: no forno. NÃO LIGAR!”
+NOTE_SPOT_in_cupboard,"«%s, en la alacena, atrás de los frascos.»","“%s: in the cupboard, behind the jars.”","“%s: no armário da cozinha, atrás dos potes.”"
+NOTE_SPOT_under_table,"«%s, abajo de la mesa del comedor.»",“%s: under the dining table.”,“%s: embaixo da mesa da sala de jantar.”
+NOTE_SPOT_in_bathtub,"«%s, en la bañera de abajo. Bañarse arriba.»",“%s: in the downstairs bathtub. Shower upstairs.”,“%s: na banheira de baixo. Tomar banho em cima.”
+NOTE_SPOT_under_stairs,"«%s, abajo de la escalera, al fondo.»","“%s: under the stairs, at the back.”","“%s: embaixo da escada, no fundo.”"
+NOTE_SPOT_under_desk,"«%s, abajo del escritorio del estudio.»",“%s: under the desk in the study.”,“%s: embaixo da escrivaninha do escritório.”
+NOTE_SPOT_in_washer,"«%s, en el lavarropas. No lavar hasta el jueves.»",“%s: in the washing machine. No laundry until Thursday.”,“%s: na máquina de lavar. Não lavar até quinta.”
+NOTE_SPOT_under_bed,"«%s, abajo de la cama del cuarto chico.»",“%s: under the bed in the small bedroom.”,“%s: embaixo da cama do quarto pequeno.”
+NOTE_SPOT_in_attic,"«%s, en el altillo, entre las cajas.»","“%s: in the attic, among the boxes.”","“%s: no sótão, entre as caixas.”"
+NOTE_SPOT_in_wardrobe,"«%s, en el ropero del cuarto grande.»",“%s: in the wardrobe of the big bedroom.”,“%s: no guarda-roupa do quarto grande.”
+NOTE_VAGUE_under_sofa,"«%s, en el living... creo.»",“%s: in the living room... I think.”,“%s: na sala... acho.”
+NOTE_VAGUE_behind_picture,"«%s, en el living, mirando a la pared.»","“%s: in the living room, facing the wall.”","“%s: na sala, olhando para a parede.”"
+NOTE_VAGUE_in_oven,"«%s, en la cocina, donde hace calor.»","“%s: in the kitchen, where it's warm.”","“%s: na cozinha, onde é quente.”"
+NOTE_VAGUE_in_cupboard,"«%s, en la cocina, ¿o era el lavadero?»","“%s: in the kitchen, or was it the laundry?”","“%s: na cozinha, ou era a lavanderia?”"
+NOTE_VAGUE_under_table,"«%s, cerca de donde comemos.»",“%s: near where we eat.”,“%s: perto de onde comemos.”
+NOTE_VAGUE_in_bathtub,"«%s, donde me baño. El de abajo.»",“%s: where I bathe. The one downstairs.”,“%s: onde eu tomo banho. O de baixo.”
+NOTE_VAGUE_under_stairs,"«%s, cerca de la escalera.»",“%s: near the stairs.”,“%s: perto da escada.”
+NOTE_VAGUE_under_desk,"«%s, en el estudio, con los papeles.»","“%s: in the study, with the papers.”","“%s: no escritório, com os papéis.”"
+NOTE_VAGUE_in_washer,"«%s, donde se lava la ropa.»",“%s: where the clothes get washed.”,“%s: onde se lava a roupa.”
+NOTE_VAGUE_under_bed,"«%s, arriba, donde duermen las visitas.»","“%s: upstairs, where the guests sleep.”","“%s: em cima, onde as visitas dormem.”"
+NOTE_VAGUE_in_attic,"«%s, arriba de todo, con los trastos.»","“%s: at the very top, with the junk.”","“%s: lá em cima, com as tralhas.”"
+NOTE_VAGUE_in_wardrobe,"«%s, arriba, con mi ropa.»","“%s: upstairs, with my clothes.”","“%s: em cima, com as minhas roupas.”"
+PROMPT_SAFE_LOCKED,Caja fuerte con combinación: busca los números,Combination safe: find the numbers,Cofre com combinação: procure os números
+PROMPT_SAFE_OPEN,E: abrir la caja fuerte con la combinación,E: open the safe with the combination,E: abrir o cofre com a combinação
+HINT_SAFE_LOCKED,No sabes la combinación. ¿La habrá anotado el abuelo en algún lado?,You don't know the combination. Did the grandpa write it down somewhere?,Você não sabe a combinação. Será que o vovô anotou em algum lugar?
+HINT_SAFE_OPENED,¡Abierta! Adentro está la recaudación del bingo.,Open! The bingo takings are inside.,Aberto! A arrecadação do bingo está aí dentro.
+PROMPT_CALENDAR,E: mirar el calendario,E: look at the calendar,E: olhar o calendário
+PROMPT_TIN,E: abrir la lata de galletas,E: open the cookie tin,E: abrir a lata de biscoitos
+CLUE_CALENDAR,"Calendario: «Jueves: BINGO». Abajo, en birome: %s","Calendar: “Thursday: BINGO”. Below, in pen: %s","Calendário: “Quinta: BINGO”. Embaixo, de caneta: %s"
+CLUE_TIN,"En la lata, entre las migas, un papelito: %s","In the tin, among the crumbs, a slip of paper: %s","Na lata, entre as migalhas, um papelzinho: %s"
+GRANDPA_SLIP,"«¡Yo nunca escondí nada %s!... Digo, no sé de qué me hablan.»","“I never hid anything %s!... I mean, I don't know what you're talking about.”","“Eu nunca escondi nada %s!... Quer dizer, não sei do que estão falando.”"
+GRANDPA_OFFENDED,«No pienso decir una palabra más sin mi abogado.»,“Not another word without my lawyer.”,“Não digo mais nenhuma palavra sem o meu advogado.”
+LOC_under_sofa,abajo del sillón,under the sofa,embaixo do sofá
+LOC_behind_picture,detrás del cuadro,behind the picture,atrás do quadro
+LOC_in_oven,en el horno,in the oven,no forno
+LOC_in_cupboard,en la alacena,in the cupboard,no armário da cozinha
+LOC_under_table,abajo de la mesa del comedor,under the dining table,embaixo da mesa de jantar
+LOC_in_bathtub,en la bañera,in the bathtub,na banheira
+LOC_under_stairs,abajo de la escalera,under the stairs,embaixo da escada
+LOC_under_desk,abajo del escritorio,under the desk,embaixo da escrivaninha
+LOC_in_washer,en el lavarropas,in the washing machine,na máquina de lavar
+LOC_under_bed,abajo de la cama del cuarto chico,under the bed in the small bedroom,embaixo da cama do quarto pequeno
+LOC_in_attic,en el altillo,in the attic,no sótão
+LOC_in_wardrobe,en el ropero,in the wardrobe,no guarda-roupa
+PROMPT_CAT_ASLEEP,Michi duerme arriba de algo. Clic para levantarlo (va a maullar),Michi is sleeping on something. Click to pick him up (he'll meow),O Michi está dormindo em cima de algo. Clique para pegar (ele vai miar)
+PROMPT_CAT,Clic: agarrar a Michi,Click: grab Michi,Clique: pegar o Michi
+CAT_MEOW,¡MIAU!,MEOW!,MIAU!
+HINT_TRIPPED_CAT,¡Pisaste a Michi!,You stepped on Michi!,Você pisou no Michi!
+GRANDPA_CAT,«¡¿Qué le hacen a Michi?!»,“What are you doing to Michi?!”,“O que estão fazendo com o Michi?!”
+PROMPT_NEIGHBOR,E: hablar con la vecina,E: talk to the neighbor,E: falar com a vizinha
+NEIGHBOR_PSST,"«¡Psst! ¡Oficial! ¡Aquí, en la ventana!»","“Psst! Officer! Over here, at the window!”","“Psiu! Policial! Aqui, na janela!”"
+NEIGHBOR_ASK,"«Ese viejo me debe mi táper desde hace tres años. Celeste, con mi nombre en cinta. Tráemelo y te cuento lo que vi.»","“That old man has had my tupperware for three years. Light blue, my name on a piece of tape. Bring it to me and I'll tell you what I saw.”","“Esse velho está com meu pote há três anos. Azul-claro, com meu nome numa fita. Traga ele e eu conto o que eu vi.”"
+NEIGHBOR_WAITING,"«¿Y mi táper? Seguro lo tiene en algún cajón, ese ladrón de tápers.»","“And my tupperware? He's got it in some drawer, that tupperware thief.”","“E o meu pote? Deve estar em alguma gaveta, aquele ladrão de potes.”"
+NEIGHBOR_CLUE,"«¡Mi táper! Bueno, te cuento: anoche lo vi meter algo %s. Y los jueves vienen veinte viejitas a gritar ¡BINGO! a las tres de la mañana.»","“My tupperware! All right, here goes: last night I saw him put something %s. And on Thursdays twenty old ladies come over and shout BINGO! at three in the morning.”","“Meu pote! Bom, vou contar: ontem à noite eu vi ele colocar algo %s. E às quintas vêm vinte velhinhas gritar BINGO! às três da manhã.”"
+CLUE_NEIGHBOR,La vecina vio al abuelo esconder algo %s,The neighbor saw the grandpa hide something %s,A vizinha viu o avô esconder algo %s
+OBJ_EXTRA_TUPPER,"Extra: devolverle el táper a la vecina (está en un cajón; llévalo a su ventana)","Extra: return the neighbor's tupperware (it's in a drawer; take it to her window)","Extra: devolver o pote da vizinha (está numa gaveta; leve até a janela dela)"
 SHIFT_TITLE,Fin del turno,End of shift,Fim do turno
 SHIFT_CASE_SOLVED,Caso resuelto,Case solved,Caso resolvido
 SHIFT_CASE_FAILED,Caso fallado,Case failed,Caso fracassado

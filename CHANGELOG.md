@@ -14,6 +14,18 @@
 - The grandpa: follows the nearest cop around the house on a baked navigation mesh, complains out loud, and fills the complaint meter at the top of the screen; at 100 he calls his lawyer and the case is lost.
 - Holding E on the grandpa makes him tell a long story: he stands still for up to 20 s (30 s rest between stories) and the listening cop can't do anything else.
 - Patrol car in front of the grandpa's house: E gets in the seat by the nearest door (front left drives) and out again; the driver drives with WASD, Space handbrake and H siren, up to 60 km/h. Low poly placeholder model from tools/modelgen.
+- Fix: walls with two doors no longer cover the first one; the living room, the bathroom and the upstairs west rooms were sealed, so the grandpa was stuck in the living room.
 - Patrol car trunk: evidence dropped in it counts as delivered (taking it out or breaking it undoes that). The tin in the trunk with every cop aboard solves the case; a broken tin fails it.
+- G drops the battering ram (E picks it up again), and the key for what you can do shows under the crosshair.
 - End of shift screen: case result, salary, evidence, fines, total against the 800 quota ("¡Turno aprobado!" or "Suspendidos") and three joke awards; "Otro turno" restarts and "Volver al menú" goes back.
 - Design docs: decisions, case catalog and working rules.
+- The comisario gives case 1.1 (an illegal bingo) before the raid, and Q opens the case checklist; the safe now counts as evidence worth 600.
+- The grandpa's house is twice as big: 24 x 20 m and 14 rooms, 12 hiding spots and about 200 ornaments.
+- Dressers with drawers you open by grabbing and pulling back slowly; yanked, a drawer comes off and spills what's inside.
+- The case is now the grandpa's illegal bingo: find the betting book, plus the bingo cage, the safe with the takings and five bingo cards hidden in drawers.
+- Clues for the bingo evidence: the grandpa's notes (E to read), mud footprints and cookie crumbs; found clues go to the Q checklist.
+- The safe has a combination, written on the kitchen calendar and inside the cookie tin by the safe; opened, the takings come out as a light cash bundle.
+- R questions the grandpa: three answers per case, each one lets slip a hiding spot and annoys him a bit.
+- Michi, the grandpa's cat, sleeps on the betting book: picked up he meows and wakes, then weaves between the cops' legs and trips anyone running past; the grandpa hears him and complains.
+- The vecina chismosa watches from the house next door: bring her the tupperware the grandpa kept (in a drawer) and she tells where she saw him hide something.
+- First person hands: the player sees blue sleeves and mittens in their skin color; they sway while walking, reach for what you hold and hide behind the battering ram.

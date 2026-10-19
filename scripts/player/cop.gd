@@ -12,6 +12,9 @@ const UNIFORMS: Array[PackedScene] = [
 	preload("res://assets/models/cop_2.glb"), preload("res://assets/models/cop_3.glb"),
 ]
 const RAM_SCENE := preload("res://scenes/tools/battering_ram.tscn")
+const RAM_PICKUP_SCENE := preload("res://scenes/tools/ram_pickup.tscn")
+## A dropped ram lands this far in front of the cop.
+const DROP_AHEAD := 1.0
 
 @export var input_enabled := true
 
@@ -31,6 +34,12 @@ var listening_to: Grandpa
 var stats := {"ram_misses": 0, "story_seconds": 0.0, "meters_driven": 0.0}
 ## The patrol car this cop sits in, if any: the body rides the seat and doesn't walk or collide.
 var vehicle: PatrolCar
+## The comisario is giving the case (CaseBriefing): the cop can look around but not move or use things.
+var in_briefing := false
+## The player's own first person hands; only a cop with a player at the keys has them.
+var hands: CopHands
+## Player index (0 to 3) whose skin this cop wears.
+var uniform := 0
 
 @onready var _shape: CollisionShape3D = $Shape
 @onready var _head: Node3D = $Head
@@ -38,6 +47,7 @@ var vehicle: PatrolCar
 @onready var model: Node3D = $Model
 @onready var _hint: Label = $Hud/Hint
 @onready var _hint_timer: Timer = $Hud/Hint/Timer
+@onready var _prompt: Label = $Hud/Prompt
 
 
 func _ready() -> void:
@@ -48,6 +58,8 @@ func _ready() -> void:
 	_hint_timer.timeout.connect(_hint.hide)
 	if input_enabled:
 		_hide_from_own_camera()
+		hands = CopHands.new(self)
+		camera.add_child(hands)
 
 
 ## What the camera points at within reach (empty if nothing), ignoring the cop's own body.
@@ -64,6 +76,37 @@ func equip_ram() -> void:
 	camera.add_child(ram)
 
 
+## Lets go of the ram: it drops on the floor in front, where E picks it up again.
+func drop_ram() -> RamPickup:
+	if not ram:
+		return null
+	ram.queue_free()
+	ram = null
+	var pickup: RamPickup = RAM_PICKUP_SCENE.instantiate()
+	var ahead := -global_basis.z * DROP_AHEAD
+	get_parent().add_child(pickup)
+	pickup.global_position = global_position + ahead
+	pickup.rotation.y = rotation.y
+	return pickup
+
+
+## The key text (tr() key) for what this cop can do right now: what's in hand, else what the camera points at.
+func current_prompt() -> String:
+	if vehicle or in_briefing:
+		return ""
+	if $Grabber.held:
+		return "PROMPT_HOLDING"
+	if ram:
+		return "PROMPT_RAM"
+	var target := _usable_target()
+	if target and target.has_method("prompt_key"):
+		return target.prompt_key(self)
+	var hit := aim_hit(GameScale.GRAB_REACH)
+	if not hit.is_empty() and hit.collider is Grabbable:
+		return hit.collider.prompt_key(self) if hit.collider.has_method("prompt_key") else "PROMPT_GRAB"
+	return ""
+
+
 ## Loses balance for a while: can't move or charge the ram.
 func stagger(seconds: float) -> void:
 	_stagger_left = maxf(_stagger_left, seconds)
@@ -73,9 +116,9 @@ func is_staggered() -> bool:
 	return _stagger_left > 0.0
 
 
-## Busy: staggered, listening to the grandpa or sitting in the car. No walking, grabbing or ramming.
+## Busy: staggered, listening to the grandpa, sitting in the car or hearing the comisario. No walking, grabbing or ramming.
 func is_busy() -> bool:
-	return is_staggered() or listening_to != null or vehicle != null
+	return is_staggered() or listening_to != null or vehicle != null or in_briefing
 
 
 ## Rides `seat` of `car`, facing forward, until stand_up(). Lets go of whatever it was holding.
@@ -107,6 +150,7 @@ func show_hint(key: String) -> void:
 
 ## Swaps the body for the skin of player `index` (0 to 3).
 func set_uniform(index: int) -> void:
+	uniform = index
 	var old: Node3D = get_node("Model")
 	var fresh: Node3D = UNIFORMS[index % UNIFORMS.size()].instantiate()
 	fresh.transform = old.transform
@@ -117,6 +161,8 @@ func set_uniform(index: int) -> void:
 	model = fresh
 	if input_enabled and is_node_ready():
 		_hide_from_own_camera()
+	if hands:
+		hands.set_skin(index)
 
 
 func _hide_from_own_camera() -> void:
@@ -132,6 +178,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		look(event.relative * MOUSE_SENSITIVITY)
 	elif event is InputEventMouseButton and event.pressed:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	elif event.is_action_pressed("drop"):
+		drop_ram()
+	elif event.is_action_pressed("ask"):
+		ask()
 	elif event.is_action_pressed("use"):
 		if vehicle:
 			vehicle.exit(self)
@@ -143,7 +193,12 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	# Without local input someone else drives this cop through step() (tests, later the network).
-	if not input_enabled or vehicle:
+	if not input_enabled:
+		return
+	var prompt := current_prompt()
+	_prompt.text = prompt
+	_prompt.visible = prompt != ""
+	if vehicle:
 		return
 	if listening_to and not Input.is_action_pressed("use"):
 		listening_to.end_story()
@@ -154,17 +209,30 @@ func _physics_process(delta: float) -> void:
 
 ## Uses what the camera points at (a pot, a door...), if it can be used. Returns true if something was used.
 func use() -> bool:
-	var hit := aim_hit(GameScale.GRAB_REACH)
-	if hit.is_empty():
-		return false
-	# A door's body is a child of the door itself.
-	var target: Node = hit.collider
-	if not target.has_method("use"):
-		target = target.get_parent()
-	if not target.has_method("use"):
+	var target := _usable_target()
+	if not target:
 		return false
 	target.use(self)
 	return true
+
+
+## Asks what the camera points at a question (R), if it can be asked (the grandpa). Returns true if it answered.
+func ask() -> bool:
+	var target := _usable_target()
+	if is_busy() or not target or not target.has_method("ask"):
+		return false
+	return target.ask(self)
+
+
+## What the camera points at within reach that can be used with E (a door's body is a child of the door).
+func _usable_target() -> Node:
+	var hit := aim_hit(GameScale.GRAB_REACH)
+	if hit.is_empty():
+		return null
+	var target: Node = hit.collider
+	if not target.has_method("use"):
+		target = target.get_parent()
+	return target if target.has_method("use") else null
 
 
 ## Rotates the view: x turns the body, y tilts the head.

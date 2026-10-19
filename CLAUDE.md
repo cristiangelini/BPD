@@ -12,7 +12,7 @@ to it (rule + why) in the same PR.
 - Branches: `main` (releases) and `develop` (integration). Branch from an up-to-date `develop`
   (`git fetch origin develop` before branching and before every push), one small PR per GitHub issue to `develop`
   (about 400 changed lines at most, assets not counted). Claude opens PRs and never merges them: Cristian merges.
-- One playable weekly goal, frozen. New ideas go to the "Para después" issue, not into the current week.
+- No frozen weekly goal: each week moves as far as it can (decision 78). Ideas not done now go to the "Para después" issue.
 - No big system gets coded without its `docs/diseno/<system>.md` (rules, numbers, how you win and lose).
   Ambiguous ask: ask Cristian, don't invent.
 - At most 2 code sessions at a time, each in its own area and worktree.

@@ -58,9 +58,9 @@ func test_falling_off_a_table_breaks_it() -> void:
 	assert_false(is_instance_valid(ornament), "the broken ornament is gone, only shards stay")
 
 
-func test_layout_is_about_150_and_follows_the_seed() -> void:
+func test_layout_is_about_200_and_follows_the_seed() -> void:
 	var places := OrnamentLayout.places(7)
-	assert_between(places.size(), 140, 160)
+	assert_between(places.size(), 190, 220)
 	assert_eq(places, OrnamentLayout.places(7))
 	assert_ne(places.map(func(p: Dictionary) -> int: return p.kind), OrnamentLayout.places(8).map(func(p: Dictionary) -> int: return p.kind))
 
@@ -71,7 +71,7 @@ func test_house_ornaments_settle_whole_and_cost_fines() -> void:
 	house.get_node("Cop").input_enabled = false
 	add_child_autofree(house)
 	await wait_physics_frames(120)
-	assert_eq(house.ornaments_total, OrnamentLayout.places(21).size())
+	assert_eq(house.ornaments_total, OrnamentLayout.places(21).size() + house._drawer_ornaments, "shelves, tops and drawers")
 	assert_eq(house.broken_ornaments, 0, "nothing breaks while the house settles")
 	var ornament: Ornament = house.get_node("Ornaments").get_child(0)
 	ornament.hit(4.0)
