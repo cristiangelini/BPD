@@ -1,0 +1,10 @@
+# Godot
+.godot/
+*.translation
+/android/
+export_credentials.cfg
+# Builds
+builds/
+*.zip
+# Test output
+tests/evidencia/
