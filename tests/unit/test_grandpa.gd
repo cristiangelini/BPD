@@ -121,3 +121,33 @@ func test_story_ends_by_itself_and_needs_a_rest() -> void:
 	assert_false(grandpa.start_story(cop), "he needs STORY_COOLDOWN before another one")
 	grandpa._story_wait = 0.0
 	assert_true(grandpa.start_story(cop))
+
+
+func test_every_room_door_is_open() -> void:
+	# Walls with two doors used to cover the first one (the living and the upstairs west rooms were sealed).
+	var house: GrandpaHouse = HOUSE_SCENE.instantiate()
+	house.get_node("Cop").input_enabled = false
+	add_child_autofree(house)
+	await wait_physics_frames(2)
+	var space := house.get_world_3d().direct_space_state
+	for w: Array in GrandpaHouse.WALLS:
+		for d: float in w[5]:
+			var query := PhysicsPointQueryParameters3D.new()
+			var y: float = w[4] * GameScale.FLOOR_HEIGHT + 1.0
+			query.position = Vector3(w[1], y, d) if w[0] == "z" else Vector3(d, y, w[1])
+			query.collision_mask = 1
+			var walls := space.intersect_point(query).filter(func(h: Dictionary) -> bool:
+				return (h.collider as Node).get_parent() == house.get_node("Built"))
+			assert_eq(walls.size(), 0, "door at %s on wall %s" % [d, w[0]])
+
+
+func test_the_grandpa_walks_out_of_the_living_room() -> void:
+	var house: GrandpaHouse = HOUSE_SCENE.instantiate()
+	house.case_seed = 7
+	house.get_node("Cop").input_enabled = false
+	add_child_autofree(house)
+	await wait_physics_frames(5)
+	var cop: Cop = house.get_node("Cop")
+	cop.global_position = Vector3(1.0, 0.1, 2.5)
+	await wait_seconds(5.0)
+	assert_gt(house.grandpa.global_position.x, -1.0, "came through the living room door into the hall")
