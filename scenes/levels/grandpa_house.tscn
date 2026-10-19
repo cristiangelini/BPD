@@ -45,6 +45,8 @@ shadow_blur = 1.5
 
 [node name="Evidence" type="Node3D" parent="."]
 
+[node name="Ornaments" type="Node3D" parent="."]
+
 [node name="FrontDoor" parent="." instance=ExtResource("3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 5)
 

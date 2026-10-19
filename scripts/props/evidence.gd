@@ -17,10 +17,7 @@ const LOSS_PER_SPEED := 0.1
 var value := 0.0
 var is_broken := false
 
-## Colliders touching last physics step, so only new contacts count as hits.
-var _touching := {}
-var _last_velocity := Vector3.ZERO
-
+var _impacts := ImpactTracker.new()
 
 @onready var _label: Label3D = get_node_or_null("ValueLabel")
 
@@ -55,16 +52,6 @@ func hit(speed: float) -> float:
 
 
 func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
-	var now := {}
-	var hardest := 0.0
-	for i in state.get_contact_count():
-		var id := state.get_contact_collider_id(i)
-		now[id] = true
-		if _touching.has(id):
-			continue
-		var relative := _last_velocity - state.get_contact_collider_velocity_at_position(i)
-		hardest = maxf(hardest, absf(relative.dot(state.get_contact_local_normal(i))))
-	_touching = now
-	_last_velocity = state.linear_velocity
-	if hardest > 0.0:
-		hit(hardest)
+	var speed := _impacts.hardest(state)
+	if speed > 0.0:
+		hit(speed)

@@ -76,6 +76,10 @@ var evidence_spots: Array = []
 var evidence: Array[Node3D] = []
 var key_pot := 0
 var pots: Array[KeyPot] = []
+var ornaments_total := 0
+var broken_ornaments := 0
+## Money taken off the case pay for broken ornaments.
+var fines := 0
 
 var _materials := {}
 @onready var _built: Node3D = $Built
@@ -96,6 +100,31 @@ func _ready() -> void:
 		item.position = SPOTS[evidence_spots[i]].at + Vector3.UP * (EVIDENCE[i].half_height + 0.02)
 		$Evidence.add_child(item)
 		evidence.append(item)
+	for place: Dictionary in OrnamentLayout.places(case_seed):
+		var ornament: Ornament = OrnamentLayout.KINDS[place.kind].instantiate()
+		ornament.position = place.at
+		ornament.rotation.y = place.turn
+		ornament.broken.connect(_on_ornament_broken)
+		$Ornaments.add_child(ornament)
+	ornaments_total = $Ornaments.get_child_count()
+
+
+func _on_ornament_broken(at: Vector3) -> void:
+	broken_ornaments += 1
+	fines += Ornament.FINE
+	# Placeholder feedback until the HUD exists: the fine floats up where it broke.
+	var label := Label3D.new()
+	label.text = "-%d" % Ornament.FINE
+	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	label.modulate = Color(1, 0.3, 0.25)
+	label.outline_size = 8
+	label.pixel_size = 0.005
+	add_child(label)
+	label.global_position = at + Vector3.UP * 0.2
+	var tween := label.create_tween()
+	tween.tween_property(label, "global_position:y", at.y + 0.8, 1.2)
+	tween.parallel().tween_property(label, "modulate:a", 0.0, 1.2)
+	tween.tween_callback(label.queue_free)
 
 
 func _build() -> void:
@@ -121,6 +150,9 @@ func _build() -> void:
 	_box(Vector3((HOLE_WEST + hole_east) / 2, up + 0.5, 0.0), Vector3(hole_east - HOLE_WEST, 1.0, 0.08), WHITE)
 	_stairs()
 	_furniture()
+	for unit: Dictionary in OrnamentLayout.SHELVES:
+		for box: Array in OrnamentLayout.shelf_boxes(unit):
+			_box(box[0], box[1], FURNITURE)
 	for p: Vector3 in POTS:
 		var pot: KeyPot = POT_SCENE.instantiate()
 		pot.position = p
