@@ -35,6 +35,7 @@ the number in brackets is the decision there.
 - Every case type needs at least 10 variants (own map and twist), picked at random each match; inside each variant the evidence, culprit, suspects, neighbours and escape route also change. [19] Cristian wants no two matches alike.
 
 - Every case needs a story the comisario tells, with the why of each thing to find; never a lone "find the box". Bizarre stories are welcome across the game. Cristian asked for it in the 19/10 playtest: only cookies felt flat.
+- A raid is a place plus a story, both drawn at random; the cops guess the story from the clues among 3 suspicions, the comisario only brings an anonymous tip. Places are not only houses: shops, companies and buildings too. [79, 80] Cristian asked for "different stories to solve with the clues" on 19/10.
 - Always show on screen what the player can do (key prompts, the Q checklist). In the 19/10 playtest he got stuck holding the ram without knowing how to drop it.
 
 ## Working with Cristian

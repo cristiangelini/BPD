@@ -1,6 +1,6 @@
-# BPD · Historias de los allanamientos (propuesta, 19/10)
+# BPD · Historias de los allanamientos (19/10)
 
-Pedido de Cristian (19/10): "más allanamientos" y que "existan diferentes historias para resolver con las pruebas". Todo lo de este archivo es **(propuesta)** hasta que Cristian lo revise. Sigue las decisiones 19 (10 variantes por tipo de caso, al azar) y 75 (cada caso tiene una historia bizarra con el porqué de cada cosa).
+Pedido de Cristian (19/10): "más allanamientos" y que "existan diferentes historias para resolver con las pruebas". Cristian aprobó la idea de lugar + historia, que los policías adivinen la historia y los 10 lugares (decisiones 79 y 80). Las historias de cada lugar, los pesos, los valores y las reglas para marcar la sospecha siguen siendo **(propuesta)**. Sigue las decisiones 19 (10 variantes por tipo de caso, al azar) y 75 (cada caso tiene una historia bizarra con el porqué de cada cosa).
 
 ## La idea: lugar + historia
 Un allanamiento se arma con dos piezas que salen al azar con la semilla de la partida:
@@ -10,7 +10,7 @@ Un allanamiento se arma con dos piezas que salen al azar con la semilla de la pa
 Así la casa del abuelo no es siempre el bingo: la misma casa puede esconder carreras de tortugas o una figurita robada del museo, con otra evidencia, otras pistas y otro comportamiento del abuelo. Con 10 lugares y 4 a 6 historias cada uno salen más de 40 allanamientos distintos, y además cambia dónde está cada cosa.
 
 ## Los lugares: casas, comercios, empresas y edificios
-Pedido de Cristian (19/10): que no sean solo casas. Esta lista reemplazaría a la de [casos.md](casos.md) ("1. Allanamiento") cuando Cristian la apruebe; quedan las ideas del catálogo que no son casas. Cada lugar trae su NPC que sube la denuncia (como el abuelo) y 2 historias de ejemplo; las demás se escriben al hacerlo.
+Pedido de Cristian (19/10): que no sean solo casas. Cristian aprobó los 10 (decisión 80) y reemplazan a la lista de [casos.md](casos.md) ("1. Allanamiento"). Cada lugar trae su NPC que sube la denuncia (como el abuelo) y 2 historias de ejemplo; las demás se escriben al hacerlo.
 
 | Lugar | Tipo | Quién protesta | Historias de ejemplo |
 |---|---|---|---|
@@ -34,7 +34,7 @@ El comisario no sabe qué pasa en la casa: tiene una **denuncia anónima** vaga 
 - Si aciertan, el caso se resuelve como hoy. Si se equivocan, el comisario los reta por radio, pierden la mitad del sueldo y pueden volver a marcar una vez más. La segunda vez que se equivocan, el caso se falla.
 - Todas las historias de un lugar tienen su evidencia escondida en la casa, pero solo la de la historia verdadera existe en esa partida: lo demás que se encuentra son cosas normales del abuelo (una tortuga de verdad, figuritas comunes).
 
-Hay otra opción más simple: que el comisario cuente la historia completa al empezar, como hoy, y que cambie solo la historia de una partida a otra. Es la pregunta 1 del final.
+Cristian eligió esto (decisión 79) en lugar de que el comisario cuente la historia al empezar.
 
 ## Las historias de la casa del abuelo
 Cada una tiene una evidencia principal (sin ella no hay caso), 1 o 2 extras, un tipo de pista propio y algo que cambia en la casa.
@@ -62,12 +62,14 @@ Los pesos y valores son **(propuesta)** y siguen la escala del bingo: la princip
 1. **Historias como datos:** sacar del código de la casa todo lo del bingo (evidencia, pistas, frases del comisario y del abuelo) a un recurso `CaseStory`, sin cambiar nada de lo que se juega. Prueba: la partida con el bingo da el mismo resultado que antes.
 2. **Sorteo de la historia** con la semilla y un atajo en el panel de debug para elegirla.
 3. **Carreras de tortugas**, la primera historia nueva (tiene la pista y la evidencia más distintas).
-4. **Sospechas en la planilla** y marcar la sospecha (si Cristian elige "resolver con las pruebas").
+4. **Sospechas en la planilla** y marcar la sospecha.
 5. **La figurita del museo**, las **dentaduras**, la **radio pirata** y el **club de lucha**, un PR cada una.
 6. Recién después, el segundo lugar (pregunta 4).
 
 ## Preguntas para Cristian
-1. ¿Los policías tienen que **adivinar la historia** con las pistas (la denuncia anónima y las 3 sospechas) o el comisario **la cuenta al empezar** y solo cambia de partida a partida?
-2. De las 5 historias nuevas, ¿cuáles van? Tachá con ✗ las que no te gusten y sumá las tuyas.
-3. ¿Te sirve la lista de lugares? Tachá con ✗ los que no y sumá los tuyos.
-4. Después de 2 o 3 historias en la casa del abuelo, ¿con qué lugar seguimos? Propongo la **panadería**: es chica, es un comercio y tiene a la panadera atendiendo, que es distinta del abuelo.
+1. De las 5 historias nuevas de la casa del abuelo, ¿cuáles van? Tachá con ✗ las que no te gusten y sumá las tuyas.
+2. Después de 2 o 3 historias en la casa del abuelo, ¿con qué lugar seguimos? Propongo la **panadería**: es chica, es un comercio y tiene a la panadera atendiendo, que es distinta del abuelo.
+
+## Respuestas de Cristian (19/10)
+1. Los policías adivinan la historia con las pistas (denuncia anónima y 3 sospechas), no la cuenta el comisario.
+2. Los 10 lugares van todos.
