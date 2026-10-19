@@ -67,6 +67,7 @@ func test_layout_is_about_200_and_follows_the_seed() -> void:
 
 func test_house_ornaments_settle_whole_and_cost_fines() -> void:
 	var house: GrandpaHouse = HOUSE_SCENE.instantiate()
+	house.story = GrandpaHouse.BINGO
 	house.case_seed = 21
 	house.get_node("Cop").input_enabled = false
 	add_child_autofree(house)

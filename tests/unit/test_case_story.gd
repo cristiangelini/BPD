@@ -19,9 +19,9 @@ func test_bingo_story_is_complete() -> void:
 func test_the_house_places_what_the_story_brings() -> void:
 	var house: GrandpaHouse = HOUSE_SCENE.instantiate()
 	house.case_seed = 41
+	house.story = GrandpaHouse.BINGO
 	house.get_node("Cop").input_enabled = false
 	add_child_autofree(house)
-	assert_eq(house.story, GrandpaHouse.BINGO, "the bingo is the default story")
 	assert_eq(house.evidence.size(), house.story.evidence.size())
 	for i in house.evidence.size():
 		assert_eq(house.evidence[i].scene_file_path, house.story.evidence[i].resource_path)

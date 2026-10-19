@@ -12,6 +12,7 @@ func _facts() -> Dictionary:
 
 func _house(player: bool) -> GrandpaHouse:
 	var house: GrandpaHouse = HOUSE_SCENE.instantiate()
+	house.story = GrandpaHouse.BINGO
 	house.case_seed = 7
 	house.get_node("Cop").input_enabled = player
 	house.get_node("Cop/Grabber").input_enabled = player

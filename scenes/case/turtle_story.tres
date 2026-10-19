@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CaseStory" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/case/case_story.gd" id="1_story"]
+[ext_resource type="PackedScene" path="res://scenes/props/turtle_racer.tscn" id="2_turtle"]
+[ext_resource type="PackedScene" path="res://scenes/props/betting_board.tscn" id="3_board"]
+[ext_resource type="PackedScene" path="res://scenes/props/trophy.tscn" id="4_trophy"]
+[ext_resource type="Script" path="res://scripts/case/turtle_rig.gd" id="5_rig"]
+
+[resource]
+script = ExtResource("1_story")
+id = "turtles"
+briefing = PackedStringArray("BRIEF_1_1_A", "BRIEF_TURTLE_B", "BRIEF_TURTLE_C", "BRIEF_TURTLE_D", "BRIEF_1_1_E")
+evidence = Array[PackedScene]([ExtResource("2_turtle"), ExtResource("3_board")])
+item_keys = PackedStringArray("turtle", "board")
+find_key = "OBJ_FIND_TURTLE"
+heavy = Array[bool]([false, false])
+half_heights = Array[float]([0.08, 0.025])
+drawer_evidence = ExtResource("4_trophy")
+drawer_count = 3
+cat_item = 1
+rig = ExtResource("5_rig")

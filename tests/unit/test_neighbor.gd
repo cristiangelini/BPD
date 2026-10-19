@@ -7,6 +7,7 @@ const HOUSE_SCENE := preload("res://scenes/levels/grandpa_house.tscn")
 
 func _house() -> GrandpaHouse:
 	var house: GrandpaHouse = HOUSE_SCENE.instantiate()
+	house.story = GrandpaHouse.BINGO
 	house.case_seed = 11
 	house.get_node("Cop").input_enabled = false
 	add_child_autofree(house)

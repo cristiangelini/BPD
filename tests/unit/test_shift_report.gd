@@ -41,6 +41,7 @@ func test_awards_go_to_the_highest_and_skip_zeros() -> void:
 
 func test_the_house_shows_the_shift_screen_with_the_pay() -> void:
 	var house: GrandpaHouse = HOUSE_SCENE.instantiate()
+	house.story = GrandpaHouse.BINGO
 	house.case_seed = 7
 	house.get_node("Cop").input_enabled = false
 	house.get_node("Cop/Grabber").input_enabled = false

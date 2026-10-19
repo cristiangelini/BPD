@@ -68,6 +68,7 @@ func test_three_ram_hits_break_the_door() -> void:
 
 func test_house_hides_the_key_in_one_pot() -> void:
 	var house: GrandpaHouse = HOUSE_SCENE.instantiate()
+	house.story = GrandpaHouse.BINGO
 	house.case_seed = 99
 	house.get_node("Cop").input_enabled = false
 	add_child_autofree(house)
@@ -78,6 +79,7 @@ func test_house_hides_the_key_in_one_pot() -> void:
 
 func test_cop_uses_the_door_in_front() -> void:
 	var house: GrandpaHouse = HOUSE_SCENE.instantiate()
+	house.story = GrandpaHouse.BINGO
 	house.case_seed = 99
 	var cop: Cop = house.get_node("Cop")
 	cop.input_enabled = false

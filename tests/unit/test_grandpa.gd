@@ -68,6 +68,7 @@ func test_at_100_he_calls_the_lawyer_once() -> void:
 
 func test_house_loses_the_case_at_100() -> void:
 	var house: GrandpaHouse = HOUSE_SCENE.instantiate()
+	house.story = GrandpaHouse.BINGO
 	house.case_seed = 3
 	house.get_node("Cop").input_enabled = false
 	add_child_autofree(house)
@@ -78,6 +79,7 @@ func test_house_loses_the_case_at_100() -> void:
 
 func test_grandpa_follows_the_nearest_cop() -> void:
 	var house: GrandpaHouse = HOUSE_SCENE.instantiate()
+	house.story = GrandpaHouse.BINGO
 	house.case_seed = 3
 	var cop: Cop = house.get_node("Cop")
 	cop.input_enabled = false
@@ -126,6 +128,7 @@ func test_story_ends_by_itself_and_needs_a_rest() -> void:
 func test_every_room_door_is_open() -> void:
 	# Walls with two doors used to cover the first one (the living and the upstairs west rooms were sealed).
 	var house: GrandpaHouse = HOUSE_SCENE.instantiate()
+	house.story = GrandpaHouse.BINGO
 	house.get_node("Cop").input_enabled = false
 	add_child_autofree(house)
 	await wait_physics_frames(2)
@@ -143,6 +146,7 @@ func test_every_room_door_is_open() -> void:
 
 func test_the_grandpa_walks_out_of_the_living_room() -> void:
 	var house: GrandpaHouse = HOUSE_SCENE.instantiate()
+	house.story = GrandpaHouse.BINGO
 	house.case_seed = 7
 	house.get_node("Cop").input_enabled = false
 	add_child_autofree(house)
