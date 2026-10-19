@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/tools/battering_ram.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/tools/ram_model.tscn" id="2"]
+
+[node name="BatteringRam" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, -0.45, -0.7)
+script = ExtResource("1")
+
+[node name="Model" parent="." instance=ExtResource("2")]

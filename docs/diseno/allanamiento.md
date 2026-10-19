@@ -61,7 +61,7 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
 - Si nadie lo levanta en 30 s, se lo lleva la ambulancia: vuelve a la comisaría y paga una multa de 100 (decisión 38).
 
 ## Herramientas de la semana 1
-- **Ariete:** se mantiene clic izquierdo para cargar el golpe y se suelta para pegar. La puerta se rompe con 3 golpes. Si el golpe no le pega a nada, el que lo usa se tambalea 1 s. Pesa 15 kg, así que se camina más lento.
+- **Ariete:** se mantiene clic izquierdo para cargar el golpe y se suelta para pegar. La puerta se rompe con 3 golpes. Si el golpe no le pega a nada, el que lo usa se tambalea 1 s. Pesa 15 kg, así que se camina más lento. La carga completa tarda 0,8 s y el golpe cuenta para la puerta desde la mitad de la carga; con el ariete se camina al 75% **(propuesta)**. Hasta que exista la armería, el ariete está tirado en el pasto frente a la casa y se agarra con E.
 - **Linterna:** se prende y se apaga con F. La casa está a media luz.
 
 ## Controles

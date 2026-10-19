@@ -11,6 +11,7 @@ const UNIFORMS: Array[PackedScene] = [
 	preload("res://assets/models/cop_0.glb"), preload("res://assets/models/cop_1.glb"),
 	preload("res://assets/models/cop_2.glb"), preload("res://assets/models/cop_3.glb"),
 ]
+const RAM_SCENE := preload("res://scenes/tools/battering_ram.tscn")
 
 @export var input_enabled := true
 
@@ -21,6 +22,9 @@ var is_crouching := false
 var exhausted := false
 ## Found in one of the pots by the grandpa's front door.
 var has_key := false
+## The battering ram in hand, if this cop carries it. Hands are busy: no grabbing.
+var ram: BatteringRam
+var _stagger_left := 0.0
 
 @onready var _shape: CollisionShape3D = $Shape
 @onready var _head: Node3D = $Head
@@ -45,6 +49,21 @@ func aim_hit(reach: float) -> Dictionary:
 	var query := PhysicsRayQueryParameters3D.create(eye.origin, eye.origin - eye.basis.z * reach)
 	query.exclude = [get_rid()]
 	return get_world_3d().direct_space_state.intersect_ray(query)
+
+
+func equip_ram() -> void:
+	ram = RAM_SCENE.instantiate()
+	ram.cop = self
+	camera.add_child(ram)
+
+
+## Loses balance for a while: can't move or charge the ram.
+func stagger(seconds: float) -> void:
+	_stagger_left = maxf(_stagger_left, seconds)
+
+
+func is_staggered() -> bool:
+	return _stagger_left > 0.0
 
 
 ## Shows a short line at the bottom of this cop's screen. `key` is a tr() key.
@@ -131,8 +150,9 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 	else:
 		stamina = minf(stamina + delta * GameScale.RUN_STAMINA / GameScale.STAMINA_RECOVERY, GameScale.RUN_STAMINA)
 
+	_stagger_left = maxf(_stagger_left - delta, 0.0)
 	var direction := (transform.basis * Vector3(wish.x, 0.0, wish.y)).normalized()
-	var speed := current_speed()
+	var speed := 0.0 if is_staggered() else current_speed()
 	velocity.x = direction.x * speed
 	velocity.z = direction.z * speed
 	if is_on_floor():
@@ -144,11 +164,12 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 
 
 func current_speed() -> float:
+	var factor := BatteringRam.SPEED_FACTOR if ram else 1.0
 	if is_crouching:
-		return GameScale.CROUCH_SPEED
+		return GameScale.CROUCH_SPEED * factor
 	if is_running:
-		return GameScale.RUN_SPEED
-	return GameScale.WALK_SPEED
+		return GameScale.RUN_SPEED * factor
+	return GameScale.WALK_SPEED * factor
 
 
 func _update_crouch(want_crouch: bool) -> void:
