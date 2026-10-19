@@ -7,6 +7,8 @@ extends CharacterBody3D
 
 signal complaint_changed(value: float)
 signal lawyer_called
+## He let slip where something is (asked with R): the line, already translated.
+signal slipped(text: String)
 
 const MAX_COMPLAINT := 100.0
 ## Meter points (proposal).
@@ -30,6 +32,10 @@ const LINE_EVERY := 6.0
 ## Holding E in front of him: he tells a long story and stands still (proposal from the design).
 const STORY_MAX := 20.0
 const STORY_COOLDOWN := 30.0
+## Asking him (R) annoys him a bit, and after ASKS answers he is offended and says nothing more (investigacion.md).
+const ASKED := 5.0
+const ASKS := 3
+const ASK_COOLDOWN := 5.0
 
 var complaint := 0.0
 var has_called_lawyer := false
@@ -41,6 +47,10 @@ var _line := 0
 var listener: Cop
 var _story_left := 0.0
 var _story_wait := 0.0
+## What he lets slip when asked, in order (the house fills it from the case seed).
+var slips: Array[String] = []
+var asked := 0
+var _ask_wait := 0.0
 
 @onready var _agent: NavigationAgent3D = $Agent
 @onready var _bubble: Label3D = $Bubble
@@ -54,6 +64,22 @@ func _ready() -> void:
 ## E on him starts a story; the cop has to keep holding E to keep him talking.
 func prompt_key(_cop: Cop) -> String:
 	return "" if listener else "PROMPT_GRANDPA"
+
+
+## R on him: a question. Each one raises the complaint; the first ASKS get a slip, then he is offended.
+func ask(_cop: Cop) -> bool:
+	if listener or _ask_wait > 0.0:
+		return false
+	if asked >= ASKS or asked >= slips.size():
+		_say("GRANDPA_OFFENDED")
+		return false
+	_ask_wait = ASK_COOLDOWN
+	_raise(ASKED)
+	var line := slips[asked]
+	asked += 1
+	_say(line, 5.0)
+	slipped.emit(line)
+	return true
 
 
 func use(cop: Cop) -> void:
@@ -88,6 +114,7 @@ func is_telling_story() -> bool:
 
 func _physics_process(delta: float) -> void:
 	_story_wait = maxf(_story_wait - delta, 0.0)
+	_ask_wait = maxf(_ask_wait - delta, 0.0)
 	if listener:
 		_story_left -= delta
 		if _story_left <= 0.0:

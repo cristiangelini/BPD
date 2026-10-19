@@ -32,7 +32,7 @@ PROMPT_TAKE_RAM,E: agarrar el ariete,E: take the battering ram,E: pegar o aríet
 PROMPT_POT,E: revisar la maceta,E: search the pot,E: revistar o vaso
 PROMPT_DOOR_LOCKED,Cerrada: busca la llave en las macetas o usa el ariete,Locked: find the key in the pots or use the battering ram,Trancada: procure a chave nos vasos ou use o aríete
 PROMPT_DOOR,E: abrir o cerrar la puerta,E: open or close the door,E: abrir ou fechar a porta
-PROMPT_GRANDPA,Mantén E: escuchar una historia del abuelo (lo distrae),Hold E: listen to one of the grandpa's stories (distracts him),Segure E: ouvir uma história do vovô (distrai ele)
+PROMPT_GRANDPA,Mantén E: escuchar una historia (lo distrae) · R: preguntarle (se enoja un poco),Hold E: listen to a story (distracts him) · R: question him (annoys him a bit),Segure E: ouvir uma história (distrai ele) · R: interrogar (ele se irrita um pouco)
 PROMPT_CAR,E: subir al patrullero,E: get in the patrol car,E: entrar na viatura
 BRIEF_SPEAKER,Comisario,Commissioner,Comissário
 BRIEF_CONTINUE,E: seguir,E: continue,E: continuar
@@ -92,3 +92,17 @@ PROMPT_CALENDAR,E: mirar el calendario,E: look at the calendar,E: olhar o calend
 PROMPT_TIN,E: abrir la lata de galletas,E: open the cookie tin,E: abrir a lata de biscoitos
 CLUE_CALENDAR,"Calendario: «Jueves: BINGO». Abajo, en birome: %s","Calendar: “Thursday: BINGO”. Below, in pen: %s","Calendário: “Quinta: BINGO”. Embaixo, de caneta: %s"
 CLUE_TIN,"En la lata, entre las migas, un papelito: %s","In the tin, among the crumbs, a slip of paper: %s","Na lata, entre as migalhas, um papelzinho: %s"
+GRANDPA_SLIP,"«¡Yo nunca escondí nada %s!... Digo, no sé de qué me hablan.»","“I never hid anything %s!... I mean, I don't know what you're talking about.”","“Eu nunca escondi nada %s!... Quer dizer, não sei do que estão falando.”"
+GRANDPA_OFFENDED,«No pienso decir una palabra más sin mi abogado.»,“Not another word without my lawyer.”,“Não digo mais nenhuma palavra sem o meu advogado.”
+LOC_under_sofa,abajo del sillón,under the sofa,embaixo do sofá
+LOC_behind_picture,detrás del cuadro,behind the picture,atrás do quadro
+LOC_in_oven,en el horno,in the oven,no forno
+LOC_in_cupboard,en la alacena,in the cupboard,no armário da cozinha
+LOC_under_table,abajo de la mesa del comedor,under the dining table,embaixo da mesa de jantar
+LOC_in_bathtub,en la bañera,in the bathtub,na banheira
+LOC_under_stairs,abajo de la escalera,under the stairs,embaixo da escada
+LOC_under_desk,abajo del escritorio,under the desk,embaixo da escrivaninha
+LOC_in_washer,en el lavarropas,in the washing machine,na máquina de lavar
+LOC_under_bed,abajo de la cama del cuarto chico,under the bed in the small bedroom,embaixo da cama do quarto pequeno
+LOC_in_attic,en el altillo,in the attic,no sótão
+LOC_in_wardrobe,en el ropero,in the wardrobe,no guarda-roupa

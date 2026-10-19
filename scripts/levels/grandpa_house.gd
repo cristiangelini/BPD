@@ -198,6 +198,7 @@ func _ready() -> void:
 	ornaments_total = $Ornaments.get_child_count() + _drawer_ornaments
 	_place_notes()
 	_place_combination()
+	_give_slips()
 	_place_trails()
 	(evidence[0] as Evidence).broken.connect(_fail.bind("CASE_FAILED_BROKEN"))
 	car.evidence_delivered.connect(_on_evidence_delivered)
@@ -284,6 +285,21 @@ func safe() -> SafeBox:
 func _on_code_found(text: String) -> void:
 	_on_clue(text)
 	safe().code_known = true
+
+
+## What the grandpa lets slip when asked: where each hidden item is, in an order drawn from the seed.
+func _give_slips() -> void:
+	var order := [0, 1, 2]
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 13 + 1
+	for i in range(order.size() - 1, 0, -1):
+		var j := rng.randi_range(0, i)
+		var swap: int = order[i]
+		order[i] = order[j]
+		order[j] = swap
+	for item: int in order:
+		grandpa.slips.append(tr("GRANDPA_SLIP") % tr("LOC_" + SPOTS[evidence_spots[item]].id))
+	grandpa.slipped.connect(_on_clue)
 
 
 func _on_clue(text: String) -> void:

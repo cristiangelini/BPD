@@ -38,7 +38,7 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
   - Para la libreta o el bolillero, **huellas de barro** desde el fondo del pasillo. El otro de los dos tiene una segunda nota, más vaga ("en la cocina, ¿o era el lavadero?").
 - Las notas aparecen en 4 de 12 lugares (mesas, camas, el lavarropas, el piso). Las huellas y las migas siguen el camino de la malla de navegación hasta la evidencia, y quedan en la planilla cuando un policía pasa a menos de 2,5 m **(propuesta)**.
 - **La caja fuerte tiene combinación** (3 números de la semilla). Está anotada en el calendario de la cocina y en un papelito adentro de la lata de galletas, que espera al final del camino de migas, al lado de la caja. Sabiéndola, E abre la caja: la recaudación sale como un fajo de billetes de 1 kg (vale 800) que lleva uno solo, y la caja vacía no vale nada. Sin abrirla, la caja cerrada vale lo mismo, pero hacen falta dos para llevarla **(propuesta)**.
-- Falta lo que cuenta el abuelo al interrogarlo.
+- **Interrogar al abuelo (R):** cada pregunta sube 5 la denuncia y se le escapa dónde está una de las 3 evidencias escondidas («¡Yo nunca escondí nada en el lavarropas!... Digo, no sé de qué me hablan.»). Contesta 3 veces por partida, con 5 s entre preguntas; después se ofende y no habla más sin su abogado **(propuesta)**. Lo que dice queda en la planilla. Mantener E sigue siendo escuchar una historia, que lo distrae. La propuesta era elegir Escuchar o Preguntar al mantener E; queda en dos teclas para que sea más rápido.
 
 ## Sin tiempo límite
 - El caso no tiene reloj (pedido de Cristian). La presión la pone el abuelo (ver "El abuelo").
@@ -96,6 +96,7 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
 | Acercar o alejar lo agarrado | rueda del mouse |
 | Usar, abrir o levantar a un compañero | E |
 | Soltar el ariete | G |
+| Preguntarle al abuelo | R |
 | Ver la planilla de objetivos | Q |
 | Elegir herramienta | 1 a 4 |
 | Linterna | F |

@@ -15,6 +15,7 @@ const KEYS := {
 	"use": KEY_E,
 	"drop": KEY_G,
 	"checklist": KEY_Q,
+	"ask": KEY_R,
 	"flashlight": KEY_F,
 	"talk": KEY_V,
 	"radio": KEY_T,
