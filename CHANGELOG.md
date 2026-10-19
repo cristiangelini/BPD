@@ -27,3 +27,4 @@
 - R questions the grandpa: three answers per case, each one lets slip a hiding spot and annoys him a bit.
 - Michi, the grandpa's cat, sleeps on the betting book: picked up he meows and wakes, then weaves between the cops' legs and trips anyone running past; the grandpa hears him and complains.
 - The vecina chismosa watches from the house next door: bring her the tupperware the grandpa kept (in a drawer) and she tells where she saw him hide something.
+- First person hands: the player sees blue sleeves and mittens in their skin color; they sway while walking, reach for what you hold and hide behind the battering ram.

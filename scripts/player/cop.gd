@@ -34,6 +34,10 @@ var listening_to: Grandpa
 var vehicle: PatrolCar
 ## The comisario is giving the case (CaseBriefing): the cop can look around but not move or use things.
 var in_briefing := false
+## The player's own first person hands; only a cop with a player at the keys has them.
+var hands: CopHands
+## Player index (0 to 3) whose skin this cop wears.
+var uniform := 0
 
 @onready var _shape: CollisionShape3D = $Shape
 @onready var _head: Node3D = $Head
@@ -52,6 +56,8 @@ func _ready() -> void:
 	_hint_timer.timeout.connect(_hint.hide)
 	if input_enabled:
 		_hide_from_own_camera()
+		hands = CopHands.new(self)
+		camera.add_child(hands)
 
 
 ## What the camera points at within reach (empty if nothing), ignoring the cop's own body.
@@ -142,6 +148,7 @@ func show_hint(key: String) -> void:
 
 ## Swaps the body for the skin of player `index` (0 to 3).
 func set_uniform(index: int) -> void:
+	uniform = index
 	var old: Node3D = get_node("Model")
 	var fresh: Node3D = UNIFORMS[index % UNIFORMS.size()].instantiate()
 	fresh.transform = old.transform
@@ -152,6 +159,8 @@ func set_uniform(index: int) -> void:
 	model = fresh
 	if input_enabled and is_node_ready():
 		_hide_from_own_camera()
+	if hands:
+		hands.set_skin(index)
 
 
 func _hide_from_own_camera() -> void:
