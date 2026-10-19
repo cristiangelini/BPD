@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3]
+
+[sub_resource type="CylinderMesh" id="Body"]
+top_radius = 0.11
+bottom_radius = 0.11
+height = 0.9
+radial_segments = 8
+rings = 1
+
+[sub_resource type="StandardMaterial3D" id="Steel"]
+albedo_color = Color(0.25, 0.27, 0.32, 1)
+metallic = 0.5
+roughness = 0.5
+
+[sub_resource type="BoxMesh" id="Handle"]
+size = Vector3(0.05, 0.16, 0.05)
+
+[sub_resource type="StandardMaterial3D" id="Yellow"]
+albedo_color = Color(1, 0.78, 0.15, 1)
+roughness = 0.7
+
+[node name="RamModel" type="Node3D"]
+
+[node name="Body" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
+mesh = SubResource("Body")
+surface_material_override/0 = SubResource("Steel")
+
+[node name="HandleFront" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.17, -0.15)
+mesh = SubResource("Handle")
+surface_material_override/0 = SubResource("Yellow")
+
+[node name="HandleBack" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.17, 0.2)
+mesh = SubResource("Handle")
+surface_material_override/0 = SubResource("Yellow")

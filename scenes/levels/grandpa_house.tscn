@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/levels/grandpa_house.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/player/cop.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/props/front_door.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/tools/ram_pickup.tscn" id="4"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
 sky_top_color = Color(0.32, 0.56, 0.9, 1)
@@ -49,3 +50,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 5)
 
 [node name="Cop" parent="." instance=ExtResource("2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 9)
+
+[node name="RamPickup" parent="." instance=ExtResource("4")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.8, 0, 8.5)
