@@ -92,20 +92,12 @@ const DRESSERS := [
 ## Chance that a drawer also holds an ornament, which breaks if the drawer is yanked out (propuesta).
 const DRAWER_ORNAMENT := 0.3
 
-## What the comisario says before the raid, one tr() key per line.
-const BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_1_1_B", "BRIEF_1_1_C", "BRIEF_1_1_D", "BRIEF_1_1_E"]
 ## The open checklist redraws this often, in seconds.
 const CHECKLIST_REFRESH := 0.2
 
 ## The illegal bingo (investigacion.md): the betting book is the main evidence; the bingo cage and the safe with the
 ## takings are extras that need two cops. They go to hiding spots; the bingo cards go into drawers.
-const EVIDENCE := [
-	{"scene": preload("res://scenes/props/betting_book.tscn"), "heavy": false, "half_height": 0.015},
-	{"scene": preload("res://scenes/props/bingo_cage.tscn"), "heavy": true, "half_height": 0.3},
-	{"scene": preload("res://scenes/props/heavy_safe.tscn"), "heavy": true, "half_height": 0.3},
-]
-const CARD_SCENE := preload("res://scenes/props/bingo_card.tscn")
-const CARDS := 5
+const BINGO := preload("res://scenes/case/bingo_story.tres")
 
 const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
 const CAT_SCENE := preload("res://scenes/npc/cat.tscn")
@@ -134,8 +126,10 @@ const CRUMB := Color(0.86, 0.66, 0.36)
 
 ## 0 draws a new seed. Online, the host will send it to everyone.
 @export var case_seed := 0
+## The story this raid tells (historias.md). The clues, Michi and the safe still follow the bingo's evidence order.
+@export var story: CaseStory = BINGO
 
-## Spot index of each placed evidence, in EVIDENCE order.
+## Spot index of each placed evidence, in story.evidence order.
 var evidence_spots: Array = []
 var evidence: Array[Node3D] = []
 var key_pot := 0
@@ -162,7 +156,7 @@ var shift_over := false
 var _materials := {}
 var _drawer_ornaments := 0
 var dressers: Array[Dresser] = []
-## The bingo cards, one in each of CARDS drawers drawn from the seed.
+## The bingo cards, one in each of story.drawer_count drawers drawn from the seed.
 var cards: Array[Evidence] = []
 var clue_plan := {}
 var notes: Array[ClueNote] = []
@@ -193,14 +187,13 @@ func _ready() -> void:
 	grandpa.lawyer_called.connect(_on_lawyer_called)
 	$FrontDoor.broken.connect(func() -> void: grandpa.door_broken($FrontDoor.global_position))
 	var spot_heavy := SPOTS.map(func(s: Dictionary) -> bool: return s.heavy)
-	var item_heavy := EVIDENCE.map(func(e: Dictionary) -> bool: return e.heavy)
-	var result := HidingDraw.draw(case_seed, spot_heavy, item_heavy, POTS.size())
+	var result := HidingDraw.draw(case_seed, spot_heavy, Array(story.heavy), POTS.size())
 	evidence_spots = result.spots
 	key_pot = result.key_pot
 	pots[key_pot].has_key = true
-	for i in EVIDENCE.size():
-		var item: Node3D = EVIDENCE[i].scene.instantiate()
-		item.position = SPOTS[evidence_spots[i]].at + Vector3.UP * (EVIDENCE[i].half_height + 0.02)
+	for i in story.evidence.size():
+		var item: Node3D = story.evidence[i].instantiate()
+		item.position = SPOTS[evidence_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.02)
 		$Evidence.add_child(item)
 		evidence.append(item)
 	for place: Dictionary in OrnamentLayout.places(case_seed):
@@ -228,7 +221,7 @@ func _ready() -> void:
 	# Only a cop with a player at the keys hears the comisario; tests drive cops without input.
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).input_enabled:
-			briefing.start(BRIEFING)
+			briefing.start(story.briefing)
 			break
 	$ShiftScreen.play_again.connect(func() -> void: get_tree().reload_current_scene())
 	$ShiftScreen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
@@ -348,7 +341,7 @@ func _give_slips() -> void:
 ## Michi sleeps on top of the betting book's hiding spot.
 func _place_michi() -> void:
 	michi = CAT_SCENE.instantiate()
-	michi.position = SPOTS[evidence_spots[0]].at + Vector3.UP * (EVIDENCE[0].half_height * 2 + 0.05)
+	michi.position = SPOTS[evidence_spots[0]].at + Vector3.UP * (story.half_heights[0] * 2 + 0.05)
 	michi.rotation.y = case_seed % 4 * PI / 2
 	michi.meowed.connect(grandpa.cat_upset)
 	michi.tripped.connect(func(cop: Cop) -> void: grandpa.cat_upset(cop.global_position))
@@ -360,7 +353,7 @@ func _place_neighbor() -> void:
 	neighbor = Neighbor.new()
 	neighbor.position = NEIGHBOR_AT
 	neighbor.rotation.y = PI / 2
-	var where := tr("LOC_" + SPOTS[evidence_spots[case_seed % EVIDENCE.size()]].id)
+	var where := tr("LOC_" + SPOTS[evidence_spots[case_seed % story.evidence.size()]].id)
 	neighbor.clue = tr("CLUE_NEIGHBOR") % where
 	neighbor.clue_speech = tr("NEIGHBOR_CLUE") % where
 	neighbor.told.connect(_on_clue)
@@ -448,8 +441,8 @@ func _place_dressers() -> void:
 		var swap: int = order[i]
 		order[i] = order[j]
 		order[j] = swap
-	var with_card := order.slice(0, CARDS)
-	var with_tupper: int = order[CARDS]
+	var with_card := order.slice(0, story.drawer_count)
+	var with_tupper: int = order[story.drawer_count]
 	var n := 0
 	for place: Dictionary in DRESSERS:
 		var dresser := Dresser.new()
@@ -457,7 +450,7 @@ func _place_dressers() -> void:
 		for i in Dresser.DRAWERS:
 			var items := [CLUTTER_SCENE]
 			if with_card.has(n):
-				items.append(CARD_SCENE)
+				items.append(story.drawer_evidence)
 			elif n == with_tupper:
 				items.append(TUPPER_SCENE)
 			elif rng.randf() < DRAWER_ORNAMENT:

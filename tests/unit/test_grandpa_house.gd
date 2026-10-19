@@ -48,7 +48,7 @@ func test_house_has_twelve_spots_and_three_pots() -> void:
 func test_evidence_waits_at_its_drawn_spot() -> void:
 	var house := _house(1234)
 	await wait_physics_frames(30)
-	assert_eq(house.evidence.size(), GrandpaHouse.EVIDENCE.size())
+	assert_eq(house.evidence.size(), house.story.evidence.size())
 	for i in house.evidence.size():
 		var spot: Vector3 = GrandpaHouse.SPOTS[house.evidence_spots[i]].at
 		var item := house.evidence[i]
@@ -91,13 +91,13 @@ func test_every_room_is_reachable_from_the_front_door() -> void:
 func test_the_bingo_cards_hide_in_drawers() -> void:
 	var house := _house(31)
 	await wait_physics_frames(5)
-	assert_eq(house.cards.size(), GrandpaHouse.CARDS)
+	assert_eq(house.cards.size(), house.story.drawer_count)
 	var drawers_with_cards := 0
 	for dresser in house.dressers:
 		for drawer in dresser.drawers:
 			if drawer.contents.any(func(c: RigidBody3D) -> bool: return c is Evidence):
 				drawers_with_cards += 1
-	assert_eq(drawers_with_cards, GrandpaHouse.CARDS, "one card per drawer")
+	assert_eq(drawers_with_cards, house.story.drawer_count, "one card per drawer")
 
 
 func test_one_cop_cannot_lift_the_bingo_cage() -> void:

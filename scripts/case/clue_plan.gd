@@ -6,7 +6,7 @@ extends RefCounted
 ## cookie crumbs from the kitchen; one of the book and the cage gets mud footprints from the back of the hall,
 ## and the other gets a second, vaguer note.
 
-## Item order matches GrandpaHouse.EVIDENCE: book, cage, safe.
+## Item order matches the bingo story evidence: book, cage, safe.
 const ITEMS := ["book", "cage", "safe"]
 const SAFE := 2
 
