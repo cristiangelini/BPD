@@ -25,6 +25,8 @@ var has_key := false
 ## The battering ram in hand, if this cop carries it. Hands are busy: no grabbing.
 var ram: BatteringRam
 var _stagger_left := 0.0
+## While holding E on the grandpa he tells a story; this cop can't do anything else (allanamiento.md).
+var listening_to: Grandpa
 
 @onready var _shape: CollisionShape3D = $Shape
 @onready var _head: Node3D = $Head
@@ -65,6 +67,11 @@ func stagger(seconds: float) -> void:
 
 func is_staggered() -> bool:
 	return _stagger_left > 0.0
+
+
+## Busy: staggered or listening to the grandpa. No walking, grabbing or ramming.
+func is_busy() -> bool:
+	return is_staggered() or listening_to != null
 
 
 ## Shows a short line at the bottom of this cop's screen. `key` is a tr() key.
@@ -111,6 +118,8 @@ func _physics_process(delta: float) -> void:
 	# Without local input someone else drives this cop through step() (tests, later the network).
 	if not input_enabled:
 		return
+	if listening_to and not Input.is_action_pressed("use"):
+		listening_to.end_story()
 	var wish := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	step(delta, wish, Input.is_action_pressed("run"), Input.is_action_pressed("crouch"),
 		Input.is_action_just_pressed("jump"))
@@ -153,7 +162,7 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 
 	_stagger_left = maxf(_stagger_left - delta, 0.0)
 	var direction := (transform.basis * Vector3(wish.x, 0.0, wish.y)).normalized()
-	var speed := 0.0 if is_staggered() else current_speed()
+	var speed := 0.0 if is_busy() else current_speed()
 	velocity.x = direction.x * speed
 	velocity.z = direction.z * speed
 	if is_on_floor():

@@ -27,6 +27,9 @@ const KEEP_AWAY := 1.6
 const EYE := 1.1
 const LINES := ["GRANDPA_LINE_1", "GRANDPA_LINE_2", "GRANDPA_LINE_3", "GRANDPA_LINE_4", "GRANDPA_LINE_5", "GRANDPA_LINE_6"]
 const LINE_EVERY := 6.0
+## Holding E in front of him: he tells a long story and stands still (proposal from the design).
+const STORY_MAX := 20.0
+const STORY_COOLDOWN := 30.0
 
 var complaint := 0.0
 var has_called_lawyer := false
@@ -34,6 +37,10 @@ var _quiet := 0.0
 var _since_struck := STRUCK_COOLDOWN
 var _since_line := 0.0
 var _line := 0
+## The cop he is telling a story to, if any.
+var listener: Cop
+var _story_left := 0.0
+var _story_wait := 0.0
 
 @onready var _agent: NavigationAgent3D = $Agent
 @onready var _bubble: Label3D = $Bubble
@@ -44,7 +51,43 @@ func _ready() -> void:
 	_bubble.hide()
 
 
+## E on him starts a story; the cop has to keep holding E to keep him talking.
+func use(cop: Cop) -> void:
+	start_story(cop)
+
+
+func start_story(cop: Cop) -> bool:
+	if listener:
+		return false
+	if _story_wait > 0.0:
+		_say("GRANDPA_STORY_TIRED")
+		return false
+	listener = cop
+	cop.listening_to = self
+	_story_left = STORY_MAX
+	_say("GRANDPA_STORY", STORY_MAX)
+	return true
+
+
+func end_story() -> void:
+	if not listener:
+		return
+	listener.listening_to = null
+	listener = null
+	_story_wait = STORY_COOLDOWN
+	_bubble.hide()
+
+
+func is_telling_story() -> bool:
+	return listener != null
+
+
 func _physics_process(delta: float) -> void:
+	_story_wait = maxf(_story_wait - delta, 0.0)
+	if listener:
+		_story_left -= delta
+		if _story_left <= 0.0:
+			end_story()
 	_since_struck += delta
 	_quiet += delta
 	if _quiet >= DECAY_EVERY:
@@ -52,7 +95,7 @@ func _physics_process(delta: float) -> void:
 		_set_complaint(complaint - 1.0)
 	var cop := nearest_cop()
 	var wish := Vector3.ZERO
-	if cop and global_position.distance_to(cop.global_position) > KEEP_AWAY:
+	if cop and not listener and global_position.distance_to(cop.global_position) > KEEP_AWAY:
 		_agent.target_position = cop.global_position
 		if not _agent.is_navigation_finished():
 			wish = _agent.get_next_path_position() - global_position
@@ -64,7 +107,7 @@ func _physics_process(delta: float) -> void:
 	velocity.z = wish.z
 	velocity.y = 0.0 if is_on_floor() else velocity.y - GameScale.GRAVITY * delta
 	move_and_slide()
-	_talk(delta, cop != null)
+	_talk(delta, cop != null and not listener)
 
 
 func nearest_cop() -> Cop:
@@ -146,8 +189,11 @@ func _talk(delta: float, following: bool) -> void:
 		_line += 1
 
 
-func _say(key: String) -> void:
+func _say(key: String, seconds := 3.0) -> void:
 	_since_line = 0.0
 	_bubble.text = key
 	_bubble.show()
-	get_tree().create_timer(3.0).timeout.connect(_bubble.hide)
+	var said := key
+	get_tree().create_timer(seconds).timeout.connect(func() -> void:
+		if _bubble.text == said:
+			_bubble.hide())

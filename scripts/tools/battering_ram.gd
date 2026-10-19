@@ -39,7 +39,7 @@ func _physics_process(delta: float) -> void:
 
 
 func start_charge() -> void:
-	if cop.is_staggered():
+	if cop.is_busy():
 		return
 	is_charging = true
 	charge = 0.0
