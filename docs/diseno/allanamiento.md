@@ -19,7 +19,7 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
 - **Evidencia principal:** una lata de galletas llena de "cosas sospechosas". Pesa 3 kg y vale 1000.
 - **Evidencia extra:** 3 objetos opcionales que suman plata. Una caja fuerte chica de 40 kg (hacen falta 2 policías), que vale 600. Un álbum de fotos de 1 kg, que vale 200. Una figurita "distinta" escondida entre las otras, de 0,3 kg, que vale 300.
 - **Al azar en cada partida** (decisión 19): dónde está cada evidencia, entre 10 escondites posibles (abajo de la cama, dentro del horno, detrás de un cuadro, en el altillo...), y en qué maceta está la llave.
-- **Fragilidad (como R.E.P.O.):** cada golpe por encima de 3 m/s le saca valor a la evidencia, en proporción a la fuerza del golpe. Si llega a 0, se rompe y no cuenta.
+- **Fragilidad (como R.E.P.O.):** cada golpe por encima de 3 m/s le saca valor a la evidencia, en proporción a la fuerza del golpe: el 10% del valor completo por cada m/s por encima de 3 (propuesta). Si llega a 0, se rompe y no cuenta.
 - **Adornos rotos:** cada uno es una multa de 20 que se descuenta del sueldo del caso.
 
 ## Sin tiempo límite
