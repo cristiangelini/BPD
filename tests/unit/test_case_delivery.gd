@@ -14,27 +14,27 @@ func _house() -> GrandpaHouse:
 	return house
 
 
-func test_the_tin_in_the_trunk_and_everyone_aboard_solves_the_case() -> void:
+func test_the_book_in_the_trunk_and_everyone_aboard_solves_the_case() -> void:
 	var house := _house()
 	await wait_physics_frames(30)
 	var car := house.car
-	var tin := house.main_evidence()
-	tin.global_position = car.to_global(Vector3(0, 0.6, -1.7))
+	var book := house.main_evidence()
+	book.global_position = car.to_global(Vector3(0, 0.6, -1.7))
 	await wait_physics_frames(10)
-	assert_true(car.is_delivered(tin))
+	assert_true(car.is_delivered(book))
 	assert_false(house.case_solved, "the cop is still outside")
 	car.enter(house.get_node("Cop"))
 	assert_true(house.case_solved)
 
 
-func test_everyone_aboard_without_the_tin_is_not_solved() -> void:
+func test_everyone_aboard_without_the_book_is_not_solved() -> void:
 	var house := _house()
 	await wait_physics_frames(30)
 	house.car.enter(house.get_node("Cop"))
 	assert_false(house.case_solved)
 
 
-func test_a_broken_tin_fails_the_case() -> void:
+func test_a_broken_book_fails_the_case() -> void:
 	var house := _house()
 	await wait_physics_frames(5)
 	house.main_evidence().hit(100.0)

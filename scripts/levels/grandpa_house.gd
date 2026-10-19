@@ -69,7 +69,7 @@ const SPOTS := [
 	{"id": "in_washer", "at": Vector3(11.4, 0.05, -9.4), "heavy": true},
 	{"id": "under_bed", "at": Vector3(-8.0, 2.7, 7.5), "heavy": false},
 	{"id": "in_attic", "at": Vector3(8.0, 2.7, -8.5), "heavy": true},
-	{"id": "in_wardrobe", "at": Vector3(11.6, 2.75, 5.0), "heavy": true},
+	{"id": "in_wardrobe", "at": Vector3(11.5, 2.75, 5.0), "heavy": true},
 ]
 
 ## The door key hides in one of these pots by the front door.
@@ -94,11 +94,15 @@ const BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_1_1_B", "BRIEF_1_1_C"
 ## The open checklist redraws this often, in seconds.
 const CHECKLIST_REFRESH := 0.2
 
-## Evidence placed this week: the main one (cookie tin) and the small safe. Album and figurine come later.
+## The illegal bingo (investigacion.md): the betting book is the main evidence; the bingo cage and the safe with the
+## takings are extras that need two cops. They go to hiding spots; the bingo cards go into drawers.
 const EVIDENCE := [
-	{"scene": preload("res://scenes/props/cookie_tin.tscn"), "heavy": false, "half_height": 0.085},
+	{"scene": preload("res://scenes/props/betting_book.tscn"), "heavy": false, "half_height": 0.015},
+	{"scene": preload("res://scenes/props/bingo_cage.tscn"), "heavy": true, "half_height": 0.3},
 	{"scene": preload("res://scenes/props/heavy_safe.tscn"), "heavy": true, "half_height": 0.3},
 ]
+const CARD_SCENE := preload("res://scenes/props/bingo_card.tscn")
+const CARDS := 5
 
 ## 0 draws a new seed. Online, the host will send it to everyone.
 @export var case_seed := 0
@@ -127,6 +131,8 @@ var _refresh_left := 0.0
 var _materials := {}
 var _drawer_ornaments := 0
 var dressers: Array[Dresser] = []
+## The bingo cards, one in each of CARDS drawers drawn from the seed.
+var cards: Array[Evidence] = []
 @onready var _built: Node3D = $Built
 @onready var grandpa: Grandpa = $Grandpa
 @onready var car: PatrolCar = $PatrolCar
@@ -195,7 +201,10 @@ func objective_facts() -> Dictionary:
 		"found": main_found,
 		"delivered": car.is_delivered(main_evidence()),
 		"all_in_car": all_in,
-		"extra_delivered": car.is_delivered(evidence[1] as Evidence),
+		"cage_delivered": car.is_delivered(evidence[1] as Evidence),
+		"safe_delivered": car.is_delivered(evidence[2] as Evidence),
+		"cards_delivered": cards.filter(func(c: Evidence) -> bool: return car.is_delivered(c)).size(),
+		"cards_total": cards.size(),
 		"broken": broken_ornaments,
 		"fines": fines,
 		"complaint": grandpa.complaint,
@@ -206,16 +215,28 @@ func objective_facts() -> Dictionary:
 func _place_dressers() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = case_seed + 17
+	var drawer_count: int = DRESSERS.size() * Dresser.DRAWERS
+	var order: Array = range(drawer_count)
+	for i in range(drawer_count - 1, 0, -1):
+		var j := rng.randi_range(0, i)
+		var swap: int = order[i]
+		order[i] = order[j]
+		order[j] = swap
+	var with_card := order.slice(0, CARDS)
+	var n := 0
 	for place: Dictionary in DRESSERS:
 		var dresser := Dresser.new()
 		var fill := []
 		for i in Dresser.DRAWERS:
 			var items := [CLUTTER_SCENE]
-			if rng.randf() < DRAWER_ORNAMENT:
+			if with_card.has(n):
+				items.append(CARD_SCENE)
+			elif rng.randf() < DRAWER_ORNAMENT:
 				items.append(OrnamentLayout.KINDS[rng.randi_range(0, OrnamentLayout.KINDS.size() - 1)])
 			else:
 				items.append(CLUTTER_SCENE)
 			fill.append(items)
+			n += 1
 		dresser.contents = fill
 		dresser.position = place.at
 		dresser.rotation.y = place.turn
@@ -227,9 +248,11 @@ func _place_dressers() -> void:
 				if item is Ornament:
 					(item as Ornament).broken.connect(_on_ornament_broken)
 					_drawer_ornaments += 1
+				elif item is Evidence:
+					cards.append(item)
 
 
-## The cookie tin, the evidence the case is about.
+## The betting book, the evidence the case is about.
 func main_evidence() -> Evidence:
 	return evidence[0]
 
@@ -368,7 +391,7 @@ func _furniture() -> void:
 	# Dormitorios: a bed in each, wardrobe in the big one.
 	_bed(Vector3(-8.0, up, 7.5))
 	_bed(Vector3(7.0, up, 7.0))
-	_open_box(Vector3(11.6, up, 5.0), Vector3(0.6, 2.0, 1.2), "-x", FURNITURE)
+	_open_box(Vector3(11.5, up, 5.0), Vector3(0.8, 2.0, 1.2), "-x", FURNITURE)
 	# Cuarto de costura: sewing table. Cuarto de juegos: card table. Baño de arriba: toilet.
 	_legs(Vector3(-7.0, up, 0.0), Vector2(1.2, 0.7), 0.74, FURNITURE)
 	_box(Vector3(-7.0, up + 0.77, 0.0), Vector3(1.2, 0.06, 0.7), FURNITURE)

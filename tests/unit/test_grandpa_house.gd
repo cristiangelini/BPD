@@ -48,7 +48,7 @@ func test_house_has_twelve_spots_and_three_pots() -> void:
 func test_evidence_waits_at_its_drawn_spot() -> void:
 	var house := _house(1234)
 	await wait_physics_frames(30)
-	assert_eq(house.evidence.size(), 2)
+	assert_eq(house.evidence.size(), GrandpaHouse.EVIDENCE.size())
 	for i in house.evidence.size():
 		var spot: Vector3 = GrandpaHouse.SPOTS[house.evidence_spots[i]].at
 		var item := house.evidence[i]
@@ -56,7 +56,7 @@ func test_evidence_waits_at_its_drawn_spot() -> void:
 			"%s stays at its spot" % item.name)
 		assert_gt(item.global_position.y, spot.y, "%s rests on its spot, not inside it" % item.name)
 	assert_true(house.evidence[0] is Evidence)
-	assert_eq((house.evidence[0] as Evidence).value, 1000.0, "the tin starts undamaged")
+	assert_eq((house.evidence[0] as Evidence).value, 1000.0, "the betting book starts undamaged")
 
 
 func test_cop_walks_up_the_stairs() -> void:
@@ -86,3 +86,20 @@ func test_every_room_is_reachable_from_the_front_door() -> void:
 				assert_false(path.is_empty(), "path to %s" % to)
 				if not path.is_empty():
 					assert_lt(path[path.size() - 1].distance_to(to), 0.6, "reaches %s" % to)
+
+
+func test_the_bingo_cards_hide_in_drawers() -> void:
+	var house := _house(31)
+	await wait_physics_frames(5)
+	assert_eq(house.cards.size(), GrandpaHouse.CARDS)
+	var drawers_with_cards := 0
+	for dresser in house.dressers:
+		for drawer in dresser.drawers:
+			if drawer.contents.any(func(c: RigidBody3D) -> bool: return c is Evidence):
+				drawers_with_cards += 1
+	assert_eq(drawers_with_cards, GrandpaHouse.CARDS, "one card per drawer")
+
+
+func test_one_cop_cannot_lift_the_bingo_cage() -> void:
+	var cage: Grabbable = preload("res://scenes/props/bingo_cage.tscn").instantiate()
+	assert_gt(cage.mass, GameScale.COP_CARRY_KG, "it needs two cops")
