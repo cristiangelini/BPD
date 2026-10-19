@@ -95,7 +95,7 @@ func current_prompt() -> String:
 		return target.prompt_key(self)
 	var hit := aim_hit(GameScale.GRAB_REACH)
 	if not hit.is_empty() and hit.collider is Grabbable:
-		return "PROMPT_GRAB"
+		return hit.collider.prompt_key(self) if hit.collider.has_method("prompt_key") else "PROMPT_GRAB"
 	return ""
 
 

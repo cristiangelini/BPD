@@ -50,3 +50,4 @@ OBJ_LEAVE,Subir todos al patrullero,Everyone gets in the patrol car,Todos entram
 OBJ_EXTRA,Extra: llevar la caja fuerte con la recaudación (hacen falta dos),Extra: take the safe with the takings (needs two),Extra: levar o cofre com a arrecadação (precisa de dois)
 OBJ_BROKEN,Adornos rotos: %d (multa: %d),Broken ornaments: %d (fine: %d),Enfeites quebrados: %d (multa: %d)
 OBJ_COMPLAINT,Denuncia del abuelo: %d%%,Grandpa's complaint: %d%%,Denúncia do vovô: %d%%
+PROMPT_DRAWER,Mantén clic: agarra el cajón y tira despacio (agáchate para no arrancarlo),Hold click: grab the drawer and pull slowly (crouch so you don't rip it out),Segure o clique: pegue a gaveta e puxe devagar (agache para não arrancar)

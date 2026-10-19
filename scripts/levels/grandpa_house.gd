@@ -76,6 +76,18 @@ const SPOTS := [
 const POTS := [Vector3(-2.5, 0.0, 10.8), Vector3(2.5, 0.0, 10.8), Vector3(4.5, 0.0, 11.6)]
 
 const POT_SCENE := preload("res://scenes/props/key_pot.tscn")
+const CLUTTER_SCENE := preload("res://scenes/props/clutter.tscn")
+
+## Dressers (cómodas): floor point at the middle of the front and the way the front faces (rotation around y).
+const DRESSERS := [
+	{"at": Vector3(-11.42, 2.7, 5.0), "turn": PI / 2},  # dormitorio chico
+	{"at": Vector3(11.42, 2.7, 8.5), "turn": -PI / 2},  # dormitorio grande
+	{"at": Vector3(-5.0, 0.0, 2.42), "turn": PI},  # estudio
+	{"at": Vector3(-11.42, 2.7, 0.0), "turn": PI / 2},  # cuarto de costura
+	{"at": Vector3(4.0, 0.0, 9.42), "turn": PI},  # comedor
+]
+## Chance that a drawer also holds an ornament, which breaks if the drawer is yanked out (propuesta).
+const DRAWER_ORNAMENT := 0.3
 
 ## What the comisario says before the raid, one tr() key per line.
 const BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_1_1_B", "BRIEF_1_1_C", "BRIEF_1_1_D", "BRIEF_1_1_E"]
@@ -113,19 +125,22 @@ var checklist: CaseChecklist
 var _refresh_left := 0.0
 
 var _materials := {}
+var _drawer_ornaments := 0
+var dressers: Array[Dresser] = []
 @onready var _built: Node3D = $Built
 @onready var grandpa: Grandpa = $Grandpa
 @onready var car: PatrolCar = $PatrolCar
 
 
 func _ready() -> void:
+	if case_seed == 0:
+		case_seed = randi() | 1
 	_build()
+	_place_dressers()
 	_bake_navigation()
 	grandpa.complaint_changed.connect(func(value: float) -> void: %ComplaintBar.value = value)
 	grandpa.lawyer_called.connect(_on_lawyer_called)
 	$FrontDoor.broken.connect(func() -> void: grandpa.door_broken($FrontDoor.global_position))
-	if case_seed == 0:
-		case_seed = randi() | 1
 	var spot_heavy := SPOTS.map(func(s: Dictionary) -> bool: return s.heavy)
 	var item_heavy := EVIDENCE.map(func(e: Dictionary) -> bool: return e.heavy)
 	var result := HidingDraw.draw(case_seed, spot_heavy, item_heavy, POTS.size())
@@ -143,7 +158,7 @@ func _ready() -> void:
 		ornament.rotation.y = place.turn
 		ornament.broken.connect(_on_ornament_broken)
 		$Ornaments.add_child(ornament)
-	ornaments_total = $Ornaments.get_child_count()
+	ornaments_total = $Ornaments.get_child_count() + _drawer_ornaments
 	(evidence[0] as Evidence).broken.connect(_fail.bind("CASE_FAILED_BROKEN"))
 	car.evidence_delivered.connect(_on_evidence_delivered)
 	car.evidence_delivered.connect(_check_solved.unbind(1))
@@ -185,6 +200,33 @@ func objective_facts() -> Dictionary:
 		"fines": fines,
 		"complaint": grandpa.complaint,
 	}
+
+
+## Dressers whose drawers hold folded clothes and, sometimes, an ornament (contents come from the case seed).
+func _place_dressers() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed + 17
+	for place: Dictionary in DRESSERS:
+		var dresser := Dresser.new()
+		var fill := []
+		for i in Dresser.DRAWERS:
+			var items := [CLUTTER_SCENE]
+			if rng.randf() < DRAWER_ORNAMENT:
+				items.append(OrnamentLayout.KINDS[rng.randi_range(0, OrnamentLayout.KINDS.size() - 1)])
+			else:
+				items.append(CLUTTER_SCENE)
+			fill.append(items)
+		dresser.contents = fill
+		dresser.position = place.at
+		dresser.rotation.y = place.turn
+		_built.add_child(dresser)
+		dressers.append(dresser)
+		for drawer in dresser.drawers:
+			drawer.ripped.connect(grandpa.saw_break)
+			for item in drawer.contents:
+				if item is Ornament:
+					(item as Ornament).broken.connect(_on_ornament_broken)
+					_drawer_ornaments += 1
 
 
 ## The cookie tin, the evidence the case is about.

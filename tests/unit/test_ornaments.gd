@@ -71,7 +71,7 @@ func test_house_ornaments_settle_whole_and_cost_fines() -> void:
 	house.get_node("Cop").input_enabled = false
 	add_child_autofree(house)
 	await wait_physics_frames(120)
-	assert_eq(house.ornaments_total, OrnamentLayout.places(21).size())
+	assert_eq(house.ornaments_total, OrnamentLayout.places(21).size() + house._drawer_ornaments, "shelves, tops and drawers")
 	assert_eq(house.broken_ornaments, 0, "nothing breaks while the house settles")
 	var ornament: Ornament = house.get_node("Ornaments").get_child(0)
 	ornament.hit(4.0)
