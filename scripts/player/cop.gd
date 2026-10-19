@@ -32,6 +32,8 @@ var _stagger_left := 0.0
 var listening_to: Grandpa
 ## The patrol car this cop sits in, if any: the body rides the seat and doesn't walk or collide.
 var vehicle: PatrolCar
+## The comisario is giving the case (CaseBriefing): the cop can look around but not move or use things.
+var in_briefing := false
 
 @onready var _shape: CollisionShape3D = $Shape
 @onready var _head: Node3D = $Head
@@ -82,7 +84,7 @@ func drop_ram() -> RamPickup:
 
 ## The key text (tr() key) for what this cop can do right now: what's in hand, else what the camera points at.
 func current_prompt() -> String:
-	if vehicle:
+	if vehicle or in_briefing:
 		return ""
 	if $Grabber.held:
 		return "PROMPT_HOLDING"
@@ -106,9 +108,9 @@ func is_staggered() -> bool:
 	return _stagger_left > 0.0
 
 
-## Busy: staggered, listening to the grandpa or sitting in the car. No walking, grabbing or ramming.
+## Busy: staggered, listening to the grandpa, sitting in the car or hearing the comisario. No walking, grabbing or ramming.
 func is_busy() -> bool:
-	return is_staggered() or listening_to != null or vehicle != null
+	return is_staggered() or listening_to != null or vehicle != null or in_briefing
 
 
 ## Rides `seat` of `car`, facing forward, until stand_up(). Lets go of whatever it was holding.

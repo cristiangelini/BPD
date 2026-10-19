@@ -24,6 +24,11 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
 - **Fragilidad (como R.E.P.O.):** cada golpe por encima de 3 m/s le saca valor a la evidencia, en proporción a la fuerza del golpe: el 10% del valor completo por cada m/s por encima de 3 (propuesta). Si llega a 0, se rompe y no cuenta.
 - **Adornos rotos:** cada uno es una multa de 20 que se descuenta del sueldo del caso.
 
+## Charla del comisario y planilla (Q)
+- Al empezar el caso, el comisario da el caso en un cartel abajo de la pantalla, una frase por vez (E, clic o Espacio para seguir). Cuenta el porqué: el abuelo organiza un **bingo clandestino** para los jubilados del barrio, guarda la libreta de apuestas en una lata de galletas y la recaudación en la caja fuerte (pedido de Cristian en la prueba del 19/10). Mientras habla, los policías pueden mirar pero no moverse ni usar cosas. Hasta que exista la comisaría, la charla pasa frente a la casa.
+- **Planilla (Q):** abre y cierra la lista de lo que hay que hacer, en orden: entrar a la casa, encontrar la lata, dejarla en el baúl y subir todos al patrullero. El paso que sigue se ve en amarillo y los hechos en verde con [x]. Abajo dice el extra (la caja fuerte), los adornos rotos con la multa y la denuncia del abuelo. Se abre sola al terminar la charla y, cerrada, queda el recordatorio "Q: planilla" arriba a la derecha.
+- La caja fuerte pasa a ser evidencia: vale 600 y cuenta al dejarla en el baúl.
+
 ## Sin tiempo límite
 - El caso no tiene reloj (pedido de Cristian). La presión la pone el abuelo (ver "El abuelo").
 

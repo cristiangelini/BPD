@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3]
 
-[ext_resource type="Script" path="res://scripts/props/grabbable.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/props/evidence.gd" id="1"]
 [ext_resource type="PackedScene" path="res://assets/models/safe.glb" id="2"]
 
 [sub_resource type="BoxShape3D" id="Shape"]
@@ -11,6 +11,7 @@ collision_layer = 4
 collision_mask = 15
 mass = 40.0
 script = ExtResource("1")
+full_value = 600.0
 
 [node name="Shape" type="CollisionShape3D" parent="."]
 shape = SubResource("Shape")
