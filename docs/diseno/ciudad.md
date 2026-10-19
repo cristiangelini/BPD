@@ -8,7 +8,7 @@ Pedido de Cristian (19/10): "que todos los casos pasen en casas diferentes y con
 - Los lugares que no son del caso de hoy están cerrados, con la persiana baja o la puerta trabada. Se ven desde la calle pero no se entra. Así la ciudad no pesa y se puede ir sumando un lugar por vez.
 
 ## El plano
-Una cuadrícula de 4 × 4 manzanas de 60 m, con calles de 12 m (dos carriles y veredas). En total son unos 290 × 290 m. De punta a punta se maneja en unos 20 s a 60 km/h y se camina en poco más de un minuto.
+Se arma de a poco (Cristian, 19/10): primero unas cuadras con lo que ya tenemos y después se van sumando la comisaría por dentro, la cárcel, el caso del político y lo que venga. Se empieza con 4 × 3 manzanas de 60 m, con calles de 12 m (dos carriles y veredas), unos 300 × 230 m. Cada lugar nuevo que no entra suma una fila de manzanas al sur, sin mover lo que ya está. De punta a punta se maneja en unos 20 s a 60 km/h.
 
 | Barrio | Dónde | Lugares |
 |---|---|---|
@@ -16,7 +16,7 @@ Una cuadrícula de 4 × 4 manzanas de 60 m, con calles de 12 m (dos carriles y v
 | **Barrio de casas** | al oeste | la casa del abuelo, el edificio de departamentos y casas vecinas para los allanamientos que vengan |
 | **Calle comercial** | al norte | la panadería, la peluquería de mascotas, la ferretería y el gimnasio |
 | **Zona industrial** | al este | la fábrica de muñecos y el laboratorio de pasteles |
-| **Lo que falta** | al sur, vacío por ahora | los lugares de los otros casos: la cárcel, el banco, la autopista, el club de golf... |
+| **Lo que falta** | filas nuevas al sur | los lugares de los otros casos: la cárcel, el político, el banco, el club de golf... |
 
 - **La comisaría** está en el centro, con el estacionamiento del patrullero adelante. Hasta que tenga interior, es un frente con la puerta y el comisario parado afuera.
 - **Calles:** todas de doble mano, con esquinas en cruz, semáforos de adorno y autos estacionados. Al principio no hay tráfico; los autos que andan solos vienen con la persecución (caso 2).
@@ -34,6 +34,8 @@ Una cuadrícula de 4 × 4 manzanas de 60 m, con calles de 12 m (dos carriles y v
 3. Hacen el caso. El patrullero queda en la calle, frente al lugar.
 4. Vuelven a la comisaría con la evidencia en el baúl y ahí termina el turno. Hoy el turno termina cuando suben todos al patrullero; con la ciudad, termina al estacionar en la comisaría.
 
+Hasta que estén los pasos 2 y 3, la ciudad se abre desde el menú con "Ciudad (prueba)".
+
 ## El orden para hacerlo (un PR chico por paso)
 1. **La ciudad vacía:** las calles, las manzanas, la comisaría por fuera y las fachadas cerradas de los 10 lugares, con sus carteles. Se maneja el patrullero por todos lados. Va con una captura desde arriba.
 2. **La casa del abuelo en su terreno:** se mueve el caso de hoy a la ciudad. Se empieza en la comisaría y hay que manejar hasta la casa, y el turno termina al volver a la comisaría.
@@ -42,5 +44,4 @@ Una cuadrícula de 4 × 4 manzanas de 60 m, con calles de 12 m (dos carriles y v
 5. Después, un lugar por vez.
 
 ## Preguntas para Cristian
-1. ¿Te sirve la cuadrícula de 4 × 4 manzanas (unos 290 m de lado), o la quieres más grande desde el principio?
-2. ¿El turno termina al volver a la comisaría, o alcanza con subir todos al patrullero como hoy?
+1. ¿El turno termina al volver a la comisaría, o alcanza con subir todos al patrullero como hoy?

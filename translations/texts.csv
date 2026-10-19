@@ -164,3 +164,20 @@ SUSPECT_radio,Radio pirata,Pirate radio,Rádio pirata
 CLUE_SUSPECT_radio,Un cable larguísimo que sube hasta el altillo.,A very long cable that goes up to the attic.,Um cabo compridíssimo que sobe até o sótão.
 SUSPECT_fight,Club de lucha de jubilados,Retirees fight club,Clube da luta dos aposentados
 CLUE_SUSPECT_fight,"Unos guantes de boxeo gastados, talle jubilado.","A pair of worn boxing gloves, retiree size.","Umas luvas de boxe gastas, tamanho aposentado."
+MENU_CITY,Ciudad (prueba),City (test),Cidade (teste)
+PLACE_STATION,Comisaría,Police station,Delegacia
+PLACE_HOTEL,Hotel Gran Siesta,Grand Nap Hotel,Hotel Grande Soneca
+PLACE_INSURANCE,Seguros Todo Tranquilo,All Calm Insurance,Seguros Tudo Tranquilo
+PLACE_GRANDPA,N.º 12,No. 12,N.º 12
+PLACE_APARTMENTS,Edificio Las Palomas,The Pigeons Building,Edifício As Pombas
+PLACE_BAKERY,Panadería El Pan Feliz,The Happy Bread Bakery,Padaria O Pão Feliz
+PLACE_PET_SALON,Peluquería de mascotas Pelos y Señas,Fur and Signs Pet Salon,Pet shop Pelos e Sinais
+PLACE_HARDWARE,Ferretería El Tornillo Flojo,The Loose Screw Hardware,Ferragens O Parafuso Solto
+PLACE_GYM,Gimnasio Hierro Puro,Pure Iron Gym,Academia Ferro Puro
+PLACE_DOLL_FACTORY,Fábrica de Muñecos Sonrisas,Smiles Doll Factory,Fábrica de Bonecos Sorrisos
+PLACE_CAKE_LAB,Laboratorio de Pasteles Dulce Ciencia,Sweet Science Cake Lab,Laboratório de Bolos Doce Ciência
+STREET_CLOCK,Avenida del Reloj,Clock Avenue,Avenida do Relógio
+STREET_LINDEN,Calle de los Tilos,Linden Street,Rua das Tílias
+STREET_TEAPOT,Calle de la Tetera,Teapot Street,Rua da Chaleira
+STREET_CENTRAL,Avenida Central,Central Avenue,Avenida Central
+STREET_BUTTON,Calle del Botón,Button Street,Rua do Botão
