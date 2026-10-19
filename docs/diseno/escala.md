@@ -10,7 +10,7 @@ Valores base del juego. Todas las constantes de código salen de acá y viven en
 | Altura | 1,80 m (cápsula de radio 0,35 m) |
 | Altura de los ojos (cámara) | 1,65 m |
 | Caminar | 4,0 m/s |
-| Correr (Shift) | 6,5 m/s, con 6 s de aguante y recuperación en 4 s |
+| Correr (Shift) | 6,5 m/s, con 6 s de aguante y recuperación en 4 s. Si se agota, no se vuelve a correr hasta recuperar la mitad **(propuesta)** |
 | Agachado (Ctrl) | 2,0 m/s, altura de 1,1 m |
 | Salto | 1,0 m de alto |
 | Caída que desmaya | más de 4 m |
