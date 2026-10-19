@@ -36,6 +36,9 @@ const STORY_COOLDOWN := 30.0
 const ASKED := 5.0
 const ASKS := 3
 const ASK_COOLDOWN := 5.0
+## Michi meowing (picked up) or a cop tripping over it (propuesta). He hears it from further than he sees.
+const CAT_UPSET := 5.0
+const HEARING := 12.0
 
 var complaint := 0.0
 var has_called_lawyer := false
@@ -158,6 +161,15 @@ func saw_break(at: Vector3) -> bool:
 	if not can_see(at):
 		return false
 	_raise(SAW_BREAK)
+	return true
+
+
+## Someone bothered Michi at `at`.
+func cat_upset(at: Vector3) -> bool:
+	if global_position.distance_to(at) > HEARING:
+		return false
+	_raise(CAT_UPSET)
+	_say("GRANDPA_CAT")
 	return true
 
 

@@ -25,3 +25,4 @@
 - Clues for the bingo evidence: the grandpa's notes (E to read), mud footprints and cookie crumbs; found clues go to the Q checklist.
 - The safe has a combination, written on the kitchen calendar and inside the cookie tin by the safe; opened, the takings come out as a light cash bundle.
 - R questions the grandpa: three answers per case, each one lets slip a hiding spot and annoys him a bit.
+- Michi, the grandpa's cat, sleeps on the betting book: picked up he meows and wakes, then weaves between the cops' legs and trips anyone running past; the grandpa hears him and complains.

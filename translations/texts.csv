@@ -106,3 +106,8 @@ LOC_in_washer,en el lavarropas,in the washing machine,na máquina de lavar
 LOC_under_bed,abajo de la cama del cuarto chico,under the bed in the small bedroom,embaixo da cama do quarto pequeno
 LOC_in_attic,en el altillo,in the attic,no sótão
 LOC_in_wardrobe,en el ropero,in the wardrobe,no guarda-roupa
+PROMPT_CAT_ASLEEP,Michi duerme arriba de algo. Clic para levantarlo (va a maullar),Michi is sleeping on something. Click to pick him up (he'll meow),O Michi está dormindo em cima de algo. Clique para pegar (ele vai miar)
+PROMPT_CAT,Clic: agarrar a Michi,Click: grab Michi,Clique: pegar o Michi
+CAT_MEOW,¡MIAU!,MEOW!,MIAU!
+HINT_TRIPPED_CAT,¡Pisaste a Michi!,You stepped on Michi!,Você pisou no Michi!
+GRANDPA_CAT,«¡¿Qué le hacen a Michi?!»,“What are you doing to Michi?!”,“O que estão fazendo com o Michi?!”
