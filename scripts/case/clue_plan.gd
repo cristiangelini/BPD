@@ -7,7 +7,7 @@ extends RefCounted
 ## hall, and the rest get a second, vaguer note.
 
 
-## Returns {"notes": [{"item", "precise", "place"}], "footprints": item index}.
+## Returns {"notes": [{"item", "precise", "place"}], "footprints": item index, "spare": note places left free}.
 ## `place` indexes the house's note places, all different. trail_item is -1 when the story has no trail of its own.
 static func draw(case_seed: int, place_count: int, item_count: int, trail_item: int) -> Dictionary:
 	var rng := RandomNumberGenerator.new()
@@ -28,7 +28,7 @@ static func draw(case_seed: int, place_count: int, item_count: int, trail_item: 
 		places[j] = swap
 	for i in notes.size():
 		notes[i].place = places[i]
-	return {"notes": notes, "footprints": footprints}
+	return {"notes": notes, "footprints": footprints, "spare": places.slice(notes.size())}
 
 
 ## The note's text: the item (its NOTE_ITEM_ key) and where it is, precise or vague, already translated.

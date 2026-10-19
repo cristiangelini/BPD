@@ -17,12 +17,13 @@ const AWARDS := [
 
 ## Pay for one case. A solved case pays the salary and what is left of each delivered evidence;
 ## a failed one pays nothing of that (propuesta), but the fines are still taken off.
-static func pay(solved: bool, evidence_values: Array, fines: int) -> Dictionary:
+## A wrong guess of the story halves the salary (historias.md).
+static func pay(solved: bool, evidence_values: Array, fines: int, wrong_guesses := 0) -> Dictionary:
 	var evidence := 0
 	if solved:
 		for value: float in evidence_values:
 			evidence += roundi(value)
-	var salary := SALARY if solved else 0
+	var salary := (SALARY if wrong_guesses == 0 else SALARY / 2) if solved else 0
 	var total := salary + evidence - fines
 	return {"salary": salary, "evidence": evidence, "fines": fines, "total": total, "quota": QUOTA,
 		"approved": total >= QUOTA}

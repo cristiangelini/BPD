@@ -45,6 +45,7 @@ func test_the_checklist_asks_for_relampago_and_counts_the_trophies() -> void:
 	TranslationServer.set_locale("es")
 	var house := _house()
 	await wait_physics_frames(30)
+	house.mark(house.suspicions.find("turtles"))
 	var trophy: Evidence = house.drawer_evidence[0]
 	trophy.global_position = house.car.to_global(Vector3(0, 0.6, -1.7))
 	await wait_physics_frames(10)

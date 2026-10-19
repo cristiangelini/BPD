@@ -10,7 +10,7 @@
 [resource]
 script = ExtResource("1_story")
 id = "bingo"
-briefing = PackedStringArray("BRIEF_1_1_A", "BRIEF_1_1_B", "BRIEF_1_1_C", "BRIEF_1_1_D", "BRIEF_1_1_E")
+briefing = PackedStringArray("BRIEF_RIGHT", "BRIEF_1_1_B", "BRIEF_1_1_C", "BRIEF_1_1_D")
 evidence = Array[PackedScene]([ExtResource("2_book"), ExtResource("3_cage"), ExtResource("4_safe")])
 item_keys = PackedStringArray("book", "cage", "safe")
 find_key = "OBJ_FIND"

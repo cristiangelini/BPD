@@ -7,11 +7,19 @@ extends RefCounted
 
 ## Facts: door_open, found, delivered, all_in_car (bools), broken, fines, complaint (numbers), and optionally
 ## find (the story's tr() key for finding the main evidence), extras (the story's rows: [{text, done}]),
-## clues (lines of found clues), tupper_asked, tupper_returned (bools).
+## clues (lines of found clues), tupper_asked, tupper_returned (bools), and suspicions ([{"name": tr() key,
+## "state": "open", "right" or "wrong"}]) with story_known (bool) when the cops have to guess the story.
 ## Returns rows {text: tr() key or formatted text, done: bool, optional: bool, status: bool}, in play order.
 static func rows(facts: Dictionary) -> Array[Dictionary]:
 	var list: Array[Dictionary] = []
 	list.append(_row("OBJ_ENTER", facts.door_open))
+	var suspicions: Array = facts.get("suspicions", [])
+	if not suspicions.is_empty():
+		list.append(_row("OBJ_GUESS", facts.get("story_known", false)))
+		for i in suspicions.size():
+			var mark: String = {"open": "[ ]", "right": "[x]", "wrong": "[-]"}[suspicions[i].state]
+			list.append({"text": "   %s %d. %s" % [mark, i + 1, TranslationServer.translate(suspicions[i].name)],
+				"done": suspicions[i].state == "right", "optional": false, "status": true})
 	list.append(_row(facts.get("find", "OBJ_FIND"), facts.found or facts.delivered))
 	list.append(_row("OBJ_TRUNK", facts.delivered))
 	list.append(_row("OBJ_LEAVE", facts.delivered and facts.all_in_car))

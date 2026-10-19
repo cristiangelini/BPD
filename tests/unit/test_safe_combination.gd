@@ -40,6 +40,7 @@ func test_the_calendar_gives_the_combination_and_the_safe_opens() -> void:
 	assert_eq(bundle.full_value, 800.0)
 	bundle.global_position = house.car.to_global(Vector3(0, 0.6, -1.7))
 	await wait_physics_frames(10)
+	house.mark(house.suspicions.find("bingo"))
 	assert_true(house.objective_facts().extras[1].done, "the takings count without the safe")
 
 

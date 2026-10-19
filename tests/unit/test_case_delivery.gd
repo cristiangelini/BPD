@@ -23,6 +23,7 @@ func test_the_book_in_the_trunk_and_everyone_aboard_solves_the_case() -> void:
 	book.global_position = car.to_global(Vector3(0, 0.6, -1.7))
 	await wait_physics_frames(10)
 	assert_true(car.is_delivered(book))
+	assert_true(house.mark(house.suspicions.find(house.story.id)))
 	assert_false(house.case_solved, "the cop is still outside")
 	car.enter(house.get_node("Cop"))
 	assert_true(house.case_solved)
