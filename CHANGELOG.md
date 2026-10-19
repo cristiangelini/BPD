@@ -19,3 +19,4 @@
 - G drops the battering ram (E picks it up again), and the key for what you can do shows under the crosshair.
 - Design docs: decisions, case catalog and working rules.
 - The comisario gives case 1.1 (an illegal bingo) before the raid, and Q opens the case checklist; the safe now counts as evidence worth 600.
+- The grandpa's house is twice as big: 24 x 20 m and 14 rooms, 12 hiding spots and about 200 ornaments.

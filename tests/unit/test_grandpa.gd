@@ -81,7 +81,7 @@ func test_grandpa_follows_the_nearest_cop() -> void:
 	house.case_seed = 3
 	var cop: Cop = house.get_node("Cop")
 	cop.input_enabled = false
-	cop.position = Vector3(0.0, 0.1, 2.5)
+	cop.position = Vector3(0.0, 0.1, 6.5)
 	add_child_autofree(house)
 	await wait_physics_frames(5)
 	var start := house.grandpa.global_position.distance_to(cop.global_position)
@@ -148,6 +148,6 @@ func test_the_grandpa_walks_out_of_the_living_room() -> void:
 	add_child_autofree(house)
 	await wait_physics_frames(5)
 	var cop: Cop = house.get_node("Cop")
-	cop.global_position = Vector3(1.0, 0.1, 2.5)
-	await wait_seconds(5.0)
+	cop.global_position = Vector3(1.0, 0.1, 6.5)
+	await wait_seconds(6.0)
 	assert_gt(house.grandpa.global_position.x, -1.0, "came through the living room door into the hall")
