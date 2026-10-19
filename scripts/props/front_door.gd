@@ -19,6 +19,14 @@ var hits := 0
 @onready var _panel: AnimatableBody3D = $Panel
 
 
+func prompt_key(cop: Cop) -> String:
+	if is_broken:
+		return ""
+	if locked and not cop.has_key:
+		return "PROMPT_DOOR_LOCKED"
+	return "PROMPT_DOOR"
+
+
 func use(cop: Cop) -> void:
 	if is_broken:
 		return

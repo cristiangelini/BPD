@@ -13,6 +13,8 @@ const KEYS := {
 	"crouch": KEY_CTRL,
 	"jump": KEY_SPACE,
 	"use": KEY_E,
+	"drop": KEY_G,
+	"checklist": KEY_Q,
 	"flashlight": KEY_F,
 	"talk": KEY_V,
 	"radio": KEY_T,

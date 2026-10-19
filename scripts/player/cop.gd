@@ -12,6 +12,9 @@ const UNIFORMS: Array[PackedScene] = [
 	preload("res://assets/models/cop_2.glb"), preload("res://assets/models/cop_3.glb"),
 ]
 const RAM_SCENE := preload("res://scenes/tools/battering_ram.tscn")
+const RAM_PICKUP_SCENE := preload("res://scenes/tools/ram_pickup.tscn")
+## A dropped ram lands this far in front of the cop.
+const DROP_AHEAD := 1.0
 
 @export var input_enabled := true
 
@@ -36,6 +39,7 @@ var vehicle: PatrolCar
 @onready var model: Node3D = $Model
 @onready var _hint: Label = $Hud/Hint
 @onready var _hint_timer: Timer = $Hud/Hint/Timer
+@onready var _prompt: Label = $Hud/Prompt
 
 
 func _ready() -> void:
@@ -60,6 +64,37 @@ func equip_ram() -> void:
 	ram = RAM_SCENE.instantiate()
 	ram.cop = self
 	camera.add_child(ram)
+
+
+## Lets go of the ram: it drops on the floor in front, where E picks it up again.
+func drop_ram() -> RamPickup:
+	if not ram:
+		return null
+	ram.queue_free()
+	ram = null
+	var pickup: RamPickup = RAM_PICKUP_SCENE.instantiate()
+	var ahead := -global_basis.z * DROP_AHEAD
+	get_parent().add_child(pickup)
+	pickup.global_position = global_position + ahead
+	pickup.rotation.y = rotation.y
+	return pickup
+
+
+## The key text (tr() key) for what this cop can do right now: what's in hand, else what the camera points at.
+func current_prompt() -> String:
+	if vehicle:
+		return ""
+	if $Grabber.held:
+		return "PROMPT_HOLDING"
+	if ram:
+		return "PROMPT_RAM"
+	var target := _usable_target()
+	if target and target.has_method("prompt_key"):
+		return target.prompt_key(self)
+	var hit := aim_hit(GameScale.GRAB_REACH)
+	if not hit.is_empty() and hit.collider is Grabbable:
+		return "PROMPT_GRAB"
+	return ""
 
 
 ## Loses balance for a while: can't move or charge the ram.
@@ -130,6 +165,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		look(event.relative * MOUSE_SENSITIVITY)
 	elif event is InputEventMouseButton and event.pressed:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	elif event.is_action_pressed("drop"):
+		drop_ram()
 	elif event.is_action_pressed("use"):
 		if vehicle:
 			vehicle.exit(self)
@@ -141,7 +178,12 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	# Without local input someone else drives this cop through step() (tests, later the network).
-	if not input_enabled or vehicle:
+	if not input_enabled:
+		return
+	var prompt := current_prompt()
+	_prompt.text = prompt
+	_prompt.visible = prompt != ""
+	if vehicle:
 		return
 	if listening_to and not Input.is_action_pressed("use"):
 		listening_to.end_story()
@@ -152,17 +194,22 @@ func _physics_process(delta: float) -> void:
 
 ## Uses what the camera points at (a pot, a door...), if it can be used. Returns true if something was used.
 func use() -> bool:
-	var hit := aim_hit(GameScale.GRAB_REACH)
-	if hit.is_empty():
-		return false
-	# A door's body is a child of the door itself.
-	var target: Node = hit.collider
-	if not target.has_method("use"):
-		target = target.get_parent()
-	if not target.has_method("use"):
+	var target := _usable_target()
+	if not target:
 		return false
 	target.use(self)
 	return true
+
+
+## What the camera points at within reach that can be used with E (a door's body is a child of the door).
+func _usable_target() -> Node:
+	var hit := aim_hit(GameScale.GRAB_REACH)
+	if hit.is_empty():
+		return null
+	var target: Node = hit.collider
+	if not target.has_method("use"):
+		target = target.get_parent()
+	return target if target.has_method("use") else null
 
 
 ## Rotates the view: x turns the body, y tilts the head.

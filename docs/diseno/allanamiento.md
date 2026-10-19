@@ -79,6 +79,8 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
 | Tirar lo que se tiene agarrado | clic derecho |
 | Acercar o alejar lo agarrado | rueda del mouse |
 | Usar, abrir o levantar a un compañero | E |
+| Soltar el ariete | G |
+| Ver la planilla de objetivos | Q |
 | Elegir herramienta | 1 a 4 |
 | Linterna | F |
 | Hablar (por cercanía) | mantener V |
@@ -89,6 +91,7 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
 
 - Hablar es con pulsar para hablar (mantener V) y se escucha por cercanía (decisión 9). Habrá una opción de voz siempre abierta.
 - Todas las teclas se pueden cambiar en Opciones.
+- Abajo de la mira aparece la tecla de lo que se puede hacer: lo que se tiene en la mano o lo que se está mirando (pedido de Cristian en la prueba del 19/10).
 
 ## Red
 - Host con autoridad: simula la física de los objetos, el abuelo, el patrullero, la plata y la evidencia. El chofer manda sus teclas y el host mueve el auto. Cada jugador mueve su propio cuerpo para que no haya demora al caminar (decisión 50).
