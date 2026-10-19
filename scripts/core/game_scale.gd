@@ -5,9 +5,9 @@ extends RefCounted
 ## Don't change them without a decision from Cristian. 1 unit = 1 meter.
 
 # Cop body
-const COP_HEIGHT := 1.8
-const COP_RADIUS := 0.35
-const EYE_HEIGHT := 1.65
+const COP_HEIGHT := 1.55
+const COP_RADIUS := 0.5
+const EYE_HEIGHT := 1.35
 const CROUCH_HEIGHT := 1.1
 
 # Movement (m/s)

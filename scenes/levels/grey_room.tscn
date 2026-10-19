@@ -58,20 +58,20 @@ albedo_color = Color(0.42, 0.74, 0.7, 1)
 roughness = 0.9
 
 [sub_resource type="BoxShape3D" id="S9"]
-size = Vector3(0.2, 2.7, 9.55)
+size = Vector3(0.2, 2.7, 9.4)
 
 [sub_resource type="BoxMesh" id="M9"]
-size = Vector3(0.2, 2.7, 9.55)
+size = Vector3(0.2, 2.7, 9.4)
 
 [sub_resource type="StandardMaterial3D" id="C9"]
 albedo_color = Color(0.95, 0.72, 0.42, 1)
 roughness = 0.9
 
 [sub_resource type="BoxShape3D" id="S12"]
-size = Vector3(0.2, 2.7, 9.55)
+size = Vector3(0.2, 2.7, 9.4)
 
 [sub_resource type="BoxMesh" id="M12"]
-size = Vector3(0.2, 2.7, 9.55)
+size = Vector3(0.2, 2.7, 9.4)
 
 [sub_resource type="StandardMaterial3D" id="C12"]
 albedo_color = Color(0.95, 0.72, 0.42, 1)
@@ -172,7 +172,7 @@ mesh = SubResource("M6")
 surface_material_override/0 = SubResource("C6")
 
 [node name="WallWestA" type="StaticBody3D" parent="Geometry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1.35, -5.225)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1.35, -5.3)
 
 [node name="Shape" type="CollisionShape3D" parent="Geometry/WallWestA"]
 shape = SubResource("S9")
@@ -182,7 +182,7 @@ mesh = SubResource("M9")
 surface_material_override/0 = SubResource("C9")
 
 [node name="WallWestB" type="StaticBody3D" parent="Geometry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1.35, 5.225)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1.35, 5.3)
 
 [node name="Shape" type="CollisionShape3D" parent="Geometry/WallWestB"]
 shape = SubResource("S12")

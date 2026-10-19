@@ -7,8 +7,8 @@ Valores base del juego. Todas las constantes de código salen de acá y viven en
 ## Policía
 | Qué | Valor |
 |---|---|
-| Altura | 1,80 m (cápsula de radio 0,35 m) |
-| Altura de los ojos (cámara) | 1,65 m |
+| Altura | 1,55 m, cuerpo pera de 1 m de ancho (cápsula de radio 0,5 m) |
+| Altura de los ojos (cámara) | 1,35 m |
 | Caminar | 4,0 m/s |
 | Correr (Shift) | 6,5 m/s, con 6 s de aguante y recuperación en 4 s. Si se agota, no se vuelve a correr hasta recuperar la mitad **(propuesta)** |
 | Agachado (Ctrl) | 2,0 m/s, altura de 1,1 m |
@@ -34,7 +34,10 @@ Valores base del juego. Todas las constantes de código salen de acá y viven en
 ## Edificios
 | Qué | Valor |
 |---|---|
-| Puerta | 0,9 × 2,1 m |
-| Pasillo | 1,2 m de ancho como mínimo (entran dos policías cargando algo) |
+| Puerta | 1,2 × 2,1 m |
+| Pasillo | 1,2 m de ancho como mínimo |
 | Altura de un piso | 2,7 m |
 | Escalera | 0,18 m por escalón, 1,0 m de ancho |
+
+## Cambios
+- 19/10: el policía pasó de 1,80 × 0,7 m a 1,55 × 1 m (ojos a 1,35 m) y las puertas de 0,9 a 1,2 m, para que el cuerpo pera (decisión 72) coincida con lo que choca. Lo eligió Cristian (decisión 73).
