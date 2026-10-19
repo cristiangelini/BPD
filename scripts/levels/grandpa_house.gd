@@ -104,6 +104,23 @@ const EVIDENCE := [
 const CARD_SCENE := preload("res://scenes/props/bingo_card.tscn")
 const CARDS := 5
 
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Surfaces where the grandpa's notes can lie (one note per place at most).
+const NOTE_PLACES := [
+	Vector3(-9.0, 0.81, -1.0), Vector3(11.5, 0.92, -1.5), Vector3(11.4, 0.92, -9.4), Vector3(-7.0, 3.52, 0.0),
+	Vector3(7.3, 3.5, 0.3), Vector3(-8.0, 3.32, 7.2), Vector3(7.0, 3.32, 6.6), Vector3(-2.3, 0.42, -9.5),
+	Vector3(-2.3, 3.12, -9.5), Vector3(0.0, 0.01, -8.5), Vector3(-5.0, 0.01, 5.0), Vector3(10.5, 3.31, -5.0),
+]
+## Mud footprints start at the back of the hall; cookie crumbs start at the kitchen counter.
+const FOOTPRINTS_FROM := Vector3(0.0, 0.0, -9.3)
+const CRUMBS_FROM := Vector3(6.4, 0.0, -2.0)
+const FOOTPRINT_STEP := 0.6
+const CRUMB_STEP := 0.35
+## A cop this close to a trail has seen it (propuesta).
+const SEE_TRAIL := 2.5
+const MUD := Color(0.36, 0.24, 0.14)
+const CRUMB := Color(0.86, 0.66, 0.36)
+
 ## 0 draws a new seed. Online, the host will send it to everyone.
 @export var case_seed := 0
 
@@ -133,6 +150,12 @@ var _drawer_ornaments := 0
 var dressers: Array[Dresser] = []
 ## The bingo cards, one in each of CARDS drawers drawn from the seed.
 var cards: Array[Evidence] = []
+var clue_plan := {}
+var notes: Array[ClueNote] = []
+## Clues the cops found, as checklist lines (already translated).
+var clues_found: Array[String] = []
+## Trail marks (footprints, crumbs) and the checklist line each trail gives when a cop sees it.
+var trails := {}
 @onready var _built: Node3D = $Built
 @onready var grandpa: Grandpa = $Grandpa
 @onready var car: PatrolCar = $PatrolCar
@@ -165,6 +188,8 @@ func _ready() -> void:
 		ornament.broken.connect(_on_ornament_broken)
 		$Ornaments.add_child(ornament)
 	ornaments_total = $Ornaments.get_child_count() + _drawer_ornaments
+	_place_notes()
+	_place_trails()
 	(evidence[0] as Evidence).broken.connect(_fail.bind("CASE_FAILED_BROKEN"))
 	car.evidence_delivered.connect(_on_evidence_delivered)
 	car.evidence_delivered.connect(_check_solved.unbind(1))
@@ -184,6 +209,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if not main_found and main_evidence().is_held():
 		main_found = true
+	for line: String in trails:
+		if not clues_found.has(line) and _a_cop_sees(trails[line]):
+			clues_found.append(line)
 	_refresh_left -= delta
 	if checklist.is_open() and _refresh_left <= 0.0:
 		_refresh_left = CHECKLIST_REFRESH
@@ -205,10 +233,89 @@ func objective_facts() -> Dictionary:
 		"safe_delivered": car.is_delivered(evidence[2] as Evidence),
 		"cards_delivered": cards.filter(func(c: Evidence) -> bool: return car.is_delivered(c)).size(),
 		"cards_total": cards.size(),
+		"clues": clues_found,
 		"broken": broken_ornaments,
 		"fines": fines,
 		"complaint": grandpa.complaint,
 	}
+
+
+func _place_notes() -> void:
+	clue_plan = CluePlan.draw(case_seed, NOTE_PLACES.size())
+	for entry: Dictionary in clue_plan.notes:
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = CluePlan.note_text(entry.item, SPOTS[evidence_spots[entry.item]].id, entry.precise)
+		note.position = NOTE_PLACES[entry.place] + Vector3.UP * 0.01
+		note.rotation.y = entry.place * 0.7
+		note.read.connect(_on_clue)
+		$Evidence.add_child(note)
+		notes.append(note)
+
+
+func _on_clue(text: String) -> void:
+	if not clues_found.has(text):
+		clues_found.append(text)
+
+
+## Mud footprints and cookie crumbs follow the navigation path to their item; the map is ready a few frames after baking.
+func _place_trails() -> void:
+	var map := get_world_3d().navigation_map
+	for i in 30:
+		await get_tree().physics_frame
+		if NavigationServer3D.map_get_path(map, FOOTPRINTS_FROM, CRUMBS_FROM, true).size() > 1:
+			break
+	var mud: int = clue_plan.footprints
+	var crumbs: int = clue_plan.crumbs
+	trails[tr("CLUE_FOOTPRINTS")] = _trail(map, FOOTPRINTS_FROM, evidence[mud].global_position, FOOTPRINT_STEP, true)
+	trails[tr("CLUE_CRUMBS")] = _trail(map, CRUMBS_FROM, evidence[crumbs].global_position, CRUMB_STEP, false)
+
+
+## Marks every `step` meters along the path; footprints alternate left and right and point along the way.
+func _trail(map: RID, from: Vector3, to: Vector3, step: float, feet: bool) -> Array[Node3D]:
+	var path := NavigationServer3D.map_get_path(map, from, to, true)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed
+	var marks: Array[Node3D] = []
+	var left := 0.0
+	for i in range(1, path.size()):
+		var a := path[i - 1]
+		var b := path[i]
+		var length := a.distance_to(b)
+		var dir := (b - a) / maxf(length, 0.001)
+		var side := dir.cross(Vector3.UP).normalized()
+		while left <= length:
+			var at := a + dir * left
+			var mark := MeshInstance3D.new()
+			var box := BoxMesh.new()
+			box.size = Vector3(0.11, 0.004, 0.26) if feet else Vector3(0.04, 0.01, 0.04)
+			mark.mesh = box
+			mark.material_override = _material(MUD if feet else CRUMB)
+			var jitter := Vector3(rng.randf_range(-0.1, 0.1), 0, rng.randf_range(-0.1, 0.1))
+			mark.position = at + (side * (0.12 if marks.size() % 2 == 0 else -0.12) if feet else jitter) + Vector3.UP * 0.012
+			$Evidence.add_child(mark)
+			if feet:
+				mark.look_at(mark.global_position + Vector3(dir.x, 0, dir.z), Vector3.UP)
+			marks.append(mark)
+			left += step
+		left -= length
+	return marks
+
+
+func _a_cop_sees(marks: Array) -> bool:
+	for cop in get_tree().get_nodes_in_group("cops"):
+		for mark: Node3D in marks:
+			if (cop as Cop).global_position.distance_to(mark.global_position) < SEE_TRAIL:
+				return true
+	return false
+
+
+func _material(color: Color) -> StandardMaterial3D:
+	if not _materials.has(color):
+		var material := StandardMaterial3D.new()
+		material.albedo_color = color
+		material.roughness = 0.9
+		_materials[color] = material
+	return _materials[color]
 
 
 ## Dressers whose drawers hold folded clothes and, sometimes, an ornament (contents come from the case seed).
@@ -514,13 +621,8 @@ func _mesh_box(center: Vector3, size: Vector3, color: Color) -> void:
 
 
 func _mesh(mesh: Mesh, at: Vector3, color: Color) -> void:
-	if not _materials.has(color):
-		var material := StandardMaterial3D.new()
-		material.albedo_color = color
-		material.roughness = 0.9
-		_materials[color] = material
 	var instance := MeshInstance3D.new()
 	instance.mesh = mesh
-	instance.material_override = _materials[color]
+	instance.material_override = _material(color)
 	instance.position = at
 	_built.add_child(instance)

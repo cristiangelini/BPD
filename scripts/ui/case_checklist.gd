@@ -8,6 +8,7 @@ const DONE := Color(0.45, 1, 0.5)
 const TODO := Color(1, 1, 1)
 const NEXT := Color(1, 0.82, 0.3)
 const STATUS := Color(1, 0.6, 0.5)
+const CLUE := Color(0.6, 0.85, 1)
 
 var _panel: PanelContainer
 var _rows: VBoxContainer
@@ -77,7 +78,7 @@ func show_rows(list: Array[Dictionary]) -> void:
 		var mark := "" if row.status else ("[x] " if row.done else "[ ] ")
 		label.text = mark + tr(row.text)
 		label.add_theme_color_override("font_color",
-			STATUS if row.status else DONE if row.done else NEXT if i == next else TODO)
+			CLUE if row.get("clue", false) else STATUS if row.status else DONE if row.done else NEXT if i == next else TODO)
 		_rows.add_child(label)
 
 
