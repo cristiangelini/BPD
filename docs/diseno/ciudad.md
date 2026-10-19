@@ -8,7 +8,7 @@ Pedido de Cristian (19/10): "que todos los casos pasen en casas diferentes y con
 - Los lugares que no son del caso de hoy están cerrados, con la persiana baja o la puerta trabada. Se ven desde la calle pero no se entra. Así la ciudad no pesa y se puede ir sumando un lugar por vez.
 
 ## El plano
-Se arma de a poco (Cristian, 19/10): primero unas cuadras con lo que ya tenemos y después se van sumando la comisaría por dentro, la cárcel, el caso del político y lo que venga. Se empieza con 4 × 3 manzanas de 60 m, con calles de 12 m (dos carriles y veredas), unos 300 × 230 m. Cada lugar nuevo que no entra suma una fila de manzanas al sur, sin mover lo que ya está. De punta a punta se maneja en unos 20 s a 60 km/h.
+Se arma de a poco (Cristian, 19/10): primero unas cuadras con lo que ya tenemos y después se van sumando la comisaría por dentro, la cárcel, el caso del político y lo que venga. El mapa es el triple de grande que el primer borrador (Cristian, 19/10): 7 × 5 manzanas de 60 m, con calles de 12 m (dos carriles y veredas), unos 520 × 370 m. Los lugares de hoy están en el medio y alrededor hay casas, edificios y galpones de relleno, que se van cambiando por los lugares nuevos. De punta a punta se maneja en unos 30 s a 60 km/h.
 
 | Barrio | Dónde | Lugares |
 |---|---|---|
@@ -16,7 +16,7 @@ Se arma de a poco (Cristian, 19/10): primero unas cuadras con lo que ya tenemos 
 | **Barrio de casas** | al oeste | la casa del abuelo, el edificio de departamentos y casas vecinas para los allanamientos que vengan |
 | **Calle comercial** | al norte | la panadería, la peluquería de mascotas, la ferretería y el gimnasio |
 | **Zona industrial** | al este | la fábrica de muñecos y el laboratorio de pasteles |
-| **Lo que falta** | filas nuevas al sur | los lugares de los otros casos: la cárcel, el político, el banco, el club de golf... |
+| **Lo que falta** | en los terrenos de relleno de alrededor | los lugares de los otros casos: la cárcel, el político, el banco, el club de golf... |
 
 - **La comisaría** está en el centro, con el estacionamiento del patrullero adelante. Hasta que tenga interior, es un frente con la puerta y el comisario parado afuera.
 - **Calles:** todas de doble mano, con esquinas en cruz, semáforos de adorno y autos estacionados. Al principio no hay tráfico; los autos que andan solos vienen con la persecución (caso 2).
@@ -32,7 +32,7 @@ Se arma de a poco (Cristian, 19/10): primero unas cuadras con lo que ya tenemos 
 1. Aparecen en la comisaría. El comisario da el caso y el lugar se marca en el mapa.
 2. Suben al patrullero y uno maneja hasta el lugar. Pueden ir a pie si quieren.
 3. Hacen el caso. El patrullero queda en la calle, frente al lugar.
-4. Vuelven a la comisaría con la evidencia en el baúl y ahí termina el turno. Hoy el turno termina cuando suben todos al patrullero; con la ciudad, termina al estacionar en la comisaría.
+4. Vuelven a la comisaría con la evidencia en el baúl y ahí termina el turno (Cristian, 19/10). Hoy el turno termina cuando suben todos al patrullero; con la ciudad, termina al estacionar en la comisaría.
 
 Hasta que estén los pasos 2 y 3, la ciudad se abre desde el menú con "Ciudad (prueba)".
 
@@ -44,4 +44,4 @@ Hasta que estén los pasos 2 y 3, la ciudad se abre desde el menú con "Ciudad (
 5. Después, un lugar por vez.
 
 ## Preguntas para Cristian
-1. ¿El turno termina al volver a la comisaría, o alcanza con subir todos al patrullero como hoy?
+- Qué se ve al entrar a cada lugar: lo indica Cristian más adelante.

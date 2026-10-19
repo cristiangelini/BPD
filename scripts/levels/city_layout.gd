@@ -7,8 +7,9 @@ extends RefCounted
 ## The city grows a little at a time (Cristian, 19/10): new places (the jail, the politician's case...) add rows
 ## to the south, so ROWS goes up and nothing already placed moves.
 
-const COLUMNS := 4
-const ROWS := 3
+## Three times the first 4 x 3 blocks (Cristian, 19/10); the first blocks sit in the middle, one block in.
+const COLUMNS := 7
+const ROWS := 5
 const BLOCK := 60.0
 const STREET := 12.0
 const PITCH := BLOCK + STREET
@@ -19,21 +20,21 @@ const SIDEWALK := 3.0
 ## Each place: its block, the side its front faces (n, s, e, w), how far along that side its middle sits,
 ## its size (width along the street, height, depth), color and sign. Interiors come one per PR.
 const PLACES := [
-	{"id": "station", "block": Vector2i(1, 1), "side": "s", "along": 0.0, "size": Vector3(30, 9, 18), "color": Color(0.3, 0.45, 0.8), "sign": "PLACE_STATION"},
-	{"id": "hotel", "block": Vector2i(1, 2), "side": "n", "along": 0.0, "size": Vector3(26, 18, 18), "color": Color(0.85, 0.5, 0.45), "sign": "PLACE_HOTEL"},
-	{"id": "insurance", "block": Vector2i(2, 2), "side": "n", "along": 0.0, "size": Vector3(22, 12, 16), "color": Color(0.6, 0.65, 0.7), "sign": "PLACE_INSURANCE"},
-	{"id": "grandpa", "block": Vector2i(0, 1), "side": "e", "along": 0.0, "size": Vector3(24, 7, 20), "color": Color(1.0, 0.84, 0.55), "sign": "PLACE_GRANDPA"},
-	{"id": "apartments", "block": Vector2i(0, 2), "side": "e", "along": 0.0, "size": Vector3(22, 15, 16), "color": Color(0.75, 0.6, 0.85), "sign": "PLACE_APARTMENTS"},
-	{"id": "bakery", "block": Vector2i(1, 0), "side": "s", "along": -12.0, "size": Vector3(16, 7, 14), "color": Color(0.95, 0.75, 0.4), "sign": "PLACE_BAKERY"},
-	{"id": "pet_salon", "block": Vector2i(1, 0), "side": "s", "along": 12.0, "size": Vector3(16, 6, 14), "color": Color(0.55, 0.85, 0.8), "sign": "PLACE_PET_SALON"},
-	{"id": "hardware", "block": Vector2i(2, 0), "side": "s", "along": -12.0, "size": Vector3(16, 7, 14), "color": Color(0.9, 0.45, 0.3), "sign": "PLACE_HARDWARE"},
-	{"id": "gym", "block": Vector2i(2, 0), "side": "s", "along": 12.0, "size": Vector3(18, 8, 16), "color": Color(0.4, 0.75, 0.4), "sign": "PLACE_GYM"},
-	{"id": "doll_factory", "block": Vector2i(3, 1), "side": "w", "along": 0.0, "size": Vector3(28, 10, 26), "color": Color(0.95, 0.6, 0.75), "sign": "PLACE_DOLL_FACTORY"},
-	{"id": "cake_lab", "block": Vector2i(3, 2), "side": "w", "along": 0.0, "size": Vector3(24, 8, 22), "color": Color(0.95, 0.95, 0.85), "sign": "PLACE_CAKE_LAB"},
+	{"id": "station", "block": Vector2i(2, 2), "side": "s", "along": 0.0, "size": Vector3(30, 9, 18), "color": Color(0.3, 0.45, 0.8), "sign": "PLACE_STATION"},
+	{"id": "hotel", "block": Vector2i(2, 3), "side": "n", "along": 0.0, "size": Vector3(26, 18, 18), "color": Color(0.85, 0.5, 0.45), "sign": "PLACE_HOTEL"},
+	{"id": "insurance", "block": Vector2i(3, 3), "side": "n", "along": 0.0, "size": Vector3(22, 12, 16), "color": Color(0.6, 0.65, 0.7), "sign": "PLACE_INSURANCE"},
+	{"id": "grandpa", "block": Vector2i(1, 2), "side": "e", "along": 0.0, "size": Vector3(24, 7, 20), "color": Color(1.0, 0.84, 0.55), "sign": "PLACE_GRANDPA"},
+	{"id": "apartments", "block": Vector2i(1, 3), "side": "e", "along": 0.0, "size": Vector3(22, 15, 16), "color": Color(0.75, 0.6, 0.85), "sign": "PLACE_APARTMENTS"},
+	{"id": "bakery", "block": Vector2i(2, 1), "side": "s", "along": -12.0, "size": Vector3(16, 7, 14), "color": Color(0.95, 0.75, 0.4), "sign": "PLACE_BAKERY"},
+	{"id": "pet_salon", "block": Vector2i(2, 1), "side": "s", "along": 12.0, "size": Vector3(16, 6, 14), "color": Color(0.55, 0.85, 0.8), "sign": "PLACE_PET_SALON"},
+	{"id": "hardware", "block": Vector2i(3, 1), "side": "s", "along": -12.0, "size": Vector3(16, 7, 14), "color": Color(0.9, 0.45, 0.3), "sign": "PLACE_HARDWARE"},
+	{"id": "gym", "block": Vector2i(3, 1), "side": "s", "along": 12.0, "size": Vector3(18, 8, 16), "color": Color(0.4, 0.75, 0.4), "sign": "PLACE_GYM"},
+	{"id": "doll_factory", "block": Vector2i(4, 2), "side": "w", "along": 0.0, "size": Vector3(28, 10, 26), "color": Color(0.95, 0.6, 0.75), "sign": "PLACE_DOLL_FACTORY"},
+	{"id": "cake_lab", "block": Vector2i(4, 3), "side": "w", "along": 0.0, "size": Vector3(24, 8, 22), "color": Color(0.95, 0.95, 0.85), "sign": "PLACE_CAKE_LAB"},
 ]
 
 ## The plaza fills its block.
-const PLAZA := Vector2i(2, 1)
+const PLAZA := Vector2i(3, 2)
 ## Shops are places whose front gets a shutter and an awning.
 const SHOPS: Array[String] = ["bakery", "pet_salon", "hardware", "gym"]
 
@@ -48,8 +49,10 @@ const FILLER_COLORS: Array[Color] = [
 ]
 
 ## Street names: rows of the grid run west to east (between block rows), columns north to south.
-const STREETS_EW: Array[String] = ["STREET_CLOCK", "STREET_LINDEN"]
-const STREETS_NS: Array[String] = ["STREET_TEAPOT", "STREET_CENTRAL", "STREET_BUTTON"]
+const STREETS_EW: Array[String] = ["STREET_KITE", "STREET_CLOCK", "STREET_LINDEN", "STREET_PUDDLE"]
+const STREETS_NS: Array[String] = [
+	"STREET_SOCK", "STREET_TEAPOT", "STREET_CENTRAL", "STREET_BUTTON", "STREET_SPOON", "STREET_WHISTLE",
+]
 
 
 ## Center of a block on the ground.
@@ -93,9 +96,9 @@ static func footprint(block: Vector2i, side: String, along: float, size: Vector3
 
 
 static func barrio_kind(block: Vector2i) -> String:
-	if block.x == 0:
+	if block.x <= 1:
 		return "house"
-	if block.x == COLUMNS - 1:
+	if block.x >= 4:
 		return "warehouse"
 	return "building"
 
