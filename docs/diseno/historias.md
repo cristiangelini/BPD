@@ -1,6 +1,6 @@
 # BPD · Historias de los allanamientos (19/10)
 
-Pedido de Cristian (19/10): "más allanamientos" y que "existan diferentes historias para resolver con las pruebas". Cristian aprobó la idea de lugar + historia, que los policías adivinen la historia y los 10 lugares (decisiones 79 y 80). Las historias de cada lugar, los pesos, los valores y las reglas para marcar la sospecha siguen siendo **(propuesta)**. Sigue las decisiones 19 (10 variantes por tipo de caso, al azar) y 75 (cada caso tiene una historia bizarra con el porqué de cada cosa).
+Pedido de Cristian (19/10): "más allanamientos" y que "existan diferentes historias para resolver con las pruebas". Cristian aprobó la idea de lugar + historia, que los policías adivinen la historia y los 10 lugares (decisiones 79 a 81). Las historias de los otros lugares, los pesos, los valores y las reglas para marcar la sospecha siguen siendo **(propuesta)**. Sigue las decisiones 19 (10 variantes por tipo de caso, al azar) y 75 (cada caso tiene una historia bizarra con el porqué de cada cosa).
 
 ## La idea: lugar + historia
 Un allanamiento se arma con dos piezas que salen al azar con la semilla de la partida:
@@ -64,12 +64,12 @@ Los pesos y valores son **(propuesta)** y siguen la escala del bingo: la princip
 3. **Carreras de tortugas**, la primera historia nueva (tiene la pista y la evidencia más distintas).
 4. **Sospechas en la planilla** y marcar la sospecha.
 5. **La figurita del museo**, las **dentaduras**, la **radio pirata** y el **club de lucha**, un PR cada una.
-6. Recién después, el segundo lugar (pregunta 4).
+6. Recién después, el segundo lugar (pregunta 1).
 
 ## Preguntas para Cristian
-1. De las 5 historias nuevas de la casa del abuelo, ¿cuáles van? Tachá con ✗ las que no te gusten y sumá las tuyas.
-2. Después de 2 o 3 historias en la casa del abuelo, ¿con qué lugar seguimos? Propongo la **panadería**: es chica, es un comercio y tiene a la panadera atendiendo, que es distinta del abuelo.
+1. Después de 2 o 3 historias en la casa del abuelo, ¿con qué lugar seguimos? Propongo la **panadería**: es chica, es un comercio y tiene a la panadera atendiendo, que es distinta del abuelo.
 
 ## Respuestas de Cristian (19/10)
 1. Los policías adivinan la historia con las pistas (denuncia anónima y 3 sospechas), no la cuenta el comisario.
 2. Los 10 lugares van todos.
+3. Las 5 historias nuevas de la casa del abuelo van todas.
