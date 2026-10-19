@@ -288,7 +288,10 @@ func _wall(axis: String, fixed: float, from: float, to: float, level: int, doors
 	var y0 := level * GameScale.FLOOR_HEIGHT
 	var height := GameScale.FLOOR_HEIGHT - SLAB
 	var start := from
-	for d: float in doors:
+	# Doors must go in order along the wall, or a later piece covers an earlier door.
+	var sorted_doors := doors.duplicate()
+	sorted_doors.sort()
+	for d: float in sorted_doors:
 		var a := d - GameScale.DOOR_WIDTH / 2
 		var b := d + GameScale.DOOR_WIDTH / 2
 		_wall_piece(axis, fixed, start, a, y0, height, color)
