@@ -1,6 +1,8 @@
-[gd_scene load_steps=33 format=3]
+[gd_scene load_steps=35 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/cop.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/props/crate.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/props/heavy_safe.tscn" id="3"]
 
 [sub_resource type="Environment" id="Env"]
 background_mode = 1
@@ -212,3 +214,17 @@ surface_material_override/0 = SubResource("C27")
 
 [node name="Cop" parent="." instance=ExtResource("1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+
+[node name="Props" type="Node3D" parent="."]
+
+[node name="Crate1" parent="Props" instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 3)
+
+[node name="Crate2" parent="Props" instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0.25, 3)
+
+[node name="Crate3" parent="Props" instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.75, 3)
+
+[node name="HeavySafe" parent="Props" instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.3, 1)
