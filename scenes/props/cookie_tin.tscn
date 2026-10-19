@@ -9,7 +9,7 @@ radius = 0.18
 
 [node name="CookieTin" type="RigidBody3D"]
 collision_layer = 4
-collision_mask = 7
+collision_mask = 15
 mass = 3.0
 script = ExtResource("1")
 full_value = 1000.0

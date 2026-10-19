@@ -8,3 +8,13 @@ HINT_KEY_FOUND,¡Encontraste la llave!,You found the key!,Você encontrou a chav
 HINT_POT_EMPTY,Solo hay tierra.,Just dirt.,Só tem terra.
 HINT_DOOR_LOCKED,Está cerrada. Busca la llave o usa el ariete.,It's locked. Find the key or use the battering ram.,Está trancada. Procure a chave ou use o aríete.
 HINT_DOOR_UNLOCKED,Abriste la puerta con la llave.,You unlocked the door.,Você destrancou a porta.
+GRANDPA_LINE_1,¡Cuidado con eso!,Careful with that!,Cuidado com isso!
+GRANDPA_LINE_2,¡Eso era de mi señora!,That was my wife's!,Isso era da minha esposa!
+GRANDPA_LINE_3,¿Tienen una orden?,Do you have a warrant?,Vocês têm um mandado?
+GRANDPA_LINE_4,¡Mis rodillas no están para esto!,My knees can't take this!,Meus joelhos não aguentam isso!
+GRANDPA_LINE_5,En mis tiempos se tocaba el timbre.,In my day people rang the bell.,No meu tempo a gente tocava a campainha.
+GRANDPA_LINE_6,¡Limpien los pies!,Wipe your feet!,Limpem os pés!
+GRANDPA_HURT,¡Ay! ¡Más respeto!,Ouch! Show some respect!,Ai! Mais respeito!
+GRANDPA_LAWYER,¡Ya está! ¡Llamo a mi abogado!,That's it! I'm calling my lawyer!,Chega! Vou ligar para o meu advogado!
+HUD_COMPLAINT,Denuncia,Complaint,Denúncia
+CASE_FAILED_LAWYER,El abuelo llamó a su abogado. Caso perdido.,The grandpa called his lawyer. Case lost.,O vovô ligou para o advogado. Caso perdido.

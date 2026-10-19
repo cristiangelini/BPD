@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/levels/grandpa_house.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/player/cop.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/props/front_door.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/tools/ram_pickup.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/npc/grandpa.tscn" id="5"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
 sky_top_color = Color(0.32, 0.56, 0.9, 1)
@@ -27,6 +28,16 @@ ssao_radius = 1.2
 ssao_intensity = 1.6
 adjustments_enabled = true
 adjustments_saturation = 1.2
+
+[sub_resource type="NavigationMesh" id="NavMesh"]
+geometry_parsed_geometry_type = 1
+geometry_source_geometry_mode = 1
+geometry_source_group_name = &"navigation_source"
+cell_size = 0.1
+cell_height = 0.05
+agent_height = 1.3
+agent_radius = 0.4
+agent_max_climb = 0.2
 
 [node name="GrandpaHouse" type="Node3D"]
 script = ExtResource("1")
@@ -55,3 +66,57 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 9)
 
 [node name="RamPickup" parent="." instance=ExtResource("4")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.8, 0, 8.5)
+
+[node name="Navigation" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavMesh")
+
+[node name="Grandpa" parent="." instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7, 0.05, 2.5)
+
+[node name="CaseHud" type="CanvasLayer" parent="."]
+
+[node name="Complaint" type="VBoxContainer" parent="CaseHud"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -160.0
+offset_top = 16.0
+offset_right = 160.0
+offset_bottom = 70.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="CaseHud/Complaint"]
+layout_mode = 2
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 22
+text = "HUD_COMPLAINT"
+horizontal_alignment = 1
+
+[node name="ComplaintBar" type="ProgressBar" parent="CaseHud/Complaint"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 18)
+layout_mode = 2
+mouse_filter = 2
+modulate = Color(1, 0.45, 0.35, 1)
+show_percentage = false
+
+[node name="CaseFailed" type="Label" parent="CaseHud"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -500.0
+offset_top = -60.0
+offset_right = 500.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.35, 0.3, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 40
+text = "CASE_FAILED_LAWYER"
+horizontal_alignment = 1
