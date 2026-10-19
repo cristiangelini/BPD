@@ -145,6 +145,8 @@ func _physics_process(delta: float) -> void:
 	elif not cop:
 		drive(0.0, 0.0, true)
 	_apply_controls(delta)
+	if cop:
+		cop.stats["meters_driven"] += absf(forward_speed()) * delta
 	# Evidence that breaks in the trunk (the car flipped) no longer counts.
 	for item in delivered.duplicate():
 		if item.is_broken:

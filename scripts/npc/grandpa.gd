@@ -119,6 +119,7 @@ func _physics_process(delta: float) -> void:
 	_story_wait = maxf(_story_wait - delta, 0.0)
 	_ask_wait = maxf(_ask_wait - delta, 0.0)
 	if listener:
+		listener.stats["story_seconds"] += delta
 		_story_left -= delta
 		if _story_left <= 0.0:
 			end_story()

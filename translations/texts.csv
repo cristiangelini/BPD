@@ -118,3 +118,20 @@ NEIGHBOR_WAITING,"«¿Y mi táper? Seguro lo tiene en algún cajón, ese ladrón
 NEIGHBOR_CLUE,"«¡Mi táper! Bueno, te cuento: anoche lo vi meter algo %s. Y los jueves vienen veinte viejitas a gritar ¡BINGO! a las tres de la mañana.»","“My tupperware! All right, here goes: last night I saw him put something %s. And on Thursdays twenty old ladies come over and shout BINGO! at three in the morning.”","“Meu pote! Bom, vou contar: ontem à noite eu vi ele colocar algo %s. E às quintas vêm vinte velhinhas gritar BINGO! às três da manhã.”"
 CLUE_NEIGHBOR,La vecina vio al abuelo esconder algo %s,The neighbor saw the grandpa hide something %s,A vizinha viu o avô esconder algo %s
 OBJ_EXTRA_TUPPER,"Extra: devolverle el táper a la vecina (está en un cajón; llévalo a su ventana)","Extra: return the neighbor's tupperware (it's in a drawer; take it to her window)","Extra: devolver o pote da vizinha (está numa gaveta; leve até a janela dela)"
+SHIFT_TITLE,Fin del turno,End of shift,Fim do turno
+SHIFT_CASE_SOLVED,Caso resuelto,Case solved,Caso resolvido
+SHIFT_CASE_FAILED,Caso fallado,Case failed,Caso fracassado
+SHIFT_SALARY,Sueldo del caso,Case salary,Salário do caso
+SHIFT_EVIDENCE,Evidencia entregada,Evidence delivered,Evidência entregue
+SHIFT_FINES,Multas (%d adornos rotos),Fines (%d ornaments broken),Multas (%d enfeites quebrados)
+SHIFT_TOTAL,Total,Total,Total
+SHIFT_QUOTA,Cuota del turno,Shift quota,Cota do turno
+SHIFT_APPROVED,¡Turno aprobado!,Shift approved!,Turno aprovado!
+SHIFT_SUSPENDED,Suspendidos,Suspended,Suspensos
+SHIFT_AWARDS,Premios del turno,Shift awards,Prêmios do turno
+SHIFT_AGAIN,Otro turno,Another shift,Outro turno
+SHIFT_MENU,Volver al menú,Back to menu,Voltar ao menu
+AWARD_RAM_MISSES,Más golpes al aire con el ariete: %s (%d),Most battering ram swings at thin air: %s (%d),Mais golpes no ar com o aríete: %s (%d)
+AWARD_STORY_SECONDS,Mejor oyente del abuelo: %s (%d s),The grandpa's best listener: %s (%d s),Melhor ouvinte do vovô: %s (%d s)
+AWARD_METERS_DRIVEN,Chofer del año: %s (%d m),Driver of the year: %s (%d m),Motorista do ano: %s (%d m)
+COP_NAME,Policía %d,Officer %d,Policial %d

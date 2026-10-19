@@ -17,6 +17,7 @@
 - Fix: walls with two doors no longer cover the first one; the living room, the bathroom and the upstairs west rooms were sealed, so the grandpa was stuck in the living room.
 - Patrol car trunk: evidence dropped in it counts as delivered (taking it out or breaking it undoes that). The tin in the trunk with every cop aboard solves the case; a broken tin fails it.
 - G drops the battering ram (E picks it up again), and the key for what you can do shows under the crosshair.
+- End of shift screen: case result, salary, evidence, fines, total against the 800 quota ("¡Turno aprobado!" or "Suspendidos") and three joke awards; "Otro turno" restarts and "Volver al menú" goes back.
 - Design docs: decisions, case catalog and working rules.
 - The comisario gives case 1.1 (an illegal bingo) before the raid, and Q opens the case checklist; the safe now counts as evidence worth 600.
 - The grandpa's house is twice as big: 24 x 20 m and 14 rooms, 12 hiding spots and about 200 ornaments.

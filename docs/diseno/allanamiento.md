@@ -85,6 +85,8 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
   - Pago = 500 de sueldo + el valor que le quede a cada evidencia entregada − las multas.
 - **Caso fallado:** el medidor de denuncia del abuelo llega a 100, o la evidencia principal se rompe. Si pasa, no cobran sueldo, pero las multas se descuentan igual. También pueden rendirse y volver sin la evidencia principal: cuenta como fallado.
 - **Cuota del turno (semana 1, un solo caso):** 800. Si llegan, aparece "¡Turno aprobado!". Si no, "Suspendidos": la fuga de la comisaría (decisión 17) llega más adelante y por ahora es solo la pantalla.
+- **Pantalla del fin del turno:** 2,5 s después de resolver o fallar el caso aparece la pantalla con el sueldo, la evidencia entregada, las multas, el total, la cuota y si aprobaron. Con el caso fallado, la evidencia entregada tampoco se cobra **(propuesta)**. Tiene "Otro turno" y "Volver al menú".
+- **Premios en chiste (decisión 41, propuesta):** más golpes al aire con el ariete, mejor oyente del abuelo (segundos de historia) y chofer del año (metros manejados). Solo salen si alguien sumó algo.
 
 ## Desmayo
 - Un policía se desmaya si se cae de más de 4 m, si le pega un objeto pesado lanzado (más de 10 kg a más de 5 m/s) o si un compañero le pega con el ariete (fuego amigo, decisión 37).

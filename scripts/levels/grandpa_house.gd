@@ -22,6 +22,9 @@ const STAIR_RUN := 3.75
 const HOLE_WEST := 0.2
 
 const FLOOR_WOOD := Color(0.66, 0.44, 0.28)
+const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
+## Seconds between solving or failing the case and the end of shift screen.
+const SHIFT_DELAY := 2.5
 const GRASS := Color(0.45, 0.72, 0.3)
 const ROAD := Color(0.32, 0.33, 0.36)
 const OUTSIDE := Color(1.0, 0.84, 0.55)
@@ -153,6 +156,9 @@ var briefing: CaseBriefing
 var checklist: CaseChecklist
 var _refresh_left := 0.0
 
+## The end of shift screen is up.
+var shift_over := false
+
 var _materials := {}
 var _drawer_ornaments := 0
 var dressers: Array[Dresser] = []
@@ -224,6 +230,31 @@ func _ready() -> void:
 		if (cop as Cop).input_enabled:
 			briefing.start(BRIEFING)
 			break
+	$ShiftScreen.play_again.connect(func() -> void: get_tree().reload_current_scene())
+	$ShiftScreen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
+
+
+## Shows the end of shift screen with the pay and the awards, and stops everyone's controls.
+func finish_shift() -> void:
+	if shift_over:
+		return
+	shift_over = true
+	var values := car.delivered.map(func(item: Evidence) -> float: return item.value)
+	var stats := []
+	for cop in get_tree().get_nodes_in_group("cops"):
+		stats.append((cop as Cop).stats)
+		cop.input_enabled = false
+		cop.get_node("Grabber").input_enabled = false
+		cop.get_node("Hud").hide()
+	%CaseSolved.hide()
+	%CaseFailed.hide()
+	checklist.set_open(false)
+	$ShiftScreen.show_report(case_solved, ShiftReport.pay(case_solved, values, fines), broken_ornaments,
+		ShiftReport.awards(stats))
+
+
+func _finish_soon() -> void:
+	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
 
 func _process(delta: float) -> void:
@@ -465,6 +496,7 @@ func _check_solved() -> void:
 			return
 	case_solved = true
 	%CaseSolved.show()
+	_finish_soon()
 
 
 func _on_evidence_delivered(item: Evidence) -> void:
@@ -481,6 +513,7 @@ func _fail(reason: String) -> void:
 	case_failed = true
 	%CaseFailed.text = reason
 	%CaseFailed.show()
+	_finish_soon()
 
 
 ## The grandpa walks on a navigation mesh baked from the built house when the scene loads.
