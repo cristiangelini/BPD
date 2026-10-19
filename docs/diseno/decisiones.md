@@ -94,3 +94,10 @@ Fuente de verdad del diseño. Cada decisión lleva un número que no cambia. Si 
 63. El código vive en la PC de Cristian (`D:\Dev\BPD`), con sesiones de Claude Code. (preguntas 2 · 8)
 64. Primera meta (la eligió Claude): un allanamiento jugable de punta a punta con cajas grises (comisaría, patrullero, allanamiento, vuelta y cuota), de 1 a 4 jugadores por Steam con voz. (preguntas 2 · 9)
 65. El repo es privado, `cristiangelini/BPD`. (preguntas 2 · 10)
+
+## Allanamiento de la semana 1 (19/10)
+66. Los casos no tienen tiempo límite. La presión la ponen los NPCs (en el allanamiento, el medidor de denuncia del abuelo). (allanamiento · 1)
+67. El patrullero lo maneja un jugador, también en la semana 1; no hay viajes automáticos. (allanamiento · 2)
+68. La voz es pulsar para hablar, con la opción de dejarla siempre abierta. (allanamiento · 3)
+69. Allanamiento de la semana 1: sueldo de 500, cuota de 800 y multa de 20 por adorno roto. (allanamiento · 4)
+70. El abuelo entra en la semana 1 como NPC de la casa. (allanamiento · 5)

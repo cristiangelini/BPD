@@ -1,13 +1,13 @@
 # BPD · Allanamiento (caso 1.1 "La casa del abuelo")
 
-Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a punta con cajas grises, de 1 a 4 jugadores por Steam con voz. Los valores marcados con **(propuesta)** son míos y se ajustan jugando. Las preguntas abiertas están al final.
+Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a punta con cajas grises, de 1 a 4 jugadores por Steam con voz. Los valores marcados con **(propuesta)** son míos y se ajustan jugando. Las respuestas de Cristian están al final.
 
 ## El turno de la semana 1
 1. **Comisaría:** aparecen los 4 en la comisaría (una sala gris con la armería y el patrullero en la puerta). El comisario (una caja con cartel) da el caso con un texto: "Allanamiento en la casa del abuelo. Traigan la evidencia. Rápido y sin romper nada."
 2. **Armería:** cada policía elige hasta 4 herramientas (decisión 35). En la semana 1 hay 2: **ariete** y **linterna**. Las demás llegan con sus casos.
-3. **Patrullero:** suben los 4 (o los que estén) y el viaje es automático, con un fundido de 3 s **(propuesta)**. Manejar llega con la persecución.
-4. **Allanamiento:** la casa, con la orden judicial y su tiempo límite.
-5. **Vuelta:** suben al patrullero con la evidencia y vuelven a la comisaría.
+3. **Patrullero:** suben los 4 (o los que estén) y uno maneja hasta la casa (ver "Patrullero"). El viaje no es automático.
+4. **Allanamiento:** la casa del abuelo, con el abuelo adentro.
+5. **Vuelta:** suben al patrullero con la evidencia y manejan de vuelta a la comisaría.
 6. **Cuota:** pantalla del turno, con la plata, las multas, los premios en chiste (decisión 41) y si llegaron a la cuota.
 
 ## La casa del abuelo
@@ -22,19 +22,36 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
 - **Fragilidad (como R.E.P.O.):** cada golpe por encima de 3 m/s le saca valor a la evidencia, en proporción a la fuerza del golpe. Si llega a 0, se rompe y no cuenta.
 - **Adornos rotos:** cada uno es una multa de 20 que se descuenta del sueldo del caso.
 
-## Orden judicial y tiempo
-- Tiempo límite: 6 minutos desde que el patrullero llega a la casa **(propuesta)**. Se ve en un reloj en la pantalla.
-- A los 5 minutos suena un aviso por la radio: "¡Les queda un minuto!".
+## Sin tiempo límite
+- El caso no tiene reloj (pedido de Cristian). La presión la pone el abuelo (ver "El abuelo").
+
+## El abuelo
+- Es un NPC (una cápsula gris con sombrero) que vive en la casa. Camina despacio entre los ambientes y sigue al policía que tenga más cerca, quejándose con ruiditos y frases cortas (decisión 45).
+- **Medidor de denuncia (0 a 100)**, visible para todos arriba de la pantalla **(propuesta)**:
+  - +10 por cada adorno que ve romperse (a menos de 8 m y con línea de vista).
+  - +15 si lo empujan, lo tiran o le pega algo.
+  - +5 por cada puerta que tiran abajo con él cerca.
+  - Baja 1 punto cada 5 s mientras no pase nada.
+- Si el medidor llega a 100, llama al abogado: la orden se cancela y el caso se pierde.
+- Se lo puede distraer: si un policía se le para enfrente y mantiene E, el abuelo le cuenta una historia larga y se queda quieto mientras dure (hasta 20 s, con 30 s de espera entre una y otra). El que lo distrae no puede hacer otra cosa.
+- No se desmaya ni se lo puede detener: es inocente (decisión 5). Si se cae, se levanta solo a los 3 s.
+
+## Patrullero
+- Auto de 4 asientos: chofer, acompañante y dos atrás. Se sube y se baja con E al lado de una puerta.
+- **Chofer:** W acelera, S frena y da marcha atrás, A y D doblan, Espacio es el freno de mano y H la sirena. Velocidad máxima de 60 km/h, manejo de juego (arcade), sin daño **(propuesta)**.
+- **Los demás:** miran con el mouse y pueden asomarse por la ventana. El que lleva la radio ve el mapa con la casa marcada.
+- **Ruta:** de la comisaría a la casa del abuelo hay unos 400 m de calles grises con algunas curvas y autos estacionados **(propuesta)**.
+- **Baúl:** el auto tiene un baúl atrás donde se deja la evidencia (ver "Entrega"). Si el auto vuelca, la evidencia que está en el baúl recibe el golpe.
 
 ## Entrega
 - La evidencia se entrega dejándola en el baúl del patrullero y cuenta en el momento (decisión 60).
 - Cuando la evidencia principal está entregada y todos los policías en pie suben al patrullero, el caso termina.
 
 ## Cómo se gana y cómo se pierde
-- **Caso resuelto:** la evidencia principal llega al baúl antes de que se acabe el tiempo.
-  - Pago = 500 de sueldo + el valor que le quede a cada evidencia entregada − las multas **(propuesta)**.
-- **Caso fallado:** se acaba el tiempo sin la evidencia principal en el baúl, o la evidencia principal se rompe. No cobran sueldo, pero las multas se descuentan igual.
-- **Cuota del turno (semana 1, un solo caso):** 800 **(propuesta)**. Si llegan, aparece "¡Turno aprobado!". Si no, "Suspendidos": la fuga de la comisaría (decisión 17) llega más adelante y por ahora es solo la pantalla.
+- **Caso resuelto:** la evidencia principal llega al baúl sin que el medidor de denuncia llegue a 100.
+  - Pago = 500 de sueldo + el valor que le quede a cada evidencia entregada − las multas.
+- **Caso fallado:** el medidor de denuncia del abuelo llega a 100, o la evidencia principal se rompe. Si pasa, no cobran sueldo, pero las multas se descuentan igual. También pueden rendirse y volver sin la evidencia principal: cuenta como fallado.
+- **Cuota del turno (semana 1, un solo caso):** 800. Si llegan, aparece "¡Turno aprobado!". Si no, "Suspendidos": la fuga de la comisaría (decisión 17) llega más adelante y por ahora es solo la pantalla.
 
 ## Desmayo
 - Un policía se desmaya si se cae de más de 4 m, si le pega un objeto pesado lanzado (más de 10 kg a más de 5 m/s) o si un compañero le pega con el ariete (fuego amigo, decisión 37).
@@ -57,20 +74,23 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
 | Usar, abrir o levantar a un compañero | E |
 | Elegir herramienta | 1 a 4 |
 | Linterna | F |
+| Hablar (por cercanía) | mantener V |
 | Hablar por la radio (a todos, con interferencia) | mantener T |
-| Ver plata, tiempo y cuota | Tab |
+| Distraer al abuelo | mantener E frente a él |
+| Manejar el patrullero (chofer) | WASD, Espacio freno de mano, H sirena |
+| Ver plata, denuncia y cuota | Tab |
 
-- La voz es siempre abierta con detección de voz y se escucha por cercanía (decisión 9) **(propuesta)**. Habrá una opción de pulsar para hablar.
+- Hablar es con pulsar para hablar (mantener V) y se escucha por cercanía (decisión 9). Habrá una opción de voz siempre abierta.
 - Todas las teclas se pueden cambiar en Opciones.
 
 ## Red
-- Host con autoridad: simula la física de los objetos, el tiempo, la plata y la evidencia. Cada jugador mueve su propio cuerpo para que no haya demora al caminar (decisión 50).
+- Host con autoridad: simula la física de los objetos, el abuelo, el patrullero, la plata y la evidencia. El chofer manda sus teclas y el host mueve el auto. Cada jugador mueve su propio cuerpo para que no haya demora al caminar (decisión 50).
 - Lo agarrado lo simula el host. El que agarra manda hacia dónde mira y el host mueve el objeto.
 - Se mide en la primera prueba online: si los objetos agarrados se sienten con demora, se prueba darle la autoridad del objeto al que lo agarra.
 
 ## Panel de debug (solo en desarrollo)
 - Saltar a la comisaría, a la casa o a la pantalla de la cuota.
-- Tiempo infinito.
+- Apagar el medidor de denuncia y vaciarlo.
 - Mostrar dónde está la evidencia.
 - Sumar plata.
 
@@ -80,14 +100,16 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
 - El sorteo: la evidencia cae siempre en un escondite válido y la misma semilla da el mismo sorteo en todos los jugadores.
 - Las cargas entre varios: un objeto de 40 kg no se levanta con 1 policía y sí con 2.
 - El desmayo: por caída de más de 4 m, y la ambulancia a los 30 s.
+- El abuelo: cada acción suma lo que dice la tabla, el medidor baja solo y al llegar a 100 se pierde el caso.
+- El patrullero: sube y baja gente, solo el chofer lo maneja y lo que está en el baúl llega a la comisaría.
 - La red: host y cliente conectados sin ventana ven el mismo resultado del caso.
 
 ## Fuera de la semana 1 (van a "Para después")
-- El abuelo como NPC, manejar el patrullero, la prensa, las coimas, más herramientas, las otras 9 variantes de allanamiento y los cosméticos.
+- La prensa, las coimas, más herramientas, las otras 9 variantes de allanamiento y los cosméticos.
 
-## Preguntas abiertas
-1. ¿6 minutos de tiempo límite? (propuesta: sí)
-2. ¿Viaje automático en el patrullero esta semana? (propuesta: sí)
-3. ¿Voz siempre abierta o pulsar para hablar? (propuesta: abierta, con la otra como opción)
-4. ¿Sueldo de 500, cuota de 800 y multa de 20 por adorno? (propuesta: sí)
-5. ¿El abuelo queda para la semana 2? (propuesta: sí)
+## Respuestas de Cristian (19/10)
+1. Sin tiempo límite.
+2. El patrullero se maneja; no hay viaje automático.
+3. Pulsar para hablar.
+4. Sueldo de 500, cuota de 800 y multa de 20 por adorno: sí.
+5. El abuelo entra ya, en la semana 1. Sus números (medidor de denuncia y distracción) son propuesta mía.
