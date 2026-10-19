@@ -51,6 +51,8 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
 ## Entrega
 - La evidencia se entrega dejándola en el baúl del patrullero y cuenta en el momento (decisión 60).
 - Cuando la evidencia principal está entregada y todos los policías en pie suben al patrullero, el caso termina.
+- Si se saca una evidencia del baúl, deja de contar hasta que vuelva. Si se rompe adentro (el auto volcó), no cuenta. Al entregarla flota el valor que le queda **(propuesta)**.
+- Por ahora, al terminar aparece "¡Caso resuelto!"; la pantalla del pago y la cuota viene después.
 
 ## Cómo se gana y cómo se pierde
 - **Caso resuelto:** la evidencia principal llega al baúl sin que el medidor de denuncia llegue a 100.

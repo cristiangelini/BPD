@@ -82,12 +82,15 @@ var broken_ornaments := 0
 ## Money taken off the case pay for broken ornaments.
 var fines := 0
 
-## The grandpa called his lawyer: the warrant is cancelled and the case is lost.
+## The grandpa called his lawyer or the main evidence broke: the case is lost.
 var case_failed := false
+## The main evidence is in the trunk and every cop got in the car (allanamiento.md, "Entrega").
+var case_solved := false
 
 var _materials := {}
 @onready var _built: Node3D = $Built
 @onready var grandpa: Grandpa = $Grandpa
+@onready var car: PatrolCar = $PatrolCar
 
 
 func _ready() -> void:
@@ -116,10 +119,40 @@ func _ready() -> void:
 		ornament.broken.connect(_on_ornament_broken)
 		$Ornaments.add_child(ornament)
 	ornaments_total = $Ornaments.get_child_count()
+	(evidence[0] as Evidence).broken.connect(_fail.bind("CASE_FAILED_BROKEN"))
+	car.evidence_delivered.connect(_on_evidence_delivered)
+	car.evidence_delivered.connect(_check_solved.unbind(1))
+	car.seats_changed.connect(_check_solved)
+
+
+## The cookie tin, the evidence the case is about.
+func main_evidence() -> Evidence:
+	return evidence[0]
+
+
+func _check_solved() -> void:
+	if case_solved or case_failed or not car.is_delivered(main_evidence()):
+		return
+	for cop in get_tree().get_nodes_in_group("cops"):
+		if (cop as Cop).vehicle != car:
+			return
+	case_solved = true
+	%CaseSolved.show()
+
+
+func _on_evidence_delivered(item: Evidence) -> void:
+	_float_label("+%d" % roundi(item.value), item.global_position, Color(0.4, 1, 0.45))
 
 
 func _on_lawyer_called() -> void:
+	_fail("CASE_FAILED_LAWYER")
+
+
+func _fail(reason: String) -> void:
+	if case_failed or case_solved:
+		return
 	case_failed = true
+	%CaseFailed.text = reason
 	%CaseFailed.show()
 
 
@@ -136,11 +169,15 @@ func _on_ornament_broken(at: Vector3) -> void:
 	grandpa.saw_break(at)
 	broken_ornaments += 1
 	fines += Ornament.FINE
-	# Placeholder feedback until the HUD exists: the fine floats up where it broke.
+	_float_label("-%d" % Ornament.FINE, at, Color(1, 0.3, 0.25))
+
+
+## Placeholder feedback until the HUD exists: money floats up where it happened.
+func _float_label(text: String, at: Vector3, color: Color) -> void:
 	var label := Label3D.new()
-	label.text = "-%d" % Ornament.FINE
+	label.text = text
 	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	label.modulate = Color(1, 0.3, 0.25)
+	label.modulate = color
 	label.outline_size = 8
 	label.pixel_size = 0.005
 	add_child(label)

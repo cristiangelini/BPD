@@ -14,4 +14,5 @@
 - The grandpa: follows the nearest cop around the house on a baked navigation mesh, complains out loud, and fills the complaint meter at the top of the screen; at 100 he calls his lawyer and the case is lost.
 - Holding E on the grandpa makes him tell a long story: he stands still for up to 20 s (30 s rest between stories) and the listening cop can't do anything else.
 - Patrol car in front of the grandpa's house: E gets in the seat by the nearest door (front left drives) and out again; the driver drives with WASD, Space handbrake and H siren, up to 60 km/h. Low poly placeholder model from tools/modelgen.
+- Patrol car trunk: evidence dropped in it counts as delivered (taking it out or breaking it undoes that). The tin in the trunk with every cop aboard solves the case; a broken tin fails it.
 - Design docs: decisions, case catalog and working rules.
