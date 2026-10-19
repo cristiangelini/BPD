@@ -5,12 +5,15 @@ extends Grabbable
 
 signal read(text: String)
 
+## The key prompt under the crosshair (the cookie tin uses its own).
+@export var prompt := "PROMPT_NOTE"
+
 var text := ""
 var was_read := false
 
 
 func prompt_key(_cop: Cop) -> String:
-	return "PROMPT_NOTE"
+	return prompt
 
 
 func use(cop: Cop) -> void:

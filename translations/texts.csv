@@ -51,7 +51,7 @@ OBJ_BROKEN,Adornos rotos: %d (multa: %d),Broken ornaments: %d (fine: %d),Enfeite
 OBJ_COMPLAINT,Denuncia del abuelo: %d%%,Grandpa's complaint: %d%%,Denúncia do vovô: %d%%
 PROMPT_DRAWER,Mantén clic: agarra el cajón y tira despacio (agáchate para no arrancarlo),Hold click: grab the drawer and pull slowly (crouch so you don't rip it out),Segure o clique: pegue a gaveta e puxe devagar (agache para não arrancar)
 OBJ_EXTRA_CAGE,Extra: el bolillero (hacen falta dos),Extra: the bingo cage (needs two),Extra: o globo do bingo (precisa de dois)
-OBJ_EXTRA_SAFE,Extra: la caja fuerte con la recaudación (hacen falta dos),Extra: the safe with the takings (needs two),Extra: o cofre com a arrecadação (precisa de dois)
+OBJ_EXTRA_SAFE,Extra: la recaudación (ábrela con la combinación o lleven la caja fuerte entre dos),"Extra: the takings (open the safe with the combination, or two of you carry it)",Extra: a arrecadação (abra o cofre com a combinação ou levem o cofre entre dois)
 OBJ_EXTRA_CARDS,"Extra: cartones de bingo (%d de %d), en los cajones","Extra: bingo cards (%d of %d), in the drawers","Extra: cartelas de bingo (%d de %d), nas gavetas"
 PROMPT_NOTE,E: leer la nota,E: read the note,E: ler o bilhete
 OBJ_CLUES,Pistas:,Clues:,Pistas:
@@ -84,3 +84,11 @@ NOTE_VAGUE_in_washer,"«%s, donde se lava la ropa.»",“%s: where the clothes g
 NOTE_VAGUE_under_bed,"«%s, arriba, donde duermen las visitas.»","“%s: upstairs, where the guests sleep.”","“%s: em cima, onde as visitas dormem.”"
 NOTE_VAGUE_in_attic,"«%s, arriba de todo, con los trastos.»","“%s: at the very top, with the junk.”","“%s: lá em cima, com as tralhas.”"
 NOTE_VAGUE_in_wardrobe,"«%s, arriba, con mi ropa.»","“%s: upstairs, with my clothes.”","“%s: em cima, com as minhas roupas.”"
+PROMPT_SAFE_LOCKED,Caja fuerte con combinación: busca los números,Combination safe: find the numbers,Cofre com combinação: procure os números
+PROMPT_SAFE_OPEN,E: abrir la caja fuerte con la combinación,E: open the safe with the combination,E: abrir o cofre com a combinação
+HINT_SAFE_LOCKED,No sabes la combinación. ¿La habrá anotado el abuelo en algún lado?,You don't know the combination. Did the grandpa write it down somewhere?,Você não sabe a combinação. Será que o vovô anotou em algum lugar?
+HINT_SAFE_OPENED,¡Abierta! Adentro está la recaudación del bingo.,Open! The bingo takings are inside.,Aberto! A arrecadação do bingo está aí dentro.
+PROMPT_CALENDAR,E: mirar el calendario,E: look at the calendar,E: olhar o calendário
+PROMPT_TIN,E: abrir la lata de galletas,E: open the cookie tin,E: abrir a lata de biscoitos
+CLUE_CALENDAR,"Calendario: «Jueves: BINGO». Abajo, en birome: %s","Calendar: “Thursday: BINGO”. Below, in pen: %s","Calendário: “Quinta: BINGO”. Embaixo, de caneta: %s"
+CLUE_TIN,"En la lata, entre las migas, un papelito: %s","In the tin, among the crumbs, a slip of paper: %s","Na lata, entre as migalhas, um papelzinho: %s"

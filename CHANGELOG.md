@@ -23,3 +23,4 @@
 - Dressers with drawers you open by grabbing and pulling back slowly; yanked, a drawer comes off and spills what's inside.
 - The case is now the grandpa's illegal bingo: find the betting book, plus the bingo cage, the safe with the takings and five bingo cards hidden in drawers.
 - Clues for the bingo evidence: the grandpa's notes (E to read), mud footprints and cookie crumbs; found clues go to the Q checklist.
+- The safe has a combination, written on the kitchen calendar and inside the cookie tin by the safe; opened, the takings come out as a light cash bundle.

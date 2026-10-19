@@ -37,7 +37,8 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
   - Para la caja fuerte, un camino de **migas de galleta** desde la mesada de la cocina.
   - Para la libreta o el bolillero, **huellas de barro** desde el fondo del pasillo. El otro de los dos tiene una segunda nota, más vaga ("en la cocina, ¿o era el lavadero?").
 - Las notas aparecen en 4 de 12 lugares (mesas, camas, el lavarropas, el piso). Las huellas y las migas siguen el camino de la malla de navegación hasta la evidencia, y quedan en la planilla cuando un policía pasa a menos de 2,5 m **(propuesta)**.
-- Faltan el calendario con la combinación de la caja fuerte y lo que cuenta el abuelo al interrogarlo.
+- **La caja fuerte tiene combinación** (3 números de la semilla). Está anotada en el calendario de la cocina y en un papelito adentro de la lata de galletas, que espera al final del camino de migas, al lado de la caja. Sabiéndola, E abre la caja: la recaudación sale como un fajo de billetes de 1 kg (vale 800) que lleva uno solo, y la caja vacía no vale nada. Sin abrirla, la caja cerrada vale lo mismo, pero hacen falta dos para llevarla **(propuesta)**.
+- Falta lo que cuenta el abuelo al interrogarlo.
 
 ## Sin tiempo límite
 - El caso no tiene reloj (pedido de Cristian). La presión la pone el abuelo (ver "El abuelo").

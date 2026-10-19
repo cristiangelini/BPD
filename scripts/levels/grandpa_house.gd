@@ -105,6 +105,10 @@ const CARD_SCENE := preload("res://scenes/props/bingo_card.tscn")
 const CARDS := 5
 
 const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+const TIN_SCENE := preload("res://scenes/props/cookie_tin_clue.tscn")
+const CALENDAR_SCENE := preload("res://scenes/props/wall_calendar.tscn")
+## The kitchen calendar hangs on the kitchen's south wall, facing north.
+const CALENDAR_AT := Vector3(9.0, 1.5, 2.91)
 ## Surfaces where the grandpa's notes can lie (one note per place at most).
 const NOTE_PLACES := [
 	Vector3(-9.0, 0.81, -1.0), Vector3(11.5, 0.92, -1.5), Vector3(11.4, 0.92, -9.4), Vector3(-7.0, 3.52, 0.0),
@@ -152,6 +156,10 @@ var dressers: Array[Dresser] = []
 var cards: Array[Evidence] = []
 var clue_plan := {}
 var notes: Array[ClueNote] = []
+## The safe's combination, like "4-7-1", written on the calendar and inside the cookie tin.
+var combination := ""
+var calendar: WallCalendar
+var cookie_tin: ClueNote
 ## Clues the cops found, as checklist lines (already translated).
 var clues_found: Array[String] = []
 ## Trail marks (footprints, crumbs) and the checklist line each trail gives when a cop sees it.
@@ -189,6 +197,7 @@ func _ready() -> void:
 		$Ornaments.add_child(ornament)
 	ornaments_total = $Ornaments.get_child_count() + _drawer_ornaments
 	_place_notes()
+	_place_combination()
 	_place_trails()
 	(evidence[0] as Evidence).broken.connect(_fail.bind("CASE_FAILED_BROKEN"))
 	car.evidence_delivered.connect(_on_evidence_delivered)
@@ -230,7 +239,7 @@ func objective_facts() -> Dictionary:
 		"delivered": car.is_delivered(main_evidence()),
 		"all_in_car": all_in,
 		"cage_delivered": car.is_delivered(evidence[1] as Evidence),
-		"safe_delivered": car.is_delivered(evidence[2] as Evidence),
+		"safe_delivered": car.is_delivered(safe()) or (safe().bundle != null and car.is_delivered(safe().bundle)),
 		"cards_delivered": cards.filter(func(c: Evidence) -> bool: return car.is_delivered(c)).size(),
 		"cards_total": cards.size(),
 		"clues": clues_found,
@@ -252,6 +261,31 @@ func _place_notes() -> void:
 		notes.append(note)
 
 
+## The calendar on the kitchen wall; the cookie tin goes at the end of the crumbs, by the safe (see _place_trails).
+func _place_combination() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 7 + 3
+	combination = "%d-%d-%d" % [rng.randi_range(1, 9), rng.randi_range(0, 9), rng.randi_range(0, 9)]
+	calendar = CALENDAR_SCENE.instantiate()
+	calendar.text = tr("CLUE_CALENDAR") % combination
+	calendar.position = CALENDAR_AT
+	calendar.rotation.y = PI
+	calendar.read.connect(_on_code_found)
+	_built.add_child(calendar)
+	cookie_tin = TIN_SCENE.instantiate()
+	cookie_tin.text = tr("CLUE_TIN") % combination
+	cookie_tin.read.connect(_on_code_found)
+
+
+func safe() -> SafeBox:
+	return evidence[2]
+
+
+func _on_code_found(text: String) -> void:
+	_on_clue(text)
+	safe().code_known = true
+
+
 func _on_clue(text: String) -> void:
 	if not clues_found.has(text):
 		clues_found.append(text)
@@ -267,7 +301,11 @@ func _place_trails() -> void:
 	var mud: int = clue_plan.footprints
 	var crumbs: int = clue_plan.crumbs
 	trails[tr("CLUE_FOOTPRINTS")] = _trail(map, FOOTPRINTS_FROM, evidence[mud].global_position, FOOTPRINT_STEP, true)
-	trails[tr("CLUE_CRUMBS")] = _trail(map, CRUMBS_FROM, evidence[crumbs].global_position, CRUMB_STEP, false)
+	var crumb_marks := _trail(map, CRUMBS_FROM, evidence[crumbs].global_position, CRUMB_STEP, false)
+	trails[tr("CLUE_CRUMBS")] = crumb_marks
+	var tin_at: Vector3 = crumb_marks[crumb_marks.size() - 1].global_position if not crumb_marks.is_empty() else CRUMBS_FROM
+	cookie_tin.position = tin_at + Vector3.UP * 0.1
+	$Evidence.add_child(cookie_tin)
 
 
 ## Marks every `step` meters along the path; footprints alternate left and right and point along the way.
