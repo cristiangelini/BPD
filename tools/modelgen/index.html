@@ -14,16 +14,18 @@
 import * as THREE from 'three';
 import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
 
-// Every module in models/*.js exports models {glbName: buildFn} and views {name: spec}.
+// Every module in models/*.js exports models {glbName: buildFn}, previews {name: buildFn} (shots only, no GLB)
+// and views {name: spec}.
 const builders = {};
 window.loadModules = async (files) => {
-	const views = {};
+	const views = {}, exported = [];
 	for (const f of files) {
 		const mod = await import(`./models/${f}`);
-		Object.assign(builders, mod.models ?? {});
+		Object.assign(builders, mod.previews ?? {}, mod.models ?? {});
+		exported.push(...Object.keys(mod.models ?? {}));
 		Object.assign(views, mod.views ?? {});
 	}
-	return { views, models: Object.keys(builders) };
+	return { views, models: exported };
 };
 const cache = {};
 const model = (name) => (cache[name] ??= builders[name]());
