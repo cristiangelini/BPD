@@ -26,6 +26,8 @@ the number in brackets is the decision there.
 - First person, simple low poly 3D with strong colors and floppy ragdoll characters; a mix of R.E.P.O., PEAK and Dear Passengers. [11, 12, 14]
 - Placeholders are not grey boxes: procedural low poly models (flat facets, strong colors, soft sky light) from `tools/modelgen`, so playtests look nice. [71] Cristian asked for it: grey boxes looked too poor, and wgt showed procedural models are cheap.
 - Keep BPD's own style (low poly, R.E.P.O. / PEAK), not wgt's comic cel shading with ink outlines. [12, 71] Cristian corrected it when wgt's look was proposed.
+- Every character uses the pear body; cops all wear the blue uniform and only the skin color tells players apart; NPCs differ by outfit and props, with softer skins. [72] Cristian wanted non-humanoid PEAK / R.E.P.O. bodies and police in police blue.
+- For a new look, show a few variants as images and let Cristian pick before putting it in the game. [72] He asked for 5 body options to approve.
 - Placeholder art is never final: final art needs Cristian's approval, AI art is never final. [71]
 
 ## Cases

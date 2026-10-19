@@ -6,7 +6,7 @@ extends CharacterBody3D
 const MOUSE_SENSITIVITY := 0.0025
 ## Render layer of the cop's own body: hidden from its own camera, but it still casts a shadow.
 const OWN_BODY_LAYER := 20
-## One uniform color per player so friends tell each other apart (placeholder models from tools/modelgen).
+## One skin color per player on the same blue uniform (decision 72; placeholder models from tools/modelgen).
 const UNIFORMS: Array[PackedScene] = [
 	preload("res://assets/models/cop_0.glb"), preload("res://assets/models/cop_1.glb"),
 	preload("res://assets/models/cop_2.glb"), preload("res://assets/models/cop_3.glb"),
@@ -34,7 +34,7 @@ func _ready() -> void:
 		_hide_from_own_camera()
 
 
-## Swaps the body for the uniform of player `index` (0 to 3).
+## Swaps the body for the skin of player `index` (0 to 3).
 func set_uniform(index: int) -> void:
 	var old: Node3D = get_node("Model")
 	var fresh: Node3D = UNIFORMS[index % UNIFORMS.size()].instantiate()
