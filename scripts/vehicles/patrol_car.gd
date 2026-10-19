@@ -3,6 +3,11 @@ extends VehicleBody3D
 
 ## The patrol car (allanamiento.md, "Patrullero"): 4 seats, only the driver drives, arcade handling, no damage.
 ## E next to a door gets in the nearest free seat; E inside gets out by that seat's door. Forward is +Z.
+## Evidence left in the trunk counts as delivered at once ("Entrega"); taking it out undoes that.
+
+signal seats_changed
+signal evidence_delivered(item: Evidence)
+signal evidence_removed(item: Evidence)
 
 ## 60 km/h (propuesta).
 const MAX_SPEED := 60.0 / 3.6
@@ -26,11 +31,43 @@ var throttle := 0.0
 var steer_input := 0.0
 var handbrake := false
 var _siren_time := 0.0
+## Unbroken evidence in the trunk right now.
+var delivered: Array[Evidence] = []
 
 @onready var _seats: Array[Node3D] = [$Seats/Driver, $Seats/Front, $Seats/BackLeft, $Seats/BackRight]
 @onready var _rear: Array[VehicleWheel3D] = [$WheelRearLeft, $WheelRearRight]
 @onready var _siren_red: OmniLight3D = $SirenRed
 @onready var _siren_blue: OmniLight3D = $SirenBlue
+
+
+func _ready() -> void:
+	$Trunk.body_entered.connect(_on_trunk_entered)
+	$Trunk.body_exited.connect(_on_trunk_exited)
+
+
+func is_delivered(item: Evidence) -> bool:
+	return delivered.has(item)
+
+
+## Cops sitting in the car.
+func passengers() -> Array[Cop]:
+	var cops: Array[Cop] = []
+	for cop in seated:
+		if cop:
+			cops.append(cop)
+	return cops
+
+
+func _on_trunk_entered(body: Node3D) -> void:
+	if body is Evidence and not body.is_broken and not delivered.has(body):
+		delivered.append(body)
+		evidence_delivered.emit(body)
+
+
+func _on_trunk_exited(body: Node3D) -> void:
+	if body is Evidence and delivered.has(body):
+		delivered.erase(body)
+		evidence_removed.emit(body)
 
 
 func driver() -> Cop:
@@ -60,6 +97,7 @@ func enter(cop: Cop) -> int:
 	seated[best] = cop
 	cop.sit_in(self, _seats[best])
 	cop.show_hint("HINT_CAR_DRIVER" if best == 0 else "HINT_CAR_PASSENGER")
+	seats_changed.emit()
 	return best
 
 
@@ -71,6 +109,7 @@ func exit(cop: Cop) -> void:
 	cop.stand_up(_door(i), global_basis.get_euler().y + PI)
 	if i == 0:
 		drive(0.0, 0.0, true)
+	seats_changed.emit()
 
 
 ## Driver controls: throttle -1 (S) to 1 (W), steer -1 (D) to 1 (A), handbrake (Space).
@@ -102,6 +141,10 @@ func _physics_process(delta: float) -> void:
 	elif not cop:
 		drive(0.0, 0.0, true)
 	_apply_controls(delta)
+	# Evidence that breaks in the trunk (the car flipped) no longer counts.
+	for item in delivered.duplicate():
+		if item.is_broken:
+			_on_trunk_exited(item)
 	if siren_on:
 		_siren_time += delta
 		var red := int(_siren_time / SIREN_FLASH) % 2 == 0

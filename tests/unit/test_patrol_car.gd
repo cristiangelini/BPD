@@ -112,3 +112,31 @@ func test_a_hard_turn_at_top_speed_does_not_tip_over() -> void:
 	car.drive(0.0, -1.0, true)
 	await wait_seconds(2.0)
 	assert_gt(car.global_basis.y.y, 0.9, "handbrake slide too")
+
+
+func _tin(at: Vector3) -> Evidence:
+	var tin: Evidence = preload("res://scenes/props/cookie_tin.tscn").instantiate()
+	add_child_autofree(tin)
+	tin.global_position = at
+	return tin
+
+
+func test_evidence_in_the_trunk_counts_and_taking_it_out_undoes_it() -> void:
+	var car := _car()
+	await wait_physics_frames(30)
+	var tin := _tin(car.to_global(Vector3(0, 0.6, -1.7)))
+	await wait_physics_frames(10)
+	assert_true(car.is_delivered(tin))
+	tin.global_position = car.to_global(Vector3(0, 0.6, -4.0))
+	await wait_physics_frames(10)
+	assert_false(car.is_delivered(tin))
+
+
+func test_evidence_that_breaks_in_the_trunk_stops_counting() -> void:
+	var car := _car()
+	await wait_physics_frames(30)
+	var tin := _tin(car.to_global(Vector3(0, 0.6, -1.7)))
+	await wait_physics_frames(10)
+	tin.hit(100.0)
+	await wait_physics_frames(2)
+	assert_false(car.is_delivered(tin))

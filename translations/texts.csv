@@ -23,3 +23,5 @@ GRANDPA_STORY_TIRED,"Ya te conté esa, jovencito.","I already told you that one,
 HINT_CAR_DRIVER,"Manejas tú: WASD, Espacio freno de mano, H sirena, E para bajarte.","You're driving: WASD, Space handbrake, H siren, E to get out.","Você dirige: WASD, Espaço freio de mão, H sirene, E para descer."
 HINT_CAR_PASSENGER,Vas de acompañante. E para bajarte.,You're riding along. E to get out.,Você vai de carona. E para descer.
 HINT_CAR_FULL,El patrullero está lleno.,The patrol car is full.,A viatura está cheia.
+CASE_FAILED_BROKEN,Se rompió la lata de galletas. Caso fallado.,The cookie tin broke. Case failed.,A lata de biscoitos quebrou. Caso fracassado.
+CASE_SOLVED,¡Caso resuelto! La evidencia va en el baúl.,Case solved! The evidence is in the trunk.,Caso resolvido! A evidência está no porta-malas.
