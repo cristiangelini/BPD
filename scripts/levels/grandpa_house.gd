@@ -1,14 +1,20 @@
 class_name GrandpaHouse
 extends Node3D
 
-## Case 1.1 "La casa del abuelo" (docs/diseno/allanamiento.md): a two floor house of 12 x 10 m with 8 rooms.
-## Downstairs: entrada (the hall), living, cocina, comedor and baño. Upstairs: two dormitorios and the altillo.
+## Case 1.1 "La casa del abuelo" (docs/diseno/allanamiento.md): a two floor house of 24 x 20 m with 14 rooms.
+## A hall runs south to north through the middle of both floors, with three rooms on each side of it.
+## Downstairs: living, estudio and baño to the west; comedor, cocina and lavadero to the east.
+## Upstairs: dormitorio chico, cuarto de costura and baño de arriba to the west; dormitorio grande,
+## cuarto de juegos and altillo to the east.
 ## It is built from the data below when the scene loads, and the evidence goes to hiding spots drawn with the case seed.
 
 const WALL := 0.15
 const SLAB := 0.2
-const HALF_X := 6.0
-const HALF_Z := 5.0
+const HALF_X := 12.0
+const HALF_Z := 10.0
+## The hall is 3 m wide; the rooms on each side are split at these z values.
+const HALL := 1.5
+const SPLITS := [3.0, -3.0]
 ## The stairs climb north along the east side of the hall, from z = 0 to z = -3.75.
 const STAIR_X := 1.0
 const STAIR_RUN := 3.75
@@ -26,40 +32,48 @@ const FURNITURE := Color(0.55, 0.36, 0.62)
 const WHITE := Color(0.92, 0.92, 0.88)
 
 ## [axis, fixed, from, to, level, door centers, color]. Axis "x" runs along x at z = fixed; "z" along z at x = fixed.
+## The east middle doors sit at z = 1.5 so they don't open onto the foot of the stairs.
 const WALLS := [
 	["x", HALF_Z, -HALF_X, HALF_X, 0, [0.0], OUTSIDE],
 	["x", -HALF_Z, -HALF_X, HALF_X, 0, [], OUTSIDE],
 	["z", -HALF_X, -HALF_Z, HALF_Z, 0, [], OUTSIDE],
 	["z", HALF_X, -HALF_Z, HALF_Z, 0, [], OUTSIDE],
-	["z", -1.5, -HALF_Z, HALF_Z, 0, [2.5, -3.0], INSIDE_DOWN],
-	["z", 1.5, -HALF_Z, HALF_Z, 0, [3.0], INSIDE_DOWN],
-	["x", -1.0, -HALF_X, -1.5, 0, [], INSIDE_DOWN],
-	["x", 1.0, 1.5, HALF_X, 0, [4.0], INSIDE_DOWN],
+	["z", -HALL, -HALF_Z, HALF_Z, 0, [6.5, 0.0, -6.5], INSIDE_DOWN],
+	["z", HALL, -HALF_Z, HALF_Z, 0, [6.5, 1.5, -6.5], INSIDE_DOWN],
+	["x", 3.0, -HALF_X, -HALL, 0, [-7.0], INSIDE_DOWN],
+	["x", -3.0, -HALF_X, -HALL, 0, [], INSIDE_DOWN],
+	["x", 3.0, HALL, HALF_X, 0, [7.0], INSIDE_DOWN],
+	["x", -3.0, HALL, HALF_X, 0, [7.0], INSIDE_DOWN],
 	["x", HALF_Z, -HALF_X, HALF_X, 1, [], OUTSIDE],
 	["x", -HALF_Z, -HALF_X, HALF_X, 1, [], OUTSIDE],
 	["z", -HALF_X, -HALF_Z, HALF_Z, 1, [], OUTSIDE],
 	["z", HALF_X, -HALF_Z, HALF_Z, 1, [], OUTSIDE],
-	["z", -1.5, -HALF_Z, HALF_Z, 1, [2.5, -2.0], INSIDE_UP],
-	["z", 1.5, -HALF_Z, HALF_Z, 1, [2.5], INSIDE_UP],
-	["x", 0.0, -HALF_X, -1.5, 1, [], INSIDE_UP],
+	["z", -HALL, -HALF_Z, HALF_Z, 1, [6.5, 0.0, -6.5], INSIDE_UP],
+	["z", HALL, -HALF_Z, HALF_Z, 1, [6.5, 1.5, -6.5], INSIDE_UP],
+	["x", 3.0, -HALF_X, -HALL, 1, [], INSIDE_UP],
+	["x", -3.0, -HALF_X, -HALL, 1, [], INSIDE_UP],
+	["x", 3.0, HALL, HALF_X, 1, [], INSIDE_UP],
+	["x", -3.0, HALL, HALF_X, 1, [], INSIDE_UP],
 ]
 
-## Ten hiding spots: where the evidence rests, and whether a heavy item (the 40 kg safe) fits there.
+## Twelve hiding spots: where the evidence rests, and whether a heavy item (the 40 kg safe) fits there.
 const SPOTS := [
-	{"id": "under_sofa", "at": Vector3(-4.5, 0.0, 4.3), "heavy": false},
-	{"id": "behind_picture", "at": Vector3(-5.72, 1.025, 1.5), "heavy": false},
-	{"id": "in_oven", "at": Vector3(5.5, 0.05, -4.0), "heavy": false},
-	{"id": "in_cupboard", "at": Vector3(3.0, 1.025, -4.6), "heavy": false},
-	{"id": "under_table", "at": Vector3(3.8, 0.0, 3.0), "heavy": true},
-	{"id": "in_bathtub", "at": Vector3(-4.8, 0.05, -4.2), "heavy": true},
+	{"id": "under_sofa", "at": Vector3(-8.0, 0.0, 9.3), "heavy": false},
+	{"id": "behind_picture", "at": Vector3(-11.72, 1.025, 6.5), "heavy": false},
+	{"id": "in_oven", "at": Vector3(11.5, 0.05, -1.5), "heavy": false},
+	{"id": "in_cupboard", "at": Vector3(5.0, 1.025, -2.6), "heavy": false},
+	{"id": "under_table", "at": Vector3(7.0, 0.0, 6.5), "heavy": true},
+	{"id": "in_bathtub", "at": Vector3(-10.8, 0.05, -9.2), "heavy": true},
 	{"id": "under_stairs", "at": Vector3(1.0, 0.0, -3.3), "heavy": true},
-	{"id": "under_bed", "at": Vector3(-4.5, 2.7, 3.6), "heavy": false},
-	{"id": "in_attic", "at": Vector3(-4.6, 2.7, -3.6), "heavy": true},
-	{"id": "in_wardrobe", "at": Vector3(5.6, 2.75, -2.0), "heavy": true},
+	{"id": "under_desk", "at": Vector3(-9.0, 0.0, -1.0), "heavy": true},
+	{"id": "in_washer", "at": Vector3(11.4, 0.05, -9.4), "heavy": true},
+	{"id": "under_bed", "at": Vector3(-8.0, 2.7, 7.5), "heavy": false},
+	{"id": "in_attic", "at": Vector3(8.0, 2.7, -8.5), "heavy": true},
+	{"id": "in_wardrobe", "at": Vector3(11.6, 2.75, 5.0), "heavy": true},
 ]
 
 ## The door key hides in one of these pots by the front door.
-const POTS := [Vector3(-2.5, 0.0, 5.8), Vector3(2.5, 0.0, 5.8), Vector3(4.5, 0.0, 6.6)]
+const POTS := [Vector3(-2.5, 0.0, 10.8), Vector3(2.5, 0.0, 10.8), Vector3(4.5, 0.0, 11.6)]
 
 const POT_SCENE := preload("res://scenes/props/key_pot.tscn")
 
@@ -238,9 +252,9 @@ func _float_label(text: String, at: Vector3, color: Color) -> void:
 
 func _build() -> void:
 	var up := GameScale.FLOOR_HEIGHT
-	_box(Vector3(0, -0.1, 0), Vector3(40, 0.2, 40), GRASS)
+	_box(Vector3(0, -0.1, 4), Vector3(60, 0.2, 52), GRASS)
 	# The street in front of the house, where the patrol car waits (visual only, flat on the grass).
-	_mesh_box(Vector3(0, 0.005, 12.5), Vector3(40, 0.01, 6), ROAD)
+	_mesh_box(Vector3(0, 0.005, 17.5), Vector3(60, 0.01, 6), ROAD)
 	_box(Vector3(0, 0.01, 0), Vector3(HALF_X * 2, 0.02, HALF_Z * 2), FLOOR_WOOD)
 	# Upstairs floor, with the hole over the stairs.
 	var hole_east := STAIR_X + GameScale.STAIR_WIDTH / 2
@@ -287,30 +301,41 @@ func _stairs() -> void:
 
 func _furniture() -> void:
 	var up := GameScale.FLOOR_HEIGHT
-	# Living: sofa on legs and a picture with a shelf behind it.
-	_legs(Vector3(-4.5, 0, 4.3), Vector2(2.2, 0.8), 0.3, FURNITURE)
-	_box(Vector3(-4.5, 0.45, 4.3), Vector3(2.2, 0.3, 0.8), FURNITURE)
-	_box(Vector3(-4.5, 0.85, 4.65), Vector3(2.2, 0.5, 0.15), FURNITURE)
-	_box(Vector3(-5.72, 1.0, 1.5), Vector3(0.4, 0.05, 0.6), FURNITURE)
-	_box(Vector3(-5.45, 1.35, 1.5), Vector3(0.05, 0.8, 0.9), Color(0.95, 0.75, 0.2))
-	# Cocina: oven open to the west, cupboard with a shelf and a counter.
-	_open_box(Vector3(5.5, 0, -4.0), Vector3(0.8, 0.9, 0.7), "-x", WHITE)
-	_open_box(Vector3(3.0, 0, -4.6), Vector3(1.2, 2.0, 0.6), "+z", FURNITURE)
-	_box(Vector3(3.0, 1.0, -4.6), Vector3(1.1, 0.05, 0.55), FURNITURE)
-	_box(Vector3(4.4, 0.45, -4.6), Vector3(1.2, 0.9, 0.6), WHITE)
+	# Living: sofa on legs against the south wall and a picture with a shelf behind it on the west wall.
+	_legs(Vector3(-8.0, 0, 9.3), Vector2(2.2, 0.8), 0.3, FURNITURE)
+	_box(Vector3(-8.0, 0.45, 9.3), Vector3(2.2, 0.3, 0.8), FURNITURE)
+	_box(Vector3(-8.0, 0.85, 9.65), Vector3(2.2, 0.5, 0.15), FURNITURE)
+	_box(Vector3(-11.72, 1.0, 6.5), Vector3(0.4, 0.05, 0.6), FURNITURE)
+	_box(Vector3(-11.45, 1.35, 6.5), Vector3(0.05, 0.8, 0.9), Color(0.95, 0.75, 0.2))
+	# Estudio: desk on legs.
+	_legs(Vector3(-9.0, 0, -1.0), Vector2(1.6, 0.9), 0.74, FURNITURE)
+	_box(Vector3(-9.0, 0.77, -1.0), Vector3(1.6, 0.06, 0.9), FURNITURE)
+	# Cocina: oven open to the west, cupboard with a shelf and a counter, against the north wall.
+	_open_box(Vector3(11.5, 0, -1.5), Vector3(0.8, 0.9, 0.7), "-x", WHITE)
+	_open_box(Vector3(5.0, 0, -2.6), Vector3(1.2, 2.0, 0.6), "+z", FURNITURE)
+	_box(Vector3(5.0, 1.0, -2.6), Vector3(1.1, 0.05, 0.55), FURNITURE)
+	_box(Vector3(6.4, 0.45, -2.6), Vector3(1.2, 0.9, 0.6), WHITE)
 	# Comedor: table on legs.
-	_legs(Vector3(3.8, 0, 3.0), Vector2(2.0, 1.1), 0.72, FURNITURE)
-	_box(Vector3(3.8, 0.75, 3.0), Vector3(2.0, 0.06, 1.1), FURNITURE)
+	_legs(Vector3(7.0, 0, 6.5), Vector2(2.0, 1.1), 0.72, FURNITURE)
+	_box(Vector3(7.0, 0.75, 6.5), Vector3(2.0, 0.06, 1.1), FURNITURE)
+	# Lavadero: washing machine open to the west.
+	_open_box(Vector3(11.4, 0, -9.4), Vector3(0.9, 0.9, 0.9), "-x", WHITE)
 	# Baño: bathtub and toilet.
-	_open_box(Vector3(-4.8, 0, -4.2), Vector3(1.7, 0.6, 0.8), "top", WHITE)
-	_box(Vector3(-2.3, 0.2, -4.5), Vector3(0.45, 0.4, 0.6), WHITE)
-	# Dormitorios: a bed in each, wardrobe in the east one.
-	_bed(Vector3(-4.5, up, 3.6))
-	_bed(Vector3(3.8, up, 3.4))
-	_open_box(Vector3(5.6, up, -2.0), Vector3(0.6, 2.0, 1.2), "-x", FURNITURE)
+	_open_box(Vector3(-10.8, 0, -9.2), Vector3(1.7, 0.6, 0.8), "top", WHITE)
+	_box(Vector3(-2.3, 0.2, -9.5), Vector3(0.45, 0.4, 0.6), WHITE)
+	# Dormitorios: a bed in each, wardrobe in the big one.
+	_bed(Vector3(-8.0, up, 7.5))
+	_bed(Vector3(7.0, up, 7.0))
+	_open_box(Vector3(11.6, up, 5.0), Vector3(0.6, 2.0, 1.2), "-x", FURNITURE)
+	# Cuarto de costura: sewing table. Cuarto de juegos: card table. Baño de arriba: toilet.
+	_legs(Vector3(-7.0, up, 0.0), Vector2(1.2, 0.7), 0.74, FURNITURE)
+	_box(Vector3(-7.0, up + 0.77, 0.0), Vector3(1.2, 0.06, 0.7), FURNITURE)
+	_legs(Vector3(7.0, up, 0.0), Vector2(1.4, 1.4), 0.72, FURNITURE)
+	_box(Vector3(7.0, up + 0.75, 0.0), Vector3(1.4, 0.06, 1.4), Color(0.2, 0.55, 0.3))
+	_box(Vector3(-2.3, up + 0.2, -9.5), Vector3(0.45, 0.4, 0.6), WHITE)
 	# Altillo: junk boxes.
-	_box(Vector3(-5.4, up + 0.3, -1.0), Vector3(0.8, 0.6, 0.8), Color(0.7, 0.55, 0.35))
-	_box(Vector3(-3.0, up + 0.4, -4.4), Vector3(1.0, 0.8, 0.8), Color(0.7, 0.55, 0.35))
+	_box(Vector3(10.5, up + 0.3, -5.0), Vector3(0.8, 0.6, 0.8), Color(0.7, 0.55, 0.35))
+	_box(Vector3(5.5, up + 0.4, -9.4), Vector3(1.0, 0.8, 0.8), Color(0.7, 0.55, 0.35))
 
 
 func _bed(foot_center: Vector3) -> void:
@@ -320,16 +345,25 @@ func _bed(foot_center: Vector3) -> void:
 	_box(foot_center + Vector3(0, 0.6, 1.05), Vector3(1.5, 1.2, 0.08), FURNITURE)
 
 
+## One light in the middle of each room and two along each hall.
 func _lights() -> void:
 	var up := GameScale.FLOOR_HEIGHT
-	for at: Vector3 in [Vector3(0, 2.2, 2), Vector3(-3.7, 2.2, 2), Vector3(3.7, 2.2, -2), Vector3(3.7, 2.2, 3),
-			Vector3(-3.7, 2.2, -3), Vector3(-3.7, up + 2.2, 2.5), Vector3(-3.7, up + 2.2, -2.5), Vector3(3.7, up + 2.2, 0)]:
-		var light := OmniLight3D.new()
-		light.position = at
-		light.light_color = Color(1.0, 0.82, 0.6)
-		light.light_energy = 0.6
-		light.omni_range = 6.0
-		_built.add_child(light)
+	for level in 2:
+		var y := level * up + 2.2
+		for x: float in [-6.75, 6.75]:
+			for z: float in [6.5, 0.0, -6.5]:
+				_light(Vector3(x, y, z))
+		for z: float in [5.0, -5.0]:
+			_light(Vector3(-0.5, y, z))
+
+
+func _light(at: Vector3) -> void:
+	var light := OmniLight3D.new()
+	light.position = at
+	light.light_color = Color(1.0, 0.82, 0.6)
+	light.light_energy = 0.7
+	light.omni_range = 8.0
+	_built.add_child(light)
 
 
 func _wall(axis: String, fixed: float, from: float, to: float, level: int, doors: Array, color: Color) -> void:

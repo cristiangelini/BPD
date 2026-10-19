@@ -20,19 +20,22 @@ const SPACING := 0.3
 
 ## Shelf units: floor center, the axis they run along and their width. Upstairs ones stand at y = 2.7.
 const SHELVES := [
-	{"at": Vector3(-3.75, 0, -0.75), "along": "x", "width": 2.0},  # living
-	{"at": Vector3(5.75, 0, 3.0), "along": "z", "width": 2.4},  # comedor
-	{"at": Vector3(-1.25, 0, 0.5), "along": "z", "width": 2.0},  # entrada
-	{"at": Vector3(1.75, 0, -2.0), "along": "z", "width": 2.0},  # cocina
-	{"at": Vector3(-4.0, 2.7, 0.25), "along": "x", "width": 2.0},  # dormitorio chico
-	{"at": Vector3(3.5, 2.7, -4.75), "along": "x", "width": 2.0},  # dormitorio grande
-	{"at": Vector3(-5.75, 2.7, -3.0), "along": "z", "width": 2.0},  # altillo
+	{"at": Vector3(-9.0, 0, 3.25), "along": "x", "width": 2.0},  # living
+	{"at": Vector3(-11.75, 0, 0.0), "along": "z", "width": 2.4},  # estudio
+	{"at": Vector3(11.75, 0, 6.5), "along": "z", "width": 2.4},  # comedor
+	{"at": Vector3(-1.25, 0, 3.5), "along": "z", "width": 2.0},  # entrada
+	{"at": Vector3(1.75, 0, -1.5), "along": "z", "width": 2.0},  # cocina
+	{"at": Vector3(-9.0, 2.7, 3.25), "along": "x", "width": 2.0},  # dormitorio chico
+	{"at": Vector3(-9.0, 2.7, -2.75), "along": "x", "width": 2.0},  # cuarto de costura
+	{"at": Vector3(4.0, 2.7, 3.25), "along": "x", "width": 2.0},  # dormitorio grande
+	{"at": Vector3(6.75, 2.7, -2.75), "along": "x", "width": 2.0},  # cuarto de juegos
+	{"at": Vector3(11.75, 2.7, -6.5), "along": "z", "width": 2.0},  # altillo
 ]
 ## Flat tops that get a row of ornaments: [first point, last point, count, only plates].
 const TOPS := [
-	[Vector3(3.0, 0.78, 2.75), Vector3(4.6, 0.78, 2.75), 6, true],  # comedor table
-	[Vector3(3.0, 0.78, 3.25), Vector3(4.6, 0.78, 3.25), 6, true],
-	[Vector3(4.0, 0.9, -4.6), Vector3(4.8, 0.9, -4.6), 3, false],  # kitchen counter
+	[Vector3(6.2, 0.78, 6.25), Vector3(7.8, 0.78, 6.25), 6, true],  # comedor table
+	[Vector3(6.2, 0.78, 6.75), Vector3(7.8, 0.78, 6.75), 6, true],
+	[Vector3(6.0, 0.9, -2.6), Vector3(6.8, 0.9, -2.6), 3, false],  # kitchen counter
 ]
 
 
