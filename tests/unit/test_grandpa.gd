@@ -88,3 +88,36 @@ func test_grandpa_follows_the_nearest_cop() -> void:
 	await wait_seconds(3.0)
 	var now := house.grandpa.global_position.distance_to(cop.global_position)
 	assert_lt(now, start - 1.0, "he walks toward the cop (from %.1f to %.1f m)" % [start, now])
+
+
+func _cop() -> Cop:
+	var cop: Cop = preload("res://scenes/player/cop.tscn").instantiate()
+	cop.input_enabled = false
+	cop.position = Vector3(0, 0, 3)
+	add_child_autofree(cop)
+	return cop
+
+
+func test_story_holds_him_and_the_listener() -> void:
+	var grandpa := _grandpa()
+	var cop := _cop()
+	assert_true(grandpa.start_story(cop))
+	assert_true(cop.is_busy(), "the cop listening can't do anything else")
+	var start := grandpa.global_position
+	await wait_seconds(1.0)
+	var moved := Vector2(grandpa.global_position.x - start.x, grandpa.global_position.z - start.z).length()
+	assert_almost_eq(moved, 0.0, 0.01, "he stands still while telling it (falling is fine, there is no floor here)")
+	grandpa.end_story()
+	assert_false(cop.is_busy())
+
+
+func test_story_ends_by_itself_and_needs_a_rest() -> void:
+	var grandpa := _grandpa()
+	var cop := _cop()
+	grandpa.start_story(cop)
+	grandpa._story_left = 0.1
+	await wait_seconds(0.3)
+	assert_false(grandpa.is_telling_story(), "at most STORY_MAX seconds")
+	assert_false(grandpa.start_story(cop), "he needs STORY_COOLDOWN before another one")
+	grandpa._story_wait = 0.0
+	assert_true(grandpa.start_story(cop))

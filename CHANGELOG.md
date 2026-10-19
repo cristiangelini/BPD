@@ -12,4 +12,5 @@
 - Battering ram: E picks it up in front of the house; hold left click to charge, let go to hit. Three charged hits knock the door down, a miss staggers the cop, and carrying it slows the walk.
 - 147 fragile ornaments (figurines, plates and vases) on shelves, the dining table and the kitchen counter; any real hit shatters one and costs a fine of 20.
 - The grandpa: follows the nearest cop around the house on a baked navigation mesh, complains out loud, and fills the complaint meter at the top of the screen; at 100 he calls his lawyer and the case is lost.
+- Holding E on the grandpa makes him tell a long story: he stands still for up to 20 s (30 s rest between stories) and the listening cop can't do anything else.
 - Design docs: decisions, case catalog and working rules.
