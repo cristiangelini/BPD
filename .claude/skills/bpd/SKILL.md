@@ -38,6 +38,8 @@ the number in brackets is the decision there.
 - A raid is a place plus a story, both drawn at random; the cops guess the story from the clues among 3 suspicions, the comisario only brings an anonymous tip. Places are not only houses: shops, companies and buildings too. [79, 80] Cristian asked for "different stories to solve with the clues" on 19/10.
 - Always show on screen what the player can do (key prompts, the Q checklist). In the 19/10 playtest he got stuck holding the ram without knowing how to drop it.
 
+- Every case happens in its own place of one open city, with its own character; the cops drive between places, no loading screens. Cristian asked for it on 19/10 so the city grows with each case. [82]
+
 ## Working with Cristian
 - He works alone and merges himself; no Jira, cards are GitHub issues. [61, 62]
 - To check progress he opens the game and gives the OK (cheapest in tokens). Videos only when he asks. [57]

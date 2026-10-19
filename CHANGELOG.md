@@ -33,3 +33,4 @@
 - The house draws its story from the seed (or `--story=<id>`), and the bingo's own pieces (safe combination, crumbs, cards) live in a story rig, so a new story only brings its own.
 - Second story for the grandpa's house, the turtle races: catch Relámpago (the turtle with a 7 on her shell) among four lookalikes that roam the house, following lettuce leaves from the kitchen; the betting board and three trophies are extras. `--story=turtles` forces it.
 - Guess the story: the comisario only brings an anonymous tip, and the checklist lists three suspicions. Each one has a clue in the house; with Q open, hold 1, 2 or 3 to mark one. A right guess makes the comisario tell what to bring, one wrong guess halves the salary, and two fail the case.
+- Design: the open city where every case has its own place and character (docs/diseno/ciudad.md, decision 82).
