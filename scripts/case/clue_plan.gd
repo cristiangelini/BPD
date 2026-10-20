@@ -8,15 +8,17 @@ extends RefCounted
 
 
 ## Returns {"notes": [{"item", "precise", "place"}], "footprints": item index, "spare": note places left free}.
-## `place` indexes the house's note places, all different. trail_item is -1 when the story has no trail of its own.
-static func draw(case_seed: int, place_count: int, item_count: int, trail_item: int) -> Dictionary:
+## `place` indexes the house's note places, all different. trail_item is -1 when the story has no trail of its own;
+## loose_item, an item that isn't in a hiding spot, gets no clues at all (-1 for none).
+static func draw(case_seed: int, place_count: int, item_count: int, trail_item: int, loose_item := -1) -> Dictionary:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = case_seed * 31 + 5
-	var others: Array = range(item_count).filter(func(i: int) -> bool: return i != trail_item)
+	var others: Array = range(item_count).filter(func(i: int) -> bool: return i != trail_item and i != loose_item)
 	var footprints: int = others[rng.randi_range(0, others.size() - 1)]
 	var notes: Array[Dictionary] = []
 	for i in item_count:
-		notes.append({"item": i, "precise": true})
+		if i != loose_item:
+			notes.append({"item": i, "precise": true})
 	for i: int in others:
 		if i != footprints:
 			notes.append({"item": i, "precise": false})
