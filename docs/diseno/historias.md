@@ -65,6 +65,12 @@ Los pesos y valores son **(propuesta)** y siguen la escala del bingo: la princip
 - **Pistas:** un camino de hojas de lechuga va desde la mesada de la cocina hasta el escondite de Relámpago. Las huellas de barro llevan al tablero, y cada una tiene además una nota del abuelo.
 - **Extras:** el tablero de apuestas (8 kg, vale 400) en un escondite y 3 trofeos (0,5 kg, 100 cada uno) en los cajones. Michi duerme arriba del tablero.
 
+## La figurita del museo (cómo quedó, propuesta)
+- **La bailarina original** (0,3 kg, 1500) está parada en uno de los estantes del abuelo, en el lugar de una figurita, junto con 8 copias de recuerdo iguales repartidas por la casa. Es muy frágil: pierde valor con cualquier golpe de más de 1,5 m/s.
+- **Cómo se distingue:** al agarrar una, la original dice "¡Abajo tiene el sello dorado del museo!" y las copias "Abajo dice «Recuerdo del museo». Es una copia.". La original no muestra su valor hasta que alguien la agarra, para que el número no la delate. Las copias son adornos del abuelo: si se rompen, son multa.
+- **El recorte del diario** (0,1 kg, 100) va en un escondite. Al agarrarlo recuerda lo del sello.
+- Como la bailarina no está en un escondite, las notas del abuelo, lo que se le escapa y lo que vio la vecina hablan solo del recorte.
+
 ## Lo que comparten todas las historias
 - La puerta cerrada, el ariete y la llave en la maceta.
 - Los adornos frágiles y la multa de 20 por cada uno.

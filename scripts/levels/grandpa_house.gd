@@ -97,6 +97,8 @@ const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_TIP_B", "BRIEF_TI
 const BINGO := preload("res://scenes/case/bingo_story.tres")
 ## The turtle races (historias.md): Relámpago is the main evidence, with the betting board and trophies as extras.
 const TURTLES := preload("res://scenes/case/turtle_story.tres")
+## The museum figurine (historias.md): the stolen ballerina stands among the ornaments with souvenir copies of it.
+const MUSEUM := preload("res://scenes/case/museum_story.tres")
 
 const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
 const CAT_SCENE := preload("res://scenes/npc/cat.tscn")
@@ -123,7 +125,7 @@ const MUD := Color(0.36, 0.24, 0.14)
 @export var case_seed := 0
 ## The stories this house can tell (historias.md). One is drawn with the seed unless `story` is set or the game runs
 ## with --story=<id>.
-const STORIES: Array[CaseStory] = [BINGO, TURTLES]
+const STORIES: Array[CaseStory] = [BINGO, TURTLES, MUSEUM]
 
 ## The story this raid tells; null draws one from STORIES.
 @export var story: CaseStory
@@ -280,7 +282,7 @@ static func pick_story(case_seed: int, args: PackedStringArray) -> CaseStory:
 
 
 func _place_notes() -> void:
-	clue_plan = CluePlan.draw(case_seed, NOTE_PLACES.size(), story.evidence.size(), rig.trail_item())
+	clue_plan = CluePlan.draw(case_seed, NOTE_PLACES.size(), story.evidence.size(), rig.trail_item(), rig.loose_item())
 	for entry: Dictionary in clue_plan.notes:
 		var note: ClueNote = NOTE_SCENE.instantiate()
 		note.text = CluePlan.note_text(story.item_keys[entry.item], SPOTS[evidence_spots[entry.item]].id, entry.precise)
@@ -301,6 +303,7 @@ func _give_slips() -> void:
 		var swap: int = order[i]
 		order[i] = order[j]
 		order[j] = swap
+	order.erase(rig.loose_item())
 	for item: int in order:
 		grandpa.slips.append(tr("GRANDPA_SLIP") % tr("LOC_" + SPOTS[evidence_spots[item]].id))
 	grandpa.slipped.connect(_on_clue)
@@ -339,7 +342,9 @@ func _place_neighbor() -> void:
 	neighbor = Neighbor.new()
 	neighbor.position = NEIGHBOR_AT
 	neighbor.rotation.y = PI / 2
-	var where := tr("LOC_" + SPOTS[evidence_spots[case_seed % story.evidence.size()]].id)
+	var seen: Array = range(story.evidence.size())
+	seen.erase(rig.loose_item())
+	var where := tr("LOC_" + SPOTS[evidence_spots[seen[case_seed % seen.size()]]].id)
 	neighbor.clue = tr("CLUE_NEIGHBOR") % where
 	neighbor.clue_speech = tr("NEIGHBOR_CLUE") % where
 	neighbor.told.connect(_on_clue)
