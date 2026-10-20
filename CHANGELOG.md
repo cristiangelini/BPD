@@ -107,3 +107,4 @@
 - Interrogation suspect: the mute answers with gestures and holds up drawings of what slips out (described in words until there's art).
 - Interrogation suspect: the foreigner speaks a made-up language, and a detainee by the table translates what slips out, adding his own lines.
 - Interrogation suspect: the police fan confesses three crimes at once on sheets on the table, and picking a wrong one brings his lawyer closer.
+- Interrogation: E sits a cop on one of the loose chairs, and sitting near the suspect is the good cop by his side.

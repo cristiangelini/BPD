@@ -19,6 +19,7 @@ const ACTIONS := {
 	"throw_chair": {"nerves": 15.0, "lawyer": 12.0, "prompt": "", "react": "SUSPECT_REACT_CHAIR"},
 	"shout": {"nerves": 10.0, "lawyer": 10.0, "prompt": "", "react": "SUSPECT_REACT_SHOUT"},
 	"offer_tissue": {"nerves": -2.0, "lawyer": -6.0, "prompt": "PROMPT_OFFER_TISSUE", "react": "SUSPECT_REACT_TISSUE"},
+	"sit_down": {"nerves": -1.0, "lawyer": -4.0, "prompt": "", "react": "SUSPECT_REACT_SIT"},
 	"show_folder": {"nerves": 20.0, "lawyer": 4.0, "prompt": "", "react": "TWIN_FOLDER"},
 }
 ## The same action again in a row gives this much of its nerves, each time ("Ya no me asusta, oficial").
@@ -456,6 +457,13 @@ func chair_thrown(chair: InterrogationChair) -> bool:
 		return false
 	var cops := chair.handling_cops(InterrogationChair.THROWN_SECONDS)
 	return act("throw_chair", cops[0] if not cops.is_empty() else null)
+
+
+## A cop sat down on a chair: near him, it's the good cop sitting by his side.
+func sat_down_by(chair: InterrogationChair, cop: Cop) -> bool:
+	if not suspect or chair.global_position.distance_to(suspect.global_position) > InterrogationChair.REACH:
+		return false
+	return act("sit_down", cop)
 
 
 ## A cop shouted into the microphone (VoiceChat): near him, it's the bad cop's shout.

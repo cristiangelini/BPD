@@ -507,3 +507,22 @@ func test_the_fan_confesses_three_crimes_and_the_cops_pick_the_true_one() -> voi
 		func(sheet: FanConfession) -> bool: return sheet.crime == case.crime)[0]
 	right.use(cop)
 	assert_true(case.confessed)
+
+
+func test_sitting_by_him_is_the_good_cop_and_e_stands_up() -> void:
+	case.give_tip()
+	case.suspect_id = "talker"
+	case.lawyer = 20.0
+	var cop: Cop = level.get_node("Cop")
+	var chair: InterrogationChair = level.chairs[0]
+	assert_eq(chair.prompt_key(cop), "PROMPT_CHAIR_SIT")
+	chair.use(cop)
+	assert_eq(cop.seated_in, chair)
+	assert_eq(case.lawyer, 16.0, "sitting by his side: -4 lawyer")
+	assert_eq(level.suspect.saying(), "SUSPECT_REACT_SIT")
+	await wait_physics_frames(3)
+	assert_almost_eq(cop.global_position.x, chair.global_position.x, 0.05, "the cop stays on the chair")
+	assert_eq(cop.current_prompt(), "PROMPT_CHAIR_STAND")
+	chair.stand_up()
+	assert_null(cop.seated_in)
+	assert_false(chair.freeze)
