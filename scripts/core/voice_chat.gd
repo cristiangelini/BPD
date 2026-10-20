@@ -43,6 +43,8 @@ var _net: Node
 var _players := {}
 var _label: Label
 var _recording := false
+## The player's own voice, to tell when they shout at a suspect.
+var shout := ShoutMeter.new()
 
 
 func _init(net: Node) -> void:
@@ -135,10 +137,35 @@ func _send(steam: Object) -> void:
 	if int(voice.get("result", -1)) != 0 or size <= 0:
 		return
 	data = data.slice(0, size)
+	_check_shout(steam, data)
 	if loopback:
 		_hear(0, maxi(talking, 0), data)
 	if _net.is_online():
 		_voice.rpc(maxi(talking, 0), data)
+
+
+## Only in an interrogation: a shout near the suspect is the bad cop's shout.
+func _check_shout(steam: Object, data: PackedByteArray) -> void:
+	if not is_inside_tree() or not get_tree().has_group("interrogation"):
+		return
+	var voice: Dictionary = steam.call("decompressVoice", data, mix_rate)
+	var pcm: PackedByteArray = voice.get("uncompressed", voice.get("buffer", PackedByteArray()))
+	if shout.feed(pcm.slice(0, int(voice.get("size", pcm.size()))), mix_rate):
+		shouted(local_cop(get_tree()))
+
+
+## Tells the interrogation that the player's cop shouted.
+func shouted(cop: Cop) -> void:
+	if cop:
+		get_tree().call_group("interrogation", "shouted_by", cop)
+
+
+## The cop this PC's player moves.
+static func local_cop(tree: SceneTree) -> Cop:
+	for cop: Node in tree.get_nodes_in_group("cops"):
+		if (cop as Cop).input_enabled:
+			return cop
+	return null
 
 
 @rpc("any_peer", "call_remote", "unreliable_ordered")

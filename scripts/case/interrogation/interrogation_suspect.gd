@@ -29,6 +29,8 @@ func _ready() -> void:
 	_bubble.font_size = 40
 	_bubble.width = 600.0
 	_bubble.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	# Over the hanging lamp, which hangs right between the cops and his head.
+	_bubble.no_depth_test = true
 	_bubble.hide()
 	add_child(_bubble)
 

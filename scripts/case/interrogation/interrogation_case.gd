@@ -17,6 +17,7 @@ const ACTIONS := {
 	"flick_lights": {"nerves": 8.0, "lawyer": 5.0, "prompt": "PROMPT_FLICK_LIGHTS", "react": "SUSPECT_REACT_LIGHTS"},
 	"give_coffee": {"nerves": -3.0, "lawyer": -10.0, "prompt": "", "react": "SUSPECT_REACT_COFFEE"},
 	"throw_chair": {"nerves": 15.0, "lawyer": 12.0, "prompt": "", "react": "SUSPECT_REACT_CHAIR"},
+	"shout": {"nerves": 10.0, "lawyer": 10.0, "prompt": "", "react": "SUSPECT_REACT_SHOUT"},
 	"offer_tissue": {"nerves": -2.0, "lawyer": -6.0, "prompt": "PROMPT_OFFER_TISSUE", "react": "SUSPECT_REACT_TISSUE"},
 }
 ## The same action again in a row gives this much of its nerves, each time ("Ya no me asusta, oficial").
@@ -32,6 +33,8 @@ const SLIPS_AT: Array[float] = [30.0, 60.0, 90.0]
 const FULL := 100.0
 ## A cop eating a donut this close to the suspect counts as the bad cop's action.
 const EAT_REACH := 3.0
+## A shout counts from this close (propuesta): in the room, not from the hall.
+const SHOUT_REACH := 5.0
 ## Seconds the lamp stays on his face, and the lights' blinks when a cop flicks them.
 const LAMP_SECONDS := 4.0
 const FLICKS := 3
@@ -177,6 +180,12 @@ func chair_thrown(chair: InterrogationChair) -> bool:
 		return false
 	var cops := chair.handling_cops(InterrogationChair.THROWN_SECONDS)
 	return act("throw_chair", cops[0] if not cops.is_empty() else null)
+
+
+## A cop shouted into the microphone (VoiceChat): near him, it's the bad cop's shout.
+func shouted_by(cop: Cop) -> void:
+	if suspect and cop.global_position.distance_to(suspect.global_position) <= SHOUT_REACH:
+		act("shout", cop)
 
 
 ## A cop ate a donut: in front of the suspect, it's torture.
