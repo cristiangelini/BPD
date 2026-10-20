@@ -49,3 +49,4 @@
 - The bakery's sixth story, the carrier pigeons: the route book, the cage and the whistle hidden in the bakery; five pigeons in the shop carry small things cops leave on the floor up to the bread rack; feathers under the bedroom window give it away.
 - Play draws the place: each match is in the grandpa's house or the bakery, from the case seed (--place= forces one); "play again" draws a new case. Fixes case seeds being always odd, which made the grandpa's house always tell the same story and the bakery only three of its six.
 - Online, step 1: "Jugar con amigos" opens a room by IP (up to 4 cops, each with its skin color); the host starts the case and everyone opens the same place with the same seed. Design in docs/diseno/online.md.
+- Online, step 3: in a room every player sees the other cops in their skin colors, walking, turning, looking up and down and crouching where their owners move them; a player who leaves takes their cop away.

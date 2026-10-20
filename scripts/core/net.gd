@@ -17,6 +17,9 @@ const DEFAULT_PORT := 7777
 const HOST_ID := 1
 ## Seconds a refused guest has to leave before the host kicks it.
 const REFUSE_GRACE := 1.0
+const COP_SCENE := preload("res://scenes/player/cop.tscn")
+## Cops stand this far apart side by side at the start, in slot order, so they don't spawn inside each other.
+const SPAWN_GAP := 1.2
 
 ## Peer id -> slot (0 to 3). The slot gives the skin color (decision 72) and the "Policía N" name.
 var players := {}
@@ -24,6 +27,12 @@ var players := {}
 var in_match := false
 ## Off in tests, so starting a case only emits match_started.
 var change_scenes := true
+## Peers that have the current level loaded, so they can take the cops' state.
+var scene_peers: Array[int] = []
+## Peer id -> its CopSync in the current level.
+var cop_syncs := {}
+## This PC has the current level loaded and its cops in place.
+var _in_scene := false
 
 
 func _ready() -> void:
@@ -79,6 +88,7 @@ func leave() -> void:
 	var had_players := not players.is_empty()
 	players = {}
 	in_match = false
+	_leave_scene()
 	if had_players:
 		players_changed.emit()
 
@@ -107,10 +117,77 @@ func start_match() -> void:
 @rpc("authority", "call_local", "reliable")
 func _start_match(place: String, case_seed: int) -> void:
 	in_match = true
+	_leave_scene()
 	match_started.emit(place, case_seed)
 	if change_scenes:
 		PlaceDraw.pending_seed = case_seed
 		get_tree().change_scene_to_file(PlaceDraw.PLACES[place])
+
+
+## Called by the player's own cop once its level is ready: puts that cop in its slot and adds a copy of every other
+## player's cop next to it. Each cop gets a CopSync so its owner moves it on every PC.
+func spawn_cops(local: Cop) -> void:
+	if not is_online() or not is_instance_valid(local):
+		return
+	_leave_scene()
+	var me := multiplayer.get_unique_id()
+	var start := local.global_transform
+	_add_cop(local, me, start)
+	for id: int in players:
+		if id == me:
+			continue
+		var copy: Cop = COP_SCENE.instantiate()
+		copy.input_enabled = false
+		copy.name = "Cop%d" % id
+		copy.get_node("Grabber").input_enabled = false
+		copy.get_node("Hud").visible = false
+		local.get_parent().add_child(copy)
+		_add_cop(copy, id, start)
+	_in_scene = true
+	_entered_scene.rpc(true)
+
+
+func _add_cop(cop: Cop, id: int, start: Transform3D) -> void:
+	var slot: int = players.get(id, 0)
+	cop.set_uniform(slot)
+	if not cop.vehicle:
+		cop.global_transform = start.translated(start.basis.x * (slot - (MAX_PLAYERS - 1) / 2.0) * SPAWN_GAP)
+	var sync := CopSync.new(cop, self, id)
+	add_child(sync)
+	cop_syncs[id] = sync
+
+
+## Another peer loaded the level. If this PC has it loaded too, it answers so the other one knows.
+@rpc("any_peer", "call_remote", "reliable")
+func _entered_scene(answer: bool) -> void:
+	var id := multiplayer.get_remote_sender_id()
+	if not scene_peers.has(id):
+		scene_peers.append(id)
+	if answer and _in_scene:
+		_entered_scene.rpc_id(id, false)
+
+
+func _leave_scene() -> void:
+	_in_scene = false
+	scene_peers.clear()
+	for sync: Node in cop_syncs.values():
+		remove_child(sync)
+		sync.queue_free()
+	cop_syncs.clear()
+
+
+## A player left: their cop goes away (what it held drops, online.md).
+func _remove_cop(id: int) -> void:
+	scene_peers.erase(id)
+	if not cop_syncs.has(id):
+		return
+	var sync: CopSync = cop_syncs[id]
+	cop_syncs.erase(id)
+	if is_instance_valid(sync.cop):
+		sync.cop.get_node("Grabber").release()
+		sync.cop.queue_free()
+	remove_child(sync)
+	sync.queue_free()
 
 
 @rpc("authority", "call_remote", "reliable")
@@ -139,6 +216,7 @@ func _kick(id: int) -> void:
 
 
 func _on_peer_disconnected(id: int) -> void:
+	_remove_cop(id)
 	if not multiplayer.is_server() or not players.has(id):
 		return
 	players.erase(id)
