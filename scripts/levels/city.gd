@@ -30,6 +30,8 @@ const HEDGE_HEIGHT := 2.5
 
 ## The comisario in his office at the station; the case scene listens to him.
 var comisario: Comisario
+## The armero behind the armory counter.
+var armero: Armero
 var _materials := {}
 var _built: Node3D
 
@@ -178,7 +180,7 @@ func _shell(size: Vector3, color: Color, root: Node3D) -> void:
 
 
 ## The station's rooms (docs/diseno/comisaria.md): floor, ceiling, inside walls, the barred counter and cells, the
-## furniture, a light per room and the comisario behind his desk.
+## furniture, a light per room, the comisario behind his desk and the armero behind the counter.
 func _station_inside(root: Node3D, size: Vector3) -> void:
 	_mesh_box(Vector3(0, 0.04, 0), Vector3(size.x - 0.4, 0.02, size.z - 0.4), STATION_FLOOR, root)
 	# The facade's color stays outside: the outside walls get a light lining up to the ceiling.
@@ -219,6 +221,11 @@ func _station_inside(root: Node3D, size: Vector3) -> void:
 	comisario.name = "Comisario"
 	comisario.position = StationRooms.COMISARIO_AT
 	root.add_child(comisario)
+	armero = Armero.new()
+	armero.name = "Armero"
+	armero.position = StationRooms.ARMERO_AT
+	armero.rotation.y = PI / 2
+	root.add_child(armero)
 
 
 ## Traffic light and street name sign on the north-east corner of an inner crossing.

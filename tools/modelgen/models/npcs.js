@@ -131,6 +131,25 @@ const NPCS = {
 		b.add('body', C('silver', 0xc8ccd2), new THREE.TorusGeometry(0.06, 0.012, 4, 10), { pos: V(0.32, 0.45, 0.32), rot: [0, 0.6, 0] });
 		limb(b, 'props', black, V(-0.42, 0.62, 0.22), V(-0.4, 0.3, 0.32), 0.03);
 	},
+	// Armero (the station's armory, comisaria.md): grey work shirt under a leather apron, goggles up on a bald head,
+	// a big beard and a wrench. Grumpy but fair.
+	armero(b) {
+		const shirt = C('work_shirt', 0x7d8590), apron = C('apron', 0x7a4a26);
+		pearBody(b, SKIN.arena, { shirt, pants: C('work_pants', 0x3d4148) });
+		b.add('body', apron, new THREE.BoxGeometry(0.5, 0.62, 0.03), { pos: V(0, 0.68, 0.4), rot: [-0.22, 0, 0] });
+		for (const s of [-1, 1]) b.add('body', apron, new THREE.BoxGeometry(0.04, 0.16, 0.02), { pos: V(s * 0.2, 1.04, 0.29), rot: [-0.7, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		for (const s of [-1, 1]) b.add('face', black, new THREE.BoxGeometry(0.09, 0.025, 0.02), { pos: V(s * 0.08, 1.39, 0.19), rot: [0, 0, s * 0.3] });
+		const beard = C('beard', 0x6a4a30);
+		b.add('face', beard, ellipsoid(0.17, 0.13, 0.08, 8, 5), { pos: V(0, 1.17, 0.15) });
+		mustache(b, beard, 1.3);
+		const glass = C('goggles', 0x8fd0e0, { emissive: 0x10303a });
+		for (const s of [-1, 1]) b.add('head', glass, new THREE.CylinderGeometry(0.045, 0.045, 0.03, 8), { pos: V(s * 0.07, 1.5, 0.15), rot: [Math.PI / 2 - 0.5, 0, 0] });
+		b.add('head', black, new THREE.TorusGeometry(0.172, 0.014, 4, 14), { pos: V(0, 1.47, 0.0), rot: [Math.PI / 2 - 0.15, 0, 0] });
+		const steel = C('silver', 0xc8ccd2);
+		limb(b, 'props', steel, V(0.5, 0.75, 0.22), V(0.56, 0.38, 0.3), 0.025);
+		b.add('props', steel, new THREE.TorusGeometry(0.045, 0.018, 4, 8, Math.PI * 1.4), { pos: V(0.56, 0.36, 0.3) });
+	},
 	// Preso: orange jumpsuit with a number, bald, ball and chain.
 	preso(b) {
 		const orange = C('jumpsuit', 0xff7a1a);

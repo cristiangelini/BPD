@@ -42,6 +42,8 @@ var stats := {"ram_misses": 0, "story_seconds": 0.0, "meters_driven": 0.0, "phot
 var vehicle: PatrolCar
 ## The comisario is giving the case (CaseBriefing): the cop can look around but not move or use things.
 var in_briefing := false
+## The armero's list is open for this cop (ArmoryMenu): same as the briefing, but only for this cop.
+var in_menu := false
 ## The player's own first person hands; only a cop with a player at the keys has them.
 var hands: CopHands
 ## Player index (0 to 3) whose skin this cop wears.
@@ -105,7 +107,7 @@ func drop_ram() -> RamPickup:
 
 ## The key text (tr() key) for what this cop can do right now: what's in hand, else what the camera points at.
 func current_prompt() -> String:
-	if vehicle or in_briefing:
+	if vehicle or in_briefing or in_menu:
 		return ""
 	if $Grabber.held:
 		return "PROMPT_HOLDING"
@@ -170,9 +172,10 @@ func is_cuffed() -> bool:
 	return _cuffed_left > 0.0
 
 
-## Busy: staggered, listening to the grandpa, sitting in the car or hearing the comisario. No walking, grabbing or ramming.
+## Busy: staggered, listening to the grandpa, sitting in the car, hearing the comisario or at the armero's list.
+## No walking, grabbing or ramming.
 func is_busy() -> bool:
-	return is_staggered() or listening_to != null or vehicle != null or in_briefing
+	return is_staggered() or listening_to != null or vehicle != null or in_briefing or in_menu
 
 
 ## Rides `seat` of `car`, facing forward, until stand_up(). Lets go of whatever it was holding.

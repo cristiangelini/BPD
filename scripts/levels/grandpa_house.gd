@@ -499,6 +499,8 @@ func _place_in_city() -> void:
 	raid.station_parking = city.transform * CityLayout.parking("station")
 	if start_at_station:
 		$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+		# The ram comes from the armory now (comisaria.md); the one by the door stays for tests that start there.
+		$RamPickup.free()
 
 
 func car_at_station() -> bool:
