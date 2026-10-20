@@ -8,10 +8,10 @@ La panadería ocupa el terreno que ya tiene en la ciudad (16 × 14 m) y tiene do
 | Planta | Ambientes |
 |---|---|
 | **Abajo** | El **local**, con el mostrador, la vitrina de tortas, los estantes de pan y la caja registradora. El **obrador**, con el horno grande, la mesa de amasar y la amasadora. El **depósito**, con bolsas de harina de 25 kg, la heladera y estantes de latas. Un baño. |
-| **Arriba** | La casa de la panadera: dormitorio, living chico y un balcón a la calle. Se sube por una escalera angosta desde el depósito. |
+| **Arriba** | La casa de la panadera: dormitorio y living chico, con dos ventanas a la calle. No tiene balcón (pedido de Cristian, 20/10). Se sube por una escalera angosta desde el depósito. |
 
 - **Cómo se entra:** a diferencia de la casa del abuelo, el local está **abierto**, con la persiana a medio subir, y adentro hay clientes. Lo cerrado es el obrador: la puerta dice "Solo personal" y la panadera la tapa con el cuerpo. La llave está en la caja registradora, y también se puede entrar por la puerta de atrás, que da al patio, con el ariete.
-- **Escondites:** unos 12, como en la casa del abuelo. Por ejemplo: adentro del horno apagado, detrás de las bolsas de harina, en la heladera, abajo del mostrador, en la vitrina, en la amasadora, arriba de un ropero y en el balcón.
+- **Escondites:** unos 12, como en la casa del abuelo. Por ejemplo: adentro del horno apagado, detrás de las bolsas de harina, en la heladera, abajo del mostrador, en la vitrina, en la amasadora, arriba de un ropero y en el baúl del living.
 - **Lo frágil:** en lugar de los adornos del abuelo están las **tortas de la vitrina** y los **panes de los estantes**. Cada uno que se rompe es una multa de 20 y le sube la denuncia a la panadera.
 
 ## La panadera
@@ -31,7 +31,7 @@ Cada una tiene una evidencia principal (sin ella no hay caso), 1 o 2 extras, un 
 | **La masa madre robada** | Gertrudis, la masa madre campeona del concurso del barrio, en un frasco (3 kg, 1000, frágil) | La medalla del concurso (0,3 kg, 300) | El frasco burbujea y hace ruido; se oye más fuerte de cerca | Gertrudis crece: cada minuto el frasco pesa un poco más, y si se cae se rompe |
 | **Las tortas de boda que nunca existieron** | El cuaderno de señas cobradas (0,3 kg, 1000) | Una torta de cartón de muestra (2 kg, 300), fotos de novios (0,1 kg, 100) | Las tortas de la vitrina son de cartón: al tocarlas suenan huecas | Llaman novios enojados por teléfono y la panadera se pone nerviosa |
 | **La lotería del pan** | El boleto premiado (0,01 kg, 1500), escondido en un pan dulce | La lista de números (0,1 kg, 200) | Los panes dulces tienen un número pintado con azúcar | Hay 10 panes dulces numerados y solo uno tiene el boleto |
-| **Palomas mensajeras** | La libreta de rutas de las palomas (0,3 kg, 1000) | La jaula (6 kg, 300), el silbato (0,05 kg, 100) | Plumas y migas en el balcón | Hay 5 palomas sueltas en el local que se llevan cosas chicas si las dejan en el piso |
+| **Palomas mensajeras** | La libreta de rutas de las palomas (0,3 kg, 1000) | La jaula (6 kg, 300), el silbato (0,05 kg, 100) | Plumas y migas en la ventana del dormitorio | Hay 5 palomas sueltas en el local que se llevan cosas chicas si las dejan en el piso |
 
 Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y los extras suman entre 300 y 600.
 
@@ -51,3 +51,4 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
 ## Respuestas de Cristian (20/10)
 1. Marta y las 6 historias van como están.
 2. El local está abierto, con clientes adentro.
+3. La panadería no tiene balcón: no tiene sentido en un local.
