@@ -3,10 +3,14 @@ extends RefCounted
 
 ## A whole match of 5 shifts, saved between shifts (docs/diseno/guardado.md): the next shift, the group's money, the
 ## items, and the cases that follow, which all come from the campaign's own seed. Only the host saves it online.
+## Each shift has a quota that rises shift by shift; missing it ends the campaign (decision 86, comisaria.md).
 
 const SHIFTS := 5
 const SAVE_PATH := "user://partidas/partida.json"
 const VERSION := 1
+## The first shift's quota and how much it rises each shift after (decision 86). A target, not money paid.
+const QUOTA_START := 800
+const QUOTA_STEP := 100
 
 ## The campaign being played, if any (solo, or hosting a room).
 static var current: Campaign
@@ -20,6 +24,8 @@ var money := 0
 var items: Array[String] = []
 ## One entry per shift played: {"shift", "story", "solved", "total", "approved"}.
 var history: Array[Dictionary] = []
+## A shift missed its quota: the cops are suspended and the campaign is lost.
+var suspended := false
 
 
 ## A new campaign at shift 1 with a fresh seed.
@@ -31,7 +37,17 @@ static func start_new() -> Campaign:
 
 
 func is_over() -> bool:
-	return shift > SHIFTS
+	return suspended or shift > SHIFTS
+
+
+## All 5 shifts made their quota: "¡Ascendidos!".
+func is_promoted() -> bool:
+	return shift > SHIFTS and not suspended
+
+
+## The quota of the shift being played.
+func quota() -> int:
+	return QUOTA_START + QUOTA_STEP * (shift - 1)
 
 
 ## The case seed of the shift being played: the same for this campaign and shift every time, never 0.
@@ -39,17 +55,21 @@ func case_seed() -> int:
 	return hash("campaign %d shift %d" % [campaign_seed, shift]) % 0x7fffffff + 1
 
 
-## Closes the shift with its end of shift numbers (ShiftReport.pay) and moves on to the next one.
+## Closes the shift with its end of shift numbers (ShiftReport.pay) and moves on to the next one. The report's quota
+## and verdict become this shift's (quota()), so the end of shift screen shows them.
 func finish_shift(story: String, solved: bool, report: Dictionary) -> void:
+	report.quota = quota()
+	report.approved = report.total >= report.quota
 	history.append({"shift": shift, "story": story, "solved": solved, "total": report.total,
 		"approved": report.approved})
 	money += report.total
+	suspended = not report.approved
 	shift += 1
 
 
 func to_dict() -> Dictionary:
 	return {"version": VERSION, "seed": campaign_seed, "shift": shift, "money": money, "items": items,
-		"history": history}
+		"history": history, "suspended": suspended}
 
 
 static func from_dict(data: Dictionary) -> Campaign:
@@ -57,6 +77,7 @@ static func from_dict(data: Dictionary) -> Campaign:
 	campaign.campaign_seed = int(data.get("seed", 0))
 	campaign.shift = int(data.get("shift", 1))
 	campaign.money = int(data.get("money", 0))
+	campaign.suspended = bool(data.get("suspended", false))
 	campaign.items.assign(data.get("items", []))
 	# JSON brings every number back as a float.
 	for entry: Dictionary in data.get("history", []):
