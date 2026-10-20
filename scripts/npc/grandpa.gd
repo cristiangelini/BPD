@@ -38,7 +38,14 @@ const ASKS := 3
 const ASK_COOLDOWN := 5.0
 ## Michi meowing (picked up) or a cop tripping over it (propuesta). He hears it from further than he sees.
 const CAT_UPSET := 5.0
+## A camera flash in his face, and being cuffed (herramientas.md, propuesta).
+const PHOTOGRAPHED := 3.0
+const CUFFED := 15.0
 const HEARING := 12.0
+## The fight club story: pushed faster than STRUCK_SPEED, the champion shoves the cop back this many times as fast,
+## and the cop staggers (propuesta).
+const PUSH_BACK := 2.5
+const PUSH_STAGGER := 1.0
 
 var complaint := 0.0
 var has_called_lawyer := false
@@ -53,7 +60,13 @@ var _story_wait := 0.0
 ## What he lets slip when asked, in order (the house fills it from the case seed).
 var slips: Array[String] = []
 var asked := 0
+## The dentures story: he hid his own teeth with the rest, so he can't be understood.
+var toothless := false
+## The fight club story: he is the champion, so he pushes back and won't stand still for a story.
+var champion := false
 var _ask_wait := 0.0
+## Cuffed by a cop: he stays where he is until it runs out.
+var _cuffed_left := 0.0
 
 @onready var _agent: NavigationAgent3D = $Agent
 @onready var _bubble: Label3D = $Bubble
@@ -81,7 +94,7 @@ func ask(_cop: Cop) -> bool:
 	var line := slips[asked]
 	asked += 1
 	_say(line, 5.0)
-	slipped.emit(line)
+	slipped.emit(mumble(line) if toothless else line)
 	return true
 
 
@@ -91,6 +104,9 @@ func use(cop: Cop) -> void:
 
 func start_story(cop: Cop) -> bool:
 	if listener:
+		return false
+	if champion:
+		_say("GRANDPA_CHAMPION_NO_STORY")
 		return false
 	if _story_wait > 0.0:
 		_say("GRANDPA_STORY_TIRED")
@@ -118,6 +134,7 @@ func is_telling_story() -> bool:
 func _physics_process(delta: float) -> void:
 	_story_wait = maxf(_story_wait - delta, 0.0)
 	_ask_wait = maxf(_ask_wait - delta, 0.0)
+	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
 	if listener:
 		listener.stats["story_seconds"] += delta
 		_story_left -= delta
@@ -130,7 +147,7 @@ func _physics_process(delta: float) -> void:
 		_set_complaint(complaint - 1.0)
 	var cop := nearest_cop()
 	var wish := Vector3.ZERO
-	if cop and not listener and global_position.distance_to(cop.global_position) > KEEP_AWAY:
+	if cop and not listener and not is_cuffed() and global_position.distance_to(cop.global_position) > KEEP_AWAY:
 		_agent.target_position = cop.global_position
 		if not _agent.is_navigation_finished():
 			wish = _agent.get_next_path_position() - global_position
@@ -155,6 +172,23 @@ func nearest_cop() -> Cop:
 			best = cop
 			best_distance = d
 	return best
+
+
+## A cop took his photo with the flash.
+func photographed(_cop: Cop) -> void:
+	_raise(PHOTOGRAPHED)
+	_say("NPC_NO_PHOTOS")
+
+
+## A cop cuffed him for `seconds`: he can't follow anyone, and complains.
+func cuffed(seconds: float) -> void:
+	_cuffed_left = maxf(_cuffed_left, seconds)
+	_raise(CUFFED)
+	_say("NPC_POLICE_ABUSE")
+
+
+func is_cuffed() -> bool:
+	return _cuffed_left > 0.0
 
 
 ## An ornament broke at `at`: it counts if he is close and can see it.
@@ -222,8 +256,16 @@ func _on_bump(body: Node3D) -> void:
 		speed = (body as Cop).velocity.length()
 	elif body is RigidBody3D:
 		speed = (body as RigidBody3D).linear_velocity.length()
-	if speed > STRUCK_SPEED:
-		struck()
+	if speed > STRUCK_SPEED and struck() and champion and body is Cop:
+		push_back(body as Cop, speed)
+
+
+## The champion shoves a cop that pushed him, harder than he got it.
+func push_back(cop: Cop, speed: float) -> void:
+	var away := cop.global_position - global_position
+	away.y = 0.0
+	cop.knock_back(away.normalized() * speed * PUSH_BACK, PUSH_STAGGER)
+	_say("GRANDPA_CHAMPION_PUSH")
 
 
 func _talk(delta: float, following: bool) -> void:
@@ -233,8 +275,36 @@ func _talk(delta: float, following: bool) -> void:
 		_line += 1
 
 
+## Without his teeth (the dentures story) everything he says comes out mushy: "s" is "sh", "t" is "d", "p" is "b".
+static func mumble(text: String) -> String:
+	var out := ""
+	for i in text.length():
+		var c := text[i]
+		var next := text[i + 1].to_lower() if i + 1 < text.length() else ""
+		match c:
+			"s", "z":
+				out += "sh"
+			"S", "Z":
+				out += "Sh"
+			"c" when next == "e" or next == "i":
+				out += "sh"
+			"t":
+				out += "d"
+			"T":
+				out += "D"
+			"p":
+				out += "b"
+			"P":
+				out += "B"
+			_:
+				out += c
+	return out
+
+
 func _say(key: String, seconds := 3.0) -> void:
 	_since_line = 0.0
+	if toothless:
+		key = mumble(tr(key))
 	_bubble.text = key
 	_bubble.show()
 	var said := key

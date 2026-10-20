@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CaseStory" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/case/case_story.gd" id="1_story"]
+[ext_resource type="PackedScene" path="res://scenes/props/radio_transmitter.tscn" id="2_radio"]
+[ext_resource type="PackedScene" path="res://scenes/props/radio_tape.tscn" id="3_tape"]
+[ext_resource type="Script" path="res://scripts/case/radio_rig.gd" id="4_rig"]
+
+[resource]
+script = ExtResource("1_story")
+id = "radio"
+briefing = PackedStringArray("BRIEF_RIGHT", "BRIEF_RADIO_B", "BRIEF_RADIO_C", "BRIEF_RADIO_D")
+evidence = Array[PackedScene]([ExtResource("2_radio")])
+item_keys = PackedStringArray("transmitter")
+find_key = "OBJ_FIND_RADIO"
+heavy = Array[bool]([true])
+half_heights = Array[float]([0.25])
+drawer_evidence = ExtResource("3_tape")
+drawer_count = 3
+cat_item = 0
+rig = ExtResource("4_rig")

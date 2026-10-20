@@ -23,6 +23,8 @@ var clue_speech := ""
 var was_asked := false
 var fed := false
 var _since_psst := PSST_EVERY
+## Cuffed by a cop: complains and says nothing until free (herramientas.md).
+var _cuffed_left := 0.0
 var _bubble: Label3D
 
 
@@ -81,6 +83,9 @@ func prompt_key(_cop: Cop) -> String:
 
 ## E on him: the first time he asks for a loaf; once he ate it, he repeats what he saw.
 func use(_cop: Cop) -> void:
+	if is_cuffed():
+		_say("NPC_CUFFED_QUIET")
+		return
 	if fed:
 		_say(clue_speech, 6.0)
 		return
@@ -101,8 +106,18 @@ func feed(loaf: Bread) -> void:
 	told.emit(clue)
 
 
+func cuffed(seconds: float) -> void:
+	_cuffed_left = maxf(_cuffed_left, seconds)
+	_say("NPC_POLICE_ABUSE")
+
+
+func is_cuffed() -> bool:
+	return _cuffed_left > 0.0
+
+
 func _physics_process(delta: float) -> void:
-	if was_asked:
+	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
+	if was_asked or is_cuffed():
 		return
 	_since_psst += delta
 	if _since_psst < PSST_EVERY:

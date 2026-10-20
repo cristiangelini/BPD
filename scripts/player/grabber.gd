@@ -40,7 +40,7 @@ func hold_point() -> Vector3:
 
 ## Grabs the object in front of the camera within reach. Returns true if it got one.
 func try_grab() -> bool:
-	if _cop.ram or _cop.is_busy() or _cop.is_eating():
+	if _cop.ram or _cop.belt.held_tool() or _cop.is_cuffed() or _cop.is_busy() or _cop.is_eating():
 		return false
 	var eye := _cop.camera.global_transform
 	var hit := _cop.aim_hit(GameScale.GRAB_REACH)
