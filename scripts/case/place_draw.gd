@@ -20,6 +20,8 @@ const INTERROGATION_EVERY := 3
 
 ## The seed the next level takes (0 = none drawn; the level draws its own).
 static var pending_seed := 0
+## The owner brought in from the last raid without a campaign (RaidCase.custody); a campaign keeps its own.
+static var custody := {}
 
 
 ## The place for this seed: from --place=<id> among the user args, or drawn. It hashes the seed instead of taking
@@ -29,7 +31,8 @@ static func pick(case_seed: int, args: PackedStringArray, shift := 0) -> String:
 	for arg in args:
 		if arg.begins_with("--place=") and PLACES.has(arg.trim_prefix("--place=")):
 			return arg.trim_prefix("--place=")
-	if is_interrogation(case_seed, shift):
+	# An owner in custody is interrogated next, whatever the shift (decision 93).
+	if is_interrogation(case_seed, shift) or not custody_now().is_empty():
 		return "interrogation"
 	return ORDER[hash("place %d" % case_seed) % ORDER.size()]
 
@@ -38,6 +41,20 @@ static func is_interrogation(case_seed: int, shift: int) -> bool:
 	if shift > 0:
 		return shift % INTERROGATION_EVERY == 0
 	return hash("interrogation %d" % case_seed) % INTERROGATION_EVERY == 0
+
+
+## The owner waiting to be interrogated: the campaign's, or the one from the last raid without one.
+static func custody_now() -> Dictionary:
+	if Campaign.current and not Campaign.current.is_over():
+		return Campaign.current.custody
+	return custody
+
+
+## Lets the owner go once he's been interrogated.
+static func release_custody() -> void:
+	custody = {}
+	if Campaign.current:
+		Campaign.current.custody = {}
 
 
 ## The shift being played, or 0 without a campaign.

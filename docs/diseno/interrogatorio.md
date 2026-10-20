@@ -186,6 +186,12 @@ turno siguiente es su interrogatorio. Todo **(propuesta)**.
    escapa dónde estaba lo que escondió (las mismas frases que decía con R en el allanamiento). La confesión paga 500 más
    la mitad de lo que valía la evidencia que quedó sin entregar.
 
+**Cómo quedó (el dueño):** E sobre el abuelo, Marta o Ramiro esposados los lleva del brazo; junto al patrullero se suben
+atrás y la partida los guarda detenidos. El turno siguiente "Jugar" abre su interrogatorio (sin partida, también el
+siguiente "Jugar"); se le escapa lo que dijo con R en el allanamiento y la confesión paga 500 más la mitad de lo que
+valía la evidencia que quedó allá. Después de interrogarlo, confiese o no, se va a su casa. Capturas: `escolta.png`,
+`escolta_patrullero.png` y `dueno_interrogado.png`.
+
 ## Online
 Los medidores, las acciones y la confesión los decide el host (decisión 50), como con la denuncia. Por la red se manda
 cada acción con quién la hizo; el grito se mide en la PC de quien habla y se manda solo si pasó el umbral.
@@ -212,7 +218,7 @@ lo pidió.
 5. El sorteo en "Jugar" (1 de cada 3). Hecho.
 6. Los otros 9 sospechosos, uno o dos por PR. Hecho.
 7. Interrogar al dueño después de un allanamiento: primero la escolta hasta el patrullero (el dueño queda detenido en la
-   partida) y después su interrogatorio.
+   partida) y después su interrogatorio. Hecho.
 
 ## Respuestas de Cristian (20/10)
 1. La sala no va en la sala de descanso: es una sala de interrogatorio de película, aparte (el ala de atrás).

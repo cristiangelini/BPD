@@ -65,7 +65,15 @@ const SUSPECT_MODELS := {
 	"foreigner": "res://assets/models/npc_sospechoso.glb",
 	"translator": "res://assets/models/npc_preso.glb",
 	"fan": "res://assets/models/npc_cliente.glb",
+	"owner_grandpa": "res://assets/models/npc_abuelo.glb",
+	"owner_baker": "res://assets/models/npc_panadera.glb",
+	"owner_groomer": "res://assets/models/npc_peluquero.glb",
 }
+## The owner brought in from the last raid (decision 93): what slips out of him is what he let slip there with R (his
+## custody's slips, OWNER_SLIP_<n> when there aren't enough), and the confession pays the salary and OWNER_SHARE of
+## what the evidence left behind was worth.
+const OWNER_SLIPS := ["OWNER_SLIP_1", "OWNER_SLIP_2", "OWNER_SLIP_3"]
+const OWNER_SHARE := 0.5
 ## The sweet grandpa cries when the nerves go up more than CRY_NERVES within CRY_SECONDS, and the lawyer goes up
 ## CRY_LAWYER on its own (propuesta).
 const CRY_NERVES := 25.0
@@ -122,6 +130,8 @@ signal twin_changed(nerves: float)
 
 var case_seed := 0
 var crime := ""
+## The owner's custody (RaidCase.custody), when it's him in the chair.
+var custody := {}
 var suspect_id := "talker"
 var suspect: InterrogationSuspect
 var nerves := 0.0
@@ -207,7 +217,7 @@ static func pick_crime(seed_value: int) -> String:
 ## Starts the case: the tip waits for a cop to talk to the comisario (right away without one).
 func start(comisario: Comisario = null) -> void:
 	add_to_group("interrogation")
-	crime = pick_crime(case_seed)
+	crime = "owner_" + str(custody.owner) if suspect_id == "owner" else pick_crime(case_seed)
 	briefing = CaseBriefing.new()
 	add_child(briefing)
 	if comisario:
@@ -225,8 +235,10 @@ func give_tip() -> void:
 	tip_given = true
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).input_enabled:
-			briefing.start(PackedStringArray(["BRIEF_INTERROGATION_A", "CRIME_" + crime, "BRIEF_SUSPECT_" + suspect_id,
-				"BRIEF_INTERROGATION_C"]))
+			var lines := ["BRIEF_INTERROGATION_A", "CRIME_" + crime, "BRIEF_SUSPECT_" + suspect_id, "BRIEF_INTERROGATION_C"]
+			if suspect_id == "owner":
+				lines = ["CRIME_" + crime, "BRIEF_SUSPECT_owner", "BRIEF_OWNER_C"]
+			briefing.start(PackedStringArray(lines))
 			break
 	briefing.finished.connect(_hint_all.bind("HINT_GO_INTERROGATION"), CONNECT_ONE_SHOT)
 
@@ -539,6 +551,9 @@ func _check(_cop: Cop) -> void:
 	while slips < SLIPS_AT.size() and nerves >= SLIPS_AT[slips]:
 		slips += 1
 		var slip := tr("SLIP_%s_%d" % [crime, slips]) if guilty else tr(TWIN_SLIPS[slips - 1])
+		if suspect_id == "owner":
+			var said: Array = custody.get("slips", [])
+			slip = str(said[slips - 1]) if slips <= said.size() else tr(OWNER_SLIPS[slips - 1])
 		if suspect_id == "mute":
 			_draw(tr("MUTE_DRAW_%s_%d" % [crime, slips]), "MUTE_DRAWS")
 			continue
@@ -744,6 +759,11 @@ func _finish_soon() -> void:
 	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
 
+## What the owner's confession adds to the salary: OWNER_SHARE of the evidence left behind in his raid.
+func owner_pay() -> float:
+	return float(custody.get("missed", 0)) * OWNER_SHARE
+
+
 ## The end of shift screen: a confession pays the salary (decision 90), the lawyer nothing. Online the host's numbers
 ## go to the guests.
 func finish_shift() -> void:
@@ -752,7 +772,11 @@ func finish_shift() -> void:
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
-	var result := {"solved": confessed, "report": ShiftReport.pay(confessed, [], 0), "awards": ShiftReport.awards(stats)}
+	var report := ShiftReport.pay(confessed, [owner_pay()] if suspect_id == "owner" else [], 0)
+	var result := {"solved": confessed, "report": report, "awards": ShiftReport.awards(stats)}
+	# Interrogated, the owner goes home whatever he said.
+	if suspect_id == "owner":
+		PlaceDraw.release_custody()
 	var campaign := Campaign.current
 	if campaign and not campaign.is_over():
 		var played := campaign.shift
