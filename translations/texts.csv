@@ -615,3 +615,5 @@ BRIEF_SUSPECT_sleeper,"Ojo: se duerme en cualquier lado. Si lo dejan tranquilo, 
 SUSPECT_FALLS_ASLEEP,Qué silla cómoda... cinco minutitos... zzz,What a comfy chair... just five minutes... zzz,Que cadeira confortável... só cinco minutinhos... zzz
 SUSPECT_SNORES,Zzz... ronc... zzz...,Zzz... snore... zzz...,Zzz... ronc... zzz...
 SUSPECT_WAKES,¡Eh! ¡Estaba despierto! ¿Qué me preguntaban?,Huh! I was awake! What were you asking?,Ei! Eu estava acordado! O que vocês perguntaram?
+BRIEF_SUSPECT_influencer,"Ojo: es influencer y tiene el celular prendido. Si solo ven al policía malo, sus seguidores llaman a su abogado.","Careful: he's an influencer and his phone is streaming. If they only see the bad cop, his followers call his lawyer.","Cuidado: ele é influencer e está transmitindo pelo celular. Se só virem o policial mau, os seguidores chamam o advogado dele."
+SUSPECT_STREAMS,"¡Chicos, abuso policial en vivo! ¡Compartan, compartan!","Guys, police abuse live! Share it, share it!","Gente, abuso policial ao vivo! Compartilhem, compartilhem!"

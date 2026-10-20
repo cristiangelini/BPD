@@ -299,3 +299,14 @@ func test_the_sleeper_dozes_off_and_only_waking_him_up_counts() -> void:
 	assert_true(_act("flick_lights"))
 	assert_false(case.asleep)
 	assert_eq(level.suspect.saying(), "SUSPECT_WAKES")
+
+
+func test_the_influencer_streams_a_bad_cop_with_no_good_cop() -> void:
+	case.suspect_id = "influencer"
+	case.give_tip()
+	_act("slam_table")
+	assert_eq(case.lawyer, 8.0 + InterrogationCase.INFLUENCER_LAWYER, "nobody played good cop")
+	assert_eq(level.suspect.saying(), "SUSPECT_STREAMS")
+	_act("calm")
+	_act("aim_lamp")
+	assert_eq(case.lawyer, 16.0 - 8.0 + 6.0, "with a good cop just before, it's only the lamp")
