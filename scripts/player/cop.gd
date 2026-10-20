@@ -53,8 +53,9 @@ var vehicle: PatrolCar
 var in_briefing := false
 ## The armero's list is open for this cop (ArmoryMenu): same as the briefing, but only for this cop.
 var in_menu := false
-## The pet salon's armchair this cop sits in with a dog, hearing Ramiro (WaitingArmchair): can look, not move.
-var seated_in: WaitingArmchair
+## What this cop sits on: the pet salon's armchair with a dog, hearing Ramiro (WaitingArmchair), or an interrogation
+## chair (InterrogationChair). Can look, not move; it has prompt_key() and stand_up().
+var seated_in: Node
 ## The player's own first person hands; only a cop with a player at the keys has them.
 var hands: CopHands
 ## Wears the armory's rubber gloves: fragile evidence in these hands loses half as much (Evidence.GLOVES_FACTOR).

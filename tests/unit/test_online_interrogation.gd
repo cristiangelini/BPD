@@ -142,3 +142,22 @@ func test_the_coffee_machine_pours_into_the_guests_hands() -> void:
 	assert_true(guest_cop.get_node("Grabber").held is CoffeeCup, "the guest holds the cup")
 	var copy: Cop = pcs[0].cop_syncs[pcs[1].multiplayer.get_unique_id()].cop
 	assert_true(copy.get_node("Grabber").held is CoffeeCup, "and the host holds it for the guest's cop")
+
+
+func test_a_guest_sits_by_him_on_every_pc() -> void:
+	var pcs := await _on()
+	var host := _case(pcs[0])
+	host.lawyer = 20.0
+	var guest_cop := OnlinePcs.own_cop(pcs[1])
+	var chair: InterrogationChair = _level(pcs[1]).chairs[0]
+	guest_cop.act("use", chair)
+	await wait_until(func() -> bool: return host.lawyer < 20.0, 5.0)
+	assert_eq(host.lawyer, 20.0 + InterrogationCase.ACTIONS.sit_down.lawyer, "the host counted the good cop sitting")
+	var copy: Cop = pcs[0].cop_syncs[pcs[1].multiplayer.get_unique_id()].cop
+	assert_eq(copy.seated_in, _level(pcs[0]).chairs[0], "the host sees the guest's cop on the chair")
+	assert_eq(guest_cop.seated_in, chair)
+	assert_almost_eq(guest_cop.global_position.x, chair.global_position.x, 0.05, "and the guest is on it")
+	guest_cop.act("use", chair)
+	await wait_until(func() -> bool: return guest_cop.seated_in == null, 5.0)
+	assert_true(chair.freeze, "the guest's copy of the chair still follows the host")
+	assert_false(_level(pcs[0]).chairs[0].freeze, "the host's is loose again")
