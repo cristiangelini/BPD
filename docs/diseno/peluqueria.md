@@ -1,8 +1,9 @@
-# BPD · La peluquería de mascotas "Pelito Feliz" (propuesta, 20/10)
+# BPD · La peluquería de mascotas "Pelito Feliz" (20/10)
 
 Tercer lugar para allanar, después de la casa del abuelo y la panadería ([historias.md](historias.md),
 [panaderia.md](panaderia.md)). Sigue la idea de lugar + historia (decisión 79): una denuncia anónima, 3 sospechas en la
-planilla y una sola historia verdadera, sorteada con la semilla. Todo es **(propuesta)** hasta que Cristian lo apruebe.
+planilla y una sola historia verdadera, sorteada con la semilla. Cristian la aprobó como tercer lugar el 20/10 (decisión 89); los números siguen marcados
+**(propuesta)** hasta probarlos jugando.
 
 ## El local
 Una planta de unos 16 × 12 m, en la calle comercial, al lado de la panadería.
@@ -66,6 +67,6 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
 4. La señora del caniche.
 5. Las 6 historias, un PR cada una.
 
-## Preguntas para Cristian
+## Preguntas para Cristian (respondidas el 20/10: sí a las dos)
 1. ¿La peluquería de mascotas como tercer lugar, o preferís otro de los 8?
 2. ¿Están bien Ramiro, los perros sueltos y las 6 historias?
