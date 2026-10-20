@@ -19,7 +19,7 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 ## Probar con Steam
 - Una vez por PC: `powershell -ExecutionPolicy Bypass -File tools/godotsteam.ps1` baja GodotSteam a `addons/godotsteam` (no se sube al repo) y después `godot --headless --path . --import`.
 - Steam tiene que estar abierto antes de arrancar el juego. Por ahora usa el AppID 480 (Spacewar), el de prueba de Valve, hasta que BPD tenga el suyo.
-- En la sala aparece **Crear sala de Steam**; con la sala abierta, **Invitar amigos** abre la ventana de Steam. El amigo acepta la invitación en Steam y entra solo (también si tenía el juego cerrado: Steam lo abre con `+connect_lobby`).
+- En la sala aparece **Crear sala de Steam** (o directo: `godot --path . -- --host-steam`); con la sala abierta, **Invitar amigos** abre la ventana de Steam. El amigo acepta la invitación en Steam y entra solo (también si tenía el juego cerrado: Steam lo abre con `+connect_lobby`).
 - Steam deja una sola cuenta por PC: para probar que alguien se une hacen falta dos PCs con dos cuentas.
 - Sin GodotSteam o sin Steam abierto, la sala ofrece solo IP, como antes.
 

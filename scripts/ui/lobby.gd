@@ -23,11 +23,13 @@ static var invite_lobby := 0
 @onready var _start_button: Button = %StartButton
 
 
-## The --host / --join=<ip> argument among `args`: "host", the IP, or "".
+## The --host / --host-steam / --join=<ip> argument among `args`: "host", "steam", the IP, or "".
 static func room_arg(args: PackedStringArray) -> String:
 	for arg in args:
 		if arg == "--host":
 			return "host"
+		if arg == "--host-steam":
+			return "steam"
 		if arg.begins_with("--join="):
 			return arg.trim_prefix("--join=")
 	return ""
@@ -64,6 +66,8 @@ func _ready() -> void:
 		_show_joining()
 	elif arg == "host":
 		_on_host_pressed()
+	elif arg == "steam":
+		_on_steam_pressed()
 	elif arg != "":
 		_join(arg)
 

@@ -19,6 +19,24 @@ func test_invite_launch_argument() -> void:
 	assert_eq(SteamRoom.connect_lobby_arg(PackedStringArray(["+connect_lobby"])), 0, "no id after it")
 
 
+func test_command_line_opens_a_steam_room() -> void:
+	assert_eq(Lobby.room_arg(PackedStringArray(["--host-steam"])), "steam")
+
+
+## Only runs where Steam is open with GodotSteam installed; CI leaves it pending.
+func test_steam_room_opens() -> void:
+	if not Net.steam.available():
+		pending("needs Steam open and GodotSteam (tools/godotsteam.ps1)")
+		return
+	watch_signals(Net)
+	Net.host_steam()
+	await wait_for_signal(Net.players_changed, 15)
+	assert_true(Net.is_steam(), "the lobby is open")
+	assert_true(Net.is_host())
+	assert_eq(Net.players, {Net.HOST_ID: 0}, "the host is cop 1")
+	assert_ne(Net.steam.lobby_id, 0)
+
+
 func test_spacewar_until_bpd_has_its_app_id() -> void:
 	assert_eq(SteamRoom.APP_ID, 480)
 
