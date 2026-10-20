@@ -93,6 +93,8 @@ func _redraw() -> void:
 		var item: Dictionary = armory.items[ids[i]]
 		var price: String = tr("ARMORY_FREE") if item.price == 0 else "$%d" % item.price
 		var action: String = tr("ARMORY_TAKE") if armory.owns(ids[i]) else tr("ARMORY_BUY")
+		if armory.is_stock(ids[i]) and armory.owns(ids[i]):
+			action += " (%d)" % armory.count(ids[i])
 		var row := Label.new()
 		row.text = "%s %s · %s · %s\n    %s" % ["▶" if i == selected else "  ", tr(item.name), price, action, tr(item.about)]
 		row.add_theme_font_size_override("font_size", 22)
