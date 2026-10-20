@@ -91,6 +91,15 @@ se le puede hacer nada. E sobre él lo agarra: uno solo lo frena a la mitad 2 s,
 atrapan entre los dos y vuelve a la silla con 15 de nervios por el susto. Jugando solo, alcanza con uno. Todo (propuesta).
 Captura: `sospechoso_dangerous.png`.
 
+**Cómo quedó (paso 6, quinta parte):** los gemelos (4, `--suspect=twins`, por ahora con el modelo del político): uno en
+la sala y el otro en la primera celda de la comisaría, junto a las rejas. Cada policía trabaja al gemelo que tiene más
+cerca (E, el grito y comer la dona sirven en la celda; la mesa, la lámpara y lo demás de la sala, en la sala), y arriba
+hay una tercera barra con los nervios del de la celda. La semilla sortea cuál lo hizo: solo ese confiesa. Al otro también
+le suben los nervios, pero lo que se le escapa es sobre su hermano ("Él tiene un lunar acá, yo no") y a 100 solo dice
+que fue el otro. La carpeta del caso ahora está suelta sobre la mesa: dejarla cerca del gemelo al que no se le mostró la
+última vez es el bluff "tu hermano ya habló" (+20 de nervios y +4 de abogado), así que rinde llevarla de una sala a la
+otra. Todo (propuesta). Captura: `sospechoso_twins.png`.
+
 ## Los dos medidores (se ven arriba, como la denuncia del abuelo)
 - **Nervios (0 a 100):** suben con el policía malo y bajan un poco con el bueno. Con 30, 60 y 90 se le escapa una frase
   que da una pista de qué hizo de verdad ("¡Yo nunca estuve en el club de golf!... Digo, ¿qué es el golf?").
@@ -121,7 +130,7 @@ Salen de [casos.md](casos.md), cada una cambia una regla:
 | 1 | El que no para de hablar | Con 30, 60 y 90 confiesa cosas que no tienen nada que ver; las pistas verdaderas están mezcladas. |
 | 2 | El mudo | Responde con gestos: las pistas son dibujos que hace en un papel sobre la mesa. |
 | 3 | El abuelito tierno | Si los nervios suben más de 25 en 5 s, llora y el abogado sube 20 solo. |
-| 4 | El gemelo | Hay dos iguales en dos salas (la segunda en una celda) y solo uno confiesa; hay que repartirse. |
+| 4 | El gemelo | Hay dos iguales, uno en la sala y otro en la celda del carcelero, y solo uno confiesa; hay que repartirse y llevar la carpeta de uno al otro (decisión 92). |
 | 5 | El abogado de sí mismo | Cada acción de malo también le sube 5 más de abogado, pero el café no le baja nada: quiere té. |
 | 6 | El que se duerme | Si nadie hace nada en 10 s, se duerme y los nervios bajan; hay que despertarlo (café, luz). |
 | 7 | El influencer | Transmite en vivo: si hay un policía de malo y nadie de bueno, la transmisión le suma abogado (decisión 92). |
@@ -157,7 +166,7 @@ cada acción con quién la hizo; el grito se mide en la PC de quien habla y se m
    contraste, la luz, el café, la silla y el pañuelo.
 4. El grito con la voz. Hecho.
 5. El sorteo en "Jugar" (1 de cada 3). Hecho.
-6. Los otros 9 sospechosos, uno o dos por PR. Hechos el 3, el 5, el 6, el 7 y el 10.
+6. Los otros 9 sospechosos, uno o dos por PR. Hechos el 3, el 4, el 5, el 6, el 7 y el 10.
 7. Interrogar al dueño después de un allanamiento.
 
 ## Respuestas de Cristian (20/10)

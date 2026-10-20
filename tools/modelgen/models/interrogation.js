@@ -5,7 +5,7 @@
 import { Builder, mat, V, THREE } from '../lib.js';
 
 // The steel table: 1.8 x 0.76 x 0.9 m, bolted down, with the ring for the handcuffs on the suspect's side (-Z), a
-// tape recorder, a folder, a paper cup and an ashtray (nobody reads the sign).
+// tape recorder, a paper cup and an ashtray (nobody reads the sign). The case folder on it is loose (case_folder).
 export function buildTable() {
 	const b = new Builder('interrogation_table');
 	const steel = mat('int_steel', 0x8a9096), dark = mat('int_steel_dark', 0x4a4e54);
@@ -18,8 +18,6 @@ export function buildTable() {
 	b.add('recorder', mat('int_recorder', 0x2a2a2e), new THREE.BoxGeometry(0.3, 0.08, 0.2), { pos: V(0.55, 0.8, 0.12) });
 	for (const x of [0.48, 0.62]) b.add('recorder', mat('int_reel', 0xb8bcc4), new THREE.CylinderGeometry(0.045, 0.045, 0.012, 10), { pos: V(x, 0.846, 0.12) });
 	b.add('recorder', mat('int_led', 0xff3020, { emissive: 0x801008 }), new THREE.BoxGeometry(0.02, 0.02, 0.01), { pos: V(0.66, 0.82, 0.225) });
-	b.add('folder', mat('int_folder', 0xd8b070), new THREE.BoxGeometry(0.32, 0.02, 0.24), { pos: V(-0.4, 0.77, 0.15), rot: [0, 0.2, 0] });
-	b.add('folder', mat('int_photo', 0xf4efd8), new THREE.BoxGeometry(0.12, 0.004, 0.09), { pos: V(-0.45, 0.782, 0.12), rot: [0, -0.3, 0] });
 	b.add('cup', mat('int_cup', 0xf4efd8), new THREE.CylinderGeometry(0.04, 0.032, 0.1, 8), { pos: V(-0.1, 0.81, -0.2) });
 	b.add('ashtray', mat('int_glass', 0x9ab0b8), new THREE.CylinderGeometry(0.07, 0.06, 0.03, 10), { pos: V(0.2, 0.775, -0.15) });
 	return b.build();
@@ -111,10 +109,20 @@ export function buildTissueBox() {
 	return b.build();
 }
 
+// The case folder, loose on the table: 0.32 x 0.02 x 0.24 m, centered, with the suspect's photo clipped on. The twins'
+// case carries it from one twin to the other (interrogatorio.md).
+export function buildCaseFolder() {
+	const b = new Builder('case_folder');
+	b.add('folder', mat('int_folder', 0xd8b070), new THREE.BoxGeometry(0.32, 0.02, 0.24), { pos: V(0, 0, 0) });
+	b.add('photo', mat('int_photo', 0xf4efd8), new THREE.BoxGeometry(0.12, 0.004, 0.09), { pos: V(-0.05, 0.012, -0.03), rot: [0, -0.5, 0] });
+	b.add('clip', mat('int_chrome', 0xd0d4d8), new THREE.BoxGeometry(0.03, 0.006, 0.02), { pos: V(-0.05, 0.016, 0.01) });
+	return b.build();
+}
+
 export const models = {
 	interrogation_table: buildTable, interrogation_chair: buildChair, hanging_lamp: buildHangingLamp,
 	wall_clock: buildWallClock, security_camera: buildCamera, recording_desk: buildRecordingDesk,
-	coffee_cup: buildCoffeeCup, light_switch: buildLightSwitch, tissue_box: buildTissueBox,
+	coffee_cup: buildCoffeeCup, light_switch: buildLightSwitch, tissue_box: buildTissueBox, case_folder: buildCaseFolder,
 };
 
 export const views = {
