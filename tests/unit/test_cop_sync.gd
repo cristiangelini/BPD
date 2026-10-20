@@ -3,60 +3,26 @@ extends GutTest
 ## Synced cops (docs/diseno/online.md, step 3): every player sees the other players' cops, in their colors, moving
 ## where their owners move them. Host and guest run on this PC, each in its own multiplayer branch.
 
-const NET_SCRIPT := preload("res://scripts/core/net.gd")
-const COP_SCENE := preload("res://scenes/player/cop.tscn")
+const OnlinePcs := preload("res://tests/unit/online_pcs.gd")
 
-var _port := 0
-var _nets: Array[Node] = []
+var _pcs: OnlinePcs
 
 
 func before_each() -> void:
-	_port = randi_range(20000, 40000)
-	_nets.clear()
+	_pcs = OnlinePcs.new(self)
 
 
 func after_each() -> void:
-	for net in _nets:
-		net.leave()
-		net.get_parent().queue_free()
+	_pcs.free_all()
 	await wait_process_frames(2)
 
 
-## A PC: its own multiplayer branch with a Net and a level holding the player's cop.
-func _new_pc() -> Node:
-	var branch := Node.new()
-	branch.name = "Pc%d" % _nets.size()
-	add_child(branch)
-	get_tree().set_multiplayer(SceneMultiplayer.new(), branch.get_path())
-	var net: Node = NET_SCRIPT.new()
-	net.name = "Net"
-	net.change_scenes = false
-	branch.add_child(net)
-	var level := Node3D.new()
-	level.name = "Level"
-	branch.add_child(level)
-	var cop: Cop = COP_SCENE.instantiate()
-	cop.input_enabled = false
-	level.add_child(cop)
-	_nets.append(net)
-	return net
-
-
 func _cops(net: Node) -> Array[Node]:
-	return net.get_parent().get_node("Level").get_children()
+	return OnlinePcs.level(net).get_children()
 
 
-## A host and a guest in the same level, each with its cop in place.
 func _two_pcs() -> Array[Node]:
-	var host := _new_pc()
-	assert_eq(host.host(_port), OK)
-	var guest := _new_pc()
-	guest.join("127.0.0.1", _port)
-	await wait_until(func() -> bool: return guest.players.size() == 2, 5.0)
-	host.spawn_cops(_cops(host)[0])
-	guest.spawn_cops(_cops(guest)[0])
-	await wait_until(func() -> bool: return not host.scene_peers.is_empty() and not guest.scene_peers.is_empty(), 5.0)
-	return [host, guest]
+	return await _pcs.two_pcs()
 
 
 func test_each_pc_has_a_cop_per_player_in_its_color() -> void:
@@ -111,7 +77,7 @@ func test_the_cop_of_a_player_who_leaves_goes_away() -> void:
 
 
 func test_solo_spawns_nobody() -> void:
-	var net := _new_pc()
+	var net := _pcs.new_pc()
 	net.spawn_cops(_cops(net)[0])
 	assert_eq(_cops(net).size(), 1)
 	assert_true(net.cop_syncs.is_empty())

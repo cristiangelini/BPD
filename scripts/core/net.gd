@@ -31,6 +31,8 @@ var change_scenes := true
 var scene_peers: Array[int] = []
 ## Peer id -> its CopSync in the current level.
 var cop_syncs := {}
+## The current level's physics objects, kept the same on every PC.
+var props: PropSync
 ## This PC has the current level loaded and its cops in place.
 var _in_scene := false
 
@@ -143,8 +145,13 @@ func spawn_cops(local: Cop) -> void:
 		copy.get_node("Hud").visible = false
 		local.get_parent().add_child(copy)
 		_add_cop(copy, id, start)
+	props = PropSync.new(self, local.get_parent())
+	add_child(props)
 	_in_scene = true
 	_entered_scene.rpc(true)
+	if multiplayer.is_server():
+		for peer in scene_peers:
+			props.resend_all(peer)
 
 
 func _add_cop(cop: Cop, id: int, start: Transform3D) -> void:
@@ -155,6 +162,7 @@ func _add_cop(cop: Cop, id: int, start: Transform3D) -> void:
 	var sync := CopSync.new(cop, self, id)
 	add_child(sync)
 	cop_syncs[id] = sync
+	cop.sync = sync
 
 
 ## Another peer loaded the level. If this PC has it loaded too, it answers so the other one knows.
@@ -165,6 +173,8 @@ func _entered_scene(answer: bool) -> void:
 		scene_peers.append(id)
 	if answer and _in_scene:
 		_entered_scene.rpc_id(id, false)
+	if _in_scene and multiplayer.is_server():
+		props.resend_all(id)
 
 
 func _leave_scene() -> void:
@@ -174,6 +184,10 @@ func _leave_scene() -> void:
 		remove_child(sync)
 		sync.queue_free()
 	cop_syncs.clear()
+	if props:
+		remove_child(props)
+		props.queue_free()
+		props = null
 
 
 ## A player left: their cop goes away (what it held drops, online.md).

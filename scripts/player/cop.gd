@@ -59,6 +59,8 @@ var hands: CopHands
 var gloves := false
 ## Player index (0 to 3) whose skin this cop wears.
 var uniform := 0
+## Online, what keeps this cop the same on every PC (null when playing solo).
+var sync: CopSync
 ## The 4 tool slots (herramientas.md).
 var belt: ToolBelt
 ## A partner cuffed this cop: no grabbing, tools or ram until it runs out or someone frees them with E.
