@@ -116,3 +116,5 @@ Fuente de verdad del diseño. Cada decisión lleva un número que no cambia. Si 
 83. El mapa de la ciudad es el triple de grande que el primer borrador (7 × 5 manzanas) y el turno termina al volver con la evidencia a la comisaría. Qué hay al entrar a cada lugar se decide después. (pedido de Cristian, 19/10)
 84. La panadería es el segundo lugar: la panadera Marta atiende el local abierto, con clientes adentro, y tiene 6 historias (el anillo en el pan, el polvo para estornudar, la masa madre robada, las tortas de boda falsas, la lotería del pan y las palomas mensajeras) ([panaderia.md](panaderia.md)). (pedido de Cristian, 20/10)
 85. La panadería no tiene balcón: arriba solo hay dos ventanas a la calle. Cada lugar tiene lo que tendría uno de verdad de ese tipo. (pedido de Cristian, 20/10)
+86. La linterna se prende y se apaga con F en cualquier momento, aunque esté guardada en el cinturón ([herramientas.md](herramientas.md)). (pedido de Cristian, 20/10)
+87. Con las esposas se puede esposar a cualquier persona o NPC del juego: compañeros, el dueño del lugar, clientes, vecinos y animales ([herramientas.md](herramientas.md)). (pedido de Cristian, 20/10)

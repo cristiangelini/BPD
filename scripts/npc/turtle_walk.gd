@@ -22,6 +22,8 @@ var in_shell := false
 var _heading := 0.0
 var _turn_left := 0.0
 var _shell_left := 0.0
+## Cuffed by a cop: it stops walking until free (herramientas.md).
+var _cuffed_left := 0.0
 var _rng := RandomNumberGenerator.new()
 @onready var _body: Grabbable = get_parent()
 
@@ -33,7 +35,20 @@ func _ready() -> void:
 	_body.axis_lock_angular_z = true
 
 
+func cuffed(seconds: float) -> void:
+	_cuffed_left = maxf(_cuffed_left, seconds)
+
+
+func is_cuffed() -> bool:
+	return _cuffed_left > 0.0
+
+
 func _physics_process(delta: float) -> void:
+	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
+	if is_cuffed():
+		_body.linear_velocity.x = 0.0
+		_body.linear_velocity.z = 0.0
+		return
 	if _body.is_held():
 		asleep = false
 		in_shell = false

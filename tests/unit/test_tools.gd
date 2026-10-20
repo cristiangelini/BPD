@@ -147,7 +147,7 @@ func test_a_cuffed_partner_cant_grab_until_freed() -> void:
 
 func test_cuffs_wear_off() -> void:
 	var cop := _cop()
-	cop.cuff(0.2)
+	cop.cuffed(0.2)
 	assert_true(cop.is_cuffed())
 	for i in 20:
 		cop.step(1.0 / 60.0, Vector2.ZERO, false, false, false)
@@ -203,3 +203,56 @@ func test_dusting_takes_a_moment_of_holding_on() -> void:
 func test_photographer_of_the_shift_award() -> void:
 	var awards := ShiftReport.awards([{"photos": 3}, {"photos": 7}])
 	assert_eq(awards, [{"key": "AWARD_PHOTOS", "cop": 1, "value": 7}] as Array[Dictionary])
+
+
+## Something cuffable floating at eye height right in front of a cop at the origin.
+func _float_in_front(body: RigidBody3D, distance := 1.0) -> void:
+	body.gravity_scale = 0.0
+	body.position = Vector3(0, GameScale.EYE_HEIGHT, -distance)
+	add_child_autofree(body)
+
+
+func test_anyone_can_be_cuffed_and_wears_the_cuffs() -> void:
+	var cop := _cop()
+	var cat: Cat = preload("res://scenes/npc/cat.tscn").instantiate()
+	_float_in_front(cat)
+	await wait_physics_frames(2)
+	var cuffs: Handcuffs = cop.belt.tools[0]
+	assert_eq(cuffs.cuff(), cat)
+	assert_true(cat.is_cuffed())
+	assert_eq(cuffs._worn.size(), 1, "the cuffs show on Michi")
+	cat._cuffed_left = 0.0
+	await wait_physics_frames(1)
+	assert_eq(cuffs._worn.size(), 0, "and come off once free")
+
+
+func test_a_turtle_is_cuffed_through_its_walker() -> void:
+	var cop := _cop()
+	var turtle: Grabbable = preload("res://scenes/props/turtle_plain.tscn").instantiate()
+	_float_in_front(turtle)
+	await wait_physics_frames(2)
+	assert_eq((cop.belt.tools[0] as Handcuffs).cuff(), turtle.get_node("Walk"))
+	assert_true((turtle.get_node("Walk") as TurtleWalk).is_cuffed())
+
+
+func test_the_neighbor_cuffed_at_her_window_says_nothing() -> void:
+	var cop := _cop()
+	var neighbor := Neighbor.new()
+	neighbor.position = Vector3(0, 0, -0.9)
+	add_child_autofree(neighbor)
+	await wait_physics_frames(2)
+	assert_eq((cop.belt.tools[0] as Handcuffs).cuff(), neighbor)
+	neighbor.use(cop)
+	assert_false(neighbor.was_asked, "cuffed, she doesn't even ask for her tupperware")
+
+
+func test_a_cuffed_customer_stays_then_runs_off() -> void:
+	var customer: BakeryCustomer = preload("res://scenes/npc/bakery_customer.tscn").instantiate()
+	customer.route = [Vector3(0, 0, -5), Vector3(0, 0, -1)] as Array[Vector3]
+	add_child_autofree(customer)
+	customer.cuffed(0.2)
+	await wait_seconds(0.1)
+	assert_eq(customer.state, BakeryCustomer.State.ENTERING)
+	assert_almost_eq(Vector2(customer.velocity.x, customer.velocity.z).length(), 0.0, 0.01, "stays put")
+	await wait_seconds(0.2)
+	assert_eq(customer.state, BakeryCustomer.State.FLEEING)

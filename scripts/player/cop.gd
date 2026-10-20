@@ -144,7 +144,7 @@ func is_eating() -> bool:
 
 
 ## Cuffed by a partner for `seconds`: lets go of everything in hand.
-func cuff(seconds: float) -> void:
+func cuffed(seconds: float) -> void:
 	$Grabber.release()
 	drop_ram()
 	belt.holster()
