@@ -37,6 +37,35 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_JUDGE_CARDS", "OBJ_EXTRA_GOLDEN_COMB"],
 		"rig": preload("res://scripts/case/groomer/contest_rig.gd"),
 	},
+	"diamonds": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_DIAMONDS_B", "BRIEF_DIAMONDS_C", "BRIEF_DIAMONDS_D"],
+		"find": "OBJ_FIND_DIAMONDS",
+		"hidden": [preload("res://scenes/props/necklace_case.tscn")],
+		"half_heights": [0.03],
+		"heavy": [false],
+		"extra_keys": ["OBJ_EXTRA_NECKLACE_CASE"],
+		"rig": preload("res://scripts/case/groomer/diamonds_rig.gd"),
+	},
+	"millionaire": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_MILLIONAIRE_B", "BRIEF_MILLIONAIRE_C", "BRIEF_MILLIONAIRE_D"],
+		"find": "OBJ_FIND_MILLIONAIRE",
+		"hidden": [preload("res://scenes/props/dog_dye.tscn"), preload("res://scenes/props/ransom_letter.tscn")],
+		"half_heights": [0.1, 0.005],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_DYE", "OBJ_EXTRA_RANSOM_LETTER"],
+		"rig": preload("res://scripts/case/groomer/millionaire_rig.gd"),
+	},
+	"hair_growth": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_HAIR_GROWTH_B", "BRIEF_HAIR_GROWTH_C", "BRIEF_HAIR_GROWTH_D"],
+		"find": "OBJ_FIND_HAIR_GROWTH",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/shampoo_jug.tscn"), preload("res://scenes/props/formula_sheet.tscn"),
+			preload("res://scenes/props/sample_jar.tscn")],
+		"half_heights": [0.23, 0.003, 0.05],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_FORMULA", "OBJ_EXTRA_SAMPLE_JAR"],
+		"rig": preload("res://scripts/case/groomer/hair_growth_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each room; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [
@@ -76,6 +105,7 @@ const TABLE_HEIGHT := 0.8
 const RAMIRO_POST := Vector3(2.5, FLOOR_TOP, 3.7)
 ## Each standing dryer's hood, open on top, behind its table.
 const DRYER_HOOD := FLOOR_TOP + 1.4
+const DRYER_Z := 5.6
 const BATHTUB_AT := Vector3(6.8, FLOOR_TOP, 3.3)
 const CAGE_XS: Array[float] = [-7.4, -6.5, -5.6, -4.7]
 const CAGE_Z := -1.4
@@ -129,7 +159,7 @@ const SPOTS := [
 	{"id": "in_doghouse", "at": DOGHOUSE_AT + Vector3(0, 0.05, 0), "heavy": true},
 	{"id": "in_freezer", "at": FREEZER_AT + Vector3(0, 0.05, 0), "heavy": true},
 	{"id": "behind_food", "at": Vector3(3.7, FLOOR_TOP, -1.6), "heavy": true},
-	{"id": "in_dryer", "at": Vector3(2.5, DRYER_HOOD + 0.05, 5.6), "heavy": false},
+	{"id": "in_dryer", "at": Vector3(2.5, DRYER_HOOD + 0.05, DRYER_Z), "heavy": false},
 	{"id": "under_armchair", "at": ARMCHAIR_AT, "heavy": false},
 	{"id": "in_towels", "at": TOWELS_AT + Vector3(0, 0.05, 0), "heavy": false},
 	{"id": "under_counter", "at": COUNTER_AT + Vector3(0, 0.05, 0), "heavy": true},
@@ -167,6 +197,8 @@ var armchair: WaitingArmchair
 var dogs: Array[Dog] = []
 var lady: PoodleLady
 var poodle: Dog
+## The look-only dogs behind bars, by cage (column, row).
+var caged_looks: Dictionary = {}
 var _build: PlaceBuilder
 @onready var car: PatrolCar = $PatrolCar
 
@@ -361,7 +393,7 @@ func _build_grooming_room() -> void:
 	for at: Vector3 in TABLES:
 		_build.legs(at, Vector2(1.2, 0.6), TABLE_HEIGHT, STEEL)
 		_build.box(at + Vector3(0, TABLE_HEIGHT + 0.03, 0), Vector3(1.2, 0.06, 0.6), WHITE)
-		var dryer := Vector3(at.x, DRYER_HOOD, 5.6)
+		var dryer := Vector3(at.x, DRYER_HOOD, DRYER_Z)
 		_build.box(Vector3(dryer.x, FLOOR_TOP + 0.7, dryer.z), Vector3(0.08, 1.4, 0.08), STEEL)
 		_build.open_box(dryer, Vector3(0.5, 0.35, 0.5), "top", PINK)
 		# Scissors hanging on the wall to the reception.
@@ -386,6 +418,7 @@ func _build_cages() -> void:
 			caged.position = at + Vector3(0, 0.05, 0)
 			caged.scale = Vector3.ONE * 0.9
 			$Built.add_child(caged)
+			caged_looks[Vector2i(i, level)] = caged
 			for b in 5:
 				var x := at.x - CAGE_SIZE.x / 2 + 0.08 + b * 0.16
 				_build.mesh_box(Vector3(x, at.y + CAGE_SIZE.y / 2, CAGE_Z + CAGE_SIZE.z / 2), Vector3(0.02, CAGE_SIZE.y, 0.02), STEEL)

@@ -107,6 +107,24 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      el mostrador, en la segunda mesa y arriba de las jaulas) con Bizcocho y la copa. Bizcocho no se aleja de su copa y
      ladra fuerte ("¡GUAU! ¡GUAU!") cada 3 s si un policía está a menos de 2,5 m de ella: cada ladrido son 5 de
      denuncia. Alzado no ladra, así que uno lo agarra mientras otro saca la copa. Capturas: `concurso_*.png`.
+   - **El collar de diamantes (propuesta):** a la señora Rosales le robaron el collar y Ramiro se lo puso a uno de los
+     perros sueltos (sorteado con la semilla). Ese perro no sigue a nadie: escapa de los policías que se le acercan a
+     menos de 3 m, 1,7 veces más rápido que los otros, y cada 30 s se va a otro lado (los dos secadores, la recepción, las
+     jaulas y el patio), así que hay que acorralarlo entre varios. Bajo la luz del secador el collar brilla: el policía
+     que lo ve a menos de 5 m suma la pista. Agarrar el collar se lo saca al perro. El estuche (0,3 kg, 200) va
+     escondido. Captura: `collar_*.png`.
+   - **El perro del millonario (propuesta):** Duque, el galgo blanco de un millonario, está teñido de marrón entre otros
+     3 galgos marrones iguales (cuál es se sortea con la semilla, y ninguno muestra su valor). De cerca, a menos de
+     1,2 m, se le ven las raíces blancas en las patas, el pecho y las orejas: esa es la pista. Duque pesa 12 kg (lo alza
+     uno solo), vale 1500 y aguanta golpes hasta 6 m/s. Alzado se retuerce (un tirón cada 0,6 s) y, si lo sueltan fuera
+     del baúl, escapa de los policías durante 10 s. En el baúl se echa y no se mueve. La tintura (150) y la carta del
+     rescate (300) van escondidas. Los perros que no son de una historia no valen nada ni cuentan en el baúl. Captura:
+     `millonario_*.png`.
+   - **El champú crecepelo (propuesta):** Ramiro inventó un champú que hace crecer el pelo de cualquier cosa y lo vende
+     a escondidas. El bidón (8 kg, 1000) va en un escondite grande; la fórmula (300) y un frasco de muestra (100) en
+     cualquiera. La pista: un perro de una jaula de arriba tiene el pelo hasta el piso (se ve a menos de 2 m). La
+     bañera gotea: hay un charco verde adelante, y el policía que lo pisa tiene 30 s un bigote enorme que le tapa la
+     parte de abajo de la vista (pisarlo de nuevo reinicia la cuenta). Capturas: `crecepelo_*.png`.
 
 ## Preguntas para Cristian (respondidas el 20/10: sí a las dos)
 1. ¿La peluquería de mascotas como tercer lugar, o preferís otro de los 8?

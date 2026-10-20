@@ -78,5 +78,8 @@
 - The grandpa's fourth story, the care home dentures: a heavy case of dentures that chatter (heard up to 7 m) and the list of clients; the grandpa hid his own teeth too, so everything he says comes out mushy.
 - The grandpa's fifth story, the pirate radio: a 35 kg transmitter for two cops, found by holding T, the cop radio, which shows more static bars near it; 3 soap opera tapes in the drawers.
 - The grandpa's sixth story, the retirees' fight club: the champion's belt, the gloves and the fight notebook, a ring in the attic and a photo of black eyes; pushed, the champion grandpa shoves the cop back harder, and he tells no stories.
+- Pet salon story: the diamond necklace. A loose dog wears it, runs from cops, moves to another part of the salon every 30 s and shines under the dryers; grabbing the necklace takes it off. The case is hidden as an extra.
+- Pet salon story: the millionaire's dog. Duque, dyed brown, hides among four identical greyhounds; his white roots show up close, he wriggles when held, runs off when let go and lies down in the trunk. Dogs are now Evidence worth 0 unless a story gives them a value.
+- Pet salon story: the hair-growth shampoo. The jug, the formula and a sample jar; a caged dog with fur to the floor; the bathtub's puddle grows a huge mustache on a cop for 30 s that covers the bottom of the view.
 - The host leaving in the middle of a case sends everyone back to the room screen with "El anfitrión cerró la sala", instead of leaving them alone in the level.
 - Esc during a case opens a menu: resume, invite friends (host with Steam), the always open voice and leave the room (or quit to the menu solo); solo it stops the game.
