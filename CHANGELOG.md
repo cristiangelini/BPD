@@ -38,3 +38,4 @@
 - The grandpa's case happens in the city: the shift starts at the station by the patrol car, the house sits on its lot among the neighbors, and the case closes when everyone drives back to the station with the evidence.
 - City map on the radio: M opens a top view with the station, today's case blinking, the cops as arrows and the patrol car.
 - Design: the bakery, second place to raid (docs/diseno/panaderia.md).
+- The bakery, inside: shop with counter, cake display and bread shelves (open, shutter half up), locked bakehouse and back door, storeroom with the stairs, bathroom, and Marta's flat with a balcony; 12 hiding spots, on its lot in the city. "Panadería (prueba)" in the menu opens it.

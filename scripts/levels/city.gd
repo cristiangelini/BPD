@@ -22,6 +22,8 @@ const HEDGE_HEIGHT := 2.5
 
 ## The place whose case is on today: its own scene builds it, so the city leaves its lot empty.
 @export var live_place := ""
+## Whether the live place's scene brings the ground of its whole block (the grandpa's yard) or only its own lot.
+@export var live_block_ground := true
 
 var _materials := {}
 var _built: Node3D
@@ -74,11 +76,11 @@ func _build() -> void:
 
 
 ## Sidewalk ring and the ground of the block: grass for houses and the plaza, paved elsewhere. The live place's
-## block has none: its scene brings its own ground.
+## block has none when its scene brings that ground itself.
 func _block(block: Vector2i) -> void:
 	var center := CityLayout.block_center(block)
 	var live := CityLayout.place(live_place)
-	if not live.is_empty() and live.block == block:
+	if live_block_ground and not live.is_empty() and live.block == block:
 		return
 	var inner := CityLayout.BLOCK - CityLayout.SIDEWALK * 2
 	_mesh_box(center + Vector3(0, 0.015, 0), Vector3(CityLayout.BLOCK, 0.01, CityLayout.BLOCK), SIDEWALK)
