@@ -5,13 +5,15 @@ extends Node3D
 ## the cages and the storeroom behind them, and the yard at the back, on its lot in the city with the front to +Z.
 ## The salon is open; the storeroom ("Solo personal") and its back door to the yard are locked. The shampoo bottles
 ## and the collar vitrine break, each one a fine. Ramiro cuts dogs at the first table, watches what breaks and tells a
-## dog's life to whoever sits in the waiting armchair with one (step 2). The dogs and the stories come next.
+## dog's life to whoever sits in the waiting armchair with one (step 2). Six dogs roam the salon and the yard, follow
+## whoever has something in hand and hide small things in the doghouse (step 3). The stories come next.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const SHAMPOO_SCENE := preload("res://scenes/props/shampoo_bottle.tscn")
 const COLLAR_SCENE := preload("res://scenes/props/dog_collar.tscn")
 const GROOMER_SCENE := preload("res://scenes/npc/dog_groomer.tscn")
+const DOG_SCENE := preload("res://scenes/npc/dog.tscn")
 const HALF_X := 8.0
 ## The lot runs from -HALF_Z to HALF_Z; the building covers its front from BACK_Z on, the yard the rest.
 const HALF_Z := 7.0
@@ -49,6 +51,15 @@ const CAGE_SIZE := Vector3(0.8, 0.8, 0.9)
 const CAGE_STEP := 0.85
 ## The cages without bars (the dogs in them roam the salon, docs/diseno/peluqueria.md "Los perros").
 const OPEN_CAGES: Array[Vector2i] = [Vector2i(1, 0), Vector2i(3, 1)]
+## Where the loose dogs start, and the floor where they roam: reception, grooming room, cages and yard (not the
+## storeroom, which is locked).
+const DOGS_AT: Array[Vector3] = [
+	Vector3(-5.0, FLOOR_TOP, 5.0), Vector3(-1.0, FLOOR_TOP, 6.0), Vector3(4.0, FLOOR_TOP, 6.2),
+	Vector3(-6.0, FLOOR_TOP, 0.5), Vector3(-1.0, FLOOR_TOP, 1.0), Vector3(1.0, GRASS_TOP, -4.5),
+]
+const DOG_AREAS: Array[Rect2] = [
+	Rect2(-7.4, 3.0, 6.8, 3.5), Rect2(0.6, 3.0, 6.8, 3.5), Rect2(-7.4, -0.6, 8.8, 2.6), Rect2(-7.4, -6.4, 14.8, 3.8),
+]
 const FREEZER_AT := Vector3(7.1, FLOOR_TOP, 0.3)
 const TOWELS_AT := Vector3(3.0, FLOOR_TOP, 1.8)
 const DOGHOUSE_AT := Vector3(5.5, GRASS_TOP, -5.2)
@@ -106,6 +117,7 @@ var collars: Array[Ornament] = []
 var fines := 0
 var ramiro: DogGroomer
 var armchair: WaitingArmchair
+var dogs: Array[Dog] = []
 var _build: PlaceBuilder
 @onready var car: PatrolCar = $PatrolCar
 
@@ -122,6 +134,8 @@ func _ready() -> void:
 	store_door = _door(Vector3(STORE_DOOR_X - GameScale.DOOR_WIDTH / 2, 0, SPLIT_Z), 0.0)
 	back_door = _door(Vector3(BACK_DOOR_X + GameScale.DOOR_WIDTH / 2, 0, BACK_Z), PI)
 	_place_ramiro()
+	_bake_navigation()
+	_place_dogs()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("pet_salon")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -222,6 +236,11 @@ func _build_cages() -> void:
 			_build.open_box(at, CAGE_SIZE, "+z", STEEL)
 			if OPEN_CAGES.has(Vector2i(i, level)):
 				continue
+			# A dog waiting its turn behind the bars (only the look: the loose ones are Dog bodies).
+			var caged: Node3D = Dog.MODELS[(i + level * 3) % Dog.MODELS.size()].instantiate()
+			caged.position = at + Vector3(0, 0.05, 0)
+			caged.scale = Vector3.ONE * 0.9
+			$Built.add_child(caged)
 			for b in 5:
 				var x := at.x - CAGE_SIZE.x / 2 + 0.08 + b * 0.16
 				_build.mesh_box(Vector3(x, at.y + CAGE_SIZE.y / 2, CAGE_Z + CAGE_SIZE.z / 2), Vector3(0.02, CAGE_SIZE.y, 0.02), STEEL)
@@ -279,6 +298,33 @@ func _place_ramiro() -> void:
 	add_child(armchair)
 	for door: FrontDoor in [store_door, back_door]:
 		door.broken.connect(ramiro.door_broken)
+
+
+## The dogs walk on a navigation mesh baked from the built salon, with the locked doors closed.
+func _bake_navigation() -> void:
+	var nav: NavigationRegion3D = $Navigation
+	NavigationServer3D.map_set_cell_size(get_world_3d().navigation_map, nav.navigation_mesh.cell_size)
+	NavigationServer3D.map_set_cell_height(get_world_3d().navigation_map, nav.navigation_mesh.cell_height)
+	$Built.add_to_group("navigation_source")
+	store_door.add_to_group("navigation_source")
+	back_door.add_to_group("navigation_source")
+	nav.bake_navigation_mesh(false)
+
+
+## The loose dogs. What they take ends up in the doghouse; every bark reaches Ramiro.
+func _place_dogs() -> void:
+	for i in DOGS_AT.size():
+		var dog: Dog = DOG_SCENE.instantiate()
+		dog.coat = i
+		dog.position = DOGS_AT[i] + Vector3.UP * 0.02
+		dog.rotation.y = i * 1.1
+		dog.areas = DOG_AREAS
+		dog.den = DOGHOUSE_AT
+		dog.floor_y = FLOOR_TOP
+		dog.rng.seed = i + 1
+		add_child(dog)
+		dog.barked.connect(ramiro.dog_barked)
+		dogs.append(dog)
 
 
 func _on_fragile_broken(at: Vector3) -> void:

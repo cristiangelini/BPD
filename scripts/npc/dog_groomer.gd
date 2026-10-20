@@ -19,6 +19,8 @@ const STRUCK := 15.0
 const DOOR_BROKEN := 5.0
 ## Seeing a shampoo bottle or a collar broken.
 const SAW_BREAK := 10.0
+## A dog barks because a cop bumped into it or dropped it hard: he hears it from anywhere in the salon.
+const DOG_BARKED := 5.0
 ## Each question (R) raises the complaint; the first ASKS get a slip, then he won't answer.
 const ASKED := 5.0
 const ASKS := 2
@@ -179,6 +181,12 @@ func struck() -> bool:
 func door_broken() -> void:
 	_raise(DOOR_BROKEN)
 	_say("GROOMER_DOOR")
+
+
+## One of his dogs barked: a cop bumped into it or threw it.
+func dog_barked(_at: Vector3) -> void:
+	_raise(DOG_BARKED)
+	_say("GROOMER_DOG")
 
 
 ## Something happened at `at` (a bottle broke): it counts if he can see it, and not while he tells the dog's story.

@@ -1,6 +1,7 @@
 // Small props of the pet salon "Pelito Feliz" (docs/diseno/peluqueria.md): the fragile shampoo bottles on its shelves
-// and the collars in the reception display. Origins at the middle of each piece. Placeholder, not final art.
-import { Builder, mat, V, THREE } from '../lib.js';
+// and the collars in the reception display, with origins at the middle of each piece; and the dogs, with the origin at
+// their feet, facing +Z. Placeholder, not final art.
+import { Builder, mat, V, THREE, ellipsoid } from '../lib.js';
 
 // A shampoo bottle: 0.07 m across, 0.22 m tall, with a pump. Pastel plastic, it shatters like porcelain in the game.
 export function buildShampoo() {
@@ -28,11 +29,61 @@ export function buildCollar() {
 	return b.build();
 }
 
-export const models = { shampoo_bottle: buildShampoo, dog_collar: buildCollar };
+// The coats of the salon's dogs: body, ears and tail color, and spots (if any).
+const COATS = [
+	{ fur: 0xf4efe6, ears: 0xe0d6c4 },
+	{ fur: 0x9a6a3a, ears: 0x6a4424 },
+	{ fur: 0x2a2420, ears: 0x1a1612 },
+	{ fur: 0xd8a848, ears: 0xb8862c },
+	{ fur: 0x8a8e94, ears: 0x5e6268 },
+	{ fur: 0xf4efe6, ears: 0x2a2420, spots: 0x2a2420 },
+];
+
+// A small dog with a pear body (decision 72): round belly, big head, floppy ears, stubby legs and a tail up.
+// About 0.5 m tall and 0.6 m long.
+export function buildDog(i) {
+	const coat = COATS[i];
+	const b = new Builder(`dog_${i}`);
+	const fur = mat(`dog_fur_${i}`, coat.fur), ears = mat(`dog_ears_${i}`, coat.ears);
+	const black = mat('dog_black', 0x141010), white = mat('dog_eye', 0xffffff), pink = mat('dog_tongue', 0xe8708a);
+	b.add('body', fur, ellipsoid(0.17, 0.15, 0.24, 12, 8), { pos: V(0, 0.24, -0.02) });
+	b.add('body', fur, ellipsoid(0.13, 0.13, 0.13, 10, 6), { pos: V(0, 0.3, 0.14) });
+	for (const [x, z] of [[-0.09, 0.12], [0.09, 0.12], [-0.09, -0.15], [0.09, -0.15]]) {
+		b.add('legs', fur, new THREE.CylinderGeometry(0.035, 0.04, 0.14, 6), { pos: V(x, 0.07, z) });
+		b.add('legs', ears, ellipsoid(0.045, 0.025, 0.06, 6, 3), { pos: V(x, 0.015, z + 0.015) });
+	}
+	if (coat.spots) {
+		const spots = mat(`dog_spots_${i}`, coat.spots);
+		for (const [x, y, z] of [[0.12, 0.3, -0.05], [-0.1, 0.33, -0.12], [0.06, 0.37, 0.05]]) b.add('body', spots, ellipsoid(0.06, 0.05, 0.06, 6, 4), { pos: V(x, y, z) });
+	}
+	b.add('head', fur, ellipsoid(0.13, 0.12, 0.12, 12, 8), { pos: V(0, 0.44, 0.22) });
+	b.add('head', fur, ellipsoid(0.07, 0.055, 0.07, 8, 5), { pos: V(0, 0.4, 0.33) });
+	b.add('head', black, ellipsoid(0.028, 0.022, 0.02, 6, 4), { pos: V(0, 0.42, 0.395) });
+	b.add('head', pink, ellipsoid(0.025, 0.012, 0.03, 6, 3), { pos: V(0.015, 0.365, 0.37), rot: [0.4, 0, 0] });
+	for (const s of [-1, 1]) {
+		b.add('head', white, ellipsoid(0.028, 0.03, 0.015, 6, 4), { pos: V(s * 0.05, 0.47, 0.32) });
+		b.add('head', black, ellipsoid(0.016, 0.018, 0.01, 6, 4), { pos: V(s * 0.05, 0.47, 0.334) });
+		b.add('ears', ears, ellipsoid(0.04, 0.09, 0.025, 6, 4), { pos: V(s * 0.12, 0.42, 0.2), rot: [0, 0, s * 0.35] });
+	}
+	b.add('tail', ears, new THREE.CylinderGeometry(0.02, 0.03, 0.16, 6), { pos: V(0, 0.36, -0.27), rot: [-0.7, 0, 0] });
+	return b.build();
+}
+
+export const DOG_COATS = COATS.length;
+
+export const models = {
+	shampoo_bottle: buildShampoo,
+	dog_collar: buildCollar,
+	...Object.fromEntries(COATS.map((_, i) => [`dog_${i}`, () => buildDog(i)])),
+};
 
 export const views = {
 	groomer: {
 		items: [{ name: 'shampoo_bottle', pos: [-0.08, 0.11, 0] }, { name: 'dog_collar', pos: [0.1, 0.065, 0] }],
 		cam: { pos: [0, 0.2, 0.55], target: [0, 0.08, 0], fov: 40 },
+	},
+	dogs: {
+		items: COATS.map((_, i) => ({ name: `dog_${i}`, pos: [(i - 2.5) * 0.7, 0, 0], rotY: 0.6 })),
+		cam: { pos: [0, 1.0, 4.6], target: [0, 0.3, 0], fov: 34 },
 	},
 };
