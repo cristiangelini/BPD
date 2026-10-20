@@ -631,3 +631,21 @@ TWIN_SLIP_1,"¡Yo no fui! Mi hermano siempre fue el malo, desde la cuna.","It wa
 TWIN_SLIP_2,"Él tiene un lunar acá, yo no. ¡Revisen las fotos!","He has a mole right here, I don't. Check the photos!","Ele tem uma pinta aqui, eu não. Olhem as fotos!"
 TWIN_SLIP_3,Esa noche yo estaba en clase de baile. ¡Pregúntenle a la profesora!,That night I was at dance class. Ask the teacher!,Naquela noite eu estava na aula de dança. Perguntem para a professora!
 TWIN_NOT_ME,¡Ya les dije todo! ¡Fue mi hermano! ¡Vayan a hablar con él!,I already told you everything! It was my brother! Go talk to him!,Eu já contei tudo! Foi meu irmão! Vão falar com ele!
+BRIEF_SUSPECT_mute,Ojo: no habla. Contesta con gestos y dibuja en un papel. Miren bien lo que dibuja.,Careful: he doesn't talk. He answers with gestures and draws on a sheet of paper. Look closely at what he draws.,Cuidado: ele não fala. Responde com gestos e desenha num papel. Olhem bem o que ele desenha.
+MUTE_FLINCHES,*se tapa la cara con las manos y tiembla*,*covers his face with his hands and shakes*,*cobre o rosto com as mãos e treme*
+MUTE_THUMBS_UP,*levanta el pulgar y sonríe*,*gives a thumbs up and smiles*,*faz joinha e sorri*
+MUTE_YAWNS,*hace como que bosteza*,*pretends to yawn*,*finge que boceja*
+MUTE_DRAWS,*dibuja algo en el papel y lo da vuelta para que lo veas*,*draws something on the paper and turns it so you can see*,*desenha algo no papel e vira para você ver*
+MUTE_CONFESSES,*asiente llorando y escribe todo en el papel*,*nods in tears and writes it all down*,*concorda chorando e escreve tudo no papel*
+MUTE_DRAW_bridge_1,"Dibujo: un puente de palitos sobre la nada, con una cruz encima.","Drawing: a stick bridge over nothing, crossed out.","Desenho: uma ponte de palitos sobre o nada, riscada."
+MUTE_DRAW_bridge_2,"Dibujo: un nene con crayones haciendo planos, y un pulgar arriba.","Drawing: a kid with crayons making blueprints, and a thumbs up.","Desenho: um menino com giz de cera fazendo plantas, e um joinha."
+MUTE_DRAW_bridge_3,Dibujo: un señor contento con una bolsa de plata y la palabra CUOTAS.,Drawing: a happy man with a bag of money and the word INSTALLMENTS.,Desenho: um senhor contente com um saco de dinheiro e a palavra PARCELAS.
+MUTE_DRAW_statue_nose_1,Dibujo: una abuela de piedra regalando una nariz.,Drawing: a stone grandma giving away a nose.,Desenho: uma avó de pedra dando um nariz de presente.
+MUTE_DRAW_statue_nose_2,"Dibujo: la estatua de la plaza sin nariz, y una flecha que apunta a un bolsillo.","Drawing: the statue in the square with no nose, and an arrow pointing at a pocket.","Desenho: a estátua da praça sem nariz, e uma seta apontando para um bolso."
+MUTE_DRAW_statue_nose_3,"Dibujo: un señor oliendo una estatua, con estrellitas alrededor.","Drawing: a man sniffing a statue, with little stars around him.","Desenho: um senhor cheirando uma estátua, com estrelinhas em volta."
+MUTE_DRAW_violet_lights_1,Dibujo: dos manos violetas y un estornudo.,Drawing: two violet hands and a sneeze.,Desenho: duas mãos roxas e um espirro.
+MUTE_DRAW_violet_lights_2,"Dibujo: un semáforo rojo, amarillo y verde durmiendo.","Drawing: a red, yellow and green traffic light asleep.","Desenho: um semáforo vermelho, amarelo e verde dormindo."
+MUTE_DRAW_violet_lights_3,"Dibujo: un semáforo violeta con un signo de pregunta, y un pincel chiquito.","Drawing: a violet traffic light with a question mark, and a tiny brush.","Desenho: um semáforo roxo com um ponto de interrogação, e um pincel pequenininho."
+MUTE_DRAW_rubber_ducks_1,Dibujo: un pato de goma con corona y un pato de verdad mordiendo.,Drawing: a rubber duck with a crown and a real duck biting.,Desenho: um pato de borracha com coroa e um pato de verdade mordendo.
+MUTE_DRAW_rubber_ducks_2,Dibujo: una bañera llena de patos con anteojos de sol.,Drawing: a bathtub full of ducks in sunglasses.,Desenho: uma banheira cheia de patos de óculos escuros.
+MUTE_DRAW_rubber_ducks_3,Dibujo: un calendario con tres semanas tachadas y un pato de goma guiñando un ojo.,Drawing: a calendar with three weeks crossed out and a rubber duck winking.,Desenho: um calendário com três semanas riscadas e um pato de borracha piscando.

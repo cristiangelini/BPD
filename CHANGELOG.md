@@ -104,3 +104,4 @@
 - Interrogation suspect: the influencer streams live, and a bad cop move with no good cop in the last 8 s adds 8 more lawyer.
 - Interrogation suspect: the dangerous one slips his cuffs after 5 s unwatched and runs round the station until two cops grab him.
 - Interrogation suspect: the twins, one in the room and one in a cell; only the guilty one confesses, and the loose case folder set down by the other twin is the "your brother already talked" bluff.
+- Interrogation suspect: the mute answers with gestures and holds up drawings of what slips out (described in words until there's art).
