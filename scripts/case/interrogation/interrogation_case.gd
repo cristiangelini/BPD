@@ -50,12 +50,13 @@ const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 const CRIMES := ["bridge", "statue_nose", "violet_lights", "rubber_ducks"]
 ## The suspects drawn with the seed (interrogatorio.md, "Los sospechosos"), each changing a rule, and their model.
 ## --suspect=<id> forces one. The rest of the 10 come in later PRs.
-const SUSPECTS := ["talker", "sweet_grandpa", "self_lawyer", "sleeper"]
+const SUSPECTS := ["talker", "sweet_grandpa", "self_lawyer", "sleeper", "influencer"]
 const SUSPECT_MODELS := {
 	"talker": "res://assets/models/npc_sospechoso.glb",
 	"sweet_grandpa": "res://assets/models/npc_abuelo.glb",
 	"self_lawyer": "res://assets/models/npc_abogado.glb",
 	"sleeper": "res://assets/models/npc_preso.glb",
+	"influencer": "res://assets/models/npc_periodista.glb",
 }
 ## The sweet grandpa cries when the nerves go up more than CRY_NERVES within CRY_SECONDS, and the lawyer goes up
 ## CRY_LAWYER on its own (propuesta).
@@ -69,6 +70,10 @@ const SELF_LAWYER_EXTRA := 5.0
 const SLEEP_SECONDS := 10.0
 const SLEEP_DRAIN := 2.0
 const WAKE_ACTIONS := ["give_coffee", "flick_lights", "shout", "throw_chair"]
+## The influencer streams it live (decision 92): a bad cop move with no good cop move in the last INFLUENCER_SECONDS
+## adds INFLUENCER_LAWYER more lawyer (propuesta).
+const INFLUENCER_SECONDS := 8.0
+const INFLUENCER_LAWYER := 8.0
 ## The talker (suspect 1): before each slip he confesses something that has nothing to do with the case.
 const TALKER_LINES := ["TALKER_1", "TALKER_2", "TALKER_3"]
 const LAWYER_MODEL := preload("res://assets/models/npc_abogado.glb")
@@ -100,6 +105,8 @@ var _recent: Array[Vector2] = []
 ## The sleeper: seconds since the last action, and whether he's asleep.
 var _idle := 0.0
 var asleep := false
+## When the last good cop move was, for the influencer.
+var _good_at := -INF
 ## The last bad cop action: who did it and when (ms), and the bonus waiting for the next one.
 var _bad_by: Cop
 var _bad_at := -INF
@@ -204,6 +211,12 @@ func act(id: String, cop: Cop = null) -> bool:
 			gain = 0.0
 			lawyer_gain = 0.0
 			react = "SUSPECT_WANTS_TEA"
+	if suspect_id == "influencer":
+		if gain > 0.0 and now - _good_at > INFLUENCER_SECONDS:
+			lawyer_gain += INFLUENCER_LAWYER
+			react = "SUSPECT_STREAMS"
+		elif action.nerves <= 0.0:
+			_good_at = now
 	nerves = clampf(nerves + gain, 0.0, FULL)
 	lawyer = clampf(lawyer + lawyer_gain, 0.0, FULL)
 	if suspect_id == "sweet_grandpa" and gain > 0.0 and _cries(now, gain):

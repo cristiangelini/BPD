@@ -78,6 +78,11 @@ usan los modelos del sospechoso, del abuelo y del abogado. Se fuerza uno con `--
 si nadie hace nada en 10 s se duerme y pierde 2 de nervios por segundo. Dormido, solo lo despiertan el café, la luz, el
 grito o una silla tirada; lo demás no lo oye ("Zzz... ronc..."). Captura: `sospechoso_sleeper.png`.
 
+**Cómo quedó (paso 6, tercera parte):** el influencer (7, `--suspect=influencer`, por ahora con el modelo del
+periodista): transmite en vivo. Si un policía hace de malo y nadie hizo de bueno en los últimos 8 s, el abogado sube 8
+más ("¡Chicos, abuso policial en vivo! ¡Compartan, compartan!") (propuesta). Si hubo uno de bueno hace poco, la transmisión no suma.
+Captura: `sospechoso_influencer.png`.
+
 ## Los dos medidores (se ven arriba, como la denuncia del abuelo)
 - **Nervios (0 a 100):** suben con el policía malo y bajan un poco con el bueno. Con 30, 60 y 90 se le escapa una frase
   que da una pista de qué hizo de verdad ("¡Yo nunca estuve en el club de golf!... Digo, ¿qué es el golf?").
@@ -111,7 +116,7 @@ Salen de [casos.md](casos.md), cada una cambia una regla:
 | 4 | El gemelo | Hay dos iguales en dos salas (la segunda en una celda) y solo uno confiesa; hay que repartirse. |
 | 5 | El abogado de sí mismo | Cada acción de malo también le sube 5 más de abogado, pero el café no le baja nada: quiere té. |
 | 6 | El que se duerme | Si nadie hace nada en 10 s, se duerme y los nervios bajan; hay que despertarlo (café, luz). |
-| 7 | El influencer | Transmite en vivo: si hay un policía de malo y nadie de bueno, baja la imagen del turno. |
+| 7 | El influencer | Transmite en vivo: si hay un policía de malo y nadie de bueno, la transmisión le suma abogado (decisión 92). |
 | 8 | El extranjero | Habla un idioma inventado; el traductor es otro sospechoso que mete sus propias frases. |
 | 9 | El fan de la policía | Confiesa cualquier cosa enseguida: hay que elegir en la planilla cuál de sus 3 confesiones es la verdadera. |
 | 10 | El peligroso | Está esposado, pero si nadie lo mira 5 s se suelta y hay que agarrarlo (o empieza una persecución por la comisaría). |
@@ -144,7 +149,7 @@ cada acción con quién la hizo; el grito se mide en la PC de quien habla y se m
    contraste, la luz, el café, la silla y el pañuelo.
 4. El grito con la voz. Hecho.
 5. El sorteo en "Jugar" (1 de cada 3). Hecho.
-6. Los otros 9 sospechosos, uno o dos por PR. Hechos el 3, el 5 y el 6.
+6. Los otros 9 sospechosos, uno o dos por PR. Hechos el 3, el 5, el 6 y el 7.
 7. Interrogar al dueño después de un allanamiento.
 
 ## Respuestas de Cristian (20/10)
