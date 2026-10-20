@@ -73,6 +73,9 @@ func take(id: String, cop: Cop) -> String:
 			cop.get_parent().add_child(box)
 			cop.get_node("Grabber").grab(box)
 			box.global_position = cop.get_node("Grabber").hold_point()
+			# Online the host hands it out (the guests get a copy of the box): the guest's own hands are told.
+			if cop.sync and not cop.sync.is_multiplayer_authority():
+				cop.sync.tell_held()
 		"gloves":
 			if cop.gloves:
 				return "ARMORY_HAS_GLOVES"

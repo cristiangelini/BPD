@@ -188,7 +188,7 @@ func is_eating() -> bool:
 
 ## Eats a donut from the box in hand: stamina full again, and the mouth too full to ask for MOUTH_FULL seconds.
 func eat_donut(box: DonutBox) -> bool:
-	if not box.eat_one():
+	if not box or not box.eat_one():
 		show_hint("HINT_DONUTS_GONE")
 		return false
 	stamina = GameScale.RUN_STAMINA
@@ -215,6 +215,34 @@ func cuffed(seconds: float) -> void:
 
 func uncuff() -> void:
 	_cuffed_left = 0.0
+
+
+## Frees a cuffed `partner` (E on them). Through act(), so it happens on every PC.
+func free_partner(partner: Cop) -> void:
+	if partner:
+		partner.uncuff()
+
+
+## The belt's actions, through act() so every PC sees the same tool in hand, the same light and the same cuffs.
+func belt_select(index: int) -> void:
+	belt.select(index)
+
+
+func belt_flashlight() -> void:
+	belt.flashlight.toggle()
+
+
+func belt_cuff(body: Node, at: Vector3) -> void:
+	(belt.tools[0] as Handcuffs).cuff_body(body, at)
+
+
+func belt_photo(subject: Node, caught: Array) -> void:
+	(belt.tools[2] as PhotoCamera).develop(subject, caught)
+
+
+func belt_prints(target: Node, at: Vector3) -> void:
+	if target:
+		(belt.tools[3] as PrintKit).reveal(target, at)
 
 
 func is_cuffed() -> bool:
@@ -310,7 +338,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	elif event.is_action_pressed("drop"):
 		if wheelbarrow:
-			wheelbarrow.dump()
+			act("wheelbarrow_dump", self)
 		elif ram:
 			act("drop_ram", self)
 	elif event.is_action_pressed("ask"):
@@ -350,12 +378,16 @@ func use() -> bool:
 		act("use", _usable_target())
 		return true
 	if $Grabber.held is DonutBox:
-		return eat_donut($Grabber.held)
+		if ($Grabber.held as DonutBox).donuts == 0:
+			show_hint("HINT_DONUTS_GONE")
+			return false
+		act("eat_donut", self, [$Grabber.held])
+		return true
 	if wheelbarrow:
 		return _use_wheelbarrow()
 	var partner := _cuffed_partner()
 	if partner:
-		partner.uncuff()
+		act("free_partner", self, [partner])
 		return true
 	var target := _usable_target()
 	if not target:
@@ -377,11 +409,29 @@ func act(method: String, target: Node, args := []) -> void:
 func _use_wheelbarrow() -> bool:
 	var aimed := aim_hit(GameScale.GRAB_REACH)
 	if not aimed.is_empty() and aimed.collider is Grabbable:
-		if not wheelbarrow.add(aimed.collider):
+		if wheelbarrow.can_load(aimed.collider):
+			act("wheelbarrow_load", self, [aimed.collider])
+		else:
 			show_hint("HINT_WHEELBARROW_FULL")
 		return true
-	wheelbarrow.park()
+	act("wheelbarrow_park", self)
 	return true
+
+
+## The wheelbarrow's actions, through act() so it carries the same load on every PC.
+func wheelbarrow_load(item: Grabbable) -> void:
+	if wheelbarrow and item:
+		wheelbarrow.add(item)
+
+
+func wheelbarrow_park() -> void:
+	if wheelbarrow:
+		wheelbarrow.park()
+
+
+func wheelbarrow_dump() -> void:
+	if wheelbarrow:
+		wheelbarrow.dump()
 
 
 ## Asks what the camera points at a question (R), if it can be asked (the grandpa). Returns true if it answered.

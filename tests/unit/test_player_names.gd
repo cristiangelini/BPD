@@ -19,6 +19,9 @@ func after_each() -> void:
 
 func test_without_steam_players_are_cop_n() -> void:
 	var pcs: Array[Node] = await _pcs.two_pcs()
+	# With Steam open on this PC both PCs told their real Steam name: forget it, as if Steam were closed.
+	for net: Node in pcs:
+		net.names.clear()
 	var guest_id: int = pcs[1].multiplayer.get_unique_id()
 	assert_eq(pcs[0].player_name(guest_id), tr("COP_NAME") % 2)
 	assert_eq(pcs[1].player_name(Net.HOST_ID), tr("COP_NAME") % 1)

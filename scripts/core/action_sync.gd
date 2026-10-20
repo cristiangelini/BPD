@@ -7,7 +7,7 @@ extends Node
 ## that cop has a player at the keys. Lives under the Net autoload as "Actions".
 
 ## Methods that take the cop doing them.
-const ACTOR_METHODS: Array[String] = ["use", "ask", "exit"]
+const ACTOR_METHODS: Array[String] = ["use", "ask", "exit", "armory_choose", "armory_given"]
 
 var net: Node
 ## Everything in the level a cop can do something to, in tree order (the same on every PC), plus what was added later
@@ -44,10 +44,25 @@ func act(actor: Cop, method: String, target: Node, args := []) -> void:
 	var index := -1 if target == actor else targets.find(target)
 	if index < 0 and target != actor:
 		return
+	args = args.map(encode)
 	if multiplayer.is_server():
 		_do_and_tell(multiplayer.get_unique_id(), index, method, args)
 	else:
 		_ask.rpc_id(net.HOST_ID, index, method, args)
+
+
+## Host: tells every guest to do `method` on `target` with `actor`, without doing it here (what the host decided alone,
+## like the armory's answer).
+func tell_guests(actor: Cop, method: String, target: Node, args := []) -> void:
+	var actor_id := -1
+	for id: int in net.cop_syncs:
+		if net.cop_syncs[id].cop == actor:
+			actor_id = id
+	var index := -1 if target == actor else targets.find(target)
+	if actor_id < 0 or (index < 0 and target != actor):
+		return
+	for peer: int in net.scene_peers:
+		_told.rpc_id(peer, actor_id, index, method, args.map(encode))
 
 
 @rpc("any_peer", "call_remote", "reliable")
@@ -78,8 +93,35 @@ func _perform(actor_id: int, index: int, method: String, args: Array) -> bool:
 	var target: Node = actor if index < 0 else (targets[index] if index < targets.size() else null)
 	if not is_instance_valid(target) or not target.has_method(method):
 		return false
-	target.callv(method, ([actor] if ACTOR_METHODS.has(method) else []) + args)
+	target.callv(method, ([actor] if ACTOR_METHODS.has(method) else []) + args.map(decode))
 	return true
+
+
+## A node among an action's arguments, as every PC can find it: a cop by its player's id (its name differs on each PC),
+## a prop by its place in PropSync's list (one made during the case has no name in common), anything else by its path
+## in the level.
+func encode(arg: Variant) -> Variant:
+	if arg is Cop:
+		for id: int in net.cop_syncs:
+			if net.cop_syncs[id].cop == arg:
+				return {"cop": id}
+		return null
+	if arg is RigidBody3D and net.props and net.props.index_of(arg) >= 0:
+		return {"prop": net.props.index_of(arg)}
+	if arg is Node:
+		return {"path": _level.get_path_to(arg)}
+	return arg
+
+
+func decode(arg: Variant) -> Variant:
+	if arg is Dictionary and arg.has("cop"):
+		var sync: CopSync = net.cop_syncs.get(arg.cop)
+		return sync.cop if sync and is_instance_valid(sync.cop) else null
+	if arg is Dictionary and arg.has("prop"):
+		return net.props.prop_at(arg.prop) if net.props else null
+	if arg is Dictionary and arg.has("path"):
+		return _level.get_node_or_null(arg.path)
+	return arg
 
 
 func _on_node_added(node: Node) -> void:

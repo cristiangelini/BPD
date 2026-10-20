@@ -70,13 +70,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not cop.input_enabled or cop.vehicle or cop.in_briefing:
 		return
 	if event.is_action_pressed("flashlight"):
-		flashlight.toggle()
+		cop.act("belt_flashlight", cop)
 		return
 	if _checklist_open():
 		return
 	for i in SLOTS:
 		if event.is_action_pressed("slot_%d" % (i + 1)):
-			select(i)
+			cop.act("belt_select", cop, [i])
 
 
 func _physics_process(_delta: float) -> void:
