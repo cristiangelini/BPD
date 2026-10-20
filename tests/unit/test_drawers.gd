@@ -98,6 +98,7 @@ func test_a_cop_grabs_the_drawer_and_opens_it_crouching_back() -> void:
 
 func test_the_house_has_dressers_with_things_inside() -> void:
 	var house: GrandpaHouse = preload("res://scenes/levels/grandpa_house.tscn").instantiate()
+	house.story = GrandpaHouse.BINGO
 	house.case_seed = 7
 	house.get_node("Cop").input_enabled = false
 	add_child_autofree(house)

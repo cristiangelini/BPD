@@ -21,5 +21,7 @@ extends Resource
 ## A small evidence that goes into drawers, one per drawer, and how many of them.
 @export var drawer_evidence: PackedScene
 @export var drawer_count := 0
+## Michi sleeps on top of this evidence.
+@export var cat_item := 0
 ## What only this story adds (a StoryRig script); empty for none.
 @export var rig: Script

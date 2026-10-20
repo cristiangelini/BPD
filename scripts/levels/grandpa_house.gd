@@ -98,6 +98,8 @@ const CHECKLIST_REFRESH := 0.2
 ## The illegal bingo (investigacion.md): the betting book is the main evidence; the bingo cage and the safe with the
 ## takings are extras that need two cops. They go to hiding spots; the bingo cards go into drawers.
 const BINGO := preload("res://scenes/case/bingo_story.tres")
+## The turtle races (historias.md): Relámpago is the main evidence, with the betting board and trophies as extras.
+const TURTLES := preload("res://scenes/case/turtle_story.tres")
 
 const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
 const CAT_SCENE := preload("res://scenes/npc/cat.tscn")
@@ -124,7 +126,7 @@ const MUD := Color(0.36, 0.24, 0.14)
 @export var case_seed := 0
 ## The stories this house can tell (historias.md). One is drawn with the seed unless `story` is set or the game runs
 ## with --story=<id>.
-const STORIES: Array[CaseStory] = [BINGO]
+const STORIES: Array[CaseStory] = [BINGO, TURTLES]
 
 ## The story this raid tells; null draws one from STORIES.
 @export var story: CaseStory
@@ -309,7 +311,7 @@ func _place_notes() -> void:
 
 ## What the grandpa lets slip when asked: where each hidden item is, in an order drawn from the seed.
 func _give_slips() -> void:
-	var order := [0, 1, 2]
+	var order: Array = range(story.evidence.size())
 	var rng := RandomNumberGenerator.new()
 	rng.seed = case_seed * 13 + 1
 	for i in range(order.size() - 1, 0, -1):
@@ -322,10 +324,11 @@ func _give_slips() -> void:
 	grandpa.slipped.connect(_on_clue)
 
 
-## Michi sleeps on top of the betting book's hiding spot.
+## Michi sleeps on top of the story's cat_item (the betting book in the bingo).
 func _place_michi() -> void:
 	michi = CAT_SCENE.instantiate()
-	michi.position = SPOTS[evidence_spots[0]].at + Vector3.UP * (story.half_heights[0] * 2 + 0.05)
+	var item := story.cat_item
+	michi.position = SPOTS[evidence_spots[item]].at + Vector3.UP * (story.half_heights[item] * 2 + 0.05)
 	michi.rotation.y = case_seed % 4 * PI / 2
 	michi.meowed.connect(grandpa.cat_upset)
 	michi.tripped.connect(func(cop: Cop) -> void: grandpa.cat_upset(cop.global_position))
@@ -368,7 +371,8 @@ func _place_trails() -> void:
 
 
 ## Marks every `step` meters along the path; footprints alternate left and right and point along the way.
-func trail(map: RID, from: Vector3, to: Vector3, step: float, feet: bool, color: Color) -> Array[Node3D]:
+func trail(map: RID, from: Vector3, to: Vector3, step: float, feet: bool, color: Color,
+		mark_size := Vector3(0.04, 0.01, 0.04)) -> Array[Node3D]:
 	var path := NavigationServer3D.map_get_path(map, from, to, true)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = case_seed
@@ -384,7 +388,7 @@ func trail(map: RID, from: Vector3, to: Vector3, step: float, feet: bool, color:
 			var at := a + dir * left
 			var mark := MeshInstance3D.new()
 			var box := BoxMesh.new()
-			box.size = Vector3(0.11, 0.004, 0.26) if feet else Vector3(0.04, 0.01, 0.04)
+			box.size = Vector3(0.11, 0.004, 0.26) if feet else mark_size
 			mark.mesh = box
 			mark.material_override = _material(color)
 			var jitter := Vector3(rng.randf_range(-0.1, 0.1), 0, rng.randf_range(-0.1, 0.1))

@@ -50,6 +50,12 @@ Cada una tiene una evidencia principal (sin ella no hay caso), 1 o 2 extras, un 
 
 Los pesos y valores son **(propuesta)** y siguen la escala del bingo: la principal vale unos 1000 y los extras suman entre 400 y 800.
 
+## Carreras de tortugas (cómo quedó)
+- **Relámpago** (2 kg, vale 1000) duerme en su escondite comiendo lechuga. Cuando un policía se le acerca a menos de 3 m se despierta y camina a 0,3 m/s, cambiando de rumbo cada 3 a 6 s. Con un policía a menos de 1,2 m se mete en el caparazón 3 s y se queda quieta: ese es el momento de agarrarla **(propuesta)**.
+- Hay **4 tortugas iguales** sin número que caminan por la casa desde el principio. No valen nada. Relámpago no muestra su valor flotando, así que solo el 7 del caparazón la distingue.
+- **Pistas:** un camino de hojas de lechuga va desde la mesada de la cocina hasta el escondite de Relámpago. Las huellas de barro llevan al tablero, y cada una tiene además una nota del abuelo.
+- **Extras:** el tablero de apuestas (8 kg, vale 400) en un escondite y 3 trofeos (0,5 kg, 100 cada uno) en los cajones. Michi duerme arriba del tablero.
+
 ## Lo que comparten todas las historias
 - La puerta cerrada, el ariete y la llave en la maceta.
 - Los adornos frágiles y la multa de 20 por cada uno.

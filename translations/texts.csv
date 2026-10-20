@@ -135,3 +135,12 @@ AWARD_RAM_MISSES,Más golpes al aire con el ariete: %s (%d),Most battering ram s
 AWARD_STORY_SECONDS,Mejor oyente del abuelo: %s (%d s),The grandpa's best listener: %s (%d s),Melhor ouvinte do vovô: %s (%d s)
 AWARD_METERS_DRIVEN,Chofer del año: %s (%d m),Driver of the year: %s (%d m),Motorista do ano: %s (%d m)
 COP_NAME,Policía %d,Officer %d,Policial %d
+BRIEF_TURTLE_B,"Hay carreras de tortugas clandestinas en el barrio, con apuestas y todo. La campeona se llama Relámpago y dicen que vive en la casa del abuelo.","There are underground turtle races in the neighborhood, with bets and everything. The champion is called Relámpago, and they say she lives at the grandpa's house.","Tem corridas de tartarugas clandestinas no bairro, com apostas e tudo. A campeã se chama Relâmpago e dizem que mora na casa do vovô."
+BRIEF_TURTLE_C,"Tenemos orden de allanamiento. Traigan a Relámpago en el baúl del patrullero: tiene un 7 pintado en el caparazón. Ojo, que no es la única tortuga de la casa.","We have a search warrant. Bring Relámpago back in the patrol car's trunk: she has a 7 painted on her shell. Careful, she's not the only turtle in the house.","Temos um mandado de busca. Tragam a Relâmpago no porta-malas da viatura: ela tem um 7 pintado no casco. Cuidado, não é a única tartaruga da casa."
+BRIEF_TURTLE_D,"Si encuentran el tablero de apuestas o los trofeos, mejor: todo suma. La puerta está cerrada: la llave suele estar en alguna maceta, y si no, usen el ariete.","If you find the betting board or the trophies, even better: it all adds up. The door is locked: the key is usually in one of the pots, and if not, use the battering ram.","Se acharem o quadro de apostas ou os troféus, melhor: tudo soma. A porta está trancada: a chave costuma estar em algum vaso, e se não, usem o aríete."
+NOTE_ITEM_turtle,Relámpago,Relámpago,Relâmpago
+NOTE_ITEM_board,El tablero,The betting board,O quadro
+OBJ_FIND_TURTLE,"Encontrar a Relámpago (la tortuga con un 7 en el caparazón)","Find Relámpago (the turtle with a 7 on her shell)","Achar a Relâmpago (a tartaruga com um 7 no casco)"
+OBJ_EXTRA_BOARD,Extra: el tablero de apuestas,Extra: the betting board,Extra: o quadro de apostas
+OBJ_EXTRA_TROPHIES,"Extra: trofeos (%d de %d), en los cajones","Extra: trophies (%d of %d), in the drawers","Extra: troféus (%d de %d), nas gavetas"
+CLUE_LETTUCE,Hojas de lechuga desde la cocina,Lettuce leaves from the kitchen,Folhas de alface desde a cozinha
