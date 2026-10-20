@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/props/evidence.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/models/sample_jar.glb" id="2"]
+
+[sub_resource type="BoxShape3D" id="Shape"]
+size = Vector3(0.07, 0.1, 0.07)
+
+[node name="SampleJar" type="RigidBody3D"]
+collision_layer = 4
+collision_mask = 15
+mass = 0.5
+script = ExtResource("1")
+full_value = 100.0
+safe_speed = 3.0
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+shape = SubResource("Shape")
+
+[node name="Model" parent="." instance=ExtResource("2")]
+
+[node name="ValueLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+billboard = 1
+pixel_size = 0.004
+outline_size = 8
+text = "0"

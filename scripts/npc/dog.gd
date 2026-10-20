@@ -1,11 +1,12 @@
 class_name Dog
-extends Grabbable
+extends Evidence
 
 ## One of the loose dogs of the pet salon (docs/diseno/peluqueria.md, "El peluquero y los perros"). It wanders the
 ## salon and the yard, follows the cop who has something in hand and jumps at him, and every now and then takes
 ## something small a cop left on the floor in its mouth and hides it in the doghouse (like the bakery's pigeons).
 ## A cop who bumps into it, or a hard landing, makes it bark: Ramiro complains. Cops can pick it up (it's light) to
-## sit with it in the waiting armchair. Every number here is (propuesta).
+## sit with it in the waiting armchair. A dog is evidence only when a story gives it a value (Duque, the
+## millionaire's dog); the others are worth 0 and never break. Every number here is (propuesta).
 
 signal barked(at: Vector3)
 
@@ -25,6 +26,9 @@ const REACH := 0.5
 const BUMP_SPEED := 2.5
 const HIT_SPEED := 4.0
 const BARK_COOLDOWN := 2.0
+## A dog with `flee` set runs this many times faster than SPEED, this far from the cop it runs from.
+const FLEE_SCALE := 1.7
+const FLEE_STEP := 3.0
 const REPATH := 0.5
 const WANDER_EVERY := 4.0
 ## Where it holds what it carries, from its feet.
@@ -44,6 +48,10 @@ enum State { WANDER, FOLLOW, FETCH, CARRY }
 @export var poodle := false
 ## Waiting in a cage: it stays put until a cop takes it out, then it roams like the others.
 @export var caged := false
+## A look of its own instead of its coat (a story's dog).
+@export var look: PackedScene
+## It runs from cops closer than this, and never follows them (0: it doesn't run).
+var flee := 0.0
 ## Where it wanders (floor rectangles of the salon, as Rect2 in x/z) and where it hides what it takes, set by the salon.
 var areas: Array[Rect2] = []
 var den: Vector3
@@ -60,19 +68,17 @@ var _wander := 0.0
 var _hop := HOP_EVERY
 var _fetch_wait := FETCH_EVERY
 var _since_bark := BARK_COOLDOWN
-var _impacts := ImpactTracker.new()
 var _model: Node3D
 var _step := 0.0
 
 
 func _ready() -> void:
+	super._ready()
 	add_to_group("dogs")
-	contact_monitor = true
-	max_contacts_reported = 4
 	axis_lock_angular_x = true
 	axis_lock_angular_y = true
 	axis_lock_angular_z = true
-	_model = (POODLE_MODEL if poodle else MODELS[coat % MODELS.size()]).instantiate()
+	_model = (look if look else POODLE_MODEL if poodle else MODELS[coat % MODELS.size()]).instantiate()
 	add_child(_model)
 	body_entered.connect(_on_body_entered)
 	_goal = global_position
@@ -113,6 +119,15 @@ func _physics_process(delta: float) -> void:
 		return
 	_carry()
 	if absf(linear_velocity.y) > 0.5:
+		return
+	var chaser := _nearest_cop(flee)
+	if chaser:
+		var away := global_position - chaser.global_position
+		away.y = 0.0
+		_set_goal(global_position + away.normalized() * FLEE_STEP)
+		_wander = WANDER_EVERY
+		state = State.WANDER
+		_walk(delta, false, FLEE_SCALE)
 		return
 	match state:
 		State.WANDER:
@@ -160,7 +175,7 @@ func _physics_process(delta: float) -> void:
 
 
 ## Walks along the path to the goal, stopping KEEP short of a cop it follows.
-func _walk(delta: float, following: bool) -> void:
+func _walk(delta: float, following: bool, speed_scale := 1.0) -> void:
 	_repath -= delta
 	if _repath <= 0.0:
 		_repath = REPATH
@@ -174,7 +189,7 @@ func _walk(delta: float, following: bool) -> void:
 		if _path.size() == 1 and wish.length() < 0.05:
 			wish = Vector3.ZERO
 	if wish.length() > 0.01:
-		wish = wish.normalized() * SPEED
+		wish = wish.normalized() * SPEED * speed_scale
 		sleeping = false
 		_model.rotation.y = atan2(wish.x, wish.z)
 		_step += delta * 14.0
@@ -193,6 +208,18 @@ func _set_goal(point: Vector3) -> void:
 
 func _flat_distance(point: Vector3) -> float:
 	return Vector2(point.x - global_position.x, point.z - global_position.z).length()
+
+
+## The nearest cop within `within` (none for 0).
+func _nearest_cop(within: float) -> Cop:
+	var best: Cop
+	var best_distance := within
+	for node in get_tree().get_nodes_in_group("cops"):
+		var d := _flat_distance((node as Node3D).global_position)
+		if d < best_distance:
+			best = node
+			best_distance = d
+	return best
 
 
 ## The nearest cop with something (not a dog) in hand, within FOLLOW_RANGE.
@@ -288,7 +315,10 @@ func _wander_point() -> Vector3:
 
 
 func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
-	if _impacts.hardest(state) > HIT_SPEED:
+	var speed := _impacts.hardest(state)
+	if speed > 0.0:
+		hit(speed)
+	if speed > HIT_SPEED:
 		bark.call_deferred()
 
 

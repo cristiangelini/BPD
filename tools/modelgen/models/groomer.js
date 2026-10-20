@@ -148,13 +148,149 @@ export function buildContestPhoto() {
 	return b.build();
 }
 
+// The diamond necklace (peluqueria.md, "El collar de diamantes"): a silver chain ring with diamonds and a big drop
+// stone, lying flat, 0.16 m across; on a dog it goes around the neck. Origin at its middle.
+export function buildDiamondNecklace() {
+	const b = new Builder('diamond_necklace');
+	const silver = mat('silver', 0xd8dce4), diamond = mat('diamond', 0xe8fbff, { emissive: 0x4a6a78 });
+	b.add('chain', silver, new THREE.TorusGeometry(0.07, 0.006, 4, 18), { rot: [Math.PI / 2, 0, 0] });
+	for (let i = 0; i < 10; i++) {
+		const a = (i / 10) * Math.PI * 2;
+		b.add('stones', diamond, new THREE.OctahedronGeometry(0.012), { pos: V(Math.cos(a) * 0.07, 0.004, Math.sin(a) * 0.07) });
+	}
+	b.add('stones', diamond, new THREE.OctahedronGeometry(0.022), { pos: V(0, 0.004, 0.085), rot: [0, 0, 0] });
+	return b.build();
+}
+
+// Its velvet case: a dark blue box with the lid open, 0.16 x 0.06 x 0.12 m (lid not counted), origin at its middle.
+export function buildNecklaceCase() {
+	const b = new Builder('necklace_case');
+	const velvet = mat('case_velvet', 0x1e2a6a), satin = mat('case_satin', 0xf0e8f0), gold = mat('gold', 0xf2c84b, { emissive: 0x3a2a05 });
+	b.add('box', velvet, new THREE.BoxGeometry(0.16, 0.05, 0.12), { pos: V(0, -0.005, 0) });
+	b.add('box', satin, new THREE.BoxGeometry(0.14, 0.004, 0.1), { pos: V(0, 0.021, 0) });
+	b.add('lid', velvet, new THREE.BoxGeometry(0.16, 0.12, 0.012), { pos: V(0, 0.08, -0.064), rot: [-0.25, 0, 0] });
+	b.add('clasp', gold, new THREE.BoxGeometry(0.02, 0.012, 0.004), { pos: V(0, 0.005, 0.061) });
+	return b.build();
+}
+
+// The millionaire's dog (peluqueria.md, "El perro del millonario"): a greyhound dyed brown, pear body on long thin legs,
+// about 0.75 m tall and 0.8 m long, origin at its feet, facing +Z. Duque is the same dog with his white roots showing at
+// the paws, the chest and the ear tips; the three decoys are just brown.
+export function buildGreyhound(roots) {
+	const b = new Builder(roots ? 'dog_greyhound_roots' : 'dog_greyhound');
+	const fur = mat('greyhound_dye', 0x7a4a2a), dark = mat('greyhound_dark', 0x4a2a16), white = mat('greyhound_root', 0xf8f6f0);
+	const black = mat('dog_black', 0x141010), eye = mat('dog_eye', 0xffffff);
+	b.add('body', fur, ellipsoid(0.15, 0.17, 0.3, 12, 8), { pos: V(0, 0.46, -0.04) });
+	b.add('body', fur, ellipsoid(0.12, 0.14, 0.12, 10, 6), { pos: V(0, 0.52, 0.2) });
+	for (const [x, z] of [[-0.08, 0.17], [0.08, 0.17], [-0.08, -0.22], [0.08, -0.22]]) {
+		b.add('legs', fur, new THREE.CylinderGeometry(0.025, 0.03, 0.36, 6), { pos: V(x, 0.18, z) });
+		b.add('legs', roots ? white : fur, ellipsoid(0.035, 0.025, 0.05, 6, 3), { pos: V(x, 0.015, z + 0.015) });
+	}
+	if (roots) b.add('body', white, ellipsoid(0.04, 0.035, 0.02, 8, 4), { pos: V(0, 0.46, 0.31) });
+	b.add('head', fur, new THREE.CylinderGeometry(0.045, 0.06, 0.2, 8), { pos: V(0, 0.66, 0.3), rot: [0.5, 0, 0] });
+	b.add('head', fur, ellipsoid(0.08, 0.075, 0.1, 10, 6), { pos: V(0, 0.75, 0.37) });
+	b.add('head', fur, ellipsoid(0.04, 0.035, 0.1, 8, 5), { pos: V(0, 0.72, 0.48) });
+	b.add('head', black, ellipsoid(0.018, 0.015, 0.014, 6, 4), { pos: V(0, 0.73, 0.575) });
+	for (const s of [-1, 1]) {
+		b.add('head', eye, ellipsoid(0.02, 0.022, 0.012, 6, 4), { pos: V(s * 0.04, 0.78, 0.44) });
+		b.add('head', black, ellipsoid(0.011, 0.013, 0.008, 6, 4), { pos: V(s * 0.04, 0.78, 0.452) });
+		b.add('ears', dark, ellipsoid(0.03, 0.05, 0.015, 6, 4), { pos: V(s * 0.06, 0.82, 0.32), rot: [0.6, 0, s * 0.5] });
+		if (roots) b.add('ears', white, ellipsoid(0.016, 0.02, 0.012, 5, 3), { pos: V(s * 0.065, 0.835, 0.31) });
+	}
+	b.add('tail', dark, new THREE.CylinderGeometry(0.012, 0.02, 0.3, 6), { pos: V(0, 0.4, -0.42), rot: [-1.0, 0, 0] });
+	return b.build();
+}
+
+// The brown dye: a 0.08 m wide, 0.2 m tall plastic bottle with a brown label and a dog on it. Origin at its middle.
+export function buildDogDye() {
+	const b = new Builder('dog_dye');
+	b.add('bottle', mat('dye_plastic', 0xf4f0e8), new THREE.CylinderGeometry(0.04, 0.04, 0.16, 8), { pos: V(0, -0.02, 0) });
+	b.add('bottle', mat('dye_cap', 0x5a3018), new THREE.CylinderGeometry(0.02, 0.025, 0.04, 8), { pos: V(0, 0.08, 0) });
+	b.add('label', mat('greyhound_dye', 0x7a4a2a), new THREE.CylinderGeometry(0.0405, 0.0405, 0.08, 8, 1, true, -0.9, 1.8), { pos: V(0, -0.02, 0) });
+	return b.build();
+}
+
+// The ransom letter: a folded sheet with letters cut out of magazines, 0.16 x 0.01 x 0.12 m, lying flat.
+export function buildRansomLetter() {
+	const b = new Builder('ransom_letter');
+	b.add('paper', mat('letter_paper', 0xf8f4e6), new THREE.BoxGeometry(0.16, 0.006, 0.12));
+	const colors = [0xd23a4a, 0x2a5ac8, 0x2a2420, 0xf2c84b, 0x3a9a4a];
+	for (let i = 0; i < 12; i++) {
+		const c = mat(`letter_cut_${i % colors.length}`, colors[i % colors.length]);
+		b.add('letters', c, new THREE.BoxGeometry(0.018, 0.002, 0.022), { pos: V(-0.06 + (i % 6) * 0.024, 0.004, -0.025 + Math.floor(i / 6) * 0.04), rot: [0, (i % 3 - 1) * 0.2, 0] });
+	}
+	return b.build();
+}
+
+// The hair-growth shampoo (peluqueria.md, "El champú crecepelo"): an 8 kg jug of green shampoo with a handle and a
+// skull-and-hair label, 0.28 x 0.46 x 0.22 m, origin at its middle.
+export function buildShampooJug() {
+	const b = new Builder('shampoo_jug');
+	const plastic = mat('jug_plastic', 0x58c878), cap = mat('jug_cap', 0xf4f0e8), label = mat('jug_label', 0xfff2a0);
+	b.add('jug', plastic, new THREE.BoxGeometry(0.28, 0.38, 0.22), { pos: V(0, -0.04, 0) });
+	b.add('jug', plastic, new THREE.CylinderGeometry(0.05, 0.1, 0.06, 8), { pos: V(-0.05, 0.18, 0) });
+	b.add('cap', cap, new THREE.CylinderGeometry(0.045, 0.045, 0.04, 8), { pos: V(-0.05, 0.21, 0) });
+	b.add('handle', plastic, new THREE.TorusGeometry(0.05, 0.015, 4, 10, Math.PI), { pos: V(0.07, 0.15, 0) });
+	b.add('label', label, new THREE.BoxGeometry(0.18, 0.16, 0.004), { pos: V(0, -0.04, 0.112) });
+	b.add('label', mat('label_hair', 0x6a3a1a), ellipsoid(0.05, 0.035, 0.003, 8, 4), { pos: V(0, 0.0, 0.115) });
+	return b.build();
+}
+
+// The secret formula: a sheet with a green stain and a big X, 0.16 x 0.006 x 0.12 m, lying flat.
+export function buildFormulaSheet() {
+	const b = new Builder('formula_sheet');
+	b.add('paper', mat('letter_paper', 0xf8f4e6), new THREE.BoxGeometry(0.16, 0.006, 0.12));
+	b.add('stain', mat('jug_plastic', 0x58c878), ellipsoid(0.03, 0.002, 0.025, 8, 3), { pos: V(0.04, 0.003, 0.02) });
+	for (const r of [0.6, -0.6]) b.add('mark', mat('ink_red', 0xd23a4a), new THREE.BoxGeometry(0.07, 0.002, 0.008), { pos: V(-0.035, 0.004, -0.015), rot: [0, r, 0] });
+	return b.build();
+}
+
+// A sample jar of it: 0.07 m across, 0.1 m tall, green, with a white lid. Origin at its middle.
+export function buildSampleJar() {
+	const b = new Builder('sample_jar');
+	b.add('jar', mat('jar_glass', 0x9ae8b0), new THREE.CylinderGeometry(0.035, 0.035, 0.08, 10), { pos: V(0, -0.01, 0) });
+	b.add('lid', mat('jug_cap', 0xf4f0e8), new THREE.CylinderGeometry(0.037, 0.037, 0.02, 10), { pos: V(0, 0.04, 0) });
+	return b.build();
+}
+
+// The caged dog that tried the shampoo: a small dog buried in fur that reaches the floor (the story's clue).
+export function buildLongHairDog() {
+	const b = new Builder('dog_long_hair');
+	const fur = mat('long_fur', 0xe8d8b0), dark = mat('long_fur_dark', 0xc8b088), black = mat('dog_black', 0x141010), eye = mat('dog_eye', 0xffffff);
+	b.add('fur', fur, new THREE.CylinderGeometry(0.17, 0.3, 0.32, 10), { pos: V(0, 0.16, 0) });
+	b.add('fur', fur, ellipsoid(0.17, 0.12, 0.24, 10, 6), { pos: V(0, 0.32, 0) });
+	b.add('fur', dark, new THREE.ConeGeometry(0.1, 0.28, 8), { pos: V(0, 0.2, 0.26), rot: [Math.PI, 0, 0] });
+	b.add('head', fur, ellipsoid(0.12, 0.11, 0.11, 10, 6), { pos: V(0, 0.46, 0.24) });
+	b.add('head', black, ellipsoid(0.025, 0.02, 0.018, 6, 4), { pos: V(0, 0.44, 0.35) });
+	for (const s of [-1, 1]) {
+		b.add('head', eye, ellipsoid(0.02, 0.022, 0.01, 6, 4), { pos: V(s * 0.045, 0.49, 0.335) });
+		b.add('head', black, ellipsoid(0.011, 0.013, 0.007, 6, 4), { pos: V(s * 0.045, 0.49, 0.343) });
+	}
+	return b.build();
+}
+
+// The mustache the shampoo grows on a cop: a big brown handlebar, 0.6 m wide, origin at its middle, facing +Z.
+export function buildMustache() {
+	const b = new Builder('cop_mustache');
+	const hair = mat('mustache_hair', 0x5a3418);
+	b.add('mustache', hair, ellipsoid(0.12, 0.06, 0.05, 10, 6));
+	for (const s of [-1, 1]) {
+		b.add('mustache', hair, ellipsoid(0.12, 0.05, 0.04, 8, 5), { pos: V(s * 0.17, -0.02, 0), rot: [0, 0, s * 0.3] });
+		b.add('mustache', hair, ellipsoid(0.05, 0.04, 0.03, 6, 4), { pos: V(s * 0.28, 0.04, 0), rot: [0, 0, s * 1.0] });
+	}
+	return b.build();
+}
+
 export const models = {
 	shampoo_bottle: buildShampoo,
 	dog_collar: buildCollar,
 	...Object.fromEntries(COATS.map((_, i) => [`dog_${i}`, () => buildDog(i)])),
 	dog_poodle: buildPoodle,
 	dog_trophy: buildDogTrophy, judge_cards: buildJudgeCards, golden_comb: buildGoldenComb,
-	contest_photo: buildContestPhoto,
+	contest_photo: buildContestPhoto, diamond_necklace: buildDiamondNecklace, necklace_case: buildNecklaceCase,
+	dog_greyhound: () => buildGreyhound(false), dog_greyhound_roots: () => buildGreyhound(true), dog_dye: buildDogDye,
+	ransom_letter: buildRansomLetter, shampoo_jug: buildShampooJug, formula_sheet: buildFormulaSheet,
+	sample_jar: buildSampleJar, dog_long_hair: buildLongHairDog, cop_mustache: buildMustache,
 };
 
 export const views = {
@@ -172,5 +308,24 @@ export const views = {
 			{ name: 'golden_comb', pos: [0.2, 0.008, -0.1], rotY: 0.4 }, { name: 'contest_photo', pos: [0.05, 0.07, 0.35], rotY: -0.2 },
 		],
 		cam: { pos: [0, 0.6, 1.2], target: [0, 0.1, 0.1], fov: 36 },
+	},
+	diamond_goods: {
+		items: [{ name: 'diamond_necklace', pos: [-0.12, 0.01, 0], rotY: 0.3 }, { name: 'necklace_case', pos: [0.15, 0.03, -0.02], rotY: -0.3 }],
+		cam: { pos: [0, 0.35, 0.6], target: [0, 0.03, 0], fov: 36 },
+	},
+	millionaire_goods: {
+		items: [
+			{ name: 'dog_greyhound', pos: [-0.55, 0, 0], rotY: 0.6 }, { name: 'dog_greyhound_roots', pos: [0.35, 0, 0], rotY: 0.6 },
+			{ name: 'dog_dye', pos: [0.9, 0.1, 0.3], rotY: 0 }, { name: 'ransom_letter', pos: [-0.1, 0.005, 0.6], rotY: 0.3 },
+		],
+		cam: { pos: [0, 1.0, 2.4], target: [0, 0.35, 0.1], fov: 38 },
+	},
+	hair_goods: {
+		items: [
+			{ name: 'shampoo_jug', pos: [-0.45, 0.23, 0], rotY: 0.3 }, { name: 'formula_sheet', pos: [-0.05, 0.003, 0.25], rotY: -0.2 },
+			{ name: 'sample_jar', pos: [0.15, 0.05, 0.2], rotY: 0 }, { name: 'dog_long_hair', pos: [0.5, 0, -0.1], rotY: -0.5 },
+			{ name: 'cop_mustache', pos: [0.05, 0.45, -0.2], rotY: 0 },
+		],
+		cam: { pos: [0, 0.8, 1.7], target: [0, 0.22, 0], fov: 38 },
 	},
 };

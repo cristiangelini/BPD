@@ -10,6 +10,7 @@ collision_layer = 4
 collision_mask = 15
 mass = 6.0
 script = ExtResource("1")
+full_value = 0.0
 
 [node name="Shape" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.26, 0.04)
