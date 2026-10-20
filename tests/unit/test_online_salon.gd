@@ -36,10 +36,15 @@ func test_ramiro_moves_talks_and_gets_annoyed_the_same_for_the_guest() -> void:
 	bubble.text = "NPC_NO_PHOTOS"
 	bubble.show()
 	on_host.complaint = 40.0
-	await wait_until(func() -> bool: return on_guest.global_position.distance_to(on_host.global_position) < 0.05, 5.0)
+	# A loose dog can bark at him meanwhile on the host (+5, another line): the guest follows whatever the host has.
+	var synced := func() -> bool:
+		return on_guest.global_position.distance_to(on_host.global_position) < 0.05 \
+			and on_guest.get_node("Bubble").text == bubble.text and absf(on_guest.complaint - on_host.complaint) < 0.01
+	await wait_until(synced, 5.0)
 	assert_almost_eq(on_guest.global_position, on_host.global_position, Vector3.ONE * 0.05)
-	assert_eq(on_guest.get_node("Bubble").text, "NPC_NO_PHOTOS")
-	assert_almost_eq(on_guest.complaint, 40.0, 0.01, "the complaint bar fills the same")
+	assert_eq(on_guest.get_node("Bubble").text, bubble.text)
+	assert_almost_eq(on_guest.complaint, on_host.complaint, 0.01, "the complaint bar fills the same")
+	assert_gte(on_host.complaint, 40.0)
 
 
 func test_the_poodle_lady_says_the_same_on_every_pc() -> void:
