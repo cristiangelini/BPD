@@ -88,6 +88,7 @@ func _ready() -> void:
 	add_child(window)
 
 	_bubble = Label3D.new()
+	_bubble.name = "Bubble"
 	_bubble.position = Vector3(0, WINDOW_TOP + 0.35, 0.8)
 	_bubble.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	_bubble.no_depth_test = true

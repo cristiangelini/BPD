@@ -43,9 +43,18 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 | Objetos con física (cajas, evidencia, adornos, panes) | Anfitrión | Posición y giro copiados; los rotos se rompen en todos |
 | Puertas, cajones, caja fuerte, baúl del patrullero | Anfitrión | Su estado (abierta, rota, combinación) |
 | Patrullero | Anfitrión, con los controles que le manda el que maneja **(propuesta)**: así lo que va en el baúl viaja con el auto en todas las PCs | Copia suavizada; los de adentro viajan con él |
-| NPC (abuelo, vecina, Marta, clientes, Michi, palomas) | Anfitrión | Posición, animación y lo que dicen |
-| Caso (historia, pistas, sospecha marcada, entrega, denuncia, multas) | Anfitrión | La lista de Q y los avisos iguales para todos |
+| NPC (abuelo, vecina, chismosa, Marta, clientes, Michi, palomas, Ramiro, la señora del caniche y los clientes de la peluquería) | Anfitrión | Posición, animación, lo que dicen, la denuncia y la toalla del cliente |
+| Perros, gatos y tortugas | Anfitrión, como objetos | Se mueven solos solo en la PC del anfitrión; en las otras siguen su copia |
+| Caso (pista del comisario, historia, pistas, sospecha marcada, entrega, denuncia, multas) | Anfitrión | La lista de Q y los avisos iguales para todos. Cualquiera que hable con el comisario da la pista para todos, también para quien entra después |
 | Plata, ítems y turno | Anfitrión | La pantalla de fin de turno igual para todos |
+
+## Herramientas
+- El cinturón se ve igual en todas las PCs: qué herramienta tiene cada uno en la mano, la linterna prendida o apagada (F) y las esposas. Como las demás acciones, el que la usa le pide al anfitrión y el anfitrión la repite en todos.
+- Esposar va a quien apuntó el que esposa en su PC; liberar con E también pasa en todas.
+- **Cámara y huellas:** la PC del que saca la foto decide qué salió en ella; el flash, el rollo, la queja del dueño y las pistas pasan en todas, y la foto cuenta para el premio al fotógrafo. Las huellas también se revelan en todas y las del dueño van a la lista de todos.
+- **Armería:** la lista se abre solo en la pantalla del que habló con el armero, pero decide el anfitrión con la caja común de la partida; la lista de los invitados muestra la plata del anfitrión. Lo que entrega se ve en todas las PCs: el ariete, los guantes, la caja de donas en las manos de quien la pidió y la carretilla.
+- **Donas:** comer una pasa en todas las PCs, así la caja tiene las mismas donas para todos.
+- **Carretilla:** agarrarla, cargarla, estacionarla y volcarla (G) pasa en todas las PCs; lo que lleva lo sigue moviendo el anfitrión, así al volcarla cae igual para todos.
 
 ## Menú con Esc
 - **Esc** en medio de un caso abre un menú: **Seguir**, **Invitar amigos** (solo el anfitrión, con Steam), la casilla **Voz siempre abierta** y **Salir de la sala** (o **Salir al menú** jugando solo). Esc otra vez lo cierra.

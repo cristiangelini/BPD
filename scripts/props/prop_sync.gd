@@ -64,6 +64,9 @@ static func _freeze(prop: RigidBody3D) -> void:
 	prop.contact_monitor = false
 	if not prop is PatrolCar:
 		prop.set_physics_process(false)
+	# A turtle walks on its own; its copy only follows the host's.
+	for walker in prop.find_children("*", "TurtleWalk", false, false):
+		walker.set_physics_process(false)
 
 
 ## Pushes `prop` (the battering ram): the host does it, a guest asks the host.
