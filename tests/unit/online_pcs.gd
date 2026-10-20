@@ -1,7 +1,8 @@
 extends RefCounted
 
 ## Test helper: a host and guests on this PC, each in its own multiplayer branch with a Net and a level holding the
-## player's cop, as if they were different PCs. `fill_level` adds the same things to every PC's level.
+## player's cop, as if they were different PCs. `fill_level` adds the same things to every PC's level; `make_level`
+## builds the whole level instead (a real place), with its own "Cop".
 
 const NET_SCRIPT := preload("res://scripts/core/net.gd")
 const COP_SCENE := preload("res://scenes/player/cop.tscn")
@@ -10,11 +11,13 @@ var nets: Array[Node] = []
 var port := randi_range(20000, 40000)
 var _test: GutTest
 var _fill_level: Callable
+var _make_level: Callable
 
 
-func _init(test: GutTest, fill_level := Callable()) -> void:
+func _init(test: GutTest, fill_level := Callable(), make_level := Callable()) -> void:
 	_test = test
 	_fill_level = fill_level
+	_make_level = make_level
 
 
 func new_pc() -> Node:
@@ -32,6 +35,13 @@ func new_pc() -> Node:
 	world.own_world_3d = true
 	world.size = Vector2i(64, 64)
 	branch.add_child(world)
+	if _make_level.is_valid():
+		var place: Node3D = _make_level.call()
+		place.name = "Level"
+		place.get_node("Cop").input_enabled = false
+		world.add_child(place)
+		nets.append(net)
+		return net
 	var level := Node3D.new()
 	level.name = "Level"
 	world.add_child(level)

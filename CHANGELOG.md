@@ -53,6 +53,7 @@
 - Online, step 4 (props): the host simulates every physics object and the guests see them where the host has them; guests grab, carry, throw and pull drawers through the host, and an ornament broken on the host shatters for everyone.
 - Online, step 4 (using things): E, R, the battering ram and dropping it happen on every PC in the same order through the host, so doors, pots, the safe and the ram look the same for everyone; hints show on the screen of the cop who did it, and only the host makes new props (the takings, the ring).
 - Online, step 4 (patrol car): getting in picks the same seat on every PC, the host drives the car with the controls the driver sends, and the siren turns on for everyone.
+- Online, step 5 (the case): the host's case decides; every guest sees the same checklist, the comisario's story once someone guesses it, the result and the end of shift screen. Guests mark suspicions through the host, and only the host starts the next case.
 - The police station opens: a guard room where the cops appear, the comisario's office, the armory behind a barred counter, two cells, the board room (closed) and a break room, with low poly furniture.
 - The comisario gives the case in his office: E on him starts the briefing, and the patrol car stays locked ("¡¿Adónde van?! ¡Primero el caso!") until then.
 - The armory: the armero behind the counter opens his list with E (cash box, price, take or buy); the battering ram is taken there instead of lying by the grandpa's door.

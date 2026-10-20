@@ -35,6 +35,8 @@ var cop_syncs := {}
 var props: PropSync
 ## What cops do to the current level, done on every PC in the same order.
 var actions: ActionSync
+## The current level's case, decided by the host (null if the level has none).
+var case_sync: CaseSync
 ## This PC has the current level loaded and its cops in place.
 var _in_scene := false
 
@@ -151,11 +153,15 @@ func spawn_cops(local: Cop) -> void:
 	add_child(props)
 	actions = ActionSync.new(self, local.get_parent())
 	add_child(actions)
+	var raids := local.get_parent().find_children("*", "RaidCase", true, false)
+	if not raids.is_empty():
+		case_sync = CaseSync.new(self, raids[0])
+		add_child(case_sync)
 	_in_scene = true
 	_entered_scene.rpc(true)
 	if multiplayer.is_server():
 		for peer in scene_peers:
-			props.resend_all(peer)
+			_resend(peer)
 
 
 func _add_cop(cop: Cop, id: int, start: Transform3D) -> void:
@@ -178,7 +184,14 @@ func _entered_scene(answer: bool) -> void:
 	if answer and _in_scene:
 		_entered_scene.rpc_id(id, false)
 	if _in_scene and multiplayer.is_server():
-		props.resend_all(id)
+		_resend(id)
+
+
+## Host: everything a peer that just loaded the level needs at once.
+func _resend(peer: int) -> void:
+	props.resend_all(peer)
+	if case_sync:
+		case_sync.resend(peer)
 
 
 func _leave_scene() -> void:
@@ -188,12 +201,13 @@ func _leave_scene() -> void:
 		remove_child(sync)
 		sync.queue_free()
 	cop_syncs.clear()
-	for sync: Node in [props, actions]:
+	for sync: Node in [props, actions, case_sync]:
 		if sync:
 			remove_child(sync)
 			sync.queue_free()
 	props = null
 	actions = null
+	case_sync = null
 
 
 ## A player left: their cop goes away (what it held drops, online.md).

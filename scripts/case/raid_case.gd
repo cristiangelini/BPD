@@ -52,6 +52,15 @@ var fines := 0
 ## Whose fresh prints the fingerprint kit finds near the evidence (tr() key): the place's owner.
 var prints_key := "PRINTS_OWNER"
 
+## Online, what keeps this case the same on every PC (null solo).
+var online: CaseSync
+## A guest's case online: it shows what the host's case decides and decides nothing itself.
+var follower := false
+## The host's checklist facts, for a follower.
+var _host_facts := {}
+## The end of shift numbers, once the shift is over (sent to the guests online).
+var _result := {}
+
 var briefing: CaseBriefing
 ## The comisario has given the tip (at the station, or right away without one).
 var tip_given := false
@@ -86,7 +95,7 @@ func start(tip_briefing: PackedStringArray, pool: Array = CaseSuspicions.POOL, c
 			(cop as Cop).show_hint("HINT_SEE_COMISARIO")
 	else:
 		give_tip()
-	shift_screen.play_again.connect(func() -> void: PlaceDraw.start(get_tree()))
+	shift_screen.play_again.connect(_play_again)
 	shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
 
 
@@ -124,8 +133,17 @@ func _physics_process(_delta: float) -> void:
 		check_solved()
 
 
-## What the checklist needs to know about the case right now.
+func _play_again() -> void:
+	if online:
+		online.play_again()
+	else:
+		PlaceDraw.start(get_tree())
+
+
+## What the checklist needs to know about the case right now (a follower's comes from the host).
 func objective_facts() -> Dictionary:
+	if follower and not _host_facts.is_empty():
+		return _host_facts
 	var facts := {
 		"door_open": true,
 		"find": find_key if story_known else "OBJ_FIND_PROOF",
@@ -165,6 +183,9 @@ func add_clue(text: String) -> void:
 ## Marks suspicion `index` as the cops' guess. Right: the comisario tells the story. Wrong: half the salary, and the
 ## second wrong one fails the case. Returns whether it was right.
 func mark(index: int) -> bool:
+	if follower:
+		online.request_mark(index)
+		return false
 	if story_known or case_failed or index < 0 or index >= suspicions.size() or wrong_marks.has(suspicions[index]):
 		return false
 	if suspicions[index] == story_id:
@@ -200,7 +221,7 @@ func _hold_to_mark(delta: float) -> void:
 
 
 func check_solved() -> void:
-	if case_solved or case_failed or not story_known or not car.is_delivered(main_evidence) or not car_at_station():
+	if follower or case_solved or case_failed or not story_known or not car.is_delivered(main_evidence) or not car_at_station():
 		return
 	if not all_in_car():
 		return
@@ -210,7 +231,7 @@ func check_solved() -> void:
 
 
 func fail(reason: String) -> void:
-	if case_failed or case_solved:
+	if follower or case_failed or case_solved:
 		return
 	case_failed = true
 	failed_label.text = reason
@@ -224,21 +245,55 @@ func _finish_soon() -> void:
 
 ## Shows the end of shift screen with the pay and the awards, and stops everyone's controls.
 func finish_shift() -> void:
-	if shift_over:
+	if shift_over or follower:
 		return
-	shift_over = true
 	var values := car.delivered.map(func(item: Evidence) -> float: return item.value)
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
+	_show_result({"solved": case_solved, "report": ShiftReport.pay(case_solved, values, fines, wrong_marks.size()),
+		"broken": objective_facts().broken, "awards": ShiftReport.awards(stats)})
+
+
+func _show_result(result: Dictionary) -> void:
+	shift_over = true
+	_result = result
+	for cop in get_tree().get_nodes_in_group("cops"):
 		cop.input_enabled = false
 		cop.get_node("Grabber").input_enabled = false
 		cop.get_node("Hud").hide()
 	solved_label.hide()
 	failed_label.hide()
 	checklist.set_open(false)
-	shift_screen.show_report(case_solved, ShiftReport.pay(case_solved, values, fines, wrong_marks.size()),
-		objective_facts().broken, ShiftReport.awards(stats))
+	var awards: Array[Dictionary] = []
+	awards.assign(result.awards)
+	shift_screen.show_report(result.solved, result.report, result.broken, awards)
+	# Only the host plays the next case for everyone.
+	shift_screen.get_node("%AgainButton").visible = not follower
+
+
+## What a follower needs to show the same case (CaseSync).
+func snapshot() -> Dictionary:
+	return {"facts": objective_facts(), "story_known": story_known, "failed": case_failed,
+		"reason": failed_label.text, "solved": case_solved, "result": _result}
+
+
+## A follower takes the host's case: the checklist, the comisario's story once it's guessed, solved or failed, and
+## the end of shift screen.
+func apply_snapshot(state: Dictionary) -> void:
+	_host_facts = state.facts
+	if state.story_known and not story_known:
+		story_known = true
+		_tell(story_briefing)
+	if state.failed and not case_failed:
+		case_failed = true
+		failed_label.text = state.reason
+		failed_label.show()
+	if state.solved and not case_solved:
+		case_solved = true
+		solved_label.show()
+	if not (state.result as Dictionary).is_empty() and not shift_over:
+		_show_result(state.result)
 
 
 func _on_evidence_delivered(item: Evidence) -> void:
