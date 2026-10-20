@@ -37,3 +37,4 @@
 - City, first blocks: 7 x 5 blocks (about 520 x 370 m) with streets, the police station, a plaza and the closed fronts of the 10 raid places with their signs, plus filler houses and warehouses. The patrol car drives all of it; "Ciudad (prueba)" in the menu opens it.
 - The grandpa's case happens in the city: the shift starts at the station by the patrol car, the house sits on its lot among the neighbors, and the case closes when everyone drives back to the station with the evidence.
 - City map on the radio: M opens a top view with the station, today's case blinking, the cops as arrows and the patrol car.
+- Design: the bakery, second place to raid (docs/diseno/panaderia.md).
