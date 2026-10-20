@@ -683,3 +683,6 @@ OWNER_SLIP_3,"¡Ni se les ocurra volver a mi casa! ...Digo, al negocio. Digo, a 
 CONFESS_owner_grandpa,"¡Está bien! ¡Lo escondí yo! ¡Y no me arrepiento de nada, que en mis tiempos esto era legal!","Fine! I hid it! And I regret nothing, back in my day this was legal!","Tá bom! Fui eu que escondi! E não me arrependo de nada, no meu tempo isso era legal!"
 CONFESS_owner_baker,"¡Está bien! ¡Lo escondí yo, detrás de las medialunas! ¡Nadie revisa detrás de las medialunas!","Fine! I hid it, behind the croissants! Nobody checks behind the croissants!","Tá bom! Fui eu que escondi, atrás dos croissants! Ninguém olha atrás dos croissants!"
 CONFESS_owner_groomer,"¡Está bien! ¡Lo escondí yo! ¡Los perros lo sabían y no dijeron nada, son buenos amigos!","Fine! I hid it! The dogs knew and said nothing, they're good friends!","Tá bom! Fui eu que escondi! Os cachorros sabiam e não disseram nada, são bons amigos!"
+PROMPT_CHAIR_SIT,E: sentarte,E: sit down,E: sentar
+PROMPT_CHAIR_STAND,E: levantarte,E: stand up,E: levantar
+SUSPECT_REACT_SIT,¿Se va a sentar conmigo? Qué amable... ¿somos amigos ahora?,You're sitting with me? How nice... are we friends now?,Vai sentar comigo? Que gentil... agora somos amigos?

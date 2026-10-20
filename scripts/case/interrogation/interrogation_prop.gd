@@ -10,13 +10,13 @@ var action := ""
 
 
 func prompt_key(_cop: Cop) -> String:
-	var case := InterrogationCase.active(get_tree())
+	var case := InterrogationCase.active(get_tree(), self)
 	if not case or not case.is_on():
 		return ""
 	return "PROMPT_POUR_COFFEE" if action == "pour_coffee" else InterrogationCase.ACTIONS[action].prompt
 
 
 func use(cop: Cop) -> void:
-	var case := InterrogationCase.active(get_tree())
+	var case := InterrogationCase.active(get_tree(), self)
 	if case:
 		case.use_prop(action, cop)

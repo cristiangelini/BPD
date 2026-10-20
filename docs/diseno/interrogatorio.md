@@ -119,6 +119,10 @@ verdadero resuelve el caso y uno falso suma 35 de abogado y desaparece. Lo que s
 verdad, así que conviene apretarlo antes de elegir; a 100 solo pide que elijan una. Todo (propuesta). Captura:
 `sospechoso_fan.png`.
 
+**Cómo quedó (sentarse):** E sobre una de las dos sillas de los policías sienta al policía (puede mirar, no moverse) y,
+si la silla está a menos de 4 m del sospechoso, es el policía bueno que se sienta a su lado (−1, −4). E de nuevo lo
+levanta detrás de la silla. Una silla con alguien sentado no se puede agarrar. Captura: `sentarse.png`.
+
 ## Los dos medidores (se ven arriba, como la denuncia del abuelo)
 - **Nervios (0 a 100):** suben con el policía malo y bajan un poco con el bueno. Con 30, 60 y 90 se le escapa una frase
   que da una pista de qué hizo de verdad ("¡Yo nunca estuve en el club de golf!... Digo, ¿qué es el golf?").
@@ -192,6 +196,12 @@ valía la evidencia que quedó allá. Después de interrogarlo, confiese o no, s
 Los medidores, las acciones y la confesión los decide el host (decisión 50), como con la denuncia. Por la red se manda
 cada acción con quién la hizo; el grito se mide en la PC de quien habla y se manda solo si pasó el umbral.
 
+**Cómo quedó:** el interrogatorio del anfitrión cuenta todas las acciones, también la E, la dona, la silla, el café y
+el grito de un invitado. Los demás ven lo mismo: los medidores, lo que dice el sospechoso (y el gemelo y el traductor),
+la lámpara y la luz que parpadea, las tres confesiones del fanático, la hoja del mudo, la confesión, el abogado y la
+pantalla del turno. Solo el anfitrión pasa al caso siguiente. El café que sirve la máquina le queda en la mano a quien
+lo pidió.
+
 ## Atajos del panel de pruebas (cuando exista)
 - Forzar un interrogatorio con el sospechoso N (`--suspect=N`).
 - Poner los nervios o el abogado en X.
@@ -202,8 +212,8 @@ cada acción con quién la hizo; el grito se mide en la PC de quien habla y se m
 2. El caso: el comisario lo da, el sospechoso esposado, los dos medidores, las primeras acciones (mesa, lámpara, dar y
    comerse una dona, "tranquilo"), la repetición que rinde menos, la confesión, el abogado y la pantalla del turno. Con
    el sospechoso 1 y 4 delitos.
-3. El resto de las acciones (café, silla, luz, pañuelo, sentarse) y el contraste entre bueno y malo. Hecho: el
-   contraste, la luz, el café, la silla y el pañuelo.
+3. El resto de las acciones (café, silla, luz, pañuelo, sentarse) y el contraste entre bueno y malo. Hecho todo: el
+   contraste, la luz, el café, la silla, el pañuelo y sentarse.
 4. El grito con la voz. Hecho.
 5. El sorteo en "Jugar" (1 de cada 3). Hecho.
 6. Los otros 9 sospechosos, uno o dos por PR. Hecho.
