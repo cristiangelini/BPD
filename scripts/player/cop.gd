@@ -15,6 +15,8 @@ const RAM_SCENE := preload("res://scenes/tools/battering_ram.tscn")
 const RAM_PICKUP_SCENE := preload("res://scenes/tools/ram_pickup.tscn")
 ## A dropped ram lands this far in front of the cop.
 const DROP_AHEAD := 1.0
+## A shove fades out in this many seconds.
+const KNOCK_FADE := 0.5
 
 @export var input_enabled := true
 
@@ -28,6 +30,8 @@ var has_key := false
 ## The battering ram in hand, if this cop carries it. Hands are busy: no grabbing.
 var ram: BatteringRam
 var _stagger_left := 0.0
+## A shove (the champion grandpa) that slides the cop and fades out.
+var _knock := Vector3.ZERO
 ## Eating a sample from the baker: the cop can walk but not grab anything (panaderia.md).
 var _eating_left := 0.0
 ## While holding E on the grandpa he tells a story; this cop can't do anything else (allanamiento.md).
@@ -126,6 +130,12 @@ func current_prompt() -> String:
 ## Loses balance for a while: can't move or charge the ram.
 func stagger(seconds: float) -> void:
 	_stagger_left = maxf(_stagger_left, seconds)
+
+
+## Shoves the cop with `push` (m/s, fading out over about KNOCK_FADE seconds) and staggers it.
+func knock_back(push: Vector3, seconds: float) -> void:
+	_knock = push
+	stagger(seconds)
 
 
 func is_staggered() -> bool:
@@ -316,8 +326,9 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
 	var direction := (transform.basis * Vector3(wish.x, 0.0, wish.y)).normalized()
 	var speed := 0.0 if is_busy() else current_speed()
-	velocity.x = direction.x * speed
-	velocity.z = direction.z * speed
+	velocity.x = direction.x * speed + _knock.x
+	velocity.z = direction.z * speed + _knock.z
+	_knock = _knock.move_toward(Vector3.ZERO, _knock.length() / KNOCK_FADE * delta) if _knock.length() > 0.05 else Vector3.ZERO
 	if is_on_floor():
 		if want_jump and not is_crouching:
 			velocity.y = GameScale.jump_velocity()
