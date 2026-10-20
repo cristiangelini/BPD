@@ -24,6 +24,9 @@ const SAW_BREAK := 10.0
 const SAW_TILL := 10.0
 ## Each question (R) raises the complaint; the first ASKS get a slip, then she won't answer.
 const ASKED := 5.0
+## A camera flash in her face, and being cuffed (herramientas.md, propuesta).
+const PHOTOGRAPHED := 3.0
+const CUFFED := 15.0
 const ASKS := 2
 const ASK_COOLDOWN := 3.0
 ## Every phone call she takes (the angry couples of the wedding story) makes her nervous.
@@ -64,6 +67,8 @@ var call_post: Vector3
 var _call_left := 0.0
 var _calls := 0
 var _ask_wait := 0.0
+## Cuffed by a cop: she stays where she is until it runs out.
+var _cuffed_left := 0.0
 var _serve_left := SERVE_TIME
 var _sample_wait := SAMPLE_EVERY
 var _offer_left := 0.0
@@ -131,11 +136,14 @@ func is_serving() -> bool:
 func _physics_process(delta: float) -> void:
 	_since_struck += delta
 	_ask_wait -= delta
+	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
 	_quiet += delta
 	if _quiet >= DECAY_EVERY:
 		_quiet = 0.0
 		_set_complaint(complaint - 1.0)
-	if is_on_call():
+	if is_cuffed():
+		_walk_to(global_position, delta)
+	elif is_on_call():
 		_call_left -= delta
 		_walk_to(call_post, delta)
 	else:
@@ -230,6 +238,23 @@ func saw(at: Vector3, points: float) -> bool:
 	_raise(points)
 	_say("BAKER_SAW")
 	return true
+
+
+## A cop took her photo with the flash.
+func photographed(_cop: Cop) -> void:
+	_raise(PHOTOGRAPHED)
+	_say("NPC_NO_PHOTOS")
+
+
+## A cop cuffed her for `seconds`: she stays put, and complains.
+func cuffed(seconds: float) -> void:
+	_cuffed_left = maxf(_cuffed_left, seconds)
+	_raise(CUFFED)
+	_say("NPC_POLICE_ABUSE")
+
+
+func is_cuffed() -> bool:
+	return _cuffed_left > 0.0
 
 
 func customer_fled() -> void:

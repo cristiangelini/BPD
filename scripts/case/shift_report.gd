@@ -12,6 +12,7 @@ const AWARDS := [
 	{"stat": "ram_misses", "key": "AWARD_RAM_MISSES"},
 	{"stat": "story_seconds", "key": "AWARD_STORY_SECONDS"},
 	{"stat": "meters_driven", "key": "AWARD_METERS_DRIVEN"},
+	{"stat": "photos", "key": "AWARD_PHOTOS"},
 ]
 
 

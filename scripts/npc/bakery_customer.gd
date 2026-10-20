@@ -28,6 +28,8 @@ var paid := false
 ## Which customer model it wears (set_look).
 var look := 0
 var _next := 0
+## Cuffed by a cop: stays put, and runs off once free (herramientas.md).
+var _cuffed_left := 0.0
 
 @onready var _bubble: Label3D = $Bubble
 
@@ -63,6 +65,15 @@ func scare() -> void:
 	fled.emit()
 
 
+func cuffed(seconds: float) -> void:
+	_cuffed_left = maxf(_cuffed_left, seconds)
+	_say("NPC_POLICE_ABUSE")
+
+
+func is_cuffed() -> bool:
+	return _cuffed_left > 0.0
+
+
 func _leave(how: State) -> void:
 	if state == State.ENTERING or state == State.WAITING:
 		_next = maxi(_next - 1, 0)
@@ -71,7 +82,11 @@ func _leave(how: State) -> void:
 
 func _physics_process(delta: float) -> void:
 	var wish := Vector3.ZERO
-	if state != State.WAITING:
+	if is_cuffed():
+		_cuffed_left -= delta
+		if not is_cuffed():
+			scare()
+	elif state != State.WAITING:
 		var target := route[_next]
 		wish = target - global_position
 		wish.y = 0.0

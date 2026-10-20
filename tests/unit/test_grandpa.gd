@@ -84,6 +84,7 @@ func test_grandpa_follows_the_nearest_cop() -> void:
 	var cop: Cop = house.get_node("Cop")
 	cop.input_enabled = false
 	cop.position = Vector3(0.0, 0.1, 6.5)
+	house.start_at_station = false
 	add_child_autofree(house)
 	await wait_physics_frames(5)
 	var start := house.grandpa.global_position.distance_to(cop.global_position)
