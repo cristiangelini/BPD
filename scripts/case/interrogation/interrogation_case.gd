@@ -16,6 +16,8 @@ const ACTIONS := {
 	"calm": {"nerves": -2.0, "lawyer": -8.0, "prompt": "PROMPT_CALM_SUSPECT", "react": "SUSPECT_REACT_CALM"},
 	"flick_lights": {"nerves": 8.0, "lawyer": 5.0, "prompt": "PROMPT_FLICK_LIGHTS", "react": "SUSPECT_REACT_LIGHTS"},
 	"give_coffee": {"nerves": -3.0, "lawyer": -10.0, "prompt": "", "react": "SUSPECT_REACT_COFFEE"},
+	"throw_chair": {"nerves": 15.0, "lawyer": 12.0, "prompt": "", "react": "SUSPECT_REACT_CHAIR"},
+	"offer_tissue": {"nerves": -2.0, "lawyer": -6.0, "prompt": "PROMPT_OFFER_TISSUE", "react": "SUSPECT_REACT_TISSUE"},
 }
 ## The same action again in a row gives this much of its nerves, each time ("Ya no me asusta, oficial").
 const REPEAT_FACTOR := 0.5
@@ -167,6 +169,14 @@ func coffee_served(cup: CoffeeCup) -> bool:
 		return false
 	var cops := cup.handling_cops(CoffeeCup.SERVED_SECONDS)
 	return act("give_coffee", cops[0] if not cops.is_empty() else null)
+
+
+## A chair hit the floor hard: this close to him, it's the bad cop's chair.
+func chair_thrown(chair: InterrogationChair) -> bool:
+	if not suspect or chair.global_position.distance_to(suspect.global_position) > InterrogationChair.REACH:
+		return false
+	var cops := chair.handling_cops(InterrogationChair.THROWN_SECONDS)
+	return act("throw_chair", cops[0] if not cops.is_empty() else null)
 
 
 ## A cop ate a donut: in front of the suspect, it's torture.

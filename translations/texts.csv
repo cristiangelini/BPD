@@ -602,3 +602,6 @@ PROMPT_POUR_COFFEE,E: servir un café,E: pour a coffee,E: servir um café
 PROMPT_COFFEE_CUP,"Déjale el café en la mesa, cerca de él · Clic derecho: tirarlo","Set the coffee on the table, close to him · Right click: throw it","Deixe o café na mesa, perto dele · Clique direito: jogar"
 SUSPECT_REACT_LIGHTS,¿Quién apagó la luz? ¿Hay alguien ahí?,Who turned off the light? Is someone there?,Quem apagou a luz? Tem alguém aí?
 SUSPECT_REACT_COFFEE,"Ah, café... Está frío, pero gracias.","Ah, coffee... It's cold, but thanks.","Ah, café... Está frio, mas obrigado."
+PROMPT_OFFER_TISSUE,E: ofrecerle un pañuelo,E: offer him a tissue,E: oferecer um lenço
+SUSPECT_REACT_CHAIR,¡Ay! ¡Casi me da!,Whoa! That almost hit me!,Ai! Quase me acertou!
+SUSPECT_REACT_TISSUE,*snif* Gracias... nadie me entiende.,*sniff* Thanks... nobody understands me.,*snif* Obrigado... ninguém me entende.

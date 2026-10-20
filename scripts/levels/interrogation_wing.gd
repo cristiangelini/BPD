@@ -35,8 +35,7 @@ const LAWYER_AT := Vector3((ROOM_DOOR.x + ROOM_DOOR.y) / 2, 0, HALL_Z - 0.8)
 const FURNITURE := [
 	["interrogation_table", Vector3(3.0, 0, -14.6), 0.0, "slam_table"],
 	["interrogation_chair", SUSPECT_AT, 0.0],
-	["interrogation_chair", Vector3(2.4, 0, -13.6), PI],
-	["interrogation_chair", Vector3(3.6, 0, -13.6), PI],
+	["tissue_box", Vector3(3.65, 0.76, -14.95), 0.3, "offer_tissue"],
 	["hanging_lamp", LAMP_AT, 0.0, "aim_lamp"],
 	["wall_clock", Vector3(3.0, 2.4, TO_Z + 0.12), 0.0],
 	["security_camera", Vector3(HALF_X - 0.2, 2.8, TO_Z + 0.2), -PI * 0.28],
@@ -51,12 +50,14 @@ const SIGN_AT := Vector3(HALF_X - StationRooms.WALL - 0.03, 2.0, -14.5)
 ## Footprints of what you bump into (the lamp's is its shade); the clock and the camera are up high.
 const SOLID := {
 	"hanging_lamp": Vector3(0.52, 0.2, 0.52),
-	"interrogation_table": Vector3(1.8, 0.76, 0.9), "interrogation_chair": Vector3(0.5, 0.9, 0.5),
+	"interrogation_table": Vector3(1.8, 0.76, 0.9), "tissue_box": Vector3(0.24, 0.1, 0.13), "interrogation_chair": Vector3(0.5, 0.9, 0.5),
 	"recording_desk": Vector3(1.6, 0.76, 0.7), "station_coffee": Vector3(0.7, 1.5, 0.6),
 	"light_switch": Vector3(0.12, 0.16, 0.06),
 }
 
 
+## The cops' two chairs at the table: loose, so a bad cop can throw one (InterrogationChair), facing the suspect.
+const CHAIRS_AT: Array[Vector3] = [Vector3(2.4, 0, -13.6), Vector3(3.6, 0, -13.6)]
 ## The donut box the observers keep on their desk, for the good cop.
 const DONUTS_AT := Vector3(MIRROR_X - 0.6, 0.85, -15.0)
 

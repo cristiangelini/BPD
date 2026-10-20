@@ -2,16 +2,18 @@ class_name InterrogationLevel
 extends Node3D
 
 ## The interrogation case's level (interrogatorio.md): the whole city with the station, the cops in the guard room,
-## the comisario in his office and the suspect cuffed to the table of the interrogation wing, with a box of donuts on
-## the observers' desk. The meters show at the top. --place=interrogation opens it from Play.
+## the comisario in his office and the suspect cuffed to the table of the interrogation wing, with the cops' two
+## loose chairs and a box of donuts on the observers' desk. The meters show at the top. --place=interrogation opens it from Play.
 
 const DONUTS_SCENE := preload("res://scenes/props/donut_box.tscn")
+const CHAIR_SCENE := preload("res://scenes/props/interrogation_chair.tscn")
 
 ## Same seed, same crime. 0 draws one.
 @export var case_seed := 0
 var case: InterrogationCase
 var suspect: InterrogationSuspect
 var donuts: DonutBox
+var chairs: Array[InterrogationChair] = []
 ## The station's space, where the wing's coordinates are (InterrogationWing).
 var wing: Node3D
 var nerves_bar: ProgressBar
@@ -34,6 +36,12 @@ func _ready() -> void:
 	suspect.name = "Suspect"
 	suspect.position = InterrogationWing.SUSPECT_AT
 	wing.add_child(suspect)
+	for at: Vector3 in InterrogationWing.CHAIRS_AT:
+		var chair: InterrogationChair = CHAIR_SCENE.instantiate()
+		chair.position = at
+		chair.rotation.y = PI
+		wing.add_child(chair)
+		chairs.append(chair)
 	donuts = DONUTS_SCENE.instantiate()
 	donuts.position = InterrogationWing.DONUTS_AT
 	wing.add_child(donuts)

@@ -188,3 +188,38 @@ func test_a_coffee_from_the_machine_set_down_near_him_is_the_good_cops_coffee() 
 	await wait_physics_frames(20)
 	assert_eq(case.lawyer, 40.0)
 	assert_false(is_instance_valid(cup), "he took it")
+
+
+func test_the_tissue_box_is_the_good_cops_tissue() -> void:
+	case.give_tip()
+	var cop: Cop = level.get_node("Cop")
+	var tissue := _prop("offer_tissue")
+	assert_eq(tissue.prompt_key(cop), "PROMPT_OFFER_TISSUE")
+	case.lawyer = 50.0
+	tissue.use(cop)
+	assert_eq(case.lawyer, 44.0)
+
+
+func _drop(chair: InterrogationChair) -> void:
+	chair.global_position = level.suspect.global_position + Vector3(0, 1.6, 1.6)
+	chair.linear_velocity = Vector3.DOWN * 2.0
+	await wait_physics_frames(40)
+
+
+func test_a_chair_thrown_near_him_is_the_bad_cops_chair() -> void:
+	case.give_tip()
+	var cop: Cop = level.get_node("Cop")
+	assert_eq(level.chairs.size(), 2, "two loose chairs for the cops")
+	var chair: InterrogationChair = level.chairs[0]
+	cop.get_node("Grabber").grab(chair)
+	cop.get_node("Grabber").release()
+	await _drop(chair)
+	assert_eq(case.nerves, 15.0, "it counts once, bounces and all")
+	assert_eq(case.lawyer, 12.0)
+	assert_eq(level.suspect.saying(), "SUSPECT_REACT_CHAIR")
+
+
+func test_a_chair_that_falls_on_its_own_doesnt_count() -> void:
+	case.give_tip()
+	await _drop(level.chairs[1])
+	assert_eq(case.nerves, 0.0, "nobody threw it")
