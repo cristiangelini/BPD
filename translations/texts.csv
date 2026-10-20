@@ -328,6 +328,10 @@ NET_HOST_LEFT,El anfitrión cerró la sala.,The host closed the room.,O anfitri�
 NET_ROOM_FULL,La sala está llena (4 policías).,The room is full (4 cops).,A sala está cheia (4 policiais).
 NET_IN_MATCH,Ya empezaron el caso. Espera a que vuelvan a la sala.,The case already started. Wait until they're back in the room.,O caso já começou. Espere voltarem para a sala.
 NET_HOST_FAILED,No se pudo abrir la sala (¿el puerto está ocupado?).,Couldn't open the room (is the port in use?).,Não foi possível abrir a sala (a porta está ocupada?).
+MENU_CONTINUE,Continuar,Continue,Continuar
+LOBBY_CONTINUE,Continuar partida,Continue match,Continuar partida
+SHIFT_TURN,"Plata del grupo (turno %d de %d)","Group money (shift %d of %d)","Grana do grupo (turno %d de %d)"
+SHIFT_CAMPAIGN_OVER,¡Partida terminada!,Match over!,Partida encerrada!
 PROMPT_ARMERO,E: hablar con el armero,E: talk to the armorer,E: falar com o armeiro
 ARMORY_TITLE,Armería,Armory,Arsenal
 ARMORY_CASH,Caja de la comisaría: $%d,Station cash box: $%d,Caixa da delegacia: $%d

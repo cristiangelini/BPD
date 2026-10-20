@@ -19,8 +19,12 @@ const LOBBY_SCENE := "res://scenes/ui/lobby.tscn"
 
 
 func _ready() -> void:
-	# Back at the menu, any room is over: Play is solo, and "Jugar con amigos" opens a fresh room.
+	# Back at the menu, any room is over: Play is solo, and "Jugar con amigos" opens a fresh room. Play starts a new
+	# campaign and Continue picks up the saved one (guardado.md); the test buttons play without one.
 	Net.leave()
+	Campaign.current = null
+	%ContinueButton.visible = Campaign.can_continue()
+	%ContinueButton.pressed.connect(_on_continue_pressed)
 	# Play draws the case: the grandpa's house or the bakery (PlaceDraw). The bakery button stays as a shortcut.
 	_play_button.pressed.connect(_on_play_pressed)
 	_online_button.pressed.connect(_open_lobby)
@@ -39,6 +43,12 @@ func _open_lobby() -> void:
 
 
 func _on_play_pressed() -> void:
+	Campaign.start_new()
+	PlaceDraw.start(get_tree())
+
+
+func _on_continue_pressed() -> void:
+	Campaign.current = Campaign.load_saved()
 	PlaceDraw.start(get_tree())
 
 

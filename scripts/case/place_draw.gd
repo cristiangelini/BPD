@@ -29,9 +29,16 @@ static func new_seed() -> int:
 	return randi_range(1, 0x7fffffff)
 
 
-## Draws a new case seed and opens its place.
+## The seed of the next case: the current campaign's shift (docs/diseno/guardado.md), or a new one without a campaign.
+static func next_seed() -> int:
+	if Campaign.current and not Campaign.current.is_over():
+		return Campaign.current.case_seed()
+	return new_seed()
+
+
+## Takes the next case seed and opens its place.
 static func start(tree: SceneTree) -> void:
-	pending_seed = new_seed()
+	pending_seed = next_seed()
 	tree.change_scene_to_file(PLACES[pick(pending_seed, OS.get_cmdline_user_args())])
 
 

@@ -38,7 +38,13 @@ static func pending_arg(args: PackedStringArray) -> String:
 func _ready() -> void:
 	_host_button.pressed.connect(_on_host_pressed)
 	_join_button.pressed.connect(func() -> void: _join(_address.text.strip_edges()))
-	_start_button.pressed.connect(Net.start_match)
+	# Start case begins a new campaign; Continue picks up the host's saved one (guardado.md).
+	_start_button.pressed.connect(func() -> void:
+		Campaign.start_new()
+		Net.start_match())
+	%ContinueButton.pressed.connect(func() -> void:
+		Campaign.current = Campaign.load_saved()
+		Net.start_match())
 	%BackButton.pressed.connect(_on_back_pressed)
 	Net.players_changed.connect(_refresh)
 	Net.session_ended.connect(_on_session_ended)
@@ -86,6 +92,7 @@ func _refresh() -> void:
 	_join_button.disabled = online
 	_address.editable = not online
 	_start_button.visible = online and Net.is_host()
+	%ContinueButton.visible = _start_button.visible and Campaign.can_continue()
 	if not online:
 		_status.text = "LOBBY_SOLO"
 	elif Net.is_host():

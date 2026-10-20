@@ -118,7 +118,7 @@ static func free_slot(taken: Array) -> int:
 func start_match() -> void:
 	if not is_online() or not multiplayer.is_server():
 		return
-	var case_seed := PlaceDraw.new_seed()
+	var case_seed := PlaceDraw.next_seed()
 	_start_match.rpc(PlaceDraw.pick(case_seed, OS.get_cmdline_user_args()), case_seed)
 
 
