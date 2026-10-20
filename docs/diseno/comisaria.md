@@ -1,7 +1,7 @@
 # La comisaría (la base entre casos)
 
 Junta lo que ya está decidido (decisiones 15, 16, 17, 20, 21, 22, 40, 59 y 69) y lo que faltaba. Cristian aprobó las
-propuestas el 20/10 (decisión 86); los números siguen marcados **(propuesta)** hasta probarlos jugando.
+propuestas el 20/10 (decisión 88); los números siguen marcados **(propuesta)** hasta probarlos jugando.
 
 ## Qué es
 La comisaría es el lugar donde empieza y termina cada turno. Es una sala más en la ciudad (ciudad.md, en el centro, con
