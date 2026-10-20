@@ -95,3 +95,14 @@ func _held(index: int) -> void:
 	if multiplayer.get_remote_sender_id() != net.HOST_ID:
 		return
 	(cop.get_node("Grabber") as Grabber).held = net.props.prop_at(index) if net.props else null
+
+
+## Host: shows `key` on the owner's screen (something only the host saw happen, like a heavy loaf in its hands).
+func tell_hint(key: String) -> void:
+	_hint.rpc_id(get_multiplayer_authority(), key)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _hint(key: String) -> void:
+	if multiplayer.get_remote_sender_id() == net.HOST_ID:
+		cop.show_hint(key)

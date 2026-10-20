@@ -245,8 +245,12 @@ func stand_up(at: Vector3, yaw: float) -> void:
 	_shape.disabled = false
 
 
-## Shows a short line at the bottom of this cop's screen. `key` is a tr() key.
+## Shows a short line at the bottom of this cop's screen. `key` is a tr() key. Online, a hint the host gives its copy
+## of another player's cop goes to that player's screen.
 func show_hint(key: String) -> void:
+	if sync and not sync.is_multiplayer_authority() and sync.multiplayer.is_server():
+		if not (sync.net.actions and sync.net.actions.performing):
+			sync.tell_hint(key)
 	_hint.text = key
 	_hint.show()
 	_hint_timer.start()
@@ -303,13 +307,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("drop"):
 		if wheelbarrow:
 			wheelbarrow.dump()
-		else:
-			drop_ram()
+		elif ram:
+			act("drop_ram", self)
 	elif event.is_action_pressed("ask"):
 		ask()
 	elif event.is_action_pressed("use"):
 		if vehicle:
-			vehicle.exit(self)
+			act("exit", vehicle)
 		elif seated_in:
 			seated_in.stand_up()
 		else:
@@ -347,8 +351,19 @@ func use() -> bool:
 	var target := _usable_target()
 	if not target:
 		return false
-	target.use(self)
+	act("use", target)
 	return true
+
+
+## Does `method` on `target` (this cop itself for "drop_ram"). Online it happens on every PC in the same order
+## (ActionSync); solo it just happens.
+func act(method: String, target: Node) -> void:
+	if sync and sync.net.actions:
+		sync.net.actions.act(self, method, target)
+	elif method in ActionSync.ACTOR_METHODS:
+		target.call(method, self)
+	else:
+		target.call(method)
 
 
 ## Pushing the wheelbarrow, E loads what the camera points at, or parks it when it points at nothing to load.
@@ -370,6 +385,9 @@ func ask() -> bool:
 	if mouth_full():
 		show_hint("HINT_MOUTH_FULL")
 		return false
+	if sync and sync.net.actions:
+		sync.net.actions.act(self, "ask", target)
+		return true
 	return target.ask(self)
 
 
@@ -387,6 +405,8 @@ func _usable_target() -> Node:
 	if hit.is_empty():
 		return null
 	var target: Node = hit.collider
+	if target is Cop:
+		return null
 	if not target.has_method("use"):
 		target = target.get_parent()
 	return target if target.has_method("use") else null

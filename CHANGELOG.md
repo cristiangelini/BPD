@@ -51,6 +51,7 @@
 - Online, step 1: "Jugar con amigos" opens a room by IP (up to 4 cops, each with its skin color); the host starts the case and everyone opens the same place with the same seed. Design in docs/diseno/online.md.
 - Online, step 3: in a room every player sees the other cops in their skin colors, walking, turning, looking up and down and crouching where their owners move them; a player who leaves takes their cop away.
 - Online, step 4 (props): the host simulates every physics object and the guests see them where the host has them; guests grab, carry, throw and pull drawers through the host, and an ornament broken on the host shatters for everyone.
+- Online, step 4 (using things): E, R, the battering ram and dropping it happen on every PC in the same order through the host, so doors, pots, the safe and the ram look the same for everyone; hints show on the screen of the cop who did it, and only the host makes new props (the takings, the ring).
 - The police station opens: a guard room where the cops appear, the comisario's office, the armory behind a barred counter, two cells, the board room (closed) and a break room, with low poly furniture.
 - The comisario gives the case in his office: E on him starts the briefing, and the patrol car stays locked ("¡¿Adónde van?! ¡Primero el caso!") until then.
 - The armory: the armero behind the counter opens his list with E (cash box, price, take or buy); the battering ram is taken there instead of lying by the grandpa's door.
