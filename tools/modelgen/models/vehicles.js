@@ -162,9 +162,42 @@ export function buildFallingBox() {
 	return b.build();
 }
 
+// School bus (persecución, sospechoso 5): long and yellow, a black stripe, a stop sign arm on the left and a row of
+// windows full of kids' heads. 8.4 m long, 2.5 m wide; faces +Z like the rest.
+export function buildSchoolBus() {
+	const yellow = mat('bus_yellow', 0xf5c21b), darkGlass = mat('truck_glass', 0x2a3340), stop = mat('stop_red', 0xd8282a);
+	const skins = [0xf3d2b0, 0xd9a06b, 0x9a6440, 0xffd0a8].map((c, i) => mat('kid_skin_' + i, c));
+	const hair = [0x2a1a10, 0xe8c060, 0x7a3a1a, 0x1a1410].map((c, i) => mat('kid_hair_' + i, c));
+	const BW = 2.5, L = 8.4, F = L / 2, R = -L / 2, TOP = 3.0, NOSE = 1.4;
+	const b = new Builder('school_bus');
+	box(b, 'body', black, BW, 0.2, L, 0, FLOOR - 0.1, 0);
+	// Short hood in front, then the long box.
+	box(b, 'body', yellow, BW - 0.2, 0.8, NOSE, 0, FLOOR + 0.4, F - NOSE / 2);
+	box(b, 'body', yellow, BW, TOP - FLOOR, L - NOSE, 0, (TOP + FLOOR) / 2, (F - NOSE + R) / 2);
+	box(b, 'body', darkGlass, BW - 0.2, 0.9, 0.05, 0, FLOOR + 1.75, F - NOSE + 0.01);
+	box(b, 'body', grey, BW + 0.06, 0.2, 0.16, 0, FLOOR + 0.05, F + 0.04);
+	for (const x of [-1, 1]) box(b, 'lights', glass, 0.3, 0.16, 0.04, x * 0.8, FLOOR + 0.5, F + 0.01);
+	for (const x of [-1, 1]) {
+		box(b, 'body', black, 0.02, 0.12, L - NOSE - 0.2, x * (BW / 2 + 0.005), FLOOR + 0.95, (F - NOSE + R) / 2);
+		// Windows, with a kid's head in each, shouting.
+		for (let i = 0; i < 6; i++) {
+			const z = F - NOSE - 0.7 - i * 1.0;
+			box(b, 'windows', darkGlass, 0.03, 0.7, 0.8, x * (BW / 2 + 0.01), FLOOR + 1.75, z);
+			b.add('kids', skins[(i + (x > 0 ? 1 : 0)) % 4], new THREE.SphereGeometry(0.17, 7, 5), { pos: V(x * (BW / 2 - 0.02), FLOOR + 1.72, z) });
+			b.add('kids', hair[(i * 3 + (x > 0 ? 2 : 0)) % 4], new THREE.SphereGeometry(0.175, 7, 5, 0, Math.PI * 2, 0, Math.PI / 2), { pos: V(x * (BW / 2 - 0.02), FLOOR + 1.77, z) });
+		}
+	}
+	box(b, 'body', stop, 0.04, 0.4, 0.4, -(BW / 2 + 0.12), FLOOR + 1.3, F - NOSE - 0.4);
+	box(b, 'body', grey, BW + 0.06, 0.2, 0.16, 0, FLOOR + 0.05, R - 0.04);
+	for (const x of [-1, 1]) box(b, 'lights', tail, 0.3, 0.16, 0.04, x * 0.8, FLOOR + 0.5, R - 0.01);
+	box(b, 'body', darkGlass, BW - 0.4, 0.8, 0.04, 0, FLOOR + 1.75, R - 0.01);
+	for (const x of [-1, 1]) for (const z of [2.7, -2.6]) box(b, 'body', black, 0.1, 0.55, 1.0, x * (BW / 2 + 0.01), FLOOR + 0.12, z);
+	return b.build();
+}
+
 export const models = { patrol_car: buildPatrolCar, car_wheel: buildCarWheel, ice_cream_truck: buildIceCreamTruck,
 	moving_truck: buildMovingTruck, falling_sofa: buildFallingSofa, falling_wardrobe: buildFallingWardrobe, falling_lamp: buildFallingLamp,
-	falling_box: buildFallingBox };
+	falling_box: buildFallingBox, school_bus: buildSchoolBus };
 
 const wheels = [[-1.1, 1.55], [1.1, 1.55], [-1.1, -1.55], [1.1, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }));
 export const views = {
@@ -175,6 +208,10 @@ export const views = {
 	ice_cream_truck: {
 		items: [{ name: 'ice_cream_truck', pos: [0, 0, 0] }, ...[[-1.1, 1.7], [1.1, 1.7], [-1.1, -1.7], [1.1, -1.7]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }))],
 		cam: { pos: [7.5, 4.2, 6.5], target: [0, 1.2, 0], fov: 38 },
+	},
+	school_bus: {
+		items: [{ name: 'school_bus', pos: [0, 0, 0] }, ...[[-1.15, 2.7], [1.15, 2.7], [-1.15, -2.6], [1.15, -2.6]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }))],
+		cam: { pos: [9.5, 4.8, 8.5], target: [0, 1.4, 0], fov: 40 },
 	},
 	moving_truck: {
 		items: [{ name: 'moving_truck', pos: [0, 0, 0], rotY: Math.PI }, ...[[-1.1, 1.7], [1.1, 1.7], [-1.1, -1.7], [1.1, -1.7]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] })),

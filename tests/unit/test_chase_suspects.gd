@@ -72,3 +72,55 @@ func test_his_route_turns_and_he_says_so() -> void:
 	watch_signals(level.truck)
 	await wait_physics_frames(roundi(12.0 * Engine.physics_ticks_per_second))
 	assert_signal_emitted(level.truck, "corner_passed")
+
+
+func test_ramming_the_school_bus_hard_has_the_parents_complain() -> void:
+	var level := _level("school_bus")
+	await wait_physics_frames(10)
+	_chase(level)
+	await wait_physics_frames(3)
+	var case := level.case
+	assert_eq(level.truck.kind, "school_bus")
+	assert_not_null(level.complaint_bar, "the parents' complaint shows at the top")
+	case.damages.rammed.emit()
+	assert_almost_eq(case.complaint, ChaseCase.RAM_COMPLAINT, 0.01)
+	assert_almost_eq(level.complaint_bar.value, ChaseCase.RAM_COMPLAINT, 0.01)
+	case.damages.rammed.emit()
+	case.damages.rammed.emit()
+	assert_true(case.case_failed, "three hard rams and they file it")
+	assert_eq(case.failed_label.text, "CASE_FAILED_PARENTS")
+
+
+func test_ramming_the_other_suspects_is_no_complaint() -> void:
+	var level := _level("ice_cream")
+	await wait_physics_frames(10)
+	_chase(level)
+	await wait_physics_frames(3)
+	level.case.damages.rammed.emit()
+	assert_eq(level.case.complaint, 0.0)
+	assert_null(level.complaint_bar)
+
+
+func test_a_hard_hit_on_the_bus_counts_as_a_ram() -> void:
+	var level := _level("school_bus")
+	await wait_physics_frames(10)
+	var car := level.case.car
+	car.enter(level.get_node("Cop"), 0)
+	var bus := level.truck
+	bus.driving = false
+	car.global_transform = Transform3D(bus.global_basis, bus.global_position - bus.global_basis.z * 11.0 + Vector3.UP * 0.3)
+	await wait_physics_frames(2)
+	car.linear_velocity = car.global_basis.z * 15.0
+	await wait_physics_frames(90)
+	assert_eq(level.case.damages.rams, 1)
+	assert_eq(level.case.damages.fines, 0, "ramming him is never a fine")
+
+
+func test_the_kids_shout_out_of_the_windows() -> void:
+	var level := _level("school_bus")
+	await wait_physics_frames(10)
+	_chase(level)
+	await wait_physics_frames(10)
+	var bubble := level.case.drops.kids_bubble
+	assert_true(bubble.visible)
+	assert_true(ChaseDrops.KIDS_LINES.has(bubble.text))

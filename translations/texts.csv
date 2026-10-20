@@ -710,3 +710,15 @@ BRIEF_CHASE_moving_truck,"Un camión de mudanza. Se está mudando con los mueble
 CHASE_MOVING_TRUCK_LINE_1,"¡Yo solo hago fletes! ¡Me dijeron que eran míos!","I just do deliveries! They told me they were mine!","Eu só faço frete! Me disseram que eram meus!"
 CHASE_MOVING_TRUCK_LINE_2,"¿Alguien vio caer una lámpara? Era de mi tía.","Did anyone see a lamp fall? It was my aunt's.","Alguém viu cair uma luminária? Era da minha tia."
 CHASE_MOVING_TRUCK_LINE_3,"Si me ayudan a cargar el sofá, confieso todo.","If you help me load the sofa, I'll confess everything.","Se vocês me ajudarem a carregar o sofá, confesso tudo."
+BRIEF_CHASE_school_bus,"Se robaron el bus escolar. Con los chicos adentro. Que iban de excursión al museo de la cuchara.","Someone stole the school bus. With the kids inside. They were on a field trip to the spoon museum.","Roubaram o ônibus escolar. Com as crianças dentro. Elas iam numa excursão ao museu da colher."
+HINT_CHASE_KIDS,"¡Cuidado, que está lleno de chicos! Los padres ya están llamando.","Careful, it's full of kids! The parents are already calling.","Cuidado, está cheio de crianças! Os pais já estão ligando."
+HUD_PARENTS,Denuncia de los padres,The parents' complaint,Denúncia dos pais
+CASE_FAILED_PARENTS,"Los padres hicieron la denuncia. Caso perdido.","The parents filed a complaint. Case lost.","Os pais fizeram a denúncia. Caso perdido."
+CHASE_KIDS_1,¡Más rápido!,Faster!,Mais rápido!
+CHASE_KIDS_2,¡AAAAAAH!,AAAAAAH!,AAAAAAH!
+CHASE_KIDS_3,¡Señor policía! ¡Tengo que ir al baño!,Officer! I need the bathroom!,Seu policial! Preciso ir ao banheiro!
+CHASE_KIDS_4,¡Mi mamá dice que usted maneja mal!,My mom says you drive badly!,Minha mãe diz que você dirige mal!
+CHASE_KIDS_5,¿Ya llegamos al museo?,Are we at the museum yet?,Já chegamos no museu?
+CHASE_SCHOOL_BUS_LINE_1,"¡Lo tomé prestado! ¡Los chicos querían ir a la playa!","I borrowed it! The kids wanted to go to the beach!","Eu peguei emprestado! As crianças queriam ir à praia!"
+CHASE_SCHOOL_BUS_LINE_2,"Cuarenta chicos cantando la misma canción. Me entrego. Por favor.","Forty kids singing the same song. I give up. Please.","Quarenta crianças cantando a mesma música. Eu me entrego. Por favor."
+CHASE_SCHOOL_BUS_LINE_3,"El de la tercera fila me mordió.","The one in the third row bit me.","O da terceira fila me mordeu."
