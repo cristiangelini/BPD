@@ -234,6 +234,15 @@ func belt_cuff(body: Node, at: Vector3) -> void:
 	(belt.tools[0] as Handcuffs).cuff_body(body, at)
 
 
+func belt_photo(subject: Node, caught: Array) -> void:
+	(belt.tools[2] as PhotoCamera).develop(subject, caught)
+
+
+func belt_prints(target: Node, at: Vector3) -> void:
+	if target:
+		(belt.tools[3] as PrintKit).reveal(target, at)
+
+
 func is_cuffed() -> bool:
 	return _cuffed_left > 0.0
 

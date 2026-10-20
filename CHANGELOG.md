@@ -87,3 +87,4 @@
 - Pet salon story: the secret human salon. The appointment book, a wig and a fragile mirror; human hair among the dog hair that only shows under the flashlight; human customers under a towel that a cop can lift.
 - Play now draws the pet salon too: the grandpa's house, the bakery or the salon, a third each.
 - Online belt: the tool in each cop's hand, the flashlight and the handcuffs (cuffing and freeing a partner) are the same on every PC.
+- Online camera and fingerprint kit: a photo (flash, film, the owner's complaint, the trails it caught) and a dusting happen on every PC, and photos count for the award on the host.
