@@ -62,6 +62,7 @@
 - Coming in late: a player who joins the room during a case (late, or after a drop) goes straight into the same case and sees everything as it is; everyone gets their cop.
 - Voice through walls: with a wall or a floor between two cops, the close voice sounds dull and lower.
 - Campaign quota: each shift's quota rises from 800 by 100 (decision 86); missing it loses the campaign ("No cumplieron la cuota: partida perdida") and making all 5 ends it with "¡Ascendidos!".
+- Campaign quota: each shift's quota rises from 800 by 100 (decision 88); missing it loses the campaign ("No cumplieron la cuota: partida perdida") and making all 5 ends it with "¡Ascendidos!".
 - The police station opens: a guard room where the cops appear, the comisario's office, the armory behind a barred counter, two cells, the board room (closed) and a break room, with low poly furniture.
 - The comisario gives the case in his office: E on him starts the briefing, and the patrol car stays locked ("¡¿Adónde van?! ¡Primero el caso!") until then.
 - The armory: the armero behind the counter opens his list with E (cash box, price, take or buy); the battering ram is taken there instead of lying by the grandpa's door.
