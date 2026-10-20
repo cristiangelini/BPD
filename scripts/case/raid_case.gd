@@ -237,7 +237,8 @@ func finish_shift() -> void:
 		var played := campaign.shift
 		campaign.finish_shift(story_id, case_solved, report)
 		campaign.save()
-		result.campaign = {"shift": played, "money": campaign.money, "over": campaign.is_over()}
+		result.campaign = {"shift": played, "money": campaign.money, "over": campaign.is_over(),
+			"promoted": campaign.is_promoted()}
 	_show_result(result)
 
 
@@ -256,7 +257,8 @@ func _show_result(result: Dictionary) -> void:
 	shift_screen.show_report(result.solved, result.report, result.broken, awards)
 	var over := false
 	if result.has("campaign"):
-		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over)
+		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over,
+			result.campaign.get("promoted", false))
 		over = result.campaign.over
 	# Only the host plays the next case for everyone, and not after the last shift.
 	shift_screen.get_node("%AgainButton").visible = not follower and not over
