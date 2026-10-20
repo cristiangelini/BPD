@@ -8,6 +8,15 @@ extends StaticBody3D
 var kind := "talker"
 ## Seconds a line stays over his head.
 const LINE_SECONDS := 3.5
+## The dangerous one loose runs this fast (m/s), half as fast with a cop holding on (propuesta): faster than a walk,
+## slower than a run.
+const RUN_SPEED := 4.5
+const HELD_FACTOR := 0.5
+
+## Loose and running round the wing (InterrogationWing.RUN_ROUTE), and whether a cop is holding on to him.
+var running := false
+var slowed := false
+var _next := 0
 
 var _bubble: Label3D
 
@@ -40,6 +49,8 @@ func prompt_key(cop: Cop) -> String:
 	var case := InterrogationCase.active(get_tree())
 	if not case or not case.is_on():
 		return ""
+	if case.loose:
+		return "PROMPT_GRAB_SUSPECT"
 	return InterrogationCase.ACTIONS["give_donut" if _donuts(cop) else "calm"].prompt
 
 
@@ -47,12 +58,45 @@ func use(cop: Cop) -> void:
 	var case := InterrogationCase.active(get_tree())
 	if not case:
 		return
+	if case.loose:
+		case.grab_loose(cop)
+		return
 	var box := _donuts(cop)
 	if box:
 		if case.is_on() and box.eat_one():
 			case.act("give_donut", cop)
 	else:
 		case.act("calm", cop)
+
+
+## He slipped the cuffs: off he runs.
+func run() -> void:
+	running = true
+	slowed = false
+	_next = 0
+
+
+## Caught (or the lawyer came): back in his chair, cuffed again.
+func sit() -> void:
+	running = false
+	slowed = false
+	position = InterrogationWing.SUSPECT_AT
+	rotation = Vector3.ZERO
+
+
+func _physics_process(delta: float) -> void:
+	if not running:
+		return
+	var route := InterrogationWing.RUN_ROUTE
+	var to := route[_next] - position
+	to.y = 0.0
+	var step := RUN_SPEED * (HELD_FACTOR if slowed else 1.0) * delta
+	if to.length() <= step:
+		position = route[_next]
+		_next = _next + 1 if _next + 1 < route.size() else InterrogationWing.RUN_LOOP_FROM
+		return
+	position += to.normalized() * step
+	rotation.y = atan2(to.x, to.z)
 
 
 ## The box of donuts in the cop's hands, if it still has one.

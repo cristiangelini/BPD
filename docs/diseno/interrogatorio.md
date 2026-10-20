@@ -83,6 +83,14 @@ periodista): transmite en vivo. Si un policía hace de malo y nadie hizo de buen
 más ("¡Chicos, abuso policial en vivo! ¡Compartan, compartan!") (propuesta). Si hubo uno de bueno hace poco, la transmisión no suma.
 Captura: `sospechoso_influencer.png`.
 
+**Cómo quedó (paso 6, cuarta parte):** el peligroso (10, `--suspect=dangerous`, por ahora con el modelo del
+sospechoso): cuando un policía ya entró y lo vio, si pasan 5 s sin que nadie lo mire (a menos de 12 m y 35° de donde mira,
+sin paredes en el medio; el espejo falso no tapa) se suelta las esposas y corre por el pasillo, la oficina del comisario
+y la sala de observación, más rápido que caminando y más lento que corriendo. Suelto, el abogado sube 1,5 por segundo y no
+se le puede hacer nada. E sobre él lo agarra: uno solo lo frena a la mitad 2 s, y si otro lo agarra mientras tanto lo
+atrapan entre los dos y vuelve a la silla con 15 de nervios por el susto. Jugando solo, alcanza con uno. Todo (propuesta).
+Captura: `sospechoso_dangerous.png`.
+
 ## Los dos medidores (se ven arriba, como la denuncia del abuelo)
 - **Nervios (0 a 100):** suben con el policía malo y bajan un poco con el bueno. Con 30, 60 y 90 se le escapa una frase
   que da una pista de qué hizo de verdad ("¡Yo nunca estuve en el club de golf!... Digo, ¿qué es el golf?").
@@ -119,7 +127,7 @@ Salen de [casos.md](casos.md), cada una cambia una regla:
 | 7 | El influencer | Transmite en vivo: si hay un policía de malo y nadie de bueno, la transmisión le suma abogado (decisión 92). |
 | 8 | El extranjero | Habla un idioma inventado; el traductor es otro sospechoso que mete sus propias frases. |
 | 9 | El fan de la policía | Confiesa cualquier cosa enseguida: hay que elegir en la planilla cuál de sus 3 confesiones es la verdadera. |
-| 10 | El peligroso | Está esposado, pero si nadie lo mira 5 s se suelta y hay que agarrarlo (o empieza una persecución por la comisaría). |
+| 10 | El peligroso | Está esposado, pero si nadie lo mira 5 s se suelta, corre por la comisaría y hay que agarrarlo entre dos (decisión 92). |
 
 Además, dentro de cada variante cambian, con la semilla: el delito (sale de una lista de 10 delitos bizarros, como "le
 vendió a la municipalidad un puente que no existe"), su cara y ropa, y las frases de las pistas.
@@ -149,7 +157,7 @@ cada acción con quién la hizo; el grito se mide en la PC de quien habla y se m
    contraste, la luz, el café, la silla y el pañuelo.
 4. El grito con la voz. Hecho.
 5. El sorteo en "Jugar" (1 de cada 3). Hecho.
-6. Los otros 9 sospechosos, uno o dos por PR. Hechos el 3, el 5, el 6 y el 7.
+6. Los otros 9 sospechosos, uno o dos por PR. Hechos el 3, el 5, el 6, el 7 y el 10.
 7. Interrogar al dueño después de un allanamiento.
 
 ## Respuestas de Cristian (20/10)
