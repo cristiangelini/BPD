@@ -103,10 +103,18 @@ export function buildLightSwitch() {
 	return b.build();
 }
 
+// A box of tissues for the good cop, on the table: 0.24 x 0.1 x 0.13 m from its origin up, one tissue sticking out.
+export function buildTissueBox() {
+	const b = new Builder('tissue_box');
+	b.add('box', mat('tissue_box', 0x7ab0d8), new THREE.BoxGeometry(0.24, 0.1, 0.13), { pos: V(0, 0.05, 0) });
+	b.add('tissue', mat('tissue', 0xffffff), new THREE.BoxGeometry(0.08, 0.06, 0.01), { pos: V(0, 0.12, 0), rot: [0, 0, 0.3] });
+	return b.build();
+}
+
 export const models = {
 	interrogation_table: buildTable, interrogation_chair: buildChair, hanging_lamp: buildHangingLamp,
 	wall_clock: buildWallClock, security_camera: buildCamera, recording_desk: buildRecordingDesk,
-	coffee_cup: buildCoffeeCup, light_switch: buildLightSwitch,
+	coffee_cup: buildCoffeeCup, light_switch: buildLightSwitch, tissue_box: buildTissueBox,
 };
 
 export const views = {

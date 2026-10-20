@@ -96,3 +96,4 @@
 - The interrogation case (--place=interrogation): the comisario gives it, the talker suspect waits cuffed in the interrogation room, the nerves and lawyer meters show at the top; calm him down or give him a donut; at full nerves he confesses (500), at full lawyer the lawyer takes him away.
 - The bad cop's moves in the interrogation room: E slams the steel table, E on the hanging lamp points it at the suspect's face, and eating a donut near him counts too.
 - Interrogation: good cop right after another cop's bad cop doubles the next bad cop move (x1.3 alone); a light switch by the room's door flicks the lights; the observation room's coffee machine pours a cup that the suspect takes when it's set down near him.
+- Interrogation: the cops' two chairs are loose, and one thrown hard near the suspect is the bad cop's chair; a tissue box on the table lets the good cop lend him a tissue.
