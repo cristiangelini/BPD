@@ -20,11 +20,19 @@ const POLE := Color(0.25, 0.27, 0.3)
 const COMISARIO_MODEL := preload("res://assets/models/npc_comisario.glb")
 const HEDGE_HEIGHT := 2.5
 
+## The place whose case is on today: its own scene builds it, so the city leaves its lot empty.
+@export var live_place := ""
+
 var _materials := {}
-@onready var _built: Node3D = $Built
+var _built: Node3D
 
 
 func _ready() -> void:
+	_built = get_node_or_null("Built")
+	if _built == null:
+		_built = Node3D.new()
+		_built.name = "Built"
+		add_child(_built)
 	_build()
 	var door := CityLayout.door_of("station")
 	var comisario: Node3D = COMISARIO_MODEL.instantiate()
@@ -44,6 +52,8 @@ func _build() -> void:
 		for col in CityLayout.COLUMNS:
 			_block(Vector2i(col, row))
 	for p: Dictionary in CityLayout.PLACES:
+		if p.id == live_place:
+			continue
 		_building(p.block, p.side, p.along, p.size, p.color, p.sign, CityLayout.SHOPS.has(p.id), p.id == "grandpa")
 	for lot: Dictionary in CityLayout.fillers():
 		_building(lot.block, lot.side, lot.along, lot.size, lot.color, "", false,
@@ -58,9 +68,13 @@ func _build() -> void:
 		_box(Vector3(s * reach.x, HEDGE_HEIGHT / 2, 0), Vector3(1, HEDGE_HEIGHT, size.y + 2), HEDGE)
 
 
-## Sidewalk ring and the ground of the block: grass for houses and the plaza, paved elsewhere.
+## Sidewalk ring and the ground of the block: grass for houses and the plaza, paved elsewhere. The live place's
+## block has none: its scene brings its own ground.
 func _block(block: Vector2i) -> void:
 	var center := CityLayout.block_center(block)
+	var live := CityLayout.place(live_place)
+	if not live.is_empty() and live.block == block:
+		return
 	var inner := CityLayout.BLOCK - CityLayout.SIDEWALK * 2
 	_mesh_box(center + Vector3(0, 0.015, 0), Vector3(CityLayout.BLOCK, 0.01, CityLayout.BLOCK), SIDEWALK)
 	var ground := PAVED
