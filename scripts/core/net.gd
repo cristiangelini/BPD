@@ -37,6 +37,8 @@ var props: PropSync
 var actions: ActionSync
 ## The current level's case, decided by the host (null if the level has none).
 var case_sync: CaseSync
+## The current level's people and animals, run by the host.
+var npcs: NpcSync
 ## This PC has the current level loaded and its cops in place.
 var _in_scene := false
 
@@ -153,6 +155,8 @@ func spawn_cops(local: Cop) -> void:
 	add_child(props)
 	actions = ActionSync.new(self, local.get_parent())
 	add_child(actions)
+	npcs = NpcSync.new(self, local.get_parent())
+	add_child(npcs)
 	var raids := local.get_parent().find_children("*", "RaidCase", true, false)
 	if not raids.is_empty():
 		case_sync = CaseSync.new(self, raids[0])
@@ -190,6 +194,7 @@ func _entered_scene(answer: bool) -> void:
 ## Host: everything a peer that just loaded the level needs at once.
 func _resend(peer: int) -> void:
 	props.resend_all(peer)
+	npcs.resend_all(peer)
 	if case_sync:
 		case_sync.resend(peer)
 
@@ -201,12 +206,13 @@ func _leave_scene() -> void:
 		remove_child(sync)
 		sync.queue_free()
 	cop_syncs.clear()
-	for sync: Node in [props, actions, case_sync]:
+	for sync: Node in [props, actions, npcs, case_sync]:
 		if sync:
 			remove_child(sync)
 			sync.queue_free()
 	props = null
 	actions = null
+	npcs = null
 	case_sync = null
 
 

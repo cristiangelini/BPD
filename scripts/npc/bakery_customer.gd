@@ -25,6 +25,8 @@ const STRUCK_SPEED := 2.0
 var route: Array[Vector3] = []
 var state := State.ENTERING
 var paid := false
+## Which customer model it wears (set_look).
+var look := 0
 var _next := 0
 
 @onready var _bubble: Label3D = $Bubble
@@ -37,6 +39,7 @@ func _ready() -> void:
 
 ## Which of the customer models to wear.
 func set_look(index: int) -> void:
+	look = index
 	var old: Node3D = $Model
 	var fresh: Node3D = MODELS[index % MODELS.size()].instantiate()
 	fresh.transform = old.transform
