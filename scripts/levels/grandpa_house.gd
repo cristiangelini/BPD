@@ -25,6 +25,8 @@ const FLOOR_WOOD := Color(0.66, 0.44, 0.28)
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 ## Seconds between solving or failing the case and the end of shift screen.
 const SHIFT_DELAY := 2.5
+## How close to its spot at the station the car has to stop to end the shift, in meters (propuesta).
+const STATION_RADIUS := 12.0
 const GRASS := Color(0.45, 0.72, 0.3)
 const ROAD := Color(0.32, 0.33, 0.36)
 const OUTSIDE := Color(1.0, 0.84, 0.55)
@@ -186,6 +188,8 @@ var trails := {}
 @onready var _built: Node3D = $Built
 @onready var grandpa: Grandpa = $Grandpa
 @onready var car: PatrolCar = $PatrolCar
+## Where the patrol car parks at the station: the shift ends when everyone gets back there (decision 83).
+var station_parking: Transform3D
 
 
 func _ready() -> void:
@@ -194,6 +198,7 @@ func _ready() -> void:
 	if story == null:
 		story = pick_story(case_seed, OS.get_cmdline_user_args())
 	rig = story.rig.new() if story.rig != null else StoryRig.new()
+	_place_in_city()
 	_build()
 	_place_dressers()
 	_bake_navigation()
@@ -291,6 +296,7 @@ func objective_facts() -> Dictionary:
 		"found": main_found,
 		"delivered": car.is_delivered(main_evidence()),
 		"all_in_car": all_in,
+		"at_station": car_at_station(),
 		"extras": rig.extras(self) if story_known else [],
 		"suspicions": suspicions.map(func(id: String) -> Dictionary: return {"name": "SUSPECT_" + id,
 			"state": "right" if story_known and id == story.id else ("wrong" if wrong_marks.has(id) else "open")}),
@@ -540,7 +546,7 @@ func main_evidence() -> Evidence:
 
 
 func _check_solved() -> void:
-	if case_solved or case_failed or not story_known or not car.is_delivered(main_evidence()):
+	if case_solved or case_failed or not story_known or not car.is_delivered(main_evidence()) or not car_at_station():
 		return
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).vehicle != car:
@@ -565,6 +571,23 @@ func _fail(reason: String) -> void:
 	%CaseFailed.text = reason
 	%CaseFailed.show()
 	_finish_soon()
+
+
+## The house stays at the origin and the city goes around it. The shift starts at the station: the scene puts
+## the car on its spot out front and the cop by the driver's door.
+func _place_in_city() -> void:
+	var city: Node3D = $City
+	city.transform = CityLayout.anchor("grandpa")
+	station_parking = city.transform * CityLayout.parking("station")
+
+
+func car_at_station() -> bool:
+	return car.global_position.distance_to(station_parking.origin) < STATION_RADIUS
+
+
+func _physics_process(_delta: float) -> void:
+	# The car arriving at the station is what closes the case once everything else is done.
+	_check_solved()
 
 
 ## The grandpa walks on a navigation mesh baked from the built house when the scene loads.
@@ -601,9 +624,8 @@ func _float_label(text: String, at: Vector3, color: Color) -> void:
 
 func _build() -> void:
 	var up := GameScale.FLOOR_HEIGHT
+	# The garden; the street in front and the rest of the town come from the city around the house.
 	_box(Vector3(0, -0.1, 4), Vector3(60, 0.2, 52), GRASS)
-	# The street in front of the house, where the patrol car waits (visual only, flat on the grass).
-	_mesh_box(Vector3(0, 0.005, 17.5), Vector3(60, 0.01, 6), ROAD)
 	_box(Vector3(0, 0.01, 0), Vector3(HALF_X * 2, 0.02, HALF_Z * 2), FLOOR_WOOD)
 	# Upstairs floor, with the hole over the stairs.
 	var hole_east := STAIR_X + GameScale.STAIR_WIDTH / 2

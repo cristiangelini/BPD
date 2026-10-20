@@ -46,7 +46,7 @@ OBJ_TITLE,Planilla del caso,Case checklist,Planilha do caso
 OBJ_ENTER,Entrar a la casa (llave en una maceta o ariete),Get into the house (key in a pot or battering ram),Entrar na casa (chave num vaso ou aríete)
 OBJ_FIND,Encontrar la libreta de apuestas,Find the betting book,Achar o caderno de apostas
 OBJ_TRUNK,Dejarla en el baúl del patrullero,Put it in the patrol car's trunk,Deixar no porta-malas da viatura
-OBJ_LEAVE,Subir todos al patrullero,Everyone gets in the patrol car,Todos entram na viatura
+OBJ_LEAVE,Volver todos en el patrullero a la comisaría,Everyone drives back to the station,Todos voltam de viatura para a delegacia
 OBJ_BROKEN,Adornos rotos: %d (multa: %d),Broken ornaments: %d (fine: %d),Enfeites quebrados: %d (multa: %d)
 OBJ_COMPLAINT,Denuncia del abuelo: %d%%,Grandpa's complaint: %d%%,Denúncia do vovô: %d%%
 PROMPT_DRAWER,Mantén clic: agarra el cajón y tira despacio (agáchate para no arrancarlo),Hold click: grab the drawer and pull slowly (crouch so you don't rip it out),Segure o clique: pegue a gaveta e puxe devagar (agache para não arrancar)

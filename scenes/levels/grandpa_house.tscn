@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://scenes/npc/grandpa.tscn" id="5"]
 [ext_resource type="PackedScene" path="res://scenes/vehicles/patrol_car.tscn" id="6"]
 [ext_resource type="PackedScene" path="res://scenes/ui/shift_screen.tscn" id="7"]
+[ext_resource type="Script" path="res://scripts/levels/city.gd" id="8"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
 sky_top_color = Color(0.32, 0.56, 0.9, 1)
@@ -54,6 +55,10 @@ light_energy = 1.2
 shadow_enabled = true
 shadow_blur = 1.5
 
+[node name="City" type="Node3D" parent="."]
+script = ExtResource("8")
+live_place = "grandpa"
+
 [node name="Built" type="Node3D" parent="."]
 
 [node name="Evidence" type="Node3D" parent="."]
@@ -64,7 +69,7 @@ shadow_blur = 1.5
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 10)
 
 [node name="Cop" parent="." instance=ExtResource("2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 14)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.5, 0.1, 55.55)
 
 [node name="RamPickup" parent="." instance=ExtResource("4")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.8, 0, 13.5)
@@ -144,6 +149,6 @@ text = "CASE_SOLVED"
 horizontal_alignment = 1
 
 [node name="PatrolCar" parent="." instance=ExtResource("6")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -6, 0.05, 17.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 0.05, 55)
 
 [node name="ShiftScreen" parent="." instance=ExtResource("7")]

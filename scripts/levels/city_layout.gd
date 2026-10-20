@@ -132,3 +132,18 @@ static func place(id: String) -> Dictionary:
 static func door_of(id: String) -> Vector3:
 	var p := place(id)
 	return lot_center(p.block, p.side, p.along, p.size.z) + side_normal(p.side) * (p.size.z / 2)
+
+
+## Where the city goes so that place `id` sits at the origin with its front facing +Z, the way a case scene
+## builds its place (the grandpa's house builds itself there and the city is laid around it).
+static func anchor(id: String) -> Transform3D:
+	var p := place(id)
+	var lot := Transform3D(Basis(Vector3.UP, side_turn(p.side)), lot_center(p.block, p.side, p.along, p.size.z))
+	return lot.affine_inverse()
+
+
+## The street spot in front of a place's door where the patrol car parks, and the car's turn to run along it.
+static func parking(id: String) -> Transform3D:
+	var p := place(id)
+	var spot := door_of(id) + side_normal(p.side) * (SIDEWALK + 3.0)
+	return Transform3D(Basis(Vector3.UP, side_turn(p.side) + PI / 2), spot)

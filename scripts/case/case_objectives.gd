@@ -22,7 +22,7 @@ static func rows(facts: Dictionary) -> Array[Dictionary]:
 				"done": suspicions[i].state == "right", "optional": false, "status": true})
 	list.append(_row(facts.get("find", "OBJ_FIND"), facts.found or facts.delivered))
 	list.append(_row("OBJ_TRUNK", facts.delivered))
-	list.append(_row("OBJ_LEAVE", facts.delivered and facts.all_in_car))
+	list.append(_row("OBJ_LEAVE", facts.delivered and facts.all_in_car and facts.get("at_station", true)))
 	for extra: Dictionary in facts.get("extras", []):
 		list.append(_extra(extra.text, extra.done))
 	if facts.get("tupper_asked", false):
