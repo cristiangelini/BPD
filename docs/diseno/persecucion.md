@@ -1,9 +1,10 @@
-# BPD · La persecución (borrador, 20/10)
+# BPD · La persecución (propuesta, 20/10)
 
 Segundo tipo de caso del catálogo ([casos.md](casos.md), punto 2), con las decisiones 24 y 25: "los 4 van en el mismo
 patrullero y cada uno tiene una tarea (manejar, radio y mapa, red o pinchos por la ventana, sirena y megáfono)", y "la
-persecución es un tipo de caso propio y también el final de cualquier caso en el que el sospechoso se escapa". Todo lo
-de este archivo es **(propuesta)** hasta que Cristian lo apruebe y lo probemos jugando.
+persecución es un tipo de caso propio y también el final de cualquier caso en el que el sospechoso se escapa". Cristian lo
+aprobó el 20/10 (decisión 94) con un cambio: hay tiempo límite. Los números siguen marcados **(propuesta)** hasta
+probarlos jugando.
 
 ## La idea
 El comisario avisa por la radio que un sospechoso se escapa por la ciudad. Los cuatro se suben al patrullero, lo
@@ -24,8 +25,10 @@ sospechoso (y a los peatones que se cruzan).
 4. **Se gana** cuando el sospechoso queda frenado 3 s seguidos (pinchado, encerrado entre el patrullero y una pared, o
    enredado en la red) y un policía se baja y lo esposa. Después hay que volver a la comisaría y estacionar, como en el
    allanamiento (decisión 83): sueldo de 500.
-5. **Se pierde** cuando la distancia llega a 100: "Se nos escapó, novatos." Sin sueldo de ese caso.
-6. Sin tiempo límite (decisión 66): la presión la pone el medidor de distancia.
+5. **Se pierde** cuando la distancia llega a 100 o cuando pasa 1 minuto sin atraparlo: "Se nos escapó, novatos." Sin
+   sueldo de ese caso.
+6. **Tiempo límite de 1 minuto** (Cristian, 20/10: "pongamos primero 1 minuto, después lo vamos midiendo"). Es la
+   excepción a la decisión 66: la persecución sí tiene reloj, que se ve arriba junto a los medidores.
 
 ## Las cuatro tareas (decisión 24)
 | Asiento | Tarea | Con qué |
@@ -77,8 +80,9 @@ El host maneja al sospechoso y decide los medidores (decisión 50), como con el 
 6. Los otros 9 sospechosos, uno o dos por PR.
 7. La persecución como final de otros casos.
 
-## Preguntas para Cristian
-1. ¿Se gana frenándolo 3 s y esposándolo, y se pierde con la distancia a 100 (sin tiempo límite)?
-2. ¿Las cuatro tareas fijas por asiento, como está en la tabla?
-3. ¿El sorteo queda así: turno 3, 6... interrogatorio, y el resto mitad allanamiento y mitad persecución?
-4. ¿Sueldo de 500, como los otros casos, y la cuota normal del turno?
+## Respuestas de Cristian (20/10)
+1. Sí: se gana frenándolo 3 s y esposándolo, y se pierde si la distancia llega a 100. Además hay tiempo límite: 1
+   minuto para empezar, y después se mide jugando.
+2. Sí: cada asiento tiene su tarea fija.
+3. Sí: el sorteo de los turnos queda así.
+4. Sí: sueldo de 500.
