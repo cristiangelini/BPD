@@ -52,6 +52,14 @@ func try_grab() -> bool:
 	return true
 
 
+## Puts `body` in this cop's hands, as if grabbed from where it is (things handed out, like the armory's).
+func grab(body: Grabbable) -> void:
+	release()
+	held = body
+	hold_distance = GameScale.HOLD_MIN
+	held.hold(get_instance_id(), hold_point())
+
+
 func release() -> void:
 	if held:
 		held.let_go(get_instance_id())

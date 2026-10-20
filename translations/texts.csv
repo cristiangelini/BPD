@@ -312,3 +312,11 @@ ARMORY_ALREADY_OWNED,"Eso ya es de la comisaría, retíralo.","The station alrea
 ARMORY_NO_MONEY,No alcanza la plata de la caja.,There isn't enough money in the cash box.,O dinheiro da caixa não dá.
 ARMORY_NOT_OWNED,Eso todavía no es de la comisaría.,The station doesn't own that yet.,Isso ainda não é da delegacia.
 ARMORY_HAS_RAM,¡Ya tienes un ariete en las manos!,You already have a ram in your hands!,Você já está com um aríete nas mãos!
+ARMORY_DONUTS,Caja de donas,Box of donuts,Caixa de rosquinhas
+ARMORY_DONUTS_ABOUT,"Trae 4. E con la caja en la mano: comes una y recuperas toda la resistencia.","Holds 4. E with the box in hand: eat one and get all your stamina back.","Vem com 4. E com a caixa na mão: você come uma e recupera toda a resistência."
+ARMORY_HANDS_FULL,Primero suelta lo que tienes en las manos.,Let go of what's in your hands first.,Primeiro solte o que está nas suas mãos.
+PROMPT_DONUT_BOX,E: comer una dona · Clic derecho: tirar la caja,E: eat a donut · Right click: throw the box,E: comer uma rosquinha · Clique direito: jogar a caixa
+PROMPT_DONUT_EMPTY,Caja vacía · Clic derecho: tirarla,Empty box · Right click: throw it,Caixa vazia · Clique direito: jogá-la
+HINT_DONUT,"¡Mmm, dona! Resistencia llena, pero con la boca llena no puedes preguntar.","Mmm, donut! Full stamina, but you can't ask anything with your mouth full.","Hum, rosquinha! Resistência cheia, mas de boca cheia você não pode perguntar."
+HINT_DONUTS_GONE,Ya no quedan donas.,There are no donuts left.,Não sobrou nenhuma rosquinha.
+HINT_MOUTH_FULL,¡Mmmf mmf! (Con la boca llena no se entiende nada.),Mmmf mmf! (Nobody understands you with your mouth full.),Mmmf mmf! (De boca cheia ninguém entende nada.)

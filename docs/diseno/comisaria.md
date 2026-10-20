@@ -63,6 +63,11 @@ casa del abuelo: se retira acá. La caja arranca en 0 hasta que la partida (hilo
 las donas, los guantes y la carretilla se suman en sus PR. Capturas: `comisaria/armero_prompt.png`, `armeria_lista.png`
 y `armeria_ariete.png`.
 
+**Las donas (cómo quedó):** la caja de donas sale 30 y cada compra es una caja; E sobre la fila la compra y otra E la
+retira (la lista muestra cuántas hay). El policía sale con la caja abierta en las manos y E come una: resistencia llena,
+pero por 3 s no puede preguntar (R) ("¡Mmmf mmf!"). Después de la cuarta queda la caja vacía. Capturas:
+`comisaria/donas_lista.png` y `donas_comer.png`.
+
 ## El comisario
 - Está en su oficina, detrás de un escritorio lleno de papeles. Grita (decisión 21).
 - Reparte el caso del turno (punto 2) y no deja salir sin escucharlo: si intentan subir al patrullero sin el caso,

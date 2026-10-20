@@ -15,6 +15,8 @@ const RAM_SCENE := preload("res://scenes/tools/battering_ram.tscn")
 const RAM_PICKUP_SCENE := preload("res://scenes/tools/ram_pickup.tscn")
 ## A dropped ram lands this far in front of the cop.
 const DROP_AHEAD := 1.0
+## Seconds a donut keeps the mouth too full to ask anything (comisaria.md, propuesta).
+const MOUTH_FULL := 3.0
 
 @export var input_enabled := true
 
@@ -30,6 +32,8 @@ var ram: BatteringRam
 var _stagger_left := 0.0
 ## Eating a sample from the baker: the cop can walk but not grab anything (panaderia.md).
 var _eating_left := 0.0
+## A donut fills the mouth: no questions (R) until this runs out.
+var _mouth_full_left := 0.0
 ## While holding E on the grandpa he tells a story; this cop can't do anything else (allanamiento.md).
 var listening_to: Grandpa
 ## Silly numbers for the joke awards at the end of the shift (decision 41).
@@ -99,6 +103,8 @@ func current_prompt() -> String:
 	if vehicle or in_briefing or in_menu:
 		return ""
 	if $Grabber.held:
+		if $Grabber.held.has_method("held_prompt_key"):
+			return $Grabber.held.held_prompt_key(self)
 		return "PROMPT_HOLDING"
 	if ram:
 		return "PROMPT_RAM"
@@ -129,6 +135,22 @@ func eat(seconds: float) -> void:
 
 func is_eating() -> bool:
 	return _eating_left > 0.0
+
+
+## Eats a donut from the box in hand: stamina full again, and the mouth too full to ask for MOUTH_FULL seconds.
+func eat_donut(box: DonutBox) -> bool:
+	if not box.eat_one():
+		show_hint("HINT_DONUTS_GONE")
+		return false
+	stamina = GameScale.RUN_STAMINA
+	exhausted = false
+	_mouth_full_left = MOUTH_FULL
+	show_hint("HINT_DONUT")
+	return true
+
+
+func mouth_full() -> bool:
+	return _mouth_full_left > 0.0
 
 
 ## Busy: staggered, listening to the grandpa, sitting in the car, hearing the comisario or at the armero's list.
@@ -225,6 +247,8 @@ func _physics_process(delta: float) -> void:
 
 ## Uses what the camera points at (a pot, a door...), if it can be used. Returns true if something was used.
 func use() -> bool:
+	if $Grabber.held is DonutBox:
+		return eat_donut($Grabber.held)
 	var target := _usable_target()
 	if not target:
 		return false
@@ -236,6 +260,9 @@ func use() -> bool:
 func ask() -> bool:
 	var target := _usable_target()
 	if is_busy() or not target or not target.has_method("ask"):
+		return false
+	if mouth_full():
+		show_hint("HINT_MOUTH_FULL")
 		return false
 	return target.ask(self)
 
@@ -273,6 +300,7 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 
 	_stagger_left = maxf(_stagger_left - delta, 0.0)
 	_eating_left = maxf(_eating_left - delta, 0.0)
+	_mouth_full_left = maxf(_mouth_full_left - delta, 0.0)
 	var direction := (transform.basis * Vector3(wish.x, 0.0, wish.y)).normalized()
 	var speed := 0.0 if is_busy() else current_speed()
 	velocity.x = direction.x * speed
