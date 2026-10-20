@@ -211,6 +211,7 @@ func _ready() -> void:
 		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
 	raid = RaidCase.new()
 	raid.case_seed = case_seed
+	raid.prints_key = "PRINTS_BAKER"
 	raid.story_id = story_id
 	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
 	raid.find_key = STORIES[story_id].find
