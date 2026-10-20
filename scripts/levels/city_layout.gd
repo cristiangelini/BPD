@@ -1,0 +1,134 @@
+class_name CityLayout
+extends RefCounted
+
+## The city plan (docs/diseno/ciudad.md): a grid of blocks with streets between and around them, the police
+## station, the 10 raid places and filler buildings. Pure data, so tests can check it without a scene.
+## Blocks are (column, row): column 0 is the west, row 0 the north (-Z). Every number here is (propuesta).
+## The city grows a little at a time (Cristian, 19/10): new places (the jail, the politician's case...) add rows
+## to the south, so ROWS goes up and nothing already placed moves.
+
+## Three times the first 4 x 3 blocks (Cristian, 19/10); the first blocks sit in the middle, one block in.
+const COLUMNS := 7
+const ROWS := 5
+const BLOCK := 60.0
+const STREET := 12.0
+const PITCH := BLOCK + STREET
+## Whole city, streets around the edge included.
+const SIZE := Vector2(COLUMNS * BLOCK + (COLUMNS + 1) * STREET, ROWS * BLOCK + (ROWS + 1) * STREET)
+const SIDEWALK := 3.0
+
+## Each place: its block, the side its front faces (n, s, e, w), how far along that side its middle sits,
+## its size (width along the street, height, depth), color and sign. Interiors come one per PR.
+const PLACES := [
+	{"id": "station", "block": Vector2i(2, 2), "side": "s", "along": 0.0, "size": Vector3(30, 9, 18), "color": Color(0.3, 0.45, 0.8), "sign": "PLACE_STATION"},
+	{"id": "hotel", "block": Vector2i(2, 3), "side": "n", "along": 0.0, "size": Vector3(26, 18, 18), "color": Color(0.85, 0.5, 0.45), "sign": "PLACE_HOTEL"},
+	{"id": "insurance", "block": Vector2i(3, 3), "side": "n", "along": 0.0, "size": Vector3(22, 12, 16), "color": Color(0.6, 0.65, 0.7), "sign": "PLACE_INSURANCE"},
+	{"id": "grandpa", "block": Vector2i(1, 2), "side": "e", "along": 0.0, "size": Vector3(24, 7, 20), "color": Color(1.0, 0.84, 0.55), "sign": "PLACE_GRANDPA"},
+	{"id": "apartments", "block": Vector2i(1, 3), "side": "e", "along": 0.0, "size": Vector3(22, 15, 16), "color": Color(0.75, 0.6, 0.85), "sign": "PLACE_APARTMENTS"},
+	{"id": "bakery", "block": Vector2i(2, 1), "side": "s", "along": -12.0, "size": Vector3(16, 7, 14), "color": Color(0.95, 0.75, 0.4), "sign": "PLACE_BAKERY"},
+	{"id": "pet_salon", "block": Vector2i(2, 1), "side": "s", "along": 12.0, "size": Vector3(16, 6, 14), "color": Color(0.55, 0.85, 0.8), "sign": "PLACE_PET_SALON"},
+	{"id": "hardware", "block": Vector2i(3, 1), "side": "s", "along": -12.0, "size": Vector3(16, 7, 14), "color": Color(0.9, 0.45, 0.3), "sign": "PLACE_HARDWARE"},
+	{"id": "gym", "block": Vector2i(3, 1), "side": "s", "along": 12.0, "size": Vector3(18, 8, 16), "color": Color(0.4, 0.75, 0.4), "sign": "PLACE_GYM"},
+	{"id": "doll_factory", "block": Vector2i(4, 2), "side": "w", "along": 0.0, "size": Vector3(28, 10, 26), "color": Color(0.95, 0.6, 0.75), "sign": "PLACE_DOLL_FACTORY"},
+	{"id": "cake_lab", "block": Vector2i(4, 3), "side": "w", "along": 0.0, "size": Vector3(24, 8, 22), "color": Color(0.95, 0.95, 0.85), "sign": "PLACE_CAKE_LAB"},
+]
+
+## The plaza fills its block.
+const PLAZA := Vector2i(3, 2)
+## Shops are places whose front gets a shutter and an awning.
+const SHOPS: Array[String] = ["bakery", "pet_salon", "hardware", "gym"]
+
+## Filler buildings on the north and south sides that have no place: 3 per side.
+const FILLER_ALONG: Array[float] = [-16.0, 0.0, 16.0]
+const FILLER_SIZE := {
+	"house": Vector3(11, 6, 10), "warehouse": Vector3(13, 8, 12), "building": Vector3(12, 10, 11),
+}
+const FILLER_COLORS: Array[Color] = [
+	Color(0.95, 0.7, 0.6), Color(0.7, 0.85, 0.95), Color(0.85, 0.9, 0.6), Color(0.95, 0.88, 0.7),
+	Color(0.8, 0.75, 0.9),
+]
+
+## Street names: rows of the grid run west to east (between block rows), columns north to south.
+const STREETS_EW: Array[String] = ["STREET_KITE", "STREET_CLOCK", "STREET_LINDEN", "STREET_PUDDLE"]
+const STREETS_NS: Array[String] = [
+	"STREET_SOCK", "STREET_TEAPOT", "STREET_CENTRAL", "STREET_BUTTON", "STREET_SPOON", "STREET_WHISTLE",
+]
+
+
+## Center of a block on the ground.
+static func block_center(block: Vector2i) -> Vector3:
+	var first := -SIZE / 2 + Vector2.ONE * (STREET + BLOCK / 2)
+	return Vector3(first.x + block.x * PITCH, 0, first.y + block.y * PITCH)
+
+
+## Center x of north-south street `k` (0 to COLUMNS).
+static func street_x(k: int) -> float:
+	return -SIZE.x / 2 + STREET / 2 + k * PITCH
+
+
+## Center z of west-east street `k` (0 to ROWS).
+static func street_z(k: int) -> float:
+	return -SIZE.y / 2 + STREET / 2 + k * PITCH
+
+
+## The direction a side faces, on the ground.
+static func side_normal(side: String) -> Vector3:
+	return {"n": Vector3.FORWARD, "s": Vector3.BACK, "e": Vector3.RIGHT, "w": Vector3.LEFT}[side]
+
+
+## Turn around Y that points a building's +Z front toward `side`.
+static func side_turn(side: String) -> float:
+	return {"n": PI, "s": 0.0, "e": PI / 2, "w": -PI / 2}[side]
+
+
+## Where a lot's footprint center sits: its front on the inner edge of the sidewalk.
+static func lot_center(block: Vector2i, side: String, along: float, depth: float) -> Vector3:
+	var normal := side_normal(side)
+	var tangent := Vector3(-normal.z, 0, normal.x).abs()
+	return block_center(block) + normal * (BLOCK / 2 - SIDEWALK - depth / 2) + tangent * along
+
+
+## Footprint on the ground (x, z) of a lot, for overlap checks.
+static func footprint(block: Vector2i, side: String, along: float, size: Vector3) -> Rect2:
+	var center := lot_center(block, side, along, size.z)
+	var across := Vector2(size.x, size.z) if side in ["n", "s"] else Vector2(size.z, size.x)
+	return Rect2(Vector2(center.x, center.z) - across / 2, across)
+
+
+static func barrio_kind(block: Vector2i) -> String:
+	if block.x <= 1:
+		return "house"
+	if block.x >= 4:
+		return "warehouse"
+	return "building"
+
+
+## Every filler lot as {block, side, along, size, color}: north and south sides without a place.
+static func fillers() -> Array[Dictionary]:
+	var lots: Array[Dictionary] = []
+	for row in ROWS:
+		for col in COLUMNS:
+			var block := Vector2i(col, row)
+			if block == PLAZA:
+				continue
+			for side: String in ["n", "s"]:
+				if PLACES.any(func(p: Dictionary) -> bool: return p.block == block and p.side == side):
+					continue
+				var size: Vector3 = FILLER_SIZE[barrio_kind(block)]
+				for i in FILLER_ALONG.size():
+					lots.append({"block": block, "side": side, "along": FILLER_ALONG[i], "size": size,
+						"color": FILLER_COLORS[(col * 7 + row * 3 + i + (1 if side == "n" else 0)) % FILLER_COLORS.size()]})
+	return lots
+
+
+static func place(id: String) -> Dictionary:
+	for p: Dictionary in PLACES:
+		if p.id == id:
+			return p
+	return {}
+
+
+## Where a place's front door meets the sidewalk.
+static func door_of(id: String) -> Vector3:
+	var p := place(id)
+	return lot_center(p.block, p.side, p.along, p.size.z) + side_normal(p.side) * (p.size.z / 2)

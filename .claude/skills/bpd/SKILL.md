@@ -40,6 +40,8 @@ the number in brackets is the decision there.
 
 - Every case happens in its own place of one open city, with its own character; the cops drive between places, no loading screens. Cristian asked for it on 19/10 so the city grows with each case. [82]
 
+- Start maps big: Cristian asked to triple the first city draft (4 x 3 blocks felt small). When in doubt about size, go bigger. [83]
+
 ## Working with Cristian
 - He works alone and merges himself; no Jira, cards are GitHub issues. [61, 62]
 - To check progress he opens the game and gives the OK (cheapest in tokens). Videos only when he asks. [57]

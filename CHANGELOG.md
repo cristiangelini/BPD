@@ -34,3 +34,4 @@
 - Second story for the grandpa's house, the turtle races: catch Relámpago (the turtle with a 7 on her shell) among four lookalikes that roam the house, following lettuce leaves from the kitchen; the betting board and three trophies are extras. `--story=turtles` forces it.
 - Guess the story: the comisario only brings an anonymous tip, and the checklist lists three suspicions. Each one has a clue in the house; with Q open, hold 1, 2 or 3 to mark one. A right guess makes the comisario tell what to bring, one wrong guess halves the salary, and two fail the case.
 - Design: the open city where every case has its own place and character (docs/diseno/ciudad.md, decision 82).
+- City, first blocks: 7 x 5 blocks (about 520 x 370 m) with streets, the police station, a plaza and the closed fronts of the 10 raid places with their signs, plus filler houses and warehouses. The patrol car drives all of it; "Ciudad (prueba)" in the menu opens it.
