@@ -131,6 +131,13 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      y, si es el bueno, sale la bolsa; si no, nada. El mapa de la excavación (0,1 kg, 300) va escondido. La pista: cada
      15 s un perro suelto que no esté ocupado va a cavar, 7 de cada 10 veces en el parche bueno, y deja tierra; el
      policía que lo ve cavar ahí a menos de 6 m suma la pista. Capturas: `huesos_*.png`.
+   - **La peluquería de humanos clandestina (propuesta):** Ramiro les corta el pelo a personas sin permiso. El libro
+     de turnos (0,3 kg, 1000) va escondido; la peluca (150) en cualquier escondite y el espejo de cuerpo entero (4 kg,
+     200, frágil: se daña con golpes de más de 1,5 m/s) en uno grande. La pista: en el piso de la sala de corte hay 8
+     mechones de pelo que parecen de perro; 3 son de persona y se ven negros y lacios cuando la linterna los alumbra (a
+     menos de 8 m). A los 10 s y después cada 40 s entra un cliente humano, se para bajo el segundo secador y Ramiro le
+     tira una toalla encima («¡Es un perro grande!»). Se queda 25 s. Levantar la toalla con E es otra pista: el cliente
+     sale corriendo y Ramiro suma 10 de denuncia. Capturas: `humanos_*.png`.
 
 ## Preguntas para Cristian (respondidas el 20/10: sí a las dos)
 1. ¿La peluquería de mascotas como tercer lugar, o preferís otro de los 8?

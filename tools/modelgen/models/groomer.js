@@ -314,6 +314,64 @@ export function buildShovel() {
 	return b.build();
 }
 
+// Human salon (peluqueria.md, "Peluquería de humanos clandestina"): the appointment book for human customers, a purple
+// cover with gold scissors, 0.22 x 0.05 x 0.3 m, lying flat, origin at its middle.
+export function buildAppointmentBook() {
+	const b = new Builder('appointment_book');
+	const cover = mat('book_purple', 0x6a3a8a), page = mat('pages', 0xf2ead8), gold = mat('gold', 0xe8c040);
+	b.add('cover', cover, new THREE.BoxGeometry(0.22, 0.05, 0.3));
+	b.add('pages', page, new THREE.BoxGeometry(0.205, 0.04, 0.29), { pos: V(0.01, 0, 0) });
+	for (const r of [0.5, -0.5]) b.add('scissors', gold, new THREE.BoxGeometry(0.012, 0.003, 0.12), { pos: V(0, 0.026, 0), rot: [0, r, 0] });
+	for (const x of [-0.035, 0.035]) b.add('scissors', gold, new THREE.TorusGeometry(0.018, 0.004, 4, 10), { pos: V(x, 0.026, 0.065), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
+// A brown wig: a cap of hair with a fringe and curls, 0.24 x 0.14 x 0.26 m, origin at its bottom.
+export function buildWig() {
+	const b = new Builder('wig');
+	const hair = mat('wig_hair', 0x6a4022);
+	b.add('cap', hair, ellipsoid(0.12, 0.1, 0.13, 10, 6), { pos: V(0, 0.04, 0) });
+	for (let i = 0; i < 7; i++) {
+		const a = Math.PI * 0.15 + (i / 6) * Math.PI * 0.7;
+		b.add('curls', hair, ellipsoid(0.03, 0.03, 0.03, 6, 4), { pos: V(Math.cos(a) * 0.11, 0.02, -Math.sin(a) * 0.1 + 0.02) });
+	}
+	b.add('fringe', hair, new THREE.BoxGeometry(0.16, 0.04, 0.03), { pos: V(0, 0.07, 0.12) });
+	return b.build();
+}
+
+// A tall salon mirror for people (not dogs): a gilt frame and the glass, 0.5 x 0.8 x 0.04 m, origin at its middle.
+export function buildSalonMirror() {
+	const b = new Builder('salon_mirror');
+	const frame = mat('gilt', 0xc8a040), glass = mat('mirror_glass', 0xc8dce8);
+	b.add('glass', glass, new THREE.BoxGeometry(0.42, 0.72, 0.01), { pos: V(0, 0, 0.012) });
+	for (const y of [-0.38, 0.38]) b.add('frame', frame, new THREE.BoxGeometry(0.5, 0.04, 0.04), { pos: V(0, y, 0) });
+	for (const x of [-0.23, 0.23]) b.add('frame', frame, new THREE.BoxGeometry(0.04, 0.8, 0.04), { pos: V(x, 0, 0) });
+	b.add('frame', frame, new THREE.BoxGeometry(0.46, 0.76, 0.01), { pos: V(0, 0, -0.012) });
+	return b.build();
+}
+
+// A tuft of cut hair on the floor, 0.12 m across, origin at the floor. Its color is set in Godot (dog or human).
+export function buildHairTuft() {
+	const b = new Builder('hair_tuft');
+	const hair = mat('tuft', 0xd8c8a8);
+	for (let i = 0; i < 9; i++) {
+		const a = i * 0.7, r = 0.02 + (i % 3) * 0.015;
+		b.add('strands', hair, new THREE.BoxGeometry(0.07, 0.004, 0.006), { pos: V(Math.cos(a) * r, 0.003 + (i % 2) * 0.002, Math.sin(a) * r), rot: [0, a * 1.3, 0] });
+	}
+	return b.build();
+}
+
+// The striped towel Ramiro throws over a human customer's head: a drape from the head to the shoulders, 0.6 x 0.5 x
+// 0.5 m, origin at its top.
+export function buildCustomerTowel() {
+	const b = new Builder('customer_towel');
+	const towel = mat('towel_white', 0xf4f0e8), stripe = mat('towel_stripe', 0x4a8ac8);
+	b.add('drape', towel, new THREE.ConeGeometry(0.32, 0.5, 9, 1, true), { pos: V(0, -0.25, 0) });
+	b.add('drape', towel, ellipsoid(0.14, 0.08, 0.14, 8, 5), { pos: V(0, -0.02, 0) });
+	for (const y of [-0.38, -0.44]) b.add('stripes', stripe, new THREE.CylinderGeometry(0.25 + (-y - 0.38) * 0.6, 0.26 + (-y - 0.38) * 0.6, 0.025, 9, 1, true), { pos: V(0, y, 0) });
+	return b.build();
+}
+
 export const models = {
 	shampoo_bottle: buildShampoo,
 	dog_collar: buildCollar,
@@ -325,6 +383,8 @@ export const models = {
 	ransom_letter: buildRansomLetter, shampoo_jug: buildShampooJug, formula_sheet: buildFormulaSheet,
 	sample_jar: buildSampleJar, dog_long_hair: buildLongHairDog, cop_mustache: buildMustache,
 	bone_bag: buildBoneBag, dig_map: buildDigMap, shovel: buildShovel,
+	appointment_book: buildAppointmentBook, wig: buildWig, salon_mirror: buildSalonMirror, hair_tuft: buildHairTuft,
+	customer_towel: buildCustomerTowel,
 };
 
 export const views = {
@@ -368,5 +428,13 @@ export const views = {
 			{ name: 'shovel', pos: [0.45, 0.55, -0.1], rotY: 0.4 },
 		],
 		cam: { pos: [0, 0.9, 1.9], target: [0, 0.3, 0], fov: 38 },
+	},
+	human_salon_goods: {
+		items: [
+			{ name: 'appointment_book', pos: [-0.4, 0.025, 0.2], rotY: 0.3 }, { name: 'wig', pos: [-0.05, 0, 0.3], rotY: -0.2 },
+			{ name: 'salon_mirror', pos: [0.4, 0.4, -0.1], rotY: -0.3 }, { name: 'hair_tuft', pos: [0.05, 0, 0.6], rotY: 0 },
+			{ name: 'customer_towel', pos: [-0.35, 0.6, -0.3], rotY: 0 },
+		],
+		cam: { pos: [0, 0.9, 2.0], target: [0, 0.3, 0], fov: 38 },
 	},
 };
