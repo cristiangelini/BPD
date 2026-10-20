@@ -93,6 +93,7 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
 3. **El anillo en el pan**, la primera historia (la de partir panes es la más distinta de la casa del abuelo). Va en dos PRs: primero los panes, las tortas, la caja y el anillo escondido; después las sospechas en la planilla, las pistas, el cliente chismoso y la entrega en el baúl, con la parte del caso que hoy está en el código de la casa del abuelo pasada a algo que comparten los dos lugares.
 4. Las otras 5 historias, un PR cada una.
 5. El sorteo del lugar: cada partida sale en la casa del abuelo o en la panadería.
+   - **Cómo quedó (propuesta):** Jugar y "Jugar otra vez" sortean una semilla nueva, y de ella salen el lugar (mitad y mitad), la historia y los escondites, así todos los jugadores ven lo mismo. `--place=grandpa` o `--place=bakery` fuerzan el lugar. El botón de la panadería del menú queda como atajo.
 
 ## Respuestas de Cristian (20/10)
 1. Marta y las 6 historias van como están.

@@ -204,7 +204,9 @@ var _looks := 0
 
 func _ready() -> void:
 	if case_seed == 0:
-		case_seed = randi() | 1
+		case_seed = PlaceDraw.take_seed()
+	if case_seed == 0:
+		case_seed = PlaceDraw.new_seed()
 	if story_id == "":
 		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
 	raid = RaidCase.new()

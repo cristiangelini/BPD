@@ -12,7 +12,8 @@ func test_menu_texts_are_translation_keys() -> void:
 func test_play_points_to_an_existing_scene() -> void:
 	var menu: Control = add_child_autofree(MENU_SCENE.instantiate())
 	assert_false(menu.get_node("%PlayButton").disabled)
-	assert_true(ResourceLoader.exists(MainMenu.PLAY_SCENE), "the Play scene should exist")
+	for path: String in PlaceDraw.PLACES.values():
+		assert_true(ResourceLoader.exists(path), "every place Play can draw should exist")
 
 
 func test_test_room_points_to_an_existing_scene() -> void:

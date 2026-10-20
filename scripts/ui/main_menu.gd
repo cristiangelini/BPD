@@ -3,7 +3,6 @@ extends Control
 
 ## Placeholder main menu. Every visible text goes through tr() keys in translations/texts.csv.
 
-const PLAY_SCENE := "res://scenes/levels/grandpa_house.tscn"
 const CITY_SCENE := "res://scenes/levels/city.tscn"
 const BAKERY_SCENE := "res://scenes/levels/bakery.tscn"
 const TEST_ROOM_SCENE := "res://scenes/levels/grey_room.tscn"
@@ -16,7 +15,7 @@ const TEST_ROOM_SCENE := "res://scenes/levels/grey_room.tscn"
 
 
 func _ready() -> void:
-	# Until the station and the patrol car exist, Play opens the grandpa's house directly.
+	# Play draws the case: the grandpa's house or the bakery (PlaceDraw). The bakery button stays as a shortcut.
 	_play_button.pressed.connect(_on_play_pressed)
 	_city_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(CITY_SCENE))
 	_bakery_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(BAKERY_SCENE))
@@ -25,7 +24,7 @@ func _ready() -> void:
 
 
 func _on_play_pressed() -> void:
-	get_tree().change_scene_to_file(PLAY_SCENE)
+	PlaceDraw.start(get_tree())
 
 
 func _on_test_room_pressed() -> void:

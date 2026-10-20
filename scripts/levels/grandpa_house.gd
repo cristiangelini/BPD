@@ -185,7 +185,9 @@ var city_map: CityMap
 
 func _ready() -> void:
 	if case_seed == 0:
-		case_seed = randi() | 1
+		case_seed = PlaceDraw.take_seed()
+	if case_seed == 0:
+		case_seed = PlaceDraw.new_seed()
 	if story == null:
 		story = pick_story(case_seed, OS.get_cmdline_user_args())
 	rig = story.rig.new() if story.rig != null else StoryRig.new()
