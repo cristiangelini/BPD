@@ -3,13 +3,23 @@ extends Node
 
 ## Each patrol car seat's job in a chase (persecucion.md, "Las cuatro tareas", decision 24): the driver drives, the
 ## copilot sees the suspect on the map (M) and calls it out, and the back right seat has the siren (H) and the
-## megaphone (click: "¡Deténgase!"), which makes the suspect nervous and sometimes take a wrong turn. A seat nobody
-## sat in hands its job to the copilot, and then to the driver, so playing alone the driver does it all. The back left
-## seat's spikes and net come next. Every number here is (propuesta).
+## megaphone (click: "¡Deténgase!"), which makes the suspect nervous and sometimes take a wrong turn, and the back left
+## seat throws things out of the window: click drops a spike strip behind the car, right click throws the net ahead
+## (ChaseTrap), SPIKES and NETS of them. A seat nobody sat in hands its job to the copilot, and then to the driver, so
+## playing alone the driver does it all; a cop with two click jobs picks one with 1 and 2. Every number here is
+## (propuesta).
 
 ## Who does each job: the first of these seats with a cop in it.
 const MAP_SEATS: Array[int] = [1, 0]
 const MEGAPHONE_SEATS: Array[int] = [3, 1, 0]
+const SPIKE_SEATS: Array[int] = [2, 1, 0]
+## What each passenger seat is told on sitting down.
+const SEAT_HINTS := {1: "HINT_CHASE_MAP", 2: "HINT_CHASE_WINDOW", 3: "HINT_CHASE_MEGAPHONE"}
+## How many of each there are, and where they land from the patrol car (m behind, m ahead).
+const SPIKES := 3
+const NETS := 3
+const SPIKES_BEHIND := 4.5
+const NET_AHEAD := 12.0
 ## Seconds between two shouts, how long he stays nervous and the chance he turns the wrong way.
 const MEGAPHONE_COOLDOWN := 4.0
 const NERVOUS_SECONDS := 2.5
@@ -18,6 +28,10 @@ const SHOUT_SECONDS := 1.5
 
 var case: ChaseCase
 var shouts := 0
+var spikes_left := SPIKES
+var nets_left := NETS
+## With both click jobs (the megaphone and the window), the one picked with 1 and 2.
+var window_picked := false
 var _cooldown := 0.0
 var _rng := RandomNumberGenerator.new()
 var _shout_label: Label3D
@@ -25,6 +39,15 @@ var _shout_label: Label3D
 
 func _ready() -> void:
 	_rng.seed = hash("megaphone %d" % case.case_seed)
+	case.car.seats_changed.connect(_tell_jobs)
+
+
+## Whoever just sat in a passenger seat hears what that seat does.
+func _tell_jobs() -> void:
+	for seat: int in SEAT_HINTS:
+		var cop := case.car.seated[seat]
+		if cop and cop.input_enabled:
+			cop.show_hint(SEAT_HINTS[seat])
 
 
 ## The seat whose cop does the job that `seats` lists, or -1 with the car empty.
@@ -58,7 +81,21 @@ func _physics_process(delta: float) -> void:
 	var cop := local_cop()
 	if not cop or not case.chasing:
 		return
-	if does(cop, MEGAPHONE_SEATS) and Input.is_action_just_pressed("grab"):
+	var shouts_here := does(cop, MEGAPHONE_SEATS)
+	var throws_here := does(cop, SPIKE_SEATS)
+	if shouts_here and throws_here:
+		if Input.is_action_just_pressed("slot_1"):
+			window_picked = false
+			cop.show_hint("HINT_CHASE_MEGAPHONE")
+		elif Input.is_action_just_pressed("slot_2"):
+			window_picked = true
+			cop.show_hint("HINT_CHASE_WINDOW")
+	var at_window := throws_here and (window_picked or not shouts_here)
+	if at_window and Input.is_action_just_pressed("grab"):
+		throw_spikes()
+	elif at_window and Input.is_action_just_pressed("throw"):
+		throw_net()
+	elif shouts_here and not at_window and Input.is_action_just_pressed("grab"):
 		shout()
 	# From the back, the siren too (the driver keeps his own H).
 	if case.car.seat_of(cop) == 3 and Input.is_action_just_pressed("siren"):
@@ -77,6 +114,33 @@ func shout() -> bool:
 	if _rng.randf() >= WRONG_TURN:
 		return false
 	return wrong_turn()
+
+
+## Drops a spike strip on the street behind the patrol car. Returns it, or null with none left.
+func throw_spikes() -> ChaseTrap:
+	if spikes_left <= 0 or case.stopped:
+		return null
+	spikes_left -= 1
+	return _drop(ChaseTrap.SPIKES, -SPIKES_BEHIND)
+
+
+## Throws the net onto the street ahead of the patrol car. Returns it, or null with none left.
+func throw_net() -> ChaseTrap:
+	if nets_left <= 0 or case.stopped:
+		return null
+	nets_left -= 1
+	return _drop(ChaseTrap.NET, NET_AHEAD)
+
+
+func _drop(kind: String, along: float) -> ChaseTrap:
+	var trap := ChaseTrap.new()
+	trap.kind = kind
+	case.get_parent().add_child(trap)
+	var car := case.car
+	var at := car.global_position + car.global_basis.z * along
+	at.y = 0.0
+	trap.global_transform = Transform3D(Basis(Vector3.UP, car.global_basis.get_euler().y), at)
+	return trap
 
 
 ## From the corner he's heading for, he drives off a new way, never the one he had planned.
