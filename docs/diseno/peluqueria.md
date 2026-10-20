@@ -125,6 +125,12 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      cualquiera. La pista: un perro de una jaula de arriba tiene el pelo hasta el piso (se ve a menos de 2 m). La
      bañera gotea: hay un charco verde adelante, y el policía que lo pisa tiene 30 s un bigote enorme que le tapa la
      parte de abajo de la vista (pisarlo de nuevo reinicia la cuenta). Capturas: `crecepelo_*.png`.
+   - **El contrabando de huesos (propuesta):** los huesos de dinosaurio robados del museo están en una bolsa (20 kg,
+     1200, la alzan dos) enterrada en el patio, bajo uno de 5 parches de tierra suelta (sorteado con la semilla). Para
+     cavar hay que tener en la mano la pala que está tirada junto a la puerta del patio: 3 golpes con E abren el parche
+     y, si es el bueno, sale la bolsa; si no, nada. El mapa de la excavación (0,1 kg, 300) va escondido. La pista: cada
+     15 s un perro suelto que no esté ocupado va a cavar, 7 de cada 10 veces en el parche bueno, y deja tierra; el
+     policía que lo ve cavar ahí a menos de 6 m suma la pista. Capturas: `huesos_*.png`.
 
 ## Preguntas para Cristian (respondidas el 20/10: sí a las dos)
 1. ¿La peluquería de mascotas como tercer lugar, o preferís otro de los 8?

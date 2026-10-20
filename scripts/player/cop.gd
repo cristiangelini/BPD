@@ -132,7 +132,7 @@ func current_prompt() -> String:
 		return seated_in.prompt_key(self)
 	if $Grabber.held:
 		var aimed := _usable_target()
-		if aimed is WaitingArmchair:
+		if aimed is WaitingArmchair or aimed is DigSpot:
 			return aimed.prompt_key(self)
 		if $Grabber.held.has_method("held_prompt_key"):
 			return $Grabber.held.held_prompt_key(self)

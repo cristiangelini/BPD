@@ -66,6 +66,15 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_FORMULA", "OBJ_EXTRA_SAMPLE_JAR"],
 		"rig": preload("res://scripts/case/groomer/hair_growth_rig.gd"),
 	},
+	"bones": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_BONES_B", "BRIEF_BONES_C", "BRIEF_BONES_D"],
+		"find": "OBJ_FIND_BONES",
+		"hidden": [preload("res://scenes/props/dig_map.tscn")],
+		"half_heights": [0.003],
+		"heavy": [false],
+		"extra_keys": ["OBJ_EXTRA_DIG_MAP"],
+		"rig": preload("res://scripts/case/groomer/bones_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each room; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [
