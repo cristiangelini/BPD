@@ -13,7 +13,7 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 |---|---|
 | En el juego final | Sala de Steam: el anfitrión crea la sala, invita desde Steam y los amigos entran con "Unirse a la partida". El tráfico va por la red de Steam (GodotSteam), sin abrir puertos. |
 | Para probar (desarrollo) | Por IP con ENet, puerto 7777 **(propuesta)**. Dos ventanas en la misma PC: `godot --path . -- --host` y `godot --path . -- --join=127.0.0.1`. |
-| Máximo | 4 jugadores. El quinto que intenta entrar queda afuera. |
+| Máximo | 4 jugadores. El quinto que intenta entrar queda afuera, aunque estén en un caso. |
 | Color de cada uno | El orden de llegada da el lugar 1 a 4, y el lugar da el color de piel (rosa, naranja, lima, violeta; decisión 72). Si alguien se va, su lugar queda libre para el próximo. |
 
 ## Probar con Steam
@@ -28,7 +28,7 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 - **Nombres:** cada uno aparece con su nombre de Steam en la lista de la sala y flotando sobre su policía, en su color de piel; sin Steam, "Policía N" **(propuesta)**.
 - Solo el anfitrión ve **Empezar caso**. Al apretarlo, el anfitrión sortea el caso (lugar e historia, con la misma semilla de siempre) y todos abren el mismo lugar con la misma semilla.
 - **Jugar** (solo) sigue igual, sin red.
-- **Entrar a mitad de un caso:** no se puede por ahora; se entra en la sala **(propuesta)**. Cuando exista la comisaría, se va a poder entrar ahí entre casos.
+- **Entrar a mitad de un caso:** el que entra a la sala durante un caso (porque llegó tarde o se le cortó) va directo al mismo caso: aparece en el punto de partida con su color y ve todo como está en ese momento (objetos, NPC, pistas y lista). El quinto sigue quedando afuera.
 
 ## Si alguien se va
 - **Se va un jugador:** su policía desaparece y el caso sigue con los demás. Lo que tenía en las manos se cae.
