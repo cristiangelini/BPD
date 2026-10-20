@@ -39,6 +39,10 @@ const ASK_COOLDOWN := 5.0
 ## Michi meowing (picked up) or a cop tripping over it (propuesta). He hears it from further than he sees.
 const CAT_UPSET := 5.0
 const HEARING := 12.0
+## The fight club story: pushed faster than STRUCK_SPEED, the champion shoves the cop back this many times as fast,
+## and the cop staggers (propuesta).
+const PUSH_BACK := 2.5
+const PUSH_STAGGER := 1.0
 
 var complaint := 0.0
 var has_called_lawyer := false
@@ -55,6 +59,8 @@ var slips: Array[String] = []
 var asked := 0
 ## The dentures story: he hid his own teeth with the rest, so he can't be understood.
 var toothless := false
+## The fight club story: he is the champion, so he pushes back and won't stand still for a story.
+var champion := false
 var _ask_wait := 0.0
 
 @onready var _agent: NavigationAgent3D = $Agent
@@ -93,6 +99,9 @@ func use(cop: Cop) -> void:
 
 func start_story(cop: Cop) -> bool:
 	if listener:
+		return false
+	if champion:
+		_say("GRANDPA_CHAMPION_NO_STORY")
 		return false
 	if _story_wait > 0.0:
 		_say("GRANDPA_STORY_TIRED")
@@ -224,8 +233,16 @@ func _on_bump(body: Node3D) -> void:
 		speed = (body as Cop).velocity.length()
 	elif body is RigidBody3D:
 		speed = (body as RigidBody3D).linear_velocity.length()
-	if speed > STRUCK_SPEED:
-		struck()
+	if speed > STRUCK_SPEED and struck() and champion and body is Cop:
+		push_back(body as Cop, speed)
+
+
+## The champion shoves a cop that pushed him, harder than he got it.
+func push_back(cop: Cop, speed: float) -> void:
+	var away := cop.global_position - global_position
+	away.y = 0.0
+	cop.knock_back(away.normalized() * speed * PUSH_BACK, PUSH_STAGGER)
+	_say("GRANDPA_CHAMPION_PUSH")
 
 
 func _talk(delta: float, following: bool) -> void:

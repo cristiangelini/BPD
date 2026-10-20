@@ -51,3 +51,4 @@
 - The grandpa's third story, the museum figurine: the stolen porcelain ballerina stands on a shelf among 8 souvenir copies; grabbing one tells the original (the museum's seal) from a copy. The newspaper clipping waits in a hiding spot.
 - The grandpa's fourth story, the care home dentures: a heavy case of dentures that chatter (heard up to 7 m) and the list of clients; the grandpa hid his own teeth too, so everything he says comes out mushy.
 - The grandpa's fifth story, the pirate radio: a 35 kg transmitter for two cops, found by holding T, the cop radio, which shows more static bars near it; 3 soap opera tapes in the drawers.
+- The grandpa's sixth story, the retirees' fight club: the champion's belt, the gloves and the fight notebook, a ring in the attic and a photo of black eyes; pushed, the champion grandpa shoves the cop back harder, and he tells no stories.

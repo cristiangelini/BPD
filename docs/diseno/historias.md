@@ -81,6 +81,12 @@ Los pesos y valores son **(propuesta)** y siguen la escala del bingo: la princip
 - **Pista propia:** con T apretada (la radio del policía), arriba de la pantalla se ven barras de estática y se escucha un ruido. En toda la casa hay 1 barra de interferencia; a menos de 15 m del transmisor suben hasta 5 pegado a él.
 - **Extras:** 3 cintas de radionovelas (0,2 kg, 80 cada una) en los cajones. Las huellas de barro y la nota del abuelo llevan al transmisor.
 
+## Club de lucha de jubilados (cómo quedó, propuesta)
+- **El cinturón de campeón** (1 kg, 1000), **los guantes** (0,5 kg, 150) y **el cuaderno de peleas** (0,3 kg, 300) están en tres escondites. Michi duerme arriba del cuaderno.
+- **El ring** (2,8 × 2,8 m) está armado en el medio del altillo; no choca, se camina a través.
+- **Pista propia:** una foto del abuelo con cuatro vecinos, todos con un ojo morado, en uno de los lugares de las notas; atrás dice «Martes, en el altillo». Se lee con E y va a la planilla.
+- **El abuelo es el campeón:** si un policía lo empuja (a más de 2 m/s), se queja como siempre y además lo empuja de vuelta 2,5 veces más fuerte, y el policía queda tambaleando 1 s. No cuenta historias («Las historias son para los que pierden»), así que no se lo puede distraer.
+
 ## Lo que comparten todas las historias
 - La puerta cerrada, el ariete y la llave en la maceta.
 - Los adornos frágiles y la multa de 20 por cada uno.
