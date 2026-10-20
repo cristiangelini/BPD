@@ -25,6 +25,9 @@ const REACH := 0.5
 const BUMP_SPEED := 2.5
 const HIT_SPEED := 4.0
 const BARK_COOLDOWN := 2.0
+## A dog with `flee` set runs this many times faster than SPEED, this far from the cop it runs from.
+const FLEE_SCALE := 1.7
+const FLEE_STEP := 3.0
 const REPATH := 0.5
 const WANDER_EVERY := 4.0
 ## Where it holds what it carries, from its feet.
@@ -44,6 +47,8 @@ enum State { WANDER, FOLLOW, FETCH, CARRY }
 @export var poodle := false
 ## Waiting in a cage: it stays put until a cop takes it out, then it roams like the others.
 @export var caged := false
+## It runs from cops closer than this, and never follows them (0: it doesn't run).
+var flee := 0.0
 ## Where it wanders (floor rectangles of the salon, as Rect2 in x/z) and where it hides what it takes, set by the salon.
 var areas: Array[Rect2] = []
 var den: Vector3
@@ -114,6 +119,15 @@ func _physics_process(delta: float) -> void:
 	_carry()
 	if absf(linear_velocity.y) > 0.5:
 		return
+	var chaser := _nearest_cop(flee)
+	if chaser:
+		var away := global_position - chaser.global_position
+		away.y = 0.0
+		_set_goal(global_position + away.normalized() * FLEE_STEP)
+		_wander = WANDER_EVERY
+		state = State.WANDER
+		_walk(delta, false, FLEE_SCALE)
+		return
 	match state:
 		State.WANDER:
 			_fetch_wait -= delta
@@ -160,7 +174,7 @@ func _physics_process(delta: float) -> void:
 
 
 ## Walks along the path to the goal, stopping KEEP short of a cop it follows.
-func _walk(delta: float, following: bool) -> void:
+func _walk(delta: float, following: bool, speed_scale := 1.0) -> void:
 	_repath -= delta
 	if _repath <= 0.0:
 		_repath = REPATH
@@ -174,7 +188,7 @@ func _walk(delta: float, following: bool) -> void:
 		if _path.size() == 1 and wish.length() < 0.05:
 			wish = Vector3.ZERO
 	if wish.length() > 0.01:
-		wish = wish.normalized() * SPEED
+		wish = wish.normalized() * SPEED * speed_scale
 		sleeping = false
 		_model.rotation.y = atan2(wish.x, wish.z)
 		_step += delta * 14.0
@@ -193,6 +207,18 @@ func _set_goal(point: Vector3) -> void:
 
 func _flat_distance(point: Vector3) -> float:
 	return Vector2(point.x - global_position.x, point.z - global_position.z).length()
+
+
+## The nearest cop within `within` (none for 0).
+func _nearest_cop(within: float) -> Cop:
+	var best: Cop
+	var best_distance := within
+	for node in get_tree().get_nodes_in_group("cops"):
+		var d := _flat_distance((node as Node3D).global_position)
+		if d < best_distance:
+			best = node
+			best_distance = d
+	return best
 
 
 ## The nearest cop with something (not a dog) in hand, within FOLLOW_RANGE.

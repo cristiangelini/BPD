@@ -107,6 +107,12 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      el mostrador, en la segunda mesa y arriba de las jaulas) con Bizcocho y la copa. Bizcocho no se aleja de su copa y
      ladra fuerte ("¡GUAU! ¡GUAU!") cada 3 s si un policía está a menos de 2,5 m de ella: cada ladrido son 5 de
      denuncia. Alzado no ladra, así que uno lo agarra mientras otro saca la copa. Capturas: `concurso_*.png`.
+   - **El collar de diamantes (propuesta):** a la señora Rosales le robaron el collar y Ramiro se lo puso a uno de los
+     perros sueltos (sorteado con la semilla). Ese perro no sigue a nadie: escapa de los policías que se le acercan a
+     menos de 3 m, 1,7 veces más rápido que los otros, y cada 30 s se va a otro lado (los dos secadores, la recepción, las
+     jaulas y el patio), así que hay que acorralarlo entre varios. Bajo la luz del secador el collar brilla: el policía
+     que lo ve a menos de 5 m suma la pista. Agarrar el collar se lo saca al perro. El estuche (0,3 kg, 200) va
+     escondido. Captura: `collar_*.png`.
 
 ## Preguntas para Cristian (respondidas el 20/10: sí a las dos)
 1. ¿La peluquería de mascotas como tercer lugar, o preferís otro de los 8?
