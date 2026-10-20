@@ -36,7 +36,7 @@ const SPAWNS: Array[Vector3] = [Vector3(-1.5, 0, 6.0), Vector3(1.5, 0, 6.0), Vec
 ## Where the comisario stands, behind his desk, facing the office door (+Z).
 const COMISARIO_AT := Vector3(0, 0, -6.5)
 ## Where the armero stands behind the counter, facing the guard room (+X).
-const ARMERO_AT := Vector3(-7.2, 0, 5.0)
+const ARMERO_AT := Vector3(-6.9, 0, 5.0)
 
 ## Furniture: [model, position, turn]. The models come from tools/modelgen/models/station.js.
 const FURNITURE := [

@@ -299,3 +299,16 @@ OBJ_EXTRA_PIGEON_CAGE,Extra: la jaula de las palomas,Extra: the pigeon cage,Extr
 OBJ_EXTRA_WHISTLE,Extra: el silbato,Extra: the whistle,Extra: o apito
 HINT_FEATHERS,"Plumas y migas junto a la ventana... ¿Palomas?","Feathers and crumbs by the window... Pigeons?","Penas e migalhas perto da janela... Pombos?"
 GOSSIP_CLUE_pigeons,"«¡Gracias! Mira, anoche vi a Marta esconder algo %s. Y todas las mañanas sale una paloma de su ventana con un papelito.»","“Thanks! Look, last night I saw Marta hide something %s. And every morning a pigeon flies out of her window with a little note.”","“Valeu! Olha, ontem à noite vi a Marta esconder algo %s. E toda manhã sai um pombo da janela dela com um papelzinho.”"
+PROMPT_ARMERO,E: hablar con el armero,E: talk to the armorer,E: falar com o armeiro
+ARMORY_TITLE,Armería,Armory,Arsenal
+ARMORY_CASH,Caja de la comisaría: $%d,Station cash box: $%d,Caixa da delegacia: $%d
+ARMORY_KEYS,W/S: elegir · E: retirar o comprar · Esc: salir,W/S: pick · E: take or buy · Esc: leave,W/S: escolher · E: retirar ou comprar · Esc: sair
+ARMORY_FREE,gratis,free,grátis
+ARMORY_TAKE,retirar,take,retirar
+ARMORY_BUY,comprar,buy,comprar
+ARMORY_RAM,Ariete,Battering ram,Aríete
+ARMORY_RAM_ABOUT,Tira abajo puertas. Siempre hay uno.,Knocks doors down. There's always one.,Derruba portas. Sempre tem um.
+ARMORY_ALREADY_OWNED,"Eso ya es de la comisaría, retíralo.","The station already owns that, take it.","Isso já é da delegacia, retire."
+ARMORY_NO_MONEY,No alcanza la plata de la caja.,There isn't enough money in the cash box.,O dinheiro da caixa não dá.
+ARMORY_NOT_OWNED,Eso todavía no es de la comisaría.,The station doesn't own that yet.,Isso ainda não é da delegacia.
+ARMORY_HAS_RAM,¡Ya tienes un ariete en las manos!,You already have a ram in your hands!,Você já está com um aríete nas mãos!

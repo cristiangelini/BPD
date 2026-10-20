@@ -55,6 +55,14 @@ Para empezar **(propuesta)**:
 
 Más adelante (con los sospechosos y la cárcel): taser, megáfono, chaleco.
 
+**Cómo quedó:** el armero (delantal de cuero, antiparras en la pelada y una llave inglesa) espera detrás del mostrador.
+Con E sobre él se abre su lista: arriba la caja de la comisaría, y una fila por ítem con el precio y "retirar" o
+"comprar". W y S eligen, E retira o compra, Esc cierra; mientras está abierta, ese policía no camina. Retirar algo cierra
+la lista y el policía sale con eso en la mano. Por ahora la lista tiene solo el ariete, que ya no está tirado frente a la
+casa del abuelo: se retira acá. La caja arranca en 0 hasta que la partida (hilo del online) guarde la plata entre turnos;
+las donas, los guantes y la carretilla se suman en sus PR. Capturas: `comisaria/armero_prompt.png`, `armeria_lista.png`
+y `armeria_ariete.png`.
+
 ## El comisario
 - Está en su oficina, detrás de un escritorio lleno de papeles. Grita (decisión 21).
 - Reparte el caso del turno (punto 2) y no deja salir sin escucharlo: si intentan subir al patrullero sin el caso,
