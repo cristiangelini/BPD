@@ -61,6 +61,10 @@ Más adelante (con los sospechosos y la cárcel): taser, megáfono, chaleco.
   grita "¡¿Adónde van?! ¡Primero el caso!".
 - Sigue apareciendo por radio en el peor momento, como hoy cuando marcan mal una sospecha.
 
+**Cómo quedó:** al empezar, abajo dice "El comisario te espera en su oficina: pasa a buscar el caso." Con E sobre
+él ("E: hablar con el comisario") arranca la charla del caso, una sola vez. Hasta entonces el patrullero no deja
+subir a nadie y grita la frase de arriba. Capturas: `comisaria/comisario_prompt.png` y `comisario_caso.png`.
+
 ## Cómo es por dentro (cómo quedó, propuesta)
 Ocupa el edificio que ya tenía en la ciudad: 30 × 18 m, una planta con techo a 3 m (la fachada sigue midiendo 9 m).
 La puerta da a la calle, frente al estacionamiento del patrullero.

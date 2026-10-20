@@ -51,6 +51,9 @@ var clues_found: Array[String] = []
 var fines := 0
 
 var briefing: CaseBriefing
+## The comisario has given the tip (at the station, or right away without one).
+var tip_given := false
+var _tip: PackedStringArray = []
 var checklist: CaseChecklist
 ## Suspicion index being held down with the checklist open, and for how long.
 var _marking := -1
@@ -58,9 +61,10 @@ var _mark_held := 0.0
 var _refresh_left := 0.0
 
 
-## Starts the case once the place has placed everything: the comisario gives the tip (only a cop with a player at
-## the keys hears it; tests drive cops without input) and the checklist opens after him.
-func start(tip_briefing: PackedStringArray, pool: Array = CaseSuspicions.POOL) -> void:
+## Starts the case once the place has placed everything. With a comisario at the station, the tip waits until a cop
+## talks to him in his office (give_tip), and the car stays locked until then; without one, he gives it right away.
+## Only a cop with a player at the keys hears it (tests drive cops without input); the checklist opens after him.
+func start(tip_briefing: PackedStringArray, pool: Array = CaseSuspicions.POOL, comisario: Comisario = null) -> void:
 	suspicions = CaseSuspicions.draw(case_seed, story_id, pool)
 	main_evidence.broken.connect(fail.bind("CASE_FAILED_BROKEN"))
 	car.evidence_delivered.connect(_on_evidence_delivered)
@@ -71,9 +75,25 @@ func start(tip_briefing: PackedStringArray, pool: Array = CaseSuspicions.POOL) -
 	briefing = CaseBriefing.new()
 	add_child(briefing)
 	briefing.finished.connect(checklist.set_open.bind(true))
-	_tell(tip_briefing)
+	_tip = tip_briefing
+	if comisario:
+		comisario.spoke.connect(give_tip.unbind(1))
+		car.locked_hint = "HINT_COMISARIO_FIRST"
+		for cop in get_tree().get_nodes_in_group("cops"):
+			(cop as Cop).show_hint("HINT_SEE_COMISARIO")
+	else:
+		give_tip()
 	shift_screen.play_again.connect(func() -> void: PlaceDraw.start(get_tree()))
 	shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
+
+
+## The comisario gives the tip, once: the case is on and the patrol car opens.
+func give_tip() -> void:
+	if tip_given:
+		return
+	tip_given = true
+	car.locked_hint = ""
+	_tell(_tip)
 
 
 func _tell(lines: PackedStringArray) -> void:

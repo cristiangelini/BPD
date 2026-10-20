@@ -18,7 +18,6 @@ const TRUNK := Color(0.45, 0.3, 0.2)
 const LEAVES := Color(0.3, 0.6, 0.25)
 const HEDGE := Color(0.25, 0.5, 0.22)
 const POLE := Color(0.25, 0.27, 0.3)
-const COMISARIO_MODEL := preload("res://assets/models/npc_comisario.glb")
 const STATION_WALL := Color(0.78, 0.84, 0.9)
 const STATION_FLOOR := Color(0.62, 0.66, 0.7)
 const BARS := Color(0.25, 0.27, 0.3)
@@ -29,6 +28,8 @@ const HEDGE_HEIGHT := 2.5
 ## Whether the live place's scene brings the ground of its whole block (the grandpa's yard) or only its own lot.
 @export var live_block_ground := true
 
+## The comisario in his office at the station; the case scene listens to him.
+var comisario: Comisario
 var _materials := {}
 var _built: Node3D
 
@@ -214,7 +215,7 @@ func _station_inside(root: Node3D, size: Vector3) -> void:
 		light.light_energy = 0.8
 		light.omni_range = 9.0
 		root.add_child(light)
-	var comisario: Node3D = COMISARIO_MODEL.instantiate()
+	comisario = Comisario.new()
 	comisario.name = "Comisario"
 	comisario.position = StationRooms.COMISARIO_AT
 	root.add_child(comisario)

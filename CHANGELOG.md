@@ -49,3 +49,4 @@
 - The bakery's sixth story, the carrier pigeons: the route book, the cage and the whistle hidden in the bakery; five pigeons in the shop carry small things cops leave on the floor up to the bread rack; feathers under the bedroom window give it away.
 - Play draws the place: each match is in the grandpa's house or the bakery, from the case seed (--place= forces one); "play again" draws a new case. Fixes case seeds being always odd, which made the grandpa's house always tell the same story and the bakery only three of its six.
 - The police station opens: a guard room where the cops appear, the comisario's office, the armory behind a barred counter, two cells, the board room (closed) and a break room, with low poly furniture.
+- The comisario gives the case in his office: E on him starts the briefing, and the patrol car stays locked ("¡¿Adónde van?! ¡Primero el caso!") until then.
