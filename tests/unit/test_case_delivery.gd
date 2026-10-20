@@ -48,7 +48,8 @@ func test_the_shift_starts_at_the_station_in_the_city() -> void:
 	var house := _house()
 	await wait_physics_frames(5)
 	assert_true(house.car_at_station(), "the car waits on its spot at the station")
-	assert_lt(house.get_node("Cop").global_position.distance_to(house.car.global_position), 4.0, "the cop starts by the car")
+	assert_lt(house.get_node("Cop").global_position.distance_to(house.car.global_position), 20.0,
+		"the cop starts in the station, by the car out front")
 	assert_gt(house.car.global_position.length(), 40.0, "the station is a drive away from the house")
 	var door: Vector3 = house.get_node("City").transform * CityLayout.door_of("station")
 	assert_lt(door.distance_to(house.car.global_position), 10.0, "parked in front of the station door")
