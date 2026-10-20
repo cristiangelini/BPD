@@ -323,3 +323,12 @@ HINT_MOUTH_FULL,¡Mmmf mmf! (Con la boca llena no se entiende nada.),Mmmf mmf! (
 ARMORY_GLOVES,Guantes de goma,Rubber gloves,Luvas de borracha
 ARMORY_GLOVES_ABOUT,"Con los guantes puestos, la evidencia frágil se rompe la mitad.","With the gloves on, fragile evidence breaks half as much.","Com as luvas, a evidência frágil quebra pela metade."
 ARMORY_HAS_GLOVES,¡Ya tienes los guantes puestos!,You already have the gloves on!,Você já está de luvas!
+ARMORY_WHEELBARROW,Carretilla,Wheelbarrow,Carrinho de mão
+ARMORY_WHEELBARROW_ABOUT,"Un solo policía lleva hasta 40 kg. Lenta y chirría: el abuelo la escucha.","One cop carries up to 40 kg. Slow and squeaky: the grandpa hears it.","Um só policial leva até 40 kg. Lento e rangente: o avô escuta."
+ARMORY_WHEELBARROW_OUT,La carretilla ya está afuera. Hay una sola.,The wheelbarrow is already out. There's only one.,O carrinho de mão já está lá fora. Só tem um.
+PROMPT_WHEELBARROW_TAKE,E: empujar la carretilla,E: push the wheelbarrow,E: empurrar o carrinho de mão
+PROMPT_WHEELBARROW,E: dejar la carretilla · G: volcarla,E: leave the wheelbarrow · G: tip it over,E: deixar o carrinho · G: virá-lo
+PROMPT_WHEELBARROW_LOAD,E: cargar en la carretilla,E: load it into the wheelbarrow,E: pôr no carrinho de mão
+PROMPT_WHEELBARROW_FULL,No entra en la carretilla (hasta 40 kg),It doesn't fit in the wheelbarrow (up to 40 kg),Não cabe no carrinho de mão (até 40 kg)
+HINT_WHEELBARROW_FULL,"¡No entra! La carretilla lleva hasta 40 kg.","It won't fit! The wheelbarrow carries up to 40 kg.","Não cabe! O carrinho de mão leva até 40 kg."
+GRANDPA_SQUEAK,¿Qué es ese chirrido? ¡Me van a rayar el piso!,What's that squeaking? You'll scratch my floor!,Que rangido é esse? Vocês vão riscar meu chão!

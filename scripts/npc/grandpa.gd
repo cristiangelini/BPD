@@ -39,6 +39,8 @@ const ASK_COOLDOWN := 5.0
 ## Michi meowing (picked up) or a cop tripping over it (propuesta). He hears it from further than he sees.
 const CAT_UPSET := 5.0
 const HEARING := 12.0
+## The armory's wheelbarrow squeaks once a second while it rolls; each squeak he hears (propuesta).
+const SQUEAK := 1.0
 
 var complaint := 0.0
 var has_called_lawyer := false
@@ -60,6 +62,7 @@ var _ask_wait := 0.0
 
 
 func _ready() -> void:
+	add_to_group("grandpas")
 	$Bump.body_entered.connect(_on_bump)
 	_bubble.hide()
 
@@ -171,6 +174,16 @@ func cat_upset(at: Vector3) -> bool:
 		return false
 	_raise(CAT_UPSET)
 	_say("GRANDPA_CAT")
+	return true
+
+
+## The wheelbarrow squeaked at `at`.
+func heard_squeak(at: Vector3) -> bool:
+	if global_position.distance_to(at) > HEARING:
+		return false
+	_raise(SQUEAK)
+	if _since_line > LINE_EVERY / 2.0:
+		_say("GRANDPA_SQUEAK")
 	return true
 
 

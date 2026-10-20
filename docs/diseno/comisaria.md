@@ -73,6 +73,13 @@ Puestos, las manos se ven amarillas (las propias y en el cuerpo que ven los dem�
 mitad en los golpes mientras uno con guantes la tiene en la mano o hasta 2 s después de soltarla o tirarla
 **(propuesta)**. Capturas: `comisaria/guantes_lista.png` y `guantes_puestos.png`.
 
+**La carretilla (cómo quedó):** sale 200 y hay una sola. Al retirarla, el policía sale empujándola, a 60% de la
+velocidad **(propuesta)**, y choca con paredes y muebles. Empujándola, E sobre algo lo carga (hasta 40 kg en total: la
+caja fuerte o el transmisor de la radio entran solos), E sobre nada la deja estacionada con la carga y G la vuelca: lo que
+lleva cae adelante. Mientras rueda chirría una vez por segundo: si el abuelo está a 12 m o menos, cada chirrido le suma
+1 a la denuncia y protesta "¿Qué es ese chirrido? ¡Me van a rayar el piso!" **(propuesta)**. Capturas:
+`comisaria/carretilla_cargar.png` y `carretilla.png`.
+
 ## El comisario
 - Está en su oficina, detrás de un escritorio lleno de papeles. Grita (decisión 21).
 - Reparte el caso del turno (punto 2) y no deja salir sin escucharlo: si intentan subir al patrullero sin el caso,

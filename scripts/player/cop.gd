@@ -30,6 +30,8 @@ var exhausted := false
 var has_key := false
 ## The battering ram in hand, if this cop carries it. Hands are busy: no grabbing.
 var ram: BatteringRam
+## The wheelbarrow this cop pushes, if any. Hands are busy: E loads things into it instead of grabbing.
+var wheelbarrow: Wheelbarrow
 var _stagger_left := 0.0
 ## Eating a sample from the baker: the cop can walk but not grab anything (panaderia.md).
 var _eating_left := 0.0
@@ -111,6 +113,11 @@ func current_prompt() -> String:
 		return "PROMPT_HOLDING"
 	if ram:
 		return "PROMPT_RAM"
+	if wheelbarrow:
+		var aimed := aim_hit(GameScale.GRAB_REACH)
+		if not aimed.is_empty() and aimed.collider is Grabbable:
+			return "PROMPT_WHEELBARROW_LOAD" if wheelbarrow.can_load(aimed.collider) else "PROMPT_WHEELBARROW_FULL"
+		return "PROMPT_WHEELBARROW"
 	var target := _usable_target()
 	if target and target.has_method("prompt_key"):
 		return target.prompt_key(self)
@@ -165,6 +172,8 @@ func is_busy() -> bool:
 ## Rides `seat` of `car`, facing forward, until stand_up(). Lets go of whatever it was holding.
 func sit_in(car: PatrolCar, seat: Node3D) -> void:
 	$Grabber.release()
+	if wheelbarrow:
+		wheelbarrow.park()
 	vehicle = car
 	velocity = Vector3.ZERO
 	_shape.disabled = true
@@ -238,7 +247,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event is InputEventMouseButton and event.pressed:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	elif event.is_action_pressed("drop"):
-		drop_ram()
+		if wheelbarrow:
+			wheelbarrow.dump()
+		else:
+			drop_ram()
 	elif event.is_action_pressed("ask"):
 		ask()
 	elif event.is_action_pressed("use"):
@@ -270,10 +282,23 @@ func _physics_process(delta: float) -> void:
 func use() -> bool:
 	if $Grabber.held is DonutBox:
 		return eat_donut($Grabber.held)
+	if wheelbarrow:
+		return _use_wheelbarrow()
 	var target := _usable_target()
 	if not target:
 		return false
 	target.use(self)
+	return true
+
+
+## Pushing the wheelbarrow, E loads what the camera points at, or parks it when it points at nothing to load.
+func _use_wheelbarrow() -> bool:
+	var aimed := aim_hit(GameScale.GRAB_REACH)
+	if not aimed.is_empty() and aimed.collider is Grabbable:
+		if not wheelbarrow.add(aimed.collider):
+			show_hint("HINT_WHEELBARROW_FULL")
+		return true
+	wheelbarrow.park()
 	return true
 
 
@@ -336,6 +361,8 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 
 func current_speed() -> float:
 	var factor := BatteringRam.SPEED_FACTOR if ram else 1.0
+	if wheelbarrow:
+		factor = Wheelbarrow.SPEED_FACTOR
 	if is_crouching:
 		return GameScale.CROUCH_SPEED * factor
 	if is_running:

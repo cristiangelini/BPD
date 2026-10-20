@@ -53,3 +53,4 @@
 - The armory: the armero behind the counter opens his list with E (cash box, price, take or buy); the battering ram is taken there instead of lying by the grandpa's door.
 - Box of donuts at the armory (30, four donuts): E with the box in hand eats one, which fills the stamina and keeps the mouth too full to ask (R) for 3 s.
 - Rubber gloves at the armory (120, bought once): yellow hands, and fragile evidence loses half on hits while a gloved cop holds it or just threw it.
+- The wheelbarrow at the armory (200, only one): one cop pushes up to 40 kg (the safe, the radio transmitter), slower; E loads, E parks, G tips it over; it squeaks and the grandpa complains.
