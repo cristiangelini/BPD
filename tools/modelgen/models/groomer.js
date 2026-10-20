@@ -281,6 +281,39 @@ export function buildMustache() {
 	return b.build();
 }
 
+// Bone smuggling (peluqueria.md, "Contrabando de huesos"): the museum's dinosaur bones in a burlap sack, bones sticking
+// out, 0.5 x 0.4 x 0.35 m, origin at its middle.
+export function buildBoneBag() {
+	const b = new Builder('bone_bag');
+	const sack = mat('burlap', 0xb89a62), bone = mat('fossil', 0xe8dcc0), rope = mat('rope', 0x8a6a3a);
+	b.add('sack', sack, ellipsoid(0.25, 0.18, 0.17, 12, 8), { pos: V(0, -0.02, 0) });
+	b.add('sack', rope, new THREE.TorusGeometry(0.08, 0.012, 4, 10), { pos: V(0.12, 0.14, 0), rot: [Math.PI / 2, 0, 0.6] });
+	for (const [x, z, r] of [[0.12, 0.02, 0.6], [0.18, -0.05, 0.9], [0.08, 0.06, 0.3]]) {
+		b.add('bones', bone, new THREE.CylinderGeometry(0.018, 0.018, 0.22, 6), { pos: V(x, 0.2, z), rot: [0.2, 0, -r] });
+		b.add('bones', bone, ellipsoid(0.03, 0.03, 0.03, 6, 4), { pos: V(x + Math.sin(r) * 0.11, 0.2 + Math.cos(r) * 0.11, z) });
+	}
+	return b.build();
+}
+
+// The dig map: a brown sheet with a dotted path and a red X, 0.16 x 0.006 x 0.12 m, lying flat.
+export function buildDigMap() {
+	const b = new Builder('dig_map');
+	b.add('paper', mat('map_paper', 0xe8d4a0), new THREE.BoxGeometry(0.16, 0.006, 0.12));
+	for (let i = 0; i < 5; i++) b.add('path', mat('ink_dark', 0x3a2a1a), new THREE.BoxGeometry(0.012, 0.002, 0.004), { pos: V(-0.06 + i * 0.022, 0.004, -0.03 + i * 0.012) });
+	for (const r of [0.7, -0.7]) b.add('mark', mat('ink_red', 0xd23a4a), new THREE.BoxGeometry(0.04, 0.002, 0.008), { pos: V(0.05, 0.004, 0.03), rot: [0, r, 0] });
+	return b.build();
+}
+
+// The yard's shovel: a wooden handle and a steel blade, 1.1 m long along Y, origin at its middle.
+export function buildShovel() {
+	const b = new Builder('shovel');
+	const wood = mat('handle_wood', 0xa07040), steel = mat('blade_steel', 0x8a8e94);
+	b.add('handle', wood, new THREE.CylinderGeometry(0.018, 0.018, 0.85, 6), { pos: V(0, 0.1, 0) });
+	b.add('handle', wood, new THREE.BoxGeometry(0.12, 0.03, 0.03), { pos: V(0, 0.53, 0) });
+	b.add('blade', steel, new THREE.BoxGeometry(0.22, 0.26, 0.02), { pos: V(0, -0.42, 0) });
+	return b.build();
+}
+
 export const models = {
 	shampoo_bottle: buildShampoo,
 	dog_collar: buildCollar,
@@ -291,6 +324,7 @@ export const models = {
 	dog_greyhound: () => buildGreyhound(false), dog_greyhound_roots: () => buildGreyhound(true), dog_dye: buildDogDye,
 	ransom_letter: buildRansomLetter, shampoo_jug: buildShampooJug, formula_sheet: buildFormulaSheet,
 	sample_jar: buildSampleJar, dog_long_hair: buildLongHairDog, cop_mustache: buildMustache,
+	bone_bag: buildBoneBag, dig_map: buildDigMap, shovel: buildShovel,
 };
 
 export const views = {
@@ -327,5 +361,12 @@ export const views = {
 			{ name: 'cop_mustache', pos: [0.05, 0.45, -0.2], rotY: 0 },
 		],
 		cam: { pos: [0, 0.8, 1.7], target: [0, 0.22, 0], fov: 38 },
+	},
+	bone_goods: {
+		items: [
+			{ name: 'bone_bag', pos: [-0.3, 0.2, 0], rotY: 0.3 }, { name: 'dig_map', pos: [0.25, 0.003, 0.25], rotY: -0.2 },
+			{ name: 'shovel', pos: [0.45, 0.55, -0.1], rotY: 0.4 },
+		],
+		cam: { pos: [0, 0.9, 1.9], target: [0, 0.3, 0], fov: 38 },
 	},
 };
