@@ -4,7 +4,8 @@ extends Node3D
 ## The bakery "El Pan Feliz" (docs/diseno/panaderia.md, step 1): the shop, the bakehouse, the storeroom and a
 ## bathroom downstairs, and Marta's flat upstairs, on its lot in the city with the front to +Z. The shop is open,
 ## with the shutter half up; the bakehouse door and the back door are locked. Marta serves the customers that come
-## and go (step 2); the stories come next. Every number here is (propuesta).
+## and go (step 2). The case is the ring in the bread (step 3), run by the same RaidCase as the grandpa's house: the
+## anonymous tip, the three suspicions, the clues and the delivery in the trunk. Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const BAKER_SCENE := preload("res://scenes/npc/baker.tscn")
@@ -12,6 +13,23 @@ const CUSTOMER_SCENE := preload("res://scenes/npc/bakery_customer.tscn")
 const BREAD_SCENE := preload("res://scenes/props/bread_loaf.tscn")
 const CAKE_SCENE := preload("res://scenes/props/bakery_cake.tscn")
 const RING_SCENE := preload("res://scenes/props/stolen_ring.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the bakery can be suspected of (panaderia.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["ring", "sneeze", "sourdough", "wedding", "lottery", "pigeons"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_BAKERY_TIP_B", "BRIEF_TIP_C", "BRIEF_BAKERY_TIP_D",
+	"BRIEF_BAKERY_TIP_E"]
+const RING_BRIEFING: PackedStringArray = ["BRIEF_RIGHT", "BRIEF_RING_B", "BRIEF_RING_C", "BRIEF_RING_D"]
+## The checklist rows for the ring story's extras, in EXTRA_SCENES order.
+const EXTRA_KEYS := ["OBJ_EXTRA_JEWELRY_BAG", "OBJ_EXTRA_PAWN_RECEIPT"]
+## Surfaces where the suspicions' clue notes can lie, one in each room; three are drawn with the seed.
+const NOTE_PLACES := [
+	Vector3(2.9, COUNTER_TOP, 3.4), Vector3(3.4, 0.91, -2.3), Vector3(-3.0, FLOOR_TOP, -2.0),
+	Vector3(-6.6, FLOOR_TOP, -5.3), Vector3(-4.0, GameScale.FLOOR_HEIGHT + 0.78, 2.0),
+	Vector3(6.0, GameScale.FLOOR_HEIGHT, -1.0),
+]
+## The gossiping customer stands in the shop's front corner, reading the paper.
+const GOSSIP_AT := Vector3(-6.2, FLOOR_TOP, 6.2)
 ## The ring story's extras (panaderia.md): they wait in hiding spots drawn with the seed.
 const EXTRA_SCENES: Array[PackedScene] = [
 	preload("res://scenes/props/jewelry_bag.tscn"), preload("res://scenes/props/pawn_receipt.tscn"),
@@ -69,7 +87,7 @@ const AWNING := Color(0.75, 0.3, 0.25)
 
 ## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
 const SPOTS := [
-	{"id": "in_oven", "at": Vector3(6.8, FLOOR_TOP + 0.05, -5.6), "heavy": true},
+	{"id": "in_big_oven", "at": Vector3(6.8, FLOOR_TOP + 0.05, -5.6), "heavy": true},
 	{"id": "behind_flour", "at": Vector3(-2.0, FLOOR_TOP, -6.7), "heavy": true},
 	{"id": "in_fridge", "at": Vector3(-0.9, 1.025, -0.2), "heavy": false},
 	{"id": "under_counter", "at": Vector3(3.5, FLOOR_TOP + 0.05, 3.5), "heavy": true},
@@ -80,11 +98,14 @@ const SPOTS := [
 	{"id": "bread_shelf", "at": Vector3(-7.55, 1.025, 4.0), "heavy": false},
 	{"id": "under_kneading_table", "at": Vector3(4.0, FLOOR_TOP, -2.5), "heavy": true},
 	{"id": "in_bathroom", "at": Vector3(-7.0, FLOOR_TOP, -6.3), "heavy": true},
-	{"id": "under_bed", "at": Vector3(4.0, GameScale.FLOOR_HEIGHT, -3.5), "heavy": false},
+	{"id": "under_marta_bed", "at": Vector3(4.0, GameScale.FLOOR_HEIGHT, -3.5), "heavy": false},
 ]
 
 ## Where the patrol car parks at the station, in this scene's space.
 var station_parking: Transform3D
+## The case flow every raid shares.
+var raid: RaidCase
+var gossip: Gossip
 var bakehouse_door: FrontDoor
 var back_door: FrontDoor
 var city_map: CityMap
@@ -103,13 +124,27 @@ var extras: Array[Evidence] = []
 var extra_spots: Array = []
 var till: Till
 ## Fines for broken loaves and cakes.
-var fines := 0
+var fines: int:
+	get: return raid.fines
 var broken_goods := 0
 var _looks := 0
 @onready var car: PatrolCar = $PatrolCar
 
 
 func _ready() -> void:
+	if case_seed == 0:
+		case_seed = randi() | 1
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = "ring"
+	raid.story_briefing = RING_BRIEFING
+	raid.find_key = "OBJ_FIND_RING"
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_shop()
@@ -120,16 +155,35 @@ func _ready() -> void:
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("bakery")
 	station_parking = city.transform * CityLayout.parking("station")
+	raid.station_parking = station_parking
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
 	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "bakery", car)
 	_add_baker()
-	if case_seed == 0:
-		case_seed = randi() | 1
 	_place_goods()
 	_place_ring_story()
+	raid.main_evidence = ring
+	raid.start(TIP_BRIEFING, SUSPICION_POOL)
+	_place_suspicion_clues()
+	_give_slips()
+	_place_gossip()
+
+
+## The bakery's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_BAKERY",
+		"guess_key": "OBJ_GUESS_BAKERY",
+		"broken_key": "OBJ_BROKEN_BAKERY",
+		"complaint_key": "OBJ_COMPLAINT_BAKER",
+		"door_open": true,
+		"extras": EXTRA_KEYS.map(func(key: String) -> Dictionary: return {"text": key,
+			"done": car.is_delivered(extras[EXTRA_KEYS.find(key)])}) if raid.story_known else [],
+		"broken": broken_goods,
+		"complaint": baker.complaint,
+	}
 
 
 func _add_baker() -> void:
@@ -158,6 +212,7 @@ func _add_baker() -> void:
 	box.add_child(complaint_bar)
 	add_child(hud)
 	baker.hurt.connect(scare_customers)
+	baker.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_BAKER"))
 	baker.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
 
 
@@ -238,9 +293,47 @@ func _place_ring_story() -> void:
 		extras.append(item)
 
 
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Marta lets slip when asked: where each extra is, in an order drawn from the seed.
+func _give_slips() -> void:
+	var order: Array = range(extras.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		baker.slips.append(tr("BAKER_SLIP") % tr("LOC_" + SPOTS[extra_spots[item]].id))
+	baker.slipped.connect(raid.add_clue)
+
+
+## The regular who knows everything: a loaf for him and he tells where Marta hid one of the extras.
+func _place_gossip() -> void:
+	gossip = Gossip.new()
+	gossip.position = GOSSIP_AT
+	gossip.rotation.y = PI / 2
+	var where := tr("LOC_" + SPOTS[extra_spots[case_seed % extras.size()]].id)
+	gossip.clue = tr("CLUE_GOSSIP") % where
+	gossip.clue_speech = tr("GOSSIP_CLUE") % where
+	gossip.told.connect(raid.add_clue)
+	add_child(gossip)
+
+
 func _on_goods_broken(at: Vector3) -> void:
 	broken_goods += 1
-	fines += Bread.FINE
+	raid.fines += Bread.FINE
+	raid.float_label("-%d" % Bread.FINE, at, Color(1, 0.3, 0.25))
 	if baker.saw(at, Baker.SAW_BREAK):
 		scare_customers()
 
