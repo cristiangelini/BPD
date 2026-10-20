@@ -20,8 +20,8 @@ const STAIR_RUN := 3.75
 const BAKEHOUSE_DOOR_X := 3.0
 const BACK_DOOR_X := 2.0
 const ENTRANCE_X := -4.0
-const BALCONY_X := 4.0
-const BALCONY_DEPTH := 1.5
+## The two windows of Marta's flat over the street, centered at these x.
+const FLAT_WINDOWS := [-6.8, 6.2]
 
 const OUTSIDE := Color(0.95, 0.75, 0.4)
 const INSIDE := Color(1.0, 0.93, 0.8)
@@ -48,7 +48,7 @@ const SPOTS := [
 	{"id": "in_display", "at": Vector3(-1.5, FLOOR_TOP + 0.05, 4.5), "heavy": false},
 	{"id": "on_mixer", "at": Vector3(0.9, 1.0, -6.0), "heavy": false},
 	{"id": "on_wardrobe", "at": Vector3(7.5, GameScale.FLOOR_HEIGHT + 2.0, 3.0), "heavy": false},
-	{"id": "on_balcony", "at": Vector3(BALCONY_X + 1.0, GameScale.FLOOR_HEIGHT, HALF_Z + 0.8), "heavy": true},
+	{"id": "in_chest", "at": Vector3(-1.2, GameScale.FLOOR_HEIGHT + 0.05, 6.3), "heavy": true},
 	{"id": "bread_shelf", "at": Vector3(-7.55, 1.025, 4.0), "heavy": false},
 	{"id": "under_kneading_table", "at": Vector3(4.0, FLOOR_TOP, -2.5), "heavy": true},
 	{"id": "in_bathroom", "at": Vector3(-7.0, FLOOR_TOP, -6.3), "heavy": true},
@@ -107,7 +107,7 @@ func _build_shell() -> void:
 		_build.wall("x", -HALF_Z, -HALF_X, HALF_X, level, [BACK_DOOR_X] if level == 0 else [], OUTSIDE)
 		_build.wall("z", -HALF_X, -HALF_Z, HALF_Z, level, [], OUTSIDE)
 		_build.wall("z", HALF_X, -HALF_Z, HALF_Z, level, [], OUTSIDE)
-	_build.wall("x", HALF_Z, -HALF_X, HALF_X, 1, [BALCONY_X], OUTSIDE)
+	_build.wall("x", HALF_Z, -HALF_X, HALF_X, 1, [], OUTSIDE)
 	# Downstairs front: wall with the entrance, then the shop window from x = -1 to 7.
 	var height := up - PlaceBuilder.SLAB
 	_build.wall("x", HALF_Z, -HALF_X, -1.0, 0, [ENTRANCE_X], OUTSIDE)
@@ -124,13 +124,12 @@ func _build_shell() -> void:
 	sign_label.font_size = 72
 	sign_label.pixel_size = 0.01
 	sign_label.outline_size = 14
-	sign_label.position = Vector3(-3.5, up + 1.5, HALF_Z + 0.12)
+	sign_label.position = Vector3(-0.3, up + 1.5, HALF_Z + 0.12)
 	$Built.add_child(sign_label)
-	# Balcony upstairs, off Marta's bedroom.
-	_build.box(Vector3(BALCONY_X + 0.5, up - 0.1, HALF_Z + BALCONY_DEPTH / 2), Vector3(4.0, 0.2, BALCONY_DEPTH), WHITE)
-	_build.box(Vector3(BALCONY_X + 0.5, up + 0.5, HALF_Z + BALCONY_DEPTH), Vector3(4.0, 1.0, 0.06), WHITE)
-	for x: float in [BALCONY_X - 1.5, BALCONY_X + 2.5]:
-		_build.box(Vector3(x, up + 0.5, HALF_Z + BALCONY_DEPTH / 2), Vector3(0.06, 1.0, BALCONY_DEPTH), WHITE)
+	# Marta's windows upstairs, only for the look.
+	for x: float in FLAT_WINDOWS:
+		_build.mesh_box(Vector3(x, up + 1.4, HALF_Z + 0.09), Vector3(1.4, 1.2, 0.04), Color(GLASS, 1.0))
+		_build.mesh_box(Vector3(x, up + 0.75, HALF_Z + 0.15), Vector3(1.6, 0.08, 0.16), WHITE)
 
 
 ## The shop: counter (open on Marta's side) with the till, the cake display, the bread shelves on the west wall.
@@ -175,7 +174,7 @@ func _build_back_rooms() -> void:
 	_build.light(Vector3(-6.8, 2.2, -5.8))
 
 
-## Marta's flat: living room (west) and bedroom (east), with the balcony off the bedroom.
+## Marta's flat: living room (west) and bedroom (east), each with a window over the street.
 func _build_flat() -> void:
 	var up := GameScale.FLOOR_HEIGHT
 	_build.wall("z", STORE_EAST, -HALF_Z, HALF_Z, 1, [3.0], FLAT)
@@ -184,6 +183,7 @@ func _build_flat() -> void:
 	_build.box(Vector3(4.0, up + 0.5, -3.5), Vector3(1.4, 0.2, 2.0), WHITE)
 	_build.open_box(Vector3(7.5, up, 3.0), Vector3(0.8, 2.0, 1.2), "-x", WOOD)
 	_build.box(Vector3(-4.0, up + 0.25, 5.8), Vector3(2.2, 0.5, 0.8), Color(0.5, 0.35, 0.6))
+	_build.open_box(Vector3(-1.2, up, 6.3), Vector3(1.0, 0.6, 0.6), "top", WOOD)
 	_build.legs(Vector3(-4.0, up, 2.0), Vector2(1.2, 1.2), 0.72, WOOD)
 	_build.box(Vector3(-4.0, up + 0.75, 2.0), Vector3(1.2, 0.06, 1.2), WOOD)
 	_build.light(Vector3(-4.0, up + 2.2, 0.0))

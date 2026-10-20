@@ -20,9 +20,7 @@ func test_twelve_spots_inside_the_building_each_on_a_surface() -> void:
 	var space := bakery.get_world_3d().direct_space_state
 	for spot: Dictionary in Bakery.SPOTS:
 		var at: Vector3 = spot.at
-		var inside := absf(at.x) < Bakery.HALF_X and absf(at.z) < Bakery.HALF_Z
-		var on_balcony: bool = spot.id == "on_balcony"
-		assert_true(inside or on_balcony, "%s is inside the bakery" % spot.id)
+		assert_true(absf(at.x) < Bakery.HALF_X and absf(at.z) < Bakery.HALF_Z, "%s is inside the bakery" % spot.id)
 		var query := PhysicsRayQueryParameters3D.create(at + Vector3.UP * 0.25, at + Vector3.DOWN * 0.2)
 		var hit := space.intersect_ray(query)
 		assert_false(hit.is_empty(), "%s has something under it" % spot.id)

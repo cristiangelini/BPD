@@ -40,6 +40,8 @@ the number in brackets is the decision there.
 
 - Every case happens in its own place of one open city, with its own character; the cops drive between places, no loading screens. Cristian asked for it on 19/10 so the city grows with each case. [82]
 
+- Each place has only what a real one of its kind would have: no balcony on the bakery. Cristian said a balcony there made no sense (20/10). [85]
+
 - Start maps big: Cristian asked to triple the first city draft (4 x 3 blocks felt small). When in doubt about size, go bigger. [83]
 
 ## Working with Cristian
