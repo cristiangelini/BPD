@@ -15,16 +15,7 @@ Esto es un borrador para que tachés, cambies o sumes. Marcá con ✗ lo que no 
 ## 1. Allanamiento
 Llegan con una orden judicial (sin tiempo límite, decisión 66), entran, encuentran la evidencia y la cargan hasta el patrullero sin romperla.
 
-1. **La casa del abuelo:** casa de dos pisos llena de adornos frágiles. La evidencia está escondida entre cientos de figuritas de porcelana.
-2. **Fábrica de muñecos:** la evidencia es un muñeco igual a otros 200 y la cinta transportadora no para.
-3. **Laboratorio de pasteles:** pasteles con "algo raro" que hay que llevar enteros. Si se aplastan, no sirven.
-4. **Mansión del millonario:** perros robot, un mayordomo que llama al abogado y una caja fuerte que se mueve por la casa.
-5. **Departamento en el piso 30:** el ascensor anda mal y la evidencia es un acuario gigante.
-6. **Granja:** la evidencia es una vaca que no quiere subir al patrullero.
-7. **Taller de autos robados:** hay que sacar un auto entero con grúa mientras el taller se desarma.
-8. **Bóveda subterránea:** túneles, trampas viejas y una puerta que se cierra a los 5 minutos.
-9. **Casa equivocada:** la orden tiene mal la dirección y descubren el error a mitad de camino. Hay que irse sin que los vecinos se den cuenta, o encontrar algo para justificarse.
-10. **Fiesta de cumpleaños:** allanan en medio de una fiesta de chicos, con un payaso que es el sospechoso.
+Cada allanamiento es un lugar más una historia, y los policías adivinan la historia con las pistas (decisiones 79 y 80). Los 10 lugares, con sus historias, están en [historias.md](historias.md): la casa del abuelo, la panadería, la peluquería de mascotas, la ferretería, la fábrica de muñecos, la oficina de seguros, el laboratorio de pasteles, el edificio de departamentos, el hotel y el gimnasio. Las ideas que había antes acá (mansión, granja, taller de autos, bóveda, casa equivocada y fiesta de cumpleaños) quedan en "Para después".
 
 ## 2. Persecución
 Los 4 van en el mismo patrullero, cada uno con su tarea (decisión 24).
