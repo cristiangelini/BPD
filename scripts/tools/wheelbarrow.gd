@@ -23,6 +23,8 @@ var pusher: Cop
 var cargo: Array[Grabbable] = []
 var _squeak_left := 0.0
 var _cop_shape: CollisionShape3D
+## Online on a guest: the host moves what it carries, so what spills out stays a frozen copy (PropSync).
+var _follower := false
 
 
 func load_kg() -> float:
@@ -50,6 +52,7 @@ func use(cop: Cop) -> void:
 
 func push(cop: Cop) -> void:
 	pusher = cop
+	_follower = cop.sync != null and not cop.sync.net.is_host()
 	cop.wheelbarrow = self
 	collision_layer = 0
 	reparent(cop, false)
@@ -100,7 +103,7 @@ func dump() -> void:
 		item.reparent(level, true)
 		item.global_position = front + global_basis.x * (i - (cargo.size() - 1) / 2.0) * 0.6
 		item.collision_layer = item.get_meta("layer", 4)
-		item.freeze = false
+		item.freeze = _follower
 	cargo.clear()
 	park()
 

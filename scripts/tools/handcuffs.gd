@@ -23,7 +23,14 @@ func prompt_key() -> String:
 
 
 func press() -> void:
-	cuff()
+	if _wait > 0.0:
+		return
+	var hit := cop.aim_hit(GameScale.GRAB_REACH)
+	if not hit.is_empty() and cuffable(hit.collider):
+		# Online the cuffs close on every PC, on whoever this PC aimed at.
+		cop.act("belt_cuff", cop, [hit.collider, hit.position])
+	else:
+		_wait = COOLDOWN
 
 
 func _physics_process(delta: float) -> void:
@@ -43,13 +50,19 @@ func cuff() -> Object:
 	var hit := cop.aim_hit(GameScale.GRAB_REACH)
 	if hit.is_empty():
 		return null
-	var target := cuffable(hit.collider)
+	return cuff_body(hit.collider, hit.position)
+
+
+## Cuffs whoever `body` belongs to, with the cuffs shown at `at`. Returns who, or null.
+func cuff_body(body: Node, at: Vector3) -> Object:
+	_wait = COOLDOWN
+	var target := cuffable(body) if body else null
 	if not target:
 		return null
 	target.cuffed(SECONDS)
 	var worn := build_model()
-	(hit.collider as Node3D).add_child(worn)
-	worn.global_position = hit.position
+	(body as Node3D).add_child(worn)
+	worn.global_position = at
 	_worn.append([worn, target])
 	return target
 

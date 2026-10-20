@@ -46,7 +46,8 @@ func _physics_process(delta: float) -> void:
 		return
 	dusting += delta
 	if dusting >= DUST_TIME:
-		reveal(_target, _point)
+		# Online the prints show on every PC (Cop.act), so the owner's prints go on everyone's checklist.
+		cop.act("belt_prints", cop, [_target, _point])
 		_target = null
 
 
