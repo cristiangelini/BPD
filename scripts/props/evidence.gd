@@ -29,6 +29,7 @@ var _impacts := ImpactTracker.new()
 
 
 func _ready() -> void:
+	add_to_group("evidence")
 	value = full_value
 	contact_monitor = true
 	max_contacts_reported = 8
