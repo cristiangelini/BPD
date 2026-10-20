@@ -597,3 +597,8 @@ SUSPECT_REACT_EAT_DONUT,¿Y para mí no hay?,None for me?,E para mim não tem?
 SUSPECT_REACT_GIVE_DONUT,Mmm... ustedes son buena gente.,Mmm... you guys are nice.,Hmm... vocês são gente boa.
 SUSPECT_REACT_CALM,Bueno... si es así...,Well... if you put it that way...,Bom... se é assim...
 SUSPECT_REACT_REPEAT,"Ya no me asusta, oficial.","That doesn't scare me anymore, officer.","Isso não me assusta mais, policial."
+PROMPT_FLICK_LIGHTS,E: apagar y prender la luz,E: flick the lights,E: apagar e acender a luz
+PROMPT_POUR_COFFEE,E: servir un café,E: pour a coffee,E: servir um café
+PROMPT_COFFEE_CUP,"Déjale el café en la mesa, cerca de él · Clic derecho: tirarlo","Set the coffee on the table, close to him · Right click: throw it","Deixe o café na mesa, perto dele · Clique direito: jogar"
+SUSPECT_REACT_LIGHTS,¿Quién apagó la luz? ¿Hay alguien ahí?,Who turned off the light? Is someone there?,Quem apagou a luz? Tem alguém aí?
+SUSPECT_REACT_COFFEE,"Ah, café... Está frío, pero gracias.","Ah, coffee... It's cold, but thanks.","Ah, café... Está frio, mas obrigado."

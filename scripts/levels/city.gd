@@ -248,7 +248,7 @@ func _interrogation_wing(root: Node3D, color: Color) -> void:
 	var sign := Label3D.new()
 	sign.text = "SIGN_NO_SMOKING"
 	sign.font_size = 32
-	sign.pixel_size = 0.01
+	sign.pixel_size = 0.006
 	sign.modulate = Color(0.85, 0.2, 0.15)
 	sign.position = InterrogationWing.SIGN_AT
 	sign.rotation.y = -PI / 2

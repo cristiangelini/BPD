@@ -43,7 +43,8 @@ const FURNITURE := [
 	["recording_desk", Vector3(MIRROR_X - 0.6, 0, -14.5), -PI / 2],
 	["interrogation_chair", Vector3(MIRROR_X - 1.8, 0, -13.9), -PI / 2],
 	["interrogation_chair", Vector3(MIRROR_X - 1.8, 0, -15.1), -PI / 2],
-	["station_coffee", Vector3(-HALF_X + 0.6, 0, TO_Z + 0.5), 0.0],
+	["station_coffee", Vector3(-HALF_X + 0.6, 0, TO_Z + 0.5), 0.0, "pour_coffee"],
+	["light_switch", Vector3(ROOM_DOOR.y + 0.4, 1.2, HALL_Z - StationRooms.WALL / 2 - 0.03), PI, "flick_lights"],
 ]
 ## The "no smoking" sign on the interrogation room's east wall, facing the room.
 const SIGN_AT := Vector3(HALF_X - StationRooms.WALL - 0.03, 2.0, -14.5)
@@ -51,7 +52,8 @@ const SIGN_AT := Vector3(HALF_X - StationRooms.WALL - 0.03, 2.0, -14.5)
 const SOLID := {
 	"hanging_lamp": Vector3(0.52, 0.2, 0.52),
 	"interrogation_table": Vector3(1.8, 0.76, 0.9), "interrogation_chair": Vector3(0.5, 0.9, 0.5),
-	"recording_desk": Vector3(1.6, 0.76, 0.7),
+	"recording_desk": Vector3(1.6, 0.76, 0.7), "station_coffee": Vector3(0.7, 1.5, 0.6),
+	"light_switch": Vector3(0.12, 0.16, 0.06),
 }
 
 

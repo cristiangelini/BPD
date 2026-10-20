@@ -136,3 +136,55 @@ func test_a_confession_pays_the_salary_and_closes_the_shift() -> void:
 	assert_eq(campaign.money, ShiftReport.SALARY)
 	assert_eq(campaign.history[0].story, "interrogation_" + case.crime)
 	Campaign.save_path = Campaign.SAVE_PATH
+
+
+func test_good_cop_right_after_another_cops_bad_cop_doubles_the_next_one() -> void:
+	case.give_tip()
+	var bad: Cop = level.get_node("Cop")
+	var good: Cop = preload("res://scenes/player/cop.tscn").instantiate()
+	good.input_enabled = false
+	level.add_child(good)
+	case._gap_left = 0.0
+	case.act("slam_table", bad)
+	case._gap_left = 0.0
+	case.act("calm", good)
+	case._gap_left = 0.0
+	case.act("slam_table", bad)
+	assert_eq(case.nerves, 12.0 - 2.0 + 24.0)
+	case._gap_left = 0.0
+	case.act("aim_lamp", bad)
+	assert_eq(case.nerves, 34.0 + 10.0, "only the next one")
+
+
+func test_alone_the_contrast_gives_less() -> void:
+	case.give_tip()
+	var cop: Cop = level.get_node("Cop")
+	for id in ["slam_table", "calm", "slam_table"]:
+		case._gap_left = 0.0
+		case.act(id, cop)
+	assert_almost_eq(case.nerves, 10.0 + 12.0 * InterrogationCase.SOLO_CONTRAST, 0.01)
+
+
+func test_the_light_switch_flicks_the_lights() -> void:
+	case.give_tip()
+	var cop: Cop = level.get_node("Cop")
+	assert_eq(_prop("flick_lights").prompt_key(cop), "PROMPT_FLICK_LIGHTS")
+	_prop("flick_lights").use(cop)
+	assert_eq(case.nerves, 8.0)
+
+
+func test_a_coffee_from_the_machine_set_down_near_him_is_the_good_cops_coffee() -> void:
+	case.give_tip()
+	var cop: Cop = level.get_node("Cop")
+	var machine := _prop("pour_coffee")
+	assert_eq(machine.prompt_key(cop), "PROMPT_POUR_COFFEE")
+	case.lawyer = 50.0
+	machine.use(cop)
+	var cup: CoffeeCup = cop.get_node("Grabber").held
+	assert_not_null(cup, "the cup comes out in the cop's hands")
+	cop.get_node("Grabber").release()
+	cup.global_position = level.suspect.global_position + Vector3(0, 0.85, 0.5)
+	cup.linear_velocity = Vector3.ZERO
+	await wait_physics_frames(20)
+	assert_eq(case.lawyer, 40.0)
+	assert_false(is_instance_valid(cup), "he took it")
