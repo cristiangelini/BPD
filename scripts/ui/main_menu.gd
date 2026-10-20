@@ -25,7 +25,8 @@ func _ready() -> void:
 	Campaign.current = null
 	%ContinueButton.visible = Campaign.can_continue()
 	%ContinueButton.pressed.connect(_on_continue_pressed)
-	# Play draws the case: the grandpa's house or the bakery (PlaceDraw). The bakery button stays as a shortcut.
+	# Play draws the case: the grandpa's house, the bakery or the pet salon (PlaceDraw). The bakery and salon buttons
+	# stay as shortcuts.
 	_play_button.pressed.connect(_on_play_pressed)
 	_online_button.pressed.connect(_open_lobby)
 	_city_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(CITY_SCENE))

@@ -99,8 +99,9 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      la comisaría, hay 3 sospechas sorteadas entre las 6 historias (con su nota cada una), la planilla con Q, la barra
      de denuncia de Ramiro, multas por lo que se rompe, el patrullero y la pantalla del turno. Ramiro suelta dónde
      escondió 2 cosas de la historia y la señora, cuando recibe a Fifí, cuenta dónde lo vio esconder otra. Si Ramiro
-     llama al abogado se pierde el caso. Todavía no sale al tocar "Jugar" (se abre con el botón de prueba): entra al
-     sorteo cuando tenga más historias.
+     llama al abogado se pierde el caso.
+   - **En "Jugar" (propuesta):** con las 6 historias hechas, "Jugar" sortea entre la casa del abuelo, la panadería y
+     la peluquería, un tercio cada una, con la misma semilla del caso. El botón de prueba sigue como atajo.
    - **El concurso arreglado (propuesta):** Bizcocho, el perro marrón con escarapela azul, gana siempre el concurso
      del barrio porque Ramiro les regaló un peine de oro a los jurados. La copa (3 kg, 1000) va en un escondite grande;
      las fichas de los jurados (300) y el peine de oro (200) en cualquiera. Su pista: 3 fotos de "clientes felices" (en
@@ -131,6 +132,13 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      y, si es el bueno, sale la bolsa; si no, nada. El mapa de la excavación (0,1 kg, 300) va escondido. La pista: cada
      15 s un perro suelto que no esté ocupado va a cavar, 7 de cada 10 veces en el parche bueno, y deja tierra; el
      policía que lo ve cavar ahí a menos de 6 m suma la pista. Capturas: `huesos_*.png`.
+   - **La peluquería de humanos clandestina (propuesta):** Ramiro les corta el pelo a personas sin permiso. El libro
+     de turnos (0,3 kg, 1000) va escondido; la peluca (150) en cualquier escondite y el espejo de cuerpo entero (4 kg,
+     200, frágil: se daña con golpes de más de 1,5 m/s) en uno grande. La pista: en el piso de la sala de corte hay 8
+     mechones de pelo que parecen de perro; 3 son de persona y se ven negros y lacios cuando la linterna los alumbra (a
+     menos de 8 m). A los 10 s y después cada 40 s entra un cliente humano, se para bajo el segundo secador y Ramiro le
+     tira una toalla encima («¡Es un perro grande!»). Se queda 25 s. Levantar la toalla con E es otra pista: el cliente
+     sale corriendo y Ramiro suma 10 de denuncia. Capturas: `humanos_*.png`.
 
 ## Preguntas para Cristian (respondidas el 20/10: sí a las dos)
 1. ¿La peluquería de mascotas como tercer lugar, o preferís otro de los 8?
