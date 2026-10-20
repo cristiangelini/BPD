@@ -90,3 +90,4 @@
 - Online camera and fingerprint kit: a photo (flash, film, the owner's complaint, the trails it caught) and a dusting happen on every PC, and photos count for the award on the host.
 - Online pet salon: Ramiro, the poodle lady, the gossip, the neighbor and the human customers (with their towel) are run by the host and followed on every PC; dogs and turtles only walk on the host.
 - Online armory: the host's cash box decides, a guest's list shows the host's money, and the ram, the gloves, the donut box (in the asking cop's hands) and the wheelbarrow show on every PC; eating a donut happens everywhere.
+- Online wheelbarrow: pushing, loading, parking and tipping it over happen on every PC, and what spills out is still moved by the host.
