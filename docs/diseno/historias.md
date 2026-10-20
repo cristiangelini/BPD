@@ -71,6 +71,11 @@ Los pesos y valores son **(propuesta)** y siguen la escala del bingo: la princip
 - **El recorte del diario** (0,1 kg, 100) va en un escondite. Al agarrarlo recuerda lo del sello.
 - Como la bailarina no está en un escondite, las notas del abuelo, lo que se le escapa y lo que vio la vecina hablan solo del recorte.
 
+## Dentaduras del geriátrico (cómo quedó, propuesta)
+- **La valija de dentaduras** (6 kg, 1000) va en un escondite grande, con Michi durmiendo arriba. La lista de clientes (0,2 kg, 300) va en otro escondite.
+- **El ruido:** las dentaduras castañetean cada 2 s. Se oye hasta 7 m, y a esa distancia aparece un "*clac clac*" sobre la valija (hasta que haya sonido de verdad).
+- **El abuelo sin dientes:** todo lo que dice sale cambiado ("s" por "sh", "t" por "d", "p" por "b"). Lo que se le escapa llega así a la planilla: "¡Yo nunca eshcondí nada en la ashena!".
+
 ## Lo que comparten todas las historias
 - La puerta cerrada, el ariete y la llave en la maceta.
 - Los adornos frágiles y la multa de 20 por cada uno.

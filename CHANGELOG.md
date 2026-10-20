@@ -49,3 +49,4 @@
 - The bakery's sixth story, the carrier pigeons: the route book, the cage and the whistle hidden in the bakery; five pigeons in the shop carry small things cops leave on the floor up to the bread rack; feathers under the bedroom window give it away.
 - Play draws the place: each match is in the grandpa's house or the bakery, from the case seed (--place= forces one); "play again" draws a new case. Fixes case seeds being always odd, which made the grandpa's house always tell the same story and the bakery only three of its six.
 - The grandpa's third story, the museum figurine: the stolen porcelain ballerina stands on a shelf among 8 souvenir copies; grabbing one tells the original (the museum's seal) from a copy. The newspaper clipping waits in a hiding spot.
+- The grandpa's fourth story, the care home dentures: a heavy case of dentures that chatter (heard up to 7 m) and the list of clients; the grandpa hid his own teeth too, so everything he says comes out mushy.
