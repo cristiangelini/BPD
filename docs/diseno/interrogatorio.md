@@ -65,7 +65,7 @@ no hay grito. Captura: `grito.png`.
 
 **Cómo quedó (paso 5):** "Jugar" ya lo sortea: en la partida guardada el turno 3 (y el 6, el 9...) es un
 interrogatorio y los demás, allanamientos; sin partida, sale 1 de cada 3 por la semilla. Como la confesión paga 500 y la
-cuota del turno 3 es 1000, el turno de interrogatorio tiene cuota propia de 500 (propuesta): confesar lo aprueba y que
+cuota del turno 3 es 1000, el turno de interrogatorio tiene cuota propia de 500 (decisión 91): confesar lo aprueba y que
 venga el abogado lo pierde. Captura: `turno_3.png`.
 
 ## Los dos medidores (se ven arriba, como la denuncia del abuelo)
