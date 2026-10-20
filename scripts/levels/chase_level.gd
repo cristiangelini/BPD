@@ -47,13 +47,15 @@ func _ready() -> void:
 	case.shift_screen = $ShiftScreen
 	case.solved_label = %CaseSolved
 	case.failed_label = %CaseFailed
+	case.world_environment = $Environment
+	case.sun = $Sun
 	add_child(case)
 	case.start(city.comisario)
 	_add_meters()
 	# The copilot's map: the patrol car, and the suspect for whoever reads it.
 	city.map.setup(city, "", $PatrolCar)
 	city.map.suspect = truck
-	city.map.shows_suspect = case.tasks.shows_suspect
+	city.map.shows_suspect = func() -> bool: return case.tasks.shows_suspect() and case.weather.shows_suspect()
 
 
 func _add_meters() -> void:
