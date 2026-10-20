@@ -29,8 +29,11 @@ const NAME_LENGTH := 24
 var players := {}
 ## Peer id -> the player's Steam name, "" without Steam (they show as "Policía N" then).
 var names := {}
-## A case is being played: new players can't come in (they join in the room).
+## A case is being played: a player who comes in now goes straight into it (online.md, "Entrar a mitad de un caso").
 var in_match := false
+## The case being played (PlaceDraw id and seed), for players who come in late.
+var match_place := ""
+var match_seed := 0
 ## Off in tests, so starting a case only emits match_started.
 var change_scenes := true
 ## Peers that have the current level loaded, so they can take the cops' state.
@@ -51,6 +54,9 @@ var steam: SteamRoom
 var voice: VoiceChat
 ## This PC has the current level loaded and its cops in place.
 var _in_scene := false
+## The current level and where its cops start, for the cops of players who come in late.
+var _level: Node
+var _start := Transform3D.IDENTITY
 
 
 func _ready() -> void:
@@ -184,6 +190,8 @@ func start_match() -> void:
 @rpc("authority", "call_local", "reliable")
 func _start_match(place: String, case_seed: int) -> void:
 	in_match = true
+	match_place = place
+	match_seed = case_seed
 	_leave_scene()
 	match_started.emit(place, case_seed)
 	if change_scenes:
@@ -197,19 +205,10 @@ func spawn_cops(local: Cop) -> void:
 	if not is_online() or not is_instance_valid(local):
 		return
 	_leave_scene()
-	var me := multiplayer.get_unique_id()
-	var start := local.global_transform
-	_add_cop(local, me, start)
-	for id: int in players:
-		if id == me:
-			continue
-		var copy: Cop = COP_SCENE.instantiate()
-		copy.input_enabled = false
-		copy.name = "Cop%d" % id
-		copy.get_node("Grabber").input_enabled = false
-		copy.get_node("Hud").visible = false
-		local.get_parent().add_child(copy)
-		_add_cop(copy, id, start)
+	_level = local.get_parent()
+	_start = local.global_transform
+	_add_cop(local, multiplayer.get_unique_id(), _start)
+	_refresh_cops()
 	props = PropSync.new(self, local.get_parent())
 	add_child(props)
 	actions = ActionSync.new(self, local.get_parent())
@@ -225,6 +224,26 @@ func spawn_cops(local: Cop) -> void:
 	if multiplayer.is_server():
 		for peer in scene_peers:
 			_resend(peer)
+
+
+## Adds a copy of the cop of every player that has none yet (all of them when the level opens, or one who came in
+## late), and keeps the name tags up to date.
+func _refresh_cops() -> void:
+	if not is_instance_valid(_level):
+		return
+	for id: int in players:
+		if cop_syncs.has(id):
+			var tag: Label3D = cop_syncs[id].cop.get_node_or_null("NameTag") if is_instance_valid(cop_syncs[id].cop) else null
+			if tag:
+				tag.text = player_name(id)
+			continue
+		var copy: Cop = COP_SCENE.instantiate()
+		copy.input_enabled = false
+		copy.name = "Cop%d" % id
+		copy.get_node("Grabber").input_enabled = false
+		copy.get_node("Hud").visible = false
+		_level.add_child(copy)
+		_add_cop(copy, id, _start)
 
 
 func _add_cop(cop: Cop, id: int, start: Transform3D) -> void:
@@ -277,6 +296,7 @@ func _resend(peer: int) -> void:
 
 func _leave_scene() -> void:
 	_in_scene = false
+	_level = null
 	scene_peers.clear()
 	for sync: Node in cop_syncs.values():
 		remove_child(sync)
@@ -312,6 +332,7 @@ func _remove_cop(id: int) -> void:
 func _sync_players(list: Dictionary, name_list := {}) -> void:
 	players = list
 	names = name_list
+	_refresh_cops()
 	players_changed.emit()
 
 
@@ -323,6 +344,7 @@ func _tell_name(player_name_text: String) -> void:
 		return
 	names[id] = player_name_text.strip_edges().left(NAME_LENGTH)
 	_sync_players.rpc(players, names)
+	_refresh_cops()
 	players_changed.emit()
 
 
@@ -330,14 +352,18 @@ func _on_peer_connected(id: int) -> void:
 	if not multiplayer.is_server():
 		return
 	var slot := free_slot(players.values())
-	if slot < 0 or in_match:
+	if slot < 0:
 		# Kicking right away would drop the notice: the guest leaves on its own, and is kicked if it doesn't.
-		_refuse.rpc_id(id, "NET_ROOM_FULL" if slot < 0 else "NET_IN_MATCH")
+		_refuse.rpc_id(id, "NET_ROOM_FULL")
 		get_tree().create_timer(REFUSE_GRACE).timeout.connect(_kick.bind(id))
 		return
 	players[id] = slot
 	_sync_players.rpc(players, names)
+	_refresh_cops()
 	players_changed.emit()
+	# Coming in during a case opens it right away; once its level loads, the host sends it how everything is.
+	if in_match:
+		_start_match.rpc_id(id, match_place, match_seed)
 
 
 func _kick(id: int) -> void:

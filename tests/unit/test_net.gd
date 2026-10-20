@@ -125,16 +125,20 @@ func test_only_the_host_starts_the_case() -> void:
 	assert_signal_not_emitted(host, "match_started")
 
 
-func test_nobody_joins_in_the_middle_of_a_case() -> void:
+func test_a_late_player_goes_straight_into_the_case() -> void:
 	var host := _host()
 	await _guest(host)
+	watch_signals(host)
 	host.start_match()
 	await wait_process_frames(5)
 	var late := _new_net()
 	watch_signals(late)
 	late.join("127.0.0.1", _port)
-	await wait_until(func() -> bool: return get_signal_emit_count(late, "session_ended") > 0, 5.0)
-	assert_signal_emitted_with_parameters(late, "session_ended", ["NET_IN_MATCH"])
+	await wait_until(func() -> bool: return get_signal_emit_count(late, "match_started") > 0, 5.0)
+	assert_eq(get_signal_parameters(late, "match_started"), get_signal_parameters(host, "match_started"),
+		"the same place and seed as the others")
+	assert_eq(late.players.size(), 3)
+	assert_true(late.in_match)
 
 
 func test_guests_go_back_when_the_host_closes_the_room() -> void:

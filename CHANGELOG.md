@@ -59,3 +59,4 @@
 - Online, step 2 (Steam): with Steam open and GodotSteam installed (tools/godotsteam.ps1), the room offers "Crear sala de Steam" and "Invitar amigos"; friends come in by accepting the invite in Steam, even with the game closed. AppID 480 (Spacewar) for now. Without Steam the room stays by IP.
 - Voice (docs/diseno/voz.md): with Steam, hold V to talk to the cops nearby (heard whole up to 3 m, silent at 20 m) or T to talk to everyone on the radio, with interference; "Voz siempre abierta" in the room keeps the close voice on. `-- --voice-loopback` plays your own voice back to try the microphone.
 - Player names: the Steam name of each player shows in the room list and over their cop, in their skin color ("Policía N" without Steam).
+- Coming in late: a player who joins the room during a case (late, or after a drop) goes straight into the same case and sees everything as it is; everyone gets their cop.
