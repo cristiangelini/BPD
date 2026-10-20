@@ -649,3 +649,14 @@ MUTE_DRAW_violet_lights_3,"Dibujo: un semáforo violeta con un signo de pregunta
 MUTE_DRAW_rubber_ducks_1,Dibujo: un pato de goma con corona y un pato de verdad mordiendo.,Drawing: a rubber duck with a crown and a real duck biting.,Desenho: um pato de borracha com coroa e um pato de verdade mordendo.
 MUTE_DRAW_rubber_ducks_2,Dibujo: una bañera llena de patos con anteojos de sol.,Drawing: a bathtub full of ducks in sunglasses.,Desenho: uma banheira cheia de patos de óculos escuros.
 MUTE_DRAW_rubber_ducks_3,Dibujo: un calendario con tres semanas tachadas y un pato de goma guiñando un ojo.,Drawing: a calendar with three weeks crossed out and a rubber duck winking.,Desenho: um calendário com três semanas riscadas e um pato de borracha piscando.
+BRIEF_SUSPECT_foreigner,Ojo: no habla nuestro idioma. Otro detenido dice que lo entiende y les va a traducir. Dice.,Careful: he doesn't speak our language. Another detainee says he understands him and will translate. So he says.,Cuidado: ele não fala a nossa língua. Outro detido diz que entende e vai traduzir. É o que ele diz.
+FOREIGN_1,"¡Brumpf glanski, oficialo!","Brumpf glanski, oficialo!","Brumpf glanski, oficialo!"
+FOREIGN_2,Nopo nopo... ¡shnurgel!,Nopo nopo... shnurgel!,Nopo nopo... shnurgel!
+FOREIGN_3,¿Kvaaa? ¡Fliba mondo!,Kvaaa? Fliba mondo!,Kvaaa? Fliba mondo!
+FOREIGN_4,"Olo olo, tremps, ¡gugu!","Olo olo, tremps, gugu!","Olo olo, tremps, gugu!"
+FOREIGN_5,"¡Zinka la plonka, zinka!","Zinka la plonka, zinka!","Zinka la plonka, zinka!"
+FOREIGN_6,Mmmh... dorpi. Dorpi dorpi.,Mmmh... dorpi. Dorpi dorpi.,Mmmh... dorpi. Dorpi dorpi.
+TRANSLATOR_SAYS,"Dice: ""%s""","He says: ""%s""","Ele diz: ""%s"""
+TRANSLATOR_EXTRA_1,"Y también dice que a mí me tienen que soltar, que soy muy buena persona.","And he also says you have to let me go, I'm a very good person.","E ele também diz que vocês têm que me soltar, que eu sou muito gente boa."
+TRANSLATOR_EXTRA_2,Y que me traigan una dona a mí también. Eso lo dijo clarito.,And to bring me a donut too. He said that very clearly.,E que tragam uma rosquinha para mim também. Isso ele disse bem claro.
+TRANSLATOR_EXTRA_3,"Y que el policía de la izquierda tiene cara de que le roban el almuerzo. Eso no lo traduzco, lo digo yo.","And the cop on the left looks like his lunch gets stolen. I'm not translating that, that's me.","E que o policial da esquerda tem cara de quem tem o lanche roubado. Isso não é tradução, sou eu."

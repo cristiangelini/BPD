@@ -453,3 +453,31 @@ func test_the_mute_answers_with_gestures_and_draws_what_slips_out() -> void:
 	_act("flick_lights")
 	assert_true(case.confessed)
 	assert_eq(case.sheet.text, tr("CONFESS_" + case.crime), "he writes the confession down")
+
+
+func test_the_foreigner_talks_gibberish_and_the_translator_adds_his_own_lines() -> void:
+	var seed_value := 1
+	while InterrogationCase.pick_suspect(seed_value, []) != "foreigner":
+		seed_value += 1
+	level.free()
+	level = LEVEL_SCENE.instantiate()
+	level.case_seed = seed_value
+	(level.get_node("Cop") as Cop).input_enabled = false
+	add_child_autofree(level)
+	await wait_physics_frames(2)
+	case = level.case
+	case.give_tip()
+	assert_not_null(level.translator, "a detainee stands by to translate")
+	_act("slam_table")
+	assert_true(InterrogationCase.FOREIGN_LINES.has(level.suspect.saying()))
+	assert_eq(level.translator.saying(), "", "reactions aren't translated")
+	case.nerves = 25.0
+	_act("aim_lamp")
+	assert_true(InterrogationCase.FOREIGN_LINES.has(level.suspect.saying()))
+	var translated := level.translator.saying()
+	assert_string_contains(translated, tr("SLIP_%s_1" % case.crime))
+	assert_string_contains(translated, tr("TRANSLATOR_EXTRA_1"))
+	case.nerves = 95.0
+	_act("flick_lights")
+	assert_true(case.confessed)
+	assert_string_contains(level.translator.saying(), tr("CONFESS_" + case.crime))

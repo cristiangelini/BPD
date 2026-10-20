@@ -66,6 +66,8 @@ const SOLID := {
 
 ## The cops' two chairs at the table: loose, so a bad cop can throw one (InterrogationChair), facing the suspect.
 const CHAIRS_AT: Array[Vector3] = [Vector3(2.4, 0, -13.6), Vector3(3.6, 0, -13.6)]
+## The foreigner's translator stands by the table, on the suspect's side, facing the cops' side (+Z).
+const TRANSLATOR_AT := Vector3(4.5, 0, -15.3)
 ## The case folder, loose on the table where the suspect can see it (CaseFolder).
 const FOLDER_AT := Vector3(2.6, 0.8, -14.45)
 ## The twins' case: the other twin waits in the station's first cell, by the bars, facing the cells room (StationRooms).

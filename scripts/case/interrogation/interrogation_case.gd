@@ -51,7 +51,7 @@ const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 const CRIMES := ["bridge", "statue_nose", "violet_lights", "rubber_ducks"]
 ## The suspects drawn with the seed (interrogatorio.md, "Los sospechosos"), each changing a rule, and their model.
 ## --suspect=<id> forces one. The rest of the 10 come in later PRs.
-const SUSPECTS := ["talker", "sweet_grandpa", "self_lawyer", "sleeper", "influencer", "dangerous", "twins", "mute"]
+const SUSPECTS := ["talker", "sweet_grandpa", "self_lawyer", "sleeper", "influencer", "dangerous", "twins", "mute", "foreigner"]
 const SUSPECT_MODELS := {
 	"talker": "res://assets/models/npc_sospechoso.glb",
 	"sweet_grandpa": "res://assets/models/npc_abuelo.glb",
@@ -61,6 +61,8 @@ const SUSPECT_MODELS := {
 	"dangerous": "res://assets/models/npc_sospechoso.glb",
 	"twins": "res://assets/models/npc_politico.glb",
 	"mute": "res://assets/models/npc_cliente.glb",
+	"foreigner": "res://assets/models/npc_sospechoso.glb",
+	"translator": "res://assets/models/npc_preso.glb",
 }
 ## The sweet grandpa cries when the nerves go up more than CRY_NERVES within CRY_SECONDS, and the lawyer goes up
 ## CRY_LAWYER on its own (propuesta).
@@ -98,6 +100,10 @@ const TWIN_SLIPS := ["TWIN_SLIP_1", "TWIN_SLIP_2", "TWIN_SLIP_3"]
 ## (MUTE_DRAW_<crime>_<n>, described in words until there's art) that he holds up for the cops; at 100 he writes the
 ## confession down.
 const SHEET_AT := Vector3(3.0, 0.95, -14.85)
+## The foreigner (suspect 8): he only speaks a made-up language (FOREIGN_LINES), and a detainee standing by the table
+## (InterrogationWing.TRANSLATOR_AT) translates what slips out, adding his own lines (TRANSLATOR_EXTRAS).
+const FOREIGN_LINES := ["FOREIGN_1", "FOREIGN_2", "FOREIGN_3", "FOREIGN_4", "FOREIGN_5", "FOREIGN_6"]
+const TRANSLATOR_EXTRAS := ["TRANSLATOR_EXTRA_1", "TRANSLATOR_EXTRA_2", "TRANSLATOR_EXTRA_3"]
 ## The talker (suspect 1): before each slip he confesses something that has nothing to do with the case.
 const TALKER_LINES := ["TALKER_1", "TALKER_2", "TALKER_3"]
 const LAWYER_MODEL := preload("res://assets/models/npc_abogado.glb")
@@ -146,6 +152,8 @@ var twin_slips := 0
 var guilty_in_cell := false
 var _folder_with: InterrogationSuspect
 var _swapped := false
+## The foreigner's translator.
+var translator: InterrogationSuspect
 ## The mute's sheet of paper and what's drawn on it.
 var sheet: Label3D
 ## The last bad cop action: who did it and when (ms), and the bonus waiting for the next one.
@@ -376,13 +384,20 @@ func _act(id: String, cop: Cop) -> bool:
 		react = "SUSPECT_WAKES"
 	if suspect_id == "mute":
 		react = "MUTE_FLINCHES" if gain > 0.0 else "MUTE_THUMBS_UP"
+	elif suspect_id == "foreigner":
+		react = _foreign(react)
 	_emit()
 	if id == "aim_lamp":
 		_aim_lamp()
 	elif id == "flick_lights":
 		_flick_lights()
 	if _streak > 0 and gain > 0.0:
-		_say("MUTE_YAWNS" if suspect_id == "mute" else "SUSPECT_REACT_REPEAT", false)
+		var line := "SUSPECT_REACT_REPEAT"
+		if suspect_id == "mute":
+			line = "MUTE_YAWNS"
+		elif suspect_id == "foreigner":
+			line = _foreign(line)
+		_say(line, false)
 	else:
 		_say(react, react == "SUSPECT_CRIES" or react == "SUSPECT_WAKES")
 	_check(cop)
@@ -481,12 +496,17 @@ func _check(_cop: Cop) -> void:
 		if suspect_id == "mute":
 			_draw(tr("MUTE_DRAW_%s_%d" % [crime, slips]), "MUTE_DRAWS")
 			continue
+		if suspect_id == "foreigner":
+			_translate(tr("SLIP_%s_%d" % [crime, slips]), tr(TRANSLATOR_EXTRAS[slips - 1]))
+			continue
 		# The talker mixes his true slip with something that has nothing to do with it.
 		_say(tr(TALKER_LINES[slips - 1]) + " " + slip if suspect_id == "talker" else slip, true)
 	if nerves >= FULL and guilty:
 		confessed = true
 		if suspect_id == "mute":
 			_draw(tr("CONFESS_" + crime), "MUTE_CONFESSES")
+		elif suspect_id == "foreigner":
+			_translate(tr("CONFESS_" + crime), "")
 		else:
 			_say("CONFESS_" + crime, true)
 		solved_label.show()
@@ -502,6 +522,19 @@ func _check(_cop: Cop) -> void:
 		_finish_soon()
 	elif nerves >= FULL:
 		_say("TWIN_NOT_ME", true)
+
+
+## The foreigner's line for a reaction: always the same gibberish for the same reaction.
+func _foreign(react: String) -> String:
+	return FOREIGN_LINES[hash(react) % FOREIGN_LINES.size()]
+
+
+## The foreigner says something in his language and the translator passes it on, with his own line at the end.
+func _translate(text: String, extra: String) -> void:
+	_say(FOREIGN_LINES[(slips + crime.length()) % FOREIGN_LINES.size()], true)
+	if translator:
+		var line := tr("TRANSLATOR_SAYS") % text
+		translator.say(line + (" " + extra if extra != "" else ""), InterrogationSuspect.LINE_SECONDS * 2.0)
 
 
 ## The mute puts something on his sheet of paper (it shows up the first time), with a gesture over his head.
