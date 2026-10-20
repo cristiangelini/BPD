@@ -116,6 +116,22 @@ func test_start_opens_the_same_case_for_everyone() -> void:
 	assert_true(guest.in_match)
 
 
+func test_the_hosts_owner_in_custody_comes_with_the_case() -> void:
+	var host := _host()
+	var guest: Node = await _guest(host)
+	PlaceDraw.custody = {"owner": "grandpa", "story": "bingo", "slips": [], "missed": 300}
+	var custody := PlaceDraw.custody.duplicate()
+	host.start_match()
+	await wait_until(func() -> bool: return guest.in_match, 5.0)
+	PlaceDraw.custody = {}
+	assert_eq(guest.match_place, "interrogation", "an owner in custody is interrogated next")
+	assert_eq(guest.match_custody, custody, "the guest gets the host's owner for the chair")
+	var late := _new_net()
+	late.join("127.0.0.1", _port)
+	await wait_until(func() -> bool: return late.in_match, 5.0)
+	assert_eq(late.match_custody, custody, "also a player who comes in during the case")
+
+
 func test_only_the_host_starts_the_case() -> void:
 	var host := _host()
 	var guest: Node = await _guest(host)

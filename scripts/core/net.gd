@@ -34,6 +34,8 @@ var in_match := false
 ## The case being played (PlaceDraw id and seed), for players who come in late.
 var match_place := ""
 var match_seed := 0
+## The owner in custody the match's interrogation is about (PlaceDraw.custody_now), the host's; empty if none.
+var match_custody := {}
 ## Off in tests, so starting a case only emits match_started.
 var change_scenes := true
 ## Peers that have the current level loaded, so they can take the cops' state.
@@ -188,14 +190,20 @@ func start_match() -> void:
 	if not is_online() or not multiplayer.is_server():
 		return
 	var case_seed := PlaceDraw.next_seed()
-	_start_match.rpc(PlaceDraw.pick(case_seed, OS.get_cmdline_user_args(), PlaceDraw.shift_now()), case_seed)
+	_start_match.rpc(PlaceDraw.pick(case_seed, OS.get_cmdline_user_args(), PlaceDraw.shift_now()), case_seed,
+		PlaceDraw.custody_now())
 
 
 @rpc("authority", "call_local", "reliable")
-func _start_match(place: String, case_seed: int) -> void:
+func _start_match(place: String, case_seed: int, custody := {}) -> void:
 	in_match = true
 	match_place = place
 	match_seed = case_seed
+	match_custody = custody
+	# A guest plays the host's campaign: the owner in the chair is the host's, and its own saved one stays out of it.
+	if not multiplayer.is_server():
+		Campaign.current = null
+		PlaceDraw.custody = custody
 	_leave_scene()
 	match_started.emit(place, case_seed)
 	if change_scenes:
@@ -368,7 +376,7 @@ func _on_peer_connected(id: int) -> void:
 	players_changed.emit()
 	# Coming in during a case opens it right away; once its level loads, the host sends it how everything is.
 	if in_match:
-		_start_match.rpc_id(id, match_place, match_seed)
+		_start_match.rpc_id(id, match_place, match_seed, match_custody)
 
 
 func _kick(id: int) -> void:

@@ -58,6 +58,9 @@ static func _puppet(npc: Node3D) -> void:
 	npc.set_process(false)
 	for area in npc.find_children("*", "Area3D", true, false):
 		(area as Area3D).monitoring = false
+	var escort := OwnerEscort.of(npc)
+	if escort:
+		escort.follower = true
 
 
 func npc_at(index: int) -> Node3D:
@@ -91,7 +94,29 @@ func _state_of(npc: Node3D) -> Array:
 	return [npc.global_transform, bubble.text if bubble else "", bubble.visible if bubble else false,
 		npc.get("complaint") if "complaint" in npc else 0.0,
 		npc.is_telling_story() if npc.has_method("is_telling_story") else false,
-		npc.net_state() if npc.has_method("net_state") else null]
+		npc.net_state() if npc.has_method("net_state") else null, _escort_state(npc)]
+
+
+## The owner's escort, if he has one: whether he's in the patrol car and which player's cop walks him (0: nobody).
+func _escort_state(npc: Node3D) -> Variant:
+	var escort := OwnerEscort.of(npc)
+	if not escort:
+		return null
+	var by := 0
+	for id: int in net.cop_syncs:
+		if escort.escorted_by and net.cop_syncs[id].cop == escort.escorted_by:
+			by = id
+	return [escort.in_car, by]
+
+
+func _apply_escort(npc: Node3D, state: Variant) -> void:
+	var escort := OwnerEscort.of(npc)
+	if not escort or state == null:
+		return
+	var sync: CopSync = net.cop_syncs.get(state[1])
+	escort.escorted_by = sync.cop if sync and is_instance_valid(sync.cop) else null
+	if state[0] and not escort.in_car:
+		escort.board()
 
 
 func _send() -> void:
@@ -134,7 +159,8 @@ func _apply(index: int, state: Array) -> void:
 	if not npc:
 		return
 	var place: Transform3D = state[0]
-	if not _targets.has(index) or npc.global_position.distance_to(place.origin) > SNAP_DISTANCE:
+	var riding := OwnerEscort.of(npc) != null and OwnerEscort.of(npc).in_car
+	if not riding and (not _targets.has(index) or npc.global_position.distance_to(place.origin) > SNAP_DISTANCE):
 		npc.global_transform = place
 	_targets[index] = place
 	var bubble := npc.get_node_or_null("Bubble") as Label3D
@@ -150,6 +176,8 @@ func _apply(index: int, state: Array) -> void:
 		npc.end_story()
 	if state.size() > 5 and npc.has_method("apply_net_state"):
 		npc.apply_net_state(state[5])
+	if state.size() > 6:
+		_apply_escort(npc, state[6])
 
 
 @rpc("authority", "call_remote", "reliable")
@@ -209,5 +237,7 @@ func _follow(delta: float) -> void:
 	var weight := 1.0 - exp(-EASE * delta)
 	for index: int in _targets:
 		var npc := npc_at(index)
-		if npc:
+		# In the patrol car his escort keeps him in the back seat, wherever the car goes.
+		var escort := OwnerEscort.of(npc) if npc else null
+		if npc and not (escort and escort.in_car):
 			npc.global_transform = npc.global_transform.interpolate_with(_targets[index], weight)
