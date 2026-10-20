@@ -296,3 +296,21 @@ OBJ_EXTRA_PIGEON_CAGE,Extra: la jaula de las palomas,Extra: the pigeon cage,Extr
 OBJ_EXTRA_WHISTLE,Extra: el silbato,Extra: the whistle,Extra: o apito
 HINT_FEATHERS,"Plumas y migas junto a la ventana... ¿Palomas?","Feathers and crumbs by the window... Pigeons?","Penas e migalhas perto da janela... Pombos?"
 GOSSIP_CLUE_pigeons,"«¡Gracias! Mira, anoche vi a Marta esconder algo %s. Y todas las mañanas sale una paloma de su ventana con un papelito.»","“Thanks! Look, last night I saw Marta hide something %s. And every morning a pigeon flies out of her window with a little note.”","“Valeu! Olha, ontem à noite vi a Marta esconder algo %s. E toda manhã sai um pombo da janela dela com um papelzinho.”"
+MENU_ONLINE,Jugar con amigos,Play with friends,Jogar com amigos
+LOBBY_TITLE,Sala,Room,Sala
+LOBBY_HOST,Crear sala,Create room,Criar sala
+LOBBY_ADDRESS,IP del anfitrión,Host IP,IP do anfitrião
+LOBBY_JOIN,Unirse,Join,Entrar
+LOBBY_START,Empezar caso,Start case,Começar caso
+LOBBY_BACK,Volver,Back,Voltar
+LOBBY_SOLO,Crea una sala o únete a la de un amigo.,Create a room or join a friend's.,Crie uma sala ou entre na de um amigo.
+LOBBY_HOSTING,"Sala abierta. Tus amigos entran con tu IP: %s","Room open. Your friends join with your IP: %s","Sala aberta. Seus amigos entram com seu IP: %s"
+LOBBY_JOINING,Entrando a la sala...,Joining the room...,Entrando na sala...
+LOBBY_WAITING,Esperando que el anfitrión empiece el caso.,Waiting for the host to start the case.,Esperando o anfitrião começar o caso.
+LOBBY_YOU,(tú),(you),(você)
+LOBBY_HOST_TAG,anfitrión,host,anfitrião
+NET_JOIN_FAILED,No se pudo entrar a la sala.,Couldn't join the room.,Não foi possível entrar na sala.
+NET_HOST_LEFT,El anfitrión cerró la sala.,The host closed the room.,O anfitrião fechou a sala.
+NET_ROOM_FULL,La sala está llena (4 policías).,The room is full (4 cops).,A sala está cheia (4 policiais).
+NET_IN_MATCH,Ya empezaron el caso. Espera a que vuelvan a la sala.,The case already started. Wait until they're back in the room.,O caso já começou. Espere voltarem para a sala.
+NET_HOST_FAILED,No se pudo abrir la sala (¿el puerto está ocupado?).,Couldn't open the room (is the port in use?).,Não foi possível abrir a sala (a porta está ocupada?).
