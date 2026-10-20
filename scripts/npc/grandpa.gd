@@ -81,7 +81,10 @@ func _ready() -> void:
 
 
 ## E on him starts a story; the cop has to keep holding E to keep him talking.
-func prompt_key(_cop: Cop) -> String:
+func prompt_key(cop: Cop) -> String:
+	var escort := OwnerEscort.of(self)
+	if escort and escort.handles_use():
+		return escort.prompt_key(cop)
 	return "" if listener else "PROMPT_GRANDPA"
 
 
@@ -102,6 +105,10 @@ func ask(_cop: Cop) -> bool:
 
 
 func use(cop: Cop) -> void:
+	var escort := OwnerEscort.of(self)
+	if escort and escort.handles_use():
+		escort.use(cop)
+		return
 	start_story(cop)
 
 

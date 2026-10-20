@@ -85,12 +85,19 @@ func _ready() -> void:
 	_bubble.hide()
 
 
-func prompt_key(_cop: Cop) -> String:
+func prompt_key(cop: Cop) -> String:
+	var escort := OwnerEscort.of(self)
+	if escort and escort.handles_use():
+		return escort.prompt_key(cop)
 	return "PROMPT_SAMPLE" if offering else ""
 
 
 ## E on her: takes the sample if she is offering one.
 func use(cop: Cop) -> void:
+	var escort := OwnerEscort.of(self)
+	if escort and escort.handles_use():
+		escort.use(cop)
+		return
 	if not offering:
 		_say("BAKER_BUSY")
 		return

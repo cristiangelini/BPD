@@ -33,6 +33,8 @@ var handbrake := false
 var _siren_time := 0.0
 ## Unbroken evidence in the trunk right now.
 var delivered: Array[Evidence] = []
+## The place's owner riding in the back to be interrogated (OwnerEscort), if any.
+var prisoner: Node3D
 
 @onready var _seats: Array[Node3D] = [$Seats/Driver, $Seats/Front, $Seats/BackLeft, $Seats/BackRight]
 @onready var _rear: Array[VehicleWheel3D] = [$WheelRearLeft, $WheelRearRight]
@@ -199,6 +201,16 @@ func _apply_controls(delta: float) -> void:
 			engine_force = ENGINE * throttle
 	for wheel in _rear:
 		wheel.brake = HANDBRAKE if handbrake else brake
+
+
+## Where the owner rides: in the back, between the two back seats, so he takes no cop's seat. A bit sunk, since he
+## stands (no NPC sits yet) and would go through the roof.
+const PRISONER_SINK := 0.3
+
+
+func prisoner_seat() -> Transform3D:
+	var middle := (_seats[2].position + _seats[3].position) / 2.0 + Vector3.DOWN * PRISONER_SINK
+	return Transform3D(global_basis, to_global(middle))
 
 
 ## Where the cop in seat `i` stands after getting out, beside that seat's door.

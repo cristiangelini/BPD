@@ -666,3 +666,9 @@ FAN_PICK_ONE,"¡Ya confesé todo! ¡Elijan una, por favor, la que más les guste
 FAN_RIGHT,¡Esa! ¡Esa sí fui yo! ¿Me dan una placa de recuerdo?,That one! That one really was me! Can I have a souvenir badge?,Essa! Essa fui eu mesmo! Posso ganhar um distintivo de lembrança?
 FAN_WRONG,Bueno... esa no fui yo. Pero me hubiera encantado.,Well... that one wasn't me. But I'd have loved to.,Bom... essa não fui eu. Mas eu teria adorado.
 PROMPT_PICK_CONFESSION,E: elegir esta confesión,E: pick this confession,E: escolher esta confissão
+PROMPT_ESCORT_OWNER,E: llevar del brazo al patrullero,E: walk by the arm to the patrol car,E: levar pelo braço até a viatura
+PROMPT_LET_GO_OWNER,E: soltar el brazo,E: let go,E: soltar o braço
+OWNER_ESCORT_1,"¡Suélteme! ¡Conozco mis derechos! Bueno, algunos.","Let go of me! I know my rights! Well, some of them.","Me solta! Eu conheço meus direitos! Bom, alguns."
+OWNER_ESCORT_2,¡Despacio! ¡Que tengo la rodilla mala!,Slow down! I have a bad knee!,Devagar! Meu joelho é ruim!
+OWNER_ESCORT_3,¡Esto va a salir en el diario del barrio!,This is going to be in the neighborhood paper!,Isso vai sair no jornal do bairro!
+HINT_OWNER_IN_CAR,Ya va detenido en el patrullero: el turno que viene es su interrogatorio.,In the patrol car under arrest: next shift is their interrogation.,Já está detido na viatura: no próximo turno é o interrogatório.

@@ -26,6 +26,9 @@ var items: Array[String] = []
 var history: Array[Dictionary] = []
 ## A shift missed its quota: the cops are suspended and the campaign is lost.
 var suspended := false
+## The place's owner the cops brought in at the end of the last raid (RaidCase.custody), to be interrogated next
+## shift (decision 93); empty if nobody.
+var custody := {}
 
 
 ## A new campaign at shift 1 with a fresh seed.
@@ -70,7 +73,7 @@ func finish_shift(story: String, solved: bool, report: Dictionary, shift_quota :
 
 func to_dict() -> Dictionary:
 	return {"version": VERSION, "seed": campaign_seed, "shift": shift, "money": money, "items": items,
-		"history": history, "suspended": suspended}
+		"history": history, "suspended": suspended, "custody": custody}
 
 
 static func from_dict(data: Dictionary) -> Campaign:
@@ -79,6 +82,7 @@ static func from_dict(data: Dictionary) -> Campaign:
 	campaign.shift = int(data.get("shift", 1))
 	campaign.money = int(data.get("money", 0))
 	campaign.suspended = bool(data.get("suspended", false))
+	campaign.custody = data.get("custody", {})
 	campaign.items.assign(data.get("items", []))
 	# JSON brings every number back as a float.
 	for entry: Dictionary in data.get("history", []):

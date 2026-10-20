@@ -26,6 +26,8 @@ const ASKED := 5.0
 ## A cop lifted the towel off one of his human customers (human salon story).
 const UNMASKED := 10.0
 const ASKS := 2
+## Being cuffed (herramientas.md): he can be taken away to be interrogated (OwnerEscort).
+const CUFFED := 15.0
 const ASK_COOLDOWN := 3.0
 const SIGHT_RANGE := 8.0
 const EYE := 1.4
@@ -56,6 +58,8 @@ var _quiet := 0.0
 var _since_struck := STRUCK_COOLDOWN
 var _since_line := 0.0
 var _line := 0
+## Cuffed by a cop: he stays at his table, not cutting, until it runs out.
+var _cuffed_left := 0.0
 
 @onready var _bubble: Label3D = $Bubble
 
@@ -63,6 +67,29 @@ var _line := 0
 func _ready() -> void:
 	$Bump.body_entered.connect(_on_bump)
 	_bubble.hide()
+
+
+## E on him only does something while he's cuffed: a cop takes him away (OwnerEscort).
+func prompt_key(cop: Cop) -> String:
+	var escort := OwnerEscort.of(self)
+	return escort.prompt_key(cop) if escort and escort.handles_use() else ""
+
+
+func use(cop: Cop) -> void:
+	var escort := OwnerEscort.of(self)
+	if escort and escort.handles_use():
+		escort.use(cop)
+
+
+## A cop cuffed him for `seconds`, and he complains.
+func cuffed(seconds: float) -> void:
+	_cuffed_left = maxf(_cuffed_left, seconds)
+	_raise(CUFFED)
+	_say("NPC_POLICE_ABUSE")
+
+
+func is_cuffed() -> bool:
+	return _cuffed_left > 0.0
 
 
 ## R on him: a question. He lets slip where something is hidden, but only the first ASKS times.
@@ -115,6 +142,7 @@ func _physics_process(delta: float) -> void:
 	_since_struck += delta
 	_ask_wait -= delta
 	_story_wait -= delta
+	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
 	_quiet += delta
 	if _quiet >= DECAY_EVERY:
 		_quiet = 0.0
