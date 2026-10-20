@@ -28,6 +28,8 @@ var has_key := false
 ## The battering ram in hand, if this cop carries it. Hands are busy: no grabbing.
 var ram: BatteringRam
 var _stagger_left := 0.0
+## Eating a sample from the baker: the cop can walk but not grab anything (panaderia.md).
+var _eating_left := 0.0
 ## While holding E on the grandpa he tells a story; this cop can't do anything else (allanamiento.md).
 var listening_to: Grandpa
 ## Silly numbers for the joke awards at the end of the shift (decision 41).
@@ -114,6 +116,17 @@ func stagger(seconds: float) -> void:
 
 func is_staggered() -> bool:
 	return _stagger_left > 0.0
+
+
+## Eats something for `seconds`: lets go of what it holds and can't grab until done.
+func eat(seconds: float) -> void:
+	$Grabber.release()
+	_eating_left = maxf(_eating_left, seconds)
+	show_hint("HINT_EATING")
+
+
+func is_eating() -> bool:
+	return _eating_left > 0.0
 
 
 ## Busy: staggered, listening to the grandpa, sitting in the car or hearing the comisario. No walking, grabbing or ramming.
@@ -256,6 +269,7 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 		stamina = minf(stamina + delta * GameScale.RUN_STAMINA / GameScale.STAMINA_RECOVERY, GameScale.RUN_STAMINA)
 
 	_stagger_left = maxf(_stagger_left - delta, 0.0)
+	_eating_left = maxf(_eating_left - delta, 0.0)
 	var direction := (transform.basis * Vector3(wish.x, 0.0, wish.y)).normalized()
 	var speed := 0.0 if is_busy() else current_speed()
 	velocity.x = direction.x * speed

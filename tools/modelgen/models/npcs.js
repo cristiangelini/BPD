@@ -156,6 +156,38 @@ const NPCS = {
 		briefcase(b, C('case_brown', 0x6a3e1e), -1);
 		b.add('props', white, new THREE.BoxGeometry(0.06, 0.04, 0.3), { pos: V(-0.52, 0.57, 0.12) });
 	},
+	// Panadera Marta (the bakery): pear dress with a white apron dusted with flour, a tall baker's hat and a rolling pin.
+	panadera(b) {
+		pearBody(b, SKIN.arena, { shirt: C('baker_dress', 0x5aa0d8), onePiece: true, belted: false, shoes: white });
+		const apron = C('apron', 0xf6f2e8);
+		b.add('body', apron, loft([{ y: 0.3, rx: 0.42, rz: 0.12 }, { y: 0.75, rx: 0.36, rz: 0.1 }, { y: 1.0, rx: 0.2, rz: 0.08 }], 8), { pos: V(0, 0, 0.3) });
+		for (const [x, y] of [[-0.12, 0.62], [0.1, 0.48], [0.02, 0.8]]) b.add('body', C('flour', 0xffffff), ellipsoid(0.05, 0.035, 0.02, 5, 3), { pos: V(x, y, 0.43) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		for (const s of [-1, 1]) b.add('face', C('blush', 0xf09a9a), ellipsoid(0.04, 0.025, 0.01, 6, 3), { pos: V(s * 0.12, 1.26, 0.18) });
+		hairCap(b, C('hair_red', 0xb0482a), { y: 1.38, back: 0.02 });
+		b.add('cap', white, new THREE.CylinderGeometry(0.17, 0.15, 0.12, 8), { pos: V(0, 1.5, 0.0) });
+		b.add('cap', white, ellipsoid(0.22, 0.12, 0.2, 10, 5), { pos: V(0, 1.62, 0.0) });
+		limb(b, 'props', C('rolling_pin', 0xc8945a), V(0.5, 0.55, 0.0), V(0.5, 0.55, 0.42), 0.04);
+	},
+	// Cliente (a bakery customer): checked shirt, hat and a paper bag of bread.
+	cliente(b) {
+		pearBody(b, SKIN.crema, { shirt: C('checked_shirt', 0x3a8a5a), pants: C('brown_pants', 0x6a4a30) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b);
+		b.add('cap', C('hat_gray', 0x6a6e74), new THREE.CylinderGeometry(0.17, 0.19, 0.12, 8), { pos: V(0, 1.5, 0.01) });
+		b.add('cap', C('hat_gray', 0x6a6e74), new THREE.CylinderGeometry(0.28, 0.28, 0.02, 10), { pos: V(0, 1.44, 0.01) });
+		b.add('props', C('paper_bag', 0xc9a66b), new THREE.BoxGeometry(0.18, 0.26, 0.12), { pos: V(0.52, 0.5, 0.12) });
+		b.add('props', C('baguette', 0xd9a050), new THREE.CylinderGeometry(0.03, 0.03, 0.3, 6), { pos: V(0.52, 0.7, 0.12), rot: [0, 0, 0.2] });
+	},
+	// Clienta (a bakery customer): yellow raincoat, short black hair and a shopping bag.
+	clienta(b) {
+		pearBody(b, SKIN.cacao, { shirt: C('raincoat', 0xf0c030), onePiece: true, belted: false, shoes: C('boots', 0x2a6a8a) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { open: true });
+		hairCap(b, C('hair_black', 0x1a1410), { y: 1.4, sy: 0.65 });
+		b.add('props', C('shopping_bag', 0xd84a6a), new THREE.BoxGeometry(0.1, 0.3, 0.3), { pos: V(-0.52, 0.45, 0.12) });
+	},
 	// Político: white suit, red tie, sash, big smile and a helmet of hair.
 	politico(b) {
 		const suit = C('white_suit', 0xf0eee8);

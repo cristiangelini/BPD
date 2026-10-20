@@ -16,8 +16,9 @@ La panadería ocupa el terreno que ya tiene en la ciudad (16 × 14 m) y tiene do
 
 ## La panadera
 - **Marta**, la panadera, con delantal y gorro, cuerpo pera (decisión 72). **No deja de atender:** mientras la policía revisa, ella sigue vendiendo pan.
-- **Los clientes** entran y salen solos (2 o 3 a la vez). Si un policía rompe algo o choca a un cliente, se asustan, se van sin pagar y la denuncia sube más rápido.
-- **Su distracción:** le ofrece "una muestrita" al policía que tiene más cerca. Si la acepta (E), se queda 3 s comiendo y no puede agarrar nada, pero la panadera se calma.
+- **Los clientes** entran y salen solos (hasta 3 a la vez, uno nuevo cada 8 s). Si un policía choca a un cliente o a Marta, o tira una puerta con el ariete, se asustan todos, se van corriendo sin pagar (+5 de denuncia cada uno) y no entra nadie por 20 s.
+- **Dónde está:** mientras hay un cliente esperando en el mostrador, atiende en la caja (4 s por cliente). Si no hay nadie, se para delante de la puerta del obrador. Así, los clientes la tienen ocupada.
+- **Su distracción:** le ofrece "una muestrita" al policía que tiene a menos de 3 m, cada 20 s y durante 6 s. Si la acepta (E), se queda 3 s comiendo y no puede agarrar nada, pero a la panadera le baja 10 la denuncia.
 - **Interrogatorio (R):** como el abuelo, cada historia tiene sus frases y algo se le escapa.
 - **El cliente chismoso** hace el papel de la vecina: si le compran un pan, da una pista de la historia verdadera.
 

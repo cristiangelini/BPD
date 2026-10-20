@@ -190,3 +190,17 @@ STREET_WHISTLE,Calle del Silbato,Whistle Street,Rua do Apito
 HUD_MAP_HINT,M: mapa,M: map,M: mapa
 MAP_TITLE,Mapa de la ciudad,City map,Mapa da cidade
 MAP_CASE,Caso de hoy,Today's case,Caso de hoje
+PROMPT_SAMPLE,"E: aceptar la muestrita (la calma, pero 3 s sin agarrar nada)","E: take the free sample (calms her, but 3 s without grabbing)","E: aceitar a amostra (acalma ela, mas 3 s sem pegar nada)"
+HINT_EATING,Mmm... ¡Qué rico! Tienes las manos ocupadas.,Mmm... Delicious! Your hands are busy.,Hum... Que delícia! Suas mãos estão ocupadas.
+BAKER_SAMPLE,"¿Una muestrita, oficial? ¡Recién horneado!","A little sample, officer? Fresh from the oven!","Uma amostrinha, policial? Saiu do forno agora!"
+BAKER_THANKS,¿Viste qué rico? Así da gusto.,"Tasty, right? That's more like it.",Viu que delícia? Assim dá gosto.
+BAKER_BUSY,"¡Estoy atendiendo, oficial!","I'm serving customers, officer!","Estou atendendo, policial!"
+BAKER_LINE_1,¡Por ahí no se pasa! Solo personal.,You can't go back there! Staff only.,Por aí não pode! Só funcionários.
+BAKER_LINE_2,¿Van a comprar algo o solo miran?,Are you buying something or just looking?,Vão comprar algo ou só olhar?
+BAKER_LINE_3,¡Me espantan a los clientes!,You're scaring off my customers!,Vocês estão espantando meus clientes!
+BAKER_LINE_4,¡Cuidado con las tortas!,Careful with the cakes!,Cuidado com os bolos!
+BAKER_HURT,¡Oye! ¡Tengo las manos en la masa!,Hey! My hands are in the dough!,Ei! Estou com a mão na massa!
+BAKER_DOOR,¡Mi puerta! ¿Quién va a pagar eso?,My door! Who's paying for that?,Minha porta! Quem vai pagar isso?
+BAKER_LAWYER,¡Se acabó! ¡Llamo a mi abogado!,That's it! I'm calling my lawyer!,Chega! Vou ligar para o meu advogado!
+CUSTOMER_THANKS,"¡Gracias, Marta! Hasta mañana.","Thanks, Marta! See you tomorrow.","Obrigado, Marta! Até amanhã."
+CUSTOMER_SCARED,¡Ay! ¡Me voy de aquí!,Yikes! I'm out of here!,Ai! Vou embora daqui!

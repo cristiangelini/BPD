@@ -39,3 +39,4 @@
 - City map on the radio: M opens a top view with the station, today's case blinking, the cops as arrows and the patrol car.
 - Design: the bakery, second place to raid (docs/diseno/panaderia.md).
 - The bakery, inside: shop with counter, cake display and bread shelves (open, shutter half up), locked bakehouse and back door, storeroom with the stairs, bathroom, and Marta's flat with two windows over the street; 12 hiding spots, on its lot in the city. "Panadería (prueba)" in the menu opens it.
+- Marta and her customers: customers walk in, wait at the counter and leave once served; Marta works the till or guards the bakehouse door, offers free samples (E: 3 s without grabbing, calms her) and fills the complaint meter. Bumping anyone or ramming a door scares every customer out without paying.
