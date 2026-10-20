@@ -147,3 +147,10 @@ static func parking(id: String) -> Transform3D:
 	var p := place(id)
 	var spot := door_of(id) + side_normal(p.side) * (SIDEWALK + 3.0)
 	return Transform3D(Basis(Vector3.UP, side_turn(p.side) + PI / 2), spot)
+
+
+## Where cop `index` (0 to 3) appears in the station's guard room, facing the comisario's office (StationRooms).
+static func station_spawn(index: int) -> Transform3D:
+	var p := place("station")
+	var lot := Transform3D(Basis(Vector3.UP, side_turn(p.side)), lot_center(p.block, p.side, p.along, p.size.z))
+	return lot * Transform3D(Basis.IDENTITY, StationRooms.SPAWNS[index % StationRooms.SPAWNS.size()])

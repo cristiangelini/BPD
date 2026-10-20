@@ -48,6 +48,8 @@ func test_a_player_hears_the_comisario_and_cannot_move_meanwhile() -> void:
 	var house := _house(true)
 	await wait_physics_frames(2)
 	var cop: Cop = house.get_node("Cop")
+	assert_false(house.briefing.visible, "he waits in his office")
+	(house.get_node("City") as City).comisario.use(cop)
 	assert_true(house.briefing.visible)
 	assert_true(cop.is_busy())
 	for i in GrandpaHouse.TIP_BRIEFING.size():

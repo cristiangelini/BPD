@@ -1,7 +1,7 @@
 class_name RamPickup
 extends StaticBody3D
 
-## The battering ram lying on the ground. E picks it up, until the armory exists.
+## The battering ram lying on the ground, where a cop dropped it (it comes from the armory). E picks it up.
 
 
 func prompt_key(_cop: Cop) -> String:
@@ -9,7 +9,7 @@ func prompt_key(_cop: Cop) -> String:
 
 
 func use(cop: Cop) -> void:
-	if cop.ram:
+	if cop.ram or cop.is_cuffed():
 		return
 	cop.equip_ram()
 	queue_free()
