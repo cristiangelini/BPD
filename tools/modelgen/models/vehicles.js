@@ -71,12 +71,46 @@ export function buildCarWheel() {
 	return b.build();
 }
 
-export const models = { patrol_car: buildPatrolCar, car_wheel: buildCarWheel };
+// The ice cream truck of the first chase suspect (persecucion.md, "El heladero"). Faces +Z, origin on the ground at
+// the center, 5.2 m long, 2.2 m wide, a giant cone on the roof. Uses the same separate wheels. Placeholder, not final art.
+export function buildIceCreamTruck() {
+	const cream = mat('truck_cream', 0xfff4e0), pink = mat('truck_pink', 0xff8fb8), mint = mat('truck_mint', 0x8fe3c8);
+	const cone = mat('cone', 0xd99a4e), scoop = mat('scoop', 0xffb6d0), darkGlass = mat('truck_glass', 0x2a3340);
+	const L = 5.2, F = L / 2, R = -L / 2, BOX_F = 0.9, TOP = 2.6;
+	const b = new Builder('ice_cream_truck');
+	box(b, 'body', black, W, 0.2, L, 0, FLOOR - 0.1, 0);
+	// Cab in front: hood, windshield, roof.
+	box(b, 'body', pink, W, 0.65, F - BOX_F, 0, FLOOR + 0.32, (F + BOX_F) / 2);
+	box(b, 'body', darkGlass, W - 0.1, 0.6, 0.06, 0, FLOOR + 0.95, F - 0.6, [-0.4, 0, 0]);
+	box(b, 'body', pink, W, 0.12, F - BOX_F - 0.6, 0, FLOOR + 1.3, (F + BOX_F - 0.6) / 2);
+	for (const x of [-1, 1]) box(b, 'body', darkGlass, 0.04, 0.5, 0.9, x * (W / 2 + 0.01), FLOOR + 0.95, BOX_F + 0.6);
+	box(b, 'body', grey, W + 0.06, 0.18, 0.16, 0, FLOOR + 0.05, F + 0.04);
+	for (const x of [-1, 1]) box(b, 'lights', glass, 0.36, 0.14, 0.04, x * 0.72, FLOOR + 0.42, F + 0.01);
+	// The ice cream box: cream walls, a mint stripe, the serving window on the right side.
+	box(b, 'box', cream, W, TOP - FLOOR, BOX_F - R, 0, (TOP + FLOOR) / 2, (BOX_F + R) / 2);
+	for (const x of [-1, 1]) box(b, 'box', mint, 0.02, 0.3, BOX_F - R - 0.1, x * (W / 2 + 0.005), FLOOR + 0.55, (BOX_F + R) / 2);
+	box(b, 'box', darkGlass, 0.03, 0.8, 1.6, W / 2 + 0.01, FLOOR + 1.45, -0.6);
+	box(b, 'box', pink, 0.5, 0.06, 1.8, W / 2 + 0.22, FLOOR + 1.95, -0.6, [0, 0, -0.35]);
+	box(b, 'box', grey, W + 0.06, 0.18, 0.16, 0, FLOOR + 0.05, R - 0.04);
+	for (const x of [-1, 1]) box(b, 'lights', tail, 0.3, 0.14, 0.04, x * 0.72, FLOOR + 0.42, R - 0.01);
+	// Giant cone on the roof, tip down, with two scoops.
+	b.add('cone', cone, new THREE.ConeGeometry(0.45, 1.1, 8), { pos: V(0, TOP + 0.55, -0.8), rot: [Math.PI, 0, 0] });
+	b.add('cone', scoop, new THREE.SphereGeometry(0.5, 8, 6), { pos: V(0, TOP + 1.25, -0.8) });
+	b.add('cone', mint, new THREE.SphereGeometry(0.4, 8, 6), { pos: V(0, TOP + 1.8, -0.8) });
+	for (const x of [-1, 1]) for (const z of [1.7, -1.7]) box(b, 'body', black, 0.1, 0.5, 0.95, x * (W / 2 + 0.01), FLOOR + 0.1, z);
+	return b.build();
+}
+
+export const models = { patrol_car: buildPatrolCar, car_wheel: buildCarWheel, ice_cream_truck: buildIceCreamTruck };
 
 const wheels = [[-1.1, 1.55], [1.1, 1.55], [-1.1, -1.55], [1.1, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }));
 export const views = {
 	patrol_car: {
 		items: [{ name: 'patrol_car', pos: [0, 0, 0] }, ...wheels, { name: 'cop_0', pos: [2.2, 0, -1.5], rotY: -0.6 }],
 		cam: { pos: [6.5, 3.8, 6.5], target: [0, 0.9, 0], fov: 38 },
+	},
+	ice_cream_truck: {
+		items: [{ name: 'ice_cream_truck', pos: [0, 0, 0] }, ...[[-1.1, 1.7], [1.1, 1.7], [-1.1, -1.7], [1.1, -1.7]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }))],
+		cam: { pos: [7.5, 4.2, 6.5], target: [0, 1.2, 0], fov: 38 },
 	},
 };
