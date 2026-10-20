@@ -148,13 +148,38 @@ export function buildContestPhoto() {
 	return b.build();
 }
 
+// The diamond necklace (peluqueria.md, "El collar de diamantes"): a silver chain ring with diamonds and a big drop
+// stone, lying flat, 0.16 m across; on a dog it goes around the neck. Origin at its middle.
+export function buildDiamondNecklace() {
+	const b = new Builder('diamond_necklace');
+	const silver = mat('silver', 0xd8dce4), diamond = mat('diamond', 0xe8fbff, { emissive: 0x4a6a78 });
+	b.add('chain', silver, new THREE.TorusGeometry(0.07, 0.006, 4, 18), { rot: [Math.PI / 2, 0, 0] });
+	for (let i = 0; i < 10; i++) {
+		const a = (i / 10) * Math.PI * 2;
+		b.add('stones', diamond, new THREE.OctahedronGeometry(0.012), { pos: V(Math.cos(a) * 0.07, 0.004, Math.sin(a) * 0.07) });
+	}
+	b.add('stones', diamond, new THREE.OctahedronGeometry(0.022), { pos: V(0, 0.004, 0.085), rot: [0, 0, 0] });
+	return b.build();
+}
+
+// Its velvet case: a dark blue box with the lid open, 0.16 x 0.06 x 0.12 m (lid not counted), origin at its middle.
+export function buildNecklaceCase() {
+	const b = new Builder('necklace_case');
+	const velvet = mat('case_velvet', 0x1e2a6a), satin = mat('case_satin', 0xf0e8f0), gold = mat('gold', 0xf2c84b, { emissive: 0x3a2a05 });
+	b.add('box', velvet, new THREE.BoxGeometry(0.16, 0.05, 0.12), { pos: V(0, -0.005, 0) });
+	b.add('box', satin, new THREE.BoxGeometry(0.14, 0.004, 0.1), { pos: V(0, 0.021, 0) });
+	b.add('lid', velvet, new THREE.BoxGeometry(0.16, 0.12, 0.012), { pos: V(0, 0.08, -0.064), rot: [-0.25, 0, 0] });
+	b.add('clasp', gold, new THREE.BoxGeometry(0.02, 0.012, 0.004), { pos: V(0, 0.005, 0.061) });
+	return b.build();
+}
+
 export const models = {
 	shampoo_bottle: buildShampoo,
 	dog_collar: buildCollar,
 	...Object.fromEntries(COATS.map((_, i) => [`dog_${i}`, () => buildDog(i)])),
 	dog_poodle: buildPoodle,
 	dog_trophy: buildDogTrophy, judge_cards: buildJudgeCards, golden_comb: buildGoldenComb,
-	contest_photo: buildContestPhoto,
+	contest_photo: buildContestPhoto, diamond_necklace: buildDiamondNecklace, necklace_case: buildNecklaceCase,
 };
 
 export const views = {
@@ -172,5 +197,9 @@ export const views = {
 			{ name: 'golden_comb', pos: [0.2, 0.008, -0.1], rotY: 0.4 }, { name: 'contest_photo', pos: [0.05, 0.07, 0.35], rotY: -0.2 },
 		],
 		cam: { pos: [0, 0.6, 1.2], target: [0, 0.1, 0.1], fov: 36 },
+	},
+	diamond_goods: {
+		items: [{ name: 'diamond_necklace', pos: [-0.12, 0.01, 0], rotY: 0.3 }, { name: 'necklace_case', pos: [0.15, 0.03, -0.02], rotY: -0.3 }],
+		cam: { pos: [0, 0.35, 0.6], target: [0, 0.03, 0], fov: 36 },
 	},
 };

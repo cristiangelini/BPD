@@ -37,6 +37,15 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_JUDGE_CARDS", "OBJ_EXTRA_GOLDEN_COMB"],
 		"rig": preload("res://scripts/case/groomer/contest_rig.gd"),
 	},
+	"diamonds": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_DIAMONDS_B", "BRIEF_DIAMONDS_C", "BRIEF_DIAMONDS_D"],
+		"find": "OBJ_FIND_DIAMONDS",
+		"hidden": [preload("res://scenes/props/necklace_case.tscn")],
+		"half_heights": [0.03],
+		"heavy": [false],
+		"extra_keys": ["OBJ_EXTRA_NECKLACE_CASE"],
+		"rig": preload("res://scripts/case/groomer/diamonds_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each room; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [
@@ -76,6 +85,7 @@ const TABLE_HEIGHT := 0.8
 const RAMIRO_POST := Vector3(2.5, FLOOR_TOP, 3.7)
 ## Each standing dryer's hood, open on top, behind its table.
 const DRYER_HOOD := FLOOR_TOP + 1.4
+const DRYER_Z := 5.6
 const BATHTUB_AT := Vector3(6.8, FLOOR_TOP, 3.3)
 const CAGE_XS: Array[float] = [-7.4, -6.5, -5.6, -4.7]
 const CAGE_Z := -1.4
@@ -129,7 +139,7 @@ const SPOTS := [
 	{"id": "in_doghouse", "at": DOGHOUSE_AT + Vector3(0, 0.05, 0), "heavy": true},
 	{"id": "in_freezer", "at": FREEZER_AT + Vector3(0, 0.05, 0), "heavy": true},
 	{"id": "behind_food", "at": Vector3(3.7, FLOOR_TOP, -1.6), "heavy": true},
-	{"id": "in_dryer", "at": Vector3(2.5, DRYER_HOOD + 0.05, 5.6), "heavy": false},
+	{"id": "in_dryer", "at": Vector3(2.5, DRYER_HOOD + 0.05, DRYER_Z), "heavy": false},
 	{"id": "under_armchair", "at": ARMCHAIR_AT, "heavy": false},
 	{"id": "in_towels", "at": TOWELS_AT + Vector3(0, 0.05, 0), "heavy": false},
 	{"id": "under_counter", "at": COUNTER_AT + Vector3(0, 0.05, 0), "heavy": true},
@@ -361,7 +371,7 @@ func _build_grooming_room() -> void:
 	for at: Vector3 in TABLES:
 		_build.legs(at, Vector2(1.2, 0.6), TABLE_HEIGHT, STEEL)
 		_build.box(at + Vector3(0, TABLE_HEIGHT + 0.03, 0), Vector3(1.2, 0.06, 0.6), WHITE)
-		var dryer := Vector3(at.x, DRYER_HOOD, 5.6)
+		var dryer := Vector3(at.x, DRYER_HOOD, DRYER_Z)
 		_build.box(Vector3(dryer.x, FLOOR_TOP + 0.7, dryer.z), Vector3(0.08, 1.4, 0.08), STEEL)
 		_build.open_box(dryer, Vector3(0.5, 0.35, 0.5), "top", PINK)
 		# Scissors hanging on the wall to the reception.
