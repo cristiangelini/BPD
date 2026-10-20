@@ -47,6 +47,11 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 | Caso (historia, pistas, sospecha marcada, entrega, denuncia, multas) | Anfitrión | La lista de Q y los avisos iguales para todos |
 | Plata, ítems y turno | Anfitrión | La pantalla de fin de turno igual para todos |
 
+## Menú con Esc
+- **Esc** en medio de un caso abre un menú: **Seguir**, **Invitar amigos** (solo el anfitrión, con Steam), la casilla **Voz siempre abierta** y **Salir de la sala** (o **Salir al menú** jugando solo). Esc otra vez lo cierra.
+- Jugando solo el juego se detiene mientras está abierto. Online no puede: dice "Tus compañeros siguen jugando." **(propuesta)**
+- Si sale el anfitrión, la sala se cierra y los demás vuelven a la pantalla de la sala con el aviso.
+
 ## Guardado
 - Lo guarda **solo el anfitrión**, al final de cada turno (decisiones 16 y 59). La partida es del anfitrión: para seguirla, él la abre y los amigos entran a su sala.
 - La plata y los ítems son del grupo, no de cada jugador **(propuesta)**: así no importa si un amigo falta un día.

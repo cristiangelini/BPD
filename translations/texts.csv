@@ -538,3 +538,8 @@ HINT_NEED_SHOVEL,Con las manos no: la pala está en el patio.,Not with your hand
 HINT_DIG_FOUND,¡Hay algo enterrado!,There's something buried here!,Tem algo enterrado!
 HINT_DIG_NOTHING,Nada. Solo tierra (y un hueso de pollo).,Nothing. Just dirt (and a chicken bone).,Nada. Só terra (e um osso de frango).
 LADY_CLUE_bones,"«¡Mi Fifí! Gracias, oficial. Mira, vi a Ramiro esconder algo %s. Y anoche lo oí cavar en el patio con una linterna.»","“My Fifí! Thank you, officer. Look, I saw Ramiro hide something %s. And last night I heard him digging in the yard with a flashlight.”","“Minha Fifí! Obrigada, policial. Olha, vi o Ramiro esconder algo %s. E ontem à noite ouvi ele cavando no quintal com uma lanterna.”"
+PAUSE_TITLE,Pausa,Pause,Pausa
+PAUSE_ONLINE_HINT,Tus compañeros siguen jugando.,Your partners keep playing.,Seus parceiros continuam jogando.
+PAUSE_RESUME,Seguir,Resume,Continuar
+PAUSE_LEAVE,Salir al menú,Quit to menu,Sair para o menu
+PAUSE_LEAVE_ROOM,Salir de la sala,Leave the room,Sair da sala
