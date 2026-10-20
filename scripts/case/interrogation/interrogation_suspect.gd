@@ -34,6 +34,8 @@ func _ready() -> void:
 	add_child(shape)
 	add_child((load(InterrogationCase.SUSPECT_MODELS[kind]) as PackedScene).instantiate())
 	_bubble = Label3D.new()
+	# Online his lines go to the guests by this name (NpcSync).
+	_bubble.name = "Bubble"
 	_bubble.position.y = bubble_height
 	_bubble.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	_bubble.pixel_size = 0.004
@@ -48,7 +50,7 @@ func _ready() -> void:
 
 
 func prompt_key(cop: Cop) -> String:
-	var case := InterrogationCase.active(get_tree())
+	var case := InterrogationCase.active(get_tree(), self)
 	if not case or not case.is_on():
 		return ""
 	if case.loose:
@@ -57,7 +59,7 @@ func prompt_key(cop: Cop) -> String:
 
 
 func use(cop: Cop) -> void:
-	var case := InterrogationCase.active(get_tree())
+	var case := InterrogationCase.active(get_tree(), self)
 	if not case:
 		return
 	if case.loose:

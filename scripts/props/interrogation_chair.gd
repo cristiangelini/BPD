@@ -25,7 +25,7 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 
 
 func _landed() -> void:
-	var case := InterrogationCase.active(get_tree())
+	var case := InterrogationCase.active(get_tree(), self)
 	if case and case.chair_thrown(self):
 		# One throw counts once, however many times it bounces.
 		let_go_at = -1
