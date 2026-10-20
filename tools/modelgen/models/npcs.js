@@ -255,6 +255,19 @@ const NPCS = {
 		b.add('head', hair, ellipsoid(0.16, 0.06, 0.1, 8, 4), { pos: V(0.04, 1.5, 0.12), rot: [0.3, 0, -0.2] });
 		b.add('body', C('sash', 0x2a8a4a), new THREE.TorusGeometry(0.4, 0.035, 4, 14), { pos: V(0, 0.75, 0.02), rot: [Math.PI / 2, 0.6, 0], scale: [1, 0.85, 1] });
 	},
+	// Heladero (persecución): white jacket with a pink apron, a paper cap, a big mustache and a cone in his hand.
+	heladero(b) {
+		const jacket = C('ice_jacket', 0xf6f2ea), pink = C('ice_pink', 0xf29ab8);
+		pearBody(b, SKIN.arena, { shirt: jacket, pants: C('ice_pants', 0x8fb8d8) });
+		b.add('body', pink, new THREE.BoxGeometry(0.36, 0.42, 0.04), { pos: V(0, 0.62, 0.33), rot: [-0.18, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { open: true });
+		mustache(b, C('ice_mustache', 0x3a2414), 1.3);
+		b.add('cap', pink, new THREE.BoxGeometry(0.32, 0.12, 0.16), { pos: V(0, 1.5, 0.0) });
+		b.add('cap', white, new THREE.BoxGeometry(0.33, 0.03, 0.17), { pos: V(0, 1.45, 0.0) });
+		b.add('props', C('ice_cone', 0xd9a35a), new THREE.ConeGeometry(0.05, 0.16, 6), { pos: V(0.52, 0.55, 0.15), rot: [Math.PI, 0, 0] });
+		b.add('props', pink, ellipsoid(0.06, 0.06, 0.06, 6, 4), { pos: V(0.52, 0.66, 0.15) });
+	},
 };
 
 export const NPC_NAMES = Object.keys(NPCS);

@@ -686,3 +686,17 @@ CONFESS_owner_groomer,"¡Está bien! ¡Lo escondí yo! ¡Los perros lo sabían y
 PROMPT_CHAIR_SIT,E: sentarte,E: sit down,E: sentar
 PROMPT_CHAIR_STAND,E: levantarte,E: stand up,E: levantar
 SUSPECT_REACT_SIT,¿Se va a sentar conmigo? Qué amable... ¿somos amigos ahora?,You're sitting with me? How nice... are we friends now?,Vai sentar comigo? Que gentil... agora somos amigos?
+BRIEF_CHASE_A,"¡Novatos! ¡Se nos escapa uno, y está pasando por la puerta de la comisaría!","Rookies! One's getting away, and he's driving right past the station door!","Novatos! Tem um fugindo, e está passando bem na porta da delegacia!"
+BRIEF_CHASE_ice_cream,"El heladero del barrio. Vendía helados de pistacho que eran de arvejas. Va en su camión rosado.","The neighborhood ice cream man. He sold pistachio ice cream that was made of peas. He's in his pink truck.","O sorveteiro do bairro. Vendia sorvete de pistache que era de ervilha. Está no caminhão cor-de-rosa dele."
+BRIEF_CHASE_C,"Tienen un minuto. Córtenle el paso con el patrullero, espósenlo y lo quiero acá, en una celda.","You have one minute. Cut him off with the patrol car, cuff him and bring him here, to a cell.","Vocês têm um minuto. Fechem a passagem dele com a viatura, algemem e quero ele aqui, numa cela."
+HINT_GO_CHASE,"¡Al patrullero! Apenas alguien se siente al volante, arranca la persecución.","To the patrol car! As soon as someone takes the wheel, the chase starts.","Para a viatura! Assim que alguém sentar no volante, a perseguição começa."
+HINT_CHASE_STOPPED,"¡Se rindió! Bájate y espósalo antes de que se acabe el tiempo.","He gave up! Get out and cuff him before time runs out.","Ele se rendeu! Desça e algeme ele antes que o tempo acabe."
+HINT_CHASE_CAUGHT,"¡Esposado! Llévalo del brazo al patrullero y vuelvan a la comisaría.","Cuffed! Walk him to the patrol car and drive back to the station.","Algemado! Leve ele pelo braço até a viatura e voltem para a delegacia."
+HINT_CHASE_IN_CAR,"Ya va detenido en el patrullero: a la comisaría, y a estacionar.","He's in the patrol car under arrest: back to the station, and park.","Ele já está preso na viatura: para a delegacia, e estacionem."
+HUD_DISTANCE,Distancia,Distance,Distância
+CASE_SOLVED_CHASE,¡Atrapado! Caso resuelto.,Caught! Case solved.,Pego! Caso resolvido.
+CASE_FAILED_ESCAPED,"Se nos escapó, novatos. Caso perdido.","He got away, rookies. Case lost.","Ele fugiu, novatos. Caso perdido."
+CASE_FAILED_TIME,"Se acabó el minuto: se nos escapó, novatos. Caso perdido.","The minute is up: he got away, rookies. Case lost.","Acabou o minuto: ele fugiu, novatos. Caso perdido."
+CHASE_ICE_CREAM_LINE_1,"¡Está bien, está bien! ¡Pero cuidado con el camión, que se me derriten!","Okay, okay! But careful with the truck, they're melting!","Tá bom, tá bom! Mas cuidado com o caminhão, que eles derretem!"
+CHASE_ICE_CREAM_LINE_2,"¡Eran arvejas premium! ¡Premium!","They were premium peas! Premium!","Eram ervilhas premium! Premium!"
+CHASE_ICE_CREAM_LINE_3,"¿Alguien quiere uno de frutilla? Es de remolacha, pero rico.","Anyone want a strawberry one? It's beetroot, but tasty.","Alguém quer um de morango? É de beterraba, mas é gostoso."

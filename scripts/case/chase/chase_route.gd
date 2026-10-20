@@ -15,11 +15,14 @@ const LANE := 1.5
 var corners: Array[Vector2i] = []
 
 
-static func draw(seed_value: int, count := CORNERS) -> ChaseRoute:
+## `start` is the corner he sets off from (by default, an inner corner drawn with the seed).
+static func draw(seed_value: int, count := CORNERS, start := Vector2i(-1, -1)) -> ChaseRoute:
 	var route := ChaseRoute.new()
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash("chase %d" % seed_value)
 	var at := Vector2i(rng.randi_range(1, CityLayout.COLUMNS - 1), rng.randi_range(1, CityLayout.ROWS - 1))
+	if on_grid(start):
+		at = start
 	route.corners.append(at)
 	var heading := Vector2i.ZERO
 	var used := {}
@@ -61,6 +64,16 @@ func waypoints() -> Array[Vector3]:
 		var offset := right_in * LANE if into == out else (right_in + right_out) * LANE
 		points.append(corner_point(corners[k]) + offset)
 	return points
+
+
+## The corner nearest to `point` (in the city's space).
+static func nearest_corner(point: Vector3) -> Vector2i:
+	var best := Vector2i.ZERO
+	for i in CityLayout.COLUMNS + 1:
+		for j in CityLayout.ROWS + 1:
+			if corner_point(Vector2i(i, j)).distance_to(point) < corner_point(best).distance_to(point):
+				best = Vector2i(i, j)
+	return best
 
 
 ## The block of street between two corners, the same whichever way it's driven.

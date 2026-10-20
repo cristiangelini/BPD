@@ -11,6 +11,8 @@ const PLACES := {
 	"bakery": "res://scenes/levels/bakery.tscn",
 	"groomer": "res://scenes/levels/groomer.tscn",
 	"interrogation": "res://scenes/levels/interrogation.tscn",
+	# Not drawn yet (persecucion.md, step 5): --place=chase opens it.
+	"chase": "res://scenes/levels/chase.tscn",
 }
 ## The raids, drawn by the seed.
 const ORDER := ["grandpa", "bakery", "groomer"]
