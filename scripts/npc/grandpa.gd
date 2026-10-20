@@ -38,6 +38,9 @@ const ASKS := 3
 const ASK_COOLDOWN := 5.0
 ## Michi meowing (picked up) or a cop tripping over it (propuesta). He hears it from further than he sees.
 const CAT_UPSET := 5.0
+## A camera flash in his face, and being cuffed (herramientas.md, propuesta).
+const PHOTOGRAPHED := 3.0
+const CUFFED := 15.0
 const HEARING := 12.0
 
 var complaint := 0.0
@@ -54,6 +57,8 @@ var _story_wait := 0.0
 var slips: Array[String] = []
 var asked := 0
 var _ask_wait := 0.0
+## Cuffed by a cop: he stays where he is until it runs out.
+var _cuffed_left := 0.0
 
 @onready var _agent: NavigationAgent3D = $Agent
 @onready var _bubble: Label3D = $Bubble
@@ -118,6 +123,7 @@ func is_telling_story() -> bool:
 func _physics_process(delta: float) -> void:
 	_story_wait = maxf(_story_wait - delta, 0.0)
 	_ask_wait = maxf(_ask_wait - delta, 0.0)
+	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
 	if listener:
 		listener.stats["story_seconds"] += delta
 		_story_left -= delta
@@ -130,7 +136,7 @@ func _physics_process(delta: float) -> void:
 		_set_complaint(complaint - 1.0)
 	var cop := nearest_cop()
 	var wish := Vector3.ZERO
-	if cop and not listener and global_position.distance_to(cop.global_position) > KEEP_AWAY:
+	if cop and not listener and not is_cuffed() and global_position.distance_to(cop.global_position) > KEEP_AWAY:
 		_agent.target_position = cop.global_position
 		if not _agent.is_navigation_finished():
 			wish = _agent.get_next_path_position() - global_position
@@ -155,6 +161,23 @@ func nearest_cop() -> Cop:
 			best = cop
 			best_distance = d
 	return best
+
+
+## A cop took his photo with the flash.
+func photographed(_cop: Cop) -> void:
+	_raise(PHOTOGRAPHED)
+	_say("NPC_NO_PHOTOS")
+
+
+## A cop cuffed him for `seconds`: he can't follow anyone, and complains.
+func cuffed(seconds: float) -> void:
+	_cuffed_left = maxf(_cuffed_left, seconds)
+	_raise(CUFFED)
+	_say("NPC_POLICE_ABUSE")
+
+
+func is_cuffed() -> bool:
+	return _cuffed_left > 0.0
 
 
 ## An ornament broke at `at`: it counts if he is close and can see it.

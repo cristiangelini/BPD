@@ -184,6 +184,7 @@ var city_map: CityMap
 
 
 func _ready() -> void:
+	add_to_group("photo_clues")
 	if case_seed == 0:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
@@ -193,6 +194,7 @@ func _ready() -> void:
 	rig = story.rig.new() if story.rig != null else StoryRig.new()
 	raid = RaidCase.new()
 	raid.case_seed = case_seed
+	raid.prints_key = "PRINTS_GRANDPA"
 	raid.story_id = story.id
 	raid.story_briefing = story.briefing
 	raid.find_key = story.find_key
@@ -400,12 +402,20 @@ func trail(map: RID, from: Vector3, to: Vector3, step: float, feet: bool, color:
 	return marks
 
 
+## A cop walked close to one of the marks, or lights it with the flashlight from farther away (herramientas.md).
 func _a_cop_sees(marks: Array) -> bool:
 	for cop in get_tree().get_nodes_in_group("cops"):
 		for mark: Node3D in marks:
 			if (cop as Cop).global_position.distance_to(mark.global_position) < SEE_TRAIL:
 				return true
+			if cop.belt and cop.belt.flashlight.lights(mark.global_position):
+				return true
 	return false
+
+
+## The trails a photo can catch (PhotoCamera): checklist line -> marks.
+func photo_clues() -> Dictionary:
+	return trails
 
 
 func _material(color: Color) -> StandardMaterial3D:

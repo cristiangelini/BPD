@@ -33,7 +33,7 @@ var _eating_left := 0.0
 ## While holding E on the grandpa he tells a story; this cop can't do anything else (allanamiento.md).
 var listening_to: Grandpa
 ## Silly numbers for the joke awards at the end of the shift (decision 41).
-var stats := {"ram_misses": 0, "story_seconds": 0.0, "meters_driven": 0.0}
+var stats := {"ram_misses": 0, "story_seconds": 0.0, "meters_driven": 0.0, "photos": 0}
 ## The patrol car this cop sits in, if any: the body rides the seat and doesn't walk or collide.
 var vehicle: PatrolCar
 ## The comisario is giving the case (CaseBriefing): the cop can look around but not move or use things.
@@ -42,6 +42,10 @@ var in_briefing := false
 var hands: CopHands
 ## Player index (0 to 3) whose skin this cop wears.
 var uniform := 0
+## The 4 tool slots (herramientas.md).
+var belt: ToolBelt
+## A partner cuffed this cop: no grabbing, tools or ram until it runs out or someone frees them with E.
+var _cuffed_left := 0.0
 
 @onready var _shape: CollisionShape3D = $Shape
 @onready var _head: Node3D = $Head
@@ -58,6 +62,8 @@ func _ready() -> void:
 	camera.fov = GameScale.FOV
 	_apply_height(GameScale.COP_HEIGHT)
 	_hint_timer.timeout.connect(_hint.hide)
+	belt = ToolBelt.new(self)
+	add_child(belt)
 	if input_enabled:
 		_hide_from_own_camera()
 		hands = CopHands.new(self)
@@ -73,6 +79,7 @@ func aim_hit(reach: float) -> Dictionary:
 
 
 func equip_ram() -> void:
+	belt.holster()
 	ram = RAM_SCENE.instantiate()
 	ram.cop = self
 	camera.add_child(ram)
@@ -100,6 +107,13 @@ func current_prompt() -> String:
 		return "PROMPT_HOLDING"
 	if ram:
 		return "PROMPT_RAM"
+	if is_cuffed():
+		return "PROMPT_CUFFED"
+	if belt.held_tool():
+		return belt.held_tool().prompt_key()
+	var partner := _cuffed_partner()
+	if partner:
+		return "PROMPT_UNCUFF"
 	var target := _usable_target()
 	if target and target.has_method("prompt_key"):
 		return target.prompt_key(self)
@@ -127,6 +141,23 @@ func eat(seconds: float) -> void:
 
 func is_eating() -> bool:
 	return _eating_left > 0.0
+
+
+## Cuffed by a partner for `seconds`: lets go of everything in hand.
+func cuff(seconds: float) -> void:
+	$Grabber.release()
+	drop_ram()
+	belt.holster()
+	_cuffed_left = maxf(_cuffed_left, seconds)
+	show_hint("HINT_CUFFED")
+
+
+func uncuff() -> void:
+	_cuffed_left = 0.0
+
+
+func is_cuffed() -> bool:
+	return _cuffed_left > 0.0
 
 
 ## Busy: staggered, listening to the grandpa, sitting in the car or hearing the comisario. No walking, grabbing or ramming.
@@ -222,6 +253,10 @@ func _physics_process(delta: float) -> void:
 
 ## Uses what the camera points at (a pot, a door...), if it can be used. Returns true if something was used.
 func use() -> bool:
+	var partner := _cuffed_partner()
+	if partner:
+		partner.uncuff()
+		return true
 	var target := _usable_target()
 	if not target:
 		return false
@@ -235,6 +270,14 @@ func ask() -> bool:
 	if is_busy() or not target or not target.has_method("ask"):
 		return false
 	return target.ask(self)
+
+
+## A cuffed cop the camera points at within reach, if any.
+func _cuffed_partner() -> Cop:
+	var hit := aim_hit(GameScale.GRAB_REACH)
+	if not hit.is_empty() and hit.collider is Cop and (hit.collider as Cop).is_cuffed():
+		return hit.collider
+	return null
 
 
 ## What the camera points at within reach that can be used with E (a door's body is a child of the door).
@@ -270,6 +313,7 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 
 	_stagger_left = maxf(_stagger_left - delta, 0.0)
 	_eating_left = maxf(_eating_left - delta, 0.0)
+	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
 	var direction := (transform.basis * Vector3(wish.x, 0.0, wish.y)).normalized()
 	var speed := 0.0 if is_busy() else current_speed()
 	velocity.x = direction.x * speed

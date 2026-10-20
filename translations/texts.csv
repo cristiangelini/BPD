@@ -296,3 +296,36 @@ OBJ_EXTRA_PIGEON_CAGE,Extra: la jaula de las palomas,Extra: the pigeon cage,Extr
 OBJ_EXTRA_WHISTLE,Extra: el silbato,Extra: the whistle,Extra: o apito
 HINT_FEATHERS,"Plumas y migas junto a la ventana... ¿Palomas?","Feathers and crumbs by the window... Pigeons?","Penas e migalhas perto da janela... Pombos?"
 GOSSIP_CLUE_pigeons,"«¡Gracias! Mira, anoche vi a Marta esconder algo %s. Y todas las mañanas sale una paloma de su ventana con un papelito.»","“Thanks! Look, last night I saw Marta hide something %s. And every morning a pigeon flies out of her window with a little note.”","“Valeu! Olha, ontem à noite vi a Marta esconder algo %s. E toda manhã sai um pombo da janela dela com um papelzinho.”"
+TOOL_HANDCUFFS,Esposas,Handcuffs,Algemas
+TOOL_FLASHLIGHT,Linterna,Flashlight,Lanterna
+TOOL_CAMERA,Cámara,Camera,Câmera
+TOOL_PRINT_KIT,Huellas,Prints,Digitais
+PROMPT_FLASHLIGHT_ON,Clic izquierdo o F: prender la linterna · mismo número: guardarla,Left click or F: turn the flashlight on · same number: put it away,Clique esquerdo ou F: acender a lanterna · mesmo número: guardá-la
+PROMPT_FLASHLIGHT_OFF,Clic izquierdo o F: apagar la linterna · mismo número: guardarla,Left click or F: turn the flashlight off · same number: put it away,Clique esquerdo ou F: apagar a lanterna · mesmo número: guardá-la
+PROMPT_CAMERA,Clic izquierdo: sacar una foto · mismo número: guardarla,Left click: take a photo · same number: put it away,Clique esquerdo: tirar uma foto · mesmo número: guardá-la
+PROMPT_CAMERA_EMPTY,No quedan fotos · mismo número: guardar la cámara,No photos left · same number: put the camera away,Acabaram as fotos · mesmo número: guardar a câmera
+HINT_NO_FILM,¡Se acabó el rollo!,Out of film!,Acabou o filme!
+HINT_PHOTO,¡Clic! Salió movida.,Click! It came out blurry.,Clique! Saiu tremida.
+HINT_PHOTO_CLUE,¡Clic! Pista fotografiada y anotada en la planilla.,Click! Clue photographed and noted on the checklist.,Clique! Pista fotografada e anotada na prancheta.
+PROMPT_HANDCUFFS,Clic izquierdo: esposar · mismo número: guardarlas,Left click: cuff · same number: put them away,Clique esquerdo: algemar · mesmo número: guardá-las
+HINT_CUFF_CAT,Michi no tiene muñecas.,Michi has no wrists.,Michi não tem pulsos.
+HINT_CUFFED,¡Te esposaron! Pide que te suelten con E.,You got cuffed! Ask someone to free you with E.,Você foi algemado! Peça para te soltarem com E.
+PROMPT_CUFFED,Esposado: un compañero te suelta con E,Cuffed: a partner frees you with E,Algemado: um colega te solta com E
+PROMPT_UNCUFF,E: quitarle las esposas,E: take the cuffs off,E: tirar as algemas
+PROMPT_PRINT_KIT,Mantén clic izquierdo: buscar huellas · mismo número: guardar el kit,Hold left click: dust for prints · same number: put the kit away,Segure o clique esquerdo: procurar digitais · mesmo número: guardar o kit
+PROMPT_PRINT_KIT_DUSTING,Echando polvo...,Dusting...,Passando o pó...
+PRINTS_FRESH,Huellas frescas %s,Fresh prints %s,Digitais frescas %s
+PRINTS_COPS,Huellas de policía: %s,Cop prints: %s,Digitais de policial: %s
+PRINTS_NONE,Ni una huella. Demasiado limpio...,Not a single print. Too clean...,Nenhuma digital. Limpo demais...
+PRINTS_OWNER,del dueño,of the owner,do dono
+PRINTS_GRANDPA,del abuelo,of the grandpa,do vovô
+PRINTS_BAKER,de la panadera,of the baker,da padeira
+CLUE_PRINTS,Huellas frescas %s cerca de algo escondido,Fresh prints %s near something hidden,Digitais frescas %s perto de algo escondido
+COLOR_PINK,rosa,pink,rosa
+COLOR_ORANGE,naranja,orange,laranja
+COLOR_LIME,lima,lime,lima
+COLOR_VIOLET,violeta,violet,violeta
+HINT_DROP_RAM_FIRST,Tienes las manos ocupadas con el ariete (G para soltarlo).,Your hands are busy with the ram (G to drop it).,Suas mãos estão ocupadas com o aríete (G para soltar).
+NPC_NO_PHOTOS,¡Sin fotos!,No photos!,Sem fotos!
+NPC_POLICE_ABUSE,¡Abuso policial!,Police abuse!,Abuso policial!
+AWARD_PHOTOS,Fotógrafo del turno: %s (%d fotos),Photographer of the shift: %s (%d photos),Fotógrafo do turno: %s (%d fotos)
