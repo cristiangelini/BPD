@@ -54,3 +54,4 @@
 - Box of donuts at the armory (30, four donuts): E with the box in hand eats one, which fills the stamina and keeps the mouth too full to ask (R) for 3 s.
 - Rubber gloves at the armory (120, bought once): yellow hands, and fragile evidence loses half on hits while a gloved cop holds it or just threw it.
 - The wheelbarrow at the armory (200, only one): one cop pushes up to 40 kg (the safe, the radio transmitter), slower; E loads, E parks, G tips it over; it squeaks and the grandpa complains.
+- The pet salon, inside: reception with the counter, the waiting armchair and the collar display, grooming room with two tables, dryers and the bathtub, the cages, the locked storeroom and the yard with the doghouse; 12 hiding spots, 24 shampoo bottles and 6 collars that break (fine of 20 each), on its lot in the city. "Peluquería (prueba)" in the menu opens it.

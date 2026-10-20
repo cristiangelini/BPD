@@ -169,13 +169,14 @@ SUSPECT_fight,Club de lucha de jubilados,Retirees fight club,Clube da luta dos a
 CLUE_SUSPECT_fight,"Unos guantes de boxeo gastados, talle jubilado.","A pair of worn boxing gloves, retiree size.","Umas luvas de boxe gastas, tamanho aposentado."
 MENU_CITY,Ciudad (prueba),City (test),Cidade (teste)
 MENU_BAKERY,Panadería (prueba),Bakery (test),Padaria (teste)
+MENU_GROOMER,Peluquería (prueba),Pet salon (test),Pet shop (teste)
 PLACE_STATION,Comisaría,Police station,Delegacia
 PLACE_HOTEL,Hotel Gran Siesta,Grand Nap Hotel,Hotel Grande Soneca
 PLACE_INSURANCE,Seguros Todo Tranquilo,All Calm Insurance,Seguros Tudo Tranquilo
 PLACE_GRANDPA,N.º 12,No. 12,N.º 12
 PLACE_APARTMENTS,Edificio Las Palomas,The Pigeons Building,Edifício As Pombas
 PLACE_BAKERY,Panadería El Pan Feliz,The Happy Bread Bakery,Padaria O Pão Feliz
-PLACE_PET_SALON,Peluquería de mascotas Pelos y Señas,Fur and Signs Pet Salon,Pet shop Pelos e Sinais
+PLACE_PET_SALON,Peluquería de mascotas Pelito Feliz,Pelito Feliz Pet Salon,Pet shop Pelito Feliz
 PLACE_HARDWARE,Ferretería El Tornillo Flojo,The Loose Screw Hardware,Ferragens O Parafuso Solto
 PLACE_GYM,Gimnasio Hierro Puro,Pure Iron Gym,Academia Ferro Puro
 PLACE_DOLL_FACTORY,Fábrica de Muñecos Sonrisas,Smiles Doll Factory,Fábrica de Bonecos Sorrisos
@@ -253,6 +254,16 @@ LOC_bread_shelf,en el estante del pan,on the bread shelf,na prateleira do pão
 LOC_under_kneading_table,abajo de la mesa de amasar,under the kneading table,embaixo da mesa de sovar
 LOC_in_bathroom,en el baño,in the bathroom,no banheiro
 LOC_under_marta_bed,abajo de la cama de Marta,under Marta's bed,embaixo da cama da Marta
+LOC_in_cage,en una jaula,in a cage,numa gaiola
+LOC_in_doghouse,en la cucha del patio,in the doghouse in the yard,na casinha de cachorro do quintal
+LOC_in_freezer,en el freezer,in the freezer,no freezer
+LOC_behind_food,detrás de las bolsas de alimento,behind the dog food sacks,atrás dos sacos de ração
+LOC_in_dryer,adentro del secador de pie,inside the standing dryer,dentro do secador de pé
+LOC_under_armchair,abajo del sillón de espera,under the waiting armchair,embaixo da poltrona de espera
+LOC_in_towels,en la caja de toallas,in the towel box,na caixa de toalhas
+LOC_on_cages,arriba de las jaulas,on top of the cages,em cima das gaiolas
+LOC_under_grooming_table,abajo de la mesa de corte,under the grooming table,embaixo da mesa de tosa
+LOC_in_vitrine,en la vitrina de collares,in the collar display,na vitrine de coleiras
 OBJ_ENTER_BAKERY,Entrar a la panadería (está abierta),Get into the bakery (it's open),Entrar na padaria (está aberta)
 OBJ_GUESS_BAKERY,"Averiguar qué pasa en la panadería (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the bakery (with Q open, hold 1, 2 or 3)","Descobrir o que acontece na padaria (com Q aberta, segure 1, 2 ou 3)"
 OBJ_BROKEN_BAKERY,Panes y tortas rotos: %d (multa: %d),Broken loaves and cakes: %d (fine: %d),Pães e bolos quebrados: %d (multa: %d)
