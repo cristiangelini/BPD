@@ -26,6 +26,9 @@ const SAW_TILL := 10.0
 const ASKED := 5.0
 const ASKS := 2
 const ASK_COOLDOWN := 3.0
+## Every phone call she takes (the angry couples of the wedding story) makes her nervous.
+const CALL_NERVES := 3.0
+const CALL_LINES := ["BAKER_PHONE_1", "BAKER_PHONE_2", "BAKER_PHONE_3"]
 const SIGHT_RANGE := 8.0
 const EYE := 1.4
 ## The meter drops one point every DECAY_EVERY seconds while nothing happens.
@@ -56,6 +59,10 @@ var offering := false
 ## What she lets slip when asked, in order (the bakery fills it from the case seed).
 var slips: Array[String] = []
 var asked := 0
+## Where she answers the phone, when the story has one (set by its rig).
+var call_post: Vector3
+var _call_left := 0.0
+var _calls := 0
 var _ask_wait := 0.0
 var _serve_left := SERVE_TIME
 var _sample_wait := SAMPLE_EVERY
@@ -105,6 +112,18 @@ func ask(_cop: Cop) -> bool:
 	return true
 
 
+## She goes to the phone and talks for `seconds`: nobody guards the bakehouse door meanwhile.
+func take_call(seconds: float) -> void:
+	_call_left = seconds
+	_raise(CALL_NERVES)
+	_say(CALL_LINES[_calls % CALL_LINES.size()], seconds)
+	_calls += 1
+
+
+func is_on_call() -> bool:
+	return _call_left > 0.0
+
+
 func is_serving() -> bool:
 	return not queue.is_empty()
 
@@ -116,8 +135,12 @@ func _physics_process(delta: float) -> void:
 	if _quiet >= DECAY_EVERY:
 		_quiet = 0.0
 		_set_complaint(complaint - 1.0)
-	_walk_to(till_post if is_serving() else door_post, delta)
-	if is_serving() and global_position.distance_to(till_post) < 0.3:
+	if is_on_call():
+		_call_left -= delta
+		_walk_to(call_post, delta)
+	else:
+		_walk_to(till_post if is_serving() else door_post, delta)
+	if is_serving() and not is_on_call() and global_position.distance_to(till_post) < 0.3:
 		_serve_left -= delta
 		if _serve_left <= 0.0:
 			_serve_left = SERVE_TIME
