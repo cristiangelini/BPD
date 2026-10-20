@@ -45,7 +45,7 @@ func show_report(solved: bool, report: Dictionary, broken_ornaments: int, awards
 
 
 ## The campaign's line under the pay: which shift this was and the group's money. When the campaign is over, the
-## verdict says how: promoted after the last shift, or lost for missing the quota (decision 86).
+## verdict says how: promoted after the last shift, or lost for missing the quota (decision 88).
 func show_campaign(shift: int, shifts: int, money: int, over: bool, promoted := false) -> void:
 	_line(tr("SHIFT_TURN") % [shift, shifts], money, true)
 	if over:

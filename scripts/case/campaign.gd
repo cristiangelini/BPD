@@ -3,12 +3,12 @@ extends RefCounted
 
 ## A whole match of 5 shifts, saved between shifts (docs/diseno/guardado.md): the next shift, the group's money, the
 ## items, and the cases that follow, which all come from the campaign's own seed. Only the host saves it online.
-## Each shift has a quota that rises shift by shift; missing it ends the campaign (decision 86, comisaria.md).
+## Each shift has a quota that rises shift by shift; missing it ends the campaign (decision 88, comisaria.md).
 
 const SHIFTS := 5
 const SAVE_PATH := "user://partidas/partida.json"
 const VERSION := 1
-## The first shift's quota and how much it rises each shift after (decision 86). A target, not money paid.
+## The first shift's quota and how much it rises each shift after (decision 88). A target, not money paid.
 const QUOTA_START := 800
 const QUOTA_STEP := 100
 

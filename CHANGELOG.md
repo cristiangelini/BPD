@@ -56,7 +56,7 @@
 - Online, step 5 (the case): the host's case decides; every guest sees the same checklist, the comisario's story once someone guesses it, the result and the end of shift screen. Guests mark suspicions through the host, and only the host starts the next case.
 - Online, step 5 (people and animals): the host runs the grandpa, Marta, the customers and the pigeons; guests see copies that walk, talk and get annoyed the same, and only the host brings customers in. Letting go of E ends the grandpa's story on every PC.
 - Campaign save: Play starts a 5 shift campaign and each end of shift saves it (shift, group money, items and the cases that follow, all from the campaign seed); Continue in the menu, or in the room for the host, picks it up where it was. Design in docs/diseno/guardado.md.
-- Campaign quota: each shift's quota rises from 800 by 100 (decision 86); missing it loses the campaign ("No cumplieron la cuota: partida perdida") and making all 5 ends it with "¡Ascendidos!".
+- Campaign quota: each shift's quota rises from 800 by 100 (decision 88); missing it loses the campaign ("No cumplieron la cuota: partida perdida") and making all 5 ends it with "¡Ascendidos!".
 - The police station opens: a guard room where the cops appear, the comisario's office, the armory behind a barred counter, two cells, the board room (closed) and a break room, with low poly furniture.
 - The comisario gives the case in his office: E on him starts the briefing, and the patrol car stays locked ("¡¿Adónde van?! ¡Primero el caso!") until then.
 - The armory: the armero behind the counter opens his list with E (cash box, price, take or buy); the battering ram is taken there instead of lying by the grandpa's door.
