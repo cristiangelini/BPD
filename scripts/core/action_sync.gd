@@ -38,38 +38,39 @@ static func is_target(node: Node) -> bool:
 		or node.has_method("struck")
 
 
-## `actor` (this PC's own cop) does `method` on `target` (the actor itself for "drop_ram"), on every PC.
-func act(actor: Cop, method: String, target: Node) -> void:
+## `actor` (this PC's own cop) does `method` on `target` (the actor itself for "drop_ram"), on every PC. `args` are
+## what the actor's own PC decided (which car seat), so every PC does exactly the same.
+func act(actor: Cop, method: String, target: Node, args := []) -> void:
 	var index := -1 if target == actor else targets.find(target)
 	if index < 0 and target != actor:
 		return
 	if multiplayer.is_server():
-		_do_and_tell(multiplayer.get_unique_id(), index, method)
+		_do_and_tell(multiplayer.get_unique_id(), index, method, args)
 	else:
-		_ask.rpc_id(net.HOST_ID, index, method)
+		_ask.rpc_id(net.HOST_ID, index, method, args)
 
 
 @rpc("any_peer", "call_remote", "reliable")
-func _ask(index: int, method: String) -> void:
+func _ask(index: int, method: String, args: Array) -> void:
 	if multiplayer.is_server():
-		_do_and_tell(multiplayer.get_remote_sender_id(), index, method)
+		_do_and_tell(multiplayer.get_remote_sender_id(), index, method, args)
 
 
-func _do_and_tell(actor_id: int, index: int, method: String) -> void:
+func _do_and_tell(actor_id: int, index: int, method: String, args: Array) -> void:
 	performing = actor_id != multiplayer.get_unique_id()
-	var done := _perform(actor_id, index, method)
+	var done := _perform(actor_id, index, method, args)
 	performing = false
 	if done:
 		for peer: int in net.scene_peers:
-			_told.rpc_id(peer, actor_id, index, method)
+			_told.rpc_id(peer, actor_id, index, method, args)
 
 
 @rpc("authority", "call_remote", "reliable")
-func _told(actor_id: int, index: int, method: String) -> void:
-	_perform(actor_id, index, method)
+func _told(actor_id: int, index: int, method: String, args: Array) -> void:
+	_perform(actor_id, index, method, args)
 
 
-func _perform(actor_id: int, index: int, method: String) -> bool:
+func _perform(actor_id: int, index: int, method: String, args: Array) -> bool:
 	var sync: CopSync = net.cop_syncs.get(actor_id)
 	if not sync or not is_instance_valid(sync.cop):
 		return false
@@ -77,10 +78,7 @@ func _perform(actor_id: int, index: int, method: String) -> bool:
 	var target: Node = actor if index < 0 else (targets[index] if index < targets.size() else null)
 	if not is_instance_valid(target) or not target.has_method(method):
 		return false
-	if ACTOR_METHODS.has(method):
-		target.call(method, actor)
-	else:
-		target.call(method)
+	target.callv(method, ([actor] if ACTOR_METHODS.has(method) else []) + args)
 	return true
 
 
