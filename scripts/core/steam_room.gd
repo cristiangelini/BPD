@@ -25,6 +25,8 @@ var steam: Object
 ## The lobby this PC is in, 0 if none.
 var lobby_id := 0
 var _started := false
+## Steam starts once per process: the tests build several Nets in one (online_pcs.gd), and a second steamInitEx errors.
+static var _steam_started := false
 
 
 ## The lobby id after "+connect_lobby" among `args`, as Steam passes it when the game launches from an invite; 0 if none.
@@ -47,10 +49,12 @@ func start() -> bool:
 	if not Engine.has_singleton("Steam") or not ClassDB.class_exists("SteamMultiplayerPeer"):
 		return false
 	steam = Engine.get_singleton("Steam")
-	var result: Dictionary = steam.call("steamInitEx", APP_ID)
-	if int(result.get("status", -1)) != 0:
-		push_warning("Steam didn't start: %s" % result.get("verbal", ""))
-		return false
+	if not _steam_started:
+		var result: Dictionary = steam.call("steamInitEx", APP_ID)
+		if int(result.get("status", -1)) != 0:
+			push_warning("Steam didn't start: %s" % result.get("verbal", ""))
+			return false
+		_steam_started = true
 	_started = true
 	steam.connect("lobby_created", _on_lobby_created)
 	steam.connect("lobby_joined", _on_lobby_joined)
