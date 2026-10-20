@@ -24,6 +24,8 @@ var awake := false
 var _weave := 0.0
 var _trip_wait := 0.0
 var _meow_wait := 0.0
+## Cuffed by a cop: Michi sits still and doesn't weave between legs (herramientas.md).
+var _cuffed_left := 0.0
 
 @onready var _bubble: Label3D = $Bubble
 
@@ -45,6 +47,15 @@ func hold(holder_id: int, point: Vector3) -> void:
 	super(holder_id, point)
 
 
+func cuffed(seconds: float) -> void:
+	_cuffed_left = maxf(_cuffed_left, seconds)
+	meow()
+
+
+func is_cuffed() -> bool:
+	return _cuffed_left > 0.0
+
+
 func meow() -> void:
 	if _meow_wait > 0.0:
 		return
@@ -59,7 +70,8 @@ func _physics_process(delta: float) -> void:
 	super(delta)
 	_trip_wait = maxf(_trip_wait - delta, 0.0)
 	_meow_wait = maxf(_meow_wait - delta, 0.0)
-	if not awake or is_held():
+	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
+	if not awake or is_held() or is_cuffed():
 		return
 	var cop := _nearest_cop()
 	if not cop:

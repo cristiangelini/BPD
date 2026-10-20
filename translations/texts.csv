@@ -34,6 +34,9 @@ PROMPT_DOOR_LOCKED,Cerrada: busca la llave en las macetas o usa el ariete,Locked
 PROMPT_DOOR,E: abrir o cerrar la puerta,E: open or close the door,E: abrir ou fechar a porta
 PROMPT_GRANDPA,Mantén E: escuchar una historia (lo distrae) · R: preguntarle (se enoja un poco),Hold E: listen to a story (distracts him) · R: question him (annoys him a bit),Segure E: ouvir uma história (distrai ele) · R: interrogar (ele se irrita um pouco)
 PROMPT_CAR,E: subir al patrullero,E: get in the patrol car,E: entrar na viatura
+PROMPT_COMISARIO,E: hablar con el comisario,E: talk to the comisario,E: falar com o comissário
+HINT_SEE_COMISARIO,El comisario te espera en su oficina: pasa a buscar el caso.,The comisario is waiting in his office: go get the case.,O comissário te espera na sala dele: vá buscar o caso.
+HINT_COMISARIO_FIRST,¡¿Adónde van?! ¡Primero el caso!,Where do you think you're going?! The case first!,Aonde vocês vão?! Primeiro o caso!
 BRIEF_SPEAKER,Comisario,Commissioner,Comissário
 BRIEF_CONTINUE,E: seguir,E: continue,E: continuar
 BRIEF_1_1_A,"¡Novatos! Atención, que no lo voy a repetir.","Rookies! Listen up, I won't say it twice.","Novatos! Atenção, que eu não vou repetir."
@@ -166,13 +169,14 @@ SUSPECT_fight,Club de lucha de jubilados,Retirees fight club,Clube da luta dos a
 CLUE_SUSPECT_fight,"Unos guantes de boxeo gastados, talle jubilado.","A pair of worn boxing gloves, retiree size.","Umas luvas de boxe gastas, tamanho aposentado."
 MENU_CITY,Ciudad (prueba),City (test),Cidade (teste)
 MENU_BAKERY,Panadería (prueba),Bakery (test),Padaria (teste)
+MENU_GROOMER,Peluquería (prueba),Pet salon (test),Pet shop (teste)
 PLACE_STATION,Comisaría,Police station,Delegacia
 PLACE_HOTEL,Hotel Gran Siesta,Grand Nap Hotel,Hotel Grande Soneca
 PLACE_INSURANCE,Seguros Todo Tranquilo,All Calm Insurance,Seguros Tudo Tranquilo
 PLACE_GRANDPA,N.º 12,No. 12,N.º 12
 PLACE_APARTMENTS,Edificio Las Palomas,The Pigeons Building,Edifício As Pombas
 PLACE_BAKERY,Panadería El Pan Feliz,The Happy Bread Bakery,Padaria O Pão Feliz
-PLACE_PET_SALON,Peluquería de mascotas Pelos y Señas,Fur and Signs Pet Salon,Pet shop Pelos e Sinais
+PLACE_PET_SALON,Peluquería de mascotas Pelito Feliz,Pelito Feliz Pet Salon,Pet shop Pelito Feliz
 PLACE_HARDWARE,Ferretería El Tornillo Flojo,The Loose Screw Hardware,Ferragens O Parafuso Solto
 PLACE_GYM,Gimnasio Hierro Puro,Pure Iron Gym,Academia Ferro Puro
 PLACE_DOLL_FACTORY,Fábrica de Muñecos Sonrisas,Smiles Doll Factory,Fábrica de Bonecos Sorrisos
@@ -250,6 +254,16 @@ LOC_bread_shelf,en el estante del pan,on the bread shelf,na prateleira do pão
 LOC_under_kneading_table,abajo de la mesa de amasar,under the kneading table,embaixo da mesa de sovar
 LOC_in_bathroom,en el baño,in the bathroom,no banheiro
 LOC_under_marta_bed,abajo de la cama de Marta,under Marta's bed,embaixo da cama da Marta
+LOC_in_cage,en una jaula,in a cage,numa gaiola
+LOC_in_doghouse,en la cucha del patio,in the doghouse in the yard,na casinha de cachorro do quintal
+LOC_in_freezer,en el freezer,in the freezer,no freezer
+LOC_behind_food,detrás de las bolsas de alimento,behind the dog food sacks,atrás dos sacos de ração
+LOC_in_dryer,adentro del secador de pie,inside the standing dryer,dentro do secador de pé
+LOC_under_armchair,abajo del sillón de espera,under the waiting armchair,embaixo da poltrona de espera
+LOC_in_towels,en la caja de toallas,in the towel box,na caixa de toalhas
+LOC_on_cages,arriba de las jaulas,on top of the cages,em cima das gaiolas
+LOC_under_grooming_table,abajo de la mesa de corte,under the grooming table,embaixo da mesa de tosa
+LOC_in_vitrine,en la vitrina de collares,in the collar display,na vitrine de coleiras
 OBJ_ENTER_BAKERY,Entrar a la panadería (está abierta),Get into the bakery (it's open),Entrar na padaria (está aberta)
 OBJ_GUESS_BAKERY,"Averiguar qué pasa en la panadería (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the bakery (with Q open, hold 1, 2 or 3)","Descobrir o que acontece na padaria (com Q aberta, segure 1, 2 ou 3)"
 OBJ_BROKEN_BAKERY,Panes y tortas rotos: %d (multa: %d),Broken loaves and cakes: %d (fine: %d),Pães e bolos quebrados: %d (multa: %d)
@@ -316,6 +330,8 @@ NET_HOST_FAILED,No se pudo abrir la sala (¿el puerto está ocupado?).,Couldn't 
 MENU_CONTINUE,Continuar,Continue,Continuar
 LOBBY_CONTINUE,Continuar partida,Continue match,Continuar partida
 SHIFT_TURN,"Plata del grupo (turno %d de %d)","Group money (shift %d of %d)","Grana do grupo (turno %d de %d)"
+SHIFT_PROMOTED,¡Ascendidos!,Promoted!,Promovidos!
+SHIFT_CAMPAIGN_LOST,No cumplieron la cuota: partida perdida.,You missed the quota: match lost.,Vocês não cumpriram a cota: partida perdida.
 SHIFT_CAMPAIGN_OVER,¡Partida terminada!,Match over!,Partida encerrada!
 LOBBY_HOST_STEAM,Crear sala de Steam,Create Steam room,Criar sala da Steam
 LOBBY_INVITE,Invitar amigos,Invite friends,Convidar amigos
@@ -324,3 +340,164 @@ LOBBY_HOSTING_STEAM,Sala de Steam abierta. Invita a tus amigos desde Steam.,Stea
 LOBBY_VOICE_OPEN,Voz siempre abierta (sin mantener V),Voice always open (no need to hold V),Voz sempre aberta (sem segurar V)
 VOICE_TALKING,Hablando,Talking,Falando
 VOICE_RADIO,Radio,Radio,Rádio
+PROMPT_ARMERO,E: hablar con el armero,E: talk to the armorer,E: falar com o armeiro
+ARMORY_TITLE,Armería,Armory,Arsenal
+ARMORY_CASH,Caja de la comisaría: $%d,Station cash box: $%d,Caixa da delegacia: $%d
+ARMORY_KEYS,W/S: elegir · E: retirar o comprar · Esc: salir,W/S: pick · E: take or buy · Esc: leave,W/S: escolher · E: retirar ou comprar · Esc: sair
+ARMORY_FREE,gratis,free,grátis
+ARMORY_TAKE,retirar,take,retirar
+ARMORY_BUY,comprar,buy,comprar
+ARMORY_RAM,Ariete,Battering ram,Aríete
+ARMORY_RAM_ABOUT,Tira abajo puertas. Siempre hay uno.,Knocks doors down. There's always one.,Derruba portas. Sempre tem um.
+ARMORY_ALREADY_OWNED,"Eso ya es de la comisaría, retíralo.","The station already owns that, take it.","Isso já é da delegacia, retire."
+ARMORY_NO_MONEY,No alcanza la plata de la caja.,There isn't enough money in the cash box.,O dinheiro da caixa não dá.
+ARMORY_NOT_OWNED,Eso todavía no es de la comisaría.,The station doesn't own that yet.,Isso ainda não é da delegacia.
+ARMORY_HAS_RAM,¡Ya tienes un ariete en las manos!,You already have a ram in your hands!,Você já está com um aríete nas mãos!
+ARMORY_DONUTS,Caja de donas,Box of donuts,Caixa de rosquinhas
+ARMORY_DONUTS_ABOUT,"Trae 4. E con la caja en la mano: comes una y recuperas toda la resistencia.","Holds 4. E with the box in hand: eat one and get all your stamina back.","Vem com 4. E com a caixa na mão: você come uma e recupera toda a resistência."
+ARMORY_HANDS_FULL,Primero suelta lo que tienes en las manos.,Let go of what's in your hands first.,Primeiro solte o que está nas suas mãos.
+PROMPT_DONUT_BOX,E: comer una dona · Clic derecho: tirar la caja,E: eat a donut · Right click: throw the box,E: comer uma rosquinha · Clique direito: jogar a caixa
+PROMPT_DONUT_EMPTY,Caja vacía · Clic derecho: tirarla,Empty box · Right click: throw it,Caixa vazia · Clique direito: jogá-la
+HINT_DONUT,"¡Mmm, dona! Resistencia llena, pero con la boca llena no puedes preguntar.","Mmm, donut! Full stamina, but you can't ask anything with your mouth full.","Hum, rosquinha! Resistência cheia, mas de boca cheia você não pode perguntar."
+HINT_DONUTS_GONE,Ya no quedan donas.,There are no donuts left.,Não sobrou nenhuma rosquinha.
+HINT_MOUTH_FULL,¡Mmmf mmf! (Con la boca llena no se entiende nada.),Mmmf mmf! (Nobody understands you with your mouth full.),Mmmf mmf! (De boca cheia ninguém entende nada.)
+ARMORY_GLOVES,Guantes de goma,Rubber gloves,Luvas de borracha
+ARMORY_GLOVES_ABOUT,"Con los guantes puestos, la evidencia frágil se rompe la mitad.","With the gloves on, fragile evidence breaks half as much.","Com as luvas, a evidência frágil quebra pela metade."
+ARMORY_HAS_GLOVES,¡Ya tienes los guantes puestos!,You already have the gloves on!,Você já está de luvas!
+ARMORY_WHEELBARROW,Carretilla,Wheelbarrow,Carrinho de mão
+ARMORY_WHEELBARROW_ABOUT,"Un solo policía lleva hasta 40 kg. Lenta y chirría: el abuelo la escucha.","One cop carries up to 40 kg. Slow and squeaky: the grandpa hears it.","Um só policial leva até 40 kg. Lento e rangente: o avô escuta."
+ARMORY_WHEELBARROW_OUT,La carretilla ya está afuera. Hay una sola.,The wheelbarrow is already out. There's only one.,O carrinho de mão já está lá fora. Só tem um.
+PROMPT_WHEELBARROW_TAKE,E: empujar la carretilla,E: push the wheelbarrow,E: empurrar o carrinho de mão
+PROMPT_WHEELBARROW,E: dejar la carretilla · G: volcarla,E: leave the wheelbarrow · G: tip it over,E: deixar o carrinho · G: virá-lo
+PROMPT_WHEELBARROW_LOAD,E: cargar en la carretilla,E: load it into the wheelbarrow,E: pôr no carrinho de mão
+PROMPT_WHEELBARROW_FULL,No entra en la carretilla (hasta 40 kg),It doesn't fit in the wheelbarrow (up to 40 kg),Não cabe no carrinho de mão (até 40 kg)
+HINT_WHEELBARROW_FULL,"¡No entra! La carretilla lleva hasta 40 kg.","It won't fit! The wheelbarrow carries up to 40 kg.","Não cabe! O carrinho de mão leva até 40 kg."
+GRANDPA_SQUEAK,¿Qué es ese chirrido? ¡Me van a rayar el piso!,What's that squeaking? You'll scratch my floor!,Que rangido é esse? Vocês vão riscar meu chão!
+PROMPT_ARMCHAIR,Sillón de espera (siéntate con un perro en brazos),Waiting armchair (sit with a dog in your arms),Poltrona de espera (sente com um cachorro no colo)
+PROMPT_ARMCHAIR_SIT,"E: sentarte con el perro (Ramiro te cuenta su vida, sin mirar el local)","E: sit with the dog (Ramiro tells you its life, not watching the salon)","E: sentar com o cachorro (Ramiro conta a vida dele, sem olhar o salão)"
+PROMPT_ARMCHAIR_STAND,E: levantarte,E: stand up,E: levantar
+HINT_ARMCHAIR_DOG,Ramiro solo charla si traes un perro en brazos.,Ramiro only chats if you bring a dog in your arms.,O Ramiro só conversa se você trouxer um cachorro no colo.
+GROOMER_LINE_1,"Quieto, Pochito, que te dejo precioso.","Hold still, Pochito, I'll make you gorgeous.","Quieto, Pochito, que eu te deixo lindo."
+GROOMER_LINE_2,¿Tienen turno? Hoy estoy hasta las orejas.,Do you have an appointment? I'm up to my ears today.,Vocês têm horário? Hoje estou até as orelhas.
+GROOMER_LINE_3,¡No me pisen los pelos que recién barrí!,Don't step on the hair! I just swept!,Não pisem nos pelos que eu acabei de varrer!
+GROOMER_LINE_4,"Un poquito más de flequillo, ¿no?","A little more fringe, don't you think?","Um pouquinho mais de franja, né?"
+GROOMER_HURT,¡Cuidado! ¡Tengo la tijera en la mano!,Careful! I've got the scissors in my hand!,Cuidado! Estou com a tesoura na mão!
+GROOMER_DOOR,¡Mi puerta! ¡Me van a asustar a los perros!,My door! You'll scare the dogs!,Minha porta! Vocês vão assustar os cachorros!
+GROOMER_SAW,"¡Ese champú es importado, eh!","That shampoo is imported, you know!","Esse xampu é importado, hein!"
+GROOMER_LAWYER,¡Se acabó! ¡Llamo a mi abogado!,That's it! I'm calling my lawyer!,Chega! Vou ligar para o meu advogado!
+GROOMER_NOTHING,"Yo solo corto pelo, oficial.","I just cut hair, officer.","Eu só corto pelo, policial."
+GROOMER_OFFENDED,¡Basta de preguntas! Yo soy un peluquero honrado.,Enough questions! I'm an honest groomer.,Chega de perguntas! Eu sou um tosador honesto.
+GROOMER_STORY_TIRED,"Ahora no, que tengo un caniche a medio cortar.","Not now, I've got a poodle half done.","Agora não, tenho um poodle pela metade."
+GROOMER_DOG_STORY_1,"¡Ay, este! Llegó flaquito, comía solo galletitas de queso...","Oh, this one! He came in skinny, ate nothing but cheese crackers...","Ai, esse! Chegou magrinho, só comia biscoito de queijo..."
+GROOMER_DOG_STORY_2,"...después se enamoró de la caniche de enfrente, un drama...","...then he fell for the poodle across the street, such drama...","...depois se apaixonou pela poodle da frente, um drama..."
+GROOMER_DOG_STORY_3,"...y ahora es campeón de dormir la siesta. ¡Mírenlo qué lindo!","...and now he's a nap champion. Look how cute he is!","...e agora é campeão de soneca. Olha que lindo!"
+PROMPT_DOG,Clic: alzar al perro,Click: pick up the dog,Clique: pegar o cachorro no colo
+PROMPT_HOLDING_DOG,Suelta el clic: bajarlo · Clic derecho: tirarlo (ladra) · Rueda: acercar o alejar,Release click: put it down · Right click: throw it (it barks) · Wheel: closer or farther,Solte o clique: pôr no chão · Clique direito: jogar (ele late) · Roda: aproximar ou afastar
+GROOMER_DOG,"¡Ey, ey! ¡Con cuidado, que es un cliente!","Hey, hey! Careful, that's a customer!","Ei, ei! Cuidado, que é um cliente!"
+PROMPT_LADY,E: hablar con la señora del caniche,E: talk to the poodle lady,E: falar com a senhora do poodle
+LADY_ASK,"¡Oficial! Hace dos horas que espero a mi Fifí. Está en una jaula del fondo, ¿me la trae?","Officer! I've been waiting two hours for my Fifí. She's in a cage in the back, would you bring her?","Policial! Faz duas horas que espero a minha Fifí. Ela está numa gaiola dos fundos, pode trazê-la?"
+LADY_WAITING,"¿Y mi Fifí? Es la blanquita del moño rosa.",And my Fifí? She's the little white one with the pink bow.,E a minha Fifí? É a branquinha do laço rosa.
+LADY_THANKS,"¡Mi Fifí! Gracias, oficial. Yo no vi nada raro, eh.","My Fifí! Thank you, officer. I didn't see anything odd, though.","Minha Fifí! Obrigada, policial. Eu não vi nada estranho, viu."
+LADY_CALL,"¡Psst! ¡Oficial! ¿Me haces un favorcito?","Psst! Officer! Would you do me a little favor?","Psst! Policial! Me faz um favorzinho?"
+SUSPECT_millionaire,El perro del millonario,The millionaire's dog,O cachorro do milionário
+SUSPECT_hair_growth,Champú crecepelo,Hair-growth shampoo,Xampu de crescer pelo
+SUSPECT_contest,Concurso canino arreglado,Rigged dog show,Concurso canino armado
+SUSPECT_bones,Contrabando de huesos,Bone smuggling,Contrabando de ossos
+SUSPECT_diamonds,El collar de diamantes,The diamond necklace,O colar de diamantes
+SUSPECT_human_salon,Peluquería de humanos clandestina,Secret salon for humans,Salão clandestino para humanos
+CLUE_SUSPECT_millionaire,"Un cartel de «Se busca»: un galgo blanco, recompensa millonaria.","A “Wanted” poster: a white greyhound, a huge reward.","Um cartaz de “Procura-se”: um galgo branco, recompensa milionária."
+CLUE_SUSPECT_hair_growth,Una etiqueta arrugada: «Fórmula X. NO usar en humanos (ni en perros)».,A crumpled label: “Formula X. Do NOT use on humans (or dogs)”.,Um rótulo amassado: “Fórmula X. NÃO usar em humanos (nem em cachorros)”.
+CLUE_SUSPECT_contest,"Un folleto del concurso canino del barrio: «¡Bizcocho, campeón por quinta vez!».","A flyer from the neighborhood dog show: “Bizcocho, champion for the fifth time!”","Um folheto do concurso canino do bairro: “Bizcocho, campeão pela quinta vez!”"
+CLUE_SUSPECT_bones,Un recorte de diario: «Desaparecen huesos de dinosaurio del museo».,A newspaper clipping: “Dinosaur bones go missing from the museum”.,Um recorte de jornal: “Somem ossos de dinossauro do museu”.
+CLUE_SUSPECT_diamonds,"Una foto de una señora con un collar de diamantes, con un círculo rojo.","A photo of a lady wearing a diamond necklace, circled in red.","Uma foto de uma senhora com um colar de diamantes, com um círculo vermelho."
+CLUE_SUSPECT_human_salon,"Un rulero rosa, demasiado grande para un perro.","A pink hair roller, far too big for a dog.","Um bobe rosa, grande demais para um cachorro."
+BRIEF_GROOMER_TIP_B,Llegó una denuncia anónima: dicen que en la peluquería de perros «Pelito Feliz» pasa algo raro.,We got an anonymous tip: they say something odd is going on at the “Pelito Feliz” dog salon.,Chegou uma denúncia anônima: dizem que no pet shop “Pelito Feliz” está acontecendo algo estranho.
+BRIEF_GROOMER_TIP_D,"El local está abierto y Ramiro sigue cortando: no le pisen los perros, que se queja de todo. El depósito está cerrado con llave.","The salon is open and Ramiro keeps cutting: don't step on his dogs, he complains about everything. The storeroom is locked.","O salão está aberto e o Ramiro continua tosando: não pisem nos cachorros, ele reclama de tudo. O depósito está trancado."
+BRIEF_GROOMER_TIP_E,Y no rompan nada: cada frasco de champú o collar roto se los descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.,And don't break anything: every broken shampoo bottle or collar comes out of your pay. Press Q to see your checklist.,E não quebrem nada: cada frasco de xampu ou coleira quebrada sai do salário de vocês. Com Q vocês veem a lista do que têm que fazer.
+BRIEF_CONTEST_B,"El concurso canino del barrio lo gana siempre Bizcocho, un cliente de Ramiro. Cinco años seguidos. Ramiro le regaló un peine de oro a cada jurado.","The neighborhood dog show is always won by Bizcocho, one of Ramiro's customers. Five years in a row. Ramiro gave each judge a golden comb.","O concurso canino do bairro é sempre vencido pelo Bizcocho, um cliente do Ramiro. Cinco anos seguidos. O Ramiro deu um pente de ouro para cada jurado."
+BRIEF_CONTEST_C,Traigan la copa del concurso en el baúl del patrullero. Cuidado con Bizcocho: no se separa de su copa y ladra como loco si alguien se le acerca.,Bring the show's cup back in the patrol car's trunk. Watch out for Bizcocho: he never leaves his cup and barks like mad if anyone gets close.,Tragam a taça do concurso no porta-malas da viatura. Cuidado com o Bizcocho: ele não larga a taça e late como louco se alguém chega perto.
+BRIEF_CONTEST_D,"Si encuentran las fichas de los jurados o el peine de oro, mejor: todo suma.","If you find the judges' score cards or the golden comb, even better: it all adds up.","Se acharem as fichas dos jurados ou o pente de ouro, melhor: tudo soma."
+OBJ_FIND_CONTEST,Encontrar la copa del concurso (Bizcocho la cuida),Find the show's cup (Bizcocho guards it),Achar a taça do concurso (o Bizcocho a vigia)
+OBJ_EXTRA_JUDGE_CARDS,Extra: las fichas de los jurados,Extra: the judges' score cards,Extra: as fichas dos jurados
+OBJ_EXTRA_GOLDEN_COMB,Extra: el peine de oro,Extra: the golden comb,Extra: o pente de ouro
+OBJ_ENTER_GROOMER,Entrar a la peluquería (está abierta),Get into the salon (it's open),Entrar no pet shop (está aberto)
+OBJ_GUESS_GROOMER,"Averiguar qué pasa en la peluquería (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the salon (with Q open, hold 1, 2 or 3)","Descobrir o que acontece no pet shop (com Q aberta, segure 1, 2 ou 3)"
+OBJ_BROKEN_GROOMER,Frascos y collares rotos: %d (multa: %d),Broken bottles and collars: %d (fine: %d),Frascos e coleiras quebrados: %d (multa: %d)
+OBJ_COMPLAINT_GROOMER,Denuncia de Ramiro: %d%%,Ramiro's complaint: %d%%,Denúncia do Ramiro: %d%%
+CASE_FAILED_LAWYER_GROOMER,Ramiro llamó a su abogado. Caso perdido.,Ramiro called his lawyer. Case lost.,O Ramiro ligou para o advogado. Caso perdido.
+GROOMER_SLIP,"«¡Yo no guardé nada %s!... Digo, ¿quién sigue con turno?»","“I didn't put anything %s!... I mean, who's next?”","“Eu não guardei nada %s!... Quer dizer, quem é o próximo?”"
+CLUE_LADY,La señora vio a Ramiro esconder algo %s,The lady saw Ramiro hide something %s,A senhora viu o Ramiro esconder algo %s
+LADY_CLUE_contest,"«¡Mi Fifí! Gracias, oficial. Mira, vi a Ramiro esconder algo %s. Y Fifí es más linda que ese Bizcocho, y siempre sale segunda.»","“My Fifí! Thank you, officer. Look, I saw Ramiro hide something %s. And Fifí is prettier than that Bizcocho, and she always comes second.”","“Minha Fifí! Obrigada, policial. Olha, vi o Ramiro esconder algo %s. E a Fifí é mais bonita que esse Bizcocho, e sempre fica em segundo.”"
+PROMPT_PHOTO,E: mirar la foto,E: look at the photo,E: olhar a foto
+CLUE_CONTEST_PHOTOS,Todas las fotos de «clientes felices» son del mismo perro con una copa: Bizcocho.,Every “happy customer” photo shows the same dog holding a cup: Bizcocho.,Todas as fotos de “clientes felizes” são do mesmo cachorro com uma taça: Bizcocho.
+DOG_LOUD_BARK,¡GUAU! ¡GUAU!,WOOF! WOOF!,AU! AU!
+TOOL_HANDCUFFS,Esposas,Handcuffs,Algemas
+TOOL_FLASHLIGHT,Linterna,Flashlight,Lanterna
+TOOL_CAMERA,Cámara,Camera,Câmera
+TOOL_PRINT_KIT,Huellas,Prints,Digitais
+PROMPT_FLASHLIGHT_ON,Clic izquierdo o F: prender la linterna · mismo número: guardarla,Left click or F: turn the flashlight on · same number: put it away,Clique esquerdo ou F: acender a lanterna · mesmo número: guardá-la
+PROMPT_FLASHLIGHT_OFF,Clic izquierdo o F: apagar la linterna · mismo número: guardarla,Left click or F: turn the flashlight off · same number: put it away,Clique esquerdo ou F: apagar a lanterna · mesmo número: guardá-la
+PROMPT_CAMERA,Clic izquierdo: sacar una foto · mismo número: guardarla,Left click: take a photo · same number: put it away,Clique esquerdo: tirar uma foto · mesmo número: guardá-la
+PROMPT_CAMERA_EMPTY,No quedan fotos · mismo número: guardar la cámara,No photos left · same number: put the camera away,Acabaram as fotos · mesmo número: guardar a câmera
+HINT_NO_FILM,¡Se acabó el rollo!,Out of film!,Acabou o filme!
+HINT_PHOTO,¡Clic! Salió movida.,Click! It came out blurry.,Clique! Saiu tremida.
+HINT_PHOTO_CLUE,¡Clic! Pista fotografiada y anotada en la planilla.,Click! Clue photographed and noted on the checklist.,Clique! Pista fotografada e anotada na prancheta.
+PROMPT_HANDCUFFS,Clic izquierdo: esposar · mismo número: guardarlas,Left click: cuff · same number: put them away,Clique esquerdo: algemar · mesmo número: guardá-las
+HINT_CUFFED,¡Te esposaron! Pide que te suelten con E.,You got cuffed! Ask someone to free you with E.,Você foi algemado! Peça para te soltarem com E.
+PROMPT_CUFFED,Esposado: un compañero te suelta con E,Cuffed: a partner frees you with E,Algemado: um colega te solta com E
+PROMPT_UNCUFF,E: quitarle las esposas,E: take the cuffs off,E: tirar as algemas
+PROMPT_PRINT_KIT,Mantén clic izquierdo: buscar huellas · mismo número: guardar el kit,Hold left click: dust for prints · same number: put the kit away,Segure o clique esquerdo: procurar digitais · mesmo número: guardar o kit
+PROMPT_PRINT_KIT_DUSTING,Echando polvo...,Dusting...,Passando o pó...
+PRINTS_FRESH,Huellas frescas %s,Fresh prints %s,Digitais frescas %s
+PRINTS_COPS,Huellas de policía: %s,Cop prints: %s,Digitais de policial: %s
+PRINTS_NONE,Ni una huella. Demasiado limpio...,Not a single print. Too clean...,Nenhuma digital. Limpo demais...
+PRINTS_OWNER,del dueño,of the owner,do dono
+PRINTS_GRANDPA,del abuelo,of the grandpa,do vovô
+PRINTS_BAKER,de la panadera,of the baker,da padeira
+CLUE_PRINTS,Huellas frescas %s cerca de algo escondido,Fresh prints %s near something hidden,Digitais frescas %s perto de algo escondido
+COLOR_PINK,rosa,pink,rosa
+COLOR_ORANGE,naranja,orange,laranja
+COLOR_LIME,lima,lime,lima
+COLOR_VIOLET,violeta,violet,violeta
+HINT_DROP_RAM_FIRST,Tienes las manos ocupadas con el ariete (G para soltarlo).,Your hands are busy with the ram (G to drop it).,Suas mãos estão ocupadas com o aríete (G para soltar).
+NPC_NO_PHOTOS,¡Sin fotos!,No photos!,Sem fotos!
+NPC_POLICE_ABUSE,¡Abuso policial!,Police abuse!,Abuso policial!
+AWARD_PHOTOS,Fotógrafo del turno: %s (%d fotos),Photographer of the shift: %s (%d photos),Fotógrafo do turno: %s (%d fotos)
+NPC_CUFFED_QUIET,No digo nada sin mi abogado.,I won't say a word without my lawyer.,Não falo nada sem meu advogado.
+BRIEF_MUSEUM_B,"Del museo del barrio se robaron la bailarina de porcelana, una pieza única. El abuelo fue a la visita guiada ese mismo día, y volvió con la bufanda abultada.","The neighborhood museum's porcelain ballerina was stolen, a one-of-a-kind piece. The grandpa went on the guided tour that same day, and came back with a lumpy scarf.","Roubaram a bailarina de porcelana do museu do bairro, uma peça única. O vovô foi à visita guiada nesse mesmo dia e voltou com o cachecol estufado."
+BRIEF_MUSEUM_C,"Traigan la bailarina en el baúl del patrullero: sin eso no hay caso. Está entre sus adornos, con copias de recuerdo iguales. La original tiene el sello del museo abajo. Y es muy frágil.","Bring the ballerina back in the patrol car's trunk: without it there's no case. It's among his ornaments, with identical souvenir copies. The original has the museum's seal underneath. And it's very fragile.","Tragam a bailarina no porta-malas da viatura: sem isso não tem caso. Está entre os enfeites dele, com cópias de lembrança iguais. A original tem o selo do museu embaixo. E é muito frágil."
+BRIEF_MUSEUM_D,"Si encuentran el recorte del diario, mejor: todo suma.","If you find the newspaper clipping, even better: it all adds up.","Se acharem o recorte de jornal, melhor: tudo soma."
+OBJ_FIND_MUSEUM,Encontrar la bailarina del museo (la que tiene el sello abajo),Find the museum ballerina (the one with the seal underneath),Achar a bailarina do museu (a que tem o selo embaixo)
+OBJ_EXTRA_CLIPPING,Extra: el recorte del diario,Extra: the newspaper clipping,Extra: o recorte de jornal
+NOTE_ITEM_ballerina,La bailarina,The ballerina,A bailarina
+NOTE_ITEM_clipping,El recorte,The clipping,O recorte
+HINT_MUSEUM_SEAL,¡Abajo tiene el sello dorado del museo! Esta es la original.,There's the museum's gold seal underneath! This is the original.,Tem o selo dourado do museu embaixo! Esta é a original.
+HINT_BALLERINA_COPY,"Abajo dice «Recuerdo del museo». Es una copia.","Underneath it says “Museum souvenir.” It's a copy.","Embaixo diz “Lembrança do museu”. É uma cópia."
+HINT_CLIPPING,"La foto del diario: la bailarina original tiene un sello dorado abajo.","The newspaper photo: the original ballerina has a gold seal underneath.","A foto do jornal: a bailarina original tem um selo dourado embaixo."
+BRIEF_DENTURES_B,"Del geriátrico del barrio desaparecieron todas las dentaduras, y ahora hay un señor que las alquila por hora para las fiestas. Dicen que es el abuelo.","Every set of dentures disappeared from the neighborhood care home, and now someone rents them out by the hour for parties. They say it's the grandpa.","Sumiram todas as dentaduras do asilo do bairro, e agora tem um senhor que aluga por hora para as festas. Dizem que é o vovô."
+BRIEF_DENTURES_C,"Traigan la valija de dentaduras en el baúl del patrullero: sin eso no hay caso. Pesa, y las dentaduras castañetean: síganlas por el ruido.","Bring the case of dentures back in the patrol car's trunk: without it there's no case. It's heavy, and the dentures chatter: follow the noise.","Tragam a mala de dentaduras no porta-malas da viatura: sem isso não tem caso. É pesada, e as dentaduras batem os dentes: sigam o barulho."
+BRIEF_DENTURES_D,"Si encuentran la lista de clientes, mejor: todo suma. Y no le pregunten mucho al abuelo: escondió también los suyos y no se le entiende nada.","If you find the list of clients, even better: it all adds up. And don't bother asking the grandpa much: he hid his own teeth too, and you can't understand a word.","Se acharem a lista de clientes, melhor: tudo soma. E não perguntem muito ao vovô: ele escondeu os dele também e não dá para entender nada."
+OBJ_FIND_DENTURES,Encontrar la valija de dentaduras (castañetea),Find the case of dentures (it chatters),Achar a mala de dentaduras (ela bate os dentes)
+OBJ_EXTRA_CLIENTS,Extra: la lista de clientes,Extra: the list of clients,Extra: a lista de clientes
+NOTE_ITEM_dentures,La valija de dientes,The teeth case,A mala dos dentes
+NOTE_ITEM_clients,La lista de clientes,The client list,A lista de clientes
+FX_CLACK,*clac clac*,*clack clack*,*clac clac*
+BRIEF_RADIO_B,"Todas las noches, a las once, una radio pirata pisa la señal del noticiero con una radionovela de amor. La voz del locutor es igualita a la del abuelo.","Every night at eleven, a pirate radio drowns out the news with a romance soap opera. The announcer sounds just like the grandpa.","Toda noite, às onze, uma rádio pirata atropela o sinal do noticiário com uma radionovela de amor. A voz do locutor é igualzinha à do vovô."
+BRIEF_RADIO_C,"Traigan el transmisor en el baúl del patrullero: sin eso no hay caso. Pesa como un ropero, así que levántenlo entre dos. Mantengan T apretada: cerca del transmisor la radio hace más estática.","Bring the transmitter back in the patrol car's trunk: without it there's no case. It weighs like a wardrobe, so lift it together. Hold T: the radio crackles louder near the transmitter.","Tragam o transmissor no porta-malas da viatura: sem isso não tem caso. Pesa como um guarda-roupa, então levantem em dois. Segurem T: perto do transmissor o rádio chia mais."
+BRIEF_RADIO_D,"Si encuentran las cintas de la radionovela, mejor: todo suma. Están en los cajones, y el capítulo final no lo escuchó nadie.","If you find the soap opera tapes, even better: it all adds up. They're in the drawers, and nobody has heard the final episode.","Se acharem as fitas da radionovela, melhor: tudo soma. Estão nas gavetas, e o capítulo final ninguém ouviu."
+OBJ_FIND_RADIO,Encontrar el transmisor (sigue la estática con T),Find the transmitter (follow the static with T),Achar o transmissor (siga a estática com T)
+OBJ_EXTRA_TAPES,"Extra: cintas (%d de %d), en los cajones","Extra: tapes (%d of %d), in the drawers","Extra: fitas (%d de %d), nas gavetas"
+NOTE_ITEM_transmitter,La radio de las once,The eleven o'clock radio,O rádio das onze
+HUD_RADIO_STATIC,Radio: estática %s,Radio: static %s,Rádio: estática %s
+BRIEF_FIGHT_B,"Los martes, los jubilados del barrio llegan al centro de salud con un ojo morado. Dicen que se cayeron de la cama. Los cinco, de la misma cama.","On Tuesdays, the neighborhood retirees show up at the clinic with a black eye. They say they fell out of bed. All five of them, out of the same bed.","Às terças, os aposentados do bairro chegam ao posto de saúde com um olho roxo. Dizem que caíram da cama. Os cinco, da mesma cama."
+BRIEF_FIGHT_C,"Traigan el cinturón de campeón en el baúl del patrullero: sin eso no hay caso. Y no empujen al abuelo: es el campeón, y devuelve el empujón más fuerte.","Bring the champion's belt back in the patrol car's trunk: without it there's no case. And don't push the grandpa: he's the champion, and he pushes back harder.","Tragam o cinturão de campeão no porta-malas da viatura: sem isso não tem caso. E não empurrem o vovô: ele é o campeão, e devolve o empurrão mais forte."
+BRIEF_FIGHT_D,"Si encuentran los guantes y el cuaderno de peleas, mejor: todo suma. No esperen que les cuente historias: un campeón no se distrae.","If you find the gloves and the fight notebook, even better: it all adds up. Don't expect him to tell you stories: a champion doesn't get distracted.","Se acharem as luvas e o caderno de lutas, melhor: tudo soma. Não esperem que ele conte histórias: um campeão não se distrai."
+OBJ_FIND_FIGHT,Encontrar el cinturón de campeón,Find the champion's belt,Achar o cinturão de campeão
+OBJ_EXTRA_GLOVES,Extra: los guantes de boxeo,Extra: the boxing gloves,Extra: as luvas de boxe
+OBJ_EXTRA_FIGHT_BOOK,Extra: el cuaderno de peleas,Extra: the fight notebook,Extra: o caderno de lutas
+NOTE_ITEM_belt,El cinturón dorado,The golden belt,O cinturão dourado
+NOTE_ITEM_gloves,Los guantes,The gloves,As luvas
+NOTE_ITEM_notebook,El cuaderno de los martes,The Tuesday notebook,O caderno das terças
+CLUE_FIGHT_PHOTO,"Una foto del abuelo con cuatro vecinos, todos con un ojo morado. Atrás dice: «Martes, en el altillo».","A photo of the grandpa with four neighbors, all with a black eye. On the back: “Tuesday, in the attic”.","Uma foto do vovô com quatro vizinhos, todos com um olho roxo. Atrás diz: “Terça, no sótão”."
+GRANDPA_CHAMPION_PUSH,¿Eso fue un empujón? ¡Esto es un empujón!,Was that a push? THIS is a push!,Isso foi um empurrão? Isto é um empurrão!
+GRANDPA_CHAMPION_NO_STORY,¿Historias? Las historias son para los que pierden.,Stories? Stories are for losers.,Histórias? Histórias são para quem perde.

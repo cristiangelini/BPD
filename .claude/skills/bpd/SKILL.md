@@ -44,6 +44,10 @@ the number in brackets is the decision there.
 
 - Start maps big: Cristian asked to triple the first city draft (4 x 3 blocks felt small). When in doubt about size, go bigger. [83]
 
+## Tools
+- The handcuffs work on anyone: any person or NPC in the game, partners and animals included. [87] Cristian asked for it on 20/10 when the first version only cuffed cops and the place's owner.
+- The flashlight turns on with F anytime, even from the belt. [86]
+
 ## Working with Cristian
 - He works alone and merges himself; no Jira, cards are GitHub issues. [61, 62]
 - To check progress he opens the game and gives the OK (cheapest in tokens). Videos only when he asks. [57]

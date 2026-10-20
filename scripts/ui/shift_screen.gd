@@ -44,11 +44,12 @@ func show_report(solved: bool, report: Dictionary, broken_ornaments: int, awards
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
-## The campaign's line under the pay: which shift this was, the group's money and whether the campaign is over.
-func show_campaign(shift: int, shifts: int, money: int, over: bool) -> void:
+## The campaign's line under the pay: which shift this was and the group's money. When the campaign is over, the
+## verdict says how: promoted after the last shift, or lost for missing the quota (decision 86).
+func show_campaign(shift: int, shifts: int, money: int, over: bool, promoted := false) -> void:
 	_line(tr("SHIFT_TURN") % [shift, shifts], money, true)
 	if over:
-		_verdict.text = tr(_verdict.text) + "\n" + tr("SHIFT_CAMPAIGN_OVER")
+		_verdict.text = tr(_verdict.text) + "\n" + tr("SHIFT_PROMOTED" if promoted else "SHIFT_CAMPAIGN_LOST")
 
 
 func _line(text: String, amount: int, bold := false) -> void:
