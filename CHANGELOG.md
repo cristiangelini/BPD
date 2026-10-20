@@ -48,6 +48,7 @@
 - The bakery's fifth story, the sweet bread lottery: ten sweet breads numbered in sugar on the kneading table, one with the winning ticket baked inside; the hidden list of numbers says which one.
 - The bakery's sixth story, the carrier pigeons: the route book, the cage and the whistle hidden in the bakery; five pigeons in the shop carry small things cops leave on the floor up to the bread rack; feathers under the bedroom window give it away.
 - Play draws the place: each match is in the grandpa's house or the bakery, from the case seed (--place= forces one); "play again" draws a new case. Fixes case seeds being always odd, which made the grandpa's house always tell the same story and the bakery only three of its six.
+- Online, step 1: "Jugar con amigos" opens a room by IP (up to 4 cops, each with its skin color); the host starts the case and everyone opens the same place with the same seed. Design in docs/diseno/online.md.
 - The police station opens: a guard room where the cops appear, the comisario's office, the armory behind a barred counter, two cells, the board room (closed) and a break room, with low poly furniture.
 - The comisario gives the case in his office: E on him starts the briefing, and the patrol car stays locked ("¡¿Adónde van?! ¡Primero el caso!") until then.
 - The armory: the armero behind the counter opens his list with E (cash box, price, take or buy); the battering ram is taken there instead of lying by the grandpa's door.

@@ -31,6 +31,7 @@ to it (rule + why) in the same PR.
 - Import (after adding assets or translations): `godot --headless --path . --import`
 - Tests (GUT 9.7.1 in `addons/gut`, config in `.gutconfig.json`): `godot --headless --path . -s res://addons/gut/gut_cmdln.gd`
 - Play: `godot --path .`
+- Online by IP on one PC (docs/diseno/online.md): `godot --path . -- --host` and `godot --path . -- --join=127.0.0.1`
 - Placeholder models (GLBs into `assets/models/`, previews optional): `cd tools/modelgen && npm install && node run.mjs [--shots <dir>]`
 
 ## Where things are
