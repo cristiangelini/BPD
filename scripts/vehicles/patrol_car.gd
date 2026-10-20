@@ -59,7 +59,8 @@ func passengers() -> Array[Cop]:
 
 
 func _on_trunk_entered(body: Node3D) -> void:
-	if body is Evidence and not body.is_broken and not delivered.has(body):
+	# Things worth nothing (a dog that isn't a story's) aren't evidence for the trunk.
+	if body is Evidence and body.full_value > 0.0 and not body.is_broken and not delivered.has(body):
 		delivered.append(body)
 		evidence_delivered.emit(body)
 

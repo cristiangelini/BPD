@@ -37,14 +37,15 @@ func _ready() -> void:
 
 ## Placeholder feedback until the HUD exists: the value floats over the object (a number, so no text key).
 func _show_value() -> void:
-	if _label:
+	if _label and full_value > 0.0:
 		_label.text = "%d" % roundi(value)
 		_label.modulate = Color.WHITE.lerp(Color(1, 0.25, 0.2), 1.0 - value / full_value)
 
 
 ## Applies a hit at `speed` m/s and returns the value lost.
 func hit(speed: float) -> float:
-	if is_broken or speed <= safe_speed:
+	# Things worth nothing (a dog that isn't a story's) never break.
+	if is_broken or full_value <= 0.0 or speed <= safe_speed:
 		return 0.0
 	var loss := full_value * LOSS_PER_SPEED * (speed - safe_speed)
 	if handling_cops(GLOVES_GRACE).any(func(c: Cop) -> bool: return c.gloves):

@@ -46,6 +46,15 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_NECKLACE_CASE"],
 		"rig": preload("res://scripts/case/groomer/diamonds_rig.gd"),
 	},
+	"millionaire": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_MILLIONAIRE_B", "BRIEF_MILLIONAIRE_C", "BRIEF_MILLIONAIRE_D"],
+		"find": "OBJ_FIND_MILLIONAIRE",
+		"hidden": [preload("res://scenes/props/dog_dye.tscn"), preload("res://scenes/props/ransom_letter.tscn")],
+		"half_heights": [0.1, 0.005],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_DYE", "OBJ_EXTRA_RANSOM_LETTER"],
+		"rig": preload("res://scripts/case/groomer/millionaire_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each room; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [

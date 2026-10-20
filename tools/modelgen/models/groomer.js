@@ -173,6 +173,55 @@ export function buildNecklaceCase() {
 	return b.build();
 }
 
+// The millionaire's dog (peluqueria.md, "El perro del millonario"): a greyhound dyed brown, pear body on long thin legs,
+// about 0.75 m tall and 0.8 m long, origin at its feet, facing +Z. Duque is the same dog with his white roots showing at
+// the paws, the chest and the ear tips; the three decoys are just brown.
+export function buildGreyhound(roots) {
+	const b = new Builder(roots ? 'dog_greyhound_roots' : 'dog_greyhound');
+	const fur = mat('greyhound_dye', 0x7a4a2a), dark = mat('greyhound_dark', 0x4a2a16), white = mat('greyhound_root', 0xf8f6f0);
+	const black = mat('dog_black', 0x141010), eye = mat('dog_eye', 0xffffff);
+	b.add('body', fur, ellipsoid(0.15, 0.17, 0.3, 12, 8), { pos: V(0, 0.46, -0.04) });
+	b.add('body', fur, ellipsoid(0.12, 0.14, 0.12, 10, 6), { pos: V(0, 0.52, 0.2) });
+	for (const [x, z] of [[-0.08, 0.17], [0.08, 0.17], [-0.08, -0.22], [0.08, -0.22]]) {
+		b.add('legs', fur, new THREE.CylinderGeometry(0.025, 0.03, 0.36, 6), { pos: V(x, 0.18, z) });
+		b.add('legs', roots ? white : fur, ellipsoid(0.035, 0.025, 0.05, 6, 3), { pos: V(x, 0.015, z + 0.015) });
+	}
+	if (roots) b.add('body', white, ellipsoid(0.04, 0.035, 0.02, 8, 4), { pos: V(0, 0.46, 0.31) });
+	b.add('head', fur, new THREE.CylinderGeometry(0.045, 0.06, 0.2, 8), { pos: V(0, 0.66, 0.3), rot: [0.5, 0, 0] });
+	b.add('head', fur, ellipsoid(0.08, 0.075, 0.1, 10, 6), { pos: V(0, 0.75, 0.37) });
+	b.add('head', fur, ellipsoid(0.04, 0.035, 0.1, 8, 5), { pos: V(0, 0.72, 0.48) });
+	b.add('head', black, ellipsoid(0.018, 0.015, 0.014, 6, 4), { pos: V(0, 0.73, 0.575) });
+	for (const s of [-1, 1]) {
+		b.add('head', eye, ellipsoid(0.02, 0.022, 0.012, 6, 4), { pos: V(s * 0.04, 0.78, 0.44) });
+		b.add('head', black, ellipsoid(0.011, 0.013, 0.008, 6, 4), { pos: V(s * 0.04, 0.78, 0.452) });
+		b.add('ears', dark, ellipsoid(0.03, 0.05, 0.015, 6, 4), { pos: V(s * 0.06, 0.82, 0.32), rot: [0.6, 0, s * 0.5] });
+		if (roots) b.add('ears', white, ellipsoid(0.016, 0.02, 0.012, 5, 3), { pos: V(s * 0.065, 0.835, 0.31) });
+	}
+	b.add('tail', dark, new THREE.CylinderGeometry(0.012, 0.02, 0.3, 6), { pos: V(0, 0.4, -0.42), rot: [-1.0, 0, 0] });
+	return b.build();
+}
+
+// The brown dye: a 0.08 m wide, 0.2 m tall plastic bottle with a brown label and a dog on it. Origin at its middle.
+export function buildDogDye() {
+	const b = new Builder('dog_dye');
+	b.add('bottle', mat('dye_plastic', 0xf4f0e8), new THREE.CylinderGeometry(0.04, 0.04, 0.16, 8), { pos: V(0, -0.02, 0) });
+	b.add('bottle', mat('dye_cap', 0x5a3018), new THREE.CylinderGeometry(0.02, 0.025, 0.04, 8), { pos: V(0, 0.08, 0) });
+	b.add('label', mat('greyhound_dye', 0x7a4a2a), new THREE.CylinderGeometry(0.0405, 0.0405, 0.08, 8, 1, true, -0.9, 1.8), { pos: V(0, -0.02, 0) });
+	return b.build();
+}
+
+// The ransom letter: a folded sheet with letters cut out of magazines, 0.16 x 0.01 x 0.12 m, lying flat.
+export function buildRansomLetter() {
+	const b = new Builder('ransom_letter');
+	b.add('paper', mat('letter_paper', 0xf8f4e6), new THREE.BoxGeometry(0.16, 0.006, 0.12));
+	const colors = [0xd23a4a, 0x2a5ac8, 0x2a2420, 0xf2c84b, 0x3a9a4a];
+	for (let i = 0; i < 12; i++) {
+		const c = mat(`letter_cut_${i % colors.length}`, colors[i % colors.length]);
+		b.add('letters', c, new THREE.BoxGeometry(0.018, 0.002, 0.022), { pos: V(-0.06 + (i % 6) * 0.024, 0.004, -0.025 + Math.floor(i / 6) * 0.04), rot: [0, (i % 3 - 1) * 0.2, 0] });
+	}
+	return b.build();
+}
+
 export const models = {
 	shampoo_bottle: buildShampoo,
 	dog_collar: buildCollar,
@@ -180,6 +229,8 @@ export const models = {
 	dog_poodle: buildPoodle,
 	dog_trophy: buildDogTrophy, judge_cards: buildJudgeCards, golden_comb: buildGoldenComb,
 	contest_photo: buildContestPhoto, diamond_necklace: buildDiamondNecklace, necklace_case: buildNecklaceCase,
+	dog_greyhound: () => buildGreyhound(false), dog_greyhound_roots: () => buildGreyhound(true), dog_dye: buildDogDye,
+	ransom_letter: buildRansomLetter,
 };
 
 export const views = {
@@ -201,5 +252,12 @@ export const views = {
 	diamond_goods: {
 		items: [{ name: 'diamond_necklace', pos: [-0.12, 0.01, 0], rotY: 0.3 }, { name: 'necklace_case', pos: [0.15, 0.03, -0.02], rotY: -0.3 }],
 		cam: { pos: [0, 0.35, 0.6], target: [0, 0.03, 0], fov: 36 },
+	},
+	millionaire_goods: {
+		items: [
+			{ name: 'dog_greyhound', pos: [-0.55, 0, 0], rotY: 0.6 }, { name: 'dog_greyhound_roots', pos: [0.35, 0, 0], rotY: 0.6 },
+			{ name: 'dog_dye', pos: [0.9, 0.1, 0.3], rotY: 0 }, { name: 'ransom_letter', pos: [-0.1, 0.005, 0.6], rotY: 0.3 },
+		],
+		cam: { pos: [0, 1.0, 2.4], target: [0, 0.35, 0.1], fov: 38 },
 	},
 };

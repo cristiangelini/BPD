@@ -60,3 +60,4 @@
 - The poodle lady waits in the pet salon's reception for Fifí, caged in the back: E on her asks for the poodle, and bringing Fifí to her arms gets her clue.
 - Pet salon case: the comisario's tip, 3 suspicions among its 6 stories, notes, Ramiro's slips and lawyer, the poodle lady's clue, fines and the shift screen. First story, the rigged dog show: the cup, the judges' cards and the golden comb; the photos of Bizcocho winning; Bizcocho guards his cup and barks at cops near it.
 - Pet salon story: the diamond necklace. A loose dog wears it, runs from cops, moves to another part of the salon every 30 s and shines under the dryers; grabbing the necklace takes it off. The case is hidden as an extra.
+- Pet salon story: the millionaire's dog. Duque, dyed brown, hides among four identical greyhounds; his white roots show up close, he wriggles when held, runs off when let go and lies down in the trunk. Dogs are now Evidence worth 0 unless a story gives them a value.
