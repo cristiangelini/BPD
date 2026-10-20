@@ -1,21 +1,25 @@
 # BPD · El interrogatorio (propuesta, 20/10)
 
 Cuarto tipo de caso del catálogo ([casos.md](casos.md), punto 4) y decisión 27: "el sospechoso es un NPC con un
-medidor de nervios y otro de abogado. Se juega a policía bueno y policía malo con acciones absurdas". Todavía no está
-aprobado: todo lo que sigue es **(propuesta)** hasta que Cristian lo vea, y los números se ajustan jugando.
+medidor de nervios y otro de abogado. Se juega a policía bueno y policía malo con acciones absurdas". Cristian lo aprobó
+el 20/10 (decisión 90), con dos cambios: la sala es propia y sale cada 3 turnos. Los números siguen marcados
+**(propuesta)** hasta probarlos jugando.
 
 ## La idea
 Traen a un sospechoso a la comisaría y hay que sacarle una confesión antes de que llegue su abogado. No se le pega
 (decisión 4): se lo pone nervioso con acciones absurdas de policía malo y se lo ablanda con acciones de policía bueno.
 El chiste cooperativo es que funciona mucho mejor si dos policías se turnan: uno grita y el otro le alcanza un café.
 
-## Dónde pasa
-- **La sala de interrogatorio** ocupa el lugar de la sala de descanso, atrás a la derecha de la comisaría
-  ([comisaria.md](comisaria.md)). La máquina de café que estaba ahí queda en la sala de guardia.
-- Adentro: una mesa de metal atornillada al piso, dos sillas para los policías, la silla del sospechoso (esposado a la
-  mesa), una lámpara de escritorio que se puede girar, el interruptor de la luz, un espejo falso y un reloj de pared.
-- **La sala de observación**, del otro lado del espejo, se arma en la mitad de la sala del tablero (que sigue cerrada).
-  Desde ahí se ve y se oye todo, y hay un micrófono para hablarle al policía de adentro por un parlante.
+## Dónde pasa: el ala de interrogatorios
+Una sala de interrogatorio de película, aparte (Cristian, 20/10: no la sala de descanso). Es un ala nueva pegada atrás
+de la comisaría, de 14 × 9 m y 3,5 m de alto, en el terreno libre de la manzana. Se entra por una puerta nueva en la
+pared de atrás de la oficina del comisario: para interrogar a alguien hay que pasar por al lado de su escritorio.
+
+| Parte | Qué hay |
+|---|---|
+| **El pasillo** | 2 m de ancho, de punta a punta del ala, con una luz fría que titila. De ahí salen las dos puertas. |
+| **La sala de interrogatorio** (8 × 7 m) | Paredes de cemento gris verdoso, sin ventanas. En el medio, la mesa de metal atornillada al piso, la silla del sospechoso (esposado a la mesa) y dos sillas para los policías. Una sola lámpara colgada sobre la mesa: el resto de la sala queda en penumbra. En la pared del oeste, el espejo falso. Arriba en una esquina, una cámara con una lucecita roja. Un reloj de pared, un grabador de cinta y una carpeta sobre la mesa, un cartel de "Prohibido fumar". |
+| **La sala de observación** (6 × 7 m) | Del otro lado del espejo, que desde acá es un vidrio oscuro: se ve todo lo de adentro. Un escritorio con el equipo de grabación, dos sillas, un micrófono para hablarle al policía de adentro por un parlante y una máquina de café vieja. |
 
 ## Cómo es el caso
 1. El comisario da el caso en su oficina, como siempre: "Detuvimos a este señor por <lo que sea>. Su abogado ya viene
@@ -71,7 +75,7 @@ vendió a la municipalidad un puente que no existe"), su cara y ropa, y las fras
 
 ## Sale como un caso más
 - En "Jugar" se sortea un tipo de caso y después el lugar o el sospechoso. Mientras haya solo allanamientos e
-  interrogatorios: **1 de cada 4 turnos es un interrogatorio** y el resto, allanamientos.
+  interrogatorios: **1 de cada 3 turnos es un interrogatorio** (Cristian, 20/10) y el resto, allanamientos.
 - **Más adelante, después de un allanamiento:** si llevan al dueño esposado en el patrullero hasta la comisaría (es
   pesado y se queja todo el viaje), se lo puede interrogar para sacarle dónde está la evidencia que faltó, por la mitad
   del sueldo de esa evidencia. Es el "puede seguir a cualquier caso" de casos.md.
@@ -86,20 +90,20 @@ cada acción con quién la hizo; el grito se mide en la PC de quien habla y se m
 - Hacer confesar o hacer llegar al abogado.
 
 ## El orden para hacerlo (un PR chico por paso)
-1. La sala de interrogatorio y la de observación en la comisaría, con sus muebles.
+1. El ala de interrogatorios detrás de la comisaría, con sus muebles, la lámpara y el espejo falso.
 2. El caso: el comisario lo da, el sospechoso esposado, los dos medidores, 4 acciones (mesa, lámpara, café, dona), la
    confesión, el abogado y la pantalla del turno. Con el sospechoso 1.
 3. El resto de las acciones, la repetición que rinde menos y el contraste entre bueno y malo.
 4. El grito con la voz.
-5. El sorteo en "Jugar" (1 de cada 4).
+5. El sorteo en "Jugar" (1 de cada 3).
 6. Los otros 9 sospechosos, uno o dos por PR.
 7. Interrogar al dueño después de un allanamiento.
 
-## Preguntas para Cristian
-1. ¿Está bien que la sala de interrogatorio reemplace a la sala de descanso, con la de observación al lado?
-2. ¿Ganar con nervios a 100 y perder con abogado a 100, sin tiempo límite?
-3. ¿Sueldo de 500 por confesión, igual que un allanamiento?
-4. ¿Gritar con la voz de verdad cuenta como acción de malo?
-5. ¿1 de cada 4 turnos es un interrogatorio?
-6. ¿Te gustan los 10 sospechosos y lo que cambia cada uno?
-7. ¿Hacemos lo de interrogar al dueño después de un allanamiento?
+## Respuestas de Cristian (20/10)
+1. La sala no va en la sala de descanso: es una sala de interrogatorio de película, aparte (el ala de atrás).
+2. Sí: se gana con los nervios a 100 y se pierde con el abogado a 100, sin tiempo límite.
+3. Sí: la confesión paga 500.
+4. Sí: gritar por el micrófono cuenta como acción de policía malo.
+5. Cambia: sale un interrogatorio cada 3 turnos.
+6. Sí: le gustan los 10 sospechosos.
+7. Sí: se puede interrogar al dueño después de un allanamiento.
