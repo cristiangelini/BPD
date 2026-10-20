@@ -57,6 +57,12 @@ Capturas: `interruptor.png` y `observacion_vidrio.png`.
 (+15, +12; cuenta una vez aunque rebote). Una silla que se cae sola no cuenta. En la mesa hay una caja de pañuelos
 (E: prestarle un pañuelo, −2, −6). Falta sentarse a su lado. Capturas: `sillas_panuelos.png` y `silla_tirada.png`.
 
+**Cómo quedó (paso 4):** gritar por el micrófono a menos de 5 m de él es el grito del policía malo (+10, +10, "¡No
+me grites! ¡Tengo los oídos sensibles!"). Cuenta como grito si la voz pasa el 30% de volumen (RMS) durante 0,3 s
+seguidos, una vez por grito (hay que tomar aire para el siguiente). Se mide en la PC de quien habla con la voz de
+Steam, así que solo funciona con Steam abierto (V o T para hablar, o la voz siempre abierta); jugando solo sin Steam
+no hay grito. Captura: `grito.png`.
+
 ## Los dos medidores (se ven arriba, como la denuncia del abuelo)
 - **Nervios (0 a 100):** suben con el policía malo y bajan un poco con el bueno. Con 30, 60 y 90 se le escapa una frase
   que da una pista de qué hizo de verdad ("¡Yo nunca estuve en el club de golf!... Digo, ¿qué es el golf?").
@@ -121,7 +127,7 @@ cada acción con quién la hizo; el grito se mide en la PC de quien habla y se m
    el sospechoso 1 y 4 delitos.
 3. El resto de las acciones (café, silla, luz, pañuelo, sentarse) y el contraste entre bueno y malo. Hecho: el
    contraste, la luz, el café, la silla y el pañuelo.
-4. El grito con la voz.
+4. El grito con la voz. Hecho.
 5. El sorteo en "Jugar" (1 de cada 3).
 6. Los otros 9 sospechosos, uno o dos por PR.
 7. Interrogar al dueño después de un allanamiento.

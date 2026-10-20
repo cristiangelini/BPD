@@ -223,3 +223,19 @@ func test_a_chair_that_falls_on_its_own_doesnt_count() -> void:
 	case.give_tip()
 	await _drop(level.chairs[1])
 	assert_eq(case.nerves, 0.0, "nobody threw it")
+
+
+func test_shouting_near_him_is_the_bad_cops_shout() -> void:
+	case.give_tip()
+	var cop: Cop = level.get_node("Cop")
+	cop.input_enabled = true
+	assert_eq(VoiceChat.local_cop(get_tree()), cop, "the cop this PC moves")
+	cop.input_enabled = false
+	cop.global_position = level.suspect.global_position + Vector3(0, 0, 10)
+	get_tree().call_group("interrogation", "shouted_by", cop)
+	assert_eq(case.nerves, 0.0, "too far, from the hall")
+	cop.global_position = level.suspect.global_position + Vector3(0, 0, 1.5)
+	get_tree().call_group("interrogation", "shouted_by", cop)
+	assert_eq(case.nerves, 10.0)
+	assert_eq(case.lawyer, 10.0)
+	assert_eq(level.suspect.saying(), "SUSPECT_REACT_SHOUT")
