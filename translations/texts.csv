@@ -611,3 +611,7 @@ BRIEF_SUSPECT_sweet_grandpa,"Ojo: es un abuelito tierno. Si lo apuran mucho de g
 BRIEF_SUSPECT_self_lawyer,"Ojo: es abogado y se defiende solo. Cada grito lo anota, y el café de la máquina no le gusta.","Careful: he's a lawyer and defends himself. He writes down every shout, and he doesn't like the machine's coffee.","Cuidado: ele é advogado e se defende sozinho. Anota cada grito, e não gosta do café da máquina."
 SUSPECT_CRIES,"¡Buaaa! ¡Quiero a mi nieto! ¡Es abogado, ¿sabían?!","Waaah! I want my grandson! He's a lawyer, you know!","Buáá! Quero meu neto! Ele é advogado, sabiam?!"
 SUSPECT_WANTS_TEA,"¿Café de máquina? Yo tomo té, oficial. Queda anotado.","Machine coffee? I drink tea, officer. That's going on the record.","Café de máquina? Eu tomo chá, policial. Fica registrado."
+BRIEF_SUSPECT_sleeper,"Ojo: se duerme en cualquier lado. Si lo dejan tranquilo, se les duerme y se olvida de todo.",Careful: he falls asleep anywhere. Leave him alone and he'll nod off and forget everything.,"Cuidado: ele dorme em qualquer lugar. Se o deixarem em paz, ele cochila e esquece tudo."
+SUSPECT_FALLS_ASLEEP,Qué silla cómoda... cinco minutitos... zzz,What a comfy chair... just five minutes... zzz,Que cadeira confortável... só cinco minutinhos... zzz
+SUSPECT_SNORES,Zzz... ronc... zzz...,Zzz... snore... zzz...,Zzz... ronc... zzz...
+SUSPECT_WAKES,¡Eh! ¡Estaba despierto! ¿Qué me preguntaban?,Huh! I was awake! What were you asking?,Ei! Eu estava acordado! O que vocês perguntaram?

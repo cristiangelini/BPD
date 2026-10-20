@@ -50,11 +50,12 @@ const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 const CRIMES := ["bridge", "statue_nose", "violet_lights", "rubber_ducks"]
 ## The suspects drawn with the seed (interrogatorio.md, "Los sospechosos"), each changing a rule, and their model.
 ## --suspect=<id> forces one. The rest of the 10 come in later PRs.
-const SUSPECTS := ["talker", "sweet_grandpa", "self_lawyer"]
+const SUSPECTS := ["talker", "sweet_grandpa", "self_lawyer", "sleeper"]
 const SUSPECT_MODELS := {
 	"talker": "res://assets/models/npc_sospechoso.glb",
 	"sweet_grandpa": "res://assets/models/npc_abuelo.glb",
 	"self_lawyer": "res://assets/models/npc_abogado.glb",
+	"sleeper": "res://assets/models/npc_preso.glb",
 }
 ## The sweet grandpa cries when the nerves go up more than CRY_NERVES within CRY_SECONDS, and the lawyer goes up
 ## CRY_LAWYER on its own (propuesta).
@@ -63,6 +64,11 @@ const CRY_SECONDS := 5.0
 const CRY_LAWYER := 20.0
 ## His own lawyer: every bad cop action also adds this much lawyer, and coffee does nothing (he wants tea).
 const SELF_LAWYER_EXTRA := 5.0
+## The sleeper: SLEEP_SECONDS without anyone doing anything and he falls asleep, losing SLEEP_DRAIN nerves a second;
+## asleep, only WAKE_ACTIONS reach him (propuesta).
+const SLEEP_SECONDS := 10.0
+const SLEEP_DRAIN := 2.0
+const WAKE_ACTIONS := ["give_coffee", "flick_lights", "shout", "throw_chair"]
 ## The talker (suspect 1): before each slip he confesses something that has nothing to do with the case.
 const TALKER_LINES := ["TALKER_1", "TALKER_2", "TALKER_3"]
 const LAWYER_MODEL := preload("res://assets/models/npc_abogado.glb")
@@ -91,6 +97,9 @@ var _gap_left := 0.0
 var _talking_until := 0.0
 ## The bad cop's nerves of the last seconds, [time, nerves], for the sweet grandpa.
 var _recent: Array[Vector2] = []
+## The sleeper: seconds since the last action, and whether he's asleep.
+var _idle := 0.0
+var asleep := false
 ## The last bad cop action: who did it and when (ms), and the bonus waiting for the next one.
 var _bad_by: Cop
 var _bad_at := -INF
@@ -147,6 +156,18 @@ func is_on() -> bool:
 
 func _process(delta: float) -> void:
 	_gap_left -= delta
+	if suspect_id == "sleeper" and is_on():
+		_doze(delta)
+
+
+func _doze(delta: float) -> void:
+	_idle += delta
+	if asleep and nerves > 0.0:
+		nerves = maxf(nerves - SLEEP_DRAIN * delta, 0.0)
+		meters_changed.emit(nerves, lawyer)
+	elif not asleep and _idle >= SLEEP_SECONDS:
+		asleep = true
+		_say("SUSPECT_FALLS_ASLEEP", true)
 
 
 ## A cop does action `id` (ACTIONS) on the suspect. Returns whether it counted.
@@ -154,6 +175,13 @@ func act(id: String, cop: Cop = null) -> bool:
 	if not is_on() or _gap_left > 0.0:
 		return false
 	_gap_left = ACTION_GAP
+	_idle = 0.0
+	var waking := asleep
+	if asleep:
+		if not WAKE_ACTIONS.has(id):
+			_say("SUSPECT_SNORES", false)
+			return false
+		asleep = false
 	var action: Dictionary = ACTIONS[id]
 	_streak = _streak + 1 if id == _last else 0
 	_last = id
@@ -181,6 +209,8 @@ func act(id: String, cop: Cop = null) -> bool:
 	if suspect_id == "sweet_grandpa" and gain > 0.0 and _cries(now, gain):
 		lawyer = clampf(lawyer + CRY_LAWYER, 0.0, FULL)
 		react = "SUSPECT_CRIES"
+	if waking:
+		react = "SUSPECT_WAKES"
 	meters_changed.emit(nerves, lawyer)
 	if id == "aim_lamp":
 		_aim_lamp()
@@ -189,7 +219,7 @@ func act(id: String, cop: Cop = null) -> bool:
 	if _streak > 0 and gain > 0.0:
 		_say("SUSPECT_REACT_REPEAT", false)
 	else:
-		_say(react, react == "SUSPECT_CRIES")
+		_say(react, react == "SUSPECT_CRIES" or react == "SUSPECT_WAKES")
 	_check(cop)
 	return true
 

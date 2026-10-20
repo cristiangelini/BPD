@@ -100,3 +100,4 @@
 - Interrogation: shouting into the microphone (Steam voice) near the suspect is the bad cop's shout.
 - Play draws the interrogation every third shift of a campaign (1 in 3 by the seed without one), with its own quota of 500.
 - Interrogation suspects drawn by the seed: the talker, the sweet grandpa (cries if pushed too fast) and his own lawyer (writes down every bad cop move, wants tea); --suspect=<id> forces one.
+- Interrogation suspect: the sleeper nods off after 10 s without action and loses nerves; only coffee, the lights, a shout or a thrown chair wake him up.
