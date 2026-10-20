@@ -26,8 +26,11 @@ func _ready() -> void:
 	truck.name = "SuspectCar"
 	add_child(truck)
 	var start := ChaseRoute.nearest_corner(CityLayout.parking("station").origin)
-	truck.follow(ChaseRoute.draw(case_seed, ChaseRoute.CORNERS, start), city.transform)
+	var route := ChaseRoute.draw(case_seed, ChaseRoute.CORNERS, start)
+	truck.follow(route, city.transform)
 	case = ChaseCase.new()
+	case.route = route
+	case.city_transform = city.transform
 	case.case_seed = case_seed
 	case.suspect_id = ChaseCase.pick_suspect(case_seed, OS.get_cmdline_user_args())
 	case.car = $PatrolCar
@@ -39,6 +42,10 @@ func _ready() -> void:
 	add_child(case)
 	_add_meters()
 	case.start(city.comisario)
+	# The copilot's map: the patrol car, and the suspect for whoever reads it.
+	city.map.setup(city, "", $PatrolCar)
+	city.map.suspect = truck
+	city.map.shows_suspect = case.tasks.shows_suspect
 
 
 func _add_meters() -> void:

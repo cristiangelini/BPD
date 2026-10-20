@@ -15,8 +15,9 @@ const LANE := 1.5
 var corners: Array[Vector2i] = []
 
 
-## `start` is the corner he sets off from (by default, an inner corner drawn with the seed).
-static func draw(seed_value: int, count := CORNERS, start := Vector2i(-1, -1)) -> ChaseRoute:
+## `start` is the corner he sets off from (by default, an inner corner drawn with the seed), and `heading` the way he
+## was going there, so he doesn't turn straight back.
+static func draw(seed_value: int, count := CORNERS, start := Vector2i(-1, -1), heading := Vector2i.ZERO) -> ChaseRoute:
 	var route := ChaseRoute.new()
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash("chase %d" % seed_value)
@@ -24,7 +25,6 @@ static func draw(seed_value: int, count := CORNERS, start := Vector2i(-1, -1)) -
 	if on_grid(start):
 		at = start
 	route.corners.append(at)
-	var heading := Vector2i.ZERO
 	var used := {}
 	while route.corners.size() < count:
 		var options: Array[Vector2i] = []
