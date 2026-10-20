@@ -34,11 +34,16 @@ const MODELS: Array[PackedScene] = [
 	preload("res://assets/models/dog_2.glb"), preload("res://assets/models/dog_3.glb"),
 	preload("res://assets/models/dog_4.glb"), preload("res://assets/models/dog_5.glb"),
 ]
+const POODLE_MODEL := preload("res://assets/models/dog_poodle.glb")
 
 enum State { WANDER, FOLLOW, FETCH, CARRY }
 
 ## Its coat (one of MODELS).
 @export var coat := 0
+## Fifí, the poodle lady's dog (PoodleLady), with her own look.
+@export var poodle := false
+## Waiting in a cage: it stays put until a cop takes it out, then it roams like the others.
+@export var caged := false
 ## Where it wanders (floor rectangles of the salon, as Rect2 in x/z) and where it hides what it takes, set by the salon.
 var areas: Array[Rect2] = []
 var den: Vector3
@@ -67,7 +72,7 @@ func _ready() -> void:
 	axis_lock_angular_x = true
 	axis_lock_angular_y = true
 	axis_lock_angular_z = true
-	_model = MODELS[coat % MODELS.size()].instantiate()
+	_model = (POODLE_MODEL if poodle else MODELS[coat % MODELS.size()]).instantiate()
 	add_child(_model)
 	body_entered.connect(_on_body_entered)
 	_goal = global_position
@@ -102,6 +107,9 @@ func _physics_process(delta: float) -> void:
 		_drop()
 		target = null
 		state = State.WANDER
+		caged = false
+		return
+	if caged:
 		return
 	_carry()
 	if absf(linear_velocity.y) > 0.5:

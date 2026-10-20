@@ -191,6 +191,25 @@ const NPCS = {
 		for (const s of [-1, 1]) limb(b, 'props', steel, V(0.52, 0.62, 0.2), V(0.52 + s * 0.04, 0.62, 0.42), 0.012);
 		for (const s of [-1, 1]) b.add('props', C('scissor_grip', 0xe04a4a), new THREE.TorusGeometry(0.03, 0.01, 4, 8), { pos: V(0.52 + s * 0.035, 0.62, 0.17), rot: [0, Math.PI / 2, 0] });
 	},
+	// Señora del caniche (the pet salon): lilac fur coat, a tall white hairdo, sunglasses up, pearls and a tiny handbag.
+	senora(b) {
+		pearBody(b, SKIN.arena, { shirt: C('fur_coat', 0xb48ad8), onePiece: true, belted: false, shoes: C('heels', 0x6a2a8a) });
+		const collar = C('coat_fur', 0xf0e8f4);
+		b.add('body', collar, new THREE.TorusGeometry(0.2, 0.06, 6, 14), { pos: V(0, 1.06, 0.02), rot: [Math.PI / 2, 0, 0] });
+		for (let i = 0; i < 7; i++) {
+			const a = Math.PI * (0.15 + 0.7 * (i / 6));
+			b.add('body', C('pearl', 0xfaf6ee), ellipsoid(0.022, 0.022, 0.022, 5, 3), { pos: V(Math.cos(a) * 0.15, 1.14 - Math.sin(a) * 0.08, 0.16) });
+		}
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		for (const s of [-1, 1]) b.add('face', C('blush', 0xf09a9a), ellipsoid(0.04, 0.025, 0.01, 6, 3), { pos: V(s * 0.12, 1.26, 0.18) });
+		const hair = C('hair_white', 0xf4f0ea);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		b.add('head', hair, ellipsoid(0.15, 0.17, 0.14, 10, 6), { pos: V(0, 1.62, -0.02) });
+		b.add('head', C('sunglasses_up', 0x2a1a3a), new THREE.BoxGeometry(0.26, 0.04, 0.03), { pos: V(0, 1.44, 0.175), rot: [-0.3, 0, 0] });
+		b.add('props', C('tiny_bag', 0xe8508a), new THREE.BoxGeometry(0.14, 0.1, 0.06), { pos: V(-0.52, 0.55, 0.12) });
+		b.add('props', gold, new THREE.TorusGeometry(0.05, 0.008, 4, 8, Math.PI), { pos: V(-0.52, 0.6, 0.12) });
+	},
 	// Panadera Marta (the bakery): pear dress with a white apron dusted with flour, a tall baker's hat and a rolling pin.
 	panadera(b) {
 		pearBody(b, SKIN.arena, { shirt: C('baker_dress', 0x5aa0d8), onePiece: true, belted: false, shoes: white });

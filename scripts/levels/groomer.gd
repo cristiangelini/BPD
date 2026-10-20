@@ -6,7 +6,8 @@ extends Node3D
 ## The salon is open; the storeroom ("Solo personal") and its back door to the yard are locked. The shampoo bottles
 ## and the collar vitrine break, each one a fine. Ramiro cuts dogs at the first table, watches what breaks and tells a
 ## dog's life to whoever sits in the waiting armchair with one (step 2). Six dogs roam the salon and the yard, follow
-## whoever has something in hand and hide small things in the doghouse (step 3). The stories come next.
+## whoever has something in hand and hide small things in the doghouse (step 3). The poodle lady waits in the
+## reception for Fifí, caged in the back, and tells what she saw when she gets her (step 4). The stories come next.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -14,6 +15,9 @@ const SHAMPOO_SCENE := preload("res://scenes/props/shampoo_bottle.tscn")
 const COLLAR_SCENE := preload("res://scenes/props/dog_collar.tscn")
 const GROOMER_SCENE := preload("res://scenes/npc/dog_groomer.tscn")
 const DOG_SCENE := preload("res://scenes/npc/dog.tscn")
+const LADY_AT := Vector3(-5.2, FLOOR_TOP, 6.3)
+## Fifí's cage: lower row, third from the west wall (one with bars).
+const POODLE_CAGE := Vector2i(2, 0)
 const HALF_X := 8.0
 ## The lot runs from -HALF_Z to HALF_Z; the building covers its front from BACK_Z on, the yard the rest.
 const HALF_Z := 7.0
@@ -118,6 +122,8 @@ var fines := 0
 var ramiro: DogGroomer
 var armchair: WaitingArmchair
 var dogs: Array[Dog] = []
+var lady: PoodleLady
+var poodle: Dog
 var _build: PlaceBuilder
 @onready var car: PatrolCar = $PatrolCar
 
@@ -234,7 +240,7 @@ func _build_cages() -> void:
 		for i in CAGE_XS.size():
 			var at := Vector3(CAGE_XS[i], FLOOR_TOP + level * CAGE_STEP, CAGE_Z)
 			_build.open_box(at, CAGE_SIZE, "+z", STEEL)
-			if OPEN_CAGES.has(Vector2i(i, level)):
+			if OPEN_CAGES.has(Vector2i(i, level)) or Vector2i(i, level) == POODLE_CAGE:
 				continue
 			# A dog waiting its turn behind the bars (only the look: the loose ones are Dog bodies).
 			var caged: Node3D = Dog.MODELS[(i + level * 3) % Dog.MODELS.size()].instantiate()
@@ -325,6 +331,19 @@ func _place_dogs() -> void:
 		add_child(dog)
 		dog.barked.connect(ramiro.dog_barked)
 		dogs.append(dog)
+	poodle = DOG_SCENE.instantiate()
+	poodle.poodle = true
+	poodle.caged = true
+	poodle.position = Vector3(CAGE_XS[POODLE_CAGE.x], FLOOR_TOP + POODLE_CAGE.y * CAGE_STEP + 0.07, CAGE_Z)
+	poodle.areas = DOG_AREAS
+	poodle.den = DOGHOUSE_AT
+	poodle.floor_y = FLOOR_TOP
+	add_child(poodle)
+	poodle.barked.connect(ramiro.dog_barked)
+	lady = PoodleLady.new()
+	lady.position = LADY_AT
+	lady.rotation.y = PI
+	add_child(lady)
 
 
 func _on_fragile_broken(at: Vector3) -> void:
