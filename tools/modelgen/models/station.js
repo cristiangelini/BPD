@@ -2,6 +2,7 @@
 // a bench, the armory's ram rack and a cell bunk. Every origin is on the floor at the middle of the piece, front to +Z,
 // so StationRooms places them by their footprint. Placeholder, not final art.
 import { Builder, mat, V, THREE } from '../lib.js';
+import { limb } from './pear.js';
 
 // The comisario's desk: 2 x 0.78 x 0.9 m, buried in papers, with a lamp and a "COMISARIO" plate.
 export function buildDesk() {
@@ -96,13 +97,35 @@ export function buildDonutBox() {
 	return b.build();
 }
 
+// The armory's wheelbarrow (comisaria.md): origin on the floor under the tray, wheel ahead (-Z), handles back (+Z)
+// toward the cop pushing it. Tray 0.7 x 0.3 x 0.9 m, its floor at 0.45 m.
+export function buildWheelbarrow() {
+	const b = new Builder('wheelbarrow');
+	const tray = mat('wb_tray', 0x3f8f4a), steel = mat('wb_steel', 0x4a4e56), tire = mat('wb_tire', 0x1c1c20);
+	b.add('tray', tray, new THREE.BoxGeometry(0.62, 0.03, 0.82), { pos: V(0, 0.45, 0) });
+	for (const s of [-1, 1]) {
+		b.add('tray', tray, new THREE.BoxGeometry(0.03, 0.3, 0.9), { pos: V(s * 0.34, 0.6, 0), rot: [0, 0, s * -0.18] });
+		b.add('tray', tray, new THREE.BoxGeometry(0.7, 0.3, 0.03), { pos: V(0, 0.6, s * 0.44), rot: [s * 0.25, 0, 0] });
+		limb(b, 'frame', steel, V(s * 0.22, 0.42, -0.42), V(s * 0.28, 0.7, 0.95), 0.022);
+		b.add('frame', mat('wb_grip', 0xc23a2a), new THREE.CylinderGeometry(0.03, 0.03, 0.14, 6), { pos: V(s * 0.28, 0.71, 0.92), rot: [Math.PI / 2 - 0.3, 0, 0] });
+		limb(b, 'frame', steel, V(s * 0.22, 0.43, 0.3), V(s * 0.24, 0.0, 0.36), 0.018);
+	}
+	b.add('wheel', tire, new THREE.CylinderGeometry(0.2, 0.2, 0.08, 10), { pos: V(0, 0.2, -0.55), rot: [0, 0, Math.PI / 2] });
+	b.add('wheel', steel, new THREE.CylinderGeometry(0.06, 0.06, 0.1, 6), { pos: V(0, 0.2, -0.55), rot: [0, 0, Math.PI / 2] });
+	limb(b, 'frame', steel, V(-0.22, 0.42, -0.42), V(0, 0.2, -0.55), 0.018);
+	limb(b, 'frame', steel, V(0.22, 0.42, -0.42), V(0, 0.2, -0.55), 0.018);
+	return b.build();
+}
+
 export const models = {
+	wheelbarrow: buildWheelbarrow,
 	donut_box: buildDonutBox,
 	station_desk: buildDesk, station_lockers: buildLockers, station_coffee: buildCoffee, station_bench: buildBench,
 	station_rack: buildRack, station_bunk: buildBunk,
 };
 
 export const views = {
+	wheelbarrow: { items: [{ name: 'wheelbarrow', pos: [0, 0, 0], rotY: 0.9 }], cam: { pos: [0, 1.4, 2.6], target: [0, 0.4, 0], fov: 40 } },
 	donut_box: { items: [{ name: 'donut_box', pos: [0, 0.06, 0], rotY: 0.4 }], cam: { pos: [0, 0.55, 0.65], target: [0, 0.0, 0], fov: 40 } },
 	station: {
 		items: [

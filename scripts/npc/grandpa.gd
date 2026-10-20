@@ -42,6 +42,8 @@ const CAT_UPSET := 5.0
 const PHOTOGRAPHED := 3.0
 const CUFFED := 15.0
 const HEARING := 12.0
+## The armory's wheelbarrow squeaks once a second while it rolls; each squeak he hears (propuesta).
+const SQUEAK := 1.0
 ## The fight club story: pushed faster than STRUCK_SPEED, the champion shoves the cop back this many times as fast,
 ## and the cop staggers (propuesta).
 const PUSH_BACK := 2.5
@@ -73,6 +75,7 @@ var _cuffed_left := 0.0
 
 
 func _ready() -> void:
+	add_to_group("grandpas")
 	$Bump.body_entered.connect(_on_bump)
 	_bubble.hide()
 
@@ -205,6 +208,16 @@ func cat_upset(at: Vector3) -> bool:
 		return false
 	_raise(CAT_UPSET)
 	_say("GRANDPA_CAT")
+	return true
+
+
+## The wheelbarrow squeaked at `at`.
+func heard_squeak(at: Vector3) -> bool:
+	if global_position.distance_to(at) > HEARING:
+		return false
+	_raise(SQUEAK)
+	if _since_line > LINE_EVERY / 2.0:
+		_say("GRANDPA_SQUEAK")
 	return true
 
 

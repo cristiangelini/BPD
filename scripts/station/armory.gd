@@ -12,11 +12,15 @@ const ITEMS := {
 	"ram": {"name": "ARMORY_RAM", "about": "ARMORY_RAM_ABOUT", "price": 0},
 	"donuts": {"name": "ARMORY_DONUTS", "about": "ARMORY_DONUTS_ABOUT", "price": 30, "stock": true},
 	"gloves": {"name": "ARMORY_GLOVES", "about": "ARMORY_GLOVES_ABOUT", "price": 120},
+	"wheelbarrow": {"name": "ARMORY_WHEELBARROW", "about": "ARMORY_WHEELBARROW_ABOUT", "price": 200},
 }
+const WHEELBARROW_SCENE := preload("res://scenes/tools/wheelbarrow.tscn")
 const DONUT_BOX_SCENE := preload("res://scenes/props/donut_box.tscn")
 
 var wallet: Object
 var items: Dictionary
+## There is only one wheelbarrow: the one out of the armory, if any.
+var wheelbarrow: Wheelbarrow
 
 
 func _init(with_wallet: Object, catalog: Dictionary = ITEMS) -> void:
@@ -73,6 +77,14 @@ func take(id: String, cop: Cop) -> String:
 			if cop.gloves:
 				return "ARMORY_HAS_GLOVES"
 			cop.put_on_gloves()
+		"wheelbarrow":
+			if is_instance_valid(wheelbarrow):
+				return "ARMORY_WHEELBARROW_OUT"
+			if cop.ram or cop.get_node("Grabber").held:
+				return "ARMORY_HANDS_FULL"
+			wheelbarrow = WHEELBARROW_SCENE.instantiate()
+			cop.get_parent().add_child(wheelbarrow)
+			wheelbarrow.push(cop)
 	if is_stock(id):
 		wallet.items.erase(id)
 	return ""

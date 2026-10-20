@@ -53,6 +53,7 @@
 - The armory: the armero behind the counter opens his list with E (cash box, price, take or buy); the battering ram is taken there instead of lying by the grandpa's door.
 - Box of donuts at the armory (30, four donuts): E with the box in hand eats one, which fills the stamina and keeps the mouth too full to ask (R) for 3 s.
 - Rubber gloves at the armory (120, bought once): yellow hands, and fragile evidence loses half on hits while a gloved cop holds it or just threw it.
+- The wheelbarrow at the armory (200, only one): one cop pushes up to 40 kg (the safe, the radio transmitter), slower; E loads, E parks, G tips it over; it squeaks and the grandpa complains.
 - Cop tools in 4 slots (1 to 4, same key puts it away): handcuffs (anyone in the game: a partner can't use their hands until freed with E, NPCs stay put, the place's owner at +15 complaint), flashlight (F anytime; lit trails seen from 8 m), camera (24 photos; a photo notes a trail in frame, the flash upsets the owner, photographer award) and fingerprint kit (hold to dust: the owner's fresh prints near hidden evidence, and the cops who grabbed it).
 - The grandpa's third story, the museum figurine: the stolen porcelain ballerina stands on a shelf among 8 souvenir copies; grabbing one tells the original (the museum's seal) from a copy. The newspaper clipping waits in a hiding spot.
 - The grandpa's fourth story, the care home dentures: a heavy case of dentures that chatter (heard up to 7 m) and the list of clients; the grandpa hid his own teeth too, so everything he says comes out mushy.
