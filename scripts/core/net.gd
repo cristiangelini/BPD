@@ -41,6 +41,8 @@ var case_sync: CaseSync
 var npcs: NpcSync
 ## Steam lobbies and invites (does nothing where GodotSteam isn't installed).
 var steam: SteamRoom
+## Steam voice: hold V or T to talk (voz.md).
+var voice: VoiceChat
 ## This PC has the current level loaded and its cops in place.
 var _in_scene := false
 
@@ -57,6 +59,8 @@ func _ready() -> void:
 	steam.joined.connect(func(peer: MultiplayerPeer) -> void: multiplayer.multiplayer_peer = peer)
 	steam.failed.connect(_on_steam_failed)
 	steam.invited.connect(_on_steam_invited)
+	voice = VoiceChat.new(self)
+	add_child(voice)
 	if steam.start():
 		# Launched from a friend's invite: the menu opens the room and joins it.
 		Lobby.invite_lobby = SteamRoom.connect_lobby_arg(OS.get_cmdline_args())
