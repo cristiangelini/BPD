@@ -86,4 +86,10 @@
 - Esc during a case opens a menu: resume, invite friends (host with Steam), the always open voice and leave the room (or quit to the menu solo); solo it stops the game.
 - Pet salon story: the secret human salon. The appointment book, a wig and a fragile mirror; human hair among the dog hair that only shows under the flashlight; human customers under a towel that a cop can lift.
 - Play now draws the pet salon too: the grandpa's house, the bakery or the salon, a third each.
+- Online belt: the tool in each cop's hand, the flashlight and the handcuffs (cuffing and freeing a partner) are the same on every PC.
+- Online camera and fingerprint kit: a photo (flash, film, the owner's complaint, the trails it caught) and a dusting happen on every PC, and photos count for the award on the host.
+- Online pet salon: Ramiro, the poodle lady, the gossip, the neighbor and the human customers (with their towel) are run by the host and followed on every PC; dogs and turtles only walk on the host.
+- Online armory: the host's cash box decides, a guest's list shows the host's money, and the ram, the gloves, the donut box (in the asking cop's hands) and the wheelbarrow show on every PC; eating a donut happens everywhere.
+- Online wheelbarrow: pushing, loading, parking and tipping it over happen on every PC, and what spills out is still moved by the host.
+- Online: whoever talks to the comisario gives the tip on every PC, also to a friend who joins after it.
 - Interrogation wing behind the station: a door in the comisario's office leads to a hall, a movie interrogation room (steel table, chairs, a single hanging lamp, clock, camera, "no smoking" sign) and the observation room behind a one-way mirror.
