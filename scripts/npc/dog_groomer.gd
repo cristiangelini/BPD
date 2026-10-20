@@ -23,6 +23,8 @@ const SAW_BREAK := 10.0
 const DOG_BARKED := 5.0
 ## Each question (R) raises the complaint; the first ASKS get a slip, then he won't answer.
 const ASKED := 5.0
+## A cop lifted the towel off one of his human customers (human salon story).
+const UNMASKED := 10.0
 const ASKS := 2
 const ASK_COOLDOWN := 3.0
 const SIGHT_RANGE := 8.0
@@ -187,6 +189,17 @@ func door_broken() -> void:
 func dog_barked(_at: Vector3) -> void:
 	_raise(DOG_BARKED)
 	_say("GROOMER_DOG")
+
+
+## A human customer walks in (human salon story): he throws a towel over their head and swears it's a dog.
+func cover_customer() -> void:
+	_say("GROOMER_TOWEL")
+
+
+## A cop lifted the towel off one of them: he heard it from anywhere, and it counts.
+func customer_unmasked() -> void:
+	_raise(UNMASKED)
+	_say("GROOMER_UNMASKED")
 
 
 ## Something happened at `at` (a bottle broke): it counts if he can see it, and not while he tells the dog's story.
