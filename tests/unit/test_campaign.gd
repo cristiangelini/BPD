@@ -34,11 +34,11 @@ func test_each_shift_has_its_own_case_always_the_same() -> void:
 func test_money_and_history_add_up_over_the_shifts() -> void:
 	var campaign := Campaign.start_new()
 	campaign.finish_shift("bingo", true, _report(900))
-	campaign.finish_shift("museum", false, _report(-40))
+	campaign.finish_shift("museum", true, _report(1000))
 	assert_eq(campaign.shift, 3)
-	assert_eq(campaign.money, 860, "the group's money is every shift's total")
+	assert_eq(campaign.money, 1900, "the group's money is every shift's total")
 	assert_eq(campaign.history.size(), 2)
-	assert_false(campaign.history[1].approved)
+	assert_true(campaign.history[1].approved)
 
 
 func test_a_saved_campaign_comes_back_with_the_same_money_items_and_cases() -> void:
@@ -63,10 +63,35 @@ func test_a_finished_campaign_cant_be_continued() -> void:
 	campaign.save()
 	assert_true(Campaign.can_continue())
 	for i in Campaign.SHIFTS:
-		campaign.finish_shift("bingo", true, _report(900))
+		campaign.finish_shift("bingo", true, _report(2000))
 	campaign.save()
 	assert_true(campaign.is_over())
+	assert_true(campaign.is_promoted(), "five quotas made: promoted")
 	assert_false(Campaign.can_continue(), "after shift 5 the campaign is over")
+
+
+func test_the_quota_rises_each_shift() -> void:
+	var campaign := Campaign.start_new()
+	assert_eq(campaign.quota(), 800)
+	campaign.finish_shift("bingo", true, _report(800))
+	assert_eq(campaign.quota(), 900)
+	campaign.shift = Campaign.SHIFTS
+	assert_eq(campaign.quota(), 1200)
+
+
+func test_missing_the_quota_loses_the_campaign() -> void:
+	var campaign := Campaign.start_new()
+	campaign.finish_shift("bingo", true, _report(850))
+	var report := _report(850)
+	campaign.finish_shift("museum", true, report)
+	assert_eq(report.quota, 900, "the screen shows shift 2's quota")
+	assert_false(report.approved)
+	assert_true(campaign.suspended)
+	assert_true(campaign.is_over())
+	assert_false(campaign.is_promoted())
+	campaign.save()
+	assert_false(Campaign.can_continue(), "a lost campaign can't be continued")
+	assert_true(Campaign.load_saved().suspended)
 
 
 func test_the_next_case_comes_from_the_campaign() -> void:
@@ -86,4 +111,5 @@ func test_the_end_of_a_shift_saves_and_shows_the_campaign() -> void:
 	var saved := Campaign.load_saved()
 	assert_not_null(saved, "and was saved")
 	assert_eq(saved.shift, 2)
-	assert_true(house.get_node("ShiftScreen").get_node("%AgainButton").visible, "four shifts to go")
+	assert_true(saved.suspended, "nothing delivered misses the quota of 800")
+	assert_false(house.get_node("ShiftScreen").get_node("%AgainButton").visible, "a lost campaign has no next shift")

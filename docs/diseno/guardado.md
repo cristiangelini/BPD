@@ -20,7 +20,9 @@ Una partida son 5 turnos de guardia y se guarda entre turnos (decisiones 16 y 59
 - **Jugar** empieza una partida nueva en el turno 1.
 - **Continuar** aparece si hay una partida sin terminar y la retoma en el turno que sigue.
 - En la sala, el anfitrión tiene **Empezar caso** (partida nueva) y **Continuar partida** si hay una guardada.
-- **Otro turno** en la pantalla de fin de turno juega el turno siguiente de la misma partida. Después del turno 5 la partida termina y ese botón ya no aparece.
+- **Otro turno** en la pantalla de fin de turno juega el turno siguiente de la misma partida. Después del turno 5, o si no cumplieron la cuota, la partida termina y ese botón ya no aparece.
 
-## Si no cumplen la cuota
-- Por ahora el turno cuenta igual y la partida sigue **(propuesta)**: se ve "Suspendidos" en ese turno y queda en el historial. Qué castigo tiene (perder la partida, repetir el turno, menos plata) lo decide Cristian.
+## La cuota
+- Cada turno tiene una cuota: 800 el primero y 100 más cada turno (800, 900, 1000, 1100, 1200; decisión 86, comisaria.md). Es una meta, no plata que se cobra.
+- **Si no cumplen la cuota, la partida se pierde:** "Suspendidos" y "No cumplieron la cuota: partida perdida". Queda guardada como perdida y ya no se puede continuar. Cuando exista la fuga de la cárcel, eso cambia (decisión 86).
+- **Si cumplen las 5 cuotas:** "¡Ascendidos!" y la partida termina.
