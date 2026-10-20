@@ -71,10 +71,37 @@ export function buildDog(i) {
 
 export const DOG_COATS = COATS.length;
 
+// Fifí, the poodle the lady waits for: white, with pompoms on the head, the tail and the paws, and a pink bow.
+export function buildPoodle() {
+	const b = new Builder('dog_poodle');
+	const fur = mat('poodle_fur', 0xfaf6f0), skin = mat('poodle_skin', 0xf0d8d0), bow = mat('poodle_bow', 0xf060a0);
+	const black = mat('dog_black', 0x141010), white = mat('dog_eye', 0xffffff);
+	b.add('body', fur, ellipsoid(0.14, 0.13, 0.2, 10, 8), { pos: V(0, 0.27, -0.02) });
+	b.add('body', fur, ellipsoid(0.15, 0.15, 0.13, 10, 8), { pos: V(0, 0.33, 0.12) });
+	for (const [x, z] of [[-0.08, 0.1], [0.08, 0.1], [-0.08, -0.13], [0.08, -0.13]]) {
+		b.add('legs', skin, new THREE.CylinderGeometry(0.025, 0.025, 0.18, 6), { pos: V(x, 0.11, z) });
+		b.add('legs', fur, ellipsoid(0.05, 0.05, 0.05, 6, 4), { pos: V(x, 0.04, z) });
+	}
+	b.add('head', skin, ellipsoid(0.09, 0.09, 0.1, 10, 6), { pos: V(0, 0.48, 0.22) });
+	b.add('head', skin, ellipsoid(0.045, 0.04, 0.07, 8, 5), { pos: V(0, 0.45, 0.31) });
+	b.add('head', black, ellipsoid(0.022, 0.018, 0.016, 6, 4), { pos: V(0, 0.46, 0.375) });
+	b.add('head', fur, ellipsoid(0.1, 0.09, 0.09, 10, 6), { pos: V(0, 0.58, 0.2) });
+	b.add('head', bow, ellipsoid(0.05, 0.03, 0.02, 6, 3), { pos: V(0.04, 0.65, 0.25), rot: [0, 0, 0.3] });
+	for (const s of [-1, 1]) {
+		b.add('head', white, ellipsoid(0.024, 0.026, 0.012, 6, 4), { pos: V(s * 0.04, 0.5, 0.3) });
+		b.add('head', black, ellipsoid(0.014, 0.016, 0.008, 6, 4), { pos: V(s * 0.04, 0.5, 0.31) });
+		b.add('ears', fur, ellipsoid(0.05, 0.08, 0.05, 6, 4), { pos: V(s * 0.1, 0.45, 0.2) });
+	}
+	b.add('tail', skin, new THREE.CylinderGeometry(0.015, 0.02, 0.14, 6), { pos: V(0, 0.38, -0.24), rot: [-0.6, 0, 0] });
+	b.add('tail', fur, ellipsoid(0.05, 0.05, 0.05, 6, 4), { pos: V(0, 0.44, -0.29) });
+	return b.build();
+}
+
 export const models = {
 	shampoo_bottle: buildShampoo,
 	dog_collar: buildCollar,
 	...Object.fromEntries(COATS.map((_, i) => [`dog_${i}`, () => buildDog(i)])),
+	dog_poodle: buildPoodle,
 };
 
 export const views = {
@@ -83,7 +110,7 @@ export const views = {
 		cam: { pos: [0, 0.2, 0.55], target: [0, 0.08, 0], fov: 40 },
 	},
 	dogs: {
-		items: COATS.map((_, i) => ({ name: `dog_${i}`, pos: [(i - 2.5) * 0.7, 0, 0], rotY: 0.6 })),
+		items: [...COATS.map((_, i) => ({ name: `dog_${i}`, pos: [(i - 3) * 0.7, 0, 0], rotY: 0.6 })), { name: 'dog_poodle', pos: [2.1, 0, 0], rotY: 0.6 }],
 		cam: { pos: [0, 1.0, 4.6], target: [0, 0.3, 0], fov: 34 },
 	},
 };

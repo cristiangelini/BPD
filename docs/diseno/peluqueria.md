@@ -88,6 +88,12 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      o si caen fuerte (por ejemplo, al tirarlos), como mucho un ladrido cada 2 s, y cada ladrido le suma 5 a la
      denuncia de Ramiro. Alzado, un perro sirve para el sillón de espera. Ramiro todavía no sale a perseguirlos.
 4. La señora del caniche.
+   - **Cómo quedó (propuesta):** la señora (tapado lila, peinado alto y blanco, perlas y una carterita) espera parada en
+     la recepción, al lado del sillón. Cada 10 s llama al policía que pasa a menos de 7 m ("¡Psst! ¡Oficial!"). Con E pide
+     a Fifí, la caniche blanca del moño rosa, que espera en una jaula con rejas del fondo y no sale hasta que un policía
+     la saca. Cuando le acercan a Fifí (alzada, soltada o tirada a menos de 1,3 m), la toma en brazos y cuenta lo que vio:
+     la pista de la historia verdadera, que pone cada historia en el paso 5 (hasta entonces dice que no vio nada raro).
+     Con E después repite la pista. Los otros perros no le sirven.
 5. Las 6 historias, un PR cada una.
 
 ## Preguntas para Cristian (respondidas el 20/10: sí a las dos)

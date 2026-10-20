@@ -364,3 +364,8 @@ GROOMER_DOG_STORY_3,"...y ahora es campeón de dormir la siesta. ¡Mírenlo qué
 PROMPT_DOG,Clic: alzar al perro,Click: pick up the dog,Clique: pegar o cachorro no colo
 PROMPT_HOLDING_DOG,Suelta el clic: bajarlo · Clic derecho: tirarlo (ladra) · Rueda: acercar o alejar,Release click: put it down · Right click: throw it (it barks) · Wheel: closer or farther,Solte o clique: pôr no chão · Clique direito: jogar (ele late) · Roda: aproximar ou afastar
 GROOMER_DOG,"¡Ey, ey! ¡Con cuidado, que es un cliente!","Hey, hey! Careful, that's a customer!","Ei, ei! Cuidado, que é um cliente!"
+PROMPT_LADY,E: hablar con la señora del caniche,E: talk to the poodle lady,E: falar com a senhora do poodle
+LADY_ASK,"¡Oficial! Hace dos horas que espero a mi Fifí. Está en una jaula del fondo, ¿me la trae?","Officer! I've been waiting two hours for my Fifí. She's in a cage in the back, would you bring her?","Policial! Faz duas horas que espero a minha Fifí. Ela está numa gaiola dos fundos, pode trazê-la?"
+LADY_WAITING,"¿Y mi Fifí? Es la blanquita del moño rosa.",And my Fifí? She's the little white one with the pink bow.,E a minha Fifí? É a branquinha do laço rosa.
+LADY_THANKS,"¡Mi Fifí! Gracias, oficial. Yo no vi nada raro, eh.","My Fifí! Thank you, officer. I didn't see anything odd, though.","Minha Fifí! Obrigada, policial. Eu não vi nada estranho, viu."
+LADY_CALL,"¡Psst! ¡Oficial! ¿Me hace un favorcito?","Psst! Officer! Would you do me a little favor?","Psst! Policial! Me faz um favorzinho?"
