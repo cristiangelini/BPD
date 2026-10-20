@@ -364,3 +364,75 @@ func test_the_dangerous_one_runs_the_route_and_a_cop_alone_catches_him() -> void
 	assert_gt(case.lawyer, 0.0, "loose, the lawyer goes up")
 	level.suspect.use(level.get_node("Cop"))
 	assert_false(case.loose, "playing alone, one cop is enough")
+
+
+## Rebuilds the level with the twins, the guilty one in the cell or in the room.
+func _twins_level(guilty_in_cell: bool) -> void:
+	var seed_value := 1
+	while InterrogationCase.pick_suspect(seed_value, []) != "twins":
+		seed_value += 1
+	level.free()
+	level = LEVEL_SCENE.instantiate()
+	level.case_seed = seed_value
+	(level.get_node("Cop") as Cop).input_enabled = false
+	add_child_autofree(level)
+	await wait_physics_frames(2)
+	case = level.case
+	case.guilty_in_cell = guilty_in_cell
+	case.give_tip()
+
+
+func test_either_twin_can_be_the_guilty_one() -> void:
+	var seen := {}
+	for seed_value in range(1, 400):
+		if InterrogationCase.pick_suspect(seed_value, []) == "twins":
+			seen[InterrogationCase.pick_guilty_in_cell(seed_value)] = true
+	assert_eq(seen.size(), 2)
+
+
+func test_with_twins_each_cop_works_the_nearest_and_only_the_guilty_one_confesses() -> void:
+	await _twins_level(true)
+	assert_not_null(level.twin, "the other twin waits in the cell")
+	var cop: Cop = level.get_node("Cop")
+	cop.global_position = level.twin.global_position + Vector3(0, 0, -1.2)
+	case._gap_left = 0.0
+	level.twin.use(cop)
+	assert_eq(case.twin_nerves, 0.0, "nerves don't go below 0")
+	case._gap_left = 0.0
+	case.shouted_by(cop)
+	assert_eq(case.twin_nerves, 10.0, "the shout by the cell reaches the cell's twin")
+	assert_eq(case.nerves, 0.0)
+	case.nerves = 95.0
+	_act("slam_table")
+	assert_false(case.confessed, "the one in the room didn't do it")
+	assert_eq(level.suspect.saying(), "TWIN_NOT_ME")
+	case.twin_nerves = 95.0
+	case._gap_left = 0.0
+	case.shouted_by(cop)
+	assert_true(case.confessed, "the one in the cell did")
+
+
+func test_the_folder_carried_to_the_other_twin_is_the_bluff() -> void:
+	await _twins_level(false)
+	var folder: CaseFolder = level.folder
+	folder.global_position = level.suspect.global_position + Vector3(0, 0.8, 0.5)
+	assert_false(case.folder_shown(folder), "it starts with the twin in the room")
+	folder.global_position = level.twin.global_position + Vector3(0, 0.8, -0.8)
+	assert_true(case.folder_shown(folder))
+	assert_eq(case.twin_nerves, 20.0)
+	assert_eq(level.twin.saying(), "TWIN_FOLDER")
+	assert_false(case.folder_shown(folder), "again to the same twin, nothing")
+	folder.global_position = level.suspect.global_position + Vector3(0, 0.8, 0.5)
+	assert_true(case.folder_shown(folder), "back to the room's twin")
+	assert_eq(case.nerves, 20.0)
+	assert_eq(level.twin_bar.value, 20.0)
+
+
+func test_without_twins_the_folder_is_just_a_folder() -> void:
+	case.give_tip()
+	assert_eq(level.suspect.kind, InterrogationCase.pick_suspect(7, []))
+	if level.suspect.kind == "twins":
+		return
+	assert_null(level.twin)
+	level.folder.global_position = level.suspect.global_position + Vector3(0, 0.8, 0.5)
+	assert_false(case.folder_shown(level.folder))

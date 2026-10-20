@@ -19,6 +19,7 @@ const ACTIONS := {
 	"throw_chair": {"nerves": 15.0, "lawyer": 12.0, "prompt": "", "react": "SUSPECT_REACT_CHAIR"},
 	"shout": {"nerves": 10.0, "lawyer": 10.0, "prompt": "", "react": "SUSPECT_REACT_SHOUT"},
 	"offer_tissue": {"nerves": -2.0, "lawyer": -6.0, "prompt": "PROMPT_OFFER_TISSUE", "react": "SUSPECT_REACT_TISSUE"},
+	"show_folder": {"nerves": 20.0, "lawyer": 4.0, "prompt": "", "react": "TWIN_FOLDER"},
 }
 ## The same action again in a row gives this much of its nerves, each time ("Ya no me asusta, oficial").
 const REPEAT_FACTOR := 0.5
@@ -50,7 +51,7 @@ const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 const CRIMES := ["bridge", "statue_nose", "violet_lights", "rubber_ducks"]
 ## The suspects drawn with the seed (interrogatorio.md, "Los sospechosos"), each changing a rule, and their model.
 ## --suspect=<id> forces one. The rest of the 10 come in later PRs.
-const SUSPECTS := ["talker", "sweet_grandpa", "self_lawyer", "sleeper", "influencer", "dangerous"]
+const SUSPECTS := ["talker", "sweet_grandpa", "self_lawyer", "sleeper", "influencer", "dangerous", "twins"]
 const SUSPECT_MODELS := {
 	"talker": "res://assets/models/npc_sospechoso.glb",
 	"sweet_grandpa": "res://assets/models/npc_abuelo.glb",
@@ -58,6 +59,7 @@ const SUSPECT_MODELS := {
 	"sleeper": "res://assets/models/npc_preso.glb",
 	"influencer": "res://assets/models/npc_periodista.glb",
 	"dangerous": "res://assets/models/npc_sospechoso.glb",
+	"twins": "res://assets/models/npc_politico.glb",
 }
 ## The sweet grandpa cries when the nerves go up more than CRY_NERVES within CRY_SECONDS, and the lawyer goes up
 ## CRY_LAWYER on its own (propuesta).
@@ -86,12 +88,18 @@ const WATCH_REACH := 12.0
 const LOOSE_LAWYER := 1.5
 const GRIP_SECONDS := 2.0
 const CAUGHT_NERVES := 15.0
+## The twins (decision 92): one in the room and his twin in the first cell of the station (InterrogationWing.TWIN_AT);
+## each cop works the twin nearest to him, and only the guilty one (drawn with the seed) confesses. The other one's
+## nerves go up too, but what slips out is about his brother and at 100 he only says it was him. The case folder
+## (CaseFolder), set down by the twin it wasn't last shown to, is the "show_folder" bluff: your brother already talked.
+const TWIN_SLIPS := ["TWIN_SLIP_1", "TWIN_SLIP_2", "TWIN_SLIP_3"]
 ## The talker (suspect 1): before each slip he confesses something that has nothing to do with the case.
 const TALKER_LINES := ["TALKER_1", "TALKER_2", "TALKER_3"]
 const LAWYER_MODEL := preload("res://assets/models/npc_abogado.glb")
 const COFFEE_SCENE := preload("res://scenes/props/coffee_cup.tscn")
 
 signal meters_changed(nerves: float, lawyer: float)
+signal twin_changed(nerves: float)
 
 var case_seed := 0
 var crime := ""
@@ -125,6 +133,14 @@ var loose := false
 var _seen := false
 var _grip_by: Cop
 var _grip_left := 0.0
+## The twins: the one in the cell, his nerves and slips, whether he's the guilty one, which twin the folder was last
+## shown to (null: the one in the room, where it starts), and whether the two are swapped while working the cell's.
+var twin: InterrogationSuspect
+var twin_nerves := 0.0
+var twin_slips := 0
+var guilty_in_cell := false
+var _folder_with: InterrogationSuspect
+var _swapped := false
 ## The last bad cop action: who did it and when (ms), and the bonus waiting for the next one.
 var _bad_by: Cop
 var _bad_at := -INF
@@ -141,6 +157,13 @@ static func pick_suspect(seed_value: int, args: PackedStringArray) -> String:
 		if arg.begins_with("--suspect=") and SUSPECTS.has(arg.trim_prefix("--suspect=")):
 			return arg.trim_prefix("--suspect=")
 	return SUSPECTS[hash("suspect %d" % seed_value) % SUSPECTS.size()]
+
+
+## Mixed through a generator: the low bits of hash() follow the suspect's draw, so it came out the same twin every time.
+static func pick_guilty_in_cell(seed_value: int) -> bool:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash("twin %d" % seed_value)
+	return rng.randi() % 2 == 1
 
 
 static func pick_crime(seed_value: int) -> String:
@@ -194,7 +217,7 @@ func _physics_process(delta: float) -> void:
 func _watch(delta: float) -> void:
 	if loose:
 		lawyer = minf(lawyer + LOOSE_LAWYER * delta, FULL)
-		meters_changed.emit(nerves, lawyer)
+		_emit()
 		_grip_left -= delta
 		if _grip_left <= 0.0:
 			suspect.slowed = false
@@ -246,7 +269,7 @@ func grab_loose(cop: Cop) -> void:
 	_grip_left = 0.0
 	suspect.sit()
 	nerves = clampf(nerves + CAUGHT_NERVES, 0.0, FULL)
-	meters_changed.emit(nerves, lawyer)
+	_emit()
 	_say("SUSPECT_CAUGHT", true)
 	_check(cop)
 
@@ -255,14 +278,49 @@ func _doze(delta: float) -> void:
 	_idle += delta
 	if asleep and nerves > 0.0:
 		nerves = maxf(nerves - SLEEP_DRAIN * delta, 0.0)
-		meters_changed.emit(nerves, lawyer)
+		_emit()
 	elif not asleep and _idle >= SLEEP_SECONDS:
 		asleep = true
 		_say("SUSPECT_FALLS_ASLEEP", true)
 
 
-## A cop does action `id` (ACTIONS) on the suspect. Returns whether it counted.
+## A cop does action `id` (ACTIONS) on the suspect (with twins, the one nearest to him). Returns whether it counted.
 func act(id: String, cop: Cop = null) -> bool:
+	if twin and cop and twin.global_position.distance_to(cop.global_position) < \
+			suspect.global_position.distance_to(cop.global_position):
+		return _act_on_twin(id, cop)
+	return _act(id, cop)
+
+
+## The action on the twin in the cell: he takes the room twin's place for it.
+func _act_on_twin(id: String, cop: Cop) -> bool:
+	_swap()
+	var counted := _act(id, cop)
+	_swap()
+	return counted
+
+
+func _swap() -> void:
+	_swapped = not _swapped
+	var other := suspect
+	suspect = twin
+	twin = other
+	var other_nerves := nerves
+	nerves = twin_nerves
+	twin_nerves = other_nerves
+	var other_slips := slips
+	slips = twin_slips
+	twin_slips = other_slips
+
+
+## The meters to the HUD: the room twin's nerves and the lawyer, and the cell twin's nerves.
+func _emit() -> void:
+	meters_changed.emit(twin_nerves if _swapped else nerves, lawyer)
+	if twin:
+		twin_changed.emit(nerves if _swapped else twin_nerves)
+
+
+func _act(id: String, cop: Cop) -> bool:
 	if not is_on() or _gap_left > 0.0 or loose:
 		return false
 	_gap_left = ACTION_GAP
@@ -274,7 +332,8 @@ func act(id: String, cop: Cop = null) -> bool:
 			return false
 		asleep = false
 	var action: Dictionary = ACTIONS[id]
-	_streak = _streak + 1 if id == _last else 0
+	# The folder going back and forth between the twins isn't the same trick again.
+	_streak = _streak + 1 if id == _last and id != "show_folder" else 0
 	_last = id
 	var gain: float = action.nerves
 	var now := Time.get_ticks_msec() / 1000.0
@@ -308,7 +367,7 @@ func act(id: String, cop: Cop = null) -> bool:
 		react = "SUSPECT_CRIES"
 	if waking:
 		react = "SUSPECT_WAKES"
-	meters_changed.emit(nerves, lawyer)
+	_emit()
 	if id == "aim_lamp":
 		_aim_lamp()
 	elif id == "flick_lights":
@@ -365,23 +424,54 @@ func chair_thrown(chair: InterrogationChair) -> bool:
 
 ## A cop shouted into the microphone (VoiceChat): near him, it's the bad cop's shout.
 func shouted_by(cop: Cop) -> void:
-	if suspect and cop.global_position.distance_to(suspect.global_position) <= SHOUT_REACH:
+	if _near(cop, SHOUT_REACH):
 		act("shout", cop)
 
 
 ## A cop ate a donut: in front of the suspect, it's torture.
 func donut_eaten_by(cop: Cop) -> void:
-	if suspect and cop.global_position.distance_to(suspect.global_position) <= EAT_REACH:
+	if _near(cop, EAT_REACH):
 		act("eat_donut", cop)
 
 
+## Whether the cop is this close to the suspect, or to his twin.
+func _near(cop: Cop, reach: float) -> bool:
+	for man: InterrogationSuspect in [suspect, twin]:
+		if man and cop.global_position.distance_to(man.global_position) <= reach:
+			return true
+	return false
+
+
+## The case folder set down: by the twin it wasn't last shown to, it's the bluff.
+func folder_shown(folder: CaseFolder) -> bool:
+	if not twin:
+		return false
+	var cops := folder.handling_cops(CaseFolder.SHOWN_SECONDS)
+	var cop: Cop = cops[0] if not cops.is_empty() else null
+	var last := _folder_with if _folder_with else suspect
+	for man: InterrogationSuspect in [suspect, twin]:
+		if man != last and folder.global_position.distance_to(man.global_position + Vector3.UP * 0.8) <= CaseFolder.REACH:
+			_gap_left = 0.0
+			var counted := _act_on_twin("show_folder", cop) if man == twin else _act("show_folder", cop)
+			if counted:
+				_folder_with = man
+			return counted
+	return false
+
+
+## With twins, whether the one being worked is the guilty one.
+func _guilty_here() -> bool:
+	return not twin or _swapped == guilty_in_cell
+
+
 func _check(_cop: Cop) -> void:
+	var guilty := _guilty_here()
 	while slips < SLIPS_AT.size() and nerves >= SLIPS_AT[slips]:
 		slips += 1
-		var slip := tr("SLIP_%s_%d" % [crime, slips])
+		var slip := tr("SLIP_%s_%d" % [crime, slips]) if guilty else tr(TWIN_SLIPS[slips - 1])
 		# The talker mixes his true slip with something that has nothing to do with it.
 		_say(tr(TALKER_LINES[slips - 1]) + " " + slip if suspect_id == "talker" else slip, true)
-	if nerves >= FULL:
+	if nerves >= FULL and guilty:
 		confessed = true
 		_say("CONFESS_" + crime, true)
 		solved_label.show()
@@ -395,6 +485,8 @@ func _check(_cop: Cop) -> void:
 		failed_label.text = "CASE_FAILED_LAWYER_INTERROGATION"
 		failed_label.show()
 		_finish_soon()
+	elif nerves >= FULL:
+		_say("TWIN_NOT_ME", true)
 
 
 ## A line over the suspect's head; reactions don't cut off what slipped out.

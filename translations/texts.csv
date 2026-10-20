@@ -623,3 +623,11 @@ SUSPECT_STRUGGLES,¡Suéltame! ¡Tengo cosquillas!,Let go! I'm ticklish!,Me solt
 SUSPECT_CAUGHT,"Está bien, está bien... me siento. Pero no me miren así.","Fine, fine... I'll sit. But don't look at me like that.","Tá bom, tá bom... eu sento. Mas não me olhem assim."
 PROMPT_GRAB_SUSPECT,E: agarrarlo (entre dos),E: grab him (two of you),E: agarrar (em dois)
 HINT_SUSPECT_LOOSE,¡El sospechoso se soltó! Agárrenlo entre dos.,"The suspect got loose! Grab him, two of you.",O suspeito se soltou! Agarrem ele em dois.
+BRIEF_SUSPECT_twins,Son gemelos: uno está acá y el otro en la celda. Solo uno lo hizo. Llévale la carpeta al otro y dile que su hermano ya habló.,They're twins: one is here and the other one is in the cell. Only one of them did it. Take the folder to the other one and tell him his brother already talked.,São gêmeos: um está aqui e o outro na cela. Só um deles fez. Leve a pasta para o outro e diga que o irmão dele já falou.
+HUD_TWIN_NERVES,Nervios del gemelo de la celda,Nerves of the twin in the cell,Nervos do gêmeo da cela
+PROMPT_CASE_FOLDER,Déjale la carpeta cerca al otro gemelo · Clic derecho: tirarla,Set the folder down near the other twin · Right click: throw it,Deixe a pasta perto do outro gêmeo · Clique direito: jogar
+TWIN_FOLDER,¿Mi hermano dijo eso? ¡Traidor! ¡Le voy a contar a mamá!,My brother said that? Traitor! I'm telling mom!,Meu irmão disse isso? Traidor! Vou contar pra mamãe!
+TWIN_SLIP_1,"¡Yo no fui! Mi hermano siempre fue el malo, desde la cuna.","It wasn't me! My brother was always the bad one, since the crib.","Não fui eu! Meu irmão sempre foi o malvado, desde o berço."
+TWIN_SLIP_2,"Él tiene un lunar acá, yo no. ¡Revisen las fotos!","He has a mole right here, I don't. Check the photos!","Ele tem uma pinta aqui, eu não. Olhem as fotos!"
+TWIN_SLIP_3,Esa noche yo estaba en clase de baile. ¡Pregúntenle a la profesora!,That night I was at dance class. Ask the teacher!,Naquela noite eu estava na aula de dança. Perguntem para a professora!
+TWIN_NOT_ME,¡Ya les dije todo! ¡Fue mi hermano! ¡Vayan a hablar con él!,I already told you everything! It was my brother! Go talk to him!,Eu já contei tudo! Foi meu irmão! Vão falar com ele!
