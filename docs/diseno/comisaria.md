@@ -40,17 +40,20 @@ Un mostrador con reja y el armero (un NPC pera, con la misma estructura que todo
 comprar (con la plata de la caja) y retirar (lo que ya es de la comisaría). Lo comprado queda en la armería para siempre
 y se guarda con la partida. Cada policía retira lo que va a llevar; lo que no vuelve en el patrullero se pierde.
 
+Las herramientas del cinturón (esposas, linterna, cámara y kit de huellas, en [herramientas.md](herramientas.md), PR #104)
+se retiran acá: hoy cada policía las tiene desde el principio, y con la armería pasan a retirarse antes de salir.
+
 Para empezar **(propuesta)**:
 
 | Ítem | Precio | Qué hace |
 |---|---|---|
 | **Ariete** | gratis, siempre hay uno | Tira abajo puertas (ya existe). |
+| **Esposas, linterna, cámara y kit de huellas** | gratis, uno de cada uno por policía | Las herramientas del cinturón (herramientas.md). |
 | **Caja de donas** | 30, trae 4 | Comer una dona (E con la caja en la mano) recupera toda la resistencia para correr. Con la boca llena no se puede preguntar (R) por 3 s. |
-| **Linterna** | 60 | Ilumina en los lugares oscuros (sótanos, altillos) y hace brillar un poco las huellas y migas a menos de 4 m. |
 | **Guantes de goma** | 120 | El que los tiene puestos rompe menos: los golpes a la evidencia frágil le sacan la mitad del valor. |
 | **Carretilla** | 200 | Un solo policía lleva hasta 40 kg empujándola (el transmisor de la radio, la caja fuerte). Lenta y ruidosa: el abuelo la escucha. |
 
-Más adelante (con los sospechosos y la cárcel): esposas, taser, megáfono, chaleco.
+Más adelante (con los sospechosos y la cárcel): taser, megáfono, chaleco.
 
 ## El comisario
 - Está en su oficina, detrás de un escritorio lleno de papeles. Grita (decisión 21).
@@ -73,7 +76,7 @@ Unos 20 × 14 m, en una planta, con estas salas: **sala de guardia** (donde apar
 2. El comisario da el caso en su oficina (mueve la charla que hoy pasa frente a la casa).
 3. La caja común, los 5 turnos con la cuota que sube, "Suspendidos" y "¡Ascendidos!".
 4. La armería: el armero, comprar y retirar, y el ariete pasa a retirarse ahí.
-5. Las donas, la linterna, los guantes y la carretilla, un PR cada uno.
+5. Las donas, los guantes y la carretilla, un PR cada uno.
 
 El guardado entre turnos (decisión 16) va en el hilo de los temas técnicos.
 
@@ -81,6 +84,6 @@ El guardado entre turnos (decisión 16) va en el hilo de los temas técnicos.
 1. ¿1 caso por turno, o varios?
 2. ¿Sueldo 500 y cuota 800 en el turno 1, subiendo 100 por turno?
 3. ¿La caja común para los 4, y la cuota como meta (no se paga)?
-4. ¿Está bien la lista de la armería para empezar (ariete, donas, linterna, guantes, carretilla)?
+4. ¿Está bien la lista de la armería para empezar (ariete, herramientas del cinturón, donas, guantes, carretilla)?
 5. ¿No llegar a la cuota termina la partida ("Suspendidos") hasta que esté la fuga?
 6. ¿5 turnos por partida, y al final "¡Ascendidos!"?
