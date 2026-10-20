@@ -28,6 +28,13 @@ func _act(id: String) -> bool:
 	return case.act(id)
 
 
+func _prop(action: String) -> InterrogationProp:
+	for prop: Node in level.find_children("*", "InterrogationProp", true, false):
+		if (prop as InterrogationProp).action == action:
+			return prop
+	return null
+
+
 func test_every_crime_comes_up_and_the_seed_keeps_it() -> void:
 	var seen := {}
 	for seed_value in range(1, 200):
@@ -38,10 +45,12 @@ func test_every_crime_comes_up_and_the_seed_keeps_it() -> void:
 
 func test_nothing_counts_until_the_comisario_gives_the_case() -> void:
 	var cop: Cop = level.get_node("Cop")
-	assert_eq(level.suspect.prompt_key(cop), "", "nothing to do with him before the case")
+	assert_eq(_prop("slam_table").prompt_key(cop), "", "plain furniture before the case")
 	assert_false(_act("slam_table"))
 	level.get_node("City").comisario.use(cop)
 	assert_true(case.tip_given)
+	assert_eq(_prop("slam_table").prompt_key(cop), "PROMPT_SLAM_TABLE")
+	assert_eq(_prop("aim_lamp").prompt_key(cop), "PROMPT_AIM_LAMP")
 	assert_eq(level.suspect.prompt_key(cop), "PROMPT_CALM_SUSPECT")
 
 
@@ -100,7 +109,7 @@ func test_at_full_lawyer_the_lawyer_takes_him_away() -> void:
 	assert_eq(level.get_node("%CaseFailed").text, "CASE_FAILED_LAWYER_INTERROGATION")
 
 
-func test_a_cop_gives_the_suspect_a_donut() -> void:
+func test_a_cop_gives_the_suspect_a_donut_and_eating_one_in_front_of_him_hurts() -> void:
 	case.give_tip()
 	var cop: Cop = level.get_node("Cop")
 	cop.get_node("Grabber").grab(level.donuts)
@@ -109,6 +118,10 @@ func test_a_cop_gives_the_suspect_a_donut() -> void:
 	level.suspect.use(cop)
 	assert_eq(case.lawyer, 38.0)
 	assert_eq(level.donuts.donuts, DonutBox.DONUTS - 1, "the donut came out of the box")
+	cop.global_position = level.suspect.global_position + Vector3(0, 0, 1.5)
+	case._gap_left = 0.0
+	assert_true(cop.eat_donut(level.donuts))
+	assert_eq(case._last, "eat_donut")
 	cop.get_node("Grabber").release()
 
 

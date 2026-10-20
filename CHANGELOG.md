@@ -88,3 +88,4 @@
 - Play now draws the pet salon too: the grandpa's house, the bakery or the salon, a third each.
 - Interrogation wing behind the station: a door in the comisario's office leads to a hall, a movie interrogation room (steel table, chairs, a single hanging lamp, clock, camera, "no smoking" sign) and the observation room behind a one-way mirror.
 - The interrogation case (--place=interrogation): the comisario gives it, the talker suspect waits cuffed in the interrogation room, the nerves and lawyer meters show at the top; calm him down or give him a donut; at full nerves he confesses (500), at full lawyer the lawyer takes him away.
+- The bad cop's moves in the interrogation room: E slams the steel table, E on the hanging lamp points it at the suspect's face, and eating a donut near him counts too.

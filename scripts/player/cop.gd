@@ -195,6 +195,8 @@ func eat_donut(box: DonutBox) -> bool:
 	exhausted = false
 	_mouth_full_left = MOUTH_FULL
 	show_hint("HINT_DONUT")
+	# Eaten in front of a suspect in an interrogation, it's the bad cop's move (interrogatorio.md).
+	get_tree().call_group("interrogation", "donut_eaten_by", self)
 	return true
 
 

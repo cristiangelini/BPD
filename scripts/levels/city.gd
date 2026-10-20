@@ -247,7 +247,7 @@ func _interrogation_wing(root: Node3D, color: Color) -> void:
 	_mirror(root)
 	var sign := Label3D.new()
 	sign.text = "SIGN_NO_SMOKING"
-	sign.font_size = 48
+	sign.font_size = 32
 	sign.pixel_size = 0.01
 	sign.modulate = Color(0.85, 0.2, 0.15)
 	sign.position = InterrogationWing.SIGN_AT
@@ -263,7 +263,8 @@ func _interrogation_wing(root: Node3D, color: Color) -> void:
 		root.add_child(light)
 	var lamp := SpotLight3D.new()
 	lamp.name = "InterrogationLamp"
-	lamp.position = InterrogationWing.LAMP_AT + Vector3.DOWN * 1.05
+	lamp.add_to_group("interrogation_lamp")
+	lamp.position = InterrogationWing.LAMP_AT + Vector3.UP * 0.05
 	lamp.rotation.x = -PI / 2
 	lamp.light_color = LAMP_LIGHT
 	lamp.light_energy = 6.0
@@ -309,7 +310,8 @@ func _mirror(root: Node3D) -> void:
 	root.add_child(probe)
 
 
-## Furniture models with a box to bump into when it has a footprint in `solids`.
+## Furniture models with a box to bump into when it has a footprint in `solids`; one with an action gets an
+## InterrogationProp, which a cop can use (E) during an interrogation.
 func _furniture(items: Array, solids: Dictionary, root: Node3D) -> void:
 	for item: Array in items:
 		var model: Node3D = load("res://assets/models/%s.glb" % item[0]).instantiate()
@@ -319,7 +321,11 @@ func _furniture(items: Array, solids: Dictionary, root: Node3D) -> void:
 		if not solids.has(item[0]):
 			continue
 		var solid: Vector3 = solids[item[0]]
-		var body := _body(item[1] + Vector3(0, solid.y / 2, 0), root)
+		var body: StaticBody3D = InterrogationProp.new() if item.size() > 3 else StaticBody3D.new()
+		if body is InterrogationProp:
+			(body as InterrogationProp).action = item[3]
+		body.position = item[1] + Vector3(0, solid.y / 2, 0)
+		root.add_child(body)
 		body.rotation.y = item[2]
 		var shape := CollisionShape3D.new()
 		var box := BoxShape3D.new()

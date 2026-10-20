@@ -24,19 +24,20 @@ const ROOM_DOOR := Vector2(4.4, 5.6)
 const MIRROR := Vector2(-16.5, -12.5)
 const MIRROR_BOTTOM := 1.0
 
-## Where the suspect sits, facing the door side (+Z), and where the lamp hangs over the table.
+## Where the suspect sits, facing the door side (+Z), and the bottom of the lamp's shade over the table.
 const SUSPECT_AT := Vector3(3.0, 0, -15.4)
-const LAMP_AT := Vector3(3.0, StationRooms.CEILING, -14.6)
+const LAMP_AT := Vector3(3.0, StationRooms.CEILING - 1.05, -14.6)
 ## Where the lawyer comes in when he gets there: the room's door.
 const LAWYER_AT := Vector3((ROOM_DOOR.x + ROOM_DOOR.y) / 2, 0, HALL_Z - 0.8)
 
-## Furniture: [model, position, turn], as in StationRooms. Models from tools/modelgen/models/interrogation.js.
+## Furniture: [model, position, turn], as in StationRooms, and for the ones a cop can use in an interrogation, the
+## action (InterrogationCase.ACTIONS). Models from tools/modelgen/models/interrogation.js.
 const FURNITURE := [
-	["interrogation_table", Vector3(3.0, 0, -14.6), 0.0],
+	["interrogation_table", Vector3(3.0, 0, -14.6), 0.0, "slam_table"],
 	["interrogation_chair", SUSPECT_AT, 0.0],
 	["interrogation_chair", Vector3(2.4, 0, -13.6), PI],
 	["interrogation_chair", Vector3(3.6, 0, -13.6), PI],
-	["hanging_lamp", LAMP_AT, 0.0],
+	["hanging_lamp", LAMP_AT, 0.0, "aim_lamp"],
 	["wall_clock", Vector3(3.0, 2.4, TO_Z + 0.12), 0.0],
 	["security_camera", Vector3(HALF_X - 0.2, 2.8, TO_Z + 0.2), -PI * 0.28],
 	["recording_desk", Vector3(MIRROR_X - 0.6, 0, -14.5), -PI / 2],
@@ -46,8 +47,9 @@ const FURNITURE := [
 ]
 ## The "no smoking" sign on the interrogation room's east wall, facing the room.
 const SIGN_AT := Vector3(HALF_X - StationRooms.WALL - 0.03, 2.0, -14.5)
-## Footprints of what you bump into; the lamp, the clock and the camera are up high.
+## Footprints of what you bump into (the lamp's is its shade); the clock and the camera are up high.
 const SOLID := {
+	"hanging_lamp": Vector3(0.52, 0.2, 0.52),
 	"interrogation_table": Vector3(1.8, 0.76, 0.9), "interrogation_chair": Vector3(0.5, 0.9, 0.5),
 	"recording_desk": Vector3(1.6, 0.76, 0.7),
 }
