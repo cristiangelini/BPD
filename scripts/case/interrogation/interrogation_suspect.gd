@@ -6,6 +6,8 @@ extends StaticBody3D
 
 ## Which of the suspects he is (InterrogationCase.SUSPECTS): it picks his model.
 var kind := "talker"
+## How high over him his lines show (the foreigner's translator talks higher, so the two don't overlap).
+var bubble_height := 1.9
 ## Seconds a line stays over his head.
 const LINE_SECONDS := 3.5
 ## The dangerous one loose runs this fast (m/s), half as fast with a cop holding on (propuesta): faster than a walk,
@@ -32,7 +34,7 @@ func _ready() -> void:
 	add_child(shape)
 	add_child((load(InterrogationCase.SUSPECT_MODELS[kind]) as PackedScene).instantiate())
 	_bubble = Label3D.new()
-	_bubble.position.y = 1.9
+	_bubble.position.y = bubble_height
 	_bubble.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	_bubble.pixel_size = 0.004
 	_bubble.outline_size = 10

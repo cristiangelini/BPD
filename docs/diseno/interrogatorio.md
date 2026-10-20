@@ -106,6 +106,12 @@ se le escapa a 30, 60 y 90 lo dibuja en un papel que levanta para que lo vean lo
 describe el dibujo con palabras ("Dibujo: un puente de palitos sobre la nada, con una cruz encima"). A 100 escribe la
 confesión en el papel. Captura: `sospechoso_mute.png`.
 
+**Cómo quedó (paso 6, séptima parte):** el extranjero (8, `--suspect=foreigner`, por ahora con el modelo del
+sospechoso) solo habla un idioma inventado ("Nopo nopo... ¡shnurgel!"). Al lado de la mesa hay otro detenido, con el
+modelo del preso, que dice que lo entiende: traduce lo que se le escapa a 30, 60 y 90 y la confesión, y a cada pista le
+agrega una frase suya ("Y también dice que a mí me tienen que soltar, que soy muy buena persona"). Las reacciones no las
+traduce. Captura: `sospechoso_foreigner.png`.
+
 ## Los dos medidores (se ven arriba, como la denuncia del abuelo)
 - **Nervios (0 a 100):** suben con el policía malo y bajan un poco con el bueno. Con 30, 60 y 90 se le escapa una frase
   que da una pista de qué hizo de verdad ("¡Yo nunca estuve en el club de golf!... Digo, ¿qué es el golf?").
@@ -172,7 +178,7 @@ cada acción con quién la hizo; el grito se mide en la PC de quien habla y se m
    contraste, la luz, el café, la silla y el pañuelo.
 4. El grito con la voz. Hecho.
 5. El sorteo en "Jugar" (1 de cada 3). Hecho.
-6. Los otros 9 sospechosos, uno o dos por PR. Hechos el 2, el 3, el 4, el 5, el 6, el 7 y el 10.
+6. Los otros 9 sospechosos, uno o dos por PR. Hechos todos menos el 9.
 7. Interrogar al dueño después de un allanamiento.
 
 ## Respuestas de Cristian (20/10)

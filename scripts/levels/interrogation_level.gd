@@ -17,6 +17,8 @@ var donuts: DonutBox
 var folder: CaseFolder
 ## The twins' case: the twin in the cell.
 var twin: InterrogationSuspect
+## The foreigner's case: the detainee who translates for him.
+var translator: InterrogationSuspect
 var chairs: Array[InterrogationChair] = []
 ## The station's space, where the wing's coordinates are (InterrogationWing).
 var wing: Node3D
@@ -58,6 +60,14 @@ func _ready() -> void:
 		twin.position = InterrogationWing.TWIN_AT
 		twin.rotation.y = PI
 		wing.add_child(twin)
+	if suspect.kind == "foreigner":
+		translator = InterrogationSuspect.new()
+		translator.name = "Translator"
+		translator.kind = "translator"
+		translator.position = InterrogationWing.TRANSLATOR_AT
+		translator.rotation.y = -0.7
+		translator.bubble_height = 2.6
+		wing.add_child(translator)
 	donuts = DONUTS_SCENE.instantiate()
 	donuts.position = InterrogationWing.DONUTS_AT
 	wing.add_child(donuts)
@@ -66,6 +76,7 @@ func _ready() -> void:
 	case.suspect = suspect
 	case.suspect_id = suspect.kind
 	case.twin = twin
+	case.translator = translator
 	case.guilty_in_cell = InterrogationCase.pick_guilty_in_cell(case_seed)
 	case.shift_screen = $ShiftScreen
 	case.solved_label = %CaseSolved
