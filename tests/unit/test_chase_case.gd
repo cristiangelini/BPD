@@ -122,3 +122,20 @@ func test_stopped_cuffed_and_brought_in_pays_the_salary() -> void:
 func test_the_place_draw_opens_it() -> void:
 	assert_eq(PlaceDraw.pick(7, PackedStringArray(["--place=chase"])), "chase")
 	assert_eq(ChaseCase.pick_suspect(7, PackedStringArray()), "ice_cream")
+
+
+func test_in_a_campaign_a_chase_is_a_shift_with_its_own_quota() -> void:
+	Campaign.save_path = "user://test_chase_case/partida.json"
+	Campaign.current = Campaign.start_new()
+	var level := _level()
+	await wait_physics_frames(10)
+	var case := level.case
+	case.case_solved = true
+	case.finish_shift()
+	var campaign := Campaign.current
+	assert_eq(campaign.shift, 2, "on to the next shift")
+	assert_eq(campaign.history[0].story, "chase_ice_cream")
+	assert_true(campaign.history[0].approved, "the 500 salary meets the chase's quota of 500")
+	Campaign.current = null
+	Campaign.save_path = Campaign.SAVE_PATH
+	DirAccess.remove_absolute(ProjectSettings.globalize_path("user://test_chase_case/partida.json"))

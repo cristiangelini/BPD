@@ -9,11 +9,12 @@ func after_each() -> void:
 	PlaceDraw.pending_seed = 0
 
 
-func test_every_raid_comes_up_about_a_third_of_the_time() -> void:
-	var count := {"grandpa": 0, "bakery": 0, "groomer": 0}
-	for i in 300:
+func test_half_are_chases_and_each_raid_a_third_of_the_rest() -> void:
+	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "chase": 0}
+	for i in 600:
 		count[PlaceDraw.pick(i + 1, [], 1)] += 1
-	for place: String in count:
+	assert_between(count.chase, 250, 350, "half chases (Cristian, 20/10)")
+	for place: String in ["grandpa", "bakery", "groomer"]:
 		assert_between(count[place], 70, 130, "even odds for %s (propuesta)" % place)
 	assert_eq(PlaceDraw.pick(77, []), PlaceDraw.pick(77, []), "the same seed gives the same place for everyone")
 
@@ -24,7 +25,7 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 	var groomer := {}
 	for i in 300:
 		var case_seed := i + 1
-		match PlaceDraw.pick(case_seed, [], 1):
+		match PlaceDraw.pick(case_seed, [], 1, false):
 			"bakery":
 				bakery[Bakery.pick_story(case_seed, [])] = true
 			"groomer":
@@ -75,6 +76,11 @@ func test_every_third_shift_is_an_interrogation() -> void:
 	for shift in range(1, 7):
 		var place := PlaceDraw.pick(5, [], shift)
 		assert_eq(place == "interrogation", shift % 3 == 0, "shift %d" % shift)
+
+
+func test_online_there_are_no_chases_yet() -> void:
+	for i in 100:
+		assert_ne(PlaceDraw.pick(i + 1, [], 1, false), "chase")
 
 
 func test_without_a_campaign_one_in_three_is_an_interrogation() -> void:

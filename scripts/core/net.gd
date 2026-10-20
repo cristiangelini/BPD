@@ -190,7 +190,8 @@ func start_match() -> void:
 	if not is_online() or not multiplayer.is_server():
 		return
 	var case_seed := PlaceDraw.next_seed()
-	_start_match.rpc(PlaceDraw.pick(case_seed, OS.get_cmdline_user_args(), PlaceDraw.shift_now()), case_seed,
+	# No chases online yet: the chase isn't synced (persecucion.md, "Online").
+	_start_match.rpc(PlaceDraw.pick(case_seed, OS.get_cmdline_user_args(), PlaceDraw.shift_now(), false), case_seed,
 		PlaceDraw.custody_now())
 
 

@@ -87,7 +87,7 @@ El host maneja al sospechoso y decide los medidores (decisión 50), como con el 
 4. Los daños a la ciudad y su multa: chocar algo de la ciudad perdiendo de golpe más de 15 km/h es un choque y cuesta
    50; chocar al sospechoso no cuesta nada **(propuesta)**. Por ahora cuentan paredes, semáforos y árboles; los autos
    estacionados y las vidrieras, cuando la ciudad los tenga.
-5. El sorteo en "Jugar".
+5. El sorteo en "Jugar". Online todavía no sale, hasta que la persecución se sincronice; ahí sale igual que solo.
 6. Los otros 9 sospechosos, uno o dos por PR.
 7. La persecución como final de otros casos.
 

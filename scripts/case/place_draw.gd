@@ -3,15 +3,15 @@ extends RefCounted
 
 ## Which place a match happens in (panaderia.md, "El orden para hacerlo", step 5): Play draws a case seed and, from
 ## it, the grandpa's house, the bakery or the pet salon, with even odds (propuesta). Every third shift is an
-## interrogation instead (interrogatorio.md, "Sale como un caso más"). --place=<id> forces one. The level then takes
-## that seed, so the place, the story and the hiding spots all come from one seed.
+## interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
+## (persecucion.md, "Sale como un caso más"). --place=<id> forces one. The level then takes that seed, so the place,
+## the story and the hiding spots all come from one seed.
 
 const PLACES := {
 	"grandpa": "res://scenes/levels/grandpa_house.tscn",
 	"bakery": "res://scenes/levels/bakery.tscn",
 	"groomer": "res://scenes/levels/groomer.tscn",
 	"interrogation": "res://scenes/levels/interrogation.tscn",
-	# Not drawn yet (persecucion.md, step 5): --place=chase opens it.
 	"chase": "res://scenes/levels/chase.tscn",
 }
 ## The raids, drawn by the seed.
@@ -19,6 +19,8 @@ const ORDER := ["grandpa", "bakery", "groomer"]
 ## One shift in this many is an interrogation (Cristian, 20/10): shifts 3, 6... of a campaign, or 1 in 3 by the seed
 ## without one.
 const INTERROGATION_EVERY := 3
+## Of the shifts that aren't interrogations, one in this many is a chase (Cristian, 20/10: half and half).
+const CHASE_EVERY := 2
 
 ## The seed the next level takes (0 = none drawn; the level draws its own).
 static var pending_seed := 0
@@ -28,14 +30,17 @@ static var custody := {}
 
 ## The place for this seed: from --place=<id> among the user args, or drawn. It hashes the seed instead of taking
 ## seed % 3, because the stories are drawn with seed % their count and the two draws would go together.
-## `shift` is the campaign's shift (0 without a campaign).
-static func pick(case_seed: int, args: PackedStringArray, shift := 0) -> String:
+## `shift` is the campaign's shift (0 without a campaign). Without `chases` (online, until the chase is synced) every
+## shift that isn't an interrogation is a raid.
+static func pick(case_seed: int, args: PackedStringArray, shift := 0, chases := true) -> String:
 	for arg in args:
 		if arg.begins_with("--place=") and PLACES.has(arg.trim_prefix("--place=")):
 			return arg.trim_prefix("--place=")
 	# An owner in custody is interrogated next, whatever the shift (decision 93).
 	if is_interrogation(case_seed, shift) or not custody_now().is_empty():
 		return "interrogation"
+	if chases and hash("case kind %d" % case_seed) % CHASE_EVERY == 0:
+		return "chase"
 	return ORDER[hash("place %d" % case_seed) % ORDER.size()]
 
 
