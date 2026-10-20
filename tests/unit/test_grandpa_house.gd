@@ -48,6 +48,10 @@ func test_house_has_twelve_spots_and_three_pots() -> void:
 
 func test_evidence_waits_at_its_drawn_spot() -> void:
 	var house := _house(1234)
+	# Michi naps on the main evidence and her weight presses it a little into a thin shelf; this test is about
+	# where the house puts things, so she naps elsewhere (test_michi covers her).
+	await wait_physics_frames(1)
+	house.michi.global_position = Vector3(0, 0.3, 5)
 	await wait_physics_frames(30)
 	assert_eq(house.evidence.size(), house.story.evidence.size())
 	for i in house.evidence.size():
