@@ -38,6 +38,8 @@ var route: ChaseRoute
 var city_transform := Transform3D.IDENTITY
 ## Each seat's job (the map, the megaphone...).
 var tasks: ChaseTasks
+## The crashes into the city, and their fines.
+var damages: ChaseDamages
 var station_parking: Transform3D
 var shift_screen: ShiftScreen
 var solved_label: Label
@@ -77,6 +79,9 @@ func start(comisario: Comisario = null) -> void:
 	tasks = ChaseTasks.new()
 	tasks.case = self
 	add_child(tasks)
+	damages = ChaseDamages.new()
+	damages.car = car
+	add_child(damages)
 	if comisario:
 		comisario.spoke.connect(give_tip.unbind(1))
 		car.locked_hint = "HINT_COMISARIO_FIRST"
@@ -179,8 +184,9 @@ func finish_shift() -> void:
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
-	var report := ShiftReport.pay(case_solved, [], 0)
-	var result := {"solved": case_solved, "report": report, "awards": ShiftReport.awards(stats)}
+	var report := ShiftReport.pay(case_solved, [], damages.fines)
+	var result := {"solved": case_solved, "report": report, "crashes": damages.crashes,
+		"awards": ShiftReport.awards(stats)}
 	var campaign := Campaign.current
 	if campaign and not campaign.is_over():
 		var played := campaign.shift
@@ -202,7 +208,7 @@ func _show_result(result: Dictionary) -> void:
 	failed_label.hide()
 	var awards: Array[Dictionary] = []
 	awards.assign(result.awards)
-	shift_screen.show_report(result.solved, result.report, 0, awards)
+	shift_screen.show_report(result.solved, result.report, result.crashes, awards, "SHIFT_FINES_CRASHES")
 	var over := false
 	if result.has("campaign"):
 		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over,

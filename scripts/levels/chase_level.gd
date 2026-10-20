@@ -11,6 +11,7 @@ var case: ChaseCase
 var truck: SuspectCar
 var distance_bar: ProgressBar
 var clock: Label
+var damage_label: Label
 
 
 func _ready() -> void:
@@ -40,8 +41,8 @@ func _ready() -> void:
 	case.solved_label = %CaseSolved
 	case.failed_label = %CaseFailed
 	add_child(case)
-	_add_meters()
 	case.start(city.comisario)
+	_add_meters()
 	# The copilot's map: the patrol car, and the suspect for whoever reads it.
 	city.map.setup(city, "", $PatrolCar)
 	city.map.suspect = truck
@@ -69,9 +70,18 @@ func _add_meters() -> void:
 	distance_bar.show_percentage = false
 	distance_bar.modulate = Color(1, 0.45, 0.35)
 	box.add_child(distance_bar)
+	damage_label = Label.new()
+	damage_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	damage_label.modulate = Color(1, 0.5, 0.4)
+	damage_label.add_theme_constant_override("outline_size", 6)
+	damage_label.hide()
+	box.add_child(damage_label)
 	add_child(hud)
 	_show(0.0, ChaseCase.TIME_LIMIT)
 	case.meters_changed.connect(_show)
+	case.damages.crashed.connect(func(fines: int) -> void:
+		damage_label.text = tr("HUD_DAMAGES") % fines
+		damage_label.show())
 
 
 func _show(distance: float, time_left: float) -> void:

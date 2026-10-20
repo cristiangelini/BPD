@@ -704,3 +704,5 @@ CHASE_MEGAPHONE,¡Deténgase!,Pull over!,Pare o veículo!
 HINT_CHASE_MEGAPHONE,"Megáfono: clic para gritarle. Con 2, la ventana.","Megaphone: click to shout at him. Press 2 for the window.","Megafone: clique para gritar. Com 2, a janela."
 HINT_CHASE_WINDOW,"Ventana: clic tira pinchos atrás, clic derecho la red adelante. Con 1, el megáfono.","Window: click drops spikes behind, right click throws the net ahead. Press 1 for the megaphone.","Janela: clique joga os pregos atrás, clique direito a rede na frente. Com 1, o megafone."
 HINT_CHASE_MAP,"Copiloto: con M ves al sospechoso en el mapa. ¡Cántale las esquinas al que maneja!","Copilot: press M to see the suspect on the map. Call the turns out to the driver!","Copiloto: com M você vê o suspeito no mapa. Diga as esquinas para quem dirige!"
+SHIFT_FINES_CRASHES,Multas (%d choques),Fines (%d crashes),Multas (%d batidas)
+HUD_DAMAGES,Daños a la ciudad: -%d,Damage to the city: -%d,Danos à cidade: -%d

@@ -19,15 +19,17 @@ func _ready() -> void:
 	%MenuButton.pressed.connect(back_to_menu.emit)
 
 
-## `report` comes from ShiftReport.pay(), `awards` from ShiftReport.awards().
-func show_report(solved: bool, report: Dictionary, broken_ornaments: int, awards: Array[Dictionary]) -> void:
+## `report` comes from ShiftReport.pay(), `awards` from ShiftReport.awards(). `fines_key` says what the fines were
+## for (broken ornaments, or a chase's crashes), with `broken_ornaments` as its count.
+func show_report(solved: bool, report: Dictionary, broken_ornaments: int, awards: Array[Dictionary],
+		fines_key := "SHIFT_FINES") -> void:
 	_case_result.text = "SHIFT_CASE_SOLVED" if solved else "SHIFT_CASE_FAILED"
 	_case_result.modulate = Color(0.45, 1, 0.5) if solved else Color(1, 0.4, 0.35)
 	for child in _lines.get_children():
 		child.queue_free()
 	_line(tr("SHIFT_SALARY"), report.salary)
 	_line(tr("SHIFT_EVIDENCE"), report.evidence)
-	_line(tr("SHIFT_FINES") % broken_ornaments, -report.fines)
+	_line(tr(fines_key) % broken_ornaments, -report.fines)
 	_line(tr("SHIFT_TOTAL"), report.total, true)
 	_line(tr("SHIFT_QUOTA"), report.quota)
 	_verdict.text = "SHIFT_APPROVED" if report.approved else "SHIFT_SUSPENDED"
