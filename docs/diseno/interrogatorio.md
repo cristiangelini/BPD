@@ -46,6 +46,12 @@ para de hablar, y por ahora sale uno de 4 delitos: el puente que no existe, la n
 semáforos violetas y los patos de goma de la fuente. Todavía no se juega online. Capturas: `caso_lampara.png`,
 `caso_se_le_escapa.png` y `caso_abogado.png`.
 
+**Cómo quedó (paso 3, primera parte):** el contraste ya cuenta: una acción de bueno menos de 5 s después de una de malo
+de otro policía hace que la siguiente de malo dé el doble de nervios (×1,3 si es el mismo policía). Al lado de la puerta
+de la sala hay un interruptor (E: apagar y prender la luz, +8 y +5), y la máquina de café de la sala de observación sirve
+un vaso (E): dejarlo en la mesa cerca de él es el café del policía bueno. Faltan la silla, el pañuelo y sentarse.
+Capturas: `interruptor.png` y `observacion_vidrio.png`.
+
 ## Los dos medidores (se ven arriba, como la denuncia del abuelo)
 - **Nervios (0 a 100):** suben con el policía malo y bajan un poco con el bueno. Con 30, 60 y 90 se le escapa una frase
   que da una pista de qué hizo de verdad ("¡Yo nunca estuve en el club de golf!... Digo, ¿qué es el golf?").
@@ -108,7 +114,8 @@ cada acción con quién la hizo; el grito se mide en la PC de quien habla y se m
 2. El caso: el comisario lo da, el sospechoso esposado, los dos medidores, las primeras acciones (mesa, lámpara, dar y
    comerse una dona, "tranquilo"), la repetición que rinde menos, la confesión, el abogado y la pantalla del turno. Con
    el sospechoso 1 y 4 delitos.
-3. El resto de las acciones (café, silla, luz, pañuelo, sentarse) y el contraste entre bueno y malo.
+3. El resto de las acciones (café, silla, luz, pañuelo, sentarse) y el contraste entre bueno y malo. Hecho: el
+   contraste, la luz y el café.
 4. El grito con la voz.
 5. El sorteo en "Jugar" (1 de cada 3).
 6. Los otros 9 sospechosos, uno o dos por PR.

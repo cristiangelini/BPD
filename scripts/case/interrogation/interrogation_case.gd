@@ -4,7 +4,7 @@ extends Node
 ## The interrogation (docs/diseno/interrogatorio.md): the comisario gives the case in his office, the suspect waits
 ## cuffed in the interrogation room, and the cops get a confession out of him before his lawyer gets there. Bad cop
 ## actions raise his nerves and the lawyer meter, good cop ones lower both; the same action twice in a row gives half
-## the nerves. At 30, 60 and 90 nerves something slips out, at 100 he confesses (the case is solved) and at 100
+## the nerves, and good cop right after another cop's bad cop doubles the next bad cop's nerves. At 30, 60 and 90 nerves something slips out, at 100 he confesses (the case is solved) and at 100
 ## lawyer the lawyer takes him away (failed). No time limit (decision 66). Every number here is (propuesta).
 
 ## Each action: nerves and lawyer it adds (negative lowers) and its prompt. The bad cop's raise both.
@@ -14,17 +14,26 @@ const ACTIONS := {
 	"eat_donut": {"nerves": 6.0, "lawyer": 3.0, "prompt": "", "react": "SUSPECT_REACT_EAT_DONUT"},
 	"give_donut": {"nerves": -3.0, "lawyer": -12.0, "prompt": "PROMPT_GIVE_DONUT", "react": "SUSPECT_REACT_GIVE_DONUT"},
 	"calm": {"nerves": -2.0, "lawyer": -8.0, "prompt": "PROMPT_CALM_SUSPECT", "react": "SUSPECT_REACT_CALM"},
+	"flick_lights": {"nerves": 8.0, "lawyer": 5.0, "prompt": "PROMPT_FLICK_LIGHTS", "react": "SUSPECT_REACT_LIGHTS"},
+	"give_coffee": {"nerves": -3.0, "lawyer": -10.0, "prompt": "", "react": "SUSPECT_REACT_COFFEE"},
 }
 ## The same action again in a row gives this much of its nerves, each time ("Ya no me asusta, oficial").
 const REPEAT_FACTOR := 0.5
+## Good cop right after bad cop (within CONTRAST_SECONDS): the next bad cop action gives this many times its nerves,
+## if two cops took turns, or less if it was the same one.
+const CONTRAST_SECONDS := 5.0
+const CONTRAST := 2.0
+const SOLO_CONTRAST := 1.3
 ## Seconds between two actions, whoever does them.
 const ACTION_GAP := 1.0
 const SLIPS_AT: Array[float] = [30.0, 60.0, 90.0]
 const FULL := 100.0
 ## A cop eating a donut this close to the suspect counts as the bad cop's action.
 const EAT_REACH := 3.0
-## Seconds the lamp stays on his face.
+## Seconds the lamp stays on his face, and the lights' blinks when a cop flicks them.
 const LAMP_SECONDS := 4.0
+const FLICKS := 3
+const FLICK_SECONDS := 0.15
 ## Seconds between the confession or the lawyer and the end of shift screen.
 const SHIFT_DELAY := 3.0
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
@@ -34,6 +43,7 @@ const CRIMES := ["bridge", "statue_nose", "violet_lights", "rubber_ducks"]
 ## The talker (suspect 1): before each slip he confesses something that has nothing to do with the case.
 const TALKER_LINES := ["TALKER_1", "TALKER_2", "TALKER_3"]
 const LAWYER_MODEL := preload("res://assets/models/npc_abogado.glb")
+const COFFEE_SCENE := preload("res://scenes/props/coffee_cup.tscn")
 
 signal meters_changed(nerves: float, lawyer: float)
 
@@ -55,6 +65,10 @@ var _last := ""
 var _streak := 0
 var _gap_left := 0.0
 var _talking_until := 0.0
+## The last bad cop action: who did it and when (ms), and the bonus waiting for the next one.
+var _bad_by: Cop
+var _bad_at := -INF
+var _contrast := 1.0
 
 
 ## The case on in this tree, if any.
@@ -110,19 +124,49 @@ func act(id: String, cop: Cop = null) -> bool:
 	_streak = _streak + 1 if id == _last else 0
 	_last = id
 	var gain: float = action.nerves
+	var now := Time.get_ticks_msec() / 1000.0
 	if gain > 0.0:
-		gain *= pow(REPEAT_FACTOR, _streak)
+		gain *= pow(REPEAT_FACTOR, _streak) * _contrast
+		_contrast = 1.0
+		_bad_by = cop
+		_bad_at = now
+	elif now - _bad_at <= CONTRAST_SECONDS:
+		_contrast = CONTRAST if cop != _bad_by else SOLO_CONTRAST
+		_bad_at = -INF
 	nerves = clampf(nerves + gain, 0.0, FULL)
 	lawyer = clampf(lawyer + action.lawyer, 0.0, FULL)
 	meters_changed.emit(nerves, lawyer)
 	if id == "aim_lamp":
 		_aim_lamp()
+	elif id == "flick_lights":
+		_flick_lights()
 	if _streak > 0 and gain > 0.0:
 		_say("SUSPECT_REACT_REPEAT", false)
 	else:
 		_say(action.react, false)
 	_check(cop)
 	return true
+
+
+## A cop uses a prop of the room: the coffee machine fills a cup in their hands, the rest are actions.
+func use_prop(id: String, cop: Cop) -> void:
+	if id != "pour_coffee":
+		act(id, cop)
+		return
+	if not is_on() or cop.get_node("Grabber").held:
+		return
+	var cup: CoffeeCup = COFFEE_SCENE.instantiate()
+	cop.get_parent().add_child(cup)
+	cup.global_position = cop.camera.global_position - cop.camera.global_basis.z * 0.6
+	cop.get_node("Grabber").grab(cup)
+
+
+## A cup of coffee set down near him: he takes it.
+func coffee_served(cup: CoffeeCup) -> bool:
+	if not suspect or cup.global_position.distance_to(suspect.global_position + Vector3.UP * 0.8) > CoffeeCup.REACH:
+		return false
+	var cops := cup.handling_cops(CoffeeCup.SERVED_SECONDS)
+	return act("give_coffee", cops[0] if not cops.is_empty() else null)
 
 
 ## A cop ate a donut: in front of the suspect, it's torture.
@@ -170,6 +214,18 @@ func _aim_lamp() -> void:
 	tween.tween_property(lamp, "rotation", Transform3D(Basis(), lamp.position).looking_at(face).basis.get_euler(), 0.25)
 	tween.tween_interval(LAMP_SECONDS)
 	tween.tween_property(lamp, "rotation", rest, 0.5)
+
+
+func _flick_lights() -> void:
+	var lamp := get_tree().get_first_node_in_group("interrogation_lamp") as Light3D
+	if not lamp:
+		return
+	var tween := lamp.create_tween()
+	for i in FLICKS:
+		tween.tween_callback(lamp.hide)
+		tween.tween_interval(FLICK_SECONDS)
+		tween.tween_callback(lamp.show)
+		tween.tween_interval(FLICK_SECONDS)
 
 
 func _lawyer_arrives() -> void:

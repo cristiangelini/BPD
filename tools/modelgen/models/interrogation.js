@@ -86,9 +86,27 @@ export function buildRecordingDesk() {
 	return b.build();
 }
 
+// The paper cup of coffee from the observation room's machine: 0.09 x 0.12 m, centered, with a lid and a sleeve.
+export function buildCoffeeCup() {
+	const b = new Builder('coffee_cup');
+	b.add('cup', mat('cup_paper', 0xf4efd8), new THREE.CylinderGeometry(0.045, 0.035, 0.11, 10), { pos: V(0, -0.005, 0) });
+	b.add('sleeve', mat('cup_sleeve', 0x8a5a2a), new THREE.CylinderGeometry(0.044, 0.039, 0.045, 10), { pos: V(0, -0.005, 0) });
+	b.add('lid', mat('cup_lid', 0xffffff), new THREE.CylinderGeometry(0.047, 0.047, 0.012, 10), { pos: V(0, 0.054, 0) });
+	return b.build();
+}
+
+// The light switch by the interrogation room's door: a plate 0.12 x 0.16 m from its origin up, facing +Z.
+export function buildLightSwitch() {
+	const b = new Builder('light_switch');
+	b.add('plate', mat('switch_plate', 0xe8e4d8), new THREE.BoxGeometry(0.12, 0.16, 0.02), { pos: V(0, 0.08, 0) });
+	b.add('toggle', mat('switch_toggle', 0x3a3e44), new THREE.BoxGeometry(0.03, 0.05, 0.03), { pos: V(0, 0.09, 0.02), rot: [0.4, 0, 0] });
+	return b.build();
+}
+
 export const models = {
 	interrogation_table: buildTable, interrogation_chair: buildChair, hanging_lamp: buildHangingLamp,
 	wall_clock: buildWallClock, security_camera: buildCamera, recording_desk: buildRecordingDesk,
+	coffee_cup: buildCoffeeCup, light_switch: buildLightSwitch,
 };
 
 export const views = {
