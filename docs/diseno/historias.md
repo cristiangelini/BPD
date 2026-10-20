@@ -65,6 +65,28 @@ Los pesos y valores son **(propuesta)** y siguen la escala del bingo: la princip
 - **Pistas:** un camino de hojas de lechuga va desde la mesada de la cocina hasta el escondite de Relámpago. Las huellas de barro llevan al tablero, y cada una tiene además una nota del abuelo.
 - **Extras:** el tablero de apuestas (8 kg, vale 400) en un escondite y 3 trofeos (0,5 kg, 100 cada uno) en los cajones. Michi duerme arriba del tablero.
 
+## La figurita del museo (cómo quedó, propuesta)
+- **La bailarina original** (0,3 kg, 1500) está parada en uno de los estantes del abuelo, en el lugar de una figurita, junto con 8 copias de recuerdo iguales repartidas por la casa. Es muy frágil: pierde valor con cualquier golpe de más de 1,5 m/s.
+- **Cómo se distingue:** al agarrar una, la original dice "¡Abajo tiene el sello dorado del museo!" y las copias "Abajo dice «Recuerdo del museo». Es una copia.". La original no muestra su valor hasta que alguien la agarra, para que el número no la delate. Las copias son adornos del abuelo: si se rompen, son multa.
+- **El recorte del diario** (0,1 kg, 100) va en un escondite. Al agarrarlo recuerda lo del sello.
+- Como la bailarina no está en un escondite, las notas del abuelo, lo que se le escapa y lo que vio la vecina hablan solo del recorte.
+
+## Dentaduras del geriátrico (cómo quedó, propuesta)
+- **La valija de dentaduras** (6 kg, 1000) va en un escondite grande, con Michi durmiendo arriba. La lista de clientes (0,2 kg, 300) va en otro escondite.
+- **El ruido:** las dentaduras castañetean cada 2 s. Se oye hasta 7 m, y a esa distancia aparece un "*clac clac*" sobre la valija (hasta que haya sonido de verdad).
+- **El abuelo sin dientes:** todo lo que dice sale cambiado ("s" por "sh", "t" por "d", "p" por "b"). Lo que se le escapa llega así a la planilla: "¡Yo nunca eshcondí nada en la ashena!".
+
+## Radio pirata (cómo quedó, propuesta)
+- **El transmisor** (35 kg, 1200) está en un escondite pesado y Michi duerme arriba. Pesa más de lo que levanta un policía (25 kg), así que lo cargan entre dos; solo se puede arrastrar.
+- **Pista propia:** con T apretada (la radio del policía), arriba de la pantalla se ven barras de estática y se escucha un ruido. En toda la casa hay 1 barra de interferencia; a menos de 15 m del transmisor suben hasta 5 pegado a él.
+- **Extras:** 3 cintas de radionovelas (0,2 kg, 80 cada una) en los cajones. Las huellas de barro y la nota del abuelo llevan al transmisor.
+
+## Club de lucha de jubilados (cómo quedó, propuesta)
+- **El cinturón de campeón** (1 kg, 1000), **los guantes** (0,5 kg, 150) y **el cuaderno de peleas** (0,3 kg, 300) están en tres escondites. Michi duerme arriba del cuaderno.
+- **El ring** (2,8 × 2,8 m) está armado en el medio del altillo; no choca, se camina a través.
+- **Pista propia:** una foto del abuelo con cuatro vecinos, todos con un ojo morado, en uno de los lugares de las notas; atrás dice «Martes, en el altillo». Se lee con E y va a la planilla.
+- **El abuelo es el campeón:** si un policía lo empuja (a más de 2 m/s), se queja como siempre y además lo empuja de vuelta 2,5 veces más fuerte, y el policía queda tambaleando 1 s. No cuenta historias («Las historias son para los que pierden»), así que no se lo puede distraer.
+
 ## Lo que comparten todas las historias
 - La puerta cerrada, el ariete y la llave en la maceta.
 - Los adornos frágiles y la multa de 20 por cada uno.

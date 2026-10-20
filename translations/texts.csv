@@ -320,3 +320,74 @@ PROMPT_DONUT_EMPTY,Caja vacía · Clic derecho: tirarla,Empty box · Right click
 HINT_DONUT,"¡Mmm, dona! Resistencia llena, pero con la boca llena no puedes preguntar.","Mmm, donut! Full stamina, but you can't ask anything with your mouth full.","Hum, rosquinha! Resistência cheia, mas de boca cheia você não pode perguntar."
 HINT_DONUTS_GONE,Ya no quedan donas.,There are no donuts left.,Não sobrou nenhuma rosquinha.
 HINT_MOUTH_FULL,¡Mmmf mmf! (Con la boca llena no se entiende nada.),Mmmf mmf! (Nobody understands you with your mouth full.),Mmmf mmf! (De boca cheia ninguém entende nada.)
+TOOL_HANDCUFFS,Esposas,Handcuffs,Algemas
+TOOL_FLASHLIGHT,Linterna,Flashlight,Lanterna
+TOOL_CAMERA,Cámara,Camera,Câmera
+TOOL_PRINT_KIT,Huellas,Prints,Digitais
+PROMPT_FLASHLIGHT_ON,Clic izquierdo o F: prender la linterna · mismo número: guardarla,Left click or F: turn the flashlight on · same number: put it away,Clique esquerdo ou F: acender a lanterna · mesmo número: guardá-la
+PROMPT_FLASHLIGHT_OFF,Clic izquierdo o F: apagar la linterna · mismo número: guardarla,Left click or F: turn the flashlight off · same number: put it away,Clique esquerdo ou F: apagar a lanterna · mesmo número: guardá-la
+PROMPT_CAMERA,Clic izquierdo: sacar una foto · mismo número: guardarla,Left click: take a photo · same number: put it away,Clique esquerdo: tirar uma foto · mesmo número: guardá-la
+PROMPT_CAMERA_EMPTY,No quedan fotos · mismo número: guardar la cámara,No photos left · same number: put the camera away,Acabaram as fotos · mesmo número: guardar a câmera
+HINT_NO_FILM,¡Se acabó el rollo!,Out of film!,Acabou o filme!
+HINT_PHOTO,¡Clic! Salió movida.,Click! It came out blurry.,Clique! Saiu tremida.
+HINT_PHOTO_CLUE,¡Clic! Pista fotografiada y anotada en la planilla.,Click! Clue photographed and noted on the checklist.,Clique! Pista fotografada e anotada na prancheta.
+PROMPT_HANDCUFFS,Clic izquierdo: esposar · mismo número: guardarlas,Left click: cuff · same number: put them away,Clique esquerdo: algemar · mesmo número: guardá-las
+HINT_CUFFED,¡Te esposaron! Pide que te suelten con E.,You got cuffed! Ask someone to free you with E.,Você foi algemado! Peça para te soltarem com E.
+PROMPT_CUFFED,Esposado: un compañero te suelta con E,Cuffed: a partner frees you with E,Algemado: um colega te solta com E
+PROMPT_UNCUFF,E: quitarle las esposas,E: take the cuffs off,E: tirar as algemas
+PROMPT_PRINT_KIT,Mantén clic izquierdo: buscar huellas · mismo número: guardar el kit,Hold left click: dust for prints · same number: put the kit away,Segure o clique esquerdo: procurar digitais · mesmo número: guardar o kit
+PROMPT_PRINT_KIT_DUSTING,Echando polvo...,Dusting...,Passando o pó...
+PRINTS_FRESH,Huellas frescas %s,Fresh prints %s,Digitais frescas %s
+PRINTS_COPS,Huellas de policía: %s,Cop prints: %s,Digitais de policial: %s
+PRINTS_NONE,Ni una huella. Demasiado limpio...,Not a single print. Too clean...,Nenhuma digital. Limpo demais...
+PRINTS_OWNER,del dueño,of the owner,do dono
+PRINTS_GRANDPA,del abuelo,of the grandpa,do vovô
+PRINTS_BAKER,de la panadera,of the baker,da padeira
+CLUE_PRINTS,Huellas frescas %s cerca de algo escondido,Fresh prints %s near something hidden,Digitais frescas %s perto de algo escondido
+COLOR_PINK,rosa,pink,rosa
+COLOR_ORANGE,naranja,orange,laranja
+COLOR_LIME,lima,lime,lima
+COLOR_VIOLET,violeta,violet,violeta
+HINT_DROP_RAM_FIRST,Tienes las manos ocupadas con el ariete (G para soltarlo).,Your hands are busy with the ram (G to drop it).,Suas mãos estão ocupadas com o aríete (G para soltar).
+NPC_NO_PHOTOS,¡Sin fotos!,No photos!,Sem fotos!
+NPC_POLICE_ABUSE,¡Abuso policial!,Police abuse!,Abuso policial!
+AWARD_PHOTOS,Fotógrafo del turno: %s (%d fotos),Photographer of the shift: %s (%d photos),Fotógrafo do turno: %s (%d fotos)
+NPC_CUFFED_QUIET,No digo nada sin mi abogado.,I won't say a word without my lawyer.,Não falo nada sem meu advogado.
+BRIEF_MUSEUM_B,"Del museo del barrio se robaron la bailarina de porcelana, una pieza única. El abuelo fue a la visita guiada ese mismo día, y volvió con la bufanda abultada.","The neighborhood museum's porcelain ballerina was stolen, a one-of-a-kind piece. The grandpa went on the guided tour that same day, and came back with a lumpy scarf.","Roubaram a bailarina de porcelana do museu do bairro, uma peça única. O vovô foi à visita guiada nesse mesmo dia e voltou com o cachecol estufado."
+BRIEF_MUSEUM_C,"Traigan la bailarina en el baúl del patrullero: sin eso no hay caso. Está entre sus adornos, con copias de recuerdo iguales. La original tiene el sello del museo abajo. Y es muy frágil.","Bring the ballerina back in the patrol car's trunk: without it there's no case. It's among his ornaments, with identical souvenir copies. The original has the museum's seal underneath. And it's very fragile.","Tragam a bailarina no porta-malas da viatura: sem isso não tem caso. Está entre os enfeites dele, com cópias de lembrança iguais. A original tem o selo do museu embaixo. E é muito frágil."
+BRIEF_MUSEUM_D,"Si encuentran el recorte del diario, mejor: todo suma.","If you find the newspaper clipping, even better: it all adds up.","Se acharem o recorte de jornal, melhor: tudo soma."
+OBJ_FIND_MUSEUM,Encontrar la bailarina del museo (la que tiene el sello abajo),Find the museum ballerina (the one with the seal underneath),Achar a bailarina do museu (a que tem o selo embaixo)
+OBJ_EXTRA_CLIPPING,Extra: el recorte del diario,Extra: the newspaper clipping,Extra: o recorte de jornal
+NOTE_ITEM_ballerina,La bailarina,The ballerina,A bailarina
+NOTE_ITEM_clipping,El recorte,The clipping,O recorte
+HINT_MUSEUM_SEAL,¡Abajo tiene el sello dorado del museo! Esta es la original.,There's the museum's gold seal underneath! This is the original.,Tem o selo dourado do museu embaixo! Esta é a original.
+HINT_BALLERINA_COPY,"Abajo dice «Recuerdo del museo». Es una copia.","Underneath it says “Museum souvenir.” It's a copy.","Embaixo diz “Lembrança do museu”. É uma cópia."
+HINT_CLIPPING,"La foto del diario: la bailarina original tiene un sello dorado abajo.","The newspaper photo: the original ballerina has a gold seal underneath.","A foto do jornal: a bailarina original tem um selo dourado embaixo."
+BRIEF_DENTURES_B,"Del geriátrico del barrio desaparecieron todas las dentaduras, y ahora hay un señor que las alquila por hora para las fiestas. Dicen que es el abuelo.","Every set of dentures disappeared from the neighborhood care home, and now someone rents them out by the hour for parties. They say it's the grandpa.","Sumiram todas as dentaduras do asilo do bairro, e agora tem um senhor que aluga por hora para as festas. Dizem que é o vovô."
+BRIEF_DENTURES_C,"Traigan la valija de dentaduras en el baúl del patrullero: sin eso no hay caso. Pesa, y las dentaduras castañetean: síganlas por el ruido.","Bring the case of dentures back in the patrol car's trunk: without it there's no case. It's heavy, and the dentures chatter: follow the noise.","Tragam a mala de dentaduras no porta-malas da viatura: sem isso não tem caso. É pesada, e as dentaduras batem os dentes: sigam o barulho."
+BRIEF_DENTURES_D,"Si encuentran la lista de clientes, mejor: todo suma. Y no le pregunten mucho al abuelo: escondió también los suyos y no se le entiende nada.","If you find the list of clients, even better: it all adds up. And don't bother asking the grandpa much: he hid his own teeth too, and you can't understand a word.","Se acharem a lista de clientes, melhor: tudo soma. E não perguntem muito ao vovô: ele escondeu os dele também e não dá para entender nada."
+OBJ_FIND_DENTURES,Encontrar la valija de dentaduras (castañetea),Find the case of dentures (it chatters),Achar a mala de dentaduras (ela bate os dentes)
+OBJ_EXTRA_CLIENTS,Extra: la lista de clientes,Extra: the list of clients,Extra: a lista de clientes
+NOTE_ITEM_dentures,La valija de dientes,The teeth case,A mala dos dentes
+NOTE_ITEM_clients,La lista de clientes,The client list,A lista de clientes
+FX_CLACK,*clac clac*,*clack clack*,*clac clac*
+BRIEF_RADIO_B,"Todas las noches, a las once, una radio pirata pisa la señal del noticiero con una radionovela de amor. La voz del locutor es igualita a la del abuelo.","Every night at eleven, a pirate radio drowns out the news with a romance soap opera. The announcer sounds just like the grandpa.","Toda noite, às onze, uma rádio pirata atropela o sinal do noticiário com uma radionovela de amor. A voz do locutor é igualzinha à do vovô."
+BRIEF_RADIO_C,"Traigan el transmisor en el baúl del patrullero: sin eso no hay caso. Pesa como un ropero, así que levántenlo entre dos. Mantengan T apretada: cerca del transmisor la radio hace más estática.","Bring the transmitter back in the patrol car's trunk: without it there's no case. It weighs like a wardrobe, so lift it together. Hold T: the radio crackles louder near the transmitter.","Tragam o transmissor no porta-malas da viatura: sem isso não tem caso. Pesa como um guarda-roupa, então levantem em dois. Segurem T: perto do transmissor o rádio chia mais."
+BRIEF_RADIO_D,"Si encuentran las cintas de la radionovela, mejor: todo suma. Están en los cajones, y el capítulo final no lo escuchó nadie.","If you find the soap opera tapes, even better: it all adds up. They're in the drawers, and nobody has heard the final episode.","Se acharem as fitas da radionovela, melhor: tudo soma. Estão nas gavetas, e o capítulo final ninguém ouviu."
+OBJ_FIND_RADIO,Encontrar el transmisor (sigue la estática con T),Find the transmitter (follow the static with T),Achar o transmissor (siga a estática com T)
+OBJ_EXTRA_TAPES,"Extra: cintas (%d de %d), en los cajones","Extra: tapes (%d of %d), in the drawers","Extra: fitas (%d de %d), nas gavetas"
+NOTE_ITEM_transmitter,La radio de las once,The eleven o'clock radio,O rádio das onze
+HUD_RADIO_STATIC,Radio: estática %s,Radio: static %s,Rádio: estática %s
+BRIEF_FIGHT_B,"Los martes, los jubilados del barrio llegan al centro de salud con un ojo morado. Dicen que se cayeron de la cama. Los cinco, de la misma cama.","On Tuesdays, the neighborhood retirees show up at the clinic with a black eye. They say they fell out of bed. All five of them, out of the same bed.","Às terças, os aposentados do bairro chegam ao posto de saúde com um olho roxo. Dizem que caíram da cama. Os cinco, da mesma cama."
+BRIEF_FIGHT_C,"Traigan el cinturón de campeón en el baúl del patrullero: sin eso no hay caso. Y no empujen al abuelo: es el campeón, y devuelve el empujón más fuerte.","Bring the champion's belt back in the patrol car's trunk: without it there's no case. And don't push the grandpa: he's the champion, and he pushes back harder.","Tragam o cinturão de campeão no porta-malas da viatura: sem isso não tem caso. E não empurrem o vovô: ele é o campeão, e devolve o empurrão mais forte."
+BRIEF_FIGHT_D,"Si encuentran los guantes y el cuaderno de peleas, mejor: todo suma. No esperen que les cuente historias: un campeón no se distrae.","If you find the gloves and the fight notebook, even better: it all adds up. Don't expect him to tell you stories: a champion doesn't get distracted.","Se acharem as luvas e o caderno de lutas, melhor: tudo soma. Não esperem que ele conte histórias: um campeão não se distrai."
+OBJ_FIND_FIGHT,Encontrar el cinturón de campeón,Find the champion's belt,Achar o cinturão de campeão
+OBJ_EXTRA_GLOVES,Extra: los guantes de boxeo,Extra: the boxing gloves,Extra: as luvas de boxe
+OBJ_EXTRA_FIGHT_BOOK,Extra: el cuaderno de peleas,Extra: the fight notebook,Extra: o caderno de lutas
+NOTE_ITEM_belt,El cinturón dorado,The golden belt,O cinturão dourado
+NOTE_ITEM_gloves,Los guantes,The gloves,As luvas
+NOTE_ITEM_notebook,El cuaderno de los martes,The Tuesday notebook,O caderno das terças
+PROMPT_PHOTO,E: mirar la foto,E: look at the photo,E: olhar a foto
+CLUE_FIGHT_PHOTO,"Una foto del abuelo con cuatro vecinos, todos con un ojo morado. Atrás dice: «Martes, en el altillo».","A photo of the grandpa with four neighbors, all with a black eye. On the back: “Tuesday, in the attic”.","Uma foto do vovô com quatro vizinhos, todos com um olho roxo. Atrás diz: “Terça, no sótão”."
+GRANDPA_CHAMPION_PUSH,¿Eso fue un empujón? ¡Esto es un empujón!,Was that a push? THIS is a push!,Isso foi um empurrão? Isto é um empurrão!
+GRANDPA_CHAMPION_NO_STORY,¿Historias? Las historias son para los que pierden.,Stories? Stories are for losers.,Histórias? Histórias são para quem perde.
