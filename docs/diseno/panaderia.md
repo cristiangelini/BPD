@@ -75,6 +75,12 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
 - **La lista de números** (0,1 kg, 200) va en un escondite. Al agarrarla aparece "La lista tiene un número marcado con un círculo: el 7". Sin la lista, hay que partir panes al azar, y cada pan dulce roto es una multa de 20 (como los panes comunes).
 - El chismoso también acepta un pan dulce, y si es el ganador suelta el boleto.
 
+## Palomas mensajeras (cómo quedó, propuesta)
+- La libreta de rutas (0,3 kg, 1000) es la prueba principal y va en un escondite. La jaula (6 kg, 300) va en un escondite grande y el silbato (0,05 kg, 100, de lata: aguanta caídas) en otro.
+- **Las palomas:** son 5 y revolotean en el local, debajo del techo. Cada 6 s, una puede bajar a buscar algo de 0,5 kg o menos que un policía haya dejado en el piso a menos de 6 m (lo que nadie tocó, como lo escondido, no lo tocan). Lo llevan al estante de arriba del exhibidor de pan.
+- Si alguien agarra la cosa mientras la paloma la lleva, la paloma la suelta. Las palomas no tienen cuerpo: no se les puede pegar.
+- **La pista:** plumas y migas en el piso del dormitorio, debajo de la ventana. Al pasar a menos de 1,8 m aparece "Plumas y migas junto a la ventana... ¿Palomas?".
+
 ## Lo que comparte con la casa del abuelo
 - La planilla con la denuncia anónima, las 3 sospechas y marcar la sospecha (1, 2 o 3 durante 2 s).
 - El medidor de denuncia, la distracción, el interrogatorio y las pistas que apuntan a cada sospecha.

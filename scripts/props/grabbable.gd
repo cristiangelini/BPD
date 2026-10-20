@@ -12,6 +12,8 @@ const STRENGTH_MARGIN := 1.2
 
 ## holder id -> hold point in world space
 var holders := {}
+## Someone grabbed it at least once (the pigeons only take what cops left lying around).
+var was_held := false
 
 
 static func max_force_per_holder() -> float:
@@ -25,6 +27,7 @@ static func throw_speed(kg: float) -> float:
 
 func hold(holder_id: int, point: Vector3) -> void:
 	holders[holder_id] = point
+	was_held = true
 	can_sleep = false
 	sleeping = false
 
