@@ -42,6 +42,8 @@ var in_briefing := false
 var hands: CopHands
 ## Player index (0 to 3) whose skin this cop wears.
 var uniform := 0
+## Online, what keeps this cop the same on every PC (null when playing solo).
+var sync: CopSync
 
 @onready var _shape: CollisionShape3D = $Shape
 @onready var _head: Node3D = $Head

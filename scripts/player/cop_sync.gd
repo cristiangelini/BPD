@@ -64,3 +64,34 @@ func _follow(delta: float) -> void:
 	cop.global_position = cop.global_position.lerp(_target_position, weight)
 	cop.global_rotation.y = lerp_angle(cop.global_rotation.y, _target_yaw, weight)
 	cop.set_head_pitch(lerp_angle(cop.head_pitch(), _target_pitch, weight))
+
+
+## Owner on a guest: asks the host to do `action` with this cop's hands ("grab", "release", "throw", "closer",
+## "farther"). The host does it with its copy of the cop, which looks where this one looks.
+func request(action: String) -> void:
+	_act.rpc_id(net.HOST_ID, action)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _act(action: String) -> void:
+	if not multiplayer.is_server() or multiplayer.get_remote_sender_id() != get_multiplayer_authority():
+		return
+	var grabber: Grabber = cop.get_node("Grabber")
+	match action:
+		"grab":
+			grabber.try_grab()
+		"release":
+			grabber.release()
+		"throw":
+			grabber.throw()
+		"closer", "farther":
+			grabber.nudge(action == "closer")
+	_held.rpc_id(get_multiplayer_authority(), net.props.index_of(grabber.held) if net.props else -1)
+
+
+## The host says what this cop holds now (-1: nothing), so the owner's hands and prompts show it.
+@rpc("any_peer", "call_remote", "reliable")
+func _held(index: int) -> void:
+	if multiplayer.get_remote_sender_id() != net.HOST_ID:
+		return
+	(cop.get_node("Grabber") as Grabber).held = net.props.prop_at(index) if net.props else null
