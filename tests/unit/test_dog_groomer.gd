@@ -100,6 +100,7 @@ func test_questions_let_two_things_slip_then_he_gets_offended() -> void:
 	var cop: Cop = groomer.get_node("Cop")
 	await wait_physics_frames(2)
 	var ramiro := groomer.ramiro
+	ramiro.slips.clear()
 	assert_false(ramiro.ask(cop), "nothing to let slip without a story")
 	ramiro.slips.assign(["SLIP_A", "SLIP_B", "SLIP_C"])
 	watch_signals(ramiro)

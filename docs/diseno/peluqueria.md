@@ -95,6 +95,18 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      la pista de la historia verdadera, que pone cada historia en el paso 5 (hasta entonces dice que no vio nada raro).
      Con E después repite la pista. Los otros perros no le sirven.
 5. Las 6 historias, un PR cada una.
+   - **Cómo quedó el caso (propuesta):** la peluquería ya es un caso como la panadería: el comisario da la denuncia en
+     la comisaría, hay 3 sospechas sorteadas entre las 6 historias (con su nota cada una), la planilla con Q, la barra
+     de denuncia de Ramiro, multas por lo que se rompe, el patrullero y la pantalla del turno. Ramiro suelta dónde
+     escondió 2 cosas de la historia y la señora, cuando recibe a Fifí, cuenta dónde lo vio esconder otra. Si Ramiro
+     llama al abogado se pierde el caso. Todavía no sale al tocar "Jugar" (se abre con el botón de prueba): entra al
+     sorteo cuando tenga más historias.
+   - **El concurso arreglado (propuesta):** Bizcocho, el perro marrón con escarapela azul, gana siempre el concurso
+     del barrio porque Ramiro les regaló un peine de oro a los jurados. La copa (3 kg, 1000) va en un escondite grande;
+     las fichas de los jurados (300) y el peine de oro (200) en cualquiera. Su pista: 3 fotos de "clientes felices" (en
+     el mostrador, en la segunda mesa y arriba de las jaulas) con Bizcocho y la copa. Bizcocho no se aleja de su copa y
+     ladra fuerte ("¡GUAU! ¡GUAU!") cada 3 s si un policía está a menos de 2,5 m de ella: cada ladrido son 5 de
+     denuncia. Alzado no ladra, así que uno lo agarra mientras otro saca la copa. Capturas: `concurso_*.png`.
 
 ## Preguntas para Cristian (respondidas el 20/10: sí a las dos)
 1. ¿La peluquería de mascotas como tercer lugar, o preferís otro de los 8?

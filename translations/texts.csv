@@ -368,4 +368,36 @@ PROMPT_LADY,E: hablar con la señora del caniche,E: talk to the poodle lady,E: f
 LADY_ASK,"¡Oficial! Hace dos horas que espero a mi Fifí. Está en una jaula del fondo, ¿me la trae?","Officer! I've been waiting two hours for my Fifí. She's in a cage in the back, would you bring her?","Policial! Faz duas horas que espero a minha Fifí. Ela está numa gaiola dos fundos, pode trazê-la?"
 LADY_WAITING,"¿Y mi Fifí? Es la blanquita del moño rosa.",And my Fifí? She's the little white one with the pink bow.,E a minha Fifí? É a branquinha do laço rosa.
 LADY_THANKS,"¡Mi Fifí! Gracias, oficial. Yo no vi nada raro, eh.","My Fifí! Thank you, officer. I didn't see anything odd, though.","Minha Fifí! Obrigada, policial. Eu não vi nada estranho, viu."
-LADY_CALL,"¡Psst! ¡Oficial! ¿Me hace un favorcito?","Psst! Officer! Would you do me a little favor?","Psst! Policial! Me faz um favorzinho?"
+LADY_CALL,"¡Psst! ¡Oficial! ¿Me haces un favorcito?","Psst! Officer! Would you do me a little favor?","Psst! Policial! Me faz um favorzinho?"
+SUSPECT_millionaire,El perro del millonario,The millionaire's dog,O cachorro do milionário
+SUSPECT_hair_growth,Champú crecepelo,Hair-growth shampoo,Xampu de crescer pelo
+SUSPECT_contest,Concurso canino arreglado,Rigged dog show,Concurso canino armado
+SUSPECT_bones,Contrabando de huesos,Bone smuggling,Contrabando de ossos
+SUSPECT_diamonds,El collar de diamantes,The diamond necklace,O colar de diamantes
+SUSPECT_human_salon,Peluquería de humanos clandestina,Secret salon for humans,Salão clandestino para humanos
+CLUE_SUSPECT_millionaire,"Un cartel de «Se busca»: un galgo blanco, recompensa millonaria.","A “Wanted” poster: a white greyhound, a huge reward.","Um cartaz de “Procura-se”: um galgo branco, recompensa milionária."
+CLUE_SUSPECT_hair_growth,Una etiqueta arrugada: «Fórmula X. NO usar en humanos (ni en perros)».,A crumpled label: “Formula X. Do NOT use on humans (or dogs)”.,Um rótulo amassado: “Fórmula X. NÃO usar em humanos (nem em cachorros)”.
+CLUE_SUSPECT_contest,"Un folleto del concurso canino del barrio: «¡Bizcocho, campeón por quinta vez!».","A flyer from the neighborhood dog show: “Bizcocho, champion for the fifth time!”","Um folheto do concurso canino do bairro: “Bizcocho, campeão pela quinta vez!”"
+CLUE_SUSPECT_bones,Un recorte de diario: «Desaparecen huesos de dinosaurio del museo».,A newspaper clipping: “Dinosaur bones go missing from the museum”.,Um recorte de jornal: “Somem ossos de dinossauro do museu”.
+CLUE_SUSPECT_diamonds,"Una foto de una señora con un collar de diamantes, con un círculo rojo.","A photo of a lady wearing a diamond necklace, circled in red.","Uma foto de uma senhora com um colar de diamantes, com um círculo vermelho."
+CLUE_SUSPECT_human_salon,"Un rulero rosa, demasiado grande para un perro.","A pink hair roller, far too big for a dog.","Um bobe rosa, grande demais para um cachorro."
+BRIEF_GROOMER_TIP_B,Llegó una denuncia anónima: dicen que en la peluquería de perros «Pelito Feliz» pasa algo raro.,We got an anonymous tip: they say something odd is going on at the “Pelito Feliz” dog salon.,Chegou uma denúncia anônima: dizem que no pet shop “Pelito Feliz” está acontecendo algo estranho.
+BRIEF_GROOMER_TIP_D,"El local está abierto y Ramiro sigue cortando: no le pisen los perros, que se queja de todo. El depósito está cerrado con llave.","The salon is open and Ramiro keeps cutting: don't step on his dogs, he complains about everything. The storeroom is locked.","O salão está aberto e o Ramiro continua tosando: não pisem nos cachorros, ele reclama de tudo. O depósito está trancado."
+BRIEF_GROOMER_TIP_E,Y no rompan nada: cada frasco de champú o collar roto se los descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.,And don't break anything: every broken shampoo bottle or collar comes out of your pay. Press Q to see your checklist.,E não quebrem nada: cada frasco de xampu ou coleira quebrada sai do salário de vocês. Com Q vocês veem a lista do que têm que fazer.
+BRIEF_CONTEST_B,"El concurso canino del barrio lo gana siempre Bizcocho, un cliente de Ramiro. Cinco años seguidos. Ramiro le regaló un peine de oro a cada jurado.","The neighborhood dog show is always won by Bizcocho, one of Ramiro's customers. Five years in a row. Ramiro gave each judge a golden comb.","O concurso canino do bairro é sempre vencido pelo Bizcocho, um cliente do Ramiro. Cinco anos seguidos. O Ramiro deu um pente de ouro para cada jurado."
+BRIEF_CONTEST_C,Traigan la copa del concurso en el baúl del patrullero. Cuidado con Bizcocho: no se separa de su copa y ladra como loco si alguien se le acerca.,Bring the show's cup back in the patrol car's trunk. Watch out for Bizcocho: he never leaves his cup and barks like mad if anyone gets close.,Tragam a taça do concurso no porta-malas da viatura. Cuidado com o Bizcocho: ele não larga a taça e late como louco se alguém chega perto.
+BRIEF_CONTEST_D,"Si encuentran las fichas de los jurados o el peine de oro, mejor: todo suma.","If you find the judges' score cards or the golden comb, even better: it all adds up.","Se acharem as fichas dos jurados ou o pente de ouro, melhor: tudo soma."
+OBJ_FIND_CONTEST,Encontrar la copa del concurso (Bizcocho la cuida),Find the show's cup (Bizcocho guards it),Achar a taça do concurso (o Bizcocho a vigia)
+OBJ_EXTRA_JUDGE_CARDS,Extra: las fichas de los jurados,Extra: the judges' score cards,Extra: as fichas dos jurados
+OBJ_EXTRA_GOLDEN_COMB,Extra: el peine de oro,Extra: the golden comb,Extra: o pente de ouro
+OBJ_ENTER_GROOMER,Entrar a la peluquería (está abierta),Get into the salon (it's open),Entrar no pet shop (está aberto)
+OBJ_GUESS_GROOMER,"Averiguar qué pasa en la peluquería (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the salon (with Q open, hold 1, 2 or 3)","Descobrir o que acontece no pet shop (com Q aberta, segure 1, 2 ou 3)"
+OBJ_BROKEN_GROOMER,Frascos y collares rotos: %d (multa: %d),Broken bottles and collars: %d (fine: %d),Frascos e coleiras quebrados: %d (multa: %d)
+OBJ_COMPLAINT_GROOMER,Denuncia de Ramiro: %d%%,Ramiro's complaint: %d%%,Denúncia do Ramiro: %d%%
+CASE_FAILED_LAWYER_GROOMER,Ramiro llamó a su abogado. Caso perdido.,Ramiro called his lawyer. Case lost.,O Ramiro ligou para o advogado. Caso perdido.
+GROOMER_SLIP,"«¡Yo no guardé nada %s!... Digo, ¿quién sigue con turno?»","“I didn't put anything %s!... I mean, who's next?”","“Eu não guardei nada %s!... Quer dizer, quem é o próximo?”"
+CLUE_LADY,La señora vio a Ramiro esconder algo %s,The lady saw Ramiro hide something %s,A senhora viu o Ramiro esconder algo %s
+LADY_CLUE_contest,"«¡Mi Fifí! Gracias, oficial. Mira, vi a Ramiro esconder algo %s. Y Fifí es más linda que ese Bizcocho, y siempre sale segunda.»","“My Fifí! Thank you, officer. Look, I saw Ramiro hide something %s. And Fifí is prettier than that Bizcocho, and she always comes second.”","“Minha Fifí! Obrigada, policial. Olha, vi o Ramiro esconder algo %s. E a Fifí é mais bonita que esse Bizcocho, e sempre fica em segundo.”"
+PROMPT_PHOTO,E: mirar la foto,E: look at the photo,E: olhar a foto
+CLUE_CONTEST_PHOTOS,Todas las fotos de «clientes felices» son del mismo perro con una copa: Bizcocho.,Every “happy customer” photo shows the same dog holding a cup: Bizcocho.,Todas as fotos de “clientes felizes” são do mesmo cachorro com uma taça: Bizcocho.
+DOG_LOUD_BARK,¡GUAU! ¡GUAU!,WOOF! WOOF!,AU! AU!

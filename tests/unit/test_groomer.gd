@@ -25,7 +25,8 @@ func test_twelve_spots_each_on_a_surface() -> void:
 		var z_from := -Groomer.HALF_Z if in_yard else Groomer.BACK_Z
 		var z_to := Groomer.BACK_Z if in_yard else Groomer.HALF_Z
 		assert_true(absf(at.x) < Groomer.HALF_X and at.z > z_from and at.z < z_to, "%s is in its part of the lot" % spot.id)
-		var query := PhysicsRayQueryParameters3D.create(at + Vector3.UP * 0.25, at + Vector3.DOWN * 0.2)
+		# Only the built salon (layer 1), not the story's things lying there.
+		var query := PhysicsRayQueryParameters3D.create(at + Vector3.UP * 0.25, at + Vector3.DOWN * 0.2, 1)
 		var hit := space.intersect_ray(query)
 		assert_false(hit.is_empty(), "%s has something under it" % spot.id)
 		if not hit.is_empty():

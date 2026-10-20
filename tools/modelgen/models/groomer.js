@@ -97,11 +97,64 @@ export function buildPoodle() {
 	return b.build();
 }
 
+// The rigged contest (peluqueria.md, "El concurso arreglado"): the dog show cup, 0.26 m wide and 0.4 m tall, gold on a
+// wooden base with a little dog on top; origin at its middle.
+export function buildDogTrophy() {
+	const b = new Builder('dog_trophy');
+	const gold = mat('gold', 0xf2c84b, { emissive: 0x3a2a05 }), wood = mat('trophy_base', 0x5a3a24);
+	b.add('base', wood, new THREE.BoxGeometry(0.16, 0.06, 0.16), { pos: V(0, -0.17, 0) });
+	b.add('cup', gold, new THREE.CylinderGeometry(0.02, 0.05, 0.08, 10), { pos: V(0, -0.1, 0) });
+	b.add('cup', gold, new THREE.CylinderGeometry(0.09, 0.04, 0.16, 12, 1, true), { pos: V(0, 0.02, 0) });
+	b.add('cup', gold, new THREE.CylinderGeometry(0.04, 0.04, 0.01, 12), { pos: V(0, -0.055, 0) });
+	for (const s of [-1, 1]) b.add('cup', gold, new THREE.TorusGeometry(0.035, 0.008, 4, 10, Math.PI), { pos: V(s * 0.072, 0.03, 0), rot: [0, 0, -s * Math.PI / 2] });
+	b.add('cup', gold, new THREE.CylinderGeometry(0.09, 0.09, 0.008, 12), { pos: V(0, 0.1, 0) });
+	b.add('dog', gold, ellipsoid(0.03, 0.025, 0.045, 8, 5), { pos: V(0, 0.125, 0) });
+	b.add('dog', gold, ellipsoid(0.025, 0.025, 0.025, 8, 5), { pos: V(0, 0.15, 0.045) });
+	b.add('plate', mat('trophy_plate', 0xd8d8d0), new THREE.BoxGeometry(0.1, 0.03, 0.004), { pos: V(0, -0.17, 0.082) });
+	return b.build();
+}
+
+// The judges' score cards, all with a 10 for the same dog: a stack of white cards with a rubber band, 0.15 x 0.02 x 0.1.
+export function buildJudgeCards() {
+	const b = new Builder('judge_cards');
+	const card = mat('card_white', 0xf8f6ee), ten = mat('card_ten', 0x2a5ac8);
+	for (let i = 0; i < 4; i++) b.add('cards', card, new THREE.BoxGeometry(0.15, 0.004, 0.1), { pos: V(i * 0.004 - 0.006, -0.008 + i * 0.005, i * 0.003), rot: [0, i * 0.06, 0] });
+	b.add('ten', ten, new THREE.BoxGeometry(0.06, 0.002, 0.05), { pos: V(0.004, 0.0125, 0.009), rot: [0, 0.18, 0] });
+	b.add('band', mat('rubber_band', 0xd23a4a), new THREE.BoxGeometry(0.008, 0.024, 0.104), { pos: V(-0.03, 0, 0.005) });
+	return b.build();
+}
+
+// The golden comb the judges got as a present: 0.2 x 0.015 x 0.05 m, lying flat, teeth toward -Z.
+export function buildGoldenComb() {
+	const b = new Builder('golden_comb');
+	const gold = mat('gold', 0xf2c84b, { emissive: 0x3a2a05 });
+	b.add('spine', gold, new THREE.BoxGeometry(0.2, 0.015, 0.018), { pos: V(0, 0, 0.016) });
+	for (let i = 0; i < 16; i++) b.add('teeth', gold, new THREE.BoxGeometry(0.006, 0.008, 0.032), { pos: V(-0.09 + i * 0.012, -0.003, -0.009) });
+	return b.build();
+}
+
+// A framed photo of a happy customer standing on its foot: the champion dog with the cup (contest story clue).
+// 0.18 x 0.14 x 0.06 m, origin at its middle, the picture toward +Z.
+export function buildContestPhoto() {
+	const b = new Builder('contest_photo');
+	const frame = mat('photo_frame', 0xf2c860), sky = mat('photo_sky', 0x9ad0f0), fur = mat('dog_fur_1', 0x9a6a3a);
+	const gold = mat('gold', 0xf2c84b, { emissive: 0x3a2a05 });
+	b.add('frame', frame, new THREE.BoxGeometry(0.18, 0.14, 0.012));
+	b.add('picture', sky, new THREE.BoxGeometry(0.15, 0.11, 0.002), { pos: V(0, 0, 0.007) });
+	b.add('picture', fur, ellipsoid(0.03, 0.025, 0.002, 8, 4), { pos: V(-0.025, -0.02, 0.009) });
+	b.add('picture', fur, ellipsoid(0.02, 0.02, 0.002, 8, 4), { pos: V(-0.005, 0.01, 0.009) });
+	b.add('picture', gold, new THREE.BoxGeometry(0.03, 0.04, 0.002), { pos: V(0.04, -0.015, 0.009) });
+	b.add('foot', frame, new THREE.BoxGeometry(0.03, 0.12, 0.008), { pos: V(0, -0.005, -0.025), rot: [-0.45, 0, 0] });
+	return b.build();
+}
+
 export const models = {
 	shampoo_bottle: buildShampoo,
 	dog_collar: buildCollar,
 	...Object.fromEntries(COATS.map((_, i) => [`dog_${i}`, () => buildDog(i)])),
 	dog_poodle: buildPoodle,
+	dog_trophy: buildDogTrophy, judge_cards: buildJudgeCards, golden_comb: buildGoldenComb,
+	contest_photo: buildContestPhoto,
 };
 
 export const views = {
@@ -112,5 +165,12 @@ export const views = {
 	dogs: {
 		items: [...COATS.map((_, i) => ({ name: `dog_${i}`, pos: [(i - 3) * 0.7, 0, 0], rotY: 0.6 })), { name: 'dog_poodle', pos: [2.1, 0, 0], rotY: 0.6 }],
 		cam: { pos: [0, 1.0, 4.6], target: [0, 0.3, 0], fov: 34 },
+	},
+	contest_goods: {
+		items: [
+			{ name: 'dog_trophy', pos: [-0.2, 0.2, 0], rotY: 0.3 }, { name: 'judge_cards', pos: [0.15, 0.01, 0.15], rotY: -0.3 },
+			{ name: 'golden_comb', pos: [0.2, 0.008, -0.1], rotY: 0.4 }, { name: 'contest_photo', pos: [0.05, 0.07, 0.35], rotY: -0.2 },
+		],
+		cam: { pos: [0, 0.6, 1.2], target: [0, 0.1, 0.1], fov: 36 },
 	},
 };

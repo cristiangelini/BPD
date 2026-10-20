@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://scripts/levels/city.gd" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/player/cop.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/vehicles/patrol_car.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/ui/shift_screen.tscn" id="5"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
 sky_top_color = Color(0.32, 0.56, 0.9, 1)
@@ -65,3 +66,47 @@ live_block_ground = false
 
 [node name="Navigation" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavMesh")
+
+[node name="CaseHud" type="CanvasLayer" parent="."]
+
+[node name="CaseFailed" type="Label" parent="CaseHud"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -500.0
+offset_top = -60.0
+offset_right = 500.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.35, 0.3, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 40
+text = "CASE_FAILED_LAWYER_GROOMER"
+horizontal_alignment = 1
+
+[node name="CaseSolved" type="Label" parent="CaseHud"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -500.0
+offset_top = -60.0
+offset_right = 500.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.45, 1, 0.5, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 40
+text = "CASE_SOLVED"
+horizontal_alignment = 1
+
+[node name="ShiftScreen" parent="." instance=ExtResource("5")]
