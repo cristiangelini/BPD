@@ -86,7 +86,8 @@ func send_customer() -> HumanCustomer:
 
 func _physics_process(delta: float) -> void:
 	_look_for_hair()
-	if customer:
+	# Online only the host brings customers in; the guests get copies of them (NpcSync).
+	if customer or groomer.raid.follower:
 		return
 	_arrive_wait -= delta
 	if _arrive_wait <= 0.0:

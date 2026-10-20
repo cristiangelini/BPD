@@ -52,6 +52,7 @@ func _ready() -> void:
 	arms.body_entered.connect(_on_arms_entered)
 	add_child(arms)
 	_bubble = Label3D.new()
+	_bubble.name = "Bubble"
 	_bubble.position = Vector3(0, 2.15, 0)
 	_bubble.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	_bubble.pixel_size = 0.004

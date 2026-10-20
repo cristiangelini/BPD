@@ -289,7 +289,7 @@ func _show_result(result: Dictionary) -> void:
 
 ## What a follower needs to show the same case (CaseSync).
 func snapshot() -> Dictionary:
-	return {"facts": objective_facts(), "story_known": story_known, "failed": case_failed,
+	return {"facts": objective_facts(), "tip": tip_given, "story_known": story_known, "failed": case_failed,
 		"reason": failed_label.text, "solved": case_solved, "result": _result}
 
 
@@ -297,6 +297,9 @@ func snapshot() -> Dictionary:
 ## the end of shift screen.
 func apply_snapshot(state: Dictionary) -> void:
 	_host_facts = state.facts
+	# A cop who talked to the comisario on another PC, or before this one joined: the tip is told here too.
+	if state.get("tip", false):
+		give_tip()
 	if state.story_known and not story_known:
 		story_known = true
 		_tell(story_briefing)
