@@ -98,3 +98,4 @@
 - Interrogation: good cop right after another cop's bad cop doubles the next bad cop move (x1.3 alone); a light switch by the room's door flicks the lights; the observation room's coffee machine pours a cup that the suspect takes when it's set down near him.
 - Interrogation: the cops' two chairs are loose, and one thrown hard near the suspect is the bad cop's chair; a tissue box on the table lets the good cop lend him a tissue.
 - Interrogation: shouting into the microphone (Steam voice) near the suspect is the bad cop's shout.
+- Play draws the interrogation every third shift of a campaign (1 in 3 by the seed without one), with its own quota of 500.

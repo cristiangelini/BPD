@@ -63,6 +63,11 @@ seguidos, una vez por grito (hay que tomar aire para el siguiente). Se mide en l
 Steam, así que solo funciona con Steam abierto (V o T para hablar, o la voz siempre abierta); jugando solo sin Steam
 no hay grito. Captura: `grito.png`.
 
+**Cómo quedó (paso 5):** "Jugar" ya lo sortea: en la partida guardada el turno 3 (y el 6, el 9...) es un
+interrogatorio y los demás, allanamientos; sin partida, sale 1 de cada 3 por la semilla. Como la confesión paga 500 y la
+cuota del turno 3 es 1000, el turno de interrogatorio tiene cuota propia de 500 (decisión 91): confesar lo aprueba y que
+venga el abogado lo pierde. Captura: `turno_3.png`.
+
 ## Los dos medidores (se ven arriba, como la denuncia del abuelo)
 - **Nervios (0 a 100):** suben con el policía malo y bajan un poco con el bueno. Con 30, 60 y 90 se le escapa una frase
   que da una pista de qué hizo de verdad ("¡Yo nunca estuve en el club de golf!... Digo, ¿qué es el golf?").
@@ -128,7 +133,7 @@ cada acción con quién la hizo; el grito se mide en la PC de quien habla y se m
 3. El resto de las acciones (café, silla, luz, pañuelo, sentarse) y el contraste entre bueno y malo. Hecho: el
    contraste, la luz, el café, la silla y el pañuelo.
 4. El grito con la voz. Hecho.
-5. El sorteo en "Jugar" (1 de cada 3).
+5. El sorteo en "Jugar" (1 de cada 3). Hecho.
 6. Los otros 9 sospechosos, uno o dos por PR.
 7. Interrogar al dueño después de un allanamiento.
 

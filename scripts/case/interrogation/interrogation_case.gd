@@ -33,6 +33,9 @@ const SLIPS_AT: Array[float] = [30.0, 60.0, 90.0]
 const FULL := 100.0
 ## A cop eating a donut this close to the suspect counts as the bad cop's action.
 const EAT_REACH := 3.0
+## The quota of an interrogation shift (decision 91): the confession's salary, so confessing
+## makes it and the lawyer loses it. The campaign's quota (800 and up) can't be made with one salary.
+const QUOTA := ShiftReport.SALARY
 ## A shout counts from this close (propuesta): in the room, not from the hall.
 const SHOUT_REACH := 5.0
 ## Seconds the lamp stays on his face, and the lights' blinks when a cop flicks them.
@@ -294,7 +297,7 @@ func finish_shift() -> void:
 	var over := false
 	if campaign and not campaign.is_over():
 		var played := campaign.shift
-		campaign.finish_shift("interrogation_" + crime, confessed, report)
+		campaign.finish_shift("interrogation_" + crime, confessed, report, QUOTA)
 		campaign.save()
 		over = campaign.is_over()
 		shift_screen.show_report(confessed, report, 0, awards)

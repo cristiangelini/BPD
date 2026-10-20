@@ -135,6 +135,8 @@ func test_a_confession_pays_the_salary_and_closes_the_shift() -> void:
 	assert_eq(campaign.shift, 2)
 	assert_eq(campaign.money, ShiftReport.SALARY)
 	assert_eq(campaign.history[0].story, "interrogation_" + case.crime)
+	assert_true(campaign.history[0].approved, "a confession makes an interrogation's quota")
+	assert_false(campaign.is_over())
 	Campaign.save_path = Campaign.SAVE_PATH
 
 
