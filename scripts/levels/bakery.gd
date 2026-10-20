@@ -3,10 +3,22 @@ extends Node3D
 
 ## The bakery "El Pan Feliz" (docs/diseno/panaderia.md, step 1): the shop, the bakehouse, the storeroom and a
 ## bathroom downstairs, and Marta's flat upstairs, on its lot in the city with the front to +Z. The shop is open,
-## with the shutter half up; the bakehouse door and the back door are locked. Marta, her customers and the stories
-## come in the next steps. Every number here is (propuesta).
+## with the shutter half up; the bakehouse door and the back door are locked. Marta serves the customers that come
+## and go (step 2); the stories come next. Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const BAKER_SCENE := preload("res://scenes/npc/baker.tscn")
+const CUSTOMER_SCENE := preload("res://scenes/npc/bakery_customer.tscn")
+## Customers: at most MAX_CUSTOMERS inside, a new one every CUSTOMER_EVERY seconds, none for SCARE_PAUSE after a scare.
+const MAX_CUSTOMERS := 3
+const CUSTOMER_EVERY := 8.0
+const FIRST_CUSTOMER := 2.0
+const SCARE_PAUSE := 20.0
+## Where customers wait in front of the counter, and the lane they walk in along, inside the shop window.
+const COUNTER_SLOTS := [2.2, 3.5, 4.8]
+const COUNTER_FRONT := 4.45
+const SHOP_LANE := 6.0
+const SIDEWALK := 8.5
 const HALF_X := 8.0
 const HALF_Z := 7.0
 ## The shop floor sits a little over the city's paved block, which runs under it.
@@ -60,7 +72,12 @@ var station_parking: Transform3D
 var bakehouse_door: FrontDoor
 var back_door: FrontDoor
 var city_map: CityMap
+var baker: Baker
+var customers: Array[BakeryCustomer] = []
+var complaint_bar: ProgressBar
 var _build: PlaceBuilder
+var _customer_wait := FIRST_CUSTOMER
+var _looks := 0
 @onready var car: PatrolCar = $PatrolCar
 
 
@@ -80,6 +97,73 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "bakery", car)
+	_add_baker()
+
+
+func _add_baker() -> void:
+	baker = BAKER_SCENE.instantiate()
+	baker.till_post = Vector3(5.0, FLOOR_TOP, 2.4)
+	baker.door_post = Vector3(BAKEHOUSE_DOOR_X, FLOOR_TOP, SHOP_BACK + 0.7)
+	baker.position = baker.door_post
+	add_child(baker)
+	for door: FrontDoor in [bakehouse_door, back_door]:
+		door.broken.connect(func() -> void:
+			baker.door_broken()
+			scare_customers())
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	baker.hurt.connect(scare_customers)
+	baker.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+func _physics_process(delta: float) -> void:
+	_customer_wait -= delta
+	if _customer_wait <= 0.0 and customers.size() < MAX_CUSTOMERS:
+		_customer_wait = CUSTOMER_EVERY
+		add_customer()
+
+
+## A customer walks in from the sidewalk to a free place at the counter and joins Marta's queue on arrival.
+func add_customer() -> BakeryCustomer:
+	var taken := customers.map(func(c: BakeryCustomer) -> float: return c.route[c.route.size() - 1].x)
+	var slot: float = COUNTER_SLOTS.filter(func(x: float) -> bool: return not taken.has(x))[0]
+	var customer: BakeryCustomer = CUSTOMER_SCENE.instantiate()
+	var side := -1.0 if _looks % 2 == 0 else 1.0
+	customer.route = [Vector3(ENTRANCE_X + side * 5.0, 0, SIDEWALK), Vector3(ENTRANCE_X, 0, SIDEWALK),
+		Vector3(ENTRANCE_X, FLOOR_TOP, SHOP_LANE), Vector3(slot, FLOOR_TOP, SHOP_LANE),
+		Vector3(slot, FLOOR_TOP, COUNTER_FRONT)]
+	customer.position = customer.route[0]
+	add_child(customer)
+	customer.set_look(_looks)
+	_looks += 1
+	customers.append(customer)
+	customer.arrived.connect(func() -> void: baker.queue.append(customer))
+	customer.fled.connect(func() -> void:
+		baker.queue.erase(customer)
+		baker.customer_fled())
+	customer.bumped.connect(scare_customers)
+	customer.gone.connect(func() -> void: customers.erase(customer))
+	return customer
+
+
+## Everyone in the shop runs out without paying, and no one comes in for a while.
+func scare_customers() -> void:
+	_customer_wait = SCARE_PAUSE
+	for customer in customers.duplicate():
+		customer.scare()
 
 
 func _door(at: Vector3, turn: float) -> FrontDoor:

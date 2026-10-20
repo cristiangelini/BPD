@@ -63,3 +63,56 @@ func test_cop_walks_up_to_martas_flat() -> void:
 		cop.step(TICK, Vector2(0, -1), false, false, false)
 		await wait_physics_frames(1)
 	assert_gt(cop.global_position.y, GameScale.FLOOR_HEIGHT - 0.1, "the cop reaches the upper floor")
+
+
+func test_a_customer_walks_in_gets_served_and_walks_out() -> void:
+	var bakery := _bakery()
+	bakery._customer_wait = 999.0
+	await wait_physics_frames(2)
+	var customer := bakery.add_customer()
+	await wait_until(func() -> bool: return customer.state == BakeryCustomer.State.WAITING, 20.0)
+	assert_eq(customer.state, BakeryCustomer.State.WAITING, "the customer reaches the counter")
+	assert_true(bakery.baker.is_serving(), "Marta goes to the till")
+	await wait_until(func() -> bool: return bakery.customers.is_empty(), 40.0)
+	assert_true(bakery.customers.is_empty(), "served, the customer walks back out and is gone")
+	assert_eq(bakery.baker.complaint, 0.0, "a paying customer doesn't bother her")
+
+
+func test_marta_guards_the_bakehouse_door_when_nobody_is_waiting() -> void:
+	var bakery := _bakery()
+	bakery._customer_wait = 999.0
+	await wait_physics_frames(30)
+	assert_lt(bakery.baker.global_position.distance_to(bakery.baker.door_post), 0.3)
+	assert_false(bakery.baker.is_serving())
+
+
+func test_a_scare_sends_everyone_out_without_paying_and_raises_the_complaint() -> void:
+	var bakery := _bakery()
+	bakery._customer_wait = 999.0
+	await wait_physics_frames(2)
+	var first := bakery.add_customer()
+	var second := bakery.add_customer()
+	await wait_physics_frames(60)
+	bakery.scare_customers()
+	assert_eq(first.state, BakeryCustomer.State.FLEEING)
+	assert_eq(second.state, BakeryCustomer.State.FLEEING)
+	assert_eq(bakery.baker.complaint, Baker.CUSTOMER_FLED * 2)
+	assert_true(bakery.baker.queue.is_empty())
+	assert_eq(bakery._customer_wait, Bakery.SCARE_PAUSE, "no one comes in for a while")
+
+
+func test_the_sample_calms_marta_and_keeps_the_cops_hands_busy() -> void:
+	var bakery := _bakery()
+	bakery._customer_wait = 999.0
+	var cop: Cop = bakery.get_node("Cop")
+	cop.global_position = bakery.baker.door_post + Vector3(0, 0.1, 1.8)
+	await wait_physics_frames(2)
+	bakery.baker.struck()
+	bakery.baker._sample_wait = 0.0
+	await wait_physics_frames(3)
+	assert_true(bakery.baker.offering)
+	assert_eq(bakery.baker.prompt_key(cop), "PROMPT_SAMPLE")
+	bakery.baker.use(cop)
+	assert_eq(bakery.baker.complaint, Baker.STRUCK - Baker.SAMPLE_CALM)
+	assert_true(cop.is_eating())
+	assert_false(cop.get_node("Grabber").try_grab(), "no grabbing while eating")
