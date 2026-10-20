@@ -47,6 +47,8 @@ var vehicle: PatrolCar
 var in_briefing := false
 ## The armero's list is open for this cop (ArmoryMenu): same as the briefing, but only for this cop.
 var in_menu := false
+## The pet salon's armchair this cop sits in with a dog, hearing Ramiro (WaitingArmchair): can look, not move.
+var seated_in: WaitingArmchair
 ## The player's own first person hands; only a cop with a player at the keys has them.
 var hands: CopHands
 ## Wears the armory's rubber gloves: fragile evidence in these hands loses half as much (Evidence.GLOVES_FACTOR).
@@ -79,7 +81,8 @@ func _ready() -> void:
 func aim_hit(reach: float) -> Dictionary:
 	var eye := camera.global_transform
 	var query := PhysicsRayQueryParameters3D.create(eye.origin, eye.origin - eye.basis.z * reach)
-	query.exclude = [get_rid()]
+	# What's in hand doesn't hide what's behind it (the armchair under the dog).
+	query.exclude = [get_rid(), $Grabber.held.get_rid()] if $Grabber.held else [get_rid()]
 	return get_world_3d().direct_space_state.intersect_ray(query)
 
 
@@ -107,7 +110,12 @@ func drop_ram() -> RamPickup:
 func current_prompt() -> String:
 	if vehicle or in_briefing or in_menu:
 		return ""
+	if seated_in:
+		return seated_in.prompt_key(self)
 	if $Grabber.held:
+		var aimed := _usable_target()
+		if aimed is WaitingArmchair:
+			return aimed.prompt_key(self)
 		if $Grabber.held.has_method("held_prompt_key"):
 			return $Grabber.held.held_prompt_key(self)
 		return "PROMPT_HOLDING"
@@ -163,10 +171,10 @@ func mouth_full() -> bool:
 	return _mouth_full_left > 0.0
 
 
-## Busy: staggered, listening to the grandpa, sitting in the car, hearing the comisario or at the armero's list.
-## No walking, grabbing or ramming.
+## Busy: staggered, listening to the grandpa, sitting in the car or in the salon's armchair, hearing the comisario
+## or at the armero's list. No walking, grabbing or ramming.
 func is_busy() -> bool:
-	return is_staggered() or listening_to != null or vehicle != null or in_briefing or in_menu
+	return is_staggered() or listening_to != null or vehicle != null or in_briefing or in_menu or seated_in != null
 
 
 ## Rides `seat` of `car`, facing forward, until stand_up(). Lets go of whatever it was holding.
@@ -256,6 +264,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("use"):
 		if vehicle:
 			vehicle.exit(self)
+		elif seated_in:
+			seated_in.stand_up()
 		else:
 			use()
 	elif event.is_action_pressed("ui_cancel"):

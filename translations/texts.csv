@@ -343,3 +343,21 @@ PROMPT_WHEELBARROW_LOAD,E: cargar en la carretilla,E: load it into the wheelbarr
 PROMPT_WHEELBARROW_FULL,No entra en la carretilla (hasta 40 kg),It doesn't fit in the wheelbarrow (up to 40 kg),Não cabe no carrinho de mão (até 40 kg)
 HINT_WHEELBARROW_FULL,"¡No entra! La carretilla lleva hasta 40 kg.","It won't fit! The wheelbarrow carries up to 40 kg.","Não cabe! O carrinho de mão leva até 40 kg."
 GRANDPA_SQUEAK,¿Qué es ese chirrido? ¡Me van a rayar el piso!,What's that squeaking? You'll scratch my floor!,Que rangido é esse? Vocês vão riscar meu chão!
+PROMPT_ARMCHAIR,Sillón de espera (siéntate con un perro en brazos),Waiting armchair (sit with a dog in your arms),Poltrona de espera (sente com um cachorro no colo)
+PROMPT_ARMCHAIR_SIT,"E: sentarte con el perro (Ramiro te cuenta su vida, sin mirar el local)","E: sit with the dog (Ramiro tells you its life, not watching the salon)","E: sentar com o cachorro (Ramiro conta a vida dele, sem olhar o salão)"
+PROMPT_ARMCHAIR_STAND,E: levantarte,E: stand up,E: levantar
+HINT_ARMCHAIR_DOG,Ramiro solo charla si traes un perro en brazos.,Ramiro only chats if you bring a dog in your arms.,O Ramiro só conversa se você trouxer um cachorro no colo.
+GROOMER_LINE_1,"Quieto, Pochito, que te dejo precioso.","Hold still, Pochito, I'll make you gorgeous.","Quieto, Pochito, que eu te deixo lindo."
+GROOMER_LINE_2,¿Tienen turno? Hoy estoy hasta las orejas.,Do you have an appointment? I'm up to my ears today.,Vocês têm horário? Hoje estou até as orelhas.
+GROOMER_LINE_3,¡No me pisen los pelos que recién barrí!,Don't step on the hair! I just swept!,Não pisem nos pelos que eu acabei de varrer!
+GROOMER_LINE_4,"Un poquito más de flequillo, ¿no?","A little more fringe, don't you think?","Um pouquinho mais de franja, né?"
+GROOMER_HURT,¡Cuidado! ¡Tengo la tijera en la mano!,Careful! I've got the scissors in my hand!,Cuidado! Estou com a tesoura na mão!
+GROOMER_DOOR,¡Mi puerta! ¡Me van a asustar a los perros!,My door! You'll scare the dogs!,Minha porta! Vocês vão assustar os cachorros!
+GROOMER_SAW,"¡Ese champú es importado, eh!","That shampoo is imported, you know!","Esse xampu é importado, hein!"
+GROOMER_LAWYER,¡Se acabó! ¡Llamo a mi abogado!,That's it! I'm calling my lawyer!,Chega! Vou ligar para o meu advogado!
+GROOMER_NOTHING,"Yo solo corto pelo, oficial.","I just cut hair, officer.","Eu só corto pelo, policial."
+GROOMER_OFFENDED,¡Basta de preguntas! Yo soy un peluquero honrado.,Enough questions! I'm an honest groomer.,Chega de perguntas! Eu sou um tosador honesto.
+GROOMER_STORY_TIRED,"Ahora no, que tengo un caniche a medio cortar.","Not now, I've got a poodle half done.","Agora não, tenho um poodle pela metade."
+GROOMER_DOG_STORY_1,"¡Ay, este! Llegó flaquito, comía solo galletitas de queso...","Oh, this one! He came in skinny, ate nothing but cheese crackers...","Ai, esse! Chegou magrinho, só comia biscoito de queijo..."
+GROOMER_DOG_STORY_2,"...después se enamoró de la caniche de enfrente, un drama...","...then he fell for the poodle across the street, such drama...","...depois se apaixonou pela poodle da frente, um drama..."
+GROOMER_DOG_STORY_3,"...y ahora es campeón de dormir la siesta. ¡Mírenlo qué lindo!","...and now he's a nap champion. Look how cute he is!","...e agora é campeão de soneca. Olha que lindo!"

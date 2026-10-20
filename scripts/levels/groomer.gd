@@ -4,12 +4,14 @@ extends Node3D
 ## The pet salon "Pelito Feliz" (docs/diseno/peluqueria.md, step 1): the reception and the grooming room at the front,
 ## the cages and the storeroom behind them, and the yard at the back, on its lot in the city with the front to +Z.
 ## The salon is open; the storeroom ("Solo personal") and its back door to the yard are locked. The shampoo bottles
-## and the collar vitrine break, each one a fine. Ramiro, the dogs and the stories come in the next steps.
+## and the collar vitrine break, each one a fine. Ramiro cuts dogs at the first table, watches what breaks and tells a
+## dog's life to whoever sits in the waiting armchair with one (step 2). The dogs and the stories come next.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const SHAMPOO_SCENE := preload("res://scenes/props/shampoo_bottle.tscn")
 const COLLAR_SCENE := preload("res://scenes/props/dog_collar.tscn")
+const GROOMER_SCENE := preload("res://scenes/npc/dog_groomer.tscn")
 const HALF_X := 8.0
 ## The lot runs from -HALF_Z to HALF_Z; the building covers its front from BACK_Z on, the yard the rest.
 const HALF_Z := 7.0
@@ -36,6 +38,8 @@ const VITRINE_AT := Vector3(-7.4, FLOOR_TOP, 3.8)
 const VITRINE_SHELF := FLOOR_TOP + 0.77
 const TABLES: Array[Vector3] = [Vector3(2.5, FLOOR_TOP, 4.5), Vector3(5.0, FLOOR_TOP, 4.5)]
 const TABLE_HEIGHT := 0.8
+## Where Ramiro stands to cut, behind the first table, facing the street.
+const RAMIRO_POST := Vector3(2.5, FLOOR_TOP, 3.7)
 ## Each standing dryer's hood, open on top, behind its table.
 const DRYER_HOOD := FLOOR_TOP + 1.4
 const BATHTUB_AT := Vector3(6.8, FLOOR_TOP, 3.3)
@@ -100,6 +104,8 @@ var shampoos: Array[Ornament] = []
 var collars: Array[Ornament] = []
 ## What the cops broke so far (each one is an Ornament.FINE).
 var fines := 0
+var ramiro: DogGroomer
+var armchair: WaitingArmchair
 var _build: PlaceBuilder
 @onready var car: PatrolCar = $PatrolCar
 
@@ -115,6 +121,7 @@ func _ready() -> void:
 	_place_fragile()
 	store_door = _door(Vector3(STORE_DOOR_X - GameScale.DOOR_WIDTH / 2, 0, SPLIT_Z), 0.0)
 	back_door = _door(Vector3(BACK_DOOR_X + GameScale.DOOR_WIDTH / 2, 0, BACK_Z), PI)
+	_place_ramiro()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("pet_salon")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -178,8 +185,8 @@ func _build_reception() -> void:
 	_build.open_box(COUNTER_AT, COUNTER_SIZE, "-z", WOOD)
 	_build.box(COUNTER_AT + Vector3(0.7, COUNTER_SIZE.y + 0.15, 0), Vector3(0.5, 0.3, 0.4), STEEL)
 	_build.legs(ARMCHAIR_AT, Vector2(1.0, 0.9), 0.35, WOOD)
-	_build.box(ARMCHAIR_AT + Vector3(0, 0.45, 0), Vector3(1.0, 0.2, 0.9), PINK)
-	_build.box(ARMCHAIR_AT + Vector3(0, 0.85, 0.45), Vector3(1.0, 0.6, 0.15), PINK)
+	_build.mesh_box(ARMCHAIR_AT + Vector3(0, 0.45, 0), WaitingArmchair.SEAT_SIZE, PINK)
+	_build.mesh_box(ARMCHAIR_AT + Vector3(0, 0.45, 0) + WaitingArmchair.BACK_AT, WaitingArmchair.BACK_SIZE, PINK)
 	_build.open_box(VITRINE_AT, Vector3(0.8, 1.4, 1.6), "+x", GLASS)
 	_build.box(Vector3(VITRINE_AT.x, VITRINE_SHELF - 0.02, VITRINE_AT.z), Vector3(0.7, 0.04, 1.5), GLASS)
 	for z: float in [3.3, 6.2]:
@@ -261,5 +268,20 @@ func _place_fragile() -> void:
 		collars.append(collar)
 
 
-func _on_fragile_broken(_at: Vector3) -> void:
+## Ramiro at his table, and the armchair where he tells a dog's life. A rammed door reaches him anywhere.
+func _place_ramiro() -> void:
+	ramiro = GROOMER_SCENE.instantiate()
+	ramiro.position = RAMIRO_POST
+	add_child(ramiro)
+	armchair = WaitingArmchair.new()
+	armchair.position = ARMCHAIR_AT + Vector3(0, 0.45, 0)
+	armchair.groomer = ramiro
+	add_child(armchair)
+	for door: FrontDoor in [store_door, back_door]:
+		door.broken.connect(ramiro.door_broken)
+
+
+func _on_fragile_broken(at: Vector3) -> void:
 	fines += Ornament.FINE
+	if ramiro:
+		ramiro.saw(at, DogGroomer.SAW_BREAK)

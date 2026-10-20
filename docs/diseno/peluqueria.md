@@ -71,6 +71,14 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      con el ariete). 12 escondites, 6 para cosas pesadas. Lo frágil: 24 frascos de champú y 6 collares, 20 de multa
      cada uno. "Peluquería (prueba)" en el menú la abre. Capturas en `peluqueria/` de la carpeta del proyecto.
 2. Ramiro, el sillón de espera y el interrogatorio.
+   - **Cómo quedó (propuesta):** Ramiro (delantal rosa lleno de pelos, jopo, bigote y tijera) corta en la primera mesa
+     y no se mueve de ahí. Llena la denuncia como Marta: 15 si lo empujan, 5 por puerta rota (la oye desde cualquier
+     lado), 10 por cada frasco o collar que ve romperse (los de la recepción no los ve, hay una pared), 5 por pregunta,
+     y llama al abogado en 100. Con R suelta 2 cosas por caso (cada historia le da las suyas; sin historia dice "Yo solo
+     corto pelo, oficial") y después se ofende. **El sillón:** el policía que tiene un perro en brazos lo apunta y con E
+     se sienta; Ramiro le cuenta la vida del perro 15 s y mientras tanto no ve nada de lo que se rompe. E otra vez se
+     levanta antes. Después necesita 30 s para contar otra. Hasta que estén los perros (paso 3), cualquier cosa del
+     grupo "dogs" cuenta como perro.
 3. Los perros sueltos.
 4. La señora del caniche.
 5. Las 6 historias, un PR cada una.
