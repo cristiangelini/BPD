@@ -89,10 +89,33 @@ export function buildFunnel() {
 	return b.build();
 }
 
+// Gertrudis, the prize sourdough, in a glass jar: 0.2 m wide, 0.3 m tall, centered on its box. The dough fills the
+// jar up to the top and bubbles out; a red cloth lid tied with string.
+export function buildSourdoughJar() {
+	const b = new Builder('sourdough_jar');
+	b.add('glass', mat('jar_glass', 0xbfe4ec, { transparent: true, opacity: 0.45 }), new THREE.CylinderGeometry(0.1, 0.1, 0.26, 14, 1, true), { pos: V(0, -0.02, 0) });
+	b.add('glass', mat('jar_glass', 0xbfe4ec, { transparent: true, opacity: 0.45 }), new THREE.CylinderGeometry(0.1, 0.1, 0.01, 14), { pos: V(0, -0.145, 0) });
+	b.add('dough', mat('dough', 0xf3e6c4), new THREE.CylinderGeometry(0.093, 0.093, 0.22, 12), { pos: V(0, -0.035, 0) });
+	for (const [x, z, r] of [[0.03, 0.02, 0.02], [-0.035, -0.01, 0.016], [0.0, -0.04, 0.012]]) b.add('dough', mat('dough', 0xf3e6c4), ellipsoid(r, r * 0.7, r, 6, 4), { pos: V(x, 0.08, z) });
+	b.add('lid', mat('lid_cloth', 0xc83a3a), new THREE.CylinderGeometry(0.115, 0.105, 0.03, 12), { pos: V(0, 0.125, 0) });
+	b.add('lid', mat('string', 0xd8c89a), new THREE.TorusGeometry(0.104, 0.005, 4, 14), { pos: V(0, 0.105, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('tag', mat('jar_tag', 0xf8f4e6), new THREE.BoxGeometry(0.08, 0.06, 0.004), { pos: V(0, 0.0, 0.102) });
+	return b.build();
+}
+
+// The neighborhood contest medal: a 0.07 m gold disc on a blue ribbon, lying flat (0.1 x 0.02 x 0.18 m).
+export function buildContestMedal() {
+	const b = new Builder('contest_medal');
+	b.add('medal', mat('gold', 0xf2c84b, { emissive: 0x3a2a05 }), new THREE.CylinderGeometry(0.035, 0.035, 0.008, 12), { pos: V(0, -0.004, 0.05) });
+	b.add('ribbon', mat('ribbon', 0x2a5ac8), new THREE.BoxGeometry(0.035, 0.004, 0.11), { pos: V(0, -0.006, -0.035) });
+	return b.build();
+}
+
 export const models = {
 	bread_loaf: buildLoaf, bread_half: buildHalfLoaf, bakery_cake: buildCake,
 	stolen_ring: buildRing, jewelry_bag: buildJewelryBag, pawn_receipt: buildPawnReceipt,
 	flour_sack: buildFlourSack, pepper_sack: buildPepperSack, victim_list: buildVictimList, funnel: buildFunnel,
+	sourdough_jar: buildSourdoughJar, contest_medal: buildContestMedal,
 };
 
 export const views = {
@@ -110,5 +133,9 @@ export const views = {
 			{ name: 'victim_list', pos: [-0.2, 0.01, 0.65], rotY: 0.3 }, { name: 'funnel', pos: [0.3, 0.1, 0.65], rotY: 0 },
 		],
 		cam: { pos: [0, 1.4, 2.2], target: [0, 0.1, 0.2], fov: 38 },
+	},
+	sourdough_goods: {
+		items: [{ name: 'sourdough_jar', pos: [-0.12, 0.15, 0], rotY: 0.3 }, { name: 'contest_medal', pos: [0.18, 0.01, 0.05], rotY: -0.4 }],
+		cam: { pos: [0, 0.5, 0.9], target: [0, 0.1, 0], fov: 36 },
 	},
 };

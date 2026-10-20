@@ -13,42 +13,51 @@ const BAKER_SCENE := preload("res://scenes/npc/baker.tscn")
 const CUSTOMER_SCENE := preload("res://scenes/npc/bakery_customer.tscn")
 const BREAD_SCENE := preload("res://scenes/props/bread_loaf.tscn")
 const CAKE_SCENE := preload("res://scenes/props/bakery_cake.tscn")
-const RING_SCENE := preload("res://scenes/props/stolen_ring.tscn")
 const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
 ## Every story the bakery can be suspected of (panaderia.md, "Las historias"): SUSPECT_<id> names it and
 ## CLUE_SUSPECT_<id> is the clue that hints at it.
 const SUSPICION_POOL := ["ring", "sneeze", "sourdough", "wedding", "lottery", "pigeons"]
 const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_BAKERY_TIP_B", "BRIEF_TIP_C", "BRIEF_BAKERY_TIP_D",
 	"BRIEF_BAKERY_TIP_E"]
-## The stories the bakery can tell so far (panaderia.md, "Las historias"): what the comisario says once it's guessed,
-## its "find it" row, and its extras with their checklist rows and half heights, hidden in spots drawn with the seed.
+## The stories the bakery can tell (panaderia.md, "Las historias"): what the comisario says once it's guessed, its
+## "find it" row, what it hides in spots drawn with the seed (with their half heights and whether they're heavy),
+## the checklist rows of its extras, and its rig. With "main_hidden" the first hidden item is the main evidence and
+## the rest are extras; otherwise the rig places the main evidence and every hidden item is an extra.
 const STORIES := {
 	"ring": {
 		"briefing": ["BRIEF_RIGHT", "BRIEF_RING_B", "BRIEF_RING_C", "BRIEF_RING_D"],
 		"find": "OBJ_FIND_RING",
-		"extras": [preload("res://scenes/props/jewelry_bag.tscn"), preload("res://scenes/props/pawn_receipt.tscn")],
-		"extra_keys": ["OBJ_EXTRA_JEWELRY_BAG", "OBJ_EXTRA_PAWN_RECEIPT"],
+		"hidden": [preload("res://scenes/props/jewelry_bag.tscn"), preload("res://scenes/props/pawn_receipt.tscn")],
 		"half_heights": [0.055, 0.01],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_JEWELRY_BAG", "OBJ_EXTRA_PAWN_RECEIPT"],
+		"rig": preload("res://scripts/case/bakery/ring_rig.gd"),
 	},
 	"sneeze": {
 		"briefing": ["BRIEF_RIGHT", "BRIEF_SNEEZE_B", "BRIEF_SNEEZE_C", "BRIEF_SNEEZE_D"],
 		"find": "OBJ_FIND_SNEEZE",
-		"extras": [preload("res://scenes/props/victim_list.tscn"), preload("res://scenes/props/funnel.tscn")],
-		"extra_keys": ["OBJ_EXTRA_VICTIM_LIST", "OBJ_EXTRA_FUNNEL"],
+		"hidden": [preload("res://scenes/props/victim_list.tscn"), preload("res://scenes/props/funnel.tscn")],
 		"half_heights": [0.01, 0.1],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_VICTIM_LIST", "OBJ_EXTRA_FUNNEL"],
+		"rig": preload("res://scripts/case/bakery/sneeze_rig.gd"),
+	},
+	"sourdough": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_SOURDOUGH_B", "BRIEF_SOURDOUGH_C", "BRIEF_SOURDOUGH_D"],
+		"find": "OBJ_FIND_SOURDOUGH",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/sourdough_jar.tscn"), preload("res://scenes/props/contest_medal.tscn")],
+		"half_heights": [0.145, 0.01],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_MEDAL"],
+		"rig": preload("res://scripts/case/bakery/bakery_rig.gd"),
 	},
 }
 const FLOUR_SCENE := preload("res://scenes/props/flour_sack.tscn")
-const PEPPER_SCENE := preload("res://scenes/props/pepper_sack.tscn")
 ## The storeroom's flour sacks: four on the floor and one on top. In the sneezing story one is the pepper sack.
 const SACKS := [Vector3(-3.2, 0.0, -6.0), Vector3(-2.55, 0.0, -6.0), Vector3(-1.9, 0.0, -6.0),
 	Vector3(-1.25, 0.0, -6.0), Vector3(-2.9, 0.36, -6.0)]
 const SACK_HALF_HEIGHT := 0.18
-## Cops this close to the pepper sack sneeze every SNEEZE_EVERY seconds, give or take SNEEZE_JITTER, and drop what
-## they hold.
-const SNEEZE_RANGE := 3.0
-const SNEEZE_EVERY := 5.0
-const SNEEZE_JITTER := 2.0
 ## Surfaces where the suspicions' clue notes can lie, one in each room; three are drawn with the seed.
 const NOTE_PLACES := [
 	Vector3(2.9, COUNTER_TOP, 3.4), Vector3(3.4, 0.91, -2.3), Vector3(-3.0, FLOOR_TOP, -2.0),
@@ -141,17 +150,18 @@ var _customer_wait := FIRST_CUSTOMER
 @export var story_id := ""
 var loaves: Array[Bread] = []
 var cakes: Array[Ornament] = []
-## The evidence the case is about: the ring, or the pepper sack.
+## The evidence the case is about (the ring, the pepper sack, Gertrudis...).
 var main: Evidence
+var rig: BakeryRig
 var ring: Evidence
 var ring_loaf := 0
 var sacks: Array[RigidBody3D] = []
 var pepper_sack := -1
-## Seconds until each cop near the pepper sack sneezes, by cop.
-var _sneeze_left := {}
-var _sneeze_rng := RandomNumberGenerator.new()
+## What the story hid in spots, and the spot of each: Marta's slips and the gossip point at them.
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+## The story's evidence that isn't the main one, in the order of its checklist rows.
 var extras: Array[Evidence] = []
-var extra_spots: Array = []
 var till: Till
 ## Fines for broken loaves and cakes.
 var fines: int:
@@ -166,7 +176,6 @@ func _ready() -> void:
 		case_seed = randi() | 1
 	if story_id == "":
 		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
-	_sneeze_rng.seed = case_seed
 	raid = RaidCase.new()
 	raid.case_seed = case_seed
 	raid.story_id = story_id
@@ -196,7 +205,10 @@ func _ready() -> void:
 	city_map.setup(city, "bakery", car)
 	_add_baker()
 	_place_goods()
-	_place_story()
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
 	raid.main_evidence = main
 	raid.start(TIP_BRIEFING, SUSPICION_POOL)
 	_place_suspicion_clues()
@@ -250,8 +262,6 @@ func _add_baker() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if pepper_sack >= 0:
-		_sneezes(delta)
 	_customer_wait -= delta
 	if _customer_wait <= 0.0 and customers.size() < MAX_CUSTOMERS:
 		_customer_wait = CUSTOMER_EVERY
@@ -281,7 +291,7 @@ func add_customer() -> BakeryCustomer:
 	return customer
 
 
-## The 40 loaves and the cakes, all fragile; the till with the bakehouse key.
+## The 40 loaves and the cakes, all fragile; the till with the bakehouse key; the flour sacks in the storeroom.
 func _place_goods() -> void:
 	var places: Array[Vector3] = []
 	for y: float in WEST_SHELVES:
@@ -310,6 +320,11 @@ func _place_goods() -> void:
 	till.position = Vector3(5.2, COUNTER_TOP + Till.SIZE.y / 2, 3.5)
 	add_child(till)
 	till.opened.connect(func(at: Vector3) -> void: baker.saw(at, Baker.SAW_TILL))
+	for at: Vector3 in SACKS:
+		var sack: RigidBody3D = FLOUR_SCENE.instantiate()
+		sack.position = at + Vector3.UP * (FLOOR_TOP + SACK_HALF_HEIGHT + 0.01)
+		add_child(sack)
+		sacks.append(sack)
 
 
 ## The story with that id from --story=<id> among the user args, or one drawn from the seed.
@@ -320,57 +335,22 @@ static func pick_story(case_seed: int, args: PackedStringArray) -> String:
 	return STORIES.keys()[case_seed % STORIES.size()]
 
 
-## The story's main evidence (the ring in a loaf, or the pepper sack among the flour sacks) and its two extras in
-## hiding spots.
-func _place_story() -> void:
-	var rng := RandomNumberGenerator.new()
-	rng.seed = case_seed * 31 + 7
-	if story_id == "ring":
-		ring_loaf = rng.randi_range(0, loaves.size() - 1)
-		ring = RING_SCENE.instantiate()
-		loaves[ring_loaf].stuff(ring)
-		main = ring
-	else:
-		pepper_sack = rng.randi_range(0, SACKS.size() - 1)
-	for i in SACKS.size():
-		var sack: RigidBody3D = (PEPPER_SCENE if i == pepper_sack else FLOUR_SCENE).instantiate()
-		sack.position = SACKS[i] + Vector3.UP * (FLOOR_TOP + SACK_HALF_HEIGHT + 0.01)
-		add_child(sack)
-		sacks.append(sack)
-	if pepper_sack >= 0:
-		main = sacks[pepper_sack] as Evidence
+## The story's hidden items, each in a spot drawn with the seed (HidingDraw keeps the heavy ones on spots that fit
+## them).
+func _place_hidden() -> void:
 	var story: Dictionary = STORIES[story_id]
 	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
-	extra_spots = HidingDraw.draw(case_seed, spot_heavy, [false, false], 1).spots
-	for i in story.extras.size():
-		var item: Evidence = story.extras[i].instantiate()
-		item.position = SPOTS[extra_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
 		add_child(item)
-		extras.append(item)
-
-
-## The pepper sack makes the cops near it sneeze: whatever they hold falls (panaderia.md, "Polvo para estornudar").
-func _sneezes(delta: float) -> void:
-	for node in get_tree().get_nodes_in_group("cops"):
-		var cop := node as Cop
-		if cop.vehicle or cop.global_position.distance_to(main.global_position) > SNEEZE_RANGE:
-			_sneeze_left.erase(cop)
-			continue
-		var left: float = _sneeze_left.get(cop, _next_sneeze()) - delta
-		if left <= 0.0:
-			sneeze(cop)
-			left = _next_sneeze()
-		_sneeze_left[cop] = left
-
-
-func _next_sneeze() -> float:
-	return SNEEZE_EVERY + _sneeze_rng.randf_range(-SNEEZE_JITTER, SNEEZE_JITTER)
-
-
-## A cop sneezes: drops what's in their hands.
-func sneeze(cop: Cop) -> void:
-	cop.get_node("Grabber").release()
-	cop.show_hint("HINT_SNEEZE")
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
 
 
 ## One clue note for each suspicion, the true one too, on note places drawn with the seed.
@@ -388,22 +368,22 @@ func _place_suspicion_clues() -> void:
 		add_child(note)
 
 
-## What Marta lets slip when asked: where each extra is, in an order drawn from the seed.
+## What Marta lets slip when asked: where the story's hidden things are, in an order drawn from the seed.
 func _give_slips() -> void:
-	var order: Array = range(extras.size())
+	var order: Array = range(hidden.size())
 	if case_seed % 2 == 1:
 		order.reverse()
 	for item: int in order:
-		baker.slips.append(tr("BAKER_SLIP") % tr("LOC_" + SPOTS[extra_spots[item]].id))
+		baker.slips.append(tr("BAKER_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
 	baker.slipped.connect(raid.add_clue)
 
 
-## The regular who knows everything: a loaf for him and he tells where Marta hid one of the extras.
+## The regular who knows everything: a loaf for him and he tells where Marta hid one of the story's things.
 func _place_gossip() -> void:
 	gossip = Gossip.new()
 	gossip.position = GOSSIP_AT
 	gossip.rotation.y = PI / 2
-	var where := tr("LOC_" + SPOTS[extra_spots[case_seed % extras.size()]].id)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
 	gossip.clue = tr("CLUE_GOSSIP") % where
 	gossip.clue_speech = tr("GOSSIP_CLUE_" + story_id) % where
 	gossip.told.connect(raid.add_clue)
