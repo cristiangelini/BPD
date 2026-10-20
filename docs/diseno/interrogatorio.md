@@ -175,6 +175,12 @@ vendió a la municipalidad un puente que no existe"), su cara y ropa, y las fras
 Los medidores, las acciones y la confesión los decide el host (decisión 50), como con la denuncia. Por la red se manda
 cada acción con quién la hizo; el grito se mide en la PC de quien habla y se manda solo si pasó el umbral.
 
+**Cómo quedó:** el interrogatorio del anfitrión cuenta todas las acciones, también la E, la dona, la silla, el café y
+el grito de un invitado. Los demás ven lo mismo: los medidores, lo que dice el sospechoso (y el gemelo y el traductor),
+la lámpara y la luz que parpadea, las tres confesiones del fanático, la hoja del mudo, la confesión, el abogado y la
+pantalla del turno. Solo el anfitrión pasa al caso siguiente. El café que sirve la máquina le queda en la mano a quien
+lo pidió.
+
 ## Atajos del panel de pruebas (cuando exista)
 - Forzar un interrogatorio con el sospechoso N (`--suspect=N`).
 - Poner los nervios o el abogado en X.

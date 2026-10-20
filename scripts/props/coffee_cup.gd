@@ -14,7 +14,7 @@ const SETTLED_SPEED := 0.3
 func _physics_process(_delta: float) -> void:
 	if not was_held or not holders.is_empty() or linear_velocity.length() > SETTLED_SPEED:
 		return
-	var case := InterrogationCase.active(get_tree())
+	var case := InterrogationCase.active(get_tree(), self)
 	if case and case.coffee_served(self):
 		queue_free()
 

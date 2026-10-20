@@ -326,6 +326,8 @@ func _furniture(items: Array, solids: Dictionary, root: Node3D) -> void:
 		var body: StaticBody3D = InterrogationProp.new() if item.size() > 3 else StaticBody3D.new()
 		if body is InterrogationProp:
 			(body as InterrogationProp).action = item[3]
+			# Named by its action, so a guest's E reaches the same one on the host (ActionSync).
+			body.name = "Prop_" + item[3]
 		body.position = item[1] + Vector3(0, solid.y / 2, 0)
 		root.add_child(body)
 		body.rotation.y = item[2]

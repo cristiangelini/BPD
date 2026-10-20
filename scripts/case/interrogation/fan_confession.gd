@@ -40,11 +40,11 @@ func _ready() -> void:
 
 
 func prompt_key(_cop: Cop) -> String:
-	var case := InterrogationCase.active(get_tree())
+	var case := InterrogationCase.active(get_tree(), self)
 	return "PROMPT_PICK_CONFESSION" if case and case.is_on() else ""
 
 
 func use(cop: Cop) -> void:
-	var case := InterrogationCase.active(get_tree())
+	var case := InterrogationCase.active(get_tree(), self)
 	if case:
 		case.pick_confession(self, cop)

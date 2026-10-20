@@ -30,7 +30,7 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 
 
 func _landed() -> void:
-	var case := InterrogationCase.active(get_tree())
+	var case := InterrogationCase.active(get_tree(), self)
 	if case and case.chair_thrown(self):
 		# One throw counts once, however many times it bounces.
 		let_go_at = -1
@@ -53,9 +53,11 @@ func use(cop: Cop) -> void:
 	cop.add_collision_exception_with(self)
 	freeze = true
 	rotation = Vector3(0, rotation.y, 0)
-	# Facing the way the chair faces: toward the table.
+	# Facing the way the chair faces: toward the table. Placed now too: online a guest's copy of the chair doesn't
+	# move it, and its owner's PC is where the cop's place comes from.
 	cop.global_rotation.y = global_rotation.y + PI
-	var case := InterrogationCase.active(get_tree())
+	cop.global_position = global_position + Vector3.UP * 0.05
+	var case := InterrogationCase.active(get_tree(), self)
 	if case:
 		case.sat_down_by(self, cop)
 
@@ -67,7 +69,8 @@ func stand_up() -> void:
 	sitter = null
 	cop.seated_in = null
 	cop.remove_collision_exception_with(self)
-	freeze = false
+	# On a guest it's a copy of the host's chair: it stays frozen, following the host.
+	freeze = cop.sync != null and not cop.sync.net.is_host()
 	cop.global_position = global_position + global_basis.z * STAND_BEHIND + Vector3.UP * 0.1
 
 

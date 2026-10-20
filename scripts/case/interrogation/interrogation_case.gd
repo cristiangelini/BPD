@@ -170,11 +170,20 @@ var sheet: Label3D
 var _bad_by: Cop
 var _bad_at := -INF
 var _contrast := 1.0
+## Online (docs/diseno/online.md): the host's case decides and a guest's follows it (CaseSync); `online` is that sync.
+var follower := false
+var online: CaseSync
+## The end of shift numbers, once it's over (sent to the guests).
+var _result := {}
 
 
-## The case on in this tree, if any.
-static func active(tree: SceneTree) -> InterrogationCase:
-	return tree.get_first_node_in_group("interrogation") as InterrogationCase
+## The case on in this tree, if any; with `near`, the one of the level `near` is in (online tests hold one level per PC
+## in the same tree).
+static func active(tree: SceneTree, near: Node = null) -> InterrogationCase:
+	for node in tree.get_nodes_in_group("interrogation"):
+		if not near or node.get_parent().is_ancestor_of(near):
+			return node as InterrogationCase
+	return null
 
 
 static func pick_suspect(seed_value: int, args: PackedStringArray) -> String:
@@ -206,7 +215,7 @@ func start(comisario: Comisario = null) -> void:
 		_hint_all("HINT_SEE_COMISARIO")
 	else:
 		give_tip()
-	shift_screen.play_again.connect(func() -> void: PlaceDraw.start(get_tree()))
+	shift_screen.play_again.connect(_play_again)
 	shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
 
 
@@ -222,6 +231,13 @@ func give_tip() -> void:
 	briefing.finished.connect(_hint_all.bind("HINT_GO_INTERROGATION"), CONNECT_ONE_SHOT)
 
 
+func _play_again() -> void:
+	if online:
+		online.play_again()
+	else:
+		PlaceDraw.start(get_tree())
+
+
 ## The cops can work on him: the case was given and it isn't over.
 func is_on() -> bool:
 	return tip_given and not confessed and not lawyer_came
@@ -229,12 +245,12 @@ func is_on() -> bool:
 
 func _process(delta: float) -> void:
 	_gap_left -= delta
-	if suspect_id == "sleeper" and is_on():
+	if suspect_id == "sleeper" and is_on() and not follower:
 		_doze(delta)
 
 
 func _physics_process(delta: float) -> void:
-	if suspect_id == "dangerous" and is_on():
+	if suspect_id == "dangerous" and is_on() and not follower:
 		_watch(delta)
 
 
@@ -281,7 +297,7 @@ func watched() -> bool:
 
 ## A cop grabs the dangerous one on the loose: the first slows him down, a second one (or a cop alone) catches him.
 func grab_loose(cop: Cop) -> void:
-	if not loose or not is_on():
+	if not loose or not is_on() or follower:
 		return
 	var alone := get_tree().get_nodes_in_group("cops").size() <= 1
 	if not alone and (_grip_left <= 0.0 or _grip_by == cop):
@@ -311,6 +327,9 @@ func _doze(delta: float) -> void:
 
 ## A cop does action `id` (ACTIONS) on the suspect (with twins, the one nearest to him). Returns whether it counted.
 func act(id: String, cop: Cop = null) -> bool:
+	# Online the host's case counts every action (the guest's E, donut or chair reaches it too).
+	if follower:
+		return false
 	if twin and cop and twin.global_position.distance_to(cop.global_position) < \
 			suspect.global_position.distance_to(cop.global_position):
 		return _act_on_twin(id, cop)
@@ -435,12 +454,15 @@ func use_prop(id: String, cop: Cop) -> void:
 	if id != "pour_coffee":
 		act(id, cop)
 		return
-	if not is_on() or cop.get_node("Grabber").held:
+	if not is_on() or follower or cop.get_node("Grabber").held:
 		return
 	var cup: CoffeeCup = COFFEE_SCENE.instantiate()
 	cop.get_parent().add_child(cup)
 	cup.global_position = cop.camera.global_position - cop.camera.global_basis.z * 0.6
 	cop.get_node("Grabber").grab(cup)
+	# A guest's cop: the host poured it (the guests get a copy of the cup), so the guest's own hands are told.
+	if cop.sync and not cop.sync.is_multiplayer_authority():
+		cop.sync.tell_held()
 
 
 ## A cup of coffee set down near him: he takes it.
@@ -468,6 +490,10 @@ func sat_down_by(chair: InterrogationChair, cop: Cop) -> bool:
 
 ## A cop shouted into the microphone (VoiceChat): near him, it's the bad cop's shout.
 func shouted_by(cop: Cop) -> void:
+	if follower:
+		if online and is_on():
+			online.request_shout()
+		return
 	if _near(cop, SHOUT_REACH):
 		act("shout", cop)
 
@@ -488,7 +514,7 @@ func _near(cop: Cop, reach: float) -> bool:
 
 ## The case folder set down: by the twin it wasn't last shown to, it's the bluff.
 func folder_shown(folder: CaseFolder) -> bool:
-	if not twin:
+	if not twin or follower:
 		return false
 	var cops := folder.handling_cops(CaseFolder.SHOWN_SECONDS)
 	var cop: Cop = cops[0] if not cops.is_empty() else null
@@ -559,9 +585,15 @@ func _blurt() -> void:
 		var swap: String = picked[i]
 		picked[i] = picked[j]
 		picked[j] = swap
-	for i in picked.size():
+	_hold_up(picked)
+
+
+## The fan's confessions held up on the table, by crime. Named by their place, so a guest's E reaches the host's.
+func _hold_up(crimes: Array) -> void:
+	for i in crimes.size():
 		var sheet_of := FanConfession.new()
-		sheet_of.crime = picked[i]
+		sheet_of.name = "FanConfession%d" % i
+		sheet_of.crime = crimes[i]
 		sheet_of.position = FAN_SHEETS_AT[i]
 		# Held up toward the door side, leaning back a little.
 		sheet_of.rotation.x = -0.3
@@ -571,7 +603,7 @@ func _blurt() -> void:
 
 ## A cop picks one of the fan's confessions: the true one solves the case, a wrong one brings the lawyer closer.
 func pick_confession(sheet_of: FanConfession, _cop: Cop) -> void:
-	if not is_on() or not confessions.has(sheet_of):
+	if not is_on() or follower or not confessions.has(sheet_of):
 		return
 	if sheet_of.crime == crime:
 		confessed = true
@@ -602,6 +634,12 @@ func _translate(text: String, extra: String) -> void:
 
 ## The mute puts something on his sheet of paper (it shows up the first time), with a gesture over his head.
 func _draw(text: String, gesture: String) -> void:
+	_show_sheet(text)
+	_say(gesture, true)
+
+
+## The mute's sheet of paper on the table, with `text` drawn on it (it shows up the first time).
+func _show_sheet(text: String) -> void:
 	if not sheet:
 		var paper := MeshInstance3D.new()
 		var quad := QuadMesh.new()
@@ -625,7 +663,6 @@ func _draw(text: String, gesture: String) -> void:
 		sheet.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		paper.add_child(sheet)
 	sheet.text = text
-	_say(gesture, true)
 
 
 ## A line over the suspect's head; reactions don't cut off what slipped out.
@@ -639,8 +676,17 @@ func _say(text: String, important: bool) -> void:
 	suspect.say(text, seconds)
 
 
+## The hanging lamp of this level.
+func _lamp() -> Light3D:
+	for node in get_tree().get_nodes_in_group("interrogation_lamp"):
+		if get_parent().is_ancestor_of(node):
+			return node as Light3D
+	return null
+
+
 func _aim_lamp() -> void:
-	var lamp := get_tree().get_first_node_in_group("interrogation_lamp") as SpotLight3D
+	_tell_guests("_aim_lamp")
+	var lamp := _lamp() as SpotLight3D
 	if not lamp or not suspect:
 		return
 	var rest := lamp.rotation
@@ -652,7 +698,8 @@ func _aim_lamp() -> void:
 
 
 func _flick_lights() -> void:
-	var lamp := get_tree().get_first_node_in_group("interrogation_lamp") as Light3D
+	_tell_guests("_flick_lights")
+	var lamp := _lamp()
 	if not lamp:
 		return
 	var tween := lamp.create_tween()
@@ -682,6 +729,12 @@ func _lawyer_arrives() -> void:
 	man.add_child(line)
 
 
+## Host: the guests see the same passing effect.
+func _tell_guests(method: String) -> void:
+	if online and not follower:
+		online.tell(method)
+
+
 func _hint_all(key: String) -> void:
 	for cop in get_tree().get_nodes_in_group("cops"):
 		(cop as Cop).show_hint(key)
@@ -691,30 +744,80 @@ func _finish_soon() -> void:
 	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
 
-## The end of shift screen: a confession pays the salary (decision 90), the lawyer nothing.
+## The end of shift screen: a confession pays the salary (decision 90), the lawyer nothing. Online the host's numbers
+## go to the guests.
 func finish_shift() -> void:
-	if shift_over:
+	if shift_over or follower:
 		return
-	shift_over = true
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
+	var result := {"solved": confessed, "report": ShiftReport.pay(confessed, [], 0), "awards": ShiftReport.awards(stats)}
+	var campaign := Campaign.current
+	if campaign and not campaign.is_over():
+		var played := campaign.shift
+		campaign.finish_shift("interrogation_" + crime, confessed, result.report, QUOTA)
+		campaign.save()
+		result.campaign = {"shift": played, "money": campaign.money, "over": campaign.is_over(),
+			"promoted": campaign.is_promoted()}
+	_show_result(result)
+
+
+func _show_result(result: Dictionary) -> void:
+	shift_over = true
+	_result = result
+	for cop in get_tree().get_nodes_in_group("cops"):
 		cop.input_enabled = false
 		cop.get_node("Grabber").input_enabled = false
 		cop.get_node("Hud").hide()
 	solved_label.hide()
 	failed_label.hide()
-	var report := ShiftReport.pay(confessed, [], 0)
-	var awards := ShiftReport.awards(stats)
-	var campaign := Campaign.current
+	var awards: Array[Dictionary] = []
+	awards.assign(result.awards)
+	shift_screen.show_report(result.solved, result.report, 0, awards)
 	var over := false
-	if campaign and not campaign.is_over():
-		var played := campaign.shift
-		campaign.finish_shift("interrogation_" + crime, confessed, report, QUOTA)
-		campaign.save()
-		over = campaign.is_over()
-		shift_screen.show_report(confessed, report, 0, awards)
-		shift_screen.show_campaign(played, Campaign.SHIFTS, campaign.money, over, campaign.is_promoted())
-	else:
-		shift_screen.show_report(confessed, report, 0, awards)
-	shift_screen.get_node("%AgainButton").visible = not over
+	if result.has("campaign"):
+		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over,
+			result.campaign.promoted)
+		over = result.campaign.over
+	# Only the host plays the next case for everyone, and not after the last shift.
+	shift_screen.get_node("%AgainButton").visible = not follower and not over
+
+
+## What a guest needs to show the same interrogation (CaseSync).
+func snapshot() -> Dictionary:
+	return {"tip": tip_given, "nerves": nerves, "lawyer": lawyer, "twin": twin_nerves, "loose": loose,
+		"asleep": asleep, "confessed": confessed, "lawyer_came": lawyer_came,
+		"confessions": confessions.map(func(sheet_of: FanConfession) -> String: return sheet_of.crime),
+		"sheet": sheet.text if sheet else "", "result": _result}
+
+
+## A guest takes the host's interrogation: the meters, what's on the table, the confession or the lawyer, and the end
+## of shift screen. What he says comes with him (NpcSync).
+func apply_snapshot(state: Dictionary) -> void:
+	if state.tip:
+		give_tip()
+	nerves = state.nerves
+	lawyer = state.lawyer
+	twin_nerves = state.twin
+	loose = state.loose
+	asleep = state.asleep
+	_emit()
+	if confessions.is_empty() and not (state.confessions as Array).is_empty():
+		_hold_up(state.confessions)
+	for sheet_of in confessions.duplicate():
+		if not (state.confessions as Array).has(sheet_of.crime):
+			confessions.erase(sheet_of)
+			sheet_of.queue_free()
+	if state.sheet != "":
+		_show_sheet(state.sheet)
+	if state.confessed and not confessed:
+		confessed = true
+		solved_label.show()
+	if state.lawyer_came and not lawyer_came:
+		lawyer_came = true
+		_lawyer_arrives()
+		failed_label.text = "CASE_FAILED_LAWYER_INTERROGATION"
+		failed_label.show()
+	if not (state.result as Dictionary).is_empty() and not shift_over:
+		_show_result(state.result)
