@@ -481,3 +481,29 @@ func test_the_foreigner_talks_gibberish_and_the_translator_adds_his_own_lines() 
 	_act("flick_lights")
 	assert_true(case.confessed)
 	assert_string_contains(level.translator.saying(), tr("CONFESS_" + case.crime))
+
+
+func test_the_fan_confesses_three_crimes_and_the_cops_pick_the_true_one() -> void:
+	case.give_tip()
+	case.suspect_id = "fan"
+	_act("calm")
+	assert_eq(case.confessions.size(), 3, "three confessions at the first action")
+	var crimes := case.confessions.map(func(sheet: FanConfession) -> String: return sheet.crime)
+	assert_true(crimes.has(case.crime), "one of them is true")
+	var wrong: FanConfession = case.confessions.filter(
+		func(sheet: FanConfession) -> bool: return sheet.crime != case.crime)[0]
+	var cop: Cop = level.get_node("Cop")
+	assert_eq(wrong.prompt_key(cop), "PROMPT_PICK_CONFESSION")
+	var lawyer_before := case.lawyer
+	wrong.use(cop)
+	assert_eq(case.lawyer, lawyer_before + InterrogationCase.FAN_WRONG_LAWYER)
+	assert_eq(case.confessions.size(), 2)
+	assert_false(case.confessed)
+	case.nerves = 95.0
+	_act("slam_table")
+	assert_false(case.confessed, "at 100 he only begs them to pick")
+	assert_eq(level.suspect.saying(), "FAN_PICK_ONE")
+	var right: FanConfession = case.confessions.filter(
+		func(sheet: FanConfession) -> bool: return sheet.crime == case.crime)[0]
+	right.use(cop)
+	assert_true(case.confessed)

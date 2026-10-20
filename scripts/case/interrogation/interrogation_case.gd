@@ -51,7 +51,7 @@ const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 const CRIMES := ["bridge", "statue_nose", "violet_lights", "rubber_ducks"]
 ## The suspects drawn with the seed (interrogatorio.md, "Los sospechosos"), each changing a rule, and their model.
 ## --suspect=<id> forces one. The rest of the 10 come in later PRs.
-const SUSPECTS := ["talker", "sweet_grandpa", "self_lawyer", "sleeper", "influencer", "dangerous", "twins", "mute", "foreigner"]
+const SUSPECTS := ["talker", "sweet_grandpa", "self_lawyer", "sleeper", "influencer", "dangerous", "twins", "mute", "foreigner", "fan"]
 const SUSPECT_MODELS := {
 	"talker": "res://assets/models/npc_sospechoso.glb",
 	"sweet_grandpa": "res://assets/models/npc_abuelo.glb",
@@ -63,6 +63,7 @@ const SUSPECT_MODELS := {
 	"mute": "res://assets/models/npc_cliente.glb",
 	"foreigner": "res://assets/models/npc_sospechoso.glb",
 	"translator": "res://assets/models/npc_preso.glb",
+	"fan": "res://assets/models/npc_cliente.glb",
 }
 ## The sweet grandpa cries when the nerves go up more than CRY_NERVES within CRY_SECONDS, and the lawyer goes up
 ## CRY_LAWYER on its own (propuesta).
@@ -104,6 +105,12 @@ const SHEET_AT := Vector3(3.0, 0.95, -14.85)
 ## (InterrogationWing.TRANSLATOR_AT) translates what slips out, adding his own lines (TRANSLATOR_EXTRAS).
 const FOREIGN_LINES := ["FOREIGN_1", "FOREIGN_2", "FOREIGN_3", "FOREIGN_4", "FOREIGN_5", "FOREIGN_6"]
 const TRANSLATOR_EXTRAS := ["TRANSLATOR_EXTRA_1", "TRANSLATOR_EXTRA_2", "TRANSLATOR_EXTRA_3"]
+## The police fan (suspect 9): at the first action he confesses three crimes at once, held up on the table
+## (FanConfession, at FAN_SHEETS_AT), and the cops pick the true one: the right one solves the case, a wrong one adds
+## FAN_WRONG_LAWYER and goes. What slips out at 30, 60 and 90 is still true, so it helps to pick; at 100 he only
+## begs them to choose (propuesta).
+const FAN_SHEETS_AT: Array[Vector3] = [Vector3(2.45, 0.9, -14.25), Vector3(3.0, 0.9, -14.25), Vector3(3.55, 0.9, -14.25)]
+const FAN_WRONG_LAWYER := 35.0
 ## The talker (suspect 1): before each slip he confesses something that has nothing to do with the case.
 const TALKER_LINES := ["TALKER_1", "TALKER_2", "TALKER_3"]
 const LAWYER_MODEL := preload("res://assets/models/npc_abogado.glb")
@@ -152,6 +159,8 @@ var twin_slips := 0
 var guilty_in_cell := false
 var _folder_with: InterrogationSuspect
 var _swapped := false
+## The fan's three confessions on the table.
+var confessions: Array[FanConfession] = []
 ## The foreigner's translator.
 var translator: InterrogationSuspect
 ## The mute's sheet of paper and what's drawn on it.
@@ -382,6 +391,9 @@ func _act(id: String, cop: Cop) -> bool:
 		react = "SUSPECT_CRIES"
 	if waking:
 		react = "SUSPECT_WAKES"
+	if suspect_id == "fan" and confessions.is_empty():
+		_blurt()
+		react = "FAN_CONFESSES_ALL"
 	if suspect_id == "mute":
 		react = "MUTE_FLINCHES" if gain > 0.0 else "MUTE_THUMBS_UP"
 	elif suspect_id == "foreigner":
@@ -399,7 +411,7 @@ func _act(id: String, cop: Cop) -> bool:
 			line = _foreign(line)
 		_say(line, false)
 	else:
-		_say(react, react == "SUSPECT_CRIES" or react == "SUSPECT_WAKES")
+		_say(react, react in ["SUSPECT_CRIES", "SUSPECT_WAKES", "FAN_CONFESSES_ALL"])
 	_check(cop)
 	return true
 
@@ -501,7 +513,9 @@ func _check(_cop: Cop) -> void:
 			continue
 		# The talker mixes his true slip with something that has nothing to do with it.
 		_say(tr(TALKER_LINES[slips - 1]) + " " + slip if suspect_id == "talker" else slip, true)
-	if nerves >= FULL and guilty:
+	if nerves >= FULL and suspect_id == "fan":
+		_say("FAN_PICK_ONE", true)
+	elif nerves >= FULL and guilty:
 		confessed = true
 		if suspect_id == "mute":
 			_draw(tr("CONFESS_" + crime), "MUTE_CONFESSES")
@@ -522,6 +536,47 @@ func _check(_cop: Cop) -> void:
 		_finish_soon()
 	elif nerves >= FULL:
 		_say("TWIN_NOT_ME", true)
+
+
+## The fan confesses his crime and two more from the list, in an order drawn with the seed.
+func _blurt() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash("fan %d" % case_seed)
+	var others: Array = CRIMES.filter(func(id: String) -> bool: return id != crime)
+	var picked: Array = [crime]
+	while picked.size() < FAN_SHEETS_AT.size():
+		picked.append(others.pop_at(rng.randi() % others.size()))
+	for i in picked.size():
+		var j := rng.randi() % picked.size()
+		var swap: String = picked[i]
+		picked[i] = picked[j]
+		picked[j] = swap
+	for i in picked.size():
+		var sheet_of := FanConfession.new()
+		sheet_of.crime = picked[i]
+		sheet_of.position = FAN_SHEETS_AT[i]
+		# Held up toward the door side, leaning back a little.
+		sheet_of.rotation.x = -0.3
+		suspect.get_parent().add_child(sheet_of)
+		confessions.append(sheet_of)
+
+
+## A cop picks one of the fan's confessions: the true one solves the case, a wrong one brings the lawyer closer.
+func pick_confession(sheet_of: FanConfession, _cop: Cop) -> void:
+	if not is_on() or not confessions.has(sheet_of):
+		return
+	if sheet_of.crime == crime:
+		confessed = true
+		_say("FAN_RIGHT", true)
+		solved_label.show()
+		_finish_soon()
+		return
+	confessions.erase(sheet_of)
+	sheet_of.queue_free()
+	lawyer = clampf(lawyer + FAN_WRONG_LAWYER, 0.0, FULL)
+	_emit()
+	_say("FAN_WRONG", true)
+	_check(null)
 
 
 ## The foreigner's line for a reaction: always the same gibberish for the same reaction.

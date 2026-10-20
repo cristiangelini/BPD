@@ -112,6 +112,13 @@ modelo del preso, que dice que lo entiende: traduce lo que se le escapa a 30, 60
 agrega una frase suya ("Y también dice que a mí me tienen que soltar, que soy muy buena persona"). Las reacciones no las
 traduce. Captura: `sospechoso_foreigner.png`.
 
+**Cómo quedó (paso 6, octava parte):** el fan de la policía (9, `--suspect=fan`, por ahora con el modelo del cliente):
+con la primera acción confiesa tres delitos a la vez, cada uno en un papel que levanta sobre la mesa (el suyo y dos más
+de la lista, en un orden que sale de la semilla). Como todavía no hay planilla, se elige con E sobre el papel: el
+verdadero resuelve el caso y uno falso suma 35 de abogado y desaparece. Lo que se le escapa a 30, 60 y 90 sigue siendo
+verdad, así que conviene apretarlo antes de elegir; a 100 solo pide que elijan una. Todo (propuesta). Captura:
+`sospechoso_fan.png`.
+
 ## Los dos medidores (se ven arriba, como la denuncia del abuelo)
 - **Nervios (0 a 100):** suben con el policía malo y bajan un poco con el bueno. Con 30, 60 y 90 se le escapa una frase
   que da una pista de qué hizo de verdad ("¡Yo nunca estuve en el club de golf!... Digo, ¿qué es el golf?").
@@ -178,7 +185,7 @@ cada acción con quién la hizo; el grito se mide en la PC de quien habla y se m
    contraste, la luz, el café, la silla y el pañuelo.
 4. El grito con la voz. Hecho.
 5. El sorteo en "Jugar" (1 de cada 3). Hecho.
-6. Los otros 9 sospechosos, uno o dos por PR. Hechos todos menos el 9.
+6. Los otros 9 sospechosos, uno o dos por PR. Hecho.
 7. Interrogar al dueño después de un allanamiento.
 
 ## Respuestas de Cristian (20/10)
