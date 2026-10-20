@@ -120,6 +120,11 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      del baúl, escapa de los policías durante 10 s. En el baúl se echa y no se mueve. La tintura (150) y la carta del
      rescate (300) van escondidas. Los perros que no son de una historia no valen nada ni cuentan en el baúl. Captura:
      `millonario_*.png`.
+   - **El champú crecepelo (propuesta):** Ramiro inventó un champú que hace crecer el pelo de cualquier cosa y lo vende
+     a escondidas. El bidón (8 kg, 1000) va en un escondite grande; la fórmula (300) y un frasco de muestra (100) en
+     cualquiera. La pista: un perro de una jaula de arriba tiene el pelo hasta el piso (se ve a menos de 2 m). La
+     bañera gotea: hay un charco verde adelante, y el policía que lo pisa tiene 30 s un bigote enorme que le tapa la
+     parte de abajo de la vista (pisarlo de nuevo reinicia la cuenta). Capturas: `crecepelo_*.png`.
 
 ## Preguntas para Cristian (respondidas el 20/10: sí a las dos)
 1. ¿La peluquería de mascotas como tercer lugar, o preferís otro de los 8?

@@ -55,6 +55,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_DYE", "OBJ_EXTRA_RANSOM_LETTER"],
 		"rig": preload("res://scripts/case/groomer/millionaire_rig.gd"),
 	},
+	"hair_growth": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_HAIR_GROWTH_B", "BRIEF_HAIR_GROWTH_C", "BRIEF_HAIR_GROWTH_D"],
+		"find": "OBJ_FIND_HAIR_GROWTH",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/shampoo_jug.tscn"), preload("res://scenes/props/formula_sheet.tscn"),
+			preload("res://scenes/props/sample_jar.tscn")],
+		"half_heights": [0.23, 0.003, 0.05],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_FORMULA", "OBJ_EXTRA_SAMPLE_JAR"],
+		"rig": preload("res://scripts/case/groomer/hair_growth_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each room; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [
@@ -186,6 +197,8 @@ var armchair: WaitingArmchair
 var dogs: Array[Dog] = []
 var lady: PoodleLady
 var poodle: Dog
+## The look-only dogs behind bars, by cage (column, row).
+var caged_looks: Dictionary = {}
 var _build: PlaceBuilder
 @onready var car: PatrolCar = $PatrolCar
 
@@ -405,6 +418,7 @@ func _build_cages() -> void:
 			caged.position = at + Vector3(0, 0.05, 0)
 			caged.scale = Vector3.ONE * 0.9
 			$Built.add_child(caged)
+			caged_looks[Vector2i(i, level)] = caged
 			for b in 5:
 				var x := at.x - CAGE_SIZE.x / 2 + 0.08 + b * 0.16
 				_build.mesh_box(Vector3(x, at.y + CAGE_SIZE.y / 2, CAGE_Z + CAGE_SIZE.z / 2), Vector3(0.02, CAGE_SIZE.y, 0.02), STEEL)
