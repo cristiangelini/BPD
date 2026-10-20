@@ -7,7 +7,7 @@ extends Node
 ## that cop has a player at the keys. Lives under the Net autoload as "Actions".
 
 ## Methods that take the cop doing them.
-const ACTOR_METHODS: Array[String] = ["use", "ask", "exit"]
+const ACTOR_METHODS: Array[String] = ["use", "ask", "exit", "armory_choose", "armory_given"]
 
 var net: Node
 ## Everything in the level a cop can do something to, in tree order (the same on every PC), plus what was added later
@@ -51,6 +51,20 @@ func act(actor: Cop, method: String, target: Node, args := []) -> void:
 		_ask.rpc_id(net.HOST_ID, index, method, args)
 
 
+## Host: tells every guest to do `method` on `target` with `actor`, without doing it here (what the host decided alone,
+## like the armory's answer).
+func tell_guests(actor: Cop, method: String, target: Node, args := []) -> void:
+	var actor_id := -1
+	for id: int in net.cop_syncs:
+		if net.cop_syncs[id].cop == actor:
+			actor_id = id
+	var index := -1 if target == actor else targets.find(target)
+	if actor_id < 0 or (index < 0 and target != actor):
+		return
+	for peer: int in net.scene_peers:
+		_told.rpc_id(peer, actor_id, index, method, args.map(encode))
+
+
 @rpc("any_peer", "call_remote", "reliable")
 func _ask(index: int, method: String, args: Array) -> void:
 	if multiplayer.is_server():
@@ -84,13 +98,16 @@ func _perform(actor_id: int, index: int, method: String, args: Array) -> bool:
 
 
 ## A node among an action's arguments, as every PC can find it: a cop by its player's id (its name differs on each PC),
-## anything else by its path in the level.
+## a prop by its place in PropSync's list (one made during the case has no name in common), anything else by its path
+## in the level.
 func encode(arg: Variant) -> Variant:
 	if arg is Cop:
 		for id: int in net.cop_syncs:
 			if net.cop_syncs[id].cop == arg:
 				return {"cop": id}
 		return null
+	if arg is RigidBody3D and net.props and net.props.index_of(arg) >= 0:
+		return {"prop": net.props.index_of(arg)}
 	if arg is Node:
 		return {"path": _level.get_path_to(arg)}
 	return arg
@@ -100,6 +117,8 @@ func decode(arg: Variant) -> Variant:
 	if arg is Dictionary and arg.has("cop"):
 		var sync: CopSync = net.cop_syncs.get(arg.cop)
 		return sync.cop if sync and is_instance_valid(sync.cop) else null
+	if arg is Dictionary and arg.has("prop"):
+		return net.props.prop_at(arg.prop) if net.props else null
 	if arg is Dictionary and arg.has("path"):
 		return _level.get_node_or_null(arg.path)
 	return arg
