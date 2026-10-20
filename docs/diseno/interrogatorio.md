@@ -38,6 +38,14 @@ observación se ve todo a través de un vidrio oscuro (y no se puede atravesar).
 5. En los dos casos sale la pantalla del turno ahí mismo: no hace falta manejar el patrullero porque no salieron de la
    comisaría (la decisión 83 dice que el turno termina al estacionar; acá no hay viaje).
 
+**Cómo quedó (paso 2):** se abre con `--place=interrogation` (todavía no sale en el sorteo de "Jugar"). El comisario da
+el caso; arriba se ven los medidores de nervios y de abogado. Con E sobre él se le dice "tranquilo" o, con la caja de
+donas de la sala de observación en la mano, se le da una. Entre dos acciones hay 1 s. Las acciones de policía malo con
+la mesa, la lámpara y la dona llegan en el PR siguiente. El sospechoso es el que no
+para de hablar, y por ahora sale uno de 4 delitos: el puente que no existe, la nariz de la estatua de la plaza, los
+semáforos violetas y los patos de goma de la fuente. Todavía no se juega online. Capturas: `caso_se_le_escapa.png` y
+`caso_abogado.png`.
+
 ## Los dos medidores (se ven arriba, como la denuncia del abuelo)
 - **Nervios (0 a 100):** suben con el policía malo y bajan un poco con el bueno. Con 30, 60 y 90 se le escapa una frase
   que da una pista de qué hizo de verdad ("¡Yo nunca estuve en el club de golf!... Digo, ¿qué es el golf?").
@@ -97,9 +105,10 @@ cada acción con quién la hizo; el grito se mide en la PC de quien habla y se m
 
 ## El orden para hacerlo (un PR chico por paso)
 1. El ala de interrogatorios detrás de la comisaría, con sus muebles, la lámpara y el espejo falso.
-2. El caso: el comisario lo da, el sospechoso esposado, los dos medidores, 4 acciones (mesa, lámpara, café, dona), la
-   confesión, el abogado y la pantalla del turno. Con el sospechoso 1.
-3. El resto de las acciones, la repetición que rinde menos y el contraste entre bueno y malo.
+2. El caso: el comisario lo da, el sospechoso esposado, los dos medidores, las primeras acciones (mesa, lámpara, dar y
+   comerse una dona, "tranquilo"), la repetición que rinde menos, la confesión, el abogado y la pantalla del turno. Con
+   el sospechoso 1 y 4 delitos.
+3. El resto de las acciones (café, silla, luz, pañuelo, sentarse) y el contraste entre bueno y malo.
 4. El grito con la voz.
 5. El sorteo en "Jugar" (1 de cada 3).
 6. Los otros 9 sospechosos, uno o dos por PR.

@@ -93,3 +93,4 @@
 - Online wheelbarrow: pushing, loading, parking and tipping it over happen on every PC, and what spills out is still moved by the host.
 - Online: whoever talks to the comisario gives the tip on every PC, also to a friend who joins after it.
 - Interrogation wing behind the station: a door in the comisario's office leads to a hall, a movie interrogation room (steel table, chairs, a single hanging lamp, clock, camera, "no smoking" sign) and the observation room behind a one-way mirror.
+- The interrogation case (--place=interrogation): the comisario gives it, the talker suspect waits cuffed in the interrogation room, the nerves and lawyer meters show at the top; calm him down or give him a donut; at full nerves he confesses (500), at full lawyer the lawyer takes him away.

@@ -149,8 +149,12 @@ static func parking(id: String) -> Transform3D:
 	return Transform3D(Basis(Vector3.UP, side_turn(p.side) + PI / 2), spot)
 
 
+## A place's lot: its building's own space (its middle on the ground, front to +Z) in the city.
+static func lot(id: String) -> Transform3D:
+	var p := place(id)
+	return Transform3D(Basis(Vector3.UP, side_turn(p.side)), lot_center(p.block, p.side, p.along, p.size.z))
+
+
 ## Where cop `index` (0 to 3) appears in the station's guard room, facing the comisario's office (StationRooms).
 static func station_spawn(index: int) -> Transform3D:
-	var p := place("station")
-	var lot := Transform3D(Basis(Vector3.UP, side_turn(p.side)), lot_center(p.block, p.side, p.along, p.size.z))
-	return lot * Transform3D(Basis.IDENTITY, StationRooms.SPAWNS[index % StationRooms.SPAWNS.size()])
+	return lot("station") * Transform3D(Basis.IDENTITY, StationRooms.SPAWNS[index % StationRooms.SPAWNS.size()])
