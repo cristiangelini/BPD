@@ -331,6 +331,8 @@ NET_HOST_FAILED,No se pudo abrir la sala (¿el puerto está ocupado?).,Couldn't 
 MENU_CONTINUE,Continuar,Continue,Continuar
 LOBBY_CONTINUE,Continuar partida,Continue match,Continuar partida
 SHIFT_TURN,"Plata del grupo (turno %d de %d)","Group money (shift %d of %d)","Grana do grupo (turno %d de %d)"
+SHIFT_PROMOTED,¡Ascendidos!,Promoted!,Promovidos!
+SHIFT_CAMPAIGN_LOST,No cumplieron la cuota: partida perdida.,You missed the quota: match lost.,Vocês não cumpriram a cota: partida perdida.
 SHIFT_CAMPAIGN_OVER,¡Partida terminada!,Match over!,Partida encerrada!
 PROMPT_ARMERO,E: hablar con el armero,E: talk to the armorer,E: falar com o armeiro
 ARMORY_TITLE,Armería,Armory,Arsenal
