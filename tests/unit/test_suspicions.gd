@@ -33,6 +33,23 @@ func test_three_different_suspicions_with_the_true_one_among_them() -> void:
 	assert_eq(CaseSuspicions.draw(5, "bingo"), CaseSuspicions.draw(5, "bingo"), "same seed, same suspicions")
 
 
+func test_each_place_draws_from_its_own_pool() -> void:
+	var pool := ["ring", "sneeze", "sourdough", "wedding"]
+	for case_seed in range(1, 20):
+		var picked := CaseSuspicions.draw(case_seed, "ring", pool)
+		assert_has(picked, "ring")
+		for id in picked:
+			assert_has(pool, id)
+
+
+func test_the_house_runs_its_case_through_the_shared_raid() -> void:
+	var house := _house(GrandpaHouse.BINGO)
+	assert_not_null(house.raid)
+	assert_eq(house.suspicions, house.raid.suspicions)
+	assert_eq(house.raid.main_evidence, house.main_evidence())
+	assert_true(house.objective_facts().has("tupper_asked"), "the house's own facts reach the checklist")
+
+
 func test_the_checklist_hides_what_to_bring_until_the_right_mark() -> void:
 	var house := _house(GrandpaHouse.BINGO)
 	await wait_physics_frames(5)

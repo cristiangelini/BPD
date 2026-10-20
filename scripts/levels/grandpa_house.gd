@@ -22,11 +22,6 @@ const STAIR_RUN := 3.75
 const HOLE_WEST := 0.2
 
 const FLOOR_WOOD := Color(0.66, 0.44, 0.28)
-const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
-## Seconds between solving or failing the case and the end of shift screen.
-const SHIFT_DELAY := 2.5
-## How close to its spot at the station the car has to stop to end the shift, in meters (propuesta).
-const STATION_RADIUS := 12.0
 const GRASS := Color(0.45, 0.72, 0.3)
 const ROAD := Color(0.32, 0.33, 0.36)
 const OUTSIDE := Color(1.0, 0.84, 0.55)
@@ -96,8 +91,6 @@ const DRAWER_ORNAMENT := 0.3
 
 ## What the comisario says before the raid: an anonymous tip, since the cops have to find out the story (decision 79).
 const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_TIP_B", "BRIEF_TIP_C", "BRIEF_TIP_D", "BRIEF_1_1_E"]
-## The open checklist redraws this often, in seconds.
-const CHECKLIST_REFRESH := 0.2
 
 ## The illegal bingo (investigacion.md): the betting book is the main evidence; the bingo cage and the safe with the
 ## takings are extras that need two cops. They go to hiding spots; the bingo cards go into drawers.
@@ -144,31 +137,32 @@ var key_pot := 0
 var pots: Array[KeyPot] = []
 var ornaments_total := 0
 var broken_ornaments := 0
-## Money taken off the case pay for broken ornaments.
-var fines := 0
-
-## The grandpa called his lawyer or the main evidence broke: the case is lost.
-var case_failed := false
-## The main evidence is in the trunk and every cop got in the car (allanamiento.md, "Entrega").
-var case_solved := false
-## The three suspicions on the checklist (CaseSuspicions), the true story among them.
-var suspicions: Array[String] = []
-## The suspicions marked wrong so far.
-var wrong_marks: Array[String] = []
-## The cops marked the true story: its evidence and extras show on the checklist and the case can be solved.
-var story_known := false
-## Suspicion index being held down with the checklist open, and for how long.
-var _marking := -1
-var _mark_held := 0.0
-## Some cop already picked up the main evidence (checklist row "find it").
-var main_found := false
-
-var briefing: CaseBriefing
-var checklist: CaseChecklist
-var _refresh_left := 0.0
-
-## The end of shift screen is up.
-var shift_over := false
+## The case flow every raid shares (RaidCase); the house's names for it stay so its rigs and tests read the same.
+var raid: RaidCase
+var fines: int:
+	get: return raid.fines
+var case_failed: bool:
+	get: return raid.case_failed
+var case_solved: bool:
+	get: return raid.case_solved
+var suspicions: Array[String]:
+	get: return raid.suspicions
+var wrong_marks: Array[String]:
+	get: return raid.wrong_marks
+var story_known: bool:
+	get: return raid.story_known
+var main_found: bool:
+	get: return raid.main_found
+var briefing: CaseBriefing:
+	get: return raid.briefing
+var checklist: CaseChecklist:
+	get: return raid.checklist
+var shift_over: bool:
+	get: return raid.shift_over
+var clues_found: Array[String]:
+	get: return raid.clues_found
+var station_parking: Transform3D:
+	get: return raid.station_parking
 
 var _materials := {}
 var _drawer_ornaments := 0
@@ -181,15 +175,11 @@ var michi: Cat
 var neighbor: Neighbor
 ## The vecina's tupperware, in the drawer after the bingo cards' ones.
 var tupperware: RigidBody3D
-## Clues the cops found, as checklist lines (already translated).
-var clues_found: Array[String] = []
 ## Trail marks (footprints, crumbs) and the checklist line each trail gives when a cop sees it.
 var trails := {}
 @onready var _built: Node3D = $Built
 @onready var grandpa: Grandpa = $Grandpa
 @onready var car: PatrolCar = $PatrolCar
-## Where the patrol car parks at the station: the shift ends when everyone gets back there (decision 83).
-var station_parking: Transform3D
 var city_map: CityMap
 
 
@@ -199,12 +189,23 @@ func _ready() -> void:
 	if story == null:
 		story = pick_story(case_seed, OS.get_cmdline_user_args())
 	rig = story.rig.new() if story.rig != null else StoryRig.new()
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story.id
+	raid.story_briefing = story.briefing
+	raid.find_key = story.find_key
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_place_in_city()
 	_build()
 	_place_dressers()
 	_bake_navigation()
 	grandpa.complaint_changed.connect(func(value: float) -> void: %ComplaintBar.value = value)
-	grandpa.lawyer_called.connect(_on_lawyer_called)
+	grandpa.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER"))
 	$FrontDoor.broken.connect(func() -> void: grandpa.door_broken($FrontDoor.global_position))
 	var spot_heavy := SPOTS.map(func(s: Dictionary) -> bool: return s.heavy)
 	var result := HidingDraw.draw(case_seed, spot_heavy, Array(story.heavy), POTS.size())
@@ -226,90 +227,42 @@ func _ready() -> void:
 	rig.setup(self)
 	_place_notes()
 	_give_slips()
-	suspicions = CaseSuspicions.draw(case_seed, story.id)
+	raid.main_evidence = main_evidence()
+	raid.start(TIP_BRIEFING)
 	_place_suspicion_clues()
 	_place_michi()
 	_place_neighbor()
 	_place_trails()
-	(evidence[0] as Evidence).broken.connect(_fail.bind("CASE_FAILED_BROKEN"))
-	car.evidence_delivered.connect(_on_evidence_delivered)
-	car.evidence_delivered.connect(_check_solved.unbind(1))
-	car.seats_changed.connect(_check_solved)
-	checklist = CaseChecklist.new()
-	add_child(checklist)
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup($City, "grandpa", car)
-	briefing = CaseBriefing.new()
-	add_child(briefing)
-	briefing.finished.connect(checklist.set_open.bind(true))
-	# Only a cop with a player at the keys hears the comisario; tests drive cops without input.
-	for cop in get_tree().get_nodes_in_group("cops"):
-		if (cop as Cop).input_enabled:
-			briefing.start(TIP_BRIEFING)
-			break
-	$ShiftScreen.play_again.connect(func() -> void: get_tree().reload_current_scene())
-	$ShiftScreen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
 
 
 ## Shows the end of shift screen with the pay and the awards, and stops everyone's controls.
 func finish_shift() -> void:
-	if shift_over:
-		return
-	shift_over = true
-	var values := car.delivered.map(func(item: Evidence) -> float: return item.value)
-	var stats := []
-	for cop in get_tree().get_nodes_in_group("cops"):
-		stats.append((cop as Cop).stats)
-		cop.input_enabled = false
-		cop.get_node("Grabber").input_enabled = false
-		cop.get_node("Hud").hide()
-	%CaseSolved.hide()
-	%CaseFailed.hide()
-	checklist.set_open(false)
-	$ShiftScreen.show_report(case_solved, ShiftReport.pay(case_solved, values, fines, wrong_marks.size()), broken_ornaments,
-		ShiftReport.awards(stats))
+	raid.finish_shift()
 
 
-func _finish_soon() -> void:
-	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
-
-
-func _process(delta: float) -> void:
-	if not main_found and main_evidence().is_held():
-		main_found = true
+func _process(_delta: float) -> void:
 	for line: String in trails:
-		if not clues_found.has(line) and _a_cop_sees(trails[line]):
-			clues_found.append(line)
-	_hold_to_mark(delta)
-	_refresh_left -= delta
-	if checklist.is_open() and _refresh_left <= 0.0:
-		_refresh_left = CHECKLIST_REFRESH
-		checklist.show_rows(CaseObjectives.rows(objective_facts()))
+		if _a_cop_sees(trails[line]):
+			add_clue(line)
 
 
 ## What the checklist needs to know about the case right now.
 func objective_facts() -> Dictionary:
+	return raid.objective_facts()
+
+
+## The house's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
 	var door: FrontDoor = $FrontDoor
-	var all_in := true
-	for cop in get_tree().get_nodes_in_group("cops"):
-		all_in = all_in and (cop as Cop).vehicle == car
 	return {
 		"door_open": door.is_open or door.is_broken,
-		"find": story.find_key if story_known else "OBJ_FIND_PROOF",
-		"found": main_found,
-		"delivered": car.is_delivered(main_evidence()),
-		"all_in_car": all_in,
-		"at_station": car_at_station(),
 		"extras": rig.extras(self) if story_known else [],
-		"suspicions": suspicions.map(func(id: String) -> Dictionary: return {"name": "SUSPECT_" + id,
-			"state": "right" if story_known and id == story.id else ("wrong" if wrong_marks.has(id) else "open")}),
-		"story_known": story_known,
 		"tupper_asked": neighbor.was_asked,
 		"tupper_returned": neighbor.returned,
-		"clues": clues_found,
 		"broken": broken_ornaments,
-		"fines": fines,
 		"complaint": grandpa.complaint,
 	}
 
@@ -351,44 +304,9 @@ func _give_slips() -> void:
 	grandpa.slipped.connect(_on_clue)
 
 
-## Marks suspicion `index` as the cops' guess. Right: the comisario tells the story. Wrong: half the salary, and the
-## second wrong one fails the case. Returns whether it was right.
+## Marks suspicion `index` as the cops' guess (RaidCase.mark). Returns whether it was right.
 func mark(index: int) -> bool:
-	if story_known or case_failed or index < 0 or index >= suspicions.size() or wrong_marks.has(suspicions[index]):
-		return false
-	if suspicions[index] == story.id:
-		story_known = true
-		for cop in get_tree().get_nodes_in_group("cops"):
-			if (cop as Cop).input_enabled:
-				briefing.start(story.briefing)
-				break
-		_check_solved()
-		return true
-	wrong_marks.append(suspicions[index])
-	for cop in get_tree().get_nodes_in_group("cops"):
-		(cop as Cop).show_hint("HINT_SUSPECT_WRONG")
-	if wrong_marks.size() >= CaseSuspicions.WRONG_TO_FAIL:
-		_fail("CASE_FAILED_WRONG")
-	return false
-
-
-## With the checklist open, holding 1, 2 or 3 for a moment marks that suspicion.
-func _hold_to_mark(delta: float) -> void:
-	var held := -1
-	if checklist.is_open():
-		for i in suspicions.size():
-			if Input.is_action_pressed("slot_%d" % (i + 1)):
-				held = i
-	if held != _marking:
-		_marking = held
-		_mark_held = 0.0
-	if held < 0:
-		return
-	_mark_held += delta
-	if _mark_held >= CaseSuspicions.MARK_SECONDS:
-		mark(held)
-		# Holding on doesn't mark again until the key is let go.
-		_mark_held = -INF
+	return raid.mark(index)
 
 
 ## One clue for each suspicion, the true one too, on note places the grandpa's notes left free.
@@ -432,8 +350,7 @@ func _on_clue(text: String) -> void:
 
 ## Adds a found clue to the checklist, once.
 func add_clue(text: String) -> void:
-	if not clues_found.has(text):
-		clues_found.append(text)
+	raid.add_clue(text)
 
 
 ## Mud footprints and the story's own trail follow the navigation path to their item; the map is ready a few frames
@@ -549,49 +466,16 @@ func main_evidence() -> Evidence:
 	return evidence[0]
 
 
-func _check_solved() -> void:
-	if case_solved or case_failed or not story_known or not car.is_delivered(main_evidence()) or not car_at_station():
-		return
-	for cop in get_tree().get_nodes_in_group("cops"):
-		if (cop as Cop).vehicle != car:
-			return
-	case_solved = true
-	%CaseSolved.show()
-	_finish_soon()
-
-
-func _on_evidence_delivered(item: Evidence) -> void:
-	_float_label("+%d" % roundi(item.value), item.global_position, Color(0.4, 1, 0.45))
-
-
-func _on_lawyer_called() -> void:
-	_fail("CASE_FAILED_LAWYER")
-
-
-func _fail(reason: String) -> void:
-	if case_failed or case_solved:
-		return
-	case_failed = true
-	%CaseFailed.text = reason
-	%CaseFailed.show()
-	_finish_soon()
-
-
 ## The house stays at the origin and the city goes around it. The shift starts at the station: the scene puts
 ## the car on its spot out front and the cop by the driver's door.
 func _place_in_city() -> void:
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("grandpa")
-	station_parking = city.transform * CityLayout.parking("station")
+	raid.station_parking = city.transform * CityLayout.parking("station")
 
 
 func car_at_station() -> bool:
-	return car.global_position.distance_to(station_parking.origin) < STATION_RADIUS
-
-
-func _physics_process(_delta: float) -> void:
-	# The car arriving at the station is what closes the case once everything else is done.
-	_check_solved()
+	return raid.car_at_station()
 
 
 ## The grandpa walks on a navigation mesh baked from the built house when the scene loads.
@@ -606,24 +490,8 @@ func _bake_navigation() -> void:
 func _on_ornament_broken(at: Vector3) -> void:
 	grandpa.saw_break(at)
 	broken_ornaments += 1
-	fines += Ornament.FINE
-	_float_label("-%d" % Ornament.FINE, at, Color(1, 0.3, 0.25))
-
-
-## Placeholder feedback until the HUD exists: money floats up where it happened.
-func _float_label(text: String, at: Vector3, color: Color) -> void:
-	var label := Label3D.new()
-	label.text = text
-	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	label.modulate = color
-	label.outline_size = 8
-	label.pixel_size = 0.005
-	add_child(label)
-	label.global_position = at + Vector3.UP * 0.2
-	var tween := label.create_tween()
-	tween.tween_property(label, "global_position:y", at.y + 0.8, 1.2)
-	tween.parallel().tween_property(label, "modulate:a", 0.0, 1.2)
-	tween.tween_callback(label.queue_free)
+	raid.fines += Ornament.FINE
+	raid.float_label("-%d" % Ornament.FINE, at, Color(1, 0.3, 0.25))
 
 
 func _build() -> void:
