@@ -13,11 +13,12 @@ const MARK_SECONDS := 2.0
 const WRONG_TO_FAIL := 2
 
 
-## The true story and two others from the pool, in an order drawn from the seed.
-static func draw(case_seed: int, true_id: String) -> Array[String]:
+## The true story and two others from the pool (the place's own, POOL for the grandpa's house), in an order drawn
+## from the seed.
+static func draw(case_seed: int, true_id: String, pool: Array = POOL) -> Array[String]:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = case_seed * 23 + 11
-	var others: Array = POOL.filter(func(id: String) -> bool: return id != true_id)
+	var others: Array = pool.filter(func(id: String) -> bool: return id != true_id)
 	var picked: Array[String] = [true_id]
 	while picked.size() < COUNT:
 		picked.append(others.pop_at(rng.randi_range(0, others.size() - 1)))
