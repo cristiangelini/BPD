@@ -102,3 +102,4 @@
 - Interrogation suspects drawn by the seed: the talker, the sweet grandpa (cries if pushed too fast) and his own lawyer (writes down every bad cop move, wants tea); --suspect=<id> forces one.
 - Interrogation suspect: the sleeper nods off after 10 s without action and loses nerves; only coffee, the lights, a shout or a thrown chair wake him up.
 - Interrogation suspect: the influencer streams live, and a bad cop move with no good cop in the last 8 s adds 8 more lawyer.
+- Interrogation suspect: the dangerous one slips his cuffs after 5 s unwatched and runs round the station until two cops grab him.

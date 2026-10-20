@@ -310,3 +310,57 @@ func test_the_influencer_streams_a_bad_cop_with_no_good_cop() -> void:
 	_act("calm")
 	_act("aim_lamp")
 	assert_eq(case.lawyer, 16.0 - 8.0 + 6.0, "with a good cop just before, it's only the lamp")
+
+
+## Turns the cop to look at a point (or away from it).
+func _look(cop: Cop, at: Vector3) -> void:
+	cop.global_position = at + Vector3(0, 0, 2.5) - Vector3.UP * 1.2
+	cop.look_at(at, Vector3.UP)
+	cop.rotation.x = 0.0
+	cop.camera.look_at(at, Vector3.UP)
+
+
+func test_the_dangerous_one_slips_loose_unwatched_and_two_cops_catch_him() -> void:
+	case.give_tip()
+	case.suspect_id = "dangerous"
+	var cop: Cop = level.get_node("Cop")
+	var head := level.suspect.global_position + Vector3.UP * 1.2
+	_look(cop, head)
+	await wait_physics_frames(2)
+	assert_true(case.watched(), "a cop in front of him looking at him")
+	case._watch(InterrogationCase.LOOSE_SECONDS + 1.0)
+	assert_false(case.loose, "watched, he stays put")
+	cop.camera.look_at(head + Vector3(0, 0, 8), Vector3.UP)
+	assert_false(case.watched(), "looking the other way")
+	case._watch(InterrogationCase.LOOSE_SECONDS + 1.0)
+	assert_true(case.loose)
+	assert_true(level.suspect.running)
+	assert_eq(level.suspect.prompt_key(cop), "PROMPT_GRAB_SUSPECT")
+	assert_false(_act("slam_table"), "nothing to slam the table at")
+	var second: Cop = load(cop.scene_file_path).instantiate()
+	second.input_enabled = false
+	level.add_child(second)
+	level.suspect.use(cop)
+	assert_true(level.suspect.slowed, "one cop only holds him back")
+	level.suspect.use(cop)
+	assert_true(case.loose, "the same cop again doesn't catch him")
+	level.suspect.use(second)
+	assert_false(case.loose, "two cops catch him")
+	assert_eq(level.suspect.position, InterrogationWing.SUSPECT_AT)
+	assert_eq(case.nerves, InterrogationCase.CAUGHT_NERVES)
+
+
+func test_the_dangerous_one_runs_the_route_and_a_cop_alone_catches_him() -> void:
+	case.give_tip()
+	case.suspect_id = "dangerous"
+	case._watch(InterrogationCase.LOOSE_SECONDS + 1.0)
+	assert_false(case.loose, "not before a cop has come in and seen him")
+	case._seen = true
+	case._watch(InterrogationCase.LOOSE_SECONDS + 1.0)
+	assert_true(case.loose)
+	var from := level.suspect.position
+	await wait_physics_frames(30)
+	assert_gt(level.suspect.position.distance_to(from), 1.0, "he runs")
+	assert_gt(case.lawyer, 0.0, "loose, the lawyer goes up")
+	level.suspect.use(level.get_node("Cop"))
+	assert_false(case.loose, "playing alone, one cop is enough")

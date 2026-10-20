@@ -278,6 +278,8 @@ func _interrogation_wing(root: Node3D, color: Color) -> void:
 func _mirror(root: Node3D) -> void:
 	var pane: Array = InterrogationWing.mirror()
 	var body := _body(pane[0], root)
+	# The dangerous suspect counts as watched from behind it (InterrogationCase).
+	body.add_to_group("see_through")
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
 	box.size = pane[1]

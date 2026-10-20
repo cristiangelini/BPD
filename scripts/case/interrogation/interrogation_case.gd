@@ -50,13 +50,14 @@ const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 const CRIMES := ["bridge", "statue_nose", "violet_lights", "rubber_ducks"]
 ## The suspects drawn with the seed (interrogatorio.md, "Los sospechosos"), each changing a rule, and their model.
 ## --suspect=<id> forces one. The rest of the 10 come in later PRs.
-const SUSPECTS := ["talker", "sweet_grandpa", "self_lawyer", "sleeper", "influencer"]
+const SUSPECTS := ["talker", "sweet_grandpa", "self_lawyer", "sleeper", "influencer", "dangerous"]
 const SUSPECT_MODELS := {
 	"talker": "res://assets/models/npc_sospechoso.glb",
 	"sweet_grandpa": "res://assets/models/npc_abuelo.glb",
 	"self_lawyer": "res://assets/models/npc_abogado.glb",
 	"sleeper": "res://assets/models/npc_preso.glb",
 	"influencer": "res://assets/models/npc_periodista.glb",
+	"dangerous": "res://assets/models/npc_sospechoso.glb",
 }
 ## The sweet grandpa cries when the nerves go up more than CRY_NERVES within CRY_SECONDS, and the lawyer goes up
 ## CRY_LAWYER on its own (propuesta).
@@ -74,6 +75,17 @@ const WAKE_ACTIONS := ["give_coffee", "flick_lights", "shout", "throw_chair"]
 ## adds INFLUENCER_LAWYER more lawyer (propuesta).
 const INFLUENCER_SECONDS := 8.0
 const INFLUENCER_LAWYER := 8.0
+## The dangerous one (decision 92): LOOSE_SECONDS with no cop looking at him (within WATCH_ANGLE of where a cop
+## looks, WATCH_REACH away at most, nothing but the one-way mirror in between) and he slips the cuffs and runs round
+## the station, the lawyer going up LOOSE_LAWYER a second. A cop's E grabs him and slows him for GRIP_SECONDS; a second
+## cop grabbing him meanwhile (or the only cop, playing alone) catches him, and back in the chair he's scared
+## (CAUGHT_NERVES). All (propuesta).
+const LOOSE_SECONDS := 5.0
+const WATCH_ANGLE := 35.0
+const WATCH_REACH := 12.0
+const LOOSE_LAWYER := 1.5
+const GRIP_SECONDS := 2.0
+const CAUGHT_NERVES := 15.0
 ## The talker (suspect 1): before each slip he confesses something that has nothing to do with the case.
 const TALKER_LINES := ["TALKER_1", "TALKER_2", "TALKER_3"]
 const LAWYER_MODEL := preload("res://assets/models/npc_abogado.glb")
@@ -107,6 +119,12 @@ var _idle := 0.0
 var asleep := false
 ## When the last good cop move was, for the influencer.
 var _good_at := -INF
+## The dangerous one: seconds nobody has been looking at him, whether he's loose, and who holds on to him and for how long.
+var _unwatched := 0.0
+var loose := false
+var _seen := false
+var _grip_by: Cop
+var _grip_left := 0.0
 ## The last bad cop action: who did it and when (ms), and the bonus waiting for the next one.
 var _bad_by: Cop
 var _bad_at := -INF
@@ -167,6 +185,72 @@ func _process(delta: float) -> void:
 		_doze(delta)
 
 
+func _physics_process(delta: float) -> void:
+	if suspect_id == "dangerous" and is_on():
+		_watch(delta)
+
+
+## The dangerous one: loose, the lawyer goes up and the grip wears off; cuffed, he slips them unwatched.
+func _watch(delta: float) -> void:
+	if loose:
+		lawyer = minf(lawyer + LOOSE_LAWYER * delta, FULL)
+		meters_changed.emit(nerves, lawyer)
+		_grip_left -= delta
+		if _grip_left <= 0.0:
+			suspect.slowed = false
+		_check(null)
+		return
+	var seen := watched()
+	# The clock starts once a cop has come in and seen him, not while they walk over from the office.
+	_seen = _seen or seen
+	_unwatched = 0.0 if seen or not _seen else _unwatched + delta
+	if _unwatched >= LOOSE_SECONDS:
+		loose = true
+		_unwatched = 0.0
+		suspect.run()
+		_say("SUSPECT_BREAKS_LOOSE", true)
+		_hint_all("HINT_SUSPECT_LOOSE")
+
+
+## Whether a cop is looking at the suspect (WATCH_ANGLE, WATCH_REACH), with nothing but the one-way mirror in between.
+func watched() -> bool:
+	if not suspect:
+		return false
+	var head := suspect.global_position + Vector3.UP * 1.2
+	var exclude: Array[RID] = []
+	for body in get_tree().get_nodes_in_group("see_through"):
+		exclude.append((body as CollisionObject3D).get_rid())
+	for cop in get_tree().get_nodes_in_group("cops"):
+		var eye: Vector3 = (cop as Cop).camera.global_position
+		var to := head - eye
+		if to.length() > WATCH_REACH or (-cop.camera.global_basis.z).angle_to(to) > deg_to_rad(WATCH_ANGLE):
+			continue
+		var ray := PhysicsRayQueryParameters3D.create(eye, head, 1, exclude)
+		if suspect.get_world_3d().direct_space_state.intersect_ray(ray).is_empty():
+			return true
+	return false
+
+
+## A cop grabs the dangerous one on the loose: the first slows him down, a second one (or a cop alone) catches him.
+func grab_loose(cop: Cop) -> void:
+	if not loose or not is_on():
+		return
+	var alone := get_tree().get_nodes_in_group("cops").size() <= 1
+	if not alone and (_grip_left <= 0.0 or _grip_by == cop):
+		_grip_by = cop
+		_grip_left = GRIP_SECONDS
+		suspect.slowed = true
+		_say("SUSPECT_STRUGGLES", false)
+		return
+	loose = false
+	_grip_left = 0.0
+	suspect.sit()
+	nerves = clampf(nerves + CAUGHT_NERVES, 0.0, FULL)
+	meters_changed.emit(nerves, lawyer)
+	_say("SUSPECT_CAUGHT", true)
+	_check(cop)
+
+
 func _doze(delta: float) -> void:
 	_idle += delta
 	if asleep and nerves > 0.0:
@@ -179,7 +263,7 @@ func _doze(delta: float) -> void:
 
 ## A cop does action `id` (ACTIONS) on the suspect. Returns whether it counted.
 func act(id: String, cop: Cop = null) -> bool:
-	if not is_on() or _gap_left > 0.0:
+	if not is_on() or _gap_left > 0.0 or loose:
 		return false
 	_gap_left = ACTION_GAP
 	_idle = 0.0
@@ -304,6 +388,9 @@ func _check(_cop: Cop) -> void:
 		_finish_soon()
 	elif lawyer >= FULL:
 		lawyer_came = true
+		if loose:
+			loose = false
+			suspect.sit()
 		_lawyer_arrives()
 		failed_label.text = "CASE_FAILED_LAWYER_INTERROGATION"
 		failed_label.show()

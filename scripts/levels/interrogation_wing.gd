@@ -27,6 +27,14 @@ const MIRROR_BOTTOM := 1.0
 ## Where the suspect sits, facing the door side (+Z), and the bottom of the lamp's shade over the table.
 const SUSPECT_AT := Vector3(3.0, 0, -15.4)
 const LAMP_AT := Vector3(3.0, StationRooms.CEILING - 1.05, -14.6)
+## The dangerous suspect loose (InterrogationSuspect.run): out from behind the table and the door, then round the hall,
+## the comisario's office and the observation room, again and again from RUN_LOOP_FROM.
+const RUN_ROUTE: Array[Vector3] = [
+	Vector3(5.0, 0, -15.6), Vector3(5.0, 0, -12.0), Vector3(5.0, 0, -10.0), Vector3(3.2, 0, -10.0),
+	Vector3(3.2, 0, -7.5), Vector3(3.2, 0, -10.0), Vector3(-4.0, 0, -10.0), Vector3(-4.0, 0, -13.5),
+	Vector3(-4.0, 0, -10.0),
+]
+const RUN_LOOP_FROM := 2
 ## Where the lawyer comes in when he gets there: the room's door.
 const LAWYER_AT := Vector3((ROOM_DOOR.x + ROOM_DOOR.y) / 2, 0, HALL_Z - 0.8)
 

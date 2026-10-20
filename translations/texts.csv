@@ -617,3 +617,9 @@ SUSPECT_SNORES,Zzz... ronc... zzz...,Zzz... snore... zzz...,Zzz... ronc... zzz..
 SUSPECT_WAKES,¡Eh! ¡Estaba despierto! ¿Qué me preguntaban?,Huh! I was awake! What were you asking?,Ei! Eu estava acordado! O que vocês perguntaram?
 BRIEF_SUSPECT_influencer,"Ojo: es influencer y tiene el celular prendido. Si solo ven al policía malo, sus seguidores llaman a su abogado.","Careful: he's an influencer and his phone is streaming. If they only see the bad cop, his followers call his lawyer.","Cuidado: ele é influencer e está transmitindo pelo celular. Se só virem o policial mau, os seguidores chamam o advogado dele."
 SUSPECT_STREAMS,"¡Chicos, abuso policial en vivo! ¡Compartan, compartan!","Guys, police abuse live! Share it, share it!","Gente, abuso policial ao vivo! Compartilhem, compartilhem!"
+BRIEF_SUSPECT_dangerous,"Cuidado: este es peligroso. Si nadie lo mira, se suelta las esposas. No le quites los ojos de encima.","Careful: this one is dangerous. If nobody watches him, he slips his cuffs. Don't take your eyes off him.","Cuidado: esse é perigoso. Se ninguém olhar para ele, ele solta as algemas. Não tire os olhos dele."
+SUSPECT_BREAKS_LOOSE,¡Ja! ¡Estas esposas son de juguete!,Ha! These cuffs are toys!,Rá! Essas algemas são de brinquedo!
+SUSPECT_STRUGGLES,¡Suéltame! ¡Tengo cosquillas!,Let go! I'm ticklish!,Me solta! Eu tenho cócegas!
+SUSPECT_CAUGHT,"Está bien, está bien... me siento. Pero no me miren así.","Fine, fine... I'll sit. But don't look at me like that.","Tá bom, tá bom... eu sento. Mas não me olhem assim."
+PROMPT_GRAB_SUSPECT,E: agarrarlo (entre dos),E: grab him (two of you),E: agarrar (em dois)
+HINT_SUSPECT_LOOSE,¡El sospechoso se soltó! Agárrenlo entre dos.,"The suspect got loose! Grab him, two of you.",O suspeito se soltou! Agarrem ele em dois.
