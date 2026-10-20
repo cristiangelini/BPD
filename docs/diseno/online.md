@@ -45,7 +45,7 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 | Patrullero | Anfitrión, con los controles que le manda el que maneja **(propuesta)**: así lo que va en el baúl viaja con el auto en todas las PCs | Copia suavizada; los de adentro viajan con él |
 | NPC (abuelo, vecina, chismosa, Marta, clientes, Michi, palomas, Ramiro, la señora del caniche y los clientes de la peluquería) | Anfitrión | Posición, animación, lo que dicen, la denuncia y la toalla del cliente |
 | Perros, gatos y tortugas | Anfitrión, como objetos | Se mueven solos solo en la PC del anfitrión; en las otras siguen su copia |
-| Caso (historia, pistas, sospecha marcada, entrega, denuncia, multas) | Anfitrión | La lista de Q y los avisos iguales para todos |
+| Caso (pista del comisario, historia, pistas, sospecha marcada, entrega, denuncia, multas) | Anfitrión | La lista de Q y los avisos iguales para todos. Cualquiera que hable con el comisario da la pista para todos, también para quien entra después |
 | Plata, ítems y turno | Anfitrión | La pantalla de fin de turno igual para todos |
 
 ## Herramientas
