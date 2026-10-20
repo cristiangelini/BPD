@@ -53,6 +53,8 @@ var _story_wait := 0.0
 ## What he lets slip when asked, in order (the house fills it from the case seed).
 var slips: Array[String] = []
 var asked := 0
+## The dentures story: he hid his own teeth with the rest, so he can't be understood.
+var toothless := false
 var _ask_wait := 0.0
 
 @onready var _agent: NavigationAgent3D = $Agent
@@ -81,7 +83,7 @@ func ask(_cop: Cop) -> bool:
 	var line := slips[asked]
 	asked += 1
 	_say(line, 5.0)
-	slipped.emit(line)
+	slipped.emit(mumble(line) if toothless else line)
 	return true
 
 
@@ -233,8 +235,36 @@ func _talk(delta: float, following: bool) -> void:
 		_line += 1
 
 
+## Without his teeth (the dentures story) everything he says comes out mushy: "s" is "sh", "t" is "d", "p" is "b".
+static func mumble(text: String) -> String:
+	var out := ""
+	for i in text.length():
+		var c := text[i]
+		var next := text[i + 1].to_lower() if i + 1 < text.length() else ""
+		match c:
+			"s", "z":
+				out += "sh"
+			"S", "Z":
+				out += "Sh"
+			"c" when next == "e" or next == "i":
+				out += "sh"
+			"t":
+				out += "d"
+			"T":
+				out += "D"
+			"p":
+				out += "b"
+			"P":
+				out += "B"
+			_:
+				out += c
+	return out
+
+
 func _say(key: String, seconds := 3.0) -> void:
 	_since_line = 0.0
+	if toothless:
+		key = mumble(tr(key))
 	_bubble.text = key
 	_bubble.show()
 	var said := key
