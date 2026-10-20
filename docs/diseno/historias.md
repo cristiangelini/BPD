@@ -76,6 +76,11 @@ Los pesos y valores son **(propuesta)** y siguen la escala del bingo: la princip
 - **El ruido:** las dentaduras castañetean cada 2 s. Se oye hasta 7 m, y a esa distancia aparece un "*clac clac*" sobre la valija (hasta que haya sonido de verdad).
 - **El abuelo sin dientes:** todo lo que dice sale cambiado ("s" por "sh", "t" por "d", "p" por "b"). Lo que se le escapa llega así a la planilla: "¡Yo nunca eshcondí nada en la ashena!".
 
+## Radio pirata (cómo quedó, propuesta)
+- **El transmisor** (35 kg, 1200) está en un escondite pesado y Michi duerme arriba. Pesa más de lo que levanta un policía (25 kg), así que lo cargan entre dos; solo se puede arrastrar.
+- **Pista propia:** con T apretada (la radio del policía), arriba de la pantalla se ven barras de estática y se escucha un ruido. En toda la casa hay 1 barra de interferencia; a menos de 15 m del transmisor suben hasta 5 pegado a él.
+- **Extras:** 3 cintas de radionovelas (0,2 kg, 80 cada una) en los cajones. Las huellas de barro y la nota del abuelo llevan al transmisor.
+
 ## Lo que comparten todas las historias
 - La puerta cerrada, el ariete y la llave en la maceta.
 - Los adornos frágiles y la multa de 20 por cada uno.
