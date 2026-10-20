@@ -81,3 +81,4 @@
 - Pet salon story: the diamond necklace. A loose dog wears it, runs from cops, moves to another part of the salon every 30 s and shines under the dryers; grabbing the necklace takes it off. The case is hidden as an extra.
 - Pet salon story: the millionaire's dog. Duque, dyed brown, hides among four identical greyhounds; his white roots show up close, he wriggles when held, runs off when let go and lies down in the trunk. Dogs are now Evidence worth 0 unless a story gives them a value.
 - Pet salon story: the hair-growth shampoo. The jug, the formula and a sample jar; a caged dog with fur to the floor; the bathtub's puddle grows a huge mustache on a cop for 30 s that covers the bottom of the view.
+- Pet salon story: bone smuggling. The museum's dinosaur bones buried under one of 5 patches in the yard; the yard shovel digs (3 digs with E); the dogs dig too, mostly where the bones are.
