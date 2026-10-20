@@ -49,6 +49,8 @@ var shift_over := false
 var clues_found: Array[String] = []
 ## Money taken off the case pay for broken things.
 var fines := 0
+## Whose fresh prints the fingerprint kit finds near the evidence (tr() key): the place's owner.
+var prints_key := "PRINTS_OWNER"
 
 var briefing: CaseBriefing
 ## The comisario has given the tip (at the station, or right away without one).
@@ -65,6 +67,7 @@ var _refresh_left := 0.0
 ## talks to him in his office (give_tip), and the car stays locked until then; without one, he gives it right away.
 ## Only a cop with a player at the keys hears it (tests drive cops without input); the checklist opens after him.
 func start(tip_briefing: PackedStringArray, pool: Array = CaseSuspicions.POOL, comisario: Comisario = null) -> void:
+	add_to_group("raid")
 	suspicions = CaseSuspicions.draw(case_seed, story_id, pool)
 	main_evidence.broken.connect(fail.bind("CASE_FAILED_BROKEN"))
 	car.evidence_delivered.connect(_on_evidence_delivered)
