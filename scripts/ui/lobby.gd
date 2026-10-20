@@ -14,6 +14,8 @@ const SKIN_COLORS: Array[Color] = [Color("ff86b0"), Color("ff9d3f"), Color("9ee0
 static var _args_used := false
 ## A friend's Steam lobby to join as soon as the room opens (an invite accepted in Steam, or +connect_lobby), 0 if none.
 static var invite_lobby := 0
+## Why the last room ended, shown when the room screen opens after a case was cut short (a tr() key), "" if nothing.
+static var notice := ""
 
 @onready var _status: Label = %Status
 @onready var _players: VBoxContainer = %Players
@@ -59,7 +61,12 @@ func _ready() -> void:
 	Net.players_changed.connect(_refresh)
 	Net.session_ended.connect(_on_session_ended)
 	Net.in_match = false
+	# Coming back from a case the mouse may still be the cop's.
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	_refresh()
+	if notice != "":
+		_status.text = notice
+		notice = ""
 	var arg := pending_arg(OS.get_cmdline_user_args())
 	_args_used = true
 	if invite_lobby != 0:

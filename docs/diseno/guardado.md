@@ -24,5 +24,5 @@ Una partida son 5 turnos de guardia y se guarda entre turnos (decisiones 16 y 59
 
 ## La cuota
 - Cada turno tiene una cuota: 800 el primero y 100 más cada turno (800, 900, 1000, 1100, 1200; decisión 88, comisaria.md). Es una meta, no plata que se cobra.
-- **Si no cumplen la cuota, la partida se pierde:** "Suspendidos" y "No cumplieron la cuota: partida perdida". Queda guardada como perdida y ya no se puede continuar. Cuando exista la fuga de la cárcel, eso cambia (decisión 86).
+- **Si no cumplen la cuota, la partida se pierde:** "Suspendidos" y "No cumplieron la cuota: partida perdida". Queda guardada como perdida y ya no se puede continuar. Cuando exista la fuga de la cárcel, eso cambia (decisión 88).
 - **Si cumplen las 5 cuotas:** "¡Ascendidos!" y la partida termina.

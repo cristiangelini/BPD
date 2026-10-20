@@ -32,7 +32,7 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 
 ## Si alguien se va
 - **Se va un jugador:** su policía desaparece y el caso sigue con los demás. Lo que tenía en las manos se cae.
-- **Se va el anfitrión:** todos vuelven al menú con el aviso "El anfitrión cerró la sala". Lo jugado hasta el último guardado no se pierde (ver "Guardado").
+- **Se va el anfitrión:** todos vuelven a la pantalla de la sala con el aviso "El anfitrión cerró la sala", también si estaban en medio de un caso. Lo jugado hasta el último guardado no se pierde (ver "Guardado").
 - **No se pudo entrar:** aviso "No se pudo entrar a la sala" y se queda en la sala.
 
 ## Qué se sincroniza
