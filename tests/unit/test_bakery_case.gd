@@ -8,6 +8,7 @@ const BAKERY_SCENE := preload("res://scenes/levels/bakery.tscn")
 
 func _bakery(case_seed := 5) -> Bakery:
 	var bakery: Bakery = BAKERY_SCENE.instantiate()
+	bakery.story_id = "ring"
 	bakery.case_seed = case_seed
 	bakery.get_node("Cop").input_enabled = false
 	bakery.get_node("Cop/Grabber").input_enabled = false

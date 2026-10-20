@@ -8,6 +8,7 @@ const TICK := 1.0 / 60.0
 
 func _bakery() -> Bakery:
 	var bakery: Bakery = BAKERY_SCENE.instantiate()
+	bakery.story_id = "ring"
 	bakery.get_node("Cop").input_enabled = false
 	add_child_autofree(bakery)
 	return bakery
@@ -200,6 +201,7 @@ func test_the_extras_wait_at_their_spots() -> void:
 
 func _bakery_with_seed(case_seed: int) -> Bakery:
 	var bakery: Bakery = BAKERY_SCENE.instantiate()
+	bakery.story_id = "ring"
 	bakery.case_seed = case_seed
 	bakery.get_node("Cop").input_enabled = false
 	add_child_autofree(bakery)

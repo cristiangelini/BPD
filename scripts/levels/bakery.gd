@@ -4,8 +4,9 @@ extends Node3D
 ## The bakery "El Pan Feliz" (docs/diseno/panaderia.md, step 1): the shop, the bakehouse, the storeroom and a
 ## bathroom downstairs, and Marta's flat upstairs, on its lot in the city with the front to +Z. The shop is open,
 ## with the shutter half up; the bakehouse door and the back door are locked. Marta serves the customers that come
-## and go (step 2). The case is the ring in the bread (step 3), run by the same RaidCase as the grandpa's house: the
-## anonymous tip, the three suspicions, the clues and the delivery in the trunk. Every number here is (propuesta).
+## and go (step 2). The case is one of its stories (STORIES), drawn with the seed, run by the same RaidCase as the
+## grandpa's house: the anonymous tip, the three suspicions, the clues and the delivery in the trunk.
+## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const BAKER_SCENE := preload("res://scenes/npc/baker.tscn")
@@ -19,9 +20,35 @@ const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
 const SUSPICION_POOL := ["ring", "sneeze", "sourdough", "wedding", "lottery", "pigeons"]
 const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_BAKERY_TIP_B", "BRIEF_TIP_C", "BRIEF_BAKERY_TIP_D",
 	"BRIEF_BAKERY_TIP_E"]
-const RING_BRIEFING: PackedStringArray = ["BRIEF_RIGHT", "BRIEF_RING_B", "BRIEF_RING_C", "BRIEF_RING_D"]
-## The checklist rows for the ring story's extras, in EXTRA_SCENES order.
-const EXTRA_KEYS := ["OBJ_EXTRA_JEWELRY_BAG", "OBJ_EXTRA_PAWN_RECEIPT"]
+## The stories the bakery can tell so far (panaderia.md, "Las historias"): what the comisario says once it's guessed,
+## its "find it" row, and its extras with their checklist rows and half heights, hidden in spots drawn with the seed.
+const STORIES := {
+	"ring": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_RING_B", "BRIEF_RING_C", "BRIEF_RING_D"],
+		"find": "OBJ_FIND_RING",
+		"extras": [preload("res://scenes/props/jewelry_bag.tscn"), preload("res://scenes/props/pawn_receipt.tscn")],
+		"extra_keys": ["OBJ_EXTRA_JEWELRY_BAG", "OBJ_EXTRA_PAWN_RECEIPT"],
+		"half_heights": [0.055, 0.01],
+	},
+	"sneeze": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_SNEEZE_B", "BRIEF_SNEEZE_C", "BRIEF_SNEEZE_D"],
+		"find": "OBJ_FIND_SNEEZE",
+		"extras": [preload("res://scenes/props/victim_list.tscn"), preload("res://scenes/props/funnel.tscn")],
+		"extra_keys": ["OBJ_EXTRA_VICTIM_LIST", "OBJ_EXTRA_FUNNEL"],
+		"half_heights": [0.01, 0.1],
+	},
+}
+const FLOUR_SCENE := preload("res://scenes/props/flour_sack.tscn")
+const PEPPER_SCENE := preload("res://scenes/props/pepper_sack.tscn")
+## The storeroom's flour sacks: four on the floor and one on top. In the sneezing story one is the pepper sack.
+const SACKS := [Vector3(-3.2, 0.0, -6.0), Vector3(-2.55, 0.0, -6.0), Vector3(-1.9, 0.0, -6.0),
+	Vector3(-1.25, 0.0, -6.0), Vector3(-2.9, 0.36, -6.0)]
+const SACK_HALF_HEIGHT := 0.18
+## Cops this close to the pepper sack sneeze every SNEEZE_EVERY seconds, give or take SNEEZE_JITTER, and drop what
+## they hold.
+const SNEEZE_RANGE := 3.0
+const SNEEZE_EVERY := 5.0
+const SNEEZE_JITTER := 2.0
 ## Surfaces where the suspicions' clue notes can lie, one in each room; three are drawn with the seed.
 const NOTE_PLACES := [
 	Vector3(2.9, COUNTER_TOP, 3.4), Vector3(3.4, 0.91, -2.3), Vector3(-3.0, FLOOR_TOP, -2.0),
@@ -30,11 +57,6 @@ const NOTE_PLACES := [
 ]
 ## The gossiping customer stands in the shop's front corner, reading the paper.
 const GOSSIP_AT := Vector3(-6.2, FLOOR_TOP, 6.2)
-## The ring story's extras (panaderia.md): they wait in hiding spots drawn with the seed.
-const EXTRA_SCENES: Array[PackedScene] = [
-	preload("res://scenes/props/jewelry_bag.tscn"), preload("res://scenes/props/pawn_receipt.tscn"),
-]
-const EXTRA_HALF_HEIGHTS := [0.055, 0.01]
 const LOAF_HALF_HEIGHT := 0.065
 ## The bread shelves on the shop's west wall and the rack behind the counter: [x, z along, heights, count].
 const WEST_SHELF_X := -7.55
@@ -81,7 +103,6 @@ const WOOD := Color(0.55, 0.36, 0.25)
 const WHITE := Color(0.92, 0.92, 0.88)
 const STEEL := Color(0.6, 0.62, 0.66)
 const GLASS := Color(0.55, 0.75, 0.85, 0.35)
-const FLOUR := Color(0.95, 0.93, 0.88)
 const SHUTTER := Color(0.55, 0.57, 0.6)
 const AWNING := Color(0.75, 0.3, 0.25)
 
@@ -114,12 +135,21 @@ var customers: Array[BakeryCustomer] = []
 var complaint_bar: ProgressBar
 var _build: PlaceBuilder
 var _customer_wait := FIRST_CUSTOMER
-## Same seed, same draw: which loaf hides the ring and where the extras go. 0 draws one.
+## Same seed, same draw: the story, which loaf hides the ring and where the extras go. 0 draws one.
 @export var case_seed := 0
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
 var loaves: Array[Bread] = []
 var cakes: Array[Ornament] = []
+## The evidence the case is about: the ring, or the pepper sack.
+var main: Evidence
 var ring: Evidence
 var ring_loaf := 0
+var sacks: Array[RigidBody3D] = []
+var pepper_sack := -1
+## Seconds until each cop near the pepper sack sneezes, by cop.
+var _sneeze_left := {}
+var _sneeze_rng := RandomNumberGenerator.new()
 var extras: Array[Evidence] = []
 var extra_spots: Array = []
 var till: Till
@@ -134,11 +164,14 @@ var _looks := 0
 func _ready() -> void:
 	if case_seed == 0:
 		case_seed = randi() | 1
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	_sneeze_rng.seed = case_seed
 	raid = RaidCase.new()
 	raid.case_seed = case_seed
-	raid.story_id = "ring"
-	raid.story_briefing = RING_BRIEFING
-	raid.find_key = "OBJ_FIND_RING"
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
 	raid.car = car
 	raid.solved_label = %CaseSolved
 	raid.failed_label = %CaseFailed
@@ -163,8 +196,8 @@ func _ready() -> void:
 	city_map.setup(city, "bakery", car)
 	_add_baker()
 	_place_goods()
-	_place_ring_story()
-	raid.main_evidence = ring
+	_place_story()
+	raid.main_evidence = main
 	raid.start(TIP_BRIEFING, SUSPICION_POOL)
 	_place_suspicion_clues()
 	_give_slips()
@@ -179,8 +212,8 @@ func _place_facts() -> Dictionary:
 		"broken_key": "OBJ_BROKEN_BAKERY",
 		"complaint_key": "OBJ_COMPLAINT_BAKER",
 		"door_open": true,
-		"extras": EXTRA_KEYS.map(func(key: String) -> Dictionary: return {"text": key,
-			"done": car.is_delivered(extras[EXTRA_KEYS.find(key)])}) if raid.story_known else [],
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
 		"broken": broken_goods,
 		"complaint": baker.complaint,
 	}
@@ -217,6 +250,8 @@ func _add_baker() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if pepper_sack >= 0:
+		_sneezes(delta)
 	_customer_wait -= delta
 	if _customer_wait <= 0.0 and customers.size() < MAX_CUSTOMERS:
 		_customer_wait = CUSTOMER_EVERY
@@ -277,20 +312,65 @@ func _place_goods() -> void:
 	till.opened.connect(func(at: Vector3) -> void: baker.saw(at, Baker.SAW_TILL))
 
 
-## The ring hides in one loaf; the jewelry bag and the pawn receipt in two hiding spots.
-func _place_ring_story() -> void:
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(case_seed: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[case_seed % STORIES.size()]
+
+
+## The story's main evidence (the ring in a loaf, or the pepper sack among the flour sacks) and its two extras in
+## hiding spots.
+func _place_story() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = case_seed * 31 + 7
-	ring_loaf = rng.randi_range(0, loaves.size() - 1)
-	ring = RING_SCENE.instantiate()
-	loaves[ring_loaf].stuff(ring)
+	if story_id == "ring":
+		ring_loaf = rng.randi_range(0, loaves.size() - 1)
+		ring = RING_SCENE.instantiate()
+		loaves[ring_loaf].stuff(ring)
+		main = ring
+	else:
+		pepper_sack = rng.randi_range(0, SACKS.size() - 1)
+	for i in SACKS.size():
+		var sack: RigidBody3D = (PEPPER_SCENE if i == pepper_sack else FLOUR_SCENE).instantiate()
+		sack.position = SACKS[i] + Vector3.UP * (FLOOR_TOP + SACK_HALF_HEIGHT + 0.01)
+		add_child(sack)
+		sacks.append(sack)
+	if pepper_sack >= 0:
+		main = sacks[pepper_sack] as Evidence
+	var story: Dictionary = STORIES[story_id]
 	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
 	extra_spots = HidingDraw.draw(case_seed, spot_heavy, [false, false], 1).spots
-	for i in EXTRA_SCENES.size():
-		var item: Evidence = EXTRA_SCENES[i].instantiate()
-		item.position = SPOTS[extra_spots[i]].at + Vector3.UP * (EXTRA_HALF_HEIGHTS[i] + 0.01)
+	for i in story.extras.size():
+		var item: Evidence = story.extras[i].instantiate()
+		item.position = SPOTS[extra_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
 		add_child(item)
 		extras.append(item)
+
+
+## The pepper sack makes the cops near it sneeze: whatever they hold falls (panaderia.md, "Polvo para estornudar").
+func _sneezes(delta: float) -> void:
+	for node in get_tree().get_nodes_in_group("cops"):
+		var cop := node as Cop
+		if cop.vehicle or cop.global_position.distance_to(main.global_position) > SNEEZE_RANGE:
+			_sneeze_left.erase(cop)
+			continue
+		var left: float = _sneeze_left.get(cop, _next_sneeze()) - delta
+		if left <= 0.0:
+			sneeze(cop)
+			left = _next_sneeze()
+		_sneeze_left[cop] = left
+
+
+func _next_sneeze() -> float:
+	return SNEEZE_EVERY + _sneeze_rng.randf_range(-SNEEZE_JITTER, SNEEZE_JITTER)
+
+
+## A cop sneezes: drops what's in their hands.
+func sneeze(cop: Cop) -> void:
+	cop.get_node("Grabber").release()
+	cop.show_hint("HINT_SNEEZE")
 
 
 ## One clue note for each suspicion, the true one too, on note places drawn with the seed.
@@ -325,7 +405,7 @@ func _place_gossip() -> void:
 	gossip.rotation.y = PI / 2
 	var where := tr("LOC_" + SPOTS[extra_spots[case_seed % extras.size()]].id)
 	gossip.clue = tr("CLUE_GOSSIP") % where
-	gossip.clue_speech = tr("GOSSIP_CLUE") % where
+	gossip.clue_speech = tr("GOSSIP_CLUE_" + story_id) % where
 	gossip.told.connect(raid.add_clue)
 	add_child(gossip)
 
@@ -419,9 +499,6 @@ func _build_back_rooms() -> void:
 	_build.legs(Vector3(4.0, 0, -2.5), Vector2(2.4, 0.9), 0.85, WOOD)
 	_build.box(Vector3(4.0, 0.88, -2.5), Vector3(2.4, 0.06, 0.9), WOOD)
 	_build.box(Vector3(0.9, 0.5, -6.0), Vector3(0.8, 1.0, 0.8), WHITE)
-	for i in 4:
-		_build.box(Vector3(-3.2 + i * 0.65, 0.18, -6.0), Vector3(0.6, 0.35, 0.9), FLOUR)
-	_build.box(Vector3(-2.9, 0.53, -6.0), Vector3(0.6, 0.35, 0.9), FLOUR)
 	_build.open_box(Vector3(-0.9, FLOOR_TOP, -0.2), Vector3(0.9, 2.0, 0.8), "-x", WHITE)
 	_build.box(Vector3(-0.9, 1.0, -0.2), Vector3(0.8, 0.05, 0.7), WHITE)
 	_build.stairs(Vector3(STAIR_X, 0, STAIR_FOOT), STAIR_RUN, WOOD)
