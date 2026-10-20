@@ -69,3 +69,17 @@ func test_the_armero_waits_behind_the_counter() -> void:
 	assert_eq(cop.current_prompt(), "PROMPT_ARMERO")
 	assert_true(cop.use())
 	assert_true(armero.menu.visible)
+
+
+func test_the_armero_spends_the_campaign_cash_box() -> void:
+	var before := Campaign.current
+	var campaign := Campaign.new()
+	Campaign.current = campaign
+	var armero := Armero.new()
+	Campaign.current = before
+	assert_eq(armero.armory.wallet, campaign, "with a campaign, the armory uses its money and items")
+	armero.free()
+	armero = Armero.new()
+	if before == null:
+		assert_true(armero.armory.wallet is StationWallet, "without one, a cash box for this shift")
+	armero.free()

@@ -2,7 +2,7 @@
 
 Tercer lugar para allanar, después de la casa del abuelo y la panadería ([historias.md](historias.md),
 [panaderia.md](panaderia.md)). Sigue la idea de lugar + historia (decisión 79): una denuncia anónima, 3 sospechas en la
-planilla y una sola historia verdadera, sorteada con la semilla. Cristian la aprobó como tercer lugar el 20/10 (decisión 87); los números siguen marcados
+planilla y una sola historia verdadera, sorteada con la semilla. Cristian la aprobó como tercer lugar el 20/10 (decisión 89); los números siguen marcados
 **(propuesta)** hasta probarlos jugando.
 
 ## El local
