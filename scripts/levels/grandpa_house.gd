@@ -190,6 +190,7 @@ var trails := {}
 @onready var car: PatrolCar = $PatrolCar
 ## Where the patrol car parks at the station: the shift ends when everyone gets back there (decision 83).
 var station_parking: Transform3D
+var city_map: CityMap
 
 
 func _ready() -> void:
@@ -236,6 +237,9 @@ func _ready() -> void:
 	car.seats_changed.connect(_check_solved)
 	checklist = CaseChecklist.new()
 	add_child(checklist)
+	city_map = CityMap.new()
+	add_child(city_map)
+	city_map.setup($City, "grandpa", car)
 	briefing = CaseBriefing.new()
 	add_child(briefing)
 	briefing.finished.connect(checklist.set_open.bind(true))

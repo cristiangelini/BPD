@@ -117,6 +117,7 @@ Es la meta de la semana 1 (decisión 64, issue #2): un caso jugable de punta a p
 | Distraer al abuelo | mantener E frente a él |
 | Manejar el patrullero (chofer) | WASD, Espacio freno de mano, H sirena |
 | Ver plata, denuncia y cuota | Tab |
+| Abrir y cerrar el mapa de la ciudad | M |
 
 - Hablar es con pulsar para hablar (mantener V) y se escucha por cercanía (decisión 9). Habrá una opción de voz siempre abierta.
 - Todas las teclas se pueden cambiar en Opciones.

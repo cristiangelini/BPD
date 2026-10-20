@@ -34,6 +34,11 @@ func _ready() -> void:
 		_built.name = "Built"
 		add_child(_built)
 	_build()
+	# Walking the city on its own (the test scene), it brings its own map; a case scene adds one with its place.
+	if live_place == "":
+		var map := CityMap.new()
+		add_child(map)
+		map.setup(self, "", get_node_or_null("PatrolCar"))
 	var door := CityLayout.door_of("station")
 	var comisario: Node3D = COMISARIO_MODEL.instantiate()
 	comisario.position = door + Vector3(3, 0, 1.5)
