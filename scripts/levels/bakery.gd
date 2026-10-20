@@ -232,7 +232,7 @@ func _ready() -> void:
 	station_parking = city.transform * CityLayout.parking("station")
 	raid.station_parking = station_parking
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
-	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
+	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "bakery", car)

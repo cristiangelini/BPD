@@ -1,7 +1,7 @@
 # La comisaría (la base entre casos)
 
-Junta lo que ya está decidido (decisiones 15, 16, 17, 20, 21, 22, 40, 59 y 69) y propone lo que falta. Todo lo marcado
-**(propuesta)** espera el OK de Cristian; las preguntas abiertas están al final.
+Junta lo que ya está decidido (decisiones 15, 16, 17, 20, 21, 22, 40, 59 y 69) y lo que faltaba. Cristian aprobó las
+propuestas el 20/10 (decisión 86); los números siguen marcados **(propuesta)** hasta probarlos jugando.
 
 ## Qué es
 La comisaría es el lugar donde empieza y termina cada turno. Es una sala más en la ciudad (ciudad.md, en el centro, con
@@ -61,10 +61,16 @@ Más adelante (con los sospechosos y la cárcel): taser, megáfono, chaleco.
   grita "¡¿Adónde van?! ¡Primero el caso!".
 - Sigue apareciendo por radio en el peor momento, como hoy cuando marcan mal una sospecha.
 
-## Cómo es por dentro (propuesta)
-Unos 20 × 14 m, en una planta, con estas salas: **sala de guardia** (donde aparecen, con lockers y una máquina de café),
-**oficina del comisario**, **armería** (mostrador con reja), **celdas** (2, vacías por ahora), **sala del tablero**
-(cerrada por ahora) y la **puerta al estacionamiento** con el patrullero. Placeholders low poly con tools/modelgen.
+## Cómo es por dentro (cómo quedó, propuesta)
+Ocupa el edificio que ya tenía en la ciudad: 30 × 18 m, una planta con techo a 3 m (la fachada sigue midiendo 9 m).
+La puerta da a la calle, frente al estacionamiento del patrullero.
+
+| Fila | Oeste | Medio | Este |
+|---|---|---|---|
+| **Adelante** | **Armería:** estantes con arietes y cajas de donas, detrás de un mostrador con reja que da a la sala de guardia | **Sala de guardia:** donde aparecen los 4, con lockers, la máquina de café y dos bancos | **Celdas:** 2, con reja, una cucheta en cada una (vacías por ahora) |
+| **Atrás** | **Sala del tablero** (cerrada por ahora) | **Oficina del comisario**, con su escritorio lleno de papeles | **Sala de descanso**, con otra máquina de café |
+
+Los muebles son placeholders low poly de `tools/modelgen/models/station.js`; la planta está en `StationRooms`.
 
 ## Atajos del panel de pruebas
 - Saltar al turno N con la caja en X.
@@ -80,7 +86,7 @@ Unos 20 × 14 m, en una planta, con estas salas: **sala de guardia** (donde apar
 
 El guardado entre turnos (decisión 16) va en el hilo de los temas técnicos.
 
-## Preguntas para Cristian
+## Preguntas para Cristian (respondidas el 20/10: sí a todas las propuestas)
 1. ¿1 caso por turno, o varios?
 2. ¿Sueldo 500 y cuota 800 en el turno 1, subiendo 100 por turno?
 3. ¿La caja común para los 4, y la cuota como meta (no se paga)?

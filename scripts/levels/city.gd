@@ -2,7 +2,8 @@ class_name City
 extends Node3D
 
 ## The open city (docs/diseno/ciudad.md, step 1): streets, blocks, the station and the closed fronts of the
-## 10 raid places, built from CityLayout. Nothing opens yet; the cops walk or drive the patrol car around.
+## 10 raid places, built from CityLayout. The station opens, with its rooms inside (StationRooms); the cops appear
+## in its guard room and walk or drive the patrol car around.
 
 const GRASS := Color(0.45, 0.72, 0.3)
 const ROAD := Color(0.32, 0.33, 0.36)
@@ -18,6 +19,9 @@ const LEAVES := Color(0.3, 0.6, 0.25)
 const HEDGE := Color(0.25, 0.5, 0.22)
 const POLE := Color(0.25, 0.27, 0.3)
 const COMISARIO_MODEL := preload("res://assets/models/npc_comisario.glb")
+const STATION_WALL := Color(0.78, 0.84, 0.9)
+const STATION_FLOOR := Color(0.62, 0.66, 0.7)
+const BARS := Color(0.25, 0.27, 0.3)
 const HEDGE_HEIGHT := 2.5
 
 ## The place whose case is on today: its own scene builds it, so the city leaves its lot empty.
@@ -41,10 +45,6 @@ func _ready() -> void:
 		var map := CityMap.new()
 		add_child(map)
 		map.setup(self, "", get_node_or_null("PatrolCar"))
-	var door := CityLayout.door_of("station")
-	var comisario: Node3D = COMISARIO_MODEL.instantiate()
-	comisario.position = door + Vector3(3, 0, 1.5)
-	_built.add_child(comisario)
 
 
 func _build() -> void:
@@ -61,7 +61,10 @@ func _build() -> void:
 	for p: Dictionary in CityLayout.PLACES:
 		if p.id == live_place:
 			continue
-		_building(p.block, p.side, p.along, p.size, p.color, p.sign, CityLayout.SHOPS.has(p.id), p.id == "grandpa")
+		var root := _building(p.block, p.side, p.along, p.size, p.color, p.sign, CityLayout.SHOPS.has(p.id),
+			p.id == "grandpa", p.id == "station")
+		if p.id == "station":
+			_station_inside(root, p.size)
 	for lot: Dictionary in CityLayout.fillers():
 		_building(lot.block, lot.side, lot.along, lot.size, lot.color, "", false,
 			CityLayout.barrio_kind(lot.block) == "house")
@@ -117,13 +120,17 @@ func _plaza(center: Vector3) -> void:
 
 ## A building on its lot, front to the street: body, roof trim, door, windows, and a sign over the door.
 ## Shops get a lowered shutter and an awning, since nothing opens until its case comes. Houses get a gable roof.
+## A hollow building (the station) is only its outside walls, with the doorway open.
 func _building(block: Vector2i, side: String, along: float, size: Vector3, color: Color, sign_key: String, shop: bool,
-		gable: bool) -> void:
+		gable: bool, hollow := false) -> Node3D:
 	var root := Node3D.new()
 	root.position = CityLayout.lot_center(block, side, along, size.z)
 	root.rotation.y = CityLayout.side_turn(side)
 	_built.add_child(root)
-	_box(Vector3(0, size.y / 2, 0), size, color, root)
+	if hollow:
+		_shell(size, color, root)
+	else:
+		_box(Vector3(0, size.y / 2, 0), size, color, root)
 	if gable:
 		var roof := PrismMesh.new()
 		roof.size = Vector3(size.x + 0.6, 2.2, size.z + 0.6)
@@ -131,7 +138,8 @@ func _building(block: Vector2i, side: String, along: float, size: Vector3, color
 	else:
 		_mesh_box(Vector3(0, size.y + 0.15, 0), Vector3(size.x + 0.4, 0.3, size.z + 0.4), color.darkened(0.35), root)
 	var front := size.z / 2 + 0.05
-	_mesh_box(Vector3(0, 1.1, front), Vector3(1.6, 2.2, 0.1), DOOR, root)
+	if not hollow:
+		_mesh_box(Vector3(0, 1.1, front), Vector3(1.6, 2.2, 0.1), DOOR, root)
 	if shop:
 		_mesh_box(Vector3(0, 1.4, front + 0.02), Vector3(size.x * 0.7, 2.8, 0.06), SHUTTER, root)
 		_mesh_box(Vector3(0, 3.2, front + 0.8), Vector3(size.x * 0.8, 0.12, 1.6), color.darkened(0.3), root)
@@ -153,6 +161,63 @@ func _building(block: Vector2i, side: String, along: float, size: Vector3, color
 		label.outline_size = 18
 		label.position = Vector3(0, minf(size.y - 0.8, 4.2), front + 0.1)
 		root.add_child(label)
+	return root
+
+
+## The outside walls of a hollow building, its roof, and the front split around the door (StationRooms).
+func _shell(size: Vector3, color: Color, root: Node3D) -> void:
+	var half := Vector3(size.x, 0, size.z) / 2
+	var wall := StationRooms.WALL
+	_box(Vector3(0, size.y / 2, -half.z + wall / 2), Vector3(size.x, size.y, wall), color, root)
+	for s: float in [-1.0, 1.0]:
+		_box(Vector3(s * (half.x - wall / 2), size.y / 2, 0), Vector3(wall, size.y, size.z), color, root)
+	for piece: Array in StationRooms.front_wall(size.y):
+		_box(piece[0] + Vector3(0, 0, -wall / 2), piece[1], color, root)
+	_box(Vector3(0, size.y - 0.1, 0), Vector3(size.x, 0.2, size.z), color, root)
+
+
+## The station's rooms (docs/diseno/comisaria.md): floor, ceiling, inside walls, the barred counter and cells, the
+## furniture, a light per room and the comisario behind his desk.
+func _station_inside(root: Node3D, size: Vector3) -> void:
+	_mesh_box(Vector3(0, 0.04, 0), Vector3(size.x - 0.4, 0.02, size.z - 0.4), STATION_FLOOR, root)
+	# The facade's color stays outside: the outside walls get a light lining up to the ceiling.
+	var lining := Vector3(size.x / 2 - StationRooms.WALL - 0.01, StationRooms.CEILING / 2, size.z / 2 - StationRooms.WALL - 0.01)
+	_mesh_box(Vector3(0, lining.y, -lining.z), Vector3(size.x, StationRooms.CEILING, 0.01), STATION_WALL, root)
+	for s: float in [-1.0, 1.0]:
+		_mesh_box(Vector3(s * lining.x, lining.y, 0), Vector3(0.01, StationRooms.CEILING, size.z), STATION_WALL, root)
+	for piece: Array in StationRooms.front_wall(StationRooms.CEILING):
+		_mesh_box(piece[0] + Vector3(0, 0, -StationRooms.WALL - 0.01), Vector3(piece[1].x, piece[1].y, 0.01), STATION_WALL, root)
+	_box(Vector3(0, StationRooms.CEILING + 0.1, 0), Vector3(size.x, 0.2, size.z), STATION_WALL, root)
+	for piece: Array in StationRooms.walls() + StationRooms.counter():
+		_box(piece[0], piece[1], STATION_WALL, root)
+	for piece: Array in StationRooms.bars():
+		_box(piece[0], piece[1], BARS, root)
+	for piece: Array in StationRooms.closed_doors():
+		_box(piece[0], piece[1], DOOR, root)
+	for item: Array in StationRooms.FURNITURE:
+		var model: Node3D = load("res://assets/models/%s.glb" % item[0]).instantiate()
+		model.position = item[1]
+		model.rotation.y = item[2]
+		root.add_child(model)
+		var solid: Vector3 = StationRooms.SOLID[item[0]]
+		var body := _body(item[1] + Vector3(0, solid.y / 2, 0), root)
+		body.rotation.y = item[2]
+		var shape := CollisionShape3D.new()
+		var box := BoxShape3D.new()
+		box.size = solid
+		shape.shape = box
+		body.add_child(shape)
+	for at: Vector3 in StationRooms.lights():
+		var light := OmniLight3D.new()
+		light.position = at
+		light.light_color = Color(0.95, 0.97, 1.0)
+		light.light_energy = 0.8
+		light.omni_range = 9.0
+		root.add_child(light)
+	var comisario: Node3D = COMISARIO_MODEL.instantiate()
+	comisario.name = "Comisario"
+	comisario.position = StationRooms.COMISARIO_AT
+	root.add_child(comisario)
 
 
 ## Traffic light and street name sign on the north-east corner of an inner crossing.

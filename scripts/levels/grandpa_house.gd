@@ -125,6 +125,8 @@ const MUD := Color(0.36, 0.24, 0.14)
 ## with --story=<id>.
 const STORIES: Array[CaseStory] = [BINGO, TURTLES]
 
+## The shift starts with the cop in the station's guard room; tests that put the cop somewhere else turn it off.
+@export var start_at_station := true
 ## The story this raid tells; null draws one from STORIES.
 @export var story: CaseStory
 ## What only this story adds (see StoryRig).
@@ -469,11 +471,13 @@ func main_evidence() -> Evidence:
 
 
 ## The house stays at the origin and the city goes around it. The shift starts at the station: the scene puts
-## the car on its spot out front and the cop by the driver's door.
+## the car on its spot out front, and the cop appears in the station's guard room.
 func _place_in_city() -> void:
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("grandpa")
 	raid.station_parking = city.transform * CityLayout.parking("station")
+	if start_at_station:
+		$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
 
 
 func car_at_station() -> bool:

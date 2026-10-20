@@ -84,6 +84,7 @@ func test_cop_uses_the_door_in_front() -> void:
 	var cop: Cop = house.get_node("Cop")
 	cop.input_enabled = false
 	cop.position = Vector3(0, 0.1, 11.4)
+	house.start_at_station = false
 	add_child_autofree(house)
 	await wait_physics_frames(3)
 	assert_true(cop.use(), "E reaches the door in front")
