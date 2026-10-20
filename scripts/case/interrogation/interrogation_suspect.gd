@@ -4,7 +4,8 @@ extends StaticBody3D
 ## The suspect, cuffed to the steel table of the interrogation room (interrogatorio.md). E on him with a box of
 ## donuts in hand gives him one; without one, the cop tells him to calm down. What he says shows over his head.
 
-const MODEL := preload("res://assets/models/npc_sospechoso.glb")
+## Which of the suspects he is (InterrogationCase.SUSPECTS): it picks his model.
+var kind := "talker"
 ## Seconds a line stays over his head.
 const LINE_SECONDS := 3.5
 
@@ -20,7 +21,7 @@ func _ready() -> void:
 	shape.shape = capsule
 	shape.position.y = 0.7
 	add_child(shape)
-	add_child(MODEL.instantiate())
+	add_child((load(InterrogationCase.SUSPECT_MODELS[kind]) as PackedScene).instantiate())
 	_bubble = Label3D.new()
 	_bubble.position.y = 1.9
 	_bubble.billboard = BaseMaterial3D.BILLBOARD_ENABLED

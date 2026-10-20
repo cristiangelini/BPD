@@ -34,6 +34,7 @@ func _ready() -> void:
 	$PatrolCar.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	suspect = InterrogationSuspect.new()
 	suspect.name = "Suspect"
+	suspect.kind = InterrogationCase.pick_suspect(case_seed, OS.get_cmdline_user_args())
 	suspect.position = InterrogationWing.SUSPECT_AT
 	wing.add_child(suspect)
 	for at: Vector3 in InterrogationWing.CHAIRS_AT:
@@ -48,6 +49,7 @@ func _ready() -> void:
 	case = InterrogationCase.new()
 	case.case_seed = case_seed
 	case.suspect = suspect
+	case.suspect_id = suspect.kind
 	case.shift_screen = $ShiftScreen
 	case.solved_label = %CaseSolved
 	case.failed_label = %CaseFailed
