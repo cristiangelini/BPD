@@ -100,6 +100,12 @@ que fue el otro. La carpeta del caso ahora está suelta sobre la mesa: dejarla c
 última vez es el bluff "tu hermano ya habló" (+20 de nervios y +4 de abogado), así que rinde llevarla de una sala a la
 otra. Todo (propuesta). Captura: `sospechoso_twins.png`.
 
+**Cómo quedó (paso 6, sexta parte):** el mudo (2, `--suspect=mute`, por ahora con el modelo del cliente): contesta con
+gestos ("*se tapa la cara con las manos y tiembla*" ante el malo, "*levanta el pulgar y sonríe*" ante el bueno). Lo que
+se le escapa a 30, 60 y 90 lo dibuja en un papel que levanta para que lo vean los policías; hasta que haya arte, el papel
+describe el dibujo con palabras ("Dibujo: un puente de palitos sobre la nada, con una cruz encima"). A 100 escribe la
+confesión en el papel. Captura: `sospechoso_mute.png`.
+
 ## Los dos medidores (se ven arriba, como la denuncia del abuelo)
 - **Nervios (0 a 100):** suben con el policía malo y bajan un poco con el bueno. Con 30, 60 y 90 se le escapa una frase
   que da una pista de qué hizo de verdad ("¡Yo nunca estuve en el club de golf!... Digo, ¿qué es el golf?").
@@ -166,7 +172,7 @@ cada acción con quién la hizo; el grito se mide en la PC de quien habla y se m
    contraste, la luz, el café, la silla y el pañuelo.
 4. El grito con la voz. Hecho.
 5. El sorteo en "Jugar" (1 de cada 3). Hecho.
-6. Los otros 9 sospechosos, uno o dos por PR. Hechos el 3, el 4, el 5, el 6, el 7 y el 10.
+6. Los otros 9 sospechosos, uno o dos por PR. Hechos el 2, el 3, el 4, el 5, el 6, el 7 y el 10.
 7. Interrogar al dueño después de un allanamiento.
 
 ## Respuestas de Cristian (20/10)

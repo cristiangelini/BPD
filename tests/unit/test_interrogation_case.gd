@@ -436,3 +436,20 @@ func test_without_twins_the_folder_is_just_a_folder() -> void:
 	assert_null(level.twin)
 	level.folder.global_position = level.suspect.global_position + Vector3(0, 0.8, 0.5)
 	assert_false(case.folder_shown(level.folder))
+
+
+func test_the_mute_answers_with_gestures_and_draws_what_slips_out() -> void:
+	case.give_tip()
+	case.suspect_id = "mute"
+	_act("slam_table")
+	assert_eq(level.suspect.saying(), "MUTE_FLINCHES")
+	assert_null(case.sheet, "no paper until he draws")
+	case.nerves = 25.0
+	_act("aim_lamp")
+	assert_not_null(case.sheet)
+	assert_eq(case.sheet.text, tr("MUTE_DRAW_%s_1" % case.crime))
+	assert_eq(level.suspect.saying(), "MUTE_DRAWS")
+	case.nerves = 95.0
+	_act("flick_lights")
+	assert_true(case.confessed)
+	assert_eq(case.sheet.text, tr("CONFESS_" + case.crime), "he writes the confession down")

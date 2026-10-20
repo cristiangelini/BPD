@@ -51,7 +51,7 @@ const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 const CRIMES := ["bridge", "statue_nose", "violet_lights", "rubber_ducks"]
 ## The suspects drawn with the seed (interrogatorio.md, "Los sospechosos"), each changing a rule, and their model.
 ## --suspect=<id> forces one. The rest of the 10 come in later PRs.
-const SUSPECTS := ["talker", "sweet_grandpa", "self_lawyer", "sleeper", "influencer", "dangerous", "twins"]
+const SUSPECTS := ["talker", "sweet_grandpa", "self_lawyer", "sleeper", "influencer", "dangerous", "twins", "mute"]
 const SUSPECT_MODELS := {
 	"talker": "res://assets/models/npc_sospechoso.glb",
 	"sweet_grandpa": "res://assets/models/npc_abuelo.glb",
@@ -60,6 +60,7 @@ const SUSPECT_MODELS := {
 	"influencer": "res://assets/models/npc_periodista.glb",
 	"dangerous": "res://assets/models/npc_sospechoso.glb",
 	"twins": "res://assets/models/npc_politico.glb",
+	"mute": "res://assets/models/npc_cliente.glb",
 }
 ## The sweet grandpa cries when the nerves go up more than CRY_NERVES within CRY_SECONDS, and the lawyer goes up
 ## CRY_LAWYER on its own (propuesta).
@@ -93,6 +94,10 @@ const CAUGHT_NERVES := 15.0
 ## nerves go up too, but what slips out is about his brother and at 100 he only says it was him. The case folder
 ## (CaseFolder), set down by the twin it wasn't last shown to, is the "show_folder" bluff: your brother already talked.
 const TWIN_SLIPS := ["TWIN_SLIP_1", "TWIN_SLIP_2", "TWIN_SLIP_3"]
+## The mute (suspect 2): he answers with gestures, and what slips out are drawings on a sheet of paper on the table
+## (MUTE_DRAW_<crime>_<n>, described in words until there's art) that he holds up for the cops; at 100 he writes the
+## confession down.
+const SHEET_AT := Vector3(3.0, 0.95, -14.85)
 ## The talker (suspect 1): before each slip he confesses something that has nothing to do with the case.
 const TALKER_LINES := ["TALKER_1", "TALKER_2", "TALKER_3"]
 const LAWYER_MODEL := preload("res://assets/models/npc_abogado.glb")
@@ -141,6 +146,8 @@ var twin_slips := 0
 var guilty_in_cell := false
 var _folder_with: InterrogationSuspect
 var _swapped := false
+## The mute's sheet of paper and what's drawn on it.
+var sheet: Label3D
 ## The last bad cop action: who did it and when (ms), and the bonus waiting for the next one.
 var _bad_by: Cop
 var _bad_at := -INF
@@ -367,13 +374,15 @@ func _act(id: String, cop: Cop) -> bool:
 		react = "SUSPECT_CRIES"
 	if waking:
 		react = "SUSPECT_WAKES"
+	if suspect_id == "mute":
+		react = "MUTE_FLINCHES" if gain > 0.0 else "MUTE_THUMBS_UP"
 	_emit()
 	if id == "aim_lamp":
 		_aim_lamp()
 	elif id == "flick_lights":
 		_flick_lights()
 	if _streak > 0 and gain > 0.0:
-		_say("SUSPECT_REACT_REPEAT", false)
+		_say("MUTE_YAWNS" if suspect_id == "mute" else "SUSPECT_REACT_REPEAT", false)
 	else:
 		_say(react, react == "SUSPECT_CRIES" or react == "SUSPECT_WAKES")
 	_check(cop)
@@ -469,11 +478,17 @@ func _check(_cop: Cop) -> void:
 	while slips < SLIPS_AT.size() and nerves >= SLIPS_AT[slips]:
 		slips += 1
 		var slip := tr("SLIP_%s_%d" % [crime, slips]) if guilty else tr(TWIN_SLIPS[slips - 1])
+		if suspect_id == "mute":
+			_draw(tr("MUTE_DRAW_%s_%d" % [crime, slips]), "MUTE_DRAWS")
+			continue
 		# The talker mixes his true slip with something that has nothing to do with it.
 		_say(tr(TALKER_LINES[slips - 1]) + " " + slip if suspect_id == "talker" else slip, true)
 	if nerves >= FULL and guilty:
 		confessed = true
-		_say("CONFESS_" + crime, true)
+		if suspect_id == "mute":
+			_draw(tr("CONFESS_" + crime), "MUTE_CONFESSES")
+		else:
+			_say("CONFESS_" + crime, true)
 		solved_label.show()
 		_finish_soon()
 	elif lawyer >= FULL:
@@ -487,6 +502,34 @@ func _check(_cop: Cop) -> void:
 		_finish_soon()
 	elif nerves >= FULL:
 		_say("TWIN_NOT_ME", true)
+
+
+## The mute puts something on his sheet of paper (it shows up the first time), with a gesture over his head.
+func _draw(text: String, gesture: String) -> void:
+	if not sheet:
+		var paper := MeshInstance3D.new()
+		var quad := QuadMesh.new()
+		quad.size = Vector2(0.42, 0.3)
+		paper.mesh = quad
+		var white := StandardMaterial3D.new()
+		white.albedo_color = Color(0.97, 0.96, 0.9)
+		paper.material_override = white
+		paper.position = SHEET_AT
+		# Held up toward the door side, leaning back a little.
+		paper.rotation.x = -0.3
+		paper.name = "MuteSheet"
+		suspect.get_parent().add_child(paper)
+		sheet = Label3D.new()
+		sheet.position.z = 0.002
+		sheet.pixel_size = 0.001
+		sheet.font_size = 36
+		sheet.modulate = Color(0.15, 0.15, 0.2)
+		sheet.outline_size = 0
+		sheet.width = 380.0
+		sheet.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		paper.add_child(sheet)
+	sheet.text = text
+	_say(gesture, true)
 
 
 ## A line over the suspect's head; reactions don't cut off what slipped out.
