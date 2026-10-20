@@ -188,7 +188,7 @@ func is_eating() -> bool:
 
 ## Eats a donut from the box in hand: stamina full again, and the mouth too full to ask for MOUTH_FULL seconds.
 func eat_donut(box: DonutBox) -> bool:
-	if not box.eat_one():
+	if not box or not box.eat_one():
 		show_hint("HINT_DONUTS_GONE")
 		return false
 	stamina = GameScale.RUN_STAMINA
@@ -373,7 +373,11 @@ func _physics_process(delta: float) -> void:
 ## Uses what the camera points at (a pot, a door...), if it can be used. Returns true if something was used.
 func use() -> bool:
 	if $Grabber.held is DonutBox:
-		return eat_donut($Grabber.held)
+		if ($Grabber.held as DonutBox).donuts == 0:
+			show_hint("HINT_DONUTS_GONE")
+			return false
+		act("eat_donut", self, [$Grabber.held])
+		return true
 	if wheelbarrow:
 		return _use_wheelbarrow()
 	var partner := _cuffed_partner()

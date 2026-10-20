@@ -13,7 +13,6 @@ var _cash: Label
 var _rows: VBoxContainer
 var _message: Label
 
-
 func _ready() -> void:
 	layer = 5
 	var panel := PanelContainer.new()
@@ -73,15 +72,28 @@ func move(rows: int) -> void:
 	_redraw()
 
 
-## E on the selected row: takes or buys it. Taking closes the list, so the cop leaves with it in hand.
+## E on the selected row: takes or buys it (online the host decides, Armero.armory_choose). Taking closes the list,
+## so the cop leaves with it in hand.
 func choose() -> void:
 	var id: String = armory.ids()[selected]
+	var armero := get_parent()
+	if armero.has_method("armory_choose"):
+		cop.act("armory_choose", armero, [id])
+		return
 	var owned := armory.owns(id)
-	var error := armory.choose(id, cop)
+	show_result(armory.choose(id, cop), owned)
+
+
+## What came of the chosen row: `owned` means it was taken, not bought.
+func show_result(error: String, owned: bool) -> void:
 	_message.text = error
 	_redraw()
 	if error == "" and owned:
 		close()
+
+
+func redraw() -> void:
+	_redraw()
 
 
 func _redraw() -> void:
