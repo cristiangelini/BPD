@@ -21,6 +21,7 @@ const KEYS := {
 	"radio": KEY_T,
 	"siren": KEY_H,
 	"scoreboard": KEY_TAB,
+	"map": KEY_M,
 	"slot_1": KEY_1,
 	"slot_2": KEY_2,
 	"slot_3": KEY_3,

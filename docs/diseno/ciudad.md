@@ -20,7 +20,7 @@ Se arma de a poco (Cristian, 19/10): primero unas cuadras con lo que ya tenemos 
 
 - **La comisaría** está en el centro, con el estacionamiento del patrullero adelante. Hasta que tenga interior, es un frente con la puerta y el comisario parado afuera.
 - **Calles:** todas de doble mano, con esquinas en cruz, semáforos de adorno y autos estacionados. Al principio no hay tráfico; los autos que andan solos vienen con la persecución (caso 2).
-- **Nombres:** cada calle tiene un cartel con un nombre inventado (calle de los Tilos, avenida del Reloj...). En la radio, el lugar del caso se marca en el mapa (Tab).
+- **Nombres:** cada calle tiene un cartel con un nombre inventado (calle de los Tilos, avenida del Reloj...). En la radio, el lugar del caso se marca en el mapa (M; el Tab ya muestra la plata y la denuncia).
 
 ## Cada lugar
 - Ocupa un terreno de la manzana, con su frente a la calle, su cartel y su color.
@@ -39,7 +39,7 @@ Hasta que estén los pasos 2 y 3, la ciudad se abre desde el menú con "Ciudad (
 ## El orden para hacerlo (un PR chico por paso)
 1. **La ciudad vacía:** las calles, las manzanas, la comisaría por fuera y las fachadas cerradas de los 10 lugares, con sus carteles. Se maneja el patrullero por todos lados. Va con una captura desde arriba.
 2. **La casa del abuelo en su terreno:** se mueve el caso de hoy a la ciudad. Se empieza en la comisaría y hay que manejar hasta la casa, y el turno termina al volver a la comisaría.
-3. **El mapa en la radio (Tab)**, con el lugar del caso marcado.
+3. **El mapa en la radio (M)**, visto desde arriba con el norte arriba: la comisaría en azul, el caso de hoy en amarillo titilando, los policías como flechas y el patrullero como un cuadrado blanco.
 4. **El interior de la panadería**, con su dueña y sus primeras historias.
 5. Después, un lugar por vez.
 
