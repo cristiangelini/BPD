@@ -9,6 +9,8 @@ const PLACES := {
 	"grandpa": "res://scenes/levels/grandpa_house.tscn",
 	"bakery": "res://scenes/levels/bakery.tscn",
 	"groomer": "res://scenes/levels/groomer.tscn",
+	# Not drawn yet (interrogatorio.md, step 5): only --place=interrogation opens it.
+	"interrogation": "res://scenes/levels/interrogation.tscn",
 }
 const ORDER := ["grandpa", "bakery", "groomer"]
 

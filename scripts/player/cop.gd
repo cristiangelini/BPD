@@ -132,7 +132,7 @@ func current_prompt() -> String:
 		return seated_in.prompt_key(self)
 	if $Grabber.held:
 		var aimed := _usable_target()
-		if aimed is WaitingArmchair or aimed is DigSpot:
+		if aimed is WaitingArmchair or aimed is DigSpot or aimed is InterrogationSuspect:
 			return aimed.prompt_key(self)
 		if $Grabber.held.has_method("held_prompt_key"):
 			return $Grabber.held.held_prompt_key(self)
@@ -344,6 +344,9 @@ func _physics_process(delta: float) -> void:
 
 ## Uses what the camera points at (a pot, a door...), if it can be used. Returns true if something was used.
 func use() -> bool:
+	if $Grabber.held is DonutBox and _usable_target() is InterrogationSuspect:
+		act("use", _usable_target())
+		return true
 	if $Grabber.held is DonutBox:
 		return eat_donut($Grabber.held)
 	if wheelbarrow:

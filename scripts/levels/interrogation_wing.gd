@@ -27,6 +27,8 @@ const MIRROR_BOTTOM := 1.0
 ## Where the suspect sits, facing the door side (+Z), and where the lamp hangs over the table.
 const SUSPECT_AT := Vector3(3.0, 0, -15.4)
 const LAMP_AT := Vector3(3.0, StationRooms.CEILING, -14.6)
+## Where the lawyer comes in when he gets there: the room's door.
+const LAWYER_AT := Vector3((ROOM_DOOR.x + ROOM_DOOR.y) / 2, 0, HALL_Z - 0.8)
 
 ## Furniture: [model, position, turn], as in StationRooms. Models from tools/modelgen/models/interrogation.js.
 const FURNITURE := [
@@ -49,6 +51,10 @@ const SOLID := {
 	"interrogation_table": Vector3(1.8, 0.76, 0.9), "interrogation_chair": Vector3(0.5, 0.9, 0.5),
 	"recording_desk": Vector3(1.6, 0.76, 0.7),
 }
+
+
+## The donut box the observers keep on their desk, for the good cop.
+const DONUTS_AT := Vector3(MIRROR_X - 0.6, 0.85, -15.0)
 
 
 ## The wing's own outside walls (west, east and back) and its roof: [center, size].

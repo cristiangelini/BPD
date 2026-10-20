@@ -556,3 +556,44 @@ GROOMER_TOWEL,"¡Es un perro grande! Muy grande. Y muy tranquilo.","It's a big d
 GROOMER_UNMASKED,"¡Eso es privado! ¡El señor es... un perro adoptado!","That's private! The gentleman is... an adopted dog!","Isso é particular! O senhor é... um cachorro adotado!"
 LADY_CLUE_human_salon,"«¡Mi Fifí! Gracias, oficial. Mira, vi a Ramiro esconder algo %s. Y el otro día me ofreció un corte a mí, por la mitad de precio.»","“My Fifí! Thank you, officer. Look, I saw Ramiro hide something %s. And the other day he offered me a haircut too, at half price.”","“Minha Fifí! Obrigada, policial. Olha, vi o Ramiro esconder algo %s. E outro dia ele me ofereceu um corte, pela metade do preço.”"
 SIGN_NO_SMOKING,PROHIBIDO FUMAR,NO SMOKING,PROIBIDO FUMAR
+HUD_NERVES,Nervios,Nerves,Nervos
+HUD_LAWYER,Abogado,Lawyer,Advogado
+CASE_SOLVED_CONFESSION,¡Confesó! Caso resuelto.,He confessed! Case solved.,Ele confessou! Caso resolvido.
+CASE_FAILED_LAWYER_INTERROGATION,Llegó el abogado y se lo llevó. Caso perdido.,The lawyer came and took him away. Case lost.,O advogado chegou e levou ele embora. Caso perdido.
+LAWYER_ARRIVES,Mi cliente no va a decir nada más.,My client has nothing more to say.,Meu cliente não vai dizer mais nada.
+HINT_GO_INTERROGATION,El sospechoso está en la sala de interrogatorio: la puerta está atrás del escritorio del comisario.,The suspect is in the interrogation room: the door is behind the comisario's desk.,O suspeito está na sala de interrogatório: a porta fica atrás da mesa do comissário.
+BRIEF_INTERROGATION_A,¡Novatos! Detuvimos a este señor y lo tenemos en la sala de interrogatorio.,Rookies! We arrested this man and he's in the interrogation room.,Novatos! Prendemos este senhor e ele está na sala de interrogatório.
+BRIEF_INTERROGATION_C,"Su abogado ya viene en camino. Quiero una confesión antes de que llegue. Policía bueno, policía malo: ya saben.","His lawyer is on the way. I want a confession before he gets here. Good cop, bad cop: you know the drill.","O advogado dele já está a caminho. Quero uma confissão antes que ele chegue. Policial bom, policial mau: vocês sabem."
+CRIME_bridge,Le vendió a la municipalidad un puente que no existe. Lo pagaron en cuotas.,He sold the town hall a bridge that doesn't exist. They paid in installments.,Ele vendeu para a prefeitura uma ponte que não existe. Pagaram em parcelas.
+CRIME_statue_nose,"Alguien le robó la nariz a la estatua de la plaza, y él tiene una nariz de piedra en el bolsillo.","Someone stole the nose off the statue in the square, and he has a stone nose in his pocket.","Alguém roubou o nariz da estátua da praça, e ele tem um nariz de pedra no bolso."
+CRIME_violet_lights,Anoche alguien pintó de violeta todos los semáforos de la ciudad. Él tiene las manos violetas.,Last night someone painted every traffic light in the city violet. His hands are violet.,Ontem à noite alguém pintou de roxo todos os semáforos da cidade. As mãos dele estão roxas.
+CRIME_rubber_ducks,Cambiaron los patos de la fuente de la plaza por patos de goma. Él vende patos de goma.,Someone swapped the ducks in the square's fountain for rubber ducks. He sells rubber ducks.,Trocaram os patos do chafariz da praça por patos de borracha. Ele vende patos de borracha.
+SLIP_bridge_1,"¡Yo nunca vendí un puente! ...Bueno, no uno de verdad.","I never sold a bridge! ...Well, not a real one.","Eu nunca vendi uma ponte! ...Bom, não uma de verdade."
+SLIP_bridge_2,"Los planos eran un dibujo de mi sobrino, pero muy bien hecho.","The blueprints were my nephew's drawing, but very well done.","As plantas eram um desenho do meu sobrinho, mas muito bem feito."
+SLIP_bridge_3,"¡Si nadie lo cruzó, nadie se quejó!","If nobody crossed it, nobody complained!","Se ninguém atravessou, ninguém reclamou!"
+CONFESS_bridge,"¡Está bien, está bien! ¡Vendí el puente! ¡Y la semana que viene iba a vender el río!","Fine, fine! I sold the bridge! And next week I was going to sell the river!","Tá bom, tá bom! Eu vendi a ponte! E semana que vem ia vender o rio!"
+SLIP_statue_nose_1,"Esta nariz es mía. Me la regaló mi abuela. Es de piedra, como ella.","This nose is mine. My grandma gave it to me. It's made of stone, like her.","Esse nariz é meu. Minha avó me deu. É de pedra, como ela."
+SLIP_statue_nose_2,"La estatua ni la usaba, siempre mira para el mismo lado.","The statue didn't even use it, it always looks the same way.","A estátua nem usava, sempre olha para o mesmo lado."
+SLIP_statue_nose_3,¡Yo solo quería saber a qué huele una estatua!,I just wanted to know what a statue smells like!,Eu só queria saber que cheiro tem uma estátua!
+CONFESS_statue_nose,"¡Fui yo! ¡Le saqué la nariz! ¡Y las orejas están en mi casa, en un frasco!","It was me! I took the nose! And the ears are at my place, in a jar!","Fui eu! Tirei o nariz! E as orelhas estão na minha casa, num pote!"
+SLIP_violet_lights_1,¿Violetas? Yo soy alérgico al violeta. Por eso tengo las manos así.,Violet? I'm allergic to violet. That's why my hands look like this.,Roxo? Eu sou alérgico a roxo. Por isso minhas mãos estão assim.
+SLIP_violet_lights_2,"El rojo, el amarillo y el verde ya aburren a todos.","Red, yellow and green bore everybody by now.","Vermelho, amarelo e verde já cansaram todo mundo."
+SLIP_violet_lights_3,"¡Violeta quiere decir ""más o menos""! ¡Es muy claro!","Violet means ""sort of""! It's very clear!","Roxo quer dizer ""mais ou menos""! É muito claro!"
+CONFESS_violet_lights,"¡Sí! ¡Los pinté yo! ¡Toda la noche con un pincel chiquito, uno por uno!","Yes! I painted them! All night with a tiny brush, one by one!","Sim! Eu que pintei! A noite toda com um pincel pequenininho, um por um!"
+SLIP_rubber_ducks_1,Los patos de goma son mejores: no muerden y flotan solos.,Rubber ducks are better: they don't bite and they float on their own.,Patos de borracha são melhores: não mordem e boiam sozinhos.
+SLIP_rubber_ducks_2,"Los de verdad están bien, se fueron de vacaciones a mi bañera.","The real ones are fine, they went on vacation to my bathtub.","Os de verdade estão bem, foram de férias para a minha banheira."
+SLIP_rubber_ducks_3,¡Nadie se dio cuenta en tres semanas!,Nobody noticed for three weeks!,Ninguém percebeu em três semanas!
+CONFESS_rubber_ducks,"¡Fui yo! ¡Cambié los patos! ¡Y les puse nombre a todos, son mis hijos!","It was me! I swapped the ducks! And I named every one of them, they're my kids!","Fui eu! Troquei os patos! E dei nome para todos, são meus filhos!"
+TALKER_1,"¡Una vez me comí la torta de cumpleaños de mi vecino, entera!",Once I ate my neighbor's whole birthday cake!,Uma vez eu comi o bolo de aniversário inteiro do meu vizinho!
+TALKER_2,¡Y yo fui el que le cambió el final a la novela de la tele!,And I'm the one who changed the ending of the TV soap!,E fui eu que mudei o final da novela da TV!
+TALKER_3,"¡Y nunca devolví un libro a la biblioteca, desde el colegio!","And I never returned a library book, since school!","E nunca devolvi um livro para a biblioteca, desde a escola!"
+PROMPT_SLAM_TABLE,E: golpear la mesa,E: slam the table,E: bater na mesa
+PROMPT_AIM_LAMP,E: apuntarle la lámpara a la cara,E: point the lamp at his face,E: apontar a lâmpada para a cara dele
+PROMPT_GIVE_DONUT,E: darle una dona,E: give him a donut,E: dar uma rosquinha
+PROMPT_CALM_SUSPECT,"E: decirle ""tranquilo, solo queremos ayudarte""","E: say ""easy, we only want to help you""","E: dizer ""calma, só queremos te ajudar"""
+SUSPECT_REACT_SLAM,¡Ay! ¡Me volcaron el café!,Ow! You spilled my coffee!,Ai! Derrubaram meu café!
+SUSPECT_REACT_LAMP,¡Mis ojos! ¡No veo nada!,My eyes! I can't see a thing!,Meus olhos! Não vejo nada!
+SUSPECT_REACT_EAT_DONUT,¿Y para mí no hay?,None for me?,E para mim não tem?
+SUSPECT_REACT_GIVE_DONUT,Mmm... ustedes son buena gente.,Mmm... you guys are nice.,Hmm... vocês são gente boa.
+SUSPECT_REACT_CALM,Bueno... si es así...,Well... if you put it that way...,Bom... se é assim...
+SUSPECT_REACT_REPEAT,"Ya no me asusta, oficial.","That doesn't scare me anymore, officer.","Isso não me assusta mais, policial."
