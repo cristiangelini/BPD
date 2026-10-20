@@ -383,13 +383,24 @@ func _on_peer_disconnected(id: int) -> void:
 
 @rpc("authority", "call_remote", "reliable")
 func _refuse(reason_key: String) -> void:
-	leave()
-	session_ended.emit(reason_key)
+	_end_session(reason_key)
 
 
 func _on_steam_failed(reason_key: String) -> void:
+	_end_session(reason_key)
+
+
+## Back to solo with a notice. In the middle of a case everyone goes back to the room screen, which shows the notice
+## (online.md, "Se va el anfitrión").
+func _end_session(reason_key: String) -> void:
+	var was_in_match := in_match
 	leave()
 	session_ended.emit(reason_key)
+	if not was_in_match:
+		return
+	Lobby.notice = reason_key
+	if change_scenes:
+		get_tree().change_scene_to_file(MainMenu.LOBBY_SCENE)
 
 
 ## A friend's invite accepted in Steam: whatever this PC was doing, it goes to the room and joins.
@@ -401,10 +412,8 @@ func _on_steam_invited(lobby_id: int) -> void:
 
 
 func _on_connection_failed() -> void:
-	leave()
-	session_ended.emit("NET_JOIN_FAILED")
+	_end_session("NET_JOIN_FAILED")
 
 
 func _on_server_disconnected() -> void:
-	leave()
-	session_ended.emit("NET_HOST_LEFT")
+	_end_session("NET_HOST_LEFT")
