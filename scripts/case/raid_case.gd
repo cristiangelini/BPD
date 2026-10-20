@@ -49,6 +49,8 @@ var shift_over := false
 var clues_found: Array[String] = []
 ## Money taken off the case pay for broken things.
 var fines := 0
+## Whose fresh prints the fingerprint kit finds near the evidence (tr() key): the place's owner.
+var prints_key := "PRINTS_OWNER"
 
 ## Online, what keeps this case the same on every PC (null solo).
 var online: CaseSync
@@ -60,6 +62,9 @@ var _host_facts := {}
 var _result := {}
 
 var briefing: CaseBriefing
+## The comisario has given the tip (at the station, or right away without one).
+var tip_given := false
+var _tip: PackedStringArray = []
 var checklist: CaseChecklist
 ## Suspicion index being held down with the checklist open, and for how long.
 var _marking := -1
@@ -67,9 +72,11 @@ var _mark_held := 0.0
 var _refresh_left := 0.0
 
 
-## Starts the case once the place has placed everything: the comisario gives the tip (only a cop with a player at
-## the keys hears it; tests drive cops without input) and the checklist opens after him.
-func start(tip_briefing: PackedStringArray, pool: Array = CaseSuspicions.POOL) -> void:
+## Starts the case once the place has placed everything. With a comisario at the station, the tip waits until a cop
+## talks to him in his office (give_tip), and the car stays locked until then; without one, he gives it right away.
+## Only a cop with a player at the keys hears it (tests drive cops without input); the checklist opens after him.
+func start(tip_briefing: PackedStringArray, pool: Array = CaseSuspicions.POOL, comisario: Comisario = null) -> void:
+	add_to_group("raid")
 	suspicions = CaseSuspicions.draw(case_seed, story_id, pool)
 	main_evidence.broken.connect(fail.bind("CASE_FAILED_BROKEN"))
 	car.evidence_delivered.connect(_on_evidence_delivered)
@@ -80,9 +87,25 @@ func start(tip_briefing: PackedStringArray, pool: Array = CaseSuspicions.POOL) -
 	briefing = CaseBriefing.new()
 	add_child(briefing)
 	briefing.finished.connect(checklist.set_open.bind(true))
-	_tell(tip_briefing)
+	_tip = tip_briefing
+	if comisario:
+		comisario.spoke.connect(give_tip.unbind(1))
+		car.locked_hint = "HINT_COMISARIO_FIRST"
+		for cop in get_tree().get_nodes_in_group("cops"):
+			(cop as Cop).show_hint("HINT_SEE_COMISARIO")
+	else:
+		give_tip()
 	shift_screen.play_again.connect(_play_again)
 	shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
+
+
+## The comisario gives the tip, once: the case is on and the patrol car opens.
+func give_tip() -> void:
+	if tip_given:
+		return
+	tip_given = true
+	car.locked_hint = ""
+	_tell(_tip)
 
 
 func _tell(lines: PackedStringArray) -> void:
@@ -237,7 +260,8 @@ func finish_shift() -> void:
 		var played := campaign.shift
 		campaign.finish_shift(story_id, case_solved, report)
 		campaign.save()
-		result.campaign = {"shift": played, "money": campaign.money, "over": campaign.is_over()}
+		result.campaign = {"shift": played, "money": campaign.money, "over": campaign.is_over(),
+			"promoted": campaign.is_promoted()}
 	_show_result(result)
 
 
@@ -256,7 +280,8 @@ func _show_result(result: Dictionary) -> void:
 	shift_screen.show_report(result.solved, result.report, result.broken, awards)
 	var over := false
 	if result.has("campaign"):
-		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over)
+		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over,
+			result.campaign.get("promoted", false))
 		over = result.campaign.over
 	# Only the host plays the next case for everyone, and not after the last shift.
 	shift_screen.get_node("%AgainButton").visible = not follower and not over
