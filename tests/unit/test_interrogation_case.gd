@@ -241,3 +241,45 @@ func test_shouting_near_him_is_the_bad_cops_shout() -> void:
 	assert_eq(case.nerves, 10.0)
 	assert_eq(case.lawyer, 10.0)
 	assert_eq(level.suspect.saying(), "SUSPECT_REACT_SHOUT")
+
+
+func test_every_suspect_comes_up_and_the_argument_forces_one() -> void:
+	var seen := {}
+	for seed_value in range(1, 200):
+		seen[InterrogationCase.pick_suspect(seed_value, [])] = true
+	assert_eq(seen.size(), InterrogationCase.SUSPECTS.size())
+	assert_eq(InterrogationCase.pick_suspect(7, ["--suspect=self_lawyer"]), "self_lawyer")
+	assert_eq(InterrogationCase.pick_suspect(7, ["--suspect=moon"]), InterrogationCase.pick_suspect(7, []))
+	assert_eq(case.suspect_id, level.suspect.kind, "the level tells the case who he is")
+
+
+func test_the_sweet_grandpa_cries_when_pushed_too_fast() -> void:
+	case.suspect_id = "sweet_grandpa"
+	case.give_tip()
+	_act("slam_table")
+	_act("aim_lamp")
+	assert_eq(case.lawyer, 14.0, "22 nerves in a few seconds: still fine")
+	_act("eat_donut")
+	assert_eq(case.lawyer, 14.0 + 3.0 + InterrogationCase.CRY_LAWYER, "past 25: he cries")
+	assert_eq(level.suspect.saying(), "SUSPECT_CRIES")
+
+
+func test_his_own_lawyer_writes_down_every_bad_cop_move_and_wants_tea() -> void:
+	case.suspect_id = "self_lawyer"
+	case.give_tip()
+	_act("slam_table")
+	assert_eq(case.lawyer, 8.0 + InterrogationCase.SELF_LAWYER_EXTRA)
+	_act("give_coffee")
+	assert_eq(case.lawyer, 13.0, "the coffee doesn't lower anything")
+	assert_eq(case.nerves, 12.0)
+	assert_eq(level.suspect.saying(), "SUSPECT_WANTS_TEA")
+	_act("give_donut")
+	assert_lt(case.lawyer, 13.0, "a donut still works")
+
+
+func test_only_the_talker_mixes_in_nonsense() -> void:
+	case.suspect_id = "self_lawyer"
+	case.give_tip()
+	case.nerves = 29.0
+	_act("slam_table")
+	assert_eq(level.suspect.saying(), tr("SLIP_%s_1" % case.crime))

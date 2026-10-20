@@ -48,6 +48,21 @@ const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 ## The crimes he can be in for, drawn with the seed: CRIME_<id> is what the comisario says, SLIP_<id>_1 to 3 what
 ## slips out and CONFESS_<id> the confession.
 const CRIMES := ["bridge", "statue_nose", "violet_lights", "rubber_ducks"]
+## The suspects drawn with the seed (interrogatorio.md, "Los sospechosos"), each changing a rule, and their model.
+## --suspect=<id> forces one. The rest of the 10 come in later PRs.
+const SUSPECTS := ["talker", "sweet_grandpa", "self_lawyer"]
+const SUSPECT_MODELS := {
+	"talker": "res://assets/models/npc_sospechoso.glb",
+	"sweet_grandpa": "res://assets/models/npc_abuelo.glb",
+	"self_lawyer": "res://assets/models/npc_abogado.glb",
+}
+## The sweet grandpa cries when the nerves go up more than CRY_NERVES within CRY_SECONDS, and the lawyer goes up
+## CRY_LAWYER on its own (propuesta).
+const CRY_NERVES := 25.0
+const CRY_SECONDS := 5.0
+const CRY_LAWYER := 20.0
+## His own lawyer: every bad cop action also adds this much lawyer, and coffee does nothing (he wants tea).
+const SELF_LAWYER_EXTRA := 5.0
 ## The talker (suspect 1): before each slip he confesses something that has nothing to do with the case.
 const TALKER_LINES := ["TALKER_1", "TALKER_2", "TALKER_3"]
 const LAWYER_MODEL := preload("res://assets/models/npc_abogado.glb")
@@ -57,6 +72,7 @@ signal meters_changed(nerves: float, lawyer: float)
 
 var case_seed := 0
 var crime := ""
+var suspect_id := "talker"
 var suspect: InterrogationSuspect
 var nerves := 0.0
 var lawyer := 0.0
@@ -73,6 +89,8 @@ var _last := ""
 var _streak := 0
 var _gap_left := 0.0
 var _talking_until := 0.0
+## The bad cop's nerves of the last seconds, [time, nerves], for the sweet grandpa.
+var _recent: Array[Vector2] = []
 ## The last bad cop action: who did it and when (ms), and the bonus waiting for the next one.
 var _bad_by: Cop
 var _bad_at := -INF
@@ -82,6 +100,13 @@ var _contrast := 1.0
 ## The case on in this tree, if any.
 static func active(tree: SceneTree) -> InterrogationCase:
 	return tree.get_first_node_in_group("interrogation") as InterrogationCase
+
+
+static func pick_suspect(seed_value: int, args: PackedStringArray) -> String:
+	for arg in args:
+		if arg.begins_with("--suspect=") and SUSPECTS.has(arg.trim_prefix("--suspect=")):
+			return arg.trim_prefix("--suspect=")
+	return SUSPECTS[hash("suspect %d" % seed_value) % SUSPECTS.size()]
 
 
 static func pick_crime(seed_value: int) -> String:
@@ -109,7 +134,8 @@ func give_tip() -> void:
 	tip_given = true
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).input_enabled:
-			briefing.start(PackedStringArray(["BRIEF_INTERROGATION_A", "CRIME_" + crime, "BRIEF_INTERROGATION_C"]))
+			briefing.start(PackedStringArray(["BRIEF_INTERROGATION_A", "CRIME_" + crime, "BRIEF_SUSPECT_" + suspect_id,
+				"BRIEF_INTERROGATION_C"]))
 			break
 	briefing.finished.connect(_hint_all.bind("HINT_GO_INTERROGATION"), CONNECT_ONE_SHOT)
 
@@ -141,8 +167,20 @@ func act(id: String, cop: Cop = null) -> bool:
 	elif now - _bad_at <= CONTRAST_SECONDS:
 		_contrast = CONTRAST if cop != _bad_by else SOLO_CONTRAST
 		_bad_at = -INF
+	var lawyer_gain: float = action.lawyer
+	var react: String = action.react
+	if suspect_id == "self_lawyer":
+		if gain > 0.0:
+			lawyer_gain += SELF_LAWYER_EXTRA
+		elif id == "give_coffee":
+			gain = 0.0
+			lawyer_gain = 0.0
+			react = "SUSPECT_WANTS_TEA"
 	nerves = clampf(nerves + gain, 0.0, FULL)
-	lawyer = clampf(lawyer + action.lawyer, 0.0, FULL)
+	lawyer = clampf(lawyer + lawyer_gain, 0.0, FULL)
+	if suspect_id == "sweet_grandpa" and gain > 0.0 and _cries(now, gain):
+		lawyer = clampf(lawyer + CRY_LAWYER, 0.0, FULL)
+		react = "SUSPECT_CRIES"
 	meters_changed.emit(nerves, lawyer)
 	if id == "aim_lamp":
 		_aim_lamp()
@@ -151,8 +189,21 @@ func act(id: String, cop: Cop = null) -> bool:
 	if _streak > 0 and gain > 0.0:
 		_say("SUSPECT_REACT_REPEAT", false)
 	else:
-		_say(action.react, false)
+		_say(react, react == "SUSPECT_CRIES")
 	_check(cop)
+	return true
+
+
+## The sweet grandpa: true when the bad cop's nerves of the last CRY_SECONDS pass CRY_NERVES (he starts over after).
+func _cries(now: float, gain: float) -> bool:
+	_recent = _recent.filter(func(entry: Vector2) -> bool: return now - entry.x <= CRY_SECONDS)
+	_recent.append(Vector2(now, gain))
+	var total := 0.0
+	for entry in _recent:
+		total += entry.y
+	if total <= CRY_NERVES:
+		return false
+	_recent.clear()
 	return true
 
 
@@ -200,8 +251,9 @@ func donut_eaten_by(cop: Cop) -> void:
 func _check(_cop: Cop) -> void:
 	while slips < SLIPS_AT.size() and nerves >= SLIPS_AT[slips]:
 		slips += 1
+		var slip := tr("SLIP_%s_%d" % [crime, slips])
 		# The talker mixes his true slip with something that has nothing to do with it.
-		_say(tr(TALKER_LINES[slips - 1]) + " " + tr("SLIP_%s_%d" % [crime, slips]), true)
+		_say(tr(TALKER_LINES[slips - 1]) + " " + slip if suspect_id == "talker" else slip, true)
 	if nerves >= FULL:
 		confessed = true
 		_say("CONFESS_" + crime, true)
