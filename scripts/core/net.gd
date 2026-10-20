@@ -20,9 +20,15 @@ const REFUSE_GRACE := 1.0
 const COP_SCENE := preload("res://scenes/player/cop.tscn")
 ## Cops stand this far apart side by side at the start, in slot order, so they don't spawn inside each other.
 const SPAWN_GAP := 1.2
+## Meters above a cop's feet where its player's name floats (the cop is 1.55 m tall, escala.md).
+const NAME_TAG_HEIGHT := 1.8
+## Longest name shown; longer Steam names are cut.
+const NAME_LENGTH := 24
 
 ## Peer id -> slot (0 to 3). The slot gives the skin color (decision 72) and the "Policía N" name.
 var players := {}
+## Peer id -> the player's Steam name, "" without Steam (they show as "Policía N" then).
+var names := {}
 ## A case is being played: new players can't come in (they join in the room).
 var in_match := false
 ## Off in tests, so starting a case only emits match_started.
@@ -52,6 +58,7 @@ func _ready() -> void:
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
+	multiplayer.connected_to_server.connect(func() -> void: _tell_name.rpc_id(HOST_ID, my_name()))
 	steam = SteamRoom.new()
 	steam.name = "Steam"
 	add_child(steam)
@@ -110,6 +117,7 @@ func is_steam() -> bool:
 func _open_room(peer: MultiplayerPeer) -> void:
 	multiplayer.multiplayer_peer = peer
 	players = {HOST_ID: 0}
+	names = {HOST_ID: my_name()}
 	in_match = false
 	players_changed.emit()
 
@@ -134,10 +142,22 @@ func leave() -> void:
 		steam.leave()
 	var had_players := not players.is_empty()
 	players = {}
+	names = {}
 	in_match = false
 	_leave_scene()
 	if had_players:
 		players_changed.emit()
+
+
+## This PC's Steam name, or "" without Steam.
+func my_name() -> String:
+	return str(steam.steam.call("getPersonaName")) if steam.available() else ""
+
+
+## What a player is called: their Steam name, or "Policía N" from their slot.
+func player_name(id: int) -> String:
+	var steam_name: String = names.get(id, "")
+	return steam_name if steam_name != "" else tr("COP_NAME") % (players.get(id, 0) + 1)
 
 
 ## This player's slot (0 to 3); 0 when playing solo.
@@ -210,12 +230,29 @@ func spawn_cops(local: Cop) -> void:
 func _add_cop(cop: Cop, id: int, start: Transform3D) -> void:
 	var slot: int = players.get(id, 0)
 	cop.set_uniform(slot)
+	if id != multiplayer.get_unique_id():
+		_add_name_tag(cop, id, slot)
 	if not cop.vehicle:
 		cop.global_transform = start.translated(start.basis.x * (slot - (MAX_PLAYERS - 1) / 2.0) * SPAWN_GAP)
 	var sync := CopSync.new(cop, self, id)
 	add_child(sync)
 	cop_syncs[id] = sync
 	cop.sync = sync
+
+
+## The other players' cops carry their name over the head, in their skin color (online.md, "La sala").
+func _add_name_tag(cop: Cop, id: int, slot: int) -> void:
+	var tag := Label3D.new()
+	tag.name = "NameTag"
+	tag.text = player_name(id)
+	tag.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	tag.position = Vector3(0, NAME_TAG_HEIGHT, 0)
+	tag.pixel_size = 0.004
+	tag.font_size = 48
+	tag.outline_size = 12
+	tag.modulate = Lobby.SKIN_COLORS[slot % Lobby.SKIN_COLORS.size()]
+	tag.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	cop.add_child(tag)
 
 
 ## Another peer loaded the level. If this PC has it loaded too, it answers so the other one knows.
@@ -272,8 +309,20 @@ func _remove_cop(id: int) -> void:
 
 
 @rpc("authority", "call_remote", "reliable")
-func _sync_players(list: Dictionary) -> void:
+func _sync_players(list: Dictionary, name_list := {}) -> void:
 	players = list
+	names = name_list
+	players_changed.emit()
+
+
+## A guest that just came in tells the host its Steam name.
+@rpc("any_peer", "call_remote", "reliable")
+func _tell_name(player_name_text: String) -> void:
+	var id := multiplayer.get_remote_sender_id()
+	if not multiplayer.is_server() or not players.has(id):
+		return
+	names[id] = player_name_text.strip_edges().left(NAME_LENGTH)
+	_sync_players.rpc(players, names)
 	players_changed.emit()
 
 
@@ -287,7 +336,7 @@ func _on_peer_connected(id: int) -> void:
 		get_tree().create_timer(REFUSE_GRACE).timeout.connect(_kick.bind(id))
 		return
 	players[id] = slot
-	_sync_players.rpc(players)
+	_sync_players.rpc(players, names)
 	players_changed.emit()
 
 
@@ -301,7 +350,8 @@ func _on_peer_disconnected(id: int) -> void:
 	if not multiplayer.is_server() or not players.has(id):
 		return
 	players.erase(id)
-	_sync_players.rpc(players)
+	names.erase(id)
+	_sync_players.rpc(players, names)
 	players_changed.emit()
 
 

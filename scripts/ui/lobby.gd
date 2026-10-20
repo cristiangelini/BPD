@@ -149,7 +149,7 @@ func _player_row(id: int, slot: int) -> HBoxContainer:
 	swatch.color = SKIN_COLORS[slot % SKIN_COLORS.size()]
 	row.add_child(swatch)
 	var label := Label.new()
-	var text := tr("COP_NAME") % (slot + 1)
+	var text := Net.player_name(id)
 	if id == Net.HOST_ID:
 		text += " · " + tr("LOBBY_HOST_TAG")
 	if id == multiplayer.get_unique_id():

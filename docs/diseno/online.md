@@ -25,6 +25,7 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 
 ## La sala
 - Desde el menú, **Jugar con amigos** abre la sala: Crear sala, Unirse y la lista de los policías conectados, cada uno con su color.
+- **Nombres:** cada uno aparece con su nombre de Steam en la lista de la sala y flotando sobre su policía, en su color de piel; sin Steam, "Policía N" **(propuesta)**.
 - Solo el anfitrión ve **Empezar caso**. Al apretarlo, el anfitrión sortea el caso (lugar e historia, con la misma semilla de siempre) y todos abren el mismo lugar con la misma semilla.
 - **Jugar** (solo) sigue igual, sin red.
 - **Entrar a mitad de un caso:** no se puede por ahora; se entra en la sala **(propuesta)**. Cuando exista la comisaría, se va a poder entrar ahí entre casos.
