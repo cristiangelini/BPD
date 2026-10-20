@@ -52,3 +52,4 @@
 - The comisario gives the case in his office: E on him starts the briefing, and the patrol car stays locked ("¡¿Adónde van?! ¡Primero el caso!") until then.
 - The armory: the armero behind the counter opens his list with E (cash box, price, take or buy); the battering ram is taken there instead of lying by the grandpa's door.
 - Box of donuts at the armory (30, four donuts): E with the box in hand eats one, which fills the stamina and keeps the mouth too full to ask (R) for 3 s.
+- Rubber gloves at the armory (120, bought once): yellow hands, and fragile evidence loses half on hits while a gloved cop holds it or just threw it.

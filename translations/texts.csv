@@ -320,3 +320,6 @@ PROMPT_DONUT_EMPTY,Caja vacía · Clic derecho: tirarla,Empty box · Right click
 HINT_DONUT,"¡Mmm, dona! Resistencia llena, pero con la boca llena no puedes preguntar.","Mmm, donut! Full stamina, but you can't ask anything with your mouth full.","Hum, rosquinha! Resistência cheia, mas de boca cheia você não pode perguntar."
 HINT_DONUTS_GONE,Ya no quedan donas.,There are no donuts left.,Não sobrou nenhuma rosquinha.
 HINT_MOUTH_FULL,¡Mmmf mmf! (Con la boca llena no se entiende nada.),Mmmf mmf! (Nobody understands you with your mouth full.),Mmmf mmf! (De boca cheia ninguém entende nada.)
+ARMORY_GLOVES,Guantes de goma,Rubber gloves,Luvas de borracha
+ARMORY_GLOVES_ABOUT,"Con los guantes puestos, la evidencia frágil se rompe la mitad.","With the gloves on, fragile evidence breaks half as much.","Com as luvas, a evidência frágil quebra pela metade."
+ARMORY_HAS_GLOVES,¡Ya tienes los guantes puestos!,You already have the gloves on!,Você já está de luvas!
