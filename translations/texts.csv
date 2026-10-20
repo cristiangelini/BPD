@@ -204,3 +204,7 @@ BAKER_DOOR,¡Mi puerta! ¿Quién va a pagar eso?,My door! Who's paying for that?
 BAKER_LAWYER,¡Se acabó! ¡Llamo a mi abogado!,That's it! I'm calling my lawyer!,Chega! Vou ligar para o meu advogado!
 CUSTOMER_THANKS,"¡Gracias, Marta! Hasta mañana.","Thanks, Marta! See you tomorrow.","Obrigado, Marta! Até amanhã."
 CUSTOMER_SCARED,¡Ay! ¡Me voy de aquí!,Yikes! I'm out of here!,Ai! Vou embora daqui!
+HINT_HEAVY_BREAD,Este pan pesa más que los otros...,This loaf is heavier than the others...,Este pão pesa mais que os outros...
+PROMPT_TILL,E: abrir la caja registradora,E: open the cash register,E: abrir a caixa registradora
+HINT_TILL_KEY,"¡Hay una llave en la caja! Dice ""Obrador"".","There's a key in the register! It says ""Bakehouse"".","Tem uma chave na caixa! Diz ""Padaria""."
+BAKER_SAW,"¡Eso se paga, eh!",You're paying for that!,"Isso vai ser pago, hein!"

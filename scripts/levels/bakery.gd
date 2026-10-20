@@ -9,6 +9,24 @@ extends Node3D
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const BAKER_SCENE := preload("res://scenes/npc/baker.tscn")
 const CUSTOMER_SCENE := preload("res://scenes/npc/bakery_customer.tscn")
+const BREAD_SCENE := preload("res://scenes/props/bread_loaf.tscn")
+const CAKE_SCENE := preload("res://scenes/props/bakery_cake.tscn")
+const RING_SCENE := preload("res://scenes/props/stolen_ring.tscn")
+## The ring story's extras (panaderia.md): they wait in hiding spots drawn with the seed.
+const EXTRA_SCENES: Array[PackedScene] = [
+	preload("res://scenes/props/jewelry_bag.tscn"), preload("res://scenes/props/pawn_receipt.tscn"),
+]
+const EXTRA_HALF_HEIGHTS := [0.055, 0.01]
+const LOAF_HALF_HEIGHT := 0.065
+## The bread shelves on the shop's west wall and the rack behind the counter: [x, z along, heights, count].
+const WEST_SHELF_X := -7.55
+const WEST_SHELVES := [0.4, 1.0, 1.6]
+const WEST_LOAVES := 6
+const RACK_X := 6.6
+const RACK_Z := SHOP_BACK + 0.35
+const RACK_SHELVES := [0.45, 0.95, 1.45, 1.95]
+const RACK_LOAVES := 5
+const COUNTER_TOP := FLOOR_TOP + 1.0
 ## Customers: at most MAX_CUSTOMERS inside, a new one every CUSTOMER_EVERY seconds, none for SCARE_PAUSE after a scare.
 const MAX_CUSTOMERS := 3
 const CUSTOMER_EVERY := 8.0
@@ -45,8 +63,6 @@ const WOOD := Color(0.55, 0.36, 0.25)
 const WHITE := Color(0.92, 0.92, 0.88)
 const STEEL := Color(0.6, 0.62, 0.66)
 const GLASS := Color(0.55, 0.75, 0.85, 0.35)
-const BREAD := Color(0.85, 0.58, 0.3)
-const CAKE := Color(1.0, 0.7, 0.8)
 const FLOUR := Color(0.95, 0.93, 0.88)
 const SHUTTER := Color(0.55, 0.57, 0.6)
 const AWNING := Color(0.75, 0.3, 0.25)
@@ -57,7 +73,7 @@ const SPOTS := [
 	{"id": "behind_flour", "at": Vector3(-2.0, FLOOR_TOP, -6.7), "heavy": true},
 	{"id": "in_fridge", "at": Vector3(-0.9, 1.025, -0.2), "heavy": false},
 	{"id": "under_counter", "at": Vector3(3.5, FLOOR_TOP + 0.05, 3.5), "heavy": true},
-	{"id": "in_display", "at": Vector3(-1.5, FLOOR_TOP + 0.05, 4.5), "heavy": false},
+	{"id": "in_display", "at": Vector3(-1.825, FLOOR_TOP + 0.05, 4.5), "heavy": false},
 	{"id": "on_mixer", "at": Vector3(0.9, 1.0, -6.0), "heavy": false},
 	{"id": "on_wardrobe", "at": Vector3(7.5, GameScale.FLOOR_HEIGHT + 2.0, 3.0), "heavy": false},
 	{"id": "in_chest", "at": Vector3(-1.2, GameScale.FLOOR_HEIGHT + 0.05, 6.3), "heavy": true},
@@ -77,6 +93,18 @@ var customers: Array[BakeryCustomer] = []
 var complaint_bar: ProgressBar
 var _build: PlaceBuilder
 var _customer_wait := FIRST_CUSTOMER
+## Same seed, same draw: which loaf hides the ring and where the extras go. 0 draws one.
+@export var case_seed := 0
+var loaves: Array[Bread] = []
+var cakes: Array[Ornament] = []
+var ring: Evidence
+var ring_loaf := 0
+var extras: Array[Evidence] = []
+var extra_spots: Array = []
+var till: Till
+## Fines for broken loaves and cakes.
+var fines := 0
+var broken_goods := 0
 var _looks := 0
 @onready var car: PatrolCar = $PatrolCar
 
@@ -98,6 +126,10 @@ func _ready() -> void:
 	add_child(city_map)
 	city_map.setup(city, "bakery", car)
 	_add_baker()
+	if case_seed == 0:
+		case_seed = randi() | 1
+	_place_goods()
+	_place_ring_story()
 
 
 func _add_baker() -> void:
@@ -157,6 +189,60 @@ func add_customer() -> BakeryCustomer:
 	customer.bumped.connect(scare_customers)
 	customer.gone.connect(func() -> void: customers.erase(customer))
 	return customer
+
+
+## The 40 loaves and the cakes, all fragile; the till with the bakehouse key.
+func _place_goods() -> void:
+	var places: Array[Vector3] = []
+	for y: float in WEST_SHELVES:
+		for i in WEST_LOAVES:
+			places.append(Vector3(WEST_SHELF_X, y + 0.025 + LOAF_HALF_HEIGHT, 2.5 + i * 0.6))
+	for y: float in RACK_SHELVES:
+		for i in RACK_LOAVES:
+			places.append(Vector3(RACK_X - 0.8 + i * 0.4, y + 0.025 + LOAF_HALF_HEIGHT, RACK_Z))
+	for x: float in [1.6, 2.2]:
+		places.append(Vector3(x, COUNTER_TOP + LOAF_HALF_HEIGHT, 3.5))
+	for at in places:
+		var loaf: Bread = BREAD_SCENE.instantiate()
+		loaf.position = at
+		# Loaves on the west shelf lie along the shelf, the others along x.
+		loaf.rotation.y = PI / 2 if at.x < 0.0 else 0.0
+		add_child(loaf)
+		loaf.broken.connect(_on_goods_broken)
+		loaves.append(loaf)
+	for x: float in [-2.15, -1.5, -0.85]:
+		var cake: Ornament = CAKE_SCENE.instantiate()
+		cake.position = Vector3(x, FLOOR_TOP + 0.05 + 0.09, 4.5)
+		add_child(cake)
+		cake.broken.connect(_on_goods_broken)
+		cakes.append(cake)
+	till = Till.new()
+	till.position = Vector3(5.2, COUNTER_TOP + Till.SIZE.y / 2, 3.5)
+	add_child(till)
+	till.opened.connect(func(at: Vector3) -> void: baker.saw(at, Baker.SAW_TILL))
+
+
+## The ring hides in one loaf; the jewelry bag and the pawn receipt in two hiding spots.
+func _place_ring_story() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 31 + 7
+	ring_loaf = rng.randi_range(0, loaves.size() - 1)
+	ring = RING_SCENE.instantiate()
+	loaves[ring_loaf].stuff(ring)
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	extra_spots = HidingDraw.draw(case_seed, spot_heavy, [false, false], 1).spots
+	for i in EXTRA_SCENES.size():
+		var item: Evidence = EXTRA_SCENES[i].instantiate()
+		item.position = SPOTS[extra_spots[i]].at + Vector3.UP * (EXTRA_HALF_HEIGHTS[i] + 0.01)
+		add_child(item)
+		extras.append(item)
+
+
+func _on_goods_broken(at: Vector3) -> void:
+	broken_goods += 1
+	fines += Bread.FINE
+	if baker.saw(at, Baker.SAW_BREAK):
+		scare_customers()
 
 
 ## Everyone in the shop runs out without paying, and no one comes in for a while.
@@ -220,18 +306,14 @@ func _build_shell() -> void:
 func _build_shop() -> void:
 	_build.wall("x", SHOP_BACK, -HALF_X, HALF_X, 0, [BAKEHOUSE_DOOR_X], INSIDE)
 	_build.open_box(Vector3(3.5, FLOOR_TOP, 3.5), Vector3(5.0, 1.0, 0.7), "-z", WOOD)
-	_build.box(Vector3(5.2, 1.15, 3.5), Vector3(0.5, 0.3, 0.4), STEEL)
 	_build.open_box(Vector3(-1.5, FLOOR_TOP, 4.5), Vector3(2.0, 1.1, 0.8), "top", GLASS)
-	for x: float in [-2.1, -1.5, -0.9]:
-		var cake := CylinderMesh.new()
-		cake.top_radius = 0.22
-		cake.bottom_radius = 0.22
-		cake.height = 0.25
-		_build.mesh(cake, Vector3(x, FLOOR_TOP + 0.18, 4.5), CAKE)
-	for y: float in [0.4, 1.0, 1.6]:
-		_build.box(Vector3(-7.55, y, 4.0), Vector3(0.6, 0.05, 4.0), WOOD)
-		for z: float in [2.6, 3.4, 4.2, 5.0]:
-			_build.mesh(_loaf(), Vector3(-7.55, y + 0.12, z), BREAD, Vector3(0, 0, PI / 2))
+	for y: float in WEST_SHELVES:
+		_build.box(Vector3(WEST_SHELF_X, y, 4.0), Vector3(0.6, 0.05, 4.0), WOOD)
+	# The bread rack behind the counter, against the wall to the bakehouse.
+	for y: float in RACK_SHELVES:
+		_build.box(Vector3(RACK_X, y, RACK_Z), Vector3(2.0, 0.05, 0.5), WOOD)
+	for x: float in [RACK_X - 1.0, RACK_X + 1.0]:
+		_build.box(Vector3(x, 1.1, RACK_Z), Vector3(0.05, 2.1, 0.5), WOOD)
 	_build.light(Vector3(0, 2.2, 4.0))
 	_build.light(Vector3(-5, 2.2, 4.0))
 
@@ -273,9 +355,3 @@ func _build_flat() -> void:
 	_build.light(Vector3(-4.0, up + 2.2, 0.0))
 	_build.light(Vector3(4.0, up + 2.2, 0.0))
 
-
-func _loaf() -> Mesh:
-	var loaf := CapsuleMesh.new()
-	loaf.radius = 0.1
-	loaf.height = 0.35
-	return loaf

@@ -17,6 +17,11 @@ const STRUCK := 15.0
 const DOOR_BROKEN := 5.0
 ## Each customer that runs away without paying.
 const CUSTOMER_FLED := 5.0
+## Seeing a loaf or a cake broken, and seeing someone open her till.
+const SAW_BREAK := 10.0
+const SAW_TILL := 10.0
+const SIGHT_RANGE := 8.0
+const EYE := 1.4
 ## The meter drops one point every DECAY_EVERY seconds while nothing happens.
 const DECAY_EVERY := 5.0
 const STRUCK_COOLDOWN := 1.0
@@ -159,6 +164,22 @@ func struck() -> bool:
 func door_broken() -> void:
 	_raise(DOOR_BROKEN)
 	_say("BAKER_DOOR")
+
+
+## Something happened at `at` (a loaf split, the till opened): it counts if she can see it.
+func saw(at: Vector3, points: float) -> bool:
+	var eye := global_position + Vector3.UP * EYE
+	if eye.distance_to(at) > SIGHT_RANGE:
+		return false
+	var query := PhysicsRayQueryParameters3D.create(eye, at, 1)
+	query.exclude = [get_rid()]
+	var hit := get_world_3d().direct_space_state.intersect_ray(query)
+	# What blocks the view only counts if it's something in between, not the thing she's looking at.
+	if not hit.is_empty() and (hit.position as Vector3).distance_to(at) > 0.4:
+		return false
+	_raise(points)
+	_say("BAKER_SAW")
+	return true
 
 
 func customer_fled() -> void:
