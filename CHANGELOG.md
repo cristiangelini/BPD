@@ -92,3 +92,4 @@
 - Online armory: the host's cash box decides, a guest's list shows the host's money, and the ram, the gloves, the donut box (in the asking cop's hands) and the wheelbarrow show on every PC; eating a donut happens everywhere.
 - Online wheelbarrow: pushing, loading, parking and tipping it over happen on every PC, and what spills out is still moved by the host.
 - Online: whoever talks to the comisario gives the tip on every PC, also to a friend who joins after it.
+- Interrogation wing behind the station: a door in the comisario's office leads to a hall, a movie interrogation room (steel table, chairs, a single hanging lamp, clock, camera, "no smoking" sign) and the observation room behind a one-way mirror.

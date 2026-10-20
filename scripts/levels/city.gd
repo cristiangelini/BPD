@@ -21,6 +21,10 @@ const POLE := Color(0.25, 0.27, 0.3)
 const STATION_WALL := Color(0.78, 0.84, 0.9)
 const STATION_FLOOR := Color(0.62, 0.66, 0.7)
 const BARS := Color(0.25, 0.27, 0.3)
+## The interrogation wing inside: grey-green concrete and a dark floor, like in the movies.
+const CONCRETE := Color(0.42, 0.46, 0.43)
+const WING_FLOOR := Color(0.3, 0.31, 0.32)
+const LAMP_LIGHT := Color(1.0, 0.92, 0.75)
 const HEDGE_HEIGHT := 2.5
 
 ## The place whose case is on today: its own scene builds it, so the city leaves its lot empty.
@@ -68,6 +72,7 @@ func _build() -> void:
 			p.id == "grandpa", p.id == "station")
 		if p.id == "station":
 			_station_inside(root, p.size)
+			_interrogation_wing(root, p.color)
 	for lot: Dictionary in CityLayout.fillers():
 		_building(lot.block, lot.side, lot.along, lot.size, lot.color, "", false,
 			CityLayout.barrio_kind(lot.block) == "house")
@@ -171,7 +176,8 @@ func _building(block: Vector2i, side: String, along: float, size: Vector3, color
 func _shell(size: Vector3, color: Color, root: Node3D) -> void:
 	var half := Vector3(size.x, 0, size.z) / 2
 	var wall := StationRooms.WALL
-	_box(Vector3(0, size.y / 2, -half.z + wall / 2), Vector3(size.x, size.y, wall), color, root)
+	for piece: Array in StationRooms.back_wall(size.y):
+		_box(piece[0] + Vector3(0, 0, wall / 2), piece[1], color, root)
 	for s: float in [-1.0, 1.0]:
 		_box(Vector3(s * (half.x - wall / 2), size.y / 2, 0), Vector3(wall, size.y, size.z), color, root)
 	for piece: Array in StationRooms.front_wall(size.y):
@@ -185,7 +191,8 @@ func _station_inside(root: Node3D, size: Vector3) -> void:
 	_mesh_box(Vector3(0, 0.04, 0), Vector3(size.x - 0.4, 0.02, size.z - 0.4), STATION_FLOOR, root)
 	# The facade's color stays outside: the outside walls get a light lining up to the ceiling.
 	var lining := Vector3(size.x / 2 - StationRooms.WALL - 0.01, StationRooms.CEILING / 2, size.z / 2 - StationRooms.WALL - 0.01)
-	_mesh_box(Vector3(0, lining.y, -lining.z), Vector3(size.x, StationRooms.CEILING, 0.01), STATION_WALL, root)
+	for piece: Array in StationRooms.back_wall(StationRooms.CEILING):
+		_mesh_box(piece[0] + Vector3(0, 0, StationRooms.WALL + 0.01), Vector3(piece[1].x, piece[1].y, 0.01), STATION_WALL, root)
 	for s: float in [-1.0, 1.0]:
 		_mesh_box(Vector3(s * lining.x, lining.y, 0), Vector3(0.01, StationRooms.CEILING, size.z), STATION_WALL, root)
 	for piece: Array in StationRooms.front_wall(StationRooms.CEILING):
@@ -197,19 +204,7 @@ func _station_inside(root: Node3D, size: Vector3) -> void:
 		_box(piece[0], piece[1], BARS, root)
 	for piece: Array in StationRooms.closed_doors():
 		_box(piece[0], piece[1], DOOR, root)
-	for item: Array in StationRooms.FURNITURE:
-		var model: Node3D = load("res://assets/models/%s.glb" % item[0]).instantiate()
-		model.position = item[1]
-		model.rotation.y = item[2]
-		root.add_child(model)
-		var solid: Vector3 = StationRooms.SOLID[item[0]]
-		var body := _body(item[1] + Vector3(0, solid.y / 2, 0), root)
-		body.rotation.y = item[2]
-		var shape := CollisionShape3D.new()
-		var box := BoxShape3D.new()
-		box.size = solid
-		shape.shape = box
-		body.add_child(shape)
+	_furniture(StationRooms.FURNITURE, StationRooms.SOLID, root)
 	for at: Vector3 in StationRooms.lights():
 		var light := OmniLight3D.new()
 		light.position = at
@@ -226,6 +221,111 @@ func _station_inside(root: Node3D, size: Vector3) -> void:
 	armero.position = StationRooms.ARMERO_AT
 	armero.rotation.y = PI / 2
 	root.add_child(armero)
+
+
+## The interrogation wing behind the station (interrogatorio.md): outside walls in the station's color, concrete
+## inside, the one-way mirror (a mirror from the interrogation room, dark glass from the observation room), the
+## furniture, a dim light in the hall and the observation room, and only the hanging lamp over the table.
+func _interrogation_wing(root: Node3D, color: Color) -> void:
+	var wall := StationRooms.WALL
+	var ceiling := StationRooms.CEILING
+	var depth := InterrogationWing.FROM_Z - InterrogationWing.TO_Z
+	var middle := (InterrogationWing.FROM_Z + InterrogationWing.TO_Z) / 2
+	var width := InterrogationWing.HALF_X * 2
+	for piece: Array in InterrogationWing.shell():
+		_box(piece[0], piece[1], color, root)
+	_mesh_box(Vector3(0, 0.04, middle), Vector3(width - 0.4, 0.02, depth - 0.2), WING_FLOOR, root)
+	_box(Vector3(0, ceiling + 0.1, middle), Vector3(width, 0.2, depth), CONCRETE, root)
+	var inner := InterrogationWing.HALF_X - wall - 0.01
+	for s: float in [-1.0, 1.0]:
+		_mesh_box(Vector3(s * inner, ceiling / 2, middle), Vector3(0.01, ceiling, depth), CONCRETE, root)
+	_mesh_box(Vector3(0, ceiling / 2, InterrogationWing.TO_Z + wall + 0.01), Vector3(width, ceiling, 0.01), CONCRETE, root)
+	for piece: Array in StationRooms.back_wall(ceiling):
+		_mesh_box(piece[0] + Vector3(0, 0, -0.01), Vector3(piece[1].x, piece[1].y, 0.01), CONCRETE, root)
+	for piece: Array in InterrogationWing.walls():
+		_box(piece[0], piece[1], CONCRETE, root)
+	_mirror(root)
+	var sign := Label3D.new()
+	sign.text = "SIGN_NO_SMOKING"
+	sign.font_size = 48
+	sign.pixel_size = 0.01
+	sign.modulate = Color(0.85, 0.2, 0.15)
+	sign.position = InterrogationWing.SIGN_AT
+	sign.rotation.y = -PI / 2
+	root.add_child(sign)
+	_furniture(InterrogationWing.FURNITURE, InterrogationWing.SOLID, root)
+	for at: Vector3 in InterrogationWing.lights():
+		var light := OmniLight3D.new()
+		light.position = at
+		light.light_color = Color(0.8, 0.9, 1.0)
+		light.light_energy = 0.35
+		light.omni_range = 6.0
+		root.add_child(light)
+	var lamp := SpotLight3D.new()
+	lamp.name = "InterrogationLamp"
+	lamp.position = InterrogationWing.LAMP_AT + Vector3.DOWN * 1.05
+	lamp.rotation.x = -PI / 2
+	lamp.light_color = LAMP_LIGHT
+	lamp.light_energy = 6.0
+	lamp.spot_range = 4.0
+	lamp.spot_angle = 38.0
+	lamp.shadow_enabled = true
+	root.add_child(lamp)
+
+
+## The one-way mirror: it stops you like glass, reflects the interrogation room and lets the observers see through.
+func _mirror(root: Node3D) -> void:
+	var pane: Array = InterrogationWing.mirror()
+	var body := _body(pane[0], root)
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = pane[1]
+	shape.shape = box
+	body.add_child(shape)
+	var size := Vector2(pane[1].z, pane[1].y)
+	var mirror := StandardMaterial3D.new()
+	mirror.albedo_color = Color(0.55, 0.58, 0.6)
+	mirror.metallic = 1.0
+	mirror.roughness = 0.03
+	var glass := StandardMaterial3D.new()
+	glass.albedo_color = Color(0.05, 0.07, 0.08, 0.3)
+	glass.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	for side: float in [1.0, -1.0]:
+		var quad := QuadMesh.new()
+		quad.size = size
+		quad.orientation = PlaneMesh.FACE_X
+		quad.flip_faces = side < 0
+		var face := MeshInstance3D.new()
+		face.name = "Mirror" if side > 0 else "ObservationGlass"
+		face.mesh = quad
+		face.material_override = mirror if side > 0 else glass
+		face.position = pane[0] + Vector3(side * 0.03, 0, 0)
+		root.add_child(face)
+	var probe := ReflectionProbe.new()
+	probe.position = Vector3((InterrogationWing.MIRROR_X + InterrogationWing.HALF_X) / 2, 1.5, (InterrogationWing.HALL_Z + InterrogationWing.TO_Z) / 2)
+	probe.size = Vector3(InterrogationWing.HALF_X - InterrogationWing.MIRROR_X, StationRooms.CEILING, InterrogationWing.HALL_Z - InterrogationWing.TO_Z)
+	probe.box_projection = true
+	probe.interior = true
+	root.add_child(probe)
+
+
+## Furniture models with a box to bump into when it has a footprint in `solids`.
+func _furniture(items: Array, solids: Dictionary, root: Node3D) -> void:
+	for item: Array in items:
+		var model: Node3D = load("res://assets/models/%s.glb" % item[0]).instantiate()
+		model.position = item[1]
+		model.rotation.y = item[2]
+		root.add_child(model)
+		if not solids.has(item[0]):
+			continue
+		var solid: Vector3 = solids[item[0]]
+		var body := _body(item[1] + Vector3(0, solid.y / 2, 0), root)
+		body.rotation.y = item[2]
+		var shape := CollisionShape3D.new()
+		var box := BoxShape3D.new()
+		box.size = solid
+		shape.shape = box
+		body.add_child(shape)
 
 
 ## Traffic light and street name sign on the north-east corner of an inner crossing.

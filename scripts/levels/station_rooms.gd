@@ -4,7 +4,7 @@ extends RefCounted
 ## The police station inside (docs/diseno/comisaria.md, "Cómo es por dentro"): one floor in the 30 x 18 m building of
 ## the city, front to +Z. The front row has the armory (west, behind a barred counter), the guard room where the cops
 ## appear (middle) and the cells (east); the back row has the board room (closed for now), the comisario's office and
-## the break room. Local coordinates of the building, with its middle on the ground. Pure data, so tests can check it
+## the break room, and a door in the office's back wall leads to the interrogation wing (InterrogationWing). Local coordinates of the building, with its middle on the ground. Pure data, so tests can check it
 ## without a scene. Every number here is (propuesta).
 
 const HALF_X := 15.0
@@ -63,19 +63,26 @@ const SOLID := {
 ## The outside walls (the facade) are built by the city with their full height.
 static func walls() -> Array:
 	var pieces := []
-	_run(pieces, "x", SPLIT_Z, -HALF_X, HALF_X, [BOARD_DOOR, OFFICE_DOOR, BREAK_DOOR])
-	_run(pieces, "z", -FRONT_X, SPLIT_Z, HALF_Z, [COUNTER])
-	_run(pieces, "z", FRONT_X, SPLIT_Z, HALF_Z, [CELLS_DOOR])
-	_run(pieces, "z", -BACK_X, -HALF_Z, SPLIT_Z, [])
-	_run(pieces, "z", BACK_X, -HALF_Z, SPLIT_Z, [])
-	_run(pieces, "z", CELL_SPLIT_X, SPLIT_Z, CELL_FRONT_Z, [])
+	run(pieces, "x", SPLIT_Z, -HALF_X, HALF_X, [BOARD_DOOR, OFFICE_DOOR, BREAK_DOOR])
+	run(pieces, "z", -FRONT_X, SPLIT_Z, HALF_Z, [COUNTER])
+	run(pieces, "z", FRONT_X, SPLIT_Z, HALF_Z, [CELLS_DOOR])
+	run(pieces, "z", -BACK_X, -HALF_Z, SPLIT_Z, [])
+	run(pieces, "z", BACK_X, -HALF_Z, SPLIT_Z, [])
+	run(pieces, "z", CELL_SPLIT_X, SPLIT_Z, CELL_FRONT_Z, [])
 	return pieces
 
 
 ## The front wall, split around the door, as [center, size] pieces of the given height.
 static func front_wall(height: float) -> Array:
 	var pieces := []
-	_run(pieces, "x", HALF_Z, -HALF_X, HALF_X, [FRONT_DOOR], height)
+	run(pieces, "x", HALF_Z, -HALF_X, HALF_X, [FRONT_DOOR], height)
+	return pieces
+
+
+## The back wall, split around the door to the interrogation wing (InterrogationWing), as [center, size] pieces.
+static func back_wall(height: float) -> Array:
+	var pieces := []
+	run(pieces, "x", -HALF_Z, -HALF_X, HALF_X, [InterrogationWing.OFFICE_DOOR], height)
 	return pieces
 
 
@@ -118,7 +125,7 @@ static func lights() -> Array[Vector3]:
 
 ## Wall pieces along x (at z = fixed) or along z (at x = fixed) from `from` to `to`, leaving the gaps open
 ## (with a lintel over each doorway up to the ceiling).
-static func _run(pieces: Array, along: String, fixed: float, from: float, to: float, gaps: Array, height := CEILING) -> void:
+static func run(pieces: Array, along: String, fixed: float, from: float, to: float, gaps: Array, height := CEILING) -> void:
 	var start := from
 	for gap: Vector2 in gaps:
 		_piece(pieces, along, fixed, start, gap.x, 0.0, height)

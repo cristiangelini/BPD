@@ -100,6 +100,7 @@ La puerta da a la calle, frente al estacionamiento del patrullero.
 | **Atrás** | **Sala del tablero** (cerrada por ahora) | **Oficina del comisario**, con su escritorio lleno de papeles | **Sala de descanso**, con otra máquina de café |
 
 Los muebles son placeholders low poly de `tools/modelgen/models/station.js`; la planta está en `StationRooms`.
+Atrás de la oficina del comisario, una puerta lleva al ala de interrogatorios ([interrogatorio.md](interrogatorio.md)).
 
 ## Atajos del panel de pruebas
 - Saltar al turno N con la caja en X.
