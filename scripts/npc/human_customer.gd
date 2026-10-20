@@ -24,6 +24,8 @@ const TOWEL_SCALE := 1.4
 var route: Array[Vector3] = []
 var state := State.ENTERING
 var towel: Node3D
+## Which of the bakery customers' models they wear (-1: drawn from their place in the salon).
+var look := -1
 var _next := 0
 var _left := 0.0
 
@@ -38,7 +40,9 @@ func _ready() -> void:
 	shape.shape = capsule
 	shape.position.y = 0.85
 	add_child(shape)
-	var model: Node3D = BakeryCustomer.MODELS[get_index() % BakeryCustomer.MODELS.size()].instantiate()
+	if look < 0:
+		look = get_index() % BakeryCustomer.MODELS.size()
+	var model: Node3D = BakeryCustomer.MODELS[look].instantiate()
 	model.scale = Vector3.ONE * 0.95
 	add_child(model)
 	towel = TOWEL_MODEL.instantiate()
@@ -65,6 +69,15 @@ func use(_cop: Cop) -> void:
 ## Ramiro throws the towel over them.
 func cover() -> void:
 	towel.show()
+
+
+## Online: whether the towel is on, for the guests' copies (NpcSync).
+func net_state() -> Variant:
+	return towel.visible
+
+
+func apply_net_state(towel_on: Variant) -> void:
+	towel.visible = towel_on
 
 
 func _physics_process(delta: float) -> void:

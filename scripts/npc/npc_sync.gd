@@ -4,7 +4,7 @@ extends Node
 ## Keeps the level's people and animals the same on every PC (docs/diseno/online.md, "Qué se sincroniza"): the host
 ## runs them (where they walk, what they say, how annoyed they are) and sends it about 15 times a second; on the
 ## guests they are puppets that only follow. Only the host brings new ones in (the bakery's customers): the guests
-## make a copy from the same scene. Lives under the Net autoload as "Npcs".
+## make a copy from the same scene (or script). Lives under the Net autoload as "Npcs".
 
 const SEND_RATE := 15.0
 const EASE := 12.0
@@ -14,7 +14,8 @@ const PER_PACKET := 12
 
 var net: Node
 var npcs: Array[Node3D] = []
-## Index -> state last sent (host) or to follow (guests): [transform, bubble text, bubble shown, complaint, story].
+## Index -> state last sent (host) or to follow (guests): [transform, bubble text, bubble shown, complaint, story,
+## what else the NPC needs (net_state())].
 var _sent := {}
 var _targets := {}
 var _gone := {}
@@ -35,7 +36,8 @@ func _init(owner_net: Node, level: Node) -> void:
 
 
 static func is_npc(node: Node) -> bool:
-	return node is Grandpa or node is Baker or node is BakeryCustomer or node is Pigeon
+	return node is Grandpa or node is Baker or node is BakeryCustomer or node is Pigeon or node is DogGroomer \
+		or node is PoodleLady or node is HumanCustomer or node is Gossip or node is Neighbor
 
 
 func _ready() -> void:
@@ -87,7 +89,8 @@ func _state_of(npc: Node3D) -> Array:
 	var bubble := npc.get_node_or_null("Bubble") as Label3D
 	return [npc.global_transform, bubble.text if bubble else "", bubble.visible if bubble else false,
 		npc.get("complaint") if "complaint" in npc else 0.0,
-		npc.is_telling_story() if npc.has_method("is_telling_story") else false]
+		npc.is_telling_story() if npc.has_method("is_telling_story") else false,
+		npc.net_state() if npc.has_method("net_state") else null]
 
 
 func _send() -> void:
@@ -144,6 +147,8 @@ func _apply(index: int, state: Array) -> void:
 	# The story ended on the host (it ran out of time): the listening cop is free again here too.
 	if npc.has_method("is_telling_story") and npc.is_telling_story() and not state[4]:
 		npc.end_story()
+	if state.size() > 5 and npc.has_method("apply_net_state"):
+		npc.apply_net_state(state[5])
 
 
 @rpc("authority", "call_remote", "reliable")
@@ -172,7 +177,9 @@ func _announce(index: int) -> void:
 	var npc := npc_at(index)
 	if not npc:
 		return
-	_spawned[index] = [npc.scene_file_path, npc.get("look") if "look" in npc else 0]
+	# One made in code (the salon's human customers) is copied from its script.
+	var source: String = npc.scene_file_path if npc.scene_file_path != "" else (npc.get_script() as Script).resource_path
+	_spawned[index] = [source, npc.get("look") if "look" in npc else 0]
 	for peer: int in net.scene_peers:
 		_made.rpc_id(peer, index, _spawned[index][0], _spawned[index][1])
 
@@ -183,7 +190,10 @@ func _made(index: int, scene: String, look: int) -> void:
 		npcs.append(null)
 	if npcs[index] or _gone.has(index) or scene == "" or not ResourceLoader.exists(scene):
 		return
-	var npc := (load(scene) as PackedScene).instantiate() as Node3D
+	var made: Variant = load(scene)
+	var npc: Node3D = (made as PackedScene).instantiate() if made is PackedScene else (made as Script).new()
+	if not npc.has_method("set_look") and "look" in npc:
+		npc.set("look", look)
 	_adding = npc
 	_level.add_child(npc)
 	_adding = null

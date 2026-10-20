@@ -43,7 +43,8 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 | Objetos con física (cajas, evidencia, adornos, panes) | Anfitrión | Posición y giro copiados; los rotos se rompen en todos |
 | Puertas, cajones, caja fuerte, baúl del patrullero | Anfitrión | Su estado (abierta, rota, combinación) |
 | Patrullero | Anfitrión, con los controles que le manda el que maneja **(propuesta)**: así lo que va en el baúl viaja con el auto en todas las PCs | Copia suavizada; los de adentro viajan con él |
-| NPC (abuelo, vecina, Marta, clientes, Michi, palomas) | Anfitrión | Posición, animación y lo que dicen |
+| NPC (abuelo, vecina, chismosa, Marta, clientes, Michi, palomas, Ramiro, la señora del caniche y los clientes de la peluquería) | Anfitrión | Posición, animación, lo que dicen, la denuncia y la toalla del cliente |
+| Perros, gatos y tortugas | Anfitrión, como objetos | Se mueven solos solo en la PC del anfitrión; en las otras siguen su copia |
 | Caso (historia, pistas, sospecha marcada, entrega, denuncia, multas) | Anfitrión | La lista de Q y los avisos iguales para todos |
 | Plata, ítems y turno | Anfitrión | La pantalla de fin de turno igual para todos |
 
