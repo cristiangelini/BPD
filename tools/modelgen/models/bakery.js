@@ -146,12 +146,53 @@ export function buildCouplePhotos() {
 	return b.build();
 }
 
+// A sweet bread for the lottery: a round dome 0.22 m wide and 0.14 m tall, glazed, with sugar pearls on top.
+export function buildSweetBread() {
+	const b = new Builder('sweet_bread');
+	b.add('bread', crust(), new THREE.CylinderGeometry(0.11, 0.105, 0.07, 12), { pos: V(0, -0.035, 0) });
+	b.add('bread', crust(), ellipsoid(0.11, 0.07, 0.11, 12, 6), { pos: V(0, 0.0, 0) });
+	b.add('glaze', mat('glaze', 0xc8782a, { emissive: 0x201004 }), ellipsoid(0.095, 0.03, 0.095, 10, 4), { pos: V(0, 0.045, 0) });
+	for (let i = 0; i < 7; i++) {
+		const turn = i * 0.9;
+		b.add('sugar', mat('sugar', 0xfafafa), ellipsoid(0.008, 0.006, 0.008, 4, 3), { pos: V(Math.cos(turn) * 0.075, 0.055, Math.sin(turn) * 0.075) });
+	}
+	return b.build();
+}
+
+// Half a sweet bread, split open: 0.11 x 0.14 x 0.22 m, the crumb facing +x, with candied fruit.
+export function buildSweetBreadHalf() {
+	const b = new Builder('sweet_bread_half');
+	b.add('bread', crust(), ellipsoid(0.055, 0.07, 0.11, 8, 6), { pos: V(-0.0, 0, 0) });
+	b.add('bread', crumb(), new THREE.CylinderGeometry(0.09, 0.09, 0.012, 10), { pos: V(0.05, 0, 0), rot: [0, 0, Math.PI / 2], scale: [0.7, 1, 1] });
+	for (const [y, z, c] of [[0.02, 0.03, 0xd82020], [-0.02, -0.03, 0x3ab040], [0.01, -0.05, 0xf2a020]]) b.add('fruit', mat('fruit_' + c.toString(16), c), new THREE.BoxGeometry(0.004, 0.012, 0.012), { pos: V(0.057, y, z) });
+	return b.build();
+}
+
+// The winning lottery ticket: a 0.06 x 0.1 m slip, golden with red numbers.
+export function buildLotteryTicket() {
+	const b = new Builder('lottery_ticket');
+	b.add('paper', mat('ticket', 0xf2d860, { emissive: 0x2a2005 }), new THREE.BoxGeometry(0.06, 0.003, 0.1));
+	for (let i = 0; i < 3; i++) b.add('ink', mat('ticket_ink', 0xc82020), new THREE.BoxGeometry(0.04, 0.002, 0.008), { pos: V(0, 0.0025, -0.03 + i * 0.03) });
+	return b.build();
+}
+
+// The list of numbers: a 0.15 x 0.21 m sheet with ten numbered lines and one circled in red.
+export function buildNumberList() {
+	const b = new Builder('number_list');
+	b.add('paper', mat('list_paper', 0xf4efd8), new THREE.BoxGeometry(0.15, 0.004, 0.21));
+	for (let i = 0; i < 10; i++) b.add('ink', mat('list_ink', 0x2a2a3a), new THREE.BoxGeometry(0.06 + (i % 3) * 0.015, 0.002, 0.006), { pos: V(0.0, 0.003, -0.09 + i * 0.02) });
+	b.add('ink', mat('list_circle', 0xd83a3a), new THREE.TorusGeometry(0.022, 0.0025, 4, 12), { pos: V(-0.045, 0.004, -0.01), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
 export const models = {
 	bread_loaf: buildLoaf, bread_half: buildHalfLoaf, bakery_cake: buildCake,
 	stolen_ring: buildRing, jewelry_bag: buildJewelryBag, pawn_receipt: buildPawnReceipt,
 	flour_sack: buildFlourSack, pepper_sack: buildPepperSack, victim_list: buildVictimList, funnel: buildFunnel,
 	sourdough_jar: buildSourdoughJar, contest_medal: buildContestMedal,
 	deposit_book: buildDepositBook, wedding_cake_sample: () => buildCardboardCake(), couple_photos: buildCouplePhotos,
+	sweet_bread: buildSweetBread, sweet_bread_half: buildSweetBreadHalf, lottery_ticket: buildLotteryTicket,
+	number_list: buildNumberList,
 };
 
 export const views = {
@@ -180,5 +221,12 @@ export const views = {
 			{ name: 'couple_photos', pos: [0.2, 0.01, 0.4], rotY: -0.3 },
 		],
 		cam: { pos: [0, 0.9, 1.4], target: [0, 0.15, 0.1], fov: 38 },
+	},
+	lottery_goods: {
+		items: [
+			{ name: 'sweet_bread', pos: [-0.25, 0.07, 0], rotY: 0 }, { name: 'sweet_bread_half', pos: [0.05, 0.07, 0.05], rotY: 0.5 },
+			{ name: 'lottery_ticket', pos: [0.25, 0.01, 0.25], rotY: -0.3 }, { name: 'number_list', pos: [-0.2, 0.01, 0.35], rotY: 0.2 },
+		],
+		cam: { pos: [0, 0.8, 1.2], target: [0, 0.05, 0.1], fov: 36 },
 	},
 };

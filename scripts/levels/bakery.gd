@@ -63,6 +63,15 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_SAMPLE_CAKE", "OBJ_EXTRA_PHOTOS"],
 		"rig": preload("res://scripts/case/bakery/wedding_rig.gd"),
 	},
+	"lottery": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_LOTTERY_B", "BRIEF_LOTTERY_C", "BRIEF_LOTTERY_D"],
+		"find": "OBJ_FIND_LOTTERY",
+		"hidden": [preload("res://scenes/props/number_list.tscn")],
+		"half_heights": [0.01],
+		"heavy": [false],
+		"extra_keys": ["OBJ_EXTRA_NUMBER_LIST"],
+		"rig": preload("res://scripts/case/bakery/lottery_rig.gd"),
+	},
 }
 const FLOUR_SCENE := preload("res://scenes/props/flour_sack.tscn")
 ## The storeroom's flour sacks: four on the floor and one on top. In the sneezing story one is the pepper sack.

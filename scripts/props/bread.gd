@@ -18,8 +18,14 @@ const FINE := 20
 const HALF_MODEL := preload("res://assets/models/bread_half.glb")
 const HALF_LIFE := 20.0
 
+## What a half looks like and its box (a sweet bread splits into round halves).
+@export var half_model: PackedScene = HALF_MODEL
+@export var half_size := Vector3(0.17, 0.13, 0.15)
+
 ## What it hides, kept out of the tree until the loaf breaks; null for a plain loaf.
 var filling: Node3D
+## Whether the filling gives itself away by its weight (a slip of paper doesn't).
+var feels_heavy := true
 var is_broken := false
 var _stretched := 0.0
 var _impacts := ImpactTracker.new()
@@ -30,9 +36,10 @@ func _ready() -> void:
 	max_contacts_reported = 4
 
 
-## Puts `item` inside: the loaf weighs that much more.
-func stuff(item: Node3D) -> void:
+## Puts `item` inside: the loaf weighs that much more, and with `heavy` it feels heavier when grabbed.
+func stuff(item: Node3D, heavy := true) -> void:
 	filling = item
+	feels_heavy = heavy
 	if item is RigidBody3D:
 		mass += (item as RigidBody3D).mass * 4.0
 
@@ -40,7 +47,7 @@ func stuff(item: Node3D) -> void:
 func hold(holder_id: int, point: Vector3) -> void:
 	var first := not holders.has(holder_id)
 	super.hold(holder_id, point)
-	if first and filling:
+	if first and filling and feels_heavy:
 		var grabber := instance_from_id(holder_id) as Node
 		if grabber and grabber.get_parent() is Cop:
 			(grabber.get_parent() as Cop).show_hint("HINT_HEAVY_BREAD")
@@ -124,14 +131,14 @@ func _half(side: float) -> Grabbable:
 	half.collision_mask = collision_mask
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
-	box.size = Vector3(0.17, 0.13, 0.15)
+	box.size = half_size
 	shape.shape = box
 	half.add_child(shape)
-	var look: Node3D = HALF_MODEL.instantiate()
+	var look: Node3D = half_model.instantiate()
 	look.rotation.y = PI if side < 0.0 else 0.0
 	half.add_child(look)
 	get_parent().add_child(half)
-	half.global_transform = global_transform.translated_local(Vector3(side * 0.1, 0, 0))
+	half.global_transform = global_transform.translated_local(Vector3(side * half_size.x * 0.6, 0, 0))
 	half.linear_velocity = global_basis.x * side * 0.8 + Vector3.UP * 0.5
 	half.get_tree().create_timer(HALF_LIFE).timeout.connect(half.queue_free)
 	return half

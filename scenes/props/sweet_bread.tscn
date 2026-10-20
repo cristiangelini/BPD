@@ -1,0 +1,22 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/props/bread.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/models/sweet_bread.glb" id="2"]
+[ext_resource type="PackedScene" path="res://assets/models/sweet_bread_half.glb" id="3"]
+
+[sub_resource type="CylinderShape3D" id="Shape"]
+height = 0.14
+radius = 0.11
+
+[node name="SweetBread" type="RigidBody3D"]
+collision_layer = 4
+collision_mask = 15
+mass = 0.5
+script = ExtResource("1")
+half_model = ExtResource("3")
+half_size = Vector3(0.11, 0.14, 0.22)
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+shape = SubResource("Shape")
+
+[node name="Model" parent="." instance=ExtResource("2")]

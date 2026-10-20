@@ -69,6 +69,12 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
 - **El teléfono:** está en la pared este del local. Suena a los 25 s y después cada 40 s; a los 2,5 s Marta atiende y habla 8 s con unos novios enojados. Cada llamada le sube 3 de denuncia.
 - Mientras habla deja sola la puerta del obrador (queda a unos 4,5 m) y no atiende la caja: es el momento para pasar.
 
+## La lotería del pan (cómo quedó, propuesta)
+- Los 10 panes dulces se enfrían en la mesa de amasar del obrador, en dos filas de 5, cada uno con su número del 1 al 10 en azúcar.
+- **El boleto premiado** (0,01 kg, 1500, de papel: no pierde valor con los golpes) está horneado adentro de uno, sorteado con la semilla. No pesa: el pan ganador no se nota al agarrarlo.
+- **La lista de números** (0,1 kg, 200) va en un escondite. Al agarrarla aparece "La lista tiene un número marcado con un círculo: el 7". Sin la lista, hay que partir panes al azar, y cada pan dulce roto es una multa de 20 (como los panes comunes).
+- El chismoso también acepta un pan dulce, y si es el ganador suelta el boleto.
+
 ## Lo que comparte con la casa del abuelo
 - La planilla con la denuncia anónima, las 3 sospechas y marcar la sospecha (1, 2 o 3 durante 2 s).
 - El medidor de denuncia, la distracción, el interrogatorio y las pistas que apuntan a cada sospecha.
