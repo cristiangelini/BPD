@@ -9,25 +9,31 @@ func after_each() -> void:
 	PlaceDraw.pending_seed = 0
 
 
-func test_both_places_come_up_about_half_the_time() -> void:
-	var count := {"grandpa": 0, "bakery": 0}
-	for i in 200:
+func test_every_place_comes_up_about_a_third_of_the_time() -> void:
+	var count := {"grandpa": 0, "bakery": 0, "groomer": 0}
+	for i in 300:
 		count[PlaceDraw.pick(i + 1, [])] += 1
-	assert_between(count.bakery, 70, 130, "even odds (propuesta)")
+	for place: String in count:
+		assert_between(count[place], 70, 130, "even odds for %s (propuesta)" % place)
 	assert_eq(PlaceDraw.pick(77, []), PlaceDraw.pick(77, []), "the same seed gives the same place for everyone")
 
 
 func test_every_story_of_each_place_still_comes_up() -> void:
 	var bakery := {}
 	var grandpa := {}
-	for i in 200:
+	var groomer := {}
+	for i in 300:
 		var case_seed := i + 1
-		if PlaceDraw.pick(case_seed, []) == "bakery":
-			bakery[Bakery.pick_story(case_seed, [])] = true
-		else:
-			grandpa[GrandpaHouse.pick_story(case_seed, []).id] = true
+		match PlaceDraw.pick(case_seed, []):
+			"bakery":
+				bakery[Bakery.pick_story(case_seed, [])] = true
+			"groomer":
+				groomer[Groomer.pick_story(case_seed, [])] = true
+			_:
+				grandpa[GrandpaHouse.pick_story(case_seed, []).id] = true
 	assert_eq(bakery.size(), Bakery.STORIES.size())
 	assert_eq(grandpa.size(), GrandpaHouse.STORIES.size())
+	assert_eq(groomer.size(), Groomer.STORIES.size())
 
 
 func test_new_seeds_are_odd_and_even() -> void:
@@ -43,6 +49,7 @@ func test_place_argument_forces_the_place() -> void:
 	for case_seed in [1, 3, 5, 7]:
 		assert_eq(PlaceDraw.pick(case_seed, ["--place=bakery"]), "bakery")
 		assert_eq(PlaceDraw.pick(case_seed, ["--place=grandpa"]), "grandpa")
+		assert_eq(PlaceDraw.pick(case_seed, ["--place=groomer"]), "groomer")
 	assert_eq(PlaceDraw.pick(9, ["--place=moon"]), PlaceDraw.pick(9, []), "an unknown place is ignored")
 
 
@@ -53,3 +60,12 @@ func test_the_level_takes_the_drawn_seed_once() -> void:
 	add_child_autofree(bakery)
 	assert_eq(bakery.case_seed, 41)
 	assert_eq(PlaceDraw.take_seed(), 0, "the next level draws its own")
+
+
+func test_the_pet_salon_takes_the_drawn_seed_too() -> void:
+	PlaceDraw.pending_seed = 43
+	var groomer: Groomer = preload("res://scenes/levels/groomer.tscn").instantiate()
+	groomer.get_node("Cop").input_enabled = false
+	add_child_autofree(groomer)
+	assert_eq(groomer.case_seed, 43)
+	assert_eq(groomer.story_id, Groomer.pick_story(43, []), "and its story comes from it")

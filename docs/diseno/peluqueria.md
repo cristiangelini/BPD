@@ -99,8 +99,9 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      la comisaría, hay 3 sospechas sorteadas entre las 6 historias (con su nota cada una), la planilla con Q, la barra
      de denuncia de Ramiro, multas por lo que se rompe, el patrullero y la pantalla del turno. Ramiro suelta dónde
      escondió 2 cosas de la historia y la señora, cuando recibe a Fifí, cuenta dónde lo vio esconder otra. Si Ramiro
-     llama al abogado se pierde el caso. Todavía no sale al tocar "Jugar" (se abre con el botón de prueba): entra al
-     sorteo cuando tenga más historias.
+     llama al abogado se pierde el caso.
+   - **En "Jugar" (propuesta):** con las 6 historias hechas, "Jugar" sortea entre la casa del abuelo, la panadería y
+     la peluquería, un tercio cada una, con la misma semilla del caso. El botón de prueba sigue como atajo.
    - **El concurso arreglado (propuesta):** Bizcocho, el perro marrón con escarapela azul, gana siempre el concurso
      del barrio porque Ramiro les regaló un peine de oro a los jurados. La copa (3 kg, 1000) va en un escondite grande;
      las fichas de los jurados (300) y el peine de oro (200) en cualquiera. Su pista: 3 fotos de "clientes felices" (en
