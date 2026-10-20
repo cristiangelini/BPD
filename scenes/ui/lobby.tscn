@@ -97,6 +97,12 @@ custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 theme_override_constants/separation = 8
 
+[node name="VoiceOpen" type="CheckBox" parent="Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "LOBBY_VOICE_OPEN"
+
 [node name="StartButton" type="Button" parent="Box"]
 unique_name_in_owner = true
 visible = false

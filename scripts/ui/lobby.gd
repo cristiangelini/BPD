@@ -53,6 +53,9 @@ func _ready() -> void:
 		Campaign.current = Campaign.load_saved()
 		Net.start_match())
 	%BackButton.pressed.connect(_on_back_pressed)
+	# Until there is an Options screen, the voice setting lives here, where it matters (voz.md).
+	%VoiceOpen.button_pressed = Net.voice.always_open
+	%VoiceOpen.toggled.connect(Net.voice.set_always_open)
 	Net.players_changed.connect(_refresh)
 	Net.session_ended.connect(_on_session_ended)
 	Net.in_match = false

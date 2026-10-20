@@ -59,4 +59,4 @@ Un PR chico por paso, cada uno con sus pruebas GUT.
 4. **Objetos y física:** agarrar, cargar entre varios, tirar, romper, puertas, cajones y patrullero.
 5. **NPC y el caso:** NPC, pistas, sospechas, entrega y la pantalla de fin de turno para todos.
 6. **Guardado entre turnos:** plata, ítems y casos que siguen.
-7. **Voz por proximidad** con la voz de Steam.
+7. **Voz por proximidad** con la voz de Steam ([voz.md](voz.md)).
