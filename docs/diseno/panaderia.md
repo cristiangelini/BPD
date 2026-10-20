@@ -36,6 +36,15 @@ Cada una tiene una evidencia principal (sin ella no hay caso), 1 o 2 extras, un 
 
 Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y los extras suman entre 300 y 600.
 
+## El anillo en el pan (cómo quedó, propuesta)
+- **Los 40 panes:** 18 en los estantes de la pared oeste, 20 en el estante detrás del mostrador y 2 sobre el mostrador. El anillo está adentro de uno, sorteado con la semilla.
+- **Partir un pan:** no hay botón. Se parte si lo estiran: dos policías tirando cada uno de una punta, o uno solo tirando mientras el pan está trabado contra algo. Cargarlo corriendo no lo parte.
+- **Aplastar:** un golpe fuerte (más de 4,5 m/s, por ejemplo tirarlo contra la pared) lo aplasta. Partido o aplastado, es un pan roto: 20 de multa, y si Marta lo ve sube la denuncia (+10) y se asustan los clientes.
+- **La pista:** el pan del anillo pesa más, y al agarrarlo aparece "Este pan pesa más que los otros...". Así no hace falta partir los 40.
+- **El anillo** es de oro: no pierde valor al caerse. La bolsita de la joyería y el recibo de empeño están en dos escondites sorteados.
+- **Las tortas de la vitrina** son frágiles como los adornos del abuelo (20 de multa cada una).
+- **La caja registradora:** E la abre y adentro está la llave del obrador (abre también la puerta de atrás). Si Marta ve que la abren, le sube la denuncia (+10).
+
 ## Lo que comparte con la casa del abuelo
 - La planilla con la denuncia anónima, las 3 sospechas y marcar la sospecha (1, 2 o 3 durante 2 s).
 - El medidor de denuncia, la distracción, el interrogatorio y las pistas que apuntan a cada sospecha.
@@ -45,7 +54,7 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
 ## El orden para hacerlo (un PR chico por paso)
 1. **El local por dentro**, en su terreno de la ciudad, con los ambientes, los escondites, la persiana a medio subir y la puerta del obrador. Va con capturas.
 2. **Marta y los clientes**, con el medidor de denuncia y la muestrita.
-3. **El anillo en el pan**, la primera historia (la de partir panes es la más distinta de la casa del abuelo).
+3. **El anillo en el pan**, la primera historia (la de partir panes es la más distinta de la casa del abuelo). Va en dos PRs: primero los panes, las tortas, la caja y el anillo escondido; después las sospechas en la planilla, las pistas, el cliente chismoso y la entrega en el baúl, con la parte del caso que hoy está en el código de la casa del abuelo pasada a algo que comparten los dos lugares.
 4. Las otras 5 historias, un PR cada una.
 5. El sorteo del lugar: cada partida sale en la casa del abuelo o en la panadería.
 

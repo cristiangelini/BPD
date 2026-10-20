@@ -21,7 +21,7 @@ func test_twelve_spots_inside_the_building_each_on_a_surface() -> void:
 	for spot: Dictionary in Bakery.SPOTS:
 		var at: Vector3 = spot.at
 		assert_true(absf(at.x) < Bakery.HALF_X and absf(at.z) < Bakery.HALF_Z, "%s is inside the bakery" % spot.id)
-		var query := PhysicsRayQueryParameters3D.create(at + Vector3.UP * 0.25, at + Vector3.DOWN * 0.2)
+		var query := PhysicsRayQueryParameters3D.create(at + Vector3.UP * 0.25, at + Vector3.DOWN * 0.2, 1)
 		var hit := space.intersect_ray(query)
 		assert_false(hit.is_empty(), "%s has something under it" % spot.id)
 		if not hit.is_empty():
@@ -116,3 +116,91 @@ func test_the_sample_calms_marta_and_keeps_the_cops_hands_busy() -> void:
 	assert_eq(bakery.baker.complaint, Baker.STRUCK - Baker.SAMPLE_CALM)
 	assert_true(cop.is_eating())
 	assert_false(cop.get_node("Grabber").try_grab(), "no grabbing while eating")
+
+
+func test_forty_loaves_and_one_hides_the_ring_drawn_from_the_seed() -> void:
+	var first := _bakery_with_seed(42)
+	await wait_physics_frames(2)
+	assert_eq(first.loaves.size(), 40)
+	var filled := first.loaves.filter(func(loaf: Bread) -> bool: return loaf.filling != null)
+	assert_eq(filled.size(), 1, "only one loaf hides something")
+	assert_eq(filled[0].filling, first.ring)
+	assert_gt(filled[0].mass, first.loaves[(first.ring_loaf + 1) % 40].mass, "the ring loaf weighs more")
+	var again := _bakery_with_seed(42)
+	await wait_physics_frames(2)
+	assert_eq(again.ring_loaf, first.ring_loaf, "same seed, same loaf")
+	assert_eq(again.extra_spots, first.extra_spots, "same seed, same spots for the extras")
+
+
+func test_pulling_the_ring_loaf_apart_drops_the_ring_and_costs_a_fine() -> void:
+	var bakery := _bakery_with_seed(7)
+	await wait_physics_frames(5)
+	var loaf: Bread = bakery.loaves[bakery.ring_loaf]
+	var across := loaf.global_basis.x
+	for i in 30:
+		if not is_instance_valid(loaf):
+			break
+		loaf.hold(1, loaf.global_position + across * 0.7)
+		loaf.hold(2, loaf.global_position - across * 0.7)
+		await wait_physics_frames(1)
+	assert_false(is_instance_valid(loaf), "two hands pulling the ends split it")
+	assert_true(bakery.ring.is_inside_tree(), "the ring drops out")
+	await wait_physics_frames(40)
+	assert_eq(bakery.ring.value, 1000.0, "a gold ring survives the fall")
+	assert_eq(bakery.fines, Bread.FINE)
+	assert_eq(bakery.broken_goods, 1)
+
+
+func test_carrying_a_loaf_around_does_not_split_it() -> void:
+	var bakery := _bakery_with_seed(7)
+	await wait_physics_frames(5)
+	var loaf: Bread = bakery.loaves[(bakery.ring_loaf + 1) % 40]
+	var point := loaf.global_position + Vector3.UP * 0.5
+	for i in 90:
+		point += Vector3(GameScale.RUN_SPEED / 60.0, 0, 0)
+		loaf.hold(1, point)
+		await wait_physics_frames(1)
+	assert_true(is_instance_valid(loaf) and not loaf.is_broken, "running with it is fine")
+	assert_eq(bakery.fines, 0)
+
+
+func test_a_hard_throw_squashes_a_loaf() -> void:
+	var bakery := _bakery_with_seed(7)
+	await wait_physics_frames(5)
+	var loaf: Bread = bakery.loaves[(bakery.ring_loaf + 2) % 40]
+	loaf.global_position = Vector3(0, 1.0, 5.0)
+	loaf.linear_velocity = Vector3(0, -8, 0)
+	await wait_physics_frames(20)
+	assert_false(is_instance_valid(loaf), "it hit the floor too hard")
+	assert_eq(bakery.fines, Bread.FINE)
+
+
+func test_the_till_has_the_bakehouse_key_and_marta_sees_it_opened() -> void:
+	var bakery := _bakery_with_seed(7)
+	bakery._customer_wait = 999.0
+	var cop: Cop = bakery.get_node("Cop")
+	await wait_physics_frames(30)
+	assert_eq(bakery.till.prompt_key(cop), "PROMPT_TILL")
+	bakery.till.use(cop)
+	assert_true(cop.has_key)
+	assert_eq(bakery.baker.complaint, Baker.SAW_TILL, "she was watching from the bakehouse door")
+	bakery.bakehouse_door.use(cop)
+	assert_false(bakery.bakehouse_door.locked, "the key opens the bakehouse")
+
+
+func test_the_extras_wait_at_their_spots() -> void:
+	var bakery := _bakery_with_seed(11)
+	await wait_physics_frames(30)
+	for i in bakery.extras.size():
+		var spot: Vector3 = Bakery.SPOTS[bakery.extra_spots[i]].at
+		var item := bakery.extras[i]
+		assert_lt(Vector2(item.global_position.x - spot.x, item.global_position.z - spot.z).length(), 0.1)
+		assert_gt(item.global_position.y, spot.y, "%s rests on its spot" % item.name)
+
+
+func _bakery_with_seed(case_seed: int) -> Bakery:
+	var bakery: Bakery = BAKERY_SCENE.instantiate()
+	bakery.case_seed = case_seed
+	bakery.get_node("Cop").input_enabled = false
+	add_child_autofree(bakery)
+	return bakery

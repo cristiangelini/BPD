@@ -13,6 +13,8 @@ const SAFE_SPEED := 3.0
 const LOSS_PER_SPEED := 0.1
 
 @export var full_value := 1000.0
+## Hits at or below this speed do nothing; tougher things (a gold ring) raise it.
+@export var safe_speed := SAFE_SPEED
 
 var value := 0.0
 var is_broken := false
@@ -38,9 +40,9 @@ func _show_value() -> void:
 
 ## Applies a hit at `speed` m/s and returns the value lost.
 func hit(speed: float) -> float:
-	if is_broken or speed <= SAFE_SPEED:
+	if is_broken or speed <= safe_speed:
 		return 0.0
-	var loss := minf(value, full_value * LOSS_PER_SPEED * (speed - SAFE_SPEED))
+	var loss := minf(value, full_value * LOSS_PER_SPEED * (speed - safe_speed))
 	value -= loss
 	_show_value()
 	damaged.emit(loss)
