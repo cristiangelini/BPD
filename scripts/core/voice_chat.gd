@@ -22,7 +22,8 @@ const SETTINGS_PATH := "user://ajustes.cfg"
 ## Where settings are saved (tests point it elsewhere).
 static var settings_path := SETTINGS_PATH
 
-## Hear your own voice back, without a room: `godot --path . -- --voice-loopback` tries the microphone on one PC.
+## Hear your own voice back, without a room and with the voice open: `godot --path . -- --voice-loopback` tries the
+## microphone on one PC.
 var loopback := false
 
 ## The close voice goes out without holding V.
@@ -86,7 +87,7 @@ func set_always_open(open: bool) -> void:
 func _process(_delta: float) -> void:
 	var steam: SteamRoom = _net.steam
 	var online: bool = (_net.is_online() or loopback) and steam.available()
-	var channel := channel_for(_held("talk"), _held("radio"), always_open) if online else -1
+	var channel := channel_for(_held("talk"), _held("radio"), always_open or loopback) if online else -1
 	_set_talking(channel)
 	if _recording:
 		_send(steam.steam)
