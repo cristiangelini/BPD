@@ -16,6 +16,7 @@ var _reminder: Label
 
 
 func _ready() -> void:
+	add_to_group("checklist")
 	layer = 4
 	_reminder = Label.new()
 	_reminder.text = "HUD_CHECKLIST_HINT"

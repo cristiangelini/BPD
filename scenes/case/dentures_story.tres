@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="CaseStory" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/case/case_story.gd" id="1_story"]
+[ext_resource type="PackedScene" path="res://scenes/props/denture_case.tscn" id="2_case"]
+[ext_resource type="PackedScene" path="res://scenes/props/client_list.tscn" id="3_list"]
+[ext_resource type="Script" path="res://scripts/case/dentures_rig.gd" id="4_rig"]
+
+[resource]
+script = ExtResource("1_story")
+id = "dentures"
+briefing = PackedStringArray("BRIEF_RIGHT", "BRIEF_DENTURES_B", "BRIEF_DENTURES_C", "BRIEF_DENTURES_D")
+evidence = Array[PackedScene]([ExtResource("2_case"), ExtResource("3_list")])
+item_keys = PackedStringArray("dentures", "clients")
+find_key = "OBJ_FIND_DENTURES"
+heavy = Array[bool]([true, false])
+half_heights = Array[float]([0.17, 0.01])
+cat_item = 0
+rig = ExtResource("4_rig")

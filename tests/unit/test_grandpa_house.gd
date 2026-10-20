@@ -10,6 +10,7 @@ func _house(case_seed: int) -> GrandpaHouse:
 	var house: GrandpaHouse = HOUSE_SCENE.instantiate()
 	house.story = GrandpaHouse.BINGO
 	house.case_seed = case_seed
+	house.start_at_station = false
 	house.get_node("Cop").input_enabled = false
 	add_child_autofree(house)
 	return house

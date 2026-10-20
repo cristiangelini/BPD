@@ -49,7 +49,8 @@ func test_the_bakery_sits_on_its_lot_and_the_car_starts_at_the_station() -> void
 	var center := CityLayout.lot_center(lot.block, lot.side, lot.along, lot.size.z)
 	assert_lt((city.transform * center).distance_to(Vector3.ZERO), 0.01, "the bakery is at the origin of its scene")
 	assert_lt(bakery.car.global_position.distance_to(bakery.station_parking.origin), 0.2)
-	assert_lt(bakery.get_node("Cop").global_position.distance_to(bakery.car.global_position), 4.0)
+	assert_lt(bakery.get_node("Cop").global_position.distance_to(bakery.car.global_position), 20.0,
+		"the cop starts in the station, by the car out front")
 	assert_eq(bakery.city_map.target, "bakery")
 
 
