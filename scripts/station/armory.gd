@@ -11,6 +11,7 @@ extends RefCounted
 const ITEMS := {
 	"ram": {"name": "ARMORY_RAM", "about": "ARMORY_RAM_ABOUT", "price": 0},
 	"donuts": {"name": "ARMORY_DONUTS", "about": "ARMORY_DONUTS_ABOUT", "price": 30, "stock": true},
+	"gloves": {"name": "ARMORY_GLOVES", "about": "ARMORY_GLOVES_ABOUT", "price": 120},
 }
 const DONUT_BOX_SCENE := preload("res://scenes/props/donut_box.tscn")
 
@@ -68,6 +69,10 @@ func take(id: String, cop: Cop) -> String:
 			cop.get_parent().add_child(box)
 			cop.get_node("Grabber").grab(box)
 			box.global_position = cop.get_node("Grabber").hold_point()
+		"gloves":
+			if cop.gloves:
+				return "ARMORY_HAS_GLOVES"
+			cop.put_on_gloves()
 	if is_stock(id):
 		wallet.items.erase(id)
 	return ""

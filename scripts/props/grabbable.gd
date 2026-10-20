@@ -14,6 +14,9 @@ const STRENGTH_MARGIN := 1.2
 var holders := {}
 ## Someone grabbed it at least once (the pigeons only take what cops left lying around).
 var was_held := false
+## The last holder that let go of it and when (ms), to know whose hands it flew from.
+var last_holder := 0
+var let_go_at := -1
 ## Player indexes of the cops who grabbed it, as keys: their prints are on it (PrintKit).
 var touched_by := {}
 
@@ -40,9 +43,24 @@ func hold(holder_id: int, point: Vector3) -> void:
 
 func let_go(holder_id: int) -> void:
 	holders.erase(holder_id)
+	last_holder = holder_id
+	let_go_at = Time.get_ticks_msec()
 	if holders.is_empty():
 		can_sleep = true
 		sleeping = false
+
+
+## The cops holding it now, plus the one who let go of it less than `since` seconds ago.
+func handling_cops(since: float) -> Array[Cop]:
+	var cops: Array[Cop] = []
+	var ids := holders.keys()
+	if let_go_at >= 0 and Time.get_ticks_msec() - let_go_at <= since * 1000.0:
+		ids.append(last_holder)
+	for id: int in ids:
+		var grabber := instance_from_id(id) as Grabber
+		if grabber and grabber.get_parent() is Cop:
+			cops.append(grabber.get_parent())
+	return cops
 
 
 func is_held() -> bool:

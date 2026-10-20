@@ -68,6 +68,11 @@ retira (la lista muestra cuántas hay). El policía sale con la caja abierta en 
 pero por 3 s no puede preguntar (R) ("¡Mmmf mmf!"). Después de la cuarta queda la caja vacía. Capturas:
 `comisaria/donas_lista.png` y `donas_comer.png`.
 
+**Los guantes (cómo quedó):** salen 120 y se compran una sola vez; después cada policía retira su par **(propuesta)**.
+Puestos, las manos se ven amarillas (las propias y en el cuerpo que ven los demás), y la evidencia frágil pierde la
+mitad en los golpes mientras uno con guantes la tiene en la mano o hasta 2 s después de soltarla o tirarla
+**(propuesta)**. Capturas: `comisaria/guantes_lista.png` y `guantes_puestos.png`.
+
 ## El comisario
 - Está en su oficina, detrás de un escritorio lleno de papeles. Grita (decisión 21).
 - Reparte el caso del turno (punto 2) y no deja salir sin escucharlo: si intentan subir al patrullero sin el caso,

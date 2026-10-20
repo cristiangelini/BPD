@@ -15,6 +15,7 @@ const RAM_SCENE := preload("res://scenes/tools/battering_ram.tscn")
 const RAM_PICKUP_SCENE := preload("res://scenes/tools/ram_pickup.tscn")
 ## A dropped ram lands this far in front of the cop.
 const DROP_AHEAD := 1.0
+const GLOVE_MATERIAL := preload("res://assets/materials/rubber_glove.tres")
 ## Seconds a donut keeps the mouth too full to ask anything (comisaria.md, propuesta).
 const MOUTH_FULL := 3.0
 ## A shove fades out in this many seconds.
@@ -50,6 +51,8 @@ var in_briefing := false
 var in_menu := false
 ## The player's own first person hands; only a cop with a player at the keys has them.
 var hands: CopHands
+## Wears the armory's rubber gloves: fragile evidence in these hands loses half as much (Evidence.GLOVES_FACTOR).
+var gloves := false
 ## Player index (0 to 3) whose skin this cop wears.
 var uniform := 0
 ## The 4 tool slots (herramientas.md).
@@ -240,6 +243,24 @@ func set_uniform(index: int) -> void:
 		_hide_from_own_camera()
 	if hands:
 		hands.set_skin(index)
+	if gloves:
+		put_on_gloves()
+
+
+## Puts on the armory's yellow rubber gloves: on the body everyone sees and on the own first person hands.
+func put_on_gloves() -> void:
+	gloves = true
+	for s: float in [-1.0, 1.0]:
+		var glove := MeshInstance3D.new()
+		var ball := SphereMesh.new()
+		ball.radius = 0.085
+		ball.height = 0.17
+		ball.material = GLOVE_MATERIAL
+		glove.mesh = ball
+		glove.position = Vector3(s * 0.49, 0.64, 0.09)
+		model.add_child(glove)
+	if hands:
+		hands.set_gloves(true)
 
 
 func _hide_from_own_camera() -> void:

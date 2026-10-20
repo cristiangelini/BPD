@@ -44,6 +44,15 @@ func set_skin(index: int) -> void:
 	add_child(model)
 	for mesh in model.find_children("*", "GeometryInstance3D", true, false):
 		(mesh as GeometryInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	if cop.gloves:
+		set_gloves(true)
+
+
+## The mittens turn into the armory's yellow rubber gloves.
+func set_gloves(on: bool) -> void:
+	for hand in model.find_children("hand*", "Node3D", true, false):
+		for mesh in hand.find_children("*", "GeometryInstance3D", true, false):
+			(mesh as GeometryInstance3D).material_override = Cop.GLOVE_MATERIAL if on else null
 
 
 ## Where the hands rest right now, relative to the camera, without the sway.
