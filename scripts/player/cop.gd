@@ -35,6 +35,8 @@ var ram: BatteringRam
 ## The wheelbarrow this cop pushes, if any. Hands are busy: E loads things into it instead of grabbing.
 var wheelbarrow: Wheelbarrow
 var _stagger_left := 0.0
+## Letting go of E during the grandpa's story already asked him to stop (online it takes a moment to happen).
+var _story_end_asked := false
 ## A shove (the champion grandpa) that slides the cop and fades out.
 var _knock := Vector3.ZERO
 ## Eating a sample from the baker: the cop can walk but not grab anything (panaderia.md).
@@ -332,7 +334,11 @@ func _physics_process(delta: float) -> void:
 	if vehicle:
 		return
 	if listening_to and not Input.is_action_pressed("use"):
-		listening_to.end_story()
+		if not _story_end_asked:
+			_story_end_asked = true
+			act("end_story", listening_to)
+	elif not listening_to:
+		_story_end_asked = false
 	var wish := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	step(delta, wish, Input.is_action_pressed("run"), Input.is_action_pressed("crouch"),
 		Input.is_action_just_pressed("jump"))

@@ -1,0 +1,202 @@
+class_name NpcSync
+extends Node
+
+## Keeps the level's people and animals the same on every PC (docs/diseno/online.md, "Qué se sincroniza"): the host
+## runs them (where they walk, what they say, how annoyed they are) and sends it about 15 times a second; on the
+## guests they are puppets that only follow. Only the host brings new ones in (the bakery's customers): the guests
+## make a copy from the same scene. Lives under the Net autoload as "Npcs".
+
+const SEND_RATE := 15.0
+const EASE := 12.0
+## A puppet further than this from where it should be jumps there instead of walking.
+const SNAP_DISTANCE := 3.0
+const PER_PACKET := 12
+
+var net: Node
+var npcs: Array[Node3D] = []
+## Index -> state last sent (host) or to follow (guests): [transform, bubble text, bubble shown, complaint, story].
+var _sent := {}
+var _targets := {}
+var _gone := {}
+## Index -> [scene, look] of what the host brought in after the level started.
+var _spawned := {}
+var _adding: Node
+var _level: Node
+var _send_left := 0.0
+
+
+func _init(owner_net: Node, level: Node) -> void:
+	net = owner_net
+	_level = level
+	name = "Npcs"
+	for node in level.find_children("*", "Node3D", true, false):
+		if is_npc(node):
+			npcs.append(node as Node3D)
+
+
+static func is_npc(node: Node) -> bool:
+	return node is Grandpa or node is Baker or node is BakeryCustomer or node is Pigeon
+
+
+func _ready() -> void:
+	get_tree().node_added.connect(_on_node_added)
+	if net.is_host():
+		return
+	# The guest's level doesn't bring anyone in; the host's copies come instead.
+	if "brings_customers" in _level:
+		_level.brings_customers = false
+	for npc in npcs:
+		_puppet(npc)
+
+
+## A guest's copy: no mind of its own and nothing it notices; it only follows the host.
+static func _puppet(npc: Node3D) -> void:
+	npc.set_physics_process(false)
+	npc.set_process(false)
+	for area in npc.find_children("*", "Area3D", true, false):
+		(area as Area3D).monitoring = false
+
+
+func npc_at(index: int) -> Node3D:
+	if index < 0 or index >= npcs.size() or not is_instance_valid(npcs[index]):
+		return null
+	return npcs[index]
+
+
+## Host: everything to `peer` (it just loaded the level).
+func resend_all(peer: int) -> void:
+	for index: int in _spawned:
+		_made.rpc_id(peer, index, _spawned[index][0], _spawned[index][1])
+	_removed.rpc_id(peer, PackedInt32Array(_gone.keys()))
+	for i in npcs.size():
+		if npc_at(i):
+			_moved_all.rpc_id(peer, PackedInt32Array([i]), [_state_of(npcs[i])])
+
+
+func _physics_process(delta: float) -> void:
+	if net.is_host():
+		_send_left -= delta
+		if _send_left <= 0.0:
+			_send_left = 1.0 / SEND_RATE
+			_send()
+	else:
+		_follow(delta)
+
+
+func _state_of(npc: Node3D) -> Array:
+	var bubble := npc.get_node_or_null("Bubble") as Label3D
+	return [npc.global_transform, bubble.text if bubble else "", bubble.visible if bubble else false,
+		npc.get("complaint") if "complaint" in npc else 0.0,
+		npc.is_telling_story() if npc.has_method("is_telling_story") else false]
+
+
+func _send() -> void:
+	var ids := PackedInt32Array()
+	var states := []
+	var gone := PackedInt32Array()
+	for i in npcs.size():
+		var npc := npc_at(i)
+		if not npc or not npc.is_inside_tree():
+			if not _gone.has(i):
+				_gone[i] = true
+				gone.append(i)
+			continue
+		var state := _state_of(npc)
+		if _sent.get(i, []) == state:
+			continue
+		_sent[i] = state
+		ids.append(i)
+		states.append(state)
+	for peer: int in net.scene_peers:
+		if not gone.is_empty():
+			_removed.rpc_id(peer, gone)
+		for from in range(0, ids.size(), PER_PACKET):
+			_moved.rpc_id(peer, ids.slice(from, from + PER_PACKET), states.slice(from, from + PER_PACKET))
+
+
+@rpc("authority", "call_remote", "unreliable_ordered")
+func _moved(ids: PackedInt32Array, states: Array) -> void:
+	for n in ids.size():
+		_apply(ids[n], states[n])
+
+
+@rpc("authority", "call_remote", "reliable")
+func _moved_all(ids: PackedInt32Array, states: Array) -> void:
+	_moved(ids, states)
+
+
+func _apply(index: int, state: Array) -> void:
+	var npc := npc_at(index)
+	if not npc:
+		return
+	var place: Transform3D = state[0]
+	if not _targets.has(index) or npc.global_position.distance_to(place.origin) > SNAP_DISTANCE:
+		npc.global_transform = place
+	_targets[index] = place
+	var bubble := npc.get_node_or_null("Bubble") as Label3D
+	if bubble:
+		bubble.text = state[1]
+		bubble.visible = state[2]
+	if "complaint" in npc and not is_equal_approx(npc.get("complaint"), state[3]):
+		npc.set("complaint", state[3])
+		if npc.has_signal("complaint_changed"):
+			npc.emit_signal("complaint_changed", state[3])
+	# The story ended on the host (it ran out of time): the listening cop is free again here too.
+	if npc.has_method("is_telling_story") and npc.is_telling_story() and not state[4]:
+		npc.end_story()
+
+
+@rpc("authority", "call_remote", "reliable")
+func _removed(gone: PackedInt32Array) -> void:
+	for i in gone:
+		var npc := npc_at(i)
+		_gone[i] = true
+		_targets.erase(i)
+		if npc:
+			npc.queue_free()
+
+
+func _on_node_added(node: Node) -> void:
+	if not is_npc(node) or node == _adding or not _level.is_ancestor_of(node) or npcs.has(node):
+		return
+	if net.is_host():
+		npcs.append(node as Node3D)
+		var index := npcs.size() - 1
+		# The look is set right after it enters the tree, so it's read on the next frame.
+		_announce.call_deferred(index)
+	else:
+		node.queue_free.call_deferred()
+
+
+func _announce(index: int) -> void:
+	var npc := npc_at(index)
+	if not npc:
+		return
+	_spawned[index] = [npc.scene_file_path, npc.get("look") if "look" in npc else 0]
+	for peer: int in net.scene_peers:
+		_made.rpc_id(peer, index, _spawned[index][0], _spawned[index][1])
+
+
+@rpc("authority", "call_remote", "reliable")
+func _made(index: int, scene: String, look: int) -> void:
+	while npcs.size() <= index:
+		npcs.append(null)
+	if npcs[index] or _gone.has(index) or scene == "" or not ResourceLoader.exists(scene):
+		return
+	var npc := (load(scene) as PackedScene).instantiate() as Node3D
+	_adding = npc
+	_level.add_child(npc)
+	_adding = null
+	# After entering the tree: on ready, Godot turns processing back on.
+	_puppet(npc)
+	if npc.has_method("set_look"):
+		npc.set_look(look)
+	npcs[index] = npc
+
+
+func _follow(delta: float) -> void:
+	var weight := 1.0 - exp(-EASE * delta)
+	for index: int in _targets:
+		var npc := npc_at(index)
+		if npc:
+			npc.global_transform = npc.global_transform.interpolate_with(_targets[index], weight)

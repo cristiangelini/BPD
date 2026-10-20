@@ -105,10 +105,11 @@ func _made(index: int, scene: String) -> void:
 	var prop := (load(scene) as PackedScene).instantiate() as RigidBody3D
 	if not prop:
 		return
-	_freeze(prop)
 	_adding = prop
 	_level.add_child(prop)
 	_adding = null
+	# After entering the tree: its _ready turns hits and processing back on.
+	_freeze(prop)
 	props[index] = prop
 
 
