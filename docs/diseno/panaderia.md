@@ -49,6 +49,13 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
 - **El cliente chismoso:** un cliente fijo lee el diario en la esquina del local y no se asusta. Con E pide un pan, y si le llevan uno (en la mano o tirado) se lo come y cuenta dónde vio a Marta esconder algo. No es multa. Si le dan el pan del anillo, muerde el anillo y se le cae.
 - **Para ganar:** el anillo en el baúl y todos de vuelta en la comisaría, como en la casa del abuelo. Si Marta llama a su abogado, si se rompe el anillo o si se equivocan dos veces, se pierde el caso.
 
+## Polvo para estornudar (cómo quedó, propuesta)
+- **Las bolsas:** en el depósito hay 5 bolsas de harina de 25 kg que se pueden mover (una sola persona las arrastra despacio). En esta historia una de ellas es la bolsa marcada con la X, sorteada con la semilla.
+- **La bolsa con la X** pesa 30 kg (la harina más la pimienta) para que hagan falta dos, como el bolillero del abuelo. No pierde valor si se cae.
+- **El estornudo:** el policía que está a menos de 3 m de la bolsa con la X estornuda cada 5 s, más o menos 2 s, y suelta lo que tiene en las manos. Cargar la bolsa entre dos también hace estornudar, así que se les cae en el camino.
+- **Los extras:** la lista de víctimas y el embudo, en dos escondites sorteados. Marta con R y el cliente chismoso dan pistas de dónde están, como en el anillo.
+- **El sorteo:** la panadería elige entre sus historias con la semilla (por ahora el anillo y el estornudo), o con `--story=<id>`.
+
 ## Lo que comparte con la casa del abuelo
 - La planilla con la denuncia anónima, las 3 sospechas y marcar la sospecha (1, 2 o 3 durante 2 s).
 - El medidor de denuncia, la distracción, el interrogatorio y las pistas que apuntan a cada sospecha.

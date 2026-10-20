@@ -54,9 +54,45 @@ export function buildPawnReceipt() {
 	return b.build();
 }
 
+// A 25 kg flour sack: 0.6 x 0.35 x 0.9 m, a rounded paper sack with a blue band. `cross` paints the red X of the
+// sneezing story's sack (panaderia.md, "Polvo para estornudar").
+function buildSack(name, cross) {
+	const b = new Builder(name);
+	b.add('sack', mat('sack_paper', 0xe8dcc0), new THREE.BoxGeometry(0.58, 0.33, 0.88), { pos: V(0, -0.005, 0) });
+	b.add('sack', mat('sack_paper', 0xe8dcc0), ellipsoid(0.29, 0.06, 0.44, 10, 4), { pos: V(0, 0.15, 0) });
+	b.add('band', mat('sack_band', 0x3a6ac0), new THREE.BoxGeometry(0.585, 0.12, 0.2), { pos: V(0, 0, 0) });
+	if (cross) {
+		for (const turn of [0.6, -0.6]) b.add('cross', mat('sack_cross', 0xd82020), new THREE.BoxGeometry(0.06, 0.012, 0.5), { pos: V(0, 0.2, 0.2), rot: [0, turn, 0] });
+	}
+	return b.build();
+}
+export const buildFlourSack = () => buildSack('flour_sack', false);
+export const buildPepperSack = () => buildSack('pepper_sack', true);
+
+// The list of "victims": a 0.15 x 0.21 m sheet with names, some crossed out.
+export function buildVictimList() {
+	const b = new Builder('victim_list');
+	b.add('paper', mat('list_paper', 0xf4efd8), new THREE.BoxGeometry(0.15, 0.004, 0.21));
+	for (let i = 0; i < 7; i++) {
+		b.add('ink', mat('list_ink', 0x2a2a3a), new THREE.BoxGeometry(0.09, 0.002, 0.008), { pos: V(-0.01, 0.003, -0.08 + i * 0.026) });
+		if (i % 2 === 0) b.add('ink', mat('list_cross', 0xd83a3a), new THREE.BoxGeometry(0.1, 0.003, 0.004), { pos: V(-0.01, 0.004, -0.08 + i * 0.026) });
+	}
+	return b.build();
+}
+
+// A tin funnel: 0.16 m wide at the top, 0.2 m tall, centered on its box.
+export function buildFunnel() {
+	const b = new Builder('funnel');
+	const tin = () => mat('tin', 0xb8bcc4);
+	b.add('funnel', tin(), new THREE.CylinderGeometry(0.08, 0.015, 0.12, 12, 1, true), { pos: V(0, 0.04, 0) });
+	b.add('funnel', tin(), new THREE.CylinderGeometry(0.015, 0.012, 0.08, 8), { pos: V(0, -0.06, 0) });
+	return b.build();
+}
+
 export const models = {
 	bread_loaf: buildLoaf, bread_half: buildHalfLoaf, bakery_cake: buildCake,
 	stolen_ring: buildRing, jewelry_bag: buildJewelryBag, pawn_receipt: buildPawnReceipt,
+	flour_sack: buildFlourSack, pepper_sack: buildPepperSack, victim_list: buildVictimList, funnel: buildFunnel,
 };
 
 export const views = {
@@ -67,5 +103,12 @@ export const views = {
 			{ name: 'jewelry_bag', pos: [0.35, 0.06, 0.35], rotY: -0.3 }, { name: 'pawn_receipt', pos: [-0.45, 0.01, 0.35], rotY: 0.2 },
 		],
 		cam: { pos: [0, 0.9, 1.6], target: [0, 0.05, 0.1], fov: 34 },
+	},
+	sneeze_goods: {
+		items: [
+			{ name: 'flour_sack', pos: [-0.4, 0.17, 0], rotY: 0.2 }, { name: 'pepper_sack', pos: [0.35, 0.17, -0.1], rotY: -0.2 },
+			{ name: 'victim_list', pos: [-0.2, 0.01, 0.65], rotY: 0.3 }, { name: 'funnel', pos: [0.3, 0.1, 0.65], rotY: 0 },
+		],
+		cam: { pos: [0, 1.4, 2.2], target: [0, 0.1, 0.2], fov: 38 },
 	},
 };

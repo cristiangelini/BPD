@@ -236,7 +236,7 @@ PROMPT_GOSSIP,E: hablar con el cliente,E: talk to the customer,E: falar com o cl
 GOSSIP_ASK,«¿Policías? Invítame un pan y te cuento algo de Marta...»,“Cops? Get me a loaf and I'll tell you something about Marta...”,“Policiais? Me paga um pão e eu te conto uma coisa da Marta...”
 GOSSIP_WAITING,"«Sin pan no hay chisme, oficial.»","“No bread, no gossip, officer.”","“Sem pão não tem fofoca, policial.”"
 GOSSIP_PSST,«Pst... oficial... yo sé cosas.»,“Psst... officer... I know things.”,“Psiu... policial... eu sei de coisas.”
-GOSSIP_CLUE,"«¡Gracias! Mira, anoche vi a Marta esconder algo %s. Y esta semana fue dos veces a la casa de empeño.»","“Thanks! Look, last night I saw Marta hide something %s. And this week she went to the pawn shop twice.”","“Valeu! Olha, ontem à noite vi a Marta esconder algo %s. E esta semana ela foi duas vezes à casa de penhores.”"
+GOSSIP_CLUE_ring,"«¡Gracias! Mira, anoche vi a Marta esconder algo %s. Y esta semana fue dos veces a la casa de empeño.»","“Thanks! Look, last night I saw Marta hide something %s. And this week she went to the pawn shop twice.”","“Valeu! Olha, ontem à noite vi a Marta esconder algo %s. E esta semana ela foi duas vezes à casa de penhores.”"
 CLUE_GOSSIP,El cliente vio a Marta esconder algo %s,The customer saw Marta hide something %s,O cliente viu a Marta esconder algo %s
 LOC_in_big_oven,en el horno grande,in the big oven,no forno grande
 LOC_behind_flour,detrás de las bolsas de harina,behind the flour sacks,atrás dos sacos de farinha
@@ -254,3 +254,11 @@ OBJ_ENTER_BAKERY,Entrar a la panadería (está abierta),Get into the bakery (it'
 OBJ_GUESS_BAKERY,"Averiguar qué pasa en la panadería (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the bakery (with Q open, hold 1, 2 or 3)","Descobrir o que acontece na padaria (com Q aberta, segure 1, 2 ou 3)"
 OBJ_BROKEN_BAKERY,Panes y tortas rotos: %d (multa: %d),Broken loaves and cakes: %d (fine: %d),Pães e bolos quebrados: %d (multa: %d)
 OBJ_COMPLAINT_BAKER,Denuncia de Marta: %d%%,Marta's complaint: %d%%,Denúncia da Marta: %d%%
+BRIEF_SNEEZE_B,Marta mezcla pimienta en una bolsa de harina y le regala pan a la gente que le cae mal. El barrio entero no para de estornudar.,Marta mixes pepper into a flour sack and gives bread to the people she doesn't like. The whole neighborhood can't stop sneezing.,A Marta mistura pimenta num saco de farinha e dá pão para quem ela não gosta. O bairro inteiro não para de espirrar.
+BRIEF_SNEEZE_C,"Traigan la bolsa marcada con una X en el baúl del patrullero: pesa 30 kilos, así que entre dos. Y cerca de ella van a estornudar: agárrenla fuerte.","Bring the sack marked with an X back in the patrol car's trunk: it weighs 30 kilos, so carry it in pairs. And near it you'll sneeze: hold on tight.","Tragam o saco marcado com um X no porta-malas da viatura: pesa 30 quilos, então em dupla. E perto dele vocês vão espirrar: segurem firme."
+BRIEF_SNEEZE_D,"Si encuentran la lista de víctimas o el embudo, mejor: todo suma.","If you find the list of victims or the funnel, even better: it all adds up.","Se acharem a lista de vítimas ou o funil, melhor: tudo soma."
+OBJ_FIND_SNEEZE,Encontrar la bolsa de harina con la X (hacen falta dos),Find the flour sack with the X (needs two),Achar o saco de farinha com o X (precisa de dois)
+OBJ_EXTRA_VICTIM_LIST,Extra: la lista de víctimas,Extra: the list of victims,Extra: a lista de vítimas
+OBJ_EXTRA_FUNNEL,Extra: el embudo,Extra: the funnel,Extra: o funil
+HINT_SNEEZE,¡Aaa... ACHÍS! Se te cayó todo de las manos.,Aaah... CHOO! Everything slipped out of your hands.,Aaa... ATCHIM! Caiu tudo das suas mãos.
+GOSSIP_CLUE_sneeze,"«¡Gracias! Mira, anoche vi a Marta esconder algo %s. Y desde que me regaló un pan no paro de estornudar.»","“Thanks! Look, last night I saw Marta hide something %s. And ever since she gave me a loaf I can't stop sneezing.”","“Valeu! Olha, ontem à noite vi a Marta esconder algo %s. E desde que ela me deu um pão eu não paro de espirrar.”"
