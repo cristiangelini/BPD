@@ -56,7 +56,7 @@ func test_the_tupperware_at_her_window_buys_a_clue() -> void:
 	assert_false(is_instance_valid(tupper), "she takes it in")
 	assert_true(house.objective_facts().tupper_returned)
 	assert_has(house.clues_found, house.neighbor.clue)
-	var spot: String = GrandpaHouse.SPOTS[house.evidence_spots[house.case_seed % GrandpaHouse.EVIDENCE.size()]].id
+	var spot: String = GrandpaHouse.SPOTS[house.evidence_spots[house.case_seed % house.story.evidence.size()]].id
 	assert_string_contains(house.neighbor.clue, tr("LOC_" + spot))
 
 

@@ -50,7 +50,7 @@ func test_a_player_hears_the_comisario_and_cannot_move_meanwhile() -> void:
 	var cop: Cop = house.get_node("Cop")
 	assert_true(house.briefing.visible)
 	assert_true(cop.is_busy())
-	for i in GrandpaHouse.BRIEFING.size():
+	for i in GrandpaHouse.BINGO.briefing.size():
 		house.briefing.advance()
 	assert_false(house.briefing.visible)
 	assert_false(cop.is_busy())

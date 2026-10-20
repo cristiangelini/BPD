@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CaseStory" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/case/case_story.gd" id="1_story"]
+[ext_resource type="PackedScene" path="res://scenes/props/betting_book.tscn" id="2_book"]
+[ext_resource type="PackedScene" path="res://scenes/props/bingo_cage.tscn" id="3_cage"]
+[ext_resource type="PackedScene" path="res://scenes/props/heavy_safe.tscn" id="4_safe"]
+[ext_resource type="PackedScene" path="res://scenes/props/bingo_card.tscn" id="5_card"]
+
+[resource]
+script = ExtResource("1_story")
+id = "bingo"
+briefing = PackedStringArray("BRIEF_1_1_A", "BRIEF_1_1_B", "BRIEF_1_1_C", "BRIEF_1_1_D", "BRIEF_1_1_E")
+evidence = Array[PackedScene]([ExtResource("2_book"), ExtResource("3_cage"), ExtResource("4_safe")])
+heavy = Array[bool]([false, true, true])
+half_heights = Array[float]([0.015, 0.3, 0.3])
+drawer_evidence = ExtResource("5_card")
+drawer_count = 5
