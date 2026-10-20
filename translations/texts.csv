@@ -501,3 +501,8 @@ NOTE_ITEM_notebook,El cuaderno de los martes,The Tuesday notebook,O caderno das 
 CLUE_FIGHT_PHOTO,"Una foto del abuelo con cuatro vecinos, todos con un ojo morado. Atrás dice: «Martes, en el altillo».","A photo of the grandpa with four neighbors, all with a black eye. On the back: “Tuesday, in the attic”.","Uma foto do vovô com quatro vizinhos, todos com um olho roxo. Atrás diz: “Terça, no sótão”."
 GRANDPA_CHAMPION_PUSH,¿Eso fue un empujón? ¡Esto es un empujón!,Was that a push? THIS is a push!,Isso foi um empurrão? Isto é um empurrão!
 GRANDPA_CHAMPION_NO_STORY,¿Historias? Las historias son para los que pierden.,Stories? Stories are for losers.,Histórias? Histórias são para quem perde.
+PAUSE_TITLE,Pausa,Pause,Pausa
+PAUSE_ONLINE_HINT,Tus compañeros siguen jugando.,Your partners keep playing.,Seus parceiros continuam jogando.
+PAUSE_RESUME,Seguir,Resume,Continuar
+PAUSE_LEAVE,Salir al menú,Quit to menu,Sair para o menu
+PAUSE_LEAVE_ROOM,Salir de la sala,Leave the room,Sair da sala

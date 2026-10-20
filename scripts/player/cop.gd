@@ -320,8 +320,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			seated_in.stand_up()
 		else:
 			use()
-	elif event.is_action_pressed("ui_cancel"):
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
 func _physics_process(delta: float) -> void:

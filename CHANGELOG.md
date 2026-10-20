@@ -79,3 +79,4 @@
 - The grandpa's fifth story, the pirate radio: a 35 kg transmitter for two cops, found by holding T, the cop radio, which shows more static bars near it; 3 soap opera tapes in the drawers.
 - The grandpa's sixth story, the retirees' fight club: the champion's belt, the gloves and the fight notebook, a ring in the attic and a photo of black eyes; pushed, the champion grandpa shoves the cop back harder, and he tells no stories.
 - The host leaving in the middle of a case sends everyone back to the room screen with "El anfitrión cerró la sala", instead of leaving them alone in the level.
+- Esc during a case opens a menu: resume, invite friends (host with Steam), the always open voice and leave the room (or quit to the menu solo); solo it stops the game.

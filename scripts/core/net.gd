@@ -52,6 +52,8 @@ var npcs: NpcSync
 var steam: SteamRoom
 ## Steam voice: hold V or T to talk (voz.md).
 var voice: VoiceChat
+## Esc during a case.
+var pause_menu: PauseMenu
 ## This PC has the current level loaded and its cops in place.
 var _in_scene := false
 ## The current level and where its cops start, for the cops of players who come in late.
@@ -74,6 +76,8 @@ func _ready() -> void:
 	steam.invited.connect(_on_steam_invited)
 	voice = VoiceChat.new(self)
 	add_child(voice)
+	pause_menu = PauseMenu.new(self)
+	add_child(pause_menu)
 	if steam.start():
 		# Launched from a friend's invite: the menu opens the room and joins it.
 		Lobby.invite_lobby = SteamRoom.connect_lobby_arg(OS.get_cmdline_args())
