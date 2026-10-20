@@ -7,6 +7,8 @@ extends Node3D
 
 ## Same seed, same suspect and route. 0 draws one.
 @export var case_seed := 0
+## Who's getting away (ChaseCase.SUSPECTS); empty draws him with the seed (or --suspect=<id>).
+@export var suspect_id := ""
 var case: ChaseCase
 var truck: SuspectCar
 var distance_bar: ProgressBar
@@ -23,8 +25,11 @@ func _ready() -> void:
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
 	var parking := city.transform * CityLayout.parking("station")
 	$PatrolCar.global_transform = parking.translated_local(Vector3.UP * 0.05)
+	if suspect_id == "":
+		suspect_id = ChaseCase.pick_suspect(case_seed, OS.get_cmdline_user_args())
 	truck = SuspectCar.new()
 	truck.name = "SuspectCar"
+	truck.kind = suspect_id
 	add_child(truck)
 	var start := ChaseRoute.nearest_corner(CityLayout.parking("station").origin)
 	var route := ChaseRoute.draw(case_seed, ChaseRoute.CORNERS, start)
@@ -33,7 +38,7 @@ func _ready() -> void:
 	case.route = route
 	case.city_transform = city.transform
 	case.case_seed = case_seed
-	case.suspect_id = ChaseCase.pick_suspect(case_seed, OS.get_cmdline_user_args())
+	case.suspect_id = suspect_id
 	case.car = $PatrolCar
 	case.truck = truck
 	case.station_parking = parking

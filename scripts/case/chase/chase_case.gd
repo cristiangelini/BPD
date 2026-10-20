@@ -7,8 +7,8 @@ extends Node
 ## to the patrol car and driven back to the station, the case is solved. The distance reaching ESCAPED or the clock
 ## running out before he's cuffed loses it. Every number here is (propuesta), except the minute (Cristian, 20/10).
 
-## The suspects (persecucion.md, "Los sospechosos"); one for now.
-const SUSPECTS := ["ice_cream"]
+## The suspects (persecucion.md, "Los sospechosos"), each with what he leaves behind (ChaseDrops).
+const SUSPECTS := ["ice_cream", "moving_truck"]
 ## Seconds to catch him: the chase has a clock (Cristian, 20/10: "pongamos primero 1 minuto").
 const TIME_LIMIT := 60.0
 ## Farther than this (m) the meter climbs CLIMB a second; closer it drops DROP a second. At ESCAPED he got away.
@@ -40,6 +40,8 @@ var city_transform := Transform3D.IDENTITY
 var tasks: ChaseTasks
 ## The crashes into the city, and their fines.
 var damages: ChaseDamages
+## What the suspect leaves on the street behind him (ice cream, furniture).
+var drops: ChaseDrops
 var station_parking: Transform3D
 var shift_screen: ShiftScreen
 var solved_label: Label
@@ -82,6 +84,9 @@ func start(comisario: Comisario = null) -> void:
 	damages = ChaseDamages.new()
 	damages.car = car
 	add_child(damages)
+	drops = ChaseDrops.new()
+	drops.case = self
+	add_child(drops)
 	if comisario:
 		comisario.spoke.connect(give_tip.unbind(1))
 		car.locked_hint = "HINT_COMISARIO_FIRST"

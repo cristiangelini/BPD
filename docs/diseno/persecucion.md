@@ -88,7 +88,10 @@ El host maneja al sospechoso y decide los medidores (decisión 50), como con el 
    50; chocar al sospechoso no cuesta nada **(propuesta)**. Por ahora cuentan paredes, semáforos y árboles; los autos
    estacionados y las vidrieras, cuando la ciudad los tenga.
 5. El sorteo en "Jugar". Online todavía no sale, hasta que la persecución se sincronice; ahí sale igual que solo.
-6. Los otros 9 sospechosos, uno o dos por PR.
+6. Los otros 9 sospechosos, uno o dos por PR. Primero la regla del heladero (cada 3 s deja un charco de helado de
+   2,2 m que dura 25 s; encima, las ruedas del patrullero agarran el 20%) y el camión de mudanza (en cada curva se le
+   cae un sofá, un ropero, una lámpara o una caja; son cosas sueltas: chocarlas no es multa pero frena; como mucho 12
+   en la calle), todo **propuesta**. `--suspect=<id>` fuerza uno.
 7. La persecución como final de otros casos.
 
 ## Respuestas de Cristian (20/10)
