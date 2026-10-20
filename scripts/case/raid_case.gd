@@ -284,6 +284,8 @@ func finish_shift() -> void:
 		campaign.save()
 		result.campaign = {"shift": played, "money": campaign.money, "over": campaign.is_over(),
 			"promoted": campaign.is_promoted()}
+	else:
+		PlaceDraw.custody = custody()
 	_show_result(result)
 
 

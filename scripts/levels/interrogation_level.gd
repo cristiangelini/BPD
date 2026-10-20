@@ -42,6 +42,10 @@ func _ready() -> void:
 	suspect = InterrogationSuspect.new()
 	suspect.name = "Suspect"
 	suspect.kind = InterrogationCase.pick_suspect(case_seed, OS.get_cmdline_user_args())
+	# The owner brought in from the last raid takes the chair (decision 93), unless --suspect forces another.
+	var held := PlaceDraw.custody_now()
+	if not held.is_empty() and not _suspect_forced():
+		suspect.kind = "owner_" + str(held.owner)
 	suspect.position = InterrogationWing.SUSPECT_AT
 	wing.add_child(suspect)
 	for at: Vector3 in InterrogationWing.CHAIRS_AT:
@@ -74,7 +78,9 @@ func _ready() -> void:
 	case = InterrogationCase.new()
 	case.case_seed = case_seed
 	case.suspect = suspect
-	case.suspect_id = suspect.kind
+	case.suspect_id = "owner" if suspect.kind.begins_with("owner_") else suspect.kind
+	if case.suspect_id == "owner":
+		case.custody = held.duplicate()
 	case.twin = twin
 	case.translator = translator
 	case.guilty_in_cell = InterrogationCase.pick_guilty_in_cell(case_seed)
@@ -84,6 +90,13 @@ func _ready() -> void:
 	add_child(case)
 	_add_meters()
 	case.start(city.comisario)
+
+
+func _suspect_forced() -> bool:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--suspect="):
+			return true
+	return false
 
 
 func _add_meters() -> void:
