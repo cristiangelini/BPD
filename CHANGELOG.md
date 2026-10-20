@@ -106,3 +106,4 @@
 - Interrogation suspect: the twins, one in the room and one in a cell; only the guilty one confesses, and the loose case folder set down by the other twin is the "your brother already talked" bluff.
 - Interrogation suspect: the mute answers with gestures and holds up drawings of what slips out (described in words until there's art).
 - Interrogation suspect: the foreigner speaks a made-up language, and a detainee by the table translates what slips out, adding his own lines.
+- Interrogation suspect: the police fan confesses three crimes at once on sheets on the table, and picking a wrong one brings his lawyer closer.
