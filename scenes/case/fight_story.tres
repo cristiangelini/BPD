@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CaseStory" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/case/case_story.gd" id="1_story"]
+[ext_resource type="PackedScene" path="res://scenes/props/champion_belt.tscn" id="2_belt"]
+[ext_resource type="PackedScene" path="res://scenes/props/boxing_gloves.tscn" id="3_gloves"]
+[ext_resource type="PackedScene" path="res://scenes/props/fight_notebook.tscn" id="4_notebook"]
+[ext_resource type="Script" path="res://scripts/case/fight_rig.gd" id="5_rig"]
+
+[resource]
+script = ExtResource("1_story")
+id = "fight"
+briefing = PackedStringArray("BRIEF_RIGHT", "BRIEF_FIGHT_B", "BRIEF_FIGHT_C", "BRIEF_FIGHT_D")
+evidence = Array[PackedScene]([ExtResource("2_belt"), ExtResource("3_gloves"), ExtResource("4_notebook")])
+item_keys = PackedStringArray("belt", "gloves", "notebook")
+find_key = "OBJ_FIND_FIGHT"
+heavy = Array[bool]([false, false, false])
+half_heights = Array[float]([0.015, 0.06, 0.0125])
+cat_item = 2
+rig = ExtResource("5_rig")
