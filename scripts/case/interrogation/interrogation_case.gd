@@ -7,8 +7,7 @@ extends Node
 ## the nerves. At 30, 60 and 90 nerves something slips out, at 100 he confesses (the case is solved) and at 100
 ## lawyer the lawyer takes him away (failed). No time limit (decision 66). Every number here is (propuesta).
 
-## Each action: nerves and lawyer it adds (negative lowers), its prompt and the suspect's reaction. The bad cop's
-## raise both. The room's table and lamp come with their props (next step); E on the suspect is calm or give_donut.
+## Each action: nerves and lawyer it adds (negative lowers) and its prompt. The bad cop's raise both.
 const ACTIONS := {
 	"slam_table": {"nerves": 12.0, "lawyer": 8.0, "prompt": "PROMPT_SLAM_TABLE", "react": "SUSPECT_REACT_SLAM"},
 	"aim_lamp": {"nerves": 10.0, "lawyer": 6.0, "prompt": "PROMPT_AIM_LAMP", "react": "SUSPECT_REACT_LAMP"},
@@ -22,6 +21,10 @@ const REPEAT_FACTOR := 0.5
 const ACTION_GAP := 1.0
 const SLIPS_AT: Array[float] = [30.0, 60.0, 90.0]
 const FULL := 100.0
+## A cop eating a donut this close to the suspect counts as the bad cop's action.
+const EAT_REACH := 3.0
+## Seconds the lamp stays on his face.
+const LAMP_SECONDS := 4.0
 ## Seconds between the confession or the lawyer and the end of shift screen.
 const SHIFT_DELAY := 3.0
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
@@ -112,12 +115,20 @@ func act(id: String, cop: Cop = null) -> bool:
 	nerves = clampf(nerves + gain, 0.0, FULL)
 	lawyer = clampf(lawyer + action.lawyer, 0.0, FULL)
 	meters_changed.emit(nerves, lawyer)
+	if id == "aim_lamp":
+		_aim_lamp()
 	if _streak > 0 and gain > 0.0:
 		_say("SUSPECT_REACT_REPEAT", false)
 	else:
 		_say(action.react, false)
 	_check(cop)
 	return true
+
+
+## A cop ate a donut: in front of the suspect, it's torture.
+func donut_eaten_by(cop: Cop) -> void:
+	if suspect and cop.global_position.distance_to(suspect.global_position) <= EAT_REACH:
+		act("eat_donut", cop)
 
 
 func _check(_cop: Cop) -> void:
@@ -147,6 +158,18 @@ func _say(text: String, important: bool) -> void:
 	if important:
 		_talking_until = now + seconds
 	suspect.say(text, seconds)
+
+
+func _aim_lamp() -> void:
+	var lamp := get_tree().get_first_node_in_group("interrogation_lamp") as SpotLight3D
+	if not lamp or not suspect:
+		return
+	var rest := lamp.rotation
+	var face := (lamp.get_parent() as Node3D).to_local(suspect.global_position + Vector3.UP * 1.2)
+	var tween := lamp.create_tween()
+	tween.tween_property(lamp, "rotation", Transform3D(Basis(), lamp.position).looking_at(face).basis.get_euler(), 0.25)
+	tween.tween_interval(LAMP_SECONDS)
+	tween.tween_property(lamp, "rotation", rest, 0.5)
 
 
 func _lawyer_arrives() -> void:

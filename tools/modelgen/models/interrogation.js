@@ -1,7 +1,7 @@
 // Furniture of the interrogation wing (docs/diseno/interrogatorio.md): the bolted steel table, the chairs, the lamp
 // hanging over the table, the wall clock, the security camera and the observers' recording desk. Origins on the floor
-// at the middle of the piece, front to +Z, like station.js; the lamp hangs from its origin on the ceiling and the clock
-// and the camera sit on theirs on the wall. Placeholder, not final art.
+// at the middle of the piece, front to +Z, like station.js; the lamp's origin is the bottom of its shade and the clock and
+// the camera sit on theirs on the wall. Placeholder, not final art.
 import { Builder, mat, V, THREE } from '../lib.js';
 
 // The steel table: 1.8 x 0.76 x 0.9 m, bolted down, with the ring for the handcuffs on the suspect's side (-Z), a
@@ -36,12 +36,13 @@ export function buildChair() {
 	return b.build();
 }
 
-// The lamp over the table: a cord down from the ceiling and a green enamel shade with a bright bulb, 1.05 m down.
+// The lamp over the table: a green enamel shade with a bright bulb, its origin at the bottom of the shade, and the
+// cord up 0.85 m to the ceiling.
 export function buildHangingLamp() {
 	const b = new Builder('hanging_lamp');
-	b.add('cord', mat('int_cord', 0x1c1c20), new THREE.CylinderGeometry(0.008, 0.008, 0.85, 4), { pos: V(0, -0.425, 0) });
-	b.add('shade', mat('int_shade', 0x2a5a3a, { side: THREE.DoubleSide }), new THREE.CylinderGeometry(0.04, 0.26, 0.2, 12, 1, true), { pos: V(0, -0.95, 0) });
-	b.add('bulb', mat('int_bulb', 0xfff4d0, { emissive: 0xfff0c0 }), new THREE.SphereGeometry(0.06, 8, 6), { pos: V(0, -1.0, 0) });
+	b.add('cord', mat('int_cord', 0x1c1c20), new THREE.CylinderGeometry(0.008, 0.008, 0.85, 4), { pos: V(0, 0.625, 0) });
+	b.add('shade', mat('int_shade', 0x2a5a3a, { side: THREE.DoubleSide }), new THREE.CylinderGeometry(0.04, 0.26, 0.2, 12, 1, true), { pos: V(0, 0.1, 0) });
+	b.add('bulb', mat('int_bulb', 0xfff4d0, { emissive: 0xfff0c0 }), new THREE.SphereGeometry(0.06, 8, 6), { pos: V(0, 0.05, 0) });
 	return b.build();
 }
 
@@ -97,7 +98,7 @@ export const views = {
 			{ name: 'interrogation_chair', pos: [0, 0, -0.8] },
 			{ name: 'interrogation_chair', pos: [-0.6, 0, 1.0], rotY: Math.PI },
 			{ name: 'interrogation_chair', pos: [0.6, 0, 1.0], rotY: Math.PI },
-			{ name: 'hanging_lamp', pos: [0, 2.4, 0] },
+			{ name: 'hanging_lamp', pos: [0, 1.35, 0] },
 			{ name: 'wall_clock', pos: [-1.6, 1.6, -1.6] },
 			{ name: 'security_camera', pos: [1.6, 2.1, -1.6], rotY: -0.6 },
 			{ name: 'recording_desk', pos: [-2.6, 0, 0.4], rotY: Math.PI / 2 },

@@ -39,12 +39,12 @@ observación se ve todo a través de un vidrio oscuro (y no se puede atravesar).
    comisaría (la decisión 83 dice que el turno termina al estacionar; acá no hay viaje).
 
 **Cómo quedó (paso 2):** se abre con `--place=interrogation` (todavía no sale en el sorteo de "Jugar"). El comisario da
-el caso; arriba se ven los medidores de nervios y de abogado. Con E sobre él se le dice "tranquilo" o, con la caja de
-donas de la sala de observación en la mano, se le da una. Entre dos acciones hay 1 s. Las acciones de policía malo con
-la mesa, la lámpara y la dona llegan en el PR siguiente. El sospechoso es el que no
+el caso; arriba se ven los medidores de nervios y de abogado. Con E se golpea la mesa y se le apunta la lámpara a la
+cara; con E sobre él se le dice "tranquilo" o, con la caja de donas de la sala de observación en la mano, se le da una.
+Comerse una dona a menos de 3 m de él cuenta como policía malo. Entre dos acciones hay 1 s. El sospechoso es el que no
 para de hablar, y por ahora sale uno de 4 delitos: el puente que no existe, la nariz de la estatua de la plaza, los
-semáforos violetas y los patos de goma de la fuente. Todavía no se juega online. Capturas: `caso_se_le_escapa.png` y
-`caso_abogado.png`.
+semáforos violetas y los patos de goma de la fuente. Todavía no se juega online. Capturas: `caso_lampara.png`,
+`caso_se_le_escapa.png` y `caso_abogado.png`.
 
 ## Los dos medidores (se ven arriba, como la denuncia del abuelo)
 - **Nervios (0 a 100):** suben con el policía malo y bajan un poco con el bueno. Con 30, 60 y 90 se le escapa una frase
