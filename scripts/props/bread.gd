@@ -74,6 +74,19 @@ func split() -> void:
 	_break(Vector3.ZERO)
 
 
+## Given to someone who eats it (the gossiping customer): no fine, but whatever it hid comes out.
+func eaten() -> void:
+	if is_broken:
+		return
+	is_broken = true
+	for holder: int in holders.keys():
+		var grabber := instance_from_id(holder) as Grabber
+		if grabber:
+			grabber.release()
+	_drop_filling(Vector3.ZERO)
+	queue_free()
+
+
 ## Hit too hard: flattened, and whatever it hid flies out with it.
 func squash() -> void:
 	if is_broken:
@@ -88,14 +101,19 @@ func _break(push: Vector3) -> void:
 		var grabber := instance_from_id(holder) as Grabber
 		if grabber:
 			grabber.release()
-	if filling:
-		get_parent().add_child(filling)
-		filling.global_position = global_position + Vector3.UP * 0.1
-		if filling is RigidBody3D:
-			(filling as RigidBody3D).linear_velocity = push + Vector3.UP
-		filling = null
+	_drop_filling(push)
 	broken.emit(global_position)
 	queue_free()
+
+
+func _drop_filling(push: Vector3) -> void:
+	if not filling:
+		return
+	get_parent().add_child(filling)
+	filling.global_position = global_position + Vector3.UP * 0.1
+	if filling is RigidBody3D:
+		(filling as RigidBody3D).linear_velocity = push + Vector3.UP
+	filling = null
 
 
 ## A half loaf left on the floor for a while (just to look at: it can be grabbed and thrown, nothing more).

@@ -44,6 +44,10 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
 - **El anillo** es de oro: no pierde valor al caerse. La bolsita de la joyería y el recibo de empeño están en dos escondites sorteados.
 - **Las tortas de la vitrina** son frágiles como los adornos del abuelo (20 de multa cada una).
 - **La caja registradora:** E la abre y adentro está la llave del obrador (abre también la puerta de atrás). Si Marta ve que la abren, le sube la denuncia (+10).
+- **El caso:** la denuncia anónima dice que el pan tiene algo raro, y las 3 sospechas salen de las 6 historias de la panadería. Hay una nota con la pista de cada sospecha, en 3 de 6 lugares sorteados (el mostrador, la mesa de amasar, el depósito, el baño, la mesa del living y el dormitorio).
+- **Marta con R:** cada pregunta le sube 5 la denuncia. Las 2 primeras se le escapa dónde está un extra; después no contesta más.
+- **El cliente chismoso:** un cliente fijo lee el diario en la esquina del local y no se asusta. Con E pide un pan, y si le llevan uno (en la mano o tirado) se lo come y cuenta dónde vio a Marta esconder algo. No es multa. Si le dan el pan del anillo, muerde el anillo y se le cae.
+- **Para ganar:** el anillo en el baúl y todos de vuelta en la comisaría, como en la casa del abuelo. Si Marta llama a su abogado, si se rompe el anillo o si se equivocan dos veces, se pierde el caso.
 
 ## Lo que comparte con la casa del abuelo
 - La planilla con la denuncia anónima, las 3 sospechas y marcar la sospecha (1, 2 o 3 durante 2 s).

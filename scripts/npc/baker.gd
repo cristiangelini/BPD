@@ -11,6 +11,8 @@ signal complaint_changed(value: float)
 signal lawyer_called
 ## A cop pushed her: it scares the customers.
 signal hurt
+## She let slip where something is (asked with R): the line, already translated.
+signal slipped(text: String)
 
 const MAX_COMPLAINT := 100.0
 const STRUCK := 15.0
@@ -20,6 +22,10 @@ const CUSTOMER_FLED := 5.0
 ## Seeing a loaf or a cake broken, and seeing someone open her till.
 const SAW_BREAK := 10.0
 const SAW_TILL := 10.0
+## Each question (R) raises the complaint; the first ASKS get a slip, then she won't answer.
+const ASKED := 5.0
+const ASKS := 2
+const ASK_COOLDOWN := 3.0
 const SIGHT_RANGE := 8.0
 const EYE := 1.4
 ## The meter drops one point every DECAY_EVERY seconds while nothing happens.
@@ -47,6 +53,10 @@ var queue: Array[BakeryCustomer] = []
 var complaint := 0.0
 var has_called_lawyer := false
 var offering := false
+## What she lets slip when asked, in order (the bakery fills it from the case seed).
+var slips: Array[String] = []
+var asked := 0
+var _ask_wait := 0.0
 var _serve_left := SERVE_TIME
 var _sample_wait := SAMPLE_EVERY
 var _offer_left := 0.0
@@ -79,12 +89,29 @@ func use(cop: Cop) -> void:
 	_say("BAKER_THANKS")
 
 
+## R on her: a question. She lets slip where something is hidden, but only the first ASKS times.
+func ask(_cop: Cop) -> bool:
+	if _ask_wait > 0.0:
+		return false
+	if asked >= ASKS or asked >= slips.size():
+		_say("BAKER_OFFENDED")
+		return false
+	_ask_wait = ASK_COOLDOWN
+	_raise(ASKED)
+	var line := slips[asked]
+	asked += 1
+	_say(line, 5.0)
+	slipped.emit(line)
+	return true
+
+
 func is_serving() -> bool:
 	return not queue.is_empty()
 
 
 func _physics_process(delta: float) -> void:
 	_since_struck += delta
+	_ask_wait -= delta
 	_quiet += delta
 	if _quiet >= DECAY_EVERY:
 		_quiet = 0.0

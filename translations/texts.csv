@@ -45,7 +45,7 @@ HUD_CHECKLIST_HINT,Q: planilla,Q: checklist,Q: planilha
 OBJ_TITLE,Planilla del caso,Case checklist,Planilha do caso
 OBJ_ENTER,Entrar a la casa (llave en una maceta o ariete),Get into the house (key in a pot or battering ram),Entrar na casa (chave num vaso ou aríete)
 OBJ_FIND,Encontrar la libreta de apuestas,Find the betting book,Achar o caderno de apostas
-OBJ_TRUNK,Dejarla en el baúl del patrullero,Put it in the patrol car's trunk,Deixar no porta-malas da viatura
+OBJ_TRUNK,Dejar la prueba en el baúl del patrullero,Put the evidence in the patrol car's trunk,Deixar a prova no porta-malas da viatura
 OBJ_LEAVE,Volver todos en el patrullero a la comisaría,Everyone drives back to the station,Todos voltam de viatura para a delegacia
 OBJ_BROKEN,Adornos rotos: %d (multa: %d),Broken ornaments: %d (fine: %d),Enfeites quebrados: %d (multa: %d)
 OBJ_COMPLAINT,Denuncia del abuelo: %d%%,Grandpa's complaint: %d%%,Denúncia do vovô: %d%%
@@ -208,3 +208,49 @@ HINT_HEAVY_BREAD,Este pan pesa más que los otros...,This loaf is heavier than t
 PROMPT_TILL,E: abrir la caja registradora,E: open the cash register,E: abrir a caixa registradora
 HINT_TILL_KEY,"¡Hay una llave en la caja! Dice ""Obrador"".","There's a key in the register! It says ""Bakehouse"".","Tem uma chave na caixa! Diz ""Padaria""."
 BAKER_SAW,"¡Eso se paga, eh!",You're paying for that!,"Isso vai ser pago, hein!"
+SUSPECT_ring,Joyas escondidas en el pan,Jewels hidden in the bread,Joias escondidas no pão
+SUSPECT_sneeze,Harina para estornudar,Sneezing flour,Farinha de espirrar
+SUSPECT_sourdough,Masa madre robada,Stolen sourdough,Fermento natural roubado
+SUSPECT_wedding,Tortas de boda falsas,Fake wedding cakes,Bolos de casamento falsos
+SUSPECT_lottery,Lotería del pan dulce,Sweet bread lottery,Loteria do pão doce
+SUSPECT_pigeons,Palomas mensajeras,Carrier pigeons,Pombos-correio
+CLUE_SUSPECT_ring,Un folleto de la joyería del barrio: «¡Robo! Se busca un anillo de zafiro».,A flyer from the neighborhood jeweler: “Robbery! Sapphire ring wanted.”,Um panfleto da joalheria do bairro: “Roubo! Procura-se um anel de safira.”
+CLUE_SUSPECT_sneeze,"Una receta tachada: «harina, sal, pimienta... MUCHA pimienta».","A crossed-out recipe: “flour, salt, pepper... LOTS of pepper.”","Uma receita riscada: “farinha, sal, pimenta... MUITA pimenta.”"
+CLUE_SUSPECT_sourdough,Un recorte del diario: «Desapareció la masa madre campeona del concurso».,A newspaper clipping: “Prize-winning sourdough missing.”,Um recorte de jornal: “Sumiu o fermento campeão do concurso.”
+CLUE_SUSPECT_wedding,Una tarjeta: «Seña cobrada: torta de cinco pisos para el sábado».,A card: “Deposit paid: five-tier cake for Saturday.”,Um cartão: “Sinal pago: bolo de cinco andares para sábado.”
+CLUE_SUSPECT_lottery,Un papelito con números del 1 al 10 y la palabra «PREMIO».,A scrap of paper with numbers 1 to 10 and the word “PRIZE.”,Um papelzinho com números de 1 a 10 e a palavra “PRÊMIO”.
+CLUE_SUSPECT_pigeons,Una pluma gris y un mapa del barrio con flechas.,A grey feather and a map of the neighborhood with arrows.,Uma pena cinza e um mapa do bairro com setas.
+BRIEF_BAKERY_TIP_B,Llegó una denuncia anónima: dicen que el pan de la panadería «El Pan Feliz» tiene algo raro.,We got an anonymous tip: they say the bread at the “El Pan Feliz” bakery has something odd about it.,Chegou uma denúncia anônima: dizem que o pão da padaria “El Pan Feliz” tem algo estranho.
+BRIEF_BAKERY_TIP_D,El local está abierto y Marta sigue atendiendo: no espanten a los clientes. El obrador está cerrado y la llave la tiene ella en la caja.,The shop is open and Marta keeps serving: don't scare off the customers. The bakehouse is locked and she keeps the key in the till.,A loja está aberta e a Marta continua atendendo: não espantem os clientes. A cozinha está trancada e ela guarda a chave no caixa.
+BRIEF_BAKERY_TIP_E,Y no rompan nada: cada pan o torta rota se los descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.,And don't break anything: every broken loaf or cake comes out of your pay. Press Q to see your checklist.,E não quebrem nada: cada pão ou bolo quebrado sai do salário de vocês. Com Q vocês veem a lista do que têm que fazer.
+BRIEF_RING_B,"Le robaron un anillo de zafiro a la joyería, y el ladrón se lo vendió a Marta. Ella lo horneó adentro de un pan para sacarlo del barrio.","A sapphire ring was stolen from the jeweler, and the thief sold it to Marta. She baked it into a loaf to get it out of the neighborhood.","Roubaram um anel de safira da joalheria, e o ladrão vendeu para a Marta. Ela assou o anel dentro de um pão para tirá-lo do bairro."
+BRIEF_RING_C,Traigan el anillo en el baúl del patrullero: sin eso no hay caso. Un pan con un anillo adentro pesa más que los otros.,Bring the ring back in the patrol car's trunk: without it there's no case. A loaf with a ring inside is heavier than the others.,Tragam o anel no porta-malas da viatura: sem isso não tem caso. Um pão com um anel dentro pesa mais que os outros.
+BRIEF_RING_D,"Si encuentran la bolsita de la joyería o el recibo de la casa de empeño, mejor: todo suma.","If you find the jeweler's little bag or the pawn shop receipt, even better: it all adds up.","Se acharem a bolsinha da joalheria ou o recibo da casa de penhores, melhor: tudo soma."
+OBJ_FIND_RING,Encontrar el anillo de zafiro (está adentro de un pan),Find the sapphire ring (it's inside a loaf),Achar o anel de safira (está dentro de um pão)
+OBJ_EXTRA_JEWELRY_BAG,Extra: la bolsita de la joyería,Extra: the jeweler's little bag,Extra: a bolsinha da joalheria
+OBJ_EXTRA_PAWN_RECEIPT,Extra: el recibo de la casa de empeño,Extra: the pawn shop receipt,Extra: o recibo da casa de penhores
+CASE_FAILED_LAWYER_BAKER,Marta llamó a su abogado. Caso perdido.,Marta called her lawyer. Case lost.,A Marta ligou para o advogado. Caso perdido.
+BAKER_SLIP,"«¡Yo no guardé nada %s!... Digo, ¿van a llevar pan o no?»","“I didn't put anything %s!... I mean, are you buying bread or not?”","“Eu não guardei nada %s!... Quer dizer, vão levar pão ou não?”"
+BAKER_OFFENDED,¡Basta de preguntas! Yo soy una panadera honrada.,Enough questions! I'm an honest baker.,Chega de perguntas! Eu sou uma padeira honesta.
+PROMPT_GOSSIP,E: hablar con el cliente,E: talk to the customer,E: falar com o cliente
+GOSSIP_ASK,«¿Policías? Invítame un pan y te cuento algo de Marta...»,“Cops? Get me a loaf and I'll tell you something about Marta...”,“Policiais? Me paga um pão e eu te conto uma coisa da Marta...”
+GOSSIP_WAITING,"«Sin pan no hay chisme, oficial.»","“No bread, no gossip, officer.”","“Sem pão não tem fofoca, policial.”"
+GOSSIP_PSST,«Pst... oficial... yo sé cosas.»,“Psst... officer... I know things.”,“Psiu... policial... eu sei de coisas.”
+GOSSIP_CLUE,"«¡Gracias! Mira, anoche vi a Marta esconder algo %s. Y esta semana fue dos veces a la casa de empeño.»","“Thanks! Look, last night I saw Marta hide something %s. And this week she went to the pawn shop twice.”","“Valeu! Olha, ontem à noite vi a Marta esconder algo %s. E esta semana ela foi duas vezes à casa de penhores.”"
+CLUE_GOSSIP,El cliente vio a Marta esconder algo %s,The customer saw Marta hide something %s,O cliente viu a Marta esconder algo %s
+LOC_in_big_oven,en el horno grande,in the big oven,no forno grande
+LOC_behind_flour,detrás de las bolsas de harina,behind the flour sacks,atrás dos sacos de farinha
+LOC_in_fridge,en la heladera,in the fridge,na geladeira
+LOC_under_counter,abajo del mostrador,under the counter,embaixo do balcão
+LOC_in_display,en la vitrina de las tortas,in the cake display,na vitrine dos bolos
+LOC_on_mixer,arriba de la amasadora,on top of the mixer,em cima da masseira
+LOC_on_wardrobe,arriba del ropero,on top of the wardrobe,em cima do guarda-roupa
+LOC_in_chest,en el baúl del living,in the living room chest,no baú da sala
+LOC_bread_shelf,en el estante del pan,on the bread shelf,na prateleira do pão
+LOC_under_kneading_table,abajo de la mesa de amasar,under the kneading table,embaixo da mesa de sovar
+LOC_in_bathroom,en el baño,in the bathroom,no banheiro
+LOC_under_marta_bed,abajo de la cama de Marta,under Marta's bed,embaixo da cama da Marta
+OBJ_ENTER_BAKERY,Entrar a la panadería (está abierta),Get into the bakery (it's open),Entrar na padaria (está aberta)
+OBJ_GUESS_BAKERY,"Averiguar qué pasa en la panadería (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the bakery (with Q open, hold 1, 2 or 3)","Descobrir o que acontece na padaria (com Q aberta, segure 1, 2 ou 3)"
+OBJ_BROKEN_BAKERY,Panes y tortas rotos: %d (multa: %d),Broken loaves and cakes: %d (fine: %d),Pães e bolos quebrados: %d (multa: %d)
+OBJ_COMPLAINT_BAKER,Denuncia de Marta: %d%%,Marta's complaint: %d%%,Denúncia da Marta: %d%%
