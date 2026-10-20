@@ -283,3 +283,19 @@ func test_only_the_talker_mixes_in_nonsense() -> void:
 	case.nerves = 29.0
 	_act("slam_table")
 	assert_eq(level.suspect.saying(), tr("SLIP_%s_1" % case.crime))
+
+
+func test_the_sleeper_dozes_off_and_only_waking_him_up_counts() -> void:
+	case.suspect_id = "sleeper"
+	case.give_tip()
+	_act("slam_table")
+	case._doze(InterrogationCase.SLEEP_SECONDS - 1.0)
+	assert_false(case.asleep, "not yet")
+	case._doze(1.0)
+	assert_true(case.asleep)
+	case._doze(1.0)
+	assert_almost_eq(case.nerves, 12.0 - InterrogationCase.SLEEP_DRAIN, 0.01, "asleep, he forgets")
+	assert_false(_act("slam_table"), "he doesn't even hear the table")
+	assert_true(_act("flick_lights"))
+	assert_false(case.asleep)
+	assert_eq(level.suspect.saying(), "SUSPECT_WAKES")

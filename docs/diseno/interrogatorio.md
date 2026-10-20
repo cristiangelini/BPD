@@ -74,6 +74,10 @@ abogado de sí mismo (5: cada acción de malo le suma 5 más de abogado y el caf
 usan los modelos del sospechoso, del abuelo y del abogado. Se fuerza uno con `--suspect=talker`, `sweet_grandpa` o
 `self_lawyer`. Capturas: `sospechoso_sweet_grandpa.png` y `sospechoso_self_lawyer.png`.
 
+**Cómo quedó (paso 6, segunda parte):** el que se duerme (6, `--suspect=sleeper`, por ahora con el modelo del preso):
+si nadie hace nada en 10 s se duerme y pierde 2 de nervios por segundo. Dormido, solo lo despiertan el café, la luz, el
+grito o una silla tirada; lo demás no lo oye ("Zzz... ronc..."). Captura: `sospechoso_sleeper.png`.
+
 ## Los dos medidores (se ven arriba, como la denuncia del abuelo)
 - **Nervios (0 a 100):** suben con el policía malo y bajan un poco con el bueno. Con 30, 60 y 90 se le escapa una frase
   que da una pista de qué hizo de verdad ("¡Yo nunca estuve en el club de golf!... Digo, ¿qué es el golf?").
@@ -140,7 +144,7 @@ cada acción con quién la hizo; el grito se mide en la PC de quien habla y se m
    contraste, la luz, el café, la silla y el pañuelo.
 4. El grito con la voz. Hecho.
 5. El sorteo en "Jugar" (1 de cada 3). Hecho.
-6. Los otros 9 sospechosos, uno o dos por PR. Hechos el 3 y el 5.
+6. Los otros 9 sospechosos, uno o dos por PR. Hechos el 3, el 5 y el 6.
 7. Interrogar al dueño después de un allanamiento.
 
 ## Respuestas de Cristian (20/10)
