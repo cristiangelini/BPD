@@ -5,11 +5,13 @@ extends Control
 
 const CITY_SCENE := "res://scenes/levels/city.tscn"
 const BAKERY_SCENE := "res://scenes/levels/bakery.tscn"
+const GROOMER_SCENE := "res://scenes/levels/groomer.tscn"
 const TEST_ROOM_SCENE := "res://scenes/levels/grey_room.tscn"
 
 @onready var _play_button: Button = %PlayButton
 @onready var _city_button: Button = %CityButton
 @onready var _bakery_button: Button = %BakeryButton
+@onready var _groomer_button: Button = %GroomerButton
 @onready var _test_room_button: Button = %TestRoomButton
 @onready var _quit_button: Button = %QuitButton
 
@@ -19,6 +21,7 @@ func _ready() -> void:
 	_play_button.pressed.connect(_on_play_pressed)
 	_city_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(CITY_SCENE))
 	_bakery_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(BAKERY_SCENE))
+	_groomer_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(GROOMER_SCENE))
 	_test_room_button.pressed.connect(_on_test_room_pressed)
 	_quit_button.pressed.connect(_on_quit_pressed)
 

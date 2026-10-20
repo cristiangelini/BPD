@@ -62,6 +62,14 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
 
 ## El orden para hacerlo (un PR chico por paso)
 1. El local en la ciudad, con los ambientes, los escondites y lo frágil.
+   - **Cómo quedó (propuesta):** el local va en su lote de la calle comercial, al lado de la panadería, con el frente
+     hacia la calle. Adelante, la recepción (mostrador con la caja, sillón de espera, vitrina de collares, fotos de
+     clientes y un estante de champú) y la sala de corte (2 mesas con secador de pie, bañera y el estante grande de
+     champú, con vidriera a la calle). Atrás, las jaulas (8, en dos filas, 2 abiertas) con la salida al patio, y el
+     depósito (bolsas de alimento, freezer, caja de toallas). El patio tiene césped, una cerca baja que se puede saltar y
+     la cucha grande. Cerrados: la puerta del depósito desde la sala de corte y su puerta de atrás al patio (se rompe
+     con el ariete). 12 escondites, 6 para cosas pesadas. Lo frágil: 24 frascos de champú y 6 collares, 20 de multa
+     cada uno. "Peluquería (prueba)" en el menú la abre. Capturas en `peluqueria/` de la carpeta del proyecto.
 2. Ramiro, el sillón de espera y el interrogatorio.
 3. Los perros sueltos.
 4. La señora del caniche.
