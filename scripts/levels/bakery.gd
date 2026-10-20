@@ -211,6 +211,7 @@ func _ready() -> void:
 		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
 	raid = RaidCase.new()
 	raid.case_seed = case_seed
+	raid.prints_key = "PRINTS_BAKER"
 	raid.story_id = story_id
 	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
 	raid.find_key = STORIES[story_id].find
@@ -232,7 +233,7 @@ func _ready() -> void:
 	station_parking = city.transform * CityLayout.parking("station")
 	raid.station_parking = station_parking
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
-	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
+	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "bakery", car)
@@ -243,7 +244,7 @@ func _ready() -> void:
 	add_child(rig)
 	rig.setup(self)
 	raid.main_evidence = main
-	raid.start(TIP_BRIEFING, SUSPICION_POOL)
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
 	_place_suspicion_clues()
 	_give_slips()
 	_place_gossip()

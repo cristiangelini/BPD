@@ -52,7 +52,7 @@ func hold_point() -> Vector3:
 
 ## Grabs the object in front of the camera within reach. Returns true if it got one.
 func try_grab() -> bool:
-	if _cop.ram or _cop.is_busy() or _cop.is_eating():
+	if _cop.ram or _cop.wheelbarrow or _cop.belt.held_tool() or _cop.is_cuffed() or _cop.is_busy() or _cop.is_eating():
 		return false
 	var eye := _cop.camera.global_transform
 	var hit := _cop.aim_hit(GameScale.GRAB_REACH)
@@ -65,6 +65,14 @@ func try_grab() -> bool:
 	hold_distance = clampf(eye.origin.distance_to(hit.position), GameScale.HOLD_MIN, GameScale.HOLD_MAX)
 	held.hold(get_instance_id(), hold_point())
 	return true
+
+
+## Puts `body` in this cop's hands, as if grabbed from where it is (things handed out, like the armory's).
+func grab(body: Grabbable) -> void:
+	release()
+	held = body
+	hold_distance = GameScale.HOLD_MIN
+	held.hold(get_instance_id(), hold_point())
 
 
 func release() -> void:
