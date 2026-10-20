@@ -672,3 +672,6 @@ OWNER_ESCORT_1,"¡Suélteme! ¡Conozco mis derechos! Bueno, algunos.","Let go of
 OWNER_ESCORT_2,¡Despacio! ¡Que tengo la rodilla mala!,Slow down! I have a bad knee!,Devagar! Meu joelho é ruim!
 OWNER_ESCORT_3,¡Esto va a salir en el diario del barrio!,This is going to be in the neighborhood paper!,Isso vai sair no jornal do bairro!
 HINT_OWNER_IN_CAR,Ya va detenido en el patrullero: el turno que viene es su interrogatorio.,In the patrol car under arrest: next shift is their interrogation.,Já está detido na viatura: no próximo turno é o interrogatório.
+PROMPT_CHAIR_SIT,E: sentarte,E: sit down,E: sentar
+PROMPT_CHAIR_STAND,E: levantarte,E: stand up,E: levantar
+SUSPECT_REACT_SIT,¿Se va a sentar conmigo? Qué amable... ¿somos amigos ahora?,You're sitting with me? How nice... are we friends now?,Vai sentar comigo? Que gentil... agora somos amigos?

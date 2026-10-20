@@ -46,6 +46,7 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 | NPC (abuelo, vecina, chismosa, Marta, clientes, Michi, palomas, Ramiro, la señora del caniche y los clientes de la peluquería) | Anfitrión | Posición, animación, lo que dicen, la denuncia y la toalla del cliente |
 | Perros, gatos y tortugas | Anfitrión, como objetos | Se mueven solos solo en la PC del anfitrión; en las otras siguen su copia |
 | Caso (pista del comisario, historia, pistas, sospecha marcada, entrega, denuncia, multas) | Anfitrión | La lista de Q y los avisos iguales para todos. Cualquiera que hable con el comisario da la pista para todos, también para quien entra después |
+| Interrogatorio (medidores, confesión, abogado, lo que hay en la mesa) | Anfitrión | Los medidores, lo que dice el sospechoso, la lámpara, las confesiones del fanático, la hoja del mudo y la pantalla del turno iguales para todos; el grito se mide en la PC de quien habla y lo cuenta el anfitrión |
 | Plata, ítems y turno | Anfitrión | La pantalla de fin de turno igual para todos |
 
 ## Herramientas

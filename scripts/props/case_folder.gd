@@ -18,7 +18,7 @@ func _physics_process(_delta: float) -> void:
 	if not holders.is_empty() or let_go_at < 0 or let_go_at == _checked_at or linear_velocity.length() > SETTLED_SPEED:
 		return
 	_checked_at = let_go_at
-	var case := InterrogationCase.active(get_tree())
+	var case := InterrogationCase.active(get_tree(), self)
 	if case:
 		case.folder_shown(self)
 
