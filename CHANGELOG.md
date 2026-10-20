@@ -55,3 +55,4 @@
 - Online, step 4 (patrol car): getting in picks the same seat on every PC, the host drives the car with the controls the driver sends, and the siren turns on for everyone.
 - Online, step 5 (the case): the host's case decides; every guest sees the same checklist, the comisario's story once someone guesses it, the result and the end of shift screen. Guests mark suspicions through the host, and only the host starts the next case.
 - Online, step 5 (people and animals): the host runs the grandpa, Marta, the customers and the pigeons; guests see copies that walk, talk and get annoyed the same, and only the host brings customers in. Letting go of E ends the grandpa's story on every PC.
+- Campaign save: Play starts a 5 shift campaign and each end of shift saves it (shift, group money, items and the cases that follow, all from the campaign seed); Continue in the menu, or in the room for the host, picks it up where it was. Design in docs/diseno/guardado.md.

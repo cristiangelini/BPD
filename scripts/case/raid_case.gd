@@ -228,8 +228,17 @@ func finish_shift() -> void:
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
-	_show_result({"solved": case_solved, "report": ShiftReport.pay(case_solved, values, fines, wrong_marks.size()),
-		"broken": objective_facts().broken, "awards": ShiftReport.awards(stats)})
+	var report := ShiftReport.pay(case_solved, values, fines, wrong_marks.size())
+	var result := {"solved": case_solved, "report": report, "broken": objective_facts().broken,
+		"awards": ShiftReport.awards(stats)}
+	# A campaign moves on to its next shift and is saved now, between shifts (guardado.md).
+	var campaign := Campaign.current
+	if campaign and not campaign.is_over():
+		var played := campaign.shift
+		campaign.finish_shift(story_id, case_solved, report)
+		campaign.save()
+		result.campaign = {"shift": played, "money": campaign.money, "over": campaign.is_over()}
+	_show_result(result)
 
 
 func _show_result(result: Dictionary) -> void:
@@ -245,8 +254,12 @@ func _show_result(result: Dictionary) -> void:
 	var awards: Array[Dictionary] = []
 	awards.assign(result.awards)
 	shift_screen.show_report(result.solved, result.report, result.broken, awards)
-	# Only the host plays the next case for everyone.
-	shift_screen.get_node("%AgainButton").visible = not follower
+	var over := false
+	if result.has("campaign"):
+		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over)
+		over = result.campaign.over
+	# Only the host plays the next case for everyone, and not after the last shift.
+	shift_screen.get_node("%AgainButton").visible = not follower and not over
 
 
 ## What a follower needs to show the same case (CaseSync).
