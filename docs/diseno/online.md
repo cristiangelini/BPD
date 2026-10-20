@@ -47,6 +47,11 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 | Caso (historia, pistas, sospecha marcada, entrega, denuncia, multas) | Anfitrión | La lista de Q y los avisos iguales para todos |
 | Plata, ítems y turno | Anfitrión | La pantalla de fin de turno igual para todos |
 
+## Herramientas
+- El cinturón se ve igual en todas las PCs: qué herramienta tiene cada uno en la mano, la linterna prendida o apagada (F) y las esposas. Como las demás acciones, el que la usa le pide al anfitrión y el anfitrión la repite en todos.
+- Esposar va a quien apuntó el que esposa en su PC; liberar con E también pasa en todas.
+- La cámara, el kit de huellas, la armería, las donas, los guantes y la carretilla van en los pasos que siguen.
+
 ## Menú con Esc
 - **Esc** en medio de un caso abre un menú: **Seguir**, **Invitar amigos** (solo el anfitrión, con Steam), la casilla **Voz siempre abierta** y **Salir de la sala** (o **Salir al menú** jugando solo). Esc otra vez lo cierra.
 - Jugando solo el juego se detiene mientras está abierto. Online no puede: dice "Tus compañeros siguen jugando." **(propuesta)**

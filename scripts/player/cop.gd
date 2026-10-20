@@ -215,6 +215,25 @@ func uncuff() -> void:
 	_cuffed_left = 0.0
 
 
+## Frees a cuffed `partner` (E on them). Through act(), so it happens on every PC.
+func free_partner(partner: Cop) -> void:
+	if partner:
+		partner.uncuff()
+
+
+## The belt's actions, through act() so every PC sees the same tool in hand, the same light and the same cuffs.
+func belt_select(index: int) -> void:
+	belt.select(index)
+
+
+func belt_flashlight() -> void:
+	belt.flashlight.toggle()
+
+
+func belt_cuff(body: Node, at: Vector3) -> void:
+	(belt.tools[0] as Handcuffs).cuff_body(body, at)
+
+
 func is_cuffed() -> bool:
 	return _cuffed_left > 0.0
 
@@ -350,7 +369,7 @@ func use() -> bool:
 		return _use_wheelbarrow()
 	var partner := _cuffed_partner()
 	if partner:
-		partner.uncuff()
+		act("free_partner", self, [partner])
 		return true
 	var target := _usable_target()
 	if not target:

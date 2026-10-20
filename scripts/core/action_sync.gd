@@ -44,6 +44,7 @@ func act(actor: Cop, method: String, target: Node, args := []) -> void:
 	var index := -1 if target == actor else targets.find(target)
 	if index < 0 and target != actor:
 		return
+	args = args.map(encode)
 	if multiplayer.is_server():
 		_do_and_tell(multiplayer.get_unique_id(), index, method, args)
 	else:
@@ -78,8 +79,30 @@ func _perform(actor_id: int, index: int, method: String, args: Array) -> bool:
 	var target: Node = actor if index < 0 else (targets[index] if index < targets.size() else null)
 	if not is_instance_valid(target) or not target.has_method(method):
 		return false
-	target.callv(method, ([actor] if ACTOR_METHODS.has(method) else []) + args)
+	target.callv(method, ([actor] if ACTOR_METHODS.has(method) else []) + args.map(decode))
 	return true
+
+
+## A node among an action's arguments, as every PC can find it: a cop by its player's id (its name differs on each PC),
+## anything else by its path in the level.
+func encode(arg: Variant) -> Variant:
+	if arg is Cop:
+		for id: int in net.cop_syncs:
+			if net.cop_syncs[id].cop == arg:
+				return {"cop": id}
+		return null
+	if arg is Node:
+		return {"path": _level.get_path_to(arg)}
+	return arg
+
+
+func decode(arg: Variant) -> Variant:
+	if arg is Dictionary and arg.has("cop"):
+		var sync: CopSync = net.cop_syncs.get(arg.cop)
+		return sync.cop if sync and is_instance_valid(sync.cop) else null
+	if arg is Dictionary and arg.has("path"):
+		return _level.get_node_or_null(arg.path)
+	return arg
 
 
 func _on_node_added(node: Node) -> void:
