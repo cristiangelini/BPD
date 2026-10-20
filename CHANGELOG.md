@@ -85,3 +85,4 @@
 - The host leaving in the middle of a case sends everyone back to the room screen with "El anfitrión cerró la sala", instead of leaving them alone in the level.
 - Esc during a case opens a menu: resume, invite friends (host with Steam), the always open voice and leave the room (or quit to the menu solo); solo it stops the game.
 - Online belt: the tool in each cop's hand, the flashlight and the handcuffs (cuffing and freeing a partner) are the same on every PC.
+- Online camera and fingerprint kit: a photo (flash, film, the owner's complaint, the trails it caught) and a dusting happen on every PC, and photos count for the award on the host.

@@ -50,7 +50,8 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 ## Herramientas
 - El cinturón se ve igual en todas las PCs: qué herramienta tiene cada uno en la mano, la linterna prendida o apagada (F) y las esposas. Como las demás acciones, el que la usa le pide al anfitrión y el anfitrión la repite en todos.
 - Esposar va a quien apuntó el que esposa en su PC; liberar con E también pasa en todas.
-- La cámara, el kit de huellas, la armería, las donas, los guantes y la carretilla van en los pasos que siguen.
+- **Cámara y huellas:** la PC del que saca la foto decide qué salió en ella; el flash, el rollo, la queja del dueño y las pistas pasan en todas, y la foto cuenta para el premio al fotógrafo. Las huellas también se revelan en todas y las del dueño van a la lista de todos.
+- La armería, las donas, los guantes y la carretilla van en los pasos que siguen.
 
 ## Menú con Esc
 - **Esc** en medio de un caso abre un menú: **Seguir**, **Invitar amigos** (solo el anfitrión, con Steam), la casilla **Voz siempre abierta** y **Salir de la sala** (o **Salir al menú** jugando solo). Esc otra vez lo cierra.
