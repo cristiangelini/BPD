@@ -130,7 +130,7 @@ func test_forty_loaves_and_one_hides_the_ring_drawn_from_the_seed() -> void:
 	var again := _bakery_with_seed(42)
 	await wait_physics_frames(2)
 	assert_eq(again.ring_loaf, first.ring_loaf, "same seed, same loaf")
-	assert_eq(again.extra_spots, first.extra_spots, "same seed, same spots for the extras")
+	assert_eq(again.hidden_spots, first.hidden_spots, "same seed, same spots for the extras")
 
 
 func test_pulling_the_ring_loaf_apart_drops_the_ring_and_costs_a_fine() -> void:
@@ -193,7 +193,7 @@ func test_the_extras_wait_at_their_spots() -> void:
 	var bakery := _bakery_with_seed(11)
 	await wait_physics_frames(30)
 	for i in bakery.extras.size():
-		var spot: Vector3 = Bakery.SPOTS[bakery.extra_spots[i]].at
+		var spot: Vector3 = Bakery.SPOTS[bakery.hidden_spots[i]].at
 		var item := bakery.extras[i]
 		assert_lt(Vector2(item.global_position.x - spot.x, item.global_position.z - spot.z).length(), 0.1)
 		assert_gt(item.global_position.y, spot.y, "%s rests on its spot" % item.name)

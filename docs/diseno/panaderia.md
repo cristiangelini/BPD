@@ -54,7 +54,14 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
 - **La bolsa con la X** pesa 30 kg (la harina más la pimienta) para que hagan falta dos, como el bolillero del abuelo. No pierde valor si se cae.
 - **El estornudo:** el policía que está a menos de 3 m de la bolsa con la X estornuda cada 5 s, más o menos 2 s, y suelta lo que tiene en las manos. Cargar la bolsa entre dos también hace estornudar, así que se les cae en el camino.
 - **Los extras:** la lista de víctimas y el embudo, en dos escondites sorteados. Marta con R y el cliente chismoso dan pistas de dónde están, como en el anillo.
-- **El sorteo:** la panadería elige entre sus historias con la semilla (por ahora el anillo y el estornudo), o con `--story=<id>`.
+- **El sorteo:** la panadería elige entre sus historias con la semilla, o con `--story=<id>`.
+
+## La masa madre robada (cómo quedó, propuesta)
+- **Gertrudis** está en un frasco de vidrio (3 kg, 1000) en uno de los escondites, y la medalla del concurso (0,3 kg, 300, de oro: aguanta caídas) en otro.
+- **El ruido:** burbujea cada 1,6 s. Se oye hasta 7 m, y a esa distancia también aparece un "*blup*" sobre el frasco (hasta que haya sonido de verdad).
+- **Crece:** cada minuto pesa 0,5 kg más, hasta 6 kg.
+- **Frágil:** un golpe de más de 4 m/s rompe el frasco entero (soltarlo desde las manos alcanza), y con Gertrudis rota se pierde el caso.
+- Marta con R y el chismoso también pueden decir dónde está Gertrudis, no solo la medalla.
 
 ## Lo que comparte con la casa del abuelo
 - La planilla con la denuncia anónima, las 3 sospechas y marcar la sospecha (1, 2 o 3 durante 2 s).

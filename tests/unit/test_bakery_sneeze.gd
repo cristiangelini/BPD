@@ -53,11 +53,11 @@ func test_near_the_pepper_sack_a_cop_sneezes_and_drops_what_they_hold() -> void:
 	grabber.held = loaf
 	loaf.hold(grabber.get_instance_id(), loaf.global_position)
 	cop.global_position = Vector3(0, 0.1, -3.0)
-	bakery._sneezes(Bakery.SNEEZE_EVERY + Bakery.SNEEZE_JITTER + 0.1)
+	bakery.rig.sneezes(SneezeRig.SNEEZE_EVERY + SneezeRig.SNEEZE_JITTER + 0.1)
 	assert_not_null(grabber.held, "too far from the sack to sneeze")
 	cop.global_position = bakery.main.global_position + Vector3(0, 0, 1.5)
-	bakery._sneezes(TICK)
-	bakery._sneezes(Bakery.SNEEZE_EVERY + Bakery.SNEEZE_JITTER + 0.1)
+	bakery.rig.sneezes(TICK)
+	bakery.rig.sneezes(SneezeRig.SNEEZE_EVERY + SneezeRig.SNEEZE_JITTER + 0.1)
 	assert_null(grabber.held, "the sneeze makes the cop let go")
 	assert_false(loaf.is_held())
 

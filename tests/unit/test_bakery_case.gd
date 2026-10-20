@@ -69,7 +69,7 @@ func test_marta_lets_slip_where_the_extras_are_then_stops_answering() -> void:
 	assert_false(baker.ask(cop), "two slips and she's done")
 	assert_eq(bakery.raid.clues_found.size(), 2)
 	for i in bakery.extras.size():
-		var where := tr("LOC_" + Bakery.SPOTS[bakery.extra_spots[i]].id)
+		var where := tr("LOC_" + Bakery.SPOTS[bakery.hidden_spots[i]].id)
 		assert_has(bakery.raid.clues_found, tr("BAKER_SLIP") % where)
 	assert_almost_eq(baker.complaint, Baker.ASKED * 2, 0.5, "every question annoys her")
 
