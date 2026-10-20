@@ -32,3 +32,4 @@
 - Raid stories as data: the bingo (briefing, evidence and drawer cards) moved from the house code to a CaseStory resource, with no change in play. It is the first step to draw a different story each match.
 - The house draws its story from the seed (or `--story=<id>`), and the bingo's own pieces (safe combination, crumbs, cards) live in a story rig, so a new story only brings its own.
 - Second story for the grandpa's house, the turtle races: catch Relámpago (the turtle with a 7 on her shell) among four lookalikes that roam the house, following lettuce leaves from the kitchen; the betting board and three trophies are extras. `--story=turtles` forces it.
+- Guess the story: the comisario only brings an anonymous tip, and the checklist lists three suspicions. Each one has a clue in the house; with Q open, hold 1, 2 or 3 to mark one. A right guess makes the comisario tell what to bring, one wrong guess halves the salary, and two fail the case.

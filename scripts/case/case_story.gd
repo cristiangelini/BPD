@@ -6,7 +6,7 @@ extends Resource
 
 ## Short name, also used to pick the story with --story=<id> when testing.
 @export var id := ""
-## What the comisario says before the raid, one tr() key per line.
+## What the comisario says once the cops guess this story right: what to bring and what adds up (one tr() key per line).
 @export var briefing: PackedStringArray = []
 ## Evidence that goes to the hiding spots. The first one is the main evidence: without it the case isn't solved.
 @export var evidence: Array[PackedScene] = []

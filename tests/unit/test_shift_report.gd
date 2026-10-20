@@ -50,6 +50,7 @@ func test_the_house_shows_the_shift_screen_with_the_pay() -> void:
 	var tin := house.main_evidence()
 	tin.global_position = house.car.to_global(Vector3(0, 0.6, -1.7))
 	await wait_physics_frames(10)
+	house.mark(house.suspicions.find(house.story.id))
 	house.car.enter(house.get_node("Cop"))
 	house.finish_shift()
 	var screen: ShiftScreen = house.get_node("ShiftScreen")

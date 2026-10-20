@@ -50,7 +50,7 @@ func test_a_player_hears_the_comisario_and_cannot_move_meanwhile() -> void:
 	var cop: Cop = house.get_node("Cop")
 	assert_true(house.briefing.visible)
 	assert_true(cop.is_busy())
-	for i in GrandpaHouse.BINGO.briefing.size():
+	for i in GrandpaHouse.TIP_BRIEFING.size():
 		house.briefing.advance()
 	assert_false(house.briefing.visible)
 	assert_false(cop.is_busy())
@@ -86,6 +86,7 @@ func test_the_extras_in_the_trunk_tick_their_rows() -> void:
 	TranslationServer.set_locale("es")
 	var house := _house(false)
 	await wait_physics_frames(30)
+	house.mark(house.suspicions.find("bingo"))
 	var safe: Evidence = house.evidence[2]
 	assert_eq(safe.full_value, 800.0, "the takings")
 	safe.global_position = house.car.to_global(Vector3(0.5, 0.7, -1.7))

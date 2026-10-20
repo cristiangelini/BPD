@@ -92,6 +92,8 @@ const DRESSERS := [
 ## Chance that a drawer also holds an ornament, which breaks if the drawer is yanked out (propuesta).
 const DRAWER_ORNAMENT := 0.3
 
+## What the comisario says before the raid: an anonymous tip, since the cops have to find out the story (decision 79).
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_TIP_B", "BRIEF_TIP_C", "BRIEF_TIP_D", "BRIEF_1_1_E"]
 ## The open checklist redraws this often, in seconds.
 const CHECKLIST_REFRESH := 0.2
 
@@ -147,6 +149,15 @@ var fines := 0
 var case_failed := false
 ## The main evidence is in the trunk and every cop got in the car (allanamiento.md, "Entrega").
 var case_solved := false
+## The three suspicions on the checklist (CaseSuspicions), the true story among them.
+var suspicions: Array[String] = []
+## The suspicions marked wrong so far.
+var wrong_marks: Array[String] = []
+## The cops marked the true story: its evidence and extras show on the checklist and the case can be solved.
+var story_known := false
+## Suspicion index being held down with the checklist open, and for how long.
+var _marking := -1
+var _mark_held := 0.0
 ## Some cop already picked up the main evidence (checklist row "find it").
 var main_found := false
 
@@ -209,6 +220,8 @@ func _ready() -> void:
 	rig.setup(self)
 	_place_notes()
 	_give_slips()
+	suspicions = CaseSuspicions.draw(case_seed, story.id)
+	_place_suspicion_clues()
 	_place_michi()
 	_place_neighbor()
 	_place_trails()
@@ -224,7 +237,7 @@ func _ready() -> void:
 	# Only a cop with a player at the keys hears the comisario; tests drive cops without input.
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).input_enabled:
-			briefing.start(story.briefing)
+			briefing.start(TIP_BRIEFING)
 			break
 	$ShiftScreen.play_again.connect(func() -> void: get_tree().reload_current_scene())
 	$ShiftScreen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
@@ -245,7 +258,7 @@ func finish_shift() -> void:
 	%CaseSolved.hide()
 	%CaseFailed.hide()
 	checklist.set_open(false)
-	$ShiftScreen.show_report(case_solved, ShiftReport.pay(case_solved, values, fines), broken_ornaments,
+	$ShiftScreen.show_report(case_solved, ShiftReport.pay(case_solved, values, fines, wrong_marks.size()), broken_ornaments,
 		ShiftReport.awards(stats))
 
 
@@ -259,6 +272,7 @@ func _process(delta: float) -> void:
 	for line: String in trails:
 		if not clues_found.has(line) and _a_cop_sees(trails[line]):
 			clues_found.append(line)
+	_hold_to_mark(delta)
 	_refresh_left -= delta
 	if checklist.is_open() and _refresh_left <= 0.0:
 		_refresh_left = CHECKLIST_REFRESH
@@ -273,11 +287,14 @@ func objective_facts() -> Dictionary:
 		all_in = all_in and (cop as Cop).vehicle == car
 	return {
 		"door_open": door.is_open or door.is_broken,
-		"find": story.find_key,
+		"find": story.find_key if story_known else "OBJ_FIND_PROOF",
 		"found": main_found,
 		"delivered": car.is_delivered(main_evidence()),
 		"all_in_car": all_in,
-		"extras": rig.extras(self),
+		"extras": rig.extras(self) if story_known else [],
+		"suspicions": suspicions.map(func(id: String) -> Dictionary: return {"name": "SUSPECT_" + id,
+			"state": "right" if story_known and id == story.id else ("wrong" if wrong_marks.has(id) else "open")}),
+		"story_known": story_known,
 		"tupper_asked": neighbor.was_asked,
 		"tupper_returned": neighbor.returned,
 		"clues": clues_found,
@@ -322,6 +339,58 @@ func _give_slips() -> void:
 	for item: int in order:
 		grandpa.slips.append(tr("GRANDPA_SLIP") % tr("LOC_" + SPOTS[evidence_spots[item]].id))
 	grandpa.slipped.connect(_on_clue)
+
+
+## Marks suspicion `index` as the cops' guess. Right: the comisario tells the story. Wrong: half the salary, and the
+## second wrong one fails the case. Returns whether it was right.
+func mark(index: int) -> bool:
+	if story_known or case_failed or index < 0 or index >= suspicions.size() or wrong_marks.has(suspicions[index]):
+		return false
+	if suspicions[index] == story.id:
+		story_known = true
+		for cop in get_tree().get_nodes_in_group("cops"):
+			if (cop as Cop).input_enabled:
+				briefing.start(story.briefing)
+				break
+		_check_solved()
+		return true
+	wrong_marks.append(suspicions[index])
+	for cop in get_tree().get_nodes_in_group("cops"):
+		(cop as Cop).show_hint("HINT_SUSPECT_WRONG")
+	if wrong_marks.size() >= CaseSuspicions.WRONG_TO_FAIL:
+		_fail("CASE_FAILED_WRONG")
+	return false
+
+
+## With the checklist open, holding 1, 2 or 3 for a moment marks that suspicion.
+func _hold_to_mark(delta: float) -> void:
+	var held := -1
+	if checklist.is_open():
+		for i in suspicions.size():
+			if Input.is_action_pressed("slot_%d" % (i + 1)):
+				held = i
+	if held != _marking:
+		_marking = held
+		_mark_held = 0.0
+	if held < 0:
+		return
+	_mark_held += delta
+	if _mark_held >= CaseSuspicions.MARK_SECONDS:
+		mark(held)
+		# Holding on doesn't mark again until the key is let go.
+		_mark_held = -INF
+
+
+## One clue for each suspicion, the true one too, on note places the grandpa's notes left free.
+func _place_suspicion_clues() -> void:
+	var spare: Array = clue_plan.spare
+	for i in suspicions.size():
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + suspicions[i])
+		note.position = NOTE_PLACES[spare[i]] + Vector3.UP * 0.01
+		note.rotation.y = spare[i] * 0.9
+		note.read.connect(_on_clue)
+		$Evidence.add_child(note)
 
 
 ## Michi sleeps on top of the story's cat_item (the betting book in the bingo).
@@ -471,7 +540,7 @@ func main_evidence() -> Evidence:
 
 
 func _check_solved() -> void:
-	if case_solved or case_failed or not car.is_delivered(main_evidence()):
+	if case_solved or case_failed or not story_known or not car.is_delivered(main_evidence()):
 		return
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).vehicle != car:

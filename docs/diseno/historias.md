@@ -36,6 +36,15 @@ El comisario no sabe qué pasa en la casa: tiene una **denuncia anónima** vaga 
 
 Cristian eligió esto (decisión 79) en lugar de que el comisario cuente la historia al empezar.
 
+**Cómo se juega (propuesta):**
+- **Las 3 sospechas** salen con la semilla: la historia verdadera y 2 más, sorteadas entre las 6 historias de la casa. Pueden ser historias que todavía no se juegan: como sospecha falsa solo hace falta su nombre y su pista.
+- **Pistas de sospecha:** en la casa hay una pista para cada una de las 3 sospechas (la verdadera también), un papel que se lee con E: una bolilla con el 23 (bingo), una hoja de lechuga mordida (tortugas), un recorte de diario sobre la bailarina robada (museo), una dentadura en un vaso (dentaduras), un cable larguísimo que sube al altillo (radio) y unos guantes de boxeo gastados (club de lucha). Solas no alcanzan: lo que decide son las notas del abuelo y la evidencia de verdad.
+- **Marcar la sospecha:** con la planilla abierta (Q), mantener 1, 2 o 3 durante 2 s. Es con las teclas y no con el clic porque la planilla no saca el mouse.
+- **Antes de acertar,** la planilla dice "Averiguar qué pasa en la casa" y "Encontrar la prueba", sin decir cuál, y no muestra los extras. La evidencia que dejen en el baúl antes queda guardada y cuenta cuando aciertan.
+- **Al acertar,** el comisario confirma por radio (el cartel de abajo) y cuenta la historia: qué traer y qué suma.
+- **Al equivocarse,** el comisario los reta y esa sospecha queda tachada. La primera vez cobran la mitad del sueldo; la segunda, el caso se falla.
+- Hasta tener la comisaría, el comisario abre el caso frente a la casa con la denuncia anónima: "dicen que en la casa del abuelo entra y sale gente todo el día".
+
 ## Las historias de la casa del abuelo
 Cada una tiene una evidencia principal (sin ella no hay caso), 1 o 2 extras, un tipo de pista propio y algo que cambia en la casa.
 

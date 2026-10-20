@@ -23,7 +23,7 @@ GRANDPA_STORY_TIRED,"Ya te conté esa, jovencito.","I already told you that one,
 HINT_CAR_DRIVER,"Manejas tú: WASD, Espacio freno de mano, H sirena, E para bajarte.","You're driving: WASD, Space handbrake, H siren, E to get out.","Você dirige: WASD, Espaço freio de mão, H sirene, E para descer."
 HINT_CAR_PASSENGER,Vas de acompañante. E para bajarte.,You're riding along. E to get out.,Você vai de carona. E para descer.
 HINT_CAR_FULL,El patrullero está lleno.,The patrol car is full.,A viatura está cheia.
-CASE_FAILED_BROKEN,Se rompió la lata de galletas. Caso fallado.,The cookie tin broke. Case failed.,A lata de biscoitos quebrou. Caso fracassado.
+CASE_FAILED_BROKEN,Se rompió la prueba principal. Caso fallado.,The main evidence broke. Case failed.,A prova principal quebrou. Caso fracassado.
 CASE_SOLVED,¡Caso resuelto! La evidencia va en el baúl.,Case solved! The evidence is in the trunk.,Caso resolvido! A evidência está no porta-malas.
 PROMPT_GRAB,Mantén clic izquierdo: agarrar,Hold left click: grab,Segure o clique esquerdo: pegar
 PROMPT_HOLDING,Suelta el clic: soltar · Clic derecho: tirar · Rueda: acercar o alejar,Release click: drop · Right click: throw · Wheel: closer or farther,Solte o clique: soltar · Clique direito: jogar · Roda: aproximar ou afastar
@@ -38,8 +38,8 @@ BRIEF_SPEAKER,Comisario,Commissioner,Comissário
 BRIEF_CONTINUE,E: seguir,E: continue,E: continuar
 BRIEF_1_1_A,"¡Novatos! Atención, que no lo voy a repetir.","Rookies! Listen up, I won't say it twice.","Novatos! Atenção, que eu não vou repetir."
 BRIEF_1_1_B,Hace meses que alguien organiza un bingo clandestino para todos los jubilados del barrio. Los vecinos dicen que es el abuelo de la casa amarilla.,For months someone has been running an illegal bingo for every retiree in the neighborhood. The neighbors say it's the grandpa in the yellow house.,Faz meses que alguém organiza um bingo clandestino para todos os aposentados do bairro. Os vizinhos dizem que é o vovô da casa amarela.
-BRIEF_1_1_C,Tenemos orden de allanamiento. Traigan la libreta de apuestas en el baúl del patrullero: sin eso no hay caso.,We have a search warrant. Bring back the betting book in the patrol car's trunk: without it there's no case.,Temos um mandado de busca. Tragam o caderno de apostas no porta-malas da viatura: sem isso não tem caso.
-BRIEF_1_1_D,"Si encuentran el bolillero, la caja fuerte con la recaudación o los cartones, mejor: todo suma. La puerta está cerrada: la llave suele estar en alguna maceta, y si no, usen el ariete.","If you find the bingo cage, the safe with the takings or the bingo cards, even better: it all adds up. The door is locked: the key is usually in one of the pots, and if not, use the battering ram.","Se acharem o globo do bingo, o cofre com a arrecadação ou as cartelas, melhor: tudo soma. A porta está trancada: a chave costuma estar em algum vaso, e se não, usem o aríete."
+BRIEF_1_1_C,Traigan la libreta de apuestas en el baúl del patrullero: sin eso no hay caso.,Bring back the betting book in the patrol car's trunk: without it there's no case.,Tragam o caderno de apostas no porta-malas da viatura: sem isso não tem caso.
+BRIEF_1_1_D,"Si encuentran el bolillero, la caja fuerte con la recaudación o los cartones, mejor: todo suma.","If you find the bingo cage, the safe with the takings or the bingo cards, even better: it all adds up.","Se acharem o globo do bingo, o cofre com a arrecadação ou as cartelas, melhor: tudo soma."
 BRIEF_1_1_E,"Y no rompan nada, que el abuelo tiene abogado: cada adorno roto se los descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.","And don't break anything, the grandpa has a lawyer: every broken ornament comes out of your pay. Press Q to see the checklist of what to do.","E não quebrem nada, que o vovô tem advogado: cada enfeite quebrado sai do salário de vocês. Com Q vocês veem a planilha do que fazer."
 HUD_CHECKLIST_HINT,Q: planilla,Q: checklist,Q: planilha
 OBJ_TITLE,Planilla del caso,Case checklist,Planilha do caso
@@ -117,7 +117,7 @@ NEIGHBOR_ASK,"«Ese viejo me debe mi táper desde hace tres años. Celeste, con 
 NEIGHBOR_WAITING,"«¿Y mi táper? Seguro lo tiene en algún cajón, ese ladrón de tápers.»","“And my tupperware? He's got it in some drawer, that tupperware thief.”","“E o meu pote? Deve estar em alguma gaveta, aquele ladrão de potes.”"
 NEIGHBOR_CLUE,"«¡Mi táper! Bueno, te cuento: anoche lo vi meter algo %s. Y los jueves vienen veinte viejitas a gritar ¡BINGO! a las tres de la mañana.»","“My tupperware! All right, here goes: last night I saw him put something %s. And on Thursdays twenty old ladies come over and shout BINGO! at three in the morning.”","“Meu pote! Bom, vou contar: ontem à noite eu vi ele colocar algo %s. E às quintas vêm vinte velhinhas gritar BINGO! às três da manhã.”"
 CLUE_NEIGHBOR,La vecina vio al abuelo esconder algo %s,The neighbor saw the grandpa hide something %s,A vizinha viu o avô esconder algo %s
-OBJ_EXTRA_TUPPER,"Extra: devolverle el táper a la vecina (está en un cajón; llévalo a su ventana)","Extra: return the neighbor's tupperware (it's in a drawer; take it to her window)","Extra: devolver o pote da vizinha (está numa gaveta; leve até a janela dela)"
+OBJ_EXTRA_TUPPER,Extra: devolverle el táper a la vecina (está en un cajón; llévalo a su ventana),Extra: return the neighbor's tupperware (it's in a drawer; take it to her window),Extra: devolver o pote da vizinha (está numa gaveta; leve até a janela dela)
 SHIFT_TITLE,Fin del turno,End of shift,Fim do turno
 SHIFT_CASE_SOLVED,Caso resuelto,Case solved,Caso resolvido
 SHIFT_CASE_FAILED,Caso fallado,Case failed,Caso fracassado
@@ -136,11 +136,31 @@ AWARD_STORY_SECONDS,Mejor oyente del abuelo: %s (%d s),The grandpa's best listen
 AWARD_METERS_DRIVEN,Chofer del año: %s (%d m),Driver of the year: %s (%d m),Motorista do ano: %s (%d m)
 COP_NAME,Policía %d,Officer %d,Policial %d
 BRIEF_TURTLE_B,"Hay carreras de tortugas clandestinas en el barrio, con apuestas y todo. La campeona se llama Relámpago y dicen que vive en la casa del abuelo.","There are underground turtle races in the neighborhood, with bets and everything. The champion is called Relámpago, and they say she lives at the grandpa's house.","Tem corridas de tartarugas clandestinas no bairro, com apostas e tudo. A campeã se chama Relâmpago e dizem que mora na casa do vovô."
-BRIEF_TURTLE_C,"Tenemos orden de allanamiento. Traigan a Relámpago en el baúl del patrullero: tiene un 7 pintado en el caparazón. Ojo, que no es la única tortuga de la casa.","We have a search warrant. Bring Relámpago back in the patrol car's trunk: she has a 7 painted on her shell. Careful, she's not the only turtle in the house.","Temos um mandado de busca. Tragam a Relâmpago no porta-malas da viatura: ela tem um 7 pintado no casco. Cuidado, não é a única tartaruga da casa."
-BRIEF_TURTLE_D,"Si encuentran el tablero de apuestas o los trofeos, mejor: todo suma. La puerta está cerrada: la llave suele estar en alguna maceta, y si no, usen el ariete.","If you find the betting board or the trophies, even better: it all adds up. The door is locked: the key is usually in one of the pots, and if not, use the battering ram.","Se acharem o quadro de apostas ou os troféus, melhor: tudo soma. A porta está trancada: a chave costuma estar em algum vaso, e se não, usem o aríete."
+BRIEF_TURTLE_C,"Traigan a Relámpago en el baúl del patrullero: tiene un 7 pintado en el caparazón. Ojo, que no es la única tortuga de la casa.","Bring Relámpago back in the patrol car's trunk: she has a 7 painted on her shell. Careful, she's not the only turtle in the house.","Tragam a Relâmpago no porta-malas da viatura: ela tem um 7 pintado no casco. Cuidado, não é a única tartaruga da casa."
+BRIEF_TURTLE_D,"Si encuentran el tablero de apuestas o los trofeos, mejor: todo suma.","If you find the betting board or the trophies, even better: it all adds up.","Se acharem o quadro de apostas ou os troféus, melhor: tudo soma."
 NOTE_ITEM_turtle,Relámpago,Relámpago,Relâmpago
 NOTE_ITEM_board,El tablero,The betting board,O quadro
-OBJ_FIND_TURTLE,"Encontrar a Relámpago (la tortuga con un 7 en el caparazón)","Find Relámpago (the turtle with a 7 on her shell)","Achar a Relâmpago (a tartaruga com um 7 no casco)"
+OBJ_FIND_TURTLE,Encontrar a Relámpago (la tortuga con un 7 en el caparazón),Find Relámpago (the turtle with a 7 on her shell),Achar a Relâmpago (a tartaruga com um 7 no casco)
 OBJ_EXTRA_BOARD,Extra: el tablero de apuestas,Extra: the betting board,Extra: o quadro de apostas
 OBJ_EXTRA_TROPHIES,"Extra: trofeos (%d de %d), en los cajones","Extra: trophies (%d of %d), in the drawers","Extra: troféus (%d de %d), nas gavetas"
 CLUE_LETTUCE,Hojas de lechuga desde la cocina,Lettuce leaves from the kitchen,Folhas de alface desde a cozinha
+BRIEF_TIP_B,Llegó una denuncia anónima: dicen que en la casa del abuelo entra y sale gente todo el día. Algo raro pasa ahí adentro.,We got an anonymous tip: people come and go from the grandpa's house all day long. Something fishy is going on in there.,Chegou uma denúncia anônima: dizem que na casa do vovô entra e sai gente o dia todo. Tem algo estranho lá dentro.
+BRIEF_TIP_C,"Tenemos orden de allanamiento. Averigüen qué es con las pistas y márquenlo en la planilla: con Q abierta, mantengan 1, 2 o 3. Si se equivocan dos veces, se cae el caso.","We have a search warrant. Find out what it is from the clues and mark it on the checklist: with Q open, hold 1, 2 or 3. Get it wrong twice and the case falls apart.","Temos um mandado de busca. Descubram o que é com as pistas e marquem na planilha: com Q aberta, segurem 1, 2 ou 3. Se errarem duas vezes, o caso cai."
+BRIEF_TIP_D,"La puerta está cerrada: la llave suele estar en alguna maceta, y si no, usen el ariete.","The door is locked: the key is usually in one of the pots, and if not, use the battering ram.","A porta está trancada: a chave costuma estar em algum vaso, e se não, usem o aríete."
+BRIEF_RIGHT,"«¡Bien, novatos! Era eso.»","“Good job, rookies! That was it.”","“Muito bem, novatos! Era isso.”"
+HINT_SUSPECT_WRONG,Comisario por radio: «¿Eso? ¡Ni de casualidad! Les descuento la mitad del sueldo.»,Commissioner on the radio: “That? Not a chance! Half your pay is gone.”,Comissário no rádio: “Isso? Nem de longe! Vou descontar metade do salário.”
+CASE_FAILED_WRONG,Se equivocaron dos veces. Caso fallado.,Wrong twice. Case failed.,Erraram duas vezes. Caso fracassado.
+OBJ_GUESS,"Averiguar qué pasa en la casa (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the house (with Q open, hold 1, 2 or 3)","Descobrir o que acontece na casa (com Q aberta, segure 1, 2 ou 3)"
+OBJ_FIND_PROOF,Encontrar la prueba,Find the evidence,Achar a prova
+SUSPECT_bingo,Bingo clandestino,Illegal bingo,Bingo clandestino
+CLUE_SUSPECT_bingo,"Una bolilla con el número 23, abajo de un mueble.","A bingo ball with number 23, under a piece of furniture.","Uma bolinha com o número 23, embaixo de um móvel."
+SUSPECT_turtles,Carreras de tortugas,Turtle races,Corridas de tartarugas
+CLUE_SUSPECT_turtles,"Una hoja de lechuga mordida, chiquita, en el piso.",A tiny bitten lettuce leaf on the floor.,Uma folhinha de alface mordida no chão.
+SUSPECT_museum,La figurita del museo,The museum figurine,A estatueta do museu
+CLUE_SUSPECT_museum,Un recorte de diario: «Roban una bailarina de porcelana del museo».,A newspaper clipping: “Porcelain dancer stolen from the museum”.,Um recorte de jornal: “Roubada bailarina de porcelana do museu”.
+SUSPECT_dentures,Dentaduras del geriátrico,Dentures from the nursing home,Dentaduras do asilo
+CLUE_SUSPECT_dentures,Un vaso con agua y una dentadura que no es del abuelo.,A glass of water with dentures that aren't the grandpa's.,Um copo com água e uma dentadura que não é do vovô.
+SUSPECT_radio,Radio pirata,Pirate radio,Rádio pirata
+CLUE_SUSPECT_radio,Un cable larguísimo que sube hasta el altillo.,A very long cable that goes up to the attic.,Um cabo compridíssimo que sobe até o sótão.
+SUSPECT_fight,Club de lucha de jubilados,Retirees fight club,Clube da luta dos aposentados
+CLUE_SUSPECT_fight,"Unos guantes de boxeo gastados, talle jubilado.","A pair of worn boxing gloves, retiree size.","Umas luvas de boxe gastas, tamanho aposentado."
