@@ -85,6 +85,9 @@ func _ready() -> void:
 		_hide_from_own_camera()
 		hands = CopHands.new(self)
 		camera.add_child(hands)
+		# Online, the player's own cop brings in the other players' cops (docs/diseno/online.md).
+		if Net.is_online():
+			Net.spawn_cops.call_deferred(self)
 
 
 ## What the camera points at within reach (empty if nothing), ignoring the cop's own body.
@@ -433,6 +436,21 @@ func current_speed() -> float:
 	if is_running:
 		return GameScale.RUN_SPEED * factor
 	return GameScale.WALK_SPEED * factor
+
+
+func head_pitch() -> float:
+	return _head.rotation.x
+
+
+func set_head_pitch(pitch: float) -> void:
+	_head.rotation.x = pitch
+
+
+## Crouches or stands right away, without checking the ceiling: for a copy of another player's cop.
+func set_crouching(crouching: bool) -> void:
+	if crouching != is_crouching:
+		is_crouching = crouching
+		_apply_height(GameScale.CROUCH_HEIGHT if is_crouching else GameScale.COP_HEIGHT)
 
 
 func _update_crouch(want_crouch: bool) -> void:
