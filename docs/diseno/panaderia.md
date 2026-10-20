@@ -1,6 +1,6 @@
-# BPD · La panadería "El Pan Feliz" (propuesta, 20/10)
+# BPD · La panadería "El Pan Feliz" (20/10)
 
-Segundo lugar para allanar, después de la casa del abuelo ([historias.md](historias.md), [ciudad.md](ciudad.md)). Está en la calle comercial, al norte de la comisaría. Sigue la idea de lugar + historia (decisión 79): una denuncia anónima, 3 sospechas en la planilla y una sola historia verdadera, sorteada con la semilla. Todo lo de este archivo es **(propuesta)**.
+Segundo lugar para allanar, después de la casa del abuelo ([historias.md](historias.md), [ciudad.md](ciudad.md)). Está en la calle comercial, al norte de la comisaría. Sigue la idea de lugar + historia (decisión 79): una denuncia anónima, 3 sospechas en la planilla y una sola historia verdadera, sorteada con la semilla. Cristian aprobó a Marta, las 6 historias y el local abierto con clientes (decisión 84). Los números, los escondites y los pesos siguen siendo **(propuesta)**.
 
 ## El local
 La panadería ocupa el terreno que ya tiene en la ciudad (16 × 14 m) y tiene dos plantas.
@@ -48,6 +48,6 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
 4. Las otras 5 historias, un PR cada una.
 5. El sorteo del lugar: cada partida sale en la casa del abuelo o en la panadería.
 
-## Preguntas para Cristian
-1. ¿Te sirven la panadera Marta y las 6 historias, o cambiarías alguna?
-2. ¿El local abierto con clientes adentro está bien, o lo prefieres cerrado como la casa del abuelo?
+## Respuestas de Cristian (20/10)
+1. Marta y las 6 historias van como están.
+2. El local está abierto, con clientes adentro.
