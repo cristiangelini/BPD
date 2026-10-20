@@ -21,6 +21,12 @@ pared de atrás de la oficina del comisario: para interrogar a alguien hay que p
 | **La sala de interrogatorio** (8 × 7 m) | Paredes de cemento gris verdoso, sin ventanas. En el medio, la mesa de metal atornillada al piso, la silla del sospechoso (esposado a la mesa) y dos sillas para los policías. Una sola lámpara colgada sobre la mesa: el resto de la sala queda en penumbra. En la pared del oeste, el espejo falso. Arriba en una esquina, una cámara con una lucecita roja. Un reloj de pared, un grabador de cinta y una carpeta sobre la mesa, un cartel de "Prohibido fumar". |
 | **La sala de observación** (6 × 7 m) | Del otro lado del espejo, que desde acá es un vidrio oscuro: se ve todo lo de adentro. Un escritorio con el equipo de grabación, dos sillas, un micrófono para hablarle al policía de adentro por un parlante y una máquina de café vieja. |
 
+**Cómo quedó (paso 1):** el ala ya está en la ciudad, con la puerta en la oficina del comisario detrás de su
+escritorio. La sala está en penumbra con la luz de la lámpara sobre la mesa, el espejo refleja la sala y desde la
+observación se ve todo a través de un vidrio oscuro (y no se puede atravesar). Los muebles son placeholders low poly de
+`tools/modelgen/models/interrogation.js` y la planta está en `InterrogationWing`. Capturas en
+`interrogatorio/`: `sala.png`, `observacion.png`, `puerta_oficina.png` y `afuera.png`.
+
 ## Cómo es el caso
 1. El comisario da el caso en su oficina, como siempre: "Detuvimos a este señor por <lo que sea>. Su abogado ya viene
    en camino. Quiero una confesión antes de que llegue."

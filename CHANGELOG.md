@@ -86,3 +86,4 @@
 - Esc during a case opens a menu: resume, invite friends (host with Steam), the always open voice and leave the room (or quit to the menu solo); solo it stops the game.
 - Pet salon story: the secret human salon. The appointment book, a wig and a fragile mirror; human hair among the dog hair that only shows under the flashlight; human customers under a towel that a cop can lift.
 - Play now draws the pet salon too: the grandpa's house, the bakery or the salon, a third each.
+- Interrogation wing behind the station: a door in the comisario's office leads to a hall, a movie interrogation room (steel table, chairs, a single hanging lamp, clock, camera, "no smoking" sign) and the observation room behind a one-way mirror.
