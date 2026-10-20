@@ -73,8 +73,10 @@ func test_sitting_with_a_dog_gets_the_dogs_life_and_he_stops_watching() -> void:
 	assert_true(groomer.ramiro.is_telling_story())
 	await wait_physics_frames(5)
 	assert_lt(cop.global_position.distance_to(groomer.armchair.seat_point()), 0.1, "on the seat")
+	# A loose dog can bark on its own meanwhile (+5): only the broken bottle is checked.
+	var before := groomer.ramiro.complaint
 	groomer.shampoos[12].hit(Ornament.BREAK_SPEED + 1.0)
-	assert_eq(groomer.ramiro.complaint, 0.0, "he doesn't look while he tells it")
+	assert_eq(groomer.ramiro.complaint, before, "he doesn't look while he tells it")
 	groomer.ramiro._story_left = 0.05
 	await wait_physics_frames(10)
 	assert_false(groomer.ramiro.is_telling_story(), "at most DOG_STORY seconds")
