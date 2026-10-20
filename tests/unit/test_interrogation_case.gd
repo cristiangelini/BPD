@@ -369,8 +369,7 @@ func test_the_dangerous_one_runs_the_route_and_a_cop_alone_catches_him() -> void
 ## Rebuilds the level with the twins, the guilty one in the cell or in the room.
 func _twins_level(guilty_in_cell: bool) -> void:
 	var seed_value := 1
-	while InterrogationCase.pick_suspect(seed_value, []) != "twins" \
-			or InterrogationCase.pick_guilty_in_cell(seed_value) != guilty_in_cell:
+	while InterrogationCase.pick_suspect(seed_value, []) != "twins":
 		seed_value += 1
 	level.free()
 	level = LEVEL_SCENE.instantiate()
@@ -379,7 +378,16 @@ func _twins_level(guilty_in_cell: bool) -> void:
 	add_child_autofree(level)
 	await wait_physics_frames(2)
 	case = level.case
+	case.guilty_in_cell = guilty_in_cell
 	case.give_tip()
+
+
+func test_either_twin_can_be_the_guilty_one() -> void:
+	var seen := {}
+	for seed_value in range(1, 400):
+		if InterrogationCase.pick_suspect(seed_value, []) == "twins":
+			seen[InterrogationCase.pick_guilty_in_cell(seed_value)] = true
+	assert_eq(seen.size(), 2)
 
 
 func test_with_twins_each_cop_works_the_nearest_and_only_the_guilty_one_confesses() -> void:

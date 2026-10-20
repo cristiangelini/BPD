@@ -159,8 +159,11 @@ static func pick_suspect(seed_value: int, args: PackedStringArray) -> String:
 	return SUSPECTS[hash("suspect %d" % seed_value) % SUSPECTS.size()]
 
 
+## Mixed through a generator: the low bits of hash() follow the suspect's draw, so it came out the same twin every time.
 static func pick_guilty_in_cell(seed_value: int) -> bool:
-	return hash("twin %d" % seed_value) % 2 == 1
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash("twin %d" % seed_value)
+	return rng.randi() % 2 == 1
 
 
 static func pick_crime(seed_value: int) -> String:
