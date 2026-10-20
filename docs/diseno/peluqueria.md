@@ -113,6 +113,13 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      jaulas y el patio), así que hay que acorralarlo entre varios. Bajo la luz del secador el collar brilla: el policía
      que lo ve a menos de 5 m suma la pista. Agarrar el collar se lo saca al perro. El estuche (0,3 kg, 200) va
      escondido. Captura: `collar_*.png`.
+   - **El perro del millonario (propuesta):** Duque, el galgo blanco de un millonario, está teñido de marrón entre otros
+     3 galgos marrones iguales (cuál es se sortea con la semilla, y ninguno muestra su valor). De cerca, a menos de
+     1,2 m, se le ven las raíces blancas en las patas, el pecho y las orejas: esa es la pista. Duque pesa 12 kg (lo alza
+     uno solo), vale 1500 y aguanta golpes hasta 6 m/s. Alzado se retuerce (un tirón cada 0,6 s) y, si lo sueltan fuera
+     del baúl, escapa de los policías durante 10 s. En el baúl se echa y no se mueve. La tintura (150) y la carta del
+     rescate (300) van escondidas. Los perros que no son de una historia no valen nada ni cuentan en el baúl. Captura:
+     `millonario_*.png`.
 
 ## Preguntas para Cristian (respondidas el 20/10: sí a las dos)
 1. ¿La peluquería de mascotas como tercer lugar, o preferís otro de los 8?

@@ -1,11 +1,12 @@
 class_name Dog
-extends Grabbable
+extends Evidence
 
 ## One of the loose dogs of the pet salon (docs/diseno/peluqueria.md, "El peluquero y los perros"). It wanders the
 ## salon and the yard, follows the cop who has something in hand and jumps at him, and every now and then takes
 ## something small a cop left on the floor in its mouth and hides it in the doghouse (like the bakery's pigeons).
 ## A cop who bumps into it, or a hard landing, makes it bark: Ramiro complains. Cops can pick it up (it's light) to
-## sit with it in the waiting armchair. Every number here is (propuesta).
+## sit with it in the waiting armchair. A dog is evidence only when a story gives it a value (Duque, the
+## millionaire's dog); the others are worth 0 and never break. Every number here is (propuesta).
 
 signal barked(at: Vector3)
 
@@ -47,6 +48,8 @@ enum State { WANDER, FOLLOW, FETCH, CARRY }
 @export var poodle := false
 ## Waiting in a cage: it stays put until a cop takes it out, then it roams like the others.
 @export var caged := false
+## A look of its own instead of its coat (a story's dog).
+@export var look: PackedScene
 ## It runs from cops closer than this, and never follows them (0: it doesn't run).
 var flee := 0.0
 ## Where it wanders (floor rectangles of the salon, as Rect2 in x/z) and where it hides what it takes, set by the salon.
@@ -65,19 +68,17 @@ var _wander := 0.0
 var _hop := HOP_EVERY
 var _fetch_wait := FETCH_EVERY
 var _since_bark := BARK_COOLDOWN
-var _impacts := ImpactTracker.new()
 var _model: Node3D
 var _step := 0.0
 
 
 func _ready() -> void:
+	super._ready()
 	add_to_group("dogs")
-	contact_monitor = true
-	max_contacts_reported = 4
 	axis_lock_angular_x = true
 	axis_lock_angular_y = true
 	axis_lock_angular_z = true
-	_model = (POODLE_MODEL if poodle else MODELS[coat % MODELS.size()]).instantiate()
+	_model = (look if look else POODLE_MODEL if poodle else MODELS[coat % MODELS.size()]).instantiate()
 	add_child(_model)
 	body_entered.connect(_on_body_entered)
 	_goal = global_position
@@ -314,7 +315,10 @@ func _wander_point() -> Vector3:
 
 
 func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
-	if _impacts.hardest(state) > HIT_SPEED:
+	var speed := _impacts.hardest(state)
+	if speed > 0.0:
+		hit(speed)
+	if speed > HIT_SPEED:
 		bark.call_deferred()
 
 
