@@ -186,7 +186,7 @@ cada acción con quién la hizo; el grito se mide en la PC de quien habla y se m
    comerse una dona, "tranquilo"), la repetición que rinde menos, la confesión, el abogado y la pantalla del turno. Con
    el sospechoso 1 y 4 delitos.
 3. El resto de las acciones (café, silla, luz, pañuelo, sentarse) y el contraste entre bueno y malo. Hecho todo: el
-   contraste, la luz, el café, la silla y el pañuelo.
+   contraste, la luz, el café, la silla, el pañuelo y sentarse.
 4. El grito con la voz. Hecho.
 5. El sorteo en "Jugar" (1 de cada 3). Hecho.
 6. Los otros 9 sospechosos, uno o dos por PR. Hecho.
