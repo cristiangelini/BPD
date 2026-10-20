@@ -185,6 +185,53 @@ export function buildNumberList() {
 	return b.build();
 }
 
+// The pigeons' route book: a 0.15 x 0.03 x 0.21 m grey notebook with a map of arrows on the cover and a feather.
+export function buildRouteBook() {
+	const b = new Builder('route_book');
+	b.add('cover', mat('route_cover', 0x6a7280), new THREE.BoxGeometry(0.15, 0.03, 0.21));
+	b.add('pages', mat('book_pages', 0xf8f4e6), new THREE.BoxGeometry(0.14, 0.022, 0.005), { pos: V(0, 0, 0.104) });
+	for (const [x, z, turn] of [[-0.03, -0.04, 0.6], [0.02, 0.0, -0.4], [-0.01, 0.05, 0.9]]) b.add('ink', mat('route_ink', 0xf2c84b), new THREE.BoxGeometry(0.06, 0.002, 0.006), { pos: V(x, 0.016, z), rot: [0, turn, 0] });
+	b.add('feather', mat('feather', 0xd8dce4), ellipsoid(0.012, 0.003, 0.045, 5, 3), { pos: V(0.045, 0.018, -0.05), rot: [0, 0.4, 0] });
+	return b.build();
+}
+
+// The pigeon cage: 0.5 x 0.4 x 0.35 m, a wooden base and roof with wire bars.
+export function buildPigeonCage() {
+	const b = new Builder('pigeon_cage');
+	const wood = () => mat('cage_wood', 0x8a5a32), wire = () => mat('cage_wire', 0xa8acb4);
+	b.add('cage', wood(), new THREE.BoxGeometry(0.5, 0.04, 0.35), { pos: V(0, -0.18, 0) });
+	b.add('cage', wood(), new THREE.BoxGeometry(0.5, 0.03, 0.35), { pos: V(0, 0.185, 0) });
+	for (let i = 0; i < 6; i++) {
+		const x = -0.23 + i * 0.092;
+		for (const z of [-0.16, 0.16]) b.add('bars', wire(), new THREE.CylinderGeometry(0.004, 0.004, 0.34, 4), { pos: V(x, 0, z) });
+	}
+	for (const x of [-0.24, 0.24]) for (const z of [-0.08, 0.0, 0.08]) b.add('bars', wire(), new THREE.CylinderGeometry(0.004, 0.004, 0.34, 4), { pos: V(x, 0, z) });
+	b.add('cage', wood(), new THREE.TorusGeometry(0.05, 0.008, 4, 10), { pos: V(0, 0.24, 0) });
+	return b.build();
+}
+
+// A tin whistle for calling the pigeons: 0.08 m long, centered on its box.
+export function buildWhistle() {
+	const b = new Builder('whistle');
+	b.add('whistle', mat('tin', 0xb8bcc4), new THREE.CylinderGeometry(0.012, 0.012, 0.06, 8), { pos: V(0, 0, -0.01), rot: [Math.PI / 2, 0, 0] });
+	b.add('whistle', mat('tin', 0xb8bcc4), new THREE.CylinderGeometry(0.018, 0.018, 0.022, 8), { pos: V(0, -0.004, 0.025) });
+	b.add('cord', mat('whistle_cord', 0xc83a3a), new THREE.TorusGeometry(0.01, 0.002, 4, 8), { pos: V(0, 0.0, -0.045) });
+	return b.build();
+}
+
+// A grey pigeon, 0.3 m long, facing +z, wings folded (the code flaps wing_l and wing_r around the body).
+export function buildPigeon() {
+	const b = new Builder('pigeon');
+	const grey = () => mat('pigeon_grey', 0x8a909c);
+	b.add('body', grey(), ellipsoid(0.07, 0.07, 0.13, 8, 6));
+	b.add('body', mat('pigeon_neck', 0x4a8a7a, { emissive: 0x0a1a14 }), ellipsoid(0.045, 0.05, 0.045, 6, 4), { pos: V(0, 0.06, 0.08) });
+	b.add('body', grey(), ellipsoid(0.035, 0.035, 0.04, 6, 4), { pos: V(0, 0.1, 0.12) });
+	b.add('beak', mat('beak', 0xe8c060), new THREE.ConeGeometry(0.01, 0.03, 4), { pos: V(0, 0.095, 0.17), rot: [Math.PI / 2, 0, 0] });
+	b.add('tail', mat('pigeon_dark', 0x4a4e58), new THREE.BoxGeometry(0.07, 0.01, 0.08), { pos: V(0, 0.01, -0.15) });
+	for (const side of [-1, 1]) b.add(side < 0 ? 'wing_r' : 'wing_l', mat('pigeon_dark', 0x4a4e58), new THREE.BoxGeometry(0.12, 0.012, 0.13), { pos: V(side * 0.09, 0.03, -0.01) });
+	return b.build();
+}
+
 export const models = {
 	bread_loaf: buildLoaf, bread_half: buildHalfLoaf, bakery_cake: buildCake,
 	stolen_ring: buildRing, jewelry_bag: buildJewelryBag, pawn_receipt: buildPawnReceipt,
@@ -193,6 +240,7 @@ export const models = {
 	deposit_book: buildDepositBook, wedding_cake_sample: () => buildCardboardCake(), couple_photos: buildCouplePhotos,
 	sweet_bread: buildSweetBread, sweet_bread_half: buildSweetBreadHalf, lottery_ticket: buildLotteryTicket,
 	number_list: buildNumberList,
+	route_book: buildRouteBook, pigeon_cage: buildPigeonCage, whistle: buildWhistle, pigeon: buildPigeon,
 };
 
 export const views = {
@@ -228,5 +276,12 @@ export const views = {
 			{ name: 'lottery_ticket', pos: [0.25, 0.01, 0.25], rotY: -0.3 }, { name: 'number_list', pos: [-0.2, 0.01, 0.35], rotY: 0.2 },
 		],
 		cam: { pos: [0, 0.8, 1.2], target: [0, 0.05, 0.1], fov: 36 },
+	},
+	pigeon_goods: {
+		items: [
+			{ name: 'pigeon_cage', pos: [-0.35, 0.2, 0], rotY: 0.3 }, { name: 'route_book', pos: [0.25, 0.015, 0.15], rotY: -0.3 },
+			{ name: 'whistle', pos: [0.3, 0.02, 0.45], rotY: 0.6 }, { name: 'pigeon', pos: [0.05, 0.07, 0.5], rotY: -0.8 },
+		],
+		cam: { pos: [0, 0.9, 1.6], target: [0, 0.1, 0.15], fov: 38 },
 	},
 };

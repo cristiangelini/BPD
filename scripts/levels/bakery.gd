@@ -72,6 +72,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_NUMBER_LIST"],
 		"rig": preload("res://scripts/case/bakery/lottery_rig.gd"),
 	},
+	"pigeons": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_PIGEONS_B", "BRIEF_PIGEONS_C", "BRIEF_PIGEONS_D"],
+		"find": "OBJ_FIND_PIGEONS",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/route_book.tscn"), preload("res://scenes/props/pigeon_cage.tscn"),
+			preload("res://scenes/props/whistle.tscn")],
+		"half_heights": [0.015, 0.21, 0.015],
+		"heavy": [false, true, false],
+		"extra_keys": ["OBJ_EXTRA_PIGEON_CAGE", "OBJ_EXTRA_WHISTLE"],
+		"rig": preload("res://scripts/case/bakery/pigeons_rig.gd"),
+	},
 }
 const FLOUR_SCENE := preload("res://scenes/props/flour_sack.tscn")
 ## The storeroom's flour sacks: four on the floor and one on top. In the sneezing story one is the pepper sack.
