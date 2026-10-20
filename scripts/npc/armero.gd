@@ -6,7 +6,8 @@ extends StaticBody3D
 
 const MODEL := preload("res://assets/models/npc_armero.glb")
 
-var armory := Armory.new(StationWallet.new())
+## Spends the campaign's cash box when there is one (solo or hosting), else a cash box for this shift only.
+var armory := Armory.new(Campaign.current if Campaign.current else StationWallet.new())
 var menu: ArmoryMenu
 
 
