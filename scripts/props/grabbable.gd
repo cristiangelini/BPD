@@ -17,6 +17,8 @@ var was_held := false
 ## The last holder that let go of it and when (ms), to know whose hands it flew from.
 var last_holder := 0
 var let_go_at := -1
+## Player indexes of the cops who grabbed it, as keys: their prints are on it (PrintKit).
+var touched_by := {}
 
 
 static func max_force_per_holder() -> float:
@@ -29,6 +31,10 @@ static func throw_speed(kg: float) -> float:
 
 
 func hold(holder_id: int, point: Vector3) -> void:
+	if not holders.has(holder_id):
+		var holder := instance_from_id(holder_id) as Node
+		if holder and holder.get_parent() is Cop:
+			touched_by[(holder.get_parent() as Cop).uniform] = true
 	holders[holder_id] = point
 	was_held = true
 	can_sleep = false

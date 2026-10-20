@@ -87,22 +87,34 @@ func prompt_key(_cop: Cop) -> String:
 var locked_hint := ""
 
 
-func use(cop: Cop) -> void:
+## E in the car gets out; E next to it gets in `seat` (-1: the free seat whose door is closest).
+func use(cop: Cop, seat := -1) -> void:
 	if locked_hint != "" and seat_of(cop) < 0:
 		cop.show_hint(locked_hint)
 		return
 	if seat_of(cop) >= 0:
 		exit(cop)
 	else:
-		enter(cop)
+		enter(cop, seat)
 
 
-## Sits the cop in the free seat whose door is closest to it. Returns the seat, or -1 if the car is full.
-func enter(cop: Cop) -> int:
+## What use() needs from the cop's own PC, so it picks the same seat on every PC online (ActionSync).
+func use_args(cop: Cop) -> Array:
+	return [] if seat_of(cop) >= 0 else [nearest_free_seat(cop)]
+
+
+## The free seat whose door is closest to the cop, or -1 if the car is full.
+func nearest_free_seat(cop: Cop) -> int:
 	var best := -1
 	for i in seated.size():
 		if seated[i] == null and (best < 0 or _door(i).distance_to(cop.global_position) < _door(best).distance_to(cop.global_position)):
 			best = i
+	return best
+
+
+## Sits the cop in `seat` (-1: the free seat whose door is closest to it). Returns the seat, or -1 if it can't.
+func enter(cop: Cop, seat := -1) -> int:
+	var best := seat if seat >= 0 and seated[seat] == null else nearest_free_seat(cop)
 	if best < 0:
 		cop.show_hint("HINT_CAR_FULL")
 		return -1
@@ -149,7 +161,10 @@ func _physics_process(delta: float) -> void:
 		drive(Input.get_axis("move_back", "move_forward"), Input.get_axis("move_right", "move_left"),
 			Input.is_action_pressed("jump"))
 		if Input.is_action_just_pressed("siren"):
-			toggle_siren()
+			cop.act("toggle_siren", self)
+		# Online on a guest, the host drives the car for everyone with these controls.
+		if cop.sync:
+			cop.sync.send_controls(throttle, steer_input, handbrake)
 	elif not cop:
 		drive(0.0, 0.0, true)
 	_apply_controls(delta)

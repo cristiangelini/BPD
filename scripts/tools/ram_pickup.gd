@@ -9,7 +9,7 @@ func prompt_key(_cop: Cop) -> String:
 
 
 func use(cop: Cop) -> void:
-	if cop.ram:
+	if cop.ram or cop.is_cuffed():
 		return
 	cop.equip_ram()
 	queue_free()

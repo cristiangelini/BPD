@@ -20,6 +20,12 @@ func trail_item() -> int:
 	return -1
 
 
+## An evidence index that doesn't wait in a hiding spot (the museum ballerina stands among the ornaments), so the
+## grandpa's notes, his slips and the vecina leave it out; -1 for none.
+func loose_item() -> int:
+	return -1
+
+
 ## Optional checklist rows: [{"text": tr() key or formatted text, "done": bool}].
 func extras(_house: GrandpaHouse) -> Array[Dictionary]:
 	return []

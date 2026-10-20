@@ -172,6 +172,8 @@ var back_door: FrontDoor
 var city_map: CityMap
 var baker: Baker
 var customers: Array[BakeryCustomer] = []
+## Off on a guest online: the host brings the customers in and the guest sees copies (NpcSync).
+var brings_customers := true
 var complaint_bar: ProgressBar
 var _build: PlaceBuilder
 var _customer_wait := FIRST_CUSTOMER
@@ -211,6 +213,7 @@ func _ready() -> void:
 		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
 	raid = RaidCase.new()
 	raid.case_seed = case_seed
+	raid.prints_key = "PRINTS_BAKER"
 	raid.story_id = story_id
 	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
 	raid.find_key = STORIES[story_id].find
@@ -295,6 +298,8 @@ func _add_baker() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if not brings_customers:
+		return
 	_customer_wait -= delta
 	if _customer_wait <= 0.0 and customers.size() < MAX_CUSTOMERS:
 		_customer_wait = CUSTOMER_EVERY

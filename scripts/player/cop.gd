@@ -18,6 +18,8 @@ const DROP_AHEAD := 1.0
 const GLOVE_MATERIAL := preload("res://assets/materials/rubber_glove.tres")
 ## Seconds a donut keeps the mouth too full to ask anything (comisaria.md, propuesta).
 const MOUTH_FULL := 3.0
+## A shove fades out in this many seconds.
+const KNOCK_FADE := 0.5
 
 @export var input_enabled := true
 
@@ -33,6 +35,10 @@ var ram: BatteringRam
 ## The wheelbarrow this cop pushes, if any. Hands are busy: E loads things into it instead of grabbing.
 var wheelbarrow: Wheelbarrow
 var _stagger_left := 0.0
+## Letting go of E during the grandpa's story already asked him to stop (online it takes a moment to happen).
+var _story_end_asked := false
+## A shove (the champion grandpa) that slides the cop and fades out.
+var _knock := Vector3.ZERO
 ## Eating a sample from the baker: the cop can walk but not grab anything (panaderia.md).
 var _eating_left := 0.0
 ## A donut fills the mouth: no questions (R) until this runs out.
@@ -40,7 +46,7 @@ var _mouth_full_left := 0.0
 ## While holding E on the grandpa he tells a story; this cop can't do anything else (allanamiento.md).
 var listening_to: Grandpa
 ## Silly numbers for the joke awards at the end of the shift (decision 41).
-var stats := {"ram_misses": 0, "story_seconds": 0.0, "meters_driven": 0.0}
+var stats := {"ram_misses": 0, "story_seconds": 0.0, "meters_driven": 0.0, "photos": 0}
 ## The patrol car this cop sits in, if any: the body rides the seat and doesn't walk or collide.
 var vehicle: PatrolCar
 ## The comisario is giving the case (CaseBriefing): the cop can look around but not move or use things.
@@ -55,6 +61,12 @@ var hands: CopHands
 var gloves := false
 ## Player index (0 to 3) whose skin this cop wears.
 var uniform := 0
+## Online, what keeps this cop the same on every PC (null when playing solo).
+var sync: CopSync
+## The 4 tool slots (herramientas.md).
+var belt: ToolBelt
+## A partner cuffed this cop: no grabbing, tools or ram until it runs out or someone frees them with E.
+var _cuffed_left := 0.0
 
 @onready var _shape: CollisionShape3D = $Shape
 @onready var _head: Node3D = $Head
@@ -71,10 +83,15 @@ func _ready() -> void:
 	camera.fov = GameScale.FOV
 	_apply_height(GameScale.COP_HEIGHT)
 	_hint_timer.timeout.connect(_hint.hide)
+	belt = ToolBelt.new(self)
+	add_child(belt)
 	if input_enabled:
 		_hide_from_own_camera()
 		hands = CopHands.new(self)
 		camera.add_child(hands)
+		# Online, the player's own cop brings in the other players' cops (docs/diseno/online.md).
+		if Net.is_online():
+			Net.spawn_cops.call_deferred(self)
 
 
 ## What the camera points at within reach (empty if nothing), ignoring the cop's own body.
@@ -87,6 +104,7 @@ func aim_hit(reach: float) -> Dictionary:
 
 
 func equip_ram() -> void:
+	belt.holster()
 	ram = RAM_SCENE.instantiate()
 	ram.cop = self
 	camera.add_child(ram)
@@ -121,11 +139,18 @@ func current_prompt() -> String:
 		return "PROMPT_HOLDING"
 	if ram:
 		return "PROMPT_RAM"
+	if is_cuffed():
+		return "PROMPT_CUFFED"
 	if wheelbarrow:
 		var aimed := aim_hit(GameScale.GRAB_REACH)
 		if not aimed.is_empty() and aimed.collider is Grabbable:
 			return "PROMPT_WHEELBARROW_LOAD" if wheelbarrow.can_load(aimed.collider) else "PROMPT_WHEELBARROW_FULL"
 		return "PROMPT_WHEELBARROW"
+	if belt.held_tool():
+		return belt.held_tool().prompt_key()
+	var partner := _cuffed_partner()
+	if partner:
+		return "PROMPT_UNCUFF"
 	var target := _usable_target()
 	if target and target.has_method("prompt_key"):
 		return target.prompt_key(self)
@@ -138,6 +163,12 @@ func current_prompt() -> String:
 ## Loses balance for a while: can't move or charge the ram.
 func stagger(seconds: float) -> void:
 	_stagger_left = maxf(_stagger_left, seconds)
+
+
+## Shoves the cop with `push` (m/s, fading out over about KNOCK_FADE seconds) and staggers it.
+func knock_back(push: Vector3, seconds: float) -> void:
+	_knock = push
+	stagger(seconds)
 
 
 func is_staggered() -> bool:
@@ -169,6 +200,23 @@ func eat_donut(box: DonutBox) -> bool:
 
 func mouth_full() -> bool:
 	return _mouth_full_left > 0.0
+## Cuffed by a partner for `seconds`: lets go of everything in hand.
+func cuffed(seconds: float) -> void:
+	$Grabber.release()
+	drop_ram()
+	if wheelbarrow:
+		wheelbarrow.park()
+	belt.holster()
+	_cuffed_left = maxf(_cuffed_left, seconds)
+	show_hint("HINT_CUFFED")
+
+
+func uncuff() -> void:
+	_cuffed_left = 0.0
+
+
+func is_cuffed() -> bool:
+	return _cuffed_left > 0.0
 
 
 ## Busy: staggered, listening to the grandpa, sitting in the car or in the salon's armchair, hearing the comisario
@@ -199,8 +247,12 @@ func stand_up(at: Vector3, yaw: float) -> void:
 	_shape.disabled = false
 
 
-## Shows a short line at the bottom of this cop's screen. `key` is a tr() key.
+## Shows a short line at the bottom of this cop's screen. `key` is a tr() key. Online, a hint the host gives its copy
+## of another player's cop goes to that player's screen.
 func show_hint(key: String) -> void:
+	if sync and not sync.is_multiplayer_authority() and sync.multiplayer.is_server():
+		if not (sync.net.actions and sync.net.actions.performing):
+			sync.tell_hint(key)
 	_hint.text = key
 	_hint.show()
 	_hint_timer.start()
@@ -257,13 +309,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("drop"):
 		if wheelbarrow:
 			wheelbarrow.dump()
-		else:
-			drop_ram()
+		elif ram:
+			act("drop_ram", self)
 	elif event.is_action_pressed("ask"):
 		ask()
 	elif event.is_action_pressed("use"):
 		if vehicle:
-			vehicle.exit(self)
+			act("exit", vehicle)
 		elif seated_in:
 			seated_in.stand_up()
 		else:
@@ -282,7 +334,11 @@ func _physics_process(delta: float) -> void:
 	if vehicle:
 		return
 	if listening_to and not Input.is_action_pressed("use"):
-		listening_to.end_story()
+		if not _story_end_asked:
+			_story_end_asked = true
+			act("end_story", listening_to)
+	elif not listening_to:
+		_story_end_asked = false
 	var wish := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	step(delta, wish, Input.is_action_pressed("run"), Input.is_action_pressed("crouch"),
 		Input.is_action_just_pressed("jump"))
@@ -294,11 +350,24 @@ func use() -> bool:
 		return eat_donut($Grabber.held)
 	if wheelbarrow:
 		return _use_wheelbarrow()
+	var partner := _cuffed_partner()
+	if partner:
+		partner.uncuff()
+		return true
 	var target := _usable_target()
 	if not target:
 		return false
-	target.use(self)
+	act("use", target, target.use_args(self) if target.has_method("use_args") else [])
 	return true
+
+
+## Does `method` on `target` (this cop itself for "drop_ram") with `args`. Online it happens on every PC in the same
+## order (ActionSync); solo it just happens.
+func act(method: String, target: Node, args := []) -> void:
+	if sync and sync.net.actions:
+		sync.net.actions.act(self, method, target, args)
+	else:
+		target.callv(method, ([self] if method in ActionSync.ACTOR_METHODS else []) + args)
 
 
 ## Pushing the wheelbarrow, E loads what the camera points at, or parks it when it points at nothing to load.
@@ -320,7 +389,18 @@ func ask() -> bool:
 	if mouth_full():
 		show_hint("HINT_MOUTH_FULL")
 		return false
+	if sync and sync.net.actions:
+		sync.net.actions.act(self, "ask", target)
+		return true
 	return target.ask(self)
+
+
+## A cuffed cop the camera points at within reach, if any.
+func _cuffed_partner() -> Cop:
+	var hit := aim_hit(GameScale.GRAB_REACH)
+	if not hit.is_empty() and hit.collider is Cop and (hit.collider as Cop).is_cuffed():
+		return hit.collider
+	return null
 
 
 ## What the camera points at within reach that can be used with E (a door's body is a child of the door).
@@ -329,6 +409,8 @@ func _usable_target() -> Node:
 	if hit.is_empty():
 		return null
 	var target: Node = hit.collider
+	if target is Cop:
+		return null
 	if not target.has_method("use"):
 		target = target.get_parent()
 	return target if target.has_method("use") else null
@@ -357,10 +439,12 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 	_stagger_left = maxf(_stagger_left - delta, 0.0)
 	_eating_left = maxf(_eating_left - delta, 0.0)
 	_mouth_full_left = maxf(_mouth_full_left - delta, 0.0)
+	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
 	var direction := (transform.basis * Vector3(wish.x, 0.0, wish.y)).normalized()
 	var speed := 0.0 if is_busy() else current_speed()
-	velocity.x = direction.x * speed
-	velocity.z = direction.z * speed
+	velocity.x = direction.x * speed + _knock.x
+	velocity.z = direction.z * speed + _knock.z
+	_knock = _knock.move_toward(Vector3.ZERO, _knock.length() / KNOCK_FADE * delta) if _knock.length() > 0.05 else Vector3.ZERO
 	if is_on_floor():
 		if want_jump and not is_crouching:
 			velocity.y = GameScale.jump_velocity()
@@ -378,6 +462,21 @@ func current_speed() -> float:
 	if is_running:
 		return GameScale.RUN_SPEED * factor
 	return GameScale.WALK_SPEED * factor
+
+
+func head_pitch() -> float:
+	return _head.rotation.x
+
+
+func set_head_pitch(pitch: float) -> void:
+	_head.rotation.x = pitch
+
+
+## Crouches or stands right away, without checking the ceiling: for a copy of another player's cop.
+func set_crouching(crouching: bool) -> void:
+	if crouching != is_crouching:
+		is_crouching = crouching
+		_apply_height(GameScale.CROUCH_HEIGHT if is_crouching else GameScale.COP_HEIGHT)
 
 
 func _update_crouch(want_crouch: bool) -> void:
