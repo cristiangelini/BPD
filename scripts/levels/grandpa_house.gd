@@ -101,6 +101,8 @@ const TURTLES := preload("res://scenes/case/turtle_story.tres")
 const MUSEUM := preload("res://scenes/case/museum_story.tres")
 ## The care home dentures (historias.md): a chattering case of dentures, and a grandpa without his teeth.
 const DENTURES := preload("res://scenes/case/dentures_story.tres")
+## The pirate radio (historias.md): a transmitter for two cops, found by the static on the cop radio.
+const RADIO := preload("res://scenes/case/radio_story.tres")
 
 const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
 const CAT_SCENE := preload("res://scenes/npc/cat.tscn")
@@ -127,7 +129,7 @@ const MUD := Color(0.36, 0.24, 0.14)
 @export var case_seed := 0
 ## The stories this house can tell (historias.md). One is drawn with the seed unless `story` is set or the game runs
 ## with --story=<id>.
-const STORIES: Array[CaseStory] = [BINGO, TURTLES, MUSEUM, DENTURES]
+const STORIES: Array[CaseStory] = [BINGO, TURTLES, MUSEUM, DENTURES, RADIO]
 
 ## The story this raid tells; null draws one from STORIES.
 @export var story: CaseStory

@@ -314,3 +314,10 @@ OBJ_EXTRA_CLIENTS,Extra: la lista de clientes,Extra: the list of clients,Extra: 
 NOTE_ITEM_dentures,La valija de dientes,The teeth case,A mala dos dentes
 NOTE_ITEM_clients,La lista de clientes,The client list,A lista de clientes
 FX_CLACK,*clac clac*,*clack clack*,*clac clac*
+BRIEF_RADIO_B,"Todas las noches, a las once, una radio pirata pisa la señal del noticiero con una radionovela de amor. La voz del locutor es igualita a la del abuelo.","Every night at eleven, a pirate radio drowns out the news with a romance soap opera. The announcer sounds just like the grandpa.","Toda noite, às onze, uma rádio pirata atropela o sinal do noticiário com uma radionovela de amor. A voz do locutor é igualzinha à do vovô."
+BRIEF_RADIO_C,"Traigan el transmisor en el baúl del patrullero: sin eso no hay caso. Pesa como un ropero, así que levántenlo entre dos. Mantengan T apretada: cerca del transmisor la radio hace más estática.","Bring the transmitter back in the patrol car's trunk: without it there's no case. It weighs like a wardrobe, so lift it together. Hold T: the radio crackles louder near the transmitter.","Tragam o transmissor no porta-malas da viatura: sem isso não tem caso. Pesa como um guarda-roupa, então levantem em dois. Segurem T: perto do transmissor o rádio chia mais."
+BRIEF_RADIO_D,"Si encuentran las cintas de la radionovela, mejor: todo suma. Están en los cajones, y el capítulo final no lo escuchó nadie.","If you find the soap opera tapes, even better: it all adds up. They're in the drawers, and nobody has heard the final episode.","Se acharem as fitas da radionovela, melhor: tudo soma. Estão nas gavetas, e o capítulo final ninguém ouviu."
+OBJ_FIND_RADIO,Encontrar el transmisor (sigue la estática con T),Find the transmitter (follow the static with T),Achar o transmissor (siga a estática com T)
+OBJ_EXTRA_TAPES,"Extra: cintas (%d de %d), en los cajones","Extra: tapes (%d of %d), in the drawers","Extra: fitas (%d de %d), nas gavetas"
+NOTE_ITEM_transmitter,La radio de las once,The eleven o'clock radio,O rádio das onze
+HUD_RADIO_STATIC,Radio: estática %s,Radio: static %s,Rádio: estática %s
