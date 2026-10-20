@@ -71,6 +71,30 @@ func test_close_voice_comes_out_of_the_speakers_cop() -> void:
 	assert_true(player.playing)
 
 
+func test_a_wall_muffles_the_close_voice() -> void:
+	var pair: Array[Node] = await pcs.two_pcs()
+	var host: Node = pair[0]
+	var guest_id: int = pair[1].multiplayer.get_unique_id()
+	var voice: VoiceChat = host.voice
+	voice.play_pcm(guest_id, VoiceChat.Channel.NEAR, _tone())
+	var player := host.cop_syncs[guest_id].cop.get_node("Head/Voice%d_0" % guest_id) as AudioStreamPlayer3D
+	var ear := player.global_position + Vector3(6, 0, 0)
+	voice.update_walls(ear)
+	assert_eq(player.attenuation_filter_cutoff_hz, VoiceChat.OPEN_CUTOFF_HZ, "in the open it sounds clear")
+	assert_eq(player.volume_db, 0.0)
+	var wall := StaticBody3D.new()
+	var shape := CollisionShape3D.new()
+	shape.shape = BoxShape3D.new()
+	shape.shape.size = Vector3(0.2, 4, 4)
+	wall.add_child(shape)
+	PCS.level(host).add_child(wall)
+	wall.global_position = player.global_position + Vector3(3, 0, 0)
+	await wait_physics_frames(2)
+	voice.update_walls(ear)
+	assert_eq(player.attenuation_filter_cutoff_hz, VoiceChat.WALL_CUTOFF_HZ, "behind a wall it sounds dull")
+	assert_eq(player.volume_db, VoiceChat.WALL_DB, "and lower")
+
+
 func test_the_radio_sounds_everywhere_with_interference() -> void:
 	var pair: Array[Node] = await pcs.two_pcs()
 	var host: Node = pair[0]

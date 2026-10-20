@@ -60,3 +60,4 @@
 - Voice (docs/diseno/voz.md): with Steam, hold V to talk to the cops nearby (heard whole up to 3 m, silent at 20 m) or T to talk to everyone on the radio, with interference; "Voz siempre abierta" in the room keeps the close voice on. `-- --voice-loopback` plays your own voice back to try the microphone.
 - Player names: the Steam name of each player shows in the room list and over their cop, in their skin color ("Policía N" without Steam).
 - Coming in late: a player who joins the room during a case (late, or after a drop) goes straight into the same case and sees everything as it is; everyone gets their cop.
+- Voice through walls: with a wall or a floor between two cops, the close voice sounds dull and lower.

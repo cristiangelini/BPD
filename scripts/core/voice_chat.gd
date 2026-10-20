@@ -11,6 +11,12 @@ enum Channel { NEAR, RADIO }
 ## Close voice is heard whole up to this many meters and goes silent at NEAR_SILENT (propuesta).
 const NEAR_FULL := 3.0
 const NEAR_SILENT := 20.0
+## Behind a wall (anything on the world's layer between the ear and the speaker's head) the close voice sounds dull and
+## lower (propuesta). In the open it keeps Godot's usual cutoff, which already dulls far voices a little.
+const WALL_CUTOFF_HZ := 700.0
+const WALL_DB := -8.0
+const OPEN_CUTOFF_HZ := 5000.0
+const WALL_LAYER := 1
 ## The radio's bus: thinner (band pass) and a bit crunchy, plus some static mixed into the voice.
 const RADIO_BUS := "Radio"
 const RADIO_STATIC := 0.04
@@ -91,6 +97,9 @@ func _process(_delta: float) -> void:
 	_set_talking(channel)
 	if _recording:
 		_send(steam.steam)
+	var camera := get_viewport().get_camera_3d()
+	if camera:
+		update_walls(camera.global_position)
 
 
 func _held(action: String) -> bool:
@@ -196,6 +205,23 @@ func _player(id: int, channel: int) -> Node:
 	player.call("play")
 	_players[key] = player
 	return player
+
+
+## Dulls every close voice with a wall between it and `ear`.
+func update_walls(ear: Vector3) -> void:
+	for player: Node in _players.values():
+		if is_instance_valid(player) and player is AudioStreamPlayer3D and player.is_inside_tree():
+			set_muffled(player, behind_wall(player, ear))
+
+
+static func behind_wall(player: Node3D, ear: Vector3) -> bool:
+	var query := PhysicsRayQueryParameters3D.create(ear, player.global_position, WALL_LAYER)
+	return not player.get_world_3d().direct_space_state.intersect_ray(query).is_empty()
+
+
+static func set_muffled(player: AudioStreamPlayer3D, muffled: bool) -> void:
+	player.attenuation_filter_cutoff_hz = WALL_CUTOFF_HZ if muffled else OPEN_CUTOFF_HZ
+	player.volume_db = WALL_DB if muffled else 0.0
 
 
 func _cop_of(id: int) -> Node3D:
