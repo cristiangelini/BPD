@@ -95,6 +95,12 @@ func _act(action: String) -> void:
 	_held.rpc_id(get_multiplayer_authority(), net.props.index_of(grabber.held) if net.props else -1)
 
 
+## Host: tells the owner what its copy holds now (something handed out, like the armory's donuts).
+func tell_held() -> void:
+	var grabber: Grabber = cop.get_node("Grabber")
+	_held.rpc_id(get_multiplayer_authority(), net.props.index_of(grabber.held) if net.props else -1)
+
+
 ## The host says what this cop holds now (-1: nothing), so the owner's hands and prompts show it.
 @rpc("any_peer", "call_remote", "reliable")
 func _held(index: int) -> void:

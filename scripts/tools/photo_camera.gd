@@ -40,7 +40,8 @@ func _physics_process(delta: float) -> void:
 	_wait = maxf(_wait - delta, 0.0)
 
 
-## Takes a photo. Returns the checklist lines of the trails it caught, or nothing if it couldn't shoot.
+## Takes a photo. Returns the checklist lines of the trails it caught, or nothing if it couldn't shoot. This PC
+## decides what the photo caught; online the photo then happens on every PC (Cop.act).
 func shoot() -> Array[String]:
 	var caught: Array[String] = []
 	if _wait > 0.0:
@@ -48,21 +49,32 @@ func shoot() -> Array[String]:
 	if film <= 0:
 		cop.show_hint("HINT_NO_FILM")
 		return caught
-	film -= 1
 	_wait = COOLDOWN
-	cop.stats["photos"] = cop.stats.get("photos", 0) + 1
-	_flash_light()
 	var hit := cop.aim_hit(RANGE)
-	if not hit.is_empty() and hit.collider.has_method("photographed"):
-		hit.collider.photographed(cop)
+	var subject: Node = hit.collider if not hit.is_empty() and hit.collider.has_method("photographed") else null
 	for place in get_tree().get_nodes_in_group("photo_clues"):
 		var trails: Dictionary = place.photo_clues()
 		for line: String in trails:
 			if _in_frame(trails[line]):
-				place.add_clue(line)
 				caught.append(line)
-	cop.show_hint("HINT_PHOTO_CLUE" if not caught.is_empty() else "HINT_PHOTO")
+	cop.act("belt_photo", cop, [subject, caught])
 	return caught
+
+
+## The photo itself: film, flash, the subject's reaction and the trails it caught noted on the checklist.
+func develop(subject: Node, caught: Array) -> void:
+	film = maxi(film - 1, 0)
+	_wait = COOLDOWN
+	cop.stats["photos"] = cop.stats.get("photos", 0) + 1
+	_flash_light()
+	if subject:
+		subject.photographed(cop)
+	for place in get_tree().get_nodes_in_group("photo_clues"):
+		var trails: Dictionary = place.photo_clues()
+		for line: String in caught:
+			if trails.has(line):
+				place.add_clue(line)
+	cop.show_hint("HINT_PHOTO_CLUE" if not caught.is_empty() else "HINT_PHOTO")
 
 
 func _in_frame(marks: Array) -> bool:

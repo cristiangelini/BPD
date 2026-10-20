@@ -36,7 +36,7 @@ func prompt_key() -> String:
 
 
 func press() -> void:
-	toggle()
+	cop.act("belt_flashlight", cop)
 
 
 func toggle() -> void:
