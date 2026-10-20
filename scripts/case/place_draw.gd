@@ -2,21 +2,22 @@ class_name PlaceDraw
 extends RefCounted
 
 ## Which place a match happens in (panaderia.md, "El orden para hacerlo", step 5): Play draws a case seed and, from
-## it, the grandpa's house or the bakery, with even odds (propuesta). --place=<id> forces one. The level then takes
+## it, the grandpa's house, the bakery or the pet salon, with even odds (propuesta). --place=<id> forces one. The level then takes
 ## that seed, so the place, the story and the hiding spots all come from one seed.
 
 const PLACES := {
 	"grandpa": "res://scenes/levels/grandpa_house.tscn",
 	"bakery": "res://scenes/levels/bakery.tscn",
+	"groomer": "res://scenes/levels/groomer.tscn",
 }
-const ORDER := ["grandpa", "bakery"]
+const ORDER := ["grandpa", "bakery", "groomer"]
 
 ## The seed the next level takes (0 = none drawn; the level draws its own).
 static var pending_seed := 0
 
 
 ## The place for this seed: from --place=<id> among the user args, or drawn. It hashes the seed instead of taking
-## seed % 2, because the stories are drawn with seed % their count and the two draws would go together.
+## seed % 3, because the stories are drawn with seed % their count and the two draws would go together.
 static func pick(case_seed: int, args: PackedStringArray) -> String:
 	for arg in args:
 		if arg.begins_with("--place=") and PLACES.has(arg.trim_prefix("--place=")):

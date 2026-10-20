@@ -84,4 +84,6 @@
 - Pet salon story: bone smuggling. The museum's dinosaur bones buried under one of 5 patches in the yard; the yard shovel digs (3 digs with E); the dogs dig too, mostly where the bones are.
 - The host leaving in the middle of a case sends everyone back to the room screen with "El anfitrión cerró la sala", instead of leaving them alone in the level.
 - Esc during a case opens a menu: resume, invite friends (host with Steam), the always open voice and leave the room (or quit to the menu solo); solo it stops the game.
+- Pet salon story: the secret human salon. The appointment book, a wig and a fragile mirror; human hair among the dog hair that only shows under the flashlight; human customers under a towel that a cop can lift.
+- Play now draws the pet salon too: the grandpa's house, the bakery or the salon, a third each.
 - Online belt: the tool in each cop's hand, the flashlight and the handcuffs (cuffing and freeing a partner) are the same on every PC.
