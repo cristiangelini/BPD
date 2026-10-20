@@ -31,7 +31,8 @@ func _ready() -> void:
 	_test_room_button.pressed.connect(_on_test_room_pressed)
 	_quit_button.pressed.connect(_on_quit_pressed)
 	# --host / --join=<ip> (two windows on one PC) go straight to the room, once per run.
-	if Lobby.pending_arg(OS.get_cmdline_user_args()) != "":
+	# A Steam invite that launched the game goes there too.
+	if Lobby.pending_arg(OS.get_cmdline_user_args()) != "" or Lobby.invite_lobby != 0:
 		_open_lobby.call_deferred()
 
 

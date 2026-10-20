@@ -318,3 +318,7 @@ MENU_CONTINUE,Continuar,Continue,Continuar
 LOBBY_CONTINUE,Continuar partida,Continue match,Continuar partida
 SHIFT_TURN,"Plata del grupo (turno %d de %d)","Group money (shift %d of %d)","Grana do grupo (turno %d de %d)"
 SHIFT_CAMPAIGN_OVER,¡Partida terminada!,Match over!,Partida encerrada!
+LOBBY_HOST_STEAM,Crear sala de Steam,Create Steam room,Criar sala da Steam
+LOBBY_INVITE,Invitar amigos,Invite friends,Convidar amigos
+LOBBY_OPENING,Abriendo la sala...,Opening the room...,Abrindo a sala...
+LOBBY_HOSTING_STEAM,Sala de Steam abierta. Invita a tus amigos desde Steam.,Steam room open. Invite your friends from Steam.,Sala da Steam aberta. Convide seus amigos pela Steam.

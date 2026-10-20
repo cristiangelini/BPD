@@ -16,6 +16,13 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 | Máximo | 4 jugadores. El quinto que intenta entrar queda afuera. |
 | Color de cada uno | El orden de llegada da el lugar 1 a 4, y el lugar da el color de piel (rosa, naranja, lima, violeta; decisión 72). Si alguien se va, su lugar queda libre para el próximo. |
 
+## Probar con Steam
+- Una vez por PC: `powershell -ExecutionPolicy Bypass -File tools/godotsteam.ps1` baja GodotSteam a `addons/godotsteam` (no se sube al repo) y después `godot --headless --path . --import`.
+- Steam tiene que estar abierto antes de arrancar el juego. Por ahora usa el AppID 480 (Spacewar), el de prueba de Valve, hasta que BPD tenga el suyo.
+- En la sala aparece **Crear sala de Steam**; con la sala abierta, **Invitar amigos** abre la ventana de Steam. El amigo acepta la invitación en Steam y entra solo (también si tenía el juego cerrado: Steam lo abre con `+connect_lobby`).
+- Steam deja una sola cuenta por PC: para probar que alguien se une hacen falta dos PCs con dos cuentas.
+- Sin GodotSteam o sin Steam abierto, la sala ofrece solo IP, como antes.
+
 ## La sala
 - Desde el menú, **Jugar con amigos** abre la sala: Crear sala, Unirse y la lista de los policías conectados, cada uno con su color.
 - Solo el anfitrión ve **Empezar caso**. Al apretarlo, el anfitrión sortea el caso (lugar e historia, con la misma semilla de siempre) y todos abren el mismo lugar con la misma semilla.
