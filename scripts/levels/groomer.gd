@@ -268,6 +268,8 @@ func _ready() -> void:
 	add_child(rig)
 	rig.setup(self)
 	raid.main_evidence = main
+	raid.owner_npc = ramiro
+	raid.owner_id = "groomer"
 	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
 	_place_suspicion_clues()
 	_give_clues()

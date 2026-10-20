@@ -51,6 +51,11 @@ var clues_found: Array[String] = []
 var fines := 0
 ## Whose fresh prints the fingerprint kit finds near the evidence (tr() key): the place's owner.
 var prints_key := "PRINTS_OWNER"
+## The place's owner (grandpa, baker or groomer, set by the place) and his escort: walked to the patrol car, the next
+## shift is his interrogation (decision 93).
+var owner_npc: CharacterBody3D
+var owner_id := ""
+var escort: OwnerEscort
 
 ## Online, what keeps this case the same on every PC (null solo).
 var online: CaseSync
@@ -95,6 +100,8 @@ func start(tip_briefing: PackedStringArray, pool: Array = CaseSuspicions.POOL, c
 			(cop as Cop).show_hint("HINT_SEE_COMISARIO")
 	else:
 		give_tip()
+	if owner_npc:
+		escort = OwnerEscort.attach(owner_npc, car)
 	shift_screen.play_again.connect(_play_again)
 	shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
 
@@ -243,6 +250,20 @@ func _finish_soon() -> void:
 	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
 
+## The owner the cops took away, for the next shift's interrogation (decision 93): who he is, what slipped out of him
+## and what the evidence left behind was worth. Empty if he isn't in the patrol car or called his lawyer.
+func custody() -> Dictionary:
+	if not escort or not escort.in_car or owner_npc.get("has_called_lawyer"):
+		return {}
+	var missed := 0.0
+	for item in get_tree().get_nodes_in_group("evidence"):
+		var evidence := item as Evidence
+		if evidence.full_value > 0.0 and not evidence.is_broken and not car.is_delivered(evidence):
+			missed += evidence.value
+	var slips: Array = owner_npc.get("slips")
+	return {"owner": owner_id, "story": story_id, "slips": slips.duplicate(), "missed": roundi(missed)}
+
+
 ## Shows the end of shift screen with the pay and the awards, and stops everyone's controls.
 func finish_shift() -> void:
 	if shift_over or follower:
@@ -259,6 +280,7 @@ func finish_shift() -> void:
 	if campaign and not campaign.is_over():
 		var played := campaign.shift
 		campaign.finish_shift(story_id, case_solved, report)
+		campaign.custody = custody()
 		campaign.save()
 		result.campaign = {"shift": played, "money": campaign.money, "over": campaign.is_over(),
 			"promoted": campaign.is_promoted()}

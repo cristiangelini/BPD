@@ -242,6 +242,8 @@ func _ready() -> void:
 	_place_notes()
 	_give_slips()
 	raid.main_evidence = main_evidence()
+	raid.owner_npc = grandpa
+	raid.owner_id = "grandpa"
 	raid.start(TIP_BRIEFING, CaseSuspicions.POOL, ($City as City).comisario if start_at_station else null)
 	_place_suspicion_clues()
 	_place_michi()

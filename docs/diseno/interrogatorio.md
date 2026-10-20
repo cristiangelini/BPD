@@ -167,9 +167,24 @@ vendió a la municipalidad un puente que no existe"), su cara y ropa, y las fras
 ## Sale como un caso más
 - En "Jugar" se sortea un tipo de caso y después el lugar o el sospechoso. Mientras haya solo allanamientos e
   interrogatorios: **1 de cada 3 turnos es un interrogatorio** (Cristian, 20/10) y el resto, allanamientos.
-- **Más adelante, después de un allanamiento:** si llevan al dueño esposado en el patrullero hasta la comisaría (es
-  pesado y se queja todo el viaje), se lo puede interrogar para sacarle dónde está la evidencia que faltó, por la mitad
-  del sueldo de esa evidencia. Es el "puede seguir a cualquier caso" de casos.md.
+- **Después de un allanamiento, el dueño (decisión 93):** ver "El dueño del allanamiento" abajo.
+
+## El dueño del allanamiento (decisión 93, Cristian 20/10: lo escoltan)
+Es el "puede seguir a cualquier caso" de casos.md: si se llevan al dueño del lugar (el abuelo, Marta o Ramiro), el
+turno siguiente es su interrogatorio. Todo **(propuesta)**.
+
+1. **Esposarlo:** con las esposas del cinturón, como siempre (+15 de denuncia). Ramiro también se puede esposar.
+2. **Escoltarlo:** E sobre el dueño esposado lo agarra del brazo: camina despacio (1,2 m/s) detrás del policía, sin que
+   se le pasen las esposas, y se queja todo el camino. Agarrarlo suma +20 de denuncia de una vez y después dice una
+   queja cada 6 s. E de nuevo lo suelta (las esposas siguen 20 s más).
+3. **Al patrullero:** si el policía lo escolta hasta el patrullero (a 1,5 m o menos), el dueño se sube atrás, en el medio
+   (no ocupa ningún asiento de los policías), y queda ahí hasta el final del turno.
+4. **El turno siguiente:** si al terminar el allanamiento el dueño va en el patrullero y no llamó a su abogado, la partida
+   guarda que está detenido, con lo que se le escapó en el allanamiento y lo que valía la evidencia que quedó sin entregar.
+   Ese turno es su interrogatorio (aunque no toque por el 1 de cada 3), con la cuota de 500 del interrogatorio.
+5. **Su interrogatorio:** es como el del que no para de hablar, pero con el modelo del dueño. A 30, 60 y 90 se le
+   escapa dónde estaba lo que escondió (las mismas frases que decía con R en el allanamiento). La confesión paga 500 más
+   la mitad de lo que valía la evidencia que quedó sin entregar.
 
 ## Online
 Los medidores, las acciones y la confesión los decide el host (decisión 50), como con la denuncia. Por la red se manda
@@ -196,7 +211,8 @@ lo pidió.
 4. El grito con la voz. Hecho.
 5. El sorteo en "Jugar" (1 de cada 3). Hecho.
 6. Los otros 9 sospechosos, uno o dos por PR. Hecho.
-7. Interrogar al dueño después de un allanamiento.
+7. Interrogar al dueño después de un allanamiento: primero la escolta hasta el patrullero (el dueño queda detenido en la
+   partida) y después su interrogatorio.
 
 ## Respuestas de Cristian (20/10)
 1. La sala no va en la sala de descanso: es una sala de interrogatorio de película, aparte (el ala de atrás).
