@@ -72,7 +72,7 @@ func start(tip_briefing: PackedStringArray, pool: Array = CaseSuspicions.POOL) -
 	add_child(briefing)
 	briefing.finished.connect(checklist.set_open.bind(true))
 	_tell(tip_briefing)
-	shift_screen.play_again.connect(func() -> void: get_tree().reload_current_scene())
+	shift_screen.play_again.connect(func() -> void: PlaceDraw.start(get_tree()))
 	shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
 
 
