@@ -7,7 +7,6 @@ const HOUSE_SCENE := preload("res://scenes/levels/grandpa_house.tscn")
 
 func _facts() -> Dictionary:
 	return {"door_open": false, "found": false, "delivered": false, "all_in_car": false,
-		"cage_delivered": false, "safe_delivered": false, "cards_delivered": 0, "cards_total": 5,
 		"broken": 0, "fines": 0, "complaint": 0.0}
 
 
@@ -89,12 +88,12 @@ func test_the_extras_in_the_trunk_tick_their_rows() -> void:
 	var safe: Evidence = house.evidence[2]
 	assert_eq(safe.full_value, 800.0, "the takings")
 	safe.global_position = house.car.to_global(Vector3(0.5, 0.7, -1.7))
-	var card: Evidence = house.cards[0]
+	var card: Evidence = house.drawer_evidence[0]
 	card.global_position = house.car.to_global(Vector3(-0.5, 0.6, -1.7))
 	await wait_physics_frames(10)
 	var facts := house.objective_facts()
-	assert_true(facts.safe_delivered)
-	assert_false(facts.cage_delivered)
-	assert_eq(facts.cards_delivered, 1)
+	var extras: Array = facts.extras
+	assert_false(extras[0].done, "the bingo cage stays in the house")
+	assert_true(extras[1].done, "the takings")
 	var texts := CaseObjectives.rows(facts).map(func(r: Dictionary) -> String: return r.text)
 	assert_has(texts, "Extra: cartones de bingo (1 de 5), en los cajones")

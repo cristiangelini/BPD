@@ -25,4 +25,20 @@ func test_the_house_places_what_the_story_brings() -> void:
 	assert_eq(house.evidence.size(), house.story.evidence.size())
 	for i in house.evidence.size():
 		assert_eq(house.evidence[i].scene_file_path, house.story.evidence[i].resource_path)
-	assert_eq(house.cards.size(), house.story.drawer_count)
+	assert_eq(house.drawer_evidence.size(), house.story.drawer_count)
+
+
+func test_the_story_comes_from_the_seed_or_the_command_line() -> void:
+	for case_seed in [1, 2, 3, 8]:
+		assert_has(GrandpaHouse.STORIES, GrandpaHouse.pick_story(case_seed, PackedStringArray()))
+	assert_eq(GrandpaHouse.pick_story(3, PackedStringArray(["--story=bingo"])).id, "bingo")
+	assert_eq(GrandpaHouse.pick_story(3, PackedStringArray(["--story=nope"])),
+		GrandpaHouse.pick_story(3, PackedStringArray()), "an unknown id falls back to the draw")
+
+
+func test_every_story_names_its_items_for_the_notes() -> void:
+	for story: CaseStory in GrandpaHouse.STORIES:
+		assert_eq(story.item_keys.size(), story.evidence.size(), story.id)
+		for key: String in story.item_keys:
+			assert_ne(tr("NOTE_ITEM_" + key), "NOTE_ITEM_" + key, "%s names %s" % [story.id, key])
+		assert_ne(tr(story.find_key), story.find_key, story.id)

@@ -15,23 +15,23 @@ func _house(case_seed: int) -> GrandpaHouse:
 
 func test_every_item_gets_two_clues() -> void:
 	for case_seed in range(1, 50):
-		var plan := CluePlan.draw(case_seed, GrandpaHouse.NOTE_PLACES.size())
+		var plan := CluePlan.draw(case_seed, GrandpaHouse.NOTE_PLACES.size(), 3, BingoRig.SAFE)
 		var count := [0, 0, 0]
 		var places := {}
 		for note: Dictionary in plan.notes:
 			count[note.item] += 1
 			places[note.place] = true
 		count[plan.footprints] += 1
-		count[plan.crumbs] += 1
+		count[BingoRig.SAFE] += 1
 		assert_eq(count, [2, 2, 2], "seed %d" % case_seed)
 		assert_eq(places.size(), plan.notes.size(), "one note per place")
-		assert_eq(plan.crumbs, CluePlan.SAFE, "the crumbs lead to the safe")
+		assert_ne(plan.footprints, BingoRig.SAFE, "the crumbs already lead to the safe")
 
 
 func test_note_texts_name_the_item_and_the_spot() -> void:
 	TranslationServer.set_locale("es")
-	assert_eq(CluePlan.note_text(0, "in_oven", true), "«La libreta, en el horno. ¡NO PRENDERLO!»")
-	assert_eq(CluePlan.note_text(2, "in_washer", false), "«La plata del bingo, donde se lava la ropa.»")
+	assert_eq(CluePlan.note_text("book", "in_oven", true), "«La libreta, en el horno. ¡NO PRENDERLO!»")
+	assert_eq(CluePlan.note_text("safe", "in_washer", false), "«La plata del bingo, donde se lava la ropa.»")
 
 
 func test_reading_a_note_adds_it_to_the_checklist() -> void:

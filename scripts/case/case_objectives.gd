@@ -5,19 +5,18 @@ extends RefCounted
 ## Built from plain facts about the case so the house only reports what happened.
 
 
-## Facts: door_open, found, delivered, all_in_car, cage_delivered, safe_delivered (bools), cards_delivered, cards_total,
-## broken, fines, complaint (numbers), clues (lines of found clues), tupper_asked, tupper_returned (optional bools).
+## Facts: door_open, found, delivered, all_in_car (bools), broken, fines, complaint (numbers), and optionally
+## find (the story's tr() key for finding the main evidence), extras (the story's rows: [{text, done}]),
+## clues (lines of found clues), tupper_asked, tupper_returned (bools).
 ## Returns rows {text: tr() key or formatted text, done: bool, optional: bool, status: bool}, in play order.
 static func rows(facts: Dictionary) -> Array[Dictionary]:
 	var list: Array[Dictionary] = []
 	list.append(_row("OBJ_ENTER", facts.door_open))
-	list.append(_row("OBJ_FIND", facts.found or facts.delivered))
+	list.append(_row(facts.get("find", "OBJ_FIND"), facts.found or facts.delivered))
 	list.append(_row("OBJ_TRUNK", facts.delivered))
 	list.append(_row("OBJ_LEAVE", facts.delivered and facts.all_in_car))
-	list.append(_extra("OBJ_EXTRA_CAGE", facts.cage_delivered))
-	list.append(_extra("OBJ_EXTRA_SAFE", facts.safe_delivered))
-	list.append(_extra(TranslationServer.translate("OBJ_EXTRA_CARDS") % [facts.cards_delivered, facts.cards_total],
-		facts.cards_total > 0 and facts.cards_delivered == facts.cards_total))
+	for extra: Dictionary in facts.get("extras", []):
+		list.append(_extra(extra.text, extra.done))
 	if facts.get("tupper_asked", false):
 		list.append(_extra("OBJ_EXTRA_TUPPER", facts.get("tupper_returned", false)))
 	var clues: Array = facts.get("clues", [])
