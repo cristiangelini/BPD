@@ -54,7 +54,7 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 - **Cámara y huellas:** la PC del que saca la foto decide qué salió en ella; el flash, el rollo, la queja del dueño y las pistas pasan en todas, y la foto cuenta para el premio al fotógrafo. Las huellas también se revelan en todas y las del dueño van a la lista de todos.
 - **Armería:** la lista se abre solo en la pantalla del que habló con el armero, pero decide el anfitrión con la caja común de la partida; la lista de los invitados muestra la plata del anfitrión. Lo que entrega se ve en todas las PCs: el ariete, los guantes, la caja de donas en las manos de quien la pidió y la carretilla.
 - **Donas:** comer una pasa en todas las PCs, así la caja tiene las mismas donas para todos.
-- Cargar, estacionar y volcar la carretilla va en el paso que sigue.
+- **Carretilla:** agarrarla, cargarla, estacionarla y volcarla (G) pasa en todas las PCs; lo que lleva lo sigue moviendo el anfitrión, así al volcarla cae igual para todos.
 
 ## Menú con Esc
 - **Esc** en medio de un caso abre un menú: **Seguir**, **Invitar amigos** (solo el anfitrión, con Steam), la casilla **Voz siempre abierta** y **Salir de la sala** (o **Salir al menú** jugando solo). Esc otra vez lo cierra.

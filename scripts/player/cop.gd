@@ -336,7 +336,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	elif event.is_action_pressed("drop"):
 		if wheelbarrow:
-			wheelbarrow.dump()
+			act("wheelbarrow_dump", self)
 		elif ram:
 			act("drop_ram", self)
 	elif event.is_action_pressed("ask"):
@@ -404,11 +404,29 @@ func act(method: String, target: Node, args := []) -> void:
 func _use_wheelbarrow() -> bool:
 	var aimed := aim_hit(GameScale.GRAB_REACH)
 	if not aimed.is_empty() and aimed.collider is Grabbable:
-		if not wheelbarrow.add(aimed.collider):
+		if wheelbarrow.can_load(aimed.collider):
+			act("wheelbarrow_load", self, [aimed.collider])
+		else:
 			show_hint("HINT_WHEELBARROW_FULL")
 		return true
-	wheelbarrow.park()
+	act("wheelbarrow_park", self)
 	return true
+
+
+## The wheelbarrow's actions, through act() so it carries the same load on every PC.
+func wheelbarrow_load(item: Grabbable) -> void:
+	if wheelbarrow and item:
+		wheelbarrow.add(item)
+
+
+func wheelbarrow_park() -> void:
+	if wheelbarrow:
+		wheelbarrow.park()
+
+
+func wheelbarrow_dump() -> void:
+	if wheelbarrow:
+		wheelbarrow.dump()
 
 
 ## Asks what the camera points at a question (R), if it can be asked (the grandpa). Returns true if it answered.
