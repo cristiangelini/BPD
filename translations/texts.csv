@@ -538,6 +538,11 @@ HINT_NEED_SHOVEL,Con las manos no: la pala está en el patio.,Not with your hand
 HINT_DIG_FOUND,¡Hay algo enterrado!,There's something buried here!,Tem algo enterrado!
 HINT_DIG_NOTHING,Nada. Solo tierra (y un hueso de pollo).,Nothing. Just dirt (and a chicken bone).,Nada. Só terra (e um osso de frango).
 LADY_CLUE_bones,"«¡Mi Fifí! Gracias, oficial. Mira, vi a Ramiro esconder algo %s. Y anoche lo oí cavar en el patio con una linterna.»","“My Fifí! Thank you, officer. Look, I saw Ramiro hide something %s. And last night I heard him digging in the yard with a flashlight.”","“Minha Fifí! Obrigada, policial. Olha, vi o Ramiro esconder algo %s. E ontem à noite ouvi ele cavando no quintal com uma lanterna.”"
+PAUSE_TITLE,Pausa,Pause,Pausa
+PAUSE_ONLINE_HINT,Tus compañeros siguen jugando.,Your partners keep playing.,Seus parceiros continuam jogando.
+PAUSE_RESUME,Seguir,Resume,Continuar
+PAUSE_LEAVE,Salir al menú,Quit to menu,Sair para o menu
+PAUSE_LEAVE_ROOM,Salir de la sala,Leave the room,Sair da sala
 BRIEF_HUMAN_SALON_B,"Ramiro no tiene permiso para cortarle el pelo a personas, pero lo hace igual: los atiende a escondidas y los tapa con una toalla cuando entra alguien.","Ramiro has no license to cut people's hair, but he does it anyway: he serves them in secret and covers them with a towel when someone walks in.","O Ramiro não tem licença para cortar cabelo de gente, mas corta mesmo assim: atende escondido e cobre com uma toalha quando alguém entra."
 BRIEF_HUMAN_SALON_C,"Traigan el libro de turnos de sus clientes humanos en el baúl del patrullero. Con la linterna se distingue el pelo de persona del de perro.","Bring the appointment book of his human customers back in the patrol car's trunk. With the flashlight you can tell human hair from dog hair.","Tragam a agenda dos clientes humanos no porta-malas da viatura. Com a lanterna dá para diferenciar cabelo de gente de pelo de cachorro."
 BRIEF_HUMAN_SALON_D,"Si encuentran la peluca o el espejo de cuerpo entero, mejor: todo suma. El espejo es frágil.","If you find the wig or the full-length mirror, even better: it all adds up. The mirror is fragile.","Se acharem a peruca ou o espelho de corpo inteiro, melhor: tudo soma. O espelho é frágil."

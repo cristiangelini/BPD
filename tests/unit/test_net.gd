@@ -141,6 +141,26 @@ func test_a_late_player_goes_straight_into_the_case() -> void:
 	assert_true(late.in_match)
 
 
+func test_a_guest_in_a_case_goes_back_to_the_room_with_the_notice_when_the_host_leaves() -> void:
+	var host := _host()
+	var guest: Node = await _guest(host)
+	host.start_match()
+	await wait_until(func() -> bool: return guest.in_match, 5.0)
+	watch_signals(guest)
+	host.leave()
+	await wait_until(func() -> bool: return get_signal_emit_count(guest, "session_ended") > 0, 5.0)
+	assert_eq(Lobby.notice, "NET_HOST_LEFT", "the room screen will say the host closed the room")
+	assert_false(guest.in_match)
+	Lobby.notice = ""
+
+
+func test_the_room_screen_shows_the_notice_once() -> void:
+	Lobby.notice = "NET_HOST_LEFT"
+	var lobby: Control = add_child_autofree(load("res://scenes/ui/lobby.tscn").instantiate())
+	assert_eq(lobby.get_node("%Status").text, "NET_HOST_LEFT")
+	assert_eq(Lobby.notice, "", "only once")
+
+
 func test_guests_go_back_when_the_host_closes_the_room() -> void:
 	var host := _host()
 	var guest: Node = await _guest(host)

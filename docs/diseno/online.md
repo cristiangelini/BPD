@@ -32,7 +32,7 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 
 ## Si alguien se va
 - **Se va un jugador:** su policía desaparece y el caso sigue con los demás. Lo que tenía en las manos se cae.
-- **Se va el anfitrión:** todos vuelven al menú con el aviso "El anfitrión cerró la sala". Lo jugado hasta el último guardado no se pierde (ver "Guardado").
+- **Se va el anfitrión:** todos vuelven a la pantalla de la sala con el aviso "El anfitrión cerró la sala", también si estaban en medio de un caso. Lo jugado hasta el último guardado no se pierde (ver "Guardado").
 - **No se pudo entrar:** aviso "No se pudo entrar a la sala" y se queda en la sala.
 
 ## Qué se sincroniza
@@ -46,6 +46,11 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 | NPC (abuelo, vecina, Marta, clientes, Michi, palomas) | Anfitrión | Posición, animación y lo que dicen |
 | Caso (historia, pistas, sospecha marcada, entrega, denuncia, multas) | Anfitrión | La lista de Q y los avisos iguales para todos |
 | Plata, ítems y turno | Anfitrión | La pantalla de fin de turno igual para todos |
+
+## Menú con Esc
+- **Esc** en medio de un caso abre un menú: **Seguir**, **Invitar amigos** (solo el anfitrión, con Steam), la casilla **Voz siempre abierta** y **Salir de la sala** (o **Salir al menú** jugando solo). Esc otra vez lo cierra.
+- Jugando solo el juego se detiene mientras está abierto. Online no puede: dice "Tus compañeros siguen jugando." **(propuesta)**
+- Si sale el anfitrión, la sala se cierra y los demás vuelven a la pantalla de la sala con el aviso.
 
 ## Guardado
 - Lo guarda **solo el anfitrión**, al final de cada turno (decisiones 16 y 59). La partida es del anfitrión: para seguirla, él la abre y los amigos entran a su sala.
