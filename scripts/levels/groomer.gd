@@ -7,7 +7,8 @@ extends Node3D
 ## and the collar vitrine break, each one a fine. Ramiro cuts dogs at the first table, watches what breaks and tells a
 ## dog's life to whoever sits in the waiting armchair with one (step 2). Six dogs roam the salon and the yard, follow
 ## whoever has something in hand and hide small things in the doghouse (step 3). The poodle lady waits in the
-## reception for Fifí, caged in the back, and tells what she saw when she gets her (step 4). The stories come next.
+## reception for Fifí, caged in the back, and tells what she saw when she gets her (step 4). The case is one of its
+## stories (STORIES), drawn with the seed, run by the same RaidCase as the other places (step 5).
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -15,6 +16,33 @@ const SHAMPOO_SCENE := preload("res://scenes/props/shampoo_bottle.tscn")
 const COLLAR_SCENE := preload("res://scenes/props/dog_collar.tscn")
 const GROOMER_SCENE := preload("res://scenes/npc/dog_groomer.tscn")
 const DOG_SCENE := preload("res://scenes/npc/dog.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the salon can be suspected of (peluqueria.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["millionaire", "hair_growth", "contest", "bones", "diamonds", "human_salon"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_GROOMER_TIP_B", "BRIEF_TIP_C", "BRIEF_GROOMER_TIP_D",
+	"BRIEF_GROOMER_TIP_E"]
+## The stories the salon can tell, like Bakery.STORIES: what the comisario says once it's guessed, its "find it" row,
+## what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the checklist rows
+## of its extras and its rig. With "main_hidden" the first hidden item is the main evidence and the rest are extras.
+const STORIES := {
+	"contest": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_CONTEST_B", "BRIEF_CONTEST_C", "BRIEF_CONTEST_D"],
+		"find": "OBJ_FIND_CONTEST",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/dog_trophy.tscn"), preload("res://scenes/props/judge_cards.tscn"),
+			preload("res://scenes/props/golden_comb.tscn")],
+		"half_heights": [0.195, 0.015, 0.008],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_JUDGE_CARDS", "OBJ_EXTRA_GOLDEN_COMB"],
+		"rig": preload("res://scripts/case/groomer/contest_rig.gd"),
+	},
+}
+## Surfaces where the suspicions' clue notes can lie, one in each room; three are drawn with the seed.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(-2.4, FLOOR_TOP + 1.0, 4.0), Vector3(-5.5, FLOOR_TOP, 5.0), Vector3(2.5, FLOOR_TOP + 0.86, 4.5),
+	Vector3(-3.0, FLOOR_TOP, 0.5), Vector3(5.0, FLOOR_TOP, 0.8), Vector3(-4.0, GRASS_TOP, -5.0),
+]
 const LADY_AT := Vector3(-5.2, FLOOR_TOP, 6.3)
 ## Fifí's cage: lower row, third from the west wall (one with bars).
 const POODLE_CAGE := Vector2i(2, 0)
@@ -112,13 +140,28 @@ const SPOTS := [
 
 ## Where the patrol car parks at the station, in this scene's space.
 var station_parking: Transform3D
+## The case flow every raid shares.
+var raid: RaidCase
+## Same seed, same draw: the story and where its things go. 0 draws one.
+@export var case_seed := 0
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: GroomerRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
+var broken_goods := 0
+var complaint_bar: ProgressBar
 var store_door: FrontDoor
 var back_door: FrontDoor
 var city_map: CityMap
 var shampoos: Array[Ornament] = []
 var collars: Array[Ornament] = []
-## What the cops broke so far (each one is an Ornament.FINE).
-var fines := 0
+## Fines for what the cops broke (each one is an Ornament.FINE).
+var fines: int:
+	get: return raid.fines
 var ramiro: DogGroomer
 var armchair: WaitingArmchair
 var dogs: Array[Dog] = []
@@ -129,6 +172,23 @@ var _build: PlaceBuilder
 
 
 func _ready() -> void:
+	if case_seed == 0:
+		case_seed = PlaceDraw.take_seed()
+	if case_seed == 0:
+		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_yard()
@@ -145,11 +205,90 @@ func _ready() -> void:
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("pet_salon")
 	station_parking = city.transform * CityLayout.parking("station")
+	raid.station_parking = station_parking
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
 	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "pet_salon", car)
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The salon's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_GROOMER",
+		"guess_key": "OBJ_GUESS_GROOMER",
+		"broken_key": "OBJ_BROKEN_GROOMER",
+		"complaint_key": "OBJ_COMPLAINT_GROOMER",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_goods,
+		"complaint": ramiro.complaint,
+	}
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(case_seed: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[case_seed % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Ramiro lets slip when asked (where the story's things are, in an order drawn from the seed), and what the
+## poodle lady saw: where he hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		ramiro.slips.append(tr("GROOMER_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	ramiro.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	lady.clue = tr("CLUE_LADY") % where
+	lady.clue_speech = tr("LADY_CLUE_" + story_id) % where
+	lady.told.connect(raid.add_clue)
 
 
 func _door(at: Vector3, turn: float) -> FrontDoor:
@@ -304,6 +443,23 @@ func _place_ramiro() -> void:
 	add_child(armchair)
 	for door: FrontDoor in [store_door, back_door]:
 		door.broken.connect(ramiro.door_broken)
+	ramiro.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_GROOMER"))
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	ramiro.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
 
 
 ## The dogs walk on a navigation mesh baked from the built salon, with the locked doors closed.
@@ -347,6 +503,8 @@ func _place_dogs() -> void:
 
 
 func _on_fragile_broken(at: Vector3) -> void:
-	fines += Ornament.FINE
+	broken_goods += 1
+	raid.fines += Ornament.FINE
+	raid.float_label("-%d" % Ornament.FINE, at, Color(1, 0.3, 0.25))
 	if ramiro:
 		ramiro.saw(at, DogGroomer.SAW_BREAK)
