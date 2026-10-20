@@ -8,3 +8,5 @@ builds/
 *.zip
 # Test output
 tests/evidencia/
+# GodotSteam (tools/godotsteam.ps1 downloads it; the game runs without it)
+addons/godotsteam/

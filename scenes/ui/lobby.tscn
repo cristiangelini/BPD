@@ -49,6 +49,22 @@ text = "LOBBY_SOLO"
 horizontal_alignment = 1
 autowrap_mode = 3
 
+[node name="SteamButton" type="Button" parent="Box"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "LOBBY_HOST_STEAM"
+
+[node name="InviteButton" type="Button" parent="Box"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "LOBBY_INVITE"
+
 [node name="HostButton" type="Button" parent="Box"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 64)

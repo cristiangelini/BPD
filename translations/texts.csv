@@ -334,6 +334,10 @@ SHIFT_TURN,"Plata del grupo (turno %d de %d)","Group money (shift %d of %d)","Gr
 SHIFT_PROMOTED,¡Ascendidos!,Promoted!,Promovidos!
 SHIFT_CAMPAIGN_LOST,No cumplieron la cuota: partida perdida.,You missed the quota: match lost.,Vocês não cumpriram a cota: partida perdida.
 SHIFT_CAMPAIGN_OVER,¡Partida terminada!,Match over!,Partida encerrada!
+LOBBY_HOST_STEAM,Crear sala de Steam,Create Steam room,Criar sala da Steam
+LOBBY_INVITE,Invitar amigos,Invite friends,Convidar amigos
+LOBBY_OPENING,Abriendo la sala...,Opening the room...,Abrindo a sala...
+LOBBY_HOSTING_STEAM,Sala de Steam abierta. Invita a tus amigos desde Steam.,Steam room open. Invite your friends from Steam.,Sala da Steam aberta. Convide seus amigos pela Steam.
 PROMPT_ARMERO,E: hablar con el armero,E: talk to the armorer,E: falar com o armeiro
 ARMORY_TITLE,Armería,Armory,Arsenal
 ARMORY_CASH,Caja de la comisaría: $%d,Station cash box: $%d,Caixa da delegacia: $%d

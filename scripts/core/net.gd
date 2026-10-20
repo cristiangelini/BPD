@@ -2,7 +2,7 @@ extends Node
 
 ## The online session (docs/diseno/online.md): host a room, join one, who is in it and which slot (skin color) each
 ## player has, and starting the same case for everyone. Autoloaded as Net. Without a room the game plays solo, as
-## always. For now the room goes by IP with ENet; Steam lobbies come in the next step.
+## always. A room goes through Steam (SteamRoom) when Steam is running, or by IP with ENet for testing on one PC.
 
 ## The player list changed: someone came in or left.
 signal players_changed
@@ -39,6 +39,8 @@ var actions: ActionSync
 var case_sync: CaseSync
 ## The current level's people and animals, run by the host.
 var npcs: NpcSync
+## Steam lobbies and invites (does nothing where GodotSteam isn't installed).
+var steam: SteamRoom
 ## This PC has the current level loaded and its cops in place.
 var _in_scene := false
 
@@ -48,6 +50,16 @@ func _ready() -> void:
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
+	steam = SteamRoom.new()
+	steam.name = "Steam"
+	add_child(steam)
+	steam.hosted.connect(_open_room)
+	steam.joined.connect(func(peer: MultiplayerPeer) -> void: multiplayer.multiplayer_peer = peer)
+	steam.failed.connect(_on_steam_failed)
+	steam.invited.connect(_on_steam_invited)
+	if steam.start():
+		# Launched from a friend's invite: the menu opens the room and joins it.
+		Lobby.invite_lobby = SteamRoom.connect_lobby_arg(OS.get_cmdline_args())
 
 
 ## In a room, as host or guest.
@@ -70,11 +82,32 @@ func host(port := DEFAULT_PORT) -> Error:
 	var error := peer.create_server(port, MAX_PLAYERS)
 	if error != OK:
 		return error
+	_open_room(peer)
+	return OK
+
+
+## Opens a Steam room; friends come in through Steam's invites. players_changed or session_ended tell how it went.
+func host_steam() -> void:
+	leave()
+	steam.host(MAX_PLAYERS)
+
+
+## Enters a friend's Steam room. players_changed or session_ended tell how it went.
+func join_steam(lobby_id: int) -> void:
+	leave()
+	steam.join(lobby_id)
+
+
+## The room is a Steam one, so friends come in by invite instead of by IP.
+func is_steam() -> bool:
+	return is_online() and steam.lobby_id != 0
+
+
+func _open_room(peer: MultiplayerPeer) -> void:
 	multiplayer.multiplayer_peer = peer
 	players = {HOST_ID: 0}
 	in_match = false
 	players_changed.emit()
-	return OK
 
 
 ## Tries to join the room at `address`. connected or session_ended tell how it went.
@@ -93,6 +126,8 @@ func leave() -> void:
 	if multiplayer.multiplayer_peer and not multiplayer.multiplayer_peer is OfflineMultiplayerPeer:
 		multiplayer.multiplayer_peer.close()
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
+	if steam:
+		steam.leave()
 	var had_players := not players.is_empty()
 	players = {}
 	in_match = false
@@ -270,6 +305,19 @@ func _on_peer_disconnected(id: int) -> void:
 func _refuse(reason_key: String) -> void:
 	leave()
 	session_ended.emit(reason_key)
+
+
+func _on_steam_failed(reason_key: String) -> void:
+	leave()
+	session_ended.emit(reason_key)
+
+
+## A friend's invite accepted in Steam: whatever this PC was doing, it goes to the room and joins.
+func _on_steam_invited(lobby_id: int) -> void:
+	leave()
+	Lobby.invite_lobby = lobby_id
+	if change_scenes:
+		get_tree().change_scene_to_file(MainMenu.LOBBY_SCENE)
 
 
 func _on_connection_failed() -> void:

@@ -2,7 +2,8 @@ class_name Lobby
 extends Control
 
 ## The room before a case (docs/diseno/online.md, "La sala"): create a room or join a friend's, see who is in with
-## their color, and the host starts the case for everyone. For now rooms go by IP; Steam comes next.
+## their color, and the host starts the case for everyone. With Steam running, the room is a Steam lobby and friends
+## come in by Steam invite; by IP stays for testing on one PC.
 ## `godot --path . -- --host` or `-- --join=<ip>` opens it straight away, for two windows on one PC.
 
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
@@ -11,6 +12,8 @@ const SKIN_COLORS: Array[Color] = [Color("ff86b0"), Color("ff9d3f"), Color("9ee0
 
 ## The --host / --join arguments open the room only once per run, not every time the menu comes back.
 static var _args_used := false
+## A friend's Steam lobby to join as soon as the room opens (an invite accepted in Steam, or +connect_lobby), 0 if none.
+static var invite_lobby := 0
 
 @onready var _status: Label = %Status
 @onready var _players: VBoxContainer = %Players
@@ -20,11 +23,13 @@ static var _args_used := false
 @onready var _start_button: Button = %StartButton
 
 
-## The --host / --join=<ip> argument among `args`: "host", the IP, or "".
+## The --host / --host-steam / --join=<ip> argument among `args`: "host", "steam", the IP, or "".
 static func room_arg(args: PackedStringArray) -> String:
 	for arg in args:
 		if arg == "--host":
 			return "host"
+		if arg == "--host-steam":
+			return "steam"
 		if arg.begins_with("--join="):
 			return arg.trim_prefix("--join=")
 	return ""
@@ -37,6 +42,8 @@ static func pending_arg(args: PackedStringArray) -> String:
 
 func _ready() -> void:
 	_host_button.pressed.connect(_on_host_pressed)
+	%SteamButton.pressed.connect(_on_steam_pressed)
+	%InviteButton.pressed.connect(func() -> void: Net.steam.invite())
 	_join_button.pressed.connect(func() -> void: _join(_address.text.strip_edges()))
 	# Start case begins a new campaign; Continue picks up the host's saved one (guardado.md).
 	_start_button.pressed.connect(func() -> void:
@@ -52,8 +59,15 @@ func _ready() -> void:
 	_refresh()
 	var arg := pending_arg(OS.get_cmdline_user_args())
 	_args_used = true
-	if arg == "host":
+	if invite_lobby != 0:
+		var lobby_id := invite_lobby
+		invite_lobby = 0
+		Net.join_steam(lobby_id)
+		_show_joining()
+	elif arg == "host":
 		_on_host_pressed()
+	elif arg == "steam":
+		_on_steam_pressed()
 	elif arg != "":
 		_join(arg)
 
@@ -65,15 +79,26 @@ func _on_host_pressed() -> void:
 	_refresh()
 
 
+func _on_steam_pressed() -> void:
+	Net.host_steam()
+	_status.text = "LOBBY_OPENING"
+	%SteamButton.disabled = true
+
+
 func _join(address: String) -> void:
 	if address == "":
 		address = "127.0.0.1"
 	if Net.join(address) != OK:
 		_status.text = "NET_JOIN_FAILED"
 		return
+	_show_joining()
+
+
+func _show_joining() -> void:
 	_status.text = "LOBBY_JOINING"
 	_host_button.disabled = true
 	_join_button.disabled = true
+	%SteamButton.disabled = true
 
 
 func _on_back_pressed() -> void:
@@ -90,11 +115,16 @@ func _refresh() -> void:
 	var online := Net.is_online() and not Net.players.is_empty()
 	_host_button.disabled = online
 	_join_button.disabled = online
+	%SteamButton.visible = Net.steam.available()
+	%SteamButton.disabled = online
+	%InviteButton.visible = online and Net.is_steam() and Net.is_host()
 	_address.editable = not online
 	_start_button.visible = online and Net.is_host()
 	%ContinueButton.visible = _start_button.visible and Campaign.can_continue()
 	if not online:
 		_status.text = "LOBBY_SOLO"
+	elif Net.is_host() and Net.is_steam():
+		_status.text = "LOBBY_HOSTING_STEAM"
 	elif Net.is_host():
 		_status.text = tr("LOBBY_HOSTING") % _local_ip()
 	else:
