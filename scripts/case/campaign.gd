@@ -56,9 +56,10 @@ func case_seed() -> int:
 
 
 ## Closes the shift with its end of shift numbers (ShiftReport.pay) and moves on to the next one. The report's quota
-## and verdict become this shift's (quota()), so the end of shift screen shows them.
-func finish_shift(story: String, solved: bool, report: Dictionary) -> void:
-	report.quota = quota()
+## and verdict become this shift's (quota(), or `shift_quota` for a shift with its own), so the end of shift screen
+## shows them.
+func finish_shift(story: String, solved: bool, report: Dictionary, shift_quota := -1) -> void:
+	report.quota = quota() if shift_quota < 0 else shift_quota
 	report.approved = report.total >= report.quota
 	history.append({"shift": shift, "story": story, "solved": solved, "total": report.total,
 		"approved": report.approved})

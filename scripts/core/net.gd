@@ -188,7 +188,7 @@ func start_match() -> void:
 	if not is_online() or not multiplayer.is_server():
 		return
 	var case_seed := PlaceDraw.next_seed()
-	_start_match.rpc(PlaceDraw.pick(case_seed, OS.get_cmdline_user_args()), case_seed)
+	_start_match.rpc(PlaceDraw.pick(case_seed, OS.get_cmdline_user_args(), PlaceDraw.shift_now()), case_seed)
 
 
 @rpc("authority", "call_local", "reliable")
