@@ -34,6 +34,9 @@ PROMPT_DOOR_LOCKED,Cerrada: busca la llave en las macetas o usa el ariete,Locked
 PROMPT_DOOR,E: abrir o cerrar la puerta,E: open or close the door,E: abrir ou fechar a porta
 PROMPT_GRANDPA,Mantén E: escuchar una historia (lo distrae) · R: preguntarle (se enoja un poco),Hold E: listen to a story (distracts him) · R: question him (annoys him a bit),Segure E: ouvir uma história (distrai ele) · R: interrogar (ele se irrita um pouco)
 PROMPT_CAR,E: subir al patrullero,E: get in the patrol car,E: entrar na viatura
+PROMPT_COMISARIO,E: hablar con el comisario,E: talk to the comisario,E: falar com o comissário
+HINT_SEE_COMISARIO,El comisario te espera en su oficina: pasa a buscar el caso.,The comisario is waiting in his office: go get the case.,O comissário te espera na sala dele: vá buscar o caso.
+HINT_COMISARIO_FIRST,¡¿Adónde van?! ¡Primero el caso!,Where do you think you're going?! The case first!,Aonde vocês vão?! Primeiro o caso!
 BRIEF_SPEAKER,Comisario,Commissioner,Comissário
 BRIEF_CONTINUE,E: seguir,E: continue,E: continuar
 BRIEF_1_1_A,"¡Novatos! Atención, que no lo voy a repetir.","Rookies! Listen up, I won't say it twice.","Novatos! Atenção, que eu não vou repetir."

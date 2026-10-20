@@ -82,7 +82,14 @@ func prompt_key(_cop: Cop) -> String:
 	return "PROMPT_CAR"
 
 
+## While set (a tr() key), E on the car only shows this hint: nobody leaves before hearing the comisario.
+var locked_hint := ""
+
+
 func use(cop: Cop) -> void:
+	if locked_hint != "" and seat_of(cop) < 0:
+		cop.show_hint(locked_hint)
+		return
 	if seat_of(cop) >= 0:
 		exit(cop)
 	else:
