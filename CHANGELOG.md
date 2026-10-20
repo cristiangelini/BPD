@@ -109,3 +109,4 @@
 - Interrogation suspect: the police fan confesses three crimes at once on sheets on the table, and picking a wrong one brings his lawyer closer.
 - Interrogation: E sits a cop on one of the loose chairs, and sitting near the suspect is the good cop by his side.
 - Online interrogation: the host's case counts every cop's action (a guest's E, donut, chair, coffee or shout too) and every PC sees the same meters, lines, lamp, confessions on the table, lawyer and end of shift.
+- Online owner: the host walks the cuffed owner after whichever cop took him, every PC sees him ride in the back of the patrol car, and the host's owner in custody sits in the next interrogation's chair on every PC.

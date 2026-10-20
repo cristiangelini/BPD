@@ -200,7 +200,9 @@ cada acción con quién la hizo; el grito se mide en la PC de quien habla y se m
 el grito de un invitado. Los demás ven lo mismo: los medidores, lo que dice el sospechoso (y el gemelo y el traductor),
 la lámpara y la luz que parpadea, las tres confesiones del fanático, la hoja del mudo, la confesión, el abogado y la
 pantalla del turno. Solo el anfitrión pasa al caso siguiente. El café que sirve la máquina le queda en la mano a quien
-lo pidió.
+lo pidió. El dueño de un allanamiento lo camina el anfitrión detrás del policía que lo agarró, y todos lo ven ir atrás
+en el patrullero; en el turno siguiente, el dueño en custodia del anfitrión es el que se sienta en la silla en todas las
+PCs.
 
 ## Atajos del panel de pruebas (cuando exista)
 - Forzar un interrogatorio con el sospechoso N (`--suspect=N`).

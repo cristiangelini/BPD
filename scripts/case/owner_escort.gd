@@ -24,6 +24,8 @@ var npc: CharacterBody3D
 var car: PatrolCar
 var escorted_by: Cop
 var in_car := false
+## Online, a guest's copy: the host walks him and says when he's in the car (NpcSync); here he only rides along.
+var follower := false
 var _since_line := 0.0
 var _line := 0
 
@@ -56,7 +58,7 @@ func prompt_key(cop: Cop) -> String:
 
 ## E: takes him by the arm, or lets go of him (the cuffs stay on for a while).
 func use(cop: Cop) -> void:
-	if in_car:
+	if in_car or follower:
 		return
 	if escorted_by == cop:
 		escorted_by = null
@@ -75,7 +77,7 @@ func _physics_process(delta: float) -> void:
 	if in_car:
 		npc.global_transform = car.prisoner_seat()
 		return
-	if not escorted_by:
+	if not escorted_by or follower:
 		return
 	# Walked by a cop, the cuffs don't run out.
 	npc.set("_cuffed_left", Handcuffs.SECONDS)
