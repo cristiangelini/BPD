@@ -205,6 +205,8 @@ func _remove_cop(id: int) -> void:
 	cop_syncs.erase(id)
 	if is_instance_valid(sync.cop):
 		sync.cop.get_node("Grabber").release()
+		if sync.cop.vehicle:
+			sync.cop.vehicle.exit(sync.cop)
 		sync.cop.queue_free()
 	remove_child(sync)
 	sync.queue_free()

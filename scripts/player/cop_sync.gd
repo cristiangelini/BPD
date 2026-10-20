@@ -53,6 +53,10 @@ func _state(at: Vector3, yaw: float, pitch: float, crouching: bool) -> void:
 	_target_yaw = yaw
 	_target_pitch = pitch
 	cop.set_crouching(crouching)
+	if cop.vehicle:
+		# A seated cop rides the car, which the host moves for everyone.
+		_has_target = true
+		return
 	if not _has_target or cop.global_position.distance_to(at) > SNAP_DISTANCE:
 		cop.global_position = at
 		cop.global_rotation.y = yaw
@@ -61,9 +65,11 @@ func _state(at: Vector3, yaw: float, pitch: float, crouching: bool) -> void:
 
 func _follow(delta: float) -> void:
 	var weight := 1.0 - exp(-EASE * delta)
+	cop.set_head_pitch(lerp_angle(cop.head_pitch(), _target_pitch, weight))
+	if cop.vehicle:
+		return
 	cop.global_position = cop.global_position.lerp(_target_position, weight)
 	cop.global_rotation.y = lerp_angle(cop.global_rotation.y, _target_yaw, weight)
-	cop.set_head_pitch(lerp_angle(cop.head_pitch(), _target_pitch, weight))
 
 
 ## Owner on a guest: asks the host to do `action` with this cop's hands ("grab", "release", "throw", "closer",
@@ -94,7 +100,7 @@ func _act(action: String) -> void:
 func _held(index: int) -> void:
 	if multiplayer.get_remote_sender_id() != net.HOST_ID:
 		return
-	(cop.get_node("Grabber") as Grabber).held = net.props.prop_at(index) if net.props else null
+	(cop.get_node("Grabber") as Grabber).held = net.props.prop_at(index) as Grabbable if net.props else null
 
 
 ## Host: shows `key` on the owner's screen (something only the host saw happen, like a heavy loaf in its hands).
@@ -106,3 +112,16 @@ func tell_hint(key: String) -> void:
 func _hint(key: String) -> void:
 	if multiplayer.get_remote_sender_id() == net.HOST_ID:
 		cop.show_hint(key)
+
+
+## Owner driving on a guest: sends the car's controls to the host every physics step; the host drives the car
+## for everyone.
+func send_controls(throttle: float, steer: float, handbrake: bool) -> void:
+	if not net.is_host():
+		_controls.rpc_id(net.HOST_ID, throttle, steer, handbrake)
+
+
+@rpc("authority", "call_remote", "unreliable_ordered")
+func _controls(throttle: float, steer: float, handbrake: bool) -> void:
+	if multiplayer.is_server() and cop.vehicle and cop.vehicle.driver() == cop:
+		cop.vehicle.drive(throttle, steer, handbrake)

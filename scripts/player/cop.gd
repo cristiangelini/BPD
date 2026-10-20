@@ -235,19 +235,17 @@ func use() -> bool:
 	var target := _usable_target()
 	if not target:
 		return false
-	act("use", target)
+	act("use", target, target.use_args(self) if target.has_method("use_args") else [])
 	return true
 
 
-## Does `method` on `target` (this cop itself for "drop_ram"). Online it happens on every PC in the same order
-## (ActionSync); solo it just happens.
-func act(method: String, target: Node) -> void:
+## Does `method` on `target` (this cop itself for "drop_ram") with `args`. Online it happens on every PC in the same
+## order (ActionSync); solo it just happens.
+func act(method: String, target: Node, args := []) -> void:
 	if sync and sync.net.actions:
-		sync.net.actions.act(self, method, target)
-	elif method in ActionSync.ACTOR_METHODS:
-		target.call(method, self)
+		sync.net.actions.act(self, method, target, args)
 	else:
-		target.call(method)
+		target.callv(method, ([self] if method in ActionSync.ACTOR_METHODS else []) + args)
 
 
 ## Asks what the camera points at a question (R), if it can be asked (the grandpa). Returns true if it answered.

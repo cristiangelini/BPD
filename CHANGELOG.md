@@ -52,3 +52,4 @@
 - Online, step 3: in a room every player sees the other cops in their skin colors, walking, turning, looking up and down and crouching where their owners move them; a player who leaves takes their cop away.
 - Online, step 4 (props): the host simulates every physics object and the guests see them where the host has them; guests grab, carry, throw and pull drawers through the host, and an ornament broken on the host shatters for everyone.
 - Online, step 4 (using things): E, R, the battering ram and dropping it happen on every PC in the same order through the host, so doors, pots, the safe and the ram look the same for everyone; hints show on the screen of the cop who did it, and only the host makes new props (the takings, the ring).
+- Online, step 4 (patrol car): getting in picks the same seat on every PC, the host drives the car with the controls the driver sends, and the siren turns on for everyone.

@@ -2,8 +2,8 @@ class_name PropSync
 extends Node
 
 ## Keeps the level's physics objects the same on every PC (docs/diseno/online.md, "Qué se sincroniza"): the host
-## simulates every Grabbable and sends where the ones that moved are, about 20 times a second; the guests' copies are
-## frozen and ease toward it. A prop that breaks on the host (an ornament) breaks on everyone. Levels build the same
+## simulates every Grabbable and the patrol car (its driver sends the controls, see CopSync) and sends where the ones
+## that moved are, about 20 times a second; the guests' copies are frozen and ease toward it. A prop that breaks on the host (an ornament) breaks on everyone. Levels build the same
 ## from the same seed, so each prop is known by its place in the level's list. Only the host makes new props (the
 ## takings out of a safe, the ring out of a loaf): it adds them to the list and the guests make a copy from the same
 ## scene; a prop a guest makes on its own is dropped. Lives under the Net autoload as "Props".
@@ -19,7 +19,7 @@ const PER_PACKET := 20
 
 ## The Net that owns this sync: it knows which peers have the level loaded and who hosts.
 var net: Node
-var props: Array[Grabbable] = []
+var props: Array[RigidBody3D] = []
 ## Index -> transform last sent (host).
 var _sent := {}
 ## Index -> transform to ease toward (guests).
@@ -38,8 +38,9 @@ func _init(owner_net: Node, level: Node) -> void:
 	net = owner_net
 	_level = level
 	name = "Props"
-	for node in level.find_children("*", "Grabbable", true, false):
-		props.append(node as Grabbable)
+	for node in level.find_children("*", "RigidBody3D", true, false):
+		if is_synced(node):
+			props.append(node as RigidBody3D)
 
 
 func _ready() -> void:
@@ -50,12 +51,19 @@ func _ready() -> void:
 		_freeze(prop)
 
 
-## A guest's copy: no physics of its own, no hits, nothing that moves it but the host.
-static func _freeze(prop: Grabbable) -> void:
-	prop.freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
+static func is_synced(node: Node) -> bool:
+	return node is Grabbable or node is PatrolCar
+
+
+## A guest's copy: no physics of its own, no hits, nothing that moves it but the host. The car keeps running its
+## own code, which reads the driver's keys and flashes the siren; it freezes static, since a kinematic car's wheels
+## work out an impossible suspension.
+static func _freeze(prop: RigidBody3D) -> void:
+	prop.freeze_mode = RigidBody3D.FREEZE_MODE_STATIC if prop is PatrolCar else RigidBody3D.FREEZE_MODE_KINEMATIC
 	prop.freeze = true
 	prop.contact_monitor = false
-	prop.set_physics_process(false)
+	if not prop is PatrolCar:
+		prop.set_physics_process(false)
 
 
 ## Pushes `prop` (the battering ram): the host does it, a guest asks the host.
@@ -74,10 +82,10 @@ func _push(index: int, impulse: Vector3, offset: Vector3) -> void:
 
 
 func _on_node_added(node: Node) -> void:
-	if not node is Grabbable or node == _adding or not _level.is_ancestor_of(node) or props.has(node):
+	if not is_synced(node) or node == _adding or not _level.is_ancestor_of(node) or props.has(node):
 		return
 	if net.is_host():
-		props.append(node as Grabbable)
+		props.append(node as RigidBody3D)
 		var index := props.size() - 1
 		_spawned[index] = node.scene_file_path
 		for peer: int in net.scene_peers:
@@ -94,7 +102,7 @@ func _made(index: int, scene: String) -> void:
 		props.append(null)
 	if props[index] or scene == "" or not ResourceLoader.exists(scene):
 		return
-	var prop := (load(scene) as PackedScene).instantiate() as Grabbable
+	var prop := (load(scene) as PackedScene).instantiate() as RigidBody3D
 	if not prop:
 		return
 	_freeze(prop)
@@ -104,12 +112,12 @@ func _made(index: int, scene: String) -> void:
 	props[index] = prop
 
 
-func index_of(prop: Grabbable) -> int:
+func index_of(prop: RigidBody3D) -> int:
 	return props.find(prop) if prop else -1
 
 
 ## The prop at `index`, or null if there is none (or it's gone).
-func prop_at(index: int) -> Grabbable:
+func prop_at(index: int) -> RigidBody3D:
 	if index < 0 or index >= props.size() or not is_instance_valid(props[index]):
 		return null
 	return props[index]
