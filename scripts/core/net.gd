@@ -33,6 +33,8 @@ var scene_peers: Array[int] = []
 var cop_syncs := {}
 ## The current level's physics objects, kept the same on every PC.
 var props: PropSync
+## What cops do to the current level, done on every PC in the same order.
+var actions: ActionSync
 ## This PC has the current level loaded and its cops in place.
 var _in_scene := false
 
@@ -147,6 +149,8 @@ func spawn_cops(local: Cop) -> void:
 		_add_cop(copy, id, start)
 	props = PropSync.new(self, local.get_parent())
 	add_child(props)
+	actions = ActionSync.new(self, local.get_parent())
+	add_child(actions)
 	_in_scene = true
 	_entered_scene.rpc(true)
 	if multiplayer.is_server():
@@ -184,10 +188,12 @@ func _leave_scene() -> void:
 		remove_child(sync)
 		sync.queue_free()
 	cop_syncs.clear()
-	if props:
-		remove_child(props)
-		props.queue_free()
-		props = null
+	for sync: Node in [props, actions]:
+		if sync:
+			remove_child(sync)
+			sync.queue_free()
+	props = null
+	actions = null
 
 
 ## A player left: their cop goes away (what it held drops, online.md).
