@@ -361,3 +361,6 @@ GROOMER_STORY_TIRED,"Ahora no, que tengo un caniche a medio cortar.","Not now, I
 GROOMER_DOG_STORY_1,"¡Ay, este! Llegó flaquito, comía solo galletitas de queso...","Oh, this one! He came in skinny, ate nothing but cheese crackers...","Ai, esse! Chegou magrinho, só comia biscoito de queijo..."
 GROOMER_DOG_STORY_2,"...después se enamoró de la caniche de enfrente, un drama...","...then he fell for the poodle across the street, such drama...","...depois se apaixonou pela poodle da frente, um drama..."
 GROOMER_DOG_STORY_3,"...y ahora es campeón de dormir la siesta. ¡Mírenlo qué lindo!","...and now he's a nap champion. Look how cute he is!","...e agora é campeão de soneca. Olha que lindo!"
+PROMPT_DOG,Clic: alzar al perro,Click: pick up the dog,Clique: pegar o cachorro no colo
+PROMPT_HOLDING_DOG,Suelta el clic: bajarlo · Clic derecho: tirarlo (ladra) · Rueda: acercar o alejar,Release click: put it down · Right click: throw it (it barks) · Wheel: closer or farther,Solte o clique: pôr no chão · Clique direito: jogar (ele late) · Roda: aproximar ou afastar
+GROOMER_DOG,"¡Ey, ey! ¡Con cuidado, que es un cliente!","Hey, hey! Careful, that's a customer!","Ei, ei! Cuidado, que é um cliente!"

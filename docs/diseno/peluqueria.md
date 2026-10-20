@@ -80,6 +80,13 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      levanta antes. Después necesita 30 s para contar otra. Hasta que estén los perros (paso 3), cualquier cosa del
      grupo "dogs" cuenta como perro.
 3. Los perros sueltos.
+   - **Cómo quedó (propuesta):** 6 perros sueltos de 6 kg (uno los alza solo), de 6 colores, más 6 enjaulados que por
+     ahora solo se ven. Pasean por la recepción, la sala de corte, las jaulas y el patio (el depósito no, está cerrado).
+     Siguen al policía que tiene algo en la mano, a menos de 6 m, y lo saltan cada 2,5 s. Cada 12 s miran si hay algo
+     chico (1 kg o menos) que un policía dejó en el piso y se lo llevan en la boca a la cucha; lo dejan apoyado, así lo
+     frágil no se rompe, y si alguien se lo saca de la boca lo sueltan. Ladran si un policía los choca a más de 2,5 m/s
+     o si caen fuerte (por ejemplo, al tirarlos), como mucho un ladrido cada 2 s, y cada ladrido le suma 5 a la
+     denuncia de Ramiro. Alzado, un perro sirve para el sillón de espera. Ramiro todavía no sale a perseguirlos.
 4. La señora del caniche.
 5. Las 6 historias, un PR cada una.
 

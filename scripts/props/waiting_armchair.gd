@@ -79,5 +79,5 @@ func _physics_process(_delta: float) -> void:
 
 
 func _holds_dog(cop: Cop) -> bool:
-	var held: Grabbable = cop.get_node("Grabber").held
-	return held != null and held.is_in_group("dogs")
+	var held = cop.get_node("Grabber").held
+	return is_instance_valid(held) and held.is_in_group("dogs")
