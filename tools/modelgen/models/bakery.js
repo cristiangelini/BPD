@@ -111,11 +111,47 @@ export function buildContestMedal() {
 	return b.build();
 }
 
+// The book of deposits taken for wedding cakes: a 0.17 x 0.03 x 0.23 m pink notebook with a ribbon and a heart.
+export function buildDepositBook() {
+	const b = new Builder('deposit_book');
+	b.add('cover', mat('book_pink', 0xe87aa8), new THREE.BoxGeometry(0.17, 0.03, 0.23));
+	b.add('pages', mat('book_pages', 0xf8f4e6), new THREE.BoxGeometry(0.16, 0.022, 0.005), { pos: V(0, 0, 0.114) });
+	b.add('ribbon', mat('book_ribbon', 0xf2c84b), new THREE.BoxGeometry(0.012, 0.032, 0.235), { pos: V(0.05, 0, 0) });
+	b.add('heart', mat('book_heart', 0xd82030), new THREE.CylinderGeometry(0.025, 0.025, 0.004, 3), { pos: V(-0.02, 0.016, 0), rot: [0, Math.PI / 2, 0] });
+	return b.build();
+}
+
+// The cardboard sample wedding cake: three tiers, 0.4 m wide and 0.5 m tall, white with a cardboard-brown base.
+export function buildCardboardCake(name = 'wedding_cake_sample') {
+	const b = new Builder(name);
+	const icing = () => mat('fake_icing', 0xf6f2ea), board = () => mat('cardboard', 0xb0844e);
+	b.add('cake', board(), new THREE.CylinderGeometry(0.21, 0.21, 0.02, 12), { pos: V(0, -0.24, 0) });
+	b.add('cake', icing(), new THREE.CylinderGeometry(0.2, 0.2, 0.18, 12), { pos: V(0, -0.14, 0) });
+	b.add('cake', icing(), new THREE.CylinderGeometry(0.14, 0.14, 0.14, 12), { pos: V(0, 0.02, 0) });
+	b.add('cake', icing(), new THREE.CylinderGeometry(0.08, 0.08, 0.1, 10), { pos: V(0, 0.14, 0) });
+	for (const [y, r] of [[-0.05, 0.2], [0.09, 0.14]]) b.add('trim', mat('fake_trim', 0xf7a8c8), new THREE.TorusGeometry(r, 0.008, 4, 14), { pos: V(0, y, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('topper', mat('topper', 0xd8202a), ellipsoid(0.02, 0.03, 0.02, 6, 4), { pos: V(-0.025, 0.22, 0) });
+	b.add('topper', mat('topper_black', 0x2a2a30), ellipsoid(0.02, 0.03, 0.02, 6, 4), { pos: V(0.025, 0.22, 0) });
+	return b.build();
+}
+
+// A stack of couple photos: 0.1 x 0.02 x 0.15 m, glossy prints a little askew.
+export function buildCouplePhotos() {
+	const b = new Builder('couple_photos');
+	for (let i = 0; i < 4; i++) {
+		b.add('photo', mat('photo_border', 0xf6f6f2), new THREE.BoxGeometry(0.1, 0.003, 0.15), { pos: V(0, -0.006 + i * 0.004, 0), rot: [0, (i - 1.5) * 0.12, 0] });
+	}
+	b.add('print', mat('photo_print', 0x6a8ac8), new THREE.BoxGeometry(0.08, 0.002, 0.11), { pos: V(0, 0.01, -0.008), rot: [0, 0.18, 0] });
+	b.add('print', mat('photo_couple', 0xf0c8a0), new THREE.BoxGeometry(0.03, 0.002, 0.05), { pos: V(0, 0.0115, -0.01), rot: [0, 0.18, 0] });
+	return b.build();
+}
+
 export const models = {
 	bread_loaf: buildLoaf, bread_half: buildHalfLoaf, bakery_cake: buildCake,
 	stolen_ring: buildRing, jewelry_bag: buildJewelryBag, pawn_receipt: buildPawnReceipt,
 	flour_sack: buildFlourSack, pepper_sack: buildPepperSack, victim_list: buildVictimList, funnel: buildFunnel,
 	sourdough_jar: buildSourdoughJar, contest_medal: buildContestMedal,
+	deposit_book: buildDepositBook, wedding_cake_sample: () => buildCardboardCake(), couple_photos: buildCouplePhotos,
 };
 
 export const views = {
@@ -137,5 +173,12 @@ export const views = {
 	sourdough_goods: {
 		items: [{ name: 'sourdough_jar', pos: [-0.12, 0.15, 0], rotY: 0.3 }, { name: 'contest_medal', pos: [0.18, 0.01, 0.05], rotY: -0.4 }],
 		cam: { pos: [0, 0.5, 0.9], target: [0, 0.1, 0], fov: 36 },
+	},
+	wedding_goods: {
+		items: [
+			{ name: 'wedding_cake_sample', pos: [-0.25, 0.25, 0], rotY: 0 }, { name: 'deposit_book', pos: [0.25, 0.015, 0.1], rotY: 0.4 },
+			{ name: 'couple_photos', pos: [0.2, 0.01, 0.4], rotY: -0.3 },
+		],
+		cam: { pos: [0, 0.9, 1.4], target: [0, 0.15, 0.1], fov: 38 },
 	},
 };

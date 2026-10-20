@@ -63,6 +63,12 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
 - **Frágil:** un golpe de más de 4 m/s rompe el frasco entero (soltarlo desde las manos alcanza), y con Gertrudis rota se pierde el caso.
 - Marta con R y el chismoso también pueden decir dónde está Gertrudis, no solo la medalla.
 
+## Las tortas de boda que nunca existieron (cómo quedó, propuesta)
+- El cuaderno de señas (0,3 kg, 1000) es la prueba principal y va en un escondite. La torta de cartón de muestra (2 kg, 300) va en un escondite grande y las fotos de novios (0,1 kg, 100) en otro.
+- **La vitrina:** las 3 tortas son de cartón. No se rompen ni cuentan como multa, y la primera vez que alguien agarra una le aparece "Suena hueca... ¡Esta torta es de cartón!".
+- **El teléfono:** está en la pared este del local. Suena a los 25 s y después cada 40 s; a los 2,5 s Marta atiende y habla 8 s con unos novios enojados. Cada llamada le sube 3 de denuncia.
+- Mientras habla deja sola la puerta del obrador (queda a unos 4,5 m) y no atiende la caja: es el momento para pasar.
+
 ## Lo que comparte con la casa del abuelo
 - La planilla con la denuncia anónima, las 3 sospechas y marcar la sospecha (1, 2 o 3 durante 2 s).
 - El medidor de denuncia, la distracción, el interrogatorio y las pistas que apuntan a cada sospecha.
