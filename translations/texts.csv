@@ -321,3 +321,16 @@ OBJ_FIND_RADIO,Encontrar el transmisor (sigue la estática con T),Find the trans
 OBJ_EXTRA_TAPES,"Extra: cintas (%d de %d), en los cajones","Extra: tapes (%d of %d), in the drawers","Extra: fitas (%d de %d), nas gavetas"
 NOTE_ITEM_transmitter,La radio de las once,The eleven o'clock radio,O rádio das onze
 HUD_RADIO_STATIC,Radio: estática %s,Radio: static %s,Rádio: estática %s
+BRIEF_FIGHT_B,"Los martes, los jubilados del barrio llegan al centro de salud con un ojo morado. Dicen que se cayeron de la cama. Los cinco, de la misma cama.","On Tuesdays, the neighborhood retirees show up at the clinic with a black eye. They say they fell out of bed. All five of them, out of the same bed.","Às terças, os aposentados do bairro chegam ao posto de saúde com um olho roxo. Dizem que caíram da cama. Os cinco, da mesma cama."
+BRIEF_FIGHT_C,"Traigan el cinturón de campeón en el baúl del patrullero: sin eso no hay caso. Y no empujen al abuelo: es el campeón, y devuelve el empujón más fuerte.","Bring the champion's belt back in the patrol car's trunk: without it there's no case. And don't push the grandpa: he's the champion, and he pushes back harder.","Tragam o cinturão de campeão no porta-malas da viatura: sem isso não tem caso. E não empurrem o vovô: ele é o campeão, e devolve o empurrão mais forte."
+BRIEF_FIGHT_D,"Si encuentran los guantes y el cuaderno de peleas, mejor: todo suma. No esperen que les cuente historias: un campeón no se distrae.","If you find the gloves and the fight notebook, even better: it all adds up. Don't expect him to tell you stories: a champion doesn't get distracted.","Se acharem as luvas e o caderno de lutas, melhor: tudo soma. Não esperem que ele conte histórias: um campeão não se distrai."
+OBJ_FIND_FIGHT,Encontrar el cinturón de campeón,Find the champion's belt,Achar o cinturão de campeão
+OBJ_EXTRA_GLOVES,Extra: los guantes de boxeo,Extra: the boxing gloves,Extra: as luvas de boxe
+OBJ_EXTRA_FIGHT_BOOK,Extra: el cuaderno de peleas,Extra: the fight notebook,Extra: o caderno de lutas
+NOTE_ITEM_belt,El cinturón dorado,The golden belt,O cinturão dourado
+NOTE_ITEM_gloves,Los guantes,The gloves,As luvas
+NOTE_ITEM_notebook,El cuaderno de los martes,The Tuesday notebook,O caderno das terças
+PROMPT_PHOTO,E: mirar la foto,E: look at the photo,E: olhar a foto
+CLUE_FIGHT_PHOTO,"Una foto del abuelo con cuatro vecinos, todos con un ojo morado. Atrás dice: «Martes, en el altillo».","A photo of the grandpa with four neighbors, all with a black eye. On the back: “Tuesday, in the attic”.","Uma foto do vovô com quatro vizinhos, todos com um olho roxo. Atrás diz: “Terça, no sótão”."
+GRANDPA_CHAMPION_PUSH,¿Eso fue un empujón? ¡Esto es un empujón!,Was that a push? THIS is a push!,Isso foi um empurrão? Isto é um empurrão!
+GRANDPA_CHAMPION_NO_STORY,¿Historias? Las historias son para los que pierden.,Stories? Stories are for losers.,Histórias? Histórias são para quem perde.
