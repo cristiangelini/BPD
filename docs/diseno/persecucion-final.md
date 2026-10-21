@@ -1,8 +1,9 @@
-# BPD · La persecución como final de otros casos (propuesta, 21/10)
+# BPD · La persecución como final de otros casos (aprobado por Cristian, 21/10)
 
 Paso 7 de [persecucion.md](persecucion.md) y decisión 25: la persecución también es el final de cualquier caso en el
 que el sospechoso se escapa. Hoy nadie se escapa ni en el allanamiento ni en el interrogatorio, así que esto propone
-cuándo pasa y qué se gana o se pierde. Todo es **propuesta** hasta que Cristian lo apruebe.
+cuándo pasa y qué se gana o se pierde. Cristian aprobó las tres recomendaciones (decisión 96); los números siguen
+siendo **(propuesta)**.
 
 ## En el allanamiento: el dueño ve que encontraron la evidencia
 - **Cuándo:** si un policía levanta la evidencia principal y el dueño la ve (está a menos de 15 m y no está esposado
@@ -24,12 +25,10 @@ cuándo pasa y qué se gana o se pierde. Todo es **propuesta** hasta que Cristia
 - **Si lo agarran:** el interrogatorio sigue donde estaba, con el peligroso de vuelta en la sala.
 - **Si se escapa:** el interrogatorio se pierde.
 
-## Preguntas para Cristian
-1. En el allanamiento, ¿el dueño se escapa cuando ve que encontraron la evidencia? La otra opción sería cuando la
-   denuncia llega a 70.
-2. Si se escapa del allanamiento, ¿el caso se resuelve igual con la evidencia, solo que sin interrogatorio? La otra
-   opción sería que el caso se pierda.
-3. El peligroso que sale a la calle, ¿se lleva el patrullero viejo? La otra opción sería que escape a pie.
+## Respuestas de Cristian (21/10)
+1. Sí: el dueño se escapa cuando ve que un policía levanta la evidencia principal (no por la denuncia).
+2. Sí: si se escapa, el allanamiento se resuelve igual con la evidencia, pero no hay interrogatorio al turno siguiente.
+3. Sí: el peligroso que llega a la puerta de la calle se lleva el patrullero viejo y lo persiguen en el bueno.
 
 ## El orden para hacerlo (un PR chico por paso)
 1. Arrancar una persecución en medio de otro nivel: el vehículo del sospechoso, el reloj y el medidor sobre el caso que
