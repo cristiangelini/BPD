@@ -1,6 +1,7 @@
 extends GutTest
 
 ## How the crime scene ends (escena-del-crimen.md, step 6): the cooks go home, the pay, the custody and the draw.
+## Seed 45: the culprit gives up (test_crime_bike_chase.gd has one who runs off).
 
 const LEVEL := preload("res://scenes/levels/crime_scene.tscn")
 
@@ -12,7 +13,7 @@ func before_each() -> void:
 	Campaign.current = null
 	PlaceDraw.custody = {}
 	level = LEVEL.instantiate()
-	level.case_seed = 44
+	level.case_seed = 45
 	(level.get_node("Cop") as Cop).input_enabled = false
 	add_child_autofree(level)
 	await wait_physics_frames(2)

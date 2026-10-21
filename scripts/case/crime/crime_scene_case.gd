@@ -4,7 +4,7 @@ extends Node
 ## The pastry contest's case (escena-del-crimen.md, step 2): the comisario tells it in his office, the seed picks the
 ## culprit and his 4 clues (CrimePlan), and Q opens the planilla with what's left to do. The clues go in the tent
 ## (the carried ones in `items`); `found` notes one and `ruin` loses it. The cooks fill their files (`file_part`); the board
-## comes next and sets `accused`.
+## sets `accused`, and then the culprit gives up or runs off on his bike (`runs_off`).
 
 ## How often the open planilla redraws, in seconds.
 const REFRESH := 0.5
@@ -23,6 +23,11 @@ const COFFEE_SCENE := preload("res://scenes/props/coffee_cup.tscn")
 ## half under the cloth, with a coffee on the table's edge just above (propuesta).
 const ON_TABLE := {"hair": Vector3(0.6, 0.9, 0), "bite": Vector3(-0.6, 0.9, 0.1), "recipe": Vector3(0.3, 0.05, -0.55)}
 const COFFEE_ON_TABLE := Vector3(0.3, 0.9, -0.3)
+## Accused, half the culprits (by the seed) run off on the delivery bike instead of giving up (Cristian, 21/10:
+## "que algunos corran y que otros pasen a interrogatorio"; half and half is a propuesta).
+const RUNS_EVERY := 2
+## The bike waits this far (m) out of the tent's open front, and rides straight out of the plaza before its route.
+const BIKE_OUT := 1.5
 
 ## The comisario's verdict at the board: right, or wrong (and whether that lost the case).
 signal verdict(right: bool, lost: bool)
@@ -60,6 +65,9 @@ var elapsed := 0.0
 var gone: Array[int] = []
 ## The culprit, caught, for the next shift's interrogation (decision 93), like the raid's owner.
 var custody := {}
+## The culprit runs off on his bike (runs_off), and the chase once he did; whether he got away.
+var chase: ChaseCase
+var escaped := false
 var _refresh_left := 0.0
 
 
@@ -170,10 +178,49 @@ func accuse(index: int) -> void:
 		_comisario_says("BOARD_WRONG_LOST" if lost else "BOARD_WRONG")
 	checklist.show_rows(rows())
 	verdict.emit(accused, lost)
+	if accused and runs_off() and _run_off():
+		return
 	if accused:
 		_take_culprit()
 	if accused or lost:
 		get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
+
+
+## Whether this case's culprit runs off when accused, from the seed. One who already went home can't.
+func runs_off() -> bool:
+	return hash(["crime runs", case_seed]) % RUNS_EVERY == 0 and not gone.has(plan.culprit)
+
+
+## The culprit gets on his delivery bike by the tent and the chase starts (decision 96). Returns false when the level
+## has no city or patrol car to chase him with (he gives up instead).
+func _run_off() -> bool:
+	var level := get_parent()
+	var city := level.get_node_or_null("City") as Node3D
+	var car := level.get_node_or_null("PatrolCar") as PatrolCar
+	if not contest or not city or not car:
+		return false
+	var cook := contest.cooks[plan.culprit]
+	_send_off(cook)
+	var out := contest.to_global(Vector3(contest.to_local(cook.global_position).x, 0, PastryContest.SIZE.y / 2 + BIKE_OUT))
+	var at := Transform3D(contest.global_basis, out)
+	chase = ChaseCase.begin(level, SuspectCar.BIKE, at, car, city, case_seed)
+	chase.who = "cook"
+	var plaza := city.global_transform * CityLayout.block_center(CityLayout.PLAZA)
+	var ahead := contest.global_basis.z
+	var edge := out + ahead * maxf(CityLayout.BLOCK / 2 - 1.0 - (out - plaza).dot(ahead), 0.0)
+	chase.truck.points.insert(1, edge)
+	chase.ended.connect(_on_chase_ended)
+	_hint_all(tr("HINT_ESCAPE_cook") % culprit().name)
+	return true
+
+
+## Caught and in the patrol car, he's in custody for the next interrogation; got away, the case is lost.
+func _on_chase_ended(caught: bool) -> void:
+	escaped = not caught
+	if caught:
+		custody = {"owner": "cook", "story": "pastry", "slips": [], "missed": 0}
+	checklist.show_rows(rows())
+	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
 
 ## Accused, the culprit gives up and goes to a cell: next shift is his interrogation. One who already went home is
@@ -185,6 +232,11 @@ func _take_culprit() -> void:
 		_send_off(contest.cooks[plan.culprit])
 
 
+## Solved: the right cook accused and, if he ran off, caught.
+func solved() -> bool:
+	return accused and not escaped
+
+
 ## The end of shift screen: the salary if solved, halved by a wrong accusation (ShiftReport). A campaign moves on.
 func finish_shift() -> void:
 	if shift_over:
@@ -193,12 +245,12 @@ func finish_shift() -> void:
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
-	var report := ShiftReport.pay(accused, [], 0, wrong_guesses)
+	var report := ShiftReport.pay(solved(), [], 0, wrong_guesses)
 	var campaign := Campaign.current
 	var played := 0
 	if campaign and not campaign.is_over():
 		played = campaign.shift
-		campaign.finish_shift("crime_pastry", accused, report, QUOTA)
+		campaign.finish_shift("crime_pastry", solved(), report, QUOTA)
 		campaign.custody = custody
 		campaign.save()
 	else:
@@ -211,7 +263,7 @@ func finish_shift() -> void:
 		cop.get_node("Hud").hide()
 	var awards: Array[Dictionary] = []
 	awards.assign(ShiftReport.awards(stats))
-	shift_screen.show_report(accused, report, 0, awards)
+	shift_screen.show_report(solved(), report, 0, awards)
 	var over := false
 	if campaign and played > 0:
 		shift_screen.show_campaign(played, Campaign.SHIFTS, campaign.money, campaign.is_over(), campaign.is_promoted())
@@ -315,6 +367,8 @@ func rows() -> Array[Dictionary]:
 		if not files.has(index):
 			list.append({"text": "- " + _missing(index), "done": false, "optional": false, "status": true})
 	list.append(_row("OBJ_CRIME_ACCUSE", accused))
+	if chase:
+		list.append(_row("OBJ_CRIME_CATCH", chase.case_solved))
 	if not gone.is_empty():
 		var names := gone.map(func(index: int) -> String: return cooks[index].name)
 		list.append({"text": tr("OBJ_CRIME_GONE") % ", ".join(names), "done": false, "optional": false, "status": true})

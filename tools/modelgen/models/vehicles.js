@@ -381,11 +381,43 @@ export function buildWheelchair() {
 	return b.build();
 }
 
+// The pastry cook's delivery bike (escena-del-crimen.md, the culprit who runs off): two thin wheels, a step-through
+// frame, a big wicker basket in front with a loaf and a cake box in it, and a bell. The cook (npc_pastelero) rides it.
+// 1.8 m long; faces +Z like the rest. Its wheels are part of it. Placeholder, not final art.
+export function buildDeliveryBike() {
+	const frame = mat('bike_mint', 0x7fd1b9), tire = mat('tire', 0x1a1a1e), rim = mat('rim', 0xc8ccd2);
+	const wicker = mat('wicker', 0xb8874a), loaf = mat('bike_loaf', 0xd99a4e), cakeBox = mat('cake_box', 0xf7c6d0);
+	const b = new Builder('delivery_bike');
+	for (const z of [0.62, -0.62]) {
+		b.add('wheels', tire, new THREE.TorusGeometry(0.32, 0.035, 6, 16), { pos: V(0, 0.34, z), rot: [0, Math.PI / 2, 0] });
+		b.add('wheels', rim, new THREE.CylinderGeometry(0.04, 0.04, 0.1, 6), { pos: V(0, 0.34, z), rot: [0, 0, Math.PI / 2] });
+		for (const a of [0, Math.PI / 3, (2 * Math.PI) / 3]) {
+			box(b, 'wheels', rim, 0.01, 0.6, 0.01, 0, 0.34, z, [a, 0, 0]);
+		}
+	}
+	// The low step-through tube, the seat post with the saddle, and the fork up to the handlebar.
+	box(b, 'frame', frame, 0.05, 0.05, 0.9, 0, 0.36, 0.0, [0.12, 0, 0]);
+	box(b, 'frame', frame, 0.05, 0.55, 0.05, 0, 0.6, -0.35, [-0.25, 0, 0]);
+	box(b, 'frame', black, 0.18, 0.06, 0.26, 0, 0.9, -0.44);
+	box(b, 'frame', frame, 0.05, 0.75, 0.05, 0, 0.7, 0.55, [0.2, 0, 0]);
+	box(b, 'frame', black, 0.6, 0.04, 0.04, 0, 1.08, 0.48);
+	box(b, 'frame', frame, 0.05, 0.05, 0.6, 0, 0.36, -0.35, [-0.1, 0, 0]);
+	b.add('frame', gold, new THREE.SphereGeometry(0.04, 6, 4), { pos: V(0.22, 1.12, 0.48) });
+	// The basket on the front, open at the top, with the loaf and the cake box.
+	box(b, 'basket', wicker, 0.5, 0.04, 0.4, 0, 0.78, 0.88);
+	for (const x of [-0.25, 0.25]) box(b, 'basket', wicker, 0.03, 0.3, 0.4, x, 0.93, 0.88);
+	for (const z of [0.68, 1.08]) box(b, 'basket', wicker, 0.5, 0.3, 0.03, 0, 0.93, z);
+	b.add('basket', loaf, new THREE.CapsuleGeometry(0.08, 0.28, 3, 8), { pos: V(-0.1, 0.96, 0.88), rot: [0, 0, Math.PI / 2 - 0.3] });
+	box(b, 'basket', cakeBox, 0.22, 0.18, 0.22, 0.1, 0.9, 0.88);
+	box(b, 'lights', glass, 0.1, 0.08, 0.03, 0, 0.8, 1.1);
+	return b.build();
+}
+
 export const models = { patrol_car: buildPatrolCar, old_patrol_car: buildOldPatrolCar, car_wheel: buildCarWheel, ice_cream_truck: buildIceCreamTruck,
 	moving_truck: buildMovingTruck, falling_sofa: buildFallingSofa, falling_wardrobe: buildFallingWardrobe, falling_lamp: buildFallingLamp,
 	falling_box: buildFallingBox, school_bus: buildSchoolBus, getaway_car: buildGetawayCar, sports_car: buildSportsCar, tow_truck: buildTowTruck, golf_cart: buildGolfCart,
 	traffic_car_0: trafficCar(0), traffic_car_1: trafficCar(1), traffic_car_2: trafficCar(2), traffic_car_3: trafficCar(3),
-	delivery_scooter: buildDeliveryScooter, wheelchair: buildWheelchair };
+	delivery_scooter: buildDeliveryScooter, wheelchair: buildWheelchair, delivery_bike: buildDeliveryBike };
 
 const wheels = [[-1.1, 1.55], [1.1, 1.55], [-1.1, -1.55], [1.1, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }));
 export const views = {
@@ -412,6 +444,10 @@ export const views = {
 	delivery_scooter: {
 		items: [{ name: 'delivery_scooter', pos: [0, 0, 0] }, { name: 'npc_repartidor', pos: [0, 0.36, -0.15], scale: 0.85 }],
 		cam: { pos: [4.0, 2.2, 3.6], target: [0.5, 0.8, 0], fov: 38 },
+	},
+	delivery_bike: {
+		items: [{ name: 'delivery_bike', pos: [0, 0, 0] }, { name: 'npc_pastelero', pos: [0, 0.3, -0.35], scale: 0.85 }],
+		cam: { pos: [3.4, 1.9, 3.0], target: [0, 0.8, 0], fov: 38 },
 	},
 	getaway_car: {
 		items: [{ name: 'getaway_car', pos: [0, 0, 0] }, ...[[-1.05, 1.55], [1.05, 1.55], [-1.05, -1.55], [1.05, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }))],
