@@ -139,6 +139,15 @@ func follow(route: ChaseRoute, city: Transform3D) -> void:
 	rotation.y = atan2(ahead.x, ahead.z)
 
 
+## Drives off from where he's parked (`at`, in the world) and on along `route`: a chase in the middle of another case
+## (persecucion-final.md).
+func drive_from(at: Transform3D, route: ChaseRoute, city: Transform3D) -> void:
+	retake(route, city)
+	points.insert(0, at.origin)
+	next = 1
+	global_transform = at
+
+
 ## Puts it at the start of `path` (points in the city's space, like HighwayRoute's), facing the way it goes.
 func follow_path(path: Array[Vector3], city: Transform3D) -> void:
 	points.clear()

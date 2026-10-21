@@ -778,3 +778,7 @@ CHASE_GOLF_CART_LINE_3,"Él manejaba. Yo solo llevaba los palos.","He was drivin
 CHASE_GOLF_RUNNER_LINE_1,"¡Era mi carrito! ¡En otra vida!","It was my cart! In another life!","Era o meu carrinho! Em outra vida!"
 CHASE_GOLF_RUNNER_LINE_2,"Que conste que corrí bastante.","For the record, I ran pretty far.","Que fique registrado que eu corri bastante."
 CHASE_GOLF_RUNNER_LINE_3,"¿Por qué siempre me toca el baúl?","Why do I always get the trunk?","Por que sempre me toca o porta-malas?"
+HINT_CHASE_FLEES,¡Se escapa! Síganlo: tienen un minuto para agarrarlo.,He's getting away! After him: you have one minute to catch him.,Ele está fugindo! Atrás dele: vocês têm um minuto para pegá-lo.
+HINT_CHASE_CAUGHT_HERE,¡Esposado! Llévalo del brazo al patrullero.,Cuffed! Walk him to the patrol car.,Algemado! Leve ele pelo braço até a viatura.
+HINT_CHASE_BACK_TO_CASE,Está en el patrullero. Sigan con el caso.,He's in the patrol car. Back to the case.,Ele está na viatura. Voltem ao caso.
+HINT_CHASE_GOT_AWAY,"Se nos escapó, novatos.","He got away, rookies.","Ele fugiu, novatos."
