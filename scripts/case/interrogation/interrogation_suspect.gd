@@ -19,8 +19,7 @@ const HELD_FACTOR := 0.5
 var running := false
 var slowed := false
 var _next := 0
-## The dangerous one can head for the street (not online yet: the chase isn't synced), the laps he ran and whether
-## he's on his way out. Out the front door, `outside` goes off.
+## The dangerous one can head for the street, the laps he ran and whether he's on his way out. Out the front door, `outside` goes off.
 var can_leave := true
 var laps := 0
 var to_street := false
