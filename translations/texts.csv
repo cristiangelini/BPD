@@ -766,3 +766,6 @@ PROMPT_UNHOOK,E: desenganchar el patrullero,E: unhook the patrol car,E: desengat
 CHASE_TOW_TRUCK_LINE_1,"¡Estaba mal estacionado! ¡En doble fila!","It was badly parked! Double parked!","Estava mal estacionada! Em fila dupla!"
 CHASE_TOW_TRUCK_LINE_2,"Yo solo cumplo órdenes. Del que me paga.","I just follow orders. From whoever pays me.","Eu só cumpro ordens. De quem me paga."
 CHASE_TOW_TRUCK_LINE_3,"Ese patrullero viejo no lo engancho ni gratis.","I wouldn't tow that old patrol car even for free.","Essa viatura velha eu não guincho nem de graça."
+SHOUT_FORE,¡Fore!,Fore!,Fore!
+HINT_GOLF_SUNK,"El patrullero se hundió en el lago. Te lo dejaron en la entrada, mojado: multa de 50.","The patrol car sank in the lake. They left it at the gate, soaking wet: a 50 fine.","A viatura afundou no lago. Deixaram ela na entrada, encharcada: multa de 50."
+SIGN_GOLF,Club de golf,Golf club,Clube de golfe

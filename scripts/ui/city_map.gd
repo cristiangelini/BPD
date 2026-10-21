@@ -19,7 +19,12 @@ const SUSPECT := Color(1, 0.45, 0.75)
 const GRASS := Color(0.3, 0.45, 0.25)
 const TOLL := Color(1, 0.82, 0.3)
 ## What the map shows: the whole ring highway.
-const EXTENT := HighwayLayout.OUTER * 2
+## What the map shows: the ring, and past it on the east the golf club; MIDDLE is its center.
+const EXTENT := Vector2(HighwayLayout.OUTER.x + GolfLayout.CENTER.x + GolfLayout.HALF.x, HighwayLayout.OUTER.y * 2)
+const MIDDLE := Vector2(GolfLayout.CENTER.x + GolfLayout.HALF.x - HighwayLayout.OUTER.x, 0) / 2
+const LAWN := Color(0.4, 0.62, 0.3)
+const SAND := Color(0.85, 0.78, 0.55)
+const WATER := Color(0.25, 0.45, 0.8)
 const BLINK := 0.5
 
 ## The city node whose local space CityLayout describes, and the place to mark (empty for none).
@@ -91,7 +96,7 @@ func toggle() -> void:
 
 ## Where a point on the city's ground (its local x, z) lands on the map square, north up.
 static func to_map(local: Vector3) -> Vector2:
-	return Vector2(SIZE, SIZE) / 2 + Vector2(local.x, local.z) * map_scale()
+	return Vector2(SIZE, SIZE) / 2 + (Vector2(local.x, local.z) - MIDDLE) * map_scale()
 
 
 static func map_scale() -> float:
@@ -117,8 +122,9 @@ func _unhandled_input(event: InputEvent) -> void:
 func _draw_map() -> void:
 	var k := map_scale()
 	var half := CityLayout.SIZE / 2
-	_canvas.draw_rect(Rect2(to_map(Vector3(-EXTENT.x, 0, -EXTENT.y) / 2), EXTENT * k), GRASS)
+	_canvas.draw_rect(Rect2(to_map(Vector3(MIDDLE.x - EXTENT.x / 2, 0, -EXTENT.y / 2)), EXTENT * k), GRASS)
 	_highway(k)
+	_golf(k)
 	_canvas.draw_rect(Rect2(to_map(Vector3(-half.x, 0, -half.y)), CityLayout.SIZE * k), STREET)
 	for row in CityLayout.ROWS:
 		for col in CityLayout.COLUMNS:
@@ -165,6 +171,21 @@ func _highway(k: float) -> void:
 		_canvas.draw_rect(Rect2(to_map(ramp[0] - Vector3(size.x, 0, size.y) / 2), size * k), STREET)
 	for i in HighwayLayout.TOLLS.size():
 		_canvas.draw_rect(Rect2(to_map(HighwayLayout.toll_point(i)) - Vector2(3, 7), Vector2(6, 14)), TOLL)
+
+
+## The golf club: its lawn, the lakes and the bunkers, and a dot on each hole.
+func _golf(k: float) -> void:
+	var half := GolfLayout.HALF
+	var center := GolfLayout.CENTER
+	_canvas.draw_rect(Rect2(to_map(center - Vector3(half.x, 0, half.y)), half * 2 * k), LAWN)
+	for ellipse: Array in GolfLayout.LAKES + GolfLayout.BUNKERS:
+		var color := WATER if GolfLayout.LAKES.has(ellipse) else SAND
+		var middle: Vector3 = ellipse[0]
+		_canvas.draw_set_transform(to_map(center + middle), 0.0, Vector2(ellipse[1], ellipse[2]) * k)
+		_canvas.draw_circle(Vector2.ZERO, 1.0, color)
+	_canvas.draw_set_transform(Vector2.ZERO)
+	for hole in GolfLayout.HOLES:
+		_canvas.draw_circle(to_map(center + hole), 2.5, Color.WHITE)
 
 
 func _lot(lot: Dictionary, color: Color) -> void:

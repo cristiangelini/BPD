@@ -96,6 +96,20 @@ comisaría, como el resto, y el mapa del copiloto los muestra.
   (si la grúa todavía se mueve, avisa que hay que frenarla). Hay que volver con el bueno: al sospechoso esposado se lo
   sube ahí, y el caso se cierra con el bueno en la comisaría. El viejo se puede dejar donde quedó.
 
+## Cómo quedó (paso 4, el club de golf)
+- El club está afuera del anillo, del lado este: la rampa este cruza la autopista (el cantero y el guardarraíl de afuera
+  se abren ahí) y llega al portón, con el cartel «Club de golf». Está cerrado por un cerco, como la ciudad.
+- Adentro: césped, 6 hoyos con su green y su bandera, un camino de cemento que va del portón a un circuito entre los
+  hoyos, 5 bunkers de arena y 2 lagos (el camino no pasa por los lagos).
+- En la arena el patrullero va a la mitad de su velocidad máxima y las ruedas agarran menos (patina). Si entra rápido,
+  la arena lo frena.
+- Si cae a un lago se hunde de a poco y a los 5 s aparece en el portón, mirando hacia adentro. En una persecución eso
+  es una multa de 50, como un choque.
+- Hay un golfista al lado de cada hoyo. Si un policía pasa a menos de 40 m, grita «¡Fore!» y le tira una pelota (cada
+  6 s). Las pelotas rebotan y no hacen nada.
+- El mapa del copiloto ahora muestra el club, con los lagos, los bunkers y los hoyos.
+- El reloj que arranca en el portón y los ladrones vienen en el paso 5.
+
 ## El orden para hacerlo (un PR chico por paso)
 1. La autopista en anillo con sus 4 rampas, el guardarraíl y los peajes, y el patrullero a 110 km/h en ella.
 2. El sospechoso de la autopista: el deportivo, el tráfico, los peajes que rompe y la radio de los refuerzos.

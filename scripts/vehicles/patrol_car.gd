@@ -27,6 +27,10 @@ const SIREN_FLASH := 0.25
 ## The old patrol car behind the station (persecucion-lugares.md, "La grúa"): slower, it brakes worse and its siren
 ## doesn't work, so H gets a cop shouting "¡Uiuuu!" out of the window instead (propuesta).
 const OLD_SPEED := 45.0 / 3.6
+## How much the tires grip on a dry street, and in a golf club's bunker this share of it and of the top speed.
+const GRIP := 3.0
+const SAND_GRIP := 0.4
+const SAND_SHARE := 0.5
 const OLD_BRAKE := 0.5
 const OLD_MODEL := preload("res://assets/models/old_patrol_car.glb")
 const SHOUT_SECONDS := 1.5
@@ -43,6 +47,9 @@ var delivered: Array[Evidence] = []
 ## The place's owner riding in the back to be interrogated (OwnerEscort), if any.
 var prisoner: Node3D
 var _highway: Highway
+var _golf: GolfClub
+## What the chase leaves of the tires' grip (ChaseDrops: the rain, the ice cream puddles).
+var grip := 1.0
 ## The old one (set before it's added).
 @export var old := false
 ## Times someone shouted the siren in the old car.
@@ -57,6 +64,7 @@ var _shout_left := 0.0
 
 
 func _ready() -> void:
+	add_to_group("patrol_cars")
 	$Trunk.body_entered.connect(_on_trunk_entered)
 	$Trunk.body_exited.connect(_on_trunk_exited)
 	if old:
@@ -223,7 +231,10 @@ func _physics_process(delta: float) -> void:
 
 func _apply_controls(delta: float) -> void:
 	var speed := forward_speed()
-	var top := OLD_SPEED if old else top_speed()
+	var top := top_speed()
+	var sand := in_sand()
+	for wheel in [$WheelFrontLeft, $WheelFrontRight, $WheelRearLeft, $WheelRearRight]:
+		(wheel as VehicleWheel3D).wheel_friction_slip = GRIP * grip * (SAND_GRIP if sand else 1.0)
 	var reach := lerpf(1.0, STEER_AT_TOP, clampf(absf(speed) / MAX_SPEED, 0.0, 1.0))
 	steering = move_toward(steering, steer_input * STEER * reach, STEER_RATE * delta)
 	engine_force = 0.0
@@ -238,17 +249,30 @@ func _apply_controls(delta: float) -> void:
 			brake = BRAKE
 		elif speed > -MAX_REVERSE:
 			engine_force = ENGINE * throttle
+	# The sand drags a car that came in fast down to its speed there.
+	if sand and speed > top + 1.0:
+		brake = maxf(brake, BRAKE * 0.25)
 	if old:
 		brake *= OLD_BRAKE
 	for wheel in _rear:
 		wheel.brake = HANDBRAKE if handbrake else brake
 
 
-## How fast the car goes here: faster on the highway's road.
+## How fast the car goes here: faster on the highway's road, slower in the old one or in the sand.
 func top_speed() -> float:
 	if not is_instance_valid(_highway):
 		_highway = get_tree().get_first_node_in_group("highway") as Highway
-	return HIGHWAY_SPEED if _highway and _highway.covers(global_position) else MAX_SPEED
+	var top := HIGHWAY_SPEED if _highway and _highway.covers(global_position) else MAX_SPEED
+	if old:
+		top = OLD_SPEED
+	return top * (SAND_SHARE if in_sand() else 1.0)
+
+
+## Whether the car is in a golf club's bunker.
+func in_sand() -> bool:
+	if not is_instance_valid(_golf):
+		_golf = get_tree().get_first_node_in_group("golf_club") as GolfClub
+	return _golf != null and _golf.in_bunker(global_position)
 
 
 ## Where the owner rides: in the back, between the two back seats, so he takes no cop's seat. A bit sunk, since he

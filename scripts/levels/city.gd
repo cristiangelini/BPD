@@ -58,7 +58,7 @@ func _ready() -> void:
 
 func _build() -> void:
 	var size := CityLayout.SIZE
-	var land := HighwayLayout.OUTER * 2 + Vector2.ONE * 40
+	var land := Vector2(GolfLayout.CENTER.x + GolfLayout.HALF.x, HighwayLayout.OUTER.y) * 2 + Vector2.ONE * 40
 	_box(Vector3(0, -0.1, 0), Vector3(land.x, 0.2, land.y), GRASS)
 	_mesh_box(Vector3(0, 0.005, 0), Vector3(size.x, 0.01, size.y), ROAD)
 	for k in CityLayout.COLUMNS + 1:
@@ -83,18 +83,21 @@ func _build() -> void:
 		for j in range(1, CityLayout.ROWS):
 			_corner(i, j)
 	# A hedge around the city, open at the highway's ramps, and another one past the highway so nobody drives off
-	# the edge.
-	_hedge(size / 2 + Vector2.ONE, true)
-	_hedge(HighwayLayout.OUTER + Vector2.ONE * 6, false)
+	# the edge, open on the east side at the golf club's gate (the club's own hedge closes it).
+	_hedge(size / 2 + Vector2.ONE, HighwayLayout.SIDES)
+	_hedge(HighwayLayout.OUTER + Vector2.ONE * 6, ["e"])
 	var highway := Highway.new()
 	highway.name = "Highway"
 	highway.city = self
 	_built.add_child(highway)
+	var golf := GolfClub.new()
+	golf.name = "Golf"
+	golf.city = self
+	_built.add_child(golf)
 
 
-## A square hedge `reach` from the middle, with a gap at each ramp's street if `ramps`.
-func _hedge(reach: Vector2, ramps: bool) -> void:
-	var gap := CityLayout.STREET / 2 + 1.0 if ramps else 0.0
+## A square hedge `reach` from the middle, with a gap at the ramp's street on each of the `open` sides.
+func _hedge(reach: Vector2, open: Array) -> void:
 	var x := CityLayout.street_x(HighwayLayout.RAMP_STREET_X)
 	var z := CityLayout.street_z(HighwayLayout.RAMP_STREET_Z)
 	var across := {"n": x, "s": x, "e": z, "w": z}
@@ -103,6 +106,7 @@ func _hedge(reach: Vector2, ramps: bool) -> void:
 		var half := (reach.x if north_south else reach.y) + 1.0
 		var line := (-reach.y if side == "n" else reach.y) if north_south else (reach.x if side == "e" else -reach.x)
 		var at: float = across[side]
+		var gap := CityLayout.STREET / 2 + 1.0 if open.has(side) else 0.0
 		for stretch: Vector2 in [Vector2(-half, at - gap), Vector2(at + gap, half)]:
 			var length := stretch.y - stretch.x
 			var middle := (stretch.x + stretch.y) / 2
