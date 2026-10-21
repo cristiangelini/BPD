@@ -13,6 +13,9 @@ var net: Node
 ## Everything in the level a cop can do something to, in tree order (the same on every PC), plus what was added later
 ## in the same order everywhere (a dropped ram).
 var targets: Array[Node] = []
+## How many of `targets` were in the level when it opened; the ones added later (a chase suspect getting out, his
+## escort) are found by their path when they have a name of their own, since each PC may add them in another order.
+var _opening_targets := 0
 ## True while the host does a guest's action: that guest does it too, so its hints aren't sent twice.
 var performing := false
 var _level: Node
@@ -25,6 +28,7 @@ func _init(owner_net: Node, level: Node) -> void:
 	for node in level.find_children("*", "", true, false):
 		if is_target(node):
 			targets.append(node)
+	_opening_targets = targets.size()
 
 
 func _ready() -> void:
@@ -41,8 +45,8 @@ static func is_target(node: Node) -> bool:
 ## `actor` (this PC's own cop) does `method` on `target` (the actor itself for "drop_ram"), on every PC. `args` are
 ## what the actor's own PC decided (which car seat), so every PC does exactly the same.
 func act(actor: Cop, method: String, target: Node, args := []) -> void:
-	var index := -1 if target == actor else targets.find(target)
-	if index < 0 and target != actor:
+	var index: Variant = -1 if target == actor else _ref(target)
+	if index is int and index < 0 and target != actor:
 		return
 	args = args.map(encode)
 	if multiplayer.is_server():
@@ -58,20 +62,20 @@ func tell_guests(actor: Cop, method: String, target: Node, args := []) -> void:
 	for id: int in net.cop_syncs:
 		if net.cop_syncs[id].cop == actor:
 			actor_id = id
-	var index := -1 if target == actor else targets.find(target)
-	if actor_id < 0 or (index < 0 and target != actor):
+	var index: Variant = -1 if target == actor else _ref(target)
+	if actor_id < 0 or (index is int and index < 0 and target != actor):
 		return
 	for peer: int in net.scene_peers:
 		_told.rpc_id(peer, actor_id, index, method, args.map(encode))
 
 
 @rpc("any_peer", "call_remote", "reliable")
-func _ask(index: int, method: String, args: Array) -> void:
+func _ask(index: Variant, method: String, args: Array) -> void:
 	if multiplayer.is_server():
 		_do_and_tell(multiplayer.get_remote_sender_id(), index, method, args)
 
 
-func _do_and_tell(actor_id: int, index: int, method: String, args: Array) -> void:
+func _do_and_tell(actor_id: int, index: Variant, method: String, args: Array) -> void:
 	performing = actor_id != multiplayer.get_unique_id()
 	var done := _perform(actor_id, index, method, args)
 	performing = false
@@ -81,20 +85,29 @@ func _do_and_tell(actor_id: int, index: int, method: String, args: Array) -> voi
 
 
 @rpc("authority", "call_remote", "reliable")
-func _told(actor_id: int, index: int, method: String, args: Array) -> void:
+func _told(actor_id: int, index: Variant, method: String, args: Array) -> void:
 	_perform(actor_id, index, method, args)
 
 
-func _perform(actor_id: int, index: int, method: String, args: Array) -> bool:
+func _perform(actor_id: int, index: Variant, method: String, args: Array) -> bool:
 	var sync: CopSync = net.cop_syncs.get(actor_id)
 	if not sync or not is_instance_valid(sync.cop):
 		return false
 	var actor := sync.cop
-	var target: Node = actor if index < 0 else (targets[index] if index < targets.size() else null)
+	var target: Node = decode(index) if index is Dictionary else actor if index < 0 \
+		else (targets[index] if index < targets.size() else null)
 	if not is_instance_valid(target) or not target.has_method(method):
 		return false
 	target.callv(method, ([actor] if ACTOR_METHODS.has(method) else []) + args.map(decode))
 	return true
+
+
+## How every PC finds `target`: its place in `targets`, or its path for one added later with a name of its own.
+func _ref(target: Node) -> Variant:
+	var index := targets.find(target)
+	if index >= _opening_targets and not String(target.name).begins_with("@"):
+		return {"path": _level.get_path_to(target)}
+	return index
 
 
 ## A node among an action's arguments, as every PC can find it: a cop by its player's id (its name differs on each PC),

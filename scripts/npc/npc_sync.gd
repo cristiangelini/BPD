@@ -19,7 +19,8 @@ var npcs: Array[Node3D] = []
 var _sent := {}
 var _targets := {}
 var _gone := {}
-## Index -> [scene, look] of what the host brought in after the level started.
+## Index -> [scene, look, setup] of what the host brought in after the level started; setup (net_setup()) is what
+## the copy needs before it's added, with its name and where it goes in the level.
 var _spawned := {}
 var _adding: Node
 var _level: Node
@@ -38,7 +39,7 @@ func _init(owner_net: Node, level: Node) -> void:
 static func is_npc(node: Node) -> bool:
 	return node is Grandpa or node is Baker or node is BakeryCustomer or node is Pigeon or node is DogGroomer \
 		or node is PoodleLady or node is HumanCustomer or node is Gossip or node is Neighbor or node is Armero \
-		or node is InterrogationSuspect or node is SuspectCar
+		or node is InterrogationSuspect or node is SuspectCar or node is ChaseSuspect
 
 
 func _ready() -> void:
@@ -72,7 +73,7 @@ func npc_at(index: int) -> Node3D:
 ## Host: everything to `peer` (it just loaded the level).
 func resend_all(peer: int) -> void:
 	for index: int in _spawned:
-		_made.rpc_id(peer, index, _spawned[index][0], _spawned[index][1])
+		_made.rpc_id(peer, index, _spawned[index][0], _spawned[index][1], _spawned[index][2])
 	_removed.rpc_id(peer, PackedInt32Array(_gone.keys()))
 	for i in npcs.size():
 		if npc_at(i):
@@ -208,13 +209,17 @@ func _announce(index: int) -> void:
 		return
 	# One made in code (the salon's human customers) is copied from its script.
 	var source: String = npc.scene_file_path if npc.scene_file_path != "" else (npc.get_script() as Script).resource_path
-	_spawned[index] = [source, npc.get("look") if "look" in npc else 0]
+	var setup: Dictionary = npc.net_setup() if npc.has_method("net_setup") else {}
+	if not setup.is_empty():
+		setup.name = npc.name
+		setup.parent = _level.get_path_to(npc.get_parent())
+	_spawned[index] = [source, npc.get("look") if "look" in npc else 0, setup]
 	for peer: int in net.scene_peers:
-		_made.rpc_id(peer, index, _spawned[index][0], _spawned[index][1])
+		_made.rpc_id(peer, index, _spawned[index][0], _spawned[index][1], setup)
 
 
 @rpc("authority", "call_remote", "reliable")
-func _made(index: int, scene: String, look: int) -> void:
+func _made(index: int, scene: String, look: int, setup := {}) -> void:
 	while npcs.size() <= index:
 		npcs.append(null)
 	if npcs[index] or _gone.has(index) or scene == "" or not ResourceLoader.exists(scene):
@@ -223,8 +228,16 @@ func _made(index: int, scene: String, look: int) -> void:
 	var npc: Node3D = (made as PackedScene).instantiate() if made is PackedScene else (made as Script).new()
 	if not npc.has_method("set_look") and "look" in npc:
 		npc.set("look", look)
+	var parent: Node = _level
+	for key: String in setup:
+		if key == "name":
+			npc.name = setup.name
+		elif key == "parent":
+			parent = _level.get_node_or_null(setup.parent) if _level.get_node_or_null(setup.parent) else _level
+		else:
+			npc.set(key, setup[key])
 	_adding = npc
-	_level.add_child(npc)
+	parent.add_child(npc)
 	_adding = null
 	# After entering the tree: on ready, Godot turns processing back on.
 	_puppet(npc)

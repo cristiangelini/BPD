@@ -116,6 +116,14 @@ var _result := {}
 var _told_on_foot := false
 
 
+## The chase of the level `node` is in (online tests hold one level per PC in the same tree), if any.
+static func of(node: Node) -> ChaseCase:
+	for case: ChaseCase in node.get_tree().get_nodes_in_group("chase"):
+		if case.get_parent().is_ancestor_of(node):
+			return case
+	return null
+
+
 static func pick_suspect(seed_value: int, args: PackedStringArray) -> String:
 	for arg in args:
 		if arg.begins_with("--suspect=") and SUSPECTS.has(arg.trim_prefix("--suspect=")):
@@ -228,7 +236,10 @@ func give_tip() -> void:
 func _physics_process(delta: float) -> void:
 	if towed and not unhooked and not follower:
 		towed.global_transform = truck.towed_transform()
-	if case_failed or case_solved or not tip_given or follower:
+	if follower:
+		_escort_copies()
+		return
+	if case_failed or case_solved or not tip_given:
 		return
 	if not chasing:
 		# The suspect drives off once a cop takes the wheel (or, on foot, walks up to him; at the golf club, goes in).
@@ -320,9 +331,32 @@ func _on_rammed() -> void:
 		fail("CASE_FAILED_PARENTS")
 
 
+## A guest: the host's suspect (and the golf runner) got out, copied by NpcSync; here they get an escort that only
+## rides along, so they sit in the back of the patrol car like on the host.
+func _escort_copies() -> void:
+	if not stopped:
+		return
+	if not suspect:
+		suspect = get_parent().get_node_or_null("Suspect") as ChaseSuspect
+		if suspect:
+			escort = _follower_escort(suspect, "HINT_CHASE_BACK_TO_CASE" if embedded else "HINT_CHASE_IN_CAR")
+	if suspect_id == SuspectCar.GOLF and not runner:
+		runner = get_parent().get_node_or_null("Runner") as ChaseSuspect
+		if runner:
+			runner_escort = _follower_escort(runner, "HINT_CHASE_IN_CAR")
+			runner_escort.seat_shift = TRUNK_SEAT
+
+
+func _follower_escort(who_got_out: ChaseSuspect, hint: String) -> OwnerEscort:
+	var made := OwnerEscort.attach(who_got_out, home_car())
+	made.follower = true
+	made.in_car_hint = hint
+	return made
+
+
 ## He gives up: the vehicle stays where it is and he gets out by his door, ready to be cuffed.
 func pull_over() -> void:
-	if stopped:
+	if stopped or follower:
 		return
 	stopped = true
 	truck.driving = false
@@ -372,6 +406,9 @@ func unhook(cop: Cop) -> void:
 		cop.show_hint("HINT_CHASE_HOOK_MOVING")
 		return
 	unhooked = true
+	if follower:
+		# The host lowers it; here it follows the host's (PropSync).
+		return
 	var flat := Basis(Vector3.UP, truck.rotation.y)
 	towed.global_transform = Transform3D(flat, truck.towed_transform().origin + Vector3.UP * 0.2)
 	towed.freeze = false

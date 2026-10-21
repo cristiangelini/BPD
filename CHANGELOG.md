@@ -112,3 +112,4 @@
 - Online owner: the host walks the cuffed owner after whichever cop took him, every PC sees him ride in the back of the patrol car, and the host's owner in custody sits in the next interrogation's chair on every PC.
 - Online chase: the host drives the suspect and every PC sees his vehicle drive off, the clock, the distance meter, the parents' complaint, losing him and the end of shift.
 - Online chase tasks: the megaphone, the spikes, the net, the cones and the backup radio work from any player's seat; the host does them and every PC sees the shout and what lands on the street.
+- Online chase suspect: he gets out of his vehicle on every PC (and the golf runner runs off), any player can cuff him and walk him to the patrol car, and any player can unhook the towed patrol car.
