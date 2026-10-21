@@ -65,6 +65,16 @@ func release_front() -> void:
 		_leave(car, false)
 
 
+## A detained car leaves the queue for the curb.
+func pull_over(car: QueueCar) -> void:
+	car.pull_over()
+	var i := cars.find(car)
+	if i >= 0:
+		cars.remove_at(i)
+		if i < cars.size():
+			cars[i].ahead = cars[i - 1] if i > 0 else null
+
+
 func _physics_process(delta: float) -> void:
 	if not checkpoint or not checkpoint.ready_now:
 		return

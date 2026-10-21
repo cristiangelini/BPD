@@ -24,6 +24,8 @@ const MODELS := {
 	"dangerous": preload("res://assets/models/npc_sospechoso.glb"),
 	# The pastry contest's culprit, off his bike (escena-del-crimen.md).
 	"cook": preload("res://assets/models/npc_pastelero.glb"),
+	# The traffic control's wanted driver (control-transito.md).
+	"driver": preload("res://assets/models/npc_cliente.glb"),
 }
 ## The golf thief who runs off (persecucion-lugares.md): at this speed (m/s), away from cops this close, staying
 ## this far inside the club's fence and off its lakes. Cuffed, he stops; once the cuffs run out he runs again.

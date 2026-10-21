@@ -18,6 +18,8 @@ const GAP := 1.5
 const STOP_BEFORE := LENGTH / 2 + 0.5
 ## Sneaking, it moves over this far toward the sidewalk (the checkpoint's +X).
 const SNEAK_SIDE := 4.5
+## Pulled over, it waits this far toward the curb, with two wheels on the sidewalk.
+const CURB_SIDE := 3.2
 ## Cones this close to it when sneaking get knocked over, with this kick (m/s).
 const KNOCK_REACH := 1.6
 const KNOCK_SPEED := 4.0
@@ -33,7 +35,7 @@ const CONTRABAND := Color(0.85, 0.75, 0.3)
 const GRANDPA := preload("res://assets/models/npc_abuelo.glb")
 const SAY_SECONDS := 4.0
 
-## "coming", "waiting", "going" (let through), "sneaking" or "gone".
+## "coming", "waiting", "going" (let through), "sneaking", "pulled_over" (detained, by the curb) or "gone".
 var state := "coming"
 var checkpoint: TrafficCheckpoint
 ## The car right in front in the queue, if any.
@@ -176,6 +178,24 @@ func let_through() -> void:
 		state = "going"
 
 
+## The handcuffs (Handcuffs.cuffable) on a stopped car cuff its driver: the case detains them (TrafficCase).
+func cuffed(_seconds: float) -> void:
+	var case := get_tree().get_first_node_in_group("traffic_case") as TrafficCase
+	if case and waiting():
+		case.detain(self)
+
+
+## The cuffs on the car itself come off right away: they're on the driver.
+func is_cuffed() -> bool:
+	return false
+
+
+## Detained: it moves over to the curb, out of the lane, and stays there.
+func pull_over() -> void:
+	if in_queue():
+		state = "pulled_over"
+
+
 func sneak() -> void:
 	if in_queue():
 		state = "sneaking"
@@ -183,6 +203,8 @@ func sneak() -> void:
 
 ## Where it wants to stop, in the checkpoint's z; INF for no stop.
 func _stop_z() -> float:
+	if state == "pulled_over":
+		return at.z
 	if not in_queue():
 		return -INF
 	var stop := TrafficCheckpoint.ZONE.y / 2 + STOP_BEFORE if checkpoint.barrier_ok() else -INF
@@ -208,6 +230,8 @@ func _physics_process(delta: float) -> void:
 	at.z = maxf(at.z - speed * delta, stop)
 	if state == "sneaking":
 		at.x = move_toward(at.x, SNEAK_SIDE, 2.5 * delta)
+	if state == "pulled_over":
+		at.x = move_toward(at.x, CURB_SIDE, 1.5 * delta)
 	if state == "coming" and speed == 0.0:
 		state = "waiting"
 		# At the barrier, the driver says their piece.
