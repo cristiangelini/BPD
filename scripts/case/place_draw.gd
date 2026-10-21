@@ -4,7 +4,8 @@ extends RefCounted
 ## Which place a match happens in (panaderia.md, "El orden para hacerlo", step 5): Play draws a case seed and, from
 ## it, the grandpa's house, the bakery or the pet salon, with even odds (propuesta). Every third shift is an
 ## interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
-## (persecucion.md, "Sale como un caso más"). --place=<id> forces one. The level then takes that seed, so the place,
+## (persecucion.md, "Sale como un caso más"). --place=<id> forces one. The crime scene (escena-del-crimen.md) only opens
+## with --place=crime_scene until its case is done. The level then takes that seed, so the place,
 ## the story and the hiding spots all come from one seed.
 
 const PLACES := {
@@ -13,6 +14,7 @@ const PLACES := {
 	"groomer": "res://scenes/levels/groomer.tscn",
 	"interrogation": "res://scenes/levels/interrogation.tscn",
 	"chase": "res://scenes/levels/chase.tscn",
+	"crime_scene": "res://scenes/levels/crime_scene.tscn",
 }
 ## The raids, drawn by the seed.
 const ORDER := ["grandpa", "bakery", "groomer"]
