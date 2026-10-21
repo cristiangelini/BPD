@@ -15,6 +15,8 @@ const PLACES := {
 	"interrogation": "res://scenes/levels/interrogation.tscn",
 	"chase": "res://scenes/levels/chase.tscn",
 	"crime_scene": "res://scenes/levels/crime_scene.tscn",
+	# Only with --place=traffic until its step 5 (control-transito.md) adds it to the draw.
+	"traffic": "res://scenes/levels/traffic_control.tscn",
 }
 ## The raids, drawn by the seed.
 const ORDER := ["grandpa", "bakery", "groomer"]

@@ -930,3 +930,5 @@ OBJ_CRIME_CATCH,"Atrapar al culpable y llevarlo al patrullero","Catch the culpri
 CHASE_COOK_LINE_1,"¡La torre era una obra de arte! Las obras de arte se comen.","The tower was a work of art! Works of art get eaten.","A torre era uma obra de arte! Obras de arte se comem."
 CHASE_COOK_LINE_2,"Pedaleé más en estos cinco minutos que en toda mi vida.","I pedaled more in these five minutes than in my whole life.","Pedalei mais nesses cinco minutos do que na vida toda."
 CHASE_COOK_LINE_3,"Está bien, me rindo. ¿Alguien quiere pan? Hay en la canasta.","Fine, I give up. Anyone want bread? There's some in the basket.","Tá bom, eu me rendo. Alguém quer pão? Tem na cesta."
+CHECKPOINT_SIGN,"CONTROL","CHECKPOINT","BLITZ"
+HINT_CHECKPOINT_READY,"¡Control armado! La barrera cierra el carril y los conos avisan. Ahora, a esperar autos.","Checkpoint set up! The barrier closes the lane and the cones warn drivers. Now wait for cars.","Blitz montada! A barreira fecha a faixa e os cones avisam. Agora, esperem os carros."
