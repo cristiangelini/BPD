@@ -307,6 +307,29 @@ export function buildTowTruck() {
 	return b.build();
 }
 
+// The stolen golf cart (persecucion-lugares.md, "Ladrones en carrito de golf"): white, with a green roof on 4 posts, one
+// bench for the two thieves and the golf bags on the back. 2.4 m long, 1.3 m wide; faces +Z. Its wheels are part of it.
+export function buildGolfCart() {
+	const white = mat('cart_white', 0xf2f2ec), roof = mat('cart_roof', 0x2f7d46), tire = mat('tire', 0x1a1a1e);
+	const seat = mat('cart_seat', 0x5a3a28), bag = mat('golf_bag', 0x2a4fa0);
+	const b = new Builder('golf_cart');
+	for (const x of [-0.58, 0.58]) for (const z of [0.8, -0.8])
+		b.add('wheels', tire, new THREE.CylinderGeometry(0.24, 0.24, 0.18, 10), { pos: V(x, 0.24, z), rot: [0, 0, Math.PI / 2] });
+	// The floor, the nose with its two lights, the bench and its back, the roof on its posts and the bags behind.
+	box(b, 'body', white, 1.2, 0.2, 2.3, 0, 0.42, 0);
+	box(b, 'body', white, 1.2, 0.45, 0.6, 0, 0.72, 0.85);
+	for (const x of [-0.38, 0.38]) box(b, 'lights', glass, 0.22, 0.12, 0.04, x, 0.75, 1.16);
+	box(b, 'body', seat, 1.1, 0.14, 0.55, 0, 0.62, -0.25);
+	box(b, 'body', seat, 1.1, 0.5, 0.12, 0, 0.92, -0.55);
+	for (const x of [-0.56, 0.56]) for (const z of [0.6, -0.75]) box(b, 'body', grey, 0.05, 1.45, 0.05, x, 1.25, z);
+	box(b, 'body', roof, 1.3, 0.08, 1.7, 0, 1.98, -0.05);
+	for (const x of [-0.25, 0.25]) {
+		b.add('body', bag, new THREE.CylinderGeometry(0.14, 0.14, 0.8, 8), { pos: V(x, 0.95, -0.95), rot: [0.25, 0, 0] });
+		box(b, 'body', grey, 0.05, 0.3, 0.05, x, 1.45, -1.05);
+	}
+	return b.build();
+}
+
 // The delivery scooter (persecución, sospechoso 2): a small red scooter with the delivery box on the back and the
 // delivery guy (npc_repartidor) rides it, standing on the board. 1.9 m long, 0.7 m wide; faces +Z like the rest. Its wheels are part of it.
 export function buildDeliveryScooter() {
@@ -360,7 +383,7 @@ export function buildWheelchair() {
 
 export const models = { patrol_car: buildPatrolCar, old_patrol_car: buildOldPatrolCar, car_wheel: buildCarWheel, ice_cream_truck: buildIceCreamTruck,
 	moving_truck: buildMovingTruck, falling_sofa: buildFallingSofa, falling_wardrobe: buildFallingWardrobe, falling_lamp: buildFallingLamp,
-	falling_box: buildFallingBox, school_bus: buildSchoolBus, getaway_car: buildGetawayCar, sports_car: buildSportsCar, tow_truck: buildTowTruck,
+	falling_box: buildFallingBox, school_bus: buildSchoolBus, getaway_car: buildGetawayCar, sports_car: buildSportsCar, tow_truck: buildTowTruck, golf_cart: buildGolfCart,
 	traffic_car_0: trafficCar(0), traffic_car_1: trafficCar(1), traffic_car_2: trafficCar(2), traffic_car_3: trafficCar(3),
 	delivery_scooter: buildDeliveryScooter, wheelchair: buildWheelchair };
 
@@ -397,6 +420,11 @@ export const views = {
 	traffic_car_1: {
 		items: [{ name: 'traffic_car_1', pos: [0, 0, 0] }, ...[[-1.05, 1.55], [1.05, 1.55], [-1.05, -1.55], [1.05, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }))],
 		cam: { pos: [6.5, 3.6, 6.0], target: [0, 0.9, 0], fov: 38 },
+	},
+	golf_cart: {
+		items: [{ name: 'golf_cart', pos: [0, 0, 0] }, { name: 'npc_sospechoso', pos: [-0.3, 0.3, -0.2], scale: 0.7 },
+			{ name: 'npc_preso', pos: [0.3, 0.3, -0.2], scale: 0.7 }],
+		cam: { pos: [3.6, 2.4, 3.6], target: [0, 0.9, 0], fov: 38 },
 	},
 	tow_truck: {
 		items: [{ name: 'tow_truck', pos: [0, 0, 0] }, ...[[-1.15, 2.0], [1.15, 2.0], [-1.15, -1.8], [1.15, -1.8]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] })),

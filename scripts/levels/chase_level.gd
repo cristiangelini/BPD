@@ -39,7 +39,12 @@ func _ready() -> void:
 	add_child(truck)
 	var start := ChaseRoute.nearest_corner(CityLayout.parking("station").origin)
 	var route := ChaseRoute.draw(case_seed, ChaseRoute.CORNERS, start)
-	if suspect_id == SuspectCar.HIGHWAY:
+	if suspect_id == SuspectCar.GOLF:
+		# The thieves wait at a hole of the golf club and drive hole to hole.
+		truck.follow_path(GolfLayout.cart_route(case_seed), city.transform)
+		for golfer in get_tree().get_nodes_in_group("golfers"):
+			truck.add_collision_exception_with(golfer)
+	elif suspect_id == SuspectCar.HIGHWAY:
 		# He heads for the highway: the planned streets only lead him to the nearest ramp.
 		route.corners = HighwayRoute.city_corners(start, HighwayRoute.nearest_ramp(start))
 		truck.follow_path(HighwayRoute.draw(case_seed, start), city.transform)

@@ -9,7 +9,7 @@ extends Node
 
 ## The suspects (persecucion.md, "Los sospechosos"), each with what he leaves behind (ChaseDrops).
 const SUSPECTS := ["ice_cream", "moving_truck", "school_bus", "rain", "night", "moto", "wheelchair", "highway",
-	"tow_truck"]
+	"tow_truck", "golf_cart"]
 ## Seconds to catch him: the chase has a clock (Cristian, 20/10: "pongamos primero 1 minuto").
 const TIME_LIMIT := 60.0
 ## Farther than this (m) the meter climbs CLIMB a second; closer it drops DROP a second. At ESCAPED he got away.
@@ -31,6 +31,9 @@ const ON_FOOT := ["wheelchair"]
 ## foot, so the distance counts from the nearest cop and the chase starts as they come out of the station.
 const CLOSE_BY := ["wheelchair", "tow_truck"]
 const START_NEAR := 25.0
+## The golf thieves (persecucion-lugares.md): the drive out to the club is long, so the chase and its clock start once a
+## cop goes through the gate. Stopped, one gives up and the other runs off; both go back, the runner in the trunk.
+const TRUNK_SEAT := Vector3(0, 0.1, -1.3)
 const BLOCK_NEAR := 2.5
 ## A chase pays the salary and has its own quota, like the interrogation (decision 91).
 const QUOTA := ShiftReport.SALARY
@@ -74,6 +77,9 @@ var failed_label: Label
 ## The suspect out of his vehicle, and his walk to the patrol car.
 var suspect: ChaseSuspect
 var escort: OwnerEscort
+## The golf thief who runs off, and his walk to the patrol car.
+var runner: ChaseSuspect
+var runner_escort: OwnerEscort
 
 var briefing: CaseBriefing
 var tip_given := false
@@ -140,7 +146,11 @@ func give_tip() -> void:
 	car.locked_hint = ""
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).input_enabled:
-			briefing.start(PackedStringArray(["BRIEF_CHASE_A", "BRIEF_CHASE_" + suspect_id, "BRIEF_CHASE_C"]))
+			# The golf thieves aren't driving past the door: the comisario goes straight to them.
+			var lines := PackedStringArray(["BRIEF_CHASE_A", "BRIEF_CHASE_" + suspect_id, "BRIEF_CHASE_C"])
+			if suspect_id == SuspectCar.GOLF:
+				lines.remove_at(0)
+			briefing.start(lines)
 			break
 	_hint_all("HINT_GO_CHASE")
 
@@ -151,10 +161,15 @@ func _physics_process(delta: float) -> void:
 	if case_failed or case_solved or not tip_given:
 		return
 	if not chasing:
-		# The suspect drives off once a cop takes the wheel (or, on foot, walks up to him).
-		if car.driver() or (CLOSE_BY.has(suspect_id) and _nearest_cop() < START_NEAR):
+		# The suspect drives off once a cop takes the wheel (or, on foot, walks up to him; at the golf club, goes in).
+		var go := car.driver() != null or (CLOSE_BY.has(suspect_id) and _nearest_cop() < START_NEAR)
+		if suspect_id == SuspectCar.GOLF:
+			go = _cop_in_club()
+		if go:
 			chasing = true
 			truck.driving = true
+			if suspect_id == SuspectCar.GOLF:
+				_hint_all("HINT_GOLF_CLOCK")
 		return
 	if not caught:
 		time_left = maxf(time_left - delta, 0.0)
@@ -168,14 +183,15 @@ func _physics_process(delta: float) -> void:
 				_told_on_foot = true
 				_hint_all("HINT_CHASE_ON_FOOT")
 	meters_changed.emit(distance, time_left)
-	if not caught and suspect and suspect.is_cuffed():
+	if not caught and suspect and suspect.was_cuffed and (not runner or runner.was_cuffed):
 		caught = true
 		_hint_all("HINT_CHASE_CAUGHT")
 	if distance >= ESCAPED:
 		fail("CASE_FAILED_ESCAPED")
 	elif time_left <= 0.0 and not caught:
 		fail("CASE_FAILED_TIME")
-	elif caught and (unhooked or not towed) and escort.in_car and all_in_car() and car_at_station():
+	elif caught and (unhooked or not towed) and escort.in_car and (not runner_escort or runner_escort.in_car) \
+			and all_in_car() and car_at_station():
 		case_solved = true
 		solved_label.show()
 		_finish_soon()
@@ -198,6 +214,15 @@ func _nearest_cop() -> float:
 	for cop in get_tree().get_nodes_in_group("cops"):
 		nearest = minf(nearest, _flat((cop as Node3D).global_position - truck.global_position).length())
 	return nearest
+
+
+## Whether a cop (on foot or in the car) is inside the golf club.
+func _cop_in_club() -> bool:
+	var golf := get_tree().get_first_node_in_group("golf_club") as GolfClub
+	for cop in get_tree().get_nodes_in_group("cops"):
+		if golf and golf.inside((cop as Node3D).global_position):
+			return true
+	return false
 
 
 ## Whether a cop on foot (not in the car) is right by him: the one in his way.
@@ -239,6 +264,17 @@ func pull_over() -> void:
 	escort = OwnerEscort.attach(suspect, home_car())
 	escort.in_car_hint = "HINT_CHASE_IN_CAR"
 	_hint_all("HINT_CHASE_STOPPED")
+	if suspect_id == SuspectCar.GOLF:
+		runner = ChaseSuspect.new()
+		runner.name = "Runner"
+		runner.kind = "golf_runner"
+		runner.runs = true
+		get_parent().add_child(runner)
+		runner.global_position = truck.global_position - truck.global_basis.x * DOOR_OUT + Vector3.UP * 0.1
+		runner_escort = OwnerEscort.attach(runner, home_car())
+		runner_escort.in_car_hint = "HINT_CHASE_IN_CAR"
+		runner_escort.seat_shift = TRUNK_SEAT
+		_hint_all("HINT_GOLF_RUNNER")
 
 
 ## The car the cops bring him back in: the good patrol car, also when the tow truck took it.

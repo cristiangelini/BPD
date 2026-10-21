@@ -194,8 +194,8 @@ func _drop(kind: String, along: float) -> ChaseTrap:
 
 ## From the corner he's heading for, he drives off a new way, never the one he had planned.
 func wrong_turn() -> bool:
-	# The sports car knows where he's going: the highway.
-	if case.suspect_id == SuspectCar.HIGHWAY:
+	# The sports car knows where he's going (the highway), and the golf cart has no streets to turn into.
+	if case.suspect_id in [SuspectCar.HIGHWAY, SuspectCar.GOLF]:
 		return false
 	var route := case.route
 	var k := case.truck.next

@@ -769,3 +769,12 @@ CHASE_TOW_TRUCK_LINE_3,"Ese patrullero viejo no lo engancho ni gratis.","I would
 SHOUT_FORE,¡Fore!,Fore!,Fore!
 HINT_GOLF_SUNK,"El patrullero se hundió en el lago. Te lo dejaron en la entrada, mojado: multa de 50.","The patrol car sank in the lake. They left it at the gate, soaking wet: a 50 fine.","A viatura afundou no lago. Deixaram ela na entrada, encharcada: multa de 50."
 SIGN_GOLF,Club de golf,Golf club,Clube de golfe
+BRIEF_CHASE_golf_cart,"¡Novatos, dos ladrones se robaron un carrito del club de golf! Está afuera de la ciudad, pasando la autopista por la rampa este. El reloj arranca cuando entren al club. Y no se metan en los lagos.","Rookies, two thieves stole a cart from the golf club! It's outside the city, past the highway by the east ramp. The clock starts when you go into the club. And stay out of the lakes.","Novatos, dois ladrões roubaram um carrinho do clube de golfe! Fica fora da cidade, passando a rodovia pela rampa leste. O relógio começa quando vocês entrarem no clube. E não entrem nos lagos."
+HINT_GOLF_CLOCK,"¡Ahí está el carrito! El reloj corre.","There's the cart! The clock is running.","Lá está o carrinho! O relógio está correndo."
+HINT_GOLF_RUNNER,"¡Uno se rindió y el otro sale corriendo! Hay que esposar a los dos.","One gave up and the other one is running! You have to cuff both.","Um se rendeu e o outro saiu correndo! Tem que algemar os dois."
+CHASE_GOLF_CART_LINE_1,"¡Solo lo estábamos probando! Para comprarnos uno.","We were just trying it out! To buy one.","Só estávamos testando! Pra comprar um."
+CHASE_GOLF_CART_LINE_2,"¿Sabes lo que cuesta la cuota de este club?","Do you know what this club's fee costs?","Você sabe quanto custa a mensalidade deste clube?"
+CHASE_GOLF_CART_LINE_3,"Él manejaba. Yo solo llevaba los palos.","He was driving. I just carried the clubs.","Ele dirigia. Eu só levava os tacos."
+CHASE_GOLF_RUNNER_LINE_1,"¡Era mi carrito! ¡En otra vida!","It was my cart! In another life!","Era o meu carrinho! Em outra vida!"
+CHASE_GOLF_RUNNER_LINE_2,"Que conste que corrí bastante.","For the record, I ran pretty far.","Que fique registrado que eu corri bastante."
+CHASE_GOLF_RUNNER_LINE_3,"¿Por qué siempre me toca el baúl?","Why do I always get the trunk?","Por que sempre me toca o porta-malas?"

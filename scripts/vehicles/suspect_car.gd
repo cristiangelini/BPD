@@ -31,21 +31,25 @@ const MODELS := {
 	"wheelchair": preload("res://assets/models/wheelchair.glb"),
 	"highway": preload("res://assets/models/sports_car.glb"),
 	"tow_truck": preload("res://assets/models/tow_truck.glb"),
+	"golf_cart": preload("res://assets/models/golf_cart.glb"),
 }
-## Who rides on top of it, where you can see him (he gets off when he gives up).
-## Who rides on top of it, where and how big: [model, position, scale] (he gets off when he gives up).
+## Who rides on top of it, where you can see them, each as [model, position, scale] (they get off when he gives up).
 const RIDERS := {
-	"moto": [preload("res://assets/models/npc_repartidor.glb"), Vector3(0, 0.36, -0.15), 0.85],
-	"wheelchair": [preload("res://assets/models/npc_abuelo.glb"), Vector3(0, 0.12, 0.02), 0.72],
+	"moto": [[preload("res://assets/models/npc_repartidor.glb"), Vector3(0, 0.36, -0.15), 0.85]],
+	"wheelchair": [[preload("res://assets/models/npc_abuelo.glb"), Vector3(0, 0.12, 0.02), 0.72]],
+	"golf_cart": [[preload("res://assets/models/npc_sospechoso.glb"), Vector3(-0.3, 0.3, -0.2), 0.7],
+		[preload("res://assets/models/npc_preso.glb"), Vector3(0.3, 0.3, -0.2), 0.7]],
 }
 ## The scooter and the wheelchair ride the sidewalk, not the street.
 const LANES := {"moto": ChaseRoute.SIDEWALK_LANE, "wheelchair": ChaseRoute.SIDEWALK_LANE}
 ## The electric wheelchair goes at 8 km/h (persecucion.md).
-const SPEEDS := {"wheelchair": 8.0 / 3.6, "tow_truck": 30.0 / 3.6}
+const SPEEDS := {"wheelchair": 8.0 / 3.6, "tow_truck": 30.0 / 3.6, "golf_cart": 25.0 / 3.6}
 ## The tow truck turns slowly and nearly stops to do it (persecucion-lugares.md): a cop cutting a corner on foot
 ## catches up with him.
-const TURN_RATES := {"tow_truck": 1.0}
-const TURN_SPEEDS := {"tow_truck": 0.3}
+## The golf cart turns very tight and hardly slows down to do it.
+const TURN_RATES := {"tow_truck": 1.0, "golf_cart": 3.2}
+const TURN_SPEEDS := {"tow_truck": 0.3, "golf_cart": 0.75}
+const GOLF := "golf_cart"
 const TOW := "tow_truck"
 ## Where the towed patrol car hangs behind the tow truck: its middle, and its nose lifted this much.
 const TOWED_AT := Vector3(0, 0.55, -5.6)
@@ -58,7 +62,7 @@ const HIGHWAY_CITY_SPEED := 50.0 / 3.6
 const COPS_LAYER := 2
 ## Each vehicle's body (width, height, length) and wheels, when not the trucks'.
 const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 4.6), "night": Vector3(2.1, 1.4, 4.6),
-	"highway": Vector3(2.1, 1.1, 4.6), "tow_truck": Vector3(2.3, 2.4, 6.2),
+	"highway": Vector3(2.1, 1.1, 4.6), "tow_truck": Vector3(2.3, 2.4, 6.2), "golf_cart": Vector3(1.3, 1.8, 2.4),
 	"moto": Vector3(0.8, 1.6, 1.9),
 	"wheelchair": Vector3(0.8, 1.4, 1.2)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
@@ -70,7 +74,7 @@ const TOW_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.0), Vector3(1.15, 0.3
 ## The scooter's wheels are part of its model.
 const NO_WHEELS: Array[Vector3] = []
 const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS,
-	"wheelchair": NO_WHEELS, "highway": SEDAN_WHEELS, "tow_truck": TOW_WHEELS}
+	"wheelchair": NO_WHEELS, "highway": SEDAN_WHEELS, "tow_truck": TOW_WHEELS, "golf_cart": NO_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
@@ -106,11 +110,12 @@ func _ready() -> void:
 	shape.position.y = body.size.y / 2 + 0.2
 	add_child(shape)
 	add_child((MODELS[kind] as PackedScene).instantiate())
-	if RIDERS.has(kind):
-		var rider: Node3D = (RIDERS[kind][0] as PackedScene).instantiate()
-		rider.name = "Rider"
-		rider.position = RIDERS[kind][1]
-		rider.scale = Vector3.ONE * float(RIDERS[kind][2])
+	var riders: Array = RIDERS.get(kind, [])
+	for k in riders.size():
+		var rider: Node3D = (riders[k][0] as PackedScene).instantiate()
+		rider.name = "Rider" if k == 0 else "Rider%d" % (k + 1)
+		rider.position = riders[k][1]
+		rider.scale = Vector3.ONE * float(riders[k][2])
 		add_child(rider)
 	if kind == TOW:
 		var hook := TowHook.new()
@@ -173,9 +178,9 @@ func puncture() -> void:
 
 ## He gives up and gets off: whoever rode on top isn't there anymore.
 func get_off() -> void:
-	var rider := get_node_or_null("Rider")
-	if rider:
-		rider.hide()
+	for rider in [get_node_or_null("Rider"), get_node_or_null("Rider2")]:
+		if rider:
+			(rider as Node3D).hide()
 
 
 ## The net: he can't drive for `seconds`.

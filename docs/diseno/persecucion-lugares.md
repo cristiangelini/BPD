@@ -110,6 +110,17 @@ comisaría, como el resto, y el mapa del copiloto los muestra.
 - El mapa del copiloto ahora muestra el club, con los lagos, los bunkers y los hoyos.
 - El reloj que arranca en el portón y los ladrones vienen en el paso 5.
 
+## Cómo quedó (paso 5, los ladrones de golf)
+- Un carrito de golf blanco con techo verde y bolsas de palos atrás, con los dos ladrones arriba. Espera en un hoyo del
+  club y, cuando un policía pasa el portón, arranca él y arranca el reloj (el comisario dice «¡Ahí está el carrito!»).
+- Va a 25 km/h de hoyo en hoyo, por el césped, en línea recta y sin pasar por los lagos. El orden sale de la semilla y
+  nunca vuelve directo al hoyo anterior. Dobla muy cerrado. El megáfono no lo hace doblar: no hay calles.
+- Frenado, se bajan los dos: uno se rinde y el otro sale corriendo a 5 m/s, lejos del policía más cercano. No sale del
+  club ni se mete en los lagos. Esposado se queda quieto; si se le pasan las esposas, vuelve a correr.
+- Hay que esposar a los dos. Al que se rindió se lo sube atrás, como siempre, y al que corrió en el baúl («¿Por qué
+  siempre me toca el baúl?»). El caso se cierra con los dos adentro y el patrullero en la comisaría.
+- Pinchos y red funcionan igual que en la ciudad.
+
 ## El orden para hacerlo (un PR chico por paso)
 1. La autopista en anillo con sus 4 rampas, el guardarraíl y los peajes, y el patrullero a 110 km/h en ella.
 2. El sospechoso de la autopista: el deportivo, el tráfico, los peajes que rompe y la radio de los refuerzos.

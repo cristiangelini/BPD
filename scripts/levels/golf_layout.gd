@@ -22,6 +22,9 @@ const BUNKERS := [[Vector3(-38, 0, -28), 6.0, 4.0], [Vector3(22, 0, -50), 7.0, 3
 const LAKES := [[Vector3(5, 0, -12), 14.0, 9.0], [Vector3(35, 0, 8), 9.0, 7.0]]
 ## Where the path from the gate meets the loop between the holes.
 const JUNCTION := Vector3(-50, 0, 0)
+## The cart keeps this far (m) off the lakes, and its route is this many holes long (minutes of driving).
+const LAKE_MARGIN := 2.5
+const CART_STOPS := 40
 
 
 ## The concrete path as straight pieces [from, to]: from the gate to the loop, then hole to hole all the way round.
@@ -55,3 +58,39 @@ static func in_bunker(point: Vector3) -> bool:
 
 static func in_lake(point: Vector3) -> bool:
 	return LAKES.any(func(lake: Array) -> bool: return in_ellipse(point, lake))
+
+
+## The holes the cart can drive straight to from hole `i`: every other one with no lake (and a margin) in the way.
+static func links(i: int) -> Array[int]:
+	var out: Array[int] = []
+	for j in HOLES.size():
+		if j != i and _dry(HOLES[i], HOLES[j]):
+			out.append(j)
+	return out
+
+
+static func _dry(from: Vector3, to: Vector3) -> bool:
+	for k in 31:
+		var at := from.lerp(to, k / 30.0)
+		for lake: Array in LAKES:
+			if in_ellipse(at, [lake[0], float(lake[1]) + LAKE_MARGIN, float(lake[2]) + LAKE_MARGIN]):
+				return false
+	return true
+
+
+## The thieves' cart route (persecucion-lugares.md): from a hole drawn with the seed, `stops` holes one after another,
+## each one linked to the last and never straight back. In the city's space, so SuspectCar.follow_path takes it.
+static func cart_route(seed_value: int, stops := CART_STOPS) -> Array[Vector3]:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash("golf cart %d" % seed_value)
+	var at := rng.randi_range(0, HOLES.size() - 1)
+	var before := -1
+	var path: Array[Vector3] = [CENTER + HOLES[at]]
+	for k in stops:
+		var options := links(at)
+		if options.size() > 1:
+			options.erase(before)
+		before = at
+		at = options[rng.randi_range(0, options.size() - 1)]
+		path.append(CENTER + HOLES[at])
+	return path
