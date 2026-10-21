@@ -8,7 +8,7 @@ extends Node
 ## running out before he's cuffed loses it. Every number here is (propuesta), except the minute (Cristian, 20/10).
 
 ## The suspects (persecucion.md, "Los sospechosos"), each with what he leaves behind (ChaseDrops).
-const SUSPECTS := ["ice_cream", "moving_truck"]
+const SUSPECTS := ["ice_cream", "moving_truck", "school_bus"]
 ## Seconds to catch him: the chase has a clock (Cristian, 20/10: "pongamos primero 1 minuto").
 const TIME_LIMIT := 60.0
 ## Farther than this (m) the meter climbs CLIMB a second; closer it drops DROP a second. At ESCAPED he got away.
@@ -23,11 +23,15 @@ const DOOR_OUT := 2.0
 ## A chase pays the salary and has its own quota, like the interrogation (decision 91).
 const QUOTA := ShiftReport.SALARY
 const SHIFT_DELAY := 2.5
+## The school bus: every hard ram raises the parents' complaint this much, and full it loses the case.
+const RAM_COMPLAINT := 35.0
+const COMPLAINT_FULL := 100.0
 ## How close to its spot at the station the car has to stop to end the shift (RaidCase).
 const STATION_RADIUS := RaidCase.STATION_RADIUS
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 
 signal meters_changed(distance: float, time_left: float)
+signal complaint_changed(complaint: float)
 
 var case_seed := 0
 var suspect_id := "ice_cream"
@@ -61,6 +65,8 @@ var stopped := false
 var caught := false
 var case_solved := false
 var case_failed := false
+## The school bus's parents' complaint.
+var complaint := 0.0
 var shift_over := false
 var _result := {}
 
@@ -84,6 +90,7 @@ func start(comisario: Comisario = null) -> void:
 	damages = ChaseDamages.new()
 	damages.car = car
 	add_child(damages)
+	damages.rammed.connect(_on_rammed)
 	drops = ChaseDrops.new()
 	drops.case = self
 	add_child(drops)
@@ -138,6 +145,17 @@ func _physics_process(delta: float) -> void:
 		case_solved = true
 		solved_label.show()
 		_finish_soon()
+
+
+## A hard ram on the school bus, full of kids: the parents complain.
+func _on_rammed() -> void:
+	if suspect_id != "school_bus" or case_failed or case_solved:
+		return
+	complaint = minf(complaint + RAM_COMPLAINT, COMPLAINT_FULL)
+	complaint_changed.emit(complaint)
+	_hint_all("HINT_CHASE_KIDS")
+	if complaint >= COMPLAINT_FULL:
+		fail("CASE_FAILED_PARENTS")
 
 
 ## He gives up: the vehicle stays where it is and he gets out by his door, ready to be cuffed.

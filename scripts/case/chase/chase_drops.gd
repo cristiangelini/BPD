@@ -4,7 +4,7 @@ extends Node
 ## What each suspect leaves on the street behind him (persecucion.md, "Los sospechosos"): the ice cream man drips ice
 ## cream every DRIP_EVERY seconds, and on a puddle the patrol car's tires lose their grip; the moving truck drops a piece
 ## of furniture at every corner he turns, which is in the way (a loose body: knocking it over isn't a fine, but it
-## slows you down). Every number here is (propuesta).
+## slows you down); the school bus is full of kids shouting out of the windows. Every number here is (propuesta).
 
 const DRIP_EVERY := 3.0
 ## A puddle's size (m), how long it lasts, and the grip left on it.
@@ -21,12 +21,18 @@ const FURNITURE := [
 const MAX_FURNITURE := 12
 ## Where it falls off: this far behind his back.
 const BEHIND := 3.5
+## The kids shout a line every this many seconds.
+const KIDS_EVERY := 2.5
+const KIDS_LINES := ["CHASE_KIDS_1", "CHASE_KIDS_2", "CHASE_KIDS_3", "CHASE_KIDS_4", "CHASE_KIDS_5"]
 
 var case: ChaseCase
 ## The ice cream puddles on the street: [mesh, seconds left].
 var puddles: Array[Array] = []
 var furniture: Array[RigidBody3D] = []
 var _drip_left := DRIP_EVERY
+var _kids_left := 0.0
+var _kids_line := 0
+var kids_bubble: Label3D
 var _rng := RandomNumberGenerator.new()
 var _wheels: Array[VehicleWheel3D] = []
 var _grip: Array[float] = []
@@ -39,6 +45,16 @@ func _ready() -> void:
 			_wheels.append(child)
 			_grip.append((child as VehicleWheel3D).wheel_friction_slip)
 	case.truck.corner_passed.connect(_on_corner)
+	if case.suspect_id == "school_bus":
+		kids_bubble = Label3D.new()
+		kids_bubble.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		kids_bubble.pixel_size = 0.006
+		kids_bubble.outline_size = 12
+		kids_bubble.font_size = 44
+		kids_bubble.modulate = Color(1, 0.95, 0.6)
+		kids_bubble.position.y = 3.6
+		kids_bubble.hide()
+		case.truck.add_child(kids_bubble)
 
 
 func _physics_process(delta: float) -> void:
@@ -47,6 +63,15 @@ func _physics_process(delta: float) -> void:
 		if _drip_left <= 0.0:
 			_drip_left = DRIP_EVERY
 			drip()
+	if kids_bubble and case.chasing and not case.stopped:
+		_kids_left -= delta
+		if _kids_left <= 0.0:
+			_kids_left = KIDS_EVERY
+			kids_bubble.text = KIDS_LINES[_kids_line % KIDS_LINES.size()]
+			kids_bubble.show()
+			_kids_line += 1
+	elif kids_bubble:
+		kids_bubble.hide()
 	for puddle in puddles.duplicate():
 		puddle[1] -= delta
 		if puddle[1] <= 0.0:

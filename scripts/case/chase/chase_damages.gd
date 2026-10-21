@@ -3,7 +3,8 @@ extends Node
 
 ## The damage the patrol car does to the city in a chase (persecucion.md, "Cómo es el caso"): every hard crash into
 ## something of the city (a wall, a traffic light, a tree) is a fine, taken off the pay like the raid's broken
-## ornaments. Ramming the suspect's vehicle is the job, so it's free. Every number here is (propuesta).
+## ornaments. Ramming the suspect's vehicle is the job, so it's free, but it's counted (`rammed`): the school bus's
+## parents complain about it. Every number here is (propuesta).
 
 ## Touching something of the city and losing this much speed at once (m/s, 15 km/h) is a crash, and each one costs
 ## FINE. Driving onto the sidewalk or scraping a wall loses far less.
@@ -15,14 +16,17 @@ const COOLDOWN := 1.0
 const SPEED_FRAMES := 8
 
 signal crashed(fines: int)
+## A hard hit on the suspect's vehicle.
+signal rammed
 
 var car: PatrolCar
 var crashes := 0
 var fines := 0
+var rams := 0
 var _speeds: Array[float] = []
 var _last_hit := {}
 ## What the car touched, waiting to see whether it slowed down enough to be a crash, and frames left to see it.
-var _touched: StaticBody3D
+var _touched: PhysicsBody3D
 var _watch := 0
 
 
@@ -52,25 +56,29 @@ func speed_lost() -> float:
 	return fastest - car.linear_velocity.length()
 
 
-## Something of the city touched from the side (not the ground under the car). Only the city's own things count:
-## not the suspect, the cops or anyone walking.
+## Something of the city or the suspect's vehicle touched from the side (not the ground under the car); not the cops,
+## anyone walking or the loose furniture.
 func _look_at_contacts() -> void:
 	var state := PhysicsServer3D.body_get_direct_state(car.get_rid())
 	if not state:
 		return
 	for i in state.get_contact_count():
-		var body := state.get_contact_collider_object(i) as StaticBody3D
-		if body and absf(state.get_contact_local_normal(i).y) < 0.5:
+		var body := state.get_contact_collider_object(i) as PhysicsBody3D
+		if (body is StaticBody3D or body is SuspectCar) and absf(state.get_contact_local_normal(i).y) < 0.5:
 			if body != _touched or _watch <= 0:
 				_touched = body
 				_watch = SPEED_FRAMES
 
 
-func _crash(body: StaticBody3D) -> void:
+func _crash(body: PhysicsBody3D) -> void:
 	var now := Time.get_ticks_msec() / 1000.0
 	if now - float(_last_hit.get(body.get_instance_id(), -INF)) < COOLDOWN:
 		return
 	_last_hit[body.get_instance_id()] = now
+	if body is SuspectCar:
+		rams += 1
+		rammed.emit()
+		return
 	crashes += 1
 	fines += FINE
 	crashed.emit(fines)
