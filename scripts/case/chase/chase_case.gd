@@ -8,7 +8,7 @@ extends Node
 ## running out before he's cuffed loses it. Every number here is (propuesta), except the minute (Cristian, 20/10).
 
 ## The suspects (persecucion.md, "Los sospechosos"), each with what he leaves behind (ChaseDrops).
-const SUSPECTS := ["ice_cream", "moving_truck", "school_bus"]
+const SUSPECTS := ["ice_cream", "moving_truck", "school_bus", "rain", "night"]
 ## Seconds to catch him: the chase has a clock (Cristian, 20/10: "pongamos primero 1 minuto").
 const TIME_LIMIT := 60.0
 ## Farther than this (m) the meter climbs CLIMB a second; closer it drops DROP a second. At ESCAPED he got away.
@@ -46,6 +46,10 @@ var tasks: ChaseTasks
 var damages: ChaseDamages
 ## What the suspect leaves on the street behind him (ice cream, furniture).
 var drops: ChaseDrops
+## The rain or the night, when the chase has them; the level hands over its sky and sun before start().
+var weather: ChaseWeather
+var world_environment: WorldEnvironment
+var sun: DirectionalLight3D
 var station_parking: Transform3D
 var shift_screen: ShiftScreen
 var solved_label: Label
@@ -94,6 +98,9 @@ func start(comisario: Comisario = null) -> void:
 	drops = ChaseDrops.new()
 	drops.case = self
 	add_child(drops)
+	weather = ChaseWeather.new()
+	weather.case = self
+	add_child(weather)
 	if comisario:
 		comisario.spoke.connect(give_tip.unbind(1))
 		car.locked_hint = "HINT_COMISARIO_FIRST"

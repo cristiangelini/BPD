@@ -36,6 +36,8 @@ var kids_bubble: Label3D
 var _rng := RandomNumberGenerator.new()
 var _wheels: Array[VehicleWheel3D] = []
 var _grip: Array[float] = []
+## The grip the weather leaves the patrol car's tires (ChaseWeather, the rain).
+var weather_grip := 1.0
 
 
 func _ready() -> void:
@@ -79,7 +81,7 @@ func _physics_process(delta: float) -> void:
 			puddles.erase(puddle)
 	var slippery := on_puddle(case.car.global_position)
 	for i in _wheels.size():
-		_wheels[i].wheel_friction_slip = _grip[i] * (PUDDLE_GRIP if slippery else 1.0)
+		_wheels[i].wheel_friction_slip = _grip[i] * weather_grip * (PUDDLE_GRIP if slippery else 1.0)
 
 
 ## Whether `at` is on an ice cream puddle.

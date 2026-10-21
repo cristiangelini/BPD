@@ -24,11 +24,16 @@ const MODELS := {
 	"ice_cream": preload("res://assets/models/ice_cream_truck.glb"),
 	"moving_truck": preload("res://assets/models/moving_truck.glb"),
 	"school_bus": preload("res://assets/models/school_bus.glb"),
+	"rain": preload("res://assets/models/getaway_car.glb"),
+	"night": preload("res://assets/models/getaway_car.glb"),
 }
 ## Each vehicle's body (width, height, length) and wheels, when not the trucks'.
-const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4)}
+const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 4.6), "night": Vector3(2.1, 1.4, 4.6)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
+const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
+	Vector3(-1.05, 0.38, -1.55), Vector3(1.05, 0.38, -1.55)]
+const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
@@ -61,7 +66,8 @@ func _ready() -> void:
 	shape.position.y = body.size.y / 2 + 0.2
 	add_child(shape)
 	add_child((MODELS[kind] as PackedScene).instantiate())
-	for at in (BUS_WHEELS if kind == "school_bus" else WHEELS):
+	var wheels: Array[Vector3] = OTHER_WHEELS.get(kind, WHEELS)
+	for at in wheels:
 		var wheel: Node3D = WHEEL.instantiate()
 		wheel.position = at
 		add_child(wheel)

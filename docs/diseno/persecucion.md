@@ -93,7 +93,11 @@ El host maneja al sospechoso y decide los medidores (decisión 50), como con el 
    cae un sofá, un ropero, una lámpara o una caja; son cosas sueltas: chocarlas no es multa pero frena; como mucho 12
    en la calle), todo **propuesta**. `--suspect=<id>` fuerza uno. Después el bus escolar: los chicos gritan por las
    ventanas, y cada choque fuerte contra el bus suma 35 a la denuncia de los padres; a 100 se pierde el caso
-   **(propuesta)**.
+   **(propuesta)**. Después la lluvia y la noche, con un auto negro de fuga: bajo la lluvia las ruedas del patrullero
+   agarran el 55% en toda la ciudad, llueve alrededor del patrullero y el que maneja ve las gotas acumularse en el
+   parabrisas porque el limpiaparabrisas no anda; de noche la ciudad está a oscuras, el auto va con las luces apagadas,
+   la linterna (F, también adentro del patrullero) alumbra hasta 35 m hacia donde mira el policía, y el mapa del
+   copiloto solo muestra al sospechoso mientras una linterna lo alumbra; todo **propuesta**.
 7. La persecución como final de otros casos.
 
 ## Respuestas de Cristian (20/10)
