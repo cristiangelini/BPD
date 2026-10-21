@@ -4,9 +4,9 @@ extends RefCounted
 ## Which place a match happens in (panaderia.md, "El orden para hacerlo", step 5): Play draws a case seed and, from
 ## it, the grandpa's house, the bakery or the pet salon, with even odds (propuesta). Every third shift is an
 ## interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
-## (persecucion.md, "Sale como un caso más"). --place=<id> forces one. The crime scene (escena-del-crimen.md) only opens
-## with --place=crime_scene until its case is done. The level then takes that seed, so the place,
-## the story and the hiding spots all come from one seed.
+## (persecucion.md, "Sale como un caso más"). Of the shifts left, one in CRIME_EVERY is the crime scene
+## (escena-del-crimen.md, propuesta) and the rest are raids. --place=<id> forces one. The level then takes that seed, so
+## the place, the story and the hiding spots all come from one seed.
 
 const PLACES := {
 	"grandpa": "res://scenes/levels/grandpa_house.tscn",
@@ -23,6 +23,8 @@ const ORDER := ["grandpa", "bakery", "groomer"]
 const INTERROGATION_EVERY := 3
 ## Of the shifts that aren't interrogations, one in this many is a chase (Cristian, 20/10: half and half).
 const CHASE_EVERY := 2
+## Of the shifts that are neither, one in this many is the crime scene (propuesta: as often as each raid).
+const CRIME_EVERY := 4
 
 ## The seed the next level takes (0 = none drawn; the level draws its own).
 static var pending_seed := 0
@@ -32,8 +34,8 @@ static var custody := {}
 
 ## The place for this seed: from --place=<id> among the user args, or drawn. It hashes the seed instead of taking
 ## seed % 3, because the stories are drawn with seed % their count and the two draws would go together.
-## `shift` is the campaign's shift (0 without a campaign). Without `chases` (online, until the chase is synced) every
-## shift that isn't an interrogation is a raid.
+## `shift` is the campaign's shift (0 without a campaign). Without `chases` (online, until the chase and the crime
+## scene are synced) every shift that isn't an interrogation is a raid.
 static func pick(case_seed: int, args: PackedStringArray, shift := 0, chases := true) -> String:
 	for arg in args:
 		if arg.begins_with("--place=") and PLACES.has(arg.trim_prefix("--place=")):
@@ -43,6 +45,9 @@ static func pick(case_seed: int, args: PackedStringArray, shift := 0, chases := 
 		return "interrogation"
 	if chases and hash("case kind %d" % case_seed) % CHASE_EVERY == 0:
 		return "chase"
+	# Hashed as an array: string hashes of the same seed with another prefix go together in their low bits.
+	if chases and hash(["crime scene", case_seed]) % CRIME_EVERY == 0:
+		return "crime_scene"
 	return ORDER[hash("place %d" % case_seed) % ORDER.size()]
 
 

@@ -10,6 +10,14 @@ extends Node
 const REFRESH := 0.5
 ## A second wrong accusation loses the case (propuesta, like the raid's suspicions).
 const MAX_WRONG := 2
+## The cooks get tired (Cristian, 21/10): from this many seconds after the tip, one goes home every LEAVE_EVERY.
+const LEAVE_FROM := 480.0
+const LEAVE_EVERY := 120.0
+## Seconds between the verdict and the end of shift screen.
+const SHIFT_DELAY := 3.0
+## Its own quota, like the interrogation and the chase (decision 91).
+const QUOTA := ShiftReport.SALARY
+const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 const COFFEE_SCENE := preload("res://scenes/props/coffee_cup.tscn")
 ## Where the carried clues go by a cook's table: the plate and the slice on top, the recipe on the floor at its front,
 ## half under the cloth, with a coffee on the table's edge just above (propuesta).
@@ -44,6 +52,14 @@ var wrong_guesses := 0
 var lost := false
 ## The station's board (CrimeBoard), where the files show up and the cops accuse.
 var board: CrimeBoard
+var shift_screen: ShiftScreen
+var shift_over := false
+## Seconds since the tip, while the case is on.
+var elapsed := 0.0
+## Indexes of the cooks who went home, in the order they left.
+var gone: Array[int] = []
+## The culprit, caught, for the next shift's interrogation (decision 93), like the raid's owner.
+var custody := {}
 var _refresh_left := 0.0
 
 
@@ -66,6 +82,9 @@ func start(comisario: Comisario = null) -> void:
 		_hint_all("HINT_SEE_COMISARIO")
 	else:
 		give_tip()
+	if shift_screen:
+		shift_screen.play_again.connect(func() -> void: PlaceDraw.start(get_tree()))
+		shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
 
 
 func give_tip() -> void:
@@ -151,7 +170,80 @@ func accuse(index: int) -> void:
 		_comisario_says("BOARD_WRONG_LOST" if lost else "BOARD_WRONG")
 	checklist.show_rows(rows())
 	verdict.emit(accused, lost)
+	if accused:
+		_take_culprit()
+	if accused or lost:
+		get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
+
+## Accused, the culprit gives up and goes to a cell: next shift is his interrogation. One who already went home is
+## picked up there.
+func _take_culprit() -> void:
+	custody = {"owner": "cook", "story": "pastry", "slips": [], "missed": 0}
+	_hint_all(tr("HINT_CULPRIT_GIVES_UP") % culprit().name)
+	if contest and not gone.has(plan.culprit):
+		_send_off(contest.cooks[plan.culprit])
+
+
+## The end of shift screen: the salary if solved, halved by a wrong accusation (ShiftReport). A campaign moves on.
+func finish_shift() -> void:
+	if shift_over:
+		return
+	shift_over = true
+	var stats := []
+	for cop in get_tree().get_nodes_in_group("cops"):
+		stats.append((cop as Cop).stats)
+	var report := ShiftReport.pay(accused, [], 0, wrong_guesses)
+	var campaign := Campaign.current
+	var played := 0
+	if campaign and not campaign.is_over():
+		played = campaign.shift
+		campaign.finish_shift("crime_pastry", accused, report, QUOTA)
+		campaign.custody = custody
+		campaign.save()
+	else:
+		PlaceDraw.custody = custody
+	if not shift_screen:
+		return
+	for cop in get_tree().get_nodes_in_group("cops"):
+		cop.input_enabled = false
+		cop.get_node("Grabber").input_enabled = false
+		cop.get_node("Hud").hide()
+	var awards: Array[Dictionary] = []
+	awards.assign(ShiftReport.awards(stats))
+	shift_screen.show_report(accused, report, 0, awards)
+	var over := false
+	if campaign and played > 0:
+		shift_screen.show_campaign(played, Campaign.SHIFTS, campaign.money, campaign.is_over(), campaign.is_promoted())
+		over = campaign.is_over()
+	shift_screen.get_node("%AgainButton").visible = not over
+
+
+## One more cook is tired and goes home; his file stays as it is. They leave in an order drawn with the seed.
+func _tire() -> void:
+	var order := range(cooks.size())
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash("cooks leave %d" % case_seed)
+	for i in range(order.size() - 1, 0, -1):
+		var j := rng.randi_range(0, i)
+		var swap: int = order[i]
+		order[i] = order[j]
+		order[j] = swap
+	for index: int in order:
+		if not gone.has(index):
+			gone.append(index)
+			_hint_all(tr("HINT_COOK_LEFT") % cooks[index].name)
+			if contest:
+				_send_off(contest.cooks[index])
+			checklist.show_rows(rows())
+			return
+
+
+## A cook leaves the tent: out of sight and out of the way.
+func _send_off(cook: PastryCook) -> void:
+	cook.hide()
+	cook.collision_layer = 0
+	cook.process_mode = Node.PROCESS_MODE_DISABLED
 
 ## The comisario comes to the board and says it (with a player at the keys).
 func _comisario_says(key: String) -> void:
@@ -223,6 +315,9 @@ func rows() -> Array[Dictionary]:
 		if not files.has(index):
 			list.append({"text": "- " + _missing(index), "done": false, "optional": false, "status": true})
 	list.append(_row("OBJ_CRIME_ACCUSE", accused))
+	if not gone.is_empty():
+		var names := gone.map(func(index: int) -> String: return cooks[index].name)
+		list.append({"text": tr("OBJ_CRIME_GONE") % ", ".join(names), "done": false, "optional": false, "status": true})
 	if wrong_guesses > 0:
 		list.append({"text": tr("OBJ_CRIME_WRONG") % [wrong_guesses, MAX_WRONG], "done": false, "optional": false,
 			"status": true})
@@ -233,6 +328,10 @@ func rows() -> Array[Dictionary]:
 func _physics_process(delta: float) -> void:
 	if not tip_given or not contest:
 		return
+	if not accused and not lost:
+		elapsed += delta
+		if gone.size() < cooks.size() and elapsed >= LEAVE_FROM + gone.size() * LEAVE_EVERY:
+			_tire()
 	if not at_tent:
 		for cop in get_tree().get_nodes_in_group("cops"):
 			if contest.under_roof((cop as Node3D).global_position):

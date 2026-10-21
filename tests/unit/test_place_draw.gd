@@ -9,13 +9,13 @@ func after_each() -> void:
 	PlaceDraw.pending_seed = 0
 
 
-func test_half_are_chases_and_each_raid_a_third_of_the_rest() -> void:
-	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "chase": 0}
+func test_half_are_chases_and_the_crime_scene_and_each_raid_a_quarter_of_the_rest() -> void:
+	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "chase": 0, "crime_scene": 0}
 	for i in 600:
 		count[PlaceDraw.pick(i + 1, [], 1)] += 1
 	assert_between(count.chase, 250, 350, "half chases (Cristian, 20/10)")
-	for place: String in ["grandpa", "bakery", "groomer"]:
-		assert_between(count[place], 70, 130, "even odds for %s (propuesta)" % place)
+	for place: String in ["grandpa", "bakery", "groomer", "crime_scene"]:
+		assert_between(count[place], 45, 105, "even odds for %s (propuesta)" % place)
 	assert_eq(PlaceDraw.pick(77, []), PlaceDraw.pick(77, []), "the same seed gives the same place for everyone")
 
 

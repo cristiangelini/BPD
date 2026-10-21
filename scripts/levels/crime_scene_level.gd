@@ -46,5 +46,6 @@ func _ready() -> void:
 	add_child(stamp)
 	stamp.global_position = station * STAMP_AT
 	case.board = board
+	case.shift_screen = $ShiftScreen
 	add_child(case)
 	case.start(city.comisario)
