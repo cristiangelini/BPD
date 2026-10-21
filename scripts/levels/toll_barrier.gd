@@ -83,11 +83,16 @@ func _is_vehicle(body: Node3D) -> bool:
 
 
 func _break(by: Node3D) -> void:
+	knock_down()
+	broken.emit(by)
+
+
+## Down on the street, without anyone to blame (online, a guest's copy of the host's broken one).
+func knock_down() -> void:
 	is_broken = true
 	_broken_for = 0.0
 	_arm.hide()
 	_fallen.show()
-	broken.emit(by)
 
 
 func _replace() -> void:

@@ -192,6 +192,8 @@ func start(comisario: Comisario = null) -> void:
 		highway = ChaseHighway.new()
 		highway.case = self
 		add_child(highway)
+	for barrier: TollBarrier in _barriers():
+		barrier.broken.connect(_on_barrier_broken.bind(barrier))
 	if embedded:
 		tip_given = true
 		chasing = true
@@ -506,6 +508,27 @@ func shown_shout() -> void:
 
 func shown_trap(kind: String, at: Transform3D) -> void:
 	tasks.shown_trap(kind, at)
+
+
+func shown_puddle(color: int, at: Vector3) -> void:
+	drops.puddle_at(color, at)
+
+
+## The toll barrier that `index` names among the level's (in tree order, the same on every PC) broke on the host.
+func shown_barrier_broken(index: int) -> void:
+	var barriers := _barriers()
+	if index < barriers.size() and not (barriers[index] as TollBarrier).is_broken:
+		(barriers[index] as TollBarrier).knock_down()
+
+
+func _barriers() -> Array[Node]:
+	return get_parent().find_children("*", "TollBarrier", true, false)
+
+
+## Host: a barrier broke; the guests see it broken too.
+func _on_barrier_broken(_by: Node3D, barrier: TollBarrier) -> void:
+	if online and not follower:
+		online.tell("shown_barrier_broken", [_barriers().find(barrier)])
 
 
 ## What every guest's chase shows (CaseSync, 5 times a second when it changes).
