@@ -24,14 +24,17 @@ const NIGHT_ENERGY := 5.0
 const BEAM_MARGIN := 6.0
 
 var case: ChaseCase
+## RAIN, NIGHT or none: the chase's own, never a chase in the middle of another case (persecucion-final.md).
+var kind := ""
 var rain: CPUParticles3D
 var windshield: WindshieldDrops
 
 
 func _ready() -> void:
-	if case.suspect_id == RAIN:
+	kind = "" if case.embedded else case.suspect_id
+	if kind == RAIN:
 		_make_rain()
-	elif case.suspect_id == NIGHT:
+	elif kind == NIGHT:
 		_make_night()
 	case.car.seats_changed.connect(_tell_seats)
 
@@ -112,9 +115,9 @@ func _environment() -> Environment:
 ## wiper.
 func _tell_seats() -> void:
 	var cop := case.tasks.local_cop()
-	if case.suspect_id == NIGHT and case.tasks.does(cop, ChaseTasks.MAP_SEATS):
+	if kind == NIGHT and case.tasks.does(cop, ChaseTasks.MAP_SEATS):
 		cop.show_hint("HINT_CHASE_FLASHLIGHT")
-	elif case.suspect_id == RAIN and cop and case.car.seat_of(cop) == 0:
+	elif kind == RAIN and cop and case.car.seat_of(cop) == 0:
 		cop.show_hint("HINT_CHASE_WIPER")
 
 
@@ -124,10 +127,10 @@ func _physics_process(_delta: float) -> void:
 	var cop := case.tasks.local_cop()
 	if windshield:
 		windshield.visible = cop != null and case.car.seat_of(cop) == 0
-	if case.suspect_id == NIGHT:
+	if kind == NIGHT:
 		_aim_beams()
 	# In the car F still works for the copilot at night (the belt ignores it inside a vehicle).
-	if case.suspect_id == NIGHT and case.tasks.does(cop, ChaseTasks.MAP_SEATS) \
+	if kind == NIGHT and case.tasks.does(cop, ChaseTasks.MAP_SEATS) \
 			and Input.is_action_just_pressed("flashlight"):
 		cop.act("belt_flashlight", cop)
 
@@ -141,7 +144,7 @@ func _aim_beams() -> void:
 
 ## Whether the copilot's map shows the suspect: always, except at night, where only while a flashlight is on him.
 func shows_suspect() -> bool:
-	return case.suspect_id != NIGHT or lights_suspect()
+	return kind != NIGHT or lights_suspect()
 
 
 ## Whether a cop's flashlight in the patrol car is on the suspect's vehicle.
