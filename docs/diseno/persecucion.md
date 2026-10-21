@@ -100,6 +100,9 @@ El host maneja al sospechoso y decide los medidores (decisión 50), como con el 
    copiloto solo muestra al sospechoso mientras una linterna lo alumbra; todo **propuesta**. Después el repartidor en
    moto: va por el medio de la vereda, y la ventana, en lugar de pinchos, pone una fila de conos 12 m adelante del
    patrullero, de vereda a vereda (4 filas); frente a los conos frena 4 s, así que se entrega **(propuesta)**.
+   Después el abuelo en silla de ruedas eléctrica: va a 8 km/h por la vereda, arranca cuando un policía se le acerca a
+   25 m (o se sube al volante), la distancia se mide desde el policía más cercano, y solo se entrega si un policía a
+   pie se le para delante (a 2,5 m); el patrullero en el camino no lo para **(propuesta)**.
 7. La persecución como final de otros casos.
 
 ## Respuestas de Cristian (20/10)

@@ -11,8 +11,9 @@ const TURN_SPEED := 0.45
 ## How fast it turns (radians a second) and how close to a corner counts as through it.
 const TURN_RATE := 1.6
 const REACH := 3.0
-## Moving slower than this while it wants to drive counts as stuck.
+## Moving slower than this (or than STUCK_SHARE of his own speed) while it wants to drive counts as stuck.
 const STUCK_SPEED := 1.0
+const STUCK_SHARE := 0.2
 ## Nervous (the megaphone), he drives at this share of his speed.
 const NERVOUS_SPEED := 0.6
 ## With his tires punctured (the spikes) he rolls to a halt in this many seconds.
@@ -27,23 +28,32 @@ const MODELS := {
 	"rain": preload("res://assets/models/getaway_car.glb"),
 	"night": preload("res://assets/models/getaway_car.glb"),
 	"moto": preload("res://assets/models/delivery_scooter.glb"),
+	"wheelchair": preload("res://assets/models/wheelchair.glb"),
 }
 ## Who rides on top of it, where you can see him (he gets off when he gives up).
-const RIDERS := {"moto": preload("res://assets/models/npc_repartidor.glb")}
-const RIDER_AT := Vector3(0, 0.36, -0.15)
-const RIDER_SCALE := 0.85
-## The scooter rides the sidewalk, not the street.
-const LANES := {"moto": ChaseRoute.SIDEWALK_LANE}
+## Who rides on top of it, where and how big: [model, position, scale] (he gets off when he gives up).
+const RIDERS := {
+	"moto": [preload("res://assets/models/npc_repartidor.glb"), Vector3(0, 0.36, -0.15), 0.85],
+	"wheelchair": [preload("res://assets/models/npc_abuelo.glb"), Vector3(0, 0.12, 0.02), 0.72],
+}
+## The scooter and the wheelchair ride the sidewalk, not the street.
+const LANES := {"moto": ChaseRoute.SIDEWALK_LANE, "wheelchair": ChaseRoute.SIDEWALK_LANE}
+## The electric wheelchair goes at 8 km/h (persecucion.md).
+const SPEEDS := {"wheelchair": 8.0 / 3.6}
+## The cops' collision layer: on foot they're in the wheelchair's way (the cars ignore them).
+const COPS_LAYER := 2
 ## Each vehicle's body (width, height, length) and wheels, when not the trucks'.
 const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 4.6), "night": Vector3(2.1, 1.4, 4.6),
-	"moto": Vector3(0.8, 1.6, 1.9)}
+	"moto": Vector3(0.8, 1.6, 1.9),
+	"wheelchair": Vector3(0.8, 1.4, 1.2)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
 	Vector3(-1.05, 0.38, -1.55), Vector3(1.05, 0.38, -1.55)]
 ## The scooter's wheels are part of its model.
 const NO_WHEELS: Array[Vector3] = []
-const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS}
+const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS,
+	"wheelchair": NO_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
@@ -69,6 +79,8 @@ var tangled_left := 0.0
 
 func _ready() -> void:
 	add_to_group("suspect_car")
+	if kind == "wheelchair":
+		set_collision_mask_value(COPS_LAYER, true)
 	var shape := CollisionShape3D.new()
 	var body := BoxShape3D.new()
 	body.size = SIZES.get(kind, Vector3(2.2, 2.3, 5.2))
@@ -77,10 +89,10 @@ func _ready() -> void:
 	add_child(shape)
 	add_child((MODELS[kind] as PackedScene).instantiate())
 	if RIDERS.has(kind):
-		var rider: Node3D = (RIDERS[kind] as PackedScene).instantiate()
+		var rider: Node3D = (RIDERS[kind][0] as PackedScene).instantiate()
 		rider.name = "Rider"
-		rider.position = RIDER_AT
-		rider.scale = Vector3.ONE * RIDER_SCALE
+		rider.position = RIDERS[kind][1]
+		rider.scale = Vector3.ONE * float(RIDERS[kind][2])
 		add_child(rider)
 	var wheels: Array[Vector3] = OTHER_WHEELS.get(kind, WHEELS)
 	for at in wheels:
@@ -163,7 +175,7 @@ func _physics_process(delta: float) -> void:
 	var can_go := 0.0 if tangled_left > 0.0 else _rolling
 	rotation.y += clampf(turn, -TURN_RATE * delta, TURN_RATE * delta) * can_go
 	# Slows down while its nose isn't on the next point yet: through the corners.
-	var speed := SPEED * lerpf(1.0, TURN_SPEED, clampf(absf(turn) / (PI / 2), 0.0, 1.0))
+	var speed: float = SPEEDS.get(kind, SPEED) * lerpf(1.0, TURN_SPEED, clampf(absf(turn) / (PI / 2), 0.0, 1.0))
 	if nervous_left > 0.0:
 		speed *= NERVOUS_SPEED
 	speed *= can_go
@@ -172,4 +184,6 @@ func _physics_process(delta: float) -> void:
 	velocity.z = wish.z
 	move_and_slide()
 	var moved := Vector2(get_real_velocity().x, get_real_velocity().z).length()
-	stuck_for = stuck_for + delta if moved < STUCK_SPEED else 0.0
+	# The wheelchair is slow anyway: stuck is slower than a share of his own speed.
+	var stuck_below := minf(STUCK_SPEED, float(SPEEDS.get(kind, SPEED)) * STUCK_SHARE)
+	stuck_for = stuck_for + delta if moved < stuck_below else 0.0
