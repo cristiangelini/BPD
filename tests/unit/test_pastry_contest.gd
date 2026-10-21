@@ -47,4 +47,3 @@ func test_the_level_puts_the_tent_in_the_plaza_clear_of_the_fountain() -> void:
 	var tent_south := level.contest.global_position.z + PastryContest.SIZE.y / 2 - plaza.z
 	assert_lt(tent_south, inner, "the tent fits in the plaza")
 	assert_true(PlaceDraw.PLACES.has("crime_scene"))
-	assert_false("crime_scene" in PlaceDraw.ORDER, "not in the random draw until its case is done")

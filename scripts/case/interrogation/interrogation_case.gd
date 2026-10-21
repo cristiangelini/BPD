@@ -68,6 +68,8 @@ const SUSPECT_MODELS := {
 	"owner_grandpa": "res://assets/models/npc_abuelo.glb",
 	"owner_baker": "res://assets/models/npc_panadera.glb",
 	"owner_groomer": "res://assets/models/npc_peluquero.glb",
+	# The pastry contest's culprit (escena-del-crimen.md), accused at the board.
+	"owner_cook": "res://assets/models/npc_pastelero.glb",
 }
 ## The owner brought in from the last raid (decision 93): what slips out of him is what he let slip there with R (his
 ## custody's slips, OWNER_SLIP_<n> when there aren't enough), and the confession pays the salary and OWNER_SHARE of
