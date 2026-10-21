@@ -1,9 +1,9 @@
-# BPD · La escena del crimen (propuesta, 21/10)
+# BPD · La escena del crimen (aprobado por Cristian, 21/10)
 
 Tercer tipo de caso del catálogo ([casos.md](casos.md), punto 3) y decisión 26: "en la escena del crimen buscan pistas
 físicas, las llevan al tablero y acusan a un sospechoso. Si se equivocan, el comisario se enoja". Cristian lo eligió el
-21/10 como lo siguiente después de la persecución. Todo es **propuesta** hasta que Cristian lo apruebe, y los números
-siguen marcados **(propuesta)** hasta probarlos jugando.
+21/10 como lo siguiente después de la persecución y respondió las tres preguntas (decisión 97). Los números siguen
+marcados **(propuesta)** hasta probarlos jugando.
 
 ## La idea
 Pasó algo raro y hay seis sospechosos que se parecen demasiado. Los novatos tienen que juntar pistas físicas en la
@@ -80,17 +80,18 @@ culpable puede ser un compañero). Cada una tiene su diseño antes de programarl
 ## Sale como un caso más
 - En el sorteo de "Jugar" (PlaceDraw) entra como un tipo más, con su cuota propia de 500 como el interrogatorio y la
   persecución (decisión 91).
-- Al acusar bien, el culpable queda detenido: el turno siguiente puede ser su interrogatorio, como con el dueño del
-  allanamiento (decisión 93).
+- **Al acusar bien** (Cristian, 21/10: "que algunos corran y que otros pasen a interrogatorio"), sale con la semilla,
+  mitad y mitad **(propuesta)**:
+  - **Se entrega:** queda detenido y el turno siguiente es su interrogatorio, como con el dueño del allanamiento
+    (decisión 93). El caso se resuelve ahí mismo.
+  - **Sale corriendo:** en cuanto lo acusan, el culpable, que sigue en la carpa, se escapa en lo suyo (el pastelero en
+    una bicicleta de reparto con canasta) y empieza la persecución en medio del caso (decisión 96). Agarrado y en el
+    patrullero, el caso se resuelve y también se lo interroga al turno siguiente; si se escapa, el caso se pierde.
 
-## Preguntas para Cristian
-1. **¿Dónde se acusa?** Recomiendo en el tablero de la comisaría, como dice la decisión 26: hay que volver con las
-   pruebas. La otra opción es acusar en la escena, delante de los seis, como en las películas.
-2. **¿Se cansan y se van?** Recomiendo que sí, de a uno desde los 8 minutos, para que haya apuro sin reloj. La otra
-   opción es sin tiempo, como el allanamiento.
-3. **Al acusar bien, ¿se termina el caso?** Recomiendo que sí, y que el culpable quede detenido para un
-   interrogatorio. La otra opción es que el culpable salga corriendo al ser acusado y empiece una persecución
-   (decisión 96).
+## Respuestas de Cristian (21/10)
+1. Se acusa en el tablero de la comisaría.
+2. Sí, los sospechosos se cansan y se van de a uno.
+3. Que varíe: algunos culpables salen corriendo (persecución) y otros pasan al interrogatorio.
 
 ## El orden para hacerlo (un PR chico por paso)
 1. La carpa del concurso en la plaza, con las mesas, la vitrina y los seis pasteleros con sus rasgos.
