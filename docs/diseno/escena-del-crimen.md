@@ -59,7 +59,8 @@ No hay reloj duro, como en el allanamiento (decisión 66), pero los pasteleros s
 ficha, todavía se lo puede acusar, pero con menos pistas que lo confirmen.
 
 ## El tablero de la comisaría
-La sala del tablero, que hoy está cerrada en la comisaría, se abre con este caso:
+La sala del tablero, que hoy está cerrada en la comisaría, se abre con este caso. Se entra por una puerta nueva
+desde la oficina del comisario, porque la puerta propia de la sala da a la armería, que está detrás del mostrador:
 - Una pared de corcho con las seis fichas arriba (aparecen solas cuando hay foto) y un espacio abajo para las pistas.
 - **Clavar una pista:** con la bolsa o la foto en la mano, clic sobre el corcho.
 - **Hilo rojo:** se agarra la punta del ovillo y se tira de una pista a una ficha. Si la pista no le corresponde a ese
