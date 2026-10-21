@@ -15,6 +15,8 @@ const REACH := 3.0
 const STUCK_SPEED := 1.0
 ## Nervous (the megaphone), he drives at this share of his speed.
 const NERVOUS_SPEED := 0.6
+## With his tires punctured (the spikes) he rolls to a halt in this many seconds.
+const FLAT_STOP := 2.0
 const WHEELS: Array[Vector3] = [Vector3(-1.1, 0.38, 1.7), Vector3(1.1, 0.38, 1.7), Vector3(-1.1, 0.38, -1.7),
 	Vector3(1.1, 0.38, -1.7)]
 const MODEL := preload("res://assets/models/ice_cream_truck.glb")
@@ -29,6 +31,10 @@ var stuck_for := 0.0
 var driving := true
 ## Seconds he's still nervous for.
 var nervous_left := 0.0
+## His tires got punctured; how much of his speed he still has; seconds the net still holds him.
+var punctured := false
+var _rolling := 1.0
+var tangled_left := 0.0
 
 
 func _ready() -> void:
@@ -62,6 +68,16 @@ func retake(route: ChaseRoute, city: Transform3D) -> void:
 		points.append(city * point)
 
 
+## The spikes: his tires go flat and he rolls to a halt, for good.
+func puncture() -> void:
+	punctured = true
+
+
+## The net: he can't drive for `seconds`.
+func tangle(seconds: float) -> void:
+	tangled_left = maxf(tangled_left, seconds)
+
+
 ## Nervous for `seconds`: he slows down.
 func scare(seconds: float) -> void:
 	nervous_left = maxf(nervous_left, seconds)
@@ -74,6 +90,9 @@ func finished() -> bool:
 func _physics_process(delta: float) -> void:
 	velocity.y = 0.0 if is_on_floor() else velocity.y - GameScale.GRAVITY * delta
 	nervous_left = maxf(nervous_left - delta, 0.0)
+	tangled_left = maxf(tangled_left - delta, 0.0)
+	if punctured:
+		_rolling = maxf(_rolling - delta / FLAT_STOP, 0.0)
 	if not driving or finished():
 		velocity.x = 0.0
 		velocity.z = 0.0
@@ -86,11 +105,14 @@ func _physics_process(delta: float) -> void:
 		return
 	var forward := global_basis.z
 	var turn := forward.signed_angle_to(to, Vector3.UP)
-	rotation.y += clampf(turn, -TURN_RATE * delta, TURN_RATE * delta)
+	# Flat or tangled, he can't get anywhere (and doesn't turn on the spot).
+	var can_go := 0.0 if tangled_left > 0.0 else _rolling
+	rotation.y += clampf(turn, -TURN_RATE * delta, TURN_RATE * delta) * can_go
 	# Slows down while its nose isn't on the next point yet: through the corners.
 	var speed := SPEED * lerpf(1.0, TURN_SPEED, clampf(absf(turn) / (PI / 2), 0.0, 1.0))
 	if nervous_left > 0.0:
 		speed *= NERVOUS_SPEED
+	speed *= can_go
 	var wish := global_basis.z * speed
 	velocity.x = wish.x
 	velocity.z = wish.z

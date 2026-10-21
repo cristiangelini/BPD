@@ -701,3 +701,6 @@ CHASE_ICE_CREAM_LINE_1,"¡Está bien, está bien! ¡Pero cuidado con el camión,
 CHASE_ICE_CREAM_LINE_2,"¡Eran arvejas premium! ¡Premium!","They were premium peas! Premium!","Eram ervilhas premium! Premium!"
 CHASE_ICE_CREAM_LINE_3,"¿Alguien quiere uno de frutilla? Es de remolacha, pero rico.","Anyone want a strawberry one? It's beetroot, but tasty.","Alguém quer um de morango? É de beterraba, mas é gostoso."
 CHASE_MEGAPHONE,¡Deténgase!,Pull over!,Pare o veículo!
+HINT_CHASE_MEGAPHONE,"Megáfono: clic para gritarle. Con 2, la ventana.","Megaphone: click to shout at him. Press 2 for the window.","Megafone: clique para gritar. Com 2, a janela."
+HINT_CHASE_WINDOW,"Ventana: clic tira pinchos atrás, clic derecho la red adelante. Con 1, el megáfono.","Window: click drops spikes behind, right click throws the net ahead. Press 1 for the megaphone.","Janela: clique joga os pregos atrás, clique direito a rede na frente. Com 1, o megafone."
+HINT_CHASE_MAP,"Copiloto: con M ves al sospechoso en el mapa. ¡Cántale las esquinas al que maneja!","Copilot: press M to see the suspect on the map. Call the turns out to the driver!","Copiloto: com M você vê o suspeito no mapa. Diga as esquinas para quem dirige!"

@@ -86,3 +86,57 @@ func test_a_wrong_turn_changes_his_way_but_never_turns_him_back() -> void:
 	var at := level.truck.global_position
 	await wait_physics_frames(60)
 	assert_gt(level.truck.global_position.distance_to(at), 3.0, "and he keeps driving")
+
+
+func _chasing(level: ChaseLevel) -> void:
+	level.case.give_tip()
+	level.case.car.enter(level.get_node("Cop"), 0)
+
+
+func test_there_are_three_spike_strips_and_three_nets() -> void:
+	var level := _level()
+	await wait_physics_frames(10)
+	_chasing(level)
+	var tasks := level.case.tasks
+	var car := level.case.car
+	var spikes := tasks.throw_spikes()
+	assert_not_null(spikes)
+	assert_lt(car.to_local(spikes.global_position).z, 0.0, "the spikes land behind the car")
+	assert_gt(car.to_local(tasks.throw_net().global_position).z, 0.0, "the net ahead")
+	tasks.throw_spikes()
+	tasks.throw_spikes()
+	assert_null(tasks.throw_spikes(), "three of them")
+	tasks.throw_net()
+	tasks.throw_net()
+	assert_null(tasks.throw_net())
+
+
+func test_the_spikes_flatten_his_tires_and_he_gives_up() -> void:
+	var level := _level()
+	await wait_physics_frames(10)
+	_chasing(level)
+	await wait_physics_frames(30)
+	var truck := level.truck
+	var spikes := ChaseTrap.new()
+	level.add_child(spikes)
+	spikes.global_transform = Transform3D(Basis(Vector3.UP, truck.rotation.y),
+		Vector3(truck.global_position.x, 0, truck.global_position.z) + truck.global_basis.z * 6.0)
+	await wait_physics_frames(60)
+	assert_true(truck.punctured, "he drove over them")
+	await wait_physics_frames(roundi((SuspectCar.FLAT_STOP + ChaseCase.STOP_SECONDS + 1.0) * Engine.physics_ticks_per_second))
+	assert_true(level.case.stopped, "flat, he gets out and gives up")
+
+
+func test_the_net_on_top_of_him_holds_him_until_he_gives_up() -> void:
+	var level := _level()
+	await wait_physics_frames(10)
+	_chasing(level)
+	await wait_physics_frames(30)
+	var truck := level.truck
+	var car := level.case.car
+	car.global_transform = Transform3D(truck.global_basis, truck.global_position - truck.global_basis.z * ChaseTasks.NET_AHEAD + Vector3.UP * 0.3)
+	level.case.tasks.throw_net()
+	await wait_physics_frames(5)
+	assert_gt(truck.tangled_left, 0.0, "tangled up in the net")
+	await wait_physics_frames(roundi((ChaseCase.STOP_SECONDS + 0.5) * Engine.physics_ticks_per_second))
+	assert_true(level.case.stopped)

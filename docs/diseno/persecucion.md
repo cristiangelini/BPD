@@ -81,7 +81,9 @@ El host maneja al sospechoso y decide los medidores (decisión 50), como con el 
 2. El caso: el comisario lo da, el medidor de distancia, esposarlo, perderlo y la pantalla del turno. Con el heladero.
 3. Las tareas, en dos PR: primero el mapa del copiloto y el megáfono (cada grito lo pone nervioso 2,5 s y frena, y la
    mitad de las veces dobla para otro lado en la esquina siguiente; un grito cada 4 s, **propuesta**), después los
-   pinchos y la red por la ventana. Un asiento vacío le pasa su tarea al copiloto, y si no hay, al conductor.
+   pinchos y la red por la ventana (los pinchos caen 4,5 m detrás del patrullero y le pinchan las ruedas: frena del
+   todo en 2 s; la red cae 12 m adelante y lo enreda 4 s; **propuesta**). El que tiene megáfono y ventana a la vez
+   elige con 1 y 2. Un asiento vacío le pasa su tarea al copiloto, y si no hay, al conductor.
 4. Los daños a la ciudad y su multa.
 5. El sorteo en "Jugar".
 6. Los otros 9 sospechosos, uno o dos por PR.
