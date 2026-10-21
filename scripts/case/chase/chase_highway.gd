@@ -71,7 +71,7 @@ func _physics_process(delta: float) -> void:
 	_cooldown = maxf(_cooldown - delta, 0.0)
 	var cop := case.tasks.local_cop()
 	if case.chasing and case.tasks.does(cop, ChaseTasks.MAP_SEATS) and Input.is_action_just_pressed("ask"):
-		call_backup()
+		case.tasks.do_job("call_backup")
 
 
 ## The copilot asks for backup: every cop hears the comisario's excuse of the day. Returns the excuse, or "" while

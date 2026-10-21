@@ -111,3 +111,4 @@
 - Online interrogation: the host's case counts every cop's action (a guest's E, donut, chair, coffee or shout too) and every PC sees the same meters, lines, lamp, confessions on the table, lawyer and end of shift.
 - Online owner: the host walks the cuffed owner after whichever cop took him, every PC sees him ride in the back of the patrol car, and the host's owner in custody sits in the next interrogation's chair on every PC.
 - Online chase: the host drives the suspect and every PC sees his vehicle drive off, the clock, the distance meter, the parents' complaint, losing him and the end of shift.
+- Online chase tasks: the megaphone, the spikes, the net, the cones and the backup radio work from any player's seat; the host does them and every PC sees the shout and what lands on the street.

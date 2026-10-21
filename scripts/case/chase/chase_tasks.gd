@@ -29,6 +29,9 @@ const MEGAPHONE_COOLDOWN := 4.0
 const NERVOUS_SECONDS := 2.5
 const WRONG_TURN := 0.5
 const SHOUT_SECONDS := 1.5
+## Each job a cop asks for online, and the seats that do it.
+const JOBS := {"shout": MEGAPHONE_SEATS, "throw_spikes": SPIKE_SEATS, "throw_net": SPIKE_SEATS,
+	"throw_cones": SPIKE_SEATS, "call_backup": MAP_SEATS}
 
 var case: ChaseCase
 var shouts := 0
@@ -102,17 +105,34 @@ func _physics_process(delta: float) -> void:
 			cop.show_hint(_window_hint())
 	var at_window := throws_here and (window_picked or not shouts_here)
 	if at_window and Input.is_action_just_pressed("grab"):
-		if uses_cones():
-			throw_cones()
-		else:
-			throw_spikes()
+		do_job("throw_cones" if uses_cones() else "throw_spikes")
 	elif at_window and Input.is_action_just_pressed("throw"):
-		throw_net()
+		do_job("throw_net")
 	elif shouts_here and not at_window and Input.is_action_just_pressed("grab"):
-		shout()
+		do_job("shout")
 	# From the back, the siren too (the driver keeps his own H).
 	if case.car.seat_of(cop) == 3 and Input.is_action_just_pressed("siren"):
 		cop.act("toggle_siren", case.car)
+
+
+## Does a job (one of JOBS) of this PC's cop: online a guest asks the host, whose chase decides (CaseSync).
+func do_job(job: String) -> void:
+	if case.online and case.follower:
+		case.online.request_job(job)
+	elif job == "call_backup":
+		case.highway.call_backup()
+	else:
+		call(job)
+
+
+## Host: `cop` (a guest's) asked for `job`; it's done only if that cop is the one doing it.
+func job_by(cop: Cop, job: String) -> void:
+	if JOBS.has(job) and does(cop, JOBS[job]) and case.chasing:
+		if job == "call_backup":
+			if case.highway:
+				case.highway.call_backup()
+		else:
+			call(job)
 
 
 ## "¡Deténgase!" through the megaphone: he gets nervous and slows down, and sometimes turns the wrong way at the next
@@ -123,6 +143,7 @@ func shout() -> bool:
 	_cooldown = MEGAPHONE_COOLDOWN
 	shouts += 1
 	_show_shout()
+	_tell_guests("shown_shout")
 	case.truck.scare(NERVOUS_SECONDS)
 	if _rng.randf() >= WRONG_TURN:
 		return false
@@ -170,6 +191,7 @@ func throw_cones() -> ChaseTrap:
 		at.x = crossing.x
 	at.y = 0.0
 	trap.global_transform = city * Transform3D(Basis(Vector3.UP, PI / 2 if along_x else 0.0), at)
+	_tell_guests("shown_trap", [trap.kind, trap.global_transform])
 	return trap
 
 
@@ -189,7 +211,29 @@ func _drop(kind: String, along: float) -> ChaseTrap:
 	var at := car.global_position + car.global_basis.z * along
 	at.y = 0.0
 	trap.global_transform = Transform3D(Basis(Vector3.UP, car.global_basis.get_euler().y), at)
+	_tell_guests("shown_trap", [kind, trap.global_transform])
 	return trap
+
+
+## Online, the host shows the guests what it just did (CaseSync.tell).
+func _tell_guests(method: String, args := []) -> void:
+	if case.online and not case.follower:
+		case.online.tell(method, args)
+
+
+## Guest: the host's megaphone shouted.
+func shown_shout() -> void:
+	shouts += 1
+	_show_shout()
+
+
+## Guest: the host threw a trap; this one only shows (the host's catches him).
+func shown_trap(kind: String, at: Transform3D) -> void:
+	var trap := ChaseTrap.new()
+	trap.kind = kind
+	trap.shown_only = true
+	case.get_parent().add_child(trap)
+	trap.global_transform = at
 
 
 ## From the corner he's heading for, he drives off a new way, never the one he had planned.
