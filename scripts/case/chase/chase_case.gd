@@ -8,7 +8,7 @@ extends Node
 ## running out before he's cuffed loses it. Every number here is (propuesta), except the minute (Cristian, 20/10).
 
 ## The suspects (persecucion.md, "Los sospechosos"), each with what he leaves behind (ChaseDrops).
-const SUSPECTS := ["ice_cream", "moving_truck", "school_bus", "rain", "night", "moto"]
+const SUSPECTS := ["ice_cream", "moving_truck", "school_bus", "rain", "night", "moto", "wheelchair"]
 ## Seconds to catch him: the chase has a clock (Cristian, 20/10: "pongamos primero 1 minuto").
 const TIME_LIMIT := 60.0
 ## Farther than this (m) the meter climbs CLIMB a second; closer it drops DROP a second. At ESCAPED he got away.
@@ -20,6 +20,12 @@ const ESCAPED := 100.0
 const STOP_SECONDS := 3.0
 ## He gets out by his door: this far to his vehicle's left.
 const DOOR_OUT := 2.0
+## The grandpa in the electric wheelchair you chase on foot (persecucion.md): the chase starts once a cop gets this
+## close to him (or takes the wheel), the distance counts from the nearest cop, and only a cop on foot in his way, this
+## close, makes him give up; the patrol car in his way doesn't.
+const ON_FOOT := ["wheelchair"]
+const START_NEAR := 25.0
+const BLOCK_NEAR := 2.5
 ## A chase pays the salary and has its own quota, like the interrogation (decision 91).
 const QUOTA := ShiftReport.SALARY
 const SHIFT_DELAY := 2.5
@@ -73,6 +79,7 @@ var case_failed := false
 var complaint := 0.0
 var shift_over := false
 var _result := {}
+var _told_on_foot := false
 
 
 static func pick_suspect(seed_value: int, args: PackedStringArray) -> String:
@@ -127,19 +134,22 @@ func _physics_process(delta: float) -> void:
 	if case_failed or case_solved or not tip_given:
 		return
 	if not chasing:
-		# The suspect drives off once a cop takes the wheel.
-		if car.driver():
+		# The suspect drives off once a cop takes the wheel (or, on foot, walks up to him).
+		if car.driver() or (on_foot() and _nearest_cop() < START_NEAR):
 			chasing = true
 			truck.driving = true
 		return
 	if not caught:
 		time_left = maxf(time_left - delta, 0.0)
 	if not stopped:
-		var gap := car.global_position - truck.global_position
-		gap.y = 0.0
-		distance = clampf(distance + (CLIMB if gap.length() > FAR else -DROP) * delta, 0.0, ESCAPED)
+		var gap := _nearest_cop() if on_foot() else _flat(car.global_position - truck.global_position).length()
+		distance = clampf(distance + (CLIMB if gap > FAR else -DROP) * delta, 0.0, ESCAPED)
 		if truck.stuck_for >= STOP_SECONDS:
-			pull_over()
+			if not on_foot() or _cop_on_foot_near():
+				pull_over()
+			elif not _told_on_foot:
+				_told_on_foot = true
+				_hint_all("HINT_CHASE_ON_FOOT")
 	meters_changed.emit(distance, time_left)
 	if not caught and suspect and suspect.is_cuffed():
 		caught = true
@@ -152,6 +162,31 @@ func _physics_process(delta: float) -> void:
 		case_solved = true
 		solved_label.show()
 		_finish_soon()
+
+
+## This chase is on foot (the wheelchair).
+func on_foot() -> bool:
+	return ON_FOOT.has(suspect_id)
+
+
+## Meters from the suspect to the nearest cop, on foot or in the car.
+func _nearest_cop() -> float:
+	var nearest := INF
+	for cop in get_tree().get_nodes_in_group("cops"):
+		nearest = minf(nearest, _flat((cop as Node3D).global_position - truck.global_position).length())
+	return nearest
+
+
+## Whether a cop on foot (not in the car) is right by him: the one in his way.
+func _cop_on_foot_near() -> bool:
+	for cop in get_tree().get_nodes_in_group("cops"):
+		if not (cop as Cop).vehicle and _flat((cop as Node3D).global_position - truck.global_position).length() < BLOCK_NEAR:
+			return true
+	return false
+
+
+static func _flat(v: Vector3) -> Vector3:
+	return Vector3(v.x, 0.0, v.z)
 
 
 ## A hard ram on the school bus, full of kids: the parents complain.

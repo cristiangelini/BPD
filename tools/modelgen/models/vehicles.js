@@ -246,10 +246,37 @@ export function buildDeliveryScooter() {
 	return b.build();
 }
 
+// The electric wheelchair (persecución, sospechoso 9): two big wheels, two small ones in front, a joystick on the arm
+// and a little flag on a pole so everyone sees him coming. The grandpa (npc_abuelo) sits in it. 1.2 m long, 0.75 m
+// wide; faces +Z like the rest. Its wheels are part of it.
+export function buildWheelchair() {
+	const frame = mat('chair_frame', 0x3a3e46), cushion = mat('chair_cushion', 0x2a5ab0), tire = mat('tire', 0x1a1a1e);
+	const rim = mat('rim', 0xc8ccd2), flag = mat('chair_flag', 0xff7a1a), battery = mat('battery', 0x202226);
+	const b = new Builder('wheelchair');
+	for (const x of [-1, 1]) {
+		b.add('wheels', tire, new THREE.CylinderGeometry(0.32, 0.32, 0.08, 12), { pos: V(x * 0.38, 0.32, -0.15), rot: [0, 0, Math.PI / 2] });
+		b.add('wheels', rim, new THREE.CylinderGeometry(0.24, 0.24, 0.09, 10), { pos: V(x * 0.38, 0.32, -0.15), rot: [0, 0, Math.PI / 2] });
+		b.add('wheels', tire, new THREE.CylinderGeometry(0.1, 0.1, 0.06, 8), { pos: V(x * 0.28, 0.1, 0.4), rot: [0, 0, Math.PI / 2] });
+		box(b, 'frame', frame, 0.04, 0.04, 0.6, x * 0.3, 0.22, 0.12);
+		// Armrests, the right one with the joystick.
+		box(b, 'frame', frame, 0.06, 0.04, 0.45, x * 0.3, 0.72, 0.0);
+		box(b, 'frame', frame, 0.04, 0.24, 0.04, x * 0.3, 0.6, 0.2);
+	}
+	box(b, 'seat', cushion, 0.56, 0.1, 0.5, 0, 0.48, 0.0);
+	box(b, 'seat', cushion, 0.56, 0.6, 0.08, 0, 0.82, -0.27, [-0.1, 0, 0]);
+	box(b, 'frame', battery, 0.4, 0.22, 0.3, 0, 0.3, -0.12);
+	box(b, 'frame', frame, 0.4, 0.04, 0.14, 0, 0.12, 0.48);
+	b.add('frame', black, new THREE.CylinderGeometry(0.02, 0.02, 0.1, 6), { pos: V(0.3, 0.8, 0.18) });
+	b.add('frame', mat('joystick_knob', 0xd8322a), new THREE.SphereGeometry(0.035, 6, 4), { pos: V(0.3, 0.86, 0.18) });
+	b.add('flag', frame, new THREE.CylinderGeometry(0.012, 0.012, 1.4, 5), { pos: V(-0.32, 1.25, -0.3) });
+	b.add('flag', flag, new THREE.BoxGeometry(0.01, 0.2, 0.3), { pos: V(-0.32, 1.85, -0.45) });
+	return b.build();
+}
+
 export const models = { patrol_car: buildPatrolCar, car_wheel: buildCarWheel, ice_cream_truck: buildIceCreamTruck,
 	moving_truck: buildMovingTruck, falling_sofa: buildFallingSofa, falling_wardrobe: buildFallingWardrobe, falling_lamp: buildFallingLamp,
 	falling_box: buildFallingBox, school_bus: buildSchoolBus, getaway_car: buildGetawayCar,
-	delivery_scooter: buildDeliveryScooter };
+	delivery_scooter: buildDeliveryScooter, wheelchair: buildWheelchair };
 
 const wheels = [[-1.1, 1.55], [1.1, 1.55], [-1.1, -1.55], [1.1, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }));
 export const views = {
@@ -264,6 +291,10 @@ export const views = {
 	school_bus: {
 		items: [{ name: 'school_bus', pos: [0, 0, 0] }, ...[[-1.15, 2.7], [1.15, 2.7], [-1.15, -2.6], [1.15, -2.6]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }))],
 		cam: { pos: [9.5, 4.8, 8.5], target: [0, 1.4, 0], fov: 40 },
+	},
+	wheelchair: {
+		items: [{ name: 'wheelchair', pos: [0, 0, 0] }, { name: 'npc_abuelo', pos: [0, 0.12, 0.02], scale: 0.72 }],
+		cam: { pos: [2.6, 1.6, 2.6], target: [0, 0.75, 0], fov: 38 },
 	},
 	delivery_scooter: {
 		items: [{ name: 'delivery_scooter', pos: [0, 0, 0] }, { name: 'npc_repartidor', pos: [0, 0.36, -0.15], scale: 0.85 }],
