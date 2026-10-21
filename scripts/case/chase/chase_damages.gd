@@ -2,8 +2,8 @@ class_name ChaseDamages
 extends Node
 
 ## The damage the patrol car does to the city in a chase (persecucion.md, "Cómo es el caso"): every hard crash into
-## something of the city (a wall, a traffic light, a tree) is a fine, taken off the pay like the raid's broken
-## ornaments. Ramming the suspect's vehicle is the job, so it's free, but it's counted (`rammed`): the school bus's
+## something of the city (a wall, a traffic light, a tree, a car of the highway's traffic) is a fine, taken off the pay
+## like the raid's broken ornaments. Ramming the suspect's vehicle is the job, so it's free, but it's counted (`rammed`): the school bus's
 ## parents complain about it. Breaking a toll barrier on the highway is a fine too (persecucion-lugares.md).
 ## Every number here is (propuesta).
 
@@ -76,7 +76,7 @@ func _look_at_contacts() -> void:
 		return
 	for i in state.get_contact_count():
 		var body := state.get_contact_collider_object(i) as PhysicsBody3D
-		if (body is StaticBody3D or body is SuspectCar) and absf(state.get_contact_local_normal(i).y) < 0.5:
+		if (body is StaticBody3D or body is SuspectCar or body is TrafficCar) and absf(state.get_contact_local_normal(i).y) < 0.5:
 			if body != _touched or _watch <= 0:
 				_touched = body
 				_watch = SPEED_FRAMES

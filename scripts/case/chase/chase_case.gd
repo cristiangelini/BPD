@@ -56,6 +56,8 @@ var damages: ChaseDamages
 var drops: ChaseDrops
 ## The rain or the night, when the chase has them; the level hands over its sky and sun before start().
 var weather: ChaseWeather
+## The highway's traffic and the backup radio, only when he takes the highway.
+var highway: ChaseHighway
 var world_environment: WorldEnvironment
 var sun: DirectionalLight3D
 var station_parking: Transform3D
@@ -110,6 +112,10 @@ func start(comisario: Comisario = null) -> void:
 	weather = ChaseWeather.new()
 	weather.case = self
 	add_child(weather)
+	if suspect_id == SuspectCar.HIGHWAY:
+		highway = ChaseHighway.new()
+		highway.case = self
+		add_child(highway)
 	if comisario:
 		comisario.spoke.connect(give_tip.unbind(1))
 		car.locked_hint = "HINT_COMISARIO_FIRST"

@@ -3,8 +3,9 @@ extends Node3D
 
 ## One toll barrier across one side of the highway (persecucion-lugares.md, "En la autopista"): a vehicle that stops
 ## (under 10 km/h) by the booth gets the arm lifted; one that drives into the lowered arm breaks it, and the arm lies on
-## the road until a new one goes up. The barrier never stops anyone. Its +X runs across the road, from the median
-## to the guardrail; +Z along it. Every number here is (propuesta).
+## the road until a new one goes up. The highway's traffic has the toll tag: it lifts the arm without stopping. The
+## barrier never stops anyone. Its +X runs across the road, from the median to the guardrail; +Z along it. Every
+## number here is (propuesta).
 
 signal broken(by: Node3D)
 
@@ -57,7 +58,7 @@ func _physics_process(delta: float) -> void:
 		return
 	_open_for = maxf(0.0, _open_for - delta)
 	for body in _zone.get_overlapping_bodies():
-		if _is_vehicle(body) and speed_of(body) < SLOW:
+		if body.is_in_group("traffic") or (_is_vehicle(body) and speed_of(body) < SLOW):
 			_open_for = OPEN_SECONDS
 	is_open = _open_for > 0.0
 	_arm.rotation.z = move_toward(_arm.rotation.z, -PI / 2 if is_open else 0.0, LIFT_RATE * delta)
