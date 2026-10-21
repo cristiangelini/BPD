@@ -47,7 +47,7 @@ const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 ## Got away in the middle of another case, his vehicle keeps going this long (s) before it's gone.
 const GONE_AFTER := 4.0
 ## Its meters go under the other case's own at the top of the screen (px).
-const EMBEDDED_METERS_TOP := 84.0
+const EMBEDDED_METERS_TOP := 112.0
 
 signal meters_changed(distance: float, time_left: float)
 signal complaint_changed(complaint: float)
@@ -120,13 +120,16 @@ static func pick_suspect(seed_value: int, args: PackedStringArray) -> String:
 
 ## Starts a chase in the middle of another case: `kind` (SuspectCar.MODELS) drives off from `at` and on through the
 ## city's streets in `patrol_car`'s level, with the clock and the distance meter at the top while it lasts. The copilot's
-## `map`, if the level has one, shows him to whoever reads it.
+## `map`, if the level has one, shows him to whoever reads it. A vehicle already parked there (`parked`) is the one he
+## takes.
 static func begin(parent: Node, kind: String, at: Transform3D, patrol_car: PatrolCar, city: Node3D, seed_value: int,
-		map: CityMap = null) -> ChaseCase:
-	var fleeing := SuspectCar.new()
-	fleeing.name = "FleeingCar"
-	fleeing.kind = kind
-	parent.add_child(fleeing, true)
+		map: CityMap = null, parked: SuspectCar = null) -> ChaseCase:
+	var fleeing := parked
+	if not fleeing:
+		fleeing = SuspectCar.new()
+		fleeing.name = "FleeingCar"
+		fleeing.kind = kind
+		parent.add_child(fleeing, true)
 	var to_city := city.global_transform
 	var start_corner := ChaseRoute.nearest_corner(to_city.affine_inverse() * at.origin)
 	var drawn := ChaseRoute.draw(seed_value, ChaseRoute.CORNERS, start_corner)

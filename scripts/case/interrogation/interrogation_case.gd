@@ -162,6 +162,16 @@ var loose := false
 var _seen := false
 var _grip_by: Cop
 var _grip_left := 0.0
+## The dangerous one out the front door takes the old patrol car (`getaway`, parked by the station) and the cops chase
+## him in the good one (`car`) through the city (persecucion-final.md, decision 96): caught, he's back in his chair;
+## got away, the interrogation is lost. The level hands over the cars, the city and the copilot's map.
+var car: PatrolCar
+var getaway: SuspectCar
+var city: Node3D
+var city_map: CityMap
+var chase: ChaseCase
+var escaping := false
+var escaped := false
 ## The twins: the one in the cell, his nerves and slips, whether he's the guilty one, which twin the folder was last
 ## shown to (null: the one in the room, where it starts), and whether the two are swapped while working the cell's.
 var twin: InterrogationSuspect
@@ -227,6 +237,8 @@ func start(comisario: Comisario = null) -> void:
 		give_tip()
 	shift_screen.play_again.connect(_play_again)
 	shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
+	if suspect:
+		suspect.outside.connect(_on_outside)
 
 
 func give_tip() -> void:
@@ -252,7 +264,7 @@ func _play_again() -> void:
 
 ## The cops can work on him: the case was given and it isn't over.
 func is_on() -> bool:
-	return tip_given and not confessed and not lawyer_came
+	return tip_given and not confessed and not lawyer_came and not escaped
 
 
 func _process(delta: float) -> void:
@@ -268,6 +280,8 @@ func _physics_process(delta: float) -> void:
 
 ## The dangerous one: loose, the lawyer goes up and the grip wears off; cuffed, he slips them unwatched.
 func _watch(delta: float) -> void:
+	if escaping:
+		return
 	if loose:
 		lawyer = minf(lawyer + LOOSE_LAWYER * delta, FULL)
 		_emit()
@@ -284,6 +298,7 @@ func _watch(delta: float) -> void:
 		loose = true
 		_unwatched = 0.0
 		suspect.run()
+		suspect.can_leave = getaway != null and online == null
 		_say("SUSPECT_BREAKS_LOOSE", true)
 		_hint_all("HINT_SUSPECT_LOOSE")
 
@@ -325,6 +340,40 @@ func grab_loose(cop: Cop) -> void:
 	_emit()
 	_say("SUSPECT_CAUGHT", true)
 	_check(cop)
+
+
+## Out the front door: he's off in the old patrol car and the chase is on.
+func _on_outside() -> void:
+	if not loose or not is_on() or not getaway:
+		return
+	loose = false
+	escaping = true
+	suspect.hide()
+	chase = ChaseCase.begin(get_parent(), SuspectCar.OLD_PATROL, getaway.global_transform, car, city, case_seed,
+		city_map, getaway)
+	chase.who = "dangerous"
+	chase.ended.connect(_on_chase_ended)
+	_hint_all("HINT_DANGEROUS_STREET")
+
+
+func _on_chase_ended(caught: bool) -> void:
+	escaping = false
+	if not caught:
+		escaped = true
+		failed_label.text = "CASE_FAILED_SUSPECT_ESCAPED"
+		failed_label.show()
+		_finish_soon()
+		return
+	# Back from the patrol car to his chair, scared.
+	if chase.home_car().prisoner == chase.suspect:
+		chase.home_car().prisoner = null
+	chase.suspect.queue_free()
+	suspect.sit()
+	nerves = clampf(nerves + CAUGHT_NERVES, 0.0, FULL)
+	_emit()
+	_say("SUSPECT_CAUGHT", true)
+	_hint_all("HINT_DANGEROUS_BACK")
+	_check(null)
 
 
 func _doze(delta: float) -> void:
