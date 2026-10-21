@@ -32,6 +32,8 @@ const MODELS := {
 	"highway": preload("res://assets/models/sports_car.glb"),
 	"tow_truck": preload("res://assets/models/tow_truck.glb"),
 	"golf_cart": preload("res://assets/models/golf_cart.glb"),
+	# The dangerous suspect takes the old patrol car from behind the station (persecucion-final.md).
+	"old_patrol": preload("res://assets/models/old_patrol_car.glb"),
 }
 ## Who rides on top of it, where you can see them, each as [model, position, scale] (they get off when he gives up).
 const RIDERS := {
@@ -51,6 +53,7 @@ const TURN_RATES := {"tow_truck": 1.0, "golf_cart": 3.2}
 const TURN_SPEEDS := {"tow_truck": 0.3, "golf_cart": 0.75}
 const GOLF := "golf_cart"
 const TOW := "tow_truck"
+const OLD_PATROL := "old_patrol"
 ## Where the towed patrol car hangs behind the tow truck: its middle, and its nose lifted this much.
 const TOWED_AT := Vector3(0, 0.55, -5.6)
 const TOWED_TILT := -0.12
@@ -63,7 +66,7 @@ const COPS_LAYER := 2
 ## Each vehicle's body (width, height, length) and wheels, when not the trucks'.
 const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 4.6), "night": Vector3(2.1, 1.4, 4.6),
 	"highway": Vector3(2.1, 1.1, 4.6), "tow_truck": Vector3(2.3, 2.4, 6.2), "golf_cart": Vector3(1.3, 1.8, 2.4),
-	"moto": Vector3(0.8, 1.6, 1.9),
+	"moto": Vector3(0.8, 1.6, 1.9), "old_patrol": Vector3(2.1, 1.5, 4.6),
 	"wheelchair": Vector3(0.8, 1.4, 1.2)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
@@ -74,7 +77,8 @@ const TOW_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.0), Vector3(1.15, 0.3
 ## The scooter's wheels are part of its model.
 const NO_WHEELS: Array[Vector3] = []
 const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS,
-	"wheelchair": NO_WHEELS, "highway": SEDAN_WHEELS, "tow_truck": TOW_WHEELS, "golf_cart": NO_WHEELS}
+	"wheelchair": NO_WHEELS, "highway": SEDAN_WHEELS, "tow_truck": TOW_WHEELS, "golf_cart": NO_WHEELS,
+	"old_patrol": SEDAN_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
