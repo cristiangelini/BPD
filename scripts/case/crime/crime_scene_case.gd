@@ -2,8 +2,9 @@ class_name CrimeSceneCase
 extends Node
 
 ## The pastry contest's case (escena-del-crimen.md, step 2): the comisario tells it in his office, the seed picks the
-## culprit and his 4 clues (CrimePlan), and Q opens the planilla with what's left to do. Finding the clues, the
-## suspects' files and the board come in the next steps; they fill `clues_found`, `files` and `accused`.
+## culprit and his 4 clues (CrimePlan), and Q opens the planilla with what's left to do. Step 3 puts the clues in the
+## tent (`found` notes one, `ruin` loses it); the suspects' files and the board come next and fill `files` and
+## `accused`.
 
 ## How often the open planilla redraws, in seconds.
 const REFRESH := 0.5
@@ -19,6 +20,9 @@ var tip_given := false
 ## A cop got to the tent.
 var at_tent := false
 var clues_found: Array[String] = []
+## Clues the cops spoiled before finding them.
+var ruined: Array[String] = []
+var flour_print: FlourPrint
 ## Indexes of the cooks whose file is done.
 var files: Array[int] = []
 var accused := false
@@ -30,6 +34,8 @@ func start(comisario: Comisario = null) -> void:
 	add_to_group("crime_scene")
 	cooks = CookTraits.draw(case_seed)
 	plan = CrimePlan.draw(cooks, case_seed)
+	if contest:
+		_place_clues()
 	briefing = CaseBriefing.new()
 	add_child(briefing)
 	checklist = CaseChecklist.new()
@@ -54,6 +60,57 @@ func give_tip() -> void:
 	checklist.show_rows(rows())
 
 
+## Puts this case's clues in the tent.
+func _place_clues() -> void:
+	contest.display_case.case = self
+	contest.display_case.has_prints = plan.clues.has("prints")
+	contest.lady.case = self
+	contest.lady.knows = plan.clues.has("witness")
+	if plan.clues.has("footprint"):
+		flour_print = FlourPrint.new()
+		flour_print.name = "FlourPrint"
+		flour_print.case = self
+		flour_print.shoe = culprit().shoe
+		var spots := PastryContest.FLOUR_SPOTS
+		flour_print.position = spots[hash("flour spot %d" % case_seed) % spots.size()]
+		contest.add_child(flour_print)
+
+
+## The cops found one of the case's clues. Returns whether it's new.
+func found(kind: String) -> bool:
+	if not plan.clues.has(kind) or clues_found.has(kind) or ruined.has(kind):
+		return false
+	clues_found.append(kind)
+	_hint_all("HINT_CRIME_CLUE")
+	checklist.show_rows(rows())
+	return true
+
+
+## The cops spoiled one of the case's clues before finding it.
+func ruin(kind: String) -> void:
+	if not plan.clues.has(kind) or clues_found.has(kind) or ruined.has(kind):
+		return
+	ruined.append(kind)
+	_hint_all("HINT_CRIME_RUINED_" + kind)
+	checklist.show_rows(rows())
+
+
+## A clue's line on the planilla: what it says about the culprit.
+func clue_line(kind: String) -> String:
+	match kind:
+		"footprint":
+			return tr("CLUE_CRIME_footprint") % culprit().shoe
+		"witness":
+			return tr("CLUE_CRIME_witness") % tr("APRON_" + str(culprit().apron))
+	return tr("CLUE_CRIME_" + kind)
+
+
+## A cop shouted (VoiceChat): the jury's lady may take offense.
+func shouted_by(cop: Cop) -> void:
+	if contest:
+		contest.lady.shouted_by(cop)
+
+
 ## The culprit's traits.
 func culprit() -> Dictionary:
 	return cooks[plan.culprit]
@@ -64,7 +121,11 @@ func rows() -> Array[Dictionary]:
 	var list: Array[Dictionary] = []
 	list.append(_row("OBJ_CRIME_GO", at_tent))
 	list.append(_row(tr("OBJ_CRIME_CLUES") % [clues_found.size(), plan.clues.size()],
-		clues_found.size() >= plan.clues.size()))
+		clues_found.size() + ruined.size() >= plan.clues.size()))
+	for kind in clues_found:
+		list.append({"text": "- " + clue_line(kind), "done": false, "optional": false, "status": true, "clue": true})
+	for kind in ruined:
+		list.append({"text": "- " + tr("CLUE_CRIME_RUINED_" + kind), "done": false, "optional": false, "status": true})
 	list.append(_row(tr("OBJ_CRIME_FILES") % [files.size(), cooks.size()], files.size() >= cooks.size()))
 	list.append(_row("OBJ_CRIME_ACCUSE", accused))
 	list.append({"text": "OBJ_CRIME_CAREFUL", "done": false, "optional": false, "status": true})

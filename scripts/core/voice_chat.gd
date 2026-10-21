@@ -154,10 +154,11 @@ func _check_shout(steam: Object, data: PackedByteArray) -> void:
 		shouted(local_cop(get_tree()))
 
 
-## Tells the interrogation that the player's cop shouted.
+## Tells the interrogation (or the crime scene) that the player's cop shouted.
 func shouted(cop: Cop) -> void:
 	if cop:
 		get_tree().call_group("interrogation", "shouted_by", cop)
+		get_tree().call_group("crime_scene", "shouted_by", cop)
 
 
 ## The cop this PC's player moves.

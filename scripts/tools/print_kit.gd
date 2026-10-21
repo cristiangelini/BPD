@@ -56,6 +56,11 @@ func _physics_process(delta: float) -> void:
 func reveal(target: Object, point: Vector3) -> Dictionary:
 	var found := prints_at(target, point)
 	var lines: PackedStringArray = []
+	# Things with their own prints (the crime scene's display case) say what they show.
+	if target.has_method("dusted"):
+		var shown: String = target.dusted(cop)
+		if shown != "":
+			lines.append(tr(shown))
 	var raid := get_tree().get_first_node_in_group("raid") as RaidCase
 	var owner_key := raid.prints_key if raid else "PRINTS_OWNER"
 	if found.owner:

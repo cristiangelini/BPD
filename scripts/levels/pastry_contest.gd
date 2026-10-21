@@ -3,7 +3,7 @@ extends Node3D
 
 ## The pastry contest's tent in the plaza (escena-del-crimen.md, step 1), south of the fountain: open sides, poles and
 ## a striped roof; the jury's table at the north end with the empty display case where the Torre de Merengue stood;
-## and six cook tables in two rows, each with its cake, its name tag and its cook behind it, facing the jury. The cooks
+## the jury's lady; and six cook tables in two rows, each with its cake, its name tag and its cook behind it, facing the jury. The cooks
 ## come from CookTraits.draw with the case seed. Every number here is (propuesta).
 
 ## Where the tent's middle is, from the plaza's center: clear of the fountain (radius 4.2) and the trees.
@@ -21,13 +21,18 @@ const TABLES: Array[Vector3] = [
 const COOK_BEHIND := 0.9
 const JURY_AT := Vector3(0, 0, -4)
 const JURY_SIZE := Vector3(5.0, 0.9, 1.0)
-const CASE_SIZE := Vector3(1.0, 1.0, 0.8)
+## Where the jury's lady sits, behind the jury's table.
+const LADY_AT := Vector3(-1.5, 0, -4.9)
+## Where the footprint in the flour can be, in the aisles between the tables (CrimeSceneCase draws one).
+const FLOUR_SPOTS: Array[Vector3] = [
+	Vector3(-3, 0, 1.3), Vector3(3, 0, 1.3), Vector3(-3, 0, -2.3), Vector3(3, 0, -2.3), Vector3(-8.5, 0, 1.3),
+	Vector3(8.5, 0, -2.3),
+]
 const POLE := Color(0.85, 0.85, 0.82)
 const ROOF_A := Color(0.95, 0.95, 0.92)
 const ROOF_B := Color(0.9, 0.35, 0.45)
 const CLOTH := Color(0.97, 0.96, 0.93)
 const WOOD := Color(0.55, 0.38, 0.24)
-const GLASS := Color(0.75, 0.9, 1.0, 0.35)
 const CAKES: Array[Color] = [
 	Color(0.55, 0.32, 0.2), Color(0.98, 0.75, 0.8), Color(0.98, 0.92, 0.6), Color(0.6, 0.85, 0.55),
 	Color(0.95, 0.95, 0.95), Color(0.75, 0.55, 0.85),
@@ -37,7 +42,8 @@ const CAKES: Array[Color] = [
 @export var case_seed := 1
 var cooks: Array[PastryCook] = []
 ## The display case where the Torre de Merengue stood, empty.
-var display_case: Node3D
+var display_case: DisplayCase
+var lady: JuryLady
 var _builder: PlaceBuilder
 
 
@@ -75,21 +81,17 @@ func _tent() -> void:
 	add_child(banner)
 
 
-## The jury's long table at the north end, with the empty display case in its middle.
+## The jury's long table at the north end, with the empty display case in its middle and the jury's lady behind.
 func _jury() -> void:
 	_counter(JURY_AT, JURY_SIZE)
-	display_case = Node3D.new()
+	display_case = DisplayCase.new()
 	display_case.name = "DisplayCase"
 	display_case.position = JURY_AT + Vector3(0, JURY_SIZE.y, 0)
 	add_child(display_case)
-	var glass := PlaceBuilder.new(display_case)
-	glass.mesh_box(Vector3(0, 0.03, 0), Vector3(CASE_SIZE.x + 0.1, 0.06, CASE_SIZE.z + 0.1), WOOD)
-	glass.open_box(Vector3(0, 0.06, 0), CASE_SIZE, "bottom", GLASS)
-	var plate := CylinderMesh.new()
-	plate.top_radius = 0.3
-	plate.bottom_radius = 0.3
-	plate.height = 0.02
-	glass.mesh(plate, Vector3(0, 0.08, 0), CLOTH)
+	lady = JuryLady.new()
+	lady.name = "JuryLady"
+	lady.position = LADY_AT
+	add_child(lady)
 
 
 ## One cook's table with his cake and name tag, and the cook behind it.
