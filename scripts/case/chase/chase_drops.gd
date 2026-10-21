@@ -34,18 +34,12 @@ var _kids_left := 0.0
 var _kids_line := 0
 var kids_bubble: Label3D
 var _rng := RandomNumberGenerator.new()
-var _wheels: Array[VehicleWheel3D] = []
-var _grip: Array[float] = []
 ## The grip the weather leaves the patrol car's tires (ChaseWeather, the rain).
 var weather_grip := 1.0
 
 
 func _ready() -> void:
 	_rng.seed = hash("drops %d" % case.case_seed)
-	for child in case.car.get_children():
-		if child is VehicleWheel3D:
-			_wheels.append(child)
-			_grip.append((child as VehicleWheel3D).wheel_friction_slip)
 	case.truck.corner_passed.connect(_on_corner)
 	if case.suspect_id == "school_bus":
 		kids_bubble = Label3D.new()
@@ -80,8 +74,7 @@ func _physics_process(delta: float) -> void:
 			(puddle[0] as Node).queue_free()
 			puddles.erase(puddle)
 	var slippery := on_puddle(case.car.global_position)
-	for i in _wheels.size():
-		_wheels[i].wheel_friction_slip = _grip[i] * weather_grip * (PUDDLE_GRIP if slippery else 1.0)
+	case.car.grip = weather_grip * (PUDDLE_GRIP if slippery else 1.0)
 
 
 ## Whether `at` is on an ice cream puddle.

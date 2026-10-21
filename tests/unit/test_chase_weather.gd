@@ -18,7 +18,7 @@ func test_in_the_rain_the_tires_grip_less_everywhere() -> void:
 	var level := _level("rain")
 	await wait_physics_frames(5)
 	var wheel: VehicleWheel3D = level.case.car.get_node("WheelFrontLeft")
-	var grip: float = level.case.drops._grip[0]
+	var grip := PatrolCar.GRIP
 	assert_almost_eq(wheel.wheel_friction_slip, grip * ChaseWeather.RAIN_GRIP, 0.01, "the wet street")
 	assert_not_null(level.case.weather.rain, "it rains around the patrol car")
 	assert_eq(level.truck.kind, "rain", "he drives the getaway car")

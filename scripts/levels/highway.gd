@@ -23,14 +23,17 @@ func _ready() -> void:
 	for offset: float in [-HighwayLayout.MEDIAN / 2 - HighwayLayout.LANE, HighwayLayout.MEDIAN / 2 + HighwayLayout.LANE]:
 		for piece in HighwayLayout.pieces(offset):
 			_along(piece, Vector3(0.15, 0.01, 0), 0.013, LINE, false, 0.0)
-	for piece in HighwayLayout.pieces():
+	# The east ramp goes on across the ring to the golf club's gate: the median and the outer guardrail open there.
+	var golf_gap := CityLayout.STREET / 2 + 0.5
+	for piece in HighwayLayout.pieces(0.0, [[HighwayLayout.ramp_point("e"), golf_gap]]):
 		_along(piece, Vector3(HighwayLayout.MEDIAN, MEDIAN_HEIGHT, 0), MEDIAN_HEIGHT / 2, City.HEDGE, true, 0.5)
 	var inner := -HighwayLayout.WIDTH / 2 - 0.2
 	var gaps := HighwayLayout.SIDES.map(func(side: String) -> Array:
 		return [HighwayLayout.ramp_point(side, inner), CityLayout.STREET / 2 + 0.5])
 	for piece in HighwayLayout.pieces(inner, gaps):
 		_along(piece, Vector3(0.3, RAIL_HEIGHT, 0), RAIL_HEIGHT / 2, RAIL, true, 0.0)
-	for piece in HighwayLayout.pieces(HighwayLayout.WIDTH / 2 + 0.2):
+	var outer := HighwayLayout.WIDTH / 2 + 0.2
+	for piece in HighwayLayout.pieces(outer, [[HighwayLayout.ramp_point("e", outer), golf_gap]]):
 		_along(piece, Vector3(0.3, RAIL_HEIGHT, 0), RAIL_HEIGHT / 2, RAIL, true, 0.0)
 	for side in HighwayLayout.SIDES:
 		var ramp := HighwayLayout.ramp_rect(side)
