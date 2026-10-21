@@ -222,9 +222,34 @@ export function buildGetawayCar() {
 	return b.build();
 }
 
+// The delivery scooter (persecución, sospechoso 2): a small red scooter with the delivery box on the back and the
+// delivery guy (npc_repartidor) rides it, standing on the board. 1.9 m long, 0.7 m wide; faces +Z like the rest. Its wheels are part of it.
+export function buildDeliveryScooter() {
+	const red = mat('scooter_red', 0xd8322a), tire = mat('tire', 0x1a1a1e), rim = mat('rim', 0xc8ccd2);
+	const jacket = mat('delivery_red', 0xd8322a), thermal = mat('thermal_box', 0xf2b01e);
+	const b = new Builder('delivery_scooter');
+	for (const z of [0.68, -0.68]) {
+		b.add('wheels', tire, new THREE.CylinderGeometry(0.26, 0.26, 0.12, 10), { pos: V(0, 0.26, z), rot: [0, 0, Math.PI / 2] });
+		b.add('wheels', rim, new THREE.CylinderGeometry(0.12, 0.12, 0.13, 8), { pos: V(0, 0.26, z), rot: [0, 0, Math.PI / 2] });
+	}
+	// Floorboard, the body under the seat, the front shield and the handlebar.
+	box(b, 'body', red, 0.36, 0.1, 0.8, 0, 0.32, 0.05);
+	box(b, 'body', red, 0.42, 0.36, 0.6, 0, 0.5, -0.45);
+	box(b, 'body', black, 0.36, 0.08, 0.5, 0, 0.72, -0.4);
+	box(b, 'body', red, 0.38, 0.75, 0.1, 0, 0.7, 0.55, [-0.25, 0, 0]);
+	box(b, 'body', grey, 0.05, 0.05, 0.3, 0, 0.95, 0.68, [-0.3, 0, 0]);
+	box(b, 'body', black, 0.6, 0.04, 0.04, 0, 1.12, 0.62);
+	box(b, 'lights', glass, 0.14, 0.1, 0.03, 0, 0.98, 0.72);
+	// The delivery box on the back.
+	box(b, 'box', thermal, 0.5, 0.45, 0.45, 0, 1.0, -0.72);
+	box(b, 'box', jacket, 0.3, 0.12, 0.02, 0, 1.05, -0.96);
+	return b.build();
+}
+
 export const models = { patrol_car: buildPatrolCar, car_wheel: buildCarWheel, ice_cream_truck: buildIceCreamTruck,
 	moving_truck: buildMovingTruck, falling_sofa: buildFallingSofa, falling_wardrobe: buildFallingWardrobe, falling_lamp: buildFallingLamp,
-	falling_box: buildFallingBox, school_bus: buildSchoolBus, getaway_car: buildGetawayCar };
+	falling_box: buildFallingBox, school_bus: buildSchoolBus, getaway_car: buildGetawayCar,
+	delivery_scooter: buildDeliveryScooter };
 
 const wheels = [[-1.1, 1.55], [1.1, 1.55], [-1.1, -1.55], [1.1, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }));
 export const views = {
@@ -239,6 +264,10 @@ export const views = {
 	school_bus: {
 		items: [{ name: 'school_bus', pos: [0, 0, 0] }, ...[[-1.15, 2.7], [1.15, 2.7], [-1.15, -2.6], [1.15, -2.6]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }))],
 		cam: { pos: [9.5, 4.8, 8.5], target: [0, 1.4, 0], fov: 40 },
+	},
+	delivery_scooter: {
+		items: [{ name: 'delivery_scooter', pos: [0, 0, 0] }, { name: 'npc_repartidor', pos: [0, 0.36, -0.15], scale: 0.85 }],
+		cam: { pos: [4.0, 2.2, 3.6], target: [0.5, 0.8, 0], fov: 38 },
 	},
 	getaway_car: {
 		items: [{ name: 'getaway_car', pos: [0, 0, 0] }, ...[[-1.05, 1.55], [1.05, 1.55], [-1.05, -1.55], [1.05, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }))],
