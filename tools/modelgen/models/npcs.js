@@ -224,6 +224,27 @@ const NPCS = {
 		b.add('cap', white, ellipsoid(0.22, 0.12, 0.2, 10, 5), { pos: V(0, 1.62, 0.0) });
 		limb(b, 'props', C('rolling_pin', 0xc8945a), V(0.5, 0.55, 0.0), V(0.5, 0.55, 0.42), 0.04);
 	},
+	// Pastelero (escena-del-crimen.md, the stolen cake): six of them at the contest, all floury and alike. The parts the
+	// game changes per cook have their own nodes: apron (recolored), hair (recolored, under the hat), glasses (shown or
+	// not), whisk (mirrored for a lefty) and the shoes (stretched to his size).
+	pastelero(b) {
+		pearBody(b, SKIN.crema, { shirt: C('chef_jacket', 0xf4f4f0), pants: C('chef_pants', 0x5a5e66), shoes: C('cook_shoes', 0x2a2a2e) });
+		for (const y of [0.82, 0.95]) for (const s of [-1, 1]) b.add('body', C('chef_button', 0xc8c8c0), new THREE.SphereGeometry(0.018, 5, 3), { pos: V(s * 0.07, y, 0.3) });
+		b.add('apron', C('apron', 0xffffff), loft([{ y: 0.3, rx: 0.42, rz: 0.12 }, { y: 0.72, rx: 0.36, rz: 0.1 }], 8), { pos: V(0, 0, 0.31) });
+		for (const [x, y, z] of [[-0.14, 0.6, 0.43], [0.12, 0.5, 0.43], [0.05, 0.9, 0.3], [-0.2, 1.3, 0.12], [0.16, 1.18, 0.15]]) b.add('body', C('flour', 0xffffff), ellipsoid(0.05, 0.035, 0.02, 5, 3), { pos: V(x, y, z) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		b.add('hair', C('hair', 0xffffff), ellipsoid(0.21, 0.13, 0.2, 10, 5), { pos: V(0, 1.4, -0.02) });
+		b.add('cap', white, new THREE.CylinderGeometry(0.18, 0.17, 0.14, 8), { pos: V(0, 1.5, 0.0) });
+		b.add('cap', white, ellipsoid(0.25, 0.16, 0.23, 10, 5), { pos: V(0, 1.66, 0.0) });
+		glasses(b);
+		// The glasses() helper puts them on the face; this cook keeps them in their own node.
+		const face = b.parts.get('face');
+		const frames = face.get(black).splice(-3);
+		b.parts.set('glasses', new Map([[black, frames]]));
+		limb(b, 'whisk', C('whisk_handle', 0xc8945a), V(0.5, 0.5, 0.0), V(0.5, 0.62, 0.18), 0.03);
+		b.add('whisk', C('whisk_wire', 0xc0c4c8), ellipsoid(0.06, 0.1, 0.06, 6, 4), { pos: V(0.5, 0.7, 0.26), rot: [0.6, 0, 0] });
+	},
 	// Cliente (a bakery customer): checked shirt, hat and a paper bag of bread.
 	cliente(b) {
 		pearBody(b, SKIN.crema, { shirt: C('checked_shirt', 0x3a8a5a), pants: C('brown_pants', 0x6a4a30) });
