@@ -255,6 +255,19 @@ const NPCS = {
 		b.add('head', hair, ellipsoid(0.16, 0.06, 0.1, 8, 4), { pos: V(0.04, 1.5, 0.12), rot: [0.3, 0, -0.2] });
 		b.add('body', C('sash', 0x2a8a4a), new THREE.TorusGeometry(0.4, 0.035, 4, 14), { pos: V(0, 0.75, 0.02), rot: [Math.PI / 2, 0.6, 0], scale: [1, 0.85, 1] });
 	},
+	// Mudancero (persecución): orange overalls with straps, a back support belt, a cap backwards and a tape measure.
+	mudancero(b) {
+		const overalls = C('overalls', 0xe8873a);
+		pearBody(b, SKIN.cacao, { shirt: C('tshirt_grey', 0xa8acb4), pants: overalls });
+		for (const s of [-1, 1]) b.add('body', overalls, new THREE.BoxGeometry(0.07, 0.4, 0.03), { pos: V(s * 0.13, 0.95, 0.28), rot: [-0.35, 0, 0] });
+		b.add('body', C('back_belt', 0x2a2a30), loft([{ y: 0.62, rx: 0.47, rz: 0.43 }, { y: 0.72, rx: 0.46, rz: 0.42 }], 10));
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		const cap = C('mover_cap', 0x3a6ad8);
+		b.add('cap', cap, ellipsoid(0.205, 0.12, 0.195, 10, 5), { pos: V(0, 1.42, 0.0) });
+		b.add('cap', cap, new THREE.CylinderGeometry(0.12, 0.12, 0.02, 8, 1, false, Math.PI / 2, Math.PI), { pos: V(0, 1.43, -0.17) });
+		b.add('props', C('tape_measure', 0xf2c84b), new THREE.BoxGeometry(0.1, 0.1, 0.05), { pos: V(0.46, 0.62, 0.1) });
+	},
 	// Heladero (persecución): white jacket with a pink apron, a paper cap, a big mustache and a cone in his hand.
 	heladero(b) {
 		const jacket = C('ice_jacket', 0xf6f2ea), pink = C('ice_pink', 0xf29ab8);

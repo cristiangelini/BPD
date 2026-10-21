@@ -9,6 +9,7 @@ const LEVEL_SCENE := preload("res://scenes/levels/chase.tscn")
 func _level() -> ChaseLevel:
 	var level: ChaseLevel = LEVEL_SCENE.instantiate()
 	level.case_seed = 7
+	level.suspect_id = "ice_cream"
 	level.get_node("Cop").input_enabled = false
 	level.get_node("Cop/Grabber").input_enabled = false
 	add_child_autofree(level)
@@ -121,7 +122,11 @@ func test_stopped_cuffed_and_brought_in_pays_the_salary() -> void:
 
 func test_the_place_draw_opens_it() -> void:
 	assert_eq(PlaceDraw.pick(7, PackedStringArray(["--place=chase"])), "chase")
-	assert_eq(ChaseCase.pick_suspect(7, PackedStringArray()), "ice_cream")
+	var drawn := {}
+	for i in 100:
+		drawn[ChaseCase.pick_suspect(i + 1, PackedStringArray())] = true
+	assert_eq(drawn.size(), ChaseCase.SUSPECTS.size(), "every suspect comes up")
+	assert_eq(ChaseCase.pick_suspect(7, PackedStringArray(["--suspect=moving_truck"])), "moving_truck")
 
 
 func test_in_a_campaign_a_chase_is_a_shift_with_its_own_quota() -> void:

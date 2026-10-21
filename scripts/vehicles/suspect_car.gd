@@ -19,7 +19,17 @@ const NERVOUS_SPEED := 0.6
 const FLAT_STOP := 2.0
 const WHEELS: Array[Vector3] = [Vector3(-1.1, 0.38, 1.7), Vector3(1.1, 0.38, 1.7), Vector3(-1.1, 0.38, -1.7),
 	Vector3(1.1, 0.38, -1.7)]
-const MODEL := preload("res://assets/models/ice_cream_truck.glb")
+## Each suspect's vehicle (ChaseCase.SUSPECTS); the trucks share one size and wheels.
+const MODELS := {
+	"ice_cream": preload("res://assets/models/ice_cream_truck.glb"),
+	"moving_truck": preload("res://assets/models/moving_truck.glb"),
+}
+
+## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
+signal corner_passed(turned: bool)
+
+## Whose vehicle it is (set before it's added).
+var kind := "ice_cream"
 const WHEEL := preload("res://assets/models/car_wheel.glb")
 
 ## Where it drives through, in the world (set before it's added, or with follow()).
@@ -45,7 +55,7 @@ func _ready() -> void:
 	shape.shape = body
 	shape.position.y = 1.35
 	add_child(shape)
-	add_child(MODEL.instantiate())
+	add_child((MODELS[kind] as PackedScene).instantiate())
 	for at in WHEELS:
 		var wheel: Node3D = WHEEL.instantiate()
 		wheel.position = at
@@ -83,6 +93,15 @@ func scare(seconds: float) -> void:
 	nervous_left = maxf(nervous_left, seconds)
 
 
+## Whether the route changes direction at point `k`.
+func _turns_at(k: int) -> bool:
+	if k < 1 or k + 1 >= points.size():
+		return false
+	var into := points[k] - points[k - 1]
+	var out := points[k + 1] - points[k]
+	return absf(Vector2(into.x, into.z).angle_to(Vector2(out.x, out.z))) > PI / 4
+
+
 func finished() -> bool:
 	return next >= points.size()
 
@@ -102,6 +121,7 @@ func _physics_process(delta: float) -> void:
 	to.y = 0.0
 	if to.length() < REACH:
 		next += 1
+		corner_passed.emit(_turns_at(next - 1))
 		return
 	var forward := global_basis.z
 	var turn := forward.signed_angle_to(to, Vector3.UP)

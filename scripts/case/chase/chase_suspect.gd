@@ -7,6 +7,7 @@ extends CharacterBody3D
 
 const MODELS := {
 	"ice_cream": preload("res://assets/models/npc_heladero.glb"),
+	"moving_truck": preload("res://assets/models/npc_mudancero.glb"),
 }
 ## Seconds a line stays over his head, and between two complaints.
 const LINE_SECONDS := 3.0

@@ -706,3 +706,7 @@ HINT_CHASE_WINDOW,"Ventana: clic tira pinchos atrás, clic derecho la red adelan
 HINT_CHASE_MAP,"Copiloto: con M ves al sospechoso en el mapa. ¡Cántale las esquinas al que maneja!","Copilot: press M to see the suspect on the map. Call the turns out to the driver!","Copiloto: com M você vê o suspeito no mapa. Diga as esquinas para quem dirige!"
 SHIFT_FINES_CRASHES,Multas (%d choques),Fines (%d crashes),Multas (%d batidas)
 HUD_DAMAGES,Daños a la ciudad: -%d,Damage to the city: -%d,Danos à cidade: -%d
+BRIEF_CHASE_moving_truck,"Un camión de mudanza. Se está mudando con los muebles de la casa de al lado, que no son suyos. Va tan cargado que en cada curva pierde algo.","A moving truck. He's moving with the furniture of the house next door, which isn't his. It's so overloaded it loses something at every turn.","Um caminhão de mudança. Ele está se mudando com os móveis da casa vizinha, que não são dele. Está tão carregado que perde algo em cada curva."
+CHASE_MOVING_TRUCK_LINE_1,"¡Yo solo hago fletes! ¡Me dijeron que eran míos!","I just do deliveries! They told me they were mine!","Eu só faço frete! Me disseram que eram meus!"
+CHASE_MOVING_TRUCK_LINE_2,"¿Alguien vio caer una lámpara? Era de mi tía.","Did anyone see a lamp fall? It was my aunt's.","Alguém viu cair uma luminária? Era da minha tia."
+CHASE_MOVING_TRUCK_LINE_3,"Si me ayudan a cargar el sofá, confieso todo.","If you help me load the sofa, I'll confess everything.","Se vocês me ajudarem a carregar o sofá, confesso tudo."

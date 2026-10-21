@@ -9,6 +9,7 @@ const LEVEL_SCENE := preload("res://scenes/levels/chase.tscn")
 func _level() -> ChaseLevel:
 	var level: ChaseLevel = LEVEL_SCENE.instantiate()
 	level.case_seed = 7
+	level.suspect_id = "ice_cream"
 	level.get_node("Cop").input_enabled = false
 	level.get_node("Cop/Grabber").input_enabled = false
 	add_child_autofree(level)

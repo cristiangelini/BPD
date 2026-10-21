@@ -101,7 +101,70 @@ export function buildIceCreamTruck() {
 	return b.build();
 }
 
-export const models = { patrol_car: buildPatrolCar, car_wheel: buildCarWheel, ice_cream_truck: buildIceCreamTruck };
+// Moving truck (persecución, sospechoso 3): orange cab, a tall brown box with a rolled-up back door, furniture piled
+// inside and a rope that clearly isn't holding anything. Same size as the ice cream truck, so it drives the same.
+export function buildMovingTruck() {
+	const orange = mat('moving_orange', 0xe8873a), brown = mat('moving_brown', 0x8a5a36), darkGlass = mat('truck_glass', 0x2a3340);
+	const rope = mat('rope', 0xd8c08a), sofa = mat('moving_sofa', 0x5a7fbf), wood = mat('moving_wood', 0xb07a48), cardboard = mat('cardboard', 0xc89c62);
+	const L = 5.2, F = L / 2, R = -L / 2, BOX_F = 0.9, TOP = 2.9;
+	const b = new Builder('moving_truck');
+	box(b, 'body', black, W, 0.2, L, 0, FLOOR - 0.1, 0);
+	box(b, 'body', orange, W, 0.65, F - BOX_F, 0, FLOOR + 0.32, (F + BOX_F) / 2);
+	box(b, 'body', darkGlass, W - 0.1, 0.6, 0.06, 0, FLOOR + 0.95, F - 0.6, [-0.4, 0, 0]);
+	box(b, 'body', orange, W, 0.12, F - BOX_F - 0.6, 0, FLOOR + 1.3, (F + BOX_F - 0.6) / 2);
+	for (const x of [-1, 1]) box(b, 'body', darkGlass, 0.04, 0.5, 0.9, x * (W / 2 + 0.01), FLOOR + 0.95, BOX_F + 0.6);
+	box(b, 'body', grey, W + 0.06, 0.18, 0.16, 0, FLOOR + 0.05, F + 0.04);
+	for (const x of [-1, 1]) box(b, 'lights', glass, 0.36, 0.14, 0.04, x * 0.72, FLOOR + 0.42, F + 0.01);
+	// The box: two walls and a roof, open at the back with the door rolled up.
+	for (const x of [-1, 1]) box(b, 'box', brown, 0.08, TOP - FLOOR, BOX_F - R, x * (W / 2 - 0.04), (TOP + FLOOR) / 2, (BOX_F + R) / 2);
+	box(b, 'box', brown, W, 0.08, BOX_F - R, 0, TOP, (BOX_F + R) / 2);
+	box(b, 'box', brown, W, TOP - FLOOR, 0.08, 0, (TOP + FLOOR) / 2, BOX_F);
+	box(b, 'box', grey, W, 0.25, 0.25, 0, TOP - 0.15, R + 0.12);
+	for (const x of [-1, 1]) box(b, 'box', orange, 0.02, 0.35, BOX_F - R - 0.3, x * (W / 2 + 0.005), FLOOR + 1.6, (BOX_F + R) / 2);
+	box(b, 'box', grey, W + 0.06, 0.18, 0.16, 0, FLOOR + 0.05, R - 0.04);
+	for (const x of [-1, 1]) box(b, 'lights', tail, 0.3, 0.14, 0.04, x * 0.72, FLOOR + 0.42, R - 0.01);
+	// The furniture inside, piled too high, and a loose rope across the back.
+	box(b, 'load', sofa, 1.8, 0.7, 0.8, 0, FLOOR + 0.45, -0.3);
+	box(b, 'load', wood, 0.9, 1.5, 0.5, -0.45, FLOOR + 1.6, -1.2, [0, 0, 0.12]);
+	box(b, 'load', cardboard, 0.6, 0.5, 0.6, 0.5, FLOOR + 1.1, -1.5);
+	box(b, 'load', cardboard, 0.5, 0.4, 0.5, 0.55, FLOOR + 1.55, -1.5, [0, 0.4, 0]);
+	b.add('load', rope, new THREE.CylinderGeometry(0.025, 0.025, W - 0.2, 5), { pos: V(0, FLOOR + 1.3, R + 0.05), rot: [0, 0, Math.PI / 2 + 0.15] });
+	for (const x of [-1, 1]) for (const z of [1.7, -1.7]) box(b, 'body', black, 0.1, 0.5, 0.95, x * (W / 2 + 0.01), FLOOR + 0.1, z);
+	return b.build();
+}
+
+// What falls off the moving truck: a sofa, a wardrobe, a floor lamp and a cardboard box. Origin on the ground.
+export function buildFallingSofa() {
+	const b = new Builder('falling_sofa'), m = mat('moving_sofa', 0x5a7fbf);
+	box(b, 'sofa', m, 1.8, 0.45, 0.8, 0, 0.23, 0);
+	box(b, 'sofa', m, 1.8, 0.5, 0.2, 0, 0.7, -0.3);
+	for (const x of [-1, 1]) box(b, 'sofa', m, 0.2, 0.3, 0.8, x * 0.8, 0.6, 0);
+	return b.build();
+}
+export function buildFallingWardrobe() {
+	const b = new Builder('falling_wardrobe'), m = mat('moving_wood', 0xb07a48), knob = mat('knob', 0x3a2414);
+	box(b, 'wardrobe', m, 0.9, 1.5, 0.5, 0, 0.75, 0);
+	box(b, 'wardrobe', knob, 0.02, 1.3, 0.02, 0, 0.75, 0.26);
+	for (const x of [-1, 1]) box(b, 'wardrobe', knob, 0.05, 0.05, 0.04, x * 0.08, 0.8, 0.27);
+	return b.build();
+}
+export function buildFallingLamp() {
+	const b = new Builder('falling_lamp'), metal = mat('lamp_metal', 0x3a3a40), shade = mat('lamp_shade', 0xf2d98a);
+	b.add('lamp', metal, new THREE.CylinderGeometry(0.2, 0.22, 0.05, 8), { pos: V(0, 0.03, 0) });
+	b.add('lamp', metal, new THREE.CylinderGeometry(0.025, 0.025, 1.4, 5), { pos: V(0, 0.72, 0) });
+	b.add('lamp', shade, new THREE.CylinderGeometry(0.15, 0.28, 0.3, 8, 1, true), { pos: V(0, 1.45, 0) });
+	return b.build();
+}
+export function buildFallingBox() {
+	const b = new Builder('falling_box'), m = mat('cardboard', 0xc89c62), tape = mat('tape', 0xe8d8a8);
+	box(b, 'box', m, 0.6, 0.5, 0.6, 0, 0.25, 0);
+	box(b, 'box', tape, 0.12, 0.01, 0.62, 0, 0.505, 0);
+	return b.build();
+}
+
+export const models = { patrol_car: buildPatrolCar, car_wheel: buildCarWheel, ice_cream_truck: buildIceCreamTruck,
+	moving_truck: buildMovingTruck, falling_sofa: buildFallingSofa, falling_wardrobe: buildFallingWardrobe, falling_lamp: buildFallingLamp,
+	falling_box: buildFallingBox };
 
 const wheels = [[-1.1, 1.55], [1.1, 1.55], [-1.1, -1.55], [1.1, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }));
 export const views = {
@@ -112,5 +175,11 @@ export const views = {
 	ice_cream_truck: {
 		items: [{ name: 'ice_cream_truck', pos: [0, 0, 0] }, ...[[-1.1, 1.7], [1.1, 1.7], [-1.1, -1.7], [1.1, -1.7]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }))],
 		cam: { pos: [7.5, 4.2, 6.5], target: [0, 1.2, 0], fov: 38 },
+	},
+	moving_truck: {
+		items: [{ name: 'moving_truck', pos: [0, 0, 0], rotY: Math.PI }, ...[[-1.1, 1.7], [1.1, 1.7], [-1.1, -1.7], [1.1, -1.7]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] })),
+			{ name: 'falling_sofa', pos: [3.2, 0, -1.5], rotY: 0.4 }, { name: 'falling_wardrobe', pos: [3.4, 0, 0.6], rotY: -0.3 },
+			{ name: 'falling_lamp', pos: [2.6, 0, 1.8] }, { name: 'falling_box', pos: [3.6, 0, 2.2], rotY: 0.6 }],
+		cam: { pos: [7.5, 4.2, -6.5], target: [0.8, 1.2, 0], fov: 42 },
 	},
 };
