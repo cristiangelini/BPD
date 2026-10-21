@@ -44,6 +44,9 @@ var speed := 0.0
 var at := Vector3.ZERO
 ## From DriverTraits.draw: name, surname, year, line and trunk.
 var driver: Dictionary = {}
+var plate := ""
+## The car the case is after (WantedPlan).
+var wanted := false
 var papers_checked := false
 var trunk_checked := false
 var lid: TrunkLid
@@ -65,6 +68,17 @@ func _ready() -> void:
 		wheel.position = wheel_at
 		add_child(wheel)
 	_build_trunk()
+	var plate_label := Label3D.new()
+	plate_label.name = "Plate"
+	plate_label.text = plate
+	plate_label.font_size = 48
+	plate_label.pixel_size = 0.004
+	plate_label.modulate = Color(0.1, 0.1, 0.12)
+	plate_label.outline_modulate = Color(0.95, 0.95, 0.9)
+	plate_label.outline_size = 18
+	plate_label.position = Vector3(0, 0.62, -LENGTH / 2 - 0.03)
+	plate_label.rotation.y = PI
+	add_child(plate_label)
 	_bubble = Label3D.new()
 	_bubble.name = "Bubble"
 	_bubble.position = Vector3(0, 2.6, 0.6)

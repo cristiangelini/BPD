@@ -28,6 +28,8 @@ const VARIANTS := {
 }
 
 var checkpoint: TrafficCheckpoint
+## Which cars come, in order, with the wanted one among them (step 4). Without it, random cars forever.
+var plan: WantedPlan
 var variant := "rush_hour"
 var case_seed := 1
 var patience := 0.0
@@ -87,6 +89,8 @@ func _physics_process(delta: float) -> void:
 
 
 func _room_to_spawn() -> bool:
+	if plan and spawned >= plan.total:
+		return false
 	return cars.is_empty() or cars.back().at.z < SPAWN_FROM - SPAWN_ROOM
 
 
@@ -94,8 +98,11 @@ func spawn() -> QueueCar:
 	var car := QueueCar.new()
 	car.name = "QueueCar%d" % spawned
 	car.checkpoint = checkpoint
-	car.look = _rng.randi()
-	car.driver = DriverTraits.draw(_rng)
+	var data := plan.cars[spawned] if plan and spawned < plan.total else WantedPlan.random_car(_rng)
+	car.look = data.look
+	car.plate = data.plate
+	car.driver = data.driver
+	car.wanted = plan != null and spawned == plan.wanted_index
 	car.at = Vector3(0, 0, SPAWN_FROM)
 	car.speed = QueueCar.SPEED
 	car.ahead = cars.back() if not cars.is_empty() else null

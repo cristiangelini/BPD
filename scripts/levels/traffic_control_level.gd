@@ -17,6 +17,9 @@ const CONES_FROM_DOOR := Vector3(-5, 0, 1.5)
 @export var case_seed := 0
 var checkpoint: TrafficCheckpoint
 var queue: TrafficQueue
+var plan: WantedPlan
+var clues: TrafficClues
+var meters: TrafficMeters
 
 
 ## Where the checkpoint goes in the city's space: cars run west (-X) on the north half of the street.
@@ -49,15 +52,30 @@ func _ready() -> void:
 		cone.name = "Cone%d" % i
 		add_child(cone)
 		cone.global_position = door + CONES_FROM_DOOR + Vector3(-0.8 * i, 0.05, 0)
+	plan = WantedPlan.draw(case_seed)
 	queue = TrafficQueue.new()
 	queue.name = "Queue"
 	queue.checkpoint = checkpoint
 	queue.case_seed = case_seed
+	queue.plan = plan
 	add_child(queue)
 	queue.passed.connect(_on_passed)
-	var meters := TrafficMeters.new()
+	meters = TrafficMeters.new()
 	meters.queue = queue
 	add_child(meters)
+	clues = TrafficClues.new()
+	clues.name = "Clues"
+	clues.plan = plan
+	clues.clue_given.connect(_on_clue)
+	add_child(clues)
+
+
+## The first clue is the case itself; the rest come by radio.
+func _on_clue(index: int, text: String) -> void:
+	meters.show_clues(clues.known_text())
+	var line := tr("HINT_TRAFFIC_START" if index == 0 else "HINT_RADIO_CLUE") % text
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		cop.show_hint(line)
 
 
 func _on_passed(_car: QueueCar, sneaked: bool) -> void:
