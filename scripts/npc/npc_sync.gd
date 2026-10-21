@@ -124,6 +124,8 @@ func _send() -> void:
 	var ids := PackedInt32Array()
 	var states := []
 	var gone := PackedInt32Array()
+	var sure_ids := PackedInt32Array()
+	var sure := []
 	for i in npcs.size():
 		var npc := npc_at(i)
 		if not npc or not npc.is_inside_tree():
@@ -132,16 +134,25 @@ func _send() -> void:
 				gone.append(i)
 			continue
 		var state := _state_of(npc)
-		if _sent.get(i, []) == state:
+		var before: Array = _sent.get(i, [])
+		if before == state:
 			continue
 		_sent[i] = state
-		ids.append(i)
-		states.append(state)
+		# Only where it is changed: that goes again in a moment if lost. Anything else (what he says, getting off his
+		# scooter, getting in the car) may not change again, so it goes reliably.
+		if before.is_empty() or before.slice(1) != state.slice(1):
+			sure_ids.append(i)
+			sure.append(state)
+		else:
+			ids.append(i)
+			states.append(state)
 	for peer: int in net.scene_peers:
 		if not gone.is_empty():
 			_removed.rpc_id(peer, gone)
 		for from in range(0, ids.size(), PER_PACKET):
 			_moved.rpc_id(peer, ids.slice(from, from + PER_PACKET), states.slice(from, from + PER_PACKET))
+		for from in range(0, sure_ids.size(), PER_PACKET):
+			_moved_all.rpc_id(peer, sure_ids.slice(from, from + PER_PACKET), sure.slice(from, from + PER_PACKET))
 
 
 @rpc("authority", "call_remote", "unreliable_ordered")
