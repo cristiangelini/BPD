@@ -95,6 +95,7 @@ func spawn() -> QueueCar:
 	car.name = "QueueCar%d" % spawned
 	car.checkpoint = checkpoint
 	car.look = _rng.randi()
+	car.driver = DriverTraits.draw(_rng)
 	car.at = Vector3(0, 0, SPAWN_FROM)
 	car.speed = QueueCar.SPEED
 	car.ahead = cars.back() if not cars.is_empty() else null
