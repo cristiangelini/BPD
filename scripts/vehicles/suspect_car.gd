@@ -34,6 +34,8 @@ const MODELS := {
 	"golf_cart": preload("res://assets/models/golf_cart.glb"),
 	# The dangerous suspect takes the old patrol car from behind the station (persecucion-final.md).
 	"old_patrol": preload("res://assets/models/old_patrol_car.glb"),
+	# The pastry contest's culprit runs off on his delivery bike (escena-del-crimen.md).
+	"bike": preload("res://assets/models/delivery_bike.glb"),
 }
 ## Who rides on top of it, where you can see them, each as [model, position, scale] (they get off when he gives up).
 const RIDERS := {
@@ -41,19 +43,22 @@ const RIDERS := {
 	"wheelchair": [[preload("res://assets/models/npc_abuelo.glb"), Vector3(0, 0.12, 0.02), 0.72]],
 	"golf_cart": [[preload("res://assets/models/npc_sospechoso.glb"), Vector3(-0.3, 0.3, -0.2), 0.7],
 		[preload("res://assets/models/npc_preso.glb"), Vector3(0.3, 0.3, -0.2), 0.7]],
+	"bike": [[preload("res://assets/models/npc_pastelero.glb"), Vector3(0, 0.3, -0.35), 0.85]],
 }
 ## The scooter and the wheelchair ride the sidewalk, not the street.
 const LANES := {"moto": ChaseRoute.SIDEWALK_LANE, "wheelchair": ChaseRoute.SIDEWALK_LANE}
 ## The electric wheelchair goes at 8 km/h (persecucion.md).
-const SPEEDS := {"wheelchair": 8.0 / 3.6, "tow_truck": 30.0 / 3.6, "golf_cart": 25.0 / 3.6}
+## The delivery bike pedals at 25 km/h and turns tight.
+const SPEEDS := {"wheelchair": 8.0 / 3.6, "tow_truck": 30.0 / 3.6, "golf_cart": 25.0 / 3.6, "bike": 25.0 / 3.6}
 ## The tow truck turns slowly and nearly stops to do it (persecucion-lugares.md): a cop cutting a corner on foot
 ## catches up with him.
 ## The golf cart turns very tight and hardly slows down to do it.
-const TURN_RATES := {"tow_truck": 1.0, "golf_cart": 3.2}
-const TURN_SPEEDS := {"tow_truck": 0.3, "golf_cart": 0.75}
+const TURN_RATES := {"tow_truck": 1.0, "golf_cart": 3.2, "bike": 3.2}
+const TURN_SPEEDS := {"tow_truck": 0.3, "golf_cart": 0.75, "bike": 0.75}
 const GOLF := "golf_cart"
 const TOW := "tow_truck"
 const OLD_PATROL := "old_patrol"
+const BIKE := "bike"
 ## Where the towed patrol car hangs behind the tow truck: its middle, and its nose lifted this much.
 const TOWED_AT := Vector3(0, 0.55, -5.6)
 const TOWED_TILT := -0.12
@@ -67,7 +72,7 @@ const COPS_LAYER := 2
 const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 4.6), "night": Vector3(2.1, 1.4, 4.6),
 	"highway": Vector3(2.1, 1.1, 4.6), "tow_truck": Vector3(2.3, 2.4, 6.2), "golf_cart": Vector3(1.3, 1.8, 2.4),
 	"moto": Vector3(0.8, 1.6, 1.9), "old_patrol": Vector3(2.1, 1.5, 4.6),
-	"wheelchair": Vector3(0.8, 1.4, 1.2)}
+	"wheelchair": Vector3(0.8, 1.4, 1.2), "bike": Vector3(0.7, 1.6, 1.9)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
@@ -78,7 +83,7 @@ const TOW_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.0), Vector3(1.15, 0.3
 const NO_WHEELS: Array[Vector3] = []
 const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS,
 	"wheelchair": NO_WHEELS, "highway": SEDAN_WHEELS, "tow_truck": TOW_WHEELS, "golf_cart": NO_WHEELS,
-	"old_patrol": SEDAN_WHEELS}
+	"old_patrol": SEDAN_WHEELS, "bike": NO_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
