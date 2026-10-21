@@ -83,8 +83,8 @@ calle. El sospechoso que se baja (y el golfista que corre), esposarlo, llevarlo 
 patrullero también. Los charcos de helado, los muebles que pierde el camión, el tráfico de la autopista y
 las barreras del peaje rotas también los decide el anfitrión. Los golfistas tiran sus pelotas en cada PC por su
 cuenta: no hacen nada. El dueño del allanamiento que se escapa (decisión 96) también: el anfitrión decide que se fue y todos
-ven la misma persecución. El peligroso del interrogatorio sigue sin escaparse online, y la
-persecución todavía no sale en el sorteo online.
+ven la misma persecución. El peligroso del interrogatorio sigue sin escaparse online. Online la
+persecución y la escena del crimen salen en el sorteo igual que jugando solo.
 
 ## El orden para hacerlo (un PR chico por paso)
 1. El auto del sospechoso que maneja solo por la ciudad, con su ruta por la semilla.
@@ -97,7 +97,7 @@ persecución todavía no sale en el sorteo online.
 4. Los daños a la ciudad y su multa: chocar algo de la ciudad perdiendo de golpe más de 15 km/h es un choque y cuesta
    50; chocar al sospechoso no cuesta nada **(propuesta)**. Por ahora cuentan paredes, semáforos y árboles; los autos
    estacionados y las vidrieras, cuando la ciudad los tenga.
-5. El sorteo en "Jugar". Online todavía no sale, hasta que la persecución se sincronice; ahí sale igual que solo.
+5. El sorteo en "Jugar". Online sale igual que solo, desde que la persecución se sincroniza.
 6. Los otros 9 sospechosos, uno o dos por PR. Primero la regla del heladero (cada 3 s deja un charco de helado de
    2,2 m que dura 25 s; encima, las ruedas del patrullero agarran el 20%) y el camión de mudanza (en cada curva se le
    cae un sofá, un ropero, una lámpara o una caja; son cosas sueltas: chocarlas no es multa pero frena; como mucho 12

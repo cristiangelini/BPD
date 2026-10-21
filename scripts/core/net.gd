@@ -190,9 +190,12 @@ func start_match() -> void:
 	if not is_online() or not multiplayer.is_server():
 		return
 	var case_seed := PlaceDraw.next_seed()
-	# No chases online yet: the chase isn't synced (persecucion.md, "Online").
-	_start_match.rpc(PlaceDraw.pick(case_seed, OS.get_cmdline_user_args(), PlaceDraw.shift_now(), false), case_seed,
-		PlaceDraw.custody_now())
+	_start_match.rpc(draw_place(case_seed), case_seed, PlaceDraw.custody_now())
+
+
+## The place the host's match opens for `case_seed`: the same draw as playing alone, chases and crime scenes too.
+func draw_place(case_seed: int) -> String:
+	return PlaceDraw.pick(case_seed, OS.get_cmdline_user_args(), PlaceDraw.shift_now())
 
 
 @rpc("authority", "call_local", "reliable")

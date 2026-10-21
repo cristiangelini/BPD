@@ -34,8 +34,8 @@ static var custody := {}
 
 ## The place for this seed: from --place=<id> among the user args, or drawn. It hashes the seed instead of taking
 ## seed % 3, because the stories are drawn with seed % their count and the two draws would go together.
-## `shift` is the campaign's shift (0 without a campaign). Without `chases` (online, until the chase and the crime
-## scene are synced) every shift that isn't an interrogation is a raid.
+## `shift` is the campaign's shift (0 without a campaign). Without `chases` every shift that isn't an interrogation is
+## a raid.
 static func pick(case_seed: int, args: PackedStringArray, shift := 0, chases := true) -> String:
 	for arg in args:
 		if arg.begins_with("--place=") and PLACES.has(arg.trim_prefix("--place=")):

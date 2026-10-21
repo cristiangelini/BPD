@@ -132,6 +132,20 @@ func test_the_hosts_owner_in_custody_comes_with_the_case() -> void:
 	assert_eq(late.match_custody, custody, "also a player who comes in during the case")
 
 
+func test_online_the_chase_and_the_crime_scene_come_up_too() -> void:
+	var host := _host()
+	# Without an owner in custody or a campaign left by another test, which would make it an interrogation.
+	Campaign.current = null
+	PlaceDraw.custody = {}
+	var places := {}
+	for i in 100:
+		places[host.draw_place(i + 1)] = true
+	assert_true(places.has("chase"), "the chase is synced (persecucion.md, \"Online\")")
+	assert_true(places.has("crime_scene"), "and the crime scene")
+	for i in 100:
+		assert_eq(host.draw_place(i + 1), PlaceDraw.pick(i + 1, [], PlaceDraw.shift_now()), "the same draw as alone")
+
+
 func test_only_the_host_starts_the_case() -> void:
 	var host := _host()
 	var guest: Node = await _guest(host)

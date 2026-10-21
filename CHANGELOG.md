@@ -116,3 +116,4 @@
 - Online chase street: the ice cream puddles, the moving truck's furniture, the highway traffic and broken toll barriers are the host's and the same on every PC.
 - Online owner escape: when the raid's owner runs off, every PC sees the same chase after him (his vehicle, the meters, him getting out) and how it ends.
 - Online crime scene: the host counts every cop's clues, files and accusations, and every PC sees the same planilla, board files, verdict, culprit's bike chase and end of shift.
+- Online draw: Play online now draws chases and crime scenes too, like playing alone.
