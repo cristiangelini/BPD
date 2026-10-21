@@ -276,6 +276,37 @@ export function buildSportsCar() {
 	return b.build();
 }
 
+// The tow truck (persecución, sospechoso 8: la grúa): an orange cab, a flat back with the crane's boom leaning back and
+// its hook hanging over the rear, an amber light bar. 6.2 m long, 2.3 m wide; faces +Z, takes the truck's wheels apart.
+export function buildTowTruck() {
+	const orange = mat('tow_orange', 0xf08a1c), dark = mat('tow_dark', 0x2b2d33), amber = mat('amber', 0xffb020, { emissive: 0x603800 });
+	const steel = mat('steel', 0x8c9098), glassDark = mat('truck_glass', 0x2a3340);
+	const BW = 2.3, F = 3.1, R = -3.1, CAB_R = 0.9, TOP = 2.6;
+	const b = new Builder('tow_truck');
+	box(b, 'body', black, BW, 0.25, F - R, 0, FLOOR - 0.05, 0);
+	// The cab up front, with its windows and the light bar.
+	box(b, 'body', orange, BW, TOP - FLOOR, F - CAB_R, 0, (TOP + FLOOR) / 2, (F + CAB_R) / 2);
+	box(b, 'body', glassDark, BW - 0.3, 0.7, 0.04, 0, TOP - 0.55, F + 0.01);
+	for (const x of [-1, 1]) box(b, 'body', glassDark, 0.04, 0.6, 1.0, x * (BW / 2 + 0.01), TOP - 0.6, (F + CAB_R) / 2 + 0.2);
+	box(b, 'body', dark, 1.4, 0.1, 0.3, 0, TOP + 0.05, (F + CAB_R) / 2);
+	for (const x of [-0.45, 0.45]) box(b, 'lights', amber, 0.5, 0.16, 0.26, x, TOP + 0.17, (F + CAB_R) / 2);
+	box(b, 'lights', glass, 0.4, 0.16, 0.04, -0.75, FLOOR + 0.45, F + 0.01);
+	box(b, 'lights', glass, 0.4, 0.16, 0.04, 0.75, FLOOR + 0.45, F + 0.01);
+	// The flat back, the crane's base and its boom leaning back over the rear, the cable and the hook.
+	box(b, 'body', dark, BW, 0.35, CAB_R - R, 0, FLOOR + 0.3, (CAB_R + R) / 2);
+	box(b, 'body', orange, 0.7, 0.6, 0.7, 0, FLOOR + 0.75, -0.6);
+	box(b, 'body', steel, 0.3, 0.3, 2.8, 0, FLOOR + 1.6, -1.8, [0.45, 0, 0]);
+	box(b, 'body', steel, 0.04, 1.0, 0.04, 0, FLOOR + 1.85, R - 0.15);
+	box(b, 'body', dark, 0.3, 0.25, 0.2, 0, FLOOR + 1.25, R - 0.15);
+	box(b, 'body', steel, BW + 0.06, 0.2, 0.16, 0, FLOOR + 0.1, R - 0.04);
+	for (const x of [-1, 1]) {
+		box(b, 'lights', tail, 0.3, 0.14, 0.04, x * 0.85, FLOOR + 0.35, R - 0.01);
+		for (const z of [2.0, -1.8]) box(b, 'body', black, 0.1, 0.55, 1.0, x * (BW / 2 + 0.01), FLOOR + 0.12, z);
+	}
+	box(b, 'body', grey, BW + 0.06, 0.2, 0.16, 0, FLOOR + 0.05, F + 0.04);
+	return b.build();
+}
+
 // The delivery scooter (persecución, sospechoso 2): a small red scooter with the delivery box on the back and the
 // delivery guy (npc_repartidor) rides it, standing on the board. 1.9 m long, 0.7 m wide; faces +Z like the rest. Its wheels are part of it.
 export function buildDeliveryScooter() {
@@ -329,7 +360,7 @@ export function buildWheelchair() {
 
 export const models = { patrol_car: buildPatrolCar, old_patrol_car: buildOldPatrolCar, car_wheel: buildCarWheel, ice_cream_truck: buildIceCreamTruck,
 	moving_truck: buildMovingTruck, falling_sofa: buildFallingSofa, falling_wardrobe: buildFallingWardrobe, falling_lamp: buildFallingLamp,
-	falling_box: buildFallingBox, school_bus: buildSchoolBus, getaway_car: buildGetawayCar, sports_car: buildSportsCar,
+	falling_box: buildFallingBox, school_bus: buildSchoolBus, getaway_car: buildGetawayCar, sports_car: buildSportsCar, tow_truck: buildTowTruck,
 	traffic_car_0: trafficCar(0), traffic_car_1: trafficCar(1), traffic_car_2: trafficCar(2), traffic_car_3: trafficCar(3),
 	delivery_scooter: buildDeliveryScooter, wheelchair: buildWheelchair };
 
@@ -366,6 +397,11 @@ export const views = {
 	traffic_car_1: {
 		items: [{ name: 'traffic_car_1', pos: [0, 0, 0] }, ...[[-1.05, 1.55], [1.05, 1.55], [-1.05, -1.55], [1.05, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }))],
 		cam: { pos: [6.5, 3.6, 6.0], target: [0, 0.9, 0], fov: 38 },
+	},
+	tow_truck: {
+		items: [{ name: 'tow_truck', pos: [0, 0, 0] }, ...[[-1.15, 2.0], [1.15, 2.0], [-1.15, -1.8], [1.15, -1.8]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] })),
+			{ name: 'patrol_car', pos: [0, 0.6, -5.4], rot: [-0.12, 0, 0] }, ...wheels.map((w) => ({ ...w, pos: [w.pos[0], w.pos[1] + 0.6, w.pos[2] - 5.4] }))],
+		cam: { pos: [9.0, 4.5, 4.0], target: [0, 1.0, -2.0], fov: 42 },
 	},
 	sports_car: {
 		items: [{ name: 'sports_car', pos: [0, 0, 0] }, ...[[-1.05, 1.55], [1.05, 1.55], [-1.05, -1.55], [1.05, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }))],

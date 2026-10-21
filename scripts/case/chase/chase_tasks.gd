@@ -17,6 +17,7 @@ const SPIKE_SEATS: Array[int] = [2, 1, 0]
 ## What each passenger seat is told on sitting down.
 const SEAT_HINTS := {1: "HINT_CHASE_MAP", 2: "HINT_CHASE_WINDOW", 3: "HINT_CHASE_MEGAPHONE"}
 const CONES_HINT := "HINT_CHASE_WINDOW_CONES"
+const EMPTY_TRUNK_HINT := "HINT_CHASE_WINDOW_EMPTY"
 ## How many of each there are, and where they land from the patrol car (m behind, m ahead).
 const SPIKES := 3
 const NETS := 3
@@ -43,6 +44,11 @@ var _shout_label: Label3D
 
 func _ready() -> void:
 	_rng.seed = hash("megaphone %d" % case.case_seed)
+	# The old patrol car's trunk is empty: the spikes and the net stayed in the good one (persecucion-lugares.md).
+	if case.car.old:
+		spikes_left = 0
+		nets_left = 0
+		cones_left = 0
 	case.car.seats_changed.connect(_tell_jobs)
 
 
@@ -137,6 +143,8 @@ func uses_cones() -> bool:
 
 
 func _window_hint() -> String:
+	if case.car.old:
+		return EMPTY_TRUNK_HINT
 	return CONES_HINT if uses_cones() else SEAT_HINTS[2]
 
 
