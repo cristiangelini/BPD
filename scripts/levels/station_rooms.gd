@@ -21,6 +21,9 @@ const FRONT_DOOR := Vector2(-1.2, 1.2)
 const OFFICE_DOOR := Vector2(-0.8, 0.8)
 const BOARD_DOOR := Vector2(-10.8, -9.6)
 const BREAK_DOOR := Vector2(9.6, 10.8)
+## The door between the office and the board room, along the office's west wall: only open while a crime scene case
+## uses the board (escena-del-crimen.md), since the board room's own door opens onto the armory.
+const BOARD_SIDE_DOOR := Vector2(-3.2, -2.0)
 const CELLS_DOOR := Vector2(5.6, 7.2)
 ## The armory counter: a window in the wall between the guard room and the armory, with bars above it.
 const COUNTER := Vector2(3.0, 7.0)
@@ -60,13 +63,14 @@ const SOLID := {
 
 
 ## Every wall piece inside the shell: [center, size] in local coordinates, doorways and the counter left open.
-## The outside walls (the facade) are built by the city with their full height.
-static func walls() -> Array:
+## The outside walls (the facade) are built by the city with their full height. With `board_open`, the office's west
+## wall has the door to the board room.
+static func walls(board_open := false) -> Array:
 	var pieces := []
 	run(pieces, "x", SPLIT_Z, -HALF_X, HALF_X, [BOARD_DOOR, OFFICE_DOOR, BREAK_DOOR])
 	run(pieces, "z", -FRONT_X, SPLIT_Z, HALF_Z, [COUNTER])
 	run(pieces, "z", FRONT_X, SPLIT_Z, HALF_Z, [CELLS_DOOR])
-	run(pieces, "z", -BACK_X, -HALF_Z, SPLIT_Z, [])
+	run(pieces, "z", -BACK_X, -HALF_Z, SPLIT_Z, [BOARD_SIDE_DOOR] if board_open else [])
 	run(pieces, "z", BACK_X, -HALF_Z, SPLIT_Z, [])
 	run(pieces, "z", CELL_SPLIT_X, SPLIT_Z, CELL_FRONT_Z, [])
 	return pieces

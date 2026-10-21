@@ -8,11 +8,16 @@ extends Node
 
 ## How often the open planilla redraws, in seconds.
 const REFRESH := 0.5
+## A second wrong accusation loses the case (propuesta, like the raid's suspicions).
+const MAX_WRONG := 2
 const COFFEE_SCENE := preload("res://scenes/props/coffee_cup.tscn")
 ## Where the carried clues go by a cook's table: the plate and the slice on top, the recipe on the floor at its front,
 ## half under the cloth, with a coffee on the table's edge just above (propuesta).
 const ON_TABLE := {"hair": Vector3(0.6, 0.9, 0), "bite": Vector3(-0.6, 0.9, 0.1), "recipe": Vector3(0.3, 0.05, -0.55)}
 const COFFEE_ON_TABLE := Vector3(0.3, 0.9, -0.3)
+
+## The comisario's verdict at the board: right, or wrong (and whether that lost the case).
+signal verdict(right: bool, lost: bool)
 
 var case_seed := 0
 var contest: PastryContest
@@ -35,6 +40,10 @@ var files: Array[int] = []
 ## What each cook's file has so far: index -> {"photo", "prints", "teeth", "hair": bool}.
 var file_parts := {}
 var accused := false
+var wrong_guesses := 0
+var lost := false
+## The station's board (CrimeBoard), where the files show up and the cops accuse.
+var board: CrimeBoard
 var _refresh_left := 0.0
 
 
@@ -124,7 +133,33 @@ func file_part(index: int, part: String) -> void:
 	if parts.values().all(func(done: bool) -> bool: return done) and not files.has(index):
 		files.append(index)
 		_hint_all(tr("HINT_FILE_DONE") % cooks[index].name)
+	if board:
+		board.refresh()
 	checklist.show_rows(rows())
+
+
+## The cops accused a cook at the board; the comisario looks.
+func accuse(index: int) -> void:
+	if accused or lost:
+		return
+	if index == plan.culprit:
+		accused = true
+		_comisario_says("BOARD_RIGHT")
+	else:
+		wrong_guesses += 1
+		lost = wrong_guesses >= MAX_WRONG
+		_comisario_says("BOARD_WRONG_LOST" if lost else "BOARD_WRONG")
+	checklist.show_rows(rows())
+	verdict.emit(accused, lost)
+
+
+## The comisario comes to the board and says it (with a player at the keys).
+func _comisario_says(key: String) -> void:
+	for cop in get_tree().get_nodes_in_group("cops"):
+		if (cop as Cop).input_enabled:
+			briefing.start(PackedStringArray([key]))
+			return
+	_hint_all(key)
 
 
 ## The cops found one of the case's clues. Returns whether it's new.
@@ -188,6 +223,9 @@ func rows() -> Array[Dictionary]:
 		if not files.has(index):
 			list.append({"text": "- " + _missing(index), "done": false, "optional": false, "status": true})
 	list.append(_row("OBJ_CRIME_ACCUSE", accused))
+	if wrong_guesses > 0:
+		list.append({"text": tr("OBJ_CRIME_WRONG") % [wrong_guesses, MAX_WRONG], "done": false, "optional": false,
+			"status": true})
 	list.append({"text": "OBJ_CRIME_CAREFUL", "done": false, "optional": false, "status": true})
 	return list
 
