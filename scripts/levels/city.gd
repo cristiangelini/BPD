@@ -31,6 +31,9 @@ const HEDGE_HEIGHT := 2.5
 @export var live_place := ""
 ## Whether the live place's scene brings the ground of its whole block (the grandpa's yard) or only its own lot.
 @export var live_block_ground := true
+## The crime scene's case opens a door from the comisario's office to the station's board room
+## (escena-del-crimen.md); otherwise the board room stays shut.
+@export var board_room_open := false
 
 ## The comisario in his office at the station; the case scene listens to him.
 var comisario: Comisario
@@ -228,7 +231,7 @@ func _station_inside(root: Node3D, size: Vector3) -> void:
 	for piece: Array in StationRooms.front_wall(StationRooms.CEILING):
 		_mesh_box(piece[0] + Vector3(0, 0, -StationRooms.WALL - 0.01), Vector3(piece[1].x, piece[1].y, 0.01), STATION_WALL, root)
 	_box(Vector3(0, StationRooms.CEILING + 0.1, 0), Vector3(size.x, 0.2, size.z), STATION_WALL, root)
-	for piece: Array in StationRooms.walls() + StationRooms.counter():
+	for piece: Array in StationRooms.walls(board_room_open) + StationRooms.counter():
 		_box(piece[0], piece[1], STATION_WALL, root)
 	for piece: Array in StationRooms.bars():
 		_box(piece[0], piece[1], BARS, root)

@@ -44,6 +44,7 @@ directional_shadow_max_distance = 120.0
 
 [node name="City" type="Node3D" parent="."]
 script = ExtResource("4")
+board_room_open = true
 
 [node name="Cop" parent="." instance=ExtResource("2")]
 
