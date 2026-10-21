@@ -65,6 +65,15 @@ comisaría, como el resto, y el mapa del copiloto los muestra.
   anda a menos de 10 km/h en los 16 m alrededor de ella, y se rompe si la cruzan más rápido; a los 20 s ponen otra.
 - El mapa del copiloto muestra el anillo, las rampas y los peajes.
 
+## Cómo quedó (paso 2a, el deportivo)
+- Un deportivo rojo sale de la esquina de la comisaría, va por las calles a 50 km/h hasta la rampa más cercana (la del
+  oeste) y da 3 vueltas al anillo a 90 km/h en el sentido de las agujas del reloj, por los carriles de la derecha.
+  En la mitad de cada lado, una de cada dos veces se cambia de carril.
+- Rompe las barreras de los peajes sin multa (la multa es solo para el patrullero).
+- En la autopista el medidor sube recién a más de 100 m; en la ciudad sigue a 60.
+- El megáfono lo pone nervioso pero no lo hace doblar mal: sabe adónde va.
+- Falta el paso 2b: el tráfico y la radio de los refuerzos.
+
 ## El orden para hacerlo (un PR chico por paso)
 1. La autopista en anillo con sus 4 rampas, el guardarraíl y los peajes, y el patrullero a 110 km/h en ella.
 2. El sospechoso de la autopista: el deportivo, el tráfico, los peajes que rompe y la radio de los refuerzos.

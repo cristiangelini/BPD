@@ -35,7 +35,12 @@ func _ready() -> void:
 	add_child(truck)
 	var start := ChaseRoute.nearest_corner(CityLayout.parking("station").origin)
 	var route := ChaseRoute.draw(case_seed, ChaseRoute.CORNERS, start)
-	truck.follow(route, city.transform)
+	if suspect_id == SuspectCar.HIGHWAY:
+		# He heads for the highway: the planned streets only lead him to the nearest ramp.
+		route.corners = HighwayRoute.city_corners(start, HighwayRoute.nearest_ramp(start))
+		truck.follow_path(HighwayRoute.draw(case_seed, start), city.transform)
+	else:
+		truck.follow(route, city.transform)
 	case = ChaseCase.new()
 	case.route = route
 	case.city_transform = city.transform

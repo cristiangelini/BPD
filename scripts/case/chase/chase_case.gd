@@ -8,7 +8,7 @@ extends Node
 ## running out before he's cuffed loses it. Every number here is (propuesta), except the minute (Cristian, 20/10).
 
 ## The suspects (persecucion.md, "Los sospechosos"), each with what he leaves behind (ChaseDrops).
-const SUSPECTS := ["ice_cream", "moving_truck", "school_bus", "rain", "night", "moto", "wheelchair"]
+const SUSPECTS := ["ice_cream", "moving_truck", "school_bus", "rain", "night", "moto", "wheelchair", "highway"]
 ## Seconds to catch him: the chase has a clock (Cristian, 20/10: "pongamos primero 1 minuto").
 const TIME_LIMIT := 60.0
 ## Farther than this (m) the meter climbs CLIMB a second; closer it drops DROP a second. At ESCAPED he got away.
@@ -16,6 +16,8 @@ const FAR := 60.0
 const CLIMB := 5.0
 const DROP := 5.0
 const ESCAPED := 100.0
+## On the highway everything is farther (persecucion-lugares.md): the meter climbs only past this.
+const HIGHWAY_FAR := 100.0
 ## Stopped this long in a row (cut off, boxed in), he gives up and gets out.
 const STOP_SECONDS := 3.0
 ## He gets out by his door: this far to his vehicle's left.
@@ -143,7 +145,7 @@ func _physics_process(delta: float) -> void:
 		time_left = maxf(time_left - delta, 0.0)
 	if not stopped:
 		var gap := _nearest_cop() if on_foot() else _flat(car.global_position - truck.global_position).length()
-		distance = clampf(distance + (CLIMB if gap > FAR else -DROP) * delta, 0.0, ESCAPED)
+		distance = clampf(distance + (CLIMB if gap > far() else -DROP) * delta, 0.0, ESCAPED)
 		if truck.stuck_for >= STOP_SECONDS:
 			if not on_foot() or _cop_on_foot_near():
 				pull_over()
@@ -162,6 +164,12 @@ func _physics_process(delta: float) -> void:
 		case_solved = true
 		solved_label.show()
 		_finish_soon()
+
+
+## How far the patrol car can fall behind before the meter climbs: farther with him on the highway.
+func far() -> float:
+	var highway := get_tree().get_first_node_in_group("highway") as Highway
+	return HIGHWAY_FAR if highway and highway.covers(truck.global_position) else FAR
 
 
 ## This chase is on foot (the wheelchair).
