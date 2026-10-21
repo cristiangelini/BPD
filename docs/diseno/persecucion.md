@@ -79,7 +79,9 @@ El host maneja al sospechoso y decide los medidores (decisión 50), como con el 
 ## El orden para hacerlo (un PR chico por paso)
 1. El auto del sospechoso que maneja solo por la ciudad, con su ruta por la semilla.
 2. El caso: el comisario lo da, el medidor de distancia, esposarlo, perderlo y la pantalla del turno. Con el heladero.
-3. Las tareas: el mapa del copiloto, los pinchos y la red por la ventana, el megáfono.
+3. Las tareas, en dos PR: primero el mapa del copiloto y el megáfono (cada grito lo pone nervioso 2,5 s y frena, y la
+   mitad de las veces dobla para otro lado en la esquina siguiente; un grito cada 4 s, **propuesta**), después los
+   pinchos y la red por la ventana. Un asiento vacío le pasa su tarea al copiloto, y si no hay, al conductor.
 4. Los daños a la ciudad y su multa.
 5. El sorteo en "Jugar".
 6. Los otros 9 sospechosos, uno o dos por PR.

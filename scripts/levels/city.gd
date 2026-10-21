@@ -36,6 +36,8 @@ const HEDGE_HEIGHT := 2.5
 var comisario: Comisario
 ## The armero behind the armory counter.
 var armero: Armero
+## Its own map, walking the city with no place in it (a chase).
+var map: CityMap
 var _materials := {}
 var _built: Node3D
 
@@ -49,7 +51,7 @@ func _ready() -> void:
 	_build()
 	# Walking the city on its own (the test scene), it brings its own map; a case scene adds one with its place.
 	if live_place == "":
-		var map := CityMap.new()
+		map = CityMap.new()
 		add_child(map)
 		map.setup(self, "", get_node_or_null("PatrolCar"))
 

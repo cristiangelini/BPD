@@ -15,12 +15,16 @@ const TARGET := Color(1, 0.82, 0.3)
 const STATION := Color(0.35, 0.55, 1)
 const COP := Color(0.45, 1, 0.5)
 const CAR := Color(1, 1, 1)
+const SUSPECT := Color(1, 0.45, 0.75)
 const BLINK := 0.5
 
 ## The city node whose local space CityLayout describes, and the place to mark (empty for none).
 var city: Node3D
 var target := ""
 var car: Node3D
+## A chase's suspect, shown only while `shows_suspect` says so (the copilot's map, persecucion.md).
+var suspect: Node3D
+var shows_suspect: Callable = func() -> bool: return true
 
 var _panel: PanelContainer
 var _canvas: Control
@@ -137,6 +141,8 @@ func _draw_map() -> void:
 			STATION.lightened(0.4) if id == "station" else TARGET)
 	if car:
 		_canvas.draw_rect(Rect2(world_to_map(car.global_position) - Vector2(5, 5), Vector2(10, 10)), CAR)
+	if is_instance_valid(suspect) and shows_suspect.call():
+		_canvas.draw_circle(world_to_map(suspect.global_position), 7.0, SUSPECT)
 	for cop in _canvas.get_tree().get_nodes_in_group("cops"):
 		_arrow(world_to_map((cop as Node3D).global_position), _map_heading(cop as Node3D))
 

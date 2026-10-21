@@ -33,6 +33,11 @@ var case_seed := 0
 var suspect_id := "ice_cream"
 var car: PatrolCar
 var truck: SuspectCar
+## His route, and where the city sits in the world (the route is in the city's space).
+var route: ChaseRoute
+var city_transform := Transform3D.IDENTITY
+## Each seat's job (the map, the megaphone...).
+var tasks: ChaseTasks
 var station_parking: Transform3D
 var shift_screen: ShiftScreen
 var solved_label: Label
@@ -69,6 +74,9 @@ func start(comisario: Comisario = null) -> void:
 	truck.driving = false
 	briefing = CaseBriefing.new()
 	add_child(briefing)
+	tasks = ChaseTasks.new()
+	tasks.case = self
+	add_child(tasks)
 	if comisario:
 		comisario.spoke.connect(give_tip.unbind(1))
 		car.locked_hint = "HINT_COMISARIO_FIRST"
