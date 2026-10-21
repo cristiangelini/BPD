@@ -782,3 +782,15 @@ HINT_CHASE_FLEES,¡Se escapa! Síganlo: tienen un minuto para agarrarlo.,He's ge
 HINT_CHASE_CAUGHT_HERE,¡Esposado! Llévalo del brazo al patrullero.,Cuffed! Walk him to the patrol car.,Algemado! Leve ele pelo braço até a viatura.
 HINT_CHASE_BACK_TO_CASE,Está en el patrullero. Sigan con el caso.,He's in the patrol car. Back to the case.,Ele está na viatura. Voltem ao caso.
 HINT_CHASE_GOT_AWAY,"Se nos escapó, novatos.","He got away, rookies.","Ele fugiu, novatos."
+HINT_ESCAPE_grandpa,"¡El abuelo vio la prueba y se escapa en la silla de ruedas! Tienen un minuto para agarrarlo.","The grandpa saw the evidence and is getting away in his wheelchair! You have one minute to catch him.","O vovô viu a prova e está fugindo na cadeira de rodas! Vocês têm um minuto para pegá-lo."
+HINT_ESCAPE_baker,"¡Marta vio la prueba y se escapa en el auto! Tienen un minuto para agarrarla.","Marta saw the evidence and is getting away in the car! You have one minute to catch her.","A Marta viu a prova e está fugindo no carro! Vocês têm um minuto para pegá-la."
+HINT_ESCAPE_groomer,"¡Ramiro vio la prueba y se escapa en el auto! Tienen un minuto para agarrarlo.","Ramiro saw the evidence and is getting away in the car! You have one minute to catch him.","O Ramiro viu a prova e está fugindo no carro! Vocês têm um minuto para pegá-lo."
+CHASE_GRANDPA_LINE_1,"¡No vi nada! ¡Iba a la farmacia, nomás!","I didn't see a thing! I was just going to the pharmacy!","Não vi nada! Eu só ia na farmácia!"
+CHASE_GRANDPA_LINE_2,"Ocho por hora y me agarran. Tengo que cambiarle las pilas.","Eight an hour and you caught me. I need new batteries.","Oito por hora e me pegaram. Preciso trocar as pilhas."
+CHASE_GRANDPA_LINE_3,"Esa prueba no es mía. Es de mi otro yo, el joven.","That evidence isn't mine. It's my other self's, the young one.","Essa prova não é minha. É do meu outro eu, o jovem."
+CHASE_BAKER_LINE_1,"¡Dejé el horno prendido! ¡Se me queman las medialunas!","I left the oven on! My croissants are burning!","Deixei o forno ligado! Meus croissants vão queimar!"
+CHASE_BAKER_LINE_2,"Yo no huía. Iba a buscar harina. Muy rápido.","I wasn't running. I was going for flour. Very fast.","Eu não estava fugindo. Ia buscar farinha. Bem rápido."
+CHASE_BAKER_LINE_3,"Si me sueltan, les regalo una docena. De ayer.","Let me go and I'll give you a dozen. From yesterday.","Se me soltarem, dou uma dúzia para vocês. De ontem."
+CHASE_GROOMER_LINE_1,"¡Los perros no pueden quedarse solos! ¡Se van a peinar entre ellos!","The dogs can't stay alone! They'll groom each other!","Os cachorros não podem ficar sozinhos! Vão se pentear entre eles!"
+CHASE_GROOMER_LINE_2,"Cuidado con el pelo. Me lo hice esta mañana.","Careful with the hair. I did it this morning.","Cuidado com o cabelo. Fiz hoje de manhã."
+CHASE_GROOMER_LINE_3,"Yo solo salí a pasear. En auto. A toda velocidad.","I just went out for a walk. By car. At full speed.","Eu só saí para passear. De carro. A toda velocidade."

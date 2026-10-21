@@ -17,6 +17,10 @@ const MODELS := {
 	"tow_truck": preload("res://assets/models/npc_mudancero.glb"),
 	"golf_cart": preload("res://assets/models/npc_sospechoso.glb"),
 	"golf_runner": preload("res://assets/models/npc_preso.glb"),
+	# The raids' owners who got away (persecucion-final.md).
+	"grandpa": preload("res://assets/models/npc_abuelo.glb"),
+	"baker": preload("res://assets/models/npc_panadera.glb"),
+	"groomer": preload("res://assets/models/npc_peluquero.glb"),
 }
 ## The golf thief who runs off (persecucion-lugares.md): at this speed (m/s), away from cops this close, staying
 ## this far inside the club's fence and off its lakes. Cuffed, he stops; once the cuffs run out he runs again.

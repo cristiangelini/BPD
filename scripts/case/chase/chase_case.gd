@@ -59,6 +59,8 @@ var case_seed := 0
 ## no weather and no shift of its own, and when it's over the case it ends goes on (ended). begin() sets it up.
 var embedded := false
 var meters: ChaseMeters
+## Who gets off when he gives up (ChaseSuspect.MODELS), when it isn't the suspect's own: a raid's owner.
+var who := ""
 var suspect_id := "ice_cream"
 var car: PatrolCar
 var truck: SuspectCar
@@ -312,7 +314,7 @@ func pull_over() -> void:
 	truck.get_off()
 	suspect = ChaseSuspect.new()
 	suspect.name = "Suspect"
-	suspect.kind = suspect_id
+	suspect.kind = who if who != "" else suspect_id
 	get_parent().add_child(suspect)
 	suspect.global_position = truck.global_position + truck.global_basis.x * DOOR_OUT + Vector3.UP * 0.1
 	suspect.rotation.y = truck.rotation.y
