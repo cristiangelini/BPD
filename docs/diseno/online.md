@@ -48,6 +48,7 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 | Caso (pista del comisario, historia, pistas, sospecha marcada, entrega, denuncia, multas) | Anfitrión | La lista de Q y los avisos iguales para todos. Cualquiera que hable con el comisario da la pista para todos, también para quien entra después |
 | Interrogatorio (medidores, confesión, abogado, lo que hay en la mesa) | Anfitrión | Los medidores, lo que dice el sospechoso, la lámpara, las confesiones del fanático, la hoja del mudo y la pantalla del turno iguales para todos; el grito se mide en la PC de quien habla y lo cuenta el anfitrión |
 | El dueño escoltado al patrullero y su interrogatorio | Anfitrión | Quién lo lleva del brazo y que va atrás en el patrullero; el dueño en custodia viaja con el caso siguiente, también para quien entra a mitad |
+| Persecución (el vehículo del sospechoso, reloj, distancia, denuncia de los padres) | Anfitrión | El sospechoso maneja solo en la PC del anfitrión; en las otras su vehículo sigue la copia. El reloj, el medidor, si se escapó o lo agarraron y la pantalla del turno iguales para todos |
 | Plata, ítems y turno | Anfitrión | La pantalla de fin de turno igual para todos |
 
 ## Herramientas
