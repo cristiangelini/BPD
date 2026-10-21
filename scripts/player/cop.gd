@@ -201,6 +201,12 @@ func eat_donut(box: DonutBox) -> bool:
 	return true
 
 
+## E with a crime scene clue in hand (CrimeClueItem): into a bag if aiming at the bags, or eaten.
+func use_clue_in_hand(item: CrimeClueItem, aimed: Node) -> void:
+	if item:
+		item.used_in_hand(self, aimed)
+
+
 func mouth_full() -> bool:
 	return _mouth_full_left > 0.0
 ## Cuffed by a partner for `seconds`: lets go of everything in hand.
@@ -383,6 +389,9 @@ func use() -> bool:
 			show_hint("HINT_DONUTS_GONE")
 			return false
 		act("eat_donut", self, [$Grabber.held])
+		return true
+	if $Grabber.held is CrimeClueItem:
+		act("use_clue_in_hand", self, [$Grabber.held, _usable_target()])
 		return true
 	if wheelbarrow:
 		return _use_wheelbarrow()

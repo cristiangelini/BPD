@@ -2,12 +2,17 @@ class_name CrimeSceneCase
 extends Node
 
 ## The pastry contest's case (escena-del-crimen.md, step 2): the comisario tells it in his office, the seed picks the
-## culprit and his 4 clues (CrimePlan), and Q opens the planilla with what's left to do. Step 3 puts the clues in the
-## tent (`found` notes one, `ruin` loses it); the suspects' files and the board come next and fill `files` and
-## `accused`.
+## culprit and his 4 clues (CrimePlan), and Q opens the planilla with what's left to do. The clues go in the tent
+## (the carried ones in `items`); `found` notes one and `ruin` loses it. The suspects' files and the board come next
+## and fill `files` and `accused`.
 
 ## How often the open planilla redraws, in seconds.
 const REFRESH := 0.5
+const COFFEE_SCENE := preload("res://scenes/props/coffee_cup.tscn")
+## Where the carried clues go by a cook's table: the plate and the slice on top, the recipe on the floor at its front,
+## half under the cloth, with a coffee on the table's edge just above (propuesta).
+const ON_TABLE := {"hair": Vector3(0.6, 0.9, 0), "bite": Vector3(-0.6, 0.9, 0.1), "recipe": Vector3(0.3, 0.05, -0.55)}
+const COFFEE_ON_TABLE := Vector3(0.3, 0.9, -0.3)
 
 var case_seed := 0
 var contest: PastryContest
@@ -23,6 +28,8 @@ var clues_found: Array[String] = []
 ## Clues the cops spoiled before finding them.
 var ruined: Array[String] = []
 var flour_print: FlourPrint
+## The clues the cops carry and bag (CrimeClueItem), by kind.
+var items := {}
 ## Indexes of the cooks whose file is done.
 var files: Array[int] = []
 var accused := false
@@ -74,6 +81,26 @@ func _place_clues() -> void:
 		var spots := PastryContest.FLOUR_SPOTS
 		flour_print.position = spots[hash("flour spot %d" % case_seed) % spots.size()]
 		contest.add_child(flour_print)
+	# Each carried clue on its own table, drawn with the seed.
+	var tables := range(PastryContest.TABLES.size())
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash("clue tables %d" % case_seed)
+	for kind: String in ["hair", "bite", "recipe"]:
+		if not plan.clues.has(kind):
+			continue
+		var table: Vector3 = PastryContest.TABLES[tables.pop_at(rng.randi_range(0, tables.size() - 1))]
+		var item := CrimeClueItem.new()
+		item.name = "Clue_" + kind
+		item.kind = kind
+		item.case = self
+		item.hair_color = CookTraits.HAIRS[culprit().hair]
+		item.position = table + ON_TABLE[kind]
+		contest.add_child(item)
+		items[kind] = item
+		if kind == "recipe":
+			var coffee: Node3D = COFFEE_SCENE.instantiate()
+			coffee.position = table + COFFEE_ON_TABLE
+			contest.add_child(coffee)
 
 
 ## The cops found one of the case's clues. Returns whether it's new.
@@ -102,6 +129,12 @@ func clue_line(kind: String) -> String:
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
 		"witness":
 			return tr("CLUE_CRIME_witness") % tr("APRON_" + str(culprit().apron))
+		"hair":
+			return tr("CLUE_CRIME_hair") % tr("HAIR_" + str(culprit().hair))
+		"bite":
+			return tr("CLUE_CRIME_bite") % tr("TEETH_" + str(culprit().teeth))
+		"recipe":
+			return tr("CLUE_CRIME_recipe_left" if culprit().left else "CLUE_CRIME_recipe_right")
 	return tr("CLUE_CRIME_" + kind)
 
 
