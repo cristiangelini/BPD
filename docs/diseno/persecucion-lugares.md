@@ -72,7 +72,13 @@ comisaría, como el resto, y el mapa del copiloto los muestra.
 - Rompe las barreras de los peajes sin multa (la multa es solo para el patrullero).
 - En la autopista el medidor sube recién a más de 100 m; en la ciudad sigue a 60.
 - El megáfono lo pone nervioso pero no lo hace doblar mal: sabe adónde va.
-- Falta el paso 2b: el tráfico y la radio de los refuerzos.
+
+## Cómo quedó (paso 2b, el tráfico y la radio)
+- 10 autos lentos (50 km/h) dan vueltas al anillo, 5 en cada sentido, cada uno en uno de sus 2 carriles. Cuando el
+  deportivo se les acerca por atrás (a 35 m o menos, en su carril) se corren al otro carril.
+- Chocar uno con el patrullero es un choque y cuesta 50. Tienen telepeaje: la barrera se levanta sola para ellos.
+- El copiloto (o el que maneja, si va solo) pide refuerzos con R. El comisario contesta con una de 8 excusas, que
+  cambian en cada pedido y arrancan distinto en cada partida. Hay 3 s de espera entre pedido y pedido.
 
 ## El orden para hacerlo (un PR chico por paso)
 1. La autopista en anillo con sus 4 rampas, el guardarraíl y los peajes, y el patrullero a 110 km/h en ella.

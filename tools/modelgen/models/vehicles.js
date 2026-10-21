@@ -198,10 +198,18 @@ export function buildSchoolBus() {
 // The getaway car (persecución, sospechosos 7 y 10: bajo la lluvia y de noche): a plain dark sedan with tinted windows
 // and its lights off, the kind you lose at night. 4.6 m long, 2.1 m wide; faces +Z like the rest.
 export function buildGetawayCar() {
-	const paint = mat('getaway_paint', 0x2c3038), tint = mat('getaway_glass', 0x14181e), chrome = mat('chrome', 0x9aa0a8);
-	const lampOff = mat('lamp_off', 0x5a5a50), tailOff = mat('tail_off', 0x501018);
+	return buildSedan('getaway_car', mat('getaway_paint', 0x2c3038), mat('lamp_off', 0x5a5a50), mat('tail_off', 0x501018));
+}
+
+// The highway's traffic (persecución, la autopista): the same plain sedan in everyday colors, lights on.
+const TRAFFIC_PAINTS = [0xf2f2ee, 0xe8c547, 0x5b9a5a, 0x7aa6d8];
+const trafficCar = (i) => () => buildSedan('traffic_car_' + i, mat('traffic_paint_' + i, TRAFFIC_PAINTS[i]),
+	mat('lamp', 0xf4f0d0), mat('tail', 0xc0202a));
+
+function buildSedan(name, paint, lampOff, tailOff) {
+	const tint = mat('getaway_glass', 0x14181e), chrome = mat('chrome', 0x9aa0a8);
 	const CW = 2.1, F = 2.3, R = -2.3, HOOD = 0.95, CABIN_F = 0.9, CABIN_R = -1.2, TOP = 1.55;
-	const b = new Builder('getaway_car');
+	const b = new Builder(name);
 	box(b, 'body', black, CW, 0.2, F - R, 0, FLOOR - 0.1, 0);
 	box(b, 'body', paint, CW, HOOD - FLOOR, F - R, 0, (HOOD + FLOOR) / 2, 0);
 	// The cabin: a narrower box with tinted windows all around, and the roof on top.
@@ -302,6 +310,7 @@ export function buildWheelchair() {
 export const models = { patrol_car: buildPatrolCar, car_wheel: buildCarWheel, ice_cream_truck: buildIceCreamTruck,
 	moving_truck: buildMovingTruck, falling_sofa: buildFallingSofa, falling_wardrobe: buildFallingWardrobe, falling_lamp: buildFallingLamp,
 	falling_box: buildFallingBox, school_bus: buildSchoolBus, getaway_car: buildGetawayCar, sports_car: buildSportsCar,
+	traffic_car_0: trafficCar(0), traffic_car_1: trafficCar(1), traffic_car_2: trafficCar(2), traffic_car_3: trafficCar(3),
 	delivery_scooter: buildDeliveryScooter, wheelchair: buildWheelchair };
 
 const wheels = [[-1.1, 1.55], [1.1, 1.55], [-1.1, -1.55], [1.1, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }));
@@ -328,6 +337,10 @@ export const views = {
 	},
 	getaway_car: {
 		items: [{ name: 'getaway_car', pos: [0, 0, 0] }, ...[[-1.05, 1.55], [1.05, 1.55], [-1.05, -1.55], [1.05, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }))],
+		cam: { pos: [6.5, 3.6, 6.0], target: [0, 0.9, 0], fov: 38 },
+	},
+	traffic_car_1: {
+		items: [{ name: 'traffic_car_1', pos: [0, 0, 0] }, ...[[-1.05, 1.55], [1.05, 1.55], [-1.05, -1.55], [1.05, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }))],
 		cam: { pos: [6.5, 3.6, 6.0], target: [0, 0.9, 0], fov: 38 },
 	},
 	sports_car: {
