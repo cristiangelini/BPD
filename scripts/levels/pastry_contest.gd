@@ -33,6 +33,9 @@ const ROOF_A := Color(0.95, 0.95, 0.92)
 const ROOF_B := Color(0.9, 0.35, 0.45)
 const CLOTH := Color(0.97, 0.96, 0.93)
 const WOOD := Color(0.55, 0.38, 0.24)
+const BREAD_SCENE := preload("res://scenes/props/bread_loaf.tscn")
+## The contest's loaves on the jury's table, for the cooks to bite (their teeth for the file).
+const LOAVES := 3
 const CAKES: Array[Color] = [
 	Color(0.55, 0.32, 0.2), Color(0.98, 0.75, 0.8), Color(0.98, 0.92, 0.6), Color(0.6, 0.85, 0.55),
 	Color(0.95, 0.95, 0.95), Color(0.75, 0.55, 0.85),
@@ -82,8 +85,8 @@ func _tent() -> void:
 	add_child(banner)
 
 
-## The jury's long table at the north end, with the empty display case in its middle, the evidence bags and the
-## jury's lady behind.
+## The jury's long table at the north end, with the empty display case in its middle, the evidence bags, a few
+## loaves and the jury's lady behind.
 func _jury() -> void:
 	_counter(JURY_AT, JURY_SIZE)
 	display_case = DisplayCase.new()
@@ -94,6 +97,11 @@ func _jury() -> void:
 	bags.name = "EvidenceBags"
 	bags.position = JURY_AT + Vector3(1.8, JURY_SIZE.y, 0)
 	add_child(bags)
+	for i in LOAVES:
+		var loaf: Node3D = BREAD_SCENE.instantiate()
+		loaf.name = "Loaf%d" % i
+		loaf.position = JURY_AT + Vector3(-2.2 + i * 0.3, JURY_SIZE.y + 0.1, 0)
+		add_child(loaf)
 	lady = JuryLady.new()
 	lady.name = "JuryLady"
 	lady.position = LADY_AT
@@ -120,6 +128,7 @@ func _table(at: Vector3, index: int, traits: Dictionary) -> void:
 	var cook := PastryCook.new()
 	cook.name = "Cook%d" % index
 	cook.traits = traits
+	cook.index = index
 	cook.position = at + Vector3(0, 0, COOK_BEHIND)
 	# The model faces +Z; the cooks face the jury, to the north.
 	cook.rotation.y = PI

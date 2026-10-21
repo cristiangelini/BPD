@@ -3,8 +3,8 @@ extends Node
 
 ## The pastry contest's case (escena-del-crimen.md, step 2): the comisario tells it in his office, the seed picks the
 ## culprit and his 4 clues (CrimePlan), and Q opens the planilla with what's left to do. The clues go in the tent
-## (the carried ones in `items`); `found` notes one and `ruin` loses it. The suspects' files and the board come next
-## and fill `files` and `accused`.
+## (the carried ones in `items`); `found` notes one and `ruin` loses it. The cooks fill their files (`file_part`); the board
+## comes next and sets `accused`.
 
 ## How often the open planilla redraws, in seconds.
 const REFRESH := 0.5
@@ -30,8 +30,10 @@ var ruined: Array[String] = []
 var flour_print: FlourPrint
 ## The clues the cops carry and bag (CrimeClueItem), by kind.
 var items := {}
-## Indexes of the cooks whose file is done.
+## Indexes of the cooks whose file is done: photo, prints, teeth and hair.
 var files: Array[int] = []
+## What each cook's file has so far: index -> {"photo", "prints", "teeth", "hair": bool}.
+var file_parts := {}
 var accused := false
 var _refresh_left := 0.0
 
@@ -43,6 +45,7 @@ func start(comisario: Comisario = null) -> void:
 	plan = CrimePlan.draw(cooks, case_seed)
 	if contest:
 		_place_clues()
+		_meet_cooks()
 	briefing = CaseBriefing.new()
 	add_child(briefing)
 	checklist = CaseChecklist.new()
@@ -103,6 +106,27 @@ func _place_clues() -> void:
 			contest.add_child(coffee)
 
 
+## The cooks know the case; one of them (by the seed) won't take off his hat for nothing.
+func _meet_cooks() -> void:
+	var stubborn := hash("stubborn cook %d" % case_seed) % cooks.size()
+	for cook in contest.cooks:
+		cook.case = self
+		cook.stubborn = cook.index == stubborn
+
+
+## One part of a cook's file is done; with the four, his file is.
+func file_part(index: int, part: String) -> void:
+	var parts: Dictionary = file_parts.get_or_add(index, {"photo": false, "prints": false, "teeth": false, "hair": false})
+	if parts[part]:
+		return
+	parts[part] = true
+	_hint_all(tr("HINT_FILE_" + part) % cooks[index].name)
+	if parts.values().all(func(done: bool) -> bool: return done) and not files.has(index):
+		files.append(index)
+		_hint_all(tr("HINT_FILE_DONE") % cooks[index].name)
+	checklist.show_rows(rows())
+
+
 ## The cops found one of the case's clues. Returns whether it's new.
 func found(kind: String) -> bool:
 	if not plan.clues.has(kind) or clues_found.has(kind) or ruined.has(kind):
@@ -160,6 +184,9 @@ func rows() -> Array[Dictionary]:
 	for kind in ruined:
 		list.append({"text": "- " + tr("CLUE_CRIME_RUINED_" + kind), "done": false, "optional": false, "status": true})
 	list.append(_row(tr("OBJ_CRIME_FILES") % [files.size(), cooks.size()], files.size() >= cooks.size()))
+	for index: int in file_parts:
+		if not files.has(index):
+			list.append({"text": "- " + _missing(index), "done": false, "optional": false, "status": true})
 	list.append(_row("OBJ_CRIME_ACCUSE", accused))
 	list.append({"text": "OBJ_CRIME_CAREFUL", "done": false, "optional": false, "status": true})
 	return list
@@ -179,6 +206,16 @@ func _physics_process(delta: float) -> void:
 	if checklist.is_open() and _refresh_left <= 0.0:
 		_refresh_left = REFRESH
 		checklist.show_rows(rows())
+
+
+## "Clara: falta foto, dientes", for a file begun but not done.
+func _missing(index: int) -> String:
+	var parts: Dictionary = file_parts[index]
+	var missing: PackedStringArray = []
+	for part: String in parts:
+		if not parts[part]:
+			missing.append(tr("FILE_PART_" + part))
+	return tr("OBJ_FILE_MISSING") % [cooks[index].name, ", ".join(missing)]
 
 
 func _row(text: String, done: bool) -> Dictionary:
