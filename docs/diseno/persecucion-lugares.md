@@ -26,8 +26,8 @@ comisaría, como el resto, y el mapa del copiloto los muestra.
 - **Pinchos y red:** iguales. Sobre el césped también sirven.
 
 ## 6. En la autopista
-- **El lugar:** el anillo de 4 carriles (dos por mano, 14 m de ancho) con guardarraíl a los costados y un cantero en el
-  medio. Mide unos 1,8 km de vuelta. Tiene **2 peajes**, uno en el lado norte y otro en el sur.
+- **El lugar:** el anillo de 4 carriles (dos por mano, 15 m de ancho) con guardarraíl a los costados y un cantero en el
+  medio. Mide unos 2 km de vuelta. Tiene **2 peajes**, uno en el lado norte y otro en el sur.
 - **El sospechoso:** un auto deportivo que entra por la rampa más cercana a la comisaría y da vueltas al anillo a
   90 km/h, cambiando de carril.
 - **Lo que cambia:**
@@ -56,6 +56,15 @@ comisaría, como el resto, y el mapa del copiloto los muestra.
   Esposado, hay que **desenganchar el patrullero** (E en el gancho de la grúa) y volver con el patrullero bueno a la
   comisaría. El auto viejo se puede dejar donde quedó.
 
+## Cómo quedó (paso 1, 21/10)
+- El anillo va a 40 m del borde de la ciudad en los lados (unos 34 m en las esquinas, que son curvas de 45 m de radio).
+  Carriles de 3,5 m, cantero de 1 m y 0,6 m de alto, guardarraíl de 0,9 m. Mide unos 2,1 km de vuelta.
+- Las rampas son planas: siguen la calle 3 de norte a sur (rampas norte y sur) y la calle 3 de oeste a este, la de la
+  comisaría (rampas este y oeste). El cerco de la ciudad se abre ahí, y otro cerco pasando la autopista cierra el mapa.
+- Peajes: el del norte a 150 m al este del centro y el del sur a 150 m al oeste. La barrera se levanta si un vehículo
+  anda a menos de 10 km/h en los 16 m alrededor de ella, y se rompe si la cruzan más rápido; a los 20 s ponen otra.
+- El mapa del copiloto muestra el anillo, las rampas y los peajes.
+
 ## El orden para hacerlo (un PR chico por paso)
 1. La autopista en anillo con sus 4 rampas, el guardarraíl y los peajes, y el patrullero a 110 km/h en ella.
 2. El sospechoso de la autopista: el deportivo, el tráfico, los peajes que rompe y la radio de los refuerzos.
@@ -63,7 +72,6 @@ comisaría, como el resto, y el mapa del copiloto los muestra.
 4. El club de golf: el lugar, con los hoyos, la arena y los lagos.
 5. Los ladrones en carrito de golf: el carrito, el que sale corriendo y llevar a los dos.
 
-## Preguntas para Cristian
-1. ¿La autopista va en anillo alrededor de la ciudad, con el club de golf afuera, del lado este? (recomiendo sí)
-2. En el golf, ¿son dos ladrones y uno sale corriendo cuando los frenan? (recomiendo sí)
-3. En la grúa, ¿el otro auto es un patrullero viejo que está detrás de la comisaría? (recomiendo sí)
+## Respuestas de Cristian (21/10)
+Sí a las tres: la autopista en anillo con el golf afuera del lado este, dos ladrones en el golf y uno sale corriendo,
+y el patrullero viejo detrás de la comisaría para la grúa.

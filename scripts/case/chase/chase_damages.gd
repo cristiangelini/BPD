@@ -4,7 +4,8 @@ extends Node
 ## The damage the patrol car does to the city in a chase (persecucion.md, "Cómo es el caso"): every hard crash into
 ## something of the city (a wall, a traffic light, a tree) is a fine, taken off the pay like the raid's broken
 ## ornaments. Ramming the suspect's vehicle is the job, so it's free, but it's counted (`rammed`): the school bus's
-## parents complain about it. Every number here is (propuesta).
+## parents complain about it. Breaking a toll barrier on the highway is a fine too (persecucion-lugares.md).
+## Every number here is (propuesta).
 
 ## Touching something of the city and losing this much speed at once (m/s, 15 km/h) is a crash, and each one costs
 ## FINE. Driving onto the sidewalk or scraping a wall loses far less.
@@ -23,6 +24,7 @@ var car: PatrolCar
 var crashes := 0
 var fines := 0
 var rams := 0
+var tolls := 0
 var _speeds: Array[float] = []
 var _last_hit := {}
 ## What the car touched, waiting to see whether it slowed down enough to be a crash, and frames left to see it.
@@ -33,6 +35,16 @@ var _watch := 0
 func _ready() -> void:
 	car.contact_monitor = true
 	car.max_contacts_reported = 8
+	for barrier in get_tree().get_nodes_in_group("toll_barriers"):
+		(barrier as TollBarrier).broken.connect(_on_barrier_broken)
+
+
+func _on_barrier_broken(by: Node3D) -> void:
+	if by != car:
+		return
+	tolls += 1
+	fines += FINE
+	crashed.emit(fines)
 
 
 func _physics_process(_delta: float) -> void:
