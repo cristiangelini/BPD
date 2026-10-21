@@ -4,7 +4,8 @@ extends Node3D
 ## The traffic control's level (control-transito.md): the whole city with the station, the cops in the guard room,
 ## the patrol car at the door and, next to it on the sidewalk, the cones and the barrier. The checkpoint is painted on
 ## the westbound lane of the street in front of the station, toward the corner. --place=traffic opens it from Play.
-## Once it's set up, the cars come and queue up (TrafficQueue), with the patience meter at the top.
+## Once it's set up, the cars come and queue up (TrafficQueue), with the patience meter at the top. The comisario
+## gives the case (TrafficCase).
 
 ## Along the street in front of the station, from the station's middle toward the east corner, in meters.
 const CHECKPOINT_ALONG := 24.0
@@ -20,6 +21,7 @@ var queue: TrafficQueue
 var plan: WantedPlan
 var clues: TrafficClues
 var meters: TrafficMeters
+var case: TrafficCase
 
 
 ## Where the checkpoint goes in the city's space: cars run west (-X) on the north half of the street.
@@ -67,15 +69,24 @@ func _ready() -> void:
 	clues.name = "Clues"
 	clues.plan = plan
 	clues.clue_given.connect(_on_clue)
-	add_child(clues)
+	case = TrafficCase.new()
+	case.name = "Case"
+	case.case_seed = case_seed
+	case.plan = plan
+	case.queue = queue
+	case.clues = clues
+	case.patrol_car = $PatrolCar
+	case.shift_screen = $ShiftScreen
+	add_child(case)
+	case.start(city.comisario)
 
 
-## The first clue is the case itself; the rest come by radio.
+## The comisario gives the first clue with the case; the rest come by radio.
 func _on_clue(index: int, text: String) -> void:
 	meters.show_clues(clues.known_text())
-	var line := tr("HINT_TRAFFIC_START" if index == 0 else "HINT_RADIO_CLUE") % text
-	for cop: Cop in get_tree().get_nodes_in_group("cops"):
-		cop.show_hint(line)
+	if index > 0:
+		for cop: Cop in get_tree().get_nodes_in_group("cops"):
+			cop.show_hint(tr("HINT_RADIO_CLUE") % text)
 
 
 func _on_passed(_car: QueueCar, sneaked: bool) -> void:
