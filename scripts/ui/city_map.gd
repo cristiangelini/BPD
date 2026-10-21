@@ -2,8 +2,8 @@ class_name CityMap
 extends CanvasLayer
 
 ## The city map on the radio (docs/diseno/ciudad.md, step 3): M opens and closes a top view of the blocks,
-## with the station, today's case place, the cops and the patrol car. Drawn from CityLayout, so new places
-## show up on their own.
+## with the station, today's case place, the cops and the patrol car, and the ring highway around it. Drawn from
+## CityLayout and HighwayLayout, so new places show up on their own.
 
 const SIZE := 760.0
 const MARGIN := 24.0
@@ -16,6 +16,10 @@ const STATION := Color(0.35, 0.55, 1)
 const COP := Color(0.45, 1, 0.5)
 const CAR := Color(1, 1, 1)
 const SUSPECT := Color(1, 0.45, 0.75)
+const GRASS := Color(0.3, 0.45, 0.25)
+const TOLL := Color(1, 0.82, 0.3)
+## What the map shows: the whole ring highway.
+const EXTENT := HighwayLayout.OUTER * 2
 const BLINK := 0.5
 
 ## The city node whose local space CityLayout describes, and the place to mark (empty for none).
@@ -87,12 +91,11 @@ func toggle() -> void:
 
 ## Where a point on the city's ground (its local x, z) lands on the map square, north up.
 static func to_map(local: Vector3) -> Vector2:
-	var scale := (SIZE - MARGIN * 2) / maxf(CityLayout.SIZE.x, CityLayout.SIZE.y)
-	return Vector2(SIZE, SIZE) / 2 + Vector2(local.x, local.z) * scale
+	return Vector2(SIZE, SIZE) / 2 + Vector2(local.x, local.z) * map_scale()
 
 
 static func map_scale() -> float:
-	return (SIZE - MARGIN * 2) / maxf(CityLayout.SIZE.x, CityLayout.SIZE.y)
+	return (SIZE - MARGIN * 2) / maxf(EXTENT.x, EXTENT.y)
 
 
 ## A point in the world on the map, through the city's transform.
@@ -114,6 +117,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func _draw_map() -> void:
 	var k := map_scale()
 	var half := CityLayout.SIZE / 2
+	_canvas.draw_rect(Rect2(to_map(Vector3(-EXTENT.x, 0, -EXTENT.y) / 2), EXTENT * k), GRASS)
+	_highway(k)
 	_canvas.draw_rect(Rect2(to_map(Vector3(-half.x, 0, -half.y)), CityLayout.SIZE * k), STREET)
 	for row in CityLayout.ROWS:
 		for col in CityLayout.COLUMNS:
@@ -145,6 +150,21 @@ func _draw_map() -> void:
 		_canvas.draw_circle(world_to_map(suspect.global_position), 7.0, SUSPECT)
 	for cop in _canvas.get_tree().get_nodes_in_group("cops"):
 		_arrow(world_to_map((cop as Node3D).global_position), _map_heading(cop as Node3D))
+
+
+## The ring as a thick line, its ramps and a mark on each toll.
+func _highway(k: float) -> void:
+	var line := PackedVector2Array()
+	for point in HighwayLayout.loop():
+		line.append(to_map(point))
+	line.append(line[0])
+	_canvas.draw_polyline(line, STREET, HighwayLayout.WIDTH * k)
+	for side in HighwayLayout.SIDES:
+		var ramp := HighwayLayout.ramp_rect(side)
+		var size: Vector2 = ramp[1]
+		_canvas.draw_rect(Rect2(to_map(ramp[0] - Vector3(size.x, 0, size.y) / 2), size * k), STREET)
+	for i in HighwayLayout.TOLLS.size():
+		_canvas.draw_rect(Rect2(to_map(HighwayLayout.toll_point(i)) - Vector2(3, 7), Vector2(6, 14)), TOLL)
 
 
 func _lot(lot: Dictionary, color: Color) -> void:

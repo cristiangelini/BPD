@@ -556,6 +556,7 @@ GROOMER_TOWEL,"¡Es un perro grande! Muy grande. Y muy tranquilo.","It's a big d
 GROOMER_UNMASKED,"¡Eso es privado! ¡El señor es... un perro adoptado!","That's private! The gentleman is... an adopted dog!","Isso é particular! O senhor é... um cachorro adotado!"
 LADY_CLUE_human_salon,"«¡Mi Fifí! Gracias, oficial. Mira, vi a Ramiro esconder algo %s. Y el otro día me ofreció un corte a mí, por la mitad de precio.»","“My Fifí! Thank you, officer. Look, I saw Ramiro hide something %s. And the other day he offered me a haircut too, at half price.”","“Minha Fifí! Obrigada, policial. Olha, vi o Ramiro esconder algo %s. E outro dia ele me ofereceu um corte, pela metade do preço.”"
 SIGN_NO_SMOKING,PROHIBIDO FUMAR,NO SMOKING,PROIBIDO FUMAR
+SIGN_TOLL,PEAJE,TOLL,PEDÁGIO
 HUD_NERVES,Nervios,Nerves,Nervos
 HUD_LAWYER,Abogado,Lawyer,Advogado
 CASE_SOLVED_CONFESSION,¡Confesó! Caso resuelto.,He confessed! Case solved.,Ele confessou! Caso resolvido.

@@ -9,8 +9,9 @@ signal seats_changed
 signal evidence_delivered(item: Evidence)
 signal evidence_removed(item: Evidence)
 
-## 60 km/h (propuesta).
+## 60 km/h in the city, 110 on the ring highway (propuesta).
 const MAX_SPEED := 60.0 / 3.6
+const HIGHWAY_SPEED := 110.0 / 3.6
 const MAX_REVERSE := 5.0
 const ENGINE := 6000.0
 const BRAKE := 60.0
@@ -35,6 +36,7 @@ var _siren_time := 0.0
 var delivered: Array[Evidence] = []
 ## The place's owner riding in the back to be interrogated (OwnerEscort), if any.
 var prisoner: Node3D
+var _highway: Highway
 
 @onready var _seats: Array[Node3D] = [$Seats/Driver, $Seats/Front, $Seats/BackLeft, $Seats/BackRight]
 @onready var _rear: Array[VehicleWheel3D] = [$WheelRearLeft, $WheelRearRight]
@@ -185,6 +187,7 @@ func _physics_process(delta: float) -> void:
 
 func _apply_controls(delta: float) -> void:
 	var speed := forward_speed()
+	var top := top_speed()
 	var reach := lerpf(1.0, STEER_AT_TOP, clampf(absf(speed) / MAX_SPEED, 0.0, 1.0))
 	steering = move_toward(steering, steer_input * STEER * reach, STEER_RATE * delta)
 	engine_force = 0.0
@@ -192,7 +195,7 @@ func _apply_controls(delta: float) -> void:
 	if throttle > 0.0:
 		if speed < -0.5:
 			brake = BRAKE
-		elif speed < MAX_SPEED:
+		elif speed < top:
 			engine_force = ENGINE * throttle
 	elif throttle < 0.0:
 		if speed > 0.5:
@@ -201,6 +204,13 @@ func _apply_controls(delta: float) -> void:
 			engine_force = ENGINE * throttle
 	for wheel in _rear:
 		wheel.brake = HANDBRAKE if handbrake else brake
+
+
+## How fast the car goes here: faster on the highway's road.
+func top_speed() -> float:
+	if not is_instance_valid(_highway):
+		_highway = get_tree().get_first_node_in_group("highway") as Highway
+	return HIGHWAY_SPEED if _highway and _highway.covers(global_position) else MAX_SPEED
 
 
 ## Where the owner rides: in the back, between the two back seats, so he takes no cop's seat. A bit sunk, since he

@@ -58,7 +58,8 @@ func _ready() -> void:
 
 func _build() -> void:
 	var size := CityLayout.SIZE
-	_box(Vector3(0, -0.1, 0), Vector3(size.x + 40, 0.2, size.y + 40), GRASS)
+	var land := HighwayLayout.OUTER * 2 + Vector2.ONE * 40
+	_box(Vector3(0, -0.1, 0), Vector3(land.x, 0.2, land.y), GRASS)
 	_mesh_box(Vector3(0, 0.005, 0), Vector3(size.x, 0.01, size.y), ROAD)
 	for k in CityLayout.COLUMNS + 1:
 		_mesh_box(Vector3(CityLayout.street_x(k), 0.012, 0), Vector3(0.2, 0.01, size.y - CityLayout.STREET), LINE)
@@ -81,11 +82,34 @@ func _build() -> void:
 	for i in range(1, CityLayout.COLUMNS):
 		for j in range(1, CityLayout.ROWS):
 			_corner(i, j)
-	# A hedge around the city so nobody drives off the edge.
-	var reach := size / 2 + Vector2.ONE
-	for s: float in [-1.0, 1.0]:
-		_box(Vector3(0, HEDGE_HEIGHT / 2, s * reach.y), Vector3(size.x + 2, HEDGE_HEIGHT, 1), HEDGE)
-		_box(Vector3(s * reach.x, HEDGE_HEIGHT / 2, 0), Vector3(1, HEDGE_HEIGHT, size.y + 2), HEDGE)
+	# A hedge around the city, open at the highway's ramps, and another one past the highway so nobody drives off
+	# the edge.
+	_hedge(size / 2 + Vector2.ONE, true)
+	_hedge(HighwayLayout.OUTER + Vector2.ONE * 6, false)
+	var highway := Highway.new()
+	highway.name = "Highway"
+	highway.city = self
+	_built.add_child(highway)
+
+
+## A square hedge `reach` from the middle, with a gap at each ramp's street if `ramps`.
+func _hedge(reach: Vector2, ramps: bool) -> void:
+	var gap := CityLayout.STREET / 2 + 1.0 if ramps else 0.0
+	var x := CityLayout.street_x(HighwayLayout.RAMP_STREET_X)
+	var z := CityLayout.street_z(HighwayLayout.RAMP_STREET_Z)
+	var across := {"n": x, "s": x, "e": z, "w": z}
+	for side: String in HighwayLayout.SIDES:
+		var north_south := side in ["n", "s"]
+		var half := (reach.x if north_south else reach.y) + 1.0
+		var line := (-reach.y if side == "n" else reach.y) if north_south else (reach.x if side == "e" else -reach.x)
+		var at: float = across[side]
+		for stretch: Vector2 in [Vector2(-half, at - gap), Vector2(at + gap, half)]:
+			var length := stretch.y - stretch.x
+			var middle := (stretch.x + stretch.y) / 2
+			if north_south:
+				_box(Vector3(middle, HEDGE_HEIGHT / 2, line), Vector3(length, HEDGE_HEIGHT, 1), HEDGE)
+			else:
+				_box(Vector3(line, HEDGE_HEIGHT / 2, middle), Vector3(1, HEDGE_HEIGHT, length), HEDGE)
 
 
 ## Sidewalk ring and the ground of the block: grass for houses and the plaza, paved elsewhere. The live place's
