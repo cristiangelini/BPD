@@ -932,3 +932,6 @@ CHASE_COOK_LINE_2,"Pedaleé más en estos cinco minutos que en toda mi vida.","I
 CHASE_COOK_LINE_3,"Está bien, me rindo. ¿Alguien quiere pan? Hay en la canasta.","Fine, I give up. Anyone want bread? There's some in the basket.","Tá bom, eu me rendo. Alguém quer pão? Tem na cesta."
 CHECKPOINT_SIGN,"CONTROL","CHECKPOINT","BLITZ"
 HINT_CHECKPOINT_READY,"¡Control armado! La barrera cierra el carril y los conos avisan. Ahora, a esperar autos.","Checkpoint set up! The barrier closes the lane and the cones warn drivers. Now wait for cars.","Blitz montada! A barreira fecha a faixa e os cones avisam. Agora, esperem os carros."
+PROMPT_LET_THROUGH,"E: dejar pasar al primer auto · Mantén clic izquierdo: agarrar","E: let the first car through · Hold left click: grab","E: deixar o primeiro carro passar · Segure o clique esquerdo: pegar"
+HUD_QUEUE_PATIENCE,"Paciencia de la fila","Queue's patience","Paciência da fila"
+HINT_CAR_SNEAKED,"¡Un auto se cansó de esperar y se coló por la vereda!","A car got tired of waiting and sneaked by on the sidewalk!","Um carro cansou de esperar e passou pela calçada!"

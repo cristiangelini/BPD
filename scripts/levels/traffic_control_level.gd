@@ -4,7 +4,7 @@ extends Node3D
 ## The traffic control's level (control-transito.md): the whole city with the station, the cops in the guard room,
 ## the patrol car at the door and, next to it on the sidewalk, the cones and the barrier. The checkpoint is painted on
 ## the westbound lane of the street in front of the station, toward the corner. --place=traffic opens it from Play.
-## Step 1: setting it up; the cars come in step 2.
+## Once it's set up, the cars come and queue up (TrafficQueue), with the patience meter at the top.
 
 ## Along the street in front of the station, from the station's middle toward the east corner, in meters.
 const CHECKPOINT_ALONG := 24.0
@@ -13,7 +13,10 @@ const CONES := 4
 const BARRIER_FROM_DOOR := Vector3(6, 0, 1.5)
 const CONES_FROM_DOOR := Vector3(-5, 0, 1.5)
 
+## Same seed, same cars. 0 draws one.
+@export var case_seed := 0
 var checkpoint: TrafficCheckpoint
+var queue: TrafficQueue
 
 
 ## Where the checkpoint goes in the city's space: cars run west (-X) on the north half of the street.
@@ -25,6 +28,10 @@ static func checkpoint_at() -> Transform3D:
 
 
 func _ready() -> void:
+	if case_seed == 0:
+		case_seed = PlaceDraw.take_seed()
+	if case_seed == 0:
+		case_seed = PlaceDraw.new_seed()
 	var city: City = $City
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
 	$PatrolCar.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
@@ -42,3 +49,18 @@ func _ready() -> void:
 		cone.name = "Cone%d" % i
 		add_child(cone)
 		cone.global_position = door + CONES_FROM_DOOR + Vector3(-0.8 * i, 0.05, 0)
+	queue = TrafficQueue.new()
+	queue.name = "Queue"
+	queue.checkpoint = checkpoint
+	queue.case_seed = case_seed
+	add_child(queue)
+	queue.passed.connect(_on_passed)
+	var meters := TrafficMeters.new()
+	meters.queue = queue
+	add_child(meters)
+
+
+func _on_passed(_car: QueueCar, sneaked: bool) -> void:
+	if sneaked:
+		for cop: Cop in get_tree().get_nodes_in_group("cops"):
+			cop.show_hint("HINT_CAR_SNEAKED")
