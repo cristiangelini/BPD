@@ -222,6 +222,32 @@ export function buildGetawayCar() {
 	return b.build();
 }
 
+// The sports car (persecución, sospechoso 6: en la autopista): low, bright red, a long hood, a black stripe and a
+// spoiler on the back. 4.6 m long, 2.1 m wide; faces +Z like the rest, and takes the sedan's wheels.
+export function buildSportsCar() {
+	const paint = mat('sports_red', 0xd8241c), tint = mat('getaway_glass', 0x14181e), stripe = mat('sports_stripe', 0x1a1a1e);
+	const lamp = mat('lamp', 0xf4f0d0), tail = mat('tail', 0xc0202a);
+	const CW = 2.1, F = 2.3, R = -2.3, HOOD = 0.78, CABIN_F = 0.3, CABIN_R = -1.4, TOP = 1.22;
+	const b = new Builder('sports_car');
+	box(b, 'body', black, CW, 0.2, F - R, 0, FLOOR - 0.1, 0);
+	box(b, 'body', paint, CW, HOOD - FLOOR, F - R, 0, (HOOD + FLOOR) / 2, 0);
+	box(b, 'body', stripe, 0.4, 0.02, F - R, 0, HOOD + 0.005, 0);
+	// The cabin sits far back, low, its windshield leaning; tinted windows all around.
+	box(b, 'body', tint, CW - 0.3, TOP - HOOD, CABIN_F - CABIN_R, 0, (TOP + HOOD) / 2, (CABIN_F + CABIN_R) / 2);
+	box(b, 'body', paint, CW - 0.26, 0.06, CABIN_F - CABIN_R - 0.5, 0, TOP, (CABIN_F + CABIN_R) / 2 - 0.1);
+	box(b, 'body', tint, CW - 0.32, 0.05, 0.55, 0, (TOP + HOOD) / 2, CABIN_F + 0.15, [1.0, 0, 0]);
+	// The spoiler: a wing on two posts over the trunk.
+	for (const x of [-0.6, 0.6]) box(b, 'body', stripe, 0.08, 0.22, 0.08, x, HOOD + 0.11, R + 0.3);
+	box(b, 'body', stripe, CW - 0.1, 0.05, 0.36, 0, HOOD + 0.24, R + 0.3);
+	for (const x of [-1, 1]) {
+		box(b, 'lights', lamp, 0.4, 0.08, 0.04, x * 0.7, HOOD - 0.15, F + 0.01);
+		box(b, 'lights', tail, 0.46, 0.08, 0.04, x * 0.65, HOOD - 0.12, R - 0.01);
+		for (const z of [1.55, -1.55]) box(b, 'body', black, 0.1, 0.45, 0.95, x * (CW / 2 + 0.01), FLOOR + 0.08, z);
+	}
+	box(b, 'body', grey, CW + 0.04, 0.12, 0.14, 0, FLOOR + 0.02, F + 0.04);
+	return b.build();
+}
+
 // The delivery scooter (persecución, sospechoso 2): a small red scooter with the delivery box on the back and the
 // delivery guy (npc_repartidor) rides it, standing on the board. 1.9 m long, 0.7 m wide; faces +Z like the rest. Its wheels are part of it.
 export function buildDeliveryScooter() {
@@ -275,7 +301,7 @@ export function buildWheelchair() {
 
 export const models = { patrol_car: buildPatrolCar, car_wheel: buildCarWheel, ice_cream_truck: buildIceCreamTruck,
 	moving_truck: buildMovingTruck, falling_sofa: buildFallingSofa, falling_wardrobe: buildFallingWardrobe, falling_lamp: buildFallingLamp,
-	falling_box: buildFallingBox, school_bus: buildSchoolBus, getaway_car: buildGetawayCar,
+	falling_box: buildFallingBox, school_bus: buildSchoolBus, getaway_car: buildGetawayCar, sports_car: buildSportsCar,
 	delivery_scooter: buildDeliveryScooter, wheelchair: buildWheelchair };
 
 const wheels = [[-1.1, 1.55], [1.1, 1.55], [-1.1, -1.55], [1.1, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }));
@@ -303,6 +329,10 @@ export const views = {
 	getaway_car: {
 		items: [{ name: 'getaway_car', pos: [0, 0, 0] }, ...[[-1.05, 1.55], [1.05, 1.55], [-1.05, -1.55], [1.05, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }))],
 		cam: { pos: [6.5, 3.6, 6.0], target: [0, 0.9, 0], fov: 38 },
+	},
+	sports_car: {
+		items: [{ name: 'sports_car', pos: [0, 0, 0] }, ...[[-1.05, 1.55], [1.05, 1.55], [-1.05, -1.55], [1.05, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }))],
+		cam: { pos: [6.5, 3.2, 6.0], target: [0, 0.7, 0], fov: 38 },
 	},
 	moving_truck: {
 		items: [{ name: 'moving_truck', pos: [0, 0, 0], rotY: Math.PI }, ...[[-1.1, 1.7], [1.1, 1.7], [-1.1, -1.7], [1.1, -1.7]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] })),

@@ -29,6 +29,7 @@ const MODELS := {
 	"night": preload("res://assets/models/getaway_car.glb"),
 	"moto": preload("res://assets/models/delivery_scooter.glb"),
 	"wheelchair": preload("res://assets/models/wheelchair.glb"),
+	"highway": preload("res://assets/models/sports_car.glb"),
 }
 ## Who rides on top of it, where you can see him (he gets off when he gives up).
 ## Who rides on top of it, where and how big: [model, position, scale] (he gets off when he gives up).
@@ -40,10 +41,15 @@ const RIDERS := {
 const LANES := {"moto": ChaseRoute.SIDEWALK_LANE, "wheelchair": ChaseRoute.SIDEWALK_LANE}
 ## The electric wheelchair goes at 8 km/h (persecucion.md).
 const SPEEDS := {"wheelchair": 8.0 / 3.6}
+## The sports car (persecucion-lugares.md): 90 km/h on the highway, 50 on the way there through the city.
+const HIGHWAY := "highway"
+const HIGHWAY_SPEED := 90.0 / 3.6
+const HIGHWAY_CITY_SPEED := 50.0 / 3.6
 ## The cops' collision layer: on foot they're in the wheelchair's way (the cars ignore them).
 const COPS_LAYER := 2
 ## Each vehicle's body (width, height, length) and wheels, when not the trucks'.
 const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 4.6), "night": Vector3(2.1, 1.4, 4.6),
+	"highway": Vector3(2.1, 1.1, 4.6),
 	"moto": Vector3(0.8, 1.6, 1.9),
 	"wheelchair": Vector3(0.8, 1.4, 1.2)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
@@ -53,7 +59,7 @@ const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 
 ## The scooter's wheels are part of its model.
 const NO_WHEELS: Array[Vector3] = []
 const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS,
-	"wheelchair": NO_WHEELS}
+	"wheelchair": NO_WHEELS, "highway": SEDAN_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
@@ -75,6 +81,7 @@ var nervous_left := 0.0
 var punctured := false
 var _rolling := 1.0
 var tangled_left := 0.0
+var _highway: Highway
 
 
 func _ready() -> void:
@@ -108,6 +115,26 @@ func follow(route: ChaseRoute, city: Transform3D) -> void:
 	global_position = points[0]
 	var ahead := points[1] - points[0]
 	rotation.y = atan2(ahead.x, ahead.z)
+
+
+## Puts it at the start of `path` (points in the city's space, like HighwayRoute's), facing the way it goes.
+func follow_path(path: Array[Vector3], city: Transform3D) -> void:
+	points.clear()
+	for point in path:
+		points.append(city * point)
+	next = 1
+	global_position = points[0]
+	var ahead := points[1] - points[0]
+	rotation.y = atan2(ahead.x, ahead.z)
+
+
+## His speed on the straight here: the sports car's depends on whether he's on the highway.
+func top_speed() -> float:
+	if kind != HIGHWAY:
+		return SPEEDS.get(kind, SPEED)
+	if not is_instance_valid(_highway):
+		_highway = get_tree().get_first_node_in_group("highway") as Highway
+	return HIGHWAY_SPEED if _highway and _highway.covers(global_position) else HIGHWAY_CITY_SPEED
 
 
 ## Drives `route` from here on (he changed his mind at a corner), heading for the same next point.
@@ -175,7 +202,7 @@ func _physics_process(delta: float) -> void:
 	var can_go := 0.0 if tangled_left > 0.0 else _rolling
 	rotation.y += clampf(turn, -TURN_RATE * delta, TURN_RATE * delta) * can_go
 	# Slows down while its nose isn't on the next point yet: through the corners.
-	var speed: float = SPEEDS.get(kind, SPEED) * lerpf(1.0, TURN_SPEED, clampf(absf(turn) / (PI / 2), 0.0, 1.0))
+	var speed: float = top_speed() * lerpf(1.0, TURN_SPEED, clampf(absf(turn) / (PI / 2), 0.0, 1.0))
 	if nervous_left > 0.0:
 		speed *= NERVOUS_SPEED
 	speed *= can_go
@@ -185,5 +212,5 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	var moved := Vector2(get_real_velocity().x, get_real_velocity().z).length()
 	# The wheelchair is slow anyway: stuck is slower than a share of his own speed.
-	var stuck_below := minf(STUCK_SPEED, float(SPEEDS.get(kind, SPEED)) * STUCK_SHARE)
+	var stuck_below := minf(STUCK_SPEED, top_speed() * STUCK_SHARE)
 	stuck_for = stuck_for + delta if moved < stuck_below else 0.0
