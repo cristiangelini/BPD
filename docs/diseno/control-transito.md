@@ -1,7 +1,8 @@
-# BPD · Control de tránsito (borrador, 21/10)
+# BPD · Control de tránsito (propuesta, 21/10)
 
 Quinto tipo de caso, del catálogo ([casos.md](casos.md), punto 8) y la decisión 32 ("casos extra: control de
-tránsito..."). Todavía no está aprobado: los números van **(propuesta)** y abajo hay 3 preguntas para Cristian.
+tránsito..."). Cristian lo eligió el 21/10 y respondió las 3 preguntas (decisión 98). Los números siguen
+**(propuesta)** hasta probarlos jugando.
 
 ## La idea
 El comisario avisa que por la ciudad anda un auto buscado. Los cuatro arman un control en una esquina con conos y una
@@ -25,7 +26,9 @@ tránsito con las manos y aguantar las bocinas y los conductores enojados.
 6. **Medidores:**
    - **Paciencia de la fila:** sube con cada auto esperando. A 100 los autos se cuelan por la vereda, rompen conos y
      el buscado puede escaparse así.
-   - **Denuncias:** detener a un inocente suma (como las multas del allanamiento) y se descuenta del sueldo.
+   - **Denuncias:** detener a un inocente suma (como las multas del allanamiento) y se descuenta del sueldo. Al
+     segundo inocente detenido se pierde el caso, como en el tablero de la escena del crimen.
+   - No hay tiempo límite (decisión 66): solo el medidor de paciencia.
 7. **Se gana** deteniendo al buscado y llevándolo al patrullero: sueldo de 500, cuota propia como la persecución
    (decisión 91). Detenido, el turno siguiente puede ser su interrogatorio (decisión 93).
 8. **Se pierde** si el buscado pasa el control (con la barrera levantada o colándose): sale corriendo y arranca la
@@ -56,10 +59,10 @@ La ciudad (CityLayout), los autos de tránsito (TrafficCar), el patrullero, la l
 patrullero (OwnerEscort), la persecución embebida (ChaseCase.begin), el sorteo de "Jugar" (PlaceDraw), el sueldo
 (ShiftReport) y la campaña. Nuevo: conos y barrera, revisar papeles y baúl, la fila con su medidor, la radio con pistas.
 
-## Preguntas para Cristian
-1. ¿La fila tiene un límite de tiempo o solo el medidor de paciencia? (Recomiendo solo el medidor, por la decisión 66.)
-2. ¿Detener a un inocente solo suma denuncia, o también pierde el caso después de 2, como el tablero? (Recomiendo 2.)
-3. ¿Arrancamos por "Hora pico" o por otra variante? (Recomiendo Hora pico: no necesita modelos nuevos.)
+## Respuestas de Cristian (21/10)
+1. La fila no tiene tiempo límite, solo el medidor de paciencia.
+2. Al segundo inocente detenido se pierde el caso.
+3. Se arranca por "Hora pico".
 
 ## El orden para hacerlo (un PR chico por paso)
 1. Conos y barrera, el control que funciona en una esquina.
