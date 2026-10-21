@@ -56,6 +56,8 @@ var prints_key := "PRINTS_OWNER"
 var owner_npc: CharacterBody3D
 var owner_id := ""
 var escort: OwnerEscort
+## The owner who runs off when he sees the evidence picked up (persecucion-final.md), for the places that have one.
+var escape: RaidEscape
 
 ## Online, what keeps this case the same on every PC (null solo).
 var online: CaseSync
@@ -102,6 +104,10 @@ func start(tip_briefing: PackedStringArray, pool: Array = CaseSuspicions.POOL, c
 		give_tip()
 	if owner_npc:
 		escort = OwnerEscort.attach(owner_npc, car)
+		if RaidEscape.handles(owner_id):
+			escape = RaidEscape.new()
+			escape.raid = self
+			add_child(escape)
 	shift_screen.play_again.connect(_play_again)
 	shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
 

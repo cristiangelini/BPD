@@ -556,6 +556,8 @@ GROOMER_TOWEL,"¡Es un perro grande! Muy grande. Y muy tranquilo.","It's a big d
 GROOMER_UNMASKED,"¡Eso es privado! ¡El señor es... un perro adoptado!","That's private! The gentleman is... an adopted dog!","Isso é particular! O senhor é... um cachorro adotado!"
 LADY_CLUE_human_salon,"«¡Mi Fifí! Gracias, oficial. Mira, vi a Ramiro esconder algo %s. Y el otro día me ofreció un corte a mí, por la mitad de precio.»","“My Fifí! Thank you, officer. Look, I saw Ramiro hide something %s. And the other day he offered me a haircut too, at half price.”","“Minha Fifí! Obrigada, policial. Olha, vi o Ramiro esconder algo %s. E outro dia ele me ofereceu um corte, pela metade do preço.”"
 SIGN_NO_SMOKING,PROHIBIDO FUMAR,NO SMOKING,PROIBIDO FUMAR
+SIGN_TOLL,PEAJE,TOLL,PEDÁGIO
+SHOUT_UIUU,¡Uiuuu! ¡Uiuuu!,Weeooo! Weeooo!,Uiuuu! Uiuuu!
 HUD_NERVES,Nervios,Nerves,Nervos
 HUD_LAWYER,Abogado,Lawyer,Advogado
 CASE_SOLVED_CONFESSION,¡Confesó! Caso resuelto.,He confessed! Case solved.,Ele confessou! Caso resolvido.
@@ -686,3 +688,115 @@ CONFESS_owner_groomer,"¡Está bien! ¡Lo escondí yo! ¡Los perros lo sabían y
 PROMPT_CHAIR_SIT,E: sentarte,E: sit down,E: sentar
 PROMPT_CHAIR_STAND,E: levantarte,E: stand up,E: levantar
 SUSPECT_REACT_SIT,¿Se va a sentar conmigo? Qué amable... ¿somos amigos ahora?,You're sitting with me? How nice... are we friends now?,Vai sentar comigo? Que gentil... agora somos amigos?
+BRIEF_CHASE_A,"¡Novatos! ¡Se nos escapa uno, y está pasando por la puerta de la comisaría!","Rookies! One's getting away, and he's driving right past the station door!","Novatos! Tem um fugindo, e está passando bem na porta da delegacia!"
+BRIEF_CHASE_ice_cream,"El heladero del barrio. Vendía helados de pistacho que eran de arvejas. Va en su camión rosado.","The neighborhood ice cream man. He sold pistachio ice cream that was made of peas. He's in his pink truck.","O sorveteiro do bairro. Vendia sorvete de pistache que era de ervilha. Está no caminhão cor-de-rosa dele."
+BRIEF_CHASE_C,"Tienen un minuto. Córtenle el paso con el patrullero, espósenlo y lo quiero acá, en una celda.","You have one minute. Cut him off with the patrol car, cuff him and bring him here, to a cell.","Vocês têm um minuto. Fechem a passagem dele com a viatura, algemem e quero ele aqui, numa cela."
+HINT_GO_CHASE,"¡Al patrullero! Apenas alguien se siente al volante, arranca la persecución.","To the patrol car! As soon as someone takes the wheel, the chase starts.","Para a viatura! Assim que alguém sentar no volante, a perseguição começa."
+HINT_CHASE_STOPPED,"¡Se rindió! Bájate y espósalo antes de que se acabe el tiempo.","He gave up! Get out and cuff him before time runs out.","Ele se rendeu! Desça e algeme ele antes que o tempo acabe."
+HINT_CHASE_CAUGHT,"¡Esposado! Llévalo del brazo al patrullero y vuelvan a la comisaría.","Cuffed! Walk him to the patrol car and drive back to the station.","Algemado! Leve ele pelo braço até a viatura e voltem para a delegacia."
+HINT_CHASE_IN_CAR,"Ya va detenido en el patrullero: a la comisaría, y a estacionar.","He's in the patrol car under arrest: back to the station, and park.","Ele já está preso na viatura: para a delegacia, e estacionem."
+HUD_DISTANCE,Distancia,Distance,Distância
+CASE_SOLVED_CHASE,¡Atrapado! Caso resuelto.,Caught! Case solved.,Pego! Caso resolvido.
+CASE_FAILED_ESCAPED,"Se nos escapó, novatos. Caso perdido.","He got away, rookies. Case lost.","Ele fugiu, novatos. Caso perdido."
+CASE_FAILED_TIME,"Se acabó el minuto: se nos escapó, novatos. Caso perdido.","The minute is up: he got away, rookies. Case lost.","Acabou o minuto: ele fugiu, novatos. Caso perdido."
+CHASE_ICE_CREAM_LINE_1,"¡Está bien, está bien! ¡Pero cuidado con el camión, que se me derriten!","Okay, okay! But careful with the truck, they're melting!","Tá bom, tá bom! Mas cuidado com o caminhão, que eles derretem!"
+CHASE_ICE_CREAM_LINE_2,"¡Eran arvejas premium! ¡Premium!","They were premium peas! Premium!","Eram ervilhas premium! Premium!"
+CHASE_ICE_CREAM_LINE_3,"¿Alguien quiere uno de frutilla? Es de remolacha, pero rico.","Anyone want a strawberry one? It's beetroot, but tasty.","Alguém quer um de morango? É de beterraba, mas é gostoso."
+CHASE_MEGAPHONE,¡Deténgase!,Pull over!,Pare o veículo!
+HINT_CHASE_MEGAPHONE,"Megáfono: clic para gritarle. Con 2, la ventana.","Megaphone: click to shout at him. Press 2 for the window.","Megafone: clique para gritar. Com 2, a janela."
+HINT_CHASE_WINDOW,"Ventana: clic tira pinchos atrás, clic derecho la red adelante. Con 1, el megáfono.","Window: click drops spikes behind, right click throws the net ahead. Press 1 for the megaphone.","Janela: clique joga os pregos atrás, clique direito a rede na frente. Com 1, o megafone."
+HINT_CHASE_MAP,"Copiloto: con M ves al sospechoso en el mapa. ¡Cántale las esquinas al que maneja!","Copilot: press M to see the suspect on the map. Call the turns out to the driver!","Copiloto: com M você vê o suspeito no mapa. Diga as esquinas para quem dirige!"
+SHIFT_FINES_CRASHES,Multas (%d choques),Fines (%d crashes),Multas (%d batidas)
+HUD_DAMAGES,Daños a la ciudad: -%d,Damage to the city: -%d,Danos à cidade: -%d
+BRIEF_CHASE_moving_truck,"Un camión de mudanza. Se está mudando con los muebles de la casa de al lado, que no son suyos. Va tan cargado que en cada curva pierde algo.","A moving truck. He's moving with the furniture of the house next door, which isn't his. It's so overloaded it loses something at every turn.","Um caminhão de mudança. Ele está se mudando com os móveis da casa vizinha, que não são dele. Está tão carregado que perde algo em cada curva."
+CHASE_MOVING_TRUCK_LINE_1,"¡Yo solo hago fletes! ¡Me dijeron que eran míos!","I just do deliveries! They told me they were mine!","Eu só faço frete! Me disseram que eram meus!"
+CHASE_MOVING_TRUCK_LINE_2,"¿Alguien vio caer una lámpara? Era de mi tía.","Did anyone see a lamp fall? It was my aunt's.","Alguém viu cair uma luminária? Era da minha tia."
+CHASE_MOVING_TRUCK_LINE_3,"Si me ayudan a cargar el sofá, confieso todo.","If you help me load the sofa, I'll confess everything.","Se vocês me ajudarem a carregar o sofá, confesso tudo."
+BRIEF_CHASE_school_bus,"Se robaron el bus escolar. Con los chicos adentro. Que iban de excursión al museo de la cuchara.","Someone stole the school bus. With the kids inside. They were on a field trip to the spoon museum.","Roubaram o ônibus escolar. Com as crianças dentro. Elas iam numa excursão ao museu da colher."
+HINT_CHASE_KIDS,"¡Cuidado, que está lleno de chicos! Los padres ya están llamando.","Careful, it's full of kids! The parents are already calling.","Cuidado, está cheio de crianças! Os pais já estão ligando."
+HUD_PARENTS,Denuncia de los padres,The parents' complaint,Denúncia dos pais
+CASE_FAILED_PARENTS,"Los padres hicieron la denuncia. Caso perdido.","The parents filed a complaint. Case lost.","Os pais fizeram a denúncia. Caso perdido."
+CHASE_KIDS_1,¡Más rápido!,Faster!,Mais rápido!
+CHASE_KIDS_2,¡AAAAAAH!,AAAAAAH!,AAAAAAH!
+CHASE_KIDS_3,¡Señor policía! ¡Tengo que ir al baño!,Officer! I need the bathroom!,Seu policial! Preciso ir ao banheiro!
+CHASE_KIDS_4,¡Mi mamá dice que usted maneja mal!,My mom says you drive badly!,Minha mãe diz que você dirige mal!
+CHASE_KIDS_5,¿Ya llegamos al museo?,Are we at the museum yet?,Já chegamos no museu?
+CHASE_SCHOOL_BUS_LINE_1,"¡Lo tomé prestado! ¡Los chicos querían ir a la playa!","I borrowed it! The kids wanted to go to the beach!","Eu peguei emprestado! As crianças queriam ir à praia!"
+CHASE_SCHOOL_BUS_LINE_2,"Cuarenta chicos cantando la misma canción. Me entrego. Por favor.","Forty kids singing the same song. I give up. Please.","Quarenta crianças cantando a mesma música. Eu me entrego. Por favor."
+CHASE_SCHOOL_BUS_LINE_3,"El de la tercera fila me mordió.","The one in the third row bit me.","O da terceira fila me mordeu."
+BRIEF_CHASE_rain,"Un auto negro se llevó todos los paraguas de la tienda. Justo hoy, que llueve. El limpiaparabrisas del patrullero sigue roto, así que suerte.","A black car took every umbrella in the shop. Today of all days, with the rain. The patrol car's wiper is still broken, so good luck.","Um carro preto levou todos os guarda-chuvas da loja. Justo hoje, que está chovendo. O limpador do para-brisa da viatura continua quebrado, então boa sorte."
+BRIEF_CHASE_night,"Alguien se robó todas las bombitas de las luces de la calle. Y anda con las luces del auto apagadas, para no gastarlas. Llévense la linterna.","Someone stole every bulb from the street lights. And he's driving with his lights off, to save them. Take the flashlight.","Alguém roubou todas as lâmpadas dos postes da rua. E anda com os faróis apagados, para não gastar. Levem a lanterna."
+HINT_CHASE_WIPER,"El limpiaparabrisas no anda. Maneja como puedas.","The wiper doesn't work. Drive as best you can.","O limpador não funciona. Dirija como puder."
+HINT_CHASE_FLASHLIGHT,"Copiloto: con F prendes la linterna. De noche, en el mapa solo ves al sospechoso si lo alumbras.","Copilot: press F for the flashlight. At night the map only shows the suspect while you light him up.","Copiloto: com F você acende a lanterna. À noite, no mapa você só vê o suspeito se iluminá-lo."
+CHASE_RAIN_LINE_1,"¡Los paraguas eran para regalar! ¡Hoy es el día del paraguas!","The umbrellas were gifts! Today is umbrella day!","Os guarda-chuvas eram para dar de presente! Hoje é o dia do guarda-chuva!"
+CHASE_RAIN_LINE_2,"¿Me prestan uno? Me estoy mojando.","Can I borrow one? I'm getting wet.","Me emprestam um? Estou me molhando."
+CHASE_RAIN_LINE_3,"Ustedes manejan peor que yo con lluvia. Y yo no veo nada.","You drive worse than me in the rain. And I can't see a thing.","Vocês dirigem pior que eu na chuva. E eu não enxergo nada."
+CHASE_NIGHT_LINE_1,"¡Apaguen esa linterna! ¡Gasta luz!","Turn that flashlight off! It wastes light!","Apaguem essa lanterna! Gasta luz!"
+CHASE_NIGHT_LINE_2,"Las bombitas eran para mi colección. Tengo cuatrocientas.","The bulbs were for my collection. I have four hundred.","As lâmpadas eram para a minha coleção. Tenho quatrocentas."
+CHASE_NIGHT_LINE_3,"¿Cómo me vieron? Si yo no veía ni el volante.","How did you see me? I couldn't even see the wheel.","Como vocês me viram? Eu não via nem o volante."
+HINT_CHASE_WINDOW_CONES,"Ventana: clic pone una fila de conos adelante, de vereda a vereda; clic derecho tira la red. Con 1, el megáfono.","Window: click puts a row of cones ahead, from sidewalk to sidewalk; right click throws the net. Press 1 for the megaphone.","Janela: clique coloca uma fila de cones na frente, de calçada a calçada; clique direito joga a rede. Com 1, o megafone."
+BRIEF_CHASE_moto,"Un repartidor en moto se está comiendo los pedidos que reparte. Va por las veredas, así que vas a tener que cortarle el paso con conos.","A delivery guy on a scooter is eating the orders he delivers. He rides on the sidewalks, so you'll have to block him with cones.","Um entregador de moto está comendo os pedidos que entrega. Ele vai pelas calçadas, então você vai ter que bloquear o caminho dele com cones."
+CHASE_MOTO_LINE_1,"¡Solo probé las papas! ¡Para ver si estaban calientes!","I only tried the fries! To see if they were hot!","Eu só provei as batatas! Para ver se estavam quentes!"
+CHASE_MOTO_LINE_2,"Si me dejan ir, les doy cinco estrellas.","Let me go and I'll give you five stars.","Se me deixarem ir, dou cinco estrelas para vocês."
+CHASE_MOTO_LINE_3,"La pizza venía así. Con un pedazo menos. Viene así.","The pizza came like that. One slice short. It comes like that.","A pizza veio assim. Com um pedaço a menos. Vem assim."
+BRIEF_CHASE_wheelchair,"Un abuelo se escapó del geriátrico en su silla de ruedas eléctrica. Va a 8 por hora por la vereda, pero con el patrullero no lo van a parar: bájense y córranlo.","A grandpa escaped from the retirement home in his electric wheelchair. He's doing 8 an hour down the sidewalk, but the patrol car won't stop him: get out and run after him.","Um vovô fugiu do asilo na cadeira de rodas elétrica. Vai a 8 por hora pela calçada, mas com a viatura vocês não vão pará-lo: desçam e corram atrás dele."
+HINT_CHASE_ON_FOOT,"¡Con el auto no lo vas a parar! Bájate y párate delante de él.","You won't stop him with the car! Get out and stand in his way.","Com o carro você não vai pará-lo! Desça e fique na frente dele."
+CHASE_WHEELCHAIR_LINE_1,"¡Iba al bingo! ¡Hoy había bingo y no me dejaban ir!","I was going to bingo! There was bingo today and they wouldn't let me go!","Eu ia ao bingo! Hoje tinha bingo e não me deixavam ir!"
+CHASE_WHEELCHAIR_LINE_2,"Ocho por hora. En mis tiempos eso era ir rápido.","Eight an hour. In my day that was fast.","Oito por hora. No meu tempo isso era rápido."
+CHASE_WHEELCHAIR_LINE_3,"Corren bastante para ser policías. Los felicito.","You run pretty well for cops. Congratulations.","Vocês correm bastante para policiais. Parabéns."
+BRIEF_CHASE_highway,"Un señor se llevó un deportivo del concesionario ""para probarlo un ratito"". Ya va por la autopista. Ahí el patrullero llega a 110, así que agárrate.","A man took a sports car from the dealership ""to try it for a little bit"". He's already on the highway. The patrol car does 110 there, so hold on.","Um senhor levou um carro esportivo da concessionária ""para testar só um pouquinho"". Já está na rodovia. Lá a viatura chega a 110, então segure firme."
+CHASE_HIGHWAY_LINE_1,"¡Lo estaba probando! ¡Dijeron que podía probarlo!","I was trying it out! They said I could try it!","Eu estava testando! Disseram que eu podia testar!"
+CHASE_HIGHWAY_LINE_2,"Tres vueltas y ni una multa por velocidad. Hasta ahora.","Three laps and not one speeding ticket. Until now.","Três voltas e nenhuma multa por velocidade. Até agora."
+CHASE_HIGHWAY_LINE_3,"¿Ustedes pagaron el peaje? Porque yo no.","Did you pay the toll? Because I didn't.","Vocês pagaram o pedágio? Porque eu não."
+HINT_CHASE_BACKUP,"Copiloto: con R pides refuerzos por la radio.","Copilot: press R to call for backup on the radio.","Copiloto: com R você pede reforços pelo rádio."
+CHASE_BACKUP_1,"Comisario por radio: «Los refuerzos están en la panadería. Ya salen.»","Commissioner on the radio: “Backup is at the bakery. They're leaving now.”","Comissário no rádio: “Os reforços estão na padaria. Já estão saindo.”"
+CHASE_BACKUP_2,"Comisario por radio: «Se les pinchó una goma. Las cuatro, en realidad.»","Commissioner on the radio: “They got a flat tire. All four, actually.”","Comissário no rádio: “Furou um pneu deles. Os quatro, na verdade.”"
+CHASE_BACKUP_3,"Comisario por radio: «Dicen que ya van. Que ya van.»","Commissioner on the radio: “They say they're on their way. On their way.”","Comissário no rádio: “Dizem que já estão indo. Que já estão indo.”"
+CHASE_BACKUP_4,"Comisario por radio: «El patrullero de refuerzo está en el lavadero. Lo quieren limpito.»","Commissioner on the radio: “The backup patrol car is at the car wash. They want it spotless.”","Comissário no rádio: “A viatura de reforço está no lava-rápido. Querem ela limpinha.”"
+CHASE_BACKUP_5,"Comisario por radio: «Están en una capacitación sobre cómo pedir refuerzos.»","Commissioner on the radio: “They're at a training on how to call for backup.”","Comissário no rádio: “Estão num treinamento sobre como pedir reforços.”"
+CHASE_BACKUP_6,"Comisario por radio: «No encuentran las llaves. ¿No las tienes tú?»","Commissioner on the radio: “They can't find the keys. Don't you have them?”","Comissário no rádio: “Não acham as chaves. Não estão com você?”"
+CHASE_BACKUP_7,"Comisario por radio: «Se perdieron. Dicen que la autopista es redonda y no se termina nunca.»","Commissioner on the radio: “They got lost. They say the highway is round and never ends.”","Comissário no rádio: “Eles se perderam. Dizem que a rodovia é redonda e não termina nunca.”"
+CHASE_BACKUP_8,"Comisario por radio: «¿Refuerzos? Los refuerzos son ustedes.»","Commissioner on the radio: “Backup? You are the backup.”","Comissário no rádio: “Reforços? Os reforços são vocês.”"
+BRIEF_CHASE_tow_truck,"¡Novatos, una grúa se está llevando el patrullero! Lo dejaron en la puerta, como siempre. Al costado de la comisaría está el viejo: no tiene sirena y en el baúl no hay nada, pero arranca. Más o menos.","Rookies, a tow truck is taking the patrol car! You left it at the door, as usual. The old one is beside the station: no siren and nothing in the trunk, but it starts. More or less.","Novatos, um guincho está levando a viatura! Vocês deixaram na porta, como sempre. Do lado da delegacia está a velha: não tem sirene e no porta-malas não tem nada, mas pega. Mais ou menos."
+HINT_CHASE_TOWED,"Está enganchado a la grúa. Usa el patrullero viejo, al costado de la comisaría, o corre.","It's hooked to the tow truck. Take the old patrol car, beside the station, or run.","Está engatada no guincho. Use a viatura velha, do lado da delegacia, ou corra."
+HINT_CHASE_HOOK_MOVING,"Primero hay que frenar la grúa.","First you have to stop the tow truck.","Primeiro é preciso parar o guincho."
+HINT_CHASE_UNHOOKED,"¡Patrullero desenganchado! Vuelvan a la comisaría en el bueno.","Patrol car unhooked! Head back to the station in the good one.","Viatura desengatada! Voltem para a delegacia na boa."
+HINT_CHASE_WINDOW_EMPTY,"Atrás a la izquierda: los pinchos y la red quedaron en el baúl del patrullero bueno. Saluda por la ventanilla.","Back left: the spikes and the net stayed in the good patrol car's trunk. Wave out of the window.","Atrás à esquerda: os pregos e a rede ficaram no porta-malas da viatura boa. Acene pela janela."
+PROMPT_UNHOOK,E: desenganchar el patrullero,E: unhook the patrol car,E: desengatar a viatura
+CHASE_TOW_TRUCK_LINE_1,"¡Estaba mal estacionado! ¡En doble fila!","It was badly parked! Double parked!","Estava mal estacionada! Em fila dupla!"
+CHASE_TOW_TRUCK_LINE_2,"Yo solo cumplo órdenes. Del que me paga.","I just follow orders. From whoever pays me.","Eu só cumpro ordens. De quem me paga."
+CHASE_TOW_TRUCK_LINE_3,"Ese patrullero viejo no lo engancho ni gratis.","I wouldn't tow that old patrol car even for free.","Essa viatura velha eu não guincho nem de graça."
+SHOUT_FORE,¡Fore!,Fore!,Fore!
+HINT_GOLF_SUNK,"El patrullero se hundió en el lago. Te lo dejaron en la entrada, mojado: multa de 50.","The patrol car sank in the lake. They left it at the gate, soaking wet: a 50 fine.","A viatura afundou no lago. Deixaram ela na entrada, encharcada: multa de 50."
+SIGN_GOLF,Club de golf,Golf club,Clube de golfe
+BRIEF_CHASE_golf_cart,"¡Novatos, dos ladrones se robaron un carrito del club de golf! Está afuera de la ciudad, pasando la autopista por la rampa este. El reloj arranca cuando entren al club. Y no se metan en los lagos.","Rookies, two thieves stole a cart from the golf club! It's outside the city, past the highway by the east ramp. The clock starts when you go into the club. And stay out of the lakes.","Novatos, dois ladrões roubaram um carrinho do clube de golfe! Fica fora da cidade, passando a rodovia pela rampa leste. O relógio começa quando vocês entrarem no clube. E não entrem nos lagos."
+HINT_GOLF_CLOCK,"¡Ahí está el carrito! El reloj corre.","There's the cart! The clock is running.","Lá está o carrinho! O relógio está correndo."
+HINT_GOLF_RUNNER,"¡Uno se rindió y el otro sale corriendo! Hay que esposar a los dos.","One gave up and the other one is running! You have to cuff both.","Um se rendeu e o outro saiu correndo! Tem que algemar os dois."
+CHASE_GOLF_CART_LINE_1,"¡Solo lo estábamos probando! Para comprarnos uno.","We were just trying it out! To buy one.","Só estávamos testando! Pra comprar um."
+CHASE_GOLF_CART_LINE_2,"¿Sabes lo que cuesta la cuota de este club?","Do you know what this club's fee costs?","Você sabe quanto custa a mensalidade deste clube?"
+CHASE_GOLF_CART_LINE_3,"Él manejaba. Yo solo llevaba los palos.","He was driving. I just carried the clubs.","Ele dirigia. Eu só levava os tacos."
+CHASE_GOLF_RUNNER_LINE_1,"¡Era mi carrito! ¡En otra vida!","It was my cart! In another life!","Era o meu carrinho! Em outra vida!"
+CHASE_GOLF_RUNNER_LINE_2,"Que conste que corrí bastante.","For the record, I ran pretty far.","Que fique registrado que eu corri bastante."
+CHASE_GOLF_RUNNER_LINE_3,"¿Por qué siempre me toca el baúl?","Why do I always get the trunk?","Por que sempre me toca o porta-malas?"
+HINT_CHASE_FLEES,¡Se escapa! Síganlo: tienen un minuto para agarrarlo.,He's getting away! After him: you have one minute to catch him.,Ele está fugindo! Atrás dele: vocês têm um minuto para pegá-lo.
+HINT_CHASE_CAUGHT_HERE,¡Esposado! Llévalo del brazo al patrullero.,Cuffed! Walk him to the patrol car.,Algemado! Leve ele pelo braço até a viatura.
+HINT_CHASE_BACK_TO_CASE,Está en el patrullero. Sigan con el caso.,He's in the patrol car. Back to the case.,Ele está na viatura. Voltem ao caso.
+HINT_CHASE_GOT_AWAY,"Se nos escapó, novatos.","He got away, rookies.","Ele fugiu, novatos."
+HINT_ESCAPE_grandpa,"¡El abuelo vio la prueba y se escapa en la silla de ruedas! Tienen un minuto para agarrarlo.","The grandpa saw the evidence and is getting away in his wheelchair! You have one minute to catch him.","O vovô viu a prova e está fugindo na cadeira de rodas! Vocês têm um minuto para pegá-lo."
+HINT_ESCAPE_baker,"¡Marta vio la prueba y se escapa en el auto! Tienen un minuto para agarrarla.","Marta saw the evidence and is getting away in the car! You have one minute to catch her.","A Marta viu a prova e está fugindo no carro! Vocês têm um minuto para pegá-la."
+HINT_ESCAPE_groomer,"¡Ramiro vio la prueba y se escapa en el auto! Tienen un minuto para agarrarlo.","Ramiro saw the evidence and is getting away in the car! You have one minute to catch him.","O Ramiro viu a prova e está fugindo no carro! Vocês têm um minuto para pegá-lo."
+CHASE_GRANDPA_LINE_1,"¡No vi nada! ¡Iba a la farmacia, nomás!","I didn't see a thing! I was just going to the pharmacy!","Não vi nada! Eu só ia na farmácia!"
+CHASE_GRANDPA_LINE_2,"Ocho por hora y me agarran. Tengo que cambiarle las pilas.","Eight an hour and you caught me. I need new batteries.","Oito por hora e me pegaram. Preciso trocar as pilhas."
+CHASE_GRANDPA_LINE_3,"Esa prueba no es mía. Es de mi otro yo, el joven.","That evidence isn't mine. It's my other self's, the young one.","Essa prova não é minha. É do meu outro eu, o jovem."
+CHASE_BAKER_LINE_1,"¡Dejé el horno prendido! ¡Se me queman las medialunas!","I left the oven on! My croissants are burning!","Deixei o forno ligado! Meus croissants vão queimar!"
+CHASE_BAKER_LINE_2,"Yo no huía. Iba a buscar harina. Muy rápido.","I wasn't running. I was going for flour. Very fast.","Eu não estava fugindo. Ia buscar farinha. Bem rápido."
+CHASE_BAKER_LINE_3,"Si me sueltan, les regalo una docena. De ayer.","Let me go and I'll give you a dozen. From yesterday.","Se me soltarem, dou uma dúzia para vocês. De ontem."
+CHASE_GROOMER_LINE_1,"¡Los perros no pueden quedarse solos! ¡Se van a peinar entre ellos!","The dogs can't stay alone! They'll groom each other!","Os cachorros não podem ficar sozinhos! Vão se pentear entre eles!"
+CHASE_GROOMER_LINE_2,"Cuidado con el pelo. Me lo hice esta mañana.","Careful with the hair. I did it this morning.","Cuidado com o cabelo. Fiz hoje de manhã."
+CHASE_GROOMER_LINE_3,"Yo solo salí a pasear. En auto. A toda velocidad.","I just went out for a walk. By car. At full speed.","Eu só saí para passear. De carro. A toda velocidade."
+HINT_DANGEROUS_STREET,"¡Salió a la calle y se lleva el patrullero viejo! Al bueno, rápido: tienen un minuto.","He's out on the street and taking the old patrol car! Into the good one, quick: you have one minute.","Ele saiu para a rua e está levando a viatura velha! Para a boa, rápido: vocês têm um minuto."
+HINT_DANGEROUS_BACK,"De vuelta en la silla. Sigan con el interrogatorio.","Back in the chair. Go on with the interrogation.","De volta na cadeira. Continuem o interrogatório."
+CASE_FAILED_SUSPECT_ESCAPED,"Se escapó en el patrullero viejo. Interrogatorio perdido.","He got away in the old patrol car. Interrogation lost.","Ele fugiu na viatura velha. Interrogatório perdido."
+CHASE_DANGEROUS_LINE_1,"¡Este patrullero no dobla! ¿Quién lo arregla?","This patrol car doesn't turn! Who fixes it?","Essa viatura não vira! Quem conserta?"
+CHASE_DANGEROUS_LINE_2,"Tenía la llave puesta. Era una invitación.","The key was in it. It was an invitation.","A chave estava no carro. Era um convite."
+CHASE_DANGEROUS_LINE_3,"Está bien, vuelvo a la silla. Pero la lámpara me la apagan.","Fine, I'll go back to the chair. But turn the lamp off.","Tá bom, volto para a cadeira. Mas desliguem a lâmpada."

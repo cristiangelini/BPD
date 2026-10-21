@@ -84,6 +84,20 @@ func _ready() -> void:
 	case.twin = twin
 	case.translator = translator
 	case.guilty_in_cell = InterrogationCase.pick_guilty_in_cell(case_seed)
+	if suspect.kind == "dangerous":
+		# He can take the old patrol car parked by the station (persecucion-final.md).
+		var old := SuspectCar.new()
+		old.name = "OldPatrolCar"
+		old.kind = SuspectCar.OLD_PATROL
+		old.driving = false
+		add_child(old)
+		old.global_transform = city.transform * CityLayout.lot("station") * ChaseLevel.OLD_CAR_SPOT
+		case.getaway = old
+		if city.map:
+			city.map.setup(city, "", $PatrolCar)
+	case.car = $PatrolCar
+	case.city = city
+	case.city_map = city.map
 	case.shift_screen = $ShiftScreen
 	case.solved_label = %CaseSolved
 	case.failed_label = %CaseFailed

@@ -19,6 +19,12 @@ const HELD_FACTOR := 0.5
 var running := false
 var slowed := false
 var _next := 0
+## The dangerous one can head for the street (not online yet: the chase isn't synced), the laps he ran and whether
+## he's on his way out. Out the front door, `outside` goes off.
+var can_leave := true
+var laps := 0
+var to_street := false
+signal outside
 
 var _bubble: Label3D
 
@@ -78,12 +84,16 @@ func run() -> void:
 	running = true
 	slowed = false
 	_next = 0
+	laps = 0
+	to_street = false
 
 
 ## Caught (or the lawyer came): back in his chair, cuffed again.
 func sit() -> void:
 	running = false
 	slowed = false
+	to_street = false
+	show()
 	position = InterrogationWing.SUSPECT_AT
 	rotation = Vector3.ZERO
 
@@ -91,13 +101,23 @@ func sit() -> void:
 func _physics_process(delta: float) -> void:
 	if not running:
 		return
-	var route := InterrogationWing.RUN_ROUTE
+	var route := InterrogationWing.STREET_ROUTE if to_street else InterrogationWing.RUN_ROUTE
 	var to := route[_next] - position
 	to.y = 0.0
 	var step := RUN_SPEED * (HELD_FACTOR if slowed else 1.0) * delta
 	if to.length() <= step:
 		position = route[_next]
-		_next = _next + 1 if _next + 1 < route.size() else InterrogationWing.RUN_LOOP_FROM
+		if to_street and _next + 1 >= route.size():
+			running = false
+			outside.emit()
+		elif _next + 1 < route.size():
+			_next += 1
+		else:
+			_next = InterrogationWing.RUN_LOOP_FROM
+			laps += 1
+			if can_leave and laps >= InterrogationWing.STREET_LAPS:
+				to_street = true
+				_next = 0
 		return
 	position += to.normalized() * step
 	rotation.y = atan2(to.x, to.z)

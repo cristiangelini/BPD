@@ -35,6 +35,13 @@ const RUN_ROUTE: Array[Vector3] = [
 	Vector3(-4.0, 0, -10.0),
 ]
 const RUN_LOOP_FROM := 2
+## After STREET_LAPS laps he heads for the street (persecucion-final.md, decision 96): from the hall through the
+## comisario's office and the guard room, out the front door, where the old patrol car waits by the station.
+const STREET_LAPS := 1
+const STREET_ROUTE: Array[Vector3] = [
+	Vector3(3.2, 0, -10.0), Vector3(3.2, 0, -7.5), Vector3(2.5, 0, -3.0), Vector3(0, 0, -0.5), Vector3(0, 0, 3.0),
+	Vector3(0, 0, StationRooms.HALF_Z + 1.5),
+]
 ## Where the lawyer comes in when he gets there: the room's door.
 const LAWYER_AT := Vector3((ROOM_DOOR.x + ROOM_DOOR.y) / 2, 0, HALL_Z - 0.8)
 
