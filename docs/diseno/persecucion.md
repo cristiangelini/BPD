@@ -84,7 +84,9 @@ El host maneja al sospechoso y decide los medidores (decisión 50), como con el 
    pinchos y la red por la ventana (los pinchos caen 4,5 m detrás del patrullero y le pinchan las ruedas: frena del
    todo en 2 s; la red cae 12 m adelante y lo enreda 4 s; **propuesta**). El que tiene megáfono y ventana a la vez
    elige con 1 y 2. Un asiento vacío le pasa su tarea al copiloto, y si no hay, al conductor.
-4. Los daños a la ciudad y su multa.
+4. Los daños a la ciudad y su multa: chocar algo de la ciudad perdiendo de golpe más de 15 km/h es un choque y cuesta
+   50; chocar al sospechoso no cuesta nada **(propuesta)**. Por ahora cuentan paredes, semáforos y árboles; los autos
+   estacionados y las vidrieras, cuando la ciudad los tenga.
 5. El sorteo en "Jugar".
 6. Los otros 9 sospechosos, uno o dos por PR.
 7. La persecución como final de otros casos.
