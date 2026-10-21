@@ -138,6 +138,9 @@ static func pick_suspect(seed_value: int, args: PackedStringArray) -> String:
 static func begin(parent: Node, kind: String, at: Transform3D, patrol_car: PatrolCar, city: Node3D, seed_value: int,
 		map: CityMap = null, parked: SuspectCar = null) -> ChaseCase:
 	var fleeing := parked
+	# Online a guest may already have the host's (NpcSync).
+	if not fleeing:
+		fleeing = parent.get_node_or_null("FleeingCar") as SuspectCar
 	if not fleeing:
 		fleeing = SuspectCar.new()
 		fleeing.name = "FleeingCar"
@@ -448,6 +451,7 @@ func _end(was_caught: bool) -> void:
 	chasing = false
 	case_solved = was_caught
 	case_failed = not was_caught
+	failed_reason = "" if was_caught else "CASE_FAILED_ESCAPED"
 	if meters:
 		meters.queue_free()
 	if not was_caught:
@@ -528,7 +532,7 @@ func _barriers() -> Array[Node]:
 ## Host: a barrier broke; the guests see it broken too.
 func _on_barrier_broken(_by: Node3D, barrier: TollBarrier) -> void:
 	if online and not follower:
-		online.tell("shown_barrier_broken", [_barriers().find(barrier)])
+		online.tell_chase("shown_barrier_broken", [_barriers().find(barrier)])
 
 
 ## What every guest's chase shows (CaseSync, 5 times a second when it changes).
@@ -540,6 +544,12 @@ func snapshot() -> Dictionary:
 
 ## A guest's chase takes the host's.
 func apply_snapshot(state: Dictionary) -> void:
+	if embedded and chasing and (state.solved or state.failed != ""):
+		# In the middle of another case it has no screen of its own: caught or lost, that case goes on.
+		_end(state.solved)
+		return
+	if embedded and not chasing:
+		return
 	if state.tip:
 		give_tip()
 	chasing = state.chasing

@@ -201,6 +201,11 @@ func get_off() -> void:
 			(rider as Node3D).hide()
 
 
+## Online (NpcSync): what a guest's copy needs before it's added (one that drives off in the middle of a case).
+func net_setup() -> Dictionary:
+	return {"kind": kind}
+
+
 ## Online (NpcSync): whether he got off, so a guest's copy hides its riders too.
 func net_state() -> Variant:
 	var rider := get_node_or_null("Rider") as Node3D

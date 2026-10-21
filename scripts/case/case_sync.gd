@@ -92,8 +92,22 @@ func request_job(job: String) -> void:
 @rpc("any_peer", "call_remote", "reliable")
 func _job(job: String) -> void:
 	var sync: CopSync = net.cop_syncs.get(multiplayer.get_remote_sender_id())
-	if multiplayer.is_server() and sync and is_instance_valid(sync.cop) and raid is ChaseCase:
-		raid.tasks.job_by(sync.cop, job)
+	var chase := ChaseCase.of(raid)
+	if multiplayer.is_server() and sync and is_instance_valid(sync.cop) and chase:
+		chase.tasks.job_by(sync.cop, job)
+
+
+## Host: a passing effect on every guest's chase, the case's own or one in the middle of it (the owner running off).
+func tell_chase(method: String, args: Array = []) -> void:
+	for peer: int in net.scene_peers:
+		_told_chase.rpc_id(peer, method, args)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _told_chase(method: String, args: Array) -> void:
+	var chase := ChaseCase.of(raid)
+	if chase:
+		chase.callv(method, args)
 
 
 ## Host at the end of the shift: plays the next case with everyone; a guest waits for the host.
