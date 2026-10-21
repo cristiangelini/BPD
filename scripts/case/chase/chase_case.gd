@@ -395,10 +395,7 @@ func _end(was_caught: bool) -> void:
 		meters.queue_free()
 	if not was_caught:
 		_hint_all("HINT_CHASE_GOT_AWAY")
-		var gone := truck
-		get_tree().create_timer(GONE_AFTER).timeout.connect(func() -> void:
-			if is_instance_valid(gone):
-				gone.queue_free())
+		get_tree().create_timer(GONE_AFTER).timeout.connect(truck.queue_free)
 	ended.emit(was_caught)
 
 
