@@ -2,8 +2,8 @@ class_name CityMap
 extends CanvasLayer
 
 ## The city map on the radio (docs/diseno/ciudad.md, step 3): M opens and closes a top view of the blocks,
-## with the station, today's case place, the cops and the patrol car. Drawn from CityLayout, so new places
-## show up on their own.
+## with the station, today's case place, the cops and the patrol car, and the ring highway around it. Drawn from
+## CityLayout and HighwayLayout, so new places show up on their own.
 
 const SIZE := 760.0
 const MARGIN := 24.0
@@ -15,12 +15,25 @@ const TARGET := Color(1, 0.82, 0.3)
 const STATION := Color(0.35, 0.55, 1)
 const COP := Color(0.45, 1, 0.5)
 const CAR := Color(1, 1, 1)
+const SUSPECT := Color(1, 0.45, 0.75)
+const GRASS := Color(0.3, 0.45, 0.25)
+const TOLL := Color(1, 0.82, 0.3)
+## What the map shows: the whole ring highway.
+## What the map shows: the ring, and past it on the east the golf club; MIDDLE is its center.
+const EXTENT := Vector2(HighwayLayout.OUTER.x + GolfLayout.CENTER.x + GolfLayout.HALF.x, HighwayLayout.OUTER.y * 2)
+const MIDDLE := Vector2(GolfLayout.CENTER.x + GolfLayout.HALF.x - HighwayLayout.OUTER.x, 0) / 2
+const LAWN := Color(0.4, 0.62, 0.3)
+const SAND := Color(0.85, 0.78, 0.55)
+const WATER := Color(0.25, 0.45, 0.8)
 const BLINK := 0.5
 
 ## The city node whose local space CityLayout describes, and the place to mark (empty for none).
 var city: Node3D
 var target := ""
 var car: Node3D
+## A chase's suspect, shown only while `shows_suspect` says so (the copilot's map, persecucion.md).
+var suspect: Node3D
+var shows_suspect: Callable = func() -> bool: return true
 
 var _panel: PanelContainer
 var _canvas: Control
@@ -83,12 +96,11 @@ func toggle() -> void:
 
 ## Where a point on the city's ground (its local x, z) lands on the map square, north up.
 static func to_map(local: Vector3) -> Vector2:
-	var scale := (SIZE - MARGIN * 2) / maxf(CityLayout.SIZE.x, CityLayout.SIZE.y)
-	return Vector2(SIZE, SIZE) / 2 + Vector2(local.x, local.z) * scale
+	return Vector2(SIZE, SIZE) / 2 + (Vector2(local.x, local.z) - MIDDLE) * map_scale()
 
 
 static func map_scale() -> float:
-	return (SIZE - MARGIN * 2) / maxf(CityLayout.SIZE.x, CityLayout.SIZE.y)
+	return (SIZE - MARGIN * 2) / maxf(EXTENT.x, EXTENT.y)
 
 
 ## A point in the world on the map, through the city's transform.
@@ -110,6 +122,9 @@ func _unhandled_input(event: InputEvent) -> void:
 func _draw_map() -> void:
 	var k := map_scale()
 	var half := CityLayout.SIZE / 2
+	_canvas.draw_rect(Rect2(to_map(Vector3(MIDDLE.x - EXTENT.x / 2, 0, -EXTENT.y / 2)), EXTENT * k), GRASS)
+	_highway(k)
+	_golf(k)
 	_canvas.draw_rect(Rect2(to_map(Vector3(-half.x, 0, -half.y)), CityLayout.SIZE * k), STREET)
 	for row in CityLayout.ROWS:
 		for col in CityLayout.COLUMNS:
@@ -137,8 +152,40 @@ func _draw_map() -> void:
 			STATION.lightened(0.4) if id == "station" else TARGET)
 	if car:
 		_canvas.draw_rect(Rect2(world_to_map(car.global_position) - Vector2(5, 5), Vector2(10, 10)), CAR)
+	if is_instance_valid(suspect) and shows_suspect.call():
+		_canvas.draw_circle(world_to_map(suspect.global_position), 7.0, SUSPECT)
 	for cop in _canvas.get_tree().get_nodes_in_group("cops"):
 		_arrow(world_to_map((cop as Node3D).global_position), _map_heading(cop as Node3D))
+
+
+## The ring as a thick line, its ramps and a mark on each toll.
+func _highway(k: float) -> void:
+	var line := PackedVector2Array()
+	for point in HighwayLayout.loop():
+		line.append(to_map(point))
+	line.append(line[0])
+	_canvas.draw_polyline(line, STREET, HighwayLayout.WIDTH * k)
+	for side in HighwayLayout.SIDES:
+		var ramp := HighwayLayout.ramp_rect(side)
+		var size: Vector2 = ramp[1]
+		_canvas.draw_rect(Rect2(to_map(ramp[0] - Vector3(size.x, 0, size.y) / 2), size * k), STREET)
+	for i in HighwayLayout.TOLLS.size():
+		_canvas.draw_rect(Rect2(to_map(HighwayLayout.toll_point(i)) - Vector2(3, 7), Vector2(6, 14)), TOLL)
+
+
+## The golf club: its lawn, the lakes and the bunkers, and a dot on each hole.
+func _golf(k: float) -> void:
+	var half := GolfLayout.HALF
+	var center := GolfLayout.CENTER
+	_canvas.draw_rect(Rect2(to_map(center - Vector3(half.x, 0, half.y)), half * 2 * k), LAWN)
+	for ellipse: Array in GolfLayout.LAKES + GolfLayout.BUNKERS:
+		var color := WATER if GolfLayout.LAKES.has(ellipse) else SAND
+		var middle: Vector3 = ellipse[0]
+		_canvas.draw_set_transform(to_map(center + middle), 0.0, Vector2(ellipse[1], ellipse[2]) * k)
+		_canvas.draw_circle(Vector2.ZERO, 1.0, color)
+	_canvas.draw_set_transform(Vector2.ZERO)
+	for hole in GolfLayout.HOLES:
+		_canvas.draw_circle(to_map(center + hole), 2.5, Color.WHITE)
 
 
 func _lot(lot: Dictionary, color: Color) -> void:
