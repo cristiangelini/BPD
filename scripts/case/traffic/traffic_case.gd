@@ -5,7 +5,8 @@ extends Node
 ## his office with the first clue (TrafficClues adds the rest by radio). Cuffing a stopped car's driver detains them:
 ## the wanted one gets out cuffed and the cops walk them to the patrol car (OwnerEscort), which solves the case; an
 ## innocent one complains, drives off and files a complaint, which comes off the pay, and the second one loses the
-## case (decision 98). The wanted car getting past the checkpoint loses it too. Every number here is (propuesta).
+## case (decision 98). The wanted car getting past the checkpoint runs off and the chase starts (decision 96, like the
+## pastry contest's culprit); caught, it's solved, and got away, lost. Every number here is (propuesta).
 
 signal detained(car: QueueCar, wanted: bool)
 
@@ -33,6 +34,9 @@ var innocents := 0
 var suspect: ChaseSuspect
 var escort: OwnerEscort
 var solved_now := false
+## The wanted car got past the checkpoint and the chase is on; whether it got away.
+var chase: ChaseCase
+var escaped := false
 var lost := false
 var shift_over := false
 
@@ -105,16 +109,42 @@ func _on_boarded() -> void:
 	_end()
 
 
-## The wanted car went by the checkpoint: the case is lost.
+## The wanted car went by the checkpoint: it runs off and the chase starts. Without a city to chase it in, lost.
 func _on_passed(car: QueueCar, _sneaked: bool) -> void:
-	if car.wanted and not solved_now and not lost and not suspect:
-		lost = true
-		_hint_all("HINT_TRAFFIC_WANTED_GONE")
-		_end()
+	if not car.wanted or solved_now or lost or suspect or chase:
+		return
+	if _run_off(car):
+		return
+	lost = true
+	_hint_all("HINT_TRAFFIC_WANTED_GONE")
+	_end()
+
+
+## The queue car becomes the chase's fleeing car, in its own paint, right where it is.
+func _run_off(car: QueueCar) -> bool:
+	var level := get_parent()
+	var city := level.get_node_or_null("City") as Node3D
+	if not city or not patrol_car:
+		return false
+	var at := car.global_transform
+	var kind := "traffic_%d" % (car.look % TrafficCar.MODELS.size())
+	car.queue_free()
+	chase = ChaseCase.begin(level, kind, at, patrol_car, city, case_seed)
+	chase.who = "driver"
+	chase.ended.connect(_on_chase_ended)
+	_hint_all("HINT_TRAFFIC_RUNS")
+	return true
+
+
+func _on_chase_ended(caught: bool) -> void:
+	escaped = not caught
+	solved_now = caught
+	lost = not caught
+	_end()
 
 
 func solved() -> bool:
-	return solved_now and not lost
+	return solved_now and not lost and not escaped
 
 
 func _end() -> void:
