@@ -11,6 +11,11 @@ const SERVED_SECONDS := 3.0
 const SETTLED_SPEED := 0.3
 
 
+func _ready() -> void:
+	# The crime scene's recipe gets wet if a cup ends up on it (CrimeClueItem).
+	add_to_group("coffee_cups")
+
+
 func _physics_process(_delta: float) -> void:
 	if not was_held or not holders.is_empty() or linear_velocity.length() > SETTLED_SPEED:
 		return

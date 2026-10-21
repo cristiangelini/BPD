@@ -101,3 +101,53 @@ func test_only_the_drawn_clues_count() -> void:
 		if not case.plan.clues.has(kind):
 			assert_false(case.found(kind), "%s isn't one of this case's clues" % kind)
 	assert_eq(case.flour_print != null, case.plan.clues.has("footprint"))
+
+
+func test_a_bagged_clue_is_found_and_safe() -> void:
+	await _open_with(["hair"])
+	var plate: CrimeClueItem = case.items.hair
+	assert_true(level.contest.under_roof(plate.global_position), "on a cook's table")
+	cop.use_clue_in_hand(plate, level.contest.bags)
+	assert_true(plate.bagged)
+	assert_eq(case.clues_found, ["hair"] as Array[String])
+	cop.use_clue_in_hand(plate, null)
+	assert_false(plate.spoiled, "in its bag it can't be eaten")
+
+
+func test_eating_the_cream_loses_the_hair() -> void:
+	await _open_with(["hair"])
+	var plate: CrimeClueItem = case.items.hair
+	cop.use_clue_in_hand(plate, null)
+	assert_true(plate.spoiled)
+	assert_eq(case.ruined, ["hair"] as Array[String])
+	cop.use_clue_in_hand(plate, level.contest.bags)
+	assert_true(case.clues_found.is_empty(), "bagged after eating, it says nothing")
+
+
+func test_biting_the_slice_again_spoils_the_bite() -> void:
+	await _open_with(["bite"])
+	cop.use_clue_in_hand(case.items.bite, null)
+	assert_eq(case.ruined, ["bite"] as Array[String])
+	var texts := case.rows().map(func(row: Dictionary) -> String: return row.text)
+	assert_has(texts, "- " + tr("CLUE_CRIME_RUINED_bite"))
+
+
+func test_coffee_on_the_recipe_runs_the_ink() -> void:
+	await _open_with(["recipe"])
+	var recipe: CrimeClueItem = case.items.recipe
+	cop.use_clue_in_hand(recipe, null)
+	assert_false(recipe.spoiled, "nobody eats paper")
+	var cup := get_tree().get_nodes_in_group("coffee_cups")[0] as Node3D
+	assert_gt(cup.global_position.distance_to(recipe.global_position), CrimeClueItem.WET_REACH, "dry at first")
+	cup.global_position = recipe.global_position + Vector3(0, 0.1, 0)
+	await wait_physics_frames(2)
+	assert_true(recipe.spoiled)
+	assert_eq(case.ruined, ["recipe"] as Array[String])
+
+
+func test_the_recipe_tells_the_hand() -> void:
+	await _open_with(["recipe"])
+	cop.use_clue_in_hand(case.items.recipe, level.contest.bags)
+	var key := "CLUE_CRIME_recipe_left" if case.culprit().left else "CLUE_CRIME_recipe_right"
+	assert_eq(case.clue_line("recipe"), tr(key))
+	assert_eq(case.clues_found, ["recipe"] as Array[String])

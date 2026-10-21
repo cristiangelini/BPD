@@ -44,6 +44,7 @@ var cooks: Array[PastryCook] = []
 ## The display case where the Torre de Merengue stood, empty.
 var display_case: DisplayCase
 var lady: JuryLady
+var bags: EvidenceBags
 var _builder: PlaceBuilder
 
 
@@ -81,13 +82,18 @@ func _tent() -> void:
 	add_child(banner)
 
 
-## The jury's long table at the north end, with the empty display case in its middle and the jury's lady behind.
+## The jury's long table at the north end, with the empty display case in its middle, the evidence bags and the
+## jury's lady behind.
 func _jury() -> void:
 	_counter(JURY_AT, JURY_SIZE)
 	display_case = DisplayCase.new()
 	display_case.name = "DisplayCase"
 	display_case.position = JURY_AT + Vector3(0, JURY_SIZE.y, 0)
 	add_child(display_case)
+	bags = EvidenceBags.new()
+	bags.name = "EvidenceBags"
+	bags.position = JURY_AT + Vector3(1.8, JURY_SIZE.y, 0)
+	add_child(bags)
 	lady = JuryLady.new()
 	lady.name = "JuryLady"
 	lady.position = LADY_AT
