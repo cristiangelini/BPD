@@ -27,7 +27,12 @@ sospechoso (y a los peatones que se cruzan).
    allanamiento (decisión 83): sueldo de 500.
 5. **Se pierde** cuando la distancia llega a 100 o cuando pasa 1 minuto sin atraparlo: "Se nos escapó, novatos." Sin
    sueldo de ese caso.
-6. **Tiempo límite de 1 minuto** (Cristian, 20/10: "pongamos primero 1 minuto, después lo vamos midiendo"). Es la
+6. **Cuándo arranca:** el sospechoso espera en la esquina de la comisaría y sale apenas un policía se sienta al volante;
+   ahí corren el reloj y la distancia **(propuesta)**. Frenado, se baja de su camión y se rinde; esposado, el reloj
+   se para, y hay que llevarlo del brazo al patrullero como al dueño del allanamiento.
+7. **Cuota:** como el interrogatorio (decisión 91), la persecución tiene su cuota propia de 500, porque solo paga el
+   sueldo **(propuesta)**.
+8. **Tiempo límite de 1 minuto** (Cristian, 20/10: "pongamos primero 1 minuto, después lo vamos midiendo"). Es la
    excepción a la decisión 66: la persecución sí tiene reloj, que se ve arriba junto a los medidores.
 
 ## Las cuatro tareas (decisión 24)

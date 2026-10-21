@@ -1,0 +1,72 @@
+class_name ChaseLevel
+extends Node3D
+
+## The chase case's level (persecucion.md): the whole city with the station, the cops in the guard room, the comisario
+## in his office, the patrol car at the door and the suspect's vehicle waiting at the nearest corner, which drives off
+## once a cop takes the wheel. The distance meter and the clock show at the top. --place=chase opens it from Play.
+
+## Same seed, same suspect and route. 0 draws one.
+@export var case_seed := 0
+var case: ChaseCase
+var truck: SuspectCar
+var distance_bar: ProgressBar
+var clock: Label
+
+
+func _ready() -> void:
+	if case_seed == 0:
+		case_seed = PlaceDraw.take_seed()
+	if case_seed == 0:
+		case_seed = PlaceDraw.new_seed()
+	var city: City = $City
+	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+	var parking := city.transform * CityLayout.parking("station")
+	$PatrolCar.global_transform = parking.translated_local(Vector3.UP * 0.05)
+	truck = SuspectCar.new()
+	truck.name = "SuspectCar"
+	add_child(truck)
+	var start := ChaseRoute.nearest_corner(CityLayout.parking("station").origin)
+	truck.follow(ChaseRoute.draw(case_seed, ChaseRoute.CORNERS, start), city.transform)
+	case = ChaseCase.new()
+	case.case_seed = case_seed
+	case.suspect_id = ChaseCase.pick_suspect(case_seed, OS.get_cmdline_user_args())
+	case.car = $PatrolCar
+	case.truck = truck
+	case.station_parking = parking
+	case.shift_screen = $ShiftScreen
+	case.solved_label = %CaseSolved
+	case.failed_label = %CaseFailed
+	add_child(case)
+	_add_meters()
+	case.start(city.comisario)
+
+
+func _add_meters() -> void:
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	clock = Label.new()
+	clock.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	clock.add_theme_font_size_override("font_size", 32)
+	clock.add_theme_constant_override("outline_size", 8)
+	box.add_child(clock)
+	var title := Label.new()
+	title.text = "HUD_DISTANCE"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	distance_bar = ProgressBar.new()
+	distance_bar.custom_minimum_size = Vector2(320, 18)
+	distance_bar.max_value = ChaseCase.ESCAPED
+	distance_bar.show_percentage = false
+	distance_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(distance_bar)
+	add_child(hud)
+	_show(0.0, ChaseCase.TIME_LIMIT)
+	case.meters_changed.connect(_show)
+
+
+func _show(distance: float, time_left: float) -> void:
+	distance_bar.value = distance
+	clock.text = "%d:%02d" % [int(ceilf(time_left)) / 60, int(ceilf(time_left)) % 60]

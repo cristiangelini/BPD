@@ -26,6 +26,8 @@ var escorted_by: Cop
 var in_car := false
 ## Online, a guest's copy: the host walks him and says when he's in the car (NpcSync); here he only rides along.
 var follower := false
+## What every cop is told once he's in the car (the chase suspect goes to a cell, not to an interrogation).
+var in_car_hint := "HINT_OWNER_IN_CAR"
 var _since_line := 0.0
 var _line := 0
 
@@ -116,5 +118,5 @@ func board() -> void:
 	npc.global_transform = car.prisoner_seat()
 	car.prisoner = npc
 	for cop in get_tree().get_nodes_in_group("cops"):
-		(cop as Cop).show_hint("HINT_OWNER_IN_CAR")
+		(cop as Cop).show_hint(in_car_hint)
 	boarded.emit()
