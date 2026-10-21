@@ -86,6 +86,16 @@ comisaría, como el resto, y el mapa del copiloto los muestra.
 - La sirena no anda: H hace que un policía grite «¡Uiuuu! ¡Uiuuu!» por la ventanilla (se ve 1,5 s arriba del auto).
 - Todavía no aparece en el juego: lo usa la grúa (paso 3b).
 
+## Cómo quedó (paso 3b, la grúa)
+- La grúa es un camión amarillo con brazo y plataforma (modelo nuevo de `tools/modelgen`). Arranca con el patrullero
+  bueno colgado atrás, un poco inclinado; mientras está enganchado no se puede subir («Está enganchado a la grúa»).
+- Va a 30 km/h y dobla despacio. Arranca cuando un policía se le acerca a menos de 25 m (a pie o en el auto viejo), y
+  la distancia se mide desde el policía más cercano.
+- El patrullero viejo espera al lado de la comisaría, del lado oeste. Tiene el baúl vacío: sin pinchos, red ni conos.
+- Frenada 3 s, el conductor (el mudancero, por ahora) se baja y se rinde. E en el gancho desengancha el patrullero bueno
+  (si la grúa todavía se mueve, avisa que hay que frenarla). Hay que volver con el bueno: al sospechoso esposado se lo
+  sube ahí, y el caso se cierra con el bueno en la comisaría. El viejo se puede dejar donde quedó.
+
 ## El orden para hacerlo (un PR chico por paso)
 1. La autopista en anillo con sus 4 rampas, el guardarraíl y los peajes, y el patrullero a 110 km/h en ella.
 2. El sospechoso de la autopista: el deportivo, el tráfico, los peajes que rompe y la radio de los refuerzos.

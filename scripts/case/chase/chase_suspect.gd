@@ -14,6 +14,7 @@ const MODELS := {
 	"moto": preload("res://assets/models/npc_repartidor.glb"),
 	"wheelchair": preload("res://assets/models/npc_abuelo.glb"),
 	"highway": preload("res://assets/models/npc_sospechoso.glb"),
+	"tow_truck": preload("res://assets/models/npc_mudancero.glb"),
 }
 ## Seconds a line stays over his head, and between two complaints.
 const LINE_SECONDS := 3.0

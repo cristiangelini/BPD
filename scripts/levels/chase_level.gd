@@ -9,6 +9,10 @@ extends Node3D
 @export var case_seed := 0
 ## Who's getting away (ChaseCase.SUSPECTS); empty draws him with the seed (or --suspect=<id>).
 @export var suspect_id := ""
+const PATROL_CAR := preload("res://scenes/vehicles/patrol_car.tscn")
+## Where the old patrol car waits, in the station's lot: beside it, by the back, its nose to the front street.
+const OLD_CAR_SPOT := Transform3D(Basis.IDENTITY, Vector3(-21, 0.05, -2))
+
 var case: ChaseCase
 var truck: SuspectCar
 var distance_bar: ProgressBar
@@ -48,6 +52,15 @@ func _ready() -> void:
 	case.suspect_id = suspect_id
 	case.car = $PatrolCar
 	case.truck = truck
+	var old_car: PatrolCar = null
+	if suspect_id == SuspectCar.TOW:
+		# The tow truck takes the patrol car from the door: the old one waits beside the station.
+		old_car = PATROL_CAR.instantiate()
+		old_car.name = "OldPatrolCar"
+		old_car.old = true
+		add_child(old_car)
+		old_car.global_transform = city.transform * CityLayout.lot("station") * OLD_CAR_SPOT
+		case.car = old_car
 	case.station_parking = parking
 	case.shift_screen = $ShiftScreen
 	case.solved_label = %CaseSolved
@@ -56,9 +69,11 @@ func _ready() -> void:
 	case.sun = $Sun
 	add_child(case)
 	case.start(city.comisario)
+	if old_car:
+		case.tow($PatrolCar)
 	_add_meters()
 	# The copilot's map: the patrol car, and the suspect for whoever reads it.
-	city.map.setup(city, "", $PatrolCar)
+	city.map.setup(city, "", case.car)
 	city.map.suspect = truck
 	city.map.shows_suspect = func() -> bool: return case.tasks.shows_suspect() and case.weather.shows_suspect()
 

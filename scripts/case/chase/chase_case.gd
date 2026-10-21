@@ -8,7 +8,8 @@ extends Node
 ## running out before he's cuffed loses it. Every number here is (propuesta), except the minute (Cristian, 20/10).
 
 ## The suspects (persecucion.md, "Los sospechosos"), each with what he leaves behind (ChaseDrops).
-const SUSPECTS := ["ice_cream", "moving_truck", "school_bus", "rain", "night", "moto", "wheelchair", "highway"]
+const SUSPECTS := ["ice_cream", "moving_truck", "school_bus", "rain", "night", "moto", "wheelchair", "highway",
+	"tow_truck"]
 ## Seconds to catch him: the chase has a clock (Cristian, 20/10: "pongamos primero 1 minuto").
 const TIME_LIMIT := 60.0
 ## Farther than this (m) the meter climbs CLIMB a second; closer it drops DROP a second. At ESCAPED he got away.
@@ -26,6 +27,9 @@ const DOOR_OUT := 2.0
 ## close to him (or takes the wheel), the distance counts from the nearest cop, and only a cop on foot in his way, this
 ## close, makes him give up; the patrol car in his way doesn't.
 const ON_FOOT := ["wheelchair"]
+## The tow truck takes the patrol car (persecucion-lugares.md, "La grúa"): the cops chase him in the old one or on
+## foot, so the distance counts from the nearest cop and the chase starts as they come out of the station.
+const CLOSE_BY := ["wheelchair", "tow_truck"]
 const START_NEAR := 25.0
 const BLOCK_NEAR := 2.5
 ## A chase pays the salary and has its own quota, like the interrogation (decision 91).
@@ -45,6 +49,9 @@ var case_seed := 0
 var suspect_id := "ice_cream"
 var car: PatrolCar
 var truck: SuspectCar
+## The good patrol car the tow truck takes away, hanging behind it until a cop unhooks it; the cops drive it back.
+var towed: PatrolCar
+var unhooked := false
 ## His route, and where the city sits in the world (the route is in the city's space).
 var route: ChaseRoute
 var city_transform := Transform3D.IDENTITY
@@ -139,18 +146,20 @@ func give_tip() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if towed and not unhooked:
+		towed.global_transform = truck.towed_transform()
 	if case_failed or case_solved or not tip_given:
 		return
 	if not chasing:
 		# The suspect drives off once a cop takes the wheel (or, on foot, walks up to him).
-		if car.driver() or (on_foot() and _nearest_cop() < START_NEAR):
+		if car.driver() or (CLOSE_BY.has(suspect_id) and _nearest_cop() < START_NEAR):
 			chasing = true
 			truck.driving = true
 		return
 	if not caught:
 		time_left = maxf(time_left - delta, 0.0)
 	if not stopped:
-		var gap := _nearest_cop() if on_foot() else _flat(car.global_position - truck.global_position).length()
+		var gap := _nearest_cop() if CLOSE_BY.has(suspect_id) else _flat(car.global_position - truck.global_position).length()
 		distance = clampf(distance + (CLIMB if gap > far() else -DROP) * delta, 0.0, ESCAPED)
 		if truck.stuck_for >= STOP_SECONDS:
 			if not on_foot() or _cop_on_foot_near():
@@ -166,7 +175,7 @@ func _physics_process(delta: float) -> void:
 		fail("CASE_FAILED_ESCAPED")
 	elif time_left <= 0.0 and not caught:
 		fail("CASE_FAILED_TIME")
-	elif caught and escort.in_car and all_in_car() and car_at_station():
+	elif caught and (unhooked or not towed) and escort.in_car and all_in_car() and car_at_station():
 		case_solved = true
 		solved_label.show()
 		_finish_soon()
@@ -227,20 +236,50 @@ func pull_over() -> void:
 	get_parent().add_child(suspect)
 	suspect.global_position = truck.global_position + truck.global_basis.x * DOOR_OUT + Vector3.UP * 0.1
 	suspect.rotation.y = truck.rotation.y
-	escort = OwnerEscort.attach(suspect, car)
+	escort = OwnerEscort.attach(suspect, home_car())
 	escort.in_car_hint = "HINT_CHASE_IN_CAR"
 	_hint_all("HINT_CHASE_STOPPED")
 
 
+## The car the cops bring him back in: the good patrol car, also when the tow truck took it.
+func home_car() -> PatrolCar:
+	return towed if towed else car
+
+
+## The tow truck takes the patrol car: it hangs behind him, locked, and the tow truck doesn't bump into it.
+func tow(patrol_car: PatrolCar) -> void:
+	towed = patrol_car
+	towed.freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
+	towed.freeze = true
+	towed.locked_hint = "HINT_CHASE_TOWED"
+	truck.add_collision_exception_with(towed)
+	towed.global_transform = truck.towed_transform()
+
+
+## E on the hook: once he gave up, the patrol car comes down and can be driven again.
+func unhook(cop: Cop) -> void:
+	if not towed or unhooked:
+		return
+	if not stopped:
+		cop.show_hint("HINT_CHASE_HOOK_MOVING")
+		return
+	unhooked = true
+	var flat := Basis(Vector3.UP, truck.rotation.y)
+	towed.global_transform = Transform3D(flat, truck.towed_transform().origin + Vector3.UP * 0.2)
+	towed.freeze = false
+	towed.locked_hint = ""
+	_hint_all("HINT_CHASE_UNHOOKED")
+
+
 func all_in_car() -> bool:
 	for cop in get_tree().get_nodes_in_group("cops"):
-		if (cop as Cop).vehicle != car:
+		if (cop as Cop).vehicle != home_car():
 			return false
 	return true
 
 
 func car_at_station() -> bool:
-	return car.global_position.distance_to(station_parking.origin) < STATION_RADIUS
+	return home_car().global_position.distance_to(station_parking.origin) < STATION_RADIUS
 
 
 func fail(reason: String) -> void:

@@ -30,6 +30,7 @@ const MODELS := {
 	"moto": preload("res://assets/models/delivery_scooter.glb"),
 	"wheelchair": preload("res://assets/models/wheelchair.glb"),
 	"highway": preload("res://assets/models/sports_car.glb"),
+	"tow_truck": preload("res://assets/models/tow_truck.glb"),
 }
 ## Who rides on top of it, where you can see him (he gets off when he gives up).
 ## Who rides on top of it, where and how big: [model, position, scale] (he gets off when he gives up).
@@ -40,7 +41,15 @@ const RIDERS := {
 ## The scooter and the wheelchair ride the sidewalk, not the street.
 const LANES := {"moto": ChaseRoute.SIDEWALK_LANE, "wheelchair": ChaseRoute.SIDEWALK_LANE}
 ## The electric wheelchair goes at 8 km/h (persecucion.md).
-const SPEEDS := {"wheelchair": 8.0 / 3.6}
+const SPEEDS := {"wheelchair": 8.0 / 3.6, "tow_truck": 30.0 / 3.6}
+## The tow truck turns slowly and nearly stops to do it (persecucion-lugares.md): a cop cutting a corner on foot
+## catches up with him.
+const TURN_RATES := {"tow_truck": 1.0}
+const TURN_SPEEDS := {"tow_truck": 0.3}
+const TOW := "tow_truck"
+## Where the towed patrol car hangs behind the tow truck: its middle, and its nose lifted this much.
+const TOWED_AT := Vector3(0, 0.55, -5.6)
+const TOWED_TILT := -0.12
 ## The sports car (persecucion-lugares.md): 90 km/h on the highway, 50 on the way there through the city.
 const HIGHWAY := "highway"
 const HIGHWAY_SPEED := 90.0 / 3.6
@@ -49,17 +58,19 @@ const HIGHWAY_CITY_SPEED := 50.0 / 3.6
 const COPS_LAYER := 2
 ## Each vehicle's body (width, height, length) and wheels, when not the trucks'.
 const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 4.6), "night": Vector3(2.1, 1.4, 4.6),
-	"highway": Vector3(2.1, 1.1, 4.6),
+	"highway": Vector3(2.1, 1.1, 4.6), "tow_truck": Vector3(2.3, 2.4, 6.2),
 	"moto": Vector3(0.8, 1.6, 1.9),
 	"wheelchair": Vector3(0.8, 1.4, 1.2)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
 	Vector3(-1.05, 0.38, -1.55), Vector3(1.05, 0.38, -1.55)]
+const TOW_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.0), Vector3(1.15, 0.38, 2.0), Vector3(-1.15, 0.38, -1.8),
+	Vector3(1.15, 0.38, -1.8)]
 ## The scooter's wheels are part of its model.
 const NO_WHEELS: Array[Vector3] = []
 const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS,
-	"wheelchair": NO_WHEELS, "highway": SEDAN_WHEELS}
+	"wheelchair": NO_WHEELS, "highway": SEDAN_WHEELS, "tow_truck": TOW_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
@@ -86,7 +97,7 @@ var _highway: Highway
 
 func _ready() -> void:
 	add_to_group("suspect_car")
-	if kind == "wheelchair":
+	if kind == "wheelchair" or kind == TOW:
 		set_collision_mask_value(COPS_LAYER, true)
 	var shape := CollisionShape3D.new()
 	var body := BoxShape3D.new()
@@ -101,6 +112,12 @@ func _ready() -> void:
 		rider.position = RIDERS[kind][1]
 		rider.scale = Vector3.ONE * float(RIDERS[kind][2])
 		add_child(rider)
+	if kind == TOW:
+		var hook := TowHook.new()
+		hook.name = "Hook"
+		hook.position = Vector3(0, 1.2, -3.3)
+		add_child(hook)
+		add_collision_exception_with(hook)
 	var wheels: Array[Vector3] = OTHER_WHEELS.get(kind, WHEELS)
 	for at in wheels:
 		var wheel: Node3D = WHEEL.instantiate()
@@ -126,6 +143,11 @@ func follow_path(path: Array[Vector3], city: Transform3D) -> void:
 	global_position = points[0]
 	var ahead := points[1] - points[0]
 	rotation.y = atan2(ahead.x, ahead.z)
+
+
+## Where the patrol car he tows hangs, in the world.
+func towed_transform() -> Transform3D:
+	return global_transform * Transform3D(Basis(Vector3.RIGHT, TOWED_TILT), TOWED_AT)
 
 
 ## His speed on the straight here: the sports car's depends on whether he's on the highway.
@@ -200,9 +222,10 @@ func _physics_process(delta: float) -> void:
 	var turn := forward.signed_angle_to(to, Vector3.UP)
 	# Flat or tangled, he can't get anywhere (and doesn't turn on the spot).
 	var can_go := 0.0 if tangled_left > 0.0 else _rolling
-	rotation.y += clampf(turn, -TURN_RATE * delta, TURN_RATE * delta) * can_go
+	var rate: float = TURN_RATES.get(kind, TURN_RATE)
+	rotation.y += clampf(turn, -rate * delta, rate * delta) * can_go
 	# Slows down while its nose isn't on the next point yet: through the corners.
-	var speed: float = top_speed() * lerpf(1.0, TURN_SPEED, clampf(absf(turn) / (PI / 2), 0.0, 1.0))
+	var speed: float = top_speed() * lerpf(1.0, TURN_SPEEDS.get(kind, TURN_SPEED), clampf(absf(turn) / (PI / 2), 0.0, 1.0))
 	if nervous_left > 0.0:
 		speed *= NERVOUS_SPEED
 	speed *= can_go
