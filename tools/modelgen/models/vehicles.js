@@ -16,7 +16,27 @@ function box(b, part, m, sx, sy, sz, x, y, z, rot) {
 }
 
 export function buildPatrolCar() {
-	const b = new Builder('patrol_car');
+	return patrolCar('patrol_car', blue, white);
+}
+
+// The old patrol car behind the station (persecucion-lugares.md, la grúa): the same car, faded, with rust patches,
+// a dented door and the light bar taped on. It runs, more or less.
+export function buildOldPatrolCar() {
+	const faded = mat('police_faded', 0x5a77a3), cream = mat('car_cream', 0xd9d0b4), rust = mat('rust', 0x8a4a22);
+	const tape = mat('tape', 0xb8b0a0);
+	const b = patrolCar('old_patrol_car', faded, cream, true);
+	box(b, 'body', rust, 0.02, 0.3, 0.5, W / 2 + 0.01, FLOOR + 0.3, 0.6);
+	box(b, 'body', rust, 0.02, 0.2, 0.35, -(W / 2 + 0.01), FLOOR + 0.25, -0.5);
+	box(b, 'body', rust, 0.5, 0.02, 0.35, -0.4, FLOOR + 0.615, 1.8);
+	box(b, 'body', rust, 0.02, 0.22, 0.4, W / 2 + 0.01, FLOOR + 0.35, -1.9);
+	// The dent in the front left door, and the tape holding the light bar.
+	box(b, 'body', faded, 0.06, 0.35, 0.5, -(W / 2 - 0.02), FLOOR + 0.45, 0.65, [0, 0, 0.12]);
+	for (const x of [-0.45, 0.45]) box(b, 'siren', tape, 0.1, 0.05, 0.34, x, ROOF + 0.26, 0.15);
+	return b.build();
+}
+
+function patrolCar(name, blue, white, unbuilt = false) {
+	const b = new Builder(name);
 	// Chassis floor and the lower skirt all around.
 	box(b, 'body', black, W, 0.2, FRONT - REAR, 0, FLOOR - 0.1, 0);
 	// Hood (front) and its bumper.
@@ -59,7 +79,7 @@ export function buildPatrolCar() {
 	box(b, 'trunk', white, W - 0.1, CABIN_R - REAR - 0.1, 0.05, 0, TRUNK_TOP + 0.55, CABIN_R - 0.15, [0.35, 0, 0]);
 	// Wheel arches (dark) so the separate wheels sit in them.
 	for (const x of [-1, 1]) for (const z of [1.55, -1.55]) box(b, 'body', black, 0.1, 0.5, 0.95, x * (W / 2 + 0.01), FLOOR + 0.1, z);
-	return b.build();
+	return unbuilt ? b : b.build();
 }
 
 // One wheel, 0.38 m radius, axle along X, centered.
@@ -307,7 +327,7 @@ export function buildWheelchair() {
 	return b.build();
 }
 
-export const models = { patrol_car: buildPatrolCar, car_wheel: buildCarWheel, ice_cream_truck: buildIceCreamTruck,
+export const models = { patrol_car: buildPatrolCar, old_patrol_car: buildOldPatrolCar, car_wheel: buildCarWheel, ice_cream_truck: buildIceCreamTruck,
 	moving_truck: buildMovingTruck, falling_sofa: buildFallingSofa, falling_wardrobe: buildFallingWardrobe, falling_lamp: buildFallingLamp,
 	falling_box: buildFallingBox, school_bus: buildSchoolBus, getaway_car: buildGetawayCar, sports_car: buildSportsCar,
 	traffic_car_0: trafficCar(0), traffic_car_1: trafficCar(1), traffic_car_2: trafficCar(2), traffic_car_3: trafficCar(3),
@@ -317,6 +337,10 @@ const wheels = [[-1.1, 1.55], [1.1, 1.55], [-1.1, -1.55], [1.1, -1.55]].map(([x,
 export const views = {
 	patrol_car: {
 		items: [{ name: 'patrol_car', pos: [0, 0, 0] }, ...wheels, { name: 'cop_0', pos: [2.2, 0, -1.5], rotY: -0.6 }],
+		cam: { pos: [6.5, 3.8, 6.5], target: [0, 0.9, 0], fov: 38 },
+	},
+	old_patrol_car: {
+		items: [{ name: 'old_patrol_car', pos: [0, 0, 0] }, ...wheels],
 		cam: { pos: [6.5, 3.8, 6.5], target: [0, 0.9, 0], fov: 38 },
 	},
 	ice_cream_truck: {

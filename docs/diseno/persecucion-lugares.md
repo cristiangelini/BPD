@@ -80,6 +80,12 @@ comisaría, como el resto, y el mapa del copiloto los muestra.
 - El copiloto (o el que maneja, si va solo) pide refuerzos con R. El comisario contesta con una de 8 excusas, que
   cambian en cada pedido y arrancan distinto en cada partida. Hay 3 s de espera entre pedido y pedido.
 
+## Cómo quedó (paso 3a, el patrullero viejo)
+- Es el mismo patrullero, desteñido, con óxido, una puerta abollada y la barra de luces pegada con cinta.
+- Llega a 45 km/h (también en la autopista) y frena con la mitad de fuerza.
+- La sirena no anda: H hace que un policía grite «¡Uiuuu! ¡Uiuuu!» por la ventanilla (se ve 1,5 s arriba del auto).
+- Todavía no aparece en el juego: lo usa la grúa (paso 3b).
+
 ## El orden para hacerlo (un PR chico por paso)
 1. La autopista en anillo con sus 4 rampas, el guardarraíl y los peajes, y el patrullero a 110 km/h en ella.
 2. El sospechoso de la autopista: el deportivo, el tráfico, los peajes que rompe y la radio de los refuerzos.

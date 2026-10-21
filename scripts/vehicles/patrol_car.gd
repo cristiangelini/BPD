@@ -24,6 +24,12 @@ const STEER_RATE := 2.5
 ## Getting out puts the cop this far from the side of the car.
 const DOOR_OUT := 1.6
 const SIREN_FLASH := 0.25
+## The old patrol car behind the station (persecucion-lugares.md, "La grúa"): slower, it brakes worse and its siren
+## doesn't work, so H gets a cop shouting "¡Uiuuu!" out of the window instead (propuesta).
+const OLD_SPEED := 45.0 / 3.6
+const OLD_BRAKE := 0.5
+const OLD_MODEL := preload("res://assets/models/old_patrol_car.glb")
+const SHOUT_SECONDS := 1.5
 
 ## Cop in each seat, null if free. Seat 0 drives.
 var seated: Array[Cop] = [null, null, null, null]
@@ -37,6 +43,12 @@ var delivered: Array[Evidence] = []
 ## The place's owner riding in the back to be interrogated (OwnerEscort), if any.
 var prisoner: Node3D
 var _highway: Highway
+## The old one (set before it's added).
+@export var old := false
+## Times someone shouted the siren in the old car.
+var uiuus := 0
+var _shout: Label3D
+var _shout_left := 0.0
 
 @onready var _seats: Array[Node3D] = [$Seats/Driver, $Seats/Front, $Seats/BackLeft, $Seats/BackRight]
 @onready var _rear: Array[VehicleWheel3D] = [$WheelRearLeft, $WheelRearRight]
@@ -47,6 +59,22 @@ var _highway: Highway
 func _ready() -> void:
 	$Trunk.body_entered.connect(_on_trunk_entered)
 	$Trunk.body_exited.connect(_on_trunk_exited)
+	if old:
+		var model: Node3D = OLD_MODEL.instantiate()
+		model.transform = $Model.transform
+		$Model.free()
+		model.name = "Model"
+		add_child(model)
+		_shout = Label3D.new()
+		_shout.text = "SHOUT_UIUU"
+		_shout.font_size = 72
+		_shout.pixel_size = 0.01
+		_shout.outline_size = 14
+		_shout.modulate = Color(1, 0.85, 0.3)
+		_shout.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		_shout.position = Vector3(0, 3.0, 0)
+		_shout.hide()
+		add_child(_shout)
 
 
 func is_delivered(item: Evidence) -> bool:
@@ -148,6 +176,11 @@ func drive(new_throttle: float, new_steer: float, new_handbrake: bool) -> void:
 
 
 func toggle_siren() -> void:
+	if old:
+		uiuus += 1
+		_shout_left = SHOUT_SECONDS
+		_shout.show()
+		return
 	siren_on = not siren_on
 	_siren_time = 0.0
 	_siren_red.visible = siren_on
@@ -178,6 +211,9 @@ func _physics_process(delta: float) -> void:
 	for item in delivered.duplicate():
 		if item.is_broken:
 			_on_trunk_exited(item)
+	if _shout and _shout.visible:
+		_shout_left -= delta
+		_shout.visible = _shout_left > 0.0
 	if siren_on:
 		_siren_time += delta
 		var red := int(_siren_time / SIREN_FLASH) % 2 == 0
@@ -187,7 +223,7 @@ func _physics_process(delta: float) -> void:
 
 func _apply_controls(delta: float) -> void:
 	var speed := forward_speed()
-	var top := top_speed()
+	var top := OLD_SPEED if old else top_speed()
 	var reach := lerpf(1.0, STEER_AT_TOP, clampf(absf(speed) / MAX_SPEED, 0.0, 1.0))
 	steering = move_toward(steering, steer_input * STEER * reach, STEER_RATE * delta)
 	engine_force = 0.0
@@ -202,6 +238,8 @@ func _apply_controls(delta: float) -> void:
 			brake = BRAKE
 		elif speed > -MAX_REVERSE:
 			engine_force = ENGINE * throttle
+	if old:
+		brake *= OLD_BRAKE
 	for wheel in _rear:
 		wheel.brake = HANDBRAKE if handbrake else brake
 
