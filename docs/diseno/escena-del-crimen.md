@@ -70,6 +70,9 @@ desde la oficina del comisario, porque la puerta propia de la sala da a la armer
   - **Mal:** el comisario se enoja (decisión 26), el sueldo baja a la mitad y la ficha queda tachada. La segunda vez
     que se equivocan, el caso se pierde, como las sospechas del allanamiento.
 - Online, el tablero es uno solo: lo que clava uno lo ven todos (lo decide el anfitrión, como el caso del allanamiento).
+  **Cómo quedó:** el anfitrión cuenta las pistas, las fichas, las acusaciones y los cocineros que se van; todos ven la
+  misma planilla, las mismas fichas en el tablero, lo que dice el comisario, la persecución en bici del culpable y la
+  pantalla del turno. El grito cerca de la señora del jurado se mide en la PC de quien grita y lo cuenta el anfitrión.
 
 ## Las otras 9 variantes
 Con las mismas piezas (sospechosos parecidos, rasgos, pistas que descartan y el tablero), cada variante cambia el lugar
