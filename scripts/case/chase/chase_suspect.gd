@@ -11,6 +11,7 @@ const MODELS := {
 	"school_bus": preload("res://assets/models/npc_sospechoso.glb"),
 	"rain": preload("res://assets/models/npc_sospechoso.glb"),
 	"night": preload("res://assets/models/npc_sospechoso.glb"),
+	"moto": preload("res://assets/models/npc_repartidor.glb"),
 }
 ## Seconds a line stays over his head, and between two complaints.
 const LINE_SECONDS := 3.0

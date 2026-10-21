@@ -26,14 +26,24 @@ const MODELS := {
 	"school_bus": preload("res://assets/models/school_bus.glb"),
 	"rain": preload("res://assets/models/getaway_car.glb"),
 	"night": preload("res://assets/models/getaway_car.glb"),
+	"moto": preload("res://assets/models/delivery_scooter.glb"),
 }
+## Who rides on top of it, where you can see him (he gets off when he gives up).
+const RIDERS := {"moto": preload("res://assets/models/npc_repartidor.glb")}
+const RIDER_AT := Vector3(0, 0.36, -0.15)
+const RIDER_SCALE := 0.85
+## The scooter rides the sidewalk, not the street.
+const LANES := {"moto": ChaseRoute.SIDEWALK_LANE}
 ## Each vehicle's body (width, height, length) and wheels, when not the trucks'.
-const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 4.6), "night": Vector3(2.1, 1.4, 4.6)}
+const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 4.6), "night": Vector3(2.1, 1.4, 4.6),
+	"moto": Vector3(0.8, 1.6, 1.9)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
 	Vector3(-1.05, 0.38, -1.55), Vector3(1.05, 0.38, -1.55)]
-const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS}
+## The scooter's wheels are part of its model.
+const NO_WHEELS: Array[Vector3] = []
+const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
@@ -66,6 +76,12 @@ func _ready() -> void:
 	shape.position.y = body.size.y / 2 + 0.2
 	add_child(shape)
 	add_child((MODELS[kind] as PackedScene).instantiate())
+	if RIDERS.has(kind):
+		var rider: Node3D = (RIDERS[kind] as PackedScene).instantiate()
+		rider.name = "Rider"
+		rider.position = RIDER_AT
+		rider.scale = Vector3.ONE * RIDER_SCALE
+		add_child(rider)
 	var wheels: Array[Vector3] = OTHER_WHEELS.get(kind, WHEELS)
 	for at in wheels:
 		var wheel: Node3D = WHEEL.instantiate()
@@ -85,13 +101,20 @@ func follow(route: ChaseRoute, city: Transform3D) -> void:
 ## Drives `route` from here on (he changed his mind at a corner), heading for the same next point.
 func retake(route: ChaseRoute, city: Transform3D) -> void:
 	points.clear()
-	for point in route.waypoints():
+	for point in route.waypoints(LANES.get(kind, ChaseRoute.LANE)):
 		points.append(city * point)
 
 
 ## The spikes: his tires go flat and he rolls to a halt, for good.
 func puncture() -> void:
 	punctured = true
+
+
+## He gives up and gets off: whoever rode on top isn't there anymore.
+func get_off() -> void:
+	var rider := get_node_or_null("Rider")
+	if rider:
+		rider.hide()
 
 
 ## The net: he can't drive for `seconds`.

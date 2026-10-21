@@ -10,6 +10,8 @@ extends RefCounted
 const CORNERS := 30
 ## He keeps to the right-hand lane: this far right of the middle of the street.
 const LANE := 1.5
+## The delivery scooter rides the sidewalk instead: the middle of it.
+const SIDEWALK_LANE := CityLayout.STREET / 2 + CityLayout.SIDEWALK / 2
 
 ## Corners (i, j): i is the north-south street (0 to COLUMNS), j the west-east one (0 to ROWS).
 var corners: Array[Vector2i] = []
@@ -53,15 +55,16 @@ static func corner_point(c: Vector2i) -> Vector3:
 	return Vector3(CityLayout.street_x(c.x), 0, CityLayout.street_z(c.y))
 
 
-## Where he drives through each corner, in the city's space: in his lane, cutting the corner when he turns.
-func waypoints() -> Array[Vector3]:
+## Where he drives through each corner, in the city's space: in his lane (`lane` m right of the street's middle),
+## cutting the corner when he turns.
+func waypoints(lane := LANE) -> Array[Vector3]:
 	var points: Array[Vector3] = []
 	for k in corners.size():
 		var into := corners[k] - corners[k - 1] if k > 0 else corners[k + 1] - corners[k]
 		var out := corners[k + 1] - corners[k] if k + 1 < corners.size() else into
 		var right_in := _right(into)
 		var right_out := _right(out)
-		var offset := right_in * LANE if into == out else (right_in + right_out) * LANE
+		var offset := right_in * lane if into == out else (right_in + right_out) * lane
 		points.append(corner_point(corners[k]) + offset)
 	return points
 

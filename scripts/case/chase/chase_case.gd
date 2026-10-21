@@ -8,7 +8,7 @@ extends Node
 ## running out before he's cuffed loses it. Every number here is (propuesta), except the minute (Cristian, 20/10).
 
 ## The suspects (persecucion.md, "Los sospechosos"), each with what he leaves behind (ChaseDrops).
-const SUSPECTS := ["ice_cream", "moving_truck", "school_bus", "rain", "night"]
+const SUSPECTS := ["ice_cream", "moving_truck", "school_bus", "rain", "night", "moto"]
 ## Seconds to catch him: the chase has a clock (Cristian, 20/10: "pongamos primero 1 minuto").
 const TIME_LIMIT := 60.0
 ## Farther than this (m) the meter climbs CLIMB a second; closer it drops DROP a second. At ESCAPED he got away.
@@ -171,6 +171,7 @@ func pull_over() -> void:
 		return
 	stopped = true
 	truck.driving = false
+	truck.get_off()
 	suspect = ChaseSuspect.new()
 	suspect.name = "Suspect"
 	suspect.kind = suspect_id

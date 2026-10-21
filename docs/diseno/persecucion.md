@@ -97,7 +97,9 @@ El host maneja al sospechoso y decide los medidores (decisión 50), como con el 
    agarran el 55% en toda la ciudad, llueve alrededor del patrullero y el que maneja ve las gotas acumularse en el
    parabrisas porque el limpiaparabrisas no anda; de noche la ciudad está a oscuras, el auto va con las luces apagadas,
    la linterna (F, también adentro del patrullero) alumbra hasta 35 m hacia donde mira el policía, y el mapa del
-   copiloto solo muestra al sospechoso mientras una linterna lo alumbra; todo **propuesta**.
+   copiloto solo muestra al sospechoso mientras una linterna lo alumbra; todo **propuesta**. Después el repartidor en
+   moto: va por el medio de la vereda, y la ventana, en lugar de pinchos, pone una fila de conos 12 m adelante del
+   patrullero, de vereda a vereda (4 filas); frente a los conos frena 4 s, así que se entrega **(propuesta)**.
 7. La persecución como final de otros casos.
 
 ## Respuestas de Cristian (20/10)
