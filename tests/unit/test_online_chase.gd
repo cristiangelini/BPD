@@ -210,9 +210,10 @@ func test_the_highway_traffic_and_a_broken_toll_barrier_are_the_host_s() -> void
 	var guest_car: TrafficCar = _case(pcs[1]).highway.traffic[0]
 	assert_false(guest_car.is_physics_processing(), "the guest's traffic only follows")
 	var start := guest_car.global_position
-	await wait_physics_frames(60)
-	# It drives fast: the copy trails the host's by a packet or two.
+	# Waited in time, not frames: a busy PC runs several physics frames between two network reads.
+	await wait_until(func() -> bool: return guest_car.global_position.distance_to(start) > 3.0, 5.0)
 	assert_gt(guest_car.global_position.distance_to(start), 3.0, "it drives on the guest")
+	# It drives fast: the copy trails the host's by a packet or two.
 	assert_lt(guest_car.global_position.distance_to(host_car.global_position), 6.0, "where the host's goes")
 	var barrier: TollBarrier = _level(pcs[0]).find_children("*", "TollBarrier", true, false)[1]
 	barrier._break(_case(pcs[0]).car)
