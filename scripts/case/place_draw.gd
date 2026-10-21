@@ -5,7 +5,8 @@ extends RefCounted
 ## it, the grandpa's house, the bakery or the pet salon, with even odds (propuesta). Every third shift is an
 ## interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
 ## (persecucion.md, "Sale como un caso más"). Of the shifts left, one in CRIME_EVERY is the crime scene
-## (escena-del-crimen.md, propuesta) and the rest are raids. --place=<id> forces one. The level then takes that seed, so
+## (escena-del-crimen.md, propuesta), then one in TRAFFIC_EVERY the traffic control (control-transito.md) and the
+## rest are raids. --place=<id> forces one. The level then takes that seed, so
 ## the place, the story and the hiding spots all come from one seed.
 
 const PLACES := {
@@ -15,7 +16,6 @@ const PLACES := {
 	"interrogation": "res://scenes/levels/interrogation.tscn",
 	"chase": "res://scenes/levels/chase.tscn",
 	"crime_scene": "res://scenes/levels/crime_scene.tscn",
-	# Only with --place=traffic until its step 5 (control-transito.md) adds it to the draw.
 	"traffic": "res://scenes/levels/traffic_control.tscn",
 }
 ## The raids, drawn by the seed.
@@ -25,8 +25,10 @@ const ORDER := ["grandpa", "bakery", "groomer"]
 const INTERROGATION_EVERY := 3
 ## Of the shifts that aren't interrogations, one in this many is a chase (Cristian, 20/10: half and half).
 const CHASE_EVERY := 2
-## Of the shifts that are neither, one in this many is the crime scene (propuesta: as often as each raid).
-const CRIME_EVERY := 4
+## Of the shifts that are neither, one in this many is the crime scene, and of the rest one in TRAFFIC_EVERY is the
+## traffic control (propuesta: each as often as each raid).
+const CRIME_EVERY := 5
+const TRAFFIC_EVERY := 4
 
 ## The seed the next level takes (0 = none drawn; the level draws its own).
 static var pending_seed := 0
@@ -50,6 +52,8 @@ static func pick(case_seed: int, args: PackedStringArray, shift := 0, chases := 
 	# Hashed as an array: string hashes of the same seed with another prefix go together in their low bits.
 	if chases and hash(["crime scene", case_seed]) % CRIME_EVERY == 0:
 		return "crime_scene"
+	if chases and hash(["traffic control", case_seed]) % TRAFFIC_EVERY == 0:
+		return "traffic"
 	return ORDER[hash("place %d" % case_seed) % ORDER.size()]
 
 
