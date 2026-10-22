@@ -16,7 +16,7 @@ extends Node3D
 ## the traffic control's barrier and cones wait at the station's door to box the van in (van_boxed_in). When the
 ## drill gets through, the robbers still loose take a sack of money each and go; if El Oso is one of them, he gets
 ## away in the van, or on foot and slower if it's boxed in, and the chase is on (ChaseCase.begin). The case and its
-## end come in step 6b.
+## end are BankCase's (step 6b): the comisario gives it over the radio as the shift starts.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -117,6 +117,7 @@ var bags_taken := 0
 var chase: ChaseCase
 var getaway_over := false
 var getaway_caught := false
+var case: BankCase
 var station_parking: Transform3D
 var _build: PlaceBuilder
 
@@ -125,6 +126,10 @@ var _build: PlaceBuilder
 
 
 func _ready() -> void:
+	if case_seed == 0:
+		case_seed = PlaceDraw.take_seed()
+	if case_seed == 0:
+		case_seed = PlaceDraw.new_seed()
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_hall()
@@ -156,6 +161,12 @@ func _ready() -> void:
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
 	_add_perimeter()
+	case = BankCase.new()
+	case.name = "Case"
+	case.bank = self
+	case.shift_screen = $ShiftScreen
+	add_child(case)
+	case.start()
 
 
 ## Whether a world position is inside the bank.
