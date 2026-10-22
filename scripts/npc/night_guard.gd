@@ -8,8 +8,10 @@ extends StaticBody3D
 ## reach on the desk. He also looks around (step 4): his head sweeps the cells, and whatever he sees in a cone of
 ## SIGHT_ANGLE and SIGHT_RANGE in front of him (a cop out of the cells, the box moving, a broken donut or the key)
 ## raises his suspicion; at 100 he catches them (`caught`, the level puts everything back). Something thrown that lands
-## away from him, or a cop shouting near him, makes him turn to look there for a while (step 5). Every number here is
-## (propuesta).
+## away from him, or a cop shouting near him, makes him turn to look there for a while (step 5). If every cop sings
+## to him at once for LULLABY seconds (heard_singing), he falls asleep for SLEEP seconds: asleep he doesn't eat, look
+## or get suspicious, a shout wakes him up, and the key can be taken off his belt, by hand (E) or with the stick's tip
+## (key_at). Every number here is (propuesta).
 
 signal ate(donut: int)
 signal found_key
@@ -49,6 +51,16 @@ const LANDED_SPEED := 0.5
 const LANDING_MAX := 1.5
 const NOISE_LINES := 3
 const SHOUT_LINES := 2
+## Singing: a cop counts as singing for SING_MEMORY seconds after each "still singing" (VoiceChat sends one every
+## half second). All the cops singing within HEAR_RANGE for LULLABY seconds put him to sleep for SLEEP seconds.
+const SING_MEMORY := 1.0
+const LULLABY := 3.0
+const SLEEP := 15.0
+const SLEEPY_LINES := 3
+## Where his belt is, from his feet, and how close the stick's tip must be to hook the key off it.
+const BELT := Vector3(0, 0.9, 0.35)
+const BELT_REACH := 0.6
+const KEY_SCENE := preload("res://scenes/props/cell_key.tscn")
 
 var box: DonutBox
 ## Which donut of the box (its part donut_<n>) has the key: the box keeps it (DonutBox.key_donut).
@@ -70,6 +82,11 @@ var distracted_left := 0.0
 var _distract_look := 0.0
 ## Things thrown that haven't landed yet -> seconds since the throw.
 var _flying := {}
+var asleep_left := 0.0
+## Cops singing to him -> seconds they still count as singing.
+var _singers := {}
+var _lullaby := 0.0
+var _sleepy_said := false
 ## Whether a world position is out of the cells (the level sets it; nothing is, by default).
 var outside_cells: Callable = func(_at: Vector3) -> bool: return false
 ## What his sight goes through: the desk in front of him.
@@ -127,13 +144,98 @@ func _physics_process(delta: float) -> void:
 	_bubble_left -= delta
 	if _bubble.visible and _bubble_left <= 0.0:
 		_bubble.hide()
+	if is_asleep():
+		asleep_left -= delta
+		if asleep_left <= 0.0:
+			wake_up()
+		return
 	eat_left -= delta
 	if eat_left <= 0.0:
 		eat_left = EAT_EVERY
 		eat()
 	_listen(delta)
+	_hear_lullaby(delta)
+	if is_asleep():
+		return
 	_turn_head(delta)
 	_watch(delta)
+
+
+func is_asleep() -> bool:
+	return asleep_left > 0.0
+
+
+## A cop near him is still singing (its voice for a while, or humming with H): see _hear_lullaby.
+func heard_singing(cop: Node3D) -> void:
+	if not is_asleep() and _flat(cop.global_position).length() <= HEAR_RANGE:
+		_singers[cop] = SING_MEMORY
+
+
+## Every cop singing at once makes him sleepy; LULLABY seconds of it and he's asleep. Fewer than all, it wears off.
+func _hear_lullaby(delta: float) -> void:
+	for cop: Node3D in _singers.keys():
+		_singers[cop] -= delta
+		if _singers[cop] <= 0.0 or not is_instance_valid(cop):
+			_singers.erase(cop)
+	var cops := get_tree().get_nodes_in_group("cops")
+	var everyone := not cops.is_empty() and cops.all(func(cop: Node) -> bool: return _singers.has(cop))
+	_lullaby = _lullaby + delta if everyone else maxf(_lullaby - delta, 0.0)
+	if not _singers.is_empty() and not _sleepy_said:
+		_sleepy_said = true
+		say("GUARD_SLEEPY_%d" % _rng.randi_range(0, SLEEPY_LINES - 1))
+	elif _singers.is_empty():
+		_sleepy_said = false
+	if _lullaby >= LULLABY:
+		fall_asleep()
+
+
+func fall_asleep() -> void:
+	asleep_left = SLEEP
+	suspicion = 0.0
+	distracted_left = 0.0
+	_lullaby = 0.0
+	_singers.clear()
+	_model.rotation.x = 0.35
+	say("GUARD_ASLEEP", SLEEP)
+
+
+func wake_up() -> void:
+	asleep_left = 0.0
+	_model.rotation.x = 0.0
+	say("GUARD_AWAKE")
+
+
+## Where his belt is now, in the world.
+func belt() -> Vector3:
+	return global_transform * BELT
+
+
+## Asleep with the key on his belt: E takes it off with empty hands.
+func prompt_key(cop: Cop) -> String:
+	if is_asleep() and key_on_belt and not cop.get_node("Grabber").held:
+		return "PROMPT_TAKE_GUARD_KEY"
+	return ""
+
+
+func use(cop: Cop) -> void:
+	if prompt_key(cop) == "":
+		return
+	cop.get_node("Grabber").grab(_take_key(cop.camera.global_position))
+
+
+## The stick's tip at his belt while he sleeps: the key, now off the belt, or null.
+func key_at(tip: Vector3) -> CellKey:
+	if not is_asleep() or not key_on_belt or tip.distance_to(belt()) > BELT_REACH:
+		return null
+	return _take_key(tip)
+
+
+func _take_key(at: Vector3) -> CellKey:
+	key_on_belt = false
+	var key: CellKey = KEY_SCENE.instantiate()
+	get_parent().add_child(key)
+	key.global_position = at
+	return key
 
 
 func _turn_head(delta: float) -> void:
@@ -169,9 +271,13 @@ func _listen(delta: float) -> void:
 				look_at_noise(body.global_position, NOISE_LOOK, "GUARD_NOISE_%d" % _rng.randi_range(0, NOISE_LINES - 1))
 
 
-## A cop shouted into the microphone near him (VoiceChat): he turns toward the voice.
+## A cop shouted into the microphone near him (VoiceChat): he turns toward the voice, or wakes up.
 func shouted_by(cop: Node3D) -> void:
-	if _flat(cop.global_position).length() <= HEAR_RANGE:
+	if _flat(cop.global_position).length() > HEAR_RANGE:
+		return
+	if is_asleep():
+		wake_up()
+	else:
 		look_at_noise(cop.global_position, SHOUT_LOOK, "GUARD_SHOUT_%d" % _rng.randi_range(0, SHOUT_LINES - 1))
 
 
@@ -269,7 +375,7 @@ func said() -> String:
 
 ## Online: what the guests need to show the same box and belt (NpcSync).
 func net_state() -> Variant:
-	return [box.donuts if is_instance_valid(box) else 0, key_on_belt, suspicion, times_caught, look]
+	return [box.donuts if is_instance_valid(box) else 0, key_on_belt, suspicion, times_caught, look, asleep_left]
 
 
 func apply_net_state(state: Variant) -> void:
@@ -278,5 +384,7 @@ func apply_net_state(state: Variant) -> void:
 	times_caught = state[3]
 	look = state[4]
 	_model.rotation.y = look
+	asleep_left = state[5]
+	_model.rotation.x = 0.35 if is_asleep() else 0.0
 	while is_instance_valid(box) and box.donuts > int(state[0]):
 		box.take_one()

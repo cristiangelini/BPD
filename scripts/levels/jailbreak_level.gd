@@ -86,6 +86,7 @@ func _guard_desk() -> void:
 	guard.outside_cells = outside_cells
 	guard.see_through = [desk.get_rid()]
 	guard.caught.connect(_on_caught)
+	guard.found_key.connect(func() -> void: get_tree().call_group("cops", "show_hint", "HINT_KEY_ON_BELT"))
 	for item: Array in STICKS:
 		var stick := HookStick.new()
 		stick.name = "Broom" if sticks.is_empty() else "FishingRod"

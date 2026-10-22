@@ -111,6 +111,21 @@ come y los invitados ven la misma caja. Captura: `fuga/paso2_guardia.png`.
 - Online, el grito de un invitado va al anfitrión, que es el que tiene al guardia.
 - Captura: `fuga/paso5_ruido.png` (mirando una dona tirada al fondo de la sala).
 
+**Cómo quedó el paso 5b (cantarle hasta dormirlo):**
+- El micrófono no distingue cantar de hablar: cuenta como cantar hablar sin cortar más de 0,4 s durante 2 s, cerca
+  de él (15 m). También se puede tararear manteniendo H (de a pie; en el auto H sigue siendo la sirena), así se puede
+  jugar solo o por IP, donde no hay voz **(propuesta, pendiente de la tarjeta)**.
+- Si cantan todos los policías de la partida a la vez durante 3 s, se duerme 15 s: "Zzz... una dona más... zzz...".
+  Con alguno cantando dice algo con sueño ("Esa canción me la cantaba mi abuela..."), pero no se duerme.
+- Dormido no come, no gira la cabeza, no ve nada y la sospecha queda en 0. Un grito lo despierta. Al despertarse
+  dice "¿Eh? ¿Qué? No dormía, estaba pensando.".
+- Cuando se cuelga la llave del cinturón, a todos les aparece: "El guardia se colgó la llave del cinturón. Si todos
+  le cantan a la vez (o mantienen H para tararear), quizá se duerma.".
+- Dormido y con la llave en el cinturón: E con las manos vacías se la saca; o, desde la celda, con la punta del
+  escobillón o la caña en su cinturón, E la engancha y la llave pasa entre las rejas colgada de la punta. E la suelta.
+- Online, el canto de un invitado (su voz o H) va al anfitrión.
+- Captura: `fuga/paso5_dormido.png` (dormido, con la llave enganchada en la punta de la caña).
+
 ## Cómo se gana y cómo se pierde
 - **Se gana** con los 4 en el patrullero fuera del estacionamiento. Pantalla corta "¡Fugados!" y a la mañana arranca el
   turno siguiente en la comisaría.
