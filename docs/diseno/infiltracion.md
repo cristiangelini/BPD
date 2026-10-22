@@ -97,7 +97,11 @@ las pruebas. El disfraz de cada policía se ve igual en todas las PC.
    3 m) y un grito a 10 m +25. A 50 sale un "?" sobre su cabeza, a 80 un "!", y a 100 grita "¡Son policías!" y Doña
    Chela sale corriendo (la persecución llega en el paso 6). Arriba de la pantalla se ve la sospecha del abuelo más
    desconfiado **(propuesta)**.
-5. El baile.
+5. El baile. Hecho así: a los 2 minutos y después cada 3 suena un vals de 30 s (Doña Chela avisa 10 s antes). En la
+   pista se baila apretando H en el primer tiempo de cada compás (UN, dos, tres, a 90 por minuto, con 0,22 s de
+   margen), solo o con quien quieras. Un compás sin paso o un paso fuera de tiempo es un pisotón: +10 de sospecha a los
+   abuelos que lo ven. El que se queda fuera de la pista durante el vals suma +20 por segundo a los que lo ven. La
+   música es un "um-pa-pa" provisorio hecho en código **(propuesta)**.
 6. Las 3 pruebas y el final: sueldo, Doña Chela esposada o en el andador (persecución), y el sorteo.
 
 ## Respuestas de Cristian (22/10, decisión 100)

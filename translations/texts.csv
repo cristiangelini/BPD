@@ -1064,3 +1064,12 @@ CLUB_FOUND_OUT_1,"¡Son policías! ¡Nadie de mi edad corre así!","They're cops
 CLUB_FOUND_OUT_2,"¡Son policías! ¡Ni saben jugar al bingo!","They're cops! They can't even play bingo!","São policiais! Nem sabem jogar bingo!"
 CHELA_FOUND_OUT,"¡Me voy! ¡Que nadie toque mi bolso!","I'm off! Nobody touch my bag!","Vou embora! Ninguém mexe na minha bolsa!"
 HINT_CLUB_FOUND_OUT,"¡Los descubrieron! Todos los abuelos saben que son policías.","You've been found out! Every grandparent knows you're cops.","Vocês foram descobertos! Todos os vovôs sabem que vocês são policiais."
+CHELA_WALTZ_SOON,"¡Atención, jóvenes! En un ratito, el vals. Todos a la pista.","Attention, youngsters! The waltz is coming up. Everyone to the dance floor.","Atenção, jovens! Daqui a pouco, a valsa. Todos para a pista."
+CHELA_WALTZ,"¡Vals! ¡A bailar todos, que nadie se quede sentado!","Waltz time! Everyone dance, nobody stays seated!","Valsa! Todo mundo dançando, ninguém fica sentado!"
+HINT_WALTZ,"¡Vals! Ve a la pista y aprieta H en el primer tiempo: UN, dos, tres.","Waltz! Go to the dance floor and press H on the first beat: ONE, two, three.","Valsa! Vá para a pista e aperte H no primeiro tempo: UM, dois, três."
+DANCE_BEAT_1,un,one,um
+DANCE_BEAT_2,dos,two,dois
+DANCE_BEAT_3,tres,three,três
+DANCE_GOOD,"¡Bien bailado!","Nicely danced!","Bem dançado!"
+DANCE_BAD,"¡Pisotón! Los abuelos te miran.","You stepped on a foot! The grandparents are watching.","Pisão! Os vovôs estão olhando."
+DANCE_GO_TO_FLOOR,"¡A la pista! El que se queda sentado llama la atención.","To the dance floor! Sitting it out gets noticed.","Para a pista! Quem fica sentado chama a atenção."

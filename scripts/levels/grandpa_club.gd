@@ -65,6 +65,7 @@ var chela: ClubMember
 var doorman: ClubDoorman
 var bingo: ClubBingo
 var suspicion: ClubSuspicion
+var dance: ClubDance
 ## The seats nobody took, as seats() gives them.
 var free_seats: Array = []
 var station_parking: Transform3D
@@ -195,6 +196,17 @@ func _add_people() -> void:
 		return absf(local.x) < HALF_X and local.z > -HALF_Z and local.z < BACK_Z and local.y < ROOF
 	add_child(suspicion)
 	suspicion.watch_bingo(bingo)
+	dance = ClubDance.new()
+	dance.name = "Dance"
+	dance.chela = chela
+	dance.inside = suspicion.inside
+	dance.on_floor = func(at: Vector3) -> bool:
+		var local := global_transform.affine_inverse() * at
+		return DANCE_FLOOR.has_point(Vector2(local.x, local.z)) and local.y < ROOF
+	add_child(dance)
+	var floor_middle := DANCE_FLOOR.get_center()
+	dance.position = Vector3(floor_middle.x, 1.5, floor_middle.y)
+	suspicion.watch_dance(dance)
 
 
 ## Doña Chela's bingo at the stand, and the cops' cards in front of free seats, lying on the table.
