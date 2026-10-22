@@ -95,7 +95,7 @@ func drip() -> MeshInstance3D:
 	at.y = 0.02
 	var color := _rng.randi() % PUDDLE_COLORS.size()
 	if case.online and not case.follower:
-		case.online.tell("shown_puddle", [color, at])
+		case.online.tell_chase("shown_puddle", [color, at])
 	return puddle_at(color, at)
 
 

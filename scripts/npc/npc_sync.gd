@@ -215,6 +215,9 @@ func _on_node_added(node: Node) -> void:
 		var index := npcs.size() - 1
 		# The look is set right after it enters the tree, so it's read on the next frame.
 		_announce.call_deferred(index)
+	elif node.has_method("net_setup") and not String(node.name).begins_with("@"):
+		# The guest's own copy of what the host also adds (the owner's getaway car): it waits for the host's to adopt it.
+		_puppet.call_deferred(node)
 	else:
 		node.queue_free.call_deferred()
 
@@ -239,6 +242,11 @@ func _made(index: int, scene: String, look: int, setup := {}) -> void:
 	while npcs.size() <= index:
 		npcs.append(null)
 	if npcs[index] or _gone.has(index) or scene == "" or not ResourceLoader.exists(scene):
+		return
+	var own := _level.get_node_or_null(NodePath(str(setup.get("parent", "."), "/", setup.get("name", "")))) \
+		if setup.has("name") else null
+	if own and is_npc(own):
+		npcs[index] = own
 		return
 	var made: Variant = load(scene)
 	var npc: Node3D = (made as PackedScene).instantiate() if made is PackedScene else (made as Script).new()

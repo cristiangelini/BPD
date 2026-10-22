@@ -82,7 +82,9 @@ conos y radio) las pide cada uno desde su asiento y las hace el anfitrión; todo
 calle. El sospechoso que se baja (y el golfista que corre), esposarlo, llevarlo del brazo y la grúa que suelta el
 patrullero también. Los charcos de helado, los muebles que pierde el camión, el tráfico de la autopista y
 las barreras del peaje rotas también los decide el anfitrión. Los golfistas tiran sus pelotas en cada PC por su
-cuenta: no hacen nada. Falta la persecución a mitad de un allanamiento; hasta entonces online no sale ninguna persecución en el sorteo.
+cuenta: no hacen nada. El dueño del allanamiento que se escapa (decisión 96) también: el anfitrión decide que se fue y todos
+ven la misma persecución. El peligroso del interrogatorio sigue sin escaparse online, y la
+persecución todavía no sale en el sorteo online.
 
 ## El orden para hacerlo (un PR chico por paso)
 1. El auto del sospechoso que maneja solo por la ciudad, con su ruta por la semilla.

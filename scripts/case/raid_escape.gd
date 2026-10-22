@@ -54,6 +54,8 @@ func flee() -> void:
 	chase = ChaseCase.begin(level, VEHICLES[raid.owner_id], city.global_transform * spot(raid.owner_id), raid.car,
 		city, raid.case_seed, map)
 	chase.who = raid.owner_id
+	chase.online = raid.online
+	chase.follower = raid.follower
 	chase.ended.connect(_on_ended)
 	for cop in get_tree().get_nodes_in_group("cops"):
 		(cop as Cop).show_hint("HINT_ESCAPE_" + raid.owner_id)

@@ -114,3 +114,4 @@
 - Online chase tasks: the megaphone, the spikes, the net, the cones and the backup radio work from any player's seat; the host does them and every PC sees the shout and what lands on the street.
 - Online chase suspect: he gets out of his vehicle on every PC (and the golf runner runs off), any player can cuff him and walk him to the patrol car, and any player can unhook the towed patrol car.
 - Online chase street: the ice cream puddles, the moving truck's furniture, the highway traffic and broken toll barriers are the host's and the same on every PC.
+- Online owner escape: when the raid's owner runs off, every PC sees the same chase after him (his vehicle, the meters, him getting out) and how it ends.

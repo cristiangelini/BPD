@@ -319,14 +319,21 @@ func _show_result(result: Dictionary) -> void:
 
 ## What a follower needs to show the same case (CaseSync).
 func snapshot() -> Dictionary:
-	return {"facts": objective_facts(), "tip": tip_given, "story_known": story_known, "failed": case_failed,
+	var state := {"facts": objective_facts(), "tip": tip_given, "story_known": story_known, "failed": case_failed,
 		"reason": failed_label.text, "solved": case_solved, "result": _result}
+	# The owner who ran off, and the chase after him (persecucion-final.md).
+	if escape and escape.fled:
+		state.chase = escape.chase.snapshot()
+	return state
 
 
 ## A follower takes the host's case: the checklist, the comisario's story once it's guessed, solved or failed, and
 ## the end of shift screen.
 func apply_snapshot(state: Dictionary) -> void:
 	_host_facts = state.facts
+	if state.has("chase") and escape:
+		escape.flee()
+		escape.chase.apply_snapshot(state.chase)
 	# A cop who talked to the comisario on another PC, or before this one joined: the tip is told here too.
 	if state.get("tip", false):
 		give_tip()

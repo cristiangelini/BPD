@@ -218,7 +218,7 @@ func _drop(kind: String, along: float) -> ChaseTrap:
 ## Online, the host shows the guests what it just did (CaseSync.tell).
 func _tell_guests(method: String, args := []) -> void:
 	if case.online and not case.follower:
-		case.online.tell(method, args)
+		case.online.tell_chase(method, args)
 
 
 ## Guest: the host's megaphone shouted.
