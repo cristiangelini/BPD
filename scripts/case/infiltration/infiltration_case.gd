@@ -28,13 +28,13 @@ const VARIANTS := {
 		"boss": "chela", "getaway": SuspectCar.WALKER,
 		"boss_cuffed": "HINT_CHELA_CUFFED", "cuff_row": "OBJ_CLUB_CUFF_CHELA", "catch_row": "OBJ_CLUB_CATCH_CHELA",
 	},
-	# The church choir (infiltracion-coro.md, decision 101). Ernesto's getaway is a plain car until the choir van.
+	# The church choir (infiltracion-coro.md, decision 101): Ernesto runs off in the choir van, with the choir inside.
 	"choir": {
 		"story": "infiltration_choir",
 		"brief": ["BRIEF_CHOIR_A", "BRIEF_CHOIR_B", "BRIEF_CHOIR_C"],
 		"go": "HINT_GO_CHOIR", "in": "HINT_CHOIR_IN", "found": "HINT_CLUB_EVIDENCE",
 		"rows": "OBJ_CHOIR_", "evidence": "EVIDENCE_CHOIR_",
-		"boss": "ernesto", "getaway": "traffic_0",
+		"boss": "ernesto", "getaway": SuspectCar.CHOIR_VAN,
 		"boss_cuffed": "HINT_ERNESTO_CUFFED", "cuff_row": "OBJ_CHOIR_CUFF_ERNESTO",
 		"catch_row": "OBJ_CHOIR_CATCH_ERNESTO",
 	},
