@@ -6,7 +6,8 @@ extends Node
 ## the wanted one gets out cuffed and the cops walk them to the patrol car (OwnerEscort), which solves the case; an
 ## innocent one complains, drives off and files a complaint, which comes off the pay, and the second one loses the
 ## case (decision 98). The wanted car getting past the checkpoint runs off and the chase starts (decision 96, like the
-## pastry contest's culprit); caught, it's solved, and got away, lost. Every number here is (propuesta).
+## pastry contest's culprit); caught, it's solved, and got away, lost. Online the host's case decides and a guest's
+## follows it (CaseSync). Every number here is (propuesta).
 
 signal detained(car: QueueCar, wanted: bool)
 
@@ -39,6 +40,25 @@ var chase: ChaseCase
 var escaped := false
 var lost := false
 var shift_over := false
+## Online (docs/diseno/online.md): the host's case decides and a guest's follows it (CaseSync); `online` is that sync.
+var follower := false:
+	set(value):
+		follower = value
+		if queue:
+			queue.follower = value
+		if clues:
+			clues.follower = value
+var online: CaseSync
+## The end of shift numbers, once it's over (sent to the guests).
+var _result := {}
+
+
+## The traffic control's case of the level `node` is in (online tests hold one level per PC in the same tree).
+static func of(node: Node) -> TrafficCase:
+	for case: TrafficCase in node.get_tree().get_nodes_in_group("traffic_case"):
+		if case.get_parent().is_ancestor_of(node):
+			return case
+	return null
 
 
 func start(comisario: Comisario = null) -> void:
@@ -52,8 +72,15 @@ func start(comisario: Comisario = null) -> void:
 	else:
 		give_tip()
 	if shift_screen:
-		shift_screen.play_again.connect(func() -> void: PlaceDraw.start(get_tree()))
+		shift_screen.play_again.connect(_play_again)
 		shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
+
+
+func _play_again() -> void:
+	if online:
+		online.play_again()
+	else:
+		PlaceDraw.start(get_tree())
 
 
 ## The comisario tells the case, with the first clue; then the radio starts.
@@ -71,7 +98,7 @@ func give_tip() -> void:
 
 ## A cop cuffed the driver of `car`, stopped in the queue.
 func detain(car: QueueCar) -> void:
-	if shift_over or lost or solved_now or not car.waiting():
+	if follower or shift_over or lost or solved_now or not car.waiting():
 		return
 	queue.pull_over(car)
 	detained.emit(car, car.wanted)
@@ -111,26 +138,27 @@ func _on_boarded() -> void:
 
 ## The wanted car went by the checkpoint: it runs off and the chase starts. Without a city to chase it in, lost.
 func _on_passed(car: QueueCar, _sneaked: bool) -> void:
-	if not car.wanted or solved_now or lost or suspect or chase:
+	if follower or not car.wanted or solved_now or lost or suspect or chase:
 		return
-	if _run_off(car):
+	if _run_off(car.global_transform, car.look):
+		car.queue_free()
 		return
 	lost = true
 	_hint_all("HINT_TRAFFIC_WANTED_GONE")
 	_end()
 
 
-## The queue car becomes the chase's fleeing car, in its own paint, right where it is.
-func _run_off(car: QueueCar) -> bool:
+## The queue car (`look`, at `at`) becomes the chase's fleeing car, in its own paint, right where it is.
+func _run_off(at: Transform3D, look: int) -> bool:
 	var level := get_parent()
 	var city := level.get_node_or_null("City") as Node3D
 	if not city or not patrol_car:
 		return false
-	var at := car.global_transform
-	var kind := "traffic_%d" % (car.look % TrafficCar.MODELS.size())
-	car.queue_free()
+	var kind := "traffic_%d" % (look % TrafficCar.MODELS.size())
 	chase = ChaseCase.begin(level, kind, at, patrol_car, city, case_seed)
 	chase.who = "driver"
+	chase.online = online
+	chase.follower = follower
 	chase.ended.connect(_on_chase_ended)
 	_hint_all("HINT_TRAFFIC_RUNS")
 	return true
@@ -140,7 +168,8 @@ func _on_chase_ended(caught: bool) -> void:
 	escaped = not caught
 	solved_now = caught
 	lost = not caught
-	_end()
+	if not follower:
+		_end()
 
 
 func solved() -> bool:
@@ -153,19 +182,26 @@ func _end() -> void:
 
 ## The end of shift screen: the salary if solved, less the complaints. A campaign moves on.
 func finish_shift() -> void:
-	if shift_over:
+	if shift_over or follower:
 		return
-	shift_over = true
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
 	var report := ShiftReport.pay(solved(), [], innocents * COMPLAINT_FINE)
+	var result := {"solved": solved(), "report": report, "awards": ShiftReport.awards(stats)}
 	var campaign := Campaign.current
-	var played := 0
 	if campaign and not campaign.is_over():
-		played = campaign.shift
+		var played := campaign.shift
 		campaign.finish_shift("traffic_rush_hour", solved(), report, QUOTA)
 		campaign.save()
+		result.campaign = {"shift": played, "money": campaign.money, "over": campaign.is_over(),
+			"promoted": campaign.is_promoted()}
+	_show_result(result)
+
+
+func _show_result(result: Dictionary) -> void:
+	shift_over = true
+	_result = result
 	if not shift_screen:
 		return
 	for cop in get_tree().get_nodes_in_group("cops"):
@@ -173,13 +209,59 @@ func finish_shift() -> void:
 		cop.get_node("Grabber").input_enabled = false
 		cop.get_node("Hud").hide()
 	var awards: Array[Dictionary] = []
-	awards.assign(ShiftReport.awards(stats))
-	shift_screen.show_report(solved(), report, 0, awards)
+	awards.assign(result.awards)
+	shift_screen.show_report(result.solved, result.report, 0, awards)
 	var over := false
-	if campaign and played > 0:
-		shift_screen.show_campaign(played, Campaign.SHIFTS, campaign.money, campaign.is_over(), campaign.is_promoted())
-		over = campaign.is_over()
-	shift_screen.get_node("%AgainButton").visible = not over
+	if result.has("campaign"):
+		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over,
+			result.campaign.promoted)
+		over = result.campaign.over
+	# Online only the host starts the next case.
+	shift_screen.get_node("%AgainButton").visible = not over and not follower
+
+
+## What every guest's case shows (CaseSync, 5 times a second when it changes): the meter, the clues, the detentions,
+## the chase after the one who ran off and the end of shift.
+func snapshot() -> Dictionary:
+	var state := {"tip": tip_given, "patience": queue.patience, "sneaked": queue.sneaked,
+		"clues": clues.known, "innocents": innocents, "lost": lost, "solved": solved_now, "escaped": escaped,
+		"suspect": suspect != null, "result": _result}
+	if chase:
+		state.chase = chase.snapshot()
+		state.run_off = [chase.truck.global_transform if is_instance_valid(chase.truck) else Transform3D(),
+			int(chase.suspect_id.trim_prefix("traffic_"))]
+	return state
+
+
+## A guest's case takes the host's, and shows the same hints when something happens.
+func apply_snapshot(state: Dictionary) -> void:
+	if state.tip:
+		give_tip()
+	queue.show_patience(state.patience, state.sneaked)
+	clues.catch_up_to(state.clues)
+	var innocent_now: bool = state.innocents > innocents
+	if innocent_now:
+		_hint_all("HINT_TRAFFIC_INNOCENT_LOST" if state.lost else "HINT_TRAFFIC_INNOCENT")
+	innocents = state.innocents
+	if state.suspect and not suspect:
+		suspect = get_parent().get_node_or_null("Driver") as ChaseSuspect
+		if suspect and patrol_car:
+			escort = OwnerEscort.attach(suspect, patrol_car)
+			escort.follower = true
+			escort.in_car_hint = "HINT_TRAFFIC_IN_CAR"
+			_hint_all("HINT_TRAFFIC_GOT_IT")
+	if state.has("chase") and not chase:
+		var run_off: Array = state.run_off
+		_run_off(run_off[0], run_off[1])
+	if chase and state.has("chase"):
+		chase.apply_snapshot(state.chase)
+	if state.lost and not lost and not chase and not innocent_now:
+		_hint_all("HINT_TRAFFIC_WANTED_GONE")
+	lost = state.lost
+	solved_now = state.solved
+	escaped = state.escaped
+	if not (state.result as Dictionary).is_empty() and not shift_over:
+		_show_result(state.result)
 
 
 func _hint_all(key: String) -> void:

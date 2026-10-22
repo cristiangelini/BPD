@@ -6,7 +6,8 @@ extends CharacterBody3D
 ## (TrafficQueue.release_front), or until the queue runs out of patience and it sneaks by along the sidewalk, knocking
 ## the cones over. It moves in the checkpoint's space, along local -Z, without physics: cars don't push the cops'
 ## things, they just stop. Stopped, its driver can be checked: the line they say at the barrier, E for the license and
-## the trunk, opened by lifting its lid (step 4 of "El orden para hacerlo"). Every number here is (propuesta).
+## the trunk, opened by lifting its lid (step 4 of "El orden para hacerlo"). Online the host's cars drive and the
+## guests' copies follow them (NpcSync). Every number here is (propuesta).
 
 const SPEED := 30.0 / 3.6
 ## Brakes and speeds up this hard, in m/s².
@@ -131,6 +132,28 @@ func _build_trunk() -> void:
 			_trunk.add_child(grandpa)
 
 
+## Online (NpcSync): what a guest's copy needs before it's added (which car it is, not whether it's the wanted one).
+func net_setup() -> Dictionary:
+	return {"plate": plate, "driver": driver}
+
+
+## Online: where it is in the queue and whether its trunk is open.
+func net_state() -> Array:
+	return [state, lid.is_open if lid else false]
+
+
+func apply_net_state(net: Array) -> void:
+	state = net[0]
+	if net[1]:
+		open_trunk()
+
+
+## The trunk opened on some PC: open on this one too (TrunkLid asks every PC through its cop).
+func open_trunk() -> void:
+	if lid and not lid.is_open:
+		lid.set_angle(TrunkLid.MAX_ANGLE)
+
+
 func prompt_key(_cop: Cop) -> String:
 	return "PROMPT_PAPERS" if waiting() else ""
 
@@ -180,7 +203,7 @@ func let_through() -> void:
 
 ## The handcuffs (Handcuffs.cuffable) on a stopped car cuff its driver: the case detains them (TrafficCase).
 func cuffed(_seconds: float) -> void:
-	var case := get_tree().get_first_node_in_group("traffic_case") as TrafficCase
+	var case := TrafficCase.of(self)
 	if case and waiting():
 		case.detain(self)
 

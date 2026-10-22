@@ -9,15 +9,26 @@ signal clue_given(index: int, text: String)
 var plan: WantedPlan
 var known := 0
 var elapsed := 0.0
+## Online, a guest's clues come with the host's case (catch_up_to) instead of its own clock.
+var follower := false
 
 
 func _ready() -> void:
-	_catch_up()
+	if not follower:
+		_catch_up()
 
 
 func _physics_process(delta: float) -> void:
+	if follower:
+		return
 	elapsed += delta
 	_catch_up()
+
+
+func catch_up_to(host_known: int) -> void:
+	while known < host_known:
+		known += 1
+		clue_given.emit(known - 1, plan.clue_text(known - 1))
 
 
 func _catch_up() -> void:

@@ -42,7 +42,20 @@ func _physics_process(_delta: float) -> void:
 		return
 	var point: Vector3 = holders.values()[0]
 	var local := (get_parent() as Node3D).global_transform.affine_inverse() * point - position
+	var was_open := is_open
 	set_angle(atan2(local.y, -local.z))
+	if is_open and not was_open:
+		_tell_every_pc()
+
+
+## Online the hand that lifted it is on one PC: its own cop has the car open the trunk on every PC (ActionSync).
+func _tell_every_pc() -> void:
+	for id: int in holders:
+		var grabber := instance_from_id(id) as Node
+		var cop := grabber.get_parent() as Cop if grabber else null
+		if cop and cop.input_enabled and get_parent().has_method("open_trunk"):
+			cop.act("open_trunk", get_parent())
+			return
 
 
 func set_angle(value: float) -> void:
