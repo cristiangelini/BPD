@@ -164,10 +164,12 @@ func _check_shout(steam: Object, data: PackedByteArray) -> void:
 		shouted(local_cop(get_tree()))
 
 
-## In the jailbreak: while the player sings (or hums with H), tells the guard every SING_EVERY seconds.
+## In the jailbreak (and on El Oso's phone at the bank): while the player sings (or hums with H), tells the guard
+## (or the phone) every SING_EVERY seconds.
 func _check_singing(delta: float) -> void:
 	_sing_left -= delta
-	if _sing_left > 0.0 or not is_inside_tree() or not get_tree().has_group("night_guard"):
+	if _sing_left > 0.0 or not is_inside_tree() \
+			or not (get_tree().has_group("night_guard") or get_tree().has_group("bank_phone")):
 		return
 	if not (_held("hum") or song.is_singing(Time.get_ticks_msec() / 1000.0)):
 		return
@@ -181,6 +183,7 @@ func sang(cop: Cop) -> void:
 		return
 	if _net.is_host():
 		get_tree().call_group("night_guard", "heard_singing", cop)
+		get_tree().call_group("bank_phone", "heard_singing", cop)
 	else:
 		_guard_heard_singing.rpc_id(_net.HOST_ID)
 
@@ -190,6 +193,7 @@ func _guard_heard_singing() -> void:
 	var sync: CopSync = _net.cop_syncs.get(multiplayer.get_remote_sender_id())
 	if multiplayer.is_server() and sync and is_instance_valid(sync.cop):
 		get_tree().call_group("night_guard", "heard_singing", sync.cop)
+		get_tree().call_group("bank_phone", "heard_singing", sync.cop)
 
 
 ## Tells the interrogation, the crime scene, the jailbreak's guard or the club's grandparents that the player's cop
