@@ -52,6 +52,10 @@ export function buildRobbersVan() {
 export const models = { robbers_van: buildRobbersVan };
 
 export const views = {
+	robbers: {
+		items: ['conejo', 'chancho', 'pato', 'oso'].map((n, i) => ({ name: `npc_ladron_${n}`, pos: [(i - 1.5) * 1.2, 0, 0], rotY: 0.3, scale: n === 'oso' ? 1.15 : 1 })),
+		cam: { pos: [0, 1.4, 6.0], target: [0, 0.9, 0], fov: 36 },
+	},
 	robbers_van: {
 		items: [{ name: 'robbers_van', pos: [0, 0, 0] },
 			...[[-1.1, 1.7], [1.1, 1.7], [-1.1, -1.7], [1.1, -1.7]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }))],

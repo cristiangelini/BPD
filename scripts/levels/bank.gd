@@ -7,7 +7,9 @@ extends Node3D
 ## two doors: the manager's office (west, with the air vent high in its outer wall, reached standing on a partner) and
 ## the corridor to the vault (east, behind its round steel door) and to the back door (locked; the key comes later).
 ## The robbers' van waits parked on the street. The cops start in the station and drive here; --place=bank opens it
-## from Play. The robbers, the hostages, the drill and the case come in the next steps.
+## from Play. Step 2 adds the four robbers at their tasks (BankRobber: the rabbit at the entrance, the pig over the
+## hostages, the duck at the vault, El Oso behind the counter) and the hostages crouched on the hall's floor. The
+## drill and the case come in the next steps.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -46,6 +48,19 @@ const VAN_AT := Vector3(8.0, 0, HALF_Z + CityLayout.SIDEWALK + 2.2)
 const VAN_WHEELS: Array[Vector3] = [Vector3(-1.1, 0.38, 1.7), Vector3(1.1, 0.38, 1.7), Vector3(-1.1, 0.38, -1.7),
 	Vector3(1.1, 0.38, -1.7)]
 const VAN_SIZE := Vector3(2.2, 2.3, 5.2)
+## Where each robber stands and which way they face (their body's yaw): the rabbit by the entrance looking at the
+## door, the pig in front of the counter looking at the hostages, the duck in the corridor looking at the vault's
+## door and El Oso behind the middle desk looking at the hall.
+const ROBBER_SPOTS := {
+	"conejo": [Vector3(2.0, 0, 8.5), PI],
+	"chancho": [Vector3(-1.5, 0, 0.0), PI],
+	"pato": [Vector3(2.2, 0, -7.5), -PI / 2],
+	"oso": [Vector3(-2.5, 0, -3.4), PI],
+}
+## The hostages: rows across the hostages' floor, facing the counter.
+const HOSTAGES := 8
+const HOSTAGE_XS: Array[float] = [-6.5, -3.5, -0.5, 2.5]
+const HOSTAGE_ZS: Array[float] = [2.5, 4.8]
 
 const OUTSIDE := Color(0.86, 0.84, 0.78)
 const INSIDE := Color(0.93, 0.92, 0.88)
@@ -60,6 +75,12 @@ var back_door: FrontDoor
 ## The vault's steel door, a body that closes the doorway until the drill gets through (step 3).
 var vault_door: StaticBody3D
 var van: Node3D
+## The case's seed: which neighbors are the hostages.
+var case_seed := 0
+var robbers: Array[BankRobber] = []
+## El Oso, the one to cuff.
+var boss: BankRobber
+var hostages: Array[BankHostage] = []
 var station_parking: Transform3D
 var _build: PlaceBuilder
 
@@ -78,6 +99,8 @@ func _ready() -> void:
 	add_child(back_door)
 	_add_vault_door()
 	_add_van()
+	_add_robbers()
+	_add_hostages()
 	city.transform = CityLayout.anchor("bank")
 	station_parking = city.transform * CityLayout.parking("station")
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
@@ -235,3 +258,36 @@ func _add_van() -> void:
 		var wheel: Node3D = WHEEL_MODEL.instantiate()
 		wheel.position = at
 		van.add_child(wheel)
+
+
+func _add_robbers() -> void:
+	for animal: String in BankRobber.ANIMALS:
+		var robber := BankRobber.new()
+		robber.name = "Robber_" + animal
+		robber.animal = animal
+		robber.position = ROBBER_SPOTS[animal][0] + Vector3.UP * FLOOR_TOP
+		robber.rotation.y = ROBBER_SPOTS[animal][1]
+		add_child(robber)
+		robbers.append(robber)
+		if robber.is_boss():
+			boss = robber
+
+
+## The hostages, a different set of neighbors for each seed.
+func _add_hostages() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["bank hostages", case_seed])
+	var looks := BankHostage.LOOKS.duplicate()
+	for i in range(looks.size() - 1, 0, -1):
+		var j := rng.randi_range(0, i)
+		var swap: String = looks[i]
+		looks[i] = looks[j]
+		looks[j] = swap
+	for i in HOSTAGES:
+		var hostage := BankHostage.new()
+		hostage.name = "Hostage%d" % i
+		hostage.look = looks[i % looks.size()]
+		hostage.next_line = i
+		hostage.position = Vector3(HOSTAGE_XS[i % HOSTAGE_XS.size()], FLOOR_TOP, HOSTAGE_ZS[i / HOSTAGE_XS.size()])
+		add_child(hostage)
+		hostages.append(hostage)
