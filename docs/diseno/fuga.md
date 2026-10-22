@@ -1,6 +1,6 @@
 # La fuga (cuando los detienen a ellos)
 
-Tipo de caso 7 del catálogo ([casos.md](casos.md)). Junta las decisiones 15, 17, 66 y 88. Todo lo que no salió de
+Tipo de caso 7 del catálogo ([casos.md](casos.md)). Junta las decisiones 15, 17, 66, 88 y 99. Todo lo que no salió de
 Cristian está marcado **(propuesta)** hasta probarlo jugando.
 
 ## Qué es
@@ -75,7 +75,7 @@ medio, al volver se aparece de nuevo en las celdas.
 5. Distraerlo: tirar cosas, la voz y cantar para dormirlo (y sacarle la llave del cinturón).
 6. Salir en el patrullero, "¡Fugados!", el turno siguiente, y perder a la tercera.
 
-## Preguntas para Cristian
+## Preguntas para Cristian (respondidas el 22/10: sí a las tres, decisión 99)
 1. ¿Una sola fuga por partida? La segunda vez que no llegan a la cuota termina como hoy.
 2. ¿Si se escapan siguen con el turno siguiente, sin la plata del turno fallado?
 3. ¿Perder si el guardia los atrapa 3 veces?
