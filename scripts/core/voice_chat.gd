@@ -150,9 +150,11 @@ func _send(steam: Object) -> void:
 		_voice.rpc(maxi(talking, 0), data)
 
 
-## Only in an interrogation (a shout near the suspect is the bad cop's shout) or the jailbreak (the guard turns to it).
+## Only in an interrogation (a shout near the suspect is the bad cop's shout), the jailbreak (the guard turns to it) or
+## the choir (ChoirSinging listens to the song meter).
 func _check_shout(steam: Object, data: PackedByteArray) -> void:
-	if not is_inside_tree() or not (get_tree().has_group("interrogation") or get_tree().has_group("night_guard")):
+	if not is_inside_tree() or not (get_tree().has_group("interrogation") or get_tree().has_group("night_guard")
+			or get_tree().has_group("choir_singing")):
 		return
 	var voice: Dictionary = steam.call("decompressVoice", data, mix_rate)
 	var pcm: PackedByteArray = voice.get("uncompressed", voice.get("buffer", PackedByteArray()))

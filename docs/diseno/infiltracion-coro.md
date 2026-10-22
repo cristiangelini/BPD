@@ -59,7 +59,15 @@ el coro compartan una base (la variante elige el lugar, el capo y las pruebas) e
    policías), que cuentan un chisme distinto cada vez que les hablas (E); el Maestro Ernesto en su cajón frente al coro,
    con la batuta; y la señora de la puerta, que empuja afuera a quien no tenga túnica (un disfraz de abuelo no sirve)
    **(propuesta)**.
-4. Cantar con la batuta (voz o H) y la sospecha del coro.
+4. Cantar con la batuta (voz o H) y la sospecha del coro. Hecho así: a los 20 s y después cada 30 s de pausa, el Maestro
+   Ernesto dirige una canción de 45 s (avisa 5 s antes). Durante la canción sube la batuta de 4 a 7 s y la baja de 2 a
+   4 s (con la semilla); arriba de su cabeza se ve ▲ ♪ o ▼, suena el "aaah" del coro con la batuta arriba, y en
+   pantalla "¡CANTA!" o "Silencio". Cada segundo, al policía que está en la tarima: callado con la batuta arriba suma
+   +15 a los coristas a 5 m (lo oyen, miren adonde miren), y cantar con la batuta abajo (el solo) +25. Hay 0,6 s de
+   margen después de cada cambio. Fuera de la tarima durante la canción, +20 por segundo a los que lo ven. Cantar es
+   la voz sin cortes (el SongMeter de la fuga) o mantener H. La sospecha es la del club con otros textos: sin túnica,
+   corriendo, con una herramienta en la mano o en la sacristía y el depósito. El cancionero todavía no cuenta
+   **(propuesta)**.
 5. Las pruebas, el caso, la combi y el sorteo.
 
 ## Respuestas de Cristian (22/10, decisión 101)

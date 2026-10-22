@@ -6,7 +6,8 @@ extends InfiltrationPlace
 ## back the choir's platform with its music stands and the cardboard organ by the west wall; behind the platform, the
 ## sacristy (locked) and the storeroom. The cops start in the station, where the robes are, and drive here.
 ## --place=choir opens it from Play. Choristers stand on the platform's spots (by the seed), Maestro Ernesto on his box
-## in front of them, and the lady at the door only lets in cops in a robe (step 3b). The case comes in step 5.
+## in front of them, and the lady at the door only lets in cops in a robe (step 3b). Ernesto leads the songs
+## (ChoirSinging) and the choristers watch and listen (ClubSuspicion, step 4). The case comes in step 5.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -58,6 +59,7 @@ const WINDOW_COLORS: Array[Color] = [Color(0.85, 0.25, 0.3), Color(0.25, 0.45, 0
 var sacristy_door: FrontDoor
 var ernesto: ClubMember
 var door_lady: ClubDoorman
+var singing: ChoirSinging
 ## The spots nobody took, for the cops.
 var free_spots: Array[Vector3] = []
 ## The choristers' spots on the platform, on the floor of the platform, in the chapel's space.
@@ -115,6 +117,36 @@ func _add_people() -> void:
 	door_lady.position = DOOR_LADY_AT
 	door_lady.door_at = global_transform * Vector3(ENTRANCE_X, 0, HALF_Z)
 	door_lady.outward = global_transform.basis * Vector3.BACK
+	_add_rehearsal()
+
+
+## The choristers' suspicion, for a robe and singing in time, and Ernesto's songs.
+func _add_rehearsal() -> void:
+	suspicion = ClubSuspicion.new()
+	suspicion.name = "Suspicion"
+	suspicion.members = members
+	suspicion.boss = ernesto
+	suspicion.boss_found_out = "ERNESTO_FOUND_OUT"
+	suspicion.disguise_look = "chorister"
+	suspicion.prefix = "CHOIR_"
+	suspicion.inside = func(at: Vector3) -> bool:
+		var local := global_transform.affine_inverse() * at
+		return absf(local.x) < HALF_X and absf(local.z) < HALF_Z and local.y < ROOF
+	suspicion.in_back_room = func(at: Vector3) -> bool:
+		var local := global_transform.affine_inverse() * at
+		return absf(local.x) < HALF_X and local.z > -HALF_Z and local.z < BACK_Z and local.y < ROOF
+	add_child(suspicion)
+	singing = ChoirSinging.new()
+	singing.name = "Singing"
+	singing.case_seed = case_seed
+	singing.ernesto = ernesto
+	singing.inside = suspicion.inside
+	singing.on_platform = func(at: Vector3) -> bool:
+		var local := global_transform.affine_inverse() * at
+		return PLATFORM.has_point(Vector2(local.x, local.z)) and local.y > FLOOR_TOP + PLATFORM_HEIGHT - 0.2 \
+			and local.y < ROOF
+	add_child(singing)
+	suspicion.watch_singing(singing)
 
 
 ## Floor, outer walls with the entrance, the roof, the sign and the round colored window over the door.

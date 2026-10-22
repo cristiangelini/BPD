@@ -253,7 +253,7 @@ func _physics_process(delta: float) -> void:
 		return
 	if not got_in and not follower:
 		for cop: Cop in get_tree().get_nodes_in_group("cops"):
-			if cop.is_disguised() and place.suspicion.inside.call(cop.global_position):
+			if cop.is_disguised(place.suspicion.disguise_look) and place.suspicion.inside.call(cop.global_position):
 				got_in = true
 				_hint_all(texts()["in"])
 				checklist.show_rows(rows())
