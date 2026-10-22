@@ -52,3 +52,4 @@ the number in brackets is the decision there.
 - He works alone and merges himself; no Jira, cards are GitHub issues. [61, 62]
 - To check progress he opens the game and gives the OK (cheapest in tokens). Videos only when he asks. [57]
 - Lessons from Dread Warden: fix scale and match length early in grey (the map was scaled 5x late); test Steam with two real accounts in the first week (it never was); keep CLAUDE.md short (it grew to 268 KB).
+- Until GitHub Actions minutes come back (1/11), don't run the GUT suite, locally or on GitHub; keep writing tests, and run them all together once CI is back. Cristian asked for it on 22/10: running them was slowing everything down.
