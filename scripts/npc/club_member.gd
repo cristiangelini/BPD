@@ -6,6 +6,9 @@ extends StaticBody3D
 ## see (step 4), with a "?" or a "!" over their head. They don't move yet, so online every PC has the same ones; their
 ## meters come from the host through ClubSuspicion.
 
+## A cop cuffed them (the handcuffs, on every PC).
+signal cuffed_now(member: ClubMember)
+
 const MODELS := {
 	"abuelo": preload("res://assets/models/npc_abuelo.glb"),
 	"abuela": preload("res://assets/models/npc_abuela.glb"),
@@ -31,6 +34,7 @@ var suspicion := 0.0
 var _bubble: Label3D
 var _bubble_left := 0.0
 var _mark: Label3D
+var _cuffed_left := 0.0
 
 
 func _ready() -> void:
@@ -96,6 +100,17 @@ func sees_cop(cop: Cop) -> bool:
 	return hit.is_empty() or hit.collider == cop
 
 
+## The handcuffs: stays put, complains, and the case hears it (InfiltrationCase).
+func cuffed(seconds: float) -> void:
+	_cuffed_left = maxf(_cuffed_left, seconds)
+	say("CHELA_CUFFED" if is_chela() else "NPC_POLICE_ABUSE")
+	cuffed_now.emit(self)
+
+
+func is_cuffed() -> bool:
+	return _cuffed_left > 0.0
+
+
 func prompt_key(_cop: Cop) -> String:
 	return "PROMPT_TALK_CHELA" if is_chela() else "PROMPT_TALK_GRANDPARENT"
 
@@ -119,6 +134,7 @@ func said() -> String:
 
 
 func _process(delta: float) -> void:
+	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
 	if _bubble_left > 0.0:
 		_bubble_left -= delta
 		if _bubble_left <= 0.0:

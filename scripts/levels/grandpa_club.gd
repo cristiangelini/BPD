@@ -4,8 +4,8 @@ extends Node3D
 ## The grandparents' club "Club de Jubilados Los Años Dorados" (docs/diseno/infiltracion.md, step 2a): one floor on its
 ## lot in the city, the front to +Z. The hall has 12 bingo tables, the bingo stand by the stage and the dance floor;
 ## behind it, the kitchen, Doña Chela's office (locked) and the storeroom. The cops start in the station, where the
-## disguises are, and drive here. --place=club opens it from Play. The grandparents, the doorman and the case come in
-## the next steps. Every number here is (propuesta).
+## disguises are, and drive here. --place=club opens it from Play. The comisario gives the case (InfiltrationCase).
+## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const BINGO_CAGE_SCENE := preload("res://scenes/props/bingo_cage.tscn")
@@ -68,6 +68,7 @@ var suspicion: ClubSuspicion
 var dance: ClubDance
 ## The seats nobody took, as seats() gives them.
 var free_seats: Array = []
+var case: InfiltrationCase
 var station_parking: Transform3D
 var _build: PlaceBuilder
 
@@ -92,6 +93,13 @@ func _ready() -> void:
 	station_parking = city.transform * CityLayout.parking("station")
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+	case = InfiltrationCase.new()
+	case.name = "Case"
+	case.case_seed = case_seed
+	case.club = self
+	case.shift_screen = $ShiftScreen
+	add_child(case)
+	case.start(city.comisario)
 
 
 ## Floor, outer walls with the entrance, the roof and the sign.
