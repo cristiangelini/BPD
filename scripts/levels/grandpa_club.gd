@@ -35,6 +35,12 @@ const BINGO_STAND := Vector3(-10.6, 0, 0.5)
 ## The dance floor, a checkerboard on the east side of the hall.
 const DANCE_FLOOR := Rect2(5.5, -2.5, 7.5, 9.0)
 const DANCE_TILE := 1.5
+## How many grandparents play bingo, of the 48 seats; the rest are for the cops.
+const MEMBERS := 16
+## Doña Chela calls the numbers from the stage, behind the bingo stand.
+const CHELA_AT := Vector3(-11.9, 0, 0.5)
+## The doorman stands outside, by the entrance.
+const DOORMAN_AT := Vector3(ENTRANCE_X + 1.4, 0, HALF_Z + 0.7)
 
 const OUTSIDE := Color(0.82, 0.55, 0.75)
 const INSIDE := Color(0.98, 0.9, 0.78)
@@ -52,6 +58,9 @@ var office_door: FrontDoor
 var bingo_cage: Node3D
 ## The tables' middles on the floor, in the club's space.
 var tables: Array[Vector3] = []
+var members: Array[ClubMember] = []
+var chela: ClubMember
+var doorman: ClubDoorman
 var station_parking: Transform3D
 var _build: PlaceBuilder
 
@@ -67,6 +76,7 @@ func _ready() -> void:
 	_build_shell()
 	_build_hall()
 	_build_back_rooms()
+	_add_people()
 	office_door = DOOR_SCENE.instantiate()
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, BACK_Z)
 	add_child(office_door)
@@ -124,6 +134,47 @@ func _build_hall() -> void:
 			var tile_at := DANCE_FLOOR.position + Vector2(i + 0.5, j + 0.5) * DANCE_TILE
 			_build.mesh_box(Vector3(tile_at.x, FLOOR_TOP + 0.006, tile_at.y), Vector3(DANCE_TILE, 0.01, DANCE_TILE),
 				DANCE_LIGHT if (i + j) % 2 == 0 else DANCE_DARK)
+
+
+## Every chair by the tables, as [where on the floor, the table's middle], in the club's space.
+func seats() -> Array:
+	var all := []
+	for at: Vector3 in tables:
+		for side: float in [-1.0, 1.0]:
+			for along: float in [-0.4, 0.4]:
+				all.append([at + Vector3(along, 0, side * (TABLE_SIZE.y / 2 + 0.35)), at])
+	return all
+
+
+## The grandparents at their seats (drawn with the seed), Doña Chela on the stage and the doorman at the entrance.
+func _add_people() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["club members", case_seed])
+	var free := seats()
+	for i in MEMBERS:
+		var seat: Array = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var member := ClubMember.new()
+		member.name = "Member%d" % i
+		member.look = "abuela" if rng.randf() < 0.5 else "abuelo"
+		member.next_line = rng.randi_range(0, ClubMember.GOSSIP_LINES - 1)
+		add_child(member)
+		member.position = seat[0]
+		var to_table: Vector3 = seat[1] - seat[0]
+		member.rotation.y = atan2(-to_table.x, -to_table.z)
+		members.append(member)
+	chela = ClubMember.new()
+	chela.name = "Chela"
+	chela.look = "chela"
+	add_child(chela)
+	chela.position = CHELA_AT + Vector3(0, FLOOR_TOP + STAGE_HEIGHT, 0)
+	# Facing the hall (+X).
+	chela.rotation.y = -PI / 2
+	doorman = ClubDoorman.new()
+	doorman.name = "Doorman"
+	add_child(doorman)
+	doorman.position = DOORMAN_AT
+	doorman.door_at = global_transform * Vector3(ENTRANCE_X, 0, HALF_Z)
+	doorman.outward = global_transform.basis * Vector3.BACK
 
 
 ## The kitchen, the office and the storeroom behind the hall, with their counters and shelves.
