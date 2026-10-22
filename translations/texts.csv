@@ -1212,3 +1212,7 @@ HOSTAGE_5,"Psst. Policía. Sácame de aquí, tengo la comida en el horno.","Psst
 HOSTAGE_6,"El conejo es el más miedoso. Se asustó de un estornudo.","The rabbit is the most scared one. A sneeze scared him.","O coelho é o mais medroso. Se assustou com um espirro."
 HOSTAGE_7,"El pato no escucha nada con esas orejeras.","The duck can't hear a thing with those ear muffs.","O pato não escuta nada com esses protetores."
 HOSTAGE_8,"El gerente se escapó en pijama. Yo lo vi.","The manager ran off in his pajamas. I saw him.","O gerente fugiu de pijama. Eu vi."
+HUD_DRILL,"TALADRO DE LA BÓVEDA","VAULT DRILL","FURADEIRA DO COFRE"
+HUD_DRILL_NERVOUS,"¡Los ladrones están nerviosos! El taladro va más rápido.","The robbers are nervous! The drill is going faster.","Os ladrões estão nervosos! A furadeira está mais rápida."
+HUD_DRILL_PAUSED,"El taladro está parado.","The drill has stopped.","A furadeira está parada."
+HUD_DRILL_OPEN,"¡Abrieron la bóveda!","They opened the vault!","Abriram o cofre!"
