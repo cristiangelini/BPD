@@ -54,7 +54,11 @@ el coro compartan una base (la variante elige el lugar, el capo y las pruebas) e
    "Capilla del barrio", en la cuadra (1, 1) al sur, de 24 x 22 m y una planta: la nave con 12 bancos en dos filas y
    un pasillo al medio, la tarima del coro contra el fondo con 14 lugares y un atril delante de cada uno, el cajón del
    director, el órgano de cartón contra la pared oeste y, detrás de la tarima, la sacristía (con llave) y el depósito.
-   Los policías arrancan en la comisaría, donde están las túnicas (`--place=choir`) **(propuesta)**.
+   Los policías arrancan en la comisaría, donde están las túnicas (`--place=choir`) **(propuesta)**. Después (3b) la gente:
+   10 coristas con túnica y cancionero en lugares de la tarima elegidos con la semilla (quedan 4 libres para los
+   policías), que cuentan un chisme distinto cada vez que les hablas (E); el Maestro Ernesto en su cajón frente al coro,
+   con la batuta; y la señora de la puerta, que empuja afuera a quien no tenga túnica (un disfraz de abuelo no sirve)
+   **(propuesta)**.
 4. Cantar con la batuta (voz o H) y la sospecha del coro.
 5. Las pruebas, el caso, la combi y el sorteo.
 

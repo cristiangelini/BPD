@@ -33,6 +33,11 @@ function peakedCap(b, m, band, badge = gold) {
 	b.add('cap', black, new THREE.CylinderGeometry(0.14, 0.14, 0.02, 8, 1, false, -Math.PI / 2, Math.PI), { pos: V(0, 1.45, 0.08) });
 	b.add('cap', badge, new THREE.CylinderGeometry(0.03, 0.03, 0.012, 5), { pos: V(0, 1.52, 0.2), rot: [Math.PI / 2, 0, 0] });
 }
+// An open songbook held in front with both hands, at the hands' height.
+function songbook(b) {
+	b.add('props', C('songbook_cover', 0x1d1a22), new THREE.BoxGeometry(0.34, 0.02, 0.24), { pos: V(0, 0.72, 0.32), rot: [-0.9, 0, 0] });
+	b.add('props', C('songbook_pages', 0xf4eedc), new THREE.BoxGeometry(0.32, 0.012, 0.22), { pos: V(0, 0.73, 0.335), rot: [-0.9, 0, 0] });
+}
 function tie(b, m) {
 	b.add('body', m, new THREE.ConeGeometry(0.035, 0.22, 4), { pos: V(0, 0.92, 0.29), rot: [Math.PI + 0.35, Math.PI / 4, 0] });
 }
@@ -125,6 +130,64 @@ const NPCS = {
 		mustache(b, C('gray', 0xd8d8d8), 1.2);
 		b.add('cap', C('bald', 0x8a5a3a), ellipsoid(0.2, 0.08, 0.19, 10, 5), { pos: V(0, 1.46, 0.02) });
 		b.add('body', suit, new THREE.BoxGeometry(0.62, 0.12, 0.14), { pos: V(0, 0.75, 0.3) });
+	},
+	// A chorister of the chapel's choir (infiltracion-coro.md): the burgundy robe with the white collar, gray curls
+	// and an open songbook in both hands.
+	corista(b) {
+		const robe = C('robe_cloth', 0x7a1f2e);
+		pearBody(b, SKIN.crema, { shirt: robe, onePiece: true, belted: false, shoes: black });
+		b.add('body', white, new THREE.TorusGeometry(0.16, 0.035, 6, 12), { pos: V(0, 1.1, 0.02), rot: [Math.PI / 2, 0, 0] });
+		eyes(b, 1.32, 0.17, 0.08, 0.045);
+		mouth(b, { open: true });
+		const hair = C('hair_gray', 0x9aa0a8);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		for (const s of [-1, 1]) b.add('head', hair, ellipsoid(0.08, 0.1, 0.08, 6, 4), { pos: V(s * 0.17, 1.33, -0.02) });
+		songbook(b);
+	},
+	// Another chorister: bald, glasses and a thick white beard, same robe and songbook.
+	corista_b(b) {
+		const robe = C('robe_cloth', 0x7a1f2e);
+		pearBody(b, SKIN.cacao, { shirt: robe, onePiece: true, belted: false, shoes: black });
+		b.add('body', white, new THREE.TorusGeometry(0.16, 0.035, 6, 12), { pos: V(0, 1.1, 0.02), rot: [Math.PI / 2, 0, 0] });
+		eyes(b, 1.32, 0.17, 0.08, 0.045);
+		glasses(b);
+		mouth(b, { open: true });
+		b.add('face', C('beard', 0xeeeae2), ellipsoid(0.15, 0.1, 0.08, 8, 5), { pos: V(0, 1.16, 0.15) });
+		b.add('cap', C('bald_cacao', 0x8a5a3a), ellipsoid(0.2, 0.08, 0.19, 10, 5), { pos: V(0, 1.46, 0.02) });
+		songbook(b);
+	},
+	// Maestro Ernesto, the choir's director (infiltracion-coro.md): black tailcoat, white bow tie, wild white hair,
+	// a gold watch and the baton up in his right hand.
+	ernesto(b) {
+		const coat = C('tailcoat', 0x16161c);
+		pearBody(b, SKIN.arena, { shirt: coat, pants: coat });
+		lapels(b, white);
+		for (const s of [-1, 1]) b.add('body', white, new THREE.ConeGeometry(0.04, 0.08, 4), { pos: V(s * 0.04, 1.08, 0.2), rot: [0, 0, s * Math.PI / 2] });
+		b.add('body', coat, new THREE.BoxGeometry(0.3, 0.35, 0.05), { pos: V(0, 0.32, -0.42), rot: [-0.2, 0, 0] });
+		b.add('body', gold, new THREE.TorusGeometry(0.03, 0.008, 4, 8), { pos: V(0.2, 0.62, 0.38) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		const hair = C('hair_white', 0xf4f0ea);
+		for (let i = 0; i < 7; i++) {
+			const a = Math.PI * (i / 6);
+			b.add('head', hair, ellipsoid(0.09, 0.09, 0.09, 6, 4), { pos: V(Math.cos(a) * 0.2, 1.4 + Math.sin(a) * 0.1, -0.04) });
+		}
+		limb(b, 'props', C('baton', 0xf8f6f0), V(0.5, 0.66, 0.12), V(0.62, 1.05, 0.3), 0.012);
+	},
+	// The lady at the chapel's door (infiltracion-coro.md): a green cardigan, a tight bun, reading glasses on a chain
+	// and the attendance list on a clipboard.
+	portera(b) {
+		const cardigan = C('door_cardigan', 0x3e7a5a);
+		pearBody(b, SKIN.celeste, { shirt: cardigan, pants: C('door_skirt', 0x4a4a5a), belted: false, shoes: black });
+		eyes(b, 1.32, 0.17, 0.08, 0.045);
+		glasses(b, gold);
+		b.add('face', gold, new THREE.TorusGeometry(0.16, 0.004, 3, 12, Math.PI), { pos: V(0, 1.28, 0.12), rot: [0, 0, Math.PI] });
+		mouth(b);
+		const hair = C('hair_dark', 0x4a3a32);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		b.add('head', hair, ellipsoid(0.09, 0.09, 0.09, 8, 5), { pos: V(0, 1.45, -0.18) });
+		b.add('props', C('clipboard', 0xa87a4a), new THREE.BoxGeometry(0.22, 0.3, 0.02), { pos: V(-0.42, 0.75, 0.25), rot: [-0.5, 0.3, 0] });
+		b.add('props', white, new THREE.BoxGeometry(0.18, 0.24, 0.005), { pos: V(-0.415, 0.75, 0.263), rot: [-0.5, 0.3, 0] });
 	},
 	// Sospechoso: striped shirt, beanie and eye mask, with a loot sack.
 	sospechoso(b) {
@@ -380,7 +443,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2 };
+const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
