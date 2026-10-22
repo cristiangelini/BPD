@@ -30,6 +30,7 @@ const PLACES := [
 	{"id": "hardware", "block": Vector2i(3, 1), "side": "s", "along": -12.0, "size": Vector3(16, 7, 14), "color": Color(0.9, 0.45, 0.3), "sign": "PLACE_HARDWARE"},
 	{"id": "gym", "block": Vector2i(3, 1), "side": "s", "along": 12.0, "size": Vector3(18, 8, 16), "color": Color(0.4, 0.75, 0.4), "sign": "PLACE_GYM"},
 	{"id": "doll_factory", "block": Vector2i(4, 2), "side": "w", "along": 0.0, "size": Vector3(28, 10, 26), "color": Color(0.95, 0.6, 0.75), "sign": "PLACE_DOLL_FACTORY"},
+	{"id": "grandpa_club", "block": Vector2i(4, 1), "side": "s", "along": 0.0, "size": Vector3(28, 5, 22), "color": Color(0.82, 0.55, 0.75), "sign": "PLACE_GRANDPA_CLUB"},
 	{"id": "cake_lab", "block": Vector2i(4, 3), "side": "w", "along": 0.0, "size": Vector3(24, 8, 22), "color": Color(0.95, 0.95, 0.85), "sign": "PLACE_CAKE_LAB"},
 ]
 

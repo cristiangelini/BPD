@@ -77,7 +77,11 @@ las pruebas. El disfraz de cada policía se ve igual en todas las PC.
    trae hasta la cara y, a menos de 22 cm de su lugar, quedan puestos (más torcidos cuanto más lejos del centro). Con 2
    piezas el policía pasa por abuelo. Corriendo 4 s se cae la pieza más torcida (1,5 s si está torcida) y chocar una
    pared corriendo la tira enseguida **(propuesta)**. El disfraz todavía no viaja de la comisaría al club (paso 2).
-2. El club en la ciudad, con los abuelos, el portero y Doña Chela.
+2. El club en la ciudad, con los abuelos, el portero y Doña Chela. Primero (2a) el club solo: "Club Años Dorados", en
+   la cuadra (4, 1) al sur, de 28 x 22 m y una planta: el salón con 12 mesas de bingo, el escenario, el bolillero y la
+   pista de baile, y atrás la cocina, la oficina de Doña Chela (cerrada con llave) y el depósito. Los policías arrancan
+   en la comisaría, donde están los disfraces, y van en el patrullero (`--place=club`). Después (2b) los abuelos, el
+   portero y Doña Chela.
 3. El bingo con cartón propio para cada policía.
 4. La sospecha de los abuelos (reusa la del guardia) y el "¡Son policías!".
 5. El baile.
