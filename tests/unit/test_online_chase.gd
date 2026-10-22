@@ -178,3 +178,45 @@ func test_a_guest_unhooks_the_towed_patrol_car_and_the_host_lowers_it() -> void:
 	assert_false(host.towed.freeze, "the host lowers it and drives it")
 	await wait_until(func() -> bool: return guest.unhooked, 5.0)
 	assert_true(guest.towed.freeze, "the guest's follows the host's")
+
+
+func test_the_ice_cream_puddles_land_in_the_same_place_on_every_pc() -> void:
+	var pcs := await _on()
+	var puddle := _case(pcs[0]).drops.drip()
+	await wait_until(func() -> bool: return not _case(pcs[1]).drops.puddles.is_empty(), 5.0)
+	var copy: Node3D = _case(pcs[1]).drops.puddles[0][0]
+	assert_almost_eq(copy.global_position.distance_to(puddle.global_position), 0.0, 0.01)
+	assert_eq(_case(pcs[1]).drops.puddles.size(), 1, "the guest drips none of its own")
+
+
+func test_the_moving_truck_furniture_falls_on_the_host_and_the_guest_sees_it() -> void:
+	_suspect = "moving_truck"
+	var pcs := await _on()
+	var sofa := _case(pcs[0]).drops.drop_furniture() as ChaseFurniture
+	var copy_of := func() -> ChaseFurniture: return _level(pcs[1]).get_node_or_null(NodePath(sofa.name)) as ChaseFurniture
+	await wait_until(func() -> bool: return copy_of.call() != null, 5.0)
+	var copy: ChaseFurniture = copy_of.call()
+	assert_eq(copy.piece, sofa.piece, "the same piece")
+	assert_true(copy.freeze, "it only falls on the host")
+	await wait_physics_frames(30)
+	await wait_until(func() -> bool: return copy.global_position.distance_to(sofa.global_position) < 0.2, 5.0)
+	assert_almost_eq(copy.global_position.distance_to(sofa.global_position), 0.0, 0.2, "it lies where the host's lies")
+
+
+func test_the_highway_traffic_and_a_broken_toll_barrier_are_the_host_s() -> void:
+	_suspect = "highway"
+	var pcs := await _on()
+	var host_car: TrafficCar = _case(pcs[0]).highway.traffic[0]
+	var guest_car: TrafficCar = _case(pcs[1]).highway.traffic[0]
+	assert_false(guest_car.is_physics_processing(), "the guest's traffic only follows")
+	var start := guest_car.global_position
+	# Waited in time, not frames: a busy PC runs several physics frames between two network reads.
+	await wait_until(func() -> bool: return guest_car.global_position.distance_to(start) > 3.0, 5.0)
+	assert_gt(guest_car.global_position.distance_to(start), 3.0, "it drives on the guest")
+	# It drives fast: the copy trails the host's by a packet or two.
+	assert_lt(guest_car.global_position.distance_to(host_car.global_position), 6.0, "where the host's goes")
+	var barrier: TollBarrier = _level(pcs[0]).find_children("*", "TollBarrier", true, false)[1]
+	barrier._break(_case(pcs[0]).car)
+	var copy: TollBarrier = _level(pcs[1]).find_children("*", "TollBarrier", true, false)[1]
+	await wait_until(func() -> bool: return copy.is_broken, 5.0)
+	assert_true(copy.is_broken, "the guest sees it broken")

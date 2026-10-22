@@ -39,7 +39,8 @@ func _init(owner_net: Node, level: Node) -> void:
 static func is_npc(node: Node) -> bool:
 	return node is Grandpa or node is Baker or node is BakeryCustomer or node is Pigeon or node is DogGroomer \
 		or node is PoodleLady or node is HumanCustomer or node is Gossip or node is Neighbor or node is Armero \
-		or node is InterrogationSuspect or node is SuspectCar or node is ChaseSuspect or node is NightGuard
+		or node is InterrogationSuspect or node is SuspectCar or node is ChaseSuspect \
+		or node is ChaseFurniture or node is TrafficCar or node is NightGuard
 
 
 func _ready() -> void:
@@ -57,6 +58,10 @@ func _ready() -> void:
 static func _puppet(npc: Node3D) -> void:
 	npc.set_physics_process(false)
 	npc.set_process(false)
+	# A body that falls (the chase's furniture) falls only on the host.
+	if npc is RigidBody3D:
+		(npc as RigidBody3D).freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
+		(npc as RigidBody3D).freeze = true
 	for area in npc.find_children("*", "Area3D", true, false):
 		(area as Area3D).monitoring = false
 	var escort := OwnerEscort.of(npc)

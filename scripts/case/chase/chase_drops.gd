@@ -11,6 +11,7 @@ const DRIP_EVERY := 3.0
 const PUDDLE_RADIUS := 2.2
 const PUDDLE_SECONDS := 25.0
 const PUDDLE_GRIP := 0.2
+const PUDDLE_COLORS: Array[Color] = [Color(0.95, 0.45, 0.65), Color(0.35, 0.8, 0.62), Color(0.85, 0.65, 0.35)]
 ## The furniture: model, collision size and weight (kg); at most this many on the street.
 const FURNITURE := [
 	{"model": preload("res://assets/models/falling_sofa.glb"), "size": Vector3(1.8, 0.9, 0.8), "mass": 60.0},
@@ -36,6 +37,7 @@ var kids_bubble: Label3D
 var _rng := RandomNumberGenerator.new()
 ## The grip the weather leaves the patrol car's tires (ChaseWeather, the rain).
 var weather_grip := 1.0
+var _dropped := 0
 
 
 func _ready() -> void:
@@ -54,7 +56,8 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if case.suspect_id == "ice_cream" and case.chasing and not case.stopped:
+	# Online the host drops them and tells the guests (a guest's furniture is the host's, copied by NpcSync).
+	if case.suspect_id == "ice_cream" and case.chasing and not case.stopped and not case.follower:
 		_drip_left -= delta
 		if _drip_left <= 0.0:
 			_drip_left = DRIP_EVERY
@@ -88,23 +91,30 @@ func on_puddle(at: Vector3) -> bool:
 
 ## A puddle of melted ice cream on the street behind him.
 func drip() -> MeshInstance3D:
+	var at := _behind()
+	at.y = 0.02
+	var color := _rng.randi() % PUDDLE_COLORS.size()
+	if case.online and not case.follower:
+		case.online.tell("shown_puddle", [color, at])
+	return puddle_at(color, at)
+
+
+## A puddle of ice cream of PUDDLE_COLORS[`color`] at `at` (on a guest, the host's).
+func puddle_at(color: int, at: Vector3) -> MeshInstance3D:
 	var disc := CylinderMesh.new()
 	disc.top_radius = PUDDLE_RADIUS
 	disc.bottom_radius = PUDDLE_RADIUS
 	disc.height = 0.02
 	disc.radial_segments = 10
-	var colors := [Color(0.95, 0.45, 0.65), Color(0.35, 0.8, 0.62), Color(0.85, 0.65, 0.35)]
-	var puddle := CopTool.piece(disc, colors[_rng.randi() % colors.size()])
+	var puddle := CopTool.piece(disc, PUDDLE_COLORS[color])
 	case.get_parent().add_child(puddle)
-	var at := _behind()
-	at.y = 0.02
 	puddle.global_position = at
 	puddles.append([puddle, PUDDLE_SECONDS])
 	return puddle
 
 
 func _on_corner(turned: bool) -> void:
-	if case.suspect_id == "moving_truck" and turned and case.chasing and not case.stopped:
+	if case.suspect_id == "moving_truck" and turned and case.chasing and not case.stopped and not case.follower:
 		drop_furniture()
 
 
@@ -112,17 +122,10 @@ func _on_corner(turned: bool) -> void:
 func drop_furniture() -> RigidBody3D:
 	if furniture.size() >= MAX_FURNITURE:
 		furniture.pop_front().queue_free()
-	var piece: Dictionary = FURNITURE[_rng.randi() % FURNITURE.size()]
-	var body := RigidBody3D.new()
-	body.mass = piece.mass
-	body.add_to_group("chase_furniture")
-	var shape := CollisionShape3D.new()
-	var box := BoxShape3D.new()
-	box.size = piece.size
-	shape.shape = box
-	shape.position.y = box.size.y / 2
-	body.add_child(shape)
-	body.add_child((piece.model as PackedScene).instantiate())
+	var body := ChaseFurniture.new()
+	body.piece = _rng.randi() % FURNITURE.size()
+	_dropped += 1
+	body.name = "Furniture%d" % _dropped
 	case.get_parent().add_child(body)
 	body.global_position = _behind() + Vector3.UP * 0.6
 	body.rotation.y = _rng.randf() * TAU
