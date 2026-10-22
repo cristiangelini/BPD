@@ -34,11 +34,15 @@ const HEDGE_HEIGHT := 2.5
 ## The crime scene's case opens a door from the comisario's office to the station's board room
 ## (escena-del-crimen.md); otherwise the board room stays shut.
 @export var board_room_open := false
+## Night at the station for the jailbreak (fuga.md): the station's lights turn low and warm.
+@export var night := false
 
 ## The comisario in his office at the station; the case scene listens to him.
 var comisario: Comisario
 ## The armero behind the armory counter.
 var armero: Armero
+## The two cells' barred doors, west cell first (StationRooms.CELL_DOORS).
+var cell_doors: Array[CellDoor] = []
 ## Its own map, walking the city with no place in it (a chase).
 var map: CityMap
 var _materials := {}
@@ -237,12 +241,18 @@ func _station_inside(root: Node3D, size: Vector3) -> void:
 		_box(piece[0], piece[1], BARS, root)
 	for piece: Array in StationRooms.closed_doors():
 		_box(piece[0], piece[1], DOOR, root)
+	for i in StationRooms.CELL_DOORS.size():
+		var door := CellDoor.new()
+		door.name = "CellDoor%d" % i
+		door.position = Vector3(StationRooms.CELL_DOORS[i].x, 0, StationRooms.CELL_FRONT_Z)
+		root.add_child(door)
+		cell_doors.append(door)
 	_furniture(StationRooms.FURNITURE, StationRooms.SOLID, root)
 	for at: Vector3 in StationRooms.lights():
 		var light := OmniLight3D.new()
 		light.position = at
-		light.light_color = Color(0.95, 0.97, 1.0)
-		light.light_energy = 0.8
+		light.light_color = Color(1.0, 0.78, 0.5) if night else Color(0.95, 0.97, 1.0)
+		light.light_energy = 0.25 if night else 0.8
 		light.omni_range = 9.0
 		root.add_child(light)
 	comisario = Comisario.new()

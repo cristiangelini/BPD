@@ -6,7 +6,7 @@ extends RefCounted
 ## interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
 ## (persecucion.md, "Sale como un caso más"). Of the shifts left, one in CRIME_EVERY is the crime scene
 ## (escena-del-crimen.md, propuesta), then one in TRAFFIC_EVERY the traffic control (control-transito.md) and the
-## rest are raids. --place=<id> forces one. The level then takes that seed, so
+## rest are raids. A campaign whose cops missed the quota goes to the jailbreak first (fuga.md). --place=<id> forces one. The level then takes that seed, so
 ## the place, the story and the hiding spots all come from one seed.
 
 const PLACES := {
@@ -17,6 +17,7 @@ const PLACES := {
 	"chase": "res://scenes/levels/chase.tscn",
 	"crime_scene": "res://scenes/levels/crime_scene.tscn",
 	"traffic": "res://scenes/levels/traffic_control.tscn",
+	"jailbreak": "res://scenes/levels/jailbreak.tscn",
 }
 ## The raids, drawn by the seed.
 const ORDER := ["grandpa", "bakery", "groomer"]
@@ -44,6 +45,9 @@ static func pick(case_seed: int, args: PackedStringArray, shift := 0, chases := 
 	for arg in args:
 		if arg.begins_with("--place=") and PLACES.has(arg.trim_prefix("--place=")):
 			return arg.trim_prefix("--place=")
+	# A missed quota locks the cops up before anything else (decision 99, fuga.md).
+	if Campaign.current and Campaign.current.jailed:
+		return "jailbreak"
 	# An owner in custody is interrogated next, whatever the shift (decision 93).
 	if is_interrogation(case_seed, shift) or not custody_now().is_empty():
 		return "interrogation"
