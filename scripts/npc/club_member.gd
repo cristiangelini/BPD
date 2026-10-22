@@ -1,8 +1,9 @@
 class_name ClubMember
 extends StaticBody3D
 
-## A grandparent at the club's bingo tables (infiltracion.md, step 2b), or Doña Chela at the bingo stand. E on one tells
-## a bit of gossip, a different line each time. Each one has a suspicion meter that ClubSuspicion fills from what they
+## A grandparent at the club's bingo tables (infiltracion.md, step 2b), or Doña Chela at the bingo stand; at the chapel
+## (infiltracion-coro.md, step 3b) a chorister on the platform, or Maestro Ernesto, the director. E on one tells a bit
+## of gossip, a different line each time. Each one has a suspicion meter that ClubSuspicion fills from what they
 ## see (step 4), with a "?" or a "!" over their head. They don't move yet, so online every PC has the same ones; their
 ## meters come from the host through ClubSuspicion.
 
@@ -13,10 +14,23 @@ const MODELS := {
 	"abuelo": preload("res://assets/models/npc_abuelo.glb"),
 	"abuela": preload("res://assets/models/npc_abuela.glb"),
 	"chela": preload("res://assets/models/npc_chela.glb"),
+	"corista": preload("res://assets/models/npc_corista.glb"),
+	"corista_b": preload("res://assets/models/npc_corista_b.glb"),
+	"ernesto": preload("res://assets/models/npc_ernesto.glb"),
 }
-const SCALES := {"abuelo": 0.82, "abuela": 0.8, "chela": 0.85}
+const SCALES := {"abuelo": 0.82, "abuela": 0.8, "chela": 0.85, "corista": 0.85, "corista_b": 0.85, "ernesto": 1.0}
+## What each look says when talked to (the key with the line's number, and how many lines), the prompt, and what it
+## shouts when cuffed. The bosses (BOSSES) have their own lines.
+const TALK := {
+	"abuelo": ["CLUB_GOSSIP_%d", 12, "PROMPT_TALK_GRANDPARENT", "NPC_POLICE_ABUSE"],
+	"abuela": ["CLUB_GOSSIP_%d", 12, "PROMPT_TALK_GRANDPARENT", "NPC_POLICE_ABUSE"],
+	"chela": ["CHELA_%d", 4, "PROMPT_TALK_CHELA", "CHELA_CUFFED"],
+	"corista": ["CHOIR_GOSSIP_%d", 10, "PROMPT_TALK_CHORISTER", "NPC_POLICE_ABUSE"],
+	"corista_b": ["CHOIR_GOSSIP_%d", 10, "PROMPT_TALK_CHORISTER", "NPC_POLICE_ABUSE"],
+	"ernesto": ["ERNESTO_%d", 4, "PROMPT_TALK_ERNESTO", "ERNESTO_CUFFED"],
+}
+const BOSSES: Array[String] = ["chela", "ernesto"]
 const GOSSIP_LINES := 12
-const CHELA_LINES := 4
 const SAY_TIME := 4.0
 ## What a grandparent sees: a wide cone in front of them (they turn their heads) and not far, at their eyes' height.
 const SIGHT_ANGLE := deg_to_rad(140.0)
@@ -81,6 +95,11 @@ func is_chela() -> bool:
 	return look == "chela"
 
 
+## The one to cuff: Doña Chela at the club, Maestro Ernesto at the chapel.
+func is_boss() -> bool:
+	return BOSSES.has(look)
+
+
 func set_suspicion(value: float) -> void:
 	suspicion = value
 	_mark.visible = suspicion >= DOUBT
@@ -107,7 +126,7 @@ func sees_cop(cop: Cop) -> bool:
 ## The handcuffs: stays put, complains, and the case hears it (InfiltrationCase).
 func cuffed(seconds: float) -> void:
 	_cuffed_left = maxf(_cuffed_left, seconds)
-	say("CHELA_CUFFED" if is_chela() else "NPC_POLICE_ABUSE")
+	say(TALK[look][3])
 	cuffed_now.emit(self)
 
 
@@ -116,14 +135,11 @@ func is_cuffed() -> bool:
 
 
 func prompt_key(_cop: Cop) -> String:
-	return "PROMPT_TALK_CHELA" if is_chela() else "PROMPT_TALK_GRANDPARENT"
+	return TALK[look][2]
 
 
 func use(_cop: Cop) -> void:
-	if is_chela():
-		say("CHELA_%d" % (next_line % CHELA_LINES))
-	else:
-		say("CLUB_GOSSIP_%d" % (next_line % GOSSIP_LINES))
+	say(TALK[look][0] % (next_line % TALK[look][1]))
 	next_line += 1
 
 

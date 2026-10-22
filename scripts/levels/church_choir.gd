@@ -5,8 +5,9 @@ extends InfiltrationPlace
 ## its lot in the city, the front to +Z. The nave has two columns of pews with an aisle down the middle, and at the
 ## back the choir's platform with its music stands and the cardboard organ by the west wall; behind the platform, the
 ## sacristy (locked) and the storeroom. The cops start in the station, where the robes are, and drive here.
-## --place=choir opens it from Play. The choristers, the lady at the door and Maestro Ernesto come next (step 3b), and
-## the case after them (step 5). Every number here is (propuesta).
+## --place=choir opens it from Play. Choristers stand on the platform's spots (by the seed), Maestro Ernesto on his box
+## in front of them, and the lady at the door only lets in cops in a robe (step 3b). The case comes in step 5.
+## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const HALF_X := 12.0
@@ -27,9 +28,13 @@ const ROW_ZS: Array[float] = [-6.7, -5.2]
 const SPOTS_PER_ROW := 7
 const SPOT_GAP := 1.8
 ## Each stand sits this far in front (+Z) of its spot.
-const STAND_AHEAD := 0.55
+const STAND_AHEAD := 0.6
 ## Where the director stands, on the floor in front of the platform, facing it (-Z).
 const DIRECTOR_AT := Vector3(0, 0, -2.6)
+## How many choristers sing, of the 14 spots; the rest are for the cops.
+const MEMBERS := 10
+## The lady at the door stands outside, by the entrance.
+const DOOR_LADY_AT := Vector3(ENTRANCE_X + 1.4, 0, HALF_Z + 0.7)
 ## The cardboard organ along the west wall, by the platform.
 const ORGAN_AT := Vector3(-11.2, 0, -3.2)
 const ORGAN_SIZE := Vector3(1.2, 2.4, 2.4)
@@ -51,6 +56,10 @@ const WINDOW_COLORS: Array[Color] = [Color(0.85, 0.25, 0.3), Color(0.25, 0.45, 0
 	Color(0.3, 0.75, 0.4)]
 
 var sacristy_door: FrontDoor
+var ernesto: ClubMember
+var door_lady: ClubDoorman
+## The spots nobody took, for the cops.
+var free_spots: Array[Vector3] = []
 ## The choristers' spots on the platform, on the floor of the platform, in the chapel's space.
 var spots: Array[Vector3] = []
 var _build: PlaceBuilder
@@ -67,12 +76,45 @@ func _ready() -> void:
 	sacristy_door = DOOR_SCENE.instantiate()
 	sacristy_door.position = Vector3(SACRISTY_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, BACK_Z)
 	add_child(sacristy_door)
+	_add_people()
 	place_in_city("chapel")
 
 
 ## The choir van waits on the street, out of the entrance (step 5).
 func getaway_at() -> Transform3D:
 	return Transform3D(global_basis, global_transform * Vector3(ENTRANCE_X, 0, HALF_Z + CityLayout.SIDEWALK + 2.0))
+
+
+## The choristers on spots drawn with the seed, facing the nave, Maestro Ernesto on his box facing them, and the lady at
+## the door.
+func _add_people() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["choir members", case_seed])
+	free_spots = spots.duplicate()
+	for i in MEMBERS:
+		var member := ClubMember.new()
+		member.name = "Member%d" % i
+		member.look = "corista" if rng.randf() < 0.5 else "corista_b"
+		member.next_line = rng.randi_range(0, ClubMember.TALK[member.look][1] - 1)
+		add_child(member)
+		member.position = free_spots.pop_at(rng.randi_range(0, free_spots.size() - 1))
+		# Facing the nave (+Z).
+		member.rotation.y = PI
+		members.append(member)
+	ernesto = ClubMember.new()
+	ernesto.name = "Ernesto"
+	ernesto.look = "ernesto"
+	add_child(ernesto)
+	ernesto.position = DIRECTOR_AT + Vector3(0, FLOOR_TOP + 0.2, 0)
+	boss = ernesto
+	door_lady = ClubDoorman.new()
+	door_lady.name = "DoorLady"
+	door_lady.look = "portera"
+	door_lady.disguise_look = "chorister"
+	add_child(door_lady)
+	door_lady.position = DOOR_LADY_AT
+	door_lady.door_at = global_transform * Vector3(ENTRANCE_X, 0, HALF_Z)
+	door_lady.outward = global_transform.basis * Vector3.BACK
 
 
 ## Floor, outer walls with the entrance, the roof, the sign and the round colored window over the door.
@@ -132,8 +174,9 @@ func _build_platform() -> void:
 			var at := Vector3((i - (SPOTS_PER_ROW - 1) / 2.0) * SPOT_GAP, top, z)
 			spots.append(at)
 			var stand := at + Vector3(0, 0, STAND_AHEAD)
-			_build.mesh_box(stand + Vector3(0, 0.5, 0), Vector3(0.04, 1.0, 0.04), STAND)
-			_build.mesh_box(stand + Vector3(0, 1.05, 0), Vector3(0.45, 0.32, 0.03), STAND)
+			# Low enough that the sheet sits under the chorister's face.
+			_build.mesh_box(stand + Vector3(0, 0.33, 0), Vector3(0.04, 0.66, 0.04), STAND)
+			_build.mesh_box(stand + Vector3(0, 0.72, 0), Vector3(0.45, 0.28, 0.03), STAND)
 	# The director's little box to stand on, so the choir sees the baton.
 	_build.box(DIRECTOR_AT + Vector3(0, FLOOR_TOP + 0.1, 0), Vector3(0.7, 0.2, 0.7), WOOD)
 
