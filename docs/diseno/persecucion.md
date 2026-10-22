@@ -79,8 +79,8 @@ El host maneja al sospechoso y decide los medidores (decisión 50), como con el 
 **Cómo va quedando:** el vehículo del sospechoso, el reloj, el medidor de distancia, la denuncia de los padres, si
 se escapó y la pantalla del turno ya son iguales en todas las PCs. Las tareas del patrullero (megáfono, pinchos, red,
 conos y radio) las pide cada uno desde su asiento y las hace el anfitrión; todos ven el grito y lo que cae a la
-calle. Faltan el sospechoso bajado y esposado, lo que deja en la calle, el tráfico de la autopista,
-los golfistas y la grúa; hasta entonces online no sale ninguna persecución en el sorteo.
+calle. El sospechoso que se baja (y el golfista que corre), esposarlo, llevarlo del brazo y la grúa que suelta el
+patrullero también. Faltan lo que deja en la calle, el tráfico de la autopista y los golfistas; hasta entonces online no sale ninguna persecución en el sorteo.
 
 ## El orden para hacerlo (un PR chico por paso)
 1. El auto del sospechoso que maneja solo por la ciudad, con su ruta por la semilla.

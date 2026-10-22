@@ -17,6 +17,6 @@ func prompt_key(_cop: Cop) -> String:
 
 
 func use(cop: Cop) -> void:
-	var case := get_tree().get_first_node_in_group("chase") as ChaseCase
+	var case := ChaseCase.of(self)
 	if case:
 		case.unhook(cop)

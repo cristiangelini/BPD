@@ -75,6 +75,11 @@ func _ready() -> void:
 	_say(lines()[0])
 
 
+## Online (NpcSync): what a guest's copy needs before it's added.
+func net_setup() -> Dictionary:
+	return {"kind": kind, "runs": runs}
+
+
 ## His complaints, as tr() keys.
 func lines() -> Array[String]:
 	var keys: Array[String] = []

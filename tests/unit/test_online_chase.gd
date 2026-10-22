@@ -139,3 +139,42 @@ func test_a_job_from_the_wrong_seat_is_not_done() -> void:
 	_case(pcs[1]).tasks.do_job("throw_net")
 	await wait_physics_frames(20)
 	assert_eq(_case(pcs[0]).tasks.nets_left, ChaseTasks.NETS, "the host didn't throw it for the wrong cop")
+
+
+func test_he_gets_out_on_every_pc_and_a_guest_cuffs_and_walks_him() -> void:
+	var pcs := await _on()
+	var host := _case(pcs[0])
+	var guest := _case(pcs[1])
+	host.pull_over()
+	await wait_until(func() -> bool: return guest.suspect != null, 5.0)
+	assert_eq(guest.suspect.kind, "ice_cream", "the same suspect gets out on the guest")
+	assert_eq(guest.suspect.get_parent(), _level(pcs[1]), "in the same place of the level")
+	assert_true(guest.escort.follower, "the guest's escort only rides along")
+	assert_almost_eq(guest.suspect.global_position.distance_to(host.suspect.global_position), 0.0, 0.5)
+	var cop := OnlinePcs.own_cop(pcs[1])
+	cop.global_position = host.suspect.global_position + Vector3(0, 0, 1.2)
+	cop.act("belt_cuff", cop, [guest.suspect, guest.suspect.global_position])
+	await wait_until(func() -> bool: return host.suspect.was_cuffed, 5.0)
+	await wait_until(func() -> bool: return guest.caught, 5.0)
+	assert_true(host.caught, "cuffed by the guest, caught on the host")
+	cop.act("use", guest.suspect)
+	await wait_until(func() -> bool: return guest.escort.escorted_by == cop, 5.0)
+	var copy: Cop = pcs[0].cop_syncs[pcs[1].multiplayer.get_unique_id()].cop
+	assert_eq(host.escort.escorted_by, copy, "the host walks him after the guest's cop")
+
+
+func test_a_guest_unhooks_the_towed_patrol_car_and_the_host_lowers_it() -> void:
+	_suspect = "tow_truck"
+	var pcs := await _pcs.two_pcs()
+	var host := _case(pcs[0])
+	var guest := _case(pcs[1])
+	host.give_tip()
+	await wait_until(func() -> bool: return guest.tip_given, 5.0)
+	host.pull_over()
+	await wait_until(func() -> bool: return guest.stopped, 5.0)
+	var cop := OnlinePcs.own_cop(pcs[1])
+	cop.act("use", _level(pcs[1]).truck.get_node("Hook"))
+	await wait_until(func() -> bool: return host.unhooked, 5.0)
+	assert_false(host.towed.freeze, "the host lowers it and drives it")
+	await wait_until(func() -> bool: return guest.unhooked, 5.0)
+	assert_true(guest.towed.freeze, "the guest's follows the host's")
