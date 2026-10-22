@@ -2,7 +2,8 @@ class_name DisguisePiece
 extends Grabbable
 
 ## A piece of disguise from the station's lockers (docs/diseno/infiltracion.md, step 1, decision 100): a wig, a
-## mustache or glasses. Held, the mouse wheel brings it right up to the face; brought to its place on the cop's head it
+## mustache or glasses for the grandparents' club, and the choir robe (infiltracion-coro.md, step 2), which goes on
+## brought to the chest instead of the face. Held, the mouse wheel brings it right up to the face; brought to its place on the cop's head it
 ## stays on, crooked by as much as it was off. Online the host sees it reach the head and tells everyone.
 ## Every number here is (propuesta).
 
@@ -11,11 +12,18 @@ const SLOTS := {
 	"wig": Vector3(0, 1.42, 0.0),
 	"glasses": Vector3(0, 1.33, -0.21),
 	"mustache": Vector3(0, 1.22, -0.2),
+	"robe": Vector3(0, 0.95, -0.3),
 }
 const MODELS := {
 	"wig": preload("res://assets/models/disguise_wig.glb"),
 	"glasses": preload("res://assets/models/disguise_glasses.glb"),
 	"mustache": preload("res://assets/models/disguise_mustache.glb"),
+	"robe": preload("res://assets/models/disguise_robe.glb"),
+}
+## Who the cops pass for, and with what: which pieces count and how many of them. (propuesta)
+const LOOKS := {
+	"grandparent": {"pieces": ["wig", "glasses", "mustache"], "needed": 2},
+	"chorister": {"pieces": ["robe"], "needed": 1},
 }
 ## Held this close to its place, it goes on (m).
 const WEAR_REACH := 0.22
