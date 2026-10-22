@@ -46,6 +46,8 @@ var suspicion_bar: ProgressBar
 var caught_label: Label
 var car_home: Transform3D
 var end_screen: CanvasLayer
+## A guest: how many catches it already followed (-1 until it first looks).
+var _seen_catches := -1
 
 
 func _ready() -> void:
@@ -181,14 +183,29 @@ func _hud() -> void:
 
 
 func _process(_delta: float) -> void:
+	if not multiplayer.is_server():
+		_follow_catches()
 	suspicion_bar.value = guard.suspicion
 	caught_label.text = tr("HUD_GUARD_CAUGHT") % [guard.times_caught, CATCHES]
 	if guard.outcome != "":
 		# A guest learns how it ended from the guard (the host's state).
 		if not end_screen:
 			_show_end(guard.outcome)
-	elif Net.is_host() and escaped():
+	elif multiplayer.is_server() and escaped():
 		finish("escaped")
+
+
+## A guest: the guard (the host's) caught them once more, so its cell doors lock again too. The rest comes from the
+## host: the cops' places, the props it took away and the hints.
+func _follow_catches() -> void:
+	if _seen_catches < 0:
+		_seen_catches = guard.times_caught
+	if guard.times_caught <= _seen_catches:
+		return
+	_seen_catches = guard.times_caught
+	for door in city.cell_doors:
+		door.lock()
+	sticks.assign(sticks.filter(func(stick: Object) -> bool: return is_instance_valid(stick)))
 
 
 ## Every cop in the patrol car, and the car far enough from the station.
@@ -269,7 +286,7 @@ func _show_end(result: String) -> void:
 	var buttons := HBoxContainer.new()
 	buttons.alignment = BoxContainer.ALIGNMENT_CENTER
 	buttons.add_theme_constant_override("separation", 24)
-	if next and Net.is_host():
+	if next and multiplayer.is_server():
 		var again := Button.new()
 		again.name = "NextShift"
 		again.text = "JAILBREAK_NEXT_SHIFT"

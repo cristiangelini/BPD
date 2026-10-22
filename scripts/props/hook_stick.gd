@@ -82,7 +82,8 @@ func use(_cop: Cop) -> void:
 	if not hooked and guard:
 		hooked = guard.key_at(tip())
 		# A key on a stick goes between the bars.
-		hooked.collision_mask = 0
+		if hooked:
+			hooked.collision_mask = 0
 
 
 ## The sleeping guard whose belt (with the key) is at the tip, if any.

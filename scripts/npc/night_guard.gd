@@ -223,10 +223,13 @@ func prompt_key(cop: Cop) -> String:
 func use(cop: Cop) -> void:
 	if prompt_key(cop) == "":
 		return
-	cop.get_node("Grabber").grab(_take_key(cop.camera.global_position))
+	var key := _take_key(cop.camera.global_position)
+	if key:
+		cop.handed(key)
 
 
-## The stick's tip at his belt while he sleeps: the key, now off the belt, or null.
+## The stick's tip at his belt while he sleeps: the key, now off the belt, or null (always null on a guest: only the
+## host makes the key, and the guests get it from PropSync).
 func key_at(tip: Vector3) -> CellKey:
 	if not is_asleep() or not key_on_belt or tip.distance_to(belt()) > BELT_REACH:
 		return null
@@ -234,6 +237,8 @@ func key_at(tip: Vector3) -> CellKey:
 
 
 func _take_key(at: Vector3) -> CellKey:
+	if not multiplayer.is_server():
+		return null
 	key_on_belt = false
 	var key: CellKey = KEY_SCENE.instantiate()
 	get_parent().add_child(key)

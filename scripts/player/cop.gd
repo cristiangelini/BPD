@@ -290,6 +290,13 @@ func stand_up(at: Vector3, yaw: float) -> void:
 	_shape.disabled = false
 
 
+## The host put something in this cop's hands (a donut, the key): online, the owner's hands are told.
+func handed(item: Grabbable) -> void:
+	$Grabber.grab(item)
+	if sync and not sync.is_multiplayer_authority() and sync.multiplayer.is_server():
+		sync.tell_held()
+
+
 ## Puts the cop at `to` at once, empty-handed (the jailbreak's guard putting it back in its cell). Online, the host
 ## moving another player's cop tells its owner, who moves it for everyone.
 func warp(to: Transform3D) -> void:
@@ -302,9 +309,11 @@ func warp(to: Transform3D) -> void:
 
 ## Shows a short line at the bottom of this cop's screen. `key` is a tr() key. Online, a hint the host gives its copy
 ## of another player's cop goes to that player's screen.
-func show_hint(key: String) -> void:
+## `decided_here`: the host alone decided it (the jailbreak's key), so it goes to the owner even inside the owner's
+## own action.
+func show_hint(key: String, decided_here := false) -> void:
 	if sync and not sync.is_multiplayer_authority() and sync.multiplayer.is_server():
-		if not (sync.net.actions and sync.net.actions.performing):
+		if decided_here or not (sync.net.actions and sync.net.actions.performing):
 			sync.tell_hint(key)
 	_hint.text = key
 	_hint.show()
