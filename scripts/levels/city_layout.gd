@@ -158,3 +158,9 @@ static func lot(id: String) -> Transform3D:
 ## Where cop `index` (0 to 3) appears in the station's guard room, facing the comisario's office (StationRooms).
 static func station_spawn(index: int) -> Transform3D:
 	return lot("station") * Transform3D(Basis.IDENTITY, StationRooms.SPAWNS[index % StationRooms.SPAWNS.size()])
+
+
+## Where cop `index` wakes up locked in a cell for the jailbreak (fuga.md), facing the bars.
+static func jail_spawn(index: int) -> Transform3D:
+	var at := StationRooms.CELL_SPAWNS[index % StationRooms.CELL_SPAWNS.size()]
+	return lot("station") * Transform3D(Basis(Vector3.UP, PI), at)

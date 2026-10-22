@@ -56,6 +56,22 @@ const NPCS = {
 		peakedCap(b, black, gold);
 		for (let i = 0; i < 3; i++) b.add('body', i === 1 ? C('medal_red', 0xd23a3a) : gold, new THREE.CylinderGeometry(0.03, 0.03, 0.01, 6), { pos: V(-0.12 + i * 0.06, 0.88, 0.3), rot: [Math.PI / 2 - 0.4, 0, 0] });
 	},
+	// Comisario in his pajamas (fuga.md): woken up by the night guard's call, striped pajamas, nightcap and slippers.
+	comisario_pijama(b) {
+		const pajama = C('pajama', 0xbcd3ea), stripe = C('pajama_stripe', 0x4a6fa5);
+		pearBody(b, SKIN.crema, { shirt: pajama, pants: pajama, shoes: C('slippers_comisario', 0x8a2f3a) });
+		for (const y of [0.55, 0.7, 0.85, 1.0]) {
+			const r = y < 0.8 ? 0.36 + (0.8 - y) * 0.33 : 0.36 - (y - 0.8) * 0.48;
+			b.add('body', stripe, loft([{ y: y - 0.02, rx: r + 0.012, rz: r * 0.89 + 0.012 }, { y: y + 0.02, rx: r + 0.006, rz: r * 0.89 + 0.006 }], 10));
+		}
+		eyes(b, 1.34, 0.17, 0.08, 0.05);
+		for (const s of [-1, 1]) b.add('face', black, new THREE.BoxGeometry(0.09, 0.02, 0.02), { pos: V(s * 0.08, 1.4, 0.19), rot: [0, 0, s * 0.35] });
+		mouth(b, { open: true });
+		mustache(b, C('gray', 0xd8d8d8), 1.5);
+		b.add('cap', pajama, new THREE.ConeGeometry(0.19, 0.42, 8), { pos: V(0.05, 1.62, -0.03), rot: [0, 0, -0.5] });
+		b.add('cap', stripe, new THREE.CylinderGeometry(0.2, 0.2, 0.05, 8), { pos: V(0, 1.45, 0.0) });
+		b.add('cap', white, ellipsoid(0.05, 0.05, 0.05, 6, 4), { pos: V(0.15, 1.8, -0.03) });
+	},
 	// Abuelo (case 1.1): small, cardigan, flat cap, glasses, white eyebrows and a cane.
 	abuelo(b) {
 		const cardigan = C('cardigan', 0x7c8b52), pants = C('abuelo_pants', 0x8c8378);
@@ -322,7 +338,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, abuelo: 0.82 };
+const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
