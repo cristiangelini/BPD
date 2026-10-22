@@ -28,6 +28,8 @@ const MODELS := {
 	"driver": preload("res://assets/models/npc_cliente.glb"),
 	# Doña Chela, off her motorized walker (infiltracion.md).
 	"chela": preload("res://assets/models/npc_chela.glb"),
+	# Maestro Ernesto, out of his getaway (infiltracion-coro.md).
+	"ernesto": preload("res://assets/models/npc_ernesto.glb"),
 }
 ## The golf thief who runs off (persecucion-lugares.md): at this speed (m/s), away from cops this close, staying
 ## this far inside the club's fence and off its lakes. Cuffed, he stops; once the cuffs run out he runs again.
