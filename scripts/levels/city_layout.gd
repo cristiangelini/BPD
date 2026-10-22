@@ -32,6 +32,7 @@ const PLACES := [
 	{"id": "doll_factory", "block": Vector2i(4, 2), "side": "w", "along": 0.0, "size": Vector3(28, 10, 26), "color": Color(0.95, 0.6, 0.75), "sign": "PLACE_DOLL_FACTORY"},
 	{"id": "grandpa_club", "block": Vector2i(4, 1), "side": "s", "along": 0.0, "size": Vector3(28, 5, 22), "color": Color(0.82, 0.55, 0.75), "sign": "PLACE_GRANDPA_CLUB"},
 	{"id": "chapel", "block": Vector2i(1, 1), "side": "s", "along": 0.0, "size": Vector3(24, 5, 22), "color": Color(0.92, 0.88, 0.78), "sign": "PLACE_CHAPEL"},
+	{"id": "bank", "block": Vector2i(3, 0), "side": "s", "along": 0.0, "size": Vector3(24, 7, 20), "color": Color(0.86, 0.84, 0.78), "sign": "PLACE_BANK"},
 	{"id": "cake_lab", "block": Vector2i(4, 3), "side": "w", "along": 0.0, "size": Vector3(24, 8, 22), "color": Color(0.95, 0.95, 0.85), "sign": "PLACE_CAKE_LAB"},
 ]
 

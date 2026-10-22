@@ -1,0 +1,239 @@
+class_name BankLevel
+extends Node3D
+
+## The neighborhood bank, robbed live (docs/diseno/robo-banco.md, step 1, decision 102): one floor on its lot in the
+## city, the front to +Z. The hall has the queue posts and the benches by the entrance, the open floor where the
+## hostages lie, and the tellers' counter across it with a gap at the east end. Behind the counter, a back wall with
+## two doors: the manager's office (west, with the air vent high in its outer wall, reached standing on a partner) and
+## the corridor to the vault (east, behind its round steel door) and to the back door (locked; the key comes later).
+## The robbers' van waits parked on the street. The cops start in the station and drive here; --place=bank opens it
+## from Play. The robbers, the hostages, the drill and the case come in the next steps.
+## Every number here is (propuesta).
+
+const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const VAN_MODEL := preload("res://assets/models/robbers_van.glb")
+const WHEEL_MODEL := preload("res://assets/models/car_wheel.glb")
+const HALF_X := 12.0
+const HALF_Z := 10.0
+const FLOOR_TOP := 0.06
+const ROOF := GameScale.FLOOR_HEIGHT
+const ENTRANCE_X := 0.0
+## The tellers' counter across the hall, with its gap to walk behind it at the east end.
+const COUNTER_Z := -1.0
+const COUNTER_FROM := -10.0
+const COUNTER_GAP := Vector2(6.8, 8.2)
+const COUNTER_SIZE := Vector2(0.7, 1.1)
+## The back wall behind the tellers, with the office's door (west) and the corridor's (east).
+const BACK_Z := -4.5
+const OFFICE_DOOR_X := -7.0
+const CORRIDOR_DOOR_X := 6.0
+## The office (west) and the corridor (middle, to the back door) split by this wall; the vault east of VAULT_X.
+const OFFICE_X := -3.0
+const VAULT_X := 3.0
+const BACK_DOOR_X := 0.0
+## The vault's doorway in its west wall, and its round steel door (step 3 opens it).
+const VAULT_DOOR_Z := -7.5
+const VAULT_DOOR_RADIUS := 1.0
+## The air vent: a hole high in the office's outer wall (x = -HALF_X), its bottom above a jump but within reach from a
+## partner's shoulders, tall enough to crawl through crouched.
+const VENT_Z := -8.0
+const VENT_BOTTOM := 1.5
+const VENT_SIZE := Vector2(1.0, 1.15)
+## Where the hostages lie (step 2): the open floor between the queue and the counter.
+const HOSTAGE_AREA := Rect2(-8.0, 1.0, 13.0, 5.5)
+## The robbers' van, parked along the curb east of the entrance, nose to the west.
+const VAN_AT := Vector3(8.0, 0, HALF_Z + CityLayout.SIDEWALK + 2.2)
+const VAN_WHEELS: Array[Vector3] = [Vector3(-1.1, 0.38, 1.7), Vector3(1.1, 0.38, 1.7), Vector3(-1.1, 0.38, -1.7),
+	Vector3(1.1, 0.38, -1.7)]
+const VAN_SIZE := Vector3(2.2, 2.3, 5.2)
+
+const OUTSIDE := Color(0.86, 0.84, 0.78)
+const INSIDE := Color(0.93, 0.92, 0.88)
+const MARBLE := Color(0.78, 0.76, 0.72)
+const WOOD := Color(0.45, 0.28, 0.16)
+const STEEL := Color(0.55, 0.58, 0.62)
+const GOLD := Color(0.85, 0.7, 0.3)
+const ROPE := Color(0.7, 0.12, 0.15)
+const MONEY := Color(0.45, 0.62, 0.38)
+
+var back_door: FrontDoor
+## The vault's steel door, a body that closes the doorway until the drill gets through (step 3).
+var vault_door: StaticBody3D
+var van: Node3D
+var station_parking: Transform3D
+var _build: PlaceBuilder
+
+@onready var car: PatrolCar = $PatrolCar
+@onready var city: Node3D = $City
+
+
+func _ready() -> void:
+	_build = PlaceBuilder.new($Built)
+	_build_shell()
+	_build_hall()
+	_build_back()
+	back_door = DOOR_SCENE.instantiate()
+	back_door.name = "BackDoor"
+	back_door.position = Vector3(BACK_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, -HALF_Z)
+	add_child(back_door)
+	_add_vault_door()
+	_add_van()
+	city.transform = CityLayout.anchor("bank")
+	station_parking = city.transform * CityLayout.parking("station")
+	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
+	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+
+
+## Whether a world position is inside the bank.
+func inside(at: Vector3) -> bool:
+	var local := global_transform.affine_inverse() * at
+	return absf(local.x) < HALF_X and absf(local.z) < HALF_Z
+
+
+## Whether a world position is on the hostages' floor.
+func in_hostage_area(at: Vector3) -> bool:
+	var local := global_transform.affine_inverse() * at
+	return HOSTAGE_AREA.has_point(Vector2(local.x, local.z))
+
+
+## Floor, outer walls with the entrance and the vent, the roof, the facade with its columns and the sign.
+func _build_shell() -> void:
+	_build.slab(-HALF_X, HALF_X, -HALF_Z, HALF_Z, FLOOR_TOP, MARBLE)
+	_build.slab(-HALF_X - 0.2, HALF_X + 0.2, -HALF_Z - 0.2, HALF_Z + 0.2, ROOF, OUTSIDE.darkened(0.4))
+	_build.wall("x", -HALF_Z, -HALF_X, HALF_X, 0, [BACK_DOOR_X], OUTSIDE)
+	_build.wall("z", HALF_X, -HALF_Z, HALF_Z, 0, [], OUTSIDE)
+	_build.wall("x", HALF_Z, -HALF_X, HALF_X, 0, [ENTRANCE_X], OUTSIDE)
+	_vent_wall()
+	# The facade: a parapet over the roof, four columns and steps up to the entrance.
+	_build.box(Vector3(0, ROOF + 0.7, HALF_Z), Vector3(HALF_X * 2, 1.4, 0.3), OUTSIDE)
+	for x: float in [-4.5, -1.6, 1.6, 4.5]:
+		_build.box(Vector3(x, ROOF / 2, HALF_Z + 0.45), Vector3(0.45, ROOF, 0.45), INSIDE)
+	_build.box(Vector3(0, ROOF + 0.05, HALF_Z + 0.45), Vector3(10.0, 0.1, 1.0), INSIDE)
+	var sign_label := Label3D.new()
+	sign_label.text = "PLACE_BANK"
+	sign_label.font_size = 64
+	sign_label.pixel_size = 0.01
+	sign_label.outline_size = 14
+	sign_label.modulate = GOLD
+	sign_label.position = Vector3(0, ROOF + 0.7, HALF_Z + 0.2)
+	$Built.add_child(sign_label)
+	for x: float in [-8.0, 0.0, 8.0]:
+		for z: float in [-7.5, -2.5, 3.0, 7.5]:
+			_build.light(Vector3(x, ROOF - 0.6, z))
+
+
+## The west outer wall, with the vent's hole into the office and its bent grille hanging off one screw.
+func _vent_wall() -> void:
+	var x := -HALF_X
+	var a := VENT_Z - VENT_SIZE.x / 2
+	var b := VENT_Z + VENT_SIZE.x / 2
+	var height := ROOF - PlaceBuilder.SLAB
+	_build.box(Vector3(x, height / 2, (-HALF_Z + a) / 2), Vector3(PlaceBuilder.WALL, height, a + HALF_Z), OUTSIDE)
+	_build.box(Vector3(x, height / 2, (b + HALF_Z) / 2), Vector3(PlaceBuilder.WALL, height, HALF_Z - b), OUTSIDE)
+	_build.box(Vector3(x, VENT_BOTTOM / 2, VENT_Z), Vector3(PlaceBuilder.WALL, VENT_BOTTOM, VENT_SIZE.x), OUTSIDE)
+	var top := VENT_BOTTOM + VENT_SIZE.y
+	if height > top:
+		_build.box(Vector3(x, (top + height) / 2, VENT_Z), Vector3(PlaceBuilder.WALL, height - top, VENT_SIZE.x), OUTSIDE)
+	_build.mesh_box(Vector3(x - 0.12, VENT_BOTTOM - 0.2, VENT_Z + 0.4), Vector3(0.03, VENT_SIZE.y * 0.8, VENT_SIZE.x * 0.8),
+		STEEL)
+
+
+## The queue posts with their rope, two benches, the plant and the tellers' counter with its three desks behind.
+func _build_hall() -> void:
+	for i in 5:
+		var at := Vector3(-6.0 + i * 1.6, FLOOR_TOP, 7.5)
+		_build.box(at + Vector3(0, 0.45, 0), Vector3(0.12, 0.9, 0.12), GOLD)
+		if i < 4:
+			_build.mesh_box(at + Vector3(0.8, 0.82, 0), Vector3(1.5, 0.05, 0.05), ROPE)
+	for x: float in [-10.0, 9.5]:
+		_build.box(Vector3(x, FLOOR_TOP + 0.22, 6.0), Vector3(0.6, 0.44, 2.4), WOOD)
+	_build.box(Vector3(10.8, FLOOR_TOP + 0.3, 9.0), Vector3(0.6, 0.6, 0.6), WOOD.darkened(0.3))
+	_build.mesh_box(Vector3(10.8, FLOOR_TOP + 1.0, 9.0), Vector3(0.7, 0.8, 0.7), Color(0.3, 0.6, 0.3))
+	var top := FLOOR_TOP + COUNTER_SIZE.y
+	for piece: Vector2 in [Vector2(COUNTER_FROM, COUNTER_GAP.x), Vector2(COUNTER_GAP.y, HALF_X)]:
+		var middle := (piece.x + piece.y) / 2
+		_build.box(Vector3(middle, FLOOR_TOP + COUNTER_SIZE.y / 2, COUNTER_Z), Vector3(piece.y - piece.x,
+			COUNTER_SIZE.y, COUNTER_SIZE.x), WOOD)
+		_build.mesh_box(Vector3(middle, top + 0.02, COUNTER_Z), Vector3(piece.y - piece.x, 0.04, COUNTER_SIZE.x + 0.06),
+			MARBLE.darkened(0.2))
+	# The counter's west end closes against a short wall, so the only way behind it is the gap.
+	_build.wall("z", COUNTER_FROM, BACK_Z, COUNTER_Z, 0, [], INSIDE)
+	for x: float in [-6.5, -2.5, 1.5]:
+		_build.legs(Vector3(x, FLOOR_TOP, COUNTER_Z - 1.4), Vector2(1.4, 0.6), 0.72, WOOD)
+		_build.box(Vector3(x, FLOOR_TOP + 0.74, COUNTER_Z - 1.4), Vector3(1.4, 0.04, 0.6), WOOD)
+
+
+## The back wall with its two doors, the office (desk, filing cabinet), the corridor to the back door and the vault with
+## its shelves of money.
+func _build_back() -> void:
+	_build.wall("x", BACK_Z, -HALF_X, HALF_X, 0, [OFFICE_DOOR_X, CORRIDOR_DOOR_X], INSIDE)
+	_build.wall("z", OFFICE_X, -HALF_Z, BACK_Z, 0, [], INSIDE)
+	_build.wall("z", VAULT_X, -HALF_Z, BACK_Z, 0, [VAULT_DOOR_Z], STEEL)
+	# The corridor runs from its door along the back wall to the vault and the back door; this wall keeps the
+	# corridor's door out of the vault.
+	_build.wall("x", -6.0, VAULT_X, HALF_X, 0, [], INSIDE)
+	_build.legs(Vector3(-7.5, FLOOR_TOP, -8.2), Vector2(1.8, 0.9), 0.72, WOOD)
+	_build.box(Vector3(-7.5, FLOOR_TOP + 0.74, -8.2), Vector3(1.8, 0.04, 0.9), WOOD)
+	_build.box(Vector3(-4.0, FLOOR_TOP + 0.7, -9.5), Vector3(0.6, 1.4, 0.6), STEEL.darkened(0.2))
+	for z: float in [-7.0, -8.6]:
+		_build.open_box(Vector3(11.4, FLOOR_TOP, z), Vector3(0.8, 2.0, 1.4), "-x", STEEL)
+		for level: float in [0.4, 1.0, 1.6]:
+			_build.mesh_box(Vector3(11.3, FLOOR_TOP + level + 0.12, z), Vector3(0.5, 0.22, 1.1), MONEY)
+	var label := Label3D.new()
+	label.text = "BANK_VAULT"
+	label.font_size = 48
+	label.pixel_size = 0.01
+	label.position = Vector3(VAULT_X - 0.1, 2.3, VAULT_DOOR_Z)
+	label.rotation.y = -PI / 2
+	$Built.add_child(label)
+
+
+## The vault's round steel door, closing its doorway from the corridor side, with its wheel.
+func _add_vault_door() -> void:
+	vault_door = StaticBody3D.new()
+	vault_door.name = "VaultDoor"
+	vault_door.position = Vector3(VAULT_X + 0.15, FLOOR_TOP + VAULT_DOOR_RADIUS + 0.05, VAULT_DOOR_Z)
+	add_child(vault_door)
+	var shape := CollisionShape3D.new()
+	var body := BoxShape3D.new()
+	body.size = Vector3(0.2, VAULT_DOOR_RADIUS * 2, VAULT_DOOR_RADIUS * 2)
+	shape.shape = body
+	vault_door.add_child(shape)
+	var disc := CylinderMesh.new()
+	disc.top_radius = VAULT_DOOR_RADIUS
+	disc.bottom_radius = VAULT_DOOR_RADIUS
+	disc.height = 0.2
+	var steel := MeshInstance3D.new()
+	steel.mesh = disc
+	steel.rotation.z = PI / 2
+	steel.material_override = _build.material(STEEL.lightened(0.1))
+	vault_door.add_child(steel)
+	var wheel := TorusMesh.new()
+	wheel.inner_radius = 0.25
+	wheel.outer_radius = 0.32
+	var handle := MeshInstance3D.new()
+	handle.mesh = wheel
+	handle.position.x = 0.14
+	handle.rotation.z = PI / 2
+	handle.material_override = _build.material(GOLD)
+	vault_door.add_child(handle)
+
+
+## The robbers' van parked along the curb, a body so the patrol car bumps into it (step 6 drives it off).
+func _add_van() -> void:
+	van = StaticBody3D.new()
+	van.name = "Van"
+	van.position = VAN_AT
+	van.rotation.y = -PI / 2
+	add_child(van)
+	var shape := CollisionShape3D.new()
+	var body := BoxShape3D.new()
+	body.size = VAN_SIZE
+	shape.shape = body
+	shape.position.y = VAN_SIZE.y / 2 + 0.2
+	van.add_child(shape)
+	van.add_child(VAN_MODEL.instantiate())
+	for at in VAN_WHEELS:
+		var wheel: Node3D = WHEEL_MODEL.instantiate()
+		wheel.position = at
+		van.add_child(wheel)
