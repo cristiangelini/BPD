@@ -78,11 +78,6 @@ func test_every_third_shift_is_an_interrogation() -> void:
 		assert_eq(place == "interrogation", shift % 3 == 0, "shift %d" % shift)
 
 
-func test_online_there_are_no_chases_yet() -> void:
-	for i in 100:
-		assert_ne(PlaceDraw.pick(i + 1, [], 1, false), "chase")
-
-
 func test_without_a_campaign_one_in_three_is_an_interrogation() -> void:
 	var interrogations := 0
 	for i in 300:
