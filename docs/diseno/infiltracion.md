@@ -84,7 +84,12 @@ las pruebas. El disfraz de cada policía se ve igual en todas las PC.
    portero y Doña Chela: 16 abuelos en las sillas de las mesas (elegidas con la semilla) que cuentan un chisme distinto
    cada vez que les hablas (E), Doña Chela en el escenario detrás del bolillero, y el portero en la puerta, que empuja
    afuera a quien no tenga al menos 2 piezas de disfraz.
-3. El bingo con cartón propio para cada policía.
+3. El bingo con cartón propio para cada policía. Hecho así: Doña Chela canta un número cada 8 s desde el bolillero (el
+   último se ve en un cartel arriba); en 4 mesas hay un cartón libre (uno por policía, en sillas sin abuelo). La primera
+   E sobre un cartón lo hace tuyo, y después E marca todos los números cantados que tiene. Un número sin marcar en 6 s
+   es un error: el abuelo más cercano lo comenta (y en el paso 4 suma sospecha). Cualquiera puede marcar cualquier
+   cartón, así un compañero te cubre. A los 24 números Doña Chela grita "¡BINGO!" (siempre gana ella) y empieza otra
+   ronda **(propuesta)**.
 4. La sospecha de los abuelos (reusa la del guardia) y el "¡Son policías!".
 5. El baile.
 6. Las 3 pruebas y el final: sueldo, Doña Chela esposada o en el andador (persecución), y el sorteo.
