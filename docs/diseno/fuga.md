@@ -158,6 +158,10 @@ rápido. Las de la comisaría reusan las mismas celdas y el mismo guardia; cada 
 Todo lo decide el host, como el resto de los casos: la semilla, cuál dona tiene la llave, la sospecha, las veces que
 los atrapa y si se escaparon. La fuga se guarda como un estado más de la partida (`Campaign`), así que si se corta en
 medio, al volver se aparece de nuevo en las celdas.
+- Solo el host saca las donas de la caja, las parte y saca la llave del cinturón (con la mano o con la caña); los
+  invitados reciben la dona o la llave en sus manos desde el host.
+- Cuando el guardia los atrapa, en cada PC se vuelven a cerrar las rejas; el host saca los palos usados, la caja y
+  las donas, y eso se borra solo en los invitados.
 
 ## Atajos del panel de pruebas
 - Empezar la fuga (turno fallado).

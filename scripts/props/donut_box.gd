@@ -4,10 +4,12 @@ extends Grabbable
 ## A box of donuts from the armory (docs/diseno/comisaria.md): E with the box in hand eats one, which fills the stamina
 ## to run, and leaves the mouth too full to ask anything (R) for a while. The last donut leaves an empty box.
 ## The night guard's box in the jailbreak (fuga.md) is `loose`: E on it takes one donut out into the cop's hands
-## (LooseDonut), and one of its donuts, `key_donut`, has the key of the cells baked in.
+## (LooseDonut), and one of its donuts, `key_donut`, has the key of the cells baked in. Online only the host makes the
+## donut and the key (PropSync copies them to the guests).
 
 const DONUTS := 4
 const KEY_SCENE := preload("res://scenes/props/cell_key.tscn")
+const LOOSE_DONUT_SCENE := preload("res://scenes/props/loose_donut.tscn")
 
 @export var donuts := DONUTS
 ## E on it takes a donut out instead of nothing.
@@ -35,7 +37,7 @@ func take_one() -> int:
 ## falls out on the floor.
 func eat_one() -> bool:
 	var taken := take_one()
-	if taken >= 0 and taken == key_donut:
+	if taken >= 0 and taken == key_donut and multiplayer.is_server():
 		var key: CellKey = KEY_SCENE.instantiate()
 		get_parent().add_child(key)
 		key.global_position = global_position + Vector3.UP * 0.2
@@ -58,8 +60,10 @@ func use(cop: Cop) -> void:
 	if taken < 0:
 		cop.show_hint("HINT_DONUTS_GONE")
 		return
-	var donut := LooseDonut.new()
+	if not multiplayer.is_server():
+		return
+	var donut: LooseDonut = LOOSE_DONUT_SCENE.instantiate()
 	donut.has_key = taken == key_donut
 	get_parent().add_child(donut)
 	donut.global_position = global_position + Vector3.UP * 0.1
-	cop.get_node("Grabber").grab(donut)
+	cop.handed(donut)
