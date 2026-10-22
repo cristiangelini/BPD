@@ -31,6 +31,8 @@ var suspended := false
 var jailed := false
 ## The campaign's one jailbreak already happened (decision 99): the next missed quota ends it.
 var jailbreak_used := false
+## How many times the night guard caught them in this jailbreak (fuga.md): the third one loses the campaign.
+var jail_catches := 0
 ## The place's owner the cops brought in at the end of the last raid (RaidCase.custody), to be interrogated next
 ## shift (decision 93); empty if nobody.
 var custody := {}
@@ -86,13 +88,14 @@ func finish_shift(story: String, solved: bool, report: Dictionary, shift_quota :
 ## The jailbreak is over: escaped, the next shift goes on as usual; caught, the campaign is lost (decision 99).
 func finish_jailbreak(escaped: bool) -> void:
 	jailed = false
+	jail_catches = 0
 	suspended = not escaped
 
 
 func to_dict() -> Dictionary:
 	return {"version": VERSION, "seed": campaign_seed, "shift": shift, "money": money, "items": items,
 		"history": history, "suspended": suspended, "custody": custody, "jailed": jailed,
-		"jailbreak_used": jailbreak_used}
+		"jailbreak_used": jailbreak_used, "jail_catches": jail_catches}
 
 
 static func from_dict(data: Dictionary) -> Campaign:
@@ -103,6 +106,7 @@ static func from_dict(data: Dictionary) -> Campaign:
 	campaign.suspended = bool(data.get("suspended", false))
 	campaign.jailed = bool(data.get("jailed", false))
 	campaign.jailbreak_used = bool(data.get("jailbreak_used", false))
+	campaign.jail_catches = int(data.get("jail_catches", 0))
 	campaign.custody = data.get("custody", {})
 	campaign.items.assign(data.get("items", []))
 	# JSON brings every number back as a float.

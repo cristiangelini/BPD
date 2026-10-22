@@ -83,6 +83,9 @@ var _distract_look := 0.0
 ## Things thrown that haven't landed yet -> seconds since the throw.
 var _flying := {}
 var asleep_left := 0.0
+## How the jailbreak ended ("escaped" or "lost"), "" while it goes on: the host's level sets it and guests see it
+## here, since the guard's state is what goes online (NpcSync).
+var outcome := ""
 ## Cops singing to him -> seconds they still count as singing.
 var _singers := {}
 var _lullaby := 0.0
@@ -375,7 +378,7 @@ func said() -> String:
 
 ## Online: what the guests need to show the same box and belt (NpcSync).
 func net_state() -> Variant:
-	return [box.donuts if is_instance_valid(box) else 0, key_on_belt, suspicion, times_caught, look, asleep_left]
+	return [box.donuts if is_instance_valid(box) else 0, key_on_belt, suspicion, times_caught, look, asleep_left, outcome]
 
 
 func apply_net_state(state: Variant) -> void:
@@ -385,6 +388,7 @@ func apply_net_state(state: Variant) -> void:
 	look = state[4]
 	_model.rotation.y = look
 	asleep_left = state[5]
+	outcome = state[6]
 	_model.rotation.x = 0.35 if is_asleep() else 0.0
 	while is_instance_valid(box) and box.donuts > int(state[0]):
 		box.take_one()
