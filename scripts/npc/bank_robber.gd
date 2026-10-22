@@ -8,8 +8,8 @@ extends CharacterBody3D
 ## sees a cop in their cone says so and `spotted` goes off (the drill speeds up in step 3); seeing a hostage being
 ## led out, `saw_hostage` (step 4). The handcuffs only close on one who doesn't see a cop at arm's length (from behind),
 ## except the rabbit, who gives up as soon as he sees one; the pig, seeing one, drops his sandwich and runs to the
-## van, where he hides for the getaway (step 6). Cuffed, E walks them to the patrol car (OwnerEscort). They don't
-## sync online yet. Every number here is (propuesta).
+## van, where he hides for the getaway (step 6). Cuffed, E walks them to the patrol car (OwnerEscort). Online the
+## host's decide and a guest's follow them (NpcSync, net_state). Every number here is (propuesta).
 
 signal spotted(robber: BankRobber, cop: Node3D)
 signal saw_hostage(robber: BankRobber, hostage: Node3D)
@@ -64,6 +64,8 @@ var surrendered := false
 var run_path: Array[Vector3] = []
 var running := false
 var in_van := false
+## A guest's copy (NpcSync): the host's decides whether the cuffs closed.
+var follower := false
 var _cuffed_left := 0.0
 ## Cop -> seconds until they count as spotted again.
 var _spotted := {}
@@ -137,6 +139,10 @@ func sees_cop(cop: Node3D) -> bool:
 
 ## The handcuffs: they close unless they see a cop right in front of them (the rabbit who gave up lets them).
 func cuffed(seconds: float) -> void:
+	if follower:
+		# Shown closed until the host says otherwise (they dodged them there).
+		_cuffed_left = maxf(_cuffed_left, seconds)
+		return
 	if not surrendered and not is_cuffed():
 		for cop: Node3D in get_tree().get_nodes_in_group("cops"):
 			if global_position.distance_to(cop.global_position) < DODGE_REACH and sees_cop(cop):
@@ -266,6 +272,27 @@ func _raise(_points: float) -> void:
 
 func said() -> String:
 	return _bubble.text if _bubble.visible else ""
+
+
+## What a guest's copy needs besides where they are and what they say (NpcSync): cuffed, gave up, running, in the van,
+## gone with a sack, where their head points and the pig's sandwich.
+func net_state() -> Array:
+	return [is_cuffed(), surrendered, running, in_van, visible, snappedf(look, 0.01), eating_left > 0.0]
+
+
+func apply_net_state(state: Variant) -> void:
+	_cuffed_left = Handcuffs.SECONDS if state[0] else 0.0
+	surrendered = state[1]
+	running = state[2]
+	in_van = state[3]
+	if visible and not state[4]:
+		hide()
+		collision_layer = 0
+	look = state[5]
+	eating_left = EAT_TIME if state[6] else 0.0
+	var sandwich := find_child("props", true, false) as Node3D
+	if sandwich and running:
+		sandwich.hide()
 
 
 func _process(delta: float) -> void:
