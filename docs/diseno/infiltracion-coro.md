@@ -74,7 +74,11 @@ el coro compartan una base (la variante elige el lugar, el capo y las pruebas) e
    foto de atrás del órgano de cartón lleno de plata, los recibos del "fondo del órgano" (en el depósito), la grabación
    de dos coristas vecinos hablando de la plata y la foto del auto nuevo del Maestro, atrás de la capilla. Esposar a
    Ernesto resuelve el caso, con el mismo sueldo y la misma cuota que el club. Hasta que esté la combi (5b), si los
-   descubren Ernesto huye en un auto común **(propuesta)**.
+   descubren Ernesto huye en un auto común **(propuesta)**. Hecho así (5b, combi y sorteo): descubiertos, el Maestro
+   Ernesto huye en la combi del coro (celeste y crema, con las ventanas abiertas), con cuatro coristas adentro que se ven
+   y cantan el "aaah" del coro todo el camino; va a 35 km/h y se la persigue en el patrullero. Cuando se rinde, Ernesto
+   se baja, los coristas se quedan y dejan de cantar. En Jugar, la infiltración sale la mitad de las veces en el club y
+   la otra mitad en el coro **(propuesta)**.
 
 ## Respuestas de Cristian (22/10, decisión 101)
 1. La historia va así: la colecta del órgano que nunca llega y el Maestro Ernesto.
