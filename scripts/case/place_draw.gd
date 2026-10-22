@@ -5,8 +5,8 @@ extends RefCounted
 ## it, the grandpa's house, the bakery or the pet salon, with even odds (propuesta). Every third shift is an
 ## interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
 ## (persecucion.md, "Sale como un caso más"). Of the shifts left, one in CRIME_EVERY is the crime scene
-## (escena-del-crimen.md, propuesta), then one in TRAFFIC_EVERY the traffic control (control-transito.md) and the
-## rest are raids. A campaign whose cops missed the quota goes to the jailbreak first (fuga.md). --place=<id> forces one. The level then takes that seed, so
+## (escena-del-crimen.md, propuesta), then one in TRAFFIC_EVERY the traffic control (control-transito.md), then one in
+## INFILTRATION_EVERY the grandparents' club (infiltracion.md) and the rest are raids. A campaign whose cops missed the quota goes to the jailbreak first (fuga.md). --place=<id> forces one. The level then takes that seed, so
 ## the place, the story and the hiding spots all come from one seed.
 
 const PLACES := {
@@ -31,6 +31,8 @@ const CHASE_EVERY := 2
 ## traffic control (propuesta: each as often as each raid).
 const CRIME_EVERY := 5
 const TRAFFIC_EVERY := 4
+## Of the rest, one in this many is the infiltration at the grandparents' club (propuesta: as often as each raid).
+const INFILTRATION_EVERY := 4
 
 ## The seed the next level takes (0 = none drawn; the level draws its own).
 static var pending_seed := 0
@@ -59,6 +61,8 @@ static func pick(case_seed: int, args: PackedStringArray, shift := 0, chases := 
 		return "crime_scene"
 	if chases and hash(["traffic control", case_seed]) % TRAFFIC_EVERY == 0:
 		return "traffic"
+	if chases and hash(["infiltration", case_seed]) % INFILTRATION_EVERY == 0:
+		return "club"
 	return ORDER[hash("place %d" % case_seed) % ORDER.size()]
 
 

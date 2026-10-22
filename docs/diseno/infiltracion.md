@@ -116,7 +116,9 @@ las pruebas. El disfraz de cada policía se ve igual en todas las PC.
    - 6c. Descubiertos: Doña Chela se baja del escenario y sale por la puerta del club en su andador con motor (con el
      motor de una cortadora de pasto, a 10 km/h por la vereda) y arranca la persecución en medio del caso, a pie como la
      del abuelo en silla de ruedas. Si la atrapan y la llevan al patrullero, el caso cuenta como resuelto con las
-     pruebas que tengan; si se escapa, se pierde **(propuesta)**. 6d. El sorteo de "Jugar".
+     pruebas que tengan; si se escapa, se pierde **(propuesta)**. 6d. El sorteo de "Jugar": de los turnos que no son interrogatorio, persecución, escena del
+     crimen ni control de tránsito, 1 de cada 4 es el club, así sale tan seguido como cada allanamiento **(propuesta)**.
+     Falta: que Doña Chela detenida tenga su interrogatorio el turno siguiente (decisión 93).
 
 ## Respuestas de Cristian (22/10, decisión 100)
 1. La primera variante es Club de abuelos y la siguiente, Coro de iglesia.
