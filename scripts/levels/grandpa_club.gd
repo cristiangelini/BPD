@@ -39,6 +39,8 @@ const DANCE_TILE := 1.5
 const MEMBERS := 16
 ## Doña Chela calls the numbers from the stage, behind the bingo stand.
 const CHELA_AT := Vector3(-11.9, 0, 0.5)
+## One bingo card per cop, on free seats of the tables (drawn with the seed).
+const CARDS := 4
 ## The doorman stands outside, by the entrance.
 const DOORMAN_AT := Vector3(ENTRANCE_X + 1.4, 0, HALF_Z + 0.7)
 
@@ -61,6 +63,9 @@ var tables: Array[Vector3] = []
 var members: Array[ClubMember] = []
 var chela: ClubMember
 var doorman: ClubDoorman
+var bingo: ClubBingo
+## The seats nobody took, as seats() gives them.
+var free_seats: Array = []
 var station_parking: Transform3D
 var _build: PlaceBuilder
 
@@ -175,6 +180,29 @@ func _add_people() -> void:
 	doorman.position = DOORMAN_AT
 	doorman.door_at = global_transform * Vector3(ENTRANCE_X, 0, HALF_Z)
 	doorman.outward = global_transform.basis * Vector3.BACK
+	free_seats = free
+	_add_bingo(rng)
+
+
+## Doña Chela's bingo at the stand, and the cops' cards in front of free seats, lying on the table.
+func _add_bingo(rng: RandomNumberGenerator) -> void:
+	bingo = ClubBingo.new()
+	bingo.name = "Bingo"
+	bingo.case_seed = case_seed
+	bingo.members = members
+	add_child(bingo)
+	bingo.position = BINGO_STAND
+	for i in CARDS:
+		var seat: Array = free_seats.pop_at(rng.randi_range(0, free_seats.size() - 1))
+		var card := ClubBingoCard.new()
+		card.name = "BingoCard%d" % i
+		bingo.add_card(card, i)
+		add_child(card)
+		var table: Vector3 = seat[1]
+		var toward: Vector3 = seat[0] - table
+		card.position = table + toward * 0.25 + Vector3(0, TABLE_HEIGHT + 0.01, 0)
+		# The card's top row (B I N G O) away from the seat.
+		card.rotation.y = atan2(toward.x, toward.z)
 
 
 ## The kitchen, the office and the storeroom behind the hall, with their counters and shelves.
