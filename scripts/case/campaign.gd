@@ -3,7 +3,8 @@ extends RefCounted
 
 ## A whole match of 5 shifts, saved between shifts (docs/diseno/guardado.md): the next shift, the group's money, the
 ## items, and the cases that follow, which all come from the campaign's own seed. Only the host saves it online.
-## Each shift has a quota that rises shift by shift; missing it ends the campaign (decision 88, comisaria.md).
+## Each shift has a quota that rises shift by shift. Missing it the first time locks the cops up in their own cells for
+## the jailbreak (decision 99, fuga.md); missing it again, or not escaping, ends the campaign (decision 88).
 
 const SHIFTS := 5
 const SAVE_PATH := "user://partidas/partida.json"
@@ -26,6 +27,10 @@ var items: Array[String] = []
 var history: Array[Dictionary] = []
 ## A shift missed its quota: the cops are suspended and the campaign is lost.
 var suspended := false
+## A shift missed its quota and the cops are locked up in their cells: the jailbreak comes before the next shift.
+var jailed := false
+## The campaign's one jailbreak already happened (decision 99): the next missed quota ends it.
+var jailbreak_used := false
 ## The place's owner the cops brought in at the end of the last raid (RaidCase.custody), to be interrogated next
 ## shift (decision 93); empty if nobody.
 var custody := {}
@@ -40,12 +45,12 @@ static func start_new() -> Campaign:
 
 
 func is_over() -> bool:
-	return suspended or shift > SHIFTS
+	return suspended or (shift > SHIFTS and not jailed)
 
 
 ## All 5 shifts made their quota: "¡Ascendidos!".
 func is_promoted() -> bool:
-	return shift > SHIFTS and not suspended
+	return shift > SHIFTS and not suspended and not jailed
 
 
 ## The quota of the shift being played.
@@ -66,14 +71,28 @@ func finish_shift(story: String, solved: bool, report: Dictionary, shift_quota :
 	report.approved = report.total >= report.quota
 	history.append({"shift": shift, "story": story, "solved": solved, "total": report.total,
 		"approved": report.approved})
-	money += report.total
-	suspended = not report.approved
 	shift += 1
+	if report.approved:
+		money += report.total
+	elif not jailbreak_used:
+		# The failed shift adds nothing to the money: escaping is a second chance, not a prize (fuga.md).
+		jailed = true
+		jailbreak_used = true
+	else:
+		money += report.total
+		suspended = true
+
+
+## The jailbreak is over: escaped, the next shift goes on as usual; caught, the campaign is lost (decision 99).
+func finish_jailbreak(escaped: bool) -> void:
+	jailed = false
+	suspended = not escaped
 
 
 func to_dict() -> Dictionary:
 	return {"version": VERSION, "seed": campaign_seed, "shift": shift, "money": money, "items": items,
-		"history": history, "suspended": suspended, "custody": custody}
+		"history": history, "suspended": suspended, "custody": custody, "jailed": jailed,
+		"jailbreak_used": jailbreak_used}
 
 
 static func from_dict(data: Dictionary) -> Campaign:
@@ -82,6 +101,8 @@ static func from_dict(data: Dictionary) -> Campaign:
 	campaign.shift = int(data.get("shift", 1))
 	campaign.money = int(data.get("money", 0))
 	campaign.suspended = bool(data.get("suspended", false))
+	campaign.jailed = bool(data.get("jailed", false))
+	campaign.jailbreak_used = bool(data.get("jailbreak_used", false))
 	campaign.custody = data.get("custody", {})
 	campaign.items.assign(data.get("items", []))
 	# JSON brings every number back as a float.

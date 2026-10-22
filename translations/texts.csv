@@ -974,3 +974,8 @@ CHASE_DRIVER_LINE_1,"¡El auto no es robado, es prestado sin avisar!","The car i
 CHASE_DRIVER_LINE_2,"¿Por qué a mí? ¡Había veinte autos más!","Why me? There were twenty other cars!","Por que eu? Tinha mais vinte carros!"
 CHASE_DRIVER_LINE_3,"Por lo menos el patrullero tiene aire acondicionado, ¿no?","At least the patrol car has air conditioning, right?","Pelo menos a viatura tem ar-condicionado, né?"
 HINT_TRAFFIC_RUNS,"¡El auto buscado pasó el control y se escapa! ¡Al patrullero!","The wanted car got past the checkpoint and is getting away! To the patrol car!","O carro procurado passou pela blitz e está fugindo! Para a viatura!"
+SHIFT_JAILED,"…y esta noche duermen en sus propias celdas. ¡A escaparse!","…and tonight you sleep in your own cells. Time to break out!","…e esta noite vocês dormem nas próprias celas. Hora de fugir!"
+HINT_JAILED,"Te encerraron en tu propia comisaría. Busca la forma de salir de la celda.","They locked you up in your own station. Find a way out of the cell.","Te trancaram na sua própria delegacia. Encontre um jeito de sair da cela."
+PROMPT_CELL_LOCKED,"E: sacudir la reja (cerrada con llave)","E: rattle the bars (locked)","E: sacudir a grade (trancada)"
+PROMPT_CELL_OPEN,"E: abrir la reja","E: open the cell door","E: abrir a grade"
+PROMPT_CELL_CLOSE,"E: cerrar la reja","E: close the cell door","E: fechar a grade"
