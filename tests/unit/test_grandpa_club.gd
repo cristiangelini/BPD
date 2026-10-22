@@ -47,3 +47,64 @@ func test_the_cops_start_at_the_station_by_the_disguises() -> void:
 		if body is DisguisePiece:
 			nearest = minf(nearest, cop.global_position.distance_to((body as Node3D).global_position))
 	assert_lt(nearest, 10.0, "the disguises are in the guard room")
+
+
+func test_sixteen_grandparents_at_the_tables_and_chela_on_the_stage() -> void:
+	assert_eq(club.members.size(), GrandpaClub.MEMBERS)
+	var seats := club.seats().map(func(seat: Array) -> Vector3: return seat[0])
+	for member: ClubMember in club.members:
+		assert_true(seats.any(func(at: Vector3) -> bool: return at.distance_to(member.position) < 0.01), "on a seat")
+	assert_true(club.chela.is_chela())
+	assert_gt(club.chela.position.y, GrandpaClub.STAGE_HEIGHT, "up on the stage")
+
+
+func test_the_same_seed_seats_them_the_same() -> void:
+	var other: GrandpaClub = LEVEL.instantiate()
+	other.case_seed = club.case_seed
+	other.get_node("Cop").input_enabled = false
+	add_child_autofree(other)
+	await wait_physics_frames(1)
+	for i in club.members.size():
+		assert_eq(other.members[i].position, club.members[i].position)
+		assert_eq(other.members[i].look, club.members[i].look)
+
+
+func test_a_grandparent_tells_a_different_bit_of_gossip_each_time() -> void:
+	var member: ClubMember = club.members[0]
+	var cop: Cop = club.get_node("Cop")
+	member.use(cop)
+	var first := member.said()
+	assert_true(first.begins_with("CLUB_GOSSIP_"))
+	member.use(cop)
+	assert_ne(member.said(), first)
+
+
+## A cop walking into the doorway from the sidewalk.
+func _walk_in(cop: Cop) -> void:
+	cop.global_position = club.global_transform * Vector3(GrandpaClub.ENTRANCE_X, 0.1, GrandpaClub.HALF_Z + 1.0)
+	cop.global_rotation.y = 0.0
+	await wait_physics_frames(2)
+	for i in 30:
+		cop.step(1.0 / 60.0, Vector2(0, -1), false, false, false)
+		club.doorman._physics_process(1.0 / 60.0)
+
+
+func test_the_doorman_pushes_out_a_cop_without_a_disguise() -> void:
+	var cop: Cop = club.get_node("Cop")
+	await _walk_in(cop)
+	assert_eq(club.doorman.said(), "DOORMAN_NO_0")
+	var inside_z := (club.global_transform.affine_inverse() * cop.global_position).z
+	assert_gt(inside_z, GrandpaClub.HALF_Z - 0.5, "he didn't get in")
+
+
+func test_the_doorman_lets_a_disguised_cop_in() -> void:
+	var cop: Cop = club.get_node("Cop")
+	cop.put_on_disguise("wig", 0.0)
+	cop.put_on_disguise("mustache", 0.0)
+	await _walk_in(cop)
+	assert_eq(club.doorman.said(), "DOORMAN_WELCOME")
+	for i in 60:
+		cop.step(1.0 / 60.0, Vector2(0, -1), false, false, false)
+		club.doorman._physics_process(1.0 / 60.0)
+	var inside_z := (club.global_transform.affine_inverse() * cop.global_position).z
+	assert_lt(inside_z, GrandpaClub.HALF_Z - 1.5, "he's in the hall")

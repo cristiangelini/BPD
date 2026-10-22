@@ -84,6 +84,48 @@ const NPCS = {
 		for (let i = 0; i < 4; i++) b.add('body', C('button', 0xe8dcc0), ellipsoid(0.02, 0.02, 0.01, 5, 3), { pos: V(0, 1.0 - i * 0.13, 0.25 + i * 0.045) });
 		limb(b, 'props', C('cane', 0x5a3a20), V(0.5, 0.62, 0.12), V(0.62, 0.0, 0.2), 0.02);
 	},
+	// Abuela of the grandparents' club (infiltracion.md): flowered dress, grey bun, glasses and a knitted shawl.
+	abuela(b) {
+		const dress = C('flower_dress', 0x6a8ad0);
+		pearBody(b, SKIN.crema, { shirt: dress, onePiece: true, belted: false, shoes: C('slippers_pink', 0xd88aa0) });
+		for (let i = 0; i < 8; i++) b.add('body', C('flower', 0xf4e070), ellipsoid(0.03, 0.03, 0.01, 5, 3), { pos: V(-0.3 + (i % 4) * 0.2, 0.35 + Math.floor(i / 4) * 0.2, 0.44) });
+		b.add('body', C('shawl', 0xc84a4a), new THREE.TorusGeometry(0.2, 0.07, 6, 14), { pos: V(0, 1.05, 0.02), rot: [Math.PI / 2, 0, 0] });
+		eyes(b, 1.32, 0.17, 0.08, 0.045);
+		glasses(b);
+		mouth(b, { smile: true });
+		const hair = C('hair_gray', 0x9aa0a8);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		b.add('head', hair, ellipsoid(0.1, 0.1, 0.1, 8, 6), { pos: V(0, 1.55, -0.06) });
+	},
+	// Doña Chela, the club's boss (infiltracion.md): purple suit, pearls, a tall white hairdo, cat-eye glasses and a
+	// bingo marker in her hand. She always wins.
+	chela(b) {
+		const suit = C('chela_suit', 0x6a2a7a);
+		pearBody(b, SKIN.arena, { shirt: suit, onePiece: true, belted: false, shoes: C('chela_shoes', 0x2a1a2a) });
+		for (let i = 0; i < 9; i++) {
+			const a = Math.PI * (0.1 + 0.8 * (i / 8));
+			b.add('body', C('pearl', 0xfaf6ee), ellipsoid(0.025, 0.025, 0.025, 5, 3), { pos: V(Math.cos(a) * 0.16, 1.13 - Math.sin(a) * 0.09, 0.16) });
+		}
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		for (const s of [-1, 1]) b.add('face', C('cat_eye', 0xd03a8a), new THREE.BoxGeometry(0.12, 0.05, 0.02), { pos: V(s * 0.08, 1.35, 0.2), rot: [0, 0, s * -0.25] });
+		mouth(b, { smile: true });
+		const hair = C('hair_white', 0xf4f0ea);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		b.add('head', hair, ellipsoid(0.17, 0.22, 0.16, 10, 6), { pos: V(0, 1.58, -0.02) });
+		b.add('props', C('marker', 0xe83a5a), new THREE.CylinderGeometry(0.03, 0.03, 0.16, 6), { pos: V(0.5, 0.7, 0.14) });
+	},
+	// The club's doorman (infiltracion.md): a broad grandpa in a black suit and sunglasses, arms crossed.
+	portero(b) {
+		const suit = C('doorman_suit', 0x22222a);
+		pearBody(b, SKIN.cacao, { shirt: suit, pants: suit });
+		lapels(b, white);
+		tie(b, C('doorman_tie', 0xb02a2a));
+		sunglasses(b);
+		mouth(b);
+		mustache(b, C('gray', 0xd8d8d8), 1.2);
+		b.add('cap', C('bald', 0x8a5a3a), ellipsoid(0.2, 0.08, 0.19, 10, 5), { pos: V(0, 1.46, 0.02) });
+		b.add('body', suit, new THREE.BoxGeometry(0.62, 0.12, 0.14), { pos: V(0, 0.75, 0.3) });
+	},
 	// Sospechoso: striped shirt, beanie and eye mask, with a loot sack.
 	sospechoso(b) {
 		pearBody(b, SKIN.celeste, { shirt: white, pants: C('jeans', 0x2a2f3a) });
@@ -338,7 +380,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82 };
+const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },

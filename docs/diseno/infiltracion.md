@@ -81,7 +81,9 @@ las pruebas. El disfraz de cada policía se ve igual en todas las PC.
    la cuadra (4, 1) al sur, de 28 x 22 m y una planta: el salón con 12 mesas de bingo, el escenario, el bolillero y la
    pista de baile, y atrás la cocina, la oficina de Doña Chela (cerrada con llave) y el depósito. Los policías arrancan
    en la comisaría, donde están los disfraces, y van en el patrullero (`--place=club`). Después (2b) los abuelos, el
-   portero y Doña Chela.
+   portero y Doña Chela: 16 abuelos en las sillas de las mesas (elegidas con la semilla) que cuentan un chisme distinto
+   cada vez que les hablas (E), Doña Chela en el escenario detrás del bolillero, y el portero en la puerta, que empuja
+   afuera a quien no tenga al menos 2 piezas de disfraz.
 3. El bingo con cartón propio para cada policía.
 4. La sospecha de los abuelos (reusa la del guardia) y el "¡Son policías!".
 5. El baile.
