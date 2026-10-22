@@ -36,6 +36,10 @@ var patience := 0.0
 ## In the order they came, the first one first.
 var cars: Array[QueueCar] = []
 var spawned := 0
+## How many cars sneaked by so far.
+var sneaked := 0
+## Online, a guest's queue only shows the host's: its cars come from the host (NpcSync) and so does the meter.
+var follower := false
 var _until_spawn := 0.0
 var _rng := RandomNumberGenerator.new()
 
@@ -43,7 +47,8 @@ var _rng := RandomNumberGenerator.new()
 func _ready() -> void:
 	_rng.seed = hash(["traffic queue", case_seed])
 	for barrier: RoadBarrier in get_tree().get_nodes_in_group("road_barriers"):
-		barrier.lifted.connect(func(_cop: Cop) -> void: release_front())
+		if barrier.get_parent() == get_parent():
+			barrier.lifted.connect(func(_cop: Cop) -> void: release_front())
 
 
 func spawn_every() -> float:
@@ -76,7 +81,7 @@ func pull_over(car: QueueCar) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if not checkpoint or not checkpoint.ready_now:
+	if follower or not checkpoint or not checkpoint.ready_now:
 		return
 	_until_spawn -= delta
 	if _until_spawn <= 0.0 and _room_to_spawn():
@@ -94,6 +99,7 @@ func _physics_process(delta: float) -> void:
 	if patience >= FULL and front():
 		var car := front()
 		car.sneak()
+		sneaked += 1
 		_leave(car, true)
 		_set_patience(AFTER_SNEAK)
 
@@ -131,6 +137,15 @@ func _leave(car: QueueCar, sneaked: bool) -> void:
 		cars[i].ahead = cars[i - 1] if i > 0 else null
 	if is_instance_valid(car):
 		passed.emit(car, sneaked)
+
+
+## A guest's queue shows the host's meter, and its hint when one more car sneaked by.
+func show_patience(value: float, host_sneaked: int) -> void:
+	if host_sneaked > sneaked:
+		sneaked = host_sneaked
+		for cop: Cop in get_tree().get_nodes_in_group("cops"):
+			cop.show_hint("HINT_CAR_SNEAKED")
+	_set_patience(value)
 
 
 func _set_patience(value: float) -> void:

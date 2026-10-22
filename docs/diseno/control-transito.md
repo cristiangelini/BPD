@@ -70,3 +70,6 @@ patrullero (OwnerEscort), la persecución embebida (ChaseCase.begin), el sorteo 
 3. Revisar: papeles, baúl, frases de los conductores.
 4. El buscado, sus pistas y la radio.
 5. Detener, escoltar, sueldo, sorteo y el que se escapa (persecución).
+
+## Online
+La fila, los detenidos y el buscado los decide el anfitrión; cada PC ve los mismos autos, el medidor, las pistas, los baúles abiertos y el final (ver [online.md](online.md)).

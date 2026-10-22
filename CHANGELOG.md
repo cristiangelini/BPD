@@ -118,3 +118,4 @@
 - Online crime scene: the host counts every cop's clues, files and accusations, and every PC sees the same planilla, board files, verdict, culprit's bike chase and end of shift.
 - Online draw: Play online now draws chases and crime scenes too, like playing alone.
 - Online dangerous suspect: online too he can get out the front door in the old patrol car, and every PC sees the same chase after him and how it ends (back in his chair or the interrogation lost).
+- Online traffic control: the host's queue brings the cars and decides who's detained, and every PC sees the same cars, patience meter, radio clues, open trunks, the wanted driver walked to the patrol car or chased, and the end of shift.
