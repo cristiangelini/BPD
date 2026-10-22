@@ -22,6 +22,8 @@ const KEYS := {
 	"siren": KEY_H,
 	# On foot, in the jailbreak: humming to put the guard to sleep (in the car H is the siren).
 	"hum": KEY_H,
+	# On foot, in the club's waltz: the step on the first beat.
+	"dance": KEY_H,
 	"scoreboard": KEY_TAB,
 	"map": KEY_M,
 	"slot_1": KEY_1,

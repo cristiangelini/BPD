@@ -3,8 +3,9 @@ extends Node3D
 
 ## The grandparents' suspicion at the club (infiltracion.md, step 4): each grandparent at the tables has a meter, like
 ## the jailbreak's guard (NightGuard.sees). What a grandparent sees in a cop raises it every second: no disguise,
-## running, a tool in hand, being in the back rooms. Some things raise it at once: a disguise piece falling where they
-## see it, a bingo number left unmarked (the neighbor at the table, ClubBingo.missed) and a shout nearby. At 50 a "?"
+## running, a tool in hand, being in the back rooms,
+## sitting out the waltz (ClubDance). Some things raise it at once: a disguise piece falling where they
+## see it, a bad step in the waltz, a bingo number left unmarked (the neighbor at the table, ClubBingo.missed) and a shout nearby. At 50 a "?"
 ## shows over their head and at 80 a "!"; at 100 they shout "¡Son policías!" and everyone knows (`discovered`; the
 ## chase comes in step 6). It calms down when they see nothing. The host decides; online the guests follow its state
 ## (NpcSync). Every number here is (propuesta).
@@ -16,6 +17,8 @@ const UNDISGUISED := 30.0
 const RUNNING := 35.0
 const TOOL_OUT := 25.0
 const BACK_ROOM := 40.0
+## While the waltz plays, off the dance floor (step 5).
+const SITTING_OUT := 20.0
 const CALM := 5.0
 ## At once.
 const DISGUISE_FELL := 30.0
@@ -23,6 +26,8 @@ const BINGO_MISS := 20.0
 const BINGO_MISS_NEAR := 10.0
 const BINGO_NEAR := 3.0
 const SHOUT := 25.0
+## A bad step in the waltz, to the grandparents who see it.
+const STUMBLE := 10.0
 const SHOUT_RANGE := 10.0
 ## A cop counts as running above this speed (between walking and running).
 const RUN_SPEED := (GameScale.WALK_SPEED + GameScale.RUN_SPEED) / 2
@@ -30,6 +35,8 @@ const FOUND_OUT_LINES := 3
 
 var members: Array[ClubMember] = []
 var chela: ClubMember
+## The waltz, if the club has one.
+var dance: ClubDance
 ## Whether a world position is inside the club, and in its back rooms (GrandpaClub sets them).
 var inside: Callable = func(_at: Vector3) -> bool: return false
 var in_back_room: Callable = func(_at: Vector3) -> bool: return false
@@ -50,6 +57,18 @@ func _ready() -> void:
 ## Connects the bingo's misses (GrandpaClub calls it).
 func watch_bingo(bingo: ClubBingo) -> void:
 	bingo.missed.connect(_on_bingo_missed)
+
+
+## Connects the waltz's bad steps (GrandpaClub calls it).
+func watch_dance(waltz: ClubDance) -> void:
+	dance = waltz
+	dance.stumbled.connect(_on_stumbled)
+
+
+func _on_stumbled(cop: Cop) -> void:
+	for member in members:
+		if member.sees_cop(cop):
+			raise(member, STUMBLE)
 
 
 func highest() -> float:
@@ -98,6 +117,8 @@ func offence(cop: Cop, speed: float) -> float:
 		rate += TOOL_OUT
 	if in_back_room.call(cop.global_position):
 		rate += BACK_ROOM
+	if dance and dance.is_waltz() and not dance.on_floor.call(cop.global_position):
+		rate += SITTING_OUT
 	return rate
 
 
