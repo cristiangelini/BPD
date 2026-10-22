@@ -1023,3 +1023,6 @@ JAILBREAK_ESCAPED_LINE,"A la mañana nadie dice nada y arranca el turno %d.","In
 JAILBREAK_LOST,"Suspendidos","Suspended","Suspensos"
 JAILBREAK_LOST_LINE,"Tres capturas del guardia, y el comisario llegó en pijama. Se terminó la partida.","Three catches by the guard, and the comisario came in his pajamas. The match is over.","Três capturas do guarda, e o comissário chegou de pijama. A partida acabou."
 JAILBREAK_NEXT_SHIFT,"Siguiente turno","Next shift","Próximo turno"
+HINT_DISGUISE_ON,"Te queda perfecto. Nadie va a sospechar.","It fits perfectly. Nobody will suspect a thing.","Ficou perfeito. Ninguém vai desconfiar."
+HINT_DISGUISE_CROOKED,"Te quedó torcido. Mejor no corras.","It's on crooked. Better not run.","Ficou torto. Melhor não correr."
+HINT_DISGUISE_FELL,"¡Se te cayó el disfraz!","Your disguise fell off!","Seu disfarce caiu!"
