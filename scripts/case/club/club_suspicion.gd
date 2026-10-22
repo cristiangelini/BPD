@@ -4,7 +4,8 @@ extends Node3D
 ## The grandparents' suspicion at the club (infiltracion.md, step 4): each grandparent at the tables has a meter, like
 ## the jailbreak's guard (NightGuard.sees). What a grandparent sees in a cop raises it every second: no disguise,
 ## running, a tool in hand, being in the back rooms,
-## sitting out the waltz (ClubDance). Some things raise it at once: a disguise piece falling where they
+## sitting out the waltz (ClubDance). At the chapel (infiltracion-coro.md, step 4) the choristers watch the same way,
+## for the robe instead of the grandparent disguise, and hear the cops sing out of time (ChoirSinging). Some things raise it at once: a disguise piece falling where they
 ## see it, a bad step in the waltz, a bingo number left unmarked (the neighbor at the table, ClubBingo.missed) and a shout nearby. At 50 a "?"
 ## shows over their head and at 80 a "!"; at 100 they shout "¡Son policías!" and everyone knows (`discovered`; the
 ## chase comes in step 6). It calms down when they see nothing. The host decides; online the guests follow its state
@@ -17,8 +18,10 @@ const UNDISGUISED := 30.0
 const RUNNING := 35.0
 const TOOL_OUT := 25.0
 const BACK_ROOM := 40.0
-## While the waltz plays, off the dance floor (step 5).
+## While the waltz plays, off the dance floor (step 5); or while the choir sings, off the platform.
 const SITTING_OUT := 20.0
+## The choristers this close hear a cop singing out of time, wherever they look.
+const HEAR_RANGE := 5.0
 const CALM := 5.0
 ## At once.
 const DISGUISE_FELL := 30.0
@@ -37,6 +40,12 @@ var members: Array[ClubMember] = []
 var boss: ClubMember
 ## What the boss shouts when they find the cops out.
 var boss_found_out := "CHELA_FOUND_OUT"
+## Who the cops have to pass for (DisguisePiece.LOOKS), and the start of the texts: <prefix>FOUND_OUT_<n>,
+## HINT_<prefix>FOUND_OUT and HUD_<prefix>SUSPICION. Set before it's added.
+var disguise_look := "grandparent"
+var prefix := "CLUB_"
+## The choir's songs, if the place has them.
+var singing: ChoirSinging
 ## The waltz, if the club has one.
 var dance: ClubDance
 ## Whether a world position is inside the club, and in its back rooms (GrandpaClub sets them).
@@ -65,6 +74,18 @@ func watch_bingo(bingo: ClubBingo) -> void:
 func watch_dance(waltz: ClubDance) -> void:
 	dance = waltz
 	dance.stumbled.connect(_on_stumbled)
+
+
+## Connects the choir's out-of-time singing (ChurchChoir calls it).
+func watch_singing(songs: ChoirSinging) -> void:
+	singing = songs
+	singing.missed.connect(_on_sang_wrong)
+
+
+func _on_sang_wrong(cop: Cop, amount: float) -> void:
+	for member in members:
+		if member.global_position.distance_to(cop.global_position) <= HEAR_RANGE:
+			raise(member, amount)
 
 
 func _on_stumbled(cop: Cop) -> void:
@@ -111,7 +132,7 @@ func _physics_process(delta: float) -> void:
 ## What a grandparent seeing `cop` (moving at `speed`) adds per second.
 func offence(cop: Cop, speed: float) -> float:
 	var rate := 0.0
-	if not cop.is_disguised():
+	if not cop.is_disguised(disguise_look):
 		rate += UNDISGUISED
 	if speed > RUN_SPEED:
 		rate += RUNNING
@@ -120,6 +141,8 @@ func offence(cop: Cop, speed: float) -> float:
 	if in_back_room.call(cop.global_position):
 		rate += BACK_ROOM
 	if dance and dance.is_waltz() and not dance.on_floor.call(cop.global_position):
+		rate += SITTING_OUT
+	if singing and singing.is_song() and not singing.on_platform.call(cop.global_position):
 		rate += SITTING_OUT
 	return rate
 
@@ -159,12 +182,12 @@ func _find_out(index: int) -> void:
 	found_by = index
 	var by: ClubMember = members[index] if index >= 0 and index < members.size() else null
 	if by:
-		by.say("CLUB_FOUND_OUT_%d" % (index % FOUND_OUT_LINES))
+		by.say(prefix + "FOUND_OUT_%d" % (index % FOUND_OUT_LINES))
 	if boss:
 		boss.say(boss_found_out)
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
 		if cop.input_enabled:
-			cop.show_hint("HINT_CLUB_FOUND_OUT")
+			cop.show_hint("HINT_" + prefix + "FOUND_OUT")
 	discovered.emit(by)
 
 
@@ -186,7 +209,7 @@ func _build_hud() -> void:
 	box.position = Vector2(-120, 16)
 	box.custom_minimum_size = Vector2(240, 0)
 	var title := Label.new()
-	title.text = "HUD_CLUB_SUSPICION"
+	title.text = "HUD_" + prefix + "SUSPICION"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(title)
 	_bar = ProgressBar.new()
