@@ -1,10 +1,11 @@
 class_name GrandpaClub
-extends Node3D
+extends InfiltrationPlace
 
 ## The grandparents' club "Club de Jubilados Los Años Dorados" (docs/diseno/infiltracion.md, step 2a): one floor on its
 ## lot in the city, the front to +Z. The hall has 12 bingo tables, the bingo stand by the stage and the dance floor;
 ## behind it, the kitchen, Doña Chela's office (locked) and the storeroom. The cops start in the station, where the
-## disguises are, and drive here. --place=club opens it from Play. The comisario gives the case (InfiltrationCase).
+## disguises are, and drive here. --place=club opens it from Play. The comisario gives the case (InfiltrationCase,
+## variant "club").
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -51,6 +52,8 @@ const MEMBERS := 16
 const CHELA_AT := Vector3(-11.9, 0, 0.5)
 ## One bingo card per cop, on free seats of the tables (drawn with the seed).
 const CARDS := 4
+## The walker waits this far (m) out of the entrance.
+const GETAWAY_OUT := 1.5
 ## The doorman stands outside, by the entrance.
 const DOORMAN_AT := Vector3(ENTRANCE_X + 1.4, 0, HALF_Z + 0.7)
 
@@ -64,33 +67,22 @@ const STAGE_COLOR := Color(0.55, 0.15, 0.2)
 const DANCE_LIGHT := Color(0.95, 0.92, 0.85)
 const DANCE_DARK := Color(0.2, 0.18, 0.2)
 
-## Same seed, same club (the grandparents and the evidence, in the next steps). 0 draws one.
-@export var case_seed := 0
 var office_door: FrontDoor
 var bingo_cage: Node3D
 ## The tables' middles on the floor, in the club's space.
 var tables: Array[Vector3] = []
-var members: Array[ClubMember] = []
 var chela: ClubMember
 var doorman: ClubDoorman
 var bingo: ClubBingo
-var suspicion: ClubSuspicion
 var dance: ClubDance
 ## The seats nobody took, as seats() gives them.
 var free_seats: Array = []
-var case: InfiltrationCase
-var evidence: ClubEvidence
-var station_parking: Transform3D
 var _build: PlaceBuilder
-
-@onready var car: PatrolCar = $PatrolCar
 
 
 func _ready() -> void:
-	if case_seed == 0:
-		case_seed = PlaceDraw.take_seed()
-	if case_seed == 0:
-		case_seed = PlaceDraw.new_seed()
+	variant = "club"
+	take_seed()
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_hall()
@@ -99,19 +91,13 @@ func _ready() -> void:
 	office_door = DOOR_SCENE.instantiate()
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, BACK_Z)
 	add_child(office_door)
-	var city: Node3D = $City
-	city.transform = CityLayout.anchor("grandpa_club")
-	station_parking = city.transform * CityLayout.parking("station")
-	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
-	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
-	case = InfiltrationCase.new()
-	case.name = "Case"
-	case.case_seed = case_seed
-	case.club = self
-	case.shift_screen = $ShiftScreen
-	add_child(case)
-	evidence.found.connect(func(kind: String) -> void: case.found(kind))
-	case.start(city.comisario)
+	place_in_city("grandpa_club")
+	start_case()
+
+
+## Doña Chela's motorized walker waits on the sidewalk, out of the entrance.
+func getaway_at() -> Transform3D:
+	return Transform3D(global_basis, global_transform * Vector3(ENTRANCE_X, 0, HALF_Z + GETAWAY_OUT))
 
 
 ## Floor, outer walls with the entrance, the roof and the sign.
@@ -196,6 +182,7 @@ func _add_people() -> void:
 	chela.position = CHELA_AT + Vector3(0, FLOOR_TOP + STAGE_HEIGHT, 0)
 	# Facing the hall (+X).
 	chela.rotation.y = -PI / 2
+	boss = chela
 	doorman = ClubDoorman.new()
 	doorman.name = "Doorman"
 	add_child(doorman)
@@ -207,7 +194,7 @@ func _add_people() -> void:
 	suspicion = ClubSuspicion.new()
 	suspicion.name = "Suspicion"
 	suspicion.members = members
-	suspicion.chela = chela
+	suspicion.boss = chela
 	suspicion.inside = func(at: Vector3) -> bool:
 		var local := global_transform.affine_inverse() * at
 		return absf(local.x) < HALF_X and absf(local.z) < HALF_Z and local.y < ROOF

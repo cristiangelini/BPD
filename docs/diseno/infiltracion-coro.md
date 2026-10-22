@@ -41,7 +41,10 @@ textos y el lugar de esta variante), ChaseCase.begin, PlaceDraw, SongMeter. Ante
 el coro compartan una base (la variante elige el lugar, el capo y las pruebas) en vez de copiar el código.
 
 ## El orden para hacerlo (un PR chico por paso)
-1. Separar la base común de la infiltración y que el club la use.
+1. Separar la base común de la infiltración y que el club la use. Hecho así: el club es un `InfiltrationPlace` (la base: semilla, gente
+   que mira, capo, pruebas, patrullero y dónde espera la huida) y el caso (`InfiltrationCase`) juega sobre el lugar, no
+   sobre el club. Lo que cambia de un lugar al otro (historia de la campaña, lo que dice el comisario, avisos, filas de
+   la planilla, nombres de las pruebas, el capo y en qué huye) está en `InfiltrationCase.VARIANTS`.
 2. La túnica y el cancionero en el casillero.
 3. La capilla en la ciudad, con los coristas, la señora de la puerta y el Maestro Ernesto.
 4. Cantar con la batuta (voz o H) y la sospecha del coro.
