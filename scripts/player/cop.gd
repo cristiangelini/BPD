@@ -20,8 +20,6 @@ const GLOVE_MATERIAL := preload("res://assets/materials/rubber_glove.tres")
 const MOUTH_FULL := 3.0
 ## A shove fades out in this many seconds.
 const KNOCK_FADE := 0.5
-## Pieces of disguise that make a cop pass for a grandparent (infiltracion.md, step 1). (propuesta)
-const DISGUISE_NEEDED := 2
 ## Seconds of running before a straight piece of disguise falls off, and a crooked one. (propuesta)
 const DISGUISE_LOOSE_RUN := 4.0
 const DISGUISE_CROOKED_RUN := 1.5
@@ -618,9 +616,10 @@ func lose_disguise(kind: String) -> void:
 	piece.linear_velocity = -global_basis.z * 1.5 + Vector3.UP
 
 
-## Enough disguise on to pass for a grandparent.
-func is_disguised() -> bool:
-	return disguise.size() >= DISGUISE_NEEDED
+## Enough disguise on to pass for `look` (DisguisePiece.LOOKS): a grandparent by default, or a chorister.
+func is_disguised(look := "grandparent") -> bool:
+	var wanted: Dictionary = DisguisePiece.LOOKS[look]
+	return wanted.pieces.filter(func(kind: String) -> bool: return disguise.has(kind)).size() >= wanted.needed
 
 
 func current_speed() -> float:

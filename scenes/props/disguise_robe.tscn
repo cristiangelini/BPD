@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/props/disguise_piece.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/models/folded_robe.glb" id="2"]
+
+[sub_resource type="BoxShape3D" id="Shape"]
+size = Vector3(0.45,0.12,0.35)
+
+[node name="Disguise_robe" type="RigidBody3D"]
+collision_layer = 4
+collision_mask = 15
+mass = 0.4
+script = ExtResource("1")
+kind = "robe"
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+shape = SubResource("Shape")
+
+[node name="Model" parent="." instance=ExtResource("2")]

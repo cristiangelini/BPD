@@ -359,13 +359,21 @@ func _mirror(root: Node3D) -> void:
 
 ## Furniture models with a box to bump into when it has a footprint in `solids`; one with an action gets an
 ## InterrogationProp, which a cop can use (E) during an interrogation.
-## The disguises on the floor in front of the lockers (infiltracion.md, step 1): one of each piece per cop.
+## The disguises on the floor in front of the lockers (infiltracion.md, step 1): one of each piece per cop, and the
+## choir's robes and songbooks (infiltracion-coro.md, step 2).
 func _disguises(root: Node3D) -> void:
 	for i in StationRooms.DISGUISES.size():
 		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.DISGUISES[i]).instantiate()
 		piece.name = "Disguise%d" % i
 		piece.position = StationRooms.DISGUISES_AT + Vector3((i % 6) * 0.38, 0.12, floorf(i / 6.0) * 0.35)
 		root.add_child(piece)
+	for i in StationRooms.CHOIR_DISGUISES.size():
+		var kind := StationRooms.CHOIR_DISGUISES[i]
+		var item: Grabbable = (load(StationRooms.SONGBOOK_SCENE) if kind == "songbook"
+			else DisguisePiece.scene_of(kind)).instantiate()
+		item.name = "Choir%d" % i
+		item.position = StationRooms.CHOIR_DISGUISES_AT + Vector3(i * StationRooms.CHOIR_GAP, 0.12, 0)
+		root.add_child(item)
 
 
 func _furniture(items: Array, solids: Dictionary, root: Node3D) -> void:

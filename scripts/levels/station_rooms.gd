@@ -51,6 +51,11 @@ const ARMERO_AT := Vector3(-6.9, 0, 5.0)
 const DISGUISES: Array[String] = ["wig", "glasses", "mustache", "wig", "glasses", "mustache",
 	"wig", "glasses", "mustache", "wig", "glasses", "mustache"]
 const DISGUISES_AT := Vector3(-5.15, 0, 1.95)
+## The choir's (infiltracion-coro.md, step 2): a folded robe and a songbook for each cop, in a third row.
+const CHOIR_DISGUISES: Array[String] = ["robe", "songbook", "robe", "songbook", "robe", "songbook", "robe", "songbook"]
+const CHOIR_DISGUISES_AT := Vector3(-5.15, 0, 2.75)
+const CHOIR_GAP := 0.34
+const SONGBOOK_SCENE := "res://scenes/props/songbook.tscn"
 
 ## Furniture: [model, position, turn]. The models come from tools/modelgen/models/station.js.
 const FURNITURE := [

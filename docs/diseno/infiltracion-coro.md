@@ -45,7 +45,11 @@ el coro compartan una base (la variante elige el lugar, el capo y las pruebas) e
    que mira, capo, pruebas, patrullero y dónde espera la huida) y el caso (`InfiltrationCase`) juega sobre el lugar, no
    sobre el club. Lo que cambia de un lugar al otro (historia de la campaña, lo que dice el comisario, avisos, filas de
    la planilla, nombres de las pruebas, el capo y en qué huye) está en `InfiltrationCase.VARIANTS`.
-2. La túnica y el cancionero en el casillero.
+2. La túnica y el cancionero en el casillero. Hecho así: en una tercera fila frente a los casilleros hay una túnica doblada y un
+   cancionero por policía. La túnica se agarra y se lleva al pecho (a 22 cm de su lugar queda puesta, como la peluca)
+   y se cae corriendo igual que las piezas del club. Con la túnica el policía pasa por corista (`is_disguised
+   ("chorister")`), no por abuelo, y al revés. El cancionero por ahora solo se lleva en la mano; en el paso 4 se ve
+   si cantar sin cancionero da sospecha **(propuesta)**.
 3. La capilla en la ciudad, con los coristas, la señora de la puerta y el Maestro Ernesto.
 4. Cantar con la batuta (voz o H) y la sospecha del coro.
 5. Las pruebas, el caso, la combi y el sorteo.
