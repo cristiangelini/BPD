@@ -98,3 +98,44 @@ func test_he_gets_off_his_scooter_on_every_pc() -> void:
 	await wait_until(func() -> bool: return _case(pcs[1]).stopped, 5.0)
 	await wait_until(func() -> bool: return not rider.visible, 5.0)
 	assert_false(rider.visible, "the rider is off on the guest too")
+
+
+## The guest's cop sits in `seat` of the patrol car (the host's is at the wheel).
+func _seat_guest(pcs: Array[Node], seat: int) -> Cop:
+	var cop := OnlinePcs.own_cop(pcs[1])
+	cop.act("use", _case(pcs[1]).car, [seat])
+	await wait_until(func() -> bool: return _case(pcs[0]).car.seated[seat] != null, 5.0)
+	return cop
+
+
+func test_a_guest_megaphone_scares_him_on_the_host_and_shows_on_the_guest() -> void:
+	var pcs := await _on()
+	await _seat_guest(pcs, 3)
+	_case(pcs[1]).tasks.do_job("shout")
+	await wait_until(func() -> bool: return _case(pcs[0]).tasks.shouts == 1, 5.0)
+	assert_gt(_level(pcs[0]).truck.nervous_left, 0.0, "the host's suspect got nervous")
+	await wait_until(func() -> bool: return _case(pcs[1]).tasks.shouts == 1, 5.0)
+	assert_true(_case(pcs[1]).tasks._shout_label.visible, "the guest sees the shout")
+
+
+func test_a_guest_at_the_window_throws_the_spikes_for_everyone() -> void:
+	var pcs := await _on()
+	await _seat_guest(pcs, 2)
+	_case(pcs[1]).tasks.do_job("throw_spikes")
+	await wait_until(func() -> bool: return _case(pcs[0]).tasks.spikes_left == ChaseTasks.SPIKES - 1, 5.0)
+	var traps := func(net: Node) -> Array: return _level(net).find_children("*", "ChaseTrap", true, false)
+	await wait_until(func() -> bool: return not traps.call(pcs[1]).is_empty(), 5.0)
+	assert_eq(traps.call(pcs[0]).size(), 1)
+	var shown: ChaseTrap = traps.call(pcs[1])[0]
+	assert_true(shown.shown_only, "the guest's spikes only show")
+	assert_almost_eq(shown.global_position.distance_to((traps.call(pcs[0])[0] as Node3D).global_position), 0.0, 0.01)
+	assert_eq(_case(pcs[1]).tasks.spikes_left, ChaseTasks.SPIKES, "the guest doesn't count its own")
+
+
+func test_a_job_from_the_wrong_seat_is_not_done() -> void:
+	var pcs := await _on()
+	# At the megaphone, with the window empty: the window is the driver's (the host's cop), not this one's.
+	await _seat_guest(pcs, 3)
+	_case(pcs[1]).tasks.do_job("throw_net")
+	await wait_physics_frames(20)
+	assert_eq(_case(pcs[0]).tasks.nets_left, ChaseTasks.NETS, "the host didn't throw it for the wrong cop")

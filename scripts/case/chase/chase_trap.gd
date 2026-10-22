@@ -23,6 +23,8 @@ const NET_SECONDS := 4.0
 const NET_DRAPE := 2.35
 
 var kind := SPIKES
+## Online, a guest's copy: it only shows; the host's catches him.
+var shown_only := false
 var _left := 0.0
 var _caught := false
 
@@ -38,6 +40,9 @@ func _ready() -> void:
 	shape.position.y = box.size.y / 2
 	add_child(shape)
 	add_child(_spikes_model() if kind == SPIKES else _cones_model() if kind == CONES else _net_model())
+	if shown_only:
+		monitoring = false
+		return
 	body_entered.connect(_on_body_entered)
 
 
@@ -45,6 +50,8 @@ func _physics_process(delta: float) -> void:
 	_left -= delta
 	if _left <= 0.0:
 		queue_free()
+		return
+	if shown_only:
 		return
 	# Already over him when it lands (the net thrown right on top of him).
 	for body in get_overlapping_bodies():

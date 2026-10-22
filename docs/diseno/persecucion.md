@@ -77,8 +77,9 @@ megáfono y el medidor de distancia.
 El host maneja al sospechoso y decide los medidores (decisión 50), como con el patrullero, que ya se sincroniza.
 
 **Cómo va quedando:** el vehículo del sospechoso, el reloj, el medidor de distancia, la denuncia de los padres, si
-se escapó y la pantalla del turno ya son iguales en todas las PCs. Faltan las tareas del patrullero (megáfono,
-pinchos, red, conos, radio), el sospechoso bajado y esposado, lo que deja en la calle, el tráfico de la autopista,
+se escapó y la pantalla del turno ya son iguales en todas las PCs. Las tareas del patrullero (megáfono, pinchos, red,
+conos y radio) las pide cada uno desde su asiento y las hace el anfitrión; todos ven el grito y lo que cae a la
+calle. Faltan el sospechoso bajado y esposado, lo que deja en la calle, el tráfico de la autopista,
 los golfistas y la grúa; hasta entonces online no sale ninguna persecución en el sorteo.
 
 ## El orden para hacerlo (un PR chico por paso)

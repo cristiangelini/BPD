@@ -462,6 +462,15 @@ func _show_result(result: Dictionary) -> void:
 	shift_screen.get_node("%AgainButton").visible = not over and not follower
 
 
+## Online (CaseSync.tell): what the host's tasks just did, shown on a guest.
+func shown_shout() -> void:
+	tasks.shown_shout()
+
+
+func shown_trap(kind: String, at: Transform3D) -> void:
+	tasks.shown_trap(kind, at)
+
+
 ## What every guest's chase shows (CaseSync, 5 times a second when it changes).
 func snapshot() -> Dictionary:
 	return {"tip": tip_given, "chasing": chasing, "distance": snappedf(distance, 0.1),

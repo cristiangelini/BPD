@@ -83,6 +83,19 @@ func _shout() -> void:
 		raid.shouted_by(sync.cop)
 
 
+## Guest: this PC's cop does a job in the chase's patrol car (the megaphone, the window, the radio); the host's chase
+## decides.
+func request_job(job: String) -> void:
+	_job.rpc_id(net.HOST_ID, job)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _job(job: String) -> void:
+	var sync: CopSync = net.cop_syncs.get(multiplayer.get_remote_sender_id())
+	if multiplayer.is_server() and sync and is_instance_valid(sync.cop) and raid is ChaseCase:
+		raid.tasks.job_by(sync.cop, job)
+
+
 ## Host at the end of the shift: plays the next case with everyone; a guest waits for the host.
 func play_again() -> void:
 	if net.is_host():
