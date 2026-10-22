@@ -1,8 +1,8 @@
 # BPD · Infiltración (propuesta, 22/10)
 
 Séptimo tipo de caso, del catálogo ([casos.md](casos.md), punto 5) y la decisión 28 ("van disfrazados y tienen que
-pasar desapercibidos mientras juntan evidencia; si los descubren, hay pelea o persecución"). Espera las respuestas de
-Cristian a las 3 preguntas del final antes de programarlo. Los números son **(propuesta)** hasta probarlos jugando.
+pasar desapercibidos mientras juntan evidencia; si los descubren, hay pelea o persecución"). Cristian respondió las 3
+preguntas el 22/10 (decisión 100). Los números son **(propuesta)** hasta probarlos jugando.
 
 ## La idea
 El comisario sospecha de un lugar, pero no tiene pruebas para un allanamiento. Los cuatro entran disfrazados, se
@@ -79,10 +79,9 @@ las pruebas. El disfraz de cada policía se ve igual en todas las PC.
 5. El baile.
 6. Las 3 pruebas y el final: sueldo, Doña Chela esposada o en el andador (persecución), y el sorteo.
 
-## Preguntas para Cristian
-1. **¿La primera variante es Club de abuelos?** Recomiendo esa, porque reusa el bingo y los abuelos. La otra buena es
-   Coro de iglesia, que reusa el canto de la fuga.
-2. **¿El disfraz se arma en la comisaría o viene puesto?** Recomiendo armarlo con las manos en el casillero de la
-   comisaría, porque es parte del chiste (un policía con bigote y peluca torcida).
-3. **¿Descubrirlos es persecución directa o tienen una segunda oportunidad?** Recomiendo persecución directa (decisión
-   28), porque es más simple y ya está hecha.
+## Respuestas de Cristian (22/10, decisión 100)
+1. La primera variante es Club de abuelos y la siguiente, Coro de iglesia.
+2. El disfraz se arma con las manos en el casillero de la comisaría: cada policía agarra la peluca o el bigote como
+   cualquier objeto y lo lleva a su cabeza, donde queda puesto (torcido si lo acercó mal). Si corre o se choca, se le
+   puede caer adelante de los abuelos.
+3. Si los descubren, arranca la persecución directa.
