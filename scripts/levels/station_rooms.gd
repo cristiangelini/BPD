@@ -33,6 +33,11 @@ const BAR_EVERY := 0.25
 ## Two cells against the cells room's back wall, barred toward the room.
 const CELL_FRONT_Z := 4.5
 const CELL_SPLIT_X := 10.5
+## The barred door of each cell, [from, to] along its front (CellDoor), hinged at `from`.
+const CELL_DOORS: Array[Vector2] = [Vector2(9.0, 10.2), Vector2(10.8, 12.0)]
+## Where the four cops wake up in the jailbreak (fuga.md): two in each cell, facing the bars (+Z).
+const CELL_SPAWNS: Array[Vector3] = [Vector3(7.3, 0, 3.2), Vector3(11.7, 0, 3.2), Vector3(9.3, 0, 3.2),
+	Vector3(13.7, 0, 3.2)]
 
 ## Where the four cops appear in the guard room, facing the office (-Z).
 const SPAWNS: Array[Vector3] = [Vector3(-1.5, 0, 6.0), Vector3(1.5, 0, 6.0), Vector3(-1.5, 0, 7.5), Vector3(1.5, 0, 7.5)]
@@ -100,8 +105,14 @@ static func bars() -> Array:
 		z += BAR_EVERY
 	var x := FRONT_X + BAR_EVERY / 2
 	while x < HALF_X:
-		posts.append([Vector3(x, CEILING / 2, CELL_FRONT_Z), Vector3(0.05, CEILING, 0.05)])
+		if not CELL_DOORS.any(func(door: Vector2) -> bool: return x > door.x - 0.05 and x < door.y + 0.05):
+			posts.append([Vector3(x, CEILING / 2, CELL_FRONT_Z), Vector3(0.05, CEILING, 0.05)])
 		x += BAR_EVERY
+	# Over each door, a beam up to the ceiling.
+	for door in CELL_DOORS:
+		var top := GameScale.DOOR_HEIGHT + 0.05
+		posts.append([Vector3((door.x + door.y) / 2, (top + CEILING) / 2, CELL_FRONT_Z),
+			Vector3(door.y - door.x, CEILING - top, 0.08)])
 	return posts
 
 

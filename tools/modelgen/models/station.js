@@ -78,22 +78,73 @@ export function buildBunk() {
 // A box of donuts from the armory (comisaria.md): 0.4 x 0.12 x 0.3 m, centered, lid open at the back and four
 // donuts the game hides one by one (parts donut_0 to donut_3).
 export function buildDonutBox() {
-	const b = new Builder('donut_box');
+	return donutBox('donut_box', 0.4, [[-0.09, -0.065], [0.09, -0.065], [-0.09, 0.065], [0.09, 0.065]]);
+}
+
+// The night guard's box (fuga.md): 0.5 x 0.12 x 0.3 m with six donuts, donut_0 to donut_5.
+export function buildGuardDonutBox() {
+	const spots = [];
+	for (const z of [-0.065, 0.065]) for (const x of [-0.15, 0, 0.15]) spots.push([x, z]);
+	return donutBox('guard_donut_box', 0.5, spots);
+}
+
+function donutBox(name, width, spots) {
+	const b = new Builder(name);
 	const box = mat('donut_box', 0xff8fb1), inside = mat('donut_box_in', 0xf6e7d0);
-	b.add('box', box, new THREE.BoxGeometry(0.4, 0.01, 0.3), { pos: V(0, -0.055, 0) });
+	b.add('box', box, new THREE.BoxGeometry(width, 0.01, 0.3), { pos: V(0, -0.055, 0) });
 	for (const s of [-1, 1]) {
-		b.add('box', box, new THREE.BoxGeometry(0.4, 0.08, 0.01), { pos: V(0, -0.02, s * 0.145) });
-		b.add('box', box, new THREE.BoxGeometry(0.01, 0.08, 0.3), { pos: V(s * 0.195, -0.02, 0) });
+		b.add('box', box, new THREE.BoxGeometry(width, 0.08, 0.01), { pos: V(0, -0.02, s * 0.145) });
+		b.add('box', box, new THREE.BoxGeometry(0.01, 0.08, 0.3), { pos: V(s * (width / 2 - 0.005), -0.02, 0) });
 	}
-	b.add('box', inside, new THREE.BoxGeometry(0.38, 0.005, 0.28), { pos: V(0, -0.048, 0) });
-	b.add('lid', box, new THREE.BoxGeometry(0.4, 0.01, 0.3), { pos: V(0, 0.1, -0.2), rot: [-1.15, 0, 0] });
+	b.add('box', inside, new THREE.BoxGeometry(width - 0.02, 0.005, 0.28), { pos: V(0, -0.048, 0) });
+	b.add('lid', box, new THREE.BoxGeometry(width, 0.01, 0.3), { pos: V(0, 0.1, -0.2), rot: [-1.15, 0, 0] });
 	b.add('lid', mat('donut_logo', 0xffffff), new THREE.BoxGeometry(0.14, 0.004, 0.08), { pos: V(0, 0.105, -0.188), rot: [-1.15, 0, 0] });
 	const dough = mat('donut_dough', 0xd99a52);
-	const icing = [mat('icing_pink', 0xff5fa2), mat('icing_choco', 0x5a3320), mat('icing_white', 0xfff4e0), mat('icing_pink', 0xff5fa2)];
-	[[-0.09, -0.065], [0.09, -0.065], [-0.09, 0.065], [0.09, 0.065]].forEach(([x, z], i) => {
+	const icing = [mat('icing_pink', 0xff5fa2), mat('icing_choco', 0x5a3320), mat('icing_white', 0xfff4e0)];
+	spots.forEach(([x, z], i) => {
 		b.add(`donut_${i}`, dough, new THREE.TorusGeometry(0.055, 0.026, 6, 10), { pos: V(x, -0.02, z), rot: [Math.PI / 2, 0, 0] });
-		b.add(`donut_${i}`, icing[i], new THREE.TorusGeometry(0.055, 0.029, 6, 10), { pos: V(x, -0.004, z), rot: [Math.PI / 2, 0, 0], scale: [1, 1, 0.5] });
+		b.add(`donut_${i}`, icing[i % 3], new THREE.TorusGeometry(0.055, 0.029, 6, 10), { pos: V(x, -0.004, z), rot: [Math.PI / 2, 0, 0], scale: [1, 1, 0.5] });
 	});
+	return b.build();
+}
+
+// The jailbreak's fishing tools (fuga.md): each lies in a cell, its origin at the grip and its length forward (-Z).
+// A very long broom, 2.8 m with the bristles at the far end.
+export function buildBroom() {
+	const b = new Builder('broom');
+	const wood = mat('broom_wood', 0xc8a060), straw = mat('broom_straw', 0xe0c25a), band = mat('broom_band', 0xc23a2a);
+	b.add('stick', wood, new THREE.CylinderGeometry(0.018, 0.018, 2.8, 6), { pos: V(0, 0, -1.4), rot: [Math.PI / 2, 0, 0] });
+	b.add('head', band, new THREE.BoxGeometry(0.1, 0.06, 0.06), { pos: V(0, 0, -2.78) });
+	b.add('head', straw, new THREE.BoxGeometry(0.3, 0.05, 0.2), { pos: V(0, -0.04, -2.9) });
+	return b.build();
+}
+
+// A fishing rod without a hook, 3 m, thinner toward the tip, with a reel by the grip and a bit of line hanging.
+export function buildFishingRod() {
+	const b = new Builder('fishing_rod');
+	const rod = mat('rod_blue', 0x2f5fa8), cork = mat('rod_cork', 0xb88a55), reel = mat('rod_reel', 0x9aa0a8);
+	b.add('grip', cork, new THREE.CylinderGeometry(0.022, 0.022, 0.35, 6), { pos: V(0, 0, 0.05), rot: [Math.PI / 2, 0, 0] });
+	b.add('rod', rod, new THREE.CylinderGeometry(0.004, 0.014, 2.8, 6), { pos: V(0, 0, -1.55), rot: [-Math.PI / 2, 0, 0] });
+	b.add('reel', reel, new THREE.CylinderGeometry(0.04, 0.04, 0.04, 8), { pos: V(0, -0.05, -0.1), rot: [0, 0, Math.PI / 2] });
+	b.add('line', mat('rod_line', 0xeeeeee), new THREE.CylinderGeometry(0.002, 0.002, 0.3, 3), { pos: V(0, -0.15, -2.95) });
+	return b.build();
+}
+
+// One donut out of the guard's box (fuga.md), centered: 0.16 m across, lying flat.
+export function buildDonut() {
+	const b = new Builder('donut');
+	b.add('dough', mat('donut_dough', 0xd99a52), new THREE.TorusGeometry(0.055, 0.026, 6, 10), { pos: V(0, 0, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('icing', mat('icing_pink', 0xff5fa2), new THREE.TorusGeometry(0.055, 0.029, 6, 10), { pos: V(0, 0.016, 0), rot: [Math.PI / 2, 0, 0], scale: [1, 1, 0.5] });
+	return b.build();
+}
+
+// The key of the cells (fuga.md), big and brass so it shows at night: a ring, a shaft and two teeth, 0.2 m long along X.
+export function buildCellKey() {
+	const b = new Builder('cell_key');
+	const brass = mat('key_brass', 0xe0b040, { emissive: 0x2a1e04 });
+	b.add('key', brass, new THREE.TorusGeometry(0.035, 0.01, 5, 10), { pos: V(-0.065, 0, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('key', brass, new THREE.BoxGeometry(0.13, 0.016, 0.016), { pos: V(0.035, 0, 0) });
+	for (const x of [0.07, 0.095]) b.add('key', brass, new THREE.BoxGeometry(0.012, 0.016, 0.04), { pos: V(x, 0, 0.02) });
 	return b.build();
 }
 
@@ -119,7 +170,8 @@ export function buildWheelbarrow() {
 
 export const models = {
 	wheelbarrow: buildWheelbarrow,
-	donut_box: buildDonutBox,
+	donut_box: buildDonutBox, guard_donut_box: buildGuardDonutBox, broom: buildBroom, fishing_rod: buildFishingRod,
+	donut: buildDonut, cell_key: buildCellKey,
 	station_desk: buildDesk, station_lockers: buildLockers, station_coffee: buildCoffee, station_bench: buildBench,
 	station_rack: buildRack, station_bunk: buildBunk,
 };
