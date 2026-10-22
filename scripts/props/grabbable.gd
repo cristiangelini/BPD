@@ -72,6 +72,8 @@ func throw_toward(holder_id: int, direction: Vector3) -> void:
 	if is_held():
 		return  # the others keep holding it, so it doesn't fly
 	linear_velocity = direction.normalized() * throw_speed(mass)
+	# Whoever listens for noises (the jailbreak's guard) hears where it lands.
+	get_tree().call_group("noise_listeners", "heard_throw", self)
 
 
 func _physics_process(_delta: float) -> void:
