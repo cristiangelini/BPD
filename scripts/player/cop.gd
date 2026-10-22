@@ -290,6 +290,16 @@ func stand_up(at: Vector3, yaw: float) -> void:
 	_shape.disabled = false
 
 
+## Puts the cop at `to` at once, empty-handed (the jailbreak's guard putting it back in its cell). Online, the host
+## moving another player's cop tells its owner, who moves it for everyone.
+func warp(to: Transform3D) -> void:
+	$Grabber.release()
+	velocity = Vector3.ZERO
+	global_transform = to
+	if sync and not sync.is_multiplayer_authority() and sync.multiplayer.is_server():
+		sync.tell_warp(to)
+
+
 ## Shows a short line at the bottom of this cop's screen. `key` is a tr() key. Online, a hint the host gives its copy
 ## of another player's cop goes to that player's screen.
 func show_hint(key: String) -> void:

@@ -11,6 +11,8 @@ var has_key := false
 
 
 func _ready() -> void:
+	# The guard gets suspicious if he sees one of his donuts out of the box (NightGuard).
+	add_to_group("guard_clues")
 	mass = 0.1
 	collision_layer = 4
 	collision_mask = 15

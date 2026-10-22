@@ -83,6 +83,22 @@ come y los invitados ven la misma caja. Captura: `fuga/paso2_guardia.png`.
 - Las cajas de la armería no cambian: E sobre una tirada no hace nada.
 - Capturas: `fuga/paso3_llave.png` y `paso3_reja_abierta.png`.
 
+**Cómo quedó el paso 4 (la mirada):**
+- El guardia gira la cabeza de a ratos: al frente, a un lado, al frente y al otro, 3 s cada vez. Ve en un cono de 70°
+  y 10 m, y no ve a través de las paredes (el escritorio no le tapa).
+- Su sospecha (barra arriba, de 0 a 100) sube por segundo con lo que ve: 50 por cada policía fuera de las celdas, 25
+  si la caja se mueve (enganchada, agarrada o deslizándose) y 15 si ve una dona suelta o la llave. Sin nada a la vista
+  baja 8 por segundo **(propuesta)**.
+- A 100 los atrapa: dice algo ("¡Eh, eh, eh! ¿Adónde creen que van? Adentro."), los que estaban afuera vuelven a una
+  celda con las manos vacías, las dos rejas quedan cerradas con llave, la caja vuelve a su escritorio y se lleva el
+  palo o la caña que usaron (el que estaba agarrado o fuera de la celda). Si alguien tenía la llave o una dona suelta
+  con la llave, se la cuelga del cinturón. La sospecha vuelve a 0.
+- Por ahora la captura es instantánea, sin que se levante a caminar **(propuesta)**.
+- Debajo de la barra dice "Capturas del guardia: 1 de 3". Perder a la tercera es del paso 6.
+- Online, el host decide; los invitados ven la misma sospecha, capturas y cabeza, y el host mueve a cada policía
+  atrapado en la pantalla de su dueño.
+- Capturas: `fuga/paso4_sospecha.png` (afuera, con la barra subiendo) y `paso4_atrapado.png` (de vuelta en la celda).
+
 ## Cómo se gana y cómo se pierde
 - **Se gana** con los 4 en el patrullero fuera del estacionamiento. Pantalla corta "¡Fugados!" y a la mañana arranca el
   turno siguiente en la comisaría.
