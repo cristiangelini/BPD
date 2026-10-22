@@ -986,3 +986,7 @@ GUARD_MUNCH_3,"Esta estaba medio dura. Igual me la como.","This one was a bit st
 GUARD_MUNCH_4,"Así da gusto cuidar presos.","Now this is how you guard prisoners.","Assim dá gosto vigiar presos."
 GUARD_KEY_FOUND,"¿Qué es esto? ¡Mi llave! Mejor me la cuelgo del cinturón.","What's this? My key! Better hang it on my belt.","O que é isso? Minha chave! Melhor pendurar no cinto."
 GUARD_NO_DONUTS,"¿Y mis donas? ¿Quién se llevó mis donas?","Where are my donuts? Who took my donuts?","Cadê meus donuts? Quem levou meus donuts?"
+PROMPT_HOOK_BOX,"E: enganchar la caja","E: hook the box","E: enganchar a caixa"
+PROMPT_UNHOOK_BOX,"E: soltar la caja · Mueve la mirada para arrastrarla","E: let go of the box · Move your view to drag it","E: soltar a caixa · Mova a visão para arrastá-la"
+PROMPT_HOLDING_STICK,"Lleva la punta hasta la caja de donas · Rueda: acercar o alejar","Bring the tip to the donut box · Wheel: closer or farther","Leve a ponta até a caixa de donuts · Roda: aproximar ou afastar"
+HINT_HOOK_SLIPPED,"¡Se soltó la caja!","The box slipped off!","A caixa soltou!"

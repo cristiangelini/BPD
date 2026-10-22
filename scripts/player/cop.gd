@@ -390,6 +390,9 @@ func use() -> bool:
 			return false
 		act("eat_donut", self, [$Grabber.held])
 		return true
+	if $Grabber.held is HookStick:
+		act("use", $Grabber.held)
+		return true
 	if $Grabber.held is CrimeClueItem:
 		act("use_clue_in_hand", self, [$Grabber.held, _usable_target()])
 		return true

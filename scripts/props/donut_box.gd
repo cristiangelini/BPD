@@ -9,6 +9,10 @@ const DONUTS := 4
 @export var donuts := DONUTS
 
 
+func _ready() -> void:
+	add_to_group("donut_boxes")
+
+
 ## Takes one donut out of the box. Returns false if it was empty.
 func eat_one() -> bool:
 	if donuts == 0:
