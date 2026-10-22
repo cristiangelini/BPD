@@ -7,7 +7,8 @@ extends StaticBody3D
 ## and hangs it from his belt. The seed draws which donut has it. He only eats from the box while it's within his
 ## reach on the desk. He also looks around (step 4): his head sweeps the cells, and whatever he sees in a cone of
 ## SIGHT_ANGLE and SIGHT_RANGE in front of him (a cop out of the cells, the box moving, a broken donut or the key)
-## raises his suspicion; at 100 he catches them (`caught`, the level puts everything back). Every number here is
+## raises his suspicion; at 100 he catches them (`caught`, the level puts everything back). Something thrown that lands
+## away from him, or a cop shouting near him, makes him turn to look there for a while (step 5). Every number here is
 ## (propuesta).
 
 signal ate(donut: int)
@@ -36,6 +37,18 @@ const SUSPICION_CALM := 8.0
 ## The box counts as moving above this speed, or while someone holds or hooks it.
 const BOX_MOVING := 0.2
 const CAUGHT_LINES := 3
+## Noises: something thrown landing at least DISTRACT_MIN from him and within HEAR_RANGE, or a shout within HEAR_RANGE,
+## turns him to look there for these seconds, faster than his usual sweep.
+const HEAR_RANGE := 15.0
+const DISTRACT_MIN := 3.0
+const NOISE_LOOK := 4.0
+const SHOUT_LOOK := 3.0
+const DISTRACT_TURN_SPEED := 4.0
+## A thrown thing makes its noise once it's slower than this, or this long after the throw (a donut rolls on).
+const LANDED_SPEED := 0.5
+const LANDING_MAX := 1.5
+const NOISE_LINES := 3
+const SHOUT_LINES := 2
 
 var box: DonutBox
 ## Which donut of the box (its part donut_<n>) has the key: the box keeps it (DonutBox.key_donut).
@@ -52,6 +65,11 @@ var times_caught := 0
 var look := 0.0
 var _look_index := 0
 var _look_left := LOOK_HOLD
+## While he looks at a noise: where his head goes and for how long.
+var distracted_left := 0.0
+var _distract_look := 0.0
+## Things thrown that haven't landed yet -> seconds since the throw.
+var _flying := {}
 ## Whether a world position is out of the cells (the level sets it; nothing is, by default).
 var outside_cells: Callable = func(_at: Vector3) -> bool: return false
 ## What his sight goes through: the desk in front of him.
@@ -71,6 +89,7 @@ func setup(case_seed: int, donut_box: DonutBox) -> void:
 
 func _ready() -> void:
 	add_to_group("night_guard")
+	add_to_group("noise_listeners")
 	collision_layer = 8
 	var shape := CollisionShape3D.new()
 	var capsule := CapsuleShape3D.new()
@@ -112,17 +131,61 @@ func _physics_process(delta: float) -> void:
 	if eat_left <= 0.0:
 		eat_left = EAT_EVERY
 		eat()
+	_listen(delta)
 	_turn_head(delta)
 	_watch(delta)
 
 
 func _turn_head(delta: float) -> void:
-	_look_left -= delta
-	if _look_left <= 0.0:
-		_look_left = LOOK_HOLD
-		_look_index = (_look_index + 1) % LOOKS.size()
-	look = move_toward(look, LOOKS[_look_index], TURN_SPEED * delta)
+	if distracted_left > 0.0:
+		distracted_left -= delta
+		look = rotate_toward(look, _distract_look, DISTRACT_TURN_SPEED * delta)
+	else:
+		_look_left -= delta
+		if _look_left <= 0.0:
+			_look_left = LOOK_HOLD
+			_look_index = (_look_index + 1) % LOOKS.size()
+		look = rotate_toward(look, LOOKS[_look_index], TURN_SPEED * delta)
 	_model.rotation.y = look
+
+
+## Something was thrown (Grabbable.throw_toward): he'll look where it lands.
+func heard_throw(body: Node3D) -> void:
+	_flying[body] = 0.0
+
+
+func _listen(delta: float) -> void:
+	for body: Node3D in _flying.keys():
+		if not is_instance_valid(body):
+			_flying.erase(body)
+			continue
+		_flying[body] += delta
+		var rigid := body as RigidBody3D
+		var slow := rigid == null or rigid.linear_velocity.length() < LANDED_SPEED
+		if (_flying[body] > 0.3 and slow) or _flying[body] > LANDING_MAX:
+			_flying.erase(body)
+			var distance := _flat(body.global_position).length()
+			if distance >= DISTRACT_MIN and distance <= HEAR_RANGE:
+				look_at_noise(body.global_position, NOISE_LOOK, "GUARD_NOISE_%d" % _rng.randi_range(0, NOISE_LINES - 1))
+
+
+## A cop shouted into the microphone near him (VoiceChat): he turns toward the voice.
+func shouted_by(cop: Node3D) -> void:
+	if _flat(cop.global_position).length() <= HEAR_RANGE:
+		look_at_noise(cop.global_position, SHOUT_LOOK, "GUARD_SHOUT_%d" % _rng.randi_range(0, SHOUT_LINES - 1))
+
+
+## Turns his head toward `at` for `seconds`, saying `line`.
+func look_at_noise(at: Vector3, seconds: float, line: String) -> void:
+	var local := global_basis.inverse() * _flat(at)
+	_distract_look = atan2(local.x, local.z)
+	distracted_left = seconds
+	say(line)
+
+
+## From him to `at`, flat on the ground.
+func _flat(at: Vector3) -> Vector3:
+	return Vector3(at.x - global_position.x, 0, at.z - global_position.z)
 
 
 ## Where he's looking, flat on the ground (his model faces +Z).
@@ -152,7 +215,8 @@ func alarm() -> float:
 			rate += SUSPICION_COP
 	if is_instance_valid(box) and _box_moving() and sees(box.global_position + Vector3.UP * 0.1, box):
 		rate += SUSPICION_BOX
-	for clue: Node3D in get_tree().get_nodes_in_group("guard_clues"):
+	# Looking at a noise, a donut over there is just what made it.
+	for clue: Node3D in [] if distracted_left > 0.0 else get_tree().get_nodes_in_group("guard_clues"):
 		if sees(clue.global_position + Vector3.UP * 0.05, clue as CollisionObject3D):
 			rate += SUSPICION_CLUE
 			break

@@ -1002,3 +1002,8 @@ GUARD_CAUGHT_2,"Esto me lo quedo yo. Y ustedes, a dormir.","I'm keeping this. An
 HINT_GUARD_CAUGHT,"¡El guardia te atrapó! Volviste a la celda y se llevó lo que usaste.","The guard caught you! You're back in the cell and he took what you used.","O guarda te pegou! Você voltou para a cela e ele levou o que você usou."
 HUD_SUSPICION,"Sospecha del guardia","Guard's suspicion","Suspeita do guarda"
 HUD_GUARD_CAUGHT,"Capturas del guardia: %d de %d","Guard catches: %d of %d","Capturas do guarda: %d de %d"
+GUARD_NOISE_0,"¿Qué fue eso? ¿Hay alguien ahí?","What was that? Is someone there?","O que foi isso? Tem alguém aí?"
+GUARD_NOISE_1,"Ese ruido otra vez... Seguro son las ratas.","That noise again... Must be the rats.","Esse barulho de novo... Devem ser os ratos."
+GUARD_NOISE_2,"¿Quién anda tirando cosas a esta hora?","Who's throwing things around at this hour?","Quem está jogando coisas a esta hora?"
+GUARD_SHOUT_0,"¡Silencio ahí! Que algunos trabajamos.","Quiet over there! Some of us are working.","Silêncio aí! Tem gente trabalhando."
+GUARD_SHOUT_1,"¿Quién gritó? ¡A dormir, que es tarde!","Who shouted? Go to sleep, it's late!","Quem gritou? Vão dormir, que é tarde!"
