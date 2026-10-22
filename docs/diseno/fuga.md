@@ -59,6 +59,18 @@ empiezo la dieta."). Si es la de la llave, la escupe: "¿Qué es esto? ¡Mi llav
 la caja no está a 1,5 m de él, se queja: "¿Y mis donas? ¿Quién se llevó mis donas?" **(propuesta)**. Online, el host
 come y los invitados ven la misma caja. Captura: `fuga/paso2_guardia.png`.
 
+**Cómo quedó el paso 3a (pescar la caja):**
+- En el piso de cada celda hay algo largo: en una, un escobillón de 2,8 m; en la otra, una caña de pescar de 3 m sin
+  anzuelo. Los dos son modelos nuevos.
+- Se agarran como cualquier cosa. En la mano apuntan adonde mira el policía (un poco abajo y a la derecha, para que se
+  vean) y pasan entre las rejas.
+- Con la punta a menos de 0,6 m de la caja de donas, E la engancha. La caja sigue a la punta: caminando hacia atrás se
+  la arrastra hasta la reja, pero no pasa entre las rejas.
+- E la suelta. Si se traba a más de 1 m de la punta, se suelta sola ("¡Se soltó la caja!"). Soltar el palo también la
+  suelta.
+- Lejos de su escritorio, el guardia ya no la alcanza y pregunta por sus donas **(propuesta)**.
+- Capturas: `fuga/paso3_escoba.png` (desde la celda) y `paso3_escoba_afuera.png` (desde afuera).
+
 ## Cómo se gana y cómo se pierde
 - **Se gana** con los 4 en el patrullero fuera del estacionamiento. Pantalla corta "¡Fugados!" y a la mañana arranca el
   turno siguiente en la comisaría.
