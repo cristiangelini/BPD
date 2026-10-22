@@ -6,7 +6,7 @@ extends Grabbable
 
 const DONUTS := 4
 
-var donuts := DONUTS
+@export var donuts := DONUTS
 
 
 ## Takes one donut out of the box. Returns false if it was empty.
