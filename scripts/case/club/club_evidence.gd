@@ -6,7 +6,8 @@ extends Node3D
 ## desk (the office opens with the key in a kitchen pot), the pre-marked cards in her bag on the stage (E), the
 ## recording of two grandparents talking business (stand by them RECORD_TIME with the camera in hand; while they talk
 ## they notice nothing), the loaded bingo cage (grab it) and the envelope of cash by the stage (grab it). The host
-## decides what was found (`found`). Every number here is (propuesta).
+## decides what was found (`found`). The chapel (infiltracion-coro.md, step 5) has its own kinds: it sets which are
+## found by holding them (`held_kinds`) and what its talkers say. Every number here is (propuesta).
 
 signal found(kind: String)
 
@@ -19,8 +20,11 @@ const TALK_LINES := 4
 const NOTEBOOK_MODEL := preload("res://assets/models/fight_notebook.glb")
 const ENVELOPE_MODEL := preload("res://assets/models/cash_bundle.glb")
 
-## The kinds in this club.
+## The kinds in this place.
 var kinds: Array[String] = []
+## The kinds that count as soon as a cop holds them, and the talkers' lines (with the line's number).
+var held_kinds: Array[String] = ["notebook", "envelope", "cage"]
+var talk_key := "CLUB_TALK_%d"
 ## What each kind is in the club: a grabbable to hold, a spot to use or photograph, or the bingo cage.
 var items := {}
 ## The two grandparents talking business, for the recording.
@@ -64,7 +68,7 @@ func _physics_process(delta: float) -> void:
 		_talk(delta)
 	if not multiplayer.is_server():
 		return
-	for kind: String in ["notebook", "envelope", "cage"]:
+	for kind: String in held_kinds:
 		var item: Node = items.get(kind)
 		if item and is_instance_valid(item) and item.is_held():
 			mark(kind)
@@ -94,7 +98,7 @@ func _talk(delta: float) -> void:
 	if _talk_left > 0.0:
 		return
 	_talk_left = TALK_EVERY
-	talkers[_talk_line % 2].say("CLUB_TALK_%d" % (_talk_line % TALK_LINES))
+	talkers[_talk_line % 2].say(talk_key % (_talk_line % TALK_LINES))
 	_talk_line += 1
 
 

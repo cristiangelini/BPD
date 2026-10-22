@@ -293,6 +293,7 @@ func _spot(kind: String, at: Vector3) -> ClubEvidenceSpot:
 	var spot := ClubEvidenceSpot.new()
 	spot.name = "Evidence_" + kind
 	spot.kind = kind
+	spot.photo = kind == "press"
 	spot.evidence = evidence
 	add_child(spot)
 	spot.position = at

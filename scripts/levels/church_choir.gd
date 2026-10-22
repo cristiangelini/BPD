@@ -7,10 +7,28 @@ extends InfiltrationPlace
 ## sacristy (locked) and the storeroom. The cops start in the station, where the robes are, and drive here.
 ## --place=choir opens it from Play. Choristers stand on the platform's spots (by the seed), Maestro Ernesto on his box
 ## in front of them, and the lady at the door only lets in cops in a robe (step 3b). Ernesto leads the songs
-## (ChoirSinging) and the choristers watch and listen (ClubSuspicion, step 4). The case comes in step 5.
+## (ChoirSinging) and the choristers watch and listen (ClubSuspicion, step 4). The comisario gives the case
+## (InfiltrationCase, variant "choir") with 3 of the 6 pieces of evidence (step 5).
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const KEY_POT_SCENE := preload("res://scenes/props/key_pot.tscn")
+const COLLECTION_BOX_MODEL := preload("res://assets/models/collection_box.glb")
+const LEDGER_MODEL := preload("res://assets/models/deposit_book.glb")
+const RECEIPTS_MODEL := preload("res://assets/models/pawn_receipt.glb")
+const NEW_CAR_MODEL := preload("res://assets/models/sports_car.glb")
+## The chapel's evidence (step 5): the collection box with the false bottom (grab it), Ernesto's ledger with
+## "órgano: 0" on the sacristy desk (the sacristy opens with the key in a pot in the storeroom), the back of the
+## cardboard organ (photograph it), the receipts of the "organ fund" in the storeroom, the recording of two choristers
+## talking about the money, and Ernesto's new car parked behind the chapel (photograph it).
+const EVIDENCE_KINDS: Array[String] = ["box", "ledger", "organ", "receipts", "recording", "car"]
+const BOX_STAND_AT := Vector3(3.0, 0, 9.6)
+const BOX_STAND := Vector3(0.5, 0.9, 0.4)
+const LEDGER_AT := Vector3(-6.0, 0.8, -9.6)
+const RECEIPTS_AT := Vector3(3.4, 0.6, -9.4)
+const KEY_POT_AT := Vector3(2.5, 0.66, -8.6)
+const NEW_CAR_AT := Vector3(7.0, 0, -15.0)
+const NEW_CAR_SIZE := Vector3(2.2, 1.1, 4.7)
 const HALF_X := 12.0
 const HALF_Z := 11.0
 const FLOOR_TOP := 0.06
@@ -79,7 +97,9 @@ func _ready() -> void:
 	sacristy_door.position = Vector3(SACRISTY_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, BACK_Z)
 	add_child(sacristy_door)
 	_add_people()
+	_add_evidence()
 	place_in_city("chapel")
+	start_case()
 
 
 ## The choir van waits on the street, out of the entrance (step 5).
@@ -147,6 +167,86 @@ func _add_rehearsal() -> void:
 			and local.y < ROOF
 	add_child(singing)
 	suspicion.watch_singing(singing)
+
+
+## The 3 pieces of evidence the seed picks (ClubEvidence) and the sacristy's key in a storeroom pot.
+func _add_evidence() -> void:
+	evidence = ClubEvidence.new()
+	evidence.name = "Evidence"
+	evidence.held_kinds.assign(["box", "ledger", "receipts"])
+	evidence.talk_key = "CHOIR_TALK_%d"
+	add_child(evidence)
+	var pair := _talking_pair()
+	var available := EVIDENCE_KINDS.duplicate()
+	if pair.is_empty():
+		available.erase("recording")
+	evidence.kinds = ClubEvidence.draw(case_seed, available)
+	var pot: KeyPot = KEY_POT_SCENE.instantiate()
+	pot.name = "KeyPot"
+	pot.has_key = true
+	add_child(pot)
+	pot.position = KEY_POT_AT
+	_build.box(BOX_STAND_AT + Vector3(0, FLOOR_TOP + BOX_STAND.y / 2, 0), BOX_STAND, WOOD)
+	for kind: String in evidence.kinds:
+		match kind:
+			"box":
+				_item(kind, COLLECTION_BOX_MODEL, Vector3(0.26, 0.2, 0.18), 0.8,
+					BOX_STAND_AT + Vector3(0, FLOOR_TOP + BOX_STAND.y + 0.11, 0))
+			"ledger":
+				_item(kind, LEDGER_MODEL, Vector3(0.22, 0.04, 0.3), 0.3, LEDGER_AT)
+			"receipts":
+				_item(kind, RECEIPTS_MODEL, Vector3(0.2, 0.02, 0.15), 0.1, RECEIPTS_AT)
+			"organ":
+				# The organ's back, toward the sacristy's door: a flap open over the bundles of cash inside.
+				var back := ORGAN_AT + Vector3(0, FLOOR_TOP + ORGAN_SIZE.y / 2, -ORGAN_SIZE.z / 2 - 0.03)
+				_spot(kind, back, Vector3(ORGAN_SIZE.x, ORGAN_SIZE.y, 0.06))
+				_build.mesh_box(back + Vector3(0, -0.3, -0.01), Vector3(0.8, 0.8, 0.02), Color(0.15, 0.1, 0.06))
+				_build.mesh_box(back + Vector3(0, -0.55, -0.03), Vector3(0.5, 0.12, 0.03), Color(0.35, 0.6, 0.35))
+			"car":
+				var car_spot := _spot(kind, NEW_CAR_AT + Vector3(0, NEW_CAR_SIZE.y / 2, 0), NEW_CAR_SIZE)
+				var model: Node3D = NEW_CAR_MODEL.instantiate()
+				model.position.y = -NEW_CAR_SIZE.y / 2
+				car_spot.add_child(model)
+			"recording":
+				evidence.talkers.assign(pair)
+				for member: ClubMember in pair:
+					member.distracted = true
+
+
+## A piece of evidence to grab, lying at `at`.
+func _item(kind: String, model: PackedScene, size: Vector3, kg: float, at: Vector3) -> void:
+	var item := ClubEvidence.make_item("Choir_" + kind, model, size, kg)
+	add_child(item)
+	item.position = at
+	evidence.items[kind] = item
+
+
+## A piece of evidence to photograph, a box of `size` around `at`.
+func _spot(kind: String, at: Vector3, size: Vector3) -> ClubEvidenceSpot:
+	var spot := ClubEvidenceSpot.new()
+	spot.name = "Evidence_" + kind
+	spot.kind = kind
+	spot.photo = true
+	spot.prompt_prefix = "PROMPT_CHOIR_"
+	spot.evidence = evidence
+	add_child(spot)
+	spot.position = at
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = size
+	shape.shape = box
+	spot.add_child(shape)
+	return spot
+
+
+## Two choristers side by side in the same row (the recording's talkers), or none.
+func _talking_pair() -> Array[ClubMember]:
+	for first in members:
+		for second in members:
+			if first != second and absf(first.position.z - second.position.z) < 0.01 \
+					and absf(first.position.x - second.position.x) < SPOT_GAP + 0.01:
+				return [first, second]
+	return []
 
 
 ## Floor, outer walls with the entrance, the roof, the sign and the round colored window over the door.

@@ -68,7 +68,13 @@ el coro compartan una base (la variante elige el lugar, el capo y las pruebas) e
    la voz sin cortes (el SongMeter de la fuga) o mantener H. La sospecha es la del club con otros textos: sin túnica,
    corriendo, con una herramienta en la mano o en la sacristía y el depósito. El cancionero todavía no cuenta
    **(propuesta)**.
-5. Las pruebas, el caso, la combi y el sorteo.
+5. Las pruebas, el caso, la combi y el sorteo. Hecho así (5a, pruebas y caso): el comisario da el caso del coro y la
+   semilla elige 3 de 6 pruebas: la alcancía de la colecta con doble fondo (en un atril junto a la entrada, se agarra),
+   el cuaderno del Maestro con "órgano: 0" (en la sacristía, que se abre con la llave de una maceta del depósito), la
+   foto de atrás del órgano de cartón lleno de plata, los recibos del "fondo del órgano" (en el depósito), la grabación
+   de dos coristas vecinos hablando de la plata y la foto del auto nuevo del Maestro, atrás de la capilla. Esposar a
+   Ernesto resuelve el caso, con el mismo sueldo y la misma cuota que el club. Hasta que esté la combi (5b), si los
+   descubren Ernesto huye en un auto común **(propuesta)**.
 
 ## Respuestas de Cristian (22/10, decisión 101)
 1. La historia va así: la colecta del órgano que nunca llega y el Maestro Ernesto.
