@@ -25,11 +25,11 @@ const STOP_SECONDS := 3.0
 const DOOR_OUT := 2.0
 ## The grandpa in the electric wheelchair you chase on foot (persecucion.md): the chase starts once a cop gets this
 ## close to him (or takes the wheel), the distance counts from the nearest cop, and only a cop on foot in his way, this
-## close, makes him give up; the patrol car in his way doesn't.
-const ON_FOOT := ["wheelchair"]
+## close, makes him give up; the patrol car in his way doesn't. Doña Chela's motorized walker goes the same way.
+const ON_FOOT := ["wheelchair", "walker"]
 ## The tow truck takes the patrol car (persecucion-lugares.md, "La grúa"): the cops chase him in the old one or on
 ## foot, so the distance counts from the nearest cop and the chase starts as they come out of the station.
-const CLOSE_BY := ["wheelchair", "tow_truck"]
+const CLOSE_BY := ["wheelchair", "walker", "tow_truck"]
 const START_NEAR := 25.0
 ## The golf thieves (persecucion-lugares.md): the drive out to the club is long, so the chase and its clock start once a
 ## cop goes through the gate. Stopped, one gives up and the other runs off; both go back, the runner in the trunk.

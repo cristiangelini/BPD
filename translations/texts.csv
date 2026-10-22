@@ -1099,3 +1099,8 @@ CLUB_TALK_0,"¿Cuántos cartones imprimimos esta semana?","How many cards did we
 CLUB_TALK_1,"Mil. Chela dice que el jueves ganamos todos los bingos de la ciudad.","A thousand. Chela says on Thursday we win every bingo in the city.","Mil. A Chela diz que na quinta ganhamos todos os bingos da cidade."
 CLUB_TALK_2,"¿Y la plata? ¿Otra vez debajo del escenario?","And the money? Under the stage again?","E o dinheiro? Embaixo do palco de novo?"
 CLUB_TALK_3,"Shh, que nadie se entere. Habla más bajo.","Shh, nobody can know. Keep your voice down.","Psiu, ninguém pode saber. Fala mais baixo."
+OBJ_CLUB_CATCH_CHELA,"Atrapar a Doña Chela en su andador","Catch Doña Chela on her walker","Pegar Dona Chela no andador"
+HINT_ESCAPE_chela,"¡Doña Chela se escapa en su andador con motor! ¡Atrápenla!","Doña Chela is getting away on her motorized walker! Catch her!","Dona Chela está fugindo no andador com motor! Peguem ela!"
+CHASE_CHELA_LINE_1,"¡Diez por hora! ¡Le puse el motor de la cortadora de pasto!","Ten an hour! I put the lawnmower's motor on it!","Dez por hora! Coloquei o motor do cortador de grama!"
+CHASE_CHELA_LINE_2,"Yo solo tengo suerte. Mucha suerte. Todos los jueves.","I'm just lucky. Very lucky. Every Thursday.","Eu só tenho sorte. Muita sorte. Toda quinta."
+CHASE_CHELA_LINE_3,"Está bien, me rindo. Pero el vals lo bailaban horrible.","Fine, I give up. But you danced the waltz horribly.","Tá bom, eu me rendo. Mas vocês dançaram a valsa horrível."

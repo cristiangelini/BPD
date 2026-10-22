@@ -113,7 +113,10 @@ las pruebas. El disfraz de cada policía se ve igual en todas las PC.
      detrás de ella en el escenario), la grabación (5 s al lado de dos abuelos que hablan del negocio con la cámara en
      la mano; mientras hablan no ven nada), el bolillero cargado (cuenta al agarrarlo) y el sobre con plata (en el piso
      al pie del escenario; cuenta al agarrarlo) **(propuesta)**.
-   - 6c. Descubiertos: Doña Chela huye en el andador con motor (persecución). 6d. El sorteo de "Jugar".
+   - 6c. Descubiertos: Doña Chela se baja del escenario y sale por la puerta del club en su andador con motor (con el
+     motor de una cortadora de pasto, a 10 km/h por la vereda) y arranca la persecución en medio del caso, a pie como la
+     del abuelo en silla de ruedas. Si la atrapan y la llevan al patrullero, el caso cuenta como resuelto con las
+     pruebas que tengan; si se escapa, se pierde **(propuesta)**. 6d. El sorteo de "Jugar".
 
 ## Respuestas de Cristian (22/10, decisión 100)
 1. La primera variante es Club de abuelos y la siguiente, Coro de iglesia.
