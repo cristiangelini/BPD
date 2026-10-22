@@ -107,7 +107,13 @@ las pruebas. El disfraz de cada policía se ve igual en todas las PC.
      Chela) y el sueldo. Esposar a Doña Chela resuelve el caso: paga 600 con las 3 pruebas y un tercio menos por cada
      una que falta. Cuota propia de 400, así que hacen falta al menos 2 pruebas para aprobar el turno. Esposar a
      cualquier otro abuelo los delata en el acto **(propuesta)**.
-   - 6b. Las pruebas. 6c. Descubiertos: Doña Chela huye en el andador con motor (persecución). 6d. El sorteo de "Jugar".
+   - 6b. Las pruebas: la semilla elige 3 de las 6 y solo esas están en el club. La imprenta (una máquina con cartones
+     en el depósito: hay que sacarle una foto), la libreta de ganancias (en el escritorio de la oficina, que se abre con
+     la llave de una maceta de la cocina; cuenta al agarrarla), los cartones marcados (E sobre el bolso de Doña Chela,
+     detrás de ella en el escenario), la grabación (5 s al lado de dos abuelos que hablan del negocio con la cámara en
+     la mano; mientras hablan no ven nada), el bolillero cargado (cuenta al agarrarlo) y el sobre con plata (en el piso
+     al pie del escenario; cuenta al agarrarlo) **(propuesta)**.
+   - 6c. Descubiertos: Doña Chela huye en el andador con motor (persecución). 6d. El sorteo de "Jugar".
 
 ## Respuestas de Cristian (22/10, decisión 100)
 1. La primera variante es Club de abuelos y la siguiente, Coro de iglesia.

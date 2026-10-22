@@ -9,6 +9,16 @@ extends Node3D
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const BINGO_CAGE_SCENE := preload("res://scenes/props/bingo_cage.tscn")
+const KEY_POT_SCENE := preload("res://scenes/props/key_pot.tscn")
+## Where the evidence goes (step 6b), in the club's space: the printing press in the storeroom, the notebook on the
+## office desk, the office key in a pot on the kitchen counter and Doña Chela's bag behind her on the stage.
+const PRESS_AT := Vector3(9.5, 0, -7.2)
+const PRESS_SIZE := Vector3(1.2, 1.2, 0.9)
+const NOTEBOOK_AT := Vector3(0.2, 0.84, -8.5)
+const KEY_POT_AT := Vector3(-11.0, 0.96, -10.4)
+const BAG_AT := Vector3(-12.8, 0.36, 1.3)
+## The envelope lies on the floor by the stage's front, somewhere along it (by the seed).
+const ENVELOPE_X := -11.3
 const HALF_X := 14.0
 const HALF_Z := 11.0
 const FLOOR_TOP := 0.06
@@ -69,6 +79,7 @@ var dance: ClubDance
 ## The seats nobody took, as seats() gives them.
 var free_seats: Array = []
 var case: InfiltrationCase
+var evidence: ClubEvidence
 var station_parking: Transform3D
 var _build: PlaceBuilder
 
@@ -99,6 +110,7 @@ func _ready() -> void:
 	case.club = self
 	case.shift_screen = $ShiftScreen
 	add_child(case)
+	evidence.found.connect(func(kind: String) -> void: case.found(kind))
 	case.start(city.comisario)
 
 
@@ -215,6 +227,101 @@ func _add_people() -> void:
 	var floor_middle := DANCE_FLOOR.get_center()
 	dance.position = Vector3(floor_middle.x, 1.5, floor_middle.y)
 	suspicion.watch_dance(dance)
+	_add_evidence(rng)
+
+
+## The 3 pieces of evidence the seed picks (ClubEvidence), and the office key in a kitchen pot.
+func _add_evidence(rng: RandomNumberGenerator) -> void:
+	evidence = ClubEvidence.new()
+	evidence.name = "Evidence"
+	add_child(evidence)
+	var pair := _talking_pair()
+	var available := ClubEvidence.KINDS.duplicate()
+	if pair.is_empty():
+		available.erase("recording")
+	evidence.kinds = ClubEvidence.draw(case_seed, available)
+	var pot: KeyPot = KEY_POT_SCENE.instantiate()
+	pot.name = "KeyPot"
+	pot.has_key = true
+	add_child(pot)
+	pot.position = KEY_POT_AT
+	for kind: String in evidence.kinds:
+		match kind:
+			"press":
+				var press := _spot("press", PRESS_AT + Vector3(0, PRESS_SIZE.y / 2 + FLOOR_TOP, 0))
+				var shape := CollisionShape3D.new()
+				var box := BoxShape3D.new()
+				box.size = PRESS_SIZE
+				shape.shape = box
+				press.add_child(shape)
+				var body := MeshInstance3D.new()
+				var mesh := BoxMesh.new()
+				mesh.size = PRESS_SIZE
+				var material := StandardMaterial3D.new()
+				material.albedo_color = Color(0.25, 0.27, 0.3)
+				mesh.material = material
+				body.mesh = mesh
+				press.add_child(body)
+				var cards := MeshInstance3D.new()
+				var stack := BoxMesh.new()
+				stack.size = Vector3(0.36, 0.25, 0.44)
+				var paper := StandardMaterial3D.new()
+				paper.albedo_color = ClubBingoCard.PAPER
+				stack.material = paper
+				cards.mesh = stack
+				cards.position = Vector3(0.2, PRESS_SIZE.y / 2 + 0.125, 0)
+				press.add_child(cards)
+			"bag":
+				var bag := _spot("bag", BAG_AT + Vector3(0, FLOOR_TOP, 0))
+				var shape := CollisionShape3D.new()
+				var box := BoxShape3D.new()
+				box.size = Vector3(0.4, 0.35, 0.25)
+				shape.shape = box
+				shape.position.y = 0.17
+				bag.add_child(shape)
+				_build.mesh_box(BAG_AT + Vector3(0, FLOOR_TOP + 0.15, 0), Vector3(0.4, 0.3, 0.2), Color(0.45, 0.1, 0.35))
+				_build.mesh_box(BAG_AT + Vector3(0, FLOOR_TOP + 0.36, 0), Vector3(0.26, 0.12, 0.03), Color(0.3, 0.06, 0.24))
+			"notebook":
+				var notebook := ClubEvidence.make_item("ClubNotebook", ClubEvidence.NOTEBOOK_MODEL,
+					Vector3(0.2, 0.025, 0.14), 0.3)
+				add_child(notebook)
+				notebook.position = NOTEBOOK_AT
+				evidence.items[kind] = notebook
+			"envelope":
+				var envelope := ClubEvidence.make_item("ClubEnvelope", ClubEvidence.ENVELOPE_MODEL,
+					Vector3(0.16, 0.06, 0.09), 0.2)
+				add_child(envelope)
+				envelope.position = Vector3(ENVELOPE_X, FLOOR_TOP + 0.04,
+					rng.randf_range(STAGE.position.y + 0.5, STAGE.end.y - 0.5))
+				evidence.items[kind] = envelope
+			"cage":
+				evidence.items[kind] = bingo_cage
+			"recording":
+				evidence.talkers.assign(pair)
+				for member: ClubMember in pair:
+					member.distracted = true
+
+
+func _spot(kind: String, at: Vector3) -> ClubEvidenceSpot:
+	var spot := ClubEvidenceSpot.new()
+	spot.name = "Evidence_" + kind
+	spot.kind = kind
+	spot.evidence = evidence
+	add_child(spot)
+	spot.position = at
+	return spot
+
+
+## The first two grandparents at the same table, in seat order (the recording's talkers), or none.
+func _talking_pair() -> Array[ClubMember]:
+	for table: Vector3 in tables:
+		var here: Array[ClubMember] = []
+		for member in members:
+			if Vector2(member.position.x - table.x, member.position.z - table.z).length() < 1.5:
+				here.append(member)
+		if here.size() >= 2:
+			return here.slice(0, 2)
+	return []
 
 
 ## Doña Chela's bingo at the stand, and the cops' cards in front of free seats, lying on the table.
