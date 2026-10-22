@@ -50,7 +50,11 @@ el coro compartan una base (la variante elige el lugar, el capo y las pruebas) e
    y se cae corriendo igual que las piezas del club. Con la túnica el policía pasa por corista (`is_disguised
    ("chorister")`), no por abuelo, y al revés. El cancionero por ahora solo se lleva en la mano; en el paso 4 se ve
    si cantar sin cancionero da sospecha **(propuesta)**.
-3. La capilla en la ciudad, con los coristas, la señora de la puerta y el Maestro Ernesto.
+3. La capilla en la ciudad, con los coristas, la señora de la puerta y el Maestro Ernesto. Primero (3a) la capilla sola:
+   "Capilla del barrio", en la cuadra (1, 1) al sur, de 24 x 22 m y una planta: la nave con 12 bancos en dos filas y
+   un pasillo al medio, la tarima del coro contra el fondo con 14 lugares y un atril delante de cada uno, el cajón del
+   director, el órgano de cartón contra la pared oeste y, detrás de la tarima, la sacristía (con llave) y el depósito.
+   Los policías arrancan en la comisaría, donde están las túnicas (`--place=choir`) **(propuesta)**.
 4. Cantar con la batuta (voz o H) y la sospecha del coro.
 5. Las pruebas, el caso, la combi y el sorteo.
 
