@@ -117,3 +117,4 @@
 - Online owner escape: when the raid's owner runs off, every PC sees the same chase after him (his vehicle, the meters, him getting out) and how it ends.
 - Online crime scene: the host counts every cop's clues, files and accusations, and every PC sees the same planilla, board files, verdict, culprit's bike chase and end of shift.
 - Online draw: Play online now draws chases and crime scenes too, like playing alone.
+- Online dangerous suspect: online too he can get out the front door in the old patrol car, and every PC sees the same chase after him and how it ends (back in his chair or the interrogation lost).

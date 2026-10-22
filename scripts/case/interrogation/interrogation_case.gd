@@ -300,7 +300,7 @@ func _watch(delta: float) -> void:
 		loose = true
 		_unwatched = 0.0
 		suspect.run()
-		suspect.can_leave = getaway != null and online == null
+		suspect.can_leave = getaway != null
 		_say("SUSPECT_BREAKS_LOOSE", true)
 		_hint_all("HINT_SUSPECT_LOOSE")
 
@@ -346,14 +346,21 @@ func grab_loose(cop: Cop) -> void:
 
 ## Out the front door: he's off in the old patrol car and the chase is on.
 func _on_outside() -> void:
-	if not loose or not is_on() or not getaway:
+	if not loose or not is_on() or not getaway or follower:
 		return
+	_escape()
+
+
+## Off in the old patrol car (online, a guest's follows the host's chase: CaseSync).
+func _escape() -> void:
 	loose = false
 	escaping = true
 	suspect.hide()
 	chase = ChaseCase.begin(get_parent(), SuspectCar.OLD_PATROL, getaway.global_transform, car, city, case_seed,
 		city_map, getaway)
 	chase.who = "dangerous"
+	chase.online = online
+	chase.follower = follower
 	chase.ended.connect(_on_chase_ended)
 	_hint_all("HINT_DANGEROUS_STREET")
 
@@ -364,9 +371,14 @@ func _on_chase_ended(caught: bool) -> void:
 		escaped = true
 		failed_label.text = "CASE_FAILED_SUSPECT_ESCAPED"
 		failed_label.show()
-		_finish_soon()
+		if not follower:
+			_finish_soon()
 		return
-	# Back from the patrol car to his chair, scared.
+	# Back from the patrol car to his chair, scared (a guest's only shows it: the host's decides, NpcSync removes the
+	# one who got out).
+	if follower:
+		suspect.sit()
+		return
 	if chase.home_car().prisoner == chase.suspect:
 		chase.home_car().prisoner = null
 	chase.suspect.queue_free()
@@ -864,7 +876,9 @@ func snapshot() -> Dictionary:
 	return {"tip": tip_given, "nerves": nerves, "lawyer": lawyer, "twin": twin_nerves, "loose": loose,
 		"asleep": asleep, "confessed": confessed, "lawyer_came": lawyer_came,
 		"confessions": confessions.map(func(sheet_of: FanConfession) -> String: return sheet_of.crime),
-		"sheet": sheet.text if sheet else "", "result": _result}
+		"sheet": sheet.text if sheet else "", "result": _result,
+		# The dangerous one out on the street, and the chase after him (persecucion-final.md).
+		"chase": chase.snapshot() if chase else {}}
 
 
 ## A guest takes the host's interrogation: the meters, what's on the table, the confession or the lawyer, and the end
@@ -878,6 +892,10 @@ func apply_snapshot(state: Dictionary) -> void:
 	loose = state.loose
 	asleep = state.asleep
 	_emit()
+	if not (state.chase as Dictionary).is_empty() and getaway:
+		if not chase:
+			_escape()
+		chase.apply_snapshot(state.chase)
 	if confessions.is_empty() and not (state.confessions as Array).is_empty():
 		_hold_up(state.confessions)
 	for sheet_of in confessions.duplicate():
