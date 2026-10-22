@@ -76,6 +76,11 @@ megáfono y el medidor de distancia.
 ## Online
 El host maneja al sospechoso y decide los medidores (decisión 50), como con el patrullero, que ya se sincroniza.
 
+**Cómo va quedando:** el vehículo del sospechoso, el reloj, el medidor de distancia, la denuncia de los padres, si
+se escapó y la pantalla del turno ya son iguales en todas las PCs. Faltan las tareas del patrullero (megáfono,
+pinchos, red, conos, radio), el sospechoso bajado y esposado, lo que deja en la calle, el tráfico de la autopista,
+los golfistas y la grúa; hasta entonces online no sale ninguna persecución en el sorteo.
+
 ## El orden para hacerlo (un PR chico por paso)
 1. El auto del sospechoso que maneja solo por la ciudad, con su ruta por la semilla.
 2. El caso: el comisario lo da, el medidor de distancia, esposarlo, perderlo y la pantalla del turno. Con el heladero.

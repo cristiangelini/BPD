@@ -107,6 +107,11 @@ var case_failed := false
 ## The school bus's parents' complaint.
 var complaint := 0.0
 var shift_over := false
+## Online (docs/diseno/online.md): the host's chase decides and a guest's follows it (CaseSync); `online` is that sync.
+var follower := false
+var online: CaseSync
+## Why it was lost (a tr() key), shown on every PC.
+var failed_reason := ""
 var _result := {}
 var _told_on_foot := false
 
@@ -193,8 +198,15 @@ func start(comisario: Comisario = null) -> void:
 		give_tip()
 	if not shift_screen:
 		return
-	shift_screen.play_again.connect(func() -> void: PlaceDraw.start(get_tree()))
+	shift_screen.play_again.connect(_play_again)
 	shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
+
+
+func _play_again() -> void:
+	if online:
+		online.play_again()
+	else:
+		PlaceDraw.start(get_tree())
 
 
 func give_tip() -> void:
@@ -214,9 +226,9 @@ func give_tip() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if towed and not unhooked:
+	if towed and not unhooked and not follower:
 		towed.global_transform = truck.towed_transform()
-	if case_failed or case_solved or not tip_given:
+	if case_failed or case_solved or not tip_given or follower:
 		return
 	if not chasing:
 		# The suspect drives off once a cop takes the wheel (or, on foot, walks up to him; at the golf club, goes in).
@@ -299,7 +311,7 @@ static func _flat(v: Vector3) -> Vector3:
 
 ## A hard ram on the school bus, full of kids: the parents complain.
 func _on_rammed() -> void:
-	if suspect_id != "school_bus" or case_failed or case_solved:
+	if suspect_id != "school_bus" or case_failed or case_solved or follower:
 		return
 	complaint = minf(complaint + RAM_COMPLAINT, COMPLAINT_FULL)
 	complaint_changed.emit(complaint)
@@ -379,12 +391,13 @@ func car_at_station() -> bool:
 
 
 func fail(reason: String) -> void:
-	if case_failed or case_solved:
+	if case_failed or case_solved or follower:
 		return
 	if embedded:
 		_end(false)
 		return
 	case_failed = true
+	failed_reason = reason
 	truck.driving = false
 	failed_label.text = reason
 	failed_label.show()
@@ -410,7 +423,7 @@ func _finish_soon() -> void:
 
 ## The end of shift screen: caught and brought in pays the salary, got away nothing.
 func finish_shift() -> void:
-	if shift_over:
+	if shift_over or follower:
 		return
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
@@ -445,7 +458,43 @@ func _show_result(result: Dictionary) -> void:
 		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over,
 			result.campaign.promoted)
 		over = result.campaign.over
-	shift_screen.get_node("%AgainButton").visible = not over
+	# Online only the host starts the next case.
+	shift_screen.get_node("%AgainButton").visible = not over and not follower
+
+
+## What every guest's chase shows (CaseSync, 5 times a second when it changes).
+func snapshot() -> Dictionary:
+	return {"tip": tip_given, "chasing": chasing, "distance": snappedf(distance, 0.1),
+		"time_left": snappedf(time_left, 0.1), "stopped": stopped, "caught": caught, "solved": case_solved,
+		"failed": failed_reason, "complaint": complaint, "unhooked": unhooked, "result": _result}
+
+
+## A guest's chase takes the host's.
+func apply_snapshot(state: Dictionary) -> void:
+	if state.tip:
+		give_tip()
+	chasing = state.chasing
+	distance = state.distance
+	time_left = state.time_left
+	stopped = state.stopped
+	caught = state.caught
+	unhooked = state.unhooked
+	meters_changed.emit(distance, time_left)
+	if not is_equal_approx(complaint, state.complaint):
+		complaint = state.complaint
+		complaint_changed.emit(complaint)
+	if state.solved and not case_solved:
+		case_solved = true
+		if solved_label:
+			solved_label.show()
+	if state.failed != "" and not case_failed:
+		case_failed = true
+		failed_reason = state.failed
+		if failed_label:
+			failed_label.text = failed_reason
+			failed_label.show()
+	if not state.result.is_empty() and not shift_over:
+		_show_result(state.result)
 
 
 func _hint_all(key: String) -> void:

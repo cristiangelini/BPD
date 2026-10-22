@@ -208,6 +208,17 @@ func get_off() -> void:
 			(rider as Node3D).hide()
 
 
+## Online (NpcSync): whether he got off, so a guest's copy hides its riders too.
+func net_state() -> Variant:
+	var rider := get_node_or_null("Rider") as Node3D
+	return rider != null and not rider.visible
+
+
+func apply_net_state(state: Variant) -> void:
+	if state:
+		get_off()
+
+
 ## The net: he can't drive for `seconds`.
 func tangle(seconds: float) -> void:
 	tangled_left = maxf(tangled_left, seconds)
