@@ -6,7 +6,8 @@ extends Node
 ## boss (Doña Chela at the club). Cuffed, the case is solved and pays SALARY, a third less for each piece of evidence
 ## missing; quota of its own, like the chase (decision 91). Found out (ClubSuspicion), the boss runs off in their
 ## getaway and the chase starts in the middle of the case (decision 96): caught, it counts as solved with the evidence
-## they have; got away, it's lost. The place's `variant` picks the texts and the getaway (VARIANTS). Online the host's
+## they have; got away, it's lost. Solved, the boss is in custody and the next shift is their interrogation (decision
+## 93, `custody`). The place's `variant` picks the texts and the getaway (VARIANTS). Online the host's
 ## case decides and the guests' follow it (CaseSync). Every number here is (propuesta).
 
 const REFRESH := 0.5
@@ -18,7 +19,8 @@ const QUOTA := 400
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 ## What changes from one place to the other: the campaign's story, the comisario's briefing, the hints, the
 ## planilla's rows (`rows` + GET_IN, EVIDENCE, CAREFUL and FOUND_OUT), the evidence's names (`evidence` + kind), and
-## the boss: who it is for the chase, what it runs off in, and its own hint and rows.
+## the boss: who it is for the chase, what it runs off in, its own hint and rows, and what slips out of them in the
+## interrogation (`slips` % 1 to 3).
 const VARIANTS := {
 	"club": {
 		"story": "infiltration_club",
@@ -27,6 +29,7 @@ const VARIANTS := {
 		"rows": "OBJ_CLUB_", "evidence": "EVIDENCE_CLUB_",
 		"boss": "chela", "getaway": SuspectCar.WALKER,
 		"boss_cuffed": "HINT_CHELA_CUFFED", "cuff_row": "OBJ_CLUB_CUFF_CHELA", "catch_row": "OBJ_CLUB_CATCH_CHELA",
+		"slips": "CHELA_SLIP_%d",
 	},
 	# The church choir (infiltracion-coro.md, decision 101): Ernesto runs off in the choir van, with the choir inside.
 	"choir": {
@@ -37,6 +40,7 @@ const VARIANTS := {
 		"boss": "ernesto", "getaway": SuspectCar.CHOIR_VAN,
 		"boss_cuffed": "HINT_ERNESTO_CUFFED", "cuff_row": "OBJ_CHOIR_CUFF_ERNESTO",
 		"catch_row": "OBJ_CHOIR_CATCH_ERNESTO",
+		"slips": "ERNESTO_SLIP_%d",
 	},
 }
 
@@ -169,6 +173,19 @@ func solved() -> bool:
 	return boss_cuffed or caught
 
 
+## The boss the cops took away, for the next shift's interrogation (decision 93), like a raid's owner
+## (RaidCase.custody): who they are, what slips out of them and what the evidence left behind was worth (the third of
+## the salary each missing piece took off). Empty if it isn't solved.
+func custody() -> Dictionary:
+	if not solved():
+		return {}
+	var slips: Array[String] = []
+	for i in InterrogationCase.OWNER_SLIPS.size():
+		slips.append(texts().slips % (i + 1))
+	return {"owner": texts().boss, "story": texts().story, "slips": slips,
+		"missed": SALARY * (EVIDENCE - evidence_found.size()) / EVIDENCE}
+
+
 ## The pay: SALARY with all the evidence, a third less for each piece missing.
 func report() -> Dictionary:
 	var salary := SALARY * evidence_found.size() / EVIDENCE if solved() else 0
@@ -187,9 +204,12 @@ func finish_shift() -> void:
 	if campaign and not campaign.is_over():
 		var played := campaign.shift
 		campaign.finish_shift(texts().story, solved(), pay, QUOTA)
+		campaign.custody = custody()
 		campaign.save()
 		result.campaign = {"shift": played, "money": campaign.money, "over": campaign.is_over(),
 			"promoted": campaign.is_promoted()}
+	else:
+		PlaceDraw.custody = custody()
 	_show_result(result)
 
 
