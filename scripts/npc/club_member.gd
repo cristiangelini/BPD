@@ -31,6 +31,8 @@ const ALARM := 80.0
 var next_line := 0
 ## 0 to 100: at 100 they shout that the cops are cops (ClubSuspicion).
 var suspicion := 0.0
+## Busy talking business with a neighbor (the recording, ClubEvidence): they notice nothing.
+var distracted := false
 var _bubble: Label3D
 var _bubble_left := 0.0
 var _mark: Label3D
@@ -88,6 +90,8 @@ func set_suspicion(value: float) -> void:
 
 ## Whether they see `cop`'s chest: in their cone, near enough and with no wall in between.
 func sees_cop(cop: Cop) -> bool:
+	if distracted:
+		return false
 	var eye := global_position + Vector3.UP * EYE_HEIGHT
 	var at := cop.global_position + Vector3.UP
 	var flat := Vector3(at.x - eye.x, 0, at.z - eye.z)
