@@ -90,7 +90,13 @@ las pruebas. El disfraz de cada policía se ve igual en todas las PC.
    es un error: el abuelo más cercano lo comenta (y en el paso 4 suma sospecha). Cualquiera puede marcar cualquier
    cartón, así un compañero te cubre. A los 24 números Doña Chela grita "¡BINGO!" (siempre gana ella) y empieza otra
    ronda **(propuesta)**.
-4. La sospecha de los abuelos (reusa la del guardia) y el "¡Son policías!".
+4. La sospecha de los abuelos (reusa la del guardia) y el "¡Son policías!". Hecho así: cada abuelo de las mesas ve
+   en un cono de 140° y 9 m delante de él. Por segundo, por cada policía que ve: sin disfraz +30, corriendo +35, con una
+   herramienta en la mano +25, en la cocina, la oficina o el depósito +40; si no ve nada, baja 5. De golpe: una pieza
+   del disfraz que se cae adelante suyo +30, un número del bingo sin marcar +20 al de al lado (+10 a los que están a
+   3 m) y un grito a 10 m +25. A 50 sale un "?" sobre su cabeza, a 80 un "!", y a 100 grita "¡Son policías!" y Doña
+   Chela sale corriendo (la persecución llega en el paso 6). Arriba de la pantalla se ve la sospecha del abuelo más
+   desconfiado **(propuesta)**.
 5. El baile.
 6. Las 3 pruebas y el final: sueldo, Doña Chela esposada o en el andador (persecución), y el sorteo.
 
