@@ -1237,3 +1237,8 @@ BEAR_PHONE_KEPT_BIRTHDAY,"Snif. Nadie me había cantado así. Suelto a uno. Paus
 BEAR_PHONE_KEPT_CAR_AWAY,"Mucho mejor. Suelto a uno, y el pato descansa un poco.","Much better. I'll let one go, and the duck takes a little rest.","Muito melhor. Solto um, e o pato descansa um pouco."
 BEAR_PHONE_LIED,"¡Me mintieron! ¡Pato, dale más fuerte a ese taladro!","You lied to me! Duck, drill harder!","Vocês mentiram! Pato, mete mais força nessa furadeira!"
 BEAR_PHONE_HANGUP,"¿No? Bueno. Clic.","No? Fine. Click.","Não? Tá bom. Clique."
+HINT_ESCAPE_oso,"¡Abrieron la bóveda! ¡El Oso se escapa en la camioneta con la plata! ¡Persíganlo!","They opened the vault! El Oso is getting away in the van with the money! After him!","Abriram o cofre! El Oso está fugindo na van com o dinheiro! Atrás dele!"
+HINT_ESCAPE_oso_FOOT,"¡Abrieron la bóveda! La camioneta está encerrada: ¡El Oso se escapa a pie con una bolsa de plata!","They opened the vault! The van is boxed in: El Oso is running off on foot with a sack of money!","Abriram o cofre! A van está cercada: El Oso está fugindo a pé com um saco de dinheiro!"
+CHASE_OSO_LINE_1,"¡El Oso nunca se rinde! Bueno, casi nunca.","El Oso never gives up! Well, almost never.","El Oso nunca se rende! Bom, quase nunca."
+CHASE_OSO_LINE_2,"Esta máscara no deja ver nada para manejar.","You can't see a thing through this mask to drive.","Não dá pra ver nada com essa máscara pra dirigir."
+CHASE_OSO_LINE_3,"Está bien, está bien. Pero las donas estaban buenas.","Fine, fine. But the donuts were good.","Tá bom, tá bom. Mas as rosquinhas estavam boas."
