@@ -130,6 +130,24 @@ export function buildFishingRod() {
 	return b.build();
 }
 
+// One donut out of the guard's box (fuga.md), centered: 0.16 m across, lying flat.
+export function buildDonut() {
+	const b = new Builder('donut');
+	b.add('dough', mat('donut_dough', 0xd99a52), new THREE.TorusGeometry(0.055, 0.026, 6, 10), { pos: V(0, 0, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('icing', mat('icing_pink', 0xff5fa2), new THREE.TorusGeometry(0.055, 0.029, 6, 10), { pos: V(0, 0.016, 0), rot: [Math.PI / 2, 0, 0], scale: [1, 1, 0.5] });
+	return b.build();
+}
+
+// The key of the cells (fuga.md), big and brass so it shows at night: a ring, a shaft and two teeth, 0.2 m long along X.
+export function buildCellKey() {
+	const b = new Builder('cell_key');
+	const brass = mat('key_brass', 0xe0b040, { emissive: 0x2a1e04 });
+	b.add('key', brass, new THREE.TorusGeometry(0.035, 0.01, 5, 10), { pos: V(-0.065, 0, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('key', brass, new THREE.BoxGeometry(0.13, 0.016, 0.016), { pos: V(0.035, 0, 0) });
+	for (const x of [0.07, 0.095]) b.add('key', brass, new THREE.BoxGeometry(0.012, 0.016, 0.04), { pos: V(x, 0, 0.02) });
+	return b.build();
+}
+
 // The armory's wheelbarrow (comisaria.md): origin on the floor under the tray, wheel ahead (-Z), handles back (+Z)
 // toward the cop pushing it. Tray 0.7 x 0.3 x 0.9 m, its floor at 0.45 m.
 export function buildWheelbarrow() {
@@ -153,6 +171,7 @@ export function buildWheelbarrow() {
 export const models = {
 	wheelbarrow: buildWheelbarrow,
 	donut_box: buildDonutBox, guard_donut_box: buildGuardDonutBox, broom: buildBroom, fishing_rod: buildFishingRod,
+	donut: buildDonut, cell_key: buildCellKey,
 	station_desk: buildDesk, station_lockers: buildLockers, station_coffee: buildCoffee, station_bench: buildBench,
 	station_rack: buildRack, station_bunk: buildBunk,
 };

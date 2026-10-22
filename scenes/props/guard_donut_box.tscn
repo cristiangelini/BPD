@@ -12,6 +12,7 @@ collision_mask = 15
 mass = 0.8
 script = ExtResource("1")
 donuts = 6
+loose = true
 
 [node name="Shape" type="CollisionShape3D" parent="."]
 shape = SubResource("Shape")

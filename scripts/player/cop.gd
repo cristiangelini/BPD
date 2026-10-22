@@ -133,7 +133,8 @@ func current_prompt() -> String:
 		return seated_in.prompt_key(self)
 	if $Grabber.held:
 		var aimed := _usable_target()
-		if aimed is WaitingArmchair or aimed is DigSpot or aimed is InterrogationSuspect or aimed is PastryCook:
+		if aimed is WaitingArmchair or aimed is DigSpot or aimed is InterrogationSuspect or aimed is PastryCook \
+				or (aimed is CellDoor and $Grabber.held is CellKey):
 			return aimed.prompt_key(self)
 		if $Grabber.held.has_method("held_prompt_key"):
 			return $Grabber.held.held_prompt_key(self)
@@ -192,13 +193,18 @@ func eat_donut(box: DonutBox) -> bool:
 	if not box or not box.eat_one():
 		show_hint("HINT_DONUTS_GONE")
 		return false
-	stamina = GameScale.RUN_STAMINA
-	exhausted = false
-	_mouth_full_left = MOUTH_FULL
+	fill_up_on_donut()
 	show_hint("HINT_DONUT")
 	# Eaten in front of a suspect in an interrogation, it's the bad cop's move (interrogatorio.md).
 	get_tree().call_group("interrogation", "donut_eaten_by", self)
 	return true
+
+
+## What a donut does: stamina full again, and the mouth too full to ask for MOUTH_FULL seconds.
+func fill_up_on_donut() -> void:
+	stamina = GameScale.RUN_STAMINA
+	exhausted = false
+	_mouth_full_left = MOUTH_FULL
 
 
 ## E with a crime scene clue in hand (CrimeClueItem): into a bag if aiming at the bags, or eaten.
@@ -390,7 +396,7 @@ func use() -> bool:
 			return false
 		act("eat_donut", self, [$Grabber.held])
 		return true
-	if $Grabber.held is HookStick:
+	if $Grabber.held is HookStick or $Grabber.held is LooseDonut:
 		act("use", $Grabber.held)
 		return true
 	if $Grabber.held is CrimeClueItem:

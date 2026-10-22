@@ -18,8 +18,12 @@ const MUNCH_LINES := 5
 const BUBBLE_TIME := 4.0
 
 var box: DonutBox
-## Which donut of the box (its part donut_<n>) has the key.
-var key_donut := 0
+## Which donut of the box (its part donut_<n>) has the key: the box keeps it (DonutBox.key_donut).
+var key_donut: int:
+	get:
+		return box.key_donut if box else -1
+	set(value):
+		box.key_donut = value
 var key_on_belt := false
 var eat_left := EAT_EVERY
 var _bubble: Label3D
@@ -31,7 +35,7 @@ var _rng := RandomNumberGenerator.new()
 func setup(case_seed: int, donut_box: DonutBox) -> void:
 	box = donut_box
 	_rng.seed = hash(["night guard", case_seed])
-	key_donut = _rng.randi_range(0, box.donuts - 1)
+	box.key_donut = _rng.randi_range(0, box.donuts - 1)
 
 
 func _ready() -> void:
@@ -83,8 +87,7 @@ func eat() -> void:
 	if not box_in_reach() or box.donuts == 0:
 		say("GUARD_NO_DONUTS")
 		return
-	box.eat_one()
-	var donut := box.donuts
+	var donut := box.take_one()
 	ate.emit(donut)
 	if donut == key_donut and not key_on_belt:
 		key_on_belt = true
@@ -112,4 +115,4 @@ func net_state() -> Variant:
 func apply_net_state(state: Variant) -> void:
 	key_on_belt = state[1]
 	while is_instance_valid(box) and box.donuts > int(state[0]):
-		box.eat_one()
+		box.take_one()
