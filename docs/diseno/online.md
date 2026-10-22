@@ -51,6 +51,7 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 | Persecución (el vehículo del sospechoso, reloj, distancia, denuncia de los padres) | Anfitrión | El sospechoso maneja solo en la PC del anfitrión; en las otras su vehículo sigue la copia. El reloj, el medidor, si se escapó o lo agarraron y la pantalla del turno iguales para todos |
 | Escena del crimen (pistas, fichas, acusación, cocineros que se van, la bici del culpable) | Anfitrión | La planilla, las fichas del tablero, el veredicto del comisario y la pantalla del turno iguales para todos |
 | Control de tránsito (los autos de la fila, la paciencia, las pistas, detener, el baúl, el buscado que se escapa) | Anfitrión | La fila llega solo en la PC del anfitrión; en las otras cada auto sigue su copia. El medidor, las pistas de la radio, los detenidos, el baúl abierto, el buscado escoltado o la persecución tras él y la pantalla del turno iguales para todos |
+| Infiltración (club de abuelos y coro: pruebas, sospecha, bingo, disfraces, el jefe esposado o la huida) | Anfitrión | Las pruebas encontradas, la sospecha de cada uno, las cartillas, los disfraces de cada policía, el jefe esposado o la persecución tras él y la pantalla del turno iguales para todos |
 | Plata, ítems y turno | Anfitrión | La pantalla de fin de turno igual para todos |
 
 ## Herramientas
