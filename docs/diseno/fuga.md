@@ -137,8 +137,8 @@ come y los invitados ven la misma caja. Captura: `fuga/paso2_guardia.png`.
 - A la tercera captura el guardia llama al comisario ("¡Se acabó! ¿Comisario? Sí, perdón por la hora..."), que
   aparece en la puerta de la sala de las celdas gritando "¿¡Me sacaron de la cama, en pijama, para esto!?
   ¡Suspendidos, todos!". A los 3 s sale "Suspendidos" y "Tres capturas del guardia, y el comisario llegó en pijama.
-  Se terminó la partida.", con "Volver al menú". Por ahora el comisario es el mismo modelo de siempre, sin pijama
-  **(propuesta: falta el modelo en pijama)**.
+  Se terminó la partida.", con "Volver al menú". Llega con un pijama a rayas celeste, gorro de dormir y
+  pantuflas (modelo nuevo `npc_comisario_pijama`, captura `fuga/npc_comisario_pijama.png`).
 - Online, el anfitrión decide cómo terminó y los invitados lo ven igual (viaja con el estado del guardia).
 - Capturas: `fuga/paso6_fugados.png`, `paso6_comisario.png` y `paso6_suspendidos.png`.
 

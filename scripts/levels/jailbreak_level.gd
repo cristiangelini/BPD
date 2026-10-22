@@ -216,6 +216,7 @@ func _call_comisario() -> void:
 	guard.say("GUARD_CALLS_COMISARIO", LOST_DELAY + 2.0)
 	var comisario := Comisario.new()
 	comisario.name = "PajamaComisario"
+	comisario.in_pajamas = true
 	add_child(comisario)
 	comisario.global_transform = city.transform * CityLayout.lot("station") * Transform3D(Basis(Vector3.UP, PI / 2),
 		COMISARIO_AT)
