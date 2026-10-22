@@ -47,11 +47,14 @@ func show_report(solved: bool, report: Dictionary, broken_ornaments: int, awards
 
 
 ## The campaign's line under the pay: which shift this was and the group's money. When the campaign is over, the
-## verdict says how: promoted after the last shift, or lost for missing the quota (decision 88).
+## verdict says how: promoted after the last shift, or lost for missing the quota (decision 88). The first missed
+## quota of a campaign sends the cops to their own cells instead (decision 99).
 func show_campaign(shift: int, shifts: int, money: int, over: bool, promoted := false) -> void:
 	_line(tr("SHIFT_TURN") % [shift, shifts], money, true)
 	if over:
 		_verdict.text = tr(_verdict.text) + "\n" + tr("SHIFT_PROMOTED" if promoted else "SHIFT_CAMPAIGN_LOST")
+	elif Campaign.current and Campaign.current.jailed:
+		_verdict.text = tr(_verdict.text) + "\n" + tr("SHIFT_JAILED")
 
 
 func _line(text: String, amount: int, bold := false) -> void:
