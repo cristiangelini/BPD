@@ -99,6 +99,18 @@ come y los invitados ven la misma caja. Captura: `fuga/paso2_guardia.png`.
   atrapado en la pantalla de su dueño.
 - Capturas: `fuga/paso4_sospecha.png` (afuera, con la barra subiendo) y `paso4_atrapado.png` (de vuelta en la celda).
 
+**Cómo quedó el paso 5a (ruidos y gritos):**
+- Algo tirado (con el clic de tirar) que cae a 3 m o más de él y a menos de 15 m lo hace girar la cabeza hacia ahí
+  4 s, más rápido que cuando vigila: "¿Qué fue eso? ¿Hay alguien ahí?". Cuenta dónde quedó cuando frena o 1,5 s
+  después de tirarlo (una dona sigue rodando) **(propuesta)**.
+- Puede girar del todo, incluso de espaldas a las celdas: mientras mira el ruido, los demás pueden moverse donde no
+  mira. Lo que tiraron (una dona) no le da sospecha mientras mira el ruido; un policía afuera sí.
+- Gritar por el micrófono (como al sospechoso en el interrogatorio) a menos de 15 m lo hace girar 3 s hacia el que
+  gritó: "¡Silencio ahí! Que algunos trabajamos.". Sirve para que mire a una celda mientras otro sale por la otra.
+- Por ahora no se levanta a mirar: gira la cabeza (y el cuerpo) desde la silla **(propuesta)**.
+- Online, el grito de un invitado va al anfitrión, que es el que tiene al guardia.
+- Captura: `fuga/paso5_ruido.png` (mirando una dona tirada al fondo de la sala).
+
 ## Cómo se gana y cómo se pierde
 - **Se gana** con los 4 en el patrullero fuera del estacionamiento. Pantalla corta "¡Fugados!" y a la mañana arranca el
   turno siguiente en la comisaría.

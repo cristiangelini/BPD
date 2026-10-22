@@ -144,9 +144,9 @@ func _send(steam: Object) -> void:
 		_voice.rpc(maxi(talking, 0), data)
 
 
-## Only in an interrogation: a shout near the suspect is the bad cop's shout.
+## Only in an interrogation (a shout near the suspect is the bad cop's shout) or the jailbreak (the guard turns to it).
 func _check_shout(steam: Object, data: PackedByteArray) -> void:
-	if not is_inside_tree() or not get_tree().has_group("interrogation"):
+	if not is_inside_tree() or not (get_tree().has_group("interrogation") or get_tree().has_group("night_guard")):
 		return
 	var voice: Dictionary = steam.call("decompressVoice", data, mix_rate)
 	var pcm: PackedByteArray = voice.get("uncompressed", voice.get("buffer", PackedByteArray()))
@@ -154,11 +154,25 @@ func _check_shout(steam: Object, data: PackedByteArray) -> void:
 		shouted(local_cop(get_tree()))
 
 
-## Tells the interrogation (or the crime scene) that the player's cop shouted.
+## Tells the interrogation, the crime scene or the jailbreak's guard that the player's cop shouted.
 func shouted(cop: Cop) -> void:
 	if cop:
 		get_tree().call_group("interrogation", "shouted_by", cop)
 		get_tree().call_group("crime_scene", "shouted_by", cop)
+		if not get_tree().has_group("night_guard"):
+			return
+		# The jailbreak's guard lives on the host.
+		if _net.is_host():
+			get_tree().call_group("night_guard", "shouted_by", cop)
+		else:
+			_guard_heard_shout.rpc_id(_net.HOST_ID)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _guard_heard_shout() -> void:
+	var sync: CopSync = _net.cop_syncs.get(multiplayer.get_remote_sender_id())
+	if multiplayer.is_server() and sync and is_instance_valid(sync.cop):
+		get_tree().call_group("night_guard", "shouted_by", sync.cop)
 
 
 ## The cop this PC's player moves.
