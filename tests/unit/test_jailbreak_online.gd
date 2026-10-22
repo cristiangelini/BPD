@@ -24,14 +24,18 @@ func _make_jail() -> Node3D:
 	return jail
 
 
+func _donuts(root: Node) -> Array:
+	return root.find_children("*", "RigidBody3D", true, false).filter(func(body: Node) -> bool: return body is LooseDonut)
+
+
 func test_a_donut_the_host_takes_out_shows_on_the_guest() -> void:
 	var pcs: Array[Node] = await _pcs.two_pcs()
 	var host_level := OnlinePcs.level(pcs[0])
 	var guest_level := OnlinePcs.level(pcs[1])
 	host_level.box.use(OnlinePcs.own_cop(pcs[0]))
 	assert_is(OnlinePcs.own_cop(pcs[0]).get_node("Grabber").held, LooseDonut, "in the host cop's hands")
-	await wait_until(func() -> bool: return not guest_level.find_children("*", "LooseDonut", true, false).is_empty(), 5.0)
-	assert_eq(guest_level.find_children("*", "LooseDonut", true, false).size(), 1, "one copy on the guest")
+	await wait_until(func() -> bool: return not _donuts(guest_level).is_empty(), 5.0)
+	assert_eq(_donuts(guest_level).size(), 1, "one copy on the guest")
 
 
 func test_a_guest_doesnt_make_its_own_donut_or_key() -> void:

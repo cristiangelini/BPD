@@ -248,6 +248,8 @@ func _station_inside(root: Node3D, size: Vector3) -> void:
 		root.add_child(door)
 		cell_doors.append(door)
 	_furniture(StationRooms.FURNITURE, StationRooms.SOLID, root)
+	if not night:
+		_disguises(root)
 	for at: Vector3 in StationRooms.lights():
 		var light := OmniLight3D.new()
 		light.position = at
@@ -357,6 +359,15 @@ func _mirror(root: Node3D) -> void:
 
 ## Furniture models with a box to bump into when it has a footprint in `solids`; one with an action gets an
 ## InterrogationProp, which a cop can use (E) during an interrogation.
+## The disguises on the floor in front of the lockers (infiltracion.md, step 1): one of each piece per cop.
+func _disguises(root: Node3D) -> void:
+	for i in StationRooms.DISGUISES.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.DISGUISES[i]).instantiate()
+		piece.name = "Disguise%d" % i
+		piece.position = StationRooms.DISGUISES_AT + Vector3((i % 6) * 0.38, 0.12, floorf(i / 6.0) * 0.35)
+		root.add_child(piece)
+
+
 func _furniture(items: Array, solids: Dictionary, root: Node3D) -> void:
 	for item: Array in items:
 		var model: Node3D = load("res://assets/models/%s.glb" % item[0]).instantiate()

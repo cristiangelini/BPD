@@ -37,7 +37,12 @@ func _unhandled_input(event: InputEvent) -> void:
 func nudge(closer: bool) -> void:
 	if _asks_host():
 		_cop.sync.request("closer" if closer else "farther")
-	hold_distance = clampf(hold_distance + (-0.25 if closer else 0.25), GameScale.HOLD_MIN, GameScale.HOLD_MAX)
+	hold_distance = clampf(hold_distance + (-0.25 if closer else 0.25), closest(), GameScale.HOLD_MAX)
+
+
+## How close to the eyes what it holds can come: a piece of disguise, right up to the face.
+func closest() -> float:
+	return DisguisePiece.HOLD_CLOSE if held is DisguisePiece else GameScale.HOLD_MIN
 
 
 ## Online on a guest: the host moves the props, so this cop's hands are only asked of it (docs/diseno/online.md).

@@ -20,6 +20,13 @@ const GLOVE_MATERIAL := preload("res://assets/materials/rubber_glove.tres")
 const MOUTH_FULL := 3.0
 ## A shove fades out in this many seconds.
 const KNOCK_FADE := 0.5
+## Pieces of disguise that make a cop pass for a grandparent (infiltracion.md, step 1). (propuesta)
+const DISGUISE_NEEDED := 2
+## Seconds of running before a straight piece of disguise falls off, and a crooked one. (propuesta)
+const DISGUISE_LOOSE_RUN := 4.0
+const DISGUISE_CROOKED_RUN := 1.5
+## After a piece falls, the next can't fall for this long (s), so a wall doesn't knock off everything at once.
+const DISGUISE_FALL_GAP := 1.0
 
 @export var input_enabled := true
 
@@ -68,6 +75,11 @@ var sync: CopSync
 var belt: ToolBelt
 ## A partner cuffed this cop: no grabbing, tools or ram until it runs out or someone frees them with E.
 var _cuffed_left := 0.0
+## The disguise it has on: kind ("wig", "glasses", "mustache") -> how crooked (radians, signed).
+var disguise := {}
+## Seconds of running that shake the disguise, and how long until a piece can fall again.
+var _shaken := 0.0
+var _fall_gap_left := 0.0
 
 @onready var _shape: CollisionShape3D = $Shape
 @onready var _head: Node3D = $Head
@@ -355,8 +367,8 @@ func put_on_gloves() -> void:
 		hands.set_gloves(true)
 
 
-func _hide_from_own_camera() -> void:
-	for mesh in model.find_children("*", "VisualInstance3D", true, false):
+func _hide_from_own_camera(part: Node3D = null) -> void:
+	for mesh in (part if part else model).find_children("*", "VisualInstance3D", true, false):
 		(mesh as VisualInstance3D).layers = 1 << (OWN_BODY_LAYER - 1)
 	camera.cull_mask &= ~(1 << (OWN_BODY_LAYER - 1))
 
@@ -542,6 +554,73 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 	else:
 		velocity.y -= GameScale.GRAVITY * delta
 	move_and_slide()
+	_shake_disguise(delta)
+
+
+## Running shakes the disguise: the most crooked piece falls off after DISGUISE_CROOKED_RUN seconds of running (a
+## straight one after DISGUISE_LOOSE_RUN), and running into a wall knocks it off at once. The cop's own PC decides.
+func _shake_disguise(delta: float) -> void:
+	_fall_gap_left = maxf(_fall_gap_left - delta, 0.0)
+	if disguise.is_empty():
+		_shaken = 0.0
+		return
+	_shaken = _shaken + delta if is_running else maxf(_shaken - delta, 0.0)
+	var loosest: String = disguise.keys()[0]
+	for kind: String in disguise:
+		if absf(disguise[kind]) > absf(disguise[loosest]):
+			loosest = kind
+	var limit := DISGUISE_CROOKED_RUN if absf(disguise[loosest]) > DisguisePiece.CROOKED else DISGUISE_LOOSE_RUN
+	if _fall_gap_left > 0.0 or not ((is_running and is_on_wall()) or _shaken >= limit):
+		return
+	_shaken = 0.0
+	_fall_gap_left = DISGUISE_FALL_GAP
+	act("lose_disguise", self, [loosest])
+
+
+## Wears a piece of disguise (DisguisePiece put it there), `tilt` radians crooked.
+func put_on_disguise(kind: String, tilt: float) -> void:
+	disguise[kind] = tilt
+	var holder := get_node_or_null("Disguise") as Node3D
+	if not holder:
+		holder = Node3D.new()
+		holder.name = "Disguise"
+		add_child(holder)
+	var old := holder.get_node_or_null(kind)
+	if old:
+		holder.remove_child(old)
+		old.queue_free()
+	var worn: Node3D = DisguisePiece.MODELS[kind].instantiate()
+	worn.name = kind
+	worn.position = DisguisePiece.SLOTS[kind]
+	# The models face +Z and the cop -Z.
+	worn.rotation = Vector3(0, PI, tilt)
+	holder.add_child(worn)
+	if input_enabled:
+		_hide_from_own_camera(worn)
+
+
+## A piece of disguise falls off in front of the cop (the host makes the one on the floor).
+func lose_disguise(kind: String) -> void:
+	if not disguise.has(kind):
+		return
+	var at := DisguisePiece.slot_on(self, kind)
+	disguise.erase(kind)
+	var worn := get_node_or_null("Disguise/" + kind)
+	if worn:
+		worn.get_parent().remove_child(worn)
+		worn.queue_free()
+	show_hint("HINT_DISGUISE_FELL")
+	if not multiplayer.is_server() or not get_parent():
+		return
+	var piece: DisguisePiece = DisguisePiece.scene_of(kind).instantiate()
+	get_parent().add_child(piece)
+	piece.global_position = at - global_basis.z * 0.35
+	piece.linear_velocity = -global_basis.z * 1.5 + Vector3.UP
+
+
+## Enough disguise on to pass for a grandparent.
+func is_disguised() -> bool:
+	return disguise.size() >= DISGUISE_NEEDED
 
 
 func current_speed() -> float:

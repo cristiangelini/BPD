@@ -46,6 +46,12 @@ const COMISARIO_AT := Vector3(0, 0, -6.5)
 ## Where the armero stands behind the counter, facing the guard room (+X).
 const ARMERO_AT := Vector3(-6.9, 0, 5.0)
 
+## The disguises in front of the lockers (infiltracion.md): a wig, glasses and a mustache for each of the four cops,
+## in two rows from DISGUISES_AT.
+const DISGUISES: Array[String] = ["wig", "glasses", "mustache", "wig", "glasses", "mustache",
+	"wig", "glasses", "mustache", "wig", "glasses", "mustache"]
+const DISGUISES_AT := Vector3(-5.15, 0, 1.95)
+
 ## Furniture: [model, position, turn]. The models come from tools/modelgen/models/station.js.
 const FURNITURE := [
 	["station_desk", Vector3(0, 0, -5.2), 0.0],
