@@ -36,6 +36,11 @@ const MODELS := {
 	"old_patrol": preload("res://assets/models/old_patrol_car.glb"),
 	# The pastry contest's culprit runs off on his delivery bike (escena-del-crimen.md).
 	"bike": preload("res://assets/models/delivery_bike.glb"),
+	# The traffic control's wanted car, in its paint (control-transito.md): the traffic car it was in the queue.
+	"traffic_0": preload("res://assets/models/traffic_car_0.glb"),
+	"traffic_1": preload("res://assets/models/traffic_car_1.glb"),
+	"traffic_2": preload("res://assets/models/traffic_car_2.glb"),
+	"traffic_3": preload("res://assets/models/traffic_car_3.glb"),
 }
 ## Who rides on top of it, where you can see them, each as [model, position, scale] (they get off when he gives up).
 const RIDERS := {
@@ -72,7 +77,8 @@ const COPS_LAYER := 2
 const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 4.6), "night": Vector3(2.1, 1.4, 4.6),
 	"highway": Vector3(2.1, 1.1, 4.6), "tow_truck": Vector3(2.3, 2.4, 6.2), "golf_cart": Vector3(1.3, 1.8, 2.4),
 	"moto": Vector3(0.8, 1.6, 1.9), "old_patrol": Vector3(2.1, 1.5, 4.6),
-	"wheelchair": Vector3(0.8, 1.4, 1.2), "bike": Vector3(0.7, 1.6, 1.9)}
+	"wheelchair": Vector3(0.8, 1.4, 1.2), "bike": Vector3(0.7, 1.6, 1.9), "traffic_0": Vector3(2.1, 1.4, 4.6),
+	"traffic_1": Vector3(2.1, 1.4, 4.6), "traffic_2": Vector3(2.1, 1.4, 4.6), "traffic_3": Vector3(2.1, 1.4, 4.6)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
@@ -83,7 +89,8 @@ const TOW_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.0), Vector3(1.15, 0.3
 const NO_WHEELS: Array[Vector3] = []
 const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS,
 	"wheelchair": NO_WHEELS, "highway": SEDAN_WHEELS, "tow_truck": TOW_WHEELS, "golf_cart": NO_WHEELS,
-	"old_patrol": SEDAN_WHEELS, "bike": NO_WHEELS}
+	"old_patrol": SEDAN_WHEELS, "bike": NO_WHEELS, "traffic_0": SEDAN_WHEELS, "traffic_1": SEDAN_WHEELS,
+	"traffic_2": SEDAN_WHEELS, "traffic_3": SEDAN_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
