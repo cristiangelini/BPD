@@ -1,7 +1,7 @@
 # BPD · Robo a un banco en vivo (propuesta, 22/10)
 
 Octavo tipo de caso, del catálogo ([casos.md](casos.md), punto 10) y la decisión 32 ("llegan cuando el robo está
-pasando"). Espera las respuestas de Cristian (al final). Los números son **(propuesta)** hasta probarlos jugando.
+pasando"). Cristian respondió las 3 preguntas el 22/10 (decisión 102). Los números son **(propuesta)** hasta probarlos jugando.
 
 ## La idea
 Suena la radio: están robando el banco del barrio ahora mismo. Los cuatro llegan en el patrullero con el robo en
@@ -77,3 +77,8 @@ Es la que mejor enseña las reglas; las otras variantes cambian una sola cosa.
    voz sin reglas?
 3. **El taladro de 8 minutos:** ¿está bien que el robo tenga ese reloj (recomendado), aunque los otros casos no
    tengan tiempo límite (decisión 66)? Al terminar no se pierde: arranca la persecución.
+
+## Respuestas de Cristian (22/10, decisión 102)
+1. Sí: se empieza por los ladrones con máscaras de animales.
+2. Sí: el teléfono con pedidos absurdos que frenan el taladro y sueltan rehenes; mentirle lo acelera.
+3. Sí: el taladro de 8 minutos; si abre la bóveda, arranca la persecución.
