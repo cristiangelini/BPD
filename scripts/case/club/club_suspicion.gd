@@ -34,7 +34,9 @@ const RUN_SPEED := (GameScale.WALK_SPEED + GameScale.RUN_SPEED) / 2
 const FOUND_OUT_LINES := 3
 
 var members: Array[ClubMember] = []
-var chela: ClubMember
+var boss: ClubMember
+## What the boss shouts when they find the cops out.
+var boss_found_out := "CHELA_FOUND_OUT"
 ## The waltz, if the club has one.
 var dance: ClubDance
 ## Whether a world position is inside the club, and in its back rooms (GrandpaClub sets them).
@@ -158,8 +160,8 @@ func _find_out(index: int) -> void:
 	var by: ClubMember = members[index] if index >= 0 and index < members.size() else null
 	if by:
 		by.say("CLUB_FOUND_OUT_%d" % (index % FOUND_OUT_LINES))
-	if chela:
-		chela.say("CHELA_FOUND_OUT")
+	if boss:
+		boss.say(boss_found_out)
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
 		if cop.input_enabled:
 			cop.show_hint("HINT_CLUB_FOUND_OUT")

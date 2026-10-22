@@ -1,33 +1,45 @@
 class_name InfiltrationCase
 extends Node
 
-## The grandparents' club case (infiltracion.md, step 6): the comisario tells it in his office, Q opens the planilla,
-## the cops go in disguised, gather the evidence (`found`, step 6b) and cuff Doña Chela. Cuffed, the case is solved and
-## pays SALARY, a third less for each piece of evidence missing; quota of its own, like the chase (decision 91).
-## Found out (ClubSuspicion), she runs off on her motorized walker and the chase starts in the middle of the case
-## (decision 96, step 6c): caught, it counts as solved with the evidence they have; got away, it's lost. Online the host's case decides and the guests' follow it
-## (CaseSync). Every number here is (propuesta).
+## The infiltration case (infiltracion.md, step 6), the same for every place (InfiltrationPlace): the comisario
+## tells it in his office, Q opens the planilla, the cops go in disguised, gather the evidence (`found`) and cuff the
+## boss (Doña Chela at the club). Cuffed, the case is solved and pays SALARY, a third less for each piece of evidence
+## missing; quota of its own, like the chase (decision 91). Found out (ClubSuspicion), the boss runs off in their
+## getaway and the chase starts in the middle of the case (decision 96): caught, it counts as solved with the evidence
+## they have; got away, it's lost. The place's `variant` picks the texts and the getaway (VARIANTS). Online the host's
+## case decides and the guests' follow it (CaseSync). Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 3.0
 const SALARY := 600
 const EVIDENCE := 3
-## The walker waits this far (m) out of the club's entrance.
-const WALKER_OUT := 1.5
 ## Two pieces of evidence of three pass the shift.
 const QUOTA := 400
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
+## What changes from one place to the other: the campaign's story, the comisario's briefing, the hints, the
+## planilla's rows (`rows` + GET_IN, EVIDENCE, CAREFUL and FOUND_OUT), the evidence's names (`evidence` + kind), and
+## the boss: who it is for the chase, what it runs off in, and its own hint and rows.
+const VARIANTS := {
+	"club": {
+		"story": "infiltration_club",
+		"brief": ["BRIEF_CLUB_A", "BRIEF_CLUB_B", "BRIEF_CLUB_C"],
+		"go": "HINT_GO_CLUB", "in": "HINT_CLUB_IN", "found": "HINT_CLUB_EVIDENCE",
+		"rows": "OBJ_CLUB_", "evidence": "EVIDENCE_CLUB_",
+		"boss": "chela", "getaway": SuspectCar.WALKER,
+		"boss_cuffed": "HINT_CHELA_CUFFED", "cuff_row": "OBJ_CLUB_CUFF_CHELA", "catch_row": "OBJ_CLUB_CATCH_CHELA",
+	},
+}
 
 var case_seed := 0
-var club: GrandpaClub
+var place: InfiltrationPlace
 var briefing: CaseBriefing
 var checklist: CaseChecklist
 var shift_screen: ShiftScreen
 var tip_given := false
-## A disguised cop got inside the club.
+## A disguised cop got inside the place.
 var got_in := false
 var evidence_found: Array[String] = []
-var chela_cuffed := false
+var boss_cuffed := false
 var found_out := false
 ## Found out, Doña Chela's run on the walker, and whether she got away.
 var chase: ChaseCase
@@ -47,11 +59,11 @@ func start(comisario: Comisario = null) -> void:
 	checklist = CaseChecklist.new()
 	add_child(checklist)
 	briefing.finished.connect(checklist.set_open.bind(true))
-	briefing.finished.connect(_hint_all.bind("HINT_GO_CLUB"))
-	if club:
-		club.suspicion.discovered.connect(_on_discovered.unbind(1))
-		club.chela.cuffed_now.connect(_on_chela_cuffed.unbind(1))
-		for member in club.members:
+	briefing.finished.connect(_hint_all.bind(texts().go))
+	if place:
+		place.suspicion.discovered.connect(_on_discovered.unbind(1))
+		place.boss.cuffed_now.connect(_on_boss_cuffed.unbind(1))
+		for member in place.members:
 			member.cuffed_now.connect(_on_grandparent_cuffed)
 	if comisario:
 		comisario.spoke.connect(give_tip.unbind(1))
@@ -76,9 +88,14 @@ func give_tip() -> void:
 	tip_given = true
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).input_enabled:
-			briefing.start(PackedStringArray(["BRIEF_CLUB_A", "BRIEF_CLUB_B", "BRIEF_CLUB_C"]))
+			briefing.start(PackedStringArray(texts().brief))
 			break
 	checklist.show_rows(rows())
+
+
+## The texts and the getaway of the place's variant (the club's without a place, as in the tests).
+func texts() -> Dictionary:
+	return VARIANTS[place.variant if place and VARIANTS.has(place.variant) else "club"]
 
 
 ## The cops found a piece of evidence (step 6b). Returns whether it's new.
@@ -86,50 +103,48 @@ func found(kind: String) -> bool:
 	if follower or evidence_found.has(kind) or evidence_found.size() >= EVIDENCE:
 		return false
 	evidence_found.append(kind)
-	_hint_all("HINT_CLUB_EVIDENCE")
+	_hint_all(texts().found)
 	checklist.show_rows(rows())
 	return true
 
 
-func _on_chela_cuffed() -> void:
-	if follower or chela_cuffed or shift_over or chase:
+func _on_boss_cuffed() -> void:
+	if follower or boss_cuffed or shift_over or chase:
 		return
-	chela_cuffed = true
-	_hint_all("HINT_CHELA_CUFFED")
+	boss_cuffed = true
+	_hint_all(texts().boss_cuffed)
 	checklist.show_rows(rows())
 	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
 
 ## Cuffing anyone else gives the cops away at once.
 func _on_grandparent_cuffed(member: ClubMember) -> void:
-	if follower or not club or club.suspicion.found_out:
+	if follower or not place or place.suspicion.found_out:
 		return
-	club.suspicion.raise(member, 100.0)
+	place.suspicion.raise(member, 100.0)
 
 
 func _on_discovered() -> void:
 	found_out = true
-	if not follower and not chela_cuffed and not shift_over:
+	if not follower and not boss_cuffed and not shift_over:
 		_run_off()
 	checklist.show_rows(rows())
 
 
-## Doña Chela leaves the stage and rides off on her motorized walker from the entrance: the chase is on.
+## The boss leaves and runs off in their getaway, from where the place says: the chase is on.
 func _run_off() -> void:
-	if chase or not club:
+	if chase or not place:
 		return
-	var chela := club.chela
-	chela.hide()
-	chela.collision_layer = 0
-	chela.process_mode = Node.PROCESS_MODE_DISABLED
-	var out := club.global_transform * Vector3(GrandpaClub.ENTRANCE_X, 0, GrandpaClub.HALF_Z + WALKER_OUT)
-	chase = ChaseCase.begin(club, SuspectCar.WALKER, Transform3D(club.global_basis, out), club.car,
-		club.get_node("City"), case_seed)
-	chase.who = "chela"
+	var boss := place.boss
+	boss.hide()
+	boss.collision_layer = 0
+	boss.process_mode = Node.PROCESS_MODE_DISABLED
+	chase = ChaseCase.begin(place, texts().getaway, place.getaway_at(), place.car, place.city, case_seed)
+	chase.who = texts().boss
 	chase.online = online
 	chase.follower = follower
 	chase.ended.connect(_on_chase_ended)
-	_hint_all("HINT_ESCAPE_chela")
+	_hint_all("HINT_ESCAPE_" + texts().boss)
 
 
 ## Caught and in the patrol car, the case counts as solved with the evidence they have; got away, it's lost.
@@ -141,7 +156,7 @@ func _on_chase_ended(was_caught: bool) -> void:
 
 
 func solved() -> bool:
-	return chela_cuffed or caught
+	return boss_cuffed or caught
 
 
 ## The pay: SALARY with all the evidence, a third less for each piece missing.
@@ -161,7 +176,7 @@ func finish_shift() -> void:
 	var campaign := Campaign.current
 	if campaign and not campaign.is_over():
 		var played := campaign.shift
-		campaign.finish_shift("infiltration_club", solved(), pay, QUOTA)
+		campaign.finish_shift(texts().story, solved(), pay, QUOTA)
 		campaign.save()
 		result.campaign = {"shift": played, "money": campaign.money, "over": campaign.is_over(),
 			"promoted": campaign.is_promoted()}
@@ -190,7 +205,7 @@ func _show_result(result: Dictionary) -> void:
 
 ## What every guest's case shows (CaseSync).
 func snapshot() -> Dictionary:
-	var state := {"tip": tip_given, "in": got_in, "found": evidence_found.duplicate(), "cuffed": chela_cuffed,
+	var state := {"tip": tip_given, "in": got_in, "found": evidence_found.duplicate(), "cuffed": boss_cuffed,
 		"found_out": found_out, "caught": caught, "escaped": escaped, "result": _result}
 	if chase:
 		state.chase = chase.snapshot()
@@ -202,9 +217,9 @@ func apply_snapshot(state: Dictionary) -> void:
 		give_tip()
 	got_in = state["in"]
 	evidence_found.assign(state.found)
-	if state.cuffed and not chela_cuffed:
-		chela_cuffed = true
-		_hint_all("HINT_CHELA_CUFFED")
+	if state.cuffed and not boss_cuffed:
+		boss_cuffed = true
+		_hint_all(texts().boss_cuffed)
 	found_out = state.found_out
 	caught = state.caught
 	escaped = state.escaped
@@ -219,29 +234,28 @@ func apply_snapshot(state: Dictionary) -> void:
 ## The planilla's rows, in the shape CaseChecklist takes.
 func rows() -> Array[Dictionary]:
 	var list: Array[Dictionary] = []
-	list.append(_row("OBJ_CLUB_GET_IN", got_in))
-	list.append(_row(tr("OBJ_CLUB_EVIDENCE") % [evidence_found.size(), EVIDENCE], evidence_found.size() >= EVIDENCE))
+	var keys := texts()
+	list.append(_row(keys.rows + "GET_IN", got_in))
+	list.append(_row(tr(keys.rows + "EVIDENCE") % [evidence_found.size(), EVIDENCE], evidence_found.size() >= EVIDENCE))
 	for kind in evidence_found:
-		list.append({"text": "- " + tr("EVIDENCE_CLUB_" + kind), "done": false, "optional": false, "status": true,
+		list.append({"text": "- " + tr(keys.evidence + kind), "done": false, "optional": false, "status": true,
 			"clue": true})
-	list.append(_row("OBJ_CLUB_CUFF_CHELA", chela_cuffed))
+	list.append(_row(keys.cuff_row, boss_cuffed))
 	if chase:
-		list.append(_row("OBJ_CLUB_CATCH_CHELA", caught))
-	if found_out:
-		list.append({"text": "OBJ_CLUB_FOUND_OUT", "done": false, "optional": false, "status": true})
-	else:
-		list.append({"text": "OBJ_CLUB_CAREFUL", "done": false, "optional": false, "status": true})
+		list.append(_row(keys.catch_row, caught))
+	list.append({"text": keys.rows + ("FOUND_OUT" if found_out else "CAREFUL"), "done": false, "optional": false,
+		"status": true})
 	return list
 
 
 func _physics_process(delta: float) -> void:
-	if not tip_given or not club:
+	if not tip_given or not place:
 		return
 	if not got_in and not follower:
 		for cop: Cop in get_tree().get_nodes_in_group("cops"):
-			if cop.is_disguised() and club.suspicion.inside.call(cop.global_position):
+			if cop.is_disguised() and place.suspicion.inside.call(cop.global_position):
 				got_in = true
-				_hint_all("HINT_CLUB_IN")
+				_hint_all(texts()["in"])
 				checklist.show_rows(rows())
 				break
 	_refresh_left -= delta
