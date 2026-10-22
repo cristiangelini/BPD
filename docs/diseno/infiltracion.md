@@ -118,7 +118,11 @@ las pruebas. El disfraz de cada policía se ve igual en todas las PC.
      del abuelo en silla de ruedas. Si la atrapan y la llevan al patrullero, el caso cuenta como resuelto con las
      pruebas que tengan; si se escapa, se pierde **(propuesta)**. 6d. El sorteo de "Jugar": de los turnos que no son interrogatorio, persecución, escena del
      crimen ni control de tránsito, 1 de cada 4 es el club, así sale tan seguido como cada allanamiento **(propuesta)**.
-     Falta: que Doña Chela detenida tenga su interrogatorio el turno siguiente (decisión 93).
+     Interrogatorio (decisión 93), hecho así: esposada o atrapada, Doña Chela queda detenida y el turno siguiente es
+     su interrogatorio, como el dueño de un allanamiento: se le escapan 3 frases propias (los números que canta, las
+     bolillas, el sobre de la merienda) y confiesa que el bingo estaba arreglado. Lo que quedó sin entregar vale el
+     tercio del sueldo que bajó cada prueba que faltó, y la confesión paga la mitad. En el coro pasa lo mismo con el
+     Maestro Ernesto (el órgano viejo, la alcancía, la tía Colecta) **(propuesta)**.
 
 ## Respuestas de Cristian (22/10, decisión 100)
 1. La primera variante es Club de abuelos y la siguiente, Coro de iglesia.
