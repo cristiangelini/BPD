@@ -44,6 +44,14 @@ celdas, con una caja de 6 donas. Esa tarde se le cayó la llave de las celdas ad
 - **Salir:** desde las celdas, por la sala de guardia y la puerta de la calle, hasta el patrullero del
   estacionamiento. Se escapan cuando los 4 están en el patrullero y sale del estacionamiento.
 
+**Cómo quedó el paso 1:** la partida guarda si están presos y si ya usaron la fuga. La primera cuota fallada no suma
+plata y, en la pantalla del turno, abajo de "Suspendidos" dice "…y esta noche duermen en sus propias celdas. ¡A
+escaparse!", con el botón para seguir. El turno siguiente es la fuga: la comisaría de noche (luna, luces bajas y
+cálidas, sin el comisario ni el armero) con los 4 en las celdas, dos en cada una, mirando la reja. Cada celda tiene
+ahora una puerta de reja de 1,2 m con candado: cerrada con llave, E solo la sacude. Si fallan la cuota del turno 5, la
+fuga va antes del final y no salen "¡Ascendidos!" desde la celda **(propuesta)**. Capturas: `fuga/paso1_celda.png` y
+`paso1_celdas.png`.
+
 ## Cómo se gana y cómo se pierde
 - **Se gana** con los 4 en el patrullero fuera del estacionamiento. Pantalla corta "¡Fugados!" y a la mañana arranca el
   turno siguiente en la comisaría.
