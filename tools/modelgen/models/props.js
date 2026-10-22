@@ -75,12 +75,47 @@ export function buildVase() {
 	return b.build();
 }
 
+// Traffic control (control-transito.md, step 1): the cone (0.7 m, 1.5 kg) and the barrier, a sawhorse 3.2 m wide
+// with a striped board (18 kg). Origin on the ground, like scripts/case/traffic/*.gd expects. Placeholders.
+export function buildTrafficCone() {
+	const orange = mat('cone_orange', 0xff6a1a), white = mat('cone_white', 0xf4f4f0), base = mat('cone_base', 0x26272b);
+	const b = new Builder('traffic_cone');
+	b.add('cone', base, new THREE.BoxGeometry(0.42, 0.04, 0.42), { pos: V(0, 0.02, 0) });
+	b.add('cone', orange, new THREE.CylinderGeometry(0.03, 0.17, 0.66, 12), { pos: V(0, 0.37, 0) });
+	for (const [y, r] of [[0.32, 0.105], [0.5, 0.072]]) {
+		b.add('cone', white, new THREE.CylinderGeometry(r - 0.01, r + 0.008, 0.07, 12), { pos: V(0, y, 0) });
+	}
+	return b.build();
+}
+
+export function buildRoadBarrier() {
+	const red = mat('barrier_red', 0xd8322a), white = mat('barrier_white', 0xf4f4f0), leg = mat('barrier_leg', 0x3a3e46);
+	const lamp = mat('barrier_lamp', 0xffb020, { emissive: 0x805010 });
+	const b = new Builder('road_barrier');
+	const W = 3.2, stripes = 8;
+	for (let i = 0; i < stripes; i++) {
+		const x = -W / 2 + (i + 0.5) * (W / stripes);
+		b.add('board', i % 2 ? white : red, new THREE.BoxGeometry(W / stripes, 0.25, 0.05), { pos: V(x, 0.9, 0) });
+	}
+	for (const x of [-1.3, 1.3]) {
+		for (const z of [-1, 1]) b.add('legs', leg, new THREE.BoxGeometry(0.05, 1.0, 0.05), { pos: V(x, 0.48, z * 0.18), rot: [z * 0.35, 0, 0] });
+		b.add('legs', leg, new THREE.BoxGeometry(0.05, 0.05, 0.42), { pos: V(x, 0.3, 0) });
+		b.add('lamp', lamp, new THREE.CylinderGeometry(0.07, 0.07, 0.08, 10), { pos: V(x, 1.07, 0) });
+	}
+	return b.build();
+}
+
 export const models = {
 	crate: buildCrate, safe: buildSafe, cookie_tin: buildCookieTin,
 	ornament_figurine: buildFigurine, ornament_plate: buildPlate, ornament_vase: buildVase,
+	traffic_cone: buildTrafficCone, road_barrier: buildRoadBarrier,
 };
 
 export const views = {
+	traffic_checkpoint: {
+		items: [{ name: 'road_barrier', pos: [0, 0, 0], rotY: 0.2 }, { name: 'traffic_cone', pos: [-1.2, 0, 1.4] }, { name: 'traffic_cone', pos: [0.3, 0, 1.8] }, { name: 'traffic_cone', pos: [1.6, 0, 1.4] }, { name: 'cop_0', pos: [2.4, 0, 0.6], rotY: -0.6 }],
+		cam: { pos: [1.5, 2.2, 6.5], target: [0.3, 0.6, 0], fov: 38 },
+	},
 	props: {
 		items: [{ name: 'crate', pos: [-0.5, 0.25, 0], rotY: 0.4 }, { name: 'safe', pos: [0.5, 0.32, 0], rotY: -0.4 }, { name: 'cookie_tin', pos: [-0.2, 0.08, 0.6], rotY: 0.3 }, { name: 'ornament_figurine', pos: [0.15, 0.08, 0.8], rotY: 0.4 }, { name: 'ornament_plate', pos: [0.45, 0.01, 0.75] }, { name: 'ornament_vase', pos: [0.75, 0.13, 0.7] }, { name: 'cop_0', pos: [1.6, 0, -0.5], rotY: -0.3 }],
 		cam: { pos: [0.3, 1.5, 4.2], target: [0.3, 0.6, 0], fov: 32 },
