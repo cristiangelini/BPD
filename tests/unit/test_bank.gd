@@ -23,7 +23,7 @@ func test_it_has_its_lot_and_play_can_open_it() -> void:
 
 func test_the_vault_door_closes_the_doorway() -> void:
 	var local := bank.vault_door.position
-	assert_almost_eq(local.x, BankLevel.VAULT_X + 0.15, 0.01)
+	assert_almost_eq(local.x, BankLevel.VAULT_X - 0.15, 0.01)
 	assert_almost_eq(local.z, BankLevel.VAULT_DOOR_Z, 0.01)
 	assert_gt(BankLevel.VAULT_DOOR_RADIUS * 2, GameScale.COP_HEIGHT, "no cop walks under it")
 

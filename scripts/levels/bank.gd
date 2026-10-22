@@ -23,10 +23,10 @@ const COUNTER_Z := -1.0
 const COUNTER_FROM := -10.0
 const COUNTER_GAP := Vector2(6.8, 8.2)
 const COUNTER_SIZE := Vector2(0.7, 1.1)
-## The back wall behind the tellers, with the office's door (west) and the corridor's (east).
+## The back wall behind the tellers, with the office's door (west) and the corridor's (middle).
 const BACK_Z := -4.5
 const OFFICE_DOOR_X := -7.0
-const CORRIDOR_DOOR_X := 6.0
+const CORRIDOR_DOOR_X := 0.0
 ## The office (west) and the corridor (middle, to the back door) split by this wall; the vault east of VAULT_X.
 const OFFICE_X := -3.0
 const VAULT_X := 3.0
@@ -169,9 +169,7 @@ func _build_back() -> void:
 	_build.wall("x", BACK_Z, -HALF_X, HALF_X, 0, [OFFICE_DOOR_X, CORRIDOR_DOOR_X], INSIDE)
 	_build.wall("z", OFFICE_X, -HALF_Z, BACK_Z, 0, [], INSIDE)
 	_build.wall("z", VAULT_X, -HALF_Z, BACK_Z, 0, [VAULT_DOOR_Z], STEEL)
-	# The corridor runs from its door along the back wall to the vault and the back door; this wall keeps the
-	# corridor's door out of the vault.
-	_build.wall("x", -6.0, VAULT_X, HALF_X, 0, [], INSIDE)
+	# The corridor runs straight from its door to the back door, with the vault's doorway on its east side.
 	_build.legs(Vector3(-7.5, FLOOR_TOP, -8.2), Vector2(1.8, 0.9), 0.72, WOOD)
 	_build.box(Vector3(-7.5, FLOOR_TOP + 0.74, -8.2), Vector3(1.8, 0.04, 0.9), WOOD)
 	_build.box(Vector3(-4.0, FLOOR_TOP + 0.7, -9.5), Vector3(0.6, 1.4, 0.6), STEEL.darkened(0.2))
@@ -192,7 +190,7 @@ func _build_back() -> void:
 func _add_vault_door() -> void:
 	vault_door = StaticBody3D.new()
 	vault_door.name = "VaultDoor"
-	vault_door.position = Vector3(VAULT_X + 0.15, FLOOR_TOP + VAULT_DOOR_RADIUS + 0.05, VAULT_DOOR_Z)
+	vault_door.position = Vector3(VAULT_X - 0.15, FLOOR_TOP + VAULT_DOOR_RADIUS + 0.05, VAULT_DOOR_Z)
 	add_child(vault_door)
 	var shape := CollisionShape3D.new()
 	var body := BoxShape3D.new()
@@ -213,7 +211,7 @@ func _add_vault_door() -> void:
 	wheel.outer_radius = 0.32
 	var handle := MeshInstance3D.new()
 	handle.mesh = wheel
-	handle.position.x = 0.14
+	handle.position.x = -0.14
 	handle.rotation.z = PI / 2
 	handle.material_override = _build.material(GOLD)
 	vault_door.add_child(handle)
