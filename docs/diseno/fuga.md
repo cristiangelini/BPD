@@ -52,6 +52,13 @@ ahora una puerta de reja de 1,2 m con candado: cerrada con llave, E solo la sacu
 fuga va antes del final y no salen "¡Ascendidos!" desde la celda **(propuesta)**. Capturas: `fuga/paso1_celda.png` y
 `paso1_celdas.png`.
 
+**Cómo quedó el paso 2:** el guardia de noche (el modelo del carcelero) está sentado detrás de un escritorio en la
+sala de las celdas, entre las dos puertas, mirando las rejas. Sobre el escritorio, a 2,75 m de las rejas, está su caja
+de 6 donas (un modelo nuevo, `guard_donut_box`). Cada 40 s se come la última que queda y dice algo ("Una más y mañana
+empiezo la dieta."). Si es la de la llave, la escupe: "¿Qué es esto? ¡Mi llave! Mejor me la cuelgo del cinturón.". Si
+la caja no está a 1,5 m de él, se queja: "¿Y mis donas? ¿Quién se llevó mis donas?" **(propuesta)**. Online, el host
+come y los invitados ven la misma caja. Captura: `fuga/paso2_guardia.png`.
+
 ## Cómo se gana y cómo se pierde
 - **Se gana** con los 4 en el patrullero fuera del estacionamiento. Pantalla corta "¡Fugados!" y a la mañana arranca el
   turno siguiente en la comisaría.
