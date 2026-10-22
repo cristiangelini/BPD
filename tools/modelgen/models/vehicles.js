@@ -413,11 +413,46 @@ export function buildDeliveryBike() {
 	return b.build();
 }
 
+// Doña Chela's motorized walker (infiltracion.md, found out): an aluminum walker with tennis balls on its back feet,
+// two little front wheels, a lawnmower motor bolted under the front with an exhaust pipe and a standing platform behind
+// on small wheels, where she rides. A bicycle horn on the handle. Doña Chela (npc_chela) stands on it. 1.3 m long;
+// faces +Z like the rest. Its wheels are part of it. Placeholder, not final art.
+export function buildMotorWalker() {
+	const alu = mat('walker_alu', 0xc8ccd2), grip = mat('walker_grip', 0x5a2a6a), tire = mat('tire', 0x1a1a1e);
+	const ball = mat('tennis_ball', 0xd8f040), motor = mat('walker_motor', 0xd8322a), deck = mat('walker_deck', 0x3a3e46);
+	const b = new Builder('motor_walker');
+	for (const x of [-1, 1]) {
+		// Legs: front pair on wheels, back pair with tennis balls.
+		box(b, 'frame', alu, 0.03, 0.85, 0.03, x * 0.27, 0.45, 0.42);
+		box(b, 'frame', alu, 0.03, 0.85, 0.03, x * 0.27, 0.45, 0.02);
+		box(b, 'frame', alu, 0.03, 0.03, 0.42, x * 0.27, 0.86, 0.22);
+		box(b, 'frame', alu, 0.03, 0.03, 0.42, x * 0.27, 0.35, 0.22);
+		box(b, 'frame', grip, 0.05, 0.05, 0.16, x * 0.27, 0.9, 0.05);
+		b.add('wheels', tire, new THREE.CylinderGeometry(0.06, 0.06, 0.04, 8), { pos: V(x * 0.27, 0.06, 0.42), rot: [0, 0, Math.PI / 2] });
+		b.add('frame', ball, new THREE.SphereGeometry(0.05, 8, 6), { pos: V(x * 0.27, 0.05, 0.02) });
+		// The platform's little wheels.
+		b.add('wheels', tire, new THREE.CylinderGeometry(0.05, 0.05, 0.04, 8), { pos: V(x * 0.2, 0.05, -0.5), rot: [0, 0, Math.PI / 2] });
+	}
+	box(b, 'frame', alu, 0.57, 0.03, 0.03, 0, 0.86, 0.42);
+	// The motor, its pull cord and the exhaust.
+	box(b, 'motor', motor, 0.3, 0.2, 0.22, 0, 0.22, 0.42);
+	b.add('motor', black, new THREE.CylinderGeometry(0.025, 0.025, 0.3, 6), { pos: V(0.12, 0.4, 0.42) });
+	b.add('motor', black, new THREE.SphereGeometry(0.03, 6, 4), { pos: V(-0.1, 0.36, 0.48) });
+	// The platform she stands on, hitched to the back legs.
+	box(b, 'deck', deck, 0.48, 0.05, 0.5, 0, 0.1, -0.32);
+	box(b, 'deck', alu, 0.03, 0.03, 0.3, 0, 0.1, -0.05);
+	// The bicycle horn on the right handle.
+	b.add('horn', mat('horn_bulb', 0x1a1a1e), new THREE.SphereGeometry(0.04, 6, 4), { pos: V(0.33, 0.9, 0.1) });
+	b.add('horn', mat('horn_brass', 0xd8b24a), new THREE.ConeGeometry(0.035, 0.1, 8), { pos: V(0.33, 0.9, 0.17), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
 export const models = { patrol_car: buildPatrolCar, old_patrol_car: buildOldPatrolCar, car_wheel: buildCarWheel, ice_cream_truck: buildIceCreamTruck,
 	moving_truck: buildMovingTruck, falling_sofa: buildFallingSofa, falling_wardrobe: buildFallingWardrobe, falling_lamp: buildFallingLamp,
 	falling_box: buildFallingBox, school_bus: buildSchoolBus, getaway_car: buildGetawayCar, sports_car: buildSportsCar, tow_truck: buildTowTruck, golf_cart: buildGolfCart,
 	traffic_car_0: trafficCar(0), traffic_car_1: trafficCar(1), traffic_car_2: trafficCar(2), traffic_car_3: trafficCar(3),
-	delivery_scooter: buildDeliveryScooter, wheelchair: buildWheelchair, delivery_bike: buildDeliveryBike };
+	delivery_scooter: buildDeliveryScooter, wheelchair: buildWheelchair, delivery_bike: buildDeliveryBike,
+	motor_walker: buildMotorWalker };
 
 const wheels = [[-1.1, 1.55], [1.1, 1.55], [-1.1, -1.55], [1.1, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }));
 export const views = {
@@ -444,6 +479,10 @@ export const views = {
 	delivery_scooter: {
 		items: [{ name: 'delivery_scooter', pos: [0, 0, 0] }, { name: 'npc_repartidor', pos: [0, 0.36, -0.15], scale: 0.85 }],
 		cam: { pos: [4.0, 2.2, 3.6], target: [0.5, 0.8, 0], fov: 38 },
+	},
+	motor_walker: {
+		items: [{ name: 'motor_walker', pos: [0, 0, 0] }, { name: 'npc_chela', pos: [0, 0.13, -0.32], scale: 0.85 }],
+		cam: { pos: [2.6, 1.6, 2.6], target: [0, 0.75, 0], fov: 38 },
 	},
 	delivery_bike: {
 		items: [{ name: 'delivery_bike', pos: [0, 0, 0] }, { name: 'npc_pastelero', pos: [0, 0.3, -0.35], scale: 0.85 }],

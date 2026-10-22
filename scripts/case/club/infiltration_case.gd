@@ -4,13 +4,16 @@ extends Node
 ## The grandparents' club case (infiltracion.md, step 6): the comisario tells it in his office, Q opens the planilla,
 ## the cops go in disguised, gather the evidence (`found`, step 6b) and cuff Doña Chela. Cuffed, the case is solved and
 ## pays SALARY, a third less for each piece of evidence missing; quota of its own, like the chase (decision 91).
-## Found out (ClubSuspicion), she runs off (step 6c). Online the host's case decides and the guests' follow it
+## Found out (ClubSuspicion), she runs off on her motorized walker and the chase starts in the middle of the case
+## (decision 96, step 6c): caught, it counts as solved with the evidence they have; got away, it's lost. Online the host's case decides and the guests' follow it
 ## (CaseSync). Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 3.0
 const SALARY := 600
 const EVIDENCE := 3
+## The walker waits this far (m) out of the club's entrance.
+const WALKER_OUT := 1.5
 ## Two pieces of evidence of three pass the shift.
 const QUOTA := 400
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
@@ -26,6 +29,10 @@ var got_in := false
 var evidence_found: Array[String] = []
 var chela_cuffed := false
 var found_out := false
+## Found out, Doña Chela's run on the walker, and whether she got away.
+var chase: ChaseCase
+var escaped := false
+var caught := false
 var shift_over := false
 var follower := false
 var online: CaseSync
@@ -85,7 +92,7 @@ func found(kind: String) -> bool:
 
 
 func _on_chela_cuffed() -> void:
-	if follower or chela_cuffed or shift_over:
+	if follower or chela_cuffed or shift_over or chase:
 		return
 	chela_cuffed = true
 	_hint_all("HINT_CHELA_CUFFED")
@@ -102,11 +109,39 @@ func _on_grandparent_cuffed(member: ClubMember) -> void:
 
 func _on_discovered() -> void:
 	found_out = true
+	if not follower and not chela_cuffed and not shift_over:
+		_run_off()
 	checklist.show_rows(rows())
 
 
+## Doña Chela leaves the stage and rides off on her motorized walker from the entrance: the chase is on.
+func _run_off() -> void:
+	if chase or not club:
+		return
+	var chela := club.chela
+	chela.hide()
+	chela.collision_layer = 0
+	chela.process_mode = Node.PROCESS_MODE_DISABLED
+	var out := club.global_transform * Vector3(GrandpaClub.ENTRANCE_X, 0, GrandpaClub.HALF_Z + WALKER_OUT)
+	chase = ChaseCase.begin(club, SuspectCar.WALKER, Transform3D(club.global_basis, out), club.car,
+		club.get_node("City"), case_seed)
+	chase.who = "chela"
+	chase.online = online
+	chase.follower = follower
+	chase.ended.connect(_on_chase_ended)
+	_hint_all("HINT_ESCAPE_chela")
+
+
+## Caught and in the patrol car, the case counts as solved with the evidence they have; got away, it's lost.
+func _on_chase_ended(was_caught: bool) -> void:
+	caught = was_caught
+	escaped = not was_caught
+	checklist.show_rows(rows())
+	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
+
+
 func solved() -> bool:
-	return chela_cuffed
+	return chela_cuffed or caught
 
 
 ## The pay: SALARY with all the evidence, a third less for each piece missing.
@@ -155,8 +190,11 @@ func _show_result(result: Dictionary) -> void:
 
 ## What every guest's case shows (CaseSync).
 func snapshot() -> Dictionary:
-	return {"tip": tip_given, "in": got_in, "found": evidence_found.duplicate(), "cuffed": chela_cuffed,
-		"found_out": found_out, "result": _result}
+	var state := {"tip": tip_given, "in": got_in, "found": evidence_found.duplicate(), "cuffed": chela_cuffed,
+		"found_out": found_out, "caught": caught, "escaped": escaped, "result": _result}
+	if chase:
+		state.chase = chase.snapshot()
+	return state
 
 
 func apply_snapshot(state: Dictionary) -> void:
@@ -168,6 +206,11 @@ func apply_snapshot(state: Dictionary) -> void:
 		chela_cuffed = true
 		_hint_all("HINT_CHELA_CUFFED")
 	found_out = state.found_out
+	caught = state.caught
+	escaped = state.escaped
+	if state.has("chase"):
+		_run_off()
+		chase.apply_snapshot(state.chase)
 	checklist.show_rows(rows())
 	if not state.result.is_empty() and not shift_over:
 		_show_result(state.result)
@@ -182,6 +225,8 @@ func rows() -> Array[Dictionary]:
 		list.append({"text": "- " + tr("EVIDENCE_CLUB_" + kind), "done": false, "optional": false, "status": true,
 			"clue": true})
 	list.append(_row("OBJ_CLUB_CUFF_CHELA", chela_cuffed))
+	if chase:
+		list.append(_row("OBJ_CLUB_CATCH_CHELA", caught))
 	if found_out:
 		list.append({"text": "OBJ_CLUB_FOUND_OUT", "done": false, "optional": false, "status": true})
 	else:
