@@ -190,16 +190,17 @@ func _guard_heard_singing() -> void:
 		get_tree().call_group("night_guard", "heard_singing", sync.cop)
 
 
-## Tells the interrogation, the crime scene or the jailbreak's guard that the player's cop shouted.
+## Tells the interrogation, the crime scene, the jailbreak's guard or the club's grandparents that the player's cop
+## shouted.
 func shouted(cop: Cop) -> void:
 	if cop:
 		get_tree().call_group("interrogation", "shouted_by", cop)
 		get_tree().call_group("crime_scene", "shouted_by", cop)
-		if not get_tree().has_group("night_guard"):
+		if not get_tree().has_group("night_guard") and not get_tree().has_group("club_suspicion"):
 			return
-		# The jailbreak's guard lives on the host.
+		# The jailbreak's guard and the club's grandparents live on the host.
 		if _net.is_host():
-			get_tree().call_group("night_guard", "shouted_by", cop)
+			_host_heard_shout(cop)
 		else:
 			_guard_heard_shout.rpc_id(_net.HOST_ID)
 
@@ -208,7 +209,12 @@ func shouted(cop: Cop) -> void:
 func _guard_heard_shout() -> void:
 	var sync: CopSync = _net.cop_syncs.get(multiplayer.get_remote_sender_id())
 	if multiplayer.is_server() and sync and is_instance_valid(sync.cop):
-		get_tree().call_group("night_guard", "shouted_by", sync.cop)
+		_host_heard_shout(sync.cop)
+
+
+func _host_heard_shout(cop: Cop) -> void:
+	get_tree().call_group("night_guard", "shouted_by", cop)
+	get_tree().call_group("club_suspicion", "shouted_by", cop)
 
 
 ## The cop this PC's player moves.

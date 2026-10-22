@@ -64,6 +64,7 @@ var members: Array[ClubMember] = []
 var chela: ClubMember
 var doorman: ClubDoorman
 var bingo: ClubBingo
+var suspicion: ClubSuspicion
 ## The seats nobody took, as seats() gives them.
 var free_seats: Array = []
 var station_parking: Transform3D
@@ -182,6 +183,18 @@ func _add_people() -> void:
 	doorman.outward = global_transform.basis * Vector3.BACK
 	free_seats = free
 	_add_bingo(rng)
+	suspicion = ClubSuspicion.new()
+	suspicion.name = "Suspicion"
+	suspicion.members = members
+	suspicion.chela = chela
+	suspicion.inside = func(at: Vector3) -> bool:
+		var local := global_transform.affine_inverse() * at
+		return absf(local.x) < HALF_X and absf(local.z) < HALF_Z and local.y < ROOF
+	suspicion.in_back_room = func(at: Vector3) -> bool:
+		var local := global_transform.affine_inverse() * at
+		return absf(local.x) < HALF_X and local.z > -HALF_Z and local.z < BACK_Z and local.y < ROOF
+	add_child(suspicion)
+	suspicion.watch_bingo(bingo)
 
 
 ## Doña Chela's bingo at the stand, and the cops' cards in front of free seats, lying on the table.
