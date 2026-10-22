@@ -267,7 +267,10 @@ func _add_cop(cop: Cop, id: int, start: Transform3D) -> void:
 	cop.set_uniform(slot)
 	if id != multiplayer.get_unique_id():
 		_add_name_tag(cop, id, slot)
-	if not cop.vehicle:
+	# A level with its own spots for each slot (the jailbreak's cells) puts the cop there; the rest stand in a row.
+	if not cop.vehicle and is_instance_valid(_level) and _level.has_method("cop_spawn"):
+		cop.global_transform = _level.cop_spawn(slot)
+	elif not cop.vehicle:
 		cop.global_transform = start.translated(start.basis.x * (slot - (MAX_PLAYERS - 1) / 2.0) * SPAWN_GAP)
 	var sync := CopSync.new(cop, self, id)
 	add_child(sync)

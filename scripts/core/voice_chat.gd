@@ -24,6 +24,8 @@ const RADIO_STATIC := 0.04
 const BUFFER_SECONDS := 0.5
 ## Where "Voz siempre abierta" is kept on this PC.
 const SETTINGS_PATH := "user://ajustes.cfg"
+## How often a singing player tells the jailbreak's guard it is still singing.
+const SING_EVERY := 0.5
 
 ## Where settings are saved (tests point it elsewhere).
 static var settings_path := SETTINGS_PATH
@@ -45,6 +47,9 @@ var _label: Label
 var _recording := false
 ## The player's own voice, to tell when they shout at a suspect.
 var shout := ShoutMeter.new()
+## The player's own voice going on and on, or H held: singing to the jailbreak's guard (NightGuard).
+var song := SongMeter.new()
+var _sing_left := 0.0
 
 
 func _init(net: Node) -> void:
@@ -92,7 +97,7 @@ func set_always_open(open: bool) -> void:
 	config.save(settings_path)
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	var steam: SteamRoom = _net.steam
 	var online: bool = (_net.is_online() or loopback) and steam.available()
 	var channel := channel_for(_held("talk"), _held("radio"), always_open or loopback) if online else -1
@@ -102,6 +107,7 @@ func _process(_delta: float) -> void:
 	var camera := get_viewport().get_camera_3d()
 	if camera:
 		update_walls(camera.global_position)
+	_check_singing(delta)
 
 
 func _held(action: String) -> bool:
@@ -144,21 +150,65 @@ func _send(steam: Object) -> void:
 		_voice.rpc(maxi(talking, 0), data)
 
 
-## Only in an interrogation: a shout near the suspect is the bad cop's shout.
+## Only in an interrogation (a shout near the suspect is the bad cop's shout) or the jailbreak (the guard turns to it).
 func _check_shout(steam: Object, data: PackedByteArray) -> void:
-	if not is_inside_tree() or not get_tree().has_group("interrogation"):
+	if not is_inside_tree() or not (get_tree().has_group("interrogation") or get_tree().has_group("night_guard")):
 		return
 	var voice: Dictionary = steam.call("decompressVoice", data, mix_rate)
 	var pcm: PackedByteArray = voice.get("uncompressed", voice.get("buffer", PackedByteArray()))
-	if shout.feed(pcm.slice(0, int(voice.get("size", pcm.size()))), mix_rate):
+	pcm = pcm.slice(0, int(voice.get("size", pcm.size())))
+	song.feed(pcm, mix_rate, Time.get_ticks_msec() / 1000.0)
+	if shout.feed(pcm, mix_rate):
 		shouted(local_cop(get_tree()))
 
 
-## Tells the interrogation (or the crime scene) that the player's cop shouted.
+## In the jailbreak: while the player sings (or hums with H), tells the guard every SING_EVERY seconds.
+func _check_singing(delta: float) -> void:
+	_sing_left -= delta
+	if _sing_left > 0.0 or not is_inside_tree() or not get_tree().has_group("night_guard"):
+		return
+	if not (_held("hum") or song.is_singing(Time.get_ticks_msec() / 1000.0)):
+		return
+	_sing_left = SING_EVERY
+	sang(local_cop(get_tree()))
+
+
+## The player's cop is singing: the guard, on the host, hears it.
+func sang(cop: Cop) -> void:
+	if not cop:
+		return
+	if _net.is_host():
+		get_tree().call_group("night_guard", "heard_singing", cop)
+	else:
+		_guard_heard_singing.rpc_id(_net.HOST_ID)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _guard_heard_singing() -> void:
+	var sync: CopSync = _net.cop_syncs.get(multiplayer.get_remote_sender_id())
+	if multiplayer.is_server() and sync and is_instance_valid(sync.cop):
+		get_tree().call_group("night_guard", "heard_singing", sync.cop)
+
+
+## Tells the interrogation, the crime scene or the jailbreak's guard that the player's cop shouted.
 func shouted(cop: Cop) -> void:
 	if cop:
 		get_tree().call_group("interrogation", "shouted_by", cop)
 		get_tree().call_group("crime_scene", "shouted_by", cop)
+		if not get_tree().has_group("night_guard"):
+			return
+		# The jailbreak's guard lives on the host.
+		if _net.is_host():
+			get_tree().call_group("night_guard", "shouted_by", cop)
+		else:
+			_guard_heard_shout.rpc_id(_net.HOST_ID)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _guard_heard_shout() -> void:
+	var sync: CopSync = _net.cop_syncs.get(multiplayer.get_remote_sender_id())
+	if multiplayer.is_server() and sync and is_instance_valid(sync.cop):
+		get_tree().call_group("night_guard", "shouted_by", sync.cop)
 
 
 ## The cop this PC's player moves.

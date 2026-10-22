@@ -81,6 +81,8 @@ func test_the_quota_rises_each_shift() -> void:
 
 func test_missing_the_quota_loses_the_campaign() -> void:
 	var campaign := Campaign.start_new()
+	# The one jailbreak (decision 99) is spent, so the next miss ends it.
+	campaign.jailbreak_used = true
 	campaign.finish_shift("bingo", true, _report(850))
 	var report := _report(850)
 	campaign.finish_shift("museum", true, report)
@@ -111,5 +113,5 @@ func test_the_end_of_a_shift_saves_and_shows_the_campaign() -> void:
 	var saved := Campaign.load_saved()
 	assert_not_null(saved, "and was saved")
 	assert_eq(saved.shift, 2)
-	assert_true(saved.suspended, "nothing delivered misses the quota of 800")
-	assert_false(house.get_node("ShiftScreen").get_node("%AgainButton").visible, "a lost campaign has no next shift")
+	assert_true(saved.jailed, "nothing delivered misses the quota of 800: off to the cells (decision 99)")
+	assert_true(house.get_node("ShiftScreen").get_node("%AgainButton").visible, "the jailbreak comes next")
