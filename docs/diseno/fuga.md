@@ -71,6 +71,18 @@ come y los invitados ven la misma caja. Captura: `fuga/paso2_guardia.png`.
 - Lejos de su escritorio, el guardia ya no la alcanza y pregunta por sus donas **(propuesta)**.
 - Capturas: `fuga/paso3_escoba.png` (desde la celda) y `paso3_escoba_afuera.png` (desde afuera).
 
+**Cómo quedó el paso 3b (la llave):**
+- Con la caja de donas al alcance (por ejemplo, contra la reja), E saca una dona y la deja en la mano. Salen de la
+  última a la primera, en el mismo orden en que come el guardia.
+- Con la dona en la mano, E la parte. Si es la de la llave, la llave (un modelo nuevo de bronce que brilla un poco)
+  cae en la mano: "¡La llave estaba adentro de la dona!". Si no, el policía se la come: "Nada adentro. Ya que estás,
+  te la comes.", con la resistencia llena como las de la armería.
+- Comiendo directo de la caja en la mano, la de la llave la deja caer al piso.
+- Con la llave en la mano, E en una reja cerrada la abre ("E: abrir con la llave") y queda abierta. La misma llave
+  abre la otra celda.
+- Las cajas de la armería no cambian: E sobre una tirada no hace nada.
+- Capturas: `fuga/paso3_llave.png` y `paso3_reja_abierta.png`.
+
 ## Cómo se gana y cómo se pierde
 - **Se gana** con los 4 en el patrullero fuera del estacionamiento. Pantalla corta "¡Fugados!" y a la mañana arranca el
   turno siguiente en la comisaría.

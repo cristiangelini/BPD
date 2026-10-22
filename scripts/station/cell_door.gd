@@ -3,8 +3,8 @@ extends StaticBody3D
 
 ## A cell's barred door at the station (comisaria.md, fuga.md): 1.2 m of bars hinged at its west end, with a lock.
 ## Its origin is on the hinge, on the ground, and it runs along local +X. Unlocked, E opens it outward (+Z, into
-## the cells room) and closes it; locked, E only rattles it. In the jailbreak both doors start locked and the key
-## opens them (step 3). Every number here is (propuesta).
+## the cells room) and closes it; locked, E only rattles it, unless the cop has the key (CellKey) in hand. In the
+## jailbreak both doors start locked. Every number here is (propuesta).
 
 const WIDTH := 1.2
 const BAR_EVERY := 0.25
@@ -51,17 +51,26 @@ func _bar(at: Vector3, size: Vector3, material: Material) -> void:
 	add_child(instance)
 
 
-func prompt_key(_cop: Cop) -> String:
+func prompt_key(cop: Cop) -> String:
 	if locked:
-		return "PROMPT_CELL_LOCKED"
+		return "PROMPT_CELL_UNLOCK" if _has_key(cop) else "PROMPT_CELL_LOCKED"
 	return "PROMPT_CELL_CLOSE" if is_open else "PROMPT_CELL_OPEN"
 
 
-func use(_cop: Cop) -> void:
+## E on it: with the key in hand a locked door unlocks and swings open; without it, it only rattles.
+func use(cop: Cop) -> void:
+	if locked and _has_key(cop):
+		unlock()
+		set_open(true)
+		return
 	if locked:
 		_rattle()
 		return
 	set_open(not is_open)
+
+
+static func _has_key(cop: Cop) -> bool:
+	return cop != null and cop.get_node("Grabber").held is CellKey
 
 
 func set_open(open: bool) -> void:
