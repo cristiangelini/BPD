@@ -126,6 +126,22 @@ come y los invitados ven la misma caja. Captura: `fuga/paso2_guardia.png`.
 - Online, el canto de un invitado (su voz o H) va al anfitrión.
 - Captura: `fuga/paso5_dormido.png` (dormido, con la llave enganchada en la punta de la caña).
 
+**Cómo quedó el paso 6 (salir y perder):**
+- Se escapan cuando todos los policías de la partida están sentados en el patrullero y el auto está a 25 m o más de
+  donde estaba estacionado **(propuesta)**. Sale una pantalla corta: "¡Fugados!" y "A la mañana nadie dice nada y
+  arranca el turno 2." (el número que toque), con "Siguiente turno" (solo el anfitrión) y "Volver al menú". La partida
+  se guarda sin la fuga y el turno siguiente se sortea como siempre.
+- Si se escapan después de fallar el turno 5, la partida termina con "¡Ascendidos!": la fuga fue la segunda
+  oportunidad **(propuesta)**.
+- Las capturas del guardia se guardan en la partida, así que si se corta en medio se vuelve con las mismas.
+- A la tercera captura el guardia llama al comisario ("¡Se acabó! ¿Comisario? Sí, perdón por la hora..."), que
+  aparece en la puerta de la sala de las celdas gritando "¿¡Me sacaron de la cama, en pijama, para esto!?
+  ¡Suspendidos, todos!". A los 3 s sale "Suspendidos" y "Tres capturas del guardia, y el comisario llegó en pijama.
+  Se terminó la partida.", con "Volver al menú". Por ahora el comisario es el mismo modelo de siempre, sin pijama
+  **(propuesta: falta el modelo en pijama)**.
+- Online, el anfitrión decide cómo terminó y los invitados lo ven igual (viaja con el estado del guardia).
+- Capturas: `fuga/paso6_fugados.png`, `paso6_comisario.png` y `paso6_suspendidos.png`.
+
 ## Cómo se gana y cómo se pierde
 - **Se gana** con los 4 en el patrullero fuera del estacionamiento. Pantalla corta "¡Fugados!" y a la mañana arranca el
   turno siguiente en la comisaría.

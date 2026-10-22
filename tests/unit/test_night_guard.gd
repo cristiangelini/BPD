@@ -69,7 +69,7 @@ func test_he_complains_when_the_box_is_gone() -> void:
 
 func test_a_guest_shows_the_same_box_belt_suspicion_and_sleep() -> void:
 	var guard := _guard()
-	guard.apply_net_state([3, true, 40.0, 1, 0.6, 5.0])
+	guard.apply_net_state([3, true, 40.0, 1, 0.6, 5.0, "escaped"])
 	assert_eq(guard.box.donuts, 3)
 	assert_true(guard.key_on_belt)
 	assert_false(guard.box.find_child("donut_4", true, false).visible, "eaten donuts are gone")
@@ -77,7 +77,8 @@ func test_a_guest_shows_the_same_box_belt_suspicion_and_sleep() -> void:
 	assert_eq(guard.times_caught, 1)
 	assert_almost_eq(guard._model.rotation.y, 0.6, 0.001, "his head turned the same way")
 	assert_true(guard.is_asleep(), "asleep too")
-	assert_eq(guard.net_state(), [3, true, 40.0, 1, 0.6, 5.0])
+	assert_eq(guard.outcome, "escaped", "and how it ended")
+	assert_eq(guard.net_state(), [3, true, 40.0, 1, 0.6, 5.0, "escaped"])
 
 
 func test_the_guard_sits_in_front_of_the_cells_with_the_box_in_reach() -> void:
