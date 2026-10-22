@@ -120,6 +120,17 @@ func _hint(key: String) -> void:
 		cop.show_hint(key)
 
 
+## Host: moves the owner's cop to `to` (the owner sends where it is, so only it can move it for good).
+func tell_warp(to: Transform3D) -> void:
+	_warp.rpc_id(get_multiplayer_authority(), to)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _warp(to: Transform3D) -> void:
+	if multiplayer.get_remote_sender_id() == net.HOST_ID:
+		cop.warp(to)
+
+
 ## Owner driving on a guest: sends the car's controls to the host every physics step; the host drives the car
 ## for everyone.
 func send_controls(throttle: float, steer: float, handbrake: bool) -> void:
