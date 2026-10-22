@@ -8,10 +8,15 @@ extends StaticBody3D
 signal spoke(cop: Cop)
 
 const MODEL := preload("res://assets/models/npc_comisario.glb")
+## Woken up at night by the jailbreak's guard (fuga.md).
+const PAJAMAS := preload("res://assets/models/npc_comisario_pijama.glb")
+
+## In his pajamas instead of his uniform.
+@export var in_pajamas := false
 
 
 func _ready() -> void:
-	add_child(MODEL.instantiate())
+	add_child((PAJAMAS if in_pajamas else MODEL).instantiate())
 	var shape := CollisionShape3D.new()
 	var capsule := CapsuleShape3D.new()
 	capsule.radius = 0.45

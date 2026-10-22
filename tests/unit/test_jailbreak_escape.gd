@@ -82,6 +82,7 @@ func test_the_third_catch_brings_the_comisario_and_loses_the_campaign() -> void:
 	assert_null(level.get_node_or_null("PajamaComisario"))
 	level.guard.catch()
 	assert_not_null(level.get_node_or_null("PajamaComisario"), "the comisario comes in his pajamas")
+	assert_true(level.get_node("PajamaComisario").in_pajamas, "his pajamas model")
 	assert_eq(level.guard.outcome, "", "he shouts for a while first")
 	await wait_seconds(JailbreakLevel.LOST_DELAY + 0.2)
 	assert_eq(level.guard.outcome, "lost")
