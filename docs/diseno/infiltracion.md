@@ -103,6 +103,11 @@ las pruebas. El disfraz de cada policía se ve igual en todas las PC.
    abuelos que lo ven. El que se queda fuera de la pista durante el vals suma +20 por segundo a los que lo ven. La
    música es un "um-pa-pa" provisorio hecho en código **(propuesta)**.
 6. Las 3 pruebas y el final: sueldo, Doña Chela esposada o en el andador (persecución), y el sorteo.
+   - 6a. El caso: el comisario lo da en su oficina, la planilla (entrar disfrazado, pruebas 0 de 3, esposar a Doña
+     Chela) y el sueldo. Esposar a Doña Chela resuelve el caso: paga 600 con las 3 pruebas y un tercio menos por cada
+     una que falta. Cuota propia de 400, así que hacen falta al menos 2 pruebas para aprobar el turno. Esposar a
+     cualquier otro abuelo los delata en el acto **(propuesta)**.
+   - 6b. Las pruebas. 6c. Descubiertos: Doña Chela huye en el andador con motor (persecución). 6d. El sorteo de "Jugar".
 
 ## Respuestas de Cristian (22/10, decisión 100)
 1. La primera variante es Club de abuelos y la siguiente, Coro de iglesia.
