@@ -68,6 +68,11 @@ var custody := {}
 ## The culprit runs off on his bike (runs_off), and the chase once he did; whether he got away.
 var chase: ChaseCase
 var escaped := false
+## Online (docs/diseno/online.md): the host's case decides and a guest's follows it (CaseSync); `online` is that sync.
+var follower := false
+var online: CaseSync
+## The end of shift numbers, once it's over (sent to the guests).
+var _result := {}
 var _refresh_left := 0.0
 
 
@@ -91,8 +96,15 @@ func start(comisario: Comisario = null) -> void:
 	else:
 		give_tip()
 	if shift_screen:
-		shift_screen.play_again.connect(func() -> void: PlaceDraw.start(get_tree()))
+		shift_screen.play_again.connect(_play_again)
 		shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
+
+
+func _play_again() -> void:
+	if online:
+		online.play_again()
+	else:
+		PlaceDraw.start(get_tree())
 
 
 func give_tip() -> void:
@@ -152,6 +164,8 @@ func _meet_cooks() -> void:
 
 ## One part of a cook's file is done; with the four, his file is.
 func file_part(index: int, part: String) -> void:
+	if follower:
+		return
 	var parts: Dictionary = file_parts.get_or_add(index, {"photo": false, "prints": false, "teeth": false, "hair": false})
 	if parts[part]:
 		return
@@ -167,7 +181,7 @@ func file_part(index: int, part: String) -> void:
 
 ## The cops accused a cook at the board; the comisario looks.
 func accuse(index: int) -> void:
-	if accused or lost:
+	if accused or lost or follower:
 		return
 	if index == plan.culprit:
 		accused = true
@@ -205,6 +219,8 @@ func _run_off() -> bool:
 	var at := Transform3D(contest.global_basis, out)
 	chase = ChaseCase.begin(level, SuspectCar.BIKE, at, car, city, case_seed)
 	chase.who = "cook"
+	chase.online = online
+	chase.follower = follower
 	var plaza := city.global_transform * CityLayout.block_center(CityLayout.PLAZA)
 	var ahead := contest.global_basis.z
 	var edge := out + ahead * maxf(CityLayout.BLOCK / 2 - 1.0 - (out - plaza).dot(ahead), 0.0)
@@ -239,22 +255,29 @@ func solved() -> bool:
 
 ## The end of shift screen: the salary if solved, halved by a wrong accusation (ShiftReport). A campaign moves on.
 func finish_shift() -> void:
-	if shift_over:
+	if shift_over or follower:
 		return
-	shift_over = true
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
 	var report := ShiftReport.pay(solved(), [], 0, wrong_guesses)
+	var result := {"solved": solved(), "report": report, "awards": ShiftReport.awards(stats)}
 	var campaign := Campaign.current
-	var played := 0
 	if campaign and not campaign.is_over():
-		played = campaign.shift
+		var played := campaign.shift
 		campaign.finish_shift("crime_pastry", solved(), report, QUOTA)
 		campaign.custody = custody
 		campaign.save()
+		result.campaign = {"shift": played, "money": campaign.money, "over": campaign.is_over(),
+			"promoted": campaign.is_promoted()}
 	else:
 		PlaceDraw.custody = custody
+	_show_result(result)
+
+
+func _show_result(result: Dictionary) -> void:
+	shift_over = true
+	_result = result
 	if not shift_screen:
 		return
 	for cop in get_tree().get_nodes_in_group("cops"):
@@ -262,17 +285,73 @@ func finish_shift() -> void:
 		cop.get_node("Grabber").input_enabled = false
 		cop.get_node("Hud").hide()
 	var awards: Array[Dictionary] = []
-	awards.assign(ShiftReport.awards(stats))
-	shift_screen.show_report(solved(), report, 0, awards)
+	awards.assign(result.awards)
+	shift_screen.show_report(result.solved, result.report, 0, awards)
 	var over := false
-	if campaign and played > 0:
-		shift_screen.show_campaign(played, Campaign.SHIFTS, campaign.money, campaign.is_over(), campaign.is_promoted())
-		over = campaign.is_over()
-	shift_screen.get_node("%AgainButton").visible = not over
+	if result.has("campaign"):
+		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over,
+			result.campaign.promoted)
+		over = result.campaign.over
+	# Online only the host starts the next case.
+	shift_screen.get_node("%AgainButton").visible = not over and not follower
+
+
+## What every guest's case shows (CaseSync, 5 times a second when it changes).
+func snapshot() -> Dictionary:
+	# Copies: CaseSync keeps the last one sent to see what changed, and these change in place.
+	var state := {"tip": tip_given, "at_tent": at_tent, "found": clues_found.duplicate(), "ruined": ruined.duplicate(),
+		"parts": file_parts.duplicate(true), "files": files.duplicate(), "accused": accused, "wrong": wrong_guesses,
+		"lost": lost, "gone": gone.duplicate(), "escaped": escaped,
+		"offended": contest != null and contest.lady.offended, "result": _result}
+	# The culprit who ran off on his bike, and the chase after him.
+	if chase:
+		state.chase = chase.snapshot()
+	return state
+
+
+## A guest's case takes the host's: the planilla, the board's files, who went home, the verdict and the end of shift.
+func apply_snapshot(state: Dictionary) -> void:
+	if state.tip:
+		give_tip()
+	at_tent = state.at_tent
+	clues_found.assign(state.found)
+	ruined.assign(state.ruined)
+	file_parts = state.parts.duplicate(true)
+	files.assign(state.files)
+	# The comisario's verdict at the board, said here too.
+	if state.wrong > wrong_guesses:
+		_comisario_says("BOARD_WRONG_LOST" if state.lost else "BOARD_WRONG")
+	elif state.accused and not accused:
+		_comisario_says("BOARD_RIGHT")
+	wrong_guesses = state.wrong
+	lost = state.lost
+	escaped = state.escaped
+	for index: int in state.gone:
+		if not gone.has(index):
+			gone.append(index)
+			if contest:
+				_send_off(contest.cooks[index])
+	if contest and state.offended and not contest.lady.offended:
+		contest.lady.offended = true
+	if state.accused and not accused:
+		accused = true
+		if state.has("chase"):
+			_run_off()
+		elif contest and not gone.has(plan.culprit):
+			_send_off(contest.cooks[plan.culprit])
+	if chase and state.has("chase"):
+		chase.apply_snapshot(state.chase)
+	if board:
+		board.refresh()
+	checklist.show_rows(rows())
+	if not state.result.is_empty() and not shift_over:
+		_show_result(state.result)
 
 
 ## One more cook is tired and goes home; his file stays as it is. They leave in an order drawn with the seed.
 func _tire() -> void:
+	if follower:
+		return
 	var order := range(cooks.size())
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash("cooks leave %d" % case_seed)
@@ -308,6 +387,8 @@ func _comisario_says(key: String) -> void:
 
 ## The cops found one of the case's clues. Returns whether it's new.
 func found(kind: String) -> bool:
+	if follower:
+		return false
 	if not plan.clues.has(kind) or clues_found.has(kind) or ruined.has(kind):
 		return false
 	clues_found.append(kind)
@@ -318,6 +399,8 @@ func found(kind: String) -> bool:
 
 ## The cops spoiled one of the case's clues before finding it.
 func ruin(kind: String) -> void:
+	if follower:
+		return
 	if not plan.clues.has(kind) or clues_found.has(kind) or ruined.has(kind):
 		return
 	ruined.append(kind)
@@ -343,6 +426,10 @@ func clue_line(kind: String) -> String:
 
 ## A cop shouted (VoiceChat): the jury's lady may take offense.
 func shouted_by(cop: Cop) -> void:
+	if follower:
+		if online:
+			online.request_shout()
+		return
 	if contest:
 		contest.lady.shouted_by(cop)
 
@@ -386,7 +473,7 @@ func _physics_process(delta: float) -> void:
 		elapsed += delta
 		if gone.size() < cooks.size() and elapsed >= LEAVE_FROM + gone.size() * LEAVE_EVERY:
 			_tire()
-	if not at_tent:
+	if not at_tent and not follower:
 		for cop in get_tree().get_nodes_in_group("cops"):
 			if contest.under_roof((cop as Node3D).global_position):
 				at_tent = true
