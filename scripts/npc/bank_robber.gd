@@ -1,14 +1,22 @@
 class_name BankRobber
-extends StaticBody3D
+extends CharacterBody3D
 
 ## A robber of the bank (robo-banco.md, step 2, decision 102), with a rubber animal mask. Each one stands at a task
 ## and looks at it, sweeping their head like the night guard of the jailbreak: the rabbit watches the entrance and
 ## looks everywhere, the pig watches the hostages and stops to eat his sandwich, the duck watches the drill at the
 ## vault with ear muffs on and a narrow cone, and El Oso, the boss, stands behind the counter by the phone. Whoever
-## sees a cop in their cone says so and `spotted` goes off (the drill speeds up in step 3). They don't move yet, so
-## online every PC has the same ones. Every number here is (propuesta).
+## sees a cop in their cone says so and `spotted` goes off (the drill speeds up in step 3); seeing a hostage being
+## led out, `saw_hostage` (step 4). The handcuffs only close on one who doesn't see a cop at arm's length (from behind),
+## except the rabbit, who gives up as soon as he sees one; the pig, seeing one, drops his sandwich and runs to the
+## van, where he hides for the getaway (step 6). Cuffed, E walks them to the patrol car (OwnerEscort). They don't
+## sync online yet. Every number here is (propuesta).
 
 signal spotted(robber: BankRobber, cop: Node3D)
+signal saw_hostage(robber: BankRobber, hostage: Node3D)
+## The handcuffs closed on them.
+signal cuffed_now(robber: BankRobber)
+## The pig got into the van.
+signal hid_in_van(robber: BankRobber)
 
 const ANIMALS: Array[String] = ["conejo", "chancho", "pato", "oso"]
 const MODELS := {
@@ -35,6 +43,11 @@ const EAT_TIME := 5.0
 ## The same cop doesn't count as spotted again for this long.
 const SPOT_AGAIN := 5.0
 const LINES := 4
+## A cop this close and in sight can't cuff them: they dodge.
+const DODGE_REACH := 2.5
+## The pig runs this fast (m/s) and gets in the van this close to its door.
+const RUN_SPEED := 3.0
+const ARRIVED := 0.6
 const SAY_TIME := 4.0
 
 @export var animal := "conejo"
@@ -45,8 +58,16 @@ var _eat_left := EAT_EVERY
 var _look_index := 0
 var _look_left := LOOK_HOLD
 var _next_line := 0
+## The rabbit gave up: he can be cuffed from the front.
+var surrendered := false
+## Where the pig runs, in order (world positions; the level sets them): out of the entrance and to the van's door.
+var run_path: Array[Vector3] = []
+var running := false
+var in_van := false
+var _cuffed_left := 0.0
 ## Cop -> seconds until they count as spotted again.
 var _spotted := {}
+var _model: Node3D
 var _bubble: Label3D
 var _bubble_left := 0.0
 
@@ -54,6 +75,7 @@ var _bubble_left := 0.0
 func _ready() -> void:
 	add_to_group("bank_robbers")
 	collision_layer = 8
+	collision_mask = 1
 	var shape := CollisionShape3D.new()
 	var capsule := CapsuleShape3D.new()
 	capsule.radius = 0.45
@@ -61,11 +83,11 @@ func _ready() -> void:
 	shape.shape = capsule
 	shape.position.y = capsule.height / 2
 	add_child(shape)
-	var model: Node3D = MODELS[animal].instantiate()
-	model.scale = Vector3.ONE * SCALES[animal]
+	_model = MODELS[animal].instantiate()
+	_model.scale = Vector3.ONE * SCALES[animal]
 	# The models face +Z; the robber faces -Z like everyone else.
-	model.rotation.y = PI
-	add_child(model)
+	_model.rotation.y = PI
+	add_child(_model)
 	_bubble = Label3D.new()
 	_bubble.name = "Bubble"
 	_bubble.position = Vector3(0, 2.1, 0)
@@ -113,19 +135,80 @@ func sees_cop(cop: Node3D) -> bool:
 	return sees(cop.global_position + Vector3.UP, cop as CollisionObject3D)
 
 
+## The handcuffs: they close unless they see a cop right in front of them (the rabbit who gave up lets them).
+func cuffed(seconds: float) -> void:
+	if not surrendered and not is_cuffed():
+		for cop: Node3D in get_tree().get_nodes_in_group("cops"):
+			if global_position.distance_to(cop.global_position) < DODGE_REACH and sees_cop(cop):
+				say("ROBBER_DODGE")
+				spotted.emit(self, cop)
+				return
+	running = false
+	_cuffed_left = maxf(_cuffed_left, seconds)
+	say("ROBBER_%s_CUFFED" % animal.to_upper())
+	cuffed_now.emit(self)
+
+
+func is_cuffed() -> bool:
+	return _cuffed_left > 0.0
+
+
 func _physics_process(delta: float) -> void:
+	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
+	if in_van or is_cuffed():
+		return
+	if running:
+		_run(delta)
+		return
 	_turn_head(delta)
 	if animal == "chancho":
 		_eat(delta)
-	for cop: Variant in _spotted.keys():
-		_spotted[cop] -= delta
-		if not is_instance_valid(cop) or _spotted[cop] <= 0.0:
-			_spotted.erase(cop)
+	for seen: Variant in _spotted.keys():
+		_spotted[seen] -= delta
+		if not is_instance_valid(seen) or _spotted[seen] <= 0.0:
+			_spotted.erase(seen)
 	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
 		if not _spotted.has(cop) and sees_cop(cop):
 			_spotted[cop] = SPOT_AGAIN
-			say("ROBBER_%s_SPOT" % animal.to_upper())
-			spotted.emit(self, cop)
+			_saw_cop(cop)
+	for hostage: Node3D in get_tree().get_nodes_in_group("bank_hostages"):
+		if hostage.get("led_by") and not _spotted.has(hostage) \
+				and sees(hostage.global_position + Vector3.UP * 0.8, hostage as CollisionObject3D):
+			_spotted[hostage] = SPOT_AGAIN
+			say("ROBBER_HOSTAGE")
+			saw_hostage.emit(self, hostage)
+
+
+func _saw_cop(cop: Node3D) -> void:
+	say("ROBBER_%s_SPOT" % animal.to_upper())
+	if animal == "conejo":
+		surrendered = true
+	elif animal == "chancho" and not run_path.is_empty():
+		running = true
+		eating_left = 0.0
+		var sandwich := find_child("props", true, false) as Node3D
+		if sandwich:
+			sandwich.hide()
+	spotted.emit(self, cop)
+
+
+## The pig running along run_path; at its end he gets in the van and is gone until the getaway.
+func _run(delta: float) -> void:
+	var to := run_path[0] - global_position
+	to.y = 0.0
+	if to.length() < ARRIVED:
+		run_path.remove_at(0)
+		if run_path.is_empty():
+			running = false
+			in_van = true
+			hide()
+			collision_layer = 0
+			hid_in_van.emit(self)
+		return
+	look_at(global_position + to, Vector3.UP)
+	velocity = to.normalized() * RUN_SPEED
+	velocity.y = 0.0 if is_on_floor() else -GameScale.GRAVITY * delta
+	move_and_slide()
 
 
 func _turn_head(delta: float) -> void:
@@ -148,12 +231,19 @@ func _eat(delta: float) -> void:
 		say("ROBBER_CHANCHO_EAT")
 
 
-func prompt_key(_cop: Cop) -> String:
+func prompt_key(cop: Cop) -> String:
+	var escort := OwnerEscort.of(self)
+	if escort and escort.handles_use():
+		return escort.prompt_key(cop)
 	return "PROMPT_TALK_ROBBER"
 
 
-## E on a robber: a line of their own, a different one each time.
-func use(_cop: Cop) -> void:
+## E on a robber: a line of their own, a different one each time; cuffed, the escort to the patrol car.
+func use(cop: Cop) -> void:
+	var escort := OwnerEscort.of(self)
+	if escort and escort.handles_use():
+		escort.use(cop)
+		return
 	say("ROBBER_%s_%d" % [animal.to_upper(), _next_line % LINES + 1])
 	_next_line += 1
 
@@ -164,11 +254,24 @@ func say(key: String) -> void:
 	_bubble_left = SAY_TIME
 
 
+## What the escort calls (OwnerEscort): a line for `seconds`; robbers have no complaint meter.
+func _say(key: String, seconds := SAY_TIME) -> void:
+	say(key)
+	_bubble_left = seconds
+
+
+func _raise(_points: float) -> void:
+	pass
+
+
 func said() -> String:
 	return _bubble.text if _bubble.visible else ""
 
 
 func _process(delta: float) -> void:
+	# The escort turns them with their +Z ahead.
+	var escort := OwnerEscort.of(self)
+	_model.rotation.y = 0.0 if escort and (escort.escorted_by or escort.in_car) else PI
 	if _bubble_left > 0.0:
 		_bubble_left -= delta
 		if _bubble_left <= 0.0:

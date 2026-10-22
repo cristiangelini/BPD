@@ -10,7 +10,9 @@ extends Node3D
 ## from Play. Step 2 adds the four robbers at their tasks (BankRobber: the rabbit at the entrance, the pig over the
 ## hostages, the duck at the vault, El Oso behind the counter) and the hostages crouched on the hall's floor. The
 ## drill (BankDrill, step 3) stands in front of the vault's door with the duck beside it; when it gets through, the
-## door swings open. The case comes in the next steps.
+## door swings open. Step 4: robbers cuffed from behind are walked to the patrol car (OwnerEscort; four seats, two of
+## them in the trunk), the pig runs to the van when he sees a cop, and hostages led out by the hand go free. The case
+## comes in the next steps.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -62,6 +64,13 @@ const ROBBER_SPOTS := {
 const DRILL_AT := Vector3(VAULT_X - 0.15 - 0.1 - BankDrill.BIT_AT.z - BankDrill.BIT_LENGTH, 0, VAULT_DOOR_Z)
 ## How the vault's door ends up when the drill gets through: swung into the vault on its hinge at the doorway's edge.
 const VAULT_DOOR_OPEN := Vector3(VAULT_X + VAULT_DOOR_RADIUS + 0.05, 0, VAULT_DOOR_Z - VAULT_DOOR_RADIUS - 0.12)
+## Where each robber rides in the patrol car once walked there (shifted from the prisoner's seat): the two at the
+## back seat, two in the trunk.
+const ROBBER_SEATS: Array[Vector3] = [Vector3(-0.35, 0, 0), Vector3(0.35, 0, 0), ChaseCase.TRUNK_SEAT,
+	ChaseCase.TRUNK_SEAT + Vector3(0, 0.5, 0)]
+## The pig's run to the van: across the hall between the queue posts, out of the entrance and to the van's side.
+const PIG_RUN: Array[Vector3] = [Vector3(-0.4, 0, 6.0), Vector3(ENTRANCE_X, 0, HALF_Z + 1.0),
+	Vector3(VAN_AT.x, 0, VAN_AT.z - 1.6)]
 ## The hostages: rows across the hostages' floor, facing the counter.
 const HOSTAGES := 8
 const HOSTAGE_XS: Array[float] = [-6.5, -3.5, -0.5, 2.5]
@@ -87,6 +96,7 @@ var robbers: Array[BankRobber] = []
 var boss: BankRobber
 var hostages: Array[BankHostage] = []
 var drill: BankDrill
+var hostages_freed := 0
 var station_parking: Transform3D
 var _build: PlaceBuilder
 
@@ -282,6 +292,12 @@ func _add_robbers() -> void:
 		robber.rotation.y = ROBBER_SPOTS[animal][1]
 		add_child(robber)
 		robbers.append(robber)
+		var escort := OwnerEscort.attach(robber, car)
+		escort.seat_shift = ROBBER_SEATS[robbers.size() - 1]
+		escort.in_car_hint = "HINT_OWNER_IN_CAR" if robber.is_boss() else "HINT_ROBBER_IN_CAR"
+		if animal == "chancho":
+			for at in PIG_RUN:
+				robber.run_path.append(global_transform * at)
 		if robber.is_boss():
 			boss = robber
 
@@ -302,6 +318,8 @@ func _add_hostages() -> void:
 		hostage.look = looks[i % looks.size()]
 		hostage.next_line = i
 		hostage.position = Vector3(HOSTAGE_XS[i % HOSTAGE_XS.size()], FLOOR_TOP, HOSTAGE_ZS[i / HOSTAGE_XS.size()])
+		hostage.is_out = func(at: Vector3) -> bool: return not inside(at)
+		hostage.freed_now.connect(func(_hostage: BankHostage) -> void: hostages_freed += 1)
 		add_child(hostage)
 		hostages.append(hostage)
 
