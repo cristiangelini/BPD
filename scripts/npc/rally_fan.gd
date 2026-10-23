@@ -206,6 +206,19 @@ func said() -> String:
 	return _bubble.text if _bubble.visible else ""
 
 
+## What a guest's copy needs besides where they are and what they say (NpcSync): cuffed, dirty hands and marked.
+func net_state() -> Array:
+	return [is_cuffed(), dirty, marked]
+
+
+func apply_net_state(state: Variant) -> void:
+	_cuffed_left = Handcuffs.SECONDS if state[0] else 0.0
+	if state[1]:
+		get_dirty()
+	if state[2]:
+		mark()
+
+
 func _physics_process(delta: float) -> void:
 	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
 

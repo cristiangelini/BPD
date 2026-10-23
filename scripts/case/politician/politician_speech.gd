@@ -23,6 +23,8 @@ var over := false
 ## Seconds of speech left.
 var left := SPEECH_TIME
 var bar: ProgressBar
+## Online, a guest's speech: the host's decides when it starts and how much is left (PoliticianCase.snapshot).
+var follower := false
 var _order: Array[int] = []
 var _next := 0
 var _line_left := 0.0
@@ -56,7 +58,8 @@ func start() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if over:
+	if over or follower:
+		_show()
 		return
 	if not speaking:
 		for cop: Node3D in get_tree().get_nodes_in_group("cops"):

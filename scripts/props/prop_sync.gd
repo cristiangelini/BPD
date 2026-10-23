@@ -91,24 +91,36 @@ func _on_node_added(node: Node) -> void:
 	if net.is_host():
 		props.append(node as RigidBody3D)
 		var index := props.size() - 1
-		_spawned[index] = node.scene_file_path
+		_spawned[index] = [_source(node), node.net_setup() if node.has_method("net_setup") else {}]
 		for peer: int in net.scene_peers:
-			_made.rpc_id(peer, index, node.scene_file_path)
+			_made.rpc_id(peer, index, _spawned[index][0], _spawned[index][1])
 	else:
 		# Only the host makes props; this one's copy comes from it.
 		node.queue_free.call_deferred()
 
 
-## The host made prop `index` from `scene` ("" when it has no scene: the guest keeps the place empty).
+## Where a copy of `node` comes from: its scene, or its script when it's made in code and says what the copy needs
+## (net_setup(): the rally's eggs and tomatoes); "" otherwise.
+static func _source(node: Node) -> String:
+	if node.scene_file_path != "":
+		return node.scene_file_path
+	return (node.get_script() as Script).resource_path if node.has_method("net_setup") else ""
+
+
+## The host made prop `index` from `scene` ("" when it has no scene: the guest keeps the place empty), set up with
+## `setup` before it's added.
 @rpc("authority", "call_remote", "reliable")
-func _made(index: int, scene: String) -> void:
+func _made(index: int, scene: String, setup := {}) -> void:
 	while props.size() <= index:
 		props.append(null)
 	if props[index] or scene == "" or not ResourceLoader.exists(scene):
 		return
-	var prop := (load(scene) as PackedScene).instantiate() as RigidBody3D
+	var made: Variant = load(scene)
+	var prop := ((made as PackedScene).instantiate() if made is PackedScene else (made as Script).new()) as RigidBody3D
 	if not prop:
 		return
+	for key: String in setup:
+		prop.set(key, setup[key])
 	_adding = prop
 	_level.add_child(prop)
 	_adding = null
@@ -131,7 +143,7 @@ func prop_at(index: int) -> RigidBody3D:
 ## Host: sends every prop to `peer` on the next send, reliably (a peer that just loaded the level).
 func resend_all(peer: int) -> void:
 	for index: int in _spawned:
-		_made.rpc_id(peer, index, _spawned[index])
+		_made.rpc_id(peer, index, _spawned[index][0], _spawned[index][1])
 	var ids := PackedInt32Array()
 	var places: Array[Transform3D] = []
 	for i in props.size():
