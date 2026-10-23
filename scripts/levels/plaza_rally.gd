@@ -6,7 +6,7 @@ extends Node3D
 ## a stage with a ramp, a lectern with its microphone, a banner and balloons: deputy Lustre waits there for his guard
 ## and gives his speech (PoliticianSpeech). In front of the stage, the crowd (RallyCrowd, step 2), with the hecklers
 ## who throw eggs and tomatoes at him; the ones cuffed are walked to the patrol car (step 4). He walks off the stage to
-## greet them now and then (PoliticianWalks, step 5). --place=plaza opens it
+## greet them now and then (PoliticianWalks, step 5). The case is PoliticianCase's (step 6). --place=plaza opens it
 ## from Play. Every number here is (propuesta).
 
 ## The stage, from the plaza's middle: its middle, its size and the ramp up its front at the east end.
@@ -35,6 +35,8 @@ const METAL := Color(0.2, 0.2, 0.22)
 var politician: Politician
 var speech: PoliticianSpeech
 var crowd: RallyCrowd
+## The case on top of the rally (step 6): the comisario's briefing, the planilla and the end of the shift.
+var case: PoliticianCase
 ## The stage's middle on its top, in world space.
 var stage_top: Vector3
 var _build: PlaceBuilder
@@ -69,6 +71,12 @@ func _ready() -> void:
 	var half := STAGE_SIZE / 2
 	PoliticianWalks.attach(politician, speech, crowd.fans, politician.global_position,
 		stage_top + Vector3(RAMP_X, 0, half.z - 0.4), stage + Vector3(RAMP_X, 0, half.z + RAMP_RUN + 0.6), case_seed)
+	case = PoliticianCase.new()
+	case.name = "Case"
+	case.rally = self
+	case.shift_screen = $ShiftScreen
+	add_child(case)
+	case.start(city.comisario)
 
 
 ## Boards on a blue skirt, the ramp up the front, the lectern and its microphone, the banner on two poles at the back
