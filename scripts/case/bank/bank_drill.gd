@@ -51,10 +51,11 @@ func _ready() -> void:
 	_build_hud()
 
 
-## Hooks the robbers: each one that spots a cop makes the gang nervous.
+## Hooks the robbers: each one that spots a cop, or a hostage being led out, makes the gang nervous.
 func watch(robbers: Array[BankRobber]) -> void:
 	for robber in robbers:
 		robber.spotted.connect(func(_robber: BankRobber, _cop: Node3D) -> void: hurry(NERVOUS))
+		robber.saw_hostage.connect(func(_robber: BankRobber, _hostage: Node3D) -> void: hurry(NERVOUS))
 
 
 ## How many drilling seconds go by each second right now.
