@@ -82,3 +82,7 @@ Es la que mejor enseña las reglas; las otras variantes cambian una sola cosa.
 1. Sí: se empieza por los ladrones con máscaras de animales.
 2. Sí: el teléfono con pedidos absurdos que frenan el taladro y sueltan rehenes; mentirle lo acelera.
 3. Sí: el taladro de 8 minutos; si abre la bóveda, arranca la persecución.
+
+## Hecho así
+
+- **Paso 1 (banco y camioneta):** el lote `bank` está en la cuadra (3, 0), lado sur, y se abre con `--place=bank`. `scenes/levels/bank.tscn` lleva al hall con la fila, los bancos y el mostrador con 3 escritorios. Atrás están la oficina, el pasillo y la bóveda, cerrada por una puerta redonda de acero (`BankLevel.vault_door`, el taladro la abre en el paso 3). La puerta de atrás tiene llave. La ventilación está en la pared oeste, a 1,5 m: no se llega saltando, pero sí subido a un compañero (propuesta). La camioneta de los ladrones (florería gris con margaritas, modelo `robbers_van`) está estacionada en el cordón. Capturas en `/mnt/project-files/banco/paso1-*.png`.

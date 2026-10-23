@@ -1115,6 +1115,8 @@ CHASE_CHELA_LINE_1,"¡Diez por hora! ¡Le puse el motor de la cortadora de pasto
 CHASE_CHELA_LINE_2,"Yo solo tengo suerte. Mucha suerte. Todos los jueves.","I'm just lucky. Very lucky. Every Thursday.","Eu só tenho sorte. Muita sorte. Toda quinta."
 CHASE_CHELA_LINE_3,"Está bien, me rindo. Pero el vals lo bailaban horrible.","Fine, I give up. But you danced the waltz horribly.","Tá bom, eu me rendo. Mas vocês dançaram a valsa horrível."
 PLACE_CHAPEL,"Capilla del barrio","Neighborhood Chapel","Capela do Bairro"
+PLACE_BANK,"Banco del Barrio","Neighborhood Bank","Banco do Bairro"
+BANK_VAULT,"BÓVEDA","VAULT","COFRE"
 PROMPT_TALK_CHORISTER,"E: charlar","E: chat","E: conversar"
 PROMPT_TALK_ERNESTO,"E: saludar al Maestro Ernesto","E: greet Maestro Ernesto","E: cumprimentar o Maestro Ernesto"
 CHOIR_GOSSIP_0,"Diez años juntando para el órgano nuevo. Este año llega seguro, dice el Maestro.","Ten years saving for the new organ. It's surely coming this year, says the Maestro.","Dez anos juntando para o órgão novo. Este ano chega com certeza, diz o Maestro."

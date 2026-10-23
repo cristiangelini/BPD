@@ -24,7 +24,8 @@ func test_the_station_and_the_ten_raid_places_are_in_the_city() -> void:
 		assert_false(CityLayout.place(id).is_empty(), "%s should have a lot" % id)
 	assert_false(CityLayout.place("grandpa_club").is_empty(), "the infiltration's club too")
 	assert_false(CityLayout.place("chapel").is_empty(), "and the choir's chapel")
-	assert_eq(CityLayout.PLACES.size(), RAID_PLACES.size() + 3)
+	assert_false(CityLayout.place("bank").is_empty(), "and the bank to rob")
+	assert_eq(CityLayout.PLACES.size(), RAID_PLACES.size() + 4)
 
 
 func test_no_two_lots_overlap() -> void:
