@@ -4,18 +4,23 @@ extends Node
 ## The riot in the prison's canteen (carcel-motin.md, step 2, decision 104): INMATES inmates at their places by the
 ## six tables, a different set of places for each seed, ANGRY_AT_START of them already angry and the rest somewhere in
 ## START_ANGER. Nothing moves until the first cop walks through the gate: then the riot is on (started) and every
-## inmate's anger lives (PrisonInmate). `angry` counts the angry ones. Every number here is (propuesta).
+## inmate's anger lives (PrisonInmate). `angry` counts the angry ones. Step 2b: an angry inmate throws food at a cop
+## within COP_REACH COP_SHARE of the time, and otherwise at another inmate within INMATE_REACH (target_for), so the anger
+## spreads from table to table. Every number here is (propuesta).
 
 signal started
 ## How many are angry now changed.
 signal angry_changed(count: int)
 
 const INMATES := 20
-const ANGRY_AT_START := 6
+const ANGRY_AT_START := 5
 const START_ANGER := Vector2(10.0, 45.0)
 ## The places by each table, from its middle: along it, and on either side out past its bench.
 const PLACE_XS: Array[float] = [-1.4, -0.45, 0.45, 1.4]
 const PLACE_Z := 1.25
+const COP_REACH := 12.0
+const COP_SHARE := 0.4
+const INMATE_REACH := 8.0
 
 var prison: PrisonLevel
 var inmates: Array[PrisonInmate] = []
@@ -47,6 +52,7 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 		inmate.anger = 100.0 if i < ANGRY_AT_START else _rng.randf_range(START_ANGER.x, START_ANGER.y)
 		level.add_child(inmate)
 		inmate.global_transform = level.global_transform * places[i]
+		inmate.riot = self
 		inmate.angry_changed.connect(_on_angry_changed.unbind(2))
 		inmates.append(inmate)
 	angry = count_angry()
@@ -66,6 +72,23 @@ func start() -> void:
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
 		cop.show_hint("HINT_RIOT_STARTED")
 	started.emit()
+
+
+## Who `inmate` throws at: the nearest cop within COP_REACH, COP_SHARE of the time; otherwise another inmate within
+## INMATE_REACH, at random. Null when there's no one.
+func target_for(inmate: PrisonInmate) -> Node3D:
+	var nearest: Cop
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		var away := cop.global_position.distance_to(inmate.global_position)
+		if away < COP_REACH and (not nearest or away < nearest.global_position.distance_to(inmate.global_position)):
+			nearest = cop
+	if nearest and _rng.randf() < COP_SHARE:
+		return nearest
+	var near := inmates.filter(func(other: PrisonInmate) -> bool:
+		return other != inmate and other.global_position.distance_to(inmate.global_position) < INMATE_REACH)
+	if near.is_empty():
+		return nearest
+	return near[_rng.randi_range(0, near.size() - 1)]
 
 
 func _on_angry_changed() -> void:

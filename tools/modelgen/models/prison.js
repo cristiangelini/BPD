@@ -54,13 +54,70 @@ export function buildJellyTray() {
 	return b.build();
 }
 
+// What flies in the riot (step 2b), each a few centimeters (the game shows them bigger): a scoop of mash, a jelly
+// cube, a chicken drumstick and a yogurt cup.
+export function buildMash() {
+	const b = new Builder('prison_mash');
+	b.add('mash', mat('mash', 0xf1dfa2), ellipsoid(0.045, 0.035, 0.045, 8, 5), { pos: V(0, 0, 0) });
+	b.add('mash', mat('mash', 0xf1dfa2), ellipsoid(0.025, 0.02, 0.025, 6, 4), { pos: V(0.015, 0.03, 0.01) });
+	return b.build();
+}
+
+export function buildJelly() {
+	const b = new Builder('prison_jelly');
+	b.add('jelly', mat('jelly', 0x5fd34a), new THREE.BoxGeometry(0.06, 0.05, 0.06), { pos: V(0, 0, 0), rot: [0, 0.2, 0] });
+	return b.build();
+}
+
+export function buildChicken() {
+	const meat = mat('chicken', 0xc98a3c), bone = mat('bone', 0xf2ead8);
+	const b = new Builder('prison_chicken');
+	b.add('chicken', meat, ellipsoid(0.035, 0.03, 0.05, 8, 5), { pos: V(0, 0, -0.01) });
+	b.add('chicken', bone, new THREE.CylinderGeometry(0.008, 0.008, 0.05, 5), { pos: V(0, 0, 0.055), rot: [Math.PI / 2, 0, 0] });
+	b.add('chicken', bone, ellipsoid(0.013, 0.013, 0.013, 5, 4), { pos: V(0, 0, 0.08) });
+	return b.build();
+}
+
+export function buildYogurt() {
+	const b = new Builder('prison_yogurt');
+	b.add('cup', mat('yogurt_cup', 0xf4f4f0), new THREE.CylinderGeometry(0.035, 0.028, 0.07, 8), { pos: V(0, 0, 0) });
+	b.add('cup', mat('yogurt_lid', 0xe25b8a), new THREE.CylinderGeometry(0.037, 0.037, 0.005, 8), { pos: V(0, 0.037, 0) });
+	return b.build();
+}
+
+// What each leaves where it lands: a flat blob with drops around it, lying on +Y (the drumstick just lies there).
+function buildSplat(name, color) {
+	const goo = mat(`${name}_goo`, color);
+	const b = new Builder(name);
+	b.add('splat', goo, new THREE.CylinderGeometry(0.09, 0.1, 0.006, 9), { pos: V(0, 0.003, 0) });
+	for (let i = 0; i < 6; i++) {
+		const a = (i / 6) * Math.PI * 2 + 0.4, r = 0.13 + 0.03 * (i % 2);
+		b.add('splat', goo, new THREE.CylinderGeometry(0.02 + 0.01 * (i % 3), 0.025, 0.005, 6),
+			{ pos: V(Math.cos(a) * r, 0.003, Math.sin(a) * r) });
+	}
+	return b.build();
+}
+
 export const models = {
+	prison_mash: buildMash,
+	prison_jelly: buildJelly,
+	prison_chicken: buildChicken,
+	prison_yogurt: buildYogurt,
+	splat_mash: () => buildSplat('splat_mash', 0xf1dfa2),
+	splat_jelly: () => buildSplat('splat_jelly', 0x5fd34a),
+	splat_yogurt: () => buildSplat('splat_yogurt', 0xf6c6d8),
 	canteen_table: buildCanteenTable,
 	prison_food_pot: buildFoodPot,
 	prison_jelly_tray: buildJellyTray,
 };
 
 export const views = {
+	prison_food: {
+		items: [{ name: 'prison_mash', pos: [-0.24, 0.04, 0] }, { name: 'prison_jelly', pos: [-0.08, 0.03, 0] },
+			{ name: 'prison_chicken', pos: [0.08, 0.03, 0] }, { name: 'prison_yogurt', pos: [0.24, 0.04, 0] },
+			{ name: 'splat_mash', pos: [-0.25, 0, 0.3] }, { name: 'splat_jelly', pos: [0, 0, 0.3] }, { name: 'splat_yogurt', pos: [0.25, 0, 0.3] }],
+		cam: { pos: [0, 0.5, 0.9], target: [0, 0.02, 0.15], fov: 40 },
+	},
 	prison_canteen: {
 		items: [{ name: 'canteen_table', pos: [0, 0, 0] }, { name: 'prison_food_pot', pos: [-0.8, 0.79, 0] },
 			{ name: 'prison_jelly_tray', pos: [0.6, 0.79, 0.1] }],
