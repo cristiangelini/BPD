@@ -49,6 +49,16 @@ function briefcase(b, m, s = 1) {
 	b.add('props', black, new THREE.BoxGeometry(0.02, 0.06, 0.1), { pos: V(s * 0.52, 0.58, 0.12) });
 }
 
+// A robber: all in black with gloves, and the mask (its color, plus what `extra` adds) over the whole head.
+function robber(b, mask, extra) {
+	const outfit = C('robber_black', 0x26262c);
+	pearBody(b, mask, { shirt: outfit, pants: outfit, belted: false, shoes: black });
+	for (const s of [-1, 1]) b.add('arms', C('glove_black', 0x111114), ellipsoid(0.08, 0.08, 0.08, 6, 4), { pos: V(s * 0.49, 0.64, 0.09) });
+	b.add('head', mask, ellipsoid(0.215, 0.235, 0.205, 10, 7), { pos: V(0, 1.31, 0.02) });
+	eyes(b, 1.35, 0.19, 0.08, 0.045);
+	extra(mask);
+}
+
 const NPCS = {
 	// Comisario: big, shouting, with a gold-banded cap, huge mustache and medals.
 	comisario(b) {
@@ -434,6 +444,43 @@ const NPCS = {
 		b.add('cap', helmet, ellipsoid(0.27, 0.22, 0.27, 10, 6), { pos: V(0, 1.42, -0.02) });
 		b.add('cap', C('visor', 0x2a3340), new THREE.BoxGeometry(0.3, 0.08, 0.04), { pos: V(0, 1.38, 0.25) });
 	},
+	// Bank robbers (robo-banco.md, step 2): black clothes and gloves, and a rubber animal mask over the whole head.
+	ladron_conejo(b) {
+		robber(b, C('mask_rabbit', 0xf2eeea), (m) => {
+			for (const s of [-1, 1]) b.add('head', m, ellipsoid(0.05, 0.2, 0.03, 6, 5), { pos: V(s * 0.08, 1.62, 0.0), rot: [0, 0, s * -0.15] });
+			for (const s of [-1, 1]) b.add('head', C('mask_rabbit_ear', 0xf2a0b8), ellipsoid(0.03, 0.15, 0.01, 6, 4), { pos: V(s * 0.08, 1.62, 0.025), rot: [0, 0, s * -0.15] });
+			b.add('face', C('mask_rabbit_nose', 0xf27a9a), ellipsoid(0.03, 0.025, 0.02, 6, 4), { pos: V(0, 1.27, 0.2) });
+			for (const s of [-1, 1]) b.add('face', white, new THREE.BoxGeometry(0.04, 0.05, 0.01), { pos: V(s * 0.022, 1.2, 0.19) });
+		});
+	},
+	ladron_chancho(b) {
+		robber(b, C('mask_pig', 0xf2a6b6), (m) => {
+			b.add('face', m, new THREE.CylinderGeometry(0.07, 0.07, 0.06, 10), { pos: V(0, 1.26, 0.2), rot: [Math.PI / 2, 0, 0] });
+			for (const s of [-1, 1]) b.add('face', C('mask_pig_hole', 0x8a3a4a), ellipsoid(0.015, 0.02, 0.01, 5, 3), { pos: V(s * 0.025, 1.26, 0.232) });
+			for (const s of [-1, 1]) b.add('head', m, new THREE.ConeGeometry(0.06, 0.1, 4), { pos: V(s * 0.14, 1.48, 0.0), rot: [0.4, 0, s * -0.5] });
+		});
+		b.add('props', C('sandwich_bread', 0xe0b070), new THREE.BoxGeometry(0.16, 0.06, 0.1), { pos: V(0.5, 0.66, 0.16) });
+		b.add('props', C('sandwich_ham', 0xe06a7a), new THREE.BoxGeometry(0.17, 0.015, 0.11), { pos: V(0.5, 0.66, 0.16) });
+	},
+	ladron_pato(b) {
+		robber(b, C('mask_duck', 0xf2d23a), (m) => {
+			b.add('face', C('mask_duck_beak', 0xf2902a), new THREE.BoxGeometry(0.16, 0.04, 0.14), { pos: V(0, 1.24, 0.24) });
+			b.add('head', m, ellipsoid(0.03, 0.06, 0.03, 5, 3), { pos: V(0, 1.53, 0.04), rot: [0.5, 0, 0] });
+		});
+		// The ear muffs: the drill is loud and he hears nothing.
+		for (const s of [-1, 1]) b.add('head', C('ear_muff', 0xd8322a), ellipsoid(0.06, 0.08, 0.05, 6, 4), { pos: V(s * 0.2, 1.3, 0.0) });
+		b.add('head', C('ear_muff_band', 0x2a2a30), new THREE.TorusGeometry(0.2, 0.015, 4, 12, Math.PI), { pos: V(0, 1.3, 0.0) });
+	},
+	// El Oso, the boss: a brown bear mask, a gold chain and a phone in his hand.
+	ladron_oso(b) {
+		robber(b, C('mask_bear', 0x8a5a32), (m) => {
+			for (const s of [-1, 1]) b.add('head', m, ellipsoid(0.07, 0.07, 0.04, 6, 4), { pos: V(s * 0.15, 1.48, 0.0) });
+			b.add('face', C('mask_bear_muzzle', 0xd8b088), ellipsoid(0.09, 0.07, 0.05, 8, 5), { pos: V(0, 1.24, 0.18) });
+			b.add('face', black, ellipsoid(0.035, 0.025, 0.02, 6, 4), { pos: V(0, 1.27, 0.23) });
+		});
+		b.add('body', gold, new THREE.TorusGeometry(0.15, 0.015, 4, 14), { pos: V(0, 1.06, 0.12), rot: [1.2, 0, 0] });
+		b.add('props', C('phone_red', 0xc8202a), new THREE.BoxGeometry(0.06, 0.16, 0.05), { pos: V(-0.5, 0.72, 0.12) });
+	},
 };
 
 export const NPC_NAMES = Object.keys(NPCS);
@@ -443,7 +490,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9 };
+const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, ladron_oso: 1.15 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
