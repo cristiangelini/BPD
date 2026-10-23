@@ -122,3 +122,4 @@
 - Online infiltration tests: the club and the choir, checked with two PCs (evidence, suspicion, bingo cards, disguises, the boss cuffed or running off, the end of shift).
 - Online bank robbery: the host's bank decides the drill, El Oso's phone requests, the robbers cuffed or gone with the sacks, the hostages let out and El Oso's getaway, and every PC sees the same, end of shift included.
 - Politician's rally, step 1: a stage on the plaza with its ramp, lectern, banner and balloons; deputy Lustre waits there for his guard and gives a 6 minute speech with a bar at the top (--place=plaza).
+- Politician's rally, step 2: a crowd of 16 neighbors in front of the stage, 4 of them hecklers throwing eggs and tomatoes on a high arc; each hit is a stain on deputy Lustre's suit, and at 10 he leaves furious.
