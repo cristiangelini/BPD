@@ -15,6 +15,7 @@ const AWARDS := [
 	{"stat": "photos", "key": "AWARD_PHOTOS"},
 	{"stat": "rally_blocks", "key": "AWARD_RALLY_BLOCKS"},
 	{"stat": "rally_catches", "key": "AWARD_RALLY_CATCHES"},
+	{"stat": "politician_returns", "key": "AWARD_POLITICIAN_RETURNS"},
 ]
 
 

@@ -4,8 +4,8 @@ extends CharacterBody3D
 ## Deputy Pompeyo Lustre (proteccion-politico.md, step 1, decision 103): the annoying politician the cops guard at
 ## the plaza. He stands at the stage's lectern and gives his speech (PoliticianSpeech says the lines). Each egg or
 ## tomato that hits him is a stain on his suit (step 2): he complains into the microphone and, with STAINS_MAX of them,
-## leaves furious (`furious`; the case is lost, decision 103). Later steps add his walks off the stage. Every number
-## here is (propuesta).
+## leaves furious (`furious`; the case is lost, decision 103). Step 5: his walks off the stage to greet the crowd and
+## being led back by the hand (PoliticianWalks, "Walks"). Every number here is (propuesta).
 
 signal stained(count: int)
 signal furious
@@ -54,13 +54,23 @@ func _ready() -> void:
 	add_child(_bubble)
 
 
-func prompt_key(_cop: Cop) -> String:
-	return "PROMPT_TALK_POLITICIAN"
+func prompt_key(cop: Cop) -> String:
+	var walks := PoliticianWalks.of(self)
+	return walks.prompt_key(cop) if walks else "PROMPT_TALK_POLITICIAN"
 
 
-## E: he shakes the cop's hand and asks for their vote.
-func use(_cop: Cop) -> void:
+## E: he shakes the cop's hand and asks for their vote; off the stage, the cop takes him by the hand (PoliticianWalks).
+func use(cop: Cop) -> void:
+	var walks := PoliticianWalks.of(self)
+	if walks and walks.use(cop):
+		return
 	say("POLITICIAN_HANDSHAKE")
+
+
+## Off the stage greeting, or being led back.
+func off_stage() -> bool:
+	var walks := PoliticianWalks.of(self)
+	return walks != null and walks.off_stage()
 
 
 ## An egg or a tomato hit him at `at` (world space).
