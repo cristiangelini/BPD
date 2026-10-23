@@ -7,10 +7,10 @@ extends Node3D
 ## the pots of mash and the trays of jelly, the kitchen behind its door (where the guards hid from the riot) and the
 ## punishment cell in the west corner. Behind the canteen, through a locked barred gate, the cell block, shut until a
 ## case needs it. The cops start in the station and drive here; --place=prison opens it from Play. Step 2: the riot
-## (PrisonRiot), with the inmates at the tables, starts when the first cop walks through the gate.
+## (PrisonRiot), with the inmates at the tables, starts when the first cop walks through the gate. Step 3: the tables
+## knock over to hide behind (CanteenTable) and the trays by the counter are shields (PrisonTray).
 ## Every number here is (propuesta).
 
-const TABLE_MODEL := preload("res://assets/models/canteen_table.glb")
 const POT_MODEL := preload("res://assets/models/prison_food_pot.glb")
 const JELLY_MODEL := preload("res://assets/models/prison_jelly_tray.glb")
 ## The lot (CityLayout "prison") and its perimeter wall, with the gate's gap in the front wall.
@@ -35,6 +35,9 @@ const COUNTER_X := 4.4
 const COUNTER_FROM := -5.0
 const COUNTER_TO := 5.0
 const COUNTER_SIZE := Vector2(0.8, 1.0)
+## The stack of trays on a little table past the counter's north end (step 3).
+const TRAY_RACK := Vector3(COUNTER_X, FLOOR_TOP, 6.6)
+const TRAYS := 8
 ## The six tables: two columns of three, long along X.
 const TABLE_XS: Array[float] = [-8.0, -2.0]
 const TABLE_ZS: Array[float] = [4.5, 0.5, -3.5]
@@ -66,7 +69,8 @@ var case_seed := 0
 var kitchen_door: FrontDoor
 var punishment_door: CellDoor
 var block_gate: CellDoor
-var tables: Array[Node3D] = []
+var tables: Array[CanteenTable] = []
+var trays: Array[PrisonTray] = []
 var riot: PrisonRiot
 var _build: PlaceBuilder
 
@@ -181,7 +185,7 @@ func _build_shell() -> void:
 	add_child(kitchen_door)
 
 
-## The six tables, the counter with the food on it and the punishment cell.
+## The six tables, the counter with the food on it, the stack of trays at its end and the punishment cell.
 func _build_canteen() -> void:
 	for x in TABLE_XS:
 		for z in TABLE_ZS:
@@ -195,6 +199,14 @@ func _build_canteen() -> void:
 		var food: Node3D = (POT_MODEL if i % 2 == 0 else JELLY_MODEL).instantiate()
 		food.position = Vector3(top.x, top.y, z)
 		$Built.add_child(food)
+	_build.legs(TRAY_RACK, Vector2(0.8, 0.6), 0.8, STEEL)
+	_build.box(TRAY_RACK + Vector3(0, 0.82, 0), Vector3(0.8, 0.04, 0.6), STEEL)
+	for i in TRAYS:
+		var tray := PrisonTray.new()
+		tray.name = "Tray%d" % i
+		tray.position = TRAY_RACK + Vector3(0, 0.86 + i * 0.035, 0)
+		add_child(tray)
+		trays.append(tray)
 	var cell := PUNISHMENT
 	_build.wall("z", cell.end.x, cell.position.y, cell.end.y, 0, [], INSIDE)
 	_build.wall("x", cell.end.y, cell.position.x, PUNISHMENT_DOOR_X, 0, [], INSIDE)
@@ -242,21 +254,13 @@ func _upper(axis: String, fixed: float, from: float, to: float, color: Color) ->
 		_build.box(Vector3(fixed, y0 + height / 2, middle), Vector3(PlaceBuilder.WALL, height, to - from), color)
 
 
-## A canteen table with its benches: the model, a solid top and benches you can climb on.
+## A canteen table with its benches, which knocks over (CanteenTable).
 func _table(at: Vector3) -> void:
-	var table: Node3D = TABLE_MODEL.instantiate()
+	var table := CanteenTable.new()
+	table.name = "Table%d" % tables.size()
 	table.position = at
-	$Built.add_child(table)
+	add_child(table)
 	tables.append(table)
-	var solid := _build.body(at)
-	for part: Array in [[Vector3(0, 0.76, 0), Vector3(4.0, 0.06, 0.9)], [Vector3(0, 0.24, -0.75), Vector3(3.8, 0.48, 0.32)],
-			[Vector3(0, 0.24, 0.75), Vector3(3.8, 0.48, 0.32)]]:
-		var shape := CollisionShape3D.new()
-		var box := BoxShape3D.new()
-		box.size = part[1]
-		shape.shape = box
-		shape.position = part[0]
-		solid.add_child(shape)
 
 
 ## A row of bars along "x" (at z = fixed) or "z" (at x = fixed), `height` tall, solid to walk into.
