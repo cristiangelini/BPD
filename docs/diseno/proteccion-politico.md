@@ -1,7 +1,7 @@
 # BPD · Protección de un político (propuesta, 23/10)
 
-Noveno tipo de caso, del catálogo ([casos.md](casos.md), punto 9) y la decisión 32. Espera las respuestas de Cristian
-(abajo) antes de programarlo. Los números son **(propuesta)** hasta probarlos jugando.
+Noveno tipo de caso, del catálogo ([casos.md](casos.md), punto 9) y la decisión 32. Cristian respondió las 3 preguntas el 23/10
+(decisión 103). Los números son **(propuesta)** hasta probarlos jugando.
 
 ## La idea
 El comisario les da el peor trabajo: cuidar a un político molesto durante un acto. Nadie lo quiere, todos le tiran
@@ -70,3 +70,10 @@ del centro de la ciudad. Es la que mejor enseña las reglas; las otras variantes
    Recomendado: se pierde con 10, así hay algo en juego.
 3. **¿El político se baja del escenario** a saludar y a sacarse fotos, y hay que llevarlo de vuelta de la mano?
    Recomendado: sí, es lo que lo hace molesto.
+
+## Respuestas de Cristian (23/10, decisión 103)
+1. Sí: se empieza por el acto en la plaza (lo eligió en la tarjeta).
+2. Con 10 manchas se va furioso y el caso se pierde.
+3. Sí: se baja a saludar y sacarse fotos, y hay que llevarlo de vuelta de la mano.
+
+## Hecho así
