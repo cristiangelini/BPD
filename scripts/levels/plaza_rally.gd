@@ -5,7 +5,8 @@ extends Node3D
 ## station, the cops in the guard room and the patrol car at the door. On the plaza's north half, facing the fountain,
 ## a stage with a ramp, a lectern with its microphone, a banner and balloons: deputy Lustre waits there for his guard
 ## and gives his speech (PoliticianSpeech). In front of the stage, the crowd (RallyCrowd, step 2), with the hecklers
-## who throw eggs and tomatoes at him. --place=plaza opens it from Play. Every number here is (propuesta).
+## who throw eggs and tomatoes at him; the ones cuffed are walked to the patrol car (step 4). --place=plaza opens it
+## from Play. Every number here is (propuesta).
 
 ## The stage, from the plaza's middle: its middle, its size and the ramp up its front at the east end.
 const STAGE_FROM_PLAZA := Vector3(0, 0, -14)
@@ -62,7 +63,8 @@ func _ready() -> void:
 	crowd = RallyCrowd.new()
 	crowd.name = "Crowd"
 	add_child(crowd)
-	crowd.setup(self, city.transform * CityLayout.block_center(CityLayout.PLAZA), politician, speech, case_seed)
+	crowd.setup(self, city.transform * CityLayout.block_center(CityLayout.PLAZA), politician, speech, case_seed,
+		$PatrolCar)
 
 
 ## Boards on a blue skirt, the ramp up the front, the lectern and its microphone, the banner on two poles at the back
