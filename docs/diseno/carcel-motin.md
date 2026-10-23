@@ -1,7 +1,7 @@
-# BPD · Cárcel: motín en el comedor (propuesta, 23/10)
+# BPD · Cárcel: motín en el comedor (23/10)
 
 Décimo y último tipo de caso del catálogo ([casos.md](casos.md), punto 6) y la decisión 29. Cristian eligió el motín en
-el comedor en la tarjeta del 23/10. Los números son **(propuesta)** hasta probarlos jugando.
+el comedor en la tarjeta del 23/10 y respondió las 3 preguntas (decisión 104). Los números son **(propuesta)** hasta probarlos jugando.
 
 ## La idea
 La cárcel de la ciudad pide refuerzos: en el comedor empezó una guerra de comida y los guardias se escondieron en la
@@ -25,7 +25,8 @@ otra variante lo necesite. Se llega en el patrullero, como al banco.
 4. **La comida:** puré, gelatina, pollo y yogur, objetos con física que vuelan en arco (como los huevos del político).
    Pegan y manchan; un policía con 5 manchas resbala y se cae. Se agarran en el aire y se pueden devolver.
 5. **Calmar:** un policía que se acerca a un preso y lo mira, sin que le peguen comida, lo calma de a poco hablándole
-   (E). Con enojo 0 el preso se sienta y deja de tirar. Las bandejas paran la comida si se sostienen delante.
+   (E). Con enojo 0 el preso se sienta y deja de tirar. Esposarlo también lo calma (decisión 104). Las bandejas paran la
+   comida si se sostienen delante.
 6. **Los cabecillas:** 3 presos (al azar por semilla) con el enojo que no baja nunca; se los reconoce porque se suben a
    las mesas y gritan. Hay que esposarlos y llevarlos a la celda de castigo (escolta del allanamiento). Mientras estén
    sueltos, cada 30 s vuelven a enojar a su mesa.
@@ -73,3 +74,8 @@ otra variante lo necesite. Se llega en el patrullero, como al banco.
    así hay algo que hacer además de esposar a 20.
 3. **¿Se pierde si se desborda** (15 enojados a la vez), o el motín no se pierde y solo baja el sueldo? Recomendado:
    se pierde, así el contagio importa.
+
+## Respuestas de Cristian (23/10, decisión 104)
+1. Sí: la cárcel va en la ciudad, en la cuadra 5, 2, y se llega en el patrullero.
+2. Sí, y esposar también: a un preso se lo calma hablándole o esposándolo.
+3. Sí: con 15 presos enojados a la vez el motín se desborda y el caso se pierde.
