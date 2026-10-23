@@ -49,9 +49,37 @@ export function buildRobbersVan() {
 	return b.build();
 }
 
-export const models = { robbers_van: buildRobbersVan };
+// The drill (step 3): a fat orange drill on a steel tripod, its nose at the height of the vault door's middle, a
+// cable running down to a little generator box at its feet. The spinning bit is added by the game (BankDrill), so it
+// turns on its own axis; it comes out of the nose at (0, 1.05, 0.3). Faces +Z, feet at y = 0.
+export function buildBankDrill() {
+	const orange = mat('drill_orange', 0xf2802a), steel = mat('drill_steel', 0x8a9098), black = mat('car_black', 0x23252b);
+	const yellow = mat('drill_yellow', 0xf2c230);
+	const b = new Builder('bank_drill');
+	for (let i = 0; i < 3; i++) {
+		const a = (i / 3) * Math.PI * 2;
+		b.add('stand', steel, new THREE.CylinderGeometry(0.025, 0.025, 1.0, 5), { pos: V(Math.sin(a) * 0.22, 0.45, Math.cos(a) * 0.22 - 0.1), rot: [Math.cos(a) * -0.4, 0, Math.sin(a) * 0.4] });
+	}
+	box(b, 'stand', steel, 0.12, 0.08, 0.12, 0, 0.92, -0.1);
+	box(b, 'body', orange, 0.26, 0.24, 0.5, 0, 1.05, -0.02);
+	box(b, 'body', black, 0.27, 0.06, 0.3, 0, 1.18, -0.08);
+	box(b, 'body', yellow, 0.02, 0.1, 0.18, 0.14, 1.05, -0.05);
+	b.add('body', steel, new THREE.CylinderGeometry(0.07, 0.09, 0.1, 8), { pos: V(0, 1.05, 0.26), rot: [Math.PI / 2, 0, 0] });
+	box(b, 'body', black, 0.05, 0.22, 0.06, 0, 0.88, -0.05);
+	// The cable to the generator.
+	b.add('cable', black, new THREE.CylinderGeometry(0.015, 0.015, 1.0, 4), { pos: V(0.25, 0.55, -0.4), rot: [0.5, 0, -0.35] });
+	box(b, 'generator', yellow, 0.4, 0.3, 0.3, 0.4, 0.15, -0.6);
+	box(b, 'generator', black, 0.1, 0.1, 0.02, 0.4, 0.2, -0.44);
+	return b.build();
+}
+
+export const models = { robbers_van: buildRobbersVan, bank_drill: buildBankDrill };
 
 export const views = {
+	bank_drill: {
+		items: [{ name: 'bank_drill', pos: [0, 0, 0], rotY: 0.9 }],
+		cam: { pos: [0.2, 1.3, 2.6], target: [0, 0.75, 0], fov: 40 },
+	},
 	robbers: {
 		items: ['conejo', 'chancho', 'pato', 'oso'].map((n, i) => ({ name: `npc_ladron_${n}`, pos: [(i - 1.5) * 1.2, 0, 0], rotY: 0.3, scale: n === 'oso' ? 1.15 : 1 })),
 		cam: { pos: [0, 1.4, 6.0], target: [0, 0.9, 0], fov: 36 },

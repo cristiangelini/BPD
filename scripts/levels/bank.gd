@@ -9,7 +9,8 @@ extends Node3D
 ## The robbers' van waits parked on the street. The cops start in the station and drive here; --place=bank opens it
 ## from Play. Step 2 adds the four robbers at their tasks (BankRobber: the rabbit at the entrance, the pig over the
 ## hostages, the duck at the vault, El Oso behind the counter) and the hostages crouched on the hall's floor. The
-## drill and the case come in the next steps.
+## drill (BankDrill, step 3) stands in front of the vault's door with the duck beside it; when it gets through, the
+## door swings open. The case comes in the next steps.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -54,9 +55,13 @@ const VAN_SIZE := Vector3(2.2, 2.3, 5.2)
 const ROBBER_SPOTS := {
 	"conejo": [Vector3(2.0, 0, 8.5), PI],
 	"chancho": [Vector3(-1.5, 0, 0.0), PI],
-	"pato": [Vector3(2.2, 0, -7.5), -PI / 2],
+	"pato": [Vector3(1.4, 0, -6.8), -1.12],
 	"oso": [Vector3(-2.5, 0, -3.4), PI],
 }
+## The drill on its tripod, its bit's tip against the vault's door, facing east.
+const DRILL_AT := Vector3(VAULT_X - 0.15 - 0.1 - BankDrill.BIT_AT.z - BankDrill.BIT_LENGTH, 0, VAULT_DOOR_Z)
+## How the vault's door ends up when the drill gets through: swung into the vault on its hinge at the doorway's edge.
+const VAULT_DOOR_OPEN := Vector3(VAULT_X + VAULT_DOOR_RADIUS + 0.05, 0, VAULT_DOOR_Z - VAULT_DOOR_RADIUS - 0.12)
 ## The hostages: rows across the hostages' floor, facing the counter.
 const HOSTAGES := 8
 const HOSTAGE_XS: Array[float] = [-6.5, -3.5, -0.5, 2.5]
@@ -81,6 +86,7 @@ var robbers: Array[BankRobber] = []
 ## El Oso, the one to cuff.
 var boss: BankRobber
 var hostages: Array[BankHostage] = []
+var drill: BankDrill
 var station_parking: Transform3D
 var _build: PlaceBuilder
 
@@ -101,6 +107,13 @@ func _ready() -> void:
 	_add_van()
 	_add_robbers()
 	_add_hostages()
+	drill = BankDrill.new()
+	drill.name = "Drill"
+	drill.position = DRILL_AT + Vector3.UP * FLOOR_TOP
+	drill.rotation.y = PI / 2
+	add_child(drill)
+	drill.watch(robbers)
+	drill.opened.connect(open_vault)
 	city.transform = CityLayout.anchor("bank")
 	station_parking = city.transform * CityLayout.parking("station")
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
@@ -291,3 +304,9 @@ func _add_hostages() -> void:
 		hostage.position = Vector3(HOSTAGE_XS[i % HOSTAGE_XS.size()], FLOOR_TOP, HOSTAGE_ZS[i / HOSTAGE_XS.size()])
 		add_child(hostage)
 		hostages.append(hostage)
+
+
+## The drill got through: the vault's door swings open against the vault's inner wall and stops blocking.
+func open_vault() -> void:
+	vault_door.position = Vector3(VAULT_DOOR_OPEN.x, vault_door.position.y, VAULT_DOOR_OPEN.z)
+	vault_door.rotation.y = PI / 2
