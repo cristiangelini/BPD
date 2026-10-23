@@ -79,3 +79,6 @@ otra variante lo necesite. Se llega en el patrullero, como al banco.
 1. Sí: la cárcel va en la ciudad, en la cuadra 5, 2, y se llega en el patrullero.
 2. Sí, y esposar también: a un preso se lo calma hablándole o esposándolo.
 3. Sí: con 15 presos enojados a la vez el motín se desborda y el caso se pierde.
+
+## Hecho así
+- **Paso 1 (la cárcel y el comedor):** `PrisonLevel` (`scenes/levels/prison.tscn`, `--place=prison`) pone la cárcel en el lote "prison" de la cuadra (5, 2), mirando al oeste: un muro de 4,5 m con alambre arriba, el portón abierto con sus dos hojas de rejas y el cartel, el patio con un aro de básquet y la torre de vigilancia. Adentro del edificio, de dos pisos de alto, el comedor (6 mesas largas con bancos, `canteen_table`), el mostrador con ollas de puré y bandejas de gelatina (`prison_food_pot`, `prison_jelly_tray`), la puerta de la cocina cerrada con llave, la celda de castigo en la esquina oeste (`CellDoor` abierta) y, detrás de una reja con llave, el pabellón con 4 celdas de cada lado. Los policías salen de la comisaría y van en el patrullero. Capturas en `/mnt/project-files/carcel/paso1-*.png`.
