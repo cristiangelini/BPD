@@ -73,6 +73,7 @@ const SUSPECT_MODELS := {
 	# The infiltrations' bosses, cuffed or caught (infiltracion.md, infiltracion-coro.md).
 	"owner_chela": "res://assets/models/npc_chela.glb",
 	"owner_ernesto": "res://assets/models/npc_ernesto.glb",
+	"owner_oso": "res://assets/models/npc_ladron_oso.glb",
 }
 ## The owner brought in from the last raid (decision 93): what slips out of him is what he let slip there with R (his
 ## custody's slips, OWNER_SLIP_<n> when there aren't enough), and the confession pays the salary and OWNER_SHARE of
