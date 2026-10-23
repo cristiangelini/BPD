@@ -5,7 +5,9 @@ extends Grabbable
 ## high arc that can be seen coming (launch) and bursts on the first thing it hits: on the politician it's a stain on
 ## his suit (Politician.stain); on a cop who got in the way, a stain on the cop instead (step 3); anywhere else it
 ## leaves a splat that dries away. It's a Grabbable, so a cop can catch one in the air (step 3: Grabber.try_grab helps
-## with what flies near the hands) and throw it again. Every number here is (propuesta).
+## with what flies near the hands) and throw it again. Online only the host's burst (PropSync copies it from its
+## script, net_setup); PoliticianCase tells the guests where, for the splats and the cops' stains. Every number here
+## is (propuesta).
 
 signal caught(throwable: RallyThrowable, cop: Cop)
 
@@ -77,19 +79,29 @@ func burst_on(body: Node) -> void:
 	queue_free()
 
 
+## Online (PropSync): what a guest's copy needs before it's added.
+func net_setup() -> Dictionary:
+	return {"kind": kind}
+
+
 ## A cop took it for the politician: a stain on their uniform for a while, and it counts for the award.
 func _stain_cop(cop: Cop) -> void:
 	cop.stats["rally_blocks"] = cop.stats.get("rally_blocks", 0) + 1
+	stain_cop(cop, kind, global_position)
+
+
+## The stain on `cop` where a `kind` burst at `at` (world space), for SPLAT_TIME, and the hint for their player.
+static func stain_cop(cop: Cop, kind: String, at: Vector3) -> void:
 	cop.show_hint("HINT_RALLY_BLOCKED")
 	var mark: Node3D = SPLATS[kind].instantiate()
 	mark.name = "RallyStain"
 	cop.add_child(mark)
-	var out := cop.to_local(global_position)
+	var out := cop.to_local(at)
 	out.y = 0.0
 	out = out.normalized() if out.length() > 0.01 else Vector3.FORWARD
-	mark.position = Vector3(0, clampf(cop.to_local(global_position).y, 0.4, 1.4), 0) + out * 0.4
+	mark.position = Vector3(0, clampf(cop.to_local(at).y, 0.4, 1.4), 0) + out * 0.4
 	mark.basis = Basis(Quaternion(Vector3.UP, out)).scaled(Vector3.ONE * Politician.STAIN_SCALE)
-	get_tree().create_timer(SPLAT_TIME).timeout.connect(mark.queue_free)
+	cop.get_tree().create_timer(SPLAT_TIME).timeout.connect(mark.queue_free)
 
 
 ## Grabbed out of the air: it stops flying (and bursting) until it's thrown again.
@@ -107,14 +119,19 @@ func hold(holder_id: int, point: Vector3) -> void:
 		caught.emit(self, cop)
 
 
-## A flat splat lying where it burst, facing up, that goes after SPLAT_TIME.
 func _splat() -> void:
+	splat_at(get_parent(), kind, global_position)
+
+
+## A flat splat of `kind` under `parent`, lying where it burst at `at` (world space), facing up, that goes after
+## SPLAT_TIME.
+static func splat_at(parent: Node, kind: String, at: Vector3) -> void:
 	var splat: Node3D = SPLATS[kind].instantiate()
 	splat.name = "Splat"
-	get_parent().add_child(splat)
-	splat.global_position = global_position - Vector3(0, RADIUS * 0.8, 0)
+	parent.add_child(splat)
+	splat.global_position = at - Vector3(0, RADIUS * 0.8, 0)
 	splat.rotation.y = randf() * TAU
-	get_tree().create_timer(SPLAT_TIME).timeout.connect(splat.queue_free)
+	parent.get_tree().create_timer(SPLAT_TIME).timeout.connect(splat.queue_free)
 
 
 func _physics_process(delta: float) -> void:
