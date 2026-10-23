@@ -33,6 +33,7 @@ const MODELS := {
 	# El Oso, out of the robbers' van or off his run with the sack (robo-banco.md).
 	"oso": preload("res://assets/models/npc_ladron_oso.glb"),
 }
+const HECKLER := "heckler_"
 ## The golf thief who runs off (persecucion-lugares.md): at this speed (m/s), away from cops this close, staying
 ## this far inside the club's fence and off its lakes. Cuffed, he stops; once the cuffs run out he runs again.
 const RUN_SPEED := 5.0
@@ -66,7 +67,7 @@ func _ready() -> void:
 	shape.shape = capsule
 	shape.position.y = 0.8
 	add_child(shape)
-	add_child((MODELS[kind] as PackedScene).instantiate())
+	add_child(model_for(kind).instantiate())
 	_bubble = Label3D.new()
 	_bubble.name = "Bubble"
 	_bubble.position.y = 1.9
@@ -86,11 +87,20 @@ func net_setup() -> Dictionary:
 	return {"kind": kind, "runs": runs}
 
 
+## The rally's heckler is "heckler_<look>" (proteccion-politico.md): their own neighbor's model, and the hecklers'
+## lines.
+static func model_for(who: String) -> PackedScene:
+	if who.begins_with(HECKLER):
+		return load("res://assets/models/npc_%s.glb" % who.trim_prefix(HECKLER))
+	return MODELS[who]
+
+
 ## His complaints, as tr() keys.
 func lines() -> Array[String]:
 	var keys: Array[String] = []
+	var who := "heckler" if kind.begins_with(HECKLER) else kind
 	for i in 3:
-		keys.append("CHASE_%s_LINE_%d" % [kind.to_upper(), i + 1])
+		keys.append("CHASE_%s_LINE_%d" % [who.to_upper(), i + 1])
 	return keys
 
 
