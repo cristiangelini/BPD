@@ -50,6 +50,9 @@ var _eating_left := 0.0
 var _mouth_full_left := 0.0
 ## While holding E on the grandpa he tells a story; this cop can't do anything else (allanamiento.md).
 var listening_to: Grandpa
+## While holding E on an inmate this cop talks them down (carcel-motin.md, step 4); letting go ends it.
+var talking_to: PrisonInmate
+var _talk_end_asked := false
 ## Silly numbers for the joke awards at the end of the shift (decision 41).
 var stats := {"ram_misses": 0, "story_seconds": 0.0, "meters_driven": 0.0, "photos": 0}
 ## The patrol car this cop sits in, if any: the body rides the seat and doesn't walk or collide.
@@ -409,6 +412,12 @@ func _physics_process(delta: float) -> void:
 			act("end_story", listening_to)
 	elif not listening_to:
 		_story_end_asked = false
+	if talking_to and not Input.is_action_pressed("use"):
+		if not _talk_end_asked:
+			_talk_end_asked = true
+			act("end_talk", talking_to)
+	elif not talking_to:
+		_talk_end_asked = false
 	var wish := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	step(delta, wish, Input.is_action_pressed("run"), Input.is_action_pressed("crouch"),
 		Input.is_action_just_pressed("jump"))
