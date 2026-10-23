@@ -12,8 +12,11 @@ extends Node3D
 ## drill (BankDrill, step 3) stands in front of the vault's door with the duck beside it; when it gets through, the
 ## door swings open. Step 4: robbers cuffed from behind are walked to the patrol car (OwnerEscort; four seats, two of
 ## them in the trunk), the pig runs to the van when he sees a cop, and hostages led out by the hand go free. Step 5:
-## the phone on the patrol car's side (BankPhone) to deal with El Oso; each kept promise lets a hostage go. The case
-## comes in the next step.
+## the phone on the patrol car's side (BankPhone) to deal with El Oso; each kept promise lets a hostage go. Step 6a:
+## the traffic control's barrier and cones wait at the station's door to box the van in (van_boxed_in). When the
+## drill gets through, the robbers still loose take a sack of money each and go; if El Oso is one of them, he gets
+## away in the van, or on foot and slower if it's boxed in, and the chase is on (ChaseCase.begin). The case and its
+## end come in step 6b.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -74,6 +77,14 @@ const PIG_RUN: Array[Vector3] = [Vector3(-0.4, 0, 6.0), Vector3(ENTRANCE_X, 0, H
 	Vector3(VAN_AT.x, 0, VAN_AT.z - 1.6)]
 ## Where the phone hangs on the patrol car: on its side, by the driver's door, at hand's height.
 const PHONE_ON_CAR := Vector3(-1.2, 1.0, 0.4)
+## The perimeter: the barrier within BARRIER_REACH of the van's nose and PERIMETER_CONES standing cones within
+## CONES_REACH of its middle box it in. They wait by the station's door, where the traffic control has them.
+const PERIMETER_CONES := 4
+const CONES_REACH := 5.0
+const BARRIER_REACH := 3.5
+const CONES := 6
+const BARRIER_FROM_DOOR := Vector3(6, 0, 1.5)
+const CONES_FROM_DOOR := Vector3(-5, 0, 1.5)
 ## The hostages: rows across the hostages' floor, facing the counter.
 const HOSTAGES := 8
 const HOSTAGE_XS: Array[float] = [-6.5, -3.5, -0.5, 2.5]
@@ -101,6 +112,11 @@ var hostages: Array[BankHostage] = []
 var drill: BankDrill
 var hostages_freed := 0
 var phone: BankPhone
+## How many sacks of money the robbers got away with, the getaway chase if El Oso ran, and how it ended.
+var bags_taken := 0
+var chase: ChaseCase
+var getaway_over := false
+var getaway_caught := false
 var station_parking: Transform3D
 var _build: PlaceBuilder
 
@@ -128,6 +144,7 @@ func _ready() -> void:
 	add_child(drill)
 	drill.watch(robbers)
 	drill.opened.connect(open_vault)
+	drill.opened.connect(_on_vault_opened)
 	phone = BankPhone.new()
 	phone.name = "Phone"
 	phone.position = PHONE_ON_CAR
@@ -138,6 +155,7 @@ func _ready() -> void:
 	station_parking = city.transform * CityLayout.parking("station")
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+	_add_perimeter()
 
 
 ## Whether a world position is inside the bank.
@@ -347,3 +365,71 @@ func release_hostage() -> void:
 			hostage.global_position = global_transform * Vector3(ENTRANCE_X, FLOOR_TOP, HALF_Z + 1.5)
 			hostage.free_hostage()
 			return
+
+
+## The barrier and the cones by the station's door, as for the traffic control.
+func _add_perimeter() -> void:
+	var door := city.transform * CityLayout.door_of("station")
+	var barrier := RoadBarrier.new()
+	barrier.name = "Barrier"
+	add_child(barrier)
+	barrier.global_position = door + BARRIER_FROM_DOOR + Vector3.UP * 0.05
+	for i in CONES:
+		var cone := TrafficCone.new()
+		cone.name = "Cone%d" % i
+		add_child(cone)
+		cone.global_position = door + CONES_FROM_DOOR + Vector3(-0.8 * i, 0.05, 0)
+
+
+## Whether the cops boxed the van in: the barrier at its nose and enough cones standing around it.
+func van_boxed_in() -> bool:
+	if not is_instance_valid(van):
+		return false
+	var nose := van.global_position + van.global_basis * Vector3(0, 0, VAN_SIZE.z / 2)
+	var barrier_ok := false
+	for barrier: Node3D in get_tree().get_nodes_in_group("road_barriers"):
+		if _flat_distance(barrier.global_position, nose) < BARRIER_REACH:
+			barrier_ok = true
+	var cones := 0
+	for cone: TrafficCone in get_tree().get_nodes_in_group("traffic_cones"):
+		if cone.standing() and _flat_distance(cone.global_position, van.global_position) < CONES_REACH:
+			cones += 1
+	return barrier_ok and cones >= PERIMETER_CONES
+
+
+static func _flat_distance(a: Vector3, b: Vector3) -> float:
+	return Vector2(a.x - b.x, a.z - b.z).length()
+
+
+## Whether a robber is still free: not cuffed, not being walked and not in the patrol car (the pig in the van is).
+static func is_loose(robber: BankRobber) -> bool:
+	var escort := OwnerEscort.of(robber)
+	return not robber.is_cuffed() and not (escort and (escort.in_car or escort.escorted_by))
+
+
+## The vault is open: every robber still loose grabs a sack and leaves; El Oso among them, the chase is on.
+func _on_vault_opened() -> void:
+	var boss_runs := is_loose(boss)
+	for robber in robbers:
+		if is_loose(robber):
+			bags_taken += 1
+			robber.hide()
+			robber.collision_layer = 0
+			robber.process_mode = Node.PROCESS_MODE_DISABLED
+	if not boss_runs:
+		return
+	var kind := SuspectCar.BEAR_ON_FOOT if van_boxed_in() else SuspectCar.ROBBERS_VAN
+	var at := Transform3D(global_basis, global_transform * Vector3(ENTRANCE_X, FLOOR_TOP, HALF_Z + 1.5))
+	if kind == SuspectCar.ROBBERS_VAN:
+		at = van.global_transform
+		van.queue_free()
+	chase = ChaseCase.begin(self, kind, at, car, city, case_seed)
+	chase.who = "oso"
+	chase.ended.connect(_on_getaway_ended)
+	for cop in get_tree().get_nodes_in_group("cops"):
+		(cop as Cop).show_hint("HINT_ESCAPE_oso" if kind == SuspectCar.ROBBERS_VAN else "HINT_ESCAPE_oso_FOOT")
+
+
+func _on_getaway_ended(was_caught: bool) -> void:
+	getaway_over = true
+	getaway_caught = was_caught
