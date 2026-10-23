@@ -41,7 +41,7 @@ static func is_npc(node: Node) -> bool:
 		or node is PoodleLady or node is HumanCustomer or node is Gossip or node is Neighbor or node is Armero \
 		or node is InterrogationSuspect or node is SuspectCar or node is ChaseSuspect \
 		or node is ChaseFurniture or node is TrafficCar or node is QueueCar or node is NightGuard \
-		or node is ClubBingo or node is ClubSuspicion
+		or node is ClubBingo or node is ClubSuspicion or node is BankRobber or node is BankHostage
 
 
 func _ready() -> void:
@@ -68,6 +68,9 @@ static func _puppet(npc: Node3D) -> void:
 	var escort := OwnerEscort.of(npc)
 	if escort:
 		escort.follower = true
+	# One that decides something of its own (a robber dodging the cuffs) leaves it to the host's.
+	if "follower" in npc:
+		npc.set("follower", true)
 
 
 func npc_at(index: int) -> Node3D:

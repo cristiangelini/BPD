@@ -1,5 +1,5 @@
 // The bank robbery's things (docs/diseno/robo-banco.md): the robbers' getaway van. Placeholder.
-import { Builder, mat, V, THREE } from '../lib.js';
+import { Builder, mat, V, THREE, ellipsoid } from '../lib.js';
 
 function box(b, part, m, sx, sy, sz, x, y, z, rot) {
 	b.add(part, m, new THREE.BoxGeometry(sx, sy, sz), { pos: V(x, y, z), rot });
@@ -49,9 +49,57 @@ export function buildRobbersVan() {
 	return b.build();
 }
 
-export const models = { robbers_van: buildRobbersVan };
+// The drill (step 3): a fat orange drill on a steel tripod, its nose at the height of the vault door's middle, a
+// cable running down to a little generator box at its feet. The spinning bit is added by the game (BankDrill), so it
+// turns on its own axis; it comes out of the nose at (0, 1.05, 0.3). Faces +Z, feet at y = 0.
+export function buildBankDrill() {
+	const orange = mat('drill_orange', 0xf2802a), steel = mat('drill_steel', 0x8a9098), black = mat('car_black', 0x23252b);
+	const yellow = mat('drill_yellow', 0xf2c230);
+	const b = new Builder('bank_drill');
+	for (let i = 0; i < 3; i++) {
+		const a = (i / 3) * Math.PI * 2;
+		b.add('stand', steel, new THREE.CylinderGeometry(0.025, 0.025, 1.0, 5), { pos: V(Math.sin(a) * 0.22, 0.45, Math.cos(a) * 0.22 - 0.1), rot: [Math.cos(a) * -0.4, 0, Math.sin(a) * 0.4] });
+	}
+	box(b, 'stand', steel, 0.12, 0.08, 0.12, 0, 0.92, -0.1);
+	box(b, 'body', orange, 0.26, 0.24, 0.5, 0, 1.05, -0.02);
+	box(b, 'body', black, 0.27, 0.06, 0.3, 0, 1.18, -0.08);
+	box(b, 'body', yellow, 0.02, 0.1, 0.18, 0.14, 1.05, -0.05);
+	b.add('body', steel, new THREE.CylinderGeometry(0.07, 0.09, 0.1, 8), { pos: V(0, 1.05, 0.26), rot: [Math.PI / 2, 0, 0] });
+	box(b, 'body', black, 0.05, 0.22, 0.06, 0, 0.88, -0.05);
+	// The cable to the generator.
+	b.add('cable', black, new THREE.CylinderGeometry(0.015, 0.015, 1.0, 4), { pos: V(0.25, 0.55, -0.4), rot: [0.5, 0, -0.35] });
+	box(b, 'generator', yellow, 0.4, 0.3, 0.3, 0.4, 0.15, -0.6);
+	box(b, 'generator', black, 0.1, 0.1, 0.02, 0.4, 0.2, -0.44);
+	return b.build();
+}
+
+// A sack of the vault's money (step 6): grey cloth tied at the neck with a gold coin painted on, El Oso's on his run
+// on foot, left on the ground when he gives up. About 0.5 m tall, its bottom at y = 0.
+export function buildMoneyBag() {
+	const cloth = mat('bag_cloth', 0xb8b0a0), rope = mat('bag_rope', 0x8a6a3a), coin = mat('bag_coin', 0xf2c84b, { emissive: 0x3a2a05 });
+	const b = new Builder('money_bag');
+	b.add('bag', cloth, ellipsoid(0.24, 0.22, 0.2, 9, 6), { pos: V(0, 0.2, 0) });
+	b.add('bag', cloth, new THREE.ConeGeometry(0.1, 0.16, 7), { pos: V(0, 0.46, 0), rot: [Math.PI, 0, 0] });
+	b.add('bag', rope, new THREE.TorusGeometry(0.06, 0.015, 4, 10), { pos: V(0, 0.4, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('bag', coin, new THREE.CylinderGeometry(0.08, 0.08, 0.01, 10), { pos: V(0, 0.22, 0.2), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
+export const models = { robbers_van: buildRobbersVan, bank_drill: buildBankDrill, money_bag: buildMoneyBag };
 
 export const views = {
+	money_bag: {
+		items: [{ name: 'money_bag', pos: [0, 0, 0], rotY: 0.3 }, { name: 'npc_ladron_oso', pos: [0.7, 0, -0.2], rotY: -0.3, scale: 1.15 }],
+		cam: { pos: [0.4, 1.2, 3.0], target: [0.35, 0.6, 0], fov: 38 },
+	},
+	bank_drill: {
+		items: [{ name: 'bank_drill', pos: [0, 0, 0], rotY: 0.9 }],
+		cam: { pos: [0.2, 1.3, 2.6], target: [0, 0.75, 0], fov: 40 },
+	},
+	robbers: {
+		items: ['conejo', 'chancho', 'pato', 'oso'].map((n, i) => ({ name: `npc_ladron_${n}`, pos: [(i - 1.5) * 1.2, 0, 0], rotY: 0.3, scale: n === 'oso' ? 1.15 : 1 })),
+		cam: { pos: [0, 1.4, 6.0], target: [0, 0.9, 0], fov: 36 },
+	},
 	robbers_van: {
 		items: [{ name: 'robbers_van', pos: [0, 0, 0] },
 			...[[-1.1, 1.7], [1.1, 1.7], [-1.1, -1.7], [1.1, -1.7]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }))],
