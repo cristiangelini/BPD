@@ -11,8 +11,9 @@ extends Node3D
 ## hostages, the duck at the vault, El Oso behind the counter) and the hostages crouched on the hall's floor. The
 ## drill (BankDrill, step 3) stands in front of the vault's door with the duck beside it; when it gets through, the
 ## door swings open. Step 4: robbers cuffed from behind are walked to the patrol car (OwnerEscort; four seats, two of
-## them in the trunk), the pig runs to the van when he sees a cop, and hostages led out by the hand go free. The case
-## comes in the next steps.
+## them in the trunk), the pig runs to the van when he sees a cop, and hostages led out by the hand go free. Step 5:
+## the phone on the patrol car's side (BankPhone) to deal with El Oso; each kept promise lets a hostage go. The case
+## comes in the next step.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -71,6 +72,8 @@ const ROBBER_SEATS: Array[Vector3] = [Vector3(-0.35, 0, 0), Vector3(0.35, 0, 0),
 ## The pig's run to the van: across the hall between the queue posts, out of the entrance and to the van's side.
 const PIG_RUN: Array[Vector3] = [Vector3(-0.4, 0, 6.0), Vector3(ENTRANCE_X, 0, HALF_Z + 1.0),
 	Vector3(VAN_AT.x, 0, VAN_AT.z - 1.6)]
+## Where the phone hangs on the patrol car: on its side, by the driver's door, at hand's height.
+const PHONE_ON_CAR := Vector3(-1.2, 1.0, 0.4)
 ## The hostages: rows across the hostages' floor, facing the counter.
 const HOSTAGES := 8
 const HOSTAGE_XS: Array[float] = [-6.5, -3.5, -0.5, 2.5]
@@ -97,6 +100,7 @@ var boss: BankRobber
 var hostages: Array[BankHostage] = []
 var drill: BankDrill
 var hostages_freed := 0
+var phone: BankPhone
 var station_parking: Transform3D
 var _build: PlaceBuilder
 
@@ -124,6 +128,12 @@ func _ready() -> void:
 	add_child(drill)
 	drill.watch(robbers)
 	drill.opened.connect(open_vault)
+	phone = BankPhone.new()
+	phone.name = "Phone"
+	phone.position = PHONE_ON_CAR
+	phone.setup(self, car, case_seed)
+	car.add_child(phone)
+	car.add_collision_exception_with(phone)
 	city.transform = CityLayout.anchor("bank")
 	station_parking = city.transform * CityLayout.parking("station")
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
@@ -328,3 +338,12 @@ func _add_hostages() -> void:
 func open_vault() -> void:
 	vault_door.position = Vector3(VAULT_DOOR_OPEN.x, vault_door.position.y, VAULT_DOOR_OPEN.z)
 	vault_door.rotation.y = PI / 2
+
+
+## El Oso keeps his word: the first hostage still on the floor walks out of the entrance and goes free.
+func release_hostage() -> void:
+	for hostage in hostages:
+		if not hostage.freed and not hostage.led_by:
+			hostage.global_position = global_transform * Vector3(ENTRANCE_X, FLOOR_TOP, HALF_Z + 1.5)
+			hostage.free_hostage()
+			return
