@@ -3,8 +3,11 @@ extends Grabbable
 
 ## An egg or a tomato a heckler throws at deputy Lustre (proteccion-politico.md, step 2, decision 103). It flies on a
 ## high arc that can be seen coming (launch) and bursts on the first thing it hits: on the politician it's a stain on
-## his suit (Politician.stain); anywhere else it leaves a splat that dries away. It's a Grabbable, so a cop can catch
-## one in the air (step 3). Every number here is (propuesta).
+## his suit (Politician.stain); on a cop who got in the way, a stain on the cop instead (step 3); anywhere else it
+## leaves a splat that dries away. It's a Grabbable, so a cop can catch one in the air (step 3: Grabber.try_grab helps
+## with what flies near the hands) and throw it again. Every number here is (propuesta).
+
+signal caught(throwable: RallyThrowable, cop: Cop)
 
 signal burst(throwable: RallyThrowable, on: Node)
 
@@ -27,6 +30,7 @@ var _life := LIFETIME
 
 func _ready() -> void:
 	add_to_group("rally_throwables")
+	add_to_group("catchables")
 	collision_layer = 4
 	collision_mask = 1 | 2 | 8
 	mass = KG[kind]
@@ -65,10 +69,42 @@ func burst_on(body: Node) -> void:
 		return
 	if body is Politician:
 		(body as Politician).stain(kind, global_position)
+	elif body is Cop:
+		_stain_cop(body as Cop)
 	else:
 		_splat()
 	burst.emit(self, body)
 	queue_free()
+
+
+## A cop took it for the politician: a stain on their uniform for a while, and it counts for the award.
+func _stain_cop(cop: Cop) -> void:
+	cop.stats["rally_blocks"] = cop.stats.get("rally_blocks", 0) + 1
+	cop.show_hint("HINT_RALLY_BLOCKED")
+	var mark: Node3D = SPLATS[kind].instantiate()
+	mark.name = "RallyStain"
+	cop.add_child(mark)
+	var out := cop.to_local(global_position)
+	out.y = 0.0
+	out = out.normalized() if out.length() > 0.01 else Vector3.FORWARD
+	mark.position = Vector3(0, clampf(cop.to_local(global_position).y, 0.4, 1.4), 0) + out * 0.4
+	mark.basis = Basis(Quaternion(Vector3.UP, out)).scaled(Vector3.ONE * Politician.STAIN_SCALE)
+	get_tree().create_timer(SPLAT_TIME).timeout.connect(mark.queue_free)
+
+
+## Grabbed out of the air: it stops flying (and bursting) until it's thrown again.
+func hold(holder_id: int, point: Vector3) -> void:
+	var first := not is_held()
+	super(holder_id, point)
+	if first and flying:
+		flying = false
+		_life = LIFETIME
+		var grabber := instance_from_id(holder_id) as Grabber
+		var cop := grabber.get_parent() as Cop if grabber else null
+		if cop:
+			cop.stats["rally_catches"] = cop.stats.get("rally_catches", 0) + 1
+			cop.show_hint("HINT_RALLY_CAUGHT")
+		caught.emit(self, cop)
 
 
 ## A flat splat lying where it burst, facing up, that goes after SPLAT_TIME.
@@ -83,6 +119,8 @@ func _splat() -> void:
 
 func _physics_process(delta: float) -> void:
 	super(delta)
+	if is_held():
+		_life = LIFETIME
 	_life -= delta
-	if _life <= 0.0 and not is_held():
+	if _life <= 0.0:
 		queue_free()

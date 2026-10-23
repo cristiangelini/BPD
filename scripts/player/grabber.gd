@@ -2,7 +2,12 @@ class_name Grabber
 extends Node
 
 ## Lets its cop grab what the camera points at: hold left click to carry, right click to throw,
-## mouse wheel to bring it closer or push it away.
+## mouse wheel to bring it closer or push it away. Something small flying past (the "catchables" group: the rally's
+## eggs and tomatoes) is caught when it's within CATCH_REACH of the hands and in front of the eyes, without aiming at
+## it exactly.
+
+const CATCH_REACH := 1.2
+const CATCH_ANGLE := 35.0
 
 @export var input_enabled := true
 
@@ -62,7 +67,10 @@ func try_grab() -> bool:
 	var eye := _cop.camera.global_transform
 	var hit := _cop.aim_hit(GameScale.GRAB_REACH)
 	if hit.is_empty() or not hit.collider is Grabbable:
-		return false
+		var flying := catchable_near()
+		if not flying:
+			return false
+		hit = {"collider": flying, "position": flying.global_position}
 	if _asks_host():
 		_cop.sync.request("grab")
 		return false
@@ -70,6 +78,20 @@ func try_grab() -> bool:
 	hold_distance = clampf(eye.origin.distance_to(hit.position), GameScale.HOLD_MIN, GameScale.HOLD_MAX)
 	held.hold(get_instance_id(), hold_point())
 	return true
+
+
+## A catchable within CATCH_REACH of the hands and within CATCH_ANGLE of where the eyes look, the nearest one.
+func catchable_near() -> Grabbable:
+	var eye := _cop.camera.global_transform
+	var hands := hold_point()
+	var best: Grabbable = null
+	for body: Node3D in get_tree().get_nodes_in_group("catchables"):
+		var to := body.global_position - eye.origin
+		if body is Grabbable and not (body as Grabbable).is_held() and body.global_position.distance_to(hands) < CATCH_REACH \
+				and (-eye.basis.z).angle_to(to) < deg_to_rad(CATCH_ANGLE) \
+				and (not best or body.global_position.distance_to(hands) < best.global_position.distance_to(hands)):
+			best = body
+	return best
 
 
 ## Puts `body` in this cop's hands, as if grabbed from where it is (things handed out, like the armory's).
