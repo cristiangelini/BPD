@@ -16,7 +16,8 @@ extends Node3D
 ## the traffic control's barrier and cones wait at the station's door to box the van in (van_boxed_in). When the
 ## drill gets through, the robbers still loose take a sack of money each and go; if El Oso is one of them, he gets
 ## away in the van, or on foot and slower if it's boxed in, and the chase is on (ChaseCase.begin). The case and its
-## end are BankCase's (step 6b): the comisario gives it over the radio as the shift starts.
+## end are BankCase's (step 6b): the comisario gives it over the radio as the shift starts. Online the host's bank
+## decides and a guest's follows it (`follower`, BankCase's snapshot).
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -118,6 +119,8 @@ var chase: ChaseCase
 var getaway_over := false
 var getaway_caught := false
 var case: BankCase
+## A guest's bank: the host's says how many sacks went and how El Oso gets away (start_getaway).
+var follower := false
 var station_parking: Transform3D
 var _build: PlaceBuilder
 
@@ -420,6 +423,8 @@ static func is_loose(robber: BankRobber) -> bool:
 
 ## The vault is open: every robber still loose grabs a sack and leaves; El Oso among them, the chase is on.
 func _on_vault_opened() -> void:
+	if follower:
+		return
 	var boss_runs := is_loose(boss)
 	for robber in robbers:
 		if is_loose(robber):
@@ -427,15 +432,23 @@ func _on_vault_opened() -> void:
 			robber.hide()
 			robber.collision_layer = 0
 			robber.process_mode = Node.PROCESS_MODE_DISABLED
-	if not boss_runs:
+	if boss_runs:
+		start_getaway(SuspectCar.BEAR_ON_FOOT if van_boxed_in() else SuspectCar.ROBBERS_VAN)
+
+
+## El Oso gets away in the van (`kind` ROBBERS_VAN) or on foot (BEAR_ON_FOOT): the chase is on.
+func start_getaway(kind: String) -> void:
+	if chase:
 		return
-	var kind := SuspectCar.BEAR_ON_FOOT if van_boxed_in() else SuspectCar.ROBBERS_VAN
 	var at := Transform3D(global_basis, global_transform * Vector3(ENTRANCE_X, FLOOR_TOP, HALF_Z + 1.5))
-	if kind == SuspectCar.ROBBERS_VAN:
+	if kind == SuspectCar.ROBBERS_VAN and is_instance_valid(van):
 		at = van.global_transform
 		van.queue_free()
 	chase = ChaseCase.begin(self, kind, at, car, city, case_seed)
 	chase.who = "oso"
+	chase.follower = follower
+	if case:
+		chase.online = case.online
 	chase.ended.connect(_on_getaway_ended)
 	for cop in get_tree().get_nodes_in_group("cops"):
 		(cop as Cop).show_hint("HINT_ESCAPE_oso" if kind == SuspectCar.ROBBERS_VAN else "HINT_ESCAPE_oso_FOOT")

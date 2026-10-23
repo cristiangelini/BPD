@@ -5,8 +5,8 @@ extends Node3D
 ## DRILL_TIME seconds to get through. When a robber sees a cop and shouts it, the gang gets nervous and the drill runs
 ## faster for NERVOUS seconds; El Oso on the phone (step 5) can stop it for a while (pause) or, lied to, speed it up
 ## the same way (hurry). A bar at the top of the screen shows how far it went. When it gets through, `opened` goes off:
-## the vault's door swings open and the robbers run with the money (step 6). It runs on the host; online comes later.
-## Every number here is (propuesta).
+## the vault's door swings open and the robbers run with the money (step 6). Online it runs on the host and a guest's
+## follows it (`follower`, BankCase's snapshot). Every number here is (propuesta).
 
 signal opened
 
@@ -24,6 +24,8 @@ var drilled := 0.0
 var nervous_left := 0.0
 var paused_left := 0.0
 var is_open := false
+## A guest's: only shows the host's (apply_net_state).
+var follower := false
 var bar: ProgressBar
 var _bit: MeshInstance3D
 var _hud: CanvasLayer
@@ -85,12 +87,27 @@ func time_left() -> float:
 
 
 func _physics_process(delta: float) -> void:
-	if is_open:
+	if is_open or follower:
 		return
 	drilled = minf(drilled + rate() * delta, DRILL_TIME)
 	nervous_left = maxf(nervous_left - delta, 0.0)
 	paused_left = maxf(paused_left - delta, 0.0)
 	if drilled >= DRILL_TIME:
+		is_open = true
+		opened.emit()
+	_show()
+
+
+## What a guest's drill shows (BankCase.snapshot).
+func net_state() -> Array:
+	return [snappedf(drilled, 0.1), snappedf(nervous_left, 0.1), snappedf(paused_left, 0.1), is_open]
+
+
+func apply_net_state(state: Array) -> void:
+	drilled = state[0]
+	nervous_left = state[1]
+	paused_left = state[2]
+	if state[3] and not is_open:
 		is_open = true
 		opened.emit()
 	_show()

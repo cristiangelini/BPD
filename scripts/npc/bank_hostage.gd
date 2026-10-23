@@ -4,8 +4,8 @@ extends CharacterBody3D
 ## A hostage of the bank robbery (robo-banco.md, step 2, decision 102): one of the neighbors who came to the bank,
 ## crouched on the hall's floor in front of the counter. E on one takes them by the hand (step 4): they tell their
 ## complaint, a different one each time, stand up and follow that cop; out of the bank they're free, say thanks and
-## go home. A robber who sees one being led out raises the alarm (BankRobber.saw_hostage). They don't sync online
-## yet. Every number here is (propuesta).
+## go home. A robber who sees one being led out raises the alarm (BankRobber.saw_hostage). Online the host's walk and
+## go free, and a guest's follow them (NpcSync, net_state). Every number here is (propuesta).
 
 signal freed_now(hostage: BankHostage)
 
@@ -116,6 +116,21 @@ func say(key: String) -> void:
 
 func said() -> String:
 	return _bubble.text if _bubble.visible else ""
+
+
+## What a guest's copy needs besides where they are and what they say (NpcSync): free, standing up and still here.
+func net_state() -> Array:
+	return [freed, is_equal_approx(_model.scale.y, _size), visible]
+
+
+func apply_net_state(state: Variant) -> void:
+	if state[0] and not freed:
+		freed = true
+		led_by = null
+		collision_layer = 0
+		freed_now.emit(self)
+	_model.scale.y = _size if state[1] else _size * CROUCH
+	visible = state[2]
 
 
 func _process(delta: float) -> void:

@@ -8,7 +8,8 @@ extends StaticBody3D
 ## requests: a box of donuts at the bank's door (the armero sells them), singing him "happy birthday" on the phone
 ## (the voice or H, as with the jailbreak's guard) and taking the patrol car away to another block (only asked for
 ## while it's near the bank: called from afar, he asks for the next thing). While a promise
-## is pending there's no other call. It runs on the host; online comes later. Every number here is (propuesta).
+## is pending there's no other call. Online the host's phone decides and a guest's shows it (`follower`, BankCase's
+## snapshot); a guest's E and singing reach the host's (ActionSync, VoiceChat). Every number here is (propuesta).
 
 signal kept(request: String)
 signal lied(request: String)
@@ -36,6 +37,8 @@ var promised := false
 ## Seconds left to promise (asking) or to keep the promise.
 var left := 0.0
 var sung := 0.0
+## A guest's: only shows the host's (apply_net_state).
+var follower := false
 var _order: Array[String] = []
 var _next := 0
 var _bubble: Label3D
@@ -95,6 +98,8 @@ func prompt_key(_cop: Cop) -> String:
 
 ## E: calls the bank, or promises what El Oso just asked for.
 func use(_cop: Cop) -> void:
+	if follower:
+		return
 	if request == "":
 		request = _order[_next % _order.size()]
 		_next += 1
@@ -113,7 +118,7 @@ func use(_cop: Cop) -> void:
 
 ## VoiceChat: a cop is singing (every half second while they sing or hum with H).
 func heard_singing(cop: Node3D) -> void:
-	if request == "birthday" and promised and cop.global_position.distance_to(global_position) < SING_REACH:
+	if not follower and request == "birthday" and promised and cop.global_position.distance_to(global_position) < SING_REACH:
 		sung += VoiceChat.SING_EVERY
 
 
@@ -138,7 +143,7 @@ func car_away() -> bool:
 
 
 func _physics_process(delta: float) -> void:
-	if request == "":
+	if request == "" or follower:
 		return
 	if promised and done():
 		_keep()
@@ -171,6 +176,20 @@ func say(key: String) -> void:
 
 func said() -> String:
 	return _bubble.text if _bubble.visible else ""
+
+
+## What a guest's phone shows (BankCase.snapshot): what El Oso asks for, whether it was promised, the time left and
+## his bubble.
+func net_state() -> Array:
+	return [request, promised, snappedf(left, 0.1), _bubble.text, _bubble.visible]
+
+
+func apply_net_state(state: Array) -> void:
+	request = state[0]
+	promised = state[1]
+	left = state[2]
+	_bubble.text = state[3]
+	_bubble.visible = state[4]
 
 
 func _process(delta: float) -> void:

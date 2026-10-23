@@ -52,6 +52,7 @@ De 1 a 4 amigos online por Steam (decisión 7), con lobby e invitaciones de Stea
 | Escena del crimen (pistas, fichas, acusación, cocineros que se van, la bici del culpable) | Anfitrión | La planilla, las fichas del tablero, el veredicto del comisario y la pantalla del turno iguales para todos |
 | Control de tránsito (los autos de la fila, la paciencia, las pistas, detener, el baúl, el buscado que se escapa) | Anfitrión | La fila llega solo en la PC del anfitrión; en las otras cada auto sigue su copia. El medidor, las pistas de la radio, los detenidos, el baúl abierto, el buscado escoltado o la persecución tras él y la pantalla del turno iguales para todos |
 | Infiltración (club de abuelos y coro: pruebas, sospecha, bingo, disfraces, el jefe esposado o la huida) | Anfitrión | Las pruebas encontradas, la sospecha de cada uno, las cartillas, los disfraces de cada policía, el jefe esposado o la persecución tras él y la pantalla del turno iguales para todos |
+| Robo al banco (taladro, teléfono con El Oso, ladrones, rehenes, huida) | Anfitrión | La barra del taladro, lo que pide El Oso y la promesa, los ladrones esposados, escondidos o idos con las bolsas, los rehenes que salen, la persecución tras El Oso y la pantalla del turno iguales para todos; el que llama o canta desde otra PC le avisa al anfitrión |
 | Plata, ítems y turno | Anfitrión | La pantalla de fin de turno igual para todos |
 
 ## Herramientas

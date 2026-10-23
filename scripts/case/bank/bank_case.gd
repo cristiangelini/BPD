@@ -7,7 +7,8 @@ extends Node
 ## station and the shift ends there, so they can still lead the last hostages out. El Oso getting away in the chase
 ## loses it. The pay is SALARY, less PER_HOSTAGE for each hostage still inside and PER_BAG for each sack of money the
 ## robbers took; quota of its own, like the chase (decision 91). Solved, El Oso is in custody and the next shift is
-## his interrogation (decision 93). It runs on the host; online comes later. Every number here is (propuesta).
+## his interrogation (decision 93). Online the host's case decides and a guest's follows it (CaseSync, snapshot),
+## with its bank, drill and phone. Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 3.0
@@ -27,6 +28,15 @@ var shift_screen: ShiftScreen
 var boss_jailed := false
 var escaped := false
 var shift_over := false
+## Online (docs/diseno/online.md): a guest's case, and its bank, only follow the host's; `online` is that sync.
+var follower := false:
+	set(value):
+		follower = value
+		if bank:
+			bank.follower = value
+			bank.drill.follower = value
+			bank.phone.follower = value
+var online: CaseSync
 var _result := {}
 var _refresh_left := 0.0
 
@@ -42,7 +52,7 @@ func start() -> void:
 	OwnerEscort.of(bank.boss).boarded.connect(_on_boss_jailed)
 	bank.drill.opened.connect(_on_vault_opened)
 	if shift_screen:
-		shift_screen.play_again.connect(func() -> void: PlaceDraw.start(get_tree()))
+		shift_screen.play_again.connect(_play_again)
 		shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
 	# Over the radio, right away: the robbery is happening now.
 	for cop in get_tree().get_nodes_in_group("cops"):
@@ -52,13 +62,26 @@ func start() -> void:
 	checklist.show_rows(rows())
 
 
+func _play_again() -> void:
+	if online:
+		online.play_again()
+	else:
+		PlaceDraw.start(get_tree())
+
+
 func _on_vault_opened() -> void:
-	if bank.chase:
-		bank.chase.ended.connect(_on_getaway_ended)
+	_watch_getaway()
 	checklist.show_rows(rows())
 
 
+func _watch_getaway() -> void:
+	if bank.chase and not bank.chase.ended.is_connected(_on_getaway_ended):
+		bank.chase.ended.connect(_on_getaway_ended)
+
+
 func _on_getaway_ended(was_caught: bool) -> void:
+	if follower:
+		return
 	if was_caught:
 		_on_boss_jailed()
 		return
@@ -68,6 +91,12 @@ func _on_getaway_ended(was_caught: bool) -> void:
 
 
 func _on_boss_jailed() -> void:
+	if follower:
+		return
+	_jail_boss()
+
+
+func _jail_boss() -> void:
 	if boss_jailed or shift_over:
 		return
 	boss_jailed = true
@@ -105,7 +134,7 @@ func custody() -> Dictionary:
 
 
 func finish_shift() -> void:
-	if shift_over:
+	if shift_over or follower:
 		return
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
@@ -142,7 +171,7 @@ func _show_result(result: Dictionary) -> void:
 		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over,
 			result.campaign.promoted)
 		over = result.campaign.over
-	shift_screen.get_node("%AgainButton").visible = not over
+	shift_screen.get_node("%AgainButton").visible = not over and not follower
 
 
 ## Back at the station with El Oso in the car.
@@ -153,13 +182,40 @@ func car_home() -> bool:
 func _physics_process(delta: float) -> void:
 	if shift_over:
 		return
-	if boss_jailed and car_home():
+	if boss_jailed and not follower and car_home():
 		finish_shift()
 		return
 	_refresh_left -= delta
 	if checklist.is_open() and _refresh_left <= 0.0:
 		_refresh_left = REFRESH
 		checklist.show_rows(rows())
+
+
+## What every guest's case shows (CaseSync): the drill, the phone, the sacks taken, El Oso jailed or gone, his
+## getaway and the end of shift.
+func snapshot() -> Dictionary:
+	var state := {"drill": bank.drill.net_state(), "phone": bank.phone.net_state(), "bags": bank.bags_taken,
+		"jailed": boss_jailed, "escaped": escaped, "result": _result}
+	if bank.chase:
+		state.getaway = bank.chase.suspect_id
+		state.chase = bank.chase.snapshot()
+	return state
+
+
+func apply_snapshot(state: Dictionary) -> void:
+	bank.drill.apply_net_state(state.drill)
+	bank.phone.apply_net_state(state.phone)
+	bank.bags_taken = state.bags
+	if state.has("getaway"):
+		bank.start_getaway(state.getaway)
+		_watch_getaway()
+		bank.chase.apply_snapshot(state.chase)
+	if state.jailed:
+		_jail_boss()
+	escaped = state.escaped
+	checklist.show_rows(rows())
+	if not state.result.is_empty() and not shift_over:
+		_show_result(state.result)
 
 
 ## The planilla's rows, in the shape CaseChecklist takes.

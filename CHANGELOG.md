@@ -120,3 +120,4 @@
 - Online dangerous suspect: online too he can get out the front door in the old patrol car, and every PC sees the same chase after him and how it ends (back in his chair or the interrogation lost).
 - Online traffic control: the host's queue brings the cars and decides who's detained, and every PC sees the same cars, patience meter, radio clues, open trunks, the wanted driver walked to the patrol car or chased, and the end of shift.
 - Online infiltration tests: the club and the choir, checked with two PCs (evidence, suspicion, bingo cards, disguises, the boss cuffed or running off, the end of shift).
+- Online bank robbery: the host's bank decides the drill, El Oso's phone requests, the robbers cuffed or gone with the sacks, the hostages let out and El Oso's getaway, and every PC sees the same, end of shift included.
