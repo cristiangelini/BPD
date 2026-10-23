@@ -4,7 +4,8 @@ extends Node3D
 ## The politician's rally at the plaza (proteccion-politico.md, step 1, decision 103): the whole city with the
 ## station, the cops in the guard room and the patrol car at the door. On the plaza's north half, facing the fountain,
 ## a stage with a ramp, a lectern with its microphone, a banner and balloons: deputy Lustre waits there for his guard
-## and gives his speech (PoliticianSpeech). --place=plaza opens it from Play. Every number here is (propuesta).
+## and gives his speech (PoliticianSpeech). In front of the stage, the crowd (RallyCrowd, step 2), with the hecklers
+## who throw eggs and tomatoes at him. --place=plaza opens it from Play. Every number here is (propuesta).
 
 ## The stage, from the plaza's middle: its middle, its size and the ramp up its front at the east end.
 const STAGE_FROM_PLAZA := Vector3(0, 0, -14)
@@ -31,6 +32,7 @@ const METAL := Color(0.2, 0.2, 0.22)
 @export var case_seed := 0
 var politician: Politician
 var speech: PoliticianSpeech
+var crowd: RallyCrowd
 ## The stage's middle on its top, in world space.
 var stage_top: Vector3
 var _build: PlaceBuilder
@@ -57,6 +59,10 @@ func _ready() -> void:
 	speech.name = "Speech"
 	speech.setup(politician, case_seed)
 	add_child(speech)
+	crowd = RallyCrowd.new()
+	crowd.name = "Crowd"
+	add_child(crowd)
+	crowd.setup(self, city.transform * CityLayout.block_center(CityLayout.PLAZA), politician, speech, case_seed)
 
 
 ## Boards on a blue skirt, the ramp up the front, the lectern and its microphone, the banner on two poles at the back
