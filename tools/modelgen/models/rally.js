@@ -74,7 +74,31 @@ export function buildDirtyHand() {
 	return b.build();
 }
 
+// The last heckler's getaway (step 6b): a kick scooter with a little motor, its deck, two small wheels, the stem and
+// the handlebar with the market bag hanging from it. The heckler stands on the deck (their own model, set in the
+// game). 1 m long; faces +Z like the vehicles. Its wheels are part of it.
+export function buildKickScooter() {
+	const frame = mat('kick_frame', 0x2fb5a8), tire = mat('tire', 0x1a1a1e), grip = mat('kick_grip', 0x1a1a1e);
+	const deck = mat('kick_deck', 0x3a3e46), motor = mat('kick_motor', 0xd8322a);
+	const b = new Builder('kick_scooter');
+	for (const z of [0.42, -0.42]) {
+		b.add('wheels', tire, new THREE.CylinderGeometry(0.09, 0.09, 0.05, 10), { pos: V(0, 0.09, z), rot: [0, 0, Math.PI / 2] });
+	}
+	b.add('deck', deck, new THREE.BoxGeometry(0.18, 0.04, 0.7), { pos: V(0, 0.13, -0.02) });
+	b.add('deck', motor, new THREE.BoxGeometry(0.12, 0.08, 0.16), { pos: V(0, 0.09, -0.32) });
+	b.add('frame', frame, new THREE.CylinderGeometry(0.02, 0.02, 1.0, 6), { pos: V(0, 0.6, 0.38), rot: [-0.08, 0, 0] });
+	b.add('frame', frame, new THREE.CylinderGeometry(0.018, 0.018, 0.5, 6), { pos: V(0, 1.1, 0.34), rot: [0, 0, Math.PI / 2] });
+	for (const x of [-0.22, 0.22]) {
+		b.add('frame', grip, new THREE.CylinderGeometry(0.024, 0.024, 0.1, 6), { pos: V(x, 1.1, 0.34), rot: [0, 0, Math.PI / 2] });
+	}
+	// The market bag on the handlebar, eggs poking out.
+	b.add('bag', mat('bag_weave', 0x3f7f5a), new THREE.CylinderGeometry(0.1, 0.085, 0.2, 8), { pos: V(0.14, 0.9, 0.38) });
+	b.add('bag', mat('egg_carton', 0xb8a888), new THREE.BoxGeometry(0.12, 0.04, 0.08), { pos: V(0.13, 1.01, 0.38), rot: [0, 0, 0.3] });
+	return b.build();
+}
+
 export const models = {
+	kick_scooter: buildKickScooter,
 	rally_market_bag: () => buildMarketBag('rally_market_bag', true),
 	rally_shopping_bag: () => buildMarketBag('rally_shopping_bag', false),
 	rally_dirty_hand: buildDirtyHand,
@@ -89,6 +113,10 @@ export const views = {
 		items: [{ name: 'rally_egg', pos: [-0.1, 0.04, 0] }, { name: 'rally_tomato', pos: [0.1, 0.035, 0] },
 			{ name: 'splat_egg', pos: [-0.2, 0, 0.3] }, { name: 'splat_tomato', pos: [0.2, 0, 0.3] }],
 		cam: { pos: [0, 0.45, 0.75], target: [0, 0.02, 0.15], fov: 40 },
+	},
+	kick_scooter: {
+		items: [{ name: 'kick_scooter', pos: [0, 0, 0], rotY: 0.9 }, { name: 'npc_vecina', pos: [0.1, 0.15, -0.1], rotY: 0.9, scale: 0.85 }],
+		cam: { pos: [0, 1.2, 3.2], target: [0, 0.7, 0], fov: 40 },
 	},
 	rally_bags: {
 		items: [{ name: 'rally_market_bag', pos: [-0.2, 0.45, 0] }, { name: 'rally_shopping_bag', pos: [0.2, 0.45, 0] },

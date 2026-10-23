@@ -1339,3 +1339,8 @@ OBJ_RALLY_HECKLERS,"Los que tiran, en el patrullero: %d de %d","Throwers in the 
 OBJ_RALLY_KEEP_CLEAN,"Con 10 manchas se va furioso.","At 10 stains he leaves furious.","Com 10 manchas ele vai embora furioso."
 OBJ_RALLY_OVER,"Terminó el discurso.","The speech is over.","O discurso acabou."
 OBJ_RALLY_FURIOUS,"Se fue furioso: caso perdido.","He left furious: case lost.","Foi embora furioso: caso perdido."
+HINT_ESCAPE_HECKLER,"¡El último que tiraba se escapa en monopatín! ¡Atrápenlo!","The last thrower is getting away on a kick scooter! Catch them!","O último que jogava está fugindo de patinete! Peguem!"
+OBJ_RALLY_CATCH_SCOOTER,"Atrapar al del monopatín (suma como detenido)","Catch the one on the kick scooter (counts as detained)","Pegar o do patinete (conta como detido)"
+CHASE_HECKLER_LINE_1,"¡Quince por hora! ¡Es eléctrico, con turbo!","Fifteen an hour! It's electric, with turbo!","Quinze por hora! É elétrico, com turbo!"
+CHASE_HECKLER_LINE_2,"Los huevos eran para la tortilla. Bueno, algunos.","The eggs were for an omelet. Well, some of them.","Os ovos eram para a omelete. Bom, alguns."
+CHASE_HECKLER_LINE_3,"Está bien, me rindo. Pero ese diputado no me devolvió el saludo.","Fine, I give up. But that deputy didn't wave back.","Tá bom, me rendo. Mas aquele deputado não me cumprimentou de volta."

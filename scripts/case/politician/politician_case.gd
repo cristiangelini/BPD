@@ -5,7 +5,9 @@ extends Node
 ## office, Q opens the planilla, and the clock is deputy Lustre's speech. When it ends with fewer than
 ## Politician.STAINS_MAX stains on his suit the case is solved and pays SALARY, PER_STAIN less for each stain and
 ## PER_HECKLER more for each heckler in the patrol car; quota of its own, like the chase (decision 91). With
-## STAINS_MAX stains he leaves furious and the case is lost there. Every number here is (propuesta).
+## STAINS_MAX stains he leaves furious and the case is lost there. When the speech ends, the last heckler still loose
+## (neither cuffed nor taken away) runs off on a kick scooter and the chase starts there (decision 96): caught, they
+## count as detained; got away, the case is solved all the same. Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 4.0
@@ -24,6 +26,11 @@ var tip_given := false
 var furious := false
 var speech_over := false
 var shift_over := false
+## The last heckler's run on the kick scooter, who it is and how it ended.
+var chase: ChaseCase
+var runner: RallyFan
+var caught := false
+var escaped := false
 var follower := false
 var _result := {}
 var _refresh_left := 0.0
@@ -66,6 +73,34 @@ func _on_speech_finished() -> void:
 		return
 	speech_over = true
 	_hint_all("HINT_RALLY_SPEECH_OVER")
+	runner = rally.crowd.loose_heckler()
+	if runner:
+		_run_off()
+	else:
+		get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
+	checklist.show_rows(rows())
+
+
+## The last heckler gets on their kick scooter, with their own look, from where they stood: the chase is on.
+func _run_off() -> void:
+	if chase or not runner:
+		return
+	runner.hide()
+	runner.collision_layer = 0
+	runner.process_mode = Node.PROCESS_MODE_DISABLED
+	chase = ChaseCase.begin(rally, SuspectCar.KICK_SCOOTER, runner.global_transform, rally.get_node("PatrolCar"),
+		rally.get_node("City"), rally.case_seed)
+	chase.who = ChaseSuspect.HECKLER + runner.look
+	chase.follower = follower
+	chase.truck.set_rider(ChaseSuspect.model_for(chase.who))
+	chase.ended.connect(_on_chase_ended)
+	_hint_all("HINT_ESCAPE_HECKLER")
+
+
+## Caught and in the patrol car, they count as detained; got away, the case is solved all the same.
+func _on_chase_ended(was_caught: bool) -> void:
+	caught = was_caught
+	escaped = not was_caught
 	checklist.show_rows(rows())
 	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
@@ -89,8 +124,9 @@ func solved() -> bool:
 	return speech_over and not furious
 
 
+## The hecklers in the patrol car, the one caught on the scooter included.
 func detained() -> int:
-	return rally.crowd.detained
+	return rally.crowd.detained + (1 if caught else 0)
 
 
 ## SALARY, less PER_STAIN for each stain and plus PER_HECKLER for each heckler detained; nothing if he left furious.
@@ -145,6 +181,8 @@ func rows() -> Array[Dictionary]:
 	list.append(_row("OBJ_RALLY_GUARD", rally.speech.speaking or rally.speech.over))
 	list.append(_row(tr("OBJ_RALLY_STAINS") % [rally.politician.stains, Politician.STAINS_MAX], false))
 	list.append(_row(tr("OBJ_RALLY_HECKLERS") % [detained(), RallyCrowd.HECKLERS], detained() >= RallyCrowd.HECKLERS))
+	if chase:
+		list.append(_row("OBJ_RALLY_CATCH_SCOOTER", caught))
 	var state := "OBJ_RALLY_FURIOUS" if furious else ("OBJ_RALLY_OVER" if speech_over else "OBJ_RALLY_KEEP_CLEAN")
 	list.append({"text": state, "done": false, "optional": false, "status": true})
 	return list

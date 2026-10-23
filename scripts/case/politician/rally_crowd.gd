@@ -136,6 +136,14 @@ func sees_throw(cop: Cop, heckler: RallyFan) -> bool:
 	return cop.get_world_3d().direct_space_state.intersect_ray(ray).is_empty()
 
 
+## The last heckler still loose (neither cuffed nor taken away), who runs off when the speech ends; null if none.
+func loose_heckler() -> RallyFan:
+	for i in range(hecklers.size() - 1, -1, -1):
+		if hecklers[i].free_to_throw():
+			return hecklers[i]
+	return null
+
+
 func _on_boarded(heckler: RallyFan) -> void:
 	detained += 1
 	jailed.emit(heckler)
