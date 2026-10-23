@@ -77,3 +77,4 @@ del centro de la ciudad. Es la que mejor enseña las reglas; las otras variantes
 3. Sí: se baja a saludar y sacarse fotos, y hay que llevarlo de vuelta de la mano.
 
 ## Hecho así
+- **Paso 1 (escenario y discurso):** `PlazaRally` (`scenes/levels/plaza_rally.tscn`, `--place=plaza`) es la ciudad entera con la comisaría, y en la mitad norte de la plaza, mirando a la fuente, un escenario de 1 m con rampa, atril con micrófono, el cartel "¡Lustre: la luz que necesitas!" y globos. El diputado (`Politician`, modelo `npc_politico`) espera a su custodia detrás del atril y se queja; el discurso (`PoliticianSpeech`) empieza cuando el primer policía llega a menos de 25 m y dura 6 minutos, con 12 frases en un orden al azar por semilla y una barra arriba con lo que falta. Captura en `/mnt/project-files/politico/paso1-*.png`.
