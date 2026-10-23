@@ -7,7 +7,8 @@ extends RefCounted
 ## (persecucion.md, "Sale como un caso más"). Of the shifts left, one in CRIME_EVERY is the crime scene
 ## (escena-del-crimen.md, propuesta), then one in TRAFFIC_EVERY the traffic control (control-transito.md), then one in
 ## INFILTRATION_EVERY an infiltration (infiltracion.md), half at the grandparents' club and half at the church choir
-## (infiltracion-coro.md), then one in BANK_EVERY the bank robbery (robo-banco.md), and the rest are raids. A
+## (infiltracion-coro.md), then one in BANK_EVERY the bank robbery (robo-banco.md), then one in RALLY_EVERY the
+## politician's rally (proteccion-politico.md), and the rest are raids. A
 ## campaign whose cops missed the quota goes to the jailbreak first (fuga.md). --place=<id> forces one. The level then
 ## takes that seed, so the place, the story and the hiding spots all come from one seed.
 
@@ -41,6 +42,8 @@ const INFILTRATION_EVERY := 4
 const INFILTRATIONS := ["club", "choir"]
 ## Of the rest, one in this many is the bank robbery (robo-banco.md, propuesta: as often as each raid).
 const BANK_EVERY := 4
+## Of the rest, one in this many is the politician's rally at the plaza (proteccion-politico.md, propuesta).
+const RALLY_EVERY := 4
 
 ## The seed the next level takes (0 = none drawn; the level draws its own).
 static var pending_seed := 0
@@ -73,6 +76,8 @@ static func pick(case_seed: int, args: PackedStringArray, shift := 0, chases := 
 		return INFILTRATIONS[hash(["infiltration place", case_seed]) % INFILTRATIONS.size()]
 	if chases and hash(["bank robbery", case_seed]) % BANK_EVERY == 0:
 		return "bank"
+	if chases and hash(["politician rally", case_seed]) % RALLY_EVERY == 0:
+		return "plaza"
 	return ORDER[hash("place %d" % case_seed) % ORDER.size()]
 
 
