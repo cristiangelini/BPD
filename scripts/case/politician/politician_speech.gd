@@ -72,7 +72,8 @@ func _physics_process(delta: float) -> void:
 		return
 	left = maxf(left - delta, 0.0)
 	_line_left -= delta
-	if _line_left <= 0.0 and left > 0.0:
+	# Off the stage he greets instead (PoliticianWalks); the clock goes on.
+	if _line_left <= 0.0 and left > 0.0 and not politician.off_stage():
 		_line_left = LINE_EVERY
 		politician.say("SPEECH_LUSTRE_%d" % _order[_next % _order.size()], LINE_EVERY - 1.0)
 		_next += 1

@@ -5,7 +5,8 @@ extends Node3D
 ## station, the cops in the guard room and the patrol car at the door. On the plaza's north half, facing the fountain,
 ## a stage with a ramp, a lectern with its microphone, a banner and balloons: deputy Lustre waits there for his guard
 ## and gives his speech (PoliticianSpeech). In front of the stage, the crowd (RallyCrowd, step 2), with the hecklers
-## who throw eggs and tomatoes at him; the ones cuffed are walked to the patrol car (step 4). --place=plaza opens it
+## who throw eggs and tomatoes at him; the ones cuffed are walked to the patrol car (step 4). He walks off the stage to
+## greet them now and then (PoliticianWalks, step 5). --place=plaza opens it
 ## from Play. Every number here is (propuesta).
 
 ## The stage, from the plaza's middle: its middle, its size and the ramp up its front at the east end.
@@ -65,6 +66,9 @@ func _ready() -> void:
 	add_child(crowd)
 	crowd.setup(self, city.transform * CityLayout.block_center(CityLayout.PLAZA), politician, speech, case_seed,
 		$PatrolCar)
+	var half := STAGE_SIZE / 2
+	PoliticianWalks.attach(politician, speech, crowd.fans, politician.global_position,
+		stage_top + Vector3(RAMP_X, 0, half.z - 0.4), stage + Vector3(RAMP_X, 0, half.z + RAMP_RUN + 0.6), case_seed)
 
 
 ## Boards on a blue skirt, the ramp up the front, the lectern and its microphone, the banner on two poles at the back
