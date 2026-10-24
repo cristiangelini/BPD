@@ -66,3 +66,7 @@ probadita que no va a olvidar'. Que no coma nada raro. Y si come algo raro, que 
 3. **¿El que se come el malo tiene que ir al baño químico?** Recomendado: sí, 40 s de retorcijones que se cortan
    encerrándose 8 s en el baño químico del fondo, así hay una carrera graciosa. La otra opción es que solo quede lento
    40 s, sin baño.
+
+## Respuestas de Cristian (24/10)
+1. Sí: la primera vez que el diputado come uno con laxante corre al baño químico (el recorrido se frena 30 s y el
+   sueldo baja 200); la segunda se va a su casa y el caso se pierde (lo eligió en la tarjeta).
