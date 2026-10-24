@@ -7,7 +7,8 @@ extends Node3D
 ## up the west side, across the back and down the east side, with 12 stalls along it, their goods drawn by the seed.
 ## Each stall has its vendor behind the counter (MarketVendor) and a few shoppers stand at the counters
 ## (MarketShopper). At the back, between the two back stalls, the chemical toilet. The cops start in the station and
-## drive here; --place=market opens it from Play. Every number here is (propuesta).
+## drive here; --place=market opens it from Play. Step 2: Deputy Lustre waits outside the way in and walks the aisle
+## stall by stall (MarketTour). Every number here is (propuesta).
 
 const STALL_MODEL := preload("res://assets/models/market_stall.glb")
 const TOILET_MODEL := preload("res://assets/models/chemical_toilet.glb")
@@ -46,8 +47,9 @@ const TOILET_AT := Vector3(0, 0, -10.2)
 const RIBBON_Z := 9.0
 const RIBBON_FROM := 7.0
 const RIBBON_TO := 12.5
-## How many shoppers stand at the counters.
+## How many shoppers stand at the counters, and how far to the side of the counter's middle: the deputy's spot stays free.
 const SHOPPERS := 10
+const SHOPPER_ASIDE := Vector2(0.8, 1.1)
 const AWNINGS: Array[Color] = [Color(0.85, 0.25, 0.18), Color(0.2, 0.5, 0.85), Color(0.25, 0.65, 0.3),
 	Color(0.95, 0.65, 0.15), Color(0.6, 0.3, 0.7), Color(0.9, 0.4, 0.6)]
 
@@ -63,6 +65,9 @@ var case_seed := 0
 ## Stall by stall, in walking order: {kind, at (the counter's middle), facing, vendor, stop (where the deputy stands)}.
 var stalls: Array[Dictionary] = []
 var shoppers: Array[MarketShopper] = []
+## Deputy Lustre (step 2), waiting outside the way in, and his walk along the stalls.
+var politician: Politician
+var tour: MarketTour
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -79,6 +84,16 @@ func _ready() -> void:
 	_build_stalls()
 	_build_back()
 	_place_shoppers()
+	politician = Politician.new()
+	politician.name = "Politician"
+	add_child(politician)
+	politician.position = Vector3(ENTRANCE_X, FLOOR_TOP, HALF_Z + 2.5)
+	# Facing the street, waiting for his guard.
+	politician.rotation.y = PI
+	tour = MarketTour.new()
+	tour.name = "Tour"
+	tour.setup(self, politician, case_seed)
+	add_child(tour)
 	city.transform = CityLayout.anchor("market")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
@@ -214,7 +229,7 @@ func _place_shoppers() -> void:
 	for i in SHOPPERS:
 		var stall := stalls[order[i]]
 		var facing: Vector3 = stall.facing
-		var aside := facing.cross(Vector3.UP) * rng.randf_range(-0.9, 0.9)
+		var aside := facing.cross(Vector3.UP) * rng.randf_range(SHOPPER_ASIDE.x, SHOPPER_ASIDE.y) * (1 if rng.randf() < 0.5 else -1)
 		var shopper := MarketShopper.new()
 		shopper.name = "Shopper%d" % i
 		shopper.look = MarketShopper.LOOKS[rng.randi() % MarketShopper.LOOKS.size()]

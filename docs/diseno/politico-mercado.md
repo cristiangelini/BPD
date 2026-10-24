@@ -84,3 +84,10 @@ probadita que no va a olvidar'. Que no coma nada raro. Y si come algo raro, que 
   dos puestos de atrás, el baño químico (`chemical_toilet`; su puerta, `chemical_toilet_door`, entra en el paso 4), y en
   la salida, la cinta roja con sus dos postes para la foto. Los policías salen de la comisaría y van en el patrullero.
   Capturas en `/mnt/project-files/mercado/paso1-*.png`.
+- **Paso 2 (el recorrido):** el diputado (`Politician`, el mismo de la plaza) espera afuera de la entrada quejándose de
+  su custodia y arranca cuando el primer policía llega a menos de 25 m (`MarketTour`). Camina el pasillo a 1 m/s y se
+  para 30 s en cada puesto, en orden: saluda con una frase de 6, a los 6,5 s el puestero le ofrece una probadita
+  ("¡Diputado! Pruebe, pruebe, que es gratis") y al final del alto la come (`tasting`, lo que hay en el plato llega en
+  el paso 3) y sigue. Después del último puesto va a la cinta de la salida, se saca la foto (5 s) y termina
+  (`finished`). Una barra arriba muestra "Puesto 3 de 12". Todo el recorrido dura unos 7 minutos y medio. `hold` lo
+  deja quieto donde está, con el reloj parado (para el baño, paso 4). Capturas en `/mnt/project-files/mercado/paso2-*.png`.
