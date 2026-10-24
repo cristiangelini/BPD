@@ -1,10 +1,11 @@
 class_name CrimeSceneCase
 extends Node
 
-## The pastry contest's case (escena-del-crimen.md, step 2): the comisario tells it in his office, the seed picks the
-## culprit and his 4 clues (CrimePlan), and Q opens the planilla with what's left to do. The clues go in the tent
-## (the carried ones in `items`); `found` notes one and `ruin` loses it. The cooks fill their files (`file_part`); the board
-## sets `accused`, and then the culprit gives up or runs off on his bike (`runs_off`).
+## The crime scene's case (escena-del-crimen.md, step 2), the same for every place (CrimeScenePlace): the comisario
+## tells it in his office, the seed picks the suspects' traits, the culprit and his 4 clues (CrimePlan), and Q opens the
+## planilla with what's left to do. The place puts the clues (the carried ones in `items`); `found` notes one and `ruin`
+## loses it. The suspects fill their files (`file_part`); the board sets `accused`, and then the culprit gives up or runs
+## off in his getaway (`runs_off`). The place's `variant` picks the texts, the traits and the getaway (VARIANTS).
 
 ## How often the open planilla redraws, in seconds.
 const REFRESH := 0.5
@@ -18,24 +19,28 @@ const SHIFT_DELAY := 3.0
 ## Its own quota, like the interrogation and the chase (decision 91).
 const QUOTA := ShiftReport.SALARY
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
-const COFFEE_SCENE := preload("res://scenes/props/coffee_cup.tscn")
-## Where the carried clues go by a cook's table: the plate and the slice on top, the recipe on the floor at its front,
-## half under the cloth, with a coffee on the table's edge just above (propuesta).
-const ON_TABLE := {"hair": Vector3(0.6, 0.9, 0), "bite": Vector3(-0.6, 0.9, 0.1), "recipe": Vector3(0.3, 0.05, -0.55)}
-const COFFEE_ON_TABLE := Vector3(0.3, 0.9, -0.3)
 ## Accused, half the culprits (by the seed) run off on the delivery bike instead of giving up (Cristian, 21/10:
 ## "que algunos corran y que otros pasen a interrogatorio"; half and half is a propuesta).
 const RUNS_EVERY := 2
-## The bike waits this far (m) out of the tent's open front, and rides straight out of the plaza before its route.
-const BIKE_OUT := 1.5
+## What changes from one place to the other: the campaign's case id and the interrogation's story, the comisario's
+## briefing, the hint to go there, who the culprit is for the chase and what he runs off in, and which trait each clue
+## tells (CrimePlan).
+const VARIANTS := {
+	"pastry": {
+		"shift": "crime_pastry", "story": "pastry",
+		"brief": ["BRIEF_CRIME_A", "BRIEF_CRIME_B", "BRIEF_CRIME_C"], "go": "HINT_GO_CONTEST",
+		"who": "cook", "getaway": SuspectCar.BIKE, "clues": CrimePlan.CLUES,
+	},
+}
 
 ## The comisario's verdict at the board: right, or wrong (and whether that lost the case).
 signal verdict(right: bool, lost: bool)
 
 var case_seed := 0
-var contest: PastryContest
+## The scene where it happened (null in some tests: then it plays the pastry case without a place).
+var place: CrimeScenePlace
 var plan: CrimePlan
-## The cooks' traits, in table order (CookTraits.draw).
+## The suspects' traits, in the place's order (CookTraits.draw for the cooks).
 var cooks: Array[Dictionary] = []
 var briefing: CaseBriefing
 var checklist: CaseChecklist
@@ -79,17 +84,16 @@ var _refresh_left := 0.0
 ## Starts the case: the tip waits for a cop to talk to the comisario (right away without one).
 func start(comisario: Comisario = null) -> void:
 	add_to_group("crime_scene")
-	cooks = CookTraits.draw(case_seed)
-	plan = CrimePlan.draw(cooks, case_seed)
-	if contest:
-		_place_clues()
-		_meet_cooks()
+	cooks = _draw_suspects()
+	plan = CrimePlan.draw(cooks, case_seed, texts().clues)
+	if place:
+		place.set_up_case(self)
 	briefing = CaseBriefing.new()
 	add_child(briefing)
 	checklist = CaseChecklist.new()
 	add_child(checklist)
 	briefing.finished.connect(checklist.set_open.bind(true))
-	briefing.finished.connect(_hint_all.bind("HINT_GO_CONTEST"))
+	briefing.finished.connect(_hint_all.bind(texts().go))
 	if comisario:
 		comisario.spoke.connect(give_tip.unbind(1))
 		_hint_all("HINT_SEE_COMISARIO")
@@ -113,53 +117,19 @@ func give_tip() -> void:
 	tip_given = true
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).input_enabled:
-			briefing.start(PackedStringArray(["BRIEF_CRIME_A", "BRIEF_CRIME_B", "BRIEF_CRIME_C"]))
+			briefing.start(PackedStringArray(texts().brief))
 			break
 	checklist.show_rows(rows())
 
 
-## Puts this case's clues in the tent.
-func _place_clues() -> void:
-	contest.display_case.case = self
-	contest.display_case.has_prints = plan.clues.has("prints")
-	contest.lady.case = self
-	contest.lady.knows = plan.clues.has("witness")
-	if plan.clues.has("footprint"):
-		flour_print = FlourPrint.new()
-		flour_print.name = "FlourPrint"
-		flour_print.case = self
-		flour_print.shoe = culprit().shoe
-		var spots := PastryContest.FLOUR_SPOTS
-		flour_print.position = spots[hash("flour spot %d" % case_seed) % spots.size()]
-		contest.add_child(flour_print)
-	# Each carried clue on its own table, drawn with the seed.
-	var tables := range(PastryContest.TABLES.size())
-	var rng := RandomNumberGenerator.new()
-	rng.seed = hash("clue tables %d" % case_seed)
-	for kind: String in ["hair", "bite", "recipe"]:
-		if not plan.clues.has(kind):
-			continue
-		var table: Vector3 = PastryContest.TABLES[tables.pop_at(rng.randi_range(0, tables.size() - 1))]
-		var item := CrimeClueItem.new()
-		item.name = "Clue_" + kind
-		item.kind = kind
-		item.case = self
-		item.hair_color = CookTraits.HAIRS[culprit().hair]
-		item.position = table + ON_TABLE[kind]
-		contest.add_child(item)
-		items[kind] = item
-		if kind == "recipe":
-			var coffee: Node3D = COFFEE_SCENE.instantiate()
-			coffee.position = table + COFFEE_ON_TABLE
-			contest.add_child(coffee)
+## The texts, the traits and the getaway of the place's variant (the pastry's without a place, as in the tests).
+func texts() -> Dictionary:
+	return VARIANTS[place.variant if place and VARIANTS.has(place.variant) else "pastry"]
 
 
-## The cooks know the case; one of them (by the seed) won't take off his hat for nothing.
-func _meet_cooks() -> void:
-	var stubborn := hash("stubborn cook %d" % case_seed) % cooks.size()
-	for cook in contest.cooks:
-		cook.case = self
-		cook.stubborn = cook.index == stubborn
+## The suspects' traits for this seed, by variant.
+func _draw_suspects() -> Array[Dictionary]:
+	return CookTraits.draw(case_seed)
 
 
 ## One part of a cook's file is done; with the four, his file is.
@@ -205,28 +175,25 @@ func runs_off() -> bool:
 	return hash(["crime runs", case_seed]) % RUNS_EVERY == 0 and not gone.has(plan.culprit)
 
 
-## The culprit gets on his delivery bike by the tent and the chase starts (decision 96). Returns false when the level
-## has no city or patrol car to chase him with (he gives up instead).
+## The culprit gets in his getaway by the scene (the pastry cook's delivery bike) and the chase starts (decision 96).
+## Returns false when the level has no place, city or patrol car to chase him with (he gives up instead).
 func _run_off() -> bool:
 	var level := get_parent()
 	var city := level.get_node_or_null("City") as Node3D
 	var car := level.get_node_or_null("PatrolCar") as PatrolCar
-	if not contest or not city or not car:
+	if not place or not city or not car:
 		return false
-	var cook := contest.cooks[plan.culprit]
-	_send_off(cook)
-	var out := contest.to_global(Vector3(contest.to_local(cook.global_position).x, 0, PastryContest.SIZE.y / 2 + BIKE_OUT))
-	var at := Transform3D(contest.global_basis, out)
-	chase = ChaseCase.begin(level, SuspectCar.BIKE, at, car, city, case_seed)
-	chase.who = "cook"
+	_send_off(place.suspect(plan.culprit))
+	var getaway := place.getaway(plan.culprit, city)
+	chase = ChaseCase.begin(level, texts().getaway, getaway.at, car, city, case_seed)
+	chase.who = texts().who
 	chase.online = online
 	chase.follower = follower
-	var plaza := city.global_transform * CityLayout.block_center(CityLayout.PLAZA)
-	var ahead := contest.global_basis.z
-	var edge := out + ahead * maxf(CityLayout.BLOCK / 2 - 1.0 - (out - plaza).dot(ahead), 0.0)
-	chase.truck.points.insert(1, edge)
+	var via: Array = getaway.via
+	for i in via.size():
+		chase.truck.points.insert(1 + i, via[i])
 	chase.ended.connect(_on_chase_ended)
-	_hint_all(tr("HINT_ESCAPE_cook") % culprit().name)
+	_hint_all(tr("HINT_ESCAPE_" + texts().who) % culprit().name)
 	return true
 
 
@@ -234,7 +201,7 @@ func _run_off() -> bool:
 func _on_chase_ended(caught: bool) -> void:
 	escaped = not caught
 	if caught:
-		custody = {"owner": "cook", "story": "pastry", "slips": [], "missed": 0}
+		custody = _custody()
 	checklist.show_rows(rows())
 	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
@@ -242,10 +209,15 @@ func _on_chase_ended(caught: bool) -> void:
 ## Accused, the culprit gives up and goes to a cell: next shift is his interrogation. One who already went home is
 ## picked up there.
 func _take_culprit() -> void:
-	custody = {"owner": "cook", "story": "pastry", "slips": [], "missed": 0}
+	custody = _custody()
 	_hint_all(tr("HINT_CULPRIT_GIVES_UP") % culprit().name)
-	if contest and not gone.has(plan.culprit):
-		_send_off(contest.cooks[plan.culprit])
+	if place and not gone.has(plan.culprit):
+		_send_off(place.suspect(plan.culprit))
+
+
+## The culprit in custody, for the next shift's interrogation.
+func _custody() -> Dictionary:
+	return {"owner": texts().who, "story": texts().story, "slips": [], "missed": 0}
 
 
 ## Solved: the right cook accused and, if he ran off, caught.
@@ -265,7 +237,7 @@ func finish_shift() -> void:
 	var campaign := Campaign.current
 	if campaign and not campaign.is_over():
 		var played := campaign.shift
-		campaign.finish_shift("crime_pastry", solved(), report, QUOTA)
+		campaign.finish_shift(texts().shift, solved(), report, QUOTA)
 		campaign.custody = custody
 		campaign.save()
 		result.campaign = {"shift": played, "money": campaign.money, "over": campaign.is_over(),
@@ -302,7 +274,7 @@ func snapshot() -> Dictionary:
 	var state := {"tip": tip_given, "at_tent": at_tent, "found": clues_found.duplicate(), "ruined": ruined.duplicate(),
 		"parts": file_parts.duplicate(true), "files": files.duplicate(), "accused": accused, "wrong": wrong_guesses,
 		"lost": lost, "gone": gone.duplicate(), "escaped": escaped,
-		"offended": contest != null and contest.lady.offended, "result": _result}
+		"offended": place != null and place.witness_offended(), "result": _result}
 	# The culprit who ran off on his bike, and the chase after him.
 	if chase:
 		state.chase = chase.snapshot()
@@ -329,16 +301,16 @@ func apply_snapshot(state: Dictionary) -> void:
 	for index: int in state.gone:
 		if not gone.has(index):
 			gone.append(index)
-			if contest:
-				_send_off(contest.cooks[index])
-	if contest and state.offended and not contest.lady.offended:
-		contest.lady.offended = true
+			if place:
+				_send_off(place.suspect(index))
+	if place and state.offended and not place.witness_offended():
+		place.offend_witness()
 	if state.accused and not accused:
 		accused = true
 		if state.has("chase"):
 			_run_off()
-		elif contest and not gone.has(plan.culprit):
-			_send_off(contest.cooks[plan.culprit])
+		elif place and not gone.has(plan.culprit):
+			_send_off(place.suspect(plan.culprit))
 	if chase and state.has("chase"):
 		chase.apply_snapshot(state.chase)
 	if board:
@@ -364,17 +336,17 @@ func _tire() -> void:
 		if not gone.has(index):
 			gone.append(index)
 			_hint_all(tr("HINT_COOK_LEFT") % cooks[index].name)
-			if contest:
-				_send_off(contest.cooks[index])
+			if place:
+				_send_off(place.suspect(index))
 			checklist.show_rows(rows())
 			return
 
 
-## A cook leaves the tent: out of sight and out of the way.
-func _send_off(cook: PastryCook) -> void:
-	cook.hide()
-	cook.collision_layer = 0
-	cook.process_mode = Node.PROCESS_MODE_DISABLED
+## A suspect leaves the scene: out of sight and out of the way.
+func _send_off(suspect: CollisionObject3D) -> void:
+	suspect.hide()
+	suspect.collision_layer = 0
+	suspect.process_mode = Node.PROCESS_MODE_DISABLED
 
 ## The comisario comes to the board and says it (with a player at the keys).
 func _comisario_says(key: String) -> void:
@@ -424,14 +396,14 @@ func clue_line(kind: String) -> String:
 	return tr("CLUE_CRIME_" + kind)
 
 
-## A cop shouted (VoiceChat): the jury's lady may take offense.
+## A cop shouted (VoiceChat): the place's witness may take offense.
 func shouted_by(cop: Cop) -> void:
 	if follower:
 		if online:
 			online.request_shout()
 		return
-	if contest:
-		contest.lady.shouted_by(cop)
+	if place:
+		place.shouted_by(cop)
 
 
 ## The culprit's traits.
@@ -467,7 +439,7 @@ func rows() -> Array[Dictionary]:
 
 
 func _physics_process(delta: float) -> void:
-	if not tip_given or not contest:
+	if not tip_given or not place:
 		return
 	if not accused and not lost:
 		elapsed += delta
@@ -475,7 +447,7 @@ func _physics_process(delta: float) -> void:
 			_tire()
 	if not at_tent and not follower:
 		for cop in get_tree().get_nodes_in_group("cops"):
-			if contest.under_roof((cop as Node3D).global_position):
+			if place.at_scene((cop as Node3D).global_position):
 				at_tent = true
 				_hint_all("HINT_CRIME_LOOK")
 				checklist.show_rows(rows())

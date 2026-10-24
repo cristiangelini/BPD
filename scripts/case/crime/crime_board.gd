@@ -114,7 +114,7 @@ func use_card(card: BoardCard, cop: Cop) -> void:
 ## The string from a clue to a cook's file: it holds if he fits the clue, else it snaps and his file is crossed out.
 ## Returns whether it held.
 func tie(kind: String, index: int, cop: Cop = null) -> bool:
-	var fits := CrimePlan.fits(case.cooks[index], kind, case.culprit())
+	var fits := CrimePlan.fits(case.cooks[index], kind, case.culprit(), case.plan.traits)
 	if fits:
 		strings.append([kind, index])
 		_string(clue_cards[kind], file_cards[index])
