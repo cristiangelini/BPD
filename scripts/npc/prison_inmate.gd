@@ -4,26 +4,45 @@ extends CharacterBody3D
 ## An inmate in the prison's canteen (carcel-motin.md, step 2, decision 104): standing at their place by a table, with
 ## an `anger` from 0 to MAX_ANGER. It goes up with what upsets them (raise: food on them, step 2b) and, once the riot
 ## is on, drifts down DECAY a second after CALM_AFTER seconds left alone. At ANGRY or more they're angry: red steam over
-## their head and shouts; step 2b has them throw food. Every number here is (propuesta).
+## their head and shouts. Step 2b: an angry inmate throws food every THROW_EVERY seconds or so (RallyThrowable: mash,
+## jelly, chicken or yogurt) at whoever PrisonRiot.target_for picks, a cop or another inmate, up to MISS off; food
+## that hits an inmate upsets them HIT_ANGER more, so the riot spreads. Every number here is (propuesta).
 
 ## They got angry, or calmed down below ANGRY.
 signal angry_changed(inmate: PrisonInmate, angry: bool)
+signal threw(inmate: PrisonInmate, food: RallyThrowable)
 
 const MODEL := preload("res://assets/models/npc_preso.glb")
 const MAX_ANGER := 100.0
 const ANGRY := 60.0
-const DECAY := 3.0
-const CALM_AFTER := 5.0
+const DECAY := 1.5
+const CALM_AFTER := 6.0
 const SHOUTS := 6
 const SHOUT_EVERY := 5.0
 const SAY_TIME := 3.0
 const STEAM_COLOR := Color(0.95, 0.2, 0.15)
+const FOODS: Array[String] = ["mash", "jelly", "chicken", "yogurt"]
+const THROW_EVERY := 6.0
+const THROW_JITTER := 2.0
+## Where the throw leaves from (about their raised hand), how long it flies and how far off it may land: more at a cop,
+## who is further away and moving.
+const HAND := Vector3(0.25, 1.4, 0)
+const FLIGHT := 0.9
+const MISS := 0.8
+const MISS_INMATE := 0.5
+## Aimed at the chest.
+const CHEST := 1.1
+const HIT_ANGER := 35.0
+const HITS := 3
 
 var anger := 0.0
 ## The riot is on: anger drifts down and the angry ones shout (PrisonRiot.start).
 var active := false
 ## A guest's copy (NpcSync): the host's says how angry they are.
 var follower := false
+## Who they throw at (step 2b): set by PrisonRiot.
+var riot: PrisonRiot
+var _throw_left := 0.0
 var _quiet_left := 0.0
 var _shout_left := 0.0
 var _next_shout := 0
@@ -91,6 +110,29 @@ func calm(points: float) -> void:
 	_update()
 
 
+## Food burst on them (RallyThrowable): it upsets them.
+func hit_by_food(_food: RallyThrowable) -> void:
+	raise(HIT_ANGER)
+	if active and not follower:
+		say("INMATE_HIT_%d" % randi_range(1, HITS))
+
+
+## Throws a `kind` to land on `target` (world space), facing it. Returns what flies.
+func throw_at(target: Vector3, kind: String) -> RallyThrowable:
+	var to := target - global_position
+	to.y = 0.0
+	if to.length() > 0.1:
+		look_at(global_position + to, Vector3.UP)
+	var food := RallyThrowable.new()
+	food.kind = kind
+	get_parent().add_child(food, true)
+	add_collision_exception_with(food)
+	food.add_collision_exception_with(self)
+	food.launch(global_transform * HAND, target, FLIGHT)
+	threw.emit(self, food)
+	return food
+
+
 func say(key: String, seconds := SAY_TIME) -> void:
 	_bubble.text = key
 	_bubble.show()
@@ -121,6 +163,7 @@ func _update() -> void:
 		_was_angry = angry
 		if angry:
 			_shout_left = 0.0
+			_throw_left = randf_range(0.5, THROW_EVERY)
 		angry_changed.emit(self, angry)
 
 
@@ -131,6 +174,14 @@ func _physics_process(delta: float) -> void:
 	if _quiet_left <= 0.0 and anger > 0.0:
 		calm(DECAY * delta)
 	if is_angry():
+		_throw_left -= delta
+		if _throw_left <= 0.0:
+			_throw_left = THROW_EVERY + randf_range(-THROW_JITTER, THROW_JITTER)
+			var target: Node3D = riot.target_for(self) if riot else null
+			if target:
+				var off: float = MISS if target is Cop else MISS_INMATE
+				var miss := Vector3(randf_range(-off, off), randf_range(-off, off) * 0.5, randf_range(-off, off))
+				throw_at(target.global_position + Vector3.UP * CHEST + miss, FOODS[randi_range(0, FOODS.size() - 1)])
 		_shout_left -= delta
 		if _shout_left <= 0.0:
 			_shout_left = SHOUT_EVERY + randf_range(0.0, 2.0)
