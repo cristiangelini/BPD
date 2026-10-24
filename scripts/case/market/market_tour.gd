@@ -4,8 +4,8 @@ extends Node
 ## Deputy Lustre's walk through the market (politico-mercado.md, step 2, decision 120), the clock of the case: he waits
 ## outside the way in for his guard and starts when the first cop gets within START_REACH of him. Then he walks the
 ## U-shaped aisle stall by stall (MarketLevel.stalls, in order) and stops STOP_TIME at each: he greets, the vendor
-## offers a sample and, at the end of the stop, he tastes it (`tasting`; what's on the plate comes in step 3). After
-## the last stall he walks to the ribbon at the way out, has his photo taken and `finished` goes off: the shift ends
+## offers a sample and, at the end of the stop, he tastes it (`tasting`; the plate and what he says: MarketSamples).
+## After the last stall he walks to the ribbon at the way out, has his photo taken and `finished` goes off: the shift ends
 ## there (step 6). A bar at the top of the screen shows how many stalls are done. `hold` stops him where he is (the
 ## toilet run, step 4). Every number here is (propuesta).
 
@@ -142,7 +142,6 @@ func _stopped(delta: float) -> void:
 		arrived.emit(stall)
 	if stop_left > 0.0:
 		return
-	politician.say("MARKET_LUSTRE_YUM_%d" % _rng.randi_range(1, YUMS))
 	tasting.emit(stall)
 	stall += 1
 	if stall < market.stalls.size():

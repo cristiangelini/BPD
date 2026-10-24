@@ -91,3 +91,11 @@ probadita que no va a olvidar'. Que no coma nada raro. Y si come algo raro, que 
   el paso 3) y sigue. Después del último puesto va a la cinta de la salida, se saca la foto (5 s) y termina
   (`finished`). Una barra arriba muestra "Puesto 3 de 12". Todo el recorrido dura unos 7 minutos y medio. `hold` lo
   deja quieto donde está, con el reloj parado (para el baño, paso 4). Capturas en `/mnt/project-files/mercado/paso2-*.png`.
+- **Paso 3 (los platitos):** cuando el puestero ofrece, aparece un platito con una probadita del color de lo que vende
+  en la mano del diputado (`SamplePlate`, modelo `sample_plate`, que se ve 1,5 veces más grande). 3 de los 12 tienen
+  laxante, por semilla, nunca el primer puesto ni dos seguidos (`MarketSamples`). Un policía que agarra el platito se
+  lo saca de la mano (él protesta, y si nadie lo había probado cuenta como `snatched`, para la imagen del paso 5); con
+  el platito en la mano y E, el policía le da un mordisco: la probadita queda más chica y el cartel dice si estaba rica
+  o si tenía laxante (`bitten`, los retorcijones llegan en el paso 4). Un platito dejado a menos de 1 m de su mano
+  mientras está parado en un puesto vuelve a su mano. Al final del alto come lo que tiene en la mano (`ate`, con el
+  laxante o no); sin platito, pide su probadita y sigue. Captura en `/mnt/project-files/mercado/paso3-platito.png`.

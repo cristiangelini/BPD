@@ -157,6 +157,7 @@ const FOODS = [fruit, cheese, empanadas, fish, pickles, olives, bread, sweets, j
 
 export const models = {
 	market_stall: buildStall,
+	sample_plate: buildSamplePlate,
 	chemical_toilet: buildToilet,
 	chemical_toilet_door: buildToiletDoor,
 	...Object.fromEntries(KINDS.map((k, i) => [`market_food_${k}`, FOODS[i]])),
@@ -177,3 +178,15 @@ export const views = {
 		cam: { pos: [2.5, 2.0, 4.0], target: [0, 1.1, 0], fov: 40 },
 	},
 };
+
+// A sample on a paper plate (step 3): the plate 20 cm across, a bite of the stall's food (its own node, "bite", tinted
+// by the game) and a toothpick with a little flag. Its origin under the plate's middle.
+export function buildSamplePlate() {
+	const b = new Builder('sample_plate');
+	b.add('plate', mat('paper_plate', 0xf8f6f0), new THREE.CylinderGeometry(0.1, 0.08, 0.015, 12), { pos: V(0, 0.0075, 0) });
+	b.add('plate', mat('paper_rim', 0xe8e2d6), new THREE.TorusGeometry(0.095, 0.006, 4, 12), { pos: V(0, 0.016, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('bite', mat('bite', 0xd9a050), ellipsoid(0.045, 0.03, 0.04, 8, 5), { pos: V(0, 0.04, 0) });
+	b.add('pick', mat('toothpick', 0xe0c08a), new THREE.CylinderGeometry(0.003, 0.003, 0.1, 4), { pos: V(0.01, 0.07, 0), rot: [0, 0, 0.15] });
+	b.add('pick', mat('pick_flag', 0xd8402e), new THREE.BoxGeometry(0.035, 0.022, 0.003), { pos: V(0.0, 0.115, 0) });
+	return b.build();
+}
