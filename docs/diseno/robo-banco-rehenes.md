@@ -47,8 +47,8 @@ dos botones con su cono y su máscara de cartón, y las frases.
 5. El caso (frases del comisario, planilla) y el online.
 
 ## Preguntas para Cristian
-1. **¿Qué hace un rehén que sueltan antes de la puerta?** Recomendado: vuelve caminando a su lugar en el piso (como
-   dice el catálogo). La otra opción es que se quede parado donde lo soltaron.
+1. **¿Qué hace un rehén que sueltan antes de la puerta?** **Respondida (Cristian, 24/10):** vuelve caminando a su
+   lugar en el piso.
 2. **¿Hay rehenes que avisan a los ladrones?** Recomendado: sí, 2 de 8 por semilla, con máscara de cartón para que se
    los pueda reconocer, y su grito acelera el taladro como el de un ladrón. La otra opción es que ningún rehén avise.
 3. **¿Con comida se los convence?** Recomendado: sí, un rehén con una dona o un cruasán en la mano sigue al policía
