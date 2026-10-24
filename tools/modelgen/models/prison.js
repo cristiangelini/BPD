@@ -113,7 +113,33 @@ export function buildTray() {
 	return b.build();
 }
 
+// The kitchen's food cart (step 5b): the last ringleader's getaway, rolling downhill. A steel cart on four small
+// casters, a lower shelf with a crate of yogurts, two pots of mash on top and the push handle at the back, where the
+// ringleader stands on the frame (the inmate's model, set in the game). 1.4 m long; faces +Z like the vehicles. Its
+// wheels are part of it.
+export function buildFoodCart() {
+	const steel = mat('cart_steel', 0xa9b1b8), dark = mat('canteen_leg', 0x4d5359), tire = mat('tire', 0x1a1a1e);
+	const pot = mat('pot_steel', 0xa9b1b8), mash = mat('mash', 0xf1dfa2), crate = mat('yogurt_crate', 0x3e7fc4);
+	const b = new Builder('food_cart');
+	for (const x of [-0.3, 0.3]) {
+		for (const z of [-0.6, 0.6]) {
+			b.add('wheels', tire, new THREE.CylinderGeometry(0.07, 0.07, 0.05, 10), { pos: V(x, 0.07, z), rot: [0, 0, Math.PI / 2] });
+			b.add('frame', dark, new THREE.CylinderGeometry(0.015, 0.015, 0.78, 6), { pos: V(x, 0.53, z) });
+		}
+	}
+	b.add('frame', steel, new THREE.BoxGeometry(0.66, 0.03, 1.3), { pos: V(0, 0.3, 0) });
+	b.add('frame', steel, new THREE.BoxGeometry(0.66, 0.03, 1.3), { pos: V(0, 0.9, 0) });
+	b.add('frame', dark, new THREE.CylinderGeometry(0.02, 0.02, 0.7, 6), { pos: V(0, 1.12, -0.7), rot: [0, 0, Math.PI / 2] });
+	b.add('food', crate, new THREE.BoxGeometry(0.4, 0.2, 0.5), { pos: V(0, 0.42, 0.2) });
+	for (const z of [0.3, -0.15]) {
+		b.add('food', pot, new THREE.CylinderGeometry(0.2, 0.18, 0.28, 10), { pos: V(0, 1.05, z) });
+		b.add('food', mash, ellipsoid(0.18, 0.06, 0.18), { pos: V(0, 1.2, z) });
+	}
+	return b.build();
+}
+
 export const models = {
+	food_cart: buildFoodCart,
 	prison_tray: buildTray,
 	prison_mash: buildMash,
 	prison_jelly: buildJelly,
@@ -128,6 +154,10 @@ export const models = {
 };
 
 export const views = {
+	food_cart: {
+		items: [{ name: 'food_cart', pos: [0, 0, 0], rotY: 0.9 }, { name: 'npc_preso', pos: [-0.65, 0.3, -0.55], rotY: 0.9, scale: 0.85 }],
+		cam: { pos: [2.2, 1.6, 2.4], target: [0, 0.7, 0], fov: 40 },
+	},
 	prison_food: {
 		items: [{ name: 'prison_mash', pos: [-0.24, 0.04, 0] }, { name: 'prison_jelly', pos: [-0.08, 0.03, 0] },
 			{ name: 'prison_chicken', pos: [0.08, 0.03, 0] }, { name: 'prison_yogurt', pos: [0.24, 0.04, 0] },

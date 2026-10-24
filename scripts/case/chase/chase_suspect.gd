@@ -32,6 +32,8 @@ const MODELS := {
 	"ernesto": preload("res://assets/models/npc_ernesto.glb"),
 	# El Oso, out of the robbers' van or off his run with the sack (robo-banco.md).
 	"oso": preload("res://assets/models/npc_ladron_oso.glb"),
+	# The prison's last ringleader, off the food cart (carcel-motin.md).
+	"ringleader": preload("res://assets/models/npc_preso.glb"),
 }
 const HECKLER := "heckler_"
 ## The golf thief who runs off (persecucion-lugares.md): at this speed (m/s), away from cops this close, staying
