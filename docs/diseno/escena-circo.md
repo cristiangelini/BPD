@@ -85,7 +85,12 @@ Antes de programar conviene que el pastel y el circo compartan una base (como el
 
 ## El orden para hacerlo (un PR chico por paso)
 1. Separar la base común de la escena del crimen y que el pastel la use (sin cambios en el juego).
-2. El circo en la ciudad: carpa, pista, casillas, pileta, baúl y cañón (`--place=circus`).
+2. El circo en la ciudad: carpa, pista, casillas, pileta, baúl y cañón (`--place=circus`). Hecho así: un lote de 40 x 30 m en la cuadra
+   (5, 3), del lado norte. La carpa redonda (9 m de radio, paredes rojas y blancas, techo rojo en cono y la entrada
+   abierta adelante) tiene la pista de aserrín con su bordecito y un hueco para entrar, tres escalones de gradas en la
+   mitad de atrás, el trapecio entre dos postes y el cañón al costado de la pista. Detrás de la carpa, las seis casillas
+   de los payasos en fila, numeradas del 1 al 6; a un costado, la pileta vacía de Galleta con su canilla, y al otro, el
+   baúl de disfraces. Los policías arrancan en la comisaría **(propuesta)**.
 3. Los seis payasos iguales con sus rasgos escondidos, el director de pista y Zulema.
 4. Sacarles lo escondido: esponja, peluca, guantes, zapato y bocina, y las fichas.
 5. El truco: se mezclan cada 90 s, y los carteles con número.
