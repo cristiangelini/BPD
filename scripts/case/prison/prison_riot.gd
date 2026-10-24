@@ -155,6 +155,9 @@ func slip(cop: Cop) -> void:
 
 ## A table went over toward `side`: the inmates standing there jump back, upset.
 func _on_tipped(table: CanteenTable, side: float) -> void:
+	# A guest's inmates go where the host's do.
+	if follower:
+		return
 	for inmate in inmates:
 		var at := table.global_transform.affine_inverse() * inmate.global_position
 		if absf(at.x) < CanteenTable.PARTS[0][1].x / 2 + 0.3 and at.z * side > 0.0 and absf(at.z) < TIP_REACH:

@@ -9,7 +9,10 @@ extends Node
 ## limit (decision 66). Step 5b: with the other ringleaders in the cell, the last one still loose gets RUN_DELAY
 ## seconds; not cuffed by then, they roll off on the kitchen's food cart out the gate and the chase starts there
 ## (decision 96), the canteen holding still to watch it. Caught, they count as jailed; got away, the case is solved all
-## the same, without the NO_ESCAPE extra. Every number here is (propuesta).
+## the same, without the NO_ESCAPE extra. Step 6: online the host's case decides and a guest's follows it (CaseSync,
+## snapshot): the ringleaders in the cell, how it ended and the getaway; the inmates go by NpcSync, and the host tells
+## the guests where each bit of food burst (show_burst), so the stains and the slips happen on the cop's own PC too.
+## Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 4.0
@@ -39,6 +42,12 @@ var escaped := 0
 var chase: ChaseCase
 var runner: PrisonInmate
 var caught := false
+var follower := false:
+	set(value):
+		follower = value
+		if prison:
+			prison.riot.follower = value
+var online: CaseSync
 var _result := {}
 var _refresh_left := 0.0
 
@@ -53,14 +62,23 @@ func start(comisario: Comisario = null) -> void:
 	briefing.finished.connect(_hint_all.bind("HINT_GO_PRISON"))
 	prison.riot.angry_changed.connect(_on_angry_changed.unbind(1))
 	prison.riot.ringleader_jailed.connect(_on_angry_changed.unbind(1))
+	for inmate in prison.riot.inmates:
+		inmate.threw.connect(_on_threw)
 	if comisario:
 		comisario.spoke.connect(give_tip.unbind(1))
 		_hint_all("HINT_SEE_COMISARIO")
 	else:
 		give_tip()
 	if shift_screen:
-		shift_screen.play_again.connect(PlaceDraw.start.bind(get_tree()))
+		shift_screen.play_again.connect(_play_again)
 		shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
+
+
+func _play_again() -> void:
+	if online:
+		online.play_again()
+	else:
+		PlaceDraw.start(get_tree())
 
 
 func give_tip() -> void:
@@ -76,7 +94,7 @@ func give_tip() -> void:
 
 ## Every ringleader in the cell (or gone) and the canteen quiet enough: solved. OVERFLOW angry: lost.
 func _on_angry_changed() -> void:
-	if calmed or overflowed or not prison.riot.running:
+	if follower or calmed or overflowed or not prison.riot.running:
 		return
 	var riot := prison.riot
 	if riot.angry >= OVERFLOW:
@@ -99,7 +117,8 @@ func overflow() -> void:
 		prison.kitchen_door.ram_hit()
 	_hint_all("HINT_RIOT_OVERFLOW")
 	checklist.show_rows(rows())
-	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
+	if not follower:
+		get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
 
 ## Every ringleader in the cell, caught on the cart or gone.
@@ -120,9 +139,10 @@ func loose_ringleader() -> PrisonInmate:
 func _run_off() -> void:
 	if chase or calmed or overflowed:
 		return
-	runner = loose_ringleader()
-	if not runner or prison.riot.jailed != prison.riot.ringleaders.size() - 1:
-		return
+	if not follower:
+		runner = loose_ringleader()
+		if not runner or prison.riot.jailed != prison.riot.ringleaders.size() - 1:
+			return
 	runner.hide()
 	runner.collision_layer = 0
 	runner.process_mode = Node.PROCESS_MODE_DISABLED
@@ -130,6 +150,8 @@ func _run_off() -> void:
 	var out := prison.global_transform * Transform3D(Basis.IDENTITY, CART_OUT)
 	chase = ChaseCase.begin(prison, SuspectCar.FOOD_CART, out, prison.car, prison.city, prison.case_seed)
 	chase.who = "ringleader"
+	chase.online = online
+	chase.follower = follower
 	chase.ended.connect(_on_chase_ended)
 	_hint_all("HINT_ESCAPE_RINGLEADER")
 	checklist.show_rows(rows())
@@ -170,7 +192,7 @@ func report() -> Dictionary:
 
 
 func finish_shift() -> void:
-	if shift_over:
+	if shift_over or follower:
 		return
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
@@ -204,7 +226,71 @@ func _show_result(result: Dictionary) -> void:
 		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over,
 			result.campaign.promoted)
 		over = result.campaign.over
-	shift_screen.get_node("%AgainButton").visible = not over
+	shift_screen.get_node("%AgainButton").visible = not over and not follower
+
+
+func _on_threw(_inmate: PrisonInmate, food: RallyThrowable) -> void:
+	food.burst.connect(_on_burst)
+
+
+## Host: where it burst and on whom (a player's cop, an inmate, or nothing: a splat), for every guest.
+func _on_burst(food: RallyThrowable, on: Node) -> void:
+	if not online or follower:
+		return
+	var cop_id := 0
+	for id: int in online.net.cop_syncs:
+		if on is Cop and online.net.cop_syncs[id].cop == on:
+			cop_id = id
+	var inmate := prison.riot.inmates.find(on) if on is PrisonInmate else -1
+	var tray := on is PrisonTray
+	online.tell("show_burst", [food.kind, food.global_position, cop_id, inmate, tray])
+
+
+## Guest: a bit of food burst at `at` on the host: on that player's cop (who may slip, here on their own PC), on an
+## inmate, on a tray (it hits whoever holds it) or a splat on the floor.
+func show_burst(kind: String, at: Vector3, cop_id: int, inmate: int, tray: bool) -> void:
+	var sync: CopSync = online.net.cop_syncs.get(cop_id) if online and cop_id != 0 else null
+	if sync and is_instance_valid(sync.cop):
+		RallyThrowable.stain_on(sync.cop, kind, at)
+		if sync.cop.input_enabled and prison.riot.stains_on(sync.cop) >= PrisonRiot.SLIP_STAINS:
+			prison.riot.slip(sync.cop)
+	elif inmate >= 0:
+		RallyThrowable.stain_on(prison.riot.inmates[inmate], kind, at)
+	elif not tray:
+		RallyThrowable.splat_at(prison, kind, at)
+
+
+## What every guest's case shows (CaseSync).
+func snapshot() -> Dictionary:
+	var state := {"tip": tip_given, "running": prison.riot.running, "calmed": calmed, "overflowed": overflowed,
+		"jailed": prison.riot.jailed, "runner": prison.riot.ringleaders.find(runner), "caught": caught,
+		"escaped": escaped, "result": _result}
+	if chase:
+		state.chase = chase.snapshot()
+	return state
+
+
+func apply_snapshot(state: Dictionary) -> void:
+	if state.tip:
+		give_tip()
+	var riot := prison.riot
+	if state.running and not riot.running:
+		riot.start()
+	riot.jailed = state.jailed
+	riot.angry = riot.count_angry()
+	calmed = state.calmed
+	if state.overflowed and not overflowed:
+		overflow()
+	caught = state.caught
+	escaped = state.escaped
+	if state.has("chase") and state.runner >= 0 and not chase:
+		runner = riot.ringleaders[state.runner]
+		_run_off()
+	if chase and state.has("chase"):
+		chase.apply_snapshot(state.chase)
+	checklist.show_rows(rows())
+	if not state.result.is_empty() and not shift_over:
+		_show_result(state.result)
 
 
 ## The planilla's rows, in the shape CaseChecklist takes.
