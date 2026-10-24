@@ -113,7 +113,11 @@ Antes de programar conviene que el pastel y el circo compartan una base (como el
    (el pelo de verdad, el pie descalzo) se anota apenas se le pega el cartel. Si un cartel pasa a otro payaso, la
    ficha mezcla lo de los dos, y acusar un cartel acusa al que lo lleva puesto (o al último que lo tuvo). En el
    tablero, las fichas se llaman "Payaso del cartel N" y un hilo a algo que la ficha todavía no sabe no se puede
-   atar **(propuesta)**.
+   atar **(propuesta)**. Hecho así (5b, el truco): con el caso en marcha, cada 90 s el director de
+   pista avisa "¡Y ahora... EL TRUCO!" (3 s antes), los payasos que siguen en la pista corren una vuelta en ronda
+   durante 3 s contando chistes y cada uno termina en el lugar de otro (ninguno se queda en el suyo), sorteado con la
+   semilla. En la corrida, a cada payaso con cartel se le cae con una probabilidad de 1 en 3 y el cartel queda en el
+   aserrín **(propuesta)**.
 6. El caso: la historia, Galleta escondida, las pistas y cómo se arruinan, y la planilla.
 7. El final: tablero, cansancio, sueldo y el autito de payasos con los muñecos.
 8. El sorteo de "Jugar" (mitad pastel, mitad circo) y el online.

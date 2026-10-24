@@ -64,6 +64,8 @@ const CARAVAN_COLORS: Array[Color] = [
 
 var clowns: Array[CircusClown] = []
 var ringmaster: Ringmaster
+## "¡El truco!": the clowns swap spots every so often while the case is on (ClownTrick).
+var trick: ClownTrick
 ## Who wears which sign: number -> clown index, and the last clown each number was on.
 var signs := {}
 var last_wearer := {}
@@ -346,6 +348,11 @@ func set_up_case(case: CrimeSceneCase) -> void:
 		clown.spare_gloves = hash(["clown gloves", case.case_seed, clown.index]) % (MAX_SPARE_GLOVES + 1)
 	tamer.case = case
 	tamer.knows = case.plan.clues.has("witness")
+	trick = ClownTrick.new()
+	trick.name = "Trick"
+	trick.circus = self
+	trick.case = case
+	add_child(trick)
 
 
 ## Whether a wall piece is part of the entrance, at the front (+Z).
