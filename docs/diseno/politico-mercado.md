@@ -120,3 +120,14 @@ probadita que no va a olvidar'. Que no coma nada raro. Y si come algo raro, que 
   con retorcijones pasa corriendo a menos de 3 m de él (una vez cada 10 s por policía) y 20 por esposar a un inocente
   ("¡Están esposando a mis votantes! ¡Así no!"). Se ve abajo de la barra del recorrido: "Imagen del diputado: 80". Capturas
   en `/mnt/project-files/mercado/paso5-*.png`.
+- **Paso 6 (el caso):** `MarketCase` arma el caso sobre la caminata, como el de la plaza: el comisario lo cuenta en
+  su oficina (3 frases), Q abre la planilla (llegar y cuidarlo, puestos recorridos, la imagen, el puestero en el
+  patrullero) y el reloj es el recorrido. Cuando el diputado corta la cinta y se saca la foto, el caso está resuelto
+  y paga 600, menos 4 por cada punto de imagen perdido, menos 200 si tuvo que correr al baño, y 100 más si el
+  puestero rencoroso quedó detenido; cuota propia de 400. Si se va a su casa (la segunda probadita mala), el caso se
+  pierde ahí. Si a la foto el rencoroso sigue suelto, sale pedaleando desde la salida en su triciclo de verduras
+  (`veggie_trike`, 16 km/h por la vereda, con el puestero arriba) y empieza la persecución (`ChaseCase.begin`,
+  decisión 96): en cada esquina donde dobla se le cae una calabaza, un repollo o una sandía (`ChaseDrops`, como los
+  muebles de la mudanza). Atrapado, cuenta como detenido; si se escapa, el caso está resuelto igual. En Jugar, la
+  protección del político sale como antes (1 de cada 4 de lo que queda), mitad en la plaza y mitad en el mercado.
+  Capturas en `/mnt/project-files/mercado/paso6-*.png`. Falta el online (paso 7).
