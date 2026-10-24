@@ -4,6 +4,7 @@ extends Grabbable
 ## A queued car's trunk lid (control-transito.md, "Revisar un auto"): no button, like the furniture (decision 76). A
 ## cop grabs its back edge and lifts it; it turns on its hinge after the hand and stays where it's let go. Past
 ## OPEN_AT it counts as open and the trunk shows what it carries. Its origin is the hinge; closed, it lies along -Z.
+## With `side`, it's the clown car's door (control-payasos.md): its hinge is upright and it swings out toward +X, the driver's side.
 ## Every number here is (propuesta).
 
 signal opened
@@ -15,6 +16,9 @@ const COLOR := Color(0.25, 0.27, 0.3)
 
 ## A clown car's lid is smaller (QueueCar.CLOWN_LID); set before it's added.
 var size := SIZE
+## A door on the car's left side instead of a lid; `action` is what the car does on every PC once it's open.
+var side := false
+var action := "open_trunk"
 var angle := 0.0
 var is_open := false
 
@@ -35,7 +39,7 @@ func _ready() -> void:
 
 
 func prompt_key(_cop: Cop) -> String:
-	return "PROMPT_TRUNK"
+	return "PROMPT_CLOWN_DOOR" if side else "PROMPT_TRUNK"
 
 
 ## Turns toward the hand: the hold point, seen from the hinge in the car's space, sets the angle.
@@ -45,7 +49,7 @@ func _physics_process(_delta: float) -> void:
 	var point: Vector3 = holders.values()[0]
 	var local := (get_parent() as Node3D).global_transform.affine_inverse() * point - position
 	var was_open := is_open
-	set_angle(atan2(local.y, -local.z))
+	set_angle(atan2(local.x if side else local.y, -local.z))
 	if is_open and not was_open:
 		_tell_every_pc()
 
@@ -55,14 +59,17 @@ func _tell_every_pc() -> void:
 	for id: int in holders:
 		var grabber := instance_from_id(id) as Node
 		var cop := grabber.get_parent() as Cop if grabber else null
-		if cop and cop.input_enabled and get_parent().has_method("open_trunk"):
-			cop.act("open_trunk", get_parent())
+		if cop and cop.input_enabled and get_parent().has_method(action):
+			cop.act(action, get_parent())
 			return
 
 
 func set_angle(value: float) -> void:
 	angle = clampf(value, 0.0, MAX_ANGLE)
-	rotation.x = angle
+	if side:
+		rotation.y = -angle
+	else:
+		rotation.x = angle
 	if angle >= OPEN_AT and not is_open:
 		is_open = true
 		opened.emit()

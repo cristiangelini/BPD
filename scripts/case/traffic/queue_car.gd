@@ -8,7 +8,8 @@ extends CharacterBody3D
 ## things, they just stop. Stopped, its driver can be checked: the line they say at the barrier, E for the license and
 ## the trunk, opened by lifting its lid (step 4 of "El orden para hacerlo"). Online the host's cars drive and the
 ## guests' copies follow them (NpcSync). In the clown convoy (control-payasos.md) every car is the same tiny clown
-## car, with the same plate and a clown at the wheel. Every number here is (propuesta).
+## car, with the same plate and a clown at the wheel; opening its door lets out its clowns (ConvoyClown), and it
+## won't move until they're all back in. Every number here is (propuesta).
 
 const SPEED := 30.0 / 3.6
 ## Brakes and speeds up this hard, in m/s².
@@ -48,6 +49,11 @@ const CLOWN_TRUNK_INSIDE := Vector3(0, 0.45, -0.78)
 const CLOWN_LID := Vector3(0.8, 0.05, 0.42)
 ## Its trunk's things, shrunk to fit.
 const CLOWN_TRUNK_SCALE := 0.5
+## The door on the driver's side (+X): its hinge at the front, closed along -Z.
+const CLOWN_DOOR_HINGE := Vector3(0.64, 0.75, 0.45)
+const CLOWN_DOOR := Vector3(0.05, 0.55, 0.6)
+## How many clowns come out of one car (control-payasos.md, answer 1).
+const CLOWN_RIDERS := Vector2i(3, 6)
 
 ## "coming", "waiting", "going" (let through), "sneaking", "pulled_over" (detained, by the curb) or "gone".
 var state := "coming"
@@ -63,6 +69,10 @@ var driver: Dictionary = {}
 var plate := ""
 ## One of the clown convoy's clown cars.
 var clown := false
+var door: TrunkLid
+## Its clowns out on the street; while there's any, it won't move.
+var clowns_out: Array[ConvoyClown] = []
+var spilled := false
 ## The car the case is after (WantedPlan).
 var wanted := false
 var papers_checked := false
@@ -97,6 +107,8 @@ func _ready() -> void:
 			wheel.position = wheel_at
 			add_child(wheel)
 	_build_trunk()
+	if clown:
+		_build_door()
 	var plate_label := Label3D.new()
 	plate_label.name = "Plate"
 	plate_label.text = shown_plate()
@@ -139,6 +151,68 @@ func stop_before() -> float:
 ## The plate it shows: every clown car has the same one painted on.
 func shown_plate() -> String:
 	return tr("PLATE_CLOWN") if clown else plate
+
+
+## How many clowns ride in it: from its plate, so every PC agrees.
+func riders() -> int:
+	return CLOWN_RIDERS.x + absi(hash(["clown riders", plate])) % (CLOWN_RIDERS.y - CLOWN_RIDERS.x + 1)
+
+
+## Where its clowns get out and back in, in world space: just outside the door.
+func door_point() -> Vector3:
+	return global_transform * (CLOWN_DOOR_HINGE + Vector3(0.6, -0.75, -CLOWN_DOOR.z / 2))
+
+
+## It can drive off: no clown of it left on the street.
+func can_go() -> bool:
+	return clowns_out.is_empty()
+
+
+func _build_door() -> void:
+	door = TrunkLid.new()
+	door.name = "Door"
+	door.side = true
+	door.action = "open_door"
+	door.size = CLOWN_DOOR
+	door.position = CLOWN_DOOR_HINGE
+	add_child(door)
+	door.opened.connect(spill)
+
+
+## The door opened on some PC: open on this one too.
+func open_door() -> void:
+	if door and not door.is_open:
+		door.set_angle(TrunkLid.MAX_ANGLE)
+
+
+## Out come its clowns, one after the other, the driver first; its seat is left empty.
+func spill() -> void:
+	if spilled or not clown:
+		return
+	spilled = true
+	var seat := get_node_or_null("Driver") as Node3D
+	if seat:
+		seat.visible = false
+	for i in riders():
+		var out := ConvoyClown.new()
+		out.name = "%sClown%d" % [name, i]
+		out.car = self
+		out.is_driver = i == 0
+		out.boarded.connect(_on_boarded)
+		clowns_out.append(out)
+		get_parent().add_child(out)
+		out.global_position = door_point() + global_basis.z * (0.5 * i - 1.0) + Vector3.UP * 0.1
+
+
+func _on_boarded(back: ConvoyClown) -> void:
+	clowns_out.erase(back)
+	if clowns_out.is_empty():
+		var seat := get_node_or_null("Driver") as Node3D
+		if seat:
+			seat.visible = true
+		if door:
+			door.set_angle(0.0)
+			door.is_open = false
 
 
 func _add_box(size: Vector3, center: Vector3) -> void:
@@ -245,7 +319,7 @@ func in_queue() -> bool:
 
 
 func let_through() -> void:
-	if in_queue():
+	if in_queue() and can_go():
 		state = "going"
 
 
@@ -268,13 +342,13 @@ func pull_over() -> void:
 
 
 func sneak() -> void:
-	if in_queue():
+	if in_queue() and can_go():
 		state = "sneaking"
 
 
 ## Where it wants to stop, in the checkpoint's z; INF for no stop.
 func _stop_z() -> float:
-	if state == "pulled_over":
+	if state == "pulled_over" or not can_go():
 		return at.z
 	if not in_queue():
 		return -INF
