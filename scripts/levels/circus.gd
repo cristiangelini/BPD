@@ -7,7 +7,9 @@ extends CrimeScenePlace
 ## caravans in a row; on one side, the seal's empty pool with its tap, and on the other, the costume trunk. In the
 ## ring, the six clowns alike (ClownTraits.draw with the case seed) practice in a circle facing out, the ringmaster
 ## (Ringmaster) waits at the ring's gap and Zulema the tamer (CircusTamer) stands by the pool. It's the circus case's
-## CrimeScenePlace (the clues come in a later step). Every number here is (propuesta).
+## CrimeScenePlace: Galleta's fish bucket (the prints), the footprint in the ring's sawdust, a hair in the pool (its
+## tap washes it away), a bitten fish by a caravan, the ringmaster's camera (the recording) and Zulema (the witness).
+## Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(40, 30)
@@ -67,6 +69,17 @@ const LOOT_MODELS := {
 	"cash": preload("res://assets/models/cash_tin.glb"),
 	"nose": preload("res://assets/models/golden_nose.glb"),
 }
+## Galleta's bucket of fish, by her pool (the prints clue).
+const FISH_BUCKET_AT := POOL_AT + Vector3(1.2, 0, POOL_RADIUS + 0.6)
+## The ringmaster's camera on its tripod, beside him (the recording clue).
+const CAMERA_AT := RINGMASTER_AT + Vector3(1.0, 0, 0.3)
+## Where the footprint can be in the ring's sawdust, inside the clowns' circle; one by the seed.
+const SAWDUST_SPOTS: Array[Vector3] = [
+	TENT_AT + Vector3(0, 0.03, 0), TENT_AT + Vector3(1.2, 0.03, -0.8), TENT_AT + Vector3(-1.1, 0.03, 0.7),
+]
+## The hair lies this far from the pool's middle at most, and the bitten fish this far in front of a caravan's door.
+const POOL_HAIR_REACH := 1.0
+const FISH_BY_CARAVAN := Vector3(1.0, 0.05, CARAVAN_SIZE.z / 2 + 0.8)
 const CARAVAN_COLORS: Array[Color] = [
 	Color(0.95, 0.55, 0.7), Color(0.45, 0.82, 0.65), Color(0.98, 0.82, 0.3), Color(0.68, 0.58, 0.9),
 	Color(0.5, 0.7, 0.95), Color(0.98, 0.6, 0.35),
@@ -87,6 +100,8 @@ var loot_spots := {}
 var signs := {}
 var last_wearer := {}
 var tamer: CircusTamer
+var fish_bucket: FishBucket
+var camera: RingmasterCamera
 var _builder: PlaceBuilder
 
 
@@ -109,6 +124,14 @@ func _ready() -> void:
 	_sign_pad()
 	_bags()
 	_loot_spots()
+	fish_bucket = FishBucket.new()
+	fish_bucket.name = "FishBucket"
+	fish_bucket.position = FISH_BUCKET_AT
+	add_child(fish_bucket)
+	camera = RingmasterCamera.new()
+	camera.name = "Camera"
+	camera.position = CAMERA_AT
+	add_child(camera)
 
 
 ## The six clowns in a circle in the ring, the ringmaster at its gap and Zulema by the pool.
@@ -263,12 +286,32 @@ func _pool() -> void:
 	tiles.bottom_radius = POOL_RADIUS
 	tiles.height = 0.02
 	_builder.mesh(tiles, POOL_AT + Vector3(0, 0.06, 0), POOL_TILE)
+	# The tiles' floor holds up what lies on it (the hair), inside the rim.
+	var tiled := _builder.body(POOL_AT + Vector3(0, 0.035, 0))
+	_builder.shape(tiled, Vector3(POOL_RADIUS * 1.4, 0.07, POOL_RADIUS * 1.4))
 	var pieces := 10
 	var piece := TAU * POOL_RADIUS / pieces + 0.05
 	for i in pieces:
 		var turn := i * TAU / pieces
 		_turned_box(POOL_AT + _around(turn, POOL_RADIUS) + Vector3(0, 0.3, 0), Vector3(piece, 0.6, 0.2), turn, WHITE)
 	_builder.mesh_box(POOL_AT + Vector3(0, 0.75, -POOL_RADIUS), Vector3(0.12, 0.3, 0.12), METAL)
+	var tap := PoolTap.new()
+	tap.name = "Tap"
+	tap.circus = self
+	tap.position = POOL_AT + Vector3(0, 0.75, -POOL_RADIUS)
+	add_child(tap)
+
+
+## The tap runs: water over the pool's floor, and the hair lying there (if nobody bagged it) goes with it.
+func open_tap(cop: Cop) -> void:
+	if cop:
+		cop.show_hint("HINT_TAP_RUNS")
+	if not case or not case.items.has("hair"):
+		return
+	var hair: CrimeClueItem = case.items.hair
+	var off := to_local(hair.global_position) - POOL_AT
+	if Vector2(off.x, off.z).length() <= POOL_RADIUS:
+		hair.wash()
 
 
 ## The costume trunk on the tent's other side, its lid shut.
@@ -409,7 +452,7 @@ func wearer(number: int) -> int:
 
 ## The circus takes the case: what was stolen and where it's hidden (by the seed; the caravan is the culprit's), and
 ## the clowns and Zulema know it: one clown (by the seed) won't take off his wig for nothing, and each has his spare
-## gloves. The clues come in a later step.
+## gloves. Then the clues go where they go.
 func set_up_case(new_case: CrimeSceneCase) -> void:
 	case = new_case
 	loot = LOOTS[hash(["circus loot", case.case_seed]) % LOOTS.size()]
@@ -423,6 +466,45 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 		clown.spare_gloves = hash(["clown gloves", case.case_seed, clown.index]) % (MAX_SPARE_GLOVES + 1)
 	tamer.case = case
 	tamer.knows = case.plan.clues.has("witness")
+	_clues()
+
+
+## The case's clues where they go: each place by the seed.
+func _clues() -> void:
+	var plan := case.plan
+	var who := case.culprit()
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["circus clues", case.case_seed])
+	fish_bucket.case = case
+	fish_bucket.has_prints = plan.clues.has("prints")
+	camera.case = case
+	camera.has_recording = plan.clues.has("recording")
+	if plan.clues.has("footprint"):
+		var footprint := FlourPrint.new()
+		footprint.name = "SawdustPrint"
+		footprint.case = case
+		footprint.shoe = who.shoe
+		footprint.dust = SAWDUST.darkened(0.15)
+		footprint.position = SAWDUST_SPOTS[rng.randi_range(0, SAWDUST_SPOTS.size() - 1)]
+		add_child(footprint)
+		case.flour_print = footprint
+	if plan.clues.has("hair"):
+		var turn := rng.randf() * TAU
+		_clue_item("hair", POOL_AT + _around(turn, rng.randf_range(0.2, POOL_HAIR_REACH)) + Vector3(0, 0.07, 0))
+	if plan.clues.has("bite"):
+		_clue_item("bite", CARAVANS[rng.randi_range(0, CARAVANS.size() - 1)] + FISH_BY_CARAVAN)
+
+
+func _clue_item(kind: String, at: Vector3) -> void:
+	var item := CrimeClueItem.new()
+	item.name = "Clue_" + kind
+	item.kind = kind
+	item.look = "circus"
+	item.case = case
+	item.hair_color = CookTraits.HAIRS[case.culprit().hair]
+	item.position = at
+	add_child(item)
+	case.items[kind] = item
 	trick = ClownTrick.new()
 	trick.name = "Trick"
 	trick.circus = self
