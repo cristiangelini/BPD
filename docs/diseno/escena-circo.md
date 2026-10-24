@@ -3,10 +3,10 @@
 Segunda variante de la escena del crimen (decisión 97). Se reusa casi todo lo del pastel robado: sospechosos que se
 parecen, rasgos sorteados con la semilla, 4 pistas que juntas dejan a uno solo, las fichas, el tablero con hilo rojo
 de la comisaría, el cansancio, el sueldo y el sorteo de "Jugar". Lo nuevo es que acá los sospechosos son **seis payasos
-iguales** que además **se mezclan**. Todo lo que dice **(propuesta)** se ajusta jugando. Las tres preguntas de abajo
-esperan la respuesta de Cristian.
+iguales** que además **se mezclan**. Cristian respondió las tres preguntas el 24/10 (decisión 130); todo lo que dice
+**(propuesta)** se ajusta jugando.
 
-## La historia (pregunta 1)
+## La historia (pregunta 1: lo robado varía)
 El comisario lo cuenta en su oficina:
 
 > "Llegó a la ciudad el Circo Hermanos Cascabel. Anoche, en plena función, alguien se robó a **Galleta**, la foca que
@@ -14,9 +14,14 @@ El comisario lo cuenta en su oficina:
 > iguales. Uno de ellos fue. Quiero un nombre en el tablero antes de que el circo se vaya a otra ciudad. Y no me
 > traigan una foca equivocada."
 
-La foca está escondida en algún lado (la semilla elige dónde: en el baúl de disfraces, en la casilla del culpable o
-dentro del cañón). Encontrarla no resuelve el caso (cualquiera pudo esconderla ahí), pero suma 100 al sueldo y, si el
-culpable huye, se lleva a la foca con él si nadie la encontró antes **(propuesta)**.
+Lo robado sale con la semilla entre tres (Cristian, 24/10: "las variemos"), y el comisario cambia esa parte de la
+historia: **Galleta, la foca**; **la recaudación** de la función (una lata de galletitas llena de monedas); o **la nariz
+de oro** del Payaso Cascabel, el más viejo, que la usaba solo en el saludo final.
+
+Lo robado está escondido en algún lado (la semilla elige dónde: en el baúl de disfraces, en la casilla del culpable o
+dentro del cañón). Encontrarlo no resuelve el caso (cualquiera pudo esconderlo ahí), pero suma 100 al sueldo y, si el
+culpable huye, se lo lleva con él si nadie lo encontró antes **(propuesta)**. La foca hay que llevarla de la mano (como
+un rehén del banco) hasta el patrullero; la lata y la nariz van en una bolsa de evidencia.
 
 ## El lugar
 - **El circo:** un lote nuevo en la ciudad, un baldío en la cuadra (5, 3) **(propuesta)**, con la carpa a rayas
@@ -65,17 +70,12 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
   interrogatorio) o **huye en el autito de payasos**: diminuto, a 30 km/h, con la bocina sonando todo el camino, y
   cada tanto se baja un payaso de mentira (un muñeco inflable igual a él) que hay que esquivar o que el que va de copiloto
   puede reventar **(propuesta)**. Agarrado y en el patrullero, el caso se resuelve; si se escapa, se pierde.
-- Sueldo de 500 (+100 si encontraron a Galleta), cuota propia de 500 como el pastel.
+- Sueldo de 500 (+100 si encontraron lo robado), cuota propia de 500 como el pastel.
 
-## Preguntas para Cristian (con mi recomendación)
-1. **¿Qué se robaron?** Recomiendo **(a) la foca Galleta**: es lo más absurdo y da un objetivo extra (encontrarla).
-   Las otras: (b) la recaudación de la función, o (c) la nariz de oro del payaso más viejo.
-2. **¿Los payasos se mezclan?** Recomiendo **(a) sí, cada 90 s hacen el truco y hay que pegarles un cartel con número**
-   en la espalda. Las otras: (b) no se mueven, solo son iguales de cara (más fácil), o (c) se mezclan y no hay cartel
-   (hay que desmaquillarlos a todos, más difícil).
-3. **¿En qué huye el culpable?** Recomiendo **(a) el autito de payasos con muñecos inflables que se caen**. Las otras:
-   (b) en monociclo por la vereda, lento pero esquivando, o (c) se dispara con el cañón a otra cuadra y la persecución
-   arranca desde ahí.
+## Respuestas de Cristian (24/10, decisión 130)
+1. Lo robado varía con la semilla: la foca Galleta, la recaudación o la nariz de oro.
+2. Sí, los payasos se mezclan con "el truco" y se les pega un cartel con número.
+3. El culpable huye en el autito de payasos, que va soltando muñecos inflables.
 
 ## Lo que se reusa
 CrimePlan (con los rasgos de los payasos), CrimeBoard, BoardCard, BoardStamp, CrimeClueItem, EvidenceBags, la pisada
