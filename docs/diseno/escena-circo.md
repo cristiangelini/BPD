@@ -118,6 +118,12 @@ Antes de programar conviene que el pastel y el circo compartan una base (como el
    durante 3 s contando chistes y cada uno termina en el lugar de otro (ninguno se queda en el suyo), sorteado con la
    semilla. En la corrida, a cada payaso con cartel se le cae con una probabilidad de 1 en 3 y el cartel queda en el
    aserrín **(propuesta)**.
-6. El caso: la historia, Galleta escondida, las pistas y cómo se arruinan, y la planilla.
+6. El caso: la historia, Galleta escondida, las pistas y cómo se arruinan, y la planilla. Hecho así (6a, lo robado):
+   la semilla elige qué se robaron (la foca Galleta, la lata de la recaudación o la nariz de oro) y dónde está
+   escondido (el baúl de disfraces, la puerta de la casilla del culpable o la boca del cañón). El comisario lo cuenta
+   en la primera línea del informe. Con E se revisa cada escondite: en los otros dos hay trastos y "nada más"; en el
+   bueno aparece lo robado y la planilla lo tacha (es opcional, suma 100 en el paso 7). Junto al balde hay un banquito
+   con el rollo de bolsas de evidencia. El caso del circo se da en el mismo nivel, con el tablero y el sello de la
+   comisaría **(propuesta)**.
 7. El final: tablero, cansancio, sueldo y el autito de payasos con los muñecos.
 8. El sorteo de "Jugar" (mitad pastel, mitad circo) y el online.
