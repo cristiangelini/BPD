@@ -1,7 +1,7 @@
 # BPD · Cárcel: traslado de presos (24/10)
 
 Segunda variante de la cárcel ([casos.md](casos.md), punto 6, variante 2). Cristian la eligió en la tarjeta del 24/10.
-Los números son **(propuesta)** hasta probarlos jugando.
+Cristian respondió las 3 preguntas (decisión 105). Los números son **(propuesta)** hasta probarlos jugando.
 
 ## La idea
 El juez mandó 8 presos a la cárcel de la ciudad y el bus de traslado lo llevan los novatos. Los presos van esposados a
@@ -59,3 +59,8 @@ tapando las ventanas mientras el bus se sacude.
    Recomendado: de la comisaría, así no hace falta otro lugar y el comisario los despide.
 3. **¿Se pierde con 4 escapados**, o el caso nunca se pierde y solo baja el sueldo por cada preso que falta?
    Recomendado: se pierde con 4, así cada fuga importa.
+
+## Respuestas de Cristian (24/10, decisión 105)
+1. Maneja un policía; los otros tres vigilan adentro.
+2. Salen de la comisaría: el bus espera en el estacionamiento con los presos.
+3. Con 4 presos escapados el caso se pierde.
