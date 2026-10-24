@@ -11,7 +11,8 @@ extends PrisonInmate
 ## E standing sits them back. At the window (step 3b), they push its bars for WINDOW_PUSH seconds; E stops them, and a
 ## loose window lets them jump out the moment the bus stands still (`jumped_out`). Singing (step 3c), they lull the
 ## nearest standing cop for SING_TIME and put them to sleep for ASLEEP; E covers their mouth. With the accomplice's file
-## (step 3c) they saw the bars like a loose window, only faster.
+## (step 3c) they saw the bars like a loose window, only faster. At a door (step 4) they step out as soon as the bus
+## stands still, also `jumped_out`; caught and walked back, back_on() sits them again.
 ## Every number here is (propuesta).
 
 signal at_door(inmate: BusInmate)
@@ -187,16 +188,40 @@ func stop_pushing(by: Cop) -> void:
 func jump_out() -> void:
 	var side := signf(PrisonBus.seat_spot(seat).x)
 	var at := bus.to_global(Vector3(side * (PrisonBus.HALF_WIDTH + JUMP_OUT), 0.0, PrisonBus.seat_spot(seat).z))
+	_leave(at, bus.global_basis.get_euler().y + side * PI / 2, "TRANSFER_WINDOW_OUT")
+
+
+## Out by the door they walked to, once the bus stands still (step 4).
+func step_out() -> void:
+	var outside: Vector3 = PrisonBus.DOORS[door].outside
+	_leave(bus.to_global(outside), bus.global_basis.get_euler().y + (PI / 2 if door == 0 else PI), "TRANSFER_DOOR_OUT")
+
+
+func _leave(at: Vector3, yaw: float, line: String) -> void:
 	pushing = false
 	seated = false
+	loose = false
+	door = -1
+	_path.clear()
 	out = true
 	reparent(bus.get_parent(), true)
-	global_transform = Transform3D(Basis(Vector3.UP, bus.global_basis.get_euler().y + side * PI / 2), at + Vector3.UP * 0.05)
+	global_transform = Transform3D(Basis(Vector3.UP, yaw), at + Vector3.UP * 0.05)
 	# They keep ignoring the bus's body: dropping that while their shape was still in the seat shoved the bus into
 	# the ground.
-	say("TRANSFER_WINDOW_OUT")
+	say(line)
 	_update()
 	jumped_out.emit(self)
+
+
+## Caught and walked back (step 4): a child of the bus again, in their seat, cuffed, with the plan from 0.
+func back_on(on_bus: PrisonBus) -> void:
+	out = false
+	show()
+	process_mode = Node.PROCESS_MODE_INHERIT
+	reparent(on_bus, false)
+	sit()
+	set_plan(0.0)
+	say("TRANSFER_BACK_ON")
 
 
 ## A cop sat them back and chained the cuffs to the ring again: the plan starts over.
@@ -263,6 +288,9 @@ func _physics_process(delta: float) -> void:
 		_sing(delta)
 		return
 	if not loose:
+		return
+	if door >= 0 and absf(bus.forward_speed()) < STOPPED:
+		step_out()
 		return
 	if door < 0 and _path.is_empty():
 		_loose_left -= delta

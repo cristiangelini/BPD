@@ -19,7 +19,7 @@ extends Node
 ## Each trick over, their plan starts again from 0. The host decides. Every number here is (propuesta).
 
 signal trick_started(inmate: BusInmate, trick: String)
-## An inmate got out of the bus (by the window, so far).
+## An inmate got out of the bus, by the window or by a door (TransferEscape runs after them).
 signal went_out(inmate: BusInmate)
 
 const TRICKS: Array[String] = ["spoon", "bathroom", "sick", "window", "singer", "accomplice"]

@@ -1431,3 +1431,9 @@ HINT_TRANSFER_ASLEEP,Te dormiste con la canción del preso. Espera a despertarte
 TRANSFER_ACCOMPLICE,"¡Ahí vienen mis amigos! ¡Pare en el semáforo, oficial!","Here come my friends! Stop at the light, officer!","Lá vêm meus amigos! Pare no sinal, seu guarda!"
 HINT_TRANSFER_ACCOMPLICE,Un auto sigue al bus. Si paras, le pasan algo a un preso por la ventana.,A car is following the bus. If you stop, they'll pass an inmate something through the window.,Um carro segue o ônibus. Se você parar, vão passar algo para um preso pela janela.
 TRANSFER_FILE,"*Ras, ras, ras* ¡Gracias por la lima!","*Rasp, rasp, rasp* Thanks for the file!","*Rec, rec, rec* Valeu pela lima!"
+TRANSFER_DOOR_OUT,"¡La puerta estaba abierta! ¡Adiós, oficiales!","The door was open! Bye, officers!","A porta estava aberta! Tchau, seus guardas!"
+TRANSFER_BACK_ON,"Bueno, bueno, ya me siento. Pero la bola no la quiero más.","Fine, fine, I'm sitting down. But I don't want the ball anymore.","Tá bom, tá bom, já sento. Mas a bola eu não quero mais."
+HINT_TRANSFER_ESCAPED,"¡Un preso se bajó del bus y corre por la vereda con su bola! Atrápalo y súbelo de nuevo.","An inmate got off the bus and is running down the sidewalk with their ball! Catch them and put them back on.","Um preso desceu do ônibus e corre pela calçada com a bola! Pegue e coloque de volta."
+CHASE_TRANSFER_INMATE_LINE_1,"¡Esta bola pesa más que mi condena!","This ball weighs more than my sentence!","Esta bola pesa mais que a minha pena!"
+CHASE_TRANSFER_INMATE_LINE_2,"¡Yo solo iba a comprar caramelos!","I was only going to buy candy!","Eu só ia comprar bala!"
+CHASE_TRANSFER_INMATE_LINE_3,"Está bien, me rindo. ¿Me guardan el asiento de la ventana?","Fine, I give up. Can you save me the window seat?","Tá bom, eu me rendo. Guardam a janela pra mim?"
