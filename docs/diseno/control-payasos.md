@@ -42,6 +42,11 @@ lleva escondida la caja fuerte del director. Todos los autitos son iguales, así
 3. **Si el payaso se escapa, ¿persecución en el autito soltando muñecos, como el circo?**
    Recomiendo que sí, reusando el final del circo tal cual.
 
+## Respuestas de Cristian (24/10)
+1. Sí: bajan de 3 a 6 payasos por autito y hay que volver a meterlos a todos antes de que arranque.
+2. Sí: la licencia tiene foto sin maquillaje y se compara después de pasarle la esponja.
+3. Sí: el que se escapa huye en el autito soltando muñecos, como el final del circo.
+
 ## El orden para hacerlo (un PR chico por paso, apilados sobre el circo)
 1. La caravana: autitos idénticos en la fila y la variante "clown_convoy" en TrafficQueue.
 2. La puerta y los payasos que salen y vuelven a entrar.
