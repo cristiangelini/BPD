@@ -99,3 +99,12 @@ probadita que no va a olvidar'. Que no coma nada raro. Y si come algo raro, que 
   o si tenía laxante (`bitten`, los retorcijones llegan en el paso 4). Un platito dejado a menos de 1 m de su mano
   mientras está parado en un puesto vuelve a su mano. Al final del alto come lo que tiene en la mano (`ate`, con el
   laxante o no); sin platito, pide su probadita y sigue. Captura en `/mnt/project-files/mercado/paso3-platito.png`.
+- **Paso 4 (retorcijones y baño químico):** el policía que muerde una probadita con laxante tiene retorcijones 40 s
+  (`Cramps`): camina a la mitad de velocidad, la vista se le mece y los demás le ven arriba de la cabeza "*GRRRGL*",
+  "*BLORP*"... El baño químico (`ChemicalToilet`) encierra al que entra: la puerta se cierra sola, arriba dice
+  "OCUPADO (8)" y a los 8 s se abre con los retorcijones curados (a uno sin retorcijones también lo encierra, "nunca
+  está de más"). Entra uno por vez. La primera vez que el diputado come una con laxante (`MarketToiletRun`) sale
+  corriendo al baño por el pasillo, golpea la puerta si hay alguien ("¡Le doy un ministerio si sale ya!"), se encierra
+  30 s y después el recorrido sigue desde donde quedó (`ran`, para los 200 menos del paso 6). La segunda se va a su
+  casa por la salida y desaparece (`went_home`, el caso se pierde en el paso 6). Capturas en
+  `/mnt/project-files/mercado/paso4-*.png`.

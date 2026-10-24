@@ -8,11 +8,11 @@ extends Node3D
 ## Each stall has its vendor behind the counter (MarketVendor) and a few shoppers stand at the counters
 ## (MarketShopper). At the back, between the two back stalls, the chemical toilet. The cops start in the station and
 ## drive here; --place=market opens it from Play. Step 2: Deputy Lustre waits outside the way in and walks the aisle
-## stall by stall (MarketTour). Step 3: the samples he's handed, some with laxative (MarketSamples).
-## Every number here is (propuesta).
+## stall by stall (MarketTour). Step 3: the samples he's handed, some with laxative (MarketSamples). Step 4: cramps
+## for the cops who bite one (Cramps), the toilet that locks in and cures (ChemicalToilet) and the deputy's run to it
+## or home (MarketToiletRun). Every number here is (propuesta).
 
 const STALL_MODEL := preload("res://assets/models/market_stall.glb")
-const TOILET_MODEL := preload("res://assets/models/chemical_toilet.glb")
 ## What the 12 stalls sell; the seed spreads them along the aisle.
 const KINDS: Array[String] = ["fruit", "cheese", "empanadas", "fish", "pickles", "olives", "bread", "sweets", "juice",
 	"meat", "spices", "ice_cream"]
@@ -48,6 +48,11 @@ const TOILET_AT := Vector3(0, 0, -10.2)
 const RIBBON_Z := 9.0
 const RIBBON_FROM := 7.0
 const RIBBON_TO := 12.5
+## The aisle's four stretches around the cold room, each by its middle line: the west and east sides (x) and the back
+## and front (z); and the corner where two of them meet.
+const AISLE_X := 9.5
+const AISLE_BACK := -7.6
+const AISLE_FRONT := 9.6
 ## How many shoppers stand at the counters, and how far to the side of the counter's middle: the deputy's spot
 ## stays free.
 const SHOPPERS := 10
@@ -67,11 +72,15 @@ var case_seed := 0
 ## Stall by stall, in walking order: {kind, at (the counter's middle), facing, vendor, stop (where the deputy stands)}.
 var stalls: Array[Dictionary] = []
 var shoppers: Array[MarketShopper] = []
+## The chemical toilet at the back (step 4: it locks in and cures cramps).
+var toilet: ChemicalToilet
 ## Deputy Lustre (step 2), waiting outside the way in, and his walk along the stalls.
 var politician: Politician
 var tour: MarketTour
 ## The samples he's handed, some with laxative (step 3).
 var samples: MarketSamples
+## His run to the toilet, or home (step 4).
+var toilet_run: MarketToiletRun
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -102,6 +111,10 @@ func _ready() -> void:
 	samples.name = "Samples"
 	add_child(samples)
 	samples.setup(self, tour, case_seed)
+	toilet_run = MarketToiletRun.new()
+	toilet_run.name = "ToiletRun"
+	add_child(toilet_run)
+	toilet_run.setup(self, tour, samples)
 	city.transform = CityLayout.anchor("market")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
@@ -199,24 +212,55 @@ func _build_stalls() -> void:
 
 ## The chemical toilet between the two back stalls and the ribbon with its posts across the way out.
 func _build_back() -> void:
-	var toilet: Node3D = TOILET_MODEL.instantiate()
+	toilet = ChemicalToilet.new()
 	toilet.name = "Toilet"
 	toilet.position = TOILET_AT + Vector3.UP * FLOOR_TOP
 	$Built.add_child(toilet)
-	var booth := _build.body(TOILET_AT + Vector3.UP * (FLOOR_TOP + 1.2))
-	for part: Array in [[Vector3(0, 0, -0.62), Vector3(1.2, 2.4, 0.08)], [Vector3(-0.57, 0, 0), Vector3(0.08, 2.4, 1.3)],
-			[Vector3(0.57, 0, 0), Vector3(0.08, 2.4, 1.3)]]:
-		var shape := CollisionShape3D.new()
-		var box := BoxShape3D.new()
-		box.size = part[1]
-		shape.shape = box
-		shape.position = part[0]
-		booth.add_child(shape)
 	for x: float in [RIBBON_FROM, RIBBON_TO]:
 		_build.box(Vector3(x, FLOOR_TOP + 0.55, RIBBON_Z), Vector3(0.12, 1.1, 0.12), POST)
 	var length := RIBBON_TO - RIBBON_FROM
 	_build.mesh_box(Vector3((RIBBON_FROM + RIBBON_TO) / 2, FLOOR_TOP + 1.0, RIBBON_Z), Vector3(length, 0.12, 0.02), RIBBON)
 	_build.mesh_box(Vector3((RIBBON_FROM + RIBBON_TO) / 2, FLOOR_TOP + 1.0, RIBBON_Z), Vector3(0.3, 0.3, 0.06), RIBBON)
+
+
+## A way to walk from `from` to `to` (world space) along the aisle, around the cold room and the stalls: the corners
+## to go through, then `to`. Of the two ways around, the shorter.
+func aisle_path(from: Vector3, to: Vector3) -> Array[Vector3]:
+	var a := _stretch(to_local(from))
+	var b := _stretch(to_local(to))
+	var ring := ["w", "b", "e", "f"]
+	var corners := {"wb": Vector2(-AISLE_X, AISLE_BACK), "be": Vector2(AISLE_X, AISLE_BACK),
+		"ef": Vector2(AISLE_X, AISLE_FRONT), "fw": Vector2(-AISLE_X, AISLE_FRONT)}
+	var best: Array[Vector3] = [to]
+	var best_length := INF
+	for way: int in [1, -1]:
+		var path: Array[Vector3] = []
+		var at := ring.find(a)
+		while ring[at] != b:
+			var next := posmod(at + way, ring.size())
+			var key: String = ring[at] + ring[next] if way == 1 else ring[next] + ring[at]
+			var corner: Vector2 = corners[key]
+			path.append(to_global(Vector3(corner.x, 0, corner.y)))
+			at = next
+		path.append(to)
+		var length := 0.0
+		var last := from
+		for point in path:
+			length += last.distance_to(point)
+			last = point
+		if length < best_length:
+			best_length = length
+			best = path
+	return best
+
+
+## Which stretch of the aisle a point in the hall's space is on: w, e, b (back) or f (front).
+func _stretch(local: Vector3) -> String:
+	if local.x < ISLAND.position.x - 0.5:
+		return "w"
+	if local.x > ISLAND.end.x + 0.5:
+		return "e"
+	return "b" if local.z < ISLAND.position.y else "f"
 
 
 ## Where the deputy stands for the photo: in the middle of the ribbon, on the inside.

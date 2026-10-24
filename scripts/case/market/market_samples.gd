@@ -63,7 +63,14 @@ func _offer(index: int) -> void:
 	market.add_child(plate)
 	plate.global_position = _hand()
 	plates[index] = plate
+	plate.bitten.connect(_on_bitten)
 	_take(plate)
+
+
+## A cop who bites a bad one gets cramps (step 4).
+func _on_bitten(cop: Cop, laxative: bool) -> void:
+	if laxative:
+		Cramps.give(cop)
 
 
 func _take(plate: SamplePlate) -> void:
