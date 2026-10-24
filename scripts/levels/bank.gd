@@ -20,7 +20,8 @@ extends Node3D
 ## decides and a guest's follows it (`follower`, BankCase's snapshot).
 ## Half the seeds are the variant where the hostages don't want to leave (robo-banco-rehenes.md, decision 121): the
 ## hall is a party, with garlands, the robbers' boombox on the bench and a tray of croissants on the counter, and the
-## hostages sway to the music. --bank=party or --bank=base forces one.
+## hostages sway to the music. Two of them are fans of the gang, with a cardboard mask, who warn the robbers when they
+## see a cop (SNITCHES). --bank=party or --bank=base forces one.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -95,6 +96,8 @@ const HOSTAGE_XS: Array[float] = [-6.5, -3.5, -0.5, 2.5]
 const HOSTAGE_ZS: Array[float] = [2.5, 4.8]
 ## The party (robo-banco-rehenes.md, step 1): garlands hung across the hall in rows under the roof, the boombox on the
 ## west bench and the croissants' tray on the counter.
+## How many of the party's hostages are fans of the gang (propuesta).
+const SNITCHES := 2
 const GARLAND_MODEL := preload("res://assets/models/bank_garland.glb")
 const BOOMBOX_MODEL := preload("res://assets/models/bank_boombox.glb")
 const TRAY_MODEL := preload("res://assets/models/bank_croissant_tray.glb")
@@ -170,6 +173,7 @@ func _ready() -> void:
 	drill.rotation.y = PI / 2
 	add_child(drill)
 	drill.watch(robbers)
+	drill.watch_hostages(hostages)
 	drill.opened.connect(open_vault)
 	drill.opened.connect(_on_vault_opened)
 	phone = BankPhone.new()
@@ -419,8 +423,20 @@ func _add_hostages() -> void:
 		var swap: String = looks[i]
 		looks[i] = looks[j]
 		looks[j] = swap
+	var fans: Array[int] = []
+	if party:
+		var order := range(HOSTAGES)
+		for i in range(order.size() - 1, 0, -1):
+			var j := rng.randi_range(0, i)
+			var swap: int = order[i]
+			order[i] = order[j]
+			order[j] = swap
+		for i in SNITCHES:
+			fans.append(order[i])
 	for i in HOSTAGES:
 		var hostage := BankHostage.new()
+		if fans.has(i):
+			hostage.snitch = BankRobber.ANIMALS[rng.randi_range(0, BankRobber.ANIMALS.size() - 1)]
 		hostage.name = "Hostage%d" % i
 		hostage.look = looks[i % looks.size()]
 		hostage.next_line = i

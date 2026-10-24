@@ -8,9 +8,13 @@ extends CharacterBody3D
 ## go free, and a guest's follow them (NpcSync, net_state). At the party (robo-banco-rehenes.md, step 1) they sway
 ## to the music while they sit, and they don't want to go (step 2, decision 121): led by the hand they walk at half
 ## speed and protest every few seconds, and let go before the door they walk back to their spot on the floor and sit
-## down again. Every number here is (propuesta).
+## down again. Two of them, by the seed, are fans of the gang (step 3): they wear a cardboard mask of one of the four
+## animals, look around while they sit, and a cop in their cone makes them shout to El Oso (`snitched`, the drill gets
+## nervous as when a robber sees one). Every number here is (propuesta).
 
 signal freed_now(hostage: BankHostage)
+## A fan saw a cop and warned the gang.
+signal snitched(hostage: BankHostage, cop: Node3D)
 
 const LOOKS: Array[String] = ["vecina", "clienta", "cliente", "senora", "abuelo", "abuela", "politico", "repartidor",
 	"heladero", "periodista"]
@@ -32,6 +36,16 @@ const PROTEST_EVERY := 6.0
 const BACK_LINES := 3
 ## Back at their spot when this close (m).
 const HOME_REACH := 0.25
+## A fan's cone (full angle in degrees and depth in meters), where their head turns to from their body (all around,
+## the door behind them too), how long each look holds, and how high their eyes are sitting.
+const SNITCH_SIGHT := Vector2(120, 8)
+const SNITCH_LOOKS: Array[float] = [0.0, 1.4, PI, -1.4]
+const SNITCH_HOLD := 2.5
+const SNITCH_EYE := 1.0
+## The same cop again only after this long (s).
+const SNITCH_AGAIN := 5.0
+## Where the cardboard mask goes on the model: over the face.
+const MASK_AT := Vector3(0, 1.31, 0.21)
 ## Stuck on the way back (behind the counter, against a wall) this long, they're just back in their spot.
 const HOME_GIVE_UP := 20.0
 
@@ -48,6 +62,14 @@ var home := Vector3.ZERO
 var _home_yaw := 0.0
 var _protest_left := 0.0
 var _home_left := 0.0
+## A fan of the gang: the animal on their cardboard mask ("" if they're not one). Set before they enter the tree.
+var snitch := ""
+## Where a fan's head looks now, turned from their body (radians).
+var head_look := 0.0
+var _look_index := 0
+var _look_left := SNITCH_HOLD
+## Cop -> seconds until a fan shouts about them again.
+var _snitched := {}
 var freed := false
 ## Whether a world position is out of the bank (the level sets it; nowhere is, by default).
 var is_out: Callable = func(_at: Vector3) -> bool: return false
@@ -74,6 +96,11 @@ func _ready() -> void:
 	# The models face +Z; the hostage faces -Z like everyone else.
 	_model.rotation.y = PI
 	add_child(_model)
+	if snitch != "":
+		var mask: Node3D = load("res://assets/models/bank_mask_%s.glb" % snitch).instantiate()
+		mask.name = "Mask"
+		mask.position = MASK_AT
+		_model.add_child(mask)
 	_bubble = Label3D.new()
 	_bubble.name = "Bubble"
 	_bubble.position = Vector3(0, 1.6, 0)
@@ -111,6 +138,7 @@ func use(cop: Cop) -> void:
 		return
 	led_by = cop
 	returning = false
+	_turn(0.0)
 	_model.scale.y = _size
 	_protest()
 
@@ -137,6 +165,8 @@ func _physics_process(delta: float) -> void:
 		_walk_home(delta)
 		return
 	if not led_by:
+		if snitch != "":
+			_watch(delta)
 		return
 	if is_out.call(global_position):
 		free_hostage()
@@ -149,6 +179,50 @@ func _physics_process(delta: float) -> void:
 	to.y = 0.0
 	var wish := to.normalized() * speed() if to.length() > KEEP_AWAY else Vector3.ZERO
 	_step(wish, delta)
+
+
+## A fan sitting: their head goes around, and a cop in their cone gets shouted about.
+func _watch(delta: float) -> void:
+	_look_left -= delta
+	if _look_left <= 0.0:
+		_look_left = SNITCH_HOLD
+		_look_index = (_look_index + 1) % SNITCH_LOOKS.size()
+	_turn(move_toward(head_look, SNITCH_LOOKS[_look_index], delta * 2.0))
+	for seen: Variant in _snitched.keys():
+		_snitched[seen] -= delta
+		if not is_instance_valid(seen) or _snitched[seen] <= 0.0:
+			_snitched.erase(seen)
+	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
+		if not _snitched.has(cop) and sees_cop(cop):
+			_snitched[cop] = SNITCH_AGAIN
+			say("HOSTAGE_SNITCH")
+			snitched.emit(self, cop)
+
+
+## Turns a fan's head (the whole sitting body, on the floor).
+func _turn(to: float) -> void:
+	head_look = to
+	if _model:
+		_model.rotation.y = PI + head_look
+
+
+## Where a fan's face points now: their body's front turned by their head.
+func facing() -> Vector3:
+	return (-global_basis.z).rotated(Vector3.UP, head_look).normalized()
+
+
+## Whether a fan sees this cop: in their cone, near enough and with no wall in between.
+func sees_cop(cop: Node3D) -> bool:
+	var eye := global_position + Vector3.UP * SNITCH_EYE
+	var at := cop.global_position + Vector3.UP
+	var flat := Vector3(at.x - eye.x, 0, at.z - eye.z)
+	if flat.length() > SNITCH_SIGHT.y or flat.length() < 0.01:
+		return false
+	if facing().angle_to(flat.normalized()) > deg_to_rad(SNITCH_SIGHT.x) / 2:
+		return false
+	var ray := PhysicsRayQueryParameters3D.create(eye, at, 1, [get_rid()])
+	var hit := get_world_3d().direct_space_state.intersect_ray(ray)
+	return hit.is_empty() or hit.collider == cop
 
 
 ## Back to where they sat: once there, they sit down again facing the counter.

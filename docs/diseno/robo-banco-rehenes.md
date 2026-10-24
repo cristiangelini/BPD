@@ -55,6 +55,11 @@ dos botones con su cono y su máscara de cartón, y las frases.
   con 8 frases. Si lo sueltas adentro dice "¡Me guardaron el lugar!" y vuelve caminando a su lugar, donde se sienta
   otra vez; si se traba más de 20 s, aparece en su lugar. Se lo puede volver a tomar en el camino. Afuera queda
   libre como siempre. En el robo base nada cambia: se sienta donde lo sueltan.
+- **Paso 3 (24/10):** 2 de los 8 rehenes de la fiesta, por semilla, son botones con una máscara de cartón de oso,
+  conejo, chancho o pato. Sentados, giran la cabeza por todo el salón (adelante, a los costados y hacia la puerta,
+  2,5 s cada lado) con un cono de 120° y 8 m. Si ven a un policía gritan "¡Oso, cuidado, la policía!" y el taladro
+  va ×1,5 durante 20 s, como con un ladrón; al mismo policía no lo vuelven a cantar por 5 s. Llevados de la mano
+  miran adelante y no avisan.
 
 ## Preguntas para Cristian
 1. **¿Qué hace un rehén que sueltan antes de la puerta?** **Respondida (Cristian, 24/10):** vuelve caminando a su

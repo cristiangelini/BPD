@@ -60,6 +60,13 @@ func watch(robbers: Array[BankRobber]) -> void:
 		robber.saw_hostage.connect(func(_robber: BankRobber, _hostage: Node3D) -> void: hurry(NERVOUS))
 
 
+## Hooks the party's fans of the gang (robo-banco-rehenes.md, step 3): one that shouts a cop is there makes the gang
+## nervous as a robber would.
+func watch_hostages(hostages: Array[BankHostage]) -> void:
+	for hostage in hostages:
+		hostage.snitched.connect(func(_hostage: BankHostage, _cop: Node3D) -> void: hurry(NERVOUS))
+
+
 ## How many drilling seconds go by each second right now.
 func rate() -> float:
 	if is_open or paused_left > 0.0:
