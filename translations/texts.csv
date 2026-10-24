@@ -1400,3 +1400,6 @@ PROMPT_BUS_DRIVE,E: manejar el bus,E: drive the bus,E: dirigir o ônibus
 HINT_BUS_DOOR,Se sube y se baja por una puerta del bus.,You get on and off by one of the bus's doors.,Sobe-se e desce-se por uma porta do ônibus.
 HINT_BUS_ON,"Estás en el bus. Para manejar, ve al asiento del chofer.","You're on the bus. To drive, go to the driver's seat.","Você está no ônibus. Para dirigir, vá até o banco do motorista."
 HINT_BUS_DRIVER,"Manejas el bus: WASD, Espacio freno de mano, E para pararte. Frena suave, que atrás van parados.","You're driving the bus: WASD, Space handbrake, E to stand up. Brake gently, they're standing in the back.","Você dirige o ônibus: WASD, Espaço freio de mão, E para levantar. Freie devagar, tem gente em pé atrás."
+TRANSFER_PLAN_READY_1,"Je, je... nadie me mira.","Heh, heh... nobody's looking.","He, he... ninguém está olhando."
+TRANSFER_PLAN_READY_2,Esta es la mía.,This is my chance.,Essa é a minha chance.
+TRANSFER_PLAN_READY_3,Ya sé cómo bajarme de este bus.,I know how to get off this bus.,Já sei como descer deste ônibus.
