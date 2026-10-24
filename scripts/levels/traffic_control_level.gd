@@ -5,8 +5,8 @@ extends Node3D
 ## the patrol car at the door and, next to it on the sidewalk, the cones and the barrier. The checkpoint is painted on
 ## the westbound lane of the street in front of the station, toward the corner. --place=traffic opens it from Play.
 ## Once it's set up, the cars come and queue up (TrafficQueue), with the patience meter at the top. The comisario
-## gives the case (TrafficCase). Half the matches are the rush hour and half the clown convoy (control-payasos.md),
-## by the seed; --traffic=<variant> picks one.
+## gives the case (TrafficCase). A third of the matches are the rush hour, a third the clown convoy
+## (control-payasos.md) and a third the fruit truck (control-frutas.md), by the seed; --traffic=<variant> picks one.
 
 ## Along the street in front of the station, from the station's middle toward the east corner, in meters.
 const CHECKPOINT_ALONG := 24.0
@@ -16,8 +16,8 @@ const BARRIER_FROM_DOOR := Vector3(6, 0, 1.5)
 const CONES_FROM_DOOR := Vector3(-5, 0, 1.5)
 ## The clown convoy's sponge (control-payasos.md, step 5), on the sidewalk between the barrier and the cones.
 const SPONGE_FROM_DOOR := Vector3(1, 0, 1.5)
-## What Play draws, half and half (propuesta).
-const VARIANTS: Array[String] = ["rush_hour", "clown_convoy"]
+## What Play draws, a third each (propuesta).
+const VARIANTS: Array[String] = ["rush_hour", "clown_convoy", "fruit_truck"]
 
 ## Same seed, same cars. 0 draws one.
 @export var case_seed := 0

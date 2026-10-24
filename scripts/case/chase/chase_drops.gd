@@ -5,7 +5,9 @@ extends Node
 ## cream every DRIP_EVERY seconds, and on a puddle the patrol car's tires lose their grip; the moving truck drops a piece
 ## of furniture at every corner he turns, which is in the way (a loose body: knocking it over isn't a fine, but it
 ## slows you down); the school bus is full of kids shouting out of the windows. The clown car honks all the way and
-## drops an inflatable clown (ChaseDummy) every DUMMY_EVERY seconds. Every number here is (propuesta).
+## drops an inflatable clown (ChaseDummy) every DUMMY_EVERY seconds. The fruit truck control's runaway pickup
+## (control-frutas.md) drops MELONS_PER_CORNER watermelons at every corner it turns, rolling down the street; the
+## patrol car running into one splits it. Every number here is (propuesta).
 
 const DRIP_EVERY := 3.0
 ## A puddle's size (m), how long it lasts, and the grip left on it.
@@ -30,12 +32,17 @@ const KIDS_LINES := ["CHASE_KIDS_1", "CHASE_KIDS_2", "CHASE_KIDS_3", "CHASE_KIDS
 const SHOUTS := {"school_bus": KIDS_LINES, "clown_car": ["CHASE_HONK_1", "CHASE_HONK_2", "CHASE_HONK_3"]}
 const DUMMY_EVERY := 5.0
 const MAX_DUMMIES := 8
+const MELONS_PER_CORNER := 2
+const MAX_MELONS := 12
+## How fast they roll off the back, in m/s.
+const MELON_ROLL := 5.0
 
 var case: ChaseCase
 ## The ice cream puddles on the street: [mesh, seconds left].
 var puddles: Array[Array] = []
 var furniture: Array[RigidBody3D] = []
 var dummies: Array[ChaseDummy] = []
+var melons: Array[Watermelon] = []
 var _drip_left := DRIP_EVERY
 var _dummy_left := DUMMY_EVERY
 var _kids_left := 0.0
@@ -127,8 +134,13 @@ func puddle_at(color: int, at: Vector3) -> MeshInstance3D:
 
 
 func _on_corner(turned: bool) -> void:
-	if case.suspect_id == "moving_truck" and turned and case.chasing and not case.stopped and not case.follower:
+	if not turned or not case.chasing or case.stopped or case.follower:
+		return
+	if case.suspect_id == "moving_truck":
 		drop_furniture()
+	elif case.suspect_id == SuspectCar.FRUIT_TRUCK:
+		for i in MELONS_PER_CORNER:
+			drop_melon()
 
 
 ## A piece of furniture falls off the back of the moving truck.
@@ -144,6 +156,26 @@ func drop_furniture() -> RigidBody3D:
 	body.rotation.y = _rng.randf() * TAU
 	furniture.append(body)
 	return body
+
+
+## A watermelon rolls off the back of the runaway fruit truck: the wanted one's, so splitting it is no complaint.
+func drop_melon() -> Watermelon:
+	melons = melons.filter(func(melon: Watermelon) -> bool: return is_instance_valid(melon))
+	if melons.size() >= MAX_MELONS:
+		melons.pop_front().queue_free()
+	var melon := Watermelon.new()
+	melon.from_wanted = true
+	_dropped += 1
+	melon.name = "Melon%d" % _dropped
+	case.get_parent().add_child(melon)
+	var back := -case.truck.global_basis.z
+	var side := case.truck.global_basis.x * _rng.randf_range(-0.6, 0.6)
+	melon.global_position = _behind() + side + Vector3.UP * 0.25
+	melon.rotation.y = case.truck.global_rotation.y + PI / 2
+	melon.linear_velocity = case.truck.velocity + (back + side * 0.5) * MELON_ROLL
+	melon.angular_velocity = case.truck.global_basis.x * -MELON_ROLL / Watermelon.RADIUS
+	melons.append(melon)
+	return melon
 
 
 ## An inflatable clown, just like him, drops out of the back of the clown car.

@@ -118,6 +118,6 @@ func test_play_draws_both_traffic_controls() -> void:
 	var seen := {}
 	for i in 60:
 		seen[TrafficControlLevel.variant_from("", PackedStringArray(), i + 1)] = true
-	assert_eq(seen.size(), 2)
+	assert_eq(seen.size(), TrafficControlLevel.VARIANTS.size())
 	assert_eq(TrafficControlLevel.variant_from("", PackedStringArray(), 9),
 		TrafficControlLevel.variant_from("", PackedStringArray(), 9), "same seed, same variant on every PC")

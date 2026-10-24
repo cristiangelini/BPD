@@ -213,9 +213,7 @@ func _build_fruit_truck() -> void:
 	var model: Node3D = FRUIT_MODEL.instantiate()
 	model.name = "Model"
 	add_child(model)
-	var paint := StandardMaterial3D.new()
-	paint.albedo_color = FRUIT_PAINTS[look % FRUIT_PAINTS.size()]
-	_paint(model, paint)
+	paint_model(model, look)
 	if crate.is_empty():
 		crate = FruitTraits.CRATES[absi(hash(["fruit crate", plate])) % FruitTraits.CRATES.size()]
 	if hat.is_empty():
@@ -283,8 +281,14 @@ func _build_seller() -> void:
 			node.visible = kind == hat
 
 
-## Tints every "paint" part of its model.
-func _paint(node: Node, material: Material) -> void:
+## Tints every "paint" part of a fruit_truck model in the paint of `look` (the chase's runaway pickup too).
+static func paint_model(model: Node, paint_look: int) -> void:
+	var paint := StandardMaterial3D.new()
+	paint.albedo_color = FRUIT_PAINTS[paint_look % FRUIT_PAINTS.size()]
+	_paint(model, paint)
+
+
+static func _paint(node: Node, material: Material) -> void:
 	for child in node.get_children():
 		if child is MeshInstance3D and (child.name.begins_with("paint") or child.get_parent().name == "paint"):
 			child.material_override = material
