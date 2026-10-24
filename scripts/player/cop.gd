@@ -430,7 +430,8 @@ func use() -> bool:
 		act("use", _usable_target())
 		return true
 	# The circus's clowns take the sponge and the loaves from the hand too (escena-circo.md).
-	if ($Grabber.held is ClownSponge or $Grabber.held is Bread) and _usable_target() is CircusClown:
+	if ($Grabber.held is ClownSponge or $Grabber.held is ClownSign or $Grabber.held is Bread) \
+			and _usable_target() is CircusClown:
 		act("use", _usable_target())
 		return true
 	if $Grabber.held is DonutBox:

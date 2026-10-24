@@ -22,6 +22,9 @@ const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 ## Accused, half the culprits (by the seed) run off on the delivery bike instead of giving up (Cristian, 21/10:
 ## "que algunos corran y que otros pasen a interrogatorio"; half and half is a propuesta).
 const RUNS_EVERY := 2
+## At the circus, the trait each part of a clown's file tells.
+const PART_TRAITS := {"photo": "glasses", "prints": "name", "teeth": "teeth", "hair": "hair", "shoe": "shoe",
+	"honk": "honk"}
 ## What changes from one place to the other: the campaign's case id and the interrogation's story, the comisario's
 ## briefing, the hint to go there, who the culprit is for the chase and what he runs off in, which trait each clue
 ## tells (CrimePlan) and the parts of a suspect's file.
@@ -63,10 +66,14 @@ var ruined: Array[String] = []
 var flour_print: FlourPrint
 ## The clues the cops carry and bag (CrimeClueItem), by kind.
 var items := {}
-## Indexes of the cooks whose file is done: photo, prints, teeth and hair.
+## The files whose parts are all done (the pastry's: photo, prints, teeth and hair). A file's id is the cook's index,
+## or at the circus the number of the sign on a clown's back.
 var files: Array[int] = []
-## What each cook's file has so far: index -> {"photo", "prints", "teeth", "hair": bool}.
+## What each file has so far: id -> {part: bool}, with the variant's parts.
 var file_parts := {}
+## At the circus, what each file says about whoever gave each part: id -> {trait: value}. A file follows its sign,
+## so a sign that changed backs mixes two clowns in one file.
+var captured := {}
 var accused := false
 var wrong_guesses := 0
 var lost := false
@@ -153,20 +160,57 @@ func file_part(index: int, part: String) -> void:
 	if parts.get(part, true):
 		return
 	parts[part] = true
-	_hint_all(tr("HINT_FILE_" + part) % cooks[index].name)
+	_hint_all(tr("HINT_FILE_" + part) % file_name(index))
 	if parts.values().all(func(done: bool) -> bool: return done) and not files.has(index):
 		files.append(index)
-		_hint_all(tr("HINT_FILE_DONE") % cooks[index].name)
+		_hint_all(tr("HINT_FILE_DONE") % file_name(index))
 	if board:
 		board.refresh()
 	checklist.show_rows(rows())
 
 
-## The cops accused a cook at the board; the comisario looks.
-func accuse(index: int) -> void:
+## A clown gave a part of his file (escena-circo.md): it goes to the file of the sign on his back, with what it says
+## about him. Without a sign it goes nowhere. Returns whether it went to a file.
+func clown_part(clown_index: int, part: String) -> bool:
+	if follower or not place:
+		return false
+	var id: int = place.sign_of(clown_index)
+	if id < 0:
+		_hint_all("HINT_CLOWN_NO_SIGN")
+		return false
+	var trait_name: String = PART_TRAITS[part]
+	(captured.get_or_add(id, {}) as Dictionary)[trait_name] = cooks[clown_index][trait_name]
+	file_part(id, part)
+	return true
+
+
+## What a file says about each trait: the cook's own traits, or at the circus what the cops got from whoever wore its
+## sign.
+func file_traits(id: int) -> Dictionary:
+	if texts() == VARIANTS.circus:
+		return captured.get(id, {})
+	return cooks[id]
+
+
+## A file's title: the cook's name, or the number of the clown's sign.
+func file_name(id: int) -> String:
+	if texts() == VARIANTS.circus:
+		return tr("FILE_SIGN") % (id + 1)
+	return cooks[id].name
+
+
+## Who a file's accusation points at: the cook, or the clown wearing its sign now (or the last one who did).
+func accused_index(id: int) -> int:
+	if texts() == VARIANTS.circus and place:
+		return place.wearer(id)
+	return id
+
+
+## The cops accused a file at the board; the comisario looks.
+func accuse(id: int) -> void:
 	if accused or lost or follower:
 		return
-	if index == plan.culprit:
+	if accused_index(id) == plan.culprit:
 		accused = true
 		_comisario_says("BOARD_RIGHT")
 	else:
@@ -411,18 +455,25 @@ func clue_line(kind: String) -> String:
 
 ## What a file card on the board says: what the photo shows, and the rest as the cops got it.
 func file_text(index: int) -> String:
-	var who: Dictionary = cooks[index]
+	var who := file_traits(index)
 	var parts: Dictionary = file_parts[index]
-	var lines := PackedStringArray(["%d. %s" % [index + 1, who.name]])
 	if texts() == VARIANTS.circus:
-		lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
-		lines.append(tr("FILE_SHOE") % who.shoe if parts.shoe else tr("FILE_SHOE_UNKNOWN"))
-		lines.append(tr("FILE_HONK") % (tr("HONK_" + str(who.honk)) if parts.honk else "?"))
-	else:
-		lines.append(tr("FILE_APRON") % tr("APRON_" + str(who.apron)))
-		lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
-		lines.append(tr("FILE_LEFT") if who.left else tr("FILE_RIGHT"))
-		lines.append(tr("FILE_SHOE") % who.shoe)
+		var lines := PackedStringArray([file_name(index)])
+		if who.has("glasses"):
+			lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
+		else:
+			lines.append(tr("FILE_GLASSES_UNKNOWN"))
+		lines.append(tr("FILE_SHOE") % who.shoe if who.has("shoe") else tr("FILE_SHOE_UNKNOWN"))
+		lines.append(tr("FILE_HONK") % (tr("HONK_" + str(who.honk)) if who.has("honk") else "?"))
+		lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if who.has("hair") else "?"))
+		lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
+		lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
+		return "\n".join(lines)
+	var lines := PackedStringArray(["%d. %s" % [index + 1, who.name]])
+	lines.append(tr("FILE_APRON") % tr("APRON_" + str(who.apron)))
+	lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
+	lines.append(tr("FILE_LEFT") if who.left else tr("FILE_RIGHT"))
+	lines.append(tr("FILE_SHOE") % who.shoe)
 	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if parts.hair else "?"))
 	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if parts.teeth else "?"))
 	lines.append(tr("FILE_PRINTS") if parts.prints else tr("FILE_NO_PRINTS"))
@@ -498,7 +549,7 @@ func _missing(index: int) -> String:
 	for part: String in parts:
 		if not parts[part]:
 			missing.append(tr("FILE_PART_" + part))
-	return tr("OBJ_FILE_MISSING") % [cooks[index].name, ", ".join(missing)]
+	return tr("OBJ_FILE_MISSING") % [file_name(index), ", ".join(missing)]
 
 
 func _row(text: String, done: bool) -> Dictionary:

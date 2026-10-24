@@ -106,7 +106,14 @@ Antes de programar conviene que el pastel y el circo compartan una base (como el
    aguda), después se le pide la peluca (uno se niega hasta que le dan de comer) y después se le saca un zapato
    gigante (su talle de verdad). La ficha del circo tiene seis partes: foto, huellas, dientes, pelo, pie y bocina. Los
    dientes salen mordiendo, como en el pastel, y no riéndose **(propuesta)**.
-5. El truco: se mezclan cada 90 s, y los carteles con número.
+5. El truco: se mezclan cada 90 s, y los carteles con número. Hecho así (5a, carteles): en un banquito junto al balde
+   hay seis carteles numerados del 1 al 6. Con un cartel en la mano, E sobre un payaso se lo pega en la espalda; si
+   ya tenía otro, el viejo se cae a sus pies. **La ficha es del cartel, no del payaso:** lo que da un payaso (foto,
+   huellas, dientes, bocina) va a la ficha del número que lleva puesto, y sin cartel no va a ninguna. Lo que ya se le ve
+   (el pelo de verdad, el pie descalzo) se anota apenas se le pega el cartel. Si un cartel pasa a otro payaso, la
+   ficha mezcla lo de los dos, y acusar un cartel acusa al que lo lleva puesto (o al último que lo tuvo). En el
+   tablero, las fichas se llaman "Payaso del cartel N" y un hilo a algo que la ficha todavía no sabe no se puede
+   atar **(propuesta)**.
 6. El caso: la historia, Galleta escondida, las pistas y cómo se arruinan, y la planilla.
 7. El final: tablero, cansancio, sueldo y el autito de payasos con los muñecos.
 8. El sorteo de "Jugar" (mitad pastel, mitad circo) y el online.

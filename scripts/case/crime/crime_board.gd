@@ -93,7 +93,7 @@ func use_card(card: BoardCard, cop: Cop) -> void:
 	elif stamp_by == cop:
 		stamp_by = null
 		case.accuse(card.id)
-		card.set_crossed(card.id != case.plan.culprit)
+		card.set_crossed(case.accused_index(card.id) != case.plan.culprit)
 	elif string_from.has(cop):
 		tie(string_from[cop], card.id, cop)
 		string_from.erase(cop)
@@ -104,7 +104,13 @@ func use_card(card: BoardCard, cop: Cop) -> void:
 ## The string from a clue to a cook's file: it holds if he fits the clue, else it snaps and his file is crossed out.
 ## Returns whether it held.
 func tie(kind: String, index: int, cop: Cop = null) -> bool:
-	var fits := CrimePlan.fits(case.cooks[index], kind, case.culprit(), case.plan.traits)
+	var known := case.file_traits(index)
+	# At the circus a file may not know that trait yet (its sign's clown never gave it).
+	if not known.has(case.plan.traits[kind]):
+		if cop:
+			cop.show_hint("HINT_BOARD_UNKNOWN")
+		return false
+	var fits := CrimePlan.fits(known, kind, case.culprit(), case.plan.traits)
 	if fits:
 		strings.append([kind, index])
 		_string(clue_cards[kind], file_cards[index])

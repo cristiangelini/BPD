@@ -31,6 +31,7 @@ func test_the_circus_case_draws_clowns_and_their_clues() -> void:
 func test_the_sponge_cleans_the_face_and_then_the_photo_counts() -> void:
 	var case := _case()
 	var clown: CircusClown = (case.place as Circus).clowns[1]
+	(case.place as Circus).stick_sign(1, clown)
 	clown.photographed(null)
 	assert_eq(clown.said(), "CLOWN_PHOTO_MAKEUP", "with the makeup they're all the same")
 	assert_false(case.file_parts[1].photo if case.file_parts.has(1) else false)
@@ -47,6 +48,7 @@ func test_the_sponge_cleans_the_face_and_then_the_photo_counts() -> void:
 func test_every_part_of_a_clowns_file() -> void:
 	var case := _case(11)
 	var clown: CircusClown = (case.place as Circus).clowns[2]
+	(case.place as Circus).stick_sign(4, clown)
 	clown.stubborn = false
 	clown.spare_gloves = 1
 	clown.honk()
@@ -68,9 +70,9 @@ func test_every_part_of_a_clowns_file() -> void:
 	for i in CircusClown.SCRUBS:
 		clown.scrub()
 	clown.photographed(null)
-	assert_has(case.files, 2, "photo, prints, teeth, hair, foot and honk: his file is done")
-	var text := case.file_text(2)
-	assert_string_contains(text, clown.traits.name)
+	assert_has(case.files, 4, "photo, prints, teeth, hair, foot and honk: the file of his sign is done")
+	var text := case.file_text(4)
+	assert_string_contains(text, tr("FILE_SIGN") % 5)
 	assert_string_contains(text, tr("FILE_SHOE") % clown.traits.shoe)
 	assert_string_contains(text, tr("FILE_HONK") % tr("HONK_" + str(clown.traits.honk)))
 
