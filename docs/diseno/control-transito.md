@@ -52,7 +52,7 @@ pasan por el control y hay 2 o 3 que se parecen mucho **(propuesta)**.
 | 7 | Neblina | Los autos aparecen de golpe; la linterna sirve. |
 | 8 | Desfile | El control queda en medio de carrozas. |
 | 9 | El auto fantasma | No tiene conductor (es a control remoto). |
-| 10 | Camión de frutas | El contrabando está dentro de las sandías. |
+| 10 | Camión de frutas | El contrabando está dentro de las sandías ([control-frutas.md](control-frutas.md)). |
 
 ## Lo que se reusa
 La ciudad (CityLayout), los autos de tránsito (TrafficCar), el patrullero, la linterna, las esposas, la escolta al
