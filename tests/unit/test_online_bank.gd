@@ -98,3 +98,23 @@ func test_the_vault_opens_and_el_oso_gets_away_on_every_pc() -> void:
 	assert_true(guest.case.escaped)
 	assert_false(guest.case.solved())
 	assert_false(guest.case.shift_screen.get_node("%AgainButton").visible, "only the host starts the next one")
+
+
+func test_the_party_shows_the_same_on_every_pc() -> void:
+	# Seed 3 is the party (robo-banco-rehenes.md).
+	_pcs = OnlinePcs.new(self, Callable(), func() -> Node3D:
+		var bank: BankLevel = BANK_SCENE.instantiate()
+		bank.case_seed = 3
+		bank.get_node("Cop/Grabber").input_enabled = false
+		return bank)
+	var pcs: Array[Node] = await _pcs.two_pcs()
+	var host := _bank(pcs[0])
+	var guest := _bank(pcs[1])
+	assert_true(host.party and guest.party)
+	host.croissant_tray.set_left(3)
+	host.hostages[0].fed = true
+	host.case.fans_heard = true
+	await wait_until(func() -> bool: return guest.croissant_tray.left == 3 and guest.hostages[0].fed, 5.0)
+	assert_eq(guest.croissant_tray.left, 3, "the same croissants on the tray")
+	assert_true(guest.hostages[0].fed, "won over there too")
+	assert_true(guest.case.fans_heard)

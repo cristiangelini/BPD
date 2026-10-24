@@ -156,6 +156,8 @@ func use(cop: Cop) -> void:
 		return
 	_take(cop)
 	_protest()
+	if partying:
+		cop.show_hint("HINT_BANK_PARTY_LEAD")
 
 
 ## Up and following `cop` by the hand.
@@ -351,9 +353,10 @@ func said() -> String:
 	return _bubble.text if _bubble.visible else ""
 
 
-## What a guest's copy needs besides where they are and what they say (NpcSync): free, standing up and still here.
+## What a guest's copy needs besides where they are and what they say (NpcSync): free, standing up, still here, won
+## over with food and where a fan's head looks.
 func net_state() -> Array:
-	return [freed, is_equal_approx(_model.scale.y, _size), visible]
+	return [freed, is_equal_approx(_model.scale.y, _size), visible, fed, snappedf(head_look, 0.01)]
 
 
 func apply_net_state(state: Variant) -> void:
@@ -364,6 +367,9 @@ func apply_net_state(state: Variant) -> void:
 		freed_now.emit(self)
 	_model.scale.y = _size if state[1] else _size * CROUCH
 	visible = state[2]
+	if state.size() > 4:
+		fed = state[3]
+		_turn(state[4])
 
 
 func _process(delta: float) -> void:

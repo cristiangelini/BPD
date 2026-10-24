@@ -66,6 +66,12 @@ dos botones con su cono y su máscara de cartón, y las frases.
   lado se lo come el policía, como una dona. El rehén que suelta El Oso por un pedido cumplido sale hasta la puerta,
   dice "¿Seguro que tengo que irme?" y espera 8 s; si nadie lo toma de la mano, vuelve a entrar entre los postes de
   la fila hasta su lugar. Las pruebas del robo base usan una semilla sin fiesta.
+- **Paso 5 (24/10):** el comisario avisa por radio de la fiesta (3 frases propias), la primera vez que un botón le
+  avisa a la banda sale una pista para todos, y al tomar de la mano a un rehén de la fiesta la pista explica que no
+  quiere irse y que la comida ayuda. La planilla suma dos filas de estado: los rehenes con máscara y los cruasanes
+  que quedan. Online: el rehén alimentado, hacia dónde mira el botón, la bandeja y el aviso de los botones se ven
+  igual en todas las PC. `--bank=party` hay que pasarlo en todas las PC (cada una sortea la fiesta con la semilla).
+  Con esto el caso está completo.
 
 ## Preguntas para Cristian
 1. **¿Qué hace un rehén que sueltan antes de la puerta?** **Respondida (Cristian, 24/10):** vuelve caminando a su
