@@ -6,7 +6,7 @@ extends RefCounted
 ## interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
 ## (persecucion.md, "Sale como un caso más"). Of the shifts left, one in CRIME_EVERY is the crime scene
 ## (escena-del-crimen.md, propuesta; half at the pastry contest and half at the circus, escena-circo.md), then one in
-## TRAFFIC_EVERY the traffic control (control-transito.md), then one in
+## TRAFFIC_EVERY the traffic control (control-transito.md; the level draws rush hour or clown convoy), then one in
 ## INFILTRATION_EVERY an infiltration (infiltracion.md), half at the grandparents' club and half at the church choir
 ## (infiltracion-coro.md), then one in BANK_EVERY the bank robbery (robo-banco.md), then one in RALLY_EVERY the
 ## politician's rally (proteccion-politico.md), then one in PRISON_EVERY the prison riot (carcel-motin.md), and the

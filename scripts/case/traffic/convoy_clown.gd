@@ -108,6 +108,20 @@ func use(cop: Cop) -> void:
 		say(tr("CONVOY_NOT_DRIVER"))
 
 
+## The cuffs on the driver detain him (TrafficCase.detain), as on his car; the others aren't driving.
+func cuffed(_seconds: float) -> void:
+	var case := TrafficCase.of(car) if is_instance_valid(car) else null
+	if is_driver and case:
+		case.detain(car)
+	else:
+		say(tr("CONVOY_NOT_DRIVER"))
+
+
+## The cuffs come off right away: he's either taken out (a ChaseSuspect) or not the driver.
+func is_cuffed() -> bool:
+	return false
+
+
 ## One scrub with the sponge; after SCRUBS his face is clean and his glasses show, if he wears them.
 func scrub() -> void:
 	_scrubbed += 1
