@@ -16,6 +16,8 @@ func before_each() -> void:
 	_pcs = OnlinePcs.new(self, Callable(), func() -> Node3D:
 		var level: TrafficControlLevel = LEVEL_SCENE.instantiate()
 		level.case_seed = SEED
+		# Play draws the clown convoy for some seeds (control-payasos.md); this is the rush hour's.
+		level.variant = "rush_hour"
 		level.get_node("Cop/Grabber").input_enabled = false
 		return level)
 
