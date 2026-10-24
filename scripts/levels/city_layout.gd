@@ -34,6 +34,7 @@ const PLACES := [
 	{"id": "chapel", "block": Vector2i(1, 1), "side": "s", "along": 0.0, "size": Vector3(24, 5, 22), "color": Color(0.92, 0.88, 0.78), "sign": "PLACE_CHAPEL"},
 	{"id": "bank", "block": Vector2i(3, 0), "side": "s", "along": 0.0, "size": Vector3(24, 7, 20), "color": Color(0.86, 0.84, 0.78), "sign": "PLACE_BANK"},
 	{"id": "prison", "block": Vector2i(5, 2), "side": "w", "along": 0.0, "size": Vector3(28, 5, 40), "color": Color(0.62, 0.6, 0.55), "sign": "PLACE_PRISON"},
+	{"id": "gas_station", "block": Vector2i(4, 2), "side": "s", "along": 0.0, "size": Vector3(14, 5, 10), "color": Color(0.95, 0.9, 0.82), "sign": "PLACE_GAS_STATION"},
 	{"id": "cake_lab", "block": Vector2i(4, 3), "side": "w", "along": 0.0, "size": Vector3(24, 8, 22), "color": Color(0.95, 0.95, 0.85), "sign": "PLACE_CAKE_LAB"},
 ]
 

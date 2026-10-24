@@ -25,11 +25,15 @@ const LURCH_PLAN := 8.0
 ## The bus has left once it goes faster than this (m/s).
 const LEAVE_SPEED := 2.0
 const COP_EYE := 1.35
+## Each inmate who got angry (the bathroom trick, too late) makes the others' plans fill this share faster.
+const CONTAGION_SHARE := 0.5
 
 var bus: PrisonBus
 var inmates: Array[BusInmate] = []
 var started := false
 var follower := false
+## Inmates who got angry on the way and spread it (TransferTricks).
+var contagion := 0
 
 
 ## Seats the inmates in `bus` with their plans drawn from `case_seed`.
@@ -91,7 +95,7 @@ func _physics_process(delta: float) -> void:
 	for inmate in inmates:
 		if not is_instance_valid(inmate) or not inmate.seated or inmate.plan >= BusInmate.FULL:
 			continue
-		var rate := -WATCH_RATE if watched(inmate) else PLAN_RATE * cops_share()
+		var rate := -WATCH_RATE if watched(inmate) else PLAN_RATE * cops_share() * (1.0 + CONTAGION_SHARE * contagion)
 		inmate.set_plan(inmate.plan + rate * delta)
 		if inmate.plan >= BusInmate.FULL:
 			plan_ready.emit(inmate)
