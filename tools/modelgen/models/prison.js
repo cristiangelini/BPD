@@ -98,7 +98,23 @@ function buildSplat(name, color) {
 	return b.build();
 }
 
+// A canteen tray (step 3): steel, with a raised rim and three hollows for the food. 45 cm by 35 cm; its origin in its
+// middle, its face up (+Y).
+export function buildTray() {
+	const steel = mat('tray_steel', 0xb9c1c8), dark = mat('tray_hollow', 0x8d969e);
+	const b = new Builder('prison_tray');
+	b.add('tray', steel, new THREE.BoxGeometry(0.45, 0.012, 0.35), { pos: V(0, -0.009, 0) });
+	for (const [x, z, w, d] of [[0, -0.17, 0.45, 0.012], [0, 0.17, 0.45, 0.012], [-0.22, 0, 0.012, 0.35], [0.22, 0, 0.012, 0.35]]) {
+		b.add('tray', steel, new THREE.BoxGeometry(w, 0.03, d), { pos: V(x, 0, z) });
+	}
+	for (const [x, z, w, d] of [[-0.1, -0.06, 0.2, 0.16], [0.11, -0.06, 0.16, 0.16], [0, 0.09, 0.4, 0.1]]) {
+		b.add('tray', dark, new THREE.BoxGeometry(w, 0.004, d), { pos: V(x, -0.001, z) });
+	}
+	return b.build();
+}
+
 export const models = {
+	prison_tray: buildTray,
 	prison_mash: buildMash,
 	prison_jelly: buildJelly,
 	prison_chicken: buildChicken,

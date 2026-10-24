@@ -1356,3 +1356,6 @@ HINT_FOOD_HIT,"¡Te dieron con la comida! Con muchas manchas vas a resbalar.","Y
 INMATE_HIT_1,"¡Ey! ¿Quién fue?","Hey! Who did that?","Ei! Quem foi?"
 INMATE_HIT_2,"¡Me arruinaste el mameluco!","You ruined my jumpsuit!","Você estragou meu macacão!"
 INMATE_HIT_3,"¡Ahora sí me enojé!","Now I'm really mad!","Agora fiquei bravo!"
+PROMPT_TIP_TABLE,"E: volcar la mesa","E: knock the table over","E: virar a mesa"
+PROMPT_RAISE_TABLE,"E: levantar la mesa","E: set the table back up","E: levantar a mesa"
+HINT_FOOD_SLIPPED,"¡Resbalaste en el puré! Se te cayó todo.","You slipped on the mash! You dropped everything.","Você escorregou no purê! Deixou tudo cair."

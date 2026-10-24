@@ -110,8 +110,10 @@ func calm(points: float) -> void:
 	_update()
 
 
-## Food burst on them (RallyThrowable): it upsets them.
-func hit_by_food(_food: RallyThrowable) -> void:
+## Food burst on them (RallyThrowable): a stain, and it upsets them.
+func hit_by_food(food: RallyThrowable) -> void:
+	if food:
+		RallyThrowable.stain_on(self, food.kind, food.global_position)
 	raise(HIT_ANGER)
 	if active and not follower:
 		say("INMATE_HIT_%d" % randi_range(1, HITS))

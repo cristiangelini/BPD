@@ -8,7 +8,7 @@ extends Grabbable
 ## with what flies near the hands) and throw it again. Online only the host's burst (PropSync copies it from its
 ## script, net_setup); PoliticianCase tells the guests where, for the splats and the cops' stains. Every number here
 ## is (propuesta). The prison riot's inmates throw food the same way (carcel-motin.md, step 2b): on a cop it counts
-## toward slipping, and on an inmate it stains them and upsets them (hit_by_food).
+## toward slipping, and what has hit_by_food (an inmate, a tray) takes it its own way.
 
 signal caught(throwable: RallyThrowable, cop: Cop)
 
@@ -82,7 +82,6 @@ func burst_on(body: Node) -> void:
 		_stain_cop(body as Cop)
 	elif body.has_method("hit_by_food"):
 		body.hit_by_food(self)
-		stain_on(body as Node3D, kind, global_position)
 	else:
 		_splat()
 	burst.emit(self, body)
@@ -112,6 +111,7 @@ static func stain_cop(cop: Cop, kind: String, at: Vector3) -> void:
 static func stain_on(body: Node3D, kind: String, at: Vector3) -> void:
 	var mark: Node3D = SPLATS[kind].instantiate()
 	mark.name = "RallyStain"
+	mark.add_to_group("food_stains")
 	body.add_child(mark)
 	var out := body.to_local(at)
 	out.y = 0.0
