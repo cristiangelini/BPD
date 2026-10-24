@@ -73,3 +73,8 @@ payasos, puertas, licencias limpias y el final ([online.md](online.md)).
   nariz (3), guantes (3) y bocina (4 sonidos). Se ven en el payaso al volante y en el conductor cuando baja; los otros
   payasos se visten al azar por la patente. Cada autito toca su bocina al llegar y cada 9 s en la fila. El comisario
   cuenta la historia de la caja fuerte del director.
+- **Paso 4 (24/10):** E al conductor (afuera o por la ventanilla) da la licencia, que dice cómo es la foto sin
+  maquillaje: con o sin anteojos. Con la esponja (en la vereda, junto a los conos) y E tres veces se le saca el
+  maquillaje y se ven sus anteojos, si tiene. El buscado lleva una licencia ajena (la foto no coincide) y la caja
+  fuerte del director en el baúl; los otros baúles traen globos (5 de 10), tortas de crema (3) o una caja fuerte de
+  cartón (2). Los otros payasos dicen que no manejan.

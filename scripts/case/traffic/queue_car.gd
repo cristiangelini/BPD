@@ -35,6 +35,11 @@ const TRUNK_LENGTH := LENGTH / 2 + TRUNK_HINGE.z
 const TRUNK_INSIDE := Vector3(0, 0.55, -1.8)
 const BAG := Color(0.45, 0.3, 0.2)
 const CONTRABAND := Color(0.85, 0.75, 0.3)
+## The clown cars' trunks (control-payasos.md): cream pies, and the ringmaster's safe or a cardboard one.
+const PIE := Color(0.85, 0.65, 0.35)
+const CREAM := Color(0.98, 0.95, 0.9)
+const SAFE := Color(0.25, 0.27, 0.3)
+const SAFE_DIAL := Color(0.8, 0.7, 0.3)
 const GRANDPA := preload("res://assets/models/npc_abuelo.glb")
 const SAY_SECONDS := 4.0
 ## The clown car (escena-circo.md's getaway, control-payasos.md): 2 m long, with its own small trunk at the back.
@@ -45,7 +50,8 @@ const CLOWN_DRIVER_SCALE := 0.8
 const CLOWN_LENGTH := 2.0
 const CLOWN_WIDTH := 1.25
 const CLOWN_TRUNK_HINGE := Vector3(0, 0.95, -0.55)
-const CLOWN_TRUNK_INSIDE := Vector3(0, 0.45, -0.78)
+## High enough to show above its round body once the trunk is open.
+const CLOWN_TRUNK_INSIDE := Vector3(0, 0.82, -0.75)
 const CLOWN_LID := Vector3(0.8, 0.05, 0.42)
 ## Its trunk's things, shrunk to fit.
 const CLOWN_TRUNK_SCALE := 0.5
@@ -266,6 +272,25 @@ func _build_trunk() -> void:
 		"contraband":
 			for i in 3:
 				builder.mesh_box(Vector3(-0.5 + i * 0.5, 0.15, 0), Vector3(0.4, 0.3, 0.4), CONTRABAND)
+		"balloons":
+			for i in 3:
+				var balloon := MeshInstance3D.new()
+				var sphere := SphereMesh.new()
+				sphere.radius = 0.25
+				sphere.height = 0.6
+				balloon.mesh = sphere
+				var material := StandardMaterial3D.new()
+				material.albedo_color = ConvoyClown.BALL_COLORS[i]
+				balloon.material_override = material
+				balloon.position = Vector3(-0.5 + i * 0.5, 0.3, 0)
+				_trunk.add_child(balloon)
+		"pies":
+			for i in 2:
+				builder.mesh_box(Vector3(-0.35 + i * 0.7, 0.1, 0), Vector3(0.5, 0.2, 0.5), PIE)
+				builder.mesh_box(Vector3(-0.35 + i * 0.7, 0.23, 0), Vector3(0.45, 0.06, 0.45), CREAM)
+		"safe", "prop_safe":
+			builder.mesh_box(Vector3(0, 0.35, 0), Vector3(0.8, 0.7, 0.6), SAFE)
+			builder.mesh_box(Vector3(0, 0.4, -0.31), Vector3(0.18, 0.18, 0.03), SAFE_DIAL)
 		"grandpa":
 			var grandpa: Node3D = GRANDPA.instantiate()
 			grandpa.scale = Vector3.ONE * 0.6
@@ -326,6 +351,12 @@ func _on_trunk_opened() -> void:
 			say(tr("TRUNK_CONTRABAND"))
 		"grandpa":
 			say(tr("TRUNK_GRANDPA"))
+		"pies":
+			say(tr("TRUNK_PIES"))
+		"prop_safe":
+			say(tr("TRUNK_PROP_SAFE"))
+		"safe":
+			say(tr("TRUNK_SAFE"))
 
 
 func waiting() -> bool:

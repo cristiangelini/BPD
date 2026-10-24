@@ -14,6 +14,8 @@ const CONES := 4
 ## On the sidewalk by the station's door: the barrier and a row of cones to its west.
 const BARRIER_FROM_DOOR := Vector3(6, 0, 1.5)
 const CONES_FROM_DOOR := Vector3(-5, 0, 1.5)
+## The clown convoy's sponge (control-payasos.md, step 5), on the sidewalk between the barrier and the cones.
+const SPONGE_FROM_DOOR := Vector3(1, 0, 1.5)
 
 ## Same seed, same cars. 0 draws one.
 @export var case_seed := 0
@@ -25,6 +27,7 @@ var plan: WantedPlan
 var clues: TrafficClues
 var meters: TrafficMeters
 var case: TrafficCase
+var sponge: ClownSponge
 
 
 ## Where the checkpoint goes in the city's space: cars run west (-X) on the north half of the street.
@@ -68,6 +71,11 @@ func _ready() -> void:
 		cone.global_position = door + CONES_FROM_DOOR + Vector3(-0.8 * i, 0.05, 0)
 	var chosen := variant_from(variant, OS.get_cmdline_user_args())
 	plan = WantedPlan.draw(case_seed, chosen == "clown_convoy")
+	if plan.convoy:
+		sponge = ClownSponge.new()
+		sponge.name = "Sponge"
+		add_child(sponge)
+		sponge.global_position = door + SPONGE_FROM_DOOR + Vector3.UP * 0.1
 	queue = TrafficQueue.new()
 	queue.name = "Queue"
 	queue.checkpoint = checkpoint
