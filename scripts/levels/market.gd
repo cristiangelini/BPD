@@ -10,7 +10,8 @@ extends Node3D
 ## drive here; --place=market opens it from Play. Step 2: Deputy Lustre waits outside the way in and walks the aisle
 ## stall by stall (MarketTour). Step 3: the samples he's handed, some with laxative (MarketSamples). Step 4: cramps
 ## for the cops who bite one (Cramps), the toilet that locks in and cures (ChemicalToilet) and the deputy's run to it
-## or home (MarketToiletRun). Every number here is (propuesta).
+## or home (MarketToiletRun). Step 5: the spiteful vendor with the clues (MarketSpite) and the deputy's image
+## (MarketImage). Every number here is (propuesta).
 
 const STALL_MODEL := preload("res://assets/models/market_stall.glb")
 ## What the 12 stalls sell; the seed spreads them along the aisle.
@@ -81,6 +82,9 @@ var tour: MarketTour
 var samples: MarketSamples
 ## His run to the toilet, or home (step 4).
 var toilet_run: MarketToiletRun
+## The spiteful vendor and the clues, and the deputy's image (step 5).
+var spite: MarketSpite
+var image: MarketImage
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -115,6 +119,14 @@ func _ready() -> void:
 	toilet_run.name = "ToiletRun"
 	add_child(toilet_run)
 	toilet_run.setup(self, tour, samples)
+	spite = MarketSpite.new()
+	spite.name = "Spite"
+	add_child(spite)
+	spite.setup(self, tour, samples, case_seed)
+	image = MarketImage.new()
+	image.name = "Image"
+	add_child(image)
+	image.setup(tour, samples, spite)
 	city.transform = CityLayout.anchor("market")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)

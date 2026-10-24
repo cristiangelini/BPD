@@ -4,6 +4,9 @@ extends StaticBody3D
 ## A shopper at a market stall's counter (politico-mercado.md, step 1), one of the usual neighbors. E on them: a line
 ## about the market, a different one each time. Cuffed, they complain like any neighbor.
 
+## A cop cuffed them (the handcuffs, on every PC): a shopper never did anything (MarketImage).
+signal cuffed_now(shopper: MarketShopper)
+
 const MODELS := {
 	"cliente": preload("res://assets/models/npc_cliente.glb"),
 	"clienta": preload("res://assets/models/npc_clienta.glb"),
@@ -68,6 +71,7 @@ func use(_cop: Cop) -> void:
 func cuffed(seconds: float) -> void:
 	_cuffed_left = maxf(_cuffed_left, seconds)
 	say("NPC_POLICE_ABUSE")
+	cuffed_now.emit(self)
 
 
 func is_cuffed() -> bool:

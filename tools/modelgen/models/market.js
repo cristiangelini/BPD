@@ -158,6 +158,9 @@ const FOODS = [fruit, cheese, empanadas, fish, pickles, olives, bread, sweets, j
 export const models = {
 	market_stall: buildStall,
 	sample_plate: buildSamplePlate,
+	laxative_jar: buildLaxativeJar,
+	market_bin: buildBin,
+	market_bin_lid: buildBinLid,
 	chemical_toilet: buildToilet,
 	chemical_toilet_door: buildToiletDoor,
 	...Object.fromEntries(KINDS.map((k, i) => [`market_food_${k}`, FOODS[i]])),
@@ -188,5 +191,33 @@ export function buildSamplePlate() {
 	b.add('bite', mat('bite', 0xd9a050), ellipsoid(0.045, 0.03, 0.04, 8, 5), { pos: V(0, 0.04, 0) });
 	b.add('pick', mat('toothpick', 0xe0c08a), new THREE.CylinderGeometry(0.003, 0.003, 0.1, 4), { pos: V(0.01, 0.07, 0), rot: [0, 0, 0.15] });
 	b.add('pick', mat('pick_flag', 0xd8402e), new THREE.BoxGeometry(0.035, 0.022, 0.003), { pos: V(0.0, 0.115, 0) });
+	return b.build();
+}
+
+// The jar of laxative hidden in the spiteful vendor's bin (step 5): a fat white jar with a green lid and a label
+// with a lightning bolt, 12 cm tall. Its origin on its bottom.
+export function buildLaxativeJar() {
+	const b = new Builder('laxative_jar');
+	b.add('jar', mat('jar_white', 0xf4f4f0), new THREE.CylinderGeometry(0.05, 0.05, 0.1, 10), { pos: V(0, 0.05, 0) });
+	b.add('jar', mat('jar_lid_green', 0x3ac84a), new THREE.CylinderGeometry(0.053, 0.053, 0.025, 10), { pos: V(0, 0.112, 0) });
+	b.add('label', mat('jar_label', 0x3a8a2a), new THREE.CylinderGeometry(0.0505, 0.0505, 0.05, 10, 1, true, -0.9, 1.8), { pos: V(0, 0.05, 0) });
+	b.add('label', mat('jar_bolt', 0xf2d23a), new THREE.BoxGeometry(0.012, 0.04, 0.004), { pos: V(0, 0.05, 0.052), rot: [0, 0, 0.4] });
+	return b.build();
+}
+
+// A trash bin with its lid (step 5): grey plastic, 45 cm across and 60 tall, open on top; the lid is its own model.
+export function buildBin() {
+	const grey = mat('bin_grey', 0x6a7078, { side: THREE.DoubleSide });
+	const b = new Builder('market_bin');
+	b.add('bin', grey, new THREE.CylinderGeometry(0.23, 0.2, 0.6, 10, 1, true), { pos: V(0, 0.3, 0) });
+	b.add('bin', mat('bin_inside', 0x3a3e44), new THREE.CylinderGeometry(0.2, 0.2, 0.02, 10), { pos: V(0, 0.01, 0) });
+	b.add('bin', mat('bin_rim', 0x50565e), new THREE.TorusGeometry(0.23, 0.015, 4, 12), { pos: V(0, 0.6, 0), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
+export function buildBinLid() {
+	const b = new Builder('market_bin_lid');
+	b.add('lid', mat('bin_lid', 0x50565e), new THREE.CylinderGeometry(0.25, 0.25, 0.04, 10), { pos: V(0, 0, 0) });
+	b.add('lid', mat('bin_handle', 0x3a3e44), new THREE.BoxGeometry(0.12, 0.03, 0.03), { pos: V(0, 0.035, 0) });
 	return b.build();
 }

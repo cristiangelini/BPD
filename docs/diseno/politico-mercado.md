@@ -108,3 +108,15 @@ probadita que no va a olvidar'. Que no coma nada raro. Y si come algo raro, que 
   30 s y después el recorrido sigue desde donde quedó (`ran`, para los 200 menos del paso 6). La segunda se va a su
   casa por la salida y desaparece (`went_home`, el caso se pierde en el paso 6). Capturas en
   `/mnt/project-files/mercado/paso4-*.png`.
+- **Paso 5 (el puestero rencoroso y la imagen):** uno de los 12 puesteros, por semilla, es el que puso el laxante
+  (`MarketSpite`). Tres pistas lo delatan: polvo blanco en las manos, un cachete y la gorra (otros 2 puesteros, también
+  por semilla, tienen harina o azúcar y se ven igual); el frasco de "Laxante Exprés" en el tacho detrás de su mostrador
+  (`LaxativeJar`; cada puesto tiene su tacho `market_bin` con una tapa `market_bin_lid` que se saca con las manos, como
+  todo en el juego), y una risita cuando el diputado se para en un puesto con una probadita mala ("Jijiji... qué rico
+  se ve eso, diputado."). El que agarra el frasco ve un "!" rojo sobre el rencoroso. Esposado, las probaditas que todavía no se
+  dieron quedan todas limpias (`caught`) y con E se lo lleva al patrullero (`OwnerEscort`, `jailed` para el paso 6).
+  Esposar a un puestero inocente o a un cliente le cuesta imagen al diputado. La imagen (`MarketImage`) reemplaza a las
+  manchas de la plaza: arranca en 100 y baja 10 si un policía le saca el platito sin haberlo probado, 5 si un policía
+  con retorcijones pasa corriendo a menos de 3 m de él (una vez cada 10 s por policía) y 20 por esposar a un inocente
+  ("¡Están esposando a mis votantes! ¡Así no!"). Se ve abajo de la barra del recorrido: "Imagen del diputado: 80". Capturas
+  en `/mnt/project-files/mercado/paso5-*.png`.
