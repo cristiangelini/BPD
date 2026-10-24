@@ -24,7 +24,6 @@ func test_a_bad_bite_gives_cramps_that_slow_the_cop() -> void:
 	var plate := SamplePlate.new()
 	plate.laxative = true
 	market.add_child(plate)
-	plate.bitten.connect(market.samples._on_bitten)
 	plate.use(cop)
 	await wait_frames(2)
 	assert_not_null(Cramps.of(cop))

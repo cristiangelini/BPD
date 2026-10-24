@@ -7,8 +7,10 @@ extends Node
 ## run to the toilet and VENDOR more if the spiteful vendor is detained; quota of its own, like the plaza (decision
 ## 103). The second bad sample sends him home and the case is lost there (Cristian, 24/10). If the spiteful vendor is
 ## still loose at the photo, he pedals off on his vegetable trike from the way out, losing veggies in the curves, and
-## the chase starts there (decision 96): caught, he counts as detained; got away, the case is solved all the same. The
-## online part comes in the next step. Every number here is (propuesta).
+## the chase starts there (decision 96): caught, he counts as detained; got away, the case is solved all the same.
+## Online (step 7) the host's case decides and a guest's follows it (CaseSync, snapshot): the walk, the image, who's in
+## the toilet, the jar found, how it ended and the getaway; the walk, the samples, the toilet run and the vendor's
+## tricks only run on the host, and the people come from it (NpcSync). Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 4.0
@@ -37,6 +39,16 @@ var jailed := false
 var chase: ChaseCase
 var caught := false
 var escaped := false
+var follower := false:
+	set(value):
+		follower = value
+		if market:
+			market.tour.follower = value
+			market.image.follower = value
+			market.toilet.follower = value
+			for node: Node in [market.samples, market.toilet_run, market.spite]:
+				node.set_physics_process(not value)
+var online: CaseSync
 var _result := {}
 var _refresh_left := 0.0
 
@@ -59,8 +71,15 @@ func start(comisario: Comisario = null) -> void:
 	else:
 		give_tip()
 	if shift_screen:
-		shift_screen.play_again.connect(func() -> void: PlaceDraw.start(get_tree()))
+		shift_screen.play_again.connect(_play_again)
 		shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
+
+
+func _play_again() -> void:
+	if online:
+		online.play_again()
+	else:
+		PlaceDraw.start(get_tree())
 
 
 func give_tip() -> void:
@@ -81,7 +100,7 @@ func _on_ran(count: int) -> void:
 
 
 func _on_went_home() -> void:
-	if photo_done or went_home:
+	if follower or photo_done or went_home:
 		return
 	went_home = true
 	_hint_all("HINT_MARKET_WENT_HOME")
@@ -96,7 +115,7 @@ func _on_jailed() -> void:
 
 ## He cut the ribbon: the case is solved, and a loose spiteful vendor runs for his trike.
 func _on_photo() -> void:
-	if went_home or photo_done:
+	if follower or went_home or photo_done:
 		return
 	photo_done = true
 	_hint_all("HINT_MARKET_PHOTO")
@@ -125,6 +144,8 @@ func _run_off() -> void:
 	var at := market.global_transform * Transform3D(Basis.IDENTITY, TRIKE_AT)
 	chase = ChaseCase.begin(market, SuspectCar.VEGGIE_TRIKE, at, market.car, market.city, market.case_seed)
 	chase.who = "vendor"
+	chase.online = online
+	chase.follower = follower
 	chase.ended.connect(_on_chase_ended)
 	_hint_all("HINT_ESCAPE_VENDOR")
 
@@ -156,7 +177,7 @@ func report() -> Dictionary:
 
 
 func finish_shift() -> void:
-	if shift_over:
+	if shift_over or follower:
 		return
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
@@ -190,7 +211,68 @@ func _show_result(result: Dictionary) -> void:
 		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over,
 			result.campaign.promoted)
 		over = result.campaign.over
-	shift_screen.get_node("%AgainButton").visible = not over
+	shift_screen.get_node("%AgainButton").visible = not over and not follower
+
+
+## What every guest's case shows (CaseSync).
+func snapshot() -> Dictionary:
+	var tour := market.tour
+	var state := {"tip": tip_given, "tour": [tour.state, tour.stall, snappedf(tour.stop_left, 0.1),
+		snappedf(tour.hold_left, 0.1)], "image": market.image.value, "toilet": _toilet_state(),
+		"jar": market.spite.jar_found, "went_home": went_home, "photo": photo_done, "toilet_run": toilet_run,
+		"jailed": jailed, "caught": caught, "escaped": escaped, "result": _result}
+	if chase:
+		state.chase = chase.snapshot()
+	return state
+
+
+func apply_snapshot(state: Dictionary) -> void:
+	if state.tip:
+		give_tip()
+	var tour := market.tour
+	tour.state = state.tour[0]
+	tour.stall = state.tour[1]
+	tour.stop_left = state.tour[2]
+	tour.hold_left = state.tour[3]
+	market.image.follow(state.image)
+	_follow_toilet(state.toilet)
+	if state.jar:
+		market.spite.show_found()
+	went_home = state.went_home
+	photo_done = state.photo
+	toilet_run = state.toilet_run
+	jailed = state.jailed
+	caught = state.caught
+	escaped = state.escaped
+	if state.has("chase"):
+		_run_off()
+		chase.apply_snapshot(state.chase)
+	checklist.show_rows(rows())
+	if not state.result.is_empty() and not shift_over:
+		_show_result(state.result)
+
+
+## Who's in the toilet, for the guests: -1 nobody, 0 the deputy, else that player's id; and the seconds left.
+func _toilet_state() -> Array:
+	var toilet := market.toilet
+	var who := -1
+	if toilet.occupant == market.politician:
+		who = 0
+	elif toilet.occupant is Cop and online:
+		for id: int in online.net.cop_syncs:
+			if online.net.cop_syncs[id].cop == toilet.occupant:
+				who = id
+	return [who, snappedf(toilet.left, 0.1)]
+
+
+func _follow_toilet(state: Array) -> void:
+	var who: Node3D = null
+	if state[0] == 0:
+		who = market.politician
+	elif state[0] > 0 and online:
+		var sync: CopSync = online.net.cop_syncs.get(state[0])
+		who = sync.cop if sync and is_instance_valid(sync.cop) else null
+	market.toilet.follow(who, state[1])
 
 
 ## The planilla's rows, in the shape CaseChecklist takes.
