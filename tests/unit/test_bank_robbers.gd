@@ -45,7 +45,10 @@ func test_the_rabbit_watches_the_door_and_the_duck_the_vault() -> void:
 	var rabbit := _robber("conejo")
 	assert_gt(rabbit.facing().dot((door - rabbit.global_position).normalized()), 0.5)
 	var duck := _robber("pato")
-	assert_gt(duck.facing().dot((bank.vault_door.global_position - duck.global_position).normalized()), 0.9)
+	# On the floor's plane: the door's middle is a meter up, the duck's feet on the floor.
+	var to_vault := bank.vault_door.global_position - duck.global_position
+	to_vault.y = 0.0
+	assert_gt(duck.facing().dot(to_vault.normalized()), 0.9)
 
 
 func test_a_robber_sees_a_cop_in_front_and_says_so() -> void:
