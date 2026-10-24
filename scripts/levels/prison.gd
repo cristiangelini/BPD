@@ -6,7 +6,8 @@ extends Node3D
 ## in the corner); across the yard, the building: the canteen first, with its six long tables, the serving counter with
 ## the pots of mash and the trays of jelly, the kitchen behind its door (where the guards hid from the riot) and the
 ## punishment cell in the west corner. Behind the canteen, through a locked barred gate, the cell block, shut until a
-## case needs it. The cops start in the station and drive here; --place=prison opens it from Play.
+## case needs it. The cops start in the station and drive here; --place=prison opens it from Play. Step 2: the riot
+## (PrisonRiot), with the inmates at the tables, starts when the first cop walks through the gate.
 ## Every number here is (propuesta).
 
 const TABLE_MODEL := preload("res://assets/models/canteen_table.glb")
@@ -66,6 +67,7 @@ var kitchen_door: FrontDoor
 var punishment_door: CellDoor
 var block_gate: CellDoor
 var tables: Array[Node3D] = []
+var riot: PrisonRiot
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -83,9 +85,19 @@ func _ready() -> void:
 	_build_shell()
 	_build_canteen()
 	_build_cells()
+	riot = PrisonRiot.new()
+	riot.name = "Riot"
+	add_child(riot)
+	riot.setup(self, case_seed)
 	city.transform = CityLayout.anchor("prison")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+
+
+## Whether a world position is inside the perimeter wall.
+func inside_walls(at: Vector3) -> bool:
+	var local := global_transform.affine_inverse() * at
+	return absf(local.x) < HALF_X and absf(local.z) < HALF_Z
 
 
 ## Whether a world position is inside the canteen (step 2 on: where the riot is).
