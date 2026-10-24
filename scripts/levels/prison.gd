@@ -85,6 +85,8 @@ var transfer: TransferPlan
 var tricks: TransferTricks
 ## The chase on foot after whoever gets out of the bus (step 4).
 var escape: TransferEscape
+## The transfer case on top (step 5): the comisario's briefing, the count at the gate and the end of the shift.
+var transfer_case: TransferCase
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -138,6 +140,12 @@ func _start_transfer() -> void:
 	escape.name = "Escape"
 	add_child(escape)
 	escape.setup(tricks, self, city, case_seed)
+	transfer_case = TransferCase.new()
+	transfer_case.name = "TransferCase"
+	transfer_case.prison = self
+	transfer_case.shift_screen = $ShiftScreen
+	add_child(transfer_case)
+	transfer_case.start(city.get("comisario"))
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
 
 
