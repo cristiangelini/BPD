@@ -25,6 +25,15 @@ const MODELS := {
 	"pato": preload("res://assets/models/npc_ladron_pato.glb"),
 	"oso": preload("res://assets/models/npc_ladron_oso.glb"),
 }
+## The grandpa robbers (robo-banco-abuelos.md, decision 122): the same masks on retirees with cane and cardigan.
+const GRANDPA_MODELS := {
+	"conejo": preload("res://assets/models/npc_abuelo_conejo.glb"),
+	"chancho": preload("res://assets/models/npc_abuelo_chancho.glb"),
+	"pato": preload("res://assets/models/npc_abuelo_pato.glb"),
+	"oso": preload("res://assets/models/npc_abuelo_oso.glb"),
+}
+## How fast a grandpa robber goes next to a young one.
+const GRANDPA_PACE := 0.5
 const SCALES := {"conejo": 1.0, "chancho": 1.0, "pato": 1.0, "oso": 1.15}
 ## Each one's cone (full angle in degrees and depth in meters) and where their head looks, turned from their body.
 const SIGHT := {"conejo": Vector2(100, 10), "chancho": Vector2(80, 8), "pato": Vector2(60, 6), "oso": Vector2(90, 12)}
@@ -51,6 +60,8 @@ const ARRIVED := 0.6
 const SAY_TIME := 4.0
 
 @export var animal := "conejo"
+## One of the grandpa gang: slower, and their own model.
+var grandpa := false
 ## Where their head looks now, turned from their body (radians).
 var look := 0.0
 var eating_left := 0.0
@@ -85,7 +96,7 @@ func _ready() -> void:
 	shape.shape = capsule
 	shape.position.y = capsule.height / 2
 	add_child(shape)
-	_model = MODELS[animal].instantiate()
+	_model = (GRANDPA_MODELS if grandpa else MODELS)[animal].instantiate()
 	_model.scale = Vector3.ONE * SCALES[animal]
 	# The models face +Z; the robber faces -Z like everyone else.
 	_model.rotation.y = PI
@@ -102,6 +113,11 @@ func _ready() -> void:
 	_bubble.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_bubble.hide()
 	add_child(_bubble)
+
+
+## How fast the pig runs to the van: half as fast for a grandpa.
+func run_speed() -> float:
+	return RUN_SPEED * (GRANDPA_PACE if grandpa else 1.0)
 
 
 func is_boss() -> bool:
@@ -212,7 +228,7 @@ func _run(delta: float) -> void:
 			hid_in_van.emit(self)
 		return
 	look_at(global_position + to, Vector3.UP)
-	velocity = to.normalized() * RUN_SPEED
+	velocity = to.normalized() * run_speed()
 	velocity.y = 0.0 if is_on_floor() else -GameScale.GRAVITY * delta
 	move_and_slide()
 

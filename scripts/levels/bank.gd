@@ -21,7 +21,9 @@ extends Node3D
 ## Half the seeds are the variant where the hostages don't want to leave (robo-banco-rehenes.md, decision 121): the
 ## hall is a party, with garlands, the robbers' boombox on the bench and a tray of croissants on the counter, and the
 ## hostages sway to the music. Two of them are fans of the gang, with a cardboard mask, who warn the robbers when they
-## see a cop (SNITCHES). --bank=party or --bank=base forces one.
+## see a cop (SNITCHES). A quarter of the seeds are the grandpa robbers (robo-banco-abuelos.md, decision 122): the same
+## gang, retired, with cane and cardigan; they walk at half pace and their old drill takes longer (BankDrill.SLOW_TIME).
+## --bank=party, --bank=grandpas or --bank=base forces one.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -129,6 +131,8 @@ var boss: BankRobber
 var hostages: Array[BankHostage] = []
 ## The variant where the hostages are having a party and don't want to leave (decision 121).
 var party := false
+## The variant where the robbers are grandpas (decision 122).
+var grandpas := false
 var croissant_tray: BankCroissantTray
 var drill: BankDrill
 var hostages_freed := 0
@@ -153,7 +157,9 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
-	party = is_party(case_seed, OS.get_cmdline_user_args())
+	var drawn := variant(case_seed, OS.get_cmdline_user_args())
+	party = drawn == "party"
+	grandpas = drawn == "grandpas"
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_hall()
@@ -170,6 +176,8 @@ func _ready() -> void:
 	_add_hostages()
 	drill = BankDrill.new()
 	drill.name = "Drill"
+	if grandpas:
+		drill.drill_time = BankDrill.SLOW_TIME
 	drill.position = DRILL_AT + Vector3.UP * FLOOR_TOP
 	drill.rotation.y = PI / 2
 	add_child(drill)
@@ -196,15 +204,22 @@ func _ready() -> void:
 	case.start()
 
 
-## Whether this seed's robbery is the party where the hostages don't want to leave: from --bank=party or --bank=base
-## among the user args, or half the seeds (propuesta).
-static func is_party(seed_: int, args: PackedStringArray) -> bool:
+## Which robbery this seed is: "party" (the hostages don't want to leave) for half the seeds, "grandpas" for a
+## quarter and "base" for the rest (propuesta); --bank=party, --bank=grandpas or --bank=base among the user args forces
+## one.
+static func variant(seed_: int, args: PackedStringArray) -> String:
 	for arg in args:
-		if arg == "--bank=party":
-			return true
-		if arg == "--bank=base":
-			return false
-	return hash(["bank party", seed_]) % 2 == 0
+		if arg in ["--bank=party", "--bank=grandpas", "--bank=base"]:
+			return arg.trim_prefix("--bank=")
+	var drawn := hash(["bank party", seed_]) % 4
+	if drawn % 2 == 0:
+		return "party"
+	return "grandpas" if drawn == 1 else "base"
+
+
+## Whether this seed's robbery is the party where the hostages don't want to leave.
+static func is_party(seed_: int, args: PackedStringArray) -> bool:
+	return variant(seed_, args) == "party"
 
 
 ## The party's things: the garlands across the hall, the boombox playing on the bench (its notes bobbing over it) and
@@ -400,6 +415,7 @@ func _add_robbers() -> void:
 		var robber := BankRobber.new()
 		robber.name = "Robber_" + animal
 		robber.animal = animal
+		robber.grandpa = grandpas
 		robber.position = ROBBER_SPOTS[animal][0] + Vector3.UP * FLOOR_TOP
 		robber.rotation.y = ROBBER_SPOTS[animal][1]
 		add_child(robber)
@@ -407,6 +423,8 @@ func _add_robbers() -> void:
 		var escort := OwnerEscort.attach(robber, car)
 		escort.seat_shift = ROBBER_SEATS[robbers.size() - 1]
 		escort.in_car_hint = "HINT_OWNER_IN_CAR" if robber.is_boss() else "HINT_ROBBER_IN_CAR"
+		if grandpas:
+			escort.speed = OwnerEscort.SPEED * BankRobber.GRANDPA_PACE
 		if animal == "chancho":
 			for at in PIG_RUN:
 				robber.run_path.append(global_transform * at)
