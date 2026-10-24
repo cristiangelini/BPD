@@ -81,6 +81,8 @@ var door: TrunkLid
 ## Its clowns out on the street; while there's any, it won't move.
 var clowns_out: Array[ConvoyClown] = []
 var spilled := false
+## Online, a guest's copy: its clowns come from the host's (PropSync), not out of its own door.
+var follower := false
 ## The clown at the wheel (ConvoyTraits.draw): what the clues are about.
 var clown_traits := {}
 var _honk_left := HONK_EVERY
@@ -205,16 +207,31 @@ func spill() -> void:
 	var seat := get_node_or_null("Driver") as Node3D
 	if seat:
 		seat.visible = false
+	if follower:
+		return
 	for i in riders():
 		var out := ConvoyClown.new()
 		out.name = "%sClown%d" % [name, i]
 		out.car = self
 		out.is_driver = i == 0
 		out.traits = clown_traits if i == 0 else _rider_traits(i)
-		out.boarded.connect(_on_boarded)
 		clowns_out.append(out)
-		get_parent().add_child(out)
+		_street().add_child(out)
 		out.global_position = door_point() + global_basis.z * (0.5 * i - 1.0) + Vector3.UP * 0.1
+
+
+## Where its clowns walk: the level (its queue's parent), so each one has the same path on every PC.
+func _street() -> Node:
+	var queue := get_parent()
+	return queue.get_parent() if queue is TrafficQueue and queue.get_parent() else queue
+
+
+## A clown of it out on the street, on any PC (a guest's come from the host's).
+func add_clown_out(out: ConvoyClown) -> void:
+	if not out.boarded.is_connected(_on_boarded):
+		out.boarded.connect(_on_boarded)
+	if not out in clowns_out:
+		clowns_out.append(out)
 
 
 ## The other clowns in the car: from its plate, so every PC dresses them alike.

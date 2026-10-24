@@ -83,3 +83,7 @@ payasos, puertas, licencias limpias y el final ([online.md](online.md)).
   al patrullero (500, cuota propia); un inocente suma denuncia y se va. Si el autito buscado pasa el control, huye
   como el del circo soltando muñecos inflables. En "Jugar", el control de tránsito sale mitad Hora pico y mitad
   Caravana por la semilla; en la campaña cuenta como `traffic_clown_convoy`.
+- **Paso 6 (24/10):** online, los payasos del anfitrión salen en todas las PC (PropSync, con el mismo nombre, ropa y
+  auto), vuelven a entrar en todas, y la puerta abierta desde un invitado se abre en el anfitrión. La cara limpia, el
+  asiento vacío del buscado y el autito que huye llegan con el caso (CaseSync). Las dos PC sacan la misma variante
+  por la semilla.
