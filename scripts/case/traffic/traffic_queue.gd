@@ -5,7 +5,9 @@ extends Node3D
 ## 6). Once the checkpoint is set up, a car comes down the lane every SPAWN_EVERY seconds and joins the queue. Each car
 ## waiting adds to the patience meter; at FULL the first one sneaks by along the sidewalk and the meter drops a bit.
 ## E on the barrier lets the first one through. There's no time limit (decision 98): only the meter.
-## "rush_hour" (Hora pico) sends twice the cars and wears the patience out faster. Every number here is (propuesta).
+## "rush_hour" (Hora pico) sends twice the cars and wears the patience out faster. "clown_convoy" (control-payasos.md)
+## sends the circus's identical clown cars, a bit less often since each one takes longer to check. Every number here
+## is (propuesta).
 
 signal patience_changed(value: float)
 ## A car went by: let through, or sneaking.
@@ -25,6 +27,7 @@ const CALM_DOWN := 2.0
 const AFTER_SNEAK := 70.0
 const VARIANTS := {
 	"rush_hour": {"spawn": 0.5, "patience": 1.5},
+	"clown_convoy": {"spawn": 0.75, "patience": 1.0, "clown": true},
 }
 
 var checkpoint: TrafficCheckpoint
@@ -118,6 +121,7 @@ func spawn() -> QueueCar:
 	car.look = data.look
 	car.plate = data.plate
 	car.driver = data.driver
+	car.clown = VARIANTS[variant].get("clown", false)
 	car.wanted = plan != null and spawned == plan.wanted_index
 	car.at = Vector3(0, 0, SPAWN_FROM)
 	car.speed = QueueCar.SPEED

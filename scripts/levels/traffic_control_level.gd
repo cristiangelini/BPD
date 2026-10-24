@@ -5,7 +5,8 @@ extends Node3D
 ## the patrol car at the door and, next to it on the sidewalk, the cones and the barrier. The checkpoint is painted on
 ## the westbound lane of the street in front of the station, toward the corner. --place=traffic opens it from Play.
 ## Once it's set up, the cars come and queue up (TrafficQueue), with the patience meter at the top. The comisario
-## gives the case (TrafficCase).
+## gives the case (TrafficCase). --traffic=clown_convoy picks the clown convoy (control-payasos.md) instead of the
+## rush hour.
 
 ## Along the street in front of the station, from the station's middle toward the east corner, in meters.
 const CHECKPOINT_ALONG := 24.0
@@ -16,6 +17,8 @@ const CONES_FROM_DOOR := Vector3(-5, 0, 1.5)
 
 ## Same seed, same cars. 0 draws one.
 @export var case_seed := 0
+## TrafficQueue.VARIANTS; empty takes --traffic=<variant> from the user args, or the rush hour.
+@export var variant := ""
 var checkpoint: TrafficCheckpoint
 var queue: TrafficQueue
 var plan: WantedPlan
@@ -30,6 +33,15 @@ static func checkpoint_at() -> Transform3D:
 	var x := CityLayout.block_center(p.block).x + CHECKPOINT_ALONG
 	var z := CityLayout.street_z(p.block.y + 1) - CityLayout.STREET / 4
 	return Transform3D(Basis(Vector3.UP, PI / 2), Vector3(x, 0, z))
+
+
+static func variant_from(chosen: String, args: PackedStringArray) -> String:
+	if TrafficQueue.VARIANTS.has(chosen):
+		return chosen
+	for arg in args:
+		if arg.begins_with("--traffic=") and TrafficQueue.VARIANTS.has(arg.trim_prefix("--traffic=")):
+			return arg.trim_prefix("--traffic=")
+	return "rush_hour"
 
 
 func _ready() -> void:
@@ -60,6 +72,7 @@ func _ready() -> void:
 	queue.checkpoint = checkpoint
 	queue.case_seed = case_seed
 	queue.plan = plan
+	queue.variant = variant_from(variant, OS.get_cmdline_user_args())
 	add_child(queue)
 	queue.passed.connect(_on_passed)
 	meters = TrafficMeters.new()

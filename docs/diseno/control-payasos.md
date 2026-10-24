@@ -58,3 +58,9 @@ lleva escondida la caja fuerte del director. Todos los autitos son iguales, así
 ## Online
 Como Hora pico: el anfitrión decide la fila, los payasos que salen y el buscado; cada PC ve los mismos autitos,
 payasos, puertas, licencias limpias y el final ([online.md](online.md)).
+
+## Hecho así
+- **Paso 1 (24/10):** TrafficQueue tiene la variante `clown_convoy` (un auto cada 4,5 s, paciencia normal): cada
+  QueueCar es el autito de payasos de 2 m, con un payaso al volante, la patente "PAYASO 1" y un baúl chico. Se prueba
+  con `godot --path . -- --place=traffic --traffic=clown_convoy`. Las pistas siguen siendo las de Hora pico hasta el
+  paso 3.

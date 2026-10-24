@@ -13,6 +13,8 @@ const MAX_ANGLE := deg_to_rad(80.0)
 const OPEN_AT := deg_to_rad(45.0)
 const COLOR := Color(0.25, 0.27, 0.3)
 
+## A clown car's lid is smaller (QueueCar.CLOWN_LID); set before it's added.
+var size := SIZE
 var angle := 0.0
 var is_open := false
 
@@ -25,11 +27,11 @@ func _ready() -> void:
 	mass = 8.0
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
-	box.size = SIZE
+	box.size = size
 	shape.shape = box
-	shape.position = Vector3(0, 0, -SIZE.z / 2)
+	shape.position = Vector3(0, 0, -size.z / 2)
 	add_child(shape)
-	PlaceBuilder.new(self).mesh_box(Vector3(0, 0, -SIZE.z / 2), SIZE, COLOR)
+	PlaceBuilder.new(self).mesh_box(Vector3(0, 0, -size.z / 2), size, COLOR)
 
 
 func prompt_key(_cop: Cop) -> String:
