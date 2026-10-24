@@ -1389,3 +1389,8 @@ OBJ_PRISON_OVERFLOWED,"Se desbordó: caso perdido.","It overflowed: case lost.",
 AWARD_FOOD_HITS,"Blanco móvil: %s (%d comidas encima)","Moving target: %s (%d foods on them)","Alvo móvel: %s (%d comidas em cima)"
 AWARD_TRAY_BLOCKS,"Mozo del año: %s (%d tapadas con la bandeja)","Waiter of the year: %s (%d blocked with the tray)","Garçom do ano: %s (%d defesas com a bandeja)"
 AWARD_FOOD_SLIPS,"Patinador sobre puré: %s (%d caídas)","Mash skater: %s (%d falls)","Patinador no purê: %s (%d tombos)"
+HINT_ESCAPE_RINGLEADER,"¡El último cabecilla se escapa en el carrito de la comida, cuesta abajo! ¡Atrápenlo!","The last ringleader is getting away downhill on the food cart! Catch them!","O último cabeça está fugindo ladeira abaixo no carrinho da comida! Peguem ele!"
+OBJ_PRISON_CATCH_CART,"Atrapar al del carrito de la comida","Catch the one on the food cart","Pegar o do carrinho da comida"
+CHASE_RINGLEADER_LINE_1,"¡Cuesta abajo no me agarra nadie! ¡Y llevo el puré!","Downhill nobody catches me! And I've got the mash!","Ladeira abaixo ninguém me pega! E estou com o purê!"
+CHASE_RINGLEADER_LINE_2,"¡Este carrito no tiene frenos! Bueno, nunca tuvo.","This cart has no brakes! Well, it never did.","Este carrinho não tem freio! Bom, nunca teve."
+CHASE_RINGLEADER_LINE_3,"Está bien, me rindo. Pero el yogur me lo quedo.","Fine, I give up. But I'm keeping the yogurt.","Tá bom, eu me rendo. Mas o iogurte fica comigo."

@@ -6,7 +6,10 @@ extends Node
 ## angry, and pays SALARY, PER_STAIN less for each food stain the cops took and NO_ESCAPE more when no ringleader got
 ## away; quota of its own, like the politician's (decision 91). With OVERFLOW inmates angry at once the riot overflows:
 ## they break the kitchen door down, the cook runs off with the secret stew recipe and the case is lost there. No time
-## limit (decision 66). Every number here is (propuesta).
+## limit (decision 66). Step 5b: with the other ringleaders in the cell, the last one still loose gets RUN_DELAY
+## seconds; not cuffed by then, they roll off on the kitchen's food cart out the gate and the chase starts there
+## (decision 96), the canteen holding still to watch it. Caught, they count as jailed; got away, the case is solved all
+## the same, without the NO_ESCAPE extra. Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 4.0
@@ -16,6 +19,9 @@ const NO_ESCAPE := 100
 const QUOTA := 400
 const CALM_ENOUGH := 3
 const OVERFLOW := 15
+const RUN_DELAY := 3.0
+## Where the cart comes out: just past the gate, heading out (level space).
+const CART_OUT := Vector3(0, 0, PrisonLevel.HALF_Z + 2.5)
 const STORY := "prison_riot"
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 
@@ -29,6 +35,10 @@ var overflowed := false
 var shift_over := false
 ## Ringleaders who got away (step 5b: the food cart).
 var escaped := 0
+## The last ringleader's run on the food cart, who it is and whether they were caught.
+var chase: ChaseCase
+var runner: PrisonInmate
+var caught := false
 var _result := {}
 var _refresh_left := 0.0
 
@@ -71,7 +81,9 @@ func _on_angry_changed() -> void:
 	var riot := prison.riot
 	if riot.angry >= OVERFLOW:
 		overflow()
-	elif riot.jailed + escaped >= riot.ringleaders.size() and riot.angry < CALM_ENOUGH:
+	elif not chase and riot.jailed == riot.ringleaders.size() - 1:
+		get_tree().create_timer(RUN_DELAY).timeout.connect(_run_off)
+	elif ringleaders_done() and riot.angry < CALM_ENOUGH and (not chase or caught or escaped > 0):
 		calmed = true
 		_hint_all("HINT_RIOT_CALMED")
 		get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
@@ -88,6 +100,53 @@ func overflow() -> void:
 	_hint_all("HINT_RIOT_OVERFLOW")
 	checklist.show_rows(rows())
 	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
+
+
+## Every ringleader in the cell, caught on the cart or gone.
+func ringleaders_done() -> bool:
+	return prison.riot.jailed + escaped + (1 if caught else 0) >= prison.riot.ringleaders.size()
+
+
+## The last loose ringleader, if any: not cuffed, not walked by a cop, not in the cell.
+func loose_ringleader() -> PrisonInmate:
+	for leader in prison.riot.ringleaders:
+		var escort := OwnerEscort.of(leader)
+		if not leader.is_cuffed() and not leader.is_jailed() and not (escort and escort.escorted_by):
+			return leader
+	return null
+
+
+## Out the gate on the food cart: the canteen holds still and the chase is on.
+func _run_off() -> void:
+	if chase or calmed or overflowed:
+		return
+	runner = loose_ringleader()
+	if not runner or prison.riot.jailed != prison.riot.ringleaders.size() - 1:
+		return
+	runner.hide()
+	runner.collision_layer = 0
+	runner.process_mode = Node.PROCESS_MODE_DISABLED
+	_hold_canteen(true)
+	var out := prison.global_transform * Transform3D(Basis.IDENTITY, CART_OUT)
+	chase = ChaseCase.begin(prison, SuspectCar.FOOD_CART, out, prison.car, prison.city, prison.case_seed)
+	chase.who = "ringleader"
+	chase.ended.connect(_on_chase_ended)
+	_hint_all("HINT_ESCAPE_RINGLEADER")
+	checklist.show_rows(rows())
+
+
+func _on_chase_ended(was_caught: bool) -> void:
+	caught = was_caught
+	escaped = 0 if was_caught else 1
+	_hold_canteen(false)
+	_on_angry_changed()
+
+
+## While the cart runs off the inmates stop to watch (anger stays where it is).
+func _hold_canteen(hold: bool) -> void:
+	for inmate in prison.riot.inmates:
+		if inmate != runner:
+			inmate.active = not hold
 
 
 func solved() -> bool:
@@ -154,7 +213,9 @@ func rows() -> Array[Dictionary]:
 	var list: Array[Dictionary] = []
 	list.append(_row("OBJ_PRISON_GO", riot.running))
 	list.append(_row(tr("OBJ_PRISON_RINGLEADERS") % [riot.jailed, riot.ringleaders.size()],
-		riot.jailed + escaped >= riot.ringleaders.size()))
+		ringleaders_done()))
+	if chase:
+		list.append(_row("OBJ_PRISON_CATCH_CART", caught))
 	list.append(_row(tr("OBJ_PRISON_ANGRY") % [riot.angry, CALM_ENOUGH], riot.running and riot.angry < CALM_ENOUGH))
 	var state := "OBJ_PRISON_OVERFLOWED" if overflowed else ("OBJ_PRISON_CALMED" if calmed else "OBJ_PRISON_OVERFLOW")
 	list.append({"text": tr(state) % OVERFLOW if state == "OBJ_PRISON_OVERFLOW" else state, "done": false,
