@@ -4,8 +4,10 @@ extends CrimeScenePlace
 ## The Cascabel Brothers' circus (escena-circo.md, step 2, decision 130), on its lot in the city with the front to +Z:
 ## the big striped tent with its entrance at the front, the ring of sawdust inside with its low curb, the stands
 ## around the back half, the trapeze over the ring and the cannon by its side. Behind the tent, the clowns' six
-## caravans in a row; on one side, the seal's empty pool with its tap, and on the other, the costume trunk. It's the
-## circus case's CrimeScenePlace (the clowns and the clues come in later steps). Every number here is (propuesta).
+## caravans in a row; on one side, the seal's empty pool with its tap, and on the other, the costume trunk. In the
+## ring, the six clowns alike (ClownTraits.draw with the case seed) practice in a circle facing out, the ringmaster
+## (Ringmaster) waits at the ring's gap and Zulema the tamer (CircusTamer) stands by the pool. It's the circus case's
+## CrimeScenePlace (the clues come in a later step). Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(40, 30)
@@ -44,11 +46,18 @@ const YELLOW := Color(0.98, 0.8, 0.25)
 const WOOD := Color(0.55, 0.38, 0.24)
 const METAL := Color(0.35, 0.37, 0.42)
 const POOL_TILE := Color(0.55, 0.78, 0.88)
+## Where the clowns practice: a circle inside the ring, each facing out.
+const CLOWNS_RADIUS := 2.6
+const RINGMASTER_AT := TENT_AT + Vector3(1.6, 0, RING_RADIUS + 0.9)
+const TAMER_AT := POOL_AT + Vector3(2.6, 0, 0.4)
 const CARAVAN_COLORS: Array[Color] = [
 	Color(0.95, 0.55, 0.7), Color(0.45, 0.82, 0.65), Color(0.98, 0.82, 0.3), Color(0.68, 0.58, 0.9),
 	Color(0.5, 0.7, 0.95), Color(0.98, 0.6, 0.35),
 ]
 
+var clowns: Array[CircusClown] = []
+var ringmaster: Ringmaster
+var tamer: CircusTamer
 var _builder: PlaceBuilder
 
 
@@ -66,6 +75,30 @@ func _ready() -> void:
 		_caravan(CARAVANS[i], i)
 	_pool()
 	_trunk()
+	_people()
+
+
+## The six clowns in a circle in the ring, the ringmaster at its gap and Zulema by the pool.
+func _people() -> void:
+	var traits := ClownTraits.draw(case_seed)
+	for i in traits.size():
+		var turn := (i + 0.5) * TAU / traits.size()
+		var clown := CircusClown.new()
+		clown.name = "Clown%d" % i
+		clown.traits = traits[i]
+		clown.index = i
+		clown.position = TENT_AT + _around(turn, CLOWNS_RADIUS)
+		clown.rotation.y = turn
+		add_child(clown)
+		clowns.append(clown)
+	ringmaster = Ringmaster.new()
+	ringmaster.name = "Ringmaster"
+	ringmaster.position = RINGMASTER_AT
+	add_child(ringmaster)
+	tamer = CircusTamer.new()
+	tamer.name = "Tamer"
+	tamer.position = TAMER_AT
+	add_child(tamer)
 
 
 ## The round wall in red and white pieces, open at the front, under a red cone of a roof, with the circus's name
@@ -243,3 +276,19 @@ func at_scene(world: Vector3) -> bool:
 func in_tent(world: Vector3) -> bool:
 	var local := to_local(world) - TENT_AT
 	return Vector2(local.x, local.z).length() <= TENT_RADIUS
+
+
+func suspect(index: int) -> CollisionObject3D:
+	return clowns[index]
+
+
+func witness_offended() -> bool:
+	return tamer.offended
+
+
+func offend_witness() -> void:
+	tamer.offended = true
+
+
+func shouted_by(cop: Cop) -> void:
+	tamer.shouted_by(cop)

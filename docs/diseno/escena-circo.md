@@ -91,7 +91,13 @@ Antes de programar conviene que el pastel y el circo compartan una base (como el
    mitad de atrás, el trapecio entre dos postes y el cañón al costado de la pista. Detrás de la carpa, las seis casillas
    de los payasos en fila, numeradas del 1 al 6; a un costado, la pileta vacía de Galleta con su canilla, y al otro, el
    baúl de disfraces. Los policías arrancan en la comisaría **(propuesta)**.
-3. Los seis payasos iguales con sus rasgos escondidos, el director de pista y Zulema.
+3. Los seis payasos iguales con sus rasgos escondidos, el director de pista y Zulema. Hecho así: los seis payasos (Pirulo, Chispita,
+   Bombón, Tallarín, Cascarita y Rulito) ensayan en ronda dentro de la pista, mirando hacia afuera, todos con la misma
+   peluca naranja, nariz roja, cara blanca, guantes y zapatos gigantes. La semilla les sortea el pelo de verdad (bajo la
+   peluca), los anteojos (solo se ven sin maquillaje), el talle de pie (bajo el zapato), los dientes y la nota de la
+   bocina (grave, media o aguda). Con E cuentan un chiste. El director de pista, de levita roja y galera, espera al
+   lado del hueco de la pista y dice sus frases; Zulema, la domadora, está junto a la pileta y, si es la testigo, dice
+   si el culpable usaba anteojos (esposada o gritada, se ofende y no habla más) **(propuesta)**.
 4. Sacarles lo escondido: esponja, peluca, guantes, zapato y bocina, y las fichas.
 5. El truco: se mezclan cada 90 s, y los carteles con número.
 6. El caso: la historia, Galleta escondida, las pistas y cómo se arruinan, y la planilla.
