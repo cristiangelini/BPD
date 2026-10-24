@@ -64,3 +64,6 @@ tapando las ventanas mientras el bus se sacude.
 1. Maneja un policía; los otros tres vigilan adentro.
 2. Salen de la comisaría: el bus espera en el estacionamiento con los presos.
 3. Con 4 presos escapados el caso se pierde.
+
+## Hecho así
+- **Paso 1 (el bus):** `PrisonBus` (`scenes/vehicles/prison_bus.tscn`, modelo `prison_bus`) es un `PatrolCar` más grande: 10 m de largo, 4000 kg, hasta 40 km/h (también en la autopista) y dobla más abierto. Adentro: el asiento del chofer adelante a la izquierda, una reja detrás de la cabina con un hueco para el pasillo, 4 filas de 2 asientos de presos con su argolla y las ventanas con rejas. E junto a la puerta de adelante (a la derecha) o la de atrás (al final del pasillo) sube o baja; E junto al asiento del chofer lo maneja y otra E lo para en la cabina. Los que van parados caminan por el pasillo y se mueven con el bus; un frenazo, un arranque o una curva fuerte (más de 5 m/s²) los empuja para el otro lado (señal `lurched`, para el plan de fuga del paso 2). El caso es una variante de la cárcel (`PrisonLevel.variant = "transfer"`, `scenes/levels/prisoner_transfer.tscn`, `--place=transfer`): el bus espera en la calle de la comisaría con las puertas hacia la vereda y los policías arrancan en la sala de guardia. Capturas en `/mnt/project-files/traslado/paso1-*.png` y `prison_bus.png`.

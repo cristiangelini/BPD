@@ -52,12 +52,19 @@ var _golf: GolfClub
 var grip := 1.0
 ## The old one (set before it's added).
 @export var old := false
+## What a bigger vehicle on the same driving changes (the prison bus, traslado-presos.md): set before it's added.
+var engine_power := ENGINE
+var brake_power := BRAKE
+var handbrake_power := HANDBRAKE
+var steer_limit := STEER
+var city_speed := MAX_SPEED
 ## Times someone shouted the siren in the old car.
 var uiuus := 0
 var _shout: Label3D
 var _shout_left := 0.0
 
-@onready var _seats: Array[Node3D] = [$Seats/Driver, $Seats/Front, $Seats/BackLeft, $Seats/BackRight]
+## The seat markers under Seats, in order: the driver's first (the patrol car: Driver, Front, BackLeft, BackRight).
+@onready var _seats: Array[Node3D] = _seat_markers()
 @onready var _rear: Array[VehicleWheel3D] = [$WheelRearLeft, $WheelRearRight]
 @onready var _siren_red: OmniLight3D = $SirenRed
 @onready var _siren_blue: OmniLight3D = $SirenBlue
@@ -83,6 +90,13 @@ func _ready() -> void:
 		_shout.position = Vector3(0, 3.0, 0)
 		_shout.hide()
 		add_child(_shout)
+
+
+func _seat_markers() -> Array[Node3D]:
+	var markers: Array[Node3D] = []
+	for marker in $Seats.get_children():
+		markers.append(marker)
+	return markers
 
 
 func is_delivered(item: Evidence) -> bool:
@@ -235,34 +249,34 @@ func _apply_controls(delta: float) -> void:
 	var sand := in_sand()
 	for wheel in [$WheelFrontLeft, $WheelFrontRight, $WheelRearLeft, $WheelRearRight]:
 		(wheel as VehicleWheel3D).wheel_friction_slip = GRIP * grip * (SAND_GRIP if sand else 1.0)
-	var reach := lerpf(1.0, STEER_AT_TOP, clampf(absf(speed) / MAX_SPEED, 0.0, 1.0))
-	steering = move_toward(steering, steer_input * STEER * reach, STEER_RATE * delta)
+	var reach := lerpf(1.0, STEER_AT_TOP, clampf(absf(speed) / city_speed, 0.0, 1.0))
+	steering = move_toward(steering, steer_input * steer_limit * reach, STEER_RATE * delta)
 	engine_force = 0.0
 	brake = 0.0
 	if throttle > 0.0:
 		if speed < -0.5:
-			brake = BRAKE
+			brake = brake_power
 		elif speed < top:
-			engine_force = ENGINE * throttle
+			engine_force = engine_power * throttle
 	elif throttle < 0.0:
 		if speed > 0.5:
-			brake = BRAKE
+			brake = brake_power
 		elif speed > -MAX_REVERSE:
-			engine_force = ENGINE * throttle
+			engine_force = engine_power * throttle
 	# The sand drags a car that came in fast down to its speed there.
 	if sand and speed > top + 1.0:
-		brake = maxf(brake, BRAKE * 0.25)
+		brake = maxf(brake, brake_power * 0.25)
 	if old:
 		brake *= OLD_BRAKE
 	for wheel in _rear:
-		wheel.brake = HANDBRAKE if handbrake else brake
+		wheel.brake = handbrake_power if handbrake else brake
 
 
 ## How fast the car goes here: faster on the highway's road, slower in the old one or in the sand.
 func top_speed() -> float:
 	if not is_instance_valid(_highway):
 		_highway = get_tree().get_first_node_in_group("highway") as Highway
-	var top := HIGHWAY_SPEED if _highway and _highway.covers(global_position) else MAX_SPEED
+	var top := HIGHWAY_SPEED if _highway and _highway.covers(global_position) else city_speed
 	if old:
 		top = OLD_SPEED
 	return top * (SAND_SHARE if in_sand() else 1.0)

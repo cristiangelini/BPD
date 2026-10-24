@@ -57,6 +57,8 @@ var _talk_end_asked := false
 var stats := {"ram_misses": 0, "story_seconds": 0.0, "meters_driven": 0.0, "photos": 0}
 ## The patrol car this cop sits in, if any: the body rides the seat and doesn't walk or collide.
 var vehicle: PatrolCar
+## The prison bus this cop stands in (traslado-presos.md): it walks the aisle and goes along with the bus.
+var riding: PrisonBus
 ## The comisario is giving the case (CaseBriefing): the cop can look around but not move or use things.
 var in_briefing := false
 ## The armero's list is open for this cop (ArmoryMenu): same as the briefing, but only for this cop.
@@ -550,7 +552,10 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 	_eating_left = maxf(_eating_left - delta, 0.0)
 	_mouth_full_left = maxf(_mouth_full_left - delta, 0.0)
 	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
-	var direction := (transform.basis * Vector3(wish.x, 0.0, wish.y)).normalized()
+	# The world's turn, so a cop standing in the moving prison bus (a child of it) walks where it looks.
+	var direction := (global_basis * Vector3(wish.x, 0.0, wish.y)).normalized()
+	direction.y = 0.0
+	direction = direction.normalized()
 	var speed := 0.0 if is_busy() else current_speed()
 	velocity.x = direction.x * speed + _knock.x
 	velocity.z = direction.z * speed + _knock.z
