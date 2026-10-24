@@ -17,6 +17,8 @@ signal saw_hostage(robber: BankRobber, hostage: Node3D)
 signal cuffed_now(robber: BankRobber)
 ## The pig got into the van.
 signal hid_in_van(robber: BankRobber)
+## A grandpa robber led out by the hand as if he were a hostage got away outside (he counts as a sack taken).
+signal slipped_out(robber: BankRobber)
 
 const ANIMALS: Array[String] = ["conejo", "chancho", "pato", "oso"]
 const MODELS := {
@@ -34,6 +36,14 @@ const GRANDPA_MODELS := {
 }
 ## How fast a grandpa robber goes next to a young one.
 const GRANDPA_PACE := 0.5
+## Hiding among the hostages (robo-banco-abuelos.md, step 2): he walks to his spot this fast (m/s), sits there this
+## close to it, and led by the hand follows the cop like a hostage, this far behind.
+const HIDE_SPEED := 0.8
+const HIDE_REACH := 0.3
+const LED_SPEED := 0.9
+const LED_KEEP_AWAY := 1.2
+const POSE_CROUCH := 0.82
+const KNEE_LINES := 3
 const SCALES := {"conejo": 1.0, "chancho": 1.0, "pato": 1.0, "oso": 1.15}
 ## Each one's cone (full angle in degrees and depth in meters) and where their head looks, turned from their body.
 const SIGHT := {"conejo": Vector2(100, 10), "chancho": Vector2(80, 8), "pato": Vector2(60, 6), "oso": Vector2(90, 12)}
@@ -62,6 +72,17 @@ const SAY_TIME := 4.0
 @export var animal := "conejo"
 ## One of the grandpa gang: slower, and their own model.
 var grandpa := false
+## A grandpa who saw a cop took his mask off and goes (or went) to sit among the hostages: where (world position, the
+## level hands it out), whether he's sitting there, and the cop leading him out by the hand as a hostage.
+var unmasked := false
+var hide_at := Vector3.ZERO
+var posing := false
+var led_by: Cop
+var slipped := false
+## The level's: a free spot on the hostages' floor for `robber` (a world position), and whether a position is out of
+## the bank.
+var claim_spot: Callable
+var is_out: Callable
 ## Where their head looks now, turned from their body (radians).
 var look := 0.0
 var eating_left := 0.0
@@ -101,6 +122,7 @@ func _ready() -> void:
 	# The models face +Z; the robber faces -Z like everyone else.
 	_model.rotation.y = PI
 	add_child(_model)
+	_show_mask(true)
 	_bubble = Label3D.new()
 	_bubble.name = "Bubble"
 	_bubble.position = Vector3(0, 2.1, 0)
@@ -136,7 +158,7 @@ func facing() -> Vector3:
 ## Whether they see `at` (a world position): in their cone, near enough and with no wall in between (or the wall hit
 ## is `body` itself).
 func sees(at: Vector3, body: CollisionObject3D = null) -> bool:
-	if is_eating():
+	if is_eating() or unmasked:
 		return false
 	var eye := global_position + Vector3.UP * EYE_HEIGHT
 	var flat := Vector3(at.x - eye.x, 0, at.z - eye.z)
@@ -166,6 +188,8 @@ func cuffed(seconds: float) -> void:
 				spotted.emit(self, cop)
 				return
 	running = false
+	posing = false
+	led_by = null
 	_cuffed_left = maxf(_cuffed_left, seconds)
 	say("ROBBER_%s_CUFFED" % animal.to_upper())
 	cuffed_now.emit(self)
@@ -177,10 +201,13 @@ func is_cuffed() -> bool:
 
 func _physics_process(delta: float) -> void:
 	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
-	if in_van or is_cuffed():
+	if in_van or is_cuffed() or slipped:
 		return
 	if running:
 		_run(delta)
+		return
+	if unmasked:
+		_pose(delta)
 		return
 	_turn_head(delta)
 	if animal == "chancho":
@@ -203,7 +230,9 @@ func _physics_process(delta: float) -> void:
 
 func _saw_cop(cop: Node3D) -> void:
 	say("ROBBER_%s_SPOT" % animal.to_upper())
-	if animal == "conejo":
+	if grandpa and not is_boss():
+		unmask()
+	elif animal == "conejo":
 		surrendered = true
 	elif animal == "chancho" and not run_path.is_empty():
 		running = true
@@ -212,6 +241,71 @@ func _saw_cop(cop: Node3D) -> void:
 		if sandwich:
 			sandwich.hide()
 	spotted.emit(self, cop)
+
+
+## A grandpa seeing a cop: off with the mask, into the cardigan's pocket (a bit sticks out), and to a free spot among
+## the hostages.
+func unmask() -> void:
+	unmasked = true
+	_show_mask(false)
+	say("ROBBER_GRANDPA_UNMASK")
+	if claim_spot.is_valid():
+		hide_at = claim_spot.call(self)
+	else:
+		hide_at = global_position
+
+
+func _show_mask(on: bool) -> void:
+	var mask := _model.find_child("mask", true, false) as Node3D
+	if mask:
+		mask.visible = on
+	var pocket := _model.find_child("pocket", true, false) as Node3D
+	if pocket:
+		pocket.visible = not on
+
+
+## Unmasked: walking to his spot and sitting there like a hostage, or led by the hand and getting away once out.
+func _pose(delta: float) -> void:
+	if led_by:
+		if is_out.is_valid() and is_out.call(global_position):
+			slip_out()
+			return
+		var to := led_by.global_position - global_position
+		to.y = 0.0
+		_step(to.normalized() * LED_SPEED if to.length() > LED_KEEP_AWAY else Vector3.ZERO, delta)
+		return
+	if posing:
+		return
+	var to := hide_at - global_position
+	to.y = 0.0
+	if to.length() < HIDE_REACH:
+		_sit()
+		return
+	_step(to.normalized() * HIDE_SPEED, delta)
+
+
+func _step(wish: Vector3, delta: float) -> void:
+	if wish.length() > 0.05:
+		look_at(global_position + wish, Vector3.UP)
+	velocity = Vector3(wish.x, 0.0 if is_on_floor() else velocity.y - GameScale.GRAVITY * delta, wish.z)
+	move_and_slide()
+
+
+## Down on the floor facing the counter, like the hostages around him.
+func _sit() -> void:
+	posing = true
+	rotation.y = 0.0
+	_model.scale.y = SCALES[animal] * POSE_CROUCH
+
+
+## Led out of the bank as a hostage, he's off down the street with what's in his pockets.
+func slip_out() -> void:
+	slipped = true
+	led_by = null
+	say("ROBBER_GRANDPA_BYE")
+	hide()
+	collision_layer = 0
+	slipped_out.emit(self)
 
 
 ## The pig running along run_path; at its end he gets in the van and is gone until the getaway.
@@ -257,6 +351,9 @@ func prompt_key(cop: Cop) -> String:
 	var escort := OwnerEscort.of(self)
 	if escort and escort.handles_use():
 		return escort.prompt_key(cop)
+	if posing or led_by:
+		# He passes for a hostage.
+		return "PROMPT_LET_GO_HOSTAGE" if led_by == cop else "PROMPT_LEAD_HOSTAGE"
 	return "PROMPT_TALK_ROBBER"
 
 
@@ -265,6 +362,18 @@ func use(cop: Cop) -> void:
 	var escort := OwnerEscort.of(self)
 	if escort and escort.handles_use():
 		escort.use(cop)
+		return
+	if led_by == cop:
+		# Let go, he goes back to his spot.
+		led_by = null
+		posing = false
+		_model.scale.y = SCALES[animal]
+		return
+	if posing:
+		led_by = cop
+		_model.scale.y = SCALES[animal]
+		say("ROBBER_GRANDPA_KNEE_%d" % (_next_line % KNEE_LINES + 1))
+		_next_line += 1
 		return
 	say("ROBBER_%s_%d" % [animal.to_upper(), _next_line % LINES + 1])
 	_next_line += 1
@@ -291,9 +400,11 @@ func said() -> String:
 
 
 ## What a guest's copy needs besides where they are and what they say (NpcSync): cuffed, gave up, running, in the van,
-## gone with a sack, where their head points and the pig's sandwich.
+## gone with a sack, where their head points, the pig's sandwich and, a grandpa, whether he took the mask off and sits
+## among the hostages.
 func net_state() -> Array:
-	return [is_cuffed(), surrendered, running, in_van, visible, snappedf(look, 0.01), eating_left > 0.0]
+	return [is_cuffed(), surrendered, running, in_van, visible, snappedf(look, 0.01), eating_left > 0.0, unmasked,
+		posing]
 
 
 func apply_net_state(state: Variant) -> void:
@@ -309,6 +420,12 @@ func apply_net_state(state: Variant) -> void:
 	var sandwich := find_child("props", true, false) as Node3D
 	if sandwich and running:
 		sandwich.hide()
+	if state.size() > 8:
+		if state[7] and not unmasked:
+			unmasked = true
+			_show_mask(false)
+		posing = state[8]
+		_model.scale.y = SCALES[animal] * (POSE_CROUCH if posing else 1.0)
 
 
 func _process(delta: float) -> void:

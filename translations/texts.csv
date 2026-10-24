@@ -1421,3 +1421,8 @@ OBJ_PRISON_CATCH_CART,"Atrapar al del carrito de la comida","Catch the one on th
 CHASE_RINGLEADER_LINE_1,"¡Cuesta abajo no me agarra nadie! ¡Y llevo el puré!","Downhill nobody catches me! And I've got the mash!","Ladeira abaixo ninguém me pega! E estou com o purê!"
 CHASE_RINGLEADER_LINE_2,"¡Este carrito no tiene frenos! Bueno, nunca tuvo.","This cart has no brakes! Well, it never did.","Este carrinho não tem freio! Bom, nunca teve."
 CHASE_RINGLEADER_LINE_3,"Está bien, me rindo. Pero el yogur me lo quedo.","Fine, I give up. But I'm keeping the yogurt.","Tá bom, eu me rendo. Mas o iogurte fica comigo."
+ROBBER_GRANDPA_UNMASK,"¡Uy, la policía! Yo me saco esto... y me siento por acá. Yo soy rehén, m'hijo.","Oh dear, the police! I'll just take this off... and sit over here. I'm a hostage, sonny.","Opa, a polícia! Vou tirar isto... e sentar aqui. Eu sou refém, meu filho."
+ROBBER_GRANDPA_KNEE_1,"Despacito, que tengo la rodilla... ¿A dónde me llevas tan rápido?","Easy now, my knee... Where are you taking me so fast?","Devagar, que tenho o joelho... Pra onde você me leva tão rápido?"
+ROBBER_GRANDPA_KNEE_2,"Sí, sí, rehén de toda la vida. Tú sácame afuera, que el resto lo hago yo.","Yes, yes, a hostage through and through. You get me outside, I'll do the rest.","Sim, sim, refém de carteirinha. Você me leva pra fora, que o resto eu faço."
+ROBBER_GRANDPA_KNEE_3,"¿Esto en el bolsillo? Es una bufanda. Una bufanda con orejas.","This in my pocket? It's a scarf. A scarf with ears.","Isto no bolso? É um cachecol. Um cachecol com orelhas."
+ROBBER_GRANDPA_BYE,"¡Gracias, oficial! Ahora sí... ¡pies para qué los quiero!","Thank you, officer! And now... legs, don't fail me!","Obrigado, policial! E agora... pernas pra que te quero!"

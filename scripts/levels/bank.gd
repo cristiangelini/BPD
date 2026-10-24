@@ -100,6 +100,10 @@ const HOSTAGE_ZS: Array[float] = [2.5, 4.8]
 ## west bench and the croissants' tray on the counter.
 ## The way back in for the party's hostage El Oso let go: through the entrance and between the queue posts.
 const WAY_IN: Array[Vector3] = [Vector3(ENTRANCE_X, 0, HALF_Z - 1.5), Vector3(-0.4, 0, 6.0)]
+## The free spots on the hostages' floor, between its two rows, where the grandpa robbers sit down to pass for hostages
+## (robo-banco-abuelos.md, step 2).
+const HIDE_SPOTS: Array[Vector3] = [Vector3(-5.0, 0, 3.65), Vector3(-2.0, 0, 3.65), Vector3(1.0, 0, 3.65),
+	Vector3(4.0, 0, 3.65)]
 ## How many of the party's hostages are fans of the gang (propuesta).
 const SNITCHES := 2
 const GARLAND_MODEL := preload("res://assets/models/bank_garland.glb")
@@ -147,6 +151,8 @@ var case: BankCase
 var follower := false
 var station_parking: Transform3D
 var _build: PlaceBuilder
+## Which robber took each of HIDE_SPOTS (by index).
+var _hide_taken := {}
 
 @onready var car: PatrolCar = $PatrolCar
 @onready var city: Node3D = $City
@@ -416,6 +422,9 @@ func _add_robbers() -> void:
 		robber.name = "Robber_" + animal
 		robber.animal = animal
 		robber.grandpa = grandpas
+		robber.claim_spot = _claim_hide_spot
+		robber.is_out = func(at: Vector3) -> bool: return not inside(at)
+		robber.slipped_out.connect(func(_robber: BankRobber) -> void: bags_taken += 1)
 		robber.position = ROBBER_SPOTS[animal][0] + Vector3.UP * FLOOR_TOP
 		robber.rotation.y = ROBBER_SPOTS[animal][1]
 		add_child(robber)
@@ -430,6 +439,21 @@ func _add_robbers() -> void:
 				robber.run_path.append(global_transform * at)
 		if robber.is_boss():
 			boss = robber
+
+
+## The free spot among the hostages nearest to `robber` (a world position), now his.
+func _claim_hide_spot(robber: BankRobber) -> Vector3:
+	var best := -1
+	for i in HIDE_SPOTS.size():
+		if _hide_taken.has(i):
+			continue
+		if best < 0 or robber.global_position.distance_to(global_transform * HIDE_SPOTS[i]) \
+				< robber.global_position.distance_to(global_transform * HIDE_SPOTS[best]):
+			best = i
+	if best < 0:
+		return robber.global_position
+	_hide_taken[best] = robber
+	return global_transform * (HIDE_SPOTS[best] + Vector3.UP * FLOOR_TOP)
 
 
 ## The hostages, a different set of neighbors for each seed.
@@ -524,10 +548,11 @@ static func _flat_distance(a: Vector3, b: Vector3) -> float:
 	return Vector2(a.x - b.x, a.z - b.z).length()
 
 
-## Whether a robber is still free: not cuffed, not being walked and not in the patrol car (the pig in the van is).
+## Whether a robber is still free: not cuffed, not being walked and not in the patrol car (the pig in the van is), and
+## not a grandpa who already slipped out as a hostage (his sack is counted).
 static func is_loose(robber: BankRobber) -> bool:
 	var escort := OwnerEscort.of(robber)
-	return not robber.is_cuffed() and not (escort and (escort.in_car or escort.escorted_by))
+	return not robber.slipped and not robber.is_cuffed() and not (escort and (escort.in_car or escort.escorted_by))
 
 
 ## The vault is open: every robber still loose grabs a sack and leaves; El Oso among them, the chase is on.

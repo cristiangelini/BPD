@@ -74,6 +74,9 @@ function grandpaRobber(b, mask, cardigan, extra) {
 		b.add('mask', black, ellipsoid(0.036, 0.044, 0.02, 6, 4), { pos: V(s * 0.08, 1.35, 0.233) });
 	}
 	extra(mask);
+	// The mask stuffed in the pocket once he takes it off (hidden until then): a crumpled ball and a bit sticking out.
+	b.add('pocket', mask, ellipsoid(0.07, 0.05, 0.05, 6, 4), { pos: V(-0.24, 0.68, 0.38), rot: [-0.3, -0.5, 0] });
+	b.add('pocket', mask, ellipsoid(0.03, 0.09, 0.025, 6, 4), { pos: V(-0.22, 0.76, 0.37), rot: [-0.2, 0, 0.35] });
 	for (const s of [-1, 1]) b.add('glasses', black, new THREE.TorusGeometry(0.06, 0.01, 4, 8), { pos: V(s * 0.08, 1.35, 0.25) });
 	b.add('glasses', black, new THREE.BoxGeometry(0.05, 0.012, 0.012), { pos: V(0, 1.355, 0.25) });
 	for (let i = 0; i < 4; i++) b.add('body', C('button', 0xe8dcc0), ellipsoid(0.02, 0.02, 0.01, 5, 3), { pos: V(0, 1.0 - i * 0.13, 0.25 + i * 0.045) });
