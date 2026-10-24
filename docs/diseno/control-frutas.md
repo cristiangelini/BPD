@@ -17,7 +17,7 @@ adentro de las sandías. No me rompan todas, que después los fruteros me llenan
 3. **Revisar una sandía:** se agarra con las manos y se baja del camión (pesa 8 kg, uno solo puede). Con E encima
    se le da un golpecito: la normal suena "toc toc" y la del contrabando suena hueca ("tonc"). En el camión buscado hay
    2 o 3 sandías huecas; en algunos inocentes, 1 sandía "pasada" que también suena raro (para que no sea tan fácil).
-4. **Romperla:** se tira al piso fuerte (o se le pega con la linterna). Se parte con jugo, y adentro hay pulpa roja,
+4. **Romperla:** se tira al piso fuerte (soltarla de las manos no alcanza). Se parte con jugo, y adentro hay pulpa roja,
    o el contrabando (relojes de oro de mentira, que son la evidencia).
 5. Cada sandía rota de un camión inocente es una queja del frutero (se descuenta del sueldo). Detener a dos fruteros
    inocentes pierde el caso, como siempre.
