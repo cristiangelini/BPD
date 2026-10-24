@@ -72,6 +72,8 @@ var block_gate: CellDoor
 var tables: Array[CanteenTable] = []
 var trays: Array[PrisonTray] = []
 var riot: PrisonRiot
+## The case on top of the riot (step 5): the comisario's briefing, the planilla and the end of the shift.
+var case: PrisonCase
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -96,6 +98,12 @@ func _ready() -> void:
 	city.transform = CityLayout.anchor("prison")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+	case = PrisonCase.new()
+	case.name = "Case"
+	case.prison = self
+	case.shift_screen = $ShiftScreen
+	add_child(case)
+	case.start(city.get("comisario"))
 
 
 ## Whether a world position is inside the perimeter wall.
