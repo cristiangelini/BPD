@@ -8,11 +8,16 @@ extends Node
 ## within COP_REACH COP_SHARE of the time, and otherwise at another inmate within INMATE_REACH (target_for), so the anger
 ## spreads from table to table. Step 3: a cop with SLIP_STAINS stains of food on them slips and falls (drops what they
 ## hold, the stains come off); a table knocked over pushes the inmates on that side back, TIP_ANGER more upset.
-## Every number here is (propuesta).
+## Step 4: RINGLEADERS inmates, each at a different table chosen by the seed, lead the riot from on top of their table:
+## every RILE_EVERY seconds they're loose they climb back up and get their table RILE_ANGER angrier. Knocking the table
+## over brings them down; cuffed, they're walked to the punishment cell (PrisonEscort) and `jailed` counts them. The
+## jailed don't count as angry. Every number here is (propuesta).
 
 signal started
 ## How many are angry now changed.
 signal angry_changed(count: int)
+## One more ringleader is in the punishment cell.
+signal ringleader_jailed(count: int)
 
 const INMATES := 20
 const ANGRY_AT_START := 5
@@ -30,38 +35,58 @@ const SLIP_PUSH := 3.0
 const TIP_REACH := 2.2
 const TIP_PUSH := 1.0
 const TIP_ANGER := 20.0
+const RINGLEADERS := 3
+const RILE_EVERY := 30.0
+const RILE_ANGER := 40.0
+const RILES := 3
 
 var prison: PrisonLevel
 var inmates: Array[PrisonInmate] = []
 var running := false
 var angry := 0
+var ringleaders: Array[PrisonInmate] = []
+var jailed := 0
 ## A guest's riot: the host's says when it starts and how angry everyone is (NpcSync).
 var follower := false
 var _rng := RandomNumberGenerator.new()
+var _rile_left := 0.0
 
 
 func setup(level: PrisonLevel, case_seed: int) -> void:
 	prison = level
 	_rng.seed = hash(["prison riot", case_seed])
-	var places: Array[Transform3D] = []
+	# Each place with its table: [transform, table].
+	var places: Array[Array] = []
 	for table in level.tables:
 		for side: float in [-1.0, 1.0]:
 			for x in PLACE_XS:
 				# Facing the table: their front (-Z) toward its middle.
 				var turn := 0.0 if side > 0 else PI
-				places.append(Transform3D(Basis(Vector3.UP, turn), table.position + Vector3(x, 0.05, side * PLACE_Z)))
+				places.append([Transform3D(Basis(Vector3.UP, turn), table.position + Vector3(x, 0.05, side * PLACE_Z)),
+					table])
 	for i in range(places.size() - 1, 0, -1):
 		var j := _rng.randi_range(0, i)
 		var swap := places[i]
 		places[i] = places[j]
 		places[j] = swap
+	var led: Array[CanteenTable] = []
 	for i in INMATES:
 		var inmate := PrisonInmate.new()
 		inmate.name = "Inmate%d" % i
-		inmate.anger = 100.0 if i < ANGRY_AT_START else _rng.randf_range(START_ANGER.x, START_ANGER.y)
+		inmate.table = places[i][1]
+		# The first ones at RINGLEADERS different tables lead them (the places are already shuffled by the seed).
+		inmate.ringleader = led.size() < RINGLEADERS and not led.has(inmate.table)
+		if inmate.ringleader:
+			led.append(inmate.table)
+		inmate.anger = 100.0 if i < ANGRY_AT_START or inmate.ringleader \
+			else _rng.randf_range(START_ANGER.x, START_ANGER.y)
 		level.add_child(inmate)
-		inmate.global_transform = level.global_transform * places[i]
+		inmate.global_transform = level.global_transform * places[i][0]
 		inmate.riot = self
+		if inmate.ringleader:
+			ringleaders.append(inmate)
+			inmate.climb()
+			PrisonEscort.to_cell(inmate, level).boarded.connect(_on_jailed)
 		inmate.angry_changed.connect(_on_angry_changed.unbind(2))
 		inmate.threw.connect(func(_by: PrisonInmate, food: RallyThrowable) -> void: food.burst.connect(_on_burst))
 		inmates.append(inmate)
@@ -71,7 +96,8 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 
 
 func count_angry() -> int:
-	return inmates.filter(func(inmate: PrisonInmate) -> bool: return inmate.is_angry()).size()
+	return inmates.filter(func(inmate: PrisonInmate) -> bool:
+		return inmate.is_angry() and not inmate.is_jailed()).size()
 
 
 ## The riot is on: every inmate's anger lives.
@@ -79,6 +105,7 @@ func start() -> void:
 	if running:
 		return
 	running = true
+	_rile_left = RILE_EVERY
 	for inmate in inmates:
 		inmate.active = true
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
@@ -133,6 +160,28 @@ func _on_tipped(table: CanteenTable, side: float) -> void:
 		if absf(at.x) < CanteenTable.PARTS[0][1].x / 2 + 0.3 and at.z * side > 0.0 and absf(at.z) < TIP_REACH:
 			inmate.global_position += table.global_transform.basis.z * side * TIP_PUSH
 			inmate.raise(TIP_ANGER)
+	# A ringleader up on it comes down on the far side.
+	for leader in ringleaders:
+		if leader.table == table and leader.is_on_table():
+			leader.jump_down(-side)
+
+
+## Every loose ringleader climbs back on their table and gets everyone at it angrier.
+func rile() -> void:
+	for leader in ringleaders:
+		if leader.is_cuffed() or leader.is_jailed():
+			continue
+		leader.climb()
+		leader.say("RINGLEADER_SHOUT_%d" % _rng.randi_range(1, RILES))
+		for inmate in inmates:
+			if inmate.table == leader.table and inmate != leader and not inmate.is_cuffed():
+				inmate.raise(RILE_ANGER)
+
+
+func _on_jailed() -> void:
+	jailed += 1
+	_on_angry_changed()
+	ringleader_jailed.emit(jailed)
 
 
 func _on_angry_changed() -> void:
@@ -142,8 +191,14 @@ func _on_angry_changed() -> void:
 		angry_changed.emit(angry)
 
 
-func _physics_process(_delta: float) -> void:
-	if running or follower:
+func _physics_process(delta: float) -> void:
+	if follower:
+		return
+	if running:
+		_rile_left -= delta
+		if _rile_left <= 0.0:
+			_rile_left = RILE_EVERY
+			rile()
 		return
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
 		if prison.inside_walls(cop.global_position):
