@@ -5,7 +5,9 @@ extends RefCounted
 ## From the case seed: how many cars come (TOTAL), which one is the wanted car, its 3 clues and every other car, so
 ## that no other car fits all 3 clues and LOOKALIKES of them fit 2. The comisario gives the first clue and the radio
 ## one more every RADIO_EVERY seconds. In the clown convoy (control-payasos.md) every car is the same clown car, so
-## the clues are on its driver (ConvoyTraits) instead. Every number here is (propuesta).
+## the clues are on its driver (ConvoyTraits) instead. In the fruit truck control (control-frutas.md) fewer pickups come,
+## and the clues are its color, the name on its sign, its crate and its fruit seller's hat (FruitTraits); the wanted
+## one's hollow watermelons hide the gold watches. Every number here is (propuesta).
 
 const TOTAL := Vector2i(15, 25)
 ## The wanted car comes somewhere in this stretch of the queue.
@@ -17,10 +19,15 @@ const RADIO_EVERY := 60.0
 const COLORS: Array[String] = ["COLOR_WHITE", "COLOR_YELLOW", "COLOR_GREEN", "COLOR_BLUE"]
 const KINDS: Array[String] = ["color", "plate", "decade", "trunk"]
 const CONVOY_KINDS: Array[String] = ["wig", "nose", "gloves", "horn"]
+const FRUIT_KINDS: Array[String] = ["color", "sign", "crate", "hat"]
+const FRUIT_TOTAL := Vector2i(10, 14)
+const FRUIT_WANTED_AT := Vector2i(4, 9)
 const LETTERS := "BCDFGHJKLMNPRSTVXZ"
 
 ## The clown convoy's plan: its cars carry their driver's ConvoyTraits under "clown".
 var convoy := false
+## The fruit truck control's plan: its cars carry FruitTraits under "fruit", with their watermelons' kinds.
+var fruit := false
 var total := 0
 var wanted_index := 0
 ## {kind, value}, in the order they're given.
@@ -30,19 +37,21 @@ var cars: Array[Dictionary] = []
 var lookalikes: Array[int] = []
 
 
-static func draw(case_seed: int, convoy := false) -> WantedPlan:
+static func draw(case_seed: int, convoy := false, fruit := false) -> WantedPlan:
 	var plan := WantedPlan.new()
 	plan.convoy = convoy
+	plan.fruit = fruit
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(["wanted plan", case_seed])
-	plan.total = rng.randi_range(TOTAL.x, TOTAL.y)
-	plan.wanted_index = rng.randi_range(WANTED_AT.x, WANTED_AT.y)
-	var wanted := random_car(rng, convoy)
+	plan.total = rng.randi_range(FRUIT_TOTAL.x, FRUIT_TOTAL.y) if fruit else rng.randi_range(TOTAL.x, TOTAL.y)
+	plan.wanted_index = rng.randi_range(FRUIT_WANTED_AT.x, FRUIT_WANTED_AT.y) if fruit \
+		else rng.randi_range(WANTED_AT.x, WANTED_AT.y)
+	var wanted := random_car(rng, convoy, fruit)
 	if convoy:
 		# The wanted clown carries the ringmaster's safe and someone else's license.
 		wanted.driver.trunk = "safe"
 		wanted.driver.license_glasses = not wanted.clown.glasses
-	var kinds := (CONVOY_KINDS if convoy else KINDS).duplicate()
+	var kinds := (CONVOY_KINDS if convoy else FRUIT_KINDS if fruit else KINDS).duplicate()
 	for i in CLUES:
 		var kind: String = kinds.pop_at(rng.randi() % kinds.size())
 		if kind == "trunk":
@@ -59,10 +68,17 @@ static func draw(case_seed: int, convoy := false) -> WantedPlan:
 		if i != plan.wanted_index:
 			car = plan._other_car(rng, i in plan.lookalikes)
 		plan.cars.append(car)
+	if fruit:
+		# Only the wanted pickup's watermelons hide the watches; set after the others are drawn, off its own rng.
+		for i in plan.total:
+			var car: Dictionary = plan.cars[i]
+			var hollow := rng.randi_range(FruitTraits.HOLLOW.x, FruitTraits.HOLLOW.y) if i == plan.wanted_index else 0
+			car.fruit = car.fruit.duplicate()
+			car.fruit.melons = FruitTraits.melon_kinds(rng, QueueCar.melon_count(car.plate), hollow)
 	return plan
 
 
-static func random_car(rng: RandomNumberGenerator, convoy := false) -> Dictionary:
+static func random_car(rng: RandomNumberGenerator, convoy := false, fruit := false) -> Dictionary:
 	var plate := ""
 	for i in 3:
 		plate += LETTERS[rng.randi() % LETTERS.length()]
@@ -73,6 +89,10 @@ static func random_car(rng: RandomNumberGenerator, convoy := false) -> Dictionar
 		car.driver.trunk = ConvoyTraits.trunk(rng)
 		# His license's photo, without makeup: his own, glasses and all.
 		car.driver.license_glasses = car.clown.glasses
+	if fruit:
+		car.fruit = FruitTraits.draw(rng)
+		# A pickup has no trunk to hide anything in.
+		car.driver.trunk = "bags"
 	return car
 
 
@@ -88,6 +108,10 @@ static func value_of(car: Dictionary, kind: String) -> Variant:
 			return car.driver.trunk
 		"wig", "nose", "gloves", "horn":
 			return car.clown[kind]
+		"sign":
+			return car.driver.name
+		"crate", "hat":
+			return car.fruit[kind]
 	return null
 
 
@@ -99,7 +123,7 @@ func fits(car: Dictionary) -> int:
 ## A car that fits every clue but one if it's a lookalike, and at most one otherwise.
 func _other_car(rng: RandomNumberGenerator, lookalike: bool) -> Dictionary:
 	while true:
-		var car := random_car(rng, convoy)
+		var car := random_car(rng, convoy, fruit)
 		if lookalike:
 			# Copy all clues but one, then make sure that one is off.
 			var off := rng.randi() % clues.size()
@@ -123,6 +147,10 @@ func _set_value(car: Dictionary, clue: Dictionary) -> void:
 			car.driver.trunk = clue.value
 		"wig", "nose", "gloves", "horn":
 			car.clown[clue.kind] = clue.value
+		"sign":
+			car.driver.name = clue.value
+		"crate", "hat":
+			car.fruit[clue.kind] = clue.value
 
 
 ## How clue `i` reads, for the comisario, the radio and the HUD.
@@ -130,7 +158,8 @@ func clue_text(i: int) -> String:
 	var clue := clues[i]
 	match clue.kind:
 		"color":
-			return TranslationServer.translate("CLUE_TRAFFIC_COLOR") % TranslationServer.translate(COLORS[clue.value])
+			return TranslationServer.translate("CLUE_FRUIT_COLOR" if fruit else "CLUE_TRAFFIC_COLOR") \
+				% TranslationServer.translate(COLORS[clue.value])
 		"plate":
 			return TranslationServer.translate("CLUE_TRAFFIC_PLATE") % clue.value
 		"decade":
@@ -143,6 +172,15 @@ func clue_text(i: int) -> String:
 		"horn":
 			return TranslationServer.translate("CLUE_CONVOY_HORN") \
 				% TranslationServer.translate(ConvoyTraits.horn_text({"horn": clue.value}))
+		"sign":
+			return TranslationServer.translate("CLUE_FRUIT_SIGN") \
+				% (TranslationServer.translate("FRUIT_SIGN") % clue.value)
+		"crate":
+			return TranslationServer.translate("CLUE_FRUIT_CRATE") \
+				% TranslationServer.translate(FruitTraits.crate_text(clue.value))
+		"hat":
+			return TranslationServer.translate("CLUE_FRUIT_HAT") \
+				% TranslationServer.translate(FruitTraits.hat_text(clue.value))
 	return ""
 
 

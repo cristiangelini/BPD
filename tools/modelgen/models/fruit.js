@@ -20,9 +20,12 @@ export function buildFruitTruck() {
 	box(b, 'body', black, W, 0.2, L, 0, FLOOR, 0);
 	// The cab: hood and cabin.
 	box(b, 'paint', paint, W, 0.6, FRONT - BED_F, 0, FLOOR + 0.4, (FRONT + BED_F) / 2);
-	box(b, 'paint', paint, W, 0.7, 1.3, 0, FLOOR + 1.05, BED_F + 0.75);
+	// The cabin: roof, back wall and pillars, its sides open so the fruit seller shows.
+	box(b, 'paint', paint, W, 0.08, 1.3, 0, FLOOR + 1.36, BED_F + 0.75);
+	box(b, 'paint', paint, W, 0.7, 0.1, 0, FLOOR + 1.05, BED_F + 0.15);
+	for (const x of [-1, 1]) box(b, 'paint', paint, 0.08, 0.7, 0.1, x * (W / 2 - 0.04), FLOOR + 1.05, BED_F + 1.35);
+	box(b, 'body', black, W - 0.2, 0.3, 0.5, 0, FLOOR + 0.85, BED_F + 0.45);
 	box(b, 'body', darkGlass, W - 0.15, 0.45, 0.05, 0, FLOOR + 1.1, BED_F + 1.42, [-0.35, 0, 0]);
-	for (const x of [-1, 1]) box(b, 'body', darkGlass, 0.04, 0.4, 0.9, x * (W / 2 + 0.01), FLOOR + 1.15, BED_F + 0.75);
 	box(b, 'body', grey, W + 0.06, 0.16, 0.14, 0, FLOOR + 0.05, FRONT + 0.03);
 	for (const x of [-1, 1]) box(b, 'lights', glass, 0.32, 0.14, 0.04, x * 0.7, FLOOR + 0.45, FRONT + 0.01);
 	// The bed: floor, two sides, the front wall and the tailgate.
@@ -89,9 +92,25 @@ export function buildGoldWatch() {
 	return b.build();
 }
 
+// The fruit sellers' hats (a clue), origin on top of the head (0.19 m wide): straw hat, cap with its visor to +Z,
+// beret. The game shows one.
+export function buildFruitHats() {
+	const b = new Builder('fruit_hats');
+	const straw = mat('straw', 0xe6c87a), band = mat('hat_band', 0x8a3a2a), cap = mat('cap_red', 0xd23a2a);
+	const beret = mat('beret', 0x2f5a8a);
+	b.add('hat_straw', straw, new THREE.CylinderGeometry(0.36, 0.36, 0.02, 12), { pos: V(0, 0.01, 0) });
+	b.add('hat_straw', straw, new THREE.CylinderGeometry(0.15, 0.18, 0.16, 10), { pos: V(0, 0.09, 0) });
+	b.add('hat_straw', band, new THREE.CylinderGeometry(0.182, 0.182, 0.04, 10), { pos: V(0, 0.04, 0) });
+	b.add('hat_cap', cap, new THREE.SphereGeometry(0.2, 10, 5, 0, Math.PI * 2, 0, Math.PI / 2), { pos: V(0, -0.04, 0) });
+	b.add('hat_cap', cap, new THREE.BoxGeometry(0.3, 0.02, 0.2), { pos: V(0, -0.03, 0.26), rot: [-0.15, 0, 0] });
+	b.add('hat_beret', beret, ellipsoid(0.24, 0.06, 0.24, 10, 5), { pos: V(0.03, 0.0, -0.02), rot: [0, 0, 0.15] });
+	b.add('hat_beret', beret, new THREE.CylinderGeometry(0.012, 0.012, 0.05, 5), { pos: V(0.03, 0.07, -0.02) });
+	return b.build();
+}
+
 export const models = {
 	fruit_truck: buildFruitTruck, watermelon: buildWatermelon, watermelon_half: buildWatermelonHalf,
-	gold_watch: buildGoldWatch,
+	gold_watch: buildGoldWatch, fruit_hats: buildFruitHats,
 };
 
 export const views = {

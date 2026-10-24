@@ -67,7 +67,12 @@ const CLOWN_RIDERS := Vector2i(3, 6)
 ## The fruit seller's pickup (control-frutas.md): its paint per WantedPlan.COLORS (white, yellow, green, blue).
 const FRUIT_MODEL := preload("res://assets/models/fruit_truck.glb")
 const FRUIT_PAINTS: Array[Color] = [Color("f2f2ee"), Color("e8c547"), Color("5b9a5a"), Color("7aa6d8")]
-const FRUIT_CRATES: Array[String] = ["bananas", "oranges", "pineapples"]
+const FRUIT_HATS := preload("res://assets/models/fruit_hats.glb")
+## The fruit seller at the wheel, by their name's place in DriverTraits.NAMES (every other one is a woman's).
+const FRUIT_SELLERS: Array[PackedScene] = [preload("res://assets/models/npc_cliente.glb"),
+	preload("res://assets/models/npc_clienta.glb")]
+## Seated on the driver's side (+X), head in the open window.
+const FRUIT_SELLER_AT := Vector3(0.5, -0.05, 1.1)
 ## How many watermelons ride in its bed (control-frutas.md, "Cómo es").
 const FRUIT_MELONS := Vector2i(6, 10)
 ## The bed's floor and its spots for watermelons, back first; the crate takes the front right.
@@ -102,8 +107,10 @@ var follower := false
 var clown_traits := {}
 ## One of the fruit truck control's pickups.
 var fruit := false
-## Its crate of other fruit (FRUIT_CRATES): the plan's, or else from its plate.
+## Its crate of other fruit (FruitTraits.CRATES): the plan's, or else from its plate.
 var crate := ""
+## Its fruit seller's hat (FruitTraits.HATS): the plan's, or else from its plate.
+var hat := ""
 ## Each watermelon's Watermelon.kind, in order (the plan's); missing ones are normal.
 var melon_kinds: Array[String] = []
 var _honk_left := HONK_EVERY
@@ -210,8 +217,10 @@ func _build_fruit_truck() -> void:
 	paint.albedo_color = FRUIT_PAINTS[look % FRUIT_PAINTS.size()]
 	_paint(model, paint)
 	if crate.is_empty():
-		crate = FRUIT_CRATES[absi(hash(["fruit crate", plate])) % FRUIT_CRATES.size()]
-	for kind in FRUIT_CRATES:
+		crate = FruitTraits.CRATES[absi(hash(["fruit crate", plate])) % FruitTraits.CRATES.size()]
+	if hat.is_empty():
+		hat = FruitTraits.HATS[absi(hash(["fruit hat", plate])) % FruitTraits.HATS.size()]
+	for kind in FruitTraits.CRATES:
 		var node := model.find_child("crate_" + kind, true, false) as Node3D
 		if node:
 			node.visible = kind == crate
@@ -219,6 +228,7 @@ func _build_fruit_truck() -> void:
 		var wheel: Node3D = TrafficCar.WHEEL.instantiate()
 		wheel.position = wheel_at
 		add_child(wheel)
+	_build_seller()
 	var bed := Node3D.new()
 	bed.name = "Bed"
 	add_child(bed)
@@ -253,6 +263,26 @@ func bed_melons() -> Array[Watermelon]:
 	return out
 
 
+## The fruit seller at the wheel, in their hat, the only thing on their head.
+func _build_seller() -> void:
+	var seller: Node3D = FRUIT_SELLERS[maxi(DriverTraits.NAMES.find(driver.get("name", "")), 0) % 2].instantiate()
+	seller.name = "Driver"
+	seller.position = FRUIT_SELLER_AT
+	add_child(seller)
+	for id in ["cap", "props", "hair"]:
+		var part := seller.find_child(id, true, false) as Node3D
+		if part:
+			part.visible = false
+	var hats: Node3D = FRUIT_HATS.instantiate()
+	hats.name = "Hat"
+	hats.position = Vector3(0, 1.5, 0)
+	seller.add_child(hats)
+	for kind in FruitTraits.HATS:
+		var node := hats.find_child("hat_" + kind, true, false) as Node3D
+		if node:
+			node.visible = kind == hat
+
+
 ## Tints every "paint" part of its model.
 func _paint(node: Node, material: Material) -> void:
 	for child in node.get_children():
@@ -263,7 +293,11 @@ func _paint(node: Node, material: Material) -> void:
 
 ## How many watermelons ride in its bed: from its plate, so every PC agrees.
 func melons() -> int:
-	return FRUIT_MELONS.x + absi(hash(["fruit melons", plate])) % (FRUIT_MELONS.y - FRUIT_MELONS.x + 1)
+	return melon_count(plate)
+
+
+static func melon_count(of_plate: String) -> int:
+	return FRUIT_MELONS.x + absi(hash(["fruit melons", of_plate])) % (FRUIT_MELONS.y - FRUIT_MELONS.x + 1)
 
 
 ## How many clowns ride in it: from its plate, so every PC agrees.
@@ -441,7 +475,7 @@ func _build_trunk() -> void:
 ## Online (NpcSync): what a guest's copy needs before it's added (which car it is, not whether it's the wanted one).
 func net_setup() -> Dictionary:
 	return {"plate": plate, "driver": driver, "clown": clown, "clown_traits": clown_traits, "fruit": fruit,
-		"crate": crate}
+		"crate": crate, "hat": hat, "melon_kinds": melon_kinds}
 
 
 ## Online: where it is in the queue and whether its trunk is open.

@@ -1549,3 +1549,15 @@ MELON_TAP,"¡Toc, toc!","Knock, knock!","Toc, toc!"
 MELON_TAP_ODD,"¡Tonc...!","Thonk...!","Tonc...!"
 PROMPT_GOLD_WATCH,"Un reloj de oro de mentira: llévalo al patrullero","A fake gold watch: take it to the patrol car","Um relógio de ouro falso: leve-o para a viatura"
 PROMPT_TAP_MELON_HELD,"E: golpecito. Tírala fuerte al piso para partirla","E: tap it. Throw it hard at the ground to split it","E: batidinha. Jogue com força no chão para parti-la"
+FRUIT_CRATE_BANANAS,un cajón de bananas,a crate of bananas,uma caixa de bananas
+FRUIT_CRATE_ORANGES,un cajón de naranjas,a crate of oranges,uma caixa de laranjas
+FRUIT_CRATE_PINEAPPLES,un cajón de ananás,a crate of pineapples,uma caixa de abacaxis
+FRUIT_HAT_STRAW,un sombrero de paja,a straw hat,um chapéu de palha
+FRUIT_HAT_CAP,una gorra roja,a red cap,um boné vermelho
+FRUIT_HAT_BERET,una boina azul,a blue beret,uma boina azul
+CLUE_FRUIT_SIGN,"El cartel del camión dice ""%s"".","The truck's sign says ""%s"".","A placa do caminhão diz ""%s""."
+CLUE_FRUIT_CRATE,"Además de sandías, lleva %s.","Besides watermelons, it carries %s.","Além de melancias, leva %s."
+CLUE_FRUIT_HAT,"Quien maneja lleva %s.","The driver wears %s.","Quem dirige usa %s."
+BRIEF_FRUIT_A,"¡Novatos! Es la feria de la fruta y pasan todos los fruteros por la esquina. Uno trae algo escondido adentro de las sandías.","Rookies! It's the fruit fair and every fruit seller comes through the corner. One of them has something hidden inside the watermelons.","Novatos! É a feira da fruta e todos os fruteiros passam pela esquina. Um deles traz algo escondido dentro das melancias."
+BRIEF_FRUIT_C,"Bajen sandías, denles un golpecito y escuchen. No me rompan todas, que después los fruteros me llenan la oficina de quejas. Si esposan a dos inocentes, se termina el caso.","Take watermelons down, tap them and listen. Don't break them all, or the fruit sellers will fill my office with complaints. Cuff two innocent people and the case is over.","Tirem melancias, deem uma batidinha e escutem. Não quebrem todas, senão os fruteiros enchem meu escritório de reclamações. Se algemarem dois inocentes, o caso acaba."
+CLUE_FRUIT_COLOR,"El camión es %s.","The truck is %s.","O caminhão é %s."
