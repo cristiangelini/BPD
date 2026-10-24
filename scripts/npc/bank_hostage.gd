@@ -6,7 +6,9 @@ extends CharacterBody3D
 ## complaint, a different one each time, stand up and follow that cop; out of the bank they're free, say thanks and
 ## go home. A robber who sees one being led out raises the alarm (BankRobber.saw_hostage). Online the host's walk and
 ## go free, and a guest's follow them (NpcSync, net_state). At the party (robo-banco-rehenes.md, step 1) they sway
-## to the music while they sit. Every number here is (propuesta).
+## to the music while they sit, and they don't want to go (step 2, decision 121): led by the hand they walk at half
+## speed and protest every few seconds, and let go before the door they walk back to their spot on the floor and sit
+## down again. Every number here is (propuesta).
 
 signal freed_now(hostage: BankHostage)
 
@@ -23,6 +25,15 @@ const KEEP_AWAY := 1.2
 ## At the party, sitting: they rock side to side this much (radians), this many times a second.
 const SWAY := 0.12
 const SWAY_RATE := 1.6
+## At the party, led by the hand: this much of SPEED, and a new protest every PROTEST_EVERY seconds.
+const RELUCTANT := 0.5
+const PARTY_LINES := 8
+const PROTEST_EVERY := 6.0
+const BACK_LINES := 3
+## Back at their spot when this close (m).
+const HOME_REACH := 0.25
+## Stuck on the way back (behind the counter, against a wall) this long, they're just back in their spot.
+const HOME_GIVE_UP := 20.0
 
 @export var look := "vecina"
 var next_line := 0
@@ -31,6 +42,12 @@ var led_by: Cop
 ## At the party (decision 121): they sway to the music while they sit, each at their own beat.
 var partying := false
 var sway_phase := 0.0
+## Let go at the party before the door: walking back to `home`, where they sat (the level's spot for them).
+var returning := false
+var home := Vector3.ZERO
+var _home_yaw := 0.0
+var _protest_left := 0.0
+var _home_left := 0.0
 var freed := false
 ## Whether a world position is out of the bank (the level sets it; nowhere is, by default).
 var is_out: Callable = func(_at: Vector3) -> bool: return false
@@ -69,6 +86,8 @@ func _ready() -> void:
 	_bubble.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_bubble.hide()
 	add_child(_bubble)
+	home = global_position
+	_home_yaw = rotation.y
 
 
 func prompt_key(cop: Cop) -> String:
@@ -83,23 +102,71 @@ func use(cop: Cop) -> void:
 		return
 	if led_by == cop:
 		led_by = null
-		_model.scale.y = _size * CROUCH
+		if partying:
+			returning = true
+			_home_left = HOME_GIVE_UP
+			say("HOSTAGE_BACK_%d" % (next_line % BACK_LINES + 1))
+		else:
+			_model.scale.y = _size * CROUCH
 		return
 	led_by = cop
+	returning = false
 	_model.scale.y = _size
-	say("HOSTAGE_%d" % (next_line % LINES + 1))
+	_protest()
+
+
+## What they say when taken by the hand, and every PROTEST_EVERY seconds at the party while led.
+func _protest() -> void:
+	if partying:
+		say("HOSTAGE_PARTY_%d" % (next_line % PARTY_LINES + 1))
+		_protest_left = PROTEST_EVERY
+	else:
+		say("HOSTAGE_%d" % (next_line % LINES + 1))
 	next_line += 1
 
 
+## How fast they follow the hand: half as fast at the party (propuesta).
+func speed() -> float:
+	return SPEED * RELUCTANT if partying else SPEED
+
+
 func _physics_process(delta: float) -> void:
-	if freed or not led_by:
+	if freed:
+		return
+	if returning:
+		_walk_home(delta)
+		return
+	if not led_by:
 		return
 	if is_out.call(global_position):
 		free_hostage()
 		return
+	if partying:
+		_protest_left -= delta
+		if _protest_left <= 0.0:
+			_protest()
 	var to := led_by.global_position - global_position
 	to.y = 0.0
-	var wish := to.normalized() * SPEED if to.length() > KEEP_AWAY else Vector3.ZERO
+	var wish := to.normalized() * speed() if to.length() > KEEP_AWAY else Vector3.ZERO
+	_step(wish, delta)
+
+
+## Back to where they sat: once there, they sit down again facing the counter.
+func _walk_home(delta: float) -> void:
+	var to := home - global_position
+	to.y = 0.0
+	_home_left -= delta
+	if to.length() < HOME_REACH or _home_left <= 0.0:
+		returning = false
+		global_position = Vector3(home.x, global_position.y, home.z)
+		velocity = Vector3.ZERO
+		rotation.y = _home_yaw
+		_model.scale.y = _size * CROUCH
+		return
+	_step(to.normalized() * SPEED, delta)
+
+
+func _step(wish: Vector3, delta: float) -> void:
 	if wish.length() > 0.05:
 		look_at(global_position + wish, Vector3.UP)
 	velocity = Vector3(wish.x, 0.0 if is_on_floor() else velocity.y - GameScale.GRAVITY * delta, wish.z)
@@ -110,6 +177,7 @@ func _physics_process(delta: float) -> void:
 func free_hostage() -> void:
 	freed = true
 	led_by = null
+	returning = false
 	collision_layer = 0
 	say("HOSTAGE_FREE")
 	freed_now.emit(self)
@@ -141,7 +209,7 @@ func apply_net_state(state: Variant) -> void:
 
 
 func _process(delta: float) -> void:
-	if partying and not led_by and not freed:
+	if partying and not led_by and not returning and not freed:
 		sway_phase += delta * SWAY_RATE * TAU
 		_model.rotation.z = sin(sway_phase) * SWAY
 	elif _model.rotation.z != 0.0:

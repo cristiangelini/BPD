@@ -51,6 +51,10 @@ dos botones con su cono y su máscara de cartón, y las frases.
   fuerza una. El hall tiene 18 guirnaldas de banderines en tres filas bajo el techo, la radio de los ladrones en el
   banco del oeste con sus notas que suben y bajan, y la bandeja de 7 cruasanes en el mostrador. Los rehenes se
   hamacan al ritmo de la música mientras están sentados y paran cuando se los lleva de la mano.
+- **Paso 2 (24/10):** en la fiesta, el rehén que llevas de la mano camina a la mitad (0,9 m/s) y protesta cada 6 s
+  con 8 frases. Si lo sueltas adentro dice "¡Me guardaron el lugar!" y vuelve caminando a su lugar, donde se sienta
+  otra vez; si se traba más de 20 s, aparece en su lugar. Se lo puede volver a tomar en el camino. Afuera queda
+  libre como siempre. En el robo base nada cambia: se sienta donde lo sueltan.
 
 ## Preguntas para Cristian
 1. **¿Qué hace un rehén que sueltan antes de la puerta?** **Respondida (Cristian, 24/10):** vuelve caminando a su
