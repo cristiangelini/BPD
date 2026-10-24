@@ -5,7 +5,8 @@ extends GutTest
 
 const OnlinePcs := preload("res://tests/unit/online_pcs.gd")
 const BANK_SCENE := preload("res://scenes/levels/bank.tscn")
-const SEED := 3
+## A base robbery's seed (not the party, robo-banco-rehenes.md).
+const SEED := 4
 
 var _pcs: OnlinePcs
 

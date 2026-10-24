@@ -96,11 +96,12 @@ const HOSTAGE_XS: Array[float] = [-6.5, -3.5, -0.5, 2.5]
 const HOSTAGE_ZS: Array[float] = [2.5, 4.8]
 ## The party (robo-banco-rehenes.md, step 1): garlands hung across the hall in rows under the roof, the boombox on the
 ## west bench and the croissants' tray on the counter.
+## The way back in for the party's hostage El Oso let go: through the entrance and between the queue posts.
+const WAY_IN: Array[Vector3] = [Vector3(ENTRANCE_X, 0, HALF_Z - 1.5), Vector3(-0.4, 0, 6.0)]
 ## How many of the party's hostages are fans of the gang (propuesta).
 const SNITCHES := 2
 const GARLAND_MODEL := preload("res://assets/models/bank_garland.glb")
 const BOOMBOX_MODEL := preload("res://assets/models/bank_boombox.glb")
-const TRAY_MODEL := preload("res://assets/models/bank_croissant_tray.glb")
 const GARLAND_XS: Array[float] = [-10.0, -6.0, -2.0, 2.0, 6.0, 10.0]
 const GARLAND_ZS: Array[float] = [1.2, 4.0, 6.8]
 const GARLAND_DROP := 0.12
@@ -128,7 +129,7 @@ var boss: BankRobber
 var hostages: Array[BankHostage] = []
 ## The variant where the hostages are having a party and don't want to leave (decision 121).
 var party := false
-var croissant_tray: Node3D
+var croissant_tray: BankCroissantTray
 var drill: BankDrill
 var hostages_freed := 0
 var phone: BankPhone
@@ -235,7 +236,7 @@ func _add_party() -> void:
 	var bob := notes.create_tween().set_loops()
 	bob.tween_property(notes, "position:y", 0.95, 0.5).set_trans(Tween.TRANS_SINE)
 	bob.tween_property(notes, "position:y", 0.75, 0.5).set_trans(Tween.TRANS_SINE)
-	croissant_tray = TRAY_MODEL.instantiate()
+	croissant_tray = BankCroissantTray.new()
 	croissant_tray.name = "CroissantTray"
 	croissant_tray.position = TRAY_AT + Vector3.UP * FLOOR_TOP
 	party_node.add_child(croissant_tray)
@@ -455,10 +456,17 @@ func open_vault() -> void:
 	vault_door.rotation.y = PI / 2
 
 
-## El Oso keeps his word: the first hostage still on the floor walks out of the entrance and goes free.
+## El Oso keeps his word: the first hostage still on the floor walks out of the entrance and goes free. At the party
+## (step 4) they only get as far as the door, and walk back in unless a cop takes them by the hand there.
 func release_hostage() -> void:
 	for hostage in hostages:
-		if not hostage.freed and not hostage.led_by:
+		if hostage.sitting():
+			if party:
+				var way_in: Array[Vector3] = []
+				for at in WAY_IN:
+					way_in.append(global_transform * (at + Vector3.UP * FLOOR_TOP))
+				hostage.walk_out(global_transform * Vector3(ENTRANCE_X, FLOOR_TOP, HALF_Z + 1.2), way_in)
+				return
 			hostage.global_position = global_transform * Vector3(ENTRANCE_X, FLOOR_TOP, HALF_Z + 1.5)
 			hostage.free_hostage()
 			return

@@ -60,6 +60,12 @@ dos botones con su cono y su máscara de cartón, y las frases.
   2,5 s cada lado) con un cono de 120° y 8 m. Si ven a un policía gritan "¡Oso, cuidado, la policía!" y el taladro
   va ×1,5 durante 20 s, como con un ladrón; al mismo policía no lo vuelven a cantar por 5 s. Llevados de la mano
   miran adelante y no avisan.
+- **Paso 4 (24/10):** E con las manos vacías en la bandeja saca un cruasán (hay 7). E con un cruasán o con una caja
+  de donas en la mano sobre un rehén de la fiesta se lo da: lo come, da las gracias y sigue a ese policía a velocidad
+  normal, sin protestar, hasta salir (de la caja se va una dona; el cruasán desaparece). E con el cruasán en otro
+  lado se lo come el policía, como una dona. El rehén que suelta El Oso por un pedido cumplido sale hasta la puerta,
+  dice "¿Seguro que tengo que irme?" y espera 8 s; si nadie lo toma de la mano, vuelve a entrar entre los postes de
+  la fila hasta su lugar. Las pruebas del robo base usan una semilla sin fiesta.
 
 ## Preguntas para Cristian
 1. **¿Qué hace un rehén que sueltan antes de la puerta?** **Respondida (Cristian, 24/10):** vuelve caminando a su
