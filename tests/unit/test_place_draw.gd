@@ -11,7 +11,7 @@ func after_each() -> void:
 
 func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltration_and_each_raid_a_sixth_of_the_rest() -> void:
 	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "chase": 0, "crime_scene": 0, "traffic": 0, "club": 0,
-		"choir": 0, "bank": 0, "plaza": 0}
+		"choir": 0, "bank": 0, "plaza": 0, "prison": 0}
 	for i in 600:
 		count[PlaceDraw.pick(i + 1, [], 1)] += 1
 	assert_between(count.chase, 250, 350, "half chases (Cristian, 20/10)")
@@ -23,6 +23,7 @@ func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltrati
 	assert_between(count.club + count.choir, 25, 80, "the infiltrations, as often as a raid (propuesta)")
 	assert_between(count.bank, 15, 70, "the bank robbery, about as often as a raid (propuesta)")
 	assert_between(count.plaza, 10, 60, "the politician's rally, about as often as a raid (propuesta)")
+	assert_between(count.prison, 5, 50, "the prison riot, about as often as a raid (propuesta)")
 	assert_gt(count.club, 5, "half of them at the grandparents' club")
 	assert_gt(count.choir, 5, "and half at the church choir")
 	assert_eq(PlaceDraw.pick(77, []), PlaceDraw.pick(77, []), "the same seed gives the same place for everyone")

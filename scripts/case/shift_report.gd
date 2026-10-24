@@ -16,6 +16,9 @@ const AWARDS := [
 	{"stat": "rally_blocks", "key": "AWARD_RALLY_BLOCKS"},
 	{"stat": "rally_catches", "key": "AWARD_RALLY_CATCHES"},
 	{"stat": "politician_returns", "key": "AWARD_POLITICIAN_RETURNS"},
+	{"stat": "food_hits", "key": "AWARD_FOOD_HITS"},
+	{"stat": "tray_blocks", "key": "AWARD_TRAY_BLOCKS"},
+	{"stat": "food_slips", "key": "AWARD_FOOD_SLIPS"},
 ]
 
 
