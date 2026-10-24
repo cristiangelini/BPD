@@ -141,3 +141,4 @@
 - Prisoner transfer, step 2: 8 inmates sit cuffed in the bus, each with an escape plan that fills once the bus leaves while no cop watches them, drops while a standing cop looks at them up close, jumps on hard brakes and shows "..." and "!" over their heads.
 - Prisoner transfer, step 3a: the spoon (an inmate opens their cuffs and walks to a door unless a cop blocks the aisle or sits them back) and the bathroom (stop at the new gas station in time, or the inmate gets angry and the others plan faster).
 - Prisoner transfer, step 3b: the sick inmate (lies in the aisle and runs for the door if a cop crouches to help) and the loose window (pushes the bars and jumps out when the bus stops, unless a cop stops them).
+- Prisoner transfer, step 3c: the singer (a lullaby puts the nearest standing cop to sleep) and the accomplice (a car follows the bus and hands an inmate a file when it stops). All six tricks are in.
