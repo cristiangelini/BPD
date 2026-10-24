@@ -4,7 +4,8 @@ extends Node
 ## What each suspect leaves on the street behind him (persecucion.md, "Los sospechosos"): the ice cream man drips ice
 ## cream every DRIP_EVERY seconds, and on a puddle the patrol car's tires lose their grip; the moving truck drops a piece
 ## of furniture at every corner he turns, which is in the way (a loose body: knocking it over isn't a fine, but it
-## slows you down); the school bus is full of kids shouting out of the windows. Every number here is (propuesta).
+## slows you down); the school bus is full of kids shouting out of the windows. The clown car honks all the way and
+## drops an inflatable clown (ChaseDummy) every DUMMY_EVERY seconds. Every number here is (propuesta).
 
 const DRIP_EVERY := 3.0
 ## A puddle's size (m), how long it lasts, and the grip left on it.
@@ -25,12 +26,18 @@ const BEHIND := 3.5
 ## The kids shout a line every this many seconds.
 const KIDS_EVERY := 2.5
 const KIDS_LINES := ["CHASE_KIDS_1", "CHASE_KIDS_2", "CHASE_KIDS_3", "CHASE_KIDS_4", "CHASE_KIDS_5"]
+## What shows over the vehicle all the way: the kids' shouts, the clown car's horn.
+const SHOUTS := {"school_bus": KIDS_LINES, "clown_car": ["CHASE_HONK_1", "CHASE_HONK_2", "CHASE_HONK_3"]}
+const DUMMY_EVERY := 5.0
+const MAX_DUMMIES := 8
 
 var case: ChaseCase
 ## The ice cream puddles on the street: [mesh, seconds left].
 var puddles: Array[Array] = []
 var furniture: Array[RigidBody3D] = []
+var dummies: Array[ChaseDummy] = []
 var _drip_left := DRIP_EVERY
+var _dummy_left := DUMMY_EVERY
 var _kids_left := 0.0
 var _kids_line := 0
 var kids_bubble: Label3D
@@ -43,14 +50,14 @@ var _dropped := 0
 func _ready() -> void:
 	_rng.seed = hash("drops %d" % case.case_seed)
 	case.truck.corner_passed.connect(_on_corner)
-	if case.suspect_id == "school_bus":
+	if SHOUTS.has(case.suspect_id):
 		kids_bubble = Label3D.new()
 		kids_bubble.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 		kids_bubble.pixel_size = 0.006
 		kids_bubble.outline_size = 12
 		kids_bubble.font_size = 44
 		kids_bubble.modulate = Color(1, 0.95, 0.6)
-		kids_bubble.position.y = 3.6
+		kids_bubble.position.y = 3.6 if case.suspect_id == "school_bus" else 2.4
 		kids_bubble.hide()
 		case.truck.add_child(kids_bubble)
 
@@ -62,11 +69,17 @@ func _physics_process(delta: float) -> void:
 		if _drip_left <= 0.0:
 			_drip_left = DRIP_EVERY
 			drip()
+	if case.suspect_id == "clown_car" and case.chasing and not case.stopped and not case.follower:
+		_dummy_left -= delta
+		if _dummy_left <= 0.0:
+			_dummy_left = DUMMY_EVERY
+			drop_dummy()
 	if kids_bubble and case.chasing and not case.stopped:
 		_kids_left -= delta
 		if _kids_left <= 0.0:
 			_kids_left = KIDS_EVERY
-			kids_bubble.text = KIDS_LINES[_kids_line % KIDS_LINES.size()]
+			var lines: Array = SHOUTS[case.suspect_id]
+			kids_bubble.text = lines[_kids_line % lines.size()]
 			kids_bubble.show()
 			_kids_line += 1
 	elif kids_bubble:
@@ -131,6 +144,21 @@ func drop_furniture() -> RigidBody3D:
 	body.rotation.y = _rng.randf() * TAU
 	furniture.append(body)
 	return body
+
+
+## An inflatable clown, just like him, drops out of the back of the clown car.
+func drop_dummy() -> ChaseDummy:
+	dummies = dummies.filter(func(dummy: ChaseDummy) -> bool: return is_instance_valid(dummy))
+	if dummies.size() >= MAX_DUMMIES:
+		dummies.pop_front().queue_free()
+	var dummy := ChaseDummy.new()
+	_dropped += 1
+	dummy.name = "Dummy%d" % _dropped
+	case.get_parent().add_child(dummy)
+	dummy.global_position = _behind() + Vector3.UP * 0.2
+	dummy.rotation.y = case.truck.global_rotation.y + PI
+	dummies.append(dummy)
+	return dummy
 
 
 func _behind() -> Vector3:

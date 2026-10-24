@@ -112,6 +112,44 @@ export function buildGoldenNose() {
 	return b.build();
 }
 
+// The clown car the culprit flees in: tiny, round, polka-dotted, with a big horn on the hood and fat wheels. Front +Z.
+export function buildClownCar() {
+	const b = new Builder('clown_car');
+	const body = C('car_yellow', 0xf0c030), dot = C('dot_red', 0xe0262e), tire = C('tire', 0x1a1a1e);
+	b.add('body', body, ellipsoid(0.62, 0.42, 1.0, 12, 8), { pos: V(0, 0.62, 0) });
+	b.add('body', body, ellipsoid(0.5, 0.36, 0.5, 10, 6), { pos: V(0, 0.95, -0.15) });
+	b.add('glass', C('car_glass', 0x9fd0ea), new THREE.BoxGeometry(0.7, 0.28, 0.04), { pos: V(0, 1.02, 0.32), rot: [-0.4, 0, 0] });
+	for (const [x, y, z] of [[0.55, 0.65, 0.3], [-0.56, 0.6, -0.3], [0.5, 0.75, -0.5], [-0.45, 0.8, 0.45], [0.0, 0.92, 0.75]]) {
+		b.add('body', dot, new THREE.SphereGeometry(0.09, 8, 6), { pos: V(x, y, z) });
+	}
+	for (const x of [-0.55, 0.55]) for (const z of [-0.65, 0.65]) {
+		b.add('wheels', tire, new THREE.CylinderGeometry(0.28, 0.28, 0.22, 12), { pos: V(x, 0.28, z), rot: [0, 0, Math.PI / 2] });
+		b.add('wheels', white, new THREE.CylinderGeometry(0.12, 0.12, 0.23, 8), { pos: V(x, 0.28, z), rot: [0, 0, Math.PI / 2] });
+	}
+	// The horn: a red rubber bulb on a golden trumpet.
+	b.add('horn', gold, new THREE.CylinderGeometry(0.1, 0.03, 0.3, 10), { pos: V(0.3, 0.98, 0.72), rot: [Math.PI / 2, 0, 0] });
+	b.add('horn', red, ellipsoid(0.08, 0.08, 0.1, 8, 6), { pos: V(0.3, 0.98, 0.52) });
+	return b.build();
+}
+
+// The inflatable clown dummy that drops out of the car: a fat white balloon with the same wig and nose, and a knot.
+export function buildInflatableClown() {
+	const b = new Builder('inflatable_clown');
+	const plastic = C('balloon_white', 0xf6f0e0, { roughness: 0.25 }), wig = C('wig_orange', 0xf07a1e);
+	b.add('body', plastic, ellipsoid(0.38, 0.55, 0.32, 12, 8), { pos: V(0, 0.6, 0) });
+	b.add('body', plastic, ellipsoid(0.28, 0.28, 0.26, 10, 7), { pos: V(0, 1.35, 0) });
+	b.add('face', red, new THREE.SphereGeometry(0.07, 8, 6), { pos: V(0, 1.35, 0.27) });
+	b.add('face', black, new THREE.TorusGeometry(0.1, 0.015, 4, 10, Math.PI), { pos: V(0, 1.24, 0.24), rot: [0, 0, Math.PI] });
+	for (const s of [-1, 1]) {
+		b.add('face', black, ellipsoid(0.03, 0.045, 0.02, 6, 4), { pos: V(s * 0.09, 1.45, 0.24) });
+		b.add('wig', wig, new THREE.SphereGeometry(0.15, 8, 6), { pos: V(s * 0.25, 1.45, -0.02) });
+		b.add('body', plastic, ellipsoid(0.1, 0.3, 0.1, 6, 5), { pos: V(s * 0.42, 0.75, 0), rot: [0, 0, s * 0.5] });
+	}
+	b.add('wig', wig, new THREE.SphereGeometry(0.16, 8, 6), { pos: V(0, 1.6, -0.05) });
+	b.add('body', plastic, new THREE.ConeGeometry(0.06, 0.1, 6), { pos: V(0, 0.05, 0), rot: [Math.PI, 0, 0] });
+	return b.build();
+}
+
 const BUILD = { payaso, director, domadora };
 export const models = {
 	...Object.fromEntries(Object.entries(BUILD).map(([n, f]) => [`npc_${n}`, () => {
@@ -119,7 +157,8 @@ export const models = {
 		f(b);
 		return b.build();
 	}])),
-	seal: buildSeal, cash_tin: buildCashTin, golden_nose: buildGoldenNose,
+	seal: buildSeal, cash_tin: buildCashTin, golden_nose: buildGoldenNose, clown_car: buildClownCar,
+	inflatable_clown: buildInflatableClown,
 };
 
 export const views = {
@@ -131,6 +170,11 @@ export const views = {
 	circus_loot: {
 		items: [{ name: 'seal', pos: [-0.5, 0, 0], rotY: 0.6 }, { name: 'cash_tin', pos: [0.5, 0, 0.2] }, { name: 'golden_nose', pos: [0.9, 0, 0.2] }],
 		cam: { pos: [0.2, 1.1, 2.6], target: [0.2, 0.3, 0], fov: 38 },
+	},
+	clown_car: {
+		items: [{ name: 'clown_car', pos: [-0.6, 0, 0], rotY: 0.7 }, { name: 'npc_payaso', pos: [-0.6, 0.45, -0.25], rotY: 0.7, scale: 0.8 },
+			{ name: 'inflatable_clown', pos: [1.2, 0, 0.3], rotY: -0.4 }],
+		cam: { pos: [0.3, 1.6, 5.2], target: [0.3, 0.7, 0], fov: 38 },
 	},
 	npc_payaso: {
 		items: [{ name: 'npc_payaso', pos: [-0.5, 0, 0], rotY: 0.35 }, { name: 'npc_payaso', pos: [0.7, 0, 0], rotY: Math.PI - 0.6 }],

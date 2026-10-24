@@ -1507,3 +1507,12 @@ HINT_CAMERA_PLAY,"El ensayo de anoche. En la oscuridad se llevan a Galleta y se 
 HINT_CAMERA_NOTHING,"El ensayo de anoche: el director saludando, una y otra vez.","Last night's rehearsal: the ringmaster bowing, over and over.","O ensaio de ontem: o diretor fazendo reverência, sem parar."
 HINT_CAMERA_DELETED,"Grabación borrada.","Recording deleted.","Gravação apagada."
 HINT_CAMERA_DELETED_ALREADY,"No hay nada grabado.","There's nothing recorded.","Não tem nada gravado."
+HINT_CLOWN_LEFT,"%s se cansó de esperar, se subió a su casilla y se fue. Su ficha queda como está.","%s got tired of waiting, got in their caravan and left. Their file stays as it is.","%s cansou de esperar, subiu no trailer e foi embora. A ficha fica como está."
+HINT_ESCAPE_clown,"¡%s se metió en el autito de payasos y se escapa tocando la bocina! ¡Al patrullero!","%s squeezed into the clown car and is getting away, honking! To the patrol car!","%s se enfiou no carrinho de palhaço e está fugindo buzinando! Para a viatura!"
+CRIME_owner_clown,"¡Novatos! Ayer acusaron a un payaso del Circo Hermanos Cascabel y está en la sala de interrogatorio. No se quiere sacar la nariz.","Rookies! Yesterday you accused a clown from the Cascabel Brothers Circus, and they're in the interrogation room. They won't take off their nose.","Novatos! Ontem vocês acusaram um palhaço do Circo Irmãos Cascabel e ele está na sala de interrogatório. Não quer tirar o nariz."
+CONFESS_owner_clown,"¡Está bien! ¡Fui yo! Quería un número propio, y nadie aplaude a un payaso más. ¡Bop!","Fine! It was me! I wanted my own act, and nobody claps for just another clown. Bop!","Tá bom! Fui eu! Eu queria um número só meu, e ninguém aplaude mais um palhaço. Bop!"
+CHASE_HONK_1,¡MEC MEC!,HONK HONK!,FOM FOM!
+CHASE_HONK_2,¡Bop bop bop!,Bop bop bop!,Bop bop bop!
+CHASE_HONK_3,"¡Jijiji, no me agarran!","Hee hee, you can't catch me!","Hihihi, não me pegam!"
+PROMPT_POP_DUMMY,"E: reventar el payaso inflable","E: pop the inflatable clown","E: estourar o palhaço inflável"
+HINT_DUMMY_POPPED,"¡PLOP! Era de mentira.","POP! It was a fake.","PLOFT! Era de mentira."

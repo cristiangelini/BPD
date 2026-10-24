@@ -132,5 +132,11 @@ Antes de programar conviene que el pastel y el circo compartan una base (como el
    del culpable); comérselo lo arruina. La cámara del director está en un trípode a su lado, con dos botones juntos:
    el verde reproduce el ensayo ("se oye una bocina aguda: ¡bop!") y el rojo, justo al lado, lo borra para siempre.
    Las líneas de la planilla y de lo arruinado son las del circo **(propuesta)**.
-7. El final: tablero, cansancio, sueldo y el autito de payasos con los muñecos.
+7. El final: tablero, cansancio, sueldo y el autito de payasos con los muñecos. Hecho así: el tablero, la acusación
+   y el cansancio son los del pastel (desde los 8 minutos, cada 2 minutos un payaso "se sube a su casilla y se va", y
+   deja de hacer el truco). Resuelto, el sueldo es 500 y si encontraron lo robado suma 100; la cuota es 500. Si al
+   acusar bien le toca huir, espera en el autito de payasos al frente del lote (amarillo con lunares, una bocina
+   grande en el capó) y sale a la calle a 30 km/h, con "¡MEC MEC!" arriba todo el camino. Cada 5 s suelta un payaso
+   inflable igual a él, con arena en la base para que estorbe al patrullero; con E se revienta ("¡PLOP!"). Bajado del
+   autito es un payaso, y en el interrogatorio también **(propuesta)**.
 8. El sorteo de "Jugar" (mitad pastel, mitad circo) y el online.

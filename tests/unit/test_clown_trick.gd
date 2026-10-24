@@ -58,6 +58,8 @@ func test_some_signs_fall_off_in_the_run() -> void:
 func test_the_trick_comes_every_so_often_once_the_case_is_on() -> void:
 	var case := _case()
 	var trick := (case.place as Circus).trick
+	# Without a comisario the case gives the tip at once: back to before it.
+	case.tip_given = false
 	trick._physics_process(ClownTrick.TRICK_EVERY)
 	assert_eq(trick.rounds, 0, "not before the tip")
 	case.give_tip()
