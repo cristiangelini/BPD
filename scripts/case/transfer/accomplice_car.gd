@@ -40,6 +40,9 @@ func _ready() -> void:
 		var wheel: Node3D = WHEEL.instantiate()
 		wheel.position = at
 		add_child(wheel)
+	# A guest's copy (NpcSync) only follows the host's.
+	if not bus:
+		return
 	var behind := bus.global_position - bus.global_basis.z * FOLLOW
 	global_transform = Transform3D(Basis(Vector3.UP, bus.global_basis.get_euler().y), Vector3(behind.x, 0.0, behind.z))
 	_trail.append(global_position)

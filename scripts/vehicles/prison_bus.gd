@@ -52,6 +52,8 @@ var return_seat := 0
 ## The cops standing inside right now.
 var riders: Array[Cop] = []
 var lurches := 0
+## The last lurch's push (online: TransferCase sends it to the guests, whose own cops it throws).
+var last_push := Vector3.ZERO
 var _last_velocity := Vector3.ZERO
 var _lurch_left := 0.0
 
@@ -190,6 +192,7 @@ func _lurch(delta: float) -> void:
 	_lurch_left = LURCH_GAP
 	lurches += 1
 	var push := -accel.normalized() * minf(accel.length() * LURCH_SHARE, LURCH_MAX)
+	last_push = push
 	for cop in riders:
 		if is_instance_valid(cop):
 			cop.knock_back(push, LURCH_SECONDS)
