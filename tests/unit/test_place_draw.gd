@@ -10,13 +10,15 @@ func after_each() -> void:
 
 
 func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltration_and_each_raid_a_sixth_of_the_rest() -> void:
-	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "chase": 0, "crime_scene": 0, "traffic": 0, "club": 0,
-		"choir": 0, "bank": 0, "plaza": 0, "prison": 0}
+	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "chase": 0, "crime_scene": 0, "circus": 0, "traffic": 0,
+		"club": 0, "choir": 0, "bank": 0, "plaza": 0, "prison": 0}
 	for i in 600:
 		count[PlaceDraw.pick(i + 1, [], 1)] += 1
 	assert_between(count.chase, 250, 350, "half chases (Cristian, 20/10)")
-	for place: String in ["crime_scene", "traffic"]:
-		assert_between(count[place], 25, 80, "even odds for %s (propuesta)" % place)
+	assert_between(count.crime_scene + count.circus, 25, 80, "even odds for the crime scenes (propuesta)")
+	assert_gt(count.crime_scene, 5, "half at the pastry contest")
+	assert_gt(count.circus, 5, "and half at the circus")
+	assert_between(count.traffic, 25, 80, "even odds for the traffic control (propuesta)")
 	# With the bank and the rally drawn before them, each raid comes up about 1 shift in 30 (propuesta).
 	for place: String in ["grandpa", "bakery", "groomer"]:
 		assert_between(count[place], 10, 60, "%s still comes up (propuesta)" % place)

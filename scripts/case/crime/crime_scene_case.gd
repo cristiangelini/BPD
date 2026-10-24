@@ -339,7 +339,10 @@ func snapshot() -> Dictionary:
 	var state := {"tip": tip_given, "at_tent": at_tent, "found": clues_found.duplicate(), "ruined": ruined.duplicate(),
 		"parts": file_parts.duplicate(true), "files": files.duplicate(), "accused": accused, "wrong": wrong_guesses,
 		"lost": lost, "gone": gone.duplicate(), "escaped": escaped, "loot": loot_found,
-		"offended": place != null and place.witness_offended(), "result": _result}
+		"offended": place != null and place.witness_offended(), "result": _result, "captured": captured.duplicate(true)}
+	# What only the place knows (the circus: the trick, the signs, the camera).
+	if place:
+		state.place = place.net_state()
 	# The culprit who ran off on his bike, and the chase after him.
 	if chase:
 		state.chase = chase.snapshot()
@@ -355,6 +358,9 @@ func apply_snapshot(state: Dictionary) -> void:
 	ruined.assign(state.ruined)
 	file_parts = state.parts.duplicate(true)
 	files.assign(state.files)
+	captured = state.get("captured", {}).duplicate(true)
+	if place and state.has("place"):
+		place.apply_net_state(state.place)
 	# The comisario's verdict at the board, said here too.
 	if state.wrong > wrong_guesses:
 		_comisario_says("BOARD_WRONG_LOST" if state.lost else "BOARD_WRONG")

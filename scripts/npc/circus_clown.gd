@@ -221,6 +221,8 @@ func _show_disguise() -> void:
 	part("glasses").visible = traits.glasses and not makeup_on
 	part("wig").visible = wig_on
 	part("hair").visible = not wig_on
+	part("gloves").visible = gloves_on
+	part("shoe_right").visible = shoe_on
 
 
 func said() -> String:

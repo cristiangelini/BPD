@@ -5,7 +5,8 @@ extends RefCounted
 ## it, the grandpa's house, the bakery or the pet salon, with even odds (propuesta). Every third shift is an
 ## interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
 ## (persecucion.md, "Sale como un caso más"). Of the shifts left, one in CRIME_EVERY is the crime scene
-## (escena-del-crimen.md, propuesta), then one in TRAFFIC_EVERY the traffic control (control-transito.md), then one in
+## (escena-del-crimen.md, propuesta; half at the pastry contest and half at the circus, escena-circo.md), then one in
+## TRAFFIC_EVERY the traffic control (control-transito.md), then one in
 ## INFILTRATION_EVERY an infiltration (infiltracion.md), half at the grandparents' club and half at the church choir
 ## (infiltracion-coro.md), then one in BANK_EVERY the bank robbery (robo-banco.md), then one in RALLY_EVERY the
 ## politician's rally (proteccion-politico.md), then one in PRISON_EVERY the prison riot (carcel-motin.md), and the
@@ -40,6 +41,8 @@ const CHASE_EVERY := 2
 ## traffic control (propuesta: each as often as each raid).
 const CRIME_EVERY := 5
 const TRAFFIC_EVERY := 4
+## The crime scenes, drawn by the seed: the pastry contest and the circus (escena-circo.md, propuesta).
+const CRIME_SCENES := ["crime_scene", "circus"]
 ## Of the rest, one in this many is an infiltration (propuesta: as often as each raid), at one of these by the seed.
 const INFILTRATION_EVERY := 4
 const INFILTRATIONS := ["club", "choir"]
@@ -74,7 +77,7 @@ static func pick(case_seed: int, args: PackedStringArray, shift := 0, chases := 
 		return "chase"
 	# Hashed as an array: string hashes of the same seed with another prefix go together in their low bits.
 	if chases and hash(["crime scene", case_seed]) % CRIME_EVERY == 0:
-		return "crime_scene"
+		return CRIME_SCENES[hash(["crime scene place", case_seed]) % CRIME_SCENES.size()]
 	if chases and hash(["traffic control", case_seed]) % TRAFFIC_EVERY == 0:
 		return "traffic"
 	if chases and hash(["infiltration", case_seed]) % INFILTRATION_EVERY == 0:

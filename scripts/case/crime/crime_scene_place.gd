@@ -44,6 +44,15 @@ func offend_witness() -> void:
 	pass
 
 
+## Online: what a guest's place needs from the host's that the case doesn't carry (CrimeSceneCase.snapshot).
+func net_state() -> Dictionary:
+	return {}
+
+
+func apply_net_state(_state: Dictionary) -> void:
+	pass
+
+
 ## A cop shouted (VoiceChat): the witness may take offense.
 func shouted_by(_cop: Cop) -> void:
 	pass
