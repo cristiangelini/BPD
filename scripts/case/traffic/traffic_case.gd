@@ -9,7 +9,8 @@ extends Node
 ## pastry contest's culprit); caught, it's solved, and got away, lost. Online the host's case decides and a guest's
 ## follows it (CaseSync). In the clown convoy (control-payasos.md) the driver can be cuffed out of the car too, the
 ## other clowns hop back in, and the wanted clown runs off in his clown car, dropping inflatable clowns. Every number
-## here is (propuesta).
+## here is (propuesta). In the fruit truck control (control-frutas.md) every watermelon split from an innocent fruit
+## seller's pickup is a complaint too, smaller, and a gold watch in the patrol car's trunk adds to a solved case's pay.
 
 signal detained(car: QueueCar, wanted: bool)
 
@@ -17,6 +18,8 @@ signal detained(car: QueueCar, wanted: bool)
 const MAX_INNOCENTS := 2
 ## Each innocent's complaint comes off the pay (propuesta, like the raid's fines).
 const COMPLAINT_FINE := 100
+## Each watermelon split from an innocent fruit seller's pickup (control-frutas.md, answer 2).
+const MELON_FINE := 20
 ## Its own quota, like the chase and the crime scene (decision 91).
 const QUOTA := ShiftReport.SALARY
 const SHIFT_DELAY := 3.0
@@ -33,6 +36,8 @@ var shift_screen: ShiftScreen
 var briefing: CaseBriefing
 var tip_given := false
 var innocents := 0
+## Watermelons split from innocent pickups, each a complaint.
+var melon_complaints := 0
 ## The wanted driver, out of the car and cuffed; in the patrol car, the case is solved.
 var suspect: ChaseSuspect
 ## The clown car the wanted clown was taken out of (its seat is left empty on every PC).
@@ -99,6 +104,32 @@ func give_tip() -> void:
 			briefing.start(PackedStringArray([story + "A", tr("BRIEF_TRAFFIC_B") % plan.clue_text(0), story + "C"]))
 			break
 	add_child(clues)
+
+
+## A watermelon split: an innocent fruit seller's is a complaint.
+func melon_broken(melon: Watermelon) -> void:
+	if follower or shift_over:
+		return
+	if melon.from_wanted:
+		if melon.kind == "hollow":
+			_hint_all("HINT_FRUIT_WATCHES")
+		return
+	melon_complaints += 1
+	_hint_all("HINT_FRUIT_COMPLAINT")
+
+
+## The pay's complaints: the innocents detained and the watermelons split.
+func fines() -> int:
+	return innocents * COMPLAINT_FINE + melon_complaints * MELON_FINE
+
+
+## Evidence in the patrol car's trunk: one gold watch is enough for the extra.
+func watch_bonus() -> Array:
+	if patrol_car:
+		for item in patrol_car.delivered:
+			if item is GoldWatch:
+				return [GoldWatch.VALUE]
+	return []
 
 
 ## A cop cuffed the driver of `car`, stopped in the queue.
@@ -201,17 +232,25 @@ func finish_shift() -> void:
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
-	var report := ShiftReport.pay(solved(), [], innocents * COMPLAINT_FINE)
+	var report := ShiftReport.pay(solved(), watch_bonus(), fines())
 	var result := {"solved": solved(), "report": report, "awards": ShiftReport.awards(stats)}
 	var campaign := Campaign.current
 	if campaign and not campaign.is_over():
 		var played := campaign.shift
-		campaign.finish_shift("traffic_clown_convoy" if plan and plan.convoy else "traffic_rush_hour", solved(), report,
-			QUOTA)
+		campaign.finish_shift(campaign_key(), solved(), report, QUOTA)
 		campaign.save()
 		result.campaign = {"shift": played, "money": campaign.money, "over": campaign.is_over(),
 			"promoted": campaign.is_promoted()}
 	_show_result(result)
+
+
+## The case's name in the campaign: each traffic variant counts as its own.
+func campaign_key() -> String:
+	if plan and plan.convoy:
+		return "traffic_clown_convoy"
+	if plan and plan.fruit:
+		return "traffic_fruit_truck"
+	return "traffic_rush_hour"
 
 
 func _show_result(result: Dictionary) -> void:
@@ -239,7 +278,7 @@ func _show_result(result: Dictionary) -> void:
 ## the chase after the one who ran off and the end of shift.
 func snapshot() -> Dictionary:
 	var state := {"tip": tip_given, "patience": queue.patience, "sneaked": queue.sneaked,
-		"clues": clues.known, "innocents": innocents, "lost": lost, "solved": solved_now, "escaped": escaped,
+		"clues": clues.known, "innocents": innocents, "melons": melon_complaints, "lost": lost, "solved": solved_now, "escaped": escaped,
 		"suspect": suspect != null, "result": _result, "taken_from": taken_from, "clean": _clean_clowns()}
 	if chase:
 		state.chase = chase.snapshot()
@@ -259,6 +298,9 @@ func apply_snapshot(state: Dictionary) -> void:
 	if innocent_now:
 		_hint_all("HINT_TRAFFIC_INNOCENT_LOST" if state.lost else "HINT_TRAFFIC_INNOCENT")
 	innocents = state.innocents
+	if state.get("melons", 0) > melon_complaints:
+		_hint_all("HINT_FRUIT_COMPLAINT")
+	melon_complaints = state.get("melons", 0)
 	if state.suspect and not suspect:
 		suspect = get_parent().get_node_or_null("Driver") as ChaseSuspect
 		if suspect and patrol_car:
