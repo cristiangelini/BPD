@@ -70,3 +70,6 @@ probadita que no va a olvidar'. Que no coma nada raro. Y si come algo raro, que 
 ## Respuestas de Cristian (24/10)
 1. Sí: la primera vez que el diputado come uno con laxante corre al baño químico (el recorrido se frena 30 s y el
    sueldo baja 200); la segunda se va a su casa y el caso se pierde (lo eligió en la tarjeta).
+2. Sí: se prueba agarrando el platito con las manos y comiéndolo con la misma tecla que la dona.
+3. Sí: el policía que come uno con laxante tiene 40 s de retorcijones, que se cortan encerrándose 8 s en el baño
+   químico del fondo.
