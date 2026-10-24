@@ -9,7 +9,9 @@ extends CharacterBody3D
 ## the trunk, opened by lifting its lid (step 4 of "El orden para hacerlo"). Online the host's cars drive and the
 ## guests' copies follow them (NpcSync). In the clown convoy (control-payasos.md) every car is the same tiny clown
 ## car, with the same plate and a clown at the wheel; opening its door lets out its clowns (ConvoyClown), and it
-## won't move until they're all back in. Every number here is (propuesta).
+## won't move until they're all back in. In the fruit truck control (control-frutas.md) every car is a fruit seller's
+## pickup, tinted by its color, with a sign on its door, watermelons in its open bed and one crate of another fruit; it
+## has no trunk. Every number here is (propuesta).
 
 const SPEED := 30.0 / 3.6
 ## Brakes and speeds up this hard, in m/s².
@@ -62,6 +64,20 @@ const CLOWN_DOOR := Vector3(0.05, 0.55, 0.6)
 const HONK_EVERY := 9.0
 ## How many clowns come out of one car (control-payasos.md, answer 1).
 const CLOWN_RIDERS := Vector2i(3, 6)
+## The fruit seller's pickup (control-frutas.md): its paint per WantedPlan.COLORS (white, yellow, green, blue).
+const FRUIT_MODEL := preload("res://assets/models/fruit_truck.glb")
+const WATERMELON := preload("res://assets/models/watermelon.glb")
+const FRUIT_PAINTS: Array[Color] = [Color("f2f2ee"), Color("e8c547"), Color("5b9a5a"), Color("7aa6d8")]
+const FRUIT_CRATES: Array[String] = ["bananas", "oranges", "pineapples"]
+## How many watermelons ride in its bed (control-frutas.md, "Cómo es").
+const FRUIT_MELONS := Vector2i(6, 10)
+## The bed's floor and its spots for watermelons, back first; the crate takes the front right.
+const FRUIT_BED := 0.84
+const FRUIT_SPOTS: Array[Vector2] = [Vector2(-0.6, -1.9), Vector2(0.0, -1.9), Vector2(0.6, -1.9), Vector2(-0.6, -1.35),
+	Vector2(0.0, -1.35), Vector2(0.6, -1.35), Vector2(-0.6, -0.8), Vector2(0.0, -0.8), Vector2(0.6, -0.8),
+	Vector2(-0.6, -0.25), Vector2(0.0, -0.25)]
+## The sign painted on the driver's door.
+const FRUIT_SIGN_AT := Vector3(1.07, 1.05, 1.0)
 
 ## "coming", "waiting", "going" (let through), "sneaking", "pulled_over" (detained, by the curb) or "gone".
 var state := "coming"
@@ -85,6 +101,10 @@ var spilled := false
 var follower := false
 ## The clown at the wheel (ConvoyTraits.draw): what the clues are about.
 var clown_traits := {}
+## One of the fruit truck control's pickups.
+var fruit := false
+## Its crate of other fruit (FRUIT_CRATES): the plan's, or else from its plate.
+var crate := ""
 var _honk_left := HONK_EVERY
 ## The car the case is after (WantedPlan).
 var wanted := false
@@ -99,6 +119,10 @@ var _trunk: Node3D
 
 func _ready() -> void:
 	add_to_group("queue_cars")
+	if fruit:
+		_build_fruit_truck()
+		_build_labels()
+		return
 	# The body leaves the trunk's top free, so the cops' hands reach the lid: the cabin and hood, and under the trunk.
 	var width := CLOWN_WIDTH if clown else 2.1
 	var trunk_length := length() / 2 + trunk_hinge().z
@@ -123,6 +147,10 @@ func _ready() -> void:
 	_build_trunk()
 	if clown:
 		_build_door()
+	_build_labels()
+
+
+func _build_labels() -> void:
 	var plate_label := Label3D.new()
 	plate_label.name = "Plate"
 	plate_label.text = shown_plate()
@@ -131,7 +159,7 @@ func _ready() -> void:
 	plate_label.modulate = Color(0.1, 0.1, 0.12)
 	plate_label.outline_modulate = Color(0.95, 0.95, 0.9)
 	plate_label.outline_size = 18
-	plate_label.position = Vector3(0, 0.5 if clown else 0.62, -length() / 2 - 0.03)
+	plate_label.position = Vector3(0, 0.5 if clown else 0.62, -length() / 2 - (0.06 if fruit else 0.03))
 	plate_label.rotation.y = PI
 	add_child(plate_label)
 	_bubble = Label3D.new()
@@ -165,6 +193,63 @@ func stop_before() -> float:
 ## The plate it shows: every clown car has the same one painted on.
 func shown_plate() -> String:
 	return tr("PLATE_CLOWN") if clown else plate
+
+
+## Its fruit seller's pickup: the cab and the open bed, with the watermelons sitting in it.
+func _build_fruit_truck() -> void:
+	_add_box(Vector3(2.1, 1.55, 1.95), Vector3(0, 0.975, 1.325))
+	_add_box(Vector3(2.1, 0.64, 2.65), Vector3(0, 0.52, -0.975))
+	for side in [-1.0, 1.0]:
+		_add_box(Vector3(0.08, 0.45, 2.65), Vector3(side * 1.01, 1.05, -0.975))
+	_add_box(Vector3(2.1, 0.45, 0.08), Vector3(0, 1.05, -2.26))
+	var model: Node3D = FRUIT_MODEL.instantiate()
+	model.name = "Model"
+	add_child(model)
+	var paint := StandardMaterial3D.new()
+	paint.albedo_color = FRUIT_PAINTS[look % FRUIT_PAINTS.size()]
+	_paint(model, paint)
+	if crate.is_empty():
+		crate = FRUIT_CRATES[absi(hash(["fruit crate", plate])) % FRUIT_CRATES.size()]
+	for kind in FRUIT_CRATES:
+		var node := model.find_child("crate_" + kind, true, false) as Node3D
+		if node:
+			node.visible = kind == crate
+	for wheel_at in SuspectCar.SEDAN_WHEELS:
+		var wheel: Node3D = TrafficCar.WHEEL.instantiate()
+		wheel.position = wheel_at
+		add_child(wheel)
+	var bed := Node3D.new()
+	bed.name = "Bed"
+	add_child(bed)
+	for i in melons():
+		var melon: Node3D = WATERMELON.instantiate()
+		melon.name = "Watermelon%d" % i
+		melon.position = Vector3(FRUIT_SPOTS[i].x, FRUIT_BED + 0.17, FRUIT_SPOTS[i].y)
+		bed.add_child(melon)
+	var sign := Label3D.new()
+	sign.name = "Sign"
+	sign.text = tr("FRUIT_SIGN") % driver.get("name", "")
+	sign.font_size = 56
+	sign.pixel_size = 0.004
+	sign.modulate = Color(0.75, 0.15, 0.1)
+	sign.outline_modulate = Color(0.98, 0.95, 0.85)
+	sign.outline_size = 14
+	sign.position = FRUIT_SIGN_AT
+	sign.rotation.y = PI / 2
+	add_child(sign)
+
+
+## Tints every "paint" part of its model.
+func _paint(node: Node, material: Material) -> void:
+	for child in node.get_children():
+		if child is MeshInstance3D and (child.name.begins_with("paint") or child.get_parent().name == "paint"):
+			child.material_override = material
+		_paint(child, material)
+
+
+## How many watermelons ride in its bed: from its plate, so every PC agrees.
+func melons() -> int:
+	return FRUIT_MELONS.x + absi(hash(["fruit melons", plate])) % (FRUIT_MELONS.y - FRUIT_MELONS.x + 1)
 
 
 ## How many clowns ride in it: from its plate, so every PC agrees.
@@ -341,7 +426,8 @@ func _build_trunk() -> void:
 
 ## Online (NpcSync): what a guest's copy needs before it's added (which car it is, not whether it's the wanted one).
 func net_setup() -> Dictionary:
-	return {"plate": plate, "driver": driver, "clown": clown, "clown_traits": clown_traits}
+	return {"plate": plate, "driver": driver, "clown": clown, "clown_traits": clown_traits, "fruit": fruit,
+		"crate": crate}
 
 
 ## Online: where it is in the queue and whether its trunk is open.
