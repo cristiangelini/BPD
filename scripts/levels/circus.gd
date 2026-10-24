@@ -22,9 +22,9 @@ const CURB_HEIGHT := 0.4
 const STANDS_FROM := 6.0
 const STAND_STEP := Vector2(0.8, 0.45)
 const STANDS_ARC := 2.4
-## The trapeze: two poles beside the ring and the bar between them, high up.
+## The trapeze: two poles beside the ring, up to the roof, and the bar hanging between them.
 const TRAPEZE_X := 3.5
-const TRAPEZE_HEIGHT := 4.6
+const TRAPEZE_HEIGHT := 2.3
 const CANNON_AT := Vector3(6.6, 0, 7.5)
 ## The clowns' caravans behind the tent, in a row, their doors to the front.
 const CARAVANS: Array[Vector3] = [
@@ -87,6 +87,9 @@ func _tent() -> void:
 	band.top_radius = TENT_RADIUS + 0.45
 	band.bottom_radius = TENT_RADIUS + 0.45
 	band.height = 0.4
+	# A ring around the roof's edge, not a lid over the tent.
+	band.cap_top = false
+	band.cap_bottom = false
 	_builder.mesh(band, TENT_AT + Vector3(0, WALL_HEIGHT + 0.1, 0), YELLOW)
 	var banner := Label3D.new()
 	banner.name = "Banner"
@@ -97,7 +100,7 @@ func _tent() -> void:
 	banner.double_sided = false
 	banner.position = TENT_AT + Vector3(0, WALL_HEIGHT + 0.9, TENT_RADIUS + 0.6)
 	add_child(banner)
-	_builder.light(TENT_AT + Vector3(0, WALL_HEIGHT + 1.5, 0))
+	_builder.light(TENT_AT + Vector3(0, WALL_HEIGHT - 0.3, 0))
 
 
 ## The ring of sawdust in the tent's middle, with a low curb around it and a gap to walk in from the entrance.
@@ -132,7 +135,7 @@ func _stands() -> void:
 
 ## Two poles beside the ring with the trapeze's bar hanging between them on two ropes.
 func _trapeze() -> void:
-	var top := TRAPEZE_HEIGHT + 1.2
+	var top := WALL_HEIGHT - 0.1
 	for x: float in [-TRAPEZE_X, TRAPEZE_X]:
 		_builder.box(TENT_AT + Vector3(x, top / 2, 0), Vector3(0.15, top, 0.15), METAL)
 	_builder.mesh_box(TENT_AT + Vector3(0, top, 0), Vector3(TRAPEZE_X * 2, 0.08, 0.08), METAL)
