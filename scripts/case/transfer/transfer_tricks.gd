@@ -7,11 +7,18 @@ extends Node
 ##   E or the handcuffs sit them back on the ring.
 ## - The bathroom: they shout that they can't hold it. If the bus stops by the gas station (GAS_REACH, for GAS_STOP
 ##   seconds) within BATHROOM_WAIT, they calm down; if not, they get angry and spread it (TransferPlan.contagion).
+## Step 3b:
+## - Sick: they lie in the aisle (BusInmate.play_sick); a cop crouching by them to help gets fooled and they run for
+##   the door; E standing sits them back.
+## - The loose window: they push their window's bars (BusInmate.push_window); E stops them, and once the bars give,
+##   they jump out as soon as the bus stands still (`went_out`; step 4 runs after them).
 ## Each trick over, their plan starts again from 0. The host decides. Every number here is (propuesta).
 
 signal trick_started(inmate: BusInmate, trick: String)
+## An inmate got out of the bus (by the window, so far).
+signal went_out(inmate: BusInmate)
 
-const TRICKS: Array[String] = ["spoon", "bathroom"]
+const TRICKS: Array[String] = ["spoon", "bathroom", "sick", "window"]
 const BATHROOM_WAIT := 40.0
 const GAS_REACH := 14.0
 const GAS_STOP := 4.0
@@ -27,6 +34,8 @@ var gas_station := Vector3.ZERO
 var tricks := {}
 ## Inmates who need the bathroom -> seconds they can still hold it.
 var bathroom := {}
+## Inmates out of the bus.
+var out: Array[BusInmate] = []
 var _stopped_at_gas := 0.0
 
 
@@ -47,6 +56,7 @@ func setup(on_plan: TransferPlan, gas_at: Vector3, case_seed: int) -> void:
 		deck.append_array(round)
 	for i in plan.inmates.size():
 		tricks[plan.inmates[i]] = deck[i]
+		plan.inmates[i].jumped_out.connect(_on_jumped_out)
 	plan.plan_ready.connect(_on_plan_ready)
 
 
@@ -70,7 +80,17 @@ func _on_plan_ready(inmate: BusInmate) -> void:
 			bathroom[inmate] = BATHROOM_WAIT
 			inmate.say("TRANSFER_BATHROOM_%d" % (inmate.seat % BATHROOM_LINES + 1), 4.0)
 			_tell_cops("HINT_TRANSFER_BATHROOM")
+		"sick":
+			inmate.play_sick()
+		"window":
+			inmate.push_window()
 	trick_started.emit(inmate, trick)
+
+
+func _on_jumped_out(inmate: BusInmate) -> void:
+	if not out.has(inmate):
+		out.append(inmate)
+	went_out.emit(inmate)
 
 
 func _physics_process(delta: float) -> void:
