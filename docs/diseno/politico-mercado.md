@@ -18,7 +18,7 @@ probadita que no va a olvidar'. Que no coma nada raro. Y si come algo raro, que 
 1. **El mercado:** un mercado techado nuevo en la ciudad (cuadra 2, 0, frente al sur, propuesta), con un pasillo en U
    y 12 puestos: frutas, quesos, empanadas, pescado, encurtidos, aceitunas, pan, dulces, jugos, carne, especias y
    helados. Cada puesto tiene su vendedor (los modelos de siempre con delantal) y unos 10 clientes caminan entre los
-   puestos. Al fondo, el baño químico y una cinta para la foto final.
+   puestos. Al fondo, el baño químico, y en la salida, una cinta para la foto final.
 2. **El recorrido:** el diputado entra cuando llega el primer policía y sigue el pasillo de puesto en puesto. En cada
    uno se para 20 s: saluda, le ofrecen una probadita en un platito y, si nadie hace nada, se la come al final.
    El recorrido entero dura unos 7 minutos y es el reloj del caso, como el discurso de la plaza.
@@ -73,3 +73,14 @@ probadita que no va a olvidar'. Que no coma nada raro. Y si come algo raro, que 
 2. Sí: se prueba agarrando el platito con las manos y comiéndolo con la misma tecla que la dona.
 3. Sí: el policía que come uno con laxante tiene 40 s de retorcijones, que se cortan encerrándose 8 s en el baño
    químico del fondo.
+
+## Hecho así
+- **Paso 1 (el mercado):** `MarketLevel` (`scenes/levels/market.tscn`, `--place=market`) pone el "Mercado Central" en el
+  lote "market" de la cuadra (2, 0), mirando al sur: un galpón de 30 × 22 m y 6 m de alto con la entrada al oeste y la
+  salida al este, y una cámara fría en el medio que arma el pasillo en U. Los 12 puestos (`market_stall`, con el toldo
+  de un color distinto cada uno) venden lo suyo (`market_food_<tipo>`), repartido por la semilla, y cada uno tiene su
+  puestero detrás del mostrador (`MarketVendor`, modelo `npc_puestero` con el delantal teñido), que con E elogia lo que
+  vende. Hay 10 clientes en los mostradores (`MarketShopper`, los vecinos de siempre) con 8 frases. Al fondo, entre los
+  dos puestos de atrás, el baño químico (`chemical_toilet`; su puerta, `chemical_toilet_door`, entra en el paso 4), y en
+  la salida, la cinta roja con sus dos postes para la foto. Los policías salen de la comisaría y van en el patrullero.
+  Capturas en `/mnt/project-files/mercado/paso1-*.png`.
