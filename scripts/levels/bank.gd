@@ -18,6 +18,9 @@ extends Node3D
 ## away in the van, or on foot and slower if it's boxed in, and the chase is on (ChaseCase.begin). The case and its
 ## end are BankCase's (step 6b): the comisario gives it over the radio as the shift starts. Online the host's bank
 ## decides and a guest's follows it (`follower`, BankCase's snapshot).
+## Half the seeds are the variant where the hostages don't want to leave (robo-banco-rehenes.md, decision 121): the
+## hall is a party, with garlands, the robbers' boombox on the bench and a tray of croissants on the counter, and the
+## hostages sway to the music. --bank=party or --bank=base forces one.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -90,6 +93,16 @@ const CONES_FROM_DOOR := Vector3(-5, 0, 1.5)
 const HOSTAGES := 8
 const HOSTAGE_XS: Array[float] = [-6.5, -3.5, -0.5, 2.5]
 const HOSTAGE_ZS: Array[float] = [2.5, 4.8]
+## The party (robo-banco-rehenes.md, step 1): garlands hung across the hall in rows under the roof, the boombox on the
+## west bench and the croissants' tray on the counter.
+const GARLAND_MODEL := preload("res://assets/models/bank_garland.glb")
+const BOOMBOX_MODEL := preload("res://assets/models/bank_boombox.glb")
+const TRAY_MODEL := preload("res://assets/models/bank_croissant_tray.glb")
+const GARLAND_XS: Array[float] = [-10.0, -6.0, -2.0, 2.0, 6.0, 10.0]
+const GARLAND_ZS: Array[float] = [1.2, 4.0, 6.8]
+const GARLAND_DROP := 0.12
+const BOOMBOX_AT := Vector3(-10.0, 0.44, 6.6)
+const TRAY_AT := Vector3(-4.0, COUNTER_SIZE.y + 0.04, COUNTER_Z)
 
 const OUTSIDE := Color(0.86, 0.84, 0.78)
 const INSIDE := Color(0.93, 0.92, 0.88)
@@ -110,6 +123,9 @@ var robbers: Array[BankRobber] = []
 ## El Oso, the one to cuff.
 var boss: BankRobber
 var hostages: Array[BankHostage] = []
+## The variant where the hostages are having a party and don't want to leave (decision 121).
+var party := false
+var croissant_tray: Node3D
 var drill: BankDrill
 var hostages_freed := 0
 var phone: BankPhone
@@ -133,10 +149,13 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	party = is_party(case_seed, OS.get_cmdline_user_args())
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_hall()
 	_build_back()
+	if party:
+		_add_party()
 	back_door = DOOR_SCENE.instantiate()
 	back_door.name = "BackDoor"
 	back_door.position = Vector3(BACK_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, -HALF_Z)
@@ -170,6 +189,52 @@ func _ready() -> void:
 	case.shift_screen = $ShiftScreen
 	add_child(case)
 	case.start()
+
+
+## Whether this seed's robbery is the party where the hostages don't want to leave: from --bank=party or --bank=base
+## among the user args, or half the seeds (propuesta).
+static func is_party(seed_: int, args: PackedStringArray) -> bool:
+	for arg in args:
+		if arg == "--bank=party":
+			return true
+		if arg == "--bank=base":
+			return false
+	return hash(["bank party", seed_]) % 2 == 0
+
+
+## The party's things: the garlands across the hall, the boombox playing on the bench (its notes bobbing over it) and
+## the croissants' tray on the counter.
+func _add_party() -> void:
+	var party_node := Node3D.new()
+	party_node.name = "Party"
+	add_child(party_node)
+	for z in GARLAND_ZS:
+		for x in GARLAND_XS:
+			var garland: Node3D = GARLAND_MODEL.instantiate()
+			garland.position = Vector3(x, ROOF - GARLAND_DROP, z)
+			party_node.add_child(garland)
+	var boombox: Node3D = BOOMBOX_MODEL.instantiate()
+	boombox.name = "Boombox"
+	boombox.position = BOOMBOX_AT + Vector3.UP * FLOOR_TOP
+	boombox.rotation.y = PI / 2
+	party_node.add_child(boombox)
+	var notes := Label3D.new()
+	notes.name = "Notes"
+	notes.text = "♪ ♫"
+	notes.font_size = 64
+	notes.pixel_size = 0.006
+	notes.outline_size = 10
+	notes.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	notes.modulate = Color(0.48, 0.88, 1.0)
+	notes.position = Vector3(0, 0.75, 0)
+	boombox.add_child(notes)
+	var bob := notes.create_tween().set_loops()
+	bob.tween_property(notes, "position:y", 0.95, 0.5).set_trans(Tween.TRANS_SINE)
+	bob.tween_property(notes, "position:y", 0.75, 0.5).set_trans(Tween.TRANS_SINE)
+	croissant_tray = TRAY_MODEL.instantiate()
+	croissant_tray.name = "CroissantTray"
+	croissant_tray.position = TRAY_AT + Vector3.UP * FLOOR_TOP
+	party_node.add_child(croissant_tray)
 
 
 ## Whether a world position is inside the bank.
@@ -359,6 +424,8 @@ func _add_hostages() -> void:
 		hostage.name = "Hostage%d" % i
 		hostage.look = looks[i % looks.size()]
 		hostage.next_line = i
+		hostage.partying = party
+		hostage.sway_phase = rng.randf() * TAU
 		hostage.position = Vector3(HOSTAGE_XS[i % HOSTAGE_XS.size()], FLOOR_TOP, HOSTAGE_ZS[i / HOSTAGE_XS.size()])
 		hostage.is_out = func(at: Vector3) -> bool: return not inside(at)
 		hostage.freed_now.connect(func(_hostage: BankHostage) -> void: hostages_freed += 1)

@@ -5,7 +5,8 @@ extends CharacterBody3D
 ## crouched on the hall's floor in front of the counter. E on one takes them by the hand (step 4): they tell their
 ## complaint, a different one each time, stand up and follow that cop; out of the bank they're free, say thanks and
 ## go home. A robber who sees one being led out raises the alarm (BankRobber.saw_hostage). Online the host's walk and
-## go free, and a guest's follow them (NpcSync, net_state). Every number here is (propuesta).
+## go free, and a guest's follow them (NpcSync, net_state). At the party (robo-banco-rehenes.md, step 1) they sway
+## to the music while they sit. Every number here is (propuesta).
 
 signal freed_now(hostage: BankHostage)
 
@@ -19,11 +20,17 @@ const SAY_TIME := 4.0
 ## They walk this fast (m/s), this far behind the cop's hand.
 const SPEED := 1.8
 const KEEP_AWAY := 1.2
+## At the party, sitting: they rock side to side this much (radians), this many times a second.
+const SWAY := 0.12
+const SWAY_RATE := 1.6
 
 @export var look := "vecina"
 var next_line := 0
 ## The cop leading them by the hand, if any.
 var led_by: Cop
+## At the party (decision 121): they sway to the music while they sit, each at their own beat.
+var partying := false
+var sway_phase := 0.0
 var freed := false
 ## Whether a world position is out of the bank (the level sets it; nowhere is, by default).
 var is_out: Callable = func(_at: Vector3) -> bool: return false
@@ -134,6 +141,11 @@ func apply_net_state(state: Variant) -> void:
 
 
 func _process(delta: float) -> void:
+	if partying and not led_by and not freed:
+		sway_phase += delta * SWAY_RATE * TAU
+		_model.rotation.z = sin(sway_phase) * SWAY
+	elif _model.rotation.z != 0.0:
+		_model.rotation.z = 0.0
 	if _bubble_left > 0.0:
 		_bubble_left -= delta
 		if _bubble_left <= 0.0:

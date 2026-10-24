@@ -46,6 +46,12 @@ dos botones con su cono y su máscara de cartón, y las frases.
 4. Los cruasanes y las donas que los convencen, y el rehén del teléfono que vuelve a entrar.
 5. El caso (frases del comisario, planilla) y el online.
 
+## Lo hecho
+- **Paso 1 (24/10):** la mitad de las semillas del banco son la fiesta (propuesta); `--bank=party` o `--bank=base`
+  fuerza una. El hall tiene 18 guirnaldas de banderines en tres filas bajo el techo, la radio de los ladrones en el
+  banco del oeste con sus notas que suben y bajan, y la bandeja de 7 cruasanes en el mostrador. Los rehenes se
+  hamacan al ritmo de la música mientras están sentados y paran cuando se los lleva de la mano.
+
 ## Preguntas para Cristian
 1. **¿Qué hace un rehén que sueltan antes de la puerta?** **Respondida (Cristian, 24/10):** vuelve caminando a su
    lugar en el piso.
