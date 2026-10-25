@@ -82,6 +82,7 @@ var _build: PlaceBuilder
 ## The transfer's bus (traslado-presos.md, step 1), parked by the station's door, and its inmates (step 2).
 var bus: PrisonBus
 var transfer: TransferPlan
+var tricks: TransferTricks
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -127,6 +128,10 @@ func _start_transfer() -> void:
 	transfer.name = "Transfer"
 	add_child(transfer)
 	transfer.setup(bus, case_seed)
+	tricks = TransferTricks.new()
+	tricks.name = "Tricks"
+	add_child(tricks)
+	tricks.setup(transfer, city.transform * CityLayout.door_of("gas_station"), case_seed)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
 
 

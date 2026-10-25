@@ -1483,6 +1483,20 @@ HINT_BUS_DRIVER,"Manejas el bus: WASD, Espacio freno de mano, E para pararte. Fr
 TRANSFER_PLAN_READY_1,"Je, je... nadie me mira.","Heh, heh... nobody's looking.","He, he... ninguém está olhando."
 TRANSFER_PLAN_READY_2,Esta es la mía.,This is my chance.,Essa é a minha chance.
 TRANSFER_PLAN_READY_3,Ya sé cómo bajarme de este bus.,I know how to get off this bus.,Já sei como descer deste ônibus.
+PLACE_GAS_STATION,Estación de servicio,Gas station,Posto de gasolina
+PROMPT_SEAT_INMATE,E: sentarlo y esposarlo,E: sit them down and cuff them,E: sentá-lo e algemá-lo
+TRANSFER_SPOON,"¡Ja! Con una cuchara se abre todo.","Ha! A spoon opens anything.","Rá! Com uma colher se abre tudo."
+TRANSFER_TO_DOOR,"Permiso, que me bajo en la próxima.","Excuse me, I'm getting off at the next stop.","Com licença, eu desço na próxima."
+TRANSFER_SAT_BACK_1,"Bueno, bueno, me siento.","Okay, okay, I'm sitting.","Tá bom, tá bom, eu sento."
+TRANSFER_SAT_BACK_2,Era una broma.,It was a joke.,Era brincadeira.
+TRANSFER_SAT_BACK_3,"¿Esta cuchara? No es mía.","This spoon? It's not mine.","Esta colher? Não é minha."
+TRANSFER_BATHROOM_1,"¡Me hago encima! ¡Paren en algún lado!","I can't hold it! Stop somewhere!","Não aguento mais! Parem em algum lugar!"
+TRANSFER_BATHROOM_2,"¡Necesito un baño YA!","I need a bathroom NOW!","Preciso de um banheiro JÁ!"
+TRANSFER_BATHROOM_3,"Oficial, ¿falta mucho? Es urgente.","Officer, how much longer? It's urgent.","Seu guarda, falta muito? É urgente."
+TRANSFER_BATHROOM_THANKS,"¡Ahhh! Gracias, oficial.","Ahhh! Thanks, officer.","Ahhh! Valeu, seu guarda."
+TRANSFER_BATHROOM_LATE,"¡Muy tarde! ¡Ahora sí que me enojé!","Too late! Now I'm really mad!","Tarde demais! Agora eu fiquei bravo!"
+HINT_TRANSFER_BATHROOM,Un preso necesita el baño: frena en la estación de servicio.,An inmate needs the bathroom: stop at the gas station.,Um preso precisa do banheiro: pare no posto de gasolina.
+HINT_TRANSFER_BATHROOM_LATE,Llegaron tarde al baño: el preso está furioso y los demás se alteran.,Too late for the bathroom: the inmate is furious and the rest are getting restless.,Chegaram tarde ao banheiro: o preso está furioso e os outros se agitam.
 HINT_JAILED_DOG,"El guardia ronca en su escritorio y la llave cuelga del collar de Mordisco, el perro de la comisaría. Hazte su amigo antes de que te ladre.","The guard is snoring at his desk and the key hangs from the collar of Mordisco, the station's dog. Make friends with him before he barks at you.","O guarda está roncando na mesa e a chave está pendurada na coleira do Mordisco, o cachorro da delegacia. Faça amizade com ele antes que ele te late."
 DOG_SNIFF_0,"*snif snif*","*sniff sniff*","*fung fung*"
 DOG_SNIFF_1,"*bosteza y babea*","*yawns and drools*","*boceja e baba*"
