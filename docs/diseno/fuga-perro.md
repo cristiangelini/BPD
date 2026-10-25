@@ -87,3 +87,13 @@ por `PropSync`.
    sí:** obliga a repartir la comida y a cubrirse entre los que ya son amigos y los que no.
 3. ¿Que los ladridos despierten al guardia (y no que el perro los atrape él mismo)? **Recomiendo sí:** así el perro
    nunca es malo, solo ruidoso, y el que atrapa sigue siendo el guardia.
+
+## Cómo quedó el paso 1
+- `JailbreakLevel.VARIANTS` suma "dog" (`--jailbreak=dog`): el sorteo queda en tercios.
+- `SleepyGuard` (hereda de `NightGuard`): duerme en el escritorio sin donas hasta que 3 s de ladridos
+  (`heard_bark`) o un grito lo despiertan; despierto vigila igual que el de la dona y a los 20 s sin ver nada raro se
+  vuelve a dormir. Ronca cada 5 s.
+- `GuardDog` (Mordisco, modelo `guard_dog` en `tools/modelgen/models/guarddog.js`): camina ida y vuelta entre la sala
+  de guardia, la puerta de las celdas, el pasillo frente a las dos celdas y el costado del escritorio, y se queda de 4
+  a 10 s en cada parada. La llave cuelga del collar (`key_on_collar`, la parte `key` del modelo). Va por `NpcSync`.
+- Captura del modelo: `/mnt/project-files/perro/paso1-mordisco.png`.
