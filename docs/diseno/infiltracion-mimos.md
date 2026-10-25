@@ -110,7 +110,7 @@ pie, `PlaceDraw` y `CaseSync`. El ensayo copia la forma de `ChoirSinging` (host 
    teatro. Online: el ensayo (mímica o estatua) y la sospecha llegan a los invitados, y la voz de un invitado cerca de
    un mimo suma en el host **(propuesta)**.
 
-## Preguntas para Cristian (decisión 170)
+## Preguntas para Cristian (decisión 170, respondidas el 25/10: sí a las 3)
 1. **¿Hablar por la radio también da sospecha?** Recomiendo que sí: si la radio no cuenta, todos hablan con T y se
    pierde el chiste de no poder hablar. Lejos de los mimos se habla libre.
 2. **¿El ensayo es estatua y mímica con H, o copiar 4 poses con teclas?** Recomiendo estatua y mímica con H: usa el
@@ -119,4 +119,4 @@ pie, `PlaceDraw` y `CaseSync`. El ensayo copia la forma de `ChoirSinging` (host 
 3. **¿La Maestra Pausa huye a pie en un auto invisible?** Recomiendo que sí: es el chiste de un mimo, se reusa la
    persecución a pie del andador y no hace falta un vehículo nuevo.
 
-Mientras no respondas, se avanza con lo recomendado.
+Cristian (25/10): "está perfecto así", quedan las tres recomendaciones.
