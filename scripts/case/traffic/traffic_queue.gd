@@ -133,11 +133,13 @@ func spawn() -> QueueCar:
 	var car := QueueCar.new()
 	car.name = "QueueCar%d" % spawned
 	car.checkpoint = checkpoint
-	var data := plan.cars[spawned] if plan and spawned < plan.total else WantedPlan.random_car(_rng)
+	var clown: bool = VARIANTS[variant].get("clown", false)
+	var data := plan.cars[spawned] if plan and spawned < plan.total else WantedPlan.random_car(_rng, clown)
 	car.look = data.look
 	car.plate = data.plate
 	car.driver = data.driver
-	car.clown = VARIANTS[variant].get("clown", false)
+	car.clown = clown
+	car.clown_traits = data.get("clown", {})
 	car.wanted = plan != null and spawned == plan.wanted_index
 	car.at = Vector3(0, 0, SPAWN_FROM)
 	car.speed = QueueCar.SPEED

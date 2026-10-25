@@ -4,7 +4,8 @@ extends RefCounted
 ## Which car the traffic control is after and how to tell it (control-transito.md, "Cómo se reconoce al buscado").
 ## From the case seed: how many cars come (TOTAL), which one is the wanted car, its 3 clues and every other car, so
 ## that no other car fits all 3 clues and LOOKALIKES of them fit 2. The comisario gives the first clue and the radio
-## one more every RADIO_EVERY seconds. Every number here is (propuesta).
+## one more every RADIO_EVERY seconds. In the clown convoy (control-payasos.md) every car is the same clown car, so
+## the clues are on its driver (ConvoyTraits) instead. Every number here is (propuesta).
 
 const TOTAL := Vector2i(15, 25)
 ## The wanted car comes somewhere in this stretch of the queue.
@@ -15,8 +16,11 @@ const RADIO_EVERY := 60.0
 ## The car's paint, by its look (TrafficCar.MODELS): white, yellow, green and light blue.
 const COLORS: Array[String] = ["COLOR_WHITE", "COLOR_YELLOW", "COLOR_GREEN", "COLOR_BLUE"]
 const KINDS: Array[String] = ["color", "plate", "decade", "trunk"]
+const CONVOY_KINDS: Array[String] = ["wig", "nose", "gloves", "horn"]
 const LETTERS := "BCDFGHJKLMNPRSTVXZ"
 
+## The clown convoy's plan: its cars carry their driver's ConvoyTraits under "clown".
+var convoy := false
 var total := 0
 var wanted_index := 0
 ## {kind, value}, in the order they're given.
@@ -26,14 +30,15 @@ var cars: Array[Dictionary] = []
 var lookalikes: Array[int] = []
 
 
-static func draw(case_seed: int) -> WantedPlan:
+static func draw(case_seed: int, convoy := false) -> WantedPlan:
 	var plan := WantedPlan.new()
+	plan.convoy = convoy
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(["wanted plan", case_seed])
 	plan.total = rng.randi_range(TOTAL.x, TOTAL.y)
 	plan.wanted_index = rng.randi_range(WANTED_AT.x, WANTED_AT.y)
-	var wanted := random_car(rng)
-	var kinds := KINDS.duplicate()
+	var wanted := random_car(rng, convoy)
+	var kinds := (CONVOY_KINDS if convoy else KINDS).duplicate()
 	for i in CLUES:
 		var kind: String = kinds.pop_at(rng.randi() % kinds.size())
 		if kind == "trunk":
@@ -53,12 +58,15 @@ static func draw(case_seed: int) -> WantedPlan:
 	return plan
 
 
-static func random_car(rng: RandomNumberGenerator) -> Dictionary:
+static func random_car(rng: RandomNumberGenerator, convoy := false) -> Dictionary:
 	var plate := ""
 	for i in 3:
 		plate += LETTERS[rng.randi() % LETTERS.length()]
 	plate += " %03d" % rng.randi_range(0, 999)
-	return {"look": rng.randi() % COLORS.size(), "plate": plate, "driver": DriverTraits.draw(rng)}
+	var car := {"look": rng.randi() % COLORS.size(), "plate": plate, "driver": DriverTraits.draw(rng)}
+	if convoy:
+		car.clown = ConvoyTraits.draw(rng)
+	return car
 
 
 static func value_of(car: Dictionary, kind: String) -> Variant:
@@ -71,6 +79,8 @@ static func value_of(car: Dictionary, kind: String) -> Variant:
 			return int(car.driver.year) / 10 * 10
 		"trunk":
 			return car.driver.trunk
+		"wig", "nose", "gloves", "horn":
+			return car.clown[kind]
 	return null
 
 
@@ -82,7 +92,7 @@ func fits(car: Dictionary) -> int:
 ## A car that fits every clue but one if it's a lookalike, and at most one otherwise.
 func _other_car(rng: RandomNumberGenerator, lookalike: bool) -> Dictionary:
 	while true:
-		var car := random_car(rng)
+		var car := random_car(rng, convoy)
 		if lookalike:
 			# Copy all clues but one, then make sure that one is off.
 			var off := rng.randi() % clues.size()
@@ -104,6 +114,8 @@ func _set_value(car: Dictionary, clue: Dictionary) -> void:
 			car.driver.year = int(clue.value) + int(car.driver.year) % 10
 		"trunk":
 			car.driver.trunk = clue.value
+		"wig", "nose", "gloves", "horn":
+			car.clown[clue.kind] = clue.value
 
 
 ## How clue `i` reads, for the comisario, the radio and the HUD.
@@ -118,6 +130,12 @@ func clue_text(i: int) -> String:
 			return TranslationServer.translate("CLUE_TRAFFIC_DECADE") % clue.value
 		"trunk":
 			return TranslationServer.translate("CLUE_TRAFFIC_TRUNK")
+		"wig", "nose", "gloves":
+			return TranslationServer.translate("CLUE_CONVOY_" + (clue.kind as String).to_upper()) \
+				% TranslationServer.translate(clue.value)
+		"horn":
+			return TranslationServer.translate("CLUE_CONVOY_HORN") \
+				% TranslationServer.translate(ConvoyTraits.horn_text({"horn": clue.value}))
 	return ""
 
 

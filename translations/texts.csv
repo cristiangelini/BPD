@@ -1606,6 +1606,17 @@ CONVOY_CLOWN_LINE_2,"¡Me aprietan los zapatos, oficial!","My shoes are pinching
 CONVOY_CLOWN_LINE_3,"¡Yo solo iba de acompañante!","I was just along for the ride!","Eu só estava de carona!"
 CONVOY_CLOWN_LINE_4,"¡Bájeme, que me mareo!","Put me down, I get dizzy!","Me ponha no chão, que eu fico tonto!"
 CONVOY_CLOWN_LINE_5,"¡Esto no estaba en el número!","This wasn't part of the act!","Isso não estava no número!"
+COLOR_RED,"rojo","red","vermelho"
+CONVOY_HORN_0,"¡MOC MOC!","HONK HONK!","FOM FOM!"
+CONVOY_HORN_1,"¡PUÍ PUÍ!","PEEP PEEP!","PIU PIU!"
+CONVOY_HORN_2,"¡TURURÚ!","TOOT-TOOT-TOO!","TURURU!"
+CONVOY_HORN_3,"¡MEEEEC!","MEEEEP!","MEEEEC!"
+CLUE_CONVOY_WIG,"Quien maneja tiene la peluca de color %s.","The driver's wig is %s.","Quem dirige tem a peruca de cor %s."
+CLUE_CONVOY_NOSE,"Quien maneja tiene la nariz de color %s.","The driver's nose is %s.","Quem dirige tem o nariz de cor %s."
+CLUE_CONVOY_GLOVES,"Quien maneja tiene los guantes de color %s.","The driver's gloves are %s.","Quem dirige tem as luvas de cor %s."
+CLUE_CONVOY_HORN,"La bocina de su autito hace %s","Its horn goes %s","A buzina do carrinho faz %s"
+BRIEF_CONVOY_A,"¡Novatos! El circo se muda esta noche y pasa toda la caravana por la esquina. Uno de los payasos se lleva escondida la caja fuerte del director.","Rookies! The circus is moving out tonight and the whole convoy comes through the corner. One of the clowns has the ringmaster's safe hidden away.","Novatos! O circo vai se mudar hoje à noite e a caravana inteira passa pela esquina. Um dos palhaços está levando escondido o cofre do diretor."
+BRIEF_CONVOY_C,"Todos los autitos son iguales: miren bien a quien maneja. Abran la puerta, vuelvan a meter a los payasos y esposen al conductor buscado. Si esposan a dos inocentes, se termina el caso.","Every clown car is the same: take a good look at the driver. Open the door, put the clowns back in and cuff the wanted driver. Cuff two innocent people and the case is over.","Todos os carrinhos são iguais: olhem bem quem dirige. Abram a porta, coloquem os palhaços de volta e algemem o motorista procurado. Se algemarem dois inocentes, o caso acaba."
 PROMPT_BUS_ON,E: subir al bus,E: get on the bus,E: subir no ônibus
 PROMPT_BUS_OFF,E: bajar del bus,E: get off the bus,E: descer do ônibus
 PROMPT_BUS_DRIVE,E: manejar el bus,E: drive the bus,E: dirigir o ônibus

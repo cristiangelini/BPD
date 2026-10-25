@@ -25,6 +25,8 @@ const BALL_COLORS: Array[Color] = [Color(0.9, 0.15, 0.15), Color(0.2, 0.5, 0.95)
 var car: QueueCar
 ## The one who was at the wheel (step 3 gives him away).
 var is_driver := false
+## ConvoyTraits: his wig, nose and gloves show.
+var traits := {}
 var out_for := 0.0
 var _target := Vector3.ZERO
 var _rng := RandomNumberGenerator.new()
@@ -46,7 +48,10 @@ func _ready() -> void:
 	shape.shape = capsule
 	shape.position.y = 0.8
 	add_child(shape)
-	add_child(MODEL.instantiate())
+	var model: Node3D = MODEL.instantiate()
+	model.name = "Model"
+	add_child(model)
+	ConvoyTraits.dress(model, traits)
 	_balls = Node3D.new()
 	_balls.name = "Juggling"
 	_balls.position = Vector3(0, 1.75, 0.3)

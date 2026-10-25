@@ -52,6 +52,8 @@ const CLOWN_TRUNK_SCALE := 0.5
 ## The door on the driver's side (+X): its hinge at the front, closed along -Z.
 const CLOWN_DOOR_HINGE := Vector3(0.64, 0.75, 0.45)
 const CLOWN_DOOR := Vector3(0.05, 0.55, 0.6)
+## A clown car honks its horn this often while it waits (control-payasos.md: each one sounds its own way).
+const HONK_EVERY := 9.0
 ## How many clowns come out of one car (control-payasos.md, answer 1).
 const CLOWN_RIDERS := Vector2i(3, 6)
 
@@ -73,6 +75,9 @@ var door: TrunkLid
 ## Its clowns out on the street; while there's any, it won't move.
 var clowns_out: Array[ConvoyClown] = []
 var spilled := false
+## The clown at the wheel (ConvoyTraits.draw): what the clues are about.
+var clown_traits := {}
+var _honk_left := HONK_EVERY
 ## The car the case is after (WantedPlan).
 var wanted := false
 var papers_checked := false
@@ -100,6 +105,7 @@ func _ready() -> void:
 		driver_model.position = CLOWN_DRIVER_AT
 		driver_model.scale = Vector3.ONE * CLOWN_DRIVER_SCALE
 		add_child(driver_model)
+		ConvoyTraits.dress(driver_model, clown_traits)
 	else:
 		add_child(TrafficCar.MODELS[look % TrafficCar.MODELS.size()].instantiate())
 		for wheel_at in SuspectCar.SEDAN_WHEELS:
@@ -198,10 +204,23 @@ func spill() -> void:
 		out.name = "%sClown%d" % [name, i]
 		out.car = self
 		out.is_driver = i == 0
+		out.traits = clown_traits if i == 0 else _rider_traits(i)
 		out.boarded.connect(_on_boarded)
 		clowns_out.append(out)
 		get_parent().add_child(out)
 		out.global_position = door_point() + global_basis.z * (0.5 * i - 1.0) + Vector3.UP * 0.1
+
+
+## The other clowns in the car: from its plate, so every PC dresses them alike.
+func _rider_traits(i: int) -> Dictionary:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["clown rider", plate, i])
+	return ConvoyTraits.draw(rng)
+
+
+## Its horn, in its bubble.
+func honk() -> void:
+	say(tr(ConvoyTraits.horn_text(clown_traits)))
 
 
 func _on_boarded(back: ConvoyClown) -> void:
@@ -256,7 +275,7 @@ func _build_trunk() -> void:
 
 ## Online (NpcSync): what a guest's copy needs before it's added (which car it is, not whether it's the wanted one).
 func net_setup() -> Dictionary:
-	return {"plate": plate, "driver": driver, "clown": clown}
+	return {"plate": plate, "driver": driver, "clown": clown, "clown_traits": clown_traits}
 
 
 ## Online: where it is in the queue and whether its trunk is open.
@@ -364,6 +383,11 @@ func _physics_process(delta: float) -> void:
 		_bubble.hide()
 	if state == "gone" or not checkpoint:
 		return
+	if clown and in_queue() and not _bubble.visible:
+		_honk_left -= delta
+		if _honk_left <= 0.0:
+			_honk_left = HONK_EVERY
+			honk()
 	var stop := _stop_z()
 	var room := at.z - stop
 	# Slows down to stop right at `stop`: v² = 2·a·d.
@@ -382,7 +406,8 @@ func _physics_process(delta: float) -> void:
 		# At the barrier, the driver says their piece.
 		if not said_line and not driver.is_empty() and not (is_instance_valid(ahead) and ahead.in_queue()):
 			said_line = true
-			say(tr(driver.line))
+			say(tr(driver.line) if not clown else tr(ConvoyTraits.horn_text(clown_traits)) + " " + tr(driver.line))
+			_honk_left = HONK_EVERY
 	elif state == "waiting" and speed > 0.0:
 		state = "coming"
 	if at.z < GONE_AT:

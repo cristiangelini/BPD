@@ -66,13 +66,14 @@ func _ready() -> void:
 		cone.name = "Cone%d" % i
 		add_child(cone)
 		cone.global_position = door + CONES_FROM_DOOR + Vector3(-0.8 * i, 0.05, 0)
-	plan = WantedPlan.draw(case_seed)
+	var chosen := variant_from(variant, OS.get_cmdline_user_args())
+	plan = WantedPlan.draw(case_seed, chosen == "clown_convoy")
 	queue = TrafficQueue.new()
 	queue.name = "Queue"
 	queue.checkpoint = checkpoint
 	queue.case_seed = case_seed
 	queue.plan = plan
-	queue.variant = variant_from(variant, OS.get_cmdline_user_args())
+	queue.variant = chosen
 	add_child(queue)
 	queue.passed.connect(_on_passed)
 	meters = TrafficMeters.new()

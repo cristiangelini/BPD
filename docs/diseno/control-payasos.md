@@ -69,3 +69,7 @@ payasos, puertas, licencias limpias y el final ([online.md](online.md)).
   5 m haciendo malabares (ConvoyClown, 18 kg, uno solo lo carga). Llevado o empujado a menos de 1 m de la puerta, el
   payaso vuelve a entrar. Con payasos afuera el auto no se mueve, no pasa con la barrera y no se cuela; cada payaso
   suelto suma 0,4 por segundo a la paciencia.
+- **Paso 3 (24/10):** WantedPlan con `convoy` saca las 3 pistas de ConvoyTraits del conductor: peluca (5 colores),
+  nariz (3), guantes (3) y bocina (4 sonidos). Se ven en el payaso al volante y en el conductor cuando baja; los otros
+  payasos se visten al azar por la patente. Cada autito toca su bocina al llegar y cada 9 s en la fila. El comisario
+  cuenta la historia de la caja fuerte del director.
