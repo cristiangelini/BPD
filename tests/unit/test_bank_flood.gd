@@ -9,6 +9,12 @@ var bank: BankLevel
 var cop: Cop
 
 
+## The front door open with the pipe pouring: the level holds where the test puts it (and the pig running out
+## doesn't let a wave out).
+func _hold() -> void:
+	bank.front_door.open_from_inside()
+
+
 func _bank(want := "flood") -> void:
 	var seed_ := 1
 	while BankLevel.variant(seed_, PackedStringArray()) != want:
@@ -66,6 +72,7 @@ func test_the_deeper_the_slower() -> void:
 
 func test_only_inside_the_bank() -> void:
 	await _bank()
+	_hold()
 	bank.water.level = 0.6
 	assert_eq(bank.water.depth_at(bank.to_global(Vector3(0, 0, 3))), 0.6)
 	assert_eq(bank.water.depth_at(bank.to_global(Vector3(0, 0, BankLevel.HALF_Z + 3.0))), 0.0, "the sidewalk is dry")
@@ -73,6 +80,7 @@ func test_only_inside_the_bank() -> void:
 
 func test_the_cop_wades_slower_inside() -> void:
 	await _bank()
+	_hold()
 	bank.water.level = 0.6
 	cop.global_position = bank.to_global(Vector3(0, 0.1, 3))
 	var dry := GameScale.WALK_SPEED
@@ -86,6 +94,7 @@ func test_the_cop_wades_slower_inside() -> void:
 
 func test_the_robbers_and_the_hostages_wade_too() -> void:
 	await _bank()
+	_hold()
 	bank.water.level = 1.0
 	await wait_physics_frames(2)
 	for robber in bank.robbers:
@@ -102,6 +111,7 @@ func test_the_robbers_and_the_hostages_wade_too() -> void:
 
 func test_the_water_shows_and_the_jet_pours() -> void:
 	await _bank()
+	_hold()
 	bank.water.level = 0.5
 	await wait_physics_frames(1)
 	var surface := bank.water.get_node("Surface") as MeshInstance3D

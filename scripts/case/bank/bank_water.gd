@@ -3,7 +3,10 @@ extends Node3D
 
 ## The flooding bank (robo-banco-inundado.md, step 1, decision 125): the duck's drill punctured the pipe behind the
 ## vault and a jet of water pours out of the hole in its door into the corridor. The water covers the whole bank's
-## floor and rises RISE meters a second while `running`, up to MAX_LEVEL. Everyone wading in it inside the bank goes
+## floor and rises RISE meters a second while `running`, up to MAX_LEVEL. Step 2: the valve out back stops it
+## (shut_off). The front door, shut in this robbery, holds it in: open with the pipe pouring, the water stays where it
+## is; open with the pipe shut, it drains DRAIN meters a second. Every time the door opens on WAVE_MIN or more water, a
+## wave rushes out: the level drops WAVE_DROP at once and it shoves what's near the door out to the sidewalk. Everyone wading in it inside the bank goes
 ## slower the deeper it is (factor()): the cops, the robbers and the hostages. The level sets each one's `wade` every
 ## physics frame; outside the bank it's 1. Online it runs on the host and a guest's follows it (`follower`, BankCase's
 ## snapshot). Every number here is (propuesta).
@@ -11,6 +14,15 @@ extends Node3D
 ## 0.2 m a minute, up to 1 m (5 min).
 const RISE := 0.2 / 60.0
 const MAX_LEVEL := 1.0
+## 0.1 m every 10 s out of the open front door, with the pipe shut.
+const DRAIN := 0.01
+const WAVE_MIN := 0.2
+const WAVE_DROP := 0.1
+## The wave shoves cops and loose things within this of the door (m), out to the sidewalk this hard.
+const WAVE_REACH := 3.5
+const WAVE_PUSH := 6.0
+const WAVE_IMPULSE := 4.0
+const WAVE_KNOCK := 0.6
 ## Speed by depth: (depth, factor) points, straight lines between them.
 const WADE: Array[Vector2] = [Vector2(0.0, 1.0), Vector2(0.3, 0.8), Vector2(0.6, 0.6), Vector2(1.0, 0.45)]
 const COLOR := Color(0.25, 0.5, 0.75, 0.55)
@@ -24,6 +36,11 @@ var jet_from := Vector3.ZERO
 ## How high the water stands above the floor (m), and whether the pipe still pours.
 var level := 0.0
 var running := true
+## The level when the valve stopped it (-1 while it pours): shut before it got to MAX_LEVEL pays more (step 4).
+var shut_at := -1.0
+## The bank's front door (shut in this robbery) and where its doorway is (global).
+var door: FrontDoor
+var door_at := Vector3.ZERO
 ## A guest's: only shows the host's (apply_net_state).
 var follower := false
 ## The robbers and the hostages (the cops are found by their group).
@@ -86,9 +103,58 @@ func wade_at(at: Vector3) -> float:
 	return factor(depth_at(at))
 
 
+## The valve is shut: the pipe stops pouring.
+func shut_off() -> void:
+	if not running:
+		return
+	running = false
+	shut_at = level
+	_show()
+
+
+## Whether the pipe was shut before the water got to the top.
+func shut_early() -> bool:
+	return shut_at >= 0.0 and shut_at < MAX_LEVEL
+
+
+func watch_door(front: FrontDoor, at: Vector3) -> void:
+	door = front
+	door_at = at
+	door.opened.connect(_on_door_opened)
+
+
+func _on_door_opened() -> void:
+	if follower or level < WAVE_MIN:
+		return
+	level -= WAVE_DROP
+	var out := global_basis.z
+	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
+		if cop.has_method("knock_back") and _near_door(cop.global_position):
+			cop.knock_back(out * WAVE_PUSH, WAVE_KNOCK)
+	for body in _loose_things():
+		if _near_door(body.global_position):
+			body.apply_central_impulse(out * WAVE_IMPULSE * body.mass)
+
+
+func _near_door(at: Vector3) -> bool:
+	return at.distance_to(door_at) <= WAVE_REACH and depth_at(at) > 0.0
+
+
+func _loose_things() -> Array[RigidBody3D]:
+	var things: Array[RigidBody3D] = []
+	for node in get_parent().find_children("*", "RigidBody3D", true, false):
+		if not (node as RigidBody3D).freeze:
+			things.append(node)
+	return things
+
+
 func _physics_process(delta: float) -> void:
-	if not follower and running:
-		level = minf(level + RISE * delta, MAX_LEVEL)
+	if not follower:
+		var door_open := door != null and door.is_open
+		if door_open and not running:
+			level = maxf(level - DRAIN * delta, 0.0)
+		elif running and not door_open:
+			level = minf(level + RISE * delta, MAX_LEVEL)
 	_show()
 	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
 		if "wade" in cop:
@@ -114,10 +180,11 @@ func _show() -> void:
 
 
 func net_state() -> Array:
-	return [level, running]
+	return [level, running, shut_at]
 
 
 func apply_net_state(state: Array) -> void:
 	level = state[0]
 	running = state[1]
+	shut_at = state[2]
 	_show()

@@ -140,6 +140,8 @@ const OUT_BACK := Vector3(BACK_DOOR_X, 0, -HALF_Z - 1.4)
 ## How long the unplugged drill stands still, and how many hostages he walks out.
 const UNPLUGGED := 60.0
 const SORRY_HOSTAGES := 2
+## The flooding bank's valve (robo-banco-inundado.md, step 2): on the back wall, outside, east of the back door.
+const VALVE_AT := Vector3(BACK_DOOR_X + 2.2, 0, -HALF_Z - 0.15)
 ## Where the gang ties the sorry robber when they catch him helping (step 4): a chair by the hall's west wall, facing
 ## the hall.
 const CHAIR_AT := Vector3(-10.5, 0, 1.2)
@@ -189,8 +191,10 @@ var manager_trunk: ManagerTrunk
 var marbles: BankMarbles
 var croissant_tray: BankCroissantTray
 var drill: BankDrill
-## The flooding vault's water (decision 125), or null.
+## The flooding vault's water (decision 125), its valve out back and the front door that holds it in, or null.
 var water: BankWater
+var valve: BankValve
+var front_door: FrontDoor
 var hostages_freed := 0
 var phone: BankPhone
 ## How many sacks of money the robbers got away with, the getaway chase if El Oso ran, and how it ended.
@@ -298,6 +302,8 @@ static func is_party(seed_: int, args: PackedStringArray) -> bool:
 
 
 ## The flooding vault's water: over the whole bank's floor, its jet out of the hole the drill made in the vault's door.
+## Step 2: a front door in the entrance holds it in, and the valve out back stops it. The pig running for the van and
+## the hostages walking out open the door on their way.
 func _add_water() -> void:
 	water = BankWater.new()
 	water.name = "Water"
@@ -309,6 +315,27 @@ func _add_water() -> void:
 	for hostage in hostages:
 		water.waders.append(hostage)
 	add_child(water)
+	front_door = DOOR_SCENE.instantiate()
+	front_door.name = "FrontDoor"
+	front_door.locked = false
+	front_door.position = Vector3(ENTRANCE_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, HALF_Z)
+	add_child(front_door)
+	water.watch_door(front_door, global_transform * Vector3(ENTRANCE_X, FLOOR_TOP, HALF_Z - 0.5))
+	valve = BankValve.new()
+	valve.name = "Valve"
+	valve.water = water
+	valve.position = VALVE_AT
+	valve.rotation.y = PI
+	add_child(valve)
+	for robber in robbers:
+		if robber.animal == "chancho":
+			robber.spotted.connect(func(_robber: BankRobber, _cop: Node3D) -> void: open_front())
+
+
+## Someone inside walks out of the flooding bank's front door: it swings open (and the wave rushes out).
+func open_front() -> void:
+	if front_door and not front_door.is_open:
+		front_door.open_from_inside()
 
 
 ## The party's things: the garlands across the hall, the boombox playing on the bench (its notes bobbing over it) and
@@ -793,6 +820,7 @@ func release_hostage() -> void:
 				var way_in: Array[Vector3] = []
 				for at in WAY_IN:
 					way_in.append(global_transform * (at + Vector3.UP * FLOOR_TOP))
+				open_front()
 				hostage.walk_out(global_transform * Vector3(ENTRANCE_X, FLOOR_TOP, HALF_Z + 1.2), way_in)
 				return
 			hostage.global_position = global_transform * Vector3(ENTRANCE_X, FLOOR_TOP, HALF_Z + 1.5)
