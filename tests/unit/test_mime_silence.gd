@@ -31,12 +31,12 @@ func test_a_mime_close_by_hears_the_cop_talk() -> void:
 	assert_almost_eq(mime.suspicion, MimeSilence.TALKING * MimeSilence.TALK_EVERY, 0.01)
 
 
-func test_a_far_mime_does_not_hear_it() -> void:
+func test_only_the_mimes_in_range_hear_it() -> void:
 	_near_first_mime(3.0)
 	theater.silence.heard_talking(cop)
 	for member: ClubMember in theater.members:
-		if member.global_position.distance_to(cop.global_position) > MimeSilence.HEAR_RANGE:
-			assert_eq(member.suspicion, 0.0, "too far to hear")
+		var near := member.global_position.distance_to(cop.global_position) <= MimeSilence.HEAR_RANGE
+		assert_eq(member.suspicion > 0.0, near, "hears it only within range")
 
 
 func test_they_hear_it_even_behind_their_back() -> void:
