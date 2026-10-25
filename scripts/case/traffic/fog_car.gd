@@ -37,6 +37,8 @@ const WARN_REACH := 4.0
 const OVERRUN_PATIENCE := 20.0
 ## What a driver says bumping into the car ahead.
 const BUMP_LINES := 4
+## Its horn's bubble shows this far over the car (step 3).
+const HORN_UP := 2.2
 
 
 ## A car's headlights and horn when no plan says them: from its plate, so every PC agrees.
@@ -64,6 +66,11 @@ static func warned(car: QueueCar) -> bool:
 		if belt and belt.flashlight and belt.flashlight.reaches(front, car):
 			return true
 	return false
+
+
+## A horn's sound (one of HORNS).
+static func horn_text(horn: int) -> String:
+	return "FOG_HORN_%d" % (horn % HORNS)
 
 
 ## What a driver says bumping into the car ahead in the fog, from its plate.

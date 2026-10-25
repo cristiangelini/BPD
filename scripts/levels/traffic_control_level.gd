@@ -25,6 +25,8 @@ const SPIKES_FROM_DOOR: Array[Vector3] = [Vector3(2, 0, 2.3), Vector3(2.7, 0, 2.
 ## The fog check's four lit cones (control-neblina.md, step 2), in a row by the patrol car.
 const FLARES_FROM_DOOR: Array[Vector3] = [Vector3(2, 0, 2.3), Vector3(2.6, 0, 2.3), Vector3(3.2, 0, 2.3),
 	Vector3(3.8, 0, 2.3)]
+## The fog check's foghorn (step 3), next to the lit cones.
+const FOGHORN_FROM_DOOR := Vector3(4.6, 0, 2.3)
 ## What Play draws, a sixth each (propuesta).
 const VARIANTS: Array[String] = ["rush_hour", "clown_convoy", "fruit_truck", "crowded_car", "ghost_car", "wedding",
 	"race"]
@@ -106,6 +108,10 @@ func _ready() -> void:
 			flare.name = "FogFlare%d" % i
 			add_child(flare)
 			flare.global_position = door + FLARES_FROM_DOOR[i] + Vector3.UP * 0.05
+		var horn := FogHorn.new()
+		horn.name = "FogHorn"
+		add_child(horn)
+		horn.global_position = door + FOGHORN_FROM_DOOR + Vector3.UP * 0.05
 	if chosen == "race":
 		for i in SPIKES_FROM_DOOR.size():
 			var strip := SpikeStrip.new()
