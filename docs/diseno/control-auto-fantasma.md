@@ -1,4 +1,4 @@
-# BPD · Control de tránsito: El auto fantasma (propuesta, 25/10)
+# BPD · Control de tránsito: El auto fantasma (aprobado, 25/10)
 
 Quinta variante del control de tránsito ([control-transito.md](control-transito.md), variante 9;
 [casos.md](casos.md), punto 8.9). Reusa el control de "Hora pico" y lo de las otras variantes
@@ -40,7 +40,7 @@ remoto desde atrás, en otro auto. Si ven un auto sin nadie al volante, no lo pe
 - El control remoto como prueba (+100 en el baúl).
 - La persecución con el fantasma que se cruza en las esquinas (ChaseDrops).
 
-## Preguntas para Cristian
+## Preguntas para Cristian (respondidas: sí a las tres, 25/10)
 1. **¿El auto fantasma se ve vacío desde el principio y lo difícil es encontrar quién lo maneja desde la fila?**
    Recomiendo que sí: el chiste es que el auto raro está a la vista y el culpable se esconde entre los normales.
 2. **¿La pista buena es el tic: cuando el fantasma hace una travesura, el Titiritero asoma la antena 2 s?**
