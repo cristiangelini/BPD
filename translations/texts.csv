@@ -1838,3 +1838,13 @@ MIME_FOUND_OUT_1,¡Son policías! ¡Ningún mimo hace tanto ruido!,They're cops!
 MIME_FOUND_OUT_2,¡Son policías! ¡Ni saben quedarse quietos!,They're cops! They can't even stand still!,São policiais! Nem sabem ficar parados!
 HINT_MIME_FOUND_OUT,¡Los descubrieron! Todos los mimos saben que son policías.,You've been found out! Every mime knows you're cops.,Vocês foram descobertos! Todos os mímicos sabem que vocês são policiais.
 HUD_MIME_HEARS_YOU,Silencio: un mimo te oye,Quiet: a mime can hear you,Silêncio: um mímico ouve você
+PAUSA_REHEARSAL,*¡Priiip! La Maestra Pausa toca el silbato: empieza el ensayo.*,*Phweet! Maestra Pausa blows her whistle: rehearsal starts.*,*Priiip! A Maestra Pausa apita: começa o ensaio.*
+PAUSA_REHEARSAL_SOON,*La Maestra Pausa señala el escenario y se lleva el silbato a la boca.*,*Maestra Pausa points at the stage and raises her whistle.*,*A Maestra Pausa aponta para o palco e leva o apito à boca.*
+HINT_MIME_REHEARSAL,¡Ensayo! Sube al escenario: con ¡MÍMICA! mantén H; con ¡ESTATUA! no te muevas.,Rehearsal! Get on the stage: on MIME! hold H; on STATUE! don't move.,Ensaio! Suba no palco: com MÍMICA! segure H; com ESTÁTUA! não se mexa.
+MIME_MIME,¡MÍMICA!,MIME!,MÍMICA!
+MIME_STATUE,¡ESTATUA!,STATUE!,ESTÁTUA!
+MIME_GOOD,Muy bien,Well done,Muito bem
+MIME_NOT_MIMING,¡Mantén H! Las manos contra la pared invisible,Hold H! Hands on the invisible wall,Segure H! As mãos na parede invisível
+MIME_MOVED,¡Te moviste! Quédate quieto,You moved! Stand still,Você se mexeu! Fique parado
+MIME_FROZE_WRONG,¡Suelta H! Las estatuas no hacen mímica,Let go of H! Statues don't mime,Solte H! Estátuas não fazem mímica
+MIME_GO_TO_STAGE,Sube al escenario,Get on the stage,Suba no palco

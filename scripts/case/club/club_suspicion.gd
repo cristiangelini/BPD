@@ -5,7 +5,8 @@ extends Node3D
 ## the jailbreak's guard (NightGuard.sees). What a grandparent sees in a cop raises it every second: no disguise,
 ## running, a tool in hand, being in the back rooms,
 ## sitting out the waltz (ClubDance). At the chapel (infiltracion-coro.md, step 4) the choristers watch the same way,
-## for the robe instead of the grandparent disguise, and hear the cops sing out of time (ChoirSinging). Some things raise it at once: a disguise piece falling where they
+## for the robe instead of the grandparent disguise, and hear the cops sing out of time (ChoirSinging); at the theater
+## (infiltracion-mimos.md, step 4) the mimes see the cops rehearse wrong (MimeRehearsal). Some things raise it at once: a disguise piece falling where they
 ## see it, a bad step in the waltz, a bingo number left unmarked (the neighbor at the table, ClubBingo.missed) and a shout nearby. At 50 a "?"
 ## shows over their head and at 80 a "!"; at 100 they shout "¡Son policías!" and everyone knows (`discovered`; the
 ## chase comes in step 6). It calms down when they see nothing. The host decides; online the guests follow its state
@@ -48,6 +49,8 @@ var prefix := "CLUB_"
 var singing: ChoirSinging
 ## The waltz, if the club has one.
 var dance: ClubDance
+## The mimes' rehearsal, if the place has one.
+var rehearsal: MimeRehearsal
 ## Whether a world position is inside the club, and in its back rooms (GrandpaClub sets them).
 var inside: Callable = func(_at: Vector3) -> bool: return false
 var in_back_room: Callable = func(_at: Vector3) -> bool: return false
@@ -80,6 +83,18 @@ func watch_dance(waltz: ClubDance) -> void:
 func watch_singing(songs: ChoirSinging) -> void:
 	singing = songs
 	singing.missed.connect(_on_sang_wrong)
+
+
+## Connects the mimes' rehearsal done wrong (MimeTheater calls it).
+func watch_rehearsal(mimes: MimeRehearsal) -> void:
+	rehearsal = mimes
+	rehearsal.missed.connect(_on_mimed_wrong)
+
+
+func _on_mimed_wrong(cop: Cop, amount: float) -> void:
+	for member in members:
+		if member.sees_cop(cop):
+			raise(member, amount)
 
 
 func _on_sang_wrong(cop: Cop, amount: float) -> void:
@@ -143,6 +158,8 @@ func offence(cop: Cop, speed: float) -> float:
 	if dance and dance.is_waltz() and not dance.on_floor.call(cop.global_position):
 		rate += SITTING_OUT
 	if singing and singing.is_song() and not singing.on_platform.call(cop.global_position):
+		rate += SITTING_OUT
+	if rehearsal and rehearsal.is_rehearsal() and not rehearsal.on_stage.call(cop.global_position):
 		rate += SITTING_OUT
 	return rate
 

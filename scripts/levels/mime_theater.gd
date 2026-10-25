@@ -8,7 +8,7 @@ extends InfiltrationPlace
 ## cops start in the station, where the mime disguises are, and drive here. --place=mime opens it from Play.
 ## Mimes stand on the stage's marks (by the seed), Maestra Pausa by her bench facing them, and the mute doorman only lets
 ## in cops passing for mimes (step 2b); they all watch the cops (ClubSuspicion, "MIME_" texts) and hear them talk
-## (MimeSilence, step 3).
+## (MimeSilence, step 3); Pausa leads the rehearsals of mime and statue (MimeRehearsal, step 4).
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -62,6 +62,8 @@ var pausa: ClubMember
 var doorman: ClubDoorman
 ## No talking near the mimes (step 3).
 var silence: MimeSilence
+## Maestra Pausa's rehearsals of mime and statue (step 4).
+var rehearsal: MimeRehearsal
 var _build: PlaceBuilder
 
 
@@ -130,6 +132,15 @@ func _add_people() -> void:
 	silence.suspicion = suspicion
 	silence.inside = is_inside
 	add_child(silence)
+	rehearsal = MimeRehearsal.new()
+	rehearsal.name = "Rehearsal"
+	rehearsal.case_seed = case_seed
+	rehearsal.pausa = pausa
+	rehearsal.members = members
+	rehearsal.inside = is_inside
+	rehearsal.on_stage = on_stage
+	add_child(rehearsal)
+	suspicion.watch_rehearsal(rehearsal)
 
 
 ## Whether a world position is inside the theater.
