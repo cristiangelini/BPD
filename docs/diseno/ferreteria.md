@@ -119,6 +119,12 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      entre las 40 llaves en blanco del tablero de atrás del mostrador; cada E en el tablero prueba una, y la buena sale
      entre la 2.ª y la 5.ª prueba (por la semilla). Cada prueba que ve Tobías le suma 5. Capturas: `paso5-*.png`.
 6. Las otras 5 historias, un PR cada una.
+   - **Los gnomos con relojes (propuesta):** 12 gnomos de cerámica (0,56 m, gorros rojo, azul y verde) en dos filas
+     en el patio, una contra la pared del fondo y otra contra el cerco, mirándose. Uno, sorteado con la semilla, es el
+     jefe (8 kg, 1000, el valor no se ve hasta agarrarlo); los otros 11 son frágiles y cada uno roto es una multa de 20.
+     Solo el jefe hace "tic tac" y se lee arriba de él cuando hay un policía a menos de 2 m; la primera vez va a la
+     planilla. La lista de relojes (0,1 kg, 300) y el pegamento (0,5 kg, 100) van en escondites sorteados. Capturas:
+     `paso6-gnomos.png`, `paso6-tictac.png`.
 7. El sorteo en "Jugar" (en cuartos entre los 4 lugares) y el online.
 
 ## Preguntas para Cristian (se avanza con lo recomendado mientras tanto)

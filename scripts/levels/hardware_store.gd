@@ -36,6 +36,15 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_WAX_MOLDS", "OBJ_EXTRA_ADDRESS_LIST"],
 		"rig": preload("res://scripts/case/hardware/master_keys_rig.gd"),
 	},
+	"gnomes": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_GNOMES_B", "BRIEF_GNOMES_C", "BRIEF_GNOMES_D"],
+		"find": "OBJ_FIND_GNOME_BOSS",
+		"hidden": [preload("res://scenes/props/watch_list.tscn"), preload("res://scenes/props/glue_tube.tscn")],
+		"half_heights": [0.005, 0.02],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_WATCH_LIST", "OBJ_EXTRA_GLUE"],
+		"rig": preload("res://scripts/case/hardware/gnomes_rig.gd"),
+	},
 }
 ## The tools for sale, laid along the gondolas' two upper boards, both sides.
 const TOOL_SCENES: Array[PackedScene] = [
