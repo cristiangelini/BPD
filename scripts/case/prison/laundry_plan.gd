@@ -73,7 +73,12 @@ var prison: PrisonLevel
 var carts: Array[LaundryCart] = []
 var workers: Array[LaundryWorker] = []
 var running := false
-var follower := false
+## A guest's copy (step 7): the host's plan decides; its machines leave it to the host's too.
+var follower := false:
+	set(value):
+		follower = value
+		for machine in machines:
+			machine.follower = value
 var room: Node3D
 var truck: LaundryTruck
 ## The trip on now (-1 before the first) and the seconds to the next.
@@ -146,6 +151,7 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 	truck = LaundryTruck.new()
 	truck.name = "LaundryTruck"
 	prison.add_child(truck)
+	child_entered_tree.connect(_on_child_entered)
 
 
 ## The `index`-th cart's place (level space x, z).
@@ -297,6 +303,31 @@ func _runner(at: Vector3) -> BlackoutInmate:
 	runners.append(runner)
 	found_one.emit(found)
 	return runner
+
+
+## A guest's copy of a runner the host let out (NpcSync makes it here): it gets its way to the punishment cell too, so
+## the guest's cops see the prompt to walk it there.
+func _on_child_entered(node: Node) -> void:
+	if not follower or not node is BlackoutInmate or runners.has(node):
+		return
+	var runner := node as BlackoutInmate
+	runner.prison = prison
+	runners.append(runner)
+	(func() -> void: BlackoutEscort.to_block(runner, prison).follower = true).call_deferred()
+
+
+## The machines with someone inside, for a guest's case (LaundryCase.snapshot).
+func machines_occupied() -> Array[bool]:
+	var occupied: Array[bool] = []
+	for machine in machines:
+		occupied.append(machine.occupied)
+	return occupied
+
+
+func apply_machines(occupied: Array) -> void:
+	for i in mini(occupied.size(), machines.size()):
+		if machines[i].occupied != occupied[i]:
+			machines[i].set_occupied(occupied[i])
 
 
 ## Walked into the punishment cell: counted once, even if they walk out and get walked back in.

@@ -4,7 +4,10 @@ extends Node
 ## The laundry case (carcel-lavanderia.md, step 6): the comisario tells it in his office and Q opens the planilla.
 ## Done when the truck leaves after its last trip (LaundryPlan.ended): SALARY, PER_ESCAPED less for each inmate gone
 ## (through the gate or up the ramp) and PER_CAUGHT more for each one walked into the punishment cell; quota of its own,
-## like the other prison cases. With LOSE_AT gone the case is lost. Every number here is (propuesta).
+## like the other prison cases. With LOSE_AT gone the case is lost. Step 7: online the host's case decides and a
+## guest's follows it (CaseSync, snapshot): the trip, the clock, the counts, the truck, who's in a machine and how it
+## ended. The workers, the carts and the runners go by NpcSync, E and R on the carts and machines by ActionSync.
+## Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 4.0
@@ -164,7 +167,7 @@ func snapshot() -> Dictionary:
 	var plan := prison.laundry
 	return {"tip": tip_given, "running": plan.running, "trip": plan.trip_now, "next": plan.next_trip_in,
 		"counts": [plan.found, plan.caught, plan.escaped], "over": plan.is_over, "solved": solved_it,
-		"failed": failed_reason, "result": _result}
+		"failed": failed_reason, "truck": plan.truck.here, "machines": plan.machines_occupied(), "result": _result}
 
 
 func apply_snapshot(state: Dictionary) -> void:
@@ -178,6 +181,11 @@ func apply_snapshot(state: Dictionary) -> void:
 	plan.caught = state.counts[1]
 	plan.escaped = state.counts[2]
 	plan.is_over = state.over
+	if state.truck and not plan.truck.here:
+		plan.truck.arrive()
+	elif not state.truck and plan.truck.here:
+		plan.truck.leave()
+	plan.apply_machines(state.machines)
 	solved_it = state.solved
 	failed_reason = state.failed
 	checklist.show_rows(rows())

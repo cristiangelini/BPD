@@ -210,6 +210,23 @@ func _show_cat() -> void:
 	say("CART_MEOW")
 
 
+## What a guest's copy needs besides where it is and what it says (NpcSync, step 7).
+func net_state() -> Array:
+	return [checked, tipped, loaded, _foot.visible, get_node_or_null("Cat") != null]
+
+
+func apply_net_state(net: Variant) -> void:
+	checked = net[0]
+	tipped = net[1]
+	_foot.visible = net[3]
+	if net[4] and not get_node_or_null("Cat"):
+		_show_cat()
+	if net[2] and not loaded:
+		loaded = true
+		hide()
+		collision_layer = 0
+
+
 func say(key: String, seconds := SAY_TIME) -> void:
 	_bubble.text = key
 	_bubble.show()

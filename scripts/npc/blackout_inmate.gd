@@ -262,6 +262,12 @@ func set_lit(lit: bool) -> void:
 
 
 ## What a guest's copy needs besides where they are and what they say (NpcSync).
+## What a guest's copy needs before it's added, for the ones the host brings in during the case (the laundry's
+## runners, carcel-lavanderia.md, step 7).
+func net_setup() -> Dictionary:
+	return {"role": role, "glow_eyes": glow_eyes}
+
+
 func net_state() -> Array:
 	return [frozen, hidden, is_escaped, jailed_in, surrendered, has_fuse, is_cuffed()]
 

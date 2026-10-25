@@ -194,6 +194,18 @@ func _nervous(delta: float) -> void:
 			return
 
 
+## What a guest's copy needs besides where they are and what they say (NpcSync, step 7): whether they're at work.
+func net_state() -> Array:
+	return [working]
+
+
+func apply_net_state(net: Variant) -> void:
+	if net[0] and not working:
+		work(0.0)
+	elif not net[0] and working:
+		_stop_working()
+
+
 func say(key: String, seconds := SAY_TIME) -> void:
 	_bubble.text = key
 	_bubble.show()

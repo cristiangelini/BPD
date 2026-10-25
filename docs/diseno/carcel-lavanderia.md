@@ -119,3 +119,9 @@ nadie duerme un gato, qué pistas da cada uno y cuándo un preso se mete en un l
   camión se va después del cuarto viaje se gana: sueldo de 600, 75 menos por cada escapado y 25 más por cada uno en la
   celda de castigo. Cuota propia de 400. En el sorteo de Jugar sale en un quinto de los casos de la cárcel
   (`PlaceDraw.PRISONS`, con el motín, el traslado, el corte de luz y el día de visitas). Captura: `paso6-planilla.png`.
+- **Paso 7 (online):** decide el anfitrión. Los presos de la lavandería y los carritos van por `NpcSync` (dónde
+  están, qué dicen, si trabajan; si el carrito está revisado, volcado o arriba del camión, el zapato y el gato); los que
+  saltan los trae el anfitrión y a los invitados les llega la copia, con su camino a la celda de castigo para que la
+  puedan llevar. E y R sobre los carritos y E sobre las máquinas van por `ActionSync`, pero solo el anfitrión sabe
+  quién está abajo de la ropa o en un lavarropas. La planilla, el reloj del camión, el camión que llega y se va, las
+  máquinas que tiemblan y el final van por `CaseSync` (`LaundryCase.snapshot`).
