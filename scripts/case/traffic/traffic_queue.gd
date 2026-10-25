@@ -138,7 +138,8 @@ func spawn() -> QueueCar:
 	car.checkpoint = checkpoint
 	var clown: bool = VARIANTS[variant].get("clown", false)
 	var fruit: bool = VARIANTS[variant].get("fruit", false)
-	var data := plan.cars[spawned] if plan and spawned < plan.total else WantedPlan.random_car(_rng, clown, fruit)
+	var crowd: bool = VARIANTS[variant].get("crowd", false)
+	var data := plan.cars[spawned] if plan and spawned < plan.total else WantedPlan.random_car(_rng, clown, fruit, crowd)
 	car.look = data.look
 	car.plate = data.plate
 	car.driver = data.driver
@@ -149,7 +150,7 @@ func spawn() -> QueueCar:
 	car.hat = fruit_traits.get("hat", "")
 	car.melon_kinds.assign(fruit_traits.get("melons", []))
 	car.clown_traits = data.get("clown", {})
-	if VARIANTS[variant].get("crowd", false):
+	if crowd:
 		car.crowd = data.get("crowd", CrowdedCar.riders_of(car.plate))
 	car.wanted = plan != null and spawned == plan.wanted_index
 	car.at = Vector3(0, 0, SPAWN_FROM)
