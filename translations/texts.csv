@@ -1655,6 +1655,11 @@ CROWD_RIDER_LINE_4,"¡Bájeme, que tengo cosquillas!","Put me down, I'm ticklish
 CROWD_RIDER_LINE_5,"Somos todos primos, oficial. Bueno, casi todos.","We're all cousins, officer. Well, almost all.","Somos todos primos, policial. Bom, quase todos."
 CROWD_RIDER_LINE_6,"¡No me meta de nuevo, que adentro huele a sándwich!","Don't put me back, it smells like sandwiches in there!","Não me ponha de volta, lá dentro cheira a sanduíche!"
 CROWD_RIDER_LINE_7,"¡Cuidado, que dejé la dentadura en el asiento!","Careful, I left my dentures on the seat!","Cuidado, deixei a dentadura no banco!"
+PROMPT_COUNT_RIDER,"E: contar (le pegas una calcomanía con su número)","E: count them (stick a numbered sticker on them)","E: contar (cola um adesivo com o número)"
+PROMPT_LOOK_INSIDE,"E: mirar adentro y contar a los que se quedaron","E: look inside and count who stayed in","E: olhar dentro e contar quem ficou"
+CROWD_COUNT,"Van %d contados.","%d counted so far.","%d contados até agora."
+CROWD_INSIDE,"Adentro se quedaron %d. Van %d contados.","%d stayed inside. %d counted so far.","%d ficaram dentro. %d contados até agora."
+CROWD_INSIDE_NONE,"Adentro no quedó nadie. Van %d contados.","Nobody stayed inside. %d counted so far.","Ninguém ficou dentro. %d contados até agora."
 PROMPT_BUS_ON,E: subir al bus,E: get on the bus,E: subir no ônibus
 PROMPT_BUS_OFF,E: bajar del bus,E: get off the bus,E: descer do ônibus
 PROMPT_BUS_DRIVE,E: manejar el bus,E: drive the bus,E: dirigir o ônibus
