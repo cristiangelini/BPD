@@ -29,6 +29,8 @@ static func held_by(cop: Cop) -> CleaningTool:
 func _ready() -> void:
 	super()
 	add_to_group("cleaning_tools")
+	if kind == "mop":
+		add_to_group("floor_scrubbers")
 	_last_tip = tip()
 
 
@@ -47,6 +49,23 @@ func _head_down() -> bool:
 		return true
 	var ray := PhysicsRayQueryParameters3D.create(tip() + Vector3.UP * 0.1, tip() + Vector3.DOWN * MOP_ABOVE, 1)
 	return not get_world_3d().direct_space_state.intersect_ray(ray).is_empty()
+
+
+## For FloorStains (a mop, like the floor polisher): where it scrubs, how wide, how fast, and whether it does now.
+func scrub_point() -> Vector3:
+	return tip()
+
+
+func scrub_reach() -> float:
+	return FloorStains.REACH
+
+
+func scrub_factor() -> float:
+	return 1.0
+
+
+func is_scrubbing() -> bool:
+	return is_working()
 
 
 func is_working() -> bool:

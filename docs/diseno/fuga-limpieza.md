@@ -154,6 +154,19 @@ la sospecha y las capturas. Clotilde y el comisario van por `NpcSync`; el llaver
   policía; las manchas y el piso mojado van online por `NpcSync`.
 - La lustradora pasa al paso 5.
 
+**Cómo quedó el paso 5:**
+- En el cuarto de limpieza está la lustradora (`FloorPolisher`, 14 kg, modelo nuevo). E la prende y la apaga, en la
+  mano o en el piso. Prendida borra las manchas el triple de rápido que el trapeador y, en la mano de un disfrazado,
+  cuenta como limpiar. Pero tira de quien la lleva para cualquier lado (cambia de rumbo cada 0,6 s), y si se suelta
+  prendida sale girando sola hasta chocar con algo o que alguien la apague.
+- El comisario tiene una parada más: la puerta de la calle, mirando si llega el inspector ("¿Y el inspector? Dijo a
+  las seis en punto."). Si desde ahí (o desde donde sea) ve el patrullero con alguien sentado, los atrapa en el acto:
+  "¿Desde cuándo la limpieza maneja patrulleros? ¡Novatos! ¡Adentro!", y los baja del auto en todas las PC.
+- Salir y perder ya venían de la dona: con todos en el patrullero a 25 m, "¡Fugados!"; a la tercera captura,
+  "Suspendidos".
+- Pruebas online con dos PC: la reja que abre Clotilde y las manchas borradas se ven igual en el invitado.
+- Captura del modelo: `limpieza/paso5-lustradora.png`.
+
 ## Preguntas para Cristian (respondidas el 25/10: sí a las tres, decisión 150)
 1. ¿La fuga sortea entre la dona y la limpieza mitad y mitad con la semilla? **Recomiendo sí:** las dos ya comparten
    celdas, salida y final, y así cada partida puede tener una fuga distinta.

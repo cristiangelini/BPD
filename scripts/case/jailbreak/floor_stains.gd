@@ -3,7 +3,7 @@ extends Node3D
 
 ## The stains on the station's floor in the cleaning crew's jailbreak (docs/diseno/fuga-limpieza.md, step 4): coffee,
 ## mud, footprints and donut crumbs on COUNT_MIN to COUNT_MAX of the SPOTS, drawn by the seed. A mop moving with its
-## head on one (CleaningTool.is_working) scrubs it, and SCRUB seconds of it clean it: the floor there stays wet for
+## head on one (CleaningTool.is_working), or the floor polisher on (FloorPolisher, faster), scrubs it, and SCRUB seconds of it clean it: the floor there stays wet for
 ## WET_TIME seconds, with a little yellow sign, and a cop running over it slips. The host scrubs (the guests get it
 ## from NpcSync); every PC slips its own cop (the level). Every number here is (propuesta).
 
@@ -101,18 +101,21 @@ func _physics_process(delta: float) -> void:
 		if wet[i] > 0.0:
 			wet[i] = maxf(wet[i] - delta, 0.0)
 			changed = changed or wet[i] == 0.0
-	for tool: CleaningTool in get_tree().get_nodes_in_group("cleaning_tools"):
-		if tool.kind == "mop" and tool.is_working():
-			changed = scrub_at(tool.tip(), delta) >= 0 or changed
+	for scrubber: Node in get_tree().get_nodes_in_group("floor_scrubbers"):
+		if scrubber.call("is_scrubbing"):
+			var at: Vector3 = scrubber.call("scrub_point")
+			var scrubbed := scrub_at(at, delta * float(scrubber.call("scrub_factor")), scrubber.call("scrub_reach"))
+			changed = scrubbed >= 0 or changed
 	if changed:
 		_refresh()
 
 
-## A mop's head at `tip` scrubs the dirty stain under it for `delta` seconds: its index, or -1 if none is there.
-func scrub_at(tip: Vector3, delta: float) -> int:
+## A mop's head at `tip` (or a polisher's disc `reach` wide) scrubs the dirty stain under it for `delta` seconds: its
+## index, or -1 if none is there.
+func scrub_at(tip: Vector3, delta: float, reach := REACH) -> int:
 	for i in spots.size():
 		var flat := Vector2(tip.x - spots[i].x, tip.z - spots[i].z)
-		if dirt[i] <= 0.0 or flat.length() > REACH or tip.y - spots[i].y > ABOVE:
+		if dirt[i] <= 0.0 or flat.length() > reach or tip.y - spots[i].y > ABOVE:
 			continue
 		dirt[i] = maxf(dirt[i] - delta, 0.0)
 		if dirt[i] == 0.0:

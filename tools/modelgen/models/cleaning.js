@@ -50,13 +50,27 @@ export function buildFeatherDuster() {
 	return b.build();
 }
 
-export const models = { cleaning_cart: buildCleaningCart, mop: buildMop, feather_duster: buildFeatherDuster };
+// The floor polisher: a grey disc with a red motor and a long handle up and back to a crossbar, 0.5 x 1.15 x 0.75 m,
+// origin at the bottom of the disc's middle.
+export function buildFloorPolisher() {
+	const b = new Builder('floor_polisher');
+	const grey = mat('polisher_grey', 0x9aa0a8), red = mat('polisher_red', 0xd0302a), black = mat('polisher_black', 0x26282c);
+	b.add('disc', black, new THREE.CylinderGeometry(0.26, 0.26, 0.04, 16), { pos: V(0, 0.02, 0) });
+	b.add('disc', grey, new THREE.CylinderGeometry(0.25, 0.27, 0.1, 16), { pos: V(0, 0.09, 0) });
+	b.add('motor', red, new THREE.CylinderGeometry(0.14, 0.16, 0.2, 12), { pos: V(0, 0.24, 0) });
+	limb(b, 'handle', grey, V(0, 0.3, -0.05), V(0, 1.1, -0.45), 0.02);
+	b.add('handle', black, new THREE.CylinderGeometry(0.025, 0.025, 0.5, 6), { pos: V(0, 1.1, -0.45), rot: [0, 0, Math.PI / 2] });
+	return b.build();
+}
+
+export const models = { cleaning_cart: buildCleaningCart, mop: buildMop, feather_duster: buildFeatherDuster, floor_polisher: buildFloorPolisher };
 
 export const views = {
 	cleaning_closet: {
 		items: [
 			{ name: 'mop', pos: [-0.6, 0.05, 0.6], rotY: 0.2 },
 			{ name: 'feather_duster', pos: [0.2, 0.05, 0.6], rotY: -0.2 },
+			{ name: 'floor_polisher', pos: [-1.3, 0, 0.2], rotY: 2.6 },
 			{ name: 'disguise_cleaner_cap', pos: [-0.5, 0.0, 0.5] },
 			{ name: 'disguise_face_mask', pos: [-0.1, 0.06, 0.5] },
 			{ name: 'folded_vest', pos: [0.35, 0.04, 0.5] },

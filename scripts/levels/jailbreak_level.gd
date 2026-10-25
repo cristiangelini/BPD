@@ -14,7 +14,8 @@ extends Node3D
 ## (fuga-limpieza.md): at dawn the guard went home and the comisario came in early, walking his round
 ## (EarlyComisario), and he catches them the same way; the third time he suspends them himself. The cells open when
 ## Clotilde, the cleaner, mops them (Cleaner), with the key ring on her cart, and the break room is the cleaning closet:
-## the crew's caps, face masks and vests (DisguisePiece, "cleaner") and their mops and feather duster (CleaningTool).
+## the crew's caps, face masks and vests (DisguisePiece, "cleaner"), their mops and feather duster (CleaningTool) and
+## the floor polisher (FloorPolisher). The comisario mustn't see them get in the patrol car.
 ## The floor has stains to mop (FloorStains); a cop running on the wet floor slips (WET_SLIP seconds down).
 ## --place=jailbreak opens it from Play, and --jailbreak=<variant> forces one of VARIANTS.
 
@@ -51,6 +52,7 @@ const CLOSET_TOOLS := [
 	["res://assets/models/mop.glb", "mop", 1.5, Vector3(12.0, 0.06, -1.3)],
 	["res://assets/models/feather_duster.glb", "duster", 0.8, Vector3(12.0, 0.06, -1.8)],
 ]
+const POLISHER_AT := Vector3(13.6, 0.02, -1.3)
 
 ## Slipping on the wet floor: how long down, how hard the push, and how long until it can slip again.
 const WET_SLIP := 2.0
@@ -86,6 +88,7 @@ var car_home: Transform3D
 var cleaner: Cleaner
 var cart_key: CellKey
 var tools: Array[CleaningTool] = []
+var polisher: FloorPolisher
 ## How many disguise pieces the comisario took back to the closet.
 var _returned := 0
 var stains: FloorStains
@@ -149,6 +152,7 @@ func _early_comisario() -> void:
 	comisario.setup_round(case_seed, city.transform * CityLayout.lot("station"))
 	comisario.outside_cells = outside_cells
 	comisario.caught.connect(_on_caught)
+	comisario.car = $PatrolCar
 	guard = comisario
 	_cleaner()
 	_closet()
@@ -184,6 +188,10 @@ func _closet() -> void:
 		add_child(tool)
 		tool.global_transform = lot * Transform3D(Basis(Vector3.UP, PI / 2), item[3])
 		tools.append(tool)
+	polisher = FloorPolisher.new()
+	polisher.name = "FloorPolisher"
+	add_child(polisher)
+	polisher.global_transform = lot * Transform3D(Basis(Vector3.UP, -PI / 2), POLISHER_AT)
 
 
 ## Clotilde beside her cart, with the cells' key ring on its tray. The comisario doesn't mind the keys on the cart,
@@ -292,6 +300,11 @@ func _on_caught(times: int) -> void:
 	var slot := 0
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
 		if outside_cells(cop.global_position):
+			var car: PatrolCar = $PatrolCar
+			if car.seat_of(cop) >= 0:
+				car.exit(cop)
+				if cop.sync and cop.sync.net.actions:
+					cop.sync.net.actions.tell_guests(cop, "exit", car)
 			if is_cleaning():
 				_undress(cop)
 			cop.warp(cop_spawn(slot))
@@ -316,6 +329,8 @@ func _on_caught(times: int) -> void:
 			_drop(cart_key)
 			cart_key.linear_velocity = Vector3.ZERO
 			cart_key.global_position = _cart * CART_KEY
+	if polisher:
+		polisher.is_on = false
 	if box:
 		_drop(box)
 		box.linear_velocity = Vector3.ZERO
