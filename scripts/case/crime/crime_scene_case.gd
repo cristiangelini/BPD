@@ -32,13 +32,15 @@ const VARIANTS := {
 	"pastry": {
 		"shift": "crime_pastry", "story": "pastry",
 		"brief": ["BRIEF_CRIME_A", "BRIEF_CRIME_B", "BRIEF_CRIME_C"], "go": "HINT_GO_CONTEST",
+		"go_row": "OBJ_CRIME_GO", "look": "HINT_CRIME_LOOK", "files_row": "OBJ_CRIME_FILES",
 		"who": "cook", "getaway": SuspectCar.BIKE, "clues": CrimePlan.CLUES,
 		"parts": ["photo", "prints", "teeth", "hair"],
 	},
 	# The circus (escena-circo.md, decision 130): six clowns alike; what hides them comes off for the file.
 	"circus": {
 		"shift": "crime_circus", "story": "circus",
-		"brief": ["BRIEF_CIRCUS_A", "BRIEF_CIRCUS_B", "BRIEF_CIRCUS_C"], "go": "HINT_GO_CIRCUS",
+		"brief": ["BRIEF_CIRCUS_A_", "BRIEF_CIRCUS_B", "BRIEF_CIRCUS_C"], "go": "HINT_GO_CIRCUS",
+		"go_row": "OBJ_CIRCUS_GO", "look": "HINT_CIRCUS_LOOK", "files_row": "OBJ_CIRCUS_FILES",
 		"who": "clown", "getaway": SuspectCar.BIKE,
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "recording": "honk",
 			"witness": "glasses"},
@@ -75,6 +77,8 @@ var file_parts := {}
 ## so a sign that changed backs mixes two clowns in one file.
 var captured := {}
 var accused := false
+## At the circus, the cops found what was stolen.
+var loot_found := false
 var wrong_guesses := 0
 var lost := false
 ## The station's board (CrimeBoard), where the files show up and the cops accuse.
@@ -134,7 +138,7 @@ func give_tip() -> void:
 	tip_given = true
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).input_enabled:
-			briefing.start(PackedStringArray(texts().brief))
+			briefing.start(briefing_lines())
 			break
 	checklist.show_rows(rows())
 
@@ -330,7 +334,7 @@ func snapshot() -> Dictionary:
 	# Copies: CaseSync keeps the last one sent to see what changed, and these change in place.
 	var state := {"tip": tip_given, "at_tent": at_tent, "found": clues_found.duplicate(), "ruined": ruined.duplicate(),
 		"parts": file_parts.duplicate(true), "files": files.duplicate(), "accused": accused, "wrong": wrong_guesses,
-		"lost": lost, "gone": gone.duplicate(), "escaped": escaped,
+		"lost": lost, "gone": gone.duplicate(), "escaped": escaped, "loot": loot_found,
 		"offended": place != null and place.witness_offended(), "result": _result}
 	# The culprit who ran off on his bike, and the chase after him.
 	if chase:
@@ -360,6 +364,8 @@ func apply_snapshot(state: Dictionary) -> void:
 			gone.append(index)
 			if place:
 				_send_off(place.suspect(index))
+	if place and state.get("loot", false) and texts() == VARIANTS.circus and not place.loot_found:
+		place.reveal_loot()
 	if place and state.offended and not place.witness_offended():
 		place.offend_witness()
 	if state.accused and not accused:
@@ -480,6 +486,23 @@ func file_text(index: int) -> String:
 	return "\n".join(lines)
 
 
+## The comisario's briefing: at the circus, the first line says what was stolen (the place drew it).
+func briefing_lines() -> PackedStringArray:
+	var lines := PackedStringArray(texts().brief)
+	if texts() == VARIANTS.circus:
+		lines[0] += place.loot if place else "seal"
+	return lines
+
+
+## At the circus, the cops found what was stolen (Circus.search).
+func found_loot() -> void:
+	if loot_found:
+		return
+	loot_found = true
+	_hint_all("HINT_LOOT_FOUND_" + (place.loot as String))
+	checklist.show_rows(rows())
+
+
 ## A cop shouted (VoiceChat): the place's witness may take offense.
 func shouted_by(cop: Cop) -> void:
 	if follower:
@@ -498,18 +521,21 @@ func culprit() -> Dictionary:
 ## The planilla's rows, in the shape CaseChecklist takes.
 func rows() -> Array[Dictionary]:
 	var list: Array[Dictionary] = []
-	list.append(_row("OBJ_CRIME_GO", at_tent))
+	list.append(_row(texts().go_row, at_tent))
 	list.append(_row(tr("OBJ_CRIME_CLUES") % [clues_found.size(), plan.clues.size()],
 		clues_found.size() + ruined.size() >= plan.clues.size()))
 	for kind in clues_found:
 		list.append({"text": "- " + clue_line(kind), "done": false, "optional": false, "status": true, "clue": true})
 	for kind in ruined:
 		list.append({"text": "- " + tr("CLUE_CRIME_RUINED_" + kind), "done": false, "optional": false, "status": true})
-	list.append(_row(tr("OBJ_CRIME_FILES") % [files.size(), cooks.size()], files.size() >= cooks.size()))
+	list.append(_row(tr(texts().files_row) % [files.size(), cooks.size()], files.size() >= cooks.size()))
 	for index: int in file_parts:
 		if not files.has(index):
 			list.append({"text": "- " + _missing(index), "done": false, "optional": false, "status": true})
 	list.append(_row("OBJ_CRIME_ACCUSE", accused))
+	if texts() == VARIANTS.circus and place:
+		list.append({"text": "OBJ_CIRCUS_LOOT_" + (place.loot as String), "done": loot_found, "optional": true,
+			"status": false})
 	if chase:
 		list.append(_row("OBJ_CRIME_CATCH", chase.case_solved))
 	if not gone.is_empty():
@@ -533,7 +559,7 @@ func _physics_process(delta: float) -> void:
 		for cop in get_tree().get_nodes_in_group("cops"):
 			if place.at_scene((cop as Node3D).global_position):
 				at_tent = true
-				_hint_all("HINT_CRIME_LOOK")
+				_hint_all(texts().look)
 				checklist.show_rows(rows())
 				break
 	_refresh_left -= delta

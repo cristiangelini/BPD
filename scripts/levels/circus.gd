@@ -57,6 +57,16 @@ const SPONGES := 2
 const MAX_SPARE_GLOVES := 2
 ## The pad of numbered signs, one per clown, on a stool by the bucket.
 const SIGNS_AT := BUCKET_AT + Vector3(1.2, 0, 0)
+## The roll of evidence bags, on another stool on the bucket's other side.
+const BAGS_AT := BUCKET_AT + Vector3(-1.2, 0, 0)
+## What was stolen, drawn with the seed (Cristian, 24/10: "las variemos"), and where it can be hidden.
+const LOOTS: Array[String] = ["seal", "cash", "nose"]
+const LOOT_SPOTS: Array[String] = ["trunk", "caravan", "cannon"]
+const LOOT_MODELS := {
+	"seal": preload("res://assets/models/seal.glb"),
+	"cash": preload("res://assets/models/cash_tin.glb"),
+	"nose": preload("res://assets/models/golden_nose.glb"),
+}
 const CARAVAN_COLORS: Array[Color] = [
 	Color(0.95, 0.55, 0.7), Color(0.45, 0.82, 0.65), Color(0.98, 0.82, 0.3), Color(0.68, 0.58, 0.9),
 	Color(0.5, 0.7, 0.95), Color(0.98, 0.6, 0.35),
@@ -66,6 +76,13 @@ var clowns: Array[CircusClown] = []
 var ringmaster: Ringmaster
 ## "¡El truco!": the clowns swap spots every so often while the case is on (ClownTrick).
 var trick: ClownTrick
+## What was stolen and where it is (drawn with the case seed in set_up_case), and whether the cops found it.
+var loot := "seal"
+var loot_spot := "trunk"
+var loot_found := false
+var case: CrimeSceneCase
+## The searchable places, by spot.
+var loot_spots := {}
 ## Who wears which sign: number -> clown index, and the last clown each number was on.
 var signs := {}
 var last_wearer := {}
@@ -90,6 +107,8 @@ func _ready() -> void:
 	_people()
 	_bucket()
 	_sign_pad()
+	_bags()
+	_loot_spots()
 
 
 ## The six clowns in a circle in the ring, the ringmaster at its gap and Zulema by the pool.
@@ -280,6 +299,56 @@ func _bucket() -> void:
 		add_child(sponge)
 
 
+## A stool with the roll of evidence bags for the clues the cops carry.
+func _bags() -> void:
+	_builder.box(BAGS_AT + Vector3(0, 0.25, 0), Vector3(0.5, 0.5, 0.4), WOOD)
+	bags = EvidenceBags.new()
+	bags.name = "EvidenceBags"
+	bags.position = BAGS_AT + Vector3(0, 0.5, 0)
+	add_child(bags)
+
+
+## The three places to search: the trunk's lid, the culprit's caravan door (chosen when the case comes) and the
+## cannon's mouth.
+func _loot_spots() -> void:
+	_loot_spot("trunk", TRUNK_AT + Vector3(0, TRUNK_SIZE.y + 0.1, 0), Vector3(TRUNK_SIZE.x, 0.2, TRUNK_SIZE.z))
+	_loot_spot("cannon", CANNON_AT + Vector3(0, 2.4, -0.6), Vector3(0.8, 0.8, 0.8))
+	_loot_spot("caravan", CARAVANS[0] + Vector3(-0.9, 1.4, CARAVAN_SIZE.z / 2 + 0.1), Vector3(0.9, 1.9, 0.2))
+
+
+func _loot_spot(spot: String, at: Vector3, size: Vector3) -> void:
+	var body := LootSpot.new(size)
+	body.name = "Search_" + spot
+	body.spot = spot
+	body.circus = self
+	body.position = at
+	add_child(body)
+	loot_spots[spot] = body
+
+
+## Searching a spot: the stolen thing turns up in the right one; a sign of nothing in the others.
+func search(spot: String, cop: Cop) -> void:
+	if spot != loot_spot or loot_found or not case:
+		if cop:
+			cop.show_hint("HINT_SEARCH_NOTHING_" + spot)
+		return
+	reveal_loot()
+
+
+## What was stolen comes out of its hiding spot, and the case notes it.
+func reveal_loot() -> void:
+	if loot_found:
+		return
+	loot_found = true
+	var item: Node3D = LOOT_MODELS[loot].instantiate()
+	item.name = "Loot"
+	add_child(item)
+	var at := (loot_spots[loot_spot] as Node3D).position
+	item.position = Vector3(at.x, 0.0 if loot == "seal" else at.y, at.z) + Vector3(0, 0, 0.9 if loot == "seal" else 0.0)
+	if case:
+		case.found_loot()
+
+
 ## A stool with the six numbered signs stacked on it.
 func _sign_pad() -> void:
 	_builder.box(SIGNS_AT + Vector3(0, 0.25, 0), Vector3(0.4, 0.5, 0.4), WOOD)
@@ -338,9 +407,15 @@ func wearer(number: int) -> int:
 	return signs.get(number, last_wearer.get(number, -1))
 
 
-## The clowns and Zulema know the case: one clown (by the seed) won't take off his wig for nothing, and each has his
-## spare gloves. The clues come in a later step.
-func set_up_case(case: CrimeSceneCase) -> void:
+## The circus takes the case: what was stolen and where it's hidden (by the seed; the caravan is the culprit's), and
+## the clowns and Zulema know it: one clown (by the seed) won't take off his wig for nothing, and each has his spare
+## gloves. The clues come in a later step.
+func set_up_case(new_case: CrimeSceneCase) -> void:
+	case = new_case
+	loot = LOOTS[hash(["circus loot", case.case_seed]) % LOOTS.size()]
+	loot_spot = LOOT_SPOTS[hash(["circus loot spot", case.case_seed]) % LOOT_SPOTS.size()]
+	# The caravan to search is the culprit's.
+	(loot_spots.caravan as Node3D).position = CARAVANS[case.plan.culprit] + Vector3(-0.9, 1.4, CARAVAN_SIZE.z / 2 + 0.1)
 	var stubborn := hash("stubborn clown %d" % case.case_seed) % clowns.size()
 	for clown in clowns:
 		clown.case = case
