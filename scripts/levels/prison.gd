@@ -125,6 +125,7 @@ var tunnel: TunnelPlan
 var tunnel_case: TunnelCase
 ## The talent show's stage, jury table, benches and inmates (carcel-talentos.md, step 2).
 var talent: TalentPlan
+var talent_case: TalentCase
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -299,6 +300,12 @@ func _start_talent() -> void:
 	talent.name = "TalentPlan"
 	add_child(talent)
 	talent.setup(self, case_seed)
+	talent_case = TalentCase.new()
+	talent_case.name = "TalentCase"
+	talent_case.prison = self
+	talent_case.shift_screen = $ShiftScreen
+	add_child(talent_case)
+	talent_case.start(city.get("comisario"))
 	city.transform = CityLayout.anchor("prison")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
