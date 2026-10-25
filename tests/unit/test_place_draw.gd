@@ -10,16 +10,16 @@ func after_each() -> void:
 
 
 func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltration_and_each_raid_a_sixth_of_the_rest() -> void:
-	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "chase": 0, "crime_scene": 0, "traffic": 0, "club": 0,
+	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "hardware": 0, "chase": 0, "crime_scene": 0, "traffic": 0, "club": 0,
 		"choir": 0, "bank": 0, "plaza": 0, "market": 0, "prison": 0}
 	for i in 600:
 		count[PlaceDraw.pick(i + 1, [], 1)] += 1
 	assert_between(count.chase, 250, 350, "half chases (Cristian, 20/10)")
 	for place: String in ["crime_scene", "traffic"]:
 		assert_between(count[place], 25, 80, "even odds for %s (propuesta)" % place)
-	# With the bank and the rally drawn before them, each raid comes up about 1 shift in 30 (propuesta).
-	for place: String in ["grandpa", "bakery", "groomer"]:
-		assert_between(count[place], 10, 60, "%s still comes up (propuesta)" % place)
+	# With the bank and the rally drawn before them, each of the four raids comes up about 1 shift in 40 (propuesta).
+	for place: String in ["grandpa", "bakery", "groomer", "hardware"]:
+		assert_between(count[place], 5, 60, "%s still comes up (propuesta)" % place)
 	assert_between(count.club + count.choir, 25, 80, "the infiltrations, as often as a raid (propuesta)")
 	assert_between(count.bank, 15, 70, "the bank robbery, about as often as a raid (propuesta)")
 	assert_between(count.plaza + count.market, 10, 60, "the politician's protection, about as often as a raid (propuesta)")
@@ -35,6 +35,7 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 	var bakery := {}
 	var grandpa := {}
 	var groomer := {}
+	var hardware := {}
 	for i in 300:
 		var case_seed := i + 1
 		match PlaceDraw.pick(case_seed, [], 1, false):
@@ -42,11 +43,14 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 				bakery[Bakery.pick_story(case_seed, [])] = true
 			"groomer":
 				groomer[Groomer.pick_story(case_seed, [])] = true
+			"hardware":
+				hardware[HardwareStore.pick_story(case_seed, [])] = true
 			_:
 				grandpa[GrandpaHouse.pick_story(case_seed, []).id] = true
 	assert_eq(bakery.size(), Bakery.STORIES.size())
 	assert_eq(grandpa.size(), GrandpaHouse.STORIES.size())
 	assert_eq(groomer.size(), Groomer.STORIES.size())
+	assert_eq(hardware.size(), HardwareStore.STORIES.size())
 
 
 func test_new_seeds_are_odd_and_even() -> void:

@@ -2,7 +2,7 @@ class_name PlaceDraw
 extends RefCounted
 
 ## Which place a match happens in (panaderia.md, "El orden para hacerlo", step 5): Play draws a case seed and, from
-## it, the grandpa's house, the bakery or the pet salon, with even odds (propuesta). Every third shift is an
+## it, the grandpa's house, the bakery, the pet salon or the hardware store (ferreteria.md), with even odds (propuesta). Every third shift is an
 ## interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
 ## (persecucion.md, "Sale como un caso más"). Of the shifts left, one in CRIME_EVERY is the crime scene
 ## (escena-del-crimen.md, propuesta), then one in TRAFFIC_EVERY the traffic control (control-transito.md), then one in
@@ -32,7 +32,7 @@ const PLACES := {
 	"hardware": "res://scenes/levels/hardware_store.tscn",
 }
 ## The raids, drawn by the seed.
-const ORDER := ["grandpa", "bakery", "groomer"]
+const ORDER := ["grandpa", "bakery", "groomer", "hardware"]
 ## One shift in this many is an interrogation (Cristian, 20/10): shifts 3, 6... of a campaign, or 1 in 3 by the seed
 ## without one.
 const INTERROGATION_EVERY := 3
@@ -61,7 +61,7 @@ static var custody := {}
 
 
 ## The place for this seed: from --place=<id> among the user args, or drawn. It hashes the seed instead of taking
-## seed % 3, because the stories are drawn with seed % their count and the two draws would go together.
+## seed % 4, because the stories are drawn with seed % their count and the two draws would go together.
 ## `shift` is the campaign's shift (0 without a campaign). Without `chases` every shift that isn't an interrogation is
 ## a raid.
 static func pick(case_seed: int, args: PackedStringArray, shift := 0, chases := true) -> String:
@@ -89,7 +89,7 @@ static func pick(case_seed: int, args: PackedStringArray, shift := 0, chases := 
 		return RALLIES[hash(["politician place", case_seed]) % RALLIES.size()]
 	if chases and hash(["prison riot", case_seed]) % PRISON_EVERY == 0:
 		return "prison"
-	return ORDER[hash("place %d" % case_seed) % ORDER.size()]
+	return ORDER[hash(["raid place", case_seed]) % ORDER.size()]
 
 
 static func is_interrogation(case_seed: int, shift: int) -> bool:
