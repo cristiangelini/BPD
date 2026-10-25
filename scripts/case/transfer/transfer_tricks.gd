@@ -12,13 +12,18 @@ extends Node
 ##   the door; E standing sits them back.
 ## - The loose window: they push their window's bars (BusInmate.push_window); E stops them, and once the bars give,
 ##   they jump out as soon as the bus stands still (`went_out`; step 4 runs after them).
+## Step 3c:
+## - The singer: a lullaby that puts the nearest standing cop to sleep (BusInmate.sing); E covers their mouth.
+## - The accomplice: a car (AccompliceCar) follows the bus and, if it stops, hands them a file through the window;
+##   with it they saw the bars in FILE_SAW seconds and jump out like the loose window.
 ## Each trick over, their plan starts again from 0. The host decides. Every number here is (propuesta).
 
 signal trick_started(inmate: BusInmate, trick: String)
 ## An inmate got out of the bus (by the window, so far).
 signal went_out(inmate: BusInmate)
 
-const TRICKS: Array[String] = ["spoon", "bathroom", "sick", "window"]
+const TRICKS: Array[String] = ["spoon", "bathroom", "sick", "window", "singer", "accomplice"]
+const FILE_SAW := 3.0
 const BATHROOM_WAIT := 40.0
 const GAS_REACH := 14.0
 const GAS_STOP := 4.0
@@ -36,6 +41,8 @@ var tricks := {}
 var bathroom := {}
 ## Inmates out of the bus.
 var out: Array[BusInmate] = []
+## The accomplices' cars on the road now.
+var cars: Array[AccompliceCar] = []
 var _stopped_at_gas := 0.0
 
 
@@ -84,7 +91,34 @@ func _on_plan_ready(inmate: BusInmate) -> void:
 			inmate.play_sick()
 		"window":
 			inmate.push_window()
+		"singer":
+			inmate.sing()
+		"accomplice":
+			var car := AccompliceCar.new()
+			car.name = "Accomplice%d" % inmate.seat
+			car.bus = plan.bus
+			car.inmate = inmate
+			car.handed.connect(_on_file_handed)
+			car.tree_exited.connect(func() -> void: cars.erase(car))
+			plan.bus.get_parent().add_child(car, true)
+			cars.append(car)
+			inmate.say("TRANSFER_ACCOMPLICE", 4.0)
+			_tell_cops("HINT_TRANSFER_ACCOMPLICE")
 	trick_started.emit(inmate, trick)
+
+
+## The file came through the window: they saw the bars and are out at once, unless a cop stops them.
+func _on_file_handed(inmate: BusInmate) -> void:
+	if is_instance_valid(inmate) and inmate.seated:
+		inmate.push_window(FILE_SAW, "TRANSFER_FILE")
+		inmate.window_open = false
+
+
+## A car that gave up leaves the inmate's plan to start over.
+func _physics_process_cars() -> void:
+	for car in cars:
+		if car.gave_up and is_instance_valid(car.inmate) and car.inmate.plan >= BusInmate.FULL and not car.inmate.pushing:
+			car.inmate.set_plan(0.0)
 
 
 func _on_jumped_out(inmate: BusInmate) -> void:
@@ -94,6 +128,8 @@ func _on_jumped_out(inmate: BusInmate) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if plan and not plan.follower:
+		_physics_process_cars()
 	if plan == null or plan.follower or bathroom.is_empty():
 		_stopped_at_gas = 0.0
 		return

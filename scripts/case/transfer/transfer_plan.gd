@@ -63,6 +63,9 @@ func watched(inmate: BusInmate) -> bool:
 
 ## Whether `cop` looks at `inmate`'s chest: close, in its view and with nothing in between.
 func watches(cop: Cop, inmate: BusInmate) -> bool:
+	# Asleep from the lullaby, or thrown about, a cop watches nothing.
+	if cop.is_staggered():
+		return false
 	var eye := cop.global_position + Vector3.UP * COP_EYE
 	var at := inmate.chest()
 	var flat := Vector3(at.x - eye.x, 0.0, at.z - eye.z)

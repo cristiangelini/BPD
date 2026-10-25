@@ -9,7 +9,9 @@ extends PrisonInmate
 ## door (`at_door`), stopping while a cop stands in their way. E, or the handcuffs, sits them back on the ring.
 ## Sick (step 3b), they lie in the aisle: a cop crouching by them to help makes them jump up and run for the door,
 ## E standing sits them back. At the window (step 3b), they push its bars for WINDOW_PUSH seconds; E stops them, and a
-## loose window lets them jump out the moment the bus stands still (`jumped_out`).
+## loose window lets them jump out the moment the bus stands still (`jumped_out`). Singing (step 3c), they lull the
+## nearest standing cop for SING_TIME and put them to sleep for ASLEEP; E covers their mouth. With the accomplice's file
+## (step 3c) they saw the bars like a loose window, only faster.
 ## Every number here is (propuesta).
 
 signal at_door(inmate: BusInmate)
@@ -42,6 +44,10 @@ const WINDOW_PUSH := 6.0
 const STOPPED := 1.0
 ## Out of the window, they land this far from the bus's side.
 const JUMP_OUT := 1.2
+## The lullaby: the nearest standing cop this close, for this long, sleeps that long.
+const SING_REACH := 4.0
+const SING_TIME := 5.0
+const ASLEEP := 10.0
 
 ## The bus they ride and the seat (0 to 7, PrisonBus.seat_spot). Set before they're added.
 var bus: PrisonBus
@@ -64,6 +70,10 @@ var window_open := false
 var _push_left := 0.0
 ## Out of the bus (by the window), in the street.
 var out := false
+## Singing the lullaby at `_lulled` (step 3c).
+var singing := false
+var _sing_left := 0.0
+var _lulled: Cop
 ## Where they walk to, in the bus's space, one after another.
 var _path: Array[Vector3] = []
 var _mark: Label3D
@@ -98,6 +108,7 @@ func sit() -> void:
 	loose = false
 	lying = false
 	pushing = false
+	singing = false
 	door = -1
 	_speed = WALK_SPEED
 	_path.clear()
@@ -136,11 +147,29 @@ func run_off() -> void:
 	_head_for_door()
 
 
-## Starts pushing the bars of their window, still in their seat.
-func push_window() -> void:
+## Starts pushing the bars of their window, still in their seat, for `seconds` (less with a file).
+func push_window(seconds := WINDOW_PUSH, line := "TRANSFER_WINDOW_PUSH") -> void:
 	pushing = true
-	_push_left = WINDOW_PUSH
-	say("TRANSFER_WINDOW_PUSH", WINDOW_PUSH)
+	_push_left = seconds
+	say(line, seconds)
+
+
+## Starts the lullaby at the nearest standing cop in reach (nobody near: they hum to themselves and give up).
+func sing() -> void:
+	singing = true
+	_sing_left = SING_TIME
+	_lulled = _nearest_rider()
+	say("TRANSFER_SING", SING_TIME)
+
+
+## A cop covered their mouth: the song is over and the plan starts over.
+func hush(by: Cop) -> void:
+	if not singing:
+		return
+	singing = false
+	set_plan(0.0)
+	say("TRANSFER_HUSHED")
+	sat_back.emit(self, by)
 
 
 ## A cop stopped them pushing (the bars hold if they hadn't given yet): the plan starts over.
@@ -198,12 +227,16 @@ func chest() -> Vector3:
 func prompt_key(_cop: Cop) -> String:
 	if pushing:
 		return "PROMPT_FIX_WINDOW"
+	if singing:
+		return "PROMPT_HUSH_INMATE"
 	return "PROMPT_SEAT_INMATE" if loose or lying else ""
 
 
 func use(cop: Cop) -> void:
 	if pushing:
 		stop_pushing(cop)
+	elif singing:
+		hush(cop)
 	else:
 		seat_back(cop)
 
@@ -225,6 +258,9 @@ func _physics_process(delta: float) -> void:
 		return
 	if pushing:
 		_push(delta)
+		return
+	if singing:
+		_sing(delta)
 		return
 	if not loose:
 		return
@@ -255,6 +291,27 @@ func _push(delta: float) -> void:
 		say("TRANSFER_WINDOW_OPEN")
 	if window_open and absf(bus.forward_speed()) < STOPPED:
 		jump_out()
+
+
+## The song ends: the cop it was for, still close, falls asleep standing.
+func _sing(delta: float) -> void:
+	_sing_left -= delta
+	if _sing_left > 0.0:
+		return
+	singing = false
+	set_plan(0.0)
+	if is_instance_valid(_lulled) and _lulled.riding == bus and _flat_to(_lulled) < SING_REACH:
+		_lulled.knock_back(Vector3.ZERO, ASLEEP)
+		_lulled.show_hint("HINT_TRANSFER_ASLEEP")
+		say("TRANSFER_SANG")
+
+
+func _nearest_rider() -> Cop:
+	var best: Cop
+	for cop in bus.riders:
+		if is_instance_valid(cop) and _flat_to(cop) < SING_REACH and (best == null or _flat_to(cop) < _flat_to(best)):
+			best = cop
+	return best
 
 
 func _flat_to(cop: Cop) -> float:

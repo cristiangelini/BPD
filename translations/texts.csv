@@ -1503,6 +1503,14 @@ TRANSFER_SICK_RUN,"¡Ja! ¡Caíste!","Ha! Gotcha!","Rá! Caiu!"
 TRANSFER_WINDOW_PUSH,"*Ñiiic, ñiiic*","*Creak, creak*","*Nhiiic, nhiiic*"
 TRANSFER_WINDOW_OPEN,"Esta reja está floja... En el próximo semáforo, me bajo.","These bars are loose... Next red light, I'm out.","Esta grade está solta... No próximo sinal, eu desço."
 TRANSFER_WINDOW_OUT,"¡Adiós, adiós!","Bye-bye!","Tchau, tchau!"
+PROMPT_HUSH_INMATE,E: taparle la boca,E: cover their mouth,E: tapar a boca dele
+TRANSFER_SING,"La la laaa... duérmete, oficial... la la laaa...","La la laaa... go to sleep, officer... la la laaa...","Lá lá láá... dorme, seu guarda... lá lá láá..."
+TRANSFER_SANG,Shhh... que descanse.,Shhh... sweet dreams.,Shhh... bons sonhos.
+TRANSFER_HUSHED,"¡Mmmf! ¡Mmmf!","Mmmf! Mmmf!","Mmmf! Mmmf!"
+HINT_TRANSFER_ASLEEP,Te dormiste con la canción del preso. Espera a despertarte.,The inmate's song put you to sleep. Wait to wake up.,A canção do preso fez você dormir. Espere acordar.
+TRANSFER_ACCOMPLICE,"¡Ahí vienen mis amigos! ¡Pare en el semáforo, oficial!","Here come my friends! Stop at the light, officer!","Lá vêm meus amigos! Pare no sinal, seu guarda!"
+HINT_TRANSFER_ACCOMPLICE,Un auto sigue al bus. Si paras, le pasan algo a un preso por la ventana.,A car is following the bus. If you stop, they'll pass an inmate something through the window.,Um carro segue o ônibus. Se você parar, vão passar algo para um preso pela janela.
+TRANSFER_FILE,"*Ras, ras, ras* ¡Gracias por la lima!","*Rasp, rasp, rasp* Thanks for the file!","*Rec, rec, rec* Valeu pela lima!"
 HINT_JAILED_DOG,"El guardia ronca en su escritorio y la llave cuelga del collar de Mordisco, el perro de la comisaría. Hazte su amigo antes de que te ladre.","The guard is snoring at his desk and the key hangs from the collar of Mordisco, the station's dog. Make friends with him before he barks at you.","O guarda está roncando na mesa e a chave está pendurada na coleira do Mordisco, o cachorro da delegacia. Faça amizade com ele antes que ele te late."
 DOG_SNIFF_0,"*snif snif*","*sniff sniff*","*fung fung*"
 DOG_SNIFF_1,"*bosteza y babea*","*yawns and drools*","*boceja e baba*"
