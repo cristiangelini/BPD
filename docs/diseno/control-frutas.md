@@ -42,6 +42,8 @@ adentro de las sandías. No me rompan todas, que después los fruteros me llenan
 3. **¿Si el camión se escapa, la persecución tira sandías rodando por la calle?** Recomiendo que sí, reusando lo del
    camión de mudanza.
 
+**Respuestas de Cristian (25/10):** sí a las tres.
+
 ## El orden para hacerlo (un PR chico por paso, apilados sobre la Caravana)
 1. Los camioncitos de fruta en la fila, con sus sandías en la caja (variante `fruit_truck`).
 2. La sandía: agarrarla, golpecito, romperla con jugo y lo de adentro.
