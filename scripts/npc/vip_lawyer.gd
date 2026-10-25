@@ -18,7 +18,11 @@ const LINES: Array[String] = ["VIP_LAWYER_TALK_1", "VIP_LAWYER_TALK_2", "VIP_LAW
 ## How far behind him whoever goes out with him walks.
 const BEHIND := 0.9
 
-var model: PackedScene = MODEL
+const MANAGER_TALK := 6.0
+const MANAGER_LINES: Array[String] = ["VIP_MANAGER_TALK_1", "VIP_MANAGER_TALK_2"]
+
+## His manager instead (step 5): his model, his lines and a short talk.
+var is_manager := false
 var lines: Array[String] = LINES
 var arrive_line := "VIP_LAWYER_ARRIVE"
 var bye_line := "VIP_LAWYER_BYE"
@@ -38,7 +42,12 @@ var _walk: Tween
 
 func _ready() -> void:
 	add_to_group("vip_lawyers")
-	add_child(model.instantiate())
+	if is_manager:
+		lines = MANAGER_LINES
+		arrive_line = "VIP_MANAGER_ARRIVE"
+		bye_line = "VIP_MANAGER_BYE"
+		talk = MANAGER_TALK
+	add_child((MANAGER if is_manager else MODEL).instantiate())
 	_bubble = Label3D.new()
 	_bubble.name = "Bubble"
 	_bubble.position = Vector3(0, 2.1, 0)
@@ -58,6 +67,11 @@ func come() -> void:
 	position = path[0]
 	say(arrive_line)
 	_walk_along(path, _on_arrived)
+
+
+## Online (NpcSync): the host brings him in; a guest's copy is made from this script, lawyer or manager.
+func net_setup() -> Dictionary:
+	return {"is_manager": is_manager}
 
 
 func say(key: String) -> void:

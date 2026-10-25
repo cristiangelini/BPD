@@ -14,7 +14,9 @@ extends Node3D
 ## MOOD_AFTER_LAWYER. Step 5: with the 3 pieces he's out (`runner`, a BlackoutInmate with his model): the file and the
 ## key open his door and he runs through the canteen and the yard for his limo at the gate. Cuffed and walked into a
 ## cell, he's back in his armchair without his pieces (`caught`); out the gate, the limo drives off with him
-## (`escaped`). After his last request his manager comes for him and takes him out the gate (`released`).
+## (`escaped`). After his last request his manager comes for him and takes him out the gate (`released`). Step 7: on a
+## guest the host's plan decides (`follower`); its state comes with the case (net_state), Rulo, his runner, the lawyer
+## and the manager by NpcSync.
 
 signal got_piece(count: int)
 signal seized_one(count: int)
@@ -54,8 +56,6 @@ const LAWYER_WAY: Array[Vector2] = [Vector2(0.0, PrisonLevel.HALF_Z + 1.0), Vect
 ## Rulo's run from the block's gate: down the canteen, out the east door and across the yard to the gate.
 const RUN_WAY: Array[Vector2] = [Vector2(1.0, -5.1), Vector2(1.0, 5.5), Vector2(2.0, 7.0), Vector2(2.0, 10.0),
 	Vector2(0.0, PrisonLevel.HALF_Z + 0.5)]
-const MANAGER_TALK := 6.0
-const MANAGER_LINES: Array[String] = ["VIP_MANAGER_TALK_1", "VIP_MANAGER_TALK_2"]
 const LIMO_AWAY := 40.0
 const LIMO_DRIVE := 3.0
 ## Where he stands in the corridor, this far from the bars.
@@ -104,6 +104,12 @@ var runner: BlackoutInmate
 var caught := 0
 var escaped := false
 var released := false
+## A guest's copy (step 7): the host's one decides.
+var follower := false:
+	set(value):
+		follower = value
+		if requests:
+			requests.follower = value
 var _rng := RandomNumberGenerator.new()
 
 
@@ -139,6 +145,7 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 	requests.mood_zero.connect(call_lawyer)
 	requests.all_done.connect(call_manager)
 	got_piece.connect(_on_got_piece)
+	child_entered_tree.connect(_on_child_entered)
 	_place_gifts()
 
 
@@ -408,11 +415,7 @@ func call_manager() -> void:
 		return
 	manager = VipLawyer.new()
 	manager.name = "Manager"
-	manager.model = VipLawyer.MANAGER
-	manager.lines = MANAGER_LINES
-	manager.arrive_line = "VIP_MANAGER_ARRIVE"
-	manager.bye_line = "VIP_MANAGER_BYE"
-	manager.talk = MANAGER_TALK
+	manager.is_manager = true
 	manager.path = _way_to_bars()
 	add_child(manager)
 	manager.arrived.connect(_on_manager_arrived)
@@ -437,3 +440,38 @@ func _on_manager_gone() -> void:
 	rulo.hide()
 	_drive_off()
 	released_rulo.emit()
+
+
+## A guest's copy of his runner (NpcSync makes it here): it gets its way to a cell too, so the guest's cops see the
+## prompt to walk him there.
+func _on_child_entered(node: Node) -> void:
+	if not follower or not node is BlackoutInmate or node == runner:
+		return
+	runner = node as BlackoutInmate
+	runner.prison = prison
+	(func() -> void: BlackoutEscort.to_block(runner, prison).follower = true).call_deferred()
+
+
+## For a guest's case (VipCase.snapshot): his pieces, the counts, how it ended and his door.
+func net_state() -> Array:
+	var door := prison.cell_door(cell)
+	return [pieces.duplicate(), seized, lawyers, caught, escaped, released, door.is_open, door.locked,
+		requests.net_state()]
+
+
+func apply_net_state(state: Array) -> void:
+	pieces.assign(state[0])
+	seized = state[1]
+	lawyers = state[2]
+	if state[3] != caught and runner:
+		runner = null
+	caught = state[3]
+	if (state[4] and not escaped) or (state[5] and not released):
+		_drive_off()
+	escaped = state[4]
+	released = state[5]
+	var door := prison.cell_door(cell)
+	if state[6] != door.is_open:
+		door.set_open(state[6])
+	door.locked = state[7]
+	requests.apply_net_state(state[8])
