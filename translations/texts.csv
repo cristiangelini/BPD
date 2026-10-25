@@ -1670,6 +1670,9 @@ CROWD_JUMP_LINE_0,"¡Yo me bajo acá, chau!","I'm getting off here, bye!","Eu de
 CROWD_JUMP_LINE_1,"¡Cada uno por su lado!","Every one for themselves!","Cada um por si!"
 CROWD_JUMP_LINE_2,"¡Me olvidé que tenía dentista!","I forgot I had a dentist appointment!","Esqueci que tinha dentista!"
 CROWD_JUMP_LINE_3,"¡Yo ni los conozco a estos!","I don't even know these people!","Eu nem conheço essa gente!"
+GHOST_NOBODY_0,No hay nadie al volante... ¿Hola?,There's nobody at the wheel... Hello?,Não tem ninguém no volante... Olá?
+GHOST_NOBODY_1,Las ruedas se mueven solas. Mejor no mirar mucho.,The wheels move by themselves. Better not stare.,As rodas se mexem sozinhas. Melhor não olhar muito.
+GHOST_NOBODY_2,"Hola, auto. ¿Me das los papeles?","Hi, car. Can I see your papers?","Oi, carro. Me mostra os documentos?"
 PROMPT_BUS_ON,E: subir al bus,E: get on the bus,E: subir no ônibus
 PROMPT_BUS_OFF,E: bajar del bus,E: get off the bus,E: descer do ônibus
 PROMPT_BUS_DRIVE,E: manejar el bus,E: drive the bus,E: dirigir o ônibus

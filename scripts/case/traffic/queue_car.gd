@@ -122,6 +122,13 @@ var hat := ""
 var melon_kinds: Array[String] = []
 ## In the crowded car control (control-auto-lleno.md): how many ride in it, its driver too. 0 elsewhere.
 var crowd := 0
+## In the ghost car control (control-auto-fantasma.md) every driver leans on their open window...
+var ghost_mode := false
+## ...but this one has nobody at the wheel: the Titiritero drives it by remote control.
+var ghost := false
+## Times a cop tried E at its empty window.
+var knocked := 0
+var _haunt_time := 0.0
 ## Riders still to pop out of its open door.
 var _to_pop := 0
 ## Riders counted so far, each with their sticker (CrowdRider.stick), and whether a cop looked in to count who stayed.
@@ -169,10 +176,15 @@ func _ready() -> void:
 		add_child(model)
 		if CrowdedCar.packed(crowd):
 			CrowdedCar.dress(self, plate, crowd)
-		for wheel_at in SuspectCar.SEDAN_WHEELS:
+		for i in SuspectCar.SEDAN_WHEELS.size():
 			var wheel: Node3D = TrafficCar.WHEEL.instantiate()
-			wheel.position = wheel_at
+			wheel.name = "Wheel%d" % i
+			wheel.position = SuspectCar.SEDAN_WHEELS[i]
 			add_child(wheel)
+		if ghost:
+			GhostCar.rig(self)
+		elif ghost_mode:
+			GhostCar.dress_driver(self, plate)
 	_build_trunk()
 	if clown or crowd > 0:
 		_build_door()
@@ -571,7 +583,7 @@ func _build_trunk() -> void:
 ## Online (NpcSync): what a guest's copy needs before it's added (which car it is, not whether it's the wanted one).
 func net_setup() -> Dictionary:
 	return {"plate": plate, "driver": driver, "clown": clown, "clown_traits": clown_traits, "fruit": fruit,
-		"crate": crate, "hat": hat, "melon_kinds": melon_kinds, "crowd": crowd}
+		"crate": crate, "hat": hat, "melon_kinds": melon_kinds, "crowd": crowd, "ghost_mode": ghost_mode, "ghost": ghost}
 
 
 ## Online: where it is in the queue and whether its trunk is open.
@@ -601,6 +613,10 @@ func prompt_key(_cop: Cop) -> String:
 func use(_cop: Cop) -> void:
 	if waiting() and can_fine():
 		fine()
+		return
+	if ghost and waiting():
+		say(tr(GhostCar.nobody_line(knocked)))
+		knocked += 1
 		return
 	if not waiting() or driver.is_empty():
 		return
@@ -690,6 +706,9 @@ func _physics_process(delta: float) -> void:
 		_bubble.hide()
 	if state == "gone" or not checkpoint:
 		return
+	if ghost:
+		_haunt_time += delta
+		GhostCar.haunt(self, _haunt_time)
 	if _to_pop > 0:
 		_pop_left -= delta
 		if _pop_left <= 0.0:
@@ -716,7 +735,8 @@ func _physics_process(delta: float) -> void:
 	if state == "coming" and speed == 0.0:
 		state = "waiting"
 		# At the barrier, the driver says their piece.
-		if not said_line and not driver.is_empty() and not (is_instance_valid(ahead) and ahead.in_queue()):
+		var first := not (is_instance_valid(ahead) and ahead.in_queue())
+		if not said_line and not ghost and not driver.is_empty() and first:
 			said_line = true
 			say(tr(driver.line) if not clown else tr(ConvoyTraits.horn_text(clown_traits)) + " " + tr(driver.line))
 			_honk_left = HONK_EVERY

@@ -9,7 +9,8 @@ extends Node3D
 ## sends the circus's identical clown cars, a bit less often since each one takes longer to check; their clowns loose
 ## on the street wear the patience out too, and a car won't go until its clowns are back in. "fruit_truck"
 ## (control-frutas.md) sends the fruit fair's pickups, loaded with watermelons. "crowded_car" (control-auto-lleno.md)
-## sends city cars, some of them packed with people. Every number here is (propuesta).
+## sends city cars, some of them packed with people. "ghost_car" (control-auto-fantasma.md) sends city cars with their
+## drivers leaning on the windows, and one with nobody at the wheel. Every number here is (propuesta).
 
 signal patience_changed(value: float)
 ## A car went by: let through, or sneaking.
@@ -34,6 +35,7 @@ const VARIANTS := {
 	"clown_convoy": {"spawn": 0.75, "patience": 1.0, "clown": true},
 	"fruit_truck": {"spawn": 0.75, "patience": 1.0, "fruit": true},
 	"crowded_car": {"spawn": 0.75, "patience": 1.0, "crowd": true},
+	"ghost_car": {"spawn": 0.75, "patience": 1.0, "ghost": true},
 }
 
 var checkpoint: TrafficCheckpoint
@@ -152,6 +154,9 @@ func spawn() -> QueueCar:
 	car.clown_traits = data.get("clown", {})
 	if crowd:
 		car.crowd = data.get("crowd", CrowdedCar.riders_of(car.plate))
+	if VARIANTS[variant].get("ghost", false):
+		car.ghost_mode = true
+		car.ghost = data.get("ghost", spawned == GhostCar.ghost_at(case_seed))
 	car.wanted = plan != null and spawned == plan.wanted_index
 	car.at = Vector3(0, 0, SPAWN_FROM)
 	car.speed = QueueCar.SPEED
