@@ -18,7 +18,9 @@ extends Node
 ## manager is the gang's boss (robo-banco-gerente.md, step 4) the radio sends the cops to look after him, the case is
 ## solved with him in the patrol car (El Oso alone isn't enough) and lost if he gets away in his car; caught before the
 ## vault opens it pays EARLY_MANAGER more, and he goes to the next shift's interrogation. In every robbery, the honest
-## manager cuffed costs PER_WRONG_MANAGER once. Every number here is (propuesta).
+## manager cuffed costs PER_WRONG_MANAGER once. In the flooding bank (robo-banco-inundado.md, step 4, decision 125) the
+## radio warns about the water, the planilla shows how deep it is and asks for the valve, and shutting it before the
+## water gets to the top pays EARLY_VALVE more. Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 3.0
@@ -29,6 +31,7 @@ const PER_WRONG_CUFF := 50
 const PER_HELP := 50
 const PER_WRONG_MANAGER := 200
 const EARLY_MANAGER := 100
+const EARLY_VALVE := 100
 const QUOTA := 400
 const STORY := "bank_robbery"
 const SLIPS := "BEAR_SLIP_%d"
@@ -115,8 +118,10 @@ func start() -> void:
 
 
 ## What the comisario says over the radio: the base robbery's, the party's, the grandpas', the sorry robber's or the
-## manager's.
+## manager's, or the flood's.
 func brief() -> PackedStringArray:
+	if bank.water:
+		return PackedStringArray(["BRIEF_BANK_FLOOD_A", "BRIEF_BANK_FLOOD_B", "BRIEF_BANK_FLOOD_C"])
 	if bank.manager.boss:
 		return PackedStringArray(["BRIEF_BANK_MANAGER_A", "BRIEF_BANK_MANAGER_B", "BRIEF_BANK_MANAGER_C"])
 	if bank.sorry:
@@ -246,7 +251,8 @@ func missed() -> int:
 
 
 func report() -> Dictionary:
-	var bonus := PER_HELP * helps() + (EARLY_MANAGER if manager_early else 0)
+	var bonus := PER_HELP * helps() + (EARLY_MANAGER if manager_early else 0) \
+		+ (EARLY_VALVE if bank.water and bank.water.shut_early() else 0)
 	var salary := maxi(SALARY - missed() + bonus, 0) if solved() else 0
 	return {"salary": salary, "evidence": 0, "fines": 0, "total": salary, "quota": QUOTA, "approved": salary >= QUOTA}
 
@@ -407,6 +413,10 @@ func rows() -> Array[Dictionary]:
 			"optional": false, "status": true})
 	if wrong_manager:
 		list.append({"text": "OBJ_BANK_WRONG_MANAGER", "done": false, "optional": false, "status": true})
+	if bank.water:
+		list.append(_row("OBJ_BANK_VALVE", bank.water.shut_early()))
+		list.append({"text": tr("OBJ_BANK_WATER") % roundi(bank.water.level * 100.0), "done": false,
+			"optional": false, "status": true})
 	if bank.party:
 		list.append({"text": "OBJ_BANK_FANS", "done": false, "optional": false, "status": true})
 		if bank.croissant_tray:
