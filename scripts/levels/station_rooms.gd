@@ -62,6 +62,12 @@ const MIME_DISGUISES: Array[String] = ["mime_beret", "mime_face", "mime_shirt", 
 	"mime_beret", "mime_face", "mime_shirt", "mime_beret", "mime_face", "mime_shirt"]
 const MIME_DISGUISES_AT := Vector3(-5.15, 0, 3.15)
 const MIME_GAP := 0.3
+## The costume party's (infiltracion-fiesta.md, step 1): a party-store cop cap, a fake mustache and a plastic badge for
+## each cop, in a fifth row.
+const PARTY_DISGUISES: Array[String] = ["party_cap", "party_mustache", "party_badge", "party_cap", "party_mustache",
+	"party_badge", "party_cap", "party_mustache", "party_badge", "party_cap", "party_mustache", "party_badge"]
+const PARTY_DISGUISES_AT := Vector3(-5.15, 0, 3.55)
+const PARTY_GAP := 0.3
 
 ## Furniture: [model, position, turn]. The models come from tools/modelgen/models/station.js.
 const FURNITURE := [

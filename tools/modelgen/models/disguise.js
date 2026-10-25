@@ -148,6 +148,48 @@ export function buildFoldedMimeShirt() {
 	return b.build();
 }
 
+// The costume party's disguises (infiltracion-fiesta.md, step 1), each origin where it sits on a cop
+// (DisguisePiece.SLOTS): a party-store cop cap with a light on top, a fake black handlebar mustache and a giant plastic
+// badge. Placeholder.
+export function buildPartyCap() {
+	const b = new Builder('disguise_party_cap');
+	const blue = mat('party_blue', 0x2a48c8), shiny = mat('party_visor', 0x101018);
+	b.add('crown', blue, new THREE.CylinderGeometry(0.2, 0.17, 0.1, 14), { pos: V(0, 0.07, 0) });
+	b.add('visor', shiny, new THREE.CylinderGeometry(0.13, 0.13, 0.015, 12, 1, false, 0, Math.PI), { pos: V(0, 0.02, -0.15), rot: [0, Math.PI / 2, 0] });
+	b.add('band', mat('party_gold', 0xf0c020), new THREE.CylinderGeometry(0.175, 0.175, 0.02, 14), { pos: V(0, 0.03, 0) });
+	b.add('light', mat('party_light_red', 0xff2030, { emissive: 0xa00010 }), ellipsoid(0.03, 0.035, 0.03, 8, 5), { pos: V(-0.03, 0.14, 0) });
+	b.add('light', mat('party_light_blue', 0x2060ff, { emissive: 0x0020a0 }), ellipsoid(0.03, 0.035, 0.03, 8, 5), { pos: V(0.03, 0.14, 0) });
+	return b.build();
+}
+
+// The fake handlebar mustache: 0.3 x 0.08 x 0.05 m, glossy black, curled up at the tips, origin at its middle.
+export function buildPartyMustache() {
+	const b = new Builder('disguise_party_mustache');
+	const black = mat('fake_black', 0x0c0c0e);
+	b.add('mustache', black, ellipsoid(0.06, 0.025, 0.025, 8, 5));
+	for (const s of [-1, 1]) {
+		b.add('mustache', black, ellipsoid(0.06, 0.018, 0.02, 8, 5), { pos: V(s * 0.08, -0.005, -0.005), rot: [0, 0, s * 0.25] });
+		b.add('curl', black, new THREE.TorusGeometry(0.02, 0.008, 5, 10, Math.PI * 1.5), { pos: V(s * 0.135, 0.015, -0.01) });
+	}
+	return b.build();
+}
+
+// The giant plastic badge: a gold star 0.24 m across and 0.03 m thick with a round blue middle, origin at its middle.
+export function buildPartyBadge() {
+	const b = new Builder('disguise_party_badge');
+	const shape = new THREE.Shape();
+	for (let i = 0; i < 10; i++) {
+		const r = i % 2 ? 0.055 : 0.12, a = Math.PI / 2 + (i / 10) * Math.PI * 2;
+		if (i === 0) shape.moveTo(Math.cos(a) * r, Math.sin(a) * r);
+		else shape.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+	}
+	const star = new THREE.ExtrudeGeometry(shape, { depth: 0.03, bevelEnabled: false });
+	star.translate(0, 0, -0.015);
+	b.add('star', mat('plastic_gold', 0xf2c230), star);
+	b.add('middle', mat('party_blue', 0x2a48c8), new THREE.CylinderGeometry(0.04, 0.04, 0.034, 12), { rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
 export const models = {
 	disguise_wig: buildDisguiseWig, disguise_mustache: buildDisguiseMustache, disguise_glasses: buildDisguiseGlasses,
 	disguise_robe: buildDisguiseRobe, folded_robe: buildFoldedRobe, songbook: buildSongbook,
@@ -155,6 +197,7 @@ export const models = {
 	folded_vest: buildFoldedVest,
 	disguise_mime_beret: buildMimeBeret, disguise_mime_face: buildMimeFace, disguise_mime_shirt: buildMimeShirt,
 	folded_mime_shirt: buildFoldedMimeShirt,
+	disguise_party_cap: buildPartyCap, disguise_party_mustache: buildPartyMustache, disguise_party_badge: buildPartyBadge,
 };
 
 export const views = {
@@ -180,6 +223,14 @@ export const views = {
 			{ name: 'disguise_mime_face', pos: [-0.4, 1.3, 0.09] },
 			{ name: 'disguise_mime_beret', pos: [-0.4, 1.42, 0.3] },
 			{ name: 'folded_mime_shirt', pos: [0.55, 0.04, 0.2], rotY: 0.3 },
+		],
+		cam: { pos: [0.3, 1.2, 3.0], target: [0.1, 0.7, 0], fov: 40 },
+	},
+	party_disguise: {
+		items: [
+			{ name: 'disguise_party_badge', pos: [-0.4, 1.05, 0.3] },
+			{ name: 'disguise_party_mustache', pos: [-0.4, 1.22, 0.1] },
+			{ name: 'disguise_party_cap', pos: [-0.4, 1.42, 0.3] },
 		],
 		cam: { pos: [0.3, 1.2, 3.0], target: [0.1, 0.7, 0], fov: 40 },
 	},

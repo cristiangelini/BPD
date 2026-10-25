@@ -72,7 +72,9 @@ La foto grupal copia la forma de `MimeRehearsal` (host decide, cada PC juzga y a
 
 ## El orden para hacerlo (un PR chico por paso)
 1. El disfraz de policía de cotillón: bigote postizo, placa de plástico y gorra con luces en una quinta fila frente a
-   los casilleros, y el look "party" (2 de 3).
+   los casilleros, y el look "party" (2 de 3). Hecho así: 12 piezas en una fila a 3,55 m frente a los casilleros
+   (gorra azul con dos lucecitas a la cabeza, bigote negro de manubrio a la cara, estrella dorada de plástico al
+   pecho); se caen corriendo como las otras. Con 2 de 3, `is_disguised("party")`; no sirven para mimo ni abuelo.
 2. El salón en la ciudad (`--place=party`), con los invitados y sus 4 rasgos por la semilla (un solo jefe posible
    con 3 rasgos), el patovica y la señora Serpentina.
 3. La foto grupal: la llamada, la escalerita, la cuenta y el flash; la sospecha; el jefe que se va a la oficina y la
