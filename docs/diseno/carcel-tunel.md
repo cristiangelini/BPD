@@ -123,3 +123,8 @@ el jardinero, en qué celda está el hámster, dónde caen los montoncitos y por
   ("¿Ya estamos afuera?"). Un policía ahí los agarra con E ("¡Cucú!") y van directo a la celda de castigo; si no, salen
   corriendo y cuentan como escapados. Con el túnel tapado ya no entra nadie más. Capturas: `paso5-corre.png`,
   `paso5-cemento.png` y `paso5-asoma.png`.
+- **Paso 6:** `TunnelCase` (`scripts/case/prison/tunnel_case.gd`): el comisario lo cuenta en su oficina y Q abre la
+  planilla: tapar el túnel con cemento, cuántos metros le faltan (o que ya salió afuera), si está encontrado, los
+  escapados (con 3 se pierde) y, de extra, los de la celda de castigo. Se gana al tapar el túnel: 600, 100 menos por
+  escapado, 25 más por cada uno en castigo y 50 más si la otra punta todavía no asomaba. Cuota 400. En Jugar entra en
+  el sorteo de cárceles (`PlaceDraw.PRISONS`, ahora en sextos). Captura: `paso6-planilla.png`.
