@@ -45,7 +45,7 @@ pasan por el control y hay 2 o 3 que se parecen mucho **(propuesta)**.
 |---|---|---|
 | 1 | Hora pico | El doble de autos y la fila se impacienta más rápido. Primera variante a programar. |
 | 2 | Caravana de payasos | Todos los autos son iguales y muy chicos; la pista está en el conductor ([control-payasos.md](control-payasos.md)). |
-| 3 | El auto con 20 personas | Hay que hacerlas bajar y contarlas. |
+| 3 | El auto con 20 personas | Hay que hacerlas bajar y contarlas ([control-auto-lleno.md](control-auto-lleno.md)). |
 | 4 | Alcoholemia en la boda | Todos van de fiesta; se sopla un tubo. |
 | 5 | Carrera ilegal | Los autos pasan rápido; hay que tirar pinchos. |
 | 6 | Mudanza del circo | Jaulas con animales; uno de ellos es el sospechoso. |
