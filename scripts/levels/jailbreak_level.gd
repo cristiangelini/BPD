@@ -15,6 +15,7 @@ extends Node3D
 ## (EarlyComisario), and he catches them the same way; the third time he suspends them himself. The cells open when
 ## Clotilde, the cleaner, mops them (Cleaner), with the key ring on her cart, and the break room is the cleaning closet:
 ## the crew's caps, face masks and vests (DisguisePiece, "cleaner") and their mops and feather duster (CleaningTool).
+## The floor has stains to mop (FloorStains); a cop running on the wet floor slips (WET_SLIP seconds down).
 ## --place=jailbreak opens it from Play, and --jailbreak=<variant> forces one of VARIANTS.
 
 const DESK_MODEL := preload("res://assets/models/station_desk.glb")
@@ -51,6 +52,11 @@ const CLOSET_TOOLS := [
 	["res://assets/models/feather_duster.glb", "duster", 0.8, Vector3(12.0, 0.06, -1.8)],
 ]
 
+## Slipping on the wet floor: how long down, how hard the push, and how long until it can slip again.
+const WET_SLIP := 2.0
+const WET_PUSH := 3.0
+const WET_AGAIN := 3.0
+
 ## How many times the guard can catch them (step 6 ends the campaign at the last one).
 const CATCHES := 3
 ## How far from its parking spot the patrol car must get with everyone on board.
@@ -82,6 +88,9 @@ var cart_key: CellKey
 var tools: Array[CleaningTool] = []
 ## How many disguise pieces the comisario took back to the closet.
 var _returned := 0
+var stains: FloorStains
+## Cop -> seconds until it can slip again.
+var _slipped := {}
 var _cart: Transform3D
 var end_screen: CanvasLayer
 ## A guest: how many catches it already followed (-1 until it first looks).
@@ -143,6 +152,11 @@ func _early_comisario() -> void:
 	guard = comisario
 	_cleaner()
 	_closet()
+	stains = FloorStains.new()
+	stains.name = "FloorStains"
+	add_child(stains)
+	stains.setup(case_seed, city.transform * CityLayout.lot("station"))
+	stains.cleaned.connect(func(_index: int, at: Vector3) -> void: (guard as EarlyComisario).saw_cleaning(at))
 	_dawn()
 
 
@@ -353,6 +367,30 @@ func _hud() -> void:
 	box_ui.add_child(caught_label)
 	hud.add_child(box_ui)
 	add_child(hud)
+
+
+func _physics_process(delta: float) -> void:
+	if stains:
+		_slip_on_wet(delta)
+
+
+## This PC's own cop running on the wet floor slips: down for a while, dropping what it holds.
+func _slip_on_wet(delta: float) -> void:
+	for cop: Variant in _slipped.keys():
+		_slipped[cop] -= delta
+		if _slipped[cop] <= 0.0 or not is_instance_valid(cop):
+			_slipped.erase(cop)
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if cop.sync and not cop.sync.is_multiplayer_authority():
+			continue
+		var flat := Vector3(cop.velocity.x, 0, cop.velocity.z)
+		if _slipped.has(cop) or not cop.is_running or flat.length() <= EarlyComisario.RUN_SPEED \
+				or not stains.wet_at(cop.global_position):
+			continue
+		_slipped[cop] = WET_AGAIN
+		cop.get_node("Grabber").release()
+		cop.knock_back(flat.normalized() * WET_PUSH, WET_SLIP)
+		cop.show_hint("HINT_WET_SLIP")
 
 
 func _process(_delta: float) -> void:
