@@ -90,7 +90,7 @@ Van a una cárcel por un motín o a cuidar presos (decisión 29).
 ## 7. Fuga (cuando los detienen a ellos)
 Si fallan, terminan presos en su propia comisaría y tienen que escaparse (decisión 17). Cada variante cambia por qué los detuvieron y cómo es la salida.
 
-1. **Por la ventilación:** con un compañero que no entra. Propuesta en [fuga-ventilacion.md](fuga-ventilacion.md) (decisión 153).
+1. **Por la ventilación:** con un compañero que no entra. Diseño en [fuga-ventilacion.md](fuga-ventilacion.md) (decisión 153).
 2. **Disfrazados de limpieza:** pasando por delante del comisario.
 3. **La llave en la dona:** hay que distraer al guardia mientras uno pesca la llave.
 4. **Túnel con cucharas:** cavan mientras los otros tapan el ruido. Propuesta en [fuga-tunel.md](fuga-tunel.md) (decisión 152).
