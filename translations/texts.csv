@@ -2224,3 +2224,5 @@ CONEJO_SLIP_3,"Esa tarde estaba en casa, tranquilo. Muy tranquilo. Nada nervioso
 CRIME_owner_conejo,"¡Novatos! Ayer se trajeron a El Conejo del Banco del Pueblo. Tiembla tanto que se le mueven las orejas de la máscara.","Rookies! Yesterday you brought in El Conejo from the Town Bank. He's shaking so hard the mask's ears wobble.","Novatos! Ontem vocês trouxeram o El Conejo do Banco do Povoado. Ele treme tanto que as orelhas da máscara balançam."
 CONFESS_owner_conejo,"¡Está bien! ¡Fui yo! ¡Solo! ¡Quería demostrarle a El Oso que podía! ¿Me dan un vaso de agua?","Fine! It was me! Alone! I wanted to show El Oso I could do it! Can I have a glass of water?","Tá bom! Fui eu! Sozinho! Queria mostrar pro El Oso que eu conseguia! Me dão um copo d'água?"
 OBJ_BANK_BACK_CONEJO,"Volver a la comisaría con El Conejo","Go back to the station with El Conejo","Voltar para a delegacia com El Conejo"
+PLACE_BANK_BLOOD,"Banco de Sangre","Blood Bank","Banco de Sangue"
+BANK_FRIDGE,"HELADERA","FRIDGE","GELADEIRA"

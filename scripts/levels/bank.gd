@@ -35,8 +35,11 @@ extends Node3D
 ## can't leave by it. Cuffing the nephew crashes it (+100). An eighth, drawn before everything, is the town bank
 ## (robo-banco-pueblo.md, decision 127): a wall of shelves cuts the hall down to a small one with no queue, Mr. Moneda
 ## isn't there, there are no hostages on the floor but don Plácido, the only clerk, asleep on his stool behind the
-## counter (BankClerk), and the gang is El Conejo alone, at the drill. --bank=party, --bank=grandpas, --bank=sorry,
-## --bank=manager, --bank=flood, --bank=roof, --bank=town or --bank=base forces one.
+## counter (BankClerk), and the gang is El Conejo alone, at the drill. A ninth, drawn before everything, is the blood
+## bank (robo-banco-sangre.md, decision 128): the power is cut at night, candles burn in the dark hall, the vault is a
+## white fridge full of blood bags, the hostages came to give blood and the gang wears vampire capes and fangs
+## (BankBlood). --bank=party, --bank=grandpas, --bank=sorry, --bank=manager, --bank=flood, --bank=roof, --bank=town,
+## --bank=blood or --bank=base forces one.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -246,6 +249,10 @@ var roof := false
 ## The town bank (decision 127) and don Plácido, its clerk.
 var town := false
 var clerk: BankClerk
+## The blood bank (decision 128), dark with its candles, and the hall's ceiling lamps (off in it).
+var blood := false
+var blood_bank: BankBlood
+var lamps: Array[OmniLight3D] = []
 ## El Conejo's nerves (step 3).
 var nerves: BankNerves
 var helicopter: ToyHelicopter
@@ -288,6 +295,7 @@ func _ready() -> void:
 	var manager_boss := drawn == "manager"
 	roof = drawn == "roof"
 	town = drawn == "town"
+	blood = drawn == "blood"
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_hall()
@@ -337,6 +345,10 @@ func _ready() -> void:
 	car.add_collision_exception_with(phone)
 	if town:
 		_add_nerves()
+	if blood:
+		blood_bank = BankBlood.new()
+		add_child(blood_bank)
+		blood_bank.setup(self)
 	city.transform = CityLayout.anchor("bank")
 	station_parking = city.transform * CityLayout.parking("station")
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
@@ -350,16 +362,18 @@ func _ready() -> void:
 	case.start()
 
 
-## Which robbery this seed is (propuesta): an eighth "town" (the town bank) drawn first, then a seventh of the rest
-## "roof" (they leave by the roof), a sixth "flood" (the vault floods), a fifth "manager" (the manager is the boss),
-## and the rest in quarters: "party" (the hostages don't want to leave), "grandpas", "sorry" (one robber wants to give
+## Which robbery this seed is (propuesta): a ninth "blood" (the blood bank) drawn first, an eighth of the rest "town"
+## (the town bank), then a seventh of the rest "roof" (they leave by the roof), a sixth "flood" (the vault floods), a
+## fifth "manager" (the manager is the boss), and the rest in quarters: "party" (the hostages don't want to leave), "grandpas", "sorry" (one robber wants to give
 ## it all back) or "base"; --bank=party, --bank=grandpas, --bank=sorry, --bank=manager, --bank=flood, --bank=roof,
-## --bank=town or --bank=base among the user args forces one.
+## --bank=town, --bank=blood or --bank=base among the user args forces one.
 static func variant(seed_: int, args: PackedStringArray) -> String:
 	for arg in args:
 		if arg in ["--bank=party", "--bank=grandpas", "--bank=sorry", "--bank=manager", "--bank=flood", "--bank=roof",
-				"--bank=town", "--bank=base"]:
+				"--bank=town", "--bank=blood", "--bank=base"]:
 			return arg.trim_prefix("--bank=")
+	if hash(["bank sangre", seed_]) % 9 == 0:
+		return "blood"
 	if hash(["bank pueblo", seed_]) % 8 == 0:
 		return "town"
 	if hash(["bank azotea", seed_]) % 7 == 0:
@@ -492,7 +506,7 @@ func _build_shell() -> void:
 		_build.box(Vector3(x, ROOF / 2, HALF_Z + 0.45), Vector3(0.45, ROOF, 0.45), INSIDE)
 	_build.box(Vector3(0, ROOF + 0.05, HALF_Z + 0.45), Vector3(10.0, 0.1, 1.0), INSIDE)
 	var sign_label := Label3D.new()
-	sign_label.text = "PLACE_BANK_TOWN" if town else "PLACE_BANK"
+	sign_label.text = "PLACE_BANK_TOWN" if town else "PLACE_BANK_BLOOD" if blood else "PLACE_BANK"
 	sign_label.font_size = 64
 	sign_label.pixel_size = 0.01
 	sign_label.outline_size = 14
@@ -501,7 +515,7 @@ func _build_shell() -> void:
 	$Built.add_child(sign_label)
 	for x: float in [-8.0, 0.0, 8.0]:
 		for z: float in [-7.5, -2.5, 3.0, 7.5]:
-			_build.light(Vector3(x, ROOF - 0.6, z))
+			lamps.append(_build.light(Vector3(x, ROOF - 0.6, z)))
 
 
 ## The west outer wall, with the vent's hole into the office and its bent grille hanging off one screw.
@@ -668,6 +682,12 @@ func roof_way_out() -> bool:
 		or on_roof(helicopter.global_position))
 
 
+## The hall's ceiling lamps on or off (the blood bank's power cut, robo-banco-sangre.md).
+func set_lights(on: bool) -> void:
+	for lamp in lamps:
+		lamp.visible = on
+
+
 ## The town bank (decision 127): the wall of shelves from the back wall to the facade, its shelves on the small hall's
 ## side with jars of jam and binders, and don Plácido asleep on his stool behind the counter.
 func _build_town() -> void:
@@ -763,9 +783,15 @@ func _build_back() -> void:
 	for z: float in [-7.0, -8.6]:
 		_build.open_box(Vector3(11.4, FLOOR_TOP, z), Vector3(0.8, 2.0, 1.4), "-x", STEEL)
 		for level: float in [0.4, 1.0, 1.6]:
-			_build.mesh_box(Vector3(11.3, FLOOR_TOP + level + 0.12, z), Vector3(0.5, 0.22, 1.1), MONEY)
+			if blood:
+				# The fridge's blood bags, in a row on each shelf.
+				for k in 4:
+					_build.mesh_box(Vector3(11.3, FLOOR_TOP + level + 0.1, z - 0.42 + k * 0.28), Vector3(0.08, 0.2, 0.16),
+						BankBlood.RED)
+			else:
+				_build.mesh_box(Vector3(11.3, FLOOR_TOP + level + 0.12, z), Vector3(0.5, 0.22, 1.1), MONEY)
 	var label := Label3D.new()
-	label.text = "BANK_VAULT"
+	label.text = "BANK_FRIDGE" if blood else "BANK_VAULT"
 	label.font_size = 48
 	label.pixel_size = 0.01
 	label.position = Vector3(VAULT_X - 0.1, 2.3, VAULT_DOOR_Z)
@@ -791,7 +817,8 @@ func _add_vault_door() -> void:
 	var steel := MeshInstance3D.new()
 	steel.mesh = disc
 	steel.rotation.z = PI / 2
-	steel.material_override = _build.material(STEEL.lightened(0.1))
+	# The blood bank's fridge door is white.
+	steel.material_override = _build.material(PAINT if blood else STEEL.lightened(0.1))
 	vault_door.add_child(steel)
 	var wheel := TorusMesh.new()
 	wheel.inner_radius = 0.25
@@ -898,6 +925,7 @@ func _add_robbers() -> void:
 			continue
 		var robber := BankRobber.new()
 		robber.alone = town
+		robber.vampire = blood
 		robber.name = "Robber_" + animal
 		robber.animal = animal
 		robber.grandpa = grandpas

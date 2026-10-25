@@ -73,3 +73,15 @@ nuevo: la capa y los colmillos de la banda, la caja de fusibles, la heladera, la
    las bolsas de plata de la base: solo cuentan las que se llevan.
 3. **¿La huida es en una carroza negra con El Conde escondido en un ataúd?** Recomendado: sí, la misma persecución de
    la base con otro modelo, y al final se abre el ataúd. La otra opción es la camioneta de siempre.
+
+## Hecho así
+
+- **Paso 1 (el banco a oscuras y los disfraces):** un noveno de las semillas, sorteado antes que todos
+  (`hash(["bank sangre", semilla]) % 9`), es el banco de sangre. Las semillas 1 a 4 de las pruebas viejas no cambian y
+  `--bank=blood` lo fuerza. Es de noche (luna azul y poca luz) y las lámparas del techo están apagadas. Hay diez velas
+  prendidas que titilan: cuatro en el mostrador, dos junto a los rehenes, dos en la entrada y dos en el pasillo. El
+  cartel dice "Banco de Sangre". La puerta redonda de la bóveda es blanca, con una gota roja arriba y el cartel
+  "HELADERA". Adentro, los estantes tienen bolsas rojas en vez de plata. Los rehenes tienen una curita en el brazo y los
+  cuatro de la banda llevan capa negra forrada de rojo, cuello alto y dos colmillos de plástico debajo de la máscara.
+  La máscara no está pintada de blanco: con la capa y los colmillos ya se entiende. Capturas en
+  `/mnt/project-files/sangre/paso1-*.png`.

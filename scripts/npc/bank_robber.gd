@@ -110,6 +110,8 @@ var sobbing_left := 0.0
 var _sob_left := SOB_EVERY
 var _next_sob := 0
 var _hanky: MeshInstance3D
+## The blood bank (robo-banco-sangre.md, decision 128): a black vampire cape with its high collar and plastic fangs.
+var vampire := false
 var _home_yaw := 0.0
 ## Turned by a cop: the help he's on ("" resting between helps or done) and its leg (a help can take more than one
 ## walk: the hostages are picked up, then walked out), his way there (world positions, in order),
@@ -201,6 +203,8 @@ func _ready() -> void:
 	add_child(_bubble)
 	if sorry:
 		_add_hanky()
+	if vampire:
+		_add_cape()
 
 
 ## The white hanky in his right hand.
@@ -215,6 +219,53 @@ func _add_hanky() -> void:
 	_hanky.mesh = cloth
 	_hanky.position = HANKY_DOWN
 	add_child(_hanky)
+
+
+## The vampire's cape down his back, its collar up behind his head, and two fangs under the mask's snout; on the model,
+## which faces +Z and is scaled with him.
+func _add_cape() -> void:
+	var black := StandardMaterial3D.new()
+	black.albedo_color = Color(0.06, 0.05, 0.07)
+	var lining := StandardMaterial3D.new()
+	lining.albedo_color = Color(0.6, 0.05, 0.08)
+	var cape := MeshInstance3D.new()
+	cape.name = "Cape"
+	var cloth := BoxMesh.new()
+	cloth.size = Vector3(0.78, 1.15, 0.04)
+	cape.mesh = cloth
+	cape.material_override = black
+	cape.position = Vector3(0, 0.75, -0.24)
+	cape.rotation.x = 0.08
+	_model.add_child(cape)
+	var inside := MeshInstance3D.new()
+	var inner := BoxMesh.new()
+	inner.size = Vector3(0.72, 1.1, 0.01)
+	inside.mesh = inner
+	inside.material_override = lining
+	inside.position = Vector3(0, 0, 0.025)
+	cape.add_child(inside)
+	var collar := MeshInstance3D.new()
+	collar.name = "Collar"
+	var high := PrismMesh.new()
+	high.size = Vector3(0.7, 0.4, 0.04)
+	collar.mesh = high
+	collar.material_override = black
+	collar.position = Vector3(0, 1.5, -0.22)
+	collar.rotation.x = PI
+	_model.add_child(collar)
+	var white := StandardMaterial3D.new()
+	white.albedo_color = Color(0.98, 0.98, 0.95)
+	for side: float in [-1.0, 1.0]:
+		var fang := MeshInstance3D.new()
+		fang.name = "FangL" if side < 0 else "FangR"
+		var tooth := CylinderMesh.new()
+		tooth.top_radius = 0.018
+		tooth.bottom_radius = 0.0
+		tooth.height = 0.06
+		fang.mesh = tooth
+		fang.material_override = white
+		fang.position = Vector3(side * 0.045, 1.2, 0.23)
+		_model.add_child(fang)
 
 
 func is_sobbing() -> bool:
