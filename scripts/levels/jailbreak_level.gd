@@ -131,6 +131,14 @@ const MEETING_SPOTS: Array[Vector3] = [Vector3(-5.5, 0, 10.8), Vector3(-4.5, 0, 
 	Vector3(3.5, 0, 10.8), Vector3(4.5, 0, 11.6), Vector3(5.5, 0, 10.8), Vector3(6.5, 0, 11.6)]
 ## The heater after a drill ("NO TOCAR"): the next smoke takes this many times as long.
 const HEATER_SLOW := 2.0
+## Step 3: holding E this long (s) with nothing to use takes the vest off. The coat rack in the waiting room's corner,
+## its hooks (around its top) and how many of them the seed fills with a coat or a hat.
+const VEST_OFF_TIME := 2.0
+const COAT_RACK_AT := Vector3(-5.5, 0, 8.3)
+const COAT_HOOK_Y := 1.68
+const COAT_HOOK_OUT := 0.12
+const COAT_HOOKS := 6
+const COATS_MIN := 4
 ## The big one stays stuck in the grille this long (s); crawling faster than this in the duct is a noisy scramble.
 const VENT_STUCK := 4.0
 const VENT_QUIET_SPEED := (Cop.CRAWL_SPEED + Cop.CRAWL_RUN_SPEED) / 2.0
@@ -175,6 +183,12 @@ var detectors: Array[SmokeDetector] = []
 var alarm_rung := false
 var drilling := false
 var drill_left := 0.0
+## The coat rack's hooks and what hangs on each (null: empty).
+var coat_hooks: Array[Transform3D] = []
+var hung: Array = []
+## This PC's cops holding E to take the vest off -> seconds, and the ones told how already.
+var _vest_hold := {}
+var _told_vest := {}
 ## The host: where each cop in the duct was last physics frame, to hear who scrambles.
 var _duct_last := {}
 ## The other end of the tunnels, on the sidewalk: it shows once one is through.
@@ -284,6 +298,7 @@ func _drill_day() -> void:
 	watcher.stand_guard(case_seed)
 	watcher.station_lot = lot
 	watcher.cell_doors = city.cell_doors
+	watcher.patrol_car = $PatrolCar
 	watcher.outside_cells = outside_cells
 	watcher.see_through = [desk.get_rid()]
 	watcher.caught.connect(_drill_caught)
@@ -332,12 +347,106 @@ func _drill_day() -> void:
 		# Facing the comisario's office (-Z; the models face +Z), give or take.
 		person.global_transform = Transform3D(lot.basis * Basis(Vector3.UP, PI + rng.randf_range(-0.8, 0.8)),
 			person.home)
+	_coat_rack(lot, rng)
 
 
-## Every cop is a prisoner in an orange vest (every PC dresses every cop the same).
-func _dress_prisoners() -> void:
+## The coat rack in the waiting room's corner, COATS_MIN to COAT_HOOKS of its hooks with a coat or a hat (the seed
+## says which). The host hangs them; a guest gets them from it.
+func _coat_rack(lot: Transform3D, rng: RandomNumberGenerator) -> void:
+	var rack := StaticBody3D.new()
+	rack.name = "CoatRack"
+	rack.add_child(load("res://assets/models/coat_rack.glb").instantiate())
+	var shape := CollisionShape3D.new()
+	var pole := CylinderShape3D.new()
+	pole.radius = 0.2
+	pole.height = 1.8
+	shape.shape = pole
+	shape.position.y = 0.9
+	rack.add_child(shape)
+	add_child(rack)
+	rack.global_transform = lot * Transform3D(Basis.IDENTITY, COAT_RACK_AT)
+	var filled := rng.randi_range(COATS_MIN, COAT_HOOKS)
+	for i in COAT_HOOKS:
+		var turn := TAU * i / COAT_HOOKS
+		var turned := Basis(Vector3.UP, turn)
+		coat_hooks.append(rack.global_transform * Transform3D(turned,
+			Vector3(0, COAT_HOOK_Y, 0) + turned * Vector3(0, 0, COAT_HOOK_OUT)))
+		hung.append(null)
+		var kind := "coat" if rng.randf() < 0.6 else "hat"
+		if i >= filled or not multiplayer.is_server():
+			continue
+		var piece: DisguisePiece = DisguisePiece.scene_of(kind).instantiate()
+		piece.name = "Coat%d" % i
+		add_child(piece)
+		_hang(piece, i)
+
+
+## Hangs `piece` on hook `i` (a hat sits a bit lower and further out, on the hook's tip).
+func _hang(piece: DisguisePiece, i: int) -> void:
+	var hook := coat_hooks[i]
+	if piece.kind == "hat":
+		hook = hook * Transform3D(Basis.IDENTITY, Vector3(0, -0.06, 0.1))
+	piece.hang(hook)
+	hung[i] = piece
+
+
+## Back in the cell, a cop's coat and hat go back on the coat rack (every PC takes them off; the host hangs them).
+func _hang_back(cop: Cop) -> void:
+	var parent := cop.get_parent()
+	for kind: String in ["coat", "hat"]:
+		if not cop.disguise.has(kind):
+			continue
+		var before := parent.get_child_count()
+		cop.lose_disguise(kind)
+		if cop.sync and cop.sync.net.actions:
+			cop.sync.net.actions.tell_guests(cop, "lose_disguise", cop, [kind])
+		for i in range(before, parent.get_child_count()):
+			var piece := parent.get_child(i) as DisguisePiece
+			var hook := hung.find_custom(func(on: Variant) -> bool:
+				return not is_instance_valid(on) or not (on as DisguisePiece).hanging)
+			if piece and hook >= 0:
+				_hang(piece, hook)
+
+
+## The drill is on: the guard (the host's, on every PC) is out with everyone.
+func drill_on() -> bool:
+	return guard is DrillGuard and (guard as DrillGuard).drill_on()
+
+
+## This PC's own cops: holding E with nothing to use takes the vest off in the drill.
+func _take_off_vests(delta: float) -> void:
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
-		if not cop.disguise.has("prison_vest"):
+		if not cop.input_enabled:
+			continue
+		if drill_on() and outside_cells(cop.global_position) and not _told_vest.has(cop):
+			_told_vest[cop] = true
+			cop.show_hint("HINT_VEST_HOW")
+		if Input.is_action_pressed("use") and not cop.vehicle and cop.current_prompt() == "":
+			hold_vest_off(cop, delta)
+		else:
+			_vest_hold.erase(cop)
+
+
+## `cop` held E one more tick to take its vest off: after VEST_OFF_TIME it drops in front of it, on every PC.
+func hold_vest_off(cop: Cop, delta: float) -> void:
+	if not drill_on() or not cop.disguise.has("prison_vest"):
+		_vest_hold.erase(cop)
+		return
+	if not _vest_hold.has(cop):
+		cop.show_hint("HINT_VEST_TAKING_OFF")
+	_vest_hold[cop] = _vest_hold.get(cop, 0.0) + delta
+	if _vest_hold[cop] >= VEST_OFF_TIME:
+		_vest_hold.erase(cop)
+		cop.act("lose_disguise", cop, ["prison_vest", "HINT_VEST_OFF"])
+
+
+## Every cop in a cell is a prisoner in an orange vest, except in the drill, when it can take it off (every PC dresses
+## every cop the same).
+func _dress_prisoners() -> void:
+	if drill_on():
+		return
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if not cop.disguise.has("prison_vest") and not outside_cells(cop.global_position):
 			cop.put_on_disguise("prison_vest", 0.0)
 
 
@@ -365,9 +474,15 @@ func _end_drill() -> void:
 	var slot := 0
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
 		if outside_cells(cop.global_position) and car.seat_of(cop) < 0:
+			_hang_back(cop)
 			cop.warp(cop_spawn(slot))
 			slot += 1
 		cop.show_hint("HINT_DRILL_OVER", true)
+	# The vests left lying around go back on (the cops in the cells get theirs).
+	for clue: Node in get_tree().get_nodes_in_group("guard_clues"):
+		if clue is DisguisePiece:
+			_drop(clue as Grabbable)
+			clue.queue_free()
 	for door in city.cell_doors:
 		door.lock()
 
@@ -885,6 +1000,8 @@ func _on_caught(times: int) -> void:
 					cop.sync.net.actions.tell_guests(cop, "exit", car)
 			if is_cleaning():
 				_undress(cop)
+			elif is_drill():
+				_hang_back(cop)
 			cop.warp(cop_spawn(slot))
 			slot += 1
 		cop.show_hint("HINT_COMISARIO_CAUGHT" if is_cleaning() else "HINT_GUARD_CAUGHT")
@@ -1005,6 +1122,7 @@ func _hud() -> void:
 func _physics_process(delta: float) -> void:
 	if is_drill():
 		_dress_prisoners()
+		_take_off_vests(delta)
 		if drilling and multiplayer.is_server():
 			drill_left -= delta
 			if drill_left <= 0.0:
@@ -1160,6 +1278,8 @@ func _show_end(result: String) -> void:
 		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_VENT")
 	elif result == "escaped" and is_garbage():
 		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_GARBAGE")
+	elif result == "escaped" and is_drill():
+		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_DRILL")
 	box_ui.add_child(line)
 	var buttons := HBoxContainer.new()
 	buttons.alignment = BoxContainer.ALIGNMENT_CENTER

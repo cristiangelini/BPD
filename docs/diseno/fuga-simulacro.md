@@ -119,3 +119,22 @@ la limpieza.
 - La puerta de las celdas y lo que hace el guardia se ven igual en todas las PCs.
 - 10 textos nuevos. Pruebas en `test_drill_evacuation.gd`. Foto: `paso2-vereda.png`.
 - Sacarse el chaleco, el perchero, la cuenta de chalecos y escaparse en el patrullero son el paso 3.
+
+## Cómo quedó el paso 3
+- En el simulacro, mantener E 2 s con las manos libres (y sin nada que usar delante) saca el chaleco: cae al piso
+  frente al policía. Fuera de la celda, un aviso cuenta cómo. En la celda y sin simulacro, el chaleco vuelve solo.
+- El perchero de la sala de espera (en la esquina, junto al banco de la izquierda) tiene 6 ganchos y la semilla cuelga
+  de 4 a 6 abrigos o sombreros. Agarrado, baja del gancho; puesto como un disfraz, uno solo alcanza para pasar por
+  "público".
+- En el punto de encuentro el guardia cuenta los chalecos que ve cada 20 s. Si están todos, lo anota; si faltan,
+  +25 de sospecha y camina entre 3 personas mirando caras antes de volver al punto.
+- En el simulacro: un chaleco está bien; un uniforme a la vista es +50 por segundo; a un policía con abrigo o
+  sombrero lo reconoce solo a menos de 2 m y después de 3 s ("¿A ti no te conozco?"): captura. Un chaleco tirado
+  que ve es +15 por segundo. Un chaleco en el patrullero a la vista es captura.
+- Al terminar el simulacro o con una captura: los abrigos y sombreros vuelven al perchero, los chalecos del piso se
+  van y cada uno en su celda vuelve a tener el suyo.
+- Online: sacarse el chaleco pasa por las acciones (igual en todas las PCs), los abrigos se ponen como cualquier
+  disfraz y los del perchero los cuelga el anfitrión.
+- Modelos nuevos en `drill.js`: `folded_prison_vest`, `disguise_coat`, `hanging_coat`, `disguise_hat` y `coat_rack`.
+  14 textos nuevos. Pruebas en `test_drill_vest.gd` y `test_drill_online.gd`. Fotos: `paso3-perchero.png`,
+  `paso3-vereda.png` y `paso3-modelos.png`.

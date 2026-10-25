@@ -689,8 +689,9 @@ func put_on_disguise(kind: String, tilt: float) -> void:
 		_hide_from_own_camera(worn)
 
 
-## A piece of disguise falls off in front of the cop (the host makes the one on the floor).
-func lose_disguise(kind: String) -> void:
+## A piece of disguise falls off in front of the cop (the host makes the one on the floor), or the cop took it off
+## (`hint` says which).
+func lose_disguise(kind: String, hint := "HINT_DISGUISE_FELL") -> void:
 	if not disguise.has(kind):
 		return
 	var at := DisguisePiece.slot_on(self, kind)
@@ -699,7 +700,7 @@ func lose_disguise(kind: String) -> void:
 	if worn:
 		worn.get_parent().remove_child(worn)
 		worn.queue_free()
-	show_hint("HINT_DISGUISE_FELL")
+	show_hint(hint)
 	if not multiplayer.is_server() or not get_parent():
 		return
 	var piece: DisguisePiece = DisguisePiece.scene_of(kind).instantiate()
