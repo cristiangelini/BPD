@@ -112,3 +112,8 @@ nuevo: la capa y los colmillos de la banda, la caja de fusibles, la heladera, la
   se escapa El Conde en la carroza. En el interrogatorio del turno siguiente El Conde confiesa que era "una fiesta de
   disfraces" y se le escapan tres frases ("...En un ataúd, pero duermo", "solo tomo jugo de tomate"). Capturas en
   `/mnt/project-files/sangre/paso4-*.png`.
+- **Paso 5 (online):** manda el banco del anfitrión. Él cuenta los 60 s de luz y decide cuándo se calienta o se echa a
+  perder cada bolsa y cuándo se tapa cada vampiro; las otras PCs ven lo mismo (la luz prendida o apagada, el color de
+  cada bolsa, las que se llevaron y los vampiros tapados o con lentes). Un invitado puede prender la luz en la caja de
+  fusibles y su linterna también hace tapar a los vampiros, porque la copia de su policía en el anfitrión la prende
+  igual.

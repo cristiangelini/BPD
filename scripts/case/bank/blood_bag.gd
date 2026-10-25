@@ -82,6 +82,14 @@ func drop() -> void:
 	freeze = false
 
 
+## In the robbers' van: gone for good.
+func take() -> void:
+	carried_by = null
+	hide()
+	collision_layer = 0
+	process_mode = Node.PROCESS_MODE_DISABLED
+
+
 func cold() -> bool:
 	return carried_by == null and is_cold.call(global_position)
 

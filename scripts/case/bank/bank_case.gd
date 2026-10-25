@@ -88,6 +88,10 @@ var follower := false:
 				bank.helicopter.follower = value
 			if bank.nerves:
 				bank.nerves.follower = value
+			if bank.blood_bank:
+				bank.blood_bank.follower = value
+				for bag in bank.blood_bank.bags:
+					bag.follower = value
 var online: CaseSync
 var _result := {}
 var _refresh_left := 0.0
@@ -395,6 +399,8 @@ func snapshot() -> Dictionary:
 		state.roof = [bank.helicopter.net_state(), bank.roof_getaway, bank.roof_bags]
 	if bank.town:
 		state.town = [bank.clerk.net_state(), bank.nerves.net_state(), clerk_left]
+	if bank.blood:
+		state.blood = bank.blood_bank.net_state()
 	if bank.chase:
 		state.getaway = bank.chase.suspect_id
 		state.chase = bank.chase.snapshot()
@@ -449,6 +455,8 @@ func apply_snapshot(state: Dictionary) -> void:
 		bank.roof_getaway = state.roof[1]
 		bank.roof_bags = state.roof[2]
 		bank._show_cart_bags()
+	if bank.blood and state.has("blood"):
+		bank.blood_bank.apply_net_state(state.blood)
 	if bank.town and state.has("town"):
 		bank.clerk.apply_net_state(state.town[0])
 		bank.nerves.apply_net_state(state.town[1])
