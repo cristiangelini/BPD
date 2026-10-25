@@ -106,3 +106,14 @@ todas las PCs.
 - Lo que cobró sale de la caja del grupo y de la plata de las coimas cuando termina la fuga.
 - Modelo `bill_wad` en `tools/modelgen/models/bribe.js`. 15 textos nuevos. Pruebas en `test_bribe_money.gd`. Fotos en
   `/mnt/project-files/soborno/`.
+
+## Cómo quedó el paso 2
+- La cámara del pasillo (`CorridorCamera`) cuelga del techo frente a las celdas y gira de una reja a la otra: se queda
+  entre 6 y 10 s en cada una (según la semilla, que también elige por cuál arranca) y tarda 1,5 s en girar, sin mirar a
+  ninguna mientras gira. Una luz roja ilumina el piso de la reja que mira.
+- El guardia cuenta el fajo en la mano. Si mientras cuenta la cámara mira esa celda, devuelve el fajo adentro de la
+  celda, dice una de 3 frases ("¿Con la cámara mirando? ¿Estás loco?") y suma 10 de sospecha.
+- Con las manos vacías frente al guardia en la reja, E regatea ("Dale, que somos colegas"): el precio baja 50, hasta 3
+  veces, y cada vez suma 15 de sospecha. Si el precio llega a lo que ya cobró, es trato hecho.
+- Online: la cámara va por `NpcSync` y lo regateado viaja con el guardia.
+- Modelo `corridor_camera`. 7 textos nuevos. Pruebas en `test_bribe_camera.gd`. Fotos en `/mnt/project-files/soborno/`.

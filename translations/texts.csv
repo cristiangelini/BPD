@@ -2352,7 +2352,7 @@ CRASH_CALM_0,"Está bien, está bien. Lo corro.","Fine, fine. I'll move it.","T�
 CRASH_CALM_1,Tiene razón. Respiro.,You're right. Breathing.,Tem razão. Respirando.
 CRASH_CALM_2,"Bueno, fue un raspón.","Okay, it was a scratch.","Tá, foi só um arranhão."
 SHIFT_STREET,Eventos en la calle,Street events,Eventos na rua
-HINT_JAILED_BRIBE,"El guardia tiene cara de que se vende... y tú tienes la plata de las coimas en la cucheta. Llámalo desde la reja.","The guard looks like he can be bought... and you have the bribe money on your bunk. Call him from the bars.","O guarda tem cara de quem se vende... e você tem o dinheiro das propinas no beliche. Chame-o da grade."
+HINT_JAILED_BRIBE,"El guardia tiene cara de que se vende... y tú tienes la plata de las coimas en la cucheta. Llámalo desde la reja, pero ojo con la cámara.","The guard looks like he can be bought... and you have the bribe money on your bunk. Call him from the bars, but mind the camera.","O guarda tem cara de quem se vende... e você tem o dinheiro das propinas no beliche. Chame-o da grade, mas cuidado com a câmera."
 PROMPT_CALL_GUARD,"[E] ¡Psst, guardia!","[E] Psst, guard!","[E] Psiu, guarda!"
 PROMPT_PAY_GUARD,"[E] Pasarle el fajo por la reja","[E] Pass him the wad through the bars","[E] Passar o maço pela grade"
 PROMPT_HOLDING_WAD,"Un fajo de billetes. Llama al guardia y pásaselo por la reja.","A wad of bills. Call the guard and pass it through the bars.","Um maço de notas. Chame o guarda e passe pela grade."
@@ -2367,3 +2367,10 @@ BRIBE_GUARD_DEAL_1,"Ay, la llave... bueno, ya la busco mañana.","Oh, the key...
 BRIBE_GUARD_DEAL_2,"Yo no vi nada. Yo leo el diario.","I didn't see anything. I'm reading the paper.","Eu não vi nada. Eu estou lendo o jornal."
 BRIBE_GUARD_BORED_0,"Bueno, cuando se decidan me avisan.","Well, let me know when you make up your minds.","Bom, quando se decidirem me avisem."
 BRIBE_GUARD_BORED_1,"Yo no tengo toda la noche. Bueno, sí, pero igual.","I don't have all night. Well, I do, but still.","Eu não tenho a noite toda. Bom, tenho, mas mesmo assim."
+PROMPT_HAGGLE,"[E] Dale, que somos colegas (regatear)","[E] Come on, we're colleagues (haggle)","[E] Qual é, somos colegas (pechinchar)"
+BRIBE_GUARD_HAGGLE_0,"Bueno, bueno, por ser colegas... pero apúrate. Faltan %d.","Fine, fine, since we're colleagues... but hurry up. %d short.","Tá bom, tá bom, por sermos colegas... mas anda logo. Faltam %d."
+BRIBE_GUARD_HAGGLE_1,"¿Me estás regateando? ¿A mí? Faltan %d y no se habla más.","Are you haggling with me? With me? %d short and that's that.","Você está pechinchando comigo? Comigo? Faltam %d e ponto final."
+BRIBE_GUARD_HAGGLE_2,"Me vas a hacer llorar. Faltan %d, último precio.","You're going to make me cry. %d short, final price.","Você vai me fazer chorar. Faltam %d, último preço."
+BRIBE_GUARD_CAMERA_0,"¿Con la cámara mirando? ¿Estás loco?","With the camera watching? Are you crazy?","Com a câmera olhando? Você está louco?"
+BRIBE_GUARD_CAMERA_1,"Guarda eso, que nos están filmando.","Put that away, we're being filmed.","Guarda isso, estão filmando a gente."
+BRIBE_GUARD_CAMERA_2,"Sonríe, que sales en la tele. Toma, esto es tuyo.","Smile, you're on TV. Here, this is yours.","Sorria, você está na TV. Toma, isso é seu."

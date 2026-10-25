@@ -34,6 +34,8 @@ func _level(case_seed := 5151) -> void:
 	await wait_physics_frames(5)
 	guard = level.guard as BribeGuard
 	guard.set_physics_process(false)
+	# The camera is step 2's (test_bribe_camera.gd).
+	guard.camera = null
 	cop = level.get_node("Cop")
 	lot = level.city.transform * CityLayout.lot("station")
 
@@ -129,7 +131,7 @@ func test_called_he_comes_and_says_his_price() -> void:
 	assert_eq(guard.line, "BRIBE_GUARD_PRICE")
 	assert_eq(guard.line_number, guard.price)
 	assert_almost_eq(guard.global_position.distance_to(door.global_position), 0.9, 0.6, "at the door")
-	assert_eq(door.prompt_key(cop), "PROMPT_CELL_LOCKED", "nothing more to do with empty hands")
+	assert_eq(door.prompt_key(cop), "PROMPT_HAGGLE", "with empty hands, haggle")
 	_step(BribeGuard.WAIT_TIME + 1.0)
 	assert_ne(guard.stage, "at_bars", "tired of waiting, he goes back")
 	_step(12.0)
@@ -151,9 +153,9 @@ func test_the_wads_add_up_and_paid_he_drops_the_key() -> void:
 		door.use(cop)
 		given += wad.amount
 		assert_eq(guard.stage, "counting")
+		_step(BribeGuard.COUNT_TIME + 0.1)
 		await wait_physics_frames(2)
 		assert_false(is_instance_valid(wad) and wad.is_inside_tree(), "he keeps it")
-		_step(BribeGuard.COUNT_TIME + 0.1)
 		assert_eq(guard.paid, given)
 		if guard.is_paid():
 			break
