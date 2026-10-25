@@ -133,6 +133,11 @@ Los pesos y valores siguen la escala de la ferretería: la principal vale unos 1
      (25 kg, entre dos), que hasta entonces no se puede agarrar. Desde la puerta del depósito hay pisadas que van hasta
      la espalda del muñeco y no vuelven: mirarlas con E es la pista propia. El plano del desfile y la llave de la caja
      van escondidos. Capturas `paso6-gigante*`.
+   - **Pelo de caniche (propuesta):** 8 mechones rosados en el piso van desde la máquina de pelo hacia donde está
+     escondida la bolsa. Un policía que pisa cerca de uno estornuda y suelta lo que lleva (como la harina de la
+     panadería), y el primer estornudo es la pista propia. La máquina de pelo le pega pelo rosado a quien pasa a 1,6 m o
+     menos, aunque no vaya en la cinta, y los muñecos de la cinta salen peludos. La bolsa de pelo (3 kg) es la evidencia
+     principal y va escondida con el peine de oro y la factura trucha. Captura `paso6-caniche`.
 7. "Jugar" sortea entre los 5 lugares de allanamiento.
 8. El online (Fermín, Nilda, la cinta y los muñecos en todas las PC).
 

@@ -157,7 +157,7 @@ func _on_machine(id: String, body: Node3D) -> void:
 	if not is_moving():
 		return
 	if body is Cop:
-		_mark_cop(id, body)
+		mark_cop(id, body)
 	else:
 		mark(body, id)
 
@@ -177,7 +177,8 @@ func mark(body: Node3D, id: String) -> void:
 	marked.emit(body, id)
 
 
-func _mark_cop(id: String, cop: Cop) -> void:
+## Leaves the machine's mark on a cop who went under it (or, in the poodle hair story, close by).
+func mark_cop(id: String, cop: Cop) -> void:
 	if id == "heads":
 		cop.stagger(0.6)
 		cop.show_hint("HINT_BELT_BONK")

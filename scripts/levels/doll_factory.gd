@@ -79,6 +79,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_PARADE_PLAN", "OBJ_EXTRA_SAFE_KEY"],
 		"rig": preload("res://scripts/case/factory/giant_doll_rig.gd"),
 	},
+	"poodle_hair": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_POODLE_HAIR_B", "BRIEF_POODLE_HAIR_C", "BRIEF_POODLE_HAIR_D"],
+		"find": "OBJ_FIND_POODLE_HAIR",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/poodle_hair_bag.tscn"), preload("res://scenes/props/gold_comb.tscn"),
+			preload("res://scenes/props/fake_invoice.tscn")],
+		"half_heights": [0.18, 0.005, 0.005],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_GOLD_COMB", "OBJ_EXTRA_FAKE_INVOICE"],
+		"rig": preload("res://scripts/case/factory/poodle_hair_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the factory; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [
