@@ -19,6 +19,8 @@ extends Node3D
 ## The floor has stains to mop (FloorStains); a cop running on the wet floor slips (WET_SLIP seconds down).
 ## The third way out is the guard dog (fuga-perro.md): the night guard fell asleep at his desk (SleepyGuard) and the
 ## key hangs from the collar of Mordisco, the station's bulldog, who walks his round (GuardDog).
+## The fourth is the spoon tunnel (fuga-tunel.md): the guard awake at his desk, listening (ListeningGuard), and each
+## cell digging a hole by its bunk with the dinner spoons (Spoon, TunnelHole).
 ## --place=jailbreak opens it from Play, and --jailbreak=<variant> forces one of VARIANTS.
 
 const DESK_MODEL := preload("res://assets/models/station_desk.glb")
@@ -85,9 +87,13 @@ const DOG_FOOD := {"sausage": 3, "ham": 3, "cheese": 3, "donut": 2, "lettuce": 2
 const DOG_FOOD_ENOUGH := 400.0
 ## Mordisco jumps into the patrol car once every cop is in it, if he's everyone's friend and this close to it (step 4).
 const DOG_RIDE_REACH := 12.0
+## The spoon tunnel (fuga-tunel.md, step 1): a tray with two spoons in each cell, and the hole by each bunk, on one of
+## its two sides (the seed draws which).
+const TUNNEL_TRAYS: Array[Vector3] = [Vector3(8.3, 0.02, 3.9), Vector3(12.7, 0.02, 3.9)]
+const TUNNEL_HOLES := [[Vector3(6.7, 0, 2.2), Vector3(9.9, 0, 2.2)], [Vector3(11.1, 0, 2.2), Vector3(14.3, 0, 2.2)]]
 
-## The ways out, drawn by the seed (fuga-limpieza.md and fuga-perro.md, question 1: in thirds, propuesta).
-const VARIANTS := ["donut", "cleaning", "dog"]
+## The ways out, drawn by the seed (fuga-limpieza.md, fuga-perro.md and fuga-tunel.md, question 1: in quarters).
+const VARIANTS := ["donut", "cleaning", "dog", "tunnel"]
 
 ## Same seed, same jailbreak. 0 draws one.
 @export var case_seed := 0
@@ -106,6 +112,9 @@ var cleaner: Cleaner
 ## Mordisco, in the guard dog's jailbreak.
 var dog: GuardDog
 var dog_food: Array[DogFood] = []
+## The spoon tunnel's holes (one for each cell) and spoons.
+var holes: Array[TunnelHole] = []
+var spoons: Array[Spoon] = []
 var cart_key: CellKey
 var tools: Array[CleaningTool] = []
 var polisher: FloorPolisher
@@ -140,6 +149,8 @@ func _ready() -> void:
 		_early_comisario()
 	elif is_dog():
 		_dog_night()
+	elif is_tunnel():
+		_tunnel_night()
 	else:
 		_guard_desk()
 	_hud()
@@ -148,7 +159,8 @@ func _ready() -> void:
 	$PatrolCar.global_transform = car_home
 	if Campaign.current:
 		guard.times_caught = Campaign.current.jail_catches
-	var hint: String = {"cleaning": "HINT_JAILED_CLEANING", "dog": "HINT_JAILED_DOG"}.get(variant, "HINT_JAILED")
+	var hint: String = {"cleaning": "HINT_JAILED_CLEANING", "dog": "HINT_JAILED_DOG", "tunnel": "HINT_JAILED_TUNNEL"} \
+		.get(variant, "HINT_JAILED")
 	($Cop as Cop).show_hint.call_deferred(hint)
 
 
@@ -169,6 +181,45 @@ func is_cleaning() -> bool:
 
 func is_dog() -> bool:
 	return variant == "dog"
+
+
+func is_tunnel() -> bool:
+	return variant == "tunnel"
+
+
+## The spoon tunnel: the guard awake at his desk with the key on his belt, a tray with two spoons in each cell and the
+## hole by each bunk.
+func _tunnel_night() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var desk := _desk()
+	var listener := ListeningGuard.new()
+	listener.name = "NightGuard"
+	add_child(listener)
+	listener.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), GUARD_AT)
+	listener.stand_guard(case_seed)
+	listener.outside_cells = outside_cells
+	listener.see_through = [desk.get_rid()]
+	listener.caught.connect(_on_caught)
+	guard = listener
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["tunnel sides", case_seed])
+	for cell in TUNNEL_TRAYS.size():
+		var tray := TRAY_MODEL.instantiate() as Node3D
+		add_child(tray)
+		tray.global_transform = lot * Transform3D(Basis.IDENTITY, TUNNEL_TRAYS[cell])
+		for i in 2:
+			var spoon := Spoon.new()
+			spoon.name = "Spoon%d" % spoons.size()
+			add_child(spoon)
+			spoon.global_position = lot * (TUNNEL_TRAYS[cell] + Vector3((i - 0.5) * 0.16, 0.03, 0))
+			spoons.append(spoon)
+		var hole := TunnelHole.new()
+		hole.name = "TunnelHole%d" % cell
+		hole.cell = cell
+		add_child(hole)
+		hole.global_transform = lot * Transform3D(Basis.IDENTITY, TUNNEL_HOLES[cell][rng.randi_range(0, 1)])
+		hole.setup(case_seed)
+		holes.append(hole)
 
 
 ## The guard dog's jailbreak: the guard asleep at his desk with no donuts, and Mordisco walking his round with the key.

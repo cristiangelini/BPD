@@ -70,6 +70,14 @@ El guardia y los pozos van por `NpcSync`; las cucharas y los colchones, por `Pro
 2. El ruido: tapar cantando, el guardia que escucha, va a mirar y atrapa, y la captura que rellena un tercio.
 3. El colchón que tapa el pozo, el túnel terminado que saca al estacionamiento, salir, frases y online.
 
+## Cómo quedó el paso 1
+- `--jailbreak=tunnel` fuerza la variante; el sorteo de la fuga ahora es en cuartos (dona, limpieza, perro, túnel).
+- `ListeningGuard` (scripts/npc/listening_guard.gd): despierto, sin donas, con la llave en el cinturón.
+- Dos bandejas con dos cucharas cada una (`Spoon`), y un `TunnelHole` por celda, del lado que sortea la semilla.
+- E con una cuchara en la mano saca una cucharada cada 0,6 s; el pozo necesita entre 70 y 90 (la semilla elige)
+  y se ve crecer junto con la montaña de tierra. Sin cuchara dice que hace falta una.
+- Modelos `tunnel_spoon` y `tunnel_mattress` en `tools/modelgen/models/tunnel.js`. Pruebas en `test_spoon_tunnel.gd`.
+
 ## Preguntas para Cristian
 1. ¿La fuga sortea en cuartos entre dona, limpieza, perro y túnel? **Recomiendo sí:** las cuatro comparten celdas,
    salida y final.
