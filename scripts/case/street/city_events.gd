@@ -1,7 +1,8 @@
 class_name CityEvents
 extends Node3D
 
-## The street events' director (ciudad-viva.md, "Los eventos"): one sequence at a time, never chaos. Every GAP_MIN to
+## The street events' director (ciudad-viva.md, "Los eventos"), a child of the City at its origin, so its local space is
+## the city's: one sequence at a time, never chaos. Every GAP_MIN to
 ## GAP_MAX seconds it picks an event and has it happen NEAR_MIN to NEAR_MAX meters from a cop, somewhere they're not
 ## looking. A finished event pays its money to the shift and the next one waits its gap. For now only in the test
 ## city, with the purse snatching. Every number here is (propuesta).
@@ -122,7 +123,7 @@ func pick_walker() -> CityWalker:
 	return options[_rng.randi() % options.size()] if not options.is_empty() else null
 
 
-## The alley nearest to `at`.
+## The alley nearest to `at`, in the city's space.
 static func nearest_alley(at: Vector3) -> Array:
 	var best: Array = CityLife.ALLEYS[0]
 	for alley: Array in CityLife.ALLEYS:
@@ -139,19 +140,19 @@ func start_snatch(walker: CityWalker = null) -> bool:
 		return false
 	var snatch := PurseSnatch.new()
 	add_child(snatch)
-	snatch.begin(walker, nearest_alley(walker.global_position))
+	snatch.begin(walker, nearest_alley(to_local(walker.global_position)))
 	_run(snatch)
 	return true
 
 
-## A crash at a crossing near a cop but out of sight, or at `at`. Returns false when there's no such crossing.
+## A crash at a crossing near a cop but out of sight, or at `at` (in the city's space). Returns false when there's no such crossing.
 func start_crash(at := Vector3.INF) -> bool:
 	if at == Vector3.INF:
 		var options: Array[Vector3] = []
 		for i in range(1, CityLayout.COLUMNS):
 			for j in range(1, CityLayout.ROWS):
 				var crossing := Vector3(CityLayout.street_x(i), 0, CityLayout.street_z(j))
-				if good_spot(crossing):
+				if good_spot(to_global(crossing)):
 					options.append(crossing)
 		if options.is_empty():
 			return false
@@ -169,7 +170,7 @@ func start_flee(at := Vector2i(-1, -1)) -> bool:
 		var options: Array[Vector2i] = []
 		for i in range(1, CityLayout.COLUMNS):
 			for j in range(1, CityLayout.ROWS):
-				if good_spot(Vector3(CityLayout.street_x(i), 0, CityLayout.street_z(j))):
+				if good_spot(to_global(Vector3(CityLayout.street_x(i), 0, CityLayout.street_z(j)))):
 					options.append(Vector2i(i, j))
 		if options.is_empty():
 			return false

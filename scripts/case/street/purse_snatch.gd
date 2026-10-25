@@ -17,7 +17,8 @@ func begin(walker: CityWalker, alley: Array) -> void:
 	victim.stop_for(30.0)
 	victim.say("EVENT_PURSE_HELP", 6.0)
 	thief = CityRunaway.new()
-	thief.route = CityRunaway.route_to(walker.global_position, alley)
+	# The route is in the city's space; this event sits at the city's origin, so its transform takes it to the world.
+	thief.route = CityRunaway.in_world(CityRunaway.route_to(to_local(walker.global_position), alley), global_transform)
 	add_child(thief)
 	thief.global_position = walker.global_position + walker.global_basis.z * 1.2
 	thief.caught.connect(_on_caught)

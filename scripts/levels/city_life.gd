@@ -7,6 +7,8 @@ extends Node3D
 ## Every number here is (propuesta).
 
 const CURB := 0.15
+## The group of the sidewalks' bodies.
+const SIDEWALKS := "sidewalks"
 const BRICK := Color(0.58, 0.3, 0.24)
 const BRICK_DARK := Color(0.42, 0.22, 0.18)
 const IRON := Color(0.16, 0.17, 0.19)
@@ -84,7 +86,8 @@ func _sidewalk(block: Vector2i) -> void:
 		var along_x := absf(normal.z) > 0.5
 		var length := CityLayout.BLOCK if along_x else CityLayout.BLOCK - w * 2
 		var slab := Vector3(length, CURB, w) if along_x else Vector3(w, CURB, length)
-		_box(c + normal * (half - w / 2) + Vector3.UP * CURB / 2, slab, SIDEWALK_TOP)
+		# What rolls on the sidewalks steps up these (SuspectCar.climb_curbs).
+		_box(c + normal * (half - w / 2) + Vector3.UP * CURB / 2, slab, SIDEWALK_TOP).add_to_group(SIDEWALKS)
 		var curb := Vector3(CityLayout.BLOCK, CURB + 0.02, 0.25) if along_x else Vector3(0.25, CURB + 0.02, CityLayout.BLOCK)
 		_mesh_box(c + normal * (half - 0.125) + Vector3.UP * (CURB + 0.02) / 2, curb, CURB_COLOR)
 		var edge := c + normal * (half - 0.6)
@@ -330,7 +333,7 @@ func _material(color: Color, glow := false) -> StandardMaterial3D:
 	return _materials[key]
 
 
-func _box(center: Vector3, size: Vector3, color: Color, parent: Node3D = null) -> void:
+func _box(center: Vector3, size: Vector3, color: Color, parent: Node3D = null) -> StaticBody3D:
 	var body := StaticBody3D.new()
 	body.position = center
 	(parent if parent else self).add_child(body)
@@ -340,6 +343,7 @@ func _box(center: Vector3, size: Vector3, color: Color, parent: Node3D = null) -
 	shape.shape = box
 	body.add_child(shape)
 	_mesh_box(center, size, color, parent)
+	return body
 
 
 func _mesh_box(center: Vector3, size: Vector3, color: Color, parent: Node3D = null, glow := false) -> void:

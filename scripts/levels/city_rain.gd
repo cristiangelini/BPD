@@ -19,6 +19,9 @@ const PUDDLES := 40
 const WET_ROUGHNESS := 0.2
 const DRY_ROUGHNESS := 0.9
 const PUDDLE := Color(0.22, 0.27, 0.36)
+## Under a roof this close above the camera (inside the station, a house), no drops fall.
+const ROOF_CHECK := 30.0
+const ROOF_EVERY := 0.25
 
 ## The shift's rain: from `start` for `length` seconds, or never (length 0).
 var start := 0.0
@@ -30,6 +33,8 @@ var clock: CityClock
 ## The street's materials that shine when wet.
 var streets: Array[StandardMaterial3D] = []
 var _drops: CPUParticles3D
+var _under_roof := false
+var _roof_left := 0.0
 var _puddles: Array[MeshInstance3D] = []
 
 
@@ -103,14 +108,23 @@ func _process(delta: float) -> void:
 	time += delta
 	set_wet(wetness(time))
 	var camera := get_viewport().get_camera_3d()
-	if camera and _drops.emitting:
+	if not camera:
+		return
+	_roof_left -= delta
+	if _roof_left <= 0.0 and wet > 0.05:
+		_roof_left = ROOF_EVERY
+		var from := camera.global_position
+		var query := PhysicsRayQueryParameters3D.create(from, from + Vector3.UP * ROOF_CHECK)
+		_under_roof = not get_world_3d().direct_space_state.intersect_ray(query).is_empty()
+		_drops.emitting = not _under_roof
+	if _drops.emitting:
 		_drops.global_position = camera.global_position + Vector3.UP * ChaseWeather.RAIN_HEIGHT / 2
 
 
 ## Makes the city as wet as `amount` (0 to 1): drops, puddles, shine, grey sky, grip, cars and people.
 func set_wet(amount: float) -> void:
 	wet = amount
-	_drops.emitting = wet > 0.05
+	_drops.emitting = wet > 0.05 and not _under_roof
 	for spot in _puddles:
 		spot.visible = wet > 0.3
 	for street in streets:
@@ -119,7 +133,7 @@ func set_wet(amount: float) -> void:
 		clock.overcast = wet
 	var raining := wet > 0.5
 	for car in get_tree().get_nodes_in_group("patrol_cars"):
-		(car as PatrolCar).grip = ChaseWeather.RAIN_GRIP if raining else 1.0
+		(car as PatrolCar).rain_grip = ChaseWeather.RAIN_GRIP if raining else 1.0
 	for car in get_tree().get_nodes_in_group("city_cars"):
 		if car is CityCar:
 			(car as CityCar).speed_factor = CAR_SLOW if raining else 1.0

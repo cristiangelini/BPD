@@ -29,13 +29,31 @@ func test_alleys_fit_their_blocks_without_touching_a_lot() -> void:
 			assert_false(rect.intersects(lot), "the alley in %s runs into a lot" % block)
 
 
-func test_the_test_city_is_alive_but_case_cities_are_not_yet() -> void:
+func test_every_city_is_alive_but_night_cases_keep_their_own_sky() -> void:
 	var city: City = add_child_autofree(CITY_SCENE.instantiate())
 	assert_not_null(city.get_node_or_null("Built/Life"), "the test city has its sidewalks, lamps and alleys")
+	assert_not_null(city.clock, "and its clock")
 	var case_city := City.new()
 	case_city.live_place = "grandpa"
 	add_child_autofree(case_city)
-	assert_null(case_city.get_node_or_null("Built/Life"), "a case's city stays as it was until it's tried")
+	assert_not_null(case_city.get_node_or_null("Built/Life"), "on the way to a case the city is alive too")
+	assert_not_null(case_city.events, "and things happen in its streets")
+	var night_city := City.new()
+	night_city.night = true
+	add_child_autofree(night_city)
+	assert_null(night_city.clock, "the jailbreak's night stays night")
+	assert_null(night_city.rain)
+
+
+func test_a_chase_with_its_own_weather_holds_the_city_clock() -> void:
+	var city: City = add_child_autofree(CITY_SCENE.instantiate())
+	city.clock.hour = 23.0
+	city.clock.apply()
+	city.hold_weather()
+	assert_null(city.clock, "no clock")
+	assert_null(city.rain, "no rain")
+	var sun: DirectionalLight3D = city.get_node("Sun")
+	assert_gt(sun.light_energy, 1.0, "back to noon's light for the chase to dress")
 
 
 func test_a_cop_walks_up_onto_the_sidewalk() -> void:
