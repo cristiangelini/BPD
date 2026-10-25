@@ -54,15 +54,25 @@ func test_the_first_cop_through_the_gate_starts_it() -> void:
 	assert_true(riot.inmates[0].active)
 
 
+## The first inmate who starts angry and isn't a ringleader (the first inmate always leads a table, and a
+## ringleader neither calms down nor shouts like the rest).
+func _angry_follower() -> PrisonInmate:
+	for inmate in riot.inmates:
+		if inmate.is_angry() and not inmate.ringleader:
+			return inmate
+	return null
+
+
 func test_left_alone_they_calm_down() -> void:
 	riot.start()
-	var inmate := riot.inmates[0]
+	var inmate := _angry_follower()
+	var before := riot.angry
 	watch_signals(riot)
 	inmate._quiet_left = 0.0
 	inmate.anger = PrisonInmate.ANGRY + 0.01
 	await wait_physics_frames(10)
 	assert_false(inmate.is_angry())
-	assert_signal_emitted_with_parameters(riot, "angry_changed", [PrisonRiot.ANGRY_AT_START - 1])
+	assert_signal_emitted_with_parameters(riot, "angry_changed", [before - 1])
 
 
 func test_upset_they_stay_upset_a_while() -> void:
@@ -77,4 +87,4 @@ func test_upset_they_stay_upset_a_while() -> void:
 func test_angry_ones_shout() -> void:
 	riot.start()
 	await wait_physics_frames(2)
-	assert_string_starts_with(riot.inmates[0].said(), "INMATE_SHOUT_")
+	assert_string_starts_with(_angry_follower().said(), "INMATE_SHOUT_")
