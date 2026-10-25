@@ -60,6 +60,8 @@ var follower := false
 var has_fuse := false
 ## The light came back and they gave up (step 5).
 var surrendered := false
+## Their eyes shine in the dark; off in daylight (the laundry's runners, carcel-lavanderia.md).
+var glow_eyes := true
 var _sparks: Node3D
 var _spark_left := 0.0
 var _next := 0
@@ -104,6 +106,7 @@ func _ready() -> void:
 		eye.position = Vector3(side * EYES.x, EYES.y, EYES.z)
 		_eyes.add_child(eye)
 	add_child(_eyes)
+	_eyes.visible = glow_eyes
 	_bubble = Label3D.new()
 	_bubble.name = "Bubble"
 	_bubble.position = Vector3(0, 1.85, 0)
@@ -259,6 +262,12 @@ func set_lit(lit: bool) -> void:
 
 
 ## What a guest's copy needs besides where they are and what they say (NpcSync).
+## What a guest's copy needs before it's added, for the ones the host brings in during the case (the laundry's
+## runners, carcel-lavanderia.md, step 7).
+func net_setup() -> Dictionary:
+	return {"role": role, "glow_eyes": glow_eyes}
+
+
 func net_state() -> Array:
 	return [frozen, hidden, is_escaped, jailed_in, surrendered, has_fuse, is_cuffed()]
 
@@ -361,7 +370,7 @@ func _process(delta: float) -> void:
 			_sparks.visible = not _sparks.visible
 		_sparks.visible = _sparks.visible and has_fuse
 	_blink_left -= delta
-	if _blink_left <= 0.0:
+	if glow_eyes and _blink_left <= 0.0:
 		_eyes.visible = not _eyes.visible
 		_blink_left = BLINK_EVERY + randf_range(-1.0, 1.0) if _eyes.visible else BLINK_TIME
 	if _bubble_left > 0.0:
