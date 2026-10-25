@@ -101,12 +101,15 @@ func test_the_robbers_and_the_hostages_wade_too() -> void:
 		assert_almost_eq(robber.wade, 0.45, 0.001, robber.animal)
 	for hostage in bank.hostages:
 		assert_almost_eq(hostage.wade, 0.45, 0.001)
+	# Low enough to be down from the counter (step 3).
+	bank.water.level = 0.45
+	await wait_physics_frames(1)
 	var hostage := bank.hostages[0]
 	hostage.led_by = cop
 	cop.global_position = hostage.global_position + Vector3(4, 0, 0)
 	await wait_physics_frames(1)
 	var horizontal := Vector2(hostage.velocity.x, hostage.velocity.z).length()
-	assert_almost_eq(horizontal, hostage.speed() * 0.45, 0.05, "led by the hand, the hostage wades")
+	assert_almost_eq(horizontal, hostage.speed() * BankWater.factor(0.45), 0.05, "led by the hand, the hostage wades")
 
 
 func test_the_water_shows_and_the_jet_pours() -> void:

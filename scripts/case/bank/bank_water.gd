@@ -6,7 +6,10 @@ extends Node3D
 ## floor and rises RISE meters a second while `running`, up to MAX_LEVEL. Step 2: the valve out back stops it
 ## (shut_off). The front door, shut in this robbery, holds it in: open with the pipe pouring, the water stays where it
 ## is; open with the pipe shut, it drains DRAIN meters a second. Every time the door opens on WAVE_MIN or more water, a
-## wave rushes out: the level drops WAVE_DROP at once and it shoves what's near the door out to the sidewalk. Everyone wading in it inside the bank goes
+## wave rushes out: the level drops WAVE_DROP at once and it shoves what's near the door out to the sidewalk. Step 3:
+## over DRILL_WET the drill gets wet and slows down (BankDrill.wet), and the duck says so once; at PERCH_LEVEL the
+## hostages still inside get up on the counter (BankHostage.climb), each on their perch, and come down again below
+## DOWN_LEVEL. Everyone wading in it inside the bank goes
 ## slower the deeper it is (factor()): the cops, the robbers and the hostages. The level sets each one's `wade` every
 ## physics frame; outside the bank it's 1. Online it runs on the host and a guest's follows it (`follower`, BankCase's
 ## snapshot). Every number here is (propuesta).
@@ -23,6 +26,9 @@ const WAVE_REACH := 3.5
 const WAVE_PUSH := 6.0
 const WAVE_IMPULSE := 4.0
 const WAVE_KNOCK := 0.6
+const DRILL_WET := 0.5
+const PERCH_LEVEL := 0.6
+const DOWN_LEVEL := 0.5
 ## Speed by depth: (depth, factor) points, straight lines between them.
 const WADE: Array[Vector2] = [Vector2(0.0, 1.0), Vector2(0.3, 0.8), Vector2(0.6, 0.6), Vector2(1.0, 0.45)]
 const COLOR := Color(0.25, 0.5, 0.75, 0.55)
@@ -45,6 +51,13 @@ var door_at := Vector3.ZERO
 var follower := false
 ## The robbers and the hostages (the cops are found by their group).
 var waders: Array[Node3D] = []
+## The drill and the duck at it; the hostages, and for each one where on the counter they get up to and where they
+## hop down to (global).
+var drill: BankDrill
+var duck: BankRobber
+var hostages: Array[BankHostage] = []
+var perches: Array[Vector3] = []
+var down_at: Array[Vector3] = []
 var _surface: MeshInstance3D
 var _jet: MeshInstance3D
 
@@ -136,6 +149,27 @@ func _on_door_opened() -> void:
 			body.apply_central_impulse(out * WAVE_IMPULSE * body.mass)
 
 
+func _wet_drill() -> void:
+	if not drill:
+		return
+	var wet := level >= DRILL_WET
+	if wet and not drill.wet and duck and not duck.is_cuffed():
+		duck.say("DUCK_DRILL_WET")
+	drill.wet = wet
+
+
+func _perch() -> void:
+	for i in hostages.size():
+		var hostage := hostages[i]
+		if hostage.freed or hostage.is_cuffed():
+			continue
+		if level >= PERCH_LEVEL and not hostage.perched and not hostage.duck_float \
+				and depth_at(hostage.global_position) > 0.0:
+			hostage.climb(perches[i], down_at[i])
+		elif level < DOWN_LEVEL and hostage.perched:
+			hostage.climb_down()
+
+
 func _near_door(at: Vector3) -> bool:
 	return at.distance_to(door_at) <= WAVE_REACH and depth_at(at) > 0.0
 
@@ -155,6 +189,8 @@ func _physics_process(delta: float) -> void:
 			level = maxf(level - DRAIN * delta, 0.0)
 		elif running and not door_open:
 			level = minf(level + RISE * delta, MAX_LEVEL)
+		_wet_drill()
+		_perch()
 	_show()
 	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
 		if "wade" in cop:
