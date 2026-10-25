@@ -283,10 +283,11 @@ func _on_caught(times: int) -> void:
 	if Campaign.current:
 		Campaign.current.jail_catches = times
 		Campaign.current.save()
-	if times >= CATCHES and is_cleaning():
-		guard.say("EARLY_SUSPENDED", LOST_DELAY + 2.0)
-	elif times >= CATCHES:
-		_call_comisario()
+	if times >= CATCHES:
+		if is_cleaning():
+			guard.say("EARLY_SUSPENDED", LOST_DELAY + 2.0)
+		else:
+			_call_comisario()
 		get_tree().create_timer(LOST_DELAY).timeout.connect(finish.bind("lost"))
 	var slot := 0
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
