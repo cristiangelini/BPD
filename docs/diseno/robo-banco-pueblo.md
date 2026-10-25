@@ -107,3 +107,12 @@ estantes y el mostrador de madera, don Plácido dormido (un cuerpo que se agarra
   mostrador y la entrada hasta la camioneta ("¡No puedo más!"). Si ve a un policía se rinde como el conejo de la base,
   salvo que ya tenga 70 o más: entonces sale corriendo. El taladro del banco del pueblo tarda 6 minutos. Capturas en
   `/mnt/project-files/pueblo/paso3-*.png`.
+- **Paso 4 (el caso):** la radio pide silencio ("Despacito y sin sirena... Agáchense para sacarle la llave"). En el
+  teléfono atiende El Conejo, tartamudeando: los tres pedidos de siempre (donas, que le canten algo, llevarse el
+  patrullero) dichos con sus palabras, para calmarse. La planilla pide sacar a don Plácido, esposar a El Conejo y
+  volver con él, el extra de sacarlo sin que se despierte (+100) y muestra sus nervios. Cuando se queda sin nervios
+  nadie sostiene el taladro (se para del todo), y cuando llega a la camioneta arranca la persecución sin bolsas (a pie
+  si está encerrada, con el modelo del conejo). Si la bóveda se abre antes, se lleva 2 bolsas. Si don Plácido sigue
+  adentro cuando El Conejo se escapa, son 300 menos. El Conejo detenido va al interrogatorio del turno siguiente
+  (sospechoso nuevo, con su confesión y sus tres frases que se le escapan). Capturas en
+  `/mnt/project-files/pueblo/paso4-*.png`.
