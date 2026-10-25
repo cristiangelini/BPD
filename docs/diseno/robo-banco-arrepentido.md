@@ -89,3 +89,14 @@ las tres ayudas, la silla con la soga y el desatar.
   corta). En vez de mantener E, como decía la idea, alcanza con quedarse al lado: mantener E es un mecanismo aparte
   para cada personaje y no sumaba. Desatado vuelve a su lugar, descansa y reintenta la ayuda; a las 3 veces dice "Ya
   fue" y no ayuda más. Online va `tied` en `net_state`. Captura en `/mnt/project-files/arrepentido/paso4-atado.png`.
+- **Paso 5 (el caso y el online):** el comisario da por radio la historia del ladrón que llamó llorando
+  (`BRIEF_BANK_SORRY_A-C`). La primera vez que lo dan vuelta y la primera vez que la banda lo ata, todos ven un aviso
+  (`HINT_BANK_SORRY_TURNED`, `HINT_BANK_SORRY_TIED`). La planilla suma "Encuentra al ladrón que llora" y "Ayudas del
+  arrepentido: n de 3 (+50 cada una)". El sueldo es el del robo base más 50 por cada ayuda hecha
+  (`BankCase.PER_HELP`), solo si el caso se resuelve. Cuando la bóveda se abre no se lleva bolsa: se queda sentado,
+  dice "Me siento acá y espero a la policía" y se deja esposar de frente. Al sorteo de Jugar ya entra por el banco (un
+  cuarto de las semillas). Online el anfitrión decide todo; el invitado ve al arrepentido dado vuelta y atado
+  (`net_state`), la puerta de atrás abierta, los avisos y las ayudas (`BankCase.snapshot`). Capturas en
+  `/mnt/project-files/arrepentido/paso5-*.png`. **El ladrón arrepentido quedó terminado** (pasos 1 a 5); faltan las
+  respuestas de Cristian a las 3 preguntas.
+

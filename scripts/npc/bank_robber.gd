@@ -443,6 +443,15 @@ func tie(at: Vector3, yaw: float) -> void:
 	tied_up.emit(self)
 
 
+## The vault is open and he wants no sack: no more helps, and he lets himself be cuffed from the front.
+func wait_for_cops() -> void:
+	gave_up = true
+	surrendered = true
+	helping = ""
+	help_path.clear()
+	say("ROBBER_SORRY_WAIT")
+
+
 ## E on him tied: `cop` starts untying him, staying close.
 func start_untie(cop: Node3D) -> void:
 	if untying_by == cop:
