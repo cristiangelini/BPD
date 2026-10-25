@@ -40,6 +40,8 @@ const CANTEEN_HIDES: Array = [
 		Vector2(-11.0, -5.2)],
 	[Vector2(EAST_AISLE, BACK_ROW), Vector2(EAST_AISLE, FRONT_ROW), Vector2(-3.5, FRONT_ROW + 0.8)],
 ]
+## How many points of a route lead out of the cell (wander_route).
+const WAY_OUT := 3
 ## Round the canteen, between the tables.
 const WANDER: Array[Vector2] = [Vector2(WEST_AISLE, BACK_ROW), Vector2(WEST_AISLE, FRONT_ROW),
 	Vector2(EAST_AISLE, FRONT_ROW), Vector2(EAST_AISLE, BACK_ROW)]
@@ -91,16 +93,14 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 					hide_at += 1
 				inmate.route = _hide_route(cell, spot)
 			BlackoutInmate.Role.WANDER:
-				var first := _rng.randi_range(0, WANDER.size() - 1)
-				inmate.route = _path(out)
-				inmate.loop_from = out.size()
-				for k in WANDER.size():
-					inmate.route.append(WANDER[(first + k) % WANDER.size()])
+				inmate.route = wander_route(cell, _rng.randi_range(0, WANDER.size() - 1))
+				inmate.loop_from = WAY_OUT
 				inmate.loop = true
 		add_child(inmate)
 		inmate.global_position = level.global_transform * Vector3(start.x, PrisonLevel.FLOOR_TOP, start.y)
 		inmate.escaped.connect(_on_escaped)
 		inmates.append(inmate)
+		BlackoutEscort.to_block(inmate, level)
 
 
 static func _path(points: Array) -> Array[Vector2]:
@@ -108,6 +108,15 @@ static func _path(points: Array) -> Array[Vector2]:
 	for point: Vector2 in points:
 		path.append(point)
 	return path
+
+
+## The way out of `cell` (WAY_OUT points: its middle, the corridor, the block's gate) and then round the canteen from
+## WANDER's point `first`.
+static func wander_route(cell: int, first: int) -> Array[Vector2]:
+	var route := _path([cell_middle(cell), Vector2(CORRIDOR_X, cell_middle(cell).y), BLOCK_OUT])
+	for k in WANDER.size():
+		route.append(WANDER[(first + k) % WANDER.size()])
+	return route
 
 
 ## The middle of a cell of the block (0 to 3 west, 4 to 7 east), in level space.
@@ -159,7 +168,18 @@ func lit(inmate: BlackoutInmate) -> bool:
 
 
 func loose() -> Array[BlackoutInmate]:
-	return inmates.filter(func(inmate: BlackoutInmate) -> bool: return not inmate.is_escaped)
+	return inmates.filter(func(inmate: BlackoutInmate) -> bool:
+		return not inmate.is_escaped and not locked_in(inmate))
+
+
+## Whether `inmate` is in a cell with its door shut (BlackoutEscort).
+func locked_in(inmate: BlackoutInmate) -> bool:
+	var escort := OwnerEscort.of(inmate) as BlackoutEscort
+	return escort != null and escort.locked_in()
+
+
+func count_locked_in() -> int:
+	return inmates.filter(locked_in).size()
 
 
 func _on_escaped(inmate: BlackoutInmate) -> void:

@@ -5,7 +5,8 @@ extends CharacterBody3D
 ## of points in the prison's space (BlackoutPlan): to a hiding spot where they crouch, round and round the canteen,
 ## or out to the yard's gate, where they escape. Lit by a cop's flashlight they freeze where they stand, with a line,
 ## and walk on UNFREEZE seconds after the light leaves them. In the dark only their eyes show, blinking. Cuffed they
-## stay put. Every number here is (propuesta).
+## stay put; E then walks them by the arm (BlackoutEscort) into any cell, where they stay while its door is shut (step
+## 4). Every number here is (propuesta).
 
 signal escaped(inmate: BlackoutInmate)
 
@@ -43,6 +44,10 @@ var active := false
 var frozen := false
 var hidden := false
 var is_escaped := false
+## The cell they were walked into (BlackoutEscort), -1 while loose.
+var jailed_in := -1
+## A guest's copy (step 7): the host walks them.
+var follower := false
 var _next := 0
 var _dark_left := 0.0
 var _cuffed_left := 0.0
@@ -110,6 +115,59 @@ func is_cuffed() -> bool:
 	return _cuffed_left > 0.0
 
 
+func is_jailed() -> bool:
+	return jailed_in != -1
+
+
+func prompt_key(cop: Cop) -> String:
+	var escort := OwnerEscort.of(self)
+	if escort and escort.handles_use():
+		return escort.prompt_key(cop)
+	return ""
+
+
+## E: cuffed, the escort (by the arm to a cell, or let go).
+func use(cop: Cop) -> void:
+	var escort := OwnerEscort.of(self)
+	if escort and escort.handles_use():
+		escort.use(cop)
+
+
+## Walked into `cell` (BlackoutEscort): they stop there, standing up.
+func jail(cell: int) -> void:
+	jailed_in = cell
+	velocity = Vector3.ZERO
+	_stand()
+	say("BLACKOUT_IN_CELL")
+
+
+## The cell's door was left open: out of `cell` and round the canteen, like the ones wandering.
+func walk_out(cell: int) -> void:
+	jailed_in = -1
+	role = Role.WANDER
+	route = BlackoutPlan.wander_route(cell, 0)
+	loop = true
+	loop_from = BlackoutPlan.WAY_OUT
+	_next = 0
+	_stand()
+	say("BLACKOUT_WALK_OUT")
+
+
+func _stand() -> void:
+	hidden = false
+	_model.position.y = 0.0
+	_eyes.position.y = 0.0
+
+
+## What the escort calls (OwnerEscort): a line, and being taken by the arm upsets no one.
+func _say(key: String, seconds := SAY_TIME) -> void:
+	say(key, seconds)
+
+
+func _raise(_points: float) -> void:
+	pass
+
+
 ## Where they're headed next, in level space, or the last point when the route is done.
 func target() -> Vector2:
 	return route[mini(_next, route.size() - 1)]
@@ -145,7 +203,7 @@ func _physics_process(delta: float) -> void:
 	_dark_left = maxf(_dark_left - delta, 0.0)
 	if frozen and _dark_left <= 0.0:
 		frozen = false
-	if not active or is_escaped or is_cuffed() or frozen or hidden:
+	if not active or follower or is_escaped or is_jailed() or is_cuffed() or frozen or hidden:
 		velocity = Vector3.ZERO
 		return
 	if delay > 0.0:
