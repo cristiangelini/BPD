@@ -24,6 +24,8 @@ const MODELS := {
 	"dangerous": preload("res://assets/models/npc_sospechoso.glb"),
 	# The pastry contest's culprit, off his bike (escena-del-crimen.md).
 	"cook": preload("res://assets/models/npc_pastelero.glb"),
+	# The circus's culprit, out of the clown car (escena-circo.md).
+	"clown": preload("res://assets/models/npc_payaso.glb"),
 	# The traffic control's wanted driver (control-transito.md).
 	"driver": preload("res://assets/models/npc_cliente.glb"),
 	# Doña Chela, off her motorized walker (infiltracion.md).
@@ -38,6 +40,8 @@ const MODELS := {
 	"manager": preload("res://assets/models/npc_gerente.glb"),
 	# The prison's last ringleader, off the food cart (carcel-motin.md).
 	"ringleader": preload("res://assets/models/npc_preso.glb"),
+	# An inmate off the transfer bus, with the ball and chain (traslado-presos.md).
+	"transfer_inmate": preload("res://assets/models/npc_preso.glb"),
 	# The market's spiteful vendor, off his vegetable trike (politico-mercado.md).
 	"vendor": preload("res://assets/models/npc_puestero.glb"),
 }
