@@ -26,6 +26,10 @@ const PER_TRIP := 3
 const HIDDEN_MIN := 4
 const HIDDEN_MAX := 6
 const WORKERS := 6
+## Step 4: one in FOOT_ONE_IN of the hidden ones has a shoe sticking out, and one in CAT_ONE_IN of the empty carts has a
+## cat asleep in the towels.
+const FOOT_ONE_IN := 2
+const CAT_ONE_IN := 3
 ## The carts' places (level space x, z): two rows by the west wall, back from the kitchen's front.
 const CART_XS: Array[float] = [7.0, 9.0]
 const CART_ZS: Array[float] = [6.6, 5.4, 4.2, 3.0, 1.8, 0.6]
@@ -105,6 +109,11 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 		cart.trip = order.find(i) / PER_TRIP
 		cart.hidden = hidden.has(i)
 		cart.linen_seed = _rng.randi()
+		cart.tell_seed = _rng.randi()
+		if cart.hidden:
+			cart.foot_out = _rng.randi_range(1, FOOT_ONE_IN) == 1
+		else:
+			cart.has_cat = _rng.randi_range(1, CAT_ONE_IN) == 1
 		var spot := cart_spot(i)
 		cart.position = Vector3(spot.x, PrisonLevel.FLOOR_TOP, spot.y)
 		room.add_child(cart)
