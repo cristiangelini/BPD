@@ -98,6 +98,8 @@ func take_bribe(amount: int, seen := false) -> bool:
 ## investigation changes, "investigation" ("opened", "closed" or "suspended").
 func finish_shift(story: String, solved: bool, report: Dictionary, shift_quota := -1) -> void:
 	_add_bribes(report)
+	# What the street paid on the way (ciudad-viva.md) counts with the case's pay.
+	CityEvents.add_to(report)
 	report.quota = quota() if shift_quota < 0 else shift_quota
 	report.approved = report.total >= report.quota
 	history.append({"shift": shift, "story": story, "solved": solved, "total": report.total,
