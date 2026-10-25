@@ -37,7 +37,7 @@ con las manos**, y abrir una torta que no tenía nada hace llorar a la abuela.
 7. **La hora de visita:** los que pasaron se sientan en las mesas del comedor frente a su preso (8 presos con mameluco
    naranja, el modelo del motín). La visita dura 6 minutos desde que pasa el último. El que todavía tiene algo
    escondido intenta **el pase por debajo de la mesa**: cada 20 a 40 s, si ningún policía mira su mesa (cono de la
-   mirada de 60° y 10 m, como el guardia de la fuga al revés), mete las manos abajo de la mesa 3 s ("Psst, tomá").
+   mirada de 60° y 10 m, como el guardia de la fuga al revés), mete las manos abajo de la mesa 3 s ("Psst, toma").
    Un policía que lo ve en esos 3 s y hace E sobre el visitante lo frena y le saca la cosa. Si termina, el preso la
    esconde en el mameluco y ya llegó.
 8. **Lo que llega:** cada cosa que llega a un preso se ve al final: el preso sale con la lima, la soga o el disfraz de
