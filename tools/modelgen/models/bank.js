@@ -85,9 +85,126 @@ export function buildMoneyBag() {
 	return b.build();
 }
 
-export const models = { robbers_van: buildRobbersVan, bank_drill: buildBankDrill, money_bag: buildMoneyBag };
+// The hostages' party (robo-banco-rehenes.md, step 1): a garland of paper pennants, 4 m long along X, its ends at
+// y = 0 and sagging 0.35 m in the middle, hung between the bank's walls.
+export function buildBankGarland() {
+	const cord = mat('garland_cord', 0xe8e0c8);
+	const colors = [0xe8433a, 0xf2c230, 0x3a8ee8, 0x4ab04a, 0xe86ab8].map((c, i) => mat(`pennant_${i}`, c, { side: THREE.DoubleSide }));
+	const b = new Builder('bank_garland');
+	const L = 4.0, SAG = 0.35, N = 12;
+	const y = (x) => -SAG * (1 - (2 * x / L) ** 2);
+	for (let i = 0; i < 8; i++) {
+		const x0 = -L / 2 + (i / 8) * L, x1 = -L / 2 + ((i + 1) / 8) * L;
+		const a = V(x0, y(x0), 0), c = V(x1, y(x1), 0);
+		const mid = a.clone().add(c).multiplyScalar(0.5);
+		b.add('cord', cord, new THREE.CylinderGeometry(0.008, 0.008, a.distanceTo(c), 4), { pos: mid, lookAt: c.clone().sub(a) });
+	}
+	for (let i = 0; i < N; i++) {
+		const x = -L / 2 + ((i + 0.5) / N) * L;
+		const flag = new THREE.BufferGeometry();
+		flag.setAttribute('position', new THREE.Float32BufferAttribute([-0.12, 0, 0, 0.12, 0, 0, 0, -0.26, 0], 3));
+		flag.computeVertexNormals();
+		b.add('pennants', colors[i % colors.length], flag, { pos: V(x, y(x), 0) });
+	}
+	return b.build();
+}
+
+// The robbers' boombox on the bench (step 1): 0.55 x 0.3 x 0.16 m, two big speakers, a tape door and a handle,
+// bottom at y = 0, speakers facing +Z.
+export function buildBankBoombox() {
+	const body = mat('boombox', 0x2b2d33), grille = mat('boombox_grille', 0x55585f), chrome = mat('drill_steel', 0x8a9098);
+	const glow = mat('boombox_glow', 0x7ae0ff, { emissive: 0x206070 });
+	const b = new Builder('bank_boombox');
+	box(b, 'body', body, 0.55, 0.3, 0.16, 0, 0.15, 0);
+	for (const x of [-0.17, 0.17]) {
+		b.add('speakers', grille, new THREE.CylinderGeometry(0.1, 0.1, 0.02, 12), { pos: V(x, 0.14, 0.08), rot: [Math.PI / 2, 0, 0] });
+		b.add('speakers', chrome, new THREE.CylinderGeometry(0.03, 0.03, 0.025, 8), { pos: V(x, 0.14, 0.085), rot: [Math.PI / 2, 0, 0] });
+	}
+	box(b, 'body', glow, 0.14, 0.06, 0.01, 0, 0.2, 0.081);
+	box(b, 'body', chrome, 0.12, 0.08, 0.01, 0, 0.1, 0.081);
+	for (const x of [-0.2, 0.2]) box(b, 'handle', chrome, 0.02, 0.1, 0.02, x, 0.35, 0);
+	box(b, 'handle', chrome, 0.42, 0.02, 0.02, 0, 0.4, 0);
+	box(b, 'antenna', chrome, 0.01, 0.3, 0.01, 0.24, 0.45, -0.05);
+	return b.build();
+}
+
+// One croissant (step 1, taken in step 4): a crescent of five puffy rolls, 0.18 m from tip to tip, bottom at y = 0.
+export function buildBankCroissant() {
+	const crust = mat('croissant', 0xd99a3c), dark = mat('croissant_dark', 0xb0702a);
+	const b = new Builder('bank_croissant');
+	for (let i = 0; i < 5; i++) {
+		const t = (i - 2) / 2, a = t * 1.1;
+		const r = 0.035 * (1 - 0.45 * Math.abs(t));
+		b.add('croissant', i % 2 ? dark : crust, ellipsoid(r * 1.2, r, r, 8, 5), { pos: V(Math.sin(a) * 0.08, r, -Math.cos(a) * 0.05 + 0.05), rot: [0, a, 0] });
+	}
+	return b.build();
+}
+
+// The croissants' tray on the counter (step 1): a round silver tray 0.5 m wide with seven croissants piled on it.
+// Bottom at y = 0. Step 4 takes them one by one, so the game hides them (parts croissant_0..6).
+export function buildBankCroissantTray() {
+	const silver = mat('tray_silver', 0xc8ccd2), crust = mat('croissant', 0xd99a3c), dark = mat('croissant_dark', 0xb0702a);
+	const b = new Builder('bank_croissant_tray');
+	b.add('tray', silver, new THREE.CylinderGeometry(0.25, 0.23, 0.02, 16), { pos: V(0, 0.01, 0) });
+	b.add('tray', silver, new THREE.TorusGeometry(0.245, 0.012, 4, 20), { pos: V(0, 0.025, 0), rot: [Math.PI / 2, 0, 0] });
+	const spots = [[0, 0, 0], [0.13, 0, 0.6], [-0.13, 0, 2.2], [0.06, 0.12, 4.0], [-0.07, -0.12, 1.1], [0.07, -0.12, 3.1], [0, 0, 5.0]];
+	spots.forEach(([x, z, rot], n) => {
+		const lift = n === 6 ? 0.05 : 0.02;
+		for (let i = 0; i < 5; i++) {
+			const t = (i - 2) / 2, a = t * 1.1, r = 0.035 * (1 - 0.45 * Math.abs(t));
+			const p = V(Math.sin(a) * 0.08, r + lift, -Math.cos(a) * 0.05 + 0.05).applyAxisAngle(V(0, 1, 0), rot).add(V(x, 0, z));
+			b.add(`croissant_${n}`, i % 2 ? dark : crust, ellipsoid(r * 1.2, r, r, 8, 5), { pos: p, rot: [0, a + rot, 0] });
+		}
+	});
+	return b.build();
+}
+
+// A fan's cardboard mask of the gang (step 3): a flat card face of one of the four animals with eye holes, on a white
+// elastic, worn over the face. The card's middle at the origin, facing +Z; the elastic goes back around the head.
+function buildCardMask(animal) {
+	const colors = { oso: 0x8a5a32, conejo: 0xeeeef2, chancho: 0xf2a8b8, pato: 0xf6d040 };
+	const card = mat(`card_${animal}`, colors[animal], { side: THREE.DoubleSide }), black = mat('card_ink', 0x1a1a1e);
+	const pink = mat('card_pink', 0xe86a90), orange = mat('card_beak', 0xf08a20), elastic = mat('card_elastic', 0xf4f2ea);
+	const b = new Builder(`bank_mask_${animal}`);
+	b.add('card', card, new THREE.CylinderGeometry(0.17, 0.17, 0.008, 14), { rot: [Math.PI / 2, 0, 0] });
+	for (const s of [-1, 1]) b.add('card', black, new THREE.CylinderGeometry(0.03, 0.03, 0.01, 8), { pos: V(s * 0.065, 0.03, 0.002), rot: [Math.PI / 2, 0, 0] });
+	b.add('card', black, new THREE.BoxGeometry(0.1, 0.012, 0.01), { pos: V(0, -0.08, 0.003) });
+	if (animal === 'oso') {
+		for (const s of [-1, 1]) b.add('card', card, new THREE.CylinderGeometry(0.06, 0.06, 0.008, 10), { pos: V(s * 0.13, 0.14, 0), rot: [Math.PI / 2, 0, 0] });
+		b.add('card', black, ellipsoid(0.035, 0.025, 0.01, 8, 4), { pos: V(0, -0.025, 0.005) });
+	} else if (animal === 'conejo') {
+		for (const s of [-1, 1]) {
+			b.add('card', card, ellipsoid(0.045, 0.16, 0.004, 8, 4), { pos: V(s * 0.07, 0.29, 0), rot: [0, 0, s * -0.15] });
+			b.add('card', pink, ellipsoid(0.025, 0.12, 0.004, 8, 4), { pos: V(s * 0.07, 0.29, 0.004), rot: [0, 0, s * -0.15] });
+		}
+		b.add('card', pink, ellipsoid(0.02, 0.015, 0.01, 6, 4), { pos: V(0, -0.025, 0.005) });
+	} else if (animal === 'chancho') {
+		for (const s of [-1, 1]) b.add('card', card, new THREE.ConeGeometry(0.05, 0.09, 3), { pos: V(s * 0.12, 0.17, 0), rot: [0, 0, s * -0.4] });
+		b.add('card', pink, new THREE.CylinderGeometry(0.05, 0.05, 0.012, 10), { pos: V(0, -0.03, 0.005), rot: [Math.PI / 2, 0, 0] });
+		for (const s of [-1, 1]) b.add('card', black, new THREE.CylinderGeometry(0.01, 0.01, 0.014, 6), { pos: V(s * 0.018, -0.03, 0.008), rot: [Math.PI / 2, 0, 0] });
+	} else {
+		b.add('card', orange, ellipsoid(0.08, 0.03, 0.01, 8, 4), { pos: V(0, -0.04, 0.005) });
+	}
+	b.add('elastic', elastic, new THREE.TorusGeometry(0.2, 0.004, 3, 16, Math.PI), { pos: V(0, 0, -0.17), rot: [Math.PI / 2, 0, Math.PI] });
+	return b.build();
+}
+
+export const models = { robbers_van: buildRobbersVan, bank_drill: buildBankDrill, money_bag: buildMoneyBag,
+	bank_garland: buildBankGarland, bank_boombox: buildBankBoombox, bank_croissant: buildBankCroissant,
+	bank_croissant_tray: buildBankCroissantTray,
+	...Object.fromEntries(['oso', 'conejo', 'chancho', 'pato'].map((a) => [`bank_mask_${a}`, () => buildCardMask(a)])) };
 
 export const views = {
+	bank_masks: {
+		items: ['oso', 'conejo', 'chancho', 'pato'].flatMap((a, i) => [{ name: 'npc_vecina', pos: [(i - 1.5) * 1.0, 0, 0] },
+			{ name: `bank_mask_${a}`, pos: [(i - 1.5) * 1.0, 1.31, 0.21] }]),
+		cam: { pos: [0, 1.4, 4.5], target: [0, 1.0, 0], fov: 40 },
+	},
+	bank_party: {
+		items: [{ name: 'bank_garland', pos: [0, 1.6, -0.6] }, { name: 'bank_boombox', pos: [-0.8, 0, 0.2], rotY: 0.3 },
+			{ name: 'bank_croissant_tray', pos: [0.5, 0, 0.3] }, { name: 'bank_croissant', pos: [0.05, 0, 0.8], rotY: 0.6 }],
+		cam: { pos: [0, 1.2, 3.0], target: [0, 0.6, 0], fov: 45 },
+	},
 	money_bag: {
 		items: [{ name: 'money_bag', pos: [0, 0, 0], rotY: 0.3 }, { name: 'npc_ladron_oso', pos: [0.7, 0, -0.2], rotY: -0.3, scale: 1.15 }],
 		cam: { pos: [0.4, 1.2, 3.0], target: [0.35, 0.6, 0], fov: 38 },
@@ -98,6 +215,10 @@ export const views = {
 	},
 	robbers: {
 		items: ['conejo', 'chancho', 'pato', 'oso'].map((n, i) => ({ name: `npc_ladron_${n}`, pos: [(i - 1.5) * 1.2, 0, 0], rotY: 0.3, scale: n === 'oso' ? 1.15 : 1 })),
+		cam: { pos: [0, 1.4, 6.0], target: [0, 0.9, 0], fov: 36 },
+	},
+	grandpa_robbers: {
+		items: ['conejo', 'chancho', 'pato', 'oso'].map((n, i) => ({ name: `npc_abuelo_${n}`, pos: [(i - 1.5) * 1.2, 0, 0], rotY: 0.3, scale: n === 'oso' ? 1.15 : 1 })),
 		cam: { pos: [0, 1.4, 6.0], target: [0, 0.9, 0], fov: 36 },
 	},
 	robbers_van: {

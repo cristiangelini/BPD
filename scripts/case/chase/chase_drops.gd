@@ -4,9 +4,10 @@ extends Node
 ## What each suspect leaves on the street behind him (persecucion.md, "Los sospechosos"): the ice cream man drips ice
 ## cream every DRIP_EVERY seconds, and on a puddle the patrol car's tires lose their grip; the moving truck drops a piece
 ## of furniture at every corner he turns, which is in the way (a loose body: knocking it over isn't a fine, but it
-## slows you down); the school bus is full of kids shouting out of the windows. The clown car honks all the way and
-## drops an inflatable clown (ChaseDummy) every DUMMY_EVERY seconds. The fruit truck control's runaway pickup
-## (control-frutas.md) drops MELONS_PER_CORNER watermelons at every corner it turns, rolling down the street; the
+## slows you down); the school bus is full of kids shouting out of the windows. The market's vegetable trike loses a
+## pumpkin, a cabbage or a watermelon at every corner it turns, the same way (politico-mercado.md). The clown car honks
+## all the way and drops an inflatable clown (ChaseDummy) every DUMMY_EVERY seconds. The fruit truck control's runaway
+## pickup (control-frutas.md) drops MELONS_PER_CORNER watermelons at every corner it turns, rolling down the street; the
 ## patrol car running into one splits it. Every number here is (propuesta).
 
 const DRIP_EVERY := 3.0
@@ -23,6 +24,12 @@ const FURNITURE := [
 	{"model": preload("res://assets/models/falling_box.glb"), "size": Vector3(0.6, 0.5, 0.6), "mass": 12.0},
 ]
 const MAX_FURNITURE := 12
+## The vegetable trike's veggies, light and round: they roll, and a car going over them only bumps.
+const VEGGIES := [
+	{"model": preload("res://assets/models/market_veggie_pumpkin.glb"), "size": Vector3(0.68, 0.55, 0.65), "mass": 6.0},
+	{"model": preload("res://assets/models/market_veggie_cabbage.glb"), "size": Vector3(0.48, 0.44, 0.46), "mass": 2.0},
+	{"model": preload("res://assets/models/market_veggie_melon.glb"), "size": Vector3(0.55, 0.5, 0.78), "mass": 8.0},
+]
 ## Where it falls off: this far behind his back.
 const BEHIND := 3.5
 ## The kids shout a line every this many seconds.
@@ -141,14 +148,17 @@ func _on_corner(turned: bool) -> void:
 	elif case.suspect_id == SuspectCar.FRUIT_TRUCK:
 		for i in MELONS_PER_CORNER:
 			drop_melon()
+	elif case.suspect_id == SuspectCar.VEGGIE_TRIKE:
+		drop_furniture(true)
 
 
-## A piece of furniture falls off the back of the moving truck.
-func drop_furniture() -> RigidBody3D:
+## A piece of furniture falls off the back of the moving truck, or a veggie off the trike.
+func drop_furniture(veggie := false) -> RigidBody3D:
 	if furniture.size() >= MAX_FURNITURE:
 		furniture.pop_front().queue_free()
 	var body := ChaseFurniture.new()
-	body.piece = _rng.randi() % FURNITURE.size()
+	body.veggie = veggie
+	body.piece = _rng.randi() % (VEGGIES if veggie else FURNITURE).size()
 	_dropped += 1
 	body.name = "Furniture%d" % _dropped
 	case.get_parent().add_child(body)
