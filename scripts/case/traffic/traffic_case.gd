@@ -123,10 +123,10 @@ func give_tip() -> void:
 			# The clown convoy has its own story (control-payasos.md, "La historia").
 			var story := "BRIEF_CONVOY_" if plan.convoy else "BRIEF_FRUIT_" if plan.fruit \
 				else "BRIEF_CROWD_" if plan.crowd else "BRIEF_GHOST_" if plan.ghost \
-				else "BRIEF_WEDDING_" if plan.wedding else "BRIEF_TRAFFIC_"
+				else "BRIEF_WEDDING_CHECK_" if plan.wedding else "BRIEF_TRAFFIC_"
 			var first := story + "A"
 			if plan.wedding:
-				first = tr("BRIEF_WEDDING_A") % WeddingCar.names(plan.couple)
+				first = tr("BRIEF_WEDDING_CHECK_A") % WeddingCar.names(plan.couple)
 			briefing.start(PackedStringArray([first, tr("BRIEF_TRAFFIC_B") % plan.clue_text(0), story + "C"]))
 			break
 	add_child(clues)
