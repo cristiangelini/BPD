@@ -28,6 +28,7 @@ script = ExtResource("1")
 
 [node name="Panel" type="AnimatableBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, 0)
+sync_to_physics = false
 
 [node name="Shape" type="CollisionShape3D" parent="Panel"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)

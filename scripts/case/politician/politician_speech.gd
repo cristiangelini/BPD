@@ -57,6 +57,11 @@ func start() -> void:
 	started.emit()
 
 
+## Holds the next line for `seconds`, so what he just said (back at the lectern) is seen.
+func hold_lines(seconds: float) -> void:
+	_line_left = maxf(_line_left, seconds)
+
+
 func _physics_process(delta: float) -> void:
 	if over or follower:
 		_show()
