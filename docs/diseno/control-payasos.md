@@ -64,3 +64,8 @@ payasos, puertas, licencias limpias y el final ([online.md](online.md)).
   QueueCar es el autito de payasos de 2 m, con un payaso al volante, la patente "PAYASO 1" y un baúl chico. Se prueba
   con `godot --path . -- --place=traffic --traffic=clown_convoy`. Las pistas siguen siendo las de Hora pico hasta el
   paso 3.
+- **Paso 2 (24/10):** el autito tiene puerta del lado del conductor (TrunkLid con `side`), se abre tirando hacia
+  afuera. Salen de 3 a 6 payasos (por la patente, igual en todas las PC), el conductor primero, y se alejan de 2,5 a
+  5 m haciendo malabares (ConvoyClown, 18 kg, uno solo lo carga). Llevado o empujado a menos de 1 m de la puerta, el
+  payaso vuelve a entrar. Con payasos afuera el auto no se mueve, no pasa con la barrera y no se cuela; cada payaso
+  suelto suma 0,4 por segundo a la paciencia.
