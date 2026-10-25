@@ -24,7 +24,10 @@ func before_each() -> void:
 ## The cop on a free spot of the platform, the song on and the baton `up` for long enough to count.
 func _on_platform_singing(up: bool) -> void:
 	cop.global_position = chapel.global_transform * chapel.free_spots[0]
-	await wait_physics_frames(1)
+	await wait_physics_frames(2)
+	# The jump onto the platform reads as running to whoever saw it (a seed's choristers may): start from nothing.
+	for member in chapel.members:
+		member.set_suspicion(0.0)
 	chapel.singing.start_song()
 	chapel.singing._set_baton(up)
 	chapel.singing.since_baton = ChoirSinging.GRACE
