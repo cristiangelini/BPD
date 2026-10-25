@@ -65,9 +65,11 @@ const RALLY_EVERY := 4
 const RALLIES := ["plaza", "market"]
 ## Of the rest, one in this many is a prison case (propuesta), one of these by the seed: the riot in the canteen
 ## (carcel-motin.md), the prisoner transfer (traslado-presos.md), the blackout (carcel-corte-de-luz.md), the
-## visiting day (carcel-visitas.md) or the laundry (carcel-lavanderia.md).
+## visiting day (carcel-visitas.md), the laundry (carcel-lavanderia.md), the tunnel (carcel-tunel.md), the talent show
+## (carcel-talentos.md) or the VIP inmate (carcel-vip.md).
 const PRISON_EVERY := 4
-const PRISONS := ["prison", "transfer", "blackout", "visits", "laundry", "prison_tunnel", "prison_talent"]
+const PRISONS := ["prison", "transfer", "blackout", "visits", "laundry", "prison_tunnel", "prison_talent",
+	"prison_vip"]
 
 ## The seed the next level takes (0 = none drawn; the level draws its own).
 static var pending_seed := 0

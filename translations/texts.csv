@@ -2345,3 +2345,16 @@ VIP_MANAGER_ARRIVE,"Buenas, soy el manager de Rulo. Traigo los papeles: hoy se t
 VIP_MANAGER_TALK_1,"Rulo, querido, mañana tienes tres programas de tele.","Rulo, darling, tomorrow you're on three TV shows.","Rulo, querido, amanhã você tem três programas de TV."
 VIP_MANAGER_TALK_2,"Gracias por cuidarlo, oficiales. Les mando entradas.","Thanks for looking after him, officers. I'll send you tickets.","Obrigado por cuidarem dele, policiais. Mando ingressos."
 VIP_MANAGER_BYE,"Vamos, Rulo. La limusina espera.","Come on, Rulo. The limo is waiting.","Vamos, Rulo. A limusine espera."
+BRIEF_VIP_A,"Novatos, hoy cuidan a Rulo Brillantina. Sí, ese. Pasa un día preso por estacionar su limusina en la puerta de los bomberos.","Rookies, today you're looking after Rulo Brillantina. Yes, that one. He's spending a day locked up for parking his limo in front of the fire station.","Novatos, hoje vocês cuidam do Rulo Brillantina. Sim, esse. Ele passa um dia preso por estacionar a limusine na porta dos bombeiros."
+BRIEF_VIP_B,"Denle lo que pida, que si se enoja sale en la tele y viene su abogado. Las cosas se dejan en la repisa de su reja.","Give him whatever he asks for: if he gets upset it's on TV and his lawyer shows up. Things go on the shelf on his bars.","Deem o que ele pedir: se ele ficar bravo sai na TV e vem o advogado. As coisas ficam na prateleira da grade dele."
+BRIEF_VIP_C,"Pero revisen todo con E antes de dárselo: sus fans son capaces de cualquier cosa. Si llega a su limusina, perdimos.","But check everything with E before you give it to him: his fans are capable of anything. If he reaches his limo, we've lost.","Mas revisem tudo com E antes de entregar: os fãs dele são capazes de tudo. Se ele chegar à limusine, perdemos."
+HINT_GO_VIP,A la cárcel en el patrullero. Rulo está en el pabellón.,To the prison in the patrol car. Rulo is in the cell block.,Para a cadeia na viatura. O Rulo está no pavilhão.
+OBJ_VIP_REQUESTS,Cumplirle el día a Rulo: %d de %d pedidos,Get Rulo through his day: %d of %d requests,Cumprir o dia do Rulo: %d de %d pedidos
+OBJ_VIP_RELEASED,Que su manager se lo lleve,Have his manager take him away,Que o empresário dele o leve
+OBJ_VIP_MOOD,Humor de Rulo: %d de 100,Rulo's mood: %d of 100,Humor do Rulo: %d de 100
+OBJ_VIP_WANTS,Pide: %s (%d s),He wants: %s (%d s),Ele pede: %s (%d s)
+OBJ_VIP_ON_TIME,Pedidos cumplidos a tiempo: %d,Requests done in time: %d,Pedidos cumpridos a tempo: %d
+OBJ_VIP_SEIZED,Piezas de fuga decomisadas: %d de %d,Escape pieces confiscated: %d of %d,Peças de fuga confiscadas: %d de %d
+OBJ_VIP_LAWYERS,Visitas del abogado: %d,Lawyer's visits: %d,Visitas do advogado: %d
+OBJ_VIP_RUNNING,¡Rulo corre hacia su limusina!,Rulo is running for his limo!,O Rulo está correndo para a limusine!
+CASE_FAILED_VIP_ESCAPED,Rulo llegó a su limusina y se fue de gira. Caso perdido.,Rulo reached his limo and went on tour. Case lost.,O Rulo chegou à limusine e saiu em turnê. Caso perdido.

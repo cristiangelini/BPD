@@ -128,6 +128,7 @@ var talent: TalentPlan
 var talent_case: TalentCase
 ## The VIP inmate's cell, his fans and his limo at the gate (carcel-vip.md, step 2).
 var vip: VipPlan
+var vip_case: VipCase
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -325,6 +326,12 @@ func _start_vip() -> void:
 	vip.name = "VipPlan"
 	add_child(vip)
 	vip.setup(self, case_seed)
+	vip_case = VipCase.new()
+	vip_case.name = "VipCase"
+	vip_case.prison = self
+	vip_case.shift_screen = $ShiftScreen
+	add_child(vip_case)
+	vip_case.start(city.get("comisario"))
 	city.transform = CityLayout.anchor("prison")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
