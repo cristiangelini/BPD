@@ -1,4 +1,4 @@
-# BPD · Control de tránsito: Alcoholemia en la boda (propuesta, 25/10)
+# BPD · Control de tránsito: Alcoholemia en la boda (aprobada, 25/10)
 
 Sexta variante del control de tránsito ([control-transito.md](control-transito.md), variante 4;
 [casos.md](casos.md), punto 8.4). Reusa el control de "Hora pico" y lo de las otras variantes
@@ -46,7 +46,7 @@ alcoholemia en la salida: así revisamos a todos sin que sospeche. Y de paso, qu
 - Los sobres de regalo como prueba (+100 en el baúl).
 - La persecución con latas y moños (ChaseDrops).
 
-## Preguntas para Cristian
+## Preguntas para Cristian (respondidas: sí a las tres, 25/10)
 1. **¿El Colado sopla 0,0 pero también hay 2 o 3 conductores designados que soplan 0,0?**
    Recomiendo que sí: el alcoholímetro achica la lista, no da la respuesta.
 2. **¿La pista buena es preguntar por los novios: El Colado se equivoca de nombres?**
