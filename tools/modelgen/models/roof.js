@@ -74,9 +74,29 @@ export function buildRoofHatch() {
 	return b.build();
 }
 
+// The sheets knotted into a rope, coiled: a white coil 0.5 m wide with knots, origin in its middle.
+export function buildSheetRope() {
+	const b = new Builder('sheet_rope');
+	const sheet = mat('sheet_white', 0xeeeee6), stripe = mat('sheet_stripe', 0x8aa0c8);
+	for (let i = 0; i < 3; i++) b.add('coil', sheet, new THREE.TorusGeometry(0.2, 0.05, 6, 14), { pos: V(0, -0.06 + i * 0.06, 0), rot: [Math.PI / 2, 0, i * 0.7] });
+	for (const a of [0, 2.1, 4.2]) b.add('knots', stripe, new THREE.SphereGeometry(0.07, 6, 5), { pos: V(Math.cos(a) * 0.2, 0.06, Math.sin(a) * 0.2) });
+	return b.build();
+}
+
+// The TV antenna on the roof: a thin pole 1.6 m tall on a base, with cross bars at the top. Origin on the roof.
+export function buildRoofAntenna() {
+	const b = new Builder('roof_antenna');
+	const metal = mat('antenna_metal', 0x9aa0a8), dark = mat('antenna_dark', 0x3a3e44);
+	b.add('base', dark, new THREE.BoxGeometry(0.4, 0.1, 0.4), { pos: V(0, 0.05, 0) });
+	b.add('pole', metal, new THREE.CylinderGeometry(0.03, 0.03, 1.6, 8), { pos: V(0, 0.85, 0) });
+	for (let i = 0; i < 4; i++) b.add('bars', metal, new THREE.BoxGeometry(0.9 - i * 0.15, 0.02, 0.02), { pos: V(0, 1.2 + i * 0.12, 0) });
+	return b.build();
+}
+
 export const models = {
 	cell_skylight: buildCellSkylight, skylight_pane: buildSkylightPane, bed_sheet: buildBedSheet,
 	cell_mattress: buildCellMattress, storage_box: buildStorageBox, roof_ladder: buildRoofLadder, roof_hatch: buildRoofHatch,
+	sheet_rope: buildSheetRope, roof_antenna: buildRoofAntenna,
 };
 
 export const views = {
@@ -99,5 +119,12 @@ export const views = {
 			{ name: 'roof_hatch', pos: [0.6, 0, 0.8] },
 		],
 		cam: { pos: [0, 2.0, 4.6], target: [0, 1.4, 0], fov: 50 },
+	},
+	rope: {
+		items: [
+			{ name: 'roof_antenna', pos: [-0.4, 0, 0] },
+			{ name: 'sheet_rope', pos: [0.5, 0.1, 0.3] },
+		],
+		cam: { pos: [0, 1.2, 2.6], target: [0, 0.7, 0], fov: 45 },
 	},
 };

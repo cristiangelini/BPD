@@ -100,3 +100,19 @@ acciones (`ActionSync`), igual en todas las PCs.
 - En el techo, correr hace pasos: cada segundo corriendo, +10 de sospecha y una de 3 frases. Caminar no se oye.
 - El techo tiene un murete de 1,1 m alrededor: se baja con la cuerda (paso 3), no saltando.
 - Modelos `storage_box`, `roof_ladder` y `roof_hatch`. 11 textos nuevos. Pruebas en `test_roof_attic.gd`.
+
+## Cómo quedó el paso 3
+- Con una sábana (o una cuerda) en la mano, E sobre otra las ata con un nudo flojo (`SheetRope`, la hace el anfitrión).
+  Con las manos libres, E sobre la cuerda aprieta su primer nudo flojo: 4 veces, una cada medio segundo. (En vez de
+  "mantener E 2 s" del diseño, que las acciones no tienen.)
+- La antena (`RoofAntenna`) está sobre el borde de atrás del techo, en uno de 3 lugares según la semilla. Con la cuerda
+  en la mano, E la ata ahí y cuelga por la pared hacia el callejón (cada sábana son 2 m).
+- E sobre la antena baja por la cuerda: 3 s y se llega al callejón de atrás. Con menos de 4 sábanas, el último tramo
+  es un salto y quedas mareado 3 s.
+- Si dos bajan a la vez y hay un nudo flojo, se desata: los dos caen al callejón, mareados, y la cuerda queda con las
+  sábanas de arriba del nudo.
+- En una captura: las claraboyas tienen candado nuevo (8 empujones), la cuerda sale de la antena y las 4 sábanas
+  vuelven a las cucheta.
+- Online: la claraboya y la cuerda de la antena van por `NpcSync`, las sábanas y cuerdas por `PropSync`, y los nudos,
+  atar y bajar, por las acciones.
+- Modelos `sheet_rope` y `roof_antenna`. 13 textos nuevos. Pruebas en `test_roof_rope.gd` y `test_roof_online.gd`.
