@@ -126,6 +126,10 @@ var crowd := 0
 var ghost_mode := false
 ## ...but this one has nobody at the wheel: the Titiritero drives it by remote control.
 var ghost := false
+## Its driver drives the ghost car by remote control, from a few cars behind it.
+var puppeteer := false
+## The ghost car's pranks move it this far from its place in the queue (GhostPilot), forward is -.
+var lurch := 0.0
 ## Times a cop tried E at its empty window.
 var knocked := 0
 var _haunt_time := 0.0
@@ -183,6 +187,9 @@ func _ready() -> void:
 			add_child(wheel)
 		if ghost:
 			GhostCar.rig(self)
+			var pilot := GhostPilot.new()
+			pilot.name = "Pilot"
+			add_child(pilot)
 		elif ghost_mode:
 			GhostCar.dress_driver(self, plate)
 	_build_trunk()
@@ -617,6 +624,7 @@ func use(_cop: Cop) -> void:
 	if ghost and waiting():
 		say(tr(GhostCar.nobody_line(knocked)))
 		knocked += 1
+		(get_node("Pilot") as GhostPilot).scare()
 		return
 	if not waiting() or driver.is_empty():
 		return
@@ -638,6 +646,8 @@ func saying() -> String:
 func _on_trunk_opened() -> void:
 	trunk_checked = true
 	_trunk.visible = true
+	if ghost:
+		(get_node("Pilot") as GhostPilot).prank("bolt")
 	match driver.get("trunk", "bags"):
 		"contraband":
 			say(tr("TRUNK_CONTRABAND"))
@@ -753,7 +763,8 @@ func _physics_process(delta: float) -> void:
 
 func _place() -> void:
 	if checkpoint:
-		global_transform = checkpoint.global_transform * Transform3D(Basis(Vector3.UP, PI), at + Vector3.UP * 0.05)
+		global_transform = checkpoint.global_transform * Transform3D(Basis(Vector3.UP, PI),
+			at + Vector3(0, 0.05, lurch))
 
 
 func _knock_cones() -> void:

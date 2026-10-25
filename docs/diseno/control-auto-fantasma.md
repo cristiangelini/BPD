@@ -18,7 +18,7 @@ remoto desde atrás, en otro auto. Si ven un auto sin nadie al volante, no lo pe
    en las piernas. La radio da una pista de él cada 60 s (color de su auto, sombrero o anteojos, la patente), como en
    Hora pico.
 3. **Las travesuras:** cada 15 a 25 s el auto fantasma hace algo solo: toca bocina, prende las luces, avanza y le pega a
-   la barrera o retrocede y empuja al policía que está atrás. Abrirle la puerta o el baúl lo hace escaparse 2 m.
+   la barrera o retrocede y empuja al policía que está atrás. Abrirle el baúl lo hace escaparse 1,5 m.
 4. **El tic:** cada vez que el auto fantasma hace una travesura, el Titiritero mueve los pulgares y asoma la antena del
    control por la ventana durante 2 s. Ahí está la pista buena: mirar la fila cuando el fantasma hace algo.
 5. E al volante vacío del fantasma no da papeles: "No hay nadie... ¿hola?". Si un policía lo empuja o le pega, el
