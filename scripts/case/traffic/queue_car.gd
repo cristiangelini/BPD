@@ -126,6 +126,8 @@ var crowd := 0
 var ghost_mode := false
 ## ...but this one has nobody at the wheel: the Titiritero drives it by remote control.
 var ghost := false
+## Its window driver's shirt (one of GhostCar.SHIRTS): the plan's, or else from its plate.
+var shirt := -1
 ## Its driver drives the ghost car by remote control, from a few cars behind it.
 var puppeteer := false
 ## The ghost car's pranks move it this far from its place in the queue (GhostPilot), forward is -.
@@ -191,7 +193,7 @@ func _ready() -> void:
 			pilot.name = "Pilot"
 			add_child(pilot)
 		elif ghost_mode:
-			GhostCar.dress_driver(self, plate)
+			GhostCar.dress_driver(self, plate, shirt)
 	_build_trunk()
 	if clown or crowd > 0:
 		_build_door()
@@ -590,7 +592,8 @@ func _build_trunk() -> void:
 ## Online (NpcSync): what a guest's copy needs before it's added (which car it is, not whether it's the wanted one).
 func net_setup() -> Dictionary:
 	return {"plate": plate, "driver": driver, "clown": clown, "clown_traits": clown_traits, "fruit": fruit,
-		"crate": crate, "hat": hat, "melon_kinds": melon_kinds, "crowd": crowd, "ghost_mode": ghost_mode, "ghost": ghost}
+		"crate": crate, "hat": hat, "melon_kinds": melon_kinds, "crowd": crowd, "ghost_mode": ghost_mode, "ghost": ghost,
+		"shirt": shirt}
 
 
 ## Online: where it is in the queue and whether its trunk is open.

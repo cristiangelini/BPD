@@ -16,8 +16,9 @@ const REMOTE_SCALE := 1.5
 const DRIVER_AT := Vector3(1.0, 0.95, 0.35)
 ## On the roof, toward the back.
 const ANTENNA_AT := Vector3(-0.5, 1.59, -0.8)
-const SHIRTS: Array[Color] = [Color("c84a3a"), Color("3a6ac8"), Color("e8e0d0"), Color("4a9a5a"), Color("e0b040"),
-	Color("6a4a8a")]
+## Red, light blue, white, green, yellow and violet, as WantedPlan.SHIRTS names them.
+const SHIRTS: Array[Color] = [Color("c84a3a"), Color("7aa6d8"), Color("f2f0ea"), Color("4a9a5a"), Color("e0b040"),
+	Color("7a4a9a")]
 ## Without a plan, the ghost car is this one in the queue (0 the first), from the seed...
 const AT := Vector2i(2, 5)
 ## ...and its pilot comes this many cars behind it.
@@ -64,8 +65,9 @@ static func remote_showing(car: Node3D) -> bool:
 	return remote != null and remote.visible
 
 
-## A driver leaning on its open window, in their own skin, hair and shirt (from the plate, so every PC agrees).
-static func dress_driver(car: Node3D, plate: String) -> void:
+## A driver leaning on its open window, in their own skin and hair (from the plate, so every PC agrees) and in `shirt`
+## (one of SHIRTS, the plan's; -1 picks one from the plate too).
+static func dress_driver(car: Node3D, plate: String, shirt := -1) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(["window driver", plate])
 	var driver: Node3D = DRIVER.instantiate()
@@ -75,7 +77,8 @@ static func dress_driver(car: Node3D, plate: String) -> void:
 	car.add_child(driver)
 	CrowdedCar._tint(driver, "skin", CrowdedCar.SKINS[rng.randi() % CrowdedCar.SKINS.size()])
 	CrowdedCar._tint(driver, "hair", CrowdedCar.HAIRS[rng.randi() % CrowdedCar.HAIRS.size()])
-	CrowdedCar._tint(driver, "shirt", SHIRTS[rng.randi() % SHIRTS.size()])
+	var from_plate := rng.randi() % SHIRTS.size()
+	CrowdedCar._tint(driver, "shirt", SHIRTS[shirt if shirt >= 0 else from_plate])
 
 
 ## The ghost car's antenna on its roof.

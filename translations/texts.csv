@@ -1676,6 +1676,9 @@ GHOST_NOBODY_2,"Hola, auto. ¿Me das los papeles?","Hi, car. Can I see your pape
 GHOST_HONK_0,¡Piiiiip!,Beeeeep!,Biiiiip!
 GHOST_HONK_1,¡Pi-pi-piii! (y nadie al volante),Beep-beep-beeep! (and nobody at the wheel),Bi-bi-biii! (e ninguém no volante)
 GHOST_HONK_2,¡Mooooc! ¡Mooooc!,Honk! Honk!,Fom! Fom!
+BRIEF_GHOST_A,"¡Novatos! El Titiritero, un ladrón de cajeros, ya no se sube a sus autos: los maneja con un control remoto desde atrás, en otro auto.","Rookies! The Puppeteer, an ATM thief, doesn't get in his cars anymore: he drives them by remote control from behind, in another car.","Novatos! O Titereiro, um ladrão de caixas eletrônicos, não entra mais nos carros dele: dirige com um controle remoto lá de trás, em outro carro."
+BRIEF_GHOST_C,"Si ven un auto sin nadie al volante, no lo persigan a él: busquen quién lo maneja. Si esposan a dos inocentes, se termina el caso.","If you see a car with nobody at the wheel, don't go after it: find who's driving it. Cuff two innocent people and the case is over.","Se virem um carro sem ninguém no volante, não corram atrás dele: procurem quem está dirigindo. Se algemarem dois inocentes, o caso acaba."
+CLUE_GHOST_SHIRT,"Quien lo maneja tiene camisa de color %s.","The one driving it wears a %s shirt.","Quem dirige veste uma camisa de cor %s."
 PROMPT_BUS_ON,E: subir al bus,E: get on the bus,E: subir no ônibus
 PROMPT_BUS_OFF,E: bajar del bus,E: get off the bus,E: descer do ônibus
 PROMPT_BUS_DRIVE,E: manejar el bus,E: drive the bus,E: dirigir o ônibus
