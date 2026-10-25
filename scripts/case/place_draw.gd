@@ -30,6 +30,7 @@ const PLACES := {
 	"bank": "res://scenes/levels/bank.tscn",
 	"plaza": "res://scenes/levels/plaza_rally.tscn",
 	"prison": "res://scenes/levels/prison.tscn",
+	"circus": "res://scenes/levels/circus.tscn",
 	"transfer": "res://scenes/levels/prisoner_transfer.tscn",
 	"blackout": "res://scenes/levels/prison_blackout.tscn",
 	"visits": "res://scenes/levels/prison_visits.tscn",

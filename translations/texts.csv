@@ -1474,6 +1474,8 @@ OBJ_PRISON_CATCH_CART,"Atrapar al del carrito de la comida","Catch the one on th
 CHASE_RINGLEADER_LINE_1,"¡Cuesta abajo no me agarra nadie! ¡Y llevo el puré!","Downhill nobody catches me! And I've got the mash!","Ladeira abaixo ninguém me pega! E estou com o purê!"
 CHASE_RINGLEADER_LINE_2,"¡Este carrito no tiene frenos! Bueno, nunca tuvo.","This cart has no brakes! Well, it never did.","Este carrinho não tem freio! Bom, nunca teve."
 CHASE_RINGLEADER_LINE_3,"Está bien, me rindo. Pero el yogur me lo quedo.","Fine, I give up. But I'm keeping the yogurt.","Tá bom, eu me rendo. Mas o iogurte fica comigo."
+PLACE_CIRCUS,"Circo","Circus","Circo"
+SIGN_CIRCUS,"Circo Hermanos Cascabel","Cascabel Brothers Circus","Circo Irmãos Cascabel"
 PROMPT_BUS_ON,E: subir al bus,E: get on the bus,E: subir no ônibus
 PROMPT_BUS_OFF,E: bajar del bus,E: get off the bus,E: descer do ônibus
 PROMPT_BUS_DRIVE,E: manejar el bus,E: drive the bus,E: dirigir o ônibus
