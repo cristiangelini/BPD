@@ -1900,3 +1900,19 @@ HINT_BELT_BONK,¡Pum! La máquina de cabezas te dio un golpe.,Bonk! The heads ma
 HINT_BELT_PAINT,La máquina de pintura te dejó rosado.,The paint machine left you pink.,A máquina de pintura te deixou cor-de-rosa.
 HINT_BELT_EYES,La máquina te pegó dos ojos saltones.,The machine stuck two googly eyes on you.,A máquina grudou dois olhos esbugalhados em você.
 HINT_BELT_HAIR,La máquina te puso pelo rosado.,The machine gave you pink hair.,A máquina te pôs cabelo cor-de-rosa.
+FOREMAN_LINE_1,"¡Vamos, vamos, que la cinta no espera!","Come on, come on, the belt doesn't wait!","Vamos, vamos, que a esteira não espera!"
+FOREMAN_LINE_2,"Doscientos muñecos por hora, oficial. Ni uno menos.","Two hundred dolls an hour, officer. Not one less.","Duzentos bonecos por hora, policial. Nem um a menos."
+FOREMAN_LINE_3,¿Y su casco? Acá adentro se usa casco.,Where's your hard hat? In here we wear hard hats.,Cadê o seu capacete? Aqui dentro se usa capacete.
+FOREMAN_LINE_4,"No toque nada, que todo es mercadería.","Don't touch anything, it's all merchandise.","Não toque em nada, que tudo é mercadoria."
+FOREMAN_BELT_STOPPED,"¡Fiiiip! ¡La cinta NO para, oficial!","Tweeeet! The belt does NOT stop, officer!","Priiiii! A esteira NÃO para, policial!"
+FOREMAN_BELT_ON,Listo. Y que no se repita.,There. And don't let it happen again.,Pronto. E que não se repita.
+FOREMAN_FIX_1,¿Quién tiró esto acá?,Who threw this in here?,Quem jogou isso aqui?
+FOREMAN_FIX_2,"Vamos, linda, vamos...","Come on, sweetie, come on...","Vamos, querida, vamos..."
+FOREMAN_FIX_3,¡Ya casi sale!,It's almost out!,Já está quase saindo!
+FOREMAN_FIX_DONE,¡Destrabada! A trabajar.,Unjammed! Back to work.,Destravada! Ao trabalho.
+FOREMAN_HURT,"¡Eh! ¡Cuidado, que estoy trabajando!","Hey! Careful, I'm working here!","Ei! Cuidado, que estou trabalhando!"
+FOREMAN_DOOR,¿Qué fue ese ruido? ¡Eso se descuenta!,What was that noise? That comes out of someone's pay!,Que barulho foi esse? Isso vai ser descontado!
+FOREMAN_SAW,¡Eso es mercadería! ¡Lo anoto!,That's merchandise! I'm writing it down!,Isso é mercadoria! Vou anotar!
+FOREMAN_NOTHING,"Yo solo hago muñecos, oficial.","I just make dolls, officer.","Eu só faço bonecos, policial."
+FOREMAN_OFFENDED,No contesto más. Hable con el sindicato.,No more answers. Talk to the union.,Não respondo mais. Fale com o sindicato.
+FOREMAN_LAWYER,¡Llamo a mi abogado ya mismo!,I'm calling my lawyer right now!,Vou ligar para o meu advogado agora mesmo!

@@ -5,9 +5,11 @@ extends Node3D
 ## +Z. The reception at the front, the factory floor with the U-shaped belt and its machines in the west part, the
 ## storeroom in the east part with the foreman's office upstairs at its back, and the loading dock behind the hall.
 ## The reception is open; the office is locked and the dock's shutter opens with a button inside. The porcelain dolls
-## of the showcase and the plaster molds of the floor break, each one a fine. Every number here is (propuesta).
+## of the showcase and the plaster molds of the floor break, each one a fine. Fermín, the foreman, walks along the
+## belt, restarts it when a cop stops it and clears it when it jams (step 3). Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const FERMIN_SCENE := preload("res://scenes/npc/foreman.tscn")
 const MOLD_SCENE := preload("res://scenes/props/plaster_mold.tscn")
 const DOLL_SCENE := preload("res://scenes/props/porcelain_doll.tscn")
 ## The dresses of the showcase's dolls, one model each (tools/modelgen/models/factory.js).
@@ -45,12 +47,18 @@ const BELT_CORNERS: Array[Vector3] = [Vector3(-10, 0, 5), Vector3(-10, 0, -6), V
 const BELT_TOP := 0.8
 const BELT_WIDTH := 0.8
 ## The machines over the belt, in the order the dolls go through them.
+## The machines over the belt, in the order the dolls go through them, and where Fermín stands to clear each one.
 const MACHINES := [
-	{"id": "heads", "at": Vector3(-10, 0, 2), "color": Color(0.95, 0.8, 0.3)},
-	{"id": "hair", "at": Vector3(-10, 0, -3), "color": Color(0.95, 0.55, 0.7)},
-	{"id": "eyes", "at": Vector3(-6, 0, -6), "color": Color(0.35, 0.55, 0.9)},
-	{"id": "paint", "at": Vector3(-2, 0, -1), "color": Color(0.85, 0.3, 0.45)},
+	{"id": "heads", "at": Vector3(-10, 0, 2), "stand": Vector3(-11.5, FLOOR_TOP, 2), "color": Color(0.95, 0.8, 0.3)},
+	{"id": "hair", "at": Vector3(-10, 0, -3), "stand": Vector3(-11.5, FLOOR_TOP, -3), "color": Color(0.95, 0.55, 0.7)},
+	{"id": "eyes", "at": Vector3(-6, 0, -6), "stand": Vector3(-6, FLOOR_TOP, -7.5), "color": Color(0.35, 0.55, 0.9)},
+	{"id": "paint", "at": Vector3(-2, 0, -1), "stand": Vector3(-0.6, FLOOR_TOP, -1), "color": Color(0.85, 0.3, 0.45)},
 ]
+## Fermín's walk around the outside of the U, back and forth, and where he stands to press the red button.
+const FERMIN_ROUTE: Array[Vector3] = [
+	Vector3(-12, FLOOR_TOP, 4), Vector3(-12, FLOOR_TOP, -7.5), Vector3(0, FLOOR_TOP, -7.5), Vector3(0, FLOOR_TOP, 4),
+]
+const BUTTON_SPOT := Vector3(-0.2, FLOOR_TOP, 5.0)
 ## The red button that stops the belt, on a post by its end, facing the street side.
 const BELT_BUTTON_AT := Vector3(-0.8, 1.1, 4.3)
 ## The box cart catches what falls off the end of the belt.
@@ -130,6 +138,10 @@ var molds: Array[Ornament] = []
 var broken_goods := 0
 ## Money taken off the case pay for broken things (each one is an Ornament.FINE).
 var fines := 0
+var fermin: Foreman
+var complaint_bar: ProgressBar
+## Fermín called his lawyer: the case is lost.
+var case_failed := false
 var _build: PlaceBuilder
 @onready var car: PatrolCar = $PatrolCar
 
@@ -146,6 +158,7 @@ func _ready() -> void:
 	office_door = DOOR_SCENE.instantiate()
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, OFFICE_TOP - FLOOR_TOP, OFFICE_FRONT_Z)
 	add_child(office_door)
+	_place_fermin()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("doll_factory")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -357,6 +370,39 @@ func open_shutter() -> void:
 	create_tween().tween_property(shutter, "position", up, SHUTTER_TIME)
 
 
-func _on_fragile_broken(_at: Vector3) -> void:
+## Fermín on his walk along the belt, ready to restart it or clear it, and his complaint meter. A rammed door
+## reaches him anywhere.
+func _place_fermin() -> void:
+	fermin = FERMIN_SCENE.instantiate()
+	fermin.route = FERMIN_ROUTE
+	fermin.button_spot = BUTTON_SPOT
+	for machine: Dictionary in MACHINES:
+		fermin.machine_spots[machine.id] = machine.stand
+	fermin.belt = belt
+	add_child(fermin)
+	fermin.start_at(0)
+	office_door.broken.connect(fermin.door_broken)
+	fermin.lawyer_called.connect(func() -> void: case_failed = true)
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	fermin.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+func _on_fragile_broken(at: Vector3) -> void:
 	broken_goods += 1
 	fines += Ornament.FINE
+	if fermin:
+		fermin.saw(at, Foreman.SAW_BREAK)

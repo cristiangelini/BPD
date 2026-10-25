@@ -89,6 +89,14 @@ Los pesos y valores siguen la escala de la ferretería: la principal vale unos 1
      alguien la destrabe (Fermín, en el paso 3). El **botón rojo**, en un poste al final de la cinta, la para, y
      apretado otra vez la vuelve a prender. Capturas: `paso2-*.png`.
 3. Fermín: la ronda, la denuncia, el silbato, la cinta parada y la distracción del atasco.
+   - **Cómo quedó (propuesta):** Fermín (casco amarillo, chaleco reflectante, silbato colgado, tabla en la mano y
+     bigote negro) camina a 1,4 m/s ida y vuelta por afuera de la U, de la recepción al fondo y de vuelta, con una pausa
+     de 2 s en cada punta. Si un policía aprieta el botón rojo, toca el silbato ("¡La cinta NO para, oficial!"), suma 15
+     a la denuncia y va por su ronda hasta el botón para prenderla otra vez; si un policía la vuelve a prender antes, se
+     vuelve a su ronda. Cuando algo atasca una máquina, va hasta ella y pasa 15 s agachado de espaldas, sin ver nada, y
+     la destraba. La denuncia es como la de Tobías: 15 si lo empujan, 5 por puerta rota (la de la oficina), 10 por cada
+     muñeca o molde que ve romperse (hasta 16 m si nada tapa), 5 por pregunta, y abogado en 100 (se pierde el caso).
+     Por ahora no sube a la oficina: eso queda para cuando haga falta en una historia. Captura: `paso3-fermin.png`.
 4. Nilda y su cuota de muñecos.
 5. El caso (RaidCase) con la primera historia: el muñeco del diamante.
 6. Las otras 5 historias, una por PR.

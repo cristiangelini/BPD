@@ -28,12 +28,15 @@ const MARK_NAMES := {"eyes": "BeltEyes", "hair": "BeltHair", "heads": "BeltHead"
 
 var running := true
 var jammed_by: Node3D
+## The machine that jammed.
+var jammed_at := ""
 ## The runs: each one {"body": StaticBody3D, "dir": Vector3, "riders": Area3D}.
 var runs: Array[Dictionary] = []
 var top := 0.8
 var width := 0.8
 var _build: PlaceBuilder
 var _paint: StandardMaterial3D
+var _machines := {}
 
 
 ## Builds the runs from corner to corner (on the floor at y = 0 under them), their top at `belt_top`. Each run owns
@@ -92,7 +95,13 @@ func add_machine(id: String, at: Vector3) -> Area3D:
 	area.add_child(shape)
 	add_child(area)
 	area.body_entered.connect(func(body: Node3D) -> void: _on_machine(id, body))
+	_machines[id] = at
 	return area
+
+
+## Where machine `id` stands, on the floor.
+func machine_at(id: String) -> Vector3:
+	return _machines.get(id, Vector3.ZERO)
 
 
 func is_moving() -> bool:
@@ -124,6 +133,7 @@ func unjam() -> void:
 	if is_instance_valid(jammed_by) and jammed_by is RigidBody3D:
 		(jammed_by as RigidBody3D).apply_central_impulse(Vector3.UP * 20.0)
 	jammed_by = null
+	jammed_at = ""
 	_apply()
 
 
@@ -140,6 +150,7 @@ func _on_machine(id: String, body: Node3D) -> void:
 	if body is RigidBody3D and (body as RigidBody3D).mass >= JAM_MASS:
 		if jammed_by == null:
 			jammed_by = body
+			jammed_at = id
 			_apply()
 			jammed.emit(body)
 		return
