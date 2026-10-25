@@ -1,4 +1,4 @@
-# La fuga: en el camión de la basura (propuesta, 25/10)
+# La fuga: en el camión de la basura (decisión 154, 25/10)
 
 Sexta variante de la fuga (tipo 7 del catálogo, [casos.md](casos.md), punto 7.5: "escapar en el camión de la basura").
 Usa todo lo de la fuga de la dona ([fuga.md](fuga.md), decisión 99) y de las otras cuatro
@@ -76,7 +76,7 @@ El guardia, Don Ruperto y el camión van por `NpcSync`; las bolsas y el contened
 2. Meterse en la bolsa, la cuenta, el muñeco de la cucheta y el peso.
 3. El contenedor, el camión con Don Ruperto, caer en la esquina, volver, salir, frases y online.
 
-## Preguntas para Cristian
+## Preguntas para Cristian (respondidas el 25/10: sí a las tres, decisión 154)
 1. ¿La fuga sortea en sextos entre las seis variantes? **Recomiendo sí:** todas comparten celdas, salida y final.
 2. ¿Los que se van en el camión quedan libres afuera y la fuga se gana igual en el patrullero, con todos? **Recomiendo
    sí:** así los de afuera vuelven a ayudar a los que quedaron, que es el chiste cooperativo.
