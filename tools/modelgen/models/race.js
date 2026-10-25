@@ -64,7 +64,22 @@ export function buildSpikeRoll() {
 	return b.build();
 }
 
-export const models = { race_spoiler: buildRaceSpoiler, race_exhaust: buildRaceExhaust, race_roundel: buildRaceRoundel,
+// El Turbo's trophy (step 5), upright, faces +Z: a gold cup with two handles on a black base and a checkered flag.
+export function buildRaceTrophy() {
+	const b = new Builder('race_trophy');
+	const gold = mat('trophy_gold', 0xe8c040, { metalness: 0.5, roughness: 0.4 }), base = mat('trophy_base', 0x1c1c20);
+	const white = mat('flag_white', 0xf4f4f0), black = mat('flag_black', 0x18181c);
+	box(b, 'base', base, 0.16, 0.06, 0.16, 0, 0.03, 0);
+	b.add('cup', gold, new THREE.CylinderGeometry(0.02, 0.03, 0.08, 10), { pos: V(0, 0.1, 0) });
+	b.add('cup', gold, new THREE.CylinderGeometry(0.09, 0.04, 0.14, 14), { pos: V(0, 0.21, 0) });
+	for (const x of [-1, 1]) b.add('cup', gold, new THREE.TorusGeometry(0.035, 0.01, 5, 10), { pos: V(x * 0.1, 0.22, 0) });
+	b.add('cup', gold, new THREE.CylinderGeometry(0.004, 0.004, 0.2, 5), { pos: V(0.06, 0.38, 0) });
+	for (let i = 0; i < 4; i++) for (let j = 0; j < 3; j++)
+		box(b, 'flag', (i + j) % 2 ? black : white, 0.025, 0.025, 0.004, 0.0785 + i * 0.025, 0.455 - j * 0.025, 0);
+	return b.build();
+}
+
+export const models = { race_trophy: buildRaceTrophy, race_spoiler: buildRaceSpoiler, race_exhaust: buildRaceExhaust, race_roundel: buildRaceRoundel,
 	spike_strip: buildSpikeStrip, spike_roll: buildSpikeRoll };
 
 export const views = {
@@ -72,6 +87,10 @@ export const views = {
 		items: [{ name: 'traffic_car_0', pos: [0, 0, 0] }, { name: 'race_spoiler', pos: [0, 1.0, -1.9] },
 			{ name: 'race_exhaust', pos: [0, 0.38, -2.3] }, { name: 'race_roundel', pos: [1.09, 0.72, 0.2] }],
 		cam: { pos: [4.5, 2.4, -4.2], target: [0, 0.7, -0.5], fov: 40 },
+	},
+	race_trophy: {
+		items: [{ name: 'race_trophy', pos: [0, 0, 0] }],
+		cam: { pos: [0.35, 0.4, 0.8], target: [0.03, 0.22, 0], fov: 35 },
 	},
 	spike_strip: {
 		items: [{ name: 'spike_strip', pos: [0, 0, 0] }, { name: 'spike_roll', pos: [0, 0, 1.0] }],

@@ -27,7 +27,8 @@ también pasan por ahí y no quiero gomas pinchadas de gente que va a comprar pa
    enrollan en 1 s) para dejar pasar a un auto común.
 5. **Pinchar a un corredor suma 25** (la multa por picada): baja, se queja ("¡Era mi mejor tiempo!", 10+ frases con
    tr()) y se va caminando. **Pinchar un auto común es denuncia**, y a la segunda se pierde el caso, como detener a
-   un inocente.
+   un inocente. Esposar a un corredor pinchado que no es El Turbo también es denuncia (ya pagó la multa): así las
+   pistas de la radio siguen importando.
 6. **El Turbo** va en una de las tandas del medio (la 3, 4 o 5). La radio da una pista de él cada 60 s, como en Hora
    pico: el color del auto, el número de la puerta, el color del neón, el alerón (grande, chico, ninguno). Los otros
    corredores se parecen pero no son iguales.

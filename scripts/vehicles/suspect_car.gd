@@ -20,6 +20,10 @@ const NERVOUS_SPEED := 0.6
 const HEAVY_SPEED := 0.8
 ## With his tires punctured (the spikes) he rolls to a halt in this many seconds.
 const FLAT_STOP := 2.0
+## The street race's El Turbo (control-carrera.md, "Cómo es" 8): this much faster than anyone in his racer, but at
+## every corner he spins round once to show off, standing there SPIN_SECONDS.
+const RACER_SPEED := 1.3
+const SPIN_SECONDS := 2.0
 const WHEELS: Array[Vector3] = [Vector3(-1.1, 0.38, 1.7), Vector3(1.1, 0.38, 1.7), Vector3(-1.1, 0.38, -1.7),
 	Vector3(1.1, 0.38, -1.7)]
 ## Each suspect's vehicle (ChaseCase.SUSPECTS); the trucks share one size and wheels.
@@ -156,6 +160,11 @@ signal corner_passed(turned: bool)
 
 ## The crowded car control's runaway, packed with the gang: slower (HEAVY_SPEED).
 var heavy := false
+## El Turbo's racer (set before the chase starts): faster, and it spins at the corners (spin()).
+var racer := false
+## Seconds left of a spin, and where its nose pointed before it.
+var spin_left := 0.0
+var _spin_from := 0.0
 ## Whose vehicle it is (set before it's added).
 var kind := "ice_cream"
 const WHEEL := preload("res://assets/models/car_wheel.glb")
@@ -259,7 +268,7 @@ func towed_transform() -> Transform3D:
 ## His speed on the straight here: the sports car's depends on whether he's on the highway; a packed car's is less.
 func top_speed() -> float:
 	if kind != HIGHWAY:
-		return SPEEDS.get(kind, SPEED) * (HEAVY_SPEED if heavy else 1.0)
+		return SPEEDS.get(kind, SPEED) * (HEAVY_SPEED if heavy else 1.0) * (RACER_SPEED if racer else 1.0)
 	if not is_instance_valid(_highway):
 		_highway = get_tree().get_first_node_in_group("highway") as Highway
 	return HIGHWAY_SPEED if _highway and _highway.covers(global_position) else HIGHWAY_CITY_SPEED
@@ -321,6 +330,13 @@ func tangle(seconds: float) -> void:
 	tangled_left = maxf(tangled_left, seconds)
 
 
+## A spin on the spot for `seconds`: one whole turn, going nowhere, then on his way pointing where he did.
+func spin(seconds := SPIN_SECONDS) -> void:
+	if spin_left <= 0.0:
+		_spin_from = rotation.y
+	spin_left = maxf(spin_left, seconds)
+
+
 ## Nervous for `seconds`: he slows down.
 func scare(seconds: float) -> void:
 	nervous_left = maxf(nervous_left, seconds)
@@ -345,7 +361,12 @@ func _physics_process(delta: float) -> void:
 	tangled_left = maxf(tangled_left - delta, 0.0)
 	if punctured:
 		_rolling = maxf(_rolling - delta / FLAT_STOP, 0.0)
-	if not driving or finished():
+	# Spinning, he turns round on the spot; on its last frame he's back where he pointed, still standing.
+	var spinning := spin_left > 0.0
+	if spinning:
+		spin_left -= delta
+		rotation.y = _spin_from if spin_left <= 0.0 else rotation.y + TAU / SPIN_SECONDS * delta
+	if not driving or finished() or spinning:
 		velocity.x = 0.0
 		velocity.z = 0.0
 		move_and_slide()
