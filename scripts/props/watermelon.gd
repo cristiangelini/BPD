@@ -30,6 +30,8 @@ var kind := "normal"
 ## Still in its truck's bed, frozen and riding along.
 var in_bed := false
 var truck: QueueCar
+## It came from the wanted pickup: breaking it is no complaint.
+var from_wanted := false
 ## How many times it's been tapped, for tests and the case.
 var taps := 0
 var _bubble: Label3D
@@ -71,6 +73,7 @@ func _ready() -> void:
 ## In a truck's bed: frozen, it moves with the truck and doesn't break.
 func put_in_bed(car: QueueCar) -> void:
 	truck = car
+	from_wanted = car.wanted
 	in_bed = true
 	freeze = true
 
@@ -132,6 +135,10 @@ func hit(speed: float) -> bool:
 
 ## Split open: the flying bits, two halves, a puddle of juice and what was inside.
 func _shatter() -> void:
+	# The traffic case hears of it: an innocent fruit seller's is a complaint.
+	var case := TrafficCase.of(self) if is_inside_tree() else null
+	if case:
+		case.melon_broken(self)
 	shard_color = MUSH if kind == "overripe" else FLESH
 	super._shatter()
 	var street := get_parent()
