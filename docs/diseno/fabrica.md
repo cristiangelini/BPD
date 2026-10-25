@@ -139,6 +139,8 @@ Los pesos y valores siguen la escala de la ferretería: la principal vale unos 1
      menos, aunque no vaya en la cinta, y los muñecos de la cinta salen peludos. La bolsa de pelo (3 kg) es la evidencia
      principal y va escondida con el peine de oro y la factura trucha. Captura `paso6-caniche`.
 7. "Jugar" sortea entre los 5 lugares de allanamiento.
+   - **Cómo quedó:** "Jugar" sortea la fábrica igual que los otros 4 allanamientos (abuelo, panadería, peluquería y
+     ferretería): cada uno sale en más o menos un quinto de los allanamientos.
 8. El online (Fermín, Nilda, la cinta y los muñecos en todas las PC).
 
 ## Preguntas para Cristian (respondidas el 25/10: sí a las 3)
