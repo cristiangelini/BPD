@@ -50,6 +50,11 @@ const POOL_TILE := Color(0.55, 0.78, 0.88)
 const CLOWNS_RADIUS := 2.6
 const RINGMASTER_AT := TENT_AT + Vector3(1.6, 0, RING_RADIUS + 0.9)
 const TAMER_AT := POOL_AT + Vector3(2.6, 0, 0.4)
+## The bucket with the sponges for the clowns' makeup, inside the tent by the entrance.
+const BUCKET_AT := TENT_AT + Vector3(-3.0, 0, 6.6)
+const SPONGES := 2
+## Of the clowns, how many gloves at most one has on under the first (the infinite glove trick), by the seed.
+const MAX_SPARE_GLOVES := 2
 const CARAVAN_COLORS: Array[Color] = [
 	Color(0.95, 0.55, 0.7), Color(0.45, 0.82, 0.65), Color(0.98, 0.82, 0.3), Color(0.68, 0.58, 0.9),
 	Color(0.5, 0.7, 0.95), Color(0.98, 0.6, 0.35),
@@ -76,6 +81,7 @@ func _ready() -> void:
 	_pool()
 	_trunk()
 	_people()
+	_bucket()
 
 
 ## The six clowns in a circle in the ring, the ringmaster at its gap and Zulema by the pool.
@@ -242,6 +248,39 @@ func _trunk() -> void:
 	_builder.box(TRUNK_AT + Vector3(0, TRUNK_SIZE.y / 2, 0), TRUNK_SIZE, WOOD)
 	_builder.mesh_box(TRUNK_AT + Vector3(0, TRUNK_SIZE.y + 0.03, 0), TRUNK_SIZE + Vector3(0.06, -TRUNK_SIZE.y + 0.06, 0.06),
 		YELLOW)
+
+
+## A bucket of soapy water with the sponges on its rim.
+func _bucket() -> void:
+	var bucket := CylinderMesh.new()
+	bucket.top_radius = 0.22
+	bucket.bottom_radius = 0.18
+	bucket.height = 0.35
+	_builder.mesh(bucket, BUCKET_AT + Vector3(0, 0.18, 0), METAL)
+	var shape := _builder.body(BUCKET_AT + Vector3(0, 0.18, 0))
+	_builder.shape(shape, Vector3(0.4, 0.35, 0.4))
+	var water := CylinderMesh.new()
+	water.top_radius = 0.2
+	water.bottom_radius = 0.2
+	water.height = 0.02
+	_builder.mesh(water, BUCKET_AT + Vector3(0, 0.3, 0), POOL_TILE)
+	for i in SPONGES:
+		var sponge := ClownSponge.new()
+		sponge.name = "Sponge%d" % i
+		sponge.position = BUCKET_AT + Vector3(-0.12 + i * 0.24, 0.42, 0)
+		add_child(sponge)
+
+
+## The clowns and Zulema know the case: one clown (by the seed) won't take off his wig for nothing, and each has his
+## spare gloves. The clues come in a later step.
+func set_up_case(case: CrimeSceneCase) -> void:
+	var stubborn := hash("stubborn clown %d" % case.case_seed) % clowns.size()
+	for clown in clowns:
+		clown.case = case
+		clown.stubborn = clown.index == stubborn
+		clown.spare_gloves = hash(["clown gloves", case.case_seed, clown.index]) % (MAX_SPARE_GLOVES + 1)
+	tamer.case = case
+	tamer.knows = case.plan.clues.has("witness")
 
 
 ## Whether a wall piece is part of the entrance, at the front (+Z).

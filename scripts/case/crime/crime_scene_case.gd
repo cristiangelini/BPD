@@ -23,13 +23,23 @@ const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 ## "que algunos corran y que otros pasen a interrogatorio"; half and half is a propuesta).
 const RUNS_EVERY := 2
 ## What changes from one place to the other: the campaign's case id and the interrogation's story, the comisario's
-## briefing, the hint to go there, who the culprit is for the chase and what he runs off in, and which trait each clue
-## tells (CrimePlan).
+## briefing, the hint to go there, who the culprit is for the chase and what he runs off in, which trait each clue
+## tells (CrimePlan) and the parts of a suspect's file.
 const VARIANTS := {
 	"pastry": {
 		"shift": "crime_pastry", "story": "pastry",
 		"brief": ["BRIEF_CRIME_A", "BRIEF_CRIME_B", "BRIEF_CRIME_C"], "go": "HINT_GO_CONTEST",
 		"who": "cook", "getaway": SuspectCar.BIKE, "clues": CrimePlan.CLUES,
+		"parts": ["photo", "prints", "teeth", "hair"],
+	},
+	# The circus (escena-circo.md, decision 130): six clowns alike; what hides them comes off for the file.
+	"circus": {
+		"shift": "crime_circus", "story": "circus",
+		"brief": ["BRIEF_CIRCUS_A", "BRIEF_CIRCUS_B", "BRIEF_CIRCUS_C"], "go": "HINT_GO_CIRCUS",
+		"who": "clown", "getaway": SuspectCar.BIKE,
+		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "recording": "honk",
+			"witness": "glasses"},
+		"parts": ["photo", "prints", "teeth", "hair", "shoe", "honk"],
 	},
 }
 
@@ -129,15 +139,18 @@ func texts() -> Dictionary:
 
 ## The suspects' traits for this seed, by variant.
 func _draw_suspects() -> Array[Dictionary]:
-	return CookTraits.draw(case_seed)
+	return ClownTraits.draw(case_seed) if texts() == VARIANTS.circus else CookTraits.draw(case_seed)
 
 
 ## One part of a cook's file is done; with the four, his file is.
 func file_part(index: int, part: String) -> void:
 	if follower:
 		return
-	var parts: Dictionary = file_parts.get_or_add(index, {"photo": false, "prints": false, "teeth": false, "hair": false})
-	if parts[part]:
+	var blank := {}
+	for name: String in texts().parts:
+		blank[name] = false
+	var parts: Dictionary = file_parts.get_or_add(index, blank)
+	if parts.get(part, true):
 		return
 	parts[part] = true
 	_hint_all(tr("HINT_FILE_" + part) % cooks[index].name)
@@ -394,6 +407,26 @@ func clue_line(kind: String) -> String:
 		"recipe":
 			return tr("CLUE_CRIME_recipe_left" if culprit().left else "CLUE_CRIME_recipe_right")
 	return tr("CLUE_CRIME_" + kind)
+
+
+## What a file card on the board says: what the photo shows, and the rest as the cops got it.
+func file_text(index: int) -> String:
+	var who: Dictionary = cooks[index]
+	var parts: Dictionary = file_parts[index]
+	var lines := PackedStringArray(["%d. %s" % [index + 1, who.name]])
+	if texts() == VARIANTS.circus:
+		lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
+		lines.append(tr("FILE_SHOE") % who.shoe if parts.shoe else tr("FILE_SHOE_UNKNOWN"))
+		lines.append(tr("FILE_HONK") % (tr("HONK_" + str(who.honk)) if parts.honk else "?"))
+	else:
+		lines.append(tr("FILE_APRON") % tr("APRON_" + str(who.apron)))
+		lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
+		lines.append(tr("FILE_LEFT") if who.left else tr("FILE_RIGHT"))
+		lines.append(tr("FILE_SHOE") % who.shoe)
+	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if parts.hair else "?"))
+	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if parts.teeth else "?"))
+	lines.append(tr("FILE_PRINTS") if parts.prints else tr("FILE_NO_PRINTS"))
+	return "\n".join(lines)
 
 
 ## A cop shouted (VoiceChat): the place's witness may take offense.

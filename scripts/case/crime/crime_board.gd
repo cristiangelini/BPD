@@ -73,19 +73,9 @@ func refresh() -> void:
 		(file_cards[index] as BoardCard).label.text = file_text(index)
 
 
-## What a file card says: the photo shows apron, glasses, hand and shoes; the rest as the cops got it.
+## What a file card says (the case's variant knows).
 func file_text(index: int) -> String:
-	var cook: Dictionary = case.cooks[index]
-	var parts: Dictionary = case.file_parts[index]
-	var lines := PackedStringArray(["%d. %s" % [index + 1, cook.name]])
-	lines.append(tr("FILE_APRON") % tr("APRON_" + str(cook.apron)))
-	lines.append(tr("FILE_GLASSES") if cook.glasses else tr("FILE_NO_GLASSES"))
-	lines.append(tr("FILE_LEFT") if cook.left else tr("FILE_RIGHT"))
-	lines.append(tr("FILE_SHOE") % cook.shoe)
-	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(cook.hair)) if parts.hair else "?"))
-	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(cook.teeth)) if parts.teeth else "?"))
-	lines.append(tr("FILE_PRINTS") if parts.prints else tr("FILE_NO_PRINTS"))
-	return "\n".join(lines)
+	return case.file_text(index)
 
 
 func prompt_for(card: BoardCard, cop: Cop) -> String:

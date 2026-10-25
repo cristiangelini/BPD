@@ -98,7 +98,14 @@ Antes de programar conviene que el pastel y el circo compartan una base (como el
    bocina (grave, media o aguda). Con E cuentan un chiste. El director de pista, de levita roja y galera, espera al
    lado del hueco de la pista y dice sus frases; Zulema, la domadora, está junto a la pileta y, si es la testigo, dice
    si el culpable usaba anteojos (esposada o gritada, se ofende y no habla más) **(propuesta)**.
-4. Sacarles lo escondido: esponja, peluca, guantes, zapato y bocina, y las fichas.
+4. Sacarles lo escondido: esponja, peluca, guantes, zapato y bocina, y las fichas. Hecho así: con E y lo que se tenga en la mano.
+   La esponja (dos, en un balde junto a la entrada de la carpa) saca el maquillaje en tres pasadas; recién sin
+   maquillaje la foto sirve y se le ven los anteojos. Una dona o un pan: muerde y muestra los dientes. Con el kit de
+   huellas se le saca un guante, pero algunos tienen uno o dos más abajo (el truco del guante infinito); con las manos
+   desnudas, el kit toma las huellas. Con las manos vacías: primero se le aprieta la nariz (suena grave, media o
+   aguda), después se le pide la peluca (uno se niega hasta que le dan de comer) y después se le saca un zapato
+   gigante (su talle de verdad). La ficha del circo tiene seis partes: foto, huellas, dientes, pelo, pie y bocina. Los
+   dientes salen mordiendo, como en el pastel, y no riéndose **(propuesta)**.
 5. El truco: se mezclan cada 90 s, y los carteles con número.
 6. El caso: la historia, Galleta escondida, las pistas y cómo se arruinan, y la planilla.
 7. El final: tablero, cansancio, sueldo y el autito de payasos con los muñecos.
