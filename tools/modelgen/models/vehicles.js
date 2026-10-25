@@ -221,6 +221,11 @@ export function buildGetawayCar() {
 	return buildSedan('getaway_car', mat('getaway_paint', 0x2c3038), mat('lamp_off', 0x5a5a50), mat('tail_off', 0x501018));
 }
 
+// The bank manager's car (robo-banco-gerente.md, decision 124): the same sedan, a shiny wine red, lights off.
+export function buildManagerCar() {
+	return buildSedan('manager_car', mat('manager_paint', 0x7a1f2e), mat('lamp_off', 0x5a5a50), mat('tail_off', 0x501018));
+}
+
 // The highway's traffic (persecución, la autopista): the same plain sedan in everyday colors, lights on.
 const TRAFFIC_PAINTS = [0xf2f2ee, 0xe8c547, 0x5b9a5a, 0x7aa6d8];
 const trafficCar = (i) => () => buildSedan('traffic_car_' + i, mat('traffic_paint_' + i, TRAFFIC_PAINTS[i]),
@@ -449,7 +454,7 @@ export function buildMotorWalker() {
 
 export const models = { patrol_car: buildPatrolCar, old_patrol_car: buildOldPatrolCar, car_wheel: buildCarWheel, ice_cream_truck: buildIceCreamTruck,
 	moving_truck: buildMovingTruck, falling_sofa: buildFallingSofa, falling_wardrobe: buildFallingWardrobe, falling_lamp: buildFallingLamp,
-	falling_box: buildFallingBox, school_bus: buildSchoolBus, getaway_car: buildGetawayCar, sports_car: buildSportsCar, tow_truck: buildTowTruck, golf_cart: buildGolfCart,
+	falling_box: buildFallingBox, school_bus: buildSchoolBus, getaway_car: buildGetawayCar, manager_car: buildManagerCar, sports_car: buildSportsCar, tow_truck: buildTowTruck, golf_cart: buildGolfCart,
 	traffic_car_0: trafficCar(0), traffic_car_1: trafficCar(1), traffic_car_2: trafficCar(2), traffic_car_3: trafficCar(3),
 	delivery_scooter: buildDeliveryScooter, wheelchair: buildWheelchair, delivery_bike: buildDeliveryBike,
 	motor_walker: buildMotorWalker };
