@@ -143,6 +143,8 @@ var tie := -1
 var newlyweds := false
 ## What its driver blows into the breathalyzer (control-boda.md): the plan's, or else -1 and WeddingCar.alcohol_of.
 var alcohol := -1.0
+## The couple its driver toasts with the license (WeddingCar.BRIDES and GROOMS): the plan's, El Colado's the wrong one.
+var couple := 0
 ## A cop made the driver blow, and what they blew.
 var blown := false
 ## Over the limit, a cop took its driver's keys and a relative took the wheel (control-boda.md, step 3).
@@ -618,7 +620,7 @@ func net_setup() -> Dictionary:
 	return {"plate": plate, "driver": driver, "clown": clown, "clown_traits": clown_traits, "fruit": fruit,
 		"crate": crate, "hat": hat, "melon_kinds": melon_kinds, "crowd": crowd, "ghost_mode": ghost_mode, "ghost": ghost,
 		"shirt": shirt, "puppeteer": puppeteer, "wedding_mode": wedding_mode, "guest": guest, "tie": tie,
-		"newlyweds": newlyweds, "alcohol": alcohol}
+		"newlyweds": newlyweds, "alcohol": alcohol, "couple": couple}
 
 
 ## Online: where it is in the queue and whether its trunk is open; the ghost car's, how many pranks and the last one.
@@ -678,6 +680,10 @@ func use(cop: Cop = null) -> void:
 	if not waiting() or driver.is_empty():
 		return
 	papers_checked = true
+	if guest:
+		# A guest hands it over toasting the couple (control-boda.md, answer 2).
+		say(DriverTraits.license_text(driver) + "\n" + WeddingCar.toast(plate, couple, newlyweds))
+		return
 	say(DriverTraits.license_text(driver))
 
 
