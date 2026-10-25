@@ -80,6 +80,8 @@ var _cuffed_left := 0.0
 var disguise := {}
 ## Seconds of running that shake the disguise, and how long until a piece can fall again.
 var _shaken := 0.0
+## Something slows the cop down for a while (the market's cramps, Cramps): walking and running speed times this.
+var slow_factor := 1.0
 var _fall_gap_left := 0.0
 
 @onready var _shape: CollisionShape3D = $Shape
@@ -434,7 +436,7 @@ func use() -> bool:
 			return false
 		act("eat_donut", self, [$Grabber.held])
 		return true
-	if $Grabber.held is HookStick or $Grabber.held is LooseDonut:
+	if $Grabber.held is HookStick or $Grabber.held is LooseDonut or $Grabber.held is SamplePlate:
 		act("use", $Grabber.held)
 		return true
 	if $Grabber.held is CrimeClueItem:
@@ -632,9 +634,9 @@ func is_disguised(look := "grandparent") -> bool:
 
 
 func current_speed() -> float:
-	var factor := BatteringRam.SPEED_FACTOR if ram else 1.0
+	var factor := (BatteringRam.SPEED_FACTOR if ram else 1.0) * slow_factor
 	if wheelbarrow:
-		factor = Wheelbarrow.SPEED_FACTOR
+		factor = Wheelbarrow.SPEED_FACTOR * slow_factor
 	if is_crouching:
 		return GameScale.CROUCH_SPEED * factor
 	if is_running:
