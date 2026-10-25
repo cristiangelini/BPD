@@ -44,6 +44,8 @@ const MODELS := {
 	# (robo-banco.md): on foot the "vehicle" is the sack he carries, and he's its rider.
 	"robbers_van": preload("res://assets/models/robbers_van.glb"),
 	"bear_on_foot": preload("res://assets/models/money_bag.glb"),
+	# The bank's manager who was the boss drives off in his own car with the sacks in its trunk (robo-banco-gerente.md).
+	"manager_car": preload("res://assets/models/manager_car.glb"),
 	# The last heckler of the rally runs off on a kick scooter (proteccion-politico.md); set_rider puts them on it.
 	"kick_scooter": preload("res://assets/models/kick_scooter.glb"),
 	# The prison's last ringleader rolls off downhill on the kitchen's food cart (carcel-motin.md), behind it.
@@ -103,6 +105,7 @@ const WALKER := "walker"
 const CHOIR_VAN := "choir_van"
 const ROBBERS_VAN := "robbers_van"
 const BEAR_ON_FOOT := "bear_on_foot"
+const MANAGER_CAR := "manager_car"
 const KICK_SCOOTER := "kick_scooter"
 const FOOD_CART := "food_cart"
 const VEGGIE_TRIKE := "veggie_trike"
@@ -120,7 +123,8 @@ const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 
 	"highway": Vector3(2.1, 1.1, 4.6), "tow_truck": Vector3(2.3, 2.4, 6.2), "golf_cart": Vector3(1.3, 1.8, 2.4),
 	"moto": Vector3(0.8, 1.6, 1.9), "old_patrol": Vector3(2.1, 1.5, 4.6),
 	"wheelchair": Vector3(0.8, 1.4, 1.2), "bear_on_foot": Vector3(0.9, 1.8, 0.9), "choir_van": Vector3(2.0, 1.95, 4.6), "walker": Vector3(0.7, 1.6, 1.3), "kick_scooter": Vector3(0.6, 1.6, 1.0), "food_cart": Vector3(0.8, 1.6, 2.2), "veggie_trike": Vector3(1.0, 1.6, 2.0), "bike": Vector3(0.7, 1.6, 1.9), "traffic_0": Vector3(2.1, 1.4, 4.6),
-	"traffic_1": Vector3(2.1, 1.4, 4.6), "traffic_2": Vector3(2.1, 1.4, 4.6), "traffic_3": Vector3(2.1, 1.4, 4.6)}
+	"traffic_1": Vector3(2.1, 1.4, 4.6), "traffic_2": Vector3(2.1, 1.4, 4.6), "traffic_3": Vector3(2.1, 1.4, 4.6),
+	"manager_car": Vector3(2.1, 1.4, 4.6)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
@@ -132,7 +136,7 @@ const NO_WHEELS: Array[Vector3] = []
 const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS,
 	"wheelchair": NO_WHEELS, "walker": NO_WHEELS, "bear_on_foot": NO_WHEELS, "kick_scooter": NO_WHEELS, "food_cart": NO_WHEELS, "veggie_trike": NO_WHEELS, "highway": SEDAN_WHEELS, "tow_truck": TOW_WHEELS, "golf_cart": NO_WHEELS,
 	"old_patrol": SEDAN_WHEELS, "bike": NO_WHEELS, "traffic_0": SEDAN_WHEELS, "traffic_1": SEDAN_WHEELS,
-	"traffic_2": SEDAN_WHEELS, "traffic_3": SEDAN_WHEELS, "choir_van": SEDAN_WHEELS}
+	"traffic_2": SEDAN_WHEELS, "traffic_3": SEDAN_WHEELS, "choir_van": SEDAN_WHEELS, "manager_car": SEDAN_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)

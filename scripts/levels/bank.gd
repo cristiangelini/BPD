@@ -823,7 +823,10 @@ static func is_loose(robber: BankRobber) -> bool:
 func _on_vault_opened() -> void:
 	if follower:
 		return
-	var boss_runs := is_loose(boss)
+	# The boss manager still loose (robo-banco-gerente.md, step 4): the gang loads the sacks in his trunk and they all
+	# drive off with him.
+	var manager_runs := manager.boss and not manager.caught
+	var boss_runs := is_loose(boss) and not manager_runs
 	for robber in robbers:
 		if robber.sorry and is_loose(robber):
 			# He doesn't take a sack: he sits down to wait for the cops (robo-banco-arrepentido.md, step 5).
@@ -833,14 +836,17 @@ func _on_vault_opened() -> void:
 			robber.hide()
 			robber.collision_layer = 0
 			robber.process_mode = Node.PROCESS_MODE_DISABLED
-	if boss_runs and grandpas:
+	if manager_runs:
+		start_getaway(SuspectCar.MANAGER_CAR)
+	elif boss_runs and grandpas:
 		start_getaway(SuspectCar.WALKER)
 	elif boss_runs:
 		start_getaway(SuspectCar.BEAR_ON_FOOT if van_boxed_in() else SuspectCar.ROBBERS_VAN)
 
 
 ## El Oso gets away in the van (`kind` ROBBERS_VAN) or on foot (BEAR_ON_FOOT), or the grandpa Oso on a motor walker
-## along the sidewalk (WALKER, robo-banco-abuelos.md, step 4): the chase is on.
+## along the sidewalk (WALKER, robo-banco-abuelos.md, step 4), or the boss manager in his car (MANAGER_CAR,
+## robo-banco-gerente.md, step 4): the chase is on.
 func start_getaway(kind: String) -> void:
 	if chase:
 		return
@@ -848,8 +854,14 @@ func start_getaway(kind: String) -> void:
 	if kind == SuspectCar.ROBBERS_VAN and is_instance_valid(van):
 		at = van.global_transform
 		van.queue_free()
+	if kind == SuspectCar.MANAGER_CAR:
+		at = manager_car.global_transform
+		manager_car.queue_free()
+		manager.hide()
+		manager.collision_layer = 0
+		manager.process_mode = Node.PROCESS_MODE_DISABLED
 	chase = ChaseCase.begin(self, kind, at, car, city, case_seed)
-	chase.who = "oso_grandpa" if grandpas else "oso"
+	chase.who = "manager" if kind == SuspectCar.MANAGER_CAR else "oso_grandpa" if grandpas else "oso"
 	if grandpas:
 		chase.truck.set_rider(ChaseSuspect.model_for(chase.who))
 	chase.follower = follower
@@ -857,8 +869,8 @@ func start_getaway(kind: String) -> void:
 		chase.online = case.online
 	chase.ended.connect(_on_getaway_ended)
 	for cop in get_tree().get_nodes_in_group("cops"):
-		(cop as Cop).show_hint({SuspectCar.ROBBERS_VAN: "HINT_ESCAPE_oso", SuspectCar.WALKER: "HINT_ESCAPE_oso_WALKER"}
-			.get(kind, "HINT_ESCAPE_oso_FOOT"))
+		(cop as Cop).show_hint({SuspectCar.ROBBERS_VAN: "HINT_ESCAPE_oso", SuspectCar.WALKER: "HINT_ESCAPE_oso_WALKER",
+			SuspectCar.MANAGER_CAR: "HINT_ESCAPE_manager"}.get(kind, "HINT_ESCAPE_oso_FOOT"))
 
 
 func _on_getaway_ended(was_caught: bool) -> void:

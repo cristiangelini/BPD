@@ -34,6 +34,8 @@ const MODELS := {
 	"oso": preload("res://assets/models/npc_ladron_oso.glb"),
 	# The grandpa Oso, off his motor walker (robo-banco-abuelos.md).
 	"oso_grandpa": preload("res://assets/models/npc_abuelo_oso.glb"),
+	# The bank's manager who was the boss, out of his car (robo-banco-gerente.md).
+	"manager": preload("res://assets/models/npc_gerente.glb"),
 	# The prison's last ringleader, off the food cart (carcel-motin.md).
 	"ringleader": preload("res://assets/models/npc_preso.glb"),
 	# The market's spiteful vendor, off his vegetable trike (politico-mercado.md).

@@ -35,13 +35,11 @@ bien."
      el control del auto fantasma).
    - **El baúl abierto:** su auto tiene el baúl abierto con bolsas vacías adentro. Si un policía lo cierra, el gerente
      lo vuelve a abrir "para que se airee".
-   Además El Oso, por teléfono, a veces se equivoca: "Tengo que consultarlo con el je... con mis amigos".
 3. **Esposarlo cuando es el jefe:** el gerente esposado cuenta como el jefe. La banda se entera por el walkie, se
    pone nerviosa una vez y El Oso cuelga el teléfono: "¿Jefe? ¿Jefe?". Desde ahí no hay más pedidos por teléfono.
-4. **La huida:** cuando la bóveda se abre, los ladrones sueltos salen por atrás con las bolsas, las tiran en el baúl
-   del gerente y el gerente se va en su auto (los ladrones se van en la camioneta, como siempre). Arranca la
-   persecución con el auto del gerente: si se lo para, se lo esposa. Si el gerente ya estaba esposado, las bolsas
-   quedan en la vereda y la huida es la de siempre, con El Oso.
+4. **La huida:** cuando la bóveda se abre, los ladrones sueltos cargan las bolsas en el baúl del gerente y se van
+   todos con él en su auto. Arranca la persecución con el auto del gerente: si se lo para, se lo esposa. Si el gerente
+   ya estaba esposado, la huida es la de siempre, con El Oso.
 5. **Se gana** con el gerente esposado (adentro de la persecución o antes); El Oso esposado suma, pero solo no
    alcanza. Sueldo de 700, 100 menos por cada rehén que quede adentro y 50 menos por cada bolsa que se lleven; +100 si
    esposan al gerente antes de que se abra la bóveda. Cuota propia de 400. **Se pierde** si el gerente se escapa en su
@@ -85,8 +83,7 @@ variantes), el walkie, el baúl y la huida en su auto.
   pijama 2 s y murmura al walkie (`MANAGER_WALKIE_1-3`, `BankManager.radio`); si no hay ningún policía a 6 m de él, el
   taladro va más rápido 10 s (`BankDrill.hurry`). Su auto tiene el baúl abierto con dos bolsas vacías
   (`ManagerTrunk`): E lo cierra y a los 6 s él lo vuelve a abrir, "¡Déjelo abierto, que se airee!". Una de cada tres
-  quejas lo delata (`MANAGER_BOSS_1-2`). El gerente honesto no tiene walkie ni baúl abierto. El desliz de El Oso por
-  teléfono queda para el paso 4. Capturas en `/mnt/project-files/gerente/paso2-*.png`.
+  quejas lo delata (`MANAGER_BOSS_1-2`). El gerente honesto no tiene walkie ni baúl abierto. Capturas en `/mnt/project-files/gerente/paso2-*.png`.
 - **Paso 3 (esposarlo):** el gerente jefe esposado se rinde ("¡Esto es un atropello! ...Bueno, sí, fui yo.",
   `BankManager.caught`): no camina más, no usa el walkie y no vuelve a abrir el baúl. E lo lleva del brazo al
   patrullero (`OwnerEscort`; va en el baúl, arriba de los dos ladrones que entran ahí). La banda lo oye por el walkie y
@@ -94,3 +91,12 @@ variantes), el walkie, el baúl y la huida en su auto.
   `BankPhone.hang_up`; si se lo vuelve a llamar, da ocupado). El gerente honesto esposado protesta ("¡¿A mí?! ¡Soy la
   víctima!"), las esposas le duran 3 s y `wrongly_cuffed` salta la primera vez (el caso le cobra 200 en el paso 4).
   Capturas en `/mnt/project-files/gerente/paso3-*.png`.
+- **Paso 4 (la huida y el caso):** si la bóveda se abre con el gerente jefe suelto, los ladrones sueltos cargan sus
+  bolsas y se van todos con él: su auto estacionado es el que huye (`SuspectCar.MANAGER_CAR`, la persecución con
+  `who = "manager"`, `HINT_ESCAPE_manager` y sus quejas `CHASE_MANAGER_LINE_1-3`). Si ya estaba esposado, huye El Oso
+  como siempre, y que El Oso se escape no termina el turno. El caso (`BankCase`): radio propia
+  (`BRIEF_BANK_MANAGER_A-C`), se resuelve con el gerente en el patrullero o atrapado al final de su huida (El Oso solo
+  no alcanza, la planilla pide "Esposar al verdadero jefe de la banda"), se pierde si el gerente se escapa; esposado
+  antes de que se abra la bóveda suma 100. Va al interrogatorio del turno siguiente (`owner_manager`, con sus deslices
+  `MANAGER_SLIP_1-3`). En todos los robos, esposar al gerente honesto cuesta 200 una vez y queda en la planilla.
+  Capturas en `/mnt/project-files/gerente/paso4-*.png`.
