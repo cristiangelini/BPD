@@ -77,7 +77,11 @@ pie, `PlaceDraw` y `CaseSync`. El ensayo copia la forma de `ChoirSinging` (host 
    a la cara, remera a rayas doblada que se lleva al pecho, como la túnica); se caen corriendo como las del club. Con 2
    de 3, `is_disguised("mime")`; no sirven para abuelo ni para corista.
 2. El teatro en la ciudad (`--place=mime`), con los mimos en sus marcas (por la semilla), el portero mudo y la Maestra
-   Pausa.
+   Pausa. Hecho así (2a, el teatro solo): lote de 24 x 20 m en la cuadra (5, 1) al sur; la sala con 8 filas de butacas
+   en dos bloques y el pasillo al medio, el escenario de 16 x 3,5 m y 0,35 de alto con 14 cruces de cinta (dos filas de
+   7, a 2 m), telones rojos a los costados, el baúl al este del escenario, el banquito de la Maestra frente a él y,
+   atrás, el camarín (oeste, con llave, espejo con lamparitas) y la utilería (este, estantes y cajas)
+   **(propuesta)**.
 3. No hablar: la voz cerca de un mimo suma sospecha (VoiceChat avisa al host).
 4. El ensayo: estatua y mímica con H, la vista de los mimos durante la estatua.
 5. Las pruebas y el caso (variante "mime" en `InfiltrationCase.VARIANTS`).

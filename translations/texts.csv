@@ -1808,3 +1808,4 @@ PROMPT_HOLE_COVERED,"El colchón tapa el pozo: sácalo para seguir cavando","The
 PROMPT_ENTER_TUNNEL,"E: meterte en el túnel","E: get into the tunnel","E: entrar no túnel"
 HINT_TUNNEL_OUT,"¡Afuera! Estás en la vereda, al lado del patrullero. Que no te vea el guardia por la ventana.","Out! You're on the sidewalk, by the patrol car. Don't let the guard see you through the window.","Lá fora! Você está na calçada, do lado da viatura. Que o guarda não te veja pela janela."
 JAILBREAK_ESCAPED_TUNNEL,"Dejaron un túnel hecho con cucharas. El guardia va a cenar con tenedor un mes entero.","You left behind a tunnel dug with spoons. The guard will eat dinner with a fork for a month.","Vocês deixaram um túnel cavado com colheres. O guarda vai jantar de garfo por um mês inteiro."
+PLACE_MIME_THEATER,"Teatro del Silencio","Theater of Silence","Teatro do Silêncio"
