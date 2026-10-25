@@ -111,3 +111,12 @@ visitas iguales.
   pala, cuchara) suena "¡Clonc!" al dejarlo en la mesa; la paloma del sombrero hace "Currucucú" y el celular de la
   sandía vibra cada 9 a 15 s hasta que los encuentran. El mapa, la soga y el disfraz no hacen ruido: son los difíciles.
   Captura: `paso4-pistas.png`.
+- **Paso 5 (la hora de visita):** frente al lugar de cada visitante, del otro lado de la mesa, está sentado su preso
+  (`VisitInmate`, el modelo del motín). Cuando entra el último visitante empieza la visita: 6 minutos. El que todavía
+  esconde algo (en el bolsillo o en lo que entró) intenta el pase cada 20 a 40 s: si ningún policía mira su mesa
+  (10 m y 60° de donde mira la cámara) mete las manos abajo 3 s ("Psst... toma, rápido, por abajo"); si lo miran,
+  espera 5 s y prueba de nuevo. E sobre él mientras pasa lo frena y se le saca (cuenta como confiscado y como pase
+  frenado). Si termina, el preso lo guarda en el mameluco y cuenta como pasado (`VisitPlan.passed`). Al terminar la
+  visita suena el timbre: los visitantes se van por el portón y los presos que recibieron algo se levantan y se van
+  caminando con eso ("Gracias por la visita"). El día termina cuando se fue el último visitante. Captura:
+  `paso5-pase.png`.
