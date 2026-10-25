@@ -2135,3 +2135,9 @@ PROMPT_HOLE_COVERED,"El colchón tapa el pozo: sácalo para seguir cavando","The
 PROMPT_ENTER_TUNNEL,"E: meterte en el túnel","E: get into the tunnel","E: entrar no túnel"
 HINT_TUNNEL_OUT,"¡Afuera! Estás en la vereda, al lado del patrullero. Que no te vea el guardia por la ventana.","Out! You're on the sidewalk, by the patrol car. Don't let the guard see you through the window.","Lá fora! Você está na calçada, do lado da viatura. Que o guarda não te veja pela janela."
 JAILBREAK_ESCAPED_TUNNEL,"Dejaron un túnel hecho con cucharas. El guardia va a cenar con tenedor un mes entero.","You left behind a tunnel dug with spoons. The guard will eat dinner with a fork for a month.","Vocês deixaram um túnel cavado com colheres. O guarda vai jantar de garfo por um mês inteiro."
+SHIFT_BRIBES,Sobornos,Bribes,Subornos
+SHIFT_AGENT_FINE,Multa de asuntos internos,Internal affairs fine,Multa da corregedoria
+SHIFT_INVESTIGATION_OPENED,Asuntos internos abrió una investigación.,Internal affairs opened an investigation.,A corregedoria abriu uma investigação.
+SHIFT_INVESTIGATION_CLOSED,Asuntos internos cerró la investigación: no encontraron nada.,Internal affairs closed the investigation: they found nothing.,A corregedoria encerrou a investigação: não encontraram nada.
+SHIFT_INVESTIGATION_SUSPENDED,¡Asuntos internos los atrapó otra vez!,Internal affairs caught you again!,A corregedoria pegou vocês de novo!
+SHIFT_CAMPAIGN_LOST_AGENT,Suspendidos por asuntos internos: partida perdida.,Suspended by internal affairs: match lost.,Suspensos pela corregedoria: partida perdida.
