@@ -3,7 +3,8 @@ extends Node
 
 ## What Rulo Brillantina asks for during his day (carcel-vip.md, step 3). Once the first cop walks through the gate he
 ## rings his little bell every EVERY seconds and asks for the next of his REQUESTS (6 of the 10, drawn by the seed), in
-## his bubble and on the board over his bars, with LIMIT seconds to bring it. Things go on the shelf of his bars
+## his bubble and on the board over his bars, with LIMIT seconds to bring it. Step 4: the cake, the guitar and the
+## flowers (HIDING, where his escape's pieces come) are always among the 6. Things go on the shelf of his bars
 ## (VipTray); the foot massage is MASSAGE presses of E on the shelf, the applause two cops pressing it at once (one,
 ## playing alone), the song a cop singing or humming (H) near his bars for SONG_TIME seconds. His mood starts at
 ## MOOD_START out of 100: ON_TIME more for each one brought in time, LATE less and a tantrum for each one that runs
@@ -20,6 +21,7 @@ signal all_done
 enum Kind { WATER, PILLOW, CAKE, MIRROR, GUITAR, FLOWERS, GLASSES, MASSAGE, APPLAUSE, SONG }
 
 const REQUESTS := 6
+const HIDING: Array[Kind] = [Kind.CAKE, Kind.GUITAR, Kind.FLOWERS]
 const FIRST := 3.0
 const EVERY := 45.0
 const LIMIT := 60.0
@@ -55,13 +57,11 @@ var board: Label3D
 func setup(vip: VipPlan, rng: RandomNumberGenerator) -> void:
 	plan = vip
 	add_to_group("vip_requests")
-	var all: Array = Kind.values()
-	for i in range(all.size() - 1, 0, -1):
-		var j := rng.randi_range(0, i)
-		var swap: int = all[i]
-		all[i] = all[j]
-		all[j] = swap
-	for kind: int in all.slice(0, REQUESTS):
+	var others: Array = Kind.values().filter(func(kind: int) -> bool: return not HIDING.has(kind))
+	_shuffle(others, rng)
+	var all: Array = HIDING + others.slice(0, REQUESTS - HIDING.size())
+	_shuffle(all, rng)
+	for kind: int in all:
 		order.append(kind as Kind)
 	board = Label3D.new()
 	board.name = "Board"
@@ -73,6 +73,14 @@ func setup(vip: VipPlan, rng: RandomNumberGenerator) -> void:
 	board.position = plan.cell_point(0.0) + Vector3.UP * 2.4
 	plan.add_child(board)
 	_show_board()
+
+
+static func _shuffle(list: Array, rng: RandomNumberGenerator) -> void:
+	for i in range(list.size() - 1, 0, -1):
+		var j := rng.randi_range(0, i)
+		var swap: Variant = list[i]
+		list[i] = list[j]
+		list[j] = swap
 
 
 ## Which request a thing brought is (-1 for anything else).
@@ -194,7 +202,7 @@ func _fulfill(kind: Kind, item: Grabbable) -> void:
 			open.erase(each)
 			break
 	on_time += 1
-	_set_mood(mood + ON_TIME)
+	set_mood(mood + ON_TIME)
 	plan.rulo.say("VIP_THANKS_%s" % Kind.keys()[kind], 4.0)
 	fulfilled.emit(kind, item)
 	_show_board()
@@ -203,12 +211,12 @@ func _fulfill(kind: Kind, item: Grabbable) -> void:
 func _run_out(each: Dictionary) -> void:
 	open.erase(each)
 	late += 1
-	_set_mood(mood - LATE)
+	set_mood(mood - LATE)
 	plan.rulo.tantrum()
 	ran_out.emit(each.kind)
 
 
-func _set_mood(to: int) -> void:
+func set_mood(to: int) -> void:
 	var was := mood
 	mood = clampi(to, 0, MOOD_MAX)
 	if mood == 0 and was > 0:
