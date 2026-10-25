@@ -79,6 +79,15 @@ Los pesos y valores siguen la escala de la ferretería: la principal vale unos 1
      20 de multa cada uno. "Fábrica de muñecos (prueba)" en el menú la abre, y también `--place=doll_factory`.
      Capturas en `fabrica/` de la carpeta del proyecto.
 2. La cinta que no para: lleva todo, las máquinas (ojos, pelo, pintura), el botón rojo y el atasco.
+   - **Cómo quedó (propuesta):** la cinta en U anda a 1 m/s y lleva lo que se apoya arriba, policías incluidos, dobla
+     en las esquinas y al final tira todo al carro de cajas. Tiene bordes bajos amarillos, pero lo que se amontona
+     empuja: un policía que va detrás de unas cajas puede terminar en el piso. Las 4 máquinas son arcos altos y anchos
+     para que un policía parado pase por abajo. La de ojos le pega dos ojos saltones a cualquier cosa (al policía, por
+     20 s), la de pelo le pone pelo rosado (al policía también, 20 s), la de pintura pinta de rosa lo que pasa (al
+     policía solo le avisa) y la de cabezas le pone una cabeza de muñeco a las cosas y al policía le da un golpe que lo
+     deja tambaleando 0,6 s. Algo de 8 kg o más que llega a una máquina la **atasca** y la cinta se para hasta que
+     alguien la destrabe (Fermín, en el paso 3). El **botón rojo**, en un poste al final de la cinta, la para, y
+     apretado otra vez la vuelve a prender. Capturas: `paso2-*.png`.
 3. Fermín: la ronda, la denuncia, el silbato, la cinta parada y la distracción del atasco.
 4. Nilda y su cuota de muñecos.
 5. El caso (RaidCase) con la primera historia: el muñeco del diamante.

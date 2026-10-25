@@ -1895,3 +1895,8 @@ LOC_on_office_desk,en el escritorio del capataz,on the foreman's desk,na mesa do
 LOC_in_filing_cabinet,en el archivero de la oficina,in the office filing cabinet,no arquivo do escritório
 LOC_in_truck,en el camión de reparto,in the delivery truck,no caminhão de entregas
 LOC_in_dumpster,en el contenedor de descarte,in the reject dumpster,na caçamba de descarte
+PROMPT_BELT_BUTTON,Botón rojo de la cinta,Belt's red button,Botão vermelho da esteira
+HINT_BELT_BONK,¡Pum! La máquina de cabezas te dio un golpe.,Bonk! The heads machine hit you.,Pum! A máquina de cabeças te acertou.
+HINT_BELT_PAINT,La máquina de pintura te dejó rosado.,The paint machine left you pink.,A máquina de pintura te deixou cor-de-rosa.
+HINT_BELT_EYES,La máquina te pegó dos ojos saltones.,The machine stuck two googly eyes on you.,A máquina grudou dois olhos esbugalhados em você.
+HINT_BELT_HAIR,La máquina te puso pelo rosado.,The machine gave you pink hair.,A máquina te pôs cabelo cor-de-rosa.
