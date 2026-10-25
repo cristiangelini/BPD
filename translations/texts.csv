@@ -2141,3 +2141,15 @@ SHIFT_INVESTIGATION_OPENED,Asuntos internos abrió una investigación.,Internal 
 SHIFT_INVESTIGATION_CLOSED,Asuntos internos cerró la investigación: no encontraron nada.,Internal affairs closed the investigation: they found nothing.,A corregedoria encerrou a investigação: não encontraram nada.
 SHIFT_INVESTIGATION_SUSPENDED,¡Asuntos internos los atrapó otra vez!,Internal affairs caught you again!,A corregedoria pegou vocês de novo!
 SHIFT_CAMPAIGN_LOST_AGENT,Suspendidos por asuntos internos: partida perdida.,Suspended by internal affairs: match lost.,Suspensos pela corregedoria: partida perdida.
+PROMPT_BRIBE,E: aceptar %d · Clic: esposar igual,E: take %d · Click: cuff anyway,E: aceitar %d · Clique: algemar mesmo assim
+AWARD_BRIBES,Más sobornos aceptados: %s (%d),Most bribes taken: %s (%d),Mais subornos aceitos: %s (%d)
+BRIBE_OFFER_1,"Toma %d y aquí no pasó nada.","Take %d and nothing happened here.","Pega %d e aqui não aconteceu nada."
+BRIBE_OFFER_2,"Oficial, ¿%d le alcanzan para olvidarse de mi cara?","Officer, is %d enough to forget my face?","Policial, %d dá para esquecer a minha cara?"
+BRIBE_OFFER_3,"Psst... %d para sus donas. No me vio.","Psst... %d for your donuts. You never saw me.","Psiu... %d para os seus donuts. Você não me viu."
+BRIBE_OFFER_4,"Tengo %d en el bolsillo y ganas de irme a casa.","I've got %d in my pocket and a strong wish to go home.","Tenho %d no bolso e muita vontade de ir para casa."
+BRIBE_OFFER_5,"¿Y si le regalo %d por su cumpleaños? Adelantado.","What if I gave you %d for your birthday? In advance.","E se eu te der %d de aniversário? Adiantado."
+BRIBE_OFFER_6,"Esto es un malentendido de %d. Tómelos y lo arreglamos.","This is a %d misunderstanding. Take them and we're square.","Isso é um mal-entendido de %d. Pega e fica tudo certo."
+BRIBE_OFFER_7,"Mi abuela me dio %d para emergencias. Esto es una emergencia.","My grandma gave me %d for emergencies. This is an emergency.","Minha avó me deu %d para emergências. Isto é uma emergência."
+BRIBE_OFFER_8,"Las esposas me quedan mal. %d y no me las pruebo.","Cuffs don't suit me. %d and I won't try them on.","Algemas não combinam comigo. %d e eu não experimento."
+BRIBE_OFFER_9,"Le ofrezco %d y una sonrisa. La sonrisa es gratis.","I'm offering %d and a smile. The smile's free.","Ofereço %d e um sorriso. O sorriso é de graça."
+BRIBE_OFFER_10,"¡%d! Última oferta. Bueno, primera. Pero es buena.","%d! Final offer. Well, first one. But it's a good one.","%d! Última oferta. Bom, a primeira. Mas é boa."

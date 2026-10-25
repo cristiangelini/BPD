@@ -128,3 +128,89 @@ func test_an_old_save_has_a_clean_record() -> void:
 	var loaded := Campaign.from_dict({"seed": 5, "shift": 2})
 	assert_eq(loaded.bribes_taken, 0)
 	assert_false(loaded.investigation)
+
+
+## Someone the cuffs close on, floating in front of the cop.
+class Cuffable:
+	extends StaticBody3D
+	var cuffed_for := 0.0
+
+	func cuffed(seconds: float) -> void:
+		cuffed_for = seconds
+
+	func is_cuffed() -> bool:
+		return cuffed_for > 0.0
+
+
+func _cop() -> Cop:
+	var cop: Cop = preload("res://scenes/player/cop.tscn").instantiate()
+	cop.input_enabled = false
+	add_child_autofree(cop)
+	cop.belt_select(0)
+	return cop
+
+
+## A person in front of the cop at the origin, renamed until they're one who offers (or not, with `offers` false).
+func _person(offers := true) -> Cuffable:
+	var person := Cuffable.new()
+	var shape := CollisionShape3D.new()
+	shape.shape = BoxShape3D.new()
+	person.add_child(shape)
+	person.position = Vector3(0, GameScale.EYE_HEIGHT, -1.0)
+	add_child_autofree(person)
+	for i in 200:
+		person.name = "Person%d" % i
+		if (Handcuffs.offer_of(person) > 0) == offers:
+			break
+	return person
+
+
+func test_someone_who_offers_isnt_cuffed_until_the_second_click() -> void:
+	var cop := _cop()
+	var person := _person()
+	await wait_physics_frames(2)
+	var cuffs: Handcuffs = cop.belt.held_tool()
+	cuffs.press()
+	assert_false(person.is_cuffed(), "the first click gets an offer")
+	assert_true(cuffs.has_offer())
+	assert_ne(cuffs.prompt_key(), "PROMPT_HANDCUFFS", "the prompt says E takes it")
+	cuffs.press()
+	assert_true(person.is_cuffed(), "clicking again refuses it and cuffs")
+	assert_false(cuffs.has_offer())
+
+
+func test_taking_the_bribe_leaves_them_free_and_pays_the_shift() -> void:
+	var campaign := Campaign.start_new()
+	var cop := _cop()
+	var person := _person()
+	await wait_physics_frames(2)
+	var cuffs: Handcuffs = cop.belt.held_tool()
+	cuffs.press()
+	var amount := cuffs._offer_amount
+	assert_true(cop.use(), "E takes it")
+	assert_false(person.is_cuffed())
+	assert_eq(campaign.shift_bribes, amount)
+	assert_eq(cop.stats.bribes, 1, "for the joke award")
+	cuffs._wait = 0.0
+	cuffs.press()
+	assert_true(person.is_cuffed(), "they don't offer twice")
+
+
+func test_most_people_just_get_cuffed() -> void:
+	var cop := _cop()
+	var person := _person(false)
+	await wait_physics_frames(2)
+	(cop.belt.held_tool() as Handcuffs).press()
+	assert_true(person.is_cuffed())
+
+
+func test_an_offer_runs_out() -> void:
+	var cop := _cop()
+	_person()
+	await wait_physics_frames(2)
+	var cuffs: Handcuffs = cop.belt.held_tool()
+	cuffs.press()
+	cuffs._offer_left = 0.01
+	await wait_physics_frames(2)
+	assert_false(cuffs.has_offer())
+	assert_false(cop.use(), "E does nothing once it's gone")
