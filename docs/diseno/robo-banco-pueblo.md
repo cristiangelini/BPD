@@ -91,3 +91,10 @@ estantes y el mostrador de madera, don Plácido dormido (un cuerpo que se agarra
   detrás del mostrador, inclinado hacia adelante, con "Zzz..." arriba de la cabeza y la llave asomando del bolsillo
   del chaleco. Pesa 70 kg y espera quieto en su banquito hasta que un policía lo agarra. El Conejo está solo, en el
   lugar del pato al lado del taladro, y como está solo es el jefe. Capturas en `/mnt/project-files/pueblo/paso1-*.png`.
+- **Paso 2 (don Plácido y el ruido):** lo despierta un policía que corre a menos de 4 m, la sirena del patrullero a
+  menos de 20 m, algo que se mueve a 4 m/s o más a menos de 4 m (mira cada 0,2 s) o un policía que le habla con E
+  parado. Despierto se endereza y grita una de tres frases ("¡Ladrones! ¡Ladrones!") durante 6 s, y se vuelve a
+  dormir; si lo estaban cargando, se suelta de las manos de todos. Agachado, E le saca la llave del bolsillo sin
+  despertarlo (el policía queda con la llave de la puerta de atrás). No se cae: carga o suelto, queda parado. Afuera
+  del banco bosteza ("¿Ya es la hora de cerrar? Me voy a casa.") y a los 4 s se va. El grito todavía no hace nada en
+  El Conejo: eso es el paso 3. Capturas en `/mnt/project-files/pueblo/paso2-*.png`.
