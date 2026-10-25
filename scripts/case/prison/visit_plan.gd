@@ -5,13 +5,20 @@ extends Node
 ## by the canteen's west door back toward the gate, each with a different thing in their hands. The seed draws who
 ## comes, what each one brings and who hides something (HIDDEN_MIN to HIDDEN_MAX of them, in what they bring or in a
 ## pocket). The head of the line walks to the table; once they go in, everyone moves up a place. Nobody moves until
-## the first cop walks through the gate. Every number here is (propuesta).
+## the first cop walks through the gate. Step 5: across each visitor's seat sits their inmate (VisitInmate); once the
+## last one is in, the visit lasts VISIT_TIME seconds, while the ones still hiding something try the pass under the
+## table when no cop watches it. Then the bell: the visitors go and the inmates who got something walk out the gate
+## with it. Every number here is (propuesta).
 
 signal started
 signal all_in
 ## Something hidden was found (step 3), or an innocent thing was opened for nothing.
 signal confiscated_one(count: int)
 signal broke_one(count: int)
+## Step 5: something got through under the table, or a pass was stopped; the bell rang; the last visitor left.
+signal got_through(count: int)
+signal visit_over
+signal ended
 
 const VISITORS := 8
 const HIDDEN_MIN := 4
@@ -37,6 +44,14 @@ const AISLE_X := -5.0
 ## A visitor's seat: past the bench on a table's +Z side, at one of these places along it.
 const SEAT_XS: Array[float] = [-0.9, 0.9]
 const SEAT_Z := 1.25
+## The visit, from the last visitor going in (step 5), and a cop watching a table: this close and within this angle of
+## where they look.
+const VISIT_TIME := 360.0
+const WATCH_REACH := 10.0
+const WATCH_ANGLE := 60.0
+## The way out from the front of the canteen to the yard's gate.
+const YARD_OUT := Vector2(-1.0, 12.5)
+const GATE := Vector2(0.0, PrisonLevel.HALF_Z + 0.5)
 
 var prison: PrisonLevel
 ## In line order: the first is the head of the line.
@@ -49,6 +64,12 @@ var table: StaticBody3D
 ## Hidden things found at the search table, and innocent things opened for nothing (step 3).
 var confiscated := 0
 var broken := 0
+## Step 5: the inmates, the things that got through, the passes stopped and the visit's clock (-1 until it starts).
+var inmates: Array[VisitInmate] = []
+var passed := 0
+var stopped := 0
+var visit_left := -1.0
+var is_over := false
 var _rng := RandomNumberGenerator.new()
 
 
@@ -88,8 +109,19 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 		visitor.went_in.connect(_on_went_in)
 		visitor.found.connect(_on_found)
 		visitor.cried.connect(_on_cried)
+		visitor.passed.connect(_on_passed)
+		visitor.stopped.connect(_on_stopped)
 		visitors.append(visitor)
 		line.append(visitor)
+		var inmate := VisitInmate.new()
+		inmate.name = "VisitInmate%d" % i
+		inmate.prison = level
+		inmate.seat = Vector2(visitor.seat.x, visitor.seat.y - SEAT_Z * 2)
+		add_child(inmate)
+		inmate.global_position = level.global_transform * Vector3(inmate.seat.x, PrisonLevel.FLOOR_TOP, inmate.seat.y)
+		inmate.look_at(inmate.global_position + level.global_basis * Vector3(0, 0, -1), Vector3.UP)
+		visitor.inmate = inmate
+		inmates.append(inmate)
 
 
 ## The search table: a plain steel-topped table standing in the yard.
@@ -132,6 +164,11 @@ static func way_in(seat: Vector2) -> Array[Vector2]:
 	return [DOOR_OUT, DOOR_IN, Vector2(AISLE_X, DOOR_IN.y), Vector2(AISLE_X, seat.y), seat]
 
 
+## From `seat` back out to the gate: up the aisle, out the west door and across the yard.
+static func way_out(seat: Vector2) -> Array[Vector2]:
+	return [Vector2(AISLE_X, seat.y), Vector2(AISLE_X, DOOR_IN.y), DOOR_IN, DOOR_OUT, YARD_OUT, GATE]
+
+
 ## The visiting day is on: the head of the line walks to the table.
 func start() -> void:
 	if running:
@@ -154,6 +191,7 @@ func _move_up() -> void:
 func _on_went_in(visitor: PrisonVisitor) -> void:
 	line.erase(visitor)
 	if line.is_empty():
+		visit_left = VISIT_TIME
 		all_in.emit()
 		return
 	_move_up()
@@ -175,13 +213,66 @@ func carrying_contraband() -> Array[PrisonVisitor]:
 		return visitor.has_contraband())
 
 
-func _physics_process(_delta: float) -> void:
-	if follower or running:
-		return
+func _on_passed(_visitor: PrisonVisitor) -> void:
+	passed += 1
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
-		if prison.inside_walls(cop.global_position):
-			start()
-			return
+		cop.show_hint("HINT_VISIT_GOT_THROUGH")
+	got_through.emit(passed)
+
+
+func _on_stopped(_visitor: PrisonVisitor) -> void:
+	stopped += 1
+	confiscated += 1
+	confiscated_one.emit(confiscated)
+
+
+## Whether a cop watches the table at `seat` (level space): close enough and looking that way.
+func watched(seat: Vector2) -> bool:
+	var at := prison.global_transform * Vector3(seat.x, 1.0, seat.y - SEAT_Z)
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		var to := at - cop.camera.global_position
+		if to.length() <= WATCH_REACH and (-cop.camera.global_basis.z).angle_to(to) <= deg_to_rad(WATCH_ANGLE):
+			return true
+	return false
+
+
+## The bell: everyone's visitor goes, and the inmates who got something walk out with it.
+func end_visit() -> void:
+	if is_over:
+		return
+	is_over = true
+	visit_left = 0.0
+	for visitor in visitors:
+		if visitor.state != PrisonVisitor.State.GONE:
+			visitor.leave()
+	for inmate in inmates:
+		inmate.leave_if_slipped()
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		cop.show_hint("HINT_VISIT_OVER")
+	visit_over.emit()
+
+
+func _physics_process(delta: float) -> void:
+	if follower:
+		return
+	if not running:
+		for cop: Cop in get_tree().get_nodes_in_group("cops"):
+			if prison.inside_walls(cop.global_position):
+				start()
+				return
+		return
+	if is_over:
+		if visitors.all(func(visitor: PrisonVisitor) -> bool: return visitor.state == PrisonVisitor.State.GONE):
+			set_physics_process(false)
+			ended.emit()
+		return
+	if visit_left < 0.0:
+		return
+	for visitor in visitors:
+		visitor.visit_tick(delta, visitor.state == PrisonVisitor.State.SEATED and watched(visitor.seat))
+	visit_left -= delta
+	if visit_left <= 0.0:
+		end_visit()
 
 
 func _shuffle(items: Array) -> void:

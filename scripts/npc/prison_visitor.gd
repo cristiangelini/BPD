@@ -7,7 +7,9 @@ extends CharacterBody3D
 ## in they take back what they brought, if it's still on the table and wasn't opened, and walk to their seat in the
 ## canteen. Step 3: at the table, R and staying close FRISK_TIME seconds frisks them (what's in a pocket falls on the
 ## table); opening what they brought (VisitItem.use) finds what's inside, or breaks it and they cry. Every number here
-## is (propuesta).
+## is (propuesta). Step 5: seated across from their inmate (VisitInmate), whoever still carries something hidden tries
+## to slip it under the table every PASS_EVERY seconds when no cop is watching their table; it takes PASS_TIME
+## seconds, and E on them meanwhile stops it. When the bell rings they leave through the gate.
 
 signal at_table(visitor: PrisonVisitor)
 signal went_in(visitor: PrisonVisitor)
@@ -15,8 +17,11 @@ signal went_in(visitor: PrisonVisitor)
 signal found(visitor: PrisonVisitor, contraband: Contraband)
 ## What they brought was opened with nothing in it.
 signal cried(visitor: PrisonVisitor)
+## Slipped something to their inmate under the table (step 5), or got stopped doing it.
+signal passed(visitor: PrisonVisitor)
+signal stopped(visitor: PrisonVisitor)
 
-enum State { QUEUE, TABLE, IN, SEATED }
+enum State { QUEUE, TABLE, IN, SEATED, LEAVING, GONE }
 
 ## The looks, one per visitor (the NPCs' bodies, decision 72): grandma, grandpa, mom, girlfriend, cousin, uncle,
 ## neighbor, lady.
@@ -42,6 +47,10 @@ const TELL_EVERY := Vector2(8.0, 14.0)
 const NERVOUS_EVERY := Vector2(15.0, 25.0)
 const TELLS: Array[String] = ["VISITOR_TELL_LOOK", "VISITOR_TELL_WHISTLE", "VISITOR_TELL_SWEAT"]
 const NERVOUS_LINES := 3
+## The pass under the table (step 5): how often they try, how long it takes and how long they wait when watched.
+const PASS_EVERY := Vector2(20.0, 40.0)
+const PASS_TIME := 3.0
+const PASS_RETRY := 5.0
 
 var look := 0
 var item_kind := VisitItem.Kind.CAKE
@@ -67,6 +76,11 @@ var _frisk_left := 0.0
 var nervous := false
 var tell_seed := 0
 var _tell_left := -1.0
+## Their inmate across the table (step 5), and the pass under it.
+var inmate: VisitInmate
+var passing := false
+var _pass_left := -1.0
+var _passing_left := 0.0
 var _tells := RandomNumberGenerator.new()
 var _next := 0
 var _waited := 0.0
@@ -155,6 +169,8 @@ func walking() -> bool:
 
 
 func prompt_key(_cop: Cop) -> String:
+	if passing:
+		return "PROMPT_STOP_PASS"
 	if state != State.TABLE:
 		return ""
 	return "PROMPT_LET_VISITOR_IN" if frisked else "PROMPT_VISITOR_AT_TABLE"
@@ -214,10 +230,82 @@ func broken(_what: VisitItem) -> void:
 	cried.emit(self)
 
 
-## E at the search table: in they go.
-func use(_cop: Cop) -> void:
+## E at the search table: in they go. E while they slip something under the table: stopped (the host decides).
+func use(cop: Cop) -> void:
+	if passing:
+		if multiplayer.is_server():
+			stop_pass(cop)
+		return
 	if state == State.TABLE:
 		go_in("VISITOR_THANKS")
+
+
+## What they still hide, as a Contraband.Kind (the pocket first), or -1.
+func hidden_kind() -> int:
+	if pocket_hidden:
+		return Contraband.IN_POCKET[pocket_kind]
+	if item_hidden and is_carrying():
+		return Contraband.IN_ITEM[item_kind]
+	return -1
+
+
+## Seated, while the visit lasts (VisitPlan): the pass under the table. `watched`: a cop is looking at their table.
+func visit_tick(delta: float, watched: bool) -> void:
+	if state != State.SEATED or not has_contraband() or not inmate:
+		return
+	if passing:
+		_passing_left -= delta
+		if _passing_left <= 0.0:
+			_finish_pass()
+		return
+	if _pass_left < 0.0:
+		_pass_left = _tells.randf_range(PASS_EVERY.x, PASS_EVERY.y)
+	_pass_left -= delta
+	if _pass_left > 0.0:
+		return
+	if watched:
+		_pass_left = PASS_RETRY
+		return
+	passing = true
+	_passing_left = PASS_TIME
+	_carried.position = HANDS + Vector3(0, -0.5, -0.1)
+	say("VISITOR_PSST", PASS_TIME)
+
+
+func _finish_pass() -> void:
+	passing = false
+	_carried.position = HANDS
+	inmate.receive(hidden_kind())
+	_drop_hidden()
+	passed.emit(self)
+
+
+## Caught slipping it: the cop takes it.
+func stop_pass(cop: Cop) -> void:
+	passing = false
+	_carried.position = HANDS
+	_drop_hidden()
+	_pass_left = -1.0
+	say("VISITOR_STOPPED")
+	cop.show_hint("HINT_VISIT_PASS_STOPPED", true)
+	stopped.emit(self)
+
+
+func _drop_hidden() -> void:
+	if pocket_hidden:
+		pocket_hidden = false
+	else:
+		item_hidden = false
+
+
+## The bell: back out through the gate.
+func leave() -> void:
+	passing = false
+	_carried.position = HANDS
+	_model.position.y = 0.0
+	state = State.LEAVING
+	walk(VisitPlan.way_out(seat))
+	say("VISITOR_BYE")
 
 
 ## Going in, with what they brought if it's still on the table (a cop holding it keeps it).
@@ -305,6 +393,10 @@ func _arrived() -> void:
 		State.QUEUE:
 			if route[-1] == VisitPlan.TABLE_SPOT:
 				_arrive_at_table()
+		State.LEAVING:
+			state = State.GONE
+			hide()
+			collision_layer = 0
 		State.IN:
 			state = State.SEATED
 			_model.position.y = -SIT_DROP
