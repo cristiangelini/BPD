@@ -45,6 +45,15 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_WATCH_LIST", "OBJ_EXTRA_GLUE"],
 		"rig": preload("res://scripts/case/hardware/gnomes_rig.gd"),
 	},
+	"gold_screws": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_GOLD_SCREWS_B", "BRIEF_GOLD_SCREWS_C", "BRIEF_GOLD_SCREWS_D"],
+		"find": "OBJ_FIND_GOLD_SCREWS",
+		"hidden": [preload("res://scenes/props/screw_mold.tscn"), preload("res://scenes/props/jewelry_bag.tscn")],
+		"half_heights": [0.03, 0.055],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_SCREW_MOLD", "OBJ_EXTRA_JEWELRY_BAG"],
+		"rig": preload("res://scripts/case/hardware/gold_screws_rig.gd"),
+	},
 }
 ## The tools for sale, laid along the gondolas' two upper boards, both sides.
 const TOOL_SCENES: Array[PackedScene] = [
@@ -277,6 +286,18 @@ static func pick_story(case_seed: int, args: PackedStringArray) -> String:
 	return STORIES.keys()[case_seed % STORIES.size()]
 
 
+## The screw wall's drawers: how wide (x, along z) and tall (y) each one is.
+static func drawer_step() -> Vector2:
+	return Vector2(SCREW_WALL_SIZE.z / SCREW_COLUMNS, SCREW_WALL_SIZE.y / SCREW_ROWS)
+
+
+## The middle of the front of the screw wall's drawer at `row` (from the floor up) and `column` (from the back).
+static func drawer_front(row: int, column: int) -> Vector3:
+	var step := drawer_step()
+	return Vector3(SCREW_WALL_AT.x + SCREW_WALL_SIZE.x / 2 + 0.01, FLOOR_TOP + (row + 0.5) * step.y,
+		SCREW_WALL_AT.z - SCREW_WALL_SIZE.z / 2 + (column + 0.5) * step.x)
+
+
 ## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
 func _place_hidden() -> void:
 	var story: Dictionary = STORIES[story_id]
@@ -396,12 +417,11 @@ func _build_shop() -> void:
 				Color(0.85, 0.72, 0.3))
 	# The screw wall: one cabinet, with its little drawer fronts only for the look.
 	_build.box(SCREW_WALL_AT + Vector3(0, SCREW_WALL_SIZE.y / 2, 0), SCREW_WALL_SIZE, WOOD)
-	var step := Vector2(SCREW_WALL_SIZE.z / SCREW_COLUMNS, SCREW_WALL_SIZE.y / SCREW_ROWS)
+	var step := drawer_step()
 	for row in SCREW_ROWS:
 		for column in SCREW_COLUMNS:
-			var front := Vector3(SCREW_WALL_AT.x + SCREW_WALL_SIZE.x / 2 + 0.01, FLOOR_TOP + (row + 0.5) * step.y,
-				SCREW_WALL_AT.z - SCREW_WALL_SIZE.z / 2 + (column + 0.5) * step.x)
-			_build.mesh_box(front, Vector3(0.02, step.y - 0.05, step.x - 0.05), CARDBOARD.lightened(0.2))
+			_build.mesh_box(drawer_front(row, column), Vector3(0.02, step.y - 0.05, step.x - 0.05),
+				CARDBOARD.lightened(0.2))
 	for at: Vector3 in GONDOLAS:
 		_build.box(at + Vector3(0, GONDOLA_SIZE.y / 2, 0), Vector3(0.06, GONDOLA_SIZE.y, GONDOLA_SIZE.z), STEEL)
 		for y: float in GONDOLA_BOARDS:

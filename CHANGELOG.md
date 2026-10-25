@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Hardware store, step 6: the golden screws story: the 60 screw wall drawers open with E, the golden one (drawn with the seed) gives up the main evidence and glints under the flashlight, one in three of the others spills screws that make a running cop slip; the screw mold and the jeweler's bag are the extras.
 - Hardware store, step 6: the gnomes with watches story: 12 fragile garden gnomes in the yard, the boss one drawn with the seed ticks when a cop is within 2 m (the story's clue), plus the watch list and the glue hidden in the store.
 - Hardware store, step 5: the store is a full raid (tip, suspicions, notes, slips, Don Cosme's clue, till with the storeroom key, Tobías's escape and interrogation) with its first story, the master keys: the key ring, wax molds and address list, fresh filings by the machine, and the storeroom key among the blank keys on the board.
 - Hardware store, step 4: Don Cosme waits for his key copy; once he asks, the key machine files it in 4 passes (Tobías complains if he sees it) and the key brought to him gets what he saw.
