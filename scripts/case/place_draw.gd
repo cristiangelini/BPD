@@ -6,8 +6,8 @@ extends RefCounted
 ## interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
 ## (persecucion.md, "Sale como un caso más"). Of the shifts left, one in CRIME_EVERY is the crime scene
 ## (escena-del-crimen.md, propuesta), then one in TRAFFIC_EVERY the traffic control (control-transito.md), then one in
-## INFILTRATION_EVERY an infiltration (infiltracion.md), half at the grandparents' club and half at the church choir
-## (infiltracion-coro.md), then one in BANK_EVERY the bank robbery (robo-banco.md), then one in RALLY_EVERY the
+## INFILTRATION_EVERY an infiltration (infiltracion.md), a third each at the grandparents' club, the church choir
+## (infiltracion-coro.md) and the mime troupe's theater (infiltracion-mimos.md), then one in BANK_EVERY the bank robbery (robo-banco.md), then one in RALLY_EVERY the
 ## politician's protection (proteccion-politico.md), half at the plaza and half at the market (politico-mercado.md),
 ## then one in PRISON_EVERY a prison case, half the riot in the canteen
 ## (carcel-motin.md) and half the prisoner transfer (traslado-presos.md), and the rest are raids. A
@@ -45,7 +45,7 @@ const CRIME_EVERY := 5
 const TRAFFIC_EVERY := 4
 ## Of the rest, one in this many is an infiltration (propuesta: as often as each raid), at one of these by the seed.
 const INFILTRATION_EVERY := 4
-const INFILTRATIONS := ["club", "choir"]
+const INFILTRATIONS := ["club", "choir", "mime"]
 ## Of the rest, one in this many is the bank robbery (robo-banco.md, propuesta: as often as each raid).
 const BANK_EVERY := 4
 ## Of the rest, one in this many is the politician's protection (proteccion-politico.md, propuesta), at one of these

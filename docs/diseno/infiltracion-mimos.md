@@ -103,7 +103,12 @@ pie, `PlaceDraw` y `CaseSync`. El ensayo copia la forma de `ChoirSinging` (host 
    Pausa resuelve el caso, con el sueldo y la cuota del club; detenida, el turno siguiente es su interrogatorio (sus 3
    frases y la confesión). Hasta que esté el auto invisible (paso 6), si los descubren huye en un auto común
    **(propuesta)**.
-6. La huida en el auto invisible, el sorteo de "Jugar" en tercios (club, coro, mimos) y online.
+6. La huida en el auto invisible, el sorteo de "Jugar" en tercios (club, coro, mimos) y online. Hecho así:
+   descubiertos, la Maestra Pausa sale por la puerta y corre por la calle (no por la vereda) a 14 km/h dentro del
+   contorno apenas visible de un auto, y se la persigue a pie como a Doña Chela; atrapada, cuenta como resuelto con las
+   pruebas que haya. En Jugar, la infiltración sale un tercio en el club, un tercio en el coro y un tercio en el
+   teatro. Online: el ensayo (mímica o estatua) y la sospecha llegan a los invitados, y la voz de un invitado cerca de
+   un mimo suma en el host **(propuesta)**.
 
 ## Preguntas para Cristian (decisión 170)
 1. **¿Hablar por la radio también da sospecha?** Recomiendo que sí: si la radio no cuenta, todos hablan con T y se

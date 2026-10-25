@@ -39,11 +39,31 @@ export function buildWatchBag() {
 	return b.build();
 }
 
-export const models = { invisible_box: buildInvisibleBox, watch_bag: buildWatchBag };
+// Maestra Pausa's invisible car (step 6): almost nothing, just the faint outline of a small car around her, so the cops
+// can tell which way she's "driving". 1.6 x 1.1 x 2.6 m, faces +Z, origin on the ground in its middle.
+export function buildInvisibleCar() {
+	const b = new Builder('invisible_car');
+	const ghost = mat('invisible_car', 0xeef6ff, { transparent: true, opacity: 0.12, roughness: 0.1 });
+	const edge = mat('invisible_car_edge', 0xffffff, { transparent: true, opacity: 0.35 });
+	b.add('body', ghost, new THREE.BoxGeometry(1.6, 0.5, 2.6), { pos: V(0, 0.45, 0) });
+	b.add('body', ghost, new THREE.BoxGeometry(1.4, 0.45, 1.3), { pos: V(0, 0.92, -0.2) });
+	for (const [x, z] of [[-0.8, 1.3], [0.8, 1.3], [-0.8, -1.3], [0.8, -1.3]]) {
+		b.add('edges', edge, new THREE.BoxGeometry(0.02, 0.5, 0.02), { pos: V(x, 0.45, z) });
+		b.add('wheels', edge, new THREE.TorusGeometry(0.22, 0.015, 4, 12), { pos: V(x, 0.22, z * 0.75), rot: [0, Math.PI / 2, 0] });
+	}
+	for (const z of [1.3, -1.3]) b.add('edges', edge, new THREE.BoxGeometry(1.6, 0.02, 0.02), { pos: V(0, 0.7, z) });
+	return b.build();
+}
+
+export const models = { invisible_box: buildInvisibleBox, watch_bag: buildWatchBag, invisible_car: buildInvisibleCar };
 
 export const views = {
 	mime_evidence: {
 		items: [{ name: 'invisible_box', pos: [-0.3, 0.2, 0] }, { name: 'watch_bag', pos: [0.35, 0.12, 0.1] }],
 		cam: { pos: [0, 0.6, 1.4], target: [0, 0.15, 0], fov: 40 },
+	},
+	invisible_car: {
+		items: [{ name: 'invisible_car', pos: [0, 0, 0], rotY: 0.6 }, { name: 'npc_pausa', pos: [0, 0, 0.1], rotY: 0.6, scale: 0.95 }],
+		cam: { pos: [2.4, 1.8, 3.6], target: [0, 0.7, 0], fov: 40 },
 	},
 };

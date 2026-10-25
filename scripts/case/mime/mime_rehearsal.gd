@@ -113,8 +113,9 @@ func _begin(left: float) -> void:
 func _switch(to_statue: bool) -> void:
 	_switch_left = _rng.randf_range(STATUE.x, STATUE.y) if to_statue else _rng.randf_range(MIME.x, MIME.y)
 	_set_statue(to_statue)
-	if multiplayer.is_server() and Net.is_online():
-		for peer: int in Net.scene_peers:
+	var net := _net()
+	if multiplayer.is_server() and net.is_online():
+		for peer: int in net.scene_peers:
 			_switched.rpc_id(peer, to_statue, rehearsal_left)
 
 
@@ -207,14 +208,24 @@ func judge() -> void:
 	if multiplayer.is_server():
 		missed.emit(cop, amount)
 	else:
-		_missed.rpc_id(Net.HOST_ID, amount)
+		_missed.rpc_id(_net().HOST_ID, amount)
 
 
 @rpc("any_peer", "call_remote", "reliable")
 func _missed(amount: float) -> void:
-	var sync: CopSync = Net.cop_syncs.get(multiplayer.get_remote_sender_id())
+	var sync: CopSync = _net().cop_syncs.get(multiplayer.get_remote_sender_id())
 	if multiplayer.is_server() and sync and is_instance_valid(sync.cop):
 		missed.emit(sync.cop, minf(amount, MOVED))
+
+
+## The Net of this PC's multiplayer branch: the autoload in the game, each test PC's own in the online tests.
+func _net() -> Node:
+	var branch := multiplayer as SceneMultiplayer
+	if branch and not branch.root_path.is_empty():
+		var net := get_node_or_null(str(branch.root_path) + "/Net")
+		if net:
+			return net
+	return Net
 
 
 func _refresh_marks() -> void:
