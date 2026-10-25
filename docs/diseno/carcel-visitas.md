@@ -120,3 +120,10 @@ visitas iguales.
   visita suena el timbre: los visitantes se van por el portón y los presos que recibieron algo se levantan y se van
   caminando con eso ("Gracias por la visita"). El día termina cuando se fue el último visitante. Captura:
   `paso5-pase.png`.
+- **Paso 6 (el caso):** el comisario lo cuenta en su oficina en tres partes (los guardias de franco, cachear con R y
+  abrir con E sin romper lo inocente, mirar las mesas durante la visita) y Q abre la planilla (`VisitCase`):
+  visitantes que pasaron, el reloj de la visita, lo confiscado, los regalos inocentes rotos, lo que llegó a los
+  presos y el extra de los pases frenados. Cuando se va el último visitante se gana: sueldo de 600, 75 menos por cada
+  cosa que llegó a un preso, 25 menos por cada cosa inocente rota y 25 más por cada pase frenado. Cuota propia de 400.
+  Con 3 cosas que llegan se pierde. En el sorteo de Jugar sale en un cuarto de los casos de la cárcel
+  (`PlaceDraw.PRISONS`, con el motín, el traslado y el corte de luz). Captura: `paso6-planilla.png`.
