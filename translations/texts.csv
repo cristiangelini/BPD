@@ -1660,6 +1660,9 @@ PROMPT_LOOK_INSIDE,"E: mirar adentro y contar a los que se quedaron","E: look in
 CROWD_COUNT,"Van %d contados.","%d counted so far.","%d contados até agora."
 CROWD_INSIDE,"Adentro se quedaron %d. Van %d contados.","%d stayed inside. %d counted so far.","%d ficaram dentro. %d contados até agora."
 CROWD_INSIDE_NONE,"Adentro no quedó nadie. Van %d contados.","Nobody stayed inside. %d counted so far.","Ninguém ficou dentro. %d contados até agora."
+BRIEF_CROWD_A,"¡Novatos! Los Apretados, una banda de carteristas, vuelven del partido todos juntos en un solo auto para no pagar el colectivo. Hoy salen todas las familias numerosas del estadio.","Rookies! The Squeezers, a gang of pickpockets, are coming back from the match all together in one car so they don't pay the bus. Every big family is leaving the stadium today.","Novatos! Os Apertados, uma gangue de batedores de carteira, voltam do jogo todos juntos num só carro para não pagar o ônibus. Hoje todas as famílias grandes saem do estádio."
+BRIEF_CROWD_C,"Abran las puertas y cuenten bien, ni uno más ni uno menos. Después vuelvan a meterlos, que el auto no arranca con gente afuera. Si esposan a dos inocentes, se termina el caso.","Open the doors and count well, not one more, not one less. Then put them back in: the car won't go with people out. Cuff two innocent people and the case is over.","Abram as portas e contem direito, nem um a mais nem um a menos. Depois coloquem todos de volta: o carro não sai com gente fora. Se algemarem dois inocentes, o caso acaba."
+CLUE_CROWD_RIDERS,"Son exactamente %d en el auto, contando al que maneja.","There are exactly %d in the car, counting the driver.","São exatamente %d no carro, contando quem dirige."
 PROMPT_BUS_ON,E: subir al bus,E: get on the bus,E: subir no ônibus
 PROMPT_BUS_OFF,E: bajar del bus,E: get off the bus,E: descer do ônibus
 PROMPT_BUS_DRIVE,E: manejar el bus,E: drive the bus,E: dirigir o ônibus
