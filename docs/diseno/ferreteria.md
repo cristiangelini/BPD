@@ -105,6 +105,19 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      la pista de la historia verdadera, que pone cada historia en el paso 5 (hasta entonces solo agradece). Con E
      después repite la pista. Captura: `paso4-cosme.png`.
 5. El caso (RaidCase) con la primera historia: las llaves maestras.
+   - **Cómo quedó el caso (propuesta):** la ferretería ya es un caso como la peluquería: el comisario da la denuncia en
+     la comisaría, hay 3 sospechas sorteadas entre las 6 historias (con su nota cada una, en 3 de 6 lugares: el local,
+     el pie del exhibidor de pinturas, la góndola de la derecha, el depósito, el banco del taller y el patio), la
+     planilla con Q, la barra de denuncia de Tobías, multas y cuenta, el patrullero y la pantalla del turno. Tobías suelta
+     dónde escondió 2 cosas de la historia y Don Cosme, cuando recibe su llave, cuenta dónde lo vio esconder otra. La
+     caja registradora (en el mostrador) tiene la llave del depósito; si Tobías ve que la abren, +10. Si Tobías llama
+     al abogado se pierde el caso. Si ve levantar la prueba principal se escapa en el auto como Ramiro, y esposado y
+     llevado al patrullero, el turno siguiente es su interrogatorio.
+   - **Las llaves maestras (propuesta):** el llavero gordo (2 kg, 1000), los moldes de cera (0,2 kg, 200) y la lista de
+     direcciones (0,1 kg, 300) van en escondites sorteados. La pista propia: limaduras frescas en el mostrador, al lado
+     de la máquina (E las mira y va a la planilla). Lo que cambia: la caja está vacía y la llave del depósito cuelga
+     entre las 40 llaves en blanco del tablero de atrás del mostrador; cada E en el tablero prueba una, y la buena sale
+     entre la 2.ª y la 5.ª prueba (por la semilla). Cada prueba que ve Tobías le suma 5. Capturas: `paso5-*.png`.
 6. Las otras 5 historias, un PR cada una.
 7. El sorteo en "Jugar" (en cuartos entre los 4 lugares) y el online.
 

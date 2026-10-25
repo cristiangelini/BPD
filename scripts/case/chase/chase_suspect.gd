@@ -21,6 +21,7 @@ const MODELS := {
 	"grandpa": preload("res://assets/models/npc_abuelo.glb"),
 	"baker": preload("res://assets/models/npc_panadera.glb"),
 	"groomer": preload("res://assets/models/npc_peluquero.glb"),
+	"hardware": preload("res://assets/models/npc_ferretero.glb"),
 	"dangerous": preload("res://assets/models/npc_sospechoso.glb"),
 	# The pastry contest's culprit, off his bike (escena-del-crimen.md).
 	"cook": preload("res://assets/models/npc_pastelero.glb"),

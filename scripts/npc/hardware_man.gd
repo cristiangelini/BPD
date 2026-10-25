@@ -19,6 +19,9 @@ const STRUCK := 15.0
 const DOOR_BROKEN := 5.0
 ## Seeing a paint can or a screw jar broken.
 const SAW_BREAK := 10.0
+## Seeing a cop open his till, or try keys at his board.
+const SAW_TILL := 10.0
+const SAW_BOARD := 5.0
 ## Each question (R) raises the complaint; the first ASKS get a slip, then he won't answer.
 const ASKED := 5.0
 const ASKS := 2
