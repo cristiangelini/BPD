@@ -2,12 +2,13 @@ class_name BlackoutEscort
 extends OwnerEscort
 
 ## Walking a cuffed inmate back to a cell in the blackout (carcel-corte-de-luz.md, step 4): the owner's escort
-## (OwnerEscort) with any cell of the block instead of the patrol car. Walked into a cell, the inmate stays there
+## (OwnerEscort) with any cell of the block (or the punishment cell, step 5: where El Chispa pays the extra) instead of
+## the patrol car. Walked into a cell, the inmate stays there
 ## while its door is shut (E on the bars, by hand: without power the lock doesn't catch); with the door open, once
 ## the cuffs run out they walk out again and wander the canteen. Every number here is (propuesta).
 
 var prison: PrisonLevel
-## The cell they were walked into (0 to 7), -1 out of one.
+## The cell they were walked into (0 to 7, or PrisonLevel.PUNISHMENT_CELL), -1 out of one.
 var cell := -1
 
 
@@ -29,26 +30,32 @@ func prompt_key(cop: Cop) -> String:
 
 ## Whether their cell's door is shut.
 func locked_in() -> bool:
-	return in_car and not prison.cell_doors[cell].is_open
+	return in_car and not prison.cell_door(cell).is_open
 
 
 func _physics_process(delta: float) -> void:
 	if in_car:
-		if not follower and not npc.is_cuffed() and prison.cell_doors[cell].is_open:
+		if not follower and not npc.is_cuffed() and prison.cell_door(cell).is_open:
 			_walk_out()
 		return
 	super(delta)
 
 
-## In a cell: their feet inside one of the block's cells.
+## In a cell: their feet inside one of the block's cells or the punishment cell.
 func near_car() -> bool:
-	return prison.cell_at(npc.global_position) != -1
+	return _cell_here() != -1
+
+
+func _cell_here() -> int:
+	if prison.in_punishment(npc.global_position):
+		return PrisonLevel.PUNISHMENT_CELL
+	return prison.cell_at(npc.global_position)
 
 
 func board() -> void:
 	in_car = true
 	escorted_by = null
-	cell = prison.cell_at(npc.global_position)
+	cell = _cell_here()
 	npc.set_physics_process(true)
 	(npc as BlackoutInmate).jail(cell)
 	for cop in get_tree().get_nodes_in_group("cops"):

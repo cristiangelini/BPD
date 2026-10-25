@@ -101,3 +101,14 @@ están los dos fusibles sueltos, quién es El Chispa y sus frases. Así no hay d
   va más (`BlackoutPlan.count_locked_in`); si queda abierta, cuando se le terminan las esposas sale por donde entró y
   se pone a dar vueltas por el comedor ("¿Puerta abierta? Gracias, me voy a dar una vuelta"). Soltado fuera de una
   celda, sigue esposado un rato y después vuelve a lo suyo.
+- **Paso 5 (los fusibles y El Chispa):** al fondo del pasillo del pabellón está el tablero de la luz (`FuseBoard`,
+  cartel "LUZ") con 3 fusibles quemados. La cocina quedó abierta (los guardias salieron corriendo) y adentro hay un
+  fusible nuevo (`Fuse`); otro está en una mesa del comedor, en el pasillo, en una cucheta o en un rincón. E con el
+  fusible en la mano lo pone y su lugar se prende verde. El Chispa es el primero de los que no van al portón: espera
+  frente al tablero con el tercero en el bolsillo y le saltan chispas amarillas de la mano. 10 s después de que
+  ponen un fusible, si está libre (sin esposas, sin la luz encima, sin que lo lleven del brazo), vuelve al tablero
+  ("¿Quién tocó mi tablero?"), saca el último y lo tira en otro de esos lugares ("¡Y se apagó! Ji, ji"). Esposado,
+  suelta su fusible a sus pies. También se lo puede llevar a la celda de castigo (para el extra del paso 6). Con los
+  3 puestos vuelve la luz: se prenden las lámparas, se traban las celdas con alguien adentro y todos los que quedaban
+  sueltos se sientan donde están ("Qué aburrido con luz"). Capturas: `paso5-tablero.png`, `paso5-chispa.png` y
+  `paso5-luz.png`.
