@@ -103,7 +103,7 @@ el jardinero, en qué celda está el hámster, dónde caen los montoncitos y por
   al patio y entra el siguiente. El que sale deja huellas de tierra por 40 m (desde la celda hasta el patio), que se
   borran a los 30 s. Los de la banda que están en el patio sueltan un montoncito de tierra cada 10 a 15 s (a veces
   dicen "Qué piedrita molesta..."), y el que pisa un montoncito deja huellas por 4 m. Mientras alguien cava, un
-  policía a menos de 5 m del escondite oye "Scrich, scrich..." cada 4 s. Encontrado el túnel, deja de avanzar.
+  policía a menos de 5 m del escondite oye "Scrich, scrich..." cada 4 s.
   Capturas: `paso3-tierra.png`, `paso3-huellas.png` y `paso3-ruido.png`.
 - **Paso 4 (las pistas falsas):** el jardinero (un preso más, con sombrero de paja, que no es de la banda) va de
   maceta en maceta (3 macetas contra el frente del edificio), se queda 6 a 10 s en cada una y también suelta
@@ -113,3 +113,13 @@ el jardinero, en qué celda está el hámster, dónde caen los montoncitos y por
   escondite del túnel pone nervioso a uno de la banda que está en el patio: silba ("Fiu, fiu... ¡Qué lindo día!") y
   camina hacia la puerta del edificio (una vez cada 15 s). Revisar un escondite vacío hace quejar desde el patio al preso
   de esa celda ("¡Ey, mi póster!"). Capturas: `paso4-jardinero.png` y `paso4-hamster.png`.
+- **Paso 5 (encontrarlo y la salida):** si al encontrar el túnel hay alguien cavando, sale corriendo al portón ("¡Nos
+  descubrieron! ¡Corran!", como los escondidos de la lavandería): esposado se lleva a la celda de castigo y en el portón
+  se escapa. Encontrado, el túnel **sigue avanzando** (viene el siguiente de la banda) hasta que un policía trae una de
+  las 2 bolsas de cemento del portón (`CementBag`) y hace E sobre el pozo: queda tapado para siempre ("¡Túnel tapado!")
+  y el que estaba adentro sale corriendo. Sin cemento, el pozo dice que hace falta. Cuando faltan 5 m, la otra punta
+  (`TunnelExit`) se mueve afuera del muro, del lado de la celda; terminado, se abre: el que cavaba y después, uno cada
+  15 s, la banda y los demás presos del patio (nunca el jardinero) entran al túnel, tardan 4 s y asoman la cabeza 2,5 s
+  ("¿Ya estamos afuera?"). Un policía ahí los agarra con E ("¡Cucú!") y van directo a la celda de castigo; si no, salen
+  corriendo y cuentan como escapados. Con el túnel tapado ya no entra nadie más. Capturas: `paso5-corre.png`,
+  `paso5-cemento.png` y `paso5-asoma.png`.
