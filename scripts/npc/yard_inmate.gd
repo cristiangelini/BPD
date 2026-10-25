@@ -3,10 +3,19 @@ extends CharacterBody3D
 
 ## An inmate out in the yard at yard time in the prison's tunnel case (carcel-tunel.md, step 2): the riot's model in its
 ## orange jumpsuit, playing basketball by the hoop (hopping for the rebound), walking round the ring or leaning on
-## the wall in the sun, once TunnelPlan starts. Walks a route of level-space points when sent somewhere. Every number
-## here is (propuesta).
+## the wall in the sun, once TunnelPlan starts. Walks a route of level-space points when sent somewhere. Step 3: the
+## gang wander round the yard (WANDER) and, with dirt in their trouser legs (`drops_dirt`), shake a little out every
+## PILE_EVERY seconds (`dropped_dirt`); sent to the tunnel they walk to their cell and go in (`in_tunnel`, out of
+## sight), and coming out they leave dirty footprints (`left_print`) for `prints_left` metres. Every number here is
+## (propuesta).
 
-enum Activity { HOOP, RING, SUN }
+signal dropped_dirt(inmate: YardInmate, at: Vector3)
+signal left_print(inmate: YardInmate, at: Vector3, heading: Vector3)
+signal reached_tunnel(inmate: YardInmate)
+signal back_in_yard(inmate: YardInmate)
+
+enum Activity { HOOP, RING, SUN, WANDER }
+enum Trip { NONE, IN, OUT }
 
 const MODEL := preload("res://assets/models/npc_preso.glb")
 const SAY_TIME := 3.0
@@ -20,6 +29,12 @@ const LEAN := -0.18
 const RING_AT := Vector2(4.0, 14.0)
 const RING_RADIUS := 3.0
 const RING_POINTS := 8
+## Where the gang wander (level space), how often the dirt falls out of their trouser legs (one in SHAKE_SAY_ONE_IN
+## with a line) and how far apart their dirty footprints are.
+const WANDER_AREA := Rect2(-12.0, 9.5, 24.0, 9.0)
+const PILE_EVERY := Vector2(10.0, 15.0)
+const SHAKE_SAY_ONE_IN := 3
+const PRINT_STEP := 0.7
 
 var prison: PrisonLevel
 var activity := Activity.RING
@@ -30,6 +45,13 @@ var face := Vector2.ZERO
 var ring_from := 0
 var busy := false
 var route: Array[Vector2] = []
+## Step 3: one of the gang, with dirt in their trouser legs; how many metres more their feet leave prints; on the way
+## to the tunnel or back, or in it.
+var drops_dirt := false
+var prints_left := 0.0
+var trip := Trip.NONE
+var in_tunnel := false
+var wander_seed := 0
 ## A guest's copy (step 7): the host walks them.
 var follower := false
 var _next := 0
@@ -37,6 +59,9 @@ var _model: Node3D
 var _bubble: Label3D
 var _bubble_left := 0.0
 var _idle: Tween
+var _rng := RandomNumberGenerator.new()
+var _pile_left := 0.0
+var _walked := 0.0
 
 
 func _ready() -> void:
@@ -95,6 +120,10 @@ func start(offset: float) -> void:
 			_model.rotation.x = LEAN
 		Activity.RING:
 			_walk_ring()
+		Activity.WANDER:
+			_rng.seed = wander_seed
+			_pile_left = _rng.randf_range(PILE_EVERY.x, PILE_EVERY.y) + offset
+			_wander()
 
 
 func _stop_idle() -> void:
@@ -113,6 +142,34 @@ func _walk_ring() -> void:
 	walk(points)
 
 
+## Off to somewhere else in the yard.
+func _wander() -> void:
+	walk([Vector2(_rng.randf_range(WANDER_AREA.position.x, WANDER_AREA.end.x),
+		_rng.randf_range(WANDER_AREA.position.y, WANDER_AREA.end.y))])
+
+
+## Step 3: off along `points` to the tunnel, and into it at the end.
+func go_to_tunnel(points: Array[Vector2]) -> void:
+	trip = Trip.IN
+	walk(points)
+
+
+## Out of the tunnel at `at` (world space), dirty to the knees, and back along `points` to the yard.
+func come_out(at: Vector3, points: Array[Vector2], prints: float) -> void:
+	in_tunnel = false
+	_set_seen(true)
+	global_position = at
+	prints_left = prints
+	trip = Trip.OUT
+	walk(points)
+
+
+## In the tunnel nobody sees them or bumps into them.
+func _set_seen(seen: bool) -> void:
+	visible = seen
+	collision_layer = 8 if seen else 0
+
+
 ## Off along `points` (level space x, z).
 func walk(points: Array[Vector2]) -> void:
 	route = points
@@ -123,13 +180,38 @@ func is_walking() -> bool:
 	return _next < route.size()
 
 
-## At the end of their way: the walkers go round again; the rest stand there.
+## At the end of their way: into the tunnel, back in the yard, round the ring again or somewhere else to wander to.
 func _arrive() -> void:
 	route.clear()
 	_next = 0
+	match trip:
+		Trip.IN:
+			trip = Trip.NONE
+			in_tunnel = true
+			_set_seen(false)
+			reached_tunnel.emit(self)
+			return
+		Trip.OUT:
+			trip = Trip.NONE
+			back_in_yard.emit(self)
 	if activity == Activity.RING and busy:
 		ring_from += RING_POINTS
 		_walk_ring()
+	elif activity == Activity.WANDER and busy:
+		_wander()
+
+
+## The gang in the yard shake some dirt out of their trouser legs now and then.
+func _shake_dirt(delta: float) -> void:
+	if not busy or not drops_dirt or in_tunnel or trip != Trip.NONE:
+		return
+	_pile_left -= delta
+	if _pile_left > 0.0:
+		return
+	_pile_left = _rng.randf_range(PILE_EVERY.x, PILE_EVERY.y)
+	if _rng.randi_range(1, SHAKE_SAY_ONE_IN) == 1:
+		say("YARD_PEBBLE")
+	dropped_dirt.emit(self, global_position)
 
 
 ## Turns so their model's front (+Z) is toward `at`.
@@ -150,15 +232,19 @@ func said() -> String:
 	return _bubble.text if _bubble.visible else ""
 
 
-## What a guest's copy needs besides where they are and what they say (NpcSync, step 7): whether yard time started.
+## What a guest's copy needs besides where they are and what they say (NpcSync, step 7): whether yard time started
+## and whether they're in the tunnel.
 func net_state() -> Array:
-	return [busy]
+	return [busy, in_tunnel]
 
 
 func apply_net_state(net: Variant) -> void:
 	if net[0] and not busy:
 		start(0.0)
 		route.clear()
+	if net[1] != in_tunnel:
+		in_tunnel = net[1]
+		_set_seen(not in_tunnel)
 
 
 func _physics_process(delta: float) -> void:
@@ -166,7 +252,10 @@ func _physics_process(delta: float) -> void:
 		_bubble_left -= delta
 		if _bubble_left <= 0.0:
 			_bubble.hide()
-	if follower or route.is_empty():
+	if follower:
+		return
+	_shake_dirt(delta)
+	if route.is_empty():
 		return
 	if _next >= route.size():
 		_arrive()
@@ -180,4 +269,12 @@ func _physics_process(delta: float) -> void:
 	velocity = prison.global_basis * Vector3(step.x, 0, step.y)
 	velocity.y = 0.0
 	_face(global_position + velocity)
+	var from := global_position
 	move_and_slide()
+	if prints_left > 0.0:
+		var moved := from.distance_to(global_position)
+		_walked += moved
+		prints_left -= moved
+		if _walked >= PRINT_STEP:
+			_walked = 0.0
+			left_print.emit(self, global_position, velocity.normalized())

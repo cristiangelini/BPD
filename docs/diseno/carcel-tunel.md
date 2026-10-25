@@ -96,3 +96,12 @@ el jardinero, en qué celda está el hámster, dónde caen los montoncitos y por
   una frase distinta para cada escondite, y si está el túnel el escondite queda corrido (el póster en el piso, la
   cucheta corrida, el inodoro de costado o la alfombra enrollada) y se ve el pozo con su tierra. Capturas en
   `/mnt/project-files/carcel-tunel/`: `paso2-patio.png`, `paso2-celda.png`, `paso2-alfombra.png` y `paso2-tunel.png`.
+- **Paso 3 (la banda):** los 3 de la banda salen de los que caminan en ronda o toman sol (nunca de los del aro) y
+  caminan por todo el patio. Se turnan para cavar: uno camina hasta la celda (entra por la puerta del este, sube por el
+  comedor al lado del mostrador, cruza la reja del pabellón y baja por el pasillo) y se mete en el túnel, donde no se
+  lo ve. El túnel avanza solo mientras alguien está adentro: 30 m en 8 minutos de cavar. Cada 60 a 90 s sale, vuelve
+  al patio y entra el siguiente. El que sale deja huellas de tierra por 40 m (desde la celda hasta el patio), que se
+  borran a los 30 s. Los de la banda que están en el patio sueltan un montoncito de tierra cada 10 a 15 s (a veces
+  dicen "Qué piedrita molesta..."), y el que pisa un montoncito deja huellas por 4 m. Mientras alguien cava, un
+  policía a menos de 5 m del escondite oye "Scrich, scrich..." cada 4 s. Encontrado el túnel, deja de avanzar.
+  Capturas: `paso3-tierra.png`, `paso3-huellas.png` y `paso3-ruido.png`.

@@ -5,12 +5,18 @@ extends Node
 ## inmates out in the yard (YardInmate: HOOP_SPOTS by the hoop, the ring walkers and SUN_SPOTS against the east wall).
 ## Every cell has its four hideouts (CellHideout: the poster, the bunk, the toilet and the rug), and the seed draws the
 ## cell the tunnel starts in and the hideout it's behind, and the GANG of inmates digging it. A cop checking the right
-## hideout finds it (`found`). Nobody moves until the first cop walks through the gate. Every number here is
-## (propuesta).
+## hideout finds it (`found`). Nobody moves until the first cop walks through the gate. Step 3: the gang (never the
+## hoop players) wander round the yard and take turns digging: one at a time walks to the cell (cell_way) and into the
+## tunnel, which grows only while someone's in it (LENGTH metres in DIG_TIME seconds of digging), and every SHIFT
+## seconds they come out and the next one goes in. The one coming out leaves dirty footprints all the way back to the
+## yard (OUT_PRINTS metres); the ones in the yard shake dirt piles out of their trouser legs (TunnelDirt), and whoever
+## walks over a pile gets PILE_PRINTS metres of dirty footprints. While someone digs, a cop within NOISE_REACH of the
+## hideout hears it every NOISE_EVERY seconds ("scrich, scrich"). Every number here is (propuesta).
 
 signal started
 signal found(hideout: CellHideout)
 signal checked_empty(hideout: CellHideout)
+signal dug_through
 
 const INMATES := 12
 const GANG := 3
@@ -29,6 +35,17 @@ const BUNK_OUT := 0.45
 const RUG_IN := 1.75
 const POSTER_IN := 1.9
 const TOILET_IN := 1.9
+## Step 3: the tunnel's length and how long it takes to dig, how long each turn lasts, the footprints and the noise.
+const LENGTH := 30.0
+const DIG_TIME := 480.0
+const SHIFT := Vector2(60.0, 90.0)
+const OUT_PRINTS := 40.0
+const PILE_PRINTS := 4.0
+const PILE_STEP := 0.35
+const NOISE_REACH := 5.0
+const NOISE_EVERY := 4.0
+## How far in front of its hideout the digger stands to get into the tunnel.
+const IN_FRONT := 0.75
 ## The block's tiled floor is a little above the yard's.
 const FLOOR := PrisonLevel.FLOOR_TOP + 0.02
 
@@ -41,6 +58,14 @@ var tunnel_cell := 0
 var tunnel_kind := CellHideout.Kind.POSTER
 var running := false
 var is_found := false
+## Step 3: metres dug, who's in the tunnel now (null on the way between turns), whose turn is next and when the turn
+## ends; the dirt on the floor.
+var dug := 0.0
+var digger: YardInmate
+var next_up := 0
+var shift_left := 0.0
+var dirt: Node3D
+var _noise_left := 0.0
 ## A guest's copy (step 7): the host's plan decides.
 var follower := false
 var _rng := RandomNumberGenerator.new()
@@ -54,10 +79,13 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 	for cell in PrisonLevel.CELLS * 2:
 		for kind: CellHideout.Kind in CellHideout.Kind.values():
 			_hideout(cell, kind)
-	var order := range(INMATES)
+	var order := range(HOOP_SPOTS.size(), INMATES)
 	_shuffle(order)
 	for i: int in order.slice(0, GANG):
 		gang.append(i)
+	dirt = Node3D.new()
+	dirt.name = "Dirt"
+	prison.add_child(dirt)
 	for i in INMATES:
 		var inmate := YardInmate.new()
 		inmate.name = "Inmate%d" % i
@@ -75,9 +103,16 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 			inmate.activity = YardInmate.Activity.SUN
 			inmate.spot = SUN_SPOTS[i - HOOP_SPOTS.size() - RINGERS]
 			inmate.face = Vector2(SUN_FACE_X, inmate.spot.y)
+		if gang.has(i):
+			inmate.activity = YardInmate.Activity.WANDER
+			inmate.drops_dirt = true
+			inmate.wander_seed = _rng.randi()
 		add_child(inmate)
 		inmate.place()
 		inmates.append(inmate)
+		inmate.dropped_dirt.connect(_on_dropped_dirt)
+		inmate.left_print.connect(_on_left_print)
+		inmate.reached_tunnel.connect(_on_reached_tunnel)
 
 
 ## The cell's hideout of `kind`, where it goes in the cell and turned so its -Z faces into it. The poster and the
@@ -131,6 +166,32 @@ func tunnel_hideout() -> CellHideout:
 	return null
 
 
+## The way from the yard to the front of the tunnel's hideout (level space): in the east front door, up the canteen's
+## lane by the counter, across to the block's gate, down the corridor to the cell and in past its open door.
+func cell_way() -> Array[Vector2]:
+	var hideout := tunnel_hideout()
+	var side := -1.0 if tunnel_cell < PrisonLevel.CELLS else 1.0
+	var front := PrisonLevel.CORRIDOR.x if side < 0 else PrisonLevel.CORRIDOR.y
+	var middle := PrisonLevel.CELLS_Z - (tunnel_cell % PrisonLevel.CELLS + 0.5) * PrisonLevel.CELL_LENGTH
+	var lane := (PrisonLevel.CORRIDOR.x + PrisonLevel.CORRIDOR.y) / 2
+	var at := hideout.position - hideout.basis.z * IN_FRONT
+	return [Vector2(PrisonLevel.ENTRANCES[1], 9.5), Vector2(PrisonLevel.ENTRANCES[1], 7.0), Vector2(3.2, 6.0),
+		Vector2(3.2, -5.6), Vector2(lane, -6.4), Vector2(lane, -7.6), Vector2(lane, middle),
+		Vector2(front + side * 0.6, middle - side * 0.2), Vector2(at.x, at.z)]
+
+
+## The tunnel's way back out to the yard.
+func yard_way() -> Array[Vector2]:
+	var way := cell_way()
+	way.reverse()
+	return way.slice(1)
+
+
+## Metres of tunnel still to dig.
+func left_to_dig() -> float:
+	return maxf(LENGTH - dug, 0.0)
+
+
 func gang_members() -> Array[YardInmate]:
 	var list: Array[YardInmate] = []
 	for i in gang:
@@ -145,7 +206,75 @@ func start() -> void:
 	running = true
 	for i in inmates.size():
 		inmates[i].start(0.15 * i)
+	_send_next()
 	started.emit()
+
+
+## The next of the gang off to dig.
+func _send_next() -> void:
+	var inmate := inmates[gang[next_up % gang.size()]]
+	next_up += 1
+	inmate.go_to_tunnel(cell_way())
+
+
+func _on_reached_tunnel(inmate: YardInmate) -> void:
+	digger = inmate
+	shift_left = _rng.randf_range(SHIFT.x, SHIFT.y)
+
+
+## The digger's turn is over: out they come, and the next one goes.
+func _end_shift() -> void:
+	var out := digger
+	digger = null
+	var hideout := tunnel_hideout()
+	var at := hideout.position - hideout.basis.z * IN_FRONT
+	out.come_out(prison.global_transform * Vector3(at.x, FLOOR, at.z), yard_way(), OUT_PRINTS)
+	_send_next()
+
+
+func _on_dropped_dirt(_inmate: YardInmate, at: Vector3) -> void:
+	_dirt(TunnelDirt.Kind.PILE, at, Vector3.FORWARD)
+
+
+func _on_left_print(_inmate: YardInmate, at: Vector3, heading: Vector3) -> void:
+	_dirt(TunnelDirt.Kind.PRINT, at, heading)
+
+
+func _dirt(kind: TunnelDirt.Kind, at: Vector3, heading: Vector3) -> void:
+	var bit := TunnelDirt.new()
+	bit.kind = kind
+	dirt.add_child(bit)
+	heading.y = 0.0
+	var local := prison.global_transform.affine_inverse() * at
+	# On the block's tiles inside, on the yard's floor outside.
+	local.y = (FLOOR if local.z < PrisonLevel.BUILDING_FRONT else PrisonLevel.FLOOR_TOP) + 0.005
+	bit.global_transform = Transform3D(Basis.looking_at(heading if heading.length() > 0.01 else Vector3.FORWARD),
+		prison.global_transform * local)
+
+
+## Anyone walking over a pile of dirt leaves prints for a few steps.
+func _step_on_piles() -> void:
+	for bit in dirt.get_children():
+		if (bit as TunnelDirt).kind != TunnelDirt.Kind.PILE:
+			continue
+		var at := (bit as Node3D).global_position
+		for inmate in inmates:
+			if inmate.visible and inmate.prints_left <= 0.0 and Vector2(inmate.global_position.x - at.x,
+					inmate.global_position.z - at.z).length() < PILE_STEP:
+				inmate.prints_left = PILE_PRINTS
+
+
+## The digging behind the hideout, heard by a cop close enough.
+func _noise(delta: float) -> void:
+	_noise_left -= delta
+	if _noise_left > 0.0:
+		return
+	_noise_left = NOISE_EVERY
+	var hideout := tunnel_hideout()
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if cop.global_position.distance_to(hideout.global_position) <= NOISE_REACH:
+			hideout.say("TUNNEL_SCRATCH")
+			return
 
 
 func _on_checked(hideout: CellHideout, had_tunnel: bool) -> void:
@@ -166,10 +295,23 @@ func _shuffle(list: Array) -> void:
 		list[j] = swap
 
 
-func _physics_process(_delta: float) -> void:
-	if running or follower:
+func _physics_process(delta: float) -> void:
+	if follower:
 		return
-	for cop: Cop in get_tree().get_nodes_in_group("cops"):
-		if prison.inside_walls(cop.global_position):
-			start()
-			return
+	if not running:
+		for cop: Cop in get_tree().get_nodes_in_group("cops"):
+			if prison.inside_walls(cop.global_position):
+				start()
+				return
+		return
+	_step_on_piles()
+	if not digger or is_found:
+		return
+	_noise(delta)
+	if dug < LENGTH:
+		dug = minf(dug + delta * LENGTH / DIG_TIME, LENGTH)
+		if dug >= LENGTH:
+			dug_through.emit()
+	shift_left -= delta
+	if shift_left <= 0.0:
+		_end_shift()
