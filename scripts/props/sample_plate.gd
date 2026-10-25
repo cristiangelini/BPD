@@ -3,8 +3,9 @@ extends Grabbable
 
 ## A sample on a paper plate (politico-mercado.md, step 3, decision 120): the vendor hands one to the deputy at each
 ## stall (MarketSamples). Some carry laxative; nobody can tell by looking. E with it in hand takes a bite to try it:
-## a cop who bites a bad one finds out the hard way (`bitten`; the cramps come in step 4). Bitten, it stays on the
-## plate, smaller, so it can go back to the deputy.
+## a cop who bites a bad one finds out the hard way and gets cramps (Cramps, step 4). Bitten, it stays on the plate,
+## smaller, so it can go back to the deputy. Online the host hands them out and the guests copy them (PropSync,
+## net_setup); a bite happens on every PC with each one's copy of the cop (ActionSync), cramps included.
 
 ## A cop took a bite: `laxative` says what they found.
 signal bitten(cop: Cop, laxative: bool)
@@ -49,6 +50,8 @@ func _ready() -> void:
 	material.albedo_color = COLORS.get(kind, Color.WHITE)
 	for mesh in _bite.find_children("*", "MeshInstance3D", true, false):
 		(mesh as MeshInstance3D).material_override = material
+	if tasted:
+		_set_tasted()
 
 
 func held_prompt_key(_cop: Cop) -> String:
@@ -60,7 +63,19 @@ func use(cop: Cop) -> void:
 	if tasted:
 		cop.show_hint("HINT_SAMPLE_TRIED")
 		return
-	tasted = true
-	_bite.scale = Vector3.ONE * BITTEN_SCALE
+	_set_tasted()
 	cop.show_hint("HINT_SAMPLE_BAD" if laxative else "HINT_SAMPLE_OK")
+	if laxative:
+		Cramps.give(cop)
 	bitten.emit(cop, laxative)
+
+
+func _set_tasted() -> void:
+	tasted = true
+	if _bite:
+		_bite.scale = Vector3.ONE * BITTEN_SCALE
+
+
+## Online (PropSync): what a guest's copy needs before it's added, its name included so a bite finds it.
+func net_setup() -> Dictionary:
+	return {"name": name, "kind": kind, "laxative": laxative, "tasted": tasted}

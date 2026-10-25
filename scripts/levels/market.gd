@@ -11,7 +11,8 @@ extends Node3D
 ## stall by stall (MarketTour). Step 3: the samples he's handed, some with laxative (MarketSamples). Step 4: cramps
 ## for the cops who bite one (Cramps), the toilet that locks in and cures (ChemicalToilet) and the deputy's run to it
 ## or home (MarketToiletRun). Step 5: the spiteful vendor with the clues (MarketSpite) and the deputy's image
-## (MarketImage). Every number here is (propuesta).
+## (MarketImage). Step 6: the case on top, with the briefing, the pay and the vendor's getaway (MarketCase). Every
+## number here is (propuesta).
 
 const STALL_MODEL := preload("res://assets/models/market_stall.glb")
 ## What the 12 stalls sell; the seed spreads them along the aisle.
@@ -85,6 +86,8 @@ var toilet_run: MarketToiletRun
 ## The spiteful vendor and the clues, and the deputy's image (step 5).
 var spite: MarketSpite
 var image: MarketImage
+## The case on top of the walk (step 6): the comisario's briefing, the planilla and the end of the shift.
+var case: MarketCase
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -130,6 +133,12 @@ func _ready() -> void:
 	city.transform = CityLayout.anchor("market")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+	case = MarketCase.new()
+	case.name = "Case"
+	case.market = self
+	case.shift_screen = $ShiftScreen
+	add_child(case)
+	case.start((city as City).comisario)
 
 
 ## What each stall sells, in walking order: the 12 kinds shuffled by the seed.

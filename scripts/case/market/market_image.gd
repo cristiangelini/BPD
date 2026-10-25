@@ -18,7 +18,7 @@ const CRAMP_GAP := 10.0
 
 var value := START
 var tour: MarketTour
-## Online, a guest's image: the host's says how much is left (later step).
+## Online, a guest's image: the host's says how much is left (MarketCase snapshot).
 var follower := false
 var _gaps := {}
 var _label: Label
@@ -50,6 +50,15 @@ func lose(points: float, line := "") -> void:
 	value = maxf(value - points, 0.0)
 	if line != "":
 		tour.politician.say(line)
+	changed.emit(value)
+	_show()
+
+
+## A guest's image: what the host's shows.
+func follow(points: float) -> void:
+	if is_equal_approx(points, value):
+		return
+	value = points
 	changed.emit(value)
 	_show()
 

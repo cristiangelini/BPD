@@ -155,7 +155,51 @@ export function buildToiletDoor() {
 export const KINDS = ['fruit', 'cheese', 'empanadas', 'fish', 'pickles', 'olives', 'bread', 'sweets', 'juice', 'meat', 'spices', 'ice_cream'];
 const FOODS = [fruit, cheese, empanadas, fish, pickles, olives, bread, sweets, juice, meat, spices, iceCream];
 
+// The spiteful vendor's getaway (step 6): a cargo tricycle, two wheels in front under a big crate full of vegetables
+// and one behind under the saddle. The vendor (npc_puestero) pedals it. 1.9 m long; faces +Z like the vehicles. Its
+// wheels are part of it. What falls off in the curves is a loose veggie (market_veggie_*).
+export function buildVeggieTrike() {
+	const frame = mat('trike_frame', 0x2a6ab0), tire = mat('tire', 0x1a1a1e), black = mat('trike_black', 0x22252a);
+	const b = new Builder('veggie_trike');
+	for (const [x, z] of [[-0.42, 0.55], [0.42, 0.55], [0, -0.7]]) {
+		b.add('wheels', tire, new THREE.TorusGeometry(0.28, 0.04, 6, 14), { pos: V(x, 0.3, z), rot: [0, Math.PI / 2, 0] });
+		b.add('wheels', black, new THREE.CylinderGeometry(0.04, 0.04, 0.1, 6), { pos: V(x, 0.3, z), rot: [0, 0, Math.PI / 2] });
+	}
+	b.add('frame', frame, new THREE.BoxGeometry(0.95, 0.05, 0.05), { pos: V(0, 0.3, 0.55) });
+	b.add('frame', frame, new THREE.BoxGeometry(0.05, 0.05, 1.3), { pos: V(0, 0.4, -0.1), rot: [0.08, 0, 0] });
+	b.add('frame', frame, new THREE.BoxGeometry(0.05, 0.6, 0.05), { pos: V(0, 0.7, -0.45), rot: [-0.2, 0, 0] });
+	b.add('frame', black, new THREE.BoxGeometry(0.2, 0.06, 0.28), { pos: V(0, 1.0, -0.52) });
+	b.add('frame', frame, new THREE.BoxGeometry(0.05, 0.6, 0.05), { pos: V(0, 0.75, 0.05), rot: [0.15, 0, 0] });
+	b.add('frame', black, new THREE.BoxGeometry(0.6, 0.04, 0.04), { pos: V(0, 1.05, 0.1) });
+	// The crate on the front axle, heaped with vegetables.
+	b.add('crate', crate, new THREE.BoxGeometry(0.95, 0.06, 0.65), { pos: V(0, 0.62, 0.62) });
+	for (const x of [-0.46, 0.46]) b.add('crate', crate, new THREE.BoxGeometry(0.04, 0.32, 0.65), { pos: V(x, 0.8, 0.62) });
+	for (const z of [0.31, 0.93]) b.add('crate', crate, new THREE.BoxGeometry(0.95, 0.32, 0.04), { pos: V(0, 0.8, z) });
+	const r = rng(41);
+	const veg = [mat('veg_cabbage', 0x7cc05a), mat('veg_pumpkin', 0xe8862a), mat('veg_tomato', 0xd8322a), mat('veg_eggplant', 0x5a2a6a)];
+	for (let i = 0; i < 14; i++) {
+		const m = veg[i % veg.length];
+		b.add('veggies', m, ellipsoid(0.1 + r() * 0.05, 0.09 + r() * 0.04, 0.1 + r() * 0.05, 8, 5),
+			{ pos: V(-0.33 + (i % 5) * 0.165, 0.95 + Math.floor(i / 5) * 0.07, 0.45 + r() * 0.34) });
+	}
+	b.add('veggies', mat('veg_carrot_leaf', 0x3a9a3a), new THREE.ConeGeometry(0.05, 0.25, 5), { pos: V(0.3, 1.15, 0.8) });
+	return b.build();
+}
+
+// What the trike loses in each curve (step 6), shown bigger than life so it's seen from the patrol car: a pumpkin, a
+// cabbage and a watermelon. Each origin on the ground.
+export function buildVeggie(name, color, rx, ry, rz, leaf) {
+	const b = new Builder(name);
+	b.add('veggie', mat(name, color), ellipsoid(rx, ry, rz, 10, 7), { pos: V(0, ry, 0) });
+	if (leaf) b.add('veggie', mat('veg_stem', 0x4a7a2a), new THREE.CylinderGeometry(0.03, 0.04, 0.1, 5), { pos: V(0, ry * 2 + 0.03, 0) });
+	return b.build();
+}
+
 export const models = {
+	veggie_trike: buildVeggieTrike,
+	market_veggie_pumpkin: () => buildVeggie('market_veggie_pumpkin', 0xe8862a, 0.35, 0.25, 0.35, true),
+	market_veggie_cabbage: () => buildVeggie('market_veggie_cabbage', 0x8ccc6a, 0.25, 0.22, 0.25, false),
+	market_veggie_melon: () => buildVeggie('market_veggie_melon', 0x2e7a3a, 0.28, 0.25, 0.42, false),
 	market_stall: buildStall,
 	sample_plate: buildSamplePlate,
 	laxative_jar: buildLaxativeJar,
@@ -167,6 +211,12 @@ export const models = {
 };
 
 export const views = {
+	veggie_trike: {
+		items: [{ name: 'veggie_trike', pos: [0, 0, 0], rotY: 0.9 }, { name: 'npc_puestero', pos: [-0.25, 0.25, -0.35], rotY: 0.9, scale: 0.85 },
+			{ name: 'market_veggie_pumpkin', pos: [1.4, 0, 0.6] }, { name: 'market_veggie_cabbage', pos: [1.1, 0, -0.5] },
+			{ name: 'market_veggie_melon', pos: [-1.3, 0, 0.8] }],
+		cam: { pos: [0, 2.0, 4.5], target: [0, 0.6, 0], fov: 40 },
+	},
 	market_stalls: {
 		items: KINDS.slice(0, 4).flatMap((k, i) => [{ name: 'market_stall', pos: [(i - 1.5) * 3.3, 0, 0] },
 			{ name: `market_food_${k}`, pos: [(i - 1.5) * 3.3, 1.0, 0] }]),
