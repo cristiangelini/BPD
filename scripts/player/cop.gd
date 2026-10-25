@@ -354,6 +354,11 @@ func tuck_away(away: bool) -> void:
 	velocity = Vector3.ZERO
 
 
+## The same name for this cop on every PC (its CopSync's), for what the host sends about it.
+func net_id() -> String:
+	return String(sync.name) if sync else String(name)
+
+
 ## Puts the cop at `to` at once, empty-handed (the jailbreak's guard putting it back in its cell). Online, the host
 ## moving another player's cop tells its owner, who moves it for everyone.
 func warp(to: Transform3D) -> void:
@@ -604,6 +609,11 @@ func look(amount: Vector2) -> void:
 
 ## One movement tick. Kept apart from input so tests can drive it.
 func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_jump: bool) -> void:
+	# Tucked away in something that carries it (the garbage bag, the truck): it only goes where that goes.
+	if seated_in and seated_in.has_method("hold_point"):
+		global_position = seated_in.hold_point(self)
+		velocity = Vector3.ZERO
+		return
 	_update_crouch(want_crouch)
 	var moving := wish.length() > 0.1
 	if stamina <= 0.0:

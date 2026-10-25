@@ -55,8 +55,36 @@ export function buildPillowDummy() {
 	return b.build();
 }
 
+// Don Ruperto's garbage truck: 7.6 m long, 2.4 m wide, 3 m tall, the cab at the front (-Z) and the open hopper at
+// the back (+Z, around z 3.2), where the dumpster's contents go. The origin on the ground.
+export function buildGarbageTruck() {
+	const b = new Builder('garbage_truck');
+	const box = (part, m, w, h, d, x, y, z, rot) => b.add(part, m, new THREE.BoxGeometry(w, h, d), { pos: V(x, y, z), rot });
+	const orange = mat('truck_orange', 0xe8782a), white = mat('truck_white', 0xeeeeea), dark = mat('truck_dark', 0x2a2a2e);
+	const glass = mat('truck_glass', 0x1e2a36, { roughness: 0.2 }), light = mat('truck_light', 0xfff2b0, { emissive: 0xfff2b0 });
+	box('body', dark, 2.3, 0.3, 7.4, 0, 0.55, 0);
+	// The cab, with its windshield and the side windows (Don Ruperto sits on the left).
+	box('cab', orange, 2.4, 1.9, 1.7, 0, 1.6, -2.95);
+	box('cab', glass, 2.2, 0.8, 0.05, 0, 2.0, -3.81);
+	for (const x of [-1, 1]) box('cab', glass, 0.05, 0.7, 1.0, x * 1.21, 2.0, -3.0);
+	for (const x of [-1, 1]) box('lights', light, 0.3, 0.16, 0.04, x * 0.8, 1.0, -3.82);
+	// The compactor box, white with an orange stripe.
+	box('box', white, 2.4, 2.3, 4.3, 0, 1.85, 0.1);
+	for (const x of [-1, 1]) box('box', orange, 0.02, 0.3, 4.3, x * 1.21, 1.6, 0.1);
+	// The hopper at the back: a low open mouth.
+	box('hopper', dark, 2.4, 0.9, 1.4, 0, 1.0, 2.95);
+	box('hopper', orange, 2.4, 1.2, 0.1, 0, 2.6, 2.3, [0.5, 0, 0]);
+	for (const x of [-1, 1]) box('hopper', dark, 0.1, 1.2, 1.4, x * 1.15, 1.8, 2.95);
+	const wheel = mat('truck_wheel', 0x1a1a1a);
+	for (const z of [-2.8, 1.2, 2.4]) for (const x of [-1, 1]) {
+		b.add('wheel', wheel, new THREE.CylinderGeometry(0.5, 0.5, 0.35, 14), { pos: V(x * 1.05, 0.5, z), rot: [0, 0, Math.PI / 2] });
+	}
+	return b.build();
+}
+
 export const models = {
 	trash_bin: buildTrashBin, garbage_bag: buildGarbageBag, dumpster: buildDumpster, pillow_dummy: buildPillowDummy,
+	garbage_truck: buildGarbageTruck,
 };
 
 export const views = {
@@ -69,5 +97,13 @@ export const views = {
 			{ name: 'cop_1', pos: [-1.8, 0, -0.4], rotY: 0.5 },
 		],
 		cam: { pos: [0, 1.8, 4.2], target: [0, 0.6, 0], fov: 45 },
+	},
+	garbage_truck: {
+		items: [
+			{ name: 'garbage_truck', pos: [0, 0, 0], rotY: 0.6 },
+			{ name: 'dumpster', pos: [2.2, 0, 4.4] },
+			{ name: 'npc_mudancero', pos: [-1.5, 0, 4.5] },
+		],
+		cam: { pos: [7, 3.5, 10], target: [0, 1.2, 0.5], fov: 45 },
 	},
 };

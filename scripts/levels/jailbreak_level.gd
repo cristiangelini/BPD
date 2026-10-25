@@ -104,11 +104,14 @@ const VENT_GRILLES: Array[Vector3] = [Vector3(8.3, VentGrille.HEIGHT, StationRoo
 ## The key board on the front wall, behind the guard's back (step 3).
 const KEY_BOARD_AT := Vector3(12.4, 1.5, StationRooms.HALF_Z - StationRooms.WALL - 0.03)
 ## The garbage truck jailbreak (fuga-basura.md, step 1): the dumpster on the sidewalk and each cell's trash bin.
-const DUMPSTER_AT := Vector3(3.0, 0, StationRooms.HALF_Z + 2.2)
+const DUMPSTER_AT := Vector3(-12.0, 0, StationRooms.HALF_Z + 2.2)
 const TRASH_BINS: Array[Vector3] = [Vector3(6.6, 0, 3.9), Vector3(14.4, 0, 3.9)]
 const TRASH_BIN_MODEL := preload("res://assets/models/trash_bin.glb")
 ## Step 2: the pillow and blanket on each cell's bunk, to roll into a dummy.
 const BUNK_DUMMIES: Array[Vector3] = [Vector3(8.3, 0.5, 1.6), Vector3(12.7, 0.5, 1.6)]
+## Step 3: the guard's roll of bags (out of sight under the guard room until he takes one).
+const BAG_ROLL := 6
+const BAG_ROLL_AT := Vector3(4.0, -3.0, 7.0)
 ## The big one stays stuck in the grille this long (s); crawling faster than this in the duct is a noisy scramble.
 const VENT_STUCK := 4.0
 const VENT_QUIET_SPEED := (Cop.CRAWL_SPEED + Cop.CRAWL_RUN_SPEED) / 2.0
@@ -146,6 +149,7 @@ var grilles: Array[VentGrille] = []
 var duct: VentDuct
 var key_board: KeyBoard
 var dumpster: Dumpster
+var garbage_truck: GarbageTruck
 ## The host: where each cop in the duct was last physics frame, to hear who scrambles.
 var _duct_last := {}
 ## The other end of the tunnels, on the sidewalk: it shows once one is through.
@@ -261,6 +265,20 @@ func _garbage_night() -> void:
 	add_child(dumpster)
 	dumpster.global_transform = lot * Transform3D(Basis.IDENTITY, DUMPSTER_AT)
 	collector.dumpster = dumpster
+	for i in BAG_ROLL:
+		var bag := GarbageBag.new()
+		bag.name = "GarbageBag%d" % i
+		add_child(bag)
+		bag.home = lot * Transform3D(Basis.IDENTITY, BAG_ROLL_AT + Vector3(i * 0.8, 0, 0))
+		bag.global_transform = bag.home
+		collector.bags.append(bag)
+	garbage_truck = GarbageTruck.new()
+	garbage_truck.name = "GarbageTruck"
+	garbage_truck.station_lot = lot
+	garbage_truck.dumpster = dumpster
+	garbage_truck.guard = collector
+	add_child(garbage_truck)
+	garbage_truck.set_up(case_seed)
 	for cell in BUNK_DUMMIES.size():
 		var dummy := BunkDummy.new()
 		dummy.name = "BunkDummy%d" % cell
@@ -273,6 +291,7 @@ func _garbage_night() -> void:
 ## Caught on garbage night (before the rest of _on_caught): out of every bag, the dummies back to pillows, and once
 ## everyone is back in the cells he counts them again.
 func _garbage_caught(_times: int) -> void:
+	garbage_truck.release_all()
 	for bag: GarbageBag in get_tree().get_nodes_in_group("garbage_bags"):
 		bag.let_out()
 	for dummy: BunkDummy in get_tree().get_nodes_in_group("bunk_dummies"):
@@ -966,6 +985,8 @@ func _show_end(result: String) -> void:
 		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_TUNNEL")
 	elif result == "escaped" and is_vent():
 		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_VENT")
+	elif result == "escaped" and is_garbage():
+		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_GARBAGE")
 	box_ui.add_child(line)
 	var buttons := HBoxContainer.new()
 	buttons.alignment = BoxContainer.ALIGNMENT_CENTER

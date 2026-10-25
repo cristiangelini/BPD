@@ -73,3 +73,15 @@ func undo() -> void:
 ## Only the lump shows: unbuilt, the pillow and the blanket are part of the bunk.
 func _refresh() -> void:
 	_model.visible = built
+
+
+## Online: rolled or not (NpcSync); the rolling itself runs on the host.
+func net_state() -> Variant:
+	return built
+
+
+func apply_net_state(state: Variant) -> void:
+	if built != state:
+		built = state
+		builder = null
+		_refresh()
