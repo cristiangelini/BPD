@@ -25,6 +25,9 @@ const COMPLAINT_FINE := 100
 const MELON_FINE := 20
 ## Each packed car fined for too many riders adds this to a solved case's pay (control-auto-lleno.md, answer 2).
 const CROWD_FINE_BONUS := 20
+## Each drunk driver's keys taken adds this to a solved case's pay, each drunk let through takes it off
+## (control-boda.md, answer 3).
+const DRUNK_KEYS := 25
 ## Its own quota, like the chase and the crime scene (decision 91).
 const QUOTA := ShiftReport.SALARY
 const SHIFT_DELAY := 3.0
@@ -47,6 +50,9 @@ var innocents := 0
 var melon_complaints := 0
 ## Packed cars fined for too many riders.
 var crowd_fines := 0
+## Drunk drivers whose keys a cop took, and drunk drivers let through (or sneaked) at the wheel.
+var drunk_keys := 0
+var drunks_passed := 0
 ## The wanted driver, out of the car and cuffed; in the patrol car, the case is solved.
 var suspect: ChaseSuspect
 ## The clown car the wanted clown was taken out of (its seat is left empty on every PC).
@@ -140,17 +146,27 @@ func crowd_fined(_car: QueueCar) -> void:
 	_hint_all("HINT_CROWD_FINED")
 
 
-## What adds to a solved case's pay: a gold watch or the pilot's remote, and each packed car fined.
+## A cop took a drunk driver's keys in the wedding check (QueueCar.take_keys).
+func keys_taken(_car: QueueCar) -> void:
+	if follower or shift_over:
+		return
+	drunk_keys += 1
+	_hint_all("HINT_WEDDING_KEYS")
+
+
+## What adds to a solved case's pay: a gold watch or the pilot's remote, each packed car fined and each drunk's keys.
 func extras() -> Array:
 	var out := watch_bonus() + remote_bonus()
 	for i in crowd_fines:
 		out.append(CROWD_FINE_BONUS)
+	for i in drunk_keys:
+		out.append(DRUNK_KEYS)
 	return out
 
 
-## The pay's complaints: the innocents detained and the watermelons split.
+## The pay's complaints: the innocents detained, the watermelons split and the drunks let through.
 func fines() -> int:
-	return innocents * COMPLAINT_FINE + melon_complaints * MELON_FINE
+	return innocents * COMPLAINT_FINE + melon_complaints * MELON_FINE + drunks_passed * DRUNK_KEYS
 
 
 ## Evidence in the patrol car's trunk: one gold watch is enough for the extra.
@@ -238,6 +254,9 @@ func _on_boarded() -> void:
 
 ## The wanted car went by the checkpoint: it runs off and the chase starts. Without a city to chase it in, lost.
 func _on_passed(car: QueueCar, _sneaked: bool) -> void:
+	if not follower and not shift_over and car.drunk_at_wheel():
+		drunks_passed += 1
+		_hint_all("HINT_WEDDING_DRUNK_PASSED")
 	if follower or not car.wanted or solved_now or lost or suspect or chase:
 		return
 	var ghost_look := -1
@@ -364,7 +383,8 @@ func _show_result(result: Dictionary) -> void:
 ## the chase after the one who ran off and the end of shift.
 func snapshot() -> Dictionary:
 	var state := {"tip": tip_given, "patience": queue.patience, "sneaked": queue.sneaked,
-		"clues": clues.known, "innocents": innocents, "melons": melon_complaints, "crowd_fines": crowd_fines, "lost": lost, "solved": solved_now, "escaped": escaped,
+		"clues": clues.known, "innocents": innocents, "melons": melon_complaints, "crowd_fines": crowd_fines,
+		"drunk_keys": drunk_keys, "drunks_passed": drunks_passed, "lost": lost, "solved": solved_now, "escaped": escaped,
 		"suspect": suspect != null, "result": _result, "taken_from": taken_from, "clean": _clean_clowns()}
 	if chase:
 		state.chase = chase.snapshot()
@@ -393,6 +413,12 @@ func apply_snapshot(state: Dictionary) -> void:
 	if state.get("crowd_fines", 0) > crowd_fines:
 		_hint_all("HINT_CROWD_FINED")
 	crowd_fines = state.get("crowd_fines", 0)
+	if state.get("drunk_keys", 0) > drunk_keys:
+		_hint_all("HINT_WEDDING_KEYS")
+	drunk_keys = state.get("drunk_keys", 0)
+	if state.get("drunks_passed", 0) > drunks_passed:
+		_hint_all("HINT_WEDDING_DRUNK_PASSED")
+	drunks_passed = state.get("drunks_passed", 0)
 	if state.suspect and not suspect:
 		suspect = get_parent().get_node_or_null("Driver") as ChaseSuspect
 		if suspect and patrol_car:
