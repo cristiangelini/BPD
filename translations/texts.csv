@@ -1624,6 +1624,11 @@ CONVOY_NOT_DRIVER,"¡Yo no manejo, oficial! Pregúntele al de las llaves.","I do
 TRUNK_PIES,"Tortas de crema para el número. Huelen a vainilla.","Cream pies for the act. They smell of vanilla.","Tortas de creme para o número. Cheiram a baunilha."
 TRUNK_PROP_SAFE,"Una caja fuerte... de cartón pintado. Es para el número.","A safe... of painted cardboard. It's for the act.","Um cofre... de papelão pintado. É para o número."
 TRUNK_SAFE,"¡Pesa una tonelada! Es la caja fuerte del director.","It weighs a ton! It's the ringmaster's safe.","Pesa uma tonelada! É o cofre do diretor."
+PROMPT_TAP_MELON,"E: darle un golpecito a la sandía (agárrala para bajarla)","E: tap the watermelon (grab it to take it down)","E: dar uma batidinha na melancia (pegue para tirá-la)"
+MELON_TAP,"¡Toc, toc!","Knock, knock!","Toc, toc!"
+MELON_TAP_ODD,"¡Tonc...!","Thonk...!","Tonc...!"
+PROMPT_GOLD_WATCH,"Un reloj de oro de mentira: llévalo al patrullero","A fake gold watch: take it to the patrol car","Um relógio de ouro falso: leve-o para a viatura"
+PROMPT_TAP_MELON_HELD,"E: golpecito. Tírala fuerte al piso para partirla","E: tap it. Throw it hard at the ground to split it","E: batidinha. Jogue com força no chão para parti-la"
 PROMPT_BUS_ON,E: subir al bus,E: get on the bus,E: subir no ônibus
 PROMPT_BUS_OFF,E: bajar del bus,E: get off the bus,E: descer do ônibus
 PROMPT_BUS_DRIVE,E: manejar el bus,E: drive the bus,E: dirigir o ônibus

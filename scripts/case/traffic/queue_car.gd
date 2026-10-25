@@ -66,7 +66,6 @@ const HONK_EVERY := 9.0
 const CLOWN_RIDERS := Vector2i(3, 6)
 ## The fruit seller's pickup (control-frutas.md): its paint per WantedPlan.COLORS (white, yellow, green, blue).
 const FRUIT_MODEL := preload("res://assets/models/fruit_truck.glb")
-const WATERMELON := preload("res://assets/models/watermelon.glb")
 const FRUIT_PAINTS: Array[Color] = [Color("f2f2ee"), Color("e8c547"), Color("5b9a5a"), Color("7aa6d8")]
 const FRUIT_CRATES: Array[String] = ["bananas", "oranges", "pineapples"]
 ## How many watermelons ride in its bed (control-frutas.md, "Cómo es").
@@ -105,6 +104,8 @@ var clown_traits := {}
 var fruit := false
 ## Its crate of other fruit (FRUIT_CRATES): the plan's, or else from its plate.
 var crate := ""
+## Each watermelon's Watermelon.kind, in order (the plan's); missing ones are normal.
+var melon_kinds: Array[String] = []
 var _honk_left := HONK_EVERY
 ## The car the case is after (WantedPlan).
 var wanted := false
@@ -222,9 +223,11 @@ func _build_fruit_truck() -> void:
 	bed.name = "Bed"
 	add_child(bed)
 	for i in melons():
-		var melon: Node3D = WATERMELON.instantiate()
-		melon.name = "Watermelon%d" % i
+		var melon := Watermelon.new()
+		melon.name = "%sMelon%d" % [name, i]
+		melon.kind = melon_kinds[i] if i < melon_kinds.size() else "normal"
 		melon.position = Vector3(FRUIT_SPOTS[i].x, FRUIT_BED + 0.17, FRUIT_SPOTS[i].y)
+		melon.put_in_bed(self)
 		bed.add_child(melon)
 	var sign := Label3D.new()
 	sign.name = "Sign"
@@ -237,6 +240,17 @@ func _build_fruit_truck() -> void:
 	sign.position = FRUIT_SIGN_AT
 	sign.rotation.y = PI / 2
 	add_child(sign)
+
+
+## Its watermelons still in the bed.
+func bed_melons() -> Array[Watermelon]:
+	var out: Array[Watermelon] = []
+	var bed := get_node_or_null("Bed")
+	if bed:
+		for melon in bed.get_children():
+			if melon is Watermelon and (melon as Watermelon).in_bed:
+				out.append(melon)
+	return out
 
 
 ## Tints every "paint" part of its model.

@@ -58,9 +58,11 @@ const R = 0.19, RY = 0.17, RZ = 0.26;
 export function buildWatermelon() {
 	const b = new Builder('watermelon');
 	b.add('rind', rind, ellipsoid(R, RY, RZ, 12, 8));
+	// Dark stripes: thin wedges of a slightly bigger rind, pole to pole along Z.
 	for (let i = 0; i < 6; i++) {
-		const a = (i / 6) * Math.PI * 2;
-		b.add('rind', stripe, ellipsoid(0.035, 0.035, RZ * 1.005, 4, 6), { pos: V(Math.cos(a) * R * 0.86, Math.sin(a) * RY * 0.86, 0) });
+		const wedge = new THREE.SphereGeometry(1, 2, 8, (i / 6) * Math.PI * 2, 0.35);
+		wedge.rotateX(Math.PI / 2);
+		b.add('rind', stripe, wedge, { scale: [R * 1.02, RY * 1.02, RZ * 1.01] });
 	}
 	return b.build();
 }
