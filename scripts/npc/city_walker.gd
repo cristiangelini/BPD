@@ -14,6 +14,8 @@ const REACH := 0.4
 var path := PackedVector3Array()
 var next := 0
 var pace := 1.2
+## The rain makes them hurry (CityRain).
+var hurry := 1.0
 var _model: Node3D
 var _time := 0.0
 
@@ -47,6 +49,6 @@ func _process(delta: float) -> void:
 		next = (next + 1) % path.size()
 		return
 	rotation.y = lerp_angle(rotation.y, atan2(to.x, to.z), minf(1.0, 6.0 * delta))
-	position += to.normalized() * pace * delta
+	position += to.normalized() * pace * hurry * delta
 	_model.position.y = absf(sin(_time * pace * 5.0)) * 0.06
 	_model.rotation.z = sin(_time * pace * 5.0) * 0.05

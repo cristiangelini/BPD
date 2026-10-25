@@ -22,6 +22,8 @@ var path := PackedVector3Array()
 var look := 0
 var next := 0
 var stopped_for := 0.0
+## The rain slows it down (CityRain).
+var speed_factor := 1.0
 var _blocked := false
 var _look_left := 0.0
 
@@ -80,7 +82,7 @@ func _physics_process(delta: float) -> void:
 			return
 	else:
 		stopped_for = 0.0
-	position += basis.z * SPEED * delta
+	position += basis.z * SPEED * speed_factor * delta
 
 
 ## Something is right in front of it: a car of the city or a cop's car, or someone walking.

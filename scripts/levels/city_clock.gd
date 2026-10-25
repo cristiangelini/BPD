@@ -31,6 +31,11 @@ const NIGHT_HORIZON := Color(0.1, 0.12, 0.22)
 const DAY_SUN := Color(1, 0.93, 0.82)
 const DUSK_SUN := Color(1, 0.62, 0.4)
 const WINDOW_LIGHT := Color(1.0, 0.85, 0.5)
+const RAIN_SKY := Color(0.36, 0.4, 0.46)
+const RAIN_HORIZON := Color(0.55, 0.58, 0.62)
+## Under the rain the sun gives this share of its light, and the fog closes in.
+const RAIN_SUN := 0.35
+const RAIN_FOG := 0.012
 
 ## The time, in hours from 0 to 24.
 var hour := 12.0
@@ -41,6 +46,8 @@ var environment: Environment
 var lamps: Array[StandardMaterial3D] = []
 var windows: Array[StandardMaterial3D] = []
 var night := false
+## How grey the rain makes the sky (CityRain), 0 to 1.
+var overcast := 0.0
 var _watch: Label
 
 
@@ -98,7 +105,7 @@ func apply() -> void:
 		# From the east in the morning to the west in the evening; at night the moon lights a little from above.
 		var high := elevation(hour) if day > 0.05 else 50.0
 		sun.rotation_degrees = Vector3(-high, 90.0 - (hour - SUNRISE) / (SUNSET - SUNRISE) * 180.0, 0)
-		sun.light_energy = lerpf(MOON_ENERGY, SUN_ENERGY, day)
+		sun.light_energy = lerpf(MOON_ENERGY, SUN_ENERGY, day) * lerpf(1.0, RAIN_SUN, overcast)
 		sun.light_color = DAY_SUN.lerp(DUSK_SUN, dusk).lerp(Color(0.6, 0.7, 1.0), 1.0 - day)
 	if environment:
 		environment.ambient_light_energy = lerpf(NIGHT_AMBIENT, DAY_AMBIENT, day)
@@ -106,7 +113,12 @@ func apply() -> void:
 		if sky:
 			sky.sky_top_color = NIGHT_SKY.lerp(DAY_SKY, day)
 			sky.sky_horizon_color = NIGHT_HORIZON.lerp(DAY_HORIZON, day).lerp(DUSK_HORIZON, dusk * 0.7)
+			sky.sky_top_color = sky.sky_top_color.lerp(RAIN_SKY * maxf(day, 0.2), overcast)
+			sky.sky_horizon_color = sky.sky_horizon_color.lerp(RAIN_HORIZON * maxf(day, 0.2), overcast)
 			sky.ground_horizon_color = sky.sky_horizon_color
+		environment.fog_enabled = overcast > 0.01
+		environment.fog_density = RAIN_FOG * overcast
+		environment.fog_light_color = RAIN_HORIZON * maxf(day, 0.2)
 	var glow := 1.0 - day
 	for lamp in lamps:
 		lamp.emission_energy_multiplier = LAMP_ENERGY * glow
