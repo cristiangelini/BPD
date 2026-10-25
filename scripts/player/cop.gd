@@ -347,6 +347,13 @@ func handed(item: Grabbable) -> void:
 		sync.tell_held()
 
 
+## Tucked away out of sight (inside the garbage jailbreak's bag): nobody sees it and it bumps into nothing.
+func tuck_away(away: bool) -> void:
+	visible = not away
+	_shape.disabled = away
+	velocity = Vector3.ZERO
+
+
 ## Puts the cop at `to` at once, empty-handed (the jailbreak's guard putting it back in its cell). Online, the host
 ## moving another player's cop tells its owner, who moves it for everyone.
 func warp(to: Transform3D) -> void:

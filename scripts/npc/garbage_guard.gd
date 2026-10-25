@@ -7,6 +7,9 @@ extends NightGuard
 ## empties the bin into it for IN_CELL seconds, knots it, steps out dragging it, locks the cell and takes it out the
 ## front door to the dumpster on the sidewalk (Dumpster), and walks back. While he's away he still watches. Every
 ## number here is (propuesta).
+## Step 2: before knotting the bag he turns and counts the cell's prisoners (a pillow dummy on the bunk counts, unless
+## he stares at it up close); one short is suspicion and a long look. A cop in the bag makes it heavy: he drags it at
+## half speed, and two heavy bags in a row is suspicious too.
 
 signal bag_dropped(bag: GarbageBag, cell: int)
 signal bag_thrown(bag: GarbageBag)
@@ -25,17 +28,34 @@ const BAG_Z := 3.6
 const DESK_SIDE: Array[Vector3] = [Vector3(8.8, 0, 8.4), Vector3(12.2, 0, 8.4)]
 const TO_STREET: Array[Vector3] = [Vector3(6.6, 0, 6.4), Vector3(5.2, 0, 6.4), Vector3(0, 0, 7.5), Vector3(0, 0, 10.0)]
 const GRUMBLE_LINES := 4
+## The count: how long he looks at the cell, and when one is missing, how much it adds and how much longer he looks.
+const COUNT_TIME := 1.5
+const MISSING_SUSPICION := 40.0
+const MISSING_LOOK := 5.0
+## A dummy he looks at from this close for this long is a dummy.
+const DUMMY_CLOSE := 2.5
+const DUMMY_STARE := 3.0
+## Dragging a bag with a cop inside.
+const HEAVY_SPEED := 0.5
+const HEAVY_AGAIN_SUSPICION := 30.0
+const HEAVY_LINES := 3
 
 ## The station's lot, the cell doors and the dumpster (the level sets them).
 var station_lot: Transform3D
 var cell_doors: Array[CellDoor] = []
 var dumpster: Dumpster
 ## Seconds to the next round, the cell it's for, and where he is in it: "" (at his desk), "to_cell", "in_cell",
-## "out_of_cell", "to_street" or "back".
+## "counting", "out_of_cell", "to_street" or "back".
 var round_left := ROUND_MAX
 var round_cell := 0
 var stage := ""
 var bag: GarbageBag
+## How many prisoners he knows are in each cell (recount()).
+var jailed: Array[int] = [0, 0]
+## Whether the bag he's dragging is heavy, and how many heavy ones in a row.
+var heavy := false
+var heavy_streak := 0
+var _stare := {}
 var _desk_spot: Transform3D
 var _path: Array[Vector3] = []
 var _stay_left := 0.0
@@ -72,10 +92,15 @@ func _physics_process(delta: float) -> void:
 	if _stay_left > 0.0:
 		_stay_left -= delta
 		if _stay_left <= 0.0:
-			_leave_cell()
+			if stage == "in_cell":
+				_count()
+			else:
+				_leave_cell()
 	else:
 		_walk(delta)
 	_drag()
+	if is_away():
+		_check_dummies(delta)
 	if is_away():
 		_watch(delta)
 
@@ -83,6 +108,7 @@ func _physics_process(delta: float) -> void:
 ## Gets up for the garbage of `round_cell`.
 func start_round() -> void:
 	stage = "to_cell"
+	jailed[round_cell] = maxi(jailed[round_cell], _present(round_cell))
 	var door := _door_x(round_cell)
 	_path = [_at(DESK_SIDE[round_cell]), _at(Vector3(door, 0, DOOR_FRONT_Z))]
 	say("GARBAGE_GUARD_GRUMBLE_%d" % _rng.randi_range(0, GRUMBLE_LINES - 1))
@@ -109,7 +135,7 @@ func _walk(delta: float) -> void:
 		return
 	var to := _path[0] - global_position
 	to.y = 0.0
-	var step := WALK_SPEED * delta
+	var step := WALK_SPEED * (HEAVY_SPEED if heavy else 1.0) * delta
 	if to.length() > 0.01:
 		global_basis = Basis.looking_at(-to.normalized())
 	look = 0.0
@@ -147,6 +173,7 @@ func _arrived() -> void:
 				dumpster.throw_in(bag)
 				bag_thrown.emit(bag)
 			bag = null
+			heavy = false
 			stage = "back"
 			var back := TO_STREET.duplicate()
 			back.reverse()
@@ -169,14 +196,86 @@ func _drop_bag() -> void:
 	get_parent().add_child(bag, true)
 	bag.global_position = _at(Vector3(_cell_x(round_cell), 0, BAG_Z))
 	_stay_left = IN_CELL
+	_face(true)
 	say("GARBAGE_GUARD_EMPTY")
 	bag_dropped.emit(bag, round_cell)
 
 
-## Done in the cell: he knots the bag and drags it out; at the door he locks the cell (then the dumpster).
+## Facing out of the cell, at the bag by the door, or into it, at the middle of its back wall (the bunk).
+func _face(out: bool) -> void:
+	var to := station_lot.basis * Vector3(0, 0, 1) if out \
+		else _flat(_at(Vector3(_cell_x(round_cell), 0, StationRooms.SPLIT_Z)))
+	global_basis = Basis.looking_at(-to.normalized())
+	look = 0.0
+
+
+## The bin's empty: he turns and counts the cell's prisoners. One short and he looks for longer.
+func _count() -> void:
+	stage = "counting"
+	_face(false)
+	_stay_left = COUNT_TIME
+	if _present(round_cell) + _dummies(round_cell) < jailed[round_cell]:
+		suspicion = minf(suspicion + MISSING_SUSPICION, 100.0)
+		_stay_left += MISSING_LOOK
+		say("GARBAGE_GUARD_MISSING")
+
+
+## The cops he can see in `cell` right now.
+func _present(cell: int) -> int:
+	var count := 0
+	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
+		if cop.visible and _cell_of(cop.global_position) == cell:
+			count += 1
+	return count
+
+
+func _dummies(cell: int) -> int:
+	return get_tree().get_nodes_in_group("bunk_dummies") \
+		.filter(func(dummy: BunkDummy) -> bool: return dummy.built and dummy.cell == cell).size()
+
+
+## Which cell a point is in, or -1 outside them.
+func _cell_of(at: Vector3) -> int:
+	if outside_cells.call(at):
+		return -1
+	return 0 if (station_lot.affine_inverse() * at).x < StationRooms.CELL_SPLIT_X else 1
+
+
+## Everyone in the cells now is who's jailed (the level calls it at the start and after a catch).
+func recount() -> void:
+	jailed = [_present(0), _present(1)]
+
+
+## A built dummy he sees from up close: DUMMY_STARE seconds of that and he knows.
+func _check_dummies(delta: float) -> void:
+	for dummy: BunkDummy in get_tree().get_nodes_in_group("bunk_dummies"):
+		var close := _flat(dummy.global_position).length() < DUMMY_CLOSE
+		if dummy.built and close and sees(dummy.global_position + Vector3.UP * 0.2, dummy):
+			_stare[dummy] = _stare.get(dummy, 0.0) + delta
+			if _stare[dummy] >= DUMMY_STARE:
+				_stare.clear()
+				say("GARBAGE_GUARD_DUMMY", 5.0)
+				catch()
+				return
+		else:
+			_stare.erase(dummy)
+
+
+## Done in the cell: he knots the bag and drags it out (heavy, if someone's in it); at the door he locks the cell (then
+## the dumpster).
 func _leave_cell() -> void:
 	if is_instance_valid(bag):
 		bag.knot()
+		heavy = bag.hider != null
+	if heavy:
+		heavy_streak += 1
+		if heavy_streak >= 2:
+			suspicion = minf(suspicion + HEAVY_AGAIN_SUSPICION, 100.0)
+			say("GARBAGE_GUARD_HEAVY_AGAIN")
+		else:
+			say("GARBAGE_GUARD_HEAVY_%d" % _rng.randi_range(0, HEAVY_LINES - 1))
+	else:
+		heavy_streak = 0
 	stage = "out_of_cell"
 	_path = [_at(Vector3(_door_x(round_cell), 0, DOOR_FRONT_Z))]
 
@@ -203,7 +302,9 @@ func catch() -> void:
 		for door in cell_doors:
 			door.lock()
 		if is_instance_valid(bag):
+			bag.let_out()
 			bag.queue_free()
 		bag = null
+		heavy = false
 		_back_at_desk()
 	super()
