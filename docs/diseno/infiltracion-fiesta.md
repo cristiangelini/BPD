@@ -82,6 +82,13 @@ La foto grupal copia la forma de `MimeRehearsal` (host decide, cada PC juzga y a
    rojos de 12 m de ancho contra el fondo (0,2 m cada uno, 6 lugares por escalón para la foto) con el cartel "¡Gran
    fiesta de policías!", el guardarropa con mostrador y percha al oeste de la entrada, el baño al este y la oficina
    (con llave, escritorio y caja fuerte) en la esquina del fondo al este. 16 lugares para que los invitados charlen.
+   Hecho así (2b, la gente): 12 invitados en 12 de los 16 lugares por la semilla, con el disfraz celeste de cotillón y
+   sus 4 rasgos puestos encima (gorra azul, negra o blanca con estrellita; bigote finito, de manubrio o tupido; estrella
+   dorada, plateada o de chocolate en el pecho; lentes de sol, de corazón o ninguno). Cada otro invitado difiere del
+   Sargento Trucho en al menos 2 rasgos, así que cualquier trío de pistas lo señala solo a él. Todos, el jefe también,
+   cuentan los mismos chismes de la fiesta. La señora Serpentina (vestido rosa de lentejuelas y gorrito) está junto al
+   ponche y no es de la banda; el patovica (remera negra y lentes oscuros) echa al que llega de uniforme. La sospecha
+   es la del club con los textos "PARTY_" **(propuesta)**.
 3. La foto grupal: la llamada, la escalerita, la cuenta y el flash; la sospecha; el jefe que se va a la oficina y la
    pista de verlo ahí.
 4. Las pistas y el caso (variante "party"): las 6 pistas, la planilla con los rasgos, esposar al jefe o a uno

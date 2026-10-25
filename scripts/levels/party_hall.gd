@@ -6,6 +6,9 @@ extends InfiltrationPlace
 ## wall, the three photo steps against the back wall with the party's banner over them, the coat check by the entrance
 ## (west) and the restroom (east), and behind, the hall's office (locked), where the gang keeps the jewels. The cops
 ## start in the station, where the party disguises are, and drive here. --place=party opens it from Play.
+## Twelve guests mingle on spots drawn with the seed, each in a cop costume told apart by four bits (PartyTraits), the
+## Sargento Trucho one of them; the señora Serpentina by the food and the bouncer at the door, who only lets in cops
+## dressed as party cops (step 2b). The guests watch the cops (ClubSuspicion, "PARTY_" texts).
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -42,6 +45,11 @@ const OFFICE_X := 6.0
 const OFFICE_Z := -6.5
 const OFFICE_DOOR_X := 9.0
 ## Where the guests mingle: on the dance floor, by the food and around (step 2b picks GUESTS of them with the seed).
+## How many guests, of the MINGLE_SPOTS.
+const GUESTS := 12
+## The señora Serpentina, by the punch bowl looking at the hall (+X), and the bouncer outside by the entrance.
+const SERPENTINA_AT := Vector3(-9.2, 0, 3.6)
+const DOORMAN_AT := Vector3(ENTRANCE_X + 1.4, 0, HALF_Z + 0.7)
 const MINGLE_SPOTS: Array[Vector3] = [
 	Vector3(-3.0, 0, -3.5), Vector3(-1.0, 0, -3.0), Vector3(1.2, 0, -3.6), Vector3(3.0, 0, -2.8),
 	Vector3(-2.6, 0, -1.0), Vector3(-0.4, 0, -0.6), Vector3(2.0, 0, -0.8), Vector3(-3.2, 0, 1.4),
@@ -62,6 +70,10 @@ const BALLOONS: Array[Color] = [Color(0.95, 0.2, 0.25), Color(0.2, 0.45, 0.95), 
 	Color(0.3, 0.8, 0.4)]
 
 var office_door: FrontDoor
+## Each guest's costume ({kind: value}, PartyTraits), in the order of `members`.
+var guest_traits: Array[Dictionary] = []
+var serpentina: ClubMember
+var doorman: ClubDoorman
 ## The spots to pose on the photo steps, in the hall's space.
 var photo_spots: Array[Vector3] = []
 var _build: PlaceBuilder
@@ -78,12 +90,59 @@ func _ready() -> void:
 	office_door = DOOR_SCENE.instantiate()
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, OFFICE_Z)
 	add_child(office_door)
+	_add_people()
 	place_in_city("party_hall")
 
 
 ## The boss runs off from the street, out of the entrance (step 5).
 func getaway_at() -> Transform3D:
 	return Transform3D(global_basis, global_transform * Vector3(ENTRANCE_X, 0, HALF_Z + CityLayout.SIDEWALK + 2.0))
+
+
+## The guests on spots drawn with the seed, in their costumes, the Sargento Trucho among them; the señora Serpentina,
+## the bouncer and the guests' suspicion.
+func _add_people() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["party guests", case_seed])
+	var costumes := PartyTraits.draw(case_seed, GUESTS)
+	guest_traits.assign(costumes.traits)
+	var spots := MINGLE_SPOTS.duplicate()
+	for i in GUESTS:
+		var guest := ClubMember.new()
+		guest.name = "Guest%d" % i
+		guest.look = "invitado" if rng.randf() < 0.5 else "invitado_b"
+		guest.next_line = rng.randi_range(0, ClubMember.TALK[guest.look][1] - 1)
+		guest.accessories = PartyTraits.models_of(guest_traits[i])
+		guest.secret_boss = i == costumes.boss
+		add_child(guest)
+		guest.position = spots.pop_at(rng.randi_range(0, spots.size() - 1)) + Vector3(0, FLOOR_TOP, 0)
+		guest.rotation.y = rng.randf_range(-PI, PI)
+		members.append(guest)
+	boss = members[costumes.boss]
+	serpentina = ClubMember.new()
+	serpentina.name = "Serpentina"
+	serpentina.look = "serpentina"
+	add_child(serpentina)
+	serpentina.position = SERPENTINA_AT + Vector3(0, FLOOR_TOP, 0)
+	serpentina.rotation.y = -PI / 2
+	doorman = ClubDoorman.new()
+	doorman.name = "Doorman"
+	doorman.look = "patovica"
+	doorman.disguise_look = "party"
+	add_child(doorman)
+	doorman.position = DOORMAN_AT
+	doorman.door_at = global_transform * Vector3(ENTRANCE_X, 0, HALF_Z)
+	doorman.outward = global_transform.basis * Vector3.BACK
+	suspicion = ClubSuspicion.new()
+	suspicion.name = "Suspicion"
+	suspicion.members = members
+	suspicion.boss = boss
+	suspicion.boss_found_out = "TRUCHO_FOUND_OUT"
+	suspicion.disguise_look = "party"
+	suspicion.prefix = "PARTY_"
+	suspicion.inside = is_inside
+	suspicion.in_back_room = in_back_room
+	add_child(suspicion)
 
 
 ## Whether a world position is inside the hall.

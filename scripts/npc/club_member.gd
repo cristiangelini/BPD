@@ -3,7 +3,9 @@ extends StaticBody3D
 
 ## A grandparent at the club's bingo tables (infiltracion.md, step 2b), or Doña Chela at the bingo stand; at the chapel
 ## (infiltracion-coro.md, step 3b) a chorister on the platform, or Maestro Ernesto, the director; at the theater
-## (infiltracion-mimos.md, step 2b) a mime on the stage, or Maestra Pausa. E on one tells a bit
+## (infiltracion-mimos.md, step 2b) a mime on the stage, or Maestra Pausa; at the costume party
+## (infiltracion-fiesta.md, step 2b) a guest dressed as a cop, the Sargento Trucho hidden among them, or the señora
+## Serpentina, the hostess. E on one tells a bit
 ## of gossip, a different line each time. Each one has a suspicion meter that ClubSuspicion fills from what they
 ## see (step 4), with a "?" or a "!" over their head. They don't move yet, so online every PC has the same ones; their
 ## meters come from the host through ClubSuspicion.
@@ -21,9 +23,12 @@ const MODELS := {
 	"mimo": preload("res://assets/models/npc_mimo.glb"),
 	"mimo_b": preload("res://assets/models/npc_mimo_b.glb"),
 	"pausa": preload("res://assets/models/npc_pausa.glb"),
+	"invitado": preload("res://assets/models/npc_invitado.glb"),
+	"invitado_b": preload("res://assets/models/npc_invitado_b.glb"),
+	"serpentina": preload("res://assets/models/npc_serpentina.glb"),
 }
 const SCALES := {"abuelo": 0.82, "abuela": 0.8, "chela": 0.85, "corista": 0.85, "corista_b": 0.85, "ernesto": 1.0,
-	"mimo": 0.85, "mimo_b": 0.85, "pausa": 0.95}
+	"mimo": 0.85, "mimo_b": 0.85, "pausa": 0.95, "invitado": 0.9, "invitado_b": 0.9, "serpentina": 0.9}
 ## What each look says when talked to (the key with the line's number, and how many lines), the prompt, and what it
 ## shouts when cuffed. The bosses (BOSSES) have their own lines.
 const TALK := {
@@ -37,6 +42,10 @@ const TALK := {
 	"mimo": ["MIME_GOSSIP_%d", 10, "PROMPT_TALK_MIME", "MIME_CUFFED"],
 	"mimo_b": ["MIME_GOSSIP_%d", 10, "PROMPT_TALK_MIME", "MIME_CUFFED"],
 	"pausa": ["PAUSA_%d", 4, "PROMPT_TALK_PAUSA", "PAUSA_CUFFED"],
+	# The party's guests all talk alike, the boss too: nothing gives him away but his costume.
+	"invitado": ["PARTY_GOSSIP_%d", 10, "PROMPT_TALK_GUEST", "PARTY_CUFFED"],
+	"invitado_b": ["PARTY_GOSSIP_%d", 10, "PROMPT_TALK_GUEST", "PARTY_CUFFED"],
+	"serpentina": ["SERPENTINA_%d", 4, "PROMPT_TALK_SERPENTINA", "SERPENTINA_CUFFED"],
 }
 const BOSSES: Array[String] = ["chela", "ernesto", "pausa"]
 const GOSSIP_LINES := 12
@@ -50,6 +59,10 @@ const DOUBT := 50.0
 const ALARM := 80.0
 
 @export var look := "abuela"
+## The costume bits worn over the model (the party's guests, PartyTraits), and whether this guest is the boss in
+## disguise (the Sargento Trucho looks like any other guest). Set before it's added.
+var accessories: Array[PackedScene] = []
+var secret_boss := false
 ## Which gossip line comes next (a different start for each, from the seed).
 var next_line := 0
 ## 0 to 100: at 100 they shout that the cops are cops (ClubSuspicion).
@@ -79,6 +92,8 @@ func _ready() -> void:
 	# The models face +Z; the member faces -Z like everyone else.
 	model.rotation.y = PI
 	add_child(model)
+	for accessory: PackedScene in accessories:
+		model.add_child(accessory.instantiate())
 	_bubble = Label3D.new()
 	_bubble.name = "Bubble"
 	_bubble.position = Vector3(0, 1.9, 0)
@@ -106,9 +121,10 @@ func is_chela() -> bool:
 	return look == "chela"
 
 
-## The one to cuff: Doña Chela at the club, Maestro Ernesto at the chapel, Maestra Pausa at the theater.
+## The one to cuff: Doña Chela at the club, Maestro Ernesto at the chapel, Maestra Pausa at the theater, the Sargento
+## Trucho at the party.
 func is_boss() -> bool:
-	return BOSSES.has(look)
+	return BOSSES.has(look) or secret_boss
 
 
 func set_suspicion(value: float) -> void:

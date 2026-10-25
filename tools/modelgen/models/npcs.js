@@ -296,6 +296,42 @@ const NPCS = {
 		b.add('body', white, new THREE.BoxGeometry(0.62, 0.12, 0.14), { pos: V(0, 0.75, 0.3) });
 		b.add('cap', black, new THREE.CylinderGeometry(0.17, 0.19, 0.2, 10), { pos: V(0, 1.55, 0.01) });
 	},
+	// A guest at the costume party (infiltracion-fiesta.md): a cheap party-store cop costume, light blue and too shiny,
+	// bare-headed. The cap, mustache, badge and glasses that tell the guests apart are their own models (party.js),
+	// put on in the game with the seed.
+	invitado(b) {
+		pearBody(b, SKIN.arena, { shirt: C('costume_blue', 0x7fb2ef), pants: C('costume_navy', 0x26305a) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		hairCap(b, C('hair_brown', 0x4a2e1c), { y: 1.36, back: 0.03 });
+		mouth(b, { smile: true });
+		tie(b, C('costume_tie', 0x1c2448));
+	},
+	invitado_b(b) {
+		pearBody(b, SKIN.cacao, { shirt: C('costume_blue', 0x7fb2ef), pants: C('costume_navy', 0x26305a) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		hairCap(b, C('hair_black', 0x161214), { y: 1.37, sx: 1.08, back: 0.02 });
+		mouth(b);
+		tie(b, C('costume_tie', 0x1c2448));
+	},
+	// The señora Serpentina, the hall's owner and hostess, not one of the gang: a pink sequin dress, a party hat and
+	// streamers round her neck.
+	serpentina(b) {
+		const dress = C('sequin_pink', 0xe2559a, { emissive: 0x2a0818 });
+		pearBody(b, SKIN.crema, { shirt: dress, pants: dress, belted: false, onePiece: true, shoes: C('heels_gold', 0xd8b040) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		hairCap(b, C('hair_red', 0xb8401c), { y: 1.38, sx: 1.12, sy: 0.6, back: 0.04 });
+		mouth(b, { smile: true });
+		b.add('cap', C('party_hat', 0x3ab0e0), new THREE.ConeGeometry(0.1, 0.28, 8), { pos: V(0.05, 1.62, 0.0), rot: [0, 0, -0.2] });
+		const colors = [0xf2c230, 0x3ab0e0, 0x40c060];
+		for (let i = 0; i < 3; i++) b.add('body', C(`streamer_${i}`, colors[i]), new THREE.TorusGeometry(0.17 - i * 0.015, 0.012, 3, 12), { pos: V(0, 1.08 - i * 0.04, 0.04), rot: [1.3, 0, i * 0.4] });
+	},
+	// The party's bouncer: huge, a black T-shirt, dark glasses and his arms crossed.
+	patovica(b) {
+		pearBody(b, SKIN.cacao, { shirt: C('tee_black', 0x141416), pants: C('pants_black', 0x1e1e22) });
+		sunglasses(b);
+		mouth(b);
+		b.add('body', C('tee_black', 0x141416), new THREE.BoxGeometry(0.66, 0.13, 0.15), { pos: V(0, 0.78, 0.3) });
+	},
 	// Sospechoso: striped shirt, beanie and eye mask, with a loot sack.
 	sospechoso(b) {
 		pearBody(b, SKIN.celeste, { shirt: white, pants: C('jeans', 0x2a2f3a) });
@@ -650,7 +686,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, ladron_oso: 1.15, abuelo_oso: 1.15 };
+const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, ladron_oso: 1.15, abuelo_oso: 1.15 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },

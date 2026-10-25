@@ -1811,6 +1811,34 @@ JAILBREAK_ESCAPED_TUNNEL,"Dejaron un túnel hecho con cucharas. El guardia va a 
 PLACE_MIME_THEATER,"Teatro del Silencio","Theater of Silence","Teatro do Silêncio"
 PLACE_PARTY_HALL,"Salón Gala","Gala Hall","Salão Gala"
 PARTY_BANNER,"¡Gran fiesta de policías!","Big cop party!","Grande festa de policiais!"
+PROMPT_TALK_GUEST,E: charlar con el invitado,E: chat with the guest,E: conversar com o convidado
+PARTY_GOSSIP_0,¡Qué buen disfraz! El mío me lo hizo mi abuela con una cortina.,Great costume! My grandma made mine out of a curtain.,Que fantasia boa! A minha foi minha avó que fez com uma cortina.
+PARTY_GOSSIP_1,Dicen que el jefe vino disfrazado igual que todos. Qué original.,They say the boss came dressed like everyone else. How original.,Dizem que o chefe veio fantasiado igual a todos. Que original.
+PARTY_GOSSIP_2,"Brindo por el último trabajo... digo, ¡por la fiesta!","A toast to the last job... I mean, to the party!","Um brinde ao último trabalho... digo, à festa!"
+PARTY_GOSSIP_3,No pruebes el ponche. Lo hizo alguien y le puso de todo.,Don't try the punch. Somebody made it and put everything in it.,Não prove o ponche. Alguém fez e colocou de tudo.
+PARTY_GOSSIP_4,"Yo quería venir de pirata, pero me dijeron que era fiesta de policías.","I wanted to come as a pirate, but they said it was a cop party.","Eu queria vir de pirata, mas me disseram que era festa de policiais."
+PARTY_GOSSIP_5,¿Ya te sacaste la foto? El fotógrafo grita cada rato.,Have you had your photo taken? The photographer keeps shouting.,Já tirou a foto? O fotógrafo grita toda hora.
+PARTY_GOSSIP_6,"Me encanta esta música. Es la misma que ponen en los bancos... digo, en los ascensores.","I love this music. It's what they play in banks... I mean, in elevators.","Adoro essa música. É a que tocam nos bancos... digo, nos elevadores."
+PARTY_GOSSIP_7,"Si ves a un policía de verdad, avísame. Ja, ja. Es un chiste. Avísame.","If you see a real cop, tell me. Ha ha. It's a joke. Tell me.","Se você vir um policial de verdade, me avise. Ha, ha. É piada. Me avise."
+PARTY_GOSSIP_8,¿Conoces a la señora Serpentina? Nos alquiló el salón sin preguntar nada. Un amor.,Do you know Mrs. Serpentina? She rented us the hall without asking anything. A sweetheart.,Conhece a dona Serpentina? Alugou o salão sem perguntar nada. Um amor.
+PARTY_GOSSIP_9,"Mi bigote es de verdad. Bueno, no. Pero me costó carísimo.","My mustache is real. Well, no. But it cost a fortune.","Meu bigode é de verdade. Bom, não. Mas custou caríssimo."
+PARTY_CUFFED,"¡Oye! ¡Las esposas son de plástico, ¿no?! ¿¡No!?","Hey! The handcuffs are plastic, right?! Right?!","Ei! As algemas são de plástico, né?! Né?!"
+PROMPT_TALK_SERPENTINA,E: hablar con la señora Serpentina,E: talk to Mrs. Serpentina,E: falar com a dona Serpentina
+SERPENTINA_0,"¡Bienvenido al Salón Gala! Hay ponche, hay pista y hay foto cada rato.","Welcome to the Gala Hall! There's punch, a dance floor and a photo every little while.","Bem-vindo ao Salão Gala! Tem ponche, pista e foto toda hora."
+SERPENTINA_1,Unos clientes encantadores. Pagaron todo en monedas de oro.,Lovely customers. They paid for everything in gold coins.,Clientes encantadores. Pagaram tudo em moedas de ouro.
+SERPENTINA_2,"No entres a la oficina, querido. Ellos guardaron ahí sus cosas y le pusieron llave.","Don't go into the office, dear. They keep their things in there and locked it.","Não entre no escritório, querido. Eles guardaram as coisas lá e trancaram."
+SERPENTINA_3,Me encantan las fiestas temáticas. El año pasado fue de bomberos y se quemó la cocina.,I love theme parties. Last year it was firefighters and the kitchen burned down.,Adoro festas temáticas. No ano passado foi de bombeiros e a cozinha pegou fogo.
+SERPENTINA_CUFFED,¡¿A mí?! ¡Yo solo alquilo el salón!,Me?! I only rent out the hall!,Eu?! Eu só alugo o salão!
+PARTYDOOR_WELCOME,Lindo disfraz. Pasa.,Nice costume. Go on in.,Bela fantasia. Pode entrar.
+PARTYDOOR_NO_0,"Es una fiesta de disfraces, no de policías de verdad. Afuera.","It's a costume party, not a real-cop party. Out.","É uma festa à fantasia, não de policiais de verdade. Fora."
+PARTYDOOR_NO_1,Ese disfraz está a medias. Vuelve cuando parezca de mentira.,That costume's only half done. Come back when it looks fake.,Essa fantasia está pela metade. Volte quando parecer de mentira.
+HINT_PARTYDOOR_NO_DISGUISE,"El patovica no te deja pasar: ponte 2 piezas de cotillón del casillero de la comisaría (gorra con luces, bigote postizo o placa de plástico).","The bouncer won't let you in: put on 2 party pieces from the station's lockers (light-up cap, fake mustache or plastic badge).","O segurança não deixa você entrar: vista 2 peças de festa do armário da delegacia (boné com luzes, bigode postiço ou distintivo de plástico)."
+HUD_PARTY_SUSPICION,Sospecha de los invitados,The guests' suspicion,Suspeita dos convidados
+PARTY_FOUND_OUT_0,¡Son policías de verdad!,They're real cops!,São policiais de verdade!
+PARTY_FOUND_OUT_1,¡Ese uniforme no es de cotillón! ¡Son de verdad!,That uniform isn't from a party store! They're real!,Esse uniforme não é de festa! São de verdade!
+PARTY_FOUND_OUT_2,¡Se acabó la fiesta! ¡Son policías!,The party's over! They're cops!,Acabou a festa! São policiais!
+HINT_PARTY_FOUND_OUT,¡Los descubrieron! Todos los invitados saben que son policías de verdad.,You've been found out! All the guests know you're real cops.,Vocês foram descobertos! Todos os convidados sabem que vocês são policiais de verdade.
+TRUCHO_FOUND_OUT,¡Yo me voy! ¡Nadie vio a nadie!,I'm out of here! Nobody saw anybody!,Eu vou embora! Ninguém viu ninguém!
 PROMPT_TALK_MIME,E: saludar con mímica,E: greet in mime,E: cumprimentar com mímica
 PROMPT_TALK_PAUSA,E: saludar a la Maestra Pausa,E: greet Maestra Pausa,E: cumprimentar a Maestra Pausa
 MIME_GOSSIP_0,*Hace como que sostiene una billetera enorme y te guiña un ojo.*,*Pretends to hold a huge wallet and winks at you.*,*Finge segurar uma carteira enorme e pisca para você.*
