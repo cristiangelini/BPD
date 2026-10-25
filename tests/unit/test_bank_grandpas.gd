@@ -1,6 +1,6 @@
 extends GutTest
 
-## The grandpa robbers (robo-banco-abuelos.md, step 1, decision 122): a quarter of the seeds turn the gang into
+## The grandpa robbers (robo-banco-abuelos.md, step 1, decision 122): a fifth of the seeds turn the gang into
 ## retirees with cane and cardigan, who walk at half pace and whose old drill takes longer.
 
 const LEVEL := preload("res://scenes/levels/bank.tscn")
@@ -17,7 +17,7 @@ func _bank(want: String) -> BankLevel:
 	return bank
 
 
-func test_the_seeds_draw_grandpas_a_quarter_of_the_time() -> void:
+func test_the_seeds_draw_grandpas_a_fifth_of_the_time() -> void:
 	var grandpas := 0
 	for seed_ in range(1, 401):
 		if BankLevel.variant(seed_, PackedStringArray()) == "grandpas":

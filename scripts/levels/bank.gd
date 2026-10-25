@@ -24,8 +24,10 @@ extends Node3D
 ## see a cop (SNITCHES). A quarter of the seeds are the grandpa robbers (robo-banco-abuelos.md, decision 122): the same
 ## gang, retired, with cane and cardigan; they walk at half pace and their old drill takes longer (BankDrill.SLOW_TIME).
 ## A quarter are the sorry robber (robo-banco-arrepentido.md, decision 123): one of the three under El Oso cries under
-## his mask with a white hanky and wants to give it all back. --bank=party, --bank=grandpas, --bank=sorry or
-## --bank=base forces one.
+## his mask with a white hanky and wants to give it all back. In every robbery Mr. Moneda, the manager, waits in
+## pajamas on the sidewalk by his car and gives the back door's key to whoever talks to him (BankManager,
+## robo-banco-gerente.md, decision 124); a fifth of the seeds he's the gang's real boss, and the others share the rest
+## in quarters. --bank=party, --bank=grandpas, --bank=sorry, --bank=manager or --bank=base forces one.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -64,6 +66,14 @@ const VAN_AT := Vector3(8.0, 0, HALF_Z + CityLayout.SIDEWALK + 2.2)
 const VAN_WHEELS: Array[Vector3] = [Vector3(-1.1, 0.38, 1.7), Vector3(1.1, 0.38, 1.7), Vector3(-1.1, 0.38, -1.7),
 	Vector3(1.1, 0.38, -1.7)]
 const VAN_SIZE := Vector3(2.2, 2.3, 5.2)
+## The manager's car, parked along the curb west of the entrance, and the two ends of his pacing on the sidewalk
+## beside it (robo-banco-gerente.md, step 1).
+const MANAGER_CAR_MODEL := preload("res://assets/models/manager_car.glb")
+const MANAGER_CAR_AT := Vector3(-8.0, 0, VAN_AT.z)
+const MANAGER_CAR_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
+	Vector3(-1.05, 0.38, -1.55), Vector3(1.05, 0.38, -1.55)]
+const MANAGER_CAR_SIZE := Vector3(2.1, 1.5, 4.6)
+const MANAGER_SPOTS: Array[Vector3] = [Vector3(-10.0, 0, HALF_Z + 2.0), Vector3(-5.5, 0, HALF_Z + 2.0)]
 ## Where each robber stands and which way they face (their body's yaw): the rabbit by the entrance looking at the
 ## door, the pig in front of the counter looking at the hostages, the duck in the corridor looking at the vault's
 ## door and El Oso behind the middle desk looking at the hall.
@@ -162,6 +172,9 @@ var grandpas := false
 ## The variant where one robber is sorry and wants to give it all back (decision 123): that robber, or null.
 var sorry: BankRobber
 var _sorry_variant := false
+## Mr. Moneda, the manager, by his car outside (every robbery), and his car.
+var manager: BankManager
+var manager_car: StaticBody3D
 ## The duck grandma's marbles on the floor, once she threw them.
 var marbles: BankMarbles
 var croissant_tray: BankCroissantTray
@@ -194,6 +207,7 @@ func _ready() -> void:
 	party = drawn == "party"
 	grandpas = drawn == "grandpas"
 	_sorry_variant = drawn == "sorry"
+	var manager_boss := drawn == "manager"
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_hall()
@@ -210,6 +224,7 @@ func _ready() -> void:
 	add_child(back_door)
 	_add_vault_door()
 	_add_van()
+	_add_manager(manager_boss)
 	_add_robbers()
 	_add_hostages()
 	drill = BankDrill.new()
@@ -243,13 +258,16 @@ func _ready() -> void:
 	case.start()
 
 
-## Which robbery this seed is, a quarter each (propuesta): "party" (the hostages don't want to leave), "grandpas",
-## "sorry" (one robber wants to give it all back) or "base"; --bank=party, --bank=grandpas, --bank=sorry or --bank=base
-## among the user args forces one.
+## Which robbery this seed is, a fifth each (propuesta): "manager" (the manager is the boss) drawn first, and the rest
+## in quarters: "party" (the hostages don't want to leave), "grandpas", "sorry" (one robber wants to give it all back)
+## or "base"; --bank=party, --bank=grandpas, --bank=sorry, --bank=manager or --bank=base among the user args forces
+## one.
 static func variant(seed_: int, args: PackedStringArray) -> String:
 	for arg in args:
-		if arg in ["--bank=party", "--bank=grandpas", "--bank=sorry", "--bank=base"]:
+		if arg in ["--bank=party", "--bank=grandpas", "--bank=sorry", "--bank=manager", "--bank=base"]:
 			return arg.trim_prefix("--bank=")
+	if hash(["bank moneda", seed_]) % 5 == 0:
+		return "manager"
 	return ["party", "grandpas", "sorry", "base"][hash(["bank party", seed_]) % 4]
 
 
@@ -449,6 +467,33 @@ func _add_van() -> void:
 		var wheel: Node3D = WHEEL_MODEL.instantiate()
 		wheel.position = at
 		van.add_child(wheel)
+
+
+## Mr. Moneda pacing on the sidewalk by his car, a body too so the patrol car bumps into it (robo-banco-gerente.md).
+func _add_manager(is_boss: bool) -> void:
+	manager_car = StaticBody3D.new()
+	manager_car.name = "ManagerCar"
+	manager_car.position = MANAGER_CAR_AT
+	manager_car.rotation.y = -PI / 2
+	add_child(manager_car)
+	var shape := CollisionShape3D.new()
+	var body := BoxShape3D.new()
+	body.size = MANAGER_CAR_SIZE
+	shape.shape = body
+	shape.position.y = MANAGER_CAR_SIZE.y / 2 + 0.05
+	manager_car.add_child(shape)
+	manager_car.add_child(MANAGER_CAR_MODEL.instantiate())
+	for at in MANAGER_CAR_WHEELS:
+		var wheel: Node3D = WHEEL_MODEL.instantiate()
+		wheel.position = at
+		manager_car.add_child(wheel)
+	manager = BankManager.new()
+	manager.name = "Manager"
+	manager.boss = is_boss
+	manager.position = MANAGER_SPOTS[0] + Vector3.UP * FLOOR_TOP
+	for at in MANAGER_SPOTS:
+		manager.spots.append(global_transform * (at + Vector3.UP * FLOOR_TOP))
+	add_child(manager)
 
 
 func _add_robbers() -> void:
