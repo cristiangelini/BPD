@@ -53,6 +53,21 @@ func lights(point: Vector3) -> bool:
 	return to.length() <= SEE_RANGE and rad_to_deg((-eye.basis.z).angle_to(to)) <= ANGLE
 
 
+## Whether the lit cone reaches `point` (RANGE and ANGLE, the way the light shines) with no wall in between: what the
+## blackout's inmates freeze under (carcel-corte-de-luz.md). `except` is left out of the wall check (who's lit).
+func reaches(point: Vector3, except: CollisionObject3D = null) -> bool:
+	if not is_on or not is_inside_tree():
+		return false
+	var eye := light.global_transform
+	var to := point - eye.origin
+	if to.length() > RANGE or rad_to_deg((-eye.basis.z).angle_to(to)) > ANGLE:
+		return false
+	var ray := PhysicsRayQueryParameters3D.create(eye.origin, point, 1)
+	if except:
+		ray.exclude = [except.get_rid()]
+	return get_world_3d().direct_space_state.intersect_ray(ray).is_empty()
+
+
 func build_model() -> Node3D:
 	var root := Node3D.new()
 	var turn := Vector3(PI / 2, 0, 0)
