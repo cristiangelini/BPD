@@ -9,7 +9,9 @@ extends Node
 ## all the way and drops an inflatable clown (ChaseDummy) every DUMMY_EVERY seconds. The fruit truck control's runaway
 ## pickup (control-frutas.md) drops MELONS_PER_CORNER watermelons at every corner it turns, rolling down the street; the
 ## patrol car running into one splits it. The crowded car control's runaway sedan (control-auto-lleno.md, answer 3)
-## lets one of the gang jump out at every corner it turns, who runs off down the street. Every number here is (propuesta).
+## lets one of the gang jump out at every corner it turns, who runs off down the street. The ghost car control's pilot
+## (control-auto-fantasma.md) has his ghost car follow him: at every corner he turns, it cuts in across the street behind
+## him, in the patrol car's way (ChaseGhost). Every number here is (propuesta).
 
 const DRIP_EVERY := 3.0
 ## A puddle's size (m), how long it lasts, and the grip left on it.
@@ -46,6 +48,11 @@ const MAX_MELONS := 12
 const MELON_ROLL := 5.0
 ## A jumper leaves the runaway packed car this fast sideways.
 const JUMP_SPEED := 3.0
+## The ghost car cuts in this far behind the runaway's back, starting this far to one side, never this close to the
+## patrol car (it doesn't land on it).
+const GHOST_BEHIND := 9.0
+const GHOST_SIDE := 2.0
+const GHOST_CLEAR := 7.0
 
 var case: ChaseCase
 ## The ice cream puddles on the street: [mesh, seconds left].
@@ -56,6 +63,9 @@ var melons: Array[Watermelon] = []
 ## The gang still in the runaway packed car besides its driver: one jumps out at each corner.
 var riders_left := 0
 var jumpers: Array[CrowdRider] = []
+## The ghost car's paint (TrafficCar.MODELS) when the runaway is its pilot; -1 otherwise.
+var ghost_look := -1
+var ghost: ChaseGhost
 var _drip_left := DRIP_EVERY
 var _dummy_left := DUMMY_EVERY
 var _kids_left := 0.0
@@ -158,6 +168,8 @@ func _on_corner(turned: bool) -> void:
 		drop_furniture(true)
 	if riders_left > 0:
 		drop_jumper()
+	if ghost_look >= 0:
+		cut_in()
 
 
 ## A piece of furniture falls off the back of the moving truck, or a veggie off the trike.
@@ -212,6 +224,27 @@ func drop_jumper() -> CrowdRider:
 	jumpers.append(jumper)
 	CrowdedCar.show_inside(case.truck, riders_left + 1)
 	return jumper
+
+
+## The ghost car cuts in across the street behind its pilot, from one side or the other, unless the patrol car is
+## right there.
+func cut_in() -> ChaseGhost:
+	var truck := case.truck
+	var side := truck.global_basis.x * (1.0 if _rng.randf() < 0.5 else -1.0)
+	var at := truck.global_position - truck.global_basis.z * GHOST_BEHIND + side * GHOST_SIDE
+	at.y = truck.global_position.y
+	if is_instance_valid(case.car) and (case.car.global_position * Vector3(1, 0, 1)).distance_to(at * Vector3(1, 0, 1)) \
+			< GHOST_CLEAR:
+		return null
+	if not is_instance_valid(ghost):
+		ghost = ChaseGhost.new()
+		ghost.name = "ChaseGhost"
+		ghost.look = ghost_look
+		case.get_parent().add_child(ghost)
+	_dropped += 1
+	ghost.cut_in(Transform3D(Basis.looking_at(-side, Vector3.UP, true), at),
+		tr("GHOST_HONK_%d" % (_dropped % GhostPilot.HONKS)))
+	return ghost
 
 
 ## An inflatable clown, just like him, drops out of the back of the clown car.
