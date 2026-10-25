@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Doll factory, step 6: the giant doll story: a 3 m parade doll in the storeroom hides the jeweler's 25 kg safe under its dress until its back zipper is opened, footprints to its back are the clue, and the parade plan and the safe's key are hidden.
 - Doll factory, step 6: the ghost workers story: ten mannequins in work coats stand at the belt and never answer, the time clock's cards punched at 3 a.m. are the clue, and the payroll book, the time cards and Fermín's wig are hidden.
 - Doll factory, step 6: the knockoff Captain Galaxy story: every second doll on the belt wears an astronaut helmet, three badly painted rejects in the dumpster are the clue, and the 15 kg stolen mold (it jams the belt), the fake labels and the prototype photos are hidden.
 - Doll factory, step 6: the spy dolls story: 10 dolls of the bin carry a microphone (drawn with the seed), a cop's radio squeals by the closest one (the story's clue), and the tape recorder, the box of microphones and the client list are hidden.

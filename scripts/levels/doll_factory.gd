@@ -70,6 +70,15 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_TIME_CARDS", "OBJ_EXTRA_FOREMAN_WIG"],
 		"rig": preload("res://scripts/case/factory/ghost_workers_rig.gd"),
 	},
+	"giant_doll": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_GIANT_DOLL_B", "BRIEF_GIANT_DOLL_C", "BRIEF_GIANT_DOLL_D"],
+		"find": "OBJ_FIND_JEWELERS_SAFE",
+		"hidden": [preload("res://scenes/props/parade_plan.tscn"), preload("res://scenes/props/safe_key.tscn")],
+		"half_heights": [0.005, 0.005],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_PARADE_PLAN", "OBJ_EXTRA_SAFE_KEY"],
+		"rig": preload("res://scripts/case/factory/giant_doll_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the factory; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [
