@@ -81,7 +81,10 @@ pie, `PlaceDraw` y `CaseSync`. El ensayo copia la forma de `ChoirSinging` (host 
    en dos bloques y el pasillo al medio, el escenario de 16 x 3,5 m y 0,35 de alto con 14 cruces de cinta (dos filas de
    7, a 2 m), telones rojos a los costados, el baúl al este del escenario, el banquito de la Maestra frente a él y,
    atrás, el camarín (oeste, con llave, espejo con lamparitas) y la utilería (este, estantes y cajas)
-   **(propuesta)**.
+   **(propuesta)**. Hecho así (2b, la gente): 10 mimos en cruces elegidas con la semilla (quedan 4 para los policías),
+   que al hablarles (E) contestan con un gesto distinto cada vez; la Maestra Pausa junto a su banquito, mirando al
+   escenario (habla solo si la esposan: "...Uy. Hablé."); y el portero, un mimo grandote de brazos cruzados que empuja
+   afuera con mímica a quien no pase por mimo. La sospecha es la del club con los textos "MIME_" **(propuesta)**.
 3. No hablar: la voz cerca de un mimo suma sospecha (VoiceChat avisa al host).
 4. El ensayo: estatua y mímica con H, la vista de los mimos durante la estatua.
 5. Las pruebas y el caso (variante "mime" en `InfiltrationCase.VARIANTS`).

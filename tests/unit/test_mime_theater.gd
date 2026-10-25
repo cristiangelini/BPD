@@ -2,7 +2,7 @@ extends GutTest
 
 ## The mimes' "Teatro del Silencio" (infiltracion-mimos.md, step 2, decision 170): its lot in the city, the seats with
 ## the aisle, the stage with a mark for each mime and cop, the locked dressing room and the cops starting at the
-## station by the disguises.
+## station by the disguises; the mimes, Maestra Pausa and the mute doorman (step 2b).
 
 const LEVEL := preload("res://scenes/levels/mime_theater.tscn")
 
@@ -63,3 +63,73 @@ func test_the_getaway_starts_on_the_street_out_of_the_entrance() -> void:
 	var local := theater.global_transform.affine_inverse() * theater.getaway_at().origin
 	assert_almost_eq(local.x, MimeTheater.ENTRANCE_X, 0.01)
 	assert_gt(local.z, MimeTheater.HALF_Z + CityLayout.SIDEWALK, "past the sidewalk")
+
+
+func test_mimes_on_marks_and_pausa_in_front_of_them() -> void:
+	assert_eq(theater.members.size(), MimeTheater.MEMBERS)
+	for member: ClubMember in theater.members:
+		assert_true(theater.marks.any(func(at: Vector3) -> bool: return at.distance_to(member.position) < 0.01),
+			"on a mark")
+		assert_true(member.look.begins_with("mimo"))
+	assert_eq(theater.free_marks.size(), theater.marks.size() - MimeTheater.MEMBERS, "marks left for the cops")
+	assert_eq(theater.boss, theater.pausa)
+	assert_true(theater.pausa.is_boss())
+	assert_lt(theater.pausa.global_basis.z.dot(theater.members[0].global_basis.z), 0.0, "facing each other")
+
+
+func test_the_same_seed_puts_the_mimes_on_the_same_marks() -> void:
+	var other: MimeTheater = LEVEL.instantiate()
+	other.case_seed = theater.case_seed
+	other.get_node("Cop").input_enabled = false
+	add_child_autofree(other)
+	await wait_physics_frames(1)
+	for i in theater.members.size():
+		assert_eq(other.members[i].position, theater.members[i].position)
+
+
+func test_mimes_only_mime_and_pausa_speaks_when_cuffed() -> void:
+	var cop: Cop = theater.get_node("Cop")
+	theater.members[0].use(cop)
+	assert_true(theater.members[0].said().begins_with("MIME_GOSSIP_"))
+	theater.pausa.use(cop)
+	assert_true(theater.pausa.said().begins_with("PAUSA_"))
+	theater.pausa.cuffed(5.0)
+	assert_eq(theater.pausa.said(), "PAUSA_CUFFED")
+
+
+func test_the_mimes_watch_for_the_mime_disguise() -> void:
+	assert_eq(theater.suspicion.disguise_look, "mime")
+	assert_eq(theater.suspicion.prefix, "MIME_")
+	assert_eq(theater.suspicion.boss, theater.pausa)
+	var cop: Cop = theater.get_node("Cop")
+	assert_gt(theater.suspicion.offence(cop, 0.0), 0.0, "a cop in uniform is suspicious")
+	cop.put_on_disguise("mime_beret", 0.0)
+	cop.put_on_disguise("mime_face", 0.0)
+	assert_eq(theater.suspicion.offence(cop, 0.0), 0.0, "a mime standing still isn't")
+
+
+## A cop walking into the doorway from the sidewalk.
+func _walk_in(cop: Cop) -> void:
+	cop.global_position = theater.global_transform * Vector3(MimeTheater.ENTRANCE_X, 0.1, MimeTheater.HALF_Z + 1.0)
+	cop.global_rotation.y = 0.0
+	await wait_physics_frames(2)
+	for i in 30:
+		cop.step(1.0 / 60.0, Vector2(0, -1), false, false, false)
+		theater.doorman._physics_process(1.0 / 60.0)
+
+
+func test_the_doorman_wants_a_mime() -> void:
+	var cop: Cop = theater.get_node("Cop")
+	cop.put_on_disguise("robe", 0.0)
+	await _walk_in(cop)
+	assert_eq(theater.doorman.said(), "MIMEDOOR_NO_1", "a robe isn't a mime")
+	var inside_z := (theater.global_transform.affine_inverse() * cop.global_position).z
+	assert_gt(inside_z, MimeTheater.HALF_Z - 0.5, "didn't get in")
+
+
+func test_the_doorman_lets_a_mime_in() -> void:
+	var cop: Cop = theater.get_node("Cop")
+	cop.put_on_disguise("mime_face", 0.0)
+	cop.put_on_disguise("mime_shirt", 0.0)
+	await _walk_in(cop)
+	assert_eq(theater.doorman.said(), "MIMEDOOR_WELCOME")

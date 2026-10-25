@@ -49,6 +49,25 @@ function briefcase(b, m, s = 1) {
 	b.add('props', black, new THREE.BoxGeometry(0.02, 0.06, 0.1), { pos: V(s * 0.52, 0.58, 0.12) });
 }
 
+// A mime's white face: black brows, closed red lips and a teardrop of `tear` under the left eye.
+function mimeFace(b, tear) {
+	b.add('head', C('mime_white', 0xfafafa), ellipsoid(0.2, 0.22, 0.19, 10, 7), { pos: V(0, 1.3, 0.025) });
+	eyes(b, 1.33, 0.18, 0.08, 0.045);
+	for (const s of [-1, 1]) b.add('face', black, new THREE.BoxGeometry(0.07, 0.014, 0.012), { pos: V(s * 0.08, 1.41, 0.19), rot: [0, 0, s * 0.35] });
+	b.add('face', tear, ellipsoid(0.012, 0.024, 0.008, 6, 4), { pos: V(0.09, 1.27, 0.2) });
+	b.add('face', C('mime_lips', 0xc0182a), ellipsoid(0.035, 0.013, 0.01, 8, 4), { pos: V(0, 1.21, 0.2) });
+}
+// A mime's body: white and black stripes around the pear, black pants and white gloves.
+function mimeBody(b, skin, stripe) {
+	pearBody(b, skin, { shirt: white, pants: black, belted: false, shoes: black });
+	for (const y of [0.6, 0.72, 0.84, 0.96]) {
+		const r = y < 0.8 ? 0.36 + (0.8 - y) * 0.33 : 0.36 - (y - 0.8) * 0.48;
+		b.add('body', stripe, loft([{ y: y - 0.025, rx: r + 0.012, rz: r * 0.89 + 0.012 }, { y: y + 0.025, rx: r + 0.006, rz: r * 0.89 + 0.006 }], 10));
+	}
+	mimeFace(b, black);
+	for (const s of [-1, 1]) b.add('arms', white, ellipsoid(0.08, 0.08, 0.08, 6, 4), { pos: V(s * 0.49, 0.64, 0.09) });
+}
+
 // A robber: all in black with gloves, and the mask (its color, plus what `extra` adds) over the whole head.
 function robber(b, mask, extra) {
 	const outfit = C('robber_black', 0x26262c);
@@ -246,6 +265,36 @@ const NPCS = {
 		b.add('head', hair, ellipsoid(0.09, 0.09, 0.09, 8, 5), { pos: V(0, 1.45, -0.18) });
 		b.add('props', C('clipboard', 0xa87a4a), new THREE.BoxGeometry(0.22, 0.3, 0.02), { pos: V(-0.42, 0.75, 0.25), rot: [-0.5, 0.3, 0] });
 		b.add('props', white, new THREE.BoxGeometry(0.18, 0.24, 0.005), { pos: V(-0.415, 0.75, 0.263), rot: [-0.5, 0.3, 0] });
+	},
+	// A mime of the troupe (infiltracion-mimos.md): white face with black brows, black and white striped shirt, black
+	// beret and white gloves.
+	mimo(b) {
+		mimeBody(b, SKIN.crema, C('mime_stripe_black', 0x1a1a1e));
+		b.add('cap', black, ellipsoid(0.23, 0.06, 0.22, 10, 5), { pos: V(0.03, 1.5, 0.0), rot: [0, 0, -0.15] });
+	},
+	// Another mime: suspenders over the stripes and a red flower in the hair instead of a beret.
+	mimo_b(b) {
+		mimeBody(b, SKIN.cacao, C('mime_stripe_black', 0x1a1a1e));
+		for (const s of [-1, 1]) b.add('body', C('suspenders', 0xb02a2a), new THREE.BoxGeometry(0.05, 0.6, 0.02), { pos: V(s * 0.15, 0.8, 0.3), rot: [-0.3, 0, 0] });
+		hairCap(b, C('hair_black', 0x1c1a1a), { y: 1.4, back: 0.02 });
+		b.add('cap', C('flower_red', 0xd02a3a), ellipsoid(0.06, 0.06, 0.03, 8, 4), { pos: V(0.14, 1.46, 0.1) });
+	},
+	// Maestra Pausa, the troupe's boss (infiltracion-mimos.md): black leotard, white face with a red tear, a red beret,
+	// white gloves and a whistle on a cord.
+	pausa(b) {
+		const leotard = C('leotard', 0x121216);
+		pearBody(b, SKIN.arena, { shirt: leotard, pants: leotard, belted: false, shoes: black });
+		mimeFace(b, C('tear_red', 0xc0182a));
+		b.add('cap', C('beret_red', 0xb0182a), ellipsoid(0.24, 0.06, 0.23, 10, 5), { pos: V(-0.03, 1.5, 0.0), rot: [0, 0, 0.18] });
+		for (const s of [-1, 1]) b.add('arms', white, ellipsoid(0.08, 0.08, 0.08, 6, 4), { pos: V(s * 0.49, 0.64, 0.09) });
+		b.add('body', white, new THREE.TorusGeometry(0.14, 0.006, 3, 12), { pos: V(0, 1.06, 0.06), rot: [1.3, 0, 0] });
+		b.add('props', C('whistle', 0xd8d8e0), new THREE.CylinderGeometry(0.02, 0.02, 0.07, 8), { pos: V(0, 0.93, 0.25), rot: [0, 0, Math.PI / 2] });
+	},
+	// The troupe's doorman (infiltracion-mimos.md): a big mime with the arms crossed who never says a word.
+	mimo_portero(b) {
+		mimeBody(b, SKIN.celeste, C('mime_stripe_black', 0x1a1a1e));
+		b.add('body', white, new THREE.BoxGeometry(0.62, 0.12, 0.14), { pos: V(0, 0.75, 0.3) });
+		b.add('cap', black, new THREE.CylinderGeometry(0.17, 0.19, 0.2, 10), { pos: V(0, 1.55, 0.01) });
 	},
 	// Sospechoso: striped shirt, beanie and eye mask, with a loot sack.
 	sospechoso(b) {
@@ -601,7 +650,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, ladron_oso: 1.15, abuelo_oso: 1.15 };
+const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, ladron_oso: 1.15, abuelo_oso: 1.15 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
