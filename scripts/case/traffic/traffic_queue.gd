@@ -5,7 +5,12 @@ extends Node3D
 ## 6). Once the checkpoint is set up, a car comes down the lane every SPAWN_EVERY seconds and joins the queue. Each car
 ## waiting adds to the patience meter; at FULL the first one sneaks by along the sidewalk and the meter drops a bit.
 ## E on the barrier lets the first one through. There's no time limit (decision 98): only the meter.
-## "rush_hour" (Hora pico) sends twice the cars and wears the patience out faster. Every number here is (propuesta).
+## "rush_hour" (Hora pico) sends twice the cars and wears the patience out faster. "clown_convoy" (control-payasos.md)
+## sends the circus's identical clown cars, a bit less often since each one takes longer to check; their clowns loose
+## on the street wear the patience out too, and a car won't go until its clowns are back in. "fruit_truck"
+## (control-frutas.md) sends the fruit fair's pickups, loaded with watermelons. "crowded_car" (control-auto-lleno.md)
+## sends city cars, some of them packed with people. "ghost_car" (control-auto-fantasma.md) sends city cars with their
+## drivers leaning on the windows, and one with nobody at the wheel. Every number here is (propuesta).
 
 signal patience_changed(value: float)
 ## A car went by: let through, or sneaking.
@@ -21,10 +26,16 @@ const FULL := 100.0
 const PATIENCE_PER_CAR := 0.5
 ## Per second with nobody waiting.
 const CALM_DOWN := 2.0
+## Per clown loose on the street, per second (control-payasos.md, step 4).
+const PATIENCE_PER_CLOWN := 0.4
 ## After a car sneaks by, the meter drops back to this.
 const AFTER_SNEAK := 70.0
 const VARIANTS := {
 	"rush_hour": {"spawn": 0.5, "patience": 1.5},
+	"clown_convoy": {"spawn": 0.75, "patience": 1.0, "clown": true},
+	"fruit_truck": {"spawn": 0.75, "patience": 1.0, "fruit": true},
+	"crowded_car": {"spawn": 0.75, "patience": 1.0, "crowd": true},
+	"ghost_car": {"spawn": 0.75, "patience": 1.0, "ghost": true},
 }
 
 var checkpoint: TrafficCheckpoint
@@ -55,6 +66,13 @@ func spawn_every() -> float:
 	return SPAWN_EVERY * float(VARIANTS[variant].spawn)
 
 
+func loose_clowns() -> int:
+	var count := 0
+	for car in cars:
+		count += car.clowns_out.size()
+	return count
+
+
 func waiting_count() -> int:
 	return cars.filter(func(car: QueueCar) -> bool: return car.waiting()).size()
 
@@ -65,6 +83,10 @@ func front() -> QueueCar:
 
 func release_front() -> void:
 	var car := front()
+	if car and not car.can_go():
+		for cop: Cop in get_tree().get_nodes_in_group("cops"):
+			cop.show_hint("HINT_RIDERS_OUT" if car.crowd > 0 else "HINT_CLOWNS_OUT")
+		return
 	if car:
 		car.let_through()
 		_leave(car, false)
@@ -92,11 +114,13 @@ func _physics_process(delta: float) -> void:
 		if not is_instance_valid(car) or car.at.z < -TrafficCheckpoint.ZONE.y:
 			_leave(car, false)
 	var waiting := waiting_count()
-	if waiting > 0:
-		_set_patience(patience + waiting * PATIENCE_PER_CAR * float(VARIANTS[variant].patience) * delta)
+	var loose := loose_clowns()
+	if waiting > 0 or loose > 0:
+		_set_patience(patience + (waiting * PATIENCE_PER_CAR * float(VARIANTS[variant].patience)
+			+ loose * PATIENCE_PER_CLOWN) * delta)
 	else:
 		_set_patience(patience - CALM_DOWN * delta)
-	if patience >= FULL and front():
+	if patience >= FULL and front() and front().can_go():
 		var car := front()
 		car.sneak()
 		sneaked += 1
@@ -114,10 +138,29 @@ func spawn() -> QueueCar:
 	var car := QueueCar.new()
 	car.name = "QueueCar%d" % spawned
 	car.checkpoint = checkpoint
-	var data := plan.cars[spawned] if plan and spawned < plan.total else WantedPlan.random_car(_rng)
+	var clown: bool = VARIANTS[variant].get("clown", false)
+	var fruit: bool = VARIANTS[variant].get("fruit", false)
+	var crowd: bool = VARIANTS[variant].get("crowd", false)
+	var ghost: bool = VARIANTS[variant].get("ghost", false)
+	var data := plan.cars[spawned] if plan and spawned < plan.total \
+		else WantedPlan.random_car(_rng, clown, fruit, crowd, ghost)
 	car.look = data.look
 	car.plate = data.plate
 	car.driver = data.driver
+	car.clown = clown
+	car.fruit = fruit
+	var fruit_traits: Dictionary = data.get("fruit", {})
+	car.crate = fruit_traits.get("crate", "")
+	car.hat = fruit_traits.get("hat", "")
+	car.melon_kinds.assign(fruit_traits.get("melons", []))
+	car.clown_traits = data.get("clown", {})
+	if crowd:
+		car.crowd = data.get("crowd", CrowdedCar.riders_of(car.plate))
+	if ghost:
+		car.ghost_mode = true
+		car.shirt = data.get("shirt", -1)
+		car.ghost = data.get("ghost", spawned == GhostCar.ghost_at(case_seed))
+		car.puppeteer = data.get("puppeteer", spawned == GhostCar.pilot_at(case_seed))
 	car.wanted = plan != null and spawned == plan.wanted_index
 	car.at = Vector3(0, 0, SPAWN_FROM)
 	car.speed = QueueCar.SPEED

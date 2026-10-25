@@ -22,12 +22,12 @@ func _seed(party: bool) -> int:
 	return seed_
 
 
-func test_about_half_the_seeds_are_the_party() -> void:
+func test_about_a_sixth_of_the_seeds_are_the_party() -> void:
 	var parties := 0
 	for seed_ in range(1, 201):
 		if BankLevel.is_party(seed_, PackedStringArray()):
 			parties += 1
-	assert_between(parties, 70, 130)
+	assert_between(parties, 20, 55)
 
 
 func test_the_args_force_one_or_the_other() -> void:

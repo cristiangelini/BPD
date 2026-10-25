@@ -102,9 +102,12 @@ func _perform(actor_id: int, index: Variant, method: String, args: Array) -> boo
 	return true
 
 
-## How every PC finds `target`: its place in `targets`, or its path for one added later with a name of its own.
+## How every PC finds `target`: its place in `targets`, or for one added later its place in PropSync's list if it's a
+## prop (a guest's copy can sit elsewhere: a watermelon in a truck's bed), else its path if it has a name of its own.
 func _ref(target: Node) -> Variant:
 	var index := targets.find(target)
+	if index >= _opening_targets and target is RigidBody3D and net.props and net.props.index_of(target) >= 0:
+		return {"prop": net.props.index_of(target)}
 	if index >= _opening_targets and not String(target.name).begins_with("@"):
 		return {"path": _level.get_path_to(target)}
 	return index
