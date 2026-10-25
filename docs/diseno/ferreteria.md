@@ -69,6 +69,16 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
 
 ## El orden para hacerlo (un PR chico por paso)
 1. El local en la ciudad, con los ambientes, los escondites y lo frágil.
+   - **Cómo quedó (propuesta):** adelante, el local (16 × 5,5 m) con la entrada y dos vidrieras a la calle, el
+     mostrador al fondo a la izquierda (caja, máquina de copiar llaves y 6 frascos de tornillos), el tablero de llaves en
+     blanco en la pared de atrás, la pared de tornillos (60 cajoncitos) contra la pared oeste, 2 góndolas de 3 estantes
+     en el medio y el exhibidor de pinturas (3 estantes, 18 latas de 6 colores) contra la pared este. Atrás, el depósito
+     (cemento, mangueras, cajas de clavos, escalera), cerrado desde el local por la puerta "Solo personal" que queda
+     detrás del mostrador, y el taller (banco de trabajo con morsa y amoladora, armario de chapa), con una abertura entre
+     los dos y la puerta de atrás al patio cerrada (se rompe con el ariete). El patio tiene carretilla, arena, ladrillos,
+     caños y una cerca baja con un portón abierto a la calle de al lado. 12 escondites, 6 para cosas pesadas. Lo
+     frágil: 18 latas y 6 frascos, 20 de multa cada uno. "Ferretería (prueba)" en el menú la abre, y también
+     `--place=hardware`. Capturas en `ferreteria/` de la carpeta del proyecto.
 2. Tobías: el mostrador, la denuncia, el interrogatorio y la distracción del tornillo.
 3. La mercadería que se cobra (la cuenta) y las herramientas que sirven.
 4. Don Cosme y la máquina de copiar llaves.
