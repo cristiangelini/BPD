@@ -92,6 +92,11 @@ static func _nearest_street(at: float, columns: bool) -> float:
 	return best
 
 
+## Online (NpcSync): copied on the guests, where it only follows the host's.
+func net_setup() -> Dictionary:
+	return {"route": route}
+
+
 ## The handcuffs: caught.
 func cuffed(seconds: float) -> void:
 	_cuffed_left = maxf(_cuffed_left, seconds)

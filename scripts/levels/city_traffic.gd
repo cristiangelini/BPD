@@ -21,6 +21,7 @@ func _ready() -> void:
 		var points := loop_points(loop[0], loop[1], loop[2], loop[3], loop[4])
 		for k in CARS_PER_LOOP:
 			var car := CityCar.new()
+			car.name = "Car%d" % get_child_count()
 			car.path = points
 			car.look = _rng.randi_range(0, 3)
 			add_child(car)
@@ -29,6 +30,7 @@ func _ready() -> void:
 		for col in CityLayout.COLUMNS:
 			for k in WALKERS_PER_BLOCK:
 				var walker := CityWalker.new()
+				walker.name = "Walker%d" % get_child_count()
 				walker.look = WALKER_LOOKS[_rng.randi() % WALKER_LOOKS.size()]
 				walker.path = ring(Vector2i(col, row), _rng.randf_range(-0.7, 0.7), _rng.randf() < 0.5)
 				add_child(walker)
