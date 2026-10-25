@@ -107,6 +107,8 @@ var guards: Array[Node3D] = []
 var blackout: BlackoutPlan
 ## The fuse board at the end of the block's corridor (step 5).
 var fuse_board: FuseBoard
+## The blackout case on top (step 6): the comisario's briefing, the planilla and the end of the shift.
+var blackout_case: BlackoutCase
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -193,6 +195,12 @@ func _start_blackout() -> void:
 	blackout.name = "Blackout"
 	add_child(blackout)
 	blackout.setup(self, case_seed)
+	blackout_case = BlackoutCase.new()
+	blackout_case.name = "BlackoutCase"
+	blackout_case.prison = self
+	blackout_case.shift_screen = $ShiftScreen
+	add_child(blackout_case)
+	blackout_case.start(city.get("comisario"))
 	city.transform = CityLayout.anchor("prison")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
