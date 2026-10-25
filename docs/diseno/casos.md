@@ -142,4 +142,4 @@ Llegan cuando el robo está pasando (decisión 32).
 7. **Robo en el banco de sangre.**
 8. **El ladrón arrepentido:** quiere devolver todo, pero la banda no lo deja. Propuesta en [robo-banco-arrepentido.md](robo-banco-arrepentido.md) (decisión 123).
 9. **Banco de semillas:** roban semillas raras de plantas que crecen enseguida.
-10. **El ladrón es el gerente:** hay que darse cuenta antes de que se vaya con la plata.
+10. **El ladrón es el gerente:** hay que darse cuenta antes de que se vaya con la plata. Propuesta en [robo-banco-gerente.md](robo-banco-gerente.md) (decisión 124).
