@@ -8,13 +8,18 @@ extends Node
 ## loses it. The pay is SALARY, less PER_HOSTAGE for each hostage still inside and PER_BAG for each sack of money the
 ## robbers took; quota of its own, like the chase (decision 91). Solved, El Oso is in custody and the next shift is
 ## his interrogation (decision 93). Online the host's case decides and a guest's follows it (CaseSync, snapshot),
-## with its bank, drill and phone. Every number here is (propuesta).
+## with its bank, drill and phone. At the party (robo-banco-rehenes.md, step 5) the comisario's radio tells about the
+## hostages who don't want to leave, the first fan who warns the gang shows a hint to everyone, and the planilla counts
+## the croissants left on the tray. With the grandpa robbers (robo-banco-abuelos.md, step 5) the radio warns that
+## they're slow but clever, the first one who passes for a hostage shows a hint to everyone, the planilla counts the
+## hostages cuffed by mistake and each one costs PER_WRONG_CUFF. Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 3.0
 const SALARY := 700
 const PER_HOSTAGE := 100
 const PER_BAG := 50
+const PER_WRONG_CUFF := 50
 const QUOTA := 400
 const STORY := "bank_robbery"
 const SLIPS := "BEAR_SLIP_%d"
@@ -28,6 +33,11 @@ var shift_screen: ShiftScreen
 var boss_jailed := false
 var escaped := false
 var shift_over := false
+## At the party: a fan of the gang already warned them once (the hint goes out only the first time).
+var fans_heard := false
+## With the grandpa robbers: one already passed for a hostage (the hint goes out once), and the true hostages cuffed.
+var grandpa_hid := false
+var wrong_cuffs := 0
 ## Online (docs/diseno/online.md): a guest's case, and its bank, only follow the host's; `online` is that sync.
 var follower := false:
 	set(value):
@@ -50,6 +60,11 @@ func start() -> void:
 	briefing.finished.connect(checklist.set_open.bind(true))
 	briefing.finished.connect(_hint_all.bind("HINT_GO_BANK"))
 	OwnerEscort.of(bank.boss).boarded.connect(_on_boss_jailed)
+	for hostage in bank.hostages:
+		hostage.snitched.connect(_on_snitched)
+		hostage.wrongly_cuffed.connect(_on_wrongly_cuffed)
+	for robber in bank.robbers:
+		robber.spotted.connect(_on_robber_spotted)
 	bank.drill.opened.connect(_on_vault_opened)
 	if shift_screen:
 		shift_screen.play_again.connect(_play_again)
@@ -57,8 +72,48 @@ func start() -> void:
 	# Over the radio, right away: the robbery is happening now.
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).input_enabled:
-			briefing.start(PackedStringArray(["BRIEF_BANK_A", "BRIEF_BANK_B", "BRIEF_BANK_C"]))
+			briefing.start(brief())
 			break
+	checklist.show_rows(rows())
+
+
+## What the comisario says over the radio: the base robbery's, the party's or the grandpas'.
+func brief() -> PackedStringArray:
+	if bank.grandpas:
+		return PackedStringArray(["BRIEF_BANK_GRANDPAS_A", "BRIEF_BANK_GRANDPAS_B", "BRIEF_BANK_GRANDPAS_C"])
+	if bank.party:
+		return PackedStringArray(["BRIEF_BANK_PARTY_A", "BRIEF_BANK_PARTY_B", "BRIEF_BANK_PARTY_C"])
+	return PackedStringArray(["BRIEF_BANK_A", "BRIEF_BANK_B", "BRIEF_BANK_C"])
+
+
+func _on_snitched(_hostage: BankHostage, _cop: Node3D) -> void:
+	if follower or fans_heard:
+		return
+	_hear_fans()
+
+
+func _hear_fans() -> void:
+	fans_heard = true
+	_hint_all("HINT_BANK_FANS")
+
+
+## A grandpa robber who saw a cop goes to pass for a hostage: everyone hears it, once.
+func _on_robber_spotted(robber: BankRobber, _cop: Node3D) -> void:
+	if follower or grandpa_hid or not robber.unmasked:
+		return
+	_grandpa_hides()
+
+
+func _grandpa_hides() -> void:
+	grandpa_hid = true
+	_hint_all("HINT_BANK_GRANDPA_HID")
+
+
+## A true hostage cuffed: with the grandpa robbers it's a mistake that costs.
+func _on_wrongly_cuffed(_hostage: BankHostage) -> void:
+	if follower or not bank.grandpas:
+		return
+	wrong_cuffs += 1
 	checklist.show_rows(rows())
 
 
@@ -112,9 +167,9 @@ func hostages_left() -> int:
 	return bank.hostages.size() - bank.hostages_freed
 
 
-## What the robbery cost: the hostages left inside and the sacks the robbers took.
+## What the robbery cost: the hostages left inside, the sacks the robbers took and the true hostages cuffed.
 func missed() -> int:
-	return PER_HOSTAGE * hostages_left() + PER_BAG * bank.bags_taken
+	return PER_HOSTAGE * hostages_left() + PER_BAG * bank.bags_taken + PER_WRONG_CUFF * wrong_cuffs
 
 
 func report() -> Dictionary:
@@ -195,7 +250,10 @@ func _physics_process(delta: float) -> void:
 ## getaway and the end of shift.
 func snapshot() -> Dictionary:
 	var state := {"drill": bank.drill.net_state(), "phone": bank.phone.net_state(), "bags": bank.bags_taken,
-		"jailed": boss_jailed, "escaped": escaped, "result": _result}
+		"jailed": boss_jailed, "escaped": escaped, "result": _result, "fans": fans_heard, "hid": grandpa_hid,
+		"wrong_cuffs": wrong_cuffs, "marbles": bank.marbles != null}
+	if bank.croissant_tray:
+		state.tray = bank.croissant_tray.left
 	if bank.chase:
 		state.getaway = bank.chase.suspect_id
 		state.chase = bank.chase.snapshot()
@@ -213,6 +271,15 @@ func apply_snapshot(state: Dictionary) -> void:
 	if state.jailed:
 		_jail_boss()
 	escaped = state.escaped
+	if state.get("fans", false) and not fans_heard:
+		_hear_fans()
+	if state.get("hid", false) and not grandpa_hid:
+		_grandpa_hides()
+	wrong_cuffs = state.get("wrong_cuffs", 0)
+	if state.get("marbles", false):
+		bank.spill_marbles()
+	if bank.croissant_tray and state.has("tray") and state.tray != bank.croissant_tray.left:
+		bank.croissant_tray.set_left(state.tray)
 	checklist.show_rows(rows())
 	if not state.result.is_empty() and not shift_over:
 		_show_result(state.result)
@@ -229,6 +296,16 @@ func rows() -> Array[Dictionary]:
 	list.append(_row("OBJ_BANK_BACK", shift_over and solved()))
 	var drill := "OBJ_BANK_VAULT_OPEN" if bank.drill.is_open else "OBJ_BANK_DRILL"
 	list.append({"text": drill, "done": false, "optional": false, "status": true})
+	if bank.grandpas:
+		list.append({"text": "OBJ_BANK_GRANDPAS", "done": false, "optional": false, "status": true})
+		if wrong_cuffs > 0:
+			list.append({"text": tr("OBJ_BANK_WRONG_CUFFS") % wrong_cuffs, "done": false, "optional": false,
+				"status": true})
+	if bank.party:
+		list.append({"text": "OBJ_BANK_FANS", "done": false, "optional": false, "status": true})
+		if bank.croissant_tray:
+			list.append({"text": tr("OBJ_BANK_CROISSANTS") % bank.croissant_tray.left, "done": false,
+				"optional": false, "status": true})
 	return list
 
 
