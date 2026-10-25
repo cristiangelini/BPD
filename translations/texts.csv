@@ -2240,3 +2240,10 @@ TALENT_LINE_SPOONS,"¡Tlin, tlin, tlin!","Clink, clink, clink!","Tlim, tlim, tli
 TALENT_ANNOUNCE_POET,¡Con ustedes... el poeta del comedor!,Here they are... the canteen poet!,Com vocês... o poeta do refeitório!
 TALENT_ACT_POET,el poeta,the poet,o poeta
 TALENT_LINE_POET,"Oh, puré de la cárcel, tan gris como mi alma...","Oh, prison mash, as grey as my soul...","Oh, purê da prisão, tão cinza quanto minha alma..."
+PROMPT_CALM_AUDIENCE,E: calmarlo,E: calm them down,E: acalmar
+HINT_AUDIENCE_CALMED,Se sentó de nuevo. Faltan los otros ofendidos.,They sat back down. The other offended ones are left.,Sentou de novo. Faltam os outros ofendidos.
+TALENT_CALMED,"Bueno, bueno... pero voten.","Fine, fine... but vote.","Tá bom, tá bom... mas votem."
+TALENT_OFFENDED,¿Nadie del jurado? ¡El público está ofendido!,Nobody on the jury? The audience is offended!,Ninguém no júri? O público está ofendido!
+TALENT_BOO_1,¡BUUU!,BOOO!,UUUH!
+TALENT_BOO_2,"¡Que voten, que voten!","Vote, vote!","Votem, votem!"
+TALENT_BOO_3,¡Fraude! ¡Jurado vendido!,Rigged! Sold-out jury!,Fraude! Júri vendido!

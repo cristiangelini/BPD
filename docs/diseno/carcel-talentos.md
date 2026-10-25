@@ -95,3 +95,8 @@ el del coro y quiénes gatean en el humo.
   Después cierra el telón 15 s. Sentado en una silla del jurado, R cambia el puntaje del cartel (1 a 10). Al final
   nombra al ganador (más puntos; con empate, el último), que sale a llorar de emoción. Capturas: `paso3-numero.png`,
   `paso3-voto.png` y `paso3-ganador.png`.
+- **Paso 4:** el público ofendido. Si nadie está sentado en el jurado cuando el presentador pide los puntajes, dice
+  que el público está ofendido y 6 presos de los bancos se paran abucheando ("¡Fraude! ¡Jurado vendido!") y le tiran
+  comida del comedor (puré, gelatina, pollo y yogur, como en el motín) al policía más cercano en el comedor, cada 2 a
+  4 s, durante 20 s. E sobre uno lo calma y se vuelve a sentar ("Bueno, bueno... pero voten"); con todos calmados se
+  termina antes. El show sigue mientras tanto. Captura: `paso4-abucheo.png`.
