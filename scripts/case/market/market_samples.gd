@@ -66,6 +66,11 @@ func _offer(index: int) -> void:
 	_take(plate)
 
 
+## The spiteful vendor is caught (step 5): the samples not handed out yet are all clean.
+func clean_rest() -> void:
+	laxed = laxed.filter(func(i: int) -> bool: return plates.has(i))
+
+
 func _take(plate: SamplePlate) -> void:
 	in_hand = plate
 	plate.freeze = true

@@ -155,15 +155,68 @@ export function buildToiletDoor() {
 export const KINDS = ['fruit', 'cheese', 'empanadas', 'fish', 'pickles', 'olives', 'bread', 'sweets', 'juice', 'meat', 'spices', 'ice_cream'];
 const FOODS = [fruit, cheese, empanadas, fish, pickles, olives, bread, sweets, juice, meat, spices, iceCream];
 
+// The spiteful vendor's getaway (step 6): a cargo tricycle, two wheels in front under a big crate full of vegetables
+// and one behind under the saddle. The vendor (npc_puestero) pedals it. 1.9 m long; faces +Z like the vehicles. Its
+// wheels are part of it. What falls off in the curves is a loose veggie (market_veggie_*).
+export function buildVeggieTrike() {
+	const frame = mat('trike_frame', 0x2a6ab0), tire = mat('tire', 0x1a1a1e), black = mat('trike_black', 0x22252a);
+	const b = new Builder('veggie_trike');
+	for (const [x, z] of [[-0.42, 0.55], [0.42, 0.55], [0, -0.7]]) {
+		b.add('wheels', tire, new THREE.TorusGeometry(0.28, 0.04, 6, 14), { pos: V(x, 0.3, z), rot: [0, Math.PI / 2, 0] });
+		b.add('wheels', black, new THREE.CylinderGeometry(0.04, 0.04, 0.1, 6), { pos: V(x, 0.3, z), rot: [0, 0, Math.PI / 2] });
+	}
+	b.add('frame', frame, new THREE.BoxGeometry(0.95, 0.05, 0.05), { pos: V(0, 0.3, 0.55) });
+	b.add('frame', frame, new THREE.BoxGeometry(0.05, 0.05, 1.3), { pos: V(0, 0.4, -0.1), rot: [0.08, 0, 0] });
+	b.add('frame', frame, new THREE.BoxGeometry(0.05, 0.6, 0.05), { pos: V(0, 0.7, -0.45), rot: [-0.2, 0, 0] });
+	b.add('frame', black, new THREE.BoxGeometry(0.2, 0.06, 0.28), { pos: V(0, 1.0, -0.52) });
+	b.add('frame', frame, new THREE.BoxGeometry(0.05, 0.6, 0.05), { pos: V(0, 0.75, 0.05), rot: [0.15, 0, 0] });
+	b.add('frame', black, new THREE.BoxGeometry(0.6, 0.04, 0.04), { pos: V(0, 1.05, 0.1) });
+	// The crate on the front axle, heaped with vegetables.
+	b.add('crate', crate, new THREE.BoxGeometry(0.95, 0.06, 0.65), { pos: V(0, 0.62, 0.62) });
+	for (const x of [-0.46, 0.46]) b.add('crate', crate, new THREE.BoxGeometry(0.04, 0.32, 0.65), { pos: V(x, 0.8, 0.62) });
+	for (const z of [0.31, 0.93]) b.add('crate', crate, new THREE.BoxGeometry(0.95, 0.32, 0.04), { pos: V(0, 0.8, z) });
+	const r = rng(41);
+	const veg = [mat('veg_cabbage', 0x7cc05a), mat('veg_pumpkin', 0xe8862a), mat('veg_tomato', 0xd8322a), mat('veg_eggplant', 0x5a2a6a)];
+	for (let i = 0; i < 14; i++) {
+		const m = veg[i % veg.length];
+		b.add('veggies', m, ellipsoid(0.1 + r() * 0.05, 0.09 + r() * 0.04, 0.1 + r() * 0.05, 8, 5),
+			{ pos: V(-0.33 + (i % 5) * 0.165, 0.95 + Math.floor(i / 5) * 0.07, 0.45 + r() * 0.34) });
+	}
+	b.add('veggies', mat('veg_carrot_leaf', 0x3a9a3a), new THREE.ConeGeometry(0.05, 0.25, 5), { pos: V(0.3, 1.15, 0.8) });
+	return b.build();
+}
+
+// What the trike loses in each curve (step 6), shown bigger than life so it's seen from the patrol car: a pumpkin, a
+// cabbage and a watermelon. Each origin on the ground.
+export function buildVeggie(name, color, rx, ry, rz, leaf) {
+	const b = new Builder(name);
+	b.add('veggie', mat(name, color), ellipsoid(rx, ry, rz, 10, 7), { pos: V(0, ry, 0) });
+	if (leaf) b.add('veggie', mat('veg_stem', 0x4a7a2a), new THREE.CylinderGeometry(0.03, 0.04, 0.1, 5), { pos: V(0, ry * 2 + 0.03, 0) });
+	return b.build();
+}
+
 export const models = {
+	veggie_trike: buildVeggieTrike,
+	market_veggie_pumpkin: () => buildVeggie('market_veggie_pumpkin', 0xe8862a, 0.35, 0.25, 0.35, true),
+	market_veggie_cabbage: () => buildVeggie('market_veggie_cabbage', 0x8ccc6a, 0.25, 0.22, 0.25, false),
+	market_veggie_melon: () => buildVeggie('market_veggie_melon', 0x2e7a3a, 0.28, 0.25, 0.42, false),
 	market_stall: buildStall,
 	sample_plate: buildSamplePlate,
+	laxative_jar: buildLaxativeJar,
+	market_bin: buildBin,
+	market_bin_lid: buildBinLid,
 	chemical_toilet: buildToilet,
 	chemical_toilet_door: buildToiletDoor,
 	...Object.fromEntries(KINDS.map((k, i) => [`market_food_${k}`, FOODS[i]])),
 };
 
 export const views = {
+	veggie_trike: {
+		items: [{ name: 'veggie_trike', pos: [0, 0, 0], rotY: 0.9 }, { name: 'npc_puestero', pos: [-0.25, 0.25, -0.35], rotY: 0.9, scale: 0.85 },
+			{ name: 'market_veggie_pumpkin', pos: [1.4, 0, 0.6] }, { name: 'market_veggie_cabbage', pos: [1.1, 0, -0.5] },
+			{ name: 'market_veggie_melon', pos: [-1.3, 0, 0.8] }],
+		cam: { pos: [0, 2.0, 4.5], target: [0, 0.6, 0], fov: 40 },
+	},
 	market_stalls: {
 		items: KINDS.slice(0, 4).flatMap((k, i) => [{ name: 'market_stall', pos: [(i - 1.5) * 3.3, 0, 0] },
 			{ name: `market_food_${k}`, pos: [(i - 1.5) * 3.3, 1.0, 0] }]),
@@ -188,5 +241,33 @@ export function buildSamplePlate() {
 	b.add('bite', mat('bite', 0xd9a050), ellipsoid(0.045, 0.03, 0.04, 8, 5), { pos: V(0, 0.04, 0) });
 	b.add('pick', mat('toothpick', 0xe0c08a), new THREE.CylinderGeometry(0.003, 0.003, 0.1, 4), { pos: V(0.01, 0.07, 0), rot: [0, 0, 0.15] });
 	b.add('pick', mat('pick_flag', 0xd8402e), new THREE.BoxGeometry(0.035, 0.022, 0.003), { pos: V(0.0, 0.115, 0) });
+	return b.build();
+}
+
+// The jar of laxative hidden in the spiteful vendor's bin (step 5): a fat white jar with a green lid and a label
+// with a lightning bolt, 12 cm tall. Its origin on its bottom.
+export function buildLaxativeJar() {
+	const b = new Builder('laxative_jar');
+	b.add('jar', mat('jar_white', 0xf4f4f0), new THREE.CylinderGeometry(0.05, 0.05, 0.1, 10), { pos: V(0, 0.05, 0) });
+	b.add('jar', mat('jar_lid_green', 0x3ac84a), new THREE.CylinderGeometry(0.053, 0.053, 0.025, 10), { pos: V(0, 0.112, 0) });
+	b.add('label', mat('jar_label', 0x3a8a2a), new THREE.CylinderGeometry(0.0505, 0.0505, 0.05, 10, 1, true, -0.9, 1.8), { pos: V(0, 0.05, 0) });
+	b.add('label', mat('jar_bolt', 0xf2d23a), new THREE.BoxGeometry(0.012, 0.04, 0.004), { pos: V(0, 0.05, 0.052), rot: [0, 0, 0.4] });
+	return b.build();
+}
+
+// A trash bin with its lid (step 5): grey plastic, 45 cm across and 60 tall, open on top; the lid is its own model.
+export function buildBin() {
+	const grey = mat('bin_grey', 0x6a7078, { side: THREE.DoubleSide });
+	const b = new Builder('market_bin');
+	b.add('bin', grey, new THREE.CylinderGeometry(0.23, 0.2, 0.6, 10, 1, true), { pos: V(0, 0.3, 0) });
+	b.add('bin', mat('bin_inside', 0x3a3e44), new THREE.CylinderGeometry(0.2, 0.2, 0.02, 10), { pos: V(0, 0.01, 0) });
+	b.add('bin', mat('bin_rim', 0x50565e), new THREE.TorusGeometry(0.23, 0.015, 4, 12), { pos: V(0, 0.6, 0), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
+export function buildBinLid() {
+	const b = new Builder('market_bin_lid');
+	b.add('lid', mat('bin_lid', 0x50565e), new THREE.CylinderGeometry(0.25, 0.25, 0.04, 10), { pos: V(0, 0, 0) });
+	b.add('lid', mat('bin_handle', 0x3a3e44), new THREE.BoxGeometry(0.12, 0.03, 0.03), { pos: V(0, 0.035, 0) });
 	return b.build();
 }

@@ -5,9 +5,9 @@ extends Node
 ## outside the way in for his guard and starts when the first cop gets within START_REACH of him. Then he walks the
 ## U-shaped aisle stall by stall (MarketLevel.stalls, in order) and stops STOP_TIME at each: he greets, the vendor
 ## offers a sample and, at the end of the stop, he tastes it (`tasting`; the plate and what he says: MarketSamples).
-## After the last stall he walks to the ribbon at the way out, has his photo taken and `finished` goes off: the shift ends
-## there (step 6). A bar at the top of the screen shows how many stalls are done. `hold` stops him where he is (the
-## toilet run, step 4). Every number here is (propuesta).
+## After the last stall he walks to the ribbon at the way out, has his photo taken and `finished` goes off: the shift
+## ends there (step 6). A bar at the top of the screen shows how many stalls are done. `hold` leaves him to someone
+## else (the toilet run, MarketToiletRun) and stops the clock. Every number here is (propuesta).
 
 signal started
 ## He's at stall `index` and the vendor offers him a sample.
@@ -72,6 +72,19 @@ func hold(seconds: float) -> void:
 	hold_left = maxf(hold_left, seconds)
 
 
+## Lets him go on after a hold, around the cold room if he was taken away from the aisle.
+func release() -> void:
+	hold_left = 0.0
+	if state == State.WALKING and not _path.is_empty():
+		_path = market.aisle_path(politician.global_position, _path[-1])
+
+
+## He leaves for good (the second laxative): the walk ends without the photo.
+func abort() -> void:
+	state = State.OVER
+	hold_left = 0.0
+
+
 func walking() -> bool:
 	return state == State.WALKING
 
@@ -85,9 +98,9 @@ func _physics_process(delta: float) -> void:
 	if follower:
 		_show()
 		return
+	# Held, someone else moves him (the toilet run).
 	if hold_left > 0.0:
 		hold_left -= delta
-		_move(Vector3.ZERO, delta)
 		_show()
 		return
 	match state:
@@ -143,6 +156,9 @@ func _stopped(delta: float) -> void:
 	if stop_left > 0.0:
 		return
 	tasting.emit(stall)
+	# What he ate may have sent him home (MarketToiletRun.went_home).
+	if state == State.OVER:
+		return
 	stall += 1
 	if stall < market.stalls.size():
 		_walk_to(_stop_point(stall))
