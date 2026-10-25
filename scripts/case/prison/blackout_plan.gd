@@ -71,6 +71,8 @@ var escaped := 0
 var chispa: BlackoutInmate
 var board: FuseBoard
 var lights_on := false
+## A guest's copy (BlackoutCase.follower): the host's inmates walk, freeze and escape; here they only follow.
+var follower := false
 ## El Chispa's countdown to pull a fuse back out (0: nothing to pull), and whether he's on his way to the board.
 var _pull_left := 0.0
 var _pulling := false
@@ -335,6 +337,8 @@ func _shuffle(items: Array) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if follower:
+		return
 	if not running:
 		for cop: Cop in get_tree().get_nodes_in_group("cops"):
 			if prison.inside_walls(cop.global_position):

@@ -28,5 +28,10 @@ func _ready() -> void:
 	add_to_group("blackout_fuses")
 
 
+## Online (PropSync): the host makes the ones El Chispa drops or tosses; a guest's copy is made from this script.
+func net_setup() -> Dictionary:
+	return {}
+
+
 func held_prompt_key(_cop: Cop) -> String:
 	return "PROMPT_HOLDING_FUSE"

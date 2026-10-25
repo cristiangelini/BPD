@@ -118,3 +118,9 @@ están los dos fusibles sueltos, quién es El Chispa y sus frases. Así no hay d
   escapado y 100 más con El Chispa en la celda de castigo con la reja cerrada. Cuota propia de 400. Con 4 escapados
   se pierde, aunque después vuelva la luz. En el sorteo de Jugar sale en un tercio de los casos de la cárcel
   (`PlaceDraw.PRISONS`, con el motín y el traslado). Captura: `paso6-planilla.png`.
+- **Paso 7 (online):** decide el anfitrión. Los presos van por `NpcSync` (dónde están, qué dicen, si están duros,
+  escondidos, escapados, en una celda, rendidos, esposados y si El Chispa todavía tiene su fusible); los fusibles por
+  `PropSync` (los que El Chispa suelta o tira los hace el anfitrión y les llegan a los invitados); las rejas y el
+  tablero por `ActionSync`, y la planilla, los escapados, los fusibles puestos, la luz y el fin del turno por
+  `CaseSync` (`BlackoutCase.snapshot`). Los invitados no mueven presos ni los congelan: el anfitrión ve las linternas
+  de todos.
