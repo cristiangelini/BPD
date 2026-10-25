@@ -154,6 +154,12 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      allanamiento se reparten en cuartos entre la casa del abuelo, la panadería, la peluquería y la ferretería. El
      sorteo del allanamiento ahora usa el hash de un arreglo (como los otros sorteos), porque con el texto y 4 lugares
      la panadería y la ferretería no salían nunca.
+   - **El online (propuesta):** Tobías y Don Cosme van por NpcSync como Ramiro: el anfitrión los maneja y los invitados
+     los siguen (Tobías buscando el tornillo, Cosme que pidió y recibió su llave). Lo que se hace con E (cajoncitos,
+     la pared de tornillos, el tablero de llaves, la máquina) pasa en todas las PC por ActionSync, así que la pared se
+     corre con un policía en cada PC. Lo que una historia saca a la luz (el cajoncito de oro, el taladro) en el
+     invitado queda congelado y sigue al del anfitrión. La goma pinchada importa en el anfitrión, que maneja el
+     patrullero para todos.
 
 ## Preguntas para Cristian (se avanza con lo recomendado mientras tanto)
 1. ¿La ferretería como cuarto lugar, o preferís otro de los 7 que faltan? **Recomendado:** la ferretería, porque ya

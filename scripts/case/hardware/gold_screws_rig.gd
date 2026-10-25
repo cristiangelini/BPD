@@ -78,7 +78,8 @@ func _on_opened(cop: Cop, index: int) -> void:
 		gold.collision_layer = 4
 		gold.collision_mask = 15
 		gold.visible = true
-		gold.freeze = false
+		# Online a guest's copy stays frozen (PropSync stopped its physics) and follows the host's.
+		gold.freeze = not gold.is_physics_processing()
 		cop.show_hint("HINT_GOLD_DRAWER")
 	elif spills_at(index):
 		var spilled := SpilledScrews.new()

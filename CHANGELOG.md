@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Hardware store, step 7: online, Tobías and Don Cosme are run by the host and followed by the guests, the screw wall slides with a cop on each PC, and the golden drawer and the drill stay the host's to move.
 - Hardware store, step 7: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon and the hardware store in quarters.
 - Hardware store, step 6: the nails on the street story: the bucket of nails, the commission book and the giant magnet hidden, a patch of nails where the patrol car parks that gives it a flat tire (half speed) until the magnet comes near, and loose nails across the street as the clue.
 - Hardware store, step 6: the deputy's mustaches story: the stencil, three spray cans and the original poster hidden, sprayed posters on the walls, a black paint puddle in the workshop with a trail of prints as the clue, and black soles for 12 steps for a cop who steps in it.
