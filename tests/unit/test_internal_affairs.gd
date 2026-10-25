@@ -98,3 +98,21 @@ func test_he_follows_the_cop_and_shows_his_badge() -> void:
 	assert_eq(agent.said(), "AGENT_BADGE")
 	assert_eq(Handcuffs.offer_of(agent), 0, "and never offers a bribe")
 	assert_ne(cop, null)
+
+
+func test_the_cop_is_told_when_the_agent_sees_the_bribe() -> void:
+	var campaign := Campaign.start_new()
+	campaign.investigation = true
+	var cop := _cop()
+	_agent(Vector3(0, 0, 6))
+	await wait_physics_frames(2)
+	cop.belt_bribe(null, 150)
+	assert_eq(cop.get_node("Hud/Hint").text, "HINT_BRIBE_CAUGHT")
+
+
+func test_an_offer_is_made_once_for_every_cop() -> void:
+	var cop := _cop()
+	var person: StaticBody3D = preload("res://tests/unit/test_bribes.gd").Cuffable.new()
+	add_child_autofree(person)
+	cop.belt_bribe_offered(person)
+	assert_eq(Handcuffs.offer_of(person), 0, "nobody gets it again")

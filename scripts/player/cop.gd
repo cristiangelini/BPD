@@ -122,7 +122,8 @@ func _ready() -> void:
 
 
 func _join_agent() -> void:
-	InternalAffairsAgent.join(self)
+	if InternalAffairsAgent.join(self) or InternalAffairsAgent.of(self):
+		show_hint("HINT_AGENT_ARRIVES")
 
 
 ## What the camera points at within reach (empty if nothing), ignoring the cop's own body.
@@ -302,6 +303,13 @@ func belt_cuff(body: Node, at: Vector3) -> void:
 ## This cop took a bribe of `amount` from whoever `body` belongs to (sobornos.md): they stay free and won't offer
 ## again. Through act(), so every PC counts it for the joke award; the host's campaign adds it to the shift, unless
 ## the internal affairs agent saw it (decision 192).
+## Whoever `body` belongs to offered a bribe (Handcuffs): they won't offer again, to any cop on any PC.
+func belt_bribe_offered(body: Node) -> void:
+	var from := Handcuffs.cuffable(body) if body else null
+	if from:
+		(from as Node).set_meta("bribe_offered", true)
+
+
 func belt_bribe(body: Node, amount: int) -> void:
 	var from := Handcuffs.cuffable(body) if body else null
 	if from:
@@ -311,6 +319,7 @@ func belt_bribe(body: Node, amount: int) -> void:
 	var seen := agent != null and agent.sees(self)
 	if seen:
 		agent.caught_bribe()
+		show_hint("HINT_BRIBE_CAUGHT")
 	if Campaign.current:
 		Campaign.current.take_bribe(amount, seen)
 
