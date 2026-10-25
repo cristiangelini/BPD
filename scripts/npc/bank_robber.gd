@@ -79,9 +79,10 @@ const SOB_TIME := 2.0
 const SOB_LINES := 4
 const HANKY_DOWN := Vector3(0.38, 0.95, -0.32)
 const HANKY_UP := Vector3(-0.02, 1.36, -0.5)
-## Turned, his helps in order, one at a time (step 2): walking there this fast (m/s), close enough this near to each
-## point of his way, and back at his spot between helps for HELP_REST seconds to blend in.
-const HELPS: Array[String] = ["door"]
+## Turned, his helps in order, one at a time (steps 2 and 3): the back door open from inside, the drill unplugged and
+## two hostages walked out the back; walking there this fast (m/s), close enough this near to each point of his way,
+## and back at his spot between helps for HELP_REST seconds to blend in.
+const HELPS: Array[String] = ["door", "drill", "hostages"]
 const HELP_SPEED := 1.6
 const HELP_REACH := 0.35
 const HELP_REST := 5.0
@@ -97,16 +98,18 @@ var _sob_left := SOB_EVERY
 var _next_sob := 0
 var _hanky: MeshInstance3D
 var _home_yaw := 0.0
-## Turned by a cop: the help he's on ("" resting between helps or done), his way there (world positions, in order),
+## Turned by a cop: the help he's on ("" resting between helps or done) and its leg (a help can take more than one
+## walk: the hostages are picked up, then walked out), his way there (world positions, in order),
 ## whether he's on his way back to his spot, the helps done and how long he still rests.
 var turned := false
 var helping := ""
+var help_stage := 0
 var help_path: Array[Vector3] = []
 var going_back := false
 var helps_done: Array[String] = []
 var rest_left := 0.0
 ## The level's: whether a loose robber other than him sees `cop`; the way to `help` and back to his spot (world
-## positions); and doing `help` once there.
+## positions); and doing `help`'s leg `stage` once there, which gives the way of its next leg (empty when it's done).
 var watched: Callable
 var help_way: Callable
 var way_back: Callable
@@ -360,6 +363,7 @@ func _help(delta: float) -> void:
 		if next == "":
 			return
 		helping = next
+		help_stage = 0
 		help_path = help_way.call(next) if help_way.is_valid() else []
 		say("ROBBER_SORRY_GO_%s" % next.to_upper())
 		return
@@ -380,11 +384,16 @@ func next_help() -> String:
 
 
 func _finish_help() -> void:
+	var more: Array[Vector3] = []
+	if do_help.is_valid():
+		more = do_help.call(helping, help_stage)
+	if not more.is_empty():
+		help_stage += 1
+		help_path = more
+		return
 	var help := helping
 	helping = ""
 	helps_done.append(help)
-	if do_help.is_valid():
-		do_help.call(help)
 	helped.emit(self, help)
 	going_back = true
 	help_path = way_back.call(help) if way_back.is_valid() else []
