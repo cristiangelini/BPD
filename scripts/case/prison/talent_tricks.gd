@@ -99,6 +99,7 @@ func setup(talent: TalentPlan, rng: RandomNumberGenerator) -> void:
 	for z in WINDOW_ZS:
 		windows.append(_window(z))
 	plan.act_started.connect(_on_act_started)
+	child_entered_tree.connect(_on_child_entered)
 	plan.voted.connect(_on_act_over.unbind(3))
 
 
@@ -147,16 +148,16 @@ func _on_act_over() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if follower:
-		return
-	if sawing:
-		_saw(delta)
 	if _clear_left > 0.0:
 		_clear_left -= delta
 		if _smoke:
 			_smoke.scale = Vector3.ONE * maxf(_clear_left / CLEAR_TIME, 0.01)
 		if _clear_left <= 0.0:
 			_remove_smoke()
+	if follower:
+		return
+	if sawing:
+		_saw(delta)
 	if _trick == "" or plan.phase != TalentPlan.Phase.ACT:
 		return
 	var before := _act_time
@@ -359,6 +360,38 @@ func _runner(at: Vector3, way: Array[Vector2]) -> BlackoutInmate:
 	BlackoutEscort.to_block(runner, prison).boarded.connect(_on_caught.bind(runner))
 	runners.append(runner)
 	return runner
+
+
+## A guest's copy of a runner the host let out (NpcSync makes it here): it gets its way to the punishment cell too, so
+## the guest's cops see the prompt to walk it there.
+func _on_child_entered(node: Node) -> void:
+	if not follower or not node is BlackoutInmate or runners.has(node):
+		return
+	var runner := node as BlackoutInmate
+	runner.prison = prison
+	runners.append(runner)
+	(func() -> void: BlackoutEscort.to_block(runner, prison).follower = true).call_deferred()
+
+
+## The smoke and the windows, for a guest's case (TalentCase.snapshot).
+func net_state() -> Array:
+	var bars: Array[bool] = []
+	for frame in windows:
+		bars.append(frame.get_node("Bars").visible)
+	return [machine.running, _smoke != null and _clear_left <= 0.0, bars, [foiled, caught, escaped]]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[1] and not _smoke:
+		_smoke_on()
+	elif not state[1] and _smoke and _clear_left <= 0.0:
+		_smoke_off()
+	machine.running = state[0]
+	for i in mini(state[2].size(), windows.size()):
+		windows[i].get_node("Bars").visible = state[2][i]
+	foiled = state[3][0]
+	caught = state[3][1]
+	escaped = state[3][2]
 
 
 func _on_caught(runner: BlackoutInmate) -> void:

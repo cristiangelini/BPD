@@ -186,6 +186,23 @@ func set_on_stage(on: bool) -> void:
 	collision_layer = 8 if on else 0
 
 
+## What a guest's copy needs besides where they are and what they say (NpcSync, step 7).
+func net_state() -> Array:
+	return [seated, visible, angry, sawing, crawling]
+
+
+func apply_net_state(net: Variant) -> void:
+	angry = net[2]
+	sawing = net[3]
+	if net[4]:
+		set_crawling(true)
+	else:
+		crawling = false
+		set_seated(net[0])
+	if net[1] != visible:
+		set_on_stage(net[1])
+
+
 ## On their knees (low, hidden in the smoke) or back up.
 func set_crawling(on: bool) -> void:
 	crawling = on

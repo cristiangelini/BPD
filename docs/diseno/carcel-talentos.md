@@ -117,3 +117,9 @@ el del coro y quiénes gatean en el humo.
   castigo. Se gana cuando termina el show: 600, 100 menos por escapado, 25 más por cada uno en castigo y 20 más por
   número votado. Cuota 400. En Jugar entra en el sorteo de cárceles (`PlaceDraw.PRISONS`, ahora en séptimos).
   Captura: `paso6-planilla.png`.
+- **Paso 7:** online. El host decide y los invitados siguen: los presos del show (`TalentInmate`, con sentado,
+  visible, ofendido, serruchando y gateando), la caja del mago y la máquina de humo (`TalentProp`) y los que salen
+  corriendo van por `NpcSync`; sentarse en el jurado, el puntaje con R y E sobre la caja, la máquina, el que sierra y
+  los ofendidos por `ActionSync`; y el caso por `CaseSync` (`TalentCase.snapshot`: la fase y el número, el telón, los
+  carteles arriba, los votos, la guerra de comida, el humo, las ventanas, los contadores y cómo terminó). Un invitado
+  solo no frustra ningún truco: lo decide el host. Prueba: `test_online_talent.gd`.
