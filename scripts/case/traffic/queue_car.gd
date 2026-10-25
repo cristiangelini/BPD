@@ -7,7 +7,8 @@ extends CharacterBody3D
 ## the cones over. It moves in the checkpoint's space, along local -Z, without physics: cars don't push the cops'
 ## things, they just stop. Stopped, its driver can be checked: the line they say at the barrier, E for the license and
 ## the trunk, opened by lifting its lid (step 4 of "El orden para hacerlo"). Online the host's cars drive and the
-## guests' copies follow them (NpcSync). Every number here is (propuesta).
+## guests' copies follow them (NpcSync). In the clown convoy (control-payasos.md) every car is the same tiny clown
+## car, with the same plate and a clown at the wheel. Every number here is (propuesta).
 
 const SPEED := 30.0 / 3.6
 ## Brakes and speeds up this hard, in m/s².
@@ -35,6 +36,18 @@ const BAG := Color(0.45, 0.3, 0.2)
 const CONTRABAND := Color(0.85, 0.75, 0.3)
 const GRANDPA := preload("res://assets/models/npc_abuelo.glb")
 const SAY_SECONDS := 4.0
+## The clown car (escena-circo.md's getaway, control-payasos.md): 2 m long, with its own small trunk at the back.
+const CLOWN_MODEL := preload("res://assets/models/clown_car.glb")
+const CLOWN_DRIVER := preload("res://assets/models/npc_payaso.glb")
+const CLOWN_DRIVER_AT := Vector3(0, 0.45, -0.25)
+const CLOWN_DRIVER_SCALE := 0.8
+const CLOWN_LENGTH := 2.0
+const CLOWN_WIDTH := 1.25
+const CLOWN_TRUNK_HINGE := Vector3(0, 0.95, -0.55)
+const CLOWN_TRUNK_INSIDE := Vector3(0, 0.45, -0.78)
+const CLOWN_LID := Vector3(0.8, 0.05, 0.42)
+## Its trunk's things, shrunk to fit.
+const CLOWN_TRUNK_SCALE := 0.5
 
 ## "coming", "waiting", "going" (let through), "sneaking", "pulled_over" (detained, by the curb) or "gone".
 var state := "coming"
@@ -48,6 +61,8 @@ var at := Vector3.ZERO
 ## From DriverTraits.draw: name, surname, year, line and trunk.
 var driver: Dictionary = {}
 var plate := ""
+## One of the clown convoy's clown cars.
+var clown := false
 ## The car the case is after (WantedPlan).
 var wanted := false
 var papers_checked := false
@@ -62,24 +77,35 @@ var _trunk: Node3D
 func _ready() -> void:
 	add_to_group("queue_cars")
 	# The body leaves the trunk's top free, so the cops' hands reach the lid: the cabin and hood, and under the trunk.
-	_add_box(Vector3(2.1, 1.4, LENGTH - TRUNK_LENGTH), Vector3(0, 0.9, TRUNK_LENGTH / 2))
-	var under := TRUNK_HINGE.y - 0.3
-	_add_box(Vector3(2.1, under, TRUNK_LENGTH), Vector3(0, 0.2 + under / 2, -LENGTH / 2 + TRUNK_LENGTH / 2))
-	add_child(TrafficCar.MODELS[look % TrafficCar.MODELS.size()].instantiate())
-	for wheel_at in SuspectCar.SEDAN_WHEELS:
-		var wheel: Node3D = TrafficCar.WHEEL.instantiate()
-		wheel.position = wheel_at
-		add_child(wheel)
+	var width := CLOWN_WIDTH if clown else 2.1
+	var trunk_length := length() / 2 + trunk_hinge().z
+	_add_box(Vector3(width, trunk_hinge().y + 0.4, length() - trunk_length),
+		Vector3(0, 0.2 + (trunk_hinge().y + 0.4) / 2, trunk_length / 2))
+	var under := trunk_hinge().y - 0.3
+	_add_box(Vector3(width, under, trunk_length), Vector3(0, 0.2 + under / 2, -length() / 2 + trunk_length / 2))
+	if clown:
+		add_child(CLOWN_MODEL.instantiate())
+		var driver_model: Node3D = CLOWN_DRIVER.instantiate()
+		driver_model.name = "Driver"
+		driver_model.position = CLOWN_DRIVER_AT
+		driver_model.scale = Vector3.ONE * CLOWN_DRIVER_SCALE
+		add_child(driver_model)
+	else:
+		add_child(TrafficCar.MODELS[look % TrafficCar.MODELS.size()].instantiate())
+		for wheel_at in SuspectCar.SEDAN_WHEELS:
+			var wheel: Node3D = TrafficCar.WHEEL.instantiate()
+			wheel.position = wheel_at
+			add_child(wheel)
 	_build_trunk()
 	var plate_label := Label3D.new()
 	plate_label.name = "Plate"
-	plate_label.text = plate
+	plate_label.text = shown_plate()
 	plate_label.font_size = 48
 	plate_label.pixel_size = 0.004
 	plate_label.modulate = Color(0.1, 0.1, 0.12)
 	plate_label.outline_modulate = Color(0.95, 0.95, 0.9)
 	plate_label.outline_size = 18
-	plate_label.position = Vector3(0, 0.62, -LENGTH / 2 - 0.03)
+	plate_label.position = Vector3(0, 0.5 if clown else 0.62, -length() / 2 - 0.03)
 	plate_label.rotation.y = PI
 	add_child(plate_label)
 	_bubble = Label3D.new()
@@ -97,6 +123,24 @@ func _ready() -> void:
 	_place()
 
 
+func length() -> float:
+	return CLOWN_LENGTH if clown else LENGTH
+
+
+func trunk_hinge() -> Vector3:
+	return CLOWN_TRUNK_HINGE if clown else TRUNK_HINGE
+
+
+## Where its middle stops before the checkpoint's box edge.
+func stop_before() -> float:
+	return length() / 2 + 0.5
+
+
+## The plate it shows: every clown car has the same one painted on.
+func shown_plate() -> String:
+	return tr("PLATE_CLOWN") if clown else plate
+
+
 func _add_box(size: Vector3, center: Vector3) -> void:
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
@@ -109,12 +153,16 @@ func _add_box(size: Vector3, center: Vector3) -> void:
 func _build_trunk() -> void:
 	lid = TrunkLid.new()
 	lid.name = "TrunkLid"
-	lid.position = TRUNK_HINGE
+	lid.position = trunk_hinge()
+	if clown:
+		lid.size = CLOWN_LID
 	add_child(lid)
 	lid.opened.connect(_on_trunk_opened)
 	_trunk = Node3D.new()
 	_trunk.name = "Trunk"
-	_trunk.position = TRUNK_INSIDE
+	_trunk.position = CLOWN_TRUNK_INSIDE if clown else TRUNK_INSIDE
+	if clown:
+		_trunk.scale = Vector3.ONE * CLOWN_TRUNK_SCALE
 	_trunk.visible = false
 	add_child(_trunk)
 	var builder := PlaceBuilder.new(_trunk)
@@ -134,7 +182,7 @@ func _build_trunk() -> void:
 
 ## Online (NpcSync): what a guest's copy needs before it's added (which car it is, not whether it's the wanted one).
 func net_setup() -> Dictionary:
-	return {"plate": plate, "driver": driver}
+	return {"plate": plate, "driver": driver, "clown": clown}
 
 
 ## Online: where it is in the queue and whether its trunk is open.
@@ -230,9 +278,9 @@ func _stop_z() -> float:
 		return at.z
 	if not in_queue():
 		return -INF
-	var stop := TrafficCheckpoint.ZONE.y / 2 + STOP_BEFORE if checkpoint.barrier_ok() else -INF
+	var stop := TrafficCheckpoint.ZONE.y / 2 + stop_before() if checkpoint.barrier_ok() else -INF
 	if is_instance_valid(ahead) and ahead.in_queue():
-		stop = maxf(stop, ahead.at.z + LENGTH + GAP)
+		stop = maxf(stop, ahead.at.z + (length() + ahead.length()) / 2 + GAP)
 	return stop
 
 

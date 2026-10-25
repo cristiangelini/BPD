@@ -1596,6 +1596,7 @@ CHASE_HONK_2,¡Bop bop bop!,Bop bop bop!,Bop bop bop!
 CHASE_HONK_3,"¡Jijiji, no me agarran!","Hee hee, you can't catch me!","Hihihi, não me pegam!"
 PROMPT_POP_DUMMY,"E: reventar el payaso inflable","E: pop the inflatable clown","E: estourar o palhaço inflável"
 HINT_DUMMY_POPPED,"¡PLOP! Era de mentira.","POP! It was a fake.","PLOFT! Era de mentira."
+PLATE_CLOWN,PAYASO 1,CLOWN 1,PALHAÇO 1
 PROMPT_BUS_ON,E: subir al bus,E: get on the bus,E: subir no ônibus
 PROMPT_BUS_OFF,E: bajar del bus,E: get off the bus,E: descer do ônibus
 PROMPT_BUS_DRIVE,E: manejar el bus,E: drive the bus,E: dirigir o ônibus
