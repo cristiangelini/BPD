@@ -739,7 +739,10 @@ func _on_vault_opened() -> void:
 		return
 	var boss_runs := is_loose(boss)
 	for robber in robbers:
-		if is_loose(robber):
+		if robber.sorry and is_loose(robber):
+			# He doesn't take a sack: he sits down to wait for the cops (robo-banco-arrepentido.md, step 5).
+			robber.wait_for_cops()
+		elif is_loose(robber):
 			bags_taken += 1
 			robber.hide()
 			robber.collision_layer = 0

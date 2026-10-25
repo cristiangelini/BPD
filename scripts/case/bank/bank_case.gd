@@ -12,7 +12,10 @@ extends Node
 ## hostages who don't want to leave, the first fan who warns the gang shows a hint to everyone, and the planilla counts
 ## the croissants left on the tray. With the grandpa robbers (robo-banco-abuelos.md, step 5) the radio warns that
 ## they're slow but clever, the first one who passes for a hostage shows a hint to everyone, the planilla counts the
-## hostages cuffed by mistake and each one costs PER_WRONG_CUFF. Every number here is (propuesta).
+## hostages cuffed by mistake and each one costs PER_WRONG_CUFF. With the sorry robber (robo-banco-arrepentido.md,
+## step 5) the radio tells about the robber who called crying, everyone hears it the first time he's turned and the
+## first time the gang ties him, the planilla counts his helps and each one done adds PER_HELP to the pay. Every number
+## here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 3.0
@@ -20,6 +23,7 @@ const SALARY := 700
 const PER_HOSTAGE := 100
 const PER_BAG := 50
 const PER_WRONG_CUFF := 50
+const PER_HELP := 50
 const QUOTA := 400
 const STORY := "bank_robbery"
 const SLIPS := "BEAR_SLIP_%d"
@@ -38,6 +42,9 @@ var fans_heard := false
 ## With the grandpa robbers: one already passed for a hostage (the hint goes out once), and the true hostages cuffed.
 var grandpa_hid := false
 var wrong_cuffs := 0
+## With the sorry robber: everyone already heard he's on their side, and that the gang tied him (each hint once).
+var sorry_turned := false
+var sorry_tied := false
 ## Online (docs/diseno/online.md): a guest's case, and its bank, only follow the host's; `online` is that sync.
 var follower := false:
 	set(value):
@@ -65,6 +72,14 @@ func start() -> void:
 		hostage.wrongly_cuffed.connect(_on_wrongly_cuffed)
 	for robber in bank.robbers:
 		robber.spotted.connect(_on_robber_spotted)
+	if bank.sorry:
+		bank.sorry.turned_now.connect(func(_robber: BankRobber) -> void:
+			if not follower and not sorry_turned:
+				_hear_sorry_turned())
+		bank.sorry.tied_up.connect(func(_robber: BankRobber) -> void:
+			if not follower and not sorry_tied:
+				_hear_sorry_tied())
+		bank.sorry.helped.connect(func(_robber: BankRobber, _help: String) -> void: checklist.show_rows(rows()))
 	bank.drill.opened.connect(_on_vault_opened)
 	if shift_screen:
 		shift_screen.play_again.connect(_play_again)
@@ -77,8 +92,10 @@ func start() -> void:
 	checklist.show_rows(rows())
 
 
-## What the comisario says over the radio: the base robbery's, the party's or the grandpas'.
+## What the comisario says over the radio: the base robbery's, the party's, the grandpas' or the sorry robber's.
 func brief() -> PackedStringArray:
+	if bank.sorry:
+		return PackedStringArray(["BRIEF_BANK_SORRY_A", "BRIEF_BANK_SORRY_B", "BRIEF_BANK_SORRY_C"])
 	if bank.grandpas:
 		return PackedStringArray(["BRIEF_BANK_GRANDPAS_A", "BRIEF_BANK_GRANDPAS_B", "BRIEF_BANK_GRANDPAS_C"])
 	if bank.party:
@@ -107,6 +124,22 @@ func _on_robber_spotted(robber: BankRobber, _cop: Node3D) -> void:
 func _grandpa_hides() -> void:
 	grandpa_hid = true
 	_hint_all("HINT_BANK_GRANDPA_HID")
+
+
+func _hear_sorry_turned() -> void:
+	sorry_turned = true
+	_hint_all("HINT_BANK_SORRY_TURNED")
+	checklist.show_rows(rows())
+
+
+func _hear_sorry_tied() -> void:
+	sorry_tied = true
+	_hint_all("HINT_BANK_SORRY_TIED")
+
+
+## The sorry robber's helps done (0 without him).
+func helps() -> int:
+	return bank.sorry.helps_done.size() if bank.sorry else 0
 
 
 ## A true hostage cuffed: with the grandpa robbers it's a mistake that costs.
@@ -173,7 +206,7 @@ func missed() -> int:
 
 
 func report() -> Dictionary:
-	var salary := maxi(SALARY - missed(), 0) if solved() else 0
+	var salary := maxi(SALARY - missed() + PER_HELP * helps(), 0) if solved() else 0
 	return {"salary": salary, "evidence": 0, "fines": 0, "total": salary, "quota": QUOTA, "approved": salary >= QUOTA}
 
 
@@ -251,7 +284,9 @@ func _physics_process(delta: float) -> void:
 func snapshot() -> Dictionary:
 	var state := {"drill": bank.drill.net_state(), "phone": bank.phone.net_state(), "bags": bank.bags_taken,
 		"jailed": boss_jailed, "escaped": escaped, "result": _result, "fans": fans_heard, "hid": grandpa_hid,
-		"wrong_cuffs": wrong_cuffs, "marbles": bank.marbles != null}
+		"wrong_cuffs": wrong_cuffs, "marbles": bank.marbles != null, "back_door": bank.back_door.is_open}
+	if bank.sorry:
+		state.sorry = [sorry_turned, sorry_tied, bank.sorry.helps_done]
 	if bank.croissant_tray:
 		state.tray = bank.croissant_tray.left
 	if bank.chase:
@@ -278,6 +313,14 @@ func apply_snapshot(state: Dictionary) -> void:
 	wrong_cuffs = state.get("wrong_cuffs", 0)
 	if state.get("marbles", false):
 		bank.spill_marbles()
+	if state.get("back_door", false) and not bank.back_door.is_open:
+		bank.back_door.open_from_inside()
+	if bank.sorry and state.has("sorry"):
+		if state.sorry[0] and not sorry_turned:
+			_hear_sorry_turned()
+		if state.sorry[1] and not sorry_tied:
+			_hear_sorry_tied()
+		bank.sorry.helps_done.assign(state.sorry[2])
 	if bank.croissant_tray and state.has("tray") and state.tray != bank.croissant_tray.left:
 		bank.croissant_tray.set_left(state.tray)
 	checklist.show_rows(rows())
@@ -301,6 +344,10 @@ func rows() -> Array[Dictionary]:
 		if wrong_cuffs > 0:
 			list.append({"text": tr("OBJ_BANK_WRONG_CUFFS") % wrong_cuffs, "done": false, "optional": false,
 				"status": true})
+	if bank.sorry:
+		list.append(_row("OBJ_BANK_SORRY", bank.sorry.turned))
+		list.append({"text": tr("OBJ_BANK_SORRY_HELPS") % [helps(), BankRobber.HELPS.size()], "done": false,
+			"optional": false, "status": true})
 	if bank.party:
 		list.append({"text": "OBJ_BANK_FANS", "done": false, "optional": false, "status": true})
 		if bank.croissant_tray:

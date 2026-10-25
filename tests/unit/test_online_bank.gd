@@ -147,3 +147,32 @@ func test_the_grandpa_robbers_show_the_same_on_every_pc() -> void:
 	assert_eq(guest.case.wrong_cuffs, 1)
 	assert_true(guest.hostages[0].is_cuffed(), "the cuffed hostage shows cuffed")
 	assert_true(guest.phone.deaf)
+
+
+func test_the_sorry_robber_shows_the_same_on_every_pc() -> void:
+	# The first sorry seed (robo-banco-arrepentido.md).
+	var seed_ := 1
+	while BankLevel.variant(seed_, PackedStringArray()) != "sorry":
+		seed_ += 1
+	_pcs = OnlinePcs.new(self, Callable(), func() -> Node3D:
+		var bank: BankLevel = BANK_SCENE.instantiate()
+		bank.case_seed = seed_
+		bank.get_node("Cop/Grabber").input_enabled = false
+		return bank)
+	var pcs: Array[Node] = await _pcs.two_pcs()
+	var host := _bank(pcs[0])
+	var guest := _bank(pcs[1])
+	assert_not_null(guest.sorry, "the guest's bank has him too")
+	assert_eq(guest.sorry.animal, host.sorry.animal)
+	host.sorry.turned = true
+	host.case._hear_sorry_turned()
+	host.back_door.open_from_inside()
+	host.sorry.helps_done = ["door"] as Array[String]
+	host.sorry.tie(host.global_transform * BankLevel.CHAIR_AT, 0.0)
+	await wait_until(func() -> bool: return guest.sorry.tied and guest.back_door.is_open \
+		and guest.case.sorry_tied, 5.0)
+	assert_true(guest.sorry.turned)
+	assert_true(guest.sorry.tied, "tied on the guest's PC too")
+	assert_true(guest.back_door.is_open, "the back door he opened")
+	assert_true(guest.case.sorry_turned)
+	assert_eq(guest.case.helps(), 1)
