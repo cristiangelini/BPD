@@ -174,4 +174,4 @@
 - Bank flood, step 4: loose things float, the gang wades out with the sacks before the getaway (up to 12 s), the radio warns about the broken pipe and the planilla asks for the valve (+100 shut before 1 m) and shows how deep the water is.
 - Bank flood, step 5: online. The host's water, valve, front door and floats decide and every guest sees the same: the level, the hostages up on the counter, the wet drill, who turns the valve and who wears a float.
 - Fix (politician's market walk): the chemical toilet lets a cured cop out in front of its door (left inside, it locked them in again at once), and the deputy's "what an odd taste" stays 2 s before he says he's running or going home (it was covered up right away). The market tests that failed on develop pass again.
-- Bank robbery design: the roof robbery (decision 126), a giant toy helicopter flown by El Oso's nephew from the roof across takes the sacks and finally El Oso.
+- Bank robbery design: the roof robbery (decision 126), a giant toy helicopter flown by El Oso's nephew from the sidewalk across takes the sacks and finally El Oso.
