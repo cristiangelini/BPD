@@ -21,6 +21,7 @@ const BOARD_AT := Vector3(0, 1.22, -1.24)
 ## The groom leans on the other window (-X), out of the newlyweds' car.
 const GROOM_AT := Vector3(-1.0, 0.95, 0.35)
 const SUIT := Color("23232a")
+const RIBBON_PINK := Color("e890b0")
 ## The newlyweds' car is white (WantedPlan.COLORS[0]) and one of the first two of the queue, from the seed.
 const NEWLYWEDS_LOOK := 0
 const NEWLYWEDS_AT := 2
