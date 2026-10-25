@@ -167,7 +167,7 @@ la sospecha y las capturas. Clotilde y el comisario van por `NpcSync`; el llaver
 - Pruebas online con dos PC: la reja que abre Clotilde y las manchas borradas se ven igual en el invitado.
 - Captura del modelo: `limpieza/paso5-lustradora.png`.
 
-## Preguntas para Cristian
+## Preguntas para Cristian (respondidas el 25/10: sí a las tres, decisión 150)
 1. ¿La fuga sortea entre la dona y la limpieza mitad y mitad con la semilla? **Recomiendo sí:** las dos ya comparten
    celdas, salida y final, y así cada partida puede tener una fuga distinta.
 2. ¿Que el comisario no mire caras sino si limpian, con el "¿Te conozco?" de cerca? **Recomiendo sí:** es el chiste

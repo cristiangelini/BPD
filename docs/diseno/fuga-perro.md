@@ -1,4 +1,4 @@
-# La fuga: el perro guardián (propuesta, 25/10)
+# La fuga: el perro guardián (decisión 151, 25/10)
 
 Tercera variante de la fuga (tipo 7 del catálogo, [casos.md](casos.md), punto 7.8: "hay que hacerse amigo con
 comida"). Usa todo lo de la fuga de la dona ([fuga.md](fuga.md), decisión 99) y lo que sumó la de limpieza
@@ -80,7 +80,7 @@ por `PropSync`.
    acariciándolo.
 4. Salir: Mordisco en el patrullero con los cuatro amigos, perder a la tercera, frases y online.
 
-## Preguntas para Cristian
+## Preguntas para Cristian (respondidas el 25/10: sí a las tres, decisión 151)
 1. ¿La fuga sortea entre dona, limpieza y perro en tercios con la semilla? **Recomiendo sí:** las tres comparten
    celdas, salida y final.
 2. ¿Que la amistad sea de cada policía (los cuatro tienen que darle de comer) y no una sola para todos? **Recomiendo

@@ -12,6 +12,8 @@ var case: BankCase
 
 func before_each() -> void:
 	bank = LEVEL.instantiate()
+	# A base robbery's seed: the party (robo-banco-rehenes.md) has its own tests.
+	bank.case_seed = 4
 	bank.get_node("Cop").input_enabled = false
 	add_child_autofree(bank)
 	await wait_physics_frames(2)
