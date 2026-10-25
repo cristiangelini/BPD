@@ -77,6 +77,11 @@ La foto grupal copia la forma de `MimeRehearsal` (host decide, cada PC juzga y a
    pecho); se caen corriendo como las otras. Con 2 de 3, `is_disguised("party")`; no sirven para mimo ni abuelo.
 2. El salón en la ciudad (`--place=party`), con los invitados y sus 4 rasgos por la semilla (un solo jefe posible
    con 3 rasgos), el patovica y la señora Serpentina.
+   Hecho así (2a, el salón solo): lote de 24 x 20 m en la cuadra (5, 0) al sur, fachada violeta con globos. Adentro, la
+   pista de 8 x 8 m a cuadros con la bola de espejos, la mesa larga de comida contra la pared oeste, tres escalones
+   rojos de 12 m de ancho contra el fondo (0,2 m cada uno, 6 lugares por escalón para la foto) con el cartel "¡Gran
+   fiesta de policías!", el guardarropa con mostrador y percha al oeste de la entrada, el baño al este y la oficina
+   (con llave, escritorio y caja fuerte) en la esquina del fondo al este. 16 lugares para que los invitados charlen.
 3. La foto grupal: la llamada, la escalerita, la cuenta y el flash; la sospecha; el jefe que se va a la oficina y la
    pista de verlo ahí.
 4. Las pistas y el caso (variante "party"): las 6 pistas, la planilla con los rasgos, esposar al jefe o a uno
