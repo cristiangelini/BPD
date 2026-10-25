@@ -87,8 +87,8 @@ var _build: PlaceBuilder
 
 ## Which prison case this is: "riot" (the canteen, carcel-motin.md), "transfer" (the bus from the station,
 ## traslado-presos.md; --place=transfer), "blackout" (the power cut, carcel-corte-de-luz.md; --place=blackout) or
-## "visits" (the visiting day, carcel-visitas.md; --place=visits) or "laundry" (the laundry, carcel-lavanderia.md;
-## --place=laundry).
+## "visits" (the visiting day, carcel-visitas.md; --place=visits), "laundry" (the laundry, carcel-lavanderia.md;
+## --place=laundry) or "tunnel" (the tunnel, carcel-tunel.md; --place=prison_tunnel).
 @export var variant := "riot"
 ## The transfer's bus (traslado-presos.md, step 1), parked by the station's door, and its inmates (step 2).
 var bus: PrisonBus
@@ -119,6 +119,8 @@ var visit_case: VisitCase
 var laundry: LaundryPlan
 ## The laundry case on top (step 6): the comisario's briefing, the planilla and the end of the shift.
 var laundry_case: LaundryCase
+## The tunnel case's yard time, the cells' hideouts and the gang digging (carcel-tunel.md, step 2).
+var tunnel: TunnelPlan
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -146,6 +148,9 @@ func _ready() -> void:
 		return
 	if variant == "laundry":
 		_start_laundry()
+		return
+	if variant == "tunnel":
+		_start_tunnel()
 		return
 	riot = PrisonRiot.new()
 	riot.name = "Riot"
@@ -253,6 +258,22 @@ func _start_laundry() -> void:
 	laundry_case.shift_screen = $ShiftScreen
 	add_child(laundry_case)
 	laundry_case.start(city.get("comisario"))
+	city.transform = CityLayout.anchor("prison")
+	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
+	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+
+
+## The tunnel (carcel-tunel.md, step 2): yard time, with the block and its cells open and empty, the cells' hideouts and
+## the inmates out in the yard. The cops come from the station in the patrol car.
+func _start_tunnel() -> void:
+	block_gate.unlock()
+	block_gate.set_open(true)
+	for door in cell_doors:
+		door.set_open(true)
+	tunnel = TunnelPlan.new()
+	tunnel.name = "TunnelPlan"
+	add_child(tunnel)
+	tunnel.setup(self, case_seed)
 	city.transform = CityLayout.anchor("prison")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
@@ -488,7 +509,7 @@ func _build_cells() -> void:
 		var front := CORRIDOR.x if side < 0 else CORRIDOR.y
 		var back := front + side * CELL_DEPTH
 		_build.wall("z", back, BUILDING_BACK, CELLS_Z, 0, [], INSIDE)
-		if variant == "blackout":
+		if variant == "blackout" or variant == "tunnel":
 			_cell_fronts(side, front, cell_z)
 		else:
 			_bars("z", front, BUILDING_BACK, CELLS_Z, GameScale.DOOR_HEIGHT)
@@ -496,7 +517,10 @@ func _build_cells() -> void:
 			var z0 := CELLS_Z + i * cell_z
 			if i > 0:
 				_build.wall("x", z0, minf(front, back), maxf(front, back), 0, [], INSIDE)
-			_build.box(Vector3(back - side * 0.45, FLOOR_TOP + 0.25, z0 + cell_z / 2), Vector3(0.8, 0.5, 1.9), ORANGE)
+			# In the tunnel case the bunk is one of the cell's hideouts (CellHideout).
+			if variant != "tunnel":
+				_build.box(Vector3(back - side * 0.45, FLOOR_TOP + 0.25, z0 + cell_z / 2), Vector3(0.8, 0.5, 1.9),
+					ORANGE)
 
 
 ## A wall above the first floor's (PlaceBuilder.wall), up to the roof: the building is two floors tall inside.
