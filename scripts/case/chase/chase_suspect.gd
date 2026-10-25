@@ -34,6 +34,8 @@ const MODELS := {
 	"pausa": preload("res://assets/models/npc_pausa.glb"),
 	# The Sargento Trucho, out of his getaway (infiltracion-fiesta.md).
 	"trucho": preload("res://assets/models/npc_invitado.glb"),
+	# El Toro, off his jog (infiltracion-gimnasio.md).
+	"toro": preload("res://assets/models/npc_toro.glb"),
 	# El Oso, out of the robbers' van or off his run with the sack (robo-banco.md).
 	"oso": preload("res://assets/models/npc_ladron_oso.glb"),
 	# The grandpa Oso, off his motor walker (robo-banco-abuelos.md).

@@ -75,6 +75,7 @@ const SUSPECT_MODELS := {
 	"owner_ernesto": "res://assets/models/npc_ernesto.glb",
 	"owner_pausa": "res://assets/models/npc_pausa.glb",
 	"owner_trucho": "res://assets/models/npc_invitado.glb",
+	"owner_toro": "res://assets/models/npc_toro.glb",
 	"owner_oso": "res://assets/models/npc_ladron_oso.glb",
 	# The bank's manager who was the gang's boss (robo-banco-gerente.md).
 	"owner_manager": "res://assets/models/npc_gerente.glb",

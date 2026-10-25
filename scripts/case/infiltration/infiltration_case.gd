@@ -65,6 +65,16 @@ const VARIANTS := {
 		"catch_row": "OBJ_PARTY_CATCH_TRUCHO",
 		"slips": "TRUCHO_SLIP_%d", "second_chance": true,
 	},
+	# The gym (infiltracion-gimnasio.md, decision 172): el Toro jogs off on foot.
+	"gym": {
+		"story": "infiltration_gym",
+		"brief": ["BRIEF_GYM_A", "BRIEF_GYM_B", "BRIEF_GYM_C"],
+		"go": "HINT_GO_GYM", "in": "HINT_GYM_IN", "found": "HINT_CLUB_EVIDENCE",
+		"rows": "OBJ_GYM_", "evidence": "EVIDENCE_GYM_",
+		"boss": "toro", "getaway": SuspectCar.BEAR_ON_FOOT,
+		"boss_cuffed": "HINT_TORO_CUFFED", "cuff_row": "OBJ_GYM_CUFF_TORO", "catch_row": "OBJ_GYM_CATCH_TORO",
+		"slips": "TORO_SLIP_%d",
+	},
 }
 ## With `second_chance`, the first wrong person cuffed only raises everyone's suspicion this much.
 const WRONG_CUFF := 50.0

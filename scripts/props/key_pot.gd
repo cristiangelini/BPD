@@ -6,10 +6,12 @@ extends StaticBody3D
 signal searched(found_key: bool)
 
 var has_key := false
+## What E on it says: a pot, or the gym's bag (GymHall).
+var prompt := "PROMPT_POT"
 
 
 func prompt_key(_cop: Cop) -> String:
-	return "PROMPT_POT"
+	return prompt
 
 
 func use(cop: Cop) -> void:
