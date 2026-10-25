@@ -90,6 +90,8 @@ const DOG_RIDE_REACH := 12.0
 ## The spoon tunnel (fuga-tunel.md, step 1): a tray with two spoons in each cell, and the hole by each bunk, on one of
 ## its two sides (the seed draws which).
 const TUNNEL_TRAYS: Array[Vector3] = [Vector3(8.3, 0.02, 3.9), Vector3(12.7, 0.02, 3.9)]
+## A catch fills a third of the hole back in (fuga-tunel.md, question 3).
+const TUNNEL_REFILL := 1.0 / 3.0
 const TUNNEL_HOLES := [[Vector3(6.7, 0, 2.2), Vector3(9.9, 0, 2.2)], [Vector3(11.1, 0, 2.2), Vector3(14.3, 0, 2.2)]]
 
 ## The ways out, drawn by the seed (fuga-limpieza.md, fuga-perro.md and fuga-tunel.md, question 1: in quarters).
@@ -197,6 +199,7 @@ func _tunnel_night() -> void:
 	add_child(listener)
 	listener.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), GUARD_AT)
 	listener.stand_guard(case_seed)
+	listener.station_lot = lot
 	listener.outside_cells = outside_cells
 	listener.see_through = [desk.get_rid()]
 	listener.caught.connect(_on_caught)
@@ -219,6 +222,7 @@ func _tunnel_night() -> void:
 		add_child(hole)
 		hole.global_transform = lot * Transform3D(Basis.IDENTITY, TUNNEL_HOLES[cell][rng.randi_range(0, 1)])
 		hole.setup(case_seed)
+		hole.scooped.connect(func(dug: TunnelHole, cop: Cop) -> void: listener.heard_scoop(dug, cop))
 		holes.append(hole)
 
 
@@ -502,6 +506,8 @@ func _on_caught(times: int) -> void:
 			stick.queue_free()
 	if dog:
 		dog.riding = false
+	if is_tunnel():
+		_confiscate_spoons()
 	if cleaner:
 		cleaner.reset()
 		if is_instance_valid(cart_key):
@@ -514,6 +520,38 @@ func _on_caught(times: int) -> void:
 		_drop(box)
 		box.linear_velocity = Vector3.ZERO
 		box.global_transform = box_home
+
+
+## The listening guard caught them: the hole he caught them at loses TUNNEL_REFILL of what was dug, and he takes away
+## the spoons in their hands and out of the cells, but leaves one on the tray of a cell that has none left.
+func _confiscate_spoons() -> void:
+	var listener := guard as ListeningGuard
+	if listener.caught_hole:
+		listener.caught_hole.fill(TUNNEL_REFILL)
+	var lot := city.transform * CityLayout.lot("station")
+	var taken: Array[Spoon] = []
+	for spoon in spoons:
+		if spoon.is_held() or outside_cells(spoon.global_position):
+			_drop(spoon)
+			taken.append(spoon)
+	for cell in TUNNEL_TRAYS.size():
+		var left := spoons.filter(func(spoon: Spoon) -> bool: return not taken.has(spoon) and spoon_cell(spoon) == cell)
+		if left.is_empty() and not taken.is_empty():
+			var spoon: Spoon = taken.pop_back()
+			spoon.linear_velocity = Vector3.ZERO
+			spoon.global_position = lot * (TUNNEL_TRAYS[cell] + Vector3(0, 0.03, 0))
+			guard.say("LISTENING_GUARD_SPOON_LEFT", 5.0)
+	for spoon in taken:
+		spoons.erase(spoon)
+		spoon.queue_free()
+
+
+## Which cell a spoon is in (0 or 1), or -1 out of both.
+func spoon_cell(spoon: Spoon) -> int:
+	if outside_cells(spoon.global_position):
+		return -1
+	var local := (city.transform * CityLayout.lot("station")).affine_inverse() * spoon.global_position
+	return 0 if local.x < StationRooms.CELL_SPLIT_X else 1
 
 
 ## The comisario takes the caught cop's cleaning disguise back to the closet: it comes off on every PC and the host

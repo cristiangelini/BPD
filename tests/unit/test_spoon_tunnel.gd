@@ -22,6 +22,8 @@ func before_each() -> void:
 	await wait_physics_frames(5)
 	cop = level.get_node("Cop")
 	level.guard.set_physics_process(false)
+	# Asleep he hears no scoops (that's test_tunnel_noise).
+	level.guard.fall_asleep()
 	lot = level.city.transform * CityLayout.lot("station")
 
 
