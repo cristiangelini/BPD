@@ -105,3 +105,12 @@ llave se sacó y las capturas. El guardia va por `NpcSync`; la rejilla, la llave
 - En el ducto, encima de cada celda, hay una rejilla para volver a bajar; la de la oficina se patea y te deja en la
   oficina. Una captura también baja a los del ducto a las celdas, y las rejillas sacadas quedan sacadas.
 - 9 textos nuevos en es, en y pt. Pruebas en `test_vent_duct.gd`.
+
+## Cómo quedó el paso 3
+- `KeyBoard` en la pared del frente, detrás del guardia, con 6 ganchos (`KeyHook`, se apunta a uno por vez). La
+  semilla elige cuál tiene la llave de las celdas. E en otro gancho dice de qué es ("la del baño", "la del auto del
+  comisario"...) y la vuelve a colgar; E en el bueno te deja la `CellKey` en la mano, que abre las celdas como en la
+  dona.
+- Una captura vuelve a colgar la llave en el tablero. Al escaparse, el final agrega "polvo de ducto en su escritorio".
+- Online: el tablero va por `NpcSync`, la llave por `PropSync`; el grandote, el desvío bueno y la llave buena salen
+  iguales en todas las PCs. Pruebas en `test_vent_keys.gd` y `test_vent_online.gd`.

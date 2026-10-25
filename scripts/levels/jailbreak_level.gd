@@ -99,6 +99,8 @@ const TUNNEL_EXIT := Vector3(5.0, 0, StationRooms.HALF_Z + 2.0)
 ## The vent jailbreak (fuga-ventilacion.md, step 1): the grille on the back wall of each cell, over its bunk.
 const VENT_GRILLES: Array[Vector3] = [Vector3(8.3, VentGrille.HEIGHT, StationRooms.SPLIT_Z + StationRooms.WALL / 2 + 0.03),
 	Vector3(12.7, VentGrille.HEIGHT, StationRooms.SPLIT_Z + StationRooms.WALL / 2 + 0.03)]
+## The key board on the front wall, behind the guard's back (step 3).
+const KEY_BOARD_AT := Vector3(12.4, 1.5, StationRooms.HALF_Z - StationRooms.WALL - 0.03)
 ## The big one stays stuck in the grille this long (s); crawling faster than this in the duct is a noisy scramble.
 const VENT_STUCK := 4.0
 const VENT_QUIET_SPEED := (Cop.CRAWL_SPEED + Cop.CRAWL_RUN_SPEED) / 2.0
@@ -134,6 +136,7 @@ var mattresses: Array[TunnelMattress] = []
 ## The vent jailbreak's grilles (one for each cell).
 var grilles: Array[VentGrille] = []
 var duct: VentDuct
+var key_board: KeyBoard
 ## The host: where each cop in the duct was last physics frame, to hear who scrambles.
 var _duct_last := {}
 ## The other end of the tunnels, on the sidewalk: it shows once one is through.
@@ -250,6 +253,11 @@ func _vent_night() -> void:
 	duct.build(case_seed, cells_x)
 	for hatch: VentHatch in duct.cell_hatches + [duct.office_hatch]:
 		hatch.used.connect(_out_of_vent)
+	key_board = KeyBoard.new()
+	key_board.name = "KeyBoard"
+	add_child(key_board)
+	key_board.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), KEY_BOARD_AT)
+	key_board.setup(case_seed)
 
 
 ## A cop on the bunk gets into the open grille: up into the duct over its cell, or, the big one, stuck for a while.
@@ -637,6 +645,8 @@ func _on_caught(times: int) -> void:
 	for clue: Node in get_tree().get_nodes_in_group("guard_clues"):
 		if is_dog() and clue is CellKey:
 			dog.key_on_collar = true
+		elif key_board and clue is CellKey:
+			key_board.hang_back()
 		elif clue is CellKey or (clue is LooseDonut and clue.has_key):
 			guard.key_on_belt = true
 		_drop(clue as Grabbable)
@@ -894,6 +904,8 @@ func _show_end(result: String) -> void:
 		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_DOG")
 	elif result == "escaped" and is_tunnel():
 		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_TUNNEL")
+	elif result == "escaped" and is_vent():
+		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_VENT")
 	box_ui.add_child(line)
 	var buttons := HBoxContainer.new()
 	buttons.alignment = BoxContainer.ALIGNMENT_CENTER
