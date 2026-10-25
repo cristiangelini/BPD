@@ -1,4 +1,4 @@
-# La fuga: por la ventilación (propuesta, 25/10)
+# La fuga: por la ventilación (decisión 153, 25/10)
 
 Quinta variante de la fuga (tipo 7 del catálogo, [casos.md](casos.md), punto 7.1: "con un compañero que no entra").
 Usa todo lo de la fuga de la dona ([fuga.md](fuga.md), decisión 99) y de las otras tres
@@ -76,7 +76,7 @@ llave se sacó y las capturas. El guardia va por `NpcSync`; la rejilla, la llave
 2. El ducto: meterse, gatear, el grandote trabado, el desvío, la rejilla de la oficina y el ruido al correr.
 3. El tablero de llaves detrás del guardia, la llave buena, abrir la celda, salir, frases y online.
 
-## Preguntas para Cristian
+## Preguntas para Cristian (respondidas el 25/10: sí a las tres, decisión 153)
 1. ¿La fuga sortea en quintos entre dona, limpieza, perro, túnel y ventilación? **Recomiendo sí:** las cinco
    comparten celdas, salida y final.
 2. ¿El grandote lo elige la semilla y no los jugadores? **Recomiendo sí:** si se elige, nadie quiere serlo; sorteado
