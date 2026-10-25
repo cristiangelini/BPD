@@ -28,6 +28,14 @@ func _on_stage() -> void:
 	rehearsal._track_walk()
 
 
+## A mime who isn't busy miming the robbery to a neighbor (the recording), so they look around.
+func _watching_mime() -> ClubMember:
+	for member: ClubMember in theater.members:
+		if not member.distracted:
+			return member
+	return null
+
+
 ## Lets the grace after a switch pass and judges.
 func _judge() -> void:
 	rehearsal.since_switch = MimeRehearsal.GRACE + 0.1
@@ -82,7 +90,7 @@ func test_moving_during_the_statue_is_wrong_and_standing_still_is_right() -> voi
 
 
 func test_the_mimes_who_see_it_get_suspicious() -> void:
-	var mime := theater.members[0]
+	var mime := _watching_mime()
 	cop.global_position = mime.global_transform * Vector3(0, 0.1, -2.0)
 	assert_true(mime.sees_cop(cop))
 	rehearsal.missed.emit(cop, MimeRehearsal.MOVED)
@@ -100,7 +108,7 @@ func test_off_the_stage_during_a_rehearsal_is_suspicious() -> void:
 
 
 func test_the_mimes_see_less_during_a_statue() -> void:
-	var mime := theater.members[0]
+	var mime := _watching_mime()
 	var angle := deg_to_rad(55.0)
 	cop.global_position = mime.global_transform * Vector3(sin(angle) * 3.0, 0.1, -cos(angle) * 3.0)
 	assert_true(mime.sees_cop(cop), "off to the side, in the usual cone")
