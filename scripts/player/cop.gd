@@ -164,7 +164,7 @@ func current_prompt() -> String:
 	if $Grabber.held:
 		var aimed := _usable_target()
 		if aimed is WaitingArmchair or aimed is DigSpot or aimed is InterrogationSuspect or aimed is PastryCook \
-				or aimed is TunnelHole or aimed is CircusClown \
+				or aimed is TunnelHole or aimed is CircusClown or aimed is CellHeater \
 				or (aimed is CellDoor and $Grabber.held is CellKey):
 			return aimed.prompt_key(self)
 		if $Grabber.held.has_method("held_prompt_key"):

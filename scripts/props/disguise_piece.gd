@@ -3,7 +3,8 @@ extends Grabbable
 
 ## A piece of disguise from the station's lockers (docs/diseno/infiltracion.md, step 1, decision 100): a wig, a
 ## mustache or glasses for the grandparents' club, and the choir robe (infiltracion-coro.md, step 2), which goes on
-## brought to the chest instead of the face, and the cleaning crew's cap, face mask and vest (fuga-limpieza.md, step 3). Held, the mouse wheel brings it right up to the face; brought to its place on the cop's head it
+## brought to the chest instead of the face, and the cleaning crew's cap, face mask and vest (fuga-limpieza.md, step 3). The fire drill's orange prisoner's vest
+## (fuga-simulacro.md) is worn the same way, but it's the opposite of a disguise. Held, the mouse wheel brings it right up to the face; brought to its place on the cop's head it
 ## stays on, crooked by as much as it was off. Online the host sees it reach the head and tells everyone.
 ## Every number here is (propuesta).
 
@@ -16,6 +17,7 @@ const SLOTS := {
 	"cleaner_cap": Vector3(0, 1.42, 0.0),
 	"face_mask": Vector3(0, 1.22, -0.2),
 	"cleaner_vest": Vector3(0, 0.95, -0.3),
+	"prison_vest": Vector3.ZERO,
 }
 const MODELS := {
 	"wig": preload("res://assets/models/disguise_wig.glb"),
@@ -25,6 +27,7 @@ const MODELS := {
 	"cleaner_cap": preload("res://assets/models/disguise_cleaner_cap.glb"),
 	"face_mask": preload("res://assets/models/disguise_face_mask.glb"),
 	"cleaner_vest": preload("res://assets/models/disguise_cleaner_vest.glb"),
+	"prison_vest": preload("res://assets/models/prison_vest.glb"),
 }
 ## Who the cops pass for, and with what: which pieces count and how many of them. (propuesta)
 const LOOKS := {
