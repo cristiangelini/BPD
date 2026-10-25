@@ -24,7 +24,7 @@ que no gire, los otros cruzan detrás.
    ("¡Mi piso!").
 3. **Las llaves en el carrito:** Clotilde deja su llavero colgado del carrito, en el pasillo. Los que salieron primero
    lo agarran con la mano y abren la otra celda (la llave de la fuga, `CellKey`, sirve para las dos).
-4. **El cuarto de limpieza:** al lado de la sala de las celdas, con la puerta que se abre con las manos. Adentro hay
+4. **El cuarto de limpieza:** la sala de descanso del fondo, que se abre a la sala de las celdas. Adentro hay
    por policía una gorra, un barbijo y un chaleco con la palabra "LIMPIEZA", y en la pared las herramientas: dos
    trapeadores, un plumero y una lustradora. El disfraz se pone como en la infiltración (`DisguisePiece`, llevándolo
    a la cabeza o al pecho): con 2 de las 3 piezas el policía pasa por "personal de limpieza".
@@ -123,6 +123,21 @@ la sospecha y las capturas. Clotilde y el comisario van por `NpcSync`; el llaver
   la ronda de nuevo y el llavero vuelve a su lugar.
 - Online, el anfitrión la mueve y las rejas que abre o cierra se ven igual en cada PC (`NpcSync`).
 - Captura de los modelos: `limpieza/paso2-clotilde-carrito.png`.
+
+**Cómo quedó el paso 3:**
+- El cuarto de limpieza es la sala de descanso del fondo, que se abre a la sala de las celdas. En el piso hay una gorra
+  azul, un barbijo y un chaleco amarillo con franjas por policía (modelos nuevos), menos hasta 2 piezas que la semilla
+  saca, y contra la pared dos trapeadores de 1,5 m y un plumero (`CleaningTool`). Se agarran y apuntan adonde mira el
+  policía, como el escobillón de la dona: para trapear se mira al piso.
+- El disfraz se pone como en la infiltración (la gorra a la cabeza, el barbijo a la cara y el chaleco al pecho). Con 2
+  de las 3 piezas el policía pasa por "personal de limpieza".
+- Lo que el comisario ve en un policía fuera de las celdas, por segundo: sin disfraz, 50; disfrazado sin trapeador ni
+  plumero en la mano, 15; disfrazado corriendo, 25 más; disfrazado con el trapeador o el plumero, nada. La velocidad la
+  mide él por dónde va el policía, así vale igual para los invitados.
+- Si los atrapa, a los que estaban afuera les saca el disfraz y las piezas vuelven al piso del cuarto de limpieza, en
+  una fila aparte.
+- Por ahora tener el trapeador en la mano ya cuenta como limpiar; en el paso 4 va a hacer falta moverlo por el piso.
+- Captura de los modelos: `limpieza/paso3-disfraz-y-herramientas.png`.
 
 ## Preguntas para Cristian
 1. ¿La fuga sortea entre la dona y la limpieza mitad y mitad con la semilla? **Recomiendo sí:** las dos ya comparten
