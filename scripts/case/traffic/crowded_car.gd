@@ -38,6 +38,12 @@ static func riders_of(plate: String) -> int:
 	return rng.randi_range(span.x, span.y)
 
 
+## How many stay in when the door opens (the grandma who won't get out, the baby in the back): in a packed car 1 or 2,
+## from its plate; in any other, nobody.
+static func stay_in(plate: String, riders: int) -> int:
+	return 1 + absi(hash(["crowd stays in", plate])) % 2 if packed(riders) else 0
+
+
 static func packed(riders: int) -> bool:
 	return riders >= PACKED_FROM
 
@@ -66,6 +72,15 @@ static func dress(car: QueueCar) -> void:
 		var hand := face.find_child("hand", true, false) as Node3D
 		if hand:
 			hand.visible = rng.randf() < 0.6
+
+
+## As many faces on its windows as riders still inside.
+static func show_inside(car: QueueCar, inside: int) -> void:
+	var faces := car.get_node_or_null("Faces")
+	if not faces:
+		return
+	for i in faces.get_child_count():
+		(faces.get_child(i) as Node3D).visible = i < inside
 
 
 static func _tint(model: Node, part: String, color: Color) -> void:

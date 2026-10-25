@@ -19,6 +19,8 @@ var size := SIZE
 ## A door on the car's left side instead of a lid; `action` is what the car does on every PC once it's open.
 var side := false
 var action := "open_trunk"
+## What a door's prompt says: the clown car's, or a city car's (control-auto-lleno.md).
+var door_prompt := "PROMPT_CLOWN_DOOR"
 var angle := 0.0
 var is_open := false
 
@@ -39,7 +41,7 @@ func _ready() -> void:
 
 
 func prompt_key(_cop: Cop) -> String:
-	return "PROMPT_CLOWN_DOOR" if side else "PROMPT_TRUNK"
+	return door_prompt if side else "PROMPT_TRUNK"
 
 
 ## Turns toward the hand: the hold point, seen from the hinge in the car's space, sets the angle.

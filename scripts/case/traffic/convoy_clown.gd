@@ -58,24 +58,7 @@ func _ready() -> void:
 	shape.shape = capsule
 	shape.position.y = 0.8
 	add_child(shape)
-	_model = MODEL.instantiate()
-	_model.name = "Model"
-	add_child(_model)
-	ConvoyTraits.dress(_model, traits)
-	_balls = Node3D.new()
-	_balls.name = "Juggling"
-	_balls.position = Vector3(0, 1.75, 0.3)
-	add_child(_balls)
-	for i in BALLS:
-		var ball := MeshInstance3D.new()
-		var sphere := SphereMesh.new()
-		sphere.radius = 0.07
-		sphere.height = 0.14
-		ball.mesh = sphere
-		var material := StandardMaterial3D.new()
-		material.albedo_color = BALL_COLORS[i]
-		ball.material_override = material
-		_balls.add_child(ball)
+	_build_look()
 	_bubble = Label3D.new()
 	_bubble.name = "Bubble"
 	_bubble.position = Vector3(0, 2.2, 0)
@@ -96,6 +79,28 @@ func _ready() -> void:
 	_pick_target()
 
 
+## His clown model, dressed by his traits, and the balls he juggles (CrowdRider wears a city neighbor's instead).
+func _build_look() -> void:
+	_model = MODEL.instantiate()
+	_model.name = "Model"
+	add_child(_model)
+	ConvoyTraits.dress(_model, traits)
+	_balls = Node3D.new()
+	_balls.name = "Juggling"
+	_balls.position = Vector3(0, 1.75, 0.3)
+	add_child(_balls)
+	for i in BALLS:
+		var ball := MeshInstance3D.new()
+		var sphere := SphereMesh.new()
+		sphere.radius = 0.07
+		sphere.height = 0.14
+		ball.mesh = sphere
+		var material := StandardMaterial3D.new()
+		material.albedo_color = BALL_COLORS[i]
+		ball.material_override = material
+		_balls.add_child(ball)
+
+
 ## Online (PropSync): what a guest's copy needs before it's added.
 func net_setup() -> Dictionary:
 	return {"name": name, "car_name": car.name if car else "", "is_driver": is_driver, "traits": traits}
@@ -108,6 +113,8 @@ func _exit_tree() -> void:
 
 
 func _process(delta: float) -> void:
+	if not _balls:
+		return
 	_juggle += delta
 	for i in _balls.get_child_count():
 		var turn := _juggle * 4.0 + TAU * i / BALLS
@@ -130,7 +137,7 @@ func use(cop: Cop) -> void:
 		car.papers_checked = true
 		say(DriverTraits.license_text(car.driver))
 	else:
-		say(tr("CONVOY_NOT_DRIVER"))
+		say(tr(_not_driver_key()))
 
 
 ## The cuffs on the driver detain him (TrafficCase.detain), as on his car; the others aren't driving.
@@ -139,7 +146,7 @@ func cuffed(_seconds: float) -> void:
 	if is_driver and case:
 		case.detain(car)
 	else:
-		say(tr("CONVOY_NOT_DRIVER"))
+		say(tr(_not_driver_key()))
 
 
 ## The cuffs come off right away: he's either taken out (a ChaseSuspect) or not the driver.
@@ -165,9 +172,23 @@ func clean() -> void:
 
 func hold(holder_id: int, point: Vector3) -> void:
 	if not is_held():
-		say(tr("CONVOY_CLOWN_LINE_%d" % (_complained % LINES)))
+		say(tr(_grab_line_key(_complained)))
 		_complained += 1
 	super(holder_id, point)
+
+
+## What he says when grabbed, the `n`th time.
+func _grab_line_key(n: int) -> String:
+	return "CONVOY_CLOWN_LINE_%d" % (n % LINES)
+
+
+## Seconds out before he starts walking on his own (a popped-out rider flies a bit first).
+func _walks_after() -> float:
+	return 0.0
+
+
+func _not_driver_key() -> String:
+	return "CONVOY_NOT_DRIVER"
 
 
 func say(text: String) -> void:
@@ -191,7 +212,7 @@ func _physics_process(delta: float) -> void:
 	if out_for >= OUT_AT_LEAST and _flat(global_position - car.door_point()).length() < BOARD_REACH:
 		board()
 		return
-	if is_held():
+	if is_held() or out_for < _walks_after():
 		return
 	var wish := _flat(_target - global_position)
 	if wish.length() < 0.3:
