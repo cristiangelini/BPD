@@ -30,6 +30,8 @@ var follower := false
 var in_car_hint := "HINT_OWNER_IN_CAR"
 ## Where he rides, moved from the prisoner's seat (the second golf thief goes in the trunk).
 var seat_shift := Vector3.ZERO
+## How fast he walks behind the cop (the bank's grandpa robbers go slower).
+var speed := SPEED
 var _since_line := 0.0
 var _line := 0
 
@@ -90,7 +92,7 @@ func _physics_process(delta: float) -> void:
 		return
 	var to := escorted_by.global_position - npc.global_position
 	to.y = 0.0
-	var wish := to.normalized() * SPEED if to.length() > KEEP_AWAY else Vector3.ZERO
+	var wish := to.normalized() * speed if to.length() > KEEP_AWAY else Vector3.ZERO
 	if wish.length() > 0.05:
 		npc.look_at(npc.global_position + wish, Vector3.UP, true)
 	npc.velocity.x = wish.x
@@ -104,10 +106,11 @@ func _physics_process(delta: float) -> void:
 		npc.call("_say", LINES[_line % LINES.size()], 3.0)
 
 
-## Whether he's within BOARD_REACH of the car's body, seen from above.
+## Whether he's within BOARD_REACH of the car's body (PatrolCar.body_half_size), seen from above.
 func near_car() -> bool:
 	var local := car.to_local(npc.global_position)
-	var outside := Vector2(maxf(absf(local.x) - HALF_SIZE.x, 0.0), maxf(absf(local.z) - HALF_SIZE.y, 0.0))
+	var half := car.body_half_size()
+	var outside := Vector2(maxf(absf(local.x) - half.x, 0.0), maxf(absf(local.z) - half.y, 0.0))
 	return outside.length() < BOARD_REACH
 
 
