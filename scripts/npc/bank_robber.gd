@@ -23,6 +23,9 @@ signal slipped_out(robber: BankRobber)
 signal turned_now(robber: BankRobber)
 ## The sorry robber did one of his helps (one of HELPS).
 signal helped(robber: BankRobber, help: String)
+## The gang caught the sorry robber helping and tied him to a chair (step 4); a cop untied him.
+signal tied_up(robber: BankRobber)
+signal untied(robber: BankRobber)
 
 const ANIMALS: Array[String] = ["conejo", "chancho", "pato", "oso"]
 const MODELS := {
@@ -86,6 +89,12 @@ const HELPS: Array[String] = ["door", "drill", "hostages"]
 const HELP_SPEED := 1.6
 const HELP_REACH := 0.35
 const HELP_REST := 5.0
+## Tied to the chair (step 4): E starts untying and the cop stays this close for UNTIE_TIME seconds; tied this many
+## times he gives up helping.
+const UNTIE_TIME := 2.0
+const UNTIE_REACH := 1.6
+const TIES_TO_QUIT := 3
+const TIED_CROUCH := 0.8
 
 @export var animal := "conejo"
 ## One of the grandpa gang: slower, and their own model.
@@ -108,6 +117,14 @@ var help_path: Array[Vector3] = []
 var going_back := false
 var helps_done: Array[String] = []
 var rest_left := 0.0
+## Tied to the chair by the gang, how many times, whether he gave up helping, and the cop untying him and for how much
+## longer.
+var tied := false
+var ties := 0
+var gave_up := false
+var untying_by: Node3D
+var untie_left := 0.0
+var _rope: MeshInstance3D
 ## The level's: whether a loose robber other than him sees `cop`; the way to `help` and back to his spot (world
 ## positions); and doing `help`'s leg `stage` once there, which gives the way of its next leg (empty when it's done).
 var watched: Callable
@@ -287,6 +304,10 @@ func _physics_process(delta: float) -> void:
 	if unmasked:
 		_pose(delta)
 		return
+	if tied:
+		if not follower:
+			_untie(delta)
+		return
 	if turned:
 		if not follower:
 			_help(delta)
@@ -375,8 +396,10 @@ func _help(delta: float) -> void:
 	_step(to.normalized() * HELP_SPEED, delta)
 
 
-## The first of HELPS he hasn't done yet, or "" when he did them all.
+## The first of HELPS he hasn't done yet, or "" when he did them all or gave up.
 func next_help() -> String:
+	if gave_up:
+		return ""
 	for help in HELPS:
 		if help not in helps_done:
 			return help
@@ -397,6 +420,75 @@ func _finish_help() -> void:
 	helped.emit(self, help)
 	going_back = true
 	help_path = way_back.call(help) if way_back.is_valid() else []
+
+
+## Caught helping: the gang ties him to the chair at `at` (a world position, facing `yaw`). The help he was on is
+## dropped (he tries it again once free) and any hostage he had by the hand is let go; the third time he gives up.
+func tie(at: Vector3, yaw: float) -> void:
+	tied = true
+	ties += 1
+	gave_up = ties >= TIES_TO_QUIT
+	helping = ""
+	help_stage = 0
+	help_path.clear()
+	going_back = false
+	untying_by = null
+	for hostage: Node3D in get_tree().get_nodes_in_group("bank_hostages"):
+		if hostage.get("led_by") == self:
+			hostage.let_go()
+	global_position = at
+	rotation.y = yaw
+	_show_tied(true)
+	say("ROBBER_SORRY_TIED")
+	tied_up.emit(self)
+
+
+## E on him tied: `cop` starts untying him, staying close.
+func start_untie(cop: Node3D) -> void:
+	if untying_by == cop:
+		return
+	untying_by = cop
+	untie_left = UNTIE_TIME
+	say("ROBBER_SORRY_UNTYING")
+
+
+## Tied: the cop untying him has to stay close UNTIE_TIME seconds; then he walks back to his spot (and on with his
+## helps, unless he gave up).
+func _untie(delta: float) -> void:
+	if not untying_by:
+		return
+	if not is_instance_valid(untying_by) or global_position.distance_to(untying_by.global_position) > UNTIE_REACH:
+		untying_by = null
+		return
+	untie_left -= delta
+	if untie_left > 0.0:
+		return
+	tied = false
+	untying_by = null
+	_show_tied(false)
+	say("ROBBER_SORRY_QUIT" if gave_up else "ROBBER_SORRY_FREE")
+	going_back = true
+	help_path = way_back.call("") if way_back.is_valid() else []
+	untied.emit(self)
+
+
+## Sitting on the chair with a rope round him, or up again.
+func _show_tied(on: bool) -> void:
+	_model.scale.y = SCALES[animal] * (TIED_CROUCH if on else 1.0)
+	if on and not _rope:
+		_rope = MeshInstance3D.new()
+		_rope.name = "Rope"
+		var ring := TorusMesh.new()
+		ring.inner_radius = 0.48
+		ring.outer_radius = 0.56
+		var brown := StandardMaterial3D.new()
+		brown.albedo_color = Color(0.62, 0.45, 0.25)
+		ring.material = brown
+		_rope.mesh = ring
+		_rope.position.y = 0.75
+		add_child(_rope)
+	if _rope:
+		_rope.visible = on
 
 
 ## A grandpa seeing a cop: off with the mask, into the cardigan's pocket (a bit sticks out), and to a free spot among
@@ -510,6 +602,8 @@ func prompt_key(cop: Cop) -> String:
 	if posing or led_by:
 		# He passes for a hostage.
 		return "PROMPT_LET_GO_HOSTAGE" if led_by == cop else "PROMPT_LEAD_HOSTAGE"
+	if tied:
+		return "PROMPT_UNTIE_SORRY"
 	if sorry and not turned:
 		return "PROMPT_TALK_SORRY"
 	return "PROMPT_TALK_ROBBER"
@@ -532,6 +626,9 @@ func use(cop: Cop) -> void:
 		_model.scale.y = SCALES[animal]
 		say("ROBBER_GRANDPA_KNEE_%d" % (_next_line % KNEE_LINES + 1))
 		_next_line += 1
+		return
+	if tied:
+		start_untie(cop)
 		return
 	if sorry and not turned:
 		try_turn(cop)
@@ -565,10 +662,10 @@ func said() -> String:
 
 ## What a guest's copy needs besides where they are and what they say (NpcSync): cuffed, gave up, running, in the van,
 ## gone with a sack, where their head points, the pig's sandwich, a grandpa, whether he took the mask off and sits
-## among the hostages, and the sorry robber's hanky up and whether he was turned.
+## among the hostages, and the sorry robber's hanky up, whether he was turned and whether he's tied.
 func net_state() -> Array:
 	return [is_cuffed(), surrendered, running, in_van, visible, snappedf(look, 0.01), eating_left > 0.0, unmasked,
-		posing, sobbing_left > 0.0, turned]
+		posing, sobbing_left > 0.0, turned, tied]
 
 
 func apply_net_state(state: Variant) -> void:
@@ -593,6 +690,9 @@ func apply_net_state(state: Variant) -> void:
 	if state.size() > 9:
 		sobbing_left = SOB_TIME if state[9] else 0.0
 		turned = state[10]
+		if state[11] != tied:
+			tied = state[11]
+			_show_tied(tied)
 		if _hanky:
 			_hanky.position = HANKY_UP if is_sobbing() else HANKY_DOWN
 
