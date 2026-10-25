@@ -98,7 +98,7 @@ Si fallan, terminan presos en su propia comisaría y tienen que escaparse (decis
 6. **Sobornar al guardia:** con la plata de las coimas, si les queda.
 7. **Simulacro de incendio:** salen entre la gente. Diseño en [fuga-simulacro.md](fuga-simulacro.md) (decisión 155).
 8. **El perro guardián:** hay que hacerse amigo con comida. Propuesta en [fuga-perro.md](fuga-perro.md) (decisión 151).
-9. **Por el techo:** con una cuerda hecha de sábanas.
+9. **Por el techo:** con una cuerda hecha de sábanas. Propuesta en [fuga-techo.md](fuga-techo.md) (decisión 156).
 10. **Hacer un juicio rápido:** uno hace de abogado y los demás de testigos falsos.
 
 ## 8. Control de tránsito
