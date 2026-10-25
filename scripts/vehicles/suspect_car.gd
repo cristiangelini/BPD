@@ -64,6 +64,9 @@ const MODELS := {
 	"traffic_3": preload("res://assets/models/traffic_car_3.glb"),
 	# The fruit truck control's wanted pickup (control-frutas.md), dropping watermelons at the corners.
 	"fruit_truck": preload("res://assets/models/fruit_truck.glb"),
+	# The roof robbery's El Oso gets away hanging from the giant toy helicopter's rope, low over the street
+	# (robo-banco-techo.md): it flies AIR_AT up, over everything, and he hangs under it.
+	"toy_helicopter": preload("res://assets/models/toy_helicopter.glb"),
 }
 ## Who rides on top of it, where you can see them, each as [model, position, scale] (they get off when he gives up).
 const RIDERS := {
@@ -81,6 +84,7 @@ const RIDERS := {
 	"inmate_on_foot": [[preload("res://assets/models/npc_preso.glb"), Vector3(0, 0, 0), 0.85]],
 	"veggie_trike": [[preload("res://assets/models/npc_puestero.glb"), Vector3(0, 0.25, -0.45), 0.85]],
 	"clown_car": [[preload("res://assets/models/npc_payaso.glb"), Vector3(0, 0.45, -0.25), 0.8]],
+	"toy_helicopter": [[preload("res://assets/models/npc_ladron_oso.glb"), Vector3(0, 2.4, 0), 0.85]],
 }
 ## Who rides inside and stays there when he gives up, the same way: the choristers in the van, seen through its open
 ## windows, singing all the way.
@@ -101,7 +105,8 @@ const LANES := {"moto": ChaseRoute.SIDEWALK_LANE, "wheelchair": ChaseRoute.SIDEW
 ## The clown car does 30, honking all the way.
 const SPEEDS := {"bear_on_foot": 12.0 / 3.6, "wheelchair": 8.0 / 3.6, "tow_truck": 30.0 / 3.6, "golf_cart": 25.0 / 3.6, "bike": 25.0 / 3.6,
 	"walker": 10.0 / 3.6, "choir_van": 35.0 / 3.6, "kick_scooter": 15.0 / 3.6,
-	"food_cart": 14.0 / 3.6, "veggie_trike": 16.0 / 3.6, "inmate_on_foot": 11.0 / 3.6, "clown_car": 30.0 / 3.6}
+	"food_cart": 14.0 / 3.6, "veggie_trike": 16.0 / 3.6, "inmate_on_foot": 11.0 / 3.6, "clown_car": 30.0 / 3.6,
+	"toy_helicopter": 20.0 / 3.6}
 ## The tow truck turns slowly and nearly stops to do it (persecucion-lugares.md): a cop cutting a corner on foot
 ## catches up with him.
 ## The golf cart turns very tight and hardly slows down to do it.
@@ -122,6 +127,11 @@ const INMATE_ON_FOOT := "inmate_on_foot"
 const VEGGIE_TRIKE := "veggie_trike"
 const CLOWN_CAR := "clown_car"
 const FRUIT_TRUCK := "fruit_truck"
+const TOY_HELICOPTER := "toy_helicopter"
+## The toy helicopter flies this high (its skids), with the rope down to El Oso's hands; he hangs with his feet over a
+## patrol car's roof, so it can pass right under him. Nothing gets in its way, and it doesn't fall.
+const AIR_AT := 5.2
+const ROPE_FROM := 3.9
 ## Where the towed patrol car hangs behind the tow truck: its middle, and its nose lifted this much.
 const TOWED_AT := Vector3(0, 0.55, -5.6)
 const TOWED_TILT := -0.12
@@ -137,7 +147,8 @@ const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 
 	"moto": Vector3(0.8, 1.6, 1.9), "old_patrol": Vector3(2.1, 1.5, 4.6),
 	"wheelchair": Vector3(0.8, 1.4, 1.2), "bear_on_foot": Vector3(0.9, 1.8, 0.9), "choir_van": Vector3(2.0, 1.95, 4.6), "walker": Vector3(0.7, 1.6, 1.3), "kick_scooter": Vector3(0.6, 1.6, 1.0), "food_cart": Vector3(0.8, 1.6, 2.2), "veggie_trike": Vector3(1.0, 1.6, 2.0), "inmate_on_foot": Vector3(0.8, 1.6, 0.9), "bike": Vector3(0.7, 1.6, 1.9), "clown_car": Vector3(1.3, 1.4, 2.0), "traffic_0": Vector3(2.1, 1.4, 4.6),
 	"traffic_1": Vector3(2.1, 1.4, 4.6), "traffic_2": Vector3(2.1, 1.4, 4.6), "traffic_3": Vector3(2.1, 1.4, 4.6),
-	"manager_car": Vector3(2.1, 1.4, 4.6), "fruit_truck": Vector3(2.1, 1.75, 4.6)}
+	"manager_car": Vector3(2.1, 1.4, 4.6), "fruit_truck": Vector3(2.1, 1.75, 4.6),
+	"toy_helicopter": Vector3(0.6, 0.6, 0.6)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
@@ -149,7 +160,8 @@ const NO_WHEELS: Array[Vector3] = []
 const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS,
 	"wheelchair": NO_WHEELS, "walker": NO_WHEELS, "bear_on_foot": NO_WHEELS, "kick_scooter": NO_WHEELS, "food_cart": NO_WHEELS, "veggie_trike": NO_WHEELS, "inmate_on_foot": NO_WHEELS, "highway": SEDAN_WHEELS, "tow_truck": TOW_WHEELS, "golf_cart": NO_WHEELS,
 	"old_patrol": SEDAN_WHEELS, "bike": NO_WHEELS, "clown_car": NO_WHEELS, "traffic_0": SEDAN_WHEELS, "traffic_1": SEDAN_WHEELS,
-	"traffic_2": SEDAN_WHEELS, "traffic_3": SEDAN_WHEELS, "choir_van": SEDAN_WHEELS, "manager_car": SEDAN_WHEELS, "fruit_truck": SEDAN_WHEELS}
+	"traffic_2": SEDAN_WHEELS, "traffic_3": SEDAN_WHEELS, "choir_van": SEDAN_WHEELS, "manager_car": SEDAN_WHEELS, "fruit_truck": SEDAN_WHEELS,
+	"toy_helicopter": NO_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
@@ -174,6 +186,7 @@ var punctured := false
 var _rolling := 1.0
 var tangled_left := 0.0
 var _highway: Highway
+var _rotor: Node3D
 
 
 func _ready() -> void:
@@ -187,7 +200,10 @@ func _ready() -> void:
 	shape.shape = body
 	shape.position.y = body.size.y / 2 + 0.2
 	add_child(shape)
-	add_child((MODELS[kind] as PackedScene).instantiate())
+	var model: Node3D = (MODELS[kind] as PackedScene).instantiate()
+	add_child(model)
+	if kind == TOY_HELICOPTER:
+		_fly(model)
 	var riders: Array = RIDERS.get(kind, [])
 	for k in riders.size():
 		var rider: Node3D = (riders[k][0] as PackedScene).instantiate()
@@ -220,6 +236,28 @@ func _ready() -> void:
 		var wheel: Node3D = WHEEL.instantiate()
 		wheel.position = at
 		add_child(wheel)
+
+
+## The toy helicopter: up in the air with its rope hanging, out of everyone's way.
+func _fly(model: Node3D) -> void:
+	model.position.y = AIR_AT
+	_rotor = model.find_child("rotor", true, false) as Node3D
+	collision_layer = 0
+	collision_mask = 0
+	var rope := MeshInstance3D.new()
+	rope.name = "Rope"
+	var line := CylinderMesh.new()
+	line.top_radius = 0.025
+	line.bottom_radius = 0.025
+	line.height = AIR_AT - ROPE_FROM
+	rope.mesh = line
+	rope.position.y = (AIR_AT + ROPE_FROM) / 2
+	add_child(rope)
+
+
+func _process(delta: float) -> void:
+	if _rotor:
+		_rotor.rotate_y(ToyHelicopter.FLY_SPIN * delta)
 
 
 ## Puts it at the start of `route` (in the city's space, which `city` places in the world), facing the way it goes.
@@ -292,7 +330,7 @@ func set_rider(model: PackedScene) -> void:
 
 
 func get_off() -> void:
-	for rider in [get_node_or_null("Rider"), get_node_or_null("Rider2")]:
+	for rider in [get_node_or_null("Rider"), get_node_or_null("Rider2"), get_node_or_null("Rope")]:
 		if rider:
 			(rider as Node3D).hide()
 	var song := get_node_or_null("Song") as AudioStreamPlayer3D
@@ -340,7 +378,8 @@ func finished() -> bool:
 
 
 func _physics_process(delta: float) -> void:
-	velocity.y = 0.0 if is_on_floor() else velocity.y - GameScale.GRAVITY * delta
+	# In the air it neither falls nor touches anything.
+	velocity.y = 0.0 if is_on_floor() or kind == TOY_HELICOPTER else velocity.y - GameScale.GRAVITY * delta
 	nervous_left = maxf(nervous_left - delta, 0.0)
 	tangled_left = maxf(tangled_left - delta, 0.0)
 	if punctured:

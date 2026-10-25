@@ -100,3 +100,12 @@ de juguete, el sobrino con el control y la persecución en el aire.
   sale a la camioneta; el paso 4b lo cuelga del helicóptero. El caso: la radio del comisario habla del helicóptero de
   juguete (`BRIEF_BANK_ROOF_A-C`) y la planilla pide esposar al que lo maneja (+100, `NEPHEW`) y cuenta las bolsas que
   se llevó. Captura en `/mnt/project-files/techo/paso4-carrito.png`.
+- **Paso 4b (El Oso colgado y la persecución en el aire):** cuando se acaban las bolsas, el último viaje es El Oso: el
+  helicóptero del techo se va y arranca la persecución de siempre (`ChaseCase.begin`), pero el vehículo es el
+  helicóptero de juguete (`SuspectCar.TOY_HELICOPTER`): vuela a 5,2 m sobre la calle a 20 km/h con El Oso colgado de la
+  soga, los pies por arriba del techo del patrullero; no choca con nada y nada lo frena, así que no se lo puede
+  encerrar. El que va al lado del que maneja, con el patrullero justo debajo (a 2,5 m o menos, visto de arriba), ve "E:
+  agarrar la soga" en vez de bajarse (`Cop.window_target`, el grupo "window_reach"); con E lo agarra (`RopeGrab`) y El
+  Oso cae esposado al asiento de atrás: la persecución se gana como siempre, y hay que volver a la comisaría. Si se
+  aleja demasiado o se acaba el tiempo, se escapa y se pierde, como en la base. Captura en
+  `/mnt/project-files/techo/paso4-persecucion.png`.

@@ -570,7 +570,7 @@ func _start_roof_getaway(sacks: int) -> void:
 	_next_trip()
 
 
-## Another sack to the cart while there are sacks on the roof; then El Oso's turn (the chase, next).
+## Another sack to the cart while there are sacks on the roof; then El Oso's turn, hanging from the rope.
 func _next_trip() -> void:
 	if follower or not roof_getaway or helicopter.crashed:
 		return
@@ -581,8 +581,7 @@ func _next_trip() -> void:
 			return
 		helicopter.trip(CART_AT + Vector3.UP * CART_TOP)
 		return
-	if is_loose(boss):
-		_roof_way_lost()
+	_oso_by_air()
 
 
 ## A sack in the cart: one more the gang got away with.
@@ -600,6 +599,31 @@ func _show_cart_bags() -> void:
 		var k := cart.get_child_count()
 		bag.position = Vector3((k % 2) * 0.25 - 0.12, (k / 2) * 0.25, 0.0)
 		cart.add_child(bag)
+
+
+## The last trip (step 4b): El Oso grabs the rope and the helicopter flies him off low over the street; the chase is
+## on, against something in the air.
+func _oso_by_air() -> void:
+	if chase or not is_loose(boss):
+		return
+	helicopter.hide()
+	helicopter.freeze = true
+	helicopter.collision_layer = 0
+	helicopter.set_physics_process(false)
+	start_getaway(SuspectCar.TOY_HELICOPTER)
+	if case:
+		case._on_vault_opened()
+
+
+## A cop leaning out of the patrol car's window got the rope: El Oso drops into the back seat, cuffed.
+func _on_rope_grabbed(_cop: Cop) -> void:
+	if follower or not chase or chase.stopped:
+		return
+	chase.pull_over()
+	chase.suspect.cuffed(Handcuffs.SECONDS)
+	chase.escort.board()
+	for cop in get_tree().get_nodes_in_group("cops"):
+		(cop as Cop).show_hint("HINT_ROPE_GRABBED")
 
 
 ## No helicopter for El Oso: he runs for the van (or on foot) like in the base robbery.
@@ -1159,7 +1183,8 @@ func _run_getaway(manager_runs: bool) -> void:
 
 ## El Oso gets away in the van (`kind` ROBBERS_VAN) or on foot (BEAR_ON_FOOT), or the grandpa Oso on a motor walker
 ## along the sidewalk (WALKER, robo-banco-abuelos.md, step 4), or the boss manager in his car (MANAGER_CAR,
-## robo-banco-gerente.md, step 4): the chase is on.
+## robo-banco-gerente.md, step 4), or El Oso hanging from the toy helicopter (TOY_HELICOPTER, robo-banco-techo.md,
+## step 4b) with the rope a cop can grab from the patrol car (RopeGrab): the chase is on.
 func start_getaway(kind: String) -> void:
 	if chase:
 		return
@@ -1181,9 +1206,16 @@ func start_getaway(kind: String) -> void:
 	if case:
 		chase.online = case.online
 	chase.ended.connect(_on_getaway_ended)
+	if kind == SuspectCar.TOY_HELICOPTER:
+		var rope := RopeGrab.new()
+		rope.name = "RopeGrab"
+		rope.position.y = SuspectCar.ROPE_FROM
+		chase.truck.add_child(rope)
+		rope.grabbed.connect(_on_rope_grabbed)
 	for cop in get_tree().get_nodes_in_group("cops"):
 		(cop as Cop).show_hint({SuspectCar.ROBBERS_VAN: "HINT_ESCAPE_oso", SuspectCar.WALKER: "HINT_ESCAPE_oso_WALKER",
-			SuspectCar.MANAGER_CAR: "HINT_ESCAPE_manager"}.get(kind, "HINT_ESCAPE_oso_FOOT"))
+			SuspectCar.MANAGER_CAR: "HINT_ESCAPE_manager", SuspectCar.TOY_HELICOPTER: "HINT_ESCAPE_oso_AIR"}.get(kind,
+			"HINT_ESCAPE_oso_FOOT"))
 
 
 func _on_getaway_ended(was_caught: bool) -> void:
