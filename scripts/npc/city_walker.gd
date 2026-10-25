@@ -1,8 +1,10 @@
 class_name CityWalker
-extends Node3D
+extends AnimatableBody3D
 
 ## Someone walking the city's sidewalks (ciudad-viva.md, step 3): round and round their block, with a little bob and
-## sway, at their own pace. The street events pick them later. Every number here is (propuesta).
+## sway, at their own pace. They're solid (a cop bumps into them) and the handcuffs work on them like on anyone
+## (decision 87): cuffed, they stop and complain. The street events stop them and make them talk.
+## Every number here is (propuesta).
 
 const MODELS_DIR := "res://assets/models/npc_%s.glb"
 const PACE_MIN := 1.0
@@ -18,10 +20,25 @@ var pace := 1.2
 var hurry := 1.0
 var _model: Node3D
 var _time := 0.0
+var _stopped_left := 0.0
+var _cuffed_left := 0.0
+var _bubble: Label3D
+var _bubble_left := 0.0
 
 
 func _ready() -> void:
 	add_to_group("city_walkers")
+	sync_to_physics = false
+	collision_layer = 8
+	var shape := CollisionShape3D.new()
+	var capsule := CapsuleShape3D.new()
+	capsule.radius = 0.35
+	capsule.height = 1.4
+	shape.shape = capsule
+	shape.position.y = 0.7
+	add_child(shape)
+	_bubble = MarketShopper.make_bubble()
+	add_child(_bubble)
 	pace = randf_range(PACE_MIN, PACE_MAX)
 	_time = randf() * 10.0
 	var scene: PackedScene = load(MODELS_DIR % look)
@@ -39,8 +56,38 @@ func place_along(along: float) -> void:
 	rotation.y = atan2(ahead.x, ahead.z)
 
 
+## Stops where they are for `seconds` (an event picked them).
+func stop_for(seconds: float) -> void:
+	_stopped_left = maxf(_stopped_left, seconds)
+
+
+## Says the line `key` over their head for a few seconds.
+func say(key: String, seconds := 4.0) -> void:
+	_bubble.text = key
+	_bubble.show()
+	_bubble_left = seconds
+
+
+## The handcuffs (decision 87): they stop and complain, they did nothing.
+func cuffed(seconds: float) -> void:
+	_cuffed_left = maxf(_cuffed_left, seconds)
+	say("NPC_POLICE_ABUSE")
+
+
+func is_cuffed() -> bool:
+	return _cuffed_left > 0.0
+
+
+func is_stopped() -> bool:
+	return _stopped_left > 0.0 or is_cuffed()
+
+
 func _process(delta: float) -> void:
-	if path.is_empty():
+	_bubble_left = maxf(_bubble_left - delta, 0.0)
+	_bubble.visible = _bubble_left > 0.0
+	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
+	_stopped_left = maxf(_stopped_left - delta, 0.0)
+	if path.is_empty() or is_stopped():
 		return
 	_time += delta
 	var to := path[next] - position

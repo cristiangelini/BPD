@@ -46,6 +46,8 @@ const HEDGE_HEIGHT := 2.5
 ## The test city's clock with day and night (ciudad-viva.md, step 5) and its rain (step 6).
 var clock: CityClock
 var rain: CityRain
+## The street events' director (step 7).
+var events: CityEvents
 
 ## The comisario in his office at the station; the case scene listens to him.
 var comisario: Comisario
@@ -145,6 +147,10 @@ func _build() -> void:
 		rain.clock = clock
 		rain.streets = [_material(ROAD), _material(SIDEWALK)]
 		add_child(rain)
+	if alive and traffic:
+		events = CityEvents.new()
+		events.name = "Events"
+		add_child(events)
 
 
 ## A square hedge `reach` from the middle, with a gap at the ramp's street on each of the `open` sides.
