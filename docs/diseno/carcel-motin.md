@@ -46,7 +46,7 @@ otra variante lo necesite. Se llega en el patrullero, como al banco.
 | 2 | Traslado de presos | 8 presos en un bus hasta la cárcel sin que se escape ninguno. |
 | 3 | Día de visitas | Los visitantes pasan cosas escondidas; se revisa con las manos ([carcel-visitas.md](carcel-visitas.md)). |
 | 4 | Túnel | Encontrar el túnel antes de que terminen de cavarlo; la pista es la tierra ([carcel-tunel.md](carcel-tunel.md)). |
-| 5 | Concurso de talentos | El show distrae a los guardias mientras otros se escapan. |
+| 5 | Concurso de talentos | El show distrae mientras otros se escapan y los policías son el jurado ([carcel-talentos.md](carcel-talentos.md)). |
 | 6 | Lavandería | Se escapan dentro de los carritos de ropa ([carcel-lavanderia.md](carcel-lavanderia.md)). |
 | 7 | Corte de luz | La cárcel a oscuras, solo con linternas ([carcel-corte-de-luz.md](carcel-corte-de-luz.md)). |
 | 8 | Preso VIP | Un famoso que exige cosas absurdas (como los pedidos de El Oso). |
