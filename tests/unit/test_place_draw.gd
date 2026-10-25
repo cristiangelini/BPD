@@ -10,20 +10,27 @@ func after_each() -> void:
 
 
 func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltration_and_each_raid_a_sixth_of_the_rest() -> void:
-	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "chase": 0, "crime_scene": 0, "traffic": 0, "club": 0,
-		"choir": 0, "bank": 0, "plaza": 0, "market": 0, "prison": 0}
+	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "chase": 0, "crime_scene": 0, "circus": 0, "traffic": 0, "club": 0,
+		"choir": 0, "bank": 0, "plaza": 0, "market": 0, "prison": 0, "transfer": 0, "blackout": 0, "visits": 0}
 	for i in 600:
 		count[PlaceDraw.pick(i + 1, [], 1)] += 1
 	assert_between(count.chase, 250, 350, "half chases (Cristian, 20/10)")
-	for place: String in ["crime_scene", "traffic"]:
-		assert_between(count[place], 25, 80, "even odds for %s (propuesta)" % place)
+	assert_between(count.crime_scene + count.circus, 25, 80, "even odds for the crime scenes (propuesta)")
+	assert_gt(count.crime_scene, 5, "half at the pastry contest")
+	assert_gt(count.circus, 5, "and half at the circus")
+	assert_between(count.traffic, 25, 80, "even odds for the traffic control (propuesta)")
 	# With the bank and the rally drawn before them, each raid comes up about 1 shift in 30 (propuesta).
 	for place: String in ["grandpa", "bakery", "groomer"]:
 		assert_between(count[place], 10, 60, "%s still comes up (propuesta)" % place)
 	assert_between(count.club + count.choir, 25, 80, "the infiltrations, as often as a raid (propuesta)")
 	assert_between(count.bank, 15, 70, "the bank robbery, about as often as a raid (propuesta)")
 	assert_between(count.plaza + count.market, 10, 60, "the politician's protection, about as often as a raid (propuesta)")
-	assert_between(count.prison, 5, 50, "the prison riot, about as often as a raid (propuesta)")
+	assert_between(count.prison + count.transfer + count.blackout + count.visits, 5, 50,
+		"a prison case, about as often as a raid (propuesta)")
+	assert_gt(count.prison, 0, "a quarter the riot")
+	assert_gt(count.transfer, 0, "a quarter the transfer")
+	assert_gt(count.blackout, 0, "a quarter the blackout")
+	assert_gt(count.visits, 0, "and a quarter the visiting day")
 	assert_gt(count.club, 5, "half of them at the grandparents' club")
 	assert_gt(count.choir, 5, "and half at the church choir")
 	assert_gt(count.plaza, 2, "half of the protections at the plaza's rally")

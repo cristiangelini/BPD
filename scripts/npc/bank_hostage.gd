@@ -15,6 +15,9 @@ extends CharacterBody3D
 ## promise only gets as far as the door (walk_out), and walks back in unless a cop takes them by the hand there.
 ## The handcuffs close on them too (decision 87): they protest, stay put until they run out, and `wrongly_cuffed` goes
 ## off the first time (in the grandpa robbers' case it costs, robo-banco-abuelos.md, step 5).
+## In the flooding bank (robo-banco-inundado.md, step 3, decision 125) the water up to their waist sends them up on the
+## counter (climb) and they won't come down to be led ("I can't swim!") until it's low again (climb_down) or a cop puts
+## a duck float on them (BankFloats): then they hop down and follow at full pace, floating.
 ## Every number here is (propuesta).
 
 signal freed_now(hostage: BankHostage)
@@ -59,11 +62,18 @@ const FED_LINES := 3
 const DOOR_WAIT := 8.0
 ## Stuck on the way back (behind the counter, against a wall) this long, they're just back in their spot.
 const HOME_GIVE_UP := 20.0
+const SWIM_LINES := 3
 
 @export var look := "vecina"
 var next_line := 0
-## The cop leading them by the hand, if any.
-var led_by: Cop
+## Wading in the flooded bank (BankWater): walking speed times this.
+var wade := 1.0
+## Up on the counter, out of the water, and the spot to hop down to; a duck float on, they float at full pace.
+var perched := false
+var duck_float := false
+var _down_at := Vector3.ZERO
+## The cop (or the bank's sorry robber) leading them by the hand, if any.
+var led_by: Node3D
 ## At the party (decision 121): they sway to the music while they sit, each at their own beat.
 var partying := false
 var sway_phase := 0.0
@@ -139,6 +149,8 @@ func _ready() -> void:
 func prompt_key(cop: Cop) -> String:
 	if freed or is_cuffed():
 		return ""
+	if perched:
+		return "PROMPT_GIVE_FLOAT" if cop.duck_float else "PROMPT_LEAD_HOSTAGE"
 	if wants_food() and food_of(cop):
 		return "PROMPT_FEED_HOSTAGE"
 	return "PROMPT_LET_GO_HOSTAGE" if led_by == cop else "PROMPT_LEAD_HOSTAGE"
@@ -148,18 +160,15 @@ func prompt_key(cop: Cop) -> String:
 func use(cop: Cop) -> void:
 	if freed or is_cuffed():
 		return
+	if perched:
+		_off_the_counter(cop)
+		return
 	var food := food_of(cop) if wants_food() else null
 	if food:
 		feed(cop, food)
 		return
 	if led_by == cop:
-		led_by = null
-		if partying:
-			returning = true
-			_home_left = HOME_GIVE_UP
-			say("HOSTAGE_BACK_%d" % (next_line % BACK_LINES + 1))
-		else:
-			_model.scale.y = _size * CROUCH
+		let_go()
 		return
 	_take(cop)
 	_protest()
@@ -167,8 +176,66 @@ func use(cop: Cop) -> void:
 		cop.show_hint("HINT_BANK_PARTY_LEAD")
 
 
-## Up and following `cop` by the hand.
-func _take(cop: Cop) -> void:
+## Up on the counter: with this cop's duck float on they hop down and follow; without one they won't.
+func _off_the_counter(cop: Cop) -> void:
+	if not cop.duck_float:
+		say("HOSTAGE_SWIM_%d" % (next_line % SWIM_LINES + 1))
+		next_line += 1
+		cop.show_hint("HINT_HOSTAGE_FLOAT")
+		return
+	BankFloats.wear(cop, false)
+	BankFloats.wear(self, true)
+	perched = false
+	global_position = _down_at
+	_take(cop)
+	say("HOSTAGE_FLOAT_ON")
+
+
+## The water got to their waist: they let go of any hand and get up on the counter at `at`, to hop down at `down_at`.
+func climb(at: Vector3, down_at: Vector3) -> void:
+	led_by = null
+	returning = false
+	_door_left = 0.0
+	perched = true
+	_down_at = down_at
+	global_position = at
+	# Facing the hall, the way they'd hop down.
+	rotation.y = PI
+	velocity = Vector3.ZERO
+	_model.scale.y = _size
+	say("HOSTAGE_SWIM_%d" % (next_line % SWIM_LINES + 1))
+	next_line += 1
+
+
+## The water is low again: down from the counter and back to their spot on the floor, crouched.
+func climb_down() -> void:
+	perched = false
+	global_position = home
+	rotation.y = _home_yaw
+	_model.scale.y = _size * CROUCH
+
+
+## Let go of the hand: at the party they walk back to their spot, otherwise they crouch where they are.
+func let_go() -> void:
+	led_by = null
+	if partying:
+		returning = true
+		_home_left = HOME_GIVE_UP
+		say("HOSTAGE_BACK_%d" % (next_line % BACK_LINES + 1))
+	else:
+		_model.scale.y = _size * CROUCH
+
+
+## Taken by the hand by the bank's sorry robber (robo-banco-arrepentido.md, step 3): up and following him, the first
+## of them saying so.
+func take_by(robber: Node3D, talks := true) -> void:
+	_take(robber)
+	if talks:
+		say("HOSTAGE_SORRY_TAKEN")
+
+
+## Up and following `cop` (or the sorry robber) by the hand.
+func _take(cop: Node3D) -> void:
 	led_by = cop
 	returning = false
 	_door_left = 0.0
@@ -204,7 +271,7 @@ func feed(cop: Cop, food: Grabbable) -> void:
 
 ## Sitting in their spot: not led, not on the way back, not at the door.
 func sitting() -> bool:
-	return not freed and not led_by and not returning and _door_left <= 0.0
+	return not freed and not led_by and not returning and _door_left <= 0.0 and not perched
 
 
 ## Let go by El Oso: standing just out of the entrance at `at`, they wait at the door for DOOR_WAIT seconds and then
@@ -238,6 +305,8 @@ func _physics_process(delta: float) -> void:
 		return
 	if _cuffed_left > 0.0:
 		_cuffed_left = maxf(_cuffed_left - delta, 0.0)
+		return
+	if perched:
 		return
 	if returning:
 		_walk_home(delta)
@@ -338,7 +407,8 @@ func _walk_home(delta: float) -> void:
 func _step(wish: Vector3, delta: float) -> void:
 	if wish.length() > 0.05:
 		look_at(global_position + wish, Vector3.UP)
-	velocity = Vector3(wish.x, 0.0 if is_on_floor() else velocity.y - GameScale.GRAVITY * delta, wish.z)
+	var pace := 1.0 if duck_float else wade
+	velocity = Vector3(wish.x * pace, 0.0 if is_on_floor() else velocity.y - GameScale.GRAVITY * delta, wish.z * pace)
 	move_and_slide()
 
 
@@ -381,9 +451,11 @@ func said() -> String:
 
 
 ## What a guest's copy needs besides where they are and what they say (NpcSync): free, standing up, still here, won
-## over with food, where a fan's head looks and whether they wear the handcuffs.
+## over with food, where a fan's head looks, whether they wear the handcuffs, and in the flooding bank whether they're
+## up on the counter and wear a duck float.
 func net_state() -> Array:
-	return [freed, is_equal_approx(_model.scale.y, _size), visible, fed, snappedf(head_look, 0.01), is_cuffed()]
+	return [freed, is_equal_approx(_model.scale.y, _size), visible, fed, snappedf(head_look, 0.01), is_cuffed(), perched,
+		duck_float]
 
 
 func apply_net_state(state: Variant) -> void:
@@ -399,6 +471,10 @@ func apply_net_state(state: Variant) -> void:
 		_turn(state[4])
 	if state.size() > 5:
 		_cuffed_left = Handcuffs.SECONDS if state[5] else 0.0
+	if state.size() > 7:
+		perched = state[6]
+		if state[7] != duck_float:
+			BankFloats.wear(self, state[7])
 
 
 func _process(delta: float) -> void:

@@ -147,3 +147,157 @@ func test_the_grandpa_robbers_show_the_same_on_every_pc() -> void:
 	assert_eq(guest.case.wrong_cuffs, 1)
 	assert_true(guest.hostages[0].is_cuffed(), "the cuffed hostage shows cuffed")
 	assert_true(guest.phone.deaf)
+
+
+func test_the_sorry_robber_shows_the_same_on_every_pc() -> void:
+	# The first sorry seed (robo-banco-arrepentido.md).
+	var seed_ := 1
+	while BankLevel.variant(seed_, PackedStringArray()) != "sorry":
+		seed_ += 1
+	_pcs = OnlinePcs.new(self, Callable(), func() -> Node3D:
+		var bank: BankLevel = BANK_SCENE.instantiate()
+		bank.case_seed = seed_
+		bank.get_node("Cop/Grabber").input_enabled = false
+		return bank)
+	var pcs: Array[Node] = await _pcs.two_pcs()
+	var host := _bank(pcs[0])
+	var guest := _bank(pcs[1])
+	assert_not_null(guest.sorry, "the guest's bank has him too")
+	assert_eq(guest.sorry.animal, host.sorry.animal)
+	host.sorry.turned = true
+	host.case._hear_sorry_turned()
+	host.back_door.open_from_inside()
+	host.sorry.helps_done = ["door"] as Array[String]
+	host.sorry.tie(host.global_transform * BankLevel.CHAIR_AT, 0.0)
+	await wait_until(func() -> bool: return guest.sorry.tied and guest.back_door.is_open \
+		and guest.case.sorry_tied, 5.0)
+	assert_true(guest.sorry.turned)
+	assert_true(guest.sorry.tied, "tied on the guest's PC too")
+	assert_true(guest.back_door.is_open, "the back door he opened")
+	assert_true(guest.case.sorry_turned)
+	assert_eq(guest.case.helps(), 1)
+
+
+func _manager_pcs() -> Array[Node]:
+	# The first seed where the manager is the boss (robo-banco-gerente.md).
+	var seed_ := 1
+	while BankLevel.variant(seed_, PackedStringArray()) != "manager":
+		seed_ += 1
+	_pcs = OnlinePcs.new(self, Callable(), func() -> Node3D:
+		var bank: BankLevel = BANK_SCENE.instantiate()
+		bank.case_seed = seed_
+		bank.get_node("Cop/Grabber").input_enabled = false
+		return bank)
+	return await _pcs.two_pcs()
+
+
+func test_the_boss_manager_shows_the_same_on_every_pc() -> void:
+	var pcs: Array[Node] = await _manager_pcs()
+	var host := _bank(pcs[0])
+	var guest := _bank(pcs[1])
+	assert_true(guest.manager.boss, "the guest's manager is the boss too")
+	assert_true(guest.manager.follower)
+	host.manager.radio()
+	await wait_until(func() -> bool: return guest.manager.walkie_showing(), 5.0)
+	assert_true(guest.manager.walkie_showing(), "the antenna shows on the guest")
+	host.manager_trunk.use(OnlinePcs.own_cop(pcs[0]))
+	await wait_until(func() -> bool: return not guest.manager_trunk.is_open, 5.0)
+	assert_false(guest.manager_trunk.is_open, "shut there too")
+	host.manager.cuffed(Handcuffs.SECONDS)
+	OwnerEscort.of(host.manager).board()
+	await wait_until(func() -> bool: return guest.case.manager_jailed and guest.phone.hung_up, 5.0)
+	assert_true(guest.manager.caught)
+	assert_true(guest.case.manager_jailed)
+	assert_true(guest.case.manager_early)
+	assert_true(guest.phone.hung_up, "El Oso hung up on every PC")
+
+
+func test_a_guest_gets_the_key_from_the_manager() -> void:
+	var pcs: Array[Node] = await _manager_pcs()
+	var host := _bank(pcs[0])
+	var guest := _bank(pcs[1])
+	OnlinePcs.own_cop(pcs[1]).act("use", guest.manager)
+	await wait_until(func() -> bool: return not host.manager.has_key, 5.0)
+	assert_false(host.manager.has_key, "the host's manager gave it")
+	await wait_until(func() -> bool: return not guest.manager.has_key, 5.0)
+	assert_false(guest.manager.has_key)
+
+
+func test_the_manager_drives_off_on_every_pc() -> void:
+	var pcs: Array[Node] = await _manager_pcs()
+	var host := _bank(pcs[0])
+	var guest := _bank(pcs[1])
+	host.drill.drilled = host.drill.drill_time - 0.01
+	await wait_until(func() -> bool: return guest.chase != null, 5.0)
+	assert_eq(guest.chase.suspect_id, SuspectCar.MANAGER_CAR, "in his car")
+	assert_false(guest.manager.visible, "he's in it on the guest's PC too")
+
+
+func _flood_pcs() -> Array[Node]:
+	# The first seed where the vault floods (robo-banco-inundado.md).
+	var seed_ := 1
+	while BankLevel.variant(seed_, PackedStringArray()) != "flood":
+		seed_ += 1
+	_pcs = OnlinePcs.new(self, Callable(), func() -> Node3D:
+		var bank: BankLevel = BANK_SCENE.instantiate()
+		bank.case_seed = seed_
+		bank.get_node("Cop/Grabber").input_enabled = false
+		return bank)
+	return await _pcs.two_pcs()
+
+
+func test_the_water_shows_the_same_on_every_pc() -> void:
+	var pcs: Array[Node] = await _flood_pcs()
+	var host := _bank(pcs[0])
+	var guest := _bank(pcs[1])
+	assert_true(guest.water.follower, "the guest's water only shows the host's")
+	assert_true(guest.valve.follower)
+	host.water.level = 0.7
+	await wait_until(func() -> bool: return absf(guest.water.level - host.water.level) < 0.02, 5.0)
+	assert_almost_eq(guest.water.level, host.water.level, 0.02)
+	await wait_until(func() -> bool: return guest.hostages[0].perched, 5.0)
+	assert_true(guest.hostages[0].perched, "up on the counter on the guest's PC too")
+	await wait_until(func() -> bool: return guest.drill.wet, 5.0)
+	assert_true(guest.drill.wet, "the wet drill shows there too")
+
+
+func test_a_guest_turns_the_valve_on_the_host() -> void:
+	var pcs: Array[Node] = await _flood_pcs()
+	var host := _bank(pcs[0])
+	var guest := _bank(pcs[1])
+	var guest_cop := OnlinePcs.own_cop(pcs[1])
+	var host_twin: Cop = host.get_tree().get_nodes_in_group("cops").filter(func(cop: Node) -> bool:
+		return cop != OnlinePcs.own_cop(pcs[0]) and cop.get_parent() == host).front()
+	guest_cop.global_position = guest.valve.to_global(Vector3(0, 0.1, 1.0))
+	host_twin.global_position = host.valve.to_global(Vector3(0, 0.1, 1.0))
+	guest_cop.act("use", guest.valve)
+	await wait_until(func() -> bool: return host.valve.turned > 0.05, 5.0)
+	assert_gt(host.valve.turned, 0.05, "the host's valve turns")
+	await wait_until(func() -> bool: return guest.valve.turned > 0.05, 5.0)
+	assert_gt(guest.valve.turned, 0.05, "and the guest sees it")
+	host.valve.turned = 1.0
+	host.valve._shut()
+	await wait_until(func() -> bool: return not guest.water.running, 5.0)
+	assert_true(guest.valve.is_shut)
+	assert_false(guest.water.running, "the water stops on every PC")
+
+
+func test_the_floats_and_the_front_door_show_the_same() -> void:
+	var pcs: Array[Node] = await _flood_pcs()
+	var host := _bank(pcs[0])
+	var guest := _bank(pcs[1])
+	var guest_cop := OnlinePcs.own_cop(pcs[1])
+	guest_cop.act("use", guest.floats)
+	await wait_until(func() -> bool: return host.floats.left == BankFloats.FLOATS - 1, 5.0)
+	assert_eq(host.floats.left, BankFloats.FLOATS - 1)
+	await wait_until(func() -> bool: return guest.floats.left == BankFloats.FLOATS - 1, 5.0)
+	assert_true(guest_cop.duck_float, "the guest wears it")
+	host.open_front()
+	await wait_until(func() -> bool: return guest.front_door.is_open, 5.0)
+	assert_true(guest.front_door.is_open, "the pig's door opens on the guest's PC too")
+	host.water.level = 0.7
+	await wait_until(func() -> bool: return host.hostages[1].perched, 5.0)
+	host.hostages[1].duck_float = false
+	BankFloats.wear(host.hostages[1], true)
+	await wait_until(func() -> bool: return guest.hostages[1].duck_float, 5.0)
+	assert_not_null(guest.hostages[1].get_node_or_null("DuckFloat"), "the hostage's float shows there too")

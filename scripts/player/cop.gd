@@ -35,6 +35,8 @@ var is_crouching := false
 var exhausted := false
 ## Found in one of the pots by the grandpa's front door.
 var has_key := false
+## A duck float around the waist, from the patrol car's trunk in the flooding bank (BankFloats).
+var duck_float := false
 ## The battering ram in hand, if this cop carries it. Hands are busy: no grabbing.
 var ram: BatteringRam
 ## The wheelbarrow this cop pushes, if any. Hands are busy: E loads things into it instead of grabbing.
@@ -53,10 +55,15 @@ var listening_to: Grandpa
 ## While holding E on an inmate this cop talks them down (carcel-motin.md, step 4); letting go ends it.
 var talking_to: PrisonInmate
 var _talk_end_asked := false
+## While holding E on the flooding bank's valve this cop turns it (BankValve); letting go ends it.
+var turning: Node
+var _turn_end_asked := false
 ## Silly numbers for the joke awards at the end of the shift (decision 41).
 var stats := {"ram_misses": 0, "story_seconds": 0.0, "meters_driven": 0.0, "photos": 0}
 ## The patrol car this cop sits in, if any: the body rides the seat and doesn't walk or collide.
 var vehicle: PatrolCar
+## The prison bus this cop stands in (traslado-presos.md): it walks the aisle and goes along with the bus.
+var riding: PrisonBus
 ## The comisario is giving the case (CaseBriefing): the cop can look around but not move or use things.
 var in_briefing := false
 ## The armero's list is open for this cop (ArmoryMenu): same as the briefing, but only for this cop.
@@ -82,6 +89,8 @@ var disguise := {}
 var _shaken := 0.0
 ## Something slows the cop down for a while (the market's cramps, Cramps): walking and running speed times this.
 var slow_factor := 1.0
+## Wading in the flooded bank (BankWater): walking and running speed times this too.
+var wade := 1.0
 var _fall_gap_left := 0.0
 
 @onready var _shape: CollisionShape3D = $Shape
@@ -149,7 +158,7 @@ func current_prompt() -> String:
 	if $Grabber.held:
 		var aimed := _usable_target()
 		if aimed is WaitingArmchair or aimed is DigSpot or aimed is InterrogationSuspect or aimed is PastryCook \
-				or aimed is TunnelHole \
+				or aimed is TunnelHole or aimed is CircusClown \
 				or (aimed is CellDoor and $Grabber.held is CellKey):
 			return aimed.prompt_key(self)
 		if $Grabber.held.has_method("held_prompt_key"):
@@ -221,6 +230,25 @@ func fill_up_on_donut() -> void:
 	stamina = GameScale.RUN_STAMINA
 	exhausted = false
 	_mouth_full_left = MOUTH_FULL
+
+
+## E with a spare battery in hand (the blackout): into the flashlight, full again. Every PC does it; the host's
+## PropSync takes the old battery away from the guests.
+func change_battery(battery: FlashlightBattery) -> void:
+	if not battery:
+		return
+	$Grabber.release()
+	belt.flashlight.recharge()
+	show_hint("HINT_BATTERY_CHANGED")
+	if multiplayer.is_server():
+		battery.queue_free()
+
+
+## E with a visitor's thing in hand (the visiting day): opened, on every PC. The thing goes as an argument, so every
+## PC finds its own copy (PropSync), since the host made it during the case.
+func open_visit_item(item: VisitItem) -> void:
+	if item:
+		item.use(self)
 
 
 ## E with a crime scene clue in hand (CrimeClueItem): into a bag if aiming at the bags, or eaten.
@@ -421,6 +449,12 @@ func _physics_process(delta: float) -> void:
 			act("end_talk", talking_to)
 	elif not talking_to:
 		_talk_end_asked = false
+	if turning and not Input.is_action_pressed("use"):
+		if not _turn_end_asked:
+			_turn_end_asked = true
+			act("end_turn", turning, [self])
+	elif not turning:
+		_turn_end_asked = false
 	var wish := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	step(delta, wish, Input.is_action_pressed("run"), Input.is_action_pressed("crouch"),
 		Input.is_action_just_pressed("jump"))
@@ -428,7 +462,13 @@ func _physics_process(delta: float) -> void:
 
 ## Uses what the camera points at (a pot, a door...), if it can be used. Returns true if something was used.
 func use() -> bool:
-	if $Grabber.held is DonutBox and (_usable_target() is InterrogationSuspect or _usable_target() is PastryCook):
+	if $Grabber.held is DonutBox and (_usable_target() is InterrogationSuspect or _usable_target() is PastryCook
+			or _usable_target() is CircusClown):
+		act("use", _usable_target())
+		return true
+	# The circus's clowns take the sponge and the loaves from the hand too (escena-circo.md).
+	if ($Grabber.held is ClownSponge or $Grabber.held is ClownSign or $Grabber.held is Bread) \
+			and _usable_target() is CircusClown:
 		act("use", _usable_target())
 		return true
 	# A donut or a croissant for a hostage at the bank's party (robo-banco-rehenes.md, step 4).
@@ -445,8 +485,14 @@ func use() -> bool:
 		act("eat_donut", self, [$Grabber.held])
 		return true
 	if $Grabber.held is HookStick or $Grabber.held is LooseDonut or $Grabber.held is SamplePlate \
-			or $Grabber.held is FloorPolisher:
+			or $Grabber.held is FloorPolisher or $Grabber.held is Watermelon:
 		act("use", $Grabber.held)
+		return true
+	if $Grabber.held is VisitItem:
+		act("open_visit_item", self, [$Grabber.held])
+		return true
+	if $Grabber.held is FlashlightBattery:
+		act("change_battery", self, [$Grabber.held])
 		return true
 	if $Grabber.held is CrimeClueItem:
 		act("use_clue_in_hand", self, [$Grabber.held, _usable_target()])
@@ -561,7 +607,10 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 	_eating_left = maxf(_eating_left - delta, 0.0)
 	_mouth_full_left = maxf(_mouth_full_left - delta, 0.0)
 	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
-	var direction := (transform.basis * Vector3(wish.x, 0.0, wish.y)).normalized()
+	# The world's turn, so a cop standing in the moving prison bus (a child of it) walks where it looks.
+	var direction := (global_basis * Vector3(wish.x, 0.0, wish.y)).normalized()
+	direction.y = 0.0
+	direction = direction.normalized()
 	var speed := 0.0 if is_busy() else current_speed()
 	velocity.x = direction.x * speed + _knock.x
 	velocity.z = direction.z * speed + _knock.z
@@ -643,9 +692,9 @@ func is_disguised(look := "grandparent") -> bool:
 
 
 func current_speed() -> float:
-	var factor := (BatteringRam.SPEED_FACTOR if ram else 1.0) * slow_factor
+	var factor := (BatteringRam.SPEED_FACTOR if ram else 1.0) * slow_factor * wade
 	if wheelbarrow:
-		factor = Wheelbarrow.SPEED_FACTOR * slow_factor
+		factor = Wheelbarrow.SPEED_FACTOR * slow_factor * wade
 	if is_crouching:
 		return GameScale.CROUCH_SPEED * factor
 	if is_running:

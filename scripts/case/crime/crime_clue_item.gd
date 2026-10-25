@@ -4,7 +4,8 @@ extends Grabbable
 ## A clue the cops carry (escena-del-crimen.md, "Las pistas"): the plate of cream with a hair in it, the bitten slice
 ## and the stolen recipe. E with it in hand, aiming at the evidence bags (EvidenceBags), puts it in a bag: then it's
 ## found and safe. E anywhere else with food in hand eats it, and the clue is gone; the recipe gets ruined if coffee
-## (CoffeeCup) ends up on it. Every number here is (propuesta).
+## (CoffeeCup) ends up on it. At the circus (`look` "circus") the hair is a loose one on the pool's floor (not food; the
+## pool's tap washes it away, Circus.open_tap) and the bite is in a raw fish. Every number here is (propuesta).
 
 ## A coffee cup this close to the recipe wets it, in meters.
 const WET_REACH := 0.4
@@ -14,9 +15,13 @@ const SPONGE := Color(0.93, 0.78, 0.5)
 const PAPER := Color(0.95, 0.93, 0.85)
 const WET := Color(0.55, 0.4, 0.28)
 const BAG := Color(0.85, 0.9, 1.0, 0.4)
+const FISH := Color(0.75, 0.8, 0.85)
+const FISH_BELLY := Color(0.9, 0.9, 0.85)
 
 ## "hair", "bite" or "recipe".
 var kind := "hair"
+## "pastry" or "circus": what the clue looks like.
+var look := "pastry"
 var case: CrimeSceneCase
 ## The culprit's hair color, for the hair in the cream.
 var hair_color := Color.BLACK
@@ -34,6 +39,8 @@ func _ready() -> void:
 	collision_mask = 15
 	var size := {"hair": Vector3(0.32, 0.12, 0.32), "bite": Vector3(0.14, 0.1, 0.22),
 		"recipe": Vector3(0.21, 0.02, 0.3)}[kind] as Vector3
+	if look == "circus":
+		size = {"hair": Vector3(0.24, 0.03, 0.24), "bite": Vector3(0.14, 0.1, 0.42)}.get(kind, size)
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
 	box.size = size
@@ -41,6 +48,9 @@ func _ready() -> void:
 	shape.position.y = size.y / 2
 	add_child(shape)
 	var builder := PlaceBuilder.new(self)
+	if look == "circus":
+		_circus_look()
+		return
 	match kind:
 		"hair":
 			var plate := CylinderMesh.new()
@@ -68,12 +78,38 @@ func _ready() -> void:
 			_paper = get_child(get_child_count() - 1) as MeshInstance3D
 
 
+## At the circus: a few loose hairs, and a fish with a bite out of its middle.
+func _circus_look() -> void:
+	_eaten_part = Node3D.new()
+	add_child(_eaten_part)
+	var part := PlaceBuilder.new(_eaten_part)
+	match kind:
+		"hair":
+			var strand := BoxMesh.new()
+			strand.size = Vector3(0.012, 0.012, 0.22)
+			for i in 3:
+				part.mesh(strand, Vector3(-0.04 + i * 0.04, 0.01, 0), hair_color, Vector3(0, 0.3 * (i - 1), 0))
+		"bite":
+			part.mesh_box(Vector3(0, 0.045, 0), Vector3(0.11, 0.09, 0.32), FISH)
+			part.mesh_box(Vector3(0, 0.015, 0), Vector3(0.1, 0.03, 0.3), FISH_BELLY)
+			var tail := BoxMesh.new()
+			tail.size = Vector3(0.025, 0.09, 0.09)
+			part.mesh(tail, Vector3(0, 0.045, 0.19), FISH, Vector3(PI / 4, 0, 0))
+			# The bite: a dark notch in its side.
+			part.mesh_box(Vector3(0.05, 0.05, -0.02), Vector3(0.03, 0.06, 0.08), WET)
+
+
+## Food can be eaten (and the clue with it); the circus's loose hair can't.
+func is_food() -> bool:
+	return kind == "bite" or (kind == "hair" and look == "pastry")
+
+
 func held_prompt_key(cop: Cop) -> String:
 	if bagged:
 		return "PROMPT_BAGGED_CLUE"
 	if cop._usable_target() is EvidenceBags:
 		return "PROMPT_BAG_CLUE"
-	return "PROMPT_EAT_CLUE" if kind != "recipe" else "PROMPT_HOLDING"
+	return "PROMPT_EAT_CLUE" if is_food() else "PROMPT_HOLDING"
 
 
 ## E with it in hand: into a bag if the cop aims at the bags; eaten if it's food; nothing otherwise.
@@ -83,7 +119,7 @@ func used_in_hand(cop: Cop, aimed: Node) -> void:
 		return
 	if aimed is EvidenceBags:
 		bag(cop)
-	elif kind != "recipe":
+	elif is_food():
 		eat(cop)
 
 
@@ -106,7 +142,17 @@ func eat(cop: Cop) -> void:
 		return
 	spoiled = true
 	_eaten_part.visible = false
-	cop.show_hint("HINT_CLUE_EATEN_" + kind)
+	cop.show_hint("HINT_CLUE_EATEN_" + kind + ("_circus" if look == "circus" else ""))
+	if case:
+		case.ruin(kind)
+
+
+## The pool's water carried it away (the circus's loose hair).
+func wash() -> void:
+	if bagged or spoiled:
+		return
+	spoiled = true
+	_eaten_part.visible = false
 	if case:
 		case.ruin(kind)
 
