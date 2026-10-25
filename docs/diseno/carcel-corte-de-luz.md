@@ -95,3 +95,9 @@ están los dos fusibles sueltos, quién es El Chispa y sus frases. Así no hay d
   1 s después de que se va la luz. A oscuras se les ven los ojos, que parpadean. El que llega al portón se escapa y
   avisa a los policías. Esposado se queda quieto (llevarlo a la celda es el paso 4). Las rejas de las celdas ahora se
   abren hacia adentro de la celda para no tapar el pasillo. Capturas: `paso3-ojos.png` y `paso3-linterna.png`.
+- **Paso 4 (de vuelta a las celdas):** cada preso tiene su escolta (`BlackoutEscort`, la del dueño del allanamiento):
+  esposado, E lo lleva del brazo y, en cuanto pisa una celda cualquiera del pabellón, se queda ahí parado ("Bueno,
+  bueno. Pero déjenme la puerta abierta, ¿sí?") y avisa a los policías que cierren la reja. Con la reja cerrada no se
+  va más (`BlackoutPlan.count_locked_in`); si queda abierta, cuando se le terminan las esposas sale por donde entró y
+  se pone a dar vueltas por el comedor ("¿Puerta abierta? Gracias, me voy a dar una vuelta"). Soltado fuera de una
+  celda, sigue esposado un rato y después vuelve a lo suyo.
