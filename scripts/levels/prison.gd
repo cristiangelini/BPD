@@ -49,6 +49,15 @@ const BLOCK_GATE_X := -1.6
 const CORRIDOR := Vector2(-2.5, 0.5)
 const CELL_DEPTH := 3.5
 const CELLS := 4
+## How long each cell is along the block (the block's length shared by its 4 cells).
+const CELL_LENGTH := (CELLS_Z - BUILDING_BACK) / CELLS
+## Where the blackout's guards wait with their candles: in the yard, by the gate (propuesta).
+const GUARD_SPOTS: Array[Vector3] = [Vector3(-4.0, FLOOR_TOP, 15.5), Vector3(4.0, FLOOR_TOP, 15.5)]
+const GUARD_MODEL := preload("res://assets/models/npc_carcelero.glb")
+## The blackout's fuse board, on the back wall at the end of the block's corridor (x, z).
+const BOARD_AT := Vector2(-1.0, BUILDING_BACK + 0.12)
+## The punishment cell, for the blackout's escort (BlackoutEscort): the 8 cells of the block are 0 to 7.
+const PUNISHMENT_CELL := CELLS * 2
 ## The watchtower in the yard's west corner and the basketball hoop.
 const TOWER_AT := Vector3(-12.0, 0, 18.0)
 const TOWER_HEIGHT := 6.0
@@ -76,7 +85,37 @@ var riot: PrisonRiot
 var case: PrisonCase
 var _build: PlaceBuilder
 
-@onready var car: PatrolCar = $PatrolCar
+## Which prison case this is: "riot" (the canteen, carcel-motin.md), "transfer" (the bus from the station,
+## traslado-presos.md; --place=transfer), "blackout" (the power cut, carcel-corte-de-luz.md; --place=blackout) or
+## "visits" (the visiting day, carcel-visitas.md; --place=visits).
+@export var variant := "riot"
+## The transfer's bus (traslado-presos.md, step 1), parked by the station's door, and its inmates (step 2).
+var bus: PrisonBus
+var transfer: TransferPlan
+var tricks: TransferTricks
+## The chase on foot after whoever gets out of the bus (step 4).
+var escape: TransferEscape
+## The transfer case on top (step 5): the comisario's briefing, the count at the gate and the end of the shift.
+var transfer_case: TransferCase
+## The building's ceiling lamps, off in the blackout until the fuses go back in (carcel-corte-de-luz.md).
+var lamps: Array[OmniLight3D] = []
+var lights_on := true
+## The blackout's barred doors, one per cell of the block (4 on each side), closed by hand with E (step 2).
+var cell_doors: Array[CellDoor] = []
+## The guards shaking in the yard with their candles (step 2).
+var guards: Array[Node3D] = []
+## The inmates loose in the dark (step 3).
+var blackout: BlackoutPlan
+## The fuse board at the end of the block's corridor (step 5).
+var fuse_board: FuseBoard
+## The blackout case on top (step 6): the comisario's briefing, the planilla and the end of the shift.
+var blackout_case: BlackoutCase
+## The visiting day's line of visitors and the search table (carcel-visitas.md, step 2).
+var visits: VisitPlan
+## The visiting day case on top (step 6): the comisario's briefing, the planilla and the end of the shift.
+var visit_case: VisitCase
+
+@onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
 
 
@@ -91,6 +130,15 @@ func _ready() -> void:
 	_build_shell()
 	_build_canteen()
 	_build_cells()
+	if variant == "transfer":
+		_start_transfer()
+		return
+	if variant == "blackout":
+		_start_blackout()
+		return
+	if variant == "visits":
+		_start_visits()
+		return
 	riot = PrisonRiot.new()
 	riot.name = "Riot"
 	add_child(riot)
@@ -104,6 +152,176 @@ func _ready() -> void:
 	case.shift_screen = $ShiftScreen
 	add_child(case)
 	case.start(city.get("comisario"))
+
+
+## The transfer starts at the station: the bus waits on the street by its door, turned so its doors face the
+## sidewalk, and the cops in the guard room.
+func _start_transfer() -> void:
+	city.transform = CityLayout.anchor("prison")
+	bus = $Bus
+	bus.global_transform = (city.transform * CityLayout.parking("station")).rotated_local(Vector3.UP, PI) \
+		.translated_local(Vector3.UP * 0.05)
+	transfer = TransferPlan.new()
+	transfer.name = "Transfer"
+	add_child(transfer)
+	transfer.setup(bus, case_seed)
+	tricks = TransferTricks.new()
+	tricks.name = "Tricks"
+	add_child(tricks)
+	tricks.setup(transfer, city.transform * CityLayout.door_of("gas_station"), case_seed)
+	escape = TransferEscape.new()
+	escape.name = "Escape"
+	add_child(escape)
+	escape.setup(tricks, self, city, case_seed)
+	transfer_case = TransferCase.new()
+	transfer_case.name = "TransferCase"
+	transfer_case.prison = self
+	transfer_case.shift_screen = $ShiftScreen
+	add_child(transfer_case)
+	transfer_case.start(city.get("comisario"))
+	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+
+
+## The blackout (carcel-corte-de-luz.md, step 2): the power is cut, so the lamps are off, the block's gate and every
+## cell stand open (the locks are electric) and the guards wait in the yard with their candles. The cops start at the
+## station and drive here, as for the riot. Step 3: the inmates loose in the dark (BlackoutPlan).
+func _start_blackout() -> void:
+	set_lights(false)
+	block_gate.unlock()
+	block_gate.set_open(true)
+	for door in cell_doors:
+		door.set_open(true)
+	for at in GUARD_SPOTS:
+		_guard(at)
+	# The guards ran out of the kitchen with their candles: it's open, and one of the fuses is in there (step 5).
+	kitchen_door.locked = false
+	fuse_board = FuseBoard.new()
+	fuse_board.name = "FuseBoard"
+	fuse_board.position = Vector3(BOARD_AT.x, FLOOR_TOP + 1.4, BOARD_AT.y)
+	add_child(fuse_board)
+	blackout = BlackoutPlan.new()
+	blackout.name = "Blackout"
+	add_child(blackout)
+	blackout.setup(self, case_seed)
+	blackout_case = BlackoutCase.new()
+	blackout_case.name = "BlackoutCase"
+	blackout_case.prison = self
+	blackout_case.shift_screen = $ShiftScreen
+	add_child(blackout_case)
+	blackout_case.start(city.get("comisario"))
+	city.transform = CityLayout.anchor("prison")
+	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
+	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+
+
+## The visiting day (carcel-visitas.md, step 2): the visitors wait in line in the yard, from the search table by the
+## canteen's west door back toward the gate. The cops start at the station and drive here.
+func _start_visits() -> void:
+	visits = VisitPlan.new()
+	visits.name = "Visits"
+	add_child(visits)
+	visits.setup(self, case_seed)
+	visit_case = VisitCase.new()
+	visit_case.name = "VisitCase"
+	visit_case.prison = self
+	visit_case.shift_screen = $ShiftScreen
+	add_child(visit_case)
+	visit_case.start(city.get("comisario"))
+	city.transform = CityLayout.anchor("prison")
+	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
+	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+
+
+## Turns the building's lamps on or off (the blackout, and the light coming back in step 5).
+func set_lights(on: bool) -> void:
+	lights_on = on
+	for lamp in lamps:
+		lamp.visible = on
+
+
+## The barred door of a cell of the block (0 to 7) or of the punishment cell (PUNISHMENT_CELL).
+func cell_door(cell: int) -> CellDoor:
+	return punishment_door if cell == PUNISHMENT_CELL else cell_doors[cell]
+
+
+## Whether a world position is in the punishment cell.
+func in_punishment(at: Vector3) -> bool:
+	var local := global_transform.affine_inverse() * at
+	return PUNISHMENT.has_point(Vector2(local.x, local.z))
+
+
+## Whether a world position is in the cell block, behind the barred wall (corridor and cells).
+func in_block(at: Vector3) -> bool:
+	var local := global_transform.affine_inverse() * at
+	return absf(local.x) < BUILDING_X and local.z < CELLS_Z and local.z > BUILDING_BACK
+
+
+## The cell of the block a world position is in (0 to 3 on the west side, 4 to 7 on the east), or -1 in the corridor
+## or outside.
+func cell_at(at: Vector3) -> int:
+	var local := global_transform.affine_inverse() * at
+	if not in_block(at):
+		return -1
+	var row := clampi(int((CELLS_Z - local.z) / CELL_LENGTH), 0, CELLS - 1)
+	if local.x < CORRIDOR.x and local.x > CORRIDOR.x - CELL_DEPTH:
+		return row
+	if local.x > CORRIDOR.y and local.x < CORRIDOR.y + CELL_DEPTH:
+		return CELLS + row
+	return -1
+
+
+## A guard of the prison (the jailer's model) standing in the yard with a lit candle, shaking.
+func _guard(at: Vector3) -> void:
+	var guard: Node3D = GUARD_MODEL.instantiate()
+	guard.name = "Guard%d" % guards.size()
+	guard.position = at
+	add_child(guard)
+	guards.append(guard)
+	var candle := MeshInstance3D.new()
+	var wax := CylinderMesh.new()
+	wax.top_radius = 0.025
+	wax.bottom_radius = 0.025
+	wax.height = 0.16
+	candle.mesh = wax
+	var material := StandardMaterial3D.new()
+	material.albedo_color = Color(0.95, 0.93, 0.85)
+	candle.material_override = material
+	candle.position = Vector3(0.2, 1.05, 0.5)
+	guard.add_child(candle)
+	var flame := OmniLight3D.new()
+	flame.name = "Candle"
+	flame.light_color = Color(1.0, 0.7, 0.35)
+	flame.light_energy = 0.8
+	flame.omni_range = 3.0
+	flame.position = Vector3(0, 0.14, 0)
+	candle.add_child(flame)
+	var flicker := create_tween().set_loops()
+	flicker.tween_property(flame, "light_energy", 0.5, 0.15 + 0.05 * guards.size())
+	flicker.tween_property(flame, "light_energy", 0.9, 0.2)
+	var shake := create_tween().set_loops()
+	shake.tween_property(guard, "rotation:z", 0.03, 0.08)
+	shake.tween_property(guard, "rotation:z", -0.03, 0.08)
+
+
+## The blackout's cell fronts on one side of the corridor: bars on each side of a barred door in the middle of every
+## cell, the door hinged so that it swings into the cell and leaves the corridor free (CellDoor turns on its own Y, so
+## it hangs from a pivot turned along the front).
+func _cell_fronts(side: float, front: float, cell_z: float) -> void:
+	for i in CELLS:
+		var z0 := CELLS_Z + i * cell_z
+		var door_hi := z0 + cell_z / 2 + CellDoor.WIDTH / 2
+		var door_lo := door_hi - CellDoor.WIDTH
+		_bars("z", front, z0 + cell_z, door_lo, GameScale.DOOR_HEIGHT)
+		_bars("z", front, door_hi, z0, GameScale.DOOR_HEIGHT)
+		var pivot := Node3D.new()
+		pivot.name = "CellPivot%d" % cell_doors.size()
+		pivot.position = Vector3(front, FLOOR_TOP, door_lo if side < 0 else door_hi)
+		pivot.rotation.y = -PI / 2 if side < 0 else PI / 2
+		add_child(pivot)
+		var door := CellDoor.new()
+		door.name = "CellDoor"
+		pivot.add_child(door)
+		cell_doors.append(door)
 
 
 ## Whether a world position is inside the perimeter wall.
@@ -186,6 +404,7 @@ func _build_shell() -> void:
 			lamp.light_energy = 1.4
 			lamp.omni_range = 9.0
 			$Built.add_child(lamp)
+			lamps.append(lamp)
 	kitchen_door = preload("res://scenes/props/front_door.tscn").instantiate()
 	kitchen_door.name = "KitchenDoor"
 	kitchen_door.position = Vector3(KITCHEN_X, FLOOR_TOP, KITCHEN_DOOR_Z + GameScale.DOOR_WIDTH / 2)
@@ -243,7 +462,10 @@ func _build_cells() -> void:
 		var front := CORRIDOR.x if side < 0 else CORRIDOR.y
 		var back := front + side * CELL_DEPTH
 		_build.wall("z", back, BUILDING_BACK, CELLS_Z, 0, [], INSIDE)
-		_bars("z", front, BUILDING_BACK, CELLS_Z, GameScale.DOOR_HEIGHT)
+		if variant == "blackout":
+			_cell_fronts(side, front, cell_z)
+		else:
+			_bars("z", front, BUILDING_BACK, CELLS_Z, GameScale.DOOR_HEIGHT)
 		for i in CELLS:
 			var z0 := CELLS_Z + i * cell_z
 			if i > 0:

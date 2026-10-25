@@ -138,8 +138,104 @@ export function buildFoodCart() {
 	return b.build();
 }
 
+// The ball and chain an inmate off the transfer bus drags along the sidewalk (traslado-presos.md, step 4): an iron ball
+// behind them (-Z) on a chain from their right ankle. Origin on the ground at the inmate's feet; they face +Z.
+export function buildBallAndChain() {
+	const iron = mat('iron_ball', 0x2b2d31), chain = mat('chain', 0x8a8f96);
+	const b = new Builder('ball_and_chain');
+	b.add('ball', iron, new THREE.SphereGeometry(0.17, 12, 8), { pos: V(0.15, 0.17, -0.85) });
+	b.add('chain', chain, new THREE.TorusGeometry(0.06, 0.015, 5, 10), { pos: V(0.1, 0.1, 0), rot: [Math.PI / 2, 0, 0] });
+	for (let i = 0; i < 6; i++) {
+		const t = (i + 0.5) / 6;
+		b.add('chain', chain, new THREE.TorusGeometry(0.045, 0.012, 5, 8),
+			{ pos: V(0.1 + 0.05 * t, 0.04, -0.68 * t), rot: [0, i % 2 ? 0 : Math.PI / 2, 0] });
+	}
+	return b.build();
+}
+
+// The prisoner transfer bus (traslado-presos.md, step 1): an old grey bus with an orange stripe and barred windows.
+// Faces +Z, origin on the ground in the middle, 10 m long and 2.7 m wide. The driver sits front left (+X) behind the
+// windshield, with the front door on the right (-X) and a barred partition behind the cab with a wide gap for the aisle.
+// Past it, four rows of two inmate seats with a ring each by the window, and the back door at the end of the aisle.
+// The wheels are the car's (separate, so Godot spins them). Placeholder, not final art.
+export const BUS = { W: 2.7, F: 5.0, R: -5.0, FLOOR: 0.35, SILL: 1.25, WIN_TOP: 2.35, TOP: 2.95, CAB: 3.0,
+	DOOR: [3.3, 4.5], ROWS: [2.0, 0.6, -0.8, -2.2], SEAT_X: 1.0, BACK_DOOR: 0.6 };
+
+export function buildPrisonBus() {
+	const body = mat('bus_grey', 0x8a96a4), stripe = mat('bus_orange', 0xe0782a), black = mat('car_black', 0x23252b);
+	const bars = mat('bus_bars', 0x2a2d33), seat = mat('bus_seat', 0x6d5a3e), floor = mat('bus_floor', 0x5a5e66);
+	const lamp = mat('lamp', 0xfff3c0, { emissive: 0x806a20 }), tail = mat('tail', 0xd01828, { emissive: 0x500810 });
+	const ring = mat('bus_ring', 0xb8bec6), glass = mat('truck_glass', 0x2a3340), door = mat('bus_door', 0x5d6876);
+	const { W, F, R, FLOOR, SILL, WIN_TOP, TOP, CAB, DOOR, ROWS, SEAT_X, BACK_DOOR } = BUS;
+	const b = new Builder('prison_bus');
+	const box = (part, m, sx, sy, sz, x, y, z, rot) => b.add(part, m, new THREE.BoxGeometry(sx, sy, sz), { pos: V(x, y, z), rot });
+	box('body', black, W, 0.2, F - R, 0, FLOOR - 0.1, 0);
+	box('body', floor, W - 0.1, 0.02, F - R - 0.1, 0, FLOOR + 0.01, 0);
+	box('body', body, W, 0.06, F - R, 0, TOP, 0);
+	// The sides: the low panel up to the sill (with the front door's gap on the right), the band over the windows and
+	// a pillar between windows; the barred windows themselves.
+	const windows = [3.9, ...ROWS, -3.8];
+	for (const x of [-1, 1]) {
+		const wx = x * (W / 2 - 0.03);
+		const runs = x < 0 ? [[R, DOOR[0]], [DOOR[1], F]] : [[R, F]];
+		for (const [a, c] of runs) {
+			box('body', body, 0.06, SILL - FLOOR, c - a, wx, (SILL + FLOOR) / 2, (a + c) / 2);
+			box('body', stripe, 0.02, 0.18, c - a, x * (W / 2 + 0.005), SILL - 0.25, (a + c) / 2);
+		}
+		box('body', body, 0.06, TOP - WIN_TOP, F - R, wx, (TOP + WIN_TOP) / 2, 0);
+		for (let z = R; z <= F + 0.01; z += 0.7) {
+			if (x < 0 && z > DOOR[0] - 0.05 && z < DOOR[1] + 0.05) continue;
+			box('body', body, 0.07, WIN_TOP - SILL, 0.12, wx, (WIN_TOP + SILL) / 2, Math.min(z, F - 0.06));
+		}
+		for (const z of windows) {
+			if (x < 0 && z > DOOR[0] && z < DOOR[1]) continue;
+			for (let k = -3; k <= 3; k++) box('bars', bars, 0.03, WIN_TOP - SILL, 0.03, x * (W / 2 - 0.02), (WIN_TOP + SILL) / 2, z + k * 0.15);
+			box('bars', bars, 0.03, 0.04, 1.0, x * (W / 2 - 0.02), (WIN_TOP + SILL) / 2, z);
+		}
+		for (const z of [3.4, -3.0]) box('body', black, 0.1, 0.55, 1.0, x * (W / 2 + 0.01), FLOOR + 0.12, z);
+	}
+	// The front door, folded shut: two panels with a window each.
+	for (const k of [0, 1]) {
+		const z = DOOR[0] + 0.3 + k * 0.6;
+		box('doors', door, 0.05, SILL - FLOOR, 0.56, -(W / 2 - 0.03), (SILL + FLOOR) / 2, z);
+		box('doors', glass, 0.04, WIN_TOP - SILL - 0.1, 0.5, -(W / 2 - 0.03), (WIN_TOP + SILL) / 2, z);
+	}
+	// The front: low nose with lights and bumper, the open windshield's frame, the dashboard and the wheel.
+	box('body', body, W, 1.0 - FLOOR + 0.1, 0.1, 0, (1.1 + FLOOR) / 2, F - 0.05);
+	box('body', body, W, TOP - 2.6, 0.1, 0, (TOP + 2.6) / 2, F - 0.05);
+	for (const x of [-1, 1]) box('body', body, 0.12, 2.6 - 1.1, 0.1, x * (W / 2 - 0.06), 1.85, F - 0.05);
+	box('body', black, W + 0.06, 0.2, 0.16, 0, FLOOR + 0.05, F + 0.04);
+	for (const x of [-1, 1]) box('lights', lamp, 0.34, 0.16, 0.04, x * 0.9, FLOOR + 0.45, F + 0.01);
+	box('body', black, W - 0.1, 0.3, 0.45, 0, 1.0, F - 0.3);
+	b.add('body', black, new THREE.TorusGeometry(0.22, 0.03, 4, 12), { pos: V(0.75, 1.25, F - 0.6), rot: [-1.0, 0, 0] });
+	box('seats', seat, 0.6, 0.15, 0.55, 0.75, FLOOR + 0.4, 3.9);
+	box('seats', seat, 0.6, 0.7, 0.12, 0.75, FLOOR + 0.8, 3.55, [-0.15, 0, 0]);
+	// The partition behind the cab: bars from the sides to the aisle's gap.
+	for (const x of [-1, 1]) {
+		for (let k = 0; k < 5; k++) box('bars', bars, 0.04, TOP - FLOOR, 0.04, x * (0.82 + k * 0.12), (TOP + FLOOR) / 2, CAB);
+		box('bars', bars, 0.55, 0.05, 0.05, x * 1.075, 1.4, CAB);
+	}
+	// The inmates' seats: a bench and back per seat by each window, and its ring on the wall.
+	for (const z of ROWS) for (const x of [-1, 1]) {
+		box('seats', seat, 0.6, 0.12, 0.5, x * SEAT_X, FLOOR + 0.45, z);
+		box('seats', bars, 0.06, 0.4, 0.06, x * SEAT_X, FLOOR + 0.2, z);
+		box('seats', seat, 0.6, 0.65, 0.1, x * SEAT_X, FLOOR + 0.85, z - 0.3, [-0.12, 0, 0]);
+		b.add('rings', ring, new THREE.TorusGeometry(0.07, 0.015, 4, 10), { pos: V(x * (W / 2 - 0.08), FLOOR + 0.75, z + 0.1), rot: [0, Math.PI / 2, 0] });
+	}
+	// The back: the wall with the back door (a barred window in it), the bumper and the lights.
+	for (const x of [-1, 1]) box('body', body, W / 2 - BACK_DOOR, TOP - FLOOR, 0.08, x * (W / 2 + BACK_DOOR) / 2, (TOP + FLOOR) / 2, R + 0.04);
+	box('body', body, BACK_DOOR * 2, TOP - 2.45, 0.08, 0, (TOP + 2.45) / 2, R + 0.04);
+	box('doors', door, BACK_DOOR * 2 - 0.04, 2.45 - FLOOR, 0.06, 0, (2.45 + FLOOR) / 2, R + 0.03);
+	for (let k = -2; k <= 2; k++) box('doors', bars, 0.03, 0.6, 0.03, k * 0.15, 1.85, R - 0.01);
+	box('body', black, W + 0.06, 0.2, 0.16, 0, FLOOR + 0.05, R - 0.04);
+	for (const x of [-1, 1]) box('lights', tail, 0.3, 0.16, 0.04, x * 0.95, FLOOR + 0.5, R - 0.02);
+	return b.build();
+}
+
 export const models = {
+	prison_bus: buildPrisonBus,
 	food_cart: buildFoodCart,
+	ball_and_chain: buildBallAndChain,
 	prison_tray: buildTray,
 	prison_mash: buildMash,
 	prison_jelly: buildJelly,
@@ -154,9 +250,22 @@ export const models = {
 };
 
 export const views = {
+	prison_bus: {
+		items: [{ name: 'prison_bus', pos: [0, 0, 0] }, ...[[-1.2, 3.4], [1.2, 3.4], [-1.2, -3.0], [1.2, -3.0]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] })),
+			{ name: 'npc_preso', pos: [-1.0, 0.8, 0.6], rotY: 0, scale: 0.85 }, { name: 'cop_0', pos: [-2.6, 0, 3.9], rotY: -1.2 }],
+		cam: { pos: [-10.0, 5.0, 9.0], target: [0, 1.3, 0], fov: 40 },
+	},
+	prison_bus_inside: {
+		items: [{ name: 'prison_bus', pos: [0, 0, 0] }, { name: 'npc_preso', pos: [1.0, 0.8, 0.6], scale: 0.85 }, { name: 'npc_preso', pos: [-1.0, 0.8, -0.8], scale: 0.85 }],
+		cam: { pos: [0, 2.2, -4.6], target: [0, 1.2, 3.0], fov: 70 },
+	},
 	food_cart: {
 		items: [{ name: 'food_cart', pos: [0, 0, 0], rotY: 0.9 }, { name: 'npc_preso', pos: [-0.65, 0.3, -0.55], rotY: 0.9, scale: 0.85 }],
 		cam: { pos: [2.2, 1.6, 2.4], target: [0, 0.7, 0], fov: 40 },
+	},
+	ball_and_chain: {
+		items: [{ name: 'ball_and_chain', pos: [0, 0, 0], rotY: 0.9 }, { name: 'npc_preso', pos: [0, 0, 0], rotY: 0.9, scale: 0.85 }],
+		cam: { pos: [2.4, 1.4, 1.4], target: [0, 0.6, -0.3], fov: 40 },
 	},
 	prison_food: {
 		items: [{ name: 'prison_mash', pos: [-0.24, 0.04, 0] }, { name: 'prison_jelly', pos: [-0.08, 0.03, 0] },
