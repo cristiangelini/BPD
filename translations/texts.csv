@@ -2275,3 +2275,10 @@ OBJ_TALENT_VOTES,Números votados: %d de %d,Acts voted: %d of %d,Números votado
 OBJ_TALENT_ESCAPED,Presos escapados: %d (con %d se pierde el caso),Inmates escaped: %d (at %d the case is lost),Presos fugidos: %d (com %d o caso está perdido)
 OBJ_TALENT_CAUGHT,Extra: presos en la celda de castigo: %d,Extra: inmates in the punishment cell: %d,Extra: presos na cela de castigo: %d
 CASE_FAILED_TALENT_ESCAPED,Se escaparon 3 presos durante el show. Caso perdido.,3 inmates got away during the show. Case lost.,3 presos fugiram durante o show. Caso perdido.
+VIP_RULO_IDLE_1,¿Esta es la celda VIP? Le falta brillo.,This is the VIP cell? It needs more sparkle.,Esta é a cela VIP? Falta brilho.
+VIP_RULO_IDLE_2,"Mis fans no pueden vivir sin mí, ¿saben?","My fans can't live without me, you know?","Meus fãs não vivem sem mim, sabia?"
+VIP_RULO_IDLE_3,"La-la-laaa... Perdón, es que no puedo dejar de cantar.","La-la-laaa... Sorry, I just can't stop singing.","Lá-lá-lááá... Desculpa, não consigo parar de cantar."
+VIP_RULO_IDLE_4,Un día preso por estacionar. ¡Qué injusticia más dramática!,A whole day locked up for parking. What a dramatic injustice!,Um dia preso por estacionar. Que injustiça mais dramática!
+VIP_FAN_CHANT_1,"¡RULO, RULO!","RULO, RULO!","RULO, RULO!"
+VIP_FAN_CHANT_2,"¡TE AMAMOS, RULO!","WE LOVE YOU, RULO!","TE AMAMOS, RULO!"
+VIP_FAN_CHANT_3,¡LIBERTAD PARA RULO!,FREE RULO!,LIBERDADE PARA O RULO!

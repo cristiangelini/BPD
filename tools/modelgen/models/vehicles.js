@@ -231,6 +231,31 @@ const TRAFFIC_PAINTS = [0xf2f2ee, 0xe8c547, 0x5b9a5a, 0x7aa6d8];
 const trafficCar = (i) => () => buildSedan('traffic_car_' + i, mat('traffic_paint_' + i, TRAFFIC_PAINTS[i]),
 	mat('lamp', 0xf4f0d0), mat('tail', 0xc0202a));
 
+// Rulo Brillantina's pink limo (carcel-vip.md), waiting by the prison gate: a sedan stretched long, with a star on
+// each door.
+function buildLimo() {
+	const paint = mat('limo_paint', 0xff69b4), tint = mat('getaway_glass', 0x14181e), chrome = mat('chrome', 0x9aa0a8);
+	const CW = 2.1, F = 3.8, R = -3.8, HOOD = 0.95, CABIN_F = 2.2, CABIN_R = -2.9, TOP = 1.5;
+	const b = new Builder('limo');
+	box(b, 'body', black, CW, 0.2, F - R, 0, FLOOR - 0.1, 0);
+	box(b, 'body', paint, CW, HOOD - FLOOR, F - R, 0, (HOOD + FLOOR) / 2, 0);
+	box(b, 'body', tint, CW - 0.16, TOP - HOOD - 0.06, CABIN_F - CABIN_R, 0, (TOP + HOOD) / 2 - 0.03, (CABIN_F + CABIN_R) / 2);
+	box(b, 'body', paint, CW - 0.1, 0.07, CABIN_F - CABIN_R - 0.2, 0, TOP, (CABIN_F + CABIN_R) / 2);
+	for (const x of [-1, 1]) {
+		for (const z of [CABIN_F - 0.1, 0.4, -1.2, CABIN_R + 0.1]) {
+			box(b, 'frame', paint, 0.07, TOP - HOOD, 0.1, x * (CW / 2 - 0.08), (TOP + HOOD) / 2, z);
+		}
+		for (const z of [1.0, -1.8]) box(b, 'body', mat('star_gold', 0xf2c230), 0.02, 0.22, 0.22, x * (CW / 2 + 0.01), HOOD - 0.3, z);
+		box(b, 'body', chrome, 0.02, 0.04, F - R - 1.0, x * (CW / 2 + 0.005), HOOD - 0.1, 0);
+		box(b, 'lights', mat('lamp', 0xf4f0d0), 0.34, 0.12, 0.04, x * 0.7, FLOOR + 0.4, F + 0.01);
+		box(b, 'lights', mat('tail', 0xc0202a), 0.34, 0.12, 0.04, x * 0.7, FLOOR + 0.4, R - 0.01);
+		for (const z of [3.0, -3.0]) box(b, 'body', black, 0.1, 0.5, 0.95, x * (CW / 2 + 0.01), FLOOR + 0.1, z);
+	}
+	box(b, 'body', chrome, CW + 0.06, 0.16, 0.14, 0, FLOOR + 0.05, F + 0.04);
+	box(b, 'body', chrome, CW + 0.06, 0.16, 0.14, 0, FLOOR + 0.05, R - 0.04);
+	return b.build();
+}
+
 function buildSedan(name, paint, lampOff, tailOff) {
 	const tint = mat('getaway_glass', 0x14181e), chrome = mat('chrome', 0x9aa0a8);
 	const CW = 2.1, F = 2.3, R = -2.3, HOOD = 0.95, CABIN_F = 0.9, CABIN_R = -1.2, TOP = 1.55;
@@ -454,7 +479,7 @@ export function buildMotorWalker() {
 
 export const models = { patrol_car: buildPatrolCar, old_patrol_car: buildOldPatrolCar, car_wheel: buildCarWheel, ice_cream_truck: buildIceCreamTruck,
 	moving_truck: buildMovingTruck, falling_sofa: buildFallingSofa, falling_wardrobe: buildFallingWardrobe, falling_lamp: buildFallingLamp,
-	falling_box: buildFallingBox, school_bus: buildSchoolBus, getaway_car: buildGetawayCar, manager_car: buildManagerCar, sports_car: buildSportsCar, tow_truck: buildTowTruck, golf_cart: buildGolfCart,
+	falling_box: buildFallingBox, school_bus: buildSchoolBus, getaway_car: buildGetawayCar, manager_car: buildManagerCar, limo: buildLimo, sports_car: buildSportsCar, tow_truck: buildTowTruck, golf_cart: buildGolfCart,
 	traffic_car_0: trafficCar(0), traffic_car_1: trafficCar(1), traffic_car_2: trafficCar(2), traffic_car_3: trafficCar(3),
 	delivery_scooter: buildDeliveryScooter, wheelchair: buildWheelchair, delivery_bike: buildDeliveryBike,
 	motor_walker: buildMotorWalker };

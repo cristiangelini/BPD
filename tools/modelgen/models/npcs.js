@@ -354,6 +354,35 @@ const NPCS = {
 		b.add('props', C('iron', 0x30343a), ellipsoid(0.13, 0.13, 0.13, 8, 6), { pos: V(0.3, 0.13, 0.55) });
 		limb(b, 'props', C('iron', 0x30343a), V(0.2, 0.08, 0.2), V(0.3, 0.13, 0.45), 0.015, 4);
 	},
+	// Rulo Brillantina (carcel-vip.md): the orange jumpsuit under a shiny pink jacket, sunglasses, a black quiff and a
+	// gold chain; the most famous inmate in the city.
+	rulo(b) {
+		const orange = C('jumpsuit', 0xff7a1a), pink = C('rulo_jacket', 0xff4fb8);
+		pearBody(b, SKIN.arena, { shirt: orange, onePiece: true, belted: false });
+		b.add('body', pink, loft([
+			{ y: 0.55, rx: 0.47, rz: 0.42 }, { y: 0.8, rx: 0.38, rz: 0.34 }, { y: 1.05, rx: 0.26, rz: 0.24 },
+		], 10), {});
+		for (const s of [-1, 1]) b.add('body', gold, new THREE.BoxGeometry(0.03, 0.03, 0.03), { pos: V(s * 0.12, 0.9, 0.33) });
+		b.add('body', gold, new THREE.TorusGeometry(0.13, 0.014, 4, 14), { pos: V(0, 1.04, 0.1), rot: [1.25, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		sunglasses(b);
+		mouth(b, { smile: true });
+		const hair = C('hair_black', 0x15121a);
+		hairCap(b, hair, { y: 1.42, sy: 0.6 });
+		b.add('head', hair, ellipsoid(0.14, 0.08, 0.15, 8, 5), { pos: V(0, 1.54, 0.18), rot: [-0.7, 0, 0] });
+	},
+	// A fan of Rulo's (carcel-vip.md): a pink "RULO" t-shirt, jeans and a cap, at the gate with a sign.
+	fan(b) {
+		const pink = C('fan_shirt', 0xff8fcf);
+		pearBody(b, SKIN.celeste, { shirt: pink, pants: C('jeans', 0x3a5a8a) });
+		b.add('body', white, new THREE.BoxGeometry(0.22, 0.08, 0.02), { pos: V(0, 0.82, 0.33), rot: [-0.35, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { open: true });
+		hairCap(b, C('hair_brown', 0x4a2e1a), { y: 1.4, sy: 0.55 });
+		b.add('props', C('sign_stick', 0x8a6a40), new THREE.CylinderGeometry(0.015, 0.015, 0.9, 5), { pos: V(0.4, 1.2, 0.2) });
+		b.add('props', white, new THREE.BoxGeometry(0.5, 0.32, 0.02), { pos: V(0.4, 1.75, 0.2) });
+		b.add('props', pink, new THREE.BoxGeometry(0.4, 0.08, 0.025), { pos: V(0.4, 1.75, 0.21) });
+	},
 	// Abogado: beige suit, bow tie, slicked hair and a fat briefcase full of papers.
 	abogado(b) {
 		const suit = C('beige_suit', 0xc8b48a);
