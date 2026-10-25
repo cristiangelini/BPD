@@ -1640,3 +1640,7 @@ OBJ_MARKET_WENT_HOME,"Se fue a su casa: caso perdido.","He went home: case lost.
 CHASE_VENDOR_LINE_1,"¡Llévense una calabaza, que yo invito!","Have a pumpkin, it's on me!","Levem uma abóbora, é por minha conta!"
 CHASE_VENDOR_LINE_2,"¡Ese diputado nunca me pagó las aceitunas!","That deputy never paid me for the olives!","Esse deputado nunca me pagou as azeitonas!"
 CHASE_VENDOR_LINE_3,"Está bien, me rindo. Pero la sandía no la suelto.","Fine, I give up. But I'm not letting go of the watermelon.","Tá bom, eu me rendo. Mas a melancia eu não largo."
+HINT_JAILED_TUNNEL,"El guardia está despierto y tiene buen oído. El piso al lado de la cucheta está flojo, y en la bandeja hay cucharas...","The guard is awake and has good ears. The floor by the bunk is loose, and there are spoons on the tray...","O guarda está acordado e tem bom ouvido. O chão do lado do beliche está solto, e tem colheres na bandeja..."
+PROMPT_HOLDING_SPOON,"E en el pozo: cavar","E on the hole: dig","E no buraco: cavar"
+PROMPT_DIG_TUNNEL,"E: cavar una cucharada","E: dig a scoop","E: cavar uma colherada"
+PROMPT_NEED_SPOON,"Hace falta una cuchara para cavar","You need a spoon to dig","Precisa de uma colher pra cavar"
