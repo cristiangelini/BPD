@@ -341,6 +341,8 @@ func _ready() -> void:
 	phone.deaf = grandpas
 	if town:
 		phone.voice = "CONEJO"
+	elif blood:
+		phone.voice = "CONDE"
 	car.add_child(phone)
 	car.add_collision_exception_with(phone)
 	if town:
@@ -841,6 +843,9 @@ func _add_van() -> void:
 	shape.position.y = VAN_SIZE.y / 2 + 0.2
 	van.add_child(shape)
 	van.add_child(VAN_MODEL.instantiate())
+	if blood:
+		# The blood bank's gang came in a black hearse, a coffin on its roof (robo-banco-sangre.md, step 4).
+		BankBlood.hearse(van)
 	for at in VAN_WHEELS:
 		var wheel: Node3D = WHEEL_MODEL.instantiate()
 		wheel.position = at
@@ -1317,9 +1322,11 @@ func start_getaway(kind: String) -> void:
 		manager.process_mode = Node.PROCESS_MODE_DISABLED
 	chase = ChaseCase.begin(self, kind, at, car, city, case_seed)
 	chase.who = "manager" if kind == SuspectCar.MANAGER_CAR else "oso_grandpa" if grandpas \
-		else "conejo" if town else "oso"
+		else "conejo" if town else "conde" if blood else "oso"
 	if grandpas or (town and kind == SuspectCar.BEAR_ON_FOOT):
 		chase.truck.set_rider(ChaseSuspect.model_for(chase.who))
+	if blood and kind == SuspectCar.ROBBERS_VAN:
+		BankBlood.hearse(chase.truck)
 	chase.follower = follower
 	if case:
 		chase.online = case.online
@@ -1334,7 +1341,8 @@ func start_getaway(kind: String) -> void:
 		var hint: String = {SuspectCar.ROBBERS_VAN: "HINT_ESCAPE_oso", SuspectCar.WALKER: "HINT_ESCAPE_oso_WALKER",
 			SuspectCar.MANAGER_CAR: "HINT_ESCAPE_manager", SuspectCar.TOY_HELICOPTER: "HINT_ESCAPE_oso_AIR"}.get(kind,
 			"HINT_ESCAPE_oso_FOOT")
-		(cop as Cop).show_hint(hint.replace("_oso", "_conejo") if town else hint)
+		(cop as Cop).show_hint(hint.replace("_oso", "_conejo") if town else hint.replace("_oso", "_conde") if blood \
+			else hint)
 
 
 func _on_getaway_ended(was_caught: bool) -> void:

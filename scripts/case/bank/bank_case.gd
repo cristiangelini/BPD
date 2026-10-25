@@ -23,7 +23,10 @@ extends Node
 ## water gets to the top pays EARLY_VALVE more. In the town bank (robo-banco-pueblo.md, step 4, decision 127) the radio
 ## asks for quiet, the planilla asks to get don Plácido out and to cuff El Conejo and shows his nerves; don Plácido
 ## still inside when El Conejo gets away costs PER_CLERK, carried out without ever waking up pays CLERK_ASLEEP more,
-## and El Conejo goes to the next shift's interrogation. Every number here is (propuesta).
+## and El Conejo goes to the next shift's interrogation. In the blood bank (robo-banco-sangre.md, step 4, decision 128)
+## the radio warns about the vampires and the dark, El Conde answers the phone, the planilla counts the blood bags
+## still cold, each spoiled bag costs PER_BAG like a taken one, all of them cold at the end pay ALL_BAGS more, and El
+## Conde goes to the next shift's interrogation. Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 3.0
@@ -38,11 +41,13 @@ const EARLY_VALVE := 100
 const NEPHEW := 100
 const PER_CLERK := 300
 const CLERK_ASLEEP := 100
+const ALL_BAGS := 100
 const QUOTA := 400
 const STORY := "bank_robbery"
 const SLIPS := "BEAR_SLIP_%d"
 const MANAGER_SLIPS := "MANAGER_SLIP_%d"
 const CONEJO_SLIPS := "CONEJO_SLIP_%d"
+const CONDE_SLIPS := "CONDE_SLIP_%d"
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 
 var bank: BankLevel
@@ -138,6 +143,8 @@ func start() -> void:
 func brief() -> PackedStringArray:
 	if bank.town:
 		return PackedStringArray(["BRIEF_BANK_TOWN_A", "BRIEF_BANK_TOWN_B", "BRIEF_BANK_TOWN_C"])
+	if bank.blood:
+		return PackedStringArray(["BRIEF_BANK_BLOOD_A", "BRIEF_BANK_BLOOD_B", "BRIEF_BANK_BLOOD_C"])
 	if bank.roof:
 		return PackedStringArray(["BRIEF_BANK_ROOF_A", "BRIEF_BANK_ROOF_B", "BRIEF_BANK_ROOF_C"])
 	if bank.water:
@@ -246,7 +253,8 @@ func _jail_boss() -> void:
 	if boss_jailed or shift_over:
 		return
 	boss_jailed = true
-	_hint_all("HINT_BANK_CONEJO_JAILED" if bank.town else "HINT_BANK_OSO_JAILED")
+	_hint_all("HINT_BANK_CONEJO_JAILED" if bank.town else "HINT_BANK_CONDE_JAILED" if bank.blood
+		else "HINT_BANK_OSO_JAILED")
 	checklist.show_rows(rows())
 
 
@@ -269,15 +277,22 @@ func hostages_left() -> int:
 ## What the robbery cost: the hostages left inside, the sacks the robbers took and the true hostages cuffed.
 func missed() -> int:
 	return PER_HOSTAGE * hostages_left() + PER_BAG * bank.bags_taken + PER_WRONG_CUFF * wrong_cuffs \
-		+ (PER_WRONG_MANAGER if wrong_manager else 0) + (PER_CLERK if clerk_left else 0)
+		+ (PER_WRONG_MANAGER if wrong_manager else 0) + (PER_CLERK if clerk_left else 0) \
+		+ (PER_BAG * bank.blood_bank.bags_spoiled() if bank.blood else 0)
 
 
 func report() -> Dictionary:
 	var bonus := PER_HELP * helps() + (EARLY_MANAGER if manager_early else 0) \
 		+ (EARLY_VALVE if bank.water and bank.water.shut_early() else 0) \
-		+ (NEPHEW if bank.roof and bank.nephew.caught else 0) + (CLERK_ASLEEP if clerk_slept() else 0)
+		+ (NEPHEW if bank.roof and bank.nephew.caught else 0) + (CLERK_ASLEEP if clerk_slept() else 0) \
+		+ (ALL_BAGS if all_bags_cold() else 0)
 	var salary := maxi(SALARY - missed() + bonus, 0) if solved() else 0
 	return {"salary": salary, "evidence": 0, "fines": 0, "total": salary, "quota": QUOTA, "approved": salary >= QUOTA}
+
+
+## The blood bank: all of its bags cold (in the fridge or the cooler), none taken or spoiled.
+func all_bags_cold() -> bool:
+	return bank.blood and bank.blood_bank.bags_cold() == BankBlood.BAGS
 
 
 ## The town bank: don Plácido carried out without ever waking up.
@@ -292,8 +307,9 @@ func custody() -> Dictionary:
 		return {}
 	var slips: Array[String] = []
 	for i in InterrogationCase.OWNER_SLIPS.size():
-		slips.append((MANAGER_SLIPS if bank.manager.boss else CONEJO_SLIPS if bank.town else SLIPS) % (i + 1))
-	var owner := "manager" if bank.manager.boss else "conejo" if bank.town else "oso"
+		slips.append((MANAGER_SLIPS if bank.manager.boss else CONEJO_SLIPS if bank.town else CONDE_SLIPS if bank.blood
+			else SLIPS) % (i + 1))
+	var owner := "manager" if bank.manager.boss else "conejo" if bank.town else "conde" if bank.blood else "oso"
 	return {"owner": owner, "story": STORY, "slips": slips, "missed": missed()}
 
 
@@ -454,6 +470,10 @@ func rows() -> Array[Dictionary]:
 		list.append(_row("OBJ_BANK_CUFF_CONEJO", boss_jailed))
 		if bank.chase:
 			list.append(_row("OBJ_BANK_CATCH_CONEJO", boss_jailed))
+	elif bank.blood:
+		list.append(_row("OBJ_BANK_CUFF_CONDE", boss_jailed))
+		if bank.chase:
+			list.append(_row("OBJ_BANK_CATCH_CONDE", boss_jailed))
 	elif bank.manager.boss:
 		list.append(_row("OBJ_BANK_CUFF_BOSS", manager_jailed))
 		if bank.chase:
@@ -462,7 +482,8 @@ func rows() -> Array[Dictionary]:
 		list.append(_row("OBJ_BANK_CUFF_OSO", boss_jailed))
 		if bank.chase:
 			list.append(_row("OBJ_BANK_CATCH_OSO", boss_jailed))
-	var back := "OBJ_BANK_BACK_MANAGER" if bank.manager.boss else "OBJ_BANK_BACK_CONEJO" if bank.town else "OBJ_BANK_BACK"
+	var back := "OBJ_BANK_BACK_MANAGER" if bank.manager.boss else "OBJ_BANK_BACK_CONEJO" if bank.town \
+		else "OBJ_BANK_BACK_CONDE" if bank.blood else "OBJ_BANK_BACK"
 	list.append(_row(back, shift_over and solved()))
 	var drill := "OBJ_BANK_VAULT_OPEN" if bank.drill.is_open else "OBJ_BANK_DRILL"
 	list.append({"text": drill, "done": false, "optional": false, "status": true})
@@ -490,6 +511,10 @@ func rows() -> Array[Dictionary]:
 		list.append(_row("OBJ_BANK_CLERK_ASLEEP", clerk_slept()))
 		list.append({"text": tr("OBJ_BANK_NERVES") % roundi(bank.nerves.nerves), "done": false, "optional": false,
 			"status": true})
+	if bank.blood:
+		list.append(_row("OBJ_BANK_ALL_BAGS", all_bags_cold()))
+		list.append({"text": tr("OBJ_BANK_BLOOD_BAGS") % [bank.blood_bank.bags_cold(), BankBlood.BAGS], "done": false,
+			"optional": false, "status": true})
 	if bank.party:
 		list.append({"text": "OBJ_BANK_FANS", "done": false, "optional": false, "status": true})
 		if bank.croissant_tray:

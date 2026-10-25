@@ -78,6 +78,8 @@ const SUSPECT_MODELS := {
 	"owner_oso": "res://assets/models/npc_ladron_oso.glb",
 	# El Conejo, who robbed the town bank alone (robo-banco-pueblo.md).
 	"owner_conejo": "res://assets/models/npc_ladron_conejo.glb",
+	# El Conde, El Oso dressed as a vampire for the blood bank (robo-banco-sangre.md).
+	"owner_conde": "res://assets/models/npc_ladron_oso.glb",
 	# The bank's manager who was the gang's boss (robo-banco-gerente.md).
 	"owner_manager": "res://assets/models/npc_gerente.glb",
 }

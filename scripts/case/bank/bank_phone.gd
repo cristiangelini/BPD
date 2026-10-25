@@ -42,8 +42,8 @@ var left := 0.0
 var sung := 0.0
 ## The grandpa Oso, who has to hear it twice; whether this request's first "yes" was already said.
 var deaf := false
-## Who answers: El Oso ("BEAR"), or El Conejo in the town bank ("CONEJO", robo-banco-pueblo.md, step 4), with his
-## own words for the same requests.
+## Who answers: El Oso ("BEAR"), El Conejo in the town bank ("CONEJO", robo-banco-pueblo.md, step 4) or El Conde in
+## the blood bank ("CONDE", robo-banco-sangre.md, step 4), with his own words for the same requests.
 var voice := "BEAR"
 var said_once := false
 ## El Oso hung up for good: his real boss, the bank's manager, was caught (robo-banco-gerente.md, step 3).

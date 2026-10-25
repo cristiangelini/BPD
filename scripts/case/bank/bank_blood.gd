@@ -155,6 +155,28 @@ static func in_beam(beam: SpotLight3D, robber: BankRobber) -> bool:
 	return beam.get_world_3d().direct_space_state.intersect_ray(ray).is_empty()
 
 
+## The gang's van as a black hearse with a coffin on its roof (the bank's parked van, or the chase's): everything
+## under `root` but the riders goes black.
+static func hearse(root: Node3D) -> void:
+	var black := StandardMaterial3D.new()
+	black.albedo_color = Color(0.22, 0.2, 0.26)
+	black.roughness = 0.35
+	for mesh: Node in root.find_children("*", "MeshInstance3D", true, false):
+		var rider := false
+		for name_: String in ["Rider", "Rider2"]:
+			var node := root.get_node_or_null(name_)
+			if node and (node == mesh or node.is_ancestor_of(mesh)):
+				rider = true
+		if not rider:
+			(mesh as MeshInstance3D).material_override = black
+	var coffin := CopTool.piece(CopTool.box(Vector3(0.75, 0.4, 2.0)), Color(0.6, 0.35, 0.16), Vector3(0, 2.75, -0.8))
+	coffin.name = "Coffin"
+	root.add_child(coffin)
+	coffin.add_child(CopTool.piece(CopTool.box(Vector3(0.8, 0.08, 2.05)), Color(0.45, 0.25, 0.1), Vector3(0, 0.22, 0)))
+	coffin.add_child(CopTool.piece(CopTool.box(Vector3(0.3, 0.04, 0.06)), Color(0.85, 0.7, 0.3), Vector3(0, 0.27, -0.3)))
+	coffin.add_child(CopTool.piece(CopTool.box(Vector3(0.06, 0.04, 0.5)), Color(0.85, 0.7, 0.3), Vector3(0, 0.27, -0.3)))
+
+
 ## Whether a world position is cold: in the fridge or in the patrol car's cooler.
 func is_cold(at: Vector3) -> bool:
 	var inside := bank.global_transform.affine_inverse() * at

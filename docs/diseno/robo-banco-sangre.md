@@ -102,3 +102,13 @@ nuevo: la capa y los colmillos de la banda, la caja de fusibles, la heladera, la
   corre con ella a la camioneta. Si lo esposan en el camino, la bolsa se cae al piso. Cuando El Conde llega a la
   camioneta, arranca la persecución de siempre (la carroza es del paso 4). Capturas en
   `/mnt/project-files/sangre/paso3-*.png`.
+- **Paso 4 (el caso):** la radio avisa que roban el Banco de Sangre a oscuras, que dicen que son vampiros (pero son
+  disfraces, ¿no?) y que no se eche a perder ni una bolsa. El que atiende el teléfono es El Conde: pide lo mismo de
+  siempre (donas, que le canten el feliz cumpleaños, que alejen el patrullero) con sus palabras ("donas rellenas de
+  mermelada roja", "hace trescientos años que nadie me canta"). La planilla pide esposar a El Conde, atraparlo si se
+  escapa y volver con él a la comisaría, y cuenta las bolsas frías ("Bolsas de sangre frías: 4 de 6"). Cada bolsa
+  echada a perder cuesta lo mismo que una que se llevan (50), y si al final están las 6 frías (en la heladera o en la
+  heladerita) se pagan +100. La camioneta es una carroza negra con un ataúd de madera en el techo, y en la persecución
+  se escapa El Conde en la carroza. En el interrogatorio del turno siguiente El Conde confiesa que era "una fiesta de
+  disfraces" y se le escapan tres frases ("...En un ataúd, pero duermo", "solo tomo jugo de tomate"). Capturas en
+  `/mnt/project-files/sangre/paso4-*.png`.
