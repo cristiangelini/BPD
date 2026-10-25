@@ -4,11 +4,17 @@ extends CharacterBody3D
 ## A visitor on the prison's visiting day (carcel-visitas.md, step 2): a grandma, a cousin, a girlfriend... waiting in
 ## line in the yard with something in their hands (VisitItem). At the head of the line they walk to the search table,
 ## leave it there and wait for a cop to let them in (E); nobody comes in WAIT_ALONE seconds and they go in alone. Going
-## in they take back what they brought, if it's still on the table, and walk to their seat in the canteen. Every
-## number here is (propuesta).
+## in they take back what they brought, if it's still on the table and wasn't opened, and walk to their seat in the
+## canteen. Step 3: at the table, R and staying close FRISK_TIME seconds frisks them (what's in a pocket falls on the
+## table); opening what they brought (VisitItem.use) finds what's inside, or breaks it and they cry. Every number here
+## is (propuesta).
 
 signal at_table(visitor: PrisonVisitor)
 signal went_in(visitor: PrisonVisitor)
+## Something they hid was found (frisked, or opened in a cop's hands).
+signal found(visitor: PrisonVisitor, contraband: Contraband)
+## What they brought was opened with nothing in it.
+signal cried(visitor: PrisonVisitor)
 
 enum State { QUEUE, TABLE, IN, SEATED }
 
@@ -25,6 +31,11 @@ const SAY_TIME := 3.0
 const HANDS := Vector3(0, 0.85, -0.42)
 ## Seated, they sit on the bench this much lower (PrisonInmate.SIT_DROP).
 const SIT_DROP := 0.35
+## Frisking (R): the cop stays this close for this long.
+const FRISK_TIME := 2.0
+const FRISK_REACH := 2.4
+const CAUGHT_LINES := 3
+const CRY_LINES := 3
 
 var look := 0
 var item_kind := VisitItem.Kind.CAKE
@@ -40,6 +51,12 @@ var item: VisitItem
 var route: Array[Vector2] = []
 ## A guest's copy (step 7): the host walks them.
 var follower := false
+## Frisked once already (step 3), and the cop frisking them now.
+var frisked := false
+var frisked_by: Cop
+## Which Contraband.IN_POCKET kind a pocket hides (VisitPlan draws it).
+var pocket_kind := 0
+var _frisk_left := 0.0
 var _next := 0
 var _waited := 0.0
 var _model: Node3D
@@ -97,7 +114,63 @@ func walking() -> bool:
 
 
 func prompt_key(_cop: Cop) -> String:
-	return "PROMPT_LET_VISITOR_IN" if state == State.TABLE else ""
+	if state != State.TABLE:
+		return ""
+	return "PROMPT_LET_VISITOR_IN" if frisked else "PROMPT_VISITOR_AT_TABLE"
+
+
+## Whether they still carry something hidden: in their pocket, or in what they brought back from the table.
+func has_contraband() -> bool:
+	return pocket_hidden or (item_hidden and is_carrying())
+
+
+## R at the search table: the cop frisks them while staying close (the host counts).
+func ask(cop: Cop) -> bool:
+	if state != State.TABLE or frisked or frisked_by:
+		return false
+	frisked_by = cop
+	_frisk_left = FRISK_TIME
+	say("VISITOR_FRISKED", FRISK_TIME)
+	return true
+
+
+func _frisk(delta: float) -> void:
+	if not is_instance_valid(frisked_by) or frisked_by.global_position.distance_to(global_position) > FRISK_REACH:
+		frisked_by = null
+		return
+	_frisk_left -= delta
+	if _frisk_left > 0.0:
+		return
+	var cop := frisked_by
+	frisked_by = null
+	frisked = true
+	_waited = 0.0
+	if not pocket_hidden:
+		say("VISITOR_FRISK_CLEAN")
+		cop.show_hint("HINT_VISIT_POCKETS_CLEAN", true)
+		return
+	pocket_hidden = false
+	var contraband := Contraband.new()
+	contraband.name = "Contraband"
+	contraband.kind = Contraband.IN_POCKET[pocket_kind]
+	prison.add_child(contraband, true)
+	contraband.global_position = prison.global_transform * (VisitPlan.ITEM_ON_TABLE + Vector3(0, 0.1, 0.5))
+	cop.show_hint("HINT_VISIT_FOUND_%s" % Contraband.Kind.keys()[contraband.kind], true)
+	caught(contraband)
+
+
+## Something of theirs was found (`from_item`: in what they brought): caught red-handed.
+func caught(contraband: Contraband, from_item := false) -> void:
+	say("VISITOR_CAUGHT_%d" % randi_range(1, CAUGHT_LINES))
+	if from_item:
+		item_hidden = false
+	found.emit(self, contraband)
+
+
+## What they brought was opened for nothing: they cry.
+func broken(_what: VisitItem) -> void:
+	say("VISITOR_CRY_%d" % randi_range(1, CRY_LINES))
+	cried.emit(self)
 
 
 ## E at the search table: in they go.
@@ -109,10 +182,15 @@ func use(_cop: Cop) -> void:
 ## Going in, with what they brought if it's still on the table (a cop holding it keeps it).
 func go_in(line: String) -> void:
 	state = State.IN
-	if is_instance_valid(item) and not item.is_held() and not item.is_queued_for_deletion():
+	frisked_by = null
+	if is_instance_valid(item) and item.opened:
+		# Opened, it stays on the table: nothing to take in.
+		item_hidden = false
+	elif is_instance_valid(item) and not item.is_held() and not item.is_queued_for_deletion():
 		item.queue_free()
 		_carried.show()
 	elif not is_carrying():
+		item_hidden = false
 		line = "VISITOR_MY_THING"
 	item = null
 	say(line)
@@ -154,6 +232,9 @@ func _physics_process(delta: float) -> void:
 	if follower:
 		return
 	if state == State.TABLE:
+		if frisked_by:
+			_frisk(delta)
+			return
 		_waited += delta
 		if _waited >= WAIT_ALONE:
 			go_in("VISITOR_GOES_ALONE")

@@ -96,3 +96,11 @@ visitas iguales.
   atiende, pasa solo. La fila avanza un lugar y cada uno se sienta en su lugar del comedor, del lado de adelante de
   una mesa. Capturas en `/mnt/project-files/dia-de-visitas/`: `paso2-fila.png`, `paso2-mesa.png` y
   `paso2-sentado.png`.
+- **Paso 3 (revisar):** en la mesa, R sobre el visitante y quedarse cerca (2,4 m) 2 s lo cachea ("¡Ay, cosquillas!"):
+  lo que tenía en el bolsillo (lima, llave, ganzúas o mapa) cae a la mesa. Cachear no rompe nada y se hace una vez;
+  después E lo deja pasar. Su cosa se agarra de la mesa y E con ella en la mano la abre (las piezas se desarman): lo
+  escondido (`Contraband`, una de 12 cosas, cada una con su escondite: la lima en la torta, la paloma en el sombrero,
+  la soga que era la bufanda...) queda en la mano del policía y cuenta como confiscado (`VisitPlan.confiscated`); si no
+  había nada, el visitante llora y cuenta como roto (`VisitPlan.broken`). Lo abierto se queda en la mesa. Lo que no se
+  encontró entra con el visitante (`PrisonVisitor.has_contraband`, para el pase del paso 5). Por ahora encontrar ya
+  es confiscar: no hace falta tirarlo a un tacho. Capturas: `paso3-cacheo.png` y `paso3-abierto.png`.

@@ -9,6 +9,9 @@ extends Node
 
 signal started
 signal all_in
+## Something hidden was found (step 3), or an innocent thing was opened for nothing.
+signal confiscated_one(count: int)
+signal broke_one(count: int)
 
 const VISITORS := 8
 const HIDDEN_MIN := 4
@@ -41,6 +44,9 @@ var line: Array[PrisonVisitor] = []
 var running := false
 var follower := false
 var table: StaticBody3D
+## Hidden things found at the search table, and innocent things opened for nothing (step 3).
+var confiscated := 0
+var broken := 0
 var _rng := RandomNumberGenerator.new()
 
 
@@ -66,6 +72,7 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 		if hiders.has(i):
 			if _rng.randi_range(1, POCKET_ONE_IN) == 1:
 				visitor.pocket_hidden = true
+				visitor.pocket_kind = _rng.randi_range(0, Contraband.IN_POCKET.size() - 1)
 			else:
 				visitor.item_hidden = true
 		visitor.seat = seats[i]
@@ -74,6 +81,8 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 		visitor.global_position = level.global_transform * Vector3(spot.x, PrisonLevel.FLOOR_TOP, spot.y)
 		visitor.look_at(visitor.global_position + level.global_basis * Vector3(0, 0, -1), Vector3.UP)
 		visitor.went_in.connect(_on_went_in)
+		visitor.found.connect(_on_found)
+		visitor.cried.connect(_on_cried)
 		visitors.append(visitor)
 		line.append(visitor)
 
@@ -143,6 +152,22 @@ func _on_went_in(visitor: PrisonVisitor) -> void:
 		all_in.emit()
 		return
 	_move_up()
+
+
+func _on_found(_visitor: PrisonVisitor, _contraband: Contraband) -> void:
+	confiscated += 1
+	confiscated_one.emit(confiscated)
+
+
+func _on_cried(_visitor: PrisonVisitor) -> void:
+	broken += 1
+	broke_one.emit(broken)
+
+
+## The ones who still carry something hidden (step 5 tries to pass it under the table).
+func carrying_contraband() -> Array[PrisonVisitor]:
+	return visitors.filter(func(visitor: PrisonVisitor) -> bool:
+		return visitor.has_contraband())
 
 
 func _physics_process(_delta: float) -> void:

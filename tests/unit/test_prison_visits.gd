@@ -100,7 +100,7 @@ func test_the_head_leaves_their_thing_on_the_table() -> void:
 	var item: VisitItem = _items()[0]
 	assert_eq(item.kind, head.item_kind)
 	assert_eq(item.hidden, head.item_hidden)
-	assert_eq(head.prompt_key(cop), "PROMPT_LET_VISITOR_IN")
+	assert_eq(head.prompt_key(cop), "PROMPT_VISITOR_AT_TABLE")
 	assert_string_starts_with(head.said(), "VISITOR_HELLO_")
 
 
