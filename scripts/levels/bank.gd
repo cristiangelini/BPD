@@ -146,6 +146,10 @@ const VALVE_AT := Vector3(BACK_DOOR_X + 2.2, 0, -HALF_Z - 0.15)
 ## car's trunk.
 const PERCH_XS: Array[float] = [-9.3, -7.9, -6.5, -5.1, -3.7, -2.3, -0.9, 0.5]
 const FLOATS_IN_TRUNK := Vector3(0, 0.45, -1.75)
+## Step 4: with this much water or more when the vault opens, the gang wades out with the sacks before they get away:
+## up to WADE_OUT seconds with the water at the top, less the shallower it is.
+const WADE_FROM := 0.2
+const WADE_OUT := 12.0
 ## Where the gang ties the sorry robber when they catch him helping (step 4): a chair by the hall's west wall, facing
 ## the hall.
 const CHAIR_AT := Vector3(-10.5, 0, 1.2)
@@ -904,12 +908,35 @@ func _on_vault_opened() -> void:
 			robber.hide()
 			robber.collision_layer = 0
 			robber.process_mode = Node.PROCESS_MODE_DISABLED
+	if not manager_runs and not boss_runs:
+		return
+	var wading := wade_out_time()
+	if wading > 0.0:
+		# The flooding bank (robo-banco-inundado.md, step 4): wading out with the sacks takes them a while.
+		for cop in get_tree().get_nodes_in_group("cops"):
+			(cop as Cop).show_hint("HINT_FLOOD_WADING")
+		get_tree().create_timer(wading, false, true).timeout.connect(_run_getaway.bind(manager_runs))
+		return
+	_run_getaway(manager_runs)
+
+
+## How long the gang takes to wade out of the flooding bank with the sacks (0 dry).
+func wade_out_time() -> float:
+	if not water or water.level < WADE_FROM:
+		return 0.0
+	return WADE_OUT * (1.0 - BankWater.factor(water.level)) / (1.0 - BankWater.factor(BankWater.MAX_LEVEL))
+
+
+## El Oso (or the boss manager) gets away: in his car, on a motor walker, in the van or on foot if it's boxed in.
+func _run_getaway(manager_runs: bool) -> void:
 	if manager_runs:
 		start_getaway(SuspectCar.MANAGER_CAR)
-	elif boss_runs and grandpas:
+	elif grandpas:
 		start_getaway(SuspectCar.WALKER)
-	elif boss_runs:
+	else:
 		start_getaway(SuspectCar.BEAR_ON_FOOT if van_boxed_in() else SuspectCar.ROBBERS_VAN)
+	if case:
+		case._on_vault_opened()
 
 
 ## El Oso gets away in the van (`kind` ROBBERS_VAN) or on foot (BEAR_ON_FOOT), or the grandpa Oso on a motor walker

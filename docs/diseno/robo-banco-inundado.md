@@ -90,3 +90,10 @@ la ola de la puerta y los flotadores.
   E se pone uno (uno por policía, `Cop.duck_float`) y E sobre un rehén del mostrador se lo pone, el rehén baja y sigue
   de la mano sin que el agua lo frene. Con el agua debajo de 0,5 m los del mostrador bajan solos a su lugar. Capturas
   en `/mnt/project-files/inundado/paso3-*.png`.
+- **Paso 4 (lo que flota, la huida y el caso):** las cosas sueltas en el agua flotan (`BankWater`: empuje 1,4 veces
+  su peso bajo la superficie y freno del agua; lo que alguien tiene en la mano no). Si la bóveda se abre con 0,2 m o
+  más, la banda tarda en salir chapoteando con las bolsas antes de la huida: hasta 12 s con el agua arriba, menos si
+  está más baja (`wade_out_time`); el aviso "Los ladrones chapotean hacia la salida" da tiempo de encerrar la
+  camioneta. El caso: la radio del comisario avisa del caño (`BRIEF_BANK_FLOOD_A-C`), la planilla pide cerrar la
+  llave de paso antes de 1 m (+100, `EARLY_VALVE`) y muestra los centímetros de agua; se gana con El Oso como en la
+  base. Captura en `/mnt/project-files/inundado/paso4-planilla.png`.

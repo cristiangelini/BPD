@@ -9,7 +9,7 @@ extends Node3D
 ## wave rushes out: the level drops WAVE_DROP at once and it shoves what's near the door out to the sidewalk. Step 3:
 ## over DRILL_WET the drill gets wet and slows down (BankDrill.wet), and the duck says so once; at PERCH_LEVEL the
 ## hostages still inside get up on the counter (BankHostage.climb), each on their perch, and come down again below
-## DOWN_LEVEL. Everyone wading in it inside the bank goes
+## DOWN_LEVEL. Step 4: loose things in the water float (BUOYANCY), slowed down by it (DRAG). Everyone wading in it inside the bank goes
 ## slower the deeper it is (factor()): the cops, the robbers and the hostages. The level sets each one's `wade` every
 ## physics frame; outside the bank it's 1. Online it runs on the host and a guest's follows it (`follower`, BankCase's
 ## snapshot). Every number here is (propuesta).
@@ -29,6 +29,12 @@ const WAVE_KNOCK := 0.6
 const DRILL_WET := 0.5
 const PERCH_LEVEL := 0.6
 const DOWN_LEVEL := 0.5
+## How much of their weight the water holds up under the surface (over 1 floats), and how much of their speed it takes
+## each second.
+const BUOYANCY := 1.4
+const DRAG := 2.0
+## How deep the bottom of a thing has to be to be all in the water (m).
+const SUBMERGED := 0.3
 ## Speed by depth: (depth, factor) points, straight lines between them.
 const WADE: Array[Vector2] = [Vector2(0.0, 1.0), Vector2(0.3, 0.8), Vector2(0.6, 0.6), Vector2(1.0, 0.45)]
 const COLOR := Color(0.25, 0.5, 0.75, 0.55)
@@ -149,6 +155,26 @@ func _on_door_opened() -> void:
 			body.apply_central_impulse(out * WAVE_IMPULSE * body.mass)
 
 
+## Whether a thing floats: loose, not in anyone's hands.
+static func floats(body: RigidBody3D) -> bool:
+	return not body.freeze and not (body is Grabbable and not (body as Grabbable).holders.is_empty())
+
+
+func _float_things() -> void:
+	if level <= 0.02:
+		return
+	var surface := global_position.y + floor_top + level
+	for body in _loose_things():
+		if not floats(body) or depth_at(body.global_position) <= 0.0:
+			continue
+		var under := clampf((surface - body.global_position.y) / SUBMERGED + 0.5, 0.0, 1.0)
+		if under <= 0.0:
+			continue
+		# As forces, so the wave's push on the same frame still counts.
+		body.apply_central_force(Vector3.UP * body.mass * GameScale.GRAVITY * BUOYANCY * under
+			- body.linear_velocity * body.mass * DRAG * under)
+
+
 func _wet_drill() -> void:
 	if not drill:
 		return
@@ -191,6 +217,7 @@ func _physics_process(delta: float) -> void:
 			level = minf(level + RISE * delta, MAX_LEVEL)
 		_wet_drill()
 		_perch()
+		_float_things()
 	_show()
 	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
 		if "wade" in cop:
