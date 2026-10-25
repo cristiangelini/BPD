@@ -12,7 +12,7 @@ extends Node3D
 ## sends city cars, some of them packed with people. "ghost_car" (control-auto-fantasma.md) sends city cars with their
 ## drivers leaning on the windows, and one with nobody at the wheel. "wedding" (control-boda.md) sends the wedding's
 ## convoy, with the newlyweds up front and a few city cars among them. "race" (control-carrera.md) sends city cars
-## and, among them, the night's racers. Every number here is (propuesta).
+## and, among them, the night's racers, in heats out of the queue. Every number here is (propuesta).
 
 signal patience_changed(value: float)
 ## A car went by: let through, or sneaking.
@@ -55,6 +55,10 @@ var spawned := 0
 var sneaked := 0
 ## Online, a guest's queue only shows the host's: its cars come from the host (NpcSync) and so does the meter.
 var follower := false
+## The street race's racers (control-carrera.md, step 2): out of the queue, in heats; how many heats came so far.
+var racers: Array[QueueCar] = []
+var heats := 0
+var _until_heat := RaceCar.FIRST_HEAT
 var _until_spawn := 0.0
 var _rng := RandomNumberGenerator.new()
 
@@ -130,6 +134,50 @@ func _physics_process(delta: float) -> void:
 		sneaked += 1
 		_leave(car, true)
 		_set_patience(AFTER_SNEAK)
+	if VARIANTS[variant].get("race", false):
+		_run_heats(delta)
+
+
+func heats_total() -> int:
+	return RaceCar.heats_of(case_seed)
+
+
+func _run_heats(delta: float) -> void:
+	_until_heat -= delta
+	if _until_heat <= 0.0 and heats < heats_total():
+		spawn_heat()
+	for racer in racers.duplicate():
+		if not is_instance_valid(racer):
+			racers.erase(racer)
+		elif racer.at.z < -TrafficCheckpoint.ZONE.y:
+			racers.erase(racer)
+			passed.emit(racer, false)
+
+
+## The next heat gathers at the back corner, in the race lane, one behind the other.
+func spawn_heat() -> Array[QueueCar]:
+	var heat: Array[QueueCar] = []
+	for slot in RaceCar.heat_size(case_seed, heats):
+		var data := WantedPlan.random_car(_rng)
+		var car := QueueCar.new()
+		car.name = "Racer%d_%d" % [heats, slot]
+		car.checkpoint = checkpoint
+		car.look = data.look
+		car.plate = data.plate
+		car.driver = data.driver
+		car.race_mode = true
+		car.racer = true
+		car.race = RaceCar.traits_of(car.plate)
+		car.race_slot = slot
+		car.race_left = RaceCar.GATHER
+		car.state = "gathering"
+		car.at = Vector3(RaceCar.LANE, 0, SPAWN_FROM + slot * RaceCar.SLOT_GAP)
+		racers.append(car)
+		heat.append(car)
+		add_child(car)
+	_until_heat = RaceCar.heat_every(case_seed, heats)
+	heats += 1
+	return heat
 
 
 func _room_to_spawn() -> bool:
@@ -176,9 +224,6 @@ func spawn() -> QueueCar:
 			car.look = WeddingCar.NEWLYWEDS_LOOK
 	if VARIANTS[variant].get("race", false):
 		car.race_mode = true
-		car.racer = data.get("racer", RaceCar.racer_at(case_seed, spawned))
-		if car.racer:
-			car.race = data.get("race", RaceCar.traits_of(car.plate))
 	car.wanted = plan != null and spawned == plan.wanted_index
 	car.at = Vector3(0, 0, SPAWN_FROM)
 	car.speed = QueueCar.SPEED

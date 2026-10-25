@@ -156,6 +156,10 @@ var honks := 0
 var race_mode := false
 var racer := false
 var race := {}
+## A racer comes in a heat, out of the queue (step 2): it gathers at the back corner, revs, then races past the
+## checkpoint ("gathering", "revving", "racing" in `state`); `race_slot` is its place in the heat.
+var race_slot := 0
+var race_left := 0.0
 var _rolled := 0.0
 ## Zigzagging, it turns this far (radians) with the lane it's crossing.
 var _sway := 0.0
@@ -856,6 +860,9 @@ func _physics_process(delta: float) -> void:
 		_bubble.hide()
 	if state == "gone" or not checkpoint:
 		return
+	if racer and state in ["gathering", "revving", "racing"]:
+		_race(delta)
+		return
 	if _to_pop > 0:
 		_pop_left -= delta
 		if _pop_left <= 0.0:
@@ -906,6 +913,52 @@ func _physics_process(delta: float) -> void:
 		_knock_cones()
 	if state == "sneaking":
 		_knock_cones()
+
+
+## A racer's heat (control-carrera.md, step 2): it waits, revs shaking (the warning), then races down its lane,
+## swerving to clip the barrier's end and the cones on its way.
+func _race(delta: float) -> void:
+	race_left -= delta
+	_rolled += delta
+	match state:
+		"gathering":
+			if race_left <= 0.0:
+				state = "revving"
+				race_left = RaceCar.REV_SECONDS
+				say(tr(RaceCar.rev_line(plate)))
+				if race_slot == 0:
+					for cop: Cop in get_tree().get_nodes_in_group("cops"):
+						cop.show_hint("HINT_RACE_REVVING")
+		"revving":
+			lurch = sin(_rolled * RaceCar.SHAKE_RATE) * RaceCar.SHAKE
+			if race_left <= 0.0:
+				state = "racing"
+				lurch = 0.0
+		"racing":
+			speed = move_toward(speed, RaceCar.SPEED, RaceCar.ACCEL * delta)
+			var step := speed * delta
+			at.z -= step
+			var x := RaceCar.lane_x(at.z)
+			if step > 0.0:
+				_sway = -atan2(x - at.x, step)
+			at.x = x
+			_knock_cones()
+			_knock_barrier()
+	RaceCar.spark(self, speed if state == "racing" else RaceCar.SPARKS_FROM * 2.0 if state == "revving" else 0.0)
+	if at.z < GONE_AT:
+		state = "gone"
+		queue_free()
+		return
+	_place()
+
+
+func _knock_barrier() -> void:
+	for barrier: RoadBarrier in get_tree().get_nodes_in_group("road_barriers"):
+		# In the checkpoint's space, before its body touches it: across, its half and the barrier's; along, ahead.
+		var off := checkpoint.to_local(barrier.global_position) - at
+		if absf(off.x) < RaceCar.BARRIER_REACH.x and absf(off.z) < RaceCar.BARRIER_REACH.y:
+			var away := (barrier.global_position - global_position) * Vector3(1, 0, 1)
+			barrier.knock((away.normalized() + global_basis.z + Vector3.UP * 0.5) * RaceCar.BARRIER_PUSH)
 
 
 func _place() -> void:

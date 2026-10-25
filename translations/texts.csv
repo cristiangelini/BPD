@@ -2177,3 +2177,8 @@ PROMPT_GIFT_ENVELOPES,"Los sobres de regalo de El Colado: llévalos al patruller
 SPOILER_NONE,sin alerón,no spoiler,sem aerofólio
 SPOILER_SMALL,alerón chico,small spoiler,aerofólio pequeno
 SPOILER_BIG,alerón grande,big spoiler,aerofólio grande
+RACE_REV_0,¡RRRUM! ¡RRRRUM!,VROOM! VRRROOM!,VRUUM! VRRRUUM!
+RACE_REV_1,"¡Rrrum, rrrum! ¡Hoy gano yo!","Vroom, vroom! Tonight I win!","Vruum, vruum! Hoje eu ganho!"
+RACE_REV_2,¡RRRRRRUUUUM!,VRRRRROOOOM!,VRRRRRUUUUM!
+RACE_REV_3,"¡Rum rum! ¡Agárrenme si pueden!","Vroom vroom! Catch me if you can!","Vrum vrum! Me peguem se puderem!"
+HINT_RACE_REVVING,¡Los corredores rugen en la esquina! ¡Van a largar!,The racers are revving at the corner! They're about to go!,Os corredores estão roncando na esquina! Vão largar!
