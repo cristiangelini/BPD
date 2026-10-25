@@ -10,7 +10,10 @@ extends Node3D
 ## They escape when every cop sits in the patrol car and it drives ESCAPE_DISTANCE away from the station: "¡Fugados!"
 ## and the campaign's next shift. The guard's CATCHES-th catch calls the comisario, who comes in his pajamas, and the
 ## campaign is lost (step 6).
-## --place=jailbreak opens it from Play.
+## There are two ways out, drawn by the seed: the key in the donut (the night guard, above) and the cleaning crew
+## (fuga-limpieza.md): at dawn the guard went home and the comisario came in early, walking his round
+## (EarlyComisario), and he catches them the same way; the third time he suspends them himself.
+## --place=jailbreak opens it from Play, and --jailbreak=<variant> forces one of VARIANTS.
 
 const DESK_MODEL := preload("res://assets/models/station_desk.glb")
 const BOX_SCENE := preload("res://scenes/props/guard_donut_box.tscn")
@@ -35,8 +38,13 @@ const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 ## The comisario at the cells room's door, facing in, when he's called.
 const COMISARIO_AT := Vector3(6.8, 0, 6.4)
 
+## The ways out, drawn by the seed (fuga-limpieza.md, question 1: half and half, propuesta).
+const VARIANTS := ["donut", "cleaning"]
+
 ## Same seed, same jailbreak. 0 draws one.
 @export var case_seed := 0
+## Which way out (VARIANTS); empty draws it from the seed Play drew, and without one it's the donut.
+@export var variant := ""
 var city: City
 var guard: NightGuard
 var box: DonutBox
@@ -51,10 +59,14 @@ var _seen_catches := -1
 
 
 func _ready() -> void:
+	var drawn := 0
 	if case_seed == 0:
 		case_seed = PlaceDraw.take_seed()
+		drawn = case_seed
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if variant == "":
+		variant = pick_variant(drawn, OS.get_cmdline_user_args())
 	city = $City
 	# At night the comisario and the armero went home.
 	for npc: Node in [city.comisario, city.armero]:
@@ -62,14 +74,59 @@ func _ready() -> void:
 			npc.queue_free()
 	for door in city.cell_doors:
 		door.lock()
-	_guard_desk()
+	if is_cleaning():
+		_early_comisario()
+	else:
+		_guard_desk()
 	_hud()
 	$Cop.global_transform = cop_spawn(0)
 	car_home = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$PatrolCar.global_transform = car_home
 	if Campaign.current:
 		guard.times_caught = Campaign.current.jail_catches
-	($Cop as Cop).show_hint.call_deferred("HINT_JAILED")
+	($Cop as Cop).show_hint.call_deferred("HINT_JAILED_CLEANING" if is_cleaning() else "HINT_JAILED")
+
+
+## The way out for this seed: from --jailbreak=<variant> among the user args, or drawn. Without a seed from Play (0)
+## it's the donut, the first one.
+static func pick_variant(drawn_seed: int, args: PackedStringArray) -> String:
+	for arg in args:
+		if arg.begins_with("--jailbreak=") and VARIANTS.has(arg.trim_prefix("--jailbreak=")):
+			return arg.trim_prefix("--jailbreak=")
+	if drawn_seed == 0:
+		return VARIANTS[0]
+	return VARIANTS[hash(["jailbreak variant", drawn_seed]) % VARIANTS.size()]
+
+
+func is_cleaning() -> bool:
+	return variant == "cleaning"
+
+
+## The cleaning crew's jailbreak: dawn, no guard at the desk, and the comisario walking his round instead.
+func _early_comisario() -> void:
+	var comisario := EarlyComisario.new()
+	comisario.name = "EarlyComisario"
+	add_child(comisario)
+	comisario.setup_round(case_seed, city.transform * CityLayout.lot("station"))
+	comisario.outside_cells = outside_cells
+	comisario.caught.connect(_on_caught)
+	guard = comisario
+	_dawn()
+
+
+## 5:30 in the morning: the sky starts to light up orange and the moon's light turns warm.
+func _dawn() -> void:
+	var light: DirectionalLight3D = $Moon
+	light.light_color = Color(1.0, 0.72, 0.5)
+	light.light_energy = 0.4
+	var world: WorldEnvironment = $Environment
+	var env: Environment = world.environment.duplicate(true)
+	var sky := env.sky.sky_material as ProceduralSkyMaterial
+	sky.sky_top_color = Color(0.22, 0.28, 0.48)
+	sky.sky_horizon_color = Color(0.95, 0.6, 0.42)
+	sky.ground_horizon_color = Color(0.95, 0.6, 0.42)
+	env.ambient_light_energy = 0.3
+	world.environment = env
 
 
 ## Where the cop in `slot` wakes up: two in each cell (Net puts every player's cop here online).
@@ -128,14 +185,17 @@ func _on_caught(times: int) -> void:
 		Campaign.current.jail_catches = times
 		Campaign.current.save()
 	if times >= CATCHES:
-		_call_comisario()
+		if is_cleaning():
+			guard.say("EARLY_SUSPENDED", LOST_DELAY + 2.0)
+		else:
+			_call_comisario()
 		get_tree().create_timer(LOST_DELAY).timeout.connect(finish.bind("lost"))
 	var slot := 0
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
 		if outside_cells(cop.global_position):
 			cop.warp(cop_spawn(slot))
 			slot += 1
-		cop.show_hint("HINT_GUARD_CAUGHT")
+		cop.show_hint("HINT_COMISARIO_CAUGHT" if is_cleaning() else "HINT_GUARD_CAUGHT")
 	for clue: Node in get_tree().get_nodes_in_group("guard_clues"):
 		if clue is CellKey or (clue is LooseDonut and clue.has_key):
 			guard.key_on_belt = true
@@ -149,9 +209,10 @@ func _on_caught(times: int) -> void:
 			_drop(stick)
 			sticks.erase(stick)
 			stick.queue_free()
-	_drop(box)
-	box.linear_velocity = Vector3.ZERO
-	box.global_transform = box_home
+	if box:
+		_drop(box)
+		box.linear_velocity = Vector3.ZERO
+		box.global_transform = box_home
 
 
 ## Out of every cop's hands.
@@ -186,7 +247,7 @@ func _process(_delta: float) -> void:
 	if not multiplayer.is_server():
 		_follow_catches()
 	suspicion_bar.value = guard.suspicion
-	caught_label.text = tr("HUD_GUARD_CAUGHT") % [guard.times_caught, CATCHES]
+	caught_label.text = tr("HUD_COMISARIO_CAUGHT" if is_cleaning() else "HUD_GUARD_CAUGHT") % [guard.times_caught, CATCHES]
 	if guard.outcome != "":
 		# A guest learns how it ended from the guard (the host's state).
 		if not end_screen:
@@ -252,7 +313,8 @@ func _call_comisario() -> void:
 
 ## The short screen at the end: "¡Fugados!" and the next shift, or "Suspendidos" and back to the menu.
 func _show_end(result: String) -> void:
-	if result == "lost" and not has_node("PajamaComisario"):
+	# The early comisario is already there: nobody calls him in his pajamas.
+	if result == "lost" and not is_cleaning() and not has_node("PajamaComisario"):
 		_call_comisario()
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
 		cop.input_enabled = false
@@ -277,7 +339,7 @@ func _show_end(result: String) -> void:
 	var campaign := Campaign.current
 	var next := result == "escaped" and not (campaign and campaign.is_over())
 	if result == "lost":
-		line.text = "JAILBREAK_LOST_LINE"
+		line.text = "JAILBREAK_LOST_LINE_CLEANING" if is_cleaning() else "JAILBREAK_LOST_LINE"
 	elif campaign and campaign.is_promoted():
 		line.text = "SHIFT_PROMOTED"
 	else:
