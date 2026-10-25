@@ -643,24 +643,29 @@ func _build_trunk() -> void:
 ## Online (NpcSync): what a guest's copy needs before it's added (which car it is, not whether it's the wanted one).
 func net_setup() -> Dictionary:
 	return {"plate": plate, "driver": driver, "clown": clown, "clown_traits": clown_traits, "fruit": fruit,
-		"crate": crate, "hat": hat, "melon_kinds": melon_kinds, "crowd": crowd, "ghost_mode": ghost_mode, "ghost": ghost,
-		"shirt": shirt, "puppeteer": puppeteer, "wedding_mode": wedding_mode, "guest": guest, "tie": tie,
-		"newlyweds": newlyweds, "alcohol": alcohol, "couple": couple, "race_mode": race_mode, "racer": racer,
-		"race": race}
+		"crate": crate, "hat": hat, "melon_kinds": melon_kinds, "crowd": crowd, "ghost_mode": ghost_mode,
+		"ghost": ghost, "shirt": shirt, "puppeteer": puppeteer, "wedding_mode": wedding_mode, "guest": guest,
+		"tie": tie, "newlyweds": newlyweds, "alcohol": alcohol, "couple": couple, "race_mode": race_mode,
+		"racer": racer, "race": race, "race_slot": race_slot}
 
 
 ## Online: where it is in the queue and whether its trunk is open; the ghost car's, how many pranks and the last one;
-## the wedding check's, whether its driver blew and gave up the keys.
+## the wedding check's, whether its driver blew and gave up the keys; the street race's, its flat tires and sparks.
 func net_state() -> Array:
 	var rig := get_node_or_null("Pilot") as GhostPilot
 	if rig:
 		return [state, lid.is_open if lid else false, rig.pranks, rig.last_prank]
 	if wedding_mode:
 		return [state, lid.is_open if lid else false, blown, keys_taken]
+	if race_mode:
+		var sparks := get_node_or_null("Exhaust/Sparks") as CPUParticles3D
+		return [state, lid.is_open if lid else false, flat, sparks != null and sparks.emitting]
 	return [state, lid.is_open if lid else false]
 
 
 func apply_net_state(net: Array) -> void:
+	if race_mode and racer and net[0] == "revving" and state != "revving":
+		_start_revving()
 	state = net[0]
 	if net[1]:
 		open_trunk()
@@ -673,6 +678,13 @@ func apply_net_state(net: Array) -> void:
 			# The host's cop took the keys: its relative drives here too.
 			keys_taken = true
 			_relative_takes_over()
+	if race_mode and net.size() > 3:
+		if net[2] and not flat:
+			# Punctured on the host: flat here too, and its driver says so.
+			flat = true
+			_flatten()
+			say(tr(flat_line()))
+		RaceCar.spark(self, RaceCar.SPARKS_FROM * 2.0 if net[3] else 0.0)
 	# The host's detained the pilot: he's out of his window here too.
 	var leaning := get_node_or_null("WindowDriver")
 	if leaning and state == "pulled_over":
@@ -936,10 +948,7 @@ func _race(delta: float) -> void:
 			if race_left <= 0.0:
 				state = "revving"
 				race_left = RaceCar.REV_SECONDS
-				say(tr(RaceCar.rev_line(plate)))
-				if race_slot == 0:
-					for cop: Cop in get_tree().get_nodes_in_group("cops"):
-						cop.show_hint("HINT_RACE_REVVING")
+				_start_revving()
 		"revving":
 			lurch = sin(_rolled * RaceCar.SHAKE_RATE) * RaceCar.SHAKE
 			if race_left <= 0.0:
@@ -976,6 +985,14 @@ func _race(delta: float) -> void:
 	_place()
 
 
+## It roars (and the first of its heat warns the cops), on every PC.
+func _start_revving() -> void:
+	say(tr(RaceCar.rev_line(plate)))
+	if race_slot == 0:
+		for cop: Cop in get_tree().get_nodes_in_group("cops"):
+			cop.show_hint("HINT_RACE_REVVING")
+
+
 ## A racer stopped on its rims (control-carrera.md): its driver can be cuffed.
 func stopped_racer() -> bool:
 	return racer and state == "punctured" and speed == 0.0
@@ -991,11 +1008,7 @@ func puncture() -> void:
 	if flat:
 		return
 	flat = true
-	for i in SuspectCar.SEDAN_WHEELS.size():
-		var wheel := get_node_or_null("Wheel%d" % i) as Node3D
-		if wheel:
-			wheel.scale.y = FLAT_SQUASH
-			wheel.position.y = SuspectCar.SEDAN_WHEELS[i].y * FLAT_SQUASH
+	_flatten()
 	if racer and state == "racing":
 		state = "punctured"
 	elif not racer:
@@ -1003,6 +1016,15 @@ func puncture() -> void:
 	var queue := get_parent() as TrafficQueue
 	if queue:
 		queue.punctured.emit(self)
+
+
+## Its wheels squashed flat.
+func _flatten() -> void:
+	for i in SuspectCar.SEDAN_WHEELS.size():
+		var wheel := get_node_or_null("Wheel%d" % i) as Node3D
+		if wheel:
+			wheel.scale.y = FLAT_SQUASH
+			wheel.position.y = SuspectCar.SEDAN_WHEELS[i].y * FLAT_SQUASH
 
 
 ## What its driver says about the flat tires: a racer one of FLAT_LINES, a city driver one of CITY_FLAT_LINES.

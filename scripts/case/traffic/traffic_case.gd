@@ -493,7 +493,8 @@ func snapshot() -> Dictionary:
 		"clues": clues.known, "innocents": innocents, "melons": melon_complaints, "crowd_fines": crowd_fines,
 		"drunk_keys": drunk_keys, "drunks_passed": drunks_passed,
 		"racer_fines": racer_fines, "lost": lost, "solved": solved_now, "escaped": escaped,
-		"suspect": suspect != null, "result": _result, "taken_from": taken_from, "clean": _clean_clowns()}
+		"suspect": suspect != null, "result": _result, "taken_from": taken_from, "clean": _clean_clowns(),
+		"spikes": _spikes()}
 	if chase:
 		state.chase = chase.snapshot()
 		var clown := chase.suspect_id == SuspectCar.CLOWN_CAR
@@ -531,13 +532,17 @@ func apply_snapshot(state: Dictionary) -> void:
 	if state.get("racer_fines", 0) > racer_fines:
 		_hint_all("HINT_RACE_FINED")
 	racer_fines = state.get("racer_fines", 0)
+	for strip_name: String in state.get("spikes", {}):
+		var strip := get_parent().get_node_or_null(strip_name) as SpikeStrip
+		if strip:
+			strip.show_unrolled(state.spikes[strip_name])
 	if state.suspect and not suspect:
 		suspect = get_parent().get_node_or_null("Driver") as ChaseSuspect
 		if suspect and patrol_car:
 			escort = OwnerEscort.attach(suspect, patrol_car)
 			escort.follower = true
 			escort.in_car_hint = "HINT_TRAFFIC_IN_CAR"
-			_hint_all("HINT_TRAFFIC_GOT_IT")
+			_hint_all("HINT_RACE_TROPHY" if plan and plan.race else "HINT_TRAFFIC_GOT_IT")
 	if state.has("chase") and not chase:
 		var run_off: Array = state.run_off
 		_run_off(run_off[0], run_off[1], run_off.size() > 2 and run_off[2], run_off.size() > 3 and run_off[3],
@@ -580,6 +585,15 @@ func _follow_convoy(from_car: String, clean: Array) -> void:
 		var out := get_parent().get_node_or_null(NodePath(clown_name)) as ConvoyClown
 		if out and out.makeup_on:
 			out.clean()
+
+
+## The spike strips by name, and whether each is unrolled across the street (a guest's only show it).
+func _spikes() -> Dictionary:
+	var out := {}
+	for strip: SpikeStrip in get_tree().get_nodes_in_group("spike_strips"):
+		if strip.get_parent() == get_parent():
+			out[String(strip.name)] = strip.deployed
+	return out
 
 
 func _hint_all(key: String) -> void:
