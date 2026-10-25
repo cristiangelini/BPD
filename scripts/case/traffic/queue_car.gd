@@ -598,7 +598,9 @@ func net_setup() -> Dictionary:
 ## Online: where it is in the queue and whether its trunk is open; the ghost car's, how many pranks and the last one.
 func net_state() -> Array:
 	var rig := get_node_or_null("Pilot") as GhostPilot
-	return [state, lid.is_open if lid else false, rig.pranks if rig else 0, rig.last_prank if rig else ""]
+	if rig:
+		return [state, lid.is_open if lid else false, rig.pranks, rig.last_prank]
+	return [state, lid.is_open if lid else false]
 
 
 func apply_net_state(net: Array) -> void:

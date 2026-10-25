@@ -77,8 +77,11 @@ func test_its_front_wheels_steer_by_themselves_and_its_light_blinks() -> void:
 	ghost.set_physics_process(false)
 	var steer := {}
 	var lit := {}
+	var rig := ghost.get_node("Pilot") as GhostPilot
+	rig.set_physics_process(false)
 	for i in 20:
 		ghost._physics_process(0.1)
+		rig._physics_process(0.1)
 		steer[snappedf((ghost.get_node("Wheel0") as Node3D).rotation.y, 0.01)] = true
 		lit[(ghost.find_child("tip", true, false) as Node3D).visible] = true
 		assert_eq((ghost.get_node("Wheel2") as Node3D).rotation.y, 0.0, "the back wheels stay straight")
