@@ -199,12 +199,66 @@ export function buildScrewMold() {
 	return b.build();
 }
 
+// The digging drill: a big yellow drill with a long auger bit caked in dirt and two handles. 0.95 m long along X.
+export function buildDiggingDrill() {
+	const b = new Builder('digging_drill');
+	const yellow = mat('drill_body', 0xf2c230), black = mat('drill_black', 0x2a2420), dirt = mat('dirt', 0x6a4a2a);
+	b.add('motor', yellow, new THREE.BoxGeometry(0.3, 0.22, 0.2), { pos: V(-0.3, 0, 0) });
+	b.add('grip', black, new THREE.CylinderGeometry(0.025, 0.025, 0.4, 6), { pos: V(-0.33, 0, 0) , rot: [Math.PI / 2, 0, 0] });
+	b.add('grip', black, new THREE.TorusGeometry(0.07, 0.02, 4, 8, Math.PI), { pos: V(-0.47, 0.06, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('chuck', mat('drill_steel', 0x8a9098), new THREE.CylinderGeometry(0.05, 0.06, 0.08, 8), { pos: V(-0.11, 0, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('bit', mat('drill_steel', 0x8a9098), new THREE.CylinderGeometry(0.02, 0.02, 0.5, 6), { pos: V(0.18, 0, 0), rot: [0, 0, Math.PI / 2] });
+	for (let i = 0; i < 6; i++) {
+		b.add('auger', dirt, new THREE.TorusGeometry(0.045, 0.012, 3, 8), { pos: V(0.0 + i * 0.07, 0, 0), rot: [0, Math.PI / 2 + 0.3, 0] });
+	}
+	b.add('tip', mat('drill_steel', 0x8a9098), new THREE.ConeGeometry(0.03, 0.06, 6), { pos: V(0.45, 0, 0), rot: [0, 0, -Math.PI / 2] });
+	return b.build();
+}
+
+// A miner's helmet: a yellow hard hat with a lamp on the front. 0.26 m across.
+export function buildMinerHelmet() {
+	const b = new Builder('miner_helmet');
+	const yellow = mat('helmet_yellow', 0xf2c230);
+	b.add('dome', yellow, new THREE.SphereGeometry(0.11, 10, 5, 0, Math.PI * 2, 0, Math.PI / 2), { pos: V(0, -0.04, 0) });
+	b.add('brim', yellow, new THREE.CylinderGeometry(0.13, 0.13, 0.012, 10), { pos: V(0, -0.04, 0) });
+	b.add('lamp', mat('lamp_black', 0x2a2420), new THREE.CylinderGeometry(0.03, 0.03, 0.04, 8), { pos: V(0, 0.01, 0.1), rot: [Math.PI / 2, 0, 0] });
+	b.add('glass', mat('lamp_glass', 0xfff4b0, { emissive: 0xffe060, emissiveIntensity: 1.5 }), new THREE.CylinderGeometry(0.025, 0.025, 0.005, 8), { pos: V(0, 0.01, 0.122), rot: [Math.PI / 2, 0, 0] });
+	b.add('dirt', mat('dirt', 0x6a4a2a), new THREE.BoxGeometry(0.06, 0.004, 0.04), { pos: V(-0.03, 0.06, -0.02), rot: [0.3, 0.4, 0] });
+	return b.build();
+}
+
+// The tunnel plan: a sheet of squared paper with a pencil line from the store to a bank. 0.3 x 0.21 m.
+export function buildTunnelPlan() {
+	const b = new Builder('tunnel_plan');
+	b.add('paper', mat('plan_paper', 0xe8eef6), new THREE.BoxGeometry(0.3, 0.004, 0.21), { rot: [0, 0, 0.02] });
+	const grid = mat('plan_grid', 0xa8c0dc);
+	for (let i = 0; i < 6; i++) b.add('grid', grid, new THREE.BoxGeometry(0.28, 0.001, 0.003), { pos: V(0, 0.0025, -0.09 + i * 0.036) });
+	const pencil = mat('plan_pencil', 0x3a3a3a);
+	b.add('line', pencil, new THREE.BoxGeometry(0.16, 0.001, 0.006), { pos: V(-0.03, 0.003, 0.02), rot: [0, 0.4, 0] });
+	b.add('shop', mat('ink_red', 0xd23a3a), new THREE.BoxGeometry(0.04, 0.001, 0.04), { pos: V(-0.11, 0.003, 0.05) });
+	b.add('bank', mat('plan_bank', 0x2a7a3a), new THREE.BoxGeometry(0.05, 0.001, 0.04), { pos: V(0.07, 0.003, -0.02) });
+	return b.build();
+}
+
+// A pile of loose dirt at the foot of the screw wall. 0.4 m across.
+export function buildDirtPile() {
+	const b = new Builder('dirt_pile');
+	const dirt = mat('dirt', 0x6a4a2a);
+	b.add('pile', dirt, ellipsoid(0.16, 0.04, 0.12, 7, 3), { pos: V(0, 0, 0) });
+	for (let i = 0; i < 7; i++) {
+		const a = i * 2.2;
+		b.add('crumbs', dirt, new THREE.BoxGeometry(0.03, 0.02, 0.03), { pos: V(Math.cos(a) * 0.2, 0.005, Math.sin(a) * 0.15), rot: [0, a, 0] });
+	}
+	return b.build();
+}
+
 export const models = {
 	...Object.fromEntries(PAINTS.map((_, i) => [`paint_can_${i}`, () => buildPaintCan(i)])),
 	screw_jar: buildScrewJar,
 	key_copy: buildKeyCopy, master_key_ring: buildKeyRing, wax_molds: buildWaxMolds, address_list: buildAddressList,
 	metal_filings: buildFilings, watch_list: buildWatchList, glue_tube: buildGlueTube,
 	gold_screw_drawer: buildGoldDrawer, screw_mold: buildScrewMold,
+	digging_drill: buildDiggingDrill, miner_helmet: buildMinerHelmet, tunnel_plan: buildTunnelPlan, dirt_pile: buildDirtPile,
 	...Object.fromEntries(GNOME_HATS.map((_, i) => [`garden_gnome_${i}`, () => buildGnome(i)])),
 	tool_hammer: buildHammer, tool_wrench: buildWrench, tool_saw: buildSaw, tool_screwdriver: buildScrewdriver,
 };
@@ -238,6 +292,13 @@ export const views = {
 			{ name: 'jewelry_bag', pos: [0.15, 0.05, 0.2] },
 		],
 		cam: { pos: [0, 0.55, 0.8], target: [0, 0.04, 0.05], fov: 40 },
+	},
+	tunnel_goods: {
+		items: [
+			{ name: 'digging_drill', pos: [0, 0.11, -0.15] }, { name: 'miner_helmet', pos: [-0.3, 0.04, 0.2] },
+			{ name: 'tunnel_plan', pos: [0.05, 0.002, 0.25], rotY: 0.2 }, { name: 'dirt_pile', pos: [0.35, 0.0, 0.2] },
+		],
+		cam: { pos: [0, 0.8, 1.3], target: [0, 0.05, 0.05], fov: 40 },
 	},
 	hardware_tools: {
 		items: [

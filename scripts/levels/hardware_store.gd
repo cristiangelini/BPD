@@ -54,6 +54,15 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_SCREW_MOLD", "OBJ_EXTRA_JEWELRY_BAG"],
 		"rig": preload("res://scripts/case/hardware/gold_screws_rig.gd"),
 	},
+	"screw_tunnel": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_SCREW_TUNNEL_B", "BRIEF_SCREW_TUNNEL_C", "BRIEF_SCREW_TUNNEL_D"],
+		"find": "OBJ_FIND_DRILL",
+		"hidden": [preload("res://scenes/props/miner_helmet.tscn"), preload("res://scenes/props/tunnel_plan.tscn")],
+		"half_heights": [0.06, 0.005],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_MINER_HELMET", "OBJ_EXTRA_TUNNEL_PLAN"],
+		"rig": preload("res://scripts/case/hardware/tunnel_rig.gd"),
+	},
 }
 ## The tools for sale, laid along the gondolas' two upper boards, both sides.
 const TOOL_SCENES: Array[PackedScene] = [
@@ -205,6 +214,7 @@ var tobias: HardwareMan
 var merchandise: Array[Merchandise] = []
 var bill := 0
 var bell: CounterBell
+var screw_shelf: ScrewShelf
 var cosme: KeyCustomer
 var key_machine: KeyMachine
 var complaint_bar: ProgressBar
@@ -415,13 +425,11 @@ func _build_shop() -> void:
 		for column in 10:
 			_build.mesh_box(KEY_BOARD_AT + Vector3(-0.7 + column * 0.155, -0.27 + row * 0.18, 0.12), Vector3(0.03, 0.08, 0.01),
 				Color(0.85, 0.72, 0.3))
-	# The screw wall: one cabinet, with its little drawer fronts only for the look.
-	_build.box(SCREW_WALL_AT + Vector3(0, SCREW_WALL_SIZE.y / 2, 0), SCREW_WALL_SIZE, WOOD)
-	var step := drawer_step()
-	for row in SCREW_ROWS:
-		for column in SCREW_COLUMNS:
-			_build.mesh_box(drawer_front(row, column), Vector3(0.02, step.y - 0.05, step.x - 0.05),
-				CARDBOARD.lightened(0.2))
+	# The screw wall: one cabinet with its little drawer fronts, that only slides in the tunnel story.
+	screw_shelf = ScrewShelf.new()
+	screw_shelf.position = SCREW_WALL_AT
+	screw_shelf.build(SCREW_WALL_SIZE, SCREW_ROWS, SCREW_COLUMNS, WOOD, CARDBOARD.lightened(0.2))
+	add_child(screw_shelf)
 	for at: Vector3 in GONDOLAS:
 		_build.box(at + Vector3(0, GONDOLA_SIZE.y / 2, 0), Vector3(0.06, GONDOLA_SIZE.y, GONDOLA_SIZE.z), STEEL)
 		for y: float in GONDOLA_BOARDS:

@@ -131,6 +131,12 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      que corre encima se resbala 2 s, como con las bolitas del banco. Con la linterna, el frente del cajoncito de oro
      brilla y la primera vez va a la planilla. El molde de tornillos (1 kg, 200) y la bolsita de la joyería (0,1 kg,
      100, la de la panadería) van en escondites sorteados. Capturas: `paso6-oro-modelos.png`, `paso6-cajoncitos.png`.
+   - **El túnel detrás de los tornillos (propuesta):** la pared de tornillos ahora es un mueble aparte (ScrewShelf)
+     que solo en esta historia se corre: E de dos policías con menos de 1,5 s entre uno y otro la mueve 1,6 m hacia
+     el fondo (uno solo no puede, y le avisa). Atrás hay un pozo en el piso y la boca del túnel en la pared, con el
+     taladro de excavar (20 kg, 1000). Si Tobías ve que la corren, suma 10. La pista propia: tierra suelta al pie de la
+     pared (E la mira). El casco con linterna (0,5 kg, 150) y el plano del túnel (0,1 kg, 300) van en escondites
+     sorteados. Capturas: `paso6-tunel-modelos.png`, `paso6-tunel-antes.png`, `paso6-tunel-despues.png`.
 7. El sorteo en "Jugar" (en cuartos entre los 4 lugares) y el online.
 
 ## Preguntas para Cristian (se avanza con lo recomendado mientras tanto)
