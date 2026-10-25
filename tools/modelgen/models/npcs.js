@@ -281,6 +281,20 @@ const NPCS = {
 		limb(b, 'props', steel, V(0.5, 0.75, 0.22), V(0.56, 0.38, 0.3), 0.025);
 		b.add('props', steel, new THREE.TorusGeometry(0.045, 0.018, 4, 8, Math.PI * 1.4), { pos: V(0.56, 0.36, 0.3) });
 	},
+	// Clotilde, the cleaner of the cleaning crew's jailbreak (fuga-limpieza.md): light blue smock with a pocket, a
+	// red kerchief over her hair, yellow rubber gloves and a feather duster in the pocket.
+	limpieza(b) {
+		const smock = C('smock_blue', 0x8fc4e0), gloves = C('rubber_yellow', 0xf2d22a);
+		pearBody(b, SKIN.arena, { shirt: smock, onePiece: true, belted: false, shoes: C('clog_white', 0xeeeeee) });
+		b.add('body', C('smock_pocket', 0x6fa8c8), new THREE.BoxGeometry(0.2, 0.14, 0.02), { pos: V(0.16, 0.6, 0.43), rot: [-0.1, 0, 0] });
+		for (let i = 0; i < 5; i++) b.add('props', C('feather', [0xd84a8a, 0x5ac0e0, 0xf2c84a][i % 3]), ellipsoid(0.035, 0.09, 0.02, 5, 3), { pos: V(0.1 + i * 0.03, 0.78, 0.43), rot: [0, 0, -0.5 + i * 0.25] });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		const scarf = C('kerchief_red', 0xd0383a);
+		hairCap(b, scarf, { y: 1.4, sx: 1.08, sy: 0.6 });
+		b.add('head', scarf, new THREE.ConeGeometry(0.06, 0.14, 5), { pos: V(0, 1.38, -0.22), rot: [-2.2, 0, 0] });
+		for (const s of [-1, 1]) b.add('arms', gloves, ellipsoid(0.09, 0.09, 0.09, 6, 4), { pos: V(s * 0.49, 0.64, 0.09) });
+	},
 	// Preso: orange jumpsuit with a number, bald, ball and chain.
 	preso(b) {
 		const orange = C('jumpsuit', 0xff7a1a);

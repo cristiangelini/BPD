@@ -110,6 +110,20 @@ la sospecha y las capturas. Clotilde y el comisario van por `NpcSync`; el llaver
   pijama.
 - Online va como el guardia (la misma semilla en cada PC y el comisario por `NpcSync`).
 
+**Cómo quedó el paso 2:**
+- Clotilde (`Cleaner`, modelo nuevo `npc_limpieza`: guardapolvo celeste, pañuelo rojo, guantes amarillos y un plumero
+  en el bolsillo) está al lado de su carrito (modelo nuevo `cleaning_cart`, con balde, trapeador y botellas), en la
+  sala de las celdas. El llavero de las celdas está arriba del carrito, del lado de las celdas.
+- Su ronda: descansa un rato y después va celda por celda (la primera la sortea la semilla). En el carrito agarra las
+  llaves, abre la reja ("Permiso, permiso, levanten los pies."), trapea adentro 20 s con la reja abierta, vuelve al
+  carrito por las llaves y la cierra con llave. Después la otra celda, y descansa de 20 a 40 s. 14 frases.
+- Si el llavero no está en el carrito no puede abrir ni cerrar: se queda ahí pidiéndolo ("¿Y mis llaves? ¿Quién se
+  llevó mis llaves?") cada 6 s, y la reja que no pudo cerrar queda abierta. Devolverlo al carrito la hace seguir.
+- Al comisario no le llama la atención el llavero en el carrito. Si los atrapa, Clotilde vuelve al carrito, arranca
+  la ronda de nuevo y el llavero vuelve a su lugar.
+- Online, el anfitrión la mueve y las rejas que abre o cierra se ven igual en cada PC (`NpcSync`).
+- Captura de los modelos: `limpieza/paso2-clotilde-carrito.png`.
+
 ## Preguntas para Cristian
 1. ¿La fuga sortea entre la dona y la limpieza mitad y mitad con la semilla? **Recomiendo sí:** las dos ya comparten
    celdas, salida y final, y así cada partida puede tener una fuga distinta.
