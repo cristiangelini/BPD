@@ -30,6 +30,8 @@ var follower := false
 var in_car_hint := "HINT_OWNER_IN_CAR"
 ## Where he rides, moved from the prisoner's seat (the second golf thief goes in the trunk).
 var seat_shift := Vector3.ZERO
+## How fast he walks behind the cop (the bank's grandpa robbers go slower).
+var speed := SPEED
 var _since_line := 0.0
 var _line := 0
 
@@ -90,7 +92,7 @@ func _physics_process(delta: float) -> void:
 		return
 	var to := escorted_by.global_position - npc.global_position
 	to.y = 0.0
-	var wish := to.normalized() * SPEED if to.length() > KEEP_AWAY else Vector3.ZERO
+	var wish := to.normalized() * speed if to.length() > KEEP_AWAY else Vector3.ZERO
 	if wish.length() > 0.05:
 		npc.look_at(npc.global_position + wish, Vector3.UP, true)
 	npc.velocity.x = wish.x
