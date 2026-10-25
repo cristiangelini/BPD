@@ -180,7 +180,38 @@ export function buildPrototypePhotos() {
 	return b.build();
 }
 
+// The payroll book: a thick green ledger 0.22 x 0.05 x 0.3 m. Main evidence of the ghost workers.
+export function buildPayrollBook() {
+	const b = new Builder('payroll_book');
+	b.add('cover', mat('ledger_green', 0x2a6a4a), new THREE.BoxGeometry(0.22, 0.05, 0.3), { pos: V(0, 0, 0) });
+	b.add('pages', mat('paper', 0xf6f2e6), new THREE.BoxGeometry(0.2, 0.04, 0.29), { pos: V(0.012, 0, 0) });
+	b.add('label', mat('ledger_label', 0xf2d040), new THREE.BoxGeometry(0.1, 0.002, 0.05), { pos: V(0, 0.026, -0.06) });
+	return b.build();
+}
+
+// The ten time cards of the ghost workers, held with a clip: a stack 0.08 x 0.03 x 0.18 m.
+export function buildTimeCards() {
+	const b = new Builder('time_cards');
+	b.add('stack', mat('card_cream', 0xf6ecd0), new THREE.BoxGeometry(0.08, 0.025, 0.18), { pos: V(0, 0, 0) });
+	b.add('stripe', mat('card_red', 0xd23a3a), new THREE.BoxGeometry(0.082, 0.026, 0.01), { pos: V(0, 0, -0.07) });
+	b.add('clip', mat('clip_steel', 0xb8bcc4), new THREE.BoxGeometry(0.03, 0.03, 0.02), { pos: V(0, 0.005, 0.085) });
+	return b.build();
+}
+
+// Fermín's wig: a black curly mop 0.24 x 0.1 x 0.26 m, to pass for one more worker on the night shift.
+export function buildForemanWig() {
+	const b = new Builder('foreman_wig');
+	const hair = mat('wig_black', 0x1e1a18);
+	b.add('mop', hair, ellipsoid(0.12, 0.05, 0.13, 10, 5), { pos: V(0, 0, 0) });
+	for (let i = 0; i < 8; i++) {
+		const a = i * Math.PI / 4;
+		b.add('curls', hair, ellipsoid(0.03, 0.03, 0.03, 5, 3), { pos: V(Math.cos(a) * 0.1, 0.01, Math.sin(a) * 0.11) });
+	}
+	return b.build();
+}
+
 export const models = {
+	payroll_book: buildPayrollBook, time_cards: buildTimeCards, foreman_wig: buildForemanWig,
 	captain_helmet: buildCaptainHelmet, reject_captain: buildRejectCaptain, stolen_mold: buildStolenMold,
 	fake_labels: buildFakeLabels, prototype_photos: buildPrototypePhotos,
 	tape_recorder: buildTapeRecorder, mic_box: buildMicBox, client_list: buildClientList,
@@ -191,6 +222,13 @@ export const models = {
 };
 
 export const views = {
+	ghost_goods: {
+		items: [
+			{ name: 'payroll_book', pos: [-0.2, 0.025, 0] }, { name: 'time_cards', pos: [0.15, 0.013, 0.05] },
+			{ name: 'foreman_wig', pos: [0.05, 0.05, 0.3] },
+		],
+		cam: { pos: [0, 0.6, 0.9], target: [0, 0.03, 0.1], fov: 40 },
+	},
 	captain_goods: {
 		items: [
 			{ name: 'stolen_mold', pos: [-0.25, 0.15, -0.1] }, { name: 'reject_captain', pos: [0.2, 0.15, 0.1] },

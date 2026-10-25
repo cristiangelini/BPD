@@ -124,6 +124,10 @@ Los pesos y valores siguen la escala de la ferretería: la principal vale unos 1
      astronauta. En el contenedor de descarte hay 3 Capitanes con la cara mal pintada: mirarlos con E es la pista
      propia. El molde robado (15 kg, entre dos) es la evidencia principal y, si lo ponen en la cinta, la traba. Va
      escondido con las etiquetas falsas y las fotos del prototipo. Capturas `paso6-capitan-*`.
+   - **Los operarios fantasma (propuesta):** 10 maniquíes con delantal naranja y cofia "trabajan" adentro de la U
+     de la cinta. Con E no contestan ("...") y el policía sospecha. El reloj de fichar de la recepción tiene diez
+     tarjetas marcadas a las 3 de la mañana: mirarlo con E es la pista propia. El libro de sueldos es la evidencia
+     principal y va escondido con las tarjetas de fichar y la peluca de Fermín. Captura `paso6-fantasmas`.
 7. "Jugar" sortea entre los 5 lugares de allanamiento.
 8. El online (Fermín, Nilda, la cinta y los muñecos en todas las PC).
 
