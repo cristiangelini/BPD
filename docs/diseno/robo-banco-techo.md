@@ -23,7 +23,7 @@ teléfono, y alguien tiene que darse cuenta de que el chico que juega en la vere
    adentro). Afuera, en la pared del este, una escalera de incendio sube hasta el techo. En el techo hay una cruz
    pintada donde aterriza el helicóptero.
 2. **El helicóptero de juguete:** grande como una heladera, amarillo, con las hélices que zumban. Espera en el techo
-   desde el principio. Si un policía lo agarra (pesa 25 kg, se puede llevar entre dos) y lo baja a la calle o lo mete
+   desde el principio. Si un policía lo agarra (pesa 40 kg: uno solo lo arrastra, entre dos se lleva) y lo baja a la calle o lo mete
    en el baúl del patrullero, la banda ya no tiene cómo irse por arriba: la huida es la de siempre, en la camioneta
    (ver pregunta 1).
 3. **El sobrino:** sentado en un banco de la vereda de enfrente, con el control remoto en la mano y una gorra al revés,
@@ -55,7 +55,7 @@ de juguete, el sobrino con el control y la persecución en el aire.
 5. El online.
 
 ## Preguntas para Cristian
-1. **¿Agarrar el helicóptero y bajarlo del techo (25 kg, entre dos) deja a la banda sin huida por arriba?**
+1. **¿Agarrar el helicóptero y bajarlo del techo (40 kg, entre dos) deja a la banda sin huida por arriba?**
    Recomendado: sí, así subir temprano tiene premio. La otra opción es que el helicóptero no se pueda agarrar y solo
    sirva esposar al sobrino.
 2. **¿En la persecución se lo agarra desde la ventanilla del patrullero, pasando por debajo?** Recomendado: sí, el
@@ -66,3 +66,14 @@ de juguete, el sobrino con el control y la persecución en el aire.
    sí, con +100. La otra opción es que el sobrino no exista y el helicóptero vuele solo.
 
 ## Hecho así
+
+- **Paso 1 (el techo, el helicóptero y el sobrino):** un séptimo de las semillas, sorteado antes que todos
+  (`hash(["bank azotea", semilla]) % 7`), es el robo por el techo; las semillas 1 a 4 de las pruebas viejas no cambian y
+  `--bank=roof` lo fuerza. Afuera de la pared del este una escalera de incendio sube hacia atrás hasta un descanso a la
+  altura del techo, y de ahí se pasa al techo. En el pasillo de la bóveda hay una trampilla oscura en el techo con su
+  escalera de mano contra la pared de la oficina (solo se ve: los policías suben por afuera), y arriba su tapa. En el
+  techo, la cruz pintada en un círculo blanco con el helicóptero de juguete (`ToyHelicopter`) esperando, las hélices
+  girando. Pesa 40 kg y no 25: con 25 un policía solo ya lo carga, y la idea es que haga falta llevarlo entre dos. El
+  sobrino (`BankNephew`, más chico que los grandes) está sentado en un banco de la vereda de enfrente con el control
+  en la mano, mirando al banco; con E dice sus frases de inocente ("¡Mire mi helicóptero, oficial!"). Capturas en
+  `/mnt/project-files/techo/paso1-*.png`.

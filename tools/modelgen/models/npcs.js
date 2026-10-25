@@ -481,6 +481,21 @@ const NPCS = {
 		b.add('props', C('ice_cone', 0xd9a35a), new THREE.ConeGeometry(0.05, 0.16, 6), { pos: V(0.52, 0.55, 0.15), rot: [Math.PI, 0, 0] });
 		b.add('props', pink, ellipsoid(0.06, 0.06, 0.06, 6, 4), { pos: V(0.52, 0.66, 0.15) });
 	},
+	// El Oso's nephew (robo-banco-techo.md, decision 126): a kid in an orange hoodie with a cap on backwards and big
+	// sneakers, the toy helicopter's remote control held in both hands in front of him (its own node, 'remote').
+	sobrino(b) {
+		const hoodie = C('hoodie_orange', 0xf08a2a);
+		pearBody(b, SKIN.arena, { shirt: hoodie, pants: C('kid_shorts', 0x3a5a8a), shoes: C('sneakers_white', 0xf2f2f2) });
+		b.add('body', C('hoodie_pocket', 0xd8741e), new THREE.BoxGeometry(0.36, 0.14, 0.04), { pos: V(0, 0.82, 0.37), rot: [-0.25, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.09, 0.055);
+		mouth(b, { smile: true });
+		const cap = C('kid_cap', 0x2a8a4a);
+		b.add('cap', cap, ellipsoid(0.215, 0.1, 0.21, 10, 5), { pos: V(0, 1.45, 0.0) });
+		b.add('cap', cap, new THREE.BoxGeometry(0.24, 0.02, 0.14), { pos: V(0, 1.44, -0.22), rot: [-0.2, 0, 0] });
+		b.add('remote', black, new THREE.BoxGeometry(0.26, 0.05, 0.16), { pos: V(0, 0.98, 0.42), rot: [-0.5, 0, 0] });
+		for (const x of [-0.07, 0.07]) b.add('remote', C('remote_stick', 0xd8322a), new THREE.CylinderGeometry(0.012, 0.012, 0.06, 5), { pos: V(x, 1.02, 0.44), rot: [-0.5, 0, 0] });
+		b.add('remote', C('remote_antenna', 0xc8ccd2), new THREE.CylinderGeometry(0.005, 0.005, 0.3, 4), { pos: V(0.1, 1.14, 0.38), rot: [-0.3, 0, -0.2] });
+	},
 	// Repartidor (persecución): red jacket, a big helmet and the thermal delivery backpack on his back.
 	repartidor(b) {
 		const jacket = C('delivery_red', 0xd8322a), helmet = C('helmet_white', 0xf2f2f0);
