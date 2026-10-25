@@ -36,6 +36,8 @@ const MODELS := {
 	"oso_grandpa": preload("res://assets/models/npc_abuelo_oso.glb"),
 	# The prison's last ringleader, off the food cart (carcel-motin.md).
 	"ringleader": preload("res://assets/models/npc_preso.glb"),
+	# The market's spiteful vendor, off his vegetable trike (politico-mercado.md).
+	"vendor": preload("res://assets/models/npc_puestero.glb"),
 }
 const HECKLER := "heckler_"
 ## The golf thief who runs off (persecucion-lugares.md): at this speed (m/s), away from cops this close, staying

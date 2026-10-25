@@ -116,6 +116,7 @@ Montan un control en la calle y tienen que encontrar el auto buscado entre mucho
 10. **Camión de frutas:** el contrabando está dentro de las sandías.
 
 ## 9. Protección de un político
+Hecho: 9.1 ([proteccion-politico.md](proteccion-politico.md)). Propuesta: 9.6 ([politico-mercado.md](politico-mercado.md)).
 Tienen que cuidar a un político molesto durante un evento (decisión 32).
 
 1. **Acto en una plaza:** le tiran huevos y tomates.

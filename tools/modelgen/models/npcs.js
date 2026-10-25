@@ -470,6 +470,19 @@ const NPCS = {
 		b.add('cap', helmet, ellipsoid(0.27, 0.22, 0.27, 10, 6), { pos: V(0, 1.42, -0.02) });
 		b.add('cap', C('visor', 0x2a3340), new THREE.BoxGeometry(0.3, 0.08, 0.04), { pos: V(0, 1.38, 0.25) });
 	},
+	// Puestero (politico-mercado.md, the market's twelve vendors): rolled-up shirt, a long apron the game tints per
+	// stall (its own node), a flat cap and a pencil behind the ear.
+	puestero(b) {
+		pearBody(b, SKIN.arena, { shirt: C('vendor_shirt', 0xe8e2d0), pants: C('vendor_pants', 0x4a4e58) });
+		b.add('apron', C('vendor_apron', 0x3a8a5a), loft([{ y: 0.3, rx: 0.42, rz: 0.12 }, { y: 0.78, rx: 0.36, rz: 0.1 }, { y: 1.02, rx: 0.2, rz: 0.08 }], 8), { pos: V(0, 0, 0.31) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		mustache(b, C('vendor_mustache', 0x3a2414));
+		const cap = C('flat_cap', 0x6a5a48);
+		b.add('cap', cap, ellipsoid(0.215, 0.09, 0.21, 10, 5), { pos: V(0, 1.45, 0.0) });
+		b.add('cap', cap, new THREE.BoxGeometry(0.26, 0.02, 0.12), { pos: V(0, 1.43, 0.2), rot: [0.15, 0, 0] });
+		limb(b, 'props', C('pencil', 0xf2c84b), V(0.2, 1.33, 0.02), V(0.2, 1.4, -0.1), 0.012);
+	},
 	// Bank robbers (robo-banco.md, step 2): black clothes and gloves, and a rubber animal mask over the whole head.
 	ladron_conejo(b) {
 		robber(b, C('mask_rabbit', 0xf2eeea), (m) => {
