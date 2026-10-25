@@ -104,3 +104,10 @@ visitas iguales.
   había nada, el visitante llora y cuenta como roto (`VisitPlan.broken`). Lo abierto se queda en la mesa. Lo que no se
   encontró entra con el visitante (`PrisonVisitor.has_contraband`, para el pase del paso 5). Por ahora encontrar ya
   es confiscar: no hace falta tirarlo a un tacho. Capturas: `paso3-cacheo.png` y `paso3-abierto.png`.
+- **Paso 4 (las pistas):** en la fila y en la mesa, el que esconde algo se delata cada 8 a 14 s: mira de reojo lo que
+  trajo, silba ("Fiu, fiu... Nada raro por acá") o suda ("Qué calor hace, ¿no?"). Uno de cada 3 inocentes está nervioso
+  igual y cada 15 a 25 s lo dice ("Es mi primera visita, estoy tan nerviosa..."), así que el tic solo no alcanza.
+  Lo que trae, con algo adentro, pesa 1,6 veces más; si es de metal (lima, llave, serrucho, herramientas, ganzúas,
+  pala, cuchara) suena "¡Clonc!" al dejarlo en la mesa; la paloma del sombrero hace "Currucucú" y el celular de la
+  sandía vibra cada 9 a 15 s hasta que los encuentran. El mapa, la soga y el disfraz no hacen ruido: son los difíciles.
+  Captura: `paso4-pistas.png`.

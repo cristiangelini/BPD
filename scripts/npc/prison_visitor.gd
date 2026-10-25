@@ -36,6 +36,12 @@ const FRISK_TIME := 2.0
 const FRISK_REACH := 2.4
 const CAUGHT_LINES := 3
 const CRY_LINES := 3
+## Their tells while in line or at the table (step 4): every so often, the ones hiding something look at it, whistle
+## or sweat; a nervous innocent (VisitPlan.NERVOUS_ONE_IN) frets now and then too.
+const TELL_EVERY := Vector2(8.0, 14.0)
+const NERVOUS_EVERY := Vector2(15.0, 25.0)
+const TELLS: Array[String] = ["VISITOR_TELL_LOOK", "VISITOR_TELL_WHISTLE", "VISITOR_TELL_SWEAT"]
+const NERVOUS_LINES := 3
 
 var look := 0
 var item_kind := VisitItem.Kind.CAKE
@@ -57,6 +63,11 @@ var frisked_by: Cop
 ## Which Contraband.IN_POCKET kind a pocket hides (VisitPlan draws it).
 var pocket_kind := 0
 var _frisk_left := 0.0
+## A nervous innocent (step 4), and the seed of everyone's tells.
+var nervous := false
+var tell_seed := 0
+var _tell_left := -1.0
+var _tells := RandomNumberGenerator.new()
 var _next := 0
 var _waited := 0.0
 var _model: Node3D
@@ -96,6 +107,36 @@ func _ready() -> void:
 	_bubble.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_bubble.hide()
 	add_child(_bubble)
+
+
+## Seconds to their next tell, or -1 if they have none.
+func _next_tell() -> float:
+	if has_contraband():
+		return _tells.randf_range(TELL_EVERY.x, TELL_EVERY.y)
+	if nervous:
+		return _tells.randf_range(NERVOUS_EVERY.x, NERVOUS_EVERY.y)
+	return -1.0
+
+
+func _tell(delta: float) -> void:
+	if state == State.IN or state == State.SEATED or frisked_by:
+		return
+	if _tell_left < 0.0:
+		_tells.seed = tell_seed
+		_tell_left = _next_tell()
+		if _tell_left < 0.0:
+			_tell_left = INF
+		return
+	_tell_left -= delta
+	if _tell_left > 0.0:
+		return
+	if has_contraband():
+		say(TELLS[_tells.randi_range(0, TELLS.size() - 1)])
+	elif nervous:
+		say("VISITOR_NERVOUS_%d" % _tells.randi_range(1, NERVOUS_LINES))
+	_tell_left = _next_tell()
+	if _tell_left < 0.0:
+		_tell_left = INF
 
 
 ## Whether they still have what they brought in their hands.
@@ -210,6 +251,7 @@ func _arrive_at_table() -> void:
 	item.visitor = self
 	prison.add_child(item, true)
 	item.global_position = prison.global_transform * VisitPlan.ITEM_ON_TABLE
+	item.set_down()
 	say("VISITOR_HELLO_%d" % randi_range(1, HELLO_LINES))
 	at_table.emit(self)
 
@@ -231,6 +273,7 @@ func _physics_process(delta: float) -> void:
 			_bubble.hide()
 	if follower:
 		return
+	_tell(delta)
 	if state == State.TABLE:
 		if frisked_by:
 			_frisk(delta)

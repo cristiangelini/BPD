@@ -18,6 +18,8 @@ const HIDDEN_MIN := 4
 const HIDDEN_MAX := 6
 ## One in POCKET_ONE_IN of the hidden ones has it in a pocket instead of in what they bring.
 const POCKET_ONE_IN := 3
+## One in NERVOUS_ONE_IN of the innocent ones is nervous anyway, and frets now and then (step 4).
+const NERVOUS_ONE_IN := 3
 ## The search table in the yard, by the canteen's west door, long along Z (level space x, z), and its size.
 const TABLE_AT := Vector2(-3.4, 10.4)
 const TABLE_SIZE := Vector3(0.8, 0.8, 2.0)
@@ -76,6 +78,9 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 			else:
 				visitor.item_hidden = true
 		visitor.seat = seats[i]
+		visitor.tell_seed = _rng.randi()
+		if not hiders.has(i) and _rng.randi_range(1, NERVOUS_ONE_IN) == 1:
+			visitor.nervous = true
 		add_child(visitor)
 		var spot := queue_spot(i)
 		visitor.global_position = level.global_transform * Vector3(spot.x, PrisonLevel.FLOOR_TOP, spot.y)
