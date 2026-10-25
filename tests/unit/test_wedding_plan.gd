@@ -94,7 +94,9 @@ func test_the_queue_seats_the_plan_s_cars_and_their_toasts() -> void:
 func test_the_comisario_names_the_couple() -> void:
 	var plan := WantedPlan.draw(3, false, false, false, false, true)
 	var names := WeddingCar.names(plan.couple)
-	assert_string_contains(tr("BRIEF_WEDDING_A") % names, names[1])
+	assert_string_contains(tr("BRIEF_WEDDING_CHECK_A") % names, names[1])
+	# Its own keys: the bakery's wedding cake case already has BRIEF_WEDDING_B to D.
+	assert_ne(tr("BRIEF_WEDDING_CHECK_C"), tr("BRIEF_WEDDING_C"))
 	var case := TrafficCase.new()
 	case.plan = plan
 	assert_eq(case.campaign_key(), "traffic_wedding")
