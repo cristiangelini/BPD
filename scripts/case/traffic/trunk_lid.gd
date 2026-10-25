@@ -41,7 +41,17 @@ func _ready() -> void:
 
 
 func prompt_key(_cop: Cop) -> String:
+	if side and is_open and get_parent().get("crowd") and not get_parent().get("looked_inside"):
+		return "PROMPT_LOOK_INSIDE"
 	return door_prompt if side else "PROMPT_TRUNK"
+
+
+## E on a crowded car's open door counts who stayed in (control-auto-lleno.md, step 4); anywhere else, E is on the car.
+func use(cop: Cop) -> void:
+	if side and is_open and get_parent().has_method("look_inside"):
+		get_parent().look_inside()
+	elif get_parent().has_method("use"):
+		get_parent().use(cop)
 
 
 ## Turns toward the hand: the hold point, seen from the hinge in the car's space, sets the angle.

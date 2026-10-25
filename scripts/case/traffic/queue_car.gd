@@ -124,6 +124,9 @@ var melon_kinds: Array[String] = []
 var crowd := 0
 ## Riders still to pop out of its open door.
 var _to_pop := 0
+## Riders counted so far, each with their sticker (CrowdRider.stick), and whether a cop looked in to count who stayed.
+var counted := 0
+var looked_inside := false
 var _pop_left := 0.0
 var _honk_left := HONK_EVERY
 ## The car the case is after (WantedPlan).
@@ -384,6 +387,29 @@ func spill() -> void:
 ## How many riders get out of it when its door opens: all of a few; in a packed car, someone always stays in.
 func riders_out() -> int:
 	return crowd - CrowdedCar.stay_in(plate, crowd)
+
+
+## A cop counted one of its riders: the next number goes on their sticker and the car says how many so far.
+func count_rider(rider: CrowdRider) -> void:
+	if rider.sticker > 0:
+		return
+	counted += 1
+	rider.stick(counted)
+	say(tr("CROWD_COUNT") % count_so_far())
+
+
+## How many riders the cops have counted, those who stayed in too once someone looked in.
+func count_so_far() -> int:
+	return counted + (CrowdedCar.stay_in(plate, crowd) if looked_inside else 0)
+
+
+## E on its open door: who stayed in gets counted.
+func look_inside() -> void:
+	if looked_inside or crowd == 0:
+		return
+	looked_inside = true
+	var stay := CrowdedCar.stay_in(plate, crowd)
+	say((tr("CROWD_INSIDE") % [stay, count_so_far()]) if stay > 0 else tr("CROWD_INSIDE_NONE") % count_so_far())
 
 
 ## The next rider pops out of its door, out toward the sidewalk, the driver first.

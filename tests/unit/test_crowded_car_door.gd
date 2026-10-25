@@ -139,9 +139,12 @@ func test_popped_riders_fly_before_they_walk() -> void:
 
 func test_the_driver_hands_the_license_and_the_others_dont() -> void:
 	var car := _spilled(5)
+	# Counted first (E on someone not counted yet sticks a number on them, step 3).
 	var driver := car.clowns_out[0]
+	driver.use(null)
 	assert_eq(driver.prompt_key(null), "PROMPT_PAPERS")
 	var rider := car.clowns_out[2]
+	rider.use(null)
 	assert_eq(rider.prompt_key(null), "PROMPT_CROWD_RIDER")
 	rider.use(null)
 	assert_eq(rider.saying(), tr("CROWD_NOT_DRIVER"))
