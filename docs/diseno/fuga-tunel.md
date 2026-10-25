@@ -78,6 +78,17 @@ El guardia y los pozos van por `NpcSync`; las cucharas y los colchones, por `Pro
   y se ve crecer junto con la montaña de tierra. Sin cuchara dice que hace falta una.
 - Modelos `tunnel_spoon` y `tunnel_mattress` en `tools/modelgen/models/tunnel.js`. Pruebas en `test_spoon_tunnel.gd`.
 
+## Cómo quedó el paso 2
+- Cada cucharada que nadie tapa le suma 12 de sospecha a `ListeningGuard` (`heard_scoop`). La tapa otro policía que
+  canta o hace la H a menos de 3 m del pozo; el que cava solo se tapa a sí mismo si juega solo. Dormido no oye nada.
+- Con 60 o más se levanta, rodea el escritorio y se para frente a la reja de esa celda 4 s. Si ve el pozo cavado y
+  destapado (`TunnelHole.is_showing`, el colchón llega en el paso 3) o a alguien con una cuchara al lado, atrapa
+  ("¡Un túnel! ¡Con cucharas!"); si no, "Será una rata.", la sospecha baja a 30 y vuelve.
+- La captura rellena un tercio del pozo donde los atrapó (o del último que oyó) y se lleva las cucharas que tienen en
+  la mano o que están fuera de las celdas. Nuevo: si una celda se queda sin cucharas, le deja una en la bandeja ("No
+  soy un monstruo"), para que la fuga no quede trabada sin con qué cavar.
+- 14 frases nuevas del guardia en es, en y pt. Pruebas en `test_tunnel_noise.gd`.
+
 ## Preguntas para Cristian
 1. ¿La fuga sortea en cuartos entre dona, limpieza, perro y túnel? **Recomiendo sí:** las cuatro comparten celdas,
    salida y final.

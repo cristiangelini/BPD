@@ -4,7 +4,7 @@ extends StaticBody3D
 ## The hole by a cell's bunk in the spoon tunnel jailbreak (docs/diseno/fuga-tunel.md, step 1): a cop with a Spoon in
 ## hand digs it with E, a scoop at most every SCOOP_EVERY seconds, and after `needed` scoops (drawn by the seed between
 ## NEEDED_MIN and NEEDED_MAX) the tunnel is through. The hole looks deeper and the dirt beside it piles up as it goes.
-## Every scoop is a noise (`scooped`), which the level and the guard care about (step 2). Every number here is
+## Every scoop is a noise (`scooped`), which the listening guard hears unless someone covers it. Every number here is
 ## (propuesta).
 
 signal scooped(hole: TunnelHole, cop: Cop)
@@ -21,6 +21,8 @@ const DARK := Color(0.08, 0.06, 0.05)
 @export var cell := 0
 var needed := 80
 var scoops := 0
+## Under the bunk's mattress, out of the guard's sight (step 3).
+var covered := false
 var _next_scoop_ms := 0
 var _hole: MeshInstance3D
 var _pile: MeshInstance3D
@@ -68,6 +70,11 @@ func progress() -> float:
 	return clampf(float(scoops) / needed, 0.0, 1.0)
 
 
+## Dug into and not covered: the guard sees it when he looks in.
+func is_showing() -> bool:
+	return scoops > 0 and not covered
+
+
 func is_through() -> bool:
 	return scoops >= needed
 
@@ -99,7 +106,7 @@ func scoop(cop: Cop = null) -> void:
 		dug_through.emit(self)
 
 
-## The guard caught them: a part of what was dug falls back in (step 2).
+## The guard caught them: a part of what was dug falls back in.
 func fill(share: float) -> void:
 	if is_through():
 		return
