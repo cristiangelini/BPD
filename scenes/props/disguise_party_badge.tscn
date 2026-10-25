@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" path="res://assets/models/disguise_party_badge.glb" id="2"]
 
 [sub_resource type="BoxShape3D" id="Shape"]
-size = Vector3(0.24,0.23,0.04)
+size = Vector3(0.24,0.04,0.23)
 
 [node name="Disguise_party_badge" type="RigidBody3D"]
 collision_layer = 4
@@ -17,3 +17,4 @@ kind = "party_badge"
 shape = SubResource("Shape")
 
 [node name="Model" parent="." instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.04, 0)
