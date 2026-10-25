@@ -110,7 +110,7 @@ func give_tip() -> void:
 		if (cop as Cop).input_enabled:
 			# The clown convoy has its own story (control-payasos.md, "La historia").
 			var story := "BRIEF_CONVOY_" if plan.convoy else "BRIEF_FRUIT_" if plan.fruit \
-				else "BRIEF_CROWD_" if plan.crowd else "BRIEF_TRAFFIC_"
+				else "BRIEF_CROWD_" if plan.crowd else "BRIEF_GHOST_" if plan.ghost else "BRIEF_TRAFFIC_"
 			briefing.start(PackedStringArray([story + "A", tr("BRIEF_TRAFFIC_B") % plan.clue_text(0), story + "C"]))
 			break
 	add_child(clues)
