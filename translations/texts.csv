@@ -2247,3 +2247,19 @@ TALENT_OFFENDED,¿Nadie del jurado? ¡El público está ofendido!,Nobody on the 
 TALENT_BOO_1,¡BUUU!,BOOO!,UUUH!
 TALENT_BOO_2,"¡Que voten, que voten!","Vote, vote!","Votem, votem!"
 TALENT_BOO_3,¡Fraude! ¡Jurado vendido!,Rigged! Sold-out jury!,Fraude! Júri vendido!
+PROMPT_OPEN_MAGIC_BOX,E: abrir la caja,E: open the box,E: abrir a caixa
+PROMPT_SMOKE_OFF,E: apagar la máquina de humo,E: turn off the smoke machine,E: desligar a máquina de fumaça
+PROMPT_GRAB_SAWYER,E: agarrarlo,E: grab them,E: agarrar
+HINT_MAGIC_FOILED,¡Doble fondo! El voluntario no se va a ningún lado.,A false bottom! The volunteer isn't going anywhere.,Fundo falso! O voluntário não vai a lugar nenhum.
+HINT_SAWYER_CAUGHT,¡Lo agarraste serruchando! A la celda de castigo.,Caught sawing! Off to the punishment cell.,Pego serrando! Para a cela de castigo.
+HINT_SMOKE_OFF,Apagaste el humo: a ver quién andaba gateando.,Smoke off: let's see who was crawling about.,Fumaça desligada: vamos ver quem estava engatinhando.
+HINT_TALENT_ESCAPED,¡Se escapó uno durante el show!,One got away during the show!,Um fugiu durante o show!
+TALENT_MAGIC_VOLUNTEER,¡Necesito un voluntario del público!,I need a volunteer from the audience!,Preciso de um voluntário da plateia!
+TALENT_MAGIC_ME,¿Yo? ¡Qué sorpresa!,Me? What a surprise!,Eu? Que surpresa!
+TALENT_MAGIC_VANISH,¡Y... desapareció! ¡Para siempre!,And... he's gone! Forever!,E... desapareceu! Para sempre!
+TALENT_MAGIC_SHAME,Eh... hola. Qué vergüenza.,Er... hello. How embarrassing.,Hã... oi. Que vergonha.
+TALENT_MAGIC_FOILED,¡Un mago nunca revela sus trucos! ¡Usted los reveló!,A magician never reveals his tricks! You revealed them!,Um mágico nunca revela seus truques! O senhor revelou!
+TALENT_SAW,"ñic, ñic, ñic...","scritch, scritch, scritch...","nhéc, nhéc, nhéc..."
+TALENT_SAW_CAUGHT,¡Estaba afinando los barrotes!,I was tuning the bars!,Eu estava afinando as grades!
+TALENT_CRAWL_SEEN,Yo... buscaba el baño.,I was... looking for the toilet.,Eu... procurava o banheiro.
+TALENT_RUNNER,¡Gracias por venir al show!,Thanks for coming to the show!,Obrigado por vir ao show!

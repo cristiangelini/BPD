@@ -9,6 +9,8 @@ extends CharacterBody3D
 ## riot); E calms them and they sit back down. Every number here is (propuesta).
 
 signal calmed(inmate: TalentInmate)
+## Step 5: E on the one sawing the window's bars.
+signal grabbed(inmate: TalentInmate, cop: Cop)
 
 enum Role { AUDIENCE, HOST, PERFORMER }
 
@@ -30,12 +32,17 @@ const FLIGHT := 0.9
 const MISS := 0.8
 const CHEST := 1.1
 const BOOS := 3
+## On their knees in the smoke, this much lower.
+const CRAWL_DROP := 0.8
 
 var role := Role.AUDIENCE
 ## A performer's act (TalentPlan.ACTS).
 var act := ""
 ## Offended (step 4): stood up, booing and throwing food.
 var angry := false
+## Step 5: at a window sawing its bars, or crawling in the smoke.
+var sawing := false
+var crawling := false
 var seated := false
 ## A guest's copy (step 7): the host's one decides.
 var follower := false
@@ -132,11 +139,16 @@ static func _ball(radius: float) -> SphereMesh:
 
 
 func prompt_key(_cop: Cop) -> String:
+	if sawing:
+		return "PROMPT_GRAB_SAWYER"
 	return "PROMPT_CALM_AUDIENCE" if angry else ""
 
 
 ## E on an offended one: they calm down and sit back on their bench (the host decides, online).
 func use(cop: Cop) -> void:
+	if sawing:
+		grabbed.emit(self, cop)
+		return
 	if not angry or follower:
 		return
 	set_angry(false)
@@ -172,6 +184,15 @@ func throw_at(target: Vector3, kind: String) -> RallyThrowable:
 func set_on_stage(on: bool) -> void:
 	visible = on
 	collision_layer = 8 if on else 0
+
+
+## On their knees (low, hidden in the smoke) or back up.
+func set_crawling(on: bool) -> void:
+	crawling = on
+	if on:
+		seated = false
+	if _model:
+		_model.position.y = -CRAWL_DROP if on else (-SIT_DROP if seated else 0.0)
 
 
 ## On the bench (lower) or standing.

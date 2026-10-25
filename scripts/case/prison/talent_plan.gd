@@ -59,6 +59,8 @@ var stage: TalentStage
 var chairs: Array[JuryChair] = []
 var inmates: Array[TalentInmate] = []
 var host: TalentInmate
+## The escapes hidden in the magician, the choir and the smoke dance (step 5).
+var tricks: TalentTricks
 ## The 5 acts of the show, in order, and who's in each (the choir is three).
 var acts: Array[String] = []
 var performers := {}
@@ -153,6 +155,10 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 	add_child(host)
 	host.global_position = stage.spot(-1.8, 0.5)
 	host.face(host.global_position + prison.global_basis.z)
+	tricks = TalentTricks.new()
+	tricks.name = "TalentTricks"
+	add_child(tricks)
+	tricks.setup(self, _rng)
 
 
 ## Showtime: the host's welcome.
