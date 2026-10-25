@@ -10,7 +10,18 @@ extends Node3D
 ## They escape when every cop sits in the patrol car and it drives ESCAPE_DISTANCE away from the station: "¡Fugados!"
 ## and the campaign's next shift. The guard's CATCHES-th catch calls the comisario, who comes in his pajamas, and the
 ## campaign is lost (step 6).
-## --place=jailbreak opens it from Play.
+## There are two ways out, drawn by the seed: the key in the donut (the night guard, above) and the cleaning crew
+## (fuga-limpieza.md): at dawn the guard went home and the comisario came in early, walking his round
+## (EarlyComisario), and he catches them the same way; the third time he suspends them himself. The cells open when
+## Clotilde, the cleaner, mops them (Cleaner), with the key ring on her cart, and the break room is the cleaning closet:
+## the crew's caps, face masks and vests (DisguisePiece, "cleaner"), their mops and feather duster (CleaningTool) and
+## the floor polisher (FloorPolisher). The comisario mustn't see them get in the patrol car.
+## The floor has stains to mop (FloorStains); a cop running on the wet floor slips (WET_SLIP seconds down).
+## The third way out is the guard dog (fuga-perro.md): the night guard fell asleep at his desk (SleepyGuard) and the
+## key hangs from the collar of Mordisco, the station's bulldog, who walks his round (GuardDog).
+## The fourth is the spoon tunnel (fuga-tunel.md): the guard awake at his desk, listening (ListeningGuard), and each
+## cell digging a hole by its bunk with the dinner spoons (Spoon, TunnelHole).
+## --place=jailbreak opens it from Play, and --jailbreak=<variant> forces one of VARIANTS.
 
 const DESK_MODEL := preload("res://assets/models/station_desk.glb")
 const BOX_SCENE := preload("res://scenes/props/guard_donut_box.tscn")
@@ -25,6 +36,33 @@ const STICKS := [
 	["res://assets/models/fishing_rod.glb", 3.0, Vector3(11.2, 0.06, 3.9), -PI / 2],
 ]
 
+## The cleaning crew's: Clotilde's cart in the cells room, front (and its key hook) toward the cells, and where the
+## key ring lies on its top tray, in the cart's own space.
+const CART_MODEL := preload("res://assets/models/cleaning_cart.glb")
+const CART_AT := Vector3(13.0, 0, 7.4)
+const CART_SIZE := Vector3(0.9, 0.97, 0.5)
+const CART_HOOK := Vector3(0.3, 0.97, 0.25)
+const CART_KEY := Vector3(0.3, 1.0, 0.15)
+
+## The cleaning closet, in the station's own space (the break room, StationRooms): the disguise pieces in two rows on
+## the floor from CLOSET_AT, one of each per cop less up to CLOSET_MISSING the seed takes away, and the tools lying
+## along the wall: [model, kind, length, grip].
+const CLOSET := ["cleaner_cap", "face_mask", "cleaner_vest"]
+const CLOSET_AT := Vector3(6.4, 0, -1.4)
+const CLOSET_GAP := Vector2(0.45, 0.4)
+const CLOSET_MISSING := 2
+const CLOSET_TOOLS := [
+	["res://assets/models/mop.glb", "mop", 1.5, Vector3(12.0, 0.06, -0.8)],
+	["res://assets/models/mop.glb", "mop", 1.5, Vector3(12.0, 0.06, -1.3)],
+	["res://assets/models/feather_duster.glb", "duster", 0.8, Vector3(12.0, 0.06, -1.8)],
+]
+const POLISHER_AT := Vector3(13.6, 0.02, -1.3)
+
+## Slipping on the wet floor: how long down, how hard the push, and how long until it can slip again.
+const WET_SLIP := 2.0
+const WET_PUSH := 3.0
+const WET_AGAIN := 3.0
+
 ## How many times the guard can catch them (step 6 ends the campaign at the last one).
 const CATCHES := 3
 ## How far from its parking spot the patrol car must get with everyone on board.
@@ -34,9 +72,39 @@ const LOST_DELAY := 3.0
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 ## The comisario at the cells room's door, facing in, when he's called.
 const COMISARIO_AT := Vector3(6.8, 0, 6.4)
+## The guard dog's jailbreak (fuga-perro.md, step 2): a dinner tray deep in each cell, the break room's fridge with the
+## door open and the guard's sandwich on his desk. What's on them is drawn from DOG_FOOD (kind -> weight), and redrawn
+## up to sausages until it adds up to DOG_FOOD_ENOUGH friendship, so there's always enough for four friends.
+const TRAY_MODEL := preload("res://assets/models/prison_tray.glb")
+const FRIDGE_MODEL := preload("res://assets/models/dog_fridge.glb")
+const TRAYS_AT: Array[Vector3] = [Vector3(9.9, 0.02, 2.6), Vector3(14.3, 0.02, 2.6)]
+const ON_TRAY := 3
+const FRIDGE_AT := Vector3(13.5, 0, 0.55)
+const FRIDGE_SHELVES: Array[float] = [0.45, 0.85, 1.25]
+const ON_SHELF := 3
+const SANDWICH_AT := Vector3(11.1, 0.86, 7.4)
+const DOG_FOOD := {"sausage": 3, "ham": 3, "cheese": 3, "donut": 2, "lettuce": 2}
+const DOG_FOOD_ENOUGH := 400.0
+## Mordisco jumps into the patrol car once every cop is in it, if he's everyone's friend and this close to it (step 4).
+const DOG_RIDE_REACH := 12.0
+## The spoon tunnel (fuga-tunel.md, step 1): a tray with two spoons in each cell, and the hole by each bunk, on one of
+## its two sides (the seed draws which).
+const TUNNEL_TRAYS: Array[Vector3] = [Vector3(8.3, 0.02, 3.9), Vector3(12.7, 0.02, 3.9)]
+## The bunks' mattresses (step 3), and where a cop comes out of a finished tunnel: on the sidewalk in front of the
+## station, by the patrol car.
+const TUNNEL_MATTRESSES: Array[Vector3] = [Vector3(8.3, 0.6, 1.6), Vector3(12.7, 0.6, 1.6)]
+const TUNNEL_EXIT := Vector3(5.0, 0, StationRooms.HALF_Z + 2.0)
+## A catch fills a third of the hole back in (fuga-tunel.md, question 3).
+const TUNNEL_REFILL := 1.0 / 3.0
+const TUNNEL_HOLES := [[Vector3(6.7, 0, 2.2), Vector3(9.9, 0, 2.2)], [Vector3(11.1, 0, 2.2), Vector3(14.3, 0, 2.2)]]
+
+## The ways out, drawn by the seed (fuga-limpieza.md, fuga-perro.md and fuga-tunel.md, question 1: in quarters).
+const VARIANTS := ["donut", "cleaning", "dog", "tunnel"]
 
 ## Same seed, same jailbreak. 0 draws one.
 @export var case_seed := 0
+## Which way out (VARIANTS); empty draws it from the seed Play drew, and without one it's the donut.
+@export var variant := ""
 var city: City
 var guard: NightGuard
 var box: DonutBox
@@ -45,16 +113,40 @@ var box_home: Transform3D
 var suspicion_bar: ProgressBar
 var caught_label: Label
 var car_home: Transform3D
+## The cleaning crew's jailbreak: Clotilde and the key ring on her cart.
+var cleaner: Cleaner
+## Mordisco, in the guard dog's jailbreak.
+var dog: GuardDog
+var dog_food: Array[DogFood] = []
+## The spoon tunnel's holes (one for each cell) and spoons.
+var holes: Array[TunnelHole] = []
+var spoons: Array[Spoon] = []
+var mattresses: Array[TunnelMattress] = []
+## The other end of the tunnels, on the sidewalk: it shows once one is through.
+var tunnel_exit: MeshInstance3D
+var cart_key: CellKey
+var tools: Array[CleaningTool] = []
+var polisher: FloorPolisher
+## How many disguise pieces the comisario took back to the closet.
+var _returned := 0
+var stains: FloorStains
+## Cop -> seconds until it can slip again.
+var _slipped := {}
+var _cart: Transform3D
 var end_screen: CanvasLayer
 ## A guest: how many catches it already followed (-1 until it first looks).
 var _seen_catches := -1
 
 
 func _ready() -> void:
+	var drawn := 0
 	if case_seed == 0:
 		case_seed = PlaceDraw.take_seed()
+		drawn = case_seed
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if variant == "":
+		variant = pick_variant(drawn, OS.get_cmdline_user_args())
 	city = $City
 	# At night the comisario and the armero went home.
 	for npc: Node in [city.comisario, city.armero]:
@@ -62,14 +154,301 @@ func _ready() -> void:
 			npc.queue_free()
 	for door in city.cell_doors:
 		door.lock()
-	_guard_desk()
+	if is_cleaning():
+		_early_comisario()
+	elif is_dog():
+		_dog_night()
+	elif is_tunnel():
+		_tunnel_night()
+	else:
+		_guard_desk()
 	_hud()
 	$Cop.global_transform = cop_spawn(0)
 	car_home = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$PatrolCar.global_transform = car_home
 	if Campaign.current:
 		guard.times_caught = Campaign.current.jail_catches
-	($Cop as Cop).show_hint.call_deferred("HINT_JAILED")
+	var hint: String = {"cleaning": "HINT_JAILED_CLEANING", "dog": "HINT_JAILED_DOG", "tunnel": "HINT_JAILED_TUNNEL"} \
+		.get(variant, "HINT_JAILED")
+	($Cop as Cop).show_hint.call_deferred(hint)
+
+
+## The way out for this seed: from --jailbreak=<variant> among the user args, or drawn. Without a seed from Play (0)
+## it's the donut, the first one.
+static func pick_variant(drawn_seed: int, args: PackedStringArray) -> String:
+	for arg in args:
+		if arg.begins_with("--jailbreak=") and VARIANTS.has(arg.trim_prefix("--jailbreak=")):
+			return arg.trim_prefix("--jailbreak=")
+	if drawn_seed == 0:
+		return VARIANTS[0]
+	return VARIANTS[hash(["jailbreak variant", drawn_seed]) % VARIANTS.size()]
+
+
+func is_cleaning() -> bool:
+	return variant == "cleaning"
+
+
+func is_dog() -> bool:
+	return variant == "dog"
+
+
+func is_tunnel() -> bool:
+	return variant == "tunnel"
+
+
+## The spoon tunnel: the guard awake at his desk with the key on his belt, a tray with two spoons in each cell and the
+## hole by each bunk.
+func _tunnel_night() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var desk := _desk()
+	var listener := ListeningGuard.new()
+	listener.name = "NightGuard"
+	add_child(listener)
+	listener.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), GUARD_AT)
+	listener.stand_guard(case_seed)
+	listener.station_lot = lot
+	listener.outside_cells = outside_cells
+	listener.see_through = [desk.get_rid()]
+	listener.caught.connect(_on_caught)
+	guard = listener
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["tunnel sides", case_seed])
+	for cell in TUNNEL_TRAYS.size():
+		var tray := TRAY_MODEL.instantiate() as Node3D
+		add_child(tray)
+		tray.global_transform = lot * Transform3D(Basis.IDENTITY, TUNNEL_TRAYS[cell])
+		for i in 2:
+			var spoon := Spoon.new()
+			spoon.name = "Spoon%d" % spoons.size()
+			add_child(spoon)
+			spoon.global_position = lot * (TUNNEL_TRAYS[cell] + Vector3((i - 0.5) * 0.16, 0.03, 0))
+			spoons.append(spoon)
+		var hole := TunnelHole.new()
+		hole.name = "TunnelHole%d" % cell
+		hole.cell = cell
+		add_child(hole)
+		hole.global_transform = lot * Transform3D(Basis.IDENTITY, TUNNEL_HOLES[cell][rng.randi_range(0, 1)])
+		hole.setup(case_seed)
+		hole.scooped.connect(func(dug: TunnelHole, cop: Cop) -> void: listener.heard_scoop(dug, cop))
+		hole.entered.connect(_into_tunnel)
+		holes.append(hole)
+		var mattress := TunnelMattress.new()
+		mattress.name = "Mattress%d" % cell
+		add_child(mattress)
+		mattress.global_position = lot * TUNNEL_MATTRESSES[cell]
+		mattresses.append(mattress)
+	tunnel_exit = MeshInstance3D.new()
+	tunnel_exit.name = "TunnelExit"
+	var disc := CylinderMesh.new()
+	disc.top_radius = TunnelHole.RADIUS
+	disc.bottom_radius = TunnelHole.RADIUS
+	disc.height = 0.02
+	var dark := StandardMaterial3D.new()
+	dark.albedo_color = TunnelHole.DARK
+	disc.material = dark
+	tunnel_exit.mesh = disc
+	add_child(tunnel_exit)
+	tunnel_exit.global_position = lot * (TUNNEL_EXIT + Vector3(0, 0.011, -0.8))
+	tunnel_exit.hide()
+
+
+## A cop got into a finished tunnel: out on the sidewalk by the patrol car (the guests' cops too, warped by the host).
+func _into_tunnel(_hole: TunnelHole, cop: Cop) -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var slot := get_tree().get_nodes_in_group("cops").find(cop)
+	cop.warp(lot * Transform3D(Basis.IDENTITY, TUNNEL_EXIT + Vector3(slot * 0.8, 0.1, 0)))
+	cop.show_hint("HINT_TUNNEL_OUT", true)
+
+
+## The host: which holes are under a mattress, and the tunnel's other end once one is through.
+func _cover_holes() -> void:
+	for hole in holes:
+		hole.covered = mattresses.any(func(mattress: TunnelMattress) -> bool:
+			return is_instance_valid(mattress) and mattress.covers(hole.global_position))
+	tunnel_exit.visible = holes.any(func(hole: TunnelHole) -> bool: return hole.is_through())
+
+
+## The guard dog's jailbreak: the guard asleep at his desk with no donuts, and Mordisco walking his round with the key.
+func _dog_night() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var desk := _desk()
+	var sleepy := SleepyGuard.new()
+	sleepy.name = "NightGuard"
+	add_child(sleepy)
+	sleepy.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), GUARD_AT)
+	sleepy.doze(case_seed)
+	sleepy.outside_cells = outside_cells
+	sleepy.see_through = [desk.get_rid()]
+	sleepy.caught.connect(_on_caught)
+	guard = sleepy
+	dog = GuardDog.new()
+	dog.name = "GuardDog"
+	add_child(dog)
+	dog.setup_round(case_seed, lot)
+	dog.outside_cells = outside_cells
+	dog.guard = sleepy
+	dog.car = $PatrolCar
+	sleepy.dog = dog
+	_dog_food()
+
+
+## The food for Mordisco: the trays in the cells, the fridge and the sandwich (on every PC, from the seed).
+func _dog_food() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var kinds := dog_food_kinds(case_seed)
+	var places: Array[Vector3] = []
+	for tray_at in TRAYS_AT:
+		var tray := TRAY_MODEL.instantiate() as Node3D
+		add_child(tray)
+		tray.global_transform = lot * Transform3D(Basis.IDENTITY, tray_at)
+		for i in ON_TRAY:
+			places.append(tray_at + Vector3((i - 1) * 0.14, 0.04, 0))
+	var fridge := StaticBody3D.new()
+	fridge.name = "Fridge"
+	add_child(fridge)
+	fridge.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), FRIDGE_AT)
+	fridge.add_child(FRIDGE_MODEL.instantiate())
+	for part: Array in [[Vector3(0.7, 0.04, 0.65), Vector3(0, 0.02, 0)], [Vector3(0.7, 0.04, 0.65), Vector3(0, 1.68, 0)],
+			[Vector3(0.04, 1.7, 0.65), Vector3(-0.33, 0.85, 0)], [Vector3(0.04, 1.7, 0.65), Vector3(0.33, 0.85, 0)],
+			[Vector3(0.62, 1.62, 0.02), Vector3(0, 0.85, -0.31)], [Vector3(0.05, 1.7, 0.7), Vector3(0.37, 0.85, 0.68)],
+			[Vector3(0.62, 0.02, 0.58), Vector3(0, 0.45, 0)], [Vector3(0.62, 0.02, 0.58), Vector3(0, 0.85, 0)],
+			[Vector3(0.62, 0.02, 0.58), Vector3(0, 1.25, 0)]]:
+		var shape := CollisionShape3D.new()
+		var box_shape := BoxShape3D.new()
+		box_shape.size = part[0]
+		shape.shape = box_shape
+		shape.position = part[1]
+		fridge.add_child(shape)
+	for shelf in FRIDGE_SHELVES:
+		for i in ON_SHELF:
+			places.append(FRIDGE_AT + Vector3((1 - i) * 0.18, shelf + 0.04, -0.05))
+	for i in kinds.size():
+		_place_food(kinds[i], lot * places[i])
+	_place_food("sandwich", lot * SANDWICH_AT)
+
+
+func _place_food(kind: String, at: Vector3) -> void:
+	var food := DogFood.new()
+	food.kind = kind
+	food.name = "DogFood%d" % dog_food.size()
+	add_child(food)
+	food.global_position = at
+	dog_food.append(food)
+
+
+## What's on the trays and in the fridge for this seed (the sandwich aside): drawn by weight, then the least liked
+## turned into sausages until it adds up to DOG_FOOD_ENOUGH.
+static func dog_food_kinds(drawn_seed: int) -> Array[String]:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["dog food", drawn_seed])
+	var pool: Array[String] = []
+	for kind: String in DOG_FOOD:
+		for i in DOG_FOOD[kind]:
+			pool.append(kind)
+	var kinds: Array[String] = []
+	for i in TRAYS_AT.size() * ON_TRAY + FRIDGE_SHELVES.size() * ON_SHELF:
+		kinds.append(pool[rng.randi_range(0, pool.size() - 1)])
+	var total := func() -> float:
+		return kinds.reduce(func(sum: float, kind: String) -> float: return sum + DogFood.KINDS[kind][0], 0.0)
+	while total.call() < DOG_FOOD_ENOUGH:
+		var worst := 0
+		for i in kinds.size():
+			if DogFood.KINDS[kinds[i]][0] < DogFood.KINDS[kinds[worst]][0]:
+				worst = i
+		kinds[worst] = "sausage"
+	return kinds
+
+
+## The cleaning crew's jailbreak: dawn, no guard at the desk, and the comisario walking his round instead.
+func _early_comisario() -> void:
+	var comisario := EarlyComisario.new()
+	comisario.name = "EarlyComisario"
+	add_child(comisario)
+	comisario.setup_round(case_seed, city.transform * CityLayout.lot("station"))
+	comisario.outside_cells = outside_cells
+	comisario.caught.connect(_on_caught)
+	comisario.car = $PatrolCar
+	guard = comisario
+	_cleaner()
+	_closet()
+	stains = FloorStains.new()
+	stains.name = "FloorStains"
+	add_child(stains)
+	stains.setup(case_seed, city.transform * CityLayout.lot("station"))
+	stains.cleaned.connect(func(_index: int, at: Vector3) -> void: (guard as EarlyComisario).saw_cleaning(at))
+	_dawn()
+
+
+## The break room as the cleaning closet: the disguises on the floor and the tools along the wall.
+func _closet() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["cleaning closet", case_seed])
+	var pieces: Array[String] = []
+	for i in 4:
+		pieces.append_array(CLOSET)
+	for i in rng.randi_range(0, CLOSET_MISSING):
+		pieces.remove_at(rng.randi_range(0, pieces.size() - 1))
+	for i in pieces.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(pieces[i]).instantiate()
+		piece.name = "Closet%d" % i
+		add_child(piece)
+		piece.global_position = lot * (CLOSET_AT + Vector3((i % 6) * CLOSET_GAP.x, 0.12, floorf(i / 6.0) * CLOSET_GAP.y))
+	for item: Array in CLOSET_TOOLS:
+		var tool := CleaningTool.new()
+		tool.name = "Tool%d" % tools.size()
+		tool.model = load(item[0])
+		tool.kind = item[1]
+		tool.length = item[2]
+		add_child(tool)
+		tool.global_transform = lot * Transform3D(Basis(Vector3.UP, PI / 2), item[3])
+		tools.append(tool)
+	polisher = FloorPolisher.new()
+	polisher.name = "FloorPolisher"
+	add_child(polisher)
+	polisher.global_transform = lot * Transform3D(Basis(Vector3.UP, -PI / 2), POLISHER_AT)
+
+
+## Clotilde beside her cart, with the cells' key ring on its tray. The comisario doesn't mind the keys on the cart,
+## so they aren't one of the guard's clues.
+func _cleaner() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var cart := StaticBody3D.new()
+	cart.name = "CleaningCart"
+	add_child(cart)
+	_cart = lot * Transform3D(Basis(Vector3.UP, PI), CART_AT)
+	cart.global_transform = _cart
+	cart.add_child(CART_MODEL.instantiate())
+	var shape := CollisionShape3D.new()
+	var solid := BoxShape3D.new()
+	solid.size = CART_SIZE
+	shape.shape = solid
+	shape.position.y = CART_SIZE.y / 2
+	cart.add_child(shape)
+	cart_key = NightGuard.KEY_SCENE.instantiate()
+	cart_key.name = "CartKey"
+	add_child(cart_key)
+	cart_key.remove_from_group("guard_clues")
+	cart_key.global_position = _cart * CART_KEY
+	cleaner = Cleaner.new()
+	cleaner.name = "Cleaner"
+	add_child(cleaner)
+	cleaner.setup(case_seed, lot, city.cell_doors, cart_key, _cart * CART_HOOK)
+
+
+## 5:30 in the morning: the sky starts to light up orange and the moon's light turns warm.
+func _dawn() -> void:
+	var light: DirectionalLight3D = $Moon
+	light.light_color = Color(1.0, 0.72, 0.5)
+	light.light_energy = 0.4
+	var world: WorldEnvironment = $Environment
+	var env: Environment = world.environment.duplicate(true)
+	var sky := env.sky.sky_material as ProceduralSkyMaterial
+	sky.sky_top_color = Color(0.22, 0.28, 0.48)
+	sky.sky_horizon_color = Color(0.95, 0.6, 0.42)
+	sky.ground_horizon_color = Color(0.95, 0.6, 0.42)
+	env.ambient_light_energy = 0.3
+	world.environment = env
 
 
 ## Where the cop in `slot` wakes up: two in each cell (Net puts every player's cop here online).
@@ -79,17 +458,7 @@ func cop_spawn(slot: int) -> Transform3D:
 
 func _guard_desk() -> void:
 	var lot := city.transform * CityLayout.lot("station")
-	var desk := StaticBody3D.new()
-	desk.name = "GuardDesk"
-	add_child(desk)
-	desk.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), DESK_AT)
-	desk.add_child(DESK_MODEL.instantiate())
-	var shape := CollisionShape3D.new()
-	var solid := BoxShape3D.new()
-	solid.size = StationRooms.SOLID["station_desk"]
-	shape.shape = solid
-	shape.position.y = solid.size.y / 2
-	desk.add_child(shape)
+	var desk := _desk()
 	box = BOX_SCENE.instantiate()
 	box.name = "GuardDonutBox"
 	add_child(box)
@@ -114,6 +483,22 @@ func _guard_desk() -> void:
 		sticks.append(stick)
 
 
+## The guard's desk in front of the cells.
+func _desk() -> StaticBody3D:
+	var desk := StaticBody3D.new()
+	desk.name = "GuardDesk"
+	add_child(desk)
+	desk.global_transform = city.transform * CityLayout.lot("station") * Transform3D(Basis(Vector3.UP, PI), DESK_AT)
+	desk.add_child(DESK_MODEL.instantiate())
+	var shape := CollisionShape3D.new()
+	var solid := BoxShape3D.new()
+	solid.size = StationRooms.SOLID["station_desk"]
+	shape.shape = solid
+	shape.position.y = solid.size.y / 2
+	desk.add_child(shape)
+	return desk
+
+
 ## Whether a world position is out of both cells (through an open door or never in).
 func outside_cells(at: Vector3) -> bool:
 	var local := (city.transform * CityLayout.lot("station")).affine_inverse() * at
@@ -128,16 +513,28 @@ func _on_caught(times: int) -> void:
 		Campaign.current.jail_catches = times
 		Campaign.current.save()
 	if times >= CATCHES:
-		_call_comisario()
+		if is_cleaning():
+			guard.say("EARLY_SUSPENDED", LOST_DELAY + 2.0)
+		else:
+			_call_comisario()
 		get_tree().create_timer(LOST_DELAY).timeout.connect(finish.bind("lost"))
 	var slot := 0
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
 		if outside_cells(cop.global_position):
+			var car: PatrolCar = $PatrolCar
+			if car.seat_of(cop) >= 0:
+				car.exit(cop)
+				if cop.sync and cop.sync.net.actions:
+					cop.sync.net.actions.tell_guests(cop, "exit", car)
+			if is_cleaning():
+				_undress(cop)
 			cop.warp(cop_spawn(slot))
 			slot += 1
-		cop.show_hint("HINT_GUARD_CAUGHT")
+		cop.show_hint("HINT_COMISARIO_CAUGHT" if is_cleaning() else "HINT_GUARD_CAUGHT")
 	for clue: Node in get_tree().get_nodes_in_group("guard_clues"):
-		if clue is CellKey or (clue is LooseDonut and clue.has_key):
+		if is_dog() and clue is CellKey:
+			dog.key_on_collar = true
+		elif clue is CellKey or (clue is LooseDonut and clue.has_key):
 			guard.key_on_belt = true
 		_drop(clue as Grabbable)
 		clue.queue_free()
@@ -149,9 +546,73 @@ func _on_caught(times: int) -> void:
 			_drop(stick)
 			sticks.erase(stick)
 			stick.queue_free()
-	_drop(box)
-	box.linear_velocity = Vector3.ZERO
-	box.global_transform = box_home
+	if dog:
+		dog.riding = false
+	if is_tunnel():
+		_confiscate_spoons()
+	if cleaner:
+		cleaner.reset()
+		if is_instance_valid(cart_key):
+			_drop(cart_key)
+			cart_key.linear_velocity = Vector3.ZERO
+			cart_key.global_position = _cart * CART_KEY
+	if polisher:
+		polisher.is_on = false
+	if box:
+		_drop(box)
+		box.linear_velocity = Vector3.ZERO
+		box.global_transform = box_home
+
+
+## The listening guard caught them: the hole he caught them at loses TUNNEL_REFILL of what was dug, and he takes away
+## the spoons in their hands and out of the cells, but leaves one on the tray of a cell that has none left.
+func _confiscate_spoons() -> void:
+	var listener := guard as ListeningGuard
+	if listener.caught_hole:
+		listener.caught_hole.fill(TUNNEL_REFILL)
+	var lot := city.transform * CityLayout.lot("station")
+	var taken: Array[Spoon] = []
+	for spoon in spoons:
+		if spoon.is_held() or outside_cells(spoon.global_position):
+			_drop(spoon)
+			taken.append(spoon)
+	for cell in TUNNEL_TRAYS.size():
+		var left := spoons.filter(func(spoon: Spoon) -> bool: return not taken.has(spoon) and spoon_cell(spoon) == cell)
+		if left.is_empty() and not taken.is_empty():
+			var spoon: Spoon = taken.pop_back()
+			spoon.linear_velocity = Vector3.ZERO
+			spoon.global_position = lot * (TUNNEL_TRAYS[cell] + Vector3(0, 0.03, 0))
+			guard.say("LISTENING_GUARD_SPOON_LEFT", 5.0)
+	for spoon in taken:
+		spoons.erase(spoon)
+		spoon.queue_free()
+
+
+## Which cell a spoon is in (0 or 1), or -1 out of both.
+func spoon_cell(spoon: Spoon) -> int:
+	if outside_cells(spoon.global_position):
+		return -1
+	var local := (city.transform * CityLayout.lot("station")).affine_inverse() * spoon.global_position
+	return 0 if local.x < StationRooms.CELL_SPLIT_X else 1
+
+
+## The comisario takes the caught cop's cleaning disguise back to the closet: it comes off on every PC and the host
+## puts the pieces back on the closet's floor, in a row of their own.
+func _undress(cop: Cop) -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var parent := cop.get_parent()
+	for kind: String in cop.disguise.keys():
+		var before := parent.get_child_count()
+		cop.lose_disguise(kind)
+		if cop.sync and cop.sync.net.actions:
+			cop.sync.net.actions.tell_guests(cop, "lose_disguise", cop, [kind])
+		for i in range(before, parent.get_child_count()):
+			var piece := parent.get_child(i) as DisguisePiece
+			if piece:
+				piece.linear_velocity = Vector3.ZERO
+				piece.global_position = lot * (CLOSET_AT + Vector3((_returned % 6) * CLOSET_GAP.x, 0.12,
+					(2 + floorf(_returned / 6.0)) * CLOSET_GAP.y))
+				_returned += 1
 
 
 ## Out of every cop's hands.
@@ -182,11 +643,52 @@ func _hud() -> void:
 	add_child(hud)
 
 
+func _physics_process(delta: float) -> void:
+	if stains:
+		_slip_on_wet(delta)
+	if dog and multiplayer.is_server():
+		_dog_jumps_in()
+	if is_tunnel():
+		if multiplayer.is_server():
+			_cover_holes()
+		else:
+			tunnel_exit.visible = holes.any(func(hole: TunnelHole) -> bool: return hole.is_through())
+
+
+## Every cop in the patrol car and Mordisco everyone's friend, near it: he jumps in too.
+func _dog_jumps_in() -> void:
+	var car: PatrolCar = $PatrolCar
+	var cops := get_tree().get_nodes_in_group("cops")
+	if dog.riding or not dog.friend_of_all(cops) or cops.any(func(cop: Node) -> bool: return car.seat_of(cop) < 0):
+		return
+	if dog.global_position.distance_to(car.global_position) <= DOG_RIDE_REACH:
+		dog.ride(car)
+
+
+## This PC's own cop running on the wet floor slips: down for a while, dropping what it holds.
+func _slip_on_wet(delta: float) -> void:
+	for cop: Variant in _slipped.keys():
+		_slipped[cop] -= delta
+		if _slipped[cop] <= 0.0 or not is_instance_valid(cop):
+			_slipped.erase(cop)
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if cop.sync and not cop.sync.is_multiplayer_authority():
+			continue
+		var flat := Vector3(cop.velocity.x, 0, cop.velocity.z)
+		if _slipped.has(cop) or not cop.is_running or flat.length() <= EarlyComisario.RUN_SPEED \
+				or not stains.wet_at(cop.global_position):
+			continue
+		_slipped[cop] = WET_AGAIN
+		cop.get_node("Grabber").release()
+		cop.knock_back(flat.normalized() * WET_PUSH, WET_SLIP)
+		cop.show_hint("HINT_WET_SLIP")
+
+
 func _process(_delta: float) -> void:
 	if not multiplayer.is_server():
 		_follow_catches()
 	suspicion_bar.value = guard.suspicion
-	caught_label.text = tr("HUD_GUARD_CAUGHT") % [guard.times_caught, CATCHES]
+	caught_label.text = tr("HUD_COMISARIO_CAUGHT" if is_cleaning() else "HUD_GUARD_CAUGHT") % [guard.times_caught, CATCHES]
 	if guard.outcome != "":
 		# A guest learns how it ended from the guard (the host's state).
 		if not end_screen:
@@ -252,7 +754,8 @@ func _call_comisario() -> void:
 
 ## The short screen at the end: "¡Fugados!" and the next shift, or "Suspendidos" and back to the menu.
 func _show_end(result: String) -> void:
-	if result == "lost" and not has_node("PajamaComisario"):
+	# The early comisario is already there: nobody calls him in his pajamas.
+	if result == "lost" and not is_cleaning() and not has_node("PajamaComisario"):
 		_call_comisario()
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
 		cop.input_enabled = false
@@ -277,11 +780,15 @@ func _show_end(result: String) -> void:
 	var campaign := Campaign.current
 	var next := result == "escaped" and not (campaign and campaign.is_over())
 	if result == "lost":
-		line.text = "JAILBREAK_LOST_LINE"
+		line.text = "JAILBREAK_LOST_LINE_CLEANING" if is_cleaning() else "JAILBREAK_LOST_LINE"
 	elif campaign and campaign.is_promoted():
 		line.text = "SHIFT_PROMOTED"
 	else:
 		line.text = tr("JAILBREAK_ESCAPED_LINE") % (campaign.shift if campaign else 1)
+	if result == "escaped" and dog and dog.riding:
+		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_DOG")
+	elif result == "escaped" and is_tunnel():
+		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_TUNNEL")
 	box_ui.add_child(line)
 	var buttons := HBoxContainer.new()
 	buttons.alignment = BoxContainer.ALIGNMENT_CENTER
