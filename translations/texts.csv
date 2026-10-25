@@ -2194,3 +2194,22 @@ CASE_FAILED_LAUNDRY_ESCAPED,"Se escaparon 3 presos con la ropa sucia. Caso perdi
 EVENT_PURSE_HELP,¡Mi cartera! ¡Ladrón!,My purse! Thief!,Minha bolsa! Ladrão!
 EVENT_PURSE_THANKS,¡Mi cartera! Gracias.,My purse! Thank you.,Minha bolsa! Obrigada.
 EVENT_PAID,+%d de plata,+%d money,+%d de dinheiro
+PROMPT_STREET_HALT,"E: ¡Alto, policía!","E: Stop, police!","E: Parado, polícia!"
+PROMPT_STREET_SEARCH,"E: revisar el bolso","E: search the bag","E: revistar a bolsa"
+STREET_HALTED_0,¿Yo? ¿Qué hice?,Me? What did I do?,Eu? O que eu fiz?
+STREET_HALTED_1,Voy apurado... bueno.,"I'm in a hurry... fine.",Estou com pressa... tá bom.
+STREET_HALTED_2,"Revise, revise. No tengo nada.",Go ahead. I've got nothing.,Pode revistar. Não tenho nada.
+STREET_HALTED_3,¿Es por la camisa? Ya sé que es fea.,Is it the shirt? I know it's ugly.,É pela camisa? Eu sei que é feia.
+STREET_FOUND_0,Quesos de contrabando. Muchos.,Smuggled cheese. Lots of it.,Queijos contrabandeados. Muitos.
+STREET_FOUND_1,Veinte relojes falsos en el brazo.,Twenty fake watches up one arm.,Vinte relógios falsos no braço.
+STREET_FOUND_2,Un loro sin papeles.,A parrot with no papers.,Um papagaio sem documentos.
+STREET_FOUND_3,El enano de jardín robado del vecino.,The neighbor's stolen garden gnome.,O anão de jardim roubado do vizinho.
+STREET_FOUND_4,Cuarenta controles remotos ajenos.,Forty remote controls that aren't theirs.,Quarenta controles remotos alheios.
+STREET_FOUND_5,Billetes de juguete muy bien planchados.,Toy money ironed very carefully.,Notas de brinquedo muito bem passadas.
+STREET_FOUND_6,Una tortuga con collar de diamantes.,A turtle wearing a diamond collar.,Uma tartaruga com coleira de diamantes.
+STREET_FOUND_7,Las llaves de la comisaría.,The police station's keys.,As chaves da delegacia.
+STREET_NOTHING_0,"Un sándwich. Es mío, no lo toque.","A sandwich. It's mine, don't touch it.","Um sanduíche. É meu, não toque."
+STREET_NOTHING_1,Medias. Limpias. Casi todas.,Socks. Clean. Mostly.,Meias. Limpas. Quase todas.
+STREET_NOTHING_2,Nada. ¿Ve? Nada.,Nothing. See? Nothing.,Nada. Viu? Nada.
+STREET_NOTHING_3,Una foto de mi gato. ¿Quiere verla?,A picture of my cat. Want to see it?,Uma foto do meu gato. Quer ver?
+STREET_BUSTED,¡No es mío! ¡Me lo pusieron!,It's not mine! Someone planted it!,Não é meu! Alguém colocou aí!
