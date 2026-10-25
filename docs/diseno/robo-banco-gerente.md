@@ -69,3 +69,14 @@ variantes), el walkie, el baúl y la huida en su auto.
    Recomendado: sí, las tres a la vez. La otra opción es una sola pista al azar por partida (más difícil).
 3. **¿Se gana con el gerente esposado, y El Oso solo no alcanza?** Recomendado: sí, el gerente es el jefe y si se
    escapa en su auto se pierde. La otra opción es que gane cualquiera de los dos y el gerente solo sume 100.
+
+## Hecho así
+
+- **Paso 1 (el gerente y la llave):** en todos los robos al banco el señor Moneda (`BankManager`, modelo `npc_gerente`
+  en pijama verde a rayas) camina de ida y vuelta por la vereda al lado de su auto (`manager_car`, un sedán bordó
+  estacionado al oeste de la entrada), tirita cuando se para y se queja cada 9 s (`MANAGER_1-4`). E sobre él le da al
+  policía la llave de la puerta de atrás (`Cop.has_key`, la misma de las macetas del abuelo) y después solo se queja
+  (`MANAGER_AGAIN_1-3`); con la llave la puerta de atrás abre desde afuera. El sorteo pasa a quintos: primero el
+  gerente jefe (`hash(["bank moneda", semilla]) % 5`), y el resto sigue en cuartos como antes, así las semillas de las
+  pruebas viejas no cambian. `--bank=manager` lo fuerza. El walkie del modelo queda escondido hasta el paso 2.
+  Capturas en `/mnt/project-files/gerente/paso1-*.png`.

@@ -1,6 +1,6 @@
 extends GutTest
 
-## The sorry robber (robo-banco-arrepentido.md, step 1, decision 123): a quarter of the seeds, one of the three under
+## The sorry robber (robo-banco-arrepentido.md, step 1, decision 123): a fifth of the seeds, one of the three under
 ## El Oso cries under his mask with a white hanky and keeps quiet about the cops.
 
 const LEVEL := preload("res://scenes/levels/bank.tscn")
@@ -17,8 +17,8 @@ func _bank(want: String) -> BankLevel:
 	return bank
 
 
-func test_the_seeds_draw_all_four_in_quarters() -> void:
-	var drawn := {"party": 0, "grandpas": 0, "sorry": 0, "base": 0}
+func test_the_seeds_draw_all_five_in_fifths() -> void:
+	var drawn := {"party": 0, "grandpas": 0, "sorry": 0, "manager": 0, "base": 0}
 	for seed_ in range(1, 401):
 		drawn[BankLevel.variant(seed_, PackedStringArray())] += 1
 	for want: String in drawn:

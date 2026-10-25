@@ -113,6 +113,28 @@ const NPCS = {
 		b.add('cap', stripe, new THREE.CylinderGeometry(0.2, 0.2, 0.05, 8), { pos: V(0, 1.45, 0.0) });
 		b.add('cap', white, ellipsoid(0.05, 0.05, 0.05, 6, 4), { pos: V(0.15, 1.8, -0.03) });
 	},
+	// Mr. Moneda, the bank's manager (robo-banco-gerente.md, decision 124): woken up by the robbery, green striped
+	// pajamas, a robe's belt, slippers, glasses, a thin mustache and a bald top with grey hair on the sides. The walkie in
+	// his pajama's pocket goes in its own node ('walkie') so the game shows it only when he's the boss and talks into it.
+	gerente(b) {
+		const pajama = C('pajama_green', 0xb8dcc0), stripe = C('pajama_green_stripe', 0x3e7a52);
+		pearBody(b, SKIN.crema, { shirt: pajama, pants: pajama, shoes: C('slippers_brown', 0x6a4a32), belted: false });
+		for (const y of [0.5, 0.65, 0.8, 0.95, 1.08]) {
+			const r = y < 0.8 ? 0.36 + (0.8 - y) * 0.33 : 0.36 - (y - 0.8) * 0.48;
+			b.add('body', stripe, loft([{ y: y - 0.015, rx: r + 0.012, rz: r * 0.89 + 0.012 }, { y: y + 0.015, rx: r + 0.006, rz: r * 0.89 + 0.006 }], 10));
+		}
+		b.add('body', C('robe_belt', 0x8a2a3a), new THREE.TorusGeometry(0.4, 0.025, 4, 16), { pos: V(0, 0.62, 0.0), rot: [Math.PI / 2, 0, 0] });
+		b.add('body', C('pajama_pocket', 0x9cc8a8), new THREE.BoxGeometry(0.12, 0.1, 0.03), { pos: V(0.17, 0.98, 0.29), rot: [-0.35, 0.4, 0] });
+		eyes(b, 1.33, 0.16, 0.08, 0.045);
+		glasses(b);
+		mouth(b);
+		mustache(b, C('hair_grey', 0x8a8a8a), 0.8);
+		const hair = C('hair_grey', 0x8a8a8a);
+		for (const s of [-1, 1]) b.add('head', hair, ellipsoid(0.06, 0.1, 0.13, 6, 4), { pos: V(s * 0.18, 1.33, -0.03) });
+		b.add('head', hair, ellipsoid(0.15, 0.08, 0.06, 8, 4), { pos: V(0, 1.31, -0.17) });
+		b.add('walkie', black, new THREE.BoxGeometry(0.06, 0.14, 0.04), { pos: V(0.17, 1.06, 0.3), rot: [-0.35, 0.4, 0] });
+		b.add('walkie', black, new THREE.CylinderGeometry(0.006, 0.006, 0.14, 4), { pos: V(0.15, 1.18, 0.3) });
+	},
 	// Abuelo (case 1.1): small, cardigan, flat cap, glasses, white eyebrows and a cane.
 	abuelo(b) {
 		const cardigan = C('cardigan', 0x7c8b52), pants = C('abuelo_pants', 0x8c8378);

@@ -22,7 +22,7 @@ func _seed(party: bool) -> int:
 	return seed_
 
 
-func test_about_a_quarter_of_the_seeds_are_the_party() -> void:
+func test_about_a_fifth_of_the_seeds_are_the_party() -> void:
 	var parties := 0
 	for seed_ in range(1, 201):
 		if BankLevel.is_party(seed_, PackedStringArray()):
