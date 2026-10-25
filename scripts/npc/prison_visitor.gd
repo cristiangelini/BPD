@@ -339,9 +339,26 @@ func _arrive_at_table() -> void:
 	item.visitor = self
 	prison.add_child(item, true)
 	item.global_position = prison.global_transform * VisitPlan.ITEM_ON_TABLE
-	item.set_down()
 	say("VISITOR_HELLO_%d" % randi_range(1, HELLO_LINES))
 	at_table.emit(self)
+
+
+## What a guest's copy needs besides where they are and what they say (NpcSync, step 7).
+func net_state() -> Array:
+	return [state, is_carrying(), passing, frisked]
+
+
+func apply_net_state(net: Variant) -> void:
+	state = net[0]
+	_carried.visible = net[1]
+	frisked = net[3]
+	if net[2] != passing:
+		passing = net[2]
+		_carried.position = HANDS + (Vector3(0, -0.5, -0.1) if passing else Vector3.ZERO)
+	_model.position.y = -SIT_DROP if state == State.SEATED else 0.0
+	if state == State.GONE and visible:
+		hide()
+		collision_layer = 0
 
 
 func say(key: String, seconds := SAY_TIME) -> void:

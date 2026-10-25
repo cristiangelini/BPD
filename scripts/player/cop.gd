@@ -234,6 +234,13 @@ func change_battery(battery: FlashlightBattery) -> void:
 		battery.queue_free()
 
 
+## E with a visitor's thing in hand (the visiting day): opened, on every PC. The thing goes as an argument, so every
+## PC finds its own copy (PropSync), since the host made it during the case.
+func open_visit_item(item: VisitItem) -> void:
+	if item:
+		item.use(self)
+
+
 ## E with a crime scene clue in hand (CrimeClueItem): into a bag if aiming at the bags, or eaten.
 func use_clue_in_hand(item: CrimeClueItem, aimed: Node) -> void:
 	if item:
@@ -448,8 +455,11 @@ func use() -> bool:
 			return false
 		act("eat_donut", self, [$Grabber.held])
 		return true
-	if $Grabber.held is HookStick or $Grabber.held is LooseDonut or $Grabber.held is VisitItem:
+	if $Grabber.held is HookStick or $Grabber.held is LooseDonut:
 		act("use", $Grabber.held)
+		return true
+	if $Grabber.held is VisitItem:
+		act("open_visit_item", self, [$Grabber.held])
 		return true
 	if $Grabber.held is FlashlightBattery:
 		act("change_battery", self, [$Grabber.held])

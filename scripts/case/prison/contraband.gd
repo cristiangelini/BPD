@@ -33,6 +33,11 @@ func _ready() -> void:
 	add_child(_model())
 
 
+## Online (PropSync): the host makes them; a guest's copy is made from this script with its kind.
+func net_setup() -> Dictionary:
+	return {"kind": kind}
+
+
 func held_prompt_key(_cop: Cop) -> String:
 	return "PROMPT_CONTRABAND_%s" % Kind.keys()[kind]
 

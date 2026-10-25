@@ -127,3 +127,10 @@ visitas iguales.
   cosa que llegó a un preso, 25 menos por cada cosa inocente rota y 25 más por cada pase frenado. Cuota propia de 400.
   Con 3 cosas que llegan se pierde. En el sorteo de Jugar sale en un cuarto de los casos de la cárcel
   (`PlaceDraw.PRISONS`, con el motín, el traslado y el corte de luz). Captura: `paso6-planilla.png`.
+- **Paso 7 (online):** decide el anfitrión. Los visitantes y sus presos van por `NpcSync` (dónde están, qué dicen, en
+  qué parte van, si tienen su cosa en la mano, si están pasando algo por debajo de la mesa, si ya los cachearon, si se
+  fueron); lo que dejan en la mesa y lo que se encuentra por `PropSync` (el anfitrión los hace y a los invitados les
+  llega la copia con su tipo); E y R sobre los visitantes y abrir lo que traen por `ActionSync` (abrir va como
+  acción del policía con la cosa de argumento, así cada PC encuentra su copia), y la planilla, el reloj de la visita
+  y el final por `CaseSync` (`VisitCase.snapshot`). Solo el anfitrión sabe qué hay adentro: los invitados ven abrirse
+  la cosa y les llega lo encontrado.
