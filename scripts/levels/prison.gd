@@ -86,7 +86,8 @@ var case: PrisonCase
 var _build: PlaceBuilder
 
 ## Which prison case this is: "riot" (the canteen, carcel-motin.md), "transfer" (the bus from the station,
-## traslado-presos.md; --place=transfer) or "blackout" (the power cut, carcel-corte-de-luz.md; --place=blackout).
+## traslado-presos.md; --place=transfer), "blackout" (the power cut, carcel-corte-de-luz.md; --place=blackout) or
+## "visits" (the visiting day, carcel-visitas.md; --place=visits).
 @export var variant := "riot"
 ## The transfer's bus (traslado-presos.md, step 1), parked by the station's door, and its inmates (step 2).
 var bus: PrisonBus
@@ -109,6 +110,8 @@ var blackout: BlackoutPlan
 var fuse_board: FuseBoard
 ## The blackout case on top (step 6): the comisario's briefing, the planilla and the end of the shift.
 var blackout_case: BlackoutCase
+## The visiting day's line of visitors and the search table (carcel-visitas.md, step 2).
+var visits: VisitPlan
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -130,6 +133,9 @@ func _ready() -> void:
 		return
 	if variant == "blackout":
 		_start_blackout()
+		return
+	if variant == "visits":
+		_start_visits()
 		return
 	riot = PrisonRiot.new()
 	riot.name = "Riot"
@@ -201,6 +207,18 @@ func _start_blackout() -> void:
 	blackout_case.shift_screen = $ShiftScreen
 	add_child(blackout_case)
 	blackout_case.start(city.get("comisario"))
+	city.transform = CityLayout.anchor("prison")
+	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
+	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+
+
+## The visiting day (carcel-visitas.md, step 2): the visitors wait in line in the yard, from the search table by the
+## canteen's west door back toward the gate. The cops start at the station and drive here.
+func _start_visits() -> void:
+	visits = VisitPlan.new()
+	visits.name = "Visits"
+	add_child(visits)
+	visits.setup(self, case_seed)
 	city.transform = CityLayout.anchor("prison")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
