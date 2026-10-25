@@ -134,7 +134,6 @@ var puppeteer := false
 var lurch := 0.0
 ## Times a cop tried E at its empty window.
 var knocked := 0
-var _haunt_time := 0.0
 ## Riders still to pop out of its open door.
 var _to_pop := 0
 ## Riders counted so far, each with their sticker (CrowdRider.stick), and whether a cop looked in to count who stayed.
@@ -593,18 +592,26 @@ func _build_trunk() -> void:
 func net_setup() -> Dictionary:
 	return {"plate": plate, "driver": driver, "clown": clown, "clown_traits": clown_traits, "fruit": fruit,
 		"crate": crate, "hat": hat, "melon_kinds": melon_kinds, "crowd": crowd, "ghost_mode": ghost_mode, "ghost": ghost,
-		"shirt": shirt}
+		"shirt": shirt, "puppeteer": puppeteer}
 
 
-## Online: where it is in the queue and whether its trunk is open.
+## Online: where it is in the queue and whether its trunk is open; the ghost car's, how many pranks and the last one.
 func net_state() -> Array:
-	return [state, lid.is_open if lid else false]
+	var rig := get_node_or_null("Pilot") as GhostPilot
+	return [state, lid.is_open if lid else false, rig.pranks if rig else 0, rig.last_prank if rig else ""]
 
 
 func apply_net_state(net: Array) -> void:
 	state = net[0]
 	if net[1]:
 		open_trunk()
+	var rig := get_node_or_null("Pilot") as GhostPilot
+	if rig and net.size() > 3:
+		rig.copy_prank(net[2], net[3])
+	# The host's detained the pilot: he's out of his window here too.
+	var leaning := get_node_or_null("WindowDriver")
+	if leaning and state == "pulled_over":
+		leaning.queue_free()
 
 
 ## The trunk opened on some PC: open on this one too (TrunkLid asks every PC through its cop).
@@ -723,9 +730,6 @@ func _physics_process(delta: float) -> void:
 		_bubble.hide()
 	if state == "gone" or not checkpoint:
 		return
-	if ghost:
-		_haunt_time += delta
-		GhostCar.haunt(self, _haunt_time)
 	if _to_pop > 0:
 		_pop_left -= delta
 		if _pop_left <= 0.0:
