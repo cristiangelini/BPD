@@ -37,6 +37,9 @@ var jail_catches := 0
 ## The place's owner the cops brought in at the end of the last raid (RaidCase.custody), to be interrogated next
 ## shift (decision 93); empty if nobody.
 var custody := {}
+## Money of the bribes taken in the campaign, less the agent's fines and what went to the bribe jailbreak's guard:
+## what the cops keep in their socks (fuga-soborno.md).
+var bribe_money := 0
 ## Bribes taken since the record was last clean; Bribes.INVESTIGATION_AT of them open an investigation.
 var bribes_taken := 0
 ## Internal affairs is investigating the cops: its agent follows them in every case.
@@ -87,6 +90,7 @@ func take_bribe(amount: int, seen := false) -> bool:
 		shift_caught += 1
 		return true
 	shift_bribes += amount
+	bribe_money += amount
 	shift_bribe_count += 1
 	bribes_taken += 1
 	return false
@@ -124,6 +128,7 @@ func _add_bribes(report: Dictionary) -> void:
 	report.bribes = shift_bribes
 	report.agent_fine = Bribes.CAUGHT_FINE * shift_caught
 	report.total += shift_bribes - report.agent_fine
+	bribe_money = maxi(bribe_money - report.agent_fine, 0)
 	if agent_catches >= Bribes.CATCHES_TO_SUSPEND:
 		report.investigation = "suspended"
 	elif investigation and shift_bribe_count == 0 and shift_caught == 0:
@@ -143,6 +148,18 @@ func _add_bribes(report: Dictionary) -> void:
 	shift_caught = 0
 
 
+## The bribes' money the cops still have for the bribe jailbreak's guard: never more than the group's money ("si les
+## queda", fuga-soborno.md).
+func bribe_fund() -> int:
+	return clampi(bribe_money, 0, maxi(money, 0))
+
+
+## What the bribe jailbreak's guard was paid comes out of the group's money and the bribes' money.
+func pay_guard(amount: int) -> void:
+	money -= amount
+	bribe_money = maxi(bribe_money - amount, 0)
+
+
 ## The jailbreak is over: escaped, the next shift goes on as usual; caught, the campaign is lost (decision 99).
 func finish_jailbreak(escaped: bool) -> void:
 	jailed = false
@@ -154,7 +171,7 @@ func to_dict() -> Dictionary:
 	return {"version": VERSION, "seed": campaign_seed, "shift": shift, "money": money, "items": items,
 		"history": history, "suspended": suspended, "custody": custody, "jailed": jailed,
 		"jailbreak_used": jailbreak_used, "jail_catches": jail_catches, "bribes_taken": bribes_taken,
-		"investigation": investigation, "clean_shifts": clean_shifts, "agent_catches": agent_catches}
+		"investigation": investigation, "clean_shifts": clean_shifts, "agent_catches": agent_catches, "bribe_money": bribe_money}
 
 
 static func from_dict(data: Dictionary) -> Campaign:
@@ -171,6 +188,7 @@ static func from_dict(data: Dictionary) -> Campaign:
 	campaign.investigation = bool(data.get("investigation", false))
 	campaign.clean_shifts = int(data.get("clean_shifts", 0))
 	campaign.agent_catches = int(data.get("agent_catches", 0))
+	campaign.bribe_money = int(data.get("bribe_money", 0))
 	campaign.items.assign(data.get("items", []))
 	# JSON brings every number back as a float.
 	for entry: Dictionary in data.get("history", []):

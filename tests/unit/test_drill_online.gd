@@ -56,7 +56,9 @@ func test_a_guests_cop_takes_its_vest_off_on_both_pcs() -> void:
 	await wait_until(func() -> bool: return guest_level.drill_on(), 5.0)
 	assert_true(guest_level.drill_on(), "the drill on the guest too")
 	guest_level.hold_vest_off(guest_cop, JailbreakLevel.VEST_OFF_TIME + 0.1)
-	await wait_until(func() -> bool: return not on_host.disguise.has("prison_vest"), 5.0)
+	# The host takes it off first, and the guest when the host's word gets back to it.
+	await wait_until(func() -> bool:
+		return not on_host.disguise.has("prison_vest") and not guest_cop.disguise.has("prison_vest"), 5.0)
 	assert_false(on_host.disguise.has("prison_vest"), "off on the host")
 	assert_false(guest_cop.disguise.has("prison_vest"), "and on the guest")
 	await wait_until(func() -> bool: return _pieces(guest_level, "prison_vest").size() == 1, 5.0)

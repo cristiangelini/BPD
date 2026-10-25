@@ -2352,3 +2352,18 @@ CRASH_CALM_0,"Está bien, está bien. Lo corro.","Fine, fine. I'll move it.","T�
 CRASH_CALM_1,Tiene razón. Respiro.,You're right. Breathing.,Tem razão. Respirando.
 CRASH_CALM_2,"Bueno, fue un raspón.","Okay, it was a scratch.","Tá, foi só um arranhão."
 SHIFT_STREET,Eventos en la calle,Street events,Eventos na rua
+HINT_JAILED_BRIBE,"El guardia tiene cara de que se vende... y tú tienes la plata de las coimas en la cucheta. Llámalo desde la reja.","The guard looks like he can be bought... and you have the bribe money on your bunk. Call him from the bars.","O guarda tem cara de quem se vende... e você tem o dinheiro das propinas no beliche. Chame-o da grade."
+PROMPT_CALL_GUARD,"[E] ¡Psst, guardia!","[E] Psst, guard!","[E] Psiu, guarda!"
+PROMPT_PAY_GUARD,"[E] Pasarle el fajo por la reja","[E] Pass him the wad through the bars","[E] Passar o maço pela grade"
+PROMPT_HOLDING_WAD,"Un fajo de billetes. Llama al guardia y pásaselo por la reja.","A wad of bills. Call the guard and pass it through the bars.","Um maço de notas. Chame o guarda e passe pela grade."
+BRIBE_GUARD_COMING_0,"¿Qué pasa ahora? Voy, voy...","What now? Coming, coming...","O que foi agora? Já vou, já vou..."
+BRIBE_GUARD_COMING_1,"Si es por el desayuno, todavía falta.","If it's about breakfast, it's not time yet.","Se for pelo café da manhã, ainda falta."
+BRIBE_GUARD_COMING_2,"Más vale que sea importante.","This had better be important.","É bom que seja importante."
+BRIBE_GUARD_PRICE,"Mira, por menos de %d ni me levanto de la silla. Digo, por decir.","Look, for less than %d I don't even get out of my chair. Just saying.","Olha, por menos de %d eu nem levanto da cadeira. Só comentando."
+BRIBE_GUARD_COUNTING,"Cincuenta, cien... no me hagas perder la cuenta.","Fifty, a hundred... don't make me lose count.","Cinquenta, cem... não me faça perder a conta."
+BRIBE_GUARD_SHORT,"Con esto no me alcanza ni para el café. Faltan %d.","This won't even buy me a coffee. %d short.","Com isso não dá nem pro café. Faltam %d."
+BRIBE_GUARD_DEAL_0,"Uy, se me cayó la llave. Qué torpe soy.","Oops, I dropped the key. How clumsy of me.","Ops, deixei a chave cair. Como sou desastrado."
+BRIBE_GUARD_DEAL_1,"Ay, la llave... bueno, ya la busco mañana.","Oh, the key... well, I'll look for it tomorrow.","Ai, a chave... bom, procuro amanhã."
+BRIBE_GUARD_DEAL_2,"Yo no vi nada. Yo leo el diario.","I didn't see anything. I'm reading the paper.","Eu não vi nada. Eu estou lendo o jornal."
+BRIBE_GUARD_BORED_0,"Bueno, cuando se decidan me avisan.","Well, let me know when you make up your minds.","Bom, quando se decidirem me avisem."
+BRIBE_GUARD_BORED_1,"Yo no tengo toda la noche. Bueno, sí, pero igual.","I don't have all night. Well, I do, but still.","Eu não tenho a noite toda. Bom, tenho, mas mesmo assim."

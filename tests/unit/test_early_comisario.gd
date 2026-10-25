@@ -36,10 +36,10 @@ func test_the_variant_is_drawn_by_the_seed_and_forced_by_the_arg() -> void:
 	assert_eq(JailbreakLevel.pick_variant(0, PackedStringArray()), "donut", "without a seed from Play, the donut")
 	var seen := {}
 	for drawn in range(1, 60):
-		var picked := JailbreakLevel.pick_variant(drawn, PackedStringArray())
-		assert_eq(picked, JailbreakLevel.pick_variant(drawn, PackedStringArray()), "same seed, same way out")
+		var picked := JailbreakLevel.pick_variant(drawn, PackedStringArray(), BribeGuard.PRICE_MIN)
+		assert_eq(picked, JailbreakLevel.pick_variant(drawn, PackedStringArray(), BribeGuard.PRICE_MIN), "same seed, same way out")
 		seen[picked] = true
-	assert_eq(seen.size(), JailbreakLevel.VARIANTS.size(), "both come up")
+	assert_eq(seen.size(), JailbreakLevel.VARIANTS.size(), "all come up (the bribe too, with the money)")
 	assert_eq(JailbreakLevel.pick_variant(7, PackedStringArray(["--jailbreak=cleaning"])), "cleaning")
 	assert_eq(JailbreakLevel.pick_variant(7, PackedStringArray(["--jailbreak=donut"])), "donut")
 

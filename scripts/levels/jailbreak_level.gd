@@ -28,6 +28,8 @@ extends Node3D
 ## The seventh is the fire drill (fuga-simulacro.md): daytime, the waiting room full of people (WaitingPerson), the
 ## day guard (DrillGuard), the cops in orange vests, and a blanket against each cell's old heater (CellHeater) makes
 ## smoke for its smoke detector (SmokeDetector).
+## The ninth is the bribe (fuga-soborno.md): the night guard sells himself (BribeGuard), and the cops have their
+## bribes' money in wads on the bunks (BillWad). It's only drawn while the campaign has at least his lowest price.
 ## --place=jailbreak opens it from Play, and --jailbreak=<variant> forces one of VARIANTS.
 
 const DESK_MODEL := preload("res://assets/models/station_desk.glb")
@@ -181,8 +183,14 @@ const TUNNEL_REFILL := 1.0 / 3.0
 const TUNNEL_HOLES := [[Vector3(6.7, 0, 2.2), Vector3(9.9, 0, 2.2)], [Vector3(11.1, 0, 2.2), Vector3(14.3, 0, 2.2)]]
 
 ## The ways out, drawn by the seed (fuga-limpieza.md, fuga-perro.md, fuga-tunel.md, fuga-ventilacion.md,
-## fuga-basura.md, fuga-simulacro.md and fuga-techo.md, question 1: in eighths).
-const VARIANTS := ["donut", "cleaning", "dog", "tunnel", "vent", "garbage", "drill", "roof"]
+## fuga-basura.md, fuga-simulacro.md and fuga-techo.md, question 1: in eighths; fuga-soborno.md: in ninths while the
+## cops have the bribe's money, the last one).
+const VARIANTS := ["donut", "cleaning", "dog", "tunnel", "vent", "garbage", "drill", "roof", "bribe"]
+## The bribe jailbreak: where the wads lie on the bunks, and the money forced with --jailbreak=bribe when the
+## campaign has less.
+const WADS: Array[Vector3] = [Vector3(7.7, 0.62, 1.5), Vector3(8.9, 0.62, 1.7), Vector3(12.1, 0.62, 1.5),
+	Vector3(13.3, 0.62, 1.7)]
+const BRIBE_TEST_MONEY := 400
 
 ## Same seed, same jailbreak. 0 draws one.
 @export var case_seed := 0
@@ -256,7 +264,7 @@ func _ready() -> void:
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
 	if variant == "":
-		variant = pick_variant(drawn, OS.get_cmdline_user_args())
+		variant = pick_variant(drawn, OS.get_cmdline_user_args(), bribe_money())
 	city = $City
 	# At night the comisario and the armero went home.
 	for npc: Node in [city.comisario, city.armero]:
@@ -278,6 +286,8 @@ func _ready() -> void:
 		_drill_day()
 	elif is_roof():
 		_roof_night()
+	elif is_bribe():
+		_bribe_night()
 	else:
 		_guard_desk()
 	_hud()
@@ -288,20 +298,26 @@ func _ready() -> void:
 		guard.times_caught = Campaign.current.jail_catches
 	var hint: String = {"cleaning": "HINT_JAILED_CLEANING", "dog": "HINT_JAILED_DOG", "tunnel": "HINT_JAILED_TUNNEL",
 		"vent": "HINT_JAILED_VENT", "garbage": "HINT_JAILED_GARBAGE",
-		"drill": "HINT_JAILED_DRILL", "roof": "HINT_JAILED_ROOF"} \
+		"drill": "HINT_JAILED_DRILL", "roof": "HINT_JAILED_ROOF", "bribe": "HINT_JAILED_BRIBE"} \
 		.get(variant, "HINT_JAILED")
 	($Cop as Cop).show_hint.call_deferred(hint)
 
 
 ## The way out for this seed: from --jailbreak=<variant> among the user args, or drawn. Without a seed from Play (0)
-## it's the donut, the first one.
-static func pick_variant(drawn_seed: int, args: PackedStringArray) -> String:
+## it's the donut, the first one. The bribe, the last one, is only drawn with `money` for the guard's lowest price.
+static func pick_variant(drawn_seed: int, args: PackedStringArray, money := 0) -> String:
 	for arg in args:
 		if arg.begins_with("--jailbreak=") and VARIANTS.has(arg.trim_prefix("--jailbreak=")):
 			return arg.trim_prefix("--jailbreak=")
 	if drawn_seed == 0:
 		return VARIANTS[0]
-	return VARIANTS[hash(["jailbreak variant", drawn_seed]) % VARIANTS.size()]
+	var ways := VARIANTS.size() if money >= BribeGuard.PRICE_MIN else VARIANTS.size() - 1
+	return VARIANTS[hash(["jailbreak variant", drawn_seed]) % ways]
+
+
+## The bribes' money the cops still have (Campaign.bribe_fund), 0 without a campaign.
+static func bribe_money() -> int:
+	return Campaign.current.bribe_fund() if Campaign.current else 0
 
 
 func is_cleaning() -> bool:
@@ -330,6 +346,40 @@ func is_drill() -> bool:
 
 func is_roof() -> bool:
 	return variant == "roof"
+
+
+func is_bribe() -> bool:
+	return variant == "bribe"
+
+
+## The bribe jailbreak: the guard who sells himself at his desk, and the bribes' money split among four wads on the
+## bunks; E on the bars calls him and pays him (BribeGuard, CellDoor.bribe).
+func _bribe_night() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var desk := _desk()
+	var money := maxi(bribe_money(), BRIBE_TEST_MONEY if bribe_money() < BribeGuard.PRICE_MIN else 0)
+	var seller := BribeGuard.new()
+	seller.name = "NightGuard"
+	seller.station_lot = lot
+	seller.cell_doors.assign(city.cell_doors)
+	add_child(seller)
+	seller.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), GUARD_AT)
+	seller.stand_guard(case_seed, money)
+	seller.outside_cells = outside_cells
+	seller.see_through = [desk.get_rid()]
+	seller.caught.connect(_on_caught)
+	guard = seller
+	for door in city.cell_doors:
+		door.bribe = seller
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["bribe wads", case_seed])
+	var amounts := BillWad.split(money, WADS.size(), BribeGuard.PRICE_STEP, rng)
+	for i in amounts.size():
+		var wad := BillWad.new()
+		wad.name = "BillWad%d" % i
+		wad.amount = amounts[i]
+		add_child(wad)
+		wad.global_transform = lot * Transform3D(Basis(Vector3.UP, rng.randf_range(-0.6, 0.6)), WADS[i])
 
 
 ## The roof jailbreak: the night guard with the key on his belt, and in each cell a skylight in the ceiling (the seed's
@@ -1482,6 +1532,8 @@ func finish(result: String) -> void:
 		return
 	guard.outcome = result
 	if Campaign.current and Campaign.current.jailed:
+		if guard is BribeGuard:
+			Campaign.current.pay_guard((guard as BribeGuard).paid)
 		Campaign.current.finish_jailbreak(result == "escaped")
 		Campaign.current.save()
 	_show_end(result)
