@@ -1,4 +1,4 @@
-# BPD · La fábrica de muñecos "Muñequitos Felices" (25/10)
+# BPD · La fábrica de muñecos "Sonrisas" (25/10)
 
 Quinto lugar para allanar, después de la casa del abuelo, la panadería, la peluquería de mascotas y la ferretería
 ([historias.md](historias.md), [ferreteria.md](ferreteria.md)). Ya tiene su lote en la ciudad (`doll_factory`, 28 × 26 m,
