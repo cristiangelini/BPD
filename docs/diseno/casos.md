@@ -116,6 +116,7 @@ Montan un control en la calle y tienen que encontrar el auto buscado entre mucho
 10. **Camión de frutas:** el contrabando está dentro de las sandías.
 
 ## 9. Protección de un político
+Hecho: 9.1 ([proteccion-politico.md](proteccion-politico.md)). Propuesta: 9.6 ([politico-mercado.md](politico-mercado.md)).
 Tienen que cuidar a un político molesto durante un evento (decisión 32).
 
 1. **Acto en una plaza:** le tiran huevos y tomates.
@@ -133,10 +134,10 @@ Tienen que cuidar a un político molesto durante un evento (decisión 32).
 Llegan cuando el robo está pasando (decisión 32).
 
 1. **Ladrones con máscaras de animales.**
-2. **Rehenes que no quieren irse:** les está gustando.
+2. **Rehenes que no quieren irse:** les está gustando. Propuesta en [robo-banco-rehenes.md](robo-banco-rehenes.md) (decisión 121).
 3. **El banco del pueblo:** chico y con un solo empleado dormido.
 4. **Robo por el techo:** con helicóptero de juguete.
-5. **Ladrones abuelos:** lentos pero astutos.
+5. **Ladrones abuelos:** lentos pero astutos. Propuesta en [robo-banco-abuelos.md](robo-banco-abuelos.md) (decisión 122).
 6. **La bóveda que se inunda.**
 7. **Robo en el banco de sangre.**
 8. **El ladrón arrepentido:** quiere devolver todo, pero la banda no lo deja.

@@ -110,7 +110,7 @@ la sospecha y las capturas. Clotilde y el comisario van por `NpcSync`; el llaver
   pijama.
 - Online va como el guardia (la misma semilla en cada PC y el comisario por `NpcSync`).
 
-## Preguntas para Cristian
+## Preguntas para Cristian (respondidas el 25/10: sí a las tres, decisión 150)
 1. ¿La fuga sortea entre la dona y la limpieza mitad y mitad con la semilla? **Recomiendo sí:** las dos ya comparten
    celdas, salida y final, y así cada partida puede tener una fuga distinta.
 2. ¿Que el comisario no mire caras sino si limpian, con el "¿Te conozco?" de cerca? **Recomiendo sí:** es el chiste
