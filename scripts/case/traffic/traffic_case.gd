@@ -42,6 +42,8 @@ var melon_complaints := 0
 var suspect: ChaseSuspect
 ## The clown car the wanted clown was taken out of (its seat is left empty on every PC).
 var taken_from := ""
+## The paint of the car that ran off (a fruit pickup's is tinted, so guests need it).
+var _run_off_look := 0
 var escort: OwnerEscort
 var solved_now := false
 ## The wanted car got past the checkpoint and the chase is on; whether it got away.
@@ -184,7 +186,7 @@ func _on_boarded() -> void:
 func _on_passed(car: QueueCar, _sneaked: bool) -> void:
 	if follower or not car.wanted or solved_now or lost or suspect or chase:
 		return
-	if _run_off(car.global_transform, car.look, car.clown):
+	if _run_off(car.global_transform, car.look, car.clown, car.fruit):
 		car.queue_free()
 		return
 	lost = true
@@ -193,14 +195,18 @@ func _on_passed(car: QueueCar, _sneaked: bool) -> void:
 
 
 ## The queue car (`look`, at `at`) becomes the chase's fleeing car, in its own paint, right where it is. A clown car
-## runs off as the circus's, dropping inflatable clowns (ChaseDrops).
-func _run_off(at: Transform3D, look: int, clown := false) -> bool:
+## runs off as the circus's, dropping inflatable clowns, and a fruit pickup drops watermelons (ChaseDrops).
+func _run_off(at: Transform3D, look: int, clown := false, fruit := false) -> bool:
 	var level := get_parent()
+	_run_off_look = look
 	var city := level.get_node_or_null("City") as Node3D
 	if not city or not patrol_car:
 		return false
-	var kind := SuspectCar.CLOWN_CAR if clown else "traffic_%d" % (look % TrafficCar.MODELS.size())
+	var kind := SuspectCar.CLOWN_CAR if clown else SuspectCar.FRUIT_TRUCK if fruit \
+		else "traffic_%d" % (look % TrafficCar.MODELS.size())
 	chase = ChaseCase.begin(level, kind, at, patrol_car, city, case_seed)
+	if fruit:
+		QueueCar.paint_model(chase.truck, look)
 	chase.who = "clown" if clown else "driver"
 	chase.online = online
 	chase.follower = follower
@@ -283,8 +289,9 @@ func snapshot() -> Dictionary:
 	if chase:
 		state.chase = chase.snapshot()
 		var clown := chase.suspect_id == SuspectCar.CLOWN_CAR
+		var fruit := chase.suspect_id == SuspectCar.FRUIT_TRUCK
 		state.run_off = [chase.truck.global_transform if is_instance_valid(chase.truck) else Transform3D(),
-			0 if clown else int(chase.suspect_id.trim_prefix("traffic_")), clown]
+			_run_off_look if clown or fruit else int(chase.suspect_id.trim_prefix("traffic_")), clown, fruit]
 	return state
 
 
@@ -310,7 +317,7 @@ func apply_snapshot(state: Dictionary) -> void:
 			_hint_all("HINT_TRAFFIC_GOT_IT")
 	if state.has("chase") and not chase:
 		var run_off: Array = state.run_off
-		_run_off(run_off[0], run_off[1], run_off.size() > 2 and run_off[2])
+		_run_off(run_off[0], run_off[1], run_off.size() > 2 and run_off[2], run_off.size() > 3 and run_off[3])
 	_follow_convoy(state.get("taken_from", ""), state.get("clean", []))
 	if chase and state.has("chase"):
 		chase.apply_snapshot(state.chase)
