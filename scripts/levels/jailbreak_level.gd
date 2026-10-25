@@ -21,6 +21,8 @@ extends Node3D
 ## key hangs from the collar of Mordisco, the station's bulldog, who walks his round (GuardDog).
 ## The fourth is the spoon tunnel (fuga-tunel.md): the guard awake at his desk, listening (ListeningGuard), and each
 ## cell digging a hole by its bunk with the dinner spoons (Spoon, TunnelHole).
+## The sixth is the garbage truck (fuga-basura.md): it's garbage night, and the guard does his rounds of the cells
+## with a giant bag (GarbageGuard, GarbageBag) out to the dumpster on the sidewalk (Dumpster).
 ## The fifth is the vent (fuga-ventilacion.md): the guard awake with no key (VentGuard), a loose grille high on each
 ## cell's wall (VentGrille) into the duct, and one cop too big to fit (big_cop).
 ## --place=jailbreak opens it from Play, and --jailbreak=<variant> forces one of VARIANTS.
@@ -101,6 +103,10 @@ const VENT_GRILLES: Array[Vector3] = [Vector3(8.3, VentGrille.HEIGHT, StationRoo
 	Vector3(12.7, VentGrille.HEIGHT, StationRooms.SPLIT_Z + StationRooms.WALL / 2 + 0.03)]
 ## The key board on the front wall, behind the guard's back (step 3).
 const KEY_BOARD_AT := Vector3(12.4, 1.5, StationRooms.HALF_Z - StationRooms.WALL - 0.03)
+## The garbage truck jailbreak (fuga-basura.md, step 1): the dumpster on the sidewalk and each cell's trash bin.
+const DUMPSTER_AT := Vector3(3.0, 0, StationRooms.HALF_Z + 2.2)
+const TRASH_BINS: Array[Vector3] = [Vector3(6.6, 0, 3.9), Vector3(14.4, 0, 3.9)]
+const TRASH_BIN_MODEL := preload("res://assets/models/trash_bin.glb")
 ## The big one stays stuck in the grille this long (s); crawling faster than this in the duct is a noisy scramble.
 const VENT_STUCK := 4.0
 const VENT_QUIET_SPEED := (Cop.CRAWL_SPEED + Cop.CRAWL_RUN_SPEED) / 2.0
@@ -108,9 +114,9 @@ const VENT_QUIET_SPEED := (Cop.CRAWL_SPEED + Cop.CRAWL_RUN_SPEED) / 2.0
 const TUNNEL_REFILL := 1.0 / 3.0
 const TUNNEL_HOLES := [[Vector3(6.7, 0, 2.2), Vector3(9.9, 0, 2.2)], [Vector3(11.1, 0, 2.2), Vector3(14.3, 0, 2.2)]]
 
-## The ways out, drawn by the seed (fuga-limpieza.md, fuga-perro.md, fuga-tunel.md and fuga-ventilacion.md,
-## question 1: in fifths).
-const VARIANTS := ["donut", "cleaning", "dog", "tunnel", "vent"]
+## The ways out, drawn by the seed (fuga-limpieza.md, fuga-perro.md, fuga-tunel.md, fuga-ventilacion.md and
+## fuga-basura.md, question 1: in sixths).
+const VARIANTS := ["donut", "cleaning", "dog", "tunnel", "vent", "garbage"]
 
 ## Same seed, same jailbreak. 0 draws one.
 @export var case_seed := 0
@@ -137,6 +143,7 @@ var mattresses: Array[TunnelMattress] = []
 var grilles: Array[VentGrille] = []
 var duct: VentDuct
 var key_board: KeyBoard
+var dumpster: Dumpster
 ## The host: where each cop in the duct was last physics frame, to hear who scrambles.
 var _duct_last := {}
 ## The other end of the tunnels, on the sidewalk: it shows once one is through.
@@ -179,6 +186,8 @@ func _ready() -> void:
 		_tunnel_night()
 	elif is_vent():
 		_vent_night()
+	elif is_garbage():
+		_garbage_night()
 	else:
 		_guard_desk()
 	_hud()
@@ -188,7 +197,7 @@ func _ready() -> void:
 	if Campaign.current:
 		guard.times_caught = Campaign.current.jail_catches
 	var hint: String = {"cleaning": "HINT_JAILED_CLEANING", "dog": "HINT_JAILED_DOG", "tunnel": "HINT_JAILED_TUNNEL",
-		"vent": "HINT_JAILED_VENT"} \
+		"vent": "HINT_JAILED_VENT", "garbage": "HINT_JAILED_GARBAGE"} \
 		.get(variant, "HINT_JAILED")
 	($Cop as Cop).show_hint.call_deferred(hint)
 
@@ -218,6 +227,37 @@ func is_tunnel() -> bool:
 
 func is_vent() -> bool:
 	return variant == "vent"
+
+
+func is_garbage() -> bool:
+	return variant == "garbage"
+
+
+## The garbage truck jailbreak: the guard at his desk with the key on his belt, doing his garbage rounds; a trash bin in
+## each cell and the dumpster on the sidewalk.
+func _garbage_night() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var desk := _desk()
+	var collector := GarbageGuard.new()
+	collector.name = "NightGuard"
+	add_child(collector)
+	collector.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), GUARD_AT)
+	collector.station_lot = lot
+	collector.cell_doors = city.cell_doors
+	collector.stand_guard(case_seed)
+	collector.outside_cells = outside_cells
+	collector.see_through = [desk.get_rid()]
+	collector.caught.connect(_on_caught)
+	guard = collector
+	for at in TRASH_BINS:
+		var bin := TRASH_BIN_MODEL.instantiate() as Node3D
+		add_child(bin)
+		bin.global_transform = lot * Transform3D(Basis.IDENTITY, at)
+	dumpster = Dumpster.new()
+	dumpster.name = "Dumpster"
+	add_child(dumpster)
+	dumpster.global_transform = lot * Transform3D(Basis.IDENTITY, DUMPSTER_AT)
+	collector.dumpster = dumpster
 
 
 ## The vent jailbreak: the guard awake at his desk with no key (it's on the key board behind him, step 3) and a loose

@@ -82,3 +82,14 @@ El guardia, Don Ruperto y el camión van por `NpcSync`; las bolsas y el contened
    sí:** así los de afuera vuelven a ayudar a los que quedaron, que es el chiste cooperativo.
 3. ¿El guardia cuenta presos en cada ronda y se engaña con un muñeco de almohada en la cucheta? **Recomiendo sí:** le
    da trabajo al que se queda y es un clásico de las fugas.
+
+## Cómo quedó el paso 1
+- `--jailbreak=garbage` fuerza la variante; el sorteo de la fuga ahora es en sextos.
+- `GarbageGuard` (scripts/npc/garbage_guard.gd): despierto, sin donas y con la llave en el cinturón. Cada 60 a 90 s
+  rezonga, va a una celda (una y después la otra), la abre, entra, deja la bolsa gigante abierta en el piso
+  (`GarbageBag`), vacía el tacho 4 s ("Contra la pared, que vacío el tacho"), la anuda, sale arrastrándola, cierra la
+  celda con llave, la lleva por la puerta del frente al contenedor de la vereda (`Dumpster`) y vuelve a su escritorio.
+  Mientras da la vuelta sigue mirando.
+- Una captura en plena ronda lo deja en el escritorio con las celdas cerradas y la bolsa se va.
+- Modelos `trash_bin`, `garbage_bag` y `dumpster` en `tools/modelgen/models/garbage.js`. 6 textos nuevos en es, en y
+  pt. Pruebas en `test_garbage_round.gd`.
