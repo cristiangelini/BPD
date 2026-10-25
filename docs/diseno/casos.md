@@ -138,7 +138,7 @@ Llegan cuando el robo está pasando (decisión 32).
 3. **El banco del pueblo:** chico y con un solo empleado dormido.
 4. **Robo por el techo:** con helicóptero de juguete.
 5. **Ladrones abuelos:** lentos pero astutos. Propuesta en [robo-banco-abuelos.md](robo-banco-abuelos.md) (decisión 122).
-6. **La bóveda que se inunda.**
+6. **La bóveda que se inunda:** el agua sube y frena a todos, también al taladro. Propuesta en [robo-banco-inundado.md](robo-banco-inundado.md) (decisión 125).
 7. **Robo en el banco de sangre.**
 8. **El ladrón arrepentido:** quiere devolver todo, pero la banda no lo deja. Propuesta en [robo-banco-arrepentido.md](robo-banco-arrepentido.md) (decisión 123).
 9. **Banco de semillas:** roban semillas raras de plantas que crecen enseguida.
