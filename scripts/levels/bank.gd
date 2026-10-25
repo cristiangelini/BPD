@@ -21,7 +21,9 @@ extends Node3D
 ## Half the seeds are the variant where the hostages don't want to leave (robo-banco-rehenes.md, decision 121): the
 ## hall is a party, with garlands, the robbers' boombox on the bench and a tray of croissants on the counter, and the
 ## hostages sway to the music. Two of them are fans of the gang, with a cardboard mask, who warn the robbers when they
-## see a cop (SNITCHES). --bank=party or --bank=base forces one.
+## see a cop (SNITCHES). A quarter of the seeds are the grandpa robbers (robo-banco-abuelos.md, decision 122): the same
+## gang, retired, with cane and cardigan; they walk at half pace and their old drill takes longer (BankDrill.SLOW_TIME).
+## --bank=party, --bank=grandpas or --bank=base forces one.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -96,11 +98,18 @@ const HOSTAGE_XS: Array[float] = [-6.5, -3.5, -0.5, 2.5]
 const HOSTAGE_ZS: Array[float] = [2.5, 4.8]
 ## The party (robo-banco-rehenes.md, step 1): garlands hung across the hall in rows under the roof, the boombox on the
 ## west bench and the croissants' tray on the counter.
+## The way back in for the party's hostage El Oso let go: through the entrance and between the queue posts.
+const WAY_IN: Array[Vector3] = [Vector3(ENTRANCE_X, 0, HALF_Z - 1.5), Vector3(-0.4, 0, 6.0)]
+## The free spots on the hostages' floor, between its two rows, where the grandpa robbers sit down to pass for hostages
+## (robo-banco-abuelos.md, step 2).
+const HIDE_SPOTS: Array[Vector3] = [Vector3(-5.0, 0, 3.65), Vector3(-2.0, 0, 3.65), Vector3(1.0, 0, 3.65),
+	Vector3(4.0, 0, 3.65)]
+## Where the duck grandma's marbles land: on the hall's floor in front of the entrance (robo-banco-abuelos.md, step 3).
+const MARBLES_AT := Vector3(ENTRANCE_X + 0.6, 0, HALF_Z - 1.3)
 ## How many of the party's hostages are fans of the gang (propuesta).
 const SNITCHES := 2
 const GARLAND_MODEL := preload("res://assets/models/bank_garland.glb")
 const BOOMBOX_MODEL := preload("res://assets/models/bank_boombox.glb")
-const TRAY_MODEL := preload("res://assets/models/bank_croissant_tray.glb")
 const GARLAND_XS: Array[float] = [-10.0, -6.0, -2.0, 2.0, 6.0, 10.0]
 const GARLAND_ZS: Array[float] = [1.2, 4.0, 6.8]
 const GARLAND_DROP := 0.12
@@ -128,7 +137,11 @@ var boss: BankRobber
 var hostages: Array[BankHostage] = []
 ## The variant where the hostages are having a party and don't want to leave (decision 121).
 var party := false
-var croissant_tray: Node3D
+## The variant where the robbers are grandpas (decision 122).
+var grandpas := false
+## The duck grandma's marbles on the floor, once she threw them.
+var marbles: BankMarbles
+var croissant_tray: BankCroissantTray
 var drill: BankDrill
 var hostages_freed := 0
 var phone: BankPhone
@@ -142,6 +155,8 @@ var case: BankCase
 var follower := false
 var station_parking: Transform3D
 var _build: PlaceBuilder
+## Which robber took each of HIDE_SPOTS (by index).
+var _hide_taken := {}
 
 @onready var car: PatrolCar = $PatrolCar
 @onready var city: Node3D = $City
@@ -152,7 +167,9 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
-	party = is_party(case_seed, OS.get_cmdline_user_args())
+	var drawn := variant(case_seed, OS.get_cmdline_user_args())
+	party = drawn == "party"
+	grandpas = drawn == "grandpas"
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_hall()
@@ -169,6 +186,8 @@ func _ready() -> void:
 	_add_hostages()
 	drill = BankDrill.new()
 	drill.name = "Drill"
+	if grandpas:
+		drill.drill_time = BankDrill.SLOW_TIME
 	drill.position = DRILL_AT + Vector3.UP * FLOOR_TOP
 	drill.rotation.y = PI / 2
 	add_child(drill)
@@ -180,6 +199,7 @@ func _ready() -> void:
 	phone.name = "Phone"
 	phone.position = PHONE_ON_CAR
 	phone.setup(self, car, case_seed)
+	phone.deaf = grandpas
 	car.add_child(phone)
 	car.add_collision_exception_with(phone)
 	city.transform = CityLayout.anchor("bank")
@@ -195,15 +215,22 @@ func _ready() -> void:
 	case.start()
 
 
-## Whether this seed's robbery is the party where the hostages don't want to leave: from --bank=party or --bank=base
-## among the user args, or half the seeds (propuesta).
-static func is_party(seed_: int, args: PackedStringArray) -> bool:
+## Which robbery this seed is: "party" (the hostages don't want to leave) for half the seeds, "grandpas" for a
+## quarter and "base" for the rest (propuesta); --bank=party, --bank=grandpas or --bank=base among the user args forces
+## one.
+static func variant(seed_: int, args: PackedStringArray) -> String:
 	for arg in args:
-		if arg == "--bank=party":
-			return true
-		if arg == "--bank=base":
-			return false
-	return hash(["bank party", seed_]) % 2 == 0
+		if arg in ["--bank=party", "--bank=grandpas", "--bank=base"]:
+			return arg.trim_prefix("--bank=")
+	var drawn := hash(["bank party", seed_]) % 4
+	if drawn % 2 == 0:
+		return "party"
+	return "grandpas" if drawn == 1 else "base"
+
+
+## Whether this seed's robbery is the party where the hostages don't want to leave.
+static func is_party(seed_: int, args: PackedStringArray) -> bool:
+	return variant(seed_, args) == "party"
 
 
 ## The party's things: the garlands across the hall, the boombox playing on the bench (its notes bobbing over it) and
@@ -235,7 +262,7 @@ func _add_party() -> void:
 	var bob := notes.create_tween().set_loops()
 	bob.tween_property(notes, "position:y", 0.95, 0.5).set_trans(Tween.TRANS_SINE)
 	bob.tween_property(notes, "position:y", 0.75, 0.5).set_trans(Tween.TRANS_SINE)
-	croissant_tray = TRAY_MODEL.instantiate()
+	croissant_tray = BankCroissantTray.new()
 	croissant_tray.name = "CroissantTray"
 	croissant_tray.position = TRAY_AT + Vector3.UP * FLOOR_TOP
 	party_node.add_child(croissant_tray)
@@ -399,6 +426,12 @@ func _add_robbers() -> void:
 		var robber := BankRobber.new()
 		robber.name = "Robber_" + animal
 		robber.animal = animal
+		robber.grandpa = grandpas
+		robber.claim_spot = _claim_hide_spot
+		robber.is_out = func(at: Vector3) -> bool: return not inside(at)
+		robber.slipped_out.connect(func(_robber: BankRobber) -> void: bags_taken += 1)
+		if grandpas:
+			robber.spotted.connect(func(_robber: BankRobber, _cop: Node3D) -> void: _gang_nervous())
 		robber.position = ROBBER_SPOTS[animal][0] + Vector3.UP * FLOOR_TOP
 		robber.rotation.y = ROBBER_SPOTS[animal][1]
 		add_child(robber)
@@ -406,11 +439,54 @@ func _add_robbers() -> void:
 		var escort := OwnerEscort.attach(robber, car)
 		escort.seat_shift = ROBBER_SEATS[robbers.size() - 1]
 		escort.in_car_hint = "HINT_OWNER_IN_CAR" if robber.is_boss() else "HINT_ROBBER_IN_CAR"
+		if grandpas:
+			escort.speed = OwnerEscort.SPEED * BankRobber.GRANDPA_PACE
 		if animal == "chancho":
 			for at in PIG_RUN:
 				robber.run_path.append(global_transform * at)
 		if robber.is_boss():
 			boss = robber
+
+
+## The grandpa gang got nervous: the duck grandma, if she's still loose, throws her marbles in front of the entrance
+## (once).
+func _gang_nervous() -> void:
+	if follower or marbles:
+		return
+	for robber in robbers:
+		if robber.animal == "pato" and is_loose(robber):
+			robber.say("ROBBER_GRANDPA_MARBLES")
+			spill_marbles()
+
+
+## The marbles on the floor (also a guest's, when the host's are there: BankCase's snapshot).
+func spill_marbles() -> void:
+	if marbles:
+		return
+	marbles = BankMarbles.new()
+	marbles.name = "Marbles"
+	marbles.position = MARBLES_AT + Vector3.UP * FLOOR_TOP
+	add_child(marbles)
+	for robber in robbers:
+		if robber.animal == "pato":
+			var bag := robber.find_child("props", true, false) as Node3D
+			if bag:
+				bag.hide()
+
+
+## The free spot among the hostages nearest to `robber` (a world position), now his.
+func _claim_hide_spot(robber: BankRobber) -> Vector3:
+	var best := -1
+	for i in HIDE_SPOTS.size():
+		if _hide_taken.has(i):
+			continue
+		if best < 0 or robber.global_position.distance_to(global_transform * HIDE_SPOTS[i]) \
+				< robber.global_position.distance_to(global_transform * HIDE_SPOTS[best]):
+			best = i
+	if best < 0:
+		return robber.global_position
+	_hide_taken[best] = robber
+	return global_transform * (HIDE_SPOTS[best] + Vector3.UP * FLOOR_TOP)
 
 
 ## The hostages, a different set of neighbors for each seed.
@@ -455,10 +531,17 @@ func open_vault() -> void:
 	vault_door.rotation.y = PI / 2
 
 
-## El Oso keeps his word: the first hostage still on the floor walks out of the entrance and goes free.
+## El Oso keeps his word: the first hostage still on the floor walks out of the entrance and goes free. At the party
+## (step 4) they only get as far as the door, and walk back in unless a cop takes them by the hand there.
 func release_hostage() -> void:
 	for hostage in hostages:
-		if not hostage.freed and not hostage.led_by:
+		if hostage.sitting():
+			if party:
+				var way_in: Array[Vector3] = []
+				for at in WAY_IN:
+					way_in.append(global_transform * (at + Vector3.UP * FLOOR_TOP))
+				hostage.walk_out(global_transform * Vector3(ENTRANCE_X, FLOOR_TOP, HALF_Z + 1.2), way_in)
+				return
 			hostage.global_position = global_transform * Vector3(ENTRANCE_X, FLOOR_TOP, HALF_Z + 1.5)
 			hostage.free_hostage()
 			return
@@ -498,10 +581,11 @@ static func _flat_distance(a: Vector3, b: Vector3) -> float:
 	return Vector2(a.x - b.x, a.z - b.z).length()
 
 
-## Whether a robber is still free: not cuffed, not being walked and not in the patrol car (the pig in the van is).
+## Whether a robber is still free: not cuffed, not being walked and not in the patrol car (the pig in the van is), and
+## not a grandpa who already slipped out as a hostage (his sack is counted).
 static func is_loose(robber: BankRobber) -> bool:
 	var escort := OwnerEscort.of(robber)
-	return not robber.is_cuffed() and not (escort and (escort.in_car or escort.escorted_by))
+	return not robber.slipped and not robber.is_cuffed() and not (escort and (escort.in_car or escort.escorted_by))
 
 
 ## The vault is open: every robber still loose grabs a sack and leaves; El Oso among them, the chase is on.
@@ -515,11 +599,14 @@ func _on_vault_opened() -> void:
 			robber.hide()
 			robber.collision_layer = 0
 			robber.process_mode = Node.PROCESS_MODE_DISABLED
-	if boss_runs:
+	if boss_runs and grandpas:
+		start_getaway(SuspectCar.WALKER)
+	elif boss_runs:
 		start_getaway(SuspectCar.BEAR_ON_FOOT if van_boxed_in() else SuspectCar.ROBBERS_VAN)
 
 
-## El Oso gets away in the van (`kind` ROBBERS_VAN) or on foot (BEAR_ON_FOOT): the chase is on.
+## El Oso gets away in the van (`kind` ROBBERS_VAN) or on foot (BEAR_ON_FOOT), or the grandpa Oso on a motor walker
+## along the sidewalk (WALKER, robo-banco-abuelos.md, step 4): the chase is on.
 func start_getaway(kind: String) -> void:
 	if chase:
 		return
@@ -528,13 +615,16 @@ func start_getaway(kind: String) -> void:
 		at = van.global_transform
 		van.queue_free()
 	chase = ChaseCase.begin(self, kind, at, car, city, case_seed)
-	chase.who = "oso"
+	chase.who = "oso_grandpa" if grandpas else "oso"
+	if grandpas:
+		chase.truck.set_rider(ChaseSuspect.model_for(chase.who))
 	chase.follower = follower
 	if case:
 		chase.online = case.online
 	chase.ended.connect(_on_getaway_ended)
 	for cop in get_tree().get_nodes_in_group("cops"):
-		(cop as Cop).show_hint("HINT_ESCAPE_oso" if kind == SuspectCar.ROBBERS_VAN else "HINT_ESCAPE_oso_FOOT")
+		(cop as Cop).show_hint({SuspectCar.ROBBERS_VAN: "HINT_ESCAPE_oso", SuspectCar.WALKER: "HINT_ESCAPE_oso_WALKER"}
+			.get(kind, "HINT_ESCAPE_oso_FOOT"))
 
 
 func _on_getaway_ended(was_caught: bool) -> void:
