@@ -101,7 +101,7 @@ func test_then_he_goes_back_to_his_spot_and_rests() -> void:
 func test_the_way_from_the_hall_goes_round_the_counter() -> void:
 	await _bank("conejo")
 	var way: Array[Vector3] = bank._sorry_way("door")
-	assert_eq(way.size(), BankLevel.TO_BACK_DOOR.size())
+	assert_eq(way.size(), BankLevel.HALL_TO_CORRIDOR.size() + 1)
 	assert_true(BankLevel.in_corridor(bank.global_transform.inverse() * way[-1]))
 
 

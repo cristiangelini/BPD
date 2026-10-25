@@ -74,3 +74,11 @@ las tres ayudas, la silla con la soga y el desatar.
   vuelve a su lugar y descansa 5 s. El pato ya está en el pasillo y va directo. Ojo para el paso 4: el pato mira el
   pasillo, así que el chancho o el conejo pasan por delante de él. Online va `turned` en `net_state` y la copia del
   invitado no camina sola. Capturas en `/mnt/project-files/arrepentido/paso2-*.png`.
+- **Paso 3 (taladro y rehenes):** las ayudas ya son las tres (`HELPS`: puerta, taladro, rehenes). Para el taladro pasa
+  por al lado del pato hasta la puerta de la bóveda y lo desenchufa: se para 60 s (`BankDrill.pause`). Para los rehenes
+  toma de la mano a los dos sentados más cerca del hueco del mostrador (`BankHostage.take_by`; el primero dice "¿El
+  ladrón nos saca?"), los lleva por el pasillo y los saca por la puerta de atrás, donde quedan libres; si nadie queda
+  sentado se saltea. Entre ayuda y ayuda vuelve a su lugar y descansa 5 s. Los caminos van por el hueco del mostrador
+  entre el hall y el pasillo (`BankLevel.HALL_TO_CORRIDOR`). De paso se arregló la puerta (`front_door.tscn`): al
+  abrirse, la hoja giraba a la vista pero su choque se quedaba cerrado y nadie podía pasar. Capturas en
+  `/mnt/project-files/arrepentido/paso3-*.png`.

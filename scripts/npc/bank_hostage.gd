@@ -62,8 +62,8 @@ const HOME_GIVE_UP := 20.0
 
 @export var look := "vecina"
 var next_line := 0
-## The cop leading them by the hand, if any.
-var led_by: Cop
+## The cop (or the bank's sorry robber) leading them by the hand, if any.
+var led_by: Node3D
 ## At the party (decision 121): they sway to the music while they sit, each at their own beat.
 var partying := false
 var sway_phase := 0.0
@@ -167,8 +167,16 @@ func use(cop: Cop) -> void:
 		cop.show_hint("HINT_BANK_PARTY_LEAD")
 
 
-## Up and following `cop` by the hand.
-func _take(cop: Cop) -> void:
+## Taken by the hand by the bank's sorry robber (robo-banco-arrepentido.md, step 3): up and following him, the first
+## of them saying so.
+func take_by(robber: Node3D, talks := true) -> void:
+	_take(robber)
+	if talks:
+		say("HOSTAGE_SORRY_TAKEN")
+
+
+## Up and following `cop` (or the sorry robber) by the hand.
+func _take(cop: Node3D) -> void:
 	led_by = cop
 	returning = false
 	_door_left = 0.0

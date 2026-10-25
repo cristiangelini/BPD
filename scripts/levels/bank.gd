@@ -110,11 +110,18 @@ const HIDE_SPOTS: Array[Vector3] = [Vector3(-5.0, 0, 3.65), Vector3(-2.0, 0, 3.6
 const MARBLES_AT := Vector3(ENTRANCE_X + 0.6, 0, HALF_Z - 1.3)
 ## Who can be the sorry robber: never El Oso.
 const SORRY_ANIMALS: Array[String] = ["conejo", "chancho", "pato"]
-## The sorry robber's way to the back door (robo-banco-arrepentido.md, step 2) from the hall: to the counter's gap,
-## behind the counter, through the corridor's door and down the corridor to the back door, which he opens from inside.
-## From the corridor (the duck) only its last point.
-const TO_BACK_DOOR: Array[Vector3] = [Vector3(7.5, 0, 0.4), Vector3(7.5, 0, -2.6), Vector3(CORRIDOR_DOOR_X, 0, -3.7),
-	Vector3(CORRIDOR_DOOR_X, 0, BACK_Z - 0.6), Vector3(BACK_DOOR_X, 0, -HALF_Z + 0.9)]
+## The sorry robber's ways (robo-banco-arrepentido.md, steps 2 and 3): between the hall and the corridor he goes by
+## the counter's gap, behind the counter and through the corridor's door; out of the back door counts as the
+## corridor's side. Where he opens the back door from, where he unplugs the drill (past the duck, by the vault's door)
+## and where he leaves the two hostages, out of the back door far enough for them to be out too.
+const HALL_TO_CORRIDOR: Array[Vector3] = [Vector3(7.5, 0, 0.4), Vector3(7.5, 0, -2.6), Vector3(CORRIDOR_DOOR_X, 0, -3.7),
+	Vector3(CORRIDOR_DOOR_X, 0, BACK_Z - 0.6)]
+const AT_BACK_DOOR := Vector3(BACK_DOOR_X, 0, -HALF_Z + 0.9)
+const AT_DRILL := Vector3(0.6, 0, VAULT_DOOR_Z - 0.5)
+const OUT_BACK := Vector3(BACK_DOOR_X, 0, -HALF_Z - 1.4)
+## How long the unplugged drill stands still, and how many hostages he walks out.
+const UNPLUGGED := 60.0
+const SORRY_HOSTAGES := 2
 ## How many of the party's hostages are fans of the gang (propuesta).
 const SNITCHES := 2
 const GARLAND_MODEL := preload("res://assets/models/bank_garland.glb")
@@ -478,39 +485,85 @@ func _sorry_watched(cop: Node3D) -> bool:
 	return false
 
 
-## In the corridor (behind the back wall, between the office and the vault).
+## On the corridor's side: in the corridor (behind the back wall, between the office and the vault) or out of the back
+## door (bank coordinates).
 static func in_corridor(at: Vector3) -> bool:
-	return at.z < BACK_Z and at.x > OFFICE_X and at.x < VAULT_X
+	return (at.z < BACK_Z and at.x > OFFICE_X and at.x < VAULT_X) or at.z < -HALF_Z
 
 
-## The sorry robber's way (world positions) to `help`.
-func _sorry_way(help: String) -> Array[Vector3]:
+## The sorry robber's way (world positions) from where he is to `to` (bank coordinates): round the counter between
+## the hall and the corridor's side, straight otherwise.
+func _sorry_way_to(to: Vector3) -> Array[Vector3]:
+	var from := global_transform.affine_inverse() * sorry.global_position
+	var points: Array[Vector3] = []
+	if in_corridor(from) and not in_corridor(to):
+		points = HALL_TO_CORRIDOR.duplicate()
+		points.reverse()
+	elif not in_corridor(from) and in_corridor(to):
+		points = HALL_TO_CORRIDOR.duplicate()
+	points.append(to)
 	var way: Array[Vector3] = []
+	for at in points:
+		way.append(global_transform * Vector3(at.x, FLOOR_TOP, at.z))
+	return way
+
+
+## The sorry robber's way to `help`: the back door, the drill, or the sitting hostage nearest to the counter's gap.
+func _sorry_way(help: String) -> Array[Vector3]:
 	match help:
 		"door":
-			var from := 0 if not in_corridor(global_transform.inverse() * sorry.global_position) else TO_BACK_DOOR.size() - 1
-			for i in range(from, TO_BACK_DOOR.size()):
-				way.append(global_transform * (TO_BACK_DOOR[i] + Vector3.UP * FLOOR_TOP))
-	return way
+			return _sorry_way_to(AT_BACK_DOOR)
+		"drill":
+			return _sorry_way_to(AT_DRILL)
+		"hostages":
+			var picked := _sorry_pick()
+			if picked.is_empty():
+				return []
+			var at := global_transform.affine_inverse() * picked[0].global_position
+			return _sorry_way_to(at + Vector3(0.9, 0, 0))
+	return []
 
 
-## The sorry robber's way back to his spot after `help`: the way there backwards, then his spot.
-func _sorry_way_back(help: String) -> Array[Vector3]:
-	var spot: Vector3 = ROBBER_SPOTS[sorry.animal][0]
-	var home := global_transform * (spot + Vector3.UP * FLOOR_TOP)
-	var way: Array[Vector3] = []
-	if help == "door" and not in_corridor(spot):
-		for i in range(TO_BACK_DOOR.size() - 2, -1, -1):
-			way.append(global_transform * (TO_BACK_DOOR[i] + Vector3.UP * FLOOR_TOP))
-	way.append(home)
-	return way
+## Up to SORRY_HOSTAGES hostages still sitting, the nearest to the counter's gap first.
+func _sorry_pick() -> Array[BankHostage]:
+	var gap := global_transform * HALL_TO_CORRIDOR[0]
+	var sitting: Array[BankHostage] = []
+	for hostage in hostages:
+		if hostage.sitting() and not hostage.is_cuffed():
+			sitting.append(hostage)
+	sitting.sort_custom(func(a: BankHostage, b: BankHostage) -> bool:
+		return a.global_position.distance_to(gap) < b.global_position.distance_to(gap))
+	return sitting.slice(0, SORRY_HOSTAGES)
 
 
-## The sorry robber does `help`: the back door, unlocked and swung open from inside.
-func _sorry_help(help: String) -> void:
+## The sorry robber's way back to his spot.
+func _sorry_way_back(_help: String) -> Array[Vector3]:
+	return _sorry_way_to(ROBBER_SPOTS[sorry.animal][0])
+
+
+## The sorry robber does `help`'s leg `stage` and gives the way of the next leg (empty when the help is done): the back
+## door unlocked and swung open from inside; the drill unplugged for UNPLUGGED seconds; the hostages taken by the hand
+## and then walked out of the back door, where they go free.
+func _sorry_help(help: String, stage: int) -> Array[Vector3]:
 	match help:
 		"door":
 			back_door.open_from_inside()
+		"drill":
+			drill.pause(UNPLUGGED)
+		"hostages":
+			if stage == 0:
+				var picked := _sorry_pick()
+				for i in picked.size():
+					picked[i].take_by(sorry, i == 0)
+				if not picked.is_empty():
+					back_door.open_from_inside()
+					return _sorry_way_to(OUT_BACK)
+			else:
+				for hostage in hostages:
+					if hostage.led_by == sorry:
+						hostage.free_hostage()
+	var none: Array[Vector3] = []
+	return none
 
 
 ## The grandpa gang got nervous: the duck grandma, if she's still loose, throws her marbles in front of the entrance
