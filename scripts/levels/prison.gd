@@ -79,8 +79,9 @@ var _build: PlaceBuilder
 ## Which prison case this is: "riot" (the canteen, carcel-motin.md) or "transfer" (the bus from the station,
 ## traslado-presos.md; --place=transfer).
 @export var variant := "riot"
-## The transfer's bus (traslado-presos.md, step 1), parked by the station's door.
+## The transfer's bus (traslado-presos.md, step 1), parked by the station's door, and its inmates (step 2).
 var bus: PrisonBus
+var transfer: TransferPlan
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -122,6 +123,10 @@ func _start_transfer() -> void:
 	bus = $Bus
 	bus.global_transform = (city.transform * CityLayout.parking("station")).rotated_local(Vector3.UP, PI) \
 		.translated_local(Vector3.UP * 0.05)
+	transfer = TransferPlan.new()
+	transfer.name = "Transfer"
+	add_child(transfer)
+	transfer.setup(bus, case_seed)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
 
 
