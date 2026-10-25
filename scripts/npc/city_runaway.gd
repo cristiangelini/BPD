@@ -24,7 +24,7 @@ const TRAPPED_FOR := 60.0
 const MODEL := preload("res://assets/models/npc_sospechoso.glb")
 
 var state := State.RUN
-## Their route: points on the ground, in order.
+## Their route: points on the ground, in the world, in order.
 var route := PackedVector3Array()
 var next := 0
 var _burst := 0.0
@@ -66,6 +66,14 @@ static func route_to(from: Vector3, alley: Array) -> PackedVector3Array:
 		if clean.is_empty() or clean[clean.size() - 1].distance_to(p) > 0.5:
 			clean.append(p)
 	return clean
+
+
+## `route` (in the city's space) in the world, for a city placed at `city`.
+static func in_world(route: PackedVector3Array, city: Transform3D) -> PackedVector3Array:
+	var world := PackedVector3Array()
+	for p in route:
+		world.append(city * p)
+	return world
 
 
 ## The nearest point on the middle of a street.

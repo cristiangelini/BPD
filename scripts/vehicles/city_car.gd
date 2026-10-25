@@ -91,7 +91,7 @@ func _physics_process(delta: float) -> void:
 ## Something is right in front of it: a car of the city or a cop's car, or someone walking.
 func blocked() -> bool:
 	_behind_wreck = false
-	for group: String in ["city_cars", "city_walkers", "cops", "patrol_cars"]:
+	for group: String in ["city_cars", "city_walkers", "cops", "patrol_cars", "suspect_car", "city_runaways"]:
 		for other: Node in get_tree().get_nodes_in_group(group):
 			if other == self or not other is Node3D:
 				continue

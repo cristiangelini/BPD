@@ -17,7 +17,7 @@ var _left := GIVE_UP
 var _smoke: CPUParticles3D
 
 
-## The two cars' places at crossing `at`: one heading east in its lane, nosed by one heading south.
+## The two cars' places at crossing `at` (in the city's space): one heading east in its lane, nosed by one heading south.
 static func layout(at: Vector3) -> Array[Transform3D]:
 	var lane := CityLayout.STREET / 4
 	return [Transform3D(Basis(Vector3.UP, PI / 2 + 0.25), at + Vector3(-lane - 1.5, 0, lane)),
@@ -31,16 +31,17 @@ func begin(at: Vector3) -> void:
 		car.look = randi() % TrafficCar.MODELS.size()
 		car.wreck = true
 		add_child(car)
-		car.global_transform = spots[i]
+		car.transform = spots[i]
 		wrecks.append(car)
 		var driver := CrashDriver.new()
 		driver.look = LOOKS[randi() % LOOKS.size()]
 		add_child(driver)
-		driver.global_position = spots[i] * Vector3(-2.2, 0, 0)
+		driver.position = spots[i] * Vector3(-2.2, 0, 0)
 		driver.calmed.connect(_on_calmed)
 		drivers.append(driver)
-	drivers[0].look_at(drivers[1].global_position, Vector3.UP, true)
-	drivers[1].look_at(drivers[0].global_position, Vector3.UP, true)
+	for k in 2:
+		var other := drivers[1 - k].position
+		drivers[k].rotation.y = atan2(other.x - drivers[k].position.x, other.z - drivers[k].position.z)
 	_smoke = CPUParticles3D.new()
 	_smoke.amount = 30
 	_smoke.lifetime = 2.5
@@ -58,7 +59,7 @@ func begin(at: Vector3) -> void:
 	puff.material = grey
 	_smoke.mesh = puff
 	add_child(_smoke)
-	_smoke.global_position = (spots[0].origin + spots[1].origin) / 2 + Vector3.UP * 0.9
+	_smoke.position = (spots[0].origin + spots[1].origin) / 2 + Vector3.UP * 0.9
 
 
 func _physics_process(delta: float) -> void:
@@ -81,7 +82,6 @@ func _on_calmed(_driver: CrashDriver) -> void:
 func _clear() -> void:
 	_smoke.emitting = false
 	for car in wrecks:
-		var out := car.global_basis.x.normalized()
-		car.global_position += out * 2.5
+		car.position += car.basis.x.normalized() * 2.5
 		car.remove_from_group("city_cars")
 		car.collision_layer = 0

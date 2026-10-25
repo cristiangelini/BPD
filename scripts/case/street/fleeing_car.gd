@@ -14,7 +14,7 @@ var car: SuspectCar
 
 
 ## A random drive over the street grid from crossing `start` (column, row of streets): LEGS stretches, never back the
-## way it came, never off the grid. Points on the ground, in the world.
+## way it came, never off the grid. Points on the ground, in the city's space.
 static func route(start: Vector2i, rng: RandomNumberGenerator) -> Array[Vector3]:
 	var at := start
 	var came := Vector2i.ZERO
@@ -40,7 +40,7 @@ func begin(start: Vector2i, rng: RandomNumberGenerator) -> void:
 	car = SuspectCar.new()
 	car.kind = "traffic_%d" % (rng.randi() % 4)
 	add_child(car)
-	car.follow_path(route(start, rng), Transform3D.IDENTITY)
+	car.follow_path(route(start, rng), global_transform)
 	car.global_position += Vector3.UP * 0.2
 
 

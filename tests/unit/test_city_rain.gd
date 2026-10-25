@@ -35,7 +35,7 @@ func test_pouring_changes_the_city() -> void:
 	var car: PatrolCar = city.get_node("PatrolCar")
 	var road := city.rain.streets[0]
 	city.rain.set_wet(1.0)
-	assert_eq(car.grip, ChaseWeather.RAIN_GRIP, "the patrol car grips like in the rainy chase")
+	assert_eq(car.rain_grip, ChaseWeather.RAIN_GRIP, "the patrol car grips like in the rainy chase")
 	var traffic: CityCar = get_tree().get_nodes_in_group("city_cars")[0]
 	assert_lt(traffic.speed_factor, 1.0, "cars slow down")
 	var walker: CityWalker = get_tree().get_nodes_in_group("city_walkers")[0]
@@ -43,5 +43,5 @@ func test_pouring_changes_the_city() -> void:
 	assert_lt(road.roughness, 0.5, "the street shines")
 	assert_eq(city.clock.overcast, 1.0, "the sky is grey")
 	city.rain.set_wet(0.0)
-	assert_eq(car.grip, 1.0, "dry again")
+	assert_eq(car.rain_grip, 1.0, "dry again")
 	assert_eq(traffic.speed_factor, 1.0)

@@ -37,13 +37,14 @@ const HEDGE_HEIGHT := 2.5
 @export var board_room_open := false
 ## Night at the station for the jailbreak (fuga.md): the station's lights turn low and warm.
 @export var night := false
-## The living city (ciudad-viva.md): sidewalks, traffic, clock, rain and street events. Only the test city
-## (city.tscn) turns it on for now; the case cities come with the online step.
-@export var alive := false
-## The test city's cars and walkers (ciudad-viva.md); a test that needs clear streets turns them off.
+## The living city (ciudad-viva.md): sidewalks, traffic, clock, rain and street events, all the time, on the way to
+## and from every case (Cristian, 25/10).
+@export var alive := true
+## The city's cars, walkers and street events; a test that needs clear streets turns them off.
 @export var traffic := true
 
-## The test city's clock with day and night (ciudad-viva.md, step 5) and its rain (step 6).
+## The clock with day and night (ciudad-viva.md, step 5) and the rain (step 6). A night case (the jailbreak, the
+## blackout) or a chase with its own weather has neither: hold_weather().
 var clock: CityClock
 var rain: CityRain
 ## The street events' director (step 7).
@@ -62,6 +63,7 @@ var _built: Node3D
 
 
 func _ready() -> void:
+	add_to_group("city")
 	_built = get_node_or_null("Built")
 	if _built == null:
 		_built = Node3D.new()
@@ -120,22 +122,27 @@ func _build() -> void:
 		var life := CityLife.new()
 		life.name = "Life"
 		_built.add_child(life)
+	var moving: CityTraffic
 	if alive and traffic:
-		var moving := CityTraffic.new()
+		moving = CityTraffic.new()
 		moving.name = "Traffic"
-		_built.add_child(moving)
-	if alive:
+		# Added once the case scene has put the city around its place: built in the same frame, the city's bodies
+		# were still at the origin on the first physics step and pushed the cop off the grandpa's stairs.
+		_built.add_child.call_deferred(moving)
+	if alive and not night:
 		clock = CityClock.new()
 		clock.name = "Clock"
 		clock.hour = CityClock.start_hour(randi())
-		clock.sun = get_node_or_null("Sun")
-		var world := get_node_or_null("Environment") as WorldEnvironment
+		# The test city has its own sun and sky; a case's city uses its level's.
+		var level := get_parent() if get_parent() else self
+		clock.sun = get_node_or_null("Sun") if has_node("Sun") else level.get_node_or_null("Sun")
+		var world := (get_node_or_null("Environment") if has_node("Environment")
+			else level.get_node_or_null("Environment")) as WorldEnvironment
 		clock.environment = world.environment if world else null
 		var life: CityLife = _built.get_node("Life")
 		clock.lamps = life.lamp_materials()
 		clock.windows = life.window_materials()
 		clock.windows.append(_material(GLASS))
-		var moving := _built.get_node_or_null("Traffic") as CityTraffic
 		if moving:
 			clock.night_changed.connect(moving.set_night)
 		add_child(clock)
@@ -151,6 +158,24 @@ func _build() -> void:
 		events = CityEvents.new()
 		events.name = "Events"
 		add_child(events)
+
+
+## A case with its own weather (a rainy or night chase) keeps the city's clock and rain out of it: the light goes
+## back to noon and both stop.
+func hold_weather() -> void:
+	if clock:
+		clock.running = false
+		clock.set_process(false)
+		clock.hour = 12.0
+		clock.overcast = 0.0
+		clock.apply()
+		clock.queue_free()
+		clock = null
+	if rain:
+		rain.set_process(false)
+		rain.set_wet(0.0)
+		rain.queue_free()
+		rain = null
 
 
 ## A square hedge `reach` from the middle, with a gap at the ramp's street on each of the `open` sides.

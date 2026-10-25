@@ -32,6 +32,10 @@ var windshield: WindshieldDrops
 
 func _ready() -> void:
 	kind = "" if case.embedded else case.suspect_id
+	if kind == RAIN or kind == NIGHT:
+		var city := get_tree().get_first_node_in_group("city") as City
+		if city:
+			city.hold_weather()
 	if kind == RAIN:
 		_make_rain()
 	elif kind == NIGHT:

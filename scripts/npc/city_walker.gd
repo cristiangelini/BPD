@@ -43,6 +43,9 @@ var halted := false
 var searched := false
 ## Running from the police after being stopped (they leave the sidewalk to this runaway).
 var runaway: CityRunaway
+## Their own dice, so a city full of walkers leaves the game's random numbers alone (and every PC rolls the same
+## ones online): CityTraffic seeds it.
+var rng := RandomNumberGenerator.new()
 
 
 func _ready() -> void:
@@ -58,10 +61,10 @@ func _ready() -> void:
 	add_child(shape)
 	_bubble = MarketShopper.make_bubble()
 	add_child(_bubble)
-	pace = randf_range(PACE_MIN, PACE_MAX)
-	if contraband < 0 and randi() % CONTRABAND_CHANCE == 0:
-		contraband = randi() % CONTRABAND_KINDS
-	_time = randf() * 10.0
+	pace = rng.randf_range(PACE_MIN, PACE_MAX)
+	if contraband < 0 and rng.randi() % CONTRABAND_CHANCE == 0:
+		contraband = rng.randi() % CONTRABAND_KINDS
+	_time = rng.randf() * 10.0
 	var scene: PackedScene = load(MODELS_DIR % look)
 	_model = scene.instantiate()
 	add_child(_model)
@@ -103,13 +106,13 @@ func use(cop: Cop) -> void:
 
 ## Stopped by `cop`. Someone carrying something forbidden may run off to the nearest alley instead.
 func halt(cop: Cop, run := -1) -> void:
-	var runs := run == 1 or (run == -1 and contraband >= 0 and randi() % RUN_CHANCE == 0)
+	var runs := run == 1 or (run == -1 and contraband >= 0 and rng.randi() % RUN_CHANCE == 0)
 	if runs:
 		_run_off()
 		return
 	halted = true
 	stop_for(HALT)
-	say("STREET_HALTED_%d" % (randi() % HALT_LINES))
+	say("STREET_HALTED_%d" % (rng.randi() % HALT_LINES))
 	if cop:
 		look_at(Vector3(cop.global_position.x, global_position.y, cop.global_position.z), Vector3.UP, true)
 
@@ -118,12 +121,15 @@ func halt(cop: Cop, run := -1) -> void:
 func search() -> void:
 	searched = true
 	stop_for(HALT)
-	say("STREET_FOUND_%d" % contraband if contraband >= 0 else "STREET_NOTHING_%d" % (randi() % INNOCENT_LINES), 6.0)
+	say("STREET_FOUND_%d" % contraband if contraband >= 0 else "STREET_NOTHING_%d" % (rng.randi() % INNOCENT_LINES), 6.0)
 
 
 func _run_off() -> void:
 	runaway = CityRunaway.new()
-	runaway.route = CityRunaway.route_to(global_position, CityEvents.nearest_alley(global_position))
+	# Walkers walk in the city's space (their parent sits at the city's origin).
+	var parent := get_parent() as Node3D
+	var city := parent.global_transform if parent else Transform3D.IDENTITY
+	runaway.route = CityRunaway.in_world(CityRunaway.route_to(position, CityEvents.nearest_alley(position)), city)
 	get_parent().add_child(runaway)
 	runaway.global_position = global_position
 	runaway.caught.connect(func() -> void: busted.emit(self))

@@ -32,6 +32,7 @@ func _ready() -> void:
 				walker.look = WALKER_LOOKS[_rng.randi() % WALKER_LOOKS.size()]
 				walker.path = ring(Vector2i(col, row), _rng.randf_range(-0.7, 0.7), _rng.randf() < 0.5)
 				add_child(walker)
+				walker.rng.seed = _rng.randi()
 				walker.place_along(_rng.randf())
 
 

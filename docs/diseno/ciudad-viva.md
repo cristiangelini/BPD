@@ -16,7 +16,7 @@ Pedido de Cristian (25/10): "que haya veredas, tachos de basura, autos andando c
 ## El tráfico y la gente
 - **Autos:** dan vueltas por recorridos fijos de calles, por el carril de la derecha a 30 km/h. Frenan si tienen algo adelante (otro auto, un policía, el patrullero, alguien cruzando) y, si a los 3 s sigue ahí, pasan igual para no trabarse en las esquinas. Son cuatro modelos de la autopista. Más adelante: respetan los semáforos y tocan bocina.
 - **Gente:** de 5 a 7 vecinos por manzana caminan su vereda dando la vuelta, cada uno a su paso (de 1 a 1,5 m/s), con los modelos de los vecinos de los casos. Las esposas funcionan con ellos, como con cualquiera (decisión 87).
-- Los autos y la gente son de la ciudad de prueba hasta que esté probado el rendimiento; después pasan a la ciudad de todos los casos.
+- Los autos, la gente, el reloj, la lluvia y los eventos están en la ciudad de todos los casos, todo el tiempo, también yendo y viniendo del caso (Cristian, 25/10).
 
 ## El reloj, el día y la noche
 - La ciudad tiene un **reloj**: 1 hora del juego dura 1 minuto real, así que un día entero dura 24 minutos. Se ve la hora en un relojito en la esquina de la pantalla.
@@ -54,5 +54,5 @@ Un **director de eventos** arma una secuencia por vez, nunca dos juntas: cada 2 
 11. Online: los autos, la gente, el reloj, la lluvia y los eventos los decide el anfitrión.
 
 ## Preguntas para Cristian
-1. ¿Los eventos pasan también mientras hay un caso en curso (yendo y viniendo) o solo cuando se patrulla sin caso? (propuesta: también yendo y viniendo, pero nunca adentro del lugar del caso).
+1. ~~¿Los eventos pasan también mientras hay un caso en curso?~~ Sí, en todo momento, yendo y viniendo del caso (Cristian, 25/10).
 2. ¿Un día de 24 minutos te parece bien, o más lento?

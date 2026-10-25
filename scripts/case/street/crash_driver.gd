@@ -17,7 +17,7 @@ var _line := 0
 func _ready() -> void:
 	super()
 	contraband = -1
-	_line = randi() % ARGUE_LINES
+	_line = rng.randi() % ARGUE_LINES
 
 
 func prompt_key(_cop: Cop) -> String:
@@ -28,7 +28,7 @@ func use(_cop: Cop) -> void:
 	if calm:
 		return
 	calm = true
-	say("CRASH_CALM_%d" % (randi() % 3), 5.0)
+	say("CRASH_CALM_%d" % (rng.randi() % 3), 5.0)
 	calmed.emit(self)
 
 
