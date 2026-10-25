@@ -293,13 +293,17 @@ func _runner(at: Vector3) -> BlackoutInmate:
 		runner.add_collision_exception_with(other)
 	runner.active = true
 	runner.escaped.connect(_on_runner_escaped)
-	BlackoutEscort.to_block(runner, prison).boarded.connect(_on_caught)
+	BlackoutEscort.to_block(runner, prison).boarded.connect(_on_caught.bind(runner))
 	runners.append(runner)
 	found_one.emit(found)
 	return runner
 
 
-func _on_caught() -> void:
+## Walked into the punishment cell: counted once, even if they walk out and get walked back in.
+func _on_caught(runner: BlackoutInmate) -> void:
+	if runner.has_meta("caught"):
+		return
+	runner.set_meta("caught", true)
 	caught += 1
 	caught_one.emit(caught)
 

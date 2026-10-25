@@ -117,6 +117,8 @@ var visits: VisitPlan
 var visit_case: VisitCase
 ## The laundry in the kitchen, its carts and its workers (carcel-lavanderia.md, step 2).
 var laundry: LaundryPlan
+## The laundry case on top (step 6): the comisario's briefing, the planilla and the end of the shift.
+var laundry_case: LaundryCase
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -245,6 +247,12 @@ func _start_laundry() -> void:
 	laundry.name = "LaundryPlan"
 	add_child(laundry)
 	laundry.setup(self, case_seed)
+	laundry_case = LaundryCase.new()
+	laundry_case.name = "LaundryCase"
+	laundry_case.prison = self
+	laundry_case.shift_screen = $ShiftScreen
+	add_child(laundry_case)
+	laundry_case.start(city.get("comisario"))
 	city.transform = CityLayout.anchor("prison")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
