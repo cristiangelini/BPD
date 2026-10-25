@@ -106,11 +106,12 @@ func test_splitting_a_dropped_one_is_no_complaint() -> void:
 	assert_eq(case.melon_complaints, 0)
 
 
-func test_play_draws_the_three_a_third_each() -> void:
+func test_play_draws_every_variant_as_often() -> void:
 	var count := {}
 	for i in 300:
 		var variant := TrafficControlLevel.variant_from("", PackedStringArray(), i + 1)
 		count[variant] = count.get(variant, 0) + 1
-	assert_eq(count.size(), 3)
+	assert_eq(count.size(), TrafficControlLevel.VARIANTS.size())
+	assert_has(count, "fruit_truck")
 	for variant in count:
-		assert_between(count[variant], 70, 130, variant)
+		assert_between(count[variant], 300 / count.size() - 30, 300 / count.size() + 30, variant)

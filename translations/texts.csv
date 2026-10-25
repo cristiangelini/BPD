@@ -1666,6 +1666,10 @@ CLUE_CROWD_RIDERS,"Son exactamente %d en el auto, contando al que maneja.","Ther
 PROMPT_CROWD_FINE,"E: multa por exceso de pasajeros","E: fine them for too many passengers","E: multa por excesso de passageiros"
 CROWD_FINED,"¿%d en un auto? Multa por exceso de pasajeros. ¡Pero si somos familia!","%d in one car? Fined for too many passengers. But we're family!","%d num carro? Multa por excesso de passageiros. Mas nós somos família!"
 HINT_CROWD_FINED,"Multa por exceso de pasajeros: +20 al sueldo si resuelven el caso.","Fined for too many passengers: +20 to the pay if you solve the case.","Multa por excesso de passageiros: +20 no salário se resolverem o caso."
+CROWD_JUMP_LINE_0,"¡Yo me bajo acá, chau!","I'm getting off here, bye!","Eu desço aqui, tchau!"
+CROWD_JUMP_LINE_1,"¡Cada uno por su lado!","Every one for themselves!","Cada um por si!"
+CROWD_JUMP_LINE_2,"¡Me olvidé que tenía dentista!","I forgot I had a dentist appointment!","Esqueci que tinha dentista!"
+CROWD_JUMP_LINE_3,"¡Yo ni los conozco a estos!","I don't even know these people!","Eu nem conheço essa gente!"
 PROMPT_BUS_ON,E: subir al bus,E: get on the bus,E: subir no ônibus
 PROMPT_BUS_OFF,E: bajar del bus,E: get off the bus,E: descer do ônibus
 PROMPT_BUS_DRIVE,E: manejar el bus,E: drive the bus,E: dirigir o ônibus
