@@ -71,7 +71,7 @@ const VARIANTS := {
 		"brief": ["BRIEF_GYM_A", "BRIEF_GYM_B", "BRIEF_GYM_C"],
 		"go": "HINT_GO_GYM", "in": "HINT_GYM_IN", "found": "HINT_CLUB_EVIDENCE",
 		"rows": "OBJ_GYM_", "evidence": "EVIDENCE_GYM_",
-		"boss": "toro", "getaway": SuspectCar.BEAR_ON_FOOT,
+		"boss": "toro", "getaway": SuspectCar.TORO_JOG,
 		"boss_cuffed": "HINT_TORO_CUFFED", "cuff_row": "OBJ_GYM_CUFF_TORO", "catch_row": "OBJ_GYM_CATCH_TORO",
 		"slips": "TORO_SLIP_%d",
 	},

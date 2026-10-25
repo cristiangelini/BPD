@@ -1,6 +1,6 @@
 extends GutTest
 
-## The infiltration online (infiltracion.md, infiltracion-coro.md, infiltracion-mimos.md and infiltracion-fiesta.md, "Online"; docs/diseno/online.md): the host's
+## The infiltration online (infiltracion.md, infiltracion-coro.md, infiltracion-mimos.md, infiltracion-fiesta.md and infiltracion-gimnasio.md, "Online"; docs/diseno/online.md): the host's
 ## case decides the evidence, the suspicion, the boss cuffed or running off and the end of shift, and every PC sees
 ## the same, disguises included.
 
@@ -9,6 +9,7 @@ const CLUB_SCENE := preload("res://scenes/levels/grandpa_club.tscn")
 const CHOIR_SCENE := preload("res://scenes/levels/church_choir.tscn")
 const MIME_SCENE := preload("res://scenes/levels/mime_theater.tscn")
 const PARTY_SCENE := preload("res://scenes/levels/party_hall.tscn")
+const GYM_SCENE := preload("res://scenes/levels/gym_hall.tscn")
 ## A seed whose club has Doña Chela's bag among its evidence (ClubEvidence.draw).
 const SEED := 2
 
@@ -199,6 +200,34 @@ func test_a_guest_talks_to_serpentina_and_seeing_the_boss_reaches_every_planilla
 	host.photo.boss_seen.emit(OnlinePcs.own_cop(pcs[0]))
 	await wait_until(func() -> bool: return guest.case.bonus_clue, 5.0)
 	assert_true(guest.case.bonus_clue, "the extra clue reaches the guest's planilla")
+
+
+func test_at_the_gym_found_out_el_toro_jogs_off_on_every_pc() -> void:
+	_scene = GYM_SCENE
+	var pcs := await _on()
+	var host := _place(pcs[0]) as GymHall
+	var guest := _place(pcs[1]) as GymHall
+	host.routine.set_process(false)
+	guest.routine.set_process(false)
+	host.suspicion.raise(host.members[0], 100.0)
+	await wait_until(func() -> bool: return guest.case.chase != null, 5.0)
+	assert_eq(guest.case.chase.suspect_id, SuspectCar.TORO_JOG, "jogging")
+	assert_false(guest.boss.visible, "el Toro is gone from the guest's gym")
+
+
+func test_the_routine_reaches_the_guest_and_a_guest_slacking_reaches_the_host() -> void:
+	_scene = GYM_SCENE
+	var pcs := await _on()
+	var host := (_place(pcs[0]) as GymHall).routine
+	var guest := (_place(pcs[1]) as GymHall).routine
+	host.start_routine("weight")
+	await wait_until(func() -> bool: return guest.is_routine(), 5.0)
+	assert_eq(guest.exercise, "weight", "the same exercise")
+	watch_signals(host)
+	guest._report(OnlinePcs.own_cop(pcs[1]), GymRoutine.GAVE_UP)
+	await wait_until(func() -> bool: return get_signal_emit_count(host, "missed") > 0, 5.0)
+	var copy: Cop = pcs[0].cop_syncs[pcs[1].multiplayer.get_unique_id()].cop
+	assert_signal_emitted_with_parameters(host, "missed", [copy, GymRoutine.GAVE_UP])
 
 
 ## Whether the party with `case_seed` has Serpentina among its clues.

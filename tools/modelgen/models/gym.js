@@ -97,9 +97,20 @@ export function buildGymBag() {
 	return b.build();
 }
 
+// El Toro jogging off (step 5): the little clouds of dust he kicks up behind him (-Z), since he is the only "vehicle".
+export function buildToroJog() {
+	const b = new Builder('toro_jog');
+	const dust = mat('gym_dust', 0xc8bca8);
+	for (const [x, y, z, r] of [[-0.15, 0.08, -0.45, 0.1], [0.12, 0.06, -0.6, 0.08], [0, 0.1, -0.8, 0.12], [-0.08, 0.05, -1.0, 0.07]]) {
+		b.add('dust', dust, new THREE.IcosahedronGeometry(r, 0), { pos: V(x, y, z) });
+	}
+	return b.build();
+}
+
 export const models = {
 	gym_treadmill: buildTreadmill, gym_bench: buildBench, gym_dumbbell_rack: buildDumbbellRack, gym_dumbbell: buildDumbbell,
 	gym_punching_bag: buildPunchingBag, gym_safe_weight: buildSafeWeight, gym_shake: buildShake, gym_bag: buildGymBag,
+	toro_jog: buildToroJog,
 };
 
 export const views = {
@@ -112,6 +123,10 @@ export const views = {
 			{ name: 'gym_punching_bag', pos: [3.2, 0, 0.2] },
 		],
 		cam: { pos: [0.6, 2.4, 5.8], target: [0.6, 0.8, 0], fov: 45 },
+	},
+	toro_jog: {
+		items: [{ name: 'toro_jog', pos: [0, 0, 0], rotY: 1.2 }, { name: 'npc_toro', pos: [0, 0, 0], rotY: 1.2, scale: 1.2 }],
+		cam: { pos: [1.2, 1.6, 3.2], target: [0, 0.7, -0.3], fov: 45 },
 	},
 	gym_evidence: {
 		items: [
