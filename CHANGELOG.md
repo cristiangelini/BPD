@@ -167,3 +167,4 @@
 - Bank flood, step 5: online. The host's water, valve, front door and floats decide and every guest sees the same: the level, the hostages up on the counter, the wet drill, who turns the valve and who wears a float.
 - Bank robbery design: the roof robbery (decision 126), a giant toy helicopter flown by El Oso's nephew from the sidewalk across takes the sacks and finally El Oso.
 - Roof robbery: a seventh of the seeds (--bank=roof) the bank has fire escape stairs up the east wall, a hatch in the corridor's ceiling, the toy helicopter (40 kg) on its helipad on the roof and the nephew with its remote on a bench across the street.
+- Roof robbery, step 2: the nephew flies the helicopter away when he sees a cop on the roof (20 s, then it lands); his remote rests 40 s after each flight, and taking the helicopter off the roof leaves the gang without it.

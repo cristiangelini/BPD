@@ -77,3 +77,10 @@ de juguete, el sobrino con el control y la persecución en el aire.
   sobrino (`BankNephew`, más chico que los grandes) está sentado en un banco de la vereda de enfrente con el control
   en la mano, mirando al banco; con E dice sus frases de inocente ("¡Mire mi helicóptero, oficial!"). Capturas en
   `/mnt/project-files/techo/paso1-*.png`.
+- **Paso 2 (agarrar el helicóptero y que despegue):** cuando el sobrino ve a un policía arriba del techo, hace
+  despegar el helicóptero ("¡Despega, despega! Digo... ¡qué lindo vuela!"): se les escapa de las manos a los que lo
+  tenían, sube 5 m sobre la cruz y da vueltas de 6 m de radio durante 20 s, y después baja a la cruz. Para que se pueda
+  agarrar, el control necesita 40 s de descanso después de cada vuelo (`NEPHEW_REST`): ese es el momento de llevárselo
+  entre dos por la escalera de incendio, o de tirarlo a la calle. Fuera del techo (en la calle, en el baúl) la banda ya
+  no tiene helicóptero, y la barra lo avisa una vez. La barra también avisa cuando despega: "Alguien lo maneja desde
+  abajo", la pista para buscar al sobrino. Captura en `/mnt/project-files/techo/paso2-vuela.png`.

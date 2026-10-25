@@ -1648,3 +1648,6 @@ PROMPT_TALK_NEPHEW,"E: hablar con el chico","E: talk to the kid","E: falar com o
 NEPHEW_1,"¡Mire mi helicóptero, oficial!","Look at my helicopter, officer!","Olha o meu helicóptero, policial!"
 NEPHEW_2,"Me lo regaló mi tío. Es enorme, ¿no?","My uncle gave it to me. It's huge, right?","Meu tio que me deu. É enorme, né?"
 NEPHEW_3,"¿Banco? ¿Qué banco? Yo solo juego.","Bank? What bank? I'm just playing.","Banco? Que banco? Eu só estou brincando."
+NEPHEW_TAKE_OFF,"¡Despega, despega! Digo... ¡qué lindo vuela!","Take off, take off! I mean... look how nice it flies!","Decola, decola! Quer dizer... que lindo que voa!"
+HINT_HELICOPTER_UP,"¡El helicóptero despegó solo! Alguien lo maneja desde abajo.","The helicopter took off on its own! Someone is flying it from down there.","O helicóptero decolou sozinho! Alguém está pilotando lá de baixo."
+HINT_HELICOPTER_TAKEN,"¡Le sacaron el helicóptero a la banda! Ya no pueden irse por el techo.","You took the gang's helicopter! They can't leave by the roof anymore.","Vocês tiraram o helicóptero da quadrilha! Eles não podem mais fugir pelo telhado."
