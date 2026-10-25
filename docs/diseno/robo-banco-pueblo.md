@@ -80,3 +80,14 @@ estantes y el mostrador de madera, don Plácido dormido (un cuerpo que se agarra
 3. **¿Con los nervios en 100 El Conejo sale corriendo a la camioneta aunque la bóveda siga cerrada?** Recomendado:
    sí, sin bolsas: se puede perder igual si se escapa, pero sin plata. La otra opción es que los nervios solo lo
    frenen (espía más) y nunca huya antes de que se abra la bóveda.
+
+## Hecho así
+
+- **Paso 1 (el banco chico, don Plácido y El Conejo):** un octavo de las semillas, sorteado antes que todos
+  (`hash(["bank pueblo", semilla]) % 8`), es el banco del pueblo; las semillas 1 a 4 de las pruebas viejas no cambian
+  y `--bank=town` lo fuerza. Una pared de madera con estantes de frascos de mermelada y biblioratos va de la pared del
+  fondo a la fachada en x = -1 y deja un hall chico sin la fila de postes; el cartel dice "Banco del Pueblo". El
+  señor Moneda y su auto no están. No hay rehenes en el piso: solo don Plácido (`BankClerk`), dormido en su banquito
+  detrás del mostrador, inclinado hacia adelante, con "Zzz..." arriba de la cabeza y la llave asomando del bolsillo
+  del chaleco. Pesa 70 kg y espera quieto en su banquito hasta que un policía lo agarra. El Conejo está solo, en el
+  lugar del pato al lado del taladro, y como está solo es el jefe. Capturas en `/mnt/project-files/pueblo/paso1-*.png`.

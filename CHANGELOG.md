@@ -182,3 +182,4 @@
 - Roof robbery, step 4b: El Oso flies off hanging from the toy helicopter's rope, low over the street; the cop riding beside the patrol car's driver grabs the rope from the window with E and he drops cuffed into the back seat.
 - Roof robbery, step 5: online. The host flies the helicopter and every guest sees it, the crash, the sacks in the cart and the nephew caught; a guest can grab El Oso's rope from the window too.
 - Bank robbery design: the town bank (decision 127), a tiny branch with one sleeping clerk, don Plácido, and one very nervous robber, El Conejo, who holds the drill himself and bolts when the noise gets to him.
+- Town bank, step 1: an eighth of the robberies is the town bank: a wall of shelves makes the hall small, don Plácido sleeps on his stool behind the counter with the back door's key in his pocket, El Conejo robs it alone at the drill, and there are no hostages and no manager.
