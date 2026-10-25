@@ -4,7 +4,11 @@ extends Node3D
 ## The prison's new garden (carcel-huerta.md, step 2): 12 beds in the east of the yard, 3 across and 4 deep, each with
 ## 4 plants of one kind (lettuce, carrot, tomato or pumpkin, by the seed). Garden time starts when the first cop walks
 ## through the gate, and the 6 gardeners (YardInmate, GARDEN, with straw hats and watering cans) go from bed to bed,
-## each round their own beds. Every number here is (propuesta).
+## each round their own beds. Step 3: the seed hides MAGIC magic beans (GardenPlant.magic) among the plants, each in a
+## bed of its own; the first starts growing FIRST_BEAN seconds into garden time and each of the others BEAN_EVERY
+## seconds after the one before. Every magic bed is on WATERED_BY gardeners' rounds, and at one they sing to it.
+
+signal bean_grew(plant: GardenPlant, stage: int)
 
 const BEDS := 12
 const PER_BED := 4
@@ -18,6 +22,11 @@ const STOPS := 4
 const AT_BED := 0.75
 const SOIL := Color(0.36, 0.25, 0.15)
 const CAN := Color(0.35, 0.6, 0.4)
+const MAGIC := 3
+const FIRST_BEAN := 10.0
+const BEAN_EVERY := 60.0
+const WATERED_BY := 2
+const SING_LINES := 3
 
 var prison: PrisonLevel
 var plants: Array[GardenPlant] = []
@@ -25,6 +34,9 @@ var gardeners: Array[YardInmate] = []
 ## Each bed's kind (GardenPlant.Kind).
 var kinds: Array[int] = []
 var started := false
+## The magic beans, in the order they start growing, and how long into garden time it is.
+var beans: Array[GardenPlant] = []
+var time := 0.0
 ## A guest's copy (step 7): the host's one decides.
 var follower := false
 var _rng := RandomNumberGenerator.new()
@@ -38,18 +50,29 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 	_shuffle(kinds)
 	for i in BEDS:
 		_bed(i)
+	var beds := range(BEDS)
+	_shuffle(beds)
+	for bed: int in beds.slice(0, MAGIC):
+		var bean := plants[bed * PER_BED + _rng.randi_range(0, PER_BED - 1)]
+		bean.magic = true
+		bean.prison = level
+		bean.grew.connect(func(plant: GardenPlant, stage: int) -> void: bean_grew.emit(plant, stage))
+		beans.append(bean)
 	for i in GARDENERS:
 		var gardener := YardInmate.new()
 		gardener.name = "Gardener%d" % i
 		gardener.prison = level
 		gardener.activity = YardInmate.Activity.GARDEN
 		gardener.wander_seed = _rng.randi()
-		var beds := range(BEDS)
-		_shuffle(beds)
-		for bed: int in beds.slice(0, STOPS):
+		var rounds := range(BEDS)
+		_shuffle(rounds)
+		for bed: int in rounds.slice(0, STOPS):
 			gardener.stops.append(bed_front(bed))
+		for b in beans.size():
+			if (i + b) % (GARDENERS / WATERED_BY) == 0 and not gardener.stops.has(bed_front(beans[b].bed)):
+				gardener.stops[b % STOPS] = bed_front(beans[b].bed)
 		gardener.spot = gardener.stops[0]
-		gardener.face = bed_center(int(beds[0]))
+		gardener.face = bed_center(int(rounds[0]))
 		add_child(gardener)
 		gardener.place()
 		_watering_can(gardener)
@@ -110,12 +133,40 @@ func _watering_can(gardener: YardInmate) -> void:
 	can.add_child(CopTool.piece(CopTool.cylinder(0.015, 0.25), CAN, Vector3(0, 0.05, 0.16), Vector3(-1.0, 0, 0)))
 
 
-func _physics_process(_delta: float) -> void:
-	if started or follower:
+func _physics_process(delta: float) -> void:
+	if follower:
 		return
-	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
-		if prison.inside_walls(cop.global_position):
-			start()
+	if not started:
+		for cop: Node3D in get_tree().get_nodes_in_group("cops"):
+			if prison.inside_walls(cop.global_position):
+				start()
+				return
+		return
+	time += delta
+	for i in beans.size():
+		if time >= FIRST_BEAN + i * BEAN_EVERY and not beans[i].growing and beans[i].stage == 0:
+			beans[i].start_growing()
+	_sing()
+
+
+## A gardener working at a bed with a magic bean growing in it sings to it.
+func _sing() -> void:
+	for gardener in gardeners:
+		if gardener._pause <= 0.0 or gardener.said() != "":
+			continue
+		var at := prison.global_transform.affine_inverse() * gardener.global_position
+		for bean in beans:
+			if bean.growing and Vector2(at.x, at.z).distance_to(bed_front(bean.bed)) < 0.5:
+				gardener.say("GARDEN_SING_%d" % (bean.bed % SING_LINES), 4.0)
+				break
+
+
+## The next magic bean grows one stage now (the debug panel's shortcut, once it exists).
+func grow_next() -> void:
+	for bean in beans:
+		if bean.stage < GardenPlant.STAGES:
+			bean.growing = true
+			bean.set_stage(bean.stage + 1)
 			return
 
 

@@ -68,3 +68,9 @@ Qué 3 plantas son raras y en qué orden aparecen, qué verdura tiene cada cante
   arranca el horario de huerta cuando el primer policía entra por el portón: los 6 jardineros (`YardInmate` en
   GARDEN, con sombrero de paja y regadera verde) van cada uno por 4 canteros de la semilla, se agachan un rato en cada
   uno y saludan al policía que pasa cerca. Capturas en `carcel-huerta/`: `paso2-huerta.png` y `paso2-cantero.png`.
+- **Paso 3:** la semilla elige 3 plantas, cada una en un cantero distinto, que son porotos mágicos (`GardenPlant.magic`).
+  El primero empieza a crecer a los 10 s del horario de huerta y cada uno de los otros 60 s después del anterior. Crecen
+  una etapa cada 40 s: el tallo sale de la verdura (0,3 m, 0,75 m, 1,6 m, 3 m), con hojas violetas desde la etapa 2;
+  el gigante se apoya sobre el muro más cercano, por arriba (`top`). A menos de 5 m un policía oye "crrc... crrc...".
+  Cada cantero con poroto está en la ronda de 2 jardineros, que le cantan cuando lo riegan. Capturas:
+  `paso3-brote.png` y `paso3-gigante.png`.
