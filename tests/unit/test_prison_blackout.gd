@@ -57,21 +57,18 @@ func test_each_door_is_in_front_of_its_own_cell() -> void:
 		# west side, east on the east.
 		var pivot: Node3D = door.get_parent()
 		var middle := pivot.global_transform * Vector3(CellDoor.WIDTH / 2, 1.0, 0)
-		var into := -0.3 if pivot.rotation.y > 0 else 0.3
+		var into := -0.3 if pivot.rotation.y < 0 else 0.3
 		var cell := prison.cell_at(middle + Vector3(into, 0, 0))
-		assert_ne(cell, -1, "%s fronts a cell" % door.get_parent().name)
+		assert_ne(cell, -1, "%s fronts a cell" % pivot.name)
 		cells[cell] = true
 	assert_eq(cells.size(), 8, "one door per cell")
 
 
-func test_a_door_swings_out_into_the_corridor() -> void:
-	for door in prison.cell_doors:
-		door.set_open(true)
+func test_an_open_door_swings_into_its_cell_and_leaves_the_corridor_free() -> void:
 	await wait_seconds(CellDoor.SWING_TIME + 0.1)
 	for door in prison.cell_doors:
 		var tip := door.global_transform * Vector3(CellDoor.WIDTH, 1.0, 0)
-		assert_true(prison.in_block(tip), "the open door stays in the block")
-		assert_eq(prison.cell_at(tip), -1, "%s opens into the corridor" % door.get_parent().name)
+		assert_ne(prison.cell_at(tip), -1, "%s opens into its cell" % door.get_parent().name)
 
 
 func test_e_closes_a_cell_by_hand() -> void:

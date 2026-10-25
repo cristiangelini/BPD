@@ -81,7 +81,8 @@ están los dos fusibles sueltos, quién es El Chispa y sus frases. Así no hay d
 - **Paso 2 (la cárcel a oscuras):** `--place=blackout` abre `scenes/levels/prison_blackout.tscn`, la misma cárcel
   (`PrisonLevel`, `variant = "blackout"`) de noche, con la luna y la ciudad de noche como en la fuga. Las 16 lámparas
   del techo están apagadas (`PrisonLevel.set_lights`), la reja del pabellón está abierta y cada una de las 8 celdas
-  tiene su reja (`CellDoor`) en el medio del frente, abierta hacia el pasillo; E la cierra y la abre a mano. Dos
+  tiene su reja (`CellDoor`) en el medio del frente, abierta hacia adentro de la celda para no tapar el pasillo; E la
+  cierra y la abre a mano. Dos
   guardias (modelo del carcelero) tiemblan en el patio junto al portón con una vela que titila. `cell_at` dice en qué
   celda está un punto (0 a 3 al oeste, 4 a 7 al este). No hay motín ni caso todavía. Capturas en
   `/mnt/project-files/corte-de-luz/paso2-*.png`.

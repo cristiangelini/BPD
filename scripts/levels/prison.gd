@@ -241,8 +241,8 @@ func _guard(at: Vector3) -> void:
 
 
 ## The blackout's cell fronts on one side of the corridor: bars on each side of a barred door in the middle of every
-## cell, the door hinged so that it swings out into the corridor (CellDoor turns on its own Y, so it hangs from a
-## pivot turned along the front).
+## cell, the door hinged so that it swings into the cell and leaves the corridor free (CellDoor turns on its own Y, so
+## it hangs from a pivot turned along the front).
 func _cell_fronts(side: float, front: float, cell_z: float) -> void:
 	for i in CELLS:
 		var z0 := CELLS_Z + i * cell_z
@@ -252,8 +252,8 @@ func _cell_fronts(side: float, front: float, cell_z: float) -> void:
 		_bars("z", front, door_hi, z0, GameScale.DOOR_HEIGHT)
 		var pivot := Node3D.new()
 		pivot.name = "CellPivot%d" % cell_doors.size()
-		pivot.position = Vector3(front, FLOOR_TOP, door_hi if side < 0 else door_lo)
-		pivot.rotation.y = PI / 2 if side < 0 else -PI / 2
+		pivot.position = Vector3(front, FLOOR_TOP, door_lo if side < 0 else door_hi)
+		pivot.rotation.y = -PI / 2 if side < 0 else PI / 2
 		add_child(pivot)
 		var door := CellDoor.new()
 		door.name = "CellDoor"
