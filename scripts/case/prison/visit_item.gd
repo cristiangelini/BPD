@@ -3,8 +3,10 @@ extends Grabbable
 
 ## What a visitor brings on the prison's visiting day (carcel-visitas.md, step 2): a cake, a guitar, a roast chicken...
 ## Left on the search table while the visitor waits there; handed back when they go in, if it's still on the table.
-## Some have something hidden inside (`hidden`, drawn by VisitPlan), found by opening them (step 3). Every number here
-## is (propuesta).
+## Some have something hidden inside (`hidden`, drawn by VisitPlan). Step 3: E with it in hand opens it (the cake
+## splits, the guitar comes apart): what was hidden lands in the cop's hands (Contraband) and is confiscated; with
+## nothing inside it's just broken, and its visitor cries. Online the host decides (only it knows what's inside).
+## Every number here is (propuesta).
 
 enum Kind { CAKE, BREAD, GUITAR, FLOWERS, SCARF, BABY, CHICKEN, HAT, WATERMELON, SHOE, YARN, BOOK }
 
@@ -23,7 +25,9 @@ var kind := Kind.CAKE
 ## What's hidden inside, found by opening it (step 3).
 var hidden := false
 ## The visitor it came with.
-var visitor: Node3D
+var visitor: PrisonVisitor
+## Opened (step 3): split open, found or broken.
+var opened := false
 
 
 func _init() -> void:
@@ -44,7 +48,44 @@ func _ready() -> void:
 
 
 func held_prompt_key(_cop: Cop) -> String:
+	if opened:
+		return "PROMPT_VISIT_ITEM_OPENED"
 	return "PROMPT_VISIT_ITEM_%s" % Kind.keys()[kind]
+
+
+## E with it in hand: opens it. Whatever was hidden goes to the cop's hands.
+func use(cop: Cop) -> void:
+	if opened or not multiplayer.is_server():
+		return
+	open()
+	if hidden:
+		hidden = false
+		var found := Contraband.new()
+		found.name = "Contraband"
+		found.kind = Contraband.IN_ITEM[kind]
+		get_parent().add_child(found, true)
+		found.global_position = global_position + Vector3.UP * 0.2
+		cop.handed(found)
+		cop.show_hint("HINT_VISIT_FOUND_%s" % Contraband.Kind.keys()[found.kind], true)
+		if visitor:
+			visitor.caught(found, true)
+		return
+	cop.show_hint("HINT_VISIT_NOTHING", true)
+	if visitor:
+		visitor.broken(self)
+
+
+## Split open: its pieces tumble apart and sag (every PC, from the host's state).
+func open() -> void:
+	opened = true
+	var model := get_node_or_null("Model")
+	if not model:
+		return
+	var k := 0
+	for part: Node3D in model.get_children():
+		k += 1
+		part.position += Vector3((k % 3 - 1) * 0.06, -0.02, (k % 2) * 0.05 - 0.025)
+		part.rotation += Vector3(0.3 * (k % 2), 0.4 * k, 0.5 * (k % 3 - 1))
 
 
 ## The kind's look from primitives, its base on the ground at the origin: also what the visitor carries in the queue.
