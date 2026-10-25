@@ -6,7 +6,9 @@ extends CharacterBody3D
 ## LaundryPlan starts. Step 3: when the truck comes, LaundryPlan sends them for a cart (`fetch`): down the room's east
 ## lane to the aisle between the two rows of carts, the cart pulled out into the aisle, and then pushed in front of them
 ## (LaundryPlan.push_route) through the canteen and the yard to the truck by the gate. Tipped over, they wait and set it
-## back on its wheels. Then back to their station. Every number here is (propuesta).
+## back on its wheels. Then back to their station. Step 4: a cart with someone under the sheets is heavier (HEAVY_SLOW of
+## the speed, puffing), and its pusher, nervous, greets every cop who comes close (NERVOUS_REACH, once every
+## NERVOUS_EVERY seconds). Every number here is (propuesta).
 
 signal delivered(worker: LaundryWorker, cart: LaundryCart)
 
@@ -26,6 +28,10 @@ const TURN_RATE := 5.0
 ## Pulling the cart out into the aisle takes this long; a tipped cart waits this long before they set it back.
 const PULL_TIME := 0.5
 const RIGHT_AFTER := 4.0
+## Step 4: pushing someone is slower, and their pusher is nervous around cops.
+const HEAVY_SLOW := 0.7
+const NERVOUS_REACH := 4.0
+const NERVOUS_EVERY := 8.0
 
 var prison: PrisonLevel
 ## Their station (level space x, z) and where they face from it.
@@ -41,6 +47,7 @@ var _next := 0
 var _wait := 0.0
 var _push_dir := Vector3.ZERO
 var _right_left := 0.0
+var _nervous_left := 0.0
 var _model: Node3D
 var _bubble: Label3D
 var _bubble_left := 0.0
@@ -128,7 +135,7 @@ func _at_cart() -> void:
 	_wait = maxf(_wait, PULL_TIME)
 	_push_dir = -prison.global_basis.z
 	job = Job.PUSH
-	say("WORKER_PUSHING")
+	say("WORKER_HEAVY" if cart.hidden else "WORKER_PUSHING")
 	_walk(LaundryPlan.push_route())
 
 
@@ -166,6 +173,25 @@ func _face(at: Vector3) -> void:
 	away.y = global_position.y
 	if away.distance_to(global_position) > 0.01:
 		look_at(away, Vector3.UP)
+
+
+## Walking, pushing, or pushing someone under the sheets.
+func _speed() -> float:
+	if job != Job.PUSH:
+		return SPEED
+	return PUSH_SPEED * (HEAVY_SLOW if cart.hidden else 1.0)
+
+
+## Pushing someone, a cop close by gets a big nervous hello.
+func _nervous(delta: float) -> void:
+	_nervous_left -= delta
+	if not cart.hidden or _nervous_left > 0.0:
+		return
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if cop.global_position.distance_to(global_position) <= NERVOUS_REACH:
+			say("WORKER_NERVOUS")
+			_nervous_left = NERVOUS_EVERY
+			return
 
 
 func say(key: String, seconds := SAY_TIME) -> void:
@@ -206,12 +232,13 @@ func _physics_process(delta: float) -> void:
 	if to.length() < REACH:
 		_next += 1
 		return
-	var step := to.normalized() * (PUSH_SPEED if job == Job.PUSH else SPEED)
+	var step := to.normalized() * _speed()
 	velocity = prison.global_basis * Vector3(step.x, 0, step.y)
 	velocity.y = 0.0
 	_face(global_position + velocity)
 	move_and_slide()
 	if job == Job.PUSH:
+		_nervous(delta)
 		var ahead := velocity.normalized()
 		if _push_dir.dot(ahead) < -0.99:
 			# Turning right round (the lerp would never cross): start the swing to one side.

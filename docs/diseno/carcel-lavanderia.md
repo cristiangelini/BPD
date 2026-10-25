@@ -97,3 +97,11 @@ nadie duerme un gato, qué pistas da cada uno y cuándo un preso se mete en un l
   que brillan). Si llega al portón, o si el carrito sube al camión con él adentro, se escapó. Un carrito volcado
   mientras lo empujan se queda en el piso 4 s y el preso lo levanta ("¡Eh, mi ropa!"). Capturas:
   `paso3-empujando.png`, `paso3-camion.png` y `paso3-volcado.png`.
+- **Paso 4 (las pistas):** el que está abajo de las sábanas estornuda cada 10 a 18 s ("¡Achís!") y las sábanas se
+  mueven; en la mitad de esos carritos se le asoma un zapato por el borde, junto a la manija. El carrito con alguien
+  adentro se empuja más lento (0,7 de la velocidad) y el que lo empuja resopla ("Uf... cómo pesa la ropa hoy...") y
+  saluda nervioso a cualquier policía que se le acerca a 4 m ("¡Buenas, oficial! Nada raro por acá. Ropa. Solo ropa.",
+  una vez cada 8 s). En uno de cada 3 carritos sin nadie duerme un gato en las toallas que maúlla cada 10 a 18 s y
+  también mueve las sábanas; al revisarlo o volcarlo aparece el gato arriba de la ropa ("Solo un gato durmiendo en las
+  toallas"). Las pistas salen de una semilla por carrito, igual en todas las PC. Capturas: `paso4-estornudo.png` y
+  `paso4-gato.png`.
