@@ -94,3 +94,10 @@ En qué celda está Rulo, qué 6 pedidos hace y en qué orden, qué 3 cosas esco
   abogado!" y el abogado (`VipLawyer`, modelo `npc_abogado`) entra por el portón, cruza el comedor y el pabellón hasta
   la reja, habla 30 s y se va por donde vino; después el humor queda en 40. Capturas: `paso4-lima.png` y
   `paso4-abogado.png`.
+- **Paso 5:** con las 3 piezas, la puerta de su celda se abre y Rulo sale corriendo (un `BlackoutInmate` con su
+  modelo, `BlackoutInmate.model`): por el pasillo, el comedor, la puerta del este y el patio hasta el portón. Esposado
+  y llevado a una celda (cualquiera, como en el corte de luz), vuelve a su sillón sin sus piezas y con la puerta con
+  llave; los pedidos siguen. Si cruza el portón, se sube a la limusina y la limusina se va (se pierde en el paso 6).
+  Tras el último pedido, su manager (`VipLawyer` con el modelo `npc_gerente` y sus propias frases) hace el camino del
+  abogado, habla 6 s, abre la puerta y se va con Rulo caminando detrás; la limusina se va con él. Capturas:
+  `paso5-fuga.png` y `paso5-manager.png`.
