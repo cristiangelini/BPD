@@ -85,3 +85,15 @@ nadie duerme un gato, qué pistas da cada uno y cuándo un preso se mete en un l
   junto a la pared del oeste. La semilla elige de 4 a 6 que llevan un preso abajo de la ropa y en cuál de los 4 viajes
   del camión sale cada uno (3 por viaje). Los carritos no se empujan a mano: los mueven los presos (paso 3). Capturas en
   `/mnt/project-files/lavanderia/`: `paso2-lavanderia.png` y `paso2-carritos.png`.
+- **Paso 3 (el camión y revisar):** 20 s después de que entra el primer policía llega el camión de la lavandería
+  (`LaundryTruck`, el camión de mudanza con el cartel "Lavandería Burbuja" y una rampa), y vuelve cada 2 minutos hasta
+  hacer los 4 viajes. En cada viaje, 3 presos de la lavandería van a buscar los carritos de ese viaje (cada uno 6 s
+  después del anterior): bajan por el pasillo de las máquinas, sacan el carrito al pasillo entre las dos filas y lo
+  empujan delante ("Permiso, ropa sucia...") por la puerta de la cocina, el pasillo del comedor junto al mostrador, la
+  puerta del este y el patio hasta el portón, donde sube por la rampa. Después vuelven a su lugar. El camión se va
+  cuando suben sus 3 carritos, y después del cuarto viaje termina el día. E sobre un carrito y quedarse cerca (2,4 m)
+  1,5 s lo revisa ("Puaj, está mojada"); R lo vuelca. Si había alguien, salta ("¡Sorpresa! ¡Chau, me voy!") y corre al
+  portón por el mismo camino: se esposa y se lleva del brazo a la celda de castigo (lo del corte de luz, sin los ojos
+  que brillan). Si llega al portón, o si el carrito sube al camión con él adentro, se escapó. Un carrito volcado
+  mientras lo empujan se queda en el piso 4 s y el preso lo levanta ("¡Eh, mi ropa!"). Capturas:
+  `paso3-empujando.png`, `paso3-camion.png` y `paso3-volcado.png`.
