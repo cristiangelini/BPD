@@ -371,7 +371,19 @@ func _physics_process(delta: float) -> void:
 	velocity.x = wish.x
 	velocity.z = wish.z
 	move_and_slide()
+	climb_curbs(self)
 	var moved := Vector2(get_real_velocity().x, get_real_velocity().z).length()
 	# The wheelchair is slow anyway: stuck is slower than a share of his own speed.
 	var stuck_below := minf(STUCK_SPEED, top_speed() * STUCK_SHARE)
 	stuck_for = stuck_for + delta if moved < stuck_below else 0.0
+
+
+## Up the living city's curbs (CityLife): whatever rides the sidewalks has a body that starts on the street, and a
+## 15 cm step stops it otherwise.
+static func climb_curbs(body: CharacterBody3D) -> void:
+	for k in body.get_slide_collision_count():
+		var hit := body.get_slide_collision(k)
+		var other := hit.get_collider() as Node
+		if absf(hit.get_normal().y) < 0.5 and other and other.is_in_group(CityLife.SIDEWALKS):
+			body.global_position.y += CityLife.CURB + 0.05
+			return

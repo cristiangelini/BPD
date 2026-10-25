@@ -100,6 +100,10 @@ var slow_factor := 1.0
 ## Wading in the flooded bank (BankWater): walking and running speed times this too.
 var wade := 1.0
 var _fall_gap_left := 0.0
+## Climbing over a fence (Climbable): seconds left, where it started and the climb.
+var climb_left := 0.0
+var _climb_from := Vector3.ZERO
+var _climb := {}
 
 @onready var _shape: CollisionShape3D = $Shape
 @onready var _head: Node3D = $Head
@@ -125,6 +129,13 @@ func _ready() -> void:
 		# Online, the player's own cop brings in the other players' cops (docs/diseno/online.md).
 		if Net.is_online():
 			Net.spawn_cops.call_deferred(self)
+		# Under investigation, the internal affairs agent comes into the case too (sobornos.md).
+		_join_agent.call_deferred()
+
+
+func _join_agent() -> void:
+	if InternalAffairsAgent.join(self) or InternalAffairsAgent.of(self):
+		show_hint("HINT_AGENT_ARRIVES")
 
 
 ## What the camera points at within reach (empty if nothing), ignoring the cop's own body.
@@ -302,6 +313,30 @@ func belt_flashlight() -> void:
 
 func belt_cuff(body: Node, at: Vector3) -> void:
 	(belt.tools[0] as Handcuffs).cuff_body(body, at)
+
+
+## This cop took a bribe of `amount` from whoever `body` belongs to (sobornos.md): they stay free and won't offer
+## again. Through act(), so every PC counts it for the joke award; the host's campaign adds it to the shift, unless
+## the internal affairs agent saw it (decision 192).
+## Whoever `body` belongs to offered a bribe (Handcuffs): they won't offer again, to any cop on any PC.
+func belt_bribe_offered(body: Node) -> void:
+	var from := Handcuffs.cuffable(body) if body else null
+	if from:
+		(from as Node).set_meta("bribe_offered", true)
+
+
+func belt_bribe(body: Node, amount: int) -> void:
+	var from := Handcuffs.cuffable(body) if body else null
+	if from:
+		(from as Node).set_meta("bribe_offered", true)
+	stats["bribes"] = stats.get("bribes", 0) + 1
+	var agent := InternalAffairsAgent.of(self)
+	var seen := agent != null and agent.sees(self)
+	if seen:
+		agent.caught_bribe()
+		show_hint("HINT_BRIBE_CAUGHT")
+	if Campaign.current:
+		Campaign.current.take_bribe(amount, seen)
 
 
 func belt_photo(subject: Node, caught: Array) -> void:
@@ -485,6 +520,9 @@ func _physics_process(delta: float) -> void:
 
 ## Uses what the camera points at (a pot, a door...), if it can be used. Returns true if something was used.
 func use() -> bool:
+	# A bribe on offer with the cuffs in hand: E takes it (sobornos.md).
+	if belt.held_tool() is Handcuffs and (belt.held_tool() as Handcuffs).take_offer():
+		return true
 	if $Grabber.held is DonutBox and (_usable_target() is InterrogationSuspect or _usable_target() is PastryCook
 			or _usable_target() is CircusClown):
 		act("use", _usable_target())
@@ -654,6 +692,9 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 	_eating_left = maxf(_eating_left - delta, 0.0)
 	_mouth_full_left = maxf(_mouth_full_left - delta, 0.0)
 	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
+	if climb_left > 0.0:
+		_climbing(delta)
+		return
 	# The world's turn, so a cop standing in the moving prison bus (a child of it) walks where it looks.
 	var direction := (global_basis * Vector3(wish.x, 0.0, wish.y)).normalized()
 	direction.y = 0.0
@@ -663,12 +704,30 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 	velocity.z = direction.z * speed + _knock.z
 	_knock = _knock.move_toward(Vector3.ZERO, _knock.length() / KNOCK_FADE * delta) if _knock.length() > 0.05 else Vector3.ZERO
 	if is_on_floor():
-		if want_jump and not is_crouching:
+		if want_jump and not is_crouching and not _start_climb():
 			velocity.y = GameScale.jump_velocity()
 	else:
 		velocity.y -= GameScale.GRAVITY * delta
 	move_and_slide()
 	_shake_disguise(delta)
+
+
+## Jumping against a fence climbs it (ciudad-viva.md, step 4). Returns true if a climb started.
+func _start_climb() -> bool:
+	if is_busy():
+		return false
+	_climb = Climbable.find(get_world_3d().direct_space_state, global_position, -global_basis.z, [get_rid()])
+	if _climb.is_empty():
+		return false
+	_climb_from = global_position
+	climb_left = Climbable.CLIMB_TIME
+	return true
+
+
+func _climbing(delta: float) -> void:
+	climb_left = maxf(climb_left - delta, 0.0)
+	velocity = Vector3.ZERO
+	global_position = Climbable.along(_climb_from, _climb, 1.0 - climb_left / Climbable.CLIMB_TIME)
 
 
 ## Running shakes the disguise: the most crooked piece falls off after DISGUISE_CROOKED_RUN seconds of running (a

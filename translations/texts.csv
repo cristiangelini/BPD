@@ -2263,3 +2263,92 @@ HINT_ROPE_SNAPPED,"¡Se desató un nudo! Los dos al piso del callejón, y la cue
 HINT_ROPE_FELL,"Se acabó la cuerda y saltaste el resto. Todo da vueltas.","The rope ran out and you jumped the rest. Everything is spinning.","A corda acabou e você pulou o resto. Tudo está girando."
 HINT_IN_THE_ALLEY,"Abajo, en el callejón de atrás. Ahora, al patrullero sin que te vean.","Down in the back alley. Now, to the patrol car without being seen.","Embaixo, no beco dos fundos. Agora, para a viatura sem ser visto."
 JAILBREAK_ESCAPED_ROOF,"A la mañana, el guardia encuentra una cuerda de sábanas colgando de la antena. La tele se ve mejor que nunca.","In the morning the guard finds a rope of sheets hanging from the antenna. The TV has never looked better.","De manhã, o guarda encontra uma corda de lençóis pendurada na antena. A TV nunca pegou tão bem."
+SHIFT_BRIBES,Sobornos,Bribes,Subornos
+SHIFT_AGENT_FINE,Multa de asuntos internos,Internal affairs fine,Multa da corregedoria
+SHIFT_INVESTIGATION_OPENED,Asuntos internos abrió una investigación.,Internal affairs opened an investigation.,A corregedoria abriu uma investigação.
+SHIFT_INVESTIGATION_CLOSED,Asuntos internos cerró la investigación: no encontraron nada.,Internal affairs closed the investigation: they found nothing.,A corregedoria encerrou a investigação: não encontraram nada.
+SHIFT_INVESTIGATION_SUSPENDED,¡Asuntos internos los atrapó otra vez!,Internal affairs caught you again!,A corregedoria pegou vocês de novo!
+SHIFT_CAMPAIGN_LOST_AGENT,Suspendidos por asuntos internos: partida perdida.,Suspended by internal affairs: match lost.,Suspensos pela corregedoria: partida perdida.
+PROMPT_BRIBE,E: aceptar %d · Clic: esposar igual,E: take %d · Click: cuff anyway,E: aceitar %d · Clique: algemar mesmo assim
+AWARD_BRIBES,Más sobornos aceptados: %s (%d),Most bribes taken: %s (%d),Mais subornos aceitos: %s (%d)
+BRIBE_OFFER_1,"Toma %d y aquí no pasó nada.","Take %d and nothing happened here.","Pega %d e aqui não aconteceu nada."
+BRIBE_OFFER_2,"Oficial, ¿%d le alcanzan para olvidarse de mi cara?","Officer, is %d enough to forget my face?","Policial, %d dá para esquecer a minha cara?"
+BRIBE_OFFER_3,"Psst... %d para sus donas. No me vio.","Psst... %d for your donuts. You never saw me.","Psiu... %d para os seus donuts. Você não me viu."
+BRIBE_OFFER_4,"Tengo %d en el bolsillo y ganas de irme a casa.","I've got %d in my pocket and a strong wish to go home.","Tenho %d no bolso e muita vontade de ir para casa."
+BRIBE_OFFER_5,"¿Y si le regalo %d por su cumpleaños? Adelantado.","What if I gave you %d for your birthday? In advance.","E se eu te der %d de aniversário? Adiantado."
+BRIBE_OFFER_6,"Esto es un malentendido de %d. Tómelos y lo arreglamos.","This is a %d misunderstanding. Take them and we're square.","Isso é um mal-entendido de %d. Pega e fica tudo certo."
+BRIBE_OFFER_7,"Mi abuela me dio %d para emergencias. Esto es una emergencia.","My grandma gave me %d for emergencies. This is an emergency.","Minha avó me deu %d para emergências. Isto é uma emergência."
+BRIBE_OFFER_8,"Las esposas me quedan mal. %d y no me las pruebo.","Cuffs don't suit me. %d and I won't try them on.","Algemas não combinam comigo. %d e eu não experimento."
+BRIBE_OFFER_9,"Le ofrezco %d y una sonrisa. La sonrisa es gratis.","I'm offering %d and a smile. The smile's free.","Ofereço %d e um sorriso. O sorriso é de graça."
+BRIBE_OFFER_10,"¡%d! Última oferta. Bueno, primera. Pero es buena.","%d! Final offer. Well, first one. But it's a good one.","%d! Última oferta. Bom, a primeira. Mas é boa."
+AGENT_CAUGHT,"¡Lo vi! Eso va a mi carpeta.","I saw that! That goes in my folder.","Eu vi! Isso vai para a minha pasta."
+AGENT_BADGE,"Asuntos internos. Guárdese esas esposas.","Internal affairs. Put those cuffs away.","Corregedoria. Guarde essas algemas."
+AGENT_NOTE_1,"Hmm... anotado.","Hmm... noted.","Hmm... anotado."
+AGENT_NOTE_2,"Usted camina como alguien con plata en el bolsillo.","You walk like someone with money in their pocket.","Você anda como alguém com dinheiro no bolso."
+AGENT_NOTE_3,"No se preocupe, yo no estoy aquí.","Don't mind me, I'm not here.","Não se preocupe, eu não estou aqui."
+AGENT_NOTE_4,"Siga, siga. Haga como si no lo mirara.","Go on, go on. Pretend I'm not watching.","Continue, continue. Finja que eu não estou olhando."
+HINT_AGENT_ARRIVES,"Asuntos internos te está investigando: su agente te sigue. Que no te vea aceptar plata.","Internal affairs is investigating you: their agent follows you. Don't let him see you take money.","A corregedoria está investigando vocês: o agente segue vocês. Que ele não te veja aceitando dinheiro."
+HINT_BRIBE_CAUGHT,"¡El agente de asuntos internos te vio! Ese soborno no cuenta y hay multa.","The internal affairs agent saw you! That bribe doesn't count and there's a fine.","O agente da corregedoria te viu! Esse suborno não conta e tem multa."
+PROMPT_CHECK_CART,"E: revisar la ropa (quédate al lado) · R: volcarlo","E: dig through the laundry (stay close) · R: knock it over","E: revirar a roupa (fique do lado) · R: derrubar"
+PROMPT_CART_CHECKED,"R: volcarlo","R: knock it over","R: derrubar"
+HINT_CART_DIGGING,"Revisando la ropa sucia... Puaj, está mojada.","Digging through the dirty laundry... Ugh, it's wet.","Revirando a roupa suja... Eca, está molhada."
+HINT_CART_ONLY_SHEETS,"Solo sábanas sucias. Y una media.","Just dirty sheets. And a sock.","Só lençóis sujos. E uma meia."
+HINT_LAUNDRY_TRUCK,"¡Llegó el camión de la lavandería! Revisa los carritos antes de que suban.","The laundry truck is here! Check the carts before they go up.","Chegou o caminhão da lavanderia! Revise os carrinhos antes que subam."
+HINT_LAUNDRY_ESCAPED,"¡Un preso se fue con la ropa sucia!","An inmate got away with the dirty laundry!","Um preso foi embora com a roupa suja!"
+LAUNDRY_SURPRISE,"¡Sorpresa! ¡Chau, me voy!","Surprise! Bye, I'm off!","Surpresa! Tchau, tô indo!"
+LAUNDRY_TRUCK_SIGN,"LAVANDERÍA BURBUJA","BUBBLE LAUNDRY","LAVANDERIA BOLHA"
+WORKER_PUSHING,"Permiso, ropa sucia, ropa sucia...","Excuse me, dirty laundry, dirty laundry...","Com licença, roupa suja, roupa suja..."
+WORKER_MY_CART,"¡Eh, mi ropa! Ahora la levanto, oficial.","Hey, my laundry! I'll pick it up, officer.","Ei, minha roupa! Já levanto, policial."
+CART_SNEEZE,"¡Achís!","Achoo!","Atchim!"
+CART_MEOW,"Miau.","Meow.","Miau."
+HINT_CART_CAT,"Solo un gato durmiendo en las toallas.","Just a cat asleep in the towels.","Só um gato dormindo nas toalhas."
+WORKER_HEAVY,"Uf... cómo pesa la ropa hoy...","Phew... the laundry's heavy today...","Ufa... como a roupa tá pesada hoje..."
+WORKER_NERVOUS,"¡Buenas, oficial! Nada raro por acá. Ropa. Solo ropa.","Hello, officer! Nothing odd here. Laundry. Just laundry.","Olá, policial! Nada estranho aqui. Roupa. Só roupa."
+PROMPT_OPEN_MACHINE,"E: abrir","E: open","E: abrir"
+HINT_MACHINE_EMPTY,"Solo ropa dando vueltas.","Just laundry going round.","Só roupa girando."
+MACHINE_AY,"¡Ay, ay, ay! ¡Paren esto!","Ow, ow, ow! Make it stop!","Ai, ai, ai! Parem isso!"
+MACHINE_DIZZY,"Todo da vueltas... ¿Dónde está la puerta?","Everything's spinning... Where's the door?","Tudo tá girando... Cadê a porta?"
+BRIEF_LAUNDRY_A,"Novatos, hoy la cárcel lava la ropa. El camión de la Lavandería Burbuja viene cuatro veces a buscar los carritos de sábanas.","Rookies, it's laundry day at the prison. The Bubble Laundry truck comes four times for the carts of sheets.","Novatos, hoje a prisão lava a roupa. O caminhão da Lavanderia Bolha vem quatro vezes buscar os carrinhos de lençóis."
+BRIEF_LAUNDRY_B,"Algunos presos se meten abajo de la ropa. E y quedarse al lado revisa un carrito; R lo vuelca. El que salta, espósenlo y llévenlo a la celda de castigo.","Some inmates hide under the laundry. E and staying close checks a cart; R knocks it over. Whoever jumps out, cuff them and walk them to the punishment cell.","Alguns presos se escondem debaixo da roupa. E e ficar do lado revira um carrinho; R derruba. Quem pular, algemem e levem para a cela de castigo."
+BRIEF_LAUNDRY_C,"Que se lleve sábanas, no presos. Si se escapan 3, perdimos. Y revisen los lavarropas, que ahí también entra gente.","Sheets go, not inmates. If 3 get away, we've lost. And check the washers: people fit in there too.","Que leve lençóis, não presos. Se 3 fugirem, perdemos. E revisem as máquinas de lavar: gente cabe lá também."
+HINT_GO_LAUNDRY,"A la cárcel en el patrullero. La lavandería está en la cocina, al lado del comedor.","To the prison in the patrol car. The laundry is in the kitchen, next to the canteen.","Para a prisão na viatura. A lavanderia fica na cozinha, ao lado do refeitório."
+OBJ_LAUNDRY_TRIPS,"Viajes del camión: %d de %d","Truck trips: %d of %d","Viagens do caminhão: %d de %d"
+OBJ_LAUNDRY_NEXT,"Próximo camión: %s","Next truck: %s","Próximo caminhão: %s"
+OBJ_LAUNDRY_LAST,"Último viaje del camión","The truck's last trip","Última viagem do caminhão"
+OBJ_LAUNDRY_FOUND,"Presos encontrados en la ropa: %d","Inmates found in the laundry: %d","Presos encontrados na roupa: %d"
+OBJ_LAUNDRY_ESCAPED,"Presos escapados: %d (con %d se pierde el caso)","Inmates escaped: %d (at %d the case is lost)","Presos fugidos: %d (com %d o caso está perdido)"
+OBJ_LAUNDRY_CAUGHT,"Extra: presos en la celda de castigo: %d","Extra: inmates in the punishment cell: %d","Extra: presos na cela de castigo: %d"
+CASE_FAILED_LAUNDRY_ESCAPED,"Se escaparon 3 presos con la ropa sucia. Caso perdido.","3 inmates got away with the dirty laundry. Case lost.","3 presos fugiram com a roupa suja. Caso perdido."
+EVENT_PURSE_HELP,¡Mi cartera! ¡Ladrón!,My purse! Thief!,Minha bolsa! Ladrão!
+EVENT_PURSE_THANKS,¡Mi cartera! Gracias.,My purse! Thank you.,Minha bolsa! Obrigada.
+EVENT_PAID,+%d de plata,+%d money,+%d de dinheiro
+PROMPT_STREET_HALT,"E: ¡Alto, policía!","E: Stop, police!","E: Parado, polícia!"
+PROMPT_STREET_SEARCH,"E: revisar el bolso","E: search the bag","E: revistar a bolsa"
+STREET_HALTED_0,¿Yo? ¿Qué hice?,Me? What did I do?,Eu? O que eu fiz?
+STREET_HALTED_1,Voy apurado... bueno.,"I'm in a hurry... fine.",Estou com pressa... tá bom.
+STREET_HALTED_2,"Revise, revise. No tengo nada.",Go ahead. I've got nothing.,Pode revistar. Não tenho nada.
+STREET_HALTED_3,¿Es por la camisa? Ya sé que es fea.,Is it the shirt? I know it's ugly.,É pela camisa? Eu sei que é feia.
+STREET_FOUND_0,Quesos de contrabando. Muchos.,Smuggled cheese. Lots of it.,Queijos contrabandeados. Muitos.
+STREET_FOUND_1,Veinte relojes falsos en el brazo.,Twenty fake watches up one arm.,Vinte relógios falsos no braço.
+STREET_FOUND_2,Un loro sin papeles.,A parrot with no papers.,Um papagaio sem documentos.
+STREET_FOUND_3,El enano de jardín robado del vecino.,The neighbor's stolen garden gnome.,O anão de jardim roubado do vizinho.
+STREET_FOUND_4,Cuarenta controles remotos ajenos.,Forty remote controls that aren't theirs.,Quarenta controles remotos alheios.
+STREET_FOUND_5,Billetes de juguete muy bien planchados.,Toy money ironed very carefully.,Notas de brinquedo muito bem passadas.
+STREET_FOUND_6,Una tortuga con collar de diamantes.,A turtle wearing a diamond collar.,Uma tartaruga com coleira de diamantes.
+STREET_FOUND_7,Las llaves de la comisaría.,The police station's keys.,As chaves da delegacia.
+STREET_NOTHING_0,"Un sándwich. Es mío, no lo toque.","A sandwich. It's mine, don't touch it.","Um sanduíche. É meu, não toque."
+STREET_NOTHING_1,Medias. Limpias. Casi todas.,Socks. Clean. Mostly.,Meias. Limpas. Quase todas.
+STREET_NOTHING_2,Nada. ¿Ve? Nada.,Nothing. See? Nothing.,Nada. Viu? Nada.
+STREET_NOTHING_3,Una foto de mi gato. ¿Quiere verla?,A picture of my cat. Want to see it?,Uma foto do meu gato. Quer ver?
+STREET_BUSTED,¡No es mío! ¡Me lo pusieron!,It's not mine! Someone planted it!,Não é meu! Alguém colocou aí!
+PROMPT_CRASH_CALM,"E: calmarlo","E: calm them down","E: acalmar"
+CRASH_ARGUE_0,¡Usted frenó de golpe!,You slammed on the brakes!,Você freou do nada!
+CRASH_ARGUE_1,¡Y usted venía volando!,And you were flying!,E você vinha voando!
+CRASH_ARGUE_2,¡Mi auto es nuevo!,My car is brand new!,Meu carro é novo!
+CRASH_ARGUE_3,¡Tiene treinta años ese auto!,That car is thirty years old!,Esse carro tem trinta anos!
+CRASH_ARGUE_4,¡Llamo a mi abogado!,I'm calling my lawyer!,Vou ligar pro meu advogado!
+CRASH_ARGUE_5,¡Yo soy abogado!,I am a lawyer!,Eu sou advogado!
+CRASH_CALM_0,"Está bien, está bien. Lo corro.","Fine, fine. I'll move it.","Tá bom, tá bom. Eu tiro."
+CRASH_CALM_1,Tiene razón. Respiro.,You're right. Breathing.,Tem razão. Respirando.
+CRASH_CALM_2,"Bueno, fue un raspón.","Okay, it was a scratch.","Tá, foi só um arranhão."
+SHIFT_STREET,Eventos en la calle,Street events,Eventos na rua

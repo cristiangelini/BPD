@@ -5,6 +5,7 @@ extends RefCounted
 ## items, and the cases that follow, which all come from the campaign's own seed. Only the host saves it online.
 ## Each shift has a quota that rises shift by shift. Missing it the first time locks the cops up in their own cells for
 ## the jailbreak (decision 99, fuga.md); missing it again, or not escaping, ends the campaign (decision 88).
+## It also keeps the cops' record of bribes and the internal affairs investigation (sobornos.md, decisions 190 to 192).
 
 const SHIFTS := 5
 const SAVE_PATH := "user://partidas/partida.json"
@@ -36,6 +37,19 @@ var jail_catches := 0
 ## The place's owner the cops brought in at the end of the last raid (RaidCase.custody), to be interrogated next
 ## shift (decision 93); empty if nobody.
 var custody := {}
+## Bribes taken since the record was last clean; Bribes.INVESTIGATION_AT of them open an investigation.
+var bribes_taken := 0
+## Internal affairs is investigating the cops: its agent follows them in every case.
+var investigation := false
+## Shifts of this investigation with no bribe taken; Bribes.CLEAN_SHIFTS of them close it.
+var clean_shifts := 0
+## Times the agent saw a bribe taken in this campaign; Bribes.CATCHES_TO_SUSPEND of them suspend the cops.
+var agent_catches := 0
+## The shift being played: money of the bribes taken, how many, and how many the agent saw. Never saved: a shift is
+## never saved halfway.
+var shift_bribes := 0
+var shift_bribe_count := 0
+var shift_caught := 0
 
 
 ## A new campaign at shift 1 with a fresh seed.
@@ -65,10 +79,27 @@ func case_seed() -> int:
 	return hash("campaign %d shift %d" % [campaign_seed, shift]) % 0x7fffffff + 1
 
 
+## A cop took a bribe of `amount`; `seen` says the internal affairs agent saw it (only while investigating). Returns
+## true if he caught them: the bribe doesn't count and the shift is fined.
+func take_bribe(amount: int, seen := false) -> bool:
+	if investigation and seen:
+		agent_catches += 1
+		shift_caught += 1
+		return true
+	shift_bribes += amount
+	shift_bribe_count += 1
+	bribes_taken += 1
+	return false
+
+
 ## Closes the shift with its end of shift numbers (ShiftReport.pay) and moves on to the next one. The report's quota
 ## and verdict become this shift's (quota(), or `shift_quota` for a shift with its own), so the end of shift screen
-## shows them.
+## shows them. The shift's bribes and the agent's fines go into the report too, as "bribes", "agent_fine" and, when the
+## investigation changes, "investigation" ("opened", "closed" or "suspended").
 func finish_shift(story: String, solved: bool, report: Dictionary, shift_quota := -1) -> void:
+	_add_bribes(report)
+	# What the street paid on the way (ciudad-viva.md) counts with the case's pay.
+	CityEvents.add_to(report)
 	report.quota = quota() if shift_quota < 0 else shift_quota
 	report.approved = report.total >= report.quota
 	history.append({"shift": shift, "story": story, "solved": solved, "total": report.total,
@@ -83,6 +114,33 @@ func finish_shift(story: String, solved: bool, report: Dictionary, shift_quota :
 	else:
 		money += report.total
 		suspended = true
+	if report.get("investigation", "") == "suspended":
+		jailed = false
+		suspended = true
+
+
+## The shift's bribes into its report, and where the investigation goes after this shift.
+func _add_bribes(report: Dictionary) -> void:
+	report.bribes = shift_bribes
+	report.agent_fine = Bribes.CAUGHT_FINE * shift_caught
+	report.total += shift_bribes - report.agent_fine
+	if agent_catches >= Bribes.CATCHES_TO_SUSPEND:
+		report.investigation = "suspended"
+	elif investigation and shift_bribe_count == 0 and shift_caught == 0:
+		clean_shifts += 1
+		if clean_shifts >= Bribes.CLEAN_SHIFTS:
+			investigation = false
+			clean_shifts = 0
+			bribes_taken = 0
+			report.investigation = "closed"
+	elif investigation:
+		clean_shifts = 0
+	elif bribes_taken >= Bribes.INVESTIGATION_AT:
+		investigation = true
+		report.investigation = "opened"
+	shift_bribes = 0
+	shift_bribe_count = 0
+	shift_caught = 0
 
 
 ## The jailbreak is over: escaped, the next shift goes on as usual; caught, the campaign is lost (decision 99).
@@ -95,7 +153,8 @@ func finish_jailbreak(escaped: bool) -> void:
 func to_dict() -> Dictionary:
 	return {"version": VERSION, "seed": campaign_seed, "shift": shift, "money": money, "items": items,
 		"history": history, "suspended": suspended, "custody": custody, "jailed": jailed,
-		"jailbreak_used": jailbreak_used, "jail_catches": jail_catches}
+		"jailbreak_used": jailbreak_used, "jail_catches": jail_catches, "bribes_taken": bribes_taken,
+		"investigation": investigation, "clean_shifts": clean_shifts, "agent_catches": agent_catches}
 
 
 static func from_dict(data: Dictionary) -> Campaign:
@@ -108,6 +167,10 @@ static func from_dict(data: Dictionary) -> Campaign:
 	campaign.jailbreak_used = bool(data.get("jailbreak_used", false))
 	campaign.jail_catches = int(data.get("jail_catches", 0))
 	campaign.custody = data.get("custody", {})
+	campaign.bribes_taken = int(data.get("bribes_taken", 0))
+	campaign.investigation = bool(data.get("investigation", false))
+	campaign.clean_shifts = int(data.get("clean_shifts", 0))
+	campaign.agent_catches = int(data.get("agent_catches", 0))
 	campaign.items.assign(data.get("items", []))
 	# JSON brings every number back as a float.
 	for entry: Dictionary in data.get("history", []):

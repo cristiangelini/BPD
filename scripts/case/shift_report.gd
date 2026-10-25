@@ -19,6 +19,7 @@ const AWARDS := [
 	{"stat": "food_hits", "key": "AWARD_FOOD_HITS"},
 	{"stat": "tray_blocks", "key": "AWARD_TRAY_BLOCKS"},
 	{"stat": "food_slips", "key": "AWARD_FOOD_SLIPS"},
+	{"stat": "bribes", "key": "AWARD_BRIBES"},
 ]
 
 
