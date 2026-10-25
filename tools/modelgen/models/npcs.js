@@ -59,6 +59,32 @@ function robber(b, mask, extra) {
 	extra(mask);
 }
 
+// A grandpa robber (robo-banco-abuelos.md, decision 122): a retiree in a cardigan with slippers and a cane, the face of
+// an old man under the rubber mask and his glasses over it. The mask and what it adds go in their own node ('mask') so
+// the game can take it off (step 2); under it, white eyebrows, a mustache and the white hair on the sides.
+function grandpaRobber(b, mask, cardigan, extra) {
+	pearBody(b, SKIN.arena, { shirt: cardigan, pants: C('abuelo_pants', 0x8c8378), shoes: C('slippers', 0x7a3e2a), belted: false });
+	eyes(b, 1.32, 0.15, 0.08, 0.045);
+	for (const s of [-1, 1]) b.add('face', white, ellipsoid(0.05, 0.02, 0.025, 6, 4), { pos: V(s * 0.08, 1.4, 0.17) });
+	for (const s of [-1, 1]) b.add('face', white, ellipsoid(0.05, 0.02, 0.02, 6, 4), { pos: V(s * 0.045, 1.25, 0.18), rot: [0, s * 0.4, s * -0.3] });
+	for (const s of [-1, 1]) b.add('face', white, ellipsoid(0.05, 0.09, 0.1, 6, 4), { pos: V(s * 0.18, 1.32, -0.02) });
+	b.add('mask', mask, ellipsoid(0.215, 0.235, 0.205, 10, 7), { pos: V(0, 1.31, 0.02) });
+	for (const s of [-1, 1]) {
+		b.add('mask', white, ellipsoid(0.08, 0.092, 0.036, 8, 6), { pos: V(s * 0.08, 1.35, 0.205) });
+		b.add('mask', black, ellipsoid(0.036, 0.044, 0.02, 6, 4), { pos: V(s * 0.08, 1.35, 0.233) });
+	}
+	extra(mask);
+	// The mask stuffed in the pocket once he takes it off (hidden until then): a crumpled ball and a bit sticking out.
+	b.add('pocket', mask, ellipsoid(0.07, 0.05, 0.05, 6, 4), { pos: V(-0.24, 0.68, 0.38), rot: [-0.3, -0.5, 0] });
+	b.add('pocket', mask, ellipsoid(0.03, 0.09, 0.025, 6, 4), { pos: V(-0.22, 0.76, 0.37), rot: [-0.2, 0, 0.35] });
+	for (const s of [-1, 1]) b.add('glasses', black, new THREE.TorusGeometry(0.06, 0.01, 4, 8), { pos: V(s * 0.08, 1.35, 0.25) });
+	b.add('glasses', black, new THREE.BoxGeometry(0.05, 0.012, 0.012), { pos: V(0, 1.355, 0.25) });
+	for (let i = 0; i < 4; i++) b.add('body', C('button', 0xe8dcc0), ellipsoid(0.02, 0.02, 0.01, 5, 3), { pos: V(0, 1.0 - i * 0.13, 0.25 + i * 0.045) });
+	// The cardigan's pocket, where the mask goes when he takes it off.
+	b.add('body', C('cardigan_pocket', 0x4a3a2a), new THREE.BoxGeometry(0.14, 0.12, 0.03), { pos: V(-0.24, 0.62, 0.39), rot: [-0.3, -0.5, 0] });
+	limb(b, 'cane', C('cane', 0x5a3a20), V(0.5, 0.62, 0.12), V(0.62, 0.0, 0.2), 0.02);
+}
+
 const NPCS = {
 	// Comisario: big, shouting, with a gold-banded cap, huge mustache and medals.
 	comisario(b) {
@@ -86,6 +112,28 @@ const NPCS = {
 		b.add('cap', pajama, new THREE.ConeGeometry(0.19, 0.42, 8), { pos: V(0.05, 1.62, -0.03), rot: [0, 0, -0.5] });
 		b.add('cap', stripe, new THREE.CylinderGeometry(0.2, 0.2, 0.05, 8), { pos: V(0, 1.45, 0.0) });
 		b.add('cap', white, ellipsoid(0.05, 0.05, 0.05, 6, 4), { pos: V(0.15, 1.8, -0.03) });
+	},
+	// Mr. Moneda, the bank's manager (robo-banco-gerente.md, decision 124): woken up by the robbery, green striped
+	// pajamas, a robe's belt, slippers, glasses, a thin mustache and a bald top with grey hair on the sides. The walkie in
+	// his pajama's pocket goes in its own node ('walkie') so the game shows it only when he's the boss and talks into it.
+	gerente(b) {
+		const pajama = C('pajama_green', 0xb8dcc0), stripe = C('pajama_green_stripe', 0x3e7a52);
+		pearBody(b, SKIN.crema, { shirt: pajama, pants: pajama, shoes: C('slippers_brown', 0x6a4a32), belted: false });
+		for (const y of [0.5, 0.65, 0.8, 0.95, 1.08]) {
+			const r = y < 0.8 ? 0.36 + (0.8 - y) * 0.33 : 0.36 - (y - 0.8) * 0.48;
+			b.add('body', stripe, loft([{ y: y - 0.015, rx: r + 0.012, rz: r * 0.89 + 0.012 }, { y: y + 0.015, rx: r + 0.006, rz: r * 0.89 + 0.006 }], 10));
+		}
+		b.add('body', C('robe_belt', 0x8a2a3a), new THREE.TorusGeometry(0.4, 0.025, 4, 16), { pos: V(0, 0.62, 0.0), rot: [Math.PI / 2, 0, 0] });
+		b.add('body', C('pajama_pocket', 0x9cc8a8), new THREE.BoxGeometry(0.12, 0.1, 0.03), { pos: V(0.17, 0.98, 0.29), rot: [-0.35, 0.4, 0] });
+		eyes(b, 1.33, 0.16, 0.08, 0.045);
+		glasses(b);
+		mouth(b);
+		mustache(b, C('hair_grey', 0x8a8a8a), 0.8);
+		const hair = C('hair_grey', 0x8a8a8a);
+		for (const s of [-1, 1]) b.add('head', hair, ellipsoid(0.06, 0.1, 0.13, 6, 4), { pos: V(s * 0.18, 1.33, -0.03) });
+		b.add('head', hair, ellipsoid(0.15, 0.08, 0.06, 8, 4), { pos: V(0, 1.31, -0.17) });
+		b.add('walkie', black, new THREE.BoxGeometry(0.06, 0.14, 0.04), { pos: V(0.17, 1.06, 0.3), rot: [-0.35, 0.4, 0] });
+		b.add('walkie', black, new THREE.CylinderGeometry(0.006, 0.006, 0.14, 4), { pos: V(0.15, 1.18, 0.3) });
 	},
 	// Abuelo (case 1.1): small, cardigan, flat cap, glasses, white eyebrows and a cane.
 	abuelo(b) {
@@ -281,6 +329,20 @@ const NPCS = {
 		limb(b, 'props', steel, V(0.5, 0.75, 0.22), V(0.56, 0.38, 0.3), 0.025);
 		b.add('props', steel, new THREE.TorusGeometry(0.045, 0.018, 4, 8, Math.PI * 1.4), { pos: V(0.56, 0.36, 0.3) });
 	},
+	// Clotilde, the cleaner of the cleaning crew's jailbreak (fuga-limpieza.md): light blue smock with a pocket, a
+	// red kerchief over her hair, yellow rubber gloves and a feather duster in the pocket.
+	limpieza(b) {
+		const smock = C('smock_blue', 0x8fc4e0), gloves = C('rubber_yellow', 0xf2d22a);
+		pearBody(b, SKIN.arena, { shirt: smock, onePiece: true, belted: false, shoes: C('clog_white', 0xeeeeee) });
+		b.add('body', C('smock_pocket', 0x6fa8c8), new THREE.BoxGeometry(0.2, 0.14, 0.02), { pos: V(0.16, 0.6, 0.43), rot: [-0.1, 0, 0] });
+		for (let i = 0; i < 5; i++) b.add('props', C('feather', [0xd84a8a, 0x5ac0e0, 0xf2c84a][i % 3]), ellipsoid(0.035, 0.09, 0.02, 5, 3), { pos: V(0.1 + i * 0.03, 0.78, 0.43), rot: [0, 0, -0.5 + i * 0.25] });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		const scarf = C('kerchief_red', 0xd0383a);
+		hairCap(b, scarf, { y: 1.4, sx: 1.08, sy: 0.6 });
+		b.add('head', scarf, new THREE.ConeGeometry(0.06, 0.14, 5), { pos: V(0, 1.38, -0.22), rot: [-2.2, 0, 0] });
+		for (const s of [-1, 1]) b.add('arms', gloves, ellipsoid(0.09, 0.09, 0.09, 6, 4), { pos: V(s * 0.49, 0.64, 0.09) });
+	},
 	// Preso: orange jumpsuit with a number, bald, ball and chain.
 	preso(b) {
 		const orange = C('jumpsuit', 0xff7a1a);
@@ -444,6 +506,19 @@ const NPCS = {
 		b.add('cap', helmet, ellipsoid(0.27, 0.22, 0.27, 10, 6), { pos: V(0, 1.42, -0.02) });
 		b.add('cap', C('visor', 0x2a3340), new THREE.BoxGeometry(0.3, 0.08, 0.04), { pos: V(0, 1.38, 0.25) });
 	},
+	// Puestero (politico-mercado.md, the market's twelve vendors): rolled-up shirt, a long apron the game tints per
+	// stall (its own node), a flat cap and a pencil behind the ear.
+	puestero(b) {
+		pearBody(b, SKIN.arena, { shirt: C('vendor_shirt', 0xe8e2d0), pants: C('vendor_pants', 0x4a4e58) });
+		b.add('apron', C('vendor_apron', 0x3a8a5a), loft([{ y: 0.3, rx: 0.42, rz: 0.12 }, { y: 0.78, rx: 0.36, rz: 0.1 }, { y: 1.02, rx: 0.2, rz: 0.08 }], 8), { pos: V(0, 0, 0.31) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		mustache(b, C('vendor_mustache', 0x3a2414));
+		const cap = C('flat_cap', 0x6a5a48);
+		b.add('cap', cap, ellipsoid(0.215, 0.09, 0.21, 10, 5), { pos: V(0, 1.45, 0.0) });
+		b.add('cap', cap, new THREE.BoxGeometry(0.26, 0.02, 0.12), { pos: V(0, 1.43, 0.2), rot: [0.15, 0, 0] });
+		limb(b, 'props', C('pencil', 0xf2c84b), V(0.2, 1.33, 0.02), V(0.2, 1.4, -0.1), 0.012);
+	},
 	// Bank robbers (robo-banco.md, step 2): black clothes and gloves, and a rubber animal mask over the whole head.
 	ladron_conejo(b) {
 		robber(b, C('mask_rabbit', 0xf2eeea), (m) => {
@@ -481,6 +556,42 @@ const NPCS = {
 		b.add('body', gold, new THREE.TorusGeometry(0.15, 0.015, 4, 14), { pos: V(0, 1.06, 0.12), rot: [1.2, 0, 0] });
 		b.add('props', C('phone_red', 0xc8202a), new THREE.BoxGeometry(0.06, 0.16, 0.05), { pos: V(-0.5, 0.72, 0.12) });
 	},
+	// The grandpa robbers (robo-banco-abuelos.md, step 1): the same four masks, a cardigan of each one's color.
+	abuelo_conejo(b) {
+		grandpaRobber(b, C('mask_rabbit', 0xf2eeea), C('cardigan_beige', 0xc8b48a), (m) => {
+			for (const s of [-1, 1]) b.add('mask', m, ellipsoid(0.05, 0.2, 0.03, 6, 5), { pos: V(s * 0.08, 1.62, 0.0), rot: [0, 0, s * -0.15] });
+			for (const s of [-1, 1]) b.add('mask', C('mask_rabbit_ear', 0xf2a0b8), ellipsoid(0.03, 0.15, 0.01, 6, 4), { pos: V(s * 0.08, 1.62, 0.025), rot: [0, 0, s * -0.15] });
+			b.add('mask', C('mask_rabbit_nose', 0xf27a9a), ellipsoid(0.03, 0.025, 0.02, 6, 4), { pos: V(0, 1.27, 0.22) });
+			for (const s of [-1, 1]) b.add('mask', white, new THREE.BoxGeometry(0.04, 0.05, 0.01), { pos: V(s * 0.022, 1.2, 0.21) });
+		});
+	},
+	abuelo_chancho(b) {
+		grandpaRobber(b, C('mask_pig', 0xf2a6b6), C('cardigan_brown', 0x7a5236), (m) => {
+			b.add('mask', m, new THREE.CylinderGeometry(0.07, 0.07, 0.06, 10), { pos: V(0, 1.26, 0.22), rot: [Math.PI / 2, 0, 0] });
+			for (const s of [-1, 1]) b.add('mask', C('mask_pig_hole', 0x8a3a4a), ellipsoid(0.015, 0.02, 0.01, 5, 3), { pos: V(s * 0.025, 1.26, 0.252) });
+			for (const s of [-1, 1]) b.add('mask', m, new THREE.ConeGeometry(0.06, 0.1, 4), { pos: V(s * 0.14, 1.48, 0.0), rot: [0.4, 0, s * -0.5] });
+		});
+		b.add('props', C('sandwich_bread', 0xe0b070), new THREE.BoxGeometry(0.16, 0.06, 0.1), { pos: V(-0.5, 0.66, 0.16) });
+		b.add('props', C('sandwich_ham', 0xe06a7a), new THREE.BoxGeometry(0.17, 0.015, 0.11), { pos: V(-0.5, 0.66, 0.16) });
+	},
+	// The duck grandma: a lilac cardigan, a grey bun over the mask and her bag of marbles (step 3).
+	abuelo_pato(b) {
+		grandpaRobber(b, C('mask_duck', 0xf2d23a), C('cardigan_lilac', 0xa88ac8), (m) => {
+			b.add('mask', C('mask_duck_beak', 0xf2902a), new THREE.BoxGeometry(0.16, 0.04, 0.14), { pos: V(0, 1.24, 0.26) });
+			b.add('mask', C('bun_grey', 0xc8c8cc), ellipsoid(0.1, 0.09, 0.1, 8, 5), { pos: V(0, 1.55, -0.06) });
+		});
+		b.add('props', C('marble_bag', 0x3a6ad8), ellipsoid(0.08, 0.1, 0.08, 6, 4), { pos: V(-0.5, 0.52, 0.12) });
+	},
+	// El Oso, the boss: a bear mask, the gold chain over his cardigan and the phone in his hand.
+	abuelo_oso(b) {
+		grandpaRobber(b, C('mask_bear', 0x8a5a32), C('cardigan_navy', 0x2e3a5c), (m) => {
+			for (const s of [-1, 1]) b.add('mask', m, ellipsoid(0.07, 0.07, 0.04, 6, 4), { pos: V(s * 0.15, 1.48, 0.0) });
+			b.add('mask', C('mask_bear_muzzle', 0xd8b088), ellipsoid(0.09, 0.07, 0.05, 8, 5), { pos: V(0, 1.24, 0.2) });
+			b.add('mask', black, ellipsoid(0.035, 0.025, 0.02, 6, 4), { pos: V(0, 1.27, 0.25) });
+		});
+		b.add('body', gold, new THREE.TorusGeometry(0.15, 0.015, 4, 14), { pos: V(0, 1.06, 0.12), rot: [1.2, 0, 0] });
+		b.add('props', C('phone_red', 0xc8202a), new THREE.BoxGeometry(0.06, 0.16, 0.05), { pos: V(-0.5, 0.72, 0.12) });
+	},
 };
 
 export const NPC_NAMES = Object.keys(NPCS);
@@ -490,7 +601,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, ladron_oso: 1.15 };
+const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, ladron_oso: 1.15, abuelo_oso: 1.15 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },

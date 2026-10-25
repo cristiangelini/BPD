@@ -163,6 +163,9 @@ func _at_podium() -> void:
 	politician.rotation.y = PI
 	politician.velocity = Vector3.ZERO
 	politician.say("POLITICIAN_BACK")
+	# The next line of the speech waits until he's said it.
+	if speech:
+		speech.hold_lines(Politician.SAY_TIME)
 	back.emit()
 
 
