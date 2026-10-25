@@ -120,6 +120,10 @@ Los pesos y valores siguen la escala de la ferretería: la principal vale unos 1
      o menos, y eso es la pista propia. El grabador (6 kg) es la evidencia principal y va escondido con la caja de
      micrófonos y la lista de clientes. Que los muñecos repitan con voz finita lo que dijo un policía queda para
      después. Capturas `paso6-espias` y `paso6-grabador`.
+   - **El Capitán Galaxia trucho (propuesta):** uno de cada dos muñecos que caen a la cinta sale con casco de
+     astronauta. En el contenedor de descarte hay 3 Capitanes con la cara mal pintada: mirarlos con E es la pista
+     propia. El molde robado (15 kg, entre dos) es la evidencia principal y, si lo ponen en la cinta, la traba. Va
+     escondido con las etiquetas falsas y las fotos del prototipo. Capturas `paso6-capitan-*`.
 7. "Jugar" sortea entre los 5 lugares de allanamiento.
 8. El online (Fermín, Nilda, la cinta y los muñecos en todas las PC).
 
