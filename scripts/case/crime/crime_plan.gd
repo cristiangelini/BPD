@@ -1,29 +1,32 @@
 class_name CrimePlan
 extends RefCounted
 
-## Who stole the Torre de Merengue and which clues point to him (escena-del-crimen.md, "Las pistas"): the culprit and
-## 4 of the 6 clues, drawn with the case seed so that together they leave only him. Pure data. Every number here is
-## (propuesta).
+## Who did it and which clues point to him (escena-del-crimen.md, "Las pistas"): the culprit and 4 of the 6 clues,
+## drawn with the case seed so that together they leave only him. Each variant says which trait each clue tells
+## (CLUES for the pastry; CrimeSceneCase.VARIANTS). Pure data. Every number here is (propuesta).
 
 const CLUES_PER_CASE := 4
-## Each clue and the trait of the culprit it tells.
+## Each clue of the pastry case and the trait of the culprit it tells.
 const CLUES := {
 	"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "recipe": "left", "witness": "apron",
 }
 
 ## Index of the culprit among the cooks.
 var culprit := 0
-## The clues of this case, in CLUES order.
+## The clues of this case, in the order of `traits`.
 var clues: Array[String] = []
+## Each clue this variant can have and the trait it tells.
+var traits := CLUES
 
 
-## The plan for these cooks and seed.
-static func draw(cooks: Array[Dictionary], seed_value: int) -> CrimePlan:
+## The plan for these suspects and seed, with the clues of a variant (the pastry's by default).
+static func draw(cooks: Array[Dictionary], seed_value: int, clue_traits: Dictionary = CLUES) -> CrimePlan:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash("crime plan %d" % seed_value)
 	var plan := CrimePlan.new()
+	plan.traits = clue_traits
 	plan.culprit = rng.randi_range(0, cooks.size() - 1)
-	var sets := _sets(CLUES.keys(), CLUES_PER_CASE)
+	var sets := _sets(clue_traits.keys(), CLUES_PER_CASE)
 	# Shuffled with the seed; the first set that leaves only him. One with the prints always does.
 	for i in range(sets.size() - 1, 0, -1):
 		var j := rng.randi_range(0, i)
@@ -31,7 +34,7 @@ static func draw(cooks: Array[Dictionary], seed_value: int) -> CrimePlan:
 		sets[i] = sets[j]
 		sets[j] = swap
 	for kinds: Array in sets:
-		var left := suspects_left(cooks, cooks[plan.culprit], kinds)
+		var left := suspects_left(cooks, cooks[plan.culprit], kinds, clue_traits)
 		if left.size() == 1:
 			plan.clues.assign(kinds)
 			break
@@ -39,20 +42,21 @@ static func draw(cooks: Array[Dictionary], seed_value: int) -> CrimePlan:
 
 
 ## What a clue says: the culprit's value of its trait.
-static func says(kind: String, culprit_cook: Dictionary) -> Variant:
-	return culprit_cook[CLUES[kind]]
+static func says(kind: String, culprit_cook: Dictionary, clue_traits: Dictionary = CLUES) -> Variant:
+	return culprit_cook[clue_traits[kind]]
 
 
-## Whether a cook fits a clue about the culprit.
-static func fits(cook: Dictionary, kind: String, culprit_cook: Dictionary) -> bool:
-	return cook[CLUES[kind]] == says(kind, culprit_cook)
+## Whether a suspect fits a clue about the culprit.
+static func fits(cook: Dictionary, kind: String, culprit_cook: Dictionary, clue_traits: Dictionary = CLUES) -> bool:
+	return cook[clue_traits[kind]] == says(kind, culprit_cook, clue_traits)
 
 
-## Indexes of the cooks that fit every one of these clues.
-static func suspects_left(cooks: Array[Dictionary], culprit_cook: Dictionary, kinds: Array) -> Array[int]:
+## Indexes of the suspects that fit every one of these clues.
+static func suspects_left(cooks: Array[Dictionary], culprit_cook: Dictionary, kinds: Array,
+		clue_traits: Dictionary = CLUES) -> Array[int]:
 	var left: Array[int] = []
 	for i in cooks.size():
-		if kinds.all(func(kind: String) -> bool: return fits(cooks[i], kind, culprit_cook)):
+		if kinds.all(func(kind: String) -> bool: return fits(cooks[i], kind, culprit_cook, clue_traits)):
 			left.append(i)
 	return left
 

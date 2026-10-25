@@ -1,10 +1,11 @@
 class_name PastryContest
-extends Node3D
+extends CrimeScenePlace
 
 ## The pastry contest's tent in the plaza (escena-del-crimen.md, step 1), south of the fountain: open sides, poles and
 ## a striped roof; the jury's table at the north end with the empty display case where the Torre de Merengue stood;
 ## the jury's lady; and six cook tables in two rows, each with its cake, its name tag and its cook behind it, facing the jury. The cooks
-## come from CookTraits.draw with the case seed. Every number here is (propuesta).
+## come from CookTraits.draw with the case seed. It's the pastry case's CrimeScenePlace: it puts the case's clues on
+## the tables. Every number here is (propuesta).
 
 ## Where the tent's middle is, from the plaza's center: clear of the fountain (radius 4.2) and the trees.
 const OFFSET := Vector3(0, 0, 10.5)
@@ -36,23 +37,28 @@ const WOOD := Color(0.55, 0.38, 0.24)
 const BREAD_SCENE := preload("res://scenes/props/bread_loaf.tscn")
 ## The contest's loaves on the jury's table, for the cooks to bite (their teeth for the file).
 const LOAVES := 3
+const COFFEE_SCENE := preload("res://scenes/props/coffee_cup.tscn")
+## Where the carried clues go by a cook's table: the plate and the slice on top, the recipe on the floor at its front,
+## half under the cloth, with a coffee on the table's edge just above (propuesta).
+const ON_TABLE := {"hair": Vector3(0.6, 0.9, 0), "bite": Vector3(-0.6, 0.9, 0.1), "recipe": Vector3(0.3, 0.05, -0.55)}
+const COFFEE_ON_TABLE := Vector3(0.3, 0.9, -0.3)
+## The bike waits this far (m) out of the tent's open front, and rides straight out of the plaza before its route.
+const BIKE_OUT := 1.5
 const CAKES: Array[Color] = [
 	Color(0.55, 0.32, 0.2), Color(0.98, 0.75, 0.8), Color(0.98, 0.92, 0.6), Color(0.6, 0.85, 0.55),
 	Color(0.95, 0.95, 0.95), Color(0.75, 0.55, 0.85),
 ]
 
-## Same seed, same cooks.
-@export var case_seed := 1
 var cooks: Array[PastryCook] = []
 ## The display case where the Torre de Merengue stood, empty.
 var display_case: DisplayCase
 var lady: JuryLady
-var bags: EvidenceBags
 var _builder: PlaceBuilder
 
 
 func _ready() -> void:
 	add_to_group("pastry_contest")
+	variant = "pastry"
 	_builder = PlaceBuilder.new(self)
 	_tent()
 	_jury()
@@ -146,3 +152,75 @@ func _counter(at: Vector3, size: Vector3) -> void:
 func under_roof(world: Vector3) -> bool:
 	var local := to_local(world)
 	return absf(local.x) <= SIZE.x / 2 and absf(local.z) <= SIZE.y / 2
+
+
+func at_scene(world: Vector3) -> bool:
+	return under_roof(world)
+
+
+func suspect(index: int) -> CollisionObject3D:
+	return cooks[index]
+
+
+## Puts the case's clues in the tent: the display case's prints, the lady's word, the footprint in the flour and the
+## carried ones, each on its own table drawn with the seed. The cooks know the case; one of them (by the seed) won't
+## take off his hat for nothing.
+func set_up_case(case: CrimeSceneCase) -> void:
+	var plan := case.plan
+	display_case.case = case
+	display_case.has_prints = plan.clues.has("prints")
+	lady.case = case
+	lady.knows = plan.clues.has("witness")
+	if plan.clues.has("footprint"):
+		var flour_print := FlourPrint.new()
+		flour_print.name = "FlourPrint"
+		flour_print.case = case
+		flour_print.shoe = case.culprit().shoe
+		flour_print.position = FLOUR_SPOTS[hash("flour spot %d" % case.case_seed) % FLOUR_SPOTS.size()]
+		add_child(flour_print)
+		case.flour_print = flour_print
+	var tables := range(TABLES.size())
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash("clue tables %d" % case.case_seed)
+	for kind: String in ["hair", "bite", "recipe"]:
+		if not plan.clues.has(kind):
+			continue
+		var table: Vector3 = TABLES[tables.pop_at(rng.randi_range(0, tables.size() - 1))]
+		var item := CrimeClueItem.new()
+		item.name = "Clue_" + kind
+		item.kind = kind
+		item.case = case
+		item.hair_color = CookTraits.HAIRS[case.culprit().hair]
+		item.position = table + ON_TABLE[kind]
+		add_child(item)
+		case.items[kind] = item
+		if kind == "recipe":
+			var coffee: Node3D = COFFEE_SCENE.instantiate()
+			coffee.position = table + COFFEE_ON_TABLE
+			add_child(coffee)
+	var stubborn := hash("stubborn cook %d" % case.case_seed) % cooks.size()
+	for cook in cooks:
+		cook.case = case
+		cook.stubborn = cook.index == stubborn
+
+
+## The delivery bike waits out of the tent's open front, by the culprit's table, and rides straight out of the plaza.
+func getaway(index: int, city: Node3D) -> Dictionary:
+	var cook := cooks[index]
+	var out := to_global(Vector3(to_local(cook.global_position).x, 0, SIZE.y / 2 + BIKE_OUT))
+	var plaza := city.global_transform * CityLayout.block_center(CityLayout.PLAZA)
+	var ahead := global_basis.z
+	var edge := out + ahead * maxf(CityLayout.BLOCK / 2 - 1.0 - (out - plaza).dot(ahead), 0.0)
+	return {"at": Transform3D(global_basis, out), "via": [edge]}
+
+
+func witness_offended() -> bool:
+	return lady.offended
+
+
+func offend_witness() -> void:
+	lady.offended = true
+
+
+func shouted_by(cop: Cop) -> void:
+	lady.shouted_by(cop)
