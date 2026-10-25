@@ -118,7 +118,7 @@ Los pesos y valores siguen la escala de la ferretería: la principal vale unos 1
 7. "Jugar" sortea entre los 5 lugares de allanamiento.
 8. El online (Fermín, Nilda, la cinta y los muñecos en todas las PC).
 
-## Preguntas para Cristian (se avanza con lo recomendado mientras tanto)
+## Preguntas para Cristian (respondidas el 25/10: sí a las 3)
 1. ¿La fábrica de muñecos como quinto lugar, o preferís otro de los 6 que faltan? **Recomendado:** la fábrica, porque es
    la que sigue en la lista, ya tiene su lote y la cinta da para mucho chiste físico.
 2. ¿La cinta lleva también a los policías (y les pega ojos saltones), y el botón rojo la para pero enoja a Fermín?
