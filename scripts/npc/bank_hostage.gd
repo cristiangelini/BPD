@@ -451,9 +451,11 @@ func said() -> String:
 
 
 ## What a guest's copy needs besides where they are and what they say (NpcSync): free, standing up, still here, won
-## over with food, where a fan's head looks and whether they wear the handcuffs.
+## over with food, where a fan's head looks, whether they wear the handcuffs, and in the flooding bank whether they're
+## up on the counter and wear a duck float.
 func net_state() -> Array:
-	return [freed, is_equal_approx(_model.scale.y, _size), visible, fed, snappedf(head_look, 0.01), is_cuffed()]
+	return [freed, is_equal_approx(_model.scale.y, _size), visible, fed, snappedf(head_look, 0.01), is_cuffed(), perched,
+		duck_float]
 
 
 func apply_net_state(state: Variant) -> void:
@@ -469,6 +471,10 @@ func apply_net_state(state: Variant) -> void:
 		_turn(state[4])
 	if state.size() > 5:
 		_cuffed_left = Handcuffs.SECONDS if state[5] else 0.0
+	if state.size() > 7:
+		perched = state[6]
+		if state[7] != duck_float:
+			BankFloats.wear(self, state[7])
 
 
 func _process(delta: float) -> void:

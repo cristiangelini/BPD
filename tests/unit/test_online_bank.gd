@@ -231,3 +231,73 @@ func test_the_manager_drives_off_on_every_pc() -> void:
 	await wait_until(func() -> bool: return guest.chase != null, 5.0)
 	assert_eq(guest.chase.suspect_id, SuspectCar.MANAGER_CAR, "in his car")
 	assert_false(guest.manager.visible, "he's in it on the guest's PC too")
+
+
+func _flood_pcs() -> Array[Node]:
+	# The first seed where the vault floods (robo-banco-inundado.md).
+	var seed_ := 1
+	while BankLevel.variant(seed_, PackedStringArray()) != "flood":
+		seed_ += 1
+	_pcs = OnlinePcs.new(self, Callable(), func() -> Node3D:
+		var bank: BankLevel = BANK_SCENE.instantiate()
+		bank.case_seed = seed_
+		bank.get_node("Cop/Grabber").input_enabled = false
+		return bank)
+	return await _pcs.two_pcs()
+
+
+func test_the_water_shows_the_same_on_every_pc() -> void:
+	var pcs: Array[Node] = await _flood_pcs()
+	var host := _bank(pcs[0])
+	var guest := _bank(pcs[1])
+	assert_true(guest.water.follower, "the guest's water only shows the host's")
+	assert_true(guest.valve.follower)
+	host.water.level = 0.7
+	await wait_until(func() -> bool: return absf(guest.water.level - host.water.level) < 0.02, 5.0)
+	assert_almost_eq(guest.water.level, host.water.level, 0.02)
+	await wait_until(func() -> bool: return guest.hostages[0].perched, 5.0)
+	assert_true(guest.hostages[0].perched, "up on the counter on the guest's PC too")
+	await wait_until(func() -> bool: return guest.drill.wet, 5.0)
+	assert_true(guest.drill.wet, "the wet drill shows there too")
+
+
+func test_a_guest_turns_the_valve_on_the_host() -> void:
+	var pcs: Array[Node] = await _flood_pcs()
+	var host := _bank(pcs[0])
+	var guest := _bank(pcs[1])
+	var guest_cop := OnlinePcs.own_cop(pcs[1])
+	var host_twin: Cop = host.get_tree().get_nodes_in_group("cops").filter(func(cop: Node) -> bool:
+		return cop != OnlinePcs.own_cop(pcs[0]) and cop.get_parent() == host).front()
+	guest_cop.global_position = guest.valve.to_global(Vector3(0, 0.1, 1.0))
+	host_twin.global_position = host.valve.to_global(Vector3(0, 0.1, 1.0))
+	guest_cop.act("use", guest.valve)
+	await wait_until(func() -> bool: return host.valve.turned > 0.05, 5.0)
+	assert_gt(host.valve.turned, 0.05, "the host's valve turns")
+	await wait_until(func() -> bool: return guest.valve.turned > 0.05, 5.0)
+	assert_gt(guest.valve.turned, 0.05, "and the guest sees it")
+	host.valve.turned = 1.0
+	host.valve._shut()
+	await wait_until(func() -> bool: return not guest.water.running, 5.0)
+	assert_true(guest.valve.is_shut)
+	assert_false(guest.water.running, "the water stops on every PC")
+
+
+func test_the_floats_and_the_front_door_show_the_same() -> void:
+	var pcs: Array[Node] = await _flood_pcs()
+	var host := _bank(pcs[0])
+	var guest := _bank(pcs[1])
+	var guest_cop := OnlinePcs.own_cop(pcs[1])
+	guest_cop.act("use", guest.floats)
+	await wait_until(func() -> bool: return host.floats.left == BankFloats.FLOATS - 1, 5.0)
+	assert_eq(host.floats.left, BankFloats.FLOATS - 1)
+	await wait_until(func() -> bool: return guest.floats.left == BankFloats.FLOATS - 1, 5.0)
+	assert_true(guest_cop.duck_float, "the guest wears it")
+	host.open_front()
+	await wait_until(func() -> bool: return guest.front_door.is_open, 5.0)
+	assert_true(guest.front_door.is_open, "the pig's door opens on the guest's PC too")
+	host.water.level = 0.7
+	await wait_until(func() -> bool: return host.hostages[1].perched, 5.0)
+	host.hostages[1].duck_float = false
+	BankFloats.wear(host.hostages[1], true)
+	await wait_until(func() -> bool: return guest.hostages[1].duck_float, 5.0)
+	assert_not_null(guest.hostages[1].get_node_or_null("DuckFloat"), "the hostage's float shows there too")

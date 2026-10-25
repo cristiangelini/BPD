@@ -143,13 +143,16 @@ func watch_door(front: FrontDoor, at: Vector3) -> void:
 
 
 func _on_door_opened() -> void:
-	if follower or level < WAVE_MIN:
+	if level < WAVE_MIN:
 		return
-	level -= WAVE_DROP
+	# Every PC knocks its own cop; the host's water and props decide the rest.
 	var out := global_basis.z
 	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
 		if cop.has_method("knock_back") and _near_door(cop.global_position):
 			cop.knock_back(out * WAVE_PUSH, WAVE_KNOCK)
+	if follower:
+		return
+	level -= WAVE_DROP
 	for body in _loose_things():
 		if _near_door(body.global_position):
 			body.apply_central_impulse(out * WAVE_IMPULSE * body.mass)
