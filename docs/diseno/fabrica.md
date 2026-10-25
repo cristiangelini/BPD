@@ -106,6 +106,14 @@ Los pesos y valores siguen la escala de la ferretería: la principal vale unos 1
      el contador (0/5). Con 5 descansa y cuenta lo que vio esconder a Fermín (la pista que pone cada historia en el
      paso 5; hasta entonces solo agradece). Otras cosas en la caja no cuentan. Captura: `paso4-nilda.png`.
 5. El caso (RaidCase) con la primera historia: el muñeco del diamante.
+   - **Cómo quedó (propuesta):** la fábrica es un allanamiento completo como la ferretería: denuncia anónima, 3
+     sospechas con su nota, la planilla, lo que Fermín deja escapar (2 veces), lo que vio Nilda, la caja de la recepción
+     con la llave de la oficina (no la lleva Fermín: si te ve abrirla, +10 de denuncia), su huida en auto y su
+     interrogatorio. Con 100 de denuncia llama al abogado y se pierde el caso. En el depósito hay un cajón con 24
+     muñecos terminados; uno, sorteado con la semilla, es el del diamante: igual a los otros pero pesa 2 kg (los otros
+     0,5) y al levantarlo avisa. La balanza de control de calidad, contra la pared de la recepción, muestra los kg de lo
+     que tiene arriba, y al lado está la planilla de calidad, la pista propia. La lupa y la lista de entregas se esconden
+     en los escondites sorteados. Capturas `paso5-*` en `fabrica/`.
 6. Las otras 5 historias, una por PR.
 7. "Jugar" sortea entre los 5 lugares de allanamiento.
 8. El online (Fermín, Nilda, la cinta y los muñecos en todas las PC).

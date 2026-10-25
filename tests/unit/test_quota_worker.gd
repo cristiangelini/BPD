@@ -21,11 +21,10 @@ func _box_top(factory: DollFactory) -> Vector3:
 func test_dolls_drop_onto_the_belt_while_it_moves() -> void:
 	var factory := _factory()
 	await wait_seconds(DollFactory.FEED_EVERY + 0.5)
-	var dolls := get_tree().get_nodes_in_group("factory_dolls")
-	assert_eq(dolls.size(), 2, "one right away and one more after FEED_EVERY")
+	assert_eq(factory.fed.size(), 2, "one right away and one more after FEED_EVERY")
 	factory.belt.stop()
 	await wait_seconds(DollFactory.FEED_EVERY + 0.5)
-	assert_eq(get_tree().get_nodes_in_group("factory_dolls").size(), 2, "none while it's stopped")
+	assert_eq(factory.fed.size(), 2, "none while it's stopped")
 
 
 func test_dolls_at_the_end_are_packed() -> void:

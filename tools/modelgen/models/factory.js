@@ -45,13 +45,53 @@ export function buildFactoryDoll() {
 	return b.build();
 }
 
+// The jeweler's loupe: a black eyepiece 0.05 m across with its lens. Extra of the diamond doll.
+export function buildJewelerLoupe() {
+	const b = new Builder('jeweler_loupe');
+	b.add('body', mat('loupe_black', 0x1e1e22), new THREE.CylinderGeometry(0.025, 0.02, 0.035, 10), { pos: V(0, 0, 0) });
+	b.add('lens', mat('loupe_lens', 0xbfe4f2, { transparent: true, opacity: 0.6 }), new THREE.CylinderGeometry(0.019, 0.019, 0.004, 10), { pos: V(0, 0.018, 0) });
+	return b.build();
+}
+
+// The delivery list: a typed sheet 0.21 x 0.3 m with a circled line. Extra of the diamond doll.
+export function buildDeliveryList() {
+	const b = new Builder('delivery_list');
+	b.add('sheet', mat('paper', 0xf6f2e6), new THREE.BoxGeometry(0.21, 0.004, 0.3), { pos: V(0, 0, 0) });
+	for (let i = 0; i < 8; i++) {
+		b.add('lines', mat('ink', 0x3a3a44), new THREE.BoxGeometry(0.15, 0.001, 0.008), { pos: V(-0.01, 0.0025, -0.11 + i * 0.03) });
+	}
+	b.add('circle', mat('ink_red', 0xd23a3a), new THREE.TorusGeometry(0.03, 0.003, 3, 12), { pos: V(0.06, 0.003, 0.04), rot: [Math.PI / 2, 0, 0], scale: [2.2, 1, 1] });
+	return b.build();
+}
+
+// The quality control sheet on a clipboard, 0.23 x 0.32 m, with a big "2 kg" in red. The diamond doll's clue.
+export function buildQualitySheet() {
+	const b = new Builder('quality_sheet');
+	b.add('board', mat('clipboard', 0x8a5a30), new THREE.BoxGeometry(0.23, 0.01, 0.32), { pos: V(0, 0, 0) });
+	b.add('sheet', mat('paper', 0xf6f2e6), new THREE.BoxGeometry(0.2, 0.002, 0.27), { pos: V(0, 0.006, 0.01) });
+	b.add('clip', mat('clip_steel', 0xb8bcc4), new THREE.BoxGeometry(0.08, 0.012, 0.03), { pos: V(0, 0.008, -0.14) });
+	for (let i = 0; i < 6; i++) {
+		b.add('lines', mat('ink', 0x3a3a44), new THREE.BoxGeometry(0.14, 0.001, 0.008), { pos: V(-0.02, 0.0075, -0.08 + i * 0.03) });
+	}
+	b.add('mark', mat('ink_red', 0xd23a3a), new THREE.BoxGeometry(0.06, 0.001, 0.04), { pos: V(0.05, 0.0078, 0.1) });
+	return b.build();
+}
+
 export const models = {
+	jeweler_loupe: buildJewelerLoupe, delivery_list: buildDeliveryList, quality_sheet: buildQualitySheet,
 	factory_doll: buildFactoryDoll,
 	...Object.fromEntries(DRESSES.map((_, i) => [`porcelain_doll_${i}`, () => buildPorcelainDoll(i)])),
 	plaster_mold: buildPlasterMold,
 };
 
 export const views = {
+	diamond_goods: {
+		items: [
+			{ name: 'factory_doll', pos: [-0.2, 0.15, 0] }, { name: 'jeweler_loupe', pos: [0.05, 0.02, 0.1] },
+			{ name: 'delivery_list', pos: [0.25, 0.002, 0], rotY: 0.3 }, { name: 'quality_sheet', pos: [0, 0.005, 0.3], rotY: -0.2 },
+		],
+		cam: { pos: [0, 0.6, 0.9], target: [0, 0.05, 0.1], fov: 40 },
+	},
 	factory: {
 		items: [
 			{ name: 'porcelain_doll_0', pos: [-0.25, 0.15, 0] }, { name: 'porcelain_doll_1', pos: [0, 0.15, -0.1] },
