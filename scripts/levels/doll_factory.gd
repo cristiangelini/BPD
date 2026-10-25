@@ -33,6 +33,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_JEWELER_LOUPE", "OBJ_EXTRA_DELIVERY_LIST"],
 		"rig": preload("res://scripts/case/factory/diamond_doll_rig.gd"),
 	},
+	"spy_dolls": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_SPY_DOLLS_B", "BRIEF_SPY_DOLLS_C", "BRIEF_SPY_DOLLS_D"],
+		"find": "OBJ_FIND_TAPE_RECORDER",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/tape_recorder.tscn"), preload("res://scenes/props/mic_box.tscn"),
+			preload("res://scenes/props/client_list.tscn")],
+		"half_heights": [0.08, 0.04, 0.005],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_MIC_BOX", "OBJ_EXTRA_CLIENT_LIST"],
+		"rig": preload("res://scripts/case/factory/spy_dolls_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the factory; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [
