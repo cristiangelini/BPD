@@ -5,7 +5,7 @@ extends StaticBody3D
 ## (infiltracion-coro.md, step 3b) a chorister on the platform, or Maestro Ernesto, the director; at the theater
 ## (infiltracion-mimos.md, step 2b) a mime on the stage, or Maestra Pausa; at the costume party
 ## (infiltracion-fiesta.md, step 2b) a guest dressed as a cop, the Sargento Trucho hidden among them, or the señora
-## Serpentina, the hostess. E on one tells a bit
+## Serpentina, the hostess; at the gym (infiltracion-gimnasio.md, step 2b) a member of the gang, or el Toro. E on one tells a bit
 ## of gossip, a different line each time. Each one has a suspicion meter that ClubSuspicion fills from what they
 ## see (step 4), with a "?" or a "!" over their head. They don't move yet, so online every PC has the same ones; their
 ## meters come from the host through ClubSuspicion.
@@ -28,9 +28,13 @@ const MODELS := {
 	"invitado": preload("res://assets/models/npc_invitado.glb"),
 	"invitado_b": preload("res://assets/models/npc_invitado_b.glb"),
 	"serpentina": preload("res://assets/models/npc_serpentina.glb"),
+	"socio": preload("res://assets/models/npc_socio.glb"),
+	"socio_b": preload("res://assets/models/npc_socio_b.glb"),
+	"toro": preload("res://assets/models/npc_toro.glb"),
 }
 const SCALES := {"abuelo": 0.82, "abuela": 0.8, "chela": 0.85, "corista": 0.85, "corista_b": 0.85, "ernesto": 1.0,
-	"mimo": 0.85, "mimo_b": 0.85, "pausa": 0.95, "invitado": 0.9, "invitado_b": 0.9, "serpentina": 0.9}
+	"mimo": 0.85, "mimo_b": 0.85, "pausa": 0.95, "invitado": 0.9, "invitado_b": 0.9, "serpentina": 0.9,
+	"socio": 1.1, "socio_b": 1.1, "toro": 1.2}
 ## What each look says when talked to (the key with the line's number, and how many lines), the prompt, and what it
 ## shouts when cuffed. The bosses (BOSSES) have their own lines.
 const TALK := {
@@ -48,8 +52,11 @@ const TALK := {
 	"invitado": ["PARTY_GOSSIP_%d", 10, "PROMPT_TALK_GUEST", "PARTY_CUFFED"],
 	"invitado_b": ["PARTY_GOSSIP_%d", 10, "PROMPT_TALK_GUEST", "PARTY_CUFFED"],
 	"serpentina": ["SERPENTINA_%d", 4, "PROMPT_TALK_SERPENTINA", "SERPENTINA_CUFFED"],
+	"socio": ["GYM_GOSSIP_%d", 10, "PROMPT_TALK_GYM", "GYM_CUFFED"],
+	"socio_b": ["GYM_GOSSIP_%d", 10, "PROMPT_TALK_GYM", "GYM_CUFFED"],
+	"toro": ["TORO_%d", 4, "PROMPT_TALK_TORO", "TORO_CUFFED"],
 }
-const BOSSES: Array[String] = ["chela", "ernesto", "pausa"]
+const BOSSES: Array[String] = ["chela", "ernesto", "pausa", "toro"]
 const GOSSIP_LINES := 12
 const SAY_TIME := 4.0
 ## What a grandparent sees: a wide cone in front of them (they turn their heads) and not far, at their eyes' height.
@@ -124,7 +131,7 @@ func is_chela() -> bool:
 
 
 ## The one to cuff: Doña Chela at the club, Maestro Ernesto at the chapel, Maestra Pausa at the theater, the Sargento
-## Trucho at the party.
+## Trucho at the party, el Toro at the gym.
 func is_boss() -> bool:
 	return BOSSES.has(look) or secret_boss
 
