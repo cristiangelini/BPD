@@ -74,6 +74,9 @@ const MANAGER_CAR_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(
 	Vector3(-1.05, 0.38, -1.55), Vector3(1.05, 0.38, -1.55)]
 const MANAGER_CAR_SIZE := Vector3(2.1, 1.5, 4.6)
 const MANAGER_SPOTS: Array[Vector3] = [Vector3(-10.0, 0, HALF_Z + 2.0), Vector3(-5.5, 0, HALF_Z + 2.0)]
+## The boss manager's walkie (step 2): with no cop this close to him (m), the drill hurries this long (s).
+const WALKIE_NEAR := 6.0
+const WALKIE_HURRY := 10.0
 ## Where each robber stands and which way they face (their body's yaw): the rabbit by the entrance looking at the
 ## door, the pig in front of the counter looking at the hostages, the duck in the corridor looking at the vault's
 ## door and El Oso behind the middle desk looking at the hall.
@@ -175,6 +178,8 @@ var _sorry_variant := false
 ## Mr. Moneda, the manager, by his car outside (every robbery), and his car.
 var manager: BankManager
 var manager_car: StaticBody3D
+## The boss manager's open trunk with the empty sacks (null when he's not the boss).
+var manager_trunk: ManagerTrunk
 ## The duck grandma's marbles on the floor, once she threw them.
 var marbles: BankMarbles
 var croissant_tray: BankCroissantTray
@@ -494,6 +499,26 @@ func _add_manager(is_boss: bool) -> void:
 	for at in MANAGER_SPOTS:
 		manager.spots.append(global_transform * (at + Vector3.UP * FLOOR_TOP))
 	add_child(manager)
+	manager.seed_with(hash(["bank walkie", case_seed]))
+	if not is_boss:
+		return
+	# The boss (step 2): the key he gives doesn't fit, his walkie hurries the gang and his trunk waits open.
+	back_door.wrong_key = true
+	manager.radioed.connect(_on_manager_radioed)
+	manager_trunk = ManagerTrunk.new()
+	manager_trunk.name = "Trunk"
+	manager_trunk.manager = manager
+	manager_car.add_child(manager_trunk)
+
+
+## The boss manager murmured into his walkie: the drill hurries unless a cop stands close to him.
+func _on_manager_radioed(_manager: BankManager) -> void:
+	if follower:
+		return
+	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
+		if cop.global_position.distance_to(manager.global_position) <= WALKIE_NEAR:
+			return
+	drill.hurry(WALKIE_HURRY)
 
 
 func _add_robbers() -> void:
