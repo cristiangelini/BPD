@@ -528,7 +528,7 @@ func snapshot() -> Dictionary:
 		"drunk_keys": drunk_keys, "drunks_passed": drunks_passed,
 		"racer_fines": racer_fines, "lost": lost, "solved": solved_now, "escaped": escaped,
 		"suspect": suspect != null, "result": _result, "taken_from": taken_from, "clean": _clean_clowns(),
-		"spikes": _spikes()}
+		"spikes": _spikes(), "overruns": queue.overruns}
 	if chase:
 		state.chase = chase.snapshot()
 		var clown := chase.suspect_id == SuspectCar.CLOWN_CAR
@@ -538,6 +538,7 @@ func snapshot() -> Dictionary:
 			_run_off_riders[0], _run_off_riders[1], chase.drops.ghost_look, chase.drops.wedding,
 			_run_off_race, _run_off_fog]
 		state.riders_left = chase.drops.riders_left
+		state.honks = chase.drops.honks
 	return state
 
 
@@ -545,7 +546,7 @@ func snapshot() -> Dictionary:
 func apply_snapshot(state: Dictionary) -> void:
 	if state.tip:
 		give_tip()
-	queue.show_patience(state.patience, state.sneaked)
+	queue.show_patience(state.patience, state.sneaked, state.get("overruns", 0))
 	clues.catch_up_to(state.clues)
 	var innocent_now: bool = state.innocents > innocents
 	if innocent_now:
@@ -591,6 +592,10 @@ func apply_snapshot(state: Dictionary) -> void:
 		# One more of the gang jumped out on the host: one face less on the guest's runaway too.
 		chase.drops.riders_left = state.riders_left
 		CrowdedCar.show_inside(chase.truck, chase.drops.riders_left + 1)
+	if chase and state.get("honks", 0) > chase.drops.honks:
+		# La Bruma honked at a corner on the host: his horn shows over the guest's runaway too.
+		chase.drops.honk()
+		chase.drops.honks = state.honks
 	if state.lost and not lost and not chase and not innocent_now:
 		_hint_all("HINT_TRAFFIC_WANTED_GONE")
 	lost = state.lost

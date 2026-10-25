@@ -82,6 +82,8 @@ var race := false
 ## The runaway is the fog check's La Bruma: his horn (FogCar.horn_text), -1 otherwise; its bubble over his car.
 var fog_horn := -1
 var horn_bubble: HornBubble
+## How many times he honked (online, the guests honk as many).
+var honks := 0
 var _drip_left := DRIP_EVERY
 var _dummy_left := DUMMY_EVERY
 var _kids_left := 0.0
@@ -203,6 +205,7 @@ func honk() -> HornBubble:
 		horn_bubble.position = Vector3(0, FogCar.HORN_UP, 0)
 		case.truck.add_child(horn_bubble)
 	horn_bubble.say(tr(FogCar.horn_text(fog_horn)))
+	honks += 1
 	return horn_bubble
 
 
