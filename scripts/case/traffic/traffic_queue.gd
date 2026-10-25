@@ -7,8 +7,8 @@ extends Node3D
 ## E on the barrier lets the first one through. There's no time limit (decision 98): only the meter.
 ## "rush_hour" (Hora pico) sends twice the cars and wears the patience out faster. "clown_convoy" (control-payasos.md)
 ## sends the circus's identical clown cars, a bit less often since each one takes longer to check; their clowns loose
-## on the street wear the patience out too, and a car won't go until its clowns are back in. Every number here is
-## (propuesta).
+## on the street wear the patience out too, and a car won't go until its clowns are back in. "fruit_truck"
+## (control-frutas.md) sends the fruit fair's pickups, loaded with watermelons. Every number here is (propuesta).
 
 signal patience_changed(value: float)
 ## A car went by: let through, or sneaking.
@@ -31,6 +31,7 @@ const AFTER_SNEAK := 70.0
 const VARIANTS := {
 	"rush_hour": {"spawn": 0.5, "patience": 1.5},
 	"clown_convoy": {"spawn": 0.75, "patience": 1.0, "clown": true},
+	"fruit_truck": {"spawn": 0.75, "patience": 1.0, "fruit": true},
 }
 
 var checkpoint: TrafficCheckpoint
@@ -139,6 +140,7 @@ func spawn() -> QueueCar:
 	car.plate = data.plate
 	car.driver = data.driver
 	car.clown = clown
+	car.fruit = VARIANTS[variant].get("fruit", false)
 	car.clown_traits = data.get("clown", {})
 	car.wanted = plan != null and spawned == plan.wanted_index
 	car.at = Vector3(0, 0, SPAWN_FROM)

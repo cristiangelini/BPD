@@ -1597,6 +1597,7 @@ CHASE_HONK_3,"¡Jijiji, no me agarran!","Hee hee, you can't catch me!","Hihihi, 
 PROMPT_POP_DUMMY,"E: reventar el payaso inflable","E: pop the inflatable clown","E: estourar o palhaço inflável"
 HINT_DUMMY_POPPED,"¡PLOP! Era de mentira.","POP! It was a fake.","PLOFT! Era de mentira."
 PLATE_CLOWN,PAYASO 1,CLOWN 1,PALHAÇO 1
+FRUIT_SIGN,Frutas %s,%s's Fruit,Frutas %s
 PROMPT_CLOWN_DOOR,"Mantén clic izquierdo y tira hacia afuera: abrir la puerta del autito","Hold left click and pull out: open the clown car's door","Segure o clique esquerdo e puxe para fora: abrir a porta do carrinho"
 PROMPT_CONVOY_CLOWN,"Clic izquierdo: agarrar al payaso y llevarlo a la puerta del autito","Left click: grab the clown and take him to the clown car's door","Clique esquerdo: pegar o palhaço e levá-lo até a porta do carrinho"
 HINT_CLOWNS_OUT,"El autito no arranca: faltan payasos adentro.","The clown car won't go: some clowns are still out.","O carrinho não sai: ainda faltam palhaços lá dentro."

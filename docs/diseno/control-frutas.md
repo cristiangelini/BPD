@@ -12,7 +12,7 @@ adentro de las sandías. No me rompan todas, que después los fruteros me llenan
 ## Cómo es
 1. Llegan 10 a 14 **camioncitos de fruta** abiertos atrás, cada uno con 6 a 10 sandías en la caja (se ven desde la
    vereda) y algún cajón de otra fruta.
-2. Las pistas son del camión y del frutero, como en Hora pico: color del camión, el cartel pintado ("Frutas Don X"),
+2. Las pistas son del camión y del frutero, como en Hora pico: color del camión, el cartel pintado ("Frutas" y el nombre del frutero),
    el sombrero del frutero y qué otra fruta lleva (bananas, naranjas, ananás).
 3. **Revisar una sandía:** se agarra con las manos y se baja del camión (pesa 8 kg, uno solo puede). Con E encima
    se le da un golpecito: la normal suena "toc toc" y la del contrabando suena hueca ("tonc"). En el camión buscado hay
