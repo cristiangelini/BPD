@@ -53,6 +53,8 @@ const MODELS := {
 	"inmate_on_foot": preload("res://assets/models/ball_and_chain.glb"),
 	# The market's spiteful vendor pedals off on his vegetable tricycle (politico-mercado.md), losing veggies in curves.
 	"veggie_trike": preload("res://assets/models/veggie_trike.glb"),
+	# The circus's culprit runs off in the clown car, dropping inflatable clowns (escena-circo.md).
+	"clown_car": preload("res://assets/models/clown_car.glb"),
 	# The traffic control's wanted car, in its paint (control-transito.md): the traffic car it was in the queue.
 	"traffic_0": preload("res://assets/models/traffic_car_0.glb"),
 	"traffic_1": preload("res://assets/models/traffic_car_1.glb"),
@@ -74,6 +76,7 @@ const RIDERS := {
 	"food_cart": [[preload("res://assets/models/npc_preso.glb"), Vector3(0, 0.05, -0.95), 0.9]],
 	"inmate_on_foot": [[preload("res://assets/models/npc_preso.glb"), Vector3(0, 0, 0), 0.85]],
 	"veggie_trike": [[preload("res://assets/models/npc_puestero.glb"), Vector3(0, 0.25, -0.45), 0.85]],
+	"clown_car": [[preload("res://assets/models/npc_payaso.glb"), Vector3(0, 0.45, -0.25), 0.8]],
 }
 ## Who rides inside and stays there when he gives up, the same way: the choristers in the van, seen through its open
 ## windows, singing all the way.
@@ -91,14 +94,15 @@ const LANES := {"moto": ChaseRoute.SIDEWALK_LANE, "wheelchair": ChaseRoute.SIDEW
 ## The delivery bike pedals at 25 km/h and turns tight. Doña Chela's walker's motor does 10 km/h. The choir's old van,
 ## full, does 35. El Oso running with his sack does 12, the heckler's kick scooter 15 and the food cart, downhill, 14
 ## (propuesta). The loaded vegetable trike, 16, and an inmate off the transfer bus, dragging the ball and chain, 11.
+## The clown car does 30, honking all the way.
 const SPEEDS := {"bear_on_foot": 12.0 / 3.6, "wheelchair": 8.0 / 3.6, "tow_truck": 30.0 / 3.6, "golf_cart": 25.0 / 3.6, "bike": 25.0 / 3.6,
 	"walker": 10.0 / 3.6, "choir_van": 35.0 / 3.6, "kick_scooter": 15.0 / 3.6,
-	"food_cart": 14.0 / 3.6, "veggie_trike": 16.0 / 3.6, "inmate_on_foot": 11.0 / 3.6}
+	"food_cart": 14.0 / 3.6, "veggie_trike": 16.0 / 3.6, "inmate_on_foot": 11.0 / 3.6, "clown_car": 30.0 / 3.6}
 ## The tow truck turns slowly and nearly stops to do it (persecucion-lugares.md): a cop cutting a corner on foot
 ## catches up with him.
 ## The golf cart turns very tight and hardly slows down to do it.
-const TURN_RATES := {"tow_truck": 1.0, "golf_cart": 3.2, "bike": 3.2}
-const TURN_SPEEDS := {"tow_truck": 0.3, "golf_cart": 0.75, "bike": 0.75}
+const TURN_RATES := {"tow_truck": 1.0, "golf_cart": 3.2, "bike": 3.2, "clown_car": 3.0}
+const TURN_SPEEDS := {"tow_truck": 0.3, "golf_cart": 0.75, "bike": 0.75, "clown_car": 0.75}
 const GOLF := "golf_cart"
 const TOW := "tow_truck"
 const OLD_PATROL := "old_patrol"
@@ -112,6 +116,7 @@ const KICK_SCOOTER := "kick_scooter"
 const FOOD_CART := "food_cart"
 const INMATE_ON_FOOT := "inmate_on_foot"
 const VEGGIE_TRIKE := "veggie_trike"
+const CLOWN_CAR := "clown_car"
 ## Where the towed patrol car hangs behind the tow truck: its middle, and its nose lifted this much.
 const TOWED_AT := Vector3(0, 0.55, -5.6)
 const TOWED_TILT := -0.12
@@ -125,7 +130,7 @@ const COPS_LAYER := 2
 const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 4.6), "night": Vector3(2.1, 1.4, 4.6),
 	"highway": Vector3(2.1, 1.1, 4.6), "tow_truck": Vector3(2.3, 2.4, 6.2), "golf_cart": Vector3(1.3, 1.8, 2.4),
 	"moto": Vector3(0.8, 1.6, 1.9), "old_patrol": Vector3(2.1, 1.5, 4.6),
-	"wheelchair": Vector3(0.8, 1.4, 1.2), "bear_on_foot": Vector3(0.9, 1.8, 0.9), "choir_van": Vector3(2.0, 1.95, 4.6), "walker": Vector3(0.7, 1.6, 1.3), "kick_scooter": Vector3(0.6, 1.6, 1.0), "food_cart": Vector3(0.8, 1.6, 2.2), "veggie_trike": Vector3(1.0, 1.6, 2.0), "inmate_on_foot": Vector3(0.8, 1.6, 0.9), "bike": Vector3(0.7, 1.6, 1.9), "traffic_0": Vector3(2.1, 1.4, 4.6),
+	"wheelchair": Vector3(0.8, 1.4, 1.2), "bear_on_foot": Vector3(0.9, 1.8, 0.9), "choir_van": Vector3(2.0, 1.95, 4.6), "walker": Vector3(0.7, 1.6, 1.3), "kick_scooter": Vector3(0.6, 1.6, 1.0), "food_cart": Vector3(0.8, 1.6, 2.2), "veggie_trike": Vector3(1.0, 1.6, 2.0), "inmate_on_foot": Vector3(0.8, 1.6, 0.9), "bike": Vector3(0.7, 1.6, 1.9), "clown_car": Vector3(1.3, 1.4, 2.0), "traffic_0": Vector3(2.1, 1.4, 4.6),
 	"traffic_1": Vector3(2.1, 1.4, 4.6), "traffic_2": Vector3(2.1, 1.4, 4.6), "traffic_3": Vector3(2.1, 1.4, 4.6),
 	"manager_car": Vector3(2.1, 1.4, 4.6)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
@@ -138,7 +143,7 @@ const TOW_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.0), Vector3(1.15, 0.3
 const NO_WHEELS: Array[Vector3] = []
 const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS,
 	"wheelchair": NO_WHEELS, "walker": NO_WHEELS, "bear_on_foot": NO_WHEELS, "kick_scooter": NO_WHEELS, "food_cart": NO_WHEELS, "veggie_trike": NO_WHEELS, "inmate_on_foot": NO_WHEELS, "highway": SEDAN_WHEELS, "tow_truck": TOW_WHEELS, "golf_cart": NO_WHEELS,
-	"old_patrol": SEDAN_WHEELS, "bike": NO_WHEELS, "traffic_0": SEDAN_WHEELS, "traffic_1": SEDAN_WHEELS,
+	"old_patrol": SEDAN_WHEELS, "bike": NO_WHEELS, "clown_car": NO_WHEELS, "traffic_0": SEDAN_WHEELS, "traffic_1": SEDAN_WHEELS,
 	"traffic_2": SEDAN_WHEELS, "traffic_3": SEDAN_WHEELS, "choir_van": SEDAN_WHEELS, "manager_car": SEDAN_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).

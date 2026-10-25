@@ -16,6 +16,8 @@ const LEAVE_FROM := 480.0
 const LEAVE_EVERY := 120.0
 ## Seconds between the verdict and the end of shift screen.
 const SHIFT_DELAY := 3.0
+## At the circus, finding what was stolen adds this much to the salary, if the case is solved (escena-circo.md).
+const LOOT_BONUS := 100.0
 ## Its own quota, like the interrogation and the chase (decision 91).
 const QUOTA := ShiftReport.SALARY
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
@@ -33,7 +35,7 @@ const VARIANTS := {
 		"shift": "crime_pastry", "story": "pastry",
 		"brief": ["BRIEF_CRIME_A", "BRIEF_CRIME_B", "BRIEF_CRIME_C"], "go": "HINT_GO_CONTEST",
 		"go_row": "OBJ_CRIME_GO", "look": "HINT_CRIME_LOOK", "files_row": "OBJ_CRIME_FILES",
-		"clue_line": "CLUE_CRIME_", "ruined_hint": "HINT_CRIME_RUINED_",
+		"clue_line": "CLUE_CRIME_", "ruined_hint": "HINT_CRIME_RUINED_", "left": "HINT_COOK_LEFT",
 		"who": "cook", "getaway": SuspectCar.BIKE, "clues": CrimePlan.CLUES,
 		"parts": ["photo", "prints", "teeth", "hair"],
 	},
@@ -42,8 +44,8 @@ const VARIANTS := {
 		"shift": "crime_circus", "story": "circus",
 		"brief": ["BRIEF_CIRCUS_A_", "BRIEF_CIRCUS_B", "BRIEF_CIRCUS_C"], "go": "HINT_GO_CIRCUS",
 		"go_row": "OBJ_CIRCUS_GO", "look": "HINT_CIRCUS_LOOK", "files_row": "OBJ_CIRCUS_FILES",
-		"clue_line": "CLUE_CIRCUS_", "ruined_hint": "HINT_CIRCUS_RUINED_",
-		"who": "clown", "getaway": SuspectCar.BIKE,
+		"clue_line": "CLUE_CIRCUS_", "ruined_hint": "HINT_CIRCUS_RUINED_", "left": "HINT_CLOWN_LEFT",
+		"who": "clown", "getaway": SuspectCar.CLOWN_CAR,
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "recording": "honk",
 			"witness": "glasses"},
 		"parts": ["photo", "prints", "teeth", "hair", "shoe", "honk"],
@@ -295,7 +297,7 @@ func finish_shift() -> void:
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
-	var report := ShiftReport.pay(solved(), [], 0, wrong_guesses)
+	var report := ShiftReport.pay(solved(), [LOOT_BONUS] if loot_found else [], 0, wrong_guesses)
 	var result := {"solved": solved(), "report": report, "awards": ShiftReport.awards(stats)}
 	var campaign := Campaign.current
 	if campaign and not campaign.is_over():
@@ -400,7 +402,7 @@ func _tire() -> void:
 	for index: int in order:
 		if not gone.has(index):
 			gone.append(index)
-			_hint_all(tr("HINT_COOK_LEFT") % cooks[index].name)
+			_hint_all(tr(texts().left) % cooks[index].name)
 			if place:
 				_send_off(place.suspect(index))
 			checklist.show_rows(rows())

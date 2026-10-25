@@ -24,6 +24,8 @@ const MODELS := {
 	"dangerous": preload("res://assets/models/npc_sospechoso.glb"),
 	# The pastry contest's culprit, off his bike (escena-del-crimen.md).
 	"cook": preload("res://assets/models/npc_pastelero.glb"),
+	# The circus's culprit, out of the clown car (escena-circo.md).
+	"clown": preload("res://assets/models/npc_payaso.glb"),
 	# The traffic control's wanted driver (control-transito.md).
 	"driver": preload("res://assets/models/npc_cliente.glb"),
 	# Doña Chela, off her motorized walker (infiltracion.md).

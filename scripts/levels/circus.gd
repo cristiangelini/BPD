@@ -79,6 +79,8 @@ const SAWDUST_SPOTS: Array[Vector3] = [
 ]
 ## The hair lies this far from the pool's middle at most, and the bitten fish this far in front of a caravan's door.
 const POOL_HAIR_REACH := 1.0
+## The clown car waits at the lot's front edge, this far to the side of the tent's entrance.
+const GETAWAY_X := -5.0
 const FISH_BY_CARAVAN := Vector3(1.0, 0.05, CARAVAN_SIZE.z / 2 + 0.8)
 const CARAVAN_COLORS: Array[Color] = [
 	Color(0.95, 0.55, 0.7), Color(0.45, 0.82, 0.65), Color(0.98, 0.82, 0.3), Color(0.68, 0.58, 0.9),
@@ -548,6 +550,12 @@ func in_tent(world: Vector3) -> bool:
 
 func suspect(index: int) -> CollisionObject3D:
 	return clowns[index]
+
+
+## The clown car waits in front of the tent, at the lot's edge, and drives straight out into the street.
+func getaway(_index: int, _city: Node3D) -> Dictionary:
+	var out := to_global(Vector3(GETAWAY_X, 0, SIZE.y / 2 - 1.5))
+	return {"at": Transform3D(global_basis, out), "via": [to_global(Vector3(GETAWAY_X, 0, SIZE.y / 2 + 4.0))]}
 
 
 func witness_offended() -> bool:

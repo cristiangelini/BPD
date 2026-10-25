@@ -40,7 +40,7 @@ static func is_npc(node: Node) -> bool:
 	return node is Grandpa or node is Baker or node is BakeryCustomer or node is Pigeon or node is DogGroomer \
 		or node is PoodleLady or node is HumanCustomer or node is Gossip or node is Neighbor or node is Armero \
 		or node is InterrogationSuspect or node is SuspectCar or node is ChaseSuspect \
-		or node is ChaseFurniture or node is TrafficCar or node is QueueCar or node is NightGuard \
+		or node is ChaseFurniture or node is ChaseDummy or node is TrafficCar or node is QueueCar or node is NightGuard \
 		or node is ClubBingo or node is ClubSuspicion or node is BankRobber or node is BankHostage \
 		or node is Politician or node is RallyFan or node is PrisonInmate or node is MarketVendor \
 		or node is MarketShopper or node is Cleaner or node is FloorStains or node is GuardDog \
