@@ -67,6 +67,9 @@ var follower := false:
 			bank.follower = value
 			bank.drill.follower = value
 			bank.phone.follower = value
+			if bank.water:
+				bank.water.follower = value
+				bank.valve.follower = value
 var online: CaseSync
 var _result := {}
 var _refresh_left := 0.0
@@ -327,7 +330,7 @@ func _physics_process(delta: float) -> void:
 
 
 ## What every guest's case shows (CaseSync): the drill, the phone, the sacks taken, El Oso jailed or gone, his
-## getaway and the end of shift.
+## getaway and the end of shift; in the flooding bank, the water, the valve, the front door and the floats left.
 func snapshot() -> Dictionary:
 	var state := {"drill": bank.drill.net_state(), "phone": bank.phone.net_state(), "bags": bank.bags_taken,
 		"jailed": boss_jailed, "escaped": escaped, "result": _result, "fans": fans_heard, "hid": grandpa_hid,
@@ -339,6 +342,11 @@ func snapshot() -> Dictionary:
 		state.trunk = bank.manager_trunk.is_open
 	if bank.croissant_tray:
 		state.tray = bank.croissant_tray.left
+	if bank.water:
+		state.water = bank.water.net_state()
+		state.valve = bank.valve.net_state()
+		state.front_door = bank.front_door.is_open
+		state.floats = bank.floats.net_state()
 	if bank.chase:
 		state.getaway = bank.chase.suspect_id
 		state.chase = bank.chase.snapshot()
@@ -381,6 +389,13 @@ func apply_snapshot(state: Dictionary) -> void:
 		bank.manager_trunk.set_open(state.trunk)
 	if bank.croissant_tray and state.has("tray") and state.tray != bank.croissant_tray.left:
 		bank.croissant_tray.set_left(state.tray)
+	if bank.water and state.has("water"):
+		# The door first, on the water as it was: the wave knocks this PC's cop too.
+		if state.front_door and not bank.front_door.is_open:
+			bank.front_door.open_from_inside()
+		bank.water.apply_net_state(state.water)
+		bank.valve.apply_net_state(state.valve)
+		bank.floats.apply_net_state(state.floats)
 	checklist.show_rows(rows())
 	if not state.result.is_empty() and not shift_over:
 		_show_result(state.result)

@@ -97,3 +97,8 @@ la ola de la puerta y los flotadores.
   camioneta. El caso: la radio del comisario avisa del caño (`BRIEF_BANK_FLOOD_A-C`), la planilla pide cerrar la
   llave de paso antes de 1 m (+100, `EARLY_VALVE`) y muestra los centímetros de agua; se gana con El Oso como en la
   base. Captura en `/mnt/project-files/inundado/paso4-planilla.png`.
+- **Paso 5 (el online):** el agua, la llave de paso, la puerta de adelante y los flotadores que quedan van en la foto
+  del caso (`BankCase.snapshot`); el agua y la llave del invitado solo muestran las del host (`follower`). Los rehenes
+  suman a lo que mandan si están en el mostrador y si tienen flotador, y el taladro si está mojado. Girar la llave,
+  soltarla, ponerse un flotador y dárselo a un rehén pasan por las acciones de siempre (`act`), así que lo decide el
+  host y todos ven lo mismo. La ola voltea al policía de cada PC; el nivel y el empujón a las cosas los decide el host.
