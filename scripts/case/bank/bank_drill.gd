@@ -12,6 +12,8 @@ signal opened
 
 const MODEL := preload("res://assets/models/bank_drill.glb")
 const DRILL_TIME := 480.0
+## The grandpa robbers' old drill (robo-banco-abuelos.md, decision 122).
+const SLOW_TIME := 720.0
 const NERVOUS := 20.0
 const NERVOUS_RATE := 1.5
 ## Where the bit comes out of the model's nose, how long it is and how fast it spins (radians a second).
@@ -19,7 +21,8 @@ const BIT_AT := Vector3(0, 1.05, 0.31)
 const BIT_LENGTH := 0.25
 const BIT_SPIN := 30.0
 
-## Seconds of drilling done (out of DRILL_TIME).
+## How long it takes to get through (the level sets it before adding it) and the seconds of drilling done.
+var drill_time := DRILL_TIME
 var drilled := 0.0
 var nervous_left := 0.0
 var paused_left := 0.0
@@ -85,21 +88,21 @@ func pause(seconds: float) -> void:
 
 
 func progress() -> float:
-	return drilled / DRILL_TIME
+	return drilled / drill_time
 
 
 ## Seconds left at the normal rate.
 func time_left() -> float:
-	return maxf(DRILL_TIME - drilled, 0.0)
+	return maxf(drill_time - drilled, 0.0)
 
 
 func _physics_process(delta: float) -> void:
 	if is_open or follower:
 		return
-	drilled = minf(drilled + rate() * delta, DRILL_TIME)
+	drilled = minf(drilled + rate() * delta, drill_time)
 	nervous_left = maxf(nervous_left - delta, 0.0)
 	paused_left = maxf(paused_left - delta, 0.0)
-	if drilled >= DRILL_TIME:
+	if drilled >= drill_time:
 		is_open = true
 		opened.emit()
 	_show()
@@ -137,7 +140,7 @@ func _build_hud() -> void:
 	box.add_child(title)
 	bar = ProgressBar.new()
 	bar.custom_minimum_size = Vector2(320, 18)
-	bar.max_value = DRILL_TIME
+	bar.max_value = drill_time
 	bar.show_percentage = false
 	bar.modulate = Color(1, 0.55, 0.2)
 	box.add_child(bar)

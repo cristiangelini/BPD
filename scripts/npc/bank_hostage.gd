@@ -13,11 +13,15 @@ extends CharacterBody3D
 ## nervous as when a robber sees one). Food wins them over (step 4): E with a donut box or a croissant in hand gives
 ## them one, and they follow that cop at full speed without a word of protest. The one El Oso lets go for a kept
 ## promise only gets as far as the door (walk_out), and walks back in unless a cop takes them by the hand there.
+## The handcuffs close on them too (decision 87): they protest, stay put until they run out, and `wrongly_cuffed` goes
+## off the first time (in the grandpa robbers' case it costs, robo-banco-abuelos.md, step 5).
 ## Every number here is (propuesta).
 
 signal freed_now(hostage: BankHostage)
 ## A fan saw a cop and warned the gang.
 signal snitched(hostage: BankHostage, cop: Node3D)
+## The handcuffs closed on them, the first time.
+signal wrongly_cuffed(hostage: BankHostage)
 
 const LOOKS: Array[String] = ["vecina", "clienta", "cliente", "senora", "abuelo", "abuela", "politico", "repartidor",
 	"heladero", "periodista"]
@@ -83,6 +87,9 @@ var _look_left := SNITCH_HOLD
 ## Cop -> seconds until a fan shouts about them again.
 var _snitched := {}
 var freed := false
+## Seconds the handcuffs still hold them, and whether they were cuffed once already.
+var _cuffed_left := 0.0
+var was_cuffed := false
 ## Whether a world position is out of the bank (the level sets it; nowhere is, by default).
 var is_out: Callable = func(_at: Vector3) -> bool: return false
 var _model: Node3D
@@ -130,7 +137,7 @@ func _ready() -> void:
 
 
 func prompt_key(cop: Cop) -> String:
-	if freed:
+	if freed or is_cuffed():
 		return ""
 	if wants_food() and food_of(cop):
 		return "PROMPT_FEED_HOSTAGE"
@@ -139,7 +146,7 @@ func prompt_key(cop: Cop) -> String:
 
 ## E: takes them by the hand (they tell their complaint and stand up), or lets go (they crouch where they are).
 func use(cop: Cop) -> void:
-	if freed:
+	if freed or is_cuffed():
 		return
 	var food := food_of(cop) if wants_food() else null
 	if food:
@@ -156,6 +163,8 @@ func use(cop: Cop) -> void:
 		return
 	_take(cop)
 	_protest()
+	if partying:
+		cop.show_hint("HINT_BANK_PARTY_LEAD")
 
 
 ## Up and following `cop` by the hand.
@@ -226,6 +235,9 @@ func speed() -> float:
 
 func _physics_process(delta: float) -> void:
 	if freed:
+		return
+	if _cuffed_left > 0.0:
+		_cuffed_left = maxf(_cuffed_left - delta, 0.0)
 		return
 	if returning:
 		_walk_home(delta)
@@ -330,6 +342,23 @@ func _step(wish: Vector3, delta: float) -> void:
 	move_and_slide()
 
 
+## The handcuffs: a hostage of true protests and stays where they are until they run out.
+func cuffed(seconds: float) -> void:
+	if freed:
+		return
+	_cuffed_left = maxf(_cuffed_left, seconds)
+	led_by = null
+	returning = false
+	say("HOSTAGE_CUFFED")
+	if not was_cuffed:
+		was_cuffed = true
+		wrongly_cuffed.emit(self)
+
+
+func is_cuffed() -> bool:
+	return _cuffed_left > 0.0
+
+
 ## Out of the bank: thanks, and home (gone once the line's said).
 func free_hostage() -> void:
 	freed = true
@@ -351,9 +380,10 @@ func said() -> String:
 	return _bubble.text if _bubble.visible else ""
 
 
-## What a guest's copy needs besides where they are and what they say (NpcSync): free, standing up and still here.
+## What a guest's copy needs besides where they are and what they say (NpcSync): free, standing up, still here, won
+## over with food, where a fan's head looks and whether they wear the handcuffs.
 func net_state() -> Array:
-	return [freed, is_equal_approx(_model.scale.y, _size), visible]
+	return [freed, is_equal_approx(_model.scale.y, _size), visible, fed, snappedf(head_look, 0.01), is_cuffed()]
 
 
 func apply_net_state(state: Variant) -> void:
@@ -364,6 +394,11 @@ func apply_net_state(state: Variant) -> void:
 		freed_now.emit(self)
 	_model.scale.y = _size if state[1] else _size * CROUCH
 	visible = state[2]
+	if state.size() > 4:
+		fed = state[3]
+		_turn(state[4])
+	if state.size() > 5:
+		_cuffed_left = Handcuffs.SECONDS if state[5] else 0.0
 
 
 func _process(delta: float) -> void:
