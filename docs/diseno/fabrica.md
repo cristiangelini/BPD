@@ -142,6 +142,11 @@ Los pesos y valores siguen la escala de la ferretería: la principal vale unos 1
    - **Cómo quedó:** "Jugar" sortea la fábrica igual que los otros 4 allanamientos (abuelo, panadería, peluquería y
      ferretería): cada uno sale en más o menos un quinto de los allanamientos.
 8. El online (Fermín, Nilda, la cinta y los muñecos en todas las PC).
+   - **Cómo quedó (propuesta):** como en la ferretería, Fermín y Nilda los maneja la PC que hospeda y los demás ven su
+     copia; Fermín lleva el estado de la cinta (anda, parada o trabada en qué máquina), así que en todas las PC se para y
+     se traba igual. Los muñecos los tira solo la cinta de quien hospeda y llegan a los demás ya vestidos (casco del
+     Capitán o pelo rosa). El botón rojo, el cierre de la muñeca gigante, los maniquíes y las pistas se usan desde
+     cualquier PC.
 
 ## Preguntas para Cristian (respondidas el 25/10: sí a las 3)
 1. ¿La fábrica de muñecos como quinto lugar, o preferís otro de los 6 que faltan? **Recomendado:** la fábrica, porque es

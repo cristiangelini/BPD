@@ -27,6 +27,8 @@ const PINK := Color(1.0, 0.45, 0.7)
 const MARK_NAMES := {"eyes": "BeltEyes", "hair": "BeltHair", "heads": "BeltHead"}
 
 var running := true
+## On a guest's PC the belt follows the host's (Fermín carries its state, step 8): it doesn't jam on its own.
+var follower := false
 var jammed_by: Node3D
 ## The machine that jammed.
 var jammed_at := ""
@@ -105,7 +107,17 @@ func machine_at(id: String) -> Vector3:
 
 
 func is_moving() -> bool:
-	return running and jammed_by == null
+	return running and jammed_at == ""
+
+
+## A guest's belt takes the host's state as it is, without the signals (Fermín's copy doesn't act on them).
+func follow(is_running: bool, jammed_machine: String) -> void:
+	if is_running == running and jammed_machine == jammed_at:
+		return
+	running = is_running
+	jammed_at = jammed_machine
+	jammed_by = null
+	_apply()
 
 
 ## The red button: stops the belt, and a second press starts it again.
@@ -128,9 +140,9 @@ func start() -> void:
 
 ## Clears a jam: whatever got stuck is pushed off the belt and it moves again.
 func unjam() -> void:
-	if jammed_by == null:
+	if jammed_at == "":
 		return
-	if is_instance_valid(jammed_by) and jammed_by is RigidBody3D:
+	if jammed_by and is_instance_valid(jammed_by) and jammed_by is RigidBody3D:
 		(jammed_by as RigidBody3D).apply_central_impulse(Vector3.UP * 20.0)
 	jammed_by = null
 	jammed_at = ""
@@ -147,6 +159,8 @@ func _apply() -> void:
 
 
 func _on_machine(id: String, body: Node3D) -> void:
+	if follower:
+		return
 	if body is RigidBody3D and (body as RigidBody3D).mass >= JAM_MASS:
 		if jammed_by == null:
 			jammed_by = body

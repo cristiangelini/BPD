@@ -139,6 +139,18 @@ func is_fixing() -> bool:
 	return _fix_left > 0.0
 
 
+## Online (step 8): whether he's bent over a machine, and his belt's state, for the guests' copies.
+func net_state() -> Variant:
+	return [is_fixing(), belt.running if belt else true, belt.jammed_at if belt else ""]
+
+
+func apply_net_state(state: Variant) -> void:
+	_fix_left = unjam_time if state[0] else 0.0
+	if belt:
+		belt.follower = true
+		belt.follow(state[1], state[2])
+
+
 ## What he's busy with: "" (walking his round), "button" or "jam" (on his way or at it).
 func errand() -> String:
 	return "jam" if is_fixing() else _errand
@@ -223,7 +235,7 @@ func _arrive() -> void:
 			_say("FOREMAN_BELT_ON")
 		_back_to_route()
 	elif done == "jam":
-		if belt and belt.jammed_by != null:
+		if belt and belt.jammed_at != "":
 			_fix_left = unjam_time
 			_fix_line = 0
 			_say(FIX_LINES[0], unjam_time / FIX_LINES.size())

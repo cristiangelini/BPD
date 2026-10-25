@@ -7,11 +7,8 @@ extends FactoryRig
 ## reject dumpster holds REJECTS of them with their faces painted crooked: looking at one is the story's own clue.
 ## Every number here is (propuesta).
 
-const HELMET_MODEL := preload("res://assets/models/captain_helmet.glb")
 const REJECT_SCENE := preload("res://scenes/props/reject_captain.tscn")
 const REJECTS := 3
-## Where the helmet sits on a belt doll: on its head.
-const HELMET_AT := Vector3(0, 0.095, 0)
 
 var rejects: Array[ClueNote] = []
 var _fed := 0
@@ -34,7 +31,4 @@ func setup(place: DollFactory) -> void:
 func _on_fed(doll: Node3D) -> void:
 	_fed += 1
 	if _fed % 2 == 0:
-		var helmet: Node3D = HELMET_MODEL.instantiate()
-		helmet.name = "CaptainHelmet"
-		helmet.position = HELMET_AT
-		doll.add_child(helmet)
+		(doll as FactoryDoll).wear("captain")

@@ -43,7 +43,7 @@ func setup(place: DollFactory) -> void:
 		tuft.position = at
 		place.add_child(tuft)
 		tufts.append(at)
-	place.fed_doll.connect(func(doll: Node3D) -> void: place.belt.mark(doll, "hair"))
+	place.fed_doll.connect(func(doll: Node3D) -> void: (doll as FactoryDoll).wear("hair"))
 
 
 func _physics_process(delta: float) -> void:
