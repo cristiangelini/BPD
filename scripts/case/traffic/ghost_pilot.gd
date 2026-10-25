@@ -39,6 +39,7 @@ var _since_prank := INF
 var _lurch_to := 0.0
 var _tic_left := 0.0
 var _flash_left := 0.0
+var _haunt := 0.0
 var _flash: Node3D
 ## The car its remote shows at, to put it away there when that car leaves.
 var _shown_on: QueueCar
@@ -69,13 +70,13 @@ func _ready() -> void:
 		_flash.add_child(bulb)
 
 
-## The car whose driver holds the remote, while it's in the queue.
+## The car whose driver holds the remote, while it's in the queue (its children: a guest's queue keeps no list).
 func pilot() -> QueueCar:
 	var queue := car.get_parent() as TrafficQueue
 	if not queue:
 		return null
-	for other in queue.cars:
-		if is_instance_valid(other) and other.puppeteer and other.in_queue():
+	for other in queue.get_children():
+		if other is QueueCar and (other as QueueCar).puppeteer and (other as QueueCar).in_queue():
 			return other
 	return null
 
@@ -88,6 +89,9 @@ func live() -> bool:
 
 func _physics_process(delta: float) -> void:
 	_since_prank += delta
+	# Here and not in the car, so a guest's copy (its processing off, NpcSync) steers its wheels too.
+	_haunt += delta
+	GhostCar.haunt(car, _haunt)
 	if not car.follower and live():
 		_prank_left -= delta
 		if _prank_left <= 0.0:
@@ -123,6 +127,14 @@ func prank(kind: String) -> void:
 			_lurch_to = BOLT
 	_tic_left = TIC_SECONDS
 	pranked.emit(kind)
+
+
+## Online, a guest's copy plays the host's pranks as they come (QueueCar.apply_net_state): `count` so far, `kind` the
+## last one. Its own move is the host's (the car's place comes from there); the flash, the tic and the shove are its own.
+func copy_prank(count: int, kind: String) -> void:
+	if count > pranks and kind != "":
+		prank(kind)
+	pranks = maxi(pranks, count)
 
 
 ## Off it goes to where the prank takes it, then slowly back to its place.
