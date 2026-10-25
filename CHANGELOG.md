@@ -180,3 +180,4 @@
 - Roof robbery, step 3: cuffing the nephew catches him for good and crashes the helicopter wherever it is; without it the gang has no way out by the roof.
 - Roof robbery, step 4a: the gang goes up the hatch with the sacks and the helicopter takes them one 20 s trip at a time to the nephew's shopping cart; the radio, the planilla and +100 for cuffing the nephew.
 - Roof robbery, step 4b: El Oso flies off hanging from the toy helicopter's rope, low over the street; the cop riding beside the patrol car's driver grabs the rope from the window with E and he drops cuffed into the back seat.
+- Roof robbery, step 5: online. The host flies the helicopter and every guest sees it, the crash, the sacks in the cart and the nephew caught; a guest can grab El Oso's rope from the window too.
