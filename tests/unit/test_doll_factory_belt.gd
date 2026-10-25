@@ -55,11 +55,12 @@ func test_things_turn_at_the_corners() -> void:
 func test_the_eyes_machine_marks_what_goes_under_it() -> void:
 	var factory := _factory()
 	await wait_physics_frames(5)
-	watch_signals(factory.belt)
+	var marks := []
+	factory.belt.marked.connect(func(body: Node3D, machine: String) -> void: marks.append([body, machine]))
 	var thing := _thing(factory, Vector3(-8.0, DollFactory.BELT_TOP + 0.12, -6.0))
 	await wait_seconds(2.5)
 	assert_true(thing.has_node("BeltEyes"), "googly eyes stuck on")
-	assert_signal_emitted_with_parameters(factory.belt, "marked", [thing, "eyes"])
+	assert_has(marks, [thing, "eyes"], "the belt tells what it marked")
 
 
 func test_a_cop_rides_the_belt_and_gets_googly_eyes() -> void:

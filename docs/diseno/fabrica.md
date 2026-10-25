@@ -98,6 +98,13 @@ Los pesos y valores siguen la escala de la ferretería: la principal vale unos 1
      muñeca o molde que ve romperse (hasta 16 m si nada tapa), 5 por pregunta, y abogado en 100 (se pierde el caso).
      Por ahora no sube a la oficina: eso queda para cuando haga falta en una historia. Captura: `paso3-fermin.png`.
 4. Nilda y su cuota de muñecos.
+   - **Cómo quedó (propuesta):** mientras la cinta anda, cada 4 s cae un muñeco pelado (sin cara ni pelo) al principio
+     de la cinta, hasta 16 dando vueltas; las máquinas les ponen ojos, pelo, pintura y cabeza, y los que caen en el carro
+     del final se empacan (desaparecen 1,5 s después). Nilda (guardapolvo rosa, cofia, antiparras y un ojo saltón pegado
+     en el cachete) trabaja adentro de la U, frente a la máquina de ojos, con su caja al lado. Cada 10 s se queja con el
+     policía que pasa cerca ("¡No puedo hablar, voy atrasada!"). Con E pide 5 muñecos de la cinta en su caja y aparece
+     el contador (0/5). Con 5 descansa y cuenta lo que vio esconder a Fermín (la pista que pone cada historia en el
+     paso 5; hasta entonces solo agradece). Otras cosas en la caja no cuentan. Captura: `paso4-nilda.png`.
 5. El caso (RaidCase) con la primera historia: el muñeco del diamante.
 6. Las otras 5 historias, una por PR.
 7. "Jugar" sortea entre los 5 lugares de allanamiento.

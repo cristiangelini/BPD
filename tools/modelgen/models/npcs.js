@@ -640,6 +640,18 @@ const NPCS = {
 		b.add('props', C('clipboard', 0x8a5a30), new THREE.BoxGeometry(0.22, 0.3, 0.02), { pos: V(0.5, 0.72, 0.18), rot: [0.3, 0, 0] });
 		b.add('props', white, new THREE.BoxGeometry(0.18, 0.24, 0.005), { pos: V(0.5, 0.72, 0.195), rot: [0.3, 0, 0] });
 	},
+	// Operaria Nilda (the doll factory's eyes machine): pink work coat, a white hairnet over grey curls, safety goggles
+	// pushed up and a doll's googly eye stuck on her cheek.
+	operaria(b) {
+		pearBody(b, SKIN.crema, { shirt: C('factory_coat', 0xe88aa8), onePiece: true, belted: false, shoes: C('clogs', 0xf2f2f0) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { open: true });
+		b.add('head', C('curls_grey', 0xb8b4b0), ellipsoid(0.22, 0.12, 0.21, 10, 5), { pos: V(0, 1.44, -0.02) });
+		b.add('cap', C('hairnet', 0xf6f6f2, { transparent: true, opacity: 0.85 }), ellipsoid(0.23, 0.13, 0.22, 10, 5), { pos: V(0, 1.47, -0.02) });
+		b.add('cap', C('goggles', 0x9ad0e8), new THREE.BoxGeometry(0.3, 0.06, 0.04), { pos: V(0, 1.47, 0.18) });
+		b.add('face', white, ellipsoid(0.035, 0.035, 0.015, 6, 4), { pos: V(0.15, 1.24, 0.15) });
+		b.add('face', black, ellipsoid(0.015, 0.015, 0.008, 5, 3), { pos: V(0.155, 1.23, 0.165) });
+	},
 };
 
 export const NPC_NAMES = Object.keys(NPCS);

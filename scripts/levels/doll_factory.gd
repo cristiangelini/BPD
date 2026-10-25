@@ -6,10 +6,12 @@ extends Node3D
 ## storeroom in the east part with the foreman's office upstairs at its back, and the loading dock behind the hall.
 ## The reception is open; the office is locked and the dock's shutter opens with a button inside. The porcelain dolls
 ## of the showcase and the plaster molds of the floor break, each one a fine. Fermín, the foreman, walks along the
-## belt, restarts it when a cop stops it and clears it when it jams (step 3). Every number here is (propuesta).
+## belt, restarts it when a cop stops it and clears it when it jams (step 3). Bare dolls keep dropping onto the
+## belt, and Nilda wants five of them in her box (step 4). Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const FERMIN_SCENE := preload("res://scenes/npc/foreman.tscn")
+const BELT_DOLL_SCENE := preload("res://scenes/props/factory_doll.tscn")
 const MOLD_SCENE := preload("res://scenes/props/plaster_mold.tscn")
 const DOLL_SCENE := preload("res://scenes/props/porcelain_doll.tscn")
 ## The dresses of the showcase's dolls, one model each (tools/modelgen/models/factory.js).
@@ -59,6 +61,14 @@ const FERMIN_ROUTE: Array[Vector3] = [
 	Vector3(-12, FLOOR_TOP, 4), Vector3(-12, FLOOR_TOP, -7.5), Vector3(0, FLOOR_TOP, -7.5), Vector3(0, FLOOR_TOP, 4),
 ]
 const BUTTON_SPOT := Vector3(-0.2, FLOOR_TOP, 5.0)
+## Nilda at the eyes machine, inside the U, facing the belt (-z), with her box of dolls at her right.
+const NILDA_AT := Vector3(-6.5, FLOOR_TOP, -4.5)
+## A new bare doll drops onto the start of the belt every FEED_EVERY seconds while it moves, up to MAX_DOLLS around;
+## the ones that fall in the box cart are packed (gone) PACK_DELAY seconds later.
+const FEED_AT := Vector3(-10.0, 1.0, 4.8)
+const FEED_EVERY := 4.0
+const MAX_DOLLS := 16
+const PACK_DELAY := 1.5
 ## The red button that stops the belt, on a post by its end, facing the street side.
 const BELT_BUTTON_AT := Vector3(-0.8, 1.1, 4.3)
 ## The box cart catches what falls off the end of the belt.
@@ -139,6 +149,10 @@ var broken_goods := 0
 ## Money taken off the case pay for broken things (each one is an Ornament.FINE).
 var fines := 0
 var fermin: Foreman
+var nilda: QuotaWorker
+## Dolls that came out of the end of the belt into the box cart.
+var shipped := 0
+var _feed_left := 0.0
 var complaint_bar: ProgressBar
 ## Fermín called his lawyer: the case is lost.
 var case_failed := false
@@ -159,6 +173,7 @@ func _ready() -> void:
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, OFFICE_TOP - FLOOR_TOP, OFFICE_FRONT_Z)
 	add_child(office_door)
 	_place_fermin()
+	_place_nilda()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("doll_factory")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -399,6 +414,44 @@ func _place_fermin() -> void:
 	box.add_child(complaint_bar)
 	add_child(hud)
 	fermin.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Nilda at her machine, and the box cart that packs the dolls reaching the end of the belt.
+func _place_nilda() -> void:
+	nilda = QuotaWorker.new()
+	nilda.name = "Nilda"
+	nilda.position = NILDA_AT
+	nilda.rotation.y = PI
+	add_child(nilda)
+	var cart := Area3D.new()
+	cart.collision_layer = 0
+	cart.collision_mask = 4
+	var inside := CollisionShape3D.new()
+	var space := BoxShape3D.new()
+	space.size = Vector3(1.1, 0.5, 0.8)
+	inside.shape = space
+	inside.position = BOX_CART_AT + Vector3(0, 0.3, 0)
+	cart.add_child(inside)
+	add_child(cart)
+	cart.body_entered.connect(func(body: Node3D) -> void:
+		if body.is_in_group("factory_dolls") and not body.has_meta("packed"):
+			body.set_meta("packed", true)
+			shipped += 1
+			get_tree().create_timer(PACK_DELAY).timeout.connect(func() -> void:
+				if is_instance_valid(body):
+					body.queue_free()))
+
+
+func _physics_process(delta: float) -> void:
+	_feed_left -= delta
+	if _feed_left > 0.0 or not belt.is_moving():
+		return
+	_feed_left = FEED_EVERY
+	if get_tree().get_nodes_in_group("factory_dolls").size() >= MAX_DOLLS:
+		return
+	var doll: Node3D = BELT_DOLL_SCENE.instantiate()
+	doll.position = FEED_AT
+	add_child(doll)
 
 
 func _on_fragile_broken(at: Vector3) -> void:

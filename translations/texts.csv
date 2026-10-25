@@ -1916,3 +1916,10 @@ FOREMAN_SAW,¡Eso es mercadería! ¡Lo anoto!,That's merchandise! I'm writing it
 FOREMAN_NOTHING,"Yo solo hago muñecos, oficial.","I just make dolls, officer.","Eu só faço bonecos, policial."
 FOREMAN_OFFENDED,No contesto más. Hable con el sindicato.,No more answers. Talk to the union.,Não respondo mais. Fale com o sindicato.
 FOREMAN_LAWYER,¡Llamo a mi abogado ya mismo!,I'm calling my lawyer right now!,Vou ligar para o meu advogado agora mesmo!
+PROMPT_NILDA,Hablar con Nilda,Talk to Nilda,Falar com a Nilda
+NILDA_BUSY_1,"¡No puedo hablar, voy atrasada!","I can't talk, I'm behind!","Não posso falar, estou atrasada!"
+NILDA_BUSY_2,Ojos y más ojos... ¡y la cuota no baja!,Eyes and more eyes... and the quota won't go down!,Olhos e mais olhos... e a cota não baixa!
+NILDA_BUSY_3,"Si Fermín me ve charlando, me descuenta.","If Fermín sees me chatting, he docks my pay.","Se o Fermín me vê conversando, ele me desconta."
+NILDA_ASK,"Me faltan cinco muñecos para la cuota. Póngame cinco de la cinta en la caja y le cuento algo que vi.","I'm five dolls short of my quota. Put five from the belt in my box and I'll tell you something I saw.","Faltam cinco bonecos para a minha cota. Ponha cinco da esteira na caixa e eu te conto uma coisa que vi."
+NILDA_WAITING,"Cinco muñecos en la caja, oficial. Los de la cinta.","Five dolls in the box, officer. The ones on the belt.","Cinco bonecos na caixa, policial. Os da esteira."
+NILDA_THANKS,"¡Gracias, oficial! Por fin un descanso.","Thank you, officer! A break at last.","Obrigada, policial! Finalmente um descanso."
