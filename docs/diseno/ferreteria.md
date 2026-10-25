@@ -137,6 +137,12 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      taladro de excavar (20 kg, 1000). Si Tobías ve que la corren, suma 10. La pista propia: tierra suelta al pie de la
      pared (E la mira). El casco con linterna (0,5 kg, 150) y el plano del túnel (0,1 kg, 300) van en escondites
      sorteados. Capturas: `paso6-tunel-modelos.png`, `paso6-tunel-antes.png`, `paso6-tunel-despues.png`.
+   - **Los bigotes del diputado (propuesta):** el esténcil (0,5 kg, 1000), 3 aerosoles negros (0,4 kg, 100 c/u) y el
+     cartel original del diputado Lustre (1 kg, 200, sin bigote) van en escondites sorteados. Los 3 carteles del local
+     (dos en la pared del local y uno afuera, en el patio) tienen el bigote pintado. En el taller hay un charco de
+     pintura negra y 8 pisadas salen de él por la puerta hacia el depósito; el par junto a la puerta es la pista
+     propia (E lo mira). El que pisa el charco deja 12 pisadas negras (una cada 0,55 m) y después se le limpia la
+     suela. Capturas: `paso6-bigotes-modelos.png`, `paso6-bigotes-taller.png`, `paso6-bigotes-carteles.png`.
 7. El sorteo en "Jugar" (en cuartos entre los 4 lugares) y el online.
 
 ## Preguntas para Cristian (se avanza con lo recomendado mientras tanto)

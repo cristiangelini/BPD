@@ -252,6 +252,66 @@ export function buildDirtPile() {
 	return b.build();
 }
 
+// A campaign poster of deputy Lustre: a smiling bald man in a tie over a blue band, standing in the XY plane and facing
+// +Z. 0.4 x 0.55 m. With `mustache`, someone sprayed a big black mustache on him.
+export function buildDeputyPoster(mustache) {
+	const b = new Builder(mustache ? 'deputy_poster_mustache' : 'deputy_poster');
+	b.add('paper', mat('poster_paper', 0xf4f1ea), new THREE.BoxGeometry(0.4, 0.55, 0.005));
+	b.add('band', mat('poster_blue', 0x2a5ab0), new THREE.BoxGeometry(0.4, 0.1, 0.002), { pos: V(0, -0.21, 0.003) });
+	b.add('letters', mat('poster_white', 0xffffff), new THREE.BoxGeometry(0.26, 0.03, 0.002), { pos: V(0, -0.21, 0.005) });
+	b.add('suit', mat('poster_suit', 0x2a2a3a), new THREE.BoxGeometry(0.26, 0.12, 0.002), { pos: V(0, -0.1, 0.003) });
+	b.add('tie', mat('poster_tie', 0xd23a3a), new THREE.BoxGeometry(0.03, 0.1, 0.002), { pos: V(0, -0.1, 0.005) });
+	b.add('face', mat('poster_skin', 0xf0c49a), new THREE.CircleGeometry(0.1, 12), { pos: V(0, 0.07, 0.0035) });
+	const ink = mat('poster_ink', 0x2a2420);
+	b.add('eyes', ink, new THREE.BoxGeometry(0.02, 0.012, 0.002), { pos: V(-0.035, 0.1, 0.005) });
+	b.add('eyes', ink, new THREE.BoxGeometry(0.02, 0.012, 0.002), { pos: V(0.035, 0.1, 0.005) });
+	b.add('smile', mat('poster_tie', 0xd23a3a), new THREE.BoxGeometry(0.07, 0.01, 0.002), { pos: V(0, 0.02, 0.005) });
+	b.add('title', mat('poster_blue', 0x2a5ab0), new THREE.BoxGeometry(0.3, 0.03, 0.002), { pos: V(0, 0.23, 0.003) });
+	if (mustache) {
+		const paint = mat('spray_black', 0x0a0a0a);
+		b.add('mustache', paint, new THREE.BoxGeometry(0.14, 0.035, 0.002), { pos: V(0, 0.05, 0.0065) });
+		b.add('mustache', paint, new THREE.BoxGeometry(0.05, 0.025, 0.002), { pos: V(-0.085, 0.035, 0.0065), rot: [0, 0, 0.6] });
+		b.add('mustache', paint, new THREE.BoxGeometry(0.05, 0.025, 0.002), { pos: V(0.085, 0.035, 0.0065), rot: [0, 0, -0.6] });
+	}
+	return b.build();
+}
+
+// The mustache stencil: a sheet of brown cardboard with a big mustache cut out, black with spray around it.
+// 0.5 x 0.35 m, lying flat.
+export function buildStencil() {
+	const b = new Builder('mustache_stencil');
+	const card = mat('stencil_card', 0xb08a5a), paint = mat('spray_black', 0x0a0a0a);
+	b.add('card', card, new THREE.BoxGeometry(0.5, 0.004, 0.35));
+	b.add('cutout', paint, new THREE.BoxGeometry(0.3, 0.002, 0.08), { pos: V(0, 0.002, -0.02) });
+	b.add('cutout', paint, new THREE.BoxGeometry(0.1, 0.002, 0.055), { pos: V(-0.18, 0.002, 0.02), rot: [0, -0.6, 0] });
+	b.add('cutout', paint, new THREE.BoxGeometry(0.1, 0.002, 0.055), { pos: V(0.18, 0.002, 0.02), rot: [0, 0.6, 0] });
+	for (let k = 0; k < 8; k++) {
+		const a = k * 0.8;
+		b.add('spray', paint, new THREE.BoxGeometry(0.02, 0.0015, 0.02), { pos: V(Math.cos(a) * 0.2, 0.0025, Math.sin(a) * 0.1 - 0.01) });
+	}
+	return b.build();
+}
+
+// A black spray can: 0.065 m across, 0.2 m tall, black with a white cap ring.
+export function buildSprayCan() {
+	const b = new Builder('spray_can_black');
+	b.add('can', mat('spray_can', 0x1a1a1e, { metalness: 0.4, roughness: 0.4 }), new THREE.CylinderGeometry(0.033, 0.033, 0.17, 10), { pos: V(0, -0.015, 0) });
+	b.add('ring', mat('spray_ring', 0xe8e8e8), new THREE.CylinderGeometry(0.03, 0.033, 0.015, 10), { pos: V(0, 0.077, 0) });
+	b.add('cap', mat('spray_can', 0x1a1a1e), new THREE.CylinderGeometry(0.012, 0.012, 0.02, 6), { pos: V(0, 0.094, 0) });
+	return b.build();
+}
+
+// Two black paint footprints, the left one a step ahead: soles 0.1 x 0.26 m, flat on the floor.
+export function buildPaintFootprints() {
+	const b = new Builder('paint_footprints');
+	const paint = mat('spray_black', 0x0a0a0a);
+	for (const [x, z] of [[-0.07, -0.18], [0.07, 0.18]]) {
+		b.add('sole', paint, new THREE.BoxGeometry(0.09, 0.003, 0.16), { pos: V(x, 0, z - 0.04) });
+		b.add('heel', paint, new THREE.BoxGeometry(0.08, 0.003, 0.07), { pos: V(x, 0, z + 0.08) });
+	}
+	return b.build();
+}
+
 export const models = {
 	...Object.fromEntries(PAINTS.map((_, i) => [`paint_can_${i}`, () => buildPaintCan(i)])),
 	screw_jar: buildScrewJar,
@@ -259,6 +319,8 @@ export const models = {
 	metal_filings: buildFilings, watch_list: buildWatchList, glue_tube: buildGlueTube,
 	gold_screw_drawer: buildGoldDrawer, screw_mold: buildScrewMold,
 	digging_drill: buildDiggingDrill, miner_helmet: buildMinerHelmet, tunnel_plan: buildTunnelPlan, dirt_pile: buildDirtPile,
+	deputy_poster: () => buildDeputyPoster(false), deputy_poster_mustache: () => buildDeputyPoster(true),
+	mustache_stencil: buildStencil, spray_can_black: buildSprayCan, paint_footprints: buildPaintFootprints,
 	...Object.fromEntries(GNOME_HATS.map((_, i) => [`garden_gnome_${i}`, () => buildGnome(i)])),
 	tool_hammer: buildHammer, tool_wrench: buildWrench, tool_saw: buildSaw, tool_screwdriver: buildScrewdriver,
 };
@@ -299,6 +361,13 @@ export const views = {
 			{ name: 'tunnel_plan', pos: [0.05, 0.002, 0.25], rotY: 0.2 }, { name: 'dirt_pile', pos: [0.35, 0.0, 0.2] },
 		],
 		cam: { pos: [0, 0.8, 1.3], target: [0, 0.05, 0.05], fov: 40 },
+	},
+	mustache_goods: {
+		items: [
+			{ name: 'deputy_poster', pos: [-0.25, 0.275, -0.2] }, { name: 'deputy_poster_mustache', pos: [0.25, 0.275, -0.2] },
+			{ name: 'mustache_stencil', pos: [0, 0.002, 0.2] }, { name: 'spray_can_black', pos: [0.38, 0.1, 0.15] },
+		],
+		cam: { pos: [0, 0.6, 1.3], target: [0, 0.2, 0], fov: 40 },
 	},
 	hardware_tools: {
 		items: [
