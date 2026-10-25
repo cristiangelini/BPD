@@ -82,3 +82,10 @@ las tres ayudas, la silla con la soga y el desatar.
   entre el hall y el pasillo (`BankLevel.HALL_TO_CORRIDOR`). De paso se arregló la puerta (`front_door.tscn`): al
   abrirse, la hoja giraba a la vista pero su choque se quedaba cerrado y nadie podía pasar. Capturas en
   `/mnt/project-files/arrepentido/paso3-*.png`.
+- **Paso 4 (la banda lo ata):** un ladrón suelto que ve al arrepentido en plena ayuda (no descansando en su lugar)
+  grita "¡Traidor!" (`ROBBER_TRAITOR`), el taladro se pone nervioso 20 s y el arrepentido queda atado con una soga en
+  una silla junto a la pared oeste del hall (`BankLevel.CHAIR_AT`, `BankRobber.tie`); suelta a los rehenes que llevaba
+  y la ayuda queda sin hacer. Para desatarlo: E y quedarse a su lado 2 s (a menos de 1,6 m; si el policía se aleja se
+  corta). En vez de mantener E, como decía la idea, alcanza con quedarse al lado: mantener E es un mecanismo aparte
+  para cada personaje y no sumaba. Desatado vuelve a su lugar, descansa y reintenta la ayuda; a las 3 veces dice "Ya
+  fue" y no ayuda más. Online va `tied` en `net_state`. Captura en `/mnt/project-files/arrepentido/paso4-atado.png`.

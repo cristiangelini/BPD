@@ -153,18 +153,23 @@ func use(cop: Cop) -> void:
 		feed(cop, food)
 		return
 	if led_by == cop:
-		led_by = null
-		if partying:
-			returning = true
-			_home_left = HOME_GIVE_UP
-			say("HOSTAGE_BACK_%d" % (next_line % BACK_LINES + 1))
-		else:
-			_model.scale.y = _size * CROUCH
+		let_go()
 		return
 	_take(cop)
 	_protest()
 	if partying:
 		cop.show_hint("HINT_BANK_PARTY_LEAD")
+
+
+## Let go of the hand: at the party they walk back to their spot, otherwise they crouch where they are.
+func let_go() -> void:
+	led_by = null
+	if partying:
+		returning = true
+		_home_left = HOME_GIVE_UP
+		say("HOSTAGE_BACK_%d" % (next_line % BACK_LINES + 1))
+	else:
+		_model.scale.y = _size * CROUCH
 
 
 ## Taken by the hand by the bank's sorry robber (robo-banco-arrepentido.md, step 3): up and following him, the first

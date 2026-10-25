@@ -62,6 +62,11 @@ func test_he_unplugs_the_drill_for_a_minute() -> void:
 func test_he_walks_two_hostages_out_of_the_back_door() -> void:
 	await _bank("pato")
 	var robber := bank.sorry
+	# The cops already cuffed the rest of the gang: nobody catches him in the hall (step 4).
+	for other in bank.robbers:
+		if other != robber:
+			other.surrendered = true
+			other.cuffed(1000.0)
 	robber.helps_done = ["door", "drill"] as Array[String]
 	var picked := bank._sorry_pick()
 	assert_eq(picked.size(), BankLevel.SORRY_HOSTAGES)

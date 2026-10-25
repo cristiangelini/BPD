@@ -122,6 +122,10 @@ const OUT_BACK := Vector3(BACK_DOOR_X, 0, -HALF_Z - 1.4)
 ## How long the unplugged drill stands still, and how many hostages he walks out.
 const UNPLUGGED := 60.0
 const SORRY_HOSTAGES := 2
+## Where the gang ties the sorry robber when they catch him helping (step 4): a chair by the hall's west wall, facing
+## the hall.
+const CHAIR_AT := Vector3(-10.5, 0, 1.2)
+const CHAIR_YAW := -PI / 2
 ## How many of the party's hostages are fans of the gang (propuesta).
 const SNITCHES := 2
 const GARLAND_MODEL := preload("res://assets/models/bank_garland.glb")
@@ -196,6 +200,10 @@ func _ready() -> void:
 	_build_back()
 	if party:
 		_add_party()
+	if _sorry_variant:
+		_build.legs(CHAIR_AT + Vector3.UP * FLOOR_TOP, Vector2(0.5, 0.5), 0.45, WOOD)
+		_build.box(CHAIR_AT + Vector3(0.0, FLOOR_TOP + 0.47, 0.0), Vector3(0.5, 0.04, 0.5), WOOD)
+		_build.box(CHAIR_AT + Vector3(-0.23, FLOOR_TOP + 0.8, 0.0), Vector3(0.04, 0.65, 0.5), WOOD)
 	back_door = DOOR_SCENE.instantiate()
 	back_door.name = "BackDoor"
 	back_door.position = Vector3(BACK_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, -HALF_Z)
@@ -475,6 +483,25 @@ func _add_robbers() -> void:
 			robber.help_way = _sorry_way
 			robber.way_back = _sorry_way_back
 			robber.do_help = _sorry_help
+
+
+func _physics_process(_delta: float) -> void:
+	if not follower and sorry:
+		_watch_the_sorry_one()
+
+
+## The gang keeps an eye on the sorry robber: one who sees him on a help (not resting at his spot) shouts "¡Traidor!",
+## the gang gets nervous and he ends up tied to the chair.
+func _watch_the_sorry_one() -> void:
+	if not sorry.turned or sorry.tied or sorry.helping == "" or not is_loose(sorry):
+		return
+	for robber in robbers:
+		if robber != sorry and is_loose(robber) and not robber.in_van \
+				and robber.sees(sorry.global_position + Vector3.UP, sorry):
+			robber.say("ROBBER_TRAITOR")
+			drill.hurry(BankDrill.NERVOUS)
+			sorry.tie(global_transform * (CHAIR_AT + Vector3(0.1, FLOOR_TOP, 0)), rotation.y + CHAIR_YAW)
+			return
 
 
 ## Whether a loose robber other than the sorry one sees `cop` (then he doesn't dare talk).
