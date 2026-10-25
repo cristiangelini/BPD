@@ -426,7 +426,7 @@ func snapshot() -> Dictionary:
 		var fruit := chase.suspect_id == SuspectCar.FRUIT_TRUCK
 		state.run_off = [chase.truck.global_transform if is_instance_valid(chase.truck) else Transform3D(),
 			_run_off_look if clown or fruit else int(chase.suspect_id.trim_prefix("traffic_")), clown, fruit,
-			_run_off_riders[0], _run_off_riders[1], chase.drops.ghost_look]
+			_run_off_riders[0], _run_off_riders[1], chase.drops.ghost_look, chase.drops.wedding]
 		state.riders_left = chase.drops.riders_left
 	return state
 
@@ -464,7 +464,7 @@ func apply_snapshot(state: Dictionary) -> void:
 		var run_off: Array = state.run_off
 		_run_off(run_off[0], run_off[1], run_off.size() > 2 and run_off[2], run_off.size() > 3 and run_off[3],
 			run_off[4] if run_off.size() > 4 else 0, run_off[5] if run_off.size() > 5 else "",
-			run_off[6] if run_off.size() > 6 else -1)
+			run_off[6] if run_off.size() > 6 else -1, run_off.size() > 7 and run_off[7])
 	_follow_convoy(state.get("taken_from", ""), state.get("clean", []))
 	if chase and state.has("chase"):
 		chase.apply_snapshot(state.chase)

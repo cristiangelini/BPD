@@ -628,11 +628,14 @@ func net_setup() -> Dictionary:
 		"newlyweds": newlyweds, "alcohol": alcohol, "couple": couple}
 
 
-## Online: where it is in the queue and whether its trunk is open; the ghost car's, how many pranks and the last one.
+## Online: where it is in the queue and whether its trunk is open; the ghost car's, how many pranks and the last one;
+## the wedding check's, whether its driver blew and gave up the keys.
 func net_state() -> Array:
 	var rig := get_node_or_null("Pilot") as GhostPilot
 	if rig:
 		return [state, lid.is_open if lid else false, rig.pranks, rig.last_prank]
+	if wedding_mode:
+		return [state, lid.is_open if lid else false, blown, keys_taken]
 	return [state, lid.is_open if lid else false]
 
 
@@ -643,6 +646,12 @@ func apply_net_state(net: Array) -> void:
 	var rig := get_node_or_null("Pilot") as GhostPilot
 	if rig and net.size() > 3:
 		rig.copy_prank(net[2], net[3])
+	if wedding_mode and not rig and net.size() > 3:
+		blown = blown or net[2]
+		if net[3] and not keys_taken:
+			# The host's cop took the keys: its relative drives here too.
+			keys_taken = true
+			_relative_takes_over()
 	# The host's detained the pilot: he's out of his window here too.
 	var leaning := get_node_or_null("WindowDriver")
 	if leaning and state == "pulled_over":
@@ -717,15 +726,20 @@ func take_keys() -> void:
 	if not can_take_keys():
 		return
 	keys_taken = true
+	_relative_takes_over()
+	var case := TrafficCase.of(self)
+	if case:
+		case.keys_taken(self)
+
+
+## The drunk leaves the window and a relative from the back seat takes the wheel, and says so.
+func _relative_takes_over() -> void:
 	var drunk := get_node_or_null("WindowDriver")
 	if drunk:
 		remove_child(drunk)
 		drunk.queue_free()
 	GhostCar.dress_driver(self, plate + " relative", shirt)
 	say(tr(WeddingCar.relative_line(plate)))
-	var case := TrafficCase.of(self)
-	if case:
-		case.keys_taken(self)
 
 
 ## What its driver blows: the plan's, or else from its plate.
