@@ -76,7 +76,13 @@ var riot: PrisonRiot
 var case: PrisonCase
 var _build: PlaceBuilder
 
-@onready var car: PatrolCar = $PatrolCar
+## Which prison case this is: "riot" (the canteen, carcel-motin.md) or "transfer" (the bus from the station,
+## traslado-presos.md; --place=transfer).
+@export var variant := "riot"
+## The transfer's bus (traslado-presos.md, step 1), parked by the station's door.
+var bus: PrisonBus
+
+@onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
 
 
@@ -91,6 +97,9 @@ func _ready() -> void:
 	_build_shell()
 	_build_canteen()
 	_build_cells()
+	if variant == "transfer":
+		_start_transfer()
+		return
 	riot = PrisonRiot.new()
 	riot.name = "Riot"
 	add_child(riot)
@@ -104,6 +113,16 @@ func _ready() -> void:
 	case.shift_screen = $ShiftScreen
 	add_child(case)
 	case.start(city.get("comisario"))
+
+
+## The transfer starts at the station: the bus waits on the street by its door, turned so its doors face the
+## sidewalk, and the cops in the guard room.
+func _start_transfer() -> void:
+	city.transform = CityLayout.anchor("prison")
+	bus = $Bus
+	bus.global_transform = (city.transform * CityLayout.parking("station")).rotated_local(Vector3.UP, PI) \
+		.translated_local(Vector3.UP * 0.05)
+	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
 
 
 ## Whether a world position is inside the perimeter wall.

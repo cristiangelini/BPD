@@ -28,6 +28,7 @@ const PLACES := {
 	"bank": "res://scenes/levels/bank.tscn",
 	"plaza": "res://scenes/levels/plaza_rally.tscn",
 	"prison": "res://scenes/levels/prison.tscn",
+	"transfer": "res://scenes/levels/prisoner_transfer.tscn",
 	"market": "res://scenes/levels/market.tscn",
 }
 ## The raids, drawn by the seed.

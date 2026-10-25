@@ -1474,6 +1474,12 @@ OBJ_PRISON_CATCH_CART,"Atrapar al del carrito de la comida","Catch the one on th
 CHASE_RINGLEADER_LINE_1,"¡Cuesta abajo no me agarra nadie! ¡Y llevo el puré!","Downhill nobody catches me! And I've got the mash!","Ladeira abaixo ninguém me pega! E estou com o purê!"
 CHASE_RINGLEADER_LINE_2,"¡Este carrito no tiene frenos! Bueno, nunca tuvo.","This cart has no brakes! Well, it never did.","Este carrinho não tem freio! Bom, nunca teve."
 CHASE_RINGLEADER_LINE_3,"Está bien, me rindo. Pero el yogur me lo quedo.","Fine, I give up. But I'm keeping the yogurt.","Tá bom, eu me rendo. Mas o iogurte fica comigo."
+PROMPT_BUS_ON,E: subir al bus,E: get on the bus,E: subir no ônibus
+PROMPT_BUS_OFF,E: bajar del bus,E: get off the bus,E: descer do ônibus
+PROMPT_BUS_DRIVE,E: manejar el bus,E: drive the bus,E: dirigir o ônibus
+HINT_BUS_DOOR,Se sube y se baja por una puerta del bus.,You get on and off by one of the bus's doors.,Sobe-se e desce-se por uma porta do ônibus.
+HINT_BUS_ON,"Estás en el bus. Para manejar, ve al asiento del chofer.","You're on the bus. To drive, go to the driver's seat.","Você está no ônibus. Para dirigir, vá até o banco do motorista."
+HINT_BUS_DRIVER,"Manejas el bus: WASD, Espacio freno de mano, E para pararte. Frena suave, que atrás van parados.","You're driving the bus: WASD, Space handbrake, E to stand up. Brake gently, they're standing in the back.","Você dirige o ônibus: WASD, Espaço freio de mão, E para levantar. Freie devagar, tem gente em pé atrás."
 HINT_JAILED_DOG,"El guardia ronca en su escritorio y la llave cuelga del collar de Mordisco, el perro de la comisaría. Hazte su amigo antes de que te ladre.","The guard is snoring at his desk and the key hangs from the collar of Mordisco, the station's dog. Make friends with him before he barks at you.","O guarda está roncando na mesa e a chave está pendurada na coleira do Mordisco, o cachorro da delegacia. Faça amizade com ele antes que ele te late."
 DOG_SNIFF_0,"*snif snif*","*sniff sniff*","*fung fung*"
 DOG_SNIFF_1,"*bosteza y babea*","*yawns and drools*","*boceja e baba*"
