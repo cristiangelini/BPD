@@ -78,6 +78,8 @@ el jardinero, en qué celda está el hámster, dónde caen los montoncitos y por
 7. Online: los presos, los escondites, el pozo, la tierra, el cemento y el final.
 
 ## Preguntas para Cristian
+Respondidas el 25/10: sí a las 3 (decisión 143).
+
 1. **¿La tierra que tiran en el patio es la pista principal**, con las huellas que llevan hasta la celda? Recomendado:
    sí, así se busca mirando el piso y siguiendo a los presos, no revisando los 32 escondites uno por uno.
 2. **¿Revisar un escondite sin nada no resta, solo cuesta tiempo** (y el preso se queja)? Recomendado: sí, el castigo
