@@ -8,7 +8,7 @@ con la planilla y el sueldo (`InfiltrationCase.VARIANTS`), la huida con persecuc
 Todo lo que dice **(propuesta)** se ajusta jugando.
 
 ## La historia
-La banda que roba cajas fuertes levantándolas a mano entrena en el gimnasio "Músculo de Acero". El jefe es **el Toro**,
+La banda que roba cajas fuertes levantándolas a mano entrena en el gimnasio "Hierro Puro". El jefe es **el Toro**,
 el profesor, que grita las rutinas con un silbato y no soporta a nadie que afloje. Los policías entran como socios
 nuevos, juntan 3 pruebas y lo esposan... si les quedan fuerzas.
 
@@ -16,7 +16,7 @@ El chiste: cuatro policías con forma de pera, sin aire, haciendo sentadillas al
 heladeras.
 
 ## Cómo es
-1. **El lugar:** "Músculo de Acero", un gimnasio de una planta de 24 x 18 m: la zona de pesas con bancos y
+1. **El lugar:** "Hierro Puro", el gimnasio que ya está en la ciudad (lote de 18 x 16 m): la zona de pesas con bancos y
    mancuernas, cuatro cintas de correr contra la vidriera, el ring de boxeo en el medio, el vestuario con casilleros y
    la oficina del Toro atrás (con llave). Entre 8 y 10 socios de la banda **(propuesta)**.
 2. **El disfraz:** en el casillero de la comisaría hay, por policía, una vincha (a la cabeza), muñequeras (a las
@@ -72,6 +72,12 @@ La rutina copia la forma de `MimeRehearsal` (host decide, cada PC juzga y avisa)
    se siguen cayendo), porque la rutina obliga a correr y saltar **(propuesta)**.
 2. El gimnasio en la ciudad (`--place=gym`): las pesas, las cintas, el ring, el vestuario y la oficina; los socios, el
    Toro y el de la recepción.
+   Hecho así (2a, el gimnasio solo): es el gimnasio "Hierro Puro" que ya estaba en la ciudad (cuadra (3, 1), al sur,
+   18 x 16 m). Adentro: la recepción a la izquierda de la entrada, cuatro cintas mirando la vidriera, dos bancos con
+   barra y un estante de mancuernas sobre una alfombra azul contra la pared oeste, el ring de 4 x 4 m con sogas rojas
+   y dos bolsas de boxeo en el medio; atrás, el vestuario con casilleros y banco (oeste), la pared de espejos con el
+   lema "¡Sin dolor no hay gloria!" donde el Toro grita la rutina, y su oficina con llave (este). 12 lugares para que
+   entrenen los socios **(propuesta)**.
 3. La rutina: el silbato, los cuatro ejercicios, la resistencia, rendirse y la sospecha.
 4. Las pruebas y el caso (variante "gym"): las 6 pruebas, esposar al Toro, el sueldo y el interrogatorio.
 5. La huida trotando, el sorteo de "Jugar" en quintos (club, coro, mimos, fiesta y gimnasio) y online.
