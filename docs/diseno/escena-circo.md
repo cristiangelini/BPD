@@ -124,6 +124,13 @@ Antes de programar conviene que el pastel y el circo compartan una base (como el
    en la primera línea del informe. Con E se revisa cada escondite: en los otros dos hay trastos y "nada más"; en el
    bueno aparece lo robado y la planilla lo tacha (es opcional, suma 100 en el paso 7). Junto al balde hay un banquito
    con el rollo de bolsas de evidencia. El caso del circo se da en el mismo nivel, con el tablero y el sello de la
-   comisaría **(propuesta)**.
+   comisaría **(propuesta)**. Hecho así (6b, las pistas): el balde de pescados de Galleta está junto a la pileta; con
+   el kit sale "¡una huella con escamas de pescado!", pero si un policía lo agarra antes (E) quedan sus huellas encima.
+   La pisada está en el aserrín de la pista, adentro de la ronda de payasos (un poco más oscura que el aserrín), y
+   pisarla la borra. El pelo de verdad está en el fondo de la pileta; se agarra y se guarda en una bolsa, y si alguien
+   abre la canilla antes, se lo lleva el agua. El pescado mordido está tirado frente a alguna casilla (al azar, no la
+   del culpable); comérselo lo arruina. La cámara del director está en un trípode a su lado, con dos botones juntos:
+   el verde reproduce el ensayo ("se oye una bocina aguda: ¡bop!") y el rojo, justo al lado, lo borra para siempre.
+   Las líneas de la planilla y de lo arruinado son las del circo **(propuesta)**.
 7. El final: tablero, cansancio, sueldo y el autito de payasos con los muñecos.
 8. El sorteo de "Jugar" (mitad pastel, mitad circo) y el online.

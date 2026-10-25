@@ -33,6 +33,7 @@ const VARIANTS := {
 		"shift": "crime_pastry", "story": "pastry",
 		"brief": ["BRIEF_CRIME_A", "BRIEF_CRIME_B", "BRIEF_CRIME_C"], "go": "HINT_GO_CONTEST",
 		"go_row": "OBJ_CRIME_GO", "look": "HINT_CRIME_LOOK", "files_row": "OBJ_CRIME_FILES",
+		"clue_line": "CLUE_CRIME_", "ruined_hint": "HINT_CRIME_RUINED_",
 		"who": "cook", "getaway": SuspectCar.BIKE, "clues": CrimePlan.CLUES,
 		"parts": ["photo", "prints", "teeth", "hair"],
 	},
@@ -41,6 +42,7 @@ const VARIANTS := {
 		"shift": "crime_circus", "story": "circus",
 		"brief": ["BRIEF_CIRCUS_A_", "BRIEF_CIRCUS_B", "BRIEF_CIRCUS_C"], "go": "HINT_GO_CIRCUS",
 		"go_row": "OBJ_CIRCUS_GO", "look": "HINT_CIRCUS_LOOK", "files_row": "OBJ_CIRCUS_FILES",
+		"clue_line": "CLUE_CIRCUS_", "ruined_hint": "HINT_CIRCUS_RUINED_",
 		"who": "clown", "getaway": SuspectCar.BIKE,
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "recording": "honk",
 			"witness": "glasses"},
@@ -439,12 +441,14 @@ func ruin(kind: String) -> void:
 	if not plan.clues.has(kind) or clues_found.has(kind) or ruined.has(kind):
 		return
 	ruined.append(kind)
-	_hint_all("HINT_CRIME_RUINED_" + kind)
+	_hint_all(texts().ruined_hint + kind)
 	checklist.show_rows(rows())
 
 
 ## A clue's line on the planilla: what it says about the culprit.
 func clue_line(kind: String) -> String:
+	if texts() == VARIANTS.circus:
+		return _circus_clue_line(kind)
 	match kind:
 		"footprint":
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
@@ -457,6 +461,23 @@ func clue_line(kind: String) -> String:
 		"recipe":
 			return tr("CLUE_CRIME_recipe_left" if culprit().left else "CLUE_CRIME_recipe_right")
 	return tr("CLUE_CRIME_" + kind)
+
+
+## At the circus: the sawdust footprint, the hair in the pool, the bitten fish, the rehearsal's honk and Zulema.
+func _circus_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_CIRCUS_footprint") % who.shoe
+		"witness":
+			return tr("CLUE_CIRCUS_witness_glasses" if who.glasses else "CLUE_CIRCUS_witness_no_glasses")
+		"hair":
+			return tr("CLUE_CIRCUS_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_CIRCUS_bite") % tr("TEETH_" + str(who.teeth))
+		"recording":
+			return tr("CLUE_CIRCUS_recording") % tr("HONK_" + str(who.honk))
+	return tr("CLUE_CIRCUS_" + kind)
 
 
 ## What a file card on the board says: what the photo shows, and the rest as the cops got it.
@@ -527,7 +548,7 @@ func rows() -> Array[Dictionary]:
 	for kind in clues_found:
 		list.append({"text": "- " + clue_line(kind), "done": false, "optional": false, "status": true, "clue": true})
 	for kind in ruined:
-		list.append({"text": "- " + tr("CLUE_CRIME_RUINED_" + kind), "done": false, "optional": false, "status": true})
+		list.append({"text": "- " + tr(texts().clue_line + "RUINED_" + kind), "done": false, "optional": false, "status": true})
 	list.append(_row(tr(texts().files_row) % [files.size(), cooks.size()], files.size() >= cooks.size()))
 	for index: int in file_parts:
 		if not files.has(index):
