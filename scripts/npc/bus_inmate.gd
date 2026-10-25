@@ -18,6 +18,8 @@ extends PrisonInmate
 signal at_door(inmate: BusInmate)
 signal sat_back(inmate: BusInmate, by: Cop)
 signal jumped_out(inmate: BusInmate)
+## The lullaby put `cop` to sleep (online, TransferCase tells that cop's own PC).
+signal lulled(cop: Cop)
 
 const FULL := 100.0
 const HINT_AT := 50.0
@@ -237,11 +239,35 @@ func seat_back(by: Cop) -> void:
 func set_plan(value: float) -> void:
 	var was_full := plan >= FULL
 	plan = clampf(value, 0.0, FULL)
-	_mark.visible = plan >= HINT_AT
-	_mark.text = "!" if plan >= WARN_AT else "..."
-	_mark.modulate = Color(1, 0.25, 0.2) if plan >= WARN_AT else Color(1, 0.85, 0.3)
+	_show_plan()
 	if plan >= FULL and not was_full:
 		say("TRANSFER_PLAN_READY_%d" % (seat % READY_LINES + 1))
+
+
+func _show_plan() -> void:
+	_mark.visible = plan >= HINT_AT and not out
+	_mark.text = "!" if plan >= WARN_AT else "..."
+	_mark.modulate = Color(1, 0.25, 0.2) if plan >= WARN_AT else Color(1, 0.85, 0.3)
+
+
+## Online (NpcSync): the riot inmate's state, plus the plan and what they're up to, so a guest's copy shows the same
+## marks and poses and offers the same E.
+func net_state() -> Array:
+	return super() + [snappedf(plan, 1.0), seated, loose, lying, pushing, singing, out, visible]
+
+
+func apply_net_state(state: Variant) -> void:
+	super(state.slice(0, 3))
+	plan = state[3]
+	seated = state[4]
+	loose = state[5]
+	lying = state[6]
+	pushing = state[7]
+	singing = state[8]
+	out = state[9]
+	visible = state[10]
+	_show_plan()
+	_update()
 
 
 func chest() -> Vector3:
@@ -331,6 +357,7 @@ func _sing(delta: float) -> void:
 	if is_instance_valid(_lulled) and _lulled.riding == bus and _flat_to(_lulled) < SING_REACH:
 		_lulled.knock_back(Vector3.ZERO, ASLEEP)
 		_lulled.show_hint("HINT_TRANSFER_ASLEEP")
+		lulled.emit(_lulled)
 		say("TRANSFER_SANG")
 
 
