@@ -38,6 +38,7 @@ static func _crossing(at: Vector2i) -> Vector3:
 
 func begin(start: Vector2i, rng: RandomNumberGenerator) -> void:
 	car = SuspectCar.new()
+	car.name = "Car"
 	car.kind = "traffic_%d" % (rng.randi() % 4)
 	add_child(car)
 	car.follow_path(route(start, rng), global_transform)

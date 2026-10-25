@@ -46,6 +46,8 @@ var runaway: CityRunaway
 ## Their own dice, so a city full of walkers leaves the game's random numbers alone (and every PC rolls the same
 ## ones online): CityTraffic seeds it.
 var rng := RandomNumberGenerator.new()
+## Online, how far a guest's copy still has to slide to where the host has it (CitySync).
+var _pull := Vector3.ZERO
 
 
 func _ready() -> void:
@@ -126,6 +128,8 @@ func search() -> void:
 
 func _run_off() -> void:
 	runaway = CityRunaway.new()
+	# The same name on every PC: online each PC makes it, and the guests' copies follow the host's (NpcSync).
+	runaway.name = String(name) + "Runaway"
 	# Walkers walk in the city's space (their parent sits at the city's origin).
 	var parent := get_parent() as Node3D
 	var city := parent.global_transform if parent else Transform3D.IDENTITY
@@ -156,6 +160,33 @@ func is_cuffed() -> bool:
 	return _cuffed_left > 0.0
 
 
+## Online, a guest's copy goes back to where the host has it, heading for the host's next point, stopped as long as
+## the host's and saying what it says (CitySync).
+func net_pull(to: Vector3, toward: int, stopped: float, line := "") -> void:
+	next = toward % maxi(path.size(), 1)
+	_pull = CitySync.pull(self, to)
+	_stopped_left = stopped
+	if line != "" and (_bubble.text != line or not _bubble.visible):
+		say(line)
+	elif line == "" and _bubble.visible:
+		_bubble_left = 0.0
+
+
+## What they're saying, or "".
+func saying() -> String:
+	return _bubble.text if _bubble.visible else ""
+
+
+## Seconds left standing still (an event or a cop stopped them).
+func stopped_left() -> float:
+	return _stopped_left
+
+
+## Online (NpcSync): a crash's driver is copied on the guests.
+func net_setup() -> Dictionary:
+	return {"look": look}
+
+
 func is_stopped() -> bool:
 	return _stopped_left > 0.0 or is_cuffed()
 
@@ -167,6 +198,7 @@ func _process(delta: float) -> void:
 	_stopped_left = maxf(_stopped_left - delta, 0.0)
 	if halted and _stopped_left <= 0.0:
 		halted = false
+	_pull = CitySync.slide(self, _pull, delta)
 	if path.is_empty() or is_stopped():
 		return
 	_time += delta

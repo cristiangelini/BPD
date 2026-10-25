@@ -52,6 +52,8 @@ var actions: ActionSync
 var case_sync: CaseSync
 ## The current level's people and animals, run by the host.
 var npcs: NpcSync
+## The current level's living city (its clock, rain, traffic and street events), run by the host.
+var city_sync: CitySync
 ## Steam lobbies and invites (does nothing where GodotSteam isn't installed).
 var steam: SteamRoom
 ## Steam voice: hold V or T to talk (voz.md).
@@ -235,6 +237,8 @@ func spawn_cops(local: Cop) -> void:
 	add_child(actions)
 	npcs = NpcSync.new(self, local.get_parent())
 	add_child(npcs)
+	city_sync = CitySync.new(self, local.get_parent())
+	add_child(city_sync)
 	var raids := local.get_parent().find_children("*", "RaidCase", true, false)
 	raids.append_array(local.get_parent().find_children("*", "InterrogationCase", true, false))
 	raids.append_array(local.get_parent().find_children("*", "ChaseCase", true, false))
@@ -338,13 +342,14 @@ func _leave_scene() -> void:
 		remove_child(sync)
 		sync.queue_free()
 	cop_syncs.clear()
-	for sync: Node in [props, actions, npcs, case_sync]:
+	for sync: Node in [props, actions, npcs, case_sync, city_sync]:
 		if sync:
 			remove_child(sync)
 			sync.queue_free()
 	props = null
 	actions = null
 	npcs = null
+	city_sync = null
 	case_sync = null
 
 

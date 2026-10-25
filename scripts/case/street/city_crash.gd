@@ -30,11 +30,13 @@ func begin(at: Vector3) -> void:
 		var car := CityCar.new()
 		car.look = randi() % TrafficCar.MODELS.size()
 		car.wreck = true
+		car.name = "Wreck%d" % i
 		add_child(car)
 		car.transform = spots[i]
 		wrecks.append(car)
 		var driver := CrashDriver.new()
 		driver.look = LOOKS[randi() % LOOKS.size()]
+		driver.name = "Driver%d" % i
 		add_child(driver)
 		driver.position = spots[i] * Vector3(-2.2, 0, 0)
 		driver.calmed.connect(_on_calmed)

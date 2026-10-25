@@ -53,6 +53,12 @@ Un **director de eventos** arma una secuencia por vez, nunca dos juntas: cada 2 
 10. El auto que huye.
 11. Online: los autos, la gente, el reloj, la lluvia y los eventos los decide el anfitrión.
 
+## Online (paso 11)
+- Cada PC arma la misma ciudad con los mismos dados, y dos veces por segundo el anfitrión manda su hora, su lluvia y dónde está cada auto y cada vecino (parado o no, y qué dice); en los invitados se deslizan hasta ahí, o saltan si están a más de 4 m.
+- Solo el director del anfitrión arranca eventos y paga. La gente de cada evento (el ladrón, los conductores, los autos chocados, el auto que huye) la mueve el anfitrión y en los invitados son copias, con el mismo nombre en todas las PCs para que las esposas y la E lleguen al mismo.
+- Parar y revisar a un vecino pasa en todas las PCs en el mismo orden, como cualquier E; el que sale corriendo lo maneja el anfitrión.
+- La plata de los eventos se ve en todas las PCs y cuenta en el informe del turno.
+
 ## Preguntas para Cristian
 1. ~~¿Los eventos pasan también mientras hay un caso en curso?~~ Sí, en todo momento, yendo y viniendo del caso (Cristian, 25/10).
 2. ¿Un día de 24 minutos te parece bien, o más lento?

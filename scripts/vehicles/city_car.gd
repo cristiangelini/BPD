@@ -29,6 +29,8 @@ var speed_factor := 1.0
 var _blocked := false
 var _behind_wreck := false
 var _look_left := 0.0
+## Online, how far a guest's copy still has to slide to where the host has it (CitySync).
+var _pull := Vector3.ZERO
 
 
 func _ready() -> void:
@@ -68,6 +70,7 @@ func place_along(along: float) -> void:
 func _physics_process(delta: float) -> void:
 	if path.is_empty() or wreck:
 		return
+	_pull = CitySync.slide(self, _pull, delta)
 	var to := path[next] - position
 	to.y = 0.0
 	if to.length() < REACH:
@@ -100,3 +103,15 @@ func blocked() -> bool:
 				_behind_wreck = other is CityCar and ((other as CityCar).wreck or (other as CityCar)._behind_wreck)
 				return true
 	return false
+
+
+## Online, a guest's copy goes back to where the host has it, heading for the host's next point (CitySync).
+func net_pull(to: Vector3, toward: int) -> void:
+	next = toward % maxi(path.size(), 1)
+	_pull = CitySync.pull(self, to)
+
+
+## Online (NpcSync): a crashed car is copied on the guests.
+func net_setup() -> Dictionary:
+	return {"look": look, "wreck": wreck}
+

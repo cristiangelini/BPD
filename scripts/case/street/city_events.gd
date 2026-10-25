@@ -8,6 +8,8 @@ extends Node3D
 ## city, with the purse snatching. Every number here is (propuesta).
 
 signal paid(money: int)
+## An event began (CitySync tells the guests).
+signal started(event: CityEvent)
 
 const GAP_MIN := 120.0
 const GAP_MAX := 240.0
@@ -26,6 +28,10 @@ const BUSTED_MONEY := 40
 static var shift_earned := 0
 
 var active: CityEvent
+## Online only the host's director starts events and pays them (CitySync); a guest's only shows what the host paid.
+var director := true
+## Events started, so each one has the same name on every PC (CitySync makes a guest's empty copy of it).
+var serial := 0
 ## Money the events paid this shift.
 var earned := 0
 var gap_left := 0.0
@@ -83,9 +89,19 @@ static func add_to(report: Dictionary) -> void:
 
 
 func pay(money: int) -> void:
+	if not director:
+		return
 	earned += money
 	shift_earned += money
 	paid.emit(money)
+	show_paid(money)
+
+
+## Shows `money` paid (on a guest, what the host's events paid, which also counts on its own report).
+func show_paid(money: int) -> void:
+	if not director:
+		earned += money
+		shift_earned += money
 	_toast.text = tr("EVENT_PAID") % money
 	_toast_left = 3.0
 
@@ -96,7 +112,7 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if active:
+	if active or not director:
 		return
 	gap_left -= delta
 	if gap_left > 0.0:
@@ -156,6 +172,7 @@ func start_snatch(walker: CityWalker = null) -> bool:
 	if not walker:
 		return false
 	var snatch := PurseSnatch.new()
+	_name(snatch)
 	add_child(snatch)
 	snatch.begin(walker, nearest_alley(to_local(walker.global_position)))
 	_run(snatch)
@@ -175,6 +192,7 @@ func start_crash(at := Vector3.INF) -> bool:
 			return false
 		at = options[_rng.randi() % options.size()]
 	var crash := CityCrash.new()
+	_name(crash)
 	add_child(crash)
 	crash.begin(at)
 	_run(crash)
@@ -193,14 +211,21 @@ func start_flee(at := Vector2i(-1, -1)) -> bool:
 			return false
 		at = options[_rng.randi() % options.size()]
 	var flee := FleeingCar.new()
+	_name(flee)
 	add_child(flee)
 	flee.begin(at, _rng)
 	_run(flee)
 	return true
 
 
+func _name(event: CityEvent) -> void:
+	serial += 1
+	event.name = "Event%d" % serial
+
+
 func _run(event: CityEvent) -> void:
 	active = event
+	started.emit(event)
 	event.finished.connect(_on_finished.bind(event))
 
 
