@@ -10,7 +10,8 @@ extends CharacterBody3D
 ## into it for 2 s (`radioed`: the level hurries the drill if no cop is near him), and now and then a complaint gives
 ## him away. The handcuffs (step 3): the boss gives up (`caught`, he doesn't pace nor use the walkie again) and E walks
 ## him to the patrol car (OwnerEscort, the level adds it); the honest one protests ("¡Soy la víctima!"), the cuffs hold
-## him only HONEST_CUFF seconds and `wrongly_cuffed` goes off the first time.
+## him only HONEST_CUFF seconds and `wrongly_cuffed` goes off the first time. Online (step 5) the host's manager
+## walks, talks and decides, and a guest's follows it (NpcSync, net_state).
 ## Every number here is (propuesta).
 
 signal key_given(cop: Cop)
@@ -50,6 +51,8 @@ var has_key := true
 var caught := false
 var was_cuffed := false
 var _cuffed_left := 0.0
+## A guest's copy: the host's manager decides (NpcSync sets it).
+var follower := false
 var next_line := 0
 ## Seconds the walkie is still out, and until the next time.
 var walkie_left := 0.0
@@ -127,6 +130,10 @@ func use(cop: Cop) -> void:
 
 ## The handcuffs: the boss gives up for good, the honest one protests and is let go soon.
 func cuffed(seconds: float) -> void:
+	if follower:
+		# Shown closed until the host says otherwise.
+		_cuffed_left = maxf(_cuffed_left, seconds)
+		return
 	if boss:
 		_cuffed_left = maxf(_cuffed_left, seconds)
 		walkie_left = 0.0
@@ -235,6 +242,22 @@ func _pace(delta: float) -> void:
 	velocity = flat.normalized() * SPEED
 	velocity.y = -1.0
 	move_and_slide()
+
+
+## What a guest's copy needs besides where he is and what he says (NpcSync): still here, the walkie out, caught, in
+## handcuffs and whether he still has the key.
+func net_state() -> Array:
+	return [visible, walkie_showing(), caught, is_cuffed(), has_key]
+
+
+func apply_net_state(state: Variant) -> void:
+	visible = state[0]
+	if not visible:
+		collision_layer = 0
+	_walkie.visible = state[1]
+	caught = state[2]
+	_cuffed_left = Handcuffs.SECONDS if state[3] else 0.0
+	has_key = state[4]
 
 
 func say(key: String) -> void:

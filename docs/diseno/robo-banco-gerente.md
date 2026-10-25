@@ -100,3 +100,8 @@ variantes), el walkie, el baúl y la huida en su auto.
   antes de que se abra la bóveda suma 100. Va al interrogatorio del turno siguiente (`owner_manager`, con sus deslices
   `MANAGER_SLIP_1-3`). En todos los robos, esposar al gerente honesto cuesta 200 una vez y queda en la planilla.
   Capturas en `/mnt/project-files/gerente/paso4-*.png`.
+- **Paso 5 (online):** el gerente del anfitrión camina, habla y decide, y el del invitado lo sigue (`NpcSync`,
+  `BankManager.net_state`: si está, el walkie afuera, rendido, esposado y si todavía tiene la llave). El baúl abierto
+  o cerrado y lo del caso (gerente preso, esposado temprano, gerente honesto esposado) van en la foto del caso
+  (`BankCase.snapshot`), y el teléfono colgado en el del teléfono. La huida en su auto se ve en todas las PCs. El E de
+  un invitado sobre el gerente lo resuelve el anfitrión.
