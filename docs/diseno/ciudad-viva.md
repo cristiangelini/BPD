@@ -21,7 +21,7 @@ Pedido de Cristian (25/10): "que haya veredas, tachos de basura, autos andando c
 ## El reloj, el día y la noche
 - La ciudad tiene un **reloj**: 1 hora del juego dura 1 minuto real, así que un día entero dura 24 minutos. Se ve la hora en el Tab, al lado de la plata.
 - El **sol** gira con la hora: amanece a las 6, es mediodía a las 12, atardece a las 19 y de 20 a 5 es de noche. El cielo y la luz cambian de color de a poco.
-- **De noche** se prenden los faroles y las ventanas de algunos edificios, y hay menos gente en la calle (la mitad).
+- **De noche** se prenden los faroles y las ventanas, y hay menos gente en la calle (la mitad se va a su casa).
 - Cada turno empieza a una hora al azar entre las 8 y las 20, salvo los casos que ya son de noche (la fuga, el corte de luz, la persecución de noche), que siguen como están.
 
 ## La lluvia

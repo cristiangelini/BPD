@@ -35,6 +35,21 @@ func _ready() -> void:
 				walker.place_along(_rng.randf())
 
 
+## At night half the walkers go home (ciudad-viva.md, step 5): every other one hides and stops.
+func set_night(night: bool) -> void:
+	var k := 0
+	for child in get_children():
+		if child is CityWalker:
+			var home := night and k % 2 == 1
+			child.visible = not home
+			child.process_mode = Node.PROCESS_MODE_DISABLED if home else Node.PROCESS_MODE_INHERIT
+			if home:
+				child.remove_from_group("city_walkers")
+			elif not child.is_in_group("city_walkers"):
+				child.add_to_group("city_walkers")
+			k += 1
+
+
 ## The right-hand lane around a rectangle of streets: clockwise (seen from above, north up) runs inside it.
 static func loop_points(west: int, north: int, east: int, south: int, clockwise: bool) -> PackedVector3Array:
 	var lane := CityLayout.STREET / 4 * (1 if clockwise else -1)

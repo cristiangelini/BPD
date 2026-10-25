@@ -52,6 +52,15 @@ func _ready() -> void:
 	add_child(yards)
 
 
+## The materials that light up at night: the lamp heads, and the windows of the alleys and the taller floors.
+func lamp_materials() -> Array[StandardMaterial3D]:
+	return [_material(LAMP_GLOW, true)]
+
+
+func window_materials() -> Array[StandardMaterial3D]:
+	return [_material(City.GLASS)]
+
+
 ## An alley's footprint on the ground (x, z), its two walls included, for overlap checks.
 static func alley_rect(block: Vector2i, side: String) -> Rect2:
 	var normal := CityLayout.side_normal(side)
