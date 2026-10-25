@@ -37,9 +37,6 @@ const WARN_REACH := 4.0
 const OVERRUN_PATIENCE := 20.0
 ## What a driver says bumping into the car ahead.
 const BUMP_LINES := 4
-## La Bruma's lighthouse lamp in its trunk (step 4): its frame and its lens.
-const LAMP_BRASS := Color(0.75, 0.6, 0.25)
-const LAMP_LIGHT := Color(1, 0.82, 0.35)
 ## Its horn's bubble shows this far over the car (step 3).
 const HORN_UP := 2.2
 

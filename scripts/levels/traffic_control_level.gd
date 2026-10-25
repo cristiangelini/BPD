@@ -5,10 +5,10 @@ extends Node3D
 ## the patrol car at the door and, next to it on the sidewalk, the cones and the barrier. The checkpoint is painted on
 ## the westbound lane of the street in front of the station, toward the corner. --place=traffic opens it from Play.
 ## Once it's set up, the cars come and queue up (TrafficQueue), with the patience meter at the top. The comisario
-## gives the case (TrafficCase). A seventh of the matches are the rush hour, a seventh the clown convoy
-## (control-payasos.md), a seventh the fruit truck (control-frutas.md), a seventh the crowded car
-## (control-auto-lleno.md), a seventh the ghost car (control-auto-fantasma.md), a seventh the wedding (control-boda.md)
-## and a seventh the street race (control-carrera.md), by the seed; --traffic=<variant> picks one.
+## gives the case (TrafficCase). An eighth of the matches each are the rush hour, the clown convoy
+## (control-payasos.md), the fruit truck (control-frutas.md), the crowded car (control-auto-lleno.md), the ghost car
+## (control-auto-fantasma.md), the wedding (control-boda.md), the street race (control-carrera.md) and the fog
+## (control-neblina.md), by the seed; --traffic=<variant> picks one.
 
 ## Along the street in front of the station, from the station's middle toward the east corner, in meters.
 const CHECKPOINT_ALONG := 24.0
@@ -27,9 +27,9 @@ const FLARES_FROM_DOOR: Array[Vector3] = [Vector3(2, 0, 2.3), Vector3(2.6, 0, 2.
 	Vector3(3.8, 0, 2.3)]
 ## The fog check's foghorn (step 3), next to the lit cones.
 const FOGHORN_FROM_DOOR := Vector3(4.6, 0, 2.3)
-## What Play draws, a sixth each (propuesta).
+## What Play draws, an eighth each (propuesta).
 const VARIANTS: Array[String] = ["rush_hour", "clown_convoy", "fruit_truck", "crowded_car", "ghost_car", "wedding",
-	"race"]
+	"race", "fog"]
 
 ## Same seed, same cars. 0 draws one.
 @export var case_seed := 0

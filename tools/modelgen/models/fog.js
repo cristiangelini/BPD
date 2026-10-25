@@ -15,9 +15,27 @@ export function buildFogHorn() {
 	return b.build();
 }
 
-export const models = { fog_horn: buildFogHorn };
+// The harbor lighthouse's lamp La Bruma stole (step 5), upright: a brass base, a tall lens of glass rings and a brass
+// cap with a ring to carry it by. 0.5 m tall. Origin on the ground, at its middle.
+export function buildLighthouseLamp() {
+	const b = new Builder('lighthouse_lamp');
+	const brass = mat('lamp_brass', 0xc09038, { metalness: 0.5, roughness: 0.4 });
+	const glass = mat('lamp_glass', 0xffe9a0, { emissive: 0x806a20 });
+	b.add('base', brass, new THREE.CylinderGeometry(0.17, 0.19, 0.08, 16), { pos: V(0, 0.04, 0) });
+	b.add('lens', glass, new THREE.CylinderGeometry(0.14, 0.14, 0.3, 16), { pos: V(0, 0.23, 0) });
+	for (const y of [0.13, 0.2, 0.27, 0.34]) b.add('lens', brass, new THREE.TorusGeometry(0.145, 0.008, 5, 18), { pos: V(0, y, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('cap', brass, new THREE.ConeGeometry(0.17, 0.1, 16), { pos: V(0, 0.43, 0) });
+	b.add('cap', brass, new THREE.TorusGeometry(0.04, 0.01, 5, 12), { pos: V(0, 0.5, 0) });
+	return b.build();
+}
+
+export const models = { fog_horn: buildFogHorn, lighthouse_lamp: buildLighthouseLamp };
 
 export const views = {
+	lighthouse_lamp: {
+		items: [{ name: 'lighthouse_lamp', pos: [0, 0, 0] }],
+		cam: { pos: [0.7, 0.55, 0.9], target: [0, 0.25, 0], fov: 35 },
+	},
 	fog_horn: {
 		items: [{ name: 'fog_horn', pos: [0, 0, 0] }],
 		cam: { pos: [0.55, 0.4, 0.55], target: [0, 0.08, 0.02], fov: 35 },
