@@ -18,6 +18,18 @@ extends Node3D
 ## away in the van, or on foot and slower if it's boxed in, and the chase is on (ChaseCase.begin). The case and its
 ## end are BankCase's (step 6b): the comisario gives it over the radio as the shift starts. Online the host's bank
 ## decides and a guest's follows it (`follower`, BankCase's snapshot).
+## A quarter of the seeds are the variant where the hostages don't want to leave (robo-banco-rehenes.md, decision 121): the
+## hall is a party, with garlands, the robbers' boombox on the bench and a tray of croissants on the counter, and the
+## hostages sway to the music. Two of them are fans of the gang, with a cardboard mask, who warn the robbers when they
+## see a cop (SNITCHES). A quarter of the seeds are the grandpa robbers (robo-banco-abuelos.md, decision 122): the same
+## gang, retired, with cane and cardigan; they walk at half pace and their old drill takes longer (BankDrill.SLOW_TIME).
+## A quarter are the sorry robber (robo-banco-arrepentido.md, decision 123): one of the three under El Oso cries under
+## his mask with a white hanky and wants to give it all back. In every robbery Mr. Moneda, the manager, waits in
+## pajamas on the sidewalk by his car and gives the back door's key to whoever talks to him (BankManager,
+## robo-banco-gerente.md, decision 124); a fifth of the seeds he's the gang's real boss, and the others share the rest
+## in quarters. A sixth of the seeds, drawn before them, the duck's drill punctured the pipe behind the vault and the
+## bank floods (BankWater, robo-banco-inundado.md, decision 125). --bank=party, --bank=grandpas, --bank=sorry,
+## --bank=manager, --bank=flood or --bank=base forces one.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -56,6 +68,20 @@ const VAN_AT := Vector3(8.0, 0, HALF_Z + CityLayout.SIDEWALK + 2.2)
 const VAN_WHEELS: Array[Vector3] = [Vector3(-1.1, 0.38, 1.7), Vector3(1.1, 0.38, 1.7), Vector3(-1.1, 0.38, -1.7),
 	Vector3(1.1, 0.38, -1.7)]
 const VAN_SIZE := Vector3(2.2, 2.3, 5.2)
+## The manager's car, parked along the curb west of the entrance, and the two ends of his pacing on the sidewalk
+## beside it (robo-banco-gerente.md, step 1).
+const MANAGER_CAR_MODEL := preload("res://assets/models/manager_car.glb")
+const MANAGER_CAR_AT := Vector3(-8.0, 0, VAN_AT.z)
+const MANAGER_CAR_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
+	Vector3(-1.05, 0.38, -1.55), Vector3(1.05, 0.38, -1.55)]
+const MANAGER_CAR_SIZE := Vector3(2.1, 1.5, 4.6)
+const MANAGER_SPOTS: Array[Vector3] = [Vector3(-10.0, 0, HALF_Z + 2.0), Vector3(-5.5, 0, HALF_Z + 2.0)]
+## The boss manager's walkie (step 2): with no cop this close to him (m), the drill hurries this long (s).
+const WALKIE_NEAR := 6.0
+const WALKIE_HURRY := 10.0
+## Where the boss manager rides in the patrol car once walked there (step 3): the fifth one, on top of the two in the
+## trunk.
+const MANAGER_SEAT := ChaseCase.TRUNK_SEAT + Vector3(0, 1.0, 0)
 ## Where each robber stands and which way they face (their body's yaw): the rabbit by the entrance looking at the
 ## door, the pig in front of the counter looking at the hostages, the duck in the corridor looking at the vault's
 ## door and El Oso behind the middle desk looking at the hall.
@@ -90,6 +116,53 @@ const CONES_FROM_DOOR := Vector3(-5, 0, 1.5)
 const HOSTAGES := 8
 const HOSTAGE_XS: Array[float] = [-6.5, -3.5, -0.5, 2.5]
 const HOSTAGE_ZS: Array[float] = [2.5, 4.8]
+## The party (robo-banco-rehenes.md, step 1): garlands hung across the hall in rows under the roof, the boombox on the
+## west bench and the croissants' tray on the counter.
+## The way back in for the party's hostage El Oso let go: through the entrance and between the queue posts.
+const WAY_IN: Array[Vector3] = [Vector3(ENTRANCE_X, 0, HALF_Z - 1.5), Vector3(-0.4, 0, 6.0)]
+## The free spots on the hostages' floor, between its two rows, where the grandpa robbers sit down to pass for hostages
+## (robo-banco-abuelos.md, step 2).
+const HIDE_SPOTS: Array[Vector3] = [Vector3(-5.0, 0, 3.65), Vector3(-2.0, 0, 3.65), Vector3(1.0, 0, 3.65),
+	Vector3(4.0, 0, 3.65)]
+## Where the duck grandma's marbles land: on the hall's floor in front of the entrance (robo-banco-abuelos.md, step 3).
+const MARBLES_AT := Vector3(ENTRANCE_X + 0.6, 0, HALF_Z - 1.3)
+## Who can be the sorry robber: never El Oso.
+const SORRY_ANIMALS: Array[String] = ["conejo", "chancho", "pato"]
+## The sorry robber's ways (robo-banco-arrepentido.md, steps 2 and 3): between the hall and the corridor he goes by
+## the counter's gap, behind the counter and through the corridor's door; out of the back door counts as the
+## corridor's side. Where he opens the back door from, where he unplugs the drill (past the duck, by the vault's door)
+## and where he leaves the two hostages, out of the back door far enough for them to be out too.
+const HALL_TO_CORRIDOR: Array[Vector3] = [Vector3(7.5, 0, 0.4), Vector3(7.5, 0, -2.6), Vector3(CORRIDOR_DOOR_X, 0, -3.7),
+	Vector3(CORRIDOR_DOOR_X, 0, BACK_Z - 0.6)]
+const AT_BACK_DOOR := Vector3(BACK_DOOR_X, 0, -HALF_Z + 0.9)
+const AT_DRILL := Vector3(0.6, 0, VAULT_DOOR_Z - 0.5)
+const OUT_BACK := Vector3(BACK_DOOR_X, 0, -HALF_Z - 1.4)
+## How long the unplugged drill stands still, and how many hostages he walks out.
+const UNPLUGGED := 60.0
+const SORRY_HOSTAGES := 2
+## The flooding bank's valve (robo-banco-inundado.md, step 2): on the back wall, outside, east of the back door.
+const VALVE_AT := Vector3(BACK_DOOR_X + 2.2, 0, -HALF_Z - 0.15)
+## Step 3: where the hostages get up on the counter, one each from the west end, and the duck floats in the patrol
+## car's trunk.
+const PERCH_XS: Array[float] = [-9.3, -7.9, -6.5, -5.1, -3.7, -2.3, -0.9, 0.5]
+const FLOATS_IN_TRUNK := Vector3(0, 0.45, -1.75)
+## Step 4: with this much water or more when the vault opens, the gang wades out with the sacks before they get away:
+## up to WADE_OUT seconds with the water at the top, less the shallower it is.
+const WADE_FROM := 0.2
+const WADE_OUT := 12.0
+## Where the gang ties the sorry robber when they catch him helping (step 4): a chair by the hall's west wall, facing
+## the hall.
+const CHAIR_AT := Vector3(-10.5, 0, 1.2)
+const CHAIR_YAW := -PI / 2
+## How many of the party's hostages are fans of the gang (propuesta).
+const SNITCHES := 2
+const GARLAND_MODEL := preload("res://assets/models/bank_garland.glb")
+const BOOMBOX_MODEL := preload("res://assets/models/bank_boombox.glb")
+const GARLAND_XS: Array[float] = [-10.0, -6.0, -2.0, 2.0, 6.0, 10.0]
+const GARLAND_ZS: Array[float] = [1.2, 4.0, 6.8]
+const GARLAND_DROP := 0.12
+const BOOMBOX_AT := Vector3(-10.0, 0.44, 6.6)
+const TRAY_AT := Vector3(-4.0, COUNTER_SIZE.y + 0.04, COUNTER_Z)
 
 const OUTSIDE := Color(0.86, 0.84, 0.78)
 const INSIDE := Color(0.93, 0.92, 0.88)
@@ -110,7 +183,27 @@ var robbers: Array[BankRobber] = []
 ## El Oso, the one to cuff.
 var boss: BankRobber
 var hostages: Array[BankHostage] = []
+## The variant where the hostages are having a party and don't want to leave (decision 121).
+var party := false
+## The variant where the robbers are grandpas (decision 122).
+var grandpas := false
+## The variant where one robber is sorry and wants to give it all back (decision 123): that robber, or null.
+var sorry: BankRobber
+var _sorry_variant := false
+## Mr. Moneda, the manager, by his car outside (every robbery), and his car.
+var manager: BankManager
+var manager_car: StaticBody3D
+## The boss manager's open trunk with the empty sacks (null when he's not the boss).
+var manager_trunk: ManagerTrunk
+## The duck grandma's marbles on the floor, once she threw them.
+var marbles: BankMarbles
+var croissant_tray: BankCroissantTray
 var drill: BankDrill
+## The flooding vault's water (decision 125), its valve out back and the front door that holds it in, or null.
+var water: BankWater
+var valve: BankValve
+var front_door: FrontDoor
+var floats: BankFloats
 var hostages_freed := 0
 var phone: BankPhone
 ## How many sacks of money the robbers got away with, the getaway chase if El Oso ran, and how it ended.
@@ -123,6 +216,8 @@ var case: BankCase
 var follower := false
 var station_parking: Transform3D
 var _build: PlaceBuilder
+## Which robber took each of HIDE_SPOTS (by index).
+var _hide_taken := {}
 
 @onready var car: PatrolCar = $PatrolCar
 @onready var city: Node3D = $City
@@ -133,30 +228,48 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	var drawn := variant(case_seed, OS.get_cmdline_user_args())
+	party = drawn == "party"
+	grandpas = drawn == "grandpas"
+	_sorry_variant = drawn == "sorry"
+	var manager_boss := drawn == "manager"
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_hall()
 	_build_back()
+	if party:
+		_add_party()
+	if _sorry_variant:
+		_build.legs(CHAIR_AT + Vector3.UP * FLOOR_TOP, Vector2(0.5, 0.5), 0.45, WOOD)
+		_build.box(CHAIR_AT + Vector3(0.0, FLOOR_TOP + 0.47, 0.0), Vector3(0.5, 0.04, 0.5), WOOD)
+		_build.box(CHAIR_AT + Vector3(-0.23, FLOOR_TOP + 0.8, 0.0), Vector3(0.04, 0.65, 0.5), WOOD)
 	back_door = DOOR_SCENE.instantiate()
 	back_door.name = "BackDoor"
 	back_door.position = Vector3(BACK_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, -HALF_Z)
 	add_child(back_door)
 	_add_vault_door()
 	_add_van()
+	_add_manager(manager_boss)
 	_add_robbers()
 	_add_hostages()
 	drill = BankDrill.new()
 	drill.name = "Drill"
+	if grandpas:
+		drill.drill_time = BankDrill.SLOW_TIME
 	drill.position = DRILL_AT + Vector3.UP * FLOOR_TOP
 	drill.rotation.y = PI / 2
 	add_child(drill)
 	drill.watch(robbers)
+	drill.watch_hostages(hostages)
 	drill.opened.connect(open_vault)
 	drill.opened.connect(_on_vault_opened)
+	if drawn == "flood":
+		_add_water()
 	phone = BankPhone.new()
 	phone.name = "Phone"
 	phone.position = PHONE_ON_CAR
 	phone.setup(self, car, case_seed)
+	phone.deaf = grandpas
 	car.add_child(phone)
 	car.add_collision_exception_with(phone)
 	city.transform = CityLayout.anchor("bank")
@@ -170,6 +283,116 @@ func _ready() -> void:
 	case.shift_screen = $ShiftScreen
 	add_child(case)
 	case.start()
+
+
+## Which robbery this seed is (propuesta): a sixth "flood" (the vault floods) drawn first, then a fifth of the rest
+## "manager" (the manager is the boss), and the rest in quarters: "party" (the hostages don't want to leave),
+## "grandpas", "sorry" (one robber wants to give it all back) or "base"; --bank=party, --bank=grandpas, --bank=sorry,
+## --bank=manager, --bank=flood or --bank=base among the user args forces one.
+static func variant(seed_: int, args: PackedStringArray) -> String:
+	for arg in args:
+		if arg in ["--bank=party", "--bank=grandpas", "--bank=sorry", "--bank=manager", "--bank=flood", "--bank=base"]:
+			return arg.trim_prefix("--bank=")
+	if hash(["bank caño", seed_]) % 6 == 0:
+		return "flood"
+	if hash(["bank moneda", seed_]) % 5 == 0:
+		return "manager"
+	return ["party", "grandpas", "sorry", "base"][hash(["bank party", seed_]) % 4]
+
+
+## Which of the three under El Oso is the sorry robber for this seed (robo-banco-arrepentido.md, decision 123).
+static func sorry_animal(seed_: int) -> String:
+	return SORRY_ANIMALS[hash(["bank sorry", seed_]) % SORRY_ANIMALS.size()]
+
+
+## Whether this seed's robbery is the party where the hostages don't want to leave.
+static func is_party(seed_: int, args: PackedStringArray) -> bool:
+	return variant(seed_, args) == "party"
+
+
+## The flooding vault's water: over the whole bank's floor, its jet out of the hole the drill made in the vault's door.
+## Step 2: a front door in the entrance holds it in, and the valve out back stops it. The pig running for the van and
+## the hostages walking out open the door on their way.
+func _add_water() -> void:
+	water = BankWater.new()
+	water.name = "Water"
+	water.area = Rect2(-HALF_X, -HALF_Z, HALF_X * 2.0, HALF_Z * 2.0).grow(-0.15)
+	water.floor_top = FLOOR_TOP
+	water.jet_from = Vector3(VAULT_X - 0.25, FLOOR_TOP + VAULT_DOOR_RADIUS + 0.4, VAULT_DOOR_Z + 0.3)
+	for robber in robbers:
+		water.waders.append(robber)
+	for hostage in hostages:
+		water.waders.append(hostage)
+	add_child(water)
+	front_door = DOOR_SCENE.instantiate()
+	front_door.name = "FrontDoor"
+	front_door.locked = false
+	front_door.position = Vector3(ENTRANCE_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, HALF_Z)
+	add_child(front_door)
+	water.watch_door(front_door, global_transform * Vector3(ENTRANCE_X, FLOOR_TOP, HALF_Z - 0.5))
+	valve = BankValve.new()
+	valve.name = "Valve"
+	valve.water = water
+	valve.position = VALVE_AT
+	valve.rotation.y = PI
+	add_child(valve)
+	for robber in robbers:
+		if robber.animal == "chancho":
+			robber.spotted.connect(func(_robber: BankRobber, _cop: Node3D) -> void: open_front())
+		elif robber.animal == "pato":
+			water.duck = robber
+	water.drill = drill
+	for i in hostages.size():
+		var x: float = PERCH_XS[i % PERCH_XS.size()]
+		water.hostages.append(hostages[i])
+		water.perches.append(global_transform * Vector3(x, FLOOR_TOP + COUNTER_SIZE.y, COUNTER_Z))
+		water.down_at.append(global_transform * Vector3(x, FLOOR_TOP, COUNTER_Z + 1.0))
+	floats = BankFloats.new()
+	floats.name = "Floats"
+	floats.position = FLOATS_IN_TRUNK
+	car.add_child(floats)
+	car.add_collision_exception_with(floats)
+
+
+## Someone inside walks out of the flooding bank's front door: it swings open (and the wave rushes out).
+func open_front() -> void:
+	if front_door and not front_door.is_open:
+		front_door.open_from_inside()
+
+
+## The party's things: the garlands across the hall, the boombox playing on the bench (its notes bobbing over it) and
+## the croissants' tray on the counter.
+func _add_party() -> void:
+	var party_node := Node3D.new()
+	party_node.name = "Party"
+	add_child(party_node)
+	for z in GARLAND_ZS:
+		for x in GARLAND_XS:
+			var garland: Node3D = GARLAND_MODEL.instantiate()
+			garland.position = Vector3(x, ROOF - GARLAND_DROP, z)
+			party_node.add_child(garland)
+	var boombox: Node3D = BOOMBOX_MODEL.instantiate()
+	boombox.name = "Boombox"
+	boombox.position = BOOMBOX_AT + Vector3.UP * FLOOR_TOP
+	boombox.rotation.y = PI / 2
+	party_node.add_child(boombox)
+	var notes := Label3D.new()
+	notes.name = "Notes"
+	notes.text = "♪ ♫"
+	notes.font_size = 64
+	notes.pixel_size = 0.006
+	notes.outline_size = 10
+	notes.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	notes.modulate = Color(0.48, 0.88, 1.0)
+	notes.position = Vector3(0, 0.75, 0)
+	boombox.add_child(notes)
+	var bob := notes.create_tween().set_loops()
+	bob.tween_property(notes, "position:y", 0.95, 0.5).set_trans(Tween.TRANS_SINE)
+	bob.tween_property(notes, "position:y", 0.75, 0.5).set_trans(Tween.TRANS_SINE)
+	croissant_tray = BankCroissantTray.new()
+	croissant_tray.name = "CroissantTray"
+	croissant_tray.position = TRAY_AT + Vector3.UP * FLOOR_TOP
+	party_node.add_child(croissant_tray)
 
 
 ## Whether a world position is inside the bank.
@@ -325,11 +548,78 @@ func _add_van() -> void:
 		van.add_child(wheel)
 
 
+## Mr. Moneda pacing on the sidewalk by his car, a body too so the patrol car bumps into it (robo-banco-gerente.md).
+func _add_manager(is_boss: bool) -> void:
+	manager_car = StaticBody3D.new()
+	manager_car.name = "ManagerCar"
+	manager_car.position = MANAGER_CAR_AT
+	manager_car.rotation.y = -PI / 2
+	add_child(manager_car)
+	var shape := CollisionShape3D.new()
+	var body := BoxShape3D.new()
+	body.size = MANAGER_CAR_SIZE
+	shape.shape = body
+	shape.position.y = MANAGER_CAR_SIZE.y / 2 + 0.05
+	manager_car.add_child(shape)
+	manager_car.add_child(MANAGER_CAR_MODEL.instantiate())
+	for at in MANAGER_CAR_WHEELS:
+		var wheel: Node3D = WHEEL_MODEL.instantiate()
+		wheel.position = at
+		manager_car.add_child(wheel)
+	manager = BankManager.new()
+	manager.name = "Manager"
+	manager.boss = is_boss
+	manager.position = MANAGER_SPOTS[0] + Vector3.UP * FLOOR_TOP
+	for at in MANAGER_SPOTS:
+		manager.spots.append(global_transform * (at + Vector3.UP * FLOOR_TOP))
+	add_child(manager)
+	manager.seed_with(hash(["bank walkie", case_seed]))
+	if not is_boss:
+		return
+	# The boss (step 2): the key he gives doesn't fit, his walkie hurries the gang and his trunk waits open.
+	back_door.wrong_key = true
+	manager.radioed.connect(_on_manager_radioed)
+	manager.caught_now.connect(_on_manager_caught)
+	var escort := OwnerEscort.attach(manager, car)
+	escort.seat_shift = MANAGER_SEAT
+	escort.in_car_hint = "HINT_MANAGER_IN_CAR"
+	manager_trunk = ManagerTrunk.new()
+	manager_trunk.name = "Trunk"
+	manager_trunk.manager = manager
+	manager_car.add_child(manager_trunk)
+
+
+## The boss manager in handcuffs (step 3): the gang hears it on the walkie and gets nervous once, and El Oso hangs up
+## the phone for good.
+func _on_manager_caught(_manager: BankManager) -> void:
+	if follower:
+		return
+	drill.hurry(BankDrill.NERVOUS)
+	phone.hang_up()
+
+
+## The boss manager murmured into his walkie: the drill hurries unless a cop stands close to him.
+func _on_manager_radioed(_manager: BankManager) -> void:
+	if follower:
+		return
+	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
+		if cop.global_position.distance_to(manager.global_position) <= WALKIE_NEAR:
+			return
+	drill.hurry(WALKIE_HURRY)
+
+
 func _add_robbers() -> void:
 	for animal: String in BankRobber.ANIMALS:
 		var robber := BankRobber.new()
 		robber.name = "Robber_" + animal
 		robber.animal = animal
+		robber.grandpa = grandpas
+		robber.sorry = _sorry_variant and animal == sorry_animal(case_seed)
+		robber.claim_spot = _claim_hide_spot
+		robber.is_out = func(at: Vector3) -> bool: return not inside(at)
+		robber.slipped_out.connect(func(_robber: BankRobber) -> void: bags_taken += 1)
+		if grandpas:
+			robber.spotted.connect(func(_robber: BankRobber, _cop: Node3D) -> void: _gang_nervous())
 		robber.position = ROBBER_SPOTS[animal][0] + Vector3.UP * FLOOR_TOP
 		robber.rotation.y = ROBBER_SPOTS[animal][1]
 		add_child(robber)
@@ -337,11 +627,168 @@ func _add_robbers() -> void:
 		var escort := OwnerEscort.attach(robber, car)
 		escort.seat_shift = ROBBER_SEATS[robbers.size() - 1]
 		escort.in_car_hint = "HINT_OWNER_IN_CAR" if robber.is_boss() else "HINT_ROBBER_IN_CAR"
+		if grandpas:
+			escort.speed = OwnerEscort.SPEED * BankRobber.GRANDPA_PACE
 		if animal == "chancho":
 			for at in PIG_RUN:
 				robber.run_path.append(global_transform * at)
 		if robber.is_boss():
 			boss = robber
+		if robber.sorry:
+			sorry = robber
+			robber.watched = _sorry_watched
+			robber.help_way = _sorry_way
+			robber.way_back = _sorry_way_back
+			robber.do_help = _sorry_help
+
+
+func _physics_process(_delta: float) -> void:
+	if not follower and sorry:
+		_watch_the_sorry_one()
+
+
+## The gang keeps an eye on the sorry robber: one who sees him on a help (not resting at his spot) shouts "¡Traidor!",
+## the gang gets nervous and he ends up tied to the chair.
+func _watch_the_sorry_one() -> void:
+	if not sorry.turned or sorry.tied or sorry.helping == "" or not is_loose(sorry):
+		return
+	for robber in robbers:
+		if robber != sorry and is_loose(robber) and not robber.in_van \
+				and robber.sees(sorry.global_position + Vector3.UP, sorry):
+			robber.say("ROBBER_TRAITOR")
+			drill.hurry(BankDrill.NERVOUS)
+			sorry.tie(global_transform * (CHAIR_AT + Vector3(0.1, FLOOR_TOP, 0)), rotation.y + CHAIR_YAW)
+			return
+
+
+## Whether a loose robber other than the sorry one sees `cop` (then he doesn't dare talk).
+func _sorry_watched(cop: Node3D) -> bool:
+	for robber in robbers:
+		if robber != sorry and is_loose(robber) and not robber.in_van and robber.sees_cop(cop):
+			return true
+	return false
+
+
+## On the corridor's side: in the corridor (behind the back wall, between the office and the vault) or out of the back
+## door (bank coordinates).
+static func in_corridor(at: Vector3) -> bool:
+	return (at.z < BACK_Z and at.x > OFFICE_X and at.x < VAULT_X) or at.z < -HALF_Z
+
+
+## The sorry robber's way (world positions) from where he is to `to` (bank coordinates): round the counter between
+## the hall and the corridor's side, straight otherwise.
+func _sorry_way_to(to: Vector3) -> Array[Vector3]:
+	var from := global_transform.affine_inverse() * sorry.global_position
+	var points: Array[Vector3] = []
+	if in_corridor(from) and not in_corridor(to):
+		points = HALL_TO_CORRIDOR.duplicate()
+		points.reverse()
+	elif not in_corridor(from) and in_corridor(to):
+		points = HALL_TO_CORRIDOR.duplicate()
+	points.append(to)
+	var way: Array[Vector3] = []
+	for at in points:
+		way.append(global_transform * Vector3(at.x, FLOOR_TOP, at.z))
+	return way
+
+
+## The sorry robber's way to `help`: the back door, the drill, or the sitting hostage nearest to the counter's gap.
+func _sorry_way(help: String) -> Array[Vector3]:
+	match help:
+		"door":
+			return _sorry_way_to(AT_BACK_DOOR)
+		"drill":
+			return _sorry_way_to(AT_DRILL)
+		"hostages":
+			var picked := _sorry_pick()
+			if picked.is_empty():
+				return []
+			var at := global_transform.affine_inverse() * picked[0].global_position
+			return _sorry_way_to(at + Vector3(0.9, 0, 0))
+	return []
+
+
+## Up to SORRY_HOSTAGES hostages still sitting, the nearest to the counter's gap first.
+func _sorry_pick() -> Array[BankHostage]:
+	var gap := global_transform * HALL_TO_CORRIDOR[0]
+	var sitting: Array[BankHostage] = []
+	for hostage in hostages:
+		if hostage.sitting() and not hostage.is_cuffed():
+			sitting.append(hostage)
+	sitting.sort_custom(func(a: BankHostage, b: BankHostage) -> bool:
+		return a.global_position.distance_to(gap) < b.global_position.distance_to(gap))
+	return sitting.slice(0, SORRY_HOSTAGES)
+
+
+## The sorry robber's way back to his spot.
+func _sorry_way_back(_help: String) -> Array[Vector3]:
+	return _sorry_way_to(ROBBER_SPOTS[sorry.animal][0])
+
+
+## The sorry robber does `help`'s leg `stage` and gives the way of the next leg (empty when the help is done): the back
+## door unlocked and swung open from inside; the drill unplugged for UNPLUGGED seconds; the hostages taken by the hand
+## and then walked out of the back door, where they go free.
+func _sorry_help(help: String, stage: int) -> Array[Vector3]:
+	match help:
+		"door":
+			back_door.open_from_inside()
+		"drill":
+			drill.pause(UNPLUGGED)
+		"hostages":
+			if stage == 0:
+				var picked := _sorry_pick()
+				for i in picked.size():
+					picked[i].take_by(sorry, i == 0)
+				if not picked.is_empty():
+					back_door.open_from_inside()
+					return _sorry_way_to(OUT_BACK)
+			else:
+				for hostage in hostages:
+					if hostage.led_by == sorry:
+						hostage.free_hostage()
+	var none: Array[Vector3] = []
+	return none
+
+
+## The grandpa gang got nervous: the duck grandma, if she's still loose, throws her marbles in front of the entrance
+## (once).
+func _gang_nervous() -> void:
+	if follower or marbles:
+		return
+	for robber in robbers:
+		if robber.animal == "pato" and is_loose(robber):
+			robber.say("ROBBER_GRANDPA_MARBLES")
+			spill_marbles()
+
+
+## The marbles on the floor (also a guest's, when the host's are there: BankCase's snapshot).
+func spill_marbles() -> void:
+	if marbles:
+		return
+	marbles = BankMarbles.new()
+	marbles.name = "Marbles"
+	marbles.position = MARBLES_AT + Vector3.UP * FLOOR_TOP
+	add_child(marbles)
+	for robber in robbers:
+		if robber.animal == "pato":
+			var bag := robber.find_child("props", true, false) as Node3D
+			if bag:
+				bag.hide()
+
+
+## The free spot among the hostages nearest to `robber` (a world position), now his.
+func _claim_hide_spot(robber: BankRobber) -> Vector3:
+	var best := -1
+	for i in HIDE_SPOTS.size():
+		if _hide_taken.has(i):
+			continue
+		if best < 0 or robber.global_position.distance_to(global_transform * HIDE_SPOTS[i]) \
+				< robber.global_position.distance_to(global_transform * HIDE_SPOTS[best]):
+			best = i
+	if best < 0:
+		return robber.global_position
+	_hide_taken[best] = robber
+	return global_transform * (HIDE_SPOTS[best] + Vector3.UP * FLOOR_TOP)
 
 
 ## The hostages, a different set of neighbors for each seed.
@@ -354,11 +801,25 @@ func _add_hostages() -> void:
 		var swap: String = looks[i]
 		looks[i] = looks[j]
 		looks[j] = swap
+	var fans: Array[int] = []
+	if party:
+		var order := range(HOSTAGES)
+		for i in range(order.size() - 1, 0, -1):
+			var j := rng.randi_range(0, i)
+			var swap: int = order[i]
+			order[i] = order[j]
+			order[j] = swap
+		for i in SNITCHES:
+			fans.append(order[i])
 	for i in HOSTAGES:
 		var hostage := BankHostage.new()
+		if fans.has(i):
+			hostage.snitch = BankRobber.ANIMALS[rng.randi_range(0, BankRobber.ANIMALS.size() - 1)]
 		hostage.name = "Hostage%d" % i
 		hostage.look = looks[i % looks.size()]
 		hostage.next_line = i
+		hostage.partying = party
+		hostage.sway_phase = rng.randf() * TAU
 		hostage.position = Vector3(HOSTAGE_XS[i % HOSTAGE_XS.size()], FLOOR_TOP, HOSTAGE_ZS[i / HOSTAGE_XS.size()])
 		hostage.is_out = func(at: Vector3) -> bool: return not inside(at)
 		hostage.freed_now.connect(func(_hostage: BankHostage) -> void: hostages_freed += 1)
@@ -372,10 +833,18 @@ func open_vault() -> void:
 	vault_door.rotation.y = PI / 2
 
 
-## El Oso keeps his word: the first hostage still on the floor walks out of the entrance and goes free.
+## El Oso keeps his word: the first hostage still on the floor walks out of the entrance and goes free. At the party
+## (step 4) they only get as far as the door, and walk back in unless a cop takes them by the hand there.
 func release_hostage() -> void:
 	for hostage in hostages:
-		if not hostage.freed and not hostage.led_by:
+		if hostage.sitting():
+			if party:
+				var way_in: Array[Vector3] = []
+				for at in WAY_IN:
+					way_in.append(global_transform * (at + Vector3.UP * FLOOR_TOP))
+				open_front()
+				hostage.walk_out(global_transform * Vector3(ENTRANCE_X, FLOOR_TOP, HALF_Z + 1.2), way_in)
+				return
 			hostage.global_position = global_transform * Vector3(ENTRANCE_X, FLOOR_TOP, HALF_Z + 1.5)
 			hostage.free_hostage()
 			return
@@ -415,28 +884,64 @@ static func _flat_distance(a: Vector3, b: Vector3) -> float:
 	return Vector2(a.x - b.x, a.z - b.z).length()
 
 
-## Whether a robber is still free: not cuffed, not being walked and not in the patrol car (the pig in the van is).
+## Whether a robber is still free: not cuffed, not being walked and not in the patrol car (the pig in the van is), and
+## not a grandpa who already slipped out as a hostage (his sack is counted).
 static func is_loose(robber: BankRobber) -> bool:
 	var escort := OwnerEscort.of(robber)
-	return not robber.is_cuffed() and not (escort and (escort.in_car or escort.escorted_by))
+	return not robber.slipped and not robber.is_cuffed() and not (escort and (escort.in_car or escort.escorted_by))
 
 
 ## The vault is open: every robber still loose grabs a sack and leaves; El Oso among them, the chase is on.
 func _on_vault_opened() -> void:
 	if follower:
 		return
-	var boss_runs := is_loose(boss)
+	# The boss manager still loose (robo-banco-gerente.md, step 4): the gang loads the sacks in his trunk and they all
+	# drive off with him.
+	var manager_runs := manager.boss and not manager.caught
+	var boss_runs := is_loose(boss) and not manager_runs
 	for robber in robbers:
-		if is_loose(robber):
+		if robber.sorry and is_loose(robber):
+			# He doesn't take a sack: he sits down to wait for the cops (robo-banco-arrepentido.md, step 5).
+			robber.wait_for_cops()
+		elif is_loose(robber):
 			bags_taken += 1
 			robber.hide()
 			robber.collision_layer = 0
 			robber.process_mode = Node.PROCESS_MODE_DISABLED
-	if boss_runs:
+	if not manager_runs and not boss_runs:
+		return
+	var wading := wade_out_time()
+	if wading > 0.0:
+		# The flooding bank (robo-banco-inundado.md, step 4): wading out with the sacks takes them a while.
+		for cop in get_tree().get_nodes_in_group("cops"):
+			(cop as Cop).show_hint("HINT_FLOOD_WADING")
+		get_tree().create_timer(wading, false, true).timeout.connect(_run_getaway.bind(manager_runs))
+		return
+	_run_getaway(manager_runs)
+
+
+## How long the gang takes to wade out of the flooding bank with the sacks (0 dry).
+func wade_out_time() -> float:
+	if not water or water.level < WADE_FROM:
+		return 0.0
+	return WADE_OUT * (1.0 - BankWater.factor(water.level)) / (1.0 - BankWater.factor(BankWater.MAX_LEVEL))
+
+
+## El Oso (or the boss manager) gets away: in his car, on a motor walker, in the van or on foot if it's boxed in.
+func _run_getaway(manager_runs: bool) -> void:
+	if manager_runs:
+		start_getaway(SuspectCar.MANAGER_CAR)
+	elif grandpas:
+		start_getaway(SuspectCar.WALKER)
+	else:
 		start_getaway(SuspectCar.BEAR_ON_FOOT if van_boxed_in() else SuspectCar.ROBBERS_VAN)
+	if case:
+		case._on_vault_opened()
 
 
-## El Oso gets away in the van (`kind` ROBBERS_VAN) or on foot (BEAR_ON_FOOT): the chase is on.
+## El Oso gets away in the van (`kind` ROBBERS_VAN) or on foot (BEAR_ON_FOOT), or the grandpa Oso on a motor walker
+## along the sidewalk (WALKER, robo-banco-abuelos.md, step 4), or the boss manager in his car (MANAGER_CAR,
+## robo-banco-gerente.md, step 4): the chase is on.
 func start_getaway(kind: String) -> void:
 	if chase:
 		return
@@ -444,14 +949,23 @@ func start_getaway(kind: String) -> void:
 	if kind == SuspectCar.ROBBERS_VAN and is_instance_valid(van):
 		at = van.global_transform
 		van.queue_free()
+	if kind == SuspectCar.MANAGER_CAR:
+		at = manager_car.global_transform
+		manager_car.queue_free()
+		manager.hide()
+		manager.collision_layer = 0
+		manager.process_mode = Node.PROCESS_MODE_DISABLED
 	chase = ChaseCase.begin(self, kind, at, car, city, case_seed)
-	chase.who = "oso"
+	chase.who = "manager" if kind == SuspectCar.MANAGER_CAR else "oso_grandpa" if grandpas else "oso"
+	if grandpas:
+		chase.truck.set_rider(ChaseSuspect.model_for(chase.who))
 	chase.follower = follower
 	if case:
 		chase.online = case.online
 	chase.ended.connect(_on_getaway_ended)
 	for cop in get_tree().get_nodes_in_group("cops"):
-		(cop as Cop).show_hint("HINT_ESCAPE_oso" if kind == SuspectCar.ROBBERS_VAN else "HINT_ESCAPE_oso_FOOT")
+		(cop as Cop).show_hint({SuspectCar.ROBBERS_VAN: "HINT_ESCAPE_oso", SuspectCar.WALKER: "HINT_ESCAPE_oso_WALKER",
+			SuspectCar.MANAGER_CAR: "HINT_ESCAPE_manager"}.get(kind, "HINT_ESCAPE_oso_FOOT"))
 
 
 func _on_getaway_ended(was_caught: bool) -> void:
