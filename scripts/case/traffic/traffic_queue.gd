@@ -8,7 +8,8 @@ extends Node3D
 ## "rush_hour" (Hora pico) sends twice the cars and wears the patience out faster. "clown_convoy" (control-payasos.md)
 ## sends the circus's identical clown cars, a bit less often since each one takes longer to check; their clowns loose
 ## on the street wear the patience out too, and a car won't go until its clowns are back in. "fruit_truck"
-## (control-frutas.md) sends the fruit fair's pickups, loaded with watermelons. Every number here is (propuesta).
+## (control-frutas.md) sends the fruit fair's pickups, loaded with watermelons. "crowded_car" (control-auto-lleno.md)
+## sends city cars, some of them packed with people. Every number here is (propuesta).
 
 signal patience_changed(value: float)
 ## A car went by: let through, or sneaking.
@@ -32,6 +33,7 @@ const VARIANTS := {
 	"rush_hour": {"spawn": 0.5, "patience": 1.5},
 	"clown_convoy": {"spawn": 0.75, "patience": 1.0, "clown": true},
 	"fruit_truck": {"spawn": 0.75, "patience": 1.0, "fruit": true},
+	"crowded_car": {"spawn": 0.75, "patience": 1.0, "crowd": true},
 }
 
 var checkpoint: TrafficCheckpoint
@@ -147,6 +149,8 @@ func spawn() -> QueueCar:
 	car.hat = fruit_traits.get("hat", "")
 	car.melon_kinds.assign(fruit_traits.get("melons", []))
 	car.clown_traits = data.get("clown", {})
+	if VARIANTS[variant].get("crowd", false):
+		car.crowd = data.get("crowd", CrowdedCar.riders_of(car.plate))
 	car.wanted = plan != null and spawned == plan.wanted_index
 	car.at = Vector3(0, 0, SPAWN_FROM)
 	car.speed = QueueCar.SPEED
