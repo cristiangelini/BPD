@@ -22,6 +22,9 @@ const LINGER := 20.0
 ## Someone stopped and caught with something forbidden (CityWalker.busted).
 const BUSTED_MONEY := 40
 
+## Money the street events paid this shift, for the end of shift report (add_to); a new city starts it over.
+static var shift_earned := 0
+
 var active: CityEvent
 ## Money the events paid this shift.
 var earned := 0
@@ -32,6 +35,7 @@ var _toast_left := 0.0
 
 
 func _ready() -> void:
+	shift_earned = 0
 	_rng.randomize()
 	gap_left = _rng.randf_range(GAP_MIN, GAP_MAX)
 	var layer := CanvasLayer.new()
@@ -66,8 +70,21 @@ func _on_busted(_walker: CityWalker) -> void:
 
 
 ## Adds `money` to the shift and shows it.
+## Adds the street events' money to an end of shift report, once (the campaign and the shift screen both ask),
+## and starts it over.
+static func add_to(report: Dictionary) -> void:
+	if report.has("street"):
+		return
+	report.street = shift_earned
+	report.total = int(report.get("total", 0)) + shift_earned
+	if report.has("quota"):
+		report.approved = report.total >= report.quota
+	shift_earned = 0
+
+
 func pay(money: int) -> void:
 	earned += money
+	shift_earned += money
 	paid.emit(money)
 	_toast.text = tr("EVENT_PAID") % money
 	_toast_left = 3.0

@@ -30,7 +30,7 @@ Pedido de Cristian (25/10): "que haya veredas, tachos de basura, autos andando c
 - Con lluvia el patrullero agarra menos (igual que en la persecución: 0,55), la gente camina más rápido y algunos abren paraguas, y los autos van a 20 km/h.
 
 ## Los eventos (decisión 180, "no tan caótico")
-Un **director de eventos** arma una secuencia por vez, nunca dos juntas: cada 2 a 4 minutos reales elige un evento y lo hace pasar a entre 30 y 90 m de algún policía, en un lugar que no esté mirando. Solo pasan en la calle (patrullando o yendo y viniendo de un caso), nunca adentro del lugar del caso. Cada evento resuelto suma plata al turno; no resolverlo no resta.
+Un **director de eventos** arma una secuencia por vez, nunca dos juntas: cada 2 a 4 minutos reales elige un evento y lo hace pasar a entre 30 y 90 m de algún policía, en un lugar que no esté mirando. Solo pasan en la calle (patrullando o yendo y viniendo de un caso), nunca adentro del lugar del caso. Cada evento resuelto suma plata al turno, que sale en el informe del final del turno como "Eventos en la calle" y cuenta para la meta; no resolverlo no resta.
 
 | Evento | Qué pasa | Cómo se resuelve |
 |---|---|---|
