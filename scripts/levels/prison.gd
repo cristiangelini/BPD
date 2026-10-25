@@ -54,6 +54,10 @@ const CELL_LENGTH := (CELLS_Z - BUILDING_BACK) / CELLS
 ## Where the blackout's guards wait with their candles: in the yard, by the gate (propuesta).
 const GUARD_SPOTS: Array[Vector3] = [Vector3(-4.0, FLOOR_TOP, 15.5), Vector3(4.0, FLOOR_TOP, 15.5)]
 const GUARD_MODEL := preload("res://assets/models/npc_carcelero.glb")
+## The blackout's fuse board, on the back wall at the end of the block's corridor (x, z).
+const BOARD_AT := Vector2(-1.0, BUILDING_BACK + 0.12)
+## The punishment cell, for the blackout's escort (BlackoutEscort): the 8 cells of the block are 0 to 7.
+const PUNISHMENT_CELL := CELLS * 2
 ## The watchtower in the yard's west corner and the basketball hoop.
 const TOWER_AT := Vector3(-12.0, 0, 18.0)
 const TOWER_HEIGHT := 6.0
@@ -101,6 +105,8 @@ var cell_doors: Array[CellDoor] = []
 var guards: Array[Node3D] = []
 ## The inmates loose in the dark (step 3).
 var blackout: BlackoutPlan
+## The fuse board at the end of the block's corridor (step 5).
+var fuse_board: FuseBoard
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -177,6 +183,12 @@ func _start_blackout() -> void:
 		door.set_open(true)
 	for at in GUARD_SPOTS:
 		_guard(at)
+	# The guards ran out of the kitchen with their candles: it's open, and one of the fuses is in there (step 5).
+	kitchen_door.locked = false
+	fuse_board = FuseBoard.new()
+	fuse_board.name = "FuseBoard"
+	fuse_board.position = Vector3(BOARD_AT.x, FLOOR_TOP + 1.4, BOARD_AT.y)
+	add_child(fuse_board)
 	blackout = BlackoutPlan.new()
 	blackout.name = "Blackout"
 	add_child(blackout)
@@ -191,6 +203,17 @@ func set_lights(on: bool) -> void:
 	lights_on = on
 	for lamp in lamps:
 		lamp.visible = on
+
+
+## The barred door of a cell of the block (0 to 7) or of the punishment cell (PUNISHMENT_CELL).
+func cell_door(cell: int) -> CellDoor:
+	return punishment_door if cell == PUNISHMENT_CELL else cell_doors[cell]
+
+
+## Whether a world position is in the punishment cell.
+func in_punishment(at: Vector3) -> bool:
+	var local := global_transform.affine_inverse() * at
+	return PUNISHMENT.has_point(Vector2(local.x, local.z))
 
 
 ## Whether a world position is in the cell block, behind the barred wall (corridor and cells).

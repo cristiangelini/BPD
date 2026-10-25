@@ -6,15 +6,19 @@ extends CharacterBody3D
 ## or out to the yard's gate, where they escape. Lit by a cop's flashlight they freeze where they stand, with a line,
 ## and walk on UNFREEZE seconds after the light leaves them. In the dark only their eyes show, blinking. Cuffed they
 ## stay put; E then walks them by the arm (BlackoutEscort) into any cell, where they stay while its door is shut (step
-## 4). Every number here is (propuesta).
+## 4). Step 5: El Chispa (CHISPA), who cut the power, waits by the fuse board with the third fuse in his pocket and
+## sparks at the fingers; cuffed, he drops it. When the light comes back, the loose ones give up and sit down. Every
+## number here is (propuesta).
 
 signal escaped(inmate: BlackoutInmate)
+## El Chispa was cuffed and dropped his fuse here.
+signal dropped_fuse(inmate: BlackoutInmate, at: Vector3)
 
-enum Role { HIDE, WANDER, GATE }
+enum Role { HIDE, WANDER, GATE, CHISPA }
 
 const MODEL := preload("res://assets/models/npc_preso.glb")
 ## How fast each role walks: slower than a walking cop, so the one at the gate can be caught.
-const SPEEDS := {Role.HIDE: 2.4, Role.WANDER: 1.6, Role.GATE: 2.2}
+const SPEEDS := {Role.HIDE: 2.4, Role.WANDER: 1.6, Role.GATE: 2.2, Role.CHISPA: 2.4}
 ## Close enough to a route point to head for the next one.
 const REACH := 0.35
 const UNFREEZE := 1.0
@@ -29,6 +33,10 @@ const CROUCH := 0.5
 const EYES := Vector3(0.09, 1.45, -0.3)
 const BLINK_EVERY := 3.5
 const BLINK_TIME := 0.15
+## El Chispa's sparks at the right hand (seen in the dark too), and how often they crackle.
+const SPARKS_AT := Vector3(0.38, 0.95, -0.15)
+const SPARK_EVERY := Vector2(0.08, 0.6)
+const SPARK_COLOR := Color(1.0, 0.9, 0.3)
 
 var role := Role.WANDER
 ## The route, in level space (x, z), walked once (a hide or the gate) or looped (wandering).
@@ -48,6 +56,12 @@ var is_escaped := false
 var jailed_in := -1
 ## A guest's copy (step 7): the host walks them.
 var follower := false
+## El Chispa's fuse, until he's cuffed (step 5).
+var has_fuse := false
+## The light came back and they gave up (step 5).
+var surrendered := false
+var _sparks: Node3D
+var _spark_left := 0.0
 var _next := 0
 var _dark_left := 0.0
 var _cuffed_left := 0.0
@@ -103,11 +117,37 @@ func _ready() -> void:
 	_bubble.hide()
 	add_child(_bubble)
 	_blink_left = randf_range(0.5, BLINK_EVERY)
+	if role == Role.CHISPA:
+		_add_sparks()
+
+
+func _add_sparks() -> void:
+	_sparks = Node3D.new()
+	_sparks.name = "Sparks"
+	_sparks.position = SPARKS_AT
+	var glow := StandardMaterial3D.new()
+	glow.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	glow.albedo_color = SPARK_COLOR
+	for at: Vector3 in [Vector3(0, 0, 0), Vector3(0.05, 0.06, -0.03), Vector3(-0.04, 0.03, 0.04)]:
+		var dot := SphereMesh.new()
+		dot.radius = 0.018
+		dot.height = 0.036
+		var spark := MeshInstance3D.new()
+		spark.mesh = dot
+		spark.material_override = glow
+		spark.position = at
+		_sparks.add_child(spark)
+	add_child(_sparks)
 
 
 func cuffed(seconds: float) -> void:
 	_cuffed_left = maxf(_cuffed_left, seconds)
 	velocity = Vector3.ZERO
+	if has_fuse:
+		has_fuse = false
+		say("CHISPA_CUFFED")
+		dropped_fuse.emit(self, global_position - global_basis.z * 0.6 + Vector3.UP * 0.3)
+		return
 	say("INMATE_CUFFED")
 
 
@@ -141,16 +181,46 @@ func jail(cell: int) -> void:
 	say("BLACKOUT_IN_CELL")
 
 
-## The cell's door was left open: out of `cell` and round the canteen, like the ones wandering.
+## The cell's door was left open: out of `cell` and round the canteen, like the ones wandering (El Chispa, back to
+## his fuse board).
 func walk_out(cell: int) -> void:
 	jailed_in = -1
-	role = Role.WANDER
-	route = BlackoutPlan.wander_route(cell, 0)
-	loop = true
-	loop_from = BlackoutPlan.WAY_OUT
+	if role == Role.CHISPA:
+		route = BlackoutPlan.board_route(cell)
+		loop = false
+	else:
+		role = Role.WANDER
+		route = BlackoutPlan.wander_route(cell, 0)
+		loop = true
+		loop_from = BlackoutPlan.way_out(cell).size()
 	_next = 0
 	_stand()
 	say("BLACKOUT_WALK_OUT")
+
+
+## A new way to walk from where they are (El Chispa, back to the board): `points`, walked once.
+func head_for(points: Array[Vector2]) -> void:
+	route = points
+	loop = false
+	_next = 0
+
+
+## The light is back: the loose ones stop and sit where they are.
+func surrender() -> void:
+	surrendered = true
+	frozen = false
+	velocity = Vector3.ZERO
+	if not is_jailed():
+		_model.position.y = -CROUCH
+		_eyes.position.y = -CROUCH
+		say("BLACKOUT_SURRENDER")
+
+
+## Whether they can do anything: walking free, not cuffed, frozen, walked by a cop, locked up or out.
+func is_free() -> bool:
+	var escort := OwnerEscort.of(self)
+	return active and not surrendered and not is_escaped and not is_jailed() and not is_cuffed() and not frozen \
+		and not (escort and escort.escorted_by)
 
 
 func _stand() -> void:
@@ -203,7 +273,7 @@ func _physics_process(delta: float) -> void:
 	_dark_left = maxf(_dark_left - delta, 0.0)
 	if frozen and _dark_left <= 0.0:
 		frozen = false
-	if not active or follower or is_escaped or is_jailed() or is_cuffed() or frozen or hidden:
+	if not active or follower or surrendered or is_escaped or is_jailed() or is_cuffed() or frozen or hidden:
 		velocity = Vector3.ZERO
 		return
 	if delay > 0.0:
@@ -260,6 +330,12 @@ func _escape() -> void:
 
 
 func _process(delta: float) -> void:
+	if _sparks:
+		_spark_left -= delta
+		if _spark_left <= 0.0:
+			_spark_left = randf_range(SPARK_EVERY.x, SPARK_EVERY.y)
+			_sparks.visible = not _sparks.visible
+		_sparks.visible = _sparks.visible and has_fuse
 	_blink_left -= delta
 	if _blink_left <= 0.0:
 		_eyes.visible = not _eyes.visible
