@@ -11,8 +11,9 @@ El comisario: "¡Novatos! El Titiritero, un ladrón de cajeros, ya no se sube a 
 remoto desde atrás, en otro auto. Si ven un auto sin nadie al volante, no lo persigan a él: busquen quién lo maneja."
 
 ## Cómo es
-1. Llegan 12 a 16 autos de la ciudad, como en Hora pico. Uno es **el auto fantasma**: no tiene a nadie al volante, el
-   volante gira solo y tiene una antenita en el techo. Llega entre los primeros 3 a 6 de la fila.
+1. Llegan 12 a 16 autos de la ciudad, como en Hora pico, cada conductor con el codo en la ventanilla abierta. Uno es
+   **el auto fantasma**: no tiene a nadie en la ventanilla, las ruedas de adelante giran solas y tiene una antenita
+   con una luz roja en el techo. Llega entre los primeros 3 a 6 de la fila.
 2. **El Titiritero** va en uno de los autos que vienen atrás (2 a 5 autos más atrás) con el control remoto escondido
    en las piernas. La radio da una pista de él cada 60 s (color de su auto, sombrero o anteojos, la patente), como en
    Hora pico.
@@ -32,8 +33,8 @@ remoto desde atrás, en otro auto. Si ven un auto sin nadie al volante, no lo pe
    y Auto fantasma.
 
 ## Lo nuevo
-- `GhostCar`: el auto sin conductor con volante que gira solo, antenita y travesuras (bocina, luces, avanzar,
-  retroceder, escaparse al abrirlo).
+- `GhostCar`: los conductores en la ventanilla y el auto sin conductor con ruedas que giran solas, antenita y
+  travesuras (bocina, luces, avanzar, retroceder, escaparse al abrirlo).
 - El Titiritero con el control remoto y su tic (pulgares y antena).
 - El plan: dónde va el fantasma, en qué auto va el Titiritero y sus pistas (sobre WantedPlan).
 - El control remoto como prueba (+100 en el baúl).
