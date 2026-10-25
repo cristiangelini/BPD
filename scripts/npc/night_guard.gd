@@ -118,7 +118,7 @@ func _ready() -> void:
 	shape.shape = capsule
 	shape.position.y = 0.8
 	add_child(shape)
-	_model = MODEL.instantiate()
+	_model = _model_scene().instantiate()
 	add_child(_model)
 	_bubble = Label3D.new()
 	_bubble.name = "Bubble"
@@ -134,6 +134,11 @@ func _ready() -> void:
 	add_child(_bubble)
 
 
+## What he looks like (the early comisario of the cleaning crew's jailbreak is another).
+func _model_scene() -> PackedScene:
+	return MODEL
+
+
 ## The key is still in a donut of the box.
 func key_in_box() -> bool:
 	return not key_on_belt and box != null and key_donut < box.donuts
@@ -144,9 +149,7 @@ func box_in_reach() -> bool:
 
 
 func _physics_process(delta: float) -> void:
-	_bubble_left -= delta
-	if _bubble.visible and _bubble_left <= 0.0:
-		_bubble.hide()
+	_tick_bubble(delta)
 	if is_asleep():
 		asleep_left -= delta
 		if asleep_left <= 0.0:
@@ -162,6 +165,12 @@ func _physics_process(delta: float) -> void:
 		return
 	_turn_head(delta)
 	_watch(delta)
+
+
+func _tick_bubble(delta: float) -> void:
+	_bubble_left -= delta
+	if _bubble.visible and _bubble_left <= 0.0:
+		_bubble.hide()
 
 
 func is_asleep() -> bool:

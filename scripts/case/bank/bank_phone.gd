@@ -27,6 +27,9 @@ const SING_REACH := 3.0
 ## The patrol car this far from the bank's entrance.
 const CAR_AWAY := 40.0
 const SAY_TIME := 6.0
+## The grandpa Oso (robo-banco-abuelos.md, step 4) doesn't hear well: the first E on each request only gets a "What?",
+## and asks in his own words.
+const DEAF_LINES := 3
 
 var bank: BankLevel
 ## Where the phone hangs on the car (the level sets it).
@@ -37,6 +40,11 @@ var promised := false
 ## Seconds left to promise (asking) or to keep the promise.
 var left := 0.0
 var sung := 0.0
+## The grandpa Oso, who has to hear it twice; whether this request's first "yes" was already said.
+var deaf := false
+var said_once := false
+## El Oso hung up for good: his real boss, the bank's manager, was caught (robo-banco-gerente.md, step 3).
+var hung_up := false
 ## A guest's: only shows the host's (apply_net_state).
 var follower := false
 var _order: Array[String] = []
@@ -91,14 +99,21 @@ func _ready() -> void:
 
 
 func prompt_key(_cop: Cop) -> String:
+	if hung_up:
+		return "PROMPT_PHONE_CALL"
 	if request == "":
 		return "PROMPT_PHONE_CALL"
-	return "" if promised else "PROMPT_PHONE_PROMISE"
+	if promised:
+		return ""
+	return "PROMPT_PHONE_LOUDER" if said_once else "PROMPT_PHONE_PROMISE"
 
 
 ## E: calls the bank, or promises what El Oso just asked for.
 func use(_cop: Cop) -> void:
 	if follower:
+		return
+	if hung_up:
+		say("PHONE_NO_ANSWER")
 		return
 	if request == "":
 		request = _order[_next % _order.size()]
@@ -107,9 +122,14 @@ func use(_cop: Cop) -> void:
 			request = _order[_next % _order.size()]
 			_next += 1
 		promised = false
+		said_once = false
 		left = ASK_TIME
 		sung = 0.0
-		say("BEAR_PHONE_ASK_" + request.to_upper())
+		say(("BEAR_GRANDPA_ASK_" if deaf else "BEAR_PHONE_ASK_") + request.to_upper())
+	elif deaf and not said_once:
+		said_once = true
+		left = ASK_TIME
+		say("BEAR_GRANDPA_WHAT_%d" % ((_next - 1) % DEAF_LINES + 1))
 	elif not promised:
 		promised = true
 		left = PROMISE_TIME
@@ -140,6 +160,14 @@ func done() -> bool:
 func car_away() -> bool:
 	var door := bank.global_transform * Vector3(BankLevel.ENTRANCE_X, 0, BankLevel.HALF_Z)
 	return car.global_position.distance_to(door) > CAR_AWAY
+
+
+## El Oso finds out his boss was caught: "¿Jefe? ¿Jefe?", he hangs up and there are no more requests.
+func hang_up() -> void:
+	hung_up = true
+	request = ""
+	promised = false
+	say("BEAR_PHONE_BOSS_GONE")
 
 
 func _physics_process(delta: float) -> void:
@@ -179,9 +207,9 @@ func said() -> String:
 
 
 ## What a guest's phone shows (BankCase.snapshot): what El Oso asks for, whether it was promised, the time left and
-## his bubble.
+## his bubble, whether the grandpa Oso already heard the first "yes" and whether El Oso hung up for good.
 func net_state() -> Array:
-	return [request, promised, snappedf(left, 0.1), _bubble.text, _bubble.visible]
+	return [request, promised, snappedf(left, 0.1), _bubble.text, _bubble.visible, said_once, hung_up]
 
 
 func apply_net_state(state: Array) -> void:
@@ -190,6 +218,10 @@ func apply_net_state(state: Array) -> void:
 	left = state[2]
 	_bubble.text = state[3]
 	_bubble.visible = state[4]
+	if state.size() > 5:
+		said_once = state[5]
+	if state.size() > 6:
+		hung_up = state[6]
 
 
 func _process(delta: float) -> void:
