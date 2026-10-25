@@ -112,6 +112,8 @@ var fuse_board: FuseBoard
 var blackout_case: BlackoutCase
 ## The visiting day's line of visitors and the search table (carcel-visitas.md, step 2).
 var visits: VisitPlan
+## The visiting day case on top (step 6): the comisario's briefing, the planilla and the end of the shift.
+var visit_case: VisitCase
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -219,6 +221,12 @@ func _start_visits() -> void:
 	visits.name = "Visits"
 	add_child(visits)
 	visits.setup(self, case_seed)
+	visit_case = VisitCase.new()
+	visit_case.name = "VisitCase"
+	visit_case.prison = self
+	visit_case.shift_screen = $ShiftScreen
+	add_child(visit_case)
+	visit_case.start(city.get("comisario"))
 	city.transform = CityLayout.anchor("prison")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
