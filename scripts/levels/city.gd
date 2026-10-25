@@ -43,6 +43,9 @@ const HEDGE_HEIGHT := 2.5
 ## The test city's cars and walkers (ciudad-viva.md); a test that needs clear streets turns them off.
 @export var traffic := true
 
+## The test city's clock with day and night (ciudad-viva.md, step 5).
+var clock: CityClock
+
 ## The comisario in his office at the station; the case scene listens to him.
 var comisario: Comisario
 ## The armero behind the armory counter.
@@ -118,6 +121,21 @@ func _build() -> void:
 		var moving := CityTraffic.new()
 		moving.name = "Traffic"
 		_built.add_child(moving)
+	if alive:
+		clock = CityClock.new()
+		clock.name = "Clock"
+		clock.hour = CityClock.start_hour(randi())
+		clock.sun = get_node_or_null("Sun")
+		var world := get_node_or_null("Environment") as WorldEnvironment
+		clock.environment = world.environment if world else null
+		var life: CityLife = _built.get_node("Life")
+		clock.lamps = life.lamp_materials()
+		clock.windows = life.window_materials()
+		clock.windows.append(_material(GLASS))
+		var moving := _built.get_node_or_null("Traffic") as CityTraffic
+		if moving:
+			clock.night_changed.connect(moving.set_night)
+		add_child(clock)
 
 
 ## A square hedge `reach` from the middle, with a gap at the ramp's street on each of the `open` sides.
