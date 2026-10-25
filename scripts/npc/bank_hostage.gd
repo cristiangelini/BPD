@@ -62,6 +62,8 @@ const HOME_GIVE_UP := 20.0
 
 @export var look := "vecina"
 var next_line := 0
+## Wading in the flooded bank (BankWater): walking speed times this.
+var wade := 1.0
 ## The cop (or the bank's sorry robber) leading them by the hand, if any.
 var led_by: Node3D
 ## At the party (decision 121): they sway to the music while they sit, each at their own beat.
@@ -351,7 +353,7 @@ func _walk_home(delta: float) -> void:
 func _step(wish: Vector3, delta: float) -> void:
 	if wish.length() > 0.05:
 		look_at(global_position + wish, Vector3.UP)
-	velocity = Vector3(wish.x, 0.0 if is_on_floor() else velocity.y - GameScale.GRAVITY * delta, wish.z)
+	velocity = Vector3(wish.x * wade, 0.0 if is_on_floor() else velocity.y - GameScale.GRAVITY * delta, wish.z * wade)
 	move_and_slide()
 
 

@@ -27,7 +27,9 @@ extends Node3D
 ## his mask with a white hanky and wants to give it all back. In every robbery Mr. Moneda, the manager, waits in
 ## pajamas on the sidewalk by his car and gives the back door's key to whoever talks to him (BankManager,
 ## robo-banco-gerente.md, decision 124); a fifth of the seeds he's the gang's real boss, and the others share the rest
-## in quarters. --bank=party, --bank=grandpas, --bank=sorry, --bank=manager or --bank=base forces one.
+## in quarters. A sixth of the seeds, drawn before them, the duck's drill punctured the pipe behind the vault and the
+## bank floods (BankWater, robo-banco-inundado.md, decision 125). --bank=party, --bank=grandpas, --bank=sorry,
+## --bank=manager, --bank=flood or --bank=base forces one.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -187,6 +189,8 @@ var manager_trunk: ManagerTrunk
 var marbles: BankMarbles
 var croissant_tray: BankCroissantTray
 var drill: BankDrill
+## The flooding vault's water (decision 125), or null.
+var water: BankWater
 var hostages_freed := 0
 var phone: BankPhone
 ## How many sacks of money the robbers got away with, the getaway chase if El Oso ran, and how it ended.
@@ -246,6 +250,8 @@ func _ready() -> void:
 	drill.watch_hostages(hostages)
 	drill.opened.connect(open_vault)
 	drill.opened.connect(_on_vault_opened)
+	if drawn == "flood":
+		_add_water()
 	phone = BankPhone.new()
 	phone.name = "Phone"
 	phone.position = PHONE_ON_CAR
@@ -266,14 +272,16 @@ func _ready() -> void:
 	case.start()
 
 
-## Which robbery this seed is, a fifth each (propuesta): "manager" (the manager is the boss) drawn first, and the rest
-## in quarters: "party" (the hostages don't want to leave), "grandpas", "sorry" (one robber wants to give it all back)
-## or "base"; --bank=party, --bank=grandpas, --bank=sorry, --bank=manager or --bank=base among the user args forces
-## one.
+## Which robbery this seed is (propuesta): a sixth "flood" (the vault floods) drawn first, then a fifth of the rest
+## "manager" (the manager is the boss), and the rest in quarters: "party" (the hostages don't want to leave),
+## "grandpas", "sorry" (one robber wants to give it all back) or "base"; --bank=party, --bank=grandpas, --bank=sorry,
+## --bank=manager, --bank=flood or --bank=base among the user args forces one.
 static func variant(seed_: int, args: PackedStringArray) -> String:
 	for arg in args:
-		if arg in ["--bank=party", "--bank=grandpas", "--bank=sorry", "--bank=manager", "--bank=base"]:
+		if arg in ["--bank=party", "--bank=grandpas", "--bank=sorry", "--bank=manager", "--bank=flood", "--bank=base"]:
 			return arg.trim_prefix("--bank=")
+	if hash(["bank caño", seed_]) % 6 == 0:
+		return "flood"
 	if hash(["bank moneda", seed_]) % 5 == 0:
 		return "manager"
 	return ["party", "grandpas", "sorry", "base"][hash(["bank party", seed_]) % 4]
@@ -287,6 +295,20 @@ static func sorry_animal(seed_: int) -> String:
 ## Whether this seed's robbery is the party where the hostages don't want to leave.
 static func is_party(seed_: int, args: PackedStringArray) -> bool:
 	return variant(seed_, args) == "party"
+
+
+## The flooding vault's water: over the whole bank's floor, its jet out of the hole the drill made in the vault's door.
+func _add_water() -> void:
+	water = BankWater.new()
+	water.name = "Water"
+	water.area = Rect2(-HALF_X, -HALF_Z, HALF_X * 2.0, HALF_Z * 2.0).grow(-0.15)
+	water.floor_top = FLOOR_TOP
+	water.jet_from = Vector3(VAULT_X - 0.25, FLOOR_TOP + VAULT_DOOR_RADIUS + 0.4, VAULT_DOOR_Z + 0.3)
+	for robber in robbers:
+		water.waders.append(robber)
+	for hostage in hostages:
+		water.waders.append(hostage)
+	add_child(water)
 
 
 ## The party's things: the garlands across the hall, the boombox playing on the bench (its notes bobbing over it) and

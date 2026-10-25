@@ -99,6 +99,8 @@ const TIED_CROUCH := 0.8
 @export var animal := "conejo"
 ## One of the grandpa gang: slower, and their own model.
 var grandpa := false
+## Wading in the flooded bank (BankWater): walking and running speed times this.
+var wade := 1.0
 ## The one who's sorry and wants to give it all back: he cries with a white hanky and doesn't shout about cops or
 ## hostages led out.
 var sorry := false
@@ -544,7 +546,7 @@ func _pose(delta: float) -> void:
 func _step(wish: Vector3, delta: float) -> void:
 	if wish.length() > 0.05:
 		look_at(global_position + wish, Vector3.UP)
-	velocity = Vector3(wish.x, 0.0 if is_on_floor() else velocity.y - GameScale.GRAVITY * delta, wish.z)
+	velocity = Vector3(wish.x * wade, 0.0 if is_on_floor() else velocity.y - GameScale.GRAVITY * delta, wish.z * wade)
 	move_and_slide()
 
 
@@ -579,7 +581,7 @@ func _run(delta: float) -> void:
 			hid_in_van.emit(self)
 		return
 	look_at(global_position + to, Vector3.UP)
-	velocity = to.normalized() * run_speed()
+	velocity = to.normalized() * run_speed() * wade
 	velocity.y = 0.0 if is_on_floor() else -GameScale.GRAVITY * delta
 	move_and_slide()
 

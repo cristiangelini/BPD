@@ -21,12 +21,12 @@ func _bank(want: String) -> BankLevel:
 	return bank
 
 
-func test_a_fifth_of_the_seeds_he_is_the_boss_and_the_arg_forces_it() -> void:
+func test_a_sixth_of_the_seeds_he_is_the_boss_and_the_arg_forces_it() -> void:
 	var bosses := 0
 	for seed_ in range(1, 401):
 		if BankLevel.variant(seed_, PackedStringArray()) == "manager":
 			bosses += 1
-	assert_between(bosses, 50, 110)
+	assert_between(bosses, 40, 100)
 	for seed_ in range(1, 20):
 		assert_eq(BankLevel.variant(seed_, PackedStringArray(["--bank=manager"])), "manager")
 

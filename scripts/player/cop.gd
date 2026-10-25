@@ -82,6 +82,8 @@ var disguise := {}
 var _shaken := 0.0
 ## Something slows the cop down for a while (the market's cramps, Cramps): walking and running speed times this.
 var slow_factor := 1.0
+## Wading in the flooded bank (BankWater): walking and running speed times this too.
+var wade := 1.0
 var _fall_gap_left := 0.0
 
 @onready var _shape: CollisionShape3D = $Shape
@@ -641,9 +643,9 @@ func is_disguised(look := "grandparent") -> bool:
 
 
 func current_speed() -> float:
-	var factor := (BatteringRam.SPEED_FACTOR if ram else 1.0) * slow_factor
+	var factor := (BatteringRam.SPEED_FACTOR if ram else 1.0) * slow_factor * wade
 	if wheelbarrow:
-		factor = Wheelbarrow.SPEED_FACTOR * slow_factor
+		factor = Wheelbarrow.SPEED_FACTOR * slow_factor * wade
 	if is_crouching:
 		return GameScale.CROUCH_SPEED * factor
 	if is_running:
