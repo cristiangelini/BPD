@@ -453,6 +453,8 @@ HARDWARE_SCREW_2,"Este no, este es de un cuarto... este es de un gato...","Not t
 HARDWARE_SCREW_3,"Estaba acá... juraría que estaba acá...","It was here... I'd swear it was here...","Estava aqui... eu juraria que estava aqui..."
 HARDWARE_SCREW_DONE,¡No me queda! Vuelva el martes.,I'm out! Come back on Tuesday.,Acabou! Volte na terça.
 HARDWARE_SCREW_TIRED,"Ya le dije que no hay, oficial.","I already told you there aren't any, officer.","Já disse que não tem, policial."
+HARDWARE_CHARGED,"¡Son 15, oficial! ¡Lo anoto!","That's 15, officer! On the bill!","São 15, policial! Vou anotar!"
+HARDWARE_TOOK_BACK,"Bueno, lo devolvió. Lo tacho.","Fine, you put it back. I'll cross it off.","Tá bom, devolveu. Vou riscar."
 PROMPT_SCREW_BELL,"E: pedir un tornillo de tres octavos (Tobías lo busca de espaldas, sin mirar el local)","E: ask for a three-eighths screw (Tobías looks for it with his back turned, not watching the shop)","E: pedir um parafuso de três oitavos (Tobías procura de costas, sem olhar a loja)"
 CASE_FAILED_LAWYER_HARDWARE,Tobías llamó a su abogado. Caso perdido.,Tobías called his lawyer. Case lost.,O Tobías ligou para o advogado. Caso perdido.
 GROOMER_SLIP,"«¡Yo no guardé nada %s!... Digo, ¿quién sigue con turno?»","“I didn't put anything %s!... I mean, who's next?”","“Eu não guardei nada %s!... Quer dizer, quem é o próximo?”"

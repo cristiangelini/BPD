@@ -32,9 +32,52 @@ export function buildScrewJar() {
 	return b.build();
 }
 
+// The tools for sale on the gondolas, lying flat with their length along X and a little orange price tag.
+function priceTag(b, at) {
+	b.add('tag', mat('price_tag', 0xff9a2a), new THREE.BoxGeometry(0.03, 0.002, 0.02), { pos: at });
+}
+
+// A hammer: 0.3 m long, wooden handle and a steel head.
+export function buildHammer() {
+	const b = new Builder('tool_hammer');
+	b.add('handle', mat('tool_wood', 0xc8945a), new THREE.BoxGeometry(0.28, 0.025, 0.03), { pos: V(-0.02, 0, 0) });
+	b.add('head', mat('tool_steel', 0x7a8088), new THREE.BoxGeometry(0.04, 0.035, 0.11), { pos: V(0.12, 0.003, 0) });
+	priceTag(b, V(-0.08, 0.014, 0));
+	return b.build();
+}
+
+// An adjustable wrench: 0.25 m long, all steel, with an open jaw.
+export function buildWrench() {
+	const b = new Builder('tool_wrench');
+	const steel = mat('tool_chrome', 0xb8bcc4);
+	b.add('handle', steel, new THREE.BoxGeometry(0.2, 0.015, 0.03), { pos: V(-0.02, 0, 0) });
+	for (const s of [-1, 1]) b.add('jaw', steel, new THREE.BoxGeometry(0.05, 0.02, 0.018), { pos: V(0.1, 0, s * 0.025) });
+	priceTag(b, V(-0.06, 0.009, 0));
+	return b.build();
+}
+
+// A hand saw: 0.45 m long, a wide blade and a red handle.
+export function buildSaw() {
+	const b = new Builder('tool_saw');
+	b.add('blade', mat('saw_blade', 0xd8dce2), new THREE.BoxGeometry(0.34, 0.006, 0.1), { pos: V(0.06, 0, 0) });
+	b.add('handle', mat('saw_handle', 0xd23a3a), new THREE.BoxGeometry(0.1, 0.03, 0.12), { pos: V(-0.17, 0.006, 0) });
+	priceTag(b, V(0.0, 0.004, 0.02));
+	return b.build();
+}
+
+// A screwdriver: 0.22 m long, yellow handle and a thin steel shaft.
+export function buildScrewdriver() {
+	const b = new Builder('tool_screwdriver');
+	b.add('handle', mat('handle_yellow_tool', 0xf2c230), new THREE.CylinderGeometry(0.016, 0.016, 0.09, 6), { pos: V(-0.065, 0, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('shaft', mat('tool_chrome', 0xb8bcc4), new THREE.CylinderGeometry(0.004, 0.004, 0.13, 4), { pos: V(0.045, 0, 0), rot: [0, 0, Math.PI / 2] });
+	priceTag(b, V(-0.065, 0.017, 0));
+	return b.build();
+}
+
 export const models = {
 	...Object.fromEntries(PAINTS.map((_, i) => [`paint_can_${i}`, () => buildPaintCan(i)])),
 	screw_jar: buildScrewJar,
+	tool_hammer: buildHammer, tool_wrench: buildWrench, tool_saw: buildSaw, tool_screwdriver: buildScrewdriver,
 };
 
 export const views = {
@@ -44,5 +87,12 @@ export const views = {
 			{ name: 'paint_can_2', pos: [0.2, 0.095, 0] }, { name: 'screw_jar', pos: [0.05, 0.075, 0.2] },
 		],
 		cam: { pos: [0, 0.4, 0.9], target: [0, 0.08, 0], fov: 36 },
+	},
+	hardware_tools: {
+		items: [
+			{ name: 'tool_hammer', pos: [-0.25, 0.02, -0.1] }, { name: 'tool_wrench', pos: [0.2, 0.01, -0.12] },
+			{ name: 'tool_saw', pos: [-0.1, 0.01, 0.15] }, { name: 'tool_screwdriver', pos: [0.28, 0.02, 0.12] },
+		],
+		cam: { pos: [0, 0.6, 0.8], target: [0, 0, 0], fov: 40 },
 	},
 };

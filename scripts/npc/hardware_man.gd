@@ -197,6 +197,16 @@ func struck() -> bool:
 	return true
 
 
+## He saw a tool from his gondolas in a cop's hand long enough: it goes on the bill.
+func charged() -> void:
+	_say("HARDWARE_CHARGED")
+
+
+## The tool is back on its gondola: he takes it off the bill.
+func took_back() -> void:
+	_say("HARDWARE_TOOK_BACK")
+
+
 ## A door came down with the ram: he hears it from anywhere in the store, searching or not.
 func door_broken() -> void:
 	_raise(DOOR_BROKEN)

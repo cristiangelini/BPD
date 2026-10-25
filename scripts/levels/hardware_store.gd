@@ -5,13 +5,24 @@ extends Node3D
 ## and the workshop behind it, and the materials yard at the back, on its lot in the city with the front to +Z.
 ## The shop is open; the storeroom ("Solo personal") and the workshop's back door to the yard are locked. The paint
 ## cans of the display and the screw jars on the counter break, each one a fine. Tobías serves behind the counter,
-## watches what breaks and looks for a screw with his back turned when a cop rings the counter bell (step 2).
+## watches what breaks and looks for a screw with his back turned when a cop rings the counter bell (step 2). The
+## tools on the gondolas are for sale: what he sees in a cop's hand goes on the bill, and comes off it when it's put
+## back (step 3).
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const PAINT_SCENE := preload("res://scenes/props/paint_can.tscn")
 const JAR_SCENE := preload("res://scenes/props/screw_jar.tscn")
 const TOBIAS_SCENE := preload("res://scenes/npc/hardware_man.tscn")
+## The tools for sale, laid along the gondolas' two upper boards, both sides.
+const TOOL_SCENES: Array[PackedScene] = [
+	preload("res://scenes/props/tool_hammer.tscn"), preload("res://scenes/props/tool_wrench.tscn"),
+	preload("res://scenes/props/tool_saw.tscn"), preload("res://scenes/props/tool_screwdriver.tscn"),
+]
+const TOOL_ALONG: Array[float] = [-0.7, 0.0, 0.7]
+## How far from a gondola's middle the tools lie on each side of its back panel.
+const TOOL_SIDE := 0.17
+const TOOL_HALF_HEIGHT := 0.02
 ## The paint colors of the display, one model each (tools/modelgen/models/hardware.js).
 const PAINT_MODELS: Array[PackedScene] = [
 	preload("res://assets/models/paint_can_0.glb"), preload("res://assets/models/paint_can_1.glb"),
@@ -122,6 +133,9 @@ var broken_goods := 0
 ## Money taken off the case pay for broken things (each one is an Ornament.FINE).
 var fines := 0
 var tobias: HardwareMan
+## The tools for sale, and how many of them are on the bill now.
+var merchandise: Array[Merchandise] = []
+var bill := 0
 var bell: CounterBell
 var complaint_bar: ProgressBar
 ## Tobías called his lawyer: the case is lost.
@@ -138,6 +152,7 @@ func _ready() -> void:
 	_build_storeroom()
 	_build_workshop()
 	_place_fragile()
+	_place_merchandise()
 	store_door = _door(Vector3(STORE_DOOR_X - GameScale.DOOR_WIDTH / 2, 0, SPLIT_Z), 0.0)
 	back_door = _door(Vector3(BACK_DOOR_X + GameScale.DOOR_WIDTH / 2, 0, BACK_Z), PI)
 	_place_tobias()
@@ -321,6 +336,46 @@ func _place_tobias() -> void:
 	box.add_child(complaint_bar)
 	add_child(hud)
 	tobias.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## The tools on the gondolas' two upper boards, both sides of the back panel, turned to lie along the board.
+func _place_merchandise() -> void:
+	var kind := 0
+	for gondola: Vector3 in GONDOLAS:
+		for board: float in GONDOLA_BOARDS.slice(1):
+			for side: float in [-TOOL_SIDE, TOOL_SIDE]:
+				for along: float in TOOL_ALONG:
+					var item: Merchandise = TOOL_SCENES[kind % TOOL_SCENES.size()].instantiate()
+					kind += 1
+					item.position = gondola + Vector3(side, board + 0.02 + TOOL_HALF_HEIGHT + 0.01, along)
+					item.rotation.y = PI / 2
+					add_child(item)
+					item.home = item.position
+					merchandise.append(item)
+
+
+## The bill: a tool Tobías sees in a hand for long enough goes on it (as much off the pay as its price), and comes
+## off when it lies near its place again.
+func _physics_process(delta: float) -> void:
+	if not tobias:
+		return
+	for item: Merchandise in merchandise:
+		if not item.is_in_hand():
+			item.seen = 0.0
+			if item.charged and item.is_home():
+				item.charged = false
+				bill -= 1
+				fines -= Merchandise.PRICE
+				tobias.took_back()
+			continue
+		if item.charged or not tobias.can_see(item.global_position):
+			continue
+		item.seen += delta
+		if item.seen >= Merchandise.SEEN_TO_CHARGE:
+			item.charged = true
+			bill += 1
+			fines += Merchandise.PRICE
+			tobias.charged()
 
 
 func _on_lawyer_called() -> void:
