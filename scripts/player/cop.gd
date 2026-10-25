@@ -35,6 +35,8 @@ var is_crouching := false
 var exhausted := false
 ## Found in one of the pots by the grandpa's front door.
 var has_key := false
+## A duck float around the waist, from the patrol car's trunk in the flooding bank (BankFloats).
+var duck_float := false
 ## The battering ram in hand, if this cop carries it. Hands are busy: no grabbing.
 var ram: BatteringRam
 ## The wheelbarrow this cop pushes, if any. Hands are busy: E loads things into it instead of grabbing.

@@ -83,3 +83,10 @@ la ola de la puerta y los flotadores.
   el caño abierto el agua se queda donde está; con el caño cerrado baja 0,1 m cada 10 s. Cada vez que la puerta se
   abre con 0,2 m o más sale una ola: el agua baja 0,1 m de golpe, voltea a los policías a 3,5 m de la puerta y empuja
   hacia la vereda las cosas sueltas. Capturas en `/mnt/project-files/inundado/paso2-*.png`.
+- **Paso 3 (el taladro mojado, los rehenes y los flotadores):** desde 0,5 m el taladro está mojado (`BankDrill.wet`):
+  va a la mitad, chisporrotea y la barra dice "El taladro está mojado"; el pato avisa "¡Glu, glu!" una vez. Desde
+  0,6 m los rehenes que siguen adentro sueltan la mano y se suben al mostrador, cada uno en su lugar, mirando al hall
+  ("¡No sé nadar!"); sin flotador no bajan. En el baúl del patrullero hay cuatro flotadores de patito (`BankFloats`):
+  E se pone uno (uno por policía, `Cop.duck_float`) y E sobre un rehén del mostrador se lo pone, el rehén baja y sigue
+  de la mano sin que el agua lo frene. Con el agua debajo de 0,5 m los del mostrador bajan solos a su lugar. Capturas
+  en `/mnt/project-files/inundado/paso3-*.png`.

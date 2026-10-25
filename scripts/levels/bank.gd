@@ -142,6 +142,10 @@ const UNPLUGGED := 60.0
 const SORRY_HOSTAGES := 2
 ## The flooding bank's valve (robo-banco-inundado.md, step 2): on the back wall, outside, east of the back door.
 const VALVE_AT := Vector3(BACK_DOOR_X + 2.2, 0, -HALF_Z - 0.15)
+## Step 3: where the hostages get up on the counter, one each from the west end, and the duck floats in the patrol
+## car's trunk.
+const PERCH_XS: Array[float] = [-9.3, -7.9, -6.5, -5.1, -3.7, -2.3, -0.9, 0.5]
+const FLOATS_IN_TRUNK := Vector3(0, 0.45, -1.75)
 ## Where the gang ties the sorry robber when they catch him helping (step 4): a chair by the hall's west wall, facing
 ## the hall.
 const CHAIR_AT := Vector3(-10.5, 0, 1.2)
@@ -195,6 +199,7 @@ var drill: BankDrill
 var water: BankWater
 var valve: BankValve
 var front_door: FrontDoor
+var floats: BankFloats
 var hostages_freed := 0
 var phone: BankPhone
 ## How many sacks of money the robbers got away with, the getaway chase if El Oso ran, and how it ended.
@@ -330,6 +335,19 @@ func _add_water() -> void:
 	for robber in robbers:
 		if robber.animal == "chancho":
 			robber.spotted.connect(func(_robber: BankRobber, _cop: Node3D) -> void: open_front())
+		elif robber.animal == "pato":
+			water.duck = robber
+	water.drill = drill
+	for i in hostages.size():
+		var x: float = PERCH_XS[i % PERCH_XS.size()]
+		water.hostages.append(hostages[i])
+		water.perches.append(global_transform * Vector3(x, FLOOR_TOP + COUNTER_SIZE.y, COUNTER_Z))
+		water.down_at.append(global_transform * Vector3(x, FLOOR_TOP, COUNTER_Z + 1.0))
+	floats = BankFloats.new()
+	floats.name = "Floats"
+	floats.position = FLOATS_IN_TRUNK
+	car.add_child(floats)
+	car.add_collision_exception_with(floats)
 
 
 ## Someone inside walks out of the flooding bank's front door: it swings open (and the wave rushes out).
