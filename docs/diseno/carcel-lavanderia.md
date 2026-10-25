@@ -105,3 +105,10 @@ nadie duerme un gato, qué pistas da cada uno y cuándo un preso se mete en un l
   también mueve las sábanas; al revisarlo o volcarlo aparece el gato arriba de la ropa ("Solo un gato durmiendo en las
   toallas"). Las pistas salen de una semilla por carrito, igual en todas las PC. Capturas: `paso4-estornudo.png` y
   `paso4-gato.png`.
+- **Paso 5 (el lavarropas):** los 4 lavarropas y los 2 secarropas son `LaundryMachine` y se abren con E (la puerta
+  redonda se abre y se vuelve a cerrar). La semilla elige 2 de los 3 primeros viajes: a mitad de camino hasta el
+  siguiente, un preso se mete en una máquina (también elegida por la semilla), que tiembla y cada 6 a 10 s se queja
+  ("¡Ay, ay, ay! ¡Paren esto!"). Si nadie lo abre, cuando llega el próximo viaje se pasa a uno de sus carritos que no
+  tenía a nadie ni estaba revisado (se le va el gato si había). Abierto antes, sale mareado ("Todo da vueltas...
+  ¿Dónde está la puerta?"), se queda 5 s y después corre al portón como los de los carritos. Abrir una máquina vacía no
+  resta ("Solo ropa dando vueltas"). Capturas: `paso5-lavarropas.png` y `paso5-mareado.png`.
