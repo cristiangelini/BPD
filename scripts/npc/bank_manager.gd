@@ -8,12 +8,18 @@ extends CharacterBody3D
 ## where he's the gang's real boss (`boss`, step 2) he looks the same at first sight, but the key he gives doesn't fit
 ## (the level marks the back door), every 20 to 30 s he stops, takes a walkie out of his pajama's pocket and murmurs
 ## into it for 2 s (`radioed`: the level hurries the drill if no cop is near him), and now and then a complaint gives
-## him away.
+## him away. The handcuffs (step 3): the boss gives up (`caught`, he doesn't pace nor use the walkie again) and E walks
+## him to the patrol car (OwnerEscort, the level adds it); the honest one protests ("¡Soy la víctima!"), the cuffs hold
+## him only HONEST_CUFF seconds and `wrongly_cuffed` goes off the first time.
 ## Every number here is (propuesta).
 
 signal key_given(cop: Cop)
 ## The boss talked to the gang on his walkie.
 signal radioed(manager: BankManager)
+## The boss in handcuffs, the first time.
+signal caught_now(manager: BankManager)
+## The honest one in handcuffs, the first time.
+signal wrongly_cuffed(manager: BankManager)
 
 const MODEL := preload("res://assets/models/npc_gerente.glb")
 ## He paces this fast (m/s) between his two spots, and stands this long at each end (s).
@@ -32,12 +38,18 @@ const WALKIE_TIME := 2.0
 const WALKIE_LINES := 3
 const BOSS_LINES := 2
 const BOSS_LINE_EVERY := 3
+## The honest manager stays cuffed this long (s), however long the cuffs say.
+const HONEST_CUFF := 3.0
 
 ## The two ends of his pacing (world positions; the level sets them before he enters the tree).
 var spots: Array[Vector3] = []
 ## The gang's real boss (step 2).
 var boss := false
 var has_key := true
+## The boss was cuffed: he gave up. The honest one was cuffed once.
+var caught := false
+var was_cuffed := false
+var _cuffed_left := 0.0
 var next_line := 0
 ## Seconds the walkie is still out, and until the next time.
 var walkie_left := 0.0
@@ -86,12 +98,22 @@ func _ready() -> void:
 		spots = [global_position, global_position]
 
 
-func prompt_key(_cop: Cop) -> String:
+func prompt_key(cop: Cop) -> String:
+	var escort := OwnerEscort.of(self)
+	if escort and escort.handles_use():
+		return escort.prompt_key(cop)
 	return "PROMPT_TALK_MANAGER"
 
 
-## E: the back door's key the first time, a complaint after that.
+## E: the back door's key the first time, a complaint after that; cuffed (the boss), the escort to the patrol car.
 func use(cop: Cop) -> void:
+	var escort := OwnerEscort.of(self)
+	if escort and escort.handles_use():
+		escort.use(cop)
+		return
+	if caught:
+		say("MANAGER_CAUGHT_AGAIN")
+		return
 	if has_key:
 		has_key = false
 		cop.has_key = true
@@ -103,11 +125,47 @@ func use(cop: Cop) -> void:
 	next_line += 1
 
 
+## The handcuffs: the boss gives up for good, the honest one protests and is let go soon.
+func cuffed(seconds: float) -> void:
+	if boss:
+		_cuffed_left = maxf(_cuffed_left, seconds)
+		walkie_left = 0.0
+		_walkie.hide()
+		_model.rotation.z = 0.0
+		say("MANAGER_CAUGHT")
+		if not caught:
+			caught = true
+			caught_now.emit(self)
+		return
+	_cuffed_left = maxf(_cuffed_left, minf(seconds, HONEST_CUFF))
+	say("MANAGER_VICTIM")
+	if not was_cuffed:
+		was_cuffed = true
+		wrongly_cuffed.emit(self)
+
+
+func is_cuffed() -> bool:
+	return _cuffed_left > 0.0
+
+
+## What the escort calls (OwnerEscort): a line for `seconds`; he has no complaint meter.
+func _say(key: String, seconds := SAY_TIME) -> void:
+	say(key)
+	_bubble_left = seconds
+
+
+func _raise(_points: float) -> void:
+	pass
+
+
 func _physics_process(delta: float) -> void:
 	if _bubble_left > 0.0:
 		_bubble_left -= delta
 		if _bubble_left <= 0.0:
 			_bubble.hide()
+	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
+	if caught or is_cuffed():
+		return
 	_line_left -= delta
 	if _line_left <= 0.0:
 		_line_left = LINE_EVERY

@@ -43,6 +43,8 @@ var sung := 0.0
 ## The grandpa Oso, who has to hear it twice; whether this request's first "yes" was already said.
 var deaf := false
 var said_once := false
+## El Oso hung up for good: his real boss, the bank's manager, was caught (robo-banco-gerente.md, step 3).
+var hung_up := false
 ## A guest's: only shows the host's (apply_net_state).
 var follower := false
 var _order: Array[String] = []
@@ -97,6 +99,8 @@ func _ready() -> void:
 
 
 func prompt_key(_cop: Cop) -> String:
+	if hung_up:
+		return "PROMPT_PHONE_CALL"
 	if request == "":
 		return "PROMPT_PHONE_CALL"
 	if promised:
@@ -107,6 +111,9 @@ func prompt_key(_cop: Cop) -> String:
 ## E: calls the bank, or promises what El Oso just asked for.
 func use(_cop: Cop) -> void:
 	if follower:
+		return
+	if hung_up:
+		say("PHONE_NO_ANSWER")
 		return
 	if request == "":
 		request = _order[_next % _order.size()]
@@ -153,6 +160,14 @@ func done() -> bool:
 func car_away() -> bool:
 	var door := bank.global_transform * Vector3(BankLevel.ENTRANCE_X, 0, BankLevel.HALF_Z)
 	return car.global_position.distance_to(door) > CAR_AWAY
+
+
+## El Oso finds out his boss was caught: "¿Jefe? ¿Jefe?", he hangs up and there are no more requests.
+func hang_up() -> void:
+	hung_up = true
+	request = ""
+	promised = false
+	say("BEAR_PHONE_BOSS_GONE")
 
 
 func _physics_process(delta: float) -> void:
