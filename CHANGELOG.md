@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Doll factory, step 1: the place on its lot: reception with the porcelain dolls showcase and the time clock, the factory floor with the U belt (still) and its four machines, the storeroom with the stairs to the locked foreman's office, and the loading dock whose shutter rolls up with a button; 12 hiding spots, 6 porcelain dolls and 4 plaster molds that break as fines, a menu test button and --place=doll_factory.
 - Hardware store, step 7: online, Tobías and Don Cosme are run by the host and followed by the guests, the screw wall slides with a cop on each PC, and the golden drawer and the drill stay the host's to move.
 - Hardware store, step 7: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon and the hardware store in quarters.
 - Hardware store, step 6: the nails on the street story: the bucket of nails, the commission book and the giant magnet hidden, a patch of nails where the patrol car parks that gives it a flat tire (half speed) until the magnet comes near, and loose nails across the street as the clue.

@@ -1880,3 +1880,18 @@ PROMPT_HOLE_COVERED,"El colchón tapa el pozo: sácalo para seguir cavando","The
 PROMPT_ENTER_TUNNEL,"E: meterte en el túnel","E: get into the tunnel","E: entrar no túnel"
 HINT_TUNNEL_OUT,"¡Afuera! Estás en la vereda, al lado del patrullero. Que no te vea el guardia por la ventana.","Out! You're on the sidewalk, by the patrol car. Don't let the guard see you through the window.","Lá fora! Você está na calçada, do lado da viatura. Que o guarda não te veja pela janela."
 JAILBREAK_ESCAPED_TUNNEL,"Dejaron un túnel hecho con cucharas. El guardia va a cenar con tenedor un mes entero.","You left behind a tunnel dug with spoons. The guard will eat dinner with a fork for a month.","Vocês deixaram um túnel cavado com colheres. O guarda vai jantar de garfo por um mês inteiro."
+MENU_DOLL_FACTORY,Fábrica de muñecos (prueba),Doll factory (test),Fábrica de bonecos (teste)
+PROMPT_PUSH_BUTTON,Apretar el botón,Press the button,Apertar o botão
+PROMPT_SHUTTER_BUTTON,Subir la persiana del muelle,Raise the dock shutter,Levantar a porta do cais
+LOC_under_reception_desk,abajo del mostrador de la recepción,under the reception desk,embaixo do balcão da recepção
+LOC_in_showcase,en la vitrina de las muñecas de porcelana,in the porcelain dolls' showcase,na vitrine das bonecas de porcelana
+LOC_under_belt,abajo de la cinta,under the belt,embaixo da esteira
+LOC_in_box_cart,en el carro de cajas al final de la cinta,in the box cart at the end of the belt,no carrinho de caixas no fim da esteira
+LOC_on_mold_table,en la mesa de los moldes,on the molds table,na mesa dos moldes
+LOC_in_crate,en un cajón del depósito,in a crate in the storeroom,num caixote do depósito
+LOC_on_storeroom_rack,en el estante de abajo del depósito,on the low rack in the storeroom,na prateleira de baixo do depósito
+LOC_under_office,abajo de la oficina del capataz,under the foreman's office,embaixo do escritório do capataz
+LOC_on_office_desk,en el escritorio del capataz,on the foreman's desk,na mesa do capataz
+LOC_in_filing_cabinet,en el archivero de la oficina,in the office filing cabinet,no arquivo do escritório
+LOC_in_truck,en el camión de reparto,in the delivery truck,no caminhão de entregas
+LOC_in_dumpster,en el contenedor de descarte,in the reject dumpster,na caçamba de descarte
