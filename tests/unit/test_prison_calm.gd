@@ -124,6 +124,8 @@ func test_rile_gets_the_ringleaders_table_angrier() -> void:
 	var mates := riot.inmates.filter(func(inmate: PrisonInmate) -> bool:
 		return inmate.table == leader.table and inmate != leader)
 	assert_gt(mates.size(), 0)
+	# Below the top, so there's room to get angrier.
+	mates[0].anger = PrisonInmate.ANGRY
 	var before: float = mates[0].anger
 	riot.rile()
 	assert_gt(mates[0].anger, before)
