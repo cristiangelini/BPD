@@ -105,3 +105,11 @@ el jardinero, en qué celda está el hámster, dónde caen los montoncitos y por
   dicen "Qué piedrita molesta..."), y el que pisa un montoncito deja huellas por 4 m. Mientras alguien cava, un
   policía a menos de 5 m del escondite oye "Scrich, scrich..." cada 4 s. Encontrado el túnel, deja de avanzar.
   Capturas: `paso3-tierra.png`, `paso3-huellas.png` y `paso3-ruido.png`.
+- **Paso 4 (las pistas falsas):** el jardinero (un preso más, con sombrero de paja, que no es de la banda) va de
+  maceta en maceta (3 macetas contra el frente del edificio), se queda 6 a 10 s en cada una y también suelta
+  montoncitos de tierra al caminar; al policía que se le acerca a 3 m le dice "Es abono, oficial. Para los malvones."
+  (una vez cada 10 s). En otra celda (nunca la del túnel) hay una jaula con un hámster que rasca: un policía a menos de
+  5 m oye "Rasc, rasc..." igual que el túnel, y con E ve que es Pelusa, el hámster. Un policía a menos de 5 m del
+  escondite del túnel pone nervioso a uno de la banda que está en el patio: silba ("Fiu, fiu... ¡Qué lindo día!") y
+  camina hacia la puerta del edificio (una vez cada 15 s). Revisar un escondite vacío hace quejar desde el patio al preso
+  de esa celda ("¡Ey, mi póster!"). Capturas: `paso4-jardinero.png` y `paso4-hamster.png`.

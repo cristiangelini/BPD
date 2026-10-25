@@ -11,7 +11,11 @@ extends Node
 ## seconds they come out and the next one goes in. The one coming out leaves dirty footprints all the way back to the
 ## yard (OUT_PRINTS metres); the ones in the yard shake dirt piles out of their trouser legs (TunnelDirt), and whoever
 ## walks over a pile gets PILE_PRINTS metres of dirty footprints. While someone digs, a cop within NOISE_REACH of the
-## hideout hears it every NOISE_EVERY seconds ("scrich, scrich"). Every number here is (propuesta).
+## hideout hears it every NOISE_EVERY seconds ("scrich, scrich"). Step 4: the false leads and the tells. The
+## gardener (one more YardInmate, GARDEN) goes round the PLANTERS with fertiliser and drops dirt too; a hamster in a cage
+## (HamsterCage) in another cell scratches like the digging. A cop close to the tunnel's hideout gets a gang member in
+## the yard whistling and heading for the building (once every NERVOUS_EVERY seconds), and the owner of a hideout
+## checked for nothing complains from the yard. Every number here is (propuesta).
 
 signal started
 signal found(hideout: CellHideout)
@@ -44,6 +48,15 @@ const PILE_PRINTS := 4.0
 const PILE_STEP := 0.35
 const NOISE_REACH := 5.0
 const NOISE_EVERY := 4.0
+## Step 4: the planters by the building's front (level space x, z), where the gardener stands at each, the hamster's
+## cage from its cell's front and side wall, and the nervous whistler.
+const PLANTERS: Array[Vector2] = [Vector2(-7.5, 8.55), Vector2(-4.5, 8.55), Vector2(6.5, 8.55)]
+const PLANTER_SIZE := Vector3(1.4, 0.5, 0.6)
+const AT_PLANTER := 0.75
+const CAGE_IN := Vector2(0.45, 0.35)
+const NERVOUS_REACH := 5.0
+const NERVOUS_EVERY := 15.0
+const NERVOUS_TO := Vector2(PrisonLevel.ENTRANCES[1], 9.5)
 ## How far in front of its hideout the digger stands to get into the tunnel.
 const IN_FRONT := 0.75
 ## The block's tiled floor is a little above the yard's.
@@ -66,6 +79,11 @@ var next_up := 0
 var shift_left := 0.0
 var dirt: Node3D
 var _noise_left := 0.0
+## Step 4: the gardener, the hamster's cell and cage, and when the next nervous whistle can come.
+var gardener: YardInmate
+var hamster_cell := 0
+var hamster: HamsterCage
+var _whistle_left := 0.0
 ## A guest's copy (step 7): the host's plan decides.
 var follower := false
 var _rng := RandomNumberGenerator.new()
@@ -86,6 +104,10 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 	dirt = Node3D.new()
 	dirt.name = "Dirt"
 	prison.add_child(dirt)
+	hamster_cell = (tunnel_cell + _rng.randi_range(1, PrisonLevel.CELLS * 2 - 1)) % (PrisonLevel.CELLS * 2)
+	_hamster()
+	for at in PLANTERS:
+		_planter(at)
 	for i in INMATES:
 		var inmate := YardInmate.new()
 		inmate.name = "Inmate%d" % i
@@ -113,6 +135,19 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 		inmate.dropped_dirt.connect(_on_dropped_dirt)
 		inmate.left_print.connect(_on_left_print)
 		inmate.reached_tunnel.connect(_on_reached_tunnel)
+	gardener = YardInmate.new()
+	gardener.name = "Gardener"
+	gardener.prison = level
+	gardener.activity = YardInmate.Activity.GARDEN
+	gardener.drops_dirt = true
+	gardener.wander_seed = _rng.randi()
+	for at in PLANTERS:
+		gardener.stops.append(at + Vector2(0, AT_PLANTER))
+	gardener.spot = gardener.stops[0]
+	gardener.face = PLANTERS[0]
+	add_child(gardener)
+	gardener.place()
+	gardener.dropped_dirt.connect(_on_dropped_dirt)
 
 
 ## The cell's hideout of `kind`, where it goes in the cell and turned so its -Z faces into it. The poster and the
@@ -166,6 +201,48 @@ func tunnel_hideout() -> CellHideout:
 	return null
 
 
+## The hamster's cage, in the front corner of its cell on the poster's side (away from where the door swings).
+func _hamster() -> void:
+	var side := -1.0 if hamster_cell < PrisonLevel.CELLS else 1.0
+	var front := PrisonLevel.CORRIDOR.x if side < 0 else PrisonLevel.CORRIDOR.y
+	var north := PrisonLevel.CELLS_Z - hamster_cell % PrisonLevel.CELLS * PrisonLevel.CELL_LENGTH
+	var z := north - CAGE_IN.y if side < 0 else north - PrisonLevel.CELL_LENGTH + CAGE_IN.y
+	hamster = HamsterCage.new()
+	hamster.name = "HamsterCage"
+	hamster.cell = hamster_cell
+	hamster.position = Vector3(front + side * CAGE_IN.x, FLOOR, z)
+	prison.add_child(hamster)
+
+
+## A planter against the building's front, with its plants.
+func _planter(at: Vector2) -> void:
+	var planter := StaticBody3D.new()
+	planter.name = "Planter%d" % PLANTERS.find(at)
+	planter.position = Vector3(at.x, PrisonLevel.FLOOR_TOP, at.y)
+	prison.add_child(planter)
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = PLANTER_SIZE
+	shape.shape = box
+	shape.position.y = PLANTER_SIZE.y / 2
+	planter.add_child(shape)
+	planter.add_child(CopTool.piece(CopTool.box(PLANTER_SIZE), PrisonLevel.WOOD, Vector3(0, PLANTER_SIZE.y / 2, 0)))
+	planter.add_child(CopTool.piece(CopTool.box(Vector3(PLANTER_SIZE.x - 0.1, 0.02, PLANTER_SIZE.z - 0.1)),
+		TunnelDirt.COLOR, Vector3(0, PLANTER_SIZE.y, 0)))
+	for x: float in [-0.45, 0.0, 0.45]:
+		var leaf := SphereMesh.new()
+		leaf.radius = 0.2
+		leaf.height = 0.35
+		planter.add_child(CopTool.piece(leaf, Color(0.3, 0.6, 0.25), Vector3(x, PLANTER_SIZE.y + 0.15, 0)))
+
+
+## Everyone out in the yard: the inmates and the gardener.
+func everyone() -> Array[YardInmate]:
+	var list: Array[YardInmate] = inmates.duplicate()
+	list.append(gardener)
+	return list
+
+
 ## The way from the yard to the front of the tunnel's hideout (level space): in the east front door, up the canteen's
 ## lane by the counter, across to the block's gate, down the corridor to the cell and in past its open door.
 func cell_way() -> Array[Vector2]:
@@ -206,6 +283,7 @@ func start() -> void:
 	running = true
 	for i in inmates.size():
 		inmates[i].start(0.15 * i)
+	gardener.start(0.0)
 	_send_next()
 	started.emit()
 
@@ -258,7 +336,7 @@ func _step_on_piles() -> void:
 		if (bit as TunnelDirt).kind != TunnelDirt.Kind.PILE:
 			continue
 		var at := (bit as Node3D).global_position
-		for inmate in inmates:
+		for inmate in everyone():
 			if inmate.visible and inmate.prints_left <= 0.0 and Vector2(inmate.global_position.x - at.x,
 					inmate.global_position.z - at.z).length() < PILE_STEP:
 				inmate.prints_left = PILE_PRINTS
@@ -272,13 +350,36 @@ func _noise(delta: float) -> void:
 	_noise_left = NOISE_EVERY
 	var hideout := tunnel_hideout()
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
-		if cop.global_position.distance_to(hideout.global_position) <= NOISE_REACH:
+		if cop.global_position.distance_to(hamster.global_position) <= NOISE_REACH:
+			hamster.say("HAMSTER_SCRATCH")
+		if digger and not is_found and cop.global_position.distance_to(hideout.global_position) <= NOISE_REACH:
 			hideout.say("TUNNEL_SCRATCH")
+
+
+## A cop close to the tunnel makes one of the gang in the yard nervous: a whistle and off toward the building.
+func _nervous(delta: float) -> void:
+	_whistle_left -= delta
+	if _whistle_left > 0.0:
+		return
+	var hideout := tunnel_hideout()
+	var close := get_tree().get_nodes_in_group("cops").any(func(cop: Cop) -> bool:
+		return cop.global_position.distance_to(hideout.global_position) <= NERVOUS_REACH)
+	if not close:
+		return
+	for inmate in gang_members():
+		if inmate.visible and inmate.trip == YardInmate.Trip.NONE:
+			inmate.say("GANG_WHISTLE")
+			inmate.walk([NERVOUS_TO])
+			_whistle_left = NERVOUS_EVERY
 			return
 
 
 func _on_checked(hideout: CellHideout, had_tunnel: bool) -> void:
 	if not had_tunnel:
+		# Its owner (the cell's inmate) isn't pleased, wherever they are in the yard.
+		var owner_inmate := inmates[hideout.cell]
+		if owner_inmate.visible:
+			owner_inmate.say("OWNER_COMPLAIN_%d" % hideout.kind)
 		checked_empty.emit(hideout)
 		return
 	if is_found:
@@ -305,9 +406,12 @@ func _physics_process(delta: float) -> void:
 				return
 		return
 	_step_on_piles()
-	if not digger or is_found:
-		return
 	_noise(delta)
+	if is_found:
+		return
+	_nervous(delta)
+	if not digger:
+		return
 	if dug < LENGTH:
 		dug = minf(dug + delta * LENGTH / DIG_TIME, LENGTH)
 		if dug >= LENGTH:
