@@ -12,6 +12,8 @@ var cop: Cop
 
 func before_each() -> void:
 	bank = LEVEL.instantiate()
+	# A base robbery's seed: the party (robo-banco-rehenes.md) has its own tests.
+	bank.case_seed = 4
 	cop = bank.get_node("Cop")
 	cop.input_enabled = false
 	add_child_autofree(bank)

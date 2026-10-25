@@ -59,6 +59,32 @@ function robber(b, mask, extra) {
 	extra(mask);
 }
 
+// A grandpa robber (robo-banco-abuelos.md, decision 122): a retiree in a cardigan with slippers and a cane, the face of
+// an old man under the rubber mask and his glasses over it. The mask and what it adds go in their own node ('mask') so
+// the game can take it off (step 2); under it, white eyebrows, a mustache and the white hair on the sides.
+function grandpaRobber(b, mask, cardigan, extra) {
+	pearBody(b, SKIN.arena, { shirt: cardigan, pants: C('abuelo_pants', 0x8c8378), shoes: C('slippers', 0x7a3e2a), belted: false });
+	eyes(b, 1.32, 0.15, 0.08, 0.045);
+	for (const s of [-1, 1]) b.add('face', white, ellipsoid(0.05, 0.02, 0.025, 6, 4), { pos: V(s * 0.08, 1.4, 0.17) });
+	for (const s of [-1, 1]) b.add('face', white, ellipsoid(0.05, 0.02, 0.02, 6, 4), { pos: V(s * 0.045, 1.25, 0.18), rot: [0, s * 0.4, s * -0.3] });
+	for (const s of [-1, 1]) b.add('face', white, ellipsoid(0.05, 0.09, 0.1, 6, 4), { pos: V(s * 0.18, 1.32, -0.02) });
+	b.add('mask', mask, ellipsoid(0.215, 0.235, 0.205, 10, 7), { pos: V(0, 1.31, 0.02) });
+	for (const s of [-1, 1]) {
+		b.add('mask', white, ellipsoid(0.08, 0.092, 0.036, 8, 6), { pos: V(s * 0.08, 1.35, 0.205) });
+		b.add('mask', black, ellipsoid(0.036, 0.044, 0.02, 6, 4), { pos: V(s * 0.08, 1.35, 0.233) });
+	}
+	extra(mask);
+	// The mask stuffed in the pocket once he takes it off (hidden until then): a crumpled ball and a bit sticking out.
+	b.add('pocket', mask, ellipsoid(0.07, 0.05, 0.05, 6, 4), { pos: V(-0.24, 0.68, 0.38), rot: [-0.3, -0.5, 0] });
+	b.add('pocket', mask, ellipsoid(0.03, 0.09, 0.025, 6, 4), { pos: V(-0.22, 0.76, 0.37), rot: [-0.2, 0, 0.35] });
+	for (const s of [-1, 1]) b.add('glasses', black, new THREE.TorusGeometry(0.06, 0.01, 4, 8), { pos: V(s * 0.08, 1.35, 0.25) });
+	b.add('glasses', black, new THREE.BoxGeometry(0.05, 0.012, 0.012), { pos: V(0, 1.355, 0.25) });
+	for (let i = 0; i < 4; i++) b.add('body', C('button', 0xe8dcc0), ellipsoid(0.02, 0.02, 0.01, 5, 3), { pos: V(0, 1.0 - i * 0.13, 0.25 + i * 0.045) });
+	// The cardigan's pocket, where the mask goes when he takes it off.
+	b.add('body', C('cardigan_pocket', 0x4a3a2a), new THREE.BoxGeometry(0.14, 0.12, 0.03), { pos: V(-0.24, 0.62, 0.39), rot: [-0.3, -0.5, 0] });
+	limb(b, 'cane', C('cane', 0x5a3a20), V(0.5, 0.62, 0.12), V(0.62, 0.0, 0.2), 0.02);
+}
+
 const NPCS = {
 	// Comisario: big, shouting, with a gold-banded cap, huge mustache and medals.
 	comisario(b) {
@@ -494,6 +520,42 @@ const NPCS = {
 		b.add('body', gold, new THREE.TorusGeometry(0.15, 0.015, 4, 14), { pos: V(0, 1.06, 0.12), rot: [1.2, 0, 0] });
 		b.add('props', C('phone_red', 0xc8202a), new THREE.BoxGeometry(0.06, 0.16, 0.05), { pos: V(-0.5, 0.72, 0.12) });
 	},
+	// The grandpa robbers (robo-banco-abuelos.md, step 1): the same four masks, a cardigan of each one's color.
+	abuelo_conejo(b) {
+		grandpaRobber(b, C('mask_rabbit', 0xf2eeea), C('cardigan_beige', 0xc8b48a), (m) => {
+			for (const s of [-1, 1]) b.add('mask', m, ellipsoid(0.05, 0.2, 0.03, 6, 5), { pos: V(s * 0.08, 1.62, 0.0), rot: [0, 0, s * -0.15] });
+			for (const s of [-1, 1]) b.add('mask', C('mask_rabbit_ear', 0xf2a0b8), ellipsoid(0.03, 0.15, 0.01, 6, 4), { pos: V(s * 0.08, 1.62, 0.025), rot: [0, 0, s * -0.15] });
+			b.add('mask', C('mask_rabbit_nose', 0xf27a9a), ellipsoid(0.03, 0.025, 0.02, 6, 4), { pos: V(0, 1.27, 0.22) });
+			for (const s of [-1, 1]) b.add('mask', white, new THREE.BoxGeometry(0.04, 0.05, 0.01), { pos: V(s * 0.022, 1.2, 0.21) });
+		});
+	},
+	abuelo_chancho(b) {
+		grandpaRobber(b, C('mask_pig', 0xf2a6b6), C('cardigan_brown', 0x7a5236), (m) => {
+			b.add('mask', m, new THREE.CylinderGeometry(0.07, 0.07, 0.06, 10), { pos: V(0, 1.26, 0.22), rot: [Math.PI / 2, 0, 0] });
+			for (const s of [-1, 1]) b.add('mask', C('mask_pig_hole', 0x8a3a4a), ellipsoid(0.015, 0.02, 0.01, 5, 3), { pos: V(s * 0.025, 1.26, 0.252) });
+			for (const s of [-1, 1]) b.add('mask', m, new THREE.ConeGeometry(0.06, 0.1, 4), { pos: V(s * 0.14, 1.48, 0.0), rot: [0.4, 0, s * -0.5] });
+		});
+		b.add('props', C('sandwich_bread', 0xe0b070), new THREE.BoxGeometry(0.16, 0.06, 0.1), { pos: V(-0.5, 0.66, 0.16) });
+		b.add('props', C('sandwich_ham', 0xe06a7a), new THREE.BoxGeometry(0.17, 0.015, 0.11), { pos: V(-0.5, 0.66, 0.16) });
+	},
+	// The duck grandma: a lilac cardigan, a grey bun over the mask and her bag of marbles (step 3).
+	abuelo_pato(b) {
+		grandpaRobber(b, C('mask_duck', 0xf2d23a), C('cardigan_lilac', 0xa88ac8), (m) => {
+			b.add('mask', C('mask_duck_beak', 0xf2902a), new THREE.BoxGeometry(0.16, 0.04, 0.14), { pos: V(0, 1.24, 0.26) });
+			b.add('mask', C('bun_grey', 0xc8c8cc), ellipsoid(0.1, 0.09, 0.1, 8, 5), { pos: V(0, 1.55, -0.06) });
+		});
+		b.add('props', C('marble_bag', 0x3a6ad8), ellipsoid(0.08, 0.1, 0.08, 6, 4), { pos: V(-0.5, 0.52, 0.12) });
+	},
+	// El Oso, the boss: a bear mask, the gold chain over his cardigan and the phone in his hand.
+	abuelo_oso(b) {
+		grandpaRobber(b, C('mask_bear', 0x8a5a32), C('cardigan_navy', 0x2e3a5c), (m) => {
+			for (const s of [-1, 1]) b.add('mask', m, ellipsoid(0.07, 0.07, 0.04, 6, 4), { pos: V(s * 0.15, 1.48, 0.0) });
+			b.add('mask', C('mask_bear_muzzle', 0xd8b088), ellipsoid(0.09, 0.07, 0.05, 8, 5), { pos: V(0, 1.24, 0.2) });
+			b.add('mask', black, ellipsoid(0.035, 0.025, 0.02, 6, 4), { pos: V(0, 1.27, 0.25) });
+		});
+		b.add('body', gold, new THREE.TorusGeometry(0.15, 0.015, 4, 14), { pos: V(0, 1.06, 0.12), rot: [1.2, 0, 0] });
+		b.add('props', C('phone_red', 0xc8202a), new THREE.BoxGeometry(0.06, 0.16, 0.05), { pos: V(-0.5, 0.72, 0.12) });
+	},
 };
 
 export const NPC_NAMES = Object.keys(NPCS);
@@ -503,7 +565,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, ladron_oso: 1.15 };
+const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, ladron_oso: 1.15, abuelo_oso: 1.15 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
