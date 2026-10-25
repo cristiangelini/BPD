@@ -93,3 +93,15 @@ llave se sacó y las capturas. El guardia va por `NpcSync`; la rejilla, la llave
 - `JailbreakLevel.big_cop()`: el grandote, sorteado por la semilla entre los policías por su uniforme (igual en todas
   las PCs); jugando solo no hay.
 - Modelos `vent_grille` y `vent_hole` en `tools/modelgen/models/vent.js`. Pruebas en `test_vent_grille.gd`.
+
+## Cómo quedó el paso 2
+- Con la rejilla sacada, E desde la cucheta mete al policía en el ducto (`VentDuct`), arriba del techo: un tramo largo
+  sobre las celdas y la sala de guardia y tres desvíos hacia la oficina del comisario. Solo uno (la semilla elige)
+  termina en la rejilla del techo de la oficina; los otros dos son ciegos.
+- Adentro se gatea agachado (`Cop.crawling`): la mitad de lo agachado, y no se puede parar porque el techo es bajo.
+  Correr (Shift) adentro sí se puede, pero es un "bong": el anfitrión lo oye por la velocidad, y si está a 15 m del
+  guardia (`VentGuard.heard_duct`) mira al techo y la sospecha sube 15 por segundo mientras dure.
+- El grandote se queda atorado 4 s ("Tú no entras: distrae al guardia desde la celda") y no sube.
+- En el ducto, encima de cada celda, hay una rejilla para volver a bajar; la de la oficina se patea y te deja en la
+  oficina. Una captura también baja a los del ducto a las celdas, y las rejillas sacadas quedan sacadas.
+- 9 textos nuevos en es, en y pt. Pruebas en `test_vent_duct.gd`.

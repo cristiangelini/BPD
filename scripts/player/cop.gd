@@ -26,11 +26,17 @@ const DISGUISE_CROOKED_RUN := 1.5
 ## After a piece falls, the next can't fall for this long (s), so a wall doesn't knock off everything at once.
 const DISGUISE_FALL_GAP := 1.0
 
+## Crawling in a duct, and scrambling (running) there.
+const CRAWL_SPEED := GameScale.CROUCH_SPEED / 2.0
+const CRAWL_RUN_SPEED := GameScale.CROUCH_SPEED
+
 @export var input_enabled := true
 
 var stamina := GameScale.RUN_STAMINA
 var is_running := false
 var is_crouching := false
+## In a duct (the vent jailbreak, VentDuct): down on all fours, slower, and running there is a noisy scramble.
+var crawling := false
 ## After running out of stamina, running waits until half of it is back.
 var exhausted := false
 ## Found in one of the pots by the grandpa's front door.
@@ -551,7 +557,7 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 		exhausted = true
 	elif stamina >= GameScale.RUN_STAMINA * GameScale.STAMINA_RESUME:
 		exhausted = false
-	is_running = want_run and moving and not is_crouching and not exhausted
+	is_running = want_run and moving and (crawling or not is_crouching) and not exhausted
 	if is_running:
 		stamina = maxf(stamina - delta, 0.0)
 	else:
@@ -646,6 +652,8 @@ func current_speed() -> float:
 	var factor := (BatteringRam.SPEED_FACTOR if ram else 1.0) * slow_factor
 	if wheelbarrow:
 		factor = Wheelbarrow.SPEED_FACTOR * slow_factor
+	if crawling:
+		return (CRAWL_RUN_SPEED if is_running else CRAWL_SPEED) * factor
 	if is_crouching:
 		return GameScale.CROUCH_SPEED * factor
 	if is_running:

@@ -99,6 +99,9 @@ const TUNNEL_EXIT := Vector3(5.0, 0, StationRooms.HALF_Z + 2.0)
 ## The vent jailbreak (fuga-ventilacion.md, step 1): the grille on the back wall of each cell, over its bunk.
 const VENT_GRILLES: Array[Vector3] = [Vector3(8.3, VentGrille.HEIGHT, StationRooms.SPLIT_Z + StationRooms.WALL / 2 + 0.03),
 	Vector3(12.7, VentGrille.HEIGHT, StationRooms.SPLIT_Z + StationRooms.WALL / 2 + 0.03)]
+## The big one stays stuck in the grille this long (s); crawling faster than this in the duct is a noisy scramble.
+const VENT_STUCK := 4.0
+const VENT_QUIET_SPEED := (Cop.CRAWL_SPEED + Cop.CRAWL_RUN_SPEED) / 2.0
 ## A catch fills a third of the hole back in (fuga-tunel.md, question 3).
 const TUNNEL_REFILL := 1.0 / 3.0
 const TUNNEL_HOLES := [[Vector3(6.7, 0, 2.2), Vector3(9.9, 0, 2.2)], [Vector3(11.1, 0, 2.2), Vector3(14.3, 0, 2.2)]]
@@ -130,6 +133,9 @@ var spoons: Array[Spoon] = []
 var mattresses: Array[TunnelMattress] = []
 ## The vent jailbreak's grilles (one for each cell).
 var grilles: Array[VentGrille] = []
+var duct: VentDuct
+## The host: where each cop in the duct was last physics frame, to hear who scrambles.
+var _duct_last := {}
 ## The other end of the tunnels, on the sidewalk: it shows once one is through.
 var tunnel_exit: MeshInstance3D
 var cart_key: CellKey
@@ -232,7 +238,55 @@ func _vent_night() -> void:
 		grille.floor_y = lot.origin.y
 		add_child(grille)
 		grille.global_transform = lot * Transform3D(Basis.IDENTITY, VENT_GRILLES[cell])
+		grille.climbed.connect(_into_vent)
 		grilles.append(grille)
+	duct = VentDuct.new()
+	duct.name = "VentDuct"
+	add_child(duct)
+	duct.global_transform = lot
+	var cells_x: Array[float] = []
+	for at in VENT_GRILLES:
+		cells_x.append(at.x)
+	duct.build(case_seed, cells_x)
+	for hatch: VentHatch in duct.cell_hatches + [duct.office_hatch]:
+		hatch.used.connect(_out_of_vent)
+
+
+## A cop on the bunk gets into the open grille: up into the duct over its cell, or, the big one, stuck for a while.
+func _into_vent(grille: VentGrille, cop: Cop) -> void:
+	if cop == big_cop():
+		cop.knock_back(Vector3.ZERO, VENT_STUCK)
+		cop.show_hint("HINT_VENT_STUCK", true)
+		return
+	cop.warp(duct.global_transform * duct.start_over(VENT_GRILLES[grille.cell].x))
+	cop.set_crouching(true)
+	cop.show_hint("HINT_VENT_IN", true)
+
+
+## Down a hatch of the duct: back into a cell, or into the comisario's office.
+func _out_of_vent(hatch: VentHatch, cop: Cop) -> void:
+	cop.warp(duct.global_transform * hatch.drop_to)
+	if hatch.into_office:
+		cop.show_hint("HINT_VENT_OFFICE", true)
+
+
+## Every PC: its cops in the duct crawl (and stay down); the host hears who scrambles there.
+func _crawl(delta: float) -> void:
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		var inside := duct.contains(cop.global_position)
+		cop.crawling = inside
+		if inside and not cop.is_crouching:
+			cop.set_crouching(true)
+		if not multiplayer.is_server() or delta <= 0.0:
+			continue
+		if not inside:
+			_duct_last.erase(cop)
+			continue
+		var last: Vector3 = _duct_last.get(cop, cop.global_position)
+		_duct_last[cop] = cop.global_position
+		var moved := Vector2(cop.global_position.x - last.x, cop.global_position.z - last.z).length()
+		if moved / delta > VENT_QUIET_SPEED:
+			(guard as VentGuard).heard_duct(cop.global_position)
 
 
 ## The cop who doesn't fit in the duct (fuga-ventilacion.md, question 2): drawn by the seed among the cops, by their
@@ -569,7 +623,7 @@ func _on_caught(times: int) -> void:
 		get_tree().create_timer(LOST_DELAY).timeout.connect(finish.bind("lost"))
 	var slot := 0
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
-		if outside_cells(cop.global_position):
+		if outside_cells(cop.global_position) or (duct and duct.contains(cop.global_position)):
 			var car: PatrolCar = $PatrolCar
 			if car.seat_of(cop) >= 0:
 				car.exit(cop)
@@ -697,6 +751,8 @@ func _physics_process(delta: float) -> void:
 		_slip_on_wet(delta)
 	if dog and multiplayer.is_server():
 		_dog_jumps_in()
+	if duct:
+		_crawl(delta)
 	if is_tunnel():
 		if multiplayer.is_server():
 			_cover_holes()
