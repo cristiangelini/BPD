@@ -12,6 +12,8 @@ extends Node
 ## here is (propuesta). In the fruit truck control (control-frutas.md) every watermelon split from an innocent fruit
 ## seller's pickup is a complaint too, smaller, and a gold watch in the patrol car's trunk adds to a solved case's pay.
 ## In the crowded car control (control-auto-lleno.md, answer 2) each packed car fined for too many riders adds a bit.
+## In the ghost car control (control-auto-fantasma.md) the wanted driver is the ghost car's pilot: cuffed, his remote
+## falls out of his hands, and in the patrol car's trunk it adds 100 like a gold watch.
 
 signal detained(car: QueueCar, wanted: bool)
 
@@ -29,6 +31,8 @@ const SHIFT_DELAY := 3.0
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 ## The detained driver gets out this far to the car's left.
 const DOOR_OUT := 1.7
+## The pilot's remote lands this far to the cuffed driver's side.
+const REMOTE_OUT := 0.8
 
 var case_seed := 0
 var plan: WantedPlan
@@ -136,9 +140,9 @@ func crowd_fined(_car: QueueCar) -> void:
 	_hint_all("HINT_CROWD_FINED")
 
 
-## What adds to a solved case's pay: a gold watch, and each packed car fined.
+## What adds to a solved case's pay: a gold watch or the pilot's remote, and each packed car fined.
 func extras() -> Array:
-	var out := watch_bonus()
+	var out := watch_bonus() + remote_bonus()
 	for i in crowd_fines:
 		out.append(CROWD_FINE_BONUS)
 	return out
@@ -158,6 +162,15 @@ func watch_bonus() -> Array:
 	return []
 
 
+## The ghost car's pilot's remote in the patrol car's trunk.
+func remote_bonus() -> Array:
+	if patrol_car:
+		for item in patrol_car.delivered:
+			if item is RcRemote:
+				return [RcRemote.VALUE]
+	return []
+
+
 ## A cop cuffed the driver of `car`, stopped in the queue.
 func detain(car: QueueCar) -> void:
 	if follower or shift_over or lost or solved_now or not car.waiting():
@@ -169,7 +182,11 @@ func detain(car: QueueCar) -> void:
 	detained.emit(car, car.wanted)
 	if car.wanted:
 		_take_out(car, out_at)
-		_hint_all("HINT_TRAFFIC_GOT_IT")
+		if car.puppeteer:
+			drop_remote()
+			_hint_all("HINT_GHOST_REMOTE")
+		else:
+			_hint_all("HINT_TRAFFIC_GOT_IT")
 		return
 	innocents += 1
 	lost = innocents >= MAX_INNOCENTS
@@ -193,12 +210,25 @@ func _take_out(car: QueueCar, at := Vector3.INF) -> void:
 	if car.clown:
 		car.empty_seat()
 		taken_from = car.name
+	# Out of the car, he's no longer at his window (control-auto-fantasma.md).
+	var leaning := car.get_node_or_null("WindowDriver")
+	if leaning:
+		leaning.queue_free()
 	suspect.rotation.y = car.rotation.y
 	suspect.cuffed(Handcuffs.SECONDS)
 	if patrol_car:
 		escort = OwnerEscort.attach(suspect, patrol_car)
 		escort.in_car_hint = "HINT_TRAFFIC_IN_CAR"
 		escort.boarded.connect(_on_boarded)
+
+
+## The pilot's remote falls out of his hands, by his feet.
+func drop_remote() -> RcRemote:
+	var remote := RcRemote.new()
+	remote.name = "RcRemote"
+	get_parent().add_child(remote)
+	remote.global_position = suspect.global_position + suspect.global_basis.x * REMOTE_OUT + Vector3.UP * 0.3
+	return remote
 
 
 func _on_boarded() -> void:
@@ -289,6 +319,8 @@ func campaign_key() -> String:
 		return "traffic_fruit_truck"
 	if plan and plan.crowd:
 		return "traffic_crowded_car"
+	if plan and plan.ghost:
+		return "traffic_ghost_car"
 	return "traffic_rush_hour"
 
 

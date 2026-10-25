@@ -680,6 +680,10 @@ func let_through() -> void:
 
 ## The handcuffs (Handcuffs.cuffable) on a stopped car cuff its driver: the case detains them (TrafficCase).
 func cuffed(_seconds: float) -> void:
+	if ghost:
+		# Nobody at its wheel to cuff (control-auto-fantasma.md).
+		say(tr("GHOST_NO_ONE_TO_CUFF"))
+		return
 	var case := TrafficCase.of(self)
 	if case and waiting():
 		case.detain(self)
