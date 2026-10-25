@@ -66,7 +66,20 @@ export function buildBowTie() {
 	return b.build();
 }
 
-export const models = { wedding_bow: buildWeddingBow, wedding_cans: buildWeddingCans, just_married: buildJustMarried,
+// The patrol car's breathalyzer, upright, faces +Z: a yellow handheld box, its dark screen ('screen', the game writes
+// the reading over it), a button and the white mouthpiece on top.
+export function buildBreathalyzer() {
+	const b = new Builder('breathalyzer');
+	const body = mat('breath_body', 0xf0c020), dark = mat('breath_screen', 0x1a2a22), white = mat('breath_tube', 0xf4f4f0);
+	const red = mat('breath_button', 0xd82828);
+	box(b, 'body', body, 0.07, 0.16, 0.035, 0, 0.08, 0);
+	box(b, 'screen', dark, 0.05, 0.04, 0.005, 0, 0.12, 0.018);
+	b.add('body', red, new THREE.CylinderGeometry(0.01, 0.01, 0.008, 8), { pos: V(0, 0.06, 0.019), rot: [Math.PI / 2, 0, 0] });
+	b.add('tube', white, new THREE.CylinderGeometry(0.008, 0.008, 0.07, 8), { pos: V(0, 0.19, 0.0) });
+	return b.build();
+}
+
+export const models = { breathalyzer: buildBreathalyzer, wedding_bow: buildWeddingBow, wedding_cans: buildWeddingCans, just_married: buildJustMarried,
 	wedding_veil: buildWeddingVeil, bow_tie: buildBowTie };
 
 export const views = {
@@ -74,6 +87,10 @@ export const views = {
 		items: [{ name: 'wedding_bow', pos: [0, 0, 0] }, { name: 'wedding_cans', pos: [0, 0.35, -0.4] },
 			{ name: 'just_married', pos: [0, 0.6, -0.6] }],
 		cam: { pos: [1.6, 1.3, 1.6], target: [0, 0.2, -0.6], fov: 40 },
+	},
+	breathalyzer: {
+		items: [{ name: 'breathalyzer', pos: [0, 0, 0] }],
+		cam: { pos: [0.25, 0.25, 0.4], target: [0, 0.1, 0], fov: 35 },
 	},
 	wedding_veil: {
 		items: [{ name: 'window_driver', pos: [0, 0, 0] }, { name: 'wedding_veil', pos: [0, 0, 0] },

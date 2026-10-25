@@ -30,6 +30,16 @@ const CITY_EVERY := 4
 const HONK_EVERY := 11.0
 const HONK_SPREAD := 5.0
 const HONK_LINES := 4
+## The breathalyzer reads 0.0 to MAX_READING; over DRUNK_ABOVE, the driver can't drive on (control-boda.md, step 3).
+const MAX_READING := 2.0
+const DRUNK_ABOVE := 0.5
+## Without a plan, out of 100 guests this many blew over the limit, and this many didn't drink at all (designated
+## drivers); the rest drank a little. City cars drank nothing.
+const DRUNK_GUESTS := 30
+const SOBER_GUESTS := 15
+## What a guest says blowing (10+ per kind, decision 19), and a city driver.
+const BLOW_LINES := 10
+const CITY_BLOW_LINES := 3
 ## Rolling, the cans swing this far (radians) at full speed, this fast.
 const RATTLE := 0.25
 const RATTLE_RATE := 18.0
@@ -115,3 +125,27 @@ static func rattle(car: Node3D, speed: float, time: float) -> void:
 	if cans:
 		cans.rotation.x = sin(time * RATTLE_RATE) * RATTLE * clampf(speed / QueueCar.SPEED, 0.0, 1.0)
 		cans.rotation.z = cos(time * RATTLE_RATE * 0.7) * RATTLE * 0.5 * clampf(speed / QueueCar.SPEED, 0.0, 1.0)
+
+
+## What the driver of a car with `plate` blows when no plan says it: from the plate, so every PC agrees, in tenths.
+static func alcohol_of(plate: String, is_guest: bool) -> float:
+	if not is_guest:
+		return 0.0
+	var roll := absi(hash(["wedding drink", plate]))
+	var share := roll % 100
+	if share < DRUNK_GUESTS:
+		return snappedf(DRUNK_ABOVE + 0.1 + float(roll / 100 % 15) / 10.0, 0.1)
+	if share < DRUNK_GUESTS + SOBER_GUESTS:
+		return 0.0
+	return snappedf(0.1 + float(roll / 100 % 4) / 10.0, 0.1)
+
+
+## A reading as the screen shows it, one decimal, with the language's decimal point ("1,4" in Spanish).
+static func reading_text(value: float) -> String:
+	return ("%.1f" % value).replace(".", TranslationServer.translate("DECIMAL_POINT"))
+
+
+## What the driver says blowing: a guest one of BLOW_LINES, a city driver one of CITY_BLOW_LINES, from the plate.
+static func blow_line(plate: String, is_guest: bool) -> String:
+	var roll := absi(hash(["wedding blow", plate]))
+	return "WEDDING_BLOW_%d" % (roll % BLOW_LINES) if is_guest else "CITY_BLOW_%d" % (roll % CITY_BLOW_LINES)
