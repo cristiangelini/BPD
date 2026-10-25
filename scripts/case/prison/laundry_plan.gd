@@ -30,13 +30,17 @@ const WORKERS := 6
 ## cat asleep in the towels.
 const FOOT_ONE_IN := 2
 const CAT_ONE_IN := 3
+## Step 5: after MACHINE_TRIPS of the trips (drawn among the first TRIPS - 1), halfway to the next one, an inmate squeezes
+## into a washer or a dryer; when the next trip comes, still in there, they slip into one of its carts that has nobody.
+## Let out, they're dizzy DIZZY_TIME seconds before they run.
+const MACHINE_TRIPS := 2
+const DIZZY_TIME := 5.0
 ## The carts' places (level space x, z): two rows by the west wall, back from the kitchen's front.
 const CART_XS: Array[float] = [7.0, 9.0]
 const CART_ZS: Array[float] = [6.6, 5.4, 4.2, 3.0, 1.8, 0.6]
-## The machines against the east wall (level space z), their size, and how far from the wall they stand.
+## The machines against the east wall (level space z; LaundryMachine), and how far from the wall they stand.
 const WASHER_ZS: Array[float] = [6.8, 6.0, 5.2, 4.4]
 const DRYER_ZS: Array[float] = [3.2, 2.4]
-const MACHINE := Vector3(0.7, 0.85, 0.7)
 const MACHINE_X := PrisonLevel.BUILDING_X - 0.5
 ## The folding table (level space x, z; long along Z) and the clothesline across the room (z), with its clothes.
 const TABLE_AT := Vector2(9.5, -1.5)
@@ -62,8 +66,6 @@ const AISLE_X := 8.0
 const CROSS_Z := -3.0
 const CANTEEN_X := 3.2
 const GATE := Vector2(0.0, PrisonLevel.HALF_Z + 0.5)
-const WHITE := Color(0.92, 0.93, 0.95)
-const GLASS := Color(0.35, 0.45, 0.55)
 const CLOTH: Array[Color] = [Color(0.85, 0.45, 0.2), Color(0.95, 0.95, 0.92), Color(0.6, 0.75, 0.9),
 	Color(0.85, 0.85, 0.5)]
 
@@ -83,6 +85,11 @@ var caught := 0
 var escaped := 0
 var is_over := false
 var runners: Array[BlackoutInmate] = []
+## Step 5: the washers and dryers; after which trips someone squeezes into one, and which.
+var machines: Array[LaundryMachine] = []
+var machine_trips: Array[int] = []
+var machine_picks: Array[int] = []
+var _machine_in := -1.0
 var _rng := RandomNumberGenerator.new()
 
 
@@ -120,6 +127,11 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 		cart.revealed.connect(_on_revealed)
 		cart.loaded_up.connect(_on_loaded)
 		carts.append(cart)
+	var trips := range(TRIPS - 1)
+	_shuffle(trips)
+	for trip: int in trips.slice(0, MACHINE_TRIPS):
+		machine_trips.append(trip)
+		machine_picks.append(_rng.randi_range(0, machines.size() - 1))
 	for i in WORKERS:
 		var worker := LaundryWorker.new()
 		worker.name = "Worker%d" % i
@@ -178,10 +190,14 @@ func hidden_count() -> int:
 ## The washers and dryers, the folding table and the clothesline with its clothes.
 func _build_room() -> void:
 	var build := PlaceBuilder.new(room)
-	for z in WASHER_ZS:
-		_machine(build, z, false)
-	for z in DRYER_ZS:
-		_machine(build, z, true)
+	for z: float in WASHER_ZS + DRYER_ZS:
+		var machine := LaundryMachine.new()
+		machine.name = "Machine%d" % machines.size()
+		machine.dryer = DRYER_ZS.has(z)
+		machine.position = Vector3(MACHINE_X, PrisonLevel.FLOOR_TOP, z)
+		room.add_child(machine)
+		machine.opened.connect(_on_machine_opened)
+		machines.append(machine)
 	var table := Vector3(TABLE_AT.x, PrisonLevel.FLOOR_TOP, TABLE_AT.y)
 	build.legs(table, Vector2(TABLE_SIZE.x, TABLE_SIZE.z), TABLE_SIZE.y, PrisonLevel.STEEL)
 	build.box(table + Vector3(0, TABLE_SIZE.y, 0), Vector3(TABLE_SIZE.x, 0.05, TABLE_SIZE.z), PrisonLevel.STEEL)
@@ -195,19 +211,6 @@ func _build_room() -> void:
 		var x := from + 0.5 + i * (to - from - 1.0) / (CLOTHES - 1)
 		var long := 0.5 + 0.2 * (i % 2)
 		build.mesh_box(Vector3(x, LINE_HEIGHT - long / 2, LINE_Z), Vector3(0.5, long, 0.02), CLOTH[i % CLOTH.size()])
-
-
-## A washer (or a dryer) against the east wall, its round glass door toward the room.
-func _machine(build: PlaceBuilder, z: float, dryer: bool) -> void:
-	var at := Vector3(MACHINE_X, PrisonLevel.FLOOR_TOP, z)
-	build.box(at + Vector3(0, MACHINE.y / 2, 0), MACHINE, WHITE if not dryer else WHITE.darkened(0.15))
-	var door := CylinderMesh.new()
-	door.top_radius = 0.22
-	door.bottom_radius = 0.22
-	door.height = 0.04
-	build.mesh(door, at + Vector3(-MACHINE.x / 2 - 0.01, MACHINE.y * 0.5, 0), GLASS, Vector3(0, 0, PI / 2))
-	build.mesh_box(at + Vector3(-MACHINE.x / 2 + 0.05, MACHINE.y - 0.06, 0), Vector3(0.12, 0.06, MACHINE.z - 0.1),
-		PrisonLevel.BARS)
 
 
 ## The laundry day is on: everyone gets to work.
@@ -230,34 +233,70 @@ func start_trip() -> void:
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
 		cop.show_hint("HINT_LAUNDRY_TRUCK")
 	var trip_carts := carts_on_trip(trip_now)
+	_out_of_machines(trip_carts)
+	_machine_in = TRIP_EVERY / 2 if machine_trips.has(trip_now) else -1.0
 	for k in trip_carts.size():
 		var worker := workers[(trip_now * PER_TRIP + k) % WORKERS]
 		worker.fetch(trip_carts[k], k * PUSH_STAGGER)
 	trip_started.emit(trip_now)
 
 
+## Halfway to the next trip: someone squeezes into the machine drawn for this one.
+func fill_machine() -> void:
+	_machine_in = -1.0
+	var pick := machine_picks[machine_trips.find(trip_now)] if machine_trips.has(trip_now) else 0
+	machines[pick].set_occupied(true)
+
+
+## The trip is here: whoever is still in a machine slips into one of its carts that has nobody (and isn't checked).
+func _out_of_machines(trip_carts: Array[LaundryCart]) -> void:
+	for machine in machines:
+		if not machine.occupied:
+			continue
+		for cart in trip_carts:
+			if not cart.hidden and not cart.checked and not cart.loaded:
+				machine.set_occupied(false)
+				cart.hidden = true
+				cart.has_cat = false
+				break
+
+
+func _on_machine_opened(machine: LaundryMachine, had_someone: bool) -> void:
+	if not had_someone:
+		return
+	var runner := _runner(machine.global_position + machine.global_basis * Vector3(-0.8, 0, 0))
+	runner.delay = DIZZY_TIME
+	runner.say("MACHINE_DIZZY", DIZZY_TIME)
+
+
 func _on_revealed(cart: LaundryCart) -> void:
+	# Out over its front (knocked over, the cart turns about its length, so its front stays level).
+	var front := -cart.global_basis.z
+	front.y = 0.0
+	var runner := _runner(cart.global_position + front.normalized() * (LaundryCart.SIZE.z / 2 + 0.4))
+	runner.say("LAUNDRY_SURPRISE")
+
+
+## An inmate found (in a cart or a machine) at `at`: off for the gate, unless cuffed and walked to the punishment cell.
+func _runner(at: Vector3) -> BlackoutInmate:
 	found += 1
 	var runner := BlackoutInmate.new()
 	runner.name = "Runner%d" % runners.size()
 	runner.role = BlackoutInmate.Role.GATE
 	runner.glow_eyes = false
 	runner.prison = prison
-	var at := prison.global_transform.affine_inverse() * cart.global_position
-	runner.route = escape_route(Vector2(at.x, at.z))
+	var local := prison.global_transform.affine_inverse() * at
+	runner.route = escape_route(Vector2(local.x, local.z))
 	add_child(runner)
-	# Out over its front (knocked over, the cart turns about its length, so its front stays level).
-	var front := -cart.global_basis.z
-	front.y = 0.0
-	runner.global_position = cart.global_position + front.normalized() * (LaundryCart.SIZE.z / 2 + 0.4)
+	runner.global_position = at
 	for other in carts:
 		runner.add_collision_exception_with(other)
 	runner.active = true
-	runner.say("LAUNDRY_SURPRISE")
 	runner.escaped.connect(_on_runner_escaped)
 	BlackoutEscort.to_block(runner, prison).boarded.connect(_on_caught)
 	runners.append(runner)
 	found_one.emit(found)
+	return runner
 
 
 func _on_caught() -> void:
@@ -297,6 +336,10 @@ func _physics_process(delta: float) -> void:
 				start()
 				return
 		return
+	if _machine_in > 0.0:
+		_machine_in -= delta
+		if _machine_in <= 0.0:
+			fill_machine()
 	if is_over or trip_now >= TRIPS - 1:
 		return
 	next_trip_in -= delta
