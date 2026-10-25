@@ -232,6 +232,18 @@ func fill_up_on_donut() -> void:
 	_mouth_full_left = MOUTH_FULL
 
 
+## E with a spare battery in hand (the blackout): into the flashlight, full again. Every PC does it; the host's
+## PropSync takes the old battery away from the guests.
+func change_battery(battery: FlashlightBattery) -> void:
+	if not battery:
+		return
+	$Grabber.release()
+	belt.flashlight.recharge()
+	show_hint("HINT_BATTERY_CHANGED")
+	if multiplayer.is_server():
+		battery.queue_free()
+
+
 ## E with a crime scene clue in hand (CrimeClueItem): into a bag if aiming at the bags, or eaten.
 func use_clue_in_hand(item: CrimeClueItem, aimed: Node) -> void:
 	if item:
@@ -462,6 +474,9 @@ func use() -> bool:
 	if $Grabber.held is HookStick or $Grabber.held is LooseDonut or $Grabber.held is SamplePlate \
 			or $Grabber.held is FloorPolisher:
 		act("use", $Grabber.held)
+		return true
+	if $Grabber.held is FlashlightBattery:
+		act("change_battery", self, [$Grabber.held])
 		return true
 	if $Grabber.held is CrimeClueItem:
 		act("use_clue_in_hand", self, [$Grabber.held, _usable_target()])
