@@ -293,6 +293,17 @@ func belt_cuff(body: Node, at: Vector3) -> void:
 	(belt.tools[0] as Handcuffs).cuff_body(body, at)
 
 
+## This cop took a bribe of `amount` from whoever `body` belongs to (sobornos.md): they stay free and won't offer
+## again. Through act(), so every PC counts it for the joke award; the host's campaign adds it to the shift.
+func belt_bribe(body: Node, amount: int) -> void:
+	var from := Handcuffs.cuffable(body) if body else null
+	if from:
+		(from as Node).set_meta("bribe_offered", true)
+	stats["bribes"] = stats.get("bribes", 0) + 1
+	if Campaign.current:
+		Campaign.current.take_bribe(amount)
+
+
 func belt_photo(subject: Node, caught: Array) -> void:
 	(belt.tools[2] as PhotoCamera).develop(subject, caught)
 
@@ -462,6 +473,9 @@ func _physics_process(delta: float) -> void:
 
 ## Uses what the camera points at (a pot, a door...), if it can be used. Returns true if something was used.
 func use() -> bool:
+	# A bribe on offer with the cuffs in hand: E takes it (sobornos.md).
+	if belt.held_tool() is Handcuffs and (belt.held_tool() as Handcuffs).take_offer():
+		return true
 	if $Grabber.held is DonutBox and (_usable_target() is InterrogationSuspect or _usable_target() is PastryCook
 			or _usable_target() is CircusClown):
 		act("use", _usable_target())

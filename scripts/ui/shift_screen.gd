@@ -11,6 +11,8 @@ signal back_to_menu
 @onready var _lines: GridContainer = %Lines
 @onready var _verdict: Label = %Verdict
 @onready var _awards: VBoxContainer = %Awards
+## Where the internal affairs investigation went this shift (Campaign.finish_shift), "" if nowhere.
+var _investigation := ""
 
 
 func _ready() -> void:
@@ -30,9 +32,17 @@ func show_report(solved: bool, report: Dictionary, broken_ornaments: int, awards
 	_line(tr("SHIFT_SALARY"), report.salary)
 	_line(tr("SHIFT_EVIDENCE"), report.evidence)
 	_line(tr(fines_key) % broken_ornaments, -report.fines)
+	# Bribes and the internal affairs agent's fines (sobornos.md), only when there were any.
+	if report.get("bribes", 0) > 0:
+		_line(tr("SHIFT_BRIBES"), report.bribes)
+	if report.get("agent_fine", 0) > 0:
+		_line(tr("SHIFT_AGENT_FINE"), -report.agent_fine)
 	_line(tr("SHIFT_TOTAL"), report.total, true)
 	_line(tr("SHIFT_QUOTA"), report.quota)
-	_verdict.text = "SHIFT_APPROVED" if report.approved else "SHIFT_SUSPENDED"
+	_investigation = report.get("investigation", "")
+	_verdict.text = tr("SHIFT_APPROVED" if report.approved else "SHIFT_SUSPENDED")
+	if _investigation != "":
+		_verdict.text += "\n" + tr("SHIFT_INVESTIGATION_" + _investigation.to_upper())
 	_verdict.modulate = Color(0.45, 1, 0.5) if report.approved else Color(1, 0.4, 0.35)
 	for child in _awards.get_children():
 		child.queue_free()
@@ -52,7 +62,8 @@ func show_report(solved: bool, report: Dictionary, broken_ornaments: int, awards
 func show_campaign(shift: int, shifts: int, money: int, over: bool, promoted := false) -> void:
 	_line(tr("SHIFT_TURN") % [shift, shifts], money, true)
 	if over:
-		_verdict.text = tr(_verdict.text) + "\n" + tr("SHIFT_PROMOTED" if promoted else "SHIFT_CAMPAIGN_LOST")
+		var lost := "SHIFT_CAMPAIGN_LOST_AGENT" if _investigation == "suspended" else "SHIFT_CAMPAIGN_LOST"
+		_verdict.text = tr(_verdict.text) + "\n" + tr("SHIFT_PROMOTED" if promoted else lost)
 	elif Campaign.current and Campaign.current.jailed:
 		_verdict.text = tr(_verdict.text) + "\n" + tr("SHIFT_JAILED")
 
