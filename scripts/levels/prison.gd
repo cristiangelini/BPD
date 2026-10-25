@@ -87,7 +87,8 @@ var _build: PlaceBuilder
 
 ## Which prison case this is: "riot" (the canteen, carcel-motin.md), "transfer" (the bus from the station,
 ## traslado-presos.md; --place=transfer), "blackout" (the power cut, carcel-corte-de-luz.md; --place=blackout) or
-## "visits" (the visiting day, carcel-visitas.md; --place=visits).
+## "visits" (the visiting day, carcel-visitas.md; --place=visits) or "laundry" (the laundry, carcel-lavanderia.md;
+## --place=laundry).
 @export var variant := "riot"
 ## The transfer's bus (traslado-presos.md, step 1), parked by the station's door, and its inmates (step 2).
 var bus: PrisonBus
@@ -114,6 +115,8 @@ var blackout_case: BlackoutCase
 var visits: VisitPlan
 ## The visiting day case on top (step 6): the comisario's briefing, the planilla and the end of the shift.
 var visit_case: VisitCase
+## The laundry in the kitchen, its carts and its workers (carcel-lavanderia.md, step 2).
+var laundry: LaundryPlan
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -138,6 +141,9 @@ func _ready() -> void:
 		return
 	if variant == "visits":
 		_start_visits()
+		return
+	if variant == "laundry":
+		_start_laundry()
 		return
 	riot = PrisonRiot.new()
 	riot.name = "Riot"
@@ -227,6 +233,18 @@ func _start_visits() -> void:
 	visit_case.shift_screen = $ShiftScreen
 	add_child(visit_case)
 	visit_case.start(city.get("comisario"))
+	city.transform = CityLayout.anchor("prison")
+	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
+	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+
+
+## The laundry (carcel-lavanderia.md, step 2): the kitchen is the laundry, with its carts and its workers. The cops
+## start at the station and drive here.
+func _start_laundry() -> void:
+	laundry = LaundryPlan.new()
+	laundry.name = "LaundryPlan"
+	add_child(laundry)
+	laundry.setup(self, case_seed)
 	city.transform = CityLayout.anchor("prison")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)

@@ -74,3 +74,14 @@ nadie duerme un gato, qué pistas da cada uno y cuándo un preso se mete en un l
    espera: mientras revisas uno, los otros dos siguen caminando.
 3. **¿Se pierde con 3 presos escapados?** Recomendado: sí, con 4 a 6 escondidos tiene que ser posible perder, y 3
    deja margen para un par de errores (igual que el día de visitas).
+
+## Hecho así
+- **Paso 2 (la lavandería):** `--place=laundry` abre `scenes/levels/prison_laundry.tscn`, la cárcel de día con
+  `variant = "laundry"`. `LaundryPlan` saca la puerta de la cocina (para que pasen los carritos) y la vuelve lavandería:
+  4 lavarropas y 2 secarropas contra la pared del este, la mesa de doblar con ropa doblada y una soga con 6 prendas
+  colgadas. Hay 6 presos trabajando (`LaundryWorker`, el modelo del motín) en los lavarropas, el secarropas, la mesa y
+  la soga, que se agachan sobre lo que hacen cuando el primer policía cruza el portón. Los 12 carritos
+  (`LaundryCart`: canasto de lona, marco de metal, ruedas, manija y sábanas de colores arriba) esperan en dos filas
+  junto a la pared del oeste. La semilla elige de 4 a 6 que llevan un preso abajo de la ropa y en cuál de los 4 viajes
+  del camión sale cada uno (3 por viaje). Los carritos no se empujan a mano: los mueven los presos (paso 3). Capturas en
+  `/mnt/project-files/lavanderia/`: `paso2-lavanderia.png` y `paso2-carritos.png`.

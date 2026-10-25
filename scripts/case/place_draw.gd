@@ -36,6 +36,7 @@ const PLACES := {
 	"blackout": "res://scenes/levels/prison_blackout.tscn",
 	"visits": "res://scenes/levels/prison_visits.tscn",
 	"market": "res://scenes/levels/market.tscn",
+	"laundry": "res://scenes/levels/prison_laundry.tscn",
 }
 ## The raids, drawn by the seed.
 const ORDER := ["grandpa", "bakery", "groomer"]
