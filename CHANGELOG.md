@@ -178,3 +178,4 @@
 - Roof robbery: a seventh of the seeds (--bank=roof) the bank has fire escape stairs up the east wall, a hatch in the corridor's ceiling, the toy helicopter (40 kg) on its helipad on the roof and the nephew with its remote on a bench across the street.
 - Roof robbery, step 2: the nephew flies the helicopter away when he sees a cop on the roof (20 s, then it lands); his remote rests 40 s after each flight, and taking the helicopter off the roof leaves the gang without it.
 - Roof robbery, step 3: cuffing the nephew catches him for good and crashes the helicopter wherever it is; without it the gang has no way out by the roof.
+- Roof robbery, step 4a: the gang goes up the hatch with the sacks and the helicopter takes them one 20 s trip at a time to the nephew's shopping cart; the radio, the planilla and +100 for cuffing the nephew.

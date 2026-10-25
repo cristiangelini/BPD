@@ -32,6 +32,7 @@ const PER_HELP := 50
 const PER_WRONG_MANAGER := 200
 const EARLY_MANAGER := 100
 const EARLY_VALVE := 100
+const NEPHEW := 100
 const QUOTA := 400
 const STORY := "bank_robbery"
 const SLIPS := "BEAR_SLIP_%d"
@@ -121,8 +122,10 @@ func start() -> void:
 
 
 ## What the comisario says over the radio: the base robbery's, the party's, the grandpas', the sorry robber's or the
-## manager's, or the flood's.
+## manager's, the flood's or the roof's.
 func brief() -> PackedStringArray:
+	if bank.roof:
+		return PackedStringArray(["BRIEF_BANK_ROOF_A", "BRIEF_BANK_ROOF_B", "BRIEF_BANK_ROOF_C"])
 	if bank.water:
 		return PackedStringArray(["BRIEF_BANK_FLOOD_A", "BRIEF_BANK_FLOOD_B", "BRIEF_BANK_FLOOD_C"])
 	if bank.manager.boss:
@@ -255,7 +258,8 @@ func missed() -> int:
 
 func report() -> Dictionary:
 	var bonus := PER_HELP * helps() + (EARLY_MANAGER if manager_early else 0) \
-		+ (EARLY_VALVE if bank.water and bank.water.shut_early() else 0)
+		+ (EARLY_VALVE if bank.water and bank.water.shut_early() else 0) \
+		+ (NEPHEW if bank.roof and bank.nephew.caught else 0)
 	var salary := maxi(SALARY - missed() + bonus, 0) if solved() else 0
 	return {"salary": salary, "evidence": 0, "fines": 0, "total": salary, "quota": QUOTA, "approved": salary >= QUOTA}
 
@@ -432,6 +436,11 @@ func rows() -> Array[Dictionary]:
 		list.append(_row("OBJ_BANK_VALVE", bank.water.shut_early()))
 		list.append({"text": tr("OBJ_BANK_WATER") % roundi(bank.water.level * 100.0), "done": false,
 			"optional": false, "status": true})
+	if bank.roof:
+		list.append(_row("OBJ_BANK_NEPHEW", bank.nephew.caught))
+		if bank.roof_getaway:
+			list.append({"text": tr("OBJ_BANK_CART") % bank.bags_taken, "done": false, "optional": false,
+				"status": true})
 	if bank.party:
 		list.append({"text": "OBJ_BANK_FANS", "done": false, "optional": false, "status": true})
 		if bank.croissant_tray:

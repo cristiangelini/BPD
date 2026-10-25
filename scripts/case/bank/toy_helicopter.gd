@@ -6,9 +6,13 @@ extends Grabbable
 ## carry it. El Oso's nephew flies it from the sidewalk across (BankNephew). Its origin is on the ground under the
 ## mast, its front to +Z. Step 2: take_off() lifts it out of the cops' hands up to FLY_HEIGHT over its pad and flies it
 ## in circles for FLY_TIME, out of reach, and then it lands back on the pad. Step 3: without its pilot it crashes
-## (crash()): the rotors stop and it falls wherever it is, broken for good. Every number here is (propuesta).
+## (crash()): the rotors stop and it falls wherever it is, broken for good. Step 4: trip() takes a sack of money to the
+## nephew's cart and back, in TRIP_TIME. Every number here is (propuesta).
 
 signal landed
+## On a trip: it let the sack go into the cart, and it's back on its pad.
+signal dropped
+signal trip_done
 
 const KG := 40.0
 const MODEL := preload("res://assets/models/toy_helicopter.glb")
@@ -23,6 +27,10 @@ const FLY_RADIUS := 6.0
 const FLY_TIME := 20.0
 const FLY_SPEED := 4.0
 const CRASH_TILT := 0.45
+## A trip to the cart and back takes this long (s), flying this high over the street, down to this over the cart.
+const TRIP_TIME := 20.0
+const TRIP_HEIGHT := 6.0
+const OVER_CART := 1.2
 
 ## How fast they turn now.
 var spin := IDLE_SPIN
@@ -33,6 +41,10 @@ var flying := false
 var crashed := false
 var fly_left := 0.0
 var _angle := 0.0
+## A trip's points still ahead (in its parent's space), how fast it flies them, and how many there are until the drop.
+var _path: Array[Vector3] = []
+var _path_speed := 0.0
+var _to_drop := -1
 var _model: Node3D
 var _rotor: Node3D
 var _tail_rotor: Node3D
@@ -57,19 +69,62 @@ func _ready() -> void:
 
 ## The nephew flies it: whoever holds it lets go, and up it goes.
 func take_off() -> void:
-	if flying or crashed:
+	if busy() or crashed:
 		return
+	flying = true
+	fly_left = FLY_TIME
+	_lift()
+	_angle = 0.0
+
+
+## Out of everyone's hands and up: it flies on its own now.
+func _lift() -> void:
 	for cop in get_tree().get_nodes_in_group("cops"):
 		var grabber := cop.get_node_or_null("Grabber") as Grabber
 		if grabber and grabber.held == self:
 			grabber.release()
 	holders.clear()
-	flying = true
-	fly_left = FLY_TIME
 	freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
 	freeze = true
 	spin = FLY_SPIN
-	_angle = 0.0
+
+
+## In the air, on a flight of the nephew's or on a trip.
+func busy() -> bool:
+	return flying or not _path.is_empty()
+
+
+## A sack to the cart at `cart` (in its parent's space): up, over the street, down to the cart, and back to its pad.
+func trip(cart: Vector3) -> void:
+	if busy() or crashed:
+		return
+	var up := Vector3.UP * TRIP_HEIGHT
+	_path.assign([pad + up, cart + up, cart + Vector3.UP * OVER_CART, cart + up, pad + up, pad])
+	_to_drop = 3
+	var length := position.distance_to(_path[0])
+	for i in range(1, _path.size()):
+		length += _path[i - 1].distance_to(_path[i])
+	_path_speed = length / TRIP_TIME
+	_lift()
+
+
+func _fly_path(delta: float) -> void:
+	var to := _path[0]
+	position = position.move_toward(to, _path_speed * delta)
+	var flat := Vector2(to.x - position.x, to.z - position.z)
+	if flat.length() > 0.1:
+		rotation.y = lerp_angle(rotation.y, atan2(flat.x, flat.y), 3.0 * delta)
+	if position.distance_to(to) > 0.01:
+		return
+	_path.pop_front()
+	_to_drop -= 1
+	if _to_drop == 0:
+		dropped.emit()
+	if _path.is_empty():
+		rotation = Vector3.ZERO
+		freeze = false
+		spin = IDLE_SPIN
+		trip_done.emit()
 
 
 ## No pilot: it drops from wherever it is, its rotors stopped, tipped over.
@@ -78,6 +133,7 @@ func crash() -> void:
 		return
 	crashed = true
 	flying = false
+	_path.clear()
 	fly_left = 0.0
 	spin = 0.0
 	freeze = false
@@ -94,6 +150,9 @@ func _target() -> Vector3:
 
 
 func _physics_process(delta: float) -> void:
+	if not _path.is_empty():
+		_fly_path(delta)
+		return
 	if not flying:
 		super(delta)
 		return
