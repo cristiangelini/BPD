@@ -384,6 +384,21 @@ const NPCS = {
 		for (const s of [-1, 1]) limb(b, 'props', steel, V(0.52, 0.62, 0.2), V(0.52 + s * 0.04, 0.62, 0.42), 0.012);
 		for (const s of [-1, 1]) b.add('props', C('scissor_grip', 0xe04a4a), new THREE.TorusGeometry(0.03, 0.01, 4, 8), { pos: V(0.52 + s * 0.035, 0.62, 0.17), rot: [0, Math.PI / 2, 0] });
 	},
+	// Ferretero Tobías (the hardware store): grey shop coat with pockets full of screwdrivers, a pencil behind the ear,
+	// glasses on the tip of the nose and a bushy grey mustache.
+	ferretero(b) {
+		pearBody(b, SKIN.cacao, { shirt: C('shop_coat', 0x8a9098), onePiece: true, belted: false, shoes: C('work_boots', 0x4a3a2a) });
+		for (const s of [-1, 1]) b.add('body', C('coat_pocket', 0x767c84), new THREE.BoxGeometry(0.16, 0.12, 0.03), { pos: V(s * 0.2, 0.62, 0.42) });
+		const handles = [C('handle_red', 0xd23a3a), C('handle_yellow', 0xf2c230), C('handle_blue', 0x3c7be8)];
+		handles.forEach((m, i) => b.add('props', m, new THREE.CylinderGeometry(0.014, 0.014, 0.1, 5), { pos: V(0.15 + i * 0.04, 0.7, 0.42), rot: [0.15, 0, (i - 1) * 0.2] }));
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		b.add('face', black, new THREE.TorusGeometry(0.045, 0.008, 4, 10), { pos: V(-0.07, 1.27, 0.2) });
+		b.add('face', black, new THREE.TorusGeometry(0.045, 0.008, 4, 10), { pos: V(0.07, 1.27, 0.2) });
+		mustache(b, C('mustache_grey', 0xb8b8b4), 1.4);
+		const hair = C('hair_grey', 0xc8c8c4);
+		for (const s of [-1, 1]) b.add('head', hair, ellipsoid(0.07, 0.08, 0.1, 6, 4), { pos: V(s * 0.17, 1.38, -0.02) });
+		limb(b, 'props', C('pencil', 0xf2c230), V(0.16, 1.42, 0.0), V(0.24, 1.36, 0.1), 0.012);
+	},
 	// Señora del caniche (the pet salon): lilac fur coat, a tall white hairdo, sunglasses up, pearls and a tiny handbag.
 	senora(b) {
 		pearBody(b, SKIN.arena, { shirt: C('fur_coat', 0xb48ad8), onePiece: true, belted: false, shoes: C('heels', 0x6a2a8a) });

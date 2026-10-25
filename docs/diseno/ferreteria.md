@@ -80,6 +80,14 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      frágil: 18 latas y 6 frascos, 20 de multa cada uno. "Ferretería (prueba)" en el menú la abre, y también
      `--place=hardware`. Capturas en `ferreteria/` de la carpeta del proyecto.
 2. Tobías: el mostrador, la denuncia, el interrogatorio y la distracción del tornillo.
+   - **Cómo quedó (propuesta):** Tobías (guardapolvo gris con destornilladores en el bolsillo, bigote canoso, anteojos y
+     lápiz en la oreja) atiende detrás del mostrador y no sale de ahí. Llena la denuncia como Ramiro: 15 si lo empujan,
+     5 por puerta rota (la oye desde cualquier lado), 10 por cada lata o frasco que ve romperse (ve hasta 13 m si nada
+     tapa), 5 por pregunta, y llama al abogado en 100 (se pierde el caso). Con R suelta 2 cosas por caso (sin historia
+     dice "Yo solo vendo tornillos, oficial") y después se ofende. **El timbre:** en el mostrador hay un timbre dorado;
+     con E se le pide "un tornillo de tres octavos" y Tobías se da vuelta 15 s hacia la pared de tornillos, murmurando,
+     sin ver nada de lo que se rompe. Al final dice "¡No me queda! Vuelva el martes." y necesita 30 s para buscar otro.
+     Un empujón corta la búsqueda. Capturas: `paso2-*.png`.
 3. La mercadería que se cobra (la cuenta) y las herramientas que sirven.
 4. Don Cosme y la máquina de copiar llaves.
 5. El caso (RaidCase) con la primera historia: las llaves maestras.
