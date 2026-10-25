@@ -15,6 +15,8 @@ var locked := true
 var is_open := false
 var is_broken := false
 var hits := 0
+## The key the cops have doesn't fit this door (the bank's manager who is the boss gave a wrong one).
+var wrong_key := false
 
 @onready var _panel: AnimatableBody3D = $Panel
 
@@ -34,9 +36,21 @@ func use(cop: Cop) -> void:
 		if not cop.has_key:
 			cop.show_hint("HINT_DOOR_LOCKED")
 			return
+		if wrong_key:
+			cop.show_hint("HINT_DOOR_WRONG_KEY")
+			return
 		locked = false
 		cop.show_hint("HINT_DOOR_UNLOCKED")
 	_swing(not is_open)
+
+
+## Unlocked and opened by someone inside (the bank's sorry robber), with no key.
+func open_from_inside() -> void:
+	if is_broken:
+		return
+	locked = false
+	if not is_open:
+		_swing(true)
 
 
 ## One battering ram hit; at RAM_HITS the door comes off. Returns true if this hit broke it.
