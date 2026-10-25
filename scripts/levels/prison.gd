@@ -99,6 +99,8 @@ var lights_on := true
 var cell_doors: Array[CellDoor] = []
 ## The guards shaking in the yard with their candles (step 2).
 var guards: Array[Node3D] = []
+## The inmates loose in the dark (step 3).
+var blackout: BlackoutPlan
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -166,7 +168,7 @@ func _start_transfer() -> void:
 
 ## The blackout (carcel-corte-de-luz.md, step 2): the power is cut, so the lamps are off, the block's gate and every
 ## cell stand open (the locks are electric) and the guards wait in the yard with their candles. The cops start at the
-## station and drive here, as for the riot. The inmates loose in the dark come in step 3.
+## station and drive here, as for the riot. Step 3: the inmates loose in the dark (BlackoutPlan).
 func _start_blackout() -> void:
 	set_lights(false)
 	block_gate.unlock()
@@ -175,6 +177,10 @@ func _start_blackout() -> void:
 		door.set_open(true)
 	for at in GUARD_SPOTS:
 		_guard(at)
+	blackout = BlackoutPlan.new()
+	blackout.name = "Blackout"
+	add_child(blackout)
+	blackout.setup(self, case_seed)
 	city.transform = CityLayout.anchor("prison")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)

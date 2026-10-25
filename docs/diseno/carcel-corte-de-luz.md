@@ -86,3 +86,12 @@ están los dos fusibles sueltos, quién es El Chispa y sus frases. Así no hay d
   guardias (modelo del carcelero) tiemblan en el patio junto al portón con una vela que titila. `cell_at` dice en qué
   celda está un punto (0 a 3 al oeste, 4 a 7 al este). No hay motín ni caso todavía. Capturas en
   `/mnt/project-files/corte-de-luz/paso2-*.png`.
+- **Paso 3 (los presos sueltos):** `BlackoutPlan` pone 12 presos (`BlackoutInmate`, modelo del preso) en las celdas,
+  uno o dos por celda, y la semilla les da un papel: de 3 a 5 van al portón (el primero sale a los 10 s y después uno
+  cada 25 s, más o menos 5), la mitad del resto se esconde agachado (en una esquina del comedor, detrás del mostrador,
+  en la celda de castigo o en una celda que no es la suya) y los demás dan vueltas por el comedor entre las mesas.
+  Nada se mueve hasta que el primer policía cruza el portón. Cada 0,1 s se fija si la linterna de algún policía los
+  alumbra (`Flashlight.reaches`: 18 m, 22° y sin paredes en el medio): alumbrado se queda duro con una frase y sigue
+  1 s después de que se va la luz. A oscuras se les ven los ojos, que parpadean. El que llega al portón se escapa y
+  avisa a los policías. Esposado se queda quieto (llevarlo a la celda es el paso 4). Las rejas de las celdas ahora se
+  abren hacia adentro de la celda para no tapar el pasillo. Capturas: `paso3-ojos.png` y `paso3-linterna.png`.
