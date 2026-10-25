@@ -32,6 +32,10 @@ static func draw(rng: RandomNumberGenerator) -> Dictionary:
 	}
 
 
-## What the license says.
+## What the license says. A clown's says how his photo looks, without makeup (control-payasos.md).
 static func license_text(driver: Dictionary) -> String:
-	return TranslationServer.translate("LICENSE_TEXT") % [driver.name, driver.surname, driver.year]
+	var text := TranslationServer.translate("LICENSE_TEXT") % [driver.name, driver.surname, driver.year]
+	if driver.has("license_glasses"):
+		text += " " + TranslationServer.translate("LICENSE_PHOTO_GLASSES" if driver.license_glasses
+			else "LICENSE_PHOTO_NO_GLASSES")
+	return text

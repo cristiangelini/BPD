@@ -77,7 +77,7 @@ desde la oficina del comisario, porque la puerta propia de la sala da a la armer
 ## Las otras 9 variantes
 Con las mismas piezas (sospechosos parecidos, rasgos, pistas que descartan y el tablero), cada variante cambia el lugar
 y la vuelta de tuerca de [casos.md](casos.md): el museo (los guardias "estaban en el baño"), el hotel (el conserje
-miente), el tren (hay que resolverlo antes de la última estación), el gato de la millonaria, el circo (payasos
+miente), el tren (hay que resolverlo antes de la última estación), el gato de la millonaria, el circo ([escena-circo.md](escena-circo.md), payasos
 iguales), la oficina (mismo traje, la pista es una taza), la boda, la mansión con pasadizos y la propia comisaría (el
 culpable puede ser un compañero). Cada una tiene su diseño antes de programarla.
 
