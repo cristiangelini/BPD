@@ -90,6 +90,10 @@ const DOG_RIDE_REACH := 12.0
 ## The spoon tunnel (fuga-tunel.md, step 1): a tray with two spoons in each cell, and the hole by each bunk, on one of
 ## its two sides (the seed draws which).
 const TUNNEL_TRAYS: Array[Vector3] = [Vector3(8.3, 0.02, 3.9), Vector3(12.7, 0.02, 3.9)]
+## The bunks' mattresses (step 3), and where a cop comes out of a finished tunnel: on the sidewalk in front of the
+## station, by the patrol car.
+const TUNNEL_MATTRESSES: Array[Vector3] = [Vector3(8.3, 0.6, 1.6), Vector3(12.7, 0.6, 1.6)]
+const TUNNEL_EXIT := Vector3(5.0, 0, StationRooms.HALF_Z + 2.0)
 ## A catch fills a third of the hole back in (fuga-tunel.md, question 3).
 const TUNNEL_REFILL := 1.0 / 3.0
 const TUNNEL_HOLES := [[Vector3(6.7, 0, 2.2), Vector3(9.9, 0, 2.2)], [Vector3(11.1, 0, 2.2), Vector3(14.3, 0, 2.2)]]
@@ -117,6 +121,9 @@ var dog_food: Array[DogFood] = []
 ## The spoon tunnel's holes (one for each cell) and spoons.
 var holes: Array[TunnelHole] = []
 var spoons: Array[Spoon] = []
+var mattresses: Array[TunnelMattress] = []
+## The other end of the tunnels, on the sidewalk: it shows once one is through.
+var tunnel_exit: MeshInstance3D
 var cart_key: CellKey
 var tools: Array[CleaningTool] = []
 var polisher: FloorPolisher
@@ -223,7 +230,42 @@ func _tunnel_night() -> void:
 		hole.global_transform = lot * Transform3D(Basis.IDENTITY, TUNNEL_HOLES[cell][rng.randi_range(0, 1)])
 		hole.setup(case_seed)
 		hole.scooped.connect(func(dug: TunnelHole, cop: Cop) -> void: listener.heard_scoop(dug, cop))
+		hole.entered.connect(_into_tunnel)
 		holes.append(hole)
+		var mattress := TunnelMattress.new()
+		mattress.name = "Mattress%d" % cell
+		add_child(mattress)
+		mattress.global_position = lot * TUNNEL_MATTRESSES[cell]
+		mattresses.append(mattress)
+	tunnel_exit = MeshInstance3D.new()
+	tunnel_exit.name = "TunnelExit"
+	var disc := CylinderMesh.new()
+	disc.top_radius = TunnelHole.RADIUS
+	disc.bottom_radius = TunnelHole.RADIUS
+	disc.height = 0.02
+	var dark := StandardMaterial3D.new()
+	dark.albedo_color = TunnelHole.DARK
+	disc.material = dark
+	tunnel_exit.mesh = disc
+	add_child(tunnel_exit)
+	tunnel_exit.global_position = lot * (TUNNEL_EXIT + Vector3(0, 0.011, -0.8))
+	tunnel_exit.hide()
+
+
+## A cop got into a finished tunnel: out on the sidewalk by the patrol car (the guests' cops too, warped by the host).
+func _into_tunnel(_hole: TunnelHole, cop: Cop) -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var slot := get_tree().get_nodes_in_group("cops").find(cop)
+	cop.warp(lot * Transform3D(Basis.IDENTITY, TUNNEL_EXIT + Vector3(slot * 0.8, 0.1, 0)))
+	cop.show_hint("HINT_TUNNEL_OUT", true)
+
+
+## The host: which holes are under a mattress, and the tunnel's other end once one is through.
+func _cover_holes() -> void:
+	for hole in holes:
+		hole.covered = mattresses.any(func(mattress: TunnelMattress) -> bool:
+			return is_instance_valid(mattress) and mattress.covers(hole.global_position))
+	tunnel_exit.visible = holes.any(func(hole: TunnelHole) -> bool: return hole.is_through())
 
 
 ## The guard dog's jailbreak: the guard asleep at his desk with no donuts, and Mordisco walking his round with the key.
@@ -606,6 +648,11 @@ func _physics_process(delta: float) -> void:
 		_slip_on_wet(delta)
 	if dog and multiplayer.is_server():
 		_dog_jumps_in()
+	if is_tunnel():
+		if multiplayer.is_server():
+			_cover_holes()
+		else:
+			tunnel_exit.visible = holes.any(func(hole: TunnelHole) -> bool: return hole.is_through())
 
 
 ## Every cop in the patrol car and Mordisco everyone's friend, near it: he jumps in too.
@@ -740,6 +787,8 @@ func _show_end(result: String) -> void:
 		line.text = tr("JAILBREAK_ESCAPED_LINE") % (campaign.shift if campaign else 1)
 	if result == "escaped" and dog and dog.riding:
 		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_DOG")
+	elif result == "escaped" and is_tunnel():
+		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_TUNNEL")
 	box_ui.add_child(line)
 	var buttons := HBoxContainer.new()
 	buttons.alignment = BoxContainer.ALIGNMENT_CENTER

@@ -89,6 +89,15 @@ El guardia y los pozos van por `NpcSync`; las cucharas y los colchones, por `Pro
   soy un monstruo"), para que la fuga no quede trabada sin con qué cavar.
 - 14 frases nuevas del guardia en es, en y pt. Pruebas en `test_tunnel_noise.gd`.
 
+## Cómo quedó el paso 3
+- Un colchón (`TunnelMattress`) sobre cada cucheta. Acostado encima del pozo lo tapa (`covered`, lo calcula el
+  anfitrión): el guardia no lo ve, y para cavar hay que sacarlo ("El colchón tapa el pozo").
+- Con el túnel terminado, E mete al policía y sale en la vereda frente a la comisaría, a unos 6 m del patrullero, donde
+  aparece la otra punta del túnel. Una captura no rellena un túnel terminado.
+- Escaparse es igual que en las otras fugas; el final agrega "Dejaron un túnel hecho con cucharas...".
+- Online: el pozo manda cucharadas y si está tapado; colchones y cucharas van por `PropSync` y el guardia por
+  `NpcSync`. Pruebas en `test_tunnel_exit.gd` y `test_tunnel_online.gd`.
+
 ## Preguntas para Cristian
 1. ¿La fuga sortea en cuartos entre dona, limpieza, perro y túnel? **Recomiendo sí:** las cuatro comparten celdas,
    salida y final.

@@ -1658,3 +1658,7 @@ LISTENING_GUARD_TUNNEL_0,"¡Un túnel! ¡Con cucharas! ¿Son ratones?","A tunnel
 LISTENING_GUARD_TUNNEL_1,"¡Un pozo en mi comisaría! ¡Eso se rellena ya!","A hole in my station! Fill that in right now!","Um buraco na minha delegacia! Tampem isso já!"
 LISTENING_GUARD_TUNNEL_2,"¿Cavando con la cuchara del puré? ¡Qué falta de respeto!","Digging with the mash spoon? How disrespectful!","Cavando com a colher do purê? Que falta de respeito!"
 LISTENING_GUARD_SPOON_LEFT,"Les dejo una cuchara para el puré. No soy un monstruo.","I'll leave you one spoon for the mash. I'm not a monster.","Vou deixar uma colher para o purê. Não sou um monstro."
+PROMPT_HOLE_COVERED,"El colchón tapa el pozo: sácalo para seguir cavando","The mattress covers the hole: move it to keep digging","O colchão cobre o buraco: tire-o para continuar cavando"
+PROMPT_ENTER_TUNNEL,"E: meterte en el túnel","E: get into the tunnel","E: entrar no túnel"
+HINT_TUNNEL_OUT,"¡Afuera! Estás en la vereda, al lado del patrullero. Que no te vea el guardia por la ventana.","Out! You're on the sidewalk, by the patrol car. Don't let the guard see you through the window.","Lá fora! Você está na calçada, do lado da viatura. Que o guarda não te veja pela janela."
+JAILBREAK_ESCAPED_TUNNEL,"Dejaron un túnel hecho con cucharas. El guardia va a cenar con tenedor un mes entero.","You left behind a tunnel dug with spoons. The guard will eat dinner with a fork for a month.","Vocês deixaram um túnel cavado com colheres. O guarda vai jantar de garfo por um mês inteiro."

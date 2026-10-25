@@ -4,11 +4,13 @@ extends StaticBody3D
 ## The hole by a cell's bunk in the spoon tunnel jailbreak (docs/diseno/fuga-tunel.md, step 1): a cop with a Spoon in
 ## hand digs it with E, a scoop at most every SCOOP_EVERY seconds, and after `needed` scoops (drawn by the seed between
 ## NEEDED_MIN and NEEDED_MAX) the tunnel is through. The hole looks deeper and the dirt beside it piles up as it goes.
-## Every scoop is a noise (`scooped`), which the listening guard hears unless someone covers it. Every number here is
+## Through, E gets a cop into it (`entered`); under a mattress it can't be dug or entered. Every scoop is a noise (`scooped`), which the listening guard hears unless someone covers it. Every number here is
 ## (propuesta).
 
 signal scooped(hole: TunnelHole, cop: Cop)
 signal dug_through(hole: TunnelHole)
+## A cop got into the finished tunnel (the level takes it out by the patrol car).
+signal entered(hole: TunnelHole, cop: Cop)
 
 const NEEDED_MIN := 70
 const NEEDED_MAX := 90
@@ -21,7 +23,7 @@ const DARK := Color(0.08, 0.06, 0.05)
 @export var cell := 0
 var needed := 80
 var scoops := 0
-## Under the bunk's mattress, out of the guard's sight (step 3).
+## Under a mattress (TunnelMattress), out of the guard's sight: the host works it out, the guests get it.
 var covered := false
 var _next_scoop_ms := 0
 var _hole: MeshInstance3D
@@ -80,13 +82,20 @@ func is_through() -> bool:
 
 
 func prompt_key(cop: Cop) -> String:
+	if covered:
+		return "PROMPT_HOLE_COVERED"
 	if is_through():
-		return ""
+		return "PROMPT_ENTER_TUNNEL"
 	return "PROMPT_DIG_TUNNEL" if cop.get_node("Grabber").held is Spoon else "PROMPT_NEED_SPOON"
 
 
 func use(cop: Cop) -> void:
-	if is_through() or not cop.get_node("Grabber").held is Spoon:
+	if covered:
+		return
+	if is_through():
+		entered.emit(self, cop)
+		return
+	if not cop.get_node("Grabber").held is Spoon:
 		return
 	var now := Time.get_ticks_msec()
 	if now < _next_scoop_ms:
@@ -125,9 +134,10 @@ func _refresh() -> void:
 
 ## Online: how far it's dug (NpcSync).
 func net_state() -> Variant:
-	return scoops
+	return [scoops, covered]
 
 
 func apply_net_state(state: Variant) -> void:
-	scoops = state
+	scoops = state[0]
+	covered = state[1]
 	_refresh()
