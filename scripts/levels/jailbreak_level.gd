@@ -12,7 +12,8 @@ extends Node3D
 ## campaign is lost (step 6).
 ## There are two ways out, drawn by the seed: the key in the donut (the night guard, above) and the cleaning crew
 ## (fuga-limpieza.md): at dawn the guard went home and the comisario came in early, walking his round
-## (EarlyComisario), and he catches them the same way; the third time he suspends them himself.
+## (EarlyComisario), and he catches them the same way; the third time he suspends them himself. The cells open when
+## Clotilde, the cleaner, mops them (Cleaner), with the key ring on her cart.
 ## --place=jailbreak opens it from Play, and --jailbreak=<variant> forces one of VARIANTS.
 
 const DESK_MODEL := preload("res://assets/models/station_desk.glb")
@@ -27,6 +28,14 @@ const STICKS := [
 	["res://assets/models/broom.glb", 2.8, Vector3(9.8, 0.06, 3.9), PI / 2],
 	["res://assets/models/fishing_rod.glb", 3.0, Vector3(11.2, 0.06, 3.9), -PI / 2],
 ]
+
+## The cleaning crew's: Clotilde's cart in the cells room, front (and its key hook) toward the cells, and where the
+## key ring lies on its top tray, in the cart's own space.
+const CART_MODEL := preload("res://assets/models/cleaning_cart.glb")
+const CART_AT := Vector3(13.0, 0, 7.4)
+const CART_SIZE := Vector3(0.9, 0.97, 0.5)
+const CART_HOOK := Vector3(0.3, 0.97, 0.25)
+const CART_KEY := Vector3(0.3, 1.0, 0.15)
 
 ## How many times the guard can catch them (step 6 ends the campaign at the last one).
 const CATCHES := 3
@@ -53,6 +62,10 @@ var box_home: Transform3D
 var suspicion_bar: ProgressBar
 var caught_label: Label
 var car_home: Transform3D
+## The cleaning crew's jailbreak: Clotilde and the key ring on her cart.
+var cleaner: Cleaner
+var cart_key: CellKey
+var _cart: Transform3D
 var end_screen: CanvasLayer
 ## A guest: how many catches it already followed (-1 until it first looks).
 var _seen_catches := -1
@@ -111,7 +124,35 @@ func _early_comisario() -> void:
 	comisario.outside_cells = outside_cells
 	comisario.caught.connect(_on_caught)
 	guard = comisario
+	_cleaner()
 	_dawn()
+
+
+## Clotilde beside her cart, with the cells' key ring on its tray. The comisario doesn't mind the keys on the cart,
+## so they aren't one of the guard's clues.
+func _cleaner() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var cart := StaticBody3D.new()
+	cart.name = "CleaningCart"
+	add_child(cart)
+	_cart = lot * Transform3D(Basis(Vector3.UP, PI), CART_AT)
+	cart.global_transform = _cart
+	cart.add_child(CART_MODEL.instantiate())
+	var shape := CollisionShape3D.new()
+	var solid := BoxShape3D.new()
+	solid.size = CART_SIZE
+	shape.shape = solid
+	shape.position.y = CART_SIZE.y / 2
+	cart.add_child(shape)
+	cart_key = NightGuard.KEY_SCENE.instantiate()
+	cart_key.name = "CartKey"
+	add_child(cart_key)
+	cart_key.remove_from_group("guard_clues")
+	cart_key.global_position = _cart * CART_KEY
+	cleaner = Cleaner.new()
+	cleaner.name = "Cleaner"
+	add_child(cleaner)
+	cleaner.setup(case_seed, lot, city.cell_doors, cart_key, _cart * CART_HOOK)
 
 
 ## 5:30 in the morning: the sky starts to light up orange and the moon's light turns warm.
@@ -209,6 +250,12 @@ func _on_caught(times: int) -> void:
 			_drop(stick)
 			sticks.erase(stick)
 			stick.queue_free()
+	if cleaner:
+		cleaner.reset()
+		if is_instance_valid(cart_key):
+			_drop(cart_key)
+			cart_key.linear_velocity = Vector3.ZERO
+			cart_key.global_position = _cart * CART_KEY
 	if box:
 		_drop(box)
 		box.linear_velocity = Vector3.ZERO
