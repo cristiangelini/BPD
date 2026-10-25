@@ -14,7 +14,7 @@ var cop: Cop
 func _open(party: bool) -> void:
 	bank = LEVEL.instantiate()
 	var seed_ := 1
-	while BankLevel.is_party(seed_, PackedStringArray()) != party:
+	while BankLevel.variant(seed_, PackedStringArray()) != ("party" if party else "base"):
 		seed_ += 1
 	bank.case_seed = seed_
 	cop = bank.get_node("Cop")
