@@ -25,7 +25,7 @@ func test_a_bad_bite_gives_cramps_that_slow_the_cop() -> void:
 	plate.laxative = true
 	market.add_child(plate)
 	plate.use(cop)
-	await wait_frames(2)
+	await wait_process_frames(2)
 	assert_not_null(Cramps.of(cop))
 	assert_almost_eq(cop.current_speed(), walk * Cramps.SLOW, 0.01)
 
@@ -33,7 +33,7 @@ func test_a_bad_bite_gives_cramps_that_slow_the_cop() -> void:
 func test_cramps_wear_off_by_themselves() -> void:
 	var cramps := Cramps.give(cop)
 	cramps.left = 0.01
-	await wait_frames(3)
+	await wait_process_frames(3)
 	assert_null(Cramps.of(cop))
 	assert_eq(cop.slow_factor, 1.0)
 
@@ -48,7 +48,8 @@ func test_the_toilet_locks_a_cop_in_and_cures_the_cramps() -> void:
 	toilet.left = 0.01
 	await wait_physics_frames(3)
 	assert_true(toilet.is_free())
-	await wait_frames(2)
+	assert_false(toilet.has_inside(cop.global_position), "let out in front of the door, not locked in again")
+	await wait_process_frames(2)
 	assert_null(Cramps.of(cop))
 
 
@@ -100,3 +101,11 @@ func test_the_texts_are_translated() -> void:
 	TranslationServer.set_locale("es")
 	for key: String in ["HINT_CRAMPS", "TOILET_BUSY", "MARKET_LUSTRE_KNOCK_3", "MARKET_LUSTRE_HOME"]:
 		assert_ne(tr(key), key)
+
+
+func test_his_odd_taste_is_heard_before_he_runs() -> void:
+	market.politician.say("MARKET_LUSTRE_ODD_TASTE")
+	market.toilet_run._on_ate(0, true)
+	assert_eq(market.politician.said(), "MARKET_LUSTRE_ODD_TASTE", "the run doesn't cover it up")
+	await wait_seconds(MarketToiletRun.ODD_TASTE_TIME + 0.3)
+	assert_eq(market.politician.said(), "MARKET_LUSTRE_RUN")

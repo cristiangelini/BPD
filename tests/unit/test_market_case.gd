@@ -50,11 +50,12 @@ func test_the_pay_counts_image_toilet_and_vendor() -> void:
 	assert_eq(case.report().salary, MarketCase.SALARY - 15 * MarketCase.PER_POINT)
 	market.toilet_run.ran.emit(1)
 	assert_eq(case.report().salary, MarketCase.SALARY - 15 * MarketCase.PER_POINT - MarketCase.TOILET_RUN)
+	assert_false(case.report().approved, "the toilet run and 15 points leave it under the quota")
 	market.spite.jailed.emit()
 	var pay := case.report()
 	assert_eq(pay.salary, MarketCase.SALARY - 15 * MarketCase.PER_POINT - MarketCase.TOILET_RUN + MarketCase.VENDOR)
 	assert_eq(pay.quota, MarketCase.QUOTA)
-	assert_false(pay.approved, "the toilet run and 15 points leave it under the quota")
+	assert_true(pay.approved, "the spiteful vendor detained brings it back over")
 
 
 func test_a_loose_vendor_runs_off_on_the_trike() -> void:

@@ -5,12 +5,15 @@ extends RefCounted
 ## it, the grandpa's house, the bakery or the pet salon, with even odds (propuesta). Every third shift is an
 ## interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
 ## (persecucion.md, "Sale como un caso más"). Of the shifts left, one in CRIME_EVERY is the crime scene
-## (escena-del-crimen.md, propuesta), then one in TRAFFIC_EVERY the traffic control (control-transito.md), then one in
+## (escena-del-crimen.md, propuesta; half at the pastry contest and half at the circus, escena-circo.md), then one in
+## TRAFFIC_EVERY the traffic control (control-transito.md; the level draws rush hour or clown convoy), then one in
 ## INFILTRATION_EVERY an infiltration (infiltracion.md), half at the grandparents' club and half at the church choir
 ## (infiltracion-coro.md), then one in BANK_EVERY the bank robbery (robo-banco.md), then one in RALLY_EVERY the
 ## politician's protection (proteccion-politico.md), half at the plaza and half at the market (politico-mercado.md),
-## then one in PRISON_EVERY the prison riot (carcel-motin.md), and the
-## rest are raids. A
+## then one in PRISON_EVERY a prison case, a quarter each the riot in the
+## canteen (carcel-motin.md), the prisoner transfer (traslado-presos.md), the blackout (carcel-corte-de-luz.md) and the
+## visiting day (carcel-visitas.md), and
+## the rest are raids. A
 ## campaign whose cops missed the quota goes to the jailbreak first (fuga.md). --place=<id> forces one. The level then
 ## takes that seed, so the place, the story and the hiding spots all come from one seed.
 
@@ -28,6 +31,10 @@ const PLACES := {
 	"bank": "res://scenes/levels/bank.tscn",
 	"plaza": "res://scenes/levels/plaza_rally.tscn",
 	"prison": "res://scenes/levels/prison.tscn",
+	"circus": "res://scenes/levels/circus.tscn",
+	"transfer": "res://scenes/levels/prisoner_transfer.tscn",
+	"blackout": "res://scenes/levels/prison_blackout.tscn",
+	"visits": "res://scenes/levels/prison_visits.tscn",
 	"market": "res://scenes/levels/market.tscn",
 }
 ## The raids, drawn by the seed.
@@ -41,6 +48,8 @@ const CHASE_EVERY := 2
 ## traffic control (propuesta: each as often as each raid).
 const CRIME_EVERY := 5
 const TRAFFIC_EVERY := 4
+## The crime scenes, drawn by the seed: the pastry contest and the circus (escena-circo.md, propuesta).
+const CRIME_SCENES := ["crime_scene", "circus"]
 ## Of the rest, one in this many is an infiltration (propuesta: as often as each raid), at one of these by the seed.
 const INFILTRATION_EVERY := 4
 const INFILTRATIONS := ["club", "choir"]
@@ -50,8 +59,11 @@ const BANK_EVERY := 4
 ## by the seed: the rally at the plaza or the walk through the market (politico-mercado.md).
 const RALLY_EVERY := 4
 const RALLIES := ["plaza", "market"]
-## Of the rest, one in this many is the riot in the prison's canteen (carcel-motin.md, propuesta).
+## Of the rest, one in this many is a prison case (propuesta), one of these by the seed: the riot in the canteen
+## (carcel-motin.md), the prisoner transfer (traslado-presos.md), the blackout (carcel-corte-de-luz.md) or the
+## visiting day (carcel-visitas.md).
 const PRISON_EVERY := 4
+const PRISONS := ["prison", "transfer", "blackout", "visits"]
 
 ## The seed the next level takes (0 = none drawn; the level draws its own).
 static var pending_seed := 0
@@ -77,7 +89,7 @@ static func pick(case_seed: int, args: PackedStringArray, shift := 0, chases := 
 		return "chase"
 	# Hashed as an array: string hashes of the same seed with another prefix go together in their low bits.
 	if chases and hash(["crime scene", case_seed]) % CRIME_EVERY == 0:
-		return "crime_scene"
+		return CRIME_SCENES[hash(["crime scene place", case_seed]) % CRIME_SCENES.size()]
 	if chases and hash(["traffic control", case_seed]) % TRAFFIC_EVERY == 0:
 		return "traffic"
 	if chases and hash(["infiltration", case_seed]) % INFILTRATION_EVERY == 0:
@@ -87,7 +99,7 @@ static func pick(case_seed: int, args: PackedStringArray, shift := 0, chases := 
 	if chases and hash(["politician rally", case_seed]) % RALLY_EVERY == 0:
 		return RALLIES[hash(["politician place", case_seed]) % RALLIES.size()]
 	if chases and hash(["prison riot", case_seed]) % PRISON_EVERY == 0:
-		return "prison"
+		return PRISONS[hash(["prison case", case_seed]) % PRISONS.size()]
 	return ORDER[hash("place %d" % case_seed) % ORDER.size()]
 
 
