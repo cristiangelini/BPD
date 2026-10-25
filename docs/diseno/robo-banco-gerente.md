@@ -80,3 +80,10 @@ variantes), el walkie, el baúl y la huida en su auto.
   gerente jefe (`hash(["bank moneda", semilla]) % 5`), y el resto sigue en cuartos como antes, así las semillas de las
   pruebas viejas no cambian. `--bank=manager` lo fuerza. El walkie del modelo queda escondido hasta el paso 2.
   Capturas en `/mnt/project-files/gerente/paso1-*.png`.
+- **Paso 2 (las pistas del jefe):** en la variante del gerente jefe la llave que da no abre la puerta de atrás
+  (`FrontDoor.wrong_key`: "La llave no entra... Esta no es."). Cada 20 a 30 s se para, saca el walkie del bolsillo del
+  pijama 2 s y murmura al walkie (`MANAGER_WALKIE_1-3`, `BankManager.radio`); si no hay ningún policía a 6 m de él, el
+  taladro va más rápido 10 s (`BankDrill.hurry`). Su auto tiene el baúl abierto con dos bolsas vacías
+  (`ManagerTrunk`): E lo cierra y a los 6 s él lo vuelve a abrir, "¡Déjelo abierto, que se airee!". Una de cada tres
+  quejas lo delata (`MANAGER_BOSS_1-2`). El gerente honesto no tiene walkie ni baúl abierto. El desliz de El Oso por
+  teléfono queda para el paso 4. Capturas en `/mnt/project-files/gerente/paso2-*.png`.

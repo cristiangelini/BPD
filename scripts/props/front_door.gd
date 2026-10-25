@@ -15,6 +15,8 @@ var locked := true
 var is_open := false
 var is_broken := false
 var hits := 0
+## The key the cops have doesn't fit this door (the bank's manager who is the boss gave a wrong one).
+var wrong_key := false
 
 @onready var _panel: AnimatableBody3D = $Panel
 
@@ -33,6 +35,9 @@ func use(cop: Cop) -> void:
 	if locked:
 		if not cop.has_key:
 			cop.show_hint("HINT_DOOR_LOCKED")
+			return
+		if wrong_key:
+			cop.show_hint("HINT_DOOR_WRONG_KEY")
 			return
 		locked = false
 		cop.show_hint("HINT_DOOR_UNLOCKED")
