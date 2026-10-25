@@ -1497,6 +1497,12 @@ TRANSFER_BATHROOM_THANKS,"¡Ahhh! Gracias, oficial.","Ahhh! Thanks, officer.","A
 TRANSFER_BATHROOM_LATE,"¡Muy tarde! ¡Ahora sí que me enojé!","Too late! Now I'm really mad!","Tarde demais! Agora eu fiquei bravo!"
 HINT_TRANSFER_BATHROOM,Un preso necesita el baño: frena en la estación de servicio.,An inmate needs the bathroom: stop at the gas station.,Um preso precisa do banheiro: pare no posto de gasolina.
 HINT_TRANSFER_BATHROOM_LATE,Llegaron tarde al baño: el preso está furioso y los demás se alteran.,Too late for the bathroom: the inmate is furious and the rest are getting restless.,Chegaram tarde ao banheiro: o preso está furioso e os outros se agitam.
+PROMPT_FIX_WINDOW,E: apretar la reja,E: hold the bars tight,E: firmar a grade
+TRANSFER_SICK,"¡Ay, ay! ¡Me muero! ¡Ayúdenme!","Ow, ow! I'm dying! Help me!","Ai, ai! Estou morrendo! Me ajudem!"
+TRANSFER_SICK_RUN,"¡Ja! ¡Caíste!","Ha! Gotcha!","Rá! Caiu!"
+TRANSFER_WINDOW_PUSH,"*Ñiiic, ñiiic*","*Creak, creak*","*Nhiiic, nhiiic*"
+TRANSFER_WINDOW_OPEN,"Esta reja está floja... En el próximo semáforo, me bajo.","These bars are loose... Next red light, I'm out.","Esta grade está solta... No próximo sinal, eu desço."
+TRANSFER_WINDOW_OUT,"¡Adiós, adiós!","Bye-bye!","Tchau, tchau!"
 HINT_JAILED_DOG,"El guardia ronca en su escritorio y la llave cuelga del collar de Mordisco, el perro de la comisaría. Hazte su amigo antes de que te ladre.","The guard is snoring at his desk and the key hangs from the collar of Mordisco, the station's dog. Make friends with him before he barks at you.","O guarda está roncando na mesa e a chave está pendurada na coleira do Mordisco, o cachorro da delegacia. Faça amizade com ele antes que ele te late."
 DOG_SNIFF_0,"*snif snif*","*sniff sniff*","*fung fung*"
 DOG_SNIFF_1,"*bosteza y babea*","*yawns and drools*","*boceja e baba*"

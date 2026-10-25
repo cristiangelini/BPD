@@ -39,7 +39,7 @@ const DRIVER_STAND := Vector3(0.0, 0.4, 3.5)
 const DRIVER_REACH := 1.4
 ## The inmates' seats (step 2 sits them there): four rows of two, by the windows, facing forward.
 const ROWS: Array[float] = [2.0, 0.6, -0.8, -2.2]
-const SEAT_X := 1.0
+const SEAT_X := 0.9
 const SEAT_TOP := 0.85
 ## The cab ends at the barred partition (z), with the aisle's gap through it.
 const CAB_Z := 3.0
