@@ -22,6 +22,9 @@ const SPONGE_FROM_DOOR := Vector3(1, 0, 1.5)
 const BREATHALYZER_FROM_DOOR := Vector3(2, 0, 1.5)
 ## The street race's two spike strips (control-carrera.md, step 3), rolled up next to it.
 const SPIKES_FROM_DOOR: Array[Vector3] = [Vector3(2, 0, 2.3), Vector3(2.7, 0, 2.3)]
+## The fog check's four lit cones (control-neblina.md, step 2), in a row by the patrol car.
+const FLARES_FROM_DOOR: Array[Vector3] = [Vector3(2, 0, 2.3), Vector3(2.6, 0, 2.3), Vector3(3.2, 0, 2.3),
+	Vector3(3.8, 0, 2.3)]
 ## What Play draws, a sixth each (propuesta).
 const VARIANTS: Array[String] = ["rush_hour", "clown_convoy", "fruit_truck", "crowded_car", "ghost_car", "wedding",
 	"race"]
@@ -98,6 +101,11 @@ func _ready() -> void:
 		var world := $Environment as WorldEnvironment
 		world.environment = world.environment.duplicate()
 		FogCar.fog_up(world.environment, $Sun)
+		for i in FLARES_FROM_DOOR.size():
+			var flare := FogFlare.new()
+			flare.name = "FogFlare%d" % i
+			add_child(flare)
+			flare.global_position = door + FLARES_FROM_DOOR[i] + Vector3.UP * 0.05
 	if chosen == "race":
 		for i in SPIKES_FROM_DOOR.size():
 			var strip := SpikeStrip.new()

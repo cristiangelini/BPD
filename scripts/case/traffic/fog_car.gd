@@ -27,6 +27,16 @@ const HALO_ALPHA := 0.55
 const BEAM_RANGE := 18.0
 const BEAM_ANGLE := 28.0
 const BEAM_ENERGY := 3.0
+## Unwarned (step 2), a car comes this fast (m/s), sees what's ahead only this close (m) and, still faster than
+## STOP_SPEED where it should stop, overruns it. A lit cone this close to it, or a cop's flashlight on it, warns it.
+const BLIND_SPEED := 45.0 / 3.6
+const SIGHT := 6.0
+const STOP_SPEED := 1.0
+const WARN_REACH := 4.0
+## A car running the checkpoint puts the queue's patience up this much.
+const OVERRUN_PATIENCE := 20.0
+## What a driver says bumping into the car ahead.
+const BUMP_LINES := 4
 
 
 ## A car's headlights and horn when no plan says them: from its plate, so every PC agrees.
@@ -39,6 +49,26 @@ static func traits_of(plate: String) -> Dictionary:
 ## A car's headlights (one of LIGHTS), which one is broken (one of BROKEN) and its horn (0 to HORNS - 1).
 static func draw(rng: RandomNumberGenerator) -> Dictionary:
 	return {"lights": rng.randi() % LIGHTS.size(), "broken": rng.randi() % BROKEN.size(), "horn": rng.randi() % HORNS}
+
+
+## Whether a lit cone (FogFlare) stands this close to `car` or a cop's flashlight shines on it.
+static func warned(car: QueueCar) -> bool:
+	for flare: FogFlare in car.get_tree().get_nodes_in_group("fog_flares"):
+		var off := flare.global_position - car.global_position
+		off.y = 0.0
+		if off.length() < WARN_REACH and flare.lit():
+			return true
+	var front := car.global_position + Vector3.UP * 0.8
+	for cop: Cop in car.get_tree().get_nodes_in_group("cops"):
+		var belt: ToolBelt = cop.get("belt")
+		if belt and belt.flashlight and belt.flashlight.reaches(front, car):
+			return true
+	return false
+
+
+## What a driver says bumping into the car ahead in the fog, from its plate.
+static func bump_line(plate: String) -> String:
+	return "FOG_BUMP_%d" % (absi(hash(["fog bump", plate])) % BUMP_LINES)
 
 
 ## Puts the fog over `env` and dims `sun` (the level's).
@@ -83,7 +113,7 @@ static func dress(car: Node3D, traits: Dictionary) -> void:
 		car.add_child(lamp)
 		if dark:
 			continue
-		lamp.add_child(_halo(color))
+		lamp.add_child(halo(color))
 		var beam := SpotLight3D.new()
 		beam.name = "Beam"
 		beam.light_color = color
@@ -100,7 +130,8 @@ static func lit(car: Node3D, left: bool) -> bool:
 	return car.get_node_or_null(("LampLeft" if left else "Lamp") + "/Halo") != null
 
 
-static func _halo(color: Color) -> MeshInstance3D:
+## A glow of `color` that shows through the fog, facing the camera.
+static func halo(color: Color) -> MeshInstance3D:
 	var halo := MeshInstance3D.new()
 	halo.name = "Halo"
 	var quad := QuadMesh.new()

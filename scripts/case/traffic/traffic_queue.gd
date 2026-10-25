@@ -245,6 +245,16 @@ func spawn() -> QueueCar:
 	return car
 
 
+## A car in the fog ran the checkpoint, unwarned (control-neblina.md, step 2): it goes by like one sneaking, and the
+## queue's patience goes up.
+func overran(car: QueueCar) -> void:
+	sneaked += 1
+	_leave(car, true)
+	_set_patience(patience + FogCar.OVERRUN_PATIENCE)
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		cop.show_hint("HINT_FOG_OVERRUN")
+
+
 func _leave(car: QueueCar, sneaked: bool) -> void:
 	var i := cars.find(car)
 	if i < 0:
