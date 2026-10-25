@@ -2226,3 +2226,8 @@ CONFESS_owner_conejo,"¡Está bien! ¡Fui yo! ¡Solo! ¡Quería demostrarle a El
 OBJ_BANK_BACK_CONEJO,"Volver a la comisaría con El Conejo","Go back to the station with El Conejo","Voltar para a delegacia com El Conejo"
 PLACE_BANK_BLOOD,"Banco de Sangre","Blood Bank","Banco de Sangue"
 BANK_FRIDGE,"HELADERA","FRIDGE","GELADEIRA"
+ROBBER_VAMPIRE_LIGHT_1,"¡La luz no! ¡La luz no!","Not the light! Not the light!","A luz não! A luz não!"
+ROBBER_VAMPIRE_LIGHT_2,"¡Me quemo! ¡Me quemo! Bueno, no, pero igual.","I'm burning! I'm burning! Well, no, but still.","Estou queimando! Estou queimando! Bom, não, mas mesmo assim."
+ROBBER_VAMPIRE_LIGHT_3,"¡Apaga eso, mortal!","Turn that off, mortal!","Desliga isso, mortal!"
+ROBBER_CONDE_CUT,"¡Que alguien corte la luz otra vez! ¡Ya!","Somebody cut the light again! Now!","Alguém corte a luz de novo! Já!"
+PROMPT_BANK_LIGHTS,"Prender la luz","Turn the light on","Acender a luz"

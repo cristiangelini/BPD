@@ -4,7 +4,13 @@ extends Node3D
 ## The blood bank (robo-banco-sangre.md, step 1, decision 128): the gang cut the power, so it's night in a dark bank
 ## with its ceiling lamps off and candles burning on the counter and the floor; the vault is a big white fridge with a
 ## red drop over its door, its shelves full of blood bags, and the hostages came to give blood (a band-aid on the arm).
-## The robbers wear their vampire capes and fangs (BankRobber.vampire). Every number here is (propuesta).
+## The robbers wear their vampire capes and fangs (BankRobber.vampire). Step 2: a vampire in a cop's flashlight beam
+## (within LIGHT_REACH, in its cone and with nothing in between) hides behind his cape (BankRobber.lit). The fuse box by
+## the back door (BankFuseBox) brings the bank's light back for LIGHTS_TIME: every vampire hides once and puts his
+## sunglasses on; then El Conde has the light cut again. Online the host's decide (`follower`). Every number here is
+## (propuesta).
+
+signal lights_changed(on: bool)
 
 ## The candles (level positions): on the counter, by the hostages, by the entrance and in the corridor.
 const CANDLES: Array[Vector3] = [
@@ -20,9 +26,21 @@ const BAND_AID := Color(0.9, 0.72, 0.55)
 const BAND_AID_AT := Vector3(0.27, 0.86, 0.0)
 const NIGHT_AMBIENT := 0.25
 const MOON := 0.08
+## The flashlight scares a vampire this close (m), within its cone; it looks every LIGHT_EVERY seconds.
+const LIGHT_REACH := 10.0
+const LIGHT_EVERY := 0.1
+## The light the fuse box brings back lasts this long (s).
+const LIGHTS_TIME := 60.0
+## The fuse box, on the corridor's back wall by the back door.
+const FUSE_BOX_AT := Vector3(-2.0, 1.4, -9.98)
 
 var bank: BankLevel
 var candles: Array[OmniLight3D] = []
+var fuse_box: BankFuseBox
+## Seconds of light left (0: the power is cut).
+var lights_left := 0.0
+var follower := false
+var _look_left := 0.0
 
 
 func setup(the_bank: BankLevel) -> void:
@@ -33,6 +51,12 @@ func setup(the_bank: BankLevel) -> void:
 	for i in CANDLES.size():
 		_candle(CANDLES[i], i)
 	_drop()
+	fuse_box = BankFuseBox.new()
+	fuse_box.name = "FuseBox"
+	fuse_box.position = FUSE_BOX_AT
+	fuse_box.lights_on = lights_on
+	fuse_box.switched.connect(func(_cop: Cop) -> void: turn_lights(true))
+	bank.add_child(fuse_box)
 	for hostage in bank.hostages:
 		var band := MeshInstance3D.new()
 		band.name = "BandAid"
@@ -42,6 +66,67 @@ func setup(the_bank: BankLevel) -> void:
 		band.material_override = _paint(BAND_AID)
 		band.position = BAND_AID_AT
 		hostage.add_child(band)
+
+
+func lights_on() -> bool:
+	return lights_left > 0.0
+
+
+## The fuse box: the light back for LIGHTS_TIME, and every vampire hides from it once; or cut again.
+func turn_lights(on: bool) -> void:
+	lights_left = LIGHTS_TIME if on else 0.0
+	bank.set_lights(on)
+	fuse_box.show_on(on)
+	if on:
+		for robber in bank.robbers:
+			robber.lit(true)
+	lights_changed.emit(on)
+
+
+func _physics_process(delta: float) -> void:
+	if follower:
+		return
+	if lights_on():
+		lights_left = maxf(lights_left - delta, 0.0)
+		if not lights_on():
+			# El Conde had someone cut it again.
+			turn_lights(false)
+			if bank.boss and not bank.boss.is_cuffed():
+				bank.boss.say("ROBBER_CONDE_CUT")
+	_look_left -= delta
+	if _look_left > 0.0:
+		return
+	_look_left = LIGHT_EVERY
+	for cop: Node in get_tree().get_nodes_in_group("cops"):
+		var beam := beam_of(cop)
+		if not beam:
+			continue
+		for robber in bank.robbers:
+			if robber.visible and in_beam(beam, robber):
+				robber.lit()
+
+
+## A cop's flashlight beam if it's on, or null.
+static func beam_of(cop: Node) -> SpotLight3D:
+	if not cop is Cop or not (cop as Cop).belt:
+		return null
+	var flashlight := (cop as Cop).belt.flashlight
+	if not flashlight or not flashlight.is_on or not flashlight.light or not flashlight.light.is_inside_tree():
+		return null
+	return flashlight.light
+
+
+## Whether the robber's face is in the beam: near enough, in its cone and with no wall in between.
+static func in_beam(beam: SpotLight3D, robber: BankRobber) -> bool:
+	var from := beam.global_position
+	var face := robber.global_position + Vector3.UP * BankRobber.EYE_HEIGHT
+	var to := face - from
+	if to.length() > LIGHT_REACH or to.length() < 0.01:
+		return false
+	if (-beam.global_basis.z).angle_to(to) > deg_to_rad(Flashlight.ANGLE):
+		return false
+	var ray := PhysicsRayQueryParameters3D.create(from, face, 1)
+	return beam.get_world_3d().direct_space_state.intersect_ray(ray).is_empty()
 
 
 ## The power is cut at night: a dark sky, a faint blue moon and little ambient light.
