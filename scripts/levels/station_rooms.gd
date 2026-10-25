@@ -74,6 +74,12 @@ const GYM_DISGUISES: Array[String] = ["gym_headband", "gym_wristbands", "gym_tan
 	"gym_tank", "gym_headband", "gym_wristbands", "gym_tank", "gym_headband", "gym_wristbands", "gym_tank"]
 const GYM_DISGUISES_AT := Vector3(-5.15, 0, 3.95)
 const GYM_GAP := 0.36
+## The thieves' school's (infiltracion-escuela.md, step 1): an eye mask, a beanie and a striped shirt for each cop, in a
+## seventh row.
+const THIEF_DISGUISES: Array[String] = ["thief_mask", "thief_beanie", "thief_shirt", "thief_mask", "thief_beanie",
+	"thief_shirt", "thief_mask", "thief_beanie", "thief_shirt", "thief_mask", "thief_beanie", "thief_shirt"]
+const THIEF_DISGUISES_AT := Vector3(-5.15, 0, 4.4)
+const THIEF_GAP := 0.42
 
 ## Furniture: [model, position, turn]. The models come from tools/modelgen/models/station.js.
 const FURNITURE := [

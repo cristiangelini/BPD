@@ -238,6 +238,47 @@ export function buildFoldedGymTank() {
 	return b.build();
 }
 
+// The thieves' school disguises (infiltracion-escuela.md, step 1), each origin where it sits on a cop
+// (DisguisePiece.SLOTS): the cartoon burglar's black eye mask, a black beanie and a grey and black striped shirt.
+// Placeholder.
+const THIEF_BLACK = 0x141418, THIEF_GREY = 0x9aa0a8;
+export function buildThiefMask() {
+	const b = new Builder('disguise_thief_mask');
+	const black = mat('thief_black', THIEF_BLACK);
+	b.add('mask', black, new THREE.BoxGeometry(0.3, 0.07, 0.03));
+	for (const s of [-1, 1]) b.add('mask', black, ellipsoid(0.055, 0.045, 0.02, 8, 4), { pos: V(s * 0.08, 0, 0.005) });
+	for (const s of [-1, 1]) b.add('holes', mat('thief_hole', 0xf0f0ea), ellipsoid(0.025, 0.018, 0.01, 6, 3), { pos: V(s * 0.08, 0, 0.022) });
+	for (const s of [-1, 1]) b.add('strings', black, new THREE.BoxGeometry(0.01, 0.015, 0.16), { pos: V(s * 0.155, 0, 0.07) });
+	return b.build();
+}
+
+export function buildThiefBeanie() {
+	const b = new Builder('disguise_thief_beanie');
+	const black = mat('thief_black', THIEF_BLACK);
+	b.add('beanie', black, ellipsoid(0.215, 0.15, 0.205, 12, 6), { pos: V(0, 0.02, 0.01) });
+	b.add('cuff', mat('thief_cuff', 0x26262c), new THREE.CylinderGeometry(0.218, 0.218, 0.06, 14), { pos: V(0, -0.0, 0.01) });
+	return b.build();
+}
+
+export function buildThiefShirt() {
+	const b = new Builder('disguise_thief_shirt');
+	const grey = mat('thief_grey', THIEF_GREY), black = mat('thief_black', THIEF_BLACK);
+	for (let i = 0; i < 8; i++) {
+		const t = i / 8, h = 0.55 / 8;
+		const top = 0.3 + t * 0.17, bottom = 0.3 + (t + 1 / 8) * 0.17;
+		b.add(i % 2 ? 'grey' : 'black', i % 2 ? grey : black, new THREE.CylinderGeometry(top, bottom, h, 14, 1, true), { pos: V(0, 0.12 - (i + 0.5) * h, -0.3) });
+	}
+	return b.build();
+}
+
+// The shirt folded: 0.4 x 0.08 x 0.3 m, origin in its middle.
+export function buildFoldedThiefShirt() {
+	const b = new Builder('folded_thief_shirt');
+	b.add('shirt', mat('thief_black', THIEF_BLACK), new THREE.BoxGeometry(0.4, 0.08, 0.3));
+	for (const z of [-0.105, -0.035, 0.035, 0.105]) b.add('stripes', mat('thief_grey', THIEF_GREY), new THREE.BoxGeometry(0.41, 0.082, 0.035), { pos: V(0, 0, z) });
+	return b.build();
+}
+
 export const models = {
 	disguise_wig: buildDisguiseWig, disguise_mustache: buildDisguiseMustache, disguise_glasses: buildDisguiseGlasses,
 	disguise_robe: buildDisguiseRobe, folded_robe: buildFoldedRobe, songbook: buildSongbook,
@@ -248,6 +289,8 @@ export const models = {
 	disguise_party_cap: buildPartyCap, disguise_party_mustache: buildPartyMustache, disguise_party_badge: buildPartyBadge,
 	disguise_gym_headband: buildGymHeadband, disguise_gym_wristbands: buildGymWristbands, folded_gym_wristbands: buildFoldedGymWristbands,
 	disguise_gym_tank: buildGymTank, folded_gym_tank: buildFoldedGymTank,
+	disguise_thief_mask: buildThiefMask, disguise_thief_beanie: buildThiefBeanie, disguise_thief_shirt: buildThiefShirt,
+	folded_thief_shirt: buildFoldedThiefShirt,
 };
 
 export const views = {
@@ -292,6 +335,18 @@ export const views = {
 			{ name: 'disguise_gym_headband', pos: [-0.4, 1.45, 0] },
 			{ name: 'folded_gym_tank', pos: [0.6, 0.03, 0.2], rotY: 0.3 },
 			{ name: 'folded_gym_wristbands', pos: [0.6, 0.035, 0.6] },
+		],
+		cam: { pos: [0.3, 1.2, 3.0], target: [0.1, 0.7, 0], fov: 40 },
+	},
+	thief_disguise: {
+		items: [
+			{ name: 'cop_0', pos: [-0.4, 0, 0] },
+			{ name: 'disguise_thief_shirt', pos: [-0.4, 0.95, 0.3] },
+			{ name: 'disguise_thief_mask', pos: [-0.4, 1.33, 0.21] },
+			{ name: 'disguise_thief_beanie', pos: [-0.4, 1.42, 0] },
+			{ name: 'disguise_thief_mask', pos: [0.45, 0.04, 0.2] },
+			{ name: 'disguise_thief_beanie', pos: [0.75, 0.08, -0.2] },
+			{ name: 'folded_thief_shirt', pos: [0.5, 0.04, -0.35] },
 		],
 		cam: { pos: [0.3, 1.2, 3.0], target: [0.1, 0.7, 0], fov: 40 },
 	},

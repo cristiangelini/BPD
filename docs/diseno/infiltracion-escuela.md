@@ -73,6 +73,9 @@ la forma de `GymRoutine` (host decide, cada PC juzga y avisa).
 ## El orden para hacerlo (un PR chico por paso)
 1. El disfraz de ladrón: antifaz, gorro y remera a rayas en una fila frente a los casilleros, y el look "thief" (2 de
    3).
+   Hecho así: 12 piezas en una séptima fila a 4,4 m frente a los casilleros (antifaz negro con agujeros, gorro negro
+   y remera a rayas gris y negra, distinta de la blanca y negra de los mimos). Con 2 de 3, `is_disguised("thief")`.
+   Correr la hace caer como cualquier disfraz **(propuesta)**.
 2. La escuela en la ciudad (`--place=school`): el aula, el patio de prácticas, la biblioteca y la oficina; los
    alumnos, la Profesora y el portero.
 3. Las clases: el timbre, las tres materias, las notas, el boletín y la sospecha por notas bajas.
