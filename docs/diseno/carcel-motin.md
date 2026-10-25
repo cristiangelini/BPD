@@ -50,7 +50,7 @@ otra variante lo necesite. Se llega en el patrullero, como al banco.
 | 6 | Lavandería | Se escapan dentro de los carritos de ropa ([carcel-lavanderia.md](carcel-lavanderia.md)). |
 | 7 | Corte de luz | La cárcel a oscuras, solo con linternas ([carcel-corte-de-luz.md](carcel-corte-de-luz.md)). |
 | 8 | Preso VIP | Un famoso que exige cosas absurdas y algunas traen escondida su fuga ([carcel-vip.md](carcel-vip.md)). |
-| 9 | Huerta | Plantaron algo raro y hay que encontrarlo. |
+| 9 | Huerta | Plantaron porotos mágicos entre las verduras y crecen hasta pasar el muro ([carcel-huerta.md](carcel-huerta.md)). |
 | 10 | Recuento | Faltan presos y hay que contarlos mientras se mueven. |
 
 ## Lo que se reusa
