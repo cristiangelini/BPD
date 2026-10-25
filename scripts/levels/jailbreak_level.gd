@@ -13,7 +13,8 @@ extends Node3D
 ## There are two ways out, drawn by the seed: the key in the donut (the night guard, above) and the cleaning crew
 ## (fuga-limpieza.md): at dawn the guard went home and the comisario came in early, walking his round
 ## (EarlyComisario), and he catches them the same way; the third time he suspends them himself. The cells open when
-## Clotilde, the cleaner, mops them (Cleaner), with the key ring on her cart.
+## Clotilde, the cleaner, mops them (Cleaner), with the key ring on her cart, and the break room is the cleaning closet:
+## the crew's caps, face masks and vests (DisguisePiece, "cleaner") and their mops and feather duster (CleaningTool).
 ## --place=jailbreak opens it from Play, and --jailbreak=<variant> forces one of VARIANTS.
 
 const DESK_MODEL := preload("res://assets/models/station_desk.glb")
@@ -36,6 +37,19 @@ const CART_AT := Vector3(13.0, 0, 7.4)
 const CART_SIZE := Vector3(0.9, 0.97, 0.5)
 const CART_HOOK := Vector3(0.3, 0.97, 0.25)
 const CART_KEY := Vector3(0.3, 1.0, 0.15)
+
+## The cleaning closet, in the station's own space (the break room, StationRooms): the disguise pieces in two rows on
+## the floor from CLOSET_AT, one of each per cop less up to CLOSET_MISSING the seed takes away, and the tools lying
+## along the wall: [model, kind, length, grip].
+const CLOSET := ["cleaner_cap", "face_mask", "cleaner_vest"]
+const CLOSET_AT := Vector3(6.4, 0, -1.4)
+const CLOSET_GAP := Vector2(0.45, 0.4)
+const CLOSET_MISSING := 2
+const CLOSET_TOOLS := [
+	["res://assets/models/mop.glb", "mop", 1.5, Vector3(12.0, 0.06, -0.8)],
+	["res://assets/models/mop.glb", "mop", 1.5, Vector3(12.0, 0.06, -1.3)],
+	["res://assets/models/feather_duster.glb", "duster", 0.8, Vector3(12.0, 0.06, -1.8)],
+]
 
 ## How many times the guard can catch them (step 6 ends the campaign at the last one).
 const CATCHES := 3
@@ -65,6 +79,9 @@ var car_home: Transform3D
 ## The cleaning crew's jailbreak: Clotilde and the key ring on her cart.
 var cleaner: Cleaner
 var cart_key: CellKey
+var tools: Array[CleaningTool] = []
+## How many disguise pieces the comisario took back to the closet.
+var _returned := 0
 var _cart: Transform3D
 var end_screen: CanvasLayer
 ## A guest: how many catches it already followed (-1 until it first looks).
@@ -125,7 +142,34 @@ func _early_comisario() -> void:
 	comisario.caught.connect(_on_caught)
 	guard = comisario
 	_cleaner()
+	_closet()
 	_dawn()
+
+
+## The break room as the cleaning closet: the disguises on the floor and the tools along the wall.
+func _closet() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["cleaning closet", case_seed])
+	var pieces: Array[String] = []
+	for i in 4:
+		pieces.append_array(CLOSET)
+	for i in rng.randi_range(0, CLOSET_MISSING):
+		pieces.remove_at(rng.randi_range(0, pieces.size() - 1))
+	for i in pieces.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(pieces[i]).instantiate()
+		piece.name = "Closet%d" % i
+		add_child(piece)
+		piece.global_position = lot * (CLOSET_AT + Vector3((i % 6) * CLOSET_GAP.x, 0.12, floorf(i / 6.0) * CLOSET_GAP.y))
+	for item: Array in CLOSET_TOOLS:
+		var tool := CleaningTool.new()
+		tool.name = "Tool%d" % tools.size()
+		tool.model = load(item[0])
+		tool.kind = item[1]
+		tool.length = item[2]
+		add_child(tool)
+		tool.global_transform = lot * Transform3D(Basis(Vector3.UP, PI / 2), item[3])
+		tools.append(tool)
 
 
 ## Clotilde beside her cart, with the cells' key ring on its tray. The comisario doesn't mind the keys on the cart,
@@ -234,6 +278,8 @@ func _on_caught(times: int) -> void:
 	var slot := 0
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
 		if outside_cells(cop.global_position):
+			if is_cleaning():
+				_undress(cop)
 			cop.warp(cop_spawn(slot))
 			slot += 1
 		cop.show_hint("HINT_COMISARIO_CAUGHT" if is_cleaning() else "HINT_GUARD_CAUGHT")
@@ -260,6 +306,25 @@ func _on_caught(times: int) -> void:
 		_drop(box)
 		box.linear_velocity = Vector3.ZERO
 		box.global_transform = box_home
+
+
+## The comisario takes the caught cop's cleaning disguise back to the closet: it comes off on every PC and the host
+## puts the pieces back on the closet's floor, in a row of their own.
+func _undress(cop: Cop) -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var parent := cop.get_parent()
+	for kind: String in cop.disguise.keys():
+		var before := parent.get_child_count()
+		cop.lose_disguise(kind)
+		if cop.sync and cop.sync.net.actions:
+			cop.sync.net.actions.tell_guests(cop, "lose_disguise", cop, [kind])
+		for i in range(before, parent.get_child_count()):
+			var piece := parent.get_child(i) as DisguisePiece
+			if piece:
+				piece.linear_velocity = Vector3.ZERO
+				piece.global_position = lot * (CLOSET_AT + Vector3((_returned % 6) * CLOSET_GAP.x, 0.12,
+					(2 + floorf(_returned / 6.0)) * CLOSET_GAP.y))
+				_returned += 1
 
 
 ## Out of every cop's hands.

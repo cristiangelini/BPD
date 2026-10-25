@@ -6,7 +6,9 @@ extends NightGuard
 ## maker in the guard room and the door of the cells room), stopping STOP_MIN to STOP_MAX seconds at each stop, drawn by
 ## the seed, and watches like the night guard (NightGuard.sees and its suspicion), so the level catches the cops the
 ## same way. Walking, he looks ahead; stopped, his head sweeps around. He doesn't eat donuts and singing doesn't put
-## him to sleep. Every number here is (propuesta).
+## him to sleep. What he sees in a cop out of the cells (step 3, offence): without the cleaning disguise, a cop; in it,
+## someone of the crew, who only worries him idle (no mop or duster in hand) or running. Every number here is
+## (propuesta).
 
 ## His round in the station's own space (StationRooms): [where, which way he faces there (radians, 0 = +Z), what he
 ## says when he stops there ("" = he walks on)].
@@ -25,6 +27,10 @@ const WALK_SPEED := 1.3
 ## Lines for each stop and for catching them.
 const STOP_LINES := 3
 const EARLY_CAUGHT_LINES := 3
+## Suspicion per second from someone of the cleaning crew he sees idle, and running.
+const SUSPICION_IDLE := 15.0
+const SUSPICION_RUNNING := 25.0
+const RUN_SPEED := (GameScale.WALK_SPEED + GameScale.RUN_SPEED) / 2
 
 ## The station's lot, where ROUND is.
 var station := Transform3D.IDENTITY
@@ -32,6 +38,8 @@ var station := Transform3D.IDENTITY
 var target := 0
 ## Seconds he still stays at his stop (0 while he walks).
 var wait_left := 0.0
+## Each cop -> [where it was last tick, how fast it went]: a guest's cop on the host has no velocity of its own.
+var _speeds := {}
 
 
 ## Starts his round at a stop drawn by the seed.
@@ -55,6 +63,7 @@ func _physics_process(delta: float) -> void:
 	_tick_bubble(delta)
 	_walk(delta)
 	_listen(delta)
+	_track_speeds(delta)
 	if is_walking() and distracted_left <= 0.0:
 		look = rotate_toward(look, 0.0, TURN_SPEED * delta)
 		_model.rotation.y = look
@@ -93,6 +102,44 @@ func _walk(delta: float) -> void:
 	global_basis = station.basis * Basis(Vector3.UP, ROUND[target][1])
 	wait_left = _rng.randf_range(STOP_MIN, STOP_MAX)
 	say("%s_%d" % [line, _rng.randi_range(0, STOP_LINES - 1)])
+
+
+## How much suspicion he gains per second from the cops he sees out of the cells (no box or donuts here).
+func alarm() -> float:
+	var rate := 0.0
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if outside_cells.call(cop.global_position) and sees(cop.global_position + Vector3.UP, cop):
+			rate += offence(cop)
+	return rate
+
+
+## What `cop`, seen out of the cells, adds per second.
+func offence(cop: Cop) -> float:
+	if not cop.is_disguised("cleaner"):
+		return SUSPICION_COP
+	var rate := 0.0
+	if not is_cleaning(cop):
+		rate += SUSPICION_IDLE
+	if speed_of(cop) > RUN_SPEED:
+		rate += SUSPICION_RUNNING
+	return rate
+
+
+func _track_speeds(delta: float) -> void:
+	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
+		var at := cop.global_position
+		var last: Array = _speeds.get(cop, [at, 0.0])
+		_speeds[cop] = [at, Vector2(at.x - last[0].x, at.z - last[0].z).length() / delta]
+
+
+## How fast `cop` goes on the ground (m/s).
+func speed_of(cop: Node3D) -> float:
+	return _speeds[cop][1] if _speeds.has(cop) else 0.0
+
+
+## Whether he takes `cop` for someone cleaning: a mop or a feather duster in hand.
+func is_cleaning(cop: Cop) -> bool:
+	return CleaningTool.held_by(cop) != null
 
 
 ## Singing doesn't put him to sleep.

@@ -1063,6 +1063,8 @@ CLEANER_NO_KEYS_1,"Sin llaves no abro ni cierro nada. Que me las devuelvan.","Wi
 CLEANER_NO_KEYS_2,"Las dejé en el carrito, estoy segura...","I left them on the cart, I'm sure of it...","Deixei no carrinho, tenho certeza..."
 CLEANER_REST_0,"Un descansito y sigo.","A little break and I'll keep going.","Um descansinho e eu continuo."
 CLEANER_REST_1,"Ay, la espalda. Ya no tengo veinte años.","Oh, my back. I'm not twenty anymore.","Ai, as costas. Já não tenho vinte anos."
+PROMPT_HOLDING_MOP,"Mira al piso y trapea: con el disfraz puesto, el comisario cree que eres de la limpieza","Look at the floor and mop: in the disguise, the comisario thinks you're on the cleaning crew","Olhe para o chão e passe o pano: disfarçado, o comissário acha que você é da limpeza"
+PROMPT_HOLDING_DUSTER,"Sacude el plumero: con el disfraz puesto, el comisario cree que eres de la limpieza","Wave the duster: in the disguise, the comisario thinks you're on the cleaning crew","Sacuda o espanador: disfarçado, o comissário acha que você é da limpeza"
 JAILBREAK_NEXT_SHIFT,"Siguiente turno","Next shift","Próximo turno"
 HINT_DISGUISE_ON,"Te queda perfecto. Nadie va a sospechar.","It fits perfectly. Nobody will suspect a thing.","Ficou perfeito. Ninguém vai desconfiar."
 HINT_DISGUISE_CROOKED,"Te quedó torcido. Mejor no corras.","It's on crooked. Better not run.","Ficou torto. Melhor não correr."
