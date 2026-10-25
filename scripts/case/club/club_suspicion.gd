@@ -6,7 +6,8 @@ extends Node3D
 ## running, a tool in hand, being in the back rooms,
 ## sitting out the waltz (ClubDance). At the chapel (infiltracion-coro.md, step 4) the choristers watch the same way,
 ## for the robe instead of the grandparent disguise, and hear the cops sing out of time (ChoirSinging); at the theater
-## (infiltracion-mimos.md, step 4) the mimes see the cops rehearse wrong (MimeRehearsal). Some things raise it at once: a disguise piece falling where they
+## (infiltracion-mimos.md, step 4) the mimes see the cops rehearse wrong (MimeRehearsal), and at the party
+## (infiltracion-fiesta.md, step 3) the guests see them move in the group photo or miss it (PartyPhoto). Some things raise it at once: a disguise piece falling where they
 ## see it, a bad step in the waltz, a bingo number left unmarked (the neighbor at the table, ClubBingo.missed) and a shout nearby. At 50 a "?"
 ## shows over their head and at 80 a "!"; at 100 they shout "¡Son policías!" and everyone knows (`discovered`; the
 ## chase comes in step 6). It calms down when they see nothing. The host decides; online the guests follow its state
@@ -51,6 +52,8 @@ var singing: ChoirSinging
 var dance: ClubDance
 ## The mimes' rehearsal, if the place has one.
 var rehearsal: MimeRehearsal
+## The party's group photo, if the place has one.
+var photo: PartyPhoto
 ## Whether a world position is inside the club, and in its back rooms (GrandpaClub sets them).
 var inside: Callable = func(_at: Vector3) -> bool: return false
 var in_back_room: Callable = func(_at: Vector3) -> bool: return false
@@ -89,6 +92,12 @@ func watch_singing(songs: ChoirSinging) -> void:
 func watch_rehearsal(mimes: MimeRehearsal) -> void:
 	rehearsal = mimes
 	rehearsal.missed.connect(_on_mimed_wrong)
+
+
+## Connects the party's group photo done wrong (PartyHall calls it): like the rehearsal, to the guests who see it.
+func watch_photo(group_photo: PartyPhoto) -> void:
+	photo = group_photo
+	photo.missed.connect(_on_mimed_wrong)
 
 
 func _on_mimed_wrong(cop: Cop, amount: float) -> void:

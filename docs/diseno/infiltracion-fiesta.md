@@ -91,6 +91,14 @@ La foto grupal copia la forma de `MimeRehearsal` (host decide, cada PC juzga y a
    es la del club con los textos "PARTY_" **(propuesta)**.
 3. La foto grupal: la llamada, la escalerita, la cuenta y el flash; la sospecha; el jefe que se va a la oficina y la
    pista de verlo ahí.
+   Hecho así: la que saca la foto es la señora Serpentina (no hay fotógrafo aparte). A los 25 s y después cada 45 s
+   grita "¡Foto grupal!", los invitados caminan 2 s hasta lugares de la escalerita elegidos con la semilla (quedan 7
+   para los policías), mirando al salón, y ella se para enfrente. A los 8 s cuenta "3, 2, 1" (en pantalla) y cada PC
+   juzga a su policía una vez por segundo: en la escalerita y caminando más de 30 cm, +25 a los que lo ven. En el
+   flash (con clic, luz y la pantalla blanca), el policía que está en el salón y no en la escalerita suma +30 a los que
+   lo ven. Mientras tanto el jefe entra por la puerta de la oficina (que abre y después cierra, sin llave) y cuenta
+   joyas frente a la caja fuerte; el policía que está en la oficina en ese momento lo ve, una vez por foto (la pista
+   llega en el paso 4) **(propuesta)**.
 4. Las pistas y el caso (variante "party"): las 6 pistas, la planilla con los rasgos, esposar al jefe o a uno
    equivocado, el sueldo y el interrogatorio.
 5. La huida en el patrullero de cotillón, el sorteo de "Jugar" en cuartos (club, coro, mimos y fiesta) y online.

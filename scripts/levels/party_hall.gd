@@ -8,7 +8,8 @@ extends InfiltrationPlace
 ## start in the station, where the party disguises are, and drive here. --place=party opens it from Play.
 ## Twelve guests mingle on spots drawn with the seed, each in a cop costume told apart by four bits (PartyTraits), the
 ## Sargento Trucho one of them; the señora Serpentina by the food and the bouncer at the door, who only lets in cops
-## dressed as party cops (step 2b). The guests watch the cops (ClubSuspicion, "PARTY_" texts).
+## dressed as party cops (step 2b). The guests watch the cops (ClubSuspicion, "PARTY_" texts). Every so often
+## Serpentina calls the group photo on the steps, and the boss slips into the office meanwhile (PartyPhoto, step 3).
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -50,6 +51,10 @@ const GUESTS := 12
 ## The señora Serpentina, by the punch bowl looking at the hall (+X), and the bouncer outside by the entrance.
 const SERPENTINA_AT := Vector3(-9.2, 0, 3.6)
 const DOORMAN_AT := Vector3(ENTRANCE_X + 1.4, 0, HALF_Z + 0.7)
+## In the group photo (step 3): where Serpentina takes it from, facing the steps, and where the boss counts the jewels,
+## by the safe.
+const PHOTOGRAPHER_AT := Vector3(-3.0, 0, -4.0)
+const JEWELS_AT := Vector3(10.4, 0, -8.6)
 const MINGLE_SPOTS: Array[Vector3] = [
 	Vector3(-3.0, 0, -3.5), Vector3(-1.0, 0, -3.0), Vector3(1.2, 0, -3.6), Vector3(3.0, 0, -2.8),
 	Vector3(-2.6, 0, -1.0), Vector3(-0.4, 0, -0.6), Vector3(2.0, 0, -0.8), Vector3(-3.2, 0, 1.4),
@@ -74,6 +79,8 @@ var office_door: FrontDoor
 var guest_traits: Array[Dictionary] = []
 var serpentina: ClubMember
 var doorman: ClubDoorman
+## The group photo (step 3).
+var photo: PartyPhoto
 ## The spots to pose on the photo steps, in the hall's space.
 var photo_spots: Array[Vector3] = []
 var _build: PlaceBuilder
@@ -143,6 +150,22 @@ func _add_people() -> void:
 	suspicion.inside = is_inside
 	suspicion.in_back_room = in_back_room
 	add_child(suspicion)
+	photo = PartyPhoto.new()
+	photo.name = "Photo"
+	photo.case_seed = case_seed
+	photo.guests = members
+	photo.boss = boss
+	photo.photo_spots = photo_spots
+	photo.office_spot = JEWELS_AT + Vector3(0, FLOOR_TOP, 0)
+	photo.office_way = Vector3(OFFICE_DOOR_X, FLOOR_TOP, OFFICE_Z + 1.0)
+	photo.office_door = office_door
+	photo.serpentina = serpentina
+	photo.photographer_spot = PHOTOGRAPHER_AT + Vector3(0, FLOOR_TOP, 0)
+	photo.on_steps = on_steps
+	photo.inside = is_inside
+	photo.in_office = in_back_room
+	add_child(photo)
+	suspicion.watch_photo(photo)
 
 
 ## Whether a world position is inside the hall.
