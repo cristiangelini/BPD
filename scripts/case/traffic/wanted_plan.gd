@@ -38,6 +38,10 @@ static func draw(case_seed: int, convoy := false) -> WantedPlan:
 	plan.total = rng.randi_range(TOTAL.x, TOTAL.y)
 	plan.wanted_index = rng.randi_range(WANTED_AT.x, WANTED_AT.y)
 	var wanted := random_car(rng, convoy)
+	if convoy:
+		# The wanted clown carries the ringmaster's safe and someone else's license.
+		wanted.driver.trunk = "safe"
+		wanted.driver.license_glasses = not wanted.clown.glasses
 	var kinds := (CONVOY_KINDS if convoy else KINDS).duplicate()
 	for i in CLUES:
 		var kind: String = kinds.pop_at(rng.randi() % kinds.size())
@@ -66,6 +70,9 @@ static func random_car(rng: RandomNumberGenerator, convoy := false) -> Dictionar
 	var car := {"look": rng.randi() % COLORS.size(), "plate": plate, "driver": DriverTraits.draw(rng)}
 	if convoy:
 		car.clown = ConvoyTraits.draw(rng)
+		car.driver.trunk = ConvoyTraits.trunk(rng)
+		# His license's photo, without makeup: his own, glasses and all.
+		car.driver.license_glasses = car.clown.glasses
 	return car
 
 

@@ -4,6 +4,8 @@ extends Grabbable
 ## A clown out of a clown car at the traffic control (control-payasos.md, "Cómo es", steps 3 and 4): opening the
 ## car's door lets out its clowns, who wander off juggling around the car. The car won't move until they're all back
 ## in: a clown carried or pushed to within BOARD_REACH of the door gets back in by himself. Grabbed, he complains.
+## E on the driver asks for his license; with the circus's sponge in hand, E scrubs his makeup off, a bit each time,
+## so his face can be held up against the license's photo (control-payasos.md, step 5).
 ## Light, so one cop can carry him (a circus clown is mostly air and makeup). Every number here is (propuesta).
 
 signal boarded(clown: ConvoyClown)
@@ -17,6 +19,8 @@ const BOARD_REACH := 1.0
 ## Out this long before he can get back in, so he doesn't hop straight back in when he gets out.
 const OUT_AT_LEAST := 2.0
 const LINES := 6
+## E with the sponge this many times cleans his face, as in the circus.
+const SCRUBS := CircusClown.SCRUBS
 const SAY_SECONDS := 3.0
 const BALLS := 3
 const BALL_COLORS: Array[Color] = [Color(0.9, 0.15, 0.15), Color(0.2, 0.5, 0.95), Color(0.95, 0.85, 0.2)]
@@ -28,6 +32,9 @@ var is_driver := false
 ## ConvoyTraits: his wig, nose and gloves show.
 var traits := {}
 var out_for := 0.0
+var makeup_on := true
+var _scrubbed := 0
+var _model: Node3D
 var _target := Vector3.ZERO
 var _rng := RandomNumberGenerator.new()
 var _balls: Node3D
@@ -48,10 +55,10 @@ func _ready() -> void:
 	shape.shape = capsule
 	shape.position.y = 0.8
 	add_child(shape)
-	var model: Node3D = MODEL.instantiate()
-	model.name = "Model"
-	add_child(model)
-	ConvoyTraits.dress(model, traits)
+	_model = MODEL.instantiate()
+	_model.name = "Model"
+	add_child(_model)
+	ConvoyTraits.dress(_model, traits)
 	_balls = Node3D.new()
 	_balls.name = "Juggling"
 	_balls.position = Vector3(0, 1.75, 0.3)
@@ -74,14 +81,42 @@ func _ready() -> void:
 	_bubble.pixel_size = 0.004
 	_bubble.outline_size = 8
 	_bubble.font_size = 36
+	_bubble.width = 700.0
+	_bubble.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_bubble.hide()
 	add_child(_bubble)
 	_rng.seed = hash([name, car.plate if car else ""])
 	_pick_target()
 
 
-func prompt_key(_cop: Cop) -> String:
+func prompt_key(cop: Cop) -> String:
+	if cop and cop.get_node("Grabber").held is ClownSponge and makeup_on:
+		return "PROMPT_CLOWN_SCRUB"
+	if is_driver:
+		return "PROMPT_PAPERS"
 	return "PROMPT_CONVOY_CLOWN"
+
+
+## E on him: with the sponge, a scrub; the driver hands his license; the others say they don't drive.
+func use(cop: Cop) -> void:
+	if cop and cop.get_node("Grabber").held is ClownSponge and makeup_on:
+		scrub()
+	elif is_driver and is_instance_valid(car):
+		car.papers_checked = true
+		say(DriverTraits.license_text(car.driver))
+	else:
+		say(tr("CONVOY_NOT_DRIVER"))
+
+
+## One scrub with the sponge; after SCRUBS his face is clean and his glasses show, if he wears them.
+func scrub() -> void:
+	_scrubbed += 1
+	if _scrubbed < SCRUBS:
+		say(tr("CLOWN_SCRUB"))
+		return
+	makeup_on = false
+	ConvoyTraits.show_face(_model, traits, true)
+	say(tr("CLOWN_FACE_CLEAN"))
 
 
 func hold(holder_id: int, point: Vector3) -> void:
