@@ -126,9 +126,14 @@ func saying() -> String:
 	return _bubble.text if _bubble.visible else ""
 
 
-## Only a hard hit splits it, and never in the bed.
+## Online (PropSync): what a guest's copy needs. It sits in the level, not in the bed, and follows the host's.
+func net_setup() -> Dictionary:
+	return {"name": name, "kind": kind, "from_wanted": from_wanted}
+
+
+## Only a hard hit splits it, and never in the bed. A frozen one (a guest's copy) only splits when the host's does.
 func hit(speed: float) -> bool:
-	if in_bed and speed != INF:
+	if (in_bed or freeze) and speed != INF:
 		return false
 	return super.hit(INF if speed > SPLIT_SPEED else 0.0)
 

@@ -21,6 +21,11 @@ func _init() -> void:
 	add_child(shape)
 
 
+## Online (PropSync): a guest's copy is red or brown like the host's.
+func net_setup() -> Dictionary:
+	return {"mushy": mushy}
+
+
 func _ready() -> void:
 	var model: Node3D = Watermelon.HALF.instantiate()
 	model.name = "Model"

@@ -34,5 +34,10 @@ func _ready() -> void:
 	add_to_group("gold_watches")
 
 
+## Online (PropSync): a guest makes its copy from this script.
+func net_setup() -> Dictionary:
+	return {}
+
+
 func held_prompt_key(_cop: Cop) -> String:
 	return "PROMPT_GOLD_WATCH"
