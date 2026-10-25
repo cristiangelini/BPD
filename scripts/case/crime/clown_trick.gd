@@ -49,7 +49,8 @@ func _physics_process(delta: float) -> void:
 		if _running == 0.0:
 			finished.emit(rounds)
 		return
-	if follower:
+	# Online only the host's clowns decide when; a guest's follow (Circus.apply_net_state).
+	if follower or case.follower:
 		return
 	_until -= delta
 	if not _warned and _until <= WARNING:
@@ -93,6 +94,21 @@ func perform() -> void:
 
 
 ## The clowns still in the ring (not gone home).
+## Online, on a guest: the host's clowns did the trick (round `round_number`) and ended up at `new_spots`.
+func follow(round_number: int, new_spots: Array) -> void:
+	if round_number <= rounds:
+		return
+	rounds = round_number
+	_until = TRICK_EVERY
+	_warned = false
+	_from.assign(spots)
+	spots.assign(new_spots)
+	for index in _here():
+		circus.clowns[index].joke()
+	_running = RUN
+	started.emit()
+
+
 func _here() -> Array[int]:
 	var here: Array[int] = []
 	for clown in circus.clowns:

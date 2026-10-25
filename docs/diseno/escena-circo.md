@@ -139,4 +139,9 @@ Antes de programar conviene que el pastel y el circo compartan una base (como el
    grande en el capó) y sale a la calle a 30 km/h, con "¡MEC MEC!" arriba todo el camino. Cada 5 s suelta un payaso
    inflable igual a él, con arena en la base para que estorbe al patrullero; con E se revienta ("¡PLOP!"). Bajado del
    autito es un payaso, y en el interrogatorio también **(propuesta)**.
-8. El sorteo de "Jugar" (mitad pastel, mitad circo) y el online.
+8. El sorteo de "Jugar" (mitad pastel, mitad circo) y el online. Hecho así: cuando "Jugar" sortea una escena del
+   crimen, la semilla elige el concurso de pastelería o el circo, mitad y mitad **(propuesta)**. Online, el circo del
+   anfitrión decide el truco y los demás lo siguen (los payasos terminan en los mismos lugares); los carteles, lo que
+   se le sacó a cada payaso (maquillaje, peluca, guantes, zapato), las fichas del tablero, lo robado encontrado, la
+   grabación borrada, el balde tocado y las pistas arruinadas se ven igual en todas las PCs. Los muñecos inflables del
+   autito se copian como los muebles del camión de mudanzas.

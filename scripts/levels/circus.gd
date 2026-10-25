@@ -304,6 +304,49 @@ func _pool() -> void:
 	add_child(tap)
 
 
+## Online, what the guests' circus takes from the host's: the trick's round and spots, who wears which sign, each
+## clown's disguise, the camera and the bucket, and the clues ruined on the host.
+func net_state() -> Dictionary:
+	var disguise := clowns.map(func(clown: CircusClown) -> Array:
+		return [clown.makeup_on, clown.wig_on, clown.gloves_on, clown.shoe_on])
+	return {"rounds": trick.rounds if trick else 0, "spots": trick.spots.duplicate() if trick else [],
+		"signs": signs.duplicate(), "last": last_wearer.duplicate(), "disguise": disguise,
+		"deleted": camera.deleted, "touched": fish_bucket.touched}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	if trick:
+		trick.follow(state.rounds, state.spots)
+	last_wearer = (state.last as Dictionary).duplicate()
+	for clown in clowns:
+		var number := -1
+		for worn: int in state.signs:
+			if state.signs[worn] == clown.index:
+				number = worn
+		if number != sign_of(clown.index):
+			if number < 0:
+				drop_sign(clown)
+			else:
+				signs.erase(sign_of(clown.index))
+				signs[number] = clown.index
+				clown.show_sign(number)
+		var look: Array = state.disguise[clown.index]
+		if [clown.makeup_on, clown.wig_on, clown.gloves_on, clown.shoe_on] != look:
+			clown.makeup_on = look[0]
+			clown.wig_on = look[1]
+			clown.gloves_on = look[2]
+			clown.shoe_on = look[3]
+			clown._show_disguise()
+	camera.deleted = state.deleted
+	fish_bucket.touched = state.touched
+	if case:
+		for kind: String in ["hair", "bite"]:
+			if case.ruined.has(kind) and case.items.has(kind):
+				var item: CrimeClueItem = case.items[kind]
+				item.spoiled = true
+				item._eaten_part.visible = false
+
+
 ## The tap runs: water over the pool's floor, and the hair lying there (if nobody bagged it) goes with it.
 func open_tap(cop: Cop) -> void:
 	if cop:
