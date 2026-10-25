@@ -23,6 +23,8 @@ const KNOCK_FADE := 0.5
 ## Seconds of running before a straight piece of disguise falls off, and a crooked one. (propuesta)
 const DISGUISE_LOOSE_RUN := 4.0
 const DISGUISE_CROOKED_RUN := 1.5
+## Climbing onto a crouched partner's shoulders (boost_on) puts the feet this high over its feet.
+const BOOST_UP := GameScale.CROUCH_HEIGHT + 0.05
 ## After a piece falls, the next can't fall for this long (s), so a wall doesn't knock off everything at once.
 const DISGUISE_FALL_GAP := 1.0
 
@@ -184,6 +186,8 @@ func current_prompt() -> String:
 	var partner := _cuffed_partner()
 	if partner:
 		return "PROMPT_UNCUFF"
+	if _crouched_partner():
+		return "PROMPT_BOOST"
 	var target := _usable_target()
 	if target and target.has_method("prompt_key"):
 		return target.prompt_key(self)
@@ -521,6 +525,10 @@ func use() -> bool:
 	if partner:
 		act("free_partner", self, [partner])
 		return true
+	var below := _crouched_partner()
+	if below:
+		act("boost_on", self, [below])
+		return true
 	var target := _usable_target()
 	if not target:
 		return false
@@ -586,6 +594,21 @@ func _cuffed_partner() -> Cop:
 	if not hit.is_empty() and hit.collider is Cop and (hit.collider as Cop).is_cuffed():
 		return hit.collider
 	return null
+
+
+## A crouched cop the camera points at within reach: E climbs onto its shoulders (fuga-techo.md, "hacer pie").
+func _crouched_partner() -> Cop:
+	var hit := aim_hit(GameScale.GRAB_REACH)
+	if not hit.is_empty() and hit.collider is Cop and (hit.collider as Cop).is_crouching \
+			and not (hit.collider as Cop).is_cuffed():
+		return hit.collider
+	return null
+
+
+## Up onto `partner`'s shoulders (it's crouched): standing on it, high enough to reach a cell's skylight.
+func boost_on(partner: Cop) -> void:
+	warp(Transform3D(global_basis, partner.global_position + Vector3.UP * BOOST_UP))
+	show_hint("HINT_BOOSTED")
 
 
 ## What the camera points at within reach that can be used with E (a door's body is a child of the door).
