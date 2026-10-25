@@ -63,8 +63,8 @@ func test_the_sign_has_the_seller_name() -> void:
 func test_it_shows_only_its_own_crate() -> void:
 	_tick(1)
 	var car := queue.front()
-	assert_has(QueueCar.FRUIT_CRATES, car.crate)
-	for kind in QueueCar.FRUIT_CRATES:
+	assert_has(FruitTraits.CRATES, car.crate)
+	for kind in FruitTraits.CRATES:
 		var node := car.find_child("crate_" + kind, true, false) as Node3D
 		assert_not_null(node, kind)
 		assert_eq(node.visible, kind == car.crate, kind)
