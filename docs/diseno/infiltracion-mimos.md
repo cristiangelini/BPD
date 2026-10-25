@@ -73,7 +73,9 @@ pie, `PlaceDraw` y `CaseSync`. El ensayo copia la forma de `ChoirSinging` (host 
 
 ## El orden para hacerlo (un PR chico por paso)
 1. El disfraz de mimo: boina, cara blanca y remera a rayas en una cuarta fila frente a los casilleros, y el look
-   "mime" (2 de 3).
+   "mime" (2 de 3). Hecho así: 12 piezas en una fila a 3,15 m frente a los casilleros (boina a la cabeza, cara blanca
+   a la cara, remera a rayas doblada que se lleva al pecho, como la túnica); se caen corriendo como las del club. Con 2
+   de 3, `is_disguised("mime")`; no sirven para abuelo ni para corista.
 2. El teatro en la ciudad (`--place=mime`), con los mimos en sus marcas (por la semilla), el portero mudo y la Maestra
    Pausa.
 3. No hablar: la voz cerca de un mimo suma sospecha (VoiceChat avisa al host).
