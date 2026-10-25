@@ -37,6 +37,9 @@ const HEDGE_HEIGHT := 2.5
 @export var board_room_open := false
 ## Night at the station for the jailbreak (fuga.md): the station's lights turn low and warm.
 @export var night := false
+## The living city (ciudad-viva.md): sidewalks, traffic, clock, rain and street events. Only the test city
+## (city.tscn) turns it on for now; the case cities come with the online step.
+@export var alive := false
 
 ## The comisario in his office at the station; the case scene listens to him.
 var comisario: Comisario
@@ -104,6 +107,11 @@ func _build() -> void:
 	golf.name = "Golf"
 	golf.city = self
 	_built.add_child(golf)
+	# The living city (ciudad-viva.md), where it is on.
+	if alive:
+		var life := CityLife.new()
+		life.name = "Life"
+		_built.add_child(life)
 
 
 ## A square hedge `reach` from the middle, with a gap at the ramp's street on each of the `open` sides.
