@@ -77,8 +77,8 @@ func _start_offer(body: Node, target: Node) -> void:
 	_offer_from = target
 	_offer_amount = offer_of(target)
 	_offer_left = Bribes.CHOICE_SECONDS
-	# Offered once: if the cop lets the time run out, the next try cuffs.
-	target.set_meta("bribe_offered", true)
+	# Offered once, on every PC: if the cop lets the time run out, the next try cuffs, and no partner gets it again.
+	cop.act("belt_bribe_offered", cop, [body])
 	var case_seed := Campaign.current.case_seed() if Campaign.current else 0
 	cop.show_hint(tr(Bribes.phrase_key(case_seed, str(target.get_path()))) % _offer_amount)
 

@@ -36,6 +36,8 @@ var match_place := ""
 var match_seed := 0
 ## The owner in custody the match's interrogation is about (PlaceDraw.custody_now), the host's; empty if none.
 var match_custody := {}
+## The host's campaign is under internal affairs investigation (sobornos.md): its agent comes into the case.
+var match_investigation := false
 ## Off in tests, so starting a case only emits match_started.
 var change_scenes := true
 ## Peers that have the current level loaded, so they can take the cops' state.
@@ -190,7 +192,8 @@ func start_match() -> void:
 	if not is_online() or not multiplayer.is_server():
 		return
 	var case_seed := PlaceDraw.next_seed()
-	_start_match.rpc(draw_place(case_seed), case_seed, PlaceDraw.custody_now())
+	_start_match.rpc(draw_place(case_seed), case_seed, PlaceDraw.custody_now(),
+		Campaign.current != null and Campaign.current.investigation)
 
 
 ## The place the host's match opens for `case_seed`: the same draw as playing alone, chases and crime scenes too.
@@ -199,11 +202,12 @@ func draw_place(case_seed: int) -> String:
 
 
 @rpc("authority", "call_local", "reliable")
-func _start_match(place: String, case_seed: int, custody := {}) -> void:
+func _start_match(place: String, case_seed: int, custody := {}, investigation := false) -> void:
 	in_match = true
 	match_place = place
 	match_seed = case_seed
 	match_custody = custody
+	match_investigation = investigation
 	# A guest plays the host's campaign: the owner in the chair is the host's, and its own saved one stays out of it.
 	if not multiplayer.is_server():
 		Campaign.current = null
@@ -395,7 +399,7 @@ func _on_peer_connected(id: int) -> void:
 	players_changed.emit()
 	# Coming in during a case opens it right away; once its level loads, the host sends it how everything is.
 	if in_match:
-		_start_match.rpc_id(id, match_place, match_seed, match_custody)
+		_start_match.rpc_id(id, match_place, match_seed, match_custody, match_investigation)
 
 
 func _kick(id: int) -> void:

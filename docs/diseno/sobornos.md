@@ -47,7 +47,6 @@ agente. Online lo guarda el anfitrión, como el resto de la partida.
 
 ## El orden para hacerlo (un PR chico por paso)
 1. Este diseño, las cuentas (el sorteo de la oferta, la línea "Sobornos", la ficha de la partida y la investigación en
-   `Campaign`) y la línea en la pantalla de fin de turno.
-2. La oferta al esposar: el globo, la mira con E y clic, aceptar y rechazar, el premio de broma. Online.
-3. El agente de asuntos internos en los casos: sigue a los policías, ve los sobornos, la multa y la suspensión.
+   `Campaign`), la línea en la pantalla de fin de turno y la oferta al esposar (E y clic, el premio de broma). Online.
+2. El agente de asuntos internos en los casos: sigue a los policías, ve los sobornos, la multa y la suspensión.
    Online.
