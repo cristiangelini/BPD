@@ -19,6 +19,8 @@ const KNOCK_EVERY := 4.0
 const KNOCKS := 3
 ## Past the way out, this far into the street, he's gone.
 const STREET := 6.0
+## His "what an odd taste" stays this long before he says he's running (or going home), so it's seen.
+const ODD_TASTE_TIME := 2.0
 
 var market: MarketLevel
 var tour: MarketTour
@@ -30,6 +32,8 @@ var runs := 0
 var _path: Array[Vector3] = []
 var _knock_left := 0.0
 var _knock := 0
+var _next_line := ""
+var _next_line_left := 0.0
 
 
 func setup(the_market: MarketLevel, the_tour: MarketTour, samples: MarketSamples) -> void:
@@ -50,7 +54,7 @@ func _on_ate(_index: int, laxative: bool) -> void:
 	if runs >= 2:
 		_leave()
 		return
-	politician.say("MARKET_LUSTRE_RUN")
+	_say_after("MARKET_LUSTRE_RUN")
 	state = State.RUNNING
 	_path = market.aisle_path(politician.global_position, toilet.to_global(ChemicalToilet.FRONT))
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
@@ -58,7 +62,7 @@ func _on_ate(_index: int, laxative: bool) -> void:
 
 
 func _leave() -> void:
-	politician.say("MARKET_LUSTRE_HOME")
+	_say_after("MARKET_LUSTRE_HOME")
 	state = State.LEAVING
 	var way_out := Vector3(MarketLevel.EXIT_X, 0, MarketLevel.HALF_Z)
 	_path = market.aisle_path(politician.global_position, market.to_global(way_out - Vector3(0, 0, 1.5)))
@@ -67,7 +71,18 @@ func _leave() -> void:
 	went_home.emit()
 
 
+## Says `key` once the odd taste line had its ODD_TASTE_TIME.
+func _say_after(key: String) -> void:
+	_next_line = key
+	_next_line_left = ODD_TASTE_TIME
+
+
 func _physics_process(delta: float) -> void:
+	if _next_line != "":
+		_next_line_left -= delta
+		if _next_line_left <= 0.0:
+			politician.say(_next_line)
+			_next_line = ""
 	match state:
 		State.RUNNING, State.LEAVING:
 			if _follow(delta):
