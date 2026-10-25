@@ -83,7 +83,8 @@ func _physics_process(delta: float) -> void:
 	gap_left -= delta
 	if gap_left > 0.0:
 		return
-	var started := start_snatch() if _rng.randf() < 0.5 else start_crash()
+	var roll := _rng.randi() % 3
+	var started := start_snatch() if roll == 0 else (start_crash() if roll == 1 else start_flee())
 	if not started:
 		gap_left = RETRY
 
@@ -159,6 +160,24 @@ func start_crash(at := Vector3.INF) -> bool:
 	add_child(crash)
 	crash.begin(at)
 	_run(crash)
+	return true
+
+
+## A car running a red light from a crossing near a cop but out of sight, or from `at` (street column and row).
+func start_flee(at := Vector2i(-1, -1)) -> bool:
+	if at.x < 0:
+		var options: Array[Vector2i] = []
+		for i in range(1, CityLayout.COLUMNS):
+			for j in range(1, CityLayout.ROWS):
+				if good_spot(Vector3(CityLayout.street_x(i), 0, CityLayout.street_z(j))):
+					options.append(Vector2i(i, j))
+		if options.is_empty():
+			return false
+		at = options[_rng.randi() % options.size()]
+	var flee := FleeingCar.new()
+	add_child(flee)
+	flee.begin(at, _rng)
+	_run(flee)
 	return true
 
 
