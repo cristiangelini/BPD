@@ -88,6 +88,15 @@ la forma de `GymRoutine` (host decide, cada PC juzga y avisa).
    (frac, galera y antifaz dorado) espera en la oficina sin que se lo vea ni se lo choque. El vigía (sobretodo negro y
    binoculares) en la puerta solo deja pasar con 2 piezas de ladrón **(propuesta)**.
 3. Las clases: el timbre, las tres materias, las notas, el boletín y la sospecha por notas bajas.
+   Hecho así: a los 20 s y después cada 45 s (aviso de la Profesora 5 s antes) suena el timbre y hay 15 s de clase,
+   una materia por vez en orden (la primera por la semilla), con el nombre, la cuenta y lo que hay que hacer en
+   pantalla. Ganzúa: al lado de una de las 4 cerraduras del patio con E apretada y sin moverse. Carterista: al lado
+   del muñeco, agachado y quieto (parado o moviéndose suenan los cascabeles). Sigilo: arriba del piso de tablas,
+   moverse cuando la Profesora está de espaldas cuenta bien y moverse cuando mira cuenta mal (ella se da vuelta cada 2
+   a 4 s; quieto mirando también cuenta bien). Cada segundo en el aula o el patio cuenta; estar en otro lado de la
+   escuela es faltar y cuenta mal. Al terminar, cada policía que estaba adentro recibe su nota (1 + 9 x la parte de
+   segundos bien) y el host guarda la mejor de cada uno por materia, para la graduación. Con 3 o menos, +25 a los
+   alumnos que lo ven. El boletín en la planilla va con el caso (paso 4) **(propuesta)**.
 4. La graduación, las pruebas y el caso (variante "school"): el Director con los diplomas, las 6 pruebas, el sueldo y
    el interrogatorio.
 5. La huida en el auto de práctica, el sorteo de "Jugar" en sextos y online.

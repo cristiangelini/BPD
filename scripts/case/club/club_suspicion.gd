@@ -56,6 +56,8 @@ var rehearsal: MimeRehearsal
 var photo: PartyPhoto
 ## The gym's routine, if the place has one.
 var routine: GymRoutine
+## The thieves' school's classes, if the place has them.
+var classes: SchoolClasses
 ## Whether a world position is inside the club, and in its back rooms (GrandpaClub sets them).
 var inside: Callable = func(_at: Vector3) -> bool: return false
 var in_back_room: Callable = func(_at: Vector3) -> bool: return false
@@ -106,6 +108,12 @@ func watch_photo(group_photo: PartyPhoto) -> void:
 func watch_routine(gym_routine: GymRoutine) -> void:
 	routine = gym_routine
 	routine.missed.connect(_on_mimed_wrong)
+
+
+## Connects the thieves' school's low grades (SchoolHall calls it): like the rehearsal, to the students who see it.
+func watch_classes(school_classes: SchoolClasses) -> void:
+	classes = school_classes
+	classes.missed.connect(_on_mimed_wrong)
 
 
 func _on_mimed_wrong(cop: Cop, amount: float) -> void:
