@@ -75,6 +75,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_SPRAY", "OBJ_EXTRA_SPRAY", "OBJ_EXTRA_SPRAY", "OBJ_EXTRA_DEPUTY_POSTER"],
 		"rig": preload("res://scripts/case/hardware/mustaches_rig.gd"),
 	},
+	"street_nails": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_STREET_NAILS_B", "BRIEF_STREET_NAILS_C", "BRIEF_STREET_NAILS_D"],
+		"find": "OBJ_FIND_NAIL_BUCKET",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/nail_bucket.tscn"), preload("res://scenes/props/commission_book.tscn"),
+			preload("res://scenes/props/giant_magnet.tscn")],
+		"half_heights": [0.15, 0.0125, 0.035],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_COMMISSION_BOOK", "OBJ_EXTRA_MAGNET"],
+		"rig": preload("res://scripts/case/hardware/street_nails_rig.gd"),
+	},
 }
 ## The tools for sale, laid along the gondolas' two upper boards, both sides.
 const TOOL_SCENES: Array[PackedScene] = [

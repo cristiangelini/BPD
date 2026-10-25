@@ -143,6 +143,12 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      pintura negra y 8 pisadas salen de él por la puerta hacia el depósito; el par junto a la puerta es la pista
      propia (E lo mira). El que pisa el charco deja 12 pisadas negras (una cada 0,55 m) y después se le limpia la
      suela. Capturas: `paso6-bigotes-modelos.png`, `paso6-bigotes-taller.png`, `paso6-bigotes-carteles.png`.
+   - **Clavos en la calle (propuesta):** el balde de clavos (10 kg, 1000, escondite pesado), la libreta de comisiones
+     de la gomería (0,1 kg, 300) y el imán gigante (3 kg, 200) van en escondites sorteados. En la calle, frente a la
+     ferretería y justo donde estaciona el patrullero, hay 36 montoncitos de clavos (8 × 3 m). Si el patrullero pasa
+     andando a menos de 1,2 m de uno, pincha una goma y anda a la mitad de velocidad. El imán a menos de 2,5 m del
+     patrullero le saca el clavo, y levanta los montoncitos que pasa a menos de 1 m. La pista propia: clavos sueltos en
+     la vereda de enfrente (E los mira). Capturas: `paso6-clavos-modelos.png`, `paso6-clavos-calle.png`.
 7. El sorteo en "Jugar" (en cuartos entre los 4 lugares) y el online.
 
 ## Preguntas para Cristian (se avanza con lo recomendado mientras tanto)
