@@ -19,6 +19,10 @@ signal cuffed_now(robber: BankRobber)
 signal hid_in_van(robber: BankRobber)
 ## A grandpa robber led out by the hand as if he were a hostage got away outside (he counts as a sack taken).
 signal slipped_out(robber: BankRobber)
+## A cop talked the sorry robber round (robo-banco-arrepentido.md, step 2): he's on the cops' side now.
+signal turned_now(robber: BankRobber)
+## The sorry robber did one of his helps (one of HELPS).
+signal helped(robber: BankRobber, help: String)
 
 const ANIMALS: Array[String] = ["conejo", "chancho", "pato", "oso"]
 const MODELS := {
@@ -75,6 +79,12 @@ const SOB_TIME := 2.0
 const SOB_LINES := 4
 const HANKY_DOWN := Vector3(0.38, 0.95, -0.32)
 const HANKY_UP := Vector3(-0.02, 1.36, -0.5)
+## Turned, his helps in order, one at a time (step 2): walking there this fast (m/s), close enough this near to each
+## point of his way, and back at his spot between helps for HELP_REST seconds to blend in.
+const HELPS: Array[String] = ["door"]
+const HELP_SPEED := 1.6
+const HELP_REACH := 0.35
+const HELP_REST := 5.0
 
 @export var animal := "conejo"
 ## One of the grandpa gang: slower, and their own model.
@@ -86,6 +96,21 @@ var sobbing_left := 0.0
 var _sob_left := SOB_EVERY
 var _next_sob := 0
 var _hanky: MeshInstance3D
+var _home_yaw := 0.0
+## Turned by a cop: the help he's on ("" resting between helps or done), his way there (world positions, in order),
+## whether he's on his way back to his spot, the helps done and how long he still rests.
+var turned := false
+var helping := ""
+var help_path: Array[Vector3] = []
+var going_back := false
+var helps_done: Array[String] = []
+var rest_left := 0.0
+## The level's: whether a loose robber other than him sees `cop`; the way to `help` and back to his spot (world
+## positions); and doing `help` once there.
+var watched: Callable
+var help_way: Callable
+var way_back: Callable
+var do_help: Callable
 ## A grandpa who saw a cop took his mask off and goes (or went) to sit among the hostages: where (world position, the
 ## level hands it out), whether he's sitting there, and the cop leading him out by the hand as a hostage.
 var unmasked := false
@@ -137,6 +162,7 @@ func _ready() -> void:
 	_model.rotation.y = PI
 	add_child(_model)
 	_show_mask(true)
+	_home_yaw = rotation.y
 	_bubble = Label3D.new()
 	_bubble.name = "Bubble"
 	_bubble.position = Vector3(0, 2.1, 0)
@@ -258,6 +284,10 @@ func _physics_process(delta: float) -> void:
 	if unmasked:
 		_pose(delta)
 		return
+	if turned:
+		if not follower:
+			_help(delta)
+		return
 	_turn_head(delta)
 	if animal == "chancho":
 		_eat(delta)
@@ -294,6 +324,70 @@ func _saw_cop(cop: Node3D) -> void:
 		if sandwich:
 			sandwich.hide()
 	spotted.emit(self, cop)
+
+
+## The sorry robber talked round: unless another robber sees the cop, he's on the cops' side and starts his helps.
+func try_turn(cop: Node3D) -> bool:
+	if turned or is_cuffed():
+		return false
+	if watched.is_valid() and watched.call(cop):
+		say("ROBBER_SORRY_NOT_NOW")
+		return false
+	turned = true
+	rest_left = 0.0
+	say("ROBBER_SORRY_TURN")
+	turned_now.emit(self)
+	return true
+
+
+## Turned: on his way to a help, doing it, back to his spot, resting there and on to the next one.
+func _help(delta: float) -> void:
+	sobbing_left = 0.0
+	if _hanky:
+		_hanky.position = HANKY_DOWN
+	if help_path.is_empty():
+		if helping != "":
+			_finish_help()
+			return
+		if going_back:
+			going_back = false
+			rest_left = HELP_REST
+			rotation.y = _home_yaw
+		if rest_left > 0.0:
+			rest_left = maxf(rest_left - delta, 0.0)
+			return
+		var next := next_help()
+		if next == "":
+			return
+		helping = next
+		help_path = help_way.call(next) if help_way.is_valid() else []
+		say("ROBBER_SORRY_GO_%s" % next.to_upper())
+		return
+	var to := help_path[0] - global_position
+	to.y = 0.0
+	if to.length() < HELP_REACH:
+		help_path.remove_at(0)
+		return
+	_step(to.normalized() * HELP_SPEED, delta)
+
+
+## The first of HELPS he hasn't done yet, or "" when he did them all.
+func next_help() -> String:
+	for help in HELPS:
+		if help not in helps_done:
+			return help
+	return ""
+
+
+func _finish_help() -> void:
+	var help := helping
+	helping = ""
+	helps_done.append(help)
+	if do_help.is_valid():
+		do_help.call(help)
+	helped.emit(self, help)
+	going_back = true
+	help_path = way_back.call(help) if way_back.is_valid() else []
 
 
 ## A grandpa seeing a cop: off with the mask, into the cardigan's pocket (a bit sticks out), and to a free spot among
@@ -407,6 +501,8 @@ func prompt_key(cop: Cop) -> String:
 	if posing or led_by:
 		# He passes for a hostage.
 		return "PROMPT_LET_GO_HOSTAGE" if led_by == cop else "PROMPT_LEAD_HOSTAGE"
+	if sorry and not turned:
+		return "PROMPT_TALK_SORRY"
 	return "PROMPT_TALK_ROBBER"
 
 
@@ -427,6 +523,12 @@ func use(cop: Cop) -> void:
 		_model.scale.y = SCALES[animal]
 		say("ROBBER_GRANDPA_KNEE_%d" % (_next_line % KNEE_LINES + 1))
 		_next_line += 1
+		return
+	if sorry and not turned:
+		try_turn(cop)
+		return
+	if turned:
+		say("ROBBER_SORRY_HELPING")
 		return
 	say("ROBBER_%s_%d" % [animal.to_upper(), _next_line % LINES + 1])
 	_next_line += 1
@@ -454,10 +556,10 @@ func said() -> String:
 
 ## What a guest's copy needs besides where they are and what they say (NpcSync): cuffed, gave up, running, in the van,
 ## gone with a sack, where their head points, the pig's sandwich, a grandpa, whether he took the mask off and sits
-## among the hostages, and the sorry robber's hanky up.
+## among the hostages, and the sorry robber's hanky up and whether he was turned.
 func net_state() -> Array:
 	return [is_cuffed(), surrendered, running, in_van, visible, snappedf(look, 0.01), eating_left > 0.0, unmasked,
-		posing, sobbing_left > 0.0]
+		posing, sobbing_left > 0.0, turned]
 
 
 func apply_net_state(state: Variant) -> void:
@@ -481,6 +583,7 @@ func apply_net_state(state: Variant) -> void:
 		_model.scale.y = SCALES[animal] * (POSE_CROUCH if posing else 1.0)
 	if state.size() > 9:
 		sobbing_left = SOB_TIME if state[9] else 0.0
+		turned = state[10]
 		if _hanky:
 			_hanky.position = HANKY_UP if is_sobbing() else HANKY_DOWN
 

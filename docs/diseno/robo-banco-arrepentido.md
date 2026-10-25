@@ -67,3 +67,10 @@ las tres ayudas, la silla con la soga y el desatar.
   `BankRobber` tiene `sorry`: lleva un pañuelo blanco en la mano derecha, cada 8 s solloza 2 s con el pañuelo en la
   cara y una de 4 frases (`ROBBER_SORRY_SOB_1-4`), y no grita cuando ve a un policía ni a un rehén que sacan (no se
   rinde ni corre). Online el sollozo va en `net_state`. Capturas en `/mnt/project-files/arrepentido/paso1-*.png`.
+- **Paso 2 (darlo vuelta y la puerta):** E sobre el que llora ("E: hablar con el que llora") lo da vuelta si ningún
+  otro ladrón suelto ve a ese policía (`BankRobber.try_turn`; si no, "¡Shh! ¡Nos están mirando!"). Dado vuelta deja de
+  llorar y hace sus ayudas en orden (`HELPS`, por ahora solo la puerta): camina a 1,6 m/s hasta el hueco del mostrador,
+  por detrás, entra al pasillo y abre la puerta de atrás desde adentro sin llave (`FrontDoor.open_from_inside`); después
+  vuelve a su lugar y descansa 5 s. El pato ya está en el pasillo y va directo. Ojo para el paso 4: el pato mira el
+  pasillo, así que el chancho o el conejo pasan por delante de él. Online va `turned` en `net_state` y la copia del
+  invitado no camina sola. Capturas en `/mnt/project-files/arrepentido/paso2-*.png`.
