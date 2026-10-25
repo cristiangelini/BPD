@@ -16,6 +16,8 @@ extends StaticBody3D
 ## food in hand within BEG of him isn't barked at: he sits and begs. A
 ## friend who whistles (sings or hums with H, which the guard passes on) has him follow for FOLLOW_TIME seconds, as
 ## far as the bars if the friend is in a cell; and a friend can pet him (E), which takes the key off his collar.
+## If he's everyone's friend, he jumps into the patrol car with them once they're all in (step 4, the level calls
+## ride) and rides in the back, between the back seats.
 ## Every number here is (propuesta).
 
 const MODEL := preload("res://assets/models/guard_dog.glb")
@@ -80,6 +82,9 @@ var begging: Cop
 var following: Cop
 var follow_left := 0.0
 var _bark_left := 0.0
+## In the patrol car with the cops (ride), on its back seat.
+var riding := false
+var car: PatrolCar
 ## The guard his barking wakes up (the level sets it).
 var guard: SleepyGuard
 ## Whether a world position is out of the cells (the level sets it).
@@ -141,6 +146,11 @@ func _physics_process(delta: float) -> void:
 	_bubble_left -= delta
 	if _bubble.visible and _bubble_left <= 0.0:
 		_bubble.hide()
+	if riding:
+		if is_instance_valid(car):
+			global_transform = car.prisoner_seat()
+		_wag_tail(delta)
+		return
 	_forget(delta)
 	if stuffed_left > 0.0:
 		stuffed_left -= delta
@@ -365,6 +375,20 @@ func is_friend(cop: Cop) -> bool:
 	return friendship_of(cop) >= FRIEND
 
 
+## Whether he's the friend of every cop in `cops`.
+func friend_of_all(cops: Array) -> bool:
+	return not cops.is_empty() and cops.all(func(cop: Node) -> bool: return cop is Cop and is_friend(cop))
+
+
+## Into the patrol car with his friends.
+func ride(patrol_car: PatrolCar) -> void:
+	car = patrol_car
+	riding = true
+	eating = null
+	following = null
+	say("DOG_RIDE", 4.0)
+
+
 func _forget(delta: float) -> void:
 	for uniform: int in friends.keys():
 		if friends[uniform] < FRIEND:
@@ -436,9 +460,9 @@ func said() -> String:
 	return _bubble.text if _bubble.visible else ""
 
 
-## Online: where he is on his round, the key on his collar, his friends and his full belly (NpcSync).
+## Online: where he is on his round, the key on his collar, his friends, his full belly and his ride (NpcSync).
 func net_state() -> Variant:
-	return [target, heading, wait_left, key_on_collar, friends, stuffed_left]
+	return [target, heading, wait_left, key_on_collar, friends, stuffed_left, riding]
 
 
 func apply_net_state(state: Variant) -> void:
@@ -448,4 +472,5 @@ func apply_net_state(state: Variant) -> void:
 	key_on_collar = state[3]
 	friends = state[4]
 	stuffed_left = state[5]
+	riding = state[6]
 	_model.rotation.z = PI / 2 if stuffed_left > 0.0 else 0.0
