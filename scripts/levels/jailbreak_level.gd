@@ -187,6 +187,8 @@ func _dog_night() -> void:
 	add_child(dog)
 	dog.setup_round(case_seed, lot)
 	dog.outside_cells = outside_cells
+	dog.guard = sleepy
+	sleepy.dog = dog
 	_dog_food()
 
 
@@ -430,7 +432,9 @@ func _on_caught(times: int) -> void:
 			slot += 1
 		cop.show_hint("HINT_COMISARIO_CAUGHT" if is_cleaning() else "HINT_GUARD_CAUGHT")
 	for clue: Node in get_tree().get_nodes_in_group("guard_clues"):
-		if clue is CellKey or (clue is LooseDonut and clue.has_key):
+		if is_dog() and clue is CellKey:
+			dog.key_on_collar = true
+		elif clue is CellKey or (clue is LooseDonut and clue.has_key):
 			guard.key_on_belt = true
 		_drop(clue as Grabbable)
 		clue.queue_free()

@@ -9,7 +9,14 @@ extends StaticBody3D
 ## EAT_TIME seconds, and what he thinks of it goes to the friendship of the cop who gave it (0 to FRIEND, one for each
 ## cop, by uniform). He can't get into the cells, so food in there is his only if it's within EAT_REACH of the bars.
 ## Lettuce he spits out; STUFFED_AFTER donuts and he lies down for STUFFED seconds. A cop who isn't his friend yet is
-## forgotten little by little (FORGET a second); a friend stays a friend. Every number here is (propuesta).
+## forgotten little by little (FORGET a second); a friend stays a friend.
+## He barks (step 3) at a cop out of the cells who isn't his friend and who he sees (SIGHT_ANGLE and SIGHT_RANGE, no
+## walls in between), standing there facing him; every second of it brings the sleepy guard closer to waking up
+## (SleepyGuard.heard_bark). Food on the floor comes first, though: throwing him some shuts him up. A stranger with
+## food in hand within BEG of him isn't barked at: he sits and begs. A
+## friend who whistles (sings or hums with H, which the guard passes on) has him follow for FOLLOW_TIME seconds, as
+## far as the bars if the friend is in a cell; and a friend can pet him (E), which takes the key off his collar.
+## Every number here is (propuesta).
 
 const MODEL := preload("res://assets/models/guard_dog.glb")
 const WALK_SPEED := 1.6
@@ -38,6 +45,15 @@ const FORGET := 2.0 / 60.0
 const STUFFED_AFTER := 3
 const STUFFED := 15.0
 const EAT_LINES := 4
+const SIGHT_ANGLE := deg_to_rad(120.0)
+const SIGHT_RANGE := 8.0
+const EYE_HEIGHT := 0.6
+const BARK_EVERY := 1.0
+const BARK_LINES := 4
+const BEG := 3.0
+const FOLLOW_TIME := 20.0
+const KEEP := 1.2
+const KEY_SCENE := preload("res://scenes/props/cell_key.tscn")
 const WAG_SPEED := 14.0
 const WAG := 0.04
 
@@ -58,6 +74,14 @@ var eating: DogFood
 var eat_left := 0.0
 var donuts := 0
 var stuffed_left := 0.0
+## Who he's barking at now (null: nobody), who he's begging and the friend he follows, for how long.
+var barking_at: Cop
+var begging: Cop
+var following: Cop
+var follow_left := 0.0
+var _bark_left := 0.0
+## The guard his barking wakes up (the level sets it).
+var guard: SleepyGuard
 ## Whether a world position is out of the cells (the level sets it).
 var outside_cells: Callable = func(_at: Vector3) -> bool: return true
 var _model: Node3D
@@ -124,14 +148,130 @@ func _physics_process(delta: float) -> void:
 		return
 	if is_instance_valid(eating):
 		_chew(delta)
-	else:
-		eating = null
-		var food := smell()
-		if food:
-			_go_eat(food, delta)
-		else:
-			_walk(delta)
+		_wag_tail(delta)
+		return
+	eating = null
+	# Food first: throwing him something shuts him up.
+	var food := smell()
+	if food:
+		barking_at = null
+		begging = null
+		_go_eat(food, delta)
+		_wag_tail(delta)
+		return
+	_watch(delta)
+	if barking_at or begging:
+		_face(barking_at.global_position if barking_at else begging.global_position)
+		return
+	if not _follow(delta):
+		_walk(delta)
 	_wag_tail(delta)
+
+
+## Who he sees: strangers out of the cells get barked at, unless one is begging-close with food in hand.
+func _watch(delta: float) -> void:
+	barking_at = null
+	begging = null
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if is_friend(cop) or not outside_cells.call(cop.global_position):
+			continue
+		if not sees(cop.global_position + Vector3.UP, cop):
+			continue
+		if cop.get_node("Grabber").held is DogFood and _flat(cop.global_position).length() <= BEG:
+			begging = cop
+		elif not barking_at:
+			barking_at = cop
+	if begging:
+		barking_at = null
+		if said() != "DOG_BEG":
+			say("DOG_BEG")
+		return
+	if not barking_at:
+		_bark_left = 0.0
+		return
+	if guard:
+		guard.heard_bark(delta, barking_at.global_position)
+	_bark_left -= delta
+	if _bark_left <= 0.0:
+		_bark_left = BARK_EVERY
+		say("DOG_BARK_%d" % _rng.randi_range(0, BARK_LINES - 1), BARK_EVERY)
+
+
+## Whether he sees `at`: inside his cone and with no wall in between (`body` itself doesn't count as one).
+func sees(at: Vector3, body: CollisionObject3D = null) -> bool:
+	var eye := global_position + Vector3.UP * EYE_HEIGHT
+	var flat := Vector3(at.x - eye.x, 0, at.z - eye.z)
+	if flat.length() > SIGHT_RANGE or flat.length() < 0.01:
+		return false
+	if global_basis.z.angle_to(flat.normalized()) > SIGHT_ANGLE / 2:
+		return false
+	var ray := PhysicsRayQueryParameters3D.create(eye, at, 1, [get_rid()])
+	var hit := get_world_3d().direct_space_state.intersect_ray(ray)
+	return hit.is_empty() or (body != null and hit.collider == body)
+
+
+func _face(at: Vector3) -> void:
+	var to := _flat(at)
+	if to.length() > 0.01:
+		global_rotation.y = atan2(to.x, to.z)
+
+
+## A cop whistled (the guard passes the singing on): a friend has him follow.
+func heard_whistle(cop: Cop) -> void:
+	if not is_friend(cop):
+		return
+	if following != cop:
+		say("DOG_COMING")
+	following = cop
+	follow_left = FOLLOW_TIME
+
+
+## Walks after the friend he follows (to the bars, if the friend is in a cell), KEEP away: false once it's over.
+func _follow(delta: float) -> bool:
+	follow_left -= delta
+	if not is_instance_valid(following) or follow_left <= 0.0:
+		following = null
+		return false
+	var to_cop := _flat(following.global_position)
+	var at := following.global_position
+	if not outside_cells.call(at):
+		var local := station.affine_inverse() * at
+		at = station * Vector3(local.x, 0, StationRooms.CELL_FRONT_Z + 0.5)
+	var to := _flat(at)
+	if to_cop.length() > KEEP and to.length() > 0.1:
+		global_position += to.normalized() * minf(WALK_SPEED * 1.3 * delta, to.length())
+	_face(following.global_position)
+	return true
+
+
+## A friend can pet him (E), and takes the key if it's still on his collar.
+func prompt_key(cop: Cop) -> String:
+	if not is_friend(cop) or cop.get_node("Grabber").held:
+		return ""
+	return "PROMPT_PET_DOG_KEY" if key_on_collar else "PROMPT_PET_DOG"
+
+
+func use(cop: Cop) -> void:
+	if prompt_key(cop) == "":
+		return
+	if not key_on_collar:
+		say("DOG_PETTED")
+		return
+	say("DOG_KEY_TAKEN", 4.0)
+	var key := _take_key(cop.camera.global_position)
+	if key:
+		cop.handed(key)
+
+
+## The key off his collar, now a CellKey at `at` (null on a guest: only the host makes it, PropSync copies it).
+func _take_key(at: Vector3) -> CellKey:
+	if not multiplayer.is_server():
+		return null
+	key_on_collar = false
+	var key: CellKey = KEY_SCENE.instantiate()
+	get_parent().add_child(key)
+	key.global_position = at
+	return key
 
 
 ## The nearest food he can get at, lying on the floor within SMELL, or null.
@@ -210,7 +350,11 @@ func eat(food: DogFood) -> void:
 
 
 func befriend(cop: Cop, amount: float) -> void:
+	var was_friend := is_friend(cop)
 	friends[cop.uniform] = clampf(friendship_of(cop) + amount, 0.0, FRIEND)
+	if is_friend(cop) and not was_friend:
+		say("DOG_FRIEND", 4.0)
+		cop.show_hint("HINT_DOG_FRIEND")
 
 
 func friendship_of(cop: Cop) -> float:
