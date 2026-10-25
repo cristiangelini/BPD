@@ -7,7 +7,8 @@ extends Node3D
 ## cans of the display and the screw jars on the counter break, each one a fine. Tobías serves behind the counter,
 ## watches what breaks and looks for a screw with his back turned when a cop rings the counter bell (step 2). The
 ## tools on the gondolas are for sale: what he sees in a cop's hand goes on the bill, and comes off it when it's put
-## back (step 3).
+## back (step 3). Don Cosme waits for his key copy, and tells what he saw to whoever files it for him in the key
+## machine (step 4).
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -57,6 +58,8 @@ const COUNTER_SIZE := Vector3(3.0, 1.0, 0.7)
 const TOBIAS_POST := Vector3(-4.0, FLOOR_TOP, 2.4)
 ## The counter bell, on the customers' side of the counter top.
 const BELL_AT := Vector3(-4.0, FLOOR_TOP + 1.0, 3.45)
+## Don Cosme waits in the front corner by the screw wall, facing the counter.
+const COSME_AT := Vector3(-6.6, FLOOR_TOP, 5.6)
 const KEY_MACHINE_AT := Vector3(-5.1, FLOOR_TOP + COUNTER_SIZE.y, 3.2)
 ## The screw wall along the west wall: 60 little drawers in a cabinet, its top a hiding spot.
 const SCREW_WALL_AT := Vector3(-7.7, FLOOR_TOP, 4.8)
@@ -137,6 +140,8 @@ var tobias: HardwareMan
 var merchandise: Array[Merchandise] = []
 var bill := 0
 var bell: CounterBell
+var cosme: KeyCustomer
+var key_machine: KeyMachine
 var complaint_bar: ProgressBar
 ## Tobías called his lawyer: the case is lost.
 var case_failed := false
@@ -156,6 +161,7 @@ func _ready() -> void:
 	store_door = _door(Vector3(STORE_DOOR_X - GameScale.DOOR_WIDTH / 2, 0, SPLIT_Z), 0.0)
 	back_door = _door(Vector3(BACK_DOOR_X + GameScale.DOOR_WIDTH / 2, 0, BACK_Z), PI)
 	_place_tobias()
+	_place_cosme()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("hardware")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -229,7 +235,7 @@ func _build_shop() -> void:
 	_build.wall("x", SPLIT_Z, -HALF_X, HALF_X, 0, [STORE_DOOR_X], INSIDE)
 	_build.open_box(COUNTER_AT, COUNTER_SIZE, "-z", WOOD)
 	_build.box(COUNTER_AT + Vector3(1.0, COUNTER_SIZE.y + 0.15, 0), Vector3(0.5, 0.3, 0.4), STEEL)
-	_build.box(KEY_MACHINE_AT + Vector3(0, 0.15, 0), Vector3(0.5, 0.3, 0.35), RED)
+	_build.mesh_box(KEY_MACHINE_AT + Vector3(0, 0.15, 0), KeyMachine.SIZE, RED)
 	_build.mesh_box(KEY_MACHINE_AT + Vector3(0, 0.34, 0), Vector3(0.12, 0.08, 0.12), STEEL)
 	# The board of blank keys on the wall behind the counter.
 	_build.mesh_box(Vector3(-2.0, 1.6, SPLIT_Z + 0.09), Vector3(1.6, 0.8, 0.03), WOOD)
@@ -336,6 +342,19 @@ func _place_tobias() -> void:
 	box.add_child(complaint_bar)
 	add_child(hud)
 	tobias.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Don Cosme in his corner, and the key machine on the counter that files his copy.
+func _place_cosme() -> void:
+	cosme = KeyCustomer.new()
+	cosme.position = COSME_AT
+	cosme.rotation.y = PI * 0.8
+	add_child(cosme)
+	key_machine = KeyMachine.new()
+	key_machine.position = KEY_MACHINE_AT
+	key_machine.customer = cosme
+	key_machine.hardware_man = tobias
+	add_child(key_machine)
 
 
 ## The tools on the gondolas' two upper boards, both sides of the back panel, turned to lie along the board.

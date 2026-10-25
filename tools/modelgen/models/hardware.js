@@ -74,9 +74,20 @@ export function buildScrewdriver() {
 	return b.build();
 }
 
+// Don Cosme's new key, fresh from the machine: 0.07 m long, shiny brass, lying flat.
+export function buildKeyCopy() {
+	const b = new Builder('key_copy');
+	const brass = mat('key_brass', 0xf2c84a, { metalness: 0.5, roughness: 0.4 });
+	b.add('bow', brass, new THREE.CylinderGeometry(0.018, 0.018, 0.006, 8), { pos: V(-0.025, 0, 0) });
+	b.add('blade', brass, new THREE.BoxGeometry(0.05, 0.006, 0.012), { pos: V(0.02, 0, 0) });
+	for (const x of [0.02, 0.035]) b.add('teeth', brass, new THREE.BoxGeometry(0.006, 0.006, 0.008), { pos: V(x, 0, -0.009) });
+	return b.build();
+}
+
 export const models = {
 	...Object.fromEntries(PAINTS.map((_, i) => [`paint_can_${i}`, () => buildPaintCan(i)])),
 	screw_jar: buildScrewJar,
+	key_copy: buildKeyCopy,
 	tool_hammer: buildHammer, tool_wrench: buildWrench, tool_saw: buildSaw, tool_screwdriver: buildScrewdriver,
 };
 
