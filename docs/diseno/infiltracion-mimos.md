@@ -85,7 +85,10 @@ pie, `PlaceDraw` y `CaseSync`. El ensayo copia la forma de `ChoirSinging` (host 
    que al hablarles (E) contestan con un gesto distinto cada vez; la Maestra Pausa junto a su banquito, mirando al
    escenario (habla solo si la esposan: "...Uy. Hablé."); y el portero, un mimo grandote de brazos cruzados que empuja
    afuera con mímica a quien no pase por mimo. La sospecha es la del club con los textos "MIME_" **(propuesta)**.
-3. No hablar: la voz cerca de un mimo suma sospecha (VoiceChat avisa al host).
+3. No hablar: la voz cerca de un mimo suma sospecha (VoiceChat avisa al host). Hecho así: mientras Steam oye hablar
+   al jugador (V, voz siempre abierta o la radio con T), su PC avisa al host cada 0,5 s y cada mimo a 8 m o menos de
+   ese policía, dentro del teatro, suma 10 (20 por segundo), mire adonde mire. Abajo de la pantalla sale "Silencio: un
+   mimo te oye" mientras haya un mimo tan cerca. Un grito además suma +25 como en el club **(propuesta)**.
 4. El ensayo: estatua y mímica con H, la vista de los mimos durante la estatua.
 5. Las pruebas y el caso (variante "mime" en `InfiltrationCase.VARIANTS`).
 6. La huida en el auto invisible, el sorteo de "Jugar" en tercios (club, coro, mimos) y online.
