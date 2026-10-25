@@ -1,4 +1,4 @@
-# BPD · Sobornos y asuntos internos (propuesta, 25/10)
+# BPD · Sobornos y asuntos internos (aprobado, 25/10)
 
 Pedido de Cristian (25/10): los policías pueden recibir sobornos de plata, el jugador elige si lo acepta o no, y si
 se toman muchos sobornos empieza una investigación de asuntos internos. Vale para todos los casos: no es un caso
@@ -37,7 +37,7 @@ nuevo, es algo que pasa encima de cualquier turno. Los números son **(propuesta
 Los sobornos aceptados de la partida, si hay investigación, cuántos turnos limpios lleva y cuántas veces los atrapó el
 agente. Online lo guarda el anfitrión, como el resto de la partida.
 
-## Preguntas para Cristian
+## Preguntas para Cristian (respondidas: sí a las tres, 25/10)
 1. **¿Ofrece cualquier persona esposable, 1 de cada 4 la primera vez, y aceptar deja libre al que ofrece?**
    Recomiendo que sí: así es una decisión de verdad (plata contra el caso) y aparece en todos los casos.
 2. **¿La investigación empieza con 3 sobornos aceptados en la partida, contando a los 4 policías juntos?**
