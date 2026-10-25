@@ -190,6 +190,54 @@ export function buildPartyBadge() {
 	return b.build();
 }
 
+// The gym's disguises (infiltracion-gimnasio.md, step 1), each origin where it sits on a cop (DisguisePiece.SLOTS): a
+// red terry headband, a pair of white wristbands and a red tank top with a white stripe. Placeholder.
+const GYM_RED = 0xd8282e, GYM_WHITE = 0xf4f4f0;
+export function buildGymHeadband() {
+	const b = new Builder('disguise_gym_headband');
+	const band = new THREE.TorusGeometry(0.205, 0.03, 6, 18);
+	band.rotateX(Math.PI / 2);
+	b.add('band', mat('gym_red', GYM_RED), band);
+	const stripe = new THREE.TorusGeometry(0.205, 0.032, 4, 18);
+	stripe.rotateX(Math.PI / 2);
+	stripe.scale(1, 0.3, 1);
+	b.add('stripe', mat('gym_white', GYM_WHITE), stripe);
+	return b.build();
+}
+
+// Worn, one on each wrist (the pear's arms end at about x 0.47, 0.02 m below and 0.165 m behind the slot).
+export function buildGymWristbands() {
+	const b = new Builder('disguise_gym_wristbands');
+	for (const s of [-1, 1]) b.add('bands', mat('gym_white', GYM_WHITE), new THREE.CylinderGeometry(0.068, 0.068, 0.07, 10), { pos: V(s * 0.45, 0.0, -0.165), rot: [0, 0, s * 0.75] });
+	return b.build();
+}
+
+// The pair lying side by side in front of the lockers: 0.2 x 0.07 x 0.14 m, origin in its middle.
+export function buildFoldedGymWristbands() {
+	const b = new Builder('folded_gym_wristbands');
+	for (const s of [-1, 1]) b.add('bands', mat('gym_white', GYM_WHITE), new THREE.CylinderGeometry(0.065, 0.065, 0.07, 10), { pos: V(s * 0.07, 0, 0) });
+	return b.build();
+}
+
+export function buildGymTank() {
+	const b = new Builder('disguise_gym_tank');
+	const red = mat('gym_red', GYM_RED), white = mat('gym_white', GYM_WHITE);
+	for (let i = 0; i < 5; i++) {
+		const t = i / 5, h = 0.5 / 5;
+		const top = 0.3 + t * 0.16, bottom = 0.3 + (t + 1 / 5) * 0.16;
+		b.add(i === 2 ? 'stripe' : 'tank', i === 2 ? white : red, new THREE.CylinderGeometry(top, bottom, h, 14, 1, true), { pos: V(0, 0.1 - (i + 0.5) * h, -0.3) });
+	}
+	return b.build();
+}
+
+// The tank top folded: 0.38 x 0.06 x 0.3 m, origin in its middle.
+export function buildFoldedGymTank() {
+	const b = new Builder('folded_gym_tank');
+	b.add('tank', mat('gym_red', GYM_RED), new THREE.BoxGeometry(0.38, 0.06, 0.3));
+	b.add('stripe', mat('gym_white', GYM_WHITE), new THREE.BoxGeometry(0.39, 0.062, 0.05));
+	return b.build();
+}
+
 export const models = {
 	disguise_wig: buildDisguiseWig, disguise_mustache: buildDisguiseMustache, disguise_glasses: buildDisguiseGlasses,
 	disguise_robe: buildDisguiseRobe, folded_robe: buildFoldedRobe, songbook: buildSongbook,
@@ -198,6 +246,8 @@ export const models = {
 	disguise_mime_beret: buildMimeBeret, disguise_mime_face: buildMimeFace, disguise_mime_shirt: buildMimeShirt,
 	folded_mime_shirt: buildFoldedMimeShirt,
 	disguise_party_cap: buildPartyCap, disguise_party_mustache: buildPartyMustache, disguise_party_badge: buildPartyBadge,
+	disguise_gym_headband: buildGymHeadband, disguise_gym_wristbands: buildGymWristbands, folded_gym_wristbands: buildFoldedGymWristbands,
+	disguise_gym_tank: buildGymTank, folded_gym_tank: buildFoldedGymTank,
 };
 
 export const views = {
@@ -231,6 +281,17 @@ export const views = {
 			{ name: 'disguise_party_badge', pos: [-0.4, 1.05, 0.3] },
 			{ name: 'disguise_party_mustache', pos: [-0.4, 1.22, 0.1] },
 			{ name: 'disguise_party_cap', pos: [-0.4, 1.42, 0.3] },
+		],
+		cam: { pos: [0.3, 1.2, 3.0], target: [0.1, 0.7, 0], fov: 40 },
+	},
+	gym_disguise: {
+		items: [
+			{ name: 'cop_0', pos: [-0.4, 0, 0] },
+			{ name: 'disguise_gym_tank', pos: [-0.4, 0.95, 0.3] },
+			{ name: 'disguise_gym_wristbands', pos: [-0.4, 0.68, 0.25] },
+			{ name: 'disguise_gym_headband', pos: [-0.4, 1.45, 0] },
+			{ name: 'folded_gym_tank', pos: [0.6, 0.03, 0.2], rotY: 0.3 },
+			{ name: 'folded_gym_wristbands', pos: [0.6, 0.035, 0.6] },
 		],
 		cam: { pos: [0.3, 1.2, 3.0], target: [0.1, 0.7, 0], fov: 40 },
 	},

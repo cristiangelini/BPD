@@ -66,6 +66,10 @@ La rutina copia la forma de `MimeRehearsal` (host decide, cada PC juzga y avisa)
 ## El orden para hacerlo (un PR chico por paso)
 1. El disfraz de gimnasio: vincha, muñequeras y musculosa en una fila frente a los casilleros, y el look "gym" (2 de
    3).
+   Hecho así: 12 piezas en una sexta fila a 3,95 m frente a los casilleros (vincha roja con raya blanca a la cabeza,
+   un par de muñequeras blancas que se ponen en las manos y una musculosa roja con raya blanca al pecho). Con 2 de 3,
+   `is_disguised("gym")`. La ropa de gimnasia está hecha para transpirar: correr no la hace caer (las demás piezas sí
+   se siguen cayendo), porque la rutina obliga a correr y saltar **(propuesta)**.
 2. El gimnasio en la ciudad (`--place=gym`): las pesas, las cintas, el ring, el vestuario y la oficina; los socios, el
    Toro y el de la recepción.
 3. La rutina: el silbato, los cuatro ejercicios, la resistencia, rendirse y la sospecha.

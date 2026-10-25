@@ -593,16 +593,17 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 	_shake_disguise(delta)
 
 
-## Running shakes the disguise: the most crooked piece falls off after DISGUISE_CROOKED_RUN seconds of running (a
+## Running shakes the disguise (but not sportswear, DisguisePiece.TIGHT): the most crooked piece falls off after DISGUISE_CROOKED_RUN seconds of running (a
 ## straight one after DISGUISE_LOOSE_RUN), and running into a wall knocks it off at once. The cop's own PC decides.
 func _shake_disguise(delta: float) -> void:
 	_fall_gap_left = maxf(_fall_gap_left - delta, 0.0)
-	if disguise.is_empty():
+	var shakable := disguise.keys().filter(func(kind: String) -> bool: return not DisguisePiece.TIGHT.has(kind))
+	if shakable.is_empty():
 		_shaken = 0.0
 		return
 	_shaken = _shaken + delta if is_running else maxf(_shaken - delta, 0.0)
-	var loosest: String = disguise.keys()[0]
-	for kind: String in disguise:
+	var loosest: String = shakable[0]
+	for kind: String in shakable:
 		if absf(disguise[kind]) > absf(disguise[loosest]):
 			loosest = kind
 	var limit := DISGUISE_CROOKED_RUN if absf(disguise[loosest]) > DisguisePiece.CROOKED else DISGUISE_LOOSE_RUN
