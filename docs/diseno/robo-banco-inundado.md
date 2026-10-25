@@ -68,3 +68,10 @@ la ola de la puerta y los flotadores.
    caminen más lento.
 
 ## Hecho así
+
+- **Paso 1 (el agua):** un sexto de las semillas, sorteado antes que los demás (`hash(["bank caño", semilla]) % 6`),
+  es el banco inundado; las semillas 1 a 4 de las pruebas viejas no cambian y `--bank=flood` lo fuerza. El agua
+  (`BankWater`) cubre todo el piso del banco y sube 0,2 m por minuto hasta 1 m, con un chorro que sale del agujero de
+  la bóveda hacia el pasillo. Cada cuadro le pone a cada policía, ladrón y rehén adentro del banco su `wade` según la
+  profundidad (1 seco, 0,8 a 0,3 m, 0,6 a 0,6 m, 0,45 a 1 m, rectas entre esos puntos); en la vereda vale 1. Capturas
+  en `/mnt/project-files/inundado/paso1-*.png`.
