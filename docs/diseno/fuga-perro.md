@@ -97,3 +97,16 @@ por `PropSync`.
   de guardia, la puerta de las celdas, el pasillo frente a las dos celdas y el costado del escritorio, y se queda de 4
   a 10 s en cada parada. La llave cuelga del collar (`key_on_collar`, la parte `key` del modelo). Va por `NpcSync`.
 - Captura del modelo: `/mnt/project-files/perro/paso1-mordisco.png`.
+
+## Cómo quedó el paso 2
+- `DogFood` (salchicha, jamón, queso, dona, lechuga y el sándwich, modelos `dog_*` en `guarddog.js`): recuerda al
+  último policía que la agarró, que es quien recibe la amistad.
+- Para que siempre alcance, hay más comida que en la propuesta: 3 cosas en cada bandeja (al fondo de cada celda, lejos
+  de las rejas: hay que tirarlas afuera), 9 en la heladera abierta de la sala de descanso (3 estantes) y el sándwich
+  en el escritorio. `JailbreakLevel.dog_food_kinds` sortea por peso y cambia lo que menos le gusta por salchichas hasta
+  sumar 400 de amistad.
+- Mordisco huele la comida quieta en el piso a menos de 8 m, va y la come en 2 s. Si está en una celda solo la alcanza
+  a menos de 0,9 m de las rejas. La lechuga la escupe (-10) y con 3 donas se tira panza arriba 15 s.
+- La amistad baja 2 por minuto solo mientras no llega a 100: el amigo queda amigo.
+- El sándwich por ahora no suma sospecha propia: el que lo agarra con el guardia despierto ya está a la vista.
+- Captura: `/mnt/project-files/perro/paso2-comida.png`.
