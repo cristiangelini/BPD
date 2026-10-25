@@ -18,6 +18,8 @@ const LOOKING := 60.0
 const RETRY := 5.0
 ## A finished event stays this long (the cuffed thief, the thanks) before it goes.
 const LINGER := 20.0
+## Someone stopped and caught with something forbidden (CityWalker.busted).
+const BUSTED_MONEY := 40
 
 var active: CityEvent
 ## Money the events paid this shift.
@@ -46,6 +48,28 @@ func _ready() -> void:
 	_toast.add_theme_color_override("font_color", Color(0.45, 1, 0.5))
 	_toast.hide()
 	layer.add_child(_toast)
+
+
+	for walker in get_tree().get_nodes_in_group("city_walkers"):
+		watch(walker)
+
+
+## Pays when `walker` is caught with something forbidden.
+func watch(walker: CityWalker) -> void:
+	if not walker.busted.is_connected(_on_busted):
+		walker.busted.connect(_on_busted)
+
+
+func _on_busted(_walker: CityWalker) -> void:
+	pay(BUSTED_MONEY)
+
+
+## Adds `money` to the shift and shows it.
+func pay(money: int) -> void:
+	earned += money
+	paid.emit(money)
+	_toast.text = tr("EVENT_PAID") % money
+	_toast_left = 3.0
 
 
 func _process(delta: float) -> void:
@@ -113,11 +137,8 @@ func _run(event: CityEvent) -> void:
 
 
 func _on_finished(money: int, event: CityEvent) -> void:
-	earned += money
 	if money > 0:
-		paid.emit(money)
-		_toast.text = tr("EVENT_PAID") % money
-		_toast_left = 3.0
+		pay(money)
 	active = null
 	gap_left = _rng.randf_range(GAP_MIN, GAP_MAX)
 	get_tree().create_timer(LINGER).timeout.connect(event.queue_free)
