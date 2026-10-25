@@ -84,3 +84,8 @@ de juguete, el sobrino con el control y la persecución en el aire.
   entre dos por la escalera de incendio, o de tirarlo a la calle. Fuera del techo (en la calle, en el baúl) la banda ya
   no tiene helicóptero, y la barra lo avisa una vez. La barra también avisa cuando despega: "Alguien lo maneja desde
   abajo", la pista para buscar al sobrino. Captura en `/mnt/project-files/techo/paso2-vuela.png`.
+- **Paso 3 (esposar al sobrino):** las esposas lo atrapan para siempre (`BankNephew.caught`): suelta el control y
+  delata al tío ("¡Fue idea de mi tío! ¡Yo solo quería jugar!"), y la barra avisa "¡Era el sobrino de El Oso!". El
+  helicóptero se queda sin piloto (`ToyHelicopter.crash`): si estaba volando cae donde esté, y en el suelo queda
+  volcado con la hélice doblada; ya no vuela más y la banda no tiene huida por el techo (`roof_way_out`). El +100 va
+  en la planilla del paso 4. Capturas en `/mnt/project-files/techo/paso3-*.png`.
