@@ -7,7 +7,9 @@ extends Node
 ## innocent one complains, drives off and files a complaint, which comes off the pay, and the second one loses the
 ## case (decision 98). The wanted car getting past the checkpoint runs off and the chase starts (decision 96, like the
 ## pastry contest's culprit); caught, it's solved, and got away, lost. Online the host's case decides and a guest's
-## follows it (CaseSync). Every number here is (propuesta).
+## follows it (CaseSync). In the clown convoy (control-payasos.md) the driver can be cuffed out of the car too, the
+## other clowns hop back in, and the wanted clown runs off in his clown car, dropping inflatable clowns. Every number
+## here is (propuesta).
 
 signal detained(car: QueueCar, wanted: bool)
 
@@ -101,10 +103,13 @@ func give_tip() -> void:
 func detain(car: QueueCar) -> void:
 	if follower or shift_over or lost or solved_now or not car.waiting():
 		return
+	# The wanted clown gets out where he stands; the others hop back in.
+	var out_at := car.driver_out_at()
+	car.recall_clowns()
 	queue.pull_over(car)
 	detained.emit(car, car.wanted)
 	if car.wanted:
-		_take_out(car)
+		_take_out(car, out_at)
 		_hint_all("HINT_TRAFFIC_GOT_IT")
 		return
 	innocents += 1
@@ -117,13 +122,17 @@ func detain(car: QueueCar) -> void:
 		_end()
 
 
-## The wanted driver gets out, cuffed, to be walked to the patrol car.
-func _take_out(car: QueueCar) -> void:
+## The wanted driver gets out, cuffed, to be walked to the patrol car; a clown already out stays where he is (`at`).
+func _take_out(car: QueueCar, at := Vector3.INF) -> void:
 	suspect = ChaseSuspect.new()
 	suspect.name = "Driver"
-	suspect.kind = "driver"
+	suspect.kind = "clown" if car.clown else "driver"
 	get_parent().add_child(suspect)
-	suspect.global_position = car.global_position + car.global_basis.x * DOOR_OUT + Vector3.UP * 0.1
+	if at == Vector3.INF:
+		at = car.global_position + car.global_basis.x * DOOR_OUT
+	suspect.global_position = at + Vector3.UP * 0.1
+	if car.clown:
+		car.empty_seat()
 	suspect.rotation.y = car.rotation.y
 	suspect.cuffed(Handcuffs.SECONDS)
 	if patrol_car:
@@ -141,7 +150,7 @@ func _on_boarded() -> void:
 func _on_passed(car: QueueCar, _sneaked: bool) -> void:
 	if follower or not car.wanted or solved_now or lost or suspect or chase:
 		return
-	if _run_off(car.global_transform, car.look):
+	if _run_off(car.global_transform, car.look, car.clown):
 		car.queue_free()
 		return
 	lost = true
@@ -149,15 +158,16 @@ func _on_passed(car: QueueCar, _sneaked: bool) -> void:
 	_end()
 
 
-## The queue car (`look`, at `at`) becomes the chase's fleeing car, in its own paint, right where it is.
-func _run_off(at: Transform3D, look: int) -> bool:
+## The queue car (`look`, at `at`) becomes the chase's fleeing car, in its own paint, right where it is. A clown car
+## runs off as the circus's, dropping inflatable clowns (ChaseDrops).
+func _run_off(at: Transform3D, look: int, clown := false) -> bool:
 	var level := get_parent()
 	var city := level.get_node_or_null("City") as Node3D
 	if not city or not patrol_car:
 		return false
-	var kind := "traffic_%d" % (look % TrafficCar.MODELS.size())
+	var kind := SuspectCar.CLOWN_CAR if clown else "traffic_%d" % (look % TrafficCar.MODELS.size())
 	chase = ChaseCase.begin(level, kind, at, patrol_car, city, case_seed)
-	chase.who = "driver"
+	chase.who = "clown" if clown else "driver"
 	chase.online = online
 	chase.follower = follower
 	chase.ended.connect(_on_chase_ended)
@@ -193,7 +203,8 @@ func finish_shift() -> void:
 	var campaign := Campaign.current
 	if campaign and not campaign.is_over():
 		var played := campaign.shift
-		campaign.finish_shift("traffic_rush_hour", solved(), report, QUOTA)
+		campaign.finish_shift("traffic_clown_convoy" if plan and plan.convoy else "traffic_rush_hour", solved(), report,
+			QUOTA)
 		campaign.save()
 		result.campaign = {"shift": played, "money": campaign.money, "over": campaign.is_over(),
 			"promoted": campaign.is_promoted()}

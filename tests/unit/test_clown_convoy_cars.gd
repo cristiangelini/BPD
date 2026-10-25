@@ -74,7 +74,8 @@ func test_rush_hour_cars_stay_as_they_were() -> void:
 
 func test_the_level_takes_the_variant_from_the_args() -> void:
 	assert_eq(TrafficControlLevel.variant_from("", PackedStringArray(["--traffic=clown_convoy"])), "clown_convoy")
-	assert_eq(TrafficControlLevel.variant_from("", PackedStringArray(["--traffic=nope"])), "rush_hour")
+	assert_eq(TrafficControlLevel.variant_from("", PackedStringArray(["--traffic=nope"]), 4),
+		TrafficControlLevel.variant_from("", PackedStringArray(), 4), "a wrong one draws it")
 	assert_eq(TrafficControlLevel.variant_from("clown_convoy", PackedStringArray()), "clown_convoy")
 
 

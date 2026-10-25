@@ -78,3 +78,8 @@ payasos, puertas, licencias limpias y el final ([online.md](online.md)).
   maquillaje y se ven sus anteojos, si tiene. El buscado lleva una licencia ajena (la foto no coincide) y la caja
   fuerte del director en el baúl; los otros baúles traen globos (5 de 10), tortas de crema (3) o una caja fuerte de
   cartón (2). Los otros payasos dicen que no manejan.
+- **Paso 5 (24/10):** las esposas sobre el conductor afuera del auto lo detienen ahí mismo y los otros payasos se suben
+  solos; esposar a otro payaso no hace nada ("yo no manejo"). El buscado sale como ChaseSuspect payaso y se lo escolta
+  al patrullero (500, cuota propia); un inocente suma denuncia y se va. Si el autito buscado pasa el control, huye
+  como el del circo soltando muñecos inflables. En "Jugar", el control de tránsito sale mitad Hora pico y mitad
+  Caravana por la semilla; en la campaña cuenta como `traffic_clown_convoy`.

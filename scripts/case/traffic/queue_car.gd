@@ -229,6 +229,30 @@ func honk() -> void:
 	say(tr(ConvoyTraits.horn_text(clown_traits)))
 
 
+## Where its driver gets out to be cuffed: where he stands if he's out already, else by the door.
+func driver_out_at() -> Vector3:
+	for out in clowns_out:
+		if is_instance_valid(out) and out.is_driver:
+			return out.global_position
+	return Vector3.INF if not clown else door_point()
+
+
+## Every clown of it still out hops back in (its driver's been detained).
+func recall_clowns() -> void:
+	for out in clowns_out.duplicate():
+		if is_instance_valid(out):
+			out.board()
+	clowns_out.clear()
+	_on_boarded(null)
+
+
+## The detained clown is out for good: nobody at the wheel.
+func empty_seat() -> void:
+	var seat := get_node_or_null("Driver") as Node3D
+	if seat:
+		seat.queue_free()
+
+
 func _on_boarded(back: ConvoyClown) -> void:
 	clowns_out.erase(back)
 	if clowns_out.is_empty():

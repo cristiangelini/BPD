@@ -5,8 +5,8 @@ extends Node3D
 ## the patrol car at the door and, next to it on the sidewalk, the cones and the barrier. The checkpoint is painted on
 ## the westbound lane of the street in front of the station, toward the corner. --place=traffic opens it from Play.
 ## Once it's set up, the cars come and queue up (TrafficQueue), with the patience meter at the top. The comisario
-## gives the case (TrafficCase). --traffic=clown_convoy picks the clown convoy (control-payasos.md) instead of the
-## rush hour.
+## gives the case (TrafficCase). Half the matches are the rush hour and half the clown convoy (control-payasos.md),
+## by the seed; --traffic=<variant> picks one.
 
 ## Along the street in front of the station, from the station's middle toward the east corner, in meters.
 const CHECKPOINT_ALONG := 24.0
@@ -16,10 +16,12 @@ const BARRIER_FROM_DOOR := Vector3(6, 0, 1.5)
 const CONES_FROM_DOOR := Vector3(-5, 0, 1.5)
 ## The clown convoy's sponge (control-payasos.md, step 5), on the sidewalk between the barrier and the cones.
 const SPONGE_FROM_DOOR := Vector3(1, 0, 1.5)
+## What Play draws, half and half (propuesta).
+const VARIANTS: Array[String] = ["rush_hour", "clown_convoy"]
 
 ## Same seed, same cars. 0 draws one.
 @export var case_seed := 0
-## TrafficQueue.VARIANTS; empty takes --traffic=<variant> from the user args, or the rush hour.
+## TrafficQueue.VARIANTS; empty takes --traffic=<variant> from the user args, or draws it with the seed.
 @export var variant := ""
 var checkpoint: TrafficCheckpoint
 var queue: TrafficQueue
@@ -38,13 +40,13 @@ static func checkpoint_at() -> Transform3D:
 	return Transform3D(Basis(Vector3.UP, PI / 2), Vector3(x, 0, z))
 
 
-static func variant_from(chosen: String, args: PackedStringArray) -> String:
+static func variant_from(chosen: String, args: PackedStringArray, case_seed := 0) -> String:
 	if TrafficQueue.VARIANTS.has(chosen):
 		return chosen
 	for arg in args:
 		if arg.begins_with("--traffic=") and TrafficQueue.VARIANTS.has(arg.trim_prefix("--traffic=")):
 			return arg.trim_prefix("--traffic=")
-	return "rush_hour"
+	return VARIANTS[hash(["traffic variant", case_seed]) % VARIANTS.size()]
 
 
 func _ready() -> void:
@@ -69,7 +71,7 @@ func _ready() -> void:
 		cone.name = "Cone%d" % i
 		add_child(cone)
 		cone.global_position = door + CONES_FROM_DOOR + Vector3(-0.8 * i, 0.05, 0)
-	var chosen := variant_from(variant, OS.get_cmdline_user_args())
+	var chosen := variant_from(variant, OS.get_cmdline_user_args(), case_seed)
 	plan = WantedPlan.draw(case_seed, chosen == "clown_convoy")
 	if plan.convoy:
 		sponge = ClownSponge.new()
