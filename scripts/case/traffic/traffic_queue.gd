@@ -83,7 +83,7 @@ func release_front() -> void:
 	var car := front()
 	if car and not car.can_go():
 		for cop: Cop in get_tree().get_nodes_in_group("cops"):
-			cop.show_hint("HINT_CLOWNS_OUT")
+			cop.show_hint("HINT_RIDERS_OUT" if car.crowd > 0 else "HINT_CLOWNS_OUT")
 		return
 	if car:
 		car.let_through()

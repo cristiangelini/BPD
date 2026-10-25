@@ -64,6 +64,13 @@ const CLOWN_DOOR := Vector3(0.05, 0.55, 0.6)
 const HONK_EVERY := 9.0
 ## How many clowns come out of one car (control-payasos.md, answer 1).
 const CLOWN_RIDERS := Vector2i(3, 6)
+## A city car's front door on the driver's side (control-auto-lleno.md), the riders' way out.
+const SEDAN_DOOR_HINGE := Vector3(1.08, 1.0, 0.85)
+const SEDAN_DOOR := Vector3(0.05, 0.85, 1.0)
+const SEDAN_DOOR_OUT := Vector3(1.7, 0.0, 0.35)
+## Riders pop out of a packed car one after the other, this often, and this fast (the cork of a champagne bottle).
+const POP_EVERY := 0.35
+const POP_SPEED := 3.5
 ## The fruit seller's pickup (control-frutas.md): its paint per WantedPlan.COLORS (white, yellow, green, blue).
 const FRUIT_MODEL := preload("res://assets/models/fruit_truck.glb")
 const FRUIT_PAINTS: Array[Color] = [Color("f2f2ee"), Color("e8c547"), Color("5b9a5a"), Color("7aa6d8")]
@@ -115,6 +122,9 @@ var hat := ""
 var melon_kinds: Array[String] = []
 ## In the crowded car control (control-auto-lleno.md): how many ride in it, its driver too. 0 elsewhere.
 var crowd := 0
+## Riders still to pop out of its open door.
+var _to_pop := 0
+var _pop_left := 0.0
 var _honk_left := HONK_EVERY
 ## The car the case is after (WantedPlan).
 var wanted := false
@@ -159,7 +169,7 @@ func _ready() -> void:
 			wheel.position = wheel_at
 			add_child(wheel)
 	_build_trunk()
-	if clown:
+	if clown or crowd > 0:
 		_build_door()
 	_build_labels()
 
@@ -317,12 +327,14 @@ func riders() -> int:
 
 ## Where its clowns get out and back in, in world space: just outside the door.
 func door_point() -> Vector3:
+	if crowd > 0:
+		return global_transform * SEDAN_DOOR_OUT
 	return global_transform * (CLOWN_DOOR_HINGE + Vector3(0.6, -0.75, -CLOWN_DOOR.z / 2))
 
 
 ## It can drive off: no clown of it left on the street.
 func can_go() -> bool:
-	return clowns_out.is_empty()
+	return clowns_out.is_empty() and _to_pop == 0
 
 
 func _build_door() -> void:
@@ -330,8 +342,10 @@ func _build_door() -> void:
 	door.name = "Door"
 	door.side = true
 	door.action = "open_door"
-	door.size = CLOWN_DOOR
-	door.position = CLOWN_DOOR_HINGE
+	door.size = SEDAN_DOOR if crowd > 0 else CLOWN_DOOR
+	door.position = SEDAN_DOOR_HINGE if crowd > 0 else CLOWN_DOOR_HINGE
+	if crowd > 0:
+		door.door_prompt = "PROMPT_CAR_DOOR"
 	add_child(door)
 	door.opened.connect(spill)
 
@@ -344,9 +358,13 @@ func open_door() -> void:
 
 ## Out come its clowns, one after the other, the driver first; its seat is left empty.
 func spill() -> void:
-	if spilled or not clown:
+	if spilled or not (clown or crowd > 0):
 		return
 	spilled = true
+	if crowd > 0:
+		_to_pop = 0 if follower else riders_out()
+		_pop_left = 0.0
+		return
 	var seat := get_node_or_null("Driver") as Node3D
 	if seat:
 		seat.visible = false
@@ -361,6 +379,27 @@ func spill() -> void:
 		clowns_out.append(out)
 		_street().add_child(out)
 		out.global_position = door_point() + global_basis.z * (0.5 * i - 1.0) + Vector3.UP * 0.1
+
+
+## How many riders get out of it when its door opens: all of a few; in a packed car, someone always stays in.
+func riders_out() -> int:
+	return crowd - CrowdedCar.stay_in(plate, crowd)
+
+
+## The next rider pops out of its door, out toward the sidewalk, the driver first.
+func _pop() -> void:
+	var i := riders_out() - _to_pop
+	_to_pop -= 1
+	var out := CrowdRider.new()
+	out.name = "%sRider%d" % [name, i]
+	out.car = self
+	out.is_driver = i == 0
+	out.traits = CrowdRider.look_of(plate, i)
+	clowns_out.append(out)
+	_street().add_child(out)
+	out.global_position = global_transform * (SEDAN_DOOR_OUT + Vector3(-0.3, 0.3, 0))
+	out.linear_velocity = global_basis.x * POP_SPEED + Vector3.UP * 2.0 + global_basis.z * randf_range(-1.0, 1.0)
+	CrowdedCar.show_inside(self, crowd - clowns_out.size())
 
 
 ## Where its clowns walk: the level (its queue's parent), so each one has the same path on every PC.
@@ -415,7 +454,9 @@ func empty_seat() -> void:
 
 func _on_boarded(back: ConvoyClown) -> void:
 	clowns_out.erase(back)
-	if clowns_out.is_empty():
+	if crowd > 0:
+		CrowdedCar.show_inside(self, crowd - clowns_out.size() - _to_pop)
+	if clowns_out.is_empty() and _to_pop == 0:
 		var seat := get_node_or_null("Driver") as Node3D
 		if seat:
 			seat.visible = true
@@ -599,6 +640,11 @@ func _physics_process(delta: float) -> void:
 		_bubble.hide()
 	if state == "gone" or not checkpoint:
 		return
+	if _to_pop > 0:
+		_pop_left -= delta
+		if _pop_left <= 0.0:
+			_pop_left = POP_EVERY
+			_pop()
 	if clown and in_queue() and not _bubble.visible:
 		_honk_left -= delta
 		if _honk_left <= 0.0:
