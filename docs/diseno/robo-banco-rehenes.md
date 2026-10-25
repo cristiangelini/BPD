@@ -46,6 +46,33 @@ dos botones con su cono y su máscara de cartón, y las frases.
 4. Los cruasanes y las donas que los convencen, y el rehén del teléfono que vuelve a entrar.
 5. El caso (frases del comisario, planilla) y el online.
 
+## Lo hecho
+- **Paso 1 (24/10):** la mitad de las semillas del banco son la fiesta (propuesta); `--bank=party` o `--bank=base`
+  fuerza una. El hall tiene 18 guirnaldas de banderines en tres filas bajo el techo, la radio de los ladrones en el
+  banco del oeste con sus notas que suben y bajan, y la bandeja de 7 cruasanes en el mostrador. Los rehenes se
+  hamacan al ritmo de la música mientras están sentados y paran cuando se los lleva de la mano.
+- **Paso 2 (24/10):** en la fiesta, el rehén que llevas de la mano camina a la mitad (0,9 m/s) y protesta cada 6 s
+  con 8 frases. Si lo sueltas adentro dice "¡Me guardaron el lugar!" y vuelve caminando a su lugar, donde se sienta
+  otra vez; si se traba más de 20 s, aparece en su lugar. Se lo puede volver a tomar en el camino. Afuera queda
+  libre como siempre. En el robo base nada cambia: se sienta donde lo sueltan.
+- **Paso 3 (24/10):** 2 de los 8 rehenes de la fiesta, por semilla, son botones con una máscara de cartón de oso,
+  conejo, chancho o pato. Sentados, giran la cabeza por todo el salón (adelante, a los costados y hacia la puerta,
+  2,5 s cada lado) con un cono de 120° y 8 m. Si ven a un policía gritan "¡Oso, cuidado, la policía!" y el taladro
+  va ×1,5 durante 20 s, como con un ladrón; al mismo policía no lo vuelven a cantar por 5 s. Llevados de la mano
+  miran adelante y no avisan.
+- **Paso 4 (24/10):** E con las manos vacías en la bandeja saca un cruasán (hay 7). E con un cruasán o con una caja
+  de donas en la mano sobre un rehén de la fiesta se lo da: lo come, da las gracias y sigue a ese policía a velocidad
+  normal, sin protestar, hasta salir (de la caja se va una dona; el cruasán desaparece). E con el cruasán en otro
+  lado se lo come el policía, como una dona. El rehén que suelta El Oso por un pedido cumplido sale hasta la puerta,
+  dice "¿Seguro que tengo que irme?" y espera 8 s; si nadie lo toma de la mano, vuelve a entrar entre los postes de
+  la fila hasta su lugar. Las pruebas del robo base usan una semilla sin fiesta.
+- **Paso 5 (24/10):** el comisario avisa por radio de la fiesta (3 frases propias), la primera vez que un botón le
+  avisa a la banda sale una pista para todos, y al tomar de la mano a un rehén de la fiesta la pista explica que no
+  quiere irse y que la comida ayuda. La planilla suma dos filas de estado: los rehenes con máscara y los cruasanes
+  que quedan. Online: el rehén alimentado, hacia dónde mira el botón, la bandeja y el aviso de los botones se ven
+  igual en todas las PC. `--bank=party` hay que pasarlo en todas las PC (cada una sortea la fiesta con la semilla).
+  Con esto el caso está completo.
+
 ## Preguntas para Cristian
 1. **¿Qué hace un rehén que sueltan antes de la puerta?** **Respondida (Cristian, 24/10):** vuelve caminando a su
    lugar en el piso.

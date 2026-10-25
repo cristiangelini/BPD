@@ -136,7 +136,7 @@ Llegan cuando el robo está pasando (decisión 32).
 2. **Rehenes que no quieren irse:** les está gustando. Propuesta en [robo-banco-rehenes.md](robo-banco-rehenes.md) (decisión 121).
 3. **El banco del pueblo:** chico y con un solo empleado dormido.
 4. **Robo por el techo:** con helicóptero de juguete.
-5. **Ladrones abuelos:** lentos pero astutos.
+5. **Ladrones abuelos:** lentos pero astutos. Propuesta en [robo-banco-abuelos.md](robo-banco-abuelos.md) (decisión 122).
 6. **La bóveda que se inunda.**
 7. **Robo en el banco de sangre.**
 8. **El ladrón arrepentido:** quiere devolver todo, pero la banda no lo deja.
