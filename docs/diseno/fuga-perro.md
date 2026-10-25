@@ -110,3 +110,14 @@ por `PropSync`.
 - La amistad baja 2 por minuto solo mientras no llega a 100: el amigo queda amigo.
 - El sándwich por ahora no suma sospecha propia: el que lo agarra con el guardia despierto ya está a la vista.
 - Captura: `/mnt/project-files/perro/paso2-comida.png`.
+
+## Cómo quedó el paso 3
+- Mordisco ve con un cono de 120° y 8 m (sin paredes en el medio) y le ladra parado y de frente al policía fuera de las
+  celdas que no es su amigo; cada segundo de ladrido va a `SleepyGuard.heard_bark`, y a los 3 s el guardia se
+  despierta. Despierto, el ladrido le hace girar la cabeza hacia ese policía.
+- La comida en el piso va primero: tirarle algo lo calla mientras va a comer.
+- Un desconocido con comida en la mano a menos de 3 m no recibe ladridos: Mordisco se sienta y pide.
+- Silbar es cantar o la H, como con el guardia (el guardia le pasa el canto al perro): un amigo que silba se hace
+  seguir 20 s, hasta las rejas si está en la celda.
+- Un amigo con las manos vacías lo acaricia con E y le saca la llave (`CellKey`). Si el guardia los atrapa, la llave
+  vuelve al collar y la amistad no se pierde.
