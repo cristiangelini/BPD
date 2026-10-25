@@ -17,6 +17,8 @@ extends Node3D
 ## the crew's caps, face masks and vests (DisguisePiece, "cleaner"), their mops and feather duster (CleaningTool) and
 ## the floor polisher (FloorPolisher). The comisario mustn't see them get in the patrol car.
 ## The floor has stains to mop (FloorStains); a cop running on the wet floor slips (WET_SLIP seconds down).
+## The third way out is the guard dog (fuga-perro.md): the night guard fell asleep at his desk (SleepyGuard) and the
+## key hangs from the collar of Mordisco, the station's bulldog, who walks his round (GuardDog).
 ## --place=jailbreak opens it from Play, and --jailbreak=<variant> forces one of VARIANTS.
 
 const DESK_MODEL := preload("res://assets/models/station_desk.glb")
@@ -69,8 +71,8 @@ const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 ## The comisario at the cells room's door, facing in, when he's called.
 const COMISARIO_AT := Vector3(6.8, 0, 6.4)
 
-## The ways out, drawn by the seed (fuga-limpieza.md, question 1: half and half, propuesta).
-const VARIANTS := ["donut", "cleaning"]
+## The ways out, drawn by the seed (fuga-limpieza.md and fuga-perro.md, question 1: in thirds, propuesta).
+const VARIANTS := ["donut", "cleaning", "dog"]
 
 ## Same seed, same jailbreak. 0 draws one.
 @export var case_seed := 0
@@ -86,6 +88,8 @@ var caught_label: Label
 var car_home: Transform3D
 ## The cleaning crew's jailbreak: Clotilde and the key ring on her cart.
 var cleaner: Cleaner
+## Mordisco, in the guard dog's jailbreak.
+var dog: GuardDog
 var cart_key: CellKey
 var tools: Array[CleaningTool] = []
 var polisher: FloorPolisher
@@ -118,6 +122,8 @@ func _ready() -> void:
 		door.lock()
 	if is_cleaning():
 		_early_comisario()
+	elif is_dog():
+		_dog_night()
 	else:
 		_guard_desk()
 	_hud()
@@ -126,7 +132,8 @@ func _ready() -> void:
 	$PatrolCar.global_transform = car_home
 	if Campaign.current:
 		guard.times_caught = Campaign.current.jail_catches
-	($Cop as Cop).show_hint.call_deferred("HINT_JAILED_CLEANING" if is_cleaning() else "HINT_JAILED")
+	var hint: String = {"cleaning": "HINT_JAILED_CLEANING", "dog": "HINT_JAILED_DOG"}.get(variant, "HINT_JAILED")
+	($Cop as Cop).show_hint.call_deferred(hint)
 
 
 ## The way out for this seed: from --jailbreak=<variant> among the user args, or drawn. Without a seed from Play (0)
@@ -142,6 +149,29 @@ static func pick_variant(drawn_seed: int, args: PackedStringArray) -> String:
 
 func is_cleaning() -> bool:
 	return variant == "cleaning"
+
+
+func is_dog() -> bool:
+	return variant == "dog"
+
+
+## The guard dog's jailbreak: the guard asleep at his desk with no donuts, and Mordisco walking his round with the key.
+func _dog_night() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var desk := _desk()
+	var sleepy := SleepyGuard.new()
+	sleepy.name = "NightGuard"
+	add_child(sleepy)
+	sleepy.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), GUARD_AT)
+	sleepy.doze(case_seed)
+	sleepy.outside_cells = outside_cells
+	sleepy.see_through = [desk.get_rid()]
+	sleepy.caught.connect(_on_caught)
+	guard = sleepy
+	dog = GuardDog.new()
+	dog.name = "GuardDog"
+	add_child(dog)
+	dog.setup_round(case_seed, lot)
 
 
 ## The cleaning crew's jailbreak: dawn, no guard at the desk, and the comisario walking his round instead.
@@ -243,17 +273,7 @@ func cop_spawn(slot: int) -> Transform3D:
 
 func _guard_desk() -> void:
 	var lot := city.transform * CityLayout.lot("station")
-	var desk := StaticBody3D.new()
-	desk.name = "GuardDesk"
-	add_child(desk)
-	desk.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), DESK_AT)
-	desk.add_child(DESK_MODEL.instantiate())
-	var shape := CollisionShape3D.new()
-	var solid := BoxShape3D.new()
-	solid.size = StationRooms.SOLID["station_desk"]
-	shape.shape = solid
-	shape.position.y = solid.size.y / 2
-	desk.add_child(shape)
+	var desk := _desk()
 	box = BOX_SCENE.instantiate()
 	box.name = "GuardDonutBox"
 	add_child(box)
@@ -276,6 +296,22 @@ func _guard_desk() -> void:
 		add_child(stick)
 		stick.global_transform = lot * Transform3D(Basis(Vector3.UP, item[3]), item[2])
 		sticks.append(stick)
+
+
+## The guard's desk in front of the cells.
+func _desk() -> StaticBody3D:
+	var desk := StaticBody3D.new()
+	desk.name = "GuardDesk"
+	add_child(desk)
+	desk.global_transform = city.transform * CityLayout.lot("station") * Transform3D(Basis(Vector3.UP, PI), DESK_AT)
+	desk.add_child(DESK_MODEL.instantiate())
+	var shape := CollisionShape3D.new()
+	var solid := BoxShape3D.new()
+	solid.size = StationRooms.SOLID["station_desk"]
+	shape.shape = solid
+	shape.position.y = solid.size.y / 2
+	desk.add_child(shape)
+	return desk
 
 
 ## Whether a world position is out of both cells (through an open door or never in).
