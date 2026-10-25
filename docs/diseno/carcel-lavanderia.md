@@ -112,3 +112,10 @@ nadie duerme un gato, qué pistas da cada uno y cuándo un preso se mete en un l
   tenía a nadie ni estaba revisado (se le va el gato si había). Abierto antes, sale mareado ("Todo da vueltas...
   ¿Dónde está la puerta?"), se queda 5 s y después corre al portón como los de los carritos. Abrir una máquina vacía no
   resta ("Solo ropa dando vueltas"). Capturas: `paso5-lavarropas.png` y `paso5-mareado.png`.
+- **Paso 6 (el caso):** el comisario lo cuenta en su oficina en tres partes (el camión de la Lavandería Burbuja,
+  revisar con E y volcar con R y llevar al que salta a la celda de castigo, y los lavarropas) y Q abre la planilla
+  (`LaundryCase`): viajes del camión, cuánto falta para el próximo (m:ss), presos encontrados en la ropa, presos
+  escapados (con 3 se pierde) y el extra de los presos en la celda de castigo (cada uno cuenta una vez). Cuando el
+  camión se va después del cuarto viaje se gana: sueldo de 600, 75 menos por cada escapado y 25 más por cada uno en la
+  celda de castigo. Cuota propia de 400. En el sorteo de Jugar sale en un quinto de los casos de la cárcel
+  (`PlaceDraw.PRISONS`, con el motín, el traslado, el corte de luz y el día de visitas). Captura: `paso6-planilla.png`.
