@@ -141,7 +141,7 @@ func _physics_process(delta: float) -> void:
 
 
 func heats_total() -> int:
-	return RaceCar.heats_of(case_seed)
+	return plan.heats.size() if plan and plan.race else RaceCar.heats_of(case_seed)
 
 
 func _run_heats(delta: float) -> void:
@@ -160,8 +160,9 @@ func _run_heats(delta: float) -> void:
 ## The next heat gathers at the back corner, in the race lane, one behind the other.
 func spawn_heat() -> Array[QueueCar]:
 	var heat: Array[QueueCar] = []
-	for slot in RaceCar.heat_size(case_seed, heats):
-		var data := WantedPlan.random_car(_rng)
+	var size := plan.heats[heats].size() if plan and plan.race else RaceCar.heat_size(case_seed, heats)
+	for slot in size:
+		var data: Dictionary = plan.heats[heats][slot] if plan and plan.race else WantedPlan.random_car(_rng)
 		var car := QueueCar.new()
 		car.name = "Racer%d_%d" % [heats, slot]
 		car.checkpoint = checkpoint
@@ -170,7 +171,8 @@ func spawn_heat() -> Array[QueueCar]:
 		car.driver = data.driver
 		car.race_mode = true
 		car.racer = true
-		car.race = RaceCar.traits_of(car.plate)
+		car.race = data.get("race", RaceCar.traits_of(car.plate))
+		car.wanted = data.get("wanted", false)
 		car.race_slot = slot
 		car.race_left = RaceCar.GATHER
 		car.state = "gathering"

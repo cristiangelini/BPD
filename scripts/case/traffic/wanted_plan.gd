@@ -13,8 +13,9 @@ extends RefCounted
 ## (control-auto-fantasma.md) one car has nobody at the wheel ("ghost") and the wanted one is its pilot's
 ## ("puppeteer"), a few cars behind it; the clues are about the pilot, his shirt too. In the wedding breathalyzer check
 ## (control-boda.md) the cars are the wedding's convoy ("guest", "tie", "newlyweds") with a few city cars, the wanted
-## one is El Colado's: he blows 0.0, like the designated drivers, and toasts the wrong couple ("couple"). Every number
-## here is (propuesta).
+## one is El Colado's: he blows 0.0, like the designated drivers, and toasts the wrong couple ("couple"). In the street
+## race check (control-carrera.md) the queue's cars are all city cars and the wanted one is El Turbo, in one of the
+## heats of racers ("racer", "race"); the clues are about his racer. Every number here is (propuesta).
 
 const TOTAL := Vector2i(15, 25)
 ## The wanted car comes somewhere in this stretch of the queue.
@@ -48,6 +49,10 @@ const WEDDING_WANTED_AT := Vector2i(3, 10)
 const DESIGNATED := Vector2i(2, 3)
 ## At least this many guests blow over the limit.
 const DRUNK_MIN := 2
+const RACE_KINDS: Array[String] = ["color", "number", "neon", "spoiler"]
+const RACE_TOTAL := Vector2i(10, 14)
+## El Turbo races in one of the middle heats (control-carrera.md, step 6: the 3rd, 4th or 5th), 0 first.
+const TURBO_HEAT := Vector2i(2, 4)
 const LETTERS := "BCDFGHJKLMNPRSTVXZ"
 
 ## The clown convoy's plan: its cars carry their driver's ConvoyTraits under "clown".
@@ -63,6 +68,11 @@ var ghost_index := -1
 var wedding := false
 var couple := 0
 var newlyweds_index := -1
+## The street race's plan: its heats of racers ({look, plate, driver, racer, race}), El Turbo's flagged "wanted".
+var race := false
+var heats: Array[Array] = []
+var turbo_heat := -1
+var turbo_slot := -1
 var total := 0
 var wanted_index := 0
 ## {kind, value}, in the order they're given.
@@ -73,8 +83,9 @@ var lookalikes: Array[int] = []
 
 
 static func draw(case_seed: int, convoy := false, fruit := false, crowd := false, ghost := false,
-		wedding := false) -> WantedPlan:
+		wedding := false, race := false) -> WantedPlan:
 	var plan := WantedPlan.new()
+	plan.race = race
 	plan.wedding = wedding
 	plan.convoy = convoy
 	plan.fruit = fruit
@@ -82,6 +93,9 @@ static func draw(case_seed: int, convoy := false, fruit := false, crowd := false
 	plan.ghost = ghost
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(["wanted plan", case_seed])
+	if race:
+		plan._draw_race(rng)
+		return plan
 	var span := FRUIT_TOTAL if fruit else CROWD_TOTAL if crowd else GHOST_TOTAL if ghost \
 		else WEDDING_TOTAL if wedding else TOTAL
 	var wanted_at := FRUIT_WANTED_AT if fruit else CROWD_WANTED_AT if crowd \
@@ -141,7 +155,7 @@ static func draw(case_seed: int, convoy := false, fruit := false, crowd := false
 
 
 static func random_car(rng: RandomNumberGenerator, convoy := false, fruit := false, crowd := false,
-		ghost := false, wedding := false) -> Dictionary:
+		ghost := false, wedding := false, racer := false) -> Dictionary:
 	var plate := ""
 	for i in 3:
 		plate += LETTERS[rng.randi() % LETTERS.length()]
@@ -163,6 +177,9 @@ static func random_car(rng: RandomNumberGenerator, convoy := false, fruit := fal
 	if wedding:
 		car.guest = true
 		car.tie = rng.randi() % SHIRTS.size()
+	if racer:
+		car.racer = true
+		car.race = RaceCar.draw(rng)
 	return car
 
 
@@ -188,6 +205,8 @@ static func value_of(car: Dictionary, kind: String) -> Variant:
 			return car.shirt
 		"tie":
 			return car.get("tie", -1)
+		"number", "neon", "spoiler":
+			return car.race[kind] if car.has("race") else -1
 	return null
 
 
@@ -199,7 +218,7 @@ func fits(car: Dictionary) -> int:
 ## A car that fits every clue but one if it's a lookalike, and at most one otherwise.
 func _other_car(rng: RandomNumberGenerator, lookalike: bool) -> Dictionary:
 	while true:
-		var car := random_car(rng, convoy, fruit, crowd, ghost, wedding)
+		var car := random_car(rng, convoy, fruit, crowd, ghost, wedding, race)
 		if lookalike:
 			# Copy all clues but one, then make sure that one is off.
 			var off := rng.randi() % clues.size()
@@ -239,6 +258,8 @@ func _set_value(car: Dictionary, clue: Dictionary) -> void:
 			car.shirt = clue.value
 		"tie":
 			car.tie = clue.value
+		"number", "neon", "spoiler":
+			car.race[clue.kind] = clue.value
 
 
 ## The wedding's convoy (control-boda.md): the couple, their car up front, a few city cars (never El Colado's or the
@@ -279,6 +300,51 @@ func _seat_the_wedding(rng: RandomNumberGenerator) -> void:
 		var i: int = guests.pop_at(rng.randi() % guests.size())
 		cars[i].alcohol = snappedf(WeddingCar.DRUNK_ABOVE + 0.1 + float(rng.randi() % 15) / 10.0, 0.1)
 		drunk.append(i)
+
+
+## The street race (control-carrera.md): the queue's city cars, then the heats of racers with El Turbo in one of the
+## middle ones, his 3 clues, LOOKALIKES racers that fit 2 and the other racers at most 1.
+func _draw_race(rng: RandomNumberGenerator) -> void:
+	total = rng.randi_range(RACE_TOTAL.x, RACE_TOTAL.y)
+	wanted_index = -1
+	for i in total:
+		cars.append(random_car(rng))
+	var sizes: Array[int] = []
+	for i in rng.randi_range(RaceCar.HEATS.x, RaceCar.HEATS.y):
+		sizes.append(rng.randi_range(RaceCar.HEAT_SIZE.x, RaceCar.HEAT_SIZE.y))
+	turbo_heat = rng.randi_range(TURBO_HEAT.x, mini(TURBO_HEAT.y, sizes.size() - 1))
+	turbo_slot = rng.randi() % sizes[turbo_heat]
+	var turbo := random_car(rng, false, false, false, false, false, true)
+	turbo.wanted = true
+	turbo.driver.trunk = "trophy"
+	var kinds := RACE_KINDS.duplicate()
+	for i in CLUES:
+		var kind: String = kinds.pop_at(rng.randi() % kinds.size())
+		clues.append({"kind": kind, "value": value_of(turbo, kind)})
+	# The other racers, by their place in the heats, the lookalikes among them.
+	var others := 0
+	for size in sizes:
+		others += size
+	others -= 1
+	var spots: Array[int] = []
+	spots.assign(range(others))
+	for i in rng.randi_range(LOOKALIKES.x, LOOKALIKES.y):
+		lookalikes.append(spots.pop_at(rng.randi() % spots.size()))
+	var n := 0
+	for heat in sizes.size():
+		var racers: Array[Dictionary] = []
+		for slot in sizes[heat]:
+			if heat == turbo_heat and slot == turbo_slot:
+				racers.append(turbo)
+				continue
+			racers.append(_other_car(rng, n in lookalikes))
+			n += 1
+		heats.append(racers)
+
+
+## El Turbo's racer.
+func turbo() -> Dictionary:
+	return heats[turbo_heat][turbo_slot] if turbo_heat >= 0 else {}
 
 
 ## The other guests the designated drivers are among: guests who blow 0.0 but aren't El Colado.
@@ -324,6 +390,14 @@ func clue_text(i: int) -> String:
 			return TranslationServer.translate("CLUE_GHOST_SHIRT") % TranslationServer.translate(SHIRTS[clue.value])
 		"tie":
 			return TranslationServer.translate("CLUE_WEDDING_TIE") % TranslationServer.translate(SHIRTS[clue.value])
+		"number":
+			return TranslationServer.translate("CLUE_RACE_NUMBER") % clue.value
+		"neon":
+			return TranslationServer.translate("CLUE_RACE_NEON") \
+				% TranslationServer.translate(RaceCar.NEON_NAMES[clue.value])
+		"spoiler":
+			return TranslationServer.translate("CLUE_RACE_SPOILER") \
+				% TranslationServer.translate(RaceCar.SPOILERS[clue.value])
 	return ""
 
 

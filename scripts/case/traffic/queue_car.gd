@@ -831,7 +831,7 @@ func cuffed(_seconds: float) -> void:
 		say(tr("GHOST_NO_ONE_TO_CUFF"))
 		return
 	var case := TrafficCase.of(self)
-	if case and waiting():
+	if case and (waiting() or stopped_racer()):
 		case.detain(self)
 
 
@@ -974,6 +974,11 @@ func _race(delta: float) -> void:
 		queue_free()
 		return
 	_place()
+
+
+## A racer stopped on its rims (control-carrera.md): its driver can be cuffed.
+func stopped_racer() -> bool:
+	return racer and state == "punctured" and speed == 0.0
 
 
 ## Rolling over a spike strip punctures it, once: moving, not out of the way at the curb.

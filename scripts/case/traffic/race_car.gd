@@ -2,9 +2,9 @@ class_name RaceCar
 extends RefCounted
 
 ## The street race check (control-carrera.md): between the city cars come the racers, in heats, sedans dressed up for
-## the night's street races. A racer has a black spoiler on its trunk (big, small or none), a big number on both front doors (1 to
-## 99), a neon light under its body and fat exhaust pipes that throw sparks while it rolls. Every number here is
-## (propuesta).
+## the night's street races. A racer has a black spoiler on its trunk (big, small or none), a big number on both front
+## doors (1 to 99), a neon light under its body and fat exhaust pipes that throw sparks while it rolls. Every number
+## here is (propuesta).
 
 const SPOILER := preload("res://assets/models/race_spoiler.glb")
 const EXHAUST := preload("res://assets/models/race_exhaust.glb")
