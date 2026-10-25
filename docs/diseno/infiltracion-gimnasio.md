@@ -85,6 +85,14 @@ La rutina copia la forma de `MimeRehearsal` (host decide, cada PC juzga y avisa)
    entre el mostrador y la vidriera mirando la entrada y no deja pasar sin 2 piezas de gimnasia: "Sin ropa de gimnasia
    no se entrena". La sospecha es la del club con sus textos ("¡Son policías! ¡Mira cómo jadean!") **(propuesta)**.
 3. La rutina: el silbato, los cuatro ejercicios, la resistencia, rendirse y la sospecha.
+   Hecho así: a los 20 s y después cada 40 s (aviso del Toro 5 s antes) suena el silbato y el Toro grita un ejercicio
+   por la semilla, 10 s, con el nombre y la cuenta en pantalla. Sentadillas: C para agacharse o pararse al menos cada
+   2 s. Saltos: Espacio cada 2 s. Cinta: arriba de una cinta y corriendo con Shift contra la baranda. Pesa: con una de
+   las 4 mancuernas de 6 kg del estante en la mano. Los socios se agachan y saltan con la rutina. Cada segundo sin
+   hacerlo, +20 a los socios que lo ven. Sentadillas, saltos y pesa gastan 0,5 s de resistencia por segundo además de
+   no dejarla recuperar, y la cinta gasta la mitad que correr: con la resistencia llena se aguantan los 10 s (12 s), y
+   cansado no. Sin aire, el policía se rinde: jadea 2 s sin moverse y suma +30 una vez por rutina. Afuera del
+   gimnasio no cuenta **(propuesta)**.
 4. Las pruebas y el caso (variante "gym"): las 6 pruebas, esposar al Toro, el sueldo y el interrogatorio.
 5. La huida trotando, el sorteo de "Jugar" en quintos (club, coro, mimos, fiesta y gimnasio) y online.
 

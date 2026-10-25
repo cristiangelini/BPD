@@ -1840,6 +1840,29 @@ GYM_FOUND_OUT_0,¡Son policías! ¡Mira cómo jadean!,They're cops! Look at them
 GYM_FOUND_OUT_1,¡Son policías! ¡Nadie con esa panza entrena aquí!,They're cops! Nobody with that belly trains here!,São policiais! Ninguém com essa barriga treina aqui!
 GYM_FOUND_OUT_2,¡Son policías! ¡Se cansaron en la primera sentadilla!,They're cops! They got tired on the first squat!,São policiais! Cansaram no primeiro agachamento!
 HINT_GYM_FOUND_OUT,¡Los descubrieron! Todos los socios saben que son policías.,You've been found out! Every member knows you're cops.,Vocês foram descobertos! Todos os sócios sabem que vocês são policiais.
+TORO_ROUTINE_SOON,"*El Toro se lleva el silbato a la boca.* ¡Prepárense, flojos!","*El Toro raises his whistle.* Get ready, you softies!","*O Toro leva o apito à boca.* Preparem-se, moleirões!"
+TORO_ROUTINE_SQUATS,¡Priiip! ¡Sentadillas! ¡Abajo y arriba!,Phweet! Squats! Down and up!,Priiip! Agachamentos! Para baixo e para cima!
+TORO_ROUTINE_JUMPS,¡Priiip! ¡Saltos! ¡Que tiemble el piso!,Phweet! Jumps! Make the floor shake!,Priiip! Saltos! Que o chão trema!
+TORO_ROUTINE_TREADMILL,¡Priiip! ¡A la cinta! ¡A correr!,Phweet! On the treadmill! Run!,Priiip! Na esteira! Correndo!
+TORO_ROUTINE_WEIGHT,¡Priiip! ¡Pesas! ¡Arriba esa mancuerna!,Phweet! Weights! Up with that dumbbell!,Priiip! Pesos! Para cima esse haltere!
+GYM_EX_SQUATS,¡SENTADILLAS!,SQUATS!,AGACHAMENTOS!
+GYM_EX_JUMPS,¡SALTOS!,JUMPS!,SALTOS!
+GYM_EX_TREADMILL,¡CINTA!,TREADMILL!,ESTEIRA!
+GYM_EX_WEIGHT,¡PESAS!,WEIGHTS!,PESOS!
+GYM_HOW_SQUATS,Agáchate y párate con C,Crouch and stand up with C,Agache e levante com C
+GYM_HOW_JUMPS,Salta con Espacio,Jump with Space,Pule com Espaço
+GYM_HOW_TREADMILL,Súbete a una cinta y corre con Shift,Get on a treadmill and run with Shift,Suba numa esteira e corra com Shift
+GYM_HOW_WEIGHT,Agarra una mancuerna del estante,Grab a dumbbell from the rack,Pegue um haltere da estante
+GYM_GOOD,¡Eso! Sin dolor no hay gloria,"That's it! No pain, no glory",Isso! Sem dor não há glória
+GYM_NOT_DOING_SQUATS,¡Agáchate y párate! (C),Crouch and stand up! (C),Agache e levante! (C)
+GYM_NOT_DOING_JUMPS,¡Salta! (Espacio),Jump! (Space),Pule! (Espaço)
+GYM_NOT_DOING_TREADMILL,¡A una cinta y corre! (Shift),Onto a treadmill and run! (Shift),Numa esteira e corra! (Shift)
+GYM_NOT_DOING_WEIGHT,¡Agarra una mancuerna!,Grab a dumbbell!,Pegue um haltere!
+GYM_GAVE_UP,¡Te quedaste sin aire! Los socios te vieron aflojar,You ran out of breath! The members saw you slack off,Você ficou sem fôlego! Os sócios viram você afrouxar
+HINT_GYM_SQUATS,"Rutina del Toro: sentadillas. Agáchate y párate con C cada 2 segundos, o los socios sospechan. Si te quedas sin aire, aflojas.","El Toro's routine: squats. Crouch and stand up with C every 2 seconds, or the members get suspicious. If you run out of breath, you slack off.","Rotina do Toro: agachamentos. Agache e levante com C a cada 2 segundos, ou os sócios desconfiam. Se ficar sem fôlego, você afrouxa."
+HINT_GYM_JUMPS,"Rutina del Toro: saltos. Salta con Espacio cada 2 segundos, o los socios sospechan. Si te quedas sin aire, aflojas.","El Toro's routine: jumps. Jump with Space every 2 seconds, or the members get suspicious. If you run out of breath, you slack off.","Rotina do Toro: saltos. Pule com Espaço a cada 2 segundos, ou os sócios desconfiam. Se ficar sem fôlego, você afrouxa."
+HINT_GYM_TREADMILL,"Rutina del Toro: cinta. Súbete a una cinta y corre con Shift contra la baranda. Si te quedas sin aire, aflojas.","El Toro's routine: treadmill. Get on a treadmill and run with Shift against the rail. If you run out of breath, you slack off.","Rotina do Toro: esteira. Suba numa esteira e corra com Shift contra a barra. Se ficar sem fôlego, você afrouxa."
+HINT_GYM_WEIGHT,"Rutina del Toro: pesas. Agarra una mancuerna del estante y sostenla. Si te quedas sin aire, aflojas.","El Toro's routine: weights. Grab a dumbbell from the rack and hold it. If you run out of breath, you slack off.","Rotina do Toro: pesos. Pegue um haltere da estante e segure. Se ficar sem fôlego, você afrouxa."
 PROMPT_TALK_GUEST,E: charlar con el invitado,E: chat with the guest,E: conversar com o convidado
 PARTY_GOSSIP_0,¡Qué buen disfraz! El mío me lo hizo mi abuela con una cortina.,Great costume! My grandma made mine out of a curtain.,Que fantasia boa! A minha foi minha avó que fez com uma cortina.
 PARTY_GOSSIP_1,Dicen que el jefe vino disfrazado igual que todos. Qué original.,They say the boss came dressed like everyone else. How original.,Dizem que o chefe veio fantasiado igual a todos. Que original.
