@@ -71,7 +71,9 @@ func test_signs_and_street_names_are_translated() -> void:
 
 
 func test_the_patrol_car_drives_down_the_avenue() -> void:
-	var city: City = add_child_autofree(CITY_SCENE.instantiate())
+	var city: City = CITY_SCENE.instantiate()
+	city.traffic = false
+	add_child_autofree(city)
 	var cop: Cop = city.get_node("Cop")
 	cop.input_enabled = false
 	cop.get_node("Grabber").input_enabled = false

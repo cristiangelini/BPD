@@ -40,6 +40,8 @@ const HEDGE_HEIGHT := 2.5
 ## The living city (ciudad-viva.md): sidewalks, traffic, clock, rain and street events. Only the test city
 ## (city.tscn) turns it on for now; the case cities come with the online step.
 @export var alive := false
+## The test city's cars and walkers (ciudad-viva.md); a test that needs clear streets turns them off.
+@export var traffic := true
 
 ## The comisario in his office at the station; the case scene listens to him.
 var comisario: Comisario
@@ -112,6 +114,10 @@ func _build() -> void:
 		var life := CityLife.new()
 		life.name = "Life"
 		_built.add_child(life)
+	if alive and traffic:
+		var moving := CityTraffic.new()
+		moving.name = "Traffic"
+		_built.add_child(moving)
 
 
 ## A square hedge `reach` from the middle, with a gap at the ramp's street on each of the `open` sides.
