@@ -113,6 +113,8 @@ var crate := ""
 var hat := ""
 ## Each watermelon's Watermelon.kind, in order (the plan's); missing ones are normal.
 var melon_kinds: Array[String] = []
+## In the crowded car control (control-auto-lleno.md): how many ride in it, its driver too. 0 elsewhere.
+var crowd := 0
 var _honk_left := HONK_EVERY
 ## The car the case is after (WantedPlan).
 var wanted := false
@@ -147,7 +149,11 @@ func _ready() -> void:
 		add_child(driver_model)
 		ConvoyTraits.dress(driver_model, clown_traits)
 	else:
-		add_child(TrafficCar.MODELS[look % TrafficCar.MODELS.size()].instantiate())
+		var model: Node3D = TrafficCar.MODELS[look % TrafficCar.MODELS.size()].instantiate()
+		model.name = "Model"
+		add_child(model)
+		if CrowdedCar.packed(crowd):
+			CrowdedCar.dress(self)
 		for wheel_at in SuspectCar.SEDAN_WHEELS:
 			var wheel: Node3D = TrafficCar.WHEEL.instantiate()
 			wheel.position = wheel_at
@@ -479,7 +485,7 @@ func _build_trunk() -> void:
 ## Online (NpcSync): what a guest's copy needs before it's added (which car it is, not whether it's the wanted one).
 func net_setup() -> Dictionary:
 	return {"plate": plate, "driver": driver, "clown": clown, "clown_traits": clown_traits, "fruit": fruit,
-		"crate": crate, "hat": hat, "melon_kinds": melon_kinds}
+		"crate": crate, "hat": hat, "melon_kinds": melon_kinds, "crowd": crowd}
 
 
 ## Online: where it is in the queue and whether its trunk is open.
