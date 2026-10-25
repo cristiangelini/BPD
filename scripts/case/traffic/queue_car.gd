@@ -151,6 +151,11 @@ var blown := false
 var keys_taken := false
 ## Its honks to celebrate so far, and seconds rolled, for its cans.
 var honks := 0
+## In the street race check (control-carrera.md) some cars are racers: a spoiler, a number, a neon and sparks, as in
+## `race` (RaceCar.draw's).
+var race_mode := false
+var racer := false
+var race := {}
 var _rolled := 0.0
 ## Zigzagging, it turns this far (radians) with the lane it's crossing.
 var _sway := 0.0
@@ -216,6 +221,8 @@ func _ready() -> void:
 		if guest:
 			WeddingCar.dress(self, plate, tie, newlyweds)
 			_honk_left = WeddingCar.honk_every(plate)
+		if racer:
+			RaceCar.dress(self, race)
 	_build_trunk()
 	if clown or crowd > 0:
 		_build_door()
@@ -625,7 +632,8 @@ func net_setup() -> Dictionary:
 	return {"plate": plate, "driver": driver, "clown": clown, "clown_traits": clown_traits, "fruit": fruit,
 		"crate": crate, "hat": hat, "melon_kinds": melon_kinds, "crowd": crowd, "ghost_mode": ghost_mode, "ghost": ghost,
 		"shirt": shirt, "puppeteer": puppeteer, "wedding_mode": wedding_mode, "guest": guest, "tie": tie,
-		"newlyweds": newlyweds, "alcohol": alcohol, "couple": couple}
+		"newlyweds": newlyweds, "alcohol": alcohol, "couple": couple, "race_mode": race_mode, "racer": racer,
+		"race": race}
 
 
 ## Online: where it is in the queue and whether its trunk is open; the ghost car's, how many pranks and the last one;
@@ -888,6 +896,8 @@ func _physics_process(delta: float) -> void:
 	_place()
 	if guest:
 		WeddingCar.rattle(self, speed, _rolled)
+	if racer:
+		RaceCar.spark(self, speed)
 	_rolled += delta
 	if state == "going" and drunk_at_wheel():
 		# A drunk let through zigzags off, and takes the cones with it (control-boda.md, step 3).

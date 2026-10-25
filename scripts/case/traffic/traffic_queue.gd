@@ -11,7 +11,8 @@ extends Node3D
 ## (control-frutas.md) sends the fruit fair's pickups, loaded with watermelons. "crowded_car" (control-auto-lleno.md)
 ## sends city cars, some of them packed with people. "ghost_car" (control-auto-fantasma.md) sends city cars with their
 ## drivers leaning on the windows, and one with nobody at the wheel. "wedding" (control-boda.md) sends the wedding's
-## convoy, with the newlyweds up front and a few city cars among them. Every number here is (propuesta).
+## convoy, with the newlyweds up front and a few city cars among them. "race" (control-carrera.md) sends city cars
+## and, among them, the night's racers. Every number here is (propuesta).
 
 signal patience_changed(value: float)
 ## A car went by: let through, or sneaking.
@@ -38,6 +39,7 @@ const VARIANTS := {
 	"crowded_car": {"spawn": 0.75, "patience": 1.0, "crowd": true},
 	"ghost_car": {"spawn": 0.75, "patience": 1.0, "ghost": true},
 	"wedding": {"spawn": 0.75, "patience": 1.0, "wedding": true},
+	"race": {"spawn": 0.75, "patience": 1.0, "race": true},
 }
 
 var checkpoint: TrafficCheckpoint
@@ -172,6 +174,11 @@ func spawn() -> QueueCar:
 		car.couple = data.get("couple", plan.couple if plan else 0)
 		if car.newlyweds:
 			car.look = WeddingCar.NEWLYWEDS_LOOK
+	if VARIANTS[variant].get("race", false):
+		car.race_mode = true
+		car.racer = data.get("racer", RaceCar.racer_at(case_seed, spawned))
+		if car.racer:
+			car.race = data.get("race", RaceCar.traits_of(car.plate))
 	car.wanted = plan != null and spawned == plan.wanted_index
 	car.at = Vector3(0, 0, SPAWN_FROM)
 	car.speed = QueueCar.SPEED
