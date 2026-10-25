@@ -1,4 +1,4 @@
-# La fuga: el simulacro de incendio (propuesta, 25/10)
+# La fuga: el simulacro de incendio (decisión 155, 25/10)
 
 Séptima variante de la fuga (tipo 7 del catálogo, [casos.md](casos.md), punto 7.7: "salen entre la gente").
 Usa todo lo de la fuga de la dona ([fuga.md](fuga.md), decisión 99) y de las otras cinco
@@ -83,7 +83,7 @@ la limpieza.
    120 s.
 3. El chaleco que se saca, el perchero y los abrigos, la cuenta y el reconocimiento, salir, frases y online.
 
-## Preguntas para Cristian
+## Preguntas para Cristian (respondidas el 25/10: sí a las tres, decisión 155)
 1. ¿La fuga sortea en séptimos entre las siete variantes? **Recomiendo sí:** todas comparten celdas, salida y final.
 2. ¿La alarma se dispara haciendo humo con la frazada en la estufa de la celda (y no con un botón de alarma afuera)?
    **Recomiendo sí:** se hace desde adentro de la celda, el guardia lo puede ver y es lo bastante absurdo.
