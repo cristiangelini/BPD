@@ -138,23 +138,35 @@ func wake(why: String) -> void:
 
 ## What he hears now that wakes him ("" if nothing): a cop running near him, the siren near or something falling hard.
 func heard(delta: float) -> String:
-	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
-		if cop is Cop and (cop as Cop).is_running and cop.global_position.distance_to(global_position) <= WAKE_RUN:
-			return "run"
-	if car and car.siren_on and car.global_position.distance_to(global_position) <= WAKE_SIREN:
-		return "siren"
 	_listen_left -= delta
-	if _listen_left > 0.0:
+	var falls := _listen_left <= 0.0
+	if falls:
+		_listen_left = LISTEN_EVERY
+	return noise_at(self, WAKE_RUN, WAKE_SIREN, WAKE_FALL, car, falls)
+
+
+## The noise around `node` ("run", "siren", "fall" or ""): a cop running within `run_reach`, `car`'s siren within
+## `siren_reach`, and if `falls`, something within `fall_reach` moving at FALL_SPEED or more. El Conejo hears it too
+## (BankNerves).
+static func noise_at(node: Node3D, run_reach: float, siren_reach: float, fall_reach: float, car: PatrolCar,
+		falls := true) -> String:
+	var at := node.global_position
+	for cop: Node3D in node.get_tree().get_nodes_in_group("cops"):
+		if cop is Cop and (cop as Cop).is_running and cop.global_position.distance_to(at) <= run_reach:
+			return "run"
+	if car and car.siren_on and car.global_position.distance_to(at) <= siren_reach:
+		return "siren"
+	if not falls:
 		return ""
-	_listen_left = LISTEN_EVERY
 	var sphere := SphereShape3D.new()
-	sphere.radius = WAKE_FALL
+	sphere.radius = fall_reach
 	var query := PhysicsShapeQueryParameters3D.new()
 	query.shape = sphere
-	query.transform = Transform3D(Basis(), global_position)
+	query.transform = Transform3D(Basis(), at)
 	query.collision_mask = 4
-	query.exclude = [get_rid()]
-	for hit in get_world_3d().direct_space_state.intersect_shape(query, 32):
+	if node is CollisionObject3D:
+		query.exclude = [(node as CollisionObject3D).get_rid()]
+	for hit in node.get_world_3d().direct_space_state.intersect_shape(query, 32):
 		var body := hit.collider as RigidBody3D
 		if body and not body.freeze and body.linear_velocity.length() >= FALL_SPEED:
 			return "fall"

@@ -98,3 +98,12 @@ estantes y el mostrador de madera, don Plácido dormido (un cuerpo que se agarra
   despertarlo (el policía queda con la llave de la puerta de atrás). No se cae: carga o suelto, queda parado. Afuera
   del banco bosteza ("¿Ya es la hora de cerrar? Me voy a casa.") y a los 4 s se va. El grito todavía no hace nada en
   El Conejo: eso es el paso 3. Capturas en `/mnt/project-files/pueblo/paso2-*.png`.
+- **Paso 3 (los nervios de El Conejo):** una barra arriba de su cabeza (de verde a rojo, `BankNerves`). Sube 10 si
+  oye ruido a menos de 8 m (un policía corriendo, la sirena a menos de 20 m, algo que cae fuerte; escucha una vez por
+  segundo), 20 cada vez que grita don Plácido y 30 si ve a un policía; baja 2 por segundo. Una promesa cumplida en el
+  teléfono le baja 30 y una mentira le sube 20 (los pedidos todavía son los de la base: eso se cambia en el paso 4).
+  Con 50 o más se da vuelta a espiar la puerta del pasillo 8 s ("¿Hola? ¿Hay alguien?") y el taladro se para; después
+  vuelve al taladro al menos 6 s antes de espiar otra vez. Con 100 sale corriendo por el pasillo, el hueco del
+  mostrador y la entrada hasta la camioneta ("¡No puedo más!"). Si ve a un policía se rinde como el conejo de la base,
+  salvo que ya tenga 70 o más: entonces sale corriendo. El taladro del banco del pueblo tarda 6 minutos. Capturas en
+  `/mnt/project-files/pueblo/paso3-*.png`.
