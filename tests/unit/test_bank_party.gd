@@ -17,7 +17,7 @@ func _bank(party: bool) -> BankLevel:
 ## The first seed from 1 that draws (or doesn't draw) the party.
 func _seed(party: bool) -> int:
 	var seed_ := 1
-	while BankLevel.is_party(seed_, PackedStringArray()) != party:
+	while BankLevel.variant(seed_, PackedStringArray()) != ("party" if party else "base"):
 		seed_ += 1
 	return seed_
 
