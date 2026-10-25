@@ -83,6 +83,8 @@ const ON_SHELF := 3
 const SANDWICH_AT := Vector3(11.1, 0.86, 7.4)
 const DOG_FOOD := {"sausage": 3, "ham": 3, "cheese": 3, "donut": 2, "lettuce": 2}
 const DOG_FOOD_ENOUGH := 400.0
+## Mordisco jumps into the patrol car once every cop is in it, if he's everyone's friend and this close to it (step 4).
+const DOG_RIDE_REACH := 12.0
 
 ## The ways out, drawn by the seed (fuga-limpieza.md and fuga-perro.md, question 1: in thirds, propuesta).
 const VARIANTS := ["donut", "cleaning", "dog"]
@@ -188,6 +190,7 @@ func _dog_night() -> void:
 	dog.setup_round(case_seed, lot)
 	dog.outside_cells = outside_cells
 	dog.guard = sleepy
+	dog.car = $PatrolCar
 	sleepy.dog = dog
 	_dog_food()
 
@@ -446,6 +449,8 @@ func _on_caught(times: int) -> void:
 			_drop(stick)
 			sticks.erase(stick)
 			stick.queue_free()
+	if dog:
+		dog.riding = false
 	if cleaner:
 		cleaner.reset()
 		if is_instance_valid(cart_key):
@@ -510,6 +515,18 @@ func _hud() -> void:
 func _physics_process(delta: float) -> void:
 	if stains:
 		_slip_on_wet(delta)
+	if dog and multiplayer.is_server():
+		_dog_jumps_in()
+
+
+## Every cop in the patrol car and Mordisco everyone's friend, near it: he jumps in too.
+func _dog_jumps_in() -> void:
+	var car: PatrolCar = $PatrolCar
+	var cops := get_tree().get_nodes_in_group("cops")
+	if dog.riding or not dog.friend_of_all(cops) or cops.any(func(cop: Node) -> bool: return car.seat_of(cop) < 0):
+		return
+	if dog.global_position.distance_to(car.global_position) <= DOG_RIDE_REACH:
+		dog.ride(car)
 
 
 ## This PC's own cop running on the wet floor slips: down for a while, dropping what it holds.
@@ -632,6 +649,8 @@ func _show_end(result: String) -> void:
 		line.text = "SHIFT_PROMOTED"
 	else:
 		line.text = tr("JAILBREAK_ESCAPED_LINE") % (campaign.shift if campaign else 1)
+	if result == "escaped" and dog and dog.riding:
+		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_DOG")
 	box_ui.add_child(line)
 	var buttons := HBoxContainer.new()
 	buttons.alignment = BoxContainer.ALIGNMENT_CENTER

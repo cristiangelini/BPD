@@ -121,3 +121,12 @@ por `PropSync`.
   seguir 20 s, hasta las rejas si está en la celda.
 - Un amigo con las manos vacías lo acaricia con E y le saca la llave (`CellKey`). Si el guardia los atrapa, la llave
   vuelve al collar y la amistad no se pierde.
+
+## Cómo quedó el paso 4
+- Con los cuatro en el patrullero, si Mordisco es amigo de todos y está a menos de 12 m del auto (hay que silbarle
+  para que los siga hasta afuera), salta adentro (`GuardDog.ride`) y va en el asiento de atrás, entre los dos de
+  atrás. Al final: "¡Fugados!" más la línea de que Mordisco se vino con ustedes. Si no, la fuga vale igual, sin perro.
+- Perder es como en la dona: a la tercera captura llega el comisario en pijama y "Suspendidos".
+- Online: Mordisco (ronda, amistades, llave, empacho y viaje) va por `NpcSync`, y la comida y la llave por
+  `PropSync` (lo que come desaparece en todas las PC).
+- No hay panel de pruebas todavía; cuando exista, los atajos son los de arriba.
