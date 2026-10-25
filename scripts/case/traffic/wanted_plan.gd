@@ -15,7 +15,9 @@ extends RefCounted
 ## (control-boda.md) the cars are the wedding's convoy ("guest", "tie", "newlyweds") with a few city cars, the wanted
 ## one is El Colado's: he blows 0.0, like the designated drivers, and toasts the wrong couple ("couple"). In the street
 ## race check (control-carrera.md) the queue's cars are all city cars and the wanted one is El Turbo, in one of the
-## heats of racers ("racer", "race"); the clues are about his racer. Every number here is (propuesta).
+## heats of racers ("racer", "race"); the clues are about his racer. In the fog check (control-neblina.md) every car
+## has its headlights on ("fog"): the wanted one is La Bruma's, the lighthouse lamp in its trunk, and the clues are its
+## paint, its headlights' color, its horn ("honk") and its broken headlight. Every number here is (propuesta).
 
 const TOTAL := Vector2i(15, 25)
 ## The wanted car comes somewhere in this stretch of the queue.
@@ -53,6 +55,9 @@ const RACE_KINDS: Array[String] = ["color", "number", "neon", "spoiler"]
 const RACE_TOTAL := Vector2i(10, 14)
 ## El Turbo races in one of the middle heats (control-carrera.md, step 6: the 3rd, 4th or 5th), 0 first.
 const TURBO_HEAT := Vector2i(2, 4)
+const FOG_KINDS: Array[String] = ["color", "lights", "honk", "broken"]
+const FOG_TOTAL := Vector2i(12, 16)
+const FOG_WANTED_AT := Vector2i(4, 10)
 const LETTERS := "BCDFGHJKLMNPRSTVXZ"
 
 ## The clown convoy's plan: its cars carry their driver's ConvoyTraits under "clown".
@@ -70,6 +75,8 @@ var couple := 0
 var newlyweds_index := -1
 ## The street race's plan: its heats of racers ({look, plate, driver, racer, race}), El Turbo's flagged "wanted".
 var race := false
+## The fog check's plan: every car's headlights and horn ("fog"), La Bruma's lamp in the wanted one's trunk.
+var fog := false
 var heats: Array[Array] = []
 var turbo_heat := -1
 var turbo_slot := -1
@@ -83,9 +90,10 @@ var lookalikes: Array[int] = []
 
 
 static func draw(case_seed: int, convoy := false, fruit := false, crowd := false, ghost := false,
-		wedding := false, race := false) -> WantedPlan:
+		wedding := false, race := false, fog := false) -> WantedPlan:
 	var plan := WantedPlan.new()
 	plan.race = race
+	plan.fog = fog
 	plan.wedding = wedding
 	plan.convoy = convoy
 	plan.fruit = fruit
@@ -97,9 +105,9 @@ static func draw(case_seed: int, convoy := false, fruit := false, crowd := false
 		plan._draw_race(rng)
 		return plan
 	var span := FRUIT_TOTAL if fruit else CROWD_TOTAL if crowd else GHOST_TOTAL if ghost \
-		else WEDDING_TOTAL if wedding else TOTAL
+		else WEDDING_TOTAL if wedding else FOG_TOTAL if fog else TOTAL
 	var wanted_at := FRUIT_WANTED_AT if fruit else CROWD_WANTED_AT if crowd \
-		else WEDDING_WANTED_AT if wedding else WANTED_AT
+		else WEDDING_WANTED_AT if wedding else FOG_WANTED_AT if fog else WANTED_AT
 	plan.total = rng.randi_range(span.x, span.y)
 	if ghost:
 		# The ghost car up front, its pilot a few cars behind.
@@ -107,7 +115,10 @@ static func draw(case_seed: int, convoy := false, fruit := false, crowd := false
 		plan.wanted_index = plan.ghost_index + rng.randi_range(GhostCar.PILOT_BEHIND.x, GhostCar.PILOT_BEHIND.y)
 	else:
 		plan.wanted_index = rng.randi_range(wanted_at.x, wanted_at.y)
-	var wanted := random_car(rng, convoy, fruit, crowd, ghost, wedding)
+	var wanted := random_car(rng, convoy, fruit, crowd, ghost, wedding, false, fog)
+	if fog:
+		# La Bruma carries the lighthouse's lamp.
+		wanted.driver.trunk = "lamp"
 	if crowd:
 		# The gang's headcount comes first, from the comisario.
 		wanted.crowd = rng.randi_range(GANG.x, GANG.y)
@@ -117,7 +128,7 @@ static func draw(case_seed: int, convoy := false, fruit := false, crowd := false
 		wanted.driver.trunk = "safe"
 		wanted.driver.license_glasses = not wanted.clown.glasses
 	var kinds := (CONVOY_KINDS if convoy else FRUIT_KINDS if fruit else CROWD_KINDS if crowd
-		else GHOST_KINDS if ghost else WEDDING_KINDS if wedding else KINDS).duplicate()
+		else GHOST_KINDS if ghost else WEDDING_KINDS if wedding else FOG_KINDS if fog else KINDS).duplicate()
 	for i in CLUES - plan.clues.size():
 		var kind: String = kinds.pop_at(rng.randi() % kinds.size())
 		if kind == "trunk":
@@ -155,7 +166,7 @@ static func draw(case_seed: int, convoy := false, fruit := false, crowd := false
 
 
 static func random_car(rng: RandomNumberGenerator, convoy := false, fruit := false, crowd := false,
-		ghost := false, wedding := false, racer := false) -> Dictionary:
+		ghost := false, wedding := false, racer := false, fog := false) -> Dictionary:
 	var plate := ""
 	for i in 3:
 		plate += LETTERS[rng.randi() % LETTERS.length()]
@@ -180,6 +191,8 @@ static func random_car(rng: RandomNumberGenerator, convoy := false, fruit := fal
 	if racer:
 		car.racer = true
 		car.race = RaceCar.draw(rng)
+	if fog:
+		car.fog = FogCar.draw(rng)
 	return car
 
 
@@ -207,6 +220,10 @@ static func value_of(car: Dictionary, kind: String) -> Variant:
 			return car.get("tie", -1)
 		"number", "neon", "spoiler":
 			return car.race[kind] if car.has("race") else -1
+		"lights", "broken":
+			return car.fog[kind] if car.has("fog") else -1
+		"honk":
+			return car.fog.horn if car.has("fog") else -1
 	return null
 
 
@@ -218,7 +235,7 @@ func fits(car: Dictionary) -> int:
 ## A car that fits every clue but one if it's a lookalike, and at most one otherwise.
 func _other_car(rng: RandomNumberGenerator, lookalike: bool) -> Dictionary:
 	while true:
-		var car := random_car(rng, convoy, fruit, crowd, ghost, wedding, race)
+		var car := random_car(rng, convoy, fruit, crowd, ghost, wedding, race, fog)
 		if lookalike:
 			# Copy all clues but one, then make sure that one is off.
 			var off := rng.randi() % clues.size()
@@ -260,6 +277,10 @@ func _set_value(car: Dictionary, clue: Dictionary) -> void:
 			car.tie = clue.value
 		"number", "neon", "spoiler":
 			car.race[clue.kind] = clue.value
+		"lights", "broken":
+			car.fog[clue.kind] = clue.value
+		"honk":
+			car.fog.horn = clue.value
 
 
 ## The wedding's convoy (control-boda.md): the couple, their car up front, a few city cars (never El Colado's or the
@@ -398,6 +419,15 @@ func clue_text(i: int) -> String:
 		"spoiler":
 			return TranslationServer.translate("CLUE_RACE_SPOILER") \
 				% TranslationServer.translate(RaceCar.SPOILERS[clue.value])
+		"lights":
+			return TranslationServer.translate("CLUE_FOG_LIGHTS") \
+				% TranslationServer.translate(FogCar.LIGHT_NAMES[clue.value])
+		"honk":
+			return TranslationServer.translate("CLUE_FOG_HONK") \
+				% TranslationServer.translate(FogCar.horn_text(clue.value))
+		"broken":
+			return TranslationServer.translate("CLUE_FOG_BROKEN") \
+				% TranslationServer.translate(FogCar.BROKEN[clue.value])
 	return ""
 
 
