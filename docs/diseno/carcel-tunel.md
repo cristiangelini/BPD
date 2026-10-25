@@ -128,3 +128,9 @@ el jardinero, en qué celda está el hámster, dónde caen los montoncitos y por
   escapados (con 3 se pierde) y, de extra, los de la celda de castigo. Se gana al tapar el túnel: 600, 100 menos por
   escapado, 25 más por cada uno en castigo y 50 más si la otra punta todavía no asomaba. Cuota 400. En Jugar entra en
   el sorteo de cárceles (`PlaceDraw.PRISONS`, ahora en sextos). Captura: `paso6-planilla.png`.
+- **Paso 7:** online. El host decide y los invitados siguen: los presos del patio (`YardInmate`, con si están en el
+  túnel y si se ven), los escondites (revisado, pozo a la vista, tapado), la tierra (`TunnelDirt`, montoncitos y
+  huellas que el host va haciendo), la jaula del hámster y los que salen corriendo van por `NpcSync`; las bolsas de
+  cemento por `PropSync`; E en los escondites y en la salida por `ActionSync`; y el caso por `CaseSync`
+  (`TunnelCase.snapshot`: hora de patio, metros cavados, encontrado, tapado, atrapados, escapados, la otra punta y
+  cómo terminó). Un invitado solo no encuentra el túnel: lo decide el host. Prueba: `test_online_tunnel.gd`.

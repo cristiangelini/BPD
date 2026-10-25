@@ -275,18 +275,18 @@ func said() -> String:
 
 
 ## What a guest's copy needs besides where they are and what they say (NpcSync, step 7): whether yard time started
-## and whether they're in the tunnel.
+## whether they're in the tunnel and whether they're seen at all (gone out the far end, caught digging).
 func net_state() -> Array:
-	return [busy, in_tunnel]
+	return [busy, in_tunnel, visible]
 
 
 func apply_net_state(net: Variant) -> void:
 	if net[0] and not busy:
 		start(0.0)
 		route.clear()
-	if net[1] != in_tunnel:
-		in_tunnel = net[1]
-		_set_seen(not in_tunnel)
+	in_tunnel = net[1]
+	if net[2] != visible:
+		_set_seen(net[2])
 
 
 func _physics_process(delta: float) -> void:

@@ -5,7 +5,10 @@ extends Node
 ## metres the tunnel still needs. Won when the hole is filled with cement (TunnelPlan.sealed): SALARY, PER_ESCAPED less
 ## for each inmate out by the far end, PER_CAUGHT more for each one in the punishment cell and EARLY more if it was
 ## sealed before the far end showed outside the wall. Quota of its own, like the other prison cases. With LOSE_AT gone
-## the case is lost. Every number here is (propuesta).
+## the case is lost. Step 7: online the host's case decides and a guest's follows it (CaseSync, snapshot): yard time,
+## the metres dug, found and sealed, the counts, the far end and how it ended. The inmates, the hideouts, the dirt and
+## the runners go by NpcSync, the cement bags by PropSync, E on the hideouts and the far end by ActionSync.
+## Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 4.0
@@ -33,6 +36,7 @@ var follower := false:
 		follower = value
 		if prison:
 			prison.tunnel.follower = value
+var online: CaseSync
 var _result := {}
 var _refresh_left := 0.0
 
@@ -53,8 +57,15 @@ func start(comisario: Comisario = null) -> void:
 	else:
 		give_tip()
 	if shift_screen:
-		shift_screen.play_again.connect(PlaceDraw.start.bind(get_tree()))
+		shift_screen.play_again.connect(_play_again)
 		shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
+
+
+func _play_again() -> void:
+	if online:
+		online.play_again()
+	else:
+		PlaceDraw.start(get_tree())
 
 
 func give_tip() -> void:
@@ -157,6 +168,33 @@ func _show_result(result: Dictionary) -> void:
 			result.campaign.promoted)
 		over = result.campaign.over
 	shift_screen.get_node("%AgainButton").visible = not over and not follower
+
+
+## What every guest's case shows (CaseSync).
+func snapshot() -> Dictionary:
+	var plan := prison.tunnel
+	return {"tip": tip_given, "running": plan.running, "dug": plan.dug, "found": plan.is_found,
+		"sealed": plan.is_sealed, "counts": [plan.caught, plan.escaped], "exit": plan.exit_state(),
+		"solved": solved_it, "early": sealed_early, "failed": failed_reason, "result": _result}
+
+
+func apply_snapshot(state: Dictionary) -> void:
+	var plan := prison.tunnel
+	if state.tip:
+		give_tip()
+	plan.running = state.running
+	plan.dug = state.dug
+	plan.is_found = state.found
+	plan.is_sealed = state.sealed
+	plan.caught = state.counts[0]
+	plan.escaped = state.counts[1]
+	plan.apply_exit(state.exit)
+	solved_it = state.solved
+	sealed_early = state.early
+	failed_reason = state.failed
+	checklist.show_rows(rows())
+	if not state.result.is_empty() and not shift_over:
+		_show_result(state.result)
 
 
 ## The planilla's rows, in the shape CaseChecklist takes.
