@@ -47,6 +47,8 @@ const HALF_LENGTH := 5.0
 const HALF_WIDTH := 1.35
 const ROOF := 2.95
 
+## The seat a caught inmate is walked back to (TransferEscape, step 4): OwnerEscort sits him there.
+var return_seat := 0
 ## The cops standing inside right now.
 var riders: Array[Cop] = []
 var lurches := 0
@@ -155,6 +157,16 @@ func exit(cop: Cop) -> void:
 	_ride(cop)
 	drive(0.0, 0.0, true)
 	seats_changed.emit()
+
+
+## A caught inmate is walked up to the bus's whole body, not a car's.
+func body_half_size() -> Vector2:
+	return Vector2(HALF_WIDTH, HALF_LENGTH)
+
+
+## A caught inmate rides back in his own seat (return_seat), facing forward.
+func prisoner_seat() -> Transform3D:
+	return global_transform * Transform3D(Basis(Vector3.UP, PI), seat_spot(return_seat))
 
 
 ## The bus never goes faster than its own top speed, not even on the highway.

@@ -83,6 +83,8 @@ var _build: PlaceBuilder
 var bus: PrisonBus
 var transfer: TransferPlan
 var tricks: TransferTricks
+## The chase on foot after whoever gets out of the bus (step 4).
+var escape: TransferEscape
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -132,6 +134,10 @@ func _start_transfer() -> void:
 	tricks.name = "Tricks"
 	add_child(tricks)
 	tricks.setup(transfer, city.transform * CityLayout.door_of("gas_station"), case_seed)
+	escape = TransferEscape.new()
+	escape.name = "Escape"
+	add_child(escape)
+	escape.setup(tricks, self, city, case_seed)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
 
 

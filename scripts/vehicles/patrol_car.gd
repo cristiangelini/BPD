@@ -289,6 +289,11 @@ func in_sand() -> bool:
 	return _golf != null and _golf.in_bunker(global_position)
 
 
+## Half its footprint (x, z), for walking someone up to it (OwnerEscort.near_car).
+func body_half_size() -> Vector2:
+	return OwnerEscort.HALF_SIZE
+
+
 ## Where the owner rides: in the back, between the two back seats, so he takes no cop's seat. A bit sunk, since he
 ## stands (no NPC sits yet) and would go through the roof.
 const PRISONER_SINK := 0.3

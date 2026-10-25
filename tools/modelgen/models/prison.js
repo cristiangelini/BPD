@@ -138,6 +138,21 @@ export function buildFoodCart() {
 	return b.build();
 }
 
+// The ball and chain an inmate off the transfer bus drags along the sidewalk (traslado-presos.md, step 4): an iron ball
+// behind them (-Z) on a chain from their right ankle. Origin on the ground at the inmate's feet; they face +Z.
+export function buildBallAndChain() {
+	const iron = mat('iron_ball', 0x2b2d31), chain = mat('chain', 0x8a8f96);
+	const b = new Builder('ball_and_chain');
+	b.add('ball', iron, new THREE.SphereGeometry(0.17, 12, 8), { pos: V(0.15, 0.17, -0.85) });
+	b.add('chain', chain, new THREE.TorusGeometry(0.06, 0.015, 5, 10), { pos: V(0.1, 0.1, 0), rot: [Math.PI / 2, 0, 0] });
+	for (let i = 0; i < 6; i++) {
+		const t = (i + 0.5) / 6;
+		b.add('chain', chain, new THREE.TorusGeometry(0.045, 0.012, 5, 8),
+			{ pos: V(0.1 + 0.05 * t, 0.04, -0.68 * t), rot: [0, i % 2 ? 0 : Math.PI / 2, 0] });
+	}
+	return b.build();
+}
+
 // The prisoner transfer bus (traslado-presos.md, step 1): an old grey bus with an orange stripe and barred windows.
 // Faces +Z, origin on the ground in the middle, 10 m long and 2.7 m wide. The driver sits front left (+X) behind the
 // windshield, with the front door on the right (-X) and a barred partition behind the cab with a wide gap for the aisle.
@@ -220,6 +235,7 @@ export function buildPrisonBus() {
 export const models = {
 	prison_bus: buildPrisonBus,
 	food_cart: buildFoodCart,
+	ball_and_chain: buildBallAndChain,
 	prison_tray: buildTray,
 	prison_mash: buildMash,
 	prison_jelly: buildJelly,
@@ -246,6 +262,10 @@ export const views = {
 	food_cart: {
 		items: [{ name: 'food_cart', pos: [0, 0, 0], rotY: 0.9 }, { name: 'npc_preso', pos: [-0.65, 0.3, -0.55], rotY: 0.9, scale: 0.85 }],
 		cam: { pos: [2.2, 1.6, 2.4], target: [0, 0.7, 0], fov: 40 },
+	},
+	ball_and_chain: {
+		items: [{ name: 'ball_and_chain', pos: [0, 0, 0], rotY: 0.9 }, { name: 'npc_preso', pos: [0, 0, 0], rotY: 0.9, scale: 0.85 }],
+		cam: { pos: [2.4, 1.4, 1.4], target: [0, 0.6, -0.3], fov: 40 },
 	},
 	prison_food: {
 		items: [{ name: 'prison_mash', pos: [-0.24, 0.04, 0] }, { name: 'prison_jelly', pos: [-0.08, 0.03, 0] },

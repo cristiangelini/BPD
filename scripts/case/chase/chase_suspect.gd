@@ -38,6 +38,8 @@ const MODELS := {
 	"manager": preload("res://assets/models/npc_gerente.glb"),
 	# The prison's last ringleader, off the food cart (carcel-motin.md).
 	"ringleader": preload("res://assets/models/npc_preso.glb"),
+	# An inmate off the transfer bus, with the ball and chain (traslado-presos.md).
+	"transfer_inmate": preload("res://assets/models/npc_preso.glb"),
 	# The market's spiteful vendor, off his vegetable trike (politico-mercado.md).
 	"vendor": preload("res://assets/models/npc_puestero.glb"),
 }

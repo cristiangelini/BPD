@@ -29,10 +29,10 @@ const DOOR_OUT := 2.0
 ## with his sack (robo-banco.md), the rally's last heckler on a kick scooter (proteccion-politico.md) and the prison's
 ## last ringleader on the food cart (carcel-motin.md) and the market's spiteful vendor on his vegetable trike
 ## (politico-mercado.md) go the same way.
-const ON_FOOT := ["wheelchair", "walker", "bear_on_foot", "kick_scooter", "food_cart", "veggie_trike"]
+const ON_FOOT := ["wheelchair", "walker", "bear_on_foot", "kick_scooter", "food_cart", "veggie_trike", "inmate_on_foot"]
 ## The tow truck takes the patrol car (persecucion-lugares.md, "La grúa"): the cops chase him in the old one or on
 ## foot, so the distance counts from the nearest cop and the chase starts as they come out of the station.
-const CLOSE_BY := ["wheelchair", "walker", "tow_truck", "bear_on_foot", "kick_scooter", "food_cart", "veggie_trike"]
+const CLOSE_BY := ["wheelchair", "walker", "tow_truck", "bear_on_foot", "kick_scooter", "food_cart", "veggie_trike", "inmate_on_foot"]
 const START_NEAR := 25.0
 ## The golf thieves (persecucion-lugares.md): the drive out to the club is long, so the chase and its clock start once a
 ## cop goes through the gate. Stopped, one gives up and the other runs off; both go back, the runner in the trunk.
