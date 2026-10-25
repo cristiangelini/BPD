@@ -73,19 +73,9 @@ func refresh() -> void:
 		(file_cards[index] as BoardCard).label.text = file_text(index)
 
 
-## What a file card says: the photo shows apron, glasses, hand and shoes; the rest as the cops got it.
+## What a file card says (the case's variant knows).
 func file_text(index: int) -> String:
-	var cook: Dictionary = case.cooks[index]
-	var parts: Dictionary = case.file_parts[index]
-	var lines := PackedStringArray(["%d. %s" % [index + 1, cook.name]])
-	lines.append(tr("FILE_APRON") % tr("APRON_" + str(cook.apron)))
-	lines.append(tr("FILE_GLASSES") if cook.glasses else tr("FILE_NO_GLASSES"))
-	lines.append(tr("FILE_LEFT") if cook.left else tr("FILE_RIGHT"))
-	lines.append(tr("FILE_SHOE") % cook.shoe)
-	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(cook.hair)) if parts.hair else "?"))
-	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(cook.teeth)) if parts.teeth else "?"))
-	lines.append(tr("FILE_PRINTS") if parts.prints else tr("FILE_NO_PRINTS"))
-	return "\n".join(lines)
+	return case.file_text(index)
 
 
 func prompt_for(card: BoardCard, cop: Cop) -> String:
@@ -103,7 +93,7 @@ func use_card(card: BoardCard, cop: Cop) -> void:
 	elif stamp_by == cop:
 		stamp_by = null
 		case.accuse(card.id)
-		card.set_crossed(card.id != case.plan.culprit)
+		card.set_crossed(case.accused_index(card.id) != case.plan.culprit)
 	elif string_from.has(cop):
 		tie(string_from[cop], card.id, cop)
 		string_from.erase(cop)
@@ -114,7 +104,13 @@ func use_card(card: BoardCard, cop: Cop) -> void:
 ## The string from a clue to a cook's file: it holds if he fits the clue, else it snaps and his file is crossed out.
 ## Returns whether it held.
 func tie(kind: String, index: int, cop: Cop = null) -> bool:
-	var fits := CrimePlan.fits(case.cooks[index], kind, case.culprit())
+	var known := case.file_traits(index)
+	# At the circus a file may not know that trait yet (its sign's clown never gave it).
+	if not known.has(case.plan.traits[kind]):
+		if cop:
+			cop.show_hint("HINT_BOARD_UNKNOWN")
+		return false
+	var fits := CrimePlan.fits(known, kind, case.culprit(), case.plan.traits)
 	if fits:
 		strings.append([kind, index])
 		_string(clue_cards[kind], file_cards[index])

@@ -106,10 +106,11 @@ func _physics_process(delta: float) -> void:
 		npc.call("_say", LINES[_line % LINES.size()], 3.0)
 
 
-## Whether he's within BOARD_REACH of the car's body, seen from above.
+## Whether he's within BOARD_REACH of the car's body (PatrolCar.body_half_size), seen from above.
 func near_car() -> bool:
 	var local := car.to_local(npc.global_position)
-	var outside := Vector2(maxf(absf(local.x) - HALF_SIZE.x, 0.0), maxf(absf(local.z) - HALF_SIZE.y, 0.0))
+	var half := car.body_half_size()
+	var outside := Vector2(maxf(absf(local.x) - half.x, 0.0), maxf(absf(local.z) - half.y, 0.0))
 	return outside.length() < BOARD_REACH
 
 
