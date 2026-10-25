@@ -7,8 +7,10 @@ extends Node3D
 ## The robbers wear their vampire capes and fangs (BankRobber.vampire). Step 2: a vampire in a cop's flashlight beam
 ## (within LIGHT_REACH, in its cone and with nothing in between) hides behind his cape (BankRobber.lit). The fuse box by
 ## the back door (BankFuseBox) brings the bank's light back for LIGHTS_TIME: every vampire hides once and puts his
-## sunglasses on; then El Conde has the light cut again. Online the host's decide (`follower`). Every number here is
-## (propuesta).
+## sunglasses on; then El Conde has the light cut again. Step 3: the fridge holds BAGS blood bags (BloodBag), one on
+## each shelf. When the drill opens it every robber still loose runs to it, takes a bag and runs out to the van with
+## it; one cuffed on the way drops his. Out of the fridge and of the patrol car's cooler (a white box in its trunk) a
+## bag warms up and spoils. Online the host's decide (`follower`). Every number here is (propuesta).
 
 signal lights_changed(on: bool)
 
@@ -33,6 +35,14 @@ const LIGHT_EVERY := 0.1
 const LIGHTS_TIME := 60.0
 ## The fuse box, on the corridor's back wall by the back door.
 const FUSE_BOX_AT := Vector3(-2.0, 1.4, -9.98)
+## The fridge's bags, one on each shelf of its two racks (bank coordinates), and its inside (x and z ranges).
+const BAGS := 6
+const RACK_ZS: Array[float] = [-7.0, -8.6]
+const SHELF_YS: Array[float] = [0.4, 1.0, 1.6]
+const FRIDGE := Rect2(3.2, -10.0, 9.0, 5.4)
+## The cooler in the patrol car's trunk (car coordinates): its middle and half its size, as a box a bag counts in.
+const COOLER_AT := Vector3(0.65, 0.55, -2.05)
+const COOLER_HALF := Vector3(0.35, 0.4, 0.3)
 
 var bank: BankLevel
 var candles: Array[OmniLight3D] = []
@@ -40,6 +50,11 @@ var fuse_box: BankFuseBox
 ## Seconds of light left (0: the power is cut).
 var lights_left := 0.0
 var follower := false
+var bags: Array[BloodBag] = []
+## The bags gone in the van.
+var bags_taken := 0
+## Each robber carrying (or on his way to fetch) a bag, and the bag ("" for none yet).
+var _carriers := {}
 var _look_left := 0.0
 
 
@@ -57,6 +72,16 @@ func setup(the_bank: BankLevel) -> void:
 	fuse_box.lights_on = lights_on
 	fuse_box.switched.connect(func(_cop: Cop) -> void: turn_lights(true))
 	bank.add_child(fuse_box)
+	_add_bags()
+	_add_cooler()
+	# The fridge runs on its own battery: a faint cold light inside.
+	var inside := OmniLight3D.new()
+	inside.name = "FridgeLight"
+	inside.light_color = Color(0.75, 0.88, 1.0)
+	inside.light_energy = 0.7
+	inside.omni_range = 6.0
+	inside.position = Vector3(8.0, 2.4, -7.6)
+	add_child(inside)
 	for hostage in bank.hostages:
 		var band := MeshInstance3D.new()
 		band.name = "BandAid"
@@ -86,6 +111,7 @@ func turn_lights(on: bool) -> void:
 func _physics_process(delta: float) -> void:
 	if follower:
 		return
+	_carry()
 	if lights_on():
 		lights_left = maxf(lights_left - delta, 0.0)
 		if not lights_on():
@@ -127,6 +153,120 @@ static func in_beam(beam: SpotLight3D, robber: BankRobber) -> bool:
 		return false
 	var ray := PhysicsRayQueryParameters3D.create(from, face, 1)
 	return beam.get_world_3d().direct_space_state.intersect_ray(ray).is_empty()
+
+
+## Whether a world position is cold: in the fridge or in the patrol car's cooler.
+func is_cold(at: Vector3) -> bool:
+	var inside := bank.global_transform.affine_inverse() * at
+	if FRIDGE.has_point(Vector2(inside.x, inside.z)):
+		return true
+	var in_car := bank.car.global_transform.affine_inverse() * at - COOLER_AT
+	return absf(in_car.x) <= COOLER_HALF.x and absf(in_car.y) <= COOLER_HALF.y and absf(in_car.z) <= COOLER_HALF.z
+
+
+## The bags still good (not spoiled, not taken) and cold now.
+func bags_cold() -> int:
+	var count := 0
+	for bag in bags:
+		if bag.visible and not bag.spoiled and bag.cold():
+			count += 1
+	return count
+
+
+func bags_spoiled() -> int:
+	return bags.filter(func(bag: BloodBag) -> bool: return bag.spoiled).size()
+
+
+## The fridge is open: every robber still loose runs to it for a bag (the corridor's way from the hall).
+func load_up() -> void:
+	for robber in bank.robbers:
+		if not BankLevel.is_loose(robber) or robber.in_van or not robber.visible:
+			continue
+		robber.run_path.clear()
+		var way: Array[Vector3] = []
+		var from := bank.to_local(robber.global_position)
+		if from.z < BankLevel.COUNTER_Z and not BankLevel.in_corridor(from):
+			# Behind the counter: straight to the corridor's door.
+			way.append_array(BankLevel.HALL_TO_CORRIDOR.slice(2))
+		elif not BankLevel.in_corridor(from):
+			way.append_array(BankLevel.HALL_TO_CORRIDOR)
+		way.append(BankLevel.AT_DRILL)
+		for at in way:
+			robber.run_path.append(bank.global_transform * at)
+		robber.into_van = false
+		robber.surrendered = false
+		robber.running = true
+		_carriers[robber] = null
+
+
+## The robbers fetching and carrying bags: at the fridge, a bag and out to the van; cuffed, the bag drops; in the
+## van, it's gone (and El Conde in it starts the getaway).
+func _carry() -> void:
+	for robber: BankRobber in _carriers.keys():
+		var bag: BloodBag = _carriers[robber]
+		if robber.is_cuffed():
+			if bag:
+				bag.drop()
+			_carriers.erase(robber)
+		elif robber.in_van:
+			if bag:
+				bag.carried_by = null
+				bag.hide()
+				bag.collision_layer = 0
+				bag.process_mode = Node.PROCESS_MODE_DISABLED
+				bags_taken += 1
+				bank.bags_taken += 1
+			_carriers.erase(robber)
+			if robber == bank.boss:
+				bank._run_getaway(false)
+		elif not robber.running and not robber.into_van:
+			bag = _free_bag()
+			if bag:
+				bag.carry(robber)
+				_carriers[robber] = bag
+			var way := BankLevel.HALL_TO_CORRIDOR.duplicate()
+			way.reverse()
+			way.append_array(BankLevel.PIG_RUN)
+			for at: Vector3 in way:
+				robber.run_path.append(bank.global_transform * at)
+			robber.into_van = true
+			robber.running = true
+
+
+## A bag still in the fridge that nobody carries.
+func _free_bag() -> BloodBag:
+	for bag in bags:
+		if bag.visible and not bag.carried_by and not bag.spoiled and bag.holders.is_empty() \
+				and FRIDGE.has_point(_flat(bag)):
+			return bag
+	return null
+
+
+func _flat(bag: BloodBag) -> Vector2:
+	var inside := bank.to_local(bag.global_position)
+	return Vector2(inside.x, inside.z)
+
+
+func _add_bags() -> void:
+	for i in BAGS:
+		var bag := BloodBag.new()
+		bag.name = "BloodBag%d" % i
+		bag.position = Vector3(11.25, BankLevel.FLOOR_TOP + SHELF_YS[i % SHELF_YS.size()] + 0.15,
+			RACK_ZS[i / SHELF_YS.size()])
+		bag.is_cold = is_cold
+		bank.add_child(bag)
+		bags.append(bag)
+
+
+## The white cooler in the patrol car's trunk.
+func _add_cooler() -> void:
+	var cooler := CopTool.piece(CopTool.box(COOLER_HALF * 2.0 - Vector3(0, 0.4, 0)), Color(0.95, 0.95, 0.95),
+		COOLER_AT - Vector3(0, 0.2, 0))
+	cooler.name = "Cooler"
+	bank.car.add_child(cooler)
+	var lid := CopTool.piece(CopTool.box(Vector3(COOLER_HALF.x * 2.0, 0.05, COOLER_HALF.z * 2.0)), Color(0.2, 0.45, 0.85),
+		COOLER_AT + Vector3(0, 0.02, 0))
+	bank.car.add_child(lid)
 
 
 ## The power is cut at night: a dark sky, a faint blue moon and little ambient light.

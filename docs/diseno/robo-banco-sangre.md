@@ -93,3 +93,12 @@ nuevo: la capa y los colmillos de la banda, la caja de fusibles, la heladera, la
   después la luz del techo ya no le hace nada (la linterna sí). A los 60 s El Conde grita "¡Que alguien corte la luz
   otra vez!" y se apaga. Por ahora nadie va hasta la caja a cortarla: se apaga sola. Capturas en
   `/mnt/project-files/sangre/paso2-*.png`.
+- **Paso 3 (las bolsas de sangre):** en la heladera hay 6 bolsas, una en cada estante de los dos muebles. Esperan
+  quietas hasta que alguien las agarra, y una luz fría propia de la heladera las deja ver a oscuras. Fuera del frío,
+  una bolsa se calienta y se oscurece, y a los 60 s se echa a perder para siempre (marrón). En la heladera o en la
+  heladerita del patrullero (una caja blanca con tapa azul en el baúl) se enfría otra vez, cuatro veces más rápido.
+  Cuando el taladro abre la heladera, cada ladrón suelto corre hasta ella: los del hall dan la vuelta por el hueco del
+  mostrador y El Conde, que está detrás del mostrador, va directo a la puerta del pasillo. Cada uno saca una bolsa y
+  corre con ella a la camioneta. Si lo esposan en el camino, la bolsa se cae al piso. Cuando El Conde llega a la
+  camioneta, arranca la persecución de siempre (la carroza es del paso 4). Capturas en
+  `/mnt/project-files/sangre/paso3-*.png`.
