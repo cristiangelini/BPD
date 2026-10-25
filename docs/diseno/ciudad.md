@@ -19,7 +19,7 @@ Se arma de a poco (Cristian, 19/10): primero unas cuadras con lo que ya tenemos 
 | **Lo que falta** | en los terrenos de relleno de alrededor | los lugares de los otros casos: la cárcel, el político, el banco, el club de golf... |
 
 - **La comisaría** está en el centro, con el estacionamiento del patrullero adelante. Hasta que tenga interior, es un frente con la puerta y el comisario parado afuera.
-- **Calles:** todas de doble mano, con esquinas en cruz, semáforos de adorno y autos estacionados. Al principio no hay tráfico; los autos que andan solos vienen con la persecución (caso 2).
+- **Calles:** todas de doble mano, con esquinas en cruz, semáforos de adorno y autos estacionados. Las veredas, el tráfico, la gente, el reloj, la lluvia y los eventos de la calle están en [ciudad-viva.md](ciudad-viva.md).
 - **Nombres:** cada calle tiene un cartel con un nombre inventado (calle de los Tilos, avenida del Reloj...). En la radio, el lugar del caso se marca en el mapa (M; el Tab ya muestra la plata y la denuncia).
 
 ## Cada lugar
