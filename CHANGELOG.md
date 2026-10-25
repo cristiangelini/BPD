@@ -164,3 +164,4 @@
 - Bank flood, step 2: the valve out back (hold E, 8 s alone or 4 s between two) stops the water; a front door holds it in, drains it once the pipe is shut and lets out a wave when opened on deep water.
 - Bank flood, step 3: the wet drill sparks and goes at half pace; waist deep, the hostages get up on the counter and only come down with a duck float from the patrol car's trunk (four) or once the water is low again.
 - Bank flood, step 4: loose things float, the gang wades out with the sacks before the getaway (up to 12 s), the radio warns about the broken pipe and the planilla asks for the valve (+100 shut before 1 m) and shows how deep the water is.
+- Fix (politician's market walk): the chemical toilet lets a cured cop out in front of its door (left inside, it locked them in again at once), and the deputy's "what an odd taste" stays 2 s before he says he's running or going home (it was covered up right away). The market tests that failed on develop pass again.
