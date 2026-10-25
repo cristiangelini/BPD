@@ -7,7 +7,8 @@ extends Node
 ## slows you down); the school bus is full of kids shouting out of the windows. The clown car honks all the way and
 ## drops an inflatable clown (ChaseDummy) every DUMMY_EVERY seconds. The fruit truck control's runaway pickup
 ## (control-frutas.md) drops MELONS_PER_CORNER watermelons at every corner it turns, rolling down the street; the
-## patrol car running into one splits it. Every number here is (propuesta).
+## patrol car running into one splits it. The crowded car control's runaway sedan (control-auto-lleno.md, answer 3)
+## lets one of the gang jump out at every corner it turns, who runs off down the street. Every number here is (propuesta).
 
 const DRIP_EVERY := 3.0
 ## A puddle's size (m), how long it lasts, and the grip left on it.
@@ -36,6 +37,8 @@ const MELONS_PER_CORNER := 2
 const MAX_MELONS := 12
 ## How fast they roll off the back, in m/s.
 const MELON_ROLL := 5.0
+## A jumper leaves the runaway packed car this fast sideways.
+const JUMP_SPEED := 3.0
 
 var case: ChaseCase
 ## The ice cream puddles on the street: [mesh, seconds left].
@@ -43,6 +46,9 @@ var puddles: Array[Array] = []
 var furniture: Array[RigidBody3D] = []
 var dummies: Array[ChaseDummy] = []
 var melons: Array[Watermelon] = []
+## The gang still in the runaway packed car besides its driver: one jumps out at each corner.
+var riders_left := 0
+var jumpers: Array[CrowdRider] = []
 var _drip_left := DRIP_EVERY
 var _dummy_left := DUMMY_EVERY
 var _kids_left := 0.0
@@ -141,6 +147,8 @@ func _on_corner(turned: bool) -> void:
 	elif case.suspect_id == SuspectCar.FRUIT_TRUCK:
 		for i in MELONS_PER_CORNER:
 			drop_melon()
+	if riders_left > 0:
+		drop_jumper()
 
 
 ## A piece of furniture falls off the back of the moving truck.
@@ -176,6 +184,24 @@ func drop_melon() -> Watermelon:
 	melon.angular_velocity = case.truck.global_basis.x * -MELON_ROLL / Watermelon.RADIUS
 	melons.append(melon)
 	return melon
+
+
+## One of the gang jumps out of the runaway packed car and runs off; there's one face less on its windows.
+func drop_jumper() -> CrowdRider:
+	riders_left -= 1
+	var jumper := CrowdRider.new()
+	_dropped += 1
+	jumper.name = "Jumper%d" % _dropped
+	jumper.traits = CrowdRider.look_of("chase %d" % case.case_seed, _dropped)
+	var side := case.truck.global_basis.x * (1.0 if _rng.randf() < 0.5 else -1.0)
+	jumper.runaway = (side - case.truck.global_basis.z).normalized()
+	case.get_parent().add_child(jumper)
+	jumper.global_position = case.truck.global_position + side * 1.4 + Vector3.UP * 0.4
+	jumper.linear_velocity = case.truck.velocity * 0.5 + side * JUMP_SPEED + Vector3.UP * 2.0
+	jumper.say(tr("CROWD_JUMP_LINE_%d" % (_dropped % CrowdRider.JUMP_LINES)))
+	jumpers.append(jumper)
+	CrowdedCar.show_inside(case.truck, riders_left + 1)
+	return jumper
 
 
 ## An inflatable clown, just like him, drops out of the back of the clown car.

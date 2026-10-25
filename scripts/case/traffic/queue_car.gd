@@ -168,7 +168,7 @@ func _ready() -> void:
 		model.name = "Model"
 		add_child(model)
 		if CrowdedCar.packed(crowd):
-			CrowdedCar.dress(self)
+			CrowdedCar.dress(self, plate, crowd)
 		for wheel_at in SuspectCar.SEDAN_WHEELS:
 			var wheel: Node3D = TrafficCar.WHEEL.instantiate()
 			wheel.position = wheel_at

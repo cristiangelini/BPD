@@ -48,8 +48,9 @@ static func packed(riders: int) -> bool:
 	return riders >= PACKED_FROM
 
 
-## Faces and hands on its windows, each in its own skin and hair, and its body sunk on its wheels.
-static func dress(car: QueueCar) -> void:
+## Faces and hands on its windows, each in its own skin and hair, and its body sunk on its wheels (a queue car, or the
+## chase's runaway sedan, by its plate and riders).
+static func dress(car: Node3D, plate: String, riders: int) -> void:
 	var model := car.get_node_or_null("Model") as Node3D
 	if model:
 		model.position.y = -SAG
@@ -58,8 +59,8 @@ static func dress(car: QueueCar) -> void:
 	faces.position.y = -SAG
 	car.add_child(faces)
 	var rng := RandomNumberGenerator.new()
-	rng.seed = hash(["crowd faces", car.plate])
-	for i in mini(car.crowd, SLOTS.size()):
+	rng.seed = hash(["crowd faces", plate])
+	for i in mini(riders, SLOTS.size()):
 		var face: Node3D = FACE.instantiate()
 		face.name = "Face%d" % i
 		face.position = SLOTS[i][0]
@@ -75,7 +76,7 @@ static func dress(car: QueueCar) -> void:
 
 
 ## As many faces on its windows as riders still inside.
-static func show_inside(car: QueueCar, inside: int) -> void:
+static func show_inside(car: Node3D, inside: int) -> void:
 	var faces := car.get_node_or_null("Faces")
 	if not faces:
 		return

@@ -19,6 +19,12 @@ const RIDER_LINES := 8
 ## Popped out of the car, they fly this long before they walk.
 const FLY := 0.8
 const STICKER := Color(0.98, 0.85, 0.15)
+## Jumped out of the runaway car (ChaseDrops), they run off this fast; what they shout as they jump.
+const RUN_SPEED := 3.0
+const JUMP_LINES := 4
+
+## Jumped out of the runaway car, the way they run (no car to get back in).
+var runaway := Vector3.ZERO
 
 ## Their number in the car's count, on a sticker; 0 while not counted.
 var sticker := 0
@@ -84,3 +90,11 @@ func stick(number: int) -> void:
 		label.position = Vector3(0, height, -0.42 if back else 0.42)
 		label.rotation.y = PI if back else 0.0
 		add_child(label)
+
+
+func _physics_process(delta: float) -> void:
+	super(delta)
+	if runaway != Vector3.ZERO and not is_instance_valid(car) and out_for >= FLY and not is_held():
+		linear_velocity.x = runaway.x * RUN_SPEED
+		linear_velocity.z = runaway.z * RUN_SPEED
+		rotation.y = atan2(runaway.x, runaway.z)

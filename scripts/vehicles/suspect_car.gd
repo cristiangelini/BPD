@@ -16,6 +16,8 @@ const STUCK_SPEED := 1.0
 const STUCK_SHARE := 0.2
 ## Nervous (the megaphone), he drives at this share of his speed.
 const NERVOUS_SPEED := 0.6
+## Packed with people (control-auto-lleno.md), he drives at this share of his speed.
+const HEAVY_SPEED := 0.8
 ## With his tires punctured (the spikes) he rolls to a halt in this many seconds.
 const FLAT_STOP := 2.0
 const WHEELS: Array[Vector3] = [Vector3(-1.1, 0.38, 1.7), Vector3(1.1, 0.38, 1.7), Vector3(-1.1, 0.38, -1.7),
@@ -141,6 +143,8 @@ const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
 
+## The crowded car control's runaway, packed with the gang: slower (HEAVY_SPEED).
+var heavy := false
 ## Whose vehicle it is (set before it's added).
 var kind := "ice_cream"
 const WHEEL := preload("res://assets/models/car_wheel.glb")
@@ -241,10 +245,10 @@ func towed_transform() -> Transform3D:
 	return global_transform * Transform3D(Basis(Vector3.RIGHT, TOWED_TILT), TOWED_AT)
 
 
-## His speed on the straight here: the sports car's depends on whether he's on the highway.
+## His speed on the straight here: the sports car's depends on whether he's on the highway; a packed car's is less.
 func top_speed() -> float:
 	if kind != HIGHWAY:
-		return SPEEDS.get(kind, SPEED)
+		return SPEEDS.get(kind, SPEED) * (HEAVY_SPEED if heavy else 1.0)
 	if not is_instance_valid(_highway):
 		_highway = get_tree().get_first_node_in_group("highway") as Highway
 	return HIGHWAY_SPEED if _highway and _highway.covers(global_position) else HIGHWAY_CITY_SPEED
