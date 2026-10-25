@@ -181,3 +181,4 @@
 - Roof robbery, step 4a: the gang goes up the hatch with the sacks and the helicopter takes them one 20 s trip at a time to the nephew's shopping cart; the radio, the planilla and +100 for cuffing the nephew.
 - Roof robbery, step 4b: El Oso flies off hanging from the toy helicopter's rope, low over the street; the cop riding beside the patrol car's driver grabs the rope from the window with E and he drops cuffed into the back seat.
 - Roof robbery, step 5: online. The host flies the helicopter and every guest sees it, the crash, the sacks in the cart and the nephew caught; a guest can grab El Oso's rope from the window too.
+- Bank robbery design: the town bank (decision 127), a tiny branch with one sleeping clerk, don Plácido, and one very nervous robber, El Conejo, who holds the drill himself and bolts when the noise gets to him.

@@ -135,7 +135,7 @@ Llegan cuando el robo está pasando (decisión 32).
 
 1. **Ladrones con máscaras de animales.**
 2. **Rehenes que no quieren irse:** les está gustando. Propuesta en [robo-banco-rehenes.md](robo-banco-rehenes.md) (decisión 121).
-3. **El banco del pueblo:** chico y con un solo empleado dormido.
+3. **El banco del pueblo:** chico y con un solo empleado dormido. Propuesta en [robo-banco-pueblo.md](robo-banco-pueblo.md) (decisión 127).
 4. **Robo por el techo:** con helicóptero de juguete. Propuesta en [robo-banco-techo.md](robo-banco-techo.md) (decisión 126).
 5. **Ladrones abuelos:** lentos pero astutos. Propuesta en [robo-banco-abuelos.md](robo-banco-abuelos.md) (decisión 122).
 6. **La bóveda que se inunda:** el agua sube y frena a todos, también al taladro. Propuesta en [robo-banco-inundado.md](robo-banco-inundado.md) (decisión 125).
