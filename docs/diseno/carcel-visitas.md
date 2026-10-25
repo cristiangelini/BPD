@@ -82,3 +82,17 @@ visitas iguales.
    todo y las pistas no sirven.
 3. **¿Se pierde con 3 cosas que llegan a los presos?** Recomendado: sí, con 4 a 6 escondidas tiene que ser posible
    perder, y 3 deja margen para un par de errores.
+
+## Hecho así
+- **Paso 2 (la fila):** `--place=visits` abre `scenes/levels/prison_visits.tscn`, la cárcel de día con
+  `variant = "visits"`. `VisitPlan` pone 8 visitantes (`PrisonVisitor`, con los cuerpos de la abuela, el abuelo, la
+  señora, la clienta, el cliente, el portero, el mudancero y la vecina) en fila en el patio, de la mesa de requisa
+  (junto a la puerta oeste del comedor) hacia el portón, un lugar cada 1 m. Cada uno trae en la mano una cosa
+  distinta de las 12 (`VisitItem`: torta, pan, guitarra, flores, bufanda, bebé, pollo, sombrero, sandía, zapatón,
+  ovillo y libro, hechas con piezas por código), y la semilla elige de 4 a 6 que esconden algo (uno de cada 3 en el
+  bolsillo, los demás adentro de la cosa; se encuentra en el paso 3). Nadie se mueve hasta que el primer policía
+  cruza el portón. El primero camina a la mesa, deja su cosa arriba y saluda; E sobre él ("que pase") lo hace pasar
+  y se lleva su cosa si sigue en la mesa (si la tiene un policía, protesta: "¿Y lo mío?"). Si en 40 s nadie lo
+  atiende, pasa solo. La fila avanza un lugar y cada uno se sienta en su lugar del comedor, del lado de adelante de
+  una mesa. Capturas en `/mnt/project-files/dia-de-visitas/`: `paso2-fila.png`, `paso2-mesa.png` y
+  `paso2-sentado.png`.
