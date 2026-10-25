@@ -110,6 +110,11 @@ const HIDE_SPOTS: Array[Vector3] = [Vector3(-5.0, 0, 3.65), Vector3(-2.0, 0, 3.6
 const MARBLES_AT := Vector3(ENTRANCE_X + 0.6, 0, HALF_Z - 1.3)
 ## Who can be the sorry robber: never El Oso.
 const SORRY_ANIMALS: Array[String] = ["conejo", "chancho", "pato"]
+## The sorry robber's way to the back door (robo-banco-arrepentido.md, step 2) from the hall: to the counter's gap,
+## behind the counter, through the corridor's door and down the corridor to the back door, which he opens from inside.
+## From the corridor (the duck) only its last point.
+const TO_BACK_DOOR: Array[Vector3] = [Vector3(7.5, 0, 0.4), Vector3(7.5, 0, -2.6), Vector3(CORRIDOR_DOOR_X, 0, -3.7),
+	Vector3(CORRIDOR_DOOR_X, 0, BACK_Z - 0.6), Vector3(BACK_DOOR_X, 0, -HALF_Z + 0.9)]
 ## How many of the party's hostages are fans of the gang (propuesta).
 const SNITCHES := 2
 const GARLAND_MODEL := preload("res://assets/models/bank_garland.glb")
@@ -459,6 +464,53 @@ func _add_robbers() -> void:
 			boss = robber
 		if robber.sorry:
 			sorry = robber
+			robber.watched = _sorry_watched
+			robber.help_way = _sorry_way
+			robber.way_back = _sorry_way_back
+			robber.do_help = _sorry_help
+
+
+## Whether a loose robber other than the sorry one sees `cop` (then he doesn't dare talk).
+func _sorry_watched(cop: Node3D) -> bool:
+	for robber in robbers:
+		if robber != sorry and is_loose(robber) and not robber.in_van and robber.sees_cop(cop):
+			return true
+	return false
+
+
+## In the corridor (behind the back wall, between the office and the vault).
+static func in_corridor(at: Vector3) -> bool:
+	return at.z < BACK_Z and at.x > OFFICE_X and at.x < VAULT_X
+
+
+## The sorry robber's way (world positions) to `help`.
+func _sorry_way(help: String) -> Array[Vector3]:
+	var way: Array[Vector3] = []
+	match help:
+		"door":
+			var from := 0 if not in_corridor(global_transform.inverse() * sorry.global_position) else TO_BACK_DOOR.size() - 1
+			for i in range(from, TO_BACK_DOOR.size()):
+				way.append(global_transform * (TO_BACK_DOOR[i] + Vector3.UP * FLOOR_TOP))
+	return way
+
+
+## The sorry robber's way back to his spot after `help`: the way there backwards, then his spot.
+func _sorry_way_back(help: String) -> Array[Vector3]:
+	var spot: Vector3 = ROBBER_SPOTS[sorry.animal][0]
+	var home := global_transform * (spot + Vector3.UP * FLOOR_TOP)
+	var way: Array[Vector3] = []
+	if help == "door" and not in_corridor(spot):
+		for i in range(TO_BACK_DOOR.size() - 2, -1, -1):
+			way.append(global_transform * (TO_BACK_DOOR[i] + Vector3.UP * FLOOR_TOP))
+	way.append(home)
+	return way
+
+
+## The sorry robber does `help`: the back door, unlocked and swung open from inside.
+func _sorry_help(help: String) -> void:
+	match help:
+		"door":
+			back_door.open_from_inside()
 
 
 ## The grandpa gang got nervous: the duck grandma, if she's still loose, throws her marbles in front of the entrance

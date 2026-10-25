@@ -39,6 +39,15 @@ func use(cop: Cop) -> void:
 	_swing(not is_open)
 
 
+## Unlocked and opened by someone inside (the bank's sorry robber), with no key.
+func open_from_inside() -> void:
+	if is_broken:
+		return
+	locked = false
+	if not is_open:
+		_swing(true)
+
+
 ## One battering ram hit; at RAM_HITS the door comes off. Returns true if this hit broke it.
 func ram_hit() -> bool:
 	if is_broken or is_open:
