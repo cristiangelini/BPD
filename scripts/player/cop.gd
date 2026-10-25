@@ -92,6 +92,10 @@ var slow_factor := 1.0
 ## Wading in the flooded bank (BankWater): walking and running speed times this too.
 var wade := 1.0
 var _fall_gap_left := 0.0
+## Climbing over a fence (Climbable): seconds left, where it started and the climb.
+var climb_left := 0.0
+var _climb_from := Vector3.ZERO
+var _climb := {}
 
 @onready var _shape: CollisionShape3D = $Shape
 @onready var _head: Node3D = $Head
@@ -641,6 +645,9 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 	_eating_left = maxf(_eating_left - delta, 0.0)
 	_mouth_full_left = maxf(_mouth_full_left - delta, 0.0)
 	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
+	if climb_left > 0.0:
+		_climbing(delta)
+		return
 	# The world's turn, so a cop standing in the moving prison bus (a child of it) walks where it looks.
 	var direction := (global_basis * Vector3(wish.x, 0.0, wish.y)).normalized()
 	direction.y = 0.0
@@ -650,12 +657,30 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 	velocity.z = direction.z * speed + _knock.z
 	_knock = _knock.move_toward(Vector3.ZERO, _knock.length() / KNOCK_FADE * delta) if _knock.length() > 0.05 else Vector3.ZERO
 	if is_on_floor():
-		if want_jump and not is_crouching:
+		if want_jump and not is_crouching and not _start_climb():
 			velocity.y = GameScale.jump_velocity()
 	else:
 		velocity.y -= GameScale.GRAVITY * delta
 	move_and_slide()
 	_shake_disguise(delta)
+
+
+## Jumping against a fence climbs it (ciudad-viva.md, step 4). Returns true if a climb started.
+func _start_climb() -> bool:
+	if is_busy():
+		return false
+	_climb = Climbable.find(get_world_3d().direct_space_state, global_position, -global_basis.z, [get_rid()])
+	if _climb.is_empty():
+		return false
+	_climb_from = global_position
+	climb_left = Climbable.CLIMB_TIME
+	return true
+
+
+func _climbing(delta: float) -> void:
+	climb_left = maxf(climb_left - delta, 0.0)
+	velocity = Vector3.ZERO
+	global_position = Climbable.along(_climb_from, _climb, 1.0 - climb_left / Climbable.CLIMB_TIME)
 
 
 ## Running shakes the disguise: the most crooked piece falls off after DISGUISE_CROOKED_RUN seconds of running (a

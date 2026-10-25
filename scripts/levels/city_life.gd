@@ -22,7 +22,7 @@ const LAMP_GLOW := Color(1.0, 0.92, 0.7)
 const FENCE := Color(0.55, 0.58, 0.6)
 const TANK := Color(0.5, 0.36, 0.24)
 ## Blocks with a dead-end alley, and the side it opens to: blocks whose middle no place reaches (tested).
-const ALLEYS := [[Vector2i(2, 4), "e"], [Vector2i(5, 1), "w"], [Vector2i(0, 3), "e"], [Vector2i(5, 4), "w"]]
+const ALLEYS := [[Vector2i(2, 4), "e"], [Vector2i(5, 1), "w"], [Vector2i(4, 0), "e"], [Vector2i(5, 4), "w"]]
 const ALLEY_WIDTH := 4.5
 const ALLEY_LENGTH := 24.0
 
@@ -47,6 +47,9 @@ func _ready() -> void:
 				lot = _tower(lot)
 		if CityLayout.barrio_kind(lot.block) != "house" and _rng.randf() < 0.35:
 			_water_tower(lot)
+	var yards := CityYards.new()
+	yards.name = "Yards"
+	add_child(yards)
 
 
 ## An alley's footprint on the ground (x, z), its two walls included, for overlap checks.
@@ -158,10 +161,19 @@ func _alley(block: Vector2i, side: String) -> void:
 					City.GLASS, root)
 		_alley_fire_escape(root, x * half, height)
 	_box(Vector3(0, 4, -ALLEY_LENGTH - 0.5), Vector3(ALLEY_WIDTH + 2, 8, 1), BRICK_DARK, root)
-	# The chain-link fence: posts, a top rail and a see-through mesh.
+	# The chain-link fence: posts, a top rail and a see-through mesh. It climbs (Climbable).
 	var fence_z := -ALLEY_LENGTH + 6
+	var climb := Climbable.new()
+	climb.top = 3.0
+	climb.position = Vector3(0, 1.5, fence_z)
+	root.add_child(climb)
+	var wall := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(ALLEY_WIDTH, 3.0, 0.1)
+	wall.shape = box
+	climb.add_child(wall)
 	for x: float in [-half + 0.1, 0.0, half - 0.1]:
-		_box(Vector3(x, 1.5, fence_z), Vector3(0.08, 3.0, 0.08), FENCE, root)
+		_mesh_box(Vector3(x, 1.5, fence_z), Vector3(0.08, 3.0, 0.08), FENCE, root)
 	_mesh_box(Vector3(0, 3.0, fence_z), Vector3(ALLEY_WIDTH, 0.06, 0.06), FENCE, root)
 	var net := BoxMesh.new()
 	net.size = Vector3(ALLEY_WIDTH, 2.9, 0.02)
