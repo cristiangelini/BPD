@@ -65,7 +65,7 @@ Van disfrazados y tienen que pasar desapercibidos mientras juntan evidencia (dec
 1. **Club de ajedrez:** hay que jugar mientras se espía.
 2. **Banda de motociclistas:** hay que hacer pruebas de valentía.
 3. **Restaurante:** se hacen pasar por cocineros y hay que cocinar de verdad.
-4. **Banda de mimos:** no se puede hablar; todo se hace con mímica.
+4. **Banda de mimos:** no se puede hablar; todo se hace con mímica. Propuesta en [infiltracion-mimos.md](infiltracion-mimos.md) (decisión 170).
 5. **Fiesta de disfraces:** todos están disfrazados de policía y hay que encontrar al falso.
 6. **Club de abuelos:** bingo y baile, y el capo es la abuela.
 7. **Gimnasio:** hay que entrenar sin rendirse.
