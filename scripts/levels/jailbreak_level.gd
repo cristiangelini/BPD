@@ -124,6 +124,13 @@ const WAITING_SPOTS: Array[Vector3] = [Vector3(-4.3, 0, 7.6), Vector3(-2.9, 0, 7
 	Vector3(4.3, 0, 7.6), Vector3(-4.5, 0, 5.8), Vector3(-3.0, 0, 4.8), Vector3(-1.5, 0, 3.8), Vector3(1.5, 0, 3.8),
 	Vector3(3.0, 0, 4.8), Vector3(4.5, 0, 5.8), Vector3(-2.5, 0, 2.4), Vector3(2.5, 0, 2.4)]
 const WAITING_MIN := 8
+## Step 2: how long the drill lasts, and where each of the waiting room's people stands on the sidewalk in it.
+const DRILL_TIME := 120.0
+const MEETING_SPOTS: Array[Vector3] = [Vector3(-5.5, 0, 10.8), Vector3(-4.5, 0, 11.6), Vector3(-3.5, 0, 10.8),
+	Vector3(-2.5, 0, 11.6), Vector3(-1.5, 0, 10.8), Vector3(-0.5, 0, 11.6), Vector3(0.5, 0, 10.8), Vector3(1.5, 0, 11.6),
+	Vector3(3.5, 0, 10.8), Vector3(4.5, 0, 11.6), Vector3(5.5, 0, 10.8), Vector3(6.5, 0, 11.6)]
+## The heater after a drill ("NO TOCAR"): the next smoke takes this many times as long.
+const HEATER_SLOW := 2.0
 ## The big one stays stuck in the grille this long (s); crawling faster than this in the duct is a noisy scramble.
 const VENT_STUCK := 4.0
 const VENT_QUIET_SPEED := (Cop.CRAWL_SPEED + Cop.CRAWL_RUN_SPEED) / 2.0
@@ -164,8 +171,10 @@ var dumpster: Dumpster
 var garbage_truck: GarbageTruck
 var heaters: Array[CellHeater] = []
 var detectors: Array[SmokeDetector] = []
-## The alarm rang (step 2 starts the drill on it).
+## The alarm rang, and the drill is on for drill_left more seconds (the host counts).
 var alarm_rung := false
+var drilling := false
+var drill_left := 0.0
 ## The host: where each cop in the duct was last physics frame, to hear who scrambles.
 var _duct_last := {}
 ## The other end of the tunnels, on the sidewalk: it shows once one is through.
@@ -273,8 +282,11 @@ func _drill_day() -> void:
 	add_child(watcher)
 	watcher.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), GUARD_AT)
 	watcher.stand_guard(case_seed)
+	watcher.station_lot = lot
+	watcher.cell_doors = city.cell_doors
 	watcher.outside_cells = outside_cells
 	watcher.see_through = [desk.get_rid()]
+	watcher.caught.connect(_drill_caught)
 	watcher.caught.connect(_on_caught)
 	guard = watcher
 	for cell in HEATERS.size():
@@ -313,10 +325,13 @@ func _drill_day() -> void:
 		var person := WaitingPerson.new()
 		person.name = "WaitingPerson%d" % i
 		person.set_up(WaitingPerson.KINDS[kinds[i]], rng.randi())
+		person.station_lot = lot
+		person.home = lot * WAITING_SPOTS[spots[i]]
+		person.meeting = lot * MEETING_SPOTS[i]
 		add_child(person)
-		var at: Vector3 = WAITING_SPOTS[spots[i]]
-		# Facing the comisario's office (-Z), give or take.
-		person.global_transform = lot * Transform3D(Basis(Vector3.UP, rng.randf_range(-0.8, 0.8)), at)
+		# Facing the comisario's office (-Z; the models face +Z), give or take.
+		person.global_transform = Transform3D(lot.basis * Basis(Vector3.UP, PI + rng.randf_range(-0.8, 0.8)),
+			person.home)
 
 
 ## Every cop is a prisoner in an orange vest (every PC dresses every cop the same).
@@ -326,9 +341,53 @@ func _dress_prisoners() -> void:
 			cop.put_on_disguise("prison_vest", 0.0)
 
 
-## Smoke made a detector ring: the drill starts (step 2).
+## Smoke made a detector ring: the drill starts. The guard opens the cells and leads everyone out (in the drill a
+## prisoner out of a cell is what he wants), and the waiting room walks out to the sidewalk.
 func _on_alarm() -> void:
 	alarm_rung = true
+	if drilling or not multiplayer.is_server():
+		return
+	drilling = true
+	drill_left = DRILL_TIME
+	guard.outside_cells = func(_at: Vector3) -> bool: return false
+	(guard as DrillGuard).start_drill()
+	for person: WaitingPerson in get_tree().get_nodes_in_group("waiting_people"):
+		person.evacuate()
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		cop.show_hint("HINT_DRILL_ALARM", true)
+
+
+## The drill's over: everyone back in, the prisoners still out back in their cells.
+func _end_drill() -> void:
+	(guard as DrillGuard).end_drill()
+	_drill_over()
+	var car: PatrolCar = $PatrolCar
+	var slot := 0
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if outside_cells(cop.global_position) and car.seat_of(cop) < 0:
+			cop.warp(cop_spawn(slot))
+			slot += 1
+		cop.show_hint("HINT_DRILL_OVER", true)
+	for door in city.cell_doors:
+		door.lock()
+
+
+## Caught in the drill: it ends there (the rest of _on_caught puts everyone back).
+func _drill_caught(_times: int) -> void:
+	if drilling:
+		_drill_over()
+
+
+## The waiting room goes back in, the alarm stops and the heaters get their "NO TOCAR" sign.
+func _drill_over() -> void:
+	drilling = false
+	guard.outside_cells = outside_cells
+	for person: WaitingPerson in get_tree().get_nodes_in_group("waiting_people"):
+		person.go_back()
+	for detector in detectors:
+		detector.hush()
+	for heater in heaters:
+		heater.slow = HEATER_SLOW
 
 
 ## Daytime: a white sun high up and a blue sky.
@@ -946,6 +1005,10 @@ func _hud() -> void:
 func _physics_process(delta: float) -> void:
 	if is_drill():
 		_dress_prisoners()
+		if drilling and multiplayer.is_server():
+			drill_left -= delta
+			if drill_left <= 0.0:
+				_end_drill()
 	if stains:
 		_slip_on_wet(delta)
 	if dog and multiplayer.is_server():

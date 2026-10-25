@@ -105,3 +105,17 @@ la limpieza.
 - El simulacro que empieza con la alarma es el paso 2.
 - Modelos `prison_vest`, `cell_heater`, `cell_blanket` y `smoke_detector` en `tools/modelgen/models/drill.js`. 19 textos
   nuevos en es, en y pt. Pruebas en `test_drill_smoke.gd`.
+
+## Cómo quedó el paso 2
+- Cuando suena la alarma empieza el simulacro, que dura 120 s (cuenta la PC que hospeda). El guardia toca el silbato,
+  abre las dos celdas una por una y lleva a todos por la puerta de entrada hasta el punto de encuentro en la vereda.
+  Ahí se queda mirando la comisaría.
+- La sala de espera sale caminando a la vereda (cada uno a su lugar, los abuelos más lentos) y dice una de 5 frases.
+- En el simulacro, un preso fuera de la celda no es sospechoso: es lo que el guardia quiere.
+- Al terminar: el guardia dice "todos adentro" y vuelve a su escritorio, la gente vuelve a la sala y el detector se
+  calla. Los policías que sigan afuera y no estén en el patrullero vuelven a la celda, y las celdas se cierran.
+- Si el guardia atrapa a alguien en el simulacro, termina ahí.
+- Después del simulacro las estufas llevan el cartel "NO TOCAR": el próximo humo tarda el doble (16 s).
+- La puerta de las celdas y lo que hace el guardia se ven igual en todas las PCs.
+- 10 textos nuevos. Pruebas en `test_drill_evacuation.gd`. Foto: `paso2-vereda.png`.
+- Sacarse el chaleco, el perchero, la cuenta de chalecos y escaparse en el patrullero son el paso 3.
