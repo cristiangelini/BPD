@@ -12,20 +12,21 @@ mirar el show y, a la vez, no mirarlo**.
 ## Cómo es el caso
 1. **El aviso:** el comisario en su oficina: "Novatos, hoy son el jurado del concurso de talentos de la cárcel. Voten
    con cariño, pero no le saquen el ojo a nadie. El año pasado ganó un mago y no lo vimos nunca más".
-2. **El comedor:** las mesas largas se corren a los costados y quedan 3 filas de bancos frente a un escenario nuevo
-   contra la pared de la cocina, con telón rojo. Delante del escenario, la **mesa del jurado** con 4 sillas y 4
+2. **El comedor:** las mesas de la mitad oeste se corren y quedan 3 filas de bancos frente a un escenario nuevo
+   contra la pared del fondo (la del pabellón), con telón rojo. Delante del escenario, la **mesa del jurado** con 4 sillas y 4
    carteles de puntaje (del 1 al 10). 12 presos en los bancos (el modelo del motín) y el presentador (un preso con
    moño y micrófono) arriba.
-3. **Los números:** son 5, de 60 s cada uno, con 15 s de telón cerrado entre uno y otro. La semilla elige 5 de 8:
-   el mago, el coro, el baile con humo, el malabarista, el ventrílocuo, el de los platos chinos, la banda de cucharas
-   y el poeta. El presentador anuncia cada uno ("¡Con ustedes... el Gran Ratoncini!").
+3. **Los números:** son 5, de 60 s cada uno, con 15 s de telón cerrado entre uno y otro: siempre el mago, el coro y
+   el baile con humo, y 2 de los 5 números sin truco (el malabarista, el ventrílocuo, el de los platos chinos, la banda
+   de cucharas y el poeta); la semilla elige cuáles 2 y el orden de los 5. El presentador anuncia cada uno ("¡Con
+   ustedes... el Gran Ratoncini!").
 4. **El jurado:** al final de cada número el presentador pide el voto: "¡Jurado, sus puntajes!". Durante 5 s tiene
    que haber al menos un policía sentado en la mesa del jurado (E en una silla para sentarse, E otra vez para
    pararse) y levanta un cartel con la rueda del mouse o con 1 a 9 y 0 para el 10. Si la mesa está vacía, el público
    se ofende: abucheo y **guerra de comida chica** de 20 s en los bancos (la del motín), que hay que parar como en el
    motín.
-5. **Los trucos de fuga:** 3 de los 5 números esconden una fuga (la semilla elige cuáles). Cada truco tiene su
-   pista, si uno mira lo que no hay que mirar:
+5. **Los trucos de fuga:** 3 de los 5 números esconden una fuga. Cada truco tiene su pista, si uno mira lo que no
+   hay que mirar:
    - **El mago:** pide un voluntario del público, lo mete en una caja y lo hace "desaparecer". La caja tiene doble
      fondo y una trampa en el escenario que da a la cocina. E sobre la caja mientras está cerrada la abre y el
      voluntario sale avergonzado; si no, aparece corriendo en la cocina hacia la puerta de servicio.
@@ -45,7 +46,7 @@ mirar el show y, a la vez, no mirarlo**.
    número votado (con alguien en la mesa del jurado a tiempo). Cuota propia de 400, como las otras cárceles.
 
 ## Lo que cambia con la semilla
-Qué 5 números salen y en qué orden, cuáles 3 esconden una fuga, quién es el voluntario del mago, qué ventana sierra
+Qué 2 números sin truco salen y en qué orden van los 5, quién es el voluntario del mago, qué ventana sierra
 el del coro y quiénes gatean en el humo.
 
 ## Lo que se reusa
@@ -78,3 +79,12 @@ el del coro y quiénes gatean en el humo.
    así no alcanza con desconfiar de todo y hay que mirar las pistas.
 3. **¿Si la mesa del jurado queda vacía al votar, el público arma una guerra de comida chica** (la del motín)?
    Recomendado: sí, es el castigo por no votar y reusa lo que ya está hecho.
+
+## Hecho así
+- **Paso 2:** `--place=prison_talent` (`scenes/levels/prison_talent.tscn`, `PrisonLevel.variant = "talent"`). Sin las
+  3 mesas del oeste, el comedor tiene el escenario (`TalentStage`: tarima de 6 x 2,5 m con escalón, telón rojo de dos
+  mitades que se abren a los costados y el cartel pintado), la mesa del jurado con sus 4 sillas (`JuryChair`: E para
+  sentarse mirando al escenario y E para pararse) y 3 bancos con los 12 presos sentados mirando el show
+  (`TalentInmate`); arriba, el presentador con moño y micrófono. `TalentPlan` sortea el show: siempre el mago, el coro
+  y el humo, más 2 de los otros 5, en el orden de la semilla. Capturas: `paso2-comedor.png`, `paso2-jurado.png` y
+  `paso2-presentador.png` en `carcel-talentos/`.

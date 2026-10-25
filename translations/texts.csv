@@ -2207,3 +2207,6 @@ OBJ_TUNNEL_FOUND,Túnel encontrado: falta el cemento,Tunnel found: it needs the 
 OBJ_TUNNEL_ESCAPED,Presos escapados: %d (con %d se pierde el caso),Inmates escaped: %d (at %d the case is lost),Presos fugidos: %d (com %d o caso está perdido)
 OBJ_TUNNEL_CAUGHT,Extra: presos en la celda de castigo: %d,Extra: inmates in the punishment cell: %d,Extra: presos na cela de castigo: %d
 CASE_FAILED_TUNNEL_ESCAPED,Se escaparon 3 presos por el túnel. Caso perdido.,3 inmates got away through the tunnel. Case lost.,3 presos fugiram pelo túnel. Caso perdido.
+PROMPT_JURY_SIT,E: sentarte en el jurado,E: sit on the jury,E: sentar no júri
+PROMPT_JURY_STAND,E: pararte,E: stand up,E: levantar
+TALENT_SIGN,CONCURSO DE TALENTOS,TALENT SHOW,CONCURSO DE TALENTOS

@@ -88,7 +88,8 @@ var _build: PlaceBuilder
 ## Which prison case this is: "riot" (the canteen, carcel-motin.md), "transfer" (the bus from the station,
 ## traslado-presos.md; --place=transfer), "blackout" (the power cut, carcel-corte-de-luz.md; --place=blackout) or
 ## "visits" (the visiting day, carcel-visitas.md; --place=visits), "laundry" (the laundry, carcel-lavanderia.md;
-## --place=laundry) or "tunnel" (the tunnel, carcel-tunel.md; --place=prison_tunnel).
+## --place=laundry), "tunnel" (the tunnel, carcel-tunel.md; --place=prison_tunnel) or "talent" (the talent show,
+## carcel-talentos.md; --place=prison_talent).
 @export var variant := "riot"
 ## The transfer's bus (traslado-presos.md, step 1), parked by the station's door, and its inmates (step 2).
 var bus: PrisonBus
@@ -122,6 +123,8 @@ var laundry_case: LaundryCase
 ## The tunnel case's yard time, the cells' hideouts and the gang digging (carcel-tunel.md, step 2).
 var tunnel: TunnelPlan
 var tunnel_case: TunnelCase
+## The talent show's stage, jury table, benches and inmates (carcel-talentos.md, step 2).
+var talent: TalentPlan
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -152,6 +155,9 @@ func _ready() -> void:
 		return
 	if variant == "tunnel":
 		_start_tunnel()
+		return
+	if variant == "talent":
+		_start_talent()
 		return
 	riot = PrisonRiot.new()
 	riot.name = "Riot"
@@ -281,6 +287,18 @@ func _start_tunnel() -> void:
 	tunnel_case.shift_screen = $ShiftScreen
 	add_child(tunnel_case)
 	tunnel_case.start(city.get("comisario"))
+	city.transform = CityLayout.anchor("prison")
+	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
+	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+
+
+## The talent show (carcel-talentos.md, step 2): the west half of the canteen is the show, with its stage, the jury
+## table and the benches. The cops come from the station in the patrol car.
+func _start_talent() -> void:
+	talent = TalentPlan.new()
+	talent.name = "TalentPlan"
+	add_child(talent)
+	talent.setup(self, case_seed)
 	city.transform = CityLayout.anchor("prison")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
@@ -469,6 +487,9 @@ func _build_shell() -> void:
 ## The six tables, the counter with the food on it, the stack of trays at its end and the punishment cell.
 func _build_canteen() -> void:
 	for x in TABLE_XS:
+		# At the talent show the west tables made room for the stage and the benches.
+		if variant == "talent" and x == TABLE_XS[0]:
+			continue
 		for z in TABLE_ZS:
 			_table(Vector3(x, FLOOR_TOP, z))
 	var length := COUNTER_TO - COUNTER_FROM
