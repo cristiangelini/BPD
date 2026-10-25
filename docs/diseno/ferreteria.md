@@ -161,7 +161,7 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      invitado queda congelado y sigue al del anfitrión. La goma pinchada importa en el anfitrión, que maneja el
      patrullero para todos.
 
-## Preguntas para Cristian (se avanza con lo recomendado mientras tanto)
+## Preguntas para Cristian (respondidas: sí a las 3, 25/10)
 1. ¿La ferretería como cuarto lugar, o preferís otro de los 7 que faltan? **Recomendado:** la ferretería, porque ya
    tiene su lote al lado de la panadería y la peluquería, y reutiliza casi todo.
 2. ¿Tobías cobra lo que agarran (15 cada herramienta, se devuelve si la dejan en su góndola)? **Recomendado:** sí, es
