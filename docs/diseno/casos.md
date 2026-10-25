@@ -93,11 +93,11 @@ Si fallan, terminan presos en su propia comisaría y tienen que escaparse (decis
 1. **Por la ventilación:** con un compañero que no entra.
 2. **Disfrazados de limpieza:** pasando por delante del comisario.
 3. **La llave en la dona:** hay que distraer al guardia mientras uno pesca la llave.
-4. **Túnel con cucharas:** cavan mientras los otros tapan el ruido.
+4. **Túnel con cucharas:** cavan mientras los otros tapan el ruido. Propuesta en [fuga-tunel.md](fuga-tunel.md) (decisión 152).
 5. **Escapar en el camión de la basura.**
 6. **Sobornar al guardia:** con la plata de las coimas, si les queda.
 7. **Simulacro de incendio:** salen entre la gente.
-8. **El perro guardián:** hay que hacerse amigo con comida.
+8. **El perro guardián:** hay que hacerse amigo con comida. Propuesta en [fuga-perro.md](fuga-perro.md) (decisión 151).
 9. **Por el techo:** con una cuerda hecha de sábanas.
 10. **Hacer un juicio rápido:** uno hace de abogado y los demás de testigos falsos.
 
@@ -116,6 +116,7 @@ Montan un control en la calle y tienen que encontrar el auto buscado entre mucho
 10. **Camión de frutas:** el contrabando está dentro de las sandías.
 
 ## 9. Protección de un político
+Hecho: 9.1 ([proteccion-politico.md](proteccion-politico.md)). Propuesta: 9.6 ([politico-mercado.md](politico-mercado.md)).
 Tienen que cuidar a un político molesto durante un evento (decisión 32).
 
 1. **Acto en una plaza:** le tiran huevos y tomates.
@@ -133,12 +134,12 @@ Tienen que cuidar a un político molesto durante un evento (decisión 32).
 Llegan cuando el robo está pasando (decisión 32).
 
 1. **Ladrones con máscaras de animales.**
-2. **Rehenes que no quieren irse:** les está gustando.
+2. **Rehenes que no quieren irse:** les está gustando. Propuesta en [robo-banco-rehenes.md](robo-banco-rehenes.md) (decisión 121).
 3. **El banco del pueblo:** chico y con un solo empleado dormido.
 4. **Robo por el techo:** con helicóptero de juguete.
-5. **Ladrones abuelos:** lentos pero astutos.
-6. **La bóveda que se inunda.**
+5. **Ladrones abuelos:** lentos pero astutos. Propuesta en [robo-banco-abuelos.md](robo-banco-abuelos.md) (decisión 122).
+6. **La bóveda que se inunda:** el agua sube y frena a todos, también al taladro. Propuesta en [robo-banco-inundado.md](robo-banco-inundado.md) (decisión 125).
 7. **Robo en el banco de sangre.**
-8. **El ladrón arrepentido:** quiere devolver todo, pero la banda no lo deja.
+8. **El ladrón arrepentido:** quiere devolver todo, pero la banda no lo deja. Propuesta en [robo-banco-arrepentido.md](robo-banco-arrepentido.md) (decisión 123).
 9. **Banco de semillas:** roban semillas raras de plantas que crecen enseguida.
-10. **El ladrón es el gerente:** hay que darse cuenta antes de que se vaya con la plata.
+10. **El ladrón es el gerente:** hay que darse cuenta antes de que se vaya con la plata. Propuesta en [robo-banco-gerente.md](robo-banco-gerente.md) (decisión 124).
