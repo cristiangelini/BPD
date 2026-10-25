@@ -86,11 +86,29 @@ la sospecha y las capturas. Clotilde y el comisario van por `NpcSync`; el llaver
 
 ## El orden para hacerlo (un PR chico por paso)
 1. El sorteo de la variante en la fuga (`JailbreakLevel.variant`: dona o limpieza, `--jailbreak=`), la madrugada sin
-   guardia y Clotilde con su carrito haciendo la ronda y abriendo las celdas (modelos nuevos en `tools/modelgen`).
-2. El llavero en el carrito y el cuarto de limpieza con los disfraces (look "cleaner") y las herramientas.
-3. Las manchas, limpiar con el trapeador y la lustradora, y el piso mojado que resbala.
-4. El comisario madrugador: su ronda, la mirada, la sospecha por disfraz y limpieza, "¿Te conozco?" y la captura.
-5. Salir (subir al patrullero a la vista), perder a la tercera, frases y online.
+   guardia y el comisario madrugador con su ronda, su mirada y la captura (todavía sin disfraces: a cualquiera fuera
+   de la celda lo ve).
+2. Clotilde con su carrito haciendo la ronda, abriendo las celdas y el llavero en el carrito (modelos nuevos en
+   `tools/modelgen`).
+3. El cuarto de limpieza con los disfraces (look "cleaner") y las herramientas, y la sospecha del comisario según el
+   disfraz y si limpian.
+4. Las manchas, limpiar con el trapeador y la lustradora, el piso mojado que resbala y el "¿Te conozco?".
+5. Salir (subir al patrullero a la vista), frases y online.
+
+**Cómo quedó el paso 1:**
+- La fuga sortea con la semilla de "Jugar" entre la dona y la limpieza, mitad y mitad. Sin semilla de "Jugar" (abrir
+  la escena directo) sale la dona. `--jailbreak=cleaning` o `--jailbreak=donut` fuerza una.
+- En la de limpieza no está el escritorio del guardia, ni la caja de donas, ni el escobillón ni la caña. Es de
+  madrugada: el cielo naranja en el horizonte y la luz más cálida.
+- El comisario madrugador (`EarlyComisario`, con el modelo del comisario) camina su ronda: su oficina, la cafetera de
+  la sala de guardia y la puerta de la sala de las celdas, mirando hacia adentro. En cada parada se queda de 4 a 8 s
+  (la semilla) y dice algo (3 frases por parada). Caminando mira al frente; parado, gira la cabeza como el guardia.
+- Mira y sospecha igual que el guardia: 50 por segundo por cada policía fuera de las celdas que ve. A 100 dice algo
+  ("¡Novatos! ¿Qué hacen fuera de la celda? ¡Adentro!") y vuelve a meter a los que estaban afuera.
+- Cantarle no lo duerme. Gritarle sí lo hace girar.
+- A la tercera captura grita "¡Tres veces! ¡Tres! ¡Suspendidos, todos!" y sale "Suspendidos", sin el comisario en
+  pijama.
+- Online va como el guardia (la misma semilla en cada PC y el comisario por `NpcSync`).
 
 ## Preguntas para Cristian
 1. ¿La fuga sortea entre la dona y la limpieza mitad y mitad con la semilla? **Recomiendo sí:** las dos ya comparten
