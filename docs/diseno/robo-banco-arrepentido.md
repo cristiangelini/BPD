@@ -59,3 +59,11 @@ las tres ayudas, la silla con la soga y el desatar.
    deja de ayudar. La otra opción es que la banda solo grite y el taladro se acelere, sin atarlo.
 3. **¿Al final se lo esposa igual que a los demás?** Recomendado: sí, va contento al patrullero y cada ayuda hecha
    suma 50 al sueldo. La otra opción es que quede libre y se vaya caminando como un rehén.
+
+## Hecho así
+
+- **Paso 1 (sorteo y el que llora):** `BankLevel.variant` reparte las semillas en cuartos: fiesta, abuelos, arrepentido
+  y base (`--bank=sorry` lo fuerza). `BankLevel.sorry_animal(semilla)` elige al conejo, al chancho o al pato, y ese
+  `BankRobber` tiene `sorry`: lleva un pañuelo blanco en la mano derecha, cada 8 s solloza 2 s con el pañuelo en la
+  cara y una de 4 frases (`ROBBER_SORRY_SOB_1-4`), y no grita cuando ve a un policía ni a un rehén que sacan (no se
+  rinde ni corre). Online el sollozo va en `net_state`. Capturas en `/mnt/project-files/arrepentido/paso1-*.png`.

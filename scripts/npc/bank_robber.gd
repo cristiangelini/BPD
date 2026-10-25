@@ -68,10 +68,24 @@ const DODGE_REACH := 2.5
 const RUN_SPEED := 3.0
 const ARRIVED := 0.6
 const SAY_TIME := 4.0
+## The sorry robber (robo-banco-arrepentido.md, step 1, decision 123): every SOB_EVERY seconds a sob or a sorry line
+## (SOB_LINES of them), the hanky up to his mask for SOB_TIME.
+const SOB_EVERY := 8.0
+const SOB_TIME := 2.0
+const SOB_LINES := 4
+const HANKY_DOWN := Vector3(0.38, 0.95, -0.32)
+const HANKY_UP := Vector3(-0.02, 1.36, -0.5)
 
 @export var animal := "conejo"
 ## One of the grandpa gang: slower, and their own model.
 var grandpa := false
+## The one who's sorry and wants to give it all back: he cries with a white hanky and doesn't shout about cops or
+## hostages led out.
+var sorry := false
+var sobbing_left := 0.0
+var _sob_left := SOB_EVERY
+var _next_sob := 0
+var _hanky: MeshInstance3D
 ## A grandpa who saw a cop took his mask off and goes (or went) to sit among the hostages: where (world position, the
 ## level hands it out), whether he's sitting there, and the cop leading him out by the hand as a hostage.
 var unmasked := false
@@ -135,6 +149,41 @@ func _ready() -> void:
 	_bubble.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_bubble.hide()
 	add_child(_bubble)
+	if sorry:
+		_add_hanky()
+
+
+## The white hanky in his right hand.
+func _add_hanky() -> void:
+	_hanky = MeshInstance3D.new()
+	_hanky.name = "Hanky"
+	var cloth := PrismMesh.new()
+	cloth.size = Vector3(0.22, 0.2, 0.03)
+	var white := StandardMaterial3D.new()
+	white.albedo_color = Color(0.97, 0.97, 0.95)
+	cloth.material = white
+	_hanky.mesh = cloth
+	_hanky.position = HANKY_DOWN
+	add_child(_hanky)
+
+
+func is_sobbing() -> bool:
+	return sobbing_left > 0.0
+
+
+## Every SOB_EVERY seconds a sob or a sorry line, with the hanky up to his mask.
+func _sob(delta: float) -> void:
+	if sobbing_left > 0.0:
+		sobbing_left = maxf(sobbing_left - delta, 0.0)
+	else:
+		_sob_left -= delta
+		if _sob_left <= 0.0:
+			_sob_left = SOB_EVERY
+			sobbing_left = SOB_TIME
+			say("ROBBER_SORRY_SOB_%d" % (_next_sob % SOB_LINES + 1))
+			_next_sob += 1
+	if _hanky:
+		_hanky.position = HANKY_UP if is_sobbing() else HANKY_DOWN
 
 
 ## How fast the pig runs to the van: half as fast for a grandpa.
@@ -212,6 +261,10 @@ func _physics_process(delta: float) -> void:
 	_turn_head(delta)
 	if animal == "chancho":
 		_eat(delta)
+	if sorry:
+		# He keeps quiet about cops and hostages: he's on their side, deep down.
+		_sob(delta)
+		return
 	for seen: Variant in _spotted.keys():
 		_spotted[seen] -= delta
 		if not is_instance_valid(seen) or _spotted[seen] <= 0.0:
@@ -400,11 +453,11 @@ func said() -> String:
 
 
 ## What a guest's copy needs besides where they are and what they say (NpcSync): cuffed, gave up, running, in the van,
-## gone with a sack, where their head points, the pig's sandwich and, a grandpa, whether he took the mask off and sits
-## among the hostages.
+## gone with a sack, where their head points, the pig's sandwich, a grandpa, whether he took the mask off and sits
+## among the hostages, and the sorry robber's hanky up.
 func net_state() -> Array:
 	return [is_cuffed(), surrendered, running, in_van, visible, snappedf(look, 0.01), eating_left > 0.0, unmasked,
-		posing]
+		posing, sobbing_left > 0.0]
 
 
 func apply_net_state(state: Variant) -> void:
@@ -426,6 +479,10 @@ func apply_net_state(state: Variant) -> void:
 			_show_mask(false)
 		posing = state[8]
 		_model.scale.y = SCALES[animal] * (POSE_CROUCH if posing else 1.0)
+	if state.size() > 9:
+		sobbing_left = SOB_TIME if state[9] else 0.0
+		if _hanky:
+			_hanky.position = HANKY_UP if is_sobbing() else HANKY_DOWN
 
 
 func _process(delta: float) -> void:

@@ -18,12 +18,14 @@ extends Node3D
 ## away in the van, or on foot and slower if it's boxed in, and the chase is on (ChaseCase.begin). The case and its
 ## end are BankCase's (step 6b): the comisario gives it over the radio as the shift starts. Online the host's bank
 ## decides and a guest's follows it (`follower`, BankCase's snapshot).
-## Half the seeds are the variant where the hostages don't want to leave (robo-banco-rehenes.md, decision 121): the
+## A quarter of the seeds are the variant where the hostages don't want to leave (robo-banco-rehenes.md, decision 121): the
 ## hall is a party, with garlands, the robbers' boombox on the bench and a tray of croissants on the counter, and the
 ## hostages sway to the music. Two of them are fans of the gang, with a cardboard mask, who warn the robbers when they
 ## see a cop (SNITCHES). A quarter of the seeds are the grandpa robbers (robo-banco-abuelos.md, decision 122): the same
 ## gang, retired, with cane and cardigan; they walk at half pace and their old drill takes longer (BankDrill.SLOW_TIME).
-## --bank=party, --bank=grandpas or --bank=base forces one.
+## A quarter are the sorry robber (robo-banco-arrepentido.md, decision 123): one of the three under El Oso cries under
+## his mask with a white hanky and wants to give it all back. --bank=party, --bank=grandpas, --bank=sorry or
+## --bank=base forces one.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -106,6 +108,8 @@ const HIDE_SPOTS: Array[Vector3] = [Vector3(-5.0, 0, 3.65), Vector3(-2.0, 0, 3.6
 	Vector3(4.0, 0, 3.65)]
 ## Where the duck grandma's marbles land: on the hall's floor in front of the entrance (robo-banco-abuelos.md, step 3).
 const MARBLES_AT := Vector3(ENTRANCE_X + 0.6, 0, HALF_Z - 1.3)
+## Who can be the sorry robber: never El Oso.
+const SORRY_ANIMALS: Array[String] = ["conejo", "chancho", "pato"]
 ## How many of the party's hostages are fans of the gang (propuesta).
 const SNITCHES := 2
 const GARLAND_MODEL := preload("res://assets/models/bank_garland.glb")
@@ -139,6 +143,9 @@ var hostages: Array[BankHostage] = []
 var party := false
 ## The variant where the robbers are grandpas (decision 122).
 var grandpas := false
+## The variant where one robber is sorry and wants to give it all back (decision 123): that robber, or null.
+var sorry: BankRobber
+var _sorry_variant := false
 ## The duck grandma's marbles on the floor, once she threw them.
 var marbles: BankMarbles
 var croissant_tray: BankCroissantTray
@@ -170,6 +177,7 @@ func _ready() -> void:
 	var drawn := variant(case_seed, OS.get_cmdline_user_args())
 	party = drawn == "party"
 	grandpas = drawn == "grandpas"
+	_sorry_variant = drawn == "sorry"
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_hall()
@@ -215,17 +223,19 @@ func _ready() -> void:
 	case.start()
 
 
-## Which robbery this seed is: "party" (the hostages don't want to leave) for half the seeds, "grandpas" for a
-## quarter and "base" for the rest (propuesta); --bank=party, --bank=grandpas or --bank=base among the user args forces
-## one.
+## Which robbery this seed is, a quarter each (propuesta): "party" (the hostages don't want to leave), "grandpas",
+## "sorry" (one robber wants to give it all back) or "base"; --bank=party, --bank=grandpas, --bank=sorry or --bank=base
+## among the user args forces one.
 static func variant(seed_: int, args: PackedStringArray) -> String:
 	for arg in args:
-		if arg in ["--bank=party", "--bank=grandpas", "--bank=base"]:
+		if arg in ["--bank=party", "--bank=grandpas", "--bank=sorry", "--bank=base"]:
 			return arg.trim_prefix("--bank=")
-	var drawn := hash(["bank party", seed_]) % 4
-	if drawn % 2 == 0:
-		return "party"
-	return "grandpas" if drawn == 1 else "base"
+	return ["party", "grandpas", "sorry", "base"][hash(["bank party", seed_]) % 4]
+
+
+## Which of the three under El Oso is the sorry robber for this seed (robo-banco-arrepentido.md, decision 123).
+static func sorry_animal(seed_: int) -> String:
+	return SORRY_ANIMALS[hash(["bank sorry", seed_]) % SORRY_ANIMALS.size()]
 
 
 ## Whether this seed's robbery is the party where the hostages don't want to leave.
@@ -427,6 +437,7 @@ func _add_robbers() -> void:
 		robber.name = "Robber_" + animal
 		robber.animal = animal
 		robber.grandpa = grandpas
+		robber.sorry = _sorry_variant and animal == sorry_animal(case_seed)
 		robber.claim_spot = _claim_hide_spot
 		robber.is_out = func(at: Vector3) -> bool: return not inside(at)
 		robber.slipped_out.connect(func(_robber: BankRobber) -> void: bags_taken += 1)
@@ -446,6 +457,8 @@ func _add_robbers() -> void:
 				robber.run_path.append(global_transform * at)
 		if robber.is_boss():
 			boss = robber
+		if robber.sorry:
+			sorry = robber
 
 
 ## The grandpa gang got nervous: the duck grandma, if she's still loose, throws her marbles in front of the entrance
