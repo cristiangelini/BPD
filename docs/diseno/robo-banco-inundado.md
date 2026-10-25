@@ -75,3 +75,11 @@ la ola de la puerta y los flotadores.
   la bóveda hacia el pasillo. Cada cuadro le pone a cada policía, ladrón y rehén adentro del banco su `wade` según la
   profundidad (1 seco, 0,8 a 0,3 m, 0,6 a 0,6 m, 0,45 a 1 m, rectas entre esos puntos); en la vereda vale 1. Capturas
   en `/mnt/project-files/inundado/paso1-*.png`.
+- **Paso 2 (la llave de paso y la puerta):** en este robo la entrada tiene una puerta (`front_door`, sin llave) que
+  aguanta el agua adentro; el chancho que corre a la camioneta y los rehenes que salen caminando la abren solos. La
+  llave de paso (`BankValve`, una rueda roja en un caño de la pared de atrás, al este de la puerta de atrás) se gira
+  manteniendo E: 8 s uno solo, 4 s entre dos (no caben más manos), y soltar guarda lo girado. Girada del todo, el
+  chorro se corta (`BankWater.shut_off`, guarda el nivel en `shut_at` para el +100 del paso 4). Con la puerta abierta y
+  el caño abierto el agua se queda donde está; con el caño cerrado baja 0,1 m cada 10 s. Cada vez que la puerta se
+  abre con 0,2 m o más sale una ola: el agua baja 0,1 m de golpe, voltea a los policías a 3,5 m de la puerta y empuja
+  hacia la vereda las cosas sueltas. Capturas en `/mnt/project-files/inundado/paso2-*.png`.

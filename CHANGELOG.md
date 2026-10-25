@@ -161,3 +161,4 @@
 - Bank manager, step 5: online. The host's manager walks, talks and decides and every guest sees the same: his walkie, his trunk, the cuffs, El Oso hanging up, the case and his getaway.
 - Bank robbery design: the flooding vault (decision 125), the water rises and slows everyone, the drill too; a valve outside and the front door to drain it.
 - Bank flood, step 1: a sixth of the robberies the duck's drill punctured the pipe; water pours from the vault and rises 0.2 m a minute up to 1 m over the whole bank, slowing every cop, robber and hostage wading in it.
+- Bank flood, step 2: the valve out back (hold E, 8 s alone or 4 s between two) stops the water; a front door holds it in, drains it once the pipe is shut and lets out a wave when opened on deep water.
