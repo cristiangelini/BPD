@@ -457,6 +457,8 @@ func add_clown_out(out: ConvoyClown) -> void:
 		out.boarded.connect(_on_boarded)
 	if not out in clowns_out:
 		clowns_out.append(out)
+	if crowd > 0:
+		CrowdedCar.show_inside(self, crowd - clowns_out.size())
 
 
 ## The other clowns in the car: from its plate, so every PC dresses them alike.

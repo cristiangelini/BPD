@@ -326,6 +326,7 @@ func snapshot() -> Dictionary:
 		state.run_off = [chase.truck.global_transform if is_instance_valid(chase.truck) else Transform3D(),
 			_run_off_look if clown or fruit else int(chase.suspect_id.trim_prefix("traffic_")), clown, fruit,
 			_run_off_riders[0], _run_off_riders[1]]
+		state.riders_left = chase.drops.riders_left
 	return state
 
 
@@ -359,6 +360,10 @@ func apply_snapshot(state: Dictionary) -> void:
 	_follow_convoy(state.get("taken_from", ""), state.get("clean", []))
 	if chase and state.has("chase"):
 		chase.apply_snapshot(state.chase)
+	if chase and state.get("riders_left", chase.drops.riders_left) != chase.drops.riders_left:
+		# One more of the gang jumped out on the host: one face less on the guest's runaway too.
+		chase.drops.riders_left = state.riders_left
+		CrowdedCar.show_inside(chase.truck, chase.drops.riders_left + 1)
 	if state.lost and not lost and not chase and not innocent_now:
 		_hint_all("HINT_TRAFFIC_WANTED_GONE")
 	lost = state.lost
