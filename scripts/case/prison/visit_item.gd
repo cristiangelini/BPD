@@ -6,7 +6,9 @@ extends Grabbable
 ## Some have something hidden inside (`hidden`, drawn by VisitPlan). Step 3: E with it in hand opens it (the cake
 ## splits, the guitar comes apart): what was hidden lands in the cop's hands (Contraband) and is confiscated; with
 ## nothing inside it's just broken, and its visitor cries. Online the host decides (only it knows what's inside).
-## Every number here is (propuesta).
+## Step 4, the tells: hidden, it weighs HEAVIER times more; a metal thing inside goes "clonc" when set down on the
+## table, the pigeon in the hat coos and the phone in the watermelon buzzes every so often. Every number here is
+## (propuesta).
 
 enum Kind { CAKE, BREAD, GUITAR, FLOWERS, SCARF, BABY, CHICKEN, HAT, WATERMELON, SHOE, YARN, BOOK }
 
@@ -21,6 +23,15 @@ const SIZES := {
 const MASSES := {Kind.CAKE: 1.0, Kind.BREAD: 0.5, Kind.GUITAR: 2.5, Kind.FLOWERS: 0.4, Kind.SCARF: 0.3, Kind.BABY: 2.0,
 	Kind.CHICKEN: 1.2, Kind.HAT: 0.3, Kind.WATERMELON: 4.0, Kind.SHOE: 0.6, Kind.YARN: 0.2, Kind.BOOK: 0.6}
 
+## Hidden, it weighs this many times more.
+const HEAVIER := 1.6
+## The metal things that go "clonc" (Contraband.Kind), and how often the noisy ones make their noise.
+const METAL: Array[int] = [Contraband.Kind.FILE, Contraband.Kind.KEY, Contraband.Kind.SAW, Contraband.Kind.TOOLS,
+	Contraband.Kind.LOCKPICKS, Contraband.Kind.SHOVEL, Contraband.Kind.SPOON]
+const NOISY := {Contraband.Kind.PIGEON: "VISIT_ITEM_COO", Contraband.Kind.PHONE: "VISIT_ITEM_BUZZ"}
+const NOISE_EVERY := Vector2(9.0, 15.0)
+const SOUND_TIME := 1.5
+
 var kind := Kind.CAKE
 ## What's hidden inside, found by opening it (step 3).
 var hidden := false
@@ -28,6 +39,9 @@ var hidden := false
 var visitor: PrisonVisitor
 ## Opened (step 3): split open, found or broken.
 var opened := false
+var _sound: Label3D
+var _sound_left := 0.0
+var _noise_left := 0.0
 
 
 func _init() -> void:
@@ -37,7 +51,7 @@ func _init() -> void:
 
 func _ready() -> void:
 	add_to_group("visit_items")
-	mass = MASSES[kind]
+	mass = MASSES[kind] * (HEAVIER if hidden else 1.0)
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
 	box.size = SIZES[kind]
@@ -45,6 +59,52 @@ func _ready() -> void:
 	shape.position.y = box.size.y / 2
 	add_child(shape)
 	add_child(build_model(kind))
+	_sound = Label3D.new()
+	_sound.name = "Sound"
+	_sound.position = Vector3(0, 0.45, 0)
+	_sound.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	_sound.no_depth_test = true
+	_sound.pixel_size = 0.003
+	_sound.outline_size = 8
+	_sound.font_size = 40
+	_sound.modulate = Color(1, 0.95, 0.6)
+	_sound.hide()
+	add_child(_sound)
+	_noise_left = randf_range(NOISE_EVERY.x, NOISE_EVERY.y)
+
+
+## What's inside, as a Contraband.Kind, or -1 with nothing.
+func inside() -> int:
+	return Contraband.IN_ITEM[kind] if hidden else -1
+
+
+## Set down on the search table by its visitor: a metal thing inside goes "clonc".
+func set_down() -> void:
+	if METAL.has(inside()):
+		make_sound("VISIT_ITEM_CLONC")
+
+
+func make_sound(key: String) -> void:
+	_sound.text = key
+	_sound.show()
+	_sound_left = SOUND_TIME
+
+
+func sound() -> String:
+	return _sound.text if _sound.visible else ""
+
+
+func _process(delta: float) -> void:
+	if _sound_left > 0.0:
+		_sound_left -= delta
+		if _sound_left <= 0.0:
+			_sound.hide()
+	if not NOISY.has(inside()) or opened:
+		return
+	_noise_left -= delta
+	if _noise_left <= 0.0:
+		make_sound(NOISY[inside()])
+		_noise_left = randf_range(NOISE_EVERY.x, NOISE_EVERY.y)
 
 
 func held_prompt_key(_cop: Cop) -> String:
