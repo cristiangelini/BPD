@@ -5,7 +5,8 @@ extends Grabbable
 ## car's door lets out its clowns, who wander off juggling around the car. The car won't move until they're all back
 ## in: a clown carried or pushed to within BOARD_REACH of the door gets back in by himself. Grabbed, he complains.
 ## E on the driver asks for his license; with the circus's sponge in hand, E scrubs his makeup off, a bit each time,
-## so his face can be held up against the license's photo (control-payasos.md, step 5).
+## so his face can be held up against the license's photo (control-payasos.md, step 5). Online the host's clowns
+## walk and get back in; the guests' are PropSync's copies, named alike, that find their car by its name.
 ## Light, so one cop can carry him (a circus clown is mostly air and makeup). Every number here is (propuesta).
 
 signal boarded(clown: ConvoyClown)
@@ -25,8 +26,9 @@ const SAY_SECONDS := 3.0
 const BALLS := 3
 const BALL_COLORS: Array[Color] = [Color(0.9, 0.15, 0.15), Color(0.2, 0.5, 0.95), Color(0.95, 0.85, 0.2)]
 
-## The car he came out of.
+## The car he came out of; a guest's copy finds it by `car_name`.
 var car: QueueCar
+var car_name := ""
 ## The one who was at the wheel (step 3 gives him away).
 var is_driver := false
 ## ConvoyTraits: his wig, nose and gloves show.
@@ -41,6 +43,7 @@ var _balls: Node3D
 var _bubble: Label3D
 var _bubble_left := 0.0
 var _complained := 0
+var _juggle := 0.0
 
 
 func _ready() -> void:
@@ -85,8 +88,30 @@ func _ready() -> void:
 	_bubble.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_bubble.hide()
 	add_child(_bubble)
+	if not car and car_name != "":
+		car = get_parent().find_child(car_name, true, false) as QueueCar
+	if car:
+		car.add_clown_out(self)
 	_rng.seed = hash([name, car.plate if car else ""])
 	_pick_target()
+
+
+## Online (PropSync): what a guest's copy needs before it's added.
+func net_setup() -> Dictionary:
+	return {"name": name, "car_name": car.name if car else "", "is_driver": is_driver, "traits": traits}
+
+
+## Gone on a guest (the host's got back in): its car counts him in.
+func _exit_tree() -> void:
+	if is_instance_valid(car) and self in car.clowns_out:
+		boarded.emit(self)
+
+
+func _process(delta: float) -> void:
+	_juggle += delta
+	for i in _balls.get_child_count():
+		var turn := _juggle * 4.0 + TAU * i / BALLS
+		(_balls.get_child(i) as Node3D).position = Vector3(cos(turn) * 0.25, sin(turn) * 0.3 + 0.1, 0)
 
 
 func prompt_key(cop: Cop) -> String:
@@ -128,9 +153,14 @@ func scrub() -> void:
 	if _scrubbed < SCRUBS:
 		say(tr("CLOWN_SCRUB"))
 		return
+	clean()
+	say(tr("CLOWN_FACE_CLEAN"))
+
+
+## His face without makeup (online, from the host's).
+func clean() -> void:
 	makeup_on = false
 	ConvoyTraits.show_face(_model, traits, true)
-	say(tr("CLOWN_FACE_CLEAN"))
 
 
 func hold(holder_id: int, point: Vector3) -> void:
@@ -156,9 +186,6 @@ func _physics_process(delta: float) -> void:
 	_bubble_left -= delta
 	if _bubble.visible and _bubble_left <= 0.0:
 		_bubble.hide()
-	for i in _balls.get_child_count():
-		var turn := out_for * 4.0 + TAU * i / BALLS
-		(_balls.get_child(i) as Node3D).position = Vector3(cos(turn) * 0.25, sin(turn) * 0.3 + 0.1, 0)
 	if not is_instance_valid(car):
 		return
 	if out_for >= OUT_AT_LEAST and _flat(global_position - car.door_point()).length() < BOARD_REACH:

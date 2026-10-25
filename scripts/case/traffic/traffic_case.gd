@@ -35,6 +35,8 @@ var tip_given := false
 var innocents := 0
 ## The wanted driver, out of the car and cuffed; in the patrol car, the case is solved.
 var suspect: ChaseSuspect
+## The clown car the wanted clown was taken out of (its seat is left empty on every PC).
+var taken_from := ""
 var escort: OwnerEscort
 var solved_now := false
 ## The wanted car got past the checkpoint and the chase is on; whether it got away.
@@ -133,6 +135,7 @@ func _take_out(car: QueueCar, at := Vector3.INF) -> void:
 	suspect.global_position = at + Vector3.UP * 0.1
 	if car.clown:
 		car.empty_seat()
+		taken_from = car.name
 	suspect.rotation.y = car.rotation.y
 	suspect.cuffed(Handcuffs.SECONDS)
 	if patrol_car:
@@ -237,11 +240,12 @@ func _show_result(result: Dictionary) -> void:
 func snapshot() -> Dictionary:
 	var state := {"tip": tip_given, "patience": queue.patience, "sneaked": queue.sneaked,
 		"clues": clues.known, "innocents": innocents, "lost": lost, "solved": solved_now, "escaped": escaped,
-		"suspect": suspect != null, "result": _result}
+		"suspect": suspect != null, "result": _result, "taken_from": taken_from, "clean": _clean_clowns()}
 	if chase:
 		state.chase = chase.snapshot()
+		var clown := chase.suspect_id == SuspectCar.CLOWN_CAR
 		state.run_off = [chase.truck.global_transform if is_instance_valid(chase.truck) else Transform3D(),
-			int(chase.suspect_id.trim_prefix("traffic_"))]
+			0 if clown else int(chase.suspect_id.trim_prefix("traffic_")), clown]
 	return state
 
 
@@ -264,7 +268,8 @@ func apply_snapshot(state: Dictionary) -> void:
 			_hint_all("HINT_TRAFFIC_GOT_IT")
 	if state.has("chase") and not chase:
 		var run_off: Array = state.run_off
-		_run_off(run_off[0], run_off[1])
+		_run_off(run_off[0], run_off[1], run_off.size() > 2 and run_off[2])
+	_follow_convoy(state.get("taken_from", ""), state.get("clean", []))
 	if chase and state.has("chase"):
 		chase.apply_snapshot(state.chase)
 	if state.lost and not lost and not chase and not innocent_now:
@@ -274,6 +279,28 @@ func apply_snapshot(state: Dictionary) -> void:
 	escaped = state.escaped
 	if not (state.result as Dictionary).is_empty() and not shift_over:
 		_show_result(state.result)
+
+
+## The convoy's clowns whose makeup is off, by name (they're named alike on every PC).
+func _clean_clowns() -> Array[String]:
+	var names: Array[String] = []
+	for out: ConvoyClown in get_tree().get_nodes_in_group("convoy_clowns"):
+		if not out.makeup_on and get_parent().is_ancestor_of(out):
+			names.append(String(out.name))
+	return names
+
+
+## A guest's convoy: the wanted clown's seat left empty, and the faces the host's sponge cleaned.
+func _follow_convoy(from_car: String, clean: Array) -> void:
+	if from_car != "" and taken_from == "":
+		taken_from = from_car
+		var car := queue.get_node_or_null(NodePath(from_car)) as QueueCar
+		if car:
+			car.empty_seat()
+	for clown_name: String in clean:
+		var out := get_parent().get_node_or_null(NodePath(clown_name)) as ConvoyClown
+		if out and out.makeup_on:
+			out.clean()
 
 
 func _hint_all(key: String) -> void:
