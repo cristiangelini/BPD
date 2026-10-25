@@ -69,13 +69,12 @@ están los dos fusibles sueltos, quién es El Chispa y sus frases. Así no hay d
    (`PlaceDraw.PRISONS`).
 7. Online: presos congelados y escondidos, rejas, fusibles y la luz que vuelve.
 
-## Preguntas para Cristian
+## Preguntas para Cristian (respondidas el 25/10)
 1. **¿Los presos se quedan duros cuando los alumbra una linterna** y se mueven a oscuras ("luz roja, luz verde")?
-   Recomendado: sí, así la linterna es la herramienta del caso y hay que repartirse entre alumbrar y esposar.
+   Respuesta: sí.
 2. **¿Se gana al volver la luz** con los 3 fusibles (uno lo tiene El Chispa, el que la cortó) y se pierde con 4
-   escapados por el portón? Recomendado: sí, así hay dos tareas a la vez: cuidar el portón y buscar los fusibles.
-3. **¿Las linternas se gastan** (60 s de pila y pilas de repuesto en la cocina)? Recomendado: no por ahora, ya alcanza
-   con la oscuridad; queda en "Para después" si en la partida resulta fácil.
+   escapados por el portón? Respuesta: sí.
+3. **¿Las linternas se gastan** y hay que buscar pilas? Respuesta: sí, "que se gasten y se busquen pilas" (paso 8).
 
 ## Hecho así
 - **Paso 2 (la cárcel a oscuras):** `--place=blackout` abre `scenes/levels/prison_blackout.tscn`, la misma cárcel
@@ -124,3 +123,11 @@ están los dos fusibles sueltos, quién es El Chispa y sus frases. Así no hay d
   tablero por `ActionSync`, y la planilla, los escapados, los fusibles puestos, la luz y el fin del turno por
   `CaseSync` (`BlackoutCase.snapshot`). Los invitados no mueven presos ni los congelan: el anfitrión ve las linternas
   de todos.
+- **Paso 8 (las pilas):** en el corte de luz cada linterna arranca con la pila llena y alumbra 60 s prendida
+  (`Flashlight.battery`; apagada no gasta). En los últimos 10 s titila y alumbra menos ("La linterna titila: se está
+  acabando la pila") y al llegar a 0 se apaga sola y F ya no la prende. Sin luz no congela a nadie. Hay pilas de
+  repuesto (`FlashlightBattery`): una en cada uno de los 3 lugares de la cocina y 3 más en los lugares sueltos del
+  comedor, el pasillo y las celdas, sorteados por la semilla. E con una pila en la mano la pone en tu linterna: llena
+  otra vez. En los demás casos la linterna no se gasta nunca. Online cada PC gasta su copia de cada linterna (prender y
+  apagar llega a todos en el mismo orden) y cambiar la pila va por `ActionSync`. Capturas: `paso8-pila-llena.png`,
+  `paso8-pila-baja.png` y `paso8-sin-pila.png`.

@@ -58,6 +58,10 @@ const KITCHEN_SPOTS: Array[Vector3] = [Vector3(9.0, 0.1, -3.0), Vector3(10.5, 0.
 const LOOSE_SPOTS: Array[Vector3] = [Vector3(-8.0, 0.85, 4.5), Vector3(-2.0, 0.85, 0.5), Vector3(-8.0, 0.85, -3.5),
 	Vector3(-1.0, 0.1, -12.0), Vector3(-5.55, 0.55, -15.5), Vector3(-11.55, 0.55, -6.0), Vector3(5.3, 0.1, 6.0),
 	Vector3(2.3, 0.55, -9.5)]
+## Spare flashlight batteries (step 8): one by each of KITCHEN_SPOTS, a bit aside from the fuse, and LOOSE_BATTERIES
+## more on LOOSE_SPOTS drawn by the seed (propuesta).
+const BATTERY_ASIDE := Vector3(0.0, 0.0, 0.35)
+const LOOSE_BATTERIES := 3
 ## The way out of the punishment cell, into the west aisle.
 const PUNISHMENT_OUT: Array[Vector2] = [Vector2(-11.0, -3.4), Vector2(-11.0, -1.5), Vector2(WEST_AISLE, -1.5)]
 ## Round the canteen, between the tables.
@@ -143,6 +147,25 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 		board.complete.connect(lights_back)
 	spawn_fuse(level.global_transform * KITCHEN_SPOTS[_rng.randi_range(0, KITCHEN_SPOTS.size() - 1)])
 	spawn_fuse(level.global_transform * LOOSE_SPOTS[_rng.randi_range(0, LOOSE_SPOTS.size() - 1)])
+	_spawn_batteries()
+
+
+## The spare batteries: the kitchen's, plus LOOSE_BATTERIES on LOOSE_SPOTS, each spot once.
+func _spawn_batteries() -> void:
+	for spot in KITCHEN_SPOTS:
+		spawn_battery(prison.global_transform * (spot + BATTERY_ASIDE))
+	var loose := range(LOOSE_SPOTS.size())
+	_shuffle(loose)
+	for k in LOOSE_BATTERIES:
+		spawn_battery(prison.global_transform * (LOOSE_SPOTS[loose[k]] + BATTERY_ASIDE))
+
+
+func spawn_battery(at: Vector3) -> FlashlightBattery:
+	var battery := FlashlightBattery.new()
+	battery.name = "FlashlightBattery"
+	prison.add_child(battery, true)
+	battery.global_position = at
+	return battery
 
 
 static func _path(points: Array) -> Array[Vector2]:
@@ -259,6 +282,17 @@ func start() -> void:
 	started.emit()
 
 
+## In the dark the flashlights run on batteries (step 8): a cop's comes with a full one, the first time it's seen here
+## (a guest's cop may arrive after the level opens). Every PC does it for every cop.
+func _arm_flashlights() -> void:
+	if lights_on:
+		return
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		var belt: ToolBelt = cop.get("belt")
+		if belt and belt.flashlight and belt.flashlight.battery < 0.0:
+			belt.flashlight.recharge()
+
+
 ## Whether any cop's flashlight lights `inmate` now.
 func lit(inmate: BlackoutInmate) -> bool:
 	var chest := inmate.global_position + Vector3.UP * 1.1
@@ -337,6 +371,7 @@ func _shuffle(items: Array) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	_arm_flashlights()
 	if follower:
 		return
 	if not running:
