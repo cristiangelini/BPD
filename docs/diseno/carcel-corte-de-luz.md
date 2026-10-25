@@ -112,3 +112,9 @@ están los dos fusibles sueltos, quién es El Chispa y sus frases. Así no hay d
   3 puestos vuelve la luz: se prenden las lámparas, se traban las celdas con alguien adentro y todos los que quedaban
   sueltos se sientan donde están ("Qué aburrido con luz"). Capturas: `paso5-tablero.png`, `paso5-chispa.png` y
   `paso5-luz.png`.
+- **Paso 6 (el caso):** el comisario lo cuenta en su oficina en tres partes (las celdas abiertas, la linterna que
+  los congela, los 3 fusibles y los 4 del portón) y Q abre la planilla (`BlackoutCase`): fusibles puestos, presos
+  encerrados, escapados y el extra de El Chispa. Cuando vuelve la luz se gana: sueldo de 600, 75 menos por cada
+  escapado y 100 más con El Chispa en la celda de castigo con la reja cerrada. Cuota propia de 400. Con 4 escapados
+  se pierde, aunque después vuelva la luz. En el sorteo de Jugar sale en un tercio de los casos de la cárcel
+  (`PlaceDraw.PRISONS`, con el motín y el traslado). Captura: `paso6-planilla.png`.
