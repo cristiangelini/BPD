@@ -44,10 +44,15 @@ const MODELS := {
 	# (robo-banco.md): on foot the "vehicle" is the sack he carries, and he's its rider.
 	"robbers_van": preload("res://assets/models/robbers_van.glb"),
 	"bear_on_foot": preload("res://assets/models/money_bag.glb"),
+	# The bank's manager who was the boss drives off in his own car with the sacks in its trunk (robo-banco-gerente.md).
+	"manager_car": preload("res://assets/models/manager_car.glb"),
 	# The last heckler of the rally runs off on a kick scooter (proteccion-politico.md); set_rider puts them on it.
 	"kick_scooter": preload("res://assets/models/kick_scooter.glb"),
 	# The prison's last ringleader rolls off downhill on the kitchen's food cart (carcel-motin.md), behind it.
 	"food_cart": preload("res://assets/models/food_cart.glb"),
+	"inmate_on_foot": preload("res://assets/models/ball_and_chain.glb"),
+	# The market's spiteful vendor pedals off on his vegetable tricycle (politico-mercado.md), losing veggies in curves.
+	"veggie_trike": preload("res://assets/models/veggie_trike.glb"),
 	# The circus's culprit runs off in the clown car, dropping inflatable clowns (escena-circo.md).
 	"clown_car": preload("res://assets/models/clown_car.glb"),
 	# The traffic control's wanted car, in its paint (control-transito.md): the traffic car it was in the queue.
@@ -71,6 +76,8 @@ const RIDERS := {
 	"bear_on_foot": [[preload("res://assets/models/npc_ladron_oso.glb"), Vector3(0, 0, -0.35), 1.15]],
 	"kick_scooter": [[preload("res://assets/models/npc_vecina.glb"), Vector3(0, 0.15, -0.1), 0.85]],
 	"food_cart": [[preload("res://assets/models/npc_preso.glb"), Vector3(0, 0.05, -0.95), 0.9]],
+	"inmate_on_foot": [[preload("res://assets/models/npc_preso.glb"), Vector3(0, 0, 0), 0.85]],
+	"veggie_trike": [[preload("res://assets/models/npc_puestero.glb"), Vector3(0, 0.25, -0.45), 0.85]],
 	"clown_car": [[preload("res://assets/models/npc_payaso.glb"), Vector3(0, 0.45, -0.25), 0.8]],
 }
 ## Who rides inside and stays there when he gives up, the same way: the choristers in the van, seen through its open
@@ -84,14 +91,15 @@ const PASSENGERS := {
 ## The scooter and the wheelchair ride the sidewalk, not the street.
 const LANES := {"moto": ChaseRoute.SIDEWALK_LANE, "wheelchair": ChaseRoute.SIDEWALK_LANE,
 	"walker": ChaseRoute.SIDEWALK_LANE, "bear_on_foot": ChaseRoute.SIDEWALK_LANE, "kick_scooter": ChaseRoute.SIDEWALK_LANE,
-	"food_cart": ChaseRoute.SIDEWALK_LANE}
+	"food_cart": ChaseRoute.SIDEWALK_LANE, "veggie_trike": ChaseRoute.SIDEWALK_LANE, "inmate_on_foot": ChaseRoute.SIDEWALK_LANE}
 ## The electric wheelchair goes at 8 km/h (persecucion.md).
 ## The delivery bike pedals at 25 km/h and turns tight. Doña Chela's walker's motor does 10 km/h. The choir's old van,
 ## full, does 35. El Oso running with his sack does 12, the heckler's kick scooter 15 and the food cart, downhill, 14
-## (propuesta). The clown car does 30, honking all the way.
+## (propuesta). The loaded vegetable trike, 16, and an inmate off the transfer bus, dragging the ball and chain, 11.
+## The clown car does 30, honking all the way.
 const SPEEDS := {"bear_on_foot": 12.0 / 3.6, "wheelchair": 8.0 / 3.6, "tow_truck": 30.0 / 3.6, "golf_cart": 25.0 / 3.6, "bike": 25.0 / 3.6,
 	"walker": 10.0 / 3.6, "choir_van": 35.0 / 3.6, "kick_scooter": 15.0 / 3.6,
-	"food_cart": 14.0 / 3.6, "clown_car": 30.0 / 3.6}
+	"food_cart": 14.0 / 3.6, "veggie_trike": 16.0 / 3.6, "inmate_on_foot": 11.0 / 3.6, "clown_car": 30.0 / 3.6}
 ## The tow truck turns slowly and nearly stops to do it (persecucion-lugares.md): a cop cutting a corner on foot
 ## catches up with him.
 ## The golf cart turns very tight and hardly slows down to do it.
@@ -105,8 +113,11 @@ const WALKER := "walker"
 const CHOIR_VAN := "choir_van"
 const ROBBERS_VAN := "robbers_van"
 const BEAR_ON_FOOT := "bear_on_foot"
+const MANAGER_CAR := "manager_car"
 const KICK_SCOOTER := "kick_scooter"
 const FOOD_CART := "food_cart"
+const INMATE_ON_FOOT := "inmate_on_foot"
+const VEGGIE_TRIKE := "veggie_trike"
 const CLOWN_CAR := "clown_car"
 const FRUIT_TRUCK := "fruit_truck"
 ## Where the towed patrol car hangs behind the tow truck: its middle, and its nose lifted this much.
@@ -122,9 +133,9 @@ const COPS_LAYER := 2
 const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 4.6), "night": Vector3(2.1, 1.4, 4.6),
 	"highway": Vector3(2.1, 1.1, 4.6), "tow_truck": Vector3(2.3, 2.4, 6.2), "golf_cart": Vector3(1.3, 1.8, 2.4),
 	"moto": Vector3(0.8, 1.6, 1.9), "old_patrol": Vector3(2.1, 1.5, 4.6),
-	"wheelchair": Vector3(0.8, 1.4, 1.2), "bear_on_foot": Vector3(0.9, 1.8, 0.9), "choir_van": Vector3(2.0, 1.95, 4.6), "walker": Vector3(0.7, 1.6, 1.3), "kick_scooter": Vector3(0.6, 1.6, 1.0), "food_cart": Vector3(0.8, 1.6, 2.2), "bike": Vector3(0.7, 1.6, 1.9), "clown_car": Vector3(1.3, 1.4, 2.0), "traffic_0": Vector3(2.1, 1.4, 4.6),
+	"wheelchair": Vector3(0.8, 1.4, 1.2), "bear_on_foot": Vector3(0.9, 1.8, 0.9), "choir_van": Vector3(2.0, 1.95, 4.6), "walker": Vector3(0.7, 1.6, 1.3), "kick_scooter": Vector3(0.6, 1.6, 1.0), "food_cart": Vector3(0.8, 1.6, 2.2), "veggie_trike": Vector3(1.0, 1.6, 2.0), "inmate_on_foot": Vector3(0.8, 1.6, 0.9), "bike": Vector3(0.7, 1.6, 1.9), "clown_car": Vector3(1.3, 1.4, 2.0), "traffic_0": Vector3(2.1, 1.4, 4.6),
 	"traffic_1": Vector3(2.1, 1.4, 4.6), "traffic_2": Vector3(2.1, 1.4, 4.6), "traffic_3": Vector3(2.1, 1.4, 4.6),
-	"fruit_truck": Vector3(2.1, 1.75, 4.6)}
+	"manager_car": Vector3(2.1, 1.4, 4.6), "fruit_truck": Vector3(2.1, 1.75, 4.6)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
@@ -134,9 +145,9 @@ const TOW_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.0), Vector3(1.15, 0.3
 ## The scooter's wheels are part of its model.
 const NO_WHEELS: Array[Vector3] = []
 const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS,
-	"wheelchair": NO_WHEELS, "walker": NO_WHEELS, "bear_on_foot": NO_WHEELS, "kick_scooter": NO_WHEELS, "food_cart": NO_WHEELS, "highway": SEDAN_WHEELS, "tow_truck": TOW_WHEELS, "golf_cart": NO_WHEELS,
+	"wheelchair": NO_WHEELS, "walker": NO_WHEELS, "bear_on_foot": NO_WHEELS, "kick_scooter": NO_WHEELS, "food_cart": NO_WHEELS, "veggie_trike": NO_WHEELS, "inmate_on_foot": NO_WHEELS, "highway": SEDAN_WHEELS, "tow_truck": TOW_WHEELS, "golf_cart": NO_WHEELS,
 	"old_patrol": SEDAN_WHEELS, "bike": NO_WHEELS, "clown_car": NO_WHEELS, "traffic_0": SEDAN_WHEELS, "traffic_1": SEDAN_WHEELS,
-	"traffic_2": SEDAN_WHEELS, "traffic_3": SEDAN_WHEELS, "choir_van": SEDAN_WHEELS, "fruit_truck": SEDAN_WHEELS}
+	"traffic_2": SEDAN_WHEELS, "traffic_3": SEDAN_WHEELS, "choir_van": SEDAN_WHEELS, "manager_car": SEDAN_WHEELS, "fruit_truck": SEDAN_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
@@ -164,7 +175,7 @@ var _highway: Highway
 func _ready() -> void:
 	add_to_group("suspect_car")
 	if kind == "wheelchair" or kind == WALKER or kind == TOW or kind == BEAR_ON_FOOT or kind == KICK_SCOOTER \
-			or kind == FOOD_CART:
+			or kind == FOOD_CART or kind == VEGGIE_TRIKE or kind == INMATE_ON_FOOT:
 		set_collision_mask_value(COPS_LAYER, true)
 	var shape := CollisionShape3D.new()
 	var body := BoxShape3D.new()
