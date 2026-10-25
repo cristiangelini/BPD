@@ -1673,6 +1673,9 @@ CROWD_JUMP_LINE_3,"¡Yo ni los conozco a estos!","I don't even know these people
 GHOST_NOBODY_0,No hay nadie al volante... ¿Hola?,There's nobody at the wheel... Hello?,Não tem ninguém no volante... Olá?
 GHOST_NOBODY_1,Las ruedas se mueven solas. Mejor no mirar mucho.,The wheels move by themselves. Better not stare.,As rodas se mexem sozinhas. Melhor não olhar muito.
 GHOST_NOBODY_2,"Hola, auto. ¿Me das los papeles?","Hi, car. Can I see your papers?","Oi, carro. Me mostra os documentos?"
+GHOST_HONK_0,¡Piiiiip!,Beeeeep!,Biiiiip!
+GHOST_HONK_1,¡Pi-pi-piii! (y nadie al volante),Beep-beep-beeep! (and nobody at the wheel),Bi-bi-biii! (e ninguém no volante)
+GHOST_HONK_2,¡Mooooc! ¡Mooooc!,Honk! Honk!,Fom! Fom!
 PROMPT_BUS_ON,E: subir al bus,E: get on the bus,E: subir no ônibus
 PROMPT_BUS_OFF,E: bajar del bus,E: get off the bus,E: descer do ônibus
 PROMPT_BUS_DRIVE,E: manejar el bus,E: drive the bus,E: dirigir o ônibus

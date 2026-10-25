@@ -157,6 +157,7 @@ func spawn() -> QueueCar:
 	if VARIANTS[variant].get("ghost", false):
 		car.ghost_mode = true
 		car.ghost = data.get("ghost", spawned == GhostCar.ghost_at(case_seed))
+		car.puppeteer = data.get("puppeteer", spawned == GhostCar.pilot_at(case_seed))
 	car.wanted = plan != null and spawned == plan.wanted_index
 	car.at = Vector3(0, 0, SPAWN_FROM)
 	car.speed = QueueCar.SPEED
