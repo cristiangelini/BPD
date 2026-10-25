@@ -127,6 +127,8 @@ var _to_pop := 0
 ## Riders counted so far, each with their sticker (CrowdRider.stick), and whether a cop looked in to count who stayed.
 var counted := 0
 var looked_inside := false
+## Fined for too many riders (control-auto-lleno.md, answer 2): once all are counted, E on a packed car.
+var fined := false
 var _pop_left := 0.0
 var _honk_left := HONK_EVERY
 ## The car the case is after (WantedPlan).
@@ -412,6 +414,21 @@ func look_inside() -> void:
 	say((tr("CROWD_INSIDE") % [stay, count_so_far()]) if stay > 0 else tr("CROWD_INSIDE_NONE") % count_so_far())
 
 
+## Too many riders and every one counted, out and in, and not fined yet.
+func can_fine() -> bool:
+	return CrowdedCar.packed(crowd) and not fined and looked_inside and count_so_far() >= crowd
+
+
+func fine() -> void:
+	if not can_fine():
+		return
+	fined = true
+	say(tr("CROWD_FINED") % crowd)
+	var case := TrafficCase.of(self)
+	if case:
+		case.crowd_fined(self)
+
+
 ## The next rider pops out of its door, out toward the sidewalk, the driver first.
 func _pop() -> void:
 	var i := riders_out() - _to_pop
@@ -573,11 +590,16 @@ func open_trunk() -> void:
 
 
 func prompt_key(_cop: Cop) -> String:
+	if waiting() and can_fine():
+		return "PROMPT_CROWD_FINE"
 	return "PROMPT_PAPERS" if waiting() else ""
 
 
-## E on a stopped car: the driver hands the license.
+## E on a stopped car: a packed one all counted gets its fine; else the driver hands the license.
 func use(_cop: Cop) -> void:
+	if waiting() and can_fine():
+		fine()
+		return
 	if not waiting() or driver.is_empty():
 		return
 	papers_checked = true

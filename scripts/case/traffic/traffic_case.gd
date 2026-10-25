@@ -11,6 +11,7 @@ extends Node
 ## other clowns hop back in, and the wanted clown runs off in his clown car, dropping inflatable clowns. Every number
 ## here is (propuesta). In the fruit truck control (control-frutas.md) every watermelon split from an innocent fruit
 ## seller's pickup is a complaint too, smaller, and a gold watch in the patrol car's trunk adds to a solved case's pay.
+## In the crowded car control (control-auto-lleno.md, answer 2) each packed car fined for too many riders adds a bit.
 
 signal detained(car: QueueCar, wanted: bool)
 
@@ -20,6 +21,8 @@ const MAX_INNOCENTS := 2
 const COMPLAINT_FINE := 100
 ## Each watermelon split from an innocent fruit seller's pickup (control-frutas.md, answer 2).
 const MELON_FINE := 20
+## Each packed car fined for too many riders adds this to a solved case's pay (control-auto-lleno.md, answer 2).
+const CROWD_FINE_BONUS := 20
 ## Its own quota, like the chase and the crime scene (decision 91).
 const QUOTA := ShiftReport.SALARY
 const SHIFT_DELAY := 3.0
@@ -38,6 +41,8 @@ var tip_given := false
 var innocents := 0
 ## Watermelons split from innocent pickups, each a complaint.
 var melon_complaints := 0
+## Packed cars fined for too many riders.
+var crowd_fines := 0
 ## The wanted driver, out of the car and cuffed; in the patrol car, the case is solved.
 var suspect: ChaseSuspect
 ## The clown car the wanted clown was taken out of (its seat is left empty on every PC).
@@ -119,6 +124,22 @@ func melon_broken(melon: Watermelon) -> void:
 		return
 	melon_complaints += 1
 	_hint_all("HINT_FRUIT_COMPLAINT")
+
+
+## A cop fined a packed car for too many riders, once it was all counted (QueueCar.fine).
+func crowd_fined(_car: QueueCar) -> void:
+	if follower or shift_over:
+		return
+	crowd_fines += 1
+	_hint_all("HINT_CROWD_FINED")
+
+
+## What adds to a solved case's pay: a gold watch, and each packed car fined.
+func extras() -> Array:
+	var out := watch_bonus()
+	for i in crowd_fines:
+		out.append(CROWD_FINE_BONUS)
+	return out
 
 
 ## The pay's complaints: the innocents detained and the watermelons split.
@@ -239,7 +260,7 @@ func finish_shift() -> void:
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
-	var report := ShiftReport.pay(solved(), watch_bonus(), fines())
+	var report := ShiftReport.pay(solved(), extras(), fines())
 	var result := {"solved": solved(), "report": report, "awards": ShiftReport.awards(stats)}
 	var campaign := Campaign.current
 	if campaign and not campaign.is_over():
@@ -257,6 +278,8 @@ func campaign_key() -> String:
 		return "traffic_clown_convoy"
 	if plan and plan.fruit:
 		return "traffic_fruit_truck"
+	if plan and plan.crowd:
+		return "traffic_crowded_car"
 	return "traffic_rush_hour"
 
 
@@ -285,7 +308,7 @@ func _show_result(result: Dictionary) -> void:
 ## the chase after the one who ran off and the end of shift.
 func snapshot() -> Dictionary:
 	var state := {"tip": tip_given, "patience": queue.patience, "sneaked": queue.sneaked,
-		"clues": clues.known, "innocents": innocents, "melons": melon_complaints, "lost": lost, "solved": solved_now, "escaped": escaped,
+		"clues": clues.known, "innocents": innocents, "melons": melon_complaints, "crowd_fines": crowd_fines, "lost": lost, "solved": solved_now, "escaped": escaped,
 		"suspect": suspect != null, "result": _result, "taken_from": taken_from, "clean": _clean_clowns()}
 	if chase:
 		state.chase = chase.snapshot()
@@ -309,6 +332,9 @@ func apply_snapshot(state: Dictionary) -> void:
 	if state.get("melons", 0) > melon_complaints:
 		_hint_all("HINT_FRUIT_COMPLAINT")
 	melon_complaints = state.get("melons", 0)
+	if state.get("crowd_fines", 0) > crowd_fines:
+		_hint_all("HINT_CROWD_FINED")
+	crowd_fines = state.get("crowd_fines", 0)
 	if state.suspect and not suspect:
 		suspect = get_parent().get_node_or_null("Driver") as ChaseSuspect
 		if suspect and patrol_car:
