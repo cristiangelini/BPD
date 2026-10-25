@@ -29,6 +29,7 @@ adjustments_saturation = 1.2
 
 [node name="City" type="Node3D"]
 script = ExtResource("1")
+alive = true
 
 [node name="Environment" type="WorldEnvironment" parent="."]
 environment = SubResource("Env")
@@ -44,7 +45,7 @@ directional_shadow_max_distance = 120.0
 [node name="Built" type="Node3D" parent="."]
 
 [node name="Cop" parent="." instance=ExtResource("2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -72, 0.1, 30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -72, 0.3, 30)
 
 [node name="PatrolCar" parent="." instance=ExtResource("3")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -64, 0.05, 33)
