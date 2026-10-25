@@ -162,6 +162,9 @@ var honks := 0
 var race_mode := false
 var racer := false
 var race := {}
+## In the fog check (control-neblina.md) every car has its headlights on, as in `fog` (FogCar.draw's).
+var fog_mode := false
+var fog := {}
 ## A racer comes in a heat, out of the queue (step 2): it gathers at the back corner, revs, then races past the
 ## checkpoint ("gathering", "revving", "racing" in `state`); `race_slot` is its place in the heat.
 var race_slot := 0
@@ -236,6 +239,8 @@ func _ready() -> void:
 			_honk_left = WeddingCar.honk_every(plate)
 		if racer:
 			RaceCar.dress(self, race)
+		if fog_mode:
+			FogCar.dress(self, fog)
 	_build_trunk()
 	if clown or crowd > 0:
 		_build_door()
@@ -646,7 +651,8 @@ func net_setup() -> Dictionary:
 		"crate": crate, "hat": hat, "melon_kinds": melon_kinds, "crowd": crowd, "ghost_mode": ghost_mode,
 		"ghost": ghost, "shirt": shirt, "puppeteer": puppeteer, "wedding_mode": wedding_mode, "guest": guest,
 		"tie": tie, "newlyweds": newlyweds, "alcohol": alcohol, "couple": couple, "race_mode": race_mode,
-		"racer": racer, "race": race, "race_slot": race_slot}
+		"racer": racer, "race": race, "race_slot": race_slot,
+		"fog_mode": fog_mode, "fog": fog}
 
 
 ## Online: where it is in the queue and whether its trunk is open; the ghost car's, how many pranks and the last one;

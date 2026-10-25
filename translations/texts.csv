@@ -2206,3 +2206,7 @@ HINT_RACE_FINED,"¡Corredor pinchado! +25 al sueldo si resuelven el caso. ¿Ser�
 RACE_NOT_TURBO_LINE,"¿El Turbo? ¡Ojalá! Yo llego siempre último. Mi abogado va a escuchar de esto.","El Turbo? I wish! I always come in last. My lawyer's going to hear about this.","El Turbo? Quem me dera! Eu sempre chego por último. Meu advogado vai saber disso."
 PROMPT_RACE_TROPHY,"El trofeo de las picadas de El Turbo: llévalo al patrullero","El Turbo's street race trophy: take it to the patrol car","O troféu dos rachas do El Turbo: leve para a viatura"
 HINT_RACE_TROPHY,"¡Es El Turbo! Su trofeo quedó sobre el baúl: llévalo al patrullero (+100).","It's El Turbo! His trophy is on his trunk: take it to the patrol car (+100).","É o El Turbo! O troféu dele ficou em cima do porta-malas: leve para a viatura (+100)."
+COLOR_BLUISH,"azulado","bluish","azulado"
+BROKEN_NONE,"con los dos faros sanos","with both headlights working","com os dois faróis inteiros"
+BROKEN_LEFT,"con el faro izquierdo roto","with the left headlight broken","com o farol esquerdo quebrado"
+BROKEN_RIGHT,"con el faro derecho roto","with the right headlight broken","com o farol direito quebrado"

@@ -12,7 +12,8 @@ extends Node3D
 ## sends city cars, some of them packed with people. "ghost_car" (control-auto-fantasma.md) sends city cars with their
 ## drivers leaning on the windows, and one with nobody at the wheel. "wedding" (control-boda.md) sends the wedding's
 ## convoy, with the newlyweds up front and a few city cars among them. "race" (control-carrera.md) sends city cars
-## and, among them, the night's racers, in heats out of the queue. Every number here is (propuesta).
+## and, among them, the night's racers, in heats out of the queue. "fog" (control-neblina.md) sends city cars with
+## their headlights on, out of the fog. Every number here is (propuesta).
 
 signal patience_changed(value: float)
 ## A car went by: let through, or sneaking.
@@ -42,6 +43,7 @@ const VARIANTS := {
 	"ghost_car": {"spawn": 0.75, "patience": 1.0, "ghost": true},
 	"wedding": {"spawn": 0.75, "patience": 1.0, "wedding": true},
 	"race": {"spawn": 0.75, "patience": 1.0, "race": true},
+	"fog": {"spawn": 0.75, "patience": 1.0, "fog": true},
 }
 
 var checkpoint: TrafficCheckpoint
@@ -230,6 +232,9 @@ func spawn() -> QueueCar:
 			car.look = WeddingCar.NEWLYWEDS_LOOK
 	if VARIANTS[variant].get("race", false):
 		car.race_mode = true
+	if VARIANTS[variant].get("fog", false):
+		car.fog_mode = true
+		car.fog = data.get("fog", FogCar.traits_of(car.plate))
 	car.wanted = plan != null and spawned == plan.wanted_index
 	car.at = Vector3(0, 0, SPAWN_FROM)
 	car.speed = QueueCar.SPEED

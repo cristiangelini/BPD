@@ -93,6 +93,11 @@ func _ready() -> void:
 		breathalyzer.name = "Breathalyzer"
 		add_child(breathalyzer)
 		breathalyzer.global_position = door + BREATHALYZER_FROM_DOOR + Vector3.UP * 0.1
+	if chosen == "fog":
+		# Its own copy of the scene's environment, so the fog stays in this match.
+		var world := $Environment as WorldEnvironment
+		world.environment = world.environment.duplicate()
+		FogCar.fog_up(world.environment, $Sun)
 	if chosen == "race":
 		for i in SPIKES_FROM_DOOR.size():
 			var strip := SpikeStrip.new()
