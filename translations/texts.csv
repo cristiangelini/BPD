@@ -1897,6 +1897,43 @@ CONFESS_owner_toro,"¡Está bien! ¡Levantábamos cajas fuertes! Pero con buena 
 CHASE_TORO_LINE_1,"¡Uno, dos! ¡Uno, dos! ¡Trotar es salud!","One, two! One, two! Jogging is healthy!","Um, dois! Um, dois! Correr é saúde!"
 CHASE_TORO_LINE_2,"¿Ya se cansaron? ¡Flojos! ¡Diez vueltas más!","Tired already? Softies! Ten more laps!","Já cansaram? Moleirões! Mais dez voltas!"
 CHASE_TORO_LINE_3,"Está bien, me rindo. Pero estiren después, que se lesionan.","Fine, I give up. But stretch afterwards, or you'll get hurt.","Tá bom, me rendo. Mas alonguem depois, senão se machucam."
+PLACE_SCHOOL,Academia Manos Ligeras,Light Hands Academy,Academia Mãos Leves
+SCHOOL_MOTTO,"¡Lo que se aprende, no se devuelve!","What you learn, you don't give back!","O que se aprende não se devolve!"
+SCHOOL_BOARD,"Hoy: ganzúa, carterista y sigilo","Today: lockpicking, pickpocketing and sneaking","Hoje: gazua, batedor de carteira e furtividade"
+PROMPT_TALK_STUDENT,E: charlar con el alumno,E: chat with the student,E: conversar com o aluno
+SCHOOL_GOSSIP_0,"¿Hiciste la tarea? Yo me la copié... digo, me la robé. Es lo mismo, ¿no?","Did you do the homework? I copied it... I mean, I stole it. Same thing, right?","Fez a lição? Eu copiei... digo, roubei. Dá no mesmo, né?"
+SCHOOL_GOSSIP_1,Dicen que el Director solo baja para la graduación. Nadie le vio la cara.,They say the Director only comes down for graduation. Nobody's seen his face.,Dizem que o Diretor só desce na formatura. Ninguém viu o rosto dele.
+SCHOOL_GOSSIP_2,"Me saqué un 9 en carterista. Mi mamá está orgullosa. Bueno, no sabe.","I got a 9 in pickpocketing. My mom's proud. Well, she doesn't know.","Tirei 9 em batedor de carteira. Minha mãe está orgulhosa. Bom, ela não sabe."
+SCHOOL_GOSSIP_3,El piso del patio cruje. La Profesora lo hizo a propósito. Es malísima.,The yard's floor creaks. The Profesora made it that way on purpose. She's so mean.,O piso do pátio range. A Professora fez de propósito. É malvada.
+SCHOOL_GOSSIP_4,"Si te sacas menos de 3, la Profesora te mira raro. Y el resto también.","If you get less than 3, the Profesora looks at you funny. And so does everyone else.","Se tirar menos de 3, a Professora olha estranho. E todo mundo também."
+SCHOOL_GOSSIP_5,"Yo vine por el diploma. Con diploma, los bancos te abren solos.","I came for the diploma. With a diploma, banks open by themselves.","Eu vim pelo diploma. Com diploma, os bancos abrem sozinhos."
+SCHOOL_GOSSIP_6,¿Eres nuevo? Tienes manos de policía. Grandes y honestas.,Are you new? You've got cop hands. Big and honest.,Você é novo? Tem mãos de policial. Grandes e honestas.
+SCHOOL_GOSSIP_7,"En la biblioteca está el registro con nuestros nombres de verdad. Yo puse ""Pepe"". No me llamo Pepe.","The library has the register with our real names. I wrote ""Pepe"". My name isn't Pepe.","Na biblioteca tem o registro com nossos nomes de verdade. Eu pus ""Pepe"". Não me chamo Pepe."
+SCHOOL_GOSSIP_8,El examen final es el banco del centro. Hay que ir con lápiz. Y con bolsa.,The final exam is the bank downtown. Bring a pencil. And a bag.,A prova final é o banco do centro. Tem que levar lápis. E sacola.
+SCHOOL_GOSSIP_9,"No toques el baúl del patio. Ahí están las cosas de práctica. Bueno, de práctica...","Don't touch the trunk in the yard. That's the practice stuff. Well, practice...","Não mexa no baú do pátio. Ali estão as coisas de treino. Bom, de treino..."
+SCHOOL_CUFFED,"¡Oye! ¡Esto no estaba en el programa!","Hey! This wasn't in the syllabus!","Ei! Isso não estava no programa!"
+PROMPT_TALK_GANZUA,E: saludar a la Profesora Ganzúa,E: greet the Profesora Ganzúa,E: cumprimentar a Professora Ganzúa
+GANZUA_0,"Alumno nuevo. Siéntate, saca un lápiz ajeno y presta atención.","New student. Sit down, take out someone else's pencil and pay attention.","Aluno novo. Sente, pegue um lápis alheio e preste atenção."
+GANZUA_1,"Cuando suene el timbre, clase práctica. Quiero ver esas manos ligeras.","When the bell rings, practical class. I want to see those light hands.","Quando tocar o sinal, aula prática. Quero ver essas mãos leves."
+GANZUA_2,"El Director baja para la graduación. Solo los mejores conocen al Director.","The Director comes down for graduation. Only the best get to meet the Director.","O Diretor desce na formatura. Só os melhores conhecem o Diretor."
+GANZUA_3,"Nunca corras en un robo. Correr es de policías. Y de gente apurada.","Never run during a robbery. Running is for cops. And people in a hurry.","Nunca corra num roubo. Correr é coisa de policial. E de gente apressada."
+GANZUA_CUFFED,"¡Cero en conducta! ¡A mí no se me esposa!","Zero for behavior! Nobody cuffs me!","Zero em comportamento! Ninguém me algema!"
+PROMPT_TALK_DIRECTOR,E: saludar al Director,E: greet the Director,E: cumprimentar o Diretor
+DIRECTOR_0,"Felicitaciones, graduados. Hoy son ladrones de verdad.","Congratulations, graduates. Today you are real thieves.","Parabéns, formandos. Hoje vocês são ladrões de verdade."
+DIRECTOR_1,"Su diploma está firmado con una firma que no es mía. Como corresponde.","Your diploma is signed with a signature that isn't mine. As it should be.","Seu diploma está assinado com uma assinatura que não é minha. Como deve ser."
+DIRECTOR_2,"El examen final es el banco del centro. Los espero. Con bolsas.","The final exam is the bank downtown. I'll be waiting. With bags.","A prova final é o banco do centro. Espero vocês. Com sacolas."
+DIRECTOR_3,"¿Esas notas? Brillantes. Sospechosamente brillantes.","Those grades? Brilliant. Suspiciously brilliant.","Essas notas? Brilhantes. Suspeitosamente brilhantes."
+DIRECTOR_CUFFED,"¡¿A mí?! ¡Yo soy el Director! ...Bueno, eso no ayuda.","Me?! I'm the Director! ...Well, that doesn't help.","Eu?! Eu sou o Diretor! ...Bom, isso não ajuda."
+DIRECTOR_FOUND_OUT,"¡Policías en mi escuela! ¡Clase suspendida! Me voy en el auto de práctica.","Cops in my school! Class is cancelled! I'm taking the learner car.","Policiais na minha escola! Aula suspensa! Vou no carro de treino."
+SCHOOLDOOR_WELCOME,"*El vigía mira para los dos lados.* Pasa, rápido, que nadie te vea.","*The lookout checks both ways.* In, quick, before anyone sees you.","*O vigia olha para os dois lados.* Entra, rápido, antes que alguém veja."
+SCHOOLDOOR_NO_0,"¿Uniforme de policía? Muy gracioso. Afuera.","A cop uniform? Very funny. Out.","Uniforme de policial? Muito engraçado. Fora."
+SCHOOLDOOR_NO_1,"Ese disfraz está a medias. Un ladrón se viste como ladrón.","That outfit's only half done. A thief dresses like a thief.","Esse disfarce está pela metade. Ladrão se veste de ladrão."
+HINT_SCHOOLDOOR_NO_DISGUISE,"El vigía no te deja pasar: ponte 2 piezas de ladrón del casillero de la comisaría (antifaz, gorro, remera a rayas).","The lookout won't let you in: put on 2 thief pieces from the station's lockers (eye mask, beanie, striped shirt).","O vigia não deixa você entrar: vista 2 peças de ladrão do armário da delegacia (máscara, gorro, camiseta listrada)."
+HUD_SCHOOL_SUSPICION,Sospecha de los alumnos,The students' suspicion,Suspeita dos alunos
+SCHOOL_FOUND_OUT_0,¡Son policías! ¡Nadie roba tan mal!,They're cops! Nobody steals that badly!,São policiais! Ninguém rouba tão mal!
+SCHOOL_FOUND_OUT_1,¡Son policías! ¡Mira cómo devuelven la billetera!,They're cops! Look at them giving the wallet back!,São policiais! Olha como devolvem a carteira!
+SCHOOL_FOUND_OUT_2,¡Son policías! ¡Ese antifaz es de cotillón!,They're cops! That mask is from a party store!,São policiais! Essa máscara é de festa!
+HINT_SCHOOL_FOUND_OUT,¡Los descubrieron! Todos los alumnos saben que son policías.,You've been found out! Every student knows you're cops.,Vocês foram descobertos! Todos os alunos sabem que vocês são policiais.
 PROMPT_TALK_GUEST,E: charlar con el invitado,E: chat with the guest,E: conversar com o convidado
 PARTY_GOSSIP_0,¡Qué buen disfraz! El mío me lo hizo mi abuela con una cortina.,Great costume! My grandma made mine out of a curtain.,Que fantasia boa! A minha foi minha avó que fez com uma cortina.
 PARTY_GOSSIP_1,Dicen que el jefe vino disfrazado igual que todos. Qué original.,They say the boss came dressed like everyone else. How original.,Dizem que o chefe veio fantasiado igual a todos. Que original.

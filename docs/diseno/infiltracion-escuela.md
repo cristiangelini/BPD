@@ -78,6 +78,15 @@ la forma de `GymRoutine` (host decide, cada PC juzga y avisa).
    Correr la hace caer como cualquier disfraz **(propuesta)**.
 2. La escuela en la ciudad (`--place=school`): el aula, el patio de prácticas, la biblioteca y la oficina; los
    alumnos, la Profesora y el portero.
+   Hecho así: un lote nuevo en la cuadra (4, 0), al sur, de 24 x 20 m. Desde la entrada, un hall; a la izquierda el
+   aula (pizarrón en la pared oeste, el escritorio de la Profesora y 12 pupitres en 3 columnas) y a la derecha el
+   patio de prácticas (4 cerraduras de práctica en la pared este, el muñeco con saco y cascabeles, y el piso de tablas
+   que cruje); atrás, la biblioteca con estantes (oeste) y la oficina del Director con llave (este), con el lema "¡Lo
+   que se aprende, no se devuelve!" en el pasillo. 9 alumnos (ladrón a rayas con mochila, o buzo violeta con capucha)
+   en 9 de los 12 pupitres por la semilla, mirando al pizarrón; los 3 que sobran son para los policías. La Profesora
+   Ganzúa (saco mostaza, anteojos, rodete con una ganzúa y una llave gigante de puntero) frente a ellos. El Director
+   (frac, galera y antifaz dorado) espera en la oficina sin que se lo vea ni se lo choque. El vigía (sobretodo negro y
+   binoculares) en la puerta solo deja pasar con 2 piezas de ladrón **(propuesta)**.
 3. Las clases: el timbre, las tres materias, las notas, el boletín y la sospecha por notas bajas.
 4. La graduación, las pruebas y el caso (variante "school"): el Director con los diplomas, las 6 pruebas, el sueldo y
    el interrogatorio.
