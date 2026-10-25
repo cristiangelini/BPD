@@ -12,6 +12,8 @@ extends StaticBody3D
 
 ## A cop cuffed them (the handcuffs, on every PC).
 signal cuffed_now(member: ClubMember)
+## A cop talked to them (E), on that cop's PC.
+signal talked(cop: Cop)
 
 const MODELS := {
 	"abuelo": preload("res://assets/models/npc_abuelo.glb"),
@@ -165,9 +167,10 @@ func prompt_key(_cop: Cop) -> String:
 	return TALK[look][2]
 
 
-func use(_cop: Cop) -> void:
+func use(cop: Cop) -> void:
 	say(TALK[look][0] % (next_line % TALK[look][1]))
 	next_line += 1
+	talked.emit(cop)
 
 
 func say(key: String) -> void:

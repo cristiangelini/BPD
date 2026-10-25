@@ -53,7 +53,21 @@ const VARIANTS := {
 		"catch_row": "OBJ_MIME_CATCH_PAUSA",
 		"slips": "PAUSA_SLIP_%d",
 	},
+	# The costume party (infiltracion-fiesta.md, decision 171): the Sargento Trucho is found by his costume, and a wrong
+	# guest cuffed gets a second chance (`second_chance`). His getaway, the party patrol car, comes in step 5.
+	"party": {
+		"story": "infiltration_party",
+		"brief": ["BRIEF_PARTY_A", "BRIEF_PARTY_B", "BRIEF_PARTY_C"],
+		"go": "HINT_GO_PARTY", "in": "HINT_PARTY_IN", "found": "HINT_PARTY_CLUE",
+		"rows": "OBJ_PARTY_", "evidence": "EVIDENCE_PARTY_",
+		"boss": "trucho", "getaway": SuspectCar.WALKER,
+		"boss_cuffed": "HINT_TRUCHO_CUFFED", "cuff_row": "OBJ_PARTY_CUFF_TRUCHO",
+		"catch_row": "OBJ_PARTY_CATCH_TRUCHO",
+		"slips": "TRUCHO_SLIP_%d", "second_chance": true,
+	},
 }
+## With `second_chance`, the first wrong person cuffed only raises everyone's suspicion this much.
+const WRONG_CUFF := 50.0
 
 var case_seed := 0
 var place: InfiltrationPlace
@@ -65,6 +79,9 @@ var tip_given := false
 var got_in := false
 var evidence_found: Array[String] = []
 var boss_cuffed := false
+## Wrong people cuffed (with `second_chance`), and the clue the cops got on their own (the party's boss seen).
+var wrong_cuffs := 0
+var bonus_clue := false
 var found_out := false
 ## Found out, Doña Chela's run on the walker, and whether she got away.
 var chase: ChaseCase
@@ -142,11 +159,26 @@ func _on_boss_cuffed() -> void:
 	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
 
-## Cuffing anyone else gives the cops away at once.
+## Cuffing anyone else gives the cops away at once; with `second_chance`, the first time only raises everyone's
+## suspicion WRONG_CUFF (the guest complains and the cuffs run out on their own).
 func _on_grandparent_cuffed(member: ClubMember) -> void:
-	if follower or not place or place.suspicion.found_out:
+	if follower or not place or place.suspicion.found_out or member == place.boss:
+		return
+	wrong_cuffs += 1
+	if texts().get("second_chance", false) and wrong_cuffs == 1:
+		_hint_all("HINT_WRONG_GUEST")
+		for other in place.members:
+			place.suspicion.raise(other, WRONG_CUFF)
 		return
 	place.suspicion.raise(member, 100.0)
+
+
+## The cops got a clue on their own (the party's boss seen in the office): the planilla shows it.
+func give_bonus() -> void:
+	if follower or bonus_clue:
+		return
+	bonus_clue = true
+	checklist.show_rows(rows())
 
 
 func _on_discovered() -> void:
@@ -247,7 +279,7 @@ func _show_result(result: Dictionary) -> void:
 ## What every guest's case shows (CaseSync).
 func snapshot() -> Dictionary:
 	var state := {"tip": tip_given, "in": got_in, "found": evidence_found.duplicate(), "cuffed": boss_cuffed,
-		"found_out": found_out, "caught": caught, "escaped": escaped, "result": _result}
+		"found_out": found_out, "bonus": bonus_clue, "caught": caught, "escaped": escaped, "result": _result}
 	if chase:
 		state.chase = chase.snapshot()
 	return state
@@ -262,6 +294,7 @@ func apply_snapshot(state: Dictionary) -> void:
 		boss_cuffed = true
 		_hint_all(texts().boss_cuffed)
 	found_out = state.found_out
+	bonus_clue = state.get("bonus", false)
 	caught = state.caught
 	escaped = state.escaped
 	if state.has("chase"):
@@ -281,6 +314,9 @@ func rows() -> Array[Dictionary]:
 	for kind in evidence_found:
 		list.append({"text": "- " + tr(keys.evidence + kind), "done": false, "optional": false, "status": true,
 			"clue": true})
+	var clue := place.clue_row(evidence_found, bonus_clue) if place else ""
+	if not clue.is_empty():
+		list.append({"text": clue, "done": false, "optional": false, "status": true, "clue": true})
 	list.append(_row(keys.cuff_row, boss_cuffed))
 	if chase:
 		list.append(_row(keys.catch_row, caught))

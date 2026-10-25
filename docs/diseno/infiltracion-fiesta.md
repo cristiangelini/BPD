@@ -101,6 +101,15 @@ La foto grupal copia la forma de `MimeRehearsal` (host decide, cada PC juzga y a
    llega en el paso 4) **(propuesta)**.
 4. Las pistas y el caso (variante "party"): las 6 pistas, la planilla con los rasgos, esposar al jefe o a uno
    equivocado, el sueldo y el interrogatorio.
+   Hecho así: el ticket del guardarropa está sobre el mostrador y la boleta de la óptica en la punta de la mesa de
+   comida (se agarran); la bolsa de joyas está detrás del lavamanos del baño y la foto del año pasado colgada en la
+   oficina (sacarles foto). El video son dos invitados vecinos (nunca el jefe) que chismean sobre él, y la señora
+   Serpentina cuenta el rasgo en voz baja solo si no hay ningún invitado a 6 m. Las pistas fijas dicen su rasgo; el
+   video y Serpentina dicen uno que las otras pistas no dicen, y verlo en la oficina durante la foto dice el que
+   queda (no cuenta para el sueldo). La planilla anota "El jefe: gorra azul, ¿?, placa de chocolate, ¿?". Esposar a
+   un invitado equivocado la primera vez suma +50 a todos y avisa; la segunda, los descubren. El jefe es un invitado
+   más, pero esposarlo a él no cuenta como error. Mientras no está la huida del paso 5, se escapa como Doña Chela.
+   Online, Serpentina solo cuenta en la PC del host (se arregla en el paso 5) **(propuesta)**.
 5. La huida en el patrullero de cotillón, el sorteo de "Jugar" en cuartos (club, coro, mimos y fiesta) y online.
 
 ## Preguntas para Cristian (decisión 171)
