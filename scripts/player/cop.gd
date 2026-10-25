@@ -428,6 +428,13 @@ func use() -> bool:
 	if $Grabber.held is DonutBox and (_usable_target() is InterrogationSuspect or _usable_target() is PastryCook):
 		act("use", _usable_target())
 		return true
+	# A donut or a croissant for a hostage at the bank's party (robo-banco-rehenes.md, step 4).
+	if BankHostage.food_of(self) and _usable_target() is BankHostage and (_usable_target() as BankHostage).wants_food():
+		act("use", _usable_target())
+		return true
+	if $Grabber.held is BankCroissant:
+		act("use", $Grabber.held)
+		return true
 	if $Grabber.held is DonutBox:
 		if ($Grabber.held as DonutBox).donuts == 0:
 			show_hint("HINT_DONUTS_GONE")
