@@ -8,7 +8,8 @@ extends StaticBody3D
 ## bit each time) so the photo is worth something; a donut or a loaf, he bites it (his teeth); the print kit pulls off a
 ## glove, but some have the infinite glove trick and there's another one under it; with empty hands, his nose honks
 ## (its note), the wig comes off (his hair; one won't until he gets something to eat) and a giant shoe comes off (his
-## real size). Then he tells jokes. Every number here is (propuesta).
+## real size). Then his nose honks again each time. A part goes to the file of the numbered sign on his back
+## (CrimeSceneCase.clown_part); with a sign in hand, E sticks it there. Every number here is (propuesta).
 
 const MODEL := preload("res://assets/models/npc_payaso.glb")
 ## Real feet sizes stretch the feet from this much (the smallest) to this much (the biggest).
@@ -24,6 +25,8 @@ var traits := {}
 ## His caravan's number, from 0 (the order of the case's traits).
 var index := 0
 var case: CrimeSceneCase
+## The circus he works at: it keeps who wears which sign.
+var circus: Circus
 var makeup_on := true
 var wig_on := true
 var gloves_on := true
@@ -39,6 +42,7 @@ var _model: Node3D
 var _bubble: Label3D
 var _bubble_left := 0.0
 var _jokes_told := 0
+var _sign: Node3D
 
 
 func _ready() -> void:
@@ -74,6 +78,8 @@ func _ready() -> void:
 
 func prompt_key(cop: Cop) -> String:
 	var held: Node = cop.get_node("Grabber").held
+	if held is ClownSign:
+		return "PROMPT_CLOWN_SIGN"
 	if held is ClownSponge and makeup_on:
 		return "PROMPT_CLOWN_SCRUB"
 	if held is DonutBox or held is Bread:
@@ -84,14 +90,20 @@ func prompt_key(cop: Cop) -> String:
 		return "PROMPT_CLOWN_HONK"
 	if wig_on:
 		return "PROMPT_CLOWN_WIG"
-	return "PROMPT_CLOWN_SHOE" if shoe_on else "PROMPT_CLOWN_TALK"
+	return "PROMPT_CLOWN_SHOE" if shoe_on else "PROMPT_CLOWN_HONK"
 
 
 ## E on him: what's in hand decides (the sponge, food, the print kit); with empty hands, the nose, the wig, a shoe and
-## then a joke, a different one each time (in an order that starts at his number).
+## then the nose again.
 func use(cop: Cop) -> void:
 	var held: Node = cop.get_node("Grabber").held
-	if held is ClownSponge and makeup_on:
+	if held is ClownSign:
+		var sign := held as ClownSign
+		cop.get_node("Grabber").release()
+		if circus:
+			circus.stick_sign(sign.number, self)
+		sign.queue_free()
+	elif held is ClownSponge and makeup_on:
 		scrub()
 	elif held is DonutBox or held is Bread:
 		feed(held)
@@ -104,8 +116,13 @@ func use(cop: Cop) -> void:
 	elif shoe_on:
 		pull_shoe()
 	else:
-		say("CLOWN_JOKE_%d" % ((index + _jokes_told) % JOKES))
-		_jokes_told += 1
+		honk()
+
+
+## A joke, a different one each time (in an order that starts at his number).
+func joke() -> void:
+	say("CLOWN_JOKE_%d" % ((index + _jokes_told) % JOKES))
+	_jokes_told += 1
 
 
 ## One scrub with the sponge; after SCRUBS, his face is clean and his glasses show (if he wears them).
@@ -227,7 +244,41 @@ func _physics_process(delta: float) -> void:
 
 func _file(what: String) -> void:
 	if case:
-		case.file_part(index, what)
+		case.clown_part(index, what)
+
+
+## The sign with this number on his back (-1 takes it off).
+func show_sign(number: int) -> void:
+	if _sign:
+		_sign.queue_free()
+		_sign = null
+	if number < 0:
+		return
+	_sign = Node3D.new()
+	_sign.name = "Sign"
+	_sign.position = Vector3(0, 0.95, -0.43)
+	_sign.rotation.y = PI
+	add_child(_sign)
+	var paper := MeshInstance3D.new()
+	var box := BoxMesh.new()
+	box.size = ClownSign.SIZE
+	paper.mesh = box
+	var material := StandardMaterial3D.new()
+	material.albedo_color = ClownSign.PAPER
+	paper.material_override = material
+	_sign.add_child(paper)
+	var label := Label3D.new()
+	label.text = str(number + 1)
+	label.font_size = 96
+	label.pixel_size = 0.002
+	label.modulate = Color(0.1, 0.1, 0.12)
+	label.outline_size = 0
+	label.position = Vector3(0, 0, ClownSign.SIZE.z / 2 + 0.002)
+	_sign.add_child(label)
+
+
+func has_sign() -> bool:
+	return _sign != null
 
 
 ## A part of his model by name (makeup, wig, hair, glasses, gloves, shoe_left, shoe_right, nose, teeth, legs...).

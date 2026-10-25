@@ -55,6 +55,8 @@ const BUCKET_AT := TENT_AT + Vector3(-3.0, 0, 6.6)
 const SPONGES := 2
 ## Of the clowns, how many gloves at most one has on under the first (the infinite glove trick), by the seed.
 const MAX_SPARE_GLOVES := 2
+## The pad of numbered signs, one per clown, on a stool by the bucket.
+const SIGNS_AT := BUCKET_AT + Vector3(1.2, 0, 0)
 const CARAVAN_COLORS: Array[Color] = [
 	Color(0.95, 0.55, 0.7), Color(0.45, 0.82, 0.65), Color(0.98, 0.82, 0.3), Color(0.68, 0.58, 0.9),
 	Color(0.5, 0.7, 0.95), Color(0.98, 0.6, 0.35),
@@ -62,6 +64,9 @@ const CARAVAN_COLORS: Array[Color] = [
 
 var clowns: Array[CircusClown] = []
 var ringmaster: Ringmaster
+## Who wears which sign: number -> clown index, and the last clown each number was on.
+var signs := {}
+var last_wearer := {}
 var tamer: CircusTamer
 var _builder: PlaceBuilder
 
@@ -82,6 +87,7 @@ func _ready() -> void:
 	_trunk()
 	_people()
 	_bucket()
+	_sign_pad()
 
 
 ## The six clowns in a circle in the ring, the ringmaster at its gap and Zulema by the pool.
@@ -95,6 +101,7 @@ func _people() -> void:
 		clown.index = i
 		clown.position = TENT_AT + _around(turn, CLOWNS_RADIUS)
 		clown.rotation.y = turn
+		clown.circus = self
 		add_child(clown)
 		clowns.append(clown)
 	ringmaster = Ringmaster.new()
@@ -269,6 +276,64 @@ func _bucket() -> void:
 		sponge.name = "Sponge%d" % i
 		sponge.position = BUCKET_AT + Vector3(-0.12 + i * 0.24, 0.42, 0)
 		add_child(sponge)
+
+
+## A stool with the six numbered signs stacked on it.
+func _sign_pad() -> void:
+	_builder.box(SIGNS_AT + Vector3(0, 0.25, 0), Vector3(0.4, 0.5, 0.4), WOOD)
+	for i in ClownTraits.COUNT:
+		var sign := ClownSign.new()
+		sign.name = "Sign%d" % i
+		sign.number = i
+		sign.position = SIGNS_AT + Vector3(0, 0.52 + i * 0.03, 0)
+		sign.rotation.x = -PI / 2
+		add_child(sign)
+
+
+## Sticks sign `number` on a clown's back; the one he had falls at his feet. What he shows already (his own hair,
+## his real foot) goes to that file right away.
+func stick_sign(number: int, clown: CircusClown) -> void:
+	var had := sign_of(clown.index)
+	if had == number:
+		return
+	if had >= 0:
+		drop_sign(clown)
+	signs[number] = clown.index
+	last_wearer[number] = clown.index
+	clown.show_sign(number)
+	clown.say(tr("CLOWN_SIGNED") % (number + 1))
+	if clown.case:
+		if not clown.wig_on:
+			clown.case.clown_part(clown.index, "hair")
+		if not clown.shoe_on:
+			clown.case.clown_part(clown.index, "shoe")
+
+
+## A clown's sign falls off at his feet, a sign to pick up again.
+func drop_sign(clown: CircusClown) -> void:
+	var number := sign_of(clown.index)
+	if number < 0:
+		return
+	signs.erase(number)
+	clown.show_sign(-1)
+	var sign := ClownSign.new()
+	sign.name = "Sign%d" % number
+	sign.number = number
+	add_child(sign)
+	sign.global_position = clown.to_global(Vector3(0, 0.1, -0.7))
+
+
+## The number of the sign on a clown's back, or -1.
+func sign_of(clown_index: int) -> int:
+	for number: int in signs:
+		if signs[number] == clown_index:
+			return number
+	return -1
+
+
+## The clown wearing a sign now, or the last one who did (-1 if nobody ever did).
+func wearer(number: int) -> int:
+	return signs.get(number, last_wearer.get(number, -1))
 
 
 ## The clowns and Zulema know the case: one clown (by the seed) won't take off his wig for nothing, and each has his

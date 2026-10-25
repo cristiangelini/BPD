@@ -1525,6 +1525,13 @@ FILE_HONK,"Bocina: %s","Honk: %s","Buzina: %s"
 HONK_low,"grave","low","grave"
 HONK_mid,"media","middle","média"
 HONK_high,"aguda","high","aguda"
+PROMPT_CLOWN_SIGN,"E: pegarle el cartel en la espalda","E: stick the sign on their back","E: colar o cartaz nas costas"
+PROMPT_CLOWN_SIGN_HELD,"Cartel con número: E sobre un payaso para pegárselo en la espalda","Numbered sign: E on a clown to stick it on their back","Cartaz com número: E num palhaço para colar nas costas"
+CLOWN_SIGNED,"¿El número %d? ¡Siempre quise ser el protagonista!","Number %d? I always wanted to be the star!","O número %d? Sempre quis ser a estrela!"
+HINT_CLOWN_NO_SIGN,"No tiene cartel: pégale uno con número para que vaya a su ficha.","No sign: stick a numbered one on them so it goes to their file.","Sem cartaz: cole um com número para ir para a ficha."
+FILE_SIGN,"Payaso del cartel %d","Clown with sign %d","Palhaço do cartaz %d"
+FILE_GLASSES_UNKNOWN,"Anteojos: ? (falta la foto)","Glasses: ? (no photo yet)","Óculos: ? (falta a foto)"
+HINT_BOARD_UNKNOWN,"Esa ficha todavía no dice nada de eso.","That file doesn't say anything about that yet.","Essa ficha ainda não diz nada sobre isso."
 PROMPT_BUS_ON,E: subir al bus,E: get on the bus,E: subir no ônibus
 PROMPT_BUS_OFF,E: bajar del bus,E: get off the bus,E: descer do ônibus
 PROMPT_BUS_DRIVE,E: manejar el bus,E: drive the bus,E: dirigir o ônibus
