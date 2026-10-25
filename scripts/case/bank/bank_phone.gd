@@ -207,9 +207,9 @@ func said() -> String:
 
 
 ## What a guest's phone shows (BankCase.snapshot): what El Oso asks for, whether it was promised, the time left and
-## his bubble, and whether the grandpa Oso already heard the first "yes".
+## his bubble, whether the grandpa Oso already heard the first "yes" and whether El Oso hung up for good.
 func net_state() -> Array:
-	return [request, promised, snappedf(left, 0.1), _bubble.text, _bubble.visible, said_once]
+	return [request, promised, snappedf(left, 0.1), _bubble.text, _bubble.visible, said_once, hung_up]
 
 
 func apply_net_state(state: Array) -> void:
@@ -220,6 +220,8 @@ func apply_net_state(state: Array) -> void:
 	_bubble.visible = state[4]
 	if state.size() > 5:
 		said_once = state[5]
+	if state.size() > 6:
+		hung_up = state[6]
 
 
 func _process(delta: float) -> void:

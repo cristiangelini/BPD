@@ -91,6 +91,12 @@ func _physics_process(delta: float) -> void:
 		manager.say("MANAGER_TRUNK")
 
 
+## A guest's trunk shows the host's (BankCase.snapshot).
+func set_open(open: bool) -> void:
+	_reopen_left = 0.0
+	_swing(open)
+
+
 func _swing(open: bool) -> void:
 	is_open = open
 	var tween := create_tween()

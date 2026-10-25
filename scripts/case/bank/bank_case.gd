@@ -329,6 +329,8 @@ func snapshot() -> Dictionary:
 	if bank.sorry:
 		state.sorry = [sorry_turned, sorry_tied, bank.sorry.helps_done]
 	state.manager = [manager_jailed, manager_early, wrong_manager]
+	if bank.manager_trunk and is_instance_valid(bank.manager_trunk):
+		state.trunk = bank.manager_trunk.is_open
 	if bank.croissant_tray:
 		state.tray = bank.croissant_tray.left
 	if bank.chase:
@@ -368,6 +370,9 @@ func apply_snapshot(state: Dictionary) -> void:
 			_jail_manager()
 		manager_early = state.manager[1]
 		wrong_manager = state.manager[2]
+	if state.has("trunk") and bank.manager_trunk and is_instance_valid(bank.manager_trunk) \
+			and state.trunk != bank.manager_trunk.is_open:
+		bank.manager_trunk.set_open(state.trunk)
 	if bank.croissant_tray and state.has("tray") and state.tray != bank.croissant_tray.left:
 		bank.croissant_tray.set_left(state.tray)
 	checklist.show_rows(rows())

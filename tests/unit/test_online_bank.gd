@@ -176,3 +176,58 @@ func test_the_sorry_robber_shows_the_same_on_every_pc() -> void:
 	assert_true(guest.back_door.is_open, "the back door he opened")
 	assert_true(guest.case.sorry_turned)
 	assert_eq(guest.case.helps(), 1)
+
+
+func _manager_pcs() -> Array[Node]:
+	# The first seed where the manager is the boss (robo-banco-gerente.md).
+	var seed_ := 1
+	while BankLevel.variant(seed_, PackedStringArray()) != "manager":
+		seed_ += 1
+	_pcs = OnlinePcs.new(self, Callable(), func() -> Node3D:
+		var bank: BankLevel = BANK_SCENE.instantiate()
+		bank.case_seed = seed_
+		bank.get_node("Cop/Grabber").input_enabled = false
+		return bank)
+	return await _pcs.two_pcs()
+
+
+func test_the_boss_manager_shows_the_same_on_every_pc() -> void:
+	var pcs: Array[Node] = await _manager_pcs()
+	var host := _bank(pcs[0])
+	var guest := _bank(pcs[1])
+	assert_true(guest.manager.boss, "the guest's manager is the boss too")
+	assert_true(guest.manager.follower)
+	host.manager.radio()
+	await wait_until(func() -> bool: return guest.manager.walkie_showing(), 5.0)
+	assert_true(guest.manager.walkie_showing(), "the antenna shows on the guest")
+	host.manager_trunk.use(OnlinePcs.own_cop(pcs[0]))
+	await wait_until(func() -> bool: return not guest.manager_trunk.is_open, 5.0)
+	assert_false(guest.manager_trunk.is_open, "shut there too")
+	host.manager.cuffed(Handcuffs.SECONDS)
+	OwnerEscort.of(host.manager).board()
+	await wait_until(func() -> bool: return guest.case.manager_jailed and guest.phone.hung_up, 5.0)
+	assert_true(guest.manager.caught)
+	assert_true(guest.case.manager_jailed)
+	assert_true(guest.case.manager_early)
+	assert_true(guest.phone.hung_up, "El Oso hung up on every PC")
+
+
+func test_a_guest_gets_the_key_from_the_manager() -> void:
+	var pcs: Array[Node] = await _manager_pcs()
+	var host := _bank(pcs[0])
+	var guest := _bank(pcs[1])
+	OnlinePcs.own_cop(pcs[1]).act("use", guest.manager)
+	await wait_until(func() -> bool: return not host.manager.has_key, 5.0)
+	assert_false(host.manager.has_key, "the host's manager gave it")
+	await wait_until(func() -> bool: return not guest.manager.has_key, 5.0)
+	assert_false(guest.manager.has_key)
+
+
+func test_the_manager_drives_off_on_every_pc() -> void:
+	var pcs: Array[Node] = await _manager_pcs()
+	var host := _bank(pcs[0])
+	var guest := _bank(pcs[1])
+	host.drill.drilled = host.drill.drill_time - 0.01
+	await wait_until(func() -> bool: return guest.chase != null, 5.0)
+	assert_eq(guest.chase.suspect_id, SuspectCar.MANAGER_CAR, "in his car")
+	assert_false(guest.manager.visible, "he's in it on the guest's PC too")
