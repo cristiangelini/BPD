@@ -12,6 +12,7 @@ const PAVED := Color(0.45, 0.43, 0.42)
 const LINE := Color(0.95, 0.85, 0.3)
 const GLASS := Color(0.25, 0.35, 0.5)
 const DOOR := Color(0.4, 0.26, 0.18)
+const PUMP := Color(0.85, 0.2, 0.18)
 const SHUTTER := Color(0.55, 0.57, 0.6)
 const ROOF := Color(0.86, 0.32, 0.26)
 const TRUNK := Color(0.45, 0.3, 0.2)
@@ -83,6 +84,8 @@ func _build() -> void:
 		if p.id == "station":
 			_station_inside(root, p.size)
 			_interrogation_wing(root, p.color)
+		if p.id == "gas_station":
+			_pumps(root, p.size)
 	for lot: Dictionary in CityLayout.fillers():
 		_building(lot.block, lot.side, lot.along, lot.size, lot.color, "", false,
 			CityLayout.barrio_kind(lot.block) == "house")
@@ -453,6 +456,17 @@ func _body(at: Vector3, parent: Node3D = null) -> StaticBody3D:
 	body.position = at
 	(parent if parent else _built).add_child(body)
 	return body
+
+
+## The gas station's two pumps on the sidewalk by its door, under a red canopy (traslado-presos.md: the bathroom
+## stop). Only looks: nothing to bump into.
+func _pumps(root: Node3D, size: Vector3) -> void:
+	var front := size.z / 2
+	for x: float in [-3.5, 3.5]:
+		_mesh_box(Vector3(x, 0.8, front + 1.2), Vector3(0.6, 1.6, 0.45), PUMP, root)
+		_mesh_box(Vector3(x, 1.25, front + 1.43), Vector3(0.4, 0.3, 0.02), GLASS, root)
+		_mesh_box(Vector3(x + 0.33, 0.9, front + 1.2), Vector3(0.06, 0.7, 0.06), POLE, root)
+	_mesh_box(Vector3(0, 3.4, front + 1.4), Vector3(size.x - 2.0, 0.25, 2.6), PUMP, root)
 
 
 func _mesh_box(center: Vector3, size: Vector3, color: Color, parent: Node3D = null) -> void:

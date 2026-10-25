@@ -5,8 +5,13 @@ extends Node
 ## cream every DRIP_EVERY seconds, and on a puddle the patrol car's tires lose their grip; the moving truck drops a piece
 ## of furniture at every corner he turns, which is in the way (a loose body: knocking it over isn't a fine, but it
 ## slows you down); the school bus is full of kids shouting out of the windows. The market's vegetable trike loses a
-## pumpkin, a cabbage or a watermelon at every corner it turns, the same way (politico-mercado.md). Every number here
-## is (propuesta).
+## pumpkin, a cabbage or a watermelon at every corner it turns, the same way (politico-mercado.md). The clown car honks
+## all the way and drops an inflatable clown (ChaseDummy) every DUMMY_EVERY seconds. The fruit truck control's runaway
+## pickup (control-frutas.md) drops MELONS_PER_CORNER watermelons at every corner it turns, rolling down the street; the
+## patrol car running into one splits it. The crowded car control's runaway sedan (control-auto-lleno.md, answer 3)
+## lets one of the gang jump out at every corner it turns, who runs off down the street. The ghost car control's pilot
+## (control-auto-fantasma.md) has his ghost car follow him: at every corner he turns, it cuts in across the street behind
+## him, in the patrol car's way (ChaseGhost). Every number here is (propuesta).
 
 const DRIP_EVERY := 3.0
 ## A puddle's size (m), how long it lasts, and the grip left on it.
@@ -33,12 +38,36 @@ const BEHIND := 3.5
 ## The kids shout a line every this many seconds.
 const KIDS_EVERY := 2.5
 const KIDS_LINES := ["CHASE_KIDS_1", "CHASE_KIDS_2", "CHASE_KIDS_3", "CHASE_KIDS_4", "CHASE_KIDS_5"]
+## What shows over the vehicle all the way: the kids' shouts, the clown car's horn.
+const SHOUTS := {"school_bus": KIDS_LINES, "clown_car": ["CHASE_HONK_1", "CHASE_HONK_2", "CHASE_HONK_3"]}
+const DUMMY_EVERY := 5.0
+const MAX_DUMMIES := 8
+const MELONS_PER_CORNER := 2
+const MAX_MELONS := 12
+## How fast they roll off the back, in m/s.
+const MELON_ROLL := 5.0
+## A jumper leaves the runaway packed car this fast sideways.
+const JUMP_SPEED := 3.0
+## The ghost car cuts in this far behind the runaway's back, starting this far to one side, never this close to the
+## patrol car (it doesn't land on it).
+const GHOST_BEHIND := 9.0
+const GHOST_SIDE := 2.0
+const GHOST_CLEAR := 7.0
 
 var case: ChaseCase
 ## The ice cream puddles on the street: [mesh, seconds left].
 var puddles: Array[Array] = []
 var furniture: Array[RigidBody3D] = []
+var dummies: Array[ChaseDummy] = []
+var melons: Array[Watermelon] = []
+## The gang still in the runaway packed car besides its driver: one jumps out at each corner.
+var riders_left := 0
+var jumpers: Array[CrowdRider] = []
+## The ghost car's paint (TrafficCar.MODELS) when the runaway is its pilot; -1 otherwise.
+var ghost_look := -1
+var ghost: ChaseGhost
 var _drip_left := DRIP_EVERY
+var _dummy_left := DUMMY_EVERY
 var _kids_left := 0.0
 var _kids_line := 0
 var kids_bubble: Label3D
@@ -51,14 +80,14 @@ var _dropped := 0
 func _ready() -> void:
 	_rng.seed = hash("drops %d" % case.case_seed)
 	case.truck.corner_passed.connect(_on_corner)
-	if case.suspect_id == "school_bus":
+	if SHOUTS.has(case.suspect_id):
 		kids_bubble = Label3D.new()
 		kids_bubble.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 		kids_bubble.pixel_size = 0.006
 		kids_bubble.outline_size = 12
 		kids_bubble.font_size = 44
 		kids_bubble.modulate = Color(1, 0.95, 0.6)
-		kids_bubble.position.y = 3.6
+		kids_bubble.position.y = 3.6 if case.suspect_id == "school_bus" else 2.4
 		kids_bubble.hide()
 		case.truck.add_child(kids_bubble)
 
@@ -70,11 +99,17 @@ func _physics_process(delta: float) -> void:
 		if _drip_left <= 0.0:
 			_drip_left = DRIP_EVERY
 			drip()
+	if case.suspect_id == "clown_car" and case.chasing and not case.stopped and not case.follower:
+		_dummy_left -= delta
+		if _dummy_left <= 0.0:
+			_dummy_left = DUMMY_EVERY
+			drop_dummy()
 	if kids_bubble and case.chasing and not case.stopped:
 		_kids_left -= delta
 		if _kids_left <= 0.0:
 			_kids_left = KIDS_EVERY
-			kids_bubble.text = KIDS_LINES[_kids_line % KIDS_LINES.size()]
+			var lines: Array = SHOUTS[case.suspect_id]
+			kids_bubble.text = lines[_kids_line % lines.size()]
 			kids_bubble.show()
 			_kids_line += 1
 	elif kids_bubble:
@@ -126,8 +161,15 @@ func _on_corner(turned: bool) -> void:
 		return
 	if case.suspect_id == "moving_truck":
 		drop_furniture()
+	elif case.suspect_id == SuspectCar.FRUIT_TRUCK:
+		for i in MELONS_PER_CORNER:
+			drop_melon()
 	elif case.suspect_id == SuspectCar.VEGGIE_TRIKE:
 		drop_furniture(true)
+	if riders_left > 0:
+		drop_jumper()
+	if ghost_look >= 0:
+		cut_in()
 
 
 ## A piece of furniture falls off the back of the moving truck, or a veggie off the trike.
@@ -144,6 +186,80 @@ func drop_furniture(veggie := false) -> RigidBody3D:
 	body.rotation.y = _rng.randf() * TAU
 	furniture.append(body)
 	return body
+
+
+## A watermelon rolls off the back of the runaway fruit truck: the wanted one's, so splitting it is no complaint.
+func drop_melon() -> Watermelon:
+	melons = melons.filter(func(melon: Watermelon) -> bool: return is_instance_valid(melon))
+	if melons.size() >= MAX_MELONS:
+		melons.pop_front().queue_free()
+	var melon := Watermelon.new()
+	melon.from_wanted = true
+	_dropped += 1
+	melon.name = "Melon%d" % _dropped
+	case.get_parent().add_child(melon)
+	var back := -case.truck.global_basis.z
+	var side := case.truck.global_basis.x * _rng.randf_range(-0.6, 0.6)
+	melon.global_position = _behind() + side + Vector3.UP * 0.25
+	melon.rotation.y = case.truck.global_rotation.y + PI / 2
+	melon.linear_velocity = case.truck.velocity + (back + side * 0.5) * MELON_ROLL
+	melon.angular_velocity = case.truck.global_basis.x * -MELON_ROLL / Watermelon.RADIUS
+	melons.append(melon)
+	return melon
+
+
+## One of the gang jumps out of the runaway packed car and runs off; there's one face less on its windows.
+func drop_jumper() -> CrowdRider:
+	riders_left -= 1
+	var jumper := CrowdRider.new()
+	_dropped += 1
+	jumper.name = "Jumper%d" % _dropped
+	jumper.traits = CrowdRider.look_of("chase %d" % case.case_seed, _dropped)
+	var side := case.truck.global_basis.x * (1.0 if _rng.randf() < 0.5 else -1.0)
+	jumper.runaway = (side - case.truck.global_basis.z).normalized()
+	case.get_parent().add_child(jumper)
+	jumper.global_position = case.truck.global_position + side * 1.4 + Vector3.UP * 0.4
+	jumper.linear_velocity = case.truck.velocity * 0.5 + side * JUMP_SPEED + Vector3.UP * 2.0
+	jumper.say(tr("CROWD_JUMP_LINE_%d" % (_dropped % CrowdRider.JUMP_LINES)))
+	jumpers.append(jumper)
+	CrowdedCar.show_inside(case.truck, riders_left + 1)
+	return jumper
+
+
+## The ghost car cuts in across the street behind its pilot, from one side or the other, unless the patrol car is
+## right there.
+func cut_in() -> ChaseGhost:
+	var truck := case.truck
+	var side := truck.global_basis.x * (1.0 if _rng.randf() < 0.5 else -1.0)
+	var at := truck.global_position - truck.global_basis.z * GHOST_BEHIND + side * GHOST_SIDE
+	at.y = truck.global_position.y
+	if is_instance_valid(case.car) and (case.car.global_position * Vector3(1, 0, 1)).distance_to(at * Vector3(1, 0, 1)) \
+			< GHOST_CLEAR:
+		return null
+	if not is_instance_valid(ghost):
+		ghost = ChaseGhost.new()
+		ghost.name = "ChaseGhost"
+		ghost.look = ghost_look
+		case.get_parent().add_child(ghost)
+	_dropped += 1
+	ghost.cut_in(Transform3D(Basis.looking_at(-side, Vector3.UP, true), at),
+		tr("GHOST_HONK_%d" % (_dropped % GhostPilot.HONKS)))
+	return ghost
+
+
+## An inflatable clown, just like him, drops out of the back of the clown car.
+func drop_dummy() -> ChaseDummy:
+	dummies = dummies.filter(func(dummy: ChaseDummy) -> bool: return is_instance_valid(dummy))
+	if dummies.size() >= MAX_DUMMIES:
+		dummies.pop_front().queue_free()
+	var dummy := ChaseDummy.new()
+	_dropped += 1
+	dummy.name = "Dummy%d" % _dropped
+	case.get_parent().add_child(dummy)
+	dummy.global_position = _behind() + Vector3.UP * 0.2
+	dummy.rotation.y = case.truck.global_rotation.y + PI
+	dummies.append(dummy)
+	return dummy
 
 
 func _behind() -> Vector3:

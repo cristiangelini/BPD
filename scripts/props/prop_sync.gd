@@ -3,7 +3,7 @@ extends Node
 
 ## Keeps the level's physics objects the same on every PC (docs/diseno/online.md, "Qué se sincroniza"): the host
 ## simulates every Grabbable and the patrol car (its driver sends the controls, see CopSync) and sends where the ones
-## that moved are, about 20 times a second; the guests' copies are frozen and ease toward it. A prop that breaks on the host (an ornament) breaks on everyone. Levels build the same
+## that moved are, about 20 times a second; the guests' copies are frozen and ease toward it. A prop that breaks on the host (an ornament) breaks on everyone; one just taken away (a watermelon gone with its truck) only goes. Levels build the same
 ## from the same seed, so each prop is known by its place in the level's list. Only the host makes new props (the
 ## takings out of a safe, the ring out of a loaf): it adds them to the list and the guests make a copy from the same
 ## scene; a prop a guest makes on its own is dropped. Lives under the Net autoload as "Props".
@@ -26,6 +26,8 @@ var _sent := {}
 var _targets := {}
 ## Indices of props that are gone, so it's only said once (host) or done once (guests).
 var _gone := {}
+## Host: indices of props that went because they broke (an Ornament's `broken`), so the guests' break too.
+var _shattered := {}
 var _send_left := 0.0
 ## Index -> scene of a prop the host made after the level started ("" if it has no scene: guests don't copy it).
 var _spawned := {}
@@ -41,6 +43,13 @@ func _init(owner_net: Node, level: Node) -> void:
 	for node in level.find_children("*", "RigidBody3D", true, false):
 		if is_synced(node):
 			props.append(node as RigidBody3D)
+			_watch_break(node, props.size() - 1)
+
+
+## Host: remembers when the prop at `index` breaks, to break the guests' copy instead of just taking it away.
+func _watch_break(node: Node, index: int) -> void:
+	if node is Ornament:
+		(node as Ornament).broken.connect(func(_at: Vector3) -> void: _shattered[index] = true)
 
 
 func _ready() -> void:
@@ -91,6 +100,7 @@ func _on_node_added(node: Node) -> void:
 	if net.is_host():
 		props.append(node as RigidBody3D)
 		var index := props.size() - 1
+		_watch_break(node, index)
 		_spawned[index] = [_source(node), node.net_setup() if node.has_method("net_setup") else {}]
 		for peer: int in net.scene_peers:
 			_made.rpc_id(peer, index, _spawned[index][0], _spawned[index][1])
@@ -167,12 +177,15 @@ func _send() -> void:
 	var ids := PackedInt32Array()
 	var places: Array[Transform3D] = []
 	var gone := PackedInt32Array()
+	var shattered := PackedInt32Array()
 	for i in props.size():
 		var prop := prop_at(i)
 		if not prop or not prop.is_inside_tree() or (prop is Ornament and (prop as Ornament).is_broken):
 			if not _gone.has(i):
 				_gone[i] = true
 				gone.append(i)
+				if _shattered.has(i) or (prop is Ornament and (prop as Ornament).is_broken):
+					shattered.append(i)
 			continue
 		var place := prop.global_transform
 		if _sent.has(i) and (_sent[i] as Transform3D).origin.distance_to(place.origin) < MOVED \
@@ -185,7 +198,7 @@ func _send() -> void:
 		for from in range(0, ids.size(), PER_PACKET):
 			_moved.rpc_id(peer, ids.slice(from, from + PER_PACKET), places.slice(from, from + PER_PACKET))
 		if not gone.is_empty():
-			_removed.rpc_id(peer, gone)
+			_removed.rpc_id(peer, gone, shattered)
 
 
 @rpc("authority", "call_remote", "unreliable_ordered")
@@ -200,15 +213,16 @@ func _moved_all(ids: PackedInt32Array, places: Array, gone: PackedInt32Array) ->
 	_removed(gone)
 
 
+## Props gone on the host; the `shattered` ones broke there, so they break here too.
 @rpc("authority", "call_remote", "reliable")
-func _removed(gone: PackedInt32Array) -> void:
+func _removed(gone: PackedInt32Array, shattered := PackedInt32Array()) -> void:
 	for i in gone:
 		var prop := prop_at(i)
 		if _gone.has(i) or not prop:
 			continue
 		_gone[i] = true
 		_targets.erase(i)
-		if prop is Ornament:
+		if prop is Ornament and i in shattered:
 			(prop as Ornament).hit(INF)
 		else:
 			prop.queue_free()
