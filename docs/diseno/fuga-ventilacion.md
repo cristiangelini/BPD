@@ -21,7 +21,7 @@ tirar cosas) mientras los otros cruzan la sala a sus espaldas.
    las celdas, sin la llave: las llaves de las celdas cuelgan del tablero de llaves de la pared, detrás de él. Aviso:
    "Una rejilla floja arriba... ¿entramos todos por ahí?"
 2. **La rejilla:** a 2,2 m del piso, en la pared del fondo de cada celda. Se llega subiéndose a la cucheta. Tiene 4
-   tornillos y cada uno se saca con E sostenida 2 s (con la uña). Sin tornillos se cae al piso y queda el agujero.
+   tornillos y cada uno sale con 4 toques de E, uno cada medio segundo (con la uña). Sin tornillos se cae al piso y queda el agujero.
 3. **El grandote:** con 2 o más policías, la semilla elige uno que no entra. Si intenta meterse en el ducto queda
    trabado 4 s ("¡Estoy atorado!") y vuelve a caer a la celda; un compañero lo puede empujar o tirar de él, pero no
    pasa igual. Jugando solo, nadie es el grandote.
@@ -83,3 +83,13 @@ llave se sacó y las capturas. El guardia va por `NpcSync`; la rejilla, la llave
    es parte del chiste, y desde la celda tiene trabajo (distraer al guardia).
 3. ¿Que correr en el ducto haga ruido y el guardia mire al techo? **Recomiendo sí:** obliga a gatear despacio y le da
    tensión al ducto, que si no es solo un pasillo.
+
+## Cómo quedó el paso 1
+- `--jailbreak=vent` fuerza la variante; el sorteo de la fuga ahora es en quintos.
+- `VentGuard` (scripts/npc/vent_guard.gd): despierto, sin donas y sin la llave.
+- `VentGrille` en la pared del fondo de cada celda, a 2,2 m, encima de la cucheta: desde el piso dice "súbete a la
+  cucheta"; arriba, cada E da una vuelta al tornillo (una cada 0,5 s) y con 4 vueltas sale. Sin tornillos se cae al
+  piso y queda el agujero oscuro.
+- `JailbreakLevel.big_cop()`: el grandote, sorteado por la semilla entre los policías por su uniforme (igual en todas
+  las PCs); jugando solo no hay.
+- Modelos `vent_grille` y `vent_hole` en `tools/modelgen/models/vent.js`. Pruebas en `test_vent_grille.gd`.
