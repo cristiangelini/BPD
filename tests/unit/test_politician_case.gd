@@ -23,13 +23,26 @@ func test_the_comisario_tells_it_in_his_office() -> void:
 
 
 func test_the_end_of_the_speech_solves_it() -> void:
+	# Every heckler already in the patrol car: nobody runs off, so the shift ends.
+	for heckler in rally.crowd.hecklers:
+		OwnerEscort.of(heckler).board()
 	rally.speech.start()
 	rally.speech.left = 0.05
 	await wait_physics_frames(10)
 	assert_true(rally.case.speech_over)
 	assert_true(rally.case.solved())
+	assert_null(rally.case.chase)
 	await wait_seconds(PoliticianCase.SHIFT_DELAY + 0.5)
 	assert_true(rally.case.shift_over)
+
+
+func test_a_loose_heckler_runs_off_when_the_speech_ends() -> void:
+	rally.speech.start()
+	rally.speech.left = 0.05
+	await wait_physics_frames(10)
+	assert_true(rally.case.solved())
+	assert_not_null(rally.case.chase, "the last heckler gets away on the kick scooter")
+	assert_false(rally.case.shift_over, "the chase comes first")
 
 
 func test_the_pay_counts_stains_and_hecklers() -> void:
