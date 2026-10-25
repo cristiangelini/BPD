@@ -1848,3 +1848,36 @@ MIME_NOT_MIMING,¡Mantén H! Las manos contra la pared invisible,Hold H! Hands o
 MIME_MOVED,¡Te moviste! Quédate quieto,You moved! Stand still,Você se mexeu! Fique parado
 MIME_FROZE_WRONG,¡Suelta H! Las estatuas no hacen mímica,Let go of H! Statues don't mime,Solte H! Estátuas não fazem mímica
 MIME_GO_TO_STAGE,Sube al escenario,Get on the stage,Suba no palco
+BRIEF_MIME_A,"¡Novatos! Cada domingo los mimos del barrio actúan en la plaza, y cada domingo desaparecen las billeteras del público.","Rookies! Every Sunday the neighborhood mimes perform in the plaza, and every Sunday the audience's wallets vanish.","Novatos! Todo domingo os mímicos do bairro se apresentam na praça, e todo domingo somem as carteiras do público."
+BRIEF_MIME_B,"Creo que la jefa, la Maestra Pausa, los entrena para robar mientras la gente mira la caja invisible. Entren como mimos nuevos: en el casillero hay boinas, caras blancas y remeras a rayas.","I think their boss, Maestra Pausa, trains them to steal while people watch the invisible box. Go in as new mimes: the lockers have berets, white faces and striped shirts.","Acho que a chefe, a Maestra Pausa, treina eles para roubar enquanto o povo olha a caixa invisível. Entrem como mímicos novos: no armário tem boinas, rostos brancos e camisetas listradas."
+BRIEF_MIME_C,Junten 3 pruebas y esposen a la Maestra Pausa. Y lo más importante: allá adentro no se habla. Ni una palabra.,"Gather 3 pieces of evidence and cuff Maestra Pausa. And most important: in there, nobody talks. Not one word.",Juntem 3 provas e algemem a Maestra Pausa. E o mais importante: lá dentro não se fala. Nem uma palavra.
+HINT_GO_MIME,"El teatro está al noreste de la comisaría. Antes, pasa por el casillero a ponerte 2 piezas de mimo.","The theater is northeast of the station. First, stop by the lockers to put on 2 mime pieces.","O teatro fica a nordeste da delegacia. Antes, passe no armário para vestir 2 peças de mímico."
+HINT_MIME_IN,"Adentro. Desde ahora, ni una palabra cerca de los mimos. Sube al escenario cuando suene el silbato.","You're in. From now on, not a word near the mimes. Get on the stage when the whistle blows.","Lá dentro. A partir de agora, nem uma palavra perto dos mímicos. Suba no palco quando o apito tocar."
+HINT_PAUSA_CUFFED,¡La Maestra Pausa esposada! Caso resuelto.,Maestra Pausa is cuffed! Case solved.,A Maestra Pausa algemada! Caso resolvido.
+HINT_ESCAPE_pausa,¡La Maestra Pausa se escapa! ¡Atrápenla!,Maestra Pausa is getting away! Catch her!,A Maestra Pausa está fugindo! Peguem ela!
+OBJ_MIME_GET_IN,Entrar disfrazado de mimo al teatro,Get into the theater dressed as a mime,Entrar vestido de mímico no teatro
+OBJ_MIME_EVIDENCE,Pruebas (%d de %d),Evidence (%d of %d),Provas (%d de %d)
+OBJ_MIME_CUFF_PAUSA,Esposar a la Maestra Pausa,Cuff Maestra Pausa,Algemar a Maestra Pausa
+OBJ_MIME_CATCH_PAUSA,Atrapar a la Maestra Pausa,Catch Maestra Pausa,Pegar a Maestra Pausa
+OBJ_MIME_CAREFUL,"Que no los descubran: nada de hablar cerca de los mimos, y en el ensayo, mímica o estatua.","Don't get found out: no talking near the mimes, and in the rehearsal, mime or statue.","Que não descubram vocês: nada de falar perto dos mímicos, e no ensaio, mímica ou estátua."
+OBJ_MIME_FOUND_OUT,¡Los descubrieron!,You've been found out!,Vocês foram descobertos!
+EVIDENCE_MIME_box,La caja invisible: es de acrílico y está llena de billeteras,The invisible box: it's acrylic and full of wallets,A caixa invisível: é de acrílico e está cheia de carteiras
+EVIDENCE_MIME_ledger,La libreta de la Maestra con lo robado cada domingo,The Maestra's ledger of every Sunday's take,A caderneta da Maestra com o roubado de cada domingo
+EVIDENCE_MIME_dummy,Foto del muñeco de práctica lleno de cascabeles,Photo of the practice dummy covered in bells,Foto do boneco de treino cheio de guizos
+EVIDENCE_MIME_watches,La bolsa de relojes ajenos del baúl,The trunk's bag of other people's watches,A bolsa de relógios alheios do baú
+EVIDENCE_MIME_recording,El video de dos mimos contándose el robo con mímica,The video of two mimes miming the robbery to each other,O vídeo de dois mímicos contando o roubo com mímica
+EVIDENCE_MIME_map,Foto del mapa de la plaza con cruces,Photo of the plaza map with crosses,Foto do mapa da praça com cruzes
+PROMPT_MIME_dummy,Un muñeco con saco y los bolsillos llenos de cascabeles... (sácale una foto),A dummy in a coat with its pockets full of bells... (take a photo),Um boneco de paletó com os bolsos cheios de guizos... (tire uma foto)
+PROMPT_MIME_map,Un mapa de la plaza con cruces rojas... (sácale una foto),A map of the plaza with red crosses... (take a photo),Um mapa da praça com cruzes vermelhas... (tire uma foto)
+MIME_TALK_0,*Hace como que mira un show muy divertido y se ríe sin ruido.*,*Pretends to watch a very funny show and laughs without a sound.*,*Finge assistir a um show muito engraçado e ri sem barulho.*
+MIME_TALK_1,"*Mete la mano en el bolsillo del otro, despacito, despacito...*","*Slips a hand into the other's pocket, slowly, slowly...*","*Põe a mão no bolso do outro, devagarinho, devagarinho...*"
+MIME_TALK_2,*Saca una billetera invisible y la mete en la caja invisible.*,*Pulls out an invisible wallet and drops it in the invisible box.*,*Tira uma carteira invisível e coloca na caixa invisível.*
+MIME_TALK_3,*Los dos se chocan las manos sin hacer ruido.*,*They high-five without a sound.*,*Os dois batem as mãos sem barulho.*
+PAUSA_SLIP_1,"¡La caja es invisible! ...Bueno, transparente.","The box is invisible! ...Well, see-through.","A caixa é invisível! ...Bom, transparente."
+PAUSA_SLIP_2,¡Los cascabeles son para el vestuario! ...Del muñeco.,The bells are for the costumes! ...The dummy's.,Os guizos são do figurino! ...Do boneco.
+PAUSA_SLIP_3,¡Esos relojes los gané en la plaza! ...De a uno.,I won those watches in the plaza! ...One at a time.,Esses relógios eu ganhei na praça! ...Um de cada vez.
+CRIME_owner_pausa,¡Novatos! Ayer se trajeron a la Maestra Pausa del teatro y está en la sala de interrogatorio. Las billeteras de la plaza no aparecieron. Háganla hablar... si pueden.,Rookies! Yesterday Maestra Pausa was brought in from the theater and she's in the interrogation room. The plaza's wallets never turned up. Make her talk... if you can.,Novatos! Ontem trouxeram a Maestra Pausa do teatro e ela está na sala de interrogatório. As carteiras da praça não apareceram. Façam ela falar... se conseguirem.
+CONFESS_owner_pausa,"¡Está bien! ¡Sí, robábamos en la plaza! ¡Y qué alivio hablar, no saben lo que es estar callada diez años!","Fine! Yes, we robbed the plaza! And what a relief to talk, you have no idea what ten years of silence is like!","Tá bom! Sim, a gente roubava na praça! E que alívio falar, vocês não sabem o que é ficar calada dez anos!"
+CHASE_PAUSA_LINE_1,*Toca bocina con la mano. La bocina no existe. El auto tampoco.*,*Honks with her hand. There's no horn. There's no car either.*,*Buzina com a mão. A buzina não existe. O carro também não.*
+CHASE_PAUSA_LINE_2,"¡Nunca me van a alcanzar! ...Uy, hablé otra vez.","You'll never catch me! ...Oops, I spoke again.","Vocês nunca vão me alcançar! ...Ops, falei de novo."
+CHASE_PAUSA_LINE_3,"Está bien, me rindo. Pero la estatua la hacían horrible.","Fine, I give up. But your statue was awful.","Tá bom, eu me rendo. Mas a estátua de vocês era horrível."
