@@ -69,9 +69,48 @@ export function buildSongbook() {
 	return b.build();
 }
 
+// The cleaning crew's disguises (fuga-limpieza.md, step 3), each origin where it sits on a cop (DisguisePiece.SLOTS):
+// a blue cap with a visor, a white face mask and a yellow vest with grey reflective stripes. Placeholder.
+export function buildCleanerCap() {
+	const b = new Builder('disguise_cleaner_cap');
+	const blue = mat('cleaner_blue', 0x2a6ad0);
+	b.add('cap', blue, ellipsoid(0.21, 0.11, 0.2, 10, 6), { pos: V(0, 0.05, 0) });
+	b.add('visor', blue, new THREE.CylinderGeometry(0.13, 0.13, 0.02, 12, 1, false, -Math.PI / 2, Math.PI), { pos: V(0, 0.02, 0.17), scale: [1, 1, 0.9] });
+	b.add('badge', mat('cleaner_badge', 0xf2eee4), new THREE.BoxGeometry(0.08, 0.04, 0.01), { pos: V(0, 0.09, 0.2) });
+	return b.build();
+}
+
+// A white face mask with its straps, 0.24 x 0.12 x 0.06 m, origin in its middle.
+export function buildFaceMask() {
+	const b = new Builder('disguise_face_mask');
+	const white = mat('mask_white', 0xf4f6f8), strap = mat('mask_strap', 0xd8dadc);
+	b.add('mask', white, ellipsoid(0.11, 0.06, 0.035, 10, 5));
+	for (const s of [-1, 1]) b.add('straps', strap, new THREE.BoxGeometry(0.1, 0.008, 0.008), { pos: V(s * 0.15, 0.01, -0.04), rot: [0, s * 0.9, 0] });
+	return b.build();
+}
+
+// The vest worn: around the cop's chest and belly, origin at the chest's front, the cop's middle 0.3 m behind (-Z).
+export function buildCleanerVest() {
+	const b = new Builder('disguise_cleaner_vest');
+	const vest = mat('vest_yellow', 0xf2d020), stripe = mat('vest_stripe', 0xb8bcc4, { emissive: 0x202224 });
+	b.add('vest', vest, new THREE.CylinderGeometry(0.3, 0.47, 0.55, 14, 1, true), { pos: V(0, -0.15, -0.3) });
+	for (const y of [-0.3, -0.12]) b.add('stripes', stripe, new THREE.CylinderGeometry(0.45 - (y + 0.3) * 0.25, 0.46 - (y + 0.3) * 0.25, 0.04, 14, 1, true), { pos: V(0, y, -0.3) });
+	return b.build();
+}
+
+// The vest folded, as it lies in the cleaning closet: 0.4 x 0.08 x 0.3 m, origin in its middle.
+export function buildFoldedVest() {
+	const b = new Builder('folded_vest');
+	b.add('vest', mat('vest_yellow', 0xf2d020), new THREE.BoxGeometry(0.4, 0.08, 0.3));
+	b.add('stripes', mat('vest_stripe', 0xb8bcc4, { emissive: 0x202224 }), new THREE.BoxGeometry(0.41, 0.02, 0.05), { pos: V(0, 0.03, 0) });
+	return b.build();
+}
+
 export const models = {
 	disguise_wig: buildDisguiseWig, disguise_mustache: buildDisguiseMustache, disguise_glasses: buildDisguiseGlasses,
 	disguise_robe: buildDisguiseRobe, folded_robe: buildFoldedRobe, songbook: buildSongbook,
+	disguise_cleaner_cap: buildCleanerCap, disguise_face_mask: buildFaceMask, disguise_cleaner_vest: buildCleanerVest,
+	folded_vest: buildFoldedVest,
 };
 
 export const views = {
