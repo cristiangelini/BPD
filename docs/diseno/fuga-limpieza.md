@@ -92,8 +92,8 @@ la sospecha y las capturas. Clotilde y el comisario van por `NpcSync`; el llaver
    `tools/modelgen`).
 3. El cuarto de limpieza con los disfraces (look "cleaner") y las herramientas, y la sospecha del comisario según el
    disfraz y si limpian.
-4. Las manchas, limpiar con el trapeador y la lustradora, el piso mojado que resbala y el "¿Te conozco?".
-5. Salir (subir al patrullero a la vista), frases y online.
+4. Las manchas, limpiar con el trapeador, el piso mojado que resbala y el "¿Te conozco?".
+5. La lustradora, salir (subir al patrullero a la vista) y lo que falte del online.
 
 **Cómo quedó el paso 1:**
 - La fuga sortea con la semilla de "Jugar" entre la dona y la limpieza, mitad y mitad. Sin semilla de "Jugar" (abrir
@@ -138,6 +138,21 @@ la sospecha y las capturas. Clotilde y el comisario van por `NpcSync`; el llaver
   una fila aparte.
 - Por ahora tener el trapeador en la mano ya cuenta como limpiar; en el paso 4 va a hacer falta moverlo por el piso.
 - Captura de los modelos: `limpieza/paso3-disfraz-y-herramientas.png`.
+
+**Cómo quedó el paso 4:**
+- En el piso de la sala de guardia y la sala de las celdas hay de 8 a 12 manchas (café, barro, pisadas y migas de
+  dona) de 20 lugares posibles, según la semilla (`FloorStains`).
+- El trapeador limpia cuando tiene la cabeza en el piso y se mueve: mirando al piso y moviendo la mira de un lado al
+  otro. Sobre una mancha, en 2 s la borra (se va aclarando). Ahí queda el piso mojado 20 s, con un cartelito amarillo.
+- Ahora "limpiar", para el comisario, es trabajar con la herramienta: el trapeador moviéndose por el piso o el plumero
+  moviéndose en el aire. Tenerlo quieto en la mano ya no alcanza.
+- Una mancha borrada donde el comisario la ve le baja 20 de sospecha: "¡Qué brillo! Así me gusta."
+- "¿Te conozco?": un disfrazado que pasa a menos de 2,5 m delante de él lo hace frenar y mirarlo 3 s. Si en esos 3 s
+  estuvo limpiando al menos 2, dice "No, no. Todos los de limpieza se parecen." y sigue; si no, la sospecha sube 40 de
+  golpe. Al mismo policía no lo vuelve a mirar hasta 15 s después. A uno sin disfraz no lo mira: lo atrapa.
+- Correr sobre el piso mojado hace resbalar 2 s y soltar lo que se tenía en la mano. Cada PC hace resbalar a su propio
+  policía; las manchas y el piso mojado van online por `NpcSync`.
+- La lustradora pasa al paso 5.
 
 ## Preguntas para Cristian
 1. ¿La fuga sortea entre la dona y la limpieza mitad y mitad con la semilla? **Recomiendo sí:** las dos ya comparten
