@@ -258,6 +258,30 @@ func set_lit(lit: bool) -> void:
 		frozen = false
 
 
+## What a guest's copy needs besides where they are and what they say (NpcSync).
+func net_state() -> Array:
+	return [frozen, hidden, is_escaped, jailed_in, surrendered, has_fuse, is_cuffed()]
+
+
+func apply_net_state(state: Variant) -> void:
+	frozen = state[0]
+	jailed_in = state[3]
+	has_fuse = state[5]
+	_cuffed_left = Handcuffs.SECONDS if state[6] else 0.0
+	if state[2] and not is_escaped:
+		is_escaped = true
+		hide()
+		collision_layer = 0
+	if state[1] != hidden or state[4] != surrendered:
+		hidden = state[1]
+		surrendered = state[4]
+		var low := -CROUCH if hidden or (surrendered and not is_jailed()) else 0.0
+		_model.position.y = low
+		_eyes.position.y = low
+	if _sparks:
+		_sparks.visible = has_fuse
+
+
 func say(key: String, seconds := SAY_TIME) -> void:
 	_bubble.text = key
 	_bubble.show()

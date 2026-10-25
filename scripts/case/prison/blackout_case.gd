@@ -4,8 +4,10 @@ extends Node
 ## The blackout case (carcel-corte-de-luz.md, step 6): the comisario tells it in his office and Q opens the planilla.
 ## Solved when the light comes back (the three fuses in, BlackoutPlan.lights_back): SALARY, PER_ESCAPED less for each
 ## inmate who got out through the gate and CHISPA_BONUS more with El Chispa shut in the punishment cell; quota of its
-## own, like the riot's. With LOSE_AT inmates escaped the case is lost. No time limit (decision 66). Every number here
-## is (propuesta).
+## own, like the riot's. With LOSE_AT inmates escaped the case is lost. No time limit (decision 66). Step 7: online the
+## host's case decides and a guest's follows it (CaseSync, snapshot): the escapes, the fuses in the board, the light
+## and how it ended. The inmates go by NpcSync, the fuses by PropSync and the cells' bars by ActionSync. Every number
+## here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 4.0
@@ -25,7 +27,11 @@ var tip_given := false
 var solved_it := false
 var failed_reason := ""
 var shift_over := false
-var follower := false
+var follower := false:
+	set(value):
+		follower = value
+		if prison:
+			prison.blackout.follower = value
 var online: CaseSync
 var _result := {}
 var _refresh_left := 0.0
@@ -156,6 +162,30 @@ func _show_result(result: Dictionary) -> void:
 			result.campaign.promoted)
 		over = result.campaign.over
 	shift_screen.get_node("%AgainButton").visible = not over and not follower
+
+
+## What every guest's case shows (CaseSync).
+func snapshot() -> Dictionary:
+	var plan := prison.blackout
+	return {"tip": tip_given, "running": plan.running, "escaped": plan.escaped, "filled": prison.fuse_board.filled,
+		"lights": plan.lights_on, "solved": solved_it, "failed": failed_reason, "result": _result}
+
+
+func apply_snapshot(state: Dictionary) -> void:
+	var plan := prison.blackout
+	if state.tip:
+		give_tip()
+	plan.running = state.running
+	plan.escaped = state.escaped
+	if prison.fuse_board.filled != state.filled and not prison.fuse_board.is_complete():
+		prison.fuse_board.set_filled(state.filled)
+	if state.lights and not plan.lights_on:
+		plan.lights_back()
+	solved_it = state.solved
+	failed_reason = state.failed
+	checklist.show_rows(rows())
+	if not state.result.is_empty() and not shift_over:
+		_show_result(state.result)
 
 
 ## The planilla's rows, in the shape CaseChecklist takes.
