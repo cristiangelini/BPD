@@ -87,3 +87,10 @@ variantes), el walkie, el baúl y la huida en su auto.
   (`ManagerTrunk`): E lo cierra y a los 6 s él lo vuelve a abrir, "¡Déjelo abierto, que se airee!". Una de cada tres
   quejas lo delata (`MANAGER_BOSS_1-2`). El gerente honesto no tiene walkie ni baúl abierto. El desliz de El Oso por
   teléfono queda para el paso 4. Capturas en `/mnt/project-files/gerente/paso2-*.png`.
+- **Paso 3 (esposarlo):** el gerente jefe esposado se rinde ("¡Esto es un atropello! ...Bueno, sí, fui yo.",
+  `BankManager.caught`): no camina más, no usa el walkie y no vuelve a abrir el baúl. E lo lleva del brazo al
+  patrullero (`OwnerEscort`; va en el baúl, arriba de los dos ladrones que entran ahí). La banda lo oye por el walkie y
+  se pone nerviosa una vez, y El Oso cuelga el teléfono para siempre ("¿Jefe? ¿Jefe? ...*clic*",
+  `BankPhone.hang_up`; si se lo vuelve a llamar, da ocupado). El gerente honesto esposado protesta ("¡¿A mí?! ¡Soy la
+  víctima!"), las esposas le duran 3 s y `wrongly_cuffed` salta la primera vez (el caso le cobra 200 en el paso 4).
+  Capturas en `/mnt/project-files/gerente/paso3-*.png`.

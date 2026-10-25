@@ -86,7 +86,7 @@ func _physics_process(delta: float) -> void:
 	if is_open or _reopen_left <= 0.0:
 		return
 	_reopen_left -= delta
-	if _reopen_left <= 0.0 and manager:
+	if _reopen_left <= 0.0 and manager and not manager.caught:
 		_swing(true)
 		manager.say("MANAGER_TRUNK")
 

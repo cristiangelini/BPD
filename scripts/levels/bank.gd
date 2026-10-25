@@ -77,6 +77,9 @@ const MANAGER_SPOTS: Array[Vector3] = [Vector3(-10.0, 0, HALF_Z + 2.0), Vector3(
 ## The boss manager's walkie (step 2): with no cop this close to him (m), the drill hurries this long (s).
 const WALKIE_NEAR := 6.0
 const WALKIE_HURRY := 10.0
+## Where the boss manager rides in the patrol car once walked there (step 3): the fifth one, on top of the two in the
+## trunk.
+const MANAGER_SEAT := ChaseCase.TRUNK_SEAT + Vector3(0, 1.0, 0)
 ## Where each robber stands and which way they face (their body's yaw): the rabbit by the entrance looking at the
 ## door, the pig in front of the counter looking at the hostages, the duck in the corridor looking at the vault's
 ## door and El Oso behind the middle desk looking at the hall.
@@ -505,10 +508,23 @@ func _add_manager(is_boss: bool) -> void:
 	# The boss (step 2): the key he gives doesn't fit, his walkie hurries the gang and his trunk waits open.
 	back_door.wrong_key = true
 	manager.radioed.connect(_on_manager_radioed)
+	manager.caught_now.connect(_on_manager_caught)
+	var escort := OwnerEscort.attach(manager, car)
+	escort.seat_shift = MANAGER_SEAT
+	escort.in_car_hint = "HINT_MANAGER_IN_CAR"
 	manager_trunk = ManagerTrunk.new()
 	manager_trunk.name = "Trunk"
 	manager_trunk.manager = manager
 	manager_car.add_child(manager_trunk)
+
+
+## The boss manager in handcuffs (step 3): the gang hears it on the walkie and gets nervous once, and El Oso hangs up
+## the phone for good.
+func _on_manager_caught(_manager: BankManager) -> void:
+	if follower:
+		return
+	drill.hurry(BankDrill.NERVOUS)
+	phone.hang_up()
 
 
 ## The boss manager murmured into his walkie: the drill hurries unless a cop stands close to him.
