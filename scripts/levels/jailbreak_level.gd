@@ -70,6 +70,19 @@ const LOST_DELAY := 3.0
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 ## The comisario at the cells room's door, facing in, when he's called.
 const COMISARIO_AT := Vector3(6.8, 0, 6.4)
+## The guard dog's jailbreak (fuga-perro.md, step 2): a dinner tray deep in each cell, the break room's fridge with the
+## door open and the guard's sandwich on his desk. What's on them is drawn from DOG_FOOD (kind -> weight), and redrawn
+## up to sausages until it adds up to DOG_FOOD_ENOUGH friendship, so there's always enough for four friends.
+const TRAY_MODEL := preload("res://assets/models/prison_tray.glb")
+const FRIDGE_MODEL := preload("res://assets/models/dog_fridge.glb")
+const TRAYS_AT: Array[Vector3] = [Vector3(9.9, 0.02, 2.6), Vector3(14.3, 0.02, 2.6)]
+const ON_TRAY := 3
+const FRIDGE_AT := Vector3(13.5, 0, 0.55)
+const FRIDGE_SHELVES: Array[float] = [0.45, 0.85, 1.25]
+const ON_SHELF := 3
+const SANDWICH_AT := Vector3(11.1, 0.86, 7.4)
+const DOG_FOOD := {"sausage": 3, "ham": 3, "cheese": 3, "donut": 2, "lettuce": 2}
+const DOG_FOOD_ENOUGH := 400.0
 
 ## The ways out, drawn by the seed (fuga-limpieza.md and fuga-perro.md, question 1: in thirds, propuesta).
 const VARIANTS := ["donut", "cleaning", "dog"]
@@ -90,6 +103,7 @@ var car_home: Transform3D
 var cleaner: Cleaner
 ## Mordisco, in the guard dog's jailbreak.
 var dog: GuardDog
+var dog_food: Array[DogFood] = []
 var cart_key: CellKey
 var tools: Array[CleaningTool] = []
 var polisher: FloorPolisher
@@ -172,6 +186,75 @@ func _dog_night() -> void:
 	dog.name = "GuardDog"
 	add_child(dog)
 	dog.setup_round(case_seed, lot)
+	dog.outside_cells = outside_cells
+	_dog_food()
+
+
+## The food for Mordisco: the trays in the cells, the fridge and the sandwich (on every PC, from the seed).
+func _dog_food() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var kinds := dog_food_kinds(case_seed)
+	var places: Array[Vector3] = []
+	for tray_at in TRAYS_AT:
+		var tray := TRAY_MODEL.instantiate() as Node3D
+		add_child(tray)
+		tray.global_transform = lot * Transform3D(Basis.IDENTITY, tray_at)
+		for i in ON_TRAY:
+			places.append(tray_at + Vector3((i - 1) * 0.14, 0.04, 0))
+	var fridge := StaticBody3D.new()
+	fridge.name = "Fridge"
+	add_child(fridge)
+	fridge.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), FRIDGE_AT)
+	fridge.add_child(FRIDGE_MODEL.instantiate())
+	for part: Array in [[Vector3(0.7, 0.04, 0.65), Vector3(0, 0.02, 0)], [Vector3(0.7, 0.04, 0.65), Vector3(0, 1.68, 0)],
+			[Vector3(0.04, 1.7, 0.65), Vector3(-0.33, 0.85, 0)], [Vector3(0.04, 1.7, 0.65), Vector3(0.33, 0.85, 0)],
+			[Vector3(0.62, 1.62, 0.02), Vector3(0, 0.85, -0.31)], [Vector3(0.05, 1.7, 0.7), Vector3(0.37, 0.85, 0.68)],
+			[Vector3(0.62, 0.02, 0.58), Vector3(0, 0.45, 0)], [Vector3(0.62, 0.02, 0.58), Vector3(0, 0.85, 0)],
+			[Vector3(0.62, 0.02, 0.58), Vector3(0, 1.25, 0)]]:
+		var shape := CollisionShape3D.new()
+		var box_shape := BoxShape3D.new()
+		box_shape.size = part[0]
+		shape.shape = box_shape
+		shape.position = part[1]
+		fridge.add_child(shape)
+	for shelf in FRIDGE_SHELVES:
+		for i in ON_SHELF:
+			places.append(FRIDGE_AT + Vector3((1 - i) * 0.18, shelf + 0.04, -0.05))
+	for i in kinds.size():
+		_place_food(kinds[i], lot * places[i])
+	_place_food("sandwich", lot * SANDWICH_AT)
+
+
+func _place_food(kind: String, at: Vector3) -> void:
+	var food := DogFood.new()
+	food.kind = kind
+	food.name = "DogFood%d" % dog_food.size()
+	add_child(food)
+	food.global_position = at
+	dog_food.append(food)
+
+
+## What's on the trays and in the fridge for this seed (the sandwich aside): drawn by weight, then the least liked
+## turned into sausages until it adds up to DOG_FOOD_ENOUGH.
+static func dog_food_kinds(drawn_seed: int) -> Array[String]:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["dog food", drawn_seed])
+	var pool: Array[String] = []
+	for kind: String in DOG_FOOD:
+		for i in DOG_FOOD[kind]:
+			pool.append(kind)
+	var kinds: Array[String] = []
+	for i in TRAYS_AT.size() * ON_TRAY + FRIDGE_SHELVES.size() * ON_SHELF:
+		kinds.append(pool[rng.randi_range(0, pool.size() - 1)])
+	var total := func() -> float:
+		return kinds.reduce(func(sum: float, kind: String) -> float: return sum + DogFood.KINDS[kind][0], 0.0)
+	while total.call() < DOG_FOOD_ENOUGH:
+		var worst := 0
+		for i in kinds.size():
+			if DogFood.KINDS[kinds[i]][0] < DogFood.KINDS[kinds[worst]][0]:
+				worst = i
+		kinds[worst] = "sausage"
+	return kinds
 
 
 ## The cleaning crew's jailbreak: dawn, no guard at the desk, and the comisario walking his round instead.
