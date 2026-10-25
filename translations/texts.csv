@@ -2213,3 +2213,13 @@ STREET_NOTHING_1,Medias. Limpias. Casi todas.,Socks. Clean. Mostly.,Meias. Limpa
 STREET_NOTHING_2,Nada. ¿Ve? Nada.,Nothing. See? Nothing.,Nada. Viu? Nada.
 STREET_NOTHING_3,Una foto de mi gato. ¿Quiere verla?,A picture of my cat. Want to see it?,Uma foto do meu gato. Quer ver?
 STREET_BUSTED,¡No es mío! ¡Me lo pusieron!,It's not mine! Someone planted it!,Não é meu! Alguém colocou aí!
+PROMPT_CRASH_CALM,"E: calmarlo","E: calm them down","E: acalmar"
+CRASH_ARGUE_0,¡Usted frenó de golpe!,You slammed on the brakes!,Você freou do nada!
+CRASH_ARGUE_1,¡Y usted venía volando!,And you were flying!,E você vinha voando!
+CRASH_ARGUE_2,¡Mi auto es nuevo!,My car is brand new!,Meu carro é novo!
+CRASH_ARGUE_3,¡Tiene treinta años ese auto!,That car is thirty years old!,Esse carro tem trinta anos!
+CRASH_ARGUE_4,¡Llamo a mi abogado!,I'm calling my lawyer!,Vou ligar pro meu advogado!
+CRASH_ARGUE_5,¡Yo soy abogado!,I am a lawyer!,Eu sou advogado!
+CRASH_CALM_0,"Está bien, está bien. Lo corro.","Fine, fine. I'll move it.","Tá bom, tá bom. Eu tiro."
+CRASH_CALM_1,Tiene razón. Respiro.,You're right. Breathing.,Tem razão. Respirando.
+CRASH_CALM_2,"Bueno, fue un raspón.","Okay, it was a scratch.","Tá, foi só um arranhão."
