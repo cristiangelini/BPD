@@ -68,7 +68,7 @@ Van disfrazados y tienen que pasar desapercibidos mientras juntan evidencia (dec
 4. **Banda de mimos:** no se puede hablar; todo se hace con mímica. Propuesta en [infiltracion-mimos.md](infiltracion-mimos.md) (decisión 170).
 5. **Fiesta de disfraces:** todos están disfrazados de policía y hay que encontrar al falso. Propuesta en [infiltracion-fiesta.md](infiltracion-fiesta.md) (decisión 171).
 6. **Club de abuelos:** bingo y baile, y el capo es la abuela.
-7. **Gimnasio:** hay que entrenar sin rendirse.
+7. **Gimnasio:** hay que entrenar sin rendirse. Propuesta en [infiltracion-gimnasio.md](infiltracion-gimnasio.md) (decisión 172).
 8. **Coro de iglesia:** hay que cantar afinado (por la voz).
 9. **Subasta de arte:** se puja con plata de la cuota, y si compran algo, lo pagan.
 10. **Escuela de ladrones:** clases de cómo robar; si sacan buenas notas, conocen al jefe de la banda.
