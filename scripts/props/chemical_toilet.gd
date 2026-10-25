@@ -4,7 +4,8 @@ extends Node3D
 ## The chemical toilet at the back of the market (politico-mercado.md, step 4, decision 120): a blue booth, its door to
 ## +Z. Whoever steps inside alone gets locked in: the door shuts for CURE_TIME and a cop's cramps are gone when it
 ## opens again. The deputy uses it too (MarketToiletRun: `occupy` with his own time). Only one at a time; the door
-## opens outward. Every number here is (propuesta).
+## opens outward. Online the host's decides who's in and for how long, and a guest's only shows it (MarketCase
+## snapshot, `follower`). Every number here is (propuesta).
 
 signal freed(who: Node3D)
 
@@ -22,6 +23,8 @@ const FRONT := Vector3(0, 0, 1.3)
 var occupant: Node3D
 ## Seconds until the door opens again.
 var left := 0.0
+## Online, a guest's toilet: it locks nobody in by itself (step 7).
+var follower := false
 var _door: Node3D
 var _door_shape: CollisionShape3D
 var _sign: MeshInstance3D
@@ -81,10 +84,12 @@ func _physics_process(delta: float) -> void:
 	var target := 0.0 if occupant else DOOR_OPEN
 	_door.rotation.y = move_toward(_door.rotation.y, target, DOOR_SPEED * delta)
 	if occupant:
-		left -= delta
+		left = maxf(left - delta, 0.0)
 		_label.text = tr("TOILET_BUSY") % ceili(left)
-		if left <= 0.0:
+		if left <= 0.0 and not follower:
 			_release()
+		return
+	if follower:
 		return
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
 		if has_inside(cop.global_position):
@@ -99,11 +104,33 @@ func _release() -> void:
 	_door_shape.disabled = true
 	_show_sign()
 	if who is Cop:
-		var cop := who as Cop
-		var had := Cramps.of(cop) != null
-		Cramps.cure(cop)
-		cop.show_hint("HINT_TOILET_RELIEF" if had else "HINT_TOILET_OUT")
+		let_out(who as Cop)
 	freed.emit(who)
+
+
+## The door opens for `cop`: cramps cured. A guest's toilet does it when the host's says so.
+func let_out(cop: Cop) -> void:
+	var had := Cramps.of(cop) != null
+	Cramps.cure(cop)
+	cop.show_hint("HINT_TOILET_RELIEF" if had else "HINT_TOILET_OUT")
+
+
+## A guest's toilet: `who` is in (null: nobody) with `seconds` to go, as the host's says; a cop let out is cured.
+func follow(who: Node3D, seconds: float) -> void:
+	if who == occupant:
+		left = seconds
+		return
+	var was := occupant
+	occupant = null
+	if was is Cop and is_instance_valid(was):
+		let_out(was as Cop)
+	if who:
+		occupy(who, seconds)
+		if who is Cop:
+			(who as Cop).show_hint("HINT_TOILET_IN")
+	else:
+		_door_shape.disabled = true
+		_show_sign()
 
 
 func _show_sign() -> void:

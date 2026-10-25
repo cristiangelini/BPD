@@ -63,14 +63,12 @@ func _offer(index: int) -> void:
 	market.add_child(plate)
 	plate.global_position = _hand()
 	plates[index] = plate
-	plate.bitten.connect(_on_bitten)
 	_take(plate)
 
 
-## A cop who bites a bad one gets cramps (step 4).
-func _on_bitten(cop: Cop, laxative: bool) -> void:
-	if laxative:
-		Cramps.give(cop)
+## The spiteful vendor is caught (step 5): the samples not handed out yet are all clean.
+func clean_rest() -> void:
+	laxed = laxed.filter(func(i: int) -> bool: return plates.has(i))
 
 
 func _take(plate: SamplePlate) -> void:
