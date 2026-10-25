@@ -418,7 +418,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif ram:
 			act("drop_ram", self)
 	elif event.is_action_pressed("ask"):
-		ask()
+		# Sat on something that takes R (the talent show's jury chair, its score card).
+		if seated_in and seated_in.has_method("ask"):
+			act("ask", seated_in)
+		else:
+			ask()
 	elif event.is_action_pressed("use"):
 		if vehicle:
 			act("exit", vehicle)
