@@ -5,9 +5,12 @@ extends StaticBody3D
 ## pumpkin in its bed. Step 3: 3 of them are magic beans in disguise (`magic`): once they start they grow a stage
 ## every GROW_EVERY seconds out of the vegetable, through STAGES (sprout, bush, plant, vine and giant), violet from the
 ## second stage on, going "crrc... crrc..." to a cop within HEAR metres. The giant leans on the nearest stretch of the
-## perimeter wall, over it (`top`). Every number here is (propuesta).
+## perimeter wall, over it (`top`). Step 4: E pulls it (`tugged`); pulled, it flies out of its bed (`pull_out`).
+## Every number here is (propuesta).
 
 signal grew(plant: GardenPlant, stage: int)
+## Step 4: E on it (ActionSync runs it on every PC; GardenPlan, on the host, decides).
+signal tugged(plant: GardenPlant, cop: Cop)
 
 enum Kind { LETTUCE, CARROT, TOMATO, PUMPKIN }
 
@@ -26,6 +29,9 @@ const CREAK_EVERY := Vector2(2.5, 4.0)
 const CREAK_TIME := 1.2
 ## The giant's top rests this high, just over the perimeter wall.
 const OVER_WALL := PrisonLevel.FENCE_HEIGHT + 0.4
+const FLY := 1.2
+const FLY_TIME := 0.5
+const SHAKE := 0.08
 
 var kind := Kind.LETTUCE
 ## The bed it's in (0 to 11) and its place in it (0 to 3).
@@ -41,6 +47,7 @@ var follower := false
 ## The giant's top, in the prison's space, over the wall.
 var top := Vector3.ZERO
 var prison: PrisonLevel
+var pulled := false
 var _model: Node3D
 var _stalk: Node3D
 var _creak: Label3D
@@ -69,6 +76,37 @@ func _ready() -> void:
 	_creak.text = "GARDEN_CREAK"
 	_creak.hide()
 	add_child(_creak)
+
+
+func prompt_key(_cop: Cop) -> String:
+	return "" if pulled else "PROMPT_GARDEN_PULL"
+
+
+func use(cop: Cop) -> void:
+	if not pulled:
+		tugged.emit(self, cop)
+
+
+## Holding on and not coming out: a shake.
+func shake() -> void:
+	var wobble := create_tween()
+	wobble.tween_property(self, "rotation:z", SHAKE, 0.06)
+	wobble.tween_property(self, "rotation:z", -SHAKE, 0.12)
+	wobble.tween_property(self, "rotation:z", 0.0, 0.06)
+
+
+## Out of its bed: up in the air and gone.
+func pull_out() -> void:
+	if pulled:
+		return
+	pulled = true
+	growing = false
+	collision_layer = 0
+	_creak.hide()
+	var fly := create_tween()
+	fly.tween_property(self, "position:y", position.y + FLY, FLY_TIME).set_ease(Tween.EASE_OUT)
+	fly.parallel().tween_property(self, "rotation:x", PI, FLY_TIME)
+	fly.tween_callback(hide)
 
 
 ## The magic bean starts growing (GardenPlan, when its turn comes).
@@ -166,11 +204,13 @@ func _wall_top() -> Vector3:
 
 ## What a guest's copy needs (NpcSync, step 7).
 func net_state() -> Array:
-	return [stage, growing]
+	return [stage, growing, pulled]
 
 
 func apply_net_state(state: Variant) -> void:
 	growing = state[1]
+	if state[2] and not pulled:
+		pull_out()
 	if state[0] != stage:
 		set_stage(state[0])
 
