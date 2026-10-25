@@ -93,11 +93,11 @@ Si fallan, terminan presos en su propia comisaría y tienen que escaparse (decis
 1. **Por la ventilación:** con un compañero que no entra.
 2. **Disfrazados de limpieza:** pasando por delante del comisario.
 3. **La llave en la dona:** hay que distraer al guardia mientras uno pesca la llave.
-4. **Túnel con cucharas:** cavan mientras los otros tapan el ruido.
+4. **Túnel con cucharas:** cavan mientras los otros tapan el ruido. Propuesta en [fuga-tunel.md](fuga-tunel.md) (decisión 152).
 5. **Escapar en el camión de la basura.**
 6. **Sobornar al guardia:** con la plata de las coimas, si les queda.
 7. **Simulacro de incendio:** salen entre la gente.
-8. **El perro guardián:** hay que hacerse amigo con comida.
+8. **El perro guardián:** hay que hacerse amigo con comida. Propuesta en [fuga-perro.md](fuga-perro.md) (decisión 151).
 9. **Por el techo:** con una cuerda hecha de sábanas.
 10. **Hacer un juicio rápido:** uno hace de abogado y los demás de testigos falsos.
 

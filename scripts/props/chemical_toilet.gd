@@ -110,6 +110,8 @@ func _release() -> void:
 
 ## The door opens for `cop`: cramps cured. A guest's toilet does it when the host's says so.
 func let_out(cop: Cop) -> void:
+	# Out in front of the door: left inside, the booth would lock them in again right away.
+	cop.global_position = to_global(FRONT) + Vector3.UP * 0.05
 	var had := Cramps.of(cop) != null
 	Cramps.cure(cop)
 	cop.show_hint("HINT_TOILET_RELIEF" if had else "HINT_TOILET_OUT")
