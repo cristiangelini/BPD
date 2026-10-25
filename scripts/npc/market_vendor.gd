@@ -16,6 +16,8 @@ const HANDS: Array[Vector3] = [Vector3(0.5, 0.55, 0.1), Vector3(-0.5, 0.55, 0.1)
 ## Where they touched their face and cap with powdery hands: these show over the counter, the hands don't.
 const SMUDGES: Array[Vector3] = [Vector3(0.13, 1.22, 0.2), Vector3(-0.06, 1.51, 0.1)]
 
+## A guest's copy (NpcSync): the host's decides whether the cuffs closed (step 7).
+var follower := false
 ## What the stall sells (MarketLevel.KINDS).
 var kind := "fruit"
 var apron := Color(0.25, 0.55, 0.35)
@@ -92,6 +94,8 @@ func use(cop: Cop) -> void:
 ## The handcuffs: complains, and the case hears it (MarketSpite).
 func cuffed(seconds: float) -> void:
 	_cuffed_left = maxf(_cuffed_left, seconds)
+	if follower:
+		return
 	say("VENDOR_SPITE_CUFFED" if spiteful else "VENDOR_CUFFED")
 	cuffed_now.emit(self)
 
@@ -126,8 +130,20 @@ func said() -> String:
 	return _bubble.text if _bubble.visible else ""
 
 
-func _process(delta: float) -> void:
+## What a guest's copy needs besides where they are and what they say (NpcSync): cuffed.
+func net_state() -> Array:
+	return [is_cuffed()]
+
+
+func apply_net_state(state: Variant) -> void:
+	_cuffed_left = Handcuffs.SECONDS if state[0] else 0.0
+
+
+func _physics_process(delta: float) -> void:
 	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
+
+
+func _process(delta: float) -> void:
 	# The escort turns them with their +Z ahead.
 	var escort := OwnerEscort.of(self)
 	_model.rotation.y = 0.0 if escort and (escort.escorted_by or escort.in_car) else PI

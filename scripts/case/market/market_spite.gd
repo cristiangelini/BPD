@@ -133,6 +133,13 @@ func _on_vendor_cuffed(vendor: MarketVendor) -> void:
 func _physics_process(_delta: float) -> void:
 	if jar_found or not jar or not jar.is_held():
 		return
+	show_found()
+
+
+## The jar is out: a red "!" over the spiteful vendor for everyone. Online the host's says when (MarketCase).
+func show_found() -> void:
+	if jar_found:
+		return
 	jar_found = true
 	var mark := Label3D.new()
 	mark.name = "Mark"

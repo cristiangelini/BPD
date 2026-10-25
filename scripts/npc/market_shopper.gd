@@ -20,6 +20,8 @@ const SAY_TIME := 4.0
 @export var look := "cliente"
 ## Which line comes next (the market draws a different start for each).
 var next_line := 0
+## A guest's copy (NpcSync): the host's decides whether the cuffs closed (step 7).
+var follower := false
 var _bubble: Label3D
 var _bubble_left := 0.0
 var _cuffed_left := 0.0
@@ -70,6 +72,8 @@ func use(_cop: Cop) -> void:
 
 func cuffed(seconds: float) -> void:
 	_cuffed_left = maxf(_cuffed_left, seconds)
+	if follower:
+		return
 	say("NPC_POLICE_ABUSE")
 	cuffed_now.emit(self)
 
@@ -88,8 +92,20 @@ func said() -> String:
 	return _bubble.text if _bubble.visible else ""
 
 
-func _process(delta: float) -> void:
+## What a guest's copy needs besides where they are and what they say (NpcSync): cuffed.
+func net_state() -> Array:
+	return [is_cuffed()]
+
+
+func apply_net_state(state: Variant) -> void:
+	_cuffed_left = Handcuffs.SECONDS if state[0] else 0.0
+
+
+func _physics_process(delta: float) -> void:
 	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
+
+
+func _process(delta: float) -> void:
 	if _bubble_left > 0.0:
 		_bubble_left -= delta
 		if _bubble_left <= 0.0:

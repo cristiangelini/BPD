@@ -131,3 +131,10 @@ probadita que no va a olvidar'. Que no coma nada raro. Y si come algo raro, que 
   muebles de la mudanza). Atrapado, cuenta como detenido; si se escapa, el caso está resuelto igual. En Jugar, la
   protección del político sale como antes (1 de cada 4 de lo que queda), mitad en la plaza y mitad en el mercado.
   Capturas en `/mnt/project-files/mercado/paso6-*.png`. Falta el online (paso 7).
+- **Paso 7 (online):** el mercado del host decide y los demás lo ven igual. El recorrido, las probaditas, la corrida
+  al baño y las mañas del puestero corren solo en el host (`MarketCase.follower`); el diputado, los puesteros y los
+  clientes (con sus esposas) llegan del host (`NpcSync`), y los platitos también (`PropSync`, con lo que tienen y si ya
+  se probaron). Morder un platito pasa en todas las PCs con la copia de cada una de ese policía, así que los
+  retorcijones le llegan al que mordió en su propia PC. El caso del host le manda a los demás (`CaseSync`) por dónde va
+  el recorrido, la imagen, quién está en el baño químico y cuánto le falta (al que sale, se le curan los retorcijones
+  en su PC), si encontraron el frasco, cómo terminó y la huida en triciclo.
