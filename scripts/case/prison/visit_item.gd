@@ -71,6 +71,8 @@ func _ready() -> void:
 	_sound.hide()
 	add_child(_sound)
 	_noise_left = randf_range(NOISE_EVERY.x, NOISE_EVERY.y)
+	# It's made when its visitor sets it on the search table (a guest's copy too).
+	set_down()
 
 
 ## What's inside, as a Contraband.Kind, or -1 with nothing.
@@ -113,11 +115,20 @@ func held_prompt_key(_cop: Cop) -> String:
 	return "PROMPT_VISIT_ITEM_%s" % Kind.keys()[kind]
 
 
-## E with it in hand: opens it. Whatever was hidden goes to the cop's hands.
+## Online (PropSync): the host makes them at the search table; a guest's copy is made from this script with its kind
+## (and whether something's inside, for the coo and the buzz).
+func net_setup() -> Dictionary:
+	return {"kind": kind, "hidden": hidden}
+
+
+## E with it in hand: opens it, on every PC (ActionSync). Only the host knows what's inside: whatever was hidden goes
+## to the cop's hands.
 func use(cop: Cop) -> void:
-	if opened or not multiplayer.is_server():
+	if opened:
 		return
 	open()
+	if not multiplayer.is_server():
+		return
 	if hidden:
 		hidden = false
 		var found := Contraband.new()

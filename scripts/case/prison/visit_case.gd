@@ -5,7 +5,9 @@ extends Node
 ## Done when the last visitor has left after the bell (VisitPlan.ended): SALARY, PER_PASSED less for each hidden thing
 ## that got to an inmate, PER_BROKEN less for each innocent thing opened for nothing and PER_STOPPED more for each pass
 ## under the table stopped; quota of its own, like the other prison cases. With LOSE_AT things through the case is lost.
-## Every number here is (propuesta).
+## Step 7: online the host's case decides and a guest's follows it (CaseSync, snapshot): the counts, the visit's clock
+## and how it ended. The visitors and their inmates go by NpcSync, what they bring and what's found by PropSync, and
+## E and R on them by ActionSync. Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 4.0

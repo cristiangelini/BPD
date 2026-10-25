@@ -70,6 +70,21 @@ func leave_if_slipped() -> bool:
 	return true
 
 
+## What a guest's copy needs besides where they are and what they say (NpcSync, step 7).
+func net_state() -> Array:
+	return [received.size(), is_gone, not route.is_empty()]
+
+
+func apply_net_state(net: Variant) -> void:
+	while received.size() < net[0]:
+		received.append(-1)
+	_model.position.y = 0.0 if net[2] else -PrisonVisitor.SIT_DROP
+	if net[1] and not is_gone:
+		is_gone = true
+		hide()
+		collision_layer = 0
+
+
 func say(key: String, seconds := SAY_TIME) -> void:
 	_bubble.text = key
 	_bubble.show()
