@@ -20,6 +20,8 @@ const CONES_FROM_DOOR := Vector3(-5, 0, 1.5)
 const SPONGE_FROM_DOOR := Vector3(1, 0, 1.5)
 ## The wedding check's breathalyzer (control-boda.md, step 2), on the sidewalk between the barrier and the cones.
 const BREATHALYZER_FROM_DOOR := Vector3(2, 0, 1.5)
+## The street race's two spike strips (control-carrera.md, step 3), rolled up next to it.
+const SPIKES_FROM_DOOR: Array[Vector3] = [Vector3(2, 0, 2.3), Vector3(2.7, 0, 2.3)]
 ## What Play draws, a sixth each (propuesta).
 const VARIANTS: Array[String] = ["rush_hour", "clown_convoy", "fruit_truck", "crowded_car", "ghost_car", "wedding"]
 
@@ -35,6 +37,7 @@ var meters: TrafficMeters
 var case: TrafficCase
 var sponge: ClownSponge
 var breathalyzer: Breathalyzer
+var spike_strips: Array[SpikeStrip] = []
 
 
 ## Where the checkpoint goes in the city's space: cars run west (-X) on the north half of the street.
@@ -89,6 +92,14 @@ func _ready() -> void:
 		breathalyzer.name = "Breathalyzer"
 		add_child(breathalyzer)
 		breathalyzer.global_position = door + BREATHALYZER_FROM_DOOR + Vector3.UP * 0.1
+	if chosen == "race":
+		for i in SPIKES_FROM_DOOR.size():
+			var strip := SpikeStrip.new()
+			strip.name = "SpikeStrip%d" % i
+			strip.checkpoint = checkpoint
+			add_child(strip)
+			strip.global_position = door + SPIKES_FROM_DOOR[i] + Vector3.UP * 0.1
+			spike_strips.append(strip)
 	queue = TrafficQueue.new()
 	queue.name = "Queue"
 	queue.checkpoint = checkpoint
