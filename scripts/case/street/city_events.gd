@@ -83,28 +83,40 @@ func _physics_process(delta: float) -> void:
 	gap_left -= delta
 	if gap_left > 0.0:
 		return
-	if not start_snatch():
+	var started := start_snatch() if _rng.randf() < 0.5 else start_crash()
+	if not started:
 		gap_left = RETRY
+
+
+## Whether a cop sees `at` (within LOOKING of where they face) and how far the nearest cop is.
+static func sight(at: Vector3, cops: Array) -> Dictionary:
+	var nearest := INF
+	var seen := false
+	for cop: Node3D in cops:
+		var to := at - cop.global_position
+		nearest = minf(nearest, to.length())
+		var facing := Vector2(-cop.global_basis.z.x, -cop.global_basis.z.z).normalized()
+		seen = seen or facing.dot(Vector2(to.x, to.z).normalized()) > cos(deg_to_rad(LOOKING))
+	return {"nearest": nearest, "seen": seen}
+
+
+## Whether `at` is a good spot for an event: near a cop but out of everyone's sight.
+func good_spot(at: Vector3) -> bool:
+	var cops := get_tree().get_nodes_in_group("cops")
+	if cops.is_empty():
+		return false
+	var look := sight(at, cops)
+	return look.nearest >= NEAR_MIN and look.nearest <= NEAR_MAX and not look.seen
 
 
 ## A walker for an event: NEAR_MIN to NEAR_MAX from the nearest cop, out of every cop's sight, walking.
 func pick_walker() -> CityWalker:
-	var cops := get_tree().get_nodes_in_group("cops")
-	if cops.is_empty():
-		return null
 	var options: Array[CityWalker] = []
 	for node in get_tree().get_nodes_in_group("city_walkers"):
 		var walker := node as CityWalker
-		if walker.is_stopped():
+		if walker is CrashDriver or walker.is_stopped():
 			continue
-		var nearest := INF
-		var seen := false
-		for cop: Node3D in cops:
-			var to := walker.global_position - cop.global_position
-			nearest = minf(nearest, to.length())
-			var facing := Vector2(-cop.global_basis.z.x, -cop.global_basis.z.z).normalized()
-			seen = seen or facing.dot(Vector2(to.x, to.z).normalized()) > cos(deg_to_rad(LOOKING))
-		if nearest >= NEAR_MIN and nearest <= NEAR_MAX and not seen:
+		if good_spot(walker.global_position):
 			options.append(walker)
 	return options[_rng.randi() % options.size()] if not options.is_empty() else null
 
@@ -128,6 +140,25 @@ func start_snatch(walker: CityWalker = null) -> bool:
 	add_child(snatch)
 	snatch.begin(walker, nearest_alley(walker.global_position))
 	_run(snatch)
+	return true
+
+
+## A crash at a crossing near a cop but out of sight, or at `at`. Returns false when there's no such crossing.
+func start_crash(at := Vector3.INF) -> bool:
+	if at == Vector3.INF:
+		var options: Array[Vector3] = []
+		for i in range(1, CityLayout.COLUMNS):
+			for j in range(1, CityLayout.ROWS):
+				var crossing := Vector3(CityLayout.street_x(i), 0, CityLayout.street_z(j))
+				if good_spot(crossing):
+					options.append(crossing)
+		if options.is_empty():
+			return false
+		at = options[_rng.randi() % options.size()]
+	var crash := CityCrash.new()
+	add_child(crash)
+	crash.begin(at)
+	_run(crash)
 	return true
 
 

@@ -22,9 +22,12 @@ var path := PackedVector3Array()
 var look := 0
 var next := 0
 var stopped_for := 0.0
+## A crashed car (CityCrash): it doesn't move, and the cars behind it wait instead of going around after PATIENCE.
+var wreck := false
 ## The rain slows it down (CityRain).
 var speed_factor := 1.0
 var _blocked := false
+var _behind_wreck := false
 var _look_left := 0.0
 
 
@@ -63,7 +66,7 @@ func place_along(along: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if path.is_empty():
+	if path.is_empty() or wreck:
 		return
 	var to := path[next] - position
 	to.y = 0.0
@@ -78,7 +81,7 @@ func _physics_process(delta: float) -> void:
 		_blocked = blocked()
 	if _blocked:
 		stopped_for += delta
-		if stopped_for < PATIENCE:
+		if stopped_for < PATIENCE or _behind_wreck:
 			return
 	else:
 		stopped_for = 0.0
@@ -87,11 +90,13 @@ func _physics_process(delta: float) -> void:
 
 ## Something is right in front of it: a car of the city or a cop's car, or someone walking.
 func blocked() -> bool:
+	_behind_wreck = false
 	for group: String in ["city_cars", "city_walkers", "cops", "patrol_cars"]:
 		for other: Node in get_tree().get_nodes_in_group(group):
 			if other == self or not other is Node3D:
 				continue
 			var offset := global_transform.affine_inverse() * (other as Node3D).global_position
 			if offset.z > 0.5 and offset.z < STOP_AHEAD and absf(offset.x) < STOP_SIDE:
+				_behind_wreck = other is CityCar and ((other as CityCar).wreck or (other as CityCar)._behind_wreck)
 				return true
 	return false
