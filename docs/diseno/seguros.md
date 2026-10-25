@@ -29,8 +29,8 @@ Una planta de 22 × 16 m y 4 m de alto, alfombra gris, tubos de luz y plantas de
 - **Escondites:** unos 12, 6 para cosas pesadas. Por ejemplo: un cajón del archivero, la caja fuerte de la jefa, una
   caja del archivo, debajo de un escritorio, adentro de la heladera, el tacho de la cocina, el armario de la sala de
   reuniones y el techo falso (se corre una placa).
-- **Lo frágil:** los **trofeos de vidrio** de la jefa (6) y las **pantallas** de las computadoras (6, las de los
-  cubículos del medio). Cada uno que se rompe es una multa de 20 y le sube la denuncia a la jefa.
+- **Lo frágil:** los **trofeos de vidrio** de la jefa (6) y las **pantallas** de las computadoras (4, las de la
+  fila del medio de cubículos). Cada uno que se rompe es una multa de 20 y le sube la denuncia a la jefa.
 
 ## La jefa de piso y la recepcionista
 - **Mirta**, la jefa de piso, con traje gris, anteojos colgando de una cadenita, rodete y una taza que dice "La
@@ -77,6 +77,19 @@ Los pesos y valores siguen la escala de la fábrica: la principal vale unos 1000
 
 ## El orden para hacerlo (un PR chico por paso)
 1. La oficina en la ciudad, con los ambientes, las sillas, las pilas de papeles, los escondites y lo frágil.
+   - **Cómo quedó (propuesta):** una planta de 22 × 16 m y 3,2 m de alto con frente de vidrio, y arriba los otros
+     pisos del edificio, cerrados, hasta los 12 m del lote. Adelante, la recepción (el mostrador de Coca, 6 sillas de
+     espera, el dispenser de agua y 4 fotos del "Empleado del mes") con dos pasos al resto. Al medio y al oeste, los 12
+     cubículos en 3 filas de 4, con mamparas de 1,2 m abiertas hacia adelante; cada uno con escritorio, computadora,
+     una pila de papeles y una silla con rueditas (8 kg, casi sin roce: un empujón la manda lejos). Un policía que pasa
+     corriendo (2,5 m/s o más) o algo tirado contra una pila hace volar sus 10 hojas, que flotan y desaparecen a los
+     10 s; caminando no pasa nada. Al este, la sala de reuniones (mesa larga, 8 sillas, armario, pizarra y 3 cuadros),
+     la cocina abierta (mesada, la máquina de café, la heladera y el tacho) y la oficina de la jefa con la puerta con
+     llave y ventana a los cubículos (escritorio, archivero, caja fuerte chica y el estante con 6 trofeos de vidrio).
+     Al fondo, la impresora gigante entre la oficina y el archivo, que también está cerrado (estantes con cajas, una
+     caja en el piso y la trituradora). 12 escondites, 6 para cosas pesadas. Lo frágil: 4 pantallas y 6 trofeos, 20 de
+     multa cada uno. "Oficina de seguros (prueba)" en el menú la abre, y también `--place=insurance`. Capturas
+     `paso1-*` en `seguros/` de la carpeta del proyecto.
 2. Mirta: la ronda, la denuncia, "todo por escrito" y la distracción de la impresora.
 3. Coca y la máquina de números.
 4. El caso (RaidCase) con la primera historia: los choques falsos.
