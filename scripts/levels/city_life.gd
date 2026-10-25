@@ -198,7 +198,9 @@ func _alley(block: Vector2i, side: String) -> void:
 	_mesh_box(Vector3(half - 1.0, 1.45, -6), Vector3(1.7, 0.1, 2.7), DUMPSTER.darkened(0.3), root)
 	_box(Vector3(-half + 0.9, 0.7, -14), Vector3(1.6, 1.4, 2.6), DUMPSTER.lerp(BIN, 0.6), root)
 	for k in 6:
-		var crate := Vector3(_rng.randf_range(-half + 0.5, half - 0.5), 0.3, -9.0 - _rng.randf() * 10.0)
+		# Against the walls, so the middle stays a way through (the purse snatcher runs it).
+		var against := 1.0 if k % 2 == 0 else -1.0
+		var crate := Vector3(against * _rng.randf_range(0.9, half - 0.4), 0.3, -9.0 - _rng.randf() * 10.0)
 		_box(crate, Vector3(0.6, 0.6, 0.6), WOOD, root)
 	for k in 8:
 		var bag := SphereMesh.new()

@@ -34,7 +34,7 @@ Un **director de eventos** arma una secuencia por vez, nunca dos juntas: cada 2 
 
 | Evento | Qué pasa | Cómo se resuelve |
 |---|---|---|
-| **Robo de cartera** | Un ladrón le arranca la cartera a una vecina, que grita "¡Mi cartera!", y sale corriendo. | Persecución a pie: el ladrón corre por la vereda, cruza la calle sin mirar y se mete en un callejón o salta patios. Esposarlo y devolverle la cartera: +60. |
+| **Robo de cartera** | Un ladrón le arranca la cartera a una vecina, que grita "¡Mi cartera!", y sale corriendo. | Persecución a pie: el ladrón corre por las calles hasta el callejón sin salida más cercano, trepa la reja más rápido que un policía y queda atrapado al fondo; si nadie llega en 60 s, salta la pared y se escapa. Esposarlo: la vecina recupera su cartera y +60. (Saltar patios viene después.) |
 | **Persecución a pie** | Un sospechoso conocido ve a un policía y sale corriendo. | Esposarlo antes de que se pierda (se pierde a 80 m sin que nadie lo vea): +80. |
 | **Parar y revisar** | Cualquier vecino se puede parar con E: "¡Alto, policía!". Se queda quieto y el policía revisa su bolso. | 1 de cada 5 lleva algo prohibido y absurdo (quesos de contrabando, relojes falsos, un loro sin papeles...): esposarlo +40. Revisar a uno que no tiene nada: él se queja, sin multa. Algunos salen corriendo antes de que los revisen. |
 | **Choque** | Dos autos se chocan en una esquina; sale humo y los conductores discuten. Los autos de atrás tocan bocina. | Separar a los conductores (hablar con cada uno) y correr los autos hasta el cordón: +50. Si nadie va, a los 3 minutos se van solos. |
