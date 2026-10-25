@@ -3,14 +3,15 @@ extends NightGuard
 
 ## The comisario who came in early (docs/diseno/fuga-limpieza.md, "Disfrazados de limpieza", step 1): in the cleaning
 ## crew's jailbreak there's no night guard, but he has an inspection today. He walks his ROUND (his office, the coffee
-## maker in the guard room and the door of the cells room), stopping STOP_MIN to STOP_MAX seconds at each stop, drawn by
+## maker in the guard room, the door of the cells room and the front door, looking out for the inspector), stopping STOP_MIN to STOP_MAX seconds at each stop, drawn by
 ## the seed, and watches like the night guard (NightGuard.sees and its suspicion), so the level catches the cops the
 ## same way. Walking, he looks ahead; stopped, his head sweeps around. He doesn't eat donuts and singing doesn't put
 ## him to sleep. What he sees in a cop out of the cells (step 3, offence): without the cleaning disguise, a cop; in it,
 ## someone of the crew, who only worries him idle (not working with a mop or duster) or running. A stain mopped clean
 ## in front of him calms him down (step 4, saw_cleaning). Someone of the crew passing close by makes him stop and
 ## squint for SQUINT seconds ("¿Te conozco?"): working through most of it, he lets it go; if not, KNOWN suspicion at
-## once. Every number here is (propuesta).
+## once. Seeing someone sitting in the patrol car (step 5) fills it up at once: "¿Desde cuándo la limpieza maneja
+## patrulleros?". Every number here is (propuesta).
 
 ## His round in the station's own space (StationRooms): [where, which way he faces there (radians, 0 = +Z), what he
 ## says when he stops there ("" = he walks on)].
@@ -20,6 +21,7 @@ const ROUND := [
 	[Vector3(0, 0, 2.2), 0.0, ""],
 	[Vector3(4.5, 0, 2.4), PI, "EARLY_COFFEE"],
 	[Vector3(5.0, 0, 6.4), PI / 2, "EARLY_CELLS"],
+	[Vector3(0, 0, 8.3), 0.0, "EARLY_DOOR"],
 	[Vector3(0, 0, 2.2), 0.0, ""],
 	[Vector3(0, 0, 0.0), 0.0, ""],
 ]
@@ -43,7 +45,11 @@ const SQUINT_PASS := 2.0
 const KNOWN := 40.0
 const SQUINT_AGAIN := 15.0
 const SQUINT_LINES := 3
+## Someone in the patrol car where he sees it: suspicion per second (enough to catch them in one tick).
+const SUSPICION_CAR := 10000.0
 
+## The patrol car parked outside (the level's).
+var car: PatrolCar
 ## The station's lot, where ROUND is.
 var station := Transform3D.IDENTITY
 ## The point of ROUND he's going to (or stopped at).
@@ -129,7 +135,10 @@ func _walk(delta: float) -> void:
 func alarm() -> float:
 	var rate := 0.0
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
-		if outside_cells.call(cop.global_position) and sees(cop.global_position + Vector3.UP, cop):
+		if car and car.seat_of(cop) >= 0:
+			if sees(car.global_position + Vector3.UP, car):
+				rate += SUSPICION_CAR
+		elif outside_cells.call(cop.global_position) and sees(cop.global_position + Vector3.UP, cop):
 			rate += offence(cop)
 	return rate
 
@@ -158,10 +167,10 @@ func speed_of(cop: Node3D) -> float:
 	return _speeds[cop][1] if _speeds.has(cop) else 0.0
 
 
-## Whether he takes `cop` for someone cleaning: working with a mop or a feather duster.
+## Whether he takes `cop` for someone cleaning: working with a mop, a feather duster or the floor polisher.
 func is_cleaning(cop: Cop) -> bool:
-	var tool := CleaningTool.held_by(cop)
-	return tool != null and tool.is_working()
+	var held: Grabbable = cop.get_node("Grabber").held
+	return held != null and held.has_method("is_working") and held.call("is_working")
 
 
 ## A stain was mopped clean at `at` (FloorStains): if he sees it, he likes it.
@@ -214,7 +223,9 @@ func heard_singing(_cop: Node3D) -> void:
 
 
 func catch() -> void:
+	var in_car := car != null and get_tree().get_nodes_in_group("cops").any(
+		func(cop: Node) -> bool: return car.seat_of(cop as Cop) >= 0)
 	suspicion = 0.0
 	times_caught += 1
-	say("EARLY_CAUGHT_%d" % _rng.randi_range(0, EARLY_CAUGHT_LINES - 1), 5.0)
+	say("EARLY_CAR" if in_car else "EARLY_CAUGHT_%d" % _rng.randi_range(0, EARLY_CAUGHT_LINES - 1), 5.0)
 	caught.emit(times_caught)
