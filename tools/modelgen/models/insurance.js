@@ -148,14 +148,40 @@ export function buildClaimPhotos() {
 	return b.build();
 }
 
+// A yellow post-it 0.08 m square with a safe's combination scribbled on it. Extra of the coffee machine safe.
+export function buildCodePostit() {
+	const b = new Builder('code_postit');
+	b.add('note', mat('postit_yellow', 0xf6e05a), new THREE.BoxGeometry(0.08, 0.002, 0.08), { pos: V(0, 0, 0) });
+	for (let i = 0; i < 3; i++) b.add('digits', mat('postit_ink', 0x2a3a8a), new THREE.BoxGeometry(0.05, 0.001, 0.008), { pos: V(0, 0.0015, -0.02 + i * 0.02) });
+	return b.build();
+}
+
+// The secret account book: a fat green ledger 0.22 x 0.05 x 0.3 m with a gold "$" on the cover. Extra of the coffee
+// machine safe.
+export function buildAccountBook() {
+	const b = new Builder('account_book');
+	b.add('cover', mat('ledger_green', 0x2e6a4a), new THREE.BoxGeometry(0.22, 0.05, 0.3), { pos: V(0, 0, 0) });
+	b.add('pages', mat('ledger_pages', 0xf2eedc), new THREE.BoxGeometry(0.2, 0.042, 0.29), { pos: V(0.012, 0, 0) });
+	b.add('sign', mat('ledger_gold', 0xd8b04a), new THREE.TorusGeometry(0.03, 0.006, 4, 10), { pos: V(0, 0.026, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('sign', mat('ledger_gold', 0xd8b04a), new THREE.BoxGeometry(0.006, 0.002, 0.09), { pos: V(0, 0.027, 0) });
+	return b.build();
+}
+
 export const models = {
 	office_chair: buildOfficeChair, office_monitor: buildOfficeMonitor, glass_trophy: buildGlassTrophy,
 	coffee_machine: buildCoffeeMachine, water_cooler: buildWaterCooler,
 	toy_car: buildToyCar, crash_model: buildCrashModel, crash_photos: buildCrashPhotos, toy_car_box: buildToyCarBox,
-	claim_photos: buildClaimPhotos,
+	claim_photos: buildClaimPhotos, code_postit: buildCodePostit, account_book: buildAccountBook,
 };
 
 export const views = {
+	coffee_goods: {
+		items: [
+			{ name: 'coffee_machine', pos: [-0.3, 0, -0.2] }, { name: 'code_postit', pos: [0.35, 0.002, 0.3] },
+			{ name: 'account_book', pos: [0.4, 0.025, -0.05], rotY: 0.4 },
+		],
+		cam: { pos: [0, 1.2, 2.4], target: [0, 0.5, 0], fov: 40 },
+	},
 	crash_goods: {
 		items: [
 			{ name: 'crash_model', pos: [-0.2, 0.06, -0.1] }, { name: 'crash_photos', pos: [0.35, 0.01, 0.25] },
