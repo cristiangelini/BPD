@@ -40,7 +40,7 @@ Buscan pistas físicas, las llevan al tablero y acusan a un sospechoso (decisió
 4. **Tren en marcha:** hay que resolverlo antes de la última estación.
 5. **El gato desaparecido:** la dueña es millonaria y el comisario está asustado.
 6. **Circo:** los sospechosos son payasos iguales.
-7. **Oficina:** todos usan el mismo traje y la pista es una taza de café.
+7. **Oficina:** todos usan el mismo traje y la pista es una taza de café ([escena-oficina.md](escena-oficina.md)).
 8. **Boda:** desapareció el anillo y la novia sospecha del novio.
 9. **Mansión de misterio:** el clásico, con pasadizos secretos y un mayordomo.
 10. **La propia comisaría:** alguien se robó la evidencia de otro caso. El culpable podría ser uno de los compañeros (gancho para Asuntos Internos).
