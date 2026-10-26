@@ -4238,6 +4238,9 @@ CRASH_CALM_0,"Está bien, está bien. Lo corro.","Fine, fine. I'll move it.","T�
 CRASH_CALM_1,Tiene razón. Respiro.,You're right. Breathing.,Tem razão. Respirando.
 CRASH_CALM_2,"Bueno, fue un raspón.","Okay, it was a scratch.","Tá, foi só um arranhão."
 SHIFT_STREET,Eventos en la calle,Street events,Eventos na rua
+PLACE_MUSEUM,"Museo","Museum","Museu"
+SIGN_MUSEUM,"Museo de la Ciudad","City Museum","Museu da Cidade"
+SIGN_MUSEUM_GALLERY,"Sala grande →","Main gallery →","Sala principal →"
 BRIEF_DOUBLE_A,"Novatos, el diputado Lustre habla otra vez en la plaza. Y dicen que anda suelto un imitador igualito a él.","Rookies, deputy Lustre is speaking at the plaza again. And word is there's an impersonator around who looks just like him.","Novatos, o deputado Lustre fala de novo na praça. E dizem que tem um imitador solto igualzinho a ele."
 BRIEF_DOUBLE_B,"Les dejo la ficha del diputado en la planilla: mírenlo de cerca y compárenlo.","I left the deputy's file on your sheet: look at him up close and compare.","Deixei a ficha do deputado na planilha: olhem de perto e comparem."
 BRIEF_DOUBLE_C,"Esposen al falso, no al verdadero. El verdadero me firma el presupuesto.","Cuff the fake one, not the real one. The real one signs my budget.","Algemem o falso, não o verdadeiro. O verdadeiro assina o meu orçamento."
