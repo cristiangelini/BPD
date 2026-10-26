@@ -12,7 +12,8 @@ extends Node3D
 ## (propuesta). Step 5: the HIDDEN ones are each in one of the 8 hideouts (CountHideout, by the seed). E on the right
 ## one finds him (`found`): out he comes, chalked and counted, to wander the yard. Unfound, each runs for the gate in
 ## turn (RUN_FIRST seconds into the count, then RUN_EVERY apart; BlackoutInmate): cuffed and walked into a cell he's
-## `caught`, and counted; at the gate he's `escaped`, crossed off as gone.
+## `caught`, and counted; at the gate he's `escaped`, crossed off as gone. Step 6: the count lasts TIME seconds
+## (`ended`, the time is up) and is done when the whole list is crossed off at once (`completed`).
 
 signal counted_one(number: int)
 signal wrong_one(worker: CountInmate)
@@ -20,6 +21,8 @@ signal rubbed_one(number: int)
 signal found_one(number: int)
 signal escaped_one(count: int)
 signal caught_one(count: int)
+signal completed
+signal ended
 
 const LIST := 20
 const HIDDEN := 3
@@ -52,6 +55,7 @@ const RUN_EVERY := 60.0
 const DOOR_IN := 6.5
 const DOOR_OUT := 9.5
 const GATE := Vector2(0.0, PrisonLevel.HALF_Z + 0.5)
+const TIME := 360.0
 const CHALK_LINES := 3
 
 var prison: PrisonLevel
@@ -77,6 +81,7 @@ var found := 0
 var caught := 0
 var escaped := 0
 var time := 0.0
+var over := false
 var _runs := 0
 ## A guest's copy (step 7): the host's one decides.
 var follower := false
@@ -216,7 +221,17 @@ func _physics_process(delta: float) -> void:
 				start()
 				return
 		return
+	if over:
+		return
+	if all_counted():
+		over = true
+		completed.emit()
+		return
 	time += delta
+	if time >= TIME:
+		over = true
+		ended.emit()
+		return
 	if _runs < hidden.size() and time >= RUN_FIRST + _runs * RUN_EVERY:
 		var number := hidden[_runs]
 		_runs += 1
@@ -336,6 +351,10 @@ func _on_caught(runner: BlackoutInmate) -> void:
 	caught += 1
 	board.set_marked(runner.get_meta("number"), true)
 	caught_one.emit(caught)
+
+
+func time_left() -> float:
+	return maxf(TIME - time, 0.0) if started else TIME
 
 
 ## Every number on the list crossed off at once (counted, or gone through the gate).

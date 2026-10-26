@@ -2404,3 +2404,14 @@ HINT_COUNT_FOUND,¡Encontraste a uno de los que faltaban! Ya está contado.,You 
 COUNT_RUNNER,¡Me voy antes de que me cuenten!,I'm off before they count me!,Vou embora antes que me contem!
 HINT_COUNT_RUNNER,¡Un preso que faltaba corre al portón! Espósalo.,A missing inmate is running for the gate! Cuff him.,Um preso que faltava corre para o portão! Algeme-o.
 HINT_COUNT_ESCAPED,Se escapó uno por el portón.,One got out through the gate.,Um fugiu pelo portão.
+BRIEF_COUNT_A,"Novatos, el director de la cárcel contó 20 presos, después 17, después 23. O cuenta mal o le faltan presos.","Rookies, the prison director counted 20 inmates, then 17, then 23. Either he can't count or some are missing.","Novatos, o diretor da cadeia contou 20 presos, depois 17, depois 23. Ou ele conta mal ou faltam presos."
+BRIEF_COUNT_B,"Cuéntenlos ustedes: E les pinta una cruz de tiza y la lista del patio los tacha. Ojo, que se mueven y algunos se la borran.","Count them yourselves: E chalks a cross on them and the list in the yard crosses them off. Careful, they move and some rub it off.","Contem vocês: E pinta uma cruz de giz e a lista do pátio risca. Cuidado, eles se mexem e alguns apagam."
+BRIEF_COUNT_C,"Los que falten están escondidos: escuchen los ronquidos. El cocinero y el plomero no son presos. Si se escapan 2, perdimos.","The missing ones are hiding: listen for the snoring. The cook and the plumber aren't inmates. If 2 get away, we've lost.","Os que faltam estão escondidos: ouçam os roncos. O cozinheiro e o encanador não são presos. Se fugirem 2, perdemos."
+HINT_GO_COUNT,A la cárcel en el patrullero. La lista está en el patio.,To the prison in the patrol car. The list is in the yard.,Para a cadeia na viatura. A lista fica no pátio.
+OBJ_COUNT_TIME,Recuento: quedan %d s,Count: %d s left,Contagem: faltam %d s
+OBJ_COUNT_LIST,Lista tachada: %d de %d,List crossed off: %d of %d,Lista riscada: %d de %d
+OBJ_COUNT_FOUND,Escondidos encontrados: %d de %d,Hidden ones found: %d of %d,Escondidos encontrados: %d de %d
+OBJ_COUNT_ESCAPED,Escapados por el portón: %d de %d,Out through the gate: %d of %d,Fugiram pelo portão: %d de %d
+OBJ_COUNT_WRONG,Trabajadores marcados por error: %d,Workers chalked by mistake: %d,Trabalhadores marcados por engano: %d
+CASE_FAILED_COUNT_ESCAPED,Se escaparon 2 presos durante el recuento. Caso perdido.,2 inmates got away during the count. Case lost.,2 presos fugiram durante a contagem. Caso perdido.
+CASE_FAILED_COUNT_TIME,Se terminó el tiempo y la lista no cierra. Caso perdido.,Time's up and the list doesn't add up. Case lost.,O tempo acabou e a lista não fecha. Caso perdido.
