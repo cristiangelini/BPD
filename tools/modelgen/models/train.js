@@ -95,6 +95,38 @@ function buildFoodCart() {
 	return b.build();
 }
 
+// What was stolen on the train (escena-tren.md, "La historia"), one per match: the Golden Rabbit (the convention's
+// prize, 0.3 m tall), the Great Abracadabra's wand (black with a gold tip and stars) and the engine driver's pocket
+// watch on its chain. Their bottoms sit at y = 0.
+function buildGoldenRabbit() {
+	const b = new Builder('golden_rabbit');
+	const gold = C('gold', 0xf2c84b, { emissive: 0x3a2a05 });
+	b.add('base', C('rabbit_base', 0x3a2a20), new THREE.CylinderGeometry(0.1, 0.11, 0.04, 10), { pos: V(0, 0.02, 0) });
+	b.add('rabbit', gold, ellipsoid(0.08, 0.09, 0.1, 8, 6), { pos: V(0, 0.13, 0) });
+	b.add('rabbit', gold, ellipsoid(0.06, 0.06, 0.06, 8, 5), { pos: V(0, 0.22, 0.07) });
+	for (const s of [-1, 1]) b.add('rabbit', gold, ellipsoid(0.018, 0.07, 0.012, 6, 4), { pos: V(s * 0.025, 0.31, 0.06), rot: [0, 0, s * -0.2] });
+	b.add('rabbit', gold, ellipsoid(0.03, 0.03, 0.03, 6, 4), { pos: V(0, 0.12, -0.1) });
+	return b.build();
+}
+function buildMagicWand() {
+	const b = new Builder('magic_wand');
+	const gold = C('gold', 0xf2c84b, { emissive: 0x3a2a05 });
+	b.add('wand', M.black, new THREE.CylinderGeometry(0.012, 0.012, 0.4, 8), { pos: V(0, 0.012, 0), rot: [0, 0, Math.PI / 2] });
+	for (const x of [-0.19, 0.19]) b.add('wand', gold, new THREE.CylinderGeometry(0.014, 0.014, 0.03, 8), { pos: V(x, 0.012, 0), rot: [0, 0, Math.PI / 2] });
+	for (let i = 0; i < 3; i++) b.add('stars', gold, new THREE.OctahedronGeometry(0.02), { pos: V(-0.08 + i * 0.08, 0.03, 0.02) });
+	return b.build();
+}
+function buildPocketWatch() {
+	const b = new Builder('pocket_watch');
+	const gold = C('gold', 0xf2c84b, { emissive: 0x3a2a05 });
+	b.add('watch', gold, new THREE.CylinderGeometry(0.04, 0.04, 0.015, 14), { pos: V(0, 0.008, 0) });
+	b.add('face', M.white, new THREE.CylinderGeometry(0.034, 0.034, 0.003, 14), { pos: V(0, 0.017, 0) });
+	b.add('face', M.black, new THREE.BoxGeometry(0.003, 0.002, 0.025), { pos: V(0, 0.019, -0.01) });
+	b.add('watch', gold, new THREE.TorusGeometry(0.012, 0.003, 4, 8), { pos: V(0, 0.008, -0.05), rot: [Math.PI / 2, 0, 0] });
+	for (let i = 0; i < 6; i++) b.add('chain', gold, new THREE.TorusGeometry(0.008, 0.002, 4, 6), { pos: V(0.01 * i, 0.004, -0.065 - 0.012 * i), rot: [Math.PI / 2, 0, i * 0.5] });
+	return b.build();
+}
+
 const PEOPLE = { mago: mago, maquinista: maquinista, guarda_tren: guarda, mostaza: mostaza };
 
 export const models = {
@@ -104,6 +136,7 @@ export const models = {
 		return b.build();
 	}])),
 	train_cart: buildFoodCart,
+	golden_rabbit: buildGoldenRabbit, magic_wand: buildMagicWand, pocket_watch: buildPocketWatch,
 };
 
 export const views = {
@@ -112,5 +145,10 @@ export const views = {
 			{ name: 'npc_mago', pos: [0.6, 0, 0], rotY: -0.3 }, { name: 'npc_guarda_tren', pos: [1.8, 0, 0], rotY: -0.3 },
 			{ name: 'npc_mostaza', pos: [3.0, 0, 0], rotY: -0.4 }, { name: 'train_cart', pos: [3.0, 0, 1.0], rotY: 0.3 }],
 		cam: { pos: [0.6, 1.5, 7.0], target: [0.6, 0.85, 0], fov: 40 },
+	},
+	train_loot: {
+		items: [{ name: 'golden_rabbit', pos: [-0.3, 0, 0], rotY: 0.5 }, { name: 'magic_wand', pos: [0.1, 0, 0.1], rotY: 0.3 },
+			{ name: 'pocket_watch', pos: [0.4, 0, 0], rotY: -0.3 }],
+		cam: { pos: [0.05, 0.5, 1.3], target: [0.05, 0.1, 0], fov: 38 },
 	},
 };
