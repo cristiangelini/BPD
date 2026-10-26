@@ -2392,3 +2392,17 @@ HOTEL_MAID_LINE_2,"Cambio las fundas todos los días. Algunas, dos veces.","I ch
 HOTEL_MAID_LINE_3,"¿La 13? No hay ninguna 13. No pregunte por la 13.","Room 13? There is no 13. Don't ask about 13.","O 13? Não existe 13. Não pergunte pelo 13."
 PROMPT_HOTEL_KEY_BOARD,E: agarrar la llave maestra del tablero,E: take the master key from the board,E: pegar a chave mestra do quadro
 HINT_HOTEL_KEY,"La llave maestra: abre todas las habitaciones y la suite. Dice ""No sacar del hotel"".","The master key: it opens every room and the suite. It says ""Do not take out of the hotel"".","A chave mestra: abre todos os quartos e a suíte. Diz ""Não tirar do hotel""."
+PROMPT_HOTEL_PILLOW,E: acomodarle la almohadita al conserje,E: tuck the little pillow under the concierge's head,E: ajeitar o travesseirinho do concierge
+PROMPT_HOTEL_BELL,E: tocar el timbre,E: ring the bell,E: tocar a campainha
+HOTEL_CONCIERGE_ZZZ,Zzz... Zzz... (Ronca sobre el mostrador.),Zzz... Zzz... (He snores on the desk.),Zzz... Zzz... (Ele ronca no balcão.)
+HOTEL_CONCIERGE_NOT_SLEEPY,"(Bostezo.) Recién me desperté, oficial. Vuelva en un rato.","(Yawn.) I just woke up, officer. Come back in a while.","(Bocejo.) Acabei de acordar, policial. Volte daqui a pouco."
+HOTEL_CONCIERGE_BELL_ANGRY,"¡¿Quién tocó el timbre?! ¡Estaba descansando los ojos!","Who rang the bell?! I was resting my eyes!","Quem tocou a campainha?! Eu estava descansando os olhos!"
+HOTEL_CONCIERGE_BELL,(Bostezo.) Sí... ya lo atiendo... (Bostezo.),(Yawn.) Yes... I'll be right with you... (Yawn.),(Bocejo.) Sim... já te atendo... (Bocejo.)
+HOTEL_CONCIERGE_WOKE,"(Se despierta.) ¿Eh? ¿Quién anda ahí? Yo no estaba durmiendo.","(He wakes up.) Huh? Who's there? I wasn't sleeping.","(Ele acorda.) Hã? Quem está aí? Eu não estava dormindo."
+HOTEL_CONCIERGE_NOTHING,(Bostezo.) Acá no pasa nada. Nunca pasa nada.,(Yawn.) Nothing happens here. Nothing ever happens.,(Bocejo.) Aqui não acontece nada. Nunca acontece nada.
+HOTEL_CONCIERGE_OFFENDED,"Zzz... digo, no tengo nada que decir.","Zzz... I mean, I have nothing to say.","Zzz... quer dizer, não tenho nada a dizer."
+HOTEL_CONCIERGE_KEY,"¡Esa llave no es suya, oficial!","That key isn't yours, officer!","Essa chave não é sua, policial!"
+HOTEL_CONCIERGE_HURT,"¡Ay! ¡Con cuidado, que estoy de turno!","Ouch! Careful, I'm on duty!","Ai! Cuidado, estou de plantão!"
+HOTEL_CONCIERGE_DOOR,"¡¿Qué fue ese golpe?! ¡Esa puerta es de 1952!","What was that bang?! That door is from 1952!","Que pancada foi essa?! Essa porta é de 1952!"
+HOTEL_CONCIERGE_SAW,"¡Eso lo va a pagar! ¡Era una antigüedad!","You'll pay for that! It was an antique!","Você vai pagar por isso! Era uma antiguidade!"
+HOTEL_CONCIERGE_LAWYER,"Se acabó. Llamo a mi abogado. Él también duerme, pero lo despierto.","That's it. I'm calling my lawyer. He sleeps too, but I'll wake him.","Chega. Vou ligar para o meu advogado. Ele também dorme, mas eu acordo ele."

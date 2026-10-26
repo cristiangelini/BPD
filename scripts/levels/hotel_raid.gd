@@ -4,8 +4,9 @@ extends Node3D
 ## The raid on the Hotel Gran Siesta (hotel-allanamiento.md, step 1, decision 240). The building is the crime scene's
 ## (Hotel, with crime_scene off: no guests, one 13 behind the wardrobe); the raid puts on top what makes it a raid:
 ## the rooms and the suite locked, the master key on the board behind the desk (or the ram), the vases downstairs and
-## the bedside lamps upstairs that break into fines, and the hiding spots. Don Bostezo, doña Escoba and the case come in
-## the next steps. Every number here is (propuesta).
+## the bedside lamps upstairs that break into fines, and the hiding spots. Don Bostezo watches from the desk and fills
+## the complaint meter; the little pillow on the desk puts him to sleep and the bell wakes him (step 2). Doña Escoba and
+## the case come in the next steps. Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const VASE_SCENE := preload("res://scenes/props/ornament_vase.tscn")
@@ -19,6 +20,9 @@ const VASES: Array[Vector3] = [
 	Vector3(-1.2, 1.05, -6.5), Vector3(-11.6, 1.1, -6.5), Vector3(-10.0, 0.77, 0.0), Vector3(-8.0, 0.77, 4.0),
 	Vector3(-11.5, 0.77, 4.5),
 ]
+## The little pillow on the desk, on don Bostezo's side, and the bell's collision over the hotel's bell.
+const PILLOW_AT := Vector3(0.2, 1.11, -6.65)
+const BELL_HIT_AT := Vector3(0.9, 1.12, -6.4)
 ## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
 const SPOTS := [
 	{"id": "hotel_in_tub", "at": Hotel.TUB_AT + Vector3(0, 0.6, 0), "heavy": true},
@@ -47,6 +51,10 @@ var vases: Array[Ornament] = []
 var lamps: Array[Ornament] = []
 var broken_goods := 0
 var fines := 0
+var concierge: HotelConcierge
+var pillow: HotelPillow
+var bell: HotelBell
+var complaint_bar: ProgressBar
 @onready var car: PatrolCar = $PatrolCar
 
 
@@ -63,6 +71,7 @@ func _ready() -> void:
 	_place_doors()
 	_place_key_board()
 	_place_fragile()
+	_place_concierge()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("hotel")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -123,6 +132,45 @@ func _fragile(scene: PackedScene, at: Vector3) -> Ornament:
 	return item
 
 
-func _on_fragile_broken(_at: Vector3) -> void:
+func _on_fragile_broken(at: Vector3) -> void:
 	broken_goods += 1
 	fines += Ornament.FINE
+	concierge.saw(at, HotelConcierge.SAW_BREAK)
+
+
+## Don Bostezo behind the desk, the pillow and the bell on it, and the complaint meter. A rammed door reaches him
+## anywhere, and the key only counts if he's awake.
+func _place_concierge() -> void:
+	concierge = HotelConcierge.new()
+	concierge.name = "Concierge"
+	concierge.position = Hotel.CONCIERGE_AT + Vector3(0, Hotel.FLOOR_TOP, 0)
+	add_child(concierge)
+	pillow = HotelPillow.new()
+	pillow.name = "Pillow"
+	pillow.position = PILLOW_AT
+	pillow.concierge = concierge
+	add_child(pillow)
+	bell = HotelBell.new()
+	bell.name = "Bell"
+	bell.position = BELL_HIT_AT
+	bell.concierge = concierge
+	add_child(bell)
+	for door: FrontDoor in doors.values():
+		door.broken.connect(concierge.door_broken)
+	key_board.taken.connect(concierge.key_taken)
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	concierge.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
