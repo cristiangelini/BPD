@@ -8,7 +8,8 @@ extends Node3D
 ## lobby and the stairs at the front and the makeup room at the back, and over the makeup room the control room, its
 ## console behind a window that looks down into the studio. The cops start in the station and drive here; --place=debate
 ## opens it from Play. Step 2: the 3 cameras on wheels (TvCamera) and the big screen, which shows live what the camera
-## on air sees. Every number here is (propuesta).
+## on air sees. Step 3: Lustre, Malvón and the moderator at their places and the debate (TvDebate). Every number here
+## is (propuesta).
 
 const LECTERN_MODEL := preload("res://assets/models/tv_lectern.glb")
 const DESK_MODEL := preload("res://assets/models/tv_anchor_desk.glb")
@@ -59,6 +60,8 @@ const CAMERAS: Array[Vector3] = [Vector3(-10, 0, 0), Vector3(-6, 0, 1), Vector3(
 const SHOTS: Array[Vector3] = [Vector3(-11, 1.5, -6), Vector3(-6, 1.3, -8.5), Vector3(-1, 1.5, -6)]
 ## The camera on air when the studio opens: Lustre's.
 const FIRST_ON_AIR := 2
+## Where each of them stands: this far behind the lectern or the desk, facing the cameras.
+const BEHIND := 0.65
 ## The picture the screen shows, in pixels.
 const FEED_SIZE := Vector2i(768, 360)
 
@@ -84,6 +87,11 @@ var cameras: Array[TvCamera] = []
 var on_air_index := -1
 var feed: SubViewport
 var feed_camera: Camera3D
+## The debate and who's in it (step 3).
+var politician: Politician
+var malvon: RallyFan
+var moderator: RallyFan
+var debate: TvDebate
 var lecterns: Array[Node3D] = []
 var public: Array[RallyFan] = []
 var _build: PlaceBuilder
@@ -104,6 +112,15 @@ func _ready() -> void:
 	_seat_public()
 	_place_cameras()
 	put_on_air(FIRST_ON_AIR)
+	politician = Politician.new()
+	politician.name = "Politician"
+	_stand(politician, LECTERNS[1])
+	malvon = _guest("Malvon", "candidata", LECTERNS[0])
+	moderator = _guest("Moderator", "moderadora", DESK_AT)
+	debate = TvDebate.new()
+	debate.name = "Debate"
+	debate.setup(self, politician, malvon, moderator)
+	add_child(debate)
 	city.transform = CityLayout.anchor("tv_studio")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
@@ -126,6 +143,21 @@ func _process(_delta: float) -> void:
 	var live := camera_on_air()
 	if live:
 		feed_camera.global_transform = live.lens()
+
+
+## Someone behind a lectern or the desk, facing the cameras (NPCs face -Z).
+func _stand(who: Node3D, spot: Vector3) -> void:
+	add_child(who)
+	who.position = spot + Vector3(0, FLOOR_TOP + 0.05, -BEHIND)
+	who.rotation.y = PI
+
+
+func _guest(guest_name: String, look: String, spot: Vector3) -> RallyFan:
+	var guest := RallyFan.new()
+	guest.name = guest_name
+	guest.look = look
+	_stand(guest, spot)
+	return guest
 
 
 ## The 3 cameras on their spots, each aimed at its shot.

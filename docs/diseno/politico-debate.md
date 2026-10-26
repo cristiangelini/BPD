@@ -93,3 +93,10 @@ vergüenza de la que pasa solo."
   hacia donde mira el policía. La que está al aire prende su luz roja y la pantalla gigante muestra en vivo lo que ve
   (una cámara del motor en un SubViewport de 768 x 360, sin luz propia); al abrir el estudio está al aire la de Lustre.
   `TvStudio.put_on_air(i)`, `camera_on_air()` y `TvCamera.frames(punto)` para saber si alguien sale en cuadro.
+- **Paso 3 (el debate):** `TvDebate` (`studio.debate`), el reloj del caso: todos esperan en su lugar hasta que un
+  policía entra al estudio; después 3 bloques de 90 s con 10 s de tanda. Cada bloque son 2 preguntas: la moderadora
+  pregunta 5 s y cada candidato contesta 20 s (Lustre primero en las impares, Malvón en las pares), con 6 preguntas
+  y 6 respuestas de cada uno. La sala de control pone al aire la cámara del que habla (en la tanda, la de la
+  moderadora). Imagen de Lustre: empieza en 50, +6 por cada respuesta suya sin papelón, -3 por cada respuesta de
+  Malvón, -8 por papelón (`blunder(kind)`, que usa el paso 4), entre 0 y 100. Arriba de la pantalla: bloque, tiempo
+  e imagen. Modelos nuevos: `npc_candidata` (Malvón, traje violeta y peinado alto) y `npc_moderadora`.
