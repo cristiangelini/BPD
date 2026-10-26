@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Doll factory, step 5: the factory is a full raid (tip, suspicions, notes, Fermín's slips, Nilda's clue, the till with the office key, his escape and interrogation, his lawyer losing the case) with its first story, the diamond doll: one of 24 finished dolls in the storeroom bin weighs 2 kg, the quality control scale shows it and the quality sheet beside it is the clue; the loupe and the delivery list are hidden.
 - Doll factory, step 4: bare dolls keep dropping onto the moving belt (up to 16) and are packed when they fall in the box cart; Nilda at the eyes machine wants five of them in her box, and then tells what she saw.
 - Doll factory, step 3: Fermín the foreman walks back and forth around the belt, blows his whistle and walks to the red button to restart it when a cop stops it (+15 complaint), clears a jam bent over the machine for 15 s seeing nothing, sees broken dolls and molds, and calls his lawyer at 100.
 - Doll factory, step 2: the belt that never stops carries things and cops at 1 m/s, turns at its corners and drops everything into the box cart; its machines stick googly eyes, pink hair, pink paint or a doll head on what goes under them (cops get the eyes and hair for 20 s, or a bonk); something heavy jams it, and the red button stops and restarts it.

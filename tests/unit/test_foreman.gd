@@ -83,11 +83,12 @@ func test_he_sees_a_mold_break_and_calls_his_lawyer_at_100() -> void:
 		factory.fermin._since_struck = Foreman.STRUCK_COOLDOWN
 		factory.fermin.struck()
 	assert_true(factory.fermin.has_called_lawyer)
-	assert_true(factory.case_failed)
+	assert_true(factory.raid.case_failed)
 
 
 func test_without_slips_he_only_makes_dolls() -> void:
 	var factory := _factory()
 	await wait_physics_frames(2)
+	factory.fermin.slips.clear()
 	assert_false(factory.fermin.ask(factory.get_node("Cop")))
 	assert_eq(factory.fermin.get_node("Bubble").text, "FOREMAN_NOTHING")

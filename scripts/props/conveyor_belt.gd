@@ -192,9 +192,7 @@ func _mark_cop(id: String, cop: Cop) -> void:
 	var node := _mark_node(id, Vector3(0, 1.42, -0.16) if id == "eyes" else Vector3(0, 1.62, 0))
 	cop.model.add_child(node)
 	cop.show_hint("HINT_BELT_EYES" if id == "eyes" else "HINT_BELT_HAIR")
-	get_tree().create_timer(COP_MARK_TIME).timeout.connect(func() -> void:
-		if is_instance_valid(node):
-			node.queue_free())
+	get_tree().create_timer(COP_MARK_TIME).timeout.connect(node.queue_free)
 	marked.emit(cop, id)
 
 

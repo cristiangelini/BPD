@@ -20,6 +20,8 @@ const STRUCK := 15.0
 const DOOR_BROKEN := 5.0
 ## Seeing a porcelain doll or a plaster mold broken.
 const SAW_BREAK := 10.0
+## Seeing a cop open the reception's till.
+const SAW_TILL := 10.0
 ## A cop stopped his belt.
 const BELT_STOPPED := 15.0
 const ASKED := 5.0
