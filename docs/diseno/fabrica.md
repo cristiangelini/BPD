@@ -115,6 +115,11 @@ Los pesos y valores siguen la escala de la ferretería: la principal vale unos 1
      que tiene arriba, y al lado está la planilla de calidad, la pista propia. La lupa y la lista de entregas se esconden
      en los escondites sorteados. Capturas `paso5-*` en `fabrica/`.
 6. Las otras 5 historias, una por PR.
+   - **Los muñecos espías (propuesta):** 10 de los 24 muñecos del cajón, sorteados con la semilla, tienen un
+     micrófono en la oreja (una bolita negra). La radio del policía chilla ("¡IIIIIH!") al lado del más cercano a 1,5 m
+     o menos, y eso es la pista propia. El grabador (6 kg) es la evidencia principal y va escondido con la caja de
+     micrófonos y la lista de clientes. Que los muñecos repitan con voz finita lo que dijo un policía queda para
+     después. Capturas `paso6-espias` y `paso6-grabador`.
 7. "Jugar" sortea entre los 5 lugares de allanamiento.
 8. El online (Fermín, Nilda, la cinta y los muñecos en todas las PC).
 
