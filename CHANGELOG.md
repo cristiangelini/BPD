@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Doll factory, step 7: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store and the doll factory in fifths.
 - Doll factory, step 6: the poodle hair story: pink tufts from the hair machine toward the hidden bag make cops sneeze and drop what they hold (the first sneeze is the clue), the hair machine sticks pink hair on cops walking by, the belt's dolls come out hairy, and the bag, the golden comb and the fake invoice are hidden.
 - Doll factory, step 6: the giant doll story: a 3 m parade doll in the storeroom hides the jeweler's 25 kg safe under its dress until its back zipper is opened, footprints to its back are the clue, and the parade plan and the safe's key are hidden.
 - Doll factory, step 6: the ghost workers story: ten mannequins in work coats stand at the belt and never answer, the time clock's cards punched at 3 a.m. are the clue, and the payroll book, the time cards and Fermín's wig are hidden.

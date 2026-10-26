@@ -10,7 +10,7 @@ func after_each() -> void:
 
 
 func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltration_and_each_raid_a_sixth_of_the_rest() -> void:
-	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "hardware": 0, "chase": 0, "crime_scene": 0, "circus": 0, "traffic": 0,
+	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "hardware": 0, "doll_factory": 0, "chase": 0, "crime_scene": 0, "circus": 0, "traffic": 0,
 		"club": 0, "choir": 0, "bank": 0, "plaza": 0, "market": 0, "prison": 0, "transfer": 0, "blackout": 0, "visits": 0,
 		"laundry": 0}
 	for i in 600:
@@ -20,9 +20,16 @@ func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltrati
 	assert_gt(count.crime_scene, 5, "half at the pastry contest")
 	assert_gt(count.circus, 5, "and half at the circus")
 	assert_between(count.traffic, 25, 80, "even odds for the traffic control (propuesta)")
-	# With the bank and the rally drawn before them, each of the four raids comes up about 1 shift in 40 (propuesta).
-	for place: String in ["grandpa", "bakery", "groomer", "hardware"]:
-		assert_between(count[place], 5, 60, "%s still comes up (propuesta)" % place)
+	# With the bank and the rally drawn before them, the raids are a few shifts in a hundred, so their share is counted
+	# over more seeds: each of the five raids comes up about a fifth of them (propuesta).
+	var raids := {}
+	for i in 3000:
+		var place := PlaceDraw.pick(i + 1, [], 1)
+		if place in PlaceDraw.ORDER:
+			raids[place] = raids.get(place, 0) + 1
+	var total: int = raids.values().reduce(func(sum: int, n: int) -> int: return sum + n, 0)
+	for place: String in PlaceDraw.ORDER:
+		assert_between(float(raids.get(place, 0)) / total, 0.1, 0.3, "%s comes up about a fifth of the raids" % place)
 	assert_between(count.club + count.choir, 25, 80, "the infiltrations, as often as a raid (propuesta)")
 	assert_between(count.bank, 15, 70, "the bank robbery, about as often as a raid (propuesta)")
 	assert_between(count.plaza + count.market, 10, 60, "the politician's protection, about as often as a raid (propuesta)")
@@ -45,6 +52,7 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 	var grandpa := {}
 	var groomer := {}
 	var hardware := {}
+	var factory := {}
 	for i in 300:
 		var case_seed := i + 1
 		match PlaceDraw.pick(case_seed, [], 1, false):
@@ -54,12 +62,15 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 				groomer[Groomer.pick_story(case_seed, [])] = true
 			"hardware":
 				hardware[HardwareStore.pick_story(case_seed, [])] = true
+			"doll_factory":
+				factory[DollFactory.pick_story(case_seed, [])] = true
 			_:
 				grandpa[GrandpaHouse.pick_story(case_seed, []).id] = true
 	assert_eq(bakery.size(), Bakery.STORIES.size())
 	assert_eq(grandpa.size(), GrandpaHouse.STORIES.size())
 	assert_eq(groomer.size(), Groomer.STORIES.size())
 	assert_eq(hardware.size(), HardwareStore.STORIES.size())
+	assert_eq(factory.size(), DollFactory.STORIES.size())
 
 
 func test_new_seeds_are_odd_and_even() -> void:
