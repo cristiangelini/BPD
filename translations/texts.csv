@@ -2375,3 +2375,13 @@ GARDEN_TO_THE_BEAN,"Voy a... regar la de arriba. Ya vuelvo.","I'm going to... wa
 GARDEN_CLIMBING,"¡Adiós, huerta! ¡Me voy al cielo!","Bye, garden! I'm off to the sky!","Tchau, horta! Vou pro céu!"
 GARDEN_PULLED_DOWN,¡Ay! Bueno... la vista era linda.,Ouch! Well... the view was nice.,Ai! Bom... a vista era bonita.
 HINT_GARDEN_ESCAPED,Un preso trepó el poroto gigante y saltó el muro.,An inmate climbed the giant beanstalk and jumped the wall.,Um preso subiu no pé de feijão gigante e pulou o muro.
+BRIEF_GARDEN_A,"Novatos, la cárcel tiene huerta nueva. El director dice que son verduras.","Rookies, the prison has a new vegetable garden. The director says they're vegetables.","Novatos, a cadeia tem horta nova. O diretor diz que são legumes."
+BRIEF_GARDEN_B,"Yo vi un paquete que decía 'porotos mágicos, crecen hasta el cielo'. Si alguno pasa el muro, es una escalera.","I saw a packet that said 'magic beans, they grow up to the sky'. If one gets past the wall, it's a ladder.","Eu vi um pacote que dizia 'feijões mágicos, crescem até o céu'. Se algum passar do muro, é uma escada."
+BRIEF_GARDEN_C,"Arránquenlos con E, los grandes entre dos. No me arranquen las lechugas. Si se escapan 3, perdimos.","Pull them out with E, the big ones with two of you. Leave the lettuces alone. If 3 get away, we've lost.","Arranquem com E, os grandes em dois. Não arranquem as alfaces. Se fugirem 3, perdemos."
+HINT_GO_GARDEN,A la cárcel en el patrullero. La huerta está en el patio.,To the prison in the patrol car. The garden is in the yard.,Para a cadeia na viatura. A horta fica no pátio.
+OBJ_GARDEN_TIME,Horario de huerta: quedan %d s,Garden time: %d s left,Horário da horta: faltam %d s
+OBJ_GARDEN_BEANS,Porotos mágicos arrancados: %d de %d,Magic beans pulled out: %d of %d,Feijões mágicos arrancados: %d de %d
+OBJ_GARDEN_ESCAPED,Escapados por el muro: %d de %d,Gone over the wall: %d of %d,Fugiram pelo muro: %d de %d
+OBJ_GARDEN_DOWN,Bajados del poroto: %d,Pulled off the beanstalk: %d,Puxados do pé de feijão: %d
+OBJ_GARDEN_WRONG,Verduras arrancadas por error: %d,Vegetables pulled by mistake: %d,Legumes arrancados por engano: %d
+CASE_FAILED_GARDEN_ESCAPED,Se escaparon 3 presos por los porotos. Caso perdido.,3 inmates got away up the beanstalks. Case lost.,3 presos fugiram pelos pés de feijão. Caso perdido.
