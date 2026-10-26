@@ -1717,7 +1717,7 @@ TRANSFER_SANG,Shhh... que descanse.,Shhh... sweet dreams.,Shhh... bons sonhos.
 TRANSFER_HUSHED,"¡Mmmf! ¡Mmmf!","Mmmf! Mmmf!","Mmmf! Mmmf!"
 HINT_TRANSFER_ASLEEP,Te dormiste con la canción del preso. Espera a despertarte.,The inmate's song put you to sleep. Wait to wake up.,A canção do preso fez você dormir. Espere acordar.
 TRANSFER_ACCOMPLICE,"¡Ahí vienen mis amigos! ¡Pare en el semáforo, oficial!","Here come my friends! Stop at the light, officer!","Lá vêm meus amigos! Pare no sinal, seu guarda!"
-HINT_TRANSFER_ACCOMPLICE,Un auto sigue al bus. Si paras, le pasan algo a un preso por la ventana.,A car is following the bus. If you stop, they'll pass an inmate something through the window.,Um carro segue o ônibus. Se você parar, vão passar algo para um preso pela janela.
+HINT_TRANSFER_ACCOMPLICE,"Un auto sigue al bus. Si paras, le pasan algo a un preso por la ventana.","A car is following the bus. If you stop, they'll pass an inmate something through the window.","Um carro segue o ônibus. Se você parar, vão passar algo para um preso pela janela."
 TRANSFER_FILE,"*Ras, ras, ras* ¡Gracias por la lima!","*Rasp, rasp, rasp* Thanks for the file!","*Rec, rec, rec* Valeu pela lima!"
 TRANSFER_DOOR_OUT,"¡La puerta estaba abierta! ¡Adiós, oficiales!","The door was open! Bye, officers!","A porta estava aberta! Tchau, seus guardas!"
 TRANSFER_BACK_ON,"Bueno, bueno, ya me siento. Pero la bola no la quiero más.","Fine, fine, I'm sitting down. But I don't want the ball anymore.","Tá bom, tá bom, já sento. Mas a bola eu não quero mais."
@@ -2224,3 +2224,6 @@ CRASH_CALM_0,"Está bien, está bien. Lo corro.","Fine, fine. I'll move it.","T�
 CRASH_CALM_1,Tiene razón. Respiro.,You're right. Breathing.,Tem razão. Respirando.
 CRASH_CALM_2,"Bueno, fue un raspón.","Okay, it was a scratch.","Tá, foi só um arranhão."
 SHIFT_STREET,Eventos en la calle,Street events,Eventos na rua
+PLACE_MUSEUM,"Museo","Museum","Museu"
+SIGN_MUSEUM,"Museo de la Ciudad","City Museum","Museu da Cidade"
+SIGN_MUSEUM_GALLERY,"Sala grande →","Main gallery →","Sala principal →"

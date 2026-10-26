@@ -109,7 +109,13 @@ PlaceDraw y la custodia para el interrogatorio.
 
 ## El orden para hacerlo (un PR chico por paso)
 1. El museo en la ciudad: hall, sala grande con el marco vacío, sala de seguridad, casilleros, depósito y el baño
-   (`--place=museum`).
+   (`--place=museum`). Hecho así: un edificio de 30 x 23 m en la cuadra (1, 0), del lado sur, con tres escalones bajos,
+   cuatro columnas, el frontón y el cartel "Museo de la Ciudad". Adelante, el hall con el mostrador de entradas; a su
+   izquierda la sala de seguridad (escritorio con tres monitores, una silla y el plato del sándwich) y a su derecha los
+   seis casilleros numerados. Atrás, la sala grande de paredes rojas y piso encerado, con seis cuadros, cuatro bustos
+   en pedestales, un banco, la soga de terciopelo y el marco vacío en la pared del fondo. Al oeste de la sala grande,
+   el depósito con cuadros tapados con sábanas y el baño de 3 x 3 m (inodoro, lavamanos, espejo, rollo de papel y
+   secador). Los policías arrancan en la comisaría **(propuesta)**.
 2. Los seis guardias iguales con sus rasgos (bigote incluido), la directora y la estatua viviente.
 3. Las fichas (foto, huellas, dientes, pelo y bigote) y la coartada del baño con sus detalles.
 4. El caso: la historia, lo robado y dónde está, las pistas con cómo se arruinan (la lustradora, el botón rojo) y la
