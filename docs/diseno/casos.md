@@ -111,7 +111,7 @@ Montan un control en la calle y tienen que encontrar el auto buscado entre mucho
 5. **Carrera ilegal:** los autos pasan a toda velocidad.
 6. **Mudanza del circo:** jaulas con animales y uno de los animales es el sospechoso. Propuesta en [control-circo.md](control-circo.md) (decisión 138).
 7. **Neblina:** los autos aparecen de golpe. Propuesta en [control-neblina.md](control-neblina.md) (decisión 137).
-8. **Desfile:** el control queda en medio de un desfile de carrozas.
+8. **Desfile:** el control queda en medio de un desfile de carrozas. Propuesta en [control-desfile.md](control-desfile.md) (decisión 139).
 9. **El auto fantasma:** no tiene conductor (es a control remoto).
 10. **Camión de frutas:** el contrabando está dentro de las sandías.
 

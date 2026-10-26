@@ -50,7 +50,7 @@ pasan por el control y hay 2 o 3 que se parecen mucho **(propuesta)**.
 | 5 | Carrera ilegal | Los autos pasan rápido; hay que tirar pinchos ([control-carrera.md](control-carrera.md)). |
 | 6 | Mudanza del circo | Jaulas con animales; uno de ellos es el sospechoso ([control-circo.md](control-circo.md)). |
 | 7 | Neblina | Los autos aparecen de golpe; la linterna sirve ([control-neblina.md](control-neblina.md)). |
-| 8 | Desfile | El control queda en medio de carrozas. |
+| 8 | Desfile | El control queda en medio de carrozas ([control-desfile.md](control-desfile.md)). |
 | 9 | El auto fantasma | No tiene conductor (es a control remoto) ([control-auto-fantasma.md](control-auto-fantasma.md)). |
 | 10 | Camión de frutas | El contrabando está dentro de las sandías ([control-frutas.md](control-frutas.md)). |
 
