@@ -70,6 +70,25 @@ preguntas preparadas. Ningún chico lo deja en ridículo, ¿entendido? Y nada de
 6. El final: sueldo, cuota, la foto, la lustradora y el sorteo de Jugar (los actos del político en tercios). Después,
    online.
 
+## Cómo quedó
+- **Pasos 1 a 3:** la escuela en la cuadra (3, 3) y el reloj de la visita (`SchoolTour`): charla, recreo, preguntas y
+  la foto, que espera a que el último chico esté en la fila. El diputado y los chicos van por los pasillos entre los
+  bancos y por delante del busto. Capturas en `/mnt/project-files/politico-escuela/paso3-*.png`.
+- **Paso 4:** cada chico tiene su tarjeta en la mano levantada (`SchoolQuestions`); la trampa se agita. La cuenta de
+  metidas de pata va debajo de la barra de la visita.
+- **Paso 5:** sacar, romper y devolver con E (como los regalos de las visitas de la cárcel); la caja de caramelos de la
+  maestra; señalar con clic a menos de 1,5 m del diputado.
+- **Paso 6:** el conserje camina de verdad (`SchoolJanitor`); el sobre está en el cajón de abajo de una cómoda en su
+  galpón, al lado del carrito (cajones con las manos, decisión 76).
+- **Paso 7:** `SchoolCase` con el sueldo y la lustradora (`SuspectCar.FLOOR_POLISHER`, 14 km/h por la vereda, deja
+  cera tan resbalosa como el helado). En Jugar, la protección del político sale en tercios: plaza, mercado y escuela.
+- **Paso 8 (online):** la escuela del host decide y los demás la ven igual. La visita, las preguntas y el conserje
+  corren solo en el host (`SchoolCase.follower`); los chicos (tarjeta, mano y llanto), la maestra y el conserje llegan
+  del host (`NpcSync`), y las tarjetas y caramelos en las manos también (`PropSync`, y al dueño se le avisa qué tiene
+  en la mano). Leer una tarjeta o ver la tinta de cerca se calcula en cada PC (`CloseLabel`). Señalar desde una PC
+  invitada le pregunta al host. El caso del host manda el reloj, las metidas de pata, los que lloraron, cómo terminó y
+  la huida en lustradora (`CaseSync`).
+
 ## Preguntas para Cristian
 1. **¿Se pierde con 8 metidas de pata** (se va avergonzado)? Recomendado: sí, como las 10 manchas de la plaza, así hay
    algo en juego. La otra opción es que solo bajen el sueldo.

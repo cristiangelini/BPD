@@ -13,6 +13,11 @@ func _init() -> void:
 	mass = 0.02
 
 
+## Made in code: a guest copies it from this script (PropSync).
+func net_setup() -> Dictionary:
+	return {}
+
+
 func _ready() -> void:
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()

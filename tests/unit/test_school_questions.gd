@@ -92,7 +92,7 @@ func test_traps_always_put_their_hand_up_and_only_in_the_questions() -> void:
 func test_he_gives_the_floor_and_the_pupil_reads_the_card() -> void:
 	await _to_questions()
 	watch_signals(questions)
-	questions.ask()
+	questions.give_floor()
 	assert_signal_emitted(questions, "asked")
 	var pupil: SchoolPupil = get_signal_parameters(questions, "asked")[0]
 	assert_eq(pupil.said(), pupil.card)
@@ -104,7 +104,7 @@ func test_an_innocent_question_gets_an_answer() -> void:
 	var pupil := _innocent()
 	pupil.raise_hand(true)
 	assert_true(questions.point_at(pupil))
-	questions.ask()
+	questions.give_floor()
 	assert_eq(questions.reading, pupil, "the one pointed at")
 	questions._react_left = 0.05
 	await wait_physics_frames(6)
@@ -117,7 +117,7 @@ func test_a_trap_read_out_is_a_gaffe() -> void:
 	watch_signals(questions)
 	_trap().raise_hand(true)
 	assert_true(questions.point_at(_trap()))
-	questions.ask()
+	questions.give_floor()
 	questions._react_left = 0.05
 	await wait_physics_frames(6)
 	assert_eq(questions.gaffes, 1)

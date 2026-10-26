@@ -9,7 +9,9 @@ extends StaticBody3D
 ## and read it out when he picks them. Step 5: E takes the card into the cop's hands (SchoolCard); an innocent pupil
 ## at their desk says it was theirs and cries until a cop gives them a candy, and after CRY_TIME crying it counts
 ## against the pay (`cried`). A trap's pupil tells who gave it to them. E with a card on a pupil with none gives it
-## back. Every number here is (propuesta).
+## back. Step 8, online: the host's pupil decides and a guest's copy follows it (NpcSync): the card, the hand, the
+## crying; a card or a candy spawned on the host reaches the guest through PropSync and its holder's hands are told.
+## Every number here is (propuesta).
 
 const MODELS: Array[PackedScene] = [
 	preload("res://assets/models/npc_alumno.glb"), preload("res://assets/models/npc_alumna.glb"),
@@ -52,11 +54,13 @@ var card := ""
 var trap := false
 var hand_up := false
 var _arm: Node3D
-var _card_text: Label3D
+var _card_text: CloseLabel
 var _wave := 0.0
 ## Violet paint on their fingers, which a cop up close can take for the janitor's ink (step 6).
 var stained := false
 var crying := false
+## A guest's copy (NpcSync): the host's decides what happens.
+var follower := false
 ## Seconds crying, and whether it already counted.
 var cry_for := 0.0
 var cry_counted := false
@@ -96,12 +100,19 @@ func prompt_key(cop: Cop) -> String:
 	return "PROMPT_TAKE_CARD" if has_card() else "PROMPT_TALK_PUPIL"
 
 
-func use(cop: Cop) -> void:
+## E on them; `how` "point" is a cop by the deputy pointing at them from afar (SchoolQuestions.try_point).
+func use(cop: Cop, how := "") -> void:
+	if follower:
+		return
+	if how == "point":
+		(get_parent() as SchoolVisitLevel).questions.point_from(cop, self)
+		return
 	var grabber: Grabber = cop.get_node("Grabber")
 	var held := grabber.held
 	if held is SchoolCandy and crying:
 		grabber.release()
 		held.queue_free()
+		tell_hands(cop)
 		calm()
 		return
 	if held is SchoolCard and not has_card():
@@ -109,6 +120,7 @@ func use(cop: Cop) -> void:
 		var given := held as SchoolCard
 		hold_card(given.key, given.trap)
 		held.queue_free()
+		tell_hands(cop)
 		calm()
 		return
 	if held == null and has_card():
@@ -133,6 +145,7 @@ func _give_card(cop: Cop) -> void:
 	cop.get_parent().add_child(card_node)
 	card_node.global_position = cop.camera.global_position - cop.camera.global_basis.z * 0.6
 	cop.get_node("Grabber").grab(card_node)
+	tell_hands(cop)
 	var seated := not walking()
 	hold_card("")
 	card_taken.emit(self, was_trap)
@@ -143,6 +156,25 @@ func _give_card(cop: Cop) -> void:
 		cry_for = 0.0
 		_sob_left = SOB_EVERY
 		say("PUPIL_MINE", SOB_EVERY)
+
+
+## Online, the host put something in (or took it out of) a guest's cop's hands: its owner is told.
+static func tell_hands(cop: Cop) -> void:
+	if cop.sync and not cop.sync.is_multiplayer_authority():
+		cop.sync.tell_held()
+
+
+## What a guest's copy needs besides where they are and what they say (NpcSync): the card, the hand and the crying.
+func net_state() -> Array:
+	return [card, trap, hand_up, crying]
+
+
+func apply_net_state(state: Variant) -> void:
+	if state[0] != card or state[1] != trap:
+		hold_card(state[0], state[1])
+	if state[2] != hand_up:
+		raise_hand(state[2])
+	crying = state[3]
 
 
 ## Walks through `points` (world space) after `delay` seconds and ends up looking along `facing` (or wherever the last
@@ -181,6 +213,7 @@ func hold_card(key: String, is_trap := false) -> void:
 	card = key
 	trap = is_trap and key != ""
 	_card_text.text = key
+	_card_text.shown = key != ""
 	_arm.get_node("Card").visible = key != ""
 	if key == "":
 		raise_hand(false)
@@ -218,10 +251,6 @@ func said() -> String:
 
 
 func _process(delta: float) -> void:
-	var near := _cop_near()
-	_card_text.visible = has_card() and near
-	if stained:
-		get_node("Stain").visible = near
 	if hand_up and trap:
 		_wave += delta * 9.0
 		_arm.rotation.z = sin(_wave) * 0.35
@@ -243,12 +272,6 @@ func _cry(delta: float) -> void:
 		cry_counted = true
 		cried.emit(self)
 
-
-func _cop_near() -> bool:
-	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
-		if cop.global_position.distance_to(global_position) < READ_REACH:
-			return true
-	return false
 
 
 ## A right arm in the smock's white that goes up with the card in its hand, and the card's text over it.
@@ -275,9 +298,10 @@ func _build_arm() -> void:
 	paper.visible = false
 	_arm.add_child(paper)
 	raise_hand(false)
-	_card_text = Label3D.new()
+	_card_text = CloseLabel.new()
 	_card_text.name = "CardText"
-	_card_text.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	_card_text.reach = READ_REACH
+	_card_text.shown = false
 	_card_text.font_size = 22
 	_card_text.outline_size = 6
 	_card_text.width = 360.0
@@ -286,7 +310,6 @@ func _build_arm() -> void:
 	_card_text.outline_modulate = CARD
 	_card_text.pixel_size = 0.003
 	_card_text.position.y = 1.05
-	_card_text.visible = false
 	add_child(_card_text)
 
 
