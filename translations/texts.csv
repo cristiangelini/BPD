@@ -4406,6 +4406,9 @@ PLACE_SCHOOL_VISIT,"Escuela Los Girasoles","Sunflowers School","Escola Os Girass
 "CHASE_ENGINEER_LINE_1","¡El cemento es de primera! Bueno, de segunda.","The cement is first-rate! Well, second-rate.","O cimento é de primeira! Bem, de segunda."
 "CHASE_ENGINEER_LINE_2","¡Las vigas eran para la parrilla de mi casa!","The beams were for my backyard grill!","As vigas eram para a minha churrasqueira!"
 "CHASE_ENGINEER_LINE_3","Está bien, me entrego. Pero el puente aguantó, ¿no?","Fine, I give up. But the bridge held up, didn't it?","Tá bom, me entrego. Mas a ponte aguentou, né?"
+"PLACE_FOOTBALL_PITCH","Cancha del Barrio","Neighborhood Pitch","Campinho do Bairro"
+"FOOTBALL_BANNER","Partido benéfico: ¡Lustre juega por los chicos!","Charity match: Lustre plays for the kids!","Jogo beneficente: Lustre joga pelas crianças!"
+"FOOTBALL_STALL","SALCHICHAS","SAUSAGES","SALSICHAS"
 HINT_INSPECTOR_ARRIVES,Llegó la inspectora de la ciudad: va contigo todo el turno y anota todo.,The city inspector is here: she goes with you all shift and writes everything down.,A inspetora da cidade chegou: ela vai com você o turno todo e anota tudo.
 INSPECTOR_ARRIVES,"Severina Regla, inspección de la ciudad. Hagan como si no estuviera.","Severina Regla, city inspection. Act as if I'm not here.","Severina Regla, inspeção da cidade. Façam de conta que não estou aqui."
 INSPECTOR_NOTE_1,Mmm.,Hmm.,Hum.
