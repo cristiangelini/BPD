@@ -75,6 +75,15 @@ static func draw(rng: RandomNumberGenerator) -> Dictionary:
 		"number": rng.randi_range(NUMBERS.x, NUMBERS.y), "dancers": dancers}
 
 
+## The dancer the plan compares to the clues on the float `traits`: El Antifaz on his, the one who looks like him on a
+## lookalike's ("double"), the first one otherwise. Empty for a city car.
+static func compared(traits: Dictionary) -> Dictionary:
+	var dancers: Array = traits.get("dancers", [])
+	if dancers.is_empty():
+		return {}
+	return dancers[clampi(int(traits.get("thief", traits.get("double", 0))), 0, dancers.size() - 1)]
+
+
 ## The name the radio gives `theme`.
 static func theme_name(theme: String) -> String:
 	return THEME_NAMES[maxi(THEMES.find(theme), 0)]
