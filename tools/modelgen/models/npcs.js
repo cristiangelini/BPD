@@ -1409,6 +1409,28 @@ const NPCS = {
 		limb(b, 'props', C('broom_stick', 0xa87a4a), V(0.5, 0.0, 0.2), V(0.5, 1.3, 0.1), 0.02);
 		b.add('props', C('broom_head', 0xd8b048), new THREE.BoxGeometry(0.34, 0.1, 0.08), { pos: V(0.5, 0.05, 0.2) });
 	},
+	// Doña Chola (casa-equivocada.md): floral robe, curlers all over, slippers and her mate in hand.
+	chola(b) {
+		const robe = C('robe_floral', 0x7ac0d8);
+		pearBody(b, SKIN.crema, { shirt: robe, onePiece: true, belted: false, shoes: C('slippers', 0xf2a6c0) });
+		const flowers = [C('flower_pink', 0xf06a9a), C('flower_yellow', 0xf2d23a), C('flower_white', 0xf4f4f0)];
+		for (let i = 0; i < 16; i++) {
+			const a = (i / 16) * Math.PI * 2 + (i % 2) * 0.2;
+			const y = 0.32 + (i % 4) * 0.17;
+			const r = y < 0.8 ? 0.36 + (0.8 - y) * 0.33 : 0.36 - (y - 0.8) * 0.48;
+			b.add('body', flowers[i % 3], ellipsoid(0.065, 0.065, 0.03, 6, 3), { pos: V(Math.sin(a) * (r + 0.01), y, Math.cos(a) * (r * 0.89 + 0.01)), rot: [0, a, 0] });
+		}
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		const hair = C('hair_gray', 0x9aa0a8);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		const curler = C('curler_pink', 0xf27ab0);
+		for (const [x, y, z] of [[-0.12, 1.5, 0.1], [0, 1.53, 0.12], [0.12, 1.5, 0.1], [-0.15, 1.5, -0.05], [0.15, 1.5, -0.05], [-0.06, 1.55, -0.12], [0.06, 1.55, -0.12]]) {
+			b.add('head', curler, new THREE.CylinderGeometry(0.032, 0.032, 0.09, 6), { pos: V(x, y, z), rot: [0, 0, Math.PI / 2] });
+		}
+		b.add('props', C('mate_gourd', 0x6a4a2a), ellipsoid(0.07, 0.08, 0.07, 8, 6), { pos: V(0.48, 0.78, 0.2) });
+		limb(b, 'props', C('bombilla', 0xc8c8cc), V(0.49, 0.82, 0.2), V(0.53, 0.98, 0.18), 0.008);
+	},
 };
 
 export const NPC_NAMES = Object.keys(NPCS);
@@ -1418,7 +1440,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, comprador: 1.0, compradora: 0.9, martillo: 1.1, portero_subasta: 1.15, ladron_oso: 1.15, abuelo_oso: 1.15, alumno_primaria: 0.62, alumna_primaria: 0.62, alumno_b: 0.62, alumna_b: 0.62 };
+const SCALE = { chola: 0.82, comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, comprador: 1.0, compradora: 0.9, martillo: 1.1, portero_subasta: 1.15, ladron_oso: 1.15, abuelo_oso: 1.15, alumno_primaria: 0.62, alumna_primaria: 0.62, alumno_b: 0.62, alumna_b: 0.62 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },

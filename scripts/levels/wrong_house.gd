@@ -4,12 +4,16 @@ extends Node3D
 ## The wrong house (docs/diseno/casa-equivocada.md, step 1, decision 223): two twin two-storey houses joined by the
 ## party wall, on one lot with the fronts to +Z. Same color, same roof, same green door, and each lost a digit of its
 ## number ("1_" and "_4"): the warrant says 14 and either could be it. Which one is the guilty neighbor's, the west or
-## the east, comes from the seed (or --guilty=left|right); the other is doña Chola's, who knows nothing. Each house
+## the east, comes from the seed (or --guilty=left|right); the other is doña Chola's, who knows nothing (step 2:
+## everything broken in hers costs CHOLA_FINES times the fine, and she sees it). Each house
 ## has its front door locked with the key in one of its pots, its ornaments (fines), its mailbox, and an old station
 ## wagon parked in the side passage, nose to the street. Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const POT_SCENE := preload("res://scenes/props/key_pot.tscn")
+const CHOLA_SCENE := preload("res://scenes/npc/neighbor_chola.tscn")
+## Doña Chola watches her soap opera standing by the sofa, facing the TV (house space).
+const CHOLA_AT := Vector3(-3.5, FLOOR_TOP, 3.4)
 ## Each house is HALF_U * 2 wide; the west one's middle at -HALF_U and the east one's at +HALF_U, the party wall at x = 0.
 const HALF_U := 7.0
 const FRONT_Z := 7.0
@@ -41,6 +45,8 @@ const NUMBERS: Array[String] = ["1_", "_4"]
 const WINDOWS := [[-5.8, -1.2, 3.5], [-3.5, 3.5]]
 const LEFT := 0
 const RIGHT := 1
+## In doña Chola's house each broken thing costs this many times the grandpa's fine.
+const CHOLA_FINES := 2
 ## Ornament shelves in house space (OrnamentLayout units) and the kitchen counter's row of plates.
 const SHELVES := [
 	{"at": Vector3(-6.75, 0, 4.3), "along": "z", "width": 2.0},  # living
@@ -72,6 +78,9 @@ var key_pot: Array[int] = [0, 0]
 var ornaments: Array = [[], []]
 var broken: Array[int] = [0, 0]
 var wagons: Array[StaticBody3D] = []
+var chola: NeighborChola
+## Fines for what the cops broke, in both houses.
+var fines := 0
 var station_parking: Transform3D
 var _build: PlaceBuilder
 @onready var car: PatrolCar = $PatrolCar
@@ -87,12 +96,26 @@ func _ready() -> void:
 	_build_lot()
 	for house in 2:
 		_build_house(house)
+	_place_chola()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("wrong_house")
 	station_parking = city.transform * CityLayout.parking("station")
 	car.global_transform = city.transform * CityLayout.parking("wrong_house")
 	car.global_position += Vector3.UP * 0.05
 	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
+
+
+## Who isn't the guilty one's house.
+func chola_house() -> int:
+	return RIGHT if guilty == LEFT else LEFT
+
+
+## Doña Chola in her living, facing the TV; a door of her house rammed down reaches her anywhere.
+func _place_chola() -> void:
+	chola = CHOLA_SCENE.instantiate()
+	chola.position = at(chola_house(), CHOLA_AT)
+	add_child(chola)
+	doors[chola_house()].broken.connect(chola.door_broken)
 
 
 ## The guilty house from --guilty=left|right among the user args, or drawn from the seed.
@@ -274,5 +297,10 @@ static func _add(result: Array, rng: RandomNumberGenerator, kind: int, surface: 
 		"turn": rng.randf() * TAU})
 
 
-func _on_ornament_broken(_at: Vector3, house: int) -> void:
+func _on_ornament_broken(where: Vector3, house: int) -> void:
 	broken[house] += 1
+	if house == chola_house():
+		fines += Ornament.FINE * CHOLA_FINES
+		chola.saw(where)
+	else:
+		fines += Ornament.FINE
