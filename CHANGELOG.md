@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Hardware store, step 6: the deputy's mustaches story: the stencil, three spray cans and the original poster hidden, sprayed posters on the walls, a black paint puddle in the workshop with a trail of prints as the clue, and black soles for 12 steps for a cop who steps in it.
 - Hardware store, step 6: the tunnel behind the screws story: the screw wall is its own cabinet and slides aside when two cops push it at once, uncovering the hole and the digging drill; loose dirt at its foot is the clue, and the miner's helmet and the tunnel plan are the extras.
 - Hardware store, step 6: the golden screws story: the 60 screw wall drawers open with E, the golden one (drawn with the seed) gives up the main evidence and glints under the flashlight, one in three of the others spills screws that make a running cop slip; the screw mold and the jeweler's bag are the extras.
 - Hardware store, step 6: the gnomes with watches story: 12 fragile garden gnomes in the yard, the boss one drawn with the seed ticks when a cop is within 2 m (the story's clue), plus the watch list and the glue hidden in the store.

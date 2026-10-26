@@ -63,6 +63,18 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_MINER_HELMET", "OBJ_EXTRA_TUNNEL_PLAN"],
 		"rig": preload("res://scripts/case/hardware/tunnel_rig.gd"),
 	},
+	"mustaches": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_MUSTACHES_B", "BRIEF_MUSTACHES_C", "BRIEF_MUSTACHES_D"],
+		"find": "OBJ_FIND_STENCIL",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/mustache_stencil.tscn"), preload("res://scenes/props/spray_can_black.tscn"),
+			preload("res://scenes/props/spray_can_black.tscn"), preload("res://scenes/props/spray_can_black.tscn"),
+			preload("res://scenes/props/deputy_poster.tscn")],
+		"half_heights": [0.005, 0.1, 0.1, 0.1, 0.005],
+		"heavy": [false, false, false, false, false],
+		"extra_keys": ["OBJ_EXTRA_SPRAY", "OBJ_EXTRA_SPRAY", "OBJ_EXTRA_SPRAY", "OBJ_EXTRA_DEPUTY_POSTER"],
+		"rig": preload("res://scripts/case/hardware/mustaches_rig.gd"),
+	},
 }
 ## The tools for sale, laid along the gondolas' two upper boards, both sides.
 const TOOL_SCENES: Array[PackedScene] = [
