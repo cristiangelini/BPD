@@ -94,6 +94,25 @@ func _physics_process(delta: float) -> void:
 			return
 
 
+## Online, what the guests' Ramón takes from the host's (NpcSync): whether he's crossing, in which disguise, and
+## whether he ran off (then the guest's checklist gets the mustache too).
+func net_state() -> Array:
+	return [walking, disguise, fled]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[1] != disguise:
+		disguise = state[1]
+		_dress()
+	if state[0] != walking:
+		walking = state[0]
+		_hide(not walking)
+	if state[2] and not fled:
+		walking = true
+		_hide(false)
+		unmask()
+
+
 ## A cop bumped into him: off comes the mustache, and off he goes for good.
 func unmask() -> void:
 	if fled or not walking:

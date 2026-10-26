@@ -82,6 +82,10 @@ Los pesos y valores siguen la escala de las otras: la principal vale unos 1000 y
      allanamientos y las 6 historias del hotel salen todas (prueba sobre 600 semillas). El menú tiene "Hotel
      (allanamiento, prueba)".
 7. El online (don Bostezo, doña Escoba, las llaves y lo que cambia en cada historia en todas las PC).
+   - **Cómo quedó (propuesta):** el host mueve a don Bostezo (siesta y denuncia), a doña Escoba, al sonámbulo y al
+     señor Ramón, y en las otras PC los siguen. Lo que hacen los policías con E (las llaves, la almohadita, el timbre,
+     las camas, la manivela, las notas) pasa en todas las PC en el mismo orden. Si Ramón sale corriendo en el host, el
+     bigote también se suma a la planilla de los invitados.
 
 ## Preguntas para Cristian
 1. ¿El allanamiento usa el mismo Hotel Gran Siesta de la escena del crimen, con don Bostezo como el que protesta y sin

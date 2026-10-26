@@ -69,6 +69,16 @@ func wake() -> void:
 	woke.emit(global_position)
 
 
+## Online, what the guests' copy takes from the host's (NpcSync): whether he's awake and how many times he was woken.
+func net_state() -> Array:
+	return [awake, wakes]
+
+
+func apply_net_state(state: Array) -> void:
+	awake = state[0]
+	wakes = state[1]
+
+
 func _physics_process(delta: float) -> void:
 	super(delta)
 	if awake:
