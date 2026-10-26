@@ -135,6 +135,18 @@ valores siguen la escala del bingo: la principal unos 1000, los extras entre 300
     alzarlo). Los de cerámica se rompen como adornos (multa). Extras: la lista de jardines (300) y la carretilla
     (15 kg, 200). Pista propia: pozos con forma de gnomo en el jardín de doña Chola.
   Capturas en `/mnt/project-files/casa-equivocada/paso5-*.png`.
+- **Paso 6 (el loro y los fuegos artificiales):**
+  - **El loro:** Pepe (`Parrot`, 1 kg, 1000) arranca en una de 5 perchas de planta baja (tele, las dos puntas de la
+    mesada, lavarropas y brazo del sillón), sorteada con la semilla. Si un policía se le acerca a menos de 2,5 m, vuela
+    (0,8 s) a la percha más lejos de todos los policías; si todas tienen un policía cerca, queda acorralado. Para que
+    se pueda jugar solo, después de 5 vuelos seguidos descansa 6 s y se deja agarrar. Una vez agarrado (o si su dueña
+    lo levanta) es una evidencia común. Cada 6 s dice números. Extras escondidos: la jaula (150) y la libreta de
+    claves (300). Pista propia: por la ventana del frente se lo oye decir números.
+  - **Los fuegos:** la caja de cohetes (`RocketBox`, 8 kg, 1000) se prende con el primer golpe a más de 2 m/s (una
+    sola vez, y no pierde valor por eso). Durante 10 s vuelan 8 cohetes de colores por la casa donde está y se rompe
+    un adorno de esa casa enseguida y otro cada 0,5 s (20 en total, multas; en la de doña Chola, al doble; afuera, ninguno).
+    Extras: las mechas (150) y el plano de la fiesta (300). Pista propia: la cortina quemada de la ventana del frente.
+  Capturas en `/mnt/project-files/casa-equivocada/paso6-*.png`.
 
 ## Preguntas para Cristian
 1. **¿Entrar en la casa equivocada se puede o termina el caso?** Recomendado: se puede, y es el chiste: doña Chola

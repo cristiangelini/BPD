@@ -4877,3 +4877,21 @@ OBJ_EXTRA_WHEELBARROW,Extra: la carretilla,Extra: the wheelbarrow,Extra: o carri
 HINT_WH_GOLD_GNOME,"¡Este gnomo pesa el triple que los otros! Es de oro.","This gnome is three times as heavy as the others! It's gold.","Este gnomo pesa o triplo dos outros! É de ouro."
 PROMPT_LOOK_HOLE,"E: mirar el pozo","E: look at the hole","E: olhar o buraco"
 CLUE_WH_GNOME_HOLES,"Pozos en el jardín de doña Chola, con la forma justa de un gnomo de jardín.","Holes in doña Chola's garden, the exact shape of a garden gnome.","Buracos no jardim da dona Chola, no formato exato de um gnomo de jardim."
+BRIEF_WH_PARROT_B,"La señora Plumas, la de al lado, tiene un loro, Pepe, que repite la clave de la caja fuerte del banco.","Señora Plumas, next door, has a parrot, Pepe, who repeats the code of the bank's safe.","A senhora Plumas, a do lado, tem um papagaio, Pepe, que repete o código do cofre do banco."
+BRIEF_WH_PARROT_C,"Traigan a Pepe en el baúl del patrullero. Vuela lejos de ustedes: acorrálenlo o cánsenlo.","Bring Pepe back in the patrol car's trunk. He flies away from you: corner him or tire him out.","Tragam o Pepe no porta-malas da viatura. Ele voa para longe de vocês: encurralem ou cansem ele."
+BRIEF_WH_PARROT_D,"Si encuentran la jaula y la libreta de claves, mejor: todo suma.","If you find the cage and the notebook of codes, even better: it all adds up.","Se acharem a gaiola e a caderneta de códigos, melhor: tudo soma."
+OBJ_FIND_WH_PARROT,"Atrapar a Pepe, el loro (vuela lejos del policía más cercano)","Catch Pepe the parrot (he flies away from the nearest cop)","Pegar o Pepe, o papagaio (ele voa para longe do policial mais perto)"
+OBJ_EXTRA_BIRD_CAGE,Extra: la jaula,Extra: the cage,Extra: a gaiola
+OBJ_EXTRA_CODE_NOTEBOOK,Extra: la libreta de claves,Extra: the notebook of codes,Extra: a caderneta de códigos
+PARROT_NUMBERS,"¡Cuatro, siete, dos, nueve! ¡Cuatro, siete…!","Four, seven, two, nine! Four, seven…!","Quatro, sete, dois, nove! Quatro, sete…!"
+PROMPT_LISTEN_WINDOW,"E: escuchar por la ventana","E: listen at the window","E: escutar pela janela"
+CLUE_WH_PARROT,"Por la ventana se oye un loro que dice números, como una clave.","Through the window you hear a parrot saying numbers, like a code.","Pela janela se ouve um papagaio dizendo números, como um código."
+BRIEF_WH_FIREWORKS_B,"El Chispa, el de al lado, guarda una caja de cohetes robada para la fiesta del barrio.","El Chispa, next door, keeps a stolen box of rockets for the neighborhood party.","O Chispa, o do lado, guarda uma caixa de rojões roubada para a festa do bairro."
+BRIEF_WH_FIREWORKS_C,"Traigan la caja de cohetes en el baúl del patrullero. Despacio: si se golpea, se prende.","Bring the box of rockets back in the patrol car's trunk. Slowly: if it gets hit, it goes off.","Tragam a caixa de rojões no porta-malas da viatura. Devagar: se bater, ela dispara."
+BRIEF_WH_FIREWORKS_D,"Si encuentran las mechas y el plano de la fiesta, mejor: todo suma.","If you find the fuses and the party plan, even better: it all adds up.","Se acharem os pavios e o mapa da festa, melhor: tudo soma."
+OBJ_FIND_WH_FIREWORKS,"Encontrar la caja de cohetes (frágil: si se golpea, se prende)","Find the box of rockets (fragile: if it gets hit, it goes off)","Achar a caixa de rojões (frágil: se bater, ela dispara)"
+OBJ_EXTRA_FUSES,Extra: las mechas,Extra: the fuses,Extra: os pavios
+OBJ_EXTRA_PARTY_PLAN,Extra: el plano de la fiesta,Extra: the party plan,Extra: o mapa da festa
+PROMPT_LOOK_BURNS,"E: mirar la cortina","E: look at the curtain","E: olhar a cortina"
+CLUE_WH_BURNS,"La cortina de esta ventana está quemada y huele a pólvora.","This window's curtain is burnt and smells of gunpowder.","A cortina desta janela está queimada e cheira a pólvora."
+HINT_WH_ROCKETS,"¡Se prendieron los cohetes! Cuidado con los adornos.","The rockets went off! Watch the ornaments.","Os rojões dispararam! Cuidado com os enfeites."

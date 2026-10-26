@@ -83,6 +83,26 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_GARDEN_LIST", "OBJ_EXTRA_WHEELBARROW"],
 		"rig": preload("res://scripts/case/wrong_house/gnomes_rig.gd"),
 	},
+	"parrot": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_WH_PARROT_B", "BRIEF_WH_PARROT_C", "BRIEF_WH_PARROT_D"],
+		"find": "OBJ_FIND_WH_PARROT",
+		"hidden": [preload("res://scenes/props/bird_cage.tscn"), preload("res://scenes/props/code_notebook.tscn")],
+		"half_heights": [0.25, 0.01],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_BIRD_CAGE", "OBJ_EXTRA_CODE_NOTEBOOK"],
+		"rig": preload("res://scripts/case/wrong_house/parrot_rig.gd"),
+	},
+	"fireworks": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_WH_FIREWORKS_B", "BRIEF_WH_FIREWORKS_C", "BRIEF_WH_FIREWORKS_D"],
+		"find": "OBJ_FIND_WH_FIREWORKS",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/rocket_box.tscn"), preload("res://scenes/props/fuses.tscn"),
+			preload("res://scenes/props/party_plan.tscn")],
+		"half_heights": [0.15, 0.02, 0.005],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_FUSES", "OBJ_EXTRA_PARTY_PLAN"],
+		"rig": preload("res://scripts/case/wrong_house/fireworks_rig.gd"),
+	},
 }
 ## Where the guilty neighbor hides his things, in house space: the floor of each spot (an item rests its half height
 ## over it), and whether a heavy one fits. All downstairs, handy for him, and none in his way out the back.
