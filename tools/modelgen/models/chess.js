@@ -96,11 +96,46 @@ export function buildChessBriefcase() {
 	return b.build();
 }
 
+// The Gran Maestro's getaway (step 6): a motorized carousel horse, white with gold, its head a chess knight's, on a round
+// red platform with a gold skirt, a gold pole through it up to a small striped canopy. Faces +Z, origin at the ground.
+export function buildCarouselHorse() {
+	const b = new Builder('carousel_horse');
+	const white = mat('horse_white', 0xf4f0e6), gold = mat('horse_gold', 0xd8b040), red = mat('horse_red', 0xc0302a);
+	const mane = mat('horse_mane', 0x7a4a2a), black = mat('chess_piece_black', PIECE.black);
+	const add = (part, m, w, h, d, x, y, z, rot) => b.add(part, m, new THREE.BoxGeometry(w, h, d), { pos: V(x, y, z), rot });
+	b.add('base', red, new THREE.CylinderGeometry(0.75, 0.8, 0.25, 14), { pos: V(0, 0.15, 0) });
+	b.add('base', gold, new THREE.CylinderGeometry(0.82, 0.82, 0.06, 14), { pos: V(0, 0.29, 0) });
+	b.add('pole', gold, new THREE.CylinderGeometry(0.035, 0.035, 2.4, 8), { pos: V(0, 1.5, 0.24) });
+	for (let i = 0; i < 8; i++) {
+		b.add('canopy', i % 2 ? white : red, new THREE.CylinderGeometry(0.02, 0.7, 0.3, 8, 1, false, (i / 8) * Math.PI * 2, Math.PI / 4), { pos: V(0, 2.75, 0.24) });
+	}
+	b.add('canopy', gold, new THREE.SphereGeometry(0.07, 8, 6), { pos: V(0, 2.92, 0.24) });
+	// The horse: body, legs folded as if galloping, a saddle and the knight's head with its mane.
+	add('body', white, 0.38, 0.38, 0.95, 0, 0.82, 0.0);
+	for (const [x, z, r] of [[-0.12, 0.38, -0.9], [0.12, 0.38, -0.6], [-0.12, -0.38, 0.9], [0.12, -0.38, 0.6]]) {
+		add('legs', white, 0.09, 0.4, 0.09, x, 0.62, z + Math.sign(z) * 0.08, [r, 0, 0]);
+		add('legs', gold, 0.1, 0.06, 0.1, x, 0.46, z + Math.sign(z) * 0.24, [r, 0, 0]);
+	}
+	add('saddle', red, 0.42, 0.06, 0.4, 0, 1.03, -0.05);
+	add('saddle', gold, 0.44, 0.02, 0.42, 0, 1.0, -0.05);
+	add('neck', white, 0.3, 0.55, 0.3, 0, 1.15, 0.45, [0.35, 0, 0]);
+	add('head', white, 0.3, 0.32, 0.3, 0, 1.45, 0.58);
+	add('head', white, 0.24, 0.18, 0.32, 0, 1.38, 0.82, [0.25, 0, 0]);
+	add('mane', mane, 0.1, 0.6, 0.14, 0, 1.3, 0.34, [0.35, 0, 0]);
+	for (const x of [-0.08, 0.08]) {
+		add('ears', white, 0.06, 0.12, 0.05, x, 1.66, 0.54, [0.2, 0, 0]);
+		add('eyes', black, 0.02, 0.05, 0.05, x * 1.9, 1.5, 0.66);
+	}
+	add('tail', mane, 0.06, 0.4, 0.06, 0, 0.75, -0.55, [-0.4, 0, 0]);
+	return b.build();
+}
+
 const KINDS = Object.keys(SHAPES);
 
 export const models = {
 	...Object.fromEntries(KINDS.flatMap((k) => ['white', 'black'].map((c) => [`chess_${k}_${c}`, piece(k, c)]))),
 	chess_clock: buildChessClock, chess_hollow_king: buildHollowKing, chess_briefcase: buildChessBriefcase,
+	carousel_horse: buildCarouselHorse,
 };
 
 export const views = {
@@ -113,5 +148,9 @@ export const views = {
 			{ name: 'chess_briefcase', pos: [0.1, 0, -0.45] },
 		],
 		cam: { pos: [0.0, 0.6, 1.0], target: [0.0, 0.07, -0.1], fov: 45 },
+	},
+	carousel_horse: {
+		items: [{ name: 'carousel_horse', pos: [0, 0, 0] }, { name: 'npc_alfil', pos: [0, 0.82, -0.22], scale: 0.8 }],
+		cam: { pos: [3.0, 2.0, 3.2], target: [0, 1.0, 0], fov: 45 },
 	},
 };

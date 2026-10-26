@@ -1,6 +1,6 @@
 extends GutTest
 
-## The infiltration online (infiltracion.md, infiltracion-coro.md, infiltracion-mimos.md, infiltracion-fiesta.md, infiltracion-gimnasio.md, infiltracion-escuela.md and infiltracion-restaurante.md, "Online"; docs/diseno/online.md): the host's
+## The infiltration online (infiltracion.md, infiltracion-coro.md, infiltracion-mimos.md, infiltracion-fiesta.md, infiltracion-gimnasio.md, infiltracion-escuela.md, infiltracion-restaurante.md and infiltracion-ajedrez.md, "Online"; docs/diseno/online.md): the host's
 ## case decides the evidence, the suspicion, the boss cuffed or running off and the end of shift, and every PC sees
 ## the same, disguises included.
 
@@ -12,6 +12,7 @@ const PARTY_SCENE := preload("res://scenes/levels/party_hall.tscn")
 const GYM_SCENE := preload("res://scenes/levels/gym_hall.tscn")
 const SCHOOL_SCENE := preload("res://scenes/levels/school_hall.tscn")
 const RESTAURANT_SCENE := preload("res://scenes/levels/restaurant_hall.tscn")
+const CHESS_SCENE := preload("res://scenes/levels/chess_club.tscn")
 ## A seed whose club has Doña Chela's bag among its evidence (ClubEvidence.draw).
 const SEED := 2
 
@@ -288,6 +289,38 @@ func test_the_chefs_orders_and_special_soup_reach_the_guest() -> void:
 	host.orders.start_special()
 	await wait_until(func() -> bool: return guest.orders.special_on, 5.0)
 	assert_true(guest.special_soup.visible, "the special soup on the guest's pass")
+
+
+func test_at_the_chess_club_found_out_alfil_rides_off_on_every_pc() -> void:
+	_scene = CHESS_SCENE
+	var pcs := await _on()
+	var host := _place(pcs[0]) as ChessClub
+	var guest := _place(pcs[1]) as ChessClub
+	host.games.set_physics_process(false)
+	host.suspicion.raise(host.members[0], 100.0)
+	await wait_until(func() -> bool: return guest.case.chase != null, 5.0)
+	assert_eq(guest.case.chase.suspect_id, SuspectCar.CAROUSEL_HORSE, "on the carousel horse")
+
+
+func test_a_chess_challenge_and_the_clock_reach_the_guest() -> void:
+	_scene = CHESS_SCENE
+	var pcs := await _on()
+	var host := _place(pcs[0]) as ChessClub
+	var guest := _place(pcs[1]) as ChessClub
+	host.games.set_physics_process(false)
+	assert_true(host.games.challenge(OnlinePcs.own_cop(pcs[1])))
+	var who := host.members.find(host.games.challenger)
+	await wait_until(func() -> bool: return guest.members[who].said() == "CHESS_CHALLENGE", 5.0)
+	assert_eq(guest.members[who].said(), "CHESS_CHALLENGE", "the same member challenges on the guest's PC")
+	var table := host.games.table
+	host.clocks[table].start(ChessClock.BLACK)
+	await wait_until(func() -> bool: return guest.clocks[table].turn == ChessClock.BLACK, 5.0)
+	assert_eq(guest.clocks[table].turn, ChessClock.BLACK, "the guest's clock runs the same side")
+	OnlinePcs.own_cop(pcs[1]).act("use", guest.clocks[table])
+	await wait_until(func() -> bool: return host.clocks[table].turn == ChessClock.WHITE, 5.0)
+	assert_eq(host.clocks[table].turn, ChessClock.WHITE, "the guest hit the clock on the host")
+	await wait_until(func() -> bool: return guest.clocks[table].turn == ChessClock.WHITE, 5.0)
+	assert_eq(guest.clocks[table].turn, ChessClock.WHITE)
 
 
 ## Whether the party with `case_seed` has Serpentina among its clues.
