@@ -112,3 +112,12 @@ interrogatorio.
    emergencia, el tablero portátil y la última estación.
 5. El final: la huida por el techo con túneles y palomas, y el interrogatorio.
 6. El sorteo en "Jugar" (las escenas del crimen salen en quintos: pastel, circo, museo, hotel y tren) y el online.
+
+## Hecho así
+- **Paso 1 (el tren, en tres PRs: el reloj, los vagones y el paisaje):** `--place=train` abre TrainLevel, sin ciudad: el tren (Train) quieto sobre las vías con los
+  cuatro vagones unidos por puertas abiertas sobre un pasillo entre vagón y vagón (las puertas que se abren con E
+  quedan para cuando haga falta), y el paisaje (TrainScenery) que corre por las ventanillas: campo, durmientes, postes,
+  árboles, vacas y casas. TrainRide es el reloj: cinco tramos de 2 min con su túnel de 8 s en el medio (las lámparas
+  se apagan), arranque y frenada de 6 s y 20 s en cada estación con su andén, su techo y su cartel. Arriba de cada
+  puerta, el cartel con la próxima estación y los segundos que faltan. El baño del comedor quedó en la esquina de
+  atrás con la puerta al pasillo. El traqueteo de la cámara queda para después.

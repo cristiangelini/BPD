@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Train crime scene, step 1c (escena-tren.md): the scenery running past the train's windows (field, sleepers, poles, trees, cows and houses), each station's platform with its roof and sign, and a tunnel through a hill in each leg that switches the train's lamps off.
 - Train crime scene, step 1b (escena-tren.md): --place=train opens the train El Lento on its own level, with no city: the luggage car, the dining car, first class with its six numbered seats and the locomotive, joined by open doors, and over every door the next station and the seconds left.
 - Train crime scene, step 1a (escena-tren.md): the train's clock, five legs of 2 min with a tunnel in the middle of each and 20 s at each station, ending at the last one.
 - Train crime scene design (escena-tren.md, decision 202): six identical magicians on a moving train with five stations to solve it, seats shuffled in every tunnel and stickers to track them, the food cart that wipes the footprint, the ticket inspector witness, the left-handed knot, the emergency brake and a getaway along the roofs.
