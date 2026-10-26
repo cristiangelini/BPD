@@ -216,6 +216,54 @@ func suspect(index: int) -> CollisionObject3D:
 	return guards[index] if index >= 0 and index < guards.size() else null
 
 
+## Online, what the guests' museum takes from the host's: each guard's cap, mustache and alibi, the statue's coin, the
+## toilet, the alarm, the frame, the monitors and the polisher, and the clues ruined on the host.
+func net_state() -> Dictionary:
+	var looks := guards.map(func(guard: MuseumGuard) -> Array:
+		return [guard.cap_on, guard.mustache_pulled, guard.told_alibi])
+	var state := {"guards": looks, "statue": statue.tipped, "toilet": toilet_used, "alarm": alarm.ringing}
+	if clues:
+		state.touched = clues.frame.touched
+		state.deleted = clues.monitors.deleted
+		state.polisher = [clues.polisher.position, clues.polisher.running, clues.polisher.switched_off]
+	return state
+
+
+func apply_net_state(state: Dictionary) -> void:
+	for guard in guards:
+		var look: Array = state.guards[guard.index]
+		if not look[0] and guard.cap_on:
+			guard.cap_on = false
+			guard.part("cap").visible = false
+		if look[1] and not guard.mustache_pulled:
+			guard.mustache_pulled = true
+			guard.part("mustache").visible = guard.traits.mustache
+		guard.told_alibi = look[2]
+	if state.statue and not statue.tipped:
+		statue.tip(null)
+	toilet_used = state.toilet
+	if state.alarm != alarm.ringing:
+		if state.alarm:
+			alarm.ring()
+		else:
+			alarm.stop()
+	if clues and state.has("polisher"):
+		clues.frame.touched = state.touched
+		clues.monitors.deleted = state.deleted
+		clues.polisher.position = state.polisher[0]
+		clues.polisher.running = state.polisher[1]
+		clues.polisher.switched_off = state.polisher[2]
+	if not case:
+		return
+	for kind: String in ["hair", "bite"]:
+		if case.ruined.has(kind) and case.items.has(kind):
+			var item: CrimeClueItem = case.items[kind]
+			item.spoiled = true
+			item._eaten_part.visible = false
+	if case.ruined.has("footprint") and case.flour_print and not case.flour_print.wiped:
+		case.flour_print.wipe()
+
+
 ## The art van waits beside the steps and drives straight out into the street.
 func getaway(_index: int, _city: Node3D) -> Dictionary:
 	var out := to_global(GETAWAY_AT)

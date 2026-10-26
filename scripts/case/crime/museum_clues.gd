@@ -73,6 +73,9 @@ func _clue_item(kind: String, at: Vector3) -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	# Online the host's museum decides when the polisher starts and when the hair falls (Museum.apply_net_state).
+	if case.follower:
+		return
 	for node in get_tree().get_nodes_in_group("cops"):
 		var cop := node as Node3D
 		if not polisher.running and museum.in_gallery(cop.global_position):

@@ -163,4 +163,9 @@ PlaceDraw y la custodia para el interrogatorio.
    ("¡CRAC!") y se descuentan 20 del sueldo por cada uno. Si lo agarran, al turno siguiente se lo interroga como
    guardia del museo ("Treinta años cuidando cuadros y nunca me dejaron colgar uno en mi casa"). El tablero, el
    cansancio y el sueldo (500, +100 si encontraron lo robado) son los de la escena del crimen **(propuesta)**.
-6. El sorteo de "Jugar" (en tercios: pastel, circo y museo) y el online.
+6. El sorteo de "Jugar" (en tercios: pastel, circo y museo) y el online. Hecho así: cuando "Jugar" sortea una escena
+   del crimen, sale el concurso de pastelería, el circo o el museo, un tercio cada uno. En línea manda el museo del
+   anfitrión: los invitados ven a cada guardia sin gorra o sin bigote como allá, la moneda en el sombrero de la
+   estatua, el inodoro usado, la alarma sonando, el marco tocado, la grabación pisada, la lustradora (dónde está y si
+   está apagada), lo robado encontrado y las pistas arruinadas. Los láseres, la lustradora y la soga solo deciden en
+   la PC del anfitrión **(propuesta)**.
