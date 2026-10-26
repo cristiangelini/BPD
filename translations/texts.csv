@@ -4742,6 +4742,13 @@ PLACE_SCHOOL_VISIT,"Escuela Los Girasoles","Sunflowers School","Escola Os Girass
 "OBJ_DEBATE_TECHNICIAN","Llevar al técnico comprado al patrullero","Take the bought technician to the patrol car","Levar o técnico comprado para a viatura"
 "OBJ_DEBATE_BLUNDERS","Papelones al aire: %d","Blunders on air: %d","Gafes no ar: %d"
 "OBJ_DEBATE_OVER","Debate terminado.","Debate over.","Debate encerrado."
+"TV_LUSTRE_MAKEUP_1","¡Tanda! Voy a que me retoquen. Este brillo no se mantiene solo.","Ad break! I'm getting a touch-up. This shine doesn't keep itself.","Intervalo! Vou retocar. Este brilho não se mantém sozinho."
+"TV_LUSTRE_MAKEUP_2","¡Un minuto! Las cámaras me agregan diez kilos. Y yo ya tengo los míos.","One minute! The cameras add ten kilos. And I already have mine.","Um minuto! As câmeras acrescentam dez quilos. E eu já tenho os meus."
+"TV_LUSTRE_MAKEUP_3","Que nadie empiece sin mí. Bueno, que empiecen, pero que no les guste.","Nobody start without me. Well, start, but don't enjoy it.","Ninguém comece sem mim. Bom, comecem, mas não gostem."
+"TV_LUSTRE_MIRROR","Un poco más de polvo... perfecto. Qué guapo soy.","A bit more powder... perfect. I'm so handsome.","Um pouco mais de pó... perfeito. Como sou bonito."
+"TV_LUSTRE_MADE_UP","Listo. Ahora sí, que me vean.","Done. Now they can look at me.","Pronto. Agora sim, podem me ver."
+"TV_LUSTRE_EMPTY","El diputado no está en su atril... Candidata Malvón, adelante.","The deputy isn't at his lectern... Candidate Malvón, go ahead.","O deputado não está no púlpito... Candidata Malvón, pode falar."
+"HINT_LUSTRE_MAKEUP","El diputado se fue al camarín. Tráelo de la mano antes de que termine la tanda.","The deputy went to the makeup room. Lead him back by the hand before the break ends.","O deputado foi para o camarim. Traga-o pela mão antes que o intervalo acabe."
 HINT_INSPECTOR_ARRIVES,Llegó la inspectora de la ciudad: va contigo todo el turno y anota todo.,The city inspector is here: she goes with you all shift and writes everything down.,A inspetora da cidade chegou: ela vai com você o turno todo e anota tudo.
 INSPECTOR_ARRIVES,"Severina Regla, inspección de la ciudad. Hagan como si no estuviera.","Severina Regla, city inspection. Act as if I'm not here.","Severina Regla, inspeção da cidade. Façam de conta que não estou aqui."
 INSPECTOR_NOTE_1,Mmm.,Hmm.,Hum.

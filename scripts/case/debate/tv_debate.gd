@@ -8,6 +8,8 @@ extends Node
 ## Lustre's image starts at IMAGE_START: each answer of his without a blunder (step 4) adds ANSWER_GAIN, each answer of
 ## Malvón's takes MALVON_GAIN off it, and each blunder takes BLUNDER; with his teleprompter unplugged (step 4) he
 ## improvises, and his answers are worth half. Time and image show at the top of the screen.
+## Step 6: at every break Lustre goes to the makeup room (TvMakeupWalk); away from his lectern when a block starts,
+## it's a blunder ("late"), and his turns while he's away earn nothing: the moderator gives the word to Malvón.
 ## `finished` at the end of the third block. Every number here is (propuesta).
 
 signal started
@@ -90,6 +92,12 @@ func blunder(kind: String) -> void:
 	blundered.emit(kind)
 
 
+## Lustre away from his lectern (step 6).
+func lustre_away() -> bool:
+	var walks := PoliticianWalks.of(politician)
+	return walks != null and walks.off_stage()
+
+
 func _add(points: int) -> void:
 	image = clampi(image + points, 0, 100)
 
@@ -117,6 +125,8 @@ func _physics_process(delta: float) -> void:
 				block += 1
 				left = BLOCK
 				_follow_the_time()
+				if lustre_away():
+					blunder("late")
 
 
 ## Who should have the word at this point of the block; a change of turn closes the one before.
@@ -147,7 +157,10 @@ func _open_turn(who: String) -> void:
 		"moderator":
 			moderator.say("TV_QUESTION_%d" % line)
 		"lustre":
-			politician.say("TV_LUSTRE_ANSWER_%d" % line, ANSWER)
+			if lustre_away():
+				moderator.say("TV_LUSTRE_EMPTY")
+			else:
+				politician.say("TV_LUSTRE_ANSWER_%d" % line, ANSWER)
 		"malvon":
 			malvon.say("TV_MALVON_ANSWER_%d" % line)
 			_add(-MALVON_GAIN)
@@ -156,7 +169,7 @@ func _open_turn(who: String) -> void:
 
 ## The turn that ends: a clean answer of Lustre's earns its points.
 func _close_turn() -> void:
-	if speaker == "lustre" and not _blunder_in_turn:
+	if speaker == "lustre" and not _blunder_in_turn and not lustre_away():
 		# Without the teleprompter he improvises (step 4): half as good.
 		_add(ANSWER_GAIN if studio.prompter == null or studio.prompter.plugged else ANSWER_GAIN / 2)
 	speaker = ""
@@ -169,6 +182,9 @@ func _end_block() -> void:
 		left = BREAK
 		studio.put_on_air(CAMERA_OF.moderator)
 		ad_break.emit()
+		var walks := PoliticianWalks.of(politician)
+		if walks:
+			walks.walk_off()
 		for cop in get_tree().get_nodes_in_group("cops"):
 			(cop as Cop).show_hint("HINT_DEBATE_BREAK")
 	else:

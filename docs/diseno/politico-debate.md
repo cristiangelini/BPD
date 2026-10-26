@@ -68,8 +68,9 @@ vergüenza de la que pasa solo."
 3. El debate: el reloj de 3 bloques, la moderadora, Malvón, los turnos y la imagen del diputado.
 4. Los sabotajes y cómo se arreglan (carteles, cámara, linterna, micrófono de repuesto); el papelón.
 5. El técnico comprado: pistas, esposarlo; el caso, sueldo y cuota.
-6. El diputado que se va al camarín, la unidad móvil y el sorteo de Jugar (plaza, mercado, puente, cancha y canal).
-7. El online.
+6. El diputado que se va al camarín en la tanda.
+7. La unidad móvil y el sorteo de Jugar (plaza, mercado, puente, cancha y canal).
+8. El online.
 
 ## Preguntas para Cristian
 1. **¿Cuándo se pierde?** Recomendado: no se pierde por papelones; se gana si la imagen termina en 50 o más, y cada
@@ -121,4 +122,9 @@ vergüenza de la que pasa solo."
   `DebateCase` (`studio.case`): el comisario lo cuenta, planilla con Q (estudio, imagen, pistas 2, técnico al
   patrullero, papelones). Se gana si la imagen termina en 50 o más: sueldo 600, 50 menos por papelón, 100 menos por
   técnico mal esposado, 100 más con el técnico en el patrullero; cuota 400. Modelos nuevos: `npc_tecnico`,
-  `npc_tecnica` y `npc_tecnico_b`. El diputado que se va al camarín pasa al paso 6.
+  `npc_tecnica` y `npc_tecnico_b`.
+- **Paso 6 (el camarín):** `TvMakeupWalk` (el "Walks" del diputado, sobre el de la plaza): en cada tanda Lustre deja
+  el atril, cruza la puerta del camarín hasta el espejo, se maquilla 8 s y vuelve despacio. Solo llega tarde: si al
+  empezar el bloque no está en su atril es papelón ("late") y, mientras falta, la moderadora le da la palabra a Malvón
+  y sus turnos no suman. E lo toma de la mano; llevado cerca del atril, vuelve a su lugar; soltado en otro lado,
+  vuelve al espejo.

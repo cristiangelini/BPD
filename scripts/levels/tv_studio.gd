@@ -11,8 +11,8 @@ extends Node3D
 ## on air sees. Step 3: Lustre, Malvón and the moderator at their places and the debate (TvDebate). Step 4: the
 ## sabotage (TvSabotage) and what undoes it: the teleprompter in front of Lustre, the cue cards on a table by the set,
 ## the spare mic on the makeup table and the spots' switch on the console, with the yellow warning light. Step 5: the
-## 3 technicians at the console (TvTechnician), one bought by Malvón, and the case on top (DebateCase). Every number
-## here is (propuesta).
+## 3 technicians at the console (TvTechnician), one bought by Malvón, and the case on top (DebateCase). Step 6: Lustre's
+## trips to the makeup room in the breaks (TvMakeupWalk). Every number here is (propuesta).
 
 const LECTERN_MODEL := preload("res://assets/models/tv_lectern.glb")
 const DESK_MODEL := preload("res://assets/models/tv_anchor_desk.glb")
@@ -148,6 +148,7 @@ func _ready() -> void:
 	debate.name = "Debate"
 	debate.setup(self, politician, malvon, moderator)
 	add_child(debate)
+	_makeup_walk()
 	_place_fixes()
 	sabotage = TvSabotage.new()
 	sabotage.name = "Sabotage"
@@ -248,6 +249,14 @@ func _place_fixes() -> void:
 	warning.position = WARNING_AT + Vector3.UP * level
 	warning.visible = false
 	add_child(warning)
+
+
+## Lustre's trips to the makeup room in the breaks (step 6): through its door to the mirror.
+func _makeup_walk() -> void:
+	var y := FLOOR_TOP + 0.05
+	var path: Array[Vector3] = [to_global(Vector3(WING_X - 1.5, y, MAKEUP_DOOR_Z)),
+		to_global(Vector3(WING_X + 1.5, y, MAKEUP_DOOR_Z)), to_global(Vector3(MIRROR_AT.x, y, MIRROR_AT.z + 1.0))]
+	TvMakeupWalk.attach_to(politician, politician.global_position, path)
 
 
 ## The 3 technicians at the console, one bought by the seed: the warning light goes on at his place.
