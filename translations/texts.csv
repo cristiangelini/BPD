@@ -2361,3 +2361,5 @@ HINT_FRAME_MOVED,"Lo apoyaste contra un farol. Queda muy artístico.","You leane
 HINT_FRAME_BROKEN,"¡CRAC! Un marco del museo menos. Se descuenta del sueldo.","CRACK! One less museum frame. It comes off your salary.","CRAC! Uma moldura do museu a menos. Desconta do salário."
 CRIME_owner_guard,"¡Novatos! Ayer acusaron a un guardia del Museo de la Ciudad y está en la sala de interrogatorio. Jura que estaba en el baño. Que confiese.","Rookies! Yesterday you accused a guard from the City Museum and he's in the interrogation room. He swears he was in the bathroom. Make him confess.","Novatos! Ontem vocês acusaram um guarda do Museu da Cidade e ele está na sala de interrogatório. Jura que estava no banheiro. Façam ele confessar."
 CONFESS_owner_guard,"¡Está bien! ¡Fui yo! Treinta años cuidando cuadros y nunca me dejaron colgar uno en mi casa.","Fine! It was me! Thirty years guarding paintings and they never let me hang one at home.","Tá bom! Fui eu! Trinta anos cuidando de quadros e nunca me deixaram pendurar um em casa."
+SIGN_HOTEL_LIFT,"Fuera de servicio","Out of order","Fora de serviço"
+SIGN_HOTEL_SUITE,"Suite","Suite","Suíte"

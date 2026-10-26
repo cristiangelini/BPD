@@ -113,3 +113,14 @@ PlaceDraw y la custodia para el interrogatorio.
    la firma, el timbre y el tablero.
 5. El final: la combi que suelta valijas y el interrogatorio.
 6. El sorteo en "Jugar" (las escenas del crimen salen en cuartos: pastel, circo, museo y hotel) y el online.
+
+## Hecho así
+- **Paso 1 (el hotel por dentro):** `Hotel` (un CrimeScenePlace) en el lote del hotel de la ciudad (26 x 18 y 18 de
+  alto: arriba del primer piso los demás pisos están cerrados, con ventanas pintadas), y `HotelLevel`
+  (`--place=hotel`). Planta baja: el lobby con la alfombra roja hasta la recepción (mostrador, timbre, libro de
+  huéspedes y tablero de llaves en la pared), la vitrina de la Almohada de Oro, dos sillones, la planta de plástico y el
+  ascensor con el cartel de "Fuera de servicio"; al oeste, el comedor con el piano y tres mesas. La escalera sube al
+  este del lobby y arriba tiene baranda alrededor del hueco. Primer piso: el pasillo con las habitaciones 11, 12, 13,
+  14 y 15 al norte y 16 y 17 al sur, cada una con cama, mesa de luz y el número en la puerta (la 13 no tiene número), y
+  la suite al oeste con su cama grande, la caja fuerte en la pared y su baño con bañera. El ropero del pasillo tapa la
+  puerta de la 13 y pesa 28 kg: un policía solo lo arrastra, despacio.
