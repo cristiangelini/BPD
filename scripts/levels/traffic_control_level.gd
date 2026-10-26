@@ -5,9 +5,10 @@ extends Node3D
 ## the patrol car at the door and, next to it on the sidewalk, the cones and the barrier. The checkpoint is painted on
 ## the westbound lane of the street in front of the station, toward the corner. --place=traffic opens it from Play.
 ## Once it's set up, the cars come and queue up (TrafficQueue), with the patience meter at the top. The comisario
-## gives the case (TrafficCase). A fifth of the matches are the rush hour, a fifth the clown convoy
-## (control-payasos.md), a fifth the fruit truck (control-frutas.md), a fifth the crowded car (control-auto-lleno.md)
-## and a fifth the ghost car (control-auto-fantasma.md), by the seed; --traffic=<variant> picks one.
+## gives the case (TrafficCase). A sixth of the matches are the rush hour, a sixth the clown convoy
+## (control-payasos.md), a sixth the fruit truck (control-frutas.md), a sixth the crowded car (control-auto-lleno.md),
+## a sixth the ghost car (control-auto-fantasma.md) and a sixth the wedding (control-boda.md), by the seed;
+## --traffic=<variant> picks one.
 
 ## Along the street in front of the station, from the station's middle toward the east corner, in meters.
 const CHECKPOINT_ALONG := 24.0
@@ -19,8 +20,8 @@ const CONES_FROM_DOOR := Vector3(-5, 0, 1.5)
 const SPONGE_FROM_DOOR := Vector3(1, 0, 1.5)
 ## The wedding check's breathalyzer (control-boda.md, step 2), on the sidewalk between the barrier and the cones.
 const BREATHALYZER_FROM_DOOR := Vector3(2, 0, 1.5)
-## What Play draws, a fifth each (propuesta).
-const VARIANTS: Array[String] = ["rush_hour", "clown_convoy", "fruit_truck", "crowded_car", "ghost_car"]
+## What Play draws, a sixth each (propuesta).
+const VARIANTS: Array[String] = ["rush_hour", "clown_convoy", "fruit_truck", "crowded_car", "ghost_car", "wedding"]
 
 ## Same seed, same cars. 0 draws one.
 @export var case_seed := 0

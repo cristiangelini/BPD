@@ -79,7 +79,23 @@ export function buildBreathalyzer() {
 	return b.build();
 }
 
-export const models = { breathalyzer: buildBreathalyzer, wedding_bow: buildWeddingBow, wedding_cans: buildWeddingCans, just_married: buildJustMarried,
+// El Colado's loot: a stack of white gift envelopes tied with a pink ribbon, flat, faces +Z.
+export function buildGiftEnvelopes() {
+	const b = new Builder('gift_envelopes');
+	const paper = mat('envelope_paper', 0xfaf8f2), flap = mat('envelope_flap', 0xe8e4da), pink = mat('wedding_pink', 0xe890b0);
+	for (let i = 0; i < 5; i++) {
+		const y = 0.006 + i * 0.012, r = (i % 2 ? 0.12 : -0.08) * (i % 3);
+		box(b, 'paper', paper, 0.22, 0.01, 0.12, 0, y, 0, [0, r, 0]);
+		box(b, 'paper', flap, 0.2, 0.003, 0.05, 0, y + 0.006, -0.03, [0, r, 0]);
+	}
+	box(b, 'ribbon', pink, 0.03, 0.07, 0.125, 0, 0.032, 0);
+	box(b, 'ribbon', pink, 0.225, 0.07, 0.03, 0, 0.032, 0);
+	b.add('ribbon', pink, ellipsoid(0.04, 0.02, 0.025, 8, 5), { pos: V(-0.03, 0.072, 0), rot: [0, 0, 0.4] });
+	b.add('ribbon', pink, ellipsoid(0.04, 0.02, 0.025, 8, 5), { pos: V(0.03, 0.072, 0), rot: [0, 0, -0.4] });
+	return b.build();
+}
+
+export const models = { gift_envelopes: buildGiftEnvelopes, breathalyzer: buildBreathalyzer, wedding_bow: buildWeddingBow, wedding_cans: buildWeddingCans, just_married: buildJustMarried,
 	wedding_veil: buildWeddingVeil, bow_tie: buildBowTie };
 
 export const views = {
@@ -89,8 +105,8 @@ export const views = {
 		cam: { pos: [1.6, 1.3, 1.6], target: [0, 0.2, -0.6], fov: 40 },
 	},
 	breathalyzer: {
-		items: [{ name: 'breathalyzer', pos: [0, 0, 0] }],
-		cam: { pos: [0.25, 0.25, 0.4], target: [0, 0.1, 0], fov: 35 },
+		items: [{ name: 'breathalyzer', pos: [0, 0, 0] }, { name: 'gift_envelopes', pos: [0.25, 0, 0.05] }],
+		cam: { pos: [0.35, 0.35, 0.6], target: [0.12, 0.06, 0], fov: 35 },
 	},
 	wedding_veil: {
 		items: [{ name: 'window_driver', pos: [0, 0, 0] }, { name: 'wedding_veil', pos: [0, 0, 0] },

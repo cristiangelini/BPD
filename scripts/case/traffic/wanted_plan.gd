@@ -267,6 +267,8 @@ func _seat_the_wedding(rng: RandomNumberGenerator) -> void:
 	# El Colado wasn't at the party: sober, and he gets the couple wrong.
 	var wanted: Dictionary = cars[wanted_index]
 	wanted.alcohol = 0.0
+	wanted.driver = (wanted.driver as Dictionary).duplicate()
+	wanted.driver.trunk = "envelopes"
 	wanted.couple = (couple + 1 + rng.randi() % (WeddingCar.BRIDES.size() - 1)) % WeddingCar.BRIDES.size()
 	for n in mini(rng.randi_range(DESIGNATED.x, DESIGNATED.y), guests.size()):
 		(cars[guests.pop_at(rng.randi() % guests.size())] as Dictionary).alcohol = 0.0

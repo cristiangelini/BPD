@@ -36,6 +36,8 @@ const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 const DOOR_OUT := 1.7
 ## The pilot's remote lands this far to the cuffed driver's side.
 const REMOTE_OUT := 0.8
+## El Colado's gift envelopes show up on his car's trunk lid (control-boda.md), this far up from its middle.
+const ENVELOPES_AT := Vector3(0, 1.3, -1.8)
 
 var case_seed := 0
 var plan: WantedPlan
@@ -160,7 +162,7 @@ func keys_taken(_car: QueueCar) -> void:
 
 ## What adds to a solved case's pay: a gold watch or the pilot's remote, each packed car fined and each drunk's keys.
 func extras() -> Array:
-	var out := watch_bonus() + remote_bonus()
+	var out := watch_bonus() + remote_bonus() + envelope_bonus()
 	for i in crowd_fines:
 		out.append(CROWD_FINE_BONUS)
 	for i in drunk_keys:
@@ -191,6 +193,15 @@ func remote_bonus() -> Array:
 	return []
 
 
+## El Colado's gift envelopes in the patrol car's trunk.
+func envelope_bonus() -> Array:
+	if patrol_car:
+		for item in patrol_car.delivered:
+			if item is GiftEnvelopes:
+				return [GiftEnvelopes.VALUE]
+	return []
+
+
 ## A cop cuffed the driver of `car`, stopped in the queue.
 func detain(car: QueueCar) -> void:
 	if follower or shift_over or lost or solved_now or not car.waiting():
@@ -205,6 +216,9 @@ func detain(car: QueueCar) -> void:
 		if car.puppeteer:
 			drop_remote()
 			_hint_all("HINT_GHOST_REMOTE")
+		elif car.driver.get("trunk", "") == "envelopes":
+			drop_envelopes(car)
+			_hint_all("HINT_WEDDING_ENVELOPES")
 		else:
 			_hint_all("HINT_TRAFFIC_GOT_IT")
 		return
@@ -251,6 +265,15 @@ func drop_remote() -> RcRemote:
 	return remote
 
 
+## El Colado's envelopes, on his car's trunk lid for a cop to take.
+func drop_envelopes(car: QueueCar) -> GiftEnvelopes:
+	var envelopes := GiftEnvelopes.new()
+	envelopes.name = "GiftEnvelopes"
+	get_parent().add_child(envelopes)
+	envelopes.global_position = car.global_transform * ENVELOPES_AT
+	return envelopes
+
+
 func _on_boarded() -> void:
 	solved_now = true
 	_end()
@@ -266,7 +289,7 @@ func _on_passed(car: QueueCar, _sneaked: bool) -> void:
 	var ghost_look := -1
 	if car.puppeteer:
 		ghost_look = _ghost_follows()
-	if _run_off(car.global_transform, car.look, car.clown, car.fruit, car.crowd, car.plate, ghost_look):
+	if _run_off(car.global_transform, car.look, car.clown, car.fruit, car.crowd, car.plate, ghost_look, car.guest):
 		car.queue_free()
 		return
 	lost = true
@@ -288,7 +311,7 @@ func _ghost_follows() -> int:
 ## car (`riders`) runs off slower, its faces on the windows, and one of the gang jumps out at every corner. The ghost
 ## car's pilot has it follow him (`ghost_look`, its paint) and cut in at every corner.
 func _run_off(at: Transform3D, look: int, clown := false, fruit := false, riders := 0, plate := "",
-		ghost_look := -1) -> bool:
+		ghost_look := -1, wedding := false) -> bool:
 	var level := get_parent()
 	_run_off_look = look
 	var city := level.get_node_or_null("City") as Node3D
@@ -306,6 +329,11 @@ func _run_off(at: Transform3D, look: int, clown := false, fruit := false, riders
 			CrowdedCar.dress(chase.truck, plate, riders)
 		chase.drops.riders_left = riders - 1
 	chase.drops.ghost_look = ghost_look
+	if wedding:
+		# El Colado runs in a guest's car, its bow and cans on; he cuts the cans loose at the corners.
+		chase.drops.wedding = true
+		if not chase.truck.has_node("Cans"):
+			WeddingCar.dress(chase.truck, plate)
 	chase.who = "clown" if clown else "driver"
 	chase.online = online
 	chase.follower = follower

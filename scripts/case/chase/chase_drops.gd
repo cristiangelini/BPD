@@ -11,7 +11,8 @@ extends Node
 ## patrol car running into one splits it. The crowded car control's runaway sedan (control-auto-lleno.md, answer 3)
 ## lets one of the gang jump out at every corner it turns, who runs off down the street. The ghost car control's pilot
 ## (control-auto-fantasma.md) has his ghost car follow him: at every corner he turns, it cuts in across the street behind
-## him, in the patrol car's way (ChaseGhost). Every number here is (propuesta).
+## him, in the patrol car's way (ChaseGhost). The wedding check's El Colado (control-boda.md) cuts CANS_PER_CORNER of
+## his tin cans loose at every corner he turns, clattering down the street (ChaseCan). Every number here is (propuesta).
 
 const DRIP_EVERY := 3.0
 ## A puddle's size (m), how long it lasts, and the grip left on it.
@@ -53,6 +54,10 @@ const JUMP_SPEED := 3.0
 const GHOST_BEHIND := 9.0
 const GHOST_SIDE := 2.0
 const GHOST_CLEAR := 7.0
+const CANS_PER_CORNER := 3
+const MAX_CANS := 18
+## Cut loose, a can rolls back this fast, give or take.
+const CAN_ROLL := 3.0
 
 var case: ChaseCase
 ## The ice cream puddles on the street: [mesh, seconds left].
@@ -66,6 +71,9 @@ var jumpers: Array[CrowdRider] = []
 ## The ghost car's paint (TrafficCar.MODELS) when the runaway is its pilot; -1 otherwise.
 var ghost_look := -1
 var ghost: ChaseGhost
+## The runaway is the wedding's El Colado: his cans clatter off at the corners.
+var wedding := false
+var cans: Array[ChaseCan] = []
 var _drip_left := DRIP_EVERY
 var _dummy_left := DUMMY_EVERY
 var _kids_left := 0.0
@@ -170,6 +178,27 @@ func _on_corner(turned: bool) -> void:
 		drop_jumper()
 	if ghost_look >= 0:
 		cut_in()
+	if wedding:
+		for i in CANS_PER_CORNER:
+			drop_can()
+
+
+## One of El Colado's tin cans comes loose and clatters down the street behind him.
+func drop_can() -> ChaseCan:
+	cans = cans.filter(func(can: ChaseCan) -> bool: return is_instance_valid(can))
+	if cans.size() >= MAX_CANS:
+		cans.pop_front().queue_free()
+	var can := ChaseCan.new()
+	_dropped += 1
+	can.name = "Can%d" % _dropped
+	case.get_parent().add_child(can)
+	var side := case.truck.global_basis.x * _rng.randf_range(-0.8, 0.8)
+	can.global_position = _behind() + side + Vector3.UP * 0.3
+	can.rotation.y = _rng.randf() * TAU
+	can.linear_velocity = case.truck.velocity * 0.5 - case.truck.global_basis.z * CAN_ROLL + side
+	can.angular_velocity = Vector3(_rng.randf_range(-8, 8), _rng.randf_range(-8, 8), _rng.randf_range(-8, 8))
+	cans.append(can)
+	return can
 
 
 ## A piece of furniture falls off the back of the moving truck, or a veggie off the trike.

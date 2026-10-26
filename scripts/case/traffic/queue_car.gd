@@ -605,6 +605,11 @@ func _build_trunk() -> void:
 			for i in 2:
 				builder.mesh_box(Vector3(-0.35 + i * 0.7, 0.1, 0), Vector3(0.5, 0.2, 0.5), PIE)
 				builder.mesh_box(Vector3(-0.35 + i * 0.7, 0.23, 0), Vector3(0.45, 0.06, 0.45), CREAM)
+		"envelopes":
+			# The wedding's gift envelopes (control-boda.md): a pile of white, a pink ribbon.
+			for i in 4:
+				builder.mesh_box(Vector3(-0.45 + i * 0.3, 0.04 + 0.03 * (i % 2), 0), Vector3(0.28, 0.04, 0.18), CREAM)
+			builder.mesh_box(Vector3(0, 0.08, 0), Vector3(1.2, 0.05, 0.04), WeddingCar.RIBBON_PINK)
 		"safe", "prop_safe":
 			builder.mesh_box(Vector3(0, 0.35, 0), Vector3(0.8, 0.7, 0.6), SAFE)
 			builder.mesh_box(Vector3(0, 0.4, -0.31), Vector3(0.18, 0.18, 0.03), SAFE_DIAL)
@@ -766,6 +771,8 @@ func _on_trunk_opened() -> void:
 			say(tr("TRUNK_PROP_SAFE"))
 		"safe":
 			say(tr("TRUNK_SAFE"))
+		"envelopes":
+			say(tr("TRUNK_ENVELOPES"))
 
 
 func waiting() -> bool:
