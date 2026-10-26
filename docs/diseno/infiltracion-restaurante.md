@@ -96,6 +96,15 @@ demás (`NpcSync` / el agarre), y el fuego de cada hornalla lo cuenta el host.
    del paso 4. El host decide todo y les cuenta a los demás. El fuego que se prende y el matafuegos quedan para
    después **(propuesta)**.
 4. Las comandas: el riel, las recetas, el pase con la campanita, el plato bien o mal y la sospecha.
+   Hecho así: a los 20 s y después cada 40 s el Chef grita "¡Comanda! ¡Una de sopa!" y la cuelga en el riel sobre el
+   pase con su cuenta regresiva de 60 s (a los cocineros de la cocina también les sale en pantalla); como mucho 3
+   colgadas. Las recetas son las de arriba: la sopa (tomate y cebolla en la olla, 6 s), la ensalada (lechuga y tomate
+   crudos en el plato), el pescado frito (en la sartén, 4 s) y los fideos (en la olla, 5 s, con un tomate crudo arriba);
+   exactamente esas cosas, una de cada una. Se deja el plato en el mostrador del pase y se toca la campanita (E): cada
+   plato del mostrador sale contra la comanda que arma, aunque no sea la más vieja ("¡Eso!"); si no arma ninguna, se
+   pierde la más vieja ("¡Está crudo!", "¡Carbón!", "Esto no es lo que pedí"). Una comanda perdida, mal o a destiempo
+   ("¡Demasiado tarde!"), suma +20 a cada cocinero que está en la cocina (+30 si estaba quemada); los mozos no cuentan.
+   A los 15 s del final el Chef apura. Campanita sin plato: "¿Me estás tomando el pelo?" **(propuesta)**.
 5. Las pruebas y el caso (variante "restaurant"): el plato especial, las 6 pruebas, el sueldo y el interrogatorio.
 6. La huida en la moto de delivery, el sorteo de "Jugar" en séptimos y online.
 

@@ -2622,6 +2622,22 @@ PROMPT_PAN_EMPTY,Sartén vacía: tira ingredientes adentro y ponla en una hornal
 PROMPT_POUR,E: servir en el plato,E: serve onto the plate,E: servir no prato
 PROMPT_POUR_NO_PLATE,Acércate a un plato para servir,Get close to a plate to serve,Chegue perto de um prato para servir
 HINT_POUR_NO_PLATE,No hay ningún plato cerca. ¿Vas a servir en el piso?,There's no plate nearby. Are you serving on the floor?,Não tem nenhum prato perto. Vai servir no chão?
+DISH_SOUP,Sopa,Soup,Sopa
+DISH_SALAD,Ensalada,Salad,Salada
+DISH_FISH,Pescado frito,Fried fish,Peixe frito
+DISH_PASTA,Fideos con tomate,Pasta with tomato,Macarrão com tomate
+FLAMBE_ORDER,"¡Comanda! ¡Una de %s! ¡Al pase, ya!","Order up! One %s! To the pass, now!","Pedido! Um de %s! Para o passe, já!"
+FLAMBE_HURRY,¡¿Y mi %s?! ¡El cliente se está muriendo de hambre!,Where's my %s?! The customer is starving!,Cadê meu %s?! O cliente está morrendo de fome!
+FLAMBE_GOOD,¡Eso! ¡Así se cocina en La Cuchara de Oro!,That's it! That's how we cook at La Cuchara de Oro!,Isso! É assim que se cozinha na La Cuchara de Oro!
+FLAMBE_WRONG,¿Qué es esto? ¡Esto no es lo que pedí! ¿Quién te enseñó a cocinar?,What is this? This isn't what I ordered! Who taught you to cook?,O que é isso? Não foi isso que eu pedi! Quem te ensinou a cozinhar?
+FLAMBE_RAW,¡Está crudo! ¡Se mueve todavía! ¡Más fuego!,It's raw! It's still moving! More heat!,Está cru! Ainda está se mexendo! Mais fogo!
+FLAMBE_BURNT,¡Carbón! ¡Me serviste carbón! ¡Todo el salón vio el humo!,Charcoal! You served me charcoal! The whole dining room saw the smoke!,Carvão! Você me serviu carvão! O salão todo viu a fumaça!
+FLAMBE_LATE,¡Demasiado tarde! El cliente se fue. Con mi postre.,Too late! The customer left. With my dessert.,Tarde demais! O cliente foi embora. Com a minha sobremesa.
+FLAMBE_NO_DISH,¿Tocaste la campanita sin plato? ¿Me estás tomando el pelo?,You rang the bell with no dish? Are you kidding me?,Você tocou a campainha sem prato? Está brincando comigo?
+FLAMBE_NO_ORDER,Nadie pidió nada. ¿Cocinas por gusto? Sospechoso...,Nobody ordered anything. Do you cook for fun? Suspicious...,Ninguém pediu nada. Você cozinha por prazer? Suspeito...
+HINT_PASS_EMPTY,Deja un plato en el mostrador del pase y después toca la campanita.,"Leave a plate on the pass's counter, then ring the bell.",Deixe um prato no balcão do passe e depois toque a campainha.
+PROMPT_PASS_BELL,E: tocar la campanita y sacar los platos,E: ring the bell and send out the dishes,E: tocar a campainha e mandar os pratos
+HUD_ORDERS,Comandas,Orders,Pedidos
 MENU_DOLL_FACTORY,Fábrica de muñecos (prueba),Doll factory (test),Fábrica de bonecos (teste)
 PROMPT_PUSH_BUTTON,Apretar el botón,Press the button,Apertar o botão
 PROMPT_SHUTTER_BUTTON,Subir la persiana del muelle,Raise the dock shutter,Levantar a porta do cais
