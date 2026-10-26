@@ -5001,6 +5001,13 @@ CHOLA_LINE_1,"¡Pasen, pasen! ¿Vinieron por la novela?","Come in, come in! Did 
 CHOLA_LINE_2,"Shhh, que ahora Rodrigo le dice que es su padre.","Shhh, Rodrigo is about to tell her he's her father.","Shhh, agora o Rodrigo vai dizer que é o pai dela."
 CHOLA_LINE_3,"¿Y la orden de quién es? Acá vivo yo sola con el gato.","And whose warrant is that? I live here alone with the cat.","E de quem é o mandado? Aqui moro só eu e o gato."
 CHOLA_LINE_4,"¡Límpiense los pies, que encerré ayer!","Wipe your feet, I waxed the floor yesterday!","Limpem os pés, que encerei ontem!"
+GUILTY_LINE_1,"¿Se les ofrece algo, oficiales?","Anything I can do for you, officers?","Posso ajudar em algo, policiais?"
+GUILTY_LINE_2,"Lindo día para no allanar a nadie, ¿no?","Lovely day for not raiding anyone, isn't it?","Lindo dia para não revistar ninguém, né?"
+GUILTY_LINE_3,"Yo acá, regando. Las plantas. Nada más.","Just me here, watering. The plants. That's all.","Eu aqui, regando. As plantas. Só isso."
+GUILTY_NOTICED,"(¡Están en lo de Chola! Mejor saco las cosas...)","(They're at Chola's! I'd better get my stuff out...)","(Estão na casa da Chola! Melhor tirar as coisas...)"
+GUILTY_GOING,"Voy a... sacar la basura. Sí, eso.","I'm just... taking out the trash. Yes, that.","Vou só... levar o lixo pra fora. Sim, isso."
+GUILTY_BLOCKED,"¡Ups! Esto no es mío. Ni sé qué es.","Oops! This isn't mine. I don't even know what it is.","Ops! Isso não é meu. Nem sei o que é."
+GUILTY_FLEES,"¡Me voy de vacaciones! ¡Chau, chau!","I'm off on vacation! Bye, bye!","Vou sair de férias! Tchau, tchau!"
 MENU_GYM_RAID,Gimnasio (allanamiento) (prueba),Gym (raid) (test),Academia (batida) (teste)
 HINT_TILL_KEY_GYM,¡Una llave! Abre la oficina y el vestuario.,A key! It opens the office and the locker room.,Uma chave! Abre o escritório e o vestiário.
 GYM_MIRROR_BROKEN,"¡Siete años de mala suerte, oficial!","Seven years of bad luck, officer!","Sete anos de azar, policial!"
