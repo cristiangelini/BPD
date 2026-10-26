@@ -37,6 +37,7 @@ var loaded_count := 0
 ## Online, a guest's: the host's runs the belt.
 var follower := false
 var _readout: Label3D
+var _on_scale: Array[Suitcase] = []
 
 
 func setup(the_airport: Airport, suitcases: Array[Suitcase], readout: Label3D) -> void:
@@ -129,10 +130,17 @@ func _weigh() -> void:
 		return
 	var kg := 0.0
 	var pan := Airport.COUNTER_AT + Airport.SCALE_AT
+	var on: Array[Suitcase] = []
 	for suitcase in line:
 		if not suitcase.visible or suitcase.is_held():
 			continue
 		var at := airport.to_local(suitcase.global_position)
 		if absf(at.x - pan.x) < Airport.SCALE_PAN / 2 and absf(at.z - pan.z) < Airport.SCALE_PAN / 2 and at.y < 0.8:
 			kg += suitcase.weight()
+			on.append(suitcase)
+			# The odd one's weight gives it away (step 3).
+			var odd := OddCargo.of(suitcase)
+			if odd and not _on_scale.has(suitcase):
+				odd.weighed()
+	_on_scale = on
 	_readout.text = "%d kg" % roundi(kg)
