@@ -62,6 +62,8 @@ const PLACES := [
 	{"id": "tv_studio", "block": Vector2i(1, 4), "side": "n", "along": 0.0, "size": Vector3(34, 7, 22), "color": Color(0.62, 0.7, 0.82), "sign": "PLACE_TV_STUDIO"},
 	# The wrong house's twin houses (casa-equivocada.md); provisional block until the city grows west, then (-1, 1) s.
 	{"id": "wrong_house", "block": Vector2i(0, 2), "side": "s", "along": 0.0, "size": Vector3(36, 7, 20), "color": Color(0.95, 0.86, 0.6), "sign": "PLACE_WRONG_HOUSE"},
+	# The airport fills its block too: the terminal and the apron are its case scene's (politico-aeropuerto.md).
+	{"id": "airport", "block": Vector2i(6, 4), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.86, 0.88, 0.9), "sign": "PLACE_AIRPORT", "park": true},
 ]
 
 ## The plaza fills its block.

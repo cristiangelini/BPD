@@ -72,3 +72,13 @@ pregunten."
    Otra opción: los rayos X solo bajan el sueldo y se pierde solo si no embarca.
 3. **¿Hay un culpable para esposar?** Recomendado: sí, el maletero comprado, que devuelve la valija a la cinta y huye
    en el carrito de equipaje.
+
+## Hecho así
+- **Paso 1 (el aeropuerto):** `Airport` (`--place=airport`), lote `airport` que ocupa toda la cuadra (6, 4) como la
+  cancha. La terminal de 40 x 24 m y 6 m de alto mira a la calle con las puertas en el medio. Adentro: el mostrador
+  de despacho con la balanza a la izquierda, la cinta de 23 m que corre de oeste a este a 0,75 m de alto y pasa por
+  la máquina de rayos X, y arriba la pantalla que muestra en vivo el interior de la máquina en azul (una cámara del
+  motor que mira la cinta desde el techo de la máquina), con 3 periodistas delante. Al fondo, la tienda libre de
+  impuestos al oeste (5 estantes con perfumes y lentes de sol), la sala de embarque al este (6 filas de asientos y el
+  mostrador) y entre las dos el ventanal que da a la pista. Afuera, la pista con el avión y una valla baja. Modelos
+  nuevos: `checkin_counter`, `xray_machine`, `airplane`, `duty_free_shelf` y `gate_seats`.
