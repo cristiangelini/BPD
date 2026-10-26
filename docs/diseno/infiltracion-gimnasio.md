@@ -1,0 +1,83 @@
+# Infiltración: Gimnasio (variante 7 de infiltracion.md)
+
+Quinta variante de la infiltración, después del Club de abuelos, el Coro de iglesia, la Banda de mimos y la Fiesta de
+disfraces (decisión 172, propuesta del 25/10). Se reusa casi todo: el lugar como `InfiltrationPlace`, la gente que
+mira con su medidor (`ClubMember` y `ClubSuspicion`), el disfraz con las manos, 3 pruebas de 6 por la semilla, el caso
+con la planilla y el sueldo (`InfiltrationCase.VARIANTS`), la huida con persecución si los descubren y el sorteo de
+"Jugar". Lo nuevo es **la rutina**: hay que entrenar de verdad, con la resistencia del policía, y **no rendirse**.
+Todo lo que dice **(propuesta)** se ajusta jugando.
+
+## La historia
+La banda que roba cajas fuertes levantándolas a mano entrena en el gimnasio "Músculo de Acero". El jefe es **el Toro**,
+el profesor, que grita las rutinas con un silbato y no soporta a nadie que afloje. Los policías entran como socios
+nuevos, juntan 3 pruebas y lo esposan... si les quedan fuerzas.
+
+El chiste: cuatro policías con forma de pera, sin aire, haciendo sentadillas al lado de patovicas que levantan
+heladeras.
+
+## Cómo es
+1. **El lugar:** "Músculo de Acero", un gimnasio de una planta de 24 x 18 m: la zona de pesas con bancos y
+   mancuernas, cuatro cintas de correr contra la vidriera, el ring de boxeo en el medio, el vestuario con casilleros y
+   la oficina del Toro atrás (con llave). Entre 8 y 10 socios de la banda **(propuesta)**.
+2. **El disfraz:** en el casillero de la comisaría hay, por policía, una vincha (a la cabeza), muñequeras (a las
+   manos, cuentan como una pieza) y una musculosa (al pecho). Con 2 de las 3 el policía pasa por socio
+   (`is_disguised("gym")`). Con el uniforme, el de la recepción no lo deja pasar: "Sin ropa de gimnasia no se entrena"
+   **(propuesta)**.
+3. **La rutina (lo nuevo):** a los 20 s y después cada 40 s, el Toro toca el silbato y grita un ejercicio por la
+   semilla, durante 10 s:
+   - **sentadillas:** agacharse y pararse (C) al menos una vez cada 2 s;
+   - **saltos:** saltar (Espacio) al menos una vez cada 2 s;
+   - **cinta:** subirse a una cinta y correr (Shift) en el lugar;
+   - **pesa:** agarrar una mancuerna (6 kg) y sostenerla en alto.
+   Cada PC juzga a su policía una vez por segundo: si no está haciendo el ejercicio, +20 a los socios que lo ven. Los
+   ejercicios gastan la resistencia del policía (la de correr); si se queda sin aire, **se rinde**: se agacha jadeando
+   2 s y los socios que lo ven suman +30 ("¡Aflojó!"). Una dona en el bolsillo recupera la resistencia, como en la
+   comisaría **(propuesta)**.
+4. **La sospecha:** la del club con otros textos: sin disfraz ("¿Y la ropa?"), con una herramienta en la mano, en la
+   oficina, una pieza del disfraz que se cae, y la rutina. A 100 un socio grita "¡Son policías! ¡Mirá cómo jadean!".
+5. **Las 3 pruebas** (la semilla elige 3 de 6) **(propuesta)**:
+   - la libreta de las cajas fuertes "levantadas" en la oficina (se agarra; la llave está en un bolso del vestuario);
+   - foto del pizarrón de la oficina con el plan del próximo golpe;
+   - la caja fuerte robada pintada como una pesa, en la zona de pesas: pesa 40 kg y hay que levantarla entre dos;
+     al levantarla suenan las monedas adentro y cuenta;
+   - el video de dos socios hablando del golpe mientras hacen abdominales (5 s cerca con la cámara, como el club);
+   - el batido de proteínas del Toro con un mapa adentro del vaso (se agarra), en el ring;
+   - el ticket del alquiler del camión de mudanzas, en un casillero del vestuario (E).
+6. **Se gana** esposando al Toro: sueldo de 600, un tercio menos por cada prueba que falte, cuota de 400, igual que las
+   otras infiltraciones. Esposar a un socio los descubre. Detenido, el turno siguiente puede ser su interrogatorio
+   (decisión 93): se le escapan 3 frases y confiesa.
+7. **Si los descubren:** el Toro sale trotando por la vereda, sin apuro y sin cansarse nunca (13 km/h), y arranca la
+   persecución a pie en medio del caso. Atrapado (un policía delante, como la abuela del andador), cuenta como
+   resuelto con las pruebas que tengan; si se escapa, se pierde. Es una persecución que se gana con la resistencia:
+   corriendo detrás se quedan sin aire **(propuesta)**.
+8. **Sin tiempo límite** (decisión 66), como las otras infiltraciones.
+
+## Online
+Todo lo decide el host, como en los mimos: la semilla (los socios, las pruebas y la rutina), cuándo hay rutina y cuál,
+la sospecha de cada socio y las pruebas. Cada PC juzga a su policía (si hace el ejercicio, si se rindió) y le avisa al
+host, como `MimeRehearsal` y `PartyPhoto`.
+
+## Lo que se reusa
+`InfiltrationPlace` e `InfiltrationCase` (variante "gym"), `ClubMember` (socios), `ClubSuspicion` (con `prefix`
+"GYM_"), `ClubDoorman` (el de la recepción), `ClubEvidence` y `ClubEvidenceSpot`, `KeyPot` (el bolso con la llave),
+`DisguisePiece` (tres piezas nuevas), `PlaceBuilder`, `ChaseCase` con un `SuspectCar` a pie, `PlaceDraw` y `NpcSync`.
+La rutina copia la forma de `MimeRehearsal` (host decide, cada PC juzga y avisa) y usa `Cop.stamina`.
+
+## El orden para hacerlo (un PR chico por paso)
+1. El disfraz de gimnasio: vincha, muñequeras y musculosa en una fila frente a los casilleros, y el look "gym" (2 de
+   3).
+2. El gimnasio en la ciudad (`--place=gym`): las pesas, las cintas, el ring, el vestuario y la oficina; los socios, el
+   Toro y el de la recepción.
+3. La rutina: el silbato, los cuatro ejercicios, la resistencia, rendirse y la sospecha.
+4. Las pruebas y el caso (variante "gym"): las 6 pruebas, esposar al Toro, el sueldo y el interrogatorio.
+5. La huida trotando, el sorteo de "Jugar" en quintos (club, coro, mimos, fiesta y gimnasio) y online.
+
+## Preguntas para Cristian (decisión 172)
+1. **¿La rutina gasta la resistencia y rendirse da sospecha?** Recomiendo que sí: "entrenar sin rendirse" es el caso,
+   y la resistencia ya existe (correr); las donas sirven de respiro.
+2. **¿Los policías se disfrazan con ropa de gimnasia (2 de 3 piezas)?** Recomiendo que sí, para mantener la regla del
+   disfraz de las otras variantes.
+3. **¿El Toro se escapa trotando, a pie?** Recomiendo que sí: una persecución a pie contra alguien que nunca se cansa
+   es el chiste del caso, y obliga a turnarse o cortarle camino.
+
+Mientras no respondas, se avanza con lo recomendado.
