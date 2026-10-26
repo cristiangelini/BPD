@@ -101,6 +101,8 @@ const MODELS := {
 	"barullo_moto": preload("res://assets/models/barullo_scooter.glb"),
 	# The museum's culprit runs off in the art transport van, dropping empty frames (escena-museo.md).
 	"art_van": preload("res://assets/models/art_van.glb"),
+	# The hotel's culprit runs off in its shuttle, dropping suitcases off the roof (escena-hotel.md).
+	"hotel_shuttle": preload("res://assets/models/hotel_shuttle.glb"),
 }
 ## Who rides on top of it, where you can see them, each as [model, position, scale] (they get off when he gives up).
 const RIDERS := {
@@ -131,6 +133,7 @@ const RIDERS := {
 	"gallery_cart": [[preload("res://assets/models/npc_martillo.glb"), Vector3(0, 0.45, 0.45), 0.85]],
 	"cement_mixer": [[preload("res://assets/models/npc_ingeniero.glb"), Vector3(-0.5, 0.75, 2.3), 0.85]],
 	"art_van": [[preload("res://assets/models/npc_guardia_museo.glb"), Vector3(-0.5, 0.4, 1.5), 0.85]],
+	"hotel_shuttle": [[preload("res://assets/models/npc_huesped.glb"), Vector3(-0.5, 0.4, 1.7), 0.85]],
 }
 ## Who rides inside and stays there when he gives up, the same way: the choristers in the van, seen through its open
 ## windows, singing all the way.
@@ -215,6 +218,7 @@ const TOY_SIREN_NOTE := 0.45
 const CEMENT_MIXER := "cement_mixer"
 const BARULLO_MOTO := "barullo_moto"
 const ART_VAN := "art_van"
+const HOTEL_SHUTTLE := "hotel_shuttle"
 ## Where the towed patrol car hangs behind the tow truck: its middle, and its nose lifted this much.
 const TOWED_AT := Vector3(0, 0.55, -5.6)
 const TOWED_TILT := -0.12
@@ -237,7 +241,8 @@ const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 
 	"toro_jog": Vector3(0.9, 1.8, 0.9), "learner_car": Vector3(2.1, 1.4, 4.6),
 	"pizza_scooter": Vector3(1.2, 1.6, 2.3), "carousel_horse": Vector3(1.6, 2.0, 1.8),
 	"chopper_moped": Vector3(0.8, 1.9, 1.7), "gallery_cart": Vector3(1.3, 1.9, 2.4),
-	"cement_mixer": Vector3(2.3, 3.0, 7.0), "barullo_moto": Vector3(0.8, 1.6, 1.9), "art_van": Vector3(2.1, 2.3, 4.8)}
+	"cement_mixer": Vector3(2.3, 3.0, 7.0), "barullo_moto": Vector3(0.8, 1.6, 1.9), "art_van": Vector3(2.1, 2.3, 4.8),
+	"hotel_shuttle": Vector3(2.1, 2.6, 5.0)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
@@ -246,6 +251,8 @@ const TOW_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.0), Vector3(1.15, 0.3
 	Vector3(1.15, 0.38, -1.8)]
 const MIXER_WHEELS: Array[Vector3] = [Vector3(-1.2, 0.38, 2.4), Vector3(1.2, 0.38, 2.4), Vector3(-1.2, 0.38, -1.5),
 	Vector3(1.2, 0.38, -1.5), Vector3(-1.2, 0.38, -2.5), Vector3(1.2, 0.38, -2.5)]
+const SHUTTLE_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.75), Vector3(1.05, 0.38, 1.75),
+	Vector3(-1.05, 0.38, -1.75), Vector3(1.05, 0.38, -1.75)]
 ## The scooter's wheels are part of its model.
 const NO_WHEELS: Array[Vector3] = []
 const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS,
@@ -258,7 +265,7 @@ const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": 
 	"pizza_scooter": NO_WHEELS, "carousel_horse": NO_WHEELS, "chopper_moped": NO_WHEELS,
 	"gallery_cart": NO_WHEELS,
 	"cement_mixer": MIXER_WHEELS, "barullo_moto": NO_WHEELS,
-	"art_van": SEDAN_WHEELS}
+	"art_van": SEDAN_WHEELS, "hotel_shuttle": SHUTTLE_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)

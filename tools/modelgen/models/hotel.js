@@ -138,6 +138,46 @@ function buildGoldenPillow() {
 	return b.build();
 }
 
+// The hotel's shuttle the culprit flees in (escena-hotel.md, "El tablero y el final"): a white minibus with the hotel's
+// burgundy stripe, windows all along and a roof rack piled with tied-down suitcases, one of which falls off every few
+// seconds. Front +Z, wheels the sedan's (SuspectCar.SEDAN_WHEELS), 2.1 x 2.6 x 5.2.
+function buildShuttle() {
+	const b = new Builder('hotel_shuttle');
+	const white = C('van_white', 0xf2f2ee), glass = C('car_glass', 0x9fd0ea), rack = C('cart_metal', 0x9aa0a8);
+	b.add('body', white, new THREE.BoxGeometry(2.1, 1.9, 5.0), { pos: V(0, 1.25, 0) });
+	b.add('stripe', C('hotel_burgundy', 0x7a1a2a), new THREE.BoxGeometry(2.12, 0.22, 5.02), { pos: V(0, 0.75, 0) });
+	b.add('glass', glass, new THREE.BoxGeometry(1.8, 0.6, 0.04), { pos: V(0, 1.6, 2.5), rot: [-0.15, 0, 0] });
+	for (const x of [-1.06, 1.06]) for (let i = 0; i < 4; i++) {
+		b.add('glass', glass, new THREE.BoxGeometry(0.02, 0.5, 0.8), { pos: V(x, 1.65, 1.5 - i * 1.05) });
+	}
+	for (const x of [-0.95, 0.95]) b.add('rack', rack, new THREE.BoxGeometry(0.05, 0.08, 4.4), { pos: V(x, 2.25, -0.2) });
+	const bags = [0x6a3a20, 0x2a4a7a, 0x8a2a2a, 0x3a6a3a, 0x5a3a6a, 0xb08030];
+	for (let i = 0; i < 6; i++) {
+		b.add('roof_bags', C(`suitcase_${i}`, bags[i]), new THREE.BoxGeometry(0.75, 0.4, 0.55),
+			{ pos: V(i % 2 ? 0.42 : -0.42, 2.45, 1.4 - Math.floor(i / 2) * 1.4), rot: [0, (i - 2.5) * 0.12, 0] });
+	}
+	b.add('rope', C('rope', 0xd8c890), new THREE.BoxGeometry(2.0, 0.03, 0.04), { pos: V(0, 2.66, 0.0) });
+	for (const x of [-1.05, 1.05]) for (const z of [-1.75, 1.75]) {
+		b.add('wheels', M.black, new THREE.CylinderGeometry(0.38, 0.38, 0.26, 12), { pos: V(x, 0.38, z), rot: [0, 0, Math.PI / 2] });
+	}
+	return b.build();
+}
+
+// A suitcase fallen off the shuttle, burst open on the street, with the guests' clothes spilling out: 0.8 x 0.6 m,
+// its bottom at y = 0.
+function buildChaseSuitcase() {
+	const b = new Builder('chase_suitcase');
+	const leather = C('suitcase_0', 0x6a3a20);
+	b.add('case', leather, new THREE.BoxGeometry(0.75, 0.12, 0.55), { pos: V(0, 0.06, 0) });
+	b.add('lid', leather, new THREE.BoxGeometry(0.75, 0.55, 0.08), { pos: V(0, 0.3, -0.3), rot: [-0.3, 0, 0] });
+	const clothes = [0xf0d040, 0xe05080, 0x40a0e0, 0xf8f6f0];
+	for (let i = 0; i < 6; i++) {
+		b.add('clothes', C(`clothes_${i % 4}`, clothes[i % 4]), new THREE.BoxGeometry(0.3, 0.04, 0.22),
+			{ pos: V(-0.25 + (i % 3) * 0.25, 0.13 + Math.floor(i / 3) * 0.03, (i % 2 ? 0.1 : 0.35)), rot: [0, i * 0.7, 0] });
+	}
+	return b.build();
+}
+
 const PEOPLE = { huesped, conserje_hotel: conserje, perlita, botones, mucama };
 
 export const models = {
@@ -148,9 +188,15 @@ export const models = {
 	}])),
 	laundry_cart: buildLaundryCart,
 	pearl_necklace: buildNecklace, gold_toupee: buildToupee, golden_pillow: buildGoldenPillow,
+	hotel_shuttle: buildShuttle, chase_suitcase: buildChaseSuitcase,
 };
 
 export const views = {
+	hotel_shuttle: {
+		items: [{ name: 'hotel_shuttle', pos: [-0.8, 0, 0], rotY: 0.7 }, { name: 'npc_huesped', pos: [-1.3, 0.4, 1.6], rotY: 0.7, scale: 0.85 },
+			{ name: 'chase_suitcase', pos: [2.0, 0, 0.8], rotY: -0.4 }],
+		cam: { pos: [0.4, 3.0, 8.5], target: [0.4, 1.1, 0], fov: 40 },
+	},
 	hotel_loot: {
 		items: [{ name: 'pearl_necklace', pos: [-0.45, 0, 0], rotY: 0.3 }, { name: 'gold_toupee', pos: [0, 0, 0.05], rotY: -0.2 },
 			{ name: 'golden_pillow', pos: [0.5, 0, 0], rotY: 0.2 }],
