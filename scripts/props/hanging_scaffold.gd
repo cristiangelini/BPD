@@ -157,6 +157,19 @@ func bump(at: Vector3, kg: float, speed: float) -> void:
 	spin.y -= push * (1.0 + absf(local.x)) * signf(local.x if local.x != 0.0 else 1.0)
 
 
+## Online (NpcSync): the host runs it (the ride, the wind, the load) and the guests' copies follow where it is; this is
+## the rest they show.
+func net_state() -> Array:
+	return [deck_y, direction, at_stop]
+
+
+func apply_net_state(state: Variant) -> void:
+	deck_y = state[0]
+	direction = state[1]
+	at_stop = state[2]
+	_hang_cables()
+
+
 func _physics_process(delta: float) -> void:
 	if direction != 0:
 		var speed := (stops[1] - stops[0]) / TRAVEL_TIME

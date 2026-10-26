@@ -98,6 +98,9 @@ func hears_noise() -> bool:
 
 
 func _physics_process(delta: float) -> void:
+	# Online the host sends the pigeons; the guests' copies follow it (NpcSync).
+	if not multiplayer.is_server():
+		return
 	_next -= delta
 	if _next <= 0.0:
 		_next = ARRIVE_EVERY
@@ -111,7 +114,8 @@ func _drop_necklace() -> void:
 	necklace.global_position = pigeon.global_position + Vector3.UP * 0.05
 	necklace.collision_layer = _necklace_layer
 	necklace.visible = true
-	necklace.freeze = false
+	# Online only the host simulates it; a guest's copy stays frozen and follows (PropSync).
+	necklace.freeze = not multiplayer.is_server()
 
 
 ## A few feathers and a sprinkle of birdseed on the floor.
