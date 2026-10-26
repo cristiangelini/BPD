@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Hardware store, step 4: Don Cosme waits for his key copy; once he asks, the key machine files it in 4 passes (Tobías complains if he sees it) and the key brought to him gets what he saw.
 - Hardware store, step 3: 24 tools for sale on the gondolas; one Tobías sees in a cop's hand for 3 s goes on the bill (15 off the pay), and comes off it when put back.
 - Hardware store, step 2: Tobías serves behind his counter, fills the complaint meter, lets two things slip when asked and turns to the screw wall for 15 s when a cop rings the counter bell.
 - Hardware store "El Tornillo Flojo" (ferreteria.md, step 1): the shop, storeroom, workshop and yard on its lot, 12 hiding spots, 18 paint cans and 6 screw jars that break as fines, and a menu test button.

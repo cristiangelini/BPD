@@ -455,6 +455,13 @@ HARDWARE_SCREW_DONE,¡No me queda! Vuelva el martes.,I'm out! Come back on Tuesd
 HARDWARE_SCREW_TIRED,"Ya le dije que no hay, oficial.","I already told you there aren't any, officer.","Já disse que não tem, policial."
 HARDWARE_CHARGED,"¡Son 15, oficial! ¡Lo anoto!","That's 15, officer! On the bill!","São 15, policial! Vou anotar!"
 HARDWARE_TOOK_BACK,"Bueno, lo devolvió. Lo tacho.","Fine, you put it back. I'll cross it off.","Tá bom, devolveu. Vou riscar."
+HARDWARE_MACHINE,¡Esa máquina es mía! ¡No me la gaste!,That machine is mine! Don't wear it out!,Essa máquina é minha! Não gaste ela!
+COSME_CALL,"¡Oficial! ¿Usted sabe usar esa máquina?","Officer! Do you know how to use that machine?","Policial! O senhor sabe usar aquela máquina?"
+COSME_ASK,"Hace una hora que espero mi copia de llave. ¿No me la hace usted? Son cuatro pasadas.","I've been waiting an hour for my key copy. Won't you make it? It's four passes.","Faz uma hora que espero a cópia da minha chave. O senhor não faz pra mim? São quatro passadas."
+COSME_WAITING,"¿Y mi llave, oficial? La máquina está ahí, en el mostrador.","And my key, officer? The machine is right there, on the counter.","E a minha chave, policial? A máquina está ali, no balcão."
+COSME_THANKS,"¡Gracias! Ahora sí puedo entrar a mi casa.","Thank you! Now I can get into my house.","Obrigado! Agora sim posso entrar em casa."
+PROMPT_COSME,E: hablar con Don Cosme,E: talk to Don Cosme,E: falar com o Seu Cosme
+PROMPT_KEY_MACHINE,"E: limar la copia de la llave de Don Cosme (4 pasadas; si Tobías te ve, se queja)","E: file Don Cosme's key copy (4 passes; if Tobías sees you, he complains)","E: limar a cópia da chave do Seu Cosme (4 passadas; se o Tobías te vir, ele reclama)"
 PROMPT_SCREW_BELL,"E: pedir un tornillo de tres octavos (Tobías lo busca de espaldas, sin mirar el local)","E: ask for a three-eighths screw (Tobías looks for it with his back turned, not watching the shop)","E: pedir um parafuso de três oitavos (Tobías procura de costas, sem olhar a loja)"
 CASE_FAILED_LAWYER_HARDWARE,Tobías llamó a su abogado. Caso perdido.,Tobías called his lawyer. Case lost.,O Tobías ligou para o advogado. Caso perdido.
 GROOMER_SLIP,"«¡Yo no guardé nada %s!... Digo, ¿quién sigue con turno?»","“I didn't put anything %s!... I mean, who's next?”","“Eu não guardei nada %s!... Quer dizer, quem é o próximo?”"

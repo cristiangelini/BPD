@@ -207,6 +207,12 @@ func took_back() -> void:
 	_say("HARDWARE_TOOK_BACK")
 
 
+## He saw a cop use his key machine.
+func saw_machine(points: float) -> void:
+	_raise(points)
+	_say("HARDWARE_MACHINE")
+
+
 ## A door came down with the ram: he hears it from anywhere in the store, searching or not.
 func door_broken() -> void:
 	_raise(DOOR_BROKEN)

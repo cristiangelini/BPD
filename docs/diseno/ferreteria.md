@@ -40,7 +40,7 @@ Una planta de 16 × 14 m (el lote que ya tiene), con un patio de materiales atr�
 - **La denuncia:** como Marta y Ramiro: 15 si lo empujan, 5 por puerta rota, 10 por cada lata o frasco que ve romperse,
   5 por pregunta, y llama al abogado en 100. Con R suelta 2 cosas por caso y después se ofende.
 - **Don Cosme**, el cliente de la llave, hace de chismoso: espera en el mostrador su copia de llave desde hace una hora.
-  Si un policía le hace la copia (mantener E 4 s en la máquina de copiar llaves, con chispas), se la lleva contento y
+  Si un policía le hace la copia (4 veces E en la máquina de copiar llaves, con chispas), se la lleva contento y
   cuenta dónde vio a Tobías esconder algo.
 
 ## Las historias
@@ -96,6 +96,14 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      estaba, la tacha ("Bueno, lo devolvió"). Mientras busca el tornillo no cobra nada. Para qué sirve cada herramienta
      se arma con las historias que la usan (paso 6). Captura: `paso3-gondola.png`.
 4. Don Cosme y la máquina de copiar llaves.
+   - **Cómo quedó (propuesta):** Don Cosme (cárdigan marrón, gorra y bigote blanco, con la llave vieja en la mano)
+     espera en el rincón de adelante, al lado de la pared de tornillos, mirando al mostrador. Cada 10 s llama al policía
+     que pasa a menos de 7 m ("¡Oficial! ¿Usted sabe usar esa máquina?"). Con E pide su copia. Recién ahí la máquina
+     del mostrador se puede usar: 4 veces E, con chispas, y la llave nueva cae en el mostrador. La máquina es de Tobías:
+     cada pasada que ve le suma 5 de denuncia ("¡Esa máquina es mía!"), así que conviene hacerla mientras busca el
+     tornillo. Cuando le acercan la llave (en la mano, soltada o tirada a menos de 1 m), la guarda y cuenta lo que vio:
+     la pista de la historia verdadera, que pone cada historia en el paso 5 (hasta entonces solo agradece). Con E
+     después repite la pista. Captura: `paso4-cosme.png`.
 5. El caso (RaidCase) con la primera historia: las llaves maestras.
 6. Las otras 5 historias, un PR cada una.
 7. El sorteo en "Jugar" (en cuartos entre los 4 lugares) y el online.

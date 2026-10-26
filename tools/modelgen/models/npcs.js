@@ -399,6 +399,20 @@ const NPCS = {
 		for (const s of [-1, 1]) b.add('head', hair, ellipsoid(0.07, 0.08, 0.1, 6, 4), { pos: V(s * 0.17, 1.38, -0.02) });
 		limb(b, 'props', C('pencil', 0xf2c230), V(0.16, 1.42, 0.0), V(0.24, 1.36, 0.1), 0.012);
 	},
+	// Don Cosme (the hardware store's regular): a retiree in a brown cardigan and a flat cap, waiting for his key copy
+	// with the old key held up in his hand.
+	cosme(b) {
+		pearBody(b, SKIN.arena, { shirt: C('cardigan_brown', 0x9a6a3a), pants: C('grey_pants', 0x6a6e74), shoes: C('brown_shoes', 0x5a3a20) });
+		for (let i = 0; i < 4; i++) b.add('body', C('cardigan_button', 0xe8d8b0), ellipsoid(0.018, 0.018, 0.01, 5, 3), { pos: V(0, 0.95 - i * 0.12, 0.31 + i * 0.03) });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mouth(b, { smile: true });
+		mustache(b, C('mustache_white', 0xeeeeea), 1.0);
+		const cap = C('flat_cap', 0x6a5a48);
+		b.add('cap', cap, ellipsoid(0.21, 0.07, 0.2, 10, 4), { pos: V(0, 1.47, 0.0) });
+		b.add('cap', cap, new THREE.BoxGeometry(0.22, 0.02, 0.1), { pos: V(0, 1.45, 0.2), rot: [0.2, 0, 0] });
+		b.add('props', gold, new THREE.BoxGeometry(0.03, 0.09, 0.008), { pos: V(0.49, 0.74, 0.12) });
+		b.add('props', gold, new THREE.TorusGeometry(0.025, 0.007, 4, 8), { pos: V(0.49, 0.8, 0.12) });
+	},
 	// Señora del caniche (the pet salon): lilac fur coat, a tall white hairdo, sunglasses up, pearls and a tiny handbag.
 	senora(b) {
 		pearBody(b, SKIN.arena, { shirt: C('fur_coat', 0xb48ad8), onePiece: true, belted: false, shoes: C('heels', 0x6a2a8a) });
