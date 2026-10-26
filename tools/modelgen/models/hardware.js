@@ -84,10 +84,61 @@ export function buildKeyCopy() {
 	return b.build();
 }
 
+// The master key ring (las llaves maestras): a fat steel ring with a brass key for every house on the block and a
+// paper tag. 0.22 m across.
+export function buildKeyRing() {
+	const b = new Builder('master_key_ring');
+	b.add('ring', mat('ring_steel', 0xb8bcc4, { metalness: 0.5, roughness: 0.4 }), new THREE.TorusGeometry(0.06, 0.008, 4, 14), { rot: [Math.PI / 2, 0, 0] });
+	const brass = mat('key_brass', 0xf2c84a, { metalness: 0.5, roughness: 0.4 });
+	for (let i = 0; i < 14; i++) {
+		const a = (i / 14) * Math.PI * 2;
+		const out = V(Math.cos(a), 0, Math.sin(a));
+		b.add('keys', brass, new THREE.BoxGeometry(0.06, 0.006, 0.014), { pos: out.clone().multiplyScalar(0.095), rot: [0, -a, 0] });
+		b.add('keys', brass, new THREE.CylinderGeometry(0.012, 0.012, 0.006, 6), { pos: out.clone().multiplyScalar(0.065) });
+	}
+	b.add('tag', mat('tag_paper', 0xfaf6ee), new THREE.BoxGeometry(0.04, 0.004, 0.06), { pos: V(0, 0.006, 0.02) });
+	return b.build();
+}
+
+// The wax molds: a tin tray with three soft wax blocks, each with a key pressed in. 0.15 m long.
+export function buildWaxMolds() {
+	const b = new Builder('wax_molds');
+	b.add('tray', mat('tin', 0xc8ccd2), new THREE.BoxGeometry(0.15, 0.015, 0.08), { pos: V(0, -0.005, 0) });
+	const wax = mat('wax', 0xe8c060);
+	for (const x of [-0.045, 0, 0.045]) {
+		b.add('wax', wax, new THREE.BoxGeometry(0.04, 0.02, 0.06), { pos: V(x, 0.012, 0) });
+		b.add('print', mat('wax_print', 0xa8823a), new THREE.BoxGeometry(0.008, 0.002, 0.04), { pos: V(x, 0.023, 0) });
+	}
+	return b.build();
+}
+
+// The list of addresses: a sheet with columns of house numbers and ticks. 0.21 x 0.15 m.
+export function buildAddressList() {
+	const b = new Builder('address_list');
+	b.add('paper', mat('paper', 0xfaf6ee), new THREE.BoxGeometry(0.21, 0.004, 0.15));
+	const ink = mat('ink', 0x2a3a6a);
+	for (let i = 0; i < 7; i++) b.add('lines', ink, new THREE.BoxGeometry(0.14, 0.001, 0.006), { pos: V(-0.02, 0.0025, -0.055 + i * 0.018) });
+	const tick = mat('tick_red', 0xd23a3a);
+	for (let i = 0; i < 7; i += 2) b.add('ticks', tick, new THREE.BoxGeometry(0.012, 0.001, 0.012), { pos: V(0.075, 0.0025, -0.055 + i * 0.018) });
+	return b.build();
+}
+
+// Fresh metal filings: a little grey heap of shavings. 0.12 m across.
+export function buildFilings() {
+	const b = new Builder('metal_filings');
+	const steel = mat('filings', 0x9aa0a8, { metalness: 0.4 });
+	for (let i = 0; i < 18; i++) {
+		const a = i * 2.39, r = 0.012 + (i % 6) * 0.008;
+		b.add('filings', steel, new THREE.BoxGeometry(0.012, 0.003, 0.003), { pos: V(Math.cos(a) * r, 0.002 + (i % 3) * 0.002, Math.sin(a) * r), rot: [0, a * 1.7, 0] });
+	}
+	return b.build();
+}
+
 export const models = {
 	...Object.fromEntries(PAINTS.map((_, i) => [`paint_can_${i}`, () => buildPaintCan(i)])),
 	screw_jar: buildScrewJar,
-	key_copy: buildKeyCopy,
+	key_copy: buildKeyCopy, master_key_ring: buildKeyRing, wax_molds: buildWaxMolds, address_list: buildAddressList,
+	metal_filings: buildFilings,
 	tool_hammer: buildHammer, tool_wrench: buildWrench, tool_saw: buildSaw, tool_screwdriver: buildScrewdriver,
 };
 
@@ -98,6 +149,13 @@ export const views = {
 			{ name: 'paint_can_2', pos: [0.2, 0.095, 0] }, { name: 'screw_jar', pos: [0.05, 0.075, 0.2] },
 		],
 		cam: { pos: [0, 0.4, 0.9], target: [0, 0.08, 0], fov: 36 },
+	},
+	master_keys_goods: {
+		items: [
+			{ name: 'master_key_ring', pos: [-0.15, 0.01, 0] }, { name: 'wax_molds', pos: [0.15, 0.015, -0.05] },
+			{ name: 'address_list', pos: [0.1, 0.002, 0.15], rotY: 0.3 }, { name: 'metal_filings', pos: [-0.2, 0, 0.2] },
+		],
+		cam: { pos: [0, 0.5, 0.6], target: [0, 0, 0.05], fov: 40 },
 	},
 	hardware_tools: {
 		items: [

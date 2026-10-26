@@ -8,13 +8,35 @@ extends Node3D
 ## watches what breaks and looks for a screw with his back turned when a cop rings the counter bell (step 2). The
 ## tools on the gondolas are for sale: what he sees in a cop's hand goes on the bill, and comes off it when it's put
 ## back (step 3). Don Cosme waits for his key copy, and tells what he saw to whoever files it for him in the key
-## machine (step 4).
-## Every number here is (propuesta).
+## machine (step 4). The case is one of its stories (STORIES), drawn with the seed, run by the same RaidCase as the
+## other places (step 5). Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const PAINT_SCENE := preload("res://scenes/props/paint_can.tscn")
 const JAR_SCENE := preload("res://scenes/props/screw_jar.tscn")
 const TOBIAS_SCENE := preload("res://scenes/npc/hardware_man.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the store can be suspected of (ferreteria.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["master_keys", "screw_tunnel", "gold_screws", "gnomes", "mustaches", "street_nails"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_HARDWARE_TIP_B", "BRIEF_TIP_C", "BRIEF_HARDWARE_TIP_D",
+	"BRIEF_HARDWARE_TIP_E"]
+## The stories the store can tell, like Groomer.STORIES: what the comisario says once it's guessed, its "find it"
+## row, what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the checklist
+## rows of its extras and its rig. With "main_hidden" the first hidden item is the main evidence and the rest extras.
+const STORIES := {
+	"master_keys": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_MASTER_KEYS_B", "BRIEF_MASTER_KEYS_C", "BRIEF_MASTER_KEYS_D"],
+		"find": "OBJ_FIND_MASTER_KEYS",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/master_key_ring.tscn"), preload("res://scenes/props/wax_molds.tscn"),
+			preload("res://scenes/props/address_list.tscn")],
+		"half_heights": [0.015, 0.02, 0.005],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_WAX_MOLDS", "OBJ_EXTRA_ADDRESS_LIST"],
+		"rig": preload("res://scripts/case/hardware/master_keys_rig.gd"),
+	},
+}
 ## The tools for sale, laid along the gondolas' two upper boards, both sides.
 const TOOL_SCENES: Array[PackedScene] = [
 	preload("res://scenes/props/tool_hammer.tscn"), preload("res://scenes/props/tool_wrench.tscn"),
@@ -33,6 +55,11 @@ const PAINT_MODELS: Array[PackedScene] = [
 const PAINT_SHARDS: Array[Color] = [
 	Color(0.91, 0.28, 0.24), Color(0.24, 0.48, 0.91), Color(0.95, 0.76, 0.19), Color(0.3, 0.72, 0.38),
 	Color(0.96, 0.95, 0.92), Color(0.54, 0.3, 0.78),
+]
+## Surfaces where the suspicions' clue notes can lie, one in each part of the store; three are drawn with the seed.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(2.5, FLOOR_TOP, 5.8), Vector3(6.8, FLOOR_TOP, 2.5), Vector3(5.48, FLOOR_TOP + 0.17, 4.4),
+	Vector3(-3.0, FLOOR_TOP, 0.5), Vector3(3.6, FLOOR_TOP + 0.96, 0.6), Vector3(2.0, GRASS_TOP, -4.0),
 ]
 const HALF_X := 8.0
 ## The lot runs from -HALF_Z to HALF_Z; the building covers its front from BACK_Z on, the yard the rest.
@@ -54,6 +81,10 @@ const GATE_Z := -4.5
 const GATE_WIDTH := 1.6
 const COUNTER_AT := Vector3(-4.0, FLOOR_TOP, 3.2)
 const COUNTER_SIZE := Vector3(3.0, 1.0, 0.7)
+## The till on the counter, by its east end.
+const TILL_AT := Vector3(-3.0, FLOOR_TOP + 1.0, 3.2)
+## The board of blank keys on the wall behind the counter.
+const KEY_BOARD_AT := Vector3(-2.0, 1.6, 1.5)
 ## Where Tobías stands behind his counter, facing the street (step 2).
 const TOBIAS_POST := Vector3(-4.0, FLOOR_TOP, 2.4)
 ## The counter bell, on the customers' side of the counter top.
@@ -133,8 +164,24 @@ var city_map: CityMap
 var paint_cans: Array[Ornament] = []
 var jars: Array[Ornament] = []
 var broken_goods := 0
-## Money taken off the case pay for broken things (each one is an Ornament.FINE).
-var fines := 0
+## Money taken off the case pay: broken things (each one an Ornament.FINE) and the bill.
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## The case flow every raid shares.
+var raid: RaidCase
+## Same seed, same draw: the story and where its things go. 0 draws one.
+@export var case_seed := 0
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: HardwareRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
+var till: Till
+var key_board: KeyBoard
 var tobias: HardwareMan
 ## The tools for sale, and how many of them are on the bill now.
 var merchandise: Array[Merchandise] = []
@@ -143,13 +190,28 @@ var bell: CounterBell
 var cosme: KeyCustomer
 var key_machine: KeyMachine
 var complaint_bar: ProgressBar
-## Tobías called his lawyer: the case is lost.
-var case_failed := false
 var _build: PlaceBuilder
 @onready var car: PatrolCar = $PatrolCar
 
 
 func _ready() -> void:
+	if case_seed == 0:
+		case_seed = PlaceDraw.take_seed()
+	if case_seed == 0:
+		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_yard()
@@ -165,11 +227,92 @@ func _ready() -> void:
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("hardware")
 	station_parking = city.transform * CityLayout.parking("station")
+	raid.station_parking = station_parking
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
 	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "hardware", car)
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = tobias
+	raid.owner_id = "hardware"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The store's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_HARDWARE",
+		"guess_key": "OBJ_GUESS_HARDWARE",
+		"broken_key": "OBJ_BROKEN_HARDWARE",
+		"complaint_key": "OBJ_COMPLAINT_HARDWARE",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_goods,
+		"complaint": tobias.complaint,
+	}
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(case_seed: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[case_seed % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Tobías lets slip when asked (where the story's things are, in an order drawn from the seed), and what Don
+## Cosme saw: where he hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		tobias.slips.append(tr("HARDWARE_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	tobias.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	cosme.clue = tr("CLUE_COSME") % where
+	cosme.clue_speech = tr("COSME_CLUE_" + story_id) % where
+	cosme.told.connect(raid.add_clue)
 
 
 func _door(at: Vector3, turn: float) -> FrontDoor:
@@ -234,14 +377,13 @@ func _build_yard() -> void:
 func _build_shop() -> void:
 	_build.wall("x", SPLIT_Z, -HALF_X, HALF_X, 0, [STORE_DOOR_X], INSIDE)
 	_build.open_box(COUNTER_AT, COUNTER_SIZE, "-z", WOOD)
-	_build.box(COUNTER_AT + Vector3(1.0, COUNTER_SIZE.y + 0.15, 0), Vector3(0.5, 0.3, 0.4), STEEL)
 	_build.mesh_box(KEY_MACHINE_AT + Vector3(0, 0.15, 0), KeyMachine.SIZE, RED)
 	_build.mesh_box(KEY_MACHINE_AT + Vector3(0, 0.34, 0), Vector3(0.12, 0.08, 0.12), STEEL)
 	# The board of blank keys on the wall behind the counter.
-	_build.mesh_box(Vector3(-2.0, 1.6, SPLIT_Z + 0.09), Vector3(1.6, 0.8, 0.03), WOOD)
+	_build.mesh_box(KEY_BOARD_AT + Vector3(0, 0, 0.09), Vector3(1.6, 0.8, 0.03), WOOD)
 	for row in 4:
 		for column in 10:
-			_build.mesh_box(Vector3(-2.7 + column * 0.155, 1.33 + row * 0.18, SPLIT_Z + 0.12), Vector3(0.03, 0.08, 0.01),
+			_build.mesh_box(KEY_BOARD_AT + Vector3(-0.7 + column * 0.155, -0.27 + row * 0.18, 0.12), Vector3(0.03, 0.08, 0.01),
 				Color(0.85, 0.72, 0.3))
 	# The screw wall: one cabinet, with its little drawer fronts only for the look.
 	_build.box(SCREW_WALL_AT + Vector3(0, SCREW_WALL_SIZE.y / 2, 0), SCREW_WALL_SIZE, WOOD)
@@ -325,7 +467,16 @@ func _place_tobias() -> void:
 	add_child(bell)
 	for door: FrontDoor in [store_door, back_door]:
 		door.broken.connect(tobias.door_broken)
-	tobias.lawyer_called.connect(_on_lawyer_called)
+	tobias.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_HARDWARE"))
+	till = Till.new()
+	till.position = TILL_AT + Vector3.UP * Till.SIZE.y / 2
+	till.key_hint = "HINT_TILL_KEY_HARDWARE"
+	add_child(till)
+	till.opened.connect(func(at: Vector3) -> void: tobias.saw(at, HardwareMan.SAW_TILL))
+	key_board = KeyBoard.new()
+	key_board.position = KEY_BOARD_AT + Vector3(0, 0, KeyBoard.SIZE.z / 2 + PlaceBuilder.WALL / 2 + 0.01)
+	add_child(key_board)
+	key_board.tried.connect(func(at: Vector3, _found: bool) -> void: tobias.saw(at, HardwareMan.SAW_BOARD))
 	var hud := CanvasLayer.new()
 	var box := VBoxContainer.new()
 	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
@@ -397,13 +548,9 @@ func _physics_process(delta: float) -> void:
 			tobias.charged()
 
 
-func _on_lawyer_called() -> void:
-	case_failed = true
-	%CaseFailed.show()
-
-
 func _on_fragile_broken(at: Vector3) -> void:
 	broken_goods += 1
-	fines += Ornament.FINE
+	raid.fines += Ornament.FINE
+	raid.float_label("-%d" % Ornament.FINE, at, Color(1, 0.3, 0.25))
 	if tobias:
 		tobias.saw(at, HardwareMan.SAW_BREAK)

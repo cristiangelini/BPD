@@ -80,6 +80,7 @@ func test_questions_let_two_things_slip_then_he_is_offended() -> void:
 	var store := _store()
 	var cop: Cop = store.get_node("Cop")
 	await wait_physics_frames(2)
+	store.tobias.slips.clear()
 	assert_false(store.tobias.ask(cop), "nothing to say without a story")
 	store.tobias.slips.assign(["a", "b", "c"])
 	var said: Array[String] = []
@@ -100,4 +101,4 @@ func test_at_100_he_calls_his_lawyer_and_the_case_is_lost() -> void:
 		store.tobias._since_struck = HardwareMan.STRUCK_COOLDOWN
 		store.tobias.struck()
 	assert_true(store.tobias.has_called_lawyer)
-	assert_true(store.case_failed)
+	assert_true(store.raid.case_failed)

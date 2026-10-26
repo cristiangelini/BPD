@@ -75,3 +75,14 @@ func test_the_store_sits_on_its_lot_and_the_car_starts_at_the_station() -> void:
 	assert_lt(store.get_node("Cop").global_position.distance_to(store.car.global_position), 4.0)
 	assert_eq(store.city_map.target, "hardware")
 	assert_true(ResourceLoader.exists(PlaceDraw.PLACES["hardware"]))
+
+
+func test_the_till_has_the_storeroom_key_when_the_board_doesnt() -> void:
+	var store := _store()
+	await wait_physics_frames(2)
+	var cop: Cop = store.get_node("Cop")
+	store.key_board.tries_needed = 0
+	store.till.has_key = true
+	assert_eq(store.key_board.prompt_key(cop), "")
+	store.till.use(cop)
+	assert_true(cop.has_key)

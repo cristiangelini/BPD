@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Hardware store, step 5: the store is a full raid (tip, suspicions, notes, slips, Don Cosme's clue, till with the storeroom key, Tobías's escape and interrogation) with its first story, the master keys: the key ring, wax molds and address list, fresh filings by the machine, and the storeroom key among the blank keys on the board.
 - Hardware store, step 4: Don Cosme waits for his key copy; once he asks, the key machine files it in 4 passes (Tobías complains if he sees it) and the key brought to him gets what he saw.
 - Hardware store, step 3: 24 tools for sale on the gondolas; one Tobías sees in a cop's hand for 3 s goes on the bill (15 off the pay), and comes off it when put back.
 - Hardware store, step 2: Tobías serves behind his counter, fills the complaint meter, lets two things slip when asked and turns to the screw wall for 15 s when a cop rings the counter bell.
