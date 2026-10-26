@@ -78,7 +78,7 @@ Los pesos y valores siguen la escala de la oficina y el laboratorio: la principa
 6. "Jugar" sortea entre los 8 lugares de allanamiento.
 7. El online (el profe, Coca, la música, las cintas y las mancuernas en todas las PC).
 
-Como el gimnasio de la infiltración todavía no está en `develop`, esta pila va arriba de la suya (#650 a #686).
+El gimnasio de la infiltración (#650 a #686) y el laboratorio ya están en `develop`, así que la pila sale de ahí.
 
 ## Preguntas para Cristian
 1. ¿El gimnasio como octavo lugar, usando el mismo "Hierro Puro" de la infiltración pero con el profe de aeróbic en vez
