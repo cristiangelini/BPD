@@ -522,6 +522,10 @@ func shown_puddle(color: int, at: Vector3) -> void:
 	drops.puddle_at(color, at)
 
 
+func shown_blob(at: Vector3) -> void:
+	drops.blob_at(at)
+
+
 ## The toll barrier that `index` names among the level's (in tree order, the same on every PC) broke on the host.
 func shown_barrier_broken(index: int) -> void:
 	var barriers := _barriers()

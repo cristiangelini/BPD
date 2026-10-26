@@ -58,9 +58,10 @@ const INFILTRATIONS := ["club", "choir"]
 ## Of the rest, one in this many is the bank robbery (robo-banco.md, propuesta: as often as each raid).
 const BANK_EVERY := 4
 ## Of the rest, one in this many is the politician's protection (proteccion-politico.md, propuesta), at one of these
-## by the seed: the rally at the plaza or the walk through the market (politico-mercado.md).
+## by the seed: the rally at the plaza, the walk through the market (politico-mercado.md) or the bridge's opening
+## (politico-puente.md), a third each.
 const RALLY_EVERY := 4
-const RALLIES := ["plaza", "market"]
+const RALLIES := ["plaza", "market", "bridge"]
 ## Of the rest, one in this many is a prison case (propuesta), one of these by the seed: the riot in the canteen
 ## (carcel-motin.md), the prisoner transfer (traslado-presos.md), the blackout (carcel-corte-de-luz.md), the
 ## visiting day (carcel-visitas.md) or the laundry (carcel-lavanderia.md).

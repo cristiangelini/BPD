@@ -5,8 +5,10 @@ extends Node
 ## opens the planilla, and the clock is deputy Lustre's walk across the bridge (BridgeCeremony). When he cuts the
 ## ribbon the case is solved and pays SALARY, DIP less for his dip in the canal, PLANK less for each plank left in the
 ## water and ENGINEER more if engineer Remache is in the patrol car; quota of its own, like the plaza (decision 103). His
-## second dip sends him home and the case is lost there (BridgeDip). Remache's getaway in the cement mixer and the
-## online come in step 6. Every number here is (propuesta).
+## second dip sends him home and the case is lost there (BridgeDip). If Remache is still loose when the ribbon is cut,
+## he runs for the cement mixer parked on the street and the chase starts there (decision 96), cement blobs in the
+## curves (ChaseDrops): caught, he counts as detained; got away, the case is solved all the same (step 6). Every number
+## here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 4.0
@@ -33,6 +35,10 @@ var dips := 0
 var jailed := false
 ## The clues found at the pickup ("invoices", "beams").
 var clues: Array[String] = []
+## Remache's run in the cement mixer and how it ended.
+var chase: ChaseCase
+var caught := false
+var escaped := false
 var _result := {}
 var _refresh_left := 0.0
 
@@ -97,12 +103,39 @@ func _on_clue(kind: String) -> void:
 	checklist.show_rows(rows())
 
 
-## He cut the ribbon: the case is solved.
+## He cut the ribbon: the case is solved, and a loose Remache runs for the cement mixer.
 func _on_ribbon() -> void:
 	if went_home or ribbon_cut:
 		return
 	ribbon_cut = true
 	_hint_all("HINT_BRIDGE_RIBBON")
+	if park.remache.loose():
+		_run_off()
+	else:
+		get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
+	checklist.show_rows(rows())
+
+
+## Remache leaves the crowd and drives off in the cement mixer: the chase is on.
+func _run_off() -> void:
+	if chase:
+		return
+	var engineer := park.remache.engineer
+	engineer.hide()
+	engineer.collision_layer = 0
+	engineer.process_mode = Node.PROCESS_MODE_DISABLED
+	park.mixer.get_node("Rider").show()
+	park.mixer.driving = true
+	chase = ChaseCase.begin(park, SuspectCar.CEMENT_MIXER, park.mixer.global_transform, park.car, park.city,
+		park.case_seed, null, park.mixer)
+	chase.who = "engineer"
+	chase.ended.connect(_on_chase_ended)
+	_hint_all("HINT_ESCAPE_ENGINEER")
+
+
+func _on_chase_ended(was_caught: bool) -> void:
+	caught = was_caught
+	escaped = not was_caught
 	checklist.show_rows(rows())
 	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
@@ -120,12 +153,17 @@ func planks_in_water() -> int:
 	return count
 
 
-## SALARY, less DIP for each dip and PLANK for each plank in the water, plus ENGINEER if Remache is in the patrol car;
-## nothing if the deputy went home.
+## Remache in the patrol car, from the crowd or caught off the cement mixer.
+func engineer_detained() -> bool:
+	return jailed or caught
+
+
+## SALARY, less DIP for each dip and PLANK for each plank in the water, plus ENGINEER if Remache is detained; nothing if
+## the deputy went home.
 func report() -> Dictionary:
 	var salary := 0
 	if solved():
-		salary = SALARY - DIP * dips - PLANK * planks_in_water() + (ENGINEER if jailed else 0)
+		salary = SALARY - DIP * dips - PLANK * planks_in_water() + (ENGINEER if engineer_detained() else 0)
 		salary = maxi(salary, 0)
 	return {"salary": salary, "evidence": 0, "fines": 0, "total": salary, "quota": QUOTA, "approved": salary >= QUOTA}
 
@@ -177,7 +215,9 @@ func rows() -> Array[Dictionary]:
 	list.append(_row(tr("OBJ_BRIDGE_PHOTOS") % [stops if ribbon_cut else ceremony.done(), stops], ribbon_cut))
 	list.append(_row(tr("OBJ_BRIDGE_PLANKS") % planks_in_water(), false))
 	list.append(_row(tr("OBJ_BRIDGE_CLUES") % [clues.size(), 2], clues.size() >= 2))
-	list.append(_row("OBJ_BRIDGE_ENGINEER", jailed))
+	list.append(_row("OBJ_BRIDGE_ENGINEER", engineer_detained()))
+	if chase:
+		list.append(_row("OBJ_BRIDGE_CATCH_MIXER", caught))
 	var state := "OBJ_BRIDGE_KEEP_DRY"
 	if went_home:
 		state = "OBJ_BRIDGE_WENT_HOME"
