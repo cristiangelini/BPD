@@ -1,13 +1,14 @@
 class_name Campaign
 extends RefCounted
 
-## A whole match of 5 shifts, saved between shifts (docs/diseno/guardado.md): the next shift, the group's money, the
+## A whole match of SHIFTS shifts, saved between shifts (docs/diseno/guardado.md): the next shift, the group's money, the
 ## items, and the cases that follow, which all come from the campaign's own seed. Only the host saves it online.
 ## Each shift has a quota that rises shift by shift. Missing it the first time locks the cops up in their own cells for
 ## the jailbreak (decision 99, fuga.md); missing it again, or not escaping, ends the campaign (decision 88).
 ## It also keeps the cops' record of bribes and the internal affairs investigation (sobornos.md, decisions 190 to 192).
 
-const SHIFTS := 5
+## Ten shifts to save the station (decision 106, Cristian 26/10: more than five).
+const SHIFTS := 10
 const SAVE_PATH := "user://partidas/partida.json"
 const VERSION := 1
 ## The first shift's quota and how much it rises each shift after (decision 88). A target, not money paid.
@@ -98,6 +99,8 @@ func take_bribe(amount: int, seen := false) -> bool:
 ## investigation changes, "investigation" ("opened", "closed" or "suspended").
 func finish_shift(story: String, solved: bool, report: Dictionary, shift_quota := -1) -> void:
 	_add_bribes(report)
+	# What the street paid on the way (ciudad-viva.md) counts with the case's pay.
+	CityEvents.add_to(report)
 	report.quota = quota() if shift_quota < 0 else shift_quota
 	report.approved = report.total >= report.quota
 	history.append({"shift": shift, "story": story, "solved": solved, "total": report.total,

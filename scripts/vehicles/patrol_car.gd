@@ -50,6 +50,8 @@ var _highway: Highway
 var _golf: GolfClub
 ## What the chase leaves of the tires' grip (ChaseDrops: the rain, the ice cream puddles).
 var grip := 1.0
+## What the living city's rain leaves of it (CityRain), on top of the chase's.
+var rain_grip := 1.0
 ## The old one (set before it's added).
 @export var old := false
 ## What a bigger vehicle on the same driving changes (the prison bus, traslado-presos.md): set before it's added.
@@ -248,7 +250,7 @@ func _apply_controls(delta: float) -> void:
 	var top := top_speed()
 	var sand := in_sand()
 	for wheel in [$WheelFrontLeft, $WheelFrontRight, $WheelRearLeft, $WheelRearRight]:
-		(wheel as VehicleWheel3D).wheel_friction_slip = GRIP * grip * (SAND_GRIP if sand else 1.0)
+		(wheel as VehicleWheel3D).wheel_friction_slip = GRIP * grip * rain_grip * (SAND_GRIP if sand else 1.0)
 	var reach := lerpf(1.0, STEER_AT_TOP, clampf(absf(speed) / city_speed, 0.0, 1.0))
 	steering = move_toward(steering, steer_input * steer_limit * reach, STEER_RATE * delta)
 	engine_force = 0.0

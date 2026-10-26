@@ -31,6 +31,9 @@ func show_report(solved: bool, report: Dictionary, broken_ornaments: int, awards
 		child.queue_free()
 	_line(tr("SHIFT_SALARY"), report.salary)
 	_line(tr("SHIFT_EVIDENCE"), report.evidence)
+	CityEvents.add_to(report)
+	if report.street > 0:
+		_line(tr("SHIFT_STREET"), report.street)
 	_line(tr(fines_key) % broken_ornaments, -report.fines)
 	# Bribes and the internal affairs agent's fines (sobornos.md), only when there were any.
 	if report.get("bribes", 0) > 0:

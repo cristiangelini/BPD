@@ -27,17 +27,18 @@ casos, y la armería, donde se retira el equipo. Más adelante se suman las celd
 - **La cuota sube 100 por turno (propuesta):** 800, 900, 1000, 1100 y 1200.
 - **La cuota es una meta, no se paga (propuesta):** se aprueba si lo que juntaron en el turno llega a la cuota, y todo
   lo juntado queda en la caja para gastar en la armería. Así gastar en equipo no hace perder la cuota.
-- **5 turnos por partida** (decisión 59).
+- **10 turnos por partida** (eran 5, decisión 59; 10 desde la decisión 106).
 
 ## Cómo se gana y cómo se pierde
-- **Se gana** aprobando los 5 turnos: pantalla de "¡Ascendidos!" con los premios de toda la partida **(propuesta)**.
+- **Se gana** aprobando los 10 turnos: pantalla de "¡Ascendidos!" con los premios de toda la partida **(propuesta)**.
 - **Se pierde** si un turno no llega a la cuota: pantalla de "Suspendidos" y termina la partida **(propuesta)**. La fuga
   de la comisaría (decisión 17) reemplaza esta pantalla más adelante: en vez de terminar, quedan presos en sus propias
   celdas y tienen que escaparse para seguir.
 
 ## El objetivo de la partida (decisión 106)
-La ciudad quiere cerrar la comisaría y convertirla en un estacionamiento: dicen que es un desastre. Los 5 turnos con
-la cuota que sube son la prueba de que sirve. Aprobar los 5 la salva (y los policías ascienden); quedar suspendidos la
+La ciudad quiere cerrar la comisaría y convertirla en un estacionamiento: dicen que es un desastre. Los 10 turnos
+con la cuota que sube son la prueba de que sirve (Cristian, 26/10: más de cinco; 10 es **propuesta**, la cuota va de
+800 a 1700). Aprobar los 10 la salva (y los policías ascienden); quedar suspendidos la
 cierra. La fuga (decisión 99) sigue siendo la segunda oportunidad.
 
 **Cómo quedó:** en el primer turno de cada partida, la primera charla del comisario arranca con la historia antes del
