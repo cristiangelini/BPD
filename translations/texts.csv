@@ -4571,6 +4571,17 @@ PLACE_SCHOOL_VISIT,"Escuela Los Girasoles","Sunflowers School","Escola Os Girass
 "HUD_FOOTBALL_BREAK","Entretiempo","Half time","Intervalo"
 "HUD_FOOTBALL_OVER","Fin del partido","Full time","Fim de jogo"
 "HUD_FOOTBALL_CLOCK","Tiempo %d · %d:%02d","Half %d · %d:%02d","Tempo %d · %d:%02d"
+"FOOTBALL_LUSTRE_DOWN_1","¡Ay! ¡Me mataron! ¡Llamen a mi asesor!","Ow! They killed me! Call my advisor!","Ai! Me mataram! Chamem meu assessor!"
+"FOOTBALL_LUSTRE_DOWN_2","¡Falta! ¡Tarjeta roja! ¡Cárcel!","Foul! Red card! Jail!","Falta! Cartão vermelho! Cadeia!"
+"FOOTBALL_LUSTRE_DOWN_3","No siento las piernas... ah, no, sí. Pero no me levanto.","I can't feel my legs... oh, yes I can. But I'm not getting up.","Não sinto as pernas... ah, não, sinto sim. Mas não levanto."
+"FOOTBALL_LUSTRE_STRETCHER","Despacio, que soy patrimonio del pueblo.","Gently, I'm a national treasure.","Devagar, que sou patrimônio do povo."
+"FOOTBALL_LUSTRE_HEALING","Un poco de agua mágica y quedo como nuevo.","A bit of magic spray and I'm good as new.","Um pouco de água mágica e fico novinho."
+"FOOTBALL_LUSTRE_BACK","¡Volví! Sáquenme una foto entrando.","I'm back! Get a photo of me coming on.","Voltei! Tirem uma foto minha entrando."
+"FOOTBALL_LUSTRE_HURT","¡AAAY! ¡Esta sí fue de verdad!","AAAGH! That one was real!","AAAI! Essa foi de verdade!"
+"FOOTBALL_TANK_CHARGE","¡AHÍ VOY!","HERE I COME!","LÁ VOU EU!"
+"FOOTBALL_TANK_BLOCKED","Uf. Me tiraron. Denme un minuto.","Oof. They got me. Give me a minute.","Uf. Me derrubaram. Me deem um minuto."
+"HINT_FOOTBALL_DOWN","¡El diputado está en el piso! Llévalo en la camilla al banco, de a dos.","The deputy is down! Carry him to the bench on the stretcher, two of you.","O deputado está no chão! Levem-no na maca até o banco, em dois."
+"HINT_FOOTBALL_INJURY","¡El Tanque llegó al diputado! Esa es una lesión de verdad.","The Tank got the deputy! That's a real injury.","O Tanque pegou o deputado! Essa é uma lesão de verdade."
 HINT_INSPECTOR_ARRIVES,Llegó la inspectora de la ciudad: va contigo todo el turno y anota todo.,The city inspector is here: she goes with you all shift and writes everything down.,A inspetora da cidade chegou: ela vai com você o turno todo e anota tudo.
 INSPECTOR_ARRIVES,"Severina Regla, inspección de la ciudad. Hagan como si no estuviera.","Severina Regla, city inspection. Act as if I'm not here.","Severina Regla, inspeção da cidade. Façam de conta que não estou aqui."
 INSPECTOR_NOTE_1,Mmm.,Hmm.,Hum.

@@ -65,6 +65,7 @@ func _ready() -> void:
 	shape.position.y = 0.8
 	add_child(shape)
 	_model = MODEL.instantiate()
+	_model.name = "Model"
 	# The models face +Z; he faces -Z like everyone else.
 	_model.rotation.y = PI
 	add_child(_model)

@@ -6,10 +6,13 @@ extends CharacterBody3D
 ## says when they play and which veteran goes for the ball (`chaser`); the others keep to their spot (`home`, the
 ## pitch's space), moved along with the ball. A veteran with the ball at their feet kicks it toward the west goal; the
 ## keeper walks along the east goal's line and stops what comes slow enough; an advisor with the ball at their feet
-## pushes it forward. Every number here is (propuesta).
+## pushes it forward. Step 4: the Tank, a veteran of 120 kg, plays like the others and every TANK_EVERY seconds runs
+## straight at the deputy with his arms open shouting; a cop that gets in his way (within BLOCK) stops him and both
+## fall on the grass; if he gets to the deputy (within HIT), the deputy flies (FootballLustre.hit). Every number here
+## is (propuesta).
 
 const SAY_TIME := 3.0
-const SPEEDS := {"veteran": 3.0, "keeper": 3.2, "advisor": 1.2}
+const SPEEDS := {"veteran": 3.0, "keeper": 3.2, "advisor": 1.2, "tank": 2.6}
 ## How far a field player's spot moves with the ball (share of the ball's x), and how close to it is "there".
 const FOLLOW := 0.35
 const THERE := 0.4
@@ -25,10 +28,19 @@ const SAVE_SPEED := 12.0
 ## A clearance or an advisor's push forward.
 const CLEAR := Vector2(9.0, 4.0)
 const PUSH := 8.0
+## The Tank: bigger than the rest, his charge (every, how fast, for how long), who stops him and how hard they fall.
+const TANK_SIZE := 1.35
+const TANK_EVERY := 25.0
+const CHARGE_SPEED := 5.0
+const CHARGE_TIME := 6.0
+const BLOCK := 1.1
+const HIT := 1.1
+const STUN := 3.0
+const KNOCK := 5.0
 const BIBS := {FootballScore.Team.LUSTRE: Color(0.98, 0.85, 0.15), FootballScore.Team.VETERANS: Color(0.88, 0.2, 0.2)}
 
 @export var look := "abuelo"
-## "veteran", "keeper" or "advisor".
+## "veteran", "keeper", "advisor" or "tank".
 var role := "veteran"
 var team: int = FootballScore.Team.VETERANS
 var pitch: FootballPitch
@@ -38,6 +50,11 @@ var playing := false
 var chaser := false
 ## A guest's copy (NpcSync): the host's plays.
 var follower := false
+## The Tank running at the deputy, and how long until his next charge (or until he gets up).
+var charging := false
+var charge_in := TANK_EVERY
+var _charge_left := 0.0
+var _stunned := 0.0
 var _kick_wait := 0.0
 var _rng := RandomNumberGenerator.new()
 var _model: Node3D
@@ -61,7 +78,10 @@ func _ready() -> void:
 	# The models face +Z; they face -Z like everyone else.
 	_model.rotation.y = PI
 	add_child(_model)
-	add_child(bib(BIBS[team]))
+	# On the model, so it goes down with them.
+	_model.add_child(bib(BIBS[team]))
+	if role == "tank":
+		_model.scale = Vector3(TANK_SIZE * 1.15, TANK_SIZE, TANK_SIZE)
 	_bubble = MarketShopper.make_bubble()
 	add_child(_bubble)
 	_rng.seed = hash(["football player", name])
@@ -105,6 +125,8 @@ func _physics_process(delta: float) -> void:
 			_keep()
 		"advisor":
 			_advise()
+		"tank":
+			_tank(delta)
 		_:
 			_play()
 
@@ -118,6 +140,68 @@ func _play() -> void:
 		var goal := pitch.to_global(FootballPitch.goal_at(-1.0) + Vector3(0, 0.3, _rng.randf_range(-SPREAD, SPREAD)))
 		_kick((goal - ball.global_position).normalized() + Vector3.UP * 0.1, _rng.randf_range(SHOT.x, SHOT.y))
 	_walk_to(target)
+
+
+func _tank(delta: float) -> void:
+	if _stunned > 0.0:
+		_stunned -= delta
+		if _stunned <= 0.0:
+			_model.rotation = Vector3(0, PI, 0)
+			_model.position.y = 0.0
+		_go(Vector3.ZERO)
+		return
+	var lustre := pitch.lustre
+	if not charging:
+		charge_in -= delta
+		if charge_in <= 0.0 and lustre.playing and not lustre.down:
+			charge()
+		else:
+			_play()
+		return
+	_charge_left -= delta
+	if _charge_left <= 0.0 or lustre.down:
+		_stop_charge()
+		return
+	for cop: Node in get_tree().get_nodes_in_group("cops"):
+		var flat := (cop as Node3D).global_position - global_position
+		flat.y = 0.0
+		if flat.length() < BLOCK:
+			_blocked(cop as Cop)
+			return
+	var to := lustre.politician.global_position - global_position
+	to.y = 0.0
+	if to.length() < HIT:
+		lustre.hit(global_position)
+		_stop_charge()
+		return
+	_go(to.normalized() * CHARGE_SPEED)
+
+
+## Straight at the deputy, arms open, shouting.
+func charge() -> void:
+	charging = true
+	chaser = false
+	_charge_left = CHARGE_TIME
+	_model.scale.x = TANK_SIZE * 1.5
+	say("FOOTBALL_TANK_CHARGE")
+
+
+func _stop_charge() -> void:
+	charging = false
+	charge_in = TANK_EVERY
+	_model.scale.x = TANK_SIZE * 1.15
+
+
+## A cop in his way: both on the grass.
+func _blocked(cop: Cop) -> void:
+	var push := cop.global_position - global_position
+	push.y = 0.0
+	cop.knock_back(push.normalized() * KNOCK, STUN / 2)
+	_stop_charge()
+	_stunned = STUN
+	_model.rotation = Vector3(-PI / 2, PI, 0)
+	_model.position.y = 0.4
+	say("FOOTBALL_TANK_BLOCKED")
 
 
 func _keep() -> void:

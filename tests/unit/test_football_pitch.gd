@@ -59,7 +59,7 @@ func test_a_ball_stops_in_the_net() -> void:
 
 func test_the_cup_and_the_stretcher_are_there() -> void:
 	assert_not_null(pitch.get_node_or_null("Built/Cup"))
-	assert_not_null(pitch.get_node_or_null("Built/Stretcher"))
+	assert_not_null(pitch.get_node_or_null("Stretcher"))
 
 
 func test_the_texts_are_translated() -> void:
