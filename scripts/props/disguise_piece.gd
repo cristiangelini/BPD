@@ -4,7 +4,8 @@ extends Grabbable
 ## A piece of disguise from the station's lockers (docs/diseno/infiltracion.md, step 1, decision 100): a wig, a
 ## mustache or glasses for the grandparents' club, and the choir robe (infiltracion-coro.md, step 2), which goes on
 ## brought to the chest instead of the face, and the cleaning crew's cap, face mask and vest (fuga-limpieza.md, step 3), and the mime troupe's beret, white face and
-## striped shirt (infiltracion-mimos.md, step 1). The fire drill's orange prisoner's vest
+## striped shirt (infiltracion-mimos.md, step 1), and the costume party's cap, mustache and plastic badge
+## (infiltracion-fiesta.md, step 1). The fire drill's orange prisoner's vest
 ## (fuga-simulacro.md) is worn the same way, but it's the opposite of a disguise: taken off it lies on the floor where
 ## the guard can see it (a clue), and the waiting room's coat and hat make a cop pass for one of the public. The fast trial's lawyer jacket (fuga-juicio.md) makes its wearer the
 ## cops' lawyer. Held, the mouse wheel brings it right up to the face; brought to its place on the cop's head it
@@ -27,6 +28,9 @@ const SLOTS := {
 	"mime_beret": Vector3(0, 1.42, 0.0),
 	"mime_face": Vector3(0, 1.3, -0.21),
 	"mime_shirt": Vector3(0, 0.95, -0.3),
+	"party_cap": Vector3(0, 1.42, 0.0),
+	"party_mustache": Vector3(0, 1.22, -0.2),
+	"party_badge": Vector3(0, 1.05, -0.31),
 }
 const MODELS := {
 	"wig": preload("res://assets/models/disguise_wig.glb"),
@@ -43,6 +47,9 @@ const MODELS := {
 	"mime_beret": preload("res://assets/models/disguise_mime_beret.glb"),
 	"mime_face": preload("res://assets/models/disguise_mime_face.glb"),
 	"mime_shirt": preload("res://assets/models/disguise_mime_shirt.glb"),
+	"party_cap": preload("res://assets/models/disguise_party_cap.glb"),
+	"party_mustache": preload("res://assets/models/disguise_party_mustache.glb"),
+	"party_badge": preload("res://assets/models/disguise_party_badge.glb"),
 }
 ## Who the cops pass for, and with what: which pieces count and how many of them. (propuesta)
 const LOOKS := {
@@ -52,6 +59,7 @@ const LOOKS := {
 	"public": {"pieces": ["coat", "hat"], "needed": 1},
 	"lawyer": {"pieces": ["lawyer_jacket"], "needed": 1},
 	"mime": {"pieces": ["mime_beret", "mime_face", "mime_shirt"], "needed": 2},
+	"party": {"pieces": ["party_cap", "party_mustache", "party_badge"], "needed": 2},
 }
 ## Held this close to its place, it goes on (m).
 const WEAR_REACH := 0.22
