@@ -97,6 +97,15 @@ func waiting_count() -> int:
 	return cars.filter(func(car: QueueCar) -> bool: return car.waiting()).size()
 
 
+## While a float's music is cut (control-desfile.md, step 2) the crowd boos: the patience runs out this many times
+## as fast.
+func booing() -> float:
+	for car in cars:
+		if is_instance_valid(car) and car.music_cut:
+			return ParadeFloat.BOO_FACTOR
+	return 1.0
+
+
 func front() -> QueueCar:
 	return cars[0] if not cars.is_empty() else null
 
@@ -137,7 +146,7 @@ func _physics_process(delta: float) -> void:
 	var loose := loose_clowns()
 	if waiting > 0 or loose > 0:
 		_set_patience(patience + (waiting * PATIENCE_PER_CAR * float(VARIANTS[variant].patience)
-			+ loose * PATIENCE_PER_CLOWN) * delta)
+			+ loose * PATIENCE_PER_CLOWN) * booing() * delta)
 	else:
 		_set_patience(patience - CALM_DOWN * delta)
 	if patience >= FULL and front() and front().can_go():

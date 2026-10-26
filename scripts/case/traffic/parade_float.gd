@@ -47,6 +47,13 @@ const DANCER_SCALE := 0.7
 const SHOULDER := Vector3(0.3, 0.85, 0)
 const HAND := Vector3(0.16, -0.22, 0.08)
 const SIGN_AT := Vector3(1.17, 0.55, 0.4)
+## Step 2: each float plays its song as it goes, the notes over it. Held at the checkpoint this long (s), its music
+## stops and the crowd boos: while it does, the queue's patience runs out BOO_FACTOR times as fast. It plays again
+## once the float moves on.
+const MUSIC_HOLD := 20.0
+const BOO_FACTOR := 2.0
+const NOTES_AT := Vector3(0, 3.4, 0)
+const NOTES_BOB := 0.15
 
 
 ## A car's parade traits when no plan says them: from its plate, so every PC agrees. Empty for a city car.
@@ -134,6 +141,26 @@ static func _dancer(traits: Dictionary, costume: Material) -> Node3D:
 		arm.add_child(held)
 		QueueCar._paint(arm, costume)
 	return dancer
+
+
+## The float's music: notes bobbing over it while it plays, the crowd's boo while it doesn't.
+static func add_notes(car: Node3D) -> Label3D:
+	var notes := _label("♪ ♫ ♪", 96, Color(1.0, 0.85, 0.3))
+	notes.name = "Notes"
+	notes.position = NOTES_AT
+	notes.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	car.add_child(notes)
+	return notes
+
+
+## Shows `car`'s music playing (the notes, bobbing to `beat` seconds) or cut (the crowd's boo instead).
+static func show_music(car: Node3D, playing: bool, beat: float) -> void:
+	var notes := car.get_node_or_null("Notes") as Label3D
+	if not notes:
+		return
+	notes.text = "♪ ♫ ♪" if playing else car.tr("PARADE_BOO")
+	notes.modulate = Color(1.0, 0.85, 0.3) if playing else Color(0.9, 0.3, 0.25)
+	notes.position = NOTES_AT + Vector3.UP * (sin(beat * TAU) * NOTES_BOB if playing else 0.0)
 
 
 ## The dancers on `car`'s float, the first one first; empty for a city car.
