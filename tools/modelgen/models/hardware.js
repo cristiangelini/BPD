@@ -169,11 +169,42 @@ export function buildGlueTube() {
 	return b.build();
 }
 
+// The little drawer of golden screws: a cardboard drawer front like the 60 on the wall, full of shiny gold screws.
+// 0.3 x 0.12 x 0.3 m.
+export function buildGoldDrawer() {
+	const b = new Builder('gold_screw_drawer');
+	const card = mat('drawer_card', 0xd8c09a);
+	b.add('bottom', card, new THREE.BoxGeometry(0.3, 0.01, 0.3), { pos: V(0, -0.055, 0) });
+	b.add('side', card, new THREE.BoxGeometry(0.01, 0.12, 0.3), { pos: V(-0.145, 0, 0) });
+	b.add('side', card, new THREE.BoxGeometry(0.01, 0.12, 0.3), { pos: V(0.145, 0, 0) });
+	b.add('side', card, new THREE.BoxGeometry(0.3, 0.12, 0.01), { pos: V(0, 0, -0.145) });
+	b.add('front', mat('drawer_front', 0xe8d4b0), new THREE.BoxGeometry(0.3, 0.12, 0.01), { pos: V(0, 0, 0.145) });
+	b.add('pull', mat('drawer_pull', 0x2a2420), new THREE.BoxGeometry(0.08, 0.02, 0.02), { pos: V(0, 0.01, 0.16) });
+	const gold = mat('gold', 0xf2c230, { metalness: 0.8, roughness: 0.25 });
+	for (let i = 0; i < 30; i++) {
+		const a = i * 2.39, r = 0.02 + (i % 6) * 0.02;
+		b.add('screws', gold, new THREE.CylinderGeometry(0.008, 0.008, 0.05, 5),
+			{ pos: V(Math.cos(a) * r, -0.03 + (i % 3) * 0.012, Math.sin(a) * r * 0.9), rot: [i * 0.7, a, 1.3] });
+	}
+	return b.build();
+}
+
+// The screw mold: a grey steel block with screw-shaped grooves. 0.2 x 0.06 x 0.12 m.
+export function buildScrewMold() {
+	const b = new Builder('screw_mold');
+	b.add('block', mat('mold_steel', 0x7a8088), new THREE.BoxGeometry(0.2, 0.06, 0.12));
+	const groove = mat('mold_groove', 0x3a3e44);
+	for (let i = 0; i < 5; i++) b.add('grooves', groove, new THREE.BoxGeometry(0.012, 0.004, 0.08), { pos: V(-0.07 + i * 0.035, 0.03, 0) });
+	b.add('drip', mat('gold', 0xf2c230, { metalness: 0.8, roughness: 0.25 }), new THREE.BoxGeometry(0.03, 0.005, 0.03), { pos: V(0.07, 0.031, 0.03) });
+	return b.build();
+}
+
 export const models = {
 	...Object.fromEntries(PAINTS.map((_, i) => [`paint_can_${i}`, () => buildPaintCan(i)])),
 	screw_jar: buildScrewJar,
 	key_copy: buildKeyCopy, master_key_ring: buildKeyRing, wax_molds: buildWaxMolds, address_list: buildAddressList,
 	metal_filings: buildFilings, watch_list: buildWatchList, glue_tube: buildGlueTube,
+	gold_screw_drawer: buildGoldDrawer, screw_mold: buildScrewMold,
 	...Object.fromEntries(GNOME_HATS.map((_, i) => [`garden_gnome_${i}`, () => buildGnome(i)])),
 	tool_hammer: buildHammer, tool_wrench: buildWrench, tool_saw: buildSaw, tool_screwdriver: buildScrewdriver,
 };
@@ -200,6 +231,13 @@ export const views = {
 			{ name: 'glue_tube', pos: [0.2, 0.02, 0.35] },
 		],
 		cam: { pos: [0, 0.6, 1.3], target: [0, 0.2, 0.1], fov: 40 },
+	},
+	gold_goods: {
+		items: [
+			{ name: 'gold_screw_drawer', pos: [-0.2, 0.06, 0] }, { name: 'screw_mold', pos: [0.18, 0.03, -0.05] },
+			{ name: 'jewelry_bag', pos: [0.15, 0.05, 0.2] },
+		],
+		cam: { pos: [0, 0.55, 0.8], target: [0, 0.04, 0.05], fov: 40 },
 	},
 	hardware_tools: {
 		items: [

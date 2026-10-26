@@ -125,6 +125,12 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      Solo el jefe hace "tic tac" y se lee arriba de él cuando hay un policía a menos de 2 m; la primera vez va a la
      planilla. La lista de relojes (0,1 kg, 300) y el pegamento (0,5 kg, 100) van en escondites sorteados. Capturas:
      `paso6-gnomos.png`, `paso6-tictac.png`.
+   - **Tornillos de oro (propuesta):** los 60 cajoncitos de la pared de tornillos se abren con E, una vez cada uno, y
+     si Tobías lo ve suma 2. El de oro (sorteado con la semilla) suelta el cajoncito con los tornillos de oro (3 kg,
+     1200); 1 de cada 3 de los otros está trabado y sale de golpe: los tornillos quedan en el piso (radio 0,5 m) y el
+     que corre encima se resbala 2 s, como con las bolitas del banco. Con la linterna, el frente del cajoncito de oro
+     brilla y la primera vez va a la planilla. El molde de tornillos (1 kg, 200) y la bolsita de la joyería (0,1 kg,
+     100, la de la panadería) van en escondites sorteados. Capturas: `paso6-oro-modelos.png`, `paso6-cajoncitos.png`.
 7. El sorteo en "Jugar" (en cuartos entre los 4 lugares) y el online.
 
 ## Preguntas para Cristian (se avanza con lo recomendado mientras tanto)
