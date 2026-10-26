@@ -4,7 +4,8 @@ extends StaticBody3D
 ## The Hotel Gran Siesta's people who aren't guests (escena-hotel.md, "El lugar"): don Bostezo the concierge, asleep
 ## behind the desk; señora Perlita, who was robbed; Tito the bellboy, with a suitcase always in hand; and doña Escoba
 ## the maid, upstairs with her laundry cart. E on any of them gets one of their lines, a different one each time. What
-## they do in the case (the concierge's lie, the witness, the maid who wipes clues) comes in steps 3 and 4. Every
+## they do in the case (the concierge's lie, the witness, the maid who wipes clues) comes in steps 3 and 4; the
+## reception's bell (HotelBell) wakes the concierge, and rung too much makes him angry. Every
 ## number here is (propuesta).
 
 ## Who they can be: their model, the prompt and how many lines they have (HOTEL_<WHO>_LINE_<n>).
@@ -28,6 +29,8 @@ var _model: Node3D
 var _bubble: Label3D
 var _bubble_left := 0.0
 var _lines_said := 0
+## The concierge, angry at the bell: seconds he answers nothing.
+var angry_left := 0.0
 
 
 func _ready() -> void:
@@ -64,11 +67,28 @@ func prompt_key(_cop: Cop) -> String:
 
 ## E on them: their next line; the concierge, with a case, says who sleeps where every other time.
 func use(_cop: Cop) -> void:
+	if angry_left > 0.0:
+		say("HOTEL_CONCIERGE_ANGRY")
+		return
 	if who == "concierge" and case and _lines_said % 2 == 0:
 		say(case.concierge_list(), 7.0)
 	else:
 		say(line_key(int(_lines_said / 2.0) if who == "concierge" and case else _lines_said))
 	_lines_said += 1
+
+
+## The bell woke the concierge: he says again who sleeps where (or his welcome, without a case).
+func wake() -> void:
+	if angry_left > 0.0:
+		say("HOTEL_CONCIERGE_ANGRY")
+	else:
+		say(case.concierge_list() if case else line_key(0), 7.0)
+
+
+## Too much bell: he answers nothing for a while.
+func get_angry(seconds: float) -> void:
+	angry_left = seconds
+	say("HOTEL_CONCIERGE_ANGRY")
 
 
 ## The key of their line number n (it goes round).
@@ -87,6 +107,7 @@ func say(text: String, seconds := 4.0) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	angry_left = maxf(angry_left - delta, 0.0)
 	_bubble_left -= delta
 	if _bubble.visible and _bubble_left <= 0.0:
 		_bubble.hide()
