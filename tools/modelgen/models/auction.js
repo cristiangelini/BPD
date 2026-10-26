@@ -105,10 +105,33 @@ export function buildLotChair() {
 	return b.build();
 }
 
+// The evidence (step 5): the stolen original, a sunny landscape in an ornate frame (1.0 x 0.8 m, lying on its back,
+// origin at its bottom), and the forger's half-painted copy of it with his paint tubes (0.7 x 0.55 m canvas).
+export function buildOriginalPainting() {
+	const b = new Builder('original_painting');
+	b.add('frame', gold(), new THREE.BoxGeometry(1.0, 0.06, 0.8), { pos: V(0, 0.03, 0) });
+	b.add('sky', mat('sky_blue', 0x7ab8e8), new THREE.BoxGeometry(0.84, 0.01, 0.34), { pos: V(0, 0.065, -0.15) });
+	b.add('field', mat('field_green', 0x5a9a3a), new THREE.BoxGeometry(0.84, 0.01, 0.3), { pos: V(0, 0.065, 0.17) });
+	b.add('sun', mat('sun_yellow', 0xf8d040), new THREE.CylinderGeometry(0.07, 0.07, 0.012, 12), { pos: V(0.25, 0.07, -0.2) });
+	for (const x of [-0.25, -0.05]) b.add('trees', mat('tree_dark', 0x2a5a2a), new THREE.ConeGeometry(0.06, 0.012, 6), { pos: V(x, 0.072, 0.05), rot: [Math.PI / 2, 0, 0], scale: [1, 1, 2] });
+	b.add('label', mat('museum_label', 0xf4f0e8), new THREE.BoxGeometry(0.16, 0.012, 0.05), { pos: V(0, 0.065, 0.37) });
+	return b.build();
+}
+
+export function buildForgery() {
+	const b = new Builder('forgery');
+	b.add('canvas', mat('canvas_white', 0xf4f0e8), new THREE.BoxGeometry(0.7, 0.55, 0.02), { pos: V(0, 0.275, 0) });
+	b.add('sky', mat('sky_blue', 0x7ab8e8), new THREE.BoxGeometry(0.66, 0.22, 0.005), { pos: V(0, 0.4, 0.012) });
+	b.add('field', mat('field_green', 0x5a9a3a), new THREE.BoxGeometry(0.33, 0.2, 0.005), { pos: V(-0.165, 0.13, 0.012) });
+	b.add('sun', mat('sun_yellow', 0xf8d040), new THREE.CylinderGeometry(0.05, 0.05, 0.006, 10), { pos: V(0.18, 0.43, 0.014), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
 export const models = {
 	auction_chair: buildAuctionChair, auction_paddle: buildAuctionPaddle, auction_podium: buildAuctionPodium,
 	auction_gavel: buildAuctionGavel, auction_easel: buildAuctionEasel, lot_painting: buildLotPainting,
 	lot_vase: buildLotVase, lot_statue: buildLotStatue, lot_chair: buildLotChair,
+	original_painting: buildOriginalPainting, forgery: buildForgery,
 };
 
 export const views = {
@@ -122,5 +145,10 @@ export const views = {
 		items: [{ name: 'lot_painting', pos: [-0.9, 0, 0] }, { name: 'lot_vase', pos: [-0.2, 0, 0] },
 			{ name: 'lot_statue', pos: [0.4, 0, 0] }, { name: 'lot_chair', pos: [1.0, 0, 0] }],
 		cam: { pos: [0.05, 0.7, 2.6], target: [0.05, 0.35, 0], fov: 40 },
+	},
+	auction_evidence: {
+		items: [{ name: 'original_painting', pos: [-0.5, 0, 0] }, { name: 'auction_easel', pos: [0.7, 0, -0.2] },
+			{ name: 'forgery', pos: [0.7, 0.905, -0.1] }],
+		cam: { pos: [0.1, 1.5, 2.4], target: [0.1, 0.5, 0], fov: 45 },
 	},
 };

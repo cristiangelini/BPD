@@ -117,6 +117,15 @@ const VARIANTS := {
 		"boss_cuffed": "HINT_CROMADO_CUFFED", "cuff_row": "OBJ_BIKER_CUFF_CROMADO",
 		"catch_row": "OBJ_BIKER_CATCH_CROMADO", "slips": "CROMADO_SLIP_%d",
 	},
+	"auction": {
+		"story": "infiltration_auction",
+		"brief": ["BRIEF_AUCTION_A", "BRIEF_AUCTION_B", "BRIEF_AUCTION_C"],
+		"go": "HINT_GO_AUCTION", "in": "HINT_AUCTION_IN", "found": "HINT_CLUB_EVIDENCE",
+		"rows": "OBJ_AUCTION_", "evidence": "EVIDENCE_AUCTION_",
+		"boss": "martillo", "getaway": SuspectCar.WALKER,
+		"boss_cuffed": "HINT_MARTILLO_CUFFED", "cuff_row": "OBJ_AUCTION_CUFF_MARTILLO",
+		"catch_row": "OBJ_AUCTION_CATCH_MARTILLO", "slips": "MARTILLO_SLIP_%d",
+	},
 }
 ## With `second_chance`, the first wrong person cuffed only raises everyone's suspicion this much.
 const WRONG_CUFF := 50.0
@@ -284,7 +293,10 @@ func custody() -> Dictionary:
 ## The pay: SALARY with all the evidence, a third less for each piece missing.
 func report() -> Dictionary:
 	var salary := SALARY * evidence_found.size() / EVIDENCE if solved() else 0
-	return {"salary": salary, "evidence": 0, "fines": 0, "total": salary, "quota": QUOTA, "approved": salary >= QUOTA}
+	# What they bought at the auction comes out of it (infiltracion-subasta.md), solved or not.
+	var paid := place.spent() if place else 0
+	var total := salary - paid
+	return {"salary": salary, "evidence": 0, "fines": paid, "total": total, "quota": QUOTA, "approved": total >= QUOTA}
 
 
 func finish_shift() -> void:
@@ -294,7 +306,8 @@ func finish_shift() -> void:
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
 	var pay := report()
-	var result := {"solved": solved(), "report": pay, "awards": ShiftReport.awards(stats)}
+	var result := {"solved": solved(), "report": pay, "awards": ShiftReport.awards(stats),
+		"bought": place.bought() if place else 0}
 	var campaign := Campaign.current
 	if campaign and not campaign.is_over():
 		var played := campaign.shift
@@ -319,7 +332,9 @@ func _show_result(result: Dictionary) -> void:
 		cop.get_node("Hud").hide()
 	var awards: Array[Dictionary] = []
 	awards.assign(result.awards)
-	shift_screen.show_report(result.solved, result.report, 0, awards)
+	var bought: int = result.get("bought", 0)
+	shift_screen.show_report(result.solved, result.report, bought, awards,
+		"SHIFT_FINES_AUCTION" if bought > 0 else "SHIFT_FINES")
 	var over := false
 	if result.has("campaign"):
 		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over,

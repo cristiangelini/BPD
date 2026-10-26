@@ -105,6 +105,15 @@ La subasta copia la forma de `ChessGames` y `BikerDares` (el host decide y avisa
    compradores de la sala. Mientras hay un lote, los compradores que no están en la sala miran y no ven nada más
    **(propuesta)**.
 5. Las pruebas y el caso (variante "auction"): las 6 pruebas, el sueldo con las compras y el interrogatorio.
+   Hecho así: el cuadro original (8 kg, con su etiqueta del museo) está tirado en el piso del depósito, detrás de su
+   copia apoyada contra la pared; el catálogo abierto con los precios en rojo, sobre una mesita de la sala (foto); el
+   rincón del falsificador en el depósito, con su atril, la copia a medio pintar y los pomos sobre un banquito (foto);
+   el libro de ventas rojo en el escritorio de la oficina (E), y la llave, debajo del martillo del podio (E). Si el lote
+   robado está entre las pruebas, la semilla elige cuál de los 4 es; cuando sale, un comprador lo susurra ("Psst... ese
+   jarrón es del museo. Todavía tiene la etiqueta abajo.") y, si un policía se lo queda, es prueba. Lo que compraron
+   se resta del sueldo en la línea "Compras en la subasta (%d lotes)" de la planilla. Detenido, Don Martillo va a la
+   persecución (a pie hasta el paso 6) y al interrogatorio ("Todo lo que vendo es original. Bueno, original de mi
+   falsificador.") **(propuesta)**.
 6. La huida en el carrito de la galería, el sorteo de "Jugar" en décimos y online.
 
 ## Preguntas para Cristian (decisión 177)

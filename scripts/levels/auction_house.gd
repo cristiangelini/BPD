@@ -10,6 +10,10 @@ extends InfiltrationPlace
 ## here. --place=auction opens it from Play. Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const KEY_POT_SCENE := preload("res://scenes/props/key_pot.tscn")
+const ORIGINAL_MODEL := preload("res://assets/models/original_painting.glb")
+const EASEL_MODEL := preload("res://assets/models/auction_easel.glb")
+const FORGERY_MODEL := preload("res://assets/models/forgery.glb")
 const HALF_X := 12.0
 const HALF_Z := 10.0
 const FLOOR_TOP := 0.06
@@ -54,6 +58,20 @@ const PAINTINGS: Array[Array] = [
 	[Vector3(9.5, 1.7, BACK_Z + 0.1), Vector2(1.6, 1.0), Vector3.BACK],
 ]
 const PEDESTAL_AT := Vector3(8.0, 0, 5.0)
+## The evidence (step 5), 3 of these by the seed: the stolen original lying in the storeroom (grabbed), the catalogue
+## with the "real" prices on a little table in the hall and the forger's half-painted copy in the storeroom (photos),
+## two buyers talking about "the original" (the recording), one of the sale's lots, stolen from a museum (the cops have
+## to buy it: AuctionSale.stolen) and the sales book on the office's desk (searched with E; the key is on the podium).
+const EVIDENCE_KINDS: Array[String] = ["original", "catalog", "forgery", "recording", "lot", "ledger"]
+const ORIGINAL_AT := Vector3(-6.0, FLOOR_TOP + 0.05, -8.8)
+## Its copy leans in front of it, hiding it from the door (rad off upright).
+const COPY_LEAN := 0.25
+const CATALOG_TABLE_AT := Vector3(3.0, 0, 8.2)
+const CATALOG_AT := Vector3(3.0, FLOOR_TOP + 0.82, 8.2)
+const FORGER_AT := Vector3(0.0, 0, -6.0)
+const LEDGER_AT := Vector3(8.5, FLOOR_TOP + 0.85, -3.0)
+## Two buyers this close (m) talk business together: the recording's pair.
+const TALK_PAIR := 2.6
 ## The storeroom's crates.
 const CRATES: Array[Vector3] = [Vector3(-10.5, 0, -8.5), Vector3(-9.0, 0, -8.5), Vector3(-1.0, 0, -8.5),
 	Vector3(2.5, 0, -3.0)]
@@ -90,12 +108,16 @@ func _ready() -> void:
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, BACK_Z)
 	add_child(office_door)
 	_add_people()
+	_add_evidence()
 	sale = AuctionSale.new()
 	sale.name = "Sale"
 	sale.house = self
 	sale.case_seed = case_seed
+	if evidence.kinds.has("lot"):
+		sale.stolen = LotEasel.KINDS[hash(["stolen lot", case_seed]) % LotEasel.KINDS.size()]
 	add_child(sale)
 	place_in_city("auction")
+	start_case()
 
 
 ## Don Martillo drives off from the street, out of the entrance (step 6).
@@ -268,3 +290,107 @@ func _build_back_rooms() -> void:
 		_build.box(at + Vector3(0, FLOOR_TOP + 0.5, 0), Vector3(1.2, 1.0, 0.3), WOOD.lightened(0.3))
 	_build.box(Vector3(8.5, FLOOR_TOP + 0.4, -3.0), Vector3(2.4, 0.8, 1.0), WOOD)
 	_build.box(Vector3(HALF_X - 0.35, FLOOR_TOP + 0.6, -7.0), Vector3(0.6, 1.2, 0.8), Color(0.25, 0.25, 0.28))
+
+
+func bought() -> int:
+	return sale.bought
+
+
+func spent() -> int:
+	return sale.spent
+
+
+## 3 of the 6 pieces of evidence by the seed, the key on the podium and, for the recording, two buyers talking. The
+## catalogue and the forger's corner are there whether they're evidence or not.
+func _add_evidence() -> void:
+	evidence = ClubEvidence.new()
+	evidence.name = "Evidence"
+	evidence.held_kinds.assign(["original"])
+	evidence.talk_key = "AUCTION_TALK_%d"
+	add_child(evidence)
+	var pair := _talking_pair()
+	var available := EVIDENCE_KINDS.duplicate()
+	if pair.is_empty():
+		available.erase("recording")
+	evidence.kinds = ClubEvidence.draw(case_seed, available)
+	var key: KeyPot = KEY_POT_SCENE.instantiate()
+	key.name = "KeyPodium"
+	key.has_key = true
+	key.prompt = "PROMPT_AUCTION_PODIUM_KEY"
+	add_child(key)
+	key.position = PODIUM_AT + Vector3(0.45, FLOOR_TOP + 1.12, 0.05)
+	key.get_node("Pot").hide()
+	key.get_node("Plant").hide()
+	_build_catalog_and_forger()
+	for kind: String in evidence.kinds:
+		match kind:
+			"original":
+				var size := Vector3(1.0, 0.1, 0.8)
+				var item := ClubEvidence.make_item("Auction_original", ORIGINAL_MODEL, size, 8.0)
+				(item.get_child(1) as Node3D).position.y = -size.y / 2
+				add_child(item)
+				item.position = ORIGINAL_AT
+				evidence.items[kind] = item
+				var copy: Node3D = ORIGINAL_MODEL.instantiate()
+				copy.basis = Basis(Vector3.RIGHT, PI / 2 - COPY_LEAN)
+				copy.position = ORIGINAL_AT + Vector3(0, -0.05 + 0.4 * cos(COPY_LEAN), 0.75)
+				$Built.add_child(copy)
+			"catalog":
+				_spot(kind, CATALOG_AT, Vector3(0.4, 0.1, 0.3), true)
+			"forgery":
+				_spot(kind, FORGER_AT + Vector3(0, FLOOR_TOP + 1.18, 0.1), Vector3(0.8, 0.6, 0.2), true)
+			"ledger":
+				_spot(kind, LEDGER_AT, Vector3(0.6, 0.1, 0.4), false)
+				_build.mesh_box(LEDGER_AT + Vector3(0, -0.02, 0), Vector3(0.3, 0.04, 0.22), Color(0.45, 0.1, 0.12))
+			"recording":
+				evidence.talkers.assign(pair)
+				for member: ClubMember in pair:
+					member.distracted = true
+
+
+## A piece of evidence that stays put, a box of `size` around `at`: photographed, or searched with E.
+func _spot(kind: String, at: Vector3, size: Vector3, photo: bool) -> ClubEvidenceSpot:
+	var spot := ClubEvidenceSpot.new()
+	spot.name = "Evidence_" + kind
+	spot.kind = kind
+	spot.photo = photo
+	spot.prompt_prefix = "PROMPT_AUCTION_"
+	spot.evidence = evidence
+	add_child(spot)
+	spot.position = at
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = size
+	shape.shape = box
+	spot.add_child(shape)
+	return spot
+
+
+## Two buyers by each other (the recording's pair), or none.
+func _talking_pair() -> Array[ClubMember]:
+	for first in members:
+		for second in members:
+			if first != second and first.position.distance_to(second.position) < TALK_PAIR:
+				return [first, second]
+	return []
+
+
+## The catalogue open on its little table in the hall, and the forger's corner in the storeroom: his easel with the
+## half-painted copy and his paint tubes on a stool.
+func _build_catalog_and_forger() -> void:
+	_build.box(CATALOG_TABLE_AT + Vector3(0, FLOOR_TOP + 0.38, 0), Vector3(0.6, 0.76, 0.5), WOOD)
+	_build.mesh_box(CATALOG_AT, Vector3(0.36, 0.02, 0.26), Color(0.95, 0.92, 0.85))
+	for i in 4:
+		_build.mesh_box(CATALOG_AT + Vector3(-0.08, 0.011, -0.08 + i * 0.05), Vector3(0.14, 0.002, 0.012), Color(0.2, 0.2, 0.25))
+		_build.mesh_box(CATALOG_AT + Vector3(0.1, 0.011, -0.08 + i * 0.05), Vector3(0.08, 0.002, 0.012), Color(0.75, 0.1, 0.1))
+	var easel_model: Node3D = EASEL_MODEL.instantiate()
+	easel_model.position = FORGER_AT + Vector3(0, FLOOR_TOP, 0)
+	$Built.add_child(easel_model)
+	var copy: Node3D = FORGERY_MODEL.instantiate()
+	copy.position = FORGER_AT + Vector3(0, FLOOR_TOP + 0.905, 0.1)
+	$Built.add_child(copy)
+	_build.box(FORGER_AT + Vector3(1.0, FLOOR_TOP + 0.3, 0.3), Vector3(0.5, 0.6, 0.5), WOOD.lightened(0.2))
+	for i in 5:
+		_build.mesh_box(FORGER_AT + Vector3(0.85 + i * 0.07, FLOOR_TOP + 0.62, 0.3), Vector3(0.03, 0.03, 0.12),
+			[Color(0.85, 0.2, 0.2), Color(0.2, 0.4, 0.85), Color(0.95, 0.85, 0.2), Color(0.3, 0.65, 0.3),
+				Color(0.95, 0.95, 0.95)][i])

@@ -59,6 +59,9 @@ var rival_left := 0.0
 var bought := 0
 var spent := 0
 var lots: Array[Grabbable] = []
+## The lot stolen from a museum, or "" (when it isn't among the evidence): a buyer whispers it when it comes up, and
+## buying it is evidence (step 5).
+var stolen := ""
 var _called := 0
 var _watching: Array[ClubMember] = []
 var _rng := RandomNumberGenerator.new()
@@ -114,6 +117,9 @@ func open() -> bool:
 		if house.is_inside(cop.global_position):
 			cop.show_hint("HINT_AUCTION_LOT")
 	_watch(true)
+	if kind == stolen:
+		var whisperer := house.members[_rng.randi_range(0, house.members.size() - 1)]
+		whisperer.say("AUCTION_STOLEN_" + kind)
 	opened.emit(kind)
 	return true
 
@@ -190,6 +196,8 @@ func _sell() -> void:
 		spent += paid
 		house.martillo.say("AUCTION_SOLD_COP")
 		_deliver(done, last_seat)
+		if done == stolen and house.case:
+			house.case.found("lot")
 	else:
 		house.martillo.say("AUCTION_SOLD" if last_bidder else "AUCTION_NO_SALE")
 	if not cop_bid:

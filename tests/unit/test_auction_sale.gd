@@ -150,10 +150,11 @@ func test_a_lot_no_cop_bid_on_makes_the_hall_suspicious() -> void:
 func test_the_buyers_out_of_the_hall_watch_the_lot() -> void:
 	sale.open()
 	for member in house.members:
-		assert_eq(member.distracted, not house.in_hall(member.global_position + Vector3.UP))
+		if not house.evidence.talkers.has(member):
+			assert_eq(member.distracted, not house.in_hall(member.global_position + Vector3.UP))
 	sale._end()
 	for member in house.members:
-		assert_false(member.distracted, "back to normal after it")
+		assert_eq(member.distracted, house.evidence.talkers.has(member), "back to normal after it (the talkers talk)")
 
 
 func test_the_sale_texts_are_translated() -> void:
