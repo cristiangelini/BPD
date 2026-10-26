@@ -98,7 +98,7 @@ func give_tip() -> void:
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).input_enabled:
 			var brief: String = {"double": "BRIEF_DOUBLE_", "birthday": "BRIEF_BIRTHDAY_",
-				"convertible": "BRIEF_PARADE_"}.get(rally.variant, "BRIEF_RALLY_")
+				"convertible": "BRIEF_CONVERTIBLE_"}.get(rally.variant, "BRIEF_RALLY_")
 			briefing.start(PackedStringArray([brief + "A", brief + "B", brief + "C"]))
 			break
 	checklist.show_rows(rows())
