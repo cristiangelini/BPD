@@ -6,7 +6,9 @@ extends CrimeScenePlace
 ## and the key board behind it), the broken lift and the stairs; west of it, the dining room with the piano. Upstairs:
 ## the long corridor with the guests' six rooms (11, 12, 14, 15, 16 and 17: the hotel skips the 13), the suite at its
 ## west end, where the theft was, and behind an old wardrobe in the corridor, the room with no number: the 13. The
-## guests and the staff come in step 2 and the case in step 4. Every number here is (propuesta).
+## six guests alike wait in the lobby, don Bostezo behind the desk, señora Perlita by the armchairs, Tito the bellboy
+## by the door and doña Escoba upstairs with her cart (step 2). The case comes in step 4. Every number here is
+## (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(26, 18)
@@ -75,6 +77,16 @@ const TABLES: Array[Vector3] = [Vector3(-10.0, 0, 0.0), Vector3(-8.0, 0, 4.0), V
 const SUITE_BED_AT := Vector3(-10.0, UP, 4.5)
 const SAFE_AT := Vector3(-HALF_X + 0.2, UP + 1.0, 0.5)
 const TUB_AT := Vector3(-11.6, UP, -7.5)
+## Where the people stand: the six guests in a row in the lobby facing the front door, the concierge behind the desk,
+## señora Perlita by the armchairs, Tito by the front door and the maid in the corridor upstairs, pushing her cart west.
+const GUESTS_AT: Array[Vector3] = [
+	Vector3(-3.5, 0, -1.5), Vector3(-2.2, 0, -1.5), Vector3(-0.9, 0, -1.5), Vector3(0.4, 0, -1.5), Vector3(1.7, 0, -1.5),
+	Vector3(3.0, 0, -1.5),
+]
+const CONCIERGE_AT := Vector3(0.0, 0, -7.6)
+const PERLITA_AT := Vector3(4.5, 0, 2.5)
+const BELLBOY_AT := Vector3(1.8, 0, 5.8)
+const MAID_AT := Vector3(7.5, UP, 0.0)
 ## The awning over the front door.
 const AWNING_DEPTH := 2.0
 const BRICK := Color(0.85, 0.5, 0.45)
@@ -91,7 +103,14 @@ const WINDOW := Color(0.35, 0.45, 0.6)
 const FLOORBOARDS := Color(0.55, 0.38, 0.25)
 
 ## The wardrobe that hides the 13.
+## With false, the hotel is just the building: no guests, no staff (the raid builds its own on top).
+@export var crime_scene := true
 var wardrobe: Grabbable
+var guests: Array[HotelGuest] = []
+var concierge: HotelStaff
+var perlita: HotelStaff
+var bellboy: HotelStaff
+var maid: HotelStaff
 var _builder: PlaceBuilder
 
 
@@ -109,6 +128,13 @@ func _ready() -> void:
 	_rooms()
 	_suite()
 	_wardrobe()
+	if crime_scene:
+		_people()
+
+
+## The guest by index (the order of the case's traits).
+func suspect(index: int) -> CollisionObject3D:
+	return guests[index] if index >= 0 and index < guests.size() else null
 
 
 ## Whether a point in the world (ignoring height) is on the hotel's lot, under the awning included.
@@ -149,6 +175,31 @@ static func room_middle(number: int) -> Vector3:
 	var room: Dictionary = ROOMS[number]
 	var z := (BACK_Z - CORRIDOR) / 2 if room.side == "n" else (CORRIDOR + FRONT_Z) / 2
 	return Vector3((room.x0 + room.x1) / 2, UP, z)
+
+
+## The six guests alike in the lobby and the staff: the concierge, señora Perlita, Tito and the maid with her cart.
+func _people() -> void:
+	for i in GUESTS_AT.size():
+		var guest := HotelGuest.new()
+		guest.name = "Guest%d" % i
+		guest.index = i
+		guest.position = GUESTS_AT[i] + Vector3(0, FLOOR_TOP, 0)
+		add_child(guest)
+		guests.append(guest)
+	concierge = _staff("concierge", CONCIERGE_AT + Vector3(0, FLOOR_TOP, 0), 0.0)
+	perlita = _staff("perlita", PERLITA_AT + Vector3(0, FLOOR_TOP, 0), -0.4)
+	bellboy = _staff("bellboy", BELLBOY_AT + Vector3(0, FLOOR_TOP, 0), PI)
+	maid = _staff("maid", MAID_AT, -PI / 2.0)
+
+
+func _staff(who: String, at: Vector3, turn: float) -> HotelStaff:
+	var person := HotelStaff.new()
+	person.who = who
+	person.name = who.capitalize()
+	person.position = at
+	person.rotation.y = turn
+	add_child(person)
+	return person
 
 
 ## The floor, the upper storeys shut over the roof, the outer walls on both floors with the front door, and windows.
