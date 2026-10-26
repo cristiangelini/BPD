@@ -98,6 +98,13 @@ const BIKER_DISGUISES: Array[String] = ["biker_bandana", "biker_beard", "biker_j
 	"biker_jacket", "biker_bandana", "biker_beard", "biker_jacket", "biker_bandana", "biker_beard", "biker_jacket"]
 const BIKER_DISGUISES_AT := Vector3(0.6, 0, 2.4)
 const BIKER_GAP := 0.42
+## The art auction's (infiltracion-subasta.md, step 1): a monocle, a top hat and a tailcoat for each cop, in a row
+## behind the bikers', by the coffee.
+const AUCTION_DISGUISES: Array[String] = ["auction_monocle", "auction_top_hat", "auction_tailcoat", "auction_monocle",
+	"auction_top_hat", "auction_tailcoat", "auction_monocle", "auction_top_hat", "auction_tailcoat", "auction_monocle",
+	"auction_top_hat", "auction_tailcoat"]
+const AUCTION_DISGUISES_AT := Vector3(0.6, 0, 2.95)
+const AUCTION_GAP := 0.42
 
 ## Furniture: [model, position, turn]. The models come from tools/modelgen/models/station.js.
 const FURNITURE := [

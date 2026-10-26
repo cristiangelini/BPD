@@ -73,6 +73,10 @@ La subasta copia la forma de `ChessGames` y `BikerDares` (el host decide y avisa
 
 ## El orden para hacerlo (un PR chico por paso)
 1. El disfraz: monóculo, galera y moño con frac en el casillero, 2 de 3.
+   Hecho así: 12 piezas en una fila detrás de la de los motoqueros, al lado del café: monóculo dorado con cadenita
+   sobre el ojo derecho (cara), galera negra alta con cinta roja (cabeza, tapa la gorra) y frac negro con pechera
+   blanca, moño rojo y dos colas atrás (pecho; doblado en el piso). Con 2 de las 3, `is_disguised("auction")`
+   **(propuesta)**.
 2. La casa de subastas en la ciudad (`--place=auction`): la sala, la galería, el depósito, la oficina, los
    compradores, Don Martillo y el portero.
 3. Lo de la sala: el podio con el martillo, el atril de los lotes, las sillas con paletas y el cartel del precio.
