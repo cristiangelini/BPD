@@ -48,7 +48,7 @@ pasan por el control y hay 2 o 3 que se parecen mucho **(propuesta)**.
 | 3 | El auto con 20 personas | Hay que hacerlas bajar y contarlas ([control-auto-lleno.md](control-auto-lleno.md)). |
 | 4 | Alcoholemia en la boda | Todos van de fiesta; se sopla un tubo ([control-boda.md](control-boda.md)). |
 | 5 | Carrera ilegal | Los autos pasan rápido; hay que tirar pinchos ([control-carrera.md](control-carrera.md)). |
-| 6 | Mudanza del circo | Jaulas con animales; uno de ellos es el sospechoso. |
+| 6 | Mudanza del circo | Jaulas con animales; uno de ellos es el sospechoso ([control-circo.md](control-circo.md)). |
 | 7 | Neblina | Los autos aparecen de golpe; la linterna sirve ([control-neblina.md](control-neblina.md)). |
 | 8 | Desfile | El control queda en medio de carrozas. |
 | 9 | El auto fantasma | No tiene conductor (es a control remoto) ([control-auto-fantasma.md](control-auto-fantasma.md)). |

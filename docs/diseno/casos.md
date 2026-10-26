@@ -109,7 +109,7 @@ Montan un control en la calle y tienen que encontrar el auto buscado entre mucho
 3. **El auto con 20 personas:** hay que contarlas.
 4. **Control de alcoholemia en la boda.**
 5. **Carrera ilegal:** los autos pasan a toda velocidad.
-6. **Mudanza del circo:** jaulas con animales y uno de los animales es el sospechoso.
+6. **Mudanza del circo:** jaulas con animales y uno de los animales es el sospechoso. Propuesta en [control-circo.md](control-circo.md) (decisión 138).
 7. **Neblina:** los autos aparecen de golpe. Propuesta en [control-neblina.md](control-neblina.md) (decisión 137).
 8. **Desfile:** el control queda en medio de un desfile de carrozas.
 9. **El auto fantasma:** no tiene conductor (es a control remoto).
