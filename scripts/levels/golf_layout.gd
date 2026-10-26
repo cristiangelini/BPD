@@ -9,7 +9,7 @@ extends RefCounted
 const HALF := Vector2(80, 60)
 ## The club's west fence stands on the hedge past the highway, so its gate opens onto the ring's east side.
 const CENTER := Vector3(HighwayLayout.OUTER.x + 6.0 + HALF.x, 0, -CityLayout.SIZE.y / 2 + CityLayout.STREET / 2
-	+ HighwayLayout.RAMP_STREET_Z * CityLayout.PITCH)
+	+ (HighwayLayout.RAMP_STREET_Z - CityLayout.NORTH) * CityLayout.PITCH)
 const GATE := Vector3(-HALF.x, 0, 0)
 const GATE_WIDTH := 14.0
 const PATH_WIDTH := 3.0

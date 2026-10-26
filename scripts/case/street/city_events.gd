@@ -183,11 +183,10 @@ func start_snatch(walker: CityWalker = null) -> bool:
 func start_crash(at := Vector3.INF) -> bool:
 	if at == Vector3.INF:
 		var options: Array[Vector3] = []
-		for i in range(1, CityLayout.COLUMNS):
-			for j in range(1, CityLayout.ROWS):
-				var crossing := Vector3(CityLayout.street_x(i), 0, CityLayout.street_z(j))
-				if good_spot(to_global(crossing)):
-					options.append(crossing)
+		for c in CityLayout.crossings(true):
+			var crossing := Vector3(CityLayout.street_x(c.x), 0, CityLayout.street_z(c.y))
+			if good_spot(to_global(crossing)):
+				options.append(crossing)
 		if options.is_empty():
 			return false
 		at = options[_rng.randi() % options.size()]
@@ -200,13 +199,12 @@ func start_crash(at := Vector3.INF) -> bool:
 
 
 ## A car running a red light from a crossing near a cop but out of sight, or from `at` (street column and row).
-func start_flee(at := Vector2i(-1, -1)) -> bool:
-	if at.x < 0:
+func start_flee(at := ChaseRoute.NONE) -> bool:
+	if not CityLayout.on_grid(at):
 		var options: Array[Vector2i] = []
-		for i in range(1, CityLayout.COLUMNS):
-			for j in range(1, CityLayout.ROWS):
-				if good_spot(to_global(Vector3(CityLayout.street_x(i), 0, CityLayout.street_z(j)))):
-					options.append(Vector2i(i, j))
+		for c in CityLayout.crossings(true):
+			if good_spot(to_global(Vector3(CityLayout.street_x(c.x), 0, CityLayout.street_z(c.y)))):
+				options.append(c)
 		if options.is_empty():
 			return false
 		at = options[_rng.randi() % options.size()]
