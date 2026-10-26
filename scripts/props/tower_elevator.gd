@@ -2,9 +2,9 @@ class_name TowerElevator
 extends AnimatableBody3D
 
 ## The elevator of the Las Palomas building (docs/diseno/edificio.md, step 2): a car that runs in its shaft between the
-## lobby and floor 30 in TRAVEL_TIME, with the floor counting on its display. E inside sends it to
-## the other floor; the call button on a landing brings it. It carries MAX_KG: a cop counts COP_KG, and anything else
-## its mass; with more it buzzes and doesn't move. Every JAM_EVERY trips it gets stuck halfway for JAM_TIME with the
+## lobby and floor 30 in TRAVEL_TIME, with the floor counting on its display, and up to the secret floor 31 when the
+## story opens it. E inside sends it up to 30 or down to the lobby; the call button on a landing brings it. It carries
+## MAX_KG: a cop counts COP_KG, and anything else its mass; with more it buzzes and doesn't move. Every JAM_EVERY trips it gets stuck halfway for JAM_TIME with the
 ## light blinking, unless a cop jumps inside. Its door and the landing's open only while it stands at that floor.
 ## Every number here is (propuesta).
 
@@ -12,7 +12,9 @@ signal arrived(stop: int)
 signal overloaded(kg: float)
 signal jammed
 
+## From the lobby to floor 30; shorter trips take their share, but never less than MIN_TRIP.
 const TRAVEL_TIME := 15.0
+const MIN_TRIP := 3.0
 const MAX_KG := 400.0
 const COP_KG := 80.0
 const JAM_EVERY := 4
@@ -43,6 +45,7 @@ var _from := 0.0
 var _to := 0.0
 var _target := 0
 var _t := 0.0
+var _trip := TRAVEL_TIME
 var _jam_trip := false
 var _door_shape: CollisionShape3D
 var _door_mesh: MeshInstance3D
@@ -128,9 +131,9 @@ func prompt_key(_cop: Cop) -> String:
 	return "PROMPT_ELEVATOR_UP" if at_stop == 0 else "PROMPT_ELEVATOR_DOWN"
 
 
-## E inside: to the other floor.
+## E inside: up to floor 30 from the lobby, down to the lobby from anywhere else.
 func use(cop: Cop) -> void:
-	if not send(1 - at_stop) and load_kg() > MAX_KG:
+	if not send(1 if at_stop == 0 else 0) and load_kg() > MAX_KG:
 		cop.show_hint("HINT_ELEVATOR_OVERLOAD")
 
 
@@ -154,6 +157,7 @@ func send(stop: int) -> bool:
 	_target = stop
 	_from = stops[at_stop]
 	_to = stops[stop]
+	_trip = maxf(TRAVEL_TIME * absf(_to - _from) / absf(stops[1] - stops[0]), MIN_TRIP)
 	_t = 0.0
 	return true
 
@@ -178,7 +182,7 @@ func _travel(delta: float) -> void:
 			_light.visible = true
 		return
 	var was := _t
-	_t = minf(_t + delta / TRAVEL_TIME, 1.0)
+	_t = minf(_t + delta / _trip, 1.0)
 	if _jam_trip and was < 0.5 and _t >= 0.5:
 		_jam_trip = false
 		jammed_left = JAM_TIME

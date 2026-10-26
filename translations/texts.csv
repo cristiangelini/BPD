@@ -5120,6 +5120,21 @@ HINT_TELESCOPE_VAULT,"Se ve la bóveda del banco de enfrente, abierta. El guardi
 CLUE_TELESCOPE_VAULT,El telescopio apunta a la bóveda del banco de enfrente: se ve la clave.,The telescope points at the vault of the bank across the street: you can see the code.,O telescópio aponta para o cofre do banco da frente: dá para ver a senha.
 PROMPT_TAPE_MARK,E: mirar la marca de cinta,E: look at the tape mark,E: olhar a marca de fita
 CLUE_TAPE_MARK,Tres tiras de cinta en el piso del balcón: ahí iba un trípode apuntando al banco.,Three strips of tape on the balcony floor: a tripod stood there pointing at the bank.,Três tiras de fita no chão da varanda: ali ficava um tripé apontando para o banco.
+BRIEF_FLOOR_31_B,"El edificio tiene 30 pisos, pero el señor Bellini sube al 31. Ahí guarda los cuadros que faltan en el museo.","The building has 30 floors, but Mr. Bellini goes up to the 31st. That's where he keeps the paintings missing from the museum.","O prédio tem 30 andares, mas o senhor Bellini sobe ao 31. É lá que ele guarda os quadros que sumiram do museu."
+BRIEF_FLOOR_31_C,Traigan al patrullero la llave del piso 31: sin ella no hay caso. No pesa nada y vale todo.,Bring the key of floor 31 to the patrol car: without it there's no case. It weighs nothing and it's worth everything.,Tragam a chave do andar 31 para a viatura: sem ela não tem caso. Não pesa nada e vale tudo.
+BRIEF_FLOOR_31_D,"Si encuentran el plano con un piso de más o la caja de cuadros, mejor: todo suma.","If you find the plan with one floor too many or the box of paintings, even better: it all counts.","Se encontrarem a planta com um andar a mais ou a caixa de quadros, melhor: tudo conta."
+OBJ_FIND_FLOOR_31,Llevarse la llave del piso 31,Take the key of floor 31,Levar a chave do andar 31
+OBJ_EXTRA_FLOOR_PLAN,Extra: el plano con un piso de más,Extra: the plan with one floor too many,Extra: a planta com um andar a mais
+OBJ_EXTRA_PAINTINGS_BOX,Extra: la caja de cuadros robados,Extra: the box of stolen paintings,Extra: a caixa de quadros roubados
+PEPA_TIP_floor_31,"El del 30B sube en el ascensor y el ascensor sigue subiendo. Arriba no hay nada, ¿no?","The man in 30B takes the elevator up and the elevator keeps going up. There's nothing up there, is there?","O do 30B pega o elevador e o elevador continua subindo. Lá em cima não tem nada, né?"
+PROMPT_TAPED_BUTTON,E: mirar el botón tapado,E: look at the taped button,E: olhar o botão tapado
+CLUE_TAPED_BUTTON,"En el ascensor hay un botón 31 tapado con cinta. El edificio tiene 30 pisos.","In the elevator there's a 31 button taped over. The building has 30 floors.","No elevador tem um botão 31 tapado com fita. O prédio tem 30 andares."
+PROMPT_KEYHOLE,E: mirar la cerradura,E: look at the keyhole,E: olhar a fechadura
+HINT_KEYHOLE_EMPTY,Una cerradura dorada debajo de los botones. Hace falta una llave.,A golden keyhole under the buttons. It needs a key.,Uma fechadura dourada embaixo dos botões. Precisa de uma chave.
+PROMPT_TURN_FLOOR_KEY,E: girar la llave,E: turn the key,E: girar a chave
+HINT_FLOOR_31_OPEN,"«Clic.» La cinta se despega sola y el botón 31 se enciende.","«Click.» The tape peels off and the 31 button lights up.","«Clique.» A fita se solta e o botão 31 acende."
+CLUE_FLOOR_31_OPEN,La llave del 30B enciende el botón 31 del ascensor: el piso que no existe.,The key from 30B lights the elevator's 31 button: the floor that doesn't exist.,A chave do 30B acende o botão 31 do elevador: o andar que não existe.
+PROMPT_ELEVATOR_31,E: subir al 31,E: go up to 31,E: subir ao 31
 AIRPORT_DEPUTY_OFF,"¡Voy a mirar un ratito la tienda, enseguida vuelvo!","I'm just popping into the shop, back in a sec!","Vou dar uma olhadinha na loja, já volto!"
 AIRPORT_DEPUTY_SHOP_1,"¿Este perfume me hace más votable?","Does this perfume make me more electable?","Este perfume me deixa mais votável?"
 AIRPORT_DEPUTY_SHOP_2,"Con estos lentes nadie me reconoce. ¡Qué pena!","Nobody recognizes me in these sunglasses. What a shame!","Com estes óculos ninguém me reconhece. Que pena!"
