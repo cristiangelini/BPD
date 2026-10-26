@@ -63,7 +63,7 @@ El sospechoso es un NPC con un medidor de nervios y otro de abogado, y se juega 
 Van disfrazados y tienen que pasar desapercibidos mientras juntan evidencia (decisión 28).
 
 1. **Club de ajedrez:** hay que jugar mientras se espía. Propuesta en [infiltracion-ajedrez.md](infiltracion-ajedrez.md) (decisión 175).
-2. **Banda de motociclistas:** hay que hacer pruebas de valentía.
+2. **Banda de motociclistas:** hay que hacer pruebas de valentía. Propuesta en [infiltracion-motos.md](infiltracion-motos.md) (decisión 176).
 3. **Restaurante:** se hacen pasar por cocineros y hay que cocinar de verdad. Propuesta en [infiltracion-restaurante.md](infiltracion-restaurante.md) (decisión 174).
 4. **Banda de mimos:** no se puede hablar; todo se hace con mímica. Propuesta en [infiltracion-mimos.md](infiltracion-mimos.md) (decisión 170).
 5. **Fiesta de disfraces:** todos están disfrazados de policía y hay que encontrar al falso. Propuesta en [infiltracion-fiesta.md](infiltracion-fiesta.md) (decisión 171).
