@@ -44,6 +44,7 @@ const PLACES := [
 	{"id": "chess", "block": Vector2i(6, 1), "side": "s", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.3, 0.32, 0.36), "sign": "PLACE_CHESS"},
 	{"id": "restaurant", "block": Vector2i(1, 0), "side": "s", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.62, 0.22, 0.2), "sign": "PLACE_RESTAURANT"},
 	{"id": "school", "block": Vector2i(4, 0), "side": "s", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.45, 0.4, 0.55), "sign": "PLACE_SCHOOL"},
+	{"id": "school_visit", "block": Vector2i(3, 3), "side": "s", "along": 0.0, "size": Vector3(28, 4, 24), "color": Color(0.95, 0.85, 0.55), "sign": "PLACE_SCHOOL_VISIT"},
 	{"id": "cake_lab", "block": Vector2i(4, 3), "side": "w", "along": 0.0, "size": Vector3(24, 8, 22), "color": Color(0.95, 0.95, 0.85), "sign": "PLACE_CAKE_LAB"},
 	# A park, not a building: it fills its block and its case scene builds the canal and the bridge on the grass.
 	{"id": "bridge_park", "block": Vector2i(3, 4), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.45, 0.72, 0.3), "sign": "PLACE_BRIDGE_PARK", "park": true},

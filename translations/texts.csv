@@ -2317,7 +2317,28 @@ CHASE_TORO_LINE_2,"¿Ya se cansaron? ¡Flojos! ¡Diez vueltas más!","Tired alre
 CHASE_TORO_LINE_3,"Está bien, me rindo. Pero estiren después, que se lesionan.","Fine, I give up. But stretch afterwards, or you'll get hurt.","Tá bom, me rendo. Mas alonguem depois, senão se machucam."
 PLACE_SCHOOL,Academia Manos Ligeras,Light Hands Academy,Academia Mãos Leves
 SCHOOL_MOTTO,"¡Lo que se aprende, no se devuelve!","What you learn, you don't give back!","O que se aprende não se devolve!"
-SCHOOL_BOARD,"Hoy: ganzúa, carterista y sigilo","Today: lockpicking, pickpocketing and sneaking","Hoje: gazua, batedor de carteira e furtividade"
+SCHOOL_BOARD,"Bienvenido, diputado Lustre","Welcome, Deputy Lustre","Bem-vindo, deputado Lustre"
+SCHOOL_FOUNDER,"Don Prudencio, fundador","Don Prudencio, founder","Dom Prudêncio, fundador"
+SCHOOL_SHED,"Conserje","Janitor","Zelador"
+PROMPT_TALK_PUPIL,"E: charlar","E: chat","E: conversar"
+PROMPT_TALK_TEACHER,"E: charlar con la maestra","E: chat with the teacher","E: conversar com a professora"
+PROMPT_TALK_JANITOR,"E: charlar con el conserje","E: chat with the janitor","E: conversar com o zelador"
+PUPIL_0,"¿Tú eres policía de verdad? ¿Me prestas las esposas?","Are you a real cop? Can I borrow your handcuffs?","Você é policial de verdade? Me empresta as algemas?"
+PUPIL_1,"La seño dice que hoy viene alguien importante. ¿Eres tú?","Miss says someone important is coming today. Is it you?","A professora disse que hoje vem alguém importante. É você?"
+PUPIL_2,"Yo ya sé mi pregunta de memoria.","I already know my question by heart.","Eu já sei minha pergunta de cor."
+PUPIL_3,"¿Por qué tu gorra no tiene orejas?","Why doesn't your cap have ears?","Por que seu boné não tem orelhas?"
+PUPIL_4,"En el recreo vamos a jugar a policías y ladrones. Yo soy ladrón.","At recess we're playing cops and robbers. I'm a robber.","No recreio vamos brincar de polícia e ladrão. Eu sou o ladrão."
+PUPIL_5,"Mi abuelo dice que los diputados no saben dividir.","My grandpa says deputies can't do division.","Meu avô diz que os deputados não sabem dividir."
+PUPIL_6,"¿Me firmas el cuaderno?","Will you sign my notebook?","Você assina meu caderno?"
+PUPIL_7,"Shhh, que la seño nos está mirando.","Shhh, Miss is watching us.","Psiu, a professora está olhando."
+TEACHER_0,"Chicos, compórtense, que hoy tenemos visita.","Kids, behave, we have a visitor today.","Crianças, comportem-se, hoje temos visita."
+TEACHER_1,"Las preguntas las escribieron ellos solitos. Creo.","They wrote the questions all by themselves. I think.","Eles escreveram as perguntas sozinhos. Acho."
+TEACHER_2,"Los caramelos son para premiar, no para sobornar.","The candy is for rewards, not for bribes.","As balas são para premiar, não para subornar."
+TEACHER_3,"Si alguien llora, me avisa, que yo tengo práctica.","If anyone cries, let me know. I've had practice.","Se alguém chorar, me avise, que eu tenho prática."
+JANITOR_0,"Yo solo barro. No vi nada, no sé nada.","I just sweep. Didn't see a thing, don't know a thing.","Eu só varro. Não vi nada, não sei de nada."
+JANITOR_1,"Treinta años en esta escuela y nunca vino un diputado. Qué suerte la mía.","Thirty years in this school and never a deputy. Lucky me.","Trinta anos nesta escola e nunca veio um deputado. Que sorte a minha."
+JANITOR_2,"Cuidado, que está mojado. Bueno, no, pero por las dudas.","Careful, it's wet. Well, no, but just in case.","Cuidado, está molhado. Bom, não, mas por via das dúvidas."
+JANITOR_3,"¿Las tarjetas? ¿Qué tarjetas? Yo de tarjetas no sé nada.","Cards? What cards? I don't know anything about cards.","Cartões? Que cartões? Eu não sei nada de cartões."
 PROMPT_TALK_STUDENT,E: charlar con el alumno,E: chat with the student,E: conversar com o aluno
 SCHOOL_GOSSIP_0,"¿Hiciste la tarea? Yo me la copié... digo, me la robé. Es lo mismo, ¿no?","Did you do the homework? I copied it... I mean, I stole it. Same thing, right?","Fez a lição? Eu copiei... digo, roubei. Dá no mesmo, né?"
 SCHOOL_GOSSIP_1,Dicen que el Director solo baja para la graduación. Nadie le vio la cara.,They say the Director only comes down for graduation. Nobody's seen his face.,Dizem que o Diretor só desce na formatura. Ninguém viu o rosto dele.
@@ -4139,6 +4160,7 @@ CRASH_CALM_0,"Está bien, está bien. Lo corro.","Fine, fine. I'll move it.","T�
 CRASH_CALM_1,Tiene razón. Respiro.,You're right. Breathing.,Tem razão. Respirando.
 CRASH_CALM_2,"Bueno, fue un raspón.","Okay, it was a scratch.","Tá, foi só um arranhão."
 SHIFT_STREET,Eventos en la calle,Street events,Eventos na rua
+PLACE_SCHOOL_VISIT,"Escuela Los Girasoles","Sunflowers School","Escola Os Girassóis"
 "PLACE_BRIDGE_PARK","Parque del Canal","Canal Park","Parque do Canal"
 "BRIDGE_BANNER","¡Puente Lustre: para cruzar al futuro!","Lustre Bridge: crossing into the future!","Ponte Lustre: para atravessar ao futuro!"
 "BRIDGE_BUILDER","Pegote Hermanos · Construcciones","Pegote Brothers · Builders","Pegote Irmãos · Construções"
