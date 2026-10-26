@@ -1,0 +1,85 @@
+# BPD · La fábrica de muñecos "Sonrisas" (25/10)
+
+Quinto lugar para allanar, después de la casa del abuelo, la panadería, la peluquería de mascotas y la ferretería
+([historias.md](historias.md), [ferreteria.md](ferreteria.md)). Ya tiene su lote en la ciudad (`doll_factory`, 28 × 26 m,
+el edificio rosa al este de la plaza) y su idea en la lista de los 10 lugares: "el capataz, y la cinta que no para; la
+evidencia es un muñeco igual a otros 200; muñecos con micrófonos para espiar". Sigue la idea de lugar + historia
+(decisión 79): una denuncia anónima, 3 sospechas en la planilla y una sola historia verdadera, sorteada con la semilla.
+Decisiones 161 a 169. Todos los números son **(propuesta)** hasta probarlos jugando.
+
+## La fábrica
+Una nave de 28 × 26 m con techo alto (10 m), la entrada a la calle del oeste y el muelle de carga atrás.
+
+| Ambiente | Qué hay |
+|---|---|
+| **La recepción** | Adelante, con la entrada. Un mostrador, sillas de espera, la vitrina con los muñecos de porcelana de muestra y el reloj de fichar con las tarjetas de los operarios. |
+| **La planta** | El centro de la nave. **La cinta** en forma de U que no para: pasa por la máquina de cabezas, la de pelo, la de ojos y la de pintura, y al final tira los muñecos a un carro de cajas. Unos 200 muñecos iguales andan por la cinta, los carros y los estantes. |
+| **El depósito** | Al costado: estantes altos con cajas de muñecos empaquetados, una zorra y el muñeco gigante para el desfile del barrio. |
+| **La oficina del capataz** | Un entrepiso con ventanal que mira a la planta, con escalera: escritorio, archivero, caja fuerte chica y el botón de la sirena del almuerzo. |
+| **El muelle** | Atrás: una rampa, el camión de reparto (no arranca) y el contenedor de descarte. La persiana del muelle está cerrada. |
+
+- **Cómo se entra:** la recepción está **abierta**; lo cerrado es la puerta de la oficina (la llave la tiene el capataz
+  en el cinturón, o se rompe con el ariete) y la persiana del muelle (un botón adentro).
+- **La cinta que no para:** va a 1 m/s y lleva todo lo que se apoya arriba: muñecos, evidencia y policías. Al final
+  todo cae al carro de cajas. Las máquinas le hacen cosas a lo que pasa: la de ojos le pega dos ojos saltones a
+  cualquier cosa (también al policía que se sube, por un rato), la de pelo le pone pelo y la de pintura lo pinta de
+  rosa. El botón rojo la para, pero el capataz se enoja (ver abajo).
+- **Escondites:** unos 12, 6 para cosas pesadas. Por ejemplo: una caja del depósito, el archivero, la caja fuerte de la
+  oficina, adentro del muñeco gigante, el contenedor de descarte, debajo de la cinta, el camión de reparto y la vitrina.
+- **Lo frágil:** los **muñecos de porcelana** de la vitrina (6) y los **moldes de yeso** de la planta (4). Cada uno que
+  se rompe es una multa de 20 y le sube la denuncia al capataz.
+
+## El capataz
+- **Fermín**, con casco amarillo, chaleco reflectante, silbato y una tabla con planillas, cuerpo cuadrado (decisión 72).
+  Camina por la planta al lado de la cinta, de punta a punta, y sube a la oficina cada tanto.
+- **La cinta no para:** si alguien aprieta el botón rojo, Fermín toca el silbato, grita "¡La cinta NO para, oficial!",
+  le suma 15 a la denuncia y va corriendo a prenderla otra vez (tarda lo que tarde en llegar).
+- **Su distracción:** la cinta se **atasca** si se le tira algo grande (una caja, una silla, un policía acostado
+  cruzado). Fermín va a destrabarla y pasa 15 s agachado de espaldas, a los golpes con una llave inglesa, sin ver nada.
+- **La denuncia:** como Tobías: 15 si lo empujan o paran la cinta, 5 por puerta rota, 10 por cada porcelana o molde que
+  ve romperse, 5 por pregunta, y llama al abogado en 100. Con R suelta 2 cosas por caso y después se ofende.
+- **Nilda**, la operaria de la máquina de ojos, hace de chismosa: está atrasada con su cuota y no puede hablar. Si un
+  policía le pone 5 muñecos de la cinta en su caja, descansa y cuenta dónde vio a Fermín esconder algo.
+
+## Las historias
+Cada una tiene una evidencia principal (sin ella no hay caso), 1 o 2 extras, un tipo de pista propio y algo que cambia
+en la fábrica. La denuncia anónima es siempre vaga: "en la fábrica de muñecos trabajan de noche y no sale ningún
+camión".
+
+| Historia | Evidencia principal | Extras | Pista propia | Qué cambia |
+|---|---|---|---|---|
+| **El muñeco del diamante** | El muñeco con el diamante robado adentro, igual a otros 200 (2 kg, 1000) | La lupa del joyero (0,3 kg, 100), la lista de entregas (0,1 kg, 300) | La balanza de control de calidad: el muñeco bueno pesa 1,5 kg más | Uno de los 200 muñecos es el bueno; se sacude con E y suena, o se pesa en la balanza |
+| **Los muñecos espías** | El grabador con las cintas de lo que escucharon los muñecos (6 kg, 1000) | La caja de micrófonos (1 kg, 200), la lista de clientes (0,1 kg, 300) | La radio del policía chilla de acople cerca de un muñeco con micrófono | 10 muñecos tienen micrófono; repiten en voz chillona lo último que dijo un policía cerca |
+| **El Capitán Galaxia trucho** | El molde robado del muñeco más vendido de la competencia (15 kg, 1000) | Las etiquetas falsas (0,5 kg, 200), las fotos del prototipo (0,1 kg, 300) | Muñecos con la cara mal pintada en el contenedor de descarte | La mitad de los muñecos de la cinta salen con casco de astronauta y la cara torcida |
+| **Los operarios fantasma** | El libro de sueldos de 10 operarios que no existen (1 kg, 1000) | Las 10 tarjetas de fichar (0,2 kg, 200), la peluca de Fermín (0,2 kg, 200) | El reloj de fichar tiene tarjetas marcadas a las 3 de la mañana | 10 maniquíes vestidos de operario "trabajan" en la cinta; con E no contestan |
+| **El muñeco gigante** | La caja fuerte de la joyería, adentro del muñeco del desfile (25 kg, 1000, entre dos) | El plano del desfile (0,1 kg, 300), la llave de la caja (0,1 kg, 200) | Un cierre en la espalda del muñeco gigante y pisadas que suben hasta él | El muñeco gigante (3 m) está en el depósito; con E en el cierre se abre y adentro está la caja |
+| **Pelo de caniche** | La bolsa de pelo de caniche robado de la peluquería (3 kg, 1000) | El peine de oro de la peluquería (0,3 kg, 200), la factura trucha (0,1 kg, 300) | Pelos rosados de caniche por el piso, que hacen estornudar | La máquina de pelo le pega pelo rosado al policía que pasa cerca; los muñecos son peludos |
+
+Los pesos y valores siguen la escala de la ferretería: la principal vale unos 1000 y los extras suman entre 300 y 600.
+
+## Qué se reutiliza
+- Lo compartido de las historias (historias.md): escondites sorteados, notas, 3 sospechas, la planilla, el patrullero, la
+  escolta del dueño, la huida (persecucion-final.md) y la pantalla del turno (RaidCase).
+- De la ferretería: el dueño con su distracción con E, el chismoso que pide un favor, lo frágil con multa y el ariete.
+- Del bingo: los 200 muñecos se arman como los cartones, un solo tipo de cuerpo con colores al azar, para que no pese.
+
+## Atajos del panel de pruebas
+- Abrir la fábrica con una historia elegida (`--place=doll_factory --story=<id>`), y "Fábrica (prueba)" en el menú.
+
+## El orden para hacerlo (un PR chico por paso)
+1. La fábrica en la ciudad, con los ambientes, los escondites y lo frágil.
+2. La cinta que no para: lleva todo, las máquinas (ojos, pelo, pintura), el botón rojo y el atasco.
+3. Fermín: la ronda, la denuncia, el silbato, la cinta parada y la distracción del atasco.
+4. Nilda y su cuota de muñecos.
+5. El caso (RaidCase) con la primera historia: el muñeco del diamante.
+6. Las otras 5 historias, una por PR.
+7. "Jugar" sortea entre los 5 lugares de allanamiento.
+8. El online (Fermín, Nilda, la cinta y los muñecos en todas las PC).
+
+## Preguntas para Cristian (se avanza con lo recomendado mientras tanto)
+1. ¿La fábrica de muñecos como quinto lugar, o preferís otro de los 6 que faltan? **Recomendado:** la fábrica, porque es
+   la que sigue en la lista, ya tiene su lote y la cinta da para mucho chiste físico.
+2. ¿La cinta lleva también a los policías (y les pega ojos saltones), y el botón rojo la para pero enoja a Fermín?
+   **Recomendado:** sí, es el chiste del lugar y le da un costo a pararla.
+3. ¿"Jugar" sortea entre los 5 lugares de allanamiento en cuartos, cuando estén las 6 historias? **Recomendado:** sí,
+   como con la ferretería.
