@@ -141,6 +141,10 @@ var guest := false
 var tie := -1
 ## The bride and the groom's car, with its "just married" board.
 var newlyweds := false
+## What its driver blows into the breathalyzer (control-boda.md): the plan's, or else -1 and WeddingCar.alcohol_of.
+var alcohol := -1.0
+## A cop made the driver blow, and what they blew.
+var blown := false
 ## Its honks to celebrate so far, and seconds rolled, for its cans.
 var honks := 0
 var _rolled := 0.0
@@ -610,7 +614,7 @@ func net_setup() -> Dictionary:
 	return {"plate": plate, "driver": driver, "clown": clown, "clown_traits": clown_traits, "fruit": fruit,
 		"crate": crate, "hat": hat, "melon_kinds": melon_kinds, "crowd": crowd, "ghost_mode": ghost_mode, "ghost": ghost,
 		"shirt": shirt, "puppeteer": puppeteer, "wedding_mode": wedding_mode, "guest": guest, "tie": tie,
-		"newlyweds": newlyweds}
+		"newlyweds": newlyweds, "alcohol": alcohol}
 
 
 ## Online: where it is in the queue and whether its trunk is open; the ghost car's, how many pranks and the last one.
@@ -640,14 +644,20 @@ func open_trunk() -> void:
 		lid.set_angle(TrunkLid.MAX_ANGLE)
 
 
-func prompt_key(_cop: Cop) -> String:
+func prompt_key(cop: Cop) -> String:
+	if can_blow() and cop and cop.get_node("Grabber").held is Breathalyzer:
+		return "PROMPT_BLOW"
 	if waiting() and can_fine():
 		return "PROMPT_CROWD_FINE"
 	return "PROMPT_PAPERS" if waiting() else ""
 
 
-## E on a stopped car: a packed one all counted gets its fine; else the driver hands the license.
-func use(_cop: Cop) -> void:
+## E on a stopped car: with the breathalyzer in hand its driver blows; a packed one all counted gets its fine; else
+## the driver hands the license.
+func use(cop: Cop = null) -> void:
+	if can_blow() and cop and cop.get_node("Grabber").held is Breathalyzer:
+		blow(cop.get_node("Grabber").held)
+		return
 	if waiting() and can_fine():
 		fine()
 		return
@@ -660,6 +670,27 @@ func use(_cop: Cop) -> void:
 		return
 	papers_checked = true
 	say(DriverTraits.license_text(driver))
+
+
+## Someone at its wheel to blow: a stopped car with a driver, in the wedding check.
+func can_blow() -> bool:
+	return wedding_mode and waiting() and not driver.is_empty()
+
+
+## What its driver blows: the plan's, or else from its plate.
+func alcohol_level() -> float:
+	return alcohol if alcohol >= 0.0 else WeddingCar.alcohol_of(plate, guest)
+
+
+## Its driver blows into `breathalyzer`: the reading on its screen, and in the bubble with what they say.
+func blow(breathalyzer: Breathalyzer) -> void:
+	if not can_blow():
+		return
+	blown = true
+	var value := alcohol_level()
+	if breathalyzer:
+		breathalyzer.show_reading(value)
+	say(tr("BLOW_READING") % WeddingCar.reading_text(value) + "\n" + tr(WeddingCar.blow_line(plate, guest)))
 
 
 func say(text: String) -> void:

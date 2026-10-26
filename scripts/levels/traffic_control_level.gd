@@ -17,6 +17,8 @@ const BARRIER_FROM_DOOR := Vector3(6, 0, 1.5)
 const CONES_FROM_DOOR := Vector3(-5, 0, 1.5)
 ## The clown convoy's sponge (control-payasos.md, step 5), on the sidewalk between the barrier and the cones.
 const SPONGE_FROM_DOOR := Vector3(1, 0, 1.5)
+## The wedding check's breathalyzer (control-boda.md, step 2), on the sidewalk between the barrier and the cones.
+const BREATHALYZER_FROM_DOOR := Vector3(2, 0, 1.5)
 ## What Play draws, a fifth each (propuesta).
 const VARIANTS: Array[String] = ["rush_hour", "clown_convoy", "fruit_truck", "crowded_car", "ghost_car"]
 
@@ -31,6 +33,7 @@ var clues: TrafficClues
 var meters: TrafficMeters
 var case: TrafficCase
 var sponge: ClownSponge
+var breathalyzer: Breathalyzer
 
 
 ## Where the checkpoint goes in the city's space: cars run west (-X) on the north half of the street.
@@ -80,6 +83,11 @@ func _ready() -> void:
 		sponge.name = "Sponge"
 		add_child(sponge)
 		sponge.global_position = door + SPONGE_FROM_DOOR + Vector3.UP * 0.1
+	if chosen == "wedding":
+		breathalyzer = Breathalyzer.new()
+		breathalyzer.name = "Breathalyzer"
+		add_child(breathalyzer)
+		breathalyzer.global_position = door + BREATHALYZER_FROM_DOOR + Vector3.UP * 0.1
 	queue = TrafficQueue.new()
 	queue.name = "Queue"
 	queue.checkpoint = checkpoint

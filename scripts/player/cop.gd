@@ -170,7 +170,8 @@ func current_prompt() -> String:
 		var aimed := _usable_target()
 		if aimed is WaitingArmchair or aimed is DigSpot or aimed is InterrogationSuspect or aimed is PastryCook \
 				or aimed is TunnelHole or aimed is CircusClown \
-				or (aimed is CellDoor and $Grabber.held is CellKey):
+				or (aimed is CellDoor and $Grabber.held is CellKey) \
+				or (aimed is QueueCar and $Grabber.held is Breathalyzer and aimed.can_blow()):
 			return aimed.prompt_key(self)
 		if $Grabber.held.has_method("held_prompt_key"):
 			return $Grabber.held.held_prompt_key(self)
@@ -507,6 +508,10 @@ func use() -> bool:
 	# The circus's clowns take the sponge and the loaves from the hand too (escena-circo.md).
 	if ($Grabber.held is ClownSponge or $Grabber.held is ClownSign or $Grabber.held is Bread) \
 			and _usable_target() is CircusClown:
+		act("use", _usable_target())
+		return true
+	# The wedding check's breathalyzer, to a stopped driver (control-boda.md).
+	if $Grabber.held is Breathalyzer and _usable_target() is QueueCar and _usable_target().can_blow():
 		act("use", _usable_target())
 		return true
 	# A donut or a croissant for a hostage at the bank's party (robo-banco-rehenes.md, step 4).
