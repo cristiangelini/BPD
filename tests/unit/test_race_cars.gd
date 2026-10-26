@@ -1,7 +1,7 @@
 extends GutTest
 
-## Street race check step 1 (control-carrera.md): in the "race" variant the queue brings city cars and, among them,
-## the racers: a spoiler (big, small or none), a number on both front doors, a neon light under the body and pipes
+## Street race check step 1 (control-carrera.md): in the "race" variant the queue brings city cars and, in heats, the
+## racers: a spoiler (big, small or none), a number on both front doors, a neon light under the body and pipes
 ## that throw sparks while rolling. Time is stepped by hand, 0.1 s at a time, like test_wedding_cars.gd.
 
 var checkpoint: TrafficCheckpoint
@@ -40,24 +40,25 @@ func _tick(seconds: float) -> void:
 			car._physics_process(0.1)
 
 
-func test_the_queue_brings_city_cars_and_racers_from_the_seed() -> void:
+func test_the_queue_brings_city_cars_and_the_racers_come_in_heats() -> void:
 	_tick(60)
 	assert_gt(queue.spawned, 6)
-	for i in queue.get_child_count():
-		var car := queue.get_child(i) as QueueCar
+	for car: QueueCar in queue.cars:
 		assert_true(car.race_mode)
-		var index := String(car.name).trim_prefix("QueueCar").to_int()
-		assert_eq(car.racer, RaceCar.racer_at(5, index))
-		assert_eq(car.get_node_or_null("Exhaust") != null, car.racer, "only racers wear the race kit")
+		assert_false(car.racer)
+		assert_null(car.get_node_or_null("Exhaust"), "city cars don't wear the race kit")
+	assert_gt(queue.heats, 0)
+	for car in queue.get_children().filter(func(n: Node) -> bool: return n is QueueCar and n.racer):
+		assert_not_null(car.get_node_or_null("Exhaust"))
+		assert_false(queue.cars.has(car), "racers don't wait in the queue")
 
 
-func test_about_one_in_a_few_is_a_racer() -> void:
-	var racers := 0
-	for case_seed in 50:
-		for i in 12:
-			if RaceCar.racer_at(case_seed, i):
-				racers += 1
-	assert_between(racers, 50 * 12 / 6, 50 * 12 / 2)
+func test_four_or_five_heats_of_two_or_three() -> void:
+	for case_seed in 30:
+		assert_between(RaceCar.heats_of(case_seed), RaceCar.HEATS.x, RaceCar.HEATS.y)
+		for heat in 5:
+			assert_between(RaceCar.heat_size(case_seed, heat), RaceCar.HEAT_SIZE.x, RaceCar.HEAT_SIZE.y)
+			assert_between(RaceCar.heat_every(case_seed, heat), RaceCar.HEAT_EVERY.x, RaceCar.HEAT_EVERY.y)
 
 
 func test_a_racer_has_its_number_on_both_doors_and_a_neon() -> void:
