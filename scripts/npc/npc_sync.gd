@@ -10,7 +10,8 @@ const SEND_RATE := 15.0
 const EASE := 12.0
 ## A puppet further than this from where it should be jumps there instead of walking.
 const SNAP_DISTANCE := 3.0
-const PER_PACKET := 12
+## States per packet: few enough that a packet of busy ones (the count's 19 in the yard) stays under the MTU.
+const PER_PACKET := 8
 
 var net: Node
 var npcs: Array[Node3D] = []
@@ -46,8 +47,27 @@ static func is_npc(node: Node) -> bool:
 		or node is MarketShopper or node is Cleaner or node is FloorStains or node is GuardDog \
 		or node is TunnelHole or node is BankManager or node is AccompliceCar \
 		or node is BlackoutInmate or node is PrisonVisitor or node is VisitInmate or node is ChaseGhost \
-		or node is LaundryWorker or node is LaundryCart \
-		or node is CityRunaway or node is CrashDriver or (node is CityCar and (node as CityCar).wreck)
+		or node is VentGrille or node is KeyBoard or node is GarbageBag or node is Dumpster or node is BunkDummy \
+		or node is GarbageTruck or node is CellHeater or node is SmokeDetector or node is WaitingPerson \
+		or node is CellSkylight or node is RoofAntenna or node is CorridorCamera or node is TrialJudge \
+		or node is LaundryWorker or node is LaundryCart or node is BridgeEngineer \
+		or node is FootballPlayer or node is FootballReferee or node is SchoolPupil or node is SchoolAdult or node is SchoolJanitor \
+		or node is CityRunaway or node is CrashDriver or (node is CityCar and (node as CityCar).wreck) \
+		or node is ChaseCan \
+		or node is BankNephew \
+		or node is VentGrille \
+		or node is KeyBoard \
+		or node is GarbageBag or node is Dumpster or node is BunkDummy or node is GarbageTruck \
+		or node is CellHeater or node is SmokeDetector or node is WaitingPerson \
+		or node is CellSkylight \
+		or node is RoofAntenna \
+		or node is HardwareMan or node is KeyCustomer \
+		or node is Foreman or node is QuotaWorker \
+		or node is FloorBoss or node is Receptionist or node is YardInmate or node is CellHideout \
+		or node is TunnelDirt or node is HamsterCage \
+		or node is TalentInmate or node is TalentProp or node is VipInmate or node is VipLawyer \
+		or node is GardenPlant \
+		or node is CityInspector
 
 
 func _ready() -> void:

@@ -14,6 +14,8 @@ const MODEL := preload("res://assets/models/bank_drill.glb")
 const DRILL_TIME := 480.0
 ## The grandpa robbers' old drill (robo-banco-abuelos.md, decision 122).
 const SLOW_TIME := 720.0
+## The town bank's small vault (robo-banco-pueblo.md, decision 127).
+const TOWN_TIME := 360.0
 const NERVOUS := 20.0
 const NERVOUS_RATE := 1.5
 ## In the flooding bank (robo-banco-inundado.md, step 3), wet up to its motor it sparks and goes at this pace.

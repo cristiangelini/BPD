@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/props/evidence.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/models/mic_box.glb" id="2"]
+
+[sub_resource type="BoxShape3D" id="Shape"]
+size = Vector3(0.2, 0.08, 0.14)
+
+[node name="Evidence" type="RigidBody3D"]
+collision_layer = 4
+collision_mask = 15
+mass = 1.0
+script = ExtResource("1")
+full_value = 200.0
+safe_speed = 8.0
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+shape = SubResource("Shape")
+
+[node name="Model" parent="." instance=ExtResource("2")]
+
+[node name="ValueLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+billboard = 1
+pixel_size = 0.004
+outline_size = 8
+text = "0"

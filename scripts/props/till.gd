@@ -11,6 +11,8 @@ const COLOR := Color(0.6, 0.62, 0.66)
 const DRAWER := Color(0.35, 0.36, 0.4)
 
 var has_key := true
+## What the cop reads on finding the key (each place names its locked door).
+var key_hint := "HINT_TILL_KEY"
 var is_open := false
 var _drawer: MeshInstance3D
 
@@ -40,7 +42,7 @@ func use(cop: Cop) -> void:
 	if has_key:
 		has_key = false
 		cop.has_key = true
-		cop.show_hint("HINT_TILL_KEY")
+		cop.show_hint(key_hint)
 	opened.emit(global_position)
 
 
