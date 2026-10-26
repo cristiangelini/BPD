@@ -68,7 +68,44 @@ export function buildCasinoChips() {
 	return b.build();
 }
 
+// The regular guest (step 5): señor Ramón's costume trunk (0.8 x 0.5 x 0.45 m, origin in the middle), the fake guest
+// book and the spare wig.
+export function buildCostumeTrunk() {
+	const wood = mat('trunk_wood', 0x7a4a26), brass = mat('gold', 0xf2c84b, { emissive: 0x3a2a05 }), band = mat('trunk_band', 0x3a2a1a);
+	const red = mat('costume_red', 0xc42a2a), feather = mat('feather', 0x43b0e0);
+	const b = new Builder('costume_trunk');
+	b.add('trunk', wood, new THREE.BoxGeometry(0.8, 0.4, 0.45), { pos: V(0, -0.05, 0) });
+	for (const x of [-0.28, 0.28]) b.add('trunk', band, new THREE.BoxGeometry(0.05, 0.41, 0.46), { pos: V(x, -0.05, 0) });
+	b.add('trunk', brass, new THREE.BoxGeometry(0.1, 0.08, 0.02), { pos: V(0, 0.08, 0.23) });
+	b.add('lid', wood, new THREE.BoxGeometry(0.8, 0.06, 0.45), { pos: V(0, 0.17, -0.04), rot: [-0.25, 0, 0] });
+	b.add('costumes', red, new THREE.BoxGeometry(0.3, 0.06, 0.2), { pos: V(-0.15, 0.17, 0.08), rot: [0, 0.3, 0.2] });
+	b.add('costumes', feather, new THREE.ConeGeometry(0.03, 0.25, 6), { pos: V(0.2, 0.2, 0.05), rot: [0, 0, -0.8] });
+	b.add('costumes', mat('mustache', 0x1c1c1c), new THREE.BoxGeometry(0.12, 0.025, 0.03), { pos: V(0.05, 0.16, 0.12) });
+	return b.build();
+}
+
+export function buildFakeGuestBook() {
+	const cover = mat('guest_book', 0x6a1e24), paper = mat('paper', 0xf3eedf), gold = mat('gold', 0xf2c84b, { emissive: 0x3a2a05 });
+	const b = new Builder('fake_guest_book');
+	b.add('book', cover, new THREE.BoxGeometry(0.32, 0.04, 0.24));
+	b.add('book', paper, new THREE.BoxGeometry(0.31, 0.034, 0.23), { pos: V(0, 0, 0.004) });
+	b.add('book', gold, new THREE.BoxGeometry(0.1, 0.002, 0.04), { pos: V(0, 0.021, 0) });
+	return b.build();
+}
+
+export function buildSpareWig() {
+	const hair = mat('wig_orange', 0xe8762a);
+	const b = new Builder('spare_wig');
+	b.add('wig', hair, new THREE.SphereGeometry(0.12, 10, 6, 0, Math.PI * 2, 0, Math.PI / 2), { scale: [1, 0.7, 1.1], pos: V(0, -0.04, 0) });
+	for (let i = 0; i < 6; i++) {
+		const a = (i / 6) * Math.PI * 2;
+		b.add('wig', hair, new THREE.SphereGeometry(0.045, 6, 4), { pos: V(Math.cos(a) * 0.11, -0.03, Math.sin(a) * 0.12) });
+	}
+	return b.build();
+}
+
 export const models = {
+	costume_trunk: buildCostumeTrunk, fake_guest_book: buildFakeGuestBook, spare_wig: buildSpareWig,
 	hotel_lamp: buildHotelLamp, roulette: buildRoulette, casino_chip_box: buildChipBox, debt_book: buildDebtBook,
 	casino_chips: buildCasinoChips,
 };
@@ -76,6 +113,9 @@ export const models = {
 export const views = {
 	hotel_lamp: { items: [{ name: 'hotel_lamp', pos: [0, 0.21, 0] }, { name: 'ornament_vase', pos: [0.35, 0.13, 0] }],
 		cam: { pos: [0.2, 0.5, 1.4], target: [0.15, 0.2, 0], fov: 35 } },
+	regular_guest: { items: [{ name: 'costume_trunk', pos: [0, 0.25, 0] }, { name: 'fake_guest_book', pos: [0.75, 0.02, 0.2], rotY: -0.3 },
+		{ name: 'spare_wig', pos: [-0.7, 0.05, 0.2] }],
+		cam: { pos: [0, 1.1, 1.8], target: [0, 0.15, 0], fov: 38 } },
 	casino_13: { items: [{ name: 'roulette', pos: [0, 0.12, 0] }, { name: 'casino_chip_box', pos: [0.65, 0.06, 0.1], rotY: -0.3 },
 		{ name: 'debt_book', pos: [-0.6, 0.015, 0.2], rotY: 0.4 }, { name: 'casino_chips', pos: [0.4, 0.02, 0.5] }],
 		cam: { pos: [0, 1.1, 1.8], target: [0, 0.1, 0], fov: 38 } },

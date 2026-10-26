@@ -23,6 +23,17 @@ const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_HOTEL_TIP_B", "BR
 ## what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the spots it keeps
 ## for itself, the checklist rows of its extras and its rig, which places the main evidence.
 const STORIES := {
+	"regular_guest": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_REGULAR_GUEST_B", "BRIEF_REGULAR_GUEST_C", "BRIEF_REGULAR_GUEST_D"],
+		"find": "OBJ_FIND_REGULAR_GUEST",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/costume_trunk.tscn"), preload("res://scenes/props/fake_guest_book.tscn"),
+			preload("res://scenes/props/spare_wig.tscn")],
+		"half_heights": [0.25, 0.02, 0.06],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_GUEST_BOOK", "OBJ_EXTRA_WIG_SPARE"],
+		"rig": preload("res://scripts/case/hotel/regular_guest_rig.gd"),
+	},
 	"casino_13": {
 		"briefing": ["BRIEF_RIGHT", "BRIEF_CASINO_B", "BRIEF_CASINO_C", "BRIEF_CASINO_D"],
 		"find": "OBJ_FIND_CASINO",
