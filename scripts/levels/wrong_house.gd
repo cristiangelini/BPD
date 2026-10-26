@@ -7,11 +7,17 @@ extends Node3D
 ## the east, comes from the seed (or --guilty=left|right); the other is doña Chola's, who knows nothing (step 2:
 ## everything broken in hers costs CHOLA_FINES times the fine, and she sees it). Each house
 ## has its front door locked with the key in one of its pots, its ornaments (fines), its mailbox, and an old station
-## wagon parked in the side passage, nose to the street. Every number here is (propuesta).
+## wagon parked in the side passage, nose to the street, with a roof rack. Step 3: the guilty neighbor, if he sees the
+## cops go into doña Chola's house, carries his things out to his rack one by one and drives off with the main one.
+## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const POT_SCENE := preload("res://scenes/props/key_pot.tscn")
 const CHOLA_SCENE := preload("res://scenes/npc/neighbor_chola.tscn")
+const GUILTY_SCENE := preload("res://scenes/npc/guilty_neighbor.tscn")
+## The guilty neighbor waits at his front window (house space).
+const GUILTY_AT := Vector3(-5.8, FLOOR_TOP, 6.0)
+const GRASS_TOP := 0.04
 ## Doña Chola watches her soap opera standing by the sofa, facing the TV (house space).
 const CHOLA_AT := Vector3(-3.5, FLOOR_TOP, 3.4)
 ## Each house is HALF_U * 2 wide; the west one's middle at -HALF_U and the east one's at +HALF_U, the party wall at x = 0.
@@ -79,6 +85,7 @@ var ornaments: Array = [[], []]
 var broken: Array[int] = [0, 0]
 var wagons: Array[StaticBody3D] = []
 var chola: NeighborChola
+var neighbor: GuiltyNeighbor
 ## Fines for what the cops broke, in both houses.
 var fines := 0
 var station_parking: Transform3D
@@ -97,6 +104,8 @@ func _ready() -> void:
 	for house in 2:
 		_build_house(house)
 	_place_chola()
+	_bake_navigation()
+	_place_neighbor()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("wrong_house")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -116,6 +125,61 @@ func _place_chola() -> void:
 	chola.position = at(chola_house(), CHOLA_AT)
 	add_child(chola)
 	doors[chola_house()].broken.connect(chola.door_broken)
+
+
+## The guilty neighbor at his window, with his house, his rack and where he stands to load it.
+func _place_neighbor() -> void:
+	neighbor = GUILTY_SCENE.instantiate()
+	neighbor.position = at(guilty, GUILTY_AT)
+	neighbor.home = neighbor.position
+	neighbor.house_rect = house_rect(guilty)
+	var side := -1.0 if guilty == LEFT else 1.0
+	neighbor.rack = Vector3(side * WAGON_X, WAGON_SIZE.y + 0.55, WAGON_Z - 0.6)
+	neighbor.rack_spot = Vector3(side * WAGON_X, FLOOR_TOP, WAGON_Z - WAGON_SIZE.z / 2 - 0.8)
+	add_child(neighbor)
+	neighbor.fled.connect(_on_fled)
+
+
+## A house's floor on the ground (x, z).
+static func house_rect(house: int) -> Rect2:
+	return Rect2(house_x(house) - HALF_U, BACK_Z, HALF_U * 2, FRONT_Z - BACK_Z)
+
+
+## The first house a cop walks into decides it: doña Chola's and the neighbor sees it; his, and he's off guard.
+func _physics_process(_delta: float) -> void:
+	if not neighbor or neighbor.noticed or neighbor.off_guard:
+		return
+	for node in get_tree().get_nodes_in_group("cops"):
+		var cop := node as Cop
+		var spot := Vector2(cop.global_position.x, cop.global_position.z)
+		if house_rect(chola_house()).has_point(spot):
+			neighbor.notice()
+			return
+		if house_rect(guilty).has_point(spot):
+			neighbor.caught_off_guard()
+			return
+
+
+## He drove off: his wagon and what's on its rack leave with him (the chase comes with the case, step 8).
+func _on_fled() -> void:
+	var wagon := wagons[guilty]
+	wagon.visible = false
+	wagon.collision_layer = 0
+	for item in neighbor.on_rack:
+		item.freeze = true
+		item.visible = false
+		item.collision_layer = 0
+
+
+## The neighbor walks on a navigation mesh baked from the built houses and the lot, with the front doors closed.
+func _bake_navigation() -> void:
+	var nav: NavigationRegion3D = $Navigation
+	NavigationServer3D.map_set_cell_size(get_world_3d().navigation_map, nav.navigation_mesh.cell_size)
+	NavigationServer3D.map_set_cell_height(get_world_3d().navigation_map, nav.navigation_mesh.cell_height)
+	$Built.add_to_group("navigation_source")
+	for door in doors:
+		door.add_to_group("navigation_source")
+	nav.bake_navigation_mesh(false)
 
 
 ## The guilty house from --guilty=left|right among the user args, or drawn from the seed.
@@ -145,6 +209,10 @@ static func house_of(point: Vector3) -> int:
 
 ## The low fences round the back yards (one between them, over the party wall) and down the side passages.
 func _build_lot() -> void:
+	_build.slab(-LOT_X, LOT_X, FRONT_Z, LOT_Z, GRASS_TOP, Color(0.42, 0.66, 0.32))
+	_build.slab(-LOT_X, LOT_X, -LOT_Z, BACK_Z, GRASS_TOP, Color(0.42, 0.66, 0.32))
+	for x: float in [-LOT_X, HALF_U * 2]:
+		_build.slab(x, x + LOT_X - HALF_U * 2, BACK_Z, FRONT_Z, GRASS_TOP, Color(0.5, 0.5, 0.48))
 	var y := FENCE_HEIGHT / 2
 	_build.box(Vector3(0, y, -LOT_Z), Vector3(LOT_X * 2, FENCE_HEIGHT, 0.06), FENCE)
 	_build.box(Vector3(0, y, (BACK_Z - LOT_Z) / 2), Vector3(0.06, FENCE_HEIGHT, LOT_Z + BACK_Z), FENCE)
@@ -242,6 +310,11 @@ func _front(house: int) -> void:
 	wagon.get_child(0).position.y = WAGON_SIZE.y / 2 + 0.25
 	var parts := [[Vector3(0, 0.75, 0), Vector3(WAGON_SIZE.x, 0.7, WAGON_SIZE.z), WAGON],
 		[Vector3(0, 1.35, -0.4), Vector3(WAGON_SIZE.x - 0.1, 0.55, 3.2), WAGON_ROOF]]
+	# The roof rack: two rails and three bars over the roof.
+	for rx: float in [-0.75, 0.75]:
+		parts.append([Vector3(rx, WAGON_SIZE.y + 0.2, -0.4), Vector3(0.05, 0.05, 3.0), Color(0.2, 0.2, 0.22)])
+	for rz: float in [-1.6, -0.4, 0.8]:
+		parts.append([Vector3(0, WAGON_SIZE.y + 0.22, rz), Vector3(1.6, 0.04, 0.05), Color(0.2, 0.2, 0.22)])
 	for part: Array in parts:
 		var mesh := BoxMesh.new()
 		mesh.size = part[1]

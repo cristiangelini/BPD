@@ -109,6 +109,13 @@ valores siguen la escala del bingo: la principal unos 1000, los extras entre 300
   la de al lado). Pedir perdón: E mantenido 3 s a menos de 2,5 m, baja 20, una vez por policía; después E acepta el mate
   y cuenta el chisme (el de la historia, que pone el paso 4; hasta entonces "Del vecino no sé nada"). Captura en
   `/mnt/project-files/casa-equivocada/paso2-chola.png`.
+- **Paso 3 (el culpable y su huida):** `GuiltyNeighbor` espera junto a su ventana y saluda. Si ve a la policía entrar
+  en lo de doña Chola, cada 30 s agarra lo siguiente de su lista que siga en su casa (sin romper, sin que nadie lo
+  tenga en la mano), lo lleva sobre la cabeza por la puerta del patio y el pasillo del costado y lo sube a la parrilla de
+  su rural; la evidencia principal va última, y con ella arriba se va en la rural (señal `fled`, la persecución la arma
+  el paso 8). Un policía a menos de 1,5 m afuera de la casa lo frena: suelta lo que lleva, vuelve y prueba de nuevo a
+  los 15 s. Lo que está en la parrilla se puede bajar. Si la policía entra primero en su casa, no tiene tiempo de nada.
+  Captura en `/mnt/project-files/casa-equivocada/paso3-culpable.png`.
 
 ## Preguntas para Cristian
 1. **¿Entrar en la casa equivocada se puede o termina el caso?** Recomendado: se puede, y es el chiste: doña Chola

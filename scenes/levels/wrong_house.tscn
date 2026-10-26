@@ -35,8 +35,8 @@ geometry_source_geometry_mode = 1
 geometry_source_group_name = &"navigation_source"
 cell_size = 0.1
 cell_height = 0.05
-agent_height = 0.6
-agent_radius = 0.3
+agent_height = 1.8
+agent_radius = 0.4
 agent_max_climb = 0.1
 
 [node name="WrongHouse" type="Node3D"]
