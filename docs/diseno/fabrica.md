@@ -68,6 +68,16 @@ Los pesos y valores siguen la escala de la ferretería: la principal vale unos 1
 
 ## El orden para hacerlo (un PR chico por paso)
 1. La fábrica en la ciudad, con los ambientes, los escondites y lo frágil.
+   - **Cómo quedó (propuesta):** una nave de 28 × 22 m y 6 m de alto, con el muelle (4 m) atrás. Adelante, la
+     recepción (mostrador, sillas, la vitrina con 6 muñecas de porcelana y el reloj de fichar con sus tarjetas), con la
+     entrada a la calle y dos pasos a la planta. En la planta (oeste), la cinta en U (quieta hasta el paso 2) con sus 4
+     máquinas en arco (cabezas, pelo, ojos y pintura), el carro de cajas al final y la mesa con 4 moldes de yeso
+     adentro de la U. En el depósito (este), estantes altos con cajas y un cajón en el piso; al fondo, la escalera sube
+     a la oficina del capataz (cerrada con llave), con ventanal sobre la planta, escritorio, archivero y caja fuerte.
+     Atrás, el muelle: el camión de reparto, el contenedor de descarte y una cerca con portón a la calle de al lado; la
+     persiana se sube con el botón de adentro. 12 escondites, 6 para cosas pesadas. Lo frágil: 6 muñecas y 4 moldes,
+     20 de multa cada uno. "Fábrica de muñecos (prueba)" en el menú la abre, y también `--place=doll_factory`.
+     Capturas en `fabrica/` de la carpeta del proyecto.
 2. La cinta que no para: lleva todo, las máquinas (ojos, pelo, pintura), el botón rojo y el atasco.
 3. Fermín: la ronda, la denuncia, el silbato, la cinta parada y la distracción del atasco.
 4. Nilda y su cuota de muñecos.
