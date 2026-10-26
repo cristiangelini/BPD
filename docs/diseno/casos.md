@@ -120,7 +120,7 @@ Hecho: 9.1 ([proteccion-politico.md](proteccion-politico.md)). Propuesta: 9.6 ([
 Tienen que cuidar a un político molesto durante un evento (decisión 32).
 
 1. **Acto en una plaza:** le tiran huevos y tomates.
-2. **Inauguración de un puente:** el puente está mal hecho.
+2. **Inauguración de un puente:** el puente está mal hecho. Propuesta en [politico-puente.md](politico-puente.md) (decisión 178).
 3. **Visita a una escuela:** los chicos le hacen preguntas que lo ponen en problemas.
 4. **Debate en televisión:** el sabotaje viene desde el control de cámaras.
 5. **Partido de fútbol benéfico:** el político juega, mal.
