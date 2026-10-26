@@ -374,6 +374,78 @@ const NPCS = {
 		mouth(b, { smile: true });
 		b.add('props', C('clipboard', 0x8a5a32), new THREE.BoxGeometry(0.2, 0.28, 0.02), { pos: V(-0.42, 0.75, 0.2), rot: [0.3, 0, 0] });
 	},
+	// The thieves' school (infiltracion-escuela.md): a student in the grey striped shirt, beanie and eye mask, with a
+	// backpack full of books on picking locks.
+	alumno(b) {
+		const grey = C('thief_grey', 0x9aa0a8), dark = C('thief_black', 0x141418);
+		pearBody(b, SKIN.arena, { shirt: grey, pants: C('jeans', 0x2a2f3a) });
+		for (const y of [0.6, 0.72, 0.84, 0.96]) {
+			const r = y < 0.8 ? 0.36 + (0.8 - y) * 0.33 : 0.36 - (y - 0.8) * 0.48;
+			b.add('body', dark, loft([{ y: y - 0.025, rx: r + 0.012, rz: r * 0.89 + 0.012 }, { y: y + 0.025, rx: r + 0.006, rz: r * 0.89 + 0.006 }], 10));
+		}
+		b.add('face', dark, new THREE.BoxGeometry(0.32, 0.08, 0.06), { pos: V(0, 1.33, 0.16) });
+		eyes(b, 1.33, 0.18, 0.08, 0.045);
+		mouth(b);
+		b.add('cap', dark, ellipsoid(0.205, 0.14, 0.195, 10, 5), { pos: V(0, 1.42, 0.01) });
+		b.add('props', C('backpack_green', 0x4a7a3a), new THREE.BoxGeometry(0.4, 0.42, 0.18), { pos: V(0, 0.82, -0.38) });
+	},
+	// Another student: a purple hoodie with the hood up over the mask, a ponytail and a notebook under the arm.
+	alumna(b) {
+		const hoodie = C('hoodie_purple', 0x6a3aa0), dark = C('thief_black', 0x141418);
+		pearBody(b, SKIN.cacao, { shirt: hoodie, pants: dark, belted: false });
+		b.add('face', dark, new THREE.BoxGeometry(0.32, 0.08, 0.06), { pos: V(0, 1.33, 0.16) });
+		eyes(b, 1.33, 0.18, 0.08, 0.045);
+		mouth(b, { smile: true });
+		const hood = new THREE.SphereGeometry(1, 10, 6, 0, Math.PI * 2, 0, Math.PI * 0.55);
+		hood.scale(0.23, 0.22, 0.22);
+		b.add('cap', hoodie, hood, { pos: V(0, 1.33, -0.04), rot: [-0.5, 0, 0] });
+		b.add('cap', C('hair_black', 0x161214), ellipsoid(0.05, 0.12, 0.05, 6, 4), { pos: V(0, 1.3, -0.26), rot: [0.4, 0, 0] });
+		b.add('props', C('notebook_red', 0xb83030), new THREE.BoxGeometry(0.04, 0.3, 0.22), { pos: V(0.5, 0.72, 0.08) });
+	},
+	// La Profesora Ganzúa, the thieves' teacher: a mustard cardigan, glasses on a chain, a grey bun with a lockpick stuck
+	// in it, and a giant key as her pointer.
+	ganzua(b) {
+		const cardigan = C('cardigan_mustard', 0xc8a03a);
+		pearBody(b, SKIN.crema, { shirt: cardigan, pants: C('skirt_brown', 0x5a3a28), belted: false });
+		for (let i = 0; i < 4; i++) b.add('body', C('button_brown', 0x5a3a20), ellipsoid(0.02, 0.02, 0.01, 5, 3), { pos: V(0, 0.62 + i * 0.12, 0.42 - i * 0.03) });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		glasses(b);
+		mouth(b);
+		const hair = C('hair_gray', 0x9aa0a8);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		b.add('head', hair, ellipsoid(0.1, 0.1, 0.1, 8, 6), { pos: V(0, 1.55, -0.06) });
+		b.add('head', C('lockpick', 0xd8d8e0), new THREE.CylinderGeometry(0.008, 0.008, 0.22, 5), { pos: V(0.05, 1.6, -0.06), rot: [0, 0, -0.6] });
+		const brass = C('key_brass', 0xd8b040);
+		b.add('props', brass, new THREE.CylinderGeometry(0.015, 0.015, 0.6, 6), { pos: V(0.5, 0.8, 0.2), rot: [0.5, 0, 0] });
+		b.add('props', brass, new THREE.TorusGeometry(0.06, 0.015, 4, 10), { pos: V(0.5, 1.08, 0.36), rot: [0.5, 0, 0] });
+		b.add('props', brass, new THREE.BoxGeometry(0.03, 0.08, 0.05), { pos: V(0.5, 0.56, 0.06), rot: [0.5, 0, 0] });
+	},
+	// The Director of the thieves' school, the gang's boss: a black tailcoat, a top hat, a gold eye mask, white gloves
+	// and a gold tie.
+	director(b) {
+		const coat = C('tailcoat_black', 0x18181c);
+		pearBody(b, SKIN.celeste, { shirt: coat, pants: coat, belted: false });
+		lapels(b, white);
+		tie(b, gold);
+		b.add('face', gold, new THREE.BoxGeometry(0.32, 0.08, 0.06), { pos: V(0, 1.33, 0.16) });
+		eyes(b, 1.33, 0.18, 0.08, 0.045);
+		mustache(b, black);
+		mouth(b, { smile: true });
+		b.add('cap', coat, new THREE.CylinderGeometry(0.15, 0.15, 0.3, 10), { pos: V(0, 1.62, 0.0) });
+		b.add('cap', coat, new THREE.CylinderGeometry(0.24, 0.24, 0.02, 12), { pos: V(0, 1.47, 0.0) });
+		b.add('cap', gold, new THREE.CylinderGeometry(0.152, 0.152, 0.04, 10), { pos: V(0, 1.5, 0.0) });
+		for (const s of [-1, 1]) b.add('arms', white, ellipsoid(0.08, 0.08, 0.08, 6, 4), { pos: V(s * 0.49, 0.64, 0.09) });
+	},
+	// The school's lookout at the door: big, a black coat and beanie, and binoculars on his chest.
+	vigia(b) {
+		const coat = C('coat_black', 0x22222a);
+		pearBody(b, SKIN.arena, { shirt: coat, pants: coat, belted: false });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mouth(b);
+		b.add('cap', C('thief_black', 0x141418), ellipsoid(0.205, 0.14, 0.195, 10, 5), { pos: V(0, 1.42, 0.01) });
+		for (const s of [-1, 1]) b.add('props', black, new THREE.CylinderGeometry(0.035, 0.035, 0.12, 8), { pos: V(s * 0.05, 1.0, 0.32), rot: [Math.PI / 2, 0, 0] });
+		b.add('props', black, new THREE.TorusGeometry(0.16, 0.008, 3, 12), { pos: V(0, 1.1, 0.12), rot: [1.2, 0, 0] });
+	},
 	// Sospechoso: striped shirt, beanie and eye mask, with a loot sack.
 	sospechoso(b) {
 		pearBody(b, SKIN.celeste, { shirt: white, pants: C('jeans', 0x2a2f3a) });
@@ -887,7 +959,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, ladron_oso: 1.15, abuelo_oso: 1.15 };
+const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, ladron_oso: 1.15, abuelo_oso: 1.15 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
