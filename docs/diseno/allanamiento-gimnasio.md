@@ -81,6 +81,14 @@ Los pesos y valores siguen la escala de la oficina y el laboratorio: la principa
      queda para después si hace falta. 12 escondites, 6 para cosas pesadas. `--place=gym_raid` y "Gimnasio
      (allanamiento) (prueba)" en el menú. Capturas `paso1-*.png`.
 2. El profe Fito: la ronda, la denuncia, "¡no me desordenen el gimnasio!" y la clase de aeróbic con la música.
+   - **Cómo quedó (propuesta):** el profe Fito es un `FloorBoss` con voz `COACH`: da vueltas por la sala (recepción,
+     centro, cintas, fondo), la denuncia sube igual que con Bruno (puerta rota, caja abierta, lo que ve) y además +5
+     por cada mancuerna que ve tirada en el piso (una vez hasta que alguien la levanta), +10 por cinta rota que ve y
+     lo del espejo roto. La distracción es el equipo de música (`GymStereo`, la misma lógica que la impresora): E en
+     el botón verde pone su canción, él va al espejo y da 15 s de clase de espaldas a la sala, los 6 socios miran al
+     espejo y rebotan con él, y suben notas del equipo. Después el equipo descansa 45 s. Un policía que salta en la
+     sala durante la clase le baja 5 la denuncia ("¡Eso, oficial! ¡Con ritmo!"), una vez por clase. Capturas
+     `paso2-*.png`.
 3. Lula y la cinta de al lado.
 4. El caso (RaidCase) con la primera historia: las pesas rellenas de plata.
 5. Las otras 5 historias, una por PR.
