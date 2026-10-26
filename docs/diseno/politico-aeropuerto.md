@@ -97,3 +97,10 @@ pregunten."
   máquina sale en la pantalla con un rótulo abajo; si es la rara, el rótulo dice qué es, los periodistas gritan el
   escándalo y la máquina emite `scandal` (en el paso 5 eso pierde el caso). Si pasa una normal, los periodistas se
   ríen de los ositos.
+- **Paso 4 (el diputado y el embarque):** Lustre empieza frente al ventanal mirando el avión. `AirportBoarding`: el
+  reloj arranca con la cinta (cuando entra el primer policía) y el embarque cierra a los 4 minutos; el cartel sobre
+  la puerta de embarque cuenta hacia atrás y con 1 minuto se avisa el último llamado. `AirportDeputy`: a los 20 s se
+  va a la tienda libre de impuestos y pasa de estante en estante 7 s cada uno, diciendo lo que se prueba. E lo lleva de
+  la mano (se queja como en la plaza); llevado a la sala de embarque, se sienta, pero a los 50 s (más o menos 10) se
+  aburre y vuelve a la tienda. Soltado en otro lado, vuelve a la tienda. Al cerrar, si está en la sala de embarque
+  sube al avión (`closed(true)`); si no, lo pierde (`closed(false)`, en el paso 5 eso pierde el caso).

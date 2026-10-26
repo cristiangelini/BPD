@@ -8,8 +8,9 @@ extends Node3D
 ## the gate on the east, with the glass wall between them that looks out at the apron and the little plane. The cops
 ## start in the station and drive here; --place=airport opens it from Play. Step 2: Lustre's 13 suitcases (Suitcase)
 ## piled by the counter, the belt that takes them (AirportBelt) and the scale. Step 3: number 13 is the odd one
-## (OddCargo, what's inside drawn by the seed) and the X-ray machine on show (AirportXray). Every number here is
-## (propuesta).
+## (OddCargo, what's inside drawn by the seed) and the X-ray machine on show (AirportXray). Step 4: Lustre, who wanders
+## off to the duty-free shop (AirportDeputy), and the boarding clock on the board over the gate (AirportBoarding).
+## Every number here is (propuesta).
 
 const COUNTER_MODEL := preload("res://assets/models/checkin_counter.glb")
 const XRAY_MODEL := preload("res://assets/models/xray_machine.glb")
@@ -84,6 +85,9 @@ var belt: AirportBelt
 ## The odd suitcase and the X-ray machine on show (step 3).
 var odd: Suitcase
 var xray: AirportXray
+var politician: Politician
+var deputy: AirportDeputy
+var boarding: AirportBoarding
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -102,6 +106,7 @@ func _ready() -> void:
 	_build_shop_and_gate()
 	_build_apron()
 	_place_suitcases()
+	_place_deputy()
 	city.transform = CityLayout.anchor("airport")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
@@ -292,6 +297,27 @@ func _place_suitcases() -> void:
 	xray.name = "Xray"
 	add_child(xray)
 	xray.setup(self)
+
+
+## Lustre at the glass wall, looking at the plane, and the clock on the board over the gate.
+func _place_deputy() -> void:
+	politician = Politician.new()
+	politician.name = "Politician"
+	add_child(politician)
+	politician.position = AirportDeputy.START_AT + Vector3.UP * FLOOR_TOP
+	deputy = AirportDeputy.attach(self, politician, case_seed)
+	var board := Label3D.new()
+	board.name = "BoardingBoard"
+	board.font_size = 64
+	board.pixel_size = 0.008
+	board.modulate = Color(1.0, 0.85, 0.3)
+	board.outline_size = 8
+	board.position = Vector3(GATE_DOOR_X - 3.5, DOORWAY_HEIGHT, BACK_Z + 0.12)
+	$Built.add_child(board)
+	boarding = AirportBoarding.new()
+	boarding.name = "Boarding"
+	add_child(boarding)
+	boarding.setup(self, deputy, board)
 
 
 ## The duty-free shop's floor, shelves and sign; the gate's floor, seats, desk and sign.
