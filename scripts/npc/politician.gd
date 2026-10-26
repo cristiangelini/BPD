@@ -59,13 +59,20 @@ func _ready() -> void:
 
 func prompt_key(cop: Cop) -> String:
 	var walks := PoliticianWalks.of(self)
-	return walks.prompt_key(cop) if walks else "PROMPT_TALK_POLITICIAN"
+	if walks:
+		return walks.prompt_key(cop)
+	# On the bridge, the cops hold him back by the coat (BridgeCoat).
+	var coat := get_node_or_null("Coat")
+	return coat.prompt_key(cop) if coat else "PROMPT_TALK_POLITICIAN"
 
 
 ## E: he shakes the cop's hand and asks for their vote; off the stage, the cop takes him by the hand (PoliticianWalks).
 func use(cop: Cop) -> void:
 	var walks := PoliticianWalks.of(self)
 	if walks and walks.use(cop):
+		return
+	var coat := get_node_or_null("Coat")
+	if coat and coat.use(cop):
 		return
 	say("POLITICIAN_HANDSHAKE")
 
