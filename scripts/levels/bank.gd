@@ -349,6 +349,8 @@ func _ready() -> void:
 		phone.voice = "CONEJO"
 	elif blood:
 		phone.voice = "CONDE"
+	elif seeds:
+		phone.voice = "GARDENER"
 	car.add_child(phone)
 	car.add_collision_exception_with(phone)
 	if town:
@@ -860,6 +862,9 @@ func _add_van() -> void:
 	if blood:
 		# The blood bank's gang came in a black hearse, a coffin on its roof (robo-banco-sangre.md, step 4).
 		BankBlood.hearse(van)
+	elif seeds:
+		# The seed bank's gang came in a green van with pots on its roof (robo-banco-semillas.md, step 4).
+		BankSeeds.garden_van(van)
 	for at in VAN_WHEELS:
 		var wheel: Node3D = WHEEL_MODEL.instantiate()
 		wheel.position = at
@@ -1346,6 +1351,8 @@ func start_getaway(kind: String) -> void:
 		chase.truck.set_rider(ChaseSuspect.model_for(chase.who))
 	if blood and kind == SuspectCar.ROBBERS_VAN:
 		BankBlood.hearse(chase.truck)
+	if seeds and kind == SuspectCar.ROBBERS_VAN:
+		BankSeeds.garden_van(chase.truck)
 	chase.follower = follower
 	if case:
 		chase.online = case.online

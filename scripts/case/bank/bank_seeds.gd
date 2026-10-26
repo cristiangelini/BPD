@@ -110,6 +110,29 @@ func grow_vine(at: Vector3, facing: Vector3) -> BankVine:
 	return vine
 
 
+## The gang's van painted green, three pots with bushes on its roof (`root`: the parked van or the chase's truck; its
+## riders keep their colors).
+static func garden_van(root: Node3D) -> void:
+	var green := StandardMaterial3D.new()
+	green.albedo_color = Color(0.3, 0.6, 0.3)
+	for mesh: Node in root.find_children("*", "MeshInstance3D", true, false):
+		var rider := false
+		for name_: String in ["Rider", "Rider2"]:
+			var node := root.get_node_or_null(name_)
+			if node and (node == mesh or node.is_ancestor_of(mesh)):
+				rider = true
+		if not rider:
+			(mesh as MeshInstance3D).material_override = green
+	var pots := Node3D.new()
+	pots.name = "RoofPots"
+	pots.position = Vector3(0, 2.4, -0.8)
+	root.add_child(pots)
+	for z: float in [-0.7, 0.0, 0.7]:
+		var plant := pot(0.9)
+		plant.position.z = z
+		pots.add_child(plant)
+
+
 ## A clay pot with a round green bush, `size` times the hall's.
 static func pot(size: float) -> Node3D:
 	var root := Node3D.new()
