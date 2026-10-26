@@ -2518,6 +2518,13 @@ CHEF_FLOUR,"¡Harina de primera, oficial!","Top-quality flour, officer!","Farinh
 CHEF_NOTHING,"Yo solo hago pasteles, oficial.","I just make cakes, officer.","Eu só faço bolos, policial."
 CHEF_OFFENDED,"Un chef no revela sus secretos.","A chef never reveals his secrets.","Um chef não revela os seus segredos."
 CHEF_LAWYER,"¡Llamo a mi abogado! ¡Y a la prensa gastronómica!","I'm calling my lawyer! And the food critics!","Vou ligar para o meu advogado! E para os críticos de gastronomia!"
+PROMPT_POCHA_SAMPLE,Probar el pastel nuevo de Pocha,Try Pocha's new cake,Provar o bolo novo da Pocha
+PROMPT_POCHA_TASTED,Pedirle otra muestra a Pocha,Ask Pocha for another sample,Pedir outra amostra para a Pocha
+POCHA_IDLE_1,"¡Pruebe mi pastel nuevo, oficial! Es de receta propia.","Try my new cake, officer! It's my own recipe.","Prove o meu bolo novo, policial! É receita minha."
+POCHA_IDLE_2,"Psst... ¿Quiere una muestrita? Y le cuento algo.","Psst... Want a little sample? And I'll tell you something.","Psiu... Quer uma amostrinha? E eu te conto uma coisa."
+POCHA_IDLE_3,"Si el chef pregunta, yo no dije nada.","If the chef asks, I didn't say a thing.","Se o chef perguntar, eu não disse nada."
+POCHA_NOTHING,"¿Rico, no? Por ahora no vi nada raro... pero vuelva más tarde.","Tasty, huh? I haven't seen anything strange yet... but come back later.","Gostoso, né? Ainda não vi nada estranho... mas volte mais tarde."
+POCHA_AGAIN,"Una por persona, oficial. Reglas del chef.","One per person, officer. Chef's rules.","Uma por pessoa, policial. Regras do chef."
 HINT_JAILED_VENT,"El guardia mira las celdas y la llave cuelga del tablero, detrás de él. Arriba, en la pared, hay una rejilla floja... ¿entramos todos por ahí?","The guard is watching the cells and the key hangs on the board behind him. Up on the wall there's a loose grille... will we all fit through?","O guarda está olhando as celas e a chave está pendurada no quadro, atrás dele. Lá em cima, na parede, tem uma grade solta... será que todos cabem?"
 PROMPT_VENT_SCREW,"E: aflojar un tornillo con la uña","E: loosen a screw with your fingernail","E: afrouxar um parafuso com a unha"
 PROMPT_VENT_TOO_HIGH,"La rejilla está muy alta: súbete a la cucheta","The grille is too high: climb onto the bunk","A grade está alta demais: suba no beliche"

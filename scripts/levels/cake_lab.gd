@@ -6,7 +6,8 @@ extends Node3D
 ## the flour storeroom and the locker room in the west, the flavor lab behind glass at the back and the cold room in
 ## the back east corner. The tasting room is open; the flavor lab and the cold room are locked. The showcase cakes
 ## break (a fine each) and the flour sacks burst into white footprints. Chef Bruno goes from counter to counter, and
-## runs to his soufflé when a cop turns its oven up to the max (step 2). Every number here is (propuesta).
+## runs to his soufflé when a cop turns its oven up to the max (step 2); Pocha gossips behind her tray of samples
+## (step 3). Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const CAKE_SCENE := preload("res://scenes/props/bakery_cake.tscn")
@@ -48,6 +49,8 @@ const TILL_AT := Vector3(-8.5, FLOOR_TOP, 7.5)
 const TILL_SIZE := Vector3(2.0, 1.0, 0.7)
 const TRAY_AT := Vector3(4.0, FLOOR_TOP, 7.5)
 const TRAY_SIZE := Vector3(1.6, 0.9, 0.6)
+## Pocha, behind her tray.
+const POCHA_AT := Vector3(4.0, FLOOR_TOP, 6.6)
 const TABLES: Array[Vector3] = [
 	Vector3(-6.5, FLOOR_TOP, 9.4), Vector3(-3.5, FLOOR_TOP, 9.4), Vector3(3.5, FLOOR_TOP, 9.4), Vector3(6.5, FLOOR_TOP, 9.4),
 ]
@@ -126,6 +129,7 @@ var sacks: Array[FlourSack] = []
 var flour: FlourPrints
 var oven: LabOven
 var chef: FloorBoss
+var pocha: LabAssistant
 var complaint_bar: ProgressBar
 var broken_goods := 0
 var burst_sacks := 0
@@ -151,6 +155,7 @@ func _ready() -> void:
 	lab_door = _door(Vector3(LAB_DOOR_X, FLOOR_TOP, BACK_Z))
 	cold_door = _door(Vector3(COLD_DOOR_X, FLOOR_TOP, BACK_Z))
 	_place_chef()
+	_place_pocha()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("cake_lab")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -427,6 +432,14 @@ func _place_chef() -> void:
 	box.add_child(complaint_bar)
 	add_child(hud)
 	chef.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Pocha behind her tray of samples, facing the tasting room.
+func _place_pocha() -> void:
+	pocha = LabAssistant.new()
+	pocha.name = "Pocha"
+	pocha.position = POCHA_AT
+	add_child(pocha)
 
 
 func _on_cake_broken(at: Vector3) -> void:
