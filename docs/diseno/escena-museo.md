@@ -134,6 +134,11 @@ PlaceDraw y la custodia para el interrogatorio.
    canilla, la araña colgando, el aromatizante violeta en el lavamanos, y el secador, que con E sopla o no. Los que
    estuvieron de verdad dicen un detalle cierto; el culpable y uno o dos más, uno falso **(propuesta)**.
 4. El caso: la historia, lo robado y dónde está, las pistas con cómo se arruinan (la lustradora, el botón rojo) y la
-   planilla; los láseres y la alarma.
+   planilla; los láseres y la alarma. Hecho así (primera parte, lo robado): el comisario da el caso en la comisaría
+   con lo que falta esa partida (La Dama del Fideo, el Huevo del Fundador o la Espada de Utilería, que es de cartón) y
+   los seis guardias que estaban en el baño; el tablero y el sello están en la sala de pizarras. La semilla lo esconde
+   en uno de tres lugares: el depósito, entre los cuadros tapados; el casillero del culpable; o detrás del segundo
+   cuadro de la sala grande. Con E se busca: donde no está, dice qué hay ("Una gorra de repuesto, un peine y un
+   sándwich viejo"); donde está, sale al piso y la planilla lo anota **(propuesta)**.
 5. El final: tablero, cansancio, sueldo y la camioneta con los marcos.
 6. El sorteo de "Jugar" (en tercios: pastel, circo y museo) y el online.

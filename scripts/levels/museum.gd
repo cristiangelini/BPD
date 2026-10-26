@@ -81,6 +81,19 @@ const GUARDS_AT: Array[Vector3] = [
 const DIRECTOR_AT := Vector3(2.0, 0, 6.5)
 ## The statue stands on the middle step (_front), so he's that step's height up.
 const STATUE_AT := Vector3(4.5, 0.12, 11.5)
+## What was stolen, drawn with the seed (escena-museo.md, pregunta 1), and where it can be hidden: among the covered
+## paintings in the storage room, in the culprit's locker or behind a painting in the gallery.
+const LOOTS: Array[String] = ["painting", "egg", "sword"]
+const LOOT_SPOTS: Array[String] = ["storage", "locker", "painting"]
+const LOOT_MODELS := {
+	"painting": preload("res://assets/models/museum_painting.glb"),
+	"egg": preload("res://assets/models/founder_egg.glb"),
+	"sword": preload("res://assets/models/prop_sword.glb"),
+}
+## The painting it can be behind (one of PAINTINGS).
+const HIDING_PAINTING := 1
+## The roll of evidence bags, on a stool in the hall by the gallery's door.
+const BAGS_AT := Vector3(-2.2, 0, 4.7)
 const COLUMNS_X: Array[float] = [-6.0, -2.4, 2.4, 6.0]
 const STONE := Color(0.88, 0.86, 0.8)
 const WAXED := Color(0.72, 0.52, 0.34)
@@ -105,6 +118,13 @@ const CANVAS_COLORS: Array[Color] = [
 ## The three bathroom details that are true this match (GuardTraits.bathroom): what the bathroom shows.
 var bathroom_details: Array[String] = []
 var dryer: HandDryer
+var case: CrimeSceneCase
+## What was stolen and where it is (drawn with the case seed in set_up_case), and whether the cops found it.
+var loot := "painting"
+var loot_spot := "storage"
+var loot_found := false
+## The searchable places, by spot.
+var loot_spots := {}
 var guards: Array[MuseumGuard] = []
 var director: MuseumDirector
 var statue: LivingStatue
@@ -126,14 +146,46 @@ func _ready() -> void:
 	_bathroom()
 	_hall()
 	_people()
+	_bags()
+	_loot_spots()
 
 
-## Tells the guards about the case; one of them (by the seed) won't take off his cap until he gets something to eat.
-func set_up_case(case: CrimeSceneCase) -> void:
+## Draws what was stolen and where it is (the locker to search is the culprit's) and tells the guards about the case;
+## one of them (by the seed) won't take off his cap until he gets something to eat.
+func set_up_case(new_case: CrimeSceneCase) -> void:
+	case = new_case
+	loot = LOOTS[hash(["museum loot", case.case_seed]) % LOOTS.size()]
+	loot_spot = LOOT_SPOTS[hash(["museum loot spot", case.case_seed]) % LOOT_SPOTS.size()]
+	(loot_spots.locker as Node3D).position = _locker_door(case.plan.culprit)
 	var stubborn := hash("stubborn guard %d" % case.case_seed) % guards.size()
 	for guard in guards:
 		guard.case = case
 		guard.stubborn = guard.index == stubborn
+
+
+## Searching a spot: the stolen thing turns up in the right one; a sign of nothing in the others.
+func search(spot: String, cop: Cop) -> void:
+	if spot != loot_spot or loot_found or not case:
+		if cop:
+			cop.show_hint("HINT_SEARCH_NOTHING_" + spot)
+		return
+	reveal_loot()
+
+
+## What was stolen comes out of its hiding spot, on the floor in front of it, and the case notes it.
+func reveal_loot() -> void:
+	if loot_found:
+		return
+	loot_found = true
+	var item: Node3D = LOOT_MODELS[loot].instantiate()
+	item.name = "Loot"
+	add_child(item)
+	var spot := loot_spots[loot_spot] as Node3D
+	var out: Vector3 = spot.get_meta("out")
+	item.position = Vector3(spot.position.x, FLOOR_TOP, spot.position.z) + out * 0.6
+	item.rotation.y = atan2(out.x, out.z)
+	if case:
+		case.found_loot()
 
 
 ## The guard by index (the order of the case's traits).
@@ -382,6 +434,43 @@ func _detail_node(detail: String, mesh: Mesh, at: Vector3, color: Color, turn :=
 	instance.material_override = _builder.material(color)
 	instance.position = at
 	add_child(instance)
+
+
+## A stool with the roll of evidence bags for the clues the cops carry.
+func _bags() -> void:
+	_builder.box(BAGS_AT + Vector3(0, 0.25, 0), Vector3(0.5, 0.5, 0.4), WOOD)
+	bags = EvidenceBags.new()
+	bags.name = "EvidenceBags"
+	bags.position = BAGS_AT + Vector3(0, 0.5, 0)
+	add_child(bags)
+
+
+## The three places to search: a covered painting in the storage room, a locker's door (the culprit's, set when the
+## case comes) and a painting in the gallery. `out` is the way into the room, where the stolen thing falls.
+func _loot_spots() -> void:
+	var stored := STORED[0]
+	_loot_spot("storage", stored + Vector3(0.25, STORED_SIZE.y / 2, 0), Vector3(0.2, STORED_SIZE.y, STORED_SIZE.z),
+		Vector3.RIGHT)
+	_loot_spot("locker", _locker_door(0), Vector3(0.1, LOCKER_SIZE.y, LOCKER_SIZE.z), Vector3.LEFT)
+	var painting: Dictionary = PAINTINGS[HIDING_PAINTING]
+	_loot_spot("painting", painting.at + Vector3(0, 0, 0.05), Vector3(painting.size.x, painting.size.y, 0.1),
+		Vector3.BACK)
+
+
+func _loot_spot(spot: String, at: Vector3, size: Vector3, out: Vector3) -> void:
+	var body := LootSpot.new(size)
+	body.name = "Search_" + spot
+	body.spot = spot
+	body.place = self
+	body.position = at
+	body.set_meta("out", out)
+	add_child(body)
+	loot_spots[spot] = body
+
+
+## Where a locker's door is, in front of it.
+func _locker_door(index: int) -> Vector3:
+	return LOCKERS[index] + Vector3(-LOCKER_SIZE.x / 2 - 0.06, LOCKER_SIZE.y / 2, 0)
 
 
 ## The ticket desk in the hall and a sign pointing to the gallery.
