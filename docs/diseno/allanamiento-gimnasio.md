@@ -111,6 +111,11 @@ Los pesos y valores siguen la escala de la oficina y el laboratorio: la principa
      con una mano", y arriba sale "¿300 kilos? ¡Si no pesa nada!"). Al lado de los bancos hay una barra de verdad de
      40 kg para comparar. La foto trucada (0,2 kg, 300) y el certificado del concurso (0,1 kg, 200) se esconden.
      Captura `paso5-record.png` y `gym_fake_record.png`.
+   - **Cómo quedaron los socios fantasma (propuesta):** 3 de los 6 socios (sorteados) son maniquíes con musculosa:
+     con E no contestan ("(No contesta. Ni pestañea.)"), en la clase no giran ni rebotan, y si un policía los choca
+     corriendo se caen duros como una tabla ("¡PLONC!"); el primero es la pista. Se esconden la carpeta con los 300
+     socios inventados (1 kg, 1000), la caja de muñecos (6 kg, 300, en un escondite para cosas pesadas) y el sello falso
+     (0,3 kg, 200). Captura `paso5-fantasmas.png` y `gym_ghost_members.png`.
 6. "Jugar" sortea entre los 8 lugares de allanamiento.
 7. El online (el profe, Lula, la música, las cintas y las mancuernas en todas las PC).
 

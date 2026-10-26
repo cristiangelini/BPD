@@ -49,6 +49,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_RECORD_PHOTO", "OBJ_EXTRA_RECORD_CERTIFICATE"],
 		"rig": preload("res://scripts/case/gym/fake_record_rig.gd"),
 	},
+	"ghost_members": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_GHOST_MEMBERS_B", "BRIEF_GHOST_MEMBERS_C", "BRIEF_GHOST_MEMBERS_D"],
+		"find": "OBJ_FIND_MEMBERS_BINDER",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/members_binder.tscn"), preload("res://scenes/props/dummy_box.tscn"),
+			preload("res://scenes/props/fake_stamp.tscn")],
+		"half_heights": [0.05, 0.2, 0.06],
+		"heavy": [false, true, false],
+		"extra_keys": ["OBJ_EXTRA_DUMMY_BOX", "OBJ_EXTRA_FAKE_STAMP"],
+		"rig": preload("res://scripts/case/gym/ghost_members_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the hall's floor, away from the machines.
 const NOTE_PLACES: Array[Vector3] = [
@@ -519,16 +530,18 @@ func _watch_dumbbells() -> void:
 			_seen_down[dumbbell] = true
 
 
-## The class: the members turn to the mirror and everyone bounces; a cop who jumps along dances with them.
+## The class: the members turn to the mirror and everyone bounces (but the ghost members' dummies); a cop who jumps
+## along dances with them.
 func _class(delta: float) -> void:
 	if _before_class.is_empty():
 		_dancers.clear()
 		for member: ClubMember in members:
-			_before_class[member] = member.transform
-			member.rotation.y = 0.0
+			if member.look != GhostMembersRig.LOOK:
+				_before_class[member] = member.transform
+				member.rotation.y = 0.0
 	_beat += delta
 	var bounce := absf(sin(_beat * BOUNCE_SPEED)) * BOUNCE
-	for member: ClubMember in members:
+	for member: ClubMember in _before_class:
 		member.position.y = (_before_class[member] as Transform3D).origin.y + bounce
 	(coach.get_node("Model") as Node3D).position.y = bounce
 	for node in get_tree().get_nodes_in_group("cops"):

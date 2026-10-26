@@ -177,6 +177,40 @@ const models = {
 		b.add('seal', C('cert_ribbon', 0x3a6ad8), new THREE.BoxGeometry(0.015, 0.003, 0.05), { pos: V(0.09, 0.005, 0.09), rot: [0, 0.3, 0] });
 		return b.build();
 	},
+	// The ghost members' binder: a fat green ring binder, "SOCIOS" on the spine and pages sticking out.
+	gym_members_binder() {
+		const b = new Builder('gym_members_binder');
+		const cover = C('binder_green', 0x3fa05a);
+		b.add('cover', cover, new THREE.BoxGeometry(0.26, 0.012, 0.32), { pos: V(0, 0.006, 0) });
+		b.add('cover', cover, new THREE.BoxGeometry(0.26, 0.012, 0.32), { pos: V(0, 0.094, 0) });
+		b.add('cover', cover, new THREE.BoxGeometry(0.012, 0.1, 0.32), { pos: V(-0.125, 0.05, 0) });
+		b.add('pages', C('sheet_paper', 0xfaf6ea), new THREE.BoxGeometry(0.24, 0.076, 0.3), { pos: V(0.005, 0.05, 0) });
+		b.add('label', white, new THREE.BoxGeometry(0.004, 0.04, 0.14), { pos: V(-0.133, 0.05, 0) });
+		for (let i = 0; i < 5; i++) b.add('tabs', C('binder_tab', [0xff4fa8, 0xf2c84b, 0x3fe0ff][i % 3]), new THREE.BoxGeometry(0.02, 0.004, 0.03), { pos: V(0.13, 0.02 + i * 0.015, -0.1 + i * 0.05) });
+		return b.build();
+	},
+	// A cardboard box of shop dummies: two plastic arms and a bald head sticking out, and a green tank top on the flap.
+	gym_dummy_box() {
+		const b = new Builder('gym_dummy_box');
+		const card = C('box_card', 0xc89a5a), plastic = C('mannequin_plastic', 0xe8d8c0, { roughness: 0.35 });
+		b.add('box', card, new THREE.BoxGeometry(0.6, 0.4, 0.4), { pos: V(0, 0.2, 0) });
+		b.add('box', card, new THREE.BoxGeometry(0.6, 0.01, 0.2), { pos: V(0, 0.42, 0.28), rot: [0.6, 0, 0] });
+		b.add('head', plastic, ellipsoid(0.1, 0.12, 0.1, 8, 6), { pos: V(-0.12, 0.44, 0) });
+		limb(b, 'arms', plastic, V(0.1, 0.35, 0.05), V(0.22, 0.62, 0.1), 0.035);
+		limb(b, 'arms', plastic, V(0.15, 0.35, -0.08), V(0.3, 0.55, -0.15), 0.035);
+		b.add('tank', C('mannequin_tank', 0x3fd06a), new THREE.BoxGeometry(0.18, 0.012, 0.14), { pos: V(0.05, 0.47, 0.32), rot: [0.6, 0, 0.1] });
+		return b.build();
+	},
+	// The fake gym stamp: a wooden handle on a rubber block, with a pink ink pad.
+	gym_fake_stamp() {
+		const b = new Builder('gym_fake_stamp');
+		b.add('pad', C('stamp_pad', 0x2a2a30), new THREE.BoxGeometry(0.12, 0.02, 0.08), { pos: V(0.09, 0.01, 0) });
+		b.add('pad', C('stamp_ink', 0xff4fa8), new THREE.BoxGeometry(0.1, 0.004, 0.06), { pos: V(0.09, 0.022, 0) });
+		b.add('block', C('stamp_rubber', 0x6a4a3a), new THREE.BoxGeometry(0.07, 0.025, 0.05), { pos: V(-0.06, 0.0125, 0) });
+		b.add('handle', C('stamp_wood', 0xb07a3a), new THREE.CylinderGeometry(0.015, 0.02, 0.07, 8), { pos: V(-0.06, 0.06, 0) });
+		b.add('handle', C('stamp_wood', 0xb07a3a), ellipsoid(0.025, 0.02, 0.025, 8, 5), { pos: V(-0.06, 0.1, 0) });
+		return b.build();
+	},
 };
 
 export { models };
@@ -203,5 +237,10 @@ export const views = {
 		items: [{ name: 'gym_record_bar', pos: [0, 0.22, 0] }, { name: 'gym_record_photo', pos: [-0.3, 0, 0.45], rotY: 0.3 },
 			{ name: 'gym_record_certificate', pos: [0.3, 0, 0.45], rotY: -0.2 }],
 		cam: { pos: [0, 1.2, 1.9], target: [0, 0.15, 0.2], fov: 45 },
+	},
+	gym_ghost_members: {
+		items: [{ name: 'gym_members_binder', pos: [-0.45, 0, 0.1], rotY: 0.3 }, { name: 'gym_dummy_box', pos: [0.1, 0, -0.1], rotY: -0.2 },
+			{ name: 'gym_fake_stamp', pos: [0.55, 0, 0.25], rotY: 0.4 }],
+		cam: { pos: [0.1, 1.0, 1.7], target: [0.05, 0.2, 0], fov: 42 },
 	},
 };
