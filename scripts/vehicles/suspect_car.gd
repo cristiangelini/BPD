@@ -66,6 +66,8 @@ const MODELS := {
 	"pizza_scooter": preload("res://assets/models/pizza_scooter.glb"),
 	# The Gran Maestro Alfil rides off on a motorized carousel horse (infiltracion-ajedrez.md), hopping at corners.
 	"carousel_horse": preload("res://assets/models/carousel_horse.glb"),
+	# El Cromado rides off on his "bike" (infiltracion-motos.md): a moped with chopper handlebars, going "BRRRUM".
+	"chopper_moped": preload("res://assets/models/chopper_moped.glb"),
 	# The traffic control's wanted car, in its paint (control-transito.md): the traffic car it was in the queue.
 	"traffic_0": preload("res://assets/models/traffic_car_0.glb"),
 	"traffic_1": preload("res://assets/models/traffic_car_1.glb"),
@@ -93,6 +95,7 @@ const RIDERS := {
 	"learner_car": [[preload("res://assets/models/npc_director.glb"), Vector3(-0.45, 0.05, 0.1), 0.8]],
 	"pizza_scooter": [[preload("res://assets/models/npc_flambe.glb"), Vector3(0, 0.36, -0.1), 0.85]],
 	"carousel_horse": [[preload("res://assets/models/npc_alfil.glb"), Vector3(0, 0.82, -0.22), 0.8]],
+	"chopper_moped": [[preload("res://assets/models/npc_cromado.glb"), Vector3(0, 0.32, -0.2), 1.3]],
 }
 ## Who rides inside and stays there when he gives up, the same way: the choristers in the van, seen through its open
 ## windows, singing all the way.
@@ -115,7 +118,7 @@ const SPEEDS := {"bear_on_foot": 12.0 / 3.6, "wheelchair": 8.0 / 3.6, "tow_truck
 	"walker": 10.0 / 3.6, "choir_van": 35.0 / 3.6, "kick_scooter": 15.0 / 3.6,
 	"food_cart": 14.0 / 3.6, "veggie_trike": 16.0 / 3.6, "inmate_on_foot": 11.0 / 3.6, "invisible_car": 14.0 / 3.6,
 	"toro_jog": 13.0 / 3.6, "learner_car": 35.0 / 3.6, "pizza_scooter": 40.0 / 3.6,
-	"carousel_horse": 25.0 / 3.6}
+	"carousel_horse": 25.0 / 3.6, "chopper_moped": 30.0 / 3.6}
 ## The tow truck turns slowly and nearly stops to do it (persecucion-lugares.md): a cop cutting a corner on foot
 ## catches up with him.
 ## The golf cart turns very tight and hardly slows down to do it.
@@ -142,6 +145,7 @@ const PIZZA_SCOOTER := "pizza_scooter"
 const CAROUSEL_HORSE := "carousel_horse"
 ## The carousel horse jumps up this fast (m/s) at every corner it turns, like a knight's L (propuesta).
 const HORSE_HOP := 4.5
+const CHOPPER_MOPED := "chopper_moped"
 ## The learner car stalls after this many seconds of driving and stays stopped this long (propuesta).
 const STALL_EVERY := 6.0
 const STALL_TIME := 2.0
@@ -165,7 +169,8 @@ const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 
 	"traffic_1": Vector3(2.1, 1.4, 4.6), "traffic_2": Vector3(2.1, 1.4, 4.6), "traffic_3": Vector3(2.1, 1.4, 4.6),
 	"manager_car": Vector3(2.1, 1.4, 4.6), "party_patrol": Vector3(2.1, 1.4, 4.6),
 	"toro_jog": Vector3(0.9, 1.8, 0.9), "learner_car": Vector3(2.1, 1.4, 4.6),
-	"pizza_scooter": Vector3(1.2, 1.6, 2.3), "carousel_horse": Vector3(1.6, 2.0, 1.8)}
+	"pizza_scooter": Vector3(1.2, 1.6, 2.3), "carousel_horse": Vector3(1.6, 2.0, 1.8),
+	"chopper_moped": Vector3(0.8, 1.9, 1.7)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
@@ -179,7 +184,7 @@ const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": 
 	"old_patrol": SEDAN_WHEELS, "bike": NO_WHEELS, "traffic_0": SEDAN_WHEELS, "traffic_1": SEDAN_WHEELS,
 	"traffic_2": SEDAN_WHEELS, "traffic_3": SEDAN_WHEELS, "choir_van": SEDAN_WHEELS, "manager_car": SEDAN_WHEELS,
 	"party_patrol": SEDAN_WHEELS, "toro_jog": NO_WHEELS, "learner_car": SEDAN_WHEELS,
-	"pizza_scooter": NO_WHEELS, "carousel_horse": NO_WHEELS}
+	"pizza_scooter": NO_WHEELS, "carousel_horse": NO_WHEELS, "chopper_moped": NO_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
@@ -251,6 +256,8 @@ func _ready() -> void:
 		add_child(siren)
 	if kind == LEARNER_CAR:
 		_add_learner_labels()
+	if kind == CHOPPER_MOPED:
+		_add_brrrum()
 	if kind == TOW:
 		var hook := TowHook.new()
 		hook.name = "Hook"
@@ -262,6 +269,28 @@ func _ready() -> void:
 		var wheel: Node3D = WHEEL.instantiate()
 		wheel.position = at
 		add_child(wheel)
+
+
+## El Cromado's moped: its little engine and the "BRRRUM!" he makes with his mouth over it all the way (stopped with
+## the song when he gets off).
+func _add_brrrum() -> void:
+	var song := AudioStreamPlayer3D.new()
+	song.name = "Song"
+	song.stream = DareCharge.engine_stream()
+	song.pitch_scale = 1.6
+	song.max_distance = 40.0
+	song.autoplay = true
+	add_child(song)
+	var brrrum := Label3D.new()
+	brrrum.name = "Brrrum"
+	brrrum.text = "MOPED_BRRRUM"
+	brrrum.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	brrrum.font_size = 48
+	brrrum.pixel_size = 0.008
+	brrrum.outline_size = 12
+	brrrum.modulate = Color(1.0, 0.75, 0.2)
+	brrrum.position = Vector3(0, 3.0, 0)
+	add_child(brrrum)
 
 
 ## The learner car's roof sign, on both faces, and the "it stalled" mark over it.
@@ -370,6 +399,9 @@ func get_off() -> void:
 	var song := get_node_or_null("Song") as AudioStreamPlayer3D
 	if song:
 		song.stop()
+	var brrrum := get_node_or_null("Brrrum") as Node3D
+	if brrrum:
+		brrrum.hide()
 
 
 ## Online (NpcSync): what a guest's copy needs before it's added (one that drives off in the middle of a case).

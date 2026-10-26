@@ -9,8 +9,9 @@ extends Node
 ## The cop has JOIN seconds to get to the dare's place; not showing up ("¡Gallina!") makes the bikers suspicious, and
 ## failing it a little less; walking off in the middle counts as not showing up. While a dare is on, the bikers out of
 ## the patio turn to watch it and notice nothing else: the moment for the others to search. Passing it pleases the
-## biker, who tells some gossip (step 5). The host decides all of it and tells the guests (step 6). Every number here
-## is (propuesta).
+## biker, who tells some gossip (step 5). The host decides all of it and tells the guests: the bikers' lines, the arms
+## on the table and how they lean, and the bike charging at the line; the heavy bike is a grabbable like any other
+## (PropSync) (step 6). Every number here is (propuesta).
 
 signal challenged(kind: String, cop: Cop)
 signal started(kind: String)
@@ -36,6 +37,8 @@ const LEAVE := 3.0
 const IDLE := 0
 const WAITING := 1
 const DOING := 2
+## The host tells the guests how the arms lean this often (s).
+const LEAN_EVERY := 0.1
 
 var bar: BikerBar
 var case_seed := 0
@@ -56,6 +59,7 @@ var pushes := 0
 var held := 0.0
 var stood_at := Vector3.ZERO
 var _watching: Array[ClubMember] = []
+var _lean_left := 0.0
 var _rng := RandomNumberGenerator.new()
 
 
@@ -107,7 +111,7 @@ func challenge(who: Cop = null) -> bool:
 	challenger = bar.members[_rng.randi_range(0, bar.members.size() - 1)]
 	state = WAITING
 	join_left = JOIN
-	challenger.say("BIKER_DARE_" + kind)
+	_say("BIKER_DARE_" + kind)
 	cop.show_hint("HINT_BIKER_DARE_" + kind)
 	challenged.emit(kind, cop)
 	return true
@@ -139,13 +143,13 @@ func _start() -> void:
 	match kind:
 		"arm":
 			left = ARM_TIME
-			bar.arm_table.set_wrestling(true)
+			_show(true, false)
 		"lift":
 			left = LIFT_TIME
 		"still":
 			left = INF
 			stood_at = cop.global_position
-			bar.charge.charge()
+			_show(false, true)
 	_watch(true)
 	started.emit(kind)
 
@@ -158,6 +162,10 @@ func _doing(delta: float) -> void:
 	match kind:
 		"arm":
 			bar.arm_table.set_lean(float(pushes) / ARM_PUSHES - (1.0 - left / ARM_TIME))
+			_lean_left -= delta
+			if _lean_left <= 0.0:
+				_lean_left = LEAN_EVERY
+				_send_lean()
 			if left <= 0.0:
 				_fail(FAIL, "BIKER_ARM_LOST")
 		"lift":
@@ -187,7 +195,7 @@ func _on_braked() -> void:
 ## The dare passed: the biker is pleased and tells some gossip about evidence still missing.
 func _pass() -> void:
 	var done := kind
-	challenger.say(tip())
+	_say(tip())
 	_end()
 	passed.emit(done)
 
@@ -203,7 +211,7 @@ func tip() -> String:
 
 ## The dare failed: `line` from the biker and the bikers in the bar get suspicious.
 func _fail(amount: float, line: String) -> void:
-	challenger.say(line)
+	_say(line)
 	_end()
 	for member in bar.members:
 		if bar.is_inside(member.global_position + Vector3.UP):
@@ -226,8 +234,63 @@ func _watch(on: bool) -> void:
 
 func _end() -> void:
 	_watch(false)
-	bar.arm_table.set_wrestling(false)
-	bar.charge.back()
+	_show(false, false)
 	state = IDLE
 	next_left = EVERY
 	kind = ""
+
+
+## Host: the challenger says `line`, on every PC.
+func _say(line: String) -> void:
+	var index := bar.members.find(challenger)
+	_said(index, line)
+	var net := _net()
+	if multiplayer.is_server() and net.is_online():
+		for peer: int in net.scene_peers:
+			_said.rpc_id(peer, index, line)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _said(index: int, line: String) -> void:
+	if index >= 0 and index < bar.members.size():
+		bar.members[index].say(line)
+
+
+## Host: the arms on the table and the bike charging at the line (or back at its start), on every PC.
+func _show(wrestling: bool, charging: bool) -> void:
+	_shown(wrestling, charging)
+	var net := _net()
+	if multiplayer.is_server() and net.is_online():
+		for peer: int in net.scene_peers:
+			_shown.rpc_id(peer, wrestling, charging)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _shown(wrestling: bool, charging: bool) -> void:
+	bar.arm_table.set_wrestling(wrestling)
+	if charging:
+		bar.charge.charge()
+	else:
+		bar.charge.back()
+
+
+func _send_lean() -> void:
+	var net := _net()
+	if multiplayer.is_server() and net.is_online():
+		for peer: int in net.scene_peers:
+			_leaned.rpc_id(peer, bar.arm_table.lean)
+
+
+@rpc("authority", "call_remote", "unreliable_ordered")
+func _leaned(value: float) -> void:
+	bar.arm_table.set_lean(value)
+
+
+## The Net of this PC's multiplayer branch: the autoload in the game, each test PC's own in the online tests.
+func _net() -> Node:
+	var branch := multiplayer as SceneMultiplayer
+	if branch and not branch.root_path.is_empty():
+		var net := get_node_or_null(str(branch.root_path) + "/Net")
+		if net:
+			return net
+	return Net
