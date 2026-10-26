@@ -114,6 +114,11 @@ Los pesos y valores siguen la escala de la oficina: la principal vale unos 1000 
      esconden en escondites livianos. En la pizarra del laboratorio de sabores hay una receta copiada con el logo de
      otra pastelería tachado (E la lee y va a la planilla), y la muestra de Pocha "sabe igualito al pastel de la
      pastelería de enfrente". Capturas `paso5-pasteles.png`, `paso5-cuaderno.png` y `paso5-pizarra.png`.
+   - **Cómo quedó (propuesta), los pasteles que dan sueño:** el frasco de polvo para dormir (1 kg, 1000), la lista de
+     clientes dormidos (0,1 kg, 300) y la cuchara medidora gigante (0,5 kg, 200) se esconden con la semilla. En la
+     punta libre de la vitrina hay un plato de porciones gratis: E y el policía suelta lo que tiene y se duerme 4 s
+     parado, con un "Zzz" arriba (por ahora parado y no en el piso, para no pelear con la cámara). La muestra de
+     Pocha da sueño y la primera vez va a la planilla. Captura `paso5-siesta.png`.
 6. "Jugar" sortea entre los 7 lugares de allanamiento.
 7. El online (el chef, Pocha, la harina y los pasteles en todas las PC).
 

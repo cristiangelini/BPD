@@ -45,6 +45,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_DISGUISE_PHOTO", "OBJ_EXTRA_DELIVERY_CAP"],
 		"rig": preload("res://scripts/case/cake_lab/stolen_recipe_rig.gd"),
 	},
+	"sleepy_cakes": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_SLEEPY_CAKES_B", "BRIEF_SLEEPY_CAKES_C", "BRIEF_SLEEPY_CAKES_D"],
+		"find": "OBJ_FIND_SLEEP_POWDER",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/sleep_powder_jar.tscn"), preload("res://scenes/props/sleepers_list.tscn"),
+			preload("res://scenes/props/measuring_spoon.tscn")],
+		"half_heights": [0.09, 0.003, 0.045],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_SLEEPERS_LIST", "OBJ_EXTRA_MEASURING_SPOON"],
+		"rig": preload("res://scripts/case/cake_lab/sleepy_cakes_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the lab; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [
