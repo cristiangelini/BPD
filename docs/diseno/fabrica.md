@@ -128,6 +128,11 @@ Los pesos y valores siguen la escala de la ferretería: la principal vale unos 1
      de la cinta. Con E no contestan ("...") y el policía sospecha. El reloj de fichar de la recepción tiene diez
      tarjetas marcadas a las 3 de la mañana: mirarlo con E es la pista propia. El libro de sueldos es la evidencia
      principal y va escondido con las tarjetas de fichar y la peluca de Fermín. Captura `paso6-fantasmas`.
+   - **El muñeco gigante (propuesta):** un muñeco de desfile de 3 m con vestido celeste está parado en el depósito,
+     de frente a las puertas. Desde atrás, con E se baja el cierre del vestido y aparece la caja fuerte de la joyería
+     (25 kg, entre dos), que hasta entonces no se puede agarrar. Desde la puerta del depósito hay pisadas que van hasta
+     la espalda del muñeco y no vuelven: mirarlas con E es la pista propia. El plano del desfile y la llave de la caja
+     van escondidos. Capturas `paso6-gigante*`.
 7. "Jugar" sortea entre los 5 lugares de allanamiento.
 8. El online (Fermín, Nilda, la cinta y los muñecos en todas las PC).
 

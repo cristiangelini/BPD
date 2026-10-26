@@ -210,7 +210,58 @@ export function buildForemanWig() {
 	return b.build();
 }
 
+// The giant parade doll: 3 m tall, a porcelain-like doll in a wide sky blue dress, its back open where the zipper is
+// (the flap is its own model, giant_doll_flap). Origin on the floor at its middle; it faces +z.
+export function buildGiantDoll() {
+	const b = new Builder('giant_doll');
+	const dress = mat('giant_dress', 0x7ab8e8, { side: THREE.DoubleSide }), skin = mat('porcelain', 0xfbf3ec);
+	b.add('dress', dress, new THREE.CylinderGeometry(0.4, 0.85, 1.6, 12, 1, true, Math.PI * 1.25, Math.PI * 1.5), { pos: V(0, 0.8, 0) });
+	b.add('hem', mat('doll_lace', 0xffffff), new THREE.TorusGeometry(0.85, 0.04, 4, 16, Math.PI * 1.5), { pos: V(0, 0.04, 0), rot: [Math.PI / 2, 0, Math.PI * 0.75] });
+	b.add('torso', dress, ellipsoid(0.42, 0.5, 0.34, 10, 6), { pos: V(0, 1.85, 0) });
+	b.add('collar', mat('doll_lace', 0xffffff), new THREE.CylinderGeometry(0.2, 0.26, 0.1, 10), { pos: V(0, 2.32, 0) });
+	b.add('head', skin, ellipsoid(0.36, 0.38, 0.36, 10, 7), { pos: V(0, 2.6, 0) });
+	b.add('hair', mat('doll_curls', 0xa86a30), ellipsoid(0.4, 0.26, 0.38, 10, 5), { pos: V(0, 2.82, -0.06) });
+	for (const s of [-1, 1]) {
+		b.add('eyes', mat('doll_eyes', 0x2a5ab0), ellipsoid(0.06, 0.07, 0.03, 6, 4), { pos: V(s * 0.13, 2.65, 0.32) });
+		b.add('cheeks', mat('doll_cheeks', 0xf2a0a8), ellipsoid(0.07, 0.045, 0.02, 6, 4), { pos: V(s * 0.2, 2.5, 0.3) });
+		b.add('arms', skin, new THREE.CylinderGeometry(0.08, 0.07, 0.8, 8), { pos: V(s * 0.55, 1.7, 0.05), rot: [0, 0, s * 0.45] });
+		b.add('curls', mat('doll_curls', 0xa86a30), ellipsoid(0.1, 0.18, 0.1, 6, 4), { pos: V(s * 0.38, 2.5, -0.05) });
+	}
+	b.add('mouth', mat('doll_mouth_paint', 0xd23a3a), ellipsoid(0.06, 0.03, 0.02, 6, 3), { pos: V(0, 2.42, 0.33) });
+	return b.build();
+}
+
+// The back flap of the giant doll's dress, with the zipper down its middle: it closes the open quarter of the dress.
+export function buildGiantDollFlap() {
+	const b = new Builder('giant_doll_flap');
+	b.add('flap', mat('giant_dress', 0x7ab8e8, { side: THREE.DoubleSide }), new THREE.CylinderGeometry(0.4, 0.85, 1.6, 4, 1, true, Math.PI * 0.75, Math.PI * 0.5), { pos: V(0, 0.8, 0) });
+	b.add('zipper', mat('zipper_steel', 0xc8ccd2), new THREE.BoxGeometry(0.03, 1.6, 0.03), { pos: V(0, 0.8, -0.635), rot: [0.27, 0, 0] });
+	b.add('zipper', mat('zipper_pull', 0xd8c050), new THREE.BoxGeometry(0.06, 0.1, 0.03), { pos: V(0, 1.45, -0.45), rot: [0.27, 0, 0] });
+	return b.build();
+}
+
+// The parade plan: a street map 0.3 x 0.21 m with a dotted route in red. Extra of the giant doll.
+export function buildParadePlan() {
+	const b = new Builder('parade_plan');
+	b.add('sheet', mat('map_paper', 0xe8eee0), new THREE.BoxGeometry(0.3, 0.004, 0.21), { pos: V(0, 0, 0) });
+	for (let i = 0; i < 4; i++) b.add('streets', mat('map_street', 0xb8bcc4), new THREE.BoxGeometry(0.28, 0.001, 0.01), { pos: V(0, 0.0025, -0.08 + i * 0.05) });
+	for (let i = 0; i < 6; i++) b.add('route', mat('ink_red', 0xd23a3a), new THREE.BoxGeometry(0.025, 0.001, 0.008), { pos: V(-0.12 + i * 0.045, 0.003, -0.03 + (i % 2) * 0.05) });
+	return b.build();
+}
+
+// The safe's key: a long brass key 0.12 m with a red tag. Extra of the giant doll.
+export function buildSafeKey() {
+	const b = new Builder('safe_key');
+	const brass = mat('brass', 0xd8b040);
+	b.add('bow', brass, new THREE.TorusGeometry(0.02, 0.006, 4, 10), { pos: V(-0.05, 0, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('shaft', brass, new THREE.BoxGeometry(0.09, 0.008, 0.008), { pos: V(0.015, 0, 0) });
+	b.add('bit', brass, new THREE.BoxGeometry(0.015, 0.008, 0.025), { pos: V(0.05, 0, 0.012) });
+	b.add('tag', mat('tag_red', 0xd23a3a), new THREE.BoxGeometry(0.03, 0.003, 0.045), { pos: V(-0.085, 0, 0.01) });
+	return b.build();
+}
+
 export const models = {
+	giant_doll: buildGiantDoll, giant_doll_flap: buildGiantDollFlap, parade_plan: buildParadePlan, safe_key: buildSafeKey,
 	payroll_book: buildPayrollBook, time_cards: buildTimeCards, foreman_wig: buildForemanWig,
 	captain_helmet: buildCaptainHelmet, reject_captain: buildRejectCaptain, stolen_mold: buildStolenMold,
 	fake_labels: buildFakeLabels, prototype_photos: buildPrototypePhotos,
@@ -222,6 +273,14 @@ export const models = {
 };
 
 export const views = {
+	giant_doll: {
+		items: [
+			{ name: 'giant_doll', pos: [-1.0, 0, 0], rotY: 3.6 }, { name: 'giant_doll_flap', pos: [-1.0, 0, 0], rotY: 3.6 },
+			{ name: 'giant_doll', pos: [1.0, 0, 0], rotY: 2.8 },
+			{ name: 'parade_plan', pos: [0.1, 0.002, 1.0] }, { name: 'safe_key', pos: [0.5, 0.004, 1.0] },
+		],
+		cam: { pos: [0, 2.2, 5.5], target: [0, 1.3, 0], fov: 40 },
+	},
 	ghost_goods: {
 		items: [
 			{ name: 'payroll_book', pos: [-0.2, 0.025, 0] }, { name: 'time_cards', pos: [0.15, 0.013, 0.05] },

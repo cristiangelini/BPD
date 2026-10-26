@@ -2335,6 +2335,16 @@ PROMPT_TIME_CLOCK,E: mirar las tarjetas del reloj de fichar,E: look at the time 
 PROMPT_ASK_WORKER,E: hablarle al operario,E: talk to the worker,E: falar com o operário
 MANNEQUIN_SILENCE,...,...,...
 HINT_MANNEQUIN,No contesta. No pestañea. ¿Es un maniquí con delantal?,No answer. No blinking. Is it a mannequin in an apron?,Não responde. Não pisca. É um manequim de avental?
+BRIEF_GIANT_DOLL_B,"Robaron la caja fuerte de la joyería del centro, y creemos que Fermín la escondió adentro del muñeco gigante que hace para el desfile.","The downtown jeweler's safe was stolen, and we think Fermín hid it inside the giant doll he's making for the parade.","Roubaram o cofre da joalheria do centro, e achamos que o Fermín o escondeu dentro do boneco gigante que ele faz para o desfile."
+BRIEF_GIANT_DOLL_C,Traigan la caja fuerte en el baúl del patrullero. Pesa una barbaridad: entre dos. Y miren bien la espalda del muñeco.,Bring the safe back in the patrol car's trunk. It weighs a ton: two of you. And take a good look at the doll's back.,Tragam o cofre no porta-malas da viatura. Pesa uma barbaridade: entre dois. E olhem bem as costas do boneco.
+BRIEF_GIANT_DOLL_D,"Si encuentran el plano del desfile o la llave de la caja, mejor: todo suma.","If you find the parade plan or the safe's key, even better: it all adds up.","Se acharem o mapa do desfile ou a chave do cofre, melhor: tudo soma."
+OBJ_FIND_JEWELERS_SAFE,Encontrar la caja fuerte de la joyería (hacen falta dos),Find the jeweler's safe (needs two),Achar o cofre da joalheria (precisa de dois)
+OBJ_EXTRA_PARADE_PLAN,Extra: el plano del desfile,Extra: the parade plan,Extra: o mapa do desfile
+OBJ_EXTRA_SAFE_KEY,Extra: la llave de la caja fuerte,Extra: the safe's key,Extra: a chave do cofre
+NILDA_CLUE_giant_doll,«¡Cuota cumplida! Le cuento: vi a Fermín esconder algo %s. Y el muñeco gigante del depósito hace ruido de lata cuando lo empujan.»,“Quota done! Here's the thing: I saw Fermín hide something %s. And the giant doll in the storeroom clanks when you push it.”,“Cota cumprida! Vou contar: vi o Fermín esconder algo %s. E o boneco gigante do depósito faz barulho de lata quando empurram.”
+CLUE_GIANT_STEPS,Pisadas de zapato que van desde la puerta hasta la espalda del muñeco gigante. Y no vuelven.,Shoe prints going from the door to the giant doll's back. And they don't come back.,Pegadas de sapato que vão da porta até as costas do boneco gigante. E não voltam.
+PROMPT_GIANT_STEPS,E: mirar las pisadas,E: look at the footprints,E: olhar as pegadas
+PROMPT_GIANT_ZIPPER,E: bajar el cierre del vestido,E: unzip the dress,E: abrir o zíper do vestido
 HINT_JAILED_VENT,"El guardia mira las celdas y la llave cuelga del tablero, detrás de él. Arriba, en la pared, hay una rejilla floja... ¿entramos todos por ahí?","The guard is watching the cells and the key hangs on the board behind him. Up on the wall there's a loose grille... will we all fit through?","O guarda está olhando as celas e a chave está pendurada no quadro, atrás dele. Lá em cima, na parede, tem uma grade solta... será que todos cabem?"
 PROMPT_VENT_SCREW,"E: aflojar un tornillo con la uña","E: loosen a screw with your fingernail","E: afrouxar um parafuso com a unha"
 PROMPT_VENT_TOO_HIGH,"La rejilla está muy alta: súbete a la cucheta","The grille is too high: climb onto the bunk","A grade está alta demais: suba no beliche"
