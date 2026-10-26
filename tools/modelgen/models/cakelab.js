@@ -182,15 +182,48 @@ export function buildJewelerInvoice() {
 	return b.build();
 }
 
+export function buildFoamMoldBox() {
+	const b = new Builder('foam_mold_box');
+	b.add('box', mat('cardboard', 0xc49a62), new THREE.BoxGeometry(0.5, 0.25, 0.4), { pos: V(0, 0.125, 0) });
+	b.add('tape', mat('tape', 0xe8d8a8), new THREE.BoxGeometry(0.52, 0.01, 0.06), { pos: V(0, 0.252, 0) });
+	b.add('mold', mat('foam_yellow', 0xf2e06a), new THREE.CylinderGeometry(0.12, 0.12, 0.1, 12), { pos: V(-0.1, 0.3, 0.05) });
+	b.add('mold_hole', mat('foam_dark', 0xb8a440), new THREE.CylinderGeometry(0.08, 0.08, 0.02, 12), { pos: V(-0.1, 0.35, 0.05) });
+	b.add('sponge', mat('foam_pink', 0xf4b6c8), new THREE.BoxGeometry(0.12, 0.06, 0.12), { pos: V(0.14, 0.28, -0.06) });
+	return b.build();
+}
+
+export function buildContestDiploma() {
+	const b = new Builder('contest_diploma');
+	b.add('frame', mat('gold_shiny', 0xe0b040, { metalness: 0.8, roughness: 0.3 }), new THREE.BoxGeometry(0.3, 0.015, 0.22), { pos: V(0, 0.0075, 0) });
+	b.add('paper', mat('photo_white', 0xf4f1ea), new THREE.BoxGeometry(0.26, 0.002, 0.18), { pos: V(0, 0.016, 0) });
+	b.add('ribbon', mat('logo_red', 0xd94a3a), new THREE.CylinderGeometry(0.025, 0.025, 0.003, 10), { pos: V(0.08, 0.018, 0.05) });
+	for (let i = 0; i < 3; i++) b.add('line', mat('ink_blue', 0x34408f), new THREE.BoxGeometry(0.16, 0.001, 0.008), { pos: V(-0.02, 0.018, -0.05 + i * 0.03) });
+	return b.build();
+}
+
+export function buildCreamSpray() {
+	const b = new Builder('cream_spray');
+	b.add('can', mat('spray_white', 0xf0f0f4), new THREE.CylinderGeometry(0.035, 0.035, 0.2, 12), { pos: V(0, 0.1, 0) });
+	b.add('stripe', mat('frosting_pink', 0xf4b6c8), new THREE.CylinderGeometry(0.036, 0.036, 0.05, 12), { pos: V(0, 0.1, 0) });
+	b.add('cap', mat('logo_red', 0xd94a3a), new THREE.CylinderGeometry(0.02, 0.03, 0.04, 10), { pos: V(0, 0.22, 0) });
+	b.add('nozzle', mat('spray_white', 0xf0f0f4), new THREE.ConeGeometry(0.012, 0.03, 6), { pos: V(0, 0.255, 0) });
+	return b.build();
+}
+
 export const models = {
 	lab_oven: buildLabOven, giant_mixer: buildGiantMixer, microscope: buildMicroscope, test_tubes: buildTestTubes,
 	silver_cake: buildSilverCake, bill_mold: buildBillMold, orders_notebook: buildOrdersNotebook,
 	sleep_powder_jar: buildSleepPowderJar, sleepers_list: buildSleepersList, measuring_spoon: buildMeasuringSpoon,
 	cake_slices: buildCakeSlices, gold_sieve: buildGoldSieve, jeweler_invoice: buildJewelerInvoice,
+	foam_mold_box: buildFoamMoldBox, contest_diploma: buildContestDiploma, cream_spray: buildCreamSpray,
 	recipe_book: buildRecipeBook, disguise_photo: buildDisguisePhoto, delivery_cap: buildDeliveryCap,
 };
 
 export const views = {
+	foam_cakes: {
+		items: [{ name: 'foam_mold_box', pos: [-0.3, 0, 0] }, { name: 'contest_diploma', pos: [0.22, 0, 0.1] }, { name: 'cream_spray', pos: [0.25, 0, -0.18] }],
+		cam: { pos: [0, 0.8, 1.2], target: [0, 0.12, 0], fov: 40 },
+	},
 	gold_flour: {
 		items: [{ name: 'gold_sieve', pos: [-0.15, 0, 0] }, { name: 'jeweler_invoice', pos: [0.2, 0, 0.05] }],
 		cam: { pos: [0, 0.5, 0.75], target: [0, 0.03, 0.05], fov: 40 },

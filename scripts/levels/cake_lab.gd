@@ -65,6 +65,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_GOLD_SIEVE", "OBJ_EXTRA_JEWELER_INVOICE"],
 		"rig": preload("res://scripts/case/cake_lab/gold_flour_rig.gd"),
 	},
+	"foam_cakes": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_FOAM_CAKES_B", "BRIEF_FOAM_CAKES_C", "BRIEF_FOAM_CAKES_D"],
+		"find": "OBJ_FIND_FOAM_MOLD",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/foam_mold_box.tscn"), preload("res://scenes/props/contest_diploma.tscn"),
+			preload("res://scenes/props/cream_spray.tscn")],
+		"half_heights": [0.18, 0.01, 0.135],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_CONTEST_DIPLOMA", "OBJ_EXTRA_CREAM_SPRAY"],
+		"rig": preload("res://scripts/case/cake_lab/foam_cakes_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the lab; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [
