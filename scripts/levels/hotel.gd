@@ -7,7 +7,8 @@ extends CrimeScenePlace
 ## the long corridor with the guests' six rooms (11, 12, 14, 15, 16 and 17: the hotel skips the 13), the suite at its
 ## west end, where the theft was, and behind an old wardrobe in the corridor, the room with no number: the 13. The
 ## six guests alike wait in the lobby, don Bostezo behind the desk, señora Perlita by the armchairs, Tito the bellboy
-## by the door and doña Escoba upstairs with her cart (step 2). The case comes in step 4. Every number here is
+## by the door and doña Escoba upstairs with her cart (step 2). In every guest room, its sleeper's shoes, hairbrush,
+## nightstand and suitcase (step 3). The case comes in step 4. Every number here is
 ## (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
@@ -107,6 +108,8 @@ const FLOORBOARDS := Color(0.55, 0.38, 0.25)
 @export var crime_scene := true
 var wardrobe: Grabbable
 var guests: Array[HotelGuest] = []
+## The things in the guest rooms (RoomThing), by room: shoe, hair, glasses and suitcase.
+var things := {}
 var concierge: HotelStaff
 var perlita: HotelStaff
 var bellboy: HotelStaff
@@ -130,6 +133,19 @@ func _ready() -> void:
 	_wardrobe()
 	if crime_scene:
 		_people()
+		_things()
+
+
+## Tells the guests, the concierge and the rooms' things about the case.
+func set_up_case(case: CrimeSceneCase) -> void:
+	if not crime_scene:
+		return
+	for guest in guests:
+		guest.case = case
+	concierge.case = case
+	for room: int in things:
+		for thing: RoomThing in things[room].values():
+			thing.case = case
 
 
 ## The guest by index (the order of the case's traits).
@@ -179,10 +195,12 @@ static func room_middle(number: int) -> Vector3:
 
 ## The six guests alike in the lobby and the staff: the concierge, señora Perlita, Tito and the maid with her cart.
 func _people() -> void:
+	var traits := GuestTraits.draw(case_seed)
 	for i in GUESTS_AT.size():
 		var guest := HotelGuest.new()
 		guest.name = "Guest%d" % i
 		guest.index = i
+		guest.traits = traits[i]
 		guest.position = GUESTS_AT[i] + Vector3(0, FLOOR_TOP, 0)
 		add_child(guest)
 		guests.append(guest)
@@ -190,6 +208,28 @@ func _people() -> void:
 	perlita = _staff("perlita", PERLITA_AT + Vector3(0, FLOOR_TOP, 0), -0.4)
 	bellboy = _staff("bellboy", BELLBOY_AT + Vector3(0, FLOOR_TOP, 0), PI)
 	maid = _staff("maid", MAID_AT, -PI / 2.0)
+
+
+## In each guest room, the things of whoever really sleeps there: the shoes at the foot of the bed, the hairbrush and
+## the glasses (or not) on the nightstand and the suitcase beside the bed.
+func _things() -> void:
+	var traits := GuestTraits.draw(case_seed)
+	for guest in traits:
+		var room: Dictionary = ROOMS[guest.room]
+		var toward := 1.0 if room.side == "n" else -1.0
+		var bed := Vector3(room_middle(guest.room).x, UP, (BACK_Z + 1.1) if room.side == "n" else (FRONT_Z - 1.1))
+		var stand := bed + Vector3(1.1, 0.6, -0.6 * toward)
+		var at := {"shoe": bed + Vector3(-0.3, 0, 1.4 * toward), "hair": stand + Vector3(0, 0, -0.1),
+			"glasses": stand + Vector3(0, 0, 0.12), "suitcase": bed + Vector3(-1.2, 0, 0.3 * toward)}
+		things[guest.room] = {}
+		for what: String in at:
+			var thing := RoomThing.new()
+			thing.what = what
+			thing.room = guest.room
+			thing.sleeper = guest
+			thing.position = at[what]
+			add_child(thing)
+			things[guest.room][what] = thing
 
 
 func _staff(who: String, at: Vector3, turn: float) -> HotelStaff:

@@ -42,6 +42,8 @@ func test_everyone_talks_and_their_lines_are_written() -> void:
 	add_child_autofree(hotel)
 	var cop: Cop = autofree(preload("res://scenes/player/cop.tscn").instantiate())
 	var guest := hotel.guests[1]
+	assert_eq(guest.prompt_key(cop), "PROMPT_GUEST_SIGN", "first they sign (step 3)")
+	guest.use(cop)
 	assert_eq(guest.prompt_key(cop), "PROMPT_HOTEL_GUEST")
 	guest.use(cop)
 	var first := guest.said()

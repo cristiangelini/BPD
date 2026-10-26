@@ -131,3 +131,15 @@ PlaceDraw y la custodia para el interrogatorio.
   la boca abierta del bostezo), la señora Perlita al lado de los sillones (vestido rosa, estola, sombrero con pluma),
   Tito al lado de la puerta con una valija en la mano y doña Escoba en el pasillo de arriba empujando su carrito de la
   ropa sucia (que no se atraviesa). Cada uno tiene cuatro frases. Modelos en `tools/modelgen/models/hotel.js`.
+- **Paso 3 (las fichas y las habitaciones):** `GuestTraits` sortea con la semilla a los seis huéspedes (pelo,
+  anteojos, talle, dientes, si es zurdo), en qué habitación duerme cada uno y lo que dice el conserje: acierta cuatro y
+  cambia la del culpable con la de otro. En cada habitación están las cosas de quien de verdad duerme ahí
+  (`RoomThing`): los zapatos al pie de la cama (más largos cuanto más talle), el cepillo con pelos de su color y los
+  anteojos (o solo un libro) en la mesa de luz, y la valija al lado de la cama. Con E, cada cosa va a la ficha de quien
+  la ficha dice que duerme ahí: si el conserje mintió, los zapatos del culpable van a la ficha de otro. La valija dice
+  de quién es la habitación y las fichas se corrigen solas (la del engañado queda sin habitación, "?"). Los huéspedes
+  dan lo suyo: las huellas con el kit, los dientes mordiendo una dona y, con las manos vacías, una firma en la libreta
+  (con la izquierda o la derecha). La cámara no saca nada (los pepinos). El conserje, con E, dice quién duerme dónde
+  una vez sí y una vez no. La ficha dice la habitación ("lo dijo el conserje" hasta que se abre la valija), el talle, los
+  anteojos, el pelo, los dientes, la mano y las huellas. El libro de huéspedes y su firma de las 3 de la mañana son una
+  pista del paso 4.
