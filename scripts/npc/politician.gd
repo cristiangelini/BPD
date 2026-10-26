@@ -7,6 +7,9 @@ extends CharacterBody3D
 ## leaves furious (`furious`; the case is lost, decision 103). Step 5: his walks off the stage to greet the crowd and
 ## being led back by the hand (PoliticianWalks, "Walks"). Online the host's decides and a guest's follows it (NpcSync,
 ## net_state: his stains and where his walk is). Every number here is (propuesta).
+## The double (politico-doble.md, decision 220): Rolo Calcado is another Politician with `impostor` on. Both wear the
+## ten tells (DoubleTells, `dress`), the double three of his own; hidden in the crowd he wears a hat and a scarf
+## (`disguise`) that cover them.
 
 signal stained(count: int)
 signal furious
@@ -17,8 +20,17 @@ const STAINS_MAX := 10
 const STAIN_LINES := 6
 ## The stain left on him: the splat this small, stuck where it hit.
 const STAIN_SCALE := 0.35
+const HIDDEN_LINES := 3
+const HAT := Color(0.18, 0.16, 0.15)
+const SCARF := Color(0.55, 0.2, 0.25)
 
 var stains := 0
+## Rolo Calcado, the double (politico-doble.md), and the tells he gets wrong.
+var impostor := false
+var fakes: Array[String] = []
+var disguised := false
+var tells: Node3D
+var _disguise: Node3D
 ## Each stain as [kind, where on him], so a guest's copy wears them in the same places.
 var marks: Array = []
 
@@ -58,6 +70,8 @@ func _ready() -> void:
 
 
 func prompt_key(cop: Cop) -> String:
+	if disguised:
+		return "PROMPT_TALK_FAN"
 	var walks := PoliticianWalks.of(self)
 	if walks:
 		return walks.prompt_key(cop)
@@ -68,6 +82,9 @@ func prompt_key(cop: Cop) -> String:
 
 ## E: he shakes the cop's hand and asks for their vote; off the stage, the cop takes him by the hand (PoliticianWalks).
 func use(cop: Cop) -> void:
+	if disguised:
+		say("DOUBLE_HIDDEN_%d" % (randi() % HIDDEN_LINES))
+		return
 	var walks := PoliticianWalks.of(self)
 	if walks and walks.use(cop):
 		return
@@ -75,6 +92,50 @@ func use(cop: Cop) -> void:
 	if coat and coat.use(cop):
 		return
 	say("POLITICIAN_HANDSHAKE")
+
+
+## The ten tells on him (DoubleTells): the real deputy's look, but `wrong` ones the double's.
+func dress(wrong: Array[String]) -> void:
+	fakes = wrong
+	if tells:
+		tells.free()
+	tells = DoubleTells.dress(_model, fakes)
+	tells.visible = not disguised
+
+
+## The double hidden in the crowd: a hat over his hair and a scarf over his face and tie, which hide his tells.
+func disguise(on: bool) -> void:
+	disguised = on
+	if on and not _disguise:
+		_disguise = Node3D.new()
+		_disguise.name = "Disguise"
+		_model.add_child(_disguise)
+		_part(_disguise, _cylinder(0.24, 0.05), Vector3(0, 1.47, 0.02), HAT)
+		_part(_disguise, _cylinder(0.17, 0.2), Vector3(0, 1.58, 0.02), HAT)
+		_part(_disguise, _cylinder(0.25, 0.32), Vector3(0, 1.08, 0.02), SCARF)
+	if _disguise:
+		_disguise.visible = on
+	if tells:
+		tells.visible = not on
+
+
+static func _part(parent: Node3D, mesh: Mesh, at: Vector3, color: Color) -> void:
+	var part := MeshInstance3D.new()
+	part.mesh = mesh
+	var material := StandardMaterial3D.new()
+	material.albedo_color = color
+	part.material_override = material
+	part.position = at
+	parent.add_child(part)
+
+
+static func _cylinder(radius: float, height: float) -> CylinderMesh:
+	var mesh := CylinderMesh.new()
+	mesh.top_radius = radius
+	mesh.bottom_radius = radius
+	mesh.height = height
+	mesh.radial_segments = 12
+	return mesh
 
 
 ## Off the stage greeting, or being led back.

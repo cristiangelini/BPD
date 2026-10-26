@@ -81,7 +81,8 @@ func give_tip() -> void:
 	tip_given = true
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).input_enabled:
-			briefing.start(PackedStringArray(["BRIEF_RALLY_A", "BRIEF_RALLY_B", "BRIEF_RALLY_C"]))
+			var brief := "BRIEF_DOUBLE_" if rally.variant == "double" else "BRIEF_RALLY_"
+			briefing.start(PackedStringArray([brief + "A", brief + "B", brief + "C"]))
 			break
 	checklist.show_rows(rows())
 
@@ -257,6 +258,11 @@ func rows() -> Array[Dictionary]:
 		list.append(_row("OBJ_RALLY_CATCH_SCOOTER", caught))
 	var state := "OBJ_RALLY_FURIOUS" if furious else ("OBJ_RALLY_OVER" if speech_over else "OBJ_RALLY_KEEP_CLEAN")
 	list.append({"text": state, "done": false, "optional": false, "status": true})
+	# The double's rally (politico-doble.md): the real deputy's file, to tell him from the double.
+	if rally.variant == "double":
+		list.append({"text": "OBJ_DOUBLE_FILE", "done": false, "optional": false, "status": true})
+		for tell in DoubleTells.TELLS:
+			list.append({"text": DoubleTells.file_key(tell), "done": false, "optional": false, "status": true})
 	return list
 
 

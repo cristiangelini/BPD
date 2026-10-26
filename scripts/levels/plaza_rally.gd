@@ -8,6 +8,8 @@ extends Node3D
 ## who throw eggs and tomatoes at him; the ones cuffed are walked to the patrol car (step 4). He walks off the stage to
 ## greet them now and then (PoliticianWalks, step 5). The case is PoliticianCase's (step 6). --place=plaza opens it
 ## from Play. Every number here is (propuesta).
+## With `variant` "double" (politico-doble.md, decision 220; --place=double) Rolo Calcado, the double, hides in the
+## crowd with a hat and a scarf, and both deputies wear the tells (DoubleTells): the double three of his own.
 
 ## The stage, from the plaza's middle: its middle, its size and the ramp up its front at the east end.
 const STAGE_FROM_PLAZA := Vector3(0, 0, -14)
@@ -22,6 +24,8 @@ const SPEAKER_BEHIND := 0.6
 const BANNER_SIZE := Vector2(9, 1.6)
 ## The banner's middle over the boards, above the politician's bubble.
 const BANNER_HEIGHT := 3.0
+## Where the double hides, from the plaza's middle: at the end of the crowd's back row.
+const DOUBLE_FROM_PLAZA := Vector3(9.0, 0.05, -5.2)
 const BALLOON_COLORS: Array[Color] = [Color(0.9, 0.2, 0.25), Color(0.25, 0.45, 0.9), Color(0.95, 0.85, 0.2)]
 
 const BOARDS := Color(0.55, 0.36, 0.2)
@@ -32,9 +36,13 @@ const METAL := Color(0.2, 0.2, 0.22)
 
 ## Same seed, same speech (and, later, the same hecklers). 0 draws one.
 @export var case_seed := 0
+## "plaza" (the base rally) or "double" (politico-doble.md).
+@export var variant := "plaza"
 var politician: Politician
 var speech: PoliticianSpeech
 var crowd: RallyCrowd
+## Rolo Calcado, with variant "double".
+var double: Politician
 ## The case on top of the rally (step 6): the comisario's briefing, the planilla and the end of the shift.
 var case: PoliticianCase
 ## The stage's middle on its top, in world space.
@@ -59,6 +67,8 @@ func _ready() -> void:
 	add_child(politician)
 	politician.global_position = stage_top + LECTERN_FROM_STAGE - Vector3(0, 0, SPEAKER_BEHIND)
 	politician.rotation.y = PI
+	if variant == "double":
+		_add_double(city.transform * CityLayout.block_center(CityLayout.PLAZA))
 	speech = PoliticianSpeech.new()
 	speech.name = "Speech"
 	speech.setup(politician, case_seed)
@@ -77,6 +87,20 @@ func _ready() -> void:
 	case.shift_screen = $ShiftScreen
 	add_child(case)
 	case.start(city.comisario)
+
+
+## The real deputy wears the tells as they are; the double, hidden in the crowd, gets the seed's three wrong.
+func _add_double(plaza: Vector3) -> void:
+	politician.dress([])
+	double = Politician.new()
+	double.name = "Double"
+	double.impostor = true
+	add_child(double)
+	double.global_position = plaza + DOUBLE_FROM_PLAZA
+	# Facing the stage, to the north, like the crowd.
+	double.rotation.y = 0.0
+	double.dress(DoubleTells.draw(case_seed))
+	double.disguise(true)
 
 
 ## Boards on a blue skirt, the ramp up the front, the lectern and its microphone, the banner on two poles at the back

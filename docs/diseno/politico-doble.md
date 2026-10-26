@@ -71,3 +71,12 @@ gota de agua. Les dejo la ficha del diputado. Esposen al falso, no al verdadero:
 3. **¿El doble y el verdadero se cruzan cada vez que uno baja?** Recomendado: sí, el doble sube por detrás del
    escenario cada vez que el verdadero baja a saludar, así hay que volver a mirar. La otra opción es que el doble suba
    una sola vez y el verdadero se quede abajo hasta que lo lleven de la mano.
+
+## Hecho así
+- **Paso 1 (el doble, las diferencias y la ficha):** `--place=double` abre `scenes/levels/plaza_double.tscn`, la misma
+  plaza del acto con `PlazaRally.variant = "double"`, y el sorteo de Jugar reparte las protecciones en tercios (plaza,
+  mercado y doble, `PlaceDraw.RALLIES`). Rolo Calcado es otro `Politician` con `impostor`, parado al final de la fila
+  de atrás del público, con galera y bufanda (`disguise`) que le tapan las diferencias; con E dice que solo vino a
+  mirar. Los dos llevan las 10 diferencias (`DoubleTells`, piezas chicas hechas en código, una vez y media más grandes
+  de lo normal); el doble tiene 3 al revés, sacadas con la semilla. La planilla (Q) suma la ficha del verdadero, una
+  línea por diferencia. El comisario cuenta lo del imitador. Capturas en `/mnt/project-files/doble/paso1-*.png`.
