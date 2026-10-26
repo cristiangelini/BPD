@@ -92,6 +92,9 @@ const MODELS := {
 	# The roof robbery's El Oso gets away hanging from the giant toy helicopter's rope, low over the street
 	# (robo-banco-techo.md): it flies AIR_AT up, over everything, and he hangs under it.
 	"toy_helicopter": preload("res://assets/models/toy_helicopter.glb"),
+	# Engineer Remache gets away from the bridge in Pegote Hermanos' cement mixer (politico-puente.md), dropping
+	# cement blobs in the curves.
+	"cement_mixer": preload("res://assets/models/cement_mixer.glb"),
 }
 ## Who rides on top of it, where you can see them, each as [model, position, scale] (they get off when he gives up).
 const RIDERS := {
@@ -118,6 +121,7 @@ const RIDERS := {
 	"carousel_horse": [[preload("res://assets/models/npc_alfil.glb"), Vector3(0, 0.82, -0.22), 0.8]],
 	"chopper_moped": [[preload("res://assets/models/npc_cromado.glb"), Vector3(0, 0.32, -0.2), 1.3]],
 	"gallery_cart": [[preload("res://assets/models/npc_martillo.glb"), Vector3(0, 0.45, 0.45), 0.85]],
+	"cement_mixer": [[preload("res://assets/models/npc_ingeniero.glb"), Vector3(-0.5, 0.75, 2.3), 0.85]],
 }
 ## Who rides inside and stays there when he gives up, the same way: the choristers in the van, seen through its open
 ## windows, singing all the way.
@@ -136,19 +140,20 @@ const LANES := {"moto": ChaseRoute.SIDEWALK_LANE, "wheelchair": ChaseRoute.SIDEW
 ## The delivery bike pedals at 25 km/h and turns tight. Doña Chela's walker's motor does 10 km/h. The choir's old van,
 ## full, does 35. El Oso running with his sack does 12, the heckler's kick scooter 15 and the food cart, downhill, 14
 ## (propuesta). The loaded vegetable trike, 16, and an inmate off the transfer bus, dragging the ball and chain, 11.
-## The clown car does 30, honking all the way, and a parade float 28, wide and slow.
+## The clown car does 30, honking all the way, and a parade float 28, wide and slow. The loaded cement mixer does 28 and nearly stops in the curves.
 const SPEEDS := {"bear_on_foot": 12.0 / 3.6, "wheelchair": 8.0 / 3.6, "tow_truck": 30.0 / 3.6, "golf_cart": 25.0 / 3.6, "bike": 25.0 / 3.6,
 	"walker": 10.0 / 3.6, "choir_van": 35.0 / 3.6, "kick_scooter": 15.0 / 3.6,
 	"food_cart": 14.0 / 3.6, "veggie_trike": 16.0 / 3.6, "inmate_on_foot": 11.0 / 3.6, "clown_car": 30.0 / 3.6,
 	"parade_float": 28.0 / 3.6,
 	"toy_helicopter": 20.0 / 3.6, "invisible_car": 14.0 / 3.6,
 	"toro_jog": 13.0 / 3.6, "learner_car": 35.0 / 3.6, "pizza_scooter": 40.0 / 3.6,
-	"carousel_horse": 25.0 / 3.6, "chopper_moped": 30.0 / 3.6, "gallery_cart": 20.0 / 3.6}
+	"carousel_horse": 25.0 / 3.6, "chopper_moped": 30.0 / 3.6, "gallery_cart": 20.0 / 3.6,
+	"cement_mixer": 28.0 / 3.6}
 ## The tow truck turns slowly and nearly stops to do it (persecucion-lugares.md): a cop cutting a corner on foot
 ## catches up with him.
 ## The golf cart turns very tight and hardly slows down to do it.
-const TURN_RATES := {"tow_truck": 1.0, "golf_cart": 3.2, "bike": 3.2, "clown_car": 3.0}
-const TURN_SPEEDS := {"tow_truck": 0.3, "golf_cart": 0.75, "bike": 0.75, "clown_car": 0.75}
+const TURN_RATES := {"tow_truck": 1.0, "golf_cart": 3.2, "bike": 3.2, "clown_car": 3.0, "cement_mixer": 1.1}
+const TURN_SPEEDS := {"tow_truck": 0.3, "golf_cart": 0.75, "bike": 0.75, "clown_car": 0.75, "cement_mixer": 0.35}
 const GOLF := "golf_cart"
 const TOW := "tow_truck"
 const OLD_PATROL := "old_patrol"
@@ -195,6 +200,7 @@ const STALL_TIME := 2.0
 ## The toy siren's two notes, a little off key from each other, and how long each lasts (propuesta).
 const TOY_SIREN_NOTES: Array[float] = [610.0, 790.0]
 const TOY_SIREN_NOTE := 0.45
+const CEMENT_MIXER := "cement_mixer"
 ## Where the towed patrol car hangs behind the tow truck: its middle, and its nose lifted this much.
 const TOWED_AT := Vector3(0, 0.55, -5.6)
 const TOWED_TILT := -0.12
@@ -216,13 +222,16 @@ const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 
 	"toy_helicopter": Vector3(0.6, 0.6, 0.6), "party_patrol": Vector3(2.1, 1.4, 4.6),
 	"toro_jog": Vector3(0.9, 1.8, 0.9), "learner_car": Vector3(2.1, 1.4, 4.6),
 	"pizza_scooter": Vector3(1.2, 1.6, 2.3), "carousel_horse": Vector3(1.6, 2.0, 1.8),
-	"chopper_moped": Vector3(0.8, 1.9, 1.7), "gallery_cart": Vector3(1.3, 1.9, 2.4)}
+	"chopper_moped": Vector3(0.8, 1.9, 1.7), "gallery_cart": Vector3(1.3, 1.9, 2.4),
+	"cement_mixer": Vector3(2.3, 3.0, 7.0)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
 	Vector3(-1.05, 0.38, -1.55), Vector3(1.05, 0.38, -1.55)]
 const TOW_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.0), Vector3(1.15, 0.38, 2.0), Vector3(-1.15, 0.38, -1.8),
 	Vector3(1.15, 0.38, -1.8)]
+const MIXER_WHEELS: Array[Vector3] = [Vector3(-1.2, 0.38, 2.4), Vector3(1.2, 0.38, 2.4), Vector3(-1.2, 0.38, -1.5),
+	Vector3(1.2, 0.38, -1.5), Vector3(-1.2, 0.38, -2.5), Vector3(1.2, 0.38, -2.5)]
 ## The scooter's wheels are part of its model.
 const NO_WHEELS: Array[Vector3] = []
 const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS,
@@ -233,7 +242,8 @@ const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": 
 	"toy_helicopter": NO_WHEELS,
 	"party_patrol": SEDAN_WHEELS, "toro_jog": NO_WHEELS, "learner_car": SEDAN_WHEELS,
 	"pizza_scooter": NO_WHEELS, "carousel_horse": NO_WHEELS, "chopper_moped": NO_WHEELS,
-	"gallery_cart": NO_WHEELS}
+	"gallery_cart": NO_WHEELS,
+	"cement_mixer": MIXER_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)

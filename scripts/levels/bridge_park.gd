@@ -11,7 +11,8 @@ extends Node3D
 ## the west ramp and crosses with his photo stops (BridgeCeremony). Step 3: the bridge falls apart (BridgeBreaks) and
 ## the deputy may fall in (BridgeDip). Step 4: fixing it (BridgeRepairs, BridgePillar) and holding him back by the coat
 ## (BridgeCoat). Step 5: engineer Remache in the crowd, the clues at the pickup (BridgeRemache) and the case on top
-## (BridgeCase). Every number here is (propuesta).
+## (BridgeCase). Step 6: Pegote Hermanos' cement mixer parked on the street, Remache's getaway. Every number here is
+## (propuesta).
 
 const PLANK_MODEL := preload("res://assets/models/bridge_plank.glb")
 const VAN_MODEL := preload("res://assets/models/builder_van.glb")
@@ -47,6 +48,8 @@ const STAND := Vector3(5, 0.6, 3)
 const VAN_AT := Vector3(-20, 0, 13)
 const VAN_SIZE := Vector3(2.1, 2.0, 5.0)
 const RIBBON_X := 9.5
+## Pegote Hermanos' cement mixer, parked on the street in front of the park facing east (step 6): Remache's getaway.
+const MIXER_AT := Vector3(-14, 0.05, HALF + CityLayout.SIDEWALK + CityLayout.STREET / 2 + 1.5)
 ## Where the deputy waits for his guard (at the foot of the west ramp), the top of that ramp and his photo stops on
 ## the deck, one every 2 spans (step 2).
 const WAIT_AT := Vector3(-19.5, 0, 0)
@@ -88,6 +91,8 @@ var repairs: BridgeRepairs
 ## Engineer Remache, the crowd and the clues at the pickup; the case on top (step 5).
 var remache: BridgeRemache
 var case: BridgeCase
+## The parked cement mixer, which becomes the fleeing one (step 6).
+var mixer: SuspectCar
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -132,6 +137,14 @@ func _ready() -> void:
 	city.transform = CityLayout.anchor("bridge_park")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+	mixer = SuspectCar.new()
+	mixer.name = "FleeingCar"
+	mixer.kind = SuspectCar.CEMENT_MIXER
+	mixer.driving = false
+	add_child(mixer)
+	mixer.transform = Transform3D(Basis(Vector3.UP, PI / 2), MIXER_AT)
+	# Remache is in the crowd until he runs for it.
+	mixer.get_node("Rider").hide()
 	remache = BridgeRemache.new()
 	remache.name = "Remache"
 	add_child(remache)

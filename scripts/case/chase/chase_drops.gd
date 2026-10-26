@@ -18,7 +18,9 @@ extends Node
 ## (control-neblina.md) honks at every corner he turns, his horn's bubble seen through the fog (HornBubble). The
 ## circus move's El Peludo (control-circo.md) drops banana peels: the patrol car skids on them. The parade's El Antifaz
 ## (control-desfile.md) shoots confetti at every corner he turns: driving into it covers the windshield
-## (ConfettiCloud). Every number here is (propuesta).
+## (ConfettiCloud). The bridge's cement mixer (politico-puente.md) drops a blob of cement at
+## every corner it turns: driving through it the patrol car sticks and slows down to BLOB_SPEED. Every number here is
+## (propuesta).
 
 const DRIP_EVERY := 3.0
 ## A puddle's size (m), how long it lasts, and the grip left on it.
@@ -74,6 +76,13 @@ const BANANA_PEEL := preload("res://assets/models/banana_peel.glb")
 const MAX_CANS := 18
 ## Cut loose, a can rolls back this fast, give or take.
 const CAN_ROLL := 3.0
+## The cement blobs: their size (m), how long they last, the most at once, and how hard they hold the car back.
+const BLOB_MODEL := preload("res://assets/models/cement_blob.glb")
+const BLOB_RADIUS := 1.2
+const BLOB_SECONDS := 40.0
+const MAX_BLOBS := 10
+const BLOB_SPEED := 15.0 / 3.6
+const BLOB_DRAG := 4.0
 
 var case: ChaseCase
 ## The ice cream puddles on the street: [mesh, seconds left].
@@ -81,6 +90,8 @@ var puddles: Array[Array] = []
 var furniture: Array[RigidBody3D] = []
 var dummies: Array[ChaseDummy] = []
 var melons: Array[Watermelon] = []
+## The cement blobs on the street: [node, seconds left].
+var blobs: Array[Array] = []
 ## The gang still in the runaway packed car besides its driver: one jumps out at each corner.
 var riders_left := 0
 var jumpers: Array[CrowdRider] = []
@@ -167,6 +178,45 @@ func _physics_process(delta: float) -> void:
 	if confetti:
 		_blind(at, delta)
 	case.car.grip = weather_grip * (PEEL_GRIP if on_peel(at) else PUDDLE_GRIP if on_puddle(at) else 1.0)
+	for blob in blobs.duplicate():
+		blob[1] -= delta
+		if blob[1] <= 0.0:
+			(blob[0] as Node).queue_free()
+			blobs.erase(blob)
+	if on_blob(case.car.global_position) and case.car.linear_velocity.length() > BLOB_SPEED:
+		case.car.linear_velocity *= maxf(1.0 - BLOB_DRAG * delta, 0.0)
+
+
+## Whether `at` is on a cement blob.
+func on_blob(at: Vector3) -> bool:
+	for blob in blobs:
+		var center: Vector3 = (blob[0] as Node3D).global_position
+		if Vector2(at.x - center.x, at.z - center.z).length() < BLOB_RADIUS + 0.8:
+			return true
+	return false
+
+
+## A blob of cement off the mixer's chute, on the street behind him.
+func drop_blob() -> Node3D:
+	var at := _behind()
+	at.y = 0.02
+	if case.online and not case.follower:
+		case.online.tell_chase("shown_blob", [at])
+	return blob_at(at)
+
+
+## A cement blob at `at` (on a guest, the host's).
+func blob_at(at: Vector3) -> Node3D:
+	if blobs.size() >= MAX_BLOBS:
+		(blobs.pop_front()[0] as Node).queue_free()
+	var blob: Node3D = BLOB_MODEL.instantiate()
+	_dropped += 1
+	blob.name = "Blob%d" % _dropped
+	case.get_parent().add_child(blob)
+	blob.global_position = at
+	blob.rotation.y = _rng.randf() * TAU
+	blobs.append([blob, BLOB_SECONDS])
+	return blob
 
 
 ## Whether `at` is on an ice cream puddle.
@@ -241,6 +291,8 @@ func _on_corner(turned: bool) -> void:
 			drop_melon()
 	elif case.suspect_id == SuspectCar.VEGGIE_TRIKE:
 		drop_furniture(true)
+	elif case.suspect_id == SuspectCar.CEMENT_MIXER:
+		drop_blob()
 	if riders_left > 0:
 		drop_jumper()
 	if ghost_look >= 0:

@@ -63,7 +63,8 @@ se caiga. El puente, digo. Bueno, el diputado tampoco."
 3. El puente que se rompe: tablones que caen, pilares que se hunden, barandas, el aviso y el chapuzón.
 4. Arreglarlo: tablones que encajan, pilares de a dos, agarrar al diputado del saco, el agua que frena.
 5. El ingeniero Remache: pistas, esposarlo y escoltarlo; el caso, sueldo y cuota.
-6. La hormigonera, el sorteo de Jugar (plaza, mercado y puente en tercios) y el online.
+6. La hormigonera y el sorteo de Jugar (plaza, mercado y puente en tercios).
+7. El online.
 
 ## Preguntas para Cristian
 1. **¿Qué pasa si el diputado cae al canal?** Recomendado: como el mercado, la primera vez sale mojado y sigue (200
@@ -123,3 +124,10 @@ se caiga. El puente, digo. Bueno, el diputado tampoco."
   Remache y cómo está el diputado; la cinta lo gana, el segundo chapuzón lo pierde. Sueldo 600, 200 menos por chapuzón,
   10 menos por tablón flotando en el canal y 100 más con Remache en el patrullero; cuota 400. Capturas en
   `/mnt/project-files/puente/paso5-*.png`.
+- **Paso 6 (la hormigonera y el sorteo):** la hormigonera de Pegote Hermanos (`cement_mixer`, `SuspectCar.CEMENT_MIXER`,
+  28 km/h, casi frena en las curvas) espera estacionada en la calle de enfrente del parque (`park.mixer`). Si Remache
+  sigue suelto cuando se corta la cinta, desaparece del público, sube a la hormigonera y arranca la persecución
+  embebida (`ChaseCase.begin` con la hormigonera estacionada). En cada esquina tira un pegote de cemento
+  (`ChaseDrops.drop_blob`, 2,4 m, dura 40 s, como mucho 10): el patrullero que pasa por arriba se frena hasta 15 km/h.
+  Atrapado cuenta como detenido (+100); si se escapa, el caso igual se gana. Jugar sortea el político en tercios: plaza,
+  mercado y puente. Captura en `/mnt/project-files/puente/paso6-hormigonera.png`.

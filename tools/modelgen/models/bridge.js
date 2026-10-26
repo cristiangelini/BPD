@@ -93,8 +93,49 @@ export function buildBridgeInvoices() {
 	return b.build();
 }
 
+// Pegote Hermanos' cement mixer (step 6): Remache's getaway. An orange cab in front (+Z) with a dented door, a grey
+// drum lying tilted on the back with spiral fins, a chute at the back dripping cement and blobs stuck all over.
+// About 2.5 x 3.2 x 7 m, its origin on the ground in the middle; the wheels are SuspectCar's (TOW_WHEELS).
+export function buildCementMixer() {
+	const b = new Builder('cement_mixer');
+	const orange = mat('builder_orange', 0xe8873a), dent = mat('builder_dent', 0xc06a2a), darkGlass = mat('truck_glass', 0x2a3340);
+	const black = mat('car_black', 0x23252b), grey = mat('car_grey', 0x6b7280), drum = mat('mixer_drum', 0xb8bcc2);
+	const fin = mat('mixer_fin', 0xe8873a), cement = mat('cement', 0x9a958c), light = mat('lamp', 0xfff3c0, { emissive: 0x806a20 });
+	const W = 2.3, FLOOR = 0.75;
+	box(b, 'body', black, W, 0.3, 6.6, 0, FLOOR - 0.1, -0.1);
+	box(b, 'body', orange, W, 1.6, 1.7, 0, FLOOR + 0.85, 2.3);
+	box(b, 'body', darkGlass, W - 0.1, 0.65, 0.06, 0, FLOOR + 1.25, 3.16, [-0.15, 0, 0]);
+	for (const x of [-1, 1]) box(b, 'body', darkGlass, 0.04, 0.55, 0.9, x * (W / 2 + 0.01), FLOOR + 1.25, 2.4);
+	box(b, 'body', dent, 0.04, 0.35, 0.6, W / 2 + 0.02, FLOOR + 0.45, 2.4, [0, 0.1, 0.25]);
+	for (const x of [-1, 1]) box(b, 'lights', light, 0.35, 0.16, 0.04, x * 0.75, FLOOR + 0.35, 3.16);
+	box(b, 'body', grey, W + 0.06, 0.2, 0.16, 0, FLOOR - 0.05, 3.2);
+	// The drum: two cones joined, tilted up toward the back, on a frame.
+	const tilt = 0.18;
+	b.add('drum', drum, new THREE.CylinderGeometry(1.0, 0.55, 2.2, 12), { pos: V(0, FLOOR + 1.45, 0.05), rot: [Math.PI / 2 + tilt, 0, 0] });
+	b.add('drum', drum, new THREE.CylinderGeometry(0.45, 1.0, 1.8, 12), { pos: V(0, FLOOR + 1.75, -1.9), rot: [Math.PI / 2 + tilt, 0, 0] });
+	for (let i = 0; i < 5; i++) box(b, 'fins', fin, 0.12, 0.08, 1.4, Math.cos(i * 1.3) * 0.85, FLOOR + 1.55 + Math.sin(i * 1.3) * 0.85, -0.9 + i * 0.25, [tilt, 0, i * 1.3]);
+	for (const z of [0.9, -2.6]) box(b, 'frame', grey, W - 0.3, 0.9, 0.15, 0, FLOOR + 0.5, z);
+	box(b, 'chute', grey, 0.4, 0.08, 1.2, 0, FLOOR + 1.0, -3.4, [-0.5, 0, 0]);
+	for (const [x, y, z, r] of [[0.6, 1.9, 0.6, 0.2], [-0.7, 1.3, -0.9, 0.16], [0.2, 2.5, -1.6, 0.18], [0, 0.75, -3.9, 0.22], [-0.9, 1.0, 2.0, 0.12]]) {
+		b.add('blobs', cement, new THREE.DodecahedronGeometry(r), { pos: V(x, FLOOR + y - 0.75, z) });
+	}
+	return b.build();
+}
+
+// A cement blob the mixer drops in the curves (step 6): a flat lumpy grey splat 2.4 m across that sticks the patrol car.
+export function buildCementBlob() {
+	const b = new Builder('cement_blob');
+	const cement = mat('cement', 0x9a958c), wet = mat('cement_wet', 0x7f7a72);
+	b.add('blob', cement, new THREE.CylinderGeometry(1.2, 1.25, 0.08, 10), { pos: V(0, 0.04, 0) });
+	for (const [x, z, r] of [[0.4, 0.3, 0.35], [-0.5, -0.2, 0.3], [0.1, -0.6, 0.25], [-0.2, 0.6, 0.2]]) {
+		b.add('lumps', wet, new THREE.DodecahedronGeometry(r), { pos: V(x, 0.06, z), scale: [1, 0.35, 1] });
+	}
+	return b.build();
+}
+
 export const models = { bridge_plank: buildPlank, builder_van: buildBuilderVan, steel_beams: buildSteelBeams,
-	bridge_tarp: buildBridgeTarp, bridge_invoices: buildBridgeInvoices };
+	bridge_tarp: buildBridgeTarp, bridge_invoices: buildBridgeInvoices, cement_mixer: buildCementMixer,
+	cement_blob: buildCementBlob };
 
 export const views = {
 	builder_van: {
@@ -104,6 +145,10 @@ export const views = {
 	loot: {
 		items: [{ name: 'steel_beams', pos: [0, 0, 0] }, { name: 'bridge_tarp', pos: [0, 0, 1.6] }, { name: 'bridge_invoices', pos: [2.0, 1.0, 0.5] }],
 		cam: { pos: [2.5, 2.4, 4.5], target: [0.3, 0.4, 0.6], fov: 45 },
+	},
+	cement_mixer: {
+		items: [{ name: 'cement_mixer', pos: [0, 0, 0], rotY: 0.7 }, { name: 'cement_blob', pos: [3.0, 0, -2.5] }],
+		cam: { pos: [8.5, 4.5, 7.5], target: [0.5, 1.2, -0.5], fov: 42 },
 	},
 	engineer: {
 		items: [{ name: 'npc_ingeniero', pos: [0, 0, 0], rotY: 0.4 }, { name: 'npc_puestero', pos: [1.3, 0, -0.4], rotY: -0.3 }],

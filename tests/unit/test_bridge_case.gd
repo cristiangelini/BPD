@@ -73,8 +73,10 @@ func test_cuffed_he_can_be_walked_to_the_car() -> void:
 func test_the_ribbon_solves_it() -> void:
 	assert_false(case.tip_given, "not before seeing the comisario")
 	case.give_tip()
+	park.remache.engineer.cuffed(Handcuffs.SECONDS)
 	park.ceremony.finished.emit()
 	assert_true(case.solved())
+	assert_null(case.chase, "Remache is cuffed: nobody runs")
 	await wait_seconds(BridgeCase.SHIFT_DELAY + 0.5)
 	assert_true(case.shift_over)
 

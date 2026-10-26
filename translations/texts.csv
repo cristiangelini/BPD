@@ -4197,6 +4197,11 @@ SHIFT_STREET,Eventos en la calle,Street events,Eventos na rua
 "OBJ_BRIDGE_WET","Ya se cayó una vez: una más y se va.","He already fell in once: one more and he leaves.","Já caiu uma vez: mais uma e ele vai embora."
 "OBJ_BRIDGE_OVER","Puente inaugurado.","The bridge is open.","Ponte inaugurada."
 "OBJ_BRIDGE_WENT_HOME","Se fue a su casa: caso perdido.","He went home: case lost.","Foi para casa: caso perdido."
+"HINT_ESCAPE_ENGINEER","¡El ingeniero Remache se escapa en la hormigonera! ¡Atrápenlo antes de que tape la calle de cemento!","Engineer Remache is getting away in the cement mixer! Catch him before he covers the street in cement!","O engenheiro Remache está fugindo na betoneira! Peguem ele antes que cubra a rua de cimento!"
+"OBJ_BRIDGE_CATCH_MIXER","Atrapar la hormigonera (suma como detenido)","Catch the cement mixer (counts as detained)","Pegar a betoneira (conta como detido)"
+"CHASE_ENGINEER_LINE_1","¡El cemento es de primera! Bueno, de segunda.","The cement is first-rate! Well, second-rate.","O cimento é de primeira! Bem, de segunda."
+"CHASE_ENGINEER_LINE_2","¡Las vigas eran para la parrilla de mi casa!","The beams were for my backyard grill!","As vigas eram para a minha churrasqueira!"
+"CHASE_ENGINEER_LINE_3","Está bien, me entrego. Pero el puente aguantó, ¿no?","Fine, I give up. But the bridge held up, didn't it?","Tá bom, me entrego. Mas a ponte aguentou, né?"
 HINT_INSPECTOR_ARRIVES,Llegó la inspectora de la ciudad: va contigo todo el turno y anota todo.,The city inspector is here: she goes with you all shift and writes everything down.,A inspetora da cidade chegou: ela vai com você o turno todo e anota tudo.
 INSPECTOR_ARRIVES,"Severina Regla, inspección de la ciudad. Hagan como si no estuviera.","Severina Regla, city inspection. Act as if I'm not here.","Severina Regla, inspeção da cidade. Façam de conta que não estou aqui."
 INSPECTOR_NOTE_1,Mmm.,Hmm.,Hum.
