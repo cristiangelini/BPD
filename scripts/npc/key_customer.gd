@@ -91,6 +91,16 @@ func take(key: Grabbable) -> void:
 	told.emit(clue)
 
 
+## Online: whether he asked for his copy and got it (NpcSync); only the host's hand takes the key.
+func net_state() -> Variant:
+	return [was_asked, served]
+
+
+func apply_net_state(state: Variant) -> void:
+	was_asked = state[0]
+	served = state[1]
+
+
 func _physics_process(delta: float) -> void:
 	if was_asked:
 		return

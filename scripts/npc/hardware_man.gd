@@ -132,6 +132,15 @@ func is_searching() -> bool:
 	return _search_left > 0.0
 
 
+## Online: whether he's at the screw wall looking for the screw (NpcSync); the guests' copy sees nothing meanwhile.
+func net_state() -> Variant:
+	return is_searching()
+
+
+func apply_net_state(state: Variant) -> void:
+	_search_left = SCREW_SEARCH if state else 0.0
+
+
 func _physics_process(delta: float) -> void:
 	_since_struck += delta
 	_ask_wait -= delta

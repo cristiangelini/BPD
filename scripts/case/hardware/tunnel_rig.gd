@@ -54,6 +54,7 @@ func _on_slid(cop: Cop) -> void:
 	drill.collision_layer = 4
 	drill.collision_mask = 15
 	drill.visible = true
-	drill.freeze = false
+	# Online a guest's copy stays frozen (PropSync stopped its physics) and follows the host's.
+	drill.freeze = not drill.is_physics_processing()
 	if cop:
 		cop.show_hint("HINT_TUNNEL_FOUND")
