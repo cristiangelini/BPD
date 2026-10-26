@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Insurance office, step 5: the shredder story: the 4 kg box of unpaid claims is hidden with the bag of shredded paper and the "shred everything" order, a trail of paper bits leads to it (the clue), and the archive's shredder eats anything up to 6 kg let go on it, losing the case if it eats the box.
 - Insurance office, step 5: the UFO insurance story: the 5 kg box of policies is hidden with the fake UFO photos and the toy saucer, the sales script on a desk is the clue, and a phone on every desk rings now and then (up to 3): E answers and a retiree asks if the policy covers cows.
 - Insurance office, step 5: the coffee machine safe story: the kitchen's coffee machine is a 30 kg safe full of money (pressing it with E gives coins instead of coffee, the clue), the code post-it and the account book are hidden, and every cup on the desks holds coins.
 - Insurance office, step 4: the office is a raid run by the shared RaidCase (tip, suspicions, Mirta's slips, Coca's clue, the till with the key, her escape, interrogation and lawyer) with its first story, the fake crashes: an 8 kg crash diorama hidden with the photos and the box of toy cars, the claim folder as its clue, and toy cars in the aisles that make cops slip.

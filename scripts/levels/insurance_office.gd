@@ -54,6 +54,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_UFO_PHOTOS", "OBJ_EXTRA_TOY_SAUCER"],
 		"rig": preload("res://scripts/case/insurance/ufo_policies_rig.gd"),
 	},
+	"shredder": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_SHREDDER_B", "BRIEF_SHREDDER_C", "BRIEF_SHREDDER_D"],
+		"find": "OBJ_FIND_CLAIMS_BOX",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/claims_box.tscn"), preload("res://scenes/props/shred_bag.tscn"),
+			preload("res://scenes/props/shred_order.tscn")],
+		"half_heights": [0.13, 0.18, 0.004],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_SHRED_BAG", "OBJ_EXTRA_SHRED_ORDER"],
+		"rig": preload("res://scripts/case/insurance/shredder_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the office; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [
@@ -66,6 +77,7 @@ const MONITOR_MODEL := preload("res://assets/models/office_monitor.glb")
 const TROPHY_SCENE := preload("res://scenes/props/glass_trophy.tscn")
 const COFFEE_MODEL := preload("res://assets/models/coffee_machine.glb")
 const COOLER_MODEL := preload("res://assets/models/water_cooler.glb")
+const SHREDDER_MODEL := preload("res://assets/models/shredder.glb")
 const HALF_X := 11.0
 const HALF_Z := 8.0
 ## The office floor's ceiling, and the closed floors of the building over it up to the lot's height.
@@ -534,7 +546,12 @@ func _build_archive() -> void:
 				continue
 			_build.mesh_box(Vector3(x, FLOOR_TOP + y + 0.17, ARCHIVE_SHELF_Z), Vector3(0.45, 0.3, 0.4), CARDBOARD)
 	_build.open_box(ARCHIVE_BOX_AT, ARCHIVE_BOX_SIZE, "top", CARDBOARD)
-	_build.box(SHREDDER_AT + Vector3(0, 0.4, 0), Vector3(0.5, 0.8, 0.4), DARK)
+	var shredder := _build.body(SHREDDER_AT + Vector3(0, 0.4, 0))
+	_build.shape(shredder, Vector3(0.4, 0.8, 0.5))
+	var shredder_model: Node3D = SHREDDER_MODEL.instantiate()
+	shredder_model.position = Vector3(0, -0.4, 0)
+	shredder_model.rotation.y = -PI / 2
+	shredder.add_child(shredder_model)
 	_build.light(Vector3(-8.0, 2.8, -6.2))
 
 
