@@ -2174,6 +2174,9 @@ WEDDING_TOAST_US,"¡Somos nosotros, %s y %s! ¡Nos casamos hoy!","It's us, %s an
 TRUNK_ENVELOPES,"El baúl está lleno de sobres de regalo... de bodas distintas.","The trunk is full of gift envelopes... from different weddings.","O porta-malas está cheio de envelopes de presente... de casamentos diferentes."
 HINT_WEDDING_ENVELOPES,"¡Es El Colado! Sus sobres de regalo quedaron sobre el baúl: llévalos al patrullero (+100).","It's El Colado! His gift envelopes are on his trunk: take them to the patrol car (+100).","É o El Colado! Os envelopes de presente ficaram em cima do porta-malas: leve para a viatura (+100)."
 PROMPT_GIFT_ENVELOPES,"Los sobres de regalo de El Colado: llévalos al patrullero","El Colado's gift envelopes: take them to the patrol car","Os envelopes de presente do El Colado: leve para a viatura"
+SPOILER_NONE,sin alerón,no spoiler,sem aerofólio
+SPOILER_SMALL,alerón chico,small spoiler,aerofólio pequeno
+SPOILER_BIG,alerón grande,big spoiler,aerofólio grande
 SHIFT_BRIBES,Sobornos,Bribes,Subornos
 SHIFT_AGENT_FINE,Multa de asuntos internos,Internal affairs fine,Multa da corregedoria
 SHIFT_INVESTIGATION_OPENED,Asuntos internos abrió una investigación.,Internal affairs opened an investigation.,A corregedoria abriu uma investigação.
