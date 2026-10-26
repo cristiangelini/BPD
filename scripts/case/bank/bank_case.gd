@@ -26,7 +26,10 @@ extends Node
 ## and El Conejo goes to the next shift's interrogation. In the blood bank (robo-banco-sangre.md, step 4, decision 128)
 ## the radio warns about the vampires and the dark, El Conde answers the phone, the planilla counts the blood bags
 ## still cold, each spoiled bag costs PER_BAG like a taken one, all of them cold at the end pay ALL_BAGS more, and El
-## Conde goes to the next shift's interrogation. Every number here is (propuesta).
+## Conde goes to the next shift's interrogation. In the seed bank (robo-banco-semillas.md, step 4, decision 129) the
+## radio warns about the seeds and the glass jars, El Oso answers the phone as a gardener, the planilla counts the jars
+## back in the vault, each broken jar costs PER_BAG like a taken one and all of them home at the end pay ALL_JARS more.
+## Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 3.0
@@ -42,6 +45,7 @@ const NEPHEW := 100
 const PER_CLERK := 300
 const CLERK_ASLEEP := 100
 const ALL_BAGS := 100
+const ALL_JARS := 100
 const QUOTA := 400
 const STORY := "bank_robbery"
 const SLIPS := "BEAR_SLIP_%d"
@@ -149,6 +153,8 @@ func brief() -> PackedStringArray:
 		return PackedStringArray(["BRIEF_BANK_TOWN_A", "BRIEF_BANK_TOWN_B", "BRIEF_BANK_TOWN_C"])
 	if bank.blood:
 		return PackedStringArray(["BRIEF_BANK_BLOOD_A", "BRIEF_BANK_BLOOD_B", "BRIEF_BANK_BLOOD_C"])
+	if bank.seeds:
+		return PackedStringArray(["BRIEF_BANK_SEEDS_A", "BRIEF_BANK_SEEDS_B", "BRIEF_BANK_SEEDS_C"])
 	if bank.roof:
 		return PackedStringArray(["BRIEF_BANK_ROOF_A", "BRIEF_BANK_ROOF_B", "BRIEF_BANK_ROOF_C"])
 	if bank.water:
@@ -282,14 +288,15 @@ func hostages_left() -> int:
 func missed() -> int:
 	return PER_HOSTAGE * hostages_left() + PER_BAG * bank.bags_taken + PER_WRONG_CUFF * wrong_cuffs \
 		+ (PER_WRONG_MANAGER if wrong_manager else 0) + (PER_CLERK if clerk_left else 0) \
-		+ (PER_BAG * bank.blood_bank.bags_spoiled() if bank.blood else 0)
+		+ (PER_BAG * bank.blood_bank.bags_spoiled() if bank.blood else 0) \
+		+ (PER_BAG * bank.seed_bank.jars_broken() if bank.seeds else 0)
 
 
 func report() -> Dictionary:
 	var bonus := PER_HELP * helps() + (EARLY_MANAGER if manager_early else 0) \
 		+ (EARLY_VALVE if bank.water and bank.water.shut_early() else 0) \
 		+ (NEPHEW if bank.roof and bank.nephew.caught else 0) + (CLERK_ASLEEP if clerk_slept() else 0) \
-		+ (ALL_BAGS if all_bags_cold() else 0)
+		+ (ALL_BAGS if all_bags_cold() else 0) + (ALL_JARS if all_jars_home() else 0)
 	var salary := maxi(SALARY - missed() + bonus, 0) if solved() else 0
 	return {"salary": salary, "evidence": 0, "fines": 0, "total": salary, "quota": QUOTA, "approved": salary >= QUOTA}
 
@@ -297,6 +304,11 @@ func report() -> Dictionary:
 ## The blood bank: all of its bags cold (in the fridge or the cooler), none taken or spoiled.
 func all_bags_cold() -> bool:
 	return bank.blood and bank.blood_bank.bags_cold() == BankBlood.BAGS
+
+
+## The seed bank: all of its jars back in the vault, none taken or broken.
+func all_jars_home() -> bool:
+	return bank.seeds and bank.seed_bank.jars_home() == BankSeeds.JARS
 
 
 ## The town bank: don Plácido carried out without ever waking up.
@@ -519,6 +531,10 @@ func rows() -> Array[Dictionary]:
 		list.append(_row("OBJ_BANK_CLERK_ASLEEP", clerk_slept()))
 		list.append({"text": tr("OBJ_BANK_NERVES") % roundi(bank.nerves.nerves), "done": false, "optional": false,
 			"status": true})
+	if bank.seeds:
+		list.append(_row("OBJ_BANK_ALL_JARS", all_jars_home()))
+		list.append({"text": tr("OBJ_BANK_SEED_JARS") % [bank.seed_bank.jars_home(), BankSeeds.JARS], "done": false,
+			"optional": false, "status": true})
 	if bank.blood:
 		list.append(_row("OBJ_BANK_ALL_BAGS", all_bags_cold()))
 		list.append({"text": tr("OBJ_BANK_BLOOD_BAGS") % [bank.blood_bank.bags_cold(), BankBlood.BAGS], "done": false,

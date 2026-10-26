@@ -98,3 +98,11 @@ delantal, la enredadera, la tijera de podar, los frascos que se rompen y la plan
   suelta sin querer ("¡Ups! Corriendo se te resbaló el frasco."). Donde se rompe crece en 2 s un girasol de 2,6 m que
   no deja pasar a los policías (a la banda sí) hasta el final del caso. Capturas en
   `/mnt/project-files/semillas/paso3-*.png`.
+- **Paso 4 (el caso):** la radio avisa que roban el Banco de Semillas, que los ladrones tiran semillas que hacen
+  crecer enredaderas (y que hay tijeras de podar en el mostrador) y que no corran con los frascos. Atiende El Oso "del
+  vivero" y pide lo mismo de siempre con sus palabras (donas de semillas de amapola, que le canten porque ni las
+  plantas le cantaron, que saquen el patrullero porque le pisa el pasto). La planilla pide esposar a El Oso como en la
+  base y cuenta los frascos en la bóveda ("Frascos en la bóveda: 7 de 8"). Cada frasco roto cuesta lo mismo que uno que
+  se llevan (50), y si al final están los 8 sanos en la bóveda se pagan +100. La camioneta es verde con tres macetas
+  en el techo, y en la persecución se escapa El Oso en ella. El interrogatorio es el de El Oso de siempre. Captura en
+  `/mnt/project-files/semillas/paso4-camioneta.png`.
