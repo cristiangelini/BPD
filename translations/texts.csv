@@ -4754,6 +4754,11 @@ PLACE_SCHOOL_VISIT,"Escuela Los Girasoles","Sunflowers School","Escola Os Girass
 "TV_LUSTRE_MADE_UP","Listo. Ahora sí, que me vean.","Done. Now they can look at me.","Pronto. Agora sim, podem me ver."
 "TV_LUSTRE_EMPTY","El diputado no está en su atril... Candidata Malvón, adelante.","The deputy isn't at his lectern... Candidate Malvón, go ahead.","O deputado não está no púlpito... Candidata Malvón, pode falar."
 "HINT_LUSTRE_MAKEUP","El diputado se fue al camarín. Tráelo de la mano antes de que termine la tanda.","The deputy went to the makeup room. Lead him back by the hand before the break ends.","O deputado foi para o camarim. Traga-o pela mão antes que o intervalo acabe."
+"HINT_ESCAPE_TECHNICIAN","¡El técnico comprado se escapa en la unidad móvil del canal! ¡Atrápenlo!","The bought technician is getting away in the channel's TV van! Catch them!","O técnico comprado está fugindo na unidade móvel do canal! Peguem!"
+"OBJ_DEBATE_CATCH_VAN","Atrapar la unidad móvil (suma como detenido)","Catch the TV van (counts as detained)","Pegar a unidade móvel (conta como detido)"
+"CHASE_TECHNICIAN_LINE_1","¡Corten! ¡Corten! ¡Vamos a una tanda!","Cut! Cut! Going to a break!","Corta! Corta! Vamos para o intervalo!"
+"CHASE_TECHNICIAN_LINE_2","¡Esto no estaba en el guion!","This wasn't in the script!","Isso não estava no roteiro!"
+"CHASE_TECHNICIAN_LINE_3","Está bien, me entrego. Pero que no me enfoquen de la nariz.","Fine, I give up. Just don't film me from the nose up.","Tudo bem, me entrego. Mas não me filmem pelo nariz."
 HINT_INSPECTOR_ARRIVES,Llegó la inspectora de la ciudad: va contigo todo el turno y anota todo.,The city inspector is here: she goes with you all shift and writes everything down.,A inspetora da cidade chegou: ela vai com você o turno todo e anota tudo.
 INSPECTOR_ARRIVES,"Severina Regla, inspección de la ciudad. Hagan como si no estuviera.","Severina Regla, city inspection. Act as if I'm not here.","Severina Regla, inspeção da cidade. Façam de conta que não estou aqui."
 INSPECTOR_NOTE_1,Mmm.,Hmm.,Hum.

@@ -12,7 +12,7 @@ func after_each() -> void:
 func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltration_and_each_raid_a_seventh_of_the_rest() -> void:
 	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "hardware": 0, "doll_factory": 0, "insurance": 0, "cake_lab": 0,
 		"chase": 0, "crime_scene": 0, "circus": 0, "museum": 0, "traffic": 0, "club": 0, "choir": 0, "mime": 0, "party": 0, "gym": 0, "school": 0, "restaurant": 0, "chess": 0, "biker": 0, "auction": 0, "bank": 0, "plaza": 0, "market": 0,
-		"bridge": 0, "double": 0, "birthday": 0, "convertible": 0, "football": 0, "school_visit": 0, "prison": 0, "transfer": 0, "blackout": 0, "visits": 0, "laundry": 0, "prison_tunnel": 0, "prison_talent": 0, "prison_vip": 0, "prison_garden": 0,
+		"bridge": 0, "double": 0, "birthday": 0, "convertible": 0, "football": 0, "school_visit": 0, "debate": 0, "prison": 0, "transfer": 0, "blackout": 0, "visits": 0, "laundry": 0, "prison_tunnel": 0, "prison_talent": 0, "prison_vip": 0, "prison_garden": 0,
 		"prison_count": 0}
 	for i in 600:
 		count[PlaceDraw.pick(i + 1, [], 1)] += 1
@@ -35,7 +35,7 @@ func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltrati
 	assert_between(count.club + count.choir + count.mime + count.party + count.gym + count.school + count.restaurant + count.chess + count.biker + count.auction, 25, 80, "the infiltrations, as often as a raid (propuesta)")
 	assert_between(count.bank, 15, 70, "the bank robbery, about as often as a raid (propuesta)")
 	assert_between(count.plaza + count.market + count.bridge + count.double + count.birthday
-		+ count.convertible + count.football + count.school_visit, 10, 60, "the politician's protection, about as often as a raid (propuesta)")
+		+ count.convertible + count.football + count.school_visit + count.debate, 10, 60, "the politician's protection, about as often as a raid (propuesta)")
 	assert_between(count.prison + count.transfer + count.blackout + count.visits + count.laundry
 		+ count.prison_tunnel + count.prison_talent + count.prison_vip + count.prison_garden
 		+ count.prison_count, 5, 50,

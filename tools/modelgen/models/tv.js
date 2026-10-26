@@ -155,9 +155,27 @@ export function buildSpareMic() {
 	return b.build();
 }
 
+// The channel's TV van (step 7), the bought technician's getaway: white, a red stripe with the channel's logo, a mast
+// and a satellite dish on the roof. Front +Z, wheels the sedan's (SuspectCar.SEDAN_WHEELS), 2.1 x 2.3 x 4.8.
+export function buildTvVan() {
+	const b = new Builder('tv_van');
+	const white = mat('tv_van_white', 0xf2f2ee), red = mat('tv_red', 0xc8323a), grey = mat('tv_dish', 0xc8ccd2);
+	b.add('body', white, new THREE.BoxGeometry(2.0, 1.0, 1.4), { pos: V(0, 0.95, 1.6) });
+	b.add('body', white, new THREE.BoxGeometry(2.1, 1.85, 3.4), { pos: V(0, 1.38, -0.7) });
+	b.add('glass', mat('car_glass', 0x9fd0ea), new THREE.BoxGeometry(1.8, 0.5, 0.04), { pos: V(0, 1.3, 2.31), rot: [-0.25, 0, 0] });
+	b.add('stripe', red, new THREE.BoxGeometry(2.12, 0.3, 3.42), { pos: V(0, 1.15, -0.7) });
+	for (const x of [-1.07, 1.07]) b.add('logo', white, new THREE.BoxGeometry(0.02, 0.2, 0.5), { pos: V(x, 1.15, -0.4) });
+	b.add('mast', grey, new THREE.CylinderGeometry(0.05, 0.05, 0.5, 6), { pos: V(0, 2.55, -1.4) });
+	b.add('dish', grey, new THREE.SphereGeometry(0.45, 10, 6, 0, Math.PI * 2, 0, Math.PI / 3), { pos: V(0, 2.6, -1.0), rot: [-1.1, 0, 0] });
+	for (const x of [-1.05, 1.05]) for (const z of [-1.55, 1.55]) {
+		b.add('wheels', mat('tire', 0x1a1a1e), new THREE.CylinderGeometry(0.38, 0.38, 0.26, 12), { pos: V(x, 0.38, z), rot: [0, 0, Math.PI / 2] });
+	}
+	return b.build();
+}
+
 export const models = { tv_lectern: buildLectern, tv_anchor_desk: buildAnchorDesk, tv_console: buildConsole,
 	makeup_mirror: buildMakeupMirror, tv_camera: buildCamera, teleprompter: buildTeleprompter, cue_card: buildCueCard,
-	spare_mic: buildSpareMic };
+	spare_mic: buildSpareMic, tv_van: buildTvVan };
 
 export const views = {
 	tv_studio_props: {

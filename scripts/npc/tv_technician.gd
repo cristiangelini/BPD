@@ -83,6 +83,11 @@ func _box(node_name: String, size: Vector3, at: Vector3, color: Color) -> MeshIn
 	return box
 
 
+## His model's name without "npc_": tecnico, tecnica or tecnico_b.
+func look() -> String:
+	return MODELS[index].resource_path.get_file().get_basename().trim_prefix("npc_")
+
+
 func prompt_key(cop: Cop) -> String:
 	var escort := OwnerEscort.of(self)
 	if escort and escort.handles_use():

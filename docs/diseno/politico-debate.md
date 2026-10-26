@@ -128,3 +128,8 @@ vergüenza de la que pasa solo."
   empezar el bloque no está en su atril es papelón ("late") y, mientras falta, la moderadora le da la palabra a Malvón
   y sus turnos no suman. E lo toma de la mano; llevado cerca del atril, vuelve a su lugar; soltado en otro lado,
   vuelve al espejo.
+- **Paso 7 (la unidad móvil y Jugar):** la unidad móvil del canal (`tv_van`, blanca con franja roja y antena
+  parabólica) estacionada en la calle frente a la recepción. Si al terminar el debate el técnico comprado sigue suelto,
+  se escapa en ella y empieza la persecución embebida (ChaseCase, decisión 96); atrapado cuenta como detenido (los
+  100 de más) y se baja con su propio modelo (`technician_<look>`) y sus quejas. Jugar sortea el debate entre las
+  protecciones del político (`PlaceDraw.RALLIES`, ahora 9).

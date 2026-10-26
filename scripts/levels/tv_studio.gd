@@ -12,7 +12,8 @@ extends Node3D
 ## sabotage (TvSabotage) and what undoes it: the teleprompter in front of Lustre, the cue cards on a table by the set,
 ## the spare mic on the makeup table and the spots' switch on the console, with the yellow warning light. Step 5: the
 ## 3 technicians at the console (TvTechnician), one bought by Malvón, and the case on top (DebateCase). Step 6: Lustre's
-## trips to the makeup room in the breaks (TvMakeupWalk). Every number here is (propuesta).
+## trips to the makeup room in the breaks (TvMakeupWalk). Step 7: the TV van parked on the street, the technician's
+## getaway. Every number here is (propuesta).
 
 const LECTERN_MODEL := preload("res://assets/models/tv_lectern.glb")
 const DESK_MODEL := preload("res://assets/models/tv_anchor_desk.glb")
@@ -77,6 +78,8 @@ const WARNING_AT := Vector3(6.15, 1.95, -6.0)
 const WARNING := Color(1.0, 0.8, 0.1)
 ## The 3 technicians stand between the console and their chairs, facing the window (step 5).
 const TECH_X := 7.0
+## The channel's TV van, parked on the street in front of the lobby facing east (step 7): the technician's getaway.
+const VAN_AT := Vector3(10, 0.05, HALF_Z + CityLayout.SIDEWALK + CityLayout.STREET / 2 + 1.5)
 ## The picture the screen shows, in pixels.
 const FEED_SIZE := Vector2i(768, 360)
 
@@ -119,6 +122,7 @@ var sabotage: TvSabotage
 var technicians: Array[TvTechnician] = []
 var technician: TvTechnician
 var case: DebateCase
+var van: SuspectCar
 var lecterns: Array[Node3D] = []
 var public: Array[RallyFan] = []
 var _build: PlaceBuilder
@@ -158,6 +162,14 @@ func _ready() -> void:
 	city.transform = CityLayout.anchor("tv_studio")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+	van = SuspectCar.new()
+	van.name = "FleeingCar"
+	van.kind = SuspectCar.TV_VAN
+	van.driving = false
+	add_child(van)
+	van.transform = Transform3D(Basis(Vector3.UP, PI / 2), VAN_AT)
+	# The technician is at the console until he runs for it.
+	van.get_node("Rider").hide()
 	case = DebateCase.new()
 	case.name = "Case"
 	case.studio = self
