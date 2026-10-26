@@ -1682,6 +1682,11 @@ CLUE_GHOST_SHIRT,"Quien lo maneja tiene camisa de color %s.","The one driving it
 GHOST_NO_ONE_TO_CUFF,"No hay a quién esposar: el volante está solo.","There's nobody to cuff: the wheel is all alone.","Não tem ninguém para algemar: o volante está sozinho."
 HINT_GHOST_REMOTE,"¡Es el Titiritero! Se le cayó el control remoto: llévenlo al baúl del patrullero.","It's the Puppeteer! He dropped his remote: put it in the patrol car's trunk.","É o Titereiro! Ele derrubou o controle remoto: levem para o porta-malas da viatura."
 PROMPT_RC_REMOTE,"El control remoto del Titiritero: llévalo al patrullero","The Puppeteer's remote: take it to the patrol car","O controle remoto do Titereiro: leve-o para a viatura"
+WEDDING_JUST_MARRIED,RECIÉN CASADOS,JUST MARRIED,RECÉM-CASADOS
+WEDDING_HONK_0,"¡Tuuu, tu-tu-tu, tuuu! ¡Vivan los novios!","Honk, honk-honk-honk, honk! Long live the newlyweds!","Fóóó, fó-fó-fó, fóóó! Vivam os noivos!"
+WEDDING_HONK_1,¡Que se besen! ¡Que se besen!,Kiss! Kiss! Kiss!,Beija! Beija! Beija!
+WEDDING_HONK_2,"¡Apúrense, que se enfría el pollo del salón!","Hurry up, the chicken at the hall is getting cold!","Andem logo, que o frango do salão está esfriando!"
+WEDDING_HONK_3,"¡Policías, vengan a la fiesta, hay torta para todos!","Officers, come to the party, there's cake for everyone!","Policiais, venham para a festa, tem bolo para todo mundo!"
 PROMPT_BUS_ON,E: subir al bus,E: get on the bus,E: subir no ônibus
 PROMPT_BUS_OFF,E: bajar del bus,E: get off the bus,E: descer do ônibus
 PROMPT_BUS_DRIVE,E: manejar el bus,E: drive the bus,E: dirigir o ônibus

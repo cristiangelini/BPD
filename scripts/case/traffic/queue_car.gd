@@ -134,6 +134,16 @@ var puppeteer := false
 var lurch := 0.0
 ## Times a cop tried E at its empty window.
 var knocked := 0
+## In the wedding breathalyzer check (control-boda.md) every driver leans on their open window too...
+var wedding_mode := false
+## ...and most cars are the wedding's: a ribbon bow, cans tied behind and a bow tie in `tie` (one of GhostCar.SHIRTS).
+var guest := false
+var tie := -1
+## The bride and the groom's car, with its "just married" board.
+var newlyweds := false
+## Its honks to celebrate so far, and seconds rolled, for its cans.
+var honks := 0
+var _rolled := 0.0
 ## Riders still to pop out of its open door.
 var _to_pop := 0
 ## Riders counted so far, each with their sticker (CrowdRider.stick), and whether a cop looked in to count who stayed.
@@ -191,8 +201,11 @@ func _ready() -> void:
 			var pilot := GhostPilot.new()
 			pilot.name = "Pilot"
 			add_child(pilot)
-		elif ghost_mode:
+		elif ghost_mode or wedding_mode:
 			GhostCar.dress_driver(self, plate, shirt)
+		if guest:
+			WeddingCar.dress(self, plate, tie, newlyweds)
+			_honk_left = WeddingCar.honk_every(plate)
 	_build_trunk()
 	if clown or crowd > 0:
 		_build_door()
@@ -488,8 +501,12 @@ func _rider_traits(i: int) -> Dictionary:
 	return ConvoyTraits.draw(rng)
 
 
-## Its horn, in its bubble.
+## Its horn, in its bubble: a clown's own, or a wedding guest's celebration.
 func honk() -> void:
+	if guest:
+		say(tr(WeddingCar.honk_line(honks)))
+		honks += 1
+		return
 	say(tr(ConvoyTraits.horn_text(clown_traits)))
 
 
@@ -592,7 +609,8 @@ func _build_trunk() -> void:
 func net_setup() -> Dictionary:
 	return {"plate": plate, "driver": driver, "clown": clown, "clown_traits": clown_traits, "fruit": fruit,
 		"crate": crate, "hat": hat, "melon_kinds": melon_kinds, "crowd": crowd, "ghost_mode": ghost_mode, "ghost": ghost,
-		"shirt": shirt, "puppeteer": puppeteer}
+		"shirt": shirt, "puppeteer": puppeteer, "wedding_mode": wedding_mode, "guest": guest, "tie": tie,
+		"newlyweds": newlyweds}
 
 
 ## Online: where it is in the queue and whether its trunk is open; the ghost car's, how many pranks and the last one.
@@ -737,10 +755,10 @@ func _physics_process(delta: float) -> void:
 		if _pop_left <= 0.0:
 			_pop_left = POP_EVERY
 			_pop()
-	if clown and in_queue() and not _bubble.visible:
+	if (clown or guest) and in_queue() and not _bubble.visible:
 		_honk_left -= delta
 		if _honk_left <= 0.0:
-			_honk_left = HONK_EVERY
+			_honk_left = WeddingCar.honk_every(plate) if guest else HONK_EVERY
 			honk()
 	var stop := _stop_z()
 	var room := at.z - stop
@@ -762,7 +780,7 @@ func _physics_process(delta: float) -> void:
 		if not said_line and not ghost and not driver.is_empty() and first:
 			said_line = true
 			say(tr(driver.line) if not clown else tr(ConvoyTraits.horn_text(clown_traits)) + " " + tr(driver.line))
-			_honk_left = HONK_EVERY
+			_honk_left = WeddingCar.honk_every(plate) if guest else HONK_EVERY
 	elif state == "waiting" and speed > 0.0:
 		state = "coming"
 	if at.z < GONE_AT:
@@ -770,6 +788,9 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 		return
 	_place()
+	if guest:
+		_rolled += delta
+		WeddingCar.rattle(self, speed, _rolled)
 	if state == "sneaking":
 		_knock_cones()
 
