@@ -260,7 +260,40 @@ export function buildSafeKey() {
 	return b.build();
 }
 
+// The bag of stolen poodle hair: a clear sack 0.4 x 0.35 x 0.3 m stuffed with pink curls. Main evidence of the poodle
+// hair (3 kg).
+export function buildPoodleHairBag() {
+	const b = new Builder('poodle_hair_bag');
+	const pink = mat('poodle_pink', 0xf2a0c8);
+	b.add('sack', mat('sack_clear', 0xe8f0f6, { transparent: true, opacity: 0.45 }), ellipsoid(0.2, 0.17, 0.15, 10, 6), { pos: V(0, 0, 0) });
+	for (let i = 0; i < 9; i++) {
+		const a = i * 2.4, r = 0.08 + (i % 3) * 0.03;
+		b.add('curls', pink, ellipsoid(0.06, 0.05, 0.06, 6, 4), { pos: V(Math.cos(a) * r, -0.06 + (i % 4) * 0.04, Math.sin(a) * r * 0.7) });
+	}
+	b.add('knot', mat('sack_tie', 0xd8c050), new THREE.CylinderGeometry(0.02, 0.03, 0.05, 6), { pos: V(0, 0.18, 0) });
+	return b.build();
+}
+
+// The groomer's golden comb: 0.18 m long with its teeth. Extra of the poodle hair.
+export function buildGoldComb() {
+	const b = new Builder('gold_comb');
+	const gold = mat('comb_gold', 0xe8c040, { metalness: 0.6, roughness: 0.4 });
+	b.add('spine', gold, new THREE.BoxGeometry(0.18, 0.008, 0.03), { pos: V(0, 0, -0.02) });
+	for (let i = 0; i < 12; i++) b.add('teeth', gold, new THREE.BoxGeometry(0.006, 0.006, 0.03), { pos: V(-0.08 + i * 0.0145, 0, 0.01) });
+	return b.build();
+}
+
+// The fake invoice: "100 kg de pelo sintético", a sheet 0.15 x 0.21 m with a stamp. Extra of the poodle hair.
+export function buildFakeInvoice() {
+	const b = new Builder('fake_invoice');
+	b.add('sheet', mat('paper', 0xf6f2e6), new THREE.BoxGeometry(0.15, 0.003, 0.21), { pos: V(0, 0, 0) });
+	for (let i = 0; i < 5; i++) b.add('lines', mat('ink', 0x3a3a44), new THREE.BoxGeometry(0.11, 0.001, 0.007), { pos: V(-0.01, 0.002, -0.07 + i * 0.025) });
+	b.add('stamp', mat('stamp_blue', 0x3a6ab8), new THREE.CylinderGeometry(0.025, 0.025, 0.001, 10), { pos: V(0.035, 0.002, 0.07) });
+	return b.build();
+}
+
 export const models = {
+	poodle_hair_bag: buildPoodleHairBag, gold_comb: buildGoldComb, fake_invoice: buildFakeInvoice,
 	giant_doll: buildGiantDoll, giant_doll_flap: buildGiantDollFlap, parade_plan: buildParadePlan, safe_key: buildSafeKey,
 	payroll_book: buildPayrollBook, time_cards: buildTimeCards, foreman_wig: buildForemanWig,
 	captain_helmet: buildCaptainHelmet, reject_captain: buildRejectCaptain, stolen_mold: buildStolenMold,
@@ -273,6 +306,13 @@ export const models = {
 };
 
 export const views = {
+	poodle_goods: {
+		items: [
+			{ name: 'poodle_hair_bag', pos: [-0.2, 0.17, 0] }, { name: 'gold_comb', pos: [0.2, 0.004, 0.1] },
+			{ name: 'fake_invoice', pos: [0.05, 0.002, 0.3], rotY: 0.3 },
+		],
+		cam: { pos: [0, 0.6, 0.9], target: [0, 0.08, 0.1], fov: 40 },
+	},
 	giant_doll: {
 		items: [
 			{ name: 'giant_doll', pos: [-1.0, 0, 0], rotY: 3.6 }, { name: 'giant_doll_flap', pos: [-1.0, 0, 0], rotY: 3.6 },
