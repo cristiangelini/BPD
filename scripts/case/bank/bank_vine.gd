@@ -5,8 +5,8 @@ extends StaticBody3D
 ## grows from the floor to its full SIZE in GROW_TIME and stops the cops (and what they throw) but not the gang, who know
 ## the way through the leaves (it's on the props' layer, which robbers don't collide with). After LIFE it dries up
 ## and falls away. A cop with pruning shears in hand cuts it, one snip per E, SNIPS snips in all: two cops with shears
-## cut it in half the time. Its origin is on the floor at its middle, its face to local ±Z. Every number here is
-## (propuesta).
+## cut it in half the time. Its origin is on the floor at its middle, its face to local ±Z. Online the host's grows,
+## dries and counts the snips (`follower`; BankSeeds.net_state). Every number here is (propuesta).
 
 signal cut_now(vine: BankVine)
 
@@ -24,6 +24,7 @@ var grown := 0.0
 var life_left := LIFE
 var snips_left := SNIPS
 var drying := false
+var follower := false
 var _box: BoxShape3D
 var _shape: CollisionShape3D
 var _leaves: Node3D
@@ -79,6 +80,8 @@ func use(cop: Cop) -> void:
 	if not holds_shears(cop):
 		cop.show_hint("HINT_VINE_NEEDS_SHEARS")
 		return
+	if follower:
+		return
 	snips_left -= 1
 	if snips_left <= 0:
 		cut_now.emit(self)
@@ -100,12 +103,26 @@ func _physics_process(delta: float) -> void:
 		if grown <= 0.0:
 			queue_free()
 			return
-	else:
+	elif not follower:
 		grown = minf(grown + delta / GROW_TIME, 1.0)
 		life_left -= delta
 		if life_left <= 0.0:
 			dry()
 	_show()
+
+
+## What a guest's copy needs: where it is and which way it faces, how grown, drying and the snips left.
+func net_state() -> Array:
+	return [name, global_position, rotation.y, grown, drying, snips_left]
+
+
+func apply_net_state(state: Array) -> void:
+	global_position = state[1]
+	rotation.y = state[2]
+	grown = state[3]
+	snips_left = state[5]
+	if state[4] and not drying:
+		dry()
 
 
 func _show() -> void:
