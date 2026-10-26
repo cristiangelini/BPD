@@ -11,6 +11,9 @@ const EASE := 12.0
 ## A puppet further than this from where it should be jumps there instead of walking.
 const SNAP_DISTANCE := 3.0
 const PER_PACKET := 12
+## The unreliable packets stay under this many bytes, below ENet's MTU (1392): over it they're split and lost more.
+## Each NPC's state is a different size (net_state()), so they're packed by size, not by count.
+const PACKET_BYTES := 1100
 
 var net: Node
 var npcs: Array[Node3D] = []
@@ -164,10 +167,27 @@ func _send() -> void:
 	for peer: int in net.scene_peers:
 		if not gone.is_empty():
 			_removed.rpc_id(peer, gone)
-		for from in range(0, ids.size(), PER_PACKET):
-			_moved.rpc_id(peer, ids.slice(from, from + PER_PACKET), states.slice(from, from + PER_PACKET))
+		for part: Array in _by_size(ids, states):
+			_moved.rpc_id(peer, part[0], part[1])
 		for from in range(0, sure_ids.size(), PER_PACKET):
 			_moved_all.rpc_id(peer, sure_ids.slice(from, from + PER_PACKET), sure.slice(from, from + PER_PACKET))
+
+
+## `ids` and their `states` in pieces of at most PACKET_BYTES: [[ids, states], ...].
+static func _by_size(ids: PackedInt32Array, states: Array) -> Array:
+	var parts := []
+	var from := 0
+	var bytes := 0
+	for n in ids.size():
+		var size := var_to_bytes(states[n]).size() + 4
+		if n > from and bytes + size > PACKET_BYTES:
+			parts.append([ids.slice(from, n), states.slice(from, n)])
+			from = n
+			bytes = 0
+		bytes += size
+	if from < ids.size():
+		parts.append([ids.slice(from), states.slice(from)])
+	return parts
 
 
 @rpc("authority", "call_remote", "unreliable_ordered")

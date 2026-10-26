@@ -202,3 +202,17 @@ func test_guests_go_back_when_the_host_closes_the_room() -> void:
 	assert_false(guest.is_online())
 	assert_true(guest.players.is_empty())
 
+
+
+func test_npc_moves_go_in_packets_under_the_mtu() -> void:
+	var ids := PackedInt32Array()
+	var states := []
+	for i in 40:
+		ids.append(i)
+		states.append([Transform3D.IDENTITY, "TRANSFER_BATHROOM_THANKS", true, 0.0, false, [i, 90.0, true], null])
+	var parts := NpcSync._by_size(ids, states)
+	var count := 0
+	for part: Array in parts:
+		assert_lt(var_to_bytes(part).size(), 1392, "under ENet's MTU")
+		count += (part[0] as PackedInt32Array).size()
+	assert_eq(count, 40, "every one goes")
