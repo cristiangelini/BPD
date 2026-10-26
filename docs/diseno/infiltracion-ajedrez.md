@@ -76,6 +76,15 @@ copian la forma de `RestaurantOrders` y `SchoolClasses` (el host decide y avisa)
    cualquier disfraz **(propuesta)**.
 2. El club en la ciudad (`--place=chess`): el salón con las mesas, la sala del torneo, la cafetería, la vitrina, el
    depósito y la oficina; los socios, el Gran Maestro y el portero.
+   Hecho así: un lote nuevo en la cuadra (6, 1), al sur, de 24 x 20 m. El conserje (chaleco a cuadros, moño y
+   cronómetro) está adentro de la entrada y solo deja pasar con 2 piezas de socio: todo el club es solo para socios.
+   El salón tiene piso de damero, 8 mesas con su tablero en dos filas y la vitrina de trofeos en la pared oeste; al
+   este, la cafetería con el mostrador y dos mesitas, y en su pared del fondo la puerta con llave de la oficina del
+   Gran Maestro. Atrás, la sala del torneo con la tarima roja, la mesa del Gran Maestro y dos bancos, y al este el
+   depósito de tableros. 6 socios (cárdigan marrón con anteojos y una pieza en la mano, o polera verde con rodete y
+   termo) en 6 de los 16 lugares junto a las mesas por la semilla (los que sobran son para los policías), 2 de público
+   mirando la tarima y el rival del Gran Maestro. El Gran Maestro Alfil (sombrero blanco de alfil, monóculo y el rey
+   negro en la mano) en la tarima, mirando la puerta. Las sillas llegan con el paso 3 **(propuesta)**.
 3. Los tableros: las piezas con física, el reloj de cada mesa y sentarse.
 4. Las partidas: el desafío, los turnos con el reloj, los comentarios, el chisme y la sospecha.
 5. Las pruebas y el caso (variante "chess"): el torneo, las 6 pruebas, el sueldo y el interrogatorio.

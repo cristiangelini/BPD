@@ -7,7 +7,8 @@ extends StaticBody3D
 ## (infiltracion-fiesta.md, step 2b) a guest dressed as a cop, the Sargento Trucho hidden among them, or the señora
 ## Serpentina, the hostess; at the gym (infiltracion-gimnasio.md, step 2b) a member of the gang, or el Toro; at the
 ## thieves' school (infiltracion-escuela.md, step 2) a student, the Profesora Ganzúa or the Director; at the restaurant
-## (infiltracion-restaurante.md, step 2) a cook, a waiter or the Chef Flambé. E on one tells a bit
+## (infiltracion-restaurante.md, step 2) a cook, a waiter or the Chef Flambé; at the chess club (infiltracion-ajedrez.md,
+## step 2) a member or the Gran Maestro Alfil. E on one tells a bit
 ## of gossip, a different line each time. Each one has a suspicion meter that ClubSuspicion fills from what they
 ## see (step 4), with a "?" or a "!" over their head. They don't move yet, so online every PC has the same ones; their
 ## meters come from the host through ClubSuspicion.
@@ -41,12 +42,16 @@ const MODELS := {
 	"cocinera": preload("res://assets/models/npc_cocinera.glb"),
 	"mozo": preload("res://assets/models/npc_mozo.glb"),
 	"flambe": preload("res://assets/models/npc_flambe.glb"),
+	"ajedrecista": preload("res://assets/models/npc_ajedrecista.glb"),
+	"ajedrecista_b": preload("res://assets/models/npc_ajedrecista_b.glb"),
+	"alfil": preload("res://assets/models/npc_alfil.glb"),
 }
 const SCALES := {"abuelo": 0.82, "abuela": 0.8, "chela": 0.85, "corista": 0.85, "corista_b": 0.85, "ernesto": 1.0,
 	"mimo": 0.85, "mimo_b": 0.85, "pausa": 0.95, "invitado": 0.9, "invitado_b": 0.9, "serpentina": 0.9,
 	"socio": 1.1, "socio_b": 1.1, "toro": 1.2,
 	"alumno": 0.9, "alumna": 0.85, "ganzua": 0.9, "director": 1.0,
-	"cocinero": 1.0, "cocinera": 0.9, "mozo": 0.9, "flambe": 1.1}
+	"cocinero": 1.0, "cocinera": 0.9, "mozo": 0.9, "flambe": 1.1,
+	"ajedrecista": 0.9, "ajedrecista_b": 0.85, "alfil": 1.05}
 ## What each look says when talked to (the key with the line's number, and how many lines), the prompt, and what it
 ## shouts when cuffed. The bosses (BOSSES) have their own lines.
 const TALK := {
@@ -75,8 +80,11 @@ const TALK := {
 	"cocinera": ["RESTAURANT_GOSSIP_%d", 10, "PROMPT_TALK_COOK", "RESTAURANT_CUFFED"],
 	"mozo": ["RESTAURANT_GOSSIP_%d", 10, "PROMPT_TALK_WAITER", "RESTAURANT_CUFFED"],
 	"flambe": ["FLAMBE_%d", 4, "PROMPT_TALK_FLAMBE", "FLAMBE_CUFFED"],
+	"ajedrecista": ["CHESS_GOSSIP_%d", 10, "PROMPT_TALK_CHESS", "CHESS_CUFFED"],
+	"ajedrecista_b": ["CHESS_GOSSIP_%d", 10, "PROMPT_TALK_CHESS", "CHESS_CUFFED"],
+	"alfil": ["ALFIL_%d", 4, "PROMPT_TALK_ALFIL", "ALFIL_CUFFED"],
 }
-const BOSSES: Array[String] = ["chela", "ernesto", "pausa", "toro", "director", "flambe"]
+const BOSSES: Array[String] = ["chela", "ernesto", "pausa", "toro", "director", "flambe", "alfil"]
 const GOSSIP_LINES := 12
 const SAY_TIME := 4.0
 ## What a grandparent sees: a wide cone in front of them (they turn their heads) and not far, at their eyes' height.
@@ -151,7 +159,8 @@ func is_chela() -> bool:
 
 
 ## The one to cuff: Doña Chela at the club, Maestro Ernesto at the chapel, Maestra Pausa at the theater, the Sargento
-## Trucho at the party, el Toro at the gym, the Director at the thieves' school, the Chef Flambé at the restaurant.
+## Trucho at the party, el Toro at the gym, the Director at the thieves' school, the Chef Flambé at the restaurant, the
+## Gran Maestro Alfil at the chess club.
 func is_boss() -> bool:
 	return BOSSES.has(look) or secret_boss
 

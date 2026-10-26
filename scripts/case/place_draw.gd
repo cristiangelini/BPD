@@ -33,6 +33,7 @@ const PLACES := {
 	"gym": "res://scenes/levels/gym_hall.tscn",
 	"school": "res://scenes/levels/school_hall.tscn",
 	"restaurant": "res://scenes/levels/restaurant_hall.tscn",
+	"chess": "res://scenes/levels/chess_club.tscn",
 	"bank": "res://scenes/levels/bank.tscn",
 	"plaza": "res://scenes/levels/plaza_rally.tscn",
 	"prison": "res://scenes/levels/prison.tscn",

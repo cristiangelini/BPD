@@ -2675,6 +2675,35 @@ CRIME_owner_flambe,¡Novatos! Ayer se trajeron al Chef Flambé y está en la sal
 CONFESS_owner_flambe,"¡Está bien! ¡Las joyas iban en la sopa! Pero la sopa era excelente, eh.","Fine! The jewels went in the soup! But the soup was excellent, okay.","Tá bom! As joias iam na sopa! Mas a sopa era excelente, hein."
 FLAMBE_SPECIAL,¡Una sopa especial para la mesa 7! Esta la hago yo. Nadie la toque.,A special soup for table 7! I'll make this one. Nobody touch it.,Uma sopa especial para a mesa 7! Essa eu faço. Ninguém toca.
 FLAMBE_SPECIAL_OUT,"¡Mozo! La especial, a la mesa 7. Con cuidado, que tiene... sabor.","Waiter! The special, to table 7. Carefully, it has... flavor.","Garçom! A especial, para a mesa 7. Com cuidado, que tem... sabor."
+PLACE_CHESS,El Peón Dormido,The Sleeping Pawn,O Peão Adormecido
+PROMPT_TALK_CHESS,E: charlar con el socio,E: chat with the member,E: conversar com o sócio
+CHESS_GOSSIP_0,"¿Nuevo? El caballo se mueve en L. Bueno, acá se mueve como quiere.","New? The knight moves in an L. Well, here it moves however it likes.","Novo? O cavalo anda em L. Bom, aqui ele anda como quer."
+CHESS_GOSSIP_1,El Gran Maestro nunca perdió una partida. Nadie se anima a ganarle.,The Gran Maestro has never lost a game. Nobody dares to beat him.,O Grande Mestre nunca perdeu uma partida. Ninguém tem coragem de ganhar dele.
+CHESS_GOSSIP_2,Mi rey negro pesa el doble que el blanco. Debe ser la madera.,My black king weighs twice as much as the white one. Must be the wood.,Meu rei preto pesa o dobro do branco. Deve ser a madeira.
+CHESS_GOSSIP_3,"La entrega es el sábado. Digo, el torneo. El torneo es el sábado.","The delivery is on Saturday. I mean, the tournament. The tournament is on Saturday.","A entrega é no sábado. Digo, o torneio. O torneio é no sábado."
+CHESS_GOSSIP_4,¿Sabías que en la vitrina hay copas que nunca ganó nadie? Igual están llenas.,Did you know there are cups in the cabinet nobody ever won? They're full anyway.,Sabia que na vitrine tem taças que ninguém nunca ganhou? Mesmo assim estão cheias.
+CHESS_GOSSIP_5,"Aquí se anotan las partidas en código. ""Peón cuatro rey"" quiere decir otra cosa.","We write the games down in code here. ""Pawn to king four"" means something else.","Aqui as partidas são anotadas em código. ""Peão quatro rei"" quer dizer outra coisa."
+CHESS_GOSSIP_6,"Shhh. En el ajedrez se piensa en silencio. Y se cuentan diamantes en silencio también.","Shhh. In chess you think in silence. And you count diamonds in silence too.","Shhh. No xadrez se pensa em silêncio. E se contam diamantes em silêncio também."
+CHESS_GOSSIP_7,"Si te desafían, juega. Si pierdes por tiempo, todos te miran raro.","If they challenge you, play. If you lose on time, everyone looks at you funny.","Se te desafiarem, jogue. Se perder no tempo, todo mundo te olha estranho."
+CHESS_GOSSIP_8,El café de la cafetería es tan fuerte que mueve las piezas solo.,The cafeteria's coffee is so strong it moves the pieces by itself.,O café da cafeteria é tão forte que move as peças sozinho.
+CHESS_GOSSIP_9,"La oficina del Gran Maestro tiene llave. La llave está debajo del reloj de la mesa 8. No le digas a nadie.","The Gran Maestro's office is locked. The key is under the clock on table 8. Don't tell anyone.","O escritório do Grande Mestre tem chave. A chave está debaixo do relógio da mesa 8. Não conte a ninguém."
+CHESS_CUFFED,¡Oiga! ¡Estaba por dar jaque mate!,Hey! I was about to checkmate!,Ei! Eu ia dar xeque-mate!
+PROMPT_TALK_ALFIL,E: saludar al Gran Maestro Alfil,E: greet the Gran Maestro Alfil,E: cumprimentar o Grande Mestre Alfil
+ALFIL_0,Socio nuevo. Bienvenido al Peón Dormido. Aquí se juega en silencio y se pierde con elegancia.,New member. Welcome to the Sleeping Pawn. Here we play in silence and lose with elegance.,Sócio novo. Bem-vindo ao Peão Adormecido. Aqui se joga em silêncio e se perde com elegância.
+ALFIL_1,"Yo nunca perdí una partida. Ni pienso empezar hoy, ¿verdad?","I've never lost a game. And I don't plan to start today, right?","Eu nunca perdi uma partida. E não pretendo começar hoje, certo?"
+ALFIL_2,"Mi rey negro no se toca. Es una pieza de colección. Muy... valiosa.","My black king is not to be touched. It's a collector's piece. Very... valuable.","Meu rei preto não se toca. É uma peça de coleção. Muito... valiosa."
+ALFIL_3,"¿Esos anteojos son suyos? Mmm. Usted tiene cara de... policía. Digo, de principiante.","Are those glasses yours? Hmm. You look like a... cop. I mean, a beginner.","Esses óculos são seus? Hum. Você tem cara de... policial. Digo, de iniciante."
+ALFIL_CUFFED,"¡Jaque! ...Ah, no, el jaque me lo hicieron a mí.","Check! ...Oh, no, I'm the one in check.","Xeque! ...Ah, não, o xeque é em mim."
+ALFIL_FOUND_OUT,¡Policías en mi club! ¡Abandono la partida! Me voy en el caballito.,Cops in my club! I resign the game! I'm taking the little horse.,Policiais no meu clube! Abandono a partida! Vou no cavalinho.
+CHESSDOOR_WELCOME,"*El conserje te mira por encima del cronómetro.* Adelante, socio. Silencio en las mesas.","*The doorkeeper looks at you over his stopwatch.* Go ahead, member. Silence at the tables.","*O porteiro olha você por cima do cronômetro.* Pode entrar, sócio. Silêncio nas mesas."
+CHESSDOOR_NO_0,Socios solamente. Y los socios no usan placa.,Members only. And members don't wear badges.,Só sócios. E sócios não usam distintivo.
+CHESSDOOR_NO_1,Así no se entra a un club de ajedrez. Le falta pinta de socio.,That's no way into a chess club. You don't look like a member.,Assim não se entra num clube de xadrez. Falta cara de sócio.
+HINT_CHESSDOOR_NO_DISGUISE,El conserje no te deja pasar: ponte 2 piezas de socio de la fila de disfraces de la comisaría.,The doorkeeper won't let you in: put on 2 member pieces from the station's disguise row.,O porteiro não deixa você entrar: vista 2 peças de sócio da fileira de disfarces da delegacia.
+HUD_CHESS_SUSPICION,Sospecha del club,Club suspicion,Suspeita do clube
+CHESS_FOUND_OUT_0,¡Son policías! ¡Nadie juega tan mal al ajedrez!,They're cops! Nobody plays chess that badly!,São policiais! Ninguém joga xadrez tão mal!
+CHESS_FOUND_OUT_1,¡Son policías! ¡Movió la torre en diagonal!,They're cops! He moved the rook diagonally!,São policiais! Ele moveu a torre na diagonal!
+CHESS_FOUND_OUT_2,¡Son policías! ¡Preguntó por qué el rey pesa tanto!,They're cops! He asked why the king is so heavy!,São policiais! Perguntou por que o rei pesa tanto!
+HINT_CHESS_FOUND_OUT,¡Los descubrieron! Todo el club sabe que son policías.,You've been found out! The whole club knows you're cops.,Vocês foram descobertos! O clube todo sabe que vocês são policiais.
 MENU_DOLL_FACTORY,Fábrica de muñecos (prueba),Doll factory (test),Fábrica de bonecos (teste)
 PROMPT_PUSH_BUTTON,Apretar el botón,Press the button,Apertar o botão
 PROMPT_SHUTTER_BUTTON,Subir la persiana del muelle,Raise the dock shutter,Levantar a porta do cais

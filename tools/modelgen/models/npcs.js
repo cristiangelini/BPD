@@ -515,6 +515,72 @@ const NPCS = {
 		hairCap(b, C('hair_black', 0x161214), { y: 1.4, sy: 0.45 });
 		b.add('props', C('book_leather', 0x5a2a1a), new THREE.BoxGeometry(0.24, 0.32, 0.05), { pos: V(-0.48, 0.8, 0.22), rot: [0.3, 0, 0] });
 	},
+	// The chess club (infiltracion-ajedrez.md): a member of the gang in a brown cardigan with leather elbows, thick
+	// glasses and a grey fringe around a bald head, a white pawn in hand.
+	ajedrecista(b) {
+		const cardigan = C('cardigan_brown', 0x7a5a3a);
+		pearBody(b, SKIN.crema, { shirt: cardigan, pants: C('trousers_grey', 0x5a5a62) });
+		for (let i = 0; i < 4; i++) b.add('body', C('button_brown', 0x5a3a20), ellipsoid(0.02, 0.02, 0.01, 5, 3), { pos: V(0, 0.62 + i * 0.12, 0.42 - i * 0.03) });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		glasses(b);
+		mouth(b);
+		const hair = C('hair_gray', 0x9aa0a8);
+		for (const s of [-1, 1]) b.add('head', hair, ellipsoid(0.07, 0.08, 0.12, 6, 4), { pos: V(s * 0.19, 1.36, -0.04) });
+		b.add('head', hair, ellipsoid(0.15, 0.07, 0.06, 8, 4), { pos: V(0, 1.36, -0.18) });
+		const pawn = C('pawn_white', 0xf2eee0);
+		b.add('props', pawn, new THREE.CylinderGeometry(0.03, 0.05, 0.08, 8), { pos: V(0.5, 0.82, 0.2) });
+		b.add('props', pawn, new THREE.SphereGeometry(0.035, 8, 6), { pos: V(0.5, 0.9, 0.2) });
+	},
+	// Another member: a green turtleneck, a grey bun with a pencil through it and a thermos of coffee.
+	ajedrecista_b(b) {
+		const neck = C('turtleneck_green', 0x3a6a4a);
+		pearBody(b, SKIN.cacao, { shirt: neck, pants: C('skirt_grey', 0x4a4a52), belted: false });
+		b.add('body', neck, new THREE.CylinderGeometry(0.17, 0.2, 0.1, 10), { pos: V(0, 1.1, 0.02) });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mouth(b, { smile: true });
+		const hair = C('hair_gray', 0x9aa0a8);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		b.add('head', hair, ellipsoid(0.1, 0.1, 0.1, 8, 6), { pos: V(0, 1.55, -0.06) });
+		b.add('head', C('pencil_yellow', 0xf0c030), new THREE.CylinderGeometry(0.008, 0.008, 0.22, 5), { pos: V(0, 1.58, -0.06), rot: [0, 0, 1.2] });
+		const steel = C('thermos_steel', 0xb8bcc4);
+		b.add('props', steel, new THREE.CylinderGeometry(0.05, 0.05, 0.26, 8), { pos: V(0.5, 0.78, 0.18) });
+		b.add('props', C('thermos_cap', 0xc8202a), new THREE.CylinderGeometry(0.055, 0.055, 0.05, 8), { pos: V(0.5, 0.93, 0.18) });
+	},
+	// The Gran Maestro Alfil, the gang's boss: a long black coat, a tall white bishop's hat with its slit and its ball,
+	// a monocle on a gold chain and the hollow black king in his hand.
+	alfil(b) {
+		const coat = C('coat_black', 0x18181c);
+		pearBody(b, SKIN.arena, { shirt: coat, pants: coat, belted: false });
+		lapels(b, white);
+		tie(b, C('tie_purple', 0x5a2a7a));
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		b.add('face', gold, new THREE.TorusGeometry(0.05, 0.008, 4, 12), { pos: V(0.08, 1.33, 0.2) });
+		b.add('face', gold, new THREE.CylinderGeometry(0.004, 0.004, 0.3, 4), { pos: V(0.14, 1.18, 0.18), rot: [0, 0, 0.3] });
+		mustache(b, C('hair_gray', 0x9aa0a8), 0.9);
+		mouth(b);
+		const hat = C('bishop_white', 0xf2eee0);
+		b.add('cap', hat, new THREE.CylinderGeometry(0.2, 0.21, 0.08, 12), { pos: V(0, 1.46, 0.0) });
+		b.add('cap', hat, ellipsoid(0.2, 0.32, 0.2, 12, 8), { pos: V(0, 1.7, 0.0) });
+		b.add('cap', coat, new THREE.BoxGeometry(0.03, 0.2, 0.26), { pos: V(0.06, 1.8, 0.0), rot: [0, 0, -0.5] });
+		b.add('cap', hat, new THREE.SphereGeometry(0.05, 8, 6), { pos: V(0, 2.04, 0.0) });
+		const king = C('king_black', 0x141418);
+		b.add('props', king, new THREE.CylinderGeometry(0.035, 0.06, 0.16, 8), { pos: V(0.5, 0.85, 0.2) });
+		b.add('props', king, new THREE.BoxGeometry(0.02, 0.07, 0.02), { pos: V(0.5, 0.97, 0.2) });
+		b.add('props', king, new THREE.BoxGeometry(0.06, 0.02, 0.02), { pos: V(0.5, 0.98, 0.2) });
+	},
+	// The chess club's doorkeeper: a checkered vest, a bow tie, a stopwatch on a chain and a very serious face.
+	conserje(b) {
+		const vest = C('vest_checker', 0x2a2a30);
+		pearBody(b, SKIN.celeste, { shirt: white, pants: vest });
+		b.add('body', vest, loft([{ y: 0.62, rx: 0.47, rz: 0.42 }, { y: 1.0, rx: 0.37, rz: 0.33 }], 10), { pos: V(0, 0, 0.005) });
+		for (let r = 0; r < 3; r++) for (let c = 0; c < 2; c++) b.add('body', white, new THREE.BoxGeometry(0.08, 0.08, 0.01), { pos: V(-0.12 + (c * 2 + (r % 2)) * 0.08, 0.68 + r * 0.1, 0.44 - r * 0.02) });
+		for (const sd of [-1, 1]) b.add('body', black, new THREE.ConeGeometry(0.05, 0.09, 4), { pos: V(sd * 0.05, 1.07, 0.34), rot: [0, 0, sd * Math.PI / 2] });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mustache(b, black, 0.6);
+		mouth(b);
+		hairCap(b, C('hair_black', 0x161214), { y: 1.4, sy: 0.45 });
+		b.add('props', C('stopwatch', 0xd8d8e0), new THREE.CylinderGeometry(0.06, 0.06, 0.02, 10), { pos: V(-0.48, 0.8, 0.22), rot: [Math.PI / 2, 0, 0] });
+	},
 	// Sospechoso: striped shirt, beanie and eye mask, with a loot sack.
 	sospechoso(b) {
 		pearBody(b, SKIN.celeste, { shirt: white, pants: C('jeans', 0x2a2f3a) });
@@ -1028,10 +1094,11 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ladron_oso: 1.15, abuelo_oso: 1.15 };
+const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, ladron_oso: 1.15, abuelo_oso: 1.15 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
+	chess_npcs: { items: row(['ajedrecista', 'ajedrecista_b', 'alfil', 'conserje']), cam: { pos: [0, 1.3, 6.5], target: [0, 0.95, 0], fov: 34 } },
 	npcs_b: { items: row(NPC_NAMES.slice(5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
 	...Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, {
 		items: [{ name: `npc_${n}`, pos: [-0.5, 0, 0], rotY: 0.35, scale: SCALE[n] }, { name: `npc_${n}`, pos: [0.7, 0, 0], rotY: Math.PI - 0.6, scale: SCALE[n] }],
