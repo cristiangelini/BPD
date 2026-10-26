@@ -117,6 +117,7 @@ Montan un control en la calle y tienen que encontrar el auto buscado entre mucho
 
 ## 9. Protección de un político
 Hecho: 9.1 ([proteccion-politico.md](proteccion-politico.md)). Propuesta: 9.6 ([politico-mercado.md](politico-mercado.md)).
+Propuesta: 9.7 ([politico-aeropuerto.md](politico-aeropuerto.md)).
 Tienen que cuidar a un político molesto durante un evento (decisión 32).
 
 1. **Acto en una plaza:** le tiran huevos y tomates.
@@ -125,7 +126,7 @@ Tienen que cuidar a un político molesto durante un evento (decisión 32).
 4. **Debate en televisión:** el sabotaje viene desde el control de cámaras.
 5. **Partido de fútbol benéfico:** el político juega, mal. Propuesta en [politico-futbol.md](politico-futbol.md) (decisión 179).
 6. **Caminata por el mercado:** quiere probar todo y algo está envenenado (con laxante).
-7. **En el aeropuerto:** con valijas iguales, y una tiene algo raro.
+7. **En el aeropuerto:** con valijas iguales, y una tiene algo raro. Propuesta en [politico-aeropuerto.md](politico-aeropuerto.md) (decisión 231).
 8. **Fiesta de cumpleaños del político:** el pastel es sospechoso. Propuesta en [politico-cumple.md](politico-cumple.md) (decisión 221).
 9. **Desfile en auto descapotable:** los 4 van caminando al lado del auto. Propuesta en [politico-descapotable.md](politico-descapotable.md) (decisión 222).
 10. **El doble:** hay dos políticos iguales y uno es un impostor. Propuesta en [politico-doble.md](politico-doble.md) (decisión 220).
