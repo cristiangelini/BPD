@@ -11,6 +11,9 @@ extends InfiltrationPlace
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const MOPED_MODEL := preload("res://assets/models/chopper_moped.glb")
+const KEY_POT_SCENE := preload("res://scenes/props/key_pot.tscn")
+const RADIOS_MODEL := preload("res://assets/models/car_radio_box.glb")
+const WHEEL_MODEL := preload("res://assets/models/steering_wheel.glb")
 const HALF_X := 12.0
 const HALF_Z := 10.0
 const FLOOR_TOP := 0.06
@@ -49,6 +52,18 @@ const DOORKEEPER_AT := Vector3(ENTRANCE_X + 1.2, 0, HALF_Z - 1.2)
 const ARM_TABLE_AT := Vector3(-8.0, 0, -3.0)
 const HEAVY_BIKE_AT := Vector3(-8.0, 0, -7.6)
 const CHARGE_AT := Vector3(-0.5, 0, -8.8)
+## The evidence (step 5), 3 of these by the seed: the box of stolen car radios between the workshop's crates and the
+## stolen steering wheel lying on the counter (grabbed), the map of the city's car parks on the workshop's front wall
+## (a photo), two bikers talking about Thursday's job (the recording), El Cromado's jacket with a patch for each job on
+## the coat rack and the sales book on his office's desk (searched with E; the key is in his moped's tank).
+const EVIDENCE_KINDS: Array[String] = ["radios", "wheel", "map", "recording", "jacket", "ledger"]
+const RADIOS_AT := Vector3(8.75, FLOOR_TOP + 0.2, 1.0)
+const WHEEL_AT := Vector3(-10.4, FLOOR_TOP + 1.14, 6.8)
+const MAP_AT := Vector3(8.0, 1.6, HALF_Z - 0.12)
+const JACKET_AT := Vector3(-3.0, FLOOR_TOP + 1.3, HALF_Z - 0.5)
+const LEDGER_AT := Vector3(8.5, FLOOR_TOP + 0.85, -3.0)
+## Two bikers this close (m) talk business together: the recording's pair.
+const TALK_PAIR := 2.6
 ## The workshop's crates against its back wall.
 const CRATES: Array[Vector3] = [Vector3(5.5, 0, 0.8), Vector3(7.0, 0, 0.8), Vector3(10.5, 0, 0.8)]
 
@@ -81,12 +96,14 @@ func _ready() -> void:
 	add_child(office_door)
 	_add_patio()
 	_add_people()
+	_add_evidence()
 	dares = BikerDares.new()
 	dares.name = "Dares"
 	dares.bar = self
 	dares.case_seed = case_seed
 	add_child(dares)
 	place_in_city("biker")
+	start_case()
 
 
 ## El Cromado rides off from the street, out of the entrance (step 6).
@@ -245,6 +262,7 @@ func _build_bar() -> void:
 		_build.box(at + Vector3(0, FLOOR_TOP + TABLE_SIZE.y / 2, 0), TABLE_SIZE, WOOD.lightened(0.1))
 	_build.box(RACK_AT + Vector3(0, FLOOR_TOP + 0.9, 0), Vector3(0.12, 1.8, 0.12), STEEL.darkened(0.4))
 	_build.mesh_box(RACK_AT + Vector3(0, FLOOR_TOP + 1.75, 0), Vector3(0.6, 0.06, 0.06), STEEL.darkened(0.4))
+	_build_map_and_jacket()
 	# The workshop: concrete floor, the boss's moped on its stand, crates and the tool wall.
 	_build.mesh_box(Vector3((SHOP_X + HALF_X) / 2, FLOOR_TOP + 0.004, HALF_Z / 2), Vector3(HALF_X - SHOP_X - 0.1, 0.008,
 		HALF_Z - 0.1), CONCRETE)
@@ -275,3 +293,93 @@ func _build_back_rooms() -> void:
 		HALF_Z - 0.1), CONCRETE)
 	_build.box(Vector3(8.5, FLOOR_TOP + 0.4, -3.0), Vector3(2.4, 0.8, 1.0), WOOD.darkened(0.2))
 	_build.box(Vector3(HALF_X - 0.35, FLOOR_TOP + 0.9, -7.0), Vector3(0.5, 1.8, 2.4), STEEL.darkened(0.3))
+
+
+## 3 of the 6 pieces of evidence by the seed, the key in the moped's tank and, for the recording, two bikers talking.
+func _add_evidence() -> void:
+	evidence = ClubEvidence.new()
+	evidence.name = "Evidence"
+	evidence.held_kinds.assign(["radios", "wheel"])
+	evidence.talk_key = "BIKER_TALK_%d"
+	add_child(evidence)
+	var pair := _talking_pair()
+	var available := EVIDENCE_KINDS.duplicate()
+	if pair.is_empty():
+		available.erase("recording")
+	evidence.kinds = ClubEvidence.draw(case_seed, available)
+	var key: KeyPot = KEY_POT_SCENE.instantiate()
+	key.name = "KeyTank"
+	key.has_key = true
+	key.prompt = "PROMPT_BIKER_TANK_KEY"
+	add_child(key)
+	key.position = MOPED_AT + Vector3(-0.3, FLOOR_TOP + 0.45, 0.25)
+	key.get_node("Pot").hide()
+	key.get_node("Plant").hide()
+	for kind: String in evidence.kinds:
+		match kind:
+			"radios":
+				_item(kind, RADIOS_MODEL, Vector3(0.6, 0.4, 0.45), 12.0, RADIOS_AT)
+			"wheel":
+				_item(kind, WHEEL_MODEL, Vector3(0.4, 0.06, 0.4), 2.0, WHEEL_AT)
+			"map":
+				_spot(kind, MAP_AT, Vector3(1.2, 0.9, 0.1), true)
+			"jacket":
+				_spot(kind, JACKET_AT, Vector3(0.6, 0.8, 0.4), false)
+			"ledger":
+				_spot(kind, LEDGER_AT, Vector3(0.6, 0.1, 0.4), false)
+				_build.mesh_box(LEDGER_AT + Vector3(0, -0.02, 0), Vector3(0.3, 0.04, 0.22), Color(0.15, 0.25, 0.5))
+			"recording":
+				evidence.talkers.assign(pair)
+				for member: ClubMember in pair:
+					member.distracted = true
+
+
+## A piece of evidence to grab, its middle at `at` (its model's origin at its bottom).
+func _item(kind: String, model: PackedScene, size: Vector3, kg: float, at: Vector3) -> void:
+	var item := ClubEvidence.make_item("Biker_" + kind, model, size, kg)
+	(item.get_child(1) as Node3D).position.y = -size.y / 2
+	add_child(item)
+	item.position = at
+	evidence.items[kind] = item
+
+
+## A piece of evidence that stays put, a box of `size` around `at`: photographed, or searched with E.
+func _spot(kind: String, at: Vector3, size: Vector3, photo: bool) -> ClubEvidenceSpot:
+	var spot := ClubEvidenceSpot.new()
+	spot.name = "Evidence_" + kind
+	spot.kind = kind
+	spot.photo = photo
+	spot.prompt_prefix = "PROMPT_BIKER_"
+	spot.evidence = evidence
+	add_child(spot)
+	spot.position = at
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = size
+	shape.shape = box
+	spot.add_child(shape)
+	return spot
+
+
+## Two bikers by each other (the recording's pair), or none.
+func _talking_pair() -> Array[ClubMember]:
+	for first in members:
+		for second in members:
+			if first != second and first.position.distance_to(second.position) < TALK_PAIR:
+				return [first, second]
+	return []
+
+
+## The map of the car parks on the workshop's wall and El Cromado's jacket on the coat rack, there whether they're
+## evidence or not.
+func _build_map_and_jacket() -> void:
+	_build.mesh_box(MAP_AT + Vector3(0, 0, 0.03), Vector3(1.2, 0.9, 0.02), Color(0.92, 0.9, 0.82))
+	for i in 4:
+		_build.mesh_box(MAP_AT + Vector3(-0.45 + i * 0.3, 0, 0.016), Vector3(0.04, 0.85, 0.005), Color(0.6, 0.6, 0.62))
+		_build.mesh_box(MAP_AT + Vector3(0, -0.33 + i * 0.22, 0.016), Vector3(1.15, 0.04, 0.005), Color(0.6, 0.6, 0.62))
+	for at: Vector2 in [Vector2(-0.3, 0.2), Vector2(0.15, -0.12), Vector2(0.42, 0.3), Vector2(-0.1, -0.3)]:
+		_build.mesh_box(MAP_AT + Vector3(at.x, at.y, 0.012), Vector3(0.08, 0.08, 0.006), Color(0.85, 0.1, 0.1))
+	_build.mesh_box(JACKET_AT, Vector3(0.5, 0.7, 0.18), Color(0.1, 0.1, 0.12))
+	for i in 5:
+		_build.mesh_box(JACKET_AT + Vector3(-0.16 + (i % 3) * 0.16, 0.2 - (i / 3) * 0.25, -0.095), Vector3(0.1, 0.1, 0.01),
+			[Color(0.85, 0.7, 0.2), Color(0.2, 0.4, 0.75), Color(0.75, 0.2, 0.15)][i % 3])

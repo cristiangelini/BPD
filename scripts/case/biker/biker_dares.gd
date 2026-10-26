@@ -184,7 +184,7 @@ func _on_braked() -> void:
 		_pass()
 
 
-## The dare passed: the biker is pleased and tells some gossip (step 5).
+## The dare passed: the biker is pleased and tells some gossip about evidence still missing.
 func _pass() -> void:
 	var done := kind
 	challenger.say(tip())
@@ -192,8 +192,12 @@ func _pass() -> void:
 	passed.emit(done)
 
 
-## What a pleased biker says (step 5 makes it gossip about the evidence).
+## What a pleased biker says: a hint about the first piece of evidence not found yet, or just respect.
 func tip() -> String:
+	if bar.evidence and bar.case:
+		for one: String in bar.evidence.kinds:
+			if not bar.case.evidence_found.has(one):
+				return "BIKER_TIP_" + one
 	return "BIKER_RESPECT"
 
 

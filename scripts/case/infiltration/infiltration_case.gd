@@ -108,6 +108,15 @@ const VARIANTS := {
 		"boss_cuffed": "HINT_ALFIL_CUFFED", "cuff_row": "OBJ_CHESS_CUFF_ALFIL",
 		"catch_row": "OBJ_CHESS_CATCH_ALFIL", "slips": "ALFIL_SLIP_%d",
 	},
+	"biker": {
+		"story": "infiltration_biker",
+		"brief": ["BRIEF_BIKER_A", "BRIEF_BIKER_B", "BRIEF_BIKER_C"],
+		"go": "HINT_GO_BIKER", "in": "HINT_BIKER_IN", "found": "HINT_CLUB_EVIDENCE",
+		"rows": "OBJ_BIKER_", "evidence": "EVIDENCE_BIKER_",
+		"boss": "cromado", "getaway": SuspectCar.WALKER,
+		"boss_cuffed": "HINT_CROMADO_CUFFED", "cuff_row": "OBJ_BIKER_CUFF_CROMADO",
+		"catch_row": "OBJ_BIKER_CATCH_CROMADO", "slips": "CROMADO_SLIP_%d",
+	},
 }
 ## With `second_chance`, the first wrong person cuffed only raises everyone's suspicion this much.
 const WRONG_CUFF := 50.0
