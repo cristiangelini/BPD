@@ -84,6 +84,19 @@ func use(_cop: Cop) -> void:
 	leave()
 
 
+## Online (NpcSync): the host flies it and the guests' copies follow where it is; this is the rest they show.
+func net_state() -> Array:
+	return [state, carries]
+
+
+func apply_net_state(net: Variant) -> void:
+	state = net[0]
+	carries = net[1]
+	_parcel.visible = carries
+	visible = state != State.AWAY
+	(get_child(0) as CollisionShape3D).disabled = state == State.AWAY
+
+
 func _fly(from: Vector3, to: Vector3, next: State) -> void:
 	_from = from
 	_to = to

@@ -134,6 +134,11 @@ Los pesos y valores siguen la escala de los otros lugares: la principal vale uno
    - **Hecho (propuesta):** el edificio entra en el sorteo de allanamientos con las mismas chances que los otros 7
      (un octavo cada uno), y salen sus 6 historias. `--place=apartments` lo fuerza.
 9. El online (el ascensor, el andamio, Don Evaristo, Doña Pepa y la evidencia en todas las PC).
+   - **Hecho (propuesta):** el anfitrión mueve el ascensor, el andamio, las caminatas de Doña Pepa y las palomas;
+     en las otras PC son copias que siguen dónde están y su estado (parada, puertas, número del piso, dirección del
+     andamio). Los botones, el portero eléctrico, la correa de Cuqui, la cerradura y el botón 31 se usan desde
+     cualquier PC. Don Evaristo y la evidencia ya se sincronizaban como en los otros lugares. Las palomas solo las
+     manda el anfitrión, y el collar que suelta una paloma lo simula él.
 
 ## Preguntas para Cristian
 1. ¿La torre de 30 pisos de verdad en la ciudad (96 m, la más alta), con solo la planta baja y el piso 30 jugables y un

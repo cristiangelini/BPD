@@ -44,6 +44,8 @@ func _ready() -> void:
 	model.scale = Vector3.ONE * 0.85
 	add_child(model)
 	_bubble = Label3D.new()
+	# NpcSync shows the host's bubble on every PC by this name.
+	_bubble.name = "Bubble"
 	_bubble.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	_bubble.pixel_size = 0.004
 	_bubble.outline_size = 10
@@ -79,6 +81,25 @@ func use(cop: Cop) -> void:
 
 func walker() -> Cop:
 	return _walker
+
+
+## Online (NpcSync): the host runs the walks. A guest's copy takes the leash when told to (the shared E) and lets go
+## when the host's walk ends, counting the cop as a walker if it was a whole lap.
+func net_state() -> Array:
+	return [_walker != null, walkers.size()]
+
+
+func apply_net_state(state: Variant) -> void:
+	if state[0] or not _walker:
+		return
+	var cop := _walker
+	_walker = null
+	dog.walker = null
+	if is_instance_valid(cop):
+		if cop.leash == dog:
+			cop.leash = null
+		if walkers.size() < state[1]:
+			walkers.append(cop)
 
 
 func _physics_process(delta: float) -> void:

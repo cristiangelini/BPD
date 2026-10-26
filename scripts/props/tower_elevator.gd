@@ -108,6 +108,9 @@ func setup(floor_heights: Array[float], floor_numbers: Array[int], storey_height
 ## The weight inside: COP_KG a cop, the mass of anything else that moves.
 func load_kg() -> float:
 	var kg := 0.0
+	# A guest's copy (NpcSync) doesn't watch what's inside: the host weighs it.
+	if not _inside.monitoring:
+		return kg
 	for body: Node3D in _inside.get_overlapping_bodies():
 		if body is Cop:
 			kg += COP_KG
@@ -160,6 +163,20 @@ func send(stop: int) -> bool:
 	_trip = maxf(TRAVEL_TIME * absf(_to - _from) / absf(stops[1] - stops[0]), MIN_TRIP)
 	_t = 0.0
 	return true
+
+
+## Online (NpcSync): the host runs the car and the guests' copies follow where it is; this is the rest they show.
+func net_state() -> Array:
+	return [at_stop, moving, _open, jammed_left > 0.0]
+
+
+func apply_net_state(state: Variant) -> void:
+	at_stop = state[0]
+	moving = state[1]
+	_open = state[2]
+	_light.visible = not state[3] or fmod(Time.get_ticks_msec() / 1000.0, 0.5) > 0.2
+	_slide_doors()
+	_show_floor()
 
 
 func _physics_process(delta: float) -> void:
