@@ -23,6 +23,7 @@ const PASS_FROM := -6.0
 const PASS_TO := -2.0
 const PASS_COUNTER := 1.0
 const PASS_TOP := 2.1
+const PASS_DEPTH := 0.6
 const KITCHEN_DOOR_X := 5.0
 ## The back rooms, behind the wall at BACK_Z: the pantry west of PANTRY_X (its door at PANTRY_DOOR_X), the walk-in fridge
 ## between PANTRY_X and OFFICE_X (its door at FRIDGE_DOOR_X) and the office east of OFFICE_X (locked, at OFFICE_DOOR_X).
@@ -43,6 +44,8 @@ const SINK_AT := Vector3(8.5, 0, -3.45)
 const SINK_SIZE := Vector3(2.0, 0.9, 0.9)
 ## The bell on the pass's counter, on the kitchen's side.
 const BELL_AT := Vector3(-2.6, PASS_COUNTER, 2.0)
+## The rail with the orders' tickets, over the pass, facing the kitchen.
+const RAIL_AT := Vector3(-2.9, 2.0, PASS_Z - 0.12)
 ## The Chef stands at the pass, his back to it, looking at the kitchen.
 const CHEF_AT := Vector3(-4.0, 0, 0.9)
 ## Where the pots and pans start (two pots on the first burners, two pans on the island) and the plates (on the island,
@@ -92,6 +95,9 @@ var chef: ClubMember
 var doorman: ClubDoorman
 ## The pots, pans and plates (step 3).
 var vessels: Array[KitchenVessel] = []
+## The Chef's orders and the pass's bell (step 4).
+var orders: RestaurantOrders
+var bell: PassBell
 var _build: PlaceBuilder
 
 
@@ -108,6 +114,7 @@ func _ready() -> void:
 	add_child(office_door)
 	_add_people()
 	_add_kitchenware()
+	_add_orders()
 	place_in_city("restaurant")
 
 
@@ -141,6 +148,15 @@ func burner_at(at: Vector3) -> int:
 				and above < BURNER_HEIGHT:
 			return i
 	return -1
+
+
+## The plates standing on the pass's counter.
+func plates_on_pass() -> Array[KitchenVessel]:
+	return vessels.filter(func(vessel: KitchenVessel) -> bool:
+		var local := _local(vessel.global_position)
+		var above := local.y - FLOOR_TOP - PASS_COUNTER
+		return vessel.kind == "plate" and local.x > PASS_FROM and local.x < PASS_TO \
+			and absf(local.z - PASS_Z) < PASS_DEPTH / 2.0 and above > 0.0 and above < 0.3)
 
 
 ## Whether a world position is in the dining room.
@@ -235,6 +251,34 @@ func _add_kitchenware() -> void:
 		crate.position = CRATES[kind] + Vector3(0, FLOOR_TOP, 0)
 
 
+## The Chef's orders, the rail over the pass with their tickets, and the bell; a lost order makes the cooks who see
+## the kitchen suspicious (step 4).
+func _add_orders() -> void:
+	orders = RestaurantOrders.new()
+	orders.name = "Orders"
+	orders.case_seed = case_seed
+	orders.chef = chef
+	orders.inside = in_staff_area
+	orders.plates_on_pass = plates_on_pass
+	add_child(orders)
+	orders.position = RAIL_AT + Vector3(0, FLOOR_TOP, 0)
+	orders.rotation.y = PI
+	orders.failed.connect(_on_order_failed)
+	bell = PassBell.new()
+	bell.name = "Bell"
+	bell.orders = orders
+	add_child(bell)
+	bell.position = BELL_AT + Vector3(0, FLOOR_TOP, 0)
+
+
+func _on_order_failed(amount: float) -> void:
+	if not multiplayer.is_server():
+		return
+	for member in members:
+		if member.look.begins_with("cocin") and in_kitchen(member.global_position + Vector3.UP):
+			suspicion.raise(member, amount)
+
+
 func _add_member(look: String, spot: Vector3, turn: float, rng: RandomNumberGenerator) -> void:
 	var member := ClubMember.new()
 	member.name = "Member%d" % members.size()
@@ -260,14 +304,9 @@ func _build_shell() -> void:
 	var height := ROOF - PlaceBuilder.SLAB
 	var middle := (PASS_FROM + PASS_TO) / 2.0
 	var width := PASS_TO - PASS_FROM
-	_build.box(Vector3(middle, PASS_COUNTER / 2.0, PASS_Z), Vector3(width, PASS_COUNTER, 0.6), STEEL)
+	_build.box(Vector3(middle, PASS_COUNTER / 2.0, PASS_Z), Vector3(width, PASS_COUNTER, PASS_DEPTH), STEEL)
 	_build.box(Vector3(middle, (PASS_TOP + height) / 2.0, PASS_Z), Vector3(width, height - PASS_TOP, PlaceBuilder.WALL),
 		INSIDE)
-	var bell := SphereMesh.new()
-	bell.radius = 0.06
-	bell.height = 0.06
-	bell.is_hemisphere = true
-	_build.mesh(bell, BELL_AT, Color(0.95, 0.8, 0.3))
 	var sign_label := Label3D.new()
 	sign_label.text = "PLACE_RESTAURANT"
 	sign_label.font_size = 64
