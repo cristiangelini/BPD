@@ -21,6 +21,8 @@ signal patience_changed(value: float)
 signal passed(car: QueueCar, sneaked: bool)
 ## A car rolled over a spike strip (control-carrera.md, step 3).
 signal punctured(car: QueueCar)
+## A circus animal out of its cage ran off for good (control-circo.md, step 3): a complaint from the circus.
+signal animal_lost(car: QueueCar)
 
 const SPAWN_EVERY := 6.0
 ## Cars start this far up the lane from the checkpoint.
@@ -284,6 +286,11 @@ func show_patience(value: float, host_sneaked: int, host_overruns := 0) -> void:
 			cop.show_hint(hint)
 	overruns = maxi(overruns, host_overruns)
 	_set_patience(value)
+
+
+## `car`'s animal ran off for good: the case hears it (a complaint).
+func lost_animal(car: QueueCar) -> void:
+	animal_lost.emit(car)
 
 
 ## Something in the queue annoys the drivers (an angry animal, control-circo.md): its patience goes up `amount`. A
