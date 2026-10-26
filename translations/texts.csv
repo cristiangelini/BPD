@@ -5173,6 +5173,7 @@ PROMPT_CARBON_PAPER,E: mirar el papel del tacho,E: look at the paper in the bin,
 CLUE_REVIEWS_CARBON,Papel carbónico en el tacho. Al revés se lee: «5 estrellas. 5 estrellas. 5 estrellas…»,Carbon paper in the bin. Backwards it reads: “5 stars. 5 stars. 5 stars…”,Papel-carbono no lixo. Ao contrário se lê: “5 estrelas. 5 estrelas. 5 estrelas…”
 REVIEWS_TAC,tac tac tac… ¡ding!,tap tap tap… ding!,tac tac tac… plim!
 CLUE_REVIEWS_TAC,Don Bostezo duerme… y algo escondido escribe a máquina: «tac tac tac».,Don Bostezo is asleep… and something hidden is typing: “tap tap tap”.,O don Bostezo dorme… e algo escondido datilografa: “tac tac tac”.
+MENU_HOTEL_RAID,"Hotel (allanamiento, prueba)","Hotel (raid, test)","Hotel (batida, teste)"
 HINT_GUEST_BOOK_SIGNED,"Firmaste en la página de anoche. Qué linda letra.","You signed on last night's page. Lovely handwriting.","Você assinou na página de ontem. Que letra bonita."
 HINT_ESCAPE_guest,"¡%s se subió a la combi del hotel, en bata y pantuflas, y se escapa! ¡Al patrullero, y cuidado con las valijas!","%s jumped into the hotel shuttle, in bathrobe and slippers, and is getting away! To the patrol car, and mind the suitcases!","%s subiu na van do hotel, de roupão e chinelos, e está fugindo! Para a viatura, e cuidado com as malas!"
 PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off the street","E: tirar a mala da rua"

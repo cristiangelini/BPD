@@ -10,7 +10,7 @@ func after_each() -> void:
 
 
 func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltration_and_each_raid_a_seventh_of_the_rest() -> void:
-	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "hardware": 0, "doll_factory": 0, "insurance": 0, "cake_lab": 0,
+	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "hotel_raid": 0, "hardware": 0, "doll_factory": 0, "insurance": 0, "cake_lab": 0,
 		"chase": 0, "crime_scene": 0, "circus": 0, "museum": 0, "hotel": 0, "traffic": 0, "club": 0, "choir": 0, "mime": 0, "party": 0, "gym": 0, "school": 0, "restaurant": 0, "chess": 0, "biker": 0, "auction": 0, "bank": 0, "plaza": 0, "market": 0,
 		"bridge": 0, "double": 0, "birthday": 0, "convertible": 0, "football": 0, "school_visit": 0, "debate": 0, "prison": 0, "transfer": 0, "blackout": 0, "visits": 0, "laundry": 0, "prison_tunnel": 0, "prison_talent": 0, "prison_vip": 0, "prison_garden": 0,
 		"prison_count": 0}
@@ -80,6 +80,7 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 	var factory := {}
 	var insurance := {}
 	var cake_lab := {}
+	var hotel := {}
 	for i in 900:
 		var case_seed := i + 1
 		match PlaceDraw.pick(case_seed, [], 1, false):
@@ -95,6 +96,8 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 				insurance[InsuranceOffice.pick_story(case_seed, [])] = true
 			"cake_lab":
 				cake_lab[CakeLab.pick_story(case_seed, [])] = true
+			"hotel_raid":
+				hotel[HotelRaid.pick_story(case_seed, PackedStringArray())] = true
 			_:
 				grandpa[GrandpaHouse.pick_story(case_seed, []).id] = true
 	assert_eq(bakery.size(), Bakery.STORIES.size())
@@ -104,6 +107,7 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 	assert_eq(factory.size(), DollFactory.STORIES.size())
 	assert_eq(insurance.size(), InsuranceOffice.STORIES.size())
 	assert_eq(cake_lab.size(), CakeLab.STORIES.size())
+	assert_eq(hotel.size(), HotelRaid.STORIES.size())
 
 
 func test_new_seeds_are_odd_and_even() -> void:
@@ -120,6 +124,7 @@ func test_place_argument_forces_the_place() -> void:
 		assert_eq(PlaceDraw.pick(case_seed, ["--place=bakery"]), "bakery")
 		assert_eq(PlaceDraw.pick(case_seed, ["--place=grandpa"]), "grandpa")
 		assert_eq(PlaceDraw.pick(case_seed, ["--place=groomer"]), "groomer")
+		assert_eq(PlaceDraw.pick(case_seed, ["--place=hotel_raid"]), "hotel_raid")
 	assert_eq(PlaceDraw.pick(9, ["--place=moon"]), PlaceDraw.pick(9, []), "an unknown place is ignored")
 
 
