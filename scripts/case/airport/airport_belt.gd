@@ -70,13 +70,18 @@ func send_next() -> void:
 			continue
 		if airport.to_local(suitcase.global_position).distance_to(piled[i]) > PILE_REACH:
 			continue
-		suitcase.set_meta("sent", true)
-		suitcase.global_transform = airport.global_transform * Transform3D(Basis.IDENTITY,
-			Vector3(Airport.BELT_X.x + SEND_AT, Airport.BELT_TOP + Suitcase.SIZE.y / 2 + 0.05, Airport.BELT_Z))
-		suitcase.linear_velocity = Vector3.ZERO
-		suitcase.angular_velocity = Vector3.ZERO
+		put_on(suitcase)
 		sent.emit(suitcase)
 		return
+
+
+## `suitcase` on the belt's start now (the clerk, or the porter's trick in step 5).
+func put_on(suitcase: Suitcase) -> void:
+	suitcase.set_meta("sent", true)
+	suitcase.global_transform = airport.global_transform * Transform3D(Basis.IDENTITY,
+		Vector3(Airport.BELT_X.x + SEND_AT, Airport.BELT_TOP + Suitcase.SIZE.y / 2 + 0.05, Airport.BELT_Z))
+	suitcase.linear_velocity = Vector3.ZERO
+	suitcase.angular_velocity = Vector3.ZERO
 
 
 func on_belt(suitcase: Suitcase) -> bool:
