@@ -6,7 +6,10 @@ extends NightGuard
 ## over to that door and says his price. A wad of bills in hand, E on the bars pays it to him; he counts it (COUNT_TIME)
 ## and keeps it, and what he's paid adds up, wad by wad and cop by cop. Paid in full, he "drops" the key, kicking it
 ## under the door into the cell, and goes back to his desk to read the paper, his back to the cells. Left waiting at the
-## bars with nothing for WAIT_TIME, he goes back too. Every number here is (propuesta).
+## bars with nothing for WAIT_TIME, he goes back too.
+## Step 2: the corridor's camera (CorridorCamera). If it looks at the cell while he counts, he gives the wad back and
+## gets suspicious ("¿Con la cámara? ¿Estás loco?"). With empty hands at the bars, E haggles: the price drops
+## HAGGLE_DROP, up to HAGGLES times, and each time his suspicion rises HAGGLE_SUSPICION. Every number here is (propuesta).
 
 ## His price, in steps of PRICE_STEP, never more than the money they have.
 const PRICE_MIN := 200
@@ -22,13 +25,26 @@ const DESK_SIDE_Z := 8.4
 const DESK_SIDE: Array[float] = [8.8, 12.2]
 ## Where the key lands, just inside the door.
 const KEY_IN := 0.5
+## Haggling (step 2) and the camera catching him counting.
+const HAGGLES := 3
+const HAGGLE_DROP := 50
+const HAGGLE_SUSPICION := 15.0
+const CAMERA_SUSPICION := 10.0
+## Where he holds the wad he counts, in his own space.
+const HAND := Vector3(0.25, 1.0, 0.35)
 const COMING_LINES := 3
+const HAGGLE_LINES := 3
+const CAMERA_LINES := 3
 const BORED_LINES := 2
 const DEAL_LINES := 3
 
 ## The station's lot and the cell doors (the level sets them).
 var station_lot: Transform3D
 var cell_doors: Array[CellDoor] = []
+## The corridor's camera (the level sets it; none, no camera).
+var camera: CorridorCamera
+## Times they haggled.
+var haggles := 0
 var price := 0
 ## What he's been paid so far (it stays his).
 var paid := 0
@@ -39,6 +55,7 @@ var at_cell := -1
 ## The wad he's counting and how long he has left, and how long he's been waiting at the bars.
 var counting_left := 0.0
 var _counting := 0
+var _wad: BillWad
 var _wait_left := 0.0
 ## The last thing he said, as its text key and the number in it, so a guest shows the same.
 var line := ""
@@ -89,7 +106,11 @@ func door_prompt(door: CellDoor, cop: Cop) -> String:
 	var held: Node = cop.get_node("Grabber").held
 	if held is BillWad:
 		return "PROMPT_PAY_GUARD" if stage == "at_bars" and cell_doors.find(door) == at_cell else ""
-	return "PROMPT_CALL_GUARD" if stage == "" and not held else ""
+	if held:
+		return ""
+	if stage == "at_bars" and cell_doors.find(door) == at_cell:
+		return "PROMPT_HAGGLE" if haggles < HAGGLES else ""
+	return "PROMPT_CALL_GUARD" if stage == "" else ""
 
 
 ## E on the door (every PC does it, and lets go of the wad; the host decides).
@@ -103,6 +124,8 @@ func door_use(door: CellDoor, cop: Cop) -> void:
 		return
 	if held is BillWad:
 		take(held as BillWad)
+	elif stage == "at_bars":
+		haggle()
 	else:
 		called_from(cell_doors.find(door))
 
@@ -117,15 +140,49 @@ func called_from(cell: int) -> void:
 	_say("BRIBE_GUARD_COMING_%d" % _rng.randi_range(0, COMING_LINES - 1))
 
 
-## A wad through the bars: he keeps it and counts it.
+## A wad through the bars: he counts it in his hand.
 func take(wad: BillWad) -> void:
 	if stage != "at_bars":
 		return
 	_counting = wad.amount
+	_wad = wad
+	wad.freeze = true
+	wad.global_position = global_transform * HAND
 	counting_left = COUNT_TIME
 	stage = "counting"
-	wad.queue_free()
 	_say("BRIBE_GUARD_COUNTING")
+
+
+## "Come on, we're colleagues": the price drops, and he likes being rushed less each time. Down to what he's been paid,
+## it's a deal.
+func haggle() -> void:
+	if stage != "at_bars" or haggles >= HAGGLES:
+		return
+	haggles += 1
+	price = maxi(price - HAGGLE_DROP, HAGGLE_DROP)
+	suspicion = minf(suspicion + HAGGLE_SUSPICION, 100.0)
+	_wait_left = WAIT_TIME
+	if is_paid():
+		_deal()
+		return
+	_say("BRIBE_GUARD_HAGGLE_%d" % _rng.randi_range(0, HAGGLE_LINES - 1), 5.0, price - paid)
+	if suspicion >= 100.0:
+		catch()
+
+
+## The camera on the cell while he counts: the wad back through the bars, and he's suspicious.
+func _refuse() -> void:
+	if is_instance_valid(_wad):
+		_wad.freeze = false
+		_wad.global_position = _at(Vector3(_door_x(at_cell), 0.3, StationRooms.CELL_FRONT_Z - KEY_IN))
+	_wad = null
+	_counting = 0
+	stage = "at_bars"
+	_wait_left = WAIT_TIME
+	suspicion = minf(suspicion + CAMERA_SUSPICION, 100.0)
+	_say("BRIBE_GUARD_CAMERA_%d" % _rng.randi_range(0, CAMERA_LINES - 1), 5.0)
+	if suspicion >= 100.0:
+		catch()
 
 
 func _physics_process(delta: float) -> void:
@@ -147,7 +204,9 @@ func _physics_process(delta: float) -> void:
 		"counting":
 			_tick_bubble(delta)
 			counting_left -= delta
-			if counting_left <= 0.0:
+			if camera and camera.watching(at_cell):
+				_refuse()
+			elif counting_left <= 0.0:
 				_counted()
 		"reading":
 			# His back to the cells, the paper up: he doesn't look (step 3: until the page is over).
@@ -160,14 +219,21 @@ func _physics_process(delta: float) -> void:
 func _counted() -> void:
 	paid += _counting
 	_counting = 0
+	if is_instance_valid(_wad):
+		_wad.queue_free()
+	_wad = null
 	if is_paid():
-		_drop_key()
-		_say("BRIBE_GUARD_DEAL_%d" % _rng.randi_range(0, DEAL_LINES - 1), 5.0)
-		_go_back()
+		_deal()
 		return
 	stage = "at_bars"
 	_wait_left = WAIT_TIME
 	_say("BRIBE_GUARD_SHORT", 5.0, price - paid)
+
+
+func _deal() -> void:
+	_drop_key()
+	_say("BRIBE_GUARD_DEAL_%d" % _rng.randi_range(0, DEAL_LINES - 1), 5.0)
+	_go_back()
 
 
 ## "Oops, I dropped the key": kicked under the door, just inside the cell.
@@ -239,13 +305,14 @@ func _at(local: Vector3) -> Vector3:
 ## Online (NpcSync): on top of the night guard's, where he is, what he's been paid and what he said.
 func net_state() -> Variant:
 	var state: Array = super()
-	state.append_array([stage, at_cell, price, paid, global_transform, line, line_number])
+	state.append_array([stage, at_cell, price, paid, global_transform, line, line_number, haggles])
 	return state
 
 
 func apply_net_state(state: Variant) -> void:
 	super(state)
-	var base: int = state.size() - 7
+	var base: int = state.size() - 8
+	haggles = state[base + 7]
 	stage = state[base]
 	at_cell = state[base + 1]
 	price = state[base + 2]

@@ -191,6 +191,8 @@ const VARIANTS := ["donut", "cleaning", "dog", "tunnel", "vent", "garbage", "dri
 const WADS: Array[Vector3] = [Vector3(7.7, 0.62, 1.5), Vector3(8.9, 0.62, 1.7), Vector3(12.1, 0.62, 1.5),
 	Vector3(13.3, 0.62, 1.7)]
 const BRIBE_TEST_MONEY := 400
+## The corridor's camera, on the ceiling in front of the cells (fuga-soborno.md, step 2).
+const CORRIDOR_CAMERA_AT := Vector3(10.5, StationRooms.CEILING, 6.4)
 
 ## Same seed, same jailbreak. 0 draws one.
 @export var case_seed := 0
@@ -353,7 +355,8 @@ func is_bribe() -> bool:
 
 
 ## The bribe jailbreak: the guard who sells himself at his desk, and the bribes' money split among four wads on the
-## bunks; E on the bars calls him and pays him (BribeGuard, CellDoor.bribe).
+## bunks; E on the bars calls him and pays him (BribeGuard, CellDoor.bribe), and the corridor's camera turning from
+## one cell to the other (CorridorCamera).
 func _bribe_night() -> void:
 	var lot := city.transform * CityLayout.lot("station")
 	var desk := _desk()
@@ -371,6 +374,15 @@ func _bribe_night() -> void:
 	guard = seller
 	for door in city.cell_doors:
 		door.bribe = seller
+	var watcher := CorridorCamera.new()
+	watcher.name = "CorridorCamera"
+	watcher.setup(case_seed)
+	add_child(watcher)
+	watcher.global_transform = lot * Transform3D(Basis.IDENTITY, CORRIDOR_CAMERA_AT)
+	for cell in StationRooms.CELL_DOORS.size():
+		var door := StationRooms.CELL_DOORS[cell]
+		watcher.doors.append(lot * Vector3((door.x + door.y) / 2.0, 1.0, StationRooms.CELL_FRONT_Z))
+	seller.camera = watcher
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(["bribe wads", case_seed])
 	var amounts := BillWad.split(money, WADS.size(), BribeGuard.PRICE_STEP, rng)
