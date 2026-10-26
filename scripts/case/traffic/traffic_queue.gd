@@ -24,6 +24,8 @@ signal passed(car: QueueCar, sneaked: bool)
 signal punctured(car: QueueCar)
 ## A circus animal out of its cage ran off for good (control-circo.md, step 3): a complaint from the circus.
 signal animal_lost(car: QueueCar)
+## A real dancer was taken down from `car`'s float (control-desfile.md, step 3): the parade queen complains.
+signal dancer_wronged(car: QueueCar)
 
 const SPAWN_EVERY := 6.0
 ## Cars start this far up the lane from the checkpoint.
@@ -305,6 +307,11 @@ func show_patience(value: float, host_sneaked: int, host_overruns := 0) -> void:
 ## `car`'s animal ran off for good: the case hears it (a complaint).
 func lost_animal(car: QueueCar) -> void:
 	animal_lost.emit(car)
+
+
+## A real dancer was taken down from `car`'s float: the case hears it (a complaint).
+func wronged_dancer(car: QueueCar) -> void:
+	dancer_wronged.emit(car)
 
 
 ## Something in the queue annoys the drivers (an angry animal, control-circo.md): its patience goes up `amount`. A

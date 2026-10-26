@@ -62,15 +62,15 @@ func test_a_float_has_its_theme_signs_and_dancers_facing_back() -> void:
 	for dancer in on:
 		assert_almost_eq(dancer.global_basis.z.normalized().dot(car.global_basis.z), -1.0, 0.01, "facing the cops")
 		assert_lt(dancer.position.z, car.get_node("Theme").position.z, "behind the theme")
-		assert_not_null(dancer.get_node_or_null("ArmRight/Held"))
-		assert_not_null(dancer.get_node_or_null("ArmLeft/Held"))
-	var held: Node3D = on[1].get_node("ArmRight/Held")
+		assert_not_null(dancer.get_node_or_null("Look/ArmRight/Held"))
+		assert_not_null(dancer.get_node_or_null("Look/ArmLeft/Held"))
+	var held: Node3D = on[1].get_node("Look/ArmRight/Held")
 	assert_eq(held.scene_file_path, ParadeFloat.HELD_MODELS[3].resource_path)
 
 
 func test_masks_and_skirts_are_painted() -> void:
 	var car := _float({"theme": "cake", "skirt": 3, "number": 2, "dancers": [{"mask": 1, "held": 0}]})
-	var mask := _painted(car.get_node("Dancers/Dancer0/Body"), "mask")
+	var mask := _painted(car.get_node("Dancers/Dancer0/Look/Body"), "mask")
 	assert_gt(mask.size(), 0)
 	assert_eq((mask[0].material_override as StandardMaterial3D).albedo_color, ParadeFloat.MASKS[1])
 	var skirt := _painted(car.get_node("Model"), "paint")

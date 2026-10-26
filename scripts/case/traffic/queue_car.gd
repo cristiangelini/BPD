@@ -181,6 +181,9 @@ var parade := {}
 var held_seconds := 0.0
 var music_cut := false
 var _beat := 0.0
+## Step 3: how many times its dancers were asked for the dance, and how many real ones were taken down.
+var danced := 0
+var downs := 0
 ## How many times its animal was offered food (step 2).
 var fed := 0
 ## Step 3: El Peludo, how long nobody's watched him, how many person's things he did and how long the one he's at
@@ -450,7 +453,50 @@ func door_point() -> Vector3:
 
 ## It can drive off: no clown of it left on the street.
 func can_go() -> bool:
-	return clowns_out.is_empty() and _to_pop == 0 and not is_instance_valid(loose)
+	return clowns_out.is_empty() and _to_pop == 0 and not is_instance_valid(loose) and not dancer_down()
+
+
+## A dancer of its float is down on the street (control-desfile.md, step 3): it waits for them.
+func dancer_down() -> bool:
+	return ParadeFloat.dancers_of(self).any(func(d: ParadeDancer) -> bool: return d.is_down)
+
+
+## Its dancers do the dance (control-desfile.md, step 3): their float's step, El Antifaz another float's (and an
+## excuse), a clumsy one starting late. Not again while they're at it.
+func dance() -> void:
+	var dancers := ParadeFloat.dancers_of(self)
+	if dancers.is_empty() or dancers.any(func(d: ParadeDancer) -> bool: return d.dancing()):
+		return
+	var theme: String = parade.get("theme", "")
+	for dancer in dancers:
+		if dancer.is_down:
+			continue
+		if dancer.thief:
+			dancer.dance(ParadeFloat.wrong_step(theme, plate))
+		else:
+			var late := ParadeFloat.clumsy(plate, dancer.index)
+			dancer.dance(ParadeFloat.step_of(theme), ParadeDancer.CLUMSY_DELAY if late else 0.0)
+	if dancers.any(func(d: ParadeDancer) -> bool: return d.thief and not d.is_down):
+		say(tr(ParadeFloat.excuse_line(plate, danced)))
+	danced += 1
+
+
+## Dancer `i` is taken down from its float (control-desfile.md, step 3): El Antifaz stays down; a real one complains
+## (the parade queen's complaint) and climbs back after a while.
+func take_down(i: int) -> void:
+	var dancers := ParadeFloat.dancers_of(self)
+	if i < 0 or i >= dancers.size() or dancers[i].is_down:
+		return
+	var dancer := dancers[i]
+	dancer.go_down()
+	if dancer.thief:
+		say(tr("PARADE_THIEF_DOWN"))
+		return
+	say(tr(ParadeFloat.down_line(plate, downs)))
+	downs += 1
+	var queue := get_parent() as TrafficQueue
+	if queue:
+		queue.wronged_dancer(self)
 
 
 func _build_door() -> void:
@@ -780,6 +826,8 @@ func prompt_key(cop: Cop) -> String:
 		return "PROMPT_BLOW"
 	if waiting() and can_fine():
 		return "PROMPT_CROWD_FINE"
+	if not parade.is_empty():
+		return "PROMPT_PARADE_DANCE" if waiting() else ""
 	return "PROMPT_PAPERS" if waiting() else ""
 
 
@@ -794,6 +842,10 @@ func use(cop: Cop = null) -> void:
 		return
 	if waiting() and can_fine():
 		fine()
+		return
+	if not parade.is_empty():
+		if waiting():
+			dance()
 		return
 	if ghost and waiting():
 		say(tr(GhostCar.nobody_line(knocked)))
