@@ -7,10 +7,39 @@ extends Node3D
 ## back east, the archive at the back west and the giant printer between them. The reception is open; the boss's
 ## office and the archive are locked. The rolling chairs roll, the paper piles fly, and the glass trophies and the
 ## monitors of the middle row break, each one a fine. Mirta, the floor boss, walks the aisles (step 2)
-## and Coca serves by number at the reception (step 3). Every number here is (propuesta).
+## and Coca serves by number at the reception (step 3). The case is one of its stories (STORIES), drawn with the seed,
+## run by the same RaidCase as the other places (step 4). Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const MIRTA_SCENE := preload("res://scenes/npc/floor_boss.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the office can be suspected of (seguros.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["fake_crashes", "coffee_safe", "ufo_policies", "shredder", "office_accidents", "insured_painting"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_INSURANCE_TIP_B", "BRIEF_TIP_C", "BRIEF_INSURANCE_TIP_D",
+	"BRIEF_INSURANCE_TIP_E"]
+## The stories the office can tell, like DollFactory.STORIES: what the comisario says once it's guessed, its "find it"
+## row, what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the checklist
+## rows of its extras and its rig. With "main_hidden" the first hidden item is the main evidence and the rest extras;
+## without it the rig sets the main evidence.
+const STORIES := {
+	"fake_crashes": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_FAKE_CRASHES_B", "BRIEF_FAKE_CRASHES_C", "BRIEF_FAKE_CRASHES_D"],
+		"find": "OBJ_FIND_CRASH_MODEL",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/crash_model.tscn"), preload("res://scenes/props/crash_photos.tscn"),
+			preload("res://scenes/props/toy_car_box.tscn")],
+		"half_heights": [0.06, 0.008, 0.06],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_CRASH_PHOTOS", "OBJ_EXTRA_TOY_CAR_BOX"],
+		"rig": preload("res://scripts/case/insurance/fake_crashes_rig.gd"),
+	},
+}
+## Surfaces where the suspicions' clue notes can lie, one in each part of the office; three are drawn with the seed.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(1.0, FLOOR_TOP, 6.6), Vector3(-6.55, FLOOR_TOP + 0.78, 2.85), Vector3(6.6, FLOOR_TOP + 0.9, 0.6),
+	Vector3(6.4, FLOOR_TOP + 0.75, 2.6), Vector3(8.2, FLOOR_TOP + 0.75, -6.0), Vector3(-2.5, FLOOR_TOP, -6.0),
+]
 const CHAIR_SCENE := preload("res://scenes/props/office_chair.tscn")
 const MONITOR_SCENE := preload("res://scenes/props/office_monitor.tscn")
 const MONITOR_MODEL := preload("res://assets/models/office_monitor.glb")
@@ -48,6 +77,8 @@ const CUBICLE_DESK_SIZE := Vector3(1.6, 0.78, 0.6)
 const MONITOR_ROW := 1
 const DESK_AT := Vector3(-6.0, FLOOR_TOP, 6.6)
 const DESK_SIZE := Vector3(2.4, 1.0, 0.7)
+## The till on Coca's desk, with the key that opens the locked doors.
+const TILL_AT := Vector3(-5.2, FLOOR_TOP + 1.0, 6.6)
 const COOLER_AT := Vector3(9.8, FLOOR_TOP, 7.3)
 const PRINTER_AT := Vector3(0.0, FLOOR_TOP, -6.8)
 ## Coca behind the reception desk, where a cop stands to be served, and the ticket machine by the entrance.
@@ -133,13 +164,45 @@ var mirta: FloorBoss
 var coca: Receptionist
 var tickets: TicketMachine
 var complaint_bar: ProgressBar
-## Money taken off the case pay for broken things (each one is an Ornament.FINE).
-var fines := 0
+## Money taken off the case pay: broken things (each one an Ornament.FINE).
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## The case flow every raid shares.
+var raid: RaidCase
+## Same seed, same draw: the story and where its things go. 0 draws one.
+@export var case_seed := 0
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: InsuranceRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
+var till: Till
 var _build: PlaceBuilder
 @onready var car: PatrolCar = $PatrolCar
 
 
 func _ready() -> void:
+	if case_seed == 0:
+		case_seed = PlaceDraw.take_seed()
+	if case_seed == 0:
+		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_reception()
@@ -153,14 +216,105 @@ func _ready() -> void:
 	archive_door = _door(Vector3(ARCHIVE_DOOR_X, FLOOR_TOP, ARCHIVE_FRONT_Z))
 	_place_mirta()
 	_place_coca()
+	_place_case_props()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("insurance")
 	station_parking = city.transform * CityLayout.parking("station")
+	raid.station_parking = station_parking
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
 	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "insurance", car)
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = mirta
+	raid.owner_id = "insurance"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The office's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_INSURANCE",
+		"guess_key": "OBJ_GUESS_INSURANCE",
+		"broken_key": "OBJ_BROKEN_INSURANCE",
+		"complaint_key": "OBJ_COMPLAINT_INSURANCE",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_goods,
+		"complaint": mirta.complaint,
+	}
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Mirta lets slip when asked (where the story's things are, in an order drawn from the seed), and what Coca
+## saw: where she hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		mirta.slips.append(tr("BOSS_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	mirta.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	coca.clue = tr("CLUE_COCA") % where
+	coca.clue_speech = tr("COCA_CLUE_" + story_id) % where
+	coca.told.connect(raid.add_clue)
+
+
+## What every story can use: the till on Coca's desk with the key to the locked doors.
+func _place_case_props() -> void:
+	till = Till.new()
+	till.position = TILL_AT + Vector3.UP * Till.SIZE.y / 2
+	till.key_hint = "HINT_TILL_KEY_INSURANCE"
+	add_child(till)
+	till.opened.connect(func(at: Vector3) -> void: mirta.saw(at, FloorBoss.SAW_TILL))
 
 
 ## A locked door in a wall along x, its middle at `at`.
@@ -381,6 +535,7 @@ func _place_mirta() -> void:
 	mirta.start_at(0)
 	for door: FrontDoor in [boss_door, archive_door]:
 		door.broken.connect(mirta.door_broken)
+	mirta.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_INSURANCE"))
 	for pile in piles:
 		pile.scattered.connect(func(at: Vector3) -> void: mirta.saw(at, FloorBoss.SAW_PAPERS, "BOSS_FORM"))
 	var hud := CanvasLayer.new()
@@ -417,6 +572,7 @@ func _place_coca() -> void:
 
 func _on_fragile_broken(at: Vector3) -> void:
 	broken_goods += 1
-	fines += Ornament.FINE
+	raid.fines += Ornament.FINE
+	raid.float_label("-%d" % Ornament.FINE, at, Color(1, 0.3, 0.25))
 	if mirta:
 		mirta.saw(at, FloorBoss.SAW_BREAK)

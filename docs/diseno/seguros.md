@@ -108,6 +108,14 @@ Los pesos y valores siguen la escala de la fábrica: la principal vale unos 1000
      pone cada historia en el paso 4); si no está, pierde el turno y tiene que sacar otro. El primero en llegar espera
      unos 36 s. Captura `paso3-coca.png`.
 4. El caso (RaidCase) con la primera historia: los choques falsos.
+   - **Cómo quedó (propuesta):** la oficina es un allanamiento completo como la fábrica: denuncia anónima, 3 sospechas
+     con su nota, la planilla, lo que Mirta deja escapar (2 veces), lo que vio Coca cuando sale tu número, la caja del
+     mostrador de Coca con la llave de la oficina de la jefa y del archivo (si Mirta te ve abrirla, +10), su huida en
+     auto y su interrogatorio. Con 100 de denuncia llama al abogado de la empresa y se pierde el caso. La maqueta de los
+     choques (8 kg) va en un escondite para cosas pesadas, con las fotos de los choques y la caja de autitos en otros.
+     Sobre la mesa de reuniones está la carpeta del reclamo: mirarla con E es la pista propia ("la calle es la alfombra
+     de esta oficina"). Y hay 10 autitos tirados por los pasillos: el policía que pisa uno caminando se cae para
+     adelante 1,2 s y el autito sale disparado 1,5 m. Capturas `paso4-*` en `seguros/`.
 5. Las otras 5 historias, una por PR.
 6. "Jugar" sortea entre los 6 lugares de allanamiento.
 7. El online (Mirta, Coca, las sillas y los papeles en todas las PC).

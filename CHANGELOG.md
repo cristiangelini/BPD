@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Insurance office, step 4: the office is a raid run by the shared RaidCase (tip, suspicions, Mirta's slips, Coca's clue, the till with the key, her escape, interrogation and lawyer) with its first story, the fake crashes: an 8 kg crash diorama hidden with the photos and the box of toy cars, the claim folder as its clue, and toy cars in the aisles that make cops slip.
 - Insurance office, step 3: Coca, the receptionist, only talks by number: the ticket machine gives each cop one, she calls the next every 6 s, and a cop at the counter when called hears what she saw; away, the number is lost.
 - Insurance office, step 2: Mirta, the floor boss, walks the aisles, adds to the complaint when she sees papers fly or things break, and spends 15 s fighting the giant printer when a cop sends 500 copies with its green button.
 - Insurance office, step 1: the office on its lot: reception, 12 cubicles with rolling chairs and paper piles that fly when a cop runs through, meeting room, kitchen nook, the locked boss office and archive, the giant printer, 12 hiding spots, and monitors and glass trophies that break as fines; a menu test button and --place=insurance.
