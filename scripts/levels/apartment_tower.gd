@@ -42,6 +42,15 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_PIANO_SHEET", "OBJ_EXTRA_GOLD_INGOT"],
 		"rig": preload("res://scripts/case/apartments/smuggling_piano_rig.gd"),
 	},
+	"spy_telescope": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_SPY_TELESCOPE_B", "BRIEF_SPY_TELESCOPE_C", "BRIEF_SPY_TELESCOPE_D"],
+		"find": "OBJ_FIND_SPY_TELESCOPE",
+		"hidden": [preload("res://scenes/props/code_notebook.tscn"), preload("res://scenes/props/binoculars.tscn")],
+		"half_heights": [0.01, 0.035],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_CODE_NOTEBOOK", "OBJ_EXTRA_BINOCULARS"],
+		"rig": preload("res://scripts/case/apartments/spy_telescope_rig.gd"),
+	},
 }
 const ORNAMENT_SCENES: Array[PackedScene] = [
 	preload("res://scenes/props/ornament_vase.tscn"), preload("res://scenes/props/ornament_figurine.tscn"),

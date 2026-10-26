@@ -4330,11 +4330,11 @@ PEPA_LINE_2,"Cuqui necesita su paseo. Y yo necesito a alguien que lo saque.","Cu
 PEPA_LINE_3,"Sé muchas cosas del 30B. Muchísimas. Si alguien pasea a Cuqui...","I know a lot about 30B. Loads. If someone walks Cuqui...","Eu sei muitas coisas do 30B. Muitíssimas. Se alguém passear com o Cuqui..."
 LOC_APT_in_mailboxes,en los buzones del hall,in the lobby's mailboxes,nas caixas de correio do saguão
 LOC_APT_behind_lobby_plant,detrás de la planta de plástico del hall,behind the plastic plant in the lobby,atrás da planta de plástico do saguão
-LOC_APT_behind_sofa,detrás del sillón del living,behind the living room sofa,atrás do sofá da sala
+LOC_APT_behind_sofa,detrás del sillón de la sala,behind the living room sofa,atrás do sofá da sala
 LOC_APT_in_closet,en el ropero del dormitorio,in the bedroom closet,no guarda-roupa do quarto
 LOC_APT_under_bed,debajo de la cama,under the bed,debaixo da cama
 LOC_APT_in_bathtub,en la bañera,in the bathtub,na banheira
-LOC_APT_in_fridge,en la heladera,in the fridge,na geladeira
+LOC_APT_in_fridge,en el refrigerador,in the fridge,na geladeira
 LOC_APT_in_toilet_tank,en el tanque del inodoro,in the toilet tank,na caixa da descarga
 LOC_APT_behind_painting,detrás del cuadro,behind the painting,atrás do quadro
 LOC_APT_on_balcony,en el balcón,on the balcony,na varanda
@@ -4924,3 +4924,15 @@ TRIAL_JUDGE_SUSTAINED_0,"Ha lugar. Esa pregunta no cuenta. Siguiente.","Sustaine
 TRIAL_JUDGE_SUSTAINED_1,"Bueno, bueno, no grite. Paso a otra cosa.","Fine, fine, no need to shout. Moving on.","Tá bom, tá bom, não grite. Vamos para outra."
 TRIAL_JUDGE_INNOCENT,"Todo coincide... más o menos. ¡Inocentes! Pueden irse.","Everything matches... more or less. Innocent! You may go.","Tudo confere... mais ou menos. Inocentes! Podem ir."
 TRIAL_GUARD_FREE,"Ya escucharon a la jueza. Afuera, y no vuelvan.","You heard the judge. Out, and don't come back.","Vocês ouviram a juíza. Para fora, e não voltem."
+BRIEF_SPY_TELESCOPE_B,"El señor Bellini mira las estrellas todas las noches, pero su telescopio apunta abajo: a la bóveda del banco de enfrente.","Mr. Bellini watches the stars every night, but his telescope points down: at the vault of the bank across the street.","O senhor Bellini olha as estrelas toda noite, mas o telescópio dele aponta para baixo: para o cofre do banco da frente."
+BRIEF_SPY_TELESCOPE_C,"Traigan el telescopio al patrullero. Pesa 35 kilos y es frágil: entre dos, con cuidado. Entra en el ascensor.","Bring the telescope to the patrol car. It weighs 35 kilos and it's fragile: two of you, carefully. It fits in the elevator.","Tragam o telescópio para a viatura. Pesa 35 quilos e é frágil: entre dois, com cuidado. Cabe no elevador."
+BRIEF_SPY_TELESCOPE_D,"Si encuentran la libreta con la clave o los binoculares, mejor: todo suma.","If you find the notebook with the code or the binoculars, even better: it all counts.","Se encontrarem a caderneta com a senha ou o binóculo, melhor: tudo conta."
+OBJ_FIND_SPY_TELESCOPE,Llevarse el telescopio espía,Take the spy telescope,Levar o telescópio espião
+OBJ_EXTRA_CODE_NOTEBOOK,Extra: la libreta con la clave,Extra: the notebook with the code,Extra: a caderneta com a senha
+OBJ_EXTRA_BINOCULARS,Extra: los binoculares,Extra: the binoculars,Extra: o binóculo
+PEPA_TIP_spy_telescope,El del 30B mira por el telescopio toda la noche. Las nubes no. El banco de enfrente sí.,The man in 30B looks through his telescope all night. Not at the clouds. At the bank across the street.,O do 30B olha pelo telescópio a noite toda. Não as nuvens. O banco da frente.
+PROMPT_TELESCOPE,E: mirar por el telescopio,E: look through the telescope,E: olhar pelo telescópio
+HINT_TELESCOPE_VAULT,"Se ve la bóveda del banco de enfrente, abierta. El guardia marca la clave: 4, 8, 15, 16...","You see the vault of the bank across the street, open. The guard types the code: 4, 8, 15, 16...","Dá para ver o cofre do banco da frente, aberto. O guarda digita a senha: 4, 8, 15, 16..."
+CLUE_TELESCOPE_VAULT,El telescopio apunta a la bóveda del banco de enfrente: se ve la clave.,The telescope points at the vault of the bank across the street: you can see the code.,O telescópio aponta para o cofre do banco da frente: dá para ver a senha.
+PROMPT_TAPE_MARK,E: mirar la marca de cinta,E: look at the tape mark,E: olhar a marca de fita
+CLUE_TAPE_MARK,Tres tiras de cinta en el piso del balcón: ahí iba un trípode apuntando al banco.,Three strips of tape on the balcony floor: a tripod stood there pointing at the bank.,Três tiras de fita no chão da varanda: ali ficava um tripé apontando para o banco.

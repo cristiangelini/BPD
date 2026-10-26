@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Apartment building, step 7: the spy telescope story: a fragile 35 kg telescope by 30B's living room window (two cops, fits the elevator), E looks through it and sees the vault code of the bank across the street, a tape mark on the balcony shows where the tripod stood, and the code notebook and the binoculars hide with the seed. Also drops two regional words from the hiding spots.
 - Apartment building, step 7: the smuggling piano story: a grand piano full of ingots in 30B's living room (110 kg, down the scaffold), E plays a key and it goes "clonc" (the clue), every hard hit shakes an ingot loose, and the sheet music with the sums and a loose ingot hide with the seed.
 - Apartment building, step 6: the building is a raid with the stolen aquarium story: the 2 m tank (110 kg, glass) waits in 30B's locked study and only goes down on the scaffold, the net and the aquarium ticket hide with the seed, puddles lead from the elevator to 30B, a hard hit makes the goldfish jump, the intercom calls Don Evaristo to open for the warrant, his key board has 30B's key, he lets slip where things are and Doña Pepa tells what she saw.
 - Cake lab, step 7: online: the host runs chef Bruno and the guests follow him, the oven knob, Pocha's tray and the stories' props work from any PC, a flour sack burst on the host bursts everywhere, the stolen book comes out of its cake on every PC, and the robot arm creams only each PC's own cop. Also fixes a race in the insurance office's online phone test.
