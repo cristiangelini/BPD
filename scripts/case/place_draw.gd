@@ -91,9 +91,11 @@ const BANK_EVERY := 4
 ## by the seed: the rally at the plaza, the walk through the market (politico-mercado.md), the bridge's opening
 ## (politico-puente.md), the rally with the double (politico-doble.md), the birthday party (politico-cumple.md), the
 ## parade in a convertible (politico-descapotable.md), the charity football match (politico-futbol.md), the school
-## visit (politico-escuela.md) or the TV debate (politico-debate.md), a ninth each.
+## visit (politico-escuela.md), the TV debate (politico-debate.md) or the trip from the airport
+## (politico-aeropuerto.md), a tenth each.
 const RALLY_EVERY := 4
-const RALLIES := ["plaza", "market", "bridge", "double", "birthday", "convertible", "football", "school_visit", "debate"]
+const RALLIES := ["plaza", "market", "bridge", "double", "birthday", "convertible", "football", "school_visit", "debate",
+	"airport"]
 ## Of the rest, one in this many is a prison case (propuesta), one of these by the seed: the riot in the canteen
 ## (carcel-motin.md), the prisoner transfer (traslado-presos.md), the blackout (carcel-corte-de-luz.md), the
 ## visiting day (carcel-visitas.md), the laundry (carcel-lavanderia.md), the tunnel (carcel-tunel.md), the talent show

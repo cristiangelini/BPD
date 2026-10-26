@@ -120,9 +120,35 @@ function buildSuitcase(name, open) {
 	return b.build();
 }
 
+// The baggage tug (step 6), the porter's getaway: a low yellow tug with the driver's seat in front, a flat bed behind
+// with two of the black suitcases with the yellow ribbon, an orange beacon on a pole and the tow bar at the back.
+// 2.4 m long (z), 1.3 m wide, facing +Z; its wheels are part of it. Its origin on the ground in the middle.
+export function buildBaggageTug() {
+	const b = new Builder('baggage_tug');
+	const yellow = mat('tug_yellow', 0xf0b820), dark = mat('airport_dark', 0x26292e), tire = mat('tire', 0x1a1a1e);
+	const black = mat('suitcase_black', 0x1e1f24), ribbon = mat('ribbon_yellow', 0xf2c84b);
+	for (const x of [-0.6, 0.6]) for (const z of [0.8, -0.8]) {
+		b.add('wheels', tire, new THREE.CylinderGeometry(0.24, 0.24, 0.18, 10), { pos: V(x, 0.24, z), rot: [0, 0, Math.PI / 2] });
+	}
+	box(b, 'body', yellow, 1.2, 0.35, 2.3, 0, 0.45, 0);
+	box(b, 'body', yellow, 1.2, 0.2, 0.5, 0, 0.72, 0.85);
+	box(b, 'seat', dark, 0.5, 0.1, 0.45, 0, 0.68, 0.25);
+	box(b, 'seat', dark, 0.5, 0.45, 0.08, 0, 0.9, 0.02);
+	box(b, 'wheel', dark, 0.04, 0.3, 0.3, 0, 1.1, 0.6, [-0.6, 0, 0]);
+	box(b, 'bed', dark, 1.2, 0.05, 0.9, 0, 0.65, -0.65);
+	for (const [x, y] of [[-0.25, 0.8], [0.25, 0.8]]) {
+		box(b, 'suitcases', black, 0.45, 0.25, 0.65, x, y, -0.65);
+		box(b, 'ribbons', ribbon, 0.455, 0.255, 0.08, x, y, -0.65);
+	}
+	box(b, 'beacon', dark, 0.04, 0.9, 0.04, 0.5, 1.4, 0.0);
+	b.add('beacon', mat('beacon_orange', 0xff8a20, { emissive: 0x803000 }), new THREE.CylinderGeometry(0.08, 0.08, 0.14, 8), { pos: V(0.5, 1.9, 0.0) });
+	box(b, 'towbar', dark, 0.08, 0.08, 0.5, 0, 0.35, -1.35);
+	return b.build();
+}
+
 export const models = { checkin_counter: buildCheckinCounter, xray_machine: buildXrayMachine, airplane: buildAirplane,
 	duty_free_shelf: buildDutyFreeShelf, gate_seats: buildGateSeats, suitcase: () => buildSuitcase('suitcase', false),
-	suitcase_open: () => buildSuitcase('suitcase_open', true) };
+	suitcase_open: () => buildSuitcase('suitcase_open', true), baggage_tug: buildBaggageTug };
 
 export const views = {
 	airport_props: {
@@ -133,6 +159,10 @@ export const views = {
 	suitcases: {
 		items: [{ name: 'suitcase', pos: [-0.5, 0.13, 0], rotY: 0.4 }, { name: 'suitcase_open', pos: [0.5, 0.13, 0.1], rotY: -0.3 }],
 		cam: { pos: [0.3, 1.2, 2.2], target: [0, 0.15, 0], fov: 45 },
+	},
+	baggage_tug: {
+		items: [{ name: 'baggage_tug', pos: [0, 0, 0], rotY: 0.6 }],
+		cam: { pos: [3.2, 1.8, 1.8], target: [0, 0.7, 0], fov: 45 },
 	},
 	airplane: {
 		items: [{ name: 'airplane', pos: [0, 0, 0], rotY: 0.6 }],

@@ -78,6 +78,8 @@ const MODELS := {
 	"referee": preload("res://assets/models/npc_arbitro.glb"),
 	# The school's janitor, off his floor polisher (politico-escuela.md).
 	"janitor": preload("res://assets/models/npc_conserje_escuela.glb"),
+	# The airport's bought porter, off the baggage tug (politico-aeropuerto.md).
+	"porter": preload("res://assets/models/npc_mudancero.glb"),
 }
 const HECKLER := "heckler_"
 ## The TV channel's bought technician is "technician_<look>" (politico-debate.md), off the TV van: his own model.

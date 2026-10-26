@@ -6,7 +6,9 @@ extends Node
 ## and the odd suitcase never went through the X-ray machine; the scandal on the screen loses it there and then, and so
 ## does the gate closing without him. It pays SALARY, OPENED less for each of his own suitcases opened for nothing,
 ## WRONG_CUFF less for each honest employee cuffed and PORTER more if the porter is in the patrol car; quota of its own,
-## like the plaza (decision 103). Every number here is (propuesta).
+## like the plaza (decision 103). If the porter is still loose when it ends, he runs for the baggage tug parked out
+## front and the chase starts there (decision 96, step 6): caught, he counts as detained. Every number here is
+## (propuesta).
 
 const SHIFT_DELAY := 4.0
 const REFRESH := 0.5
@@ -34,6 +36,10 @@ var wrong_cuffs := 0
 var jailed := false
 var clues: Array[String] = []
 var tricks := 0
+## The porter's run on the baggage tug and how it ended.
+var chase: ChaseCase
+var caught := false
+var escaped := false
 var shift_over := false
 var follower := false
 var _result := {}
@@ -115,6 +121,34 @@ func _on_closed(on_time: bool) -> void:
 
 func _end() -> void:
 	checklist.show_rows(rows())
+	if airport.porter.loose():
+		_run_off()
+	else:
+		get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
+
+
+## The porter drops everything and drives off on the baggage tug: the chase is on.
+func _run_off() -> void:
+	if chase:
+		return
+	var porter := airport.porter
+	porter.hide()
+	porter.collision_layer = 0
+	porter.process_mode = Node.PROCESS_MODE_DISABLED
+	airport.tug.get_node("Rider").show()
+	airport.tug.driving = true
+	chase = ChaseCase.begin(airport, SuspectCar.BAGGAGE_TUG, airport.tug.global_transform, airport.car, airport.city,
+		airport.case_seed, null, airport.tug)
+	chase.who = "porter"
+	chase.follower = follower
+	chase.ended.connect(_on_chase_ended)
+	_hint_all("HINT_ESCAPE_PORTER")
+
+
+func _on_chase_ended(was_caught: bool) -> void:
+	caught = was_caught
+	escaped = not was_caught
+	checklist.show_rows(rows())
 	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
 
@@ -136,8 +170,9 @@ func _on_jailed() -> void:
 	checklist.show_rows(rows())
 
 
+## The porter in the patrol car, from the terminal or caught off the tug.
 func porter_detained() -> bool:
-	return jailed
+	return jailed or caught
 
 
 func solved() -> bool:
@@ -200,6 +235,8 @@ func rows() -> Array[Dictionary]:
 	list.append(_row(tr("OBJ_AIRPORT_CLUES") % [clues.size(), CLUES], clues.size() >= CLUES))
 	list.append(_row("OBJ_AIRPORT_PORTER", porter_detained()))
 	list.append(_row("OBJ_AIRPORT_BOARD", boarded))
+	if chase:
+		list.append(_row("OBJ_AIRPORT_CATCH_TUG", caught))
 	var state := tr("OBJ_AIRPORT_OPENED") % opened.size()
 	if scandal:
 		state = "OBJ_AIRPORT_SCANDAL"

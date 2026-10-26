@@ -11,6 +11,7 @@ extends Node3D
 ## (OddCargo, what's inside drawn by the seed) and the X-ray machine on show (AirportXray). Step 4: Lustre, who wanders
 ## off to the duty-free shop (AirportDeputy), and the boarding clock on the board over the gate (AirportBoarding).
 ## Step 5: the staff (AirportStaff: the bought porter, the clerk and the gate agent) and the case on top (AirportCase).
+## Step 6: the baggage tug parked on the street out front, the porter's getaway.
 ## Every number here is (propuesta).
 
 const COUNTER_MODEL := preload("res://assets/models/checkin_counter.glb")
@@ -64,6 +65,8 @@ const SEATS: Array[Vector3] = [Vector3(11.5, 0, 2.5), Vector3(14.5, 0, 2.5), Vec
 const PLANE_AT := Vector3(0, 0, -15)
 ## Where the staff stand (AirportStaff.ROLES' order), all facing +Z: the porter behind the belt's start, the clerk by
 ## the counter's east end, the gate agent by the gate's desk.
+## The baggage tug, parked on the street out front facing east.
+const TUG_AT := Vector3(-14, 0.05, HALF + CityLayout.SIDEWALK + CityLayout.STREET / 2 + 1.5)
 const STAFF_AT: Array[Vector3] = [Vector3(-15.5, 0, 11.0), Vector3(-7.8, 0, 14.6), Vector3(19.0, 0, -0.8)]
 
 const WALL := Color(0.86, 0.88, 0.9)
@@ -95,6 +98,7 @@ var boarding: AirportBoarding
 var staff: Array[AirportStaff] = []
 var porter: AirportStaff
 var case: AirportCase
+var tug: SuspectCar
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -118,6 +122,14 @@ func _ready() -> void:
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
 	_place_staff()
+	tug = SuspectCar.new()
+	tug.name = "FleeingCar"
+	tug.kind = SuspectCar.BAGGAGE_TUG
+	tug.driving = false
+	add_child(tug)
+	tug.transform = Transform3D(Basis(Vector3.UP, PI / 2), TUG_AT)
+	# The porter is at work until he runs for it.
+	tug.get_node("Rider").hide()
 	case = AirportCase.new()
 	case.name = "Case"
 	case.airport = self

@@ -62,14 +62,14 @@ func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltrati
 	assert_gt(count.chess, 0, "a tenth at the chess club")
 	assert_gt(count.biker, 0, "a tenth at the biker bar")
 	assert_gt(count.auction, 0, "and a tenth at the auction house")
-	# Eight protections are too many to see each one in 600 shifts too (propuesta).
+	# Nine protections are too many to see each one in 600 shifts too (propuesta).
 	var rallies := {}
 	for i in 3000:
 		var place := PlaceDraw.pick(i + 1, [], 1)
 		if PlaceDraw.RALLIES.has(place):
 			rallies[place] = rallies.get(place, 0) + 1
 	for place: String in PlaceDraw.RALLIES:
-		assert_gt(rallies.get(place, 0), 0, "an eighth of the protections at %s" % place)
+		assert_gt(rallies.get(place, 0), 0, "a tenth of the protections at %s" % place)
 	assert_eq(PlaceDraw.pick(77, []), PlaceDraw.pick(77, []), "the same seed gives the same place for everyone")
 
 

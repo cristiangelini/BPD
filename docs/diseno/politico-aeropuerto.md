@@ -115,3 +115,7 @@ pregunten."
   pierde en el momento si la maleta rara sale en la pantalla o si cierra el embarque sin el diputado; se gana si sube al
   avión a tiempo. Sueldo 600, 50 menos por cada maleta suya abierta (una vez por maleta, y él se queja), 100 menos por
   cada empleado honesto esposado y 100 más si el maletero está en el patrullero. Cuota 400.
+- **Paso 6 (el carrito de equipaje y Jugar):** el carrito de equipaje (`baggage_tug`, amarillo con dos maletas atrás y
+  una baliza naranja) espera estacionado en la calle frente al aeropuerto. Si el maletero sigue suelto cuando el caso
+  termina (sube el diputado, pierde el avión o sale el escándalo), se sube y se escapa: persecución embebida (decisión
+  96) a 22 km/h; atrapado, cuenta como detenido. Jugar sortea el aeropuerto como una de las 9 protecciones del diputado.
