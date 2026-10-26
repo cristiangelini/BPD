@@ -1,0 +1,183 @@
+class_name YardInmate
+extends CharacterBody3D
+
+## An inmate out in the yard at yard time in the prison's tunnel case (carcel-tunel.md, step 2): the riot's model in its
+## orange jumpsuit, playing basketball by the hoop (hopping for the rebound), walking round the ring or leaning on
+## the wall in the sun, once TunnelPlan starts. Walks a route of level-space points when sent somewhere. Every number
+## here is (propuesta).
+
+enum Activity { HOOP, RING, SUN }
+
+const MODEL := preload("res://assets/models/npc_preso.glb")
+const SAY_TIME := 3.0
+const SPEED := 1.4
+const REACH := 0.3
+## The hoop players hop this high every HOP_EVERY seconds; the sunbathers lean back this far.
+const HOP := 0.25
+const HOP_EVERY := 1.2
+const LEAN := -0.18
+## The ring the walkers go round (level space centre and radius), in this many points.
+const RING_AT := Vector2(4.0, 14.0)
+const RING_RADIUS := 3.0
+const RING_POINTS := 8
+
+var prison: PrisonLevel
+var activity := Activity.RING
+## Where they stand at the start (level space x, z) and where they face from there.
+var spot := Vector2.ZERO
+var face := Vector2.ZERO
+## For the walkers: which point of the ring they start at.
+var ring_from := 0
+var busy := false
+var route: Array[Vector2] = []
+## A guest's copy (step 7): the host walks them.
+var follower := false
+var _next := 0
+var _model: Node3D
+var _bubble: Label3D
+var _bubble_left := 0.0
+var _idle: Tween
+
+
+func _ready() -> void:
+	add_to_group("yard_inmates")
+	collision_layer = 8
+	collision_mask = 1
+	var shape := CollisionShape3D.new()
+	var capsule := CapsuleShape3D.new()
+	capsule.radius = 0.3
+	capsule.height = 1.7
+	shape.shape = capsule
+	shape.position.y = 0.85
+	add_child(shape)
+	_model = MODEL.instantiate()
+	add_child(_model)
+	_bubble = Label3D.new()
+	_bubble.name = "Bubble"
+	_bubble.position = Vector3(0, 2.1, 0)
+	_bubble.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	_bubble.no_depth_test = true
+	_bubble.pixel_size = 0.004
+	_bubble.outline_size = 8
+	_bubble.font_size = 36
+	_bubble.width = 700.0
+	_bubble.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_bubble.hide()
+	add_child(_bubble)
+
+
+## Stands at their spot, facing the way they look from there.
+func place() -> void:
+	global_position = prison.global_transform * Vector3(spot.x, PrisonLevel.FLOOR_TOP, spot.y)
+	_face(prison.global_transform * Vector3(face.x, PrisonLevel.FLOOR_TOP, face.y))
+
+
+## The `index`-th point of the walkers' ring (level space x, z).
+static func ring_point(index: int) -> Vector2:
+	var angle := TAU * posmod(index, RING_POINTS) / RING_POINTS
+	return RING_AT + Vector2(cos(angle), sin(angle)) * RING_RADIUS
+
+
+## Yard time: off to what they do, `offset` seconds after the others.
+func start(offset: float) -> void:
+	if busy:
+		return
+	busy = true
+	_stop_idle()
+	match activity:
+		Activity.HOOP:
+			_idle = create_tween().set_loops()
+			_idle.tween_interval(offset)
+			_idle.tween_property(_model, "position:y", HOP, HOP_EVERY / 4).set_ease(Tween.EASE_OUT)
+			_idle.tween_property(_model, "position:y", 0.0, HOP_EVERY / 4).set_ease(Tween.EASE_IN)
+			_idle.tween_interval(HOP_EVERY / 2)
+		Activity.SUN:
+			_model.rotation.x = LEAN
+		Activity.RING:
+			_walk_ring()
+
+
+func _stop_idle() -> void:
+	if _idle:
+		_idle.kill()
+		_idle = null
+	_model.position.y = 0.0
+	_model.rotation.x = 0.0
+
+
+## Round and round the ring, from where they are on it.
+func _walk_ring() -> void:
+	var points: Array[Vector2] = []
+	for i in RING_POINTS:
+		points.append(ring_point(ring_from + 1 + i))
+	walk(points)
+
+
+## Off along `points` (level space x, z).
+func walk(points: Array[Vector2]) -> void:
+	route = points
+	_next = 0
+
+
+func is_walking() -> bool:
+	return _next < route.size()
+
+
+## At the end of their way: the walkers go round again; the rest stand there.
+func _arrive() -> void:
+	route.clear()
+	_next = 0
+	if activity == Activity.RING and busy:
+		ring_from += RING_POINTS
+		_walk_ring()
+
+
+## Turns so their model's front (+Z) is toward `at`.
+func _face(at: Vector3) -> void:
+	var away := global_position - (at - global_position)
+	away.y = global_position.y
+	if away.distance_to(global_position) > 0.01:
+		look_at(away, Vector3.UP)
+
+
+func say(key: String, seconds := SAY_TIME) -> void:
+	_bubble.text = key
+	_bubble.show()
+	_bubble_left = seconds
+
+
+func said() -> String:
+	return _bubble.text if _bubble.visible else ""
+
+
+## What a guest's copy needs besides where they are and what they say (NpcSync, step 7): whether yard time started.
+func net_state() -> Array:
+	return [busy]
+
+
+func apply_net_state(net: Variant) -> void:
+	if net[0] and not busy:
+		start(0.0)
+		route.clear()
+
+
+func _physics_process(delta: float) -> void:
+	if _bubble_left > 0.0:
+		_bubble_left -= delta
+		if _bubble_left <= 0.0:
+			_bubble.hide()
+	if follower or route.is_empty():
+		return
+	if _next >= route.size():
+		_arrive()
+		return
+	var local := prison.global_transform.affine_inverse() * global_position
+	var to := route[_next] - Vector2(local.x, local.z)
+	if to.length() < REACH:
+		_next += 1
+		return
+	var step := to.normalized() * SPEED
+	velocity = prison.global_basis * Vector3(step.x, 0, step.y)
+	velocity.y = 0.0
+	_face(global_position + velocity)
+	move_and_slide()

@@ -86,3 +86,15 @@ Respondidas el 25/10: sí a las 3 (decisión 143).
    es que el túnel sigue avanzando mientras tanto.
 3. **¿Cuando el túnel se termina el caso no se pierde de una**, sino que salen de a uno por la otra punta y se pierde
    con 3 escapados? Recomendado: sí, así hay una última oportunidad esperándolos afuera del muro.
+
+## Hecho así
+- **Paso 2 (el túnel escondido):** `--place=prison_tunnel` abre `scenes/levels/prison_tunnel.tscn`, la cárcel de día
+  con `variant = "tunnel"`: la reja del pabellón y las 8 celdas abiertas (las puertas de rejas del corte de luz).
+  `TunnelPlan` pone en cada celda sus 4 escondites (`CellHideout`): el póster en una pared del costado, la cucheta
+  contra la pared del fondo, el inodoro en la otra pared del costado (lejos de la puerta) y la alfombra en el piso. La
+  semilla elige la celda, el escondite del túnel y los 3 de la banda. Hay 12 presos en el patio (`YardInmate`): 4 en el
+  aro que saltan, 4 que caminan en ronda y 4 que toman sol contra el muro del este, quietos hasta que el primer policía
+  cruza el portón. E y quedarse al lado 1,5 s revisa un escondite ("¿Qué hay acá atrás?"); si no hay nada lo dice con
+  una frase distinta para cada escondite, y si está el túnel el escondite queda corrido (el póster en el piso, la
+  cucheta corrida, el inodoro de costado o la alfombra enrollada) y se ve el pozo con su tierra. Capturas en
+  `/mnt/project-files/carcel-tunel/`: `paso2-patio.png`, `paso2-celda.png`, `paso2-alfombra.png` y `paso2-tunel.png`.
