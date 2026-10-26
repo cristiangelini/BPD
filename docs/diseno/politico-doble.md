@@ -41,9 +41,9 @@ gota de agua. Les dejo la ficha del diputado. Esposen al falso, no al verdadero:
 7. **El equivocado:** lo que pasa si esposan al verdadero sale de la pregunta 2.
 8. **Se gana** si termina el discurso con menos de 10 manchas, como en la base. Sueldo de 600: 50 menos por mancha, 50
    más por cada uno de los que tiran detenido y 150 más si el doble quedó detenido. Cuota de 400, como la plaza.
-9. **El final:** si el doble sigue suelto cuando termina el discurso, huye corriendo con el sombrero en la mano y
-   empieza la persecución a pie (ChaseCase.begin, decisión 96), como el del monopatín de la base. Si también queda
-   suelto uno de los que tiran, huye ese en el monopatín y el doble a pie. Atrapado, cuenta como detenido.
+9. **El final:** si el doble sigue suelto cuando termina el discurso, huye él en el monopatín de la base (en lugar del
+   último que tira) y empieza la persecución (ChaseCase.begin, decisión 96). Atrapado, cuenta como el doble detenido.
+   Ver "Hecho así": se cambió de a pie a monopatín para no tener dos persecuciones a la vez.
 
 ## Lo que se reusa
 - Todo el acto de la plaza: `PlazaRally`, el escenario, `PoliticianSpeech`, `RallyCrowd`, los huevos y tomates
@@ -88,3 +88,12 @@ gota de agua. Les dejo la ficha del diputado. Esposen al falso, no al verdadero:
   atril, el doble le deja el lugar y se pone a saludar a la gente con sus propios paseos (`PoliticianWalks`, que en él
   nunca arrancan solos) hasta la próxima vez que el verdadero baje. Si un policía lo confunde y lo sube a él de la mano,
   toma el atril y el verdadero se baja. Captura en `/mnt/project-files/doble/paso2-barbaridad.png`.
+- **Paso 3 (esposar, el final y el online):** las esposas de siempre en el doble lo dejan atrapado para siempre: se le
+  va la galera y la bufanda si las tenía, se le cae el bigote, confiesa ("¡Era un trabajo! ¡Me pagaban por hora!"), deja
+  el atril y no vuelve a subir. Con E se lo lleva al patrullero (`OwnerEscort`, sentado sobre los que tiran) y suma 150
+  (fila "El doble, en el patrullero" en la planilla). Esposar al verdadero lo ofende ("¿¡Saben quién soy yo!?"): son 3
+  manchas en su imagen y las esposas se abren solas; en la plaza común no pasa nada. Si el doble sigue suelto cuando
+  termina el discurso, huye él en el monopatín (no a pie como decía la propuesta, para no tener dos persecuciones a la
+  vez) con su propia cara y sus frases (`ChaseSuspect.DOUBLE`); atrapado, suma los 150. Online el host decide todo: el
+  doble va por `NpcSync` (sin galera, atrapado y escoltado) y su huida por el snapshot del caso. Captura en
+  `/mnt/project-files/doble/paso3-esposas.png`.
