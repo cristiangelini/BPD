@@ -88,6 +88,7 @@ func test_without_help_she_is_busy_and_without_a_clue_she_saw_nothing() -> void:
 	var cop: Cop = raid.get_node("Cop")
 	raid.maid.use(cop)
 	assert_eq(raid.maid.said(), "HOTEL_MAID_BUSY")
+	raid.maid.clue = ""
 	watch_signals(raid.maid)
 	raid.maid.helped(cop)
 	assert_signal_emitted_with_parameters(raid.maid, "told", [tr("HOTEL_MAID_SAW_NOTHING")])

@@ -33,7 +33,8 @@ func _ready() -> void:
 	_messy.name = "Messy"
 	add_child(_messy)
 	_messy.add_child(_box(Vector3(1.2, 0.12, 1.1), Vector3(0.1, 0.06, 0.3), Vector3(0.1, 0.4, 0.15), MESSY))
-	_messy.add_child(_box(Vector3(0.7, 0.18, 0.6), Vector3(-0.3, 0.09, -0.4), Vector3(-0.2, -0.6, 0.0), MESSY.darkened(0.1)))
+	var lump := MESSY.darkened(0.1)
+	_messy.add_child(_box(Vector3(0.7, 0.18, 0.6), Vector3(-0.3, 0.09, -0.4), Vector3(-0.2, -0.6, 0.0), lump))
 	_messy.add_child(_box(Vector3(0.5, 0.12, 0.35), Vector3(0.4, 0.06, -0.75), Vector3(0.0, 0.9, 0.3), Color.WHITE))
 	_neat = _box(Vector3(1.42, 0.04, 1.6), Vector3(0, 0.02, 0.15), Vector3.ZERO, NEAT)
 	_neat.visible = false
