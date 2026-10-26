@@ -36,7 +36,7 @@ const SPOTS: Array[Array] = [
 	[Vector3(-9.4, 0, 3.0), -PI / 2], [Vector3(-9.4, 0, 5.0), -PI / 2], [Vector3(-9.4, 0, 7.0), -PI / 2],
 	[Vector3(-5.5, 0, 2.0), PI], [Vector3(-1.5, 0, 4.0), 0.0], [Vector3(-6.5, 0, 7.0), -PI / 2],
 	[Vector3(-4.5, 0, 7.0), PI / 2], [Vector3(6.0, 0, 6.5), PI / 2], [Vector3(10.0, 0, 3.0), PI],
-	[Vector3(-8.0, 0, -3.0), PI], [Vector3(0.0, 0, -6.0), -PI / 2],
+	[Vector3(-10.5, 0, -5.5), -PI / 2], [Vector3(2.8, 0, -6.0), PI / 2],
 ]
 const PLAYERS := 8
 ## El Cromado polishes his moped in the workshop, facing it (-X); the coat rack by the entrance and the bouncer.
@@ -44,6 +44,11 @@ const CROMADO_AT := Vector3(9.8, 0, 6.5)
 const MOPED_AT := Vector3(8.6, 0, 6.5)
 const RACK_AT := Vector3(-3.0, 0, HALF_Z - 0.5)
 const DOORKEEPER_AT := Vector3(ENTRANCE_X + 1.2, 0, HALF_Z - 1.2)
+## The patio (step 3): the arm-wrestling table, the heavy bike lying by the west wall, and the "don't move" lane: the
+## biker's bike waits at its far end facing the line painted LANE ahead of it, toward the door.
+const ARM_TABLE_AT := Vector3(-8.0, 0, -3.0)
+const HEAVY_BIKE_AT := Vector3(-8.0, 0, -7.6)
+const CHARGE_AT := Vector3(-0.5, 0, -8.8)
 ## The workshop's crates against its back wall.
 const CRATES: Array[Vector3] = [Vector3(5.5, 0, 0.8), Vector3(7.0, 0, 0.8), Vector3(10.5, 0, 0.8)]
 
@@ -55,6 +60,9 @@ const WOOD := Color(0.4, 0.24, 0.14)
 const STEEL := Color(0.6, 0.62, 0.66)
 
 var office_door: FrontDoor
+var arm_table: ArmTable
+var heavy_bike: HeavyBike
+var charge: DareCharge
 var cromado: ClubMember
 var doorman: ClubDoorman
 var _build: PlaceBuilder
@@ -70,6 +78,7 @@ func _ready() -> void:
 	office_door = DOOR_SCENE.instantiate()
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, BACK_Z)
 	add_child(office_door)
+	_add_patio()
 	_add_people()
 	place_in_city("biker")
 
@@ -148,6 +157,33 @@ func _add_people() -> void:
 	suspicion.inside = is_inside
 	suspicion.in_back_room = in_back_room
 	add_child(suspicion)
+
+
+## The patio's arm-wrestling table, heavy bike and the "don't move" lane with its bike and its line.
+func _add_patio() -> void:
+	arm_table = ArmTable.new()
+	arm_table.name = "ArmTable"
+	arm_table.position = ARM_TABLE_AT + Vector3(0, FLOOR_TOP, 0)
+	add_child(arm_table)
+	heavy_bike = HeavyBike.new()
+	heavy_bike.name = "HeavyBike"
+	heavy_bike.position = HEAVY_BIKE_AT + Vector3(0, FLOOR_TOP, 0)
+	heavy_bike.rotation.y = PI / 2
+	add_child(heavy_bike)
+	charge = DareCharge.new()
+	charge.name = "Charge"
+	charge.position = CHARGE_AT + Vector3(0, FLOOR_TOP, 0)
+	add_child(charge)
+	var line := charge.line_at()
+	_build.mesh_box(Vector3(line.x, FLOOR_TOP + 0.01, line.z), Vector3(1.6, 0.012, 0.12), Color(0.95, 0.85, 0.2))
+	for side: float in [-1.0, 1.0]:
+		_build.mesh_box(Vector3(line.x + side * 0.9, FLOOR_TOP + 0.01, (CHARGE_AT.z + line.z) / 2),
+			Vector3(0.06, 0.012, DareCharge.LANE), Color(0.9, 0.9, 0.9))
+
+
+## Where the cop stands for the "don't move" dare, in the bar's space.
+func line_at() -> Vector3:
+	return charge.line_at() + Vector3(0, 0, 0.3)
 
 
 func _add_member(look: String, spot: Vector3, turn: float, rng: RandomNumberGenerator) -> void:

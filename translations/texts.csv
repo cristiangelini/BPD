@@ -2791,6 +2791,7 @@ BIKER_FOUND_OUT_0,¡Son policías! ¡Ningún motoquero pide permiso para pasar!,
 BIKER_FOUND_OUT_1,¡Son policías! ¡Se puso el cinturón de seguridad en el banquito!,They're cops! He buckled up on a bar stool!,São policiais! Ele pôs o cinto de segurança no banquinho!
 BIKER_FOUND_OUT_2,¡Son policías! ¡Preguntó si las motos tienen los papeles al día!,They're cops! He asked if the bikes' papers are up to date!,São policiais! Perguntou se as motos estão com os documentos em dia!
 HINT_BIKER_FOUND_OUT,¡Los descubrieron! Toda la banda sabe que son policías.,You've been found out! The whole gang knows you're cops.,Vocês foram descobertos! A gangue toda sabe que vocês são policiais.
+PROMPT_BIKER_ARM,E: hacer fuerza,E: push,E: fazer força
 MENU_DOLL_FACTORY,Fábrica de muñecos (prueba),Doll factory (test),Fábrica de bonecos (teste)
 PROMPT_PUSH_BUTTON,Apretar el botón,Press the button,Apertar o botão
 PROMPT_SHUTTER_BUTTON,Subir la persiana del muelle,Raise the dock shutter,Levantar a porta do cais

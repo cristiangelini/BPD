@@ -31,7 +31,7 @@ en serio, mientras los otros revisan el taller.
    y +30 de sospecha de los motoqueros del bar). La semilla ordena los tres tipos:
    - **la pulseada:** en la mesa de las pulseadas, contra un motoquero. Hay que apretar E 15 veces en 8 s; si no
      llega, pierde y +20. Ganar o perder por poco no importa: lo que cuenta es no abandonar;
-   - **levantar la moto:** la moto pesada del patio (120 kg, un objeto con física) hay que tenerla en el aire 5 s.
+   - **levantar la moto:** la moto pesada del patio (50 kg, un objeto con física) hay que tenerla en el aire 5 s.
      Solo no se puede: tiene que llamar a otro policía (si los demás están ocupados, mala suerte). Si no la levanta en
      20 s, +20;
    - **no moverse:** el policía se para en la raya y un motoquero arranca la moto hacia él y frena a 1 m. Si se mueve
@@ -84,6 +84,12 @@ valentía copian la forma de `ChessGames` (el host decide y avisa).
    hasta el paso 3) y la oficina con llave detrás del taller. La semilla reparte 8 motoqueros (dos modelos: barba gris
    con pañuelo, y campera con cresta rosa) entre 11 lugares del bar, el taller y el patio **(propuesta)**.
 3. Lo del patio: la mesa de las pulseadas, la moto pesada y la raya.
+   Hecho así: la mesa alta de las pulseadas con dos almohadillas rojas (E es "hacer fuerza"; mientras alguien juega
+   aparecen dos antebrazos agarrados, uno de manga azul y otro de cuero, que se inclinan hacia el que va ganando); la
+   moto pesada, un chopper negro y cromado de 50 kg (un policía levanta 30 como mucho, dos levantan 60: hacen falta
+   dos), que cuenta como "en el aire" 25 cm por encima de donde descansa; y el carril pintado del "no moverse", con un
+   motoquero en una moto igual al fondo que arranca hacia la raya amarilla a 6 m/s, con ruido de motor, y frena a 1 m
+   de ella **(propuesta)**.
 4. Las pruebas de valentía: los desafíos, los tres tipos y la sospecha.
 5. Las pruebas y el caso (variante "biker"): las 6 pruebas, los chismes, el sueldo y el interrogatorio.
 6. La huida en el ciclomotor, el sorteo de "Jugar" en novenos y online.
