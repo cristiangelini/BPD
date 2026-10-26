@@ -45,6 +45,12 @@ func text() -> String:
 	return _text.text
 
 
+## Online, a guest's: shows what the host's says, already translated or not.
+func follow(on: bool, now: String) -> void:
+	plugged = on
+	_text.text = now
+
+
 func prompt_key(_cop: Cop) -> String:
 	return "PROMPT_UNPLUG_PROMPTER" if plugged else "PROMPT_PLUG_PROMPTER"
 
