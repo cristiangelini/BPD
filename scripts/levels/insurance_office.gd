@@ -76,6 +76,15 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_XRAYS", "OBJ_EXTRA_BANANA_PEELS"],
 		"rig": preload("res://scripts/case/insurance/office_accidents_rig.gd"),
 	},
+	"insured_painting": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_INSURED_PAINTING_B", "BRIEF_INSURED_PAINTING_C", "BRIEF_INSURED_PAINTING_D"],
+		"find": "OBJ_FIND_INSURED_PAINTING",
+		"hidden": [preload("res://scenes/props/painting_policy.tscn"), preload("res://scenes/props/paint_tubes.tscn")],
+		"half_heights": [0.004, 0.025],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_PAINTING_POLICY", "OBJ_EXTRA_PAINT_TUBES"],
+		"rig": preload("res://scripts/case/insurance/insured_painting_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the office; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [

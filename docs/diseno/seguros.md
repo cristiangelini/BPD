@@ -137,6 +137,13 @@ Los pesos y valores siguen la escala de la fábrica: la principal vale unos 1000
      mirarlos con E es la pista propia. Hay 6 charcos con su cartel amarillo de "piso mojado" (pasillos, recepción y
      cocina, de 0,9 m de radio): el policía que pasa por uno a más de 1 m/s patina 0,9 s sin control hacia donde iba,
      y no vuelve a patinar hasta 1,5 s después. Capturas `paso5-accidentes-*` en `seguros/`.
+   - **Cómo quedó el cuadro asegurado (propuesta):** hay 8 cuadros iguales (un atardecer con una casita roja)
+     colgados en las paredes de la recepción, los cubículos, la sala de reuniones, la cocina, la oficina de la jefa y
+     junto a la impresora. Quedan quietos en la pared hasta que un policía agarra uno. El verdadero (6 kg) sale por la
+     semilla, tiene la firma al revés y al agarrarlo dice "¡La firma está al revés!" (su valor no se ve hasta
+     agarrarlo); las 7 copias son frágiles y cada una rota es una multa. La pista propia es la marca limpia de un marco
+     en la pared polvorienta de la sala de reuniones, entre los cuadros de la empresa. La póliza y los pomos de
+     pintura van escondidos. Capturas `paso5-cuadro-*` en `seguros/`.
 6. "Jugar" sortea entre los 6 lugares de allanamiento.
 7. El online (Mirta, Coca, las sillas y los papeles en todas las PC).
 
