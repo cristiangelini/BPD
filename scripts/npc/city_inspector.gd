@@ -10,6 +10,7 @@ extends CharacterBody3D
 ## What she sees within SEEN_REACH, with nothing in between, goes in her report (InspectionReport): the cops cuffing
 ## someone or a partner, taking a bribe or eating a donut, evidence put in the car, things broken, the car she rides in
 ## crashing, something hitting her and being left behind.
+## Online the host's decides: a guest gets a copy of hers (NpcSync) that only follows, with her report's score.
 
 ## She got in the patrol car or got out of it.
 signal boarded(car: PatrolCar)
@@ -43,6 +44,8 @@ const HIT_COOLDOWN := 2.0
 
 ## The patrol car she rides in, or null on foot.
 var car: PatrolCar
+## A guest's copy of the host's: it writes nothing down.
+var follower := false
 var _bubble: Label3D
 var _bubble_left := 0.0
 var _note_left := NOTE_EVERY
@@ -55,13 +58,16 @@ var _hit_wait := 0.0
 ## Brings the inspector into `cop`'s level on the inspection's shift, if she isn't there yet: called by the player's
 ## own cop when the level opens.
 static func join(cop: Cop) -> CityInspector:
-	if not due() or not cop.get_parent() or of(cop) != null:
+	if not due() or not cop.get_parent() or of(cop) != null or (Net.is_online() and not Net.is_host()):
 		return null
 	var inspector := CityInspector.new()
 	inspector.name = "CityInspector"
 	cop.get_parent().add_child(inspector)
 	inspector.global_position = cop.global_position + cop.global_basis.z * FOLLOW
 	inspector.say("INSPECTOR_ARRIVES", 5.0)
+	# The host's hint reaches every player's cop.
+	for other in cop.get_tree().get_nodes_in_group("cops"):
+		(other as Cop).show_hint("HINT_INSPECTOR_ARRIVES")
 	return inspector
 
 
@@ -71,7 +77,7 @@ static func due() -> bool:
 		return true
 	if Campaign.current:
 		return Campaign.current.shift == Campaign.SHIFTS and not Campaign.current.jailed
-	return false
+	return Net.is_online() and Net.match_inspection
 
 
 ## The inspector in `node`'s level, if any.
@@ -142,7 +148,7 @@ func _watch() -> void:
 func _show_score(score: int) -> void:
 	get_tree().call_group("checklist", "show_report", score)
 	# On the campaign's last shift her report decides the end (Campaign.finish_shift).
-	if Campaign.current and Campaign.current.shift == Campaign.SHIFTS:
+	if not follower and Campaign.current and Campaign.current.shift == Campaign.SHIFTS:
 		Campaign.current.inspection = report.summary()
 
 
@@ -164,7 +170,7 @@ func sees(at: Vector3, target: Node = null) -> bool:
 
 ## Writes down `kind` (InspectionReport.KINDS) if she sees `at`, and says so. Returns whether it went in.
 func saw(kind: String, at: Vector3, target: Node = null) -> bool:
-	if not sees(at, target):
+	if follower or not sees(at, target):
 		return false
 	report.note(kind)
 	say("INSPECTOR_SAW_" + kind.to_upper())
@@ -185,6 +191,17 @@ func saw_bribe(cop: Cop) -> void:
 
 func saw_donut(cop: Cop) -> void:
 	saw("donut", cop.global_position, cop)
+
+
+## What a guest's copy needs besides where she is and what she says (NpcSync): her report's score.
+func net_state() -> Array:
+	return [report.score]
+
+
+func apply_net_state(state: Array) -> void:
+	if int(state[0]) != report.score:
+		report.score = int(state[0])
+		_show_score(report.score)
 
 
 func _on_felt(body: Node3D) -> void:

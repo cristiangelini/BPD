@@ -13,6 +13,8 @@ signal back_to_menu
 @onready var _awards: VBoxContainer = %Awards
 ## Where the internal affairs investigation went this shift (Campaign.finish_shift), "" if nowhere.
 var _investigation := ""
+## The inspector's report on the last shift (inspeccion.md), from the shift's report so every PC has it; empty if none.
+var _inspection := {}
 
 
 func _ready() -> void:
@@ -42,7 +44,11 @@ func show_report(solved: bool, report: Dictionary, broken_ornaments: int, awards
 		_line(tr("SHIFT_AGENT_FINE"), -report.agent_fine)
 	_line(tr("SHIFT_TOTAL"), report.total, true)
 	# On the inspection's shift the quota doesn't count: her report does (show_campaign).
-	if not report.has("inspection"):
+	_inspection = {}
+	if report.has("inspection"):
+		_inspection = {"score": report.inspection, "best": report.get("inspection_best", ""),
+			"worst": report.get("inspection_worst", "")}
+	else:
 		_line(tr("SHIFT_QUOTA"), report.quota)
 	_investigation = report.get("investigation", "")
 	_verdict.text = tr("SHIFT_APPROVED" if report.approved else "SHIFT_SUSPENDED")
@@ -66,9 +72,8 @@ func show_report(solved: bool, report: Dictionary, broken_ornaments: int, awards
 ## quota of a campaign sends the cops to their own cells instead (decision 99).
 func show_campaign(shift: int, shifts: int, money: int, over: bool, promoted := false) -> void:
 	_line(tr("SHIFT_TURN") % [shift, shifts], money, true)
-	var inspection: Dictionary = Campaign.current.last_inspection if Campaign.current else {}
-	if over and not inspection.is_empty():
-		_show_inspection(inspection)
+	if over and not _inspection.is_empty():
+		_show_inspection(_inspection)
 		_verdict.text = tr("SHIFT_PROMOTED" if promoted else "SHIFT_INSPECTION_FAILED")
 	elif over:
 		var lost := "SHIFT_CAMPAIGN_LOST_AGENT" if _investigation == "suspended" else "SHIFT_CAMPAIGN_LOST"
