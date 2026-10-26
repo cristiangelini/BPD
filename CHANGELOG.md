@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Doll factory, step 6: the knockoff Captain Galaxy story: every second doll on the belt wears an astronaut helmet, three badly painted rejects in the dumpster are the clue, and the 15 kg stolen mold (it jams the belt), the fake labels and the prototype photos are hidden.
 - Doll factory, step 6: the spy dolls story: 10 dolls of the bin carry a microphone (drawn with the seed), a cop's radio squeals by the closest one (the story's clue), and the tape recorder, the box of microphones and the client list are hidden.
 - Doll factory, step 5: the factory is a full raid (tip, suspicions, notes, Fermín's slips, Nilda's clue, the till with the office key, his escape and interrogation, his lawyer losing the case) with its first story, the diamond doll: one of 24 finished dolls in the storeroom bin weighs 2 kg, the quality control scale shows it and the quality sheet beside it is the clue; the loupe and the delivery list are hidden.
 - Doll factory, step 4: bare dolls keep dropping onto the moving belt (up to 16) and are packed when they fall in the box cart; Nilda at the eyes machine wants five of them in her box, and then tells what she saw.

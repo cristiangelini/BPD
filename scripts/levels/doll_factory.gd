@@ -10,10 +10,14 @@ extends Node3D
 ## belt, and Nilda wants five of them in her box (step 4). The case is one of its stories (STORIES), drawn with the
 ## seed, run by the same RaidCase as the other places (step 5). Every number here is (propuesta).
 
+## The feeder dropped a bare doll onto the belt (the stories can dress it).
+signal fed_doll(doll: Node3D)
+
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const FERMIN_SCENE := preload("res://scenes/npc/foreman.tscn")
 const BELT_DOLL_SCENE := preload("res://scenes/props/factory_doll.tscn")
 const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+
 ## Every story the factory can be suspected of (fabrica.md, "Las historias"): SUSPECT_<id> names it and
 ## CLUE_SUSPECT_<id> is the clue that hints at it.
 const SUSPICION_POOL := ["diamond_doll", "spy_dolls", "fake_captain", "ghost_workers", "giant_doll", "poodle_hair"]
@@ -43,6 +47,17 @@ const STORIES := {
 		"heavy": [true, false, false],
 		"extra_keys": ["OBJ_EXTRA_MIC_BOX", "OBJ_EXTRA_CLIENT_LIST"],
 		"rig": preload("res://scripts/case/factory/spy_dolls_rig.gd"),
+	},
+	"fake_captain": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_FAKE_CAPTAIN_B", "BRIEF_FAKE_CAPTAIN_C", "BRIEF_FAKE_CAPTAIN_D"],
+		"find": "OBJ_FIND_STOLEN_MOLD",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/stolen_mold.tscn"), preload("res://scenes/props/fake_labels.tscn"),
+			preload("res://scenes/props/prototype_photos.tscn")],
+		"half_heights": [0.16, 0.05, 0.005],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_FAKE_LABELS", "OBJ_EXTRA_PROTOTYPE_PHOTOS"],
+		"rig": preload("res://scripts/case/factory/fake_captain_rig.gd"),
 	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the factory; three are drawn with the seed.
@@ -637,6 +652,7 @@ func _physics_process(delta: float) -> void:
 	doll.position = FEED_AT
 	add_child(doll)
 	fed.append(doll)
+	fed_doll.emit(doll)
 
 
 func _on_fragile_broken(at: Vector3) -> void:
