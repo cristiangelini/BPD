@@ -2549,7 +2549,7 @@ BRIEF_SCHOOL_C,Con 7 de promedio en las tres materias se gradúan. Junten 3 prue
 HINT_GO_SCHOOL,"Antes, pasa por la fila de disfraces de la comisaría y ponte 2 piezas de ladrón. La Academia Manos Ligeras está en la ciudad: ve en el patrullero.","First, stop by the station's disguise row and put on 2 thief pieces. The Light Hands Academy is in the city: take the patrol car.","Antes, passe na fileira de disfarces da delegacia e vista 2 peças de ladrão. A Academia Mãos Leves fica na cidade: vá de viatura."
 HINT_SCHOOL_IN,"Adentro. Busca pruebas, ve a clase cuando suene el timbre y saca buenas notas.","You're in. Look for evidence, go to class when the bell rings and get good grades.","Lá dentro. Procure provas, vá para a aula quando o sinal tocar e tire boas notas."
 HINT_DIRECTOR_CUFFED,¡El Director esposado! Caso resuelto.,The Director is cuffed! Case solved.,O Diretor está algemado! Caso resolvido.
-HINT_ESCAPE_director,¡El Director se escapa! ¡Atrápenlo!,The Director is escaping! Catch him!,O Diretor está fugindo! Peguem ele!
+HINT_ESCAPE_director,¡El Director se escapa en el auto de práctica! Se le cala cada tanto: ¡alcáncenlo!,The Director is escaping in the learner car! It stalls every so often: catch up with him!,O Diretor está fugindo no carro da autoescola! O motor morre de vez em quando: alcancem ele!
 OBJ_SCHOOL_GET_IN,Entrar a la escuela disfrazado de ladrón,Get into the school dressed as a thief,Entrar na escola disfarçado de ladrão
 OBJ_SCHOOL_EVIDENCE,Pruebas (%d de %d),Evidence (%d of %d),Provas (%d de %d)
 OBJ_SCHOOL_CUFF_DIRECTOR,Esposar al Director en la graduación,Cuff the Director at the graduation,Algemar o Diretor na formatura
@@ -2578,6 +2578,8 @@ CONFESS_owner_director,"¡Está bien! ¡Yo fundé la escuela! Pero con plan de e
 CHASE_DIRECTOR_LINE_1,¡La clase de hoy: cómo escapar de la policía! ¡Tomen nota!,Today's class: how to escape from the police! Take notes!,A aula de hoje: como fugir da polícia! Anotem!
 CHASE_DIRECTOR_LINE_2,¡Un cero en persecución! ¡Están todos reprobados!,A zero in chasing! You all fail!,Zero em perseguição! Estão todos reprovados!
 CHASE_DIRECTOR_LINE_3,"Está bien, me rindo. Pero que conste en el boletín que corrí bien.","Fine, I give up. But put it on the report card that I ran well.","Tá bom, me rendo. Mas que conste no boletim que eu corri bem."
+LEARNER_SIGN,ESCUELA DE MANEJO... DE ESCAPE,DRIVING SCHOOL... FOR GETAWAYS,AUTOESCOLA... DE FUGA
+LEARNER_STALLED,*¡Se le caló!*,*It stalled!*,*Morreu o motor!*
 MENU_DOLL_FACTORY,Fábrica de muñecos (prueba),Doll factory (test),Fábrica de bonecos (teste)
 PROMPT_PUSH_BUTTON,Apretar el botón,Press the button,Apertar o botão
 PROMPT_SHUTTER_BUTTON,Subir la persiana del muelle,Raise the dock shutter,Levantar a porta do cais

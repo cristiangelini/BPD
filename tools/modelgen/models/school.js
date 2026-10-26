@@ -1,6 +1,7 @@
 // The thieves' school "Academia Manos Ligeras" (docs/diseno/infiltracion-escuela.md, step 4): the evidence's props.
 // Placeholder.
 import { Builder, mat, V, THREE } from '../lib.js';
+import { buildSedan } from './vehicles.js';
 
 const ink = mat('school_ink', 0x2a2a3a), red = mat('school_red', 0xc8202a), wood = mat('school_trunk_wood', 0x6a4022);
 const iron = mat('school_iron', 0x3a3a40);
@@ -38,7 +39,26 @@ export function buildTrunk() {
 	return b.build();
 }
 
-export const models = { school_homework: buildHomework, school_trunk: buildTrunk };
+// The Director's getaway (step 5): the school's learner car, a small yellow sedan with a sign on the roof (the game
+// writes "ESCUELA DE MANEJO... DE ESCAPE" on it), big red L plates front and back and a second pedal set's mirror on
+// the passenger side. It takes the sedan's wheels.
+export function buildLearnerCar() {
+	const yellow = mat('learner_yellow', 0xf2c230);
+	return buildSedan('learner_car', yellow, mat('lamp_off', 0x5a5a50), mat('tail_off', 0x501018), (b) => {
+		const white = mat('learner_white', 0xf4f4f0);
+		box(b, 'sign', white, 1.4, 0.36, 0.08, 0, 1.78, -0.15);
+		box(b, 'sign', red, 1.44, 0.04, 0.1, 0, 1.97, -0.15);
+		box(b, 'sign', iron, 0.6, 0.06, 0.3, 0, 1.58, -0.15);
+		for (const z of [2.32, -2.32]) {
+			box(b, 'plates', white, 0.34, 0.34, 0.02, 0, 0.75, z);
+			box(b, 'plates', red, 0.06, 0.24, 0.03, -0.05, 0.75, z);
+			box(b, 'plates', red, 0.16, 0.06, 0.03, 0, 0.66, z);
+		}
+		box(b, 'mirror', iron, 0.05, 0.14, 0.22, 1.12, 1.15, 0.7);
+	});
+}
+
+export const models = { school_homework: buildHomework, school_trunk: buildTrunk, learner_car: buildLearnerCar };
 
 export const views = {
 	school_evidence: {
@@ -47,5 +67,9 @@ export const views = {
 			{ name: 'school_trunk', pos: [0.5, 0, 0], rotY: -0.3 },
 		],
 		cam: { pos: [0, 1.4, 2.4], target: [0, 0.3, 0], fov: 45 },
+	},
+	learner_car: {
+		items: [{ name: 'learner_car', pos: [0, 0, 0] }, ...[[-1.05, 1.55], [1.05, 1.55], [-1.05, -1.55], [1.05, -1.55]].map(([x, z]) => ({ name: 'car_wheel', pos: [x, 0.38, z] }))],
+		cam: { pos: [4.5, 2.6, 5.0], target: [0, 0.9, 0], fov: 45 },
 	},
 };
