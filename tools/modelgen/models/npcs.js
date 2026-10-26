@@ -1157,6 +1157,34 @@ const NPCS = {
 		hairCap(b, C('councillor_hair', 0x1a1410), { y: 1.4, sy: 0.5 });
 		limb(b, 'props', C('cigar', 0x6a3a1a), V(0.06, 1.22, 0.2), V(0.12, 1.2, 0.36), 0.02);
 	},
+	// Candidata Rita Malvón (politico-debate.md, step 3): a purple suit with big shoulder pads, a tall purple-black
+	// hairdo, gold earrings, a campaign rosette in her color and a confident smile.
+	candidata(b) {
+		const suit = C('malvon_suit', 0x7a3a9a);
+		pearBody(b, SKIN.crema, { shirt: suit, onePiece: true, belted: false, shoes: C('malvon_heels', 0x2a1a30) });
+		lapels(b, C('malvon_blouse', 0xf4eef6));
+		for (const s of [-1, 1]) b.add('body', suit, ellipsoid(0.12, 0.06, 0.12, 8, 4), { pos: V(s * 0.3, 1.04, 0.0) });
+		b.add('props', C('rosette_purple', 0x9a4ad8), new THREE.CylinderGeometry(0.08, 0.08, 0.02, 10), { pos: V(-0.2, 0.92, 0.29), rot: [Math.PI / 2 - 0.4, 0, 0] });
+		b.add('props', C('rosette_white', 0xf4f4f0), new THREE.CylinderGeometry(0.04, 0.04, 0.025, 8), { pos: V(-0.2, 0.92, 0.3), rot: [Math.PI / 2 - 0.4, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		const hair = C('malvon_hair', 0x2a1430);
+		hairCap(b, hair, { y: 1.4, sx: 1.06, back: 0.02 });
+		b.add('head', hair, ellipsoid(0.15, 0.2, 0.14, 8, 6), { pos: V(0, 1.66, -0.02) });
+		for (const s of [-1, 1]) b.add('head', C('earring_gold', 0xe8c040, { metalness: 0.5, roughness: 0.3 }), ellipsoid(0.025, 0.035, 0.025, 6, 4), { pos: V(s * 0.21, 1.22, 0.02) });
+	},
+	// The moderator (politico-debate.md, step 3): a navy blazer, a neat gray bob, big round glasses and her question
+	// cards in one hand.
+	moderadora(b) {
+		pearBody(b, SKIN.cacao, { shirt: C('moderator_blazer', 0x2a3a6a), pants: C('moderator_skirt', 0x3a3a44), shoes: C('moderator_shoes', 0x1e1f24) });
+		lapels(b, C('moderator_shirt', 0xf2f2ee));
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		glasses(b);
+		mouth(b);
+		const hair = C('moderator_hair', 0xb8bcc4);
+		hairCap(b, hair, { y: 1.38, sx: 1.08, sy: 0.7, back: 0.03 });
+		b.add('props', C('question_cards', 0xf6e8b0), new THREE.BoxGeometry(0.16, 0.22, 0.02), { pos: V(0.5, 0.62, 0.2), rot: [-0.3, 0, 0] });
+	},
 	// Bank robbers (robo-banco.md, step 2): black clothes and gloves, and a rubber animal mask over the whole head.
 	ladron_conejo(b) {
 		robber(b, C('mask_rabbit', 0xf2eeea), (m) => {
