@@ -169,6 +169,10 @@ var fog := {}
 ## FogCar.BLIND_SPEED and brakes only once it sees what's ahead (FogCar.SIGHT): behind a car it bumps into it, at the
 ## barrier it runs the checkpoint ("overrun").
 var warned := false
+## In the circus move check (control-circo.md) most of the queue are circus trucks, each with a cage and an animal
+## in it, as in `circus` (CircusTruck.draw's); empty for a city car among them.
+var circus_mode := false
+var circus := {}
 ## It bumped into the car ahead in the fog (online, the guest's copy says so too).
 var bumped := false
 ## Its horn's sound over it, seen through the fog (step 3): it answers the foghorn (FogHorn).
@@ -207,6 +211,10 @@ func _ready() -> void:
 	add_to_group("queue_cars")
 	if fruit:
 		_build_fruit_truck()
+		_build_labels()
+		return
+	if not circus.is_empty():
+		CircusTruck.build(self, circus)
 		_build_labels()
 		return
 	# The body leaves the trunk's top free, so the cops' hands reach the lid: the cabin and hood, and under the trunk.
@@ -268,7 +276,8 @@ func _build_labels() -> void:
 	plate_label.modulate = Color(0.1, 0.1, 0.12)
 	plate_label.outline_modulate = Color(0.95, 0.95, 0.9)
 	plate_label.outline_size = 18
-	plate_label.position = Vector3(0, 0.5 if clown else 0.62, -length() / 2 - (0.06 if fruit else 0.03))
+	var truck := fruit or not circus.is_empty()
+	plate_label.position = Vector3(0, 0.5 if clown else 0.62, -length() / 2 - (0.06 if truck else 0.03))
 	plate_label.rotation.y = PI
 	add_child(plate_label)
 	_bubble = Label3D.new()
@@ -672,7 +681,7 @@ func net_setup() -> Dictionary:
 		"ghost": ghost, "shirt": shirt, "puppeteer": puppeteer, "wedding_mode": wedding_mode, "guest": guest,
 		"tie": tie, "newlyweds": newlyweds, "alcohol": alcohol, "couple": couple, "race_mode": race_mode,
 		"racer": racer, "race": race, "race_slot": race_slot,
-		"fog_mode": fog_mode, "fog": fog}
+		"fog_mode": fog_mode, "fog": fog, "circus_mode": circus_mode, "circus": circus}
 
 
 ## Online: where it is in the queue and whether its trunk is open; the ghost car's, how many pranks and the last one;
