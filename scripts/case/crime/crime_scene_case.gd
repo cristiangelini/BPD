@@ -72,7 +72,7 @@ const VARIANTS := {
 		"brief": ["BRIEF_HOTEL_A_", "BRIEF_HOTEL_B", "BRIEF_HOTEL_C"], "go": "HINT_GO_HOTEL",
 		"go_row": "OBJ_HOTEL_GO", "look": "HINT_HOTEL_LOOK", "files_row": "OBJ_HOTEL_FILES",
 		"clue_line": "CLUE_HOTEL_", "ruined_hint": "HINT_HOTEL_RUINED_", "left": "HINT_GUEST_LEFT",
-		"who": "guest", "getaway": SuspectCar.ART_VAN,
+		"who": "guest", "getaway": SuspectCar.ART_VAN, "loot_row": "OBJ_HOTEL_LOOT_",
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "witness": "glasses",
 			"signature": "left"},
 		"parts": ["prints", "teeth", "sign", "shoe", "hair", "glasses"],

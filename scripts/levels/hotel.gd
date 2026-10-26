@@ -8,7 +8,8 @@ extends CrimeScenePlace
 ## west end, where the theft was, and behind an old wardrobe in the corridor, the room with no number: the 13. The
 ## six guests alike wait in the lobby, don Bostezo behind the desk, señora Perlita by the armchairs, Tito the bellboy
 ## by the door and doña Escoba upstairs with her cart (step 2). In every guest room, its sleeper's shoes, hairbrush,
-## nightstand and suitcase (step 3). The case comes in step 4. Every number here is
+## nightstand and suitcase (step 3). The case (step 4): what was stolen hides in the 13, in the maid's cart or in the
+## culprit's suitcase, and the evidence bags wait on a stool by the desk. Every number here is
 ## (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
@@ -88,6 +89,19 @@ const CONCIERGE_AT := Vector3(0.0, 0, -7.6)
 const PERLITA_AT := Vector3(4.5, 0, 2.5)
 const BELLBOY_AT := Vector3(1.8, 0, 5.8)
 const MAID_AT := Vector3(7.5, UP, 0.0)
+## What was stolen, drawn with the seed (escena-hotel.md, pregunta 1), and where it can be hidden: under the bed in the
+## 13, in the maid's laundry cart or in the culprit's suitcase.
+const LOOTS: Array[String] = ["necklace", "toupee", "pillow"]
+const LOOT_SPOTS: Array[String] = ["room13", "cart", "suitcase"]
+const LOOT_MODELS := {
+	"necklace": preload("res://assets/models/pearl_necklace.glb"),
+	"toupee": preload("res://assets/models/gold_toupee.glb"),
+	"pillow": preload("res://assets/models/golden_pillow.glb"),
+}
+## How far in front of its hiding spot (toward the door) what was stolen falls: past the bed, the cart, the suitcase.
+const LOOT_OUT := {"room13": 1.4, "cart": 0.8, "suitcase": 0.6}
+## The roll of evidence bags, on a stool by the reception desk.
+const BAGS_AT := Vector3(2.4, 0, -5.6)
 ## The awning over the front door.
 const AWNING_DEPTH := 2.0
 const BRICK := Color(0.85, 0.5, 0.45)
@@ -110,6 +124,13 @@ var wardrobe: Grabbable
 var guests: Array[HotelGuest] = []
 ## The things in the guest rooms (RoomThing), by room: shoe, hair, glasses and suitcase.
 var things := {}
+var case: CrimeSceneCase
+## What was stolen and where it is (drawn with the case seed in set_up_case), and whether the cops found it.
+var loot := "necklace"
+var loot_spot := "room13"
+var loot_found := false
+## The searchable places, by spot (the suitcase is the culprit's RoomThing).
+var loot_spots := {}
 var concierge: HotelStaff
 var perlita: HotelStaff
 var bellboy: HotelStaff
@@ -134,18 +155,53 @@ func _ready() -> void:
 	if crime_scene:
 		_people()
 		_things()
+		_bags()
+		_loot_spots()
 
 
-## Tells the guests, the concierge and the rooms' things about the case.
-func set_up_case(case: CrimeSceneCase) -> void:
+## Draws what was stolen and where it is, and tells the guests, the concierge and the rooms' things about the case.
+func set_up_case(new_case: CrimeSceneCase) -> void:
 	if not crime_scene:
 		return
+	case = new_case
+	loot = LOOTS[hash(["hotel loot", case.case_seed]) % LOOTS.size()]
+	loot_spot = LOOT_SPOTS[hash(["hotel loot spot", case.case_seed]) % LOOT_SPOTS.size()]
+	loot_spots.suitcase = things[case.cooks[case.plan.culprit].room].suitcase
 	for guest in guests:
 		guest.case = case
 	concierge.case = case
 	for room: int in things:
 		for thing: RoomThing in things[room].values():
 			thing.case = case
+
+
+## Searching a spot: the stolen thing turns up in the right one; a sign of nothing in the others. Any suitcase can be
+## searched, but only the culprit's can hide it.
+func search(spot: String, cop: Cop, room := 0) -> void:
+	if spot == "suitcase" and loot_spots.get("suitcase") != things.get(room, {}).get("suitcase"):
+		return
+	if spot != loot_spot or loot_found or not case:
+		if cop:
+			cop.show_hint("HINT_SEARCH_NOTHING_" + spot)
+		return
+	reveal_loot()
+
+
+## What was stolen comes out of its hiding spot, on the floor in front of it, and the case notes it.
+func reveal_loot() -> void:
+	if loot_found:
+		return
+	loot_found = true
+	var item: Node3D = LOOT_MODELS[loot].instantiate()
+	item.name = "Loot"
+	add_child(item)
+	var spot := loot_spots[loot_spot] as Node3D
+	var at := to_local(spot.global_position)
+	var floor_y := UP if floor_of(spot.global_position + Vector3.UP * 0.1) == 1 else FLOOR_TOP
+	var out := Vector3(0, 0, 1 if at.z < 0 else -1)
+	item.position = Vector3(at.x, floor_y, at.z) + out * LOOT_OUT[loot_spot]
+	if case:
+		case.found_loot()
 
 
 ## The guest by index (the order of the case's traits).
@@ -230,6 +286,34 @@ func _things() -> void:
 			thing.position = at[what]
 			add_child(thing)
 			things[guest.room][what] = thing
+
+
+## A stool with the roll of evidence bags for the clues the cops carry.
+func _bags() -> void:
+	_builder.box(BAGS_AT + Vector3(0, 0.25, 0), Vector3(0.5, 0.5, 0.4), WOOD)
+	bags = EvidenceBags.new()
+	bags.name = "EvidenceBags"
+	bags.position = BAGS_AT + Vector3(0, 0.5, 0)
+	add_child(bags)
+
+
+## Two places to search besides the suitcases: under the bed of the 13 and the maid's cart (it goes with her).
+func _loot_spots() -> void:
+	var bed := Vector3(room_middle(HIDDEN_ROOM).x, UP + 0.3, BACK_Z + 1.1)
+	var under_bed := LootSpot.new(Vector3(1.5, 0.6, 2.1))
+	under_bed.name = "Search_room13"
+	under_bed.spot = "room13"
+	under_bed.place = self
+	under_bed.position = bed
+	add_child(under_bed)
+	loot_spots.room13 = under_bed
+	var in_cart := LootSpot.new(HotelStaff.CART_SIZE + Vector3(0.05, 0.05, 0.05))
+	in_cart.name = "Search_cart"
+	in_cart.spot = "cart"
+	in_cart.place = self
+	in_cart.position.y = HotelStaff.CART_SIZE.y / 2
+	maid.cart.add_child(in_cart)
+	loot_spots.cart = in_cart
 
 
 func _staff(who: String, at: Vector3, turn: float) -> HotelStaff:

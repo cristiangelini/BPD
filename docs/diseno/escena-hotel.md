@@ -143,3 +143,9 @@ PlaceDraw y la custodia para el interrogatorio.
   una vez sí y una vez no. La ficha dice la habitación ("lo dijo el conserje" hasta que se abre la valija), el talle, los
   anteojos, el pelo, los dientes, la mano y las huellas. El libro de huéspedes y su firma de las 3 de la mañana son una
   pista del paso 4.
+- **Paso 4a (el caso):** `HotelLevel` da el caso (`CrimeSceneCase`, variante `hotel`) con el tablero y el sello de la
+  comisaría. La semilla elige lo robado (el collar de perlas, el bisoñé de oro o la Almohada de Oro; el comisario lo
+  nombra en la primera línea) y dónde está: debajo de la cama de la 13, en el carrito de la mucama (se va con ella) o
+  en la valija del culpable (todas las valijas se pueden revisar, solo la suya puede tenerlo). Encontrado, cae delante
+  de su escondite y la planilla tacha la fila opcional (+100). Las bolsas de evidencia están en un banquito al lado de
+  la recepción.
