@@ -5,7 +5,8 @@ extends YardInmate
 ## (or the cook or the plumber, `number` 0). E on him (ActionSync runs it on every PC; CountPlan, on the host,
 ## decides) chalks a yellow cross on his back (`marked`). Step 4: a `cheater`, chalked, every RUB_EVERY seconds walks to
 ## the nearest wall and rubs his back on it for RUB_TIME seconds ("¡Pica!"): the cross is gone (`rubbed_off`). Every
-## number here is (propuesta).
+## number here is (propuesta). Step 7: on a guest NpcSync moves him; his cross comes with his state (net_state), and
+## one the host brought in during the count (found in a hideout) is copied with his number (net_setup).
 
 signal chalked(inmate: CountInmate, cop: Cop)
 signal rubbed_off(inmate: CountInmate)
@@ -36,6 +37,8 @@ var _cross: Node3D
 
 func _ready() -> void:
 	super()
+	if number > 0:
+		CountPlan.wear_number(self, number)
 	_cross = Node3D.new()
 	_cross.name = "Cross"
 	_cross.position = Vector3(0, CROSS_HEIGHT, -CROSS_OUT)
@@ -119,3 +122,23 @@ func _rubbed() -> void:
 	rub_left = RUB_EVERY
 	rubbed_off.emit(self)
 	_wander()
+
+
+## What a guest's copy needs besides the yard inmate's: whether he has his cross on and is rubbing it off.
+func net_state() -> Array:
+	var state := super()
+	state.append_array([marked, rubbing > 0.0])
+	return state
+
+
+func apply_net_state(net: Variant) -> void:
+	super(net)
+	if net.size() > 4:
+		if net[3] != marked:
+			set_marked(net[3])
+		_model.rotation.z = RUB_SWAY if net[4] else 0.0
+
+
+## For a guest's copy of one brought in during the count (NpcSync): who he is.
+func net_setup() -> Dictionary:
+	return {"number": number, "activity": activity}
