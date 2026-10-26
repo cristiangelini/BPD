@@ -7,8 +7,10 @@ extends Node
 ## water and ENGINEER more if engineer Remache is in the patrol car; quota of its own, like the plaza (decision 103). His
 ## second dip sends him home and the case is lost there (BridgeDip). If Remache is still loose when the ribbon is cut,
 ## he runs for the cement mixer parked on the street and the chase starts there (decision 96), cement blobs in the
-## curves (ChaseDrops): caught, he counts as detained; got away, the case is solved all the same (step 6). Every number
-## here is (propuesta).
+## curves (ChaseDrops): caught, he counts as detained; got away, the case is solved all the same (step 6). Online
+## (step 7) the host's case decides and a guest's follows it (CaseSync, snapshot): the ceremony, the bridge, the dips,
+## the clues, how it ended and the getaway; the walk, the breaks and the dips only run on the host, and the people come
+## from it (NpcSync). Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 4.0
@@ -39,6 +41,12 @@ var clues: Array[String] = []
 var chase: ChaseCase
 var caught := false
 var escaped := false
+var follower := false:
+	set(value):
+		follower = value
+		if park:
+			park.ceremony.follower = value
+var online: CaseSync
 var _result := {}
 var _refresh_left := 0.0
 
@@ -62,8 +70,15 @@ func start(comisario: Comisario = null) -> void:
 	else:
 		give_tip()
 	if shift_screen:
-		shift_screen.play_again.connect(func() -> void: PlaceDraw.start(get_tree()))
+		shift_screen.play_again.connect(_play_again)
 		shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
+
+
+func _play_again() -> void:
+	if online:
+		online.play_again()
+	else:
+		PlaceDraw.start(get_tree())
 
 
 func give_tip() -> void:
@@ -83,7 +98,7 @@ func _on_dipped(count: int) -> void:
 
 
 func _on_went_home() -> void:
-	if ribbon_cut or went_home:
+	if follower or ribbon_cut or went_home:
 		return
 	went_home = true
 	_hint_all("HINT_BRIDGE_WENT_HOME")
@@ -105,7 +120,7 @@ func _on_clue(kind: String) -> void:
 
 ## He cut the ribbon: the case is solved, and a loose Remache runs for the cement mixer.
 func _on_ribbon() -> void:
-	if went_home or ribbon_cut:
+	if follower or went_home or ribbon_cut:
 		return
 	ribbon_cut = true
 	_hint_all("HINT_BRIDGE_RIBBON")
@@ -129,6 +144,8 @@ func _run_off() -> void:
 	chase = ChaseCase.begin(park, SuspectCar.CEMENT_MIXER, park.mixer.global_transform, park.car, park.city,
 		park.case_seed, null, park.mixer)
 	chase.who = "engineer"
+	chase.online = online
+	chase.follower = follower
 	chase.ended.connect(_on_chase_ended)
 	_hint_all("HINT_ESCAPE_ENGINEER")
 
@@ -169,7 +186,7 @@ func report() -> Dictionary:
 
 
 func finish_shift() -> void:
-	if shift_over:
+	if shift_over or follower:
 		return
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
@@ -203,7 +220,46 @@ func _show_result(result: Dictionary) -> void:
 		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over,
 			result.campaign.promoted)
 		over = result.campaign.over
-	shift_screen.get_node("%AgainButton").visible = not over
+	shift_screen.get_node("%AgainButton").visible = not over and not follower
+
+
+## What every guest's case shows (CaseSync).
+func snapshot() -> Dictionary:
+	var ceremony := park.ceremony
+	var state := {"tip": tip_given, "ceremony": [ceremony.state, ceremony.stop, snappedf(ceremony.stop_left, 0.1),
+		snappedf(ceremony.hold_left, 0.1)], "bridge": park.breaks.state(), "dips": dips, "clues": clues.duplicate(),
+		"went_home": went_home, "ribbon": ribbon_cut, "jailed": jailed, "caught": caught, "escaped": escaped,
+		"result": _result}
+	if chase:
+		state.chase = chase.snapshot()
+	return state
+
+
+func apply_snapshot(state: Dictionary) -> void:
+	if state.tip:
+		give_tip()
+	var ceremony := park.ceremony
+	ceremony.state = state.ceremony[0]
+	ceremony.stop = state.ceremony[1]
+	ceremony.stop_left = state.ceremony[2]
+	ceremony.hold_left = state.ceremony[3]
+	park.breaks.follow(state.bridge)
+	dips = state.dips
+	for kind: String in state.clues:
+		if not clues.has(kind):
+			clues.append(kind)
+			(park.remache.invoices if kind == "invoices" else park.remache.beams).show_found()
+	went_home = state.went_home
+	ribbon_cut = state.ribbon
+	jailed = state.jailed
+	caught = state.caught
+	escaped = state.escaped
+	if state.has("chase"):
+		_run_off()
+		chase.apply_snapshot(state.chase)
+	checklist.show_rows(rows())
+	if not state.result.is_empty() and not shift_over:
+		_show_result(state.result)
 
 
 ## The planilla's rows, in the shape CaseChecklist takes.

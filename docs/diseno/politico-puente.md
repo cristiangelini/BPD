@@ -131,3 +131,9 @@ se caiga. El puente, digo. Bueno, el diputado tampoco."
   (`ChaseDrops.drop_blob`, 2,4 m, dura 40 s, como mucho 10): el patrullero que pasa por arriba se frena hasta 15 km/h.
   Atrapado cuenta como detenido (+100); si se escapa, el caso igual se gana. Jugar sortea el político en tercios: plaza,
   mercado y puente. Captura en `/mnt/project-files/puente/paso6-hormigonera.png`.
+- **Paso 7 (el online):** el caso del anfitrión decide y el de cada invitado lo sigue (`BridgeCase.snapshot`, por
+  `CaseSync`): la ceremonia, el puente (`BridgeBreaks.state`/`follow`: qué tablones y barandas siguen puestos, cada
+  pilar parado, hundido o con sus tramos caídos, y qué cruje), los chapuzones, las pistas, cómo terminó y la
+  hormigonera. Solo el anfitrión rompe, arregla y moja al diputado; los tablones que caen y los de repuesto vienen de
+  él (`PropSync`, desde el script), y Remache y los vecinos también (`NpcSync`). En el invitado lo que cruje tiembla
+  igual. Empujar un pilar y agarrar del saco pasan por el anfitrión como cualquier E.
