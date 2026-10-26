@@ -2395,3 +2395,12 @@ COUNT_COOK_OFFENDED,¡Yo trabajo acá! ¡Soy el cocinero!,I work here! I'm the c
 COUNT_PLUMBER_OFFENDED,¡Yo trabajo acá! ¡Vine a arreglar un caño!,I work here! I came to fix a pipe!,Eu trabalho aqui! Vim consertar um cano!
 HINT_COUNT_WORKER,"Ese no es un preso, no tiene número.","That's no inmate, he has no number.","Esse não é um preso, não tem número."
 COUNT_ITCHY,"¡Ay, cómo pica esta tiza!","Ow, this chalk itches!","Ai, como coça esse giz!"
+COUNT_BOARD_ESCAPED,FUGA,GONE,FUGIU
+PROMPT_COUNT_SEARCH,E: revisar,E: search it,E: revistar
+HINT_COUNT_EMPTY,Acá no hay nadie.,Nobody in here.,Não tem ninguém aqui.
+COUNT_SNORE,Zzz... ronc...,Zzz... snore...,Zzz... ronc...
+COUNT_FOUND,"¡Ufa, me encontraron! Bueno, presente.","Aw, you found me! Fine, present.","Ah, me acharam! Tá bom, presente."
+HINT_COUNT_FOUND,¡Encontraste a uno de los que faltaban! Ya está contado.,You found one of the missing ones! He's counted.,Você achou um dos que faltavam! Já está contado.
+COUNT_RUNNER,¡Me voy antes de que me cuenten!,I'm off before they count me!,Vou embora antes que me contem!
+HINT_COUNT_RUNNER,¡Un preso que faltaba corre al portón! Espósalo.,A missing inmate is running for the gate! Cuff him.,Um preso que faltava corre para o portão! Algeme-o.
+HINT_COUNT_ESCAPED,Se escapó uno por el portón.,One got out through the gate.,Um fugiu pelo portão.
