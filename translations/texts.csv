@@ -2698,3 +2698,99 @@ BRIBE_GUARD_HEARD_2,"Ejem. EJEM. Sigo leyendo, ¿eh?","Ahem. AHEM. Still reading
 BRIBE_GUARD_PAGE_OVER,"Bueno, página terminada. ¿Todo en orden por acá?","Well, page done. Everything in order here?","Bom, página terminada. Tudo em ordem por aqui?"
 BRIBE_GUARD_LOOKED_BACK,"Yo cobré por no ver, no por no darme vuelta. ¡A la celda!","I got paid not to look, not to never turn around. Back in the cell!","Eu recebi para não ver, não para nunca me virar. Para a cela!"
 BRIBE_GUARD_KEEPS_IT,"La plata no se devuelve, eso es de la casa. La próxima sale más cara.","The money's not coming back, that's the house's. Next time costs more.","O dinheiro não volta, é da casa. Da próxima vez sai mais caro."
+HINT_JAILED_TRIAL,"Juicio exprés esta mañana, acá mismo. Alguien tiene que hacer de abogado... y nadie estudió derecho. Busca un saco en la caja de objetos perdidos.","Express trial this morning, right here. Someone has to be the lawyer... and nobody studied law. Look for a jacket in the lost and found box.","Julgamento expresso esta manhã, aqui mesmo. Alguém tem que ser o advogado... e ninguém estudou direito. Procure um paletó na caixa de achados e perdidos."
+HINT_TRIAL_LAWYER,Eres el abogado. Lee la coartada y cuéntasela a los testigos antes de que llegue la jueza.,You're the lawyer. Read the alibi and tell it to the witnesses before the judge arrives.,Você é o advogado. Leia o álibi e conte para as testemunhas antes que a juíza chegue.
+HINT_TRIAL_JACKET_BACK,El saco volvió a la caja de objetos perdidos.,The jacket went back to the lost and found box.,O paletó voltou para a caixa de achados e perdidos.
+TRIAL_GUARD_CALL,"¡Arriba, que hay juicio! Todos al banco de la sala de espera, y nadie se va.","Up, there's a trial! Everyone to the waiting room's bench, and nobody leaves.","De pé, tem julgamento! Todos para o banco da sala de espera, e ninguém sai."
+TRIAL_GUARD_JUDGE_COMING,"De pie, que entra la jueza Bermúdez.","All rise, Judge Bermúdez is coming in.","Todos de pé, a juíza Bermúdez está entrando."
+TRIAL_FILE,"Expediente. Coartada: estábamos %s, %s, %s.","Case file. Alibi: we were %s, %s, %s.","Processo. Álibi: estávamos %s, %s, %s."
+TRIAL_WHAT_0_0,rescatando un gato,rescuing a cat,resgatando um gato
+TRIAL_WHAT_0_1,rescatando un perro,rescuing a dog,resgatando um cachorro
+TRIAL_WHAT_0_2,rescatando un loro,rescuing a parrot,resgatando um papagaio
+TRIAL_WHAT_1_0,jugando al bingo,playing bingo,jogando bingo
+TRIAL_WHAT_1_1,jugando a las cartas,playing cards,jogando cartas
+TRIAL_WHAT_1_2,jugando al dominó,playing dominoes,jogando dominó
+TRIAL_WHAT_2_0,cocinando una pizza,making a pizza,fazendo uma pizza
+TRIAL_WHAT_2_1,cocinando una lasaña,making a lasagna,fazendo uma lasanha
+TRIAL_WHAT_2_2,cocinando una sopa,making a soup,fazendo uma sopa
+TRIAL_WHAT_3_0,arreglando una bicicleta,fixing a bicycle,consertando uma bicicleta
+TRIAL_WHAT_3_1,arreglando una moto,fixing a motorbike,consertando uma moto
+TRIAL_WHAT_3_2,arreglando un monopatín,fixing a scooter,consertando um patinete
+TRIAL_WHAT_4_0,cantando en un coro,singing in a choir,cantando num coral
+TRIAL_WHAT_4_1,cantando en una boda,singing at a wedding,cantando num casamento
+TRIAL_WHAT_4_2,cantando en un karaoke,singing at a karaoke,cantando num karaokê
+TRIAL_WHAT_5_0,paseando a un caniche,walking a poodle,passeando com um poodle
+TRIAL_WHAT_5_1,paseando a un salchicha,walking a dachshund,passeando com um salsicha
+TRIAL_WHAT_5_2,paseando a un dálmata,walking a dalmatian,passeando com um dálmata
+TRIAL_WHAT_6_0,pintando una cerca,painting a fence,pintando uma cerca
+TRIAL_WHAT_6_1,pintando una pared,painting a wall,pintando uma parede
+TRIAL_WHAT_6_2,pintando un bote,painting a boat,pintando um barco
+TRIAL_WHAT_7_0,buscando unas llaves,looking for some keys,procurando umas chaves
+TRIAL_WHAT_7_1,buscando unos anteojos,looking for some glasses,procurando uns óculos
+TRIAL_WHAT_7_2,buscando un control remoto,looking for a remote control,procurando um controle remoto
+TRIAL_WHAT_8_0,aprendiendo a nadar,learning to swim,aprendendo a nadar
+TRIAL_WHAT_8_1,aprendiendo a patinar,learning to skate,aprendendo a patinar
+TRIAL_WHAT_8_2,aprendiendo a bailar,learning to dance,aprendendo a dançar
+TRIAL_WHAT_9_0,armando un rompecabezas,putting together a jigsaw puzzle,montando um quebra-cabeça
+TRIAL_WHAT_9_1,armando un mueble,assembling a piece of furniture,montando um móvel
+TRIAL_WHAT_9_2,armando una carpa,pitching a tent,montando uma barraca
+TRIAL_WHERE_0_0,en el dentista,at the dentist's,no dentista
+TRIAL_WHERE_0_1,en el veterinario,at the vet's,no veterinário
+TRIAL_WHERE_0_2,en el oculista,at the eye doctor's,no oculista
+TRIAL_WHERE_1_0,en la plaza,in the square,na praça
+TRIAL_WHERE_1_1,en el parque,in the park,no parque
+TRIAL_WHERE_1_2,en el jardín botánico,in the botanical garden,no jardim botânico
+TRIAL_WHERE_2_0,en el supermercado,at the supermarket,no supermercado
+TRIAL_WHERE_2_1,en la verdulería,at the greengrocer's,na quitanda
+TRIAL_WHERE_2_2,en la panadería,at the bakery,na padaria
+TRIAL_WHERE_3_0,en la casa de la abuela,at grandma's house,na casa da avó
+TRIAL_WHERE_3_1,en la casa del tío,at the uncle's house,na casa do tio
+TRIAL_WHERE_3_2,en la casa de la vecina,at the neighbor's house,na casa da vizinha
+TRIAL_WHERE_4_0,en el cine,at the cinema,no cinema
+TRIAL_WHERE_4_1,en el teatro,at the theater,no teatro
+TRIAL_WHERE_4_2,en el circo,at the circus,no circo
+TRIAL_WHERE_5_0,en la lavandería,at the laundromat,na lavanderia
+TRIAL_WHERE_5_1,en la peluquería,at the hairdresser's,no cabeleireiro
+TRIAL_WHERE_5_2,en la farmacia,at the pharmacy,na farmácia
+TRIAL_WHERE_6_0,en el gimnasio,at the gym,na academia
+TRIAL_WHERE_6_1,en la piscina,at the swimming pool,na piscina
+TRIAL_WHERE_6_2,en la cancha de fútbol,at the soccer field,no campo de futebol
+TRIAL_WHERE_7_0,en la biblioteca,at the library,na biblioteca
+TRIAL_WHERE_7_1,en el museo,at the museum,no museu
+TRIAL_WHERE_7_2,en la escuela,at the school,na escola
+TRIAL_WHERE_8_0,en un ascensor trabado,in a stuck elevator,num elevador travado
+TRIAL_WHERE_8_1,en un tren parado,on a stopped train,num trem parado
+TRIAL_WHERE_8_2,en un auto con una rueda pinchada,in a car with a flat tire,num carro com o pneu furado
+TRIAL_WHERE_9_0,en la terraza,on the rooftop terrace,no terraço
+TRIAL_WHERE_9_1,en el sótano,in the basement,no porão
+TRIAL_WHERE_9_2,en el garaje,in the garage,na garagem
+TRIAL_WHO_0_0,con la tía Porota,with Aunt Porota,com a tia Porota
+TRIAL_WHO_0_1,con la tía Pocha,with Aunt Pocha,com a tia Pocha
+TRIAL_WHO_0_2,con la tía Pepa,with Aunt Pepa,com a tia Pepa
+TRIAL_WHO_1_0,con el cartero,with the mailman,com o carteiro
+TRIAL_WHO_1_1,con el plomero,with the plumber,com o encanador
+TRIAL_WHO_1_2,con el panadero,with the baker,com o padeiro
+TRIAL_WHO_2_0,con un mago,with a magician,com um mágico
+TRIAL_WHO_2_1,con un payaso,with a clown,com um palhaço
+TRIAL_WHO_2_2,con un mimo,with a mime,com um mímico
+TRIAL_WHO_3_0,con la vecina del quinto,with the neighbor from the fifth floor,com a vizinha do quinto andar
+TRIAL_WHO_3_1,con la vecina del tercero,with the neighbor from the third floor,com a vizinha do terceiro andar
+TRIAL_WHO_3_2,con el vecino del primero,with the neighbor from the first floor,com o vizinho do primeiro andar
+TRIAL_WHO_4_0,con un señor de bigote,with a man with a mustache,com um senhor de bigode
+TRIAL_WHO_4_1,con un señor de barba,with a man with a beard,com um senhor de barba
+TRIAL_WHO_4_2,con un señor pelado,with a bald man,com um senhor careca
+TRIAL_WHO_5_0,con el equipo de bochas,with the bocce team,com o time de bocha
+TRIAL_WHO_5_1,con el equipo de vóley,with the volleyball team,com o time de vôlei
+TRIAL_WHO_5_2,con el equipo de ajedrez,with the chess team,com o time de xadrez
+TRIAL_WHO_6_0,con un cura,with a priest,com um padre
+TRIAL_WHO_6_1,con una monja,with a nun,com uma freira
+TRIAL_WHO_6_2,con un monaguillo,with an altar boy,com um coroinha
+TRIAL_WHO_7_0,con unos turistas,with some tourists,com uns turistas
+TRIAL_WHO_7_1,con unos estudiantes,with some students,com uns estudantes
+TRIAL_WHO_7_2,con unos jubilados,with some retirees,com uns aposentados
+TRIAL_WHO_8_0,con el primo de un compañero,with a partner's cousin,com o primo de um colega
+TRIAL_WHO_8_1,con el cuñado de un compañero,with a partner's brother-in-law,com o cunhado de um colega
+TRIAL_WHO_8_2,con el suegro de un compañero,with a partner's father-in-law,com o sogro de um colega
+TRIAL_WHO_9_0,con unos mellizos,with some twins,com uns gêmeos
+TRIAL_WHO_9_1,con unos trillizos,with some triplets,com uns trigêmeos
+TRIAL_WHO_9_2,con unos cuatrillizos,with some quadruplets,com uns quadrigêmeos
