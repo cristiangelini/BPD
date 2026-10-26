@@ -4829,3 +4829,11 @@ TRIAL_JUDGE_SUSTAINED_0,"Ha lugar. Esa pregunta no cuenta. Siguiente.","Sustaine
 TRIAL_JUDGE_SUSTAINED_1,"Bueno, bueno, no grite. Paso a otra cosa.","Fine, fine, no need to shout. Moving on.","Tá bom, tá bom, não grite. Vamos para outra."
 TRIAL_JUDGE_INNOCENT,"Todo coincide... más o menos. ¡Inocentes! Pueden irse.","Everything matches... more or less. Innocent! You may go.","Tudo confere... mais ou menos. Inocentes! Podem ir."
 TRIAL_GUARD_FREE,"Ya escucharon a la jueza. Afuera, y no vuelvan.","You heard the judge. Out, and don't come back.","Vocês ouviram a juíza. Para fora, e não voltem."
+TRAIN_STATION_1,Villa Bostezo,Yawnville,Vila Bocejo
+TRAIN_STATION_2,Paso del Medio,Halfway Pass,Passo do Meio
+TRAIN_STATION_3,Las Vacas,The Cows,As Vacas
+TRAIN_STATION_4,Fin del Mundo Chico,Little World's End,Fim do Mundo Pequeno
+TRAIN_STATION_5,Gran Convención,Grand Convention,Grande Convenção
+TRAIN_NEXT_STATION,Próxima: %s (%d s),Next: %s (%d s),Próxima: %s (%d s)
+TRAIN_AT_STATION,Estación: %s,Station: %s,Estação: %s
+TRAIN_LAST_STOP,Última estación: todos abajo,End of the line: everybody off,Última estação: todos para fora
