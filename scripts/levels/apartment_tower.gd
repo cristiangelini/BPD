@@ -33,6 +33,15 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_FISHING_NET", "OBJ_EXTRA_AQUARIUM_TICKET"],
 		"rig": preload("res://scripts/case/apartments/stolen_aquarium_rig.gd"),
 	},
+	"smuggling_piano": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_SMUGGLING_PIANO_B", "BRIEF_SMUGGLING_PIANO_C", "BRIEF_SMUGGLING_PIANO_D"],
+		"find": "OBJ_FIND_SMUGGLING_PIANO",
+		"hidden": [preload("res://scenes/props/piano_sheet.tscn"), preload("res://scenes/props/gold_ingot.tscn")],
+		"half_heights": [0.005, 0.035],
+		"heavy": [false, true],
+		"extra_keys": ["OBJ_EXTRA_PIANO_SHEET", "OBJ_EXTRA_GOLD_INGOT"],
+		"rig": preload("res://scripts/case/apartments/smuggling_piano_rig.gd"),
+	},
 }
 const ORNAMENT_SCENES: Array[PackedScene] = [
 	preload("res://scenes/props/ornament_vase.tscn"), preload("res://scenes/props/ornament_figurine.tscn"),

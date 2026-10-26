@@ -106,6 +106,10 @@ Los pesos y valores siguen la escala de los otros lugares: la principal vale uno
      Bellini que vuelve y huye queda para después: por ahora no hay dueño que escape ni interrogatorio. Capturas
      `paso6-*.png`.
 7. Las otras 5 historias, una por PR.
+   - **El piano del contrabando (propuesta):** el piano de cola está en el living del 30B. Pesa 110 kg, como el
+     acuario, y no entra en el ascensor. E toca una tecla y hace «clonc» (la primera vez va a la planilla); cada golpe
+     fuerte le suelta un lingote, hasta 3. La partitura y el lingote suelto (12 kg, escondite para cosas pesadas) se
+     esconden con la semilla. Capturas `paso7-piano*.png`.
 8. "Jugar" sortea entre los 8 lugares de allanamiento.
 9. El online (el ascensor, el andamio, Don Evaristo, Doña Pepa y la evidencia en todas las PC).
 

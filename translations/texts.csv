@@ -4381,6 +4381,16 @@ OBJ_BROKEN_APARTMENTS,Cosas rotas o caídas: %d (multa: %d),Broken or dropped th
 OBJ_COMPLAINT_APARTMENTS,Queja de Don Evaristo: %d%%,Don Evaristo's complaint: %d%%,Queixa do Seu Evaristo: %d%%
 PROMPT_PUDDLE,E: mirar el charco,E: look at the puddle,E: olhar a poça
 CLUE_PUDDLES,Charcos de agua desde el ascensor hasta el 30B. Huelen a pescado.,Puddles of water from the elevator to 30B. They smell of fish.,Poças de água do elevador até o 30B. Cheiram a peixe.
+BRIEF_SMUGGLING_PIANO_B,"El señor Bellini da clases de piano, pero no tiene alumnos. Su piano de cola cruza la frontera de la ciudad cada mes y vuelve lleno de oro.","Mr. Bellini gives piano lessons, but has no pupils. His grand piano leaves the city every month and comes back full of gold.","O senhor Bellini dá aulas de piano, mas não tem alunos. O piano de cauda dele sai da cidade todo mês e volta cheio de ouro."
+BRIEF_SMUGGLING_PIANO_C,"Traigan el piano al patrullero. Pesa 110 kilos y no entra en el ascensor: entre cuatro, por el andamio. Cada golpe le suelta un lingote.","Bring the piano to the patrol car. It weighs 110 kilos and doesn't fit in the elevator: four of you, down the scaffold. Every knock shakes an ingot loose.","Tragam o piano para a viatura. Pesa 110 quilos e não cabe no elevador: entre quatro, pelo andaime. Cada batida solta um lingote."
+BRIEF_SMUGGLING_PIANO_D,"Si encuentran la partitura con las cuentas o un lingote suelto, mejor: todo suma.","If you find the sheet music with the sums or a loose ingot, even better: it all counts.","Se encontrarem a partitura com as contas ou um lingote solto, melhor: tudo conta."
+OBJ_FIND_SMUGGLING_PIANO,Llevarse el piano del contrabando,Take the smuggling piano,Levar o piano do contrabando
+OBJ_EXTRA_PIANO_SHEET,Extra: la partitura con las cuentas,Extra: the sheet music with the sums,Extra: a partitura com as contas
+OBJ_EXTRA_GOLD_INGOT,Extra: el lingote suelto,Extra: the loose ingot,Extra: o lingote solto
+PEPA_TIP_smuggling_piano,El del 30B toca el piano todas las noches y nunca suena. Ni una nota. Solo «clonc».,The man in 30B plays the piano every night and it never sounds. Not a note. Just «clonk».,O do 30B toca piano toda noite e nunca sai som. Nem uma nota. Só «clonc».
+PROMPT_PIANO,E: tocar una tecla,E: play a key,E: tocar uma tecla
+HINT_PIANO_CLONK,«Clonc.» Esa tecla no suena. Adentro hay algo duro.,«Clonk.» That key doesn't sound. There's something hard inside.,«Clonc.» Essa tecla não soa. Tem algo duro dentro.
+CLUE_PIANO_CLONK,El piano de cola hace «clonc» en vez de sonar: está lleno de algo pesado.,The grand piano goes «clonk» instead of playing: it's full of something heavy.,O piano de cauda faz «clonc» em vez de tocar: está cheio de algo pesado.
 PLACE_MUSEUM,"Museo","Museum","Museu"
 SIGN_MUSEUM,"Museo de la Ciudad","City Museum","Museu da Cidade"
 SIGN_MUSEUM_GALLERY,"Sala grande →","Main gallery →","Sala principal →"
