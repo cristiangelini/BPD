@@ -115,10 +115,11 @@ func test_the_station_has_a_disguise_for_each_cop() -> void:
 	add_child_autofree(house)
 	await wait_physics_frames(2)
 	var pieces := _pieces_in(house)
-	assert_eq(pieces.size(), 40, "3 pieces for the club, a robe for the choir, 3 for the mimes and 3 for the party, for each cop")
+	assert_eq(pieces.size(), 52,
+		"3 pieces for the club, a robe for the choir, 3 for the mimes, 3 for the party and 3 for the gym, for each cop")
 	# The station's lockers hold the club's, the choir's and the mimes'; the cleaning crew's and the prisoner's vest are the
 	# jailbreak's.
 	var kinds: Array = DisguisePiece.LOOKS.grandparent.pieces + DisguisePiece.LOOKS.chorister.pieces \
-		+ DisguisePiece.LOOKS.mime.pieces + DisguisePiece.LOOKS.party.pieces
+		+ DisguisePiece.LOOKS.mime.pieces + DisguisePiece.LOOKS.party.pieces + DisguisePiece.LOOKS.gym.pieces
 	for kind: String in kinds:
 		assert_eq(pieces.filter(func(piece: DisguisePiece) -> bool: return piece.kind == kind).size(), 4, kind)

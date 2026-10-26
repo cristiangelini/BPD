@@ -68,6 +68,12 @@ const PARTY_DISGUISES: Array[String] = ["party_cap", "party_mustache", "party_ba
 	"party_badge", "party_cap", "party_mustache", "party_badge", "party_cap", "party_mustache", "party_badge"]
 const PARTY_DISGUISES_AT := Vector3(-5.15, 0, 3.55)
 const PARTY_GAP := 0.3
+## The gym's (infiltracion-gimnasio.md, step 1): a headband, a pair of wristbands and a tank top for each cop, in a
+## sixth row.
+const GYM_DISGUISES: Array[String] = ["gym_headband", "gym_wristbands", "gym_tank", "gym_headband", "gym_wristbands",
+	"gym_tank", "gym_headband", "gym_wristbands", "gym_tank", "gym_headband", "gym_wristbands", "gym_tank"]
+const GYM_DISGUISES_AT := Vector3(-5.15, 0, 3.95)
+const GYM_GAP := 0.36
 
 ## Furniture: [model, position, turn]. The models come from tools/modelgen/models/station.js.
 const FURNITURE := [

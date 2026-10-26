@@ -5,7 +5,7 @@ extends Grabbable
 ## mustache or glasses for the grandparents' club, and the choir robe (infiltracion-coro.md, step 2), which goes on
 ## brought to the chest instead of the face, and the cleaning crew's cap, face mask and vest (fuga-limpieza.md, step 3), and the mime troupe's beret, white face and
 ## striped shirt (infiltracion-mimos.md, step 1), and the costume party's cap, mustache and plastic badge
-## (infiltracion-fiesta.md, step 1). The fire drill's orange prisoner's vest
+## (infiltracion-fiesta.md, step 1), and the gym's headband, wristbands and tank top (infiltracion-gimnasio.md, step 1). The fire drill's orange prisoner's vest
 ## (fuga-simulacro.md) is worn the same way, but it's the opposite of a disguise: taken off it lies on the floor where
 ## the guard can see it (a clue), and the waiting room's coat and hat make a cop pass for one of the public. The fast trial's lawyer jacket (fuga-juicio.md) makes its wearer the
 ## cops' lawyer. Held, the mouse wheel brings it right up to the face; brought to its place on the cop's head it
@@ -31,6 +31,9 @@ const SLOTS := {
 	"party_cap": Vector3(0, 1.42, 0.0),
 	"party_mustache": Vector3(0, 1.22, -0.2),
 	"party_badge": Vector3(0, 1.05, -0.31),
+	"gym_headband": Vector3(0, 1.45, 0.0),
+	"gym_wristbands": Vector3(0, 0.68, -0.25),
+	"gym_tank": Vector3(0, 0.95, -0.3),
 }
 const MODELS := {
 	"wig": preload("res://assets/models/disguise_wig.glb"),
@@ -50,6 +53,9 @@ const MODELS := {
 	"party_cap": preload("res://assets/models/disguise_party_cap.glb"),
 	"party_mustache": preload("res://assets/models/disguise_party_mustache.glb"),
 	"party_badge": preload("res://assets/models/disguise_party_badge.glb"),
+	"gym_headband": preload("res://assets/models/disguise_gym_headband.glb"),
+	"gym_wristbands": preload("res://assets/models/disguise_gym_wristbands.glb"),
+	"gym_tank": preload("res://assets/models/disguise_gym_tank.glb"),
 }
 ## Who the cops pass for, and with what: which pieces count and how many of them. (propuesta)
 const LOOKS := {
@@ -60,7 +66,10 @@ const LOOKS := {
 	"lawyer": {"pieces": ["lawyer_jacket"], "needed": 1},
 	"mime": {"pieces": ["mime_beret", "mime_face", "mime_shirt"], "needed": 2},
 	"party": {"pieces": ["party_cap", "party_mustache", "party_badge"], "needed": 2},
+	"gym": {"pieces": ["gym_headband", "gym_wristbands", "gym_tank"], "needed": 2},
 }
+## Sportswear is made to sweat in: running doesn't shake it off (the gym's routine has the cops running and jumping).
+const TIGHT: Array[String] = ["gym_headband", "gym_wristbands", "gym_tank"]
 ## Held this close to its place, it goes on (m).
 const WEAR_REACH := 0.22
 ## How close to the eyes it can be held (the rest of the things stop at GameScale.HOLD_MIN).
