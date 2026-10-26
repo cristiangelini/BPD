@@ -4,11 +4,14 @@ extends Node3D
 ## The hardware store "El Tornillo Flojo" (docs/diseno/ferreteria.md, step 1): the shop at the front, the storeroom
 ## and the workshop behind it, and the materials yard at the back, on its lot in the city with the front to +Z.
 ## The shop is open; the storeroom ("Solo personal") and the workshop's back door to the yard are locked. The paint
-## cans of the display and the screw jars on the counter break, each one a fine. Every number here is (propuesta).
+## cans of the display and the screw jars on the counter break, each one a fine. Tobías serves behind the counter,
+## watches what breaks and looks for a screw with his back turned when a cop rings the counter bell (step 2).
+## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const PAINT_SCENE := preload("res://scenes/props/paint_can.tscn")
 const JAR_SCENE := preload("res://scenes/props/screw_jar.tscn")
+const TOBIAS_SCENE := preload("res://scenes/npc/hardware_man.tscn")
 ## The paint colors of the display, one model each (tools/modelgen/models/hardware.js).
 const PAINT_MODELS: Array[PackedScene] = [
 	preload("res://assets/models/paint_can_0.glb"), preload("res://assets/models/paint_can_1.glb"),
@@ -41,6 +44,8 @@ const COUNTER_AT := Vector3(-4.0, FLOOR_TOP, 3.2)
 const COUNTER_SIZE := Vector3(3.0, 1.0, 0.7)
 ## Where Tobías stands behind his counter, facing the street (step 2).
 const TOBIAS_POST := Vector3(-4.0, FLOOR_TOP, 2.4)
+## The counter bell, on the customers' side of the counter top.
+const BELL_AT := Vector3(-4.0, FLOOR_TOP + 1.0, 3.45)
 const KEY_MACHINE_AT := Vector3(-5.1, FLOOR_TOP + COUNTER_SIZE.y, 3.2)
 ## The screw wall along the west wall: 60 little drawers in a cabinet, its top a hiding spot.
 const SCREW_WALL_AT := Vector3(-7.7, FLOOR_TOP, 4.8)
@@ -116,6 +121,11 @@ var jars: Array[Ornament] = []
 var broken_goods := 0
 ## Money taken off the case pay for broken things (each one is an Ornament.FINE).
 var fines := 0
+var tobias: HardwareMan
+var bell: CounterBell
+var complaint_bar: ProgressBar
+## Tobías called his lawyer: the case is lost.
+var case_failed := false
 var _build: PlaceBuilder
 @onready var car: PatrolCar = $PatrolCar
 
@@ -130,6 +140,7 @@ func _ready() -> void:
 	_place_fragile()
 	store_door = _door(Vector3(STORE_DOOR_X - GameScale.DOOR_WIDTH / 2, 0, SPLIT_Z), 0.0)
 	back_door = _door(Vector3(BACK_DOOR_X + GameScale.DOOR_WIDTH / 2, 0, BACK_Z), PI)
+	_place_tobias()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("hardware")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -280,6 +291,45 @@ func _place_fragile() -> void:
 		jars.append(jar)
 
 
-func _on_fragile_broken(_at: Vector3) -> void:
+## Tobías behind his counter, the bell that sends him to the screw wall and his complaint meter. A rammed door
+## reaches him anywhere.
+func _place_tobias() -> void:
+	tobias = TOBIAS_SCENE.instantiate()
+	tobias.position = TOBIAS_POST
+	tobias.screw_wall = SCREW_WALL_AT + Vector3(0, 1.0, 0)
+	add_child(tobias)
+	bell = CounterBell.new()
+	bell.position = BELL_AT
+	bell.hardware_man = tobias
+	add_child(bell)
+	for door: FrontDoor in [store_door, back_door]:
+		door.broken.connect(tobias.door_broken)
+	tobias.lawyer_called.connect(_on_lawyer_called)
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	tobias.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+func _on_lawyer_called() -> void:
+	case_failed = true
+	%CaseFailed.show()
+
+
+func _on_fragile_broken(at: Vector3) -> void:
 	broken_goods += 1
 	fines += Ornament.FINE
+	if tobias:
+		tobias.saw(at, HardwareMan.SAW_BREAK)

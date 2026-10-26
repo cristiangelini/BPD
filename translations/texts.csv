@@ -438,6 +438,22 @@ OBJ_GUESS_GROOMER,"Averiguar qué pasa en la peluquería (con Q abierta, mantén
 OBJ_BROKEN_GROOMER,Frascos y collares rotos: %d (multa: %d),Broken bottles and collars: %d (fine: %d),Frascos e coleiras quebrados: %d (multa: %d)
 OBJ_COMPLAINT_GROOMER,Denuncia de Ramiro: %d%%,Ramiro's complaint: %d%%,Denúncia do Ramiro: %d%%
 CASE_FAILED_LAWYER_GROOMER,Ramiro llamó a su abogado. Caso perdido.,Ramiro called his lawyer. Case lost.,O Ramiro ligou para o advogado. Caso perdido.
+HARDWARE_LINE_1,"¿Busca algo, oficial? Todo lo que agarre, se paga.","Looking for something, officer? Whatever you pick up, you pay for.","Procurando algo, policial? Tudo o que pegar, se paga."
+HARDWARE_LINE_2,Tengo tornillos de todos los tamaños. Menos uno.,I have screws of every size. Except one.,Tenho parafusos de todos os tamanhos. Menos um.
+HARDWARE_LINE_3,Esa pintura no se toca. Esa tampoco.,Don't touch that paint. Or that one.,Essa tinta não se toca. Essa também não.
+HARDWARE_LINE_4,"Cuarenta años en el negocio, y nunca vino la policía.","Forty years in business, and the police never came.","Quarenta anos no negócio, e a polícia nunca veio."
+HARDWARE_HURT,"¡Cuidado, que me desarma!","Careful, you'll take me apart!","Cuidado, que você me desmonta!"
+HARDWARE_DOOR,¡Mi puerta! ¡Eso no se arregla con un tornillo!,My door! A screw won't fix that!,Minha porta! Isso não se conserta com um parafuso!
+HARDWARE_SAW,¡Lo vi! ¡Eso se anota!,I saw that! That goes on the bill!,Eu vi! Isso vai pra conta!
+HARDWARE_LAWYER,¡Llamo a mi abogado! Es cliente.,I'm calling my lawyer! He's a customer.,Vou ligar pro meu advogado! Ele é cliente.
+HARDWARE_NOTHING,"Yo solo vendo tornillos, oficial.","I just sell screws, officer.","Eu só vendo parafusos, policial."
+HARDWARE_OFFENDED,No contesto más. Esto es una ferretería.,I'm not answering anymore. This is a hardware store.,Não respondo mais. Isto é uma loja de ferragens.
+HARDWARE_SCREW_1,"Tres octavos, rosca fina... déjeme ver.","Three eighths, fine thread... let me see.","Três oitavos, rosca fina... deixa eu ver."
+HARDWARE_SCREW_2,"Este no, este es de un cuarto... este es de un gato...","Not this one, this is a quarter... this one's from a cat...","Este não, este é de um quarto... este é de um gato..."
+HARDWARE_SCREW_3,"Estaba acá... juraría que estaba acá...","It was here... I'd swear it was here...","Estava aqui... eu juraria que estava aqui..."
+HARDWARE_SCREW_DONE,¡No me queda! Vuelva el martes.,I'm out! Come back on Tuesday.,Acabou! Volte na terça.
+HARDWARE_SCREW_TIRED,"Ya le dije que no hay, oficial.","I already told you there aren't any, officer.","Já disse que não tem, policial."
+PROMPT_SCREW_BELL,"E: pedir un tornillo de tres octavos (Tobías lo busca de espaldas, sin mirar el local)","E: ask for a three-eighths screw (Tobías looks for it with his back turned, not watching the shop)","E: pedir um parafuso de três oitavos (Tobías procura de costas, sem olhar a loja)"
 CASE_FAILED_LAWYER_HARDWARE,Tobías llamó a su abogado. Caso perdido.,Tobías called his lawyer. Case lost.,O Tobías ligou para o advogado. Caso perdido.
 GROOMER_SLIP,"«¡Yo no guardé nada %s!... Digo, ¿quién sigue con turno?»","“I didn't put anything %s!... I mean, who's next?”","“Eu não guardei nada %s!... Quer dizer, quem é o próximo?”"
 CLUE_LADY,La señora vio a Ramiro esconder algo %s,The lady saw Ramiro hide something %s,A senhora viu o Ramiro esconder algo %s
