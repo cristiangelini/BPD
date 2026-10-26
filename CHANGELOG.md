@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Cat crime scene, step 0: design doc (docs/diseno/escena-gato.md) and decision 260 (proposed).
 - Cake lab, step 7: online: the host runs chef Bruno and the guests follow him, the oven knob, Pocha's tray and the stories' props work from any PC, a flour sack burst on the host bursts everywhere, the stolen book comes out of its cake on every PC, and the robot arm creams only each PC's own cop. Also fixes a race in the insurance office's online phone test.
 - Cake lab, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office and the cake lab in sevenths.
 - Cake lab, step 5: the robot arm story: the 15 kg arm from the factory next door decorates on a kitchen counter and throws cream in the face of the nearest cop (2 s blind) until it is carried off; a cake with oil stains in its cream is the clue, and the remote control and the foreign manual are hidden. The lab now tells its six stories.
