@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Cake lab, step 5: the foam cakes story: the box with the fake cakes' mold is hidden with the contest diploma and the cream spray, and half the showcase (drawn with the seed) is foam: those cakes never squash, they bounce with a "boing", and the first bounce is the clue.
 - Cake lab, step 5: the gold flour story: one of the ten storeroom sacks (drawn with the seed) is the 10 kg gold one, identical and with its value hidden until picked up; it leaks gold flour by the aisle and a cop who steps in it leaves golden footprints (the clue); the golden sieve and the jeweler's invoice are hidden.
 - Cake lab, step 5: the sleepy cakes story: the jar of sleeping powder is hidden with the list of customers put to sleep and the giant measuring spoon, Pocha's sample makes you yawn (the clue), and a free slice from the plate on the showcase puts a cop to sleep for 4 s.
 - Cake lab, step 5: the stolen recipe story: the rival bakery's recipe book is baked inside one of six order cakes on the cold room's table, and every cake opened is squashed (a fine); the photo of the chef in disguise and the delivery cap are hidden, a copied recipe with a crossed-out logo on the formula board is the clue, and Pocha's sample tastes like the other bakery's cake.

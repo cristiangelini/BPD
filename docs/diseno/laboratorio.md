@@ -124,6 +124,11 @@ Los pesos y valores siguen la escala de la oficina: la principal vale unos 1000 
      lado, en el pasillo, pierde un poco de harina dorada: el policía que la pisa deja huellas doradas por 15 s y la
      primera vez va a la planilla. El tamiz dorado (1 kg, 200) y la factura del joyero (0,1 kg, 300) se esconden.
      Reventar una bolsa de verdad sigue dejando la nube blanca. Captura `paso5-oro.png`.
+   - **Cómo quedó (propuesta), los pasteles de espuma:** la caja con el molde de los pasteles falsos (4 kg, 1000) se
+     esconde en un escondite para cosas pesadas, con el diploma del concurso (0,2 kg, 300) y el aerosol de crema
+     (0,5 kg, 200). 4 de los 8 pasteles de la vitrina, sorteados con la semilla, son de espuma: pesan 0,3 kg, no se
+     aplastan ni cuentan como multa y rebotan con un "¡Boing!"; el primer rebote va a la planilla. Captura
+     `paso5-espuma.png`.
 6. "Jugar" sortea entre los 7 lugares de allanamiento.
 7. El online (el chef, Pocha, la harina y los pasteles en todas las PC).
 
