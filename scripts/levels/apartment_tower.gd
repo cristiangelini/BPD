@@ -64,6 +64,9 @@ const MANAGER_ROUTE: Array[Vector3] = [
 	Vector3(-6.0, LOBBY_Y, 5.2), Vector3(-2.0, LOBBY_Y, 2.0), Vector3(3.0, LOBBY_Y, 2.0), Vector3(8.5, LOBBY_Y, 1.0),
 ]
 const MANAGER_ELEVATOR := Vector3(0.0, LOBBY_Y, CORE_Z + 0.9)
+## Doña Pepa at her door (30A), watching the hallway, and how far down it a lap with Cuqui goes.
+const PEPA_AT := Vector3(FLAT_A_DOOR_X, TOP_Y, CORE_Z + 0.5)
+const LAP_FAR_X := -8.0
 ## The intercom board outside, beside the glass door.
 const INTERCOM_AT := Vector3(1.4, LOBBY_Y + 1.3, HALF_Z + 0.1)
 ## Where its deck stands at the street.
@@ -149,6 +152,7 @@ var calls: Array[ElevatorCall] = []
 var ornaments: Array[Ornament] = []
 var scaffold: HangingScaffold
 var manager: Concierge
+var pepa: NosyNeighbor
 var intercom: IntercomPanel
 var complaint_bar: ProgressBar
 var scaffold_calls: Array[ScaffoldButton] = []
@@ -176,6 +180,10 @@ func _ready() -> void:
 	_place_elevator()
 	_place_scaffold()
 	_place_manager()
+	pepa = NosyNeighbor.new()
+	pepa.position = PEPA_AT
+	pepa.far_x = LAP_FAR_X
+	add_child(pepa)
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("apartments")
 	station_parking = city.transform * CityLayout.parking("station")

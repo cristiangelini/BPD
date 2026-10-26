@@ -4327,6 +4327,13 @@ EVARISTO_ORNAMENT,¡Los adornos del señor Bellini!,Mr. Bellini's ornaments!,Os 
 EVARISTO_NOTHING,"Yo solo barro el hall, oficial.","I just sweep the lobby, officer.","Eu só varro o saguão, policial."
 EVARISTO_OFFENDED,"Un encargado no anda contando lo que ve. Bueno, a veces sí. Hoy no.","A manager doesn't go around telling what he sees. Well, sometimes. Not today.","Um zelador não sai contando o que vê. Bom, às vezes sim. Hoje não."
 EVARISTO_LAWYER,"¡Llamo al abogado del edificio! ¡Y a la reunión de vecinos!","I'm calling the building's lawyer! And the residents' meeting!","Vou ligar para o advogado do condomínio! E para a reunião de condôminos!"
+PROMPT_WALK_DOG,E: pasear a Cuqui,E: walk Cuqui,E: passear com o Cuqui
+PEPA_TAKE_HIM,"Una vuelta entera al pasillo, ¿eh? Hasta el fondo y de vuelta. Después te cuento todo.","A whole lap of the hallway, all right? To the end and back. Then I'll tell you everything.","Uma volta inteira no corredor, hein? Até o fundo e de volta. Depois eu te conto tudo."
+PEPA_CUQUI_BACK,"¡Cuqui, mi amor, volviste solito! Así no hay chisme.","Cuqui, my love, you came back alone! No gossip like that.","Cuqui, meu amor, voltou sozinho! Assim não tem fofoca."
+PEPA_TIP_VAGUE,"El del 30B entra y sale cargado a cualquier hora. Y el edificio hace ruidos raros.","The man in 30B comes and goes loaded at all hours. And the building makes strange noises.","O do 30B entra e sai carregado a qualquer hora. E o prédio faz barulhos estranhos."
+PEPA_LINE_1,"Yo no espío, oficial. Miro por la mirilla, que es otra cosa.","I don't spy, officer. I look through the peephole, which is different.","Eu não espio, policial. Olho pelo olho mágico, que é outra coisa."
+PEPA_LINE_2,"Cuqui necesita su paseo. Y yo necesito a alguien que lo saque.","Cuqui needs his walk. And I need someone to take him.","O Cuqui precisa do passeio dele. E eu preciso de alguém que o leve."
+PEPA_LINE_3,"Sé muchas cosas del 30B. Muchísimas. Si alguien pasea a Cuqui...","I know a lot about 30B. Loads. If someone walks Cuqui...","Eu sei muitas coisas do 30B. Muitíssimas. Se alguém passear com o Cuqui..."
 PLACE_MUSEUM,"Museo","Museum","Museu"
 SIGN_MUSEUM,"Museo de la Ciudad","City Museum","Museu da Cidade"
 SIGN_MUSEUM_GALLERY,"Sala grande →","Main gallery →","Sala principal →"
