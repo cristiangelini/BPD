@@ -183,7 +183,7 @@ func current_prompt() -> String:
 	if $Grabber.held:
 		var aimed := _usable_target()
 		if aimed is WaitingArmchair or aimed is DigSpot or aimed is InterrogationSuspect or aimed is PastryCook \
-				or aimed is TunnelHole or aimed is CircusClown or aimed is CellHideout \
+				or aimed is TunnelHole or aimed is CircusClown or aimed is CellHideout or aimed is SchoolPupil \
 				or (aimed is CellDoor and $Grabber.held is CellKey) \
 				or (aimed is QueueCar and $Grabber.held is Breathalyzer and aimed.breath_check_ready()) \
 				or aimed is BankVine \
@@ -569,7 +569,11 @@ func use() -> bool:
 	if BankHostage.food_of(self) and _usable_target() is BankHostage and (_usable_target() as BankHostage).wants_food():
 		act("use", _usable_target())
 		return true
-	if $Grabber.held is BankCroissant:
+	# A pupil's card back to them, or a candy for one who cries (politico-escuela.md, step 5).
+	if ($Grabber.held is SchoolCard or $Grabber.held is SchoolCandy) and _usable_target() is SchoolPupil:
+		act("use", _usable_target())
+		return true
+	if $Grabber.held is BankCroissant or $Grabber.held is SchoolCard:
 		act("use", $Grabber.held)
 		return true
 	if $Grabber.held is DonutBox:

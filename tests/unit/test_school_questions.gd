@@ -62,10 +62,10 @@ func test_the_seed_deals_the_traps() -> void:
 
 func test_a_cop_reads_the_card_only_up_close() -> void:
 	var pupil := school.pupils[0]
-	await wait_frames(2)
+	await wait_process_frames(2)
 	assert_false(pupil.card_shown())
 	cop.global_position = pupil.global_position + school.global_basis.z * 1.2
-	await wait_frames(2)
+	await wait_process_frames(2)
 	assert_true(pupil.card_shown())
 
 

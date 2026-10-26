@@ -76,7 +76,6 @@ const SAND := Color(0.93, 0.83, 0.55)
 const SLIDE_RED := Color(0.9, 0.25, 0.2)
 const METAL := Color(0.7, 0.72, 0.75)
 const BUST := Color(0.8, 0.78, 0.74)
-const CANDY := Color(0.95, 0.4, 0.65)
 const CART := Color(0.95, 0.75, 0.15)
 const BAGS: Array[Color] = [Color(0.85, 0.2, 0.2), Color(0.95, 0.75, 0.2), Color(0.25, 0.6, 0.3), Color(0.55, 0.3, 0.8)]
 
@@ -90,6 +89,8 @@ var politician: Politician
 var tour: SchoolTour
 ## The cards in the pupils' hands and the questions (step 4).
 var questions: SchoolQuestions
+## The teacher's candies, for a pupil who cries (step 5).
+var candy_box: CandyBox
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -259,7 +260,10 @@ func _build_classroom() -> void:
 	_build.mesh_box(BOARD + Vector3(0, -BOARD_SIZE.y / 2 - 0.05, 0.06), Vector3(BOARD_SIZE.x, 0.05, 0.12), WOOD)
 	_label("SCHOOL_BOARD", BOARD + Vector3(0, 0.2, 0.04), 0.0, 40)
 	_build.box(TEACHER_DESK + Vector3(0, 0.38, 0), Vector3(1.4, 0.76, 0.7), WOOD)
-	_build.mesh_box(TEACHER_DESK + Vector3(0.4, 0.84, 0), Vector3(0.3, 0.16, 0.2), CANDY)
+	candy_box = CandyBox.new()
+	candy_box.name = "CandyBox"
+	candy_box.position = TEACHER_DESK + Vector3(0.4, 0.84, 0)
+	add_child(candy_box)
 	for desk in PUPILS:
 		var at := seat(desk) + Vector3(0, FLOOR_TOP, -DESK_AHEAD)
 		_build.box(at + Vector3(0, DESK.y / 2, 0), DESK, WOOD)
