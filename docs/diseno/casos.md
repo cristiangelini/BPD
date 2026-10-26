@@ -126,7 +126,7 @@ Tienen que cuidar a un político molesto durante un evento (decisión 32).
 5. **Partido de fútbol benéfico:** el político juega, mal.
 6. **Caminata por el mercado:** quiere probar todo y algo está envenenado (con laxante).
 7. **En el aeropuerto:** con valijas iguales, y una tiene algo raro.
-8. **Fiesta de cumpleaños del político:** el pastel es sospechoso.
+8. **Fiesta de cumpleaños del político:** el pastel es sospechoso. Propuesta en [politico-cumple.md](politico-cumple.md) (decisión 221).
 9. **Desfile en auto descapotable:** los 4 van caminando al lado del auto.
 10. **El doble:** hay dos políticos iguales y uno es un impostor.
 
