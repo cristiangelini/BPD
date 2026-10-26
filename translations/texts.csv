@@ -5010,6 +5010,28 @@ LOC_on_ring_corner,en una esquina del ring,on a corner of the ring,num canto do 
 LOC_on_profe_desk,en el escritorio del profe,on the coach's desk,na mesa do professor
 LOC_on_reception,arriba de la recepción,on top of the reception,em cima da recepção
 CASE_FAILED_LAWYER_GYM,El profe Fito llamó al abogado del gimnasio. Caso perdido.,Coach Fito called the gym's lawyer. Case lost.,O professor Fito ligou para o advogado da academia. Caso perdido.
+PROMPT_STEREO,E: poner música,E: play music,E: tocar música
+HINT_STEREO_PLAYING,La música ya está sonando.,The music is already playing.,A música já está tocando.
+HINT_STEREO_RESTING,"El equipo está recalentado. Espera un poco.","The stereo is overheated. Wait a bit.","O aparelho está superaquecido. Espere um pouco."
+COACH_LINE_1,"¡Esa espalda, campeón!","Back straight, champ!","Essa coluna, campeão!"
+COACH_LINE_2,"Uno más, uno más… ¡y otro más!","One more, one more… and another!","Mais um, mais um… e outro!"
+COACH_LINE_3,"Sin dolor no hay gloria, y sin cuota tampoco.","No pain, no glory, and no fee, no glory either.","Sem dor não há glória, e sem mensalidade também não."
+COACH_LINE_4,"Oficiales, ¿vienen a anotarse? Hay promo por dos.","Officers, here to sign up? Two-for-one deal.","Policiais, vieram se inscrever? Tem promoção para dois."
+COACH_PRINTER,"¡Mi canción! ¡Todos frente al espejo!","My song! Everyone to the mirror!","Minha música! Todos na frente do espelho!"
+COACH_FIX_1,"¡Y arriba, y abajo, y arriba!","And up, and down, and up!","E pra cima, e pra baixo, e pra cima!"
+COACH_FIX_2,"¡Cinco, seis, siete, ocho!","Five, six, seven, eight!","Cinco, seis, sete, oito!"
+COACH_FIX_3,"¡Esa sonrisa, campeones! ¡Sonrisa!","Smile, champs! Smile!","Esse sorriso, campeões! Sorriso!"
+COACH_FIX_DONE,"¡Excelente clase! Agua y a seguir.","Great class! Water and back to it.","Ótima aula! Água e bora continuar."
+COACH_HURT,"¡Epa, oficial! ¡Eso es un golpe bajo, y lo anoto!","Hey, officer! That's a low blow, and I'm writing it down!","Opa, policial! Isso é golpe baixo, e eu vou anotar!"
+COACH_DOOR,"¿Una puerta rota? ¡Esto es un gimnasio familiar!","A broken door? This is a family gym!","Uma porta quebrada? Isto é uma academia familiar!"
+COACH_SAW,"¡Eso no se toca sin toalla!","Don't touch that without a towel!","Isso não se toca sem toalha!"
+COACH_NOTHING,"Yo solo doy clases de aeróbic, oficial.","I just teach aerobics, officer.","Eu só dou aulas de aeróbica, policial."
+COACH_OFFENDED,"No hablo más. Me voy a elongar.","I'm done talking. I'm off to stretch.","Não falo mais. Vou alongar."
+COACH_LAWYER,"¡Llamo a mi abogado! ¡Y a mi nutricionista!","I'm calling my lawyer! And my nutritionist!","Vou ligar para o meu advogado! E para a minha nutricionista!"
+COACH_DUMBBELL,"¡No me desordenen el gimnasio! Las mancuernas van en el estante.","Don't mess up my gym! Dumbbells go on the rack.","Não baguncem a minha academia! Os halteres vão na prateleira."
+COACH_TREADMILL,"¡Mi cinta! ¡Era la que andaba!","My treadmill! That was the one that worked!","Minha esteira! Era a que funcionava!"
+COACH_MIRROR,"¡Mi espejo! ¿Y ahora dónde me miro?","My mirror! Where do I look at myself now?","Meu espelho! E agora onde eu me olho?"
+COACH_DANCE,"¡Eso, campeón! ¡Qué cintura!","That's it, champ! What moves!","Isso, campeão! Que gingado!"
 BRIEF_HOTEL_A_necklace,"Anoche, en el Hotel Gran Siesta, a la señora Perlita le robaron el collar de perlas de la caja fuerte de la suite.","Last night, at the Hotel Gran Siesta, señora Perlita's pearl necklace was stolen from the suite's safe.","Ontem à noite, no Hotel Gran Siesta, roubaram o colar de pérolas da senhora Perlita do cofre da suíte."
 BRIEF_HOTEL_A_toupee,"Anoche, en el Hotel Gran Siesta, robaron el bisoñé de oro del tenor, el que usa para cantar los sábados. Estaba en la caja fuerte de la suite.","Last night, at the Hotel Gran Siesta, the tenor's gold toupee was stolen, the one he sings in on Saturdays. It was in the suite's safe.","Ontem à noite, no Hotel Gran Siesta, roubaram a peruca de ouro do tenor, a que ele usa para cantar aos sábados. Estava no cofre da suíte."
 BRIEF_HOTEL_A_pillow,"Anoche, en el Hotel Gran Siesta, robaron la Almohada de Oro, el premio a la mejor siesta de la ciudad. La habían guardado en la caja fuerte de la suite.","Last night, at the Hotel Gran Siesta, the Golden Pillow was stolen: the prize for the city's best nap. It was kept in the suite's safe.","Ontem à noite, no Hotel Gran Siesta, roubaram o Travesseiro de Ouro, o prêmio da melhor soneca da cidade. Estava guardado no cofre da suíte."

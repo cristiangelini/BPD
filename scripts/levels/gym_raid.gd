@@ -3,8 +3,9 @@ extends Node3D
 
 ## The gym "Hierro Puro" as a place to raid (docs/diseno/allanamiento-gimnasio.md, step 1): the same hall as the
 ## infiltration (GymHall.build_hall) on the city's gym lot, without el Toro and his band. Six common members train on
-## spots drawn with the seed, the stereo waits on the reception (the profe's distraction, step 2) and the record wall
-## hangs on the east wall. The big mirror breaks when something hits it fast and a treadmill breaks when something
+## spots drawn with the seed and the record wall hangs on the east wall. El profe Fito walks the hall and fills the
+## complaint with every dumbbell he sees on the floor and every treadmill that breaks; the stereo on the reception is
+## his weak spot: E puts on his song and he gives a class to the mirror with the members, seeing nothing (step 2). The big mirror breaks when something hits it fast and a treadmill breaks when something
 ## heavy falls on it, each a fine. The office and the locker room are locked; their key is in the reception's till.
 ## Every number here is (propuesta).
 
@@ -12,9 +13,9 @@ signal mirror_broken
 signal treadmill_broken(index: int)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
-const STEREO_MODEL := preload("res://assets/models/gym_stereo.glb")
 const RECORD_WALL_MODEL := preload("res://assets/models/gym_record_wall.glb")
 const RECORD_BAR_MODEL := preload("res://assets/models/gym_record_bar.glb")
+const COACH_SCENE := preload("res://scenes/npc/gym_coach.tscn")
 const FLOOR_TOP := GymHall.FLOOR_TOP
 const MEMBERS := 6
 ## The stereo on the reception's counter, and the till with the key next to it.
@@ -32,6 +33,25 @@ const MIRROR_FINE := 30
 const TREADMILL_KG := 10.0
 const TREADMILL_FALL := 1.5
 const TREADMILL_FINE := 20
+## El profe's round, back and forth: in front of the benches, along the treadmills, down the east side and behind the
+## ring. His class is in front of the mirror, facing it.
+const COACH_ROUTE: Array[Vector3] = [
+	Vector3(-3.5, FLOOR_TOP, 3.8), Vector3(0.0, FLOOR_TOP, 3.0), Vector3(6.8, FLOOR_TOP, 2.2),
+	Vector3(6.8, FLOOR_TOP, -3.6), Vector3(-0.5, FLOOR_TOP, -3.6),
+]
+const CLASS_SPOT := Vector3(0, FLOOR_TOP, -6.2)
+## Seeing a dumbbell on the floor, and a treadmill break.
+const SAW_DUMBBELL := 5.0
+const SAW_TREADMILL := 10.0
+## A dumbbell lower than this is on the floor; higher than PICKED_UP it's back up.
+const DUMBBELL_DOWN := FLOOR_TOP + 0.25
+const PICKED_UP := 0.6
+## A cop who jumps during the class dances with them: the profe likes it, once a class.
+const DANCED := 5.0
+const DANCE_JUMP := 2.0
+## How high and fast everyone bounces in the class.
+const BOUNCE := 0.25
+const BOUNCE_SPEED := 6.0
 ## The towel bin by the east wall, a hiding spot.
 const TOWEL_BIN_AT := Vector3(8.3, FLOOR_TOP, 3.2)
 const TOWEL_BIN_SIZE := Vector3(0.6, 0.7, 0.6)
@@ -60,6 +80,9 @@ var city_map: CityMap
 var office_door: FrontDoor
 var locker_door: FrontDoor
 var till: Till
+var stereo: GymStereo
+var coach: FloorBoss
+var complaint_bar: ProgressBar
 var members: Array[ClubMember] = []
 var dumbbells: Array[Grabbable] = []
 var mirror_is_broken := false
@@ -71,6 +94,12 @@ var fines := 0
 @export var case_seed := 0
 var _build: PlaceBuilder
 var _cracks: Node3D
+## Dumbbells the profe already saw on the floor (until they're picked up again).
+var _seen_down := {}
+## Cops who danced in this class, and where the members stood before it.
+var _dancers := {}
+var _before_class := {}
+var _beat := 0.0
 @onready var car: PatrolCar = $PatrolCar
 
 
@@ -88,6 +117,7 @@ func _ready() -> void:
 	_place_dumbbells()
 	_watch_mirror()
 	_watch_treadmills()
+	_place_coach()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("gym")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -100,7 +130,10 @@ func _ready() -> void:
 
 ## The stereo and the till on the reception, the record wall with its bar and the towel bin.
 func _build_extras() -> void:
-	_model(STEREO_MODEL, STEREO_AT, PI)
+	stereo = GymStereo.new()
+	stereo.position = STEREO_AT
+	stereo.rotation.y = PI
+	add_child(stereo)
 	till = Till.new()
 	till.position = TILL_ON + Vector3.UP * Till.SIZE.y / 2
 	till.key_hint = "HINT_TILL_KEY_GYM"
@@ -247,3 +280,97 @@ func _model(scene: PackedScene, at: Vector3, turn := 0.0) -> Node3D:
 	look.rotation.y = turn
 	$Built.add_child(look)
 	return look
+
+
+## El profe on his round, the class at the stereo, what he notices and the complaint bar.
+func _place_coach() -> void:
+	coach = COACH_SCENE.instantiate()
+	coach.route = COACH_ROUTE
+	coach.printer_spot = CLASS_SPOT
+	coach.printer = stereo
+	add_child(coach)
+	coach.fix_facing = to_global(GymRaid.MIRROR_AT)
+	coach.start_at(0)
+	for door: FrontDoor in [office_door, locker_door]:
+		door.broken.connect(coach.door_broken)
+	till.opened.connect(func(at: Vector3) -> void: coach.saw(at, FloorBoss.SAW_TILL))
+	mirror_broken.connect(func() -> void: coach.saw(to_global(MIRROR_AT), FloorBoss.SAW_BREAK, "COACH_MIRROR"))
+	treadmill_broken.connect(func(index: int) -> void:
+		coach.saw(to_global(GymHall.TREADMILLS[index] + Vector3.UP * 0.6), SAW_TREADMILL, "COACH_TREADMILL"))
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	coach.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Whether the class is on: the song plays and the profe is at the mirror.
+func in_class() -> bool:
+	return coach != null and coach.is_fixing()
+
+
+func _physics_process(delta: float) -> void:
+	if not coach:
+		return
+	_watch_dumbbells()
+	if in_class():
+		_class(delta)
+	elif not _before_class.is_empty():
+		_end_class()
+
+
+## Every dumbbell on the floor that the profe sees, once until it's picked up.
+func _watch_dumbbells() -> void:
+	for dumbbell: Grabbable in dumbbells:
+		if not is_instance_valid(dumbbell):
+			continue
+		var height := to_local(dumbbell.global_position).y
+		if height > PICKED_UP:
+			_seen_down.erase(dumbbell)
+		elif height < DUMBBELL_DOWN and not dumbbell.is_held() and not _seen_down.has(dumbbell) \
+				and coach.saw(dumbbell.global_position + Vector3.UP * 0.1, SAW_DUMBBELL, "COACH_DUMBBELL"):
+			_seen_down[dumbbell] = true
+
+
+## The class: the members turn to the mirror and everyone bounces; a cop who jumps along dances with them.
+func _class(delta: float) -> void:
+	if _before_class.is_empty():
+		_dancers.clear()
+		for member: ClubMember in members:
+			_before_class[member] = member.transform
+			member.rotation.y = 0.0
+	_beat += delta
+	var bounce := absf(sin(_beat * BOUNCE_SPEED)) * BOUNCE
+	for member: ClubMember in members:
+		member.position.y = (_before_class[member] as Transform3D).origin.y + bounce
+	(coach.get_node("Model") as Node3D).position.y = bounce
+	for node in get_tree().get_nodes_in_group("cops"):
+		var cop := node as Cop
+		if not _dancers.has(cop) and cop.velocity.y > DANCE_JUMP and _is_inside(cop.global_position):
+			_dancers[cop] = true
+			coach.praise(DANCED, "COACH_DANCE")
+
+
+## Back to training where they were.
+func _end_class() -> void:
+	for member: ClubMember in _before_class:
+		if is_instance_valid(member):
+			member.transform = _before_class[member]
+	_before_class.clear()
+	(coach.get_node("Model") as Node3D).position.y = 0.0
+
+
+func _is_inside(at: Vector3) -> bool:
+	var local := to_local(at)
+	return absf(local.x) < GymHall.HALF_X and absf(local.z) < GymHall.HALF_Z and local.y < GymHall.ROOF
