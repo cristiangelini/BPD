@@ -4307,6 +4307,26 @@ PROMPT_SCAFFOLD_DOWN,E: bajar el andamio,E: lower the scaffold,E: descer o andai
 PROMPT_SCAFFOLD_UP,E: subir el andamio,E: raise the scaffold,E: subir o andaime
 PROMPT_SCAFFOLD_STOP,E: frenar el andamio,E: stop the scaffold,E: parar o andaime
 PROMPT_CALL_SCAFFOLD,E: llamar al andamio,E: call the scaffold,E: chamar o andaime
+PROMPT_INTERCOM,E: tocar el timbre de un departamento,E: ring a flat's buzzer,E: tocar o interfone de um apartamento
+HINT_INTERCOM_WAIT,Nadie contesta. Los vecinos ya están cansados del timbre.,Nobody answers. The neighbors are tired of the buzzer.,Ninguém atende. Os vizinhos já cansaram do interfone.
+EVARISTO_LINE_1,"Limpiecito, limpiecito. Así me gusta el hall.","Nice and clean. That's how I like my lobby.","Limpinho, limpinho. Assim que eu gosto do saguão."
+EVARISTO_LINE_2,"¡Esto es un edificio de familia, oficiales!","This is a family building, officers!","Este é um prédio de família, policiais!"
+EVARISTO_LINE_3,"El ascensor anda bien. Casi siempre. Bueno, a veces.","The elevator works fine. Almost always. Well, sometimes.","O elevador funciona bem. Quase sempre. Bom, às vezes."
+EVARISTO_LINE_4,"Treinta años de encargado y nunca vi tanto policía junto.","Thirty years as manager and I've never seen so many cops.","Trinta anos de zelador e nunca vi tanto policial junto."
+EVARISTO_PRINTER,"¿Una pérdida de agua en el 12? ¡Otra vez! Ya subo, ya subo.","A leak on the 12th? Again! Coming, coming.","Um vazamento no 12? De novo! Já vou, já vou."
+EVARISTO_FIX_1,(Se fue al piso 12),(He went up to the 12th),(Ele subiu para o 12)
+EVARISTO_FIX_2,(Se oye una llave inglesa a lo lejos),(A wrench clanks far away),(Ouve-se uma chave inglesa ao longe)
+EVARISTO_FIX_3,(Ya casi baja),(He's almost back down),(Ele já está quase descendo)
+EVARISTO_FIX_DONE,"Era la ducha del 12C. Siempre es la ducha del 12C.","It was 12C's shower. It's always 12C's shower.","Era o chuveiro do 12C. É sempre o chuveiro do 12C."
+EVARISTO_HURT,"¡Epa! ¡Con el encargado no, oficial! Esto va a la denuncia.","Hey! Not the manager, officer! This goes in the complaint.","Epa! Com o zelador não, policial! Isso vai para a denúncia."
+EVARISTO_DOOR,¿Quién me paga esa puerta? ¡El edificio no!,Who pays for that door? Not the residents' fund!,Quem paga essa porta? O condomínio não!
+EVARISTO_SAW,¡Esto es un edificio de familia!,This is a family building!,Este é um prédio de família!
+EVARISTO_OVERLOAD,"¡Cuatrocientos kilos dice el cartel! ¡CUATROCIENTOS!","The sign says four hundred kilos! FOUR HUNDRED!","A placa diz quatrocentos quilos! QUATROCENTOS!"
+EVARISTO_FALL,¿Qué fue ese ruido en la calle? ¡Esto es un edificio de familia!,What was that crash on the sidewalk? This is a family building!,Que barulho foi esse na calçada? Este é um prédio de família!
+EVARISTO_ORNAMENT,¡Los adornos del señor Bellini!,Mr. Bellini's ornaments!,Os enfeites do senhor Bellini!
+EVARISTO_NOTHING,"Yo solo barro el hall, oficial.","I just sweep the lobby, officer.","Eu só varro o saguão, policial."
+EVARISTO_OFFENDED,"Un encargado no anda contando lo que ve. Bueno, a veces sí. Hoy no.","A manager doesn't go around telling what he sees. Well, sometimes. Not today.","Um zelador não sai contando o que vê. Bom, às vezes sim. Hoje não."
+EVARISTO_LAWYER,"¡Llamo al abogado del edificio! ¡Y a la reunión de vecinos!","I'm calling the building's lawyer! And the residents' meeting!","Vou ligar para o advogado do condomínio! E para a reunião de condôminos!"
 PLACE_MUSEUM,"Museo","Museum","Museu"
 SIGN_MUSEUM,"Museo de la Ciudad","City Museum","Museu da Cidade"
 SIGN_MUSEUM_GALLERY,"Sala grande →","Main gallery →","Sala principal →"
