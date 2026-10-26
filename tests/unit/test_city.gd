@@ -29,7 +29,18 @@ func test_the_station_and_the_ten_raid_places_are_in_the_city() -> void:
 	assert_false(CityLayout.place("gas_station").is_empty(), "and the transfer's gas station")
 	assert_false(CityLayout.place("market").is_empty(), "and the covered market")
 	assert_false(CityLayout.place("circus").is_empty(), "and the circus")
-	assert_eq(CityLayout.PLACES.size(), RAID_PLACES.size() + 8)
+	assert_false(CityLayout.place("mime_theater").is_empty(), "and the mimes' theater")
+	assert_false(CityLayout.place("party_hall").is_empty(), "and the costume party's hall")
+	assert_false(CityLayout.place("school").is_empty(), "and the thieves' school")
+	assert_false(CityLayout.place("restaurant").is_empty(), "and the restaurant")
+	assert_false(CityLayout.place("chess").is_empty(), "and the chess club")
+	assert_false(CityLayout.place("biker").is_empty(), "and the biker bar")
+	assert_false(CityLayout.place("auction").is_empty(), "and the auction house")
+	assert_false(CityLayout.place("bridge_park").is_empty(), "and the park with the canal")
+	assert_false(CityLayout.place("school_visit").is_empty(), "and the school the deputy visits")
+	assert_false(CityLayout.place("football_pitch").is_empty(), "and the football pitch")
+	assert_false(CityLayout.place("museum").is_empty(), "and the museum")
+	assert_eq(CityLayout.PLACES.size(), RAID_PLACES.size() + 19)
 
 
 func test_no_two_lots_overlap() -> void:

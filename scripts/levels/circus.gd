@@ -408,7 +408,7 @@ func _loot_spot(spot: String, at: Vector3, size: Vector3) -> void:
 	var body := LootSpot.new(size)
 	body.name = "Search_" + spot
 	body.spot = spot
-	body.circus = self
+	body.place = self
 	body.position = at
 	add_child(body)
 	loot_spots[spot] = body

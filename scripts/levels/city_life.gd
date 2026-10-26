@@ -24,7 +24,7 @@ const LAMP_GLOW := Color(1.0, 0.92, 0.7)
 const FENCE := Color(0.55, 0.58, 0.6)
 const TANK := Color(0.5, 0.36, 0.24)
 ## Blocks with a dead-end alley, and the side it opens to: blocks whose middle no place reaches (tested).
-const ALLEYS := [[Vector2i(2, 4), "e"], [Vector2i(5, 1), "w"], [Vector2i(4, 0), "e"], [Vector2i(5, 4), "w"]]
+const ALLEYS := [[Vector2i(2, 4), "e"], [Vector2i(6, 3), "w"], [Vector2i(3, 1), "e"], [Vector2i(5, 4), "w"]]
 const ALLEY_WIDTH := 4.5
 const ALLEY_LENGTH := 24.0
 
