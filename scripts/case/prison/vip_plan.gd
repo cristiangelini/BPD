@@ -11,11 +11,18 @@ extends Node3D
 ## hides a file, the guitar a rope and the flowers a key (PIECES); opened with E in hand (VisitItem), the piece is
 ## found and confiscated (`seized`), and the thing can still be given to him. What he gets unopened he keeps the piece
 ## of (`pieces`). His mood at 0 brings his lawyer (VipLawyer, `lawyers`), and after the lawyer's gone it's back at
-## MOOD_AFTER_LAWYER.
+## MOOD_AFTER_LAWYER. Step 5: with the 3 pieces he's out (`runner`, a BlackoutInmate with his model): the file and the
+## key open his door and he runs through the canteen and the yard for his limo at the gate. Cuffed and walked into a
+## cell, he's back in his armchair without his pieces (`caught`); out the gate, the limo drives off with him
+## (`escaped`). After his last request his manager comes for him and takes him out the gate (`released`).
 
 signal got_piece(count: int)
 signal seized_one(count: int)
 signal lawyer_called(count: int)
+signal ran(runner: BlackoutInmate)
+signal caught_one(count: int)
+signal escaped_rulo
+signal released_rulo
 
 const FANS := 6
 ## The fans in a row on the sidewalk, three on each side of the gate, looking in through it.
@@ -44,6 +51,13 @@ const MOOD_AFTER_LAWYER := 40
 ## gate and along the corridor (then to the VIP cell's bars).
 const LAWYER_WAY: Array[Vector2] = [Vector2(0.0, PrisonLevel.HALF_Z + 1.0), Vector2(2.0, 10.0), Vector2(2.0, 7.0),
 	Vector2(1.0, 5.5), Vector2(1.0, -6.2), Vector2(-1.0, -6.4), Vector2(-1.0, -7.6)]
+## Rulo's run from the block's gate: down the canteen, out the east door and across the yard to the gate.
+const RUN_WAY: Array[Vector2] = [Vector2(1.0, -5.1), Vector2(1.0, 5.5), Vector2(2.0, 7.0), Vector2(2.0, 10.0),
+	Vector2(0.0, PrisonLevel.HALF_Z + 0.5)]
+const MANAGER_TALK := 6.0
+const MANAGER_LINES: Array[String] = ["VIP_MANAGER_TALK_1", "VIP_MANAGER_TALK_2"]
+const LIMO_AWAY := 40.0
+const LIMO_DRIVE := 3.0
 ## Where he stands in the corridor, this far from the bars.
 const LAWYER_OUT := 0.9
 const WHITE := Color(0.93, 0.94, 0.95)
@@ -85,6 +99,11 @@ var pieces: Array[int] = []
 var seized := 0
 var lawyers := 0
 var lawyer: VipLawyer
+var manager: VipLawyer
+var runner: BlackoutInmate
+var caught := 0
+var escaped := false
+var released := false
 var _rng := RandomNumberGenerator.new()
 
 
@@ -118,6 +137,8 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 	tray.put.connect(requests.offered)
 	tray.pressed.connect(requests.pressed)
 	requests.mood_zero.connect(call_lawyer)
+	requests.all_done.connect(call_manager)
+	got_piece.connect(_on_got_piece)
 	_place_gifts()
 
 
@@ -288,16 +309,131 @@ func call_lawyer() -> void:
 	rulo.say("VIP_RULO_LAWYER", 4.0)
 	lawyer = VipLawyer.new()
 	lawyer.name = "Lawyer"
-	for at in LAWYER_WAY:
-		lawyer.path.append(Vector3(at.x, PrisonLevel.FLOOR_TOP, at.y))
-	var bars := cell_point(0.0) - _into() * LAWYER_OUT
-	lawyer.path.append(Vector3(LAWYER_WAY[-1].x, PrisonLevel.FLOOR_TOP, bars.z))
-	lawyer.path.append(bars)
+	lawyer.path = _way_to_bars()
 	add_child(lawyer)
 	lawyer.gone.connect(_on_lawyer_gone)
 	lawyer.come()
 
 
+## From the gate to the corridor in front of his door (the lawyer's and the manager's way).
+func _way_to_bars() -> Array[Vector3]:
+	var way: Array[Vector3] = []
+	for at in LAWYER_WAY:
+		way.append(Vector3(at.x, PrisonLevel.FLOOR_TOP, at.y))
+	var bars := cell_point(0.0) - _into() * LAWYER_OUT
+	way.append(Vector3(LAWYER_WAY[-1].x, PrisonLevel.FLOOR_TOP, bars.z))
+	way.append(bars)
+	return way
+
+
 func _on_lawyer_gone() -> void:
 	lawyer = null
 	requests.set_mood(MOOD_AFTER_LAWYER)
+
+
+func _on_got_piece(count: int) -> void:
+	if count >= PIECES.size():
+		run()
+
+
+## The file and the key open his door, and he runs for his limo (the debug panel's shortcut too).
+func run() -> void:
+	if runner or escaped or released:
+		return
+	var door := prison.cell_door(cell)
+	door.unlock()
+	door.set_open(true)
+	rulo.hide()
+	rulo.process_mode = Node.PROCESS_MODE_DISABLED
+	requests.set_process(false)
+	runner = BlackoutInmate.new()
+	runner.name = "RuloRunner"
+	runner.model = VipInmate.MODEL
+	runner.role = BlackoutInmate.Role.GATE
+	runner.glow_eyes = false
+	runner.prison = prison
+	var way := BlackoutPlan.way_out(cell)
+	way.append_array(RUN_WAY)
+	runner.route = way
+	add_child(runner)
+	runner.global_position = rulo.global_position
+	runner.active = true
+	runner.say("VIP_RULO_RUN")
+	runner.escaped.connect(_on_escaped)
+	BlackoutEscort.to_block(runner, prison).boarded.connect(_on_caught)
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		cop.show_hint("HINT_VIP_RUNNING")
+	ran.emit(runner)
+
+
+## Walked into a cell: back in his armchair, his door locked, his pieces taken off him.
+func _on_caught() -> void:
+	if not runner:
+		return
+	runner.queue_free()
+	runner = null
+	caught += 1
+	pieces.clear()
+	var door := prison.cell_door(cell)
+	door.set_open(false)
+	door.lock()
+	rulo.show()
+	rulo.process_mode = Node.PROCESS_MODE_INHERIT
+	rulo.transform = Transform3D(Basis.looking_at(-_into(), Vector3.UP, true), cell_point(CHAIR_IN - 0.1))
+	rulo.set_seated(true)
+	rulo.say("VIP_RULO_CAUGHT", 4.0)
+	requests.set_process(true)
+	caught_one.emit(caught)
+
+
+func _on_escaped(_inmate: BlackoutInmate) -> void:
+	escaped = true
+	requests.set_process(false)
+	_drive_off()
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		cop.show_hint("HINT_VIP_ESCAPED")
+	escaped_rulo.emit()
+
+
+## The limo drives away down the street.
+func _drive_off() -> void:
+	var drive := limo.create_tween()
+	drive.tween_property(limo, "position:x", LIMO_AT.x + LIMO_AWAY, LIMO_DRIVE).set_trans(Tween.TRANS_QUAD) \
+		.set_ease(Tween.EASE_IN)
+
+
+## His last request is done: his manager comes for him, and he goes out with him.
+func call_manager() -> void:
+	if manager or runner or escaped or released:
+		return
+	manager = VipLawyer.new()
+	manager.name = "Manager"
+	manager.model = VipLawyer.MANAGER
+	manager.lines = MANAGER_LINES
+	manager.arrive_line = "VIP_MANAGER_ARRIVE"
+	manager.bye_line = "VIP_MANAGER_BYE"
+	manager.talk = MANAGER_TALK
+	manager.path = _way_to_bars()
+	add_child(manager)
+	manager.arrived.connect(_on_manager_arrived)
+	manager.gone.connect(_on_manager_gone)
+	manager.come()
+
+
+func _on_manager_arrived() -> void:
+	var door := prison.cell_door(cell)
+	door.unlock()
+	door.set_open(true)
+	rulo.set_seated(false)
+	rulo.say("VIP_RULO_BYE", 5.0)
+	var out := rulo.create_tween()
+	out.tween_property(rulo, "position", cell_point(0.0), 1.2)
+	manager.with = rulo
+
+
+func _on_manager_gone() -> void:
+	manager = null
+	released = true
+	rulo.hide()
+	_drive_off()
+	released_rulo.emit()

@@ -62,6 +62,8 @@ var has_fuse := false
 var surrendered := false
 ## Their eyes shine in the dark; off in daylight (the laundry's runners, carcel-lavanderia.md).
 var glow_eyes := true
+## Its model (Rulo Brillantina's, when he runs for his limo, carcel-vip.md).
+var model: PackedScene = MODEL
 var _sparks: Node3D
 var _spark_left := 0.0
 var _next := 0
@@ -87,7 +89,7 @@ func _ready() -> void:
 	shape.shape = capsule
 	shape.position.y = 0.75
 	add_child(shape)
-	_model = MODEL.instantiate()
+	_model = model.instantiate()
 	# The models face +Z; the inmate's front is -Z, like the other NPCs placed by code.
 	_model.rotation.y = PI
 	add_child(_model)
