@@ -82,6 +82,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_LOTTERY_LIST", "OBJ_EXTRA_GOLD_BLENDER"],
 		"rig": preload("res://scripts/case/gym/lucky_shakes_rig.gd"),
 	},
+	"fixed_fights": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_FIXED_FIGHTS_B", "BRIEF_FIXED_FIGHTS_C", "BRIEF_FIXED_FIGHTS_D"],
+		"find": "OBJ_FIND_BETTING_BOOK",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/betting_book.tscn"), preload("res://scenes/props/horseshoe_gloves.tscn"),
+			preload("res://scenes/props/cardboard_belt.tscn")],
+		"half_heights": [0.025, 0.075, 0.012],
+		"heavy": [false, false, true],
+		"extra_keys": ["OBJ_EXTRA_HORSESHOE_GLOVES", "OBJ_EXTRA_CARDBOARD_BELT"],
+		"rig": preload("res://scripts/case/gym/fixed_fights_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the hall's floor, away from the machines.
 const NOTE_PLACES: Array[Vector3] = [

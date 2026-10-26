@@ -285,6 +285,36 @@ const models = {
 		}
 		return b.build();
 	},
+	// The fixed fights' betting book: a black ledger with a red ribbon and a gold "$" corner.
+	gym_betting_book() {
+		const b = new Builder('gym_betting_book');
+		b.add('cover', C('ledger_black', 0x22222a), new THREE.BoxGeometry(0.2, 0.05, 0.28), { pos: V(0, 0.025, 0) });
+		b.add('pages', C('sheet_paper', 0xfaf6ea), new THREE.BoxGeometry(0.19, 0.04, 0.27), { pos: V(0.006, 0.025, 0) });
+		b.add('ribbon', C('ribbon_red', 0xc83a3a), new THREE.BoxGeometry(0.015, 0.003, 0.08), { pos: V(0.03, 0.002, 0.17) });
+		b.add('corner', C('trophy_gold', 0xf2c84b, { emissive: 0x3a2a05 }), new THREE.BoxGeometry(0.04, 0.052, 0.04), { pos: V(0.08, 0.026, -0.12) });
+		return b.build();
+	},
+	// A pair of red boxing gloves; one has a horseshoe-shaped bulge over the knuckles.
+	gym_horseshoe_gloves() {
+		const b = new Builder('gym_horseshoe_gloves');
+		const red = C('glove_red', 0xd83a3a), cuff = C('glove_cuff', 0xf6f4ee);
+		for (const s of [-1, 1]) {
+			b.add('gloves', red, ellipsoid(0.08, 0.075, 0.11, 10, 6), { pos: V(s * 0.1, 0.075, 0.02) });
+			b.add('gloves', red, ellipsoid(0.035, 0.035, 0.04, 6, 4), { pos: V(s * 0.1 + s * 0.06, 0.07, 0.04) });
+			b.add('cuffs', cuff, new THREE.CylinderGeometry(0.06, 0.06, 0.06, 10), { pos: V(s * 0.1, 0.06, -0.1), rot: [Math.PI / 2, 0, 0] });
+		}
+		b.add('horseshoe', C('glove_bulge', 0xb82a2a), new THREE.TorusGeometry(0.04, 0.012, 4, 10, Math.PI * 1.4), { pos: V(0.1, 0.14, 0.04), rot: [Math.PI / 2, 0, 0] });
+		return b.build();
+	},
+	// The champion belt made of cardboard: a black strip with a huge gold-painted cardboard plate, a bit bent.
+	gym_cardboard_belt() {
+		const b = new Builder('gym_cardboard_belt');
+		b.add('strap', C('belt_black', 0x2a2a30), new THREE.BoxGeometry(0.9, 0.01, 0.1), { pos: V(0, 0.005, 0) });
+		b.add('plate', C('cardboard_gold', 0xe0b84a), new THREE.CylinderGeometry(0.13, 0.13, 0.012, 12), { pos: V(0, 0.012, 0), rot: [0, 0, 0.05] });
+		b.add('plate', C('box_card', 0xc89a5a), new THREE.BoxGeometry(0.04, 0.013, 0.05), { pos: V(0.11, 0.012, 0.06) });
+		b.add('plate', C('ribbon_red', 0xc83a3a), new THREE.CylinderGeometry(0.05, 0.05, 0.014, 5), { pos: V(0, 0.016, 0) });
+		return b.build();
+	},
 };
 
 export { models };
@@ -326,5 +356,10 @@ export const views = {
 		items: [{ name: 'gym_shake_jar', pos: [-0.3, 0, 0] }, { name: 'gym_gold_blender', pos: [0.05, 0, -0.1] },
 			{ name: 'gym_shake_cup', pos: [0.3, 0, 0.1] }, { name: 'gym_lottery_list', pos: [0.05, 0, 0.3], rotY: 0.2 }],
 		cam: { pos: [0, 0.7, 1.1], target: [0, 0.12, 0], fov: 42 },
+	},
+	gym_fixed_fights: {
+		items: [{ name: 'gym_betting_book', pos: [-0.35, 0, 0.1], rotY: 0.3 }, { name: 'gym_horseshoe_gloves', pos: [0.3, 0, 0.15], rotY: -0.3 },
+			{ name: 'gym_cardboard_belt', pos: [0, 0, -0.3] }],
+		cam: { pos: [0, 0.9, 1.3], target: [0, 0.05, 0], fov: 44 },
 	},
 };
