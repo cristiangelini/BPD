@@ -292,3 +292,4 @@
 - Hotel raid, step 3: doña Escoba walks the upstairs corridor with her cart; a cop who makes one of the unmade beds (3 s, hands busy) gets her chat about where she saw don Bostezo hide something, once per cop.
 - Hotel raid, step 4: the case runs on RaidCase with its first story, the casino of the 13: the roulette (18 kg) waits behind the wardrobe, the chip box and the debt book hide elsewhere; chips in the plant, footprints to the wardrobe, the roulette's tic tic tic and cigar smoke are its clues. Don Bostezo can be interrogated.
 - Hotel raid, story 2: the regular guest. Señor Ramón crosses the lobby every 40 s in another disguise and runs off without his mustache if a cop bumps him; the guest book has forty signatures in one handwriting; his costume trunk is the evidence.
+- Hotel raid, story 3: the stolen robes. A robe hangs in every room with another hotel's crest; the bag of stolen robes is the evidence, with the buyers' list and the embroidery machine.

@@ -5125,6 +5125,18 @@ RAMON_HELLO_MUSTACHE,"Buenas, recién llegado. Me llamo... Bigotes. Señor Bigot
 RAMON_HELLO_HAT,¡Buenas noches! Turista. Vengo de muy lejos. De la otra cuadra.,Good evening! Tourist. I come from very far away. From the next block.,Boa noite! Turista. Venho de muito longe. Do outro quarteirão.
 RAMON_HELLO_WIG,"Hola, soy un huésped completamente nuevo. Nunca me vio. Nunca.","Hi, I'm a completely new guest. You've never seen me. Never.","Oi, sou um hóspede completamente novo. Você nunca me viu. Nunca."
 RAMON_UNMASKED,"¡Mi bigote! ¡Nadie vio nada! ¡Me voy, digo, hago el check-out!","My mustache! Nobody saw anything! I'm leaving, I mean, checking out!","Meu bigode! Ninguém viu nada! Vou embora, quer dizer, faço o check-out!"
+BRIEF_ROBES_B,Don Bostezo junta las batas bordadas de los hoteles caros de la ciudad y las vende como si fueran del Gran Siesta.,Don Bostezo collects the embroidered robes of the city's fancy hotels and sells them as if they were the Gran Siesta's.,O don Bostezo junta os roupões bordados dos hotéis caros da cidade e vende como se fossem do Gran Siesta.
+BRIEF_ROBES_C,Traigan la bolsa de batas robadas en el baúl del patrullero. Las batas colgadas no sirven: son de muestra.,Bring the bag of stolen robes back in the patrol car's trunk. The hanging robes don't count: they're just samples.,Tragam a bolsa de roupões roubados no porta-malas da viatura. Os roupões pendurados não servem: são de amostra.
+BRIEF_ROBES_D,"Si encuentran la lista de compradores o el bordador, mejor: todo suma.","If you find the buyers' list or the embroidery machine, even better: it all adds up.","Se acharem a lista de compradores ou a bordadeira, melhor: tudo soma."
+OBJ_FIND_ROBES,Encontrar la bolsa de batas robadas (no las colgadas),Find the bag of stolen robes (not the hanging ones),Achar a bolsa de roupões roubados (não os pendurados)
+OBJ_EXTRA_BUYERS_LIST,Extra: la lista de compradores,Extra: the buyers' list,Extra: a lista de compradores
+OBJ_EXTRA_EMBROIDERY,Extra: el bordador,Extra: the embroidery machine,Extra: a bordadeira
+PROMPT_ROBE,E: mirar el escudo de la bata,E: look at the robe's crest,E: olhar o brasão do roupão
+CLUE_ROBES_CREST,Una bata del Gran Siesta... con el escudo del %s. Mal descosido.,A Gran Siesta robe... with the crest of the %s. Badly unstitched.,Um roupão do Gran Siesta... com o brasão do %s. Mal descosturado.
+ROBE_HOTEL_0,Hotel Imperial,Hotel Imperial,Hotel Imperial
+ROBE_HOTEL_1,Gran Hotel Palacio,Gran Hotel Palacio,Gran Hotel Palacio
+ROBE_HOTEL_2,Hotel Mirador,Hotel Mirador,Hotel Mirador
+ROBE_HOTEL_3,Hotel Corona,Hotel Corona,Hotel Corona
 HINT_GUEST_BOOK_SIGNED,"Firmaste en la página de anoche. Qué linda letra.","You signed on last night's page. Lovely handwriting.","Você assinou na página de ontem. Que letra bonita."
 HINT_ESCAPE_guest,"¡%s se subió a la combi del hotel, en bata y pantuflas, y se escapa! ¡Al patrullero, y cuidado con las valijas!","%s jumped into the hotel shuttle, in bathrobe and slippers, and is getting away! To the patrol car, and mind the suitcases!","%s subiu na van do hotel, de roupão e chinelos, e está fugindo! Para a viatura, e cuidado com as malas!"
 PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off the street","E: tirar a mala da rua"

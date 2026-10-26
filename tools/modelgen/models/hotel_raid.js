@@ -104,7 +104,53 @@ export function buildSpareWig() {
 	return b.build();
 }
 
+// The stolen robes (step 5): the bag of embroidered robes (0.7 x 0.6 x 0.5 m, origin in the middle), the buyers' list,
+// the embroidery machine and the robe hanging on a hook, with another hotel's crest.
+export function buildRobeBag() {
+	const sack = mat('robe_bag', 0xe8e4da), cord = mat('cord', 0x8a6a3a), robe = mat('robe_white', 0xf4f2ee);
+	const crest = mat('crest_blue', 0x2a4aa0), gold = mat('gold', 0xf2c84b, { emissive: 0x3a2a05 });
+	const b = new Builder('robe_bag');
+	b.add('bag', sack, new THREE.SphereGeometry(0.34, 10, 7), { scale: [1, 0.85, 0.75], pos: V(0, -0.02, 0) });
+	b.add('bag', cord, new THREE.TorusGeometry(0.1, 0.015, 4, 10), { pos: V(0, 0.27, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('robes', robe, new THREE.SphereGeometry(0.1, 6, 4), { pos: V(0.02, 0.32, 0.02), scale: [1.3, 0.6, 1] });
+	b.add('robes', crest, new THREE.BoxGeometry(0.06, 0.06, 0.01), { pos: V(0.12, 0.05, 0.25) });
+	b.add('robes', gold, new THREE.BoxGeometry(0.05, 0.05, 0.01), { pos: V(-0.14, 0.1, 0.24) });
+	return b.build();
+}
+
+export function buildBuyersList() {
+	const paper = mat('paper', 0xf3eedf), ink = mat('ink', 0x2a2a6a);
+	const b = new Builder('buyers_list');
+	b.add('paper', paper, new THREE.BoxGeometry(0.21, 0.004, 0.29));
+	for (let i = 0; i < 6; i++) b.add('lines', ink, new THREE.BoxGeometry(0.15, 0.001, 0.008), { pos: V(-0.01, 0.0025, -0.11 + i * 0.04) });
+	return b.build();
+}
+
+export function buildEmbroideryMachine() {
+	const body = mat('machine_body', 0xd8d2c0), dark = mat('machine_dark', 0x3a3a40), red = mat('thread_red', 0xd23030);
+	const b = new Builder('embroidery_machine');
+	b.add('base', body, new THREE.BoxGeometry(0.45, 0.08, 0.22), { pos: V(0, -0.12, 0) });
+	b.add('arm', body, new THREE.BoxGeometry(0.1, 0.22, 0.16), { pos: V(0.17, 0.0, 0) });
+	b.add('arm', body, new THREE.BoxGeometry(0.42, 0.09, 0.16), { pos: V(0.0, 0.1, 0) });
+	b.add('arm', dark, new THREE.BoxGeometry(0.04, 0.12, 0.04), { pos: V(-0.17, 0.0, 0) });
+	b.add('thread', red, new THREE.CylinderGeometry(0.025, 0.025, 0.06, 8), { pos: V(0.05, 0.17, 0) });
+	return b.build();
+}
+
+export function buildHangingRobe() {
+	const robe = mat('robe_white', 0xf4f2ee), terry = mat('robe_terry', 0xdedad2), crest = mat('crest_blue', 0x2a4aa0);
+	const b = new Builder('hanging_robe');
+	b.add('robe', robe, new THREE.CylinderGeometry(0.18, 0.26, 0.95, 8), { pos: V(0, -0.1, 0), scale: [1, 1, 0.45] });
+	for (const s of [-1, 1]) b.add('robe', robe, new THREE.CylinderGeometry(0.06, 0.08, 0.6, 6), { pos: V(s * 0.24, 0.0, 0), rot: [0, 0, s * 0.2] });
+	b.add('robe', terry, new THREE.BoxGeometry(0.42, 0.04, 0.14), { pos: V(0, -0.05, 0.02) });
+	b.add('crest', crest, new THREE.BoxGeometry(0.08, 0.09, 0.01), { pos: V(-0.08, 0.2, 0.09) });
+	b.add('hook', mat('gold', 0xf2c84b, { emissive: 0x3a2a05 }), new THREE.TorusGeometry(0.03, 0.008, 4, 8), { pos: V(0, 0.42, 0) });
+	return b.build();
+}
+
 export const models = {
+	robe_bag: buildRobeBag, buyers_list: buildBuyersList, embroidery_machine: buildEmbroideryMachine,
+	hanging_robe: buildHangingRobe,
 	costume_trunk: buildCostumeTrunk, fake_guest_book: buildFakeGuestBook, spare_wig: buildSpareWig,
 	hotel_lamp: buildHotelLamp, roulette: buildRoulette, casino_chip_box: buildChipBox, debt_book: buildDebtBook,
 	casino_chips: buildCasinoChips,
@@ -116,6 +162,9 @@ export const views = {
 	regular_guest: { items: [{ name: 'costume_trunk', pos: [0, 0.25, 0] }, { name: 'fake_guest_book', pos: [0.75, 0.02, 0.2], rotY: -0.3 },
 		{ name: 'spare_wig', pos: [-0.7, 0.05, 0.2] }],
 		cam: { pos: [0, 1.1, 1.8], target: [0, 0.15, 0], fov: 38 } },
+	robes: { items: [{ name: 'robe_bag', pos: [0, 0.3, 0] }, { name: 'buyers_list', pos: [0.7, 0.01, 0.3], rotY: -0.3 },
+		{ name: 'embroidery_machine', pos: [-0.75, 0.16, 0.1], rotY: 0.4 }, { name: 'hanging_robe', pos: [1.3, 0.6, -0.3] }],
+		cam: { pos: [0.2, 1.2, 2.4], target: [0.2, 0.3, 0], fov: 40 } },
 	casino_13: { items: [{ name: 'roulette', pos: [0, 0.12, 0] }, { name: 'casino_chip_box', pos: [0.65, 0.06, 0.1], rotY: -0.3 },
 		{ name: 'debt_book', pos: [-0.6, 0.015, 0.2], rotY: 0.4 }, { name: 'casino_chips', pos: [0.4, 0.02, 0.5] }],
 		cam: { pos: [0, 1.1, 1.8], target: [0, 0.1, 0], fov: 38 } },
