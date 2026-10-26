@@ -85,3 +85,11 @@ nuevo: la capa y los colmillos de la banda, la caja de fusibles, la heladera, la
   cuatro de la banda llevan capa negra forrada de rojo, cuello alto y dos colmillos de plástico debajo de la máscara.
   La máscara no está pintada de blanco: con la capa y los colmillos ya se entiende. Capturas en
   `/mnt/project-files/sangre/paso1-*.png`.
+- **Paso 2 (la luz):** un vampiro que queda dentro del haz de la linterna de un policía (a menos de 10 m, dentro del
+  cono y sin una pared en el medio) se tapa la cara con la capa ("¡La luz no!") durante 4 s, y vuelve a empezar
+  mientras lo siguen alumbrando. Tapado no ve a nadie ni se mueve, y de frente se lo puede esposar (sin taparse,
+  esquiva las esposas como en la base). La caja de fusibles está en la pared del fondo del pasillo, al lado de la
+  puerta de atrás: con E se prende la luz del banco por 60 s. Cada vampiro se tapa una vez y se pone lentes de sol, y
+  después la luz del techo ya no le hace nada (la linterna sí). A los 60 s El Conde grita "¡Que alguien corte la luz
+  otra vez!" y se apaga. Por ahora nadie va hasta la caja a cortarla: se apaga sola. Capturas en
+  `/mnt/project-files/sangre/paso2-*.png`.
