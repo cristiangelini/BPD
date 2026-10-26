@@ -11,6 +11,8 @@ extends Node
 ## where he stands before going back; the party goes on.
 
 signal blew(cake: BirthdayCake)
+## He's off to `cake` (the courier laughs).
+signal going(cake: BirthdayCake)
 
 enum State { WAITING, GOING, SINGING, CRYING, RETURNING, DONE }
 
@@ -135,6 +137,7 @@ func _go() -> void:
 	walks.set_physics_process(false)
 	_target = Vector3(cake.global_position.x, walks.podium.y, cake.global_position.z - BEHIND)
 	politician.say("BIRTHDAY_TO_CAKE")
+	going.emit(cake)
 
 
 func _sing() -> void:
@@ -192,6 +195,11 @@ func _back() -> void:
 	speech.hold_lines(Politician.SAY_TIME)
 	_light_next()
 	state = State.WAITING
+
+
+## The good cakes he blew (he likes blowing them).
+func good_blown() -> int:
+	return cakes.filter(func(cake: BirthdayCake) -> bool: return cake.blown and not cake.rigged).size()
 
 
 func _light_next() -> void:

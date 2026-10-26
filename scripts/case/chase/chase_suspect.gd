@@ -45,10 +45,13 @@ const MODELS := {
 	# The market's spiteful vendor, off his vegetable trike (politico-mercado.md).
 	"vendor": preload("res://assets/models/npc_puestero.glb"),
 	"double": preload("res://assets/models/npc_politico.glb"),
+	"courier": preload("res://assets/models/npc_repartidor.glb"),
 }
 const HECKLER := "heckler_"
 ## The deputy's double (politico-doble.md), off on the kick scooter.
 const DOUBLE := "double"
+## The cake shop's courier at the deputy's birthday (politico-cumple.md), off on the kick scooter.
+const COURIER := "courier"
 ## The golf thief who runs off (persecucion-lugares.md): at this speed (m/s), away from cops this close, staying
 ## this far inside the club's fence and off its lakes. Cuffed, he stops; once the cuffs run out he runs again.
 const RUN_SPEED := 5.0
