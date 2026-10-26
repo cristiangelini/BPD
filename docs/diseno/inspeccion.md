@@ -15,8 +15,9 @@ alguien mirando, cuando todo sale mal igual.
   modelo pera de `tools/modelgen` y se cae como ragdoll como todos.
 - Aparece en la sala de guardia con el comisario, que la presenta nervioso: "Ella es la inspectora Regla. Sonrían.
   ¡Sonrían más!".
-- **Va con ellos a todos lados (propuesta):** sube al asiento de atrás del patrullero (E: "Suba, inspectora"), baja en
-  el lugar del caso y camina detrás del grupo a 3 m. Si la dejan atrás, protesta y anota.
+- **Va con ellos a todos lados (propuesta):** sube sola atrás del patrullero cuando alguien se sienta a manejar y ella
+  está al lado, baja cuando el auto queda quieto sin conductor y camina detrás del grupo a 3 m. Si la dejan atrás,
+  protesta y anota.
 - Habla en globitos cortos cada vez que anota algo ("Anotado." "Interesante..." "¡Esto va al informe!").
 
 ## El informe (la nota)
@@ -69,3 +70,13 @@ La nota no baja de 0 ni pasa de 100.
 1. ¿En el último turno decide solo el informe (recomendado), o hace falta llegar a la cuota y al informe?
 2. ¿La inspectora va con ellos a todos lados (recomendado), o se queda en la comisaría y los mira por la radio?
 3. ¿Aprobar con 60 de 100 (recomendado), o más difícil (70)?
+
+## Hecho así
+- **Paso 2 (la inspectora):** `CityInspector` (`scripts/npc/city_inspector.gd`), modelo `npc_inspectora` en
+  `tools/modelgen/models/npcs.js`. Llega al caso en el último turno de la partida (`CityInspector.due()`; con
+  `--inspection`, en cualquier caso) y dice "Severina Regla, inspección de la ciudad. Hagan como si no estuviera.".
+  Sigue al policía más cercano a 3 m, y si queda a más de 40 m aparece detrás de él. Si un patrullero con conductor
+  está a 3 m o menos, sube atrás (parada, como los dueños detenidos, un poco más atrás para que entren los dos) y no
+  ocupa el lugar de ningún policía. Baja por atrás del auto cuando queda quieto sin nadie al volante. Las esposas no se
+  le cierran ("¡Soy funcionaria! Esto va al informe."). Capturas: `campana/inspectora.png`,
+  `inspectora_sigue.png` e `inspectora_auto.png`.

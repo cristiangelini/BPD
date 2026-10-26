@@ -4139,6 +4139,15 @@ CRASH_CALM_0,"Está bien, está bien. Lo corro.","Fine, fine. I'll move it.","T�
 CRASH_CALM_1,Tiene razón. Respiro.,You're right. Breathing.,Tem razão. Respirando.
 CRASH_CALM_2,"Bueno, fue un raspón.","Okay, it was a scratch.","Tá, foi só um arranhão."
 SHIFT_STREET,Eventos en la calle,Street events,Eventos na rua
+HINT_INSPECTOR_ARRIVES,Llegó la inspectora de la ciudad: va contigo todo el turno y anota todo.,The city inspector is here: she goes with you all shift and writes everything down.,A inspetora da cidade chegou: ela vai com você o turno todo e anota tudo.
+INSPECTOR_ARRIVES,"Severina Regla, inspección de la ciudad. Hagan como si no estuviera.","Severina Regla, city inspection. Act as if I'm not here.","Severina Regla, inspeção da cidade. Façam de conta que não estou aqui."
+INSPECTOR_NOTE_1,Mmm.,Hmm.,Hum.
+INSPECTOR_NOTE_2,Anotado.,Noted.,Anotado.
+INSPECTOR_NOTE_3,Interesante...,Interesting...,Interessante...
+INSPECTOR_NOTE_4,¿Siempre es así?,Is it always like this?,É sempre assim?
+INSPECTOR_IN_CAR,Yo voy atrás. Manejen con cuidado.,I'll ride in the back. Drive carefully.,Eu vou atrás. Dirijam com cuidado.
+INSPECTOR_OUT,Bueno. Veamos.,Well. Let's see.,Bom. Vejamos.
+INSPECTOR_CUFFED,¡Soy funcionaria! Esto va al informe.,I'm a city official! This goes in the report.,Sou funcionária! Isso vai para o relatório.
 HINT_JAILED_BRIBE,"El guardia tiene cara de que se vende... y tú tienes la plata de las coimas en la cucheta. Llámalo desde la reja, pero ojo con la cámara.","The guard looks like he can be bought... and you have the bribe money on your bunk. Call him from the bars, but mind the camera.","O guarda tem cara de quem se vende... e você tem o dinheiro das propinas no beliche. Chame-o da grade, mas cuidado com a câmera."
 PROMPT_CALL_GUARD,"[E] ¡Psst, guardia!","[E] Psst, guard!","[E] Psiu, guarda!"
 PROMPT_PAY_GUARD,"[E] Pasarle el fajo por la reja","[E] Pass him the wad through the bars","[E] Passar o maço pela grade"
