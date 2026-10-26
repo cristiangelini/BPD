@@ -10,6 +10,7 @@ extends Node3D
 ## wagon parked in the side passage, nose to the street, with a roof rack. Step 3: the guilty neighbor, if he sees the
 ## cops go into doña Chola's house, carries his things out to his rack one by one and drives off with the main one.
 ## Step 4: the door clues (a letter for the 14, the newspaper and Don Sobre the mailman), one of the first two wrong.
+## Steps 5 to 7: his stories (STORIES), drawn with the seed or --story=<id>, each with its rig.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -57,6 +58,43 @@ const PAPER_AT := Vector3(2.5, GRASS_TOP + 0.05, 8.8)
 ## The mailman rides the sidewalk in front of the lot, between two ends off it.
 const MAIL_Z := LOT_Z + 1.2
 const MAIL_ENDS := Vector2(-LOT_X - 8.0, LOT_X + 8.0)
+## The guilty neighbor's stories (casa-equivocada.md, "Las historias"), like Groomer.STORIES: what the comisario says
+## once it's guessed, its "find it" row, what it hides in his house in spots drawn with the seed (half heights, heavy
+## ones), the checklist rows of its extras and its rig. With "main_hidden" the first hidden item is the main evidence;
+## otherwise the rig places it. Steps 5 to 7 add two each.
+const STORIES := {
+	"bills": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_WH_BILLS_B", "BRIEF_WH_BILLS_C", "BRIEF_WH_BILLS_D"],
+		"find": "OBJ_FIND_WH_BILLS",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/printing_plate.tscn"), preload("res://scenes/props/fake_bills.tscn"),
+			preload("res://scenes/props/ink_pot.tscn")],
+		"half_heights": [0.04, 0.03, 0.1],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_FAKE_BILLS", "OBJ_EXTRA_INK_POT"],
+		"rig": preload("res://scripts/case/wrong_house/bills_rig.gd"),
+	},
+	"gnomes": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_WH_GNOMES_B", "BRIEF_WH_GNOMES_C", "BRIEF_WH_GNOMES_D"],
+		"find": "OBJ_FIND_WH_GNOMES",
+		"hidden": [preload("res://scenes/props/garden_list.tscn"), preload("res://scenes/props/loot_wheelbarrow.tscn")],
+		"half_heights": [0.005, 0.0],
+		"heavy": [false, true],
+		"extra_keys": ["OBJ_EXTRA_GARDEN_LIST", "OBJ_EXTRA_WHEELBARROW"],
+		"rig": preload("res://scripts/case/wrong_house/gnomes_rig.gd"),
+	},
+}
+## Where the guilty neighbor hides his things, in house space: the floor of each spot (an item rests its half height
+## over it), and whether a heavy one fits. All downstairs, handy for him, and none in his way out the back.
+const SPOTS := [
+	{"id": "in_fridge", "at": Vector3(6.4, FLOOR_TOP + 0.05, 6.4), "heavy": false},
+	{"id": "in_bathtub", "at": Vector3(-5.6, FLOOR_TOP + 0.05, -3.2), "heavy": true},
+	{"id": "in_washer", "at": Vector3(6.4, FLOOR_TOP + 0.05, -3.3), "heavy": false},
+	{"id": "under_sofa", "at": Vector3(-3.5, FLOOR_TOP, 2.5), "heavy": false},
+	{"id": "on_counter", "at": Vector3(4.5, FLOOR_TOP + 0.9, 2.0), "heavy": false},
+	{"id": "kitchen_floor", "at": Vector3(2.5, FLOOR_TOP, 5.8), "heavy": true},
+	{"id": "on_the_tv", "at": Vector3(-3.5, 0.95, 6.5), "heavy": false},
+]
 ## Which of the two door clues is the wrong one (the mailman never lies).
 const MAILBOX := 0
 const PAPER := 1
@@ -88,6 +126,14 @@ const WAGON_ROOF := Color(0.45, 0.34, 0.24)
 const GLASS := Color(0.55, 0.72, 0.85)
 
 @export var case_seed := 0
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where (SPOTS indexes), and its extras.
+var main: Evidence
+var rig: WrongHouseRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
 ## The guilty neighbor's house: LEFT (west) or RIGHT (east).
 var guilty := LEFT
 ## By house (LEFT, RIGHT): its front door, its pots, which pot has the key, its ornaments and its station wagon.
@@ -119,6 +165,8 @@ func _ready() -> void:
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
 	guilty = pick_guilty(case_seed, OS.get_cmdline_user_args())
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
 	_build = PlaceBuilder.new($Built)
 	_build_lot()
 	for house in 2:
@@ -127,6 +175,7 @@ func _ready() -> void:
 	_bake_navigation()
 	_place_neighbor()
 	_place_door_clues()
+	_place_story()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("wrong_house")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -154,11 +203,45 @@ func _place_neighbor() -> void:
 	neighbor.position = at(guilty, GUILTY_AT)
 	neighbor.home = neighbor.position
 	neighbor.house_rect = house_rect(guilty)
+	neighbor.grounds = grounds_rect(guilty)
 	var side := -1.0 if guilty == LEFT else 1.0
 	neighbor.rack = Vector3(side * WAGON_X, WAGON_SIZE.y + 0.55, WAGON_Z - 0.6)
 	neighbor.rack_spot = Vector3(side * WAGON_X, FLOOR_TOP, WAGON_Z - WAGON_SIZE.z / 2 - 0.8)
 	add_child(neighbor)
 	neighbor.fled.connect(_on_fled)
+
+
+## The story's hidden items in the guilty house, in spots drawn with the seed, then its rig; he takes the extras out
+## first and the main evidence last.
+func _place_story() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = at(guilty, SPOTS[hidden_spots[i]].at) + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+	rig = (story.rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	var loot: Array[Grabbable] = []
+	loot.assign(extras)
+	loot.append(main)
+	neighbor.loot = loot
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
 
 
 ## The door clues: a letter for the 14 in one mailbox, the 14's newspaper in one front garden and the mailman. One
@@ -219,6 +302,11 @@ static func pick_lying(seed_value: int) -> int:
 ## How a house is named from the sidewalk: the west one is on the left.
 static func side_key(house: int) -> String:
 	return "WH_SIDE_LEFT" if house == LEFT else "WH_SIDE_RIGHT"
+
+
+## A house and its back yard on the ground (x, z): what the guilty neighbor takes out has to be in there.
+static func grounds_rect(house: int) -> Rect2:
+	return Rect2(house_x(house) - HALF_U, -LOT_Z, HALF_U * 2, FRONT_Z + LOT_Z)
 
 
 ## A house's floor on the ground (x, z).
