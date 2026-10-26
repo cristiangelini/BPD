@@ -126,6 +126,12 @@ Los pesos y valores siguen la escala de la fábrica: la principal vale unos 1000
      leerlo con E es la pista propia ("¿Y si lo abducen, señora?"). Cada escritorio tiene un teléfono: uno suena al
      empezar y otro cada 8 s (hasta 3 a la vez); con E lo atiendes y un jubilado pregunta si la póliza cubre a las vacas
      (5 llamadas distintas). Capturas `paso5-ovni-*` en `seguros/`.
+   - **Cómo quedó la trituradora (propuesta):** la caja de reclamos sin pagar (4 kg) va escondida con la bolsa de
+     papel picado y la orden de "triturar todo". Un rastro de papelitos blancos va desde un lugar a la vista (un
+     pasillo o la puerta del cuarto) hasta el escondite de la caja; mirarlo con E es la pista propia. La trituradora
+     del archivo ahora es un modelo (negra, con ranura y ventanita) y se come todo lo que se suelte arriba que pese
+     hasta 6 kg ("¡GRRRRR!"): un extra se pierde, y si se come la caja de reclamos se pierde el caso. Lo que un
+     policía todavía tiene agarrado no se lo come. Capturas `paso5-triturar-*` en `seguros/`.
 6. "Jugar" sortea entre los 6 lugares de allanamiento.
 7. El online (Mirta, Coca, las sillas y los papeles en todas las PC).
 

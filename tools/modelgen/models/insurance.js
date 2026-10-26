@@ -230,16 +230,71 @@ export function buildDeskPhone() {
 	return b.build();
 }
 
+// The box of unpaid claims: a grey archive box 0.36 x 0.26 x 0.3 m with a red "SIN PAGAR" band (a red stripe) and
+// claim forms sticking out. Main evidence of the shredder.
+export function buildClaimsBox() {
+	const b = new Builder('claims_box');
+	b.add('box', mat('archive_grey', 0x8a8e96), new THREE.BoxGeometry(0.36, 0.24, 0.3), { pos: V(0, -0.01, 0) });
+	b.add('band', mat('script_red', 0xd23a3a), new THREE.BoxGeometry(0.365, 0.05, 0.305), { pos: V(0, 0.02, 0) });
+	for (let i = 0; i < 5; i++) b.add('forms', mat('form_pink', i % 2 ? 0xf2c8d2 : 0xf6f6f0), new THREE.BoxGeometry(0.3, 0.04, 0.004), { pos: V(0, 0.12, -0.1 + i * 0.05), rot: [0.08 * (i - 2), 0, 0] });
+	return b.build();
+}
+
+// A clear bag 0.35 m tall stuffed with shredded paper strips, tied at the top. Extra of the shredder.
+export function buildShredBag() {
+	const b = new Builder('shred_bag');
+	b.add('bag', mat('bag_clear', 0xdfe6ea), ellipsoid(0.17, 0.16, 0.15, 10, 6), { pos: V(0, -0.02, 0) });
+	b.add('knot', mat('bag_clear', 0xdfe6ea), ellipsoid(0.04, 0.04, 0.04, 6, 4), { pos: V(0, 0.15, 0) });
+	for (let i = 0; i < 14; i++) {
+		const a = i * 2.4, r = 0.12 + (i % 3) * 0.015;
+		b.add('strips', mat('policy_paper', 0xf6f6f0), new THREE.BoxGeometry(0.008, 0.1, 0.002), { pos: V(Math.cos(a) * r, -0.04 + (i % 4) * 0.035, Math.sin(a) * r), rot: [0.3 * (i % 3), a, 0.4] });
+	}
+	return b.build();
+}
+
+// The "shred everything" order: a memo 0.21 x 0.3 m with a big red stamp and the boss's signature. Extra of the
+// shredder.
+export function buildShredOrder() {
+	const b = new Builder('shred_order');
+	b.add('sheet', mat('policy_paper', 0xf6f6f0), new THREE.BoxGeometry(0.21, 0.003, 0.3), { pos: V(0, 0, 0) });
+	b.add('stamp', mat('script_red', 0xd23a3a), new THREE.BoxGeometry(0.15, 0.001, 0.05), { pos: V(0, 0.002, -0.08), rot: [0, 0.2, 0] });
+	for (let i = 0; i < 4; i++) b.add('lines', mat('folder_text', 0x3a3a40), new THREE.BoxGeometry(0.16, 0.001, 0.007), { pos: V(0, 0.002, 0.0 + i * 0.025) });
+	b.add('signature', mat('postit_ink', 0x2a3a8a), new THREE.TorusGeometry(0.025, 0.003, 3, 8), { pos: V(0.04, 0.002, 0.12), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
+// The archive's shredder: a black cabinet 0.5 x 0.8 x 0.4 m with a wide slot on top, a red light and a bin of
+// shredded paper behind its window. It eats whatever is put in it.
+export function buildShredder() {
+	const b = new Builder('shredder');
+	const black = mat('shredder_black', 0x26262b);
+	b.add('body', black, new THREE.BoxGeometry(0.5, 0.7, 0.4), { pos: V(0, 0.35, 0) });
+	b.add('head', mat('shredder_grey', 0x5a5a60), new THREE.BoxGeometry(0.52, 0.1, 0.42), { pos: V(0, 0.75, 0) });
+	b.add('slot', black, new THREE.BoxGeometry(0.4, 0.012, 0.04), { pos: V(0, 0.8, 0) });
+	b.add('window', mat('bag_clear', 0xdfe6ea), new THREE.BoxGeometry(0.3, 0.3, 0.01), { pos: V(0, 0.3, 0.2) });
+	for (let i = 0; i < 8; i++) b.add('strips', mat('policy_paper', 0xf6f6f0), new THREE.BoxGeometry(0.006, 0.08, 0.004), { pos: V(-0.12 + i * 0.034, 0.22 + (i % 3) * 0.03, 0.205), rot: [0, 0, 0.3 * ((i % 3) - 1)] });
+	b.add('light', mat('shredder_light', 0xe84a4a), ellipsoid(0.015, 0.015, 0.01, 6, 3), { pos: V(0.2, 0.75, 0.212) });
+	return b.build();
+}
+
 export const models = {
 	office_chair: buildOfficeChair, office_monitor: buildOfficeMonitor, glass_trophy: buildGlassTrophy,
 	coffee_machine: buildCoffeeMachine, water_cooler: buildWaterCooler,
 	toy_car: buildToyCar, crash_model: buildCrashModel, crash_photos: buildCrashPhotos, toy_car_box: buildToyCarBox,
 	claim_photos: buildClaimPhotos, code_postit: buildCodePostit, account_book: buildAccountBook,
 	ufo_policies: buildUfoPolicies, ufo_photos: buildUfoPhotos, toy_saucer: buildToySaucer, sales_script: buildSalesScript,
-	desk_phone: buildDeskPhone,
+	desk_phone: buildDeskPhone, claims_box: buildClaimsBox, shred_bag: buildShredBag, shred_order: buildShredOrder,
+	shredder: buildShredder,
 };
 
 export const views = {
+	shred_goods: {
+		items: [
+			{ name: 'shredder', pos: [-0.4, 0, -0.2] }, { name: 'claims_box', pos: [0.2, 0.13, 0.0] },
+			{ name: 'shred_bag', pos: [0.6, 0.18, -0.2] }, { name: 'shred_order', pos: [0.1, 0.002, 0.4], rotY: 0.3 },
+		],
+		cam: { pos: [0, 1.2, 2.0], target: [0, 0.35, 0], fov: 40 },
+	},
 	ufo_goods: {
 		items: [
 			{ name: 'ufo_policies', pos: [-0.25, 0.1, -0.1] }, { name: 'ufo_photos', pos: [0.3, 0.01, 0.3] },
