@@ -526,6 +526,10 @@ func shown_peel(at: Vector3) -> void:
 	drops.peel_at(at)
 
 
+func shown_confetti(at: Vector3) -> void:
+	drops.confetti_at(at)
+
+
 ## The toll barrier that `index` names among the level's (in tree order, the same on every PC) broke on the host.
 func shown_barrier_broken(index: int) -> void:
 	var barriers := _barriers()

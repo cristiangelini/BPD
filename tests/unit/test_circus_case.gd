@@ -3,7 +3,7 @@ extends GutTest
 ## Circus move step 5 (control-circo.md, "Cómo es" 6 to 8): the cuffs go on whoever's in an open cage: El Peludo comes
 ## out cuffed and leaves the jewels in the straw (+100 in the patrol car's trunk); a real animal won't be cuffed. If he
 ## gets past the checkpoint he runs off in his circus truck, dropping banana peels at every corner, and the patrol car
-## skids on them. Play draws the nine controls a ninth each.
+## skids on them. Play draws the circus move among the other controls.
 
 var level: Node3D
 var checkpoint: TrafficCheckpoint
@@ -137,7 +137,7 @@ func test_play_draws_the_circus_too() -> void:
 	for i in 900:
 		var variant := TrafficControlLevel.variant_from("", PackedStringArray(), i + 1)
 		count[variant] = count.get(variant, 0) + 1
-	assert_eq(count.size(), 9)
+	assert_eq(count.size(), TrafficControlLevel.VARIANTS.size())
 	assert_gt(count.circus_move, 60)
 
 

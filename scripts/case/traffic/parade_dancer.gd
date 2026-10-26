@@ -57,6 +57,26 @@ func use(_cop: Cop = null) -> void:
 		car.take_down(index)
 
 
+## The cuffs on them (step 5): El Antifaz, once taken down, is detained (TrafficCase.detain_dancer); on the float
+## nobody can be cuffed, and a real dancer taken down isn't the thief.
+func cuffed(_seconds: float) -> void:
+	if not car:
+		return
+	if not is_down:
+		car.say(tr("PARADE_TAKE_DOWN_FIRST"))
+	elif not thief:
+		car.say(tr("PARADE_NOT_THE_THIEF"))
+	else:
+		var case := TrafficCase.of(car)
+		if case:
+			case.detain_dancer(self)
+
+
+## The cuffs come off right away: he's taken out (a ChaseSuspect) or not the thief.
+func is_cuffed() -> bool:
+	return false
+
+
 ## Does `dance_step` for DANCE_SECONDS, `delay` seconds from now.
 func dance(dance_step: String, delay := 0.0) -> void:
 	step = dance_step

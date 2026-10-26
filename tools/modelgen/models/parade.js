@@ -251,11 +251,31 @@ export function buildHeldRibbon() {
 	return b.build();
 }
 
+// The parade queen's crown El Antifaz stole (step 5): a gold band with five points, a red gem on each and a velvet
+// cushion inside. Origin on the ground, about 26 cm across.
+export function buildParadeCrown() {
+	const b = new Builder('parade_crown');
+	const band = mat('crown_gold', 0xf0c030, { metalness: 0.5, roughness: 0.35 });
+	const velvet = mat('crown_velvet', 0xb01838);
+	const gem = mat('crown_gem', 0xe02a4a, { emissive: 0x400010 }), pearl = mat('crown_pearl', 0xf4f0e8);
+	b.add('velvet', velvet, ellipsoid(0.11, 0.08, 0.11, 10, 6), { pos: V(0, 0.08, 0) });
+	b.add('band', band, new THREE.CylinderGeometry(0.13, 0.12, 0.08, 16, 1, true), { pos: V(0, 0.04, 0) });
+	for (let i = 0; i < 5; i++) {
+		const a = i / 5 * Math.PI * 2;
+		const x = Math.sin(a) * 0.125, z = Math.cos(a) * 0.125;
+		b.add('band', band, new THREE.ConeGeometry(0.045, 0.12, 4), { pos: V(x, 0.14, z), rot: [0, -a, 0] });
+		b.add('gems', pearl, new THREE.SphereGeometry(0.014, 6, 4), { pos: V(x, 0.205, z) });
+		b.add('gems', gem, new THREE.OctahedronGeometry(0.018), { pos: V(x * 1.07, 0.045, z * 1.07) });
+	}
+	return b.build();
+}
+
 export const models = {
 	parade_float: buildParadeFloat, float_dragon: buildFloatDragon, float_ship: buildFloatShip, float_cake: buildFloatCake,
 	float_castle: buildFloatCastle, float_volcano: buildFloatVolcano, float_whale: buildFloatWhale,
 	float_rocket: buildFloatRocket, parade_dancer: buildParadeDancer, parade_arm: buildParadeArm,
 	held_pompom: buildHeldPompom, held_maracas: buildHeldMaracas, held_fan: buildHeldFan, held_ribbon: buildHeldRibbon,
+	parade_crown: buildParadeCrown,
 };
 
 const dancers = [[-0.6, -1.9], [0, -1.9], [0.6, -1.9], [-0.35, -1.1], [0.35, -1.1]].flatMap(([x, z]) => [
@@ -265,6 +285,10 @@ const dancers = [[-0.6, -1.9], [0, -1.9], [0.6, -1.9], [-0.35, -1.1], [0.35, -1.
 ]);
 
 export const views = {
+	parade_crown: {
+		items: [{ name: 'parade_crown', pos: [0, 0, 0] }],
+		cam: { pos: [0.4, 0.4, 0.6], target: [0, 0.1, 0], fov: 35 },
+	},
 	parade_float: {
 		items: [{ name: 'parade_float', pos: [0, 0, 0] }, { name: 'float_dragon', pos: [0, 0.94, 1.35] }, ...dancers],
 		cam: { pos: [5.5, 3.2, -5.5], target: [0, 1.2, 0], fov: 42 },
