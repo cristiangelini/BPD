@@ -145,6 +145,8 @@ Los pesos y valores siguen la escala de la fábrica: la principal vale unos 1000
      en la pared polvorienta de la sala de reuniones, entre los cuadros de la empresa. La póliza y los pomos de
      pintura van escondidos. Capturas `paso5-cuadro-*` en `seguros/`.
 6. "Jugar" sortea entre los 6 lugares de allanamiento.
+   - **Cómo quedó (propuesta):** "Jugar" sortea la oficina entre los allanamientos en sextos, igual que la casa del
+     abuelo, la panadería, la peluquería, la ferretería y la fábrica, y cada una de sus 6 historias sale por la semilla.
 7. El online (Mirta, Coca, las sillas y los papeles en todas las PC).
 
 ## Preguntas para Cristian

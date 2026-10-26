@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Insurance office, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory and the insurance office in sixths.
 - Insurance office, step 5: the insured painting story: 8 identical paintings hang on the walls until grabbed, the real one (drawn with the seed, 6 kg) has its signature upside down and the 7 copies are fines if they break, the clean mark of a frame in the meeting room is the clue, and the policy and the paint tubes are hidden.
 - Insurance office, step 5: the office accidents story: the 3 kg box of neck braces is hidden with the fake X-rays and the banana peels, the employees of the month all wear neck braces (the clue), and 6 wet patches with their "wet floor" signs make running cops skate on out of control.
 - Insurance office, step 5: the shredder story: the 4 kg box of unpaid claims is hidden with the bag of shredded paper and the "shred everything" order, a trail of paper bits leads to it (the clue), and the archive's shredder eats anything up to 6 kg let go on it, losing the case if it eats the box.
