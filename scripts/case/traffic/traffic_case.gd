@@ -19,7 +19,9 @@ extends Node
 ## another racer is a complaint too. His trophy is then on his racer's trunk lid: in the patrol car's trunk it adds 100.
 ## Past the checkpoint, he runs off faster than anyone and spins round at every corner (ChaseDrops.race). In the fog
 ## check (control-neblina.md) La Bruma's lighthouse lamp is on his trunk lid once he's cuffed, +100 in the patrol car's
-## trunk; past the checkpoint he runs off in the fog, headlights on, honking at every corner.
+## trunk; past the checkpoint he runs off in the fog, headlights on, honking at every corner. In the circus move
+## (control-circo.md) El Peludo is cuffed in his open cage, the jewels left in its straw (+100 in the patrol car's
+## trunk); past the checkpoint he runs off in his circus truck, dropping banana peels at every corner.
 
 signal detained(car: QueueCar, wanted: bool)
 
@@ -79,6 +81,7 @@ var _run_off_riders := [0, ""]
 var _run_off_race := {}
 ## La Bruma's headlights and horn when he ran off (FogCar.draw's), for guests too.
 var _run_off_fog := {}
+var _run_off_circus := {}
 var escort: OwnerEscort
 var solved_now := false
 ## The wanted car got past the checkpoint and the chase is on; whether it got away.
@@ -181,7 +184,7 @@ func keys_taken(_car: QueueCar) -> void:
 
 ## What adds to a solved case's pay: a gold watch or the pilot's remote, each packed car fined and each drunk's keys.
 func extras() -> Array:
-	var out := watch_bonus() + remote_bonus() + envelope_bonus() + trophy_bonus() + lamp_bonus()
+	var out := watch_bonus() + remote_bonus() + envelope_bonus() + trophy_bonus() + lamp_bonus() + jewels_bonus()
 	for i in crowd_fines:
 		out.append(CROWD_FINE_BONUS)
 	for i in drunk_keys:
@@ -232,6 +235,15 @@ func trophy_bonus() -> Array:
 	return []
 
 
+## El Peludo's jewels in the patrol car's trunk.
+func jewels_bonus() -> Array:
+	if patrol_car:
+		for item in patrol_car.delivered:
+			if item is CircusJewels:
+				return [CircusJewels.VALUE]
+	return []
+
+
 ## La Bruma's lighthouse lamp in the patrol car's trunk.
 func lamp_bonus() -> Array:
 	if patrol_car:
@@ -278,6 +290,9 @@ func detain(car: QueueCar) -> void:
 		car.say(tr("RACE_NOT_TURBO_LINE"))
 		_complaint()
 		return
+	if not car.circus.is_empty():
+		_detain_in_cage(car)
+		return
 	if car.racer:
 		detained.emit(car, true)
 		_take_out(car)
@@ -310,6 +325,26 @@ func detain(car: QueueCar) -> void:
 	# Let go, they drive off in a huff.
 	car.state = "going"
 	_complaint()
+
+
+## The cuffs on a circus truck (control-circo.md) go on whoever's in its cage, the door open: El Peludo comes out,
+## cuffed, and leaves the jewels in the straw; a real animal won't be cuffed. Its door shut, they wait.
+func _detain_in_cage(car: QueueCar) -> void:
+	var cage_door := car.get_node_or_null("Cage/Door") as CageDoor
+	if not cage_door or not cage_door.is_open:
+		car.say(tr("CIRCUS_OPEN_CAGE_FIRST"))
+		return
+	if not car.circus.get("costume", false):
+		car.say(tr("CIRCUS_NO_CUFFS_FOR_ANIMALS") % tr(CircusTruck.animal_name(car.circus.get("animal", ""))))
+		return
+	queue.pull_over(car)
+	detained.emit(car, car.wanted)
+	_take_out(car, CircusTruck.cage_mouth(car))
+	var animal := CircusTruck.animal_of(car)
+	if animal:
+		animal.visible = false
+	drop_jewels(car)
+	_hint_all("HINT_CIRCUS_JEWELS")
 
 
 ## The wanted driver gets out, cuffed, to be walked to the patrol car; a clown already out stays where he is (`at`).
@@ -363,6 +398,15 @@ func drop_trophy(car: QueueCar) -> RaceTrophy:
 	return trophy
 
 
+## El Peludo's jewels, in his empty cage's straw for a cop to take.
+func drop_jewels(car: QueueCar) -> CircusJewels:
+	var jewels := CircusJewels.new()
+	jewels.name = "CircusJewels"
+	get_parent().add_child(jewels)
+	jewels.global_transform = car.global_transform * Transform3D(Basis(), CircusTruck.JEWELS_AT)
+	return jewels
+
+
 ## La Bruma's lighthouse lamp, on his car's trunk lid for a cop to take.
 func drop_lamp(car: QueueCar) -> LighthouseLamp:
 	var lamp := LighthouseLamp.new()
@@ -388,7 +432,7 @@ func _on_passed(car: QueueCar, _sneaked: bool) -> void:
 	if car.puppeteer:
 		ghost_look = _ghost_follows()
 	if _run_off(car.global_transform, car.look, car.clown, car.fruit, car.crowd, car.plate, ghost_look, car.guest,
-			car.race if car.racer else {}, car.fog if car.fog_mode else {}):
+			car.race if car.racer else {}, car.fog if car.fog_mode else {}, car.circus):
 		car.queue_free()
 		return
 	lost = true
@@ -410,16 +454,18 @@ func _ghost_follows() -> int:
 ## car (`riders`) runs off slower, its faces on the windows, and one of the gang jumps out at every corner. The ghost
 ## car's pilot has it follow him (`ghost_look`, its paint) and cut in at every corner. El Turbo (`race`, his racer's
 ## looks) runs off in his racer, faster, spinning at every corner. La Bruma (`fog`, his headlights and horn) runs off
-## with his headlights on, honking at every corner.
+## with his headlights on, honking at every corner. El Peludo (`circus`, his truck's) runs off in his circus truck, in
+## his cage, dropping banana peels at every corner.
 func _run_off(at: Transform3D, look: int, clown := false, fruit := false, riders := 0, plate := "",
-		ghost_look := -1, wedding := false, race: Dictionary = {}, fog: Dictionary = {}) -> bool:
+		ghost_look := -1, wedding := false, race: Dictionary = {}, fog: Dictionary = {},
+		circus: Dictionary = {}) -> bool:
 	var level := get_parent()
 	_run_off_look = look
 	var city := level.get_node_or_null("City") as Node3D
 	if not city or not patrol_car:
 		return false
 	var kind := SuspectCar.CLOWN_CAR if clown else SuspectCar.FRUIT_TRUCK if fruit \
-		else "traffic_%d" % (look % TrafficCar.MODELS.size())
+		else SuspectCar.CIRCUS_TRUCK if not circus.is_empty() else "traffic_%d" % (look % TrafficCar.MODELS.size())
 	chase = ChaseCase.begin(level, kind, at, patrol_car, city, case_seed)
 	if fruit:
 		QueueCar.paint_model(chase.truck, look)
@@ -446,6 +492,11 @@ func _run_off(at: Transform3D, look: int, clown := false, fruit := false, riders
 		_run_off_fog = fog
 		if not chase.truck.has_node("Lamp"):
 			FogCar.dress(chase.truck, fog)
+	if not circus.is_empty():
+		chase.drops.bananas = true
+		_run_off_circus = circus
+		if not chase.truck.has_node("Cage"):
+			CircusTruck.dress_runaway(chase.truck, circus)
 	chase.who = "clown" if clown else "driver"
 	chase.online = online
 	chase.follower = follower
@@ -545,9 +596,10 @@ func snapshot() -> Dictionary:
 		var clown := chase.suspect_id == SuspectCar.CLOWN_CAR
 		var fruit := chase.suspect_id == SuspectCar.FRUIT_TRUCK
 		state.run_off = [chase.truck.global_transform if is_instance_valid(chase.truck) else Transform3D(),
-			_run_off_look if clown or fruit else int(chase.suspect_id.trim_prefix("traffic_")), clown, fruit,
+			_run_off_look if clown or fruit or not _run_off_circus.is_empty()
+				else int(chase.suspect_id.trim_prefix("traffic_")), clown, fruit,
 			_run_off_riders[0], _run_off_riders[1], chase.drops.ghost_look, chase.drops.wedding,
-			_run_off_race, _run_off_fog]
+			_run_off_race, _run_off_fog, _run_off_circus]
 		state.riders_left = chase.drops.riders_left
 		state.honks = chase.drops.honks
 	return state
@@ -589,13 +641,14 @@ func apply_snapshot(state: Dictionary) -> void:
 			escort.follower = true
 			escort.in_car_hint = "HINT_TRAFFIC_IN_CAR"
 			_hint_all("HINT_RACE_TROPHY" if plan and plan.race else "HINT_FOG_LAMP" if plan and plan.fog
-				else "HINT_TRAFFIC_GOT_IT")
+				else "HINT_CIRCUS_JEWELS" if plan and plan.circus else "HINT_TRAFFIC_GOT_IT")
 	if state.has("chase") and not chase:
 		var run_off: Array = state.run_off
 		_run_off(run_off[0], run_off[1], run_off.size() > 2 and run_off[2], run_off.size() > 3 and run_off[3],
 			run_off[4] if run_off.size() > 4 else 0, run_off[5] if run_off.size() > 5 else "",
 			run_off[6] if run_off.size() > 6 else -1, run_off.size() > 7 and run_off[7],
-			run_off[8] if run_off.size() > 8 else {}, run_off[9] if run_off.size() > 9 else {})
+			run_off[8] if run_off.size() > 8 else {}, run_off[9] if run_off.size() > 9 else {},
+			run_off[10] if run_off.size() > 10 else {})
 	_follow_convoy(state.get("taken_from", ""), state.get("clean", []))
 	if chase and state.has("chase"):
 		chase.apply_snapshot(state.chase)

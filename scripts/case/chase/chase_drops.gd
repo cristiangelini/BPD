@@ -14,8 +14,9 @@ extends Node
 ## him, in the patrol car's way (ChaseGhost). The wedding check's El Colado (control-boda.md) cuts CANS_PER_CORNER of
 ## his tin cans loose at every corner he turns, clattering down the street (ChaseCan). The street race's El Turbo
 ## (control-carrera.md) spins round at every corner he turns, to show off (SuspectCar.spin). The fog check's La Bruma
-## (control-neblina.md) honks at every corner he turns, his horn's bubble seen through the fog (HornBubble). Every
-## number here is (propuesta).
+## (control-neblina.md) honks at every corner he turns, his horn's bubble seen through the fog (HornBubble). The
+## circus move's El Peludo (control-circo.md) drops banana peels: the patrol car skids on them. Every number here is
+## (propuesta).
 
 const DRIP_EVERY := 3.0
 ## A puddle's size (m), how long it lasts, and the grip left on it.
@@ -58,6 +59,14 @@ const GHOST_BEHIND := 9.0
 const GHOST_SIDE := 2.0
 const GHOST_CLEAR := 7.0
 const CANS_PER_CORNER := 3
+## The circus move's El Peludo (control-circo.md) drops this many banana peels at every corner he turns, a little apart
+## across the street; the patrol car's tires lose their grip on one (PEEL_GRIP) for PEEL_SECONDS (propuesta).
+const PEELS_PER_CORNER := 3
+const PEEL_SPREAD := 1.6
+const PEEL_RADIUS := 0.9
+const PEEL_SECONDS := 30.0
+const PEEL_GRIP := 0.12
+const BANANA_PEEL := preload("res://assets/models/banana_peel.glb")
 const MAX_CANS := 18
 ## Cut loose, a can rolls back this fast, give or take.
 const CAN_ROLL := 3.0
@@ -77,6 +86,9 @@ var ghost: ChaseGhost
 ## The runaway is the wedding's El Colado: his cans clatter off at the corners.
 var wedding := false
 var cans: Array[ChaseCan] = []
+## The runaway is the circus move's El Peludo: banana peels at the corners, [model, seconds left] each.
+var bananas := false
+var peels: Array[Array] = []
 ## The runaway is the street race's El Turbo: he spins at the corners.
 var race := false
 ## The runaway is the fog check's La Bruma: his horn (FogCar.horn_text), -1 otherwise; its bubble over his car.
@@ -137,8 +149,13 @@ func _physics_process(delta: float) -> void:
 		if puddle[1] <= 0.0:
 			(puddle[0] as Node).queue_free()
 			puddles.erase(puddle)
-	var slippery := on_puddle(case.car.global_position)
-	case.car.grip = weather_grip * (PUDDLE_GRIP if slippery else 1.0)
+	for peel in peels.duplicate():
+		peel[1] -= delta
+		if peel[1] <= 0.0:
+			(peel[0] as Node).queue_free()
+			peels.erase(peel)
+	var at := case.car.global_position
+	case.car.grip = weather_grip * (PEEL_GRIP if on_peel(at) else PUDDLE_GRIP if on_puddle(at) else 1.0)
 
 
 ## Whether `at` is on an ice cream puddle.
@@ -148,6 +165,35 @@ func on_puddle(at: Vector3) -> bool:
 		if Vector2(at.x - center.x, at.z - center.z).length() < PUDDLE_RADIUS:
 			return true
 	return false
+
+
+## Whether `at` is on a banana peel.
+func on_peel(at: Vector3) -> bool:
+	for peel in peels:
+		var center: Vector3 = (peel[0] as Node3D).global_position
+		if Vector2(at.x - center.x, at.z - center.z).length() < PEEL_RADIUS:
+			return true
+	return false
+
+
+## The `i`th banana peel of a corner on the street behind him, across it from the others.
+func drop_peel(i := 0) -> Node3D:
+	var at := _behind() + case.truck.global_basis.x * PEEL_SPREAD * (i - (PEELS_PER_CORNER - 1) / 2.0)
+	at.y = 0.02
+	if case.online and not case.follower:
+		case.online.tell_chase("shown_peel", [at])
+	return peel_at(at)
+
+
+## A banana peel at `at` (on a guest, the host's).
+func peel_at(at: Vector3) -> Node3D:
+	var peel: Node3D = BANANA_PEEL.instantiate()
+	peel.name = "BananaPeel"
+	case.get_parent().add_child(peel, true)
+	peel.global_position = at
+	peel.rotation.y = _rng.randf() * TAU
+	peels.append([peel, PEEL_SECONDS])
+	return peel
 
 
 ## A puddle of melted ice cream on the street behind him.
@@ -195,6 +241,9 @@ func _on_corner(turned: bool) -> void:
 		case.truck.spin()
 	if fog_horn >= 0:
 		honk()
+	if bananas:
+		for i in PEELS_PER_CORNER:
+			drop_peel(i)
 
 
 ## La Bruma can't help it: he honks, and his horn's bubble shows over his car through the fog.

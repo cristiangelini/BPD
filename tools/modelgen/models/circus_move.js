@@ -224,10 +224,45 @@ export function buildFoodBucket() {
 	return b.build();
 }
 
+// El Peludo's loot from the jewelry store (step 5): a purple velvet sack tied with a gold cord, a necklace and gems
+// spilling out of its mouth. Origin on the ground, about 35 cm across.
+export function buildJewelSack() {
+	const b = new Builder('jewel_sack');
+	const velvet = mat('velvet', 0x6a2a8a), cord = mat('cord_gold', 0xe0b840, { metalness: 0.5, roughness: 0.4 });
+	const gems = [mat('gem_red', 0xe02a4a, { emissive: 0x400010 }), mat('gem_blue', 0x2a7ae0, { emissive: 0x081a40 }),
+		mat('gem_green', 0x2ac07a, { emissive: 0x08301a }), mat('pearl', 0xf4f0e8)];
+	b.add('sack', velvet, ellipsoid(0.16, 0.14, 0.15, 10, 7), { pos: V(0, 0.14, 0) });
+	b.add('sack', velvet, new THREE.ConeGeometry(0.07, 0.12, 8), { pos: V(0, 0.3, 0), rot: [Math.PI, 0, 0] });
+	b.add('cord', cord, new THREE.TorusGeometry(0.05, 0.012, 5, 10), { pos: V(0, 0.27, 0), rot: [Math.PI / 2, 0, 0] });
+	for (let i = 0; i < 9; i++) {
+		const a = i / 9 * Math.PI * 1.2 - 0.3;
+		b.add('gems', gems[3], new THREE.SphereGeometry(0.018, 6, 4), { pos: V(0.12 + Math.cos(a) * 0.1, 0.02, 0.1 + Math.sin(a) * 0.08) });
+	}
+	for (let i = 0; i < 5; i++) {
+		b.add('gems', gems[i % 3], new THREE.OctahedronGeometry(0.03), { pos: V(-0.05 + i * 0.05, 0.025, 0.2 + (i % 2) * 0.04) });
+	}
+	return b.build();
+}
+
+// A banana peel on the street (step 5), its four strips splayed out, yellow with brown tips. Origin on the ground.
+export function buildBananaPeel() {
+	const b = new Builder('banana_peel');
+	const yellow = mat('peel_yellow', 0xf2d23a), brown = mat('peel_brown', 0x6a4a1a);
+	b.add('peel', yellow, ellipsoid(0.05, 0.04, 0.05, 8, 5), { pos: V(0, 0.03, 0) });
+	b.add('peel', brown, new THREE.CylinderGeometry(0.012, 0.015, 0.05, 6), { pos: V(0, 0.07, 0) });
+	for (let i = 0; i < 4; i++) {
+		const a = i / 4 * Math.PI * 2 + 0.3;
+		b.add('peel', yellow, ellipsoid(0.035, 0.01, 0.12, 6, 3), { pos: V(Math.cos(a) * 0.1, 0.012, Math.sin(a) * 0.1), rot: [0, -a + Math.PI / 2, 0] });
+		b.add('peel', brown, ellipsoid(0.02, 0.011, 0.02, 5, 3), { pos: V(Math.cos(a) * 0.21, 0.012, Math.sin(a) * 0.21) });
+	}
+	return b.build();
+}
+
 export const models = {
 	circus_truck: buildCircusTruck, circus_cage: buildCircusCage, circus_cage_door: buildCircusCageDoor,
 	animal_lion: buildLion, animal_bear: buildBear, animal_gorilla: buildGorilla, animal_monkey: buildMonkey,
 	animal_zebra: buildZebra, animal_kangaroo: buildKangaroo, food_bucket: buildFoodBucket,
+	jewel_sack: buildJewelSack, banana_peel: buildBananaPeel,
 };
 
 export const views = {
@@ -235,6 +270,10 @@ export const views = {
 		items: [{ name: 'circus_truck', pos: [0, 0, 0] }, { name: 'circus_cage', pos: [0, 0.8, -0.95] },
 			{ name: 'circus_cage_door', pos: [-0.95, 0.8, -2.2] }, { name: 'animal_lion', pos: [0, 0.9, -0.95], rotY: Math.PI }],
 		cam: { pos: [4.5, 2.6, -5.5], target: [0, 1.2, -0.6], fov: 40 },
+	},
+	jewel_sack: {
+		items: [{ name: 'jewel_sack', pos: [0, 0, 0] }, { name: 'banana_peel', pos: [0.5, 0, 0.1] }],
+		cam: { pos: [0.3, 0.6, 1.1], target: [0.25, 0.1, 0.05], fov: 35 },
 	},
 	food_bucket: {
 		items: [{ name: 'food_bucket', pos: [0, 0, 0] }],

@@ -39,6 +39,8 @@ const DRIVER_AT := Vector3(0.5, -0.05, 1.1)
 const SIGN_AT := Vector3(1.07, 1.05, 1.0)
 ## The animal stands a bit back from the door, facing it (and the cops behind the truck).
 const ANIMAL_AT := Vector3(0, 0.1, 0.2)
+## Where El Peludo's jewels are left once he's cuffed (step 5): in his cage's straw, by the door.
+const JEWELS_AT := Vector3(0.3, 0.95, -1.8)
 ## The patrol car's food buckets (step 2), and what each animal eats.
 const FOODS: Array[String] = ["bananas", "fish", "meat", "carrots"]
 const DIET := {"lion": "meat", "bear": "fish", "gorilla": "bananas", "monkey": "bananas", "seal": "fish",
@@ -94,7 +96,13 @@ static func animal_name(animal: String) -> String:
 static func build(car: QueueCar, traits: Dictionary) -> void:
 	car._add_box(Vector3(2.1, 1.55, 1.95), Vector3(0, 0.975, 1.325))
 	car._add_box(Vector3(2.1, 0.6, 2.65), Vector3(0, 0.5, -0.975))
-	car._add_box(CAGE_SIZE, CAGE_AT + Vector3(0, CAGE_SIZE.y / 2, 0))
+	# The cage, hollow so its straw holds what's left in it: floor, roof, the sides and the front; the door's its own.
+	var mid := CAGE_AT + Vector3(0, CAGE_SIZE.y / 2, 0)
+	car._add_box(Vector3(CAGE_SIZE.x, 0.1, CAGE_SIZE.z), CAGE_AT + Vector3(0, 0.05, 0))
+	car._add_box(Vector3(CAGE_SIZE.x, 0.1, CAGE_SIZE.z), CAGE_AT + Vector3(0, CAGE_SIZE.y, 0))
+	for side: float in [1.0, -1.0]:
+		car._add_box(Vector3(0.1, CAGE_SIZE.y, CAGE_SIZE.z), mid + Vector3(side * CAGE_SIZE.x / 2, 0, 0))
+	car._add_box(Vector3(CAGE_SIZE.x, CAGE_SIZE.y, 0.1), mid + Vector3(0, 0, CAGE_SIZE.z / 2))
 	var paint := StandardMaterial3D.new()
 	paint.albedo_color = STRIPES[int(traits.get("stripes", 0)) % STRIPES.size()]
 	var model: Node3D = TRUCK_MODEL.instantiate()
@@ -209,6 +217,34 @@ static func shake(car: Node3D) -> void:
 		for i in 6:
 			tween.tween_property(cage, "position:x", CAGE_AT.x + (0.06 if i % 2 == 0 else -0.06), 0.06)
 		tween.tween_property(cage, "position:x", CAGE_AT.x, 0.06)
+
+
+## The chase's runaway (a SuspectCar "circus_truck"): El Peludo's truck in its stripes, his cage on its bed with him in
+## it, his sneakers showing.
+static func dress_runaway(truck: Node3D, traits: Dictionary) -> void:
+	var paint := StandardMaterial3D.new()
+	paint.albedo_color = STRIPES[int(traits.get("stripes", 0)) % STRIPES.size()]
+	QueueCar._paint(truck, paint)
+	var cage := Node3D.new()
+	cage.name = "Cage"
+	cage.position = CAGE_AT
+	truck.add_child(cage)
+	var bars: Node3D = CAGE_MODEL.instantiate()
+	bars.name = "Bars"
+	cage.add_child(bars)
+	QueueCar._paint(bars, paint)
+	var door: Node3D = DOOR_MODEL.instantiate()
+	door.name = "Door"
+	door.position = Vector3(CAGE_SIZE.x / 2, 0, -CAGE_SIZE.z / 2)
+	door.rotation.y = PI
+	cage.add_child(door)
+	var animal: Node3D = ANIMAL_MODELS[maxi(ANIMALS.find(traits.get("animal", "")), 0)].instantiate()
+	animal.name = "Animal"
+	animal.position = ANIMAL_AT
+	animal.rotation.y = PI
+	cage.add_child(animal)
+	if traits.get("costume", false):
+		_put_on_sneakers(animal, traits)
 
 
 ## El Peludo's sneakers, showing under his costume's front paws.
