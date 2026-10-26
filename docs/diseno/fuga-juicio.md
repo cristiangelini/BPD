@@ -111,3 +111,15 @@ el estrado, por `NpcSync`; subir al estrado, levantar un cartel y objetar, por l
 - Cuando terminó con todos: "Ya escuché a todos los testigos" (el veredicto es el paso 3).
 - Online: la jueza va por `NpcSync`; subir al estrado y contestar, por las acciones, y lo decide el anfitrión.
 - 15 textos nuevos. Pruebas en `test_trial_judge.gd`. Fotos en `/mnt/project-files/juicio/`.
+
+## Cómo quedó el paso 3
+- El abogado (quien tenga el saco puesto) puede objetar con E sobre la jueza mientras pregunta, una vez por testigo:
+  "Ha lugar. Esa pregunta no cuenta." Esa pregunta no suma ni resta, y ella sigue con la próxima.
+- Si escuchó a todos los testigos con menos de 3 contradicciones: "Todo coincide... más o menos. ¡Inocentes!". El guardia
+  los deja ir ("Afuera, y no vuelvan") y ya nada está fuera de lugar. Se gana como siempre, todos en el patrullero.
+- La captura (culpables, o alguien que se va de la sala antes del veredicto) es la del paso 2: celdas, el saco a la caja
+  y otra coartada.
+- Jugando solo (o si el único que queda es el abogado), el abogado declara él mismo. En el estrado no ve el expediente:
+  tiene que acordarse. (En vez de las "5 preguntas" del diseño: con 3 detalles, acordárselos ya es el desafío.)
+- Online: la jueza (con la objeción) va por `NpcSync`; objetar, subir al estrado y contestar, por las acciones.
+- 5 textos nuevos. Pruebas en `test_trial_verdict.gd` y `test_trial_online.gd`. Fotos en `/mnt/project-files/juicio/`.

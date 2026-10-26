@@ -5,14 +5,16 @@ extends NightGuard
 ## his belt. CALL_TIME seconds after the cops wake up he calls them to the trial and opens both cells, and they have
 ## BRIEFING seconds on the waiting room's bench for the lawyer to tell the alibi before the judge comes in (step 2).
 ## In court, the level's outside_cells is anywhere out of the front row (the cells and the guard room): he catches
-## whoever he sees leaving. Every number here is (propuesta).
+## whoever he sees leaving. Step 3: declared innocent, they're free to go (phase "free"): nowhere is out of place.
+## Every number here is (propuesta).
 
 const CALL_TIME := 6.0
 const BRIEFING := 60.0
 
 ## The cell doors (the level sets them).
 var cell_doors: Array[CellDoor] = []
-## "" (the cops in their cells), "briefing" (the cells open, the lawyer telling the alibi) or "court" (step 2).
+## "" (the cops in their cells), "briefing" (the cells open, the lawyer telling the alibi), "court" (step 2) or
+## "free" (innocent, step 3).
 var phase := ""
 ## Seconds left of this phase.
 var phase_left := CALL_TIME
@@ -62,6 +64,22 @@ func call_to_trial() -> void:
 		door.unlock()
 		door.set_open(true)
 	say("TRIAL_GUARD_CALL", 6.0)
+
+
+## Innocent: "you can go".
+func set_free() -> void:
+	phase = "free"
+	suspicion = 0.0
+	say("TRIAL_GUARD_FREE", 6.0)
+
+
+func is_free() -> bool:
+	return phase == "free"
+
+
+## Free, he doesn't mind where anyone is.
+func alarm() -> float:
+	return 0.0 if is_free() else super()
 
 
 ## Caught: back to the start, the cells locked (the level puts everyone back).

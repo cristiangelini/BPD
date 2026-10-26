@@ -449,6 +449,7 @@ func _court(lot: Transform3D) -> void:
 	# The witness faces the stand (+Z); the cops' forward is -Z.
 	judge.stand_spot = lot * Transform3D(Basis(Vector3.UP, PI), WITNESS_AT)
 	judge.guilty.connect(func() -> void: guard.catch())
+	judge.innocent.connect(func() -> void: (guard as TrialGuard).set_free())
 	var stand := TrialStand.new()
 	stand.name = "TrialStand"
 	stand.judge = judge
@@ -491,7 +492,9 @@ func lawyer() -> Cop:
 ## This PC's cop sees the file while it's the lawyer.
 func _show_file() -> void:
 	var own := $Cop as Cop
-	var shown := own != null and own.disguise.has("lawyer_jacket")
+	# Testifying on the stand (alone, the lawyer testifies too) the file is put away.
+	var shown := own != null and own.disguise.has("lawyer_jacket") and not (judge.is_witness(own)
+		and judge.state in ["asking", "reacting"])
 	if shown and not file_label.visible:
 		own.show_hint("HINT_TRIAL_LAWYER")
 	file_label.visible = shown
@@ -1487,6 +1490,8 @@ func outside_cells(at: Vector3) -> bool:
 	if is_roof() and local.y > StationRooms.CEILING:
 		return true
 	# In the fast trial's court, the front row past the armory (the cells and the guard room) is where they should be.
+	if is_trial() and guard is TrialGuard and (guard as TrialGuard).is_free():
+		return false
 	if is_trial() and guard is TrialGuard and (guard as TrialGuard).in_court():
 		return not (local.x > -StationRooms.FRONT_X and local.x < StationRooms.HALF_X
 			and local.z > StationRooms.SPLIT_Z and local.z < StationRooms.HALF_Z)
