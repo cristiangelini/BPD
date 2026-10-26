@@ -9,10 +9,14 @@ extends CharacterBody3D
 ## net_state: his stains and where his walk is). Every number here is (propuesta).
 ## The double (politico-doble.md, decision 220): Rolo Calcado is another Politician with `impostor` on. Both wear the
 ## ten tells (DoubleTells, `dress`), the double three of his own; hidden in the crowd he wears a hat and a scarf
-## (`disguise`) that cover them.
+## (`disguise`) that cover them. Step 3: cuffed, the double is caught for good (his mustache falls off) and E walks him
+## to the patrol car (OwnerEscort); cuffing the real deputy offends him, `wrong_cuff_stains` stains on his image, and the
+## cuffs open at once.
 
 signal stained(count: int)
 signal furious
+## The double got cuffed (politico-doble.md, step 3).
+signal cuffed_now
 
 const MODEL := preload("res://assets/models/npc_politico.glb")
 const SAY_TIME := 6.0
@@ -24,6 +28,8 @@ const HIDDEN_LINES := 3
 ## A stain on his image, not on his suit: the double's outrages (politico-doble.md, step 2). It leaves no mark.
 const SHAME := "shame"
 const SHAME_LINES := 3
+const CAUGHT_LINES := 3
+const WRONG_CUFF_LINES := 3
 const HAT := Color(0.18, 0.16, 0.15)
 const SCARF := Color(0.55, 0.2, 0.25)
 
@@ -33,6 +39,11 @@ var impostor := false
 var fakes: Array[String] = []
 var disguised := false
 var tells: Node3D
+## Cuffing the real deputy costs this many stains (only at the double's rally).
+var wrong_cuff_stains := 0
+## The double, cuffed: caught for good.
+var caught := false
+var _cuffed_left := 0.0
 var _disguise: Node3D
 ## Each stain as [kind, where on him], so a guest's copy wears them in the same places.
 var marks: Array = []
@@ -73,6 +84,9 @@ func _ready() -> void:
 
 
 func prompt_key(cop: Cop) -> String:
+	var escort := OwnerEscort.of(self)
+	if escort and escort.handles_use():
+		return escort.prompt_key(cop)
 	if disguised:
 		return "PROMPT_TALK_FAN"
 	var walks := PoliticianWalks.of(self)
@@ -81,6 +95,10 @@ func prompt_key(cop: Cop) -> String:
 
 ## E: he shakes the cop's hand and asks for their vote; off the stage, the cop takes him by the hand (PoliticianWalks).
 func use(cop: Cop) -> void:
+	var escort := OwnerEscort.of(self)
+	if escort and escort.handles_use():
+		escort.use(cop)
+		return
 	if disguised:
 		say("DOUBLE_HIDDEN_%d" % (randi() % HIDDEN_LINES))
 		return
@@ -134,6 +152,44 @@ static func _cylinder(radius: float, height: float) -> CylinderMesh:
 	return mesh
 
 
+## The handcuffs. The double is caught: no more hat and scarf, his mustache falls off and he owns up. The real deputy is
+## offended: wrong_cuff_stains stains on his image, and the cuffs open at once.
+func cuffed(seconds: float) -> void:
+	if impostor:
+		_cuffed_left = maxf(_cuffed_left, seconds)
+		if caught:
+			return
+		caught = true
+		_caught_look()
+		say("DOUBLE_CAUGHT_%d" % (randi() % CAUGHT_LINES + 1))
+		cuffed_now.emit()
+		return
+	for i in wrong_cuff_stains:
+		stain(SHAME, global_position + Vector3.UP)
+	if stains < STAINS_MAX:
+		say("POLITICIAN_WRONG_CUFF_%d" % (randi() % WRONG_CUFF_LINES + 1))
+
+
+## Only the double stays cuffed: walked by a cop or not, until he's in the patrol car.
+func is_cuffed() -> bool:
+	return caught
+
+
+func _caught_look() -> void:
+	disguise(false)
+	if tells:
+		tells.get_node("mustache").hide()
+
+
+## What the escort calls (OwnerEscort): a line for `seconds`; he has no complaint meter.
+func _say(key: String, seconds := SAY_TIME) -> void:
+	say(key, seconds)
+
+
+func _raise(_points: float) -> void:
+	pass
+
+
 ## Off the stage greeting, or being led back.
 func off_stage() -> bool:
 	var walks := PoliticianWalks.of(self)
@@ -175,13 +231,18 @@ func _wear(kind: String, local: Vector3) -> void:
 ## What a guest's copy needs besides where he is and what he says (NpcSync): his stains and his walk's state.
 func net_state() -> Array:
 	var walks := PoliticianWalks.of(self)
-	return [marks.duplicate(), walks.state if walks else 0]
+	return [marks.duplicate(), walks.state if walks else 0, disguised, caught]
 
 
 func apply_net_state(state: Variant) -> void:
 	for i in range(marks.size(), (state[0] as Array).size()):
 		_wear(state[0][i][0], state[0][i][1])
 	stains = marks.size()
+	if state[2] != disguised:
+		disguise(state[2])
+	if state[3] and not caught:
+		caught = true
+		_caught_look()
 	var walks := PoliticianWalks.of(self)
 	if walks:
 		walks.state = state[1]

@@ -27,6 +27,9 @@ const BANNER_SIZE := Vector2(9, 1.6)
 const BANNER_HEIGHT := 3.0
 ## Where the double hides, from the plaza's middle: at the end of the crowd's back row.
 const DOUBLE_FROM_PLAZA := Vector3(9.0, 0.05, -5.2)
+## Where the double rides in the patrol car (above the hecklers' seats), and what cuffing the real deputy costs.
+const DOUBLE_SEAT := Vector3(0, 0.5, 0)
+const WRONG_CUFF_STAINS := 3
 const BALLOON_COLORS: Array[Color] = [Color(0.9, 0.2, 0.25), Color(0.25, 0.45, 0.9), Color(0.95, 0.85, 0.2)]
 
 const BOARDS := Color(0.55, 0.36, 0.2)
@@ -93,6 +96,11 @@ func _ready() -> void:
 		swap.name = "DoubleSwap"
 		add_child(swap)
 		swap.setup(politician, double, speech, stage)
+		# Cuffed, he's walked to the patrol car (step 3); the real deputy doesn't like the cuffs at all.
+		var escort := OwnerEscort.attach(double, $PatrolCar)
+		escort.seat_shift = DOUBLE_SEAT
+		escort.in_car_hint = "HINT_DOUBLE_IN_CAR"
+		politician.wrong_cuff_stains = WRONG_CUFF_STAINS
 	case = PoliticianCase.new()
 	case.name = "Case"
 	case.rally = self

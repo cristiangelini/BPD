@@ -8,9 +8,10 @@ extends Node
 ## words, each one a stain on the real deputy's image. When the cops lead the real one back to the lectern, the double
 ## gives way: he goes down the ramp and mingles with the crowd like the deputy does (his own PoliticianWalks, which never
 ## walks off by itself), until the real one walks off again. Led by the hand to the lectern himself, he takes it.
-## It runs on the host. Every number here is (propuesta).
+## Step 3: cuffed, he's CAUGHT for good: off the lectern, and no more sneaking. It runs on the host. Every number here
+## is (propuesta).
 
-enum State { LURKING, SNEAKING, SPEAKING, MINGLING }
+enum State { LURKING, SNEAKING, SPEAKING, MINGLING, CAUGHT }
 
 const SPEED := 2.2
 const ARRIVED := 0.5
@@ -41,6 +42,7 @@ func setup(the_real: Politician, the_double: Politician, the_speech: PoliticianS
 	double_walks.auto_walks = false
 	double_walks.set_physics_process(false)
 	real_walks.walked_off.connect(_on_real_walked_off)
+	double.cuffed_now.connect(_on_caught)
 
 
 ## At the lectern now (the speech is his).
@@ -48,8 +50,16 @@ func double_speaking() -> bool:
 	return state == State.SPEAKING
 
 
+func _on_caught() -> void:
+	state = State.CAUGHT
+	if speech.impostor == double:
+		speech.impostor = null
+	double_walks.set_physics_process(false)
+	double.velocity = Vector3.ZERO
+
+
 func _on_real_walked_off() -> void:
-	if state == State.SPEAKING or state == State.SNEAKING:
+	if state != State.LURKING and state != State.MINGLING:
 		return
 	# Being led by the hand somewhere, he doesn't get away.
 	if double_walks.state == PoliticianWalks.State.LED:

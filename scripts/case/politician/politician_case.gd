@@ -10,14 +10,19 @@ extends Node
 ## count as detained; got away, the case is solved all the same. Online the host's case decides and a guest's follows
 ## it (CaseSync, snapshot): the speech's clock, how it ended and the getaway; the host tells the guests where each egg
 ## and tomato burst (show_burst). Every number here is (propuesta).
+## At the double's rally (politico-doble.md, step 3, decision 220) the double in the patrol car pays PER_DOUBLE more,
+## and if he's still loose when the speech ends, it's him who runs off on the kick scooter, not a heckler.
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 4.0
 const SALARY := 600
 const PER_STAIN := 50
 const PER_HECKLER := 50
+const PER_DOUBLE := 150
 const QUOTA := 400
 const STORY := "politician_rally"
+## The snapshot's runner when it's the double, not a heckler.
+const DOUBLE_RUNNER := -2
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 
 var rally: PlazaRally
@@ -28,9 +33,9 @@ var tip_given := false
 var furious := false
 var speech_over := false
 var shift_over := false
-## The last heckler's run on the kick scooter, who it is and how it ended.
+## The last heckler's run on the kick scooter (or the double's), who it is and how it ended.
 var chase: ChaseCase
-var runner: RallyFan
+var runner: Node3D
 var caught := false
 var escaped := false
 var follower := false:
@@ -40,6 +45,9 @@ var follower := false:
 			rally.speech.follower = value
 			rally.crowd.set_physics_process(not value)
 			PoliticianWalks.of(rally.politician).set_physics_process(not value)
+			if rally.double:
+				PoliticianWalks.of(rally.double).set_physics_process(not value)
+				rally.swap.set_physics_process(not value)
 var online: CaseSync
 var _result := {}
 var _refresh_left := 0.0
@@ -92,7 +100,7 @@ func _on_speech_finished() -> void:
 		return
 	speech_over = true
 	_hint_all("HINT_RALLY_SPEECH_OVER")
-	runner = rally.crowd.loose_heckler()
+	runner = rally.double if double_loose() else rally.crowd.loose_heckler()
 	if runner:
 		_run_off()
 	else:
@@ -105,16 +113,16 @@ func _run_off() -> void:
 	if chase or not runner:
 		return
 	runner.hide()
-	runner.collision_layer = 0
+	(runner as CollisionObject3D).collision_layer = 0
 	runner.process_mode = Node.PROCESS_MODE_DISABLED
 	chase = ChaseCase.begin(rally, SuspectCar.KICK_SCOOTER, runner.global_transform, rally.get_node("PatrolCar"),
 		rally.get_node("City"), rally.case_seed)
-	chase.who = ChaseSuspect.HECKLER + runner.look
+	chase.who = ChaseSuspect.DOUBLE if runner is Politician else ChaseSuspect.HECKLER + (runner as RallyFan).look
 	chase.online = online
 	chase.follower = follower
 	chase.truck.set_rider(ChaseSuspect.model_for(chase.who))
 	chase.ended.connect(_on_chase_ended)
-	_hint_all("HINT_ESCAPE_HECKLER")
+	_hint_all("HINT_ESCAPE_DOUBLE" if runner is Politician else "HINT_ESCAPE_HECKLER")
 
 
 ## Caught and in the patrol car, they count as detained; got away, the case is solved all the same.
@@ -144,16 +152,30 @@ func solved() -> bool:
 	return speech_over and not furious
 
 
-## The hecklers in the patrol car, the one caught on the scooter included.
+## The hecklers in the patrol car, the one caught on the scooter included (not the double).
 func detained() -> int:
-	return rally.crowd.detained + (1 if caught else 0)
+	return rally.crowd.detained + (1 if caught and not runner is Politician else 0)
+
+
+## The double in the patrol car, or caught on the scooter.
+func double_detained() -> bool:
+	if not rally.double:
+		return false
+	var escort := OwnerEscort.of(rally.double)
+	return (escort and escort.in_car) or (caught and runner == rally.double)
+
+
+## The double neither cuffed nor in the car: he'd run off at the end.
+func double_loose() -> bool:
+	return rally.double != null and not rally.double.caught
 
 
 ## SALARY, less PER_STAIN for each stain and plus PER_HECKLER for each heckler detained; nothing if he left furious.
 func report() -> Dictionary:
 	var salary := 0
 	if solved():
-		salary = maxi(SALARY - PER_STAIN * rally.politician.stains + PER_HECKLER * detained(), 0)
+		salary = maxi(SALARY - PER_STAIN * rally.politician.stains + PER_HECKLER * detained()
+			+ (PER_DOUBLE if double_detained() else 0), 0)
 	return {"salary": salary, "evidence": 0, "fines": 0, "total": salary, "quota": QUOTA, "approved": salary >= QUOTA}
 
 
@@ -223,7 +245,8 @@ func show_burst(kind: String, at: Vector3, cop_id: int) -> void:
 func snapshot() -> Dictionary:
 	var state := {"tip": tip_given, "speaking": rally.speech.speaking, "over": rally.speech.over,
 		"left": snappedf(rally.speech.left, 0.1), "furious": furious, "speech_over": speech_over,
-		"runner": rally.crowd.hecklers.find(runner), "caught": caught, "escaped": escaped, "result": _result}
+		"runner": DOUBLE_RUNNER if runner and runner == rally.double else rally.crowd.hecklers.find(runner),
+		"caught": caught, "escaped": escaped, "result": _result}
 	if chase:
 		state.chase = chase.snapshot()
 	return state
@@ -239,8 +262,8 @@ func apply_snapshot(state: Dictionary) -> void:
 	speech_over = state.speech_over
 	caught = state.caught
 	escaped = state.escaped
-	if state.has("chase") and state.runner >= 0:
-		runner = rally.crowd.hecklers[state.runner]
+	if state.has("chase") and (state.runner >= 0 or state.runner == DOUBLE_RUNNER):
+		runner = rally.double if state.runner == DOUBLE_RUNNER else rally.crowd.hecklers[state.runner]
 		_run_off()
 		chase.apply_snapshot(state.chase)
 	checklist.show_rows(rows())
@@ -254,8 +277,10 @@ func rows() -> Array[Dictionary]:
 	list.append(_row("OBJ_RALLY_GUARD", rally.speech.speaking or rally.speech.over))
 	list.append(_row(tr("OBJ_RALLY_STAINS") % [rally.politician.stains, Politician.STAINS_MAX], false))
 	list.append(_row(tr("OBJ_RALLY_HECKLERS") % [detained(), RallyCrowd.HECKLERS], detained() >= RallyCrowd.HECKLERS))
+	if rally.double:
+		list.append(_row("OBJ_DOUBLE_CATCH", double_detained()))
 	if chase:
-		list.append(_row("OBJ_RALLY_CATCH_SCOOTER", caught))
+		list.append(_row("OBJ_DOUBLE_CATCH_SCOOTER" if runner is Politician else "OBJ_RALLY_CATCH_SCOOTER", caught))
 	var state := "OBJ_RALLY_FURIOUS" if furious else ("OBJ_RALLY_OVER" if speech_over else "OBJ_RALLY_KEEP_CLEAN")
 	list.append({"text": state, "done": false, "optional": false, "status": true})
 	# The double's rally (politico-doble.md): the real deputy's file, to tell him from the double.
