@@ -78,3 +78,11 @@ caminando. Si llega limpio a la plaza, nos aumentan el presupuesto. Si llega con
   5 s arriba es una mancha de imagen. Con E se lo baja ("E: bajarlo del auto"): queda al lado del auto, del lado del
   policía, y vuelve caminando a su lugar en la vereda. Si se traba en el cordón más de 20 s, aparece en su lugar. Uno
   por vez. Captura en `/mnt/project-files/descapotable/paso2-abrazo.png`.
+- **Paso 3 (el caso, el sueldo y el online):** el comisario cuenta el desfile (desde el paso 1). La planilla suma
+  "Vuelta a la plaza: N %" y los abrazadores bajados del auto, y al final dice "Terminó el desfile". El sueldo es el de
+  la plaza (600, 50 menos por mancha, 50 más por cada uno que tiraba detenido, cuota 400). Al terminar, el abrazador
+  que esté arriba se baja y el último que tira suelto huye en el monopatín desde su vereda, como en la base. El
+  patrullero espera en la comisaría, como en la base (no en la plaza como decía la propuesta). Online el reloj del host
+  mueve el auto igual en todas las PC, el host decide los abrazadores y los invitados ven quién está arriba
+  (`RallyFan.net_state`). Se trepa estando a menos de 0,7 m del costado del auto (no del centro, que con el auto largo no
+  se alcanzaba desde adelante). Captura en `/mnt/project-files/descapotable/paso3-planilla.png`.

@@ -2352,3 +2352,7 @@ PARADE_HUG_1,"¡Usted es mi ídolo! ¡Una foto, una foto!","You're my idol! A ph
 PARADE_HUG_2,"¡Huele a perfume caro, diputado!","You smell of expensive perfume, deputy!","Tem cheiro de perfume caro, deputado!"
 PARADE_HUG_3,"¡Un abrazo más fuerte! ¡Así!","A tighter hug! Like this!","Um abraço mais forte! Assim!"
 PARADE_HUG_OFF,"¡Está bien, está bien! Me bajo. ¡Te quiero, diputado!","Okay, okay! I'm getting off. Love you, deputy!","Tá bom, tá bom! Já desço. Te amo, deputado!"
+OBJ_PARADE_ROUTE,"Vuelta a la plaza: %d%%","Round the plaza: %d%%","Volta na praça: %d%%"
+OBJ_PARADE_HUGGERS,"Abrazadores bajados del auto: %d","Huggers pulled off the car: %d","Abraçadores tirados do carro: %d"
+HINT_PARADE_OVER,"¡Terminó el desfile! El diputado volvió a la plaza.","The parade is over! The deputy is back at the plaza.","O desfile acabou! O deputado voltou à praça."
+OBJ_PARADE_OVER,"Terminó el desfile.","The parade is over.","O desfile acabou."
