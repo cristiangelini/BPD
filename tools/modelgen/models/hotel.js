@@ -109,7 +109,7 @@ function buildLaundryCart() {
 	return b.build();
 }
 
-const PEOPLE = { huesped, conserje, perlita, botones, mucama };
+const PEOPLE = { huesped, conserje_hotel: conserje, perlita, botones, mucama };
 
 export const models = {
 	...Object.fromEntries(Object.entries(PEOPLE).map(([n, f]) => [`npc_${n}`, () => {
@@ -123,7 +123,7 @@ export const models = {
 export const views = {
 	hotel_people: {
 		items: [{ name: 'npc_huesped', pos: [-2.4, 0, 0], rotY: 0.3 }, { name: 'npc_huesped', pos: [-1.3, 0, 0], rotY: 0.1 },
-			{ name: 'npc_conserje', pos: [-0.1, 0, 0], rotY: 0.1 }, { name: 'npc_perlita', pos: [1.1, 0, 0], rotY: -0.1 },
+			{ name: 'npc_conserje_hotel', pos: [-0.1, 0, 0], rotY: 0.1 }, { name: 'npc_perlita', pos: [1.1, 0, 0], rotY: -0.1 },
 			{ name: 'npc_botones', pos: [2.2, 0, 0], rotY: -0.3 }, { name: 'npc_mucama', pos: [3.4, 0, 0], rotY: -0.4 },
 			{ name: 'laundry_cart', pos: [4.4, 0, 0.3], rotY: -0.6 }],
 		cam: { pos: [1.0, 1.5, 7.5], target: [1.0, 0.85, 0], fov: 40 },

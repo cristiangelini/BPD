@@ -9,7 +9,7 @@ extends StaticBody3D
 
 ## Who they can be: their model, the prompt and how many lines they have (HOTEL_<WHO>_LINE_<n>).
 const WHO := {
-	"concierge": {"model": "res://assets/models/npc_conserje.glb", "lines": 4},
+	"concierge": {"model": "res://assets/models/npc_conserje_hotel.glb", "lines": 4},
 	"perlita": {"model": "res://assets/models/npc_perlita.glb", "lines": 4},
 	"bellboy": {"model": "res://assets/models/npc_botones.glb", "lines": 4},
 	"maid": {"model": "res://assets/models/npc_mucama.glb", "lines": 4},
