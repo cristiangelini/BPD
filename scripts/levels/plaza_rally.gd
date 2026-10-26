@@ -15,6 +15,9 @@ extends Node3D
 ## long table on the stage with three cakes (BirthdayCake), pennants over the banner, and BirthdayParty takes him to
 ## blow each cake's candles while the crowd sings. One of them is rigged with a spring of cream (step 2), brought by
 ## the courier in the crowd (step 3).
+## With `variant` "convertible" (politico-descapotable.md, decision 222; --place=convertible) there's no lectern: the
+## deputy stands in a red convertible (ParadeCar) that drives once round the plaza's block, in its lane by the plaza,
+## for as long as the speech lasts, and the city's traffic is off (plaza_convertible.tscn).
 
 ## The stage, from the plaza's middle: its middle, its size and the ramp up its front at the east end.
 const STAGE_FROM_PLAZA := Vector3(0, 0, -14)
@@ -39,6 +42,8 @@ const TABLE_FROM_STAGE := Vector3(-3.2, 0, 1.0)
 const TABLE_SIZE := Vector3(3.0, 0.8, 0.8)
 const CAKE_EVERY := 1.0
 const PENNANTS := 14
+## The parade's start (and end), on the street north of the plaza, from the plaza's middle across (x).
+const PARADE_START_X := 0.0
 ## The courier, from the plaza's middle: at the west end, between the crowd's rows.
 const COURIER_FROM_PLAZA := Vector3(-9.0, 0.05, -6.4)
 const BALLOON_COLORS: Array[Color] = [Color(0.9, 0.2, 0.25), Color(0.25, 0.45, 0.9), Color(0.95, 0.85, 0.2)]
@@ -51,7 +56,8 @@ const METAL := Color(0.2, 0.2, 0.22)
 
 ## Same seed, same speech (and, later, the same hecklers). 0 draws one.
 @export var case_seed := 0
-## "plaza" (the base rally), "double" (politico-doble.md) or "birthday" (politico-cumple.md).
+## "plaza" (the base rally), "double" (politico-doble.md), "birthday" (politico-cumple.md) or "convertible"
+## (politico-descapotable.md).
 @export var variant := "plaza"
 var politician: Politician
 var speech: PoliticianSpeech
@@ -65,6 +71,8 @@ var cakes: Array[BirthdayCake] = []
 var party: BirthdayParty
 ## The cake shop's courier who brought the rigged one.
 var courier: RallyFan
+## With variant "convertible": the car the deputy rides.
+var parade_car: ParadeCar
 ## The case on top of the rally (step 6): the comisario's briefing, the planilla and the end of the shift.
 var case: PoliticianCase
 ## The stage's middle on its top, in world space.
@@ -96,6 +104,9 @@ func _ready() -> void:
 	speech.setup(politician, case_seed)
 	if variant == "birthday":
 		speech.line_key = "BIRTHDAY_LUSTRE_%d"
+	elif variant == "convertible":
+		speech.line_key = "PARADE_LUSTRE_%d"
+		speech.title_key = "HUD_PARADE"
 	add_child(speech)
 	crowd = RallyCrowd.new()
 	crowd.name = "Crowd"
@@ -121,6 +132,8 @@ func _ready() -> void:
 		politician.wrong_cuff_stains = WRONG_CUFF_STAINS
 	if variant == "birthday":
 		_add_party()
+	elif variant == "convertible":
+		_add_parade()
 	case = PoliticianCase.new()
 	case.name = "Case"
 	case.rally = self
@@ -186,6 +199,35 @@ func _add_party() -> void:
 	var escort := OwnerEscort.attach(courier, $PatrolCar)
 	escort.seat_shift = DOUBLE_SEAT
 	escort.in_car_hint = "HINT_COURIER_IN_CAR"
+
+
+## The convertible on the street north of the plaza, with the deputy on its back seat: he rides it, so he never walks
+## off to greet.
+func _add_parade() -> void:
+	var walks := PoliticianWalks.of(politician)
+	walks.auto_walks = false
+	walks.set_physics_process(false)
+	parade_car = ParadeCar.new()
+	parade_car.name = "ParadeCar"
+	add_child(parade_car)
+	parade_car.setup(parade_route(), speech, politician)
+
+
+## Once round the plaza's block, clockwise (seen from above, north up) in the lane by the plaza, from the middle of the
+## street north of it and back there, in world space.
+func parade_route() -> PackedVector3Array:
+	var city := ($City as Node3D).transform
+	var lane := CityLayout.STREET / 4
+	var x0 := CityLayout.street_x(CityLayout.PLAZA.x) + lane
+	var x1 := CityLayout.street_x(CityLayout.PLAZA.x + 1) - lane
+	var z0 := CityLayout.street_z(CityLayout.PLAZA.y) + lane
+	var z1 := CityLayout.street_z(CityLayout.PLAZA.y + 1) - lane
+	var start := CityLayout.block_center(CityLayout.PLAZA).x + PARADE_START_X
+	var points := PackedVector3Array()
+	for at: Vector3 in [Vector3(start, 0, z0), Vector3(x1, 0, z0), Vector3(x1, 0, z1), Vector3(x0, 0, z1),
+			Vector3(x0, 0, z0), Vector3(start, 0, z0)]:
+		points.append(city * at)
+	return points
 
 
 ## The plaza's middle on the ground, in world space.

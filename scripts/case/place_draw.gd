@@ -47,6 +47,7 @@ const PLACES := {
 	"market": "res://scenes/levels/market.tscn",
 	"double": "res://scenes/levels/plaza_double.tscn",
 	"birthday": "res://scenes/levels/plaza_birthday.tscn",
+	"convertible": "res://scenes/levels/plaza_convertible.tscn",
 	"laundry": "res://scenes/levels/prison_laundry.tscn",
 	"hardware": "res://scenes/levels/hardware_store.tscn",
 	"doll_factory": "res://scenes/levels/doll_factory.tscn",
@@ -81,10 +82,10 @@ const INFILTRATIONS := ["club", "choir", "mime", "party", "gym", "school", "rest
 const BANK_EVERY := 4
 ## Of the rest, one in this many is the politician's protection (proteccion-politico.md, propuesta), at one of these
 ## by the seed: the rally at the plaza, the walk through the market (politico-mercado.md), the bridge's opening
-## (politico-puente.md), the rally with the double (politico-doble.md) or the birthday party (politico-cumple.md),
-## a fifth each.
+## (politico-puente.md), the rally with the double (politico-doble.md), the birthday party (politico-cumple.md) or the
+## parade in a convertible (politico-descapotable.md), a sixth each.
 const RALLY_EVERY := 4
-const RALLIES := ["plaza", "market", "bridge", "double", "birthday"]
+const RALLIES := ["plaza", "market", "bridge", "double", "birthday", "convertible"]
 ## Of the rest, one in this many is a prison case (propuesta), one of these by the seed: the riot in the canteen
 ## (carcel-motin.md), the prisoner transfer (traslado-presos.md), the blackout (carcel-corte-de-luz.md), the
 ## visiting day (carcel-visitas.md), the laundry (carcel-lavanderia.md), the tunnel (carcel-tunel.md), the talent show
