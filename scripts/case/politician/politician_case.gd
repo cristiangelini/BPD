@@ -56,6 +56,8 @@ var follower := false:
 				rally.swap.set_physics_process(not value)
 			if rally.party:
 				rally.party.set_physics_process(not value)
+			if rally.huggers:
+				rally.huggers.set_physics_process(not value)
 var online: CaseSync
 var _result := {}
 var _refresh_left := 0.0
