@@ -6,7 +6,8 @@ extends Node3D
 ## counter with its scale, behind it the belt that takes the suitcases west to east through the X-ray machine, with
 ## the big screen over it where the press watches what goes through; at the back, the duty-free shop on the west and
 ## the gate on the east, with the glass wall between them that looks out at the apron and the little plane. The cops
-## start in the station and drive here; --place=airport opens it from Play. Every number here is (propuesta).
+## start in the station and drive here; --place=airport opens it from Play. Step 2: Lustre's 13 suitcases (Suitcase)
+## piled by the counter, the belt that takes them (AirportBelt) and the scale. Every number here is (propuesta).
 
 const COUNTER_MODEL := preload("res://assets/models/checkin_counter.glb")
 const XRAY_MODEL := preload("res://assets/models/xray_machine.glb")
@@ -36,6 +37,12 @@ const BELT_Z := 12.5
 const BELT_X := Vector2(-14.0, 9.0)
 const BELT_TOP := 0.75
 const BELT_WIDTH := 1.0
+## The scale in front of the counter (in its space), its pan's side and its readout.
+const SCALE_AT := Vector3(1.0, 0, 0.9)
+const SCALE_PAN := 0.9
+const READOUT_AT := Vector3(1.0, 1.0, 0.47)
+## Lustre's 12 suitcases and the one slipped in (step 2).
+const SUITCASES := 13
 const XRAY_AT := Vector3(5, 0, BELT_Z)
 const SCREEN_AT := Vector3(5, 3.6, 11.6)
 const SCREEN := Vector2(3.2, 1.8)
@@ -70,6 +77,8 @@ var feed: SubViewport
 var feed_camera: Camera3D
 var screen: MeshInstance3D
 var press: Array[RallyFan] = []
+var suitcases: Array[Suitcase] = []
+var belt: AirportBelt
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -87,6 +96,7 @@ func _ready() -> void:
 	_build_hall()
 	_build_shop_and_gate()
 	_build_apron()
+	_place_suitcases()
 	city.transform = CityLayout.anchor("airport")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
@@ -110,7 +120,7 @@ func at_gate(at: Vector3) -> bool:
 func _process(_delta: float) -> void:
 	# The screen shows the inside of the X-ray machine, from its roof down onto the belt.
 	feed_camera.global_transform = Transform3D(Basis.looking_at(Vector3.DOWN, Vector3.FORWARD),
-		to_global(XRAY_AT + Vector3.UP * 1.6))
+		to_global(XRAY_AT + Vector3.UP * 1.25))
 
 
 ## The front plaza, the grass around and the apron behind the terminal (the city's grass is at 0.035).
@@ -179,6 +189,18 @@ func _build_hall() -> void:
 		_build.shape(_build.body(XRAY_AT + Vector3(0, 0.95, side * 0.55)), Vector3(2.4, 1.9, 0.1))
 	_build.shape(_build.body(XRAY_AT + Vector3(0, 1.55, 0)), Vector3(2.4, 0.5, 1.2))
 	_label("AIRPORT_XRAY", XRAY_AT + Vector3(0, 2.3, 0.65), 0.0, 40)
+	# The machine's glowing plate under the belt: what goes over it shows dark on the screen.
+	var plate := MeshInstance3D.new()
+	plate.name = "XrayPlate"
+	var plate_mesh := BoxMesh.new()
+	plate_mesh.size = Vector3(2.3, 0.01, BELT_WIDTH - 0.1)
+	plate.mesh = plate_mesh
+	var glow := StandardMaterial3D.new()
+	glow.albedo_color = Color(0.92, 0.95, 1.0)
+	glow.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	plate.material_override = glow
+	plate.position = XRAY_AT + Vector3(0, BELT_TOP + 0.025, 0)
+	$Built.add_child(plate)
 	_build_screen()
 	for i in PRESS_AT.size():
 		var reporter := RallyFan.new()
@@ -219,6 +241,40 @@ func _build_screen() -> void:
 	_build.mesh_box(SCREEN_AT + Vector3(0, SCREEN.y / 2 + (ROOF - SCREEN_AT.y - SCREEN.y / 2) / 2, -0.06),
 		Vector3(0.1, ROOF - SCREEN_AT.y - SCREEN.y / 2, 0.1), RAIL)
 	_process(0.0)
+
+
+## The 13 suitcases in the pile, their numbers and the order the clerk sends them in drawn by the seed, and the belt.
+func _place_suitcases() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["airport suitcases", case_seed])
+	var numbers: Array[int] = []
+	for i in SUITCASES:
+		numbers.append(i + 1)
+	for i in range(numbers.size() - 1, 0, -1):
+		var j := rng.randi_range(0, i)
+		var swap := numbers[i]
+		numbers[i] = numbers[j]
+		numbers[j] = swap
+	for i in SUITCASES:
+		var suitcase := Suitcase.new()
+		suitcase.name = "Suitcase%d" % numbers[i]
+		suitcase.number = numbers[i]
+		suitcase.position = AirportBelt.pile_spot(i)
+		add_child(suitcase)
+		suitcases.append(suitcase)
+	_build.shape(_build.body(COUNTER_AT + SCALE_AT + Vector3(0, FLOOR_TOP + 0.06, 0)), Vector3(SCALE_PAN, 0.12,
+		SCALE_PAN))
+	var readout := Label3D.new()
+	readout.name = "ScaleReadout"
+	readout.font_size = 28
+	readout.pixel_size = 0.004
+	readout.modulate = Color(1.0, 0.3, 0.3)
+	readout.position = COUNTER_AT + READOUT_AT + Vector3(0, FLOOR_TOP, 0.01)
+	$Built.add_child(readout)
+	belt = AirportBelt.new()
+	belt.name = "Belt"
+	belt.setup(self, suitcases, readout)
+	add_child(belt)
 
 
 ## The duty-free shop's floor, shelves and sign; the gate's floor, seats, desk and sign.

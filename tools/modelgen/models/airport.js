@@ -97,14 +97,42 @@ export function buildGateSeats() {
 	return b.build();
 }
 
+// Lustre's suitcase (step 2), lying flat: 0.7 m long (x), 0.25 high, 0.5 deep, black with the yellow ribbon around
+// it, a handle on its +Z side and the tag on top. Origin at its middle. `open` lifts the lid (hinged at -Z) and shows
+// his clothes: a folded suit, a tie and a teddy bear.
+function buildSuitcase(name, open) {
+	const b = new Builder(name);
+	const black = mat('suitcase_black', 0x1e1f24), yellow = mat('ribbon_yellow', 0xf2c84b), white = mat('tag_white', 0xf4f4f0);
+	if (open) {
+		box(b, 'body', black, 0.7, 0.13, 0.5, 0, -0.06, 0);
+		box(b, 'lid', black, 0.7, 0.5, 0.12, 0, 0.25, -0.31, [-0.15, 0, 0]);
+		box(b, 'ribbon', yellow, 0.08, 0.5, 0.125, 0, 0.25, -0.31, [-0.15, 0, 0]);
+		box(b, 'clothes', mat('suit_grey', 0x5a6070), 0.5, 0.06, 0.36, -0.05, 0.03, 0);
+		box(b, 'clothes', mat('tie_red', 0xc8323a), 0.06, 0.02, 0.3, 0.12, 0.07, 0);
+		b.add('bear', mat('bear_brown', 0x9a6a3a), new THREE.SphereGeometry(0.07, 8, 6), { pos: V(-0.22, 0.09, 0.08) });
+		b.add('bear', mat('bear_brown', 0x9a6a3a), new THREE.SphereGeometry(0.05, 8, 6), { pos: V(-0.22, 0.13, -0.02) });
+	} else {
+		box(b, 'body', black, 0.7, 0.25, 0.5, 0, 0, 0);
+		box(b, 'ribbon', yellow, 0.08, 0.255, 0.505, 0, 0, 0);
+		box(b, 'handle', black, 0.2, 0.04, 0.05, 0, 0, 0.27);
+		box(b, 'tag', white, 0.1, 0.01, 0.07, 0.22, 0.13, 0.12);
+	}
+	return b.build();
+}
+
 export const models = { checkin_counter: buildCheckinCounter, xray_machine: buildXrayMachine, airplane: buildAirplane,
-	duty_free_shelf: buildDutyFreeShelf, gate_seats: buildGateSeats };
+	duty_free_shelf: buildDutyFreeShelf, gate_seats: buildGateSeats, suitcase: () => buildSuitcase('suitcase', false),
+	suitcase_open: () => buildSuitcase('suitcase_open', true) };
 
 export const views = {
 	airport_props: {
 		items: [{ name: 'checkin_counter', pos: [-2.5, 0, 1.0], rotY: 0.4 }, { name: 'xray_machine', pos: [1.5, 0, 1.0], rotY: -0.3 },
 			{ name: 'duty_free_shelf', pos: [-2.0, 0, -2.0], rotY: 0.2 }, { name: 'gate_seats', pos: [2.0, 0, -1.6], rotY: -0.2 }],
 		cam: { pos: [0.5, 2.6, 7.5], target: [0, 0.8, -0.3], fov: 50 },
+	},
+	suitcases: {
+		items: [{ name: 'suitcase', pos: [-0.5, 0.13, 0], rotY: 0.4 }, { name: 'suitcase_open', pos: [0.5, 0.13, 0.1], rotY: -0.3 }],
+		cam: { pos: [0.3, 1.2, 2.2], target: [0, 0.15, 0], fov: 45 },
 	},
 	airplane: {
 		items: [{ name: 'airplane', pos: [0, 0, 0], rotY: 0.6 }],
