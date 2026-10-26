@@ -167,13 +167,14 @@ func test_walking_off_in_the_middle_is_chicken() -> void:
 func test_the_bikers_out_of_the_patio_watch_the_dare() -> void:
 	_dare("arm")
 	_go()
+	var talkers := bar.evidence.talkers
 	for member in bar.members:
 		var in_patio := bar.in_patio(member.global_position + Vector3.UP)
-		assert_eq(member.distracted, not in_patio, "out of the patio they're watching it")
+		assert_eq(member.distracted, not in_patio or talkers.has(member), "out of the patio they're watching it")
 	for i in BikerDares.ARM_PUSHES:
 		bar.arm_table.use(cop)
 	for member in bar.members:
-		assert_false(member.distracted, "back to normal after it")
+		assert_eq(member.distracted, talkers.has(member), "back to normal after it, the recording's pair still talking")
 
 
 func test_the_dare_texts_are_translated() -> void:
