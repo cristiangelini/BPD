@@ -2249,3 +2249,10 @@ INSPECTOR_SAW_BRIBE,Ajá. Ajá.,Uh-huh. Uh-huh.,Aham. Aham.
 INSPECTOR_SAW_HIT,¡Esto va al informe!,This goes in the report!,Isso vai para o relatório!
 INSPECTOR_SAW_BEHIND,¿Hola? ¿Oficiales? ¿Me olvidaron?,Hello? Officers? Did you forget me?,Olá? Oficiais? Esqueceram de mim?
 INSPECTOR_SAW_DONUT,Típico.,Typical.,Típico.
+BRIEF_INSPECTION_A,"¡Novatos! Llegó el día. Ella es la inspectora Regla, de la ciudad.","Rookies! The day has come. This is Inspector Regla, from the city.","Novatos! Chegou o dia. Esta é a inspetora Regla, da cidade."
+BRIEF_INSPECTION_B,"Va con ustedes todo el turno y anota todo. Si su informe es malo, nos cierran.","She goes with you all shift and writes everything down. If her report is bad, they close us down.","Ela vai com vocês o turno todo e anota tudo. Se o relatório for ruim, fecham a gente."
+BRIEF_INSPECTION_C,"Sonrían. ¡Sonrían más! Y ahora, el caso de hoy.","Smile. Smile more! And now, today's case.","Sorriam. Sorriam mais! E agora, o caso de hoje."
+SHIFT_INSPECTION,Informe de la inspectora (de 100),Inspector's report (out of 100),Relatório da inspetora (de 100)
+SHIFT_INSPECTION_BEST,Lo mejor: «%s»,The best: “%s”,O melhor: “%s”
+SHIFT_INSPECTION_WORST,Lo peor: «%s»,The worst: “%s”,O pior: “%s”
+SHIFT_INSPECTION_FAILED,Informe reprobado: la comisaría cierra. Partida perdida.,Report failed: the station closes. Match lost.,Relatório reprovado: a delegacia fecha. Partida perdida.

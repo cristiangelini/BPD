@@ -89,3 +89,11 @@ La nota no baja de 0 ni pasa de 100.
   velocidad del auto en el que va. Los golpes los siente con una esfera alrededor del cuerpo. La planilla (Q) muestra
   "Informe de la inspectora: N de 100" debajo de todo. El +25 del caso resuelto se suma en el paso 4. Captura:
   `campana/informe.png`.
+- **Paso 4 (el turno 10):** en el último turno el comisario la presenta antes del caso ("¡Novatos! Llegó el día. Ella
+  es la inspectora Regla, de la ciudad.", `CaseBriefing.INSPECTION`). Ella guarda su informe en la partida
+  (`Campaign.inspection`) y, al cerrar el turno, `Campaign.finish_shift` le suma los +25 si el caso se resolvió y
+  decide solo con eso: con 60 o más la comisaría se salva; con menos cierra, sin fuga y aunque haya llegado a la cuota.
+  La pantalla del turno no muestra la cuota y lee el informe: la nota, "Lo mejor" y "Lo peor" (lo que más sumó y lo
+  que más restó, con la frase de ella), y "¡Ascendidos! La comisaría sigue abierta." o "Informe reprobado: la comisaría
+  cierra.". Por ahora el informe se lee en la pantalla del turno, no en la oficina con los policías mirando: eso queda
+  para cuando haya animaciones. Capturas: `campana/inspeccion_comisario.png` e `inspeccion_final.png`.
