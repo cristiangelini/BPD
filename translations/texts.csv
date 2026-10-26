@@ -4303,6 +4303,10 @@ PROMPT_ELEVATOR_DOWN,E: bajar a la planta baja,E: go down to the lobby,E: descer
 PROMPT_CALL_ELEVATOR,E: llamar al ascensor,E: call the elevator,E: chamar o elevador
 HINT_ELEVATOR_OVERLOAD,"¡Bzzz! Más de 400 kg: el ascensor no se mueve.","Bzzz! Over 400 kg: the elevator won't move.","Bzzz! Mais de 400 kg: o elevador não se move."
 ELEVATOR_MAX,Máximo 400 kg,Max 400 kg,Máximo 400 kg
+PROMPT_SCAFFOLD_DOWN,E: bajar el andamio,E: lower the scaffold,E: descer o andaime
+PROMPT_SCAFFOLD_UP,E: subir el andamio,E: raise the scaffold,E: subir o andaime
+PROMPT_SCAFFOLD_STOP,E: frenar el andamio,E: stop the scaffold,E: parar o andaime
+PROMPT_CALL_SCAFFOLD,E: llamar al andamio,E: call the scaffold,E: chamar o andaime
 PLACE_MUSEUM,"Museo","Museum","Museu"
 SIGN_MUSEUM,"Museo de la Ciudad","City Museum","Museu da Cidade"
 SIGN_MUSEUM_GALLERY,"Sala grande →","Main gallery →","Sala principal →"

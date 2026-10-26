@@ -6,8 +6,12 @@ extends Node3D
 ## board, the mailboxes, an armchair and a plastic plant) and floor 30 (the hallway with 30A, 30B, 30C, the fire stairs
 ## and the elevator, and 30B: living room with its big window and balcony, kitchen, bedroom, bathroom and a locked
 ## study). Floors 1 to 29 are only windows outside. The front door, 30B, its study and 30C are locked; 30A and the
-## fire stairs are shut for good, so the elevator (TowerElevator, step 2) is the way up. The ornaments of 30B break,
+## fire stairs are shut for good, so the elevator (TowerElevator, step 2) is the way up; what doesn't fit in it goes down on the hanging
+## scaffold (HangingScaffold, step 3) at the balcony, and what falls from up there is lost and a fine. The ornaments of 30B break,
 ## each one a fine. Every number here is (propuesta).
+
+## Something fell from up high in front of the building (Don Evaristo will see it).
+signal something_fell(body: Node3D)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const ORNAMENT_SCENES: Array[PackedScene] = [
@@ -48,6 +52,17 @@ const STUDY_DOOR_X := 9.0
 const BALCONY_DOOR_X := 4.0
 const BALCONY_DEPTH := 1.6
 const RAIL_HEIGHT := 1.1
+## The hanging scaffold: the middle of its deck along the front, how far out from the balcony, and the crane's arms
+## on the roof that hold its cables.
+const SCAFFOLD_X := 6.5
+const SCAFFOLD_GAP := 0.1
+const SCAFFOLD_Z := HALF_Z + BALCONY_DEPTH + SCAFFOLD_GAP + HangingScaffold.SIZE.z / 2
+const CRANE_Y := ROOF_Y + 1.8
+## Where its deck stands at the street.
+const STREET_Y := 0.05
+## Something falling faster than this (m/s) went over the edge: it's lost, and a fine.
+const FALL_SPEED := 12.0
+const DROP_FINE := 50
 
 const COUNTER_AT := Vector3(-6.0, LOBBY_Y, 3.5)
 const COUNTER_SIZE := Vector3(3.0, 1.1, 0.8)
@@ -124,10 +139,15 @@ var city_map: CityMap
 var elevator: TowerElevator
 var calls: Array[ElevatorCall] = []
 var ornaments: Array[Ornament] = []
+var scaffold: HangingScaffold
+var scaffold_calls: Array[ScaffoldButton] = []
+## What fell from up high, each one lost and a DROP_FINE.
+var dropped: Array[Node3D] = []
 var broken_goods := 0
 ## Money taken off the case pay for broken things (each one is an Ornament.FINE).
 var fines := 0
 var _build: PlaceBuilder
+var _falls: Area3D
 @onready var car: PatrolCar = $PatrolCar
 
 
@@ -143,6 +163,7 @@ func _ready() -> void:
 	study_door = _door(Vector3(STUDY_DOOR_X, TOP_Y, STUDY_FRONT))
 	rental_door = _door(Vector3(FLAT_C_DOOR_X, TOP_Y, CORE_Z))
 	_place_elevator()
+	_place_scaffold()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("apartments")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -200,6 +221,68 @@ func _place_elevator() -> void:
 		mesh.mesh = box
 		mesh.material_override = _build.material(Color(0.95, 0.8, 0.3))
 		button.add_child(mesh)
+
+
+## The scaffold docked at 30B's balcony, the crane on the roof, a call button on the balcony and one at the street,
+## and the watch over the front for what falls.
+func _place_scaffold() -> void:
+	var half := HangingScaffold.SIZE.x / 2 - 0.2
+	var crane: Array[Vector3] = []
+	for side: float in [-1.0, 1.0]:
+		var x := SCAFFOLD_X + side * half
+		crane.append(Vector3(x, CRANE_Y, SCAFFOLD_Z))
+		_build.box(Vector3(x, ROOF_Y + 0.9, HALF_Z - 1.0), Vector3(0.2, 1.8, 0.2), STEEL.darkened(0.3))
+		_build.box(Vector3(x, CRANE_Y, (HALF_Z - 1.0 + SCAFFOLD_Z) / 2), Vector3(0.2, 0.2, SCAFFOLD_Z - HALF_Z + 1.4),
+			STEEL.darkened(0.3))
+	scaffold = HangingScaffold.new()
+	scaffold.position = Vector3(SCAFFOLD_X, TOP_Y, SCAFFOLD_Z)
+	add_child(scaffold)
+	scaffold.setup(STREET_Y, TOP_Y, crane)
+	var places := [Vector3(SCAFFOLD_X + HangingScaffold.OPENING / 2 + 0.3, TOP_Y + RAIL_HEIGHT, HALF_Z + BALCONY_DEPTH),
+		Vector3(SCAFFOLD_X + half + 0.6, 1.2, HALF_Z + 0.1)]
+	for i in 2:
+		var button := ScaffoldButton.new()
+		button.scaffold = scaffold
+		button.stop = 1 - i
+		button.position = places[i]
+		_build.shape(button, Vector3(0.15, 0.15, 0.12))
+		var mesh := MeshInstance3D.new()
+		var box := BoxMesh.new()
+		box.size = Vector3(0.15, 0.15, 0.12)
+		mesh.mesh = box
+		mesh.material_override = _build.material(Color(0.95, 0.8, 0.3))
+		button.add_child(mesh)
+		add_child(button)
+		scaffold_calls.append(button)
+	var front := Area3D.new()
+	front.collision_mask = 0xFFFFFFFF
+	var column := CollisionShape3D.new()
+	var column_box := BoxShape3D.new()
+	column_box.size = Vector3(HALF_X * 2 + 4, ROOF_Y, 6.0)
+	column.shape = column_box
+	front.add_child(column)
+	front.position = Vector3(0, ROOF_Y / 2, HALF_Z + 3.0)
+	add_child(front)
+	_falls = front
+
+
+func _physics_process(_delta: float) -> void:
+	if _falls == null:
+		return
+	for body: Node3D in _falls.get_overlapping_bodies():
+		if body is RigidBody3D and not body is Ornament and not dropped.has(body) \
+				and (body as RigidBody3D).linear_velocity.y < -FALL_SPEED:
+			_drop(body)
+
+
+## Something went over the edge: it breaks at the bottom and it's a fine.
+func _drop(body: Node3D) -> void:
+	dropped.append(body)
+	fines += DROP_FINE
+	if body is Evidence:
+		var evidence := body as Evidence
+		evidence.hit(INF)
+	something_fell.emit(body)
 
 
 ## A floor slab at `top` with the elevator shaft's hole.
@@ -340,7 +423,10 @@ func _build_flat() -> void:
 		Vector3(GameScale.DOOR_WIDTH, ROOM_HEIGHT - GameScale.DOOR_HEIGHT, 0.06), GLASS)
 	_build.slab(LIVING_WEST, HALF_X, HALF_Z, HALF_Z + BALCONY_DEPTH, y, OUTSIDE.darkened(0.2))
 	var rail_y := y + RAIL_HEIGHT / 2
-	_build.box(Vector3((LIVING_WEST + HALF_X) / 2, rail_y, HALF_Z + BALCONY_DEPTH), Vector3(HALF_X - LIVING_WEST, RAIL_HEIGHT, 0.06), STEEL)
+	# The front rail has a gap where the scaffold docks.
+	var gap := [SCAFFOLD_X - HangingScaffold.OPENING / 2, SCAFFOLD_X + HangingScaffold.OPENING / 2]
+	for span: Array in [[LIVING_WEST, gap[0]], [gap[1], HALF_X]]:
+		_build.box(Vector3((span[0] + span[1]) / 2, rail_y, HALF_Z + BALCONY_DEPTH), Vector3(span[1] - span[0], RAIL_HEIGHT, 0.06), STEEL)
 	for x: float in [LIVING_WEST, HALF_X]:
 		_build.box(Vector3(x, rail_y, HALF_Z + BALCONY_DEPTH / 2), Vector3(0.06, RAIL_HEIGHT, BALCONY_DEPTH), STEEL)
 	# Living room.
