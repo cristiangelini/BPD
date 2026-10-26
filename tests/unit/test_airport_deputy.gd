@@ -87,7 +87,13 @@ func test_sitting_he_gets_bored_and_wanders_again() -> void:
 	assert_eq(airport.deputy.state, AirportDeputy.State.WALKING)
 
 
+## The porter in the patrol car, so he doesn't drive off on the tug when it closes (step 6) and take the hint.
+func _jail_porter() -> void:
+	OwnerEscort.of(airport.porter).board()
+
+
 func test_the_last_call_and_boarding_on_time() -> void:
+	_jail_porter()
 	_put(airport.politician, Vector3(14, 0, 4))
 	airport.boarding.start()
 	airport.boarding.left = AirportBoarding.LAST_CALL + 0.05
@@ -105,6 +111,7 @@ func test_the_last_call_and_boarding_on_time() -> void:
 
 
 func test_away_from_the_gate_he_misses_the_plane() -> void:
+	_jail_porter()
 	_put(airport.politician, Vector3(-14, 0, 4))
 	watch_signals(airport.boarding)
 	airport.boarding.start()
