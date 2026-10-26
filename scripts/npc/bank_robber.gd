@@ -117,6 +117,9 @@ var _hanky: MeshInstance3D
 ## Step 2: lit up (lit()), he hides his face behind his cape for HIDE_TIME, blind and still; the bank's lamps make him
 ## do it once, then he puts his sunglasses on and only a flashlight does.
 var vampire := false
+## The seed bank (robo-banco-semillas.md, decision 129): a straw hat and a green gardener's apron; El Oso's hat is
+## bigger and he carries a watering can.
+var gardener := false
 var hiding_left := 0.0
 var shades := false
 var _cape_up: MeshInstance3D
@@ -217,6 +220,8 @@ func _ready() -> void:
 		_add_hanky()
 	if vampire:
 		_add_cape()
+	if gardener:
+		_add_gardener()
 
 
 ## The white hanky in his right hand.
@@ -302,6 +307,27 @@ func _add_cape() -> void:
 	_shades.position = Vector3(0, 1.33, 0.25)
 	_shades.visible = false
 	_model.add_child(_shades)
+
+
+## The gardener's straw hat over the mask's ears, his apron over his belly and El Oso's watering can in his right hand;
+## on the model, which faces +Z and is scaled with him.
+func _add_gardener() -> void:
+	var straw := Color(0.86, 0.74, 0.42)
+	var big := 1.3 if animal == "oso" else 1.0
+	var hat := CopTool.piece(CopTool.cylinder(0.36 * big, 0.03), straw, Vector3(0, 1.5, 0))
+	hat.name = "StrawHat"
+	hat.add_child(CopTool.piece(CopTool.cylinder(0.17 * big, 0.16), straw, Vector3(0, 0.09, 0)))
+	hat.add_child(CopTool.piece(CopTool.cylinder(0.175 * big, 0.04), Color(0.3, 0.55, 0.3), Vector3(0, 0.04, 0)))
+	_model.add_child(hat)
+	var apron := CopTool.piece(CopTool.box(Vector3(0.46, 0.62, 0.03)), Color(0.25, 0.55, 0.3), Vector3(0, 0.82, 0.24))
+	apron.name = "Apron"
+	_model.add_child(apron)
+	if animal == "oso":
+		var can := CopTool.piece(CopTool.cylinder(0.1, 0.22), Color(0.35, 0.6, 0.45), Vector3(0.38, 0.75, 0.12))
+		can.name = "WateringCan"
+		can.add_child(CopTool.piece(CopTool.cylinder(0.02, 0.3), Color(0.35, 0.6, 0.45), Vector3(0, 0.05, 0.18),
+			Vector3(1.0, 0, 0)))
+		_model.add_child(can)
 
 
 func is_sobbing() -> bool:

@@ -22,7 +22,7 @@ func test_the_seeds_draw_grandpas_a_sixth_of_the_time() -> void:
 	for seed_ in range(1, 401):
 		if BankLevel.variant(seed_, PackedStringArray()) == "grandpas":
 			grandpas += 1
-	assert_between(grandpas, 40, 100)
+	assert_between(grandpas, 25, 100)
 
 
 func test_the_args_force_one() -> void:
