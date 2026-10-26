@@ -27,7 +27,7 @@ const PAINT := Color(0.98, 0.85, 0.15)
 
 var kind := "rooster"
 var spots: Array[MeshInstance3D] = []
-## Online, a guest's: the host's gives it away.
+## Online, a guest's: the host's gives it away and jolts it; here it only crows, rings and drips.
 var follower := false
 var _suitcase: Suitcase
 var _bubble: Label3D
@@ -72,8 +72,10 @@ func say(key: String) -> void:
 	_bubble_left = SAY_TIME
 
 
-## Gives it away to the cops close enough (all of them if it was opened).
+## Gives it away to the cops close enough (all of them if it was opened). The host's decides.
 func _give_away(opened := false) -> void:
+	if follower:
+		return
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
 		if opened or cop.global_position.distance_to(_suitcase.global_position) < SEE:
 			if not _seen.has(cop):
@@ -90,12 +92,12 @@ func weighed() -> void:
 
 func _physics_process(delta: float) -> void:
 	_inside.visible = _suitcase.opened
-	if follower or not _suitcase.visible:
+	if not _suitcase.visible:
 		return
 	match kind:
 		"rooster":
 			_jolt_left -= delta
-			if _jolt_left <= 0.0:
+			if _jolt_left <= 0.0 and not follower:
 				_jolt_left = JOLT_EVERY
 				_suitcase.apply_central_impulse(Vector3(randf_range(-1, 1), 1.0, randf_range(-1, 1)).normalized() * JOLT)
 				_give_away()

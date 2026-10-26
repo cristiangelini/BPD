@@ -119,3 +119,8 @@ pregunten."
   una baliza naranja) espera estacionado en la calle frente al aeropuerto. Si el maletero sigue suelto cuando el caso
   termina (sube el diputado, pierde el avión o sale el escándalo), se sube y se escapa: persecución embebida (decisión
   96) a 22 km/h; atrapado, cuenta como detenido. Jugar sortea el aeropuerto como una de las 9 protecciones del diputado.
+- **Paso 7 (online):** el caso del anfitrión decide y el de cada invitado lo sigue (`AirportCase.snapshot`): la cinta
+  andando, el reloj del embarque y el cierre, lo que hace el diputado, lo último que mostró la pantalla de rayos X, las
+  maletas abiertas, las pistas, el escándalo, cómo terminó y la huida en el carrito. La gente (el diputado, el personal,
+  la prensa) viene del anfitrión (NpcSync) y las maletas también (PropSync). En el invitado la maleta rara solo canta,
+  suena y gotea; los saltos y las pistas los decide el anfitrión.

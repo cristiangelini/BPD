@@ -7,8 +7,10 @@ extends Node
 ## does the gate closing without him. It pays SALARY, OPENED less for each of his own suitcases opened for nothing,
 ## WRONG_CUFF less for each honest employee cuffed and PORTER more if the porter is in the patrol car; quota of its own,
 ## like the plaza (decision 103). If the porter is still loose when it ends, he runs for the baggage tug parked out
-## front and the chase starts there (decision 96, step 6): caught, he counts as detained. Every number here is
-## (propuesta).
+## front and the chase starts there (decision 96, step 6): caught, he counts as detained. Online (step 7) the host's
+## case decides and a guest's follows it (CaseSync, snapshot): the belt and the boarding clock, the deputy's errands,
+## what the X-ray showed, the suitcases opened, the clues, how it ended and the getaway; the people come from the host
+## (NpcSync) and the suitcases too (PropSync). Every number here is (propuesta).
 
 const SHIFT_DELAY := 4.0
 const REFRESH := 0.5
@@ -41,7 +43,15 @@ var chase: ChaseCase
 var caught := false
 var escaped := false
 var shift_over := false
-var follower := false
+var follower := false:
+	set(value):
+		follower = value
+		if airport:
+			airport.belt.follower = value
+			airport.boarding.follower = value
+			airport.deputy.follower = value
+			OddCargo.of(airport.odd).follower = value
+var online: CaseSync
 var _result := {}
 var _refresh_left := 0.0
 
@@ -71,8 +81,15 @@ func start(comisario: Comisario = null) -> void:
 	else:
 		give_tip()
 	if shift_screen:
-		shift_screen.play_again.connect(func() -> void: PlaceDraw.start(get_tree()))
+		shift_screen.play_again.connect(_play_again)
 		shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
+
+
+func _play_again() -> void:
+	if online:
+		online.play_again()
+	else:
+		PlaceDraw.start(get_tree())
 
 
 func give_tip() -> void:
@@ -140,6 +157,7 @@ func _run_off() -> void:
 	chase = ChaseCase.begin(airport, SuspectCar.BAGGAGE_TUG, airport.tug.global_transform, airport.car, airport.city,
 		airport.case_seed, null, airport.tug)
 	chase.who = "porter"
+	chase.online = online
 	chase.follower = follower
 	chase.ended.connect(_on_chase_ended)
 	_hint_all("HINT_ESCAPE_PORTER")
@@ -225,6 +243,47 @@ func _show_result(result: Dictionary) -> void:
 			result.campaign.promoted)
 		over = result.campaign.over
 	shift_screen.get_node("%AgainButton").visible = not over and not follower
+
+
+## What every guest's case shows (CaseSync).
+func snapshot() -> Dictionary:
+	var boarding := airport.boarding
+	var state := {"tip": tip_given, "belt": airport.belt.running,
+		"boarding": [boarding.running, snappedf(boarding.left, 0.1), boarding.done], "deputy": airport.deputy.state,
+		"xray": [airport.xray.scanned, airport.xray.caption()], "scandal": scandal, "boarded": boarded, "missed": missed,
+		"opened": opened.duplicate(), "odd": odd_found, "wrong": wrong_cuffs, "jailed": jailed, "clues": clues.duplicate(),
+		"tricks": tricks, "caught": caught, "escaped": escaped, "result": _result}
+	if chase:
+		state.chase = chase.snapshot()
+	return state
+
+
+func apply_snapshot(state: Dictionary) -> void:
+	if state.tip:
+		give_tip()
+	airport.belt.running = state.belt
+	boarded = state.boarded
+	airport.boarding.follow(state.boarding[0], state.boarding[1], state.boarding[2], boarded)
+	airport.deputy.state = state.deputy as AirportDeputy.State
+	airport.xray.follow(state.xray[0], state.xray[1])
+	scandal = state.scandal
+	missed = state.missed
+	opened.assign(state.opened)
+	odd_found = state.odd
+	wrong_cuffs = state.wrong
+	jailed = state.jailed
+	for kind: String in state.clues:
+		if not clues.has(kind):
+			clues.append(kind)
+	tricks = state.tricks
+	caught = state.caught
+	escaped = state.escaped
+	if state.has("chase"):
+		_run_off()
+		chase.apply_snapshot(state.chase)
+	checklist.show_rows(rows())
+	if not state.result.is_empty() and not shift_over:
+		_show_result(state.result)
 
 
 ## The planilla's rows, in the shape CaseChecklist takes.
