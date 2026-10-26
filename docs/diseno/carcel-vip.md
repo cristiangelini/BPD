@@ -68,3 +68,11 @@ En qué celda está Rulo, qué 6 pedidos hace y en qué orden, qué 3 cosas esco
    pierde de verdad es que se escape, y lo otro es un castigo chico.
 3. **¿Se escapa cuando junta las 3 piezas y se pierde si llega a la limusina?** Recomendado: sí, así revisar las
    cosas importa más que darle todo rápido.
+
+## Hecho así
+- **Paso 2:** `--place=prison_vip` (`scenes/levels/prison_vip.tscn`, `PrisonLevel.variant = "vip"`). El pabellón
+  abierto y las 8 celdas con puerta; la que sortea la semilla (`VipPlan`) tiene la alfombra roja, el sillón dorado
+  mirando a la reja, el espejo de camarín con focos y una luz cálida, y la puerta con llave. Rulo (`VipInmate`, modelo
+  `npc_rulo`) está sentado en el sillón y dice cosas cada 12 s. En la vereda, a los dos lados del portón, los 6 fans
+  (`VipFan`, modelo `npc_fan`) saltan y gritan "¡RULO, RULO!" por turnos, y la limusina rosa (`limo`) espera junto al
+  cordón. Capturas en la carpeta del proyecto `carcel-vip/`: `paso2-celda.png` y `paso2-porton.png`.
