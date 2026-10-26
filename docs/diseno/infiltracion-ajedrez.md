@@ -70,6 +70,10 @@ copian la forma de `RestaurantOrders` y `SchoolClasses` (el host decide y avisa)
 ## El orden para hacerlo (un PR chico por paso)
 1. El disfraz de socio: anteojos gruesos, chaleco de rombos y boina en una fila frente a los casilleros, y el look
    "chess" (2 de 3).
+   Hecho así: 12 piezas en una novena fila a 5,3 m frente a los casilleros (anteojos negros gruesos con lentes de
+   culo de botella, chaleco verde de rombos sobre camisa blanca con corbata marrón y boina marrón). Con 2 de 3,
+   `is_disguised("chess")`; los anteojos del club de abuelos y la boina de mimo no cuentan. Correr la hace caer como
+   cualquier disfraz **(propuesta)**.
 2. El club en la ciudad (`--place=chess`): el salón con las mesas, la sala del torneo, la cafetería, la vitrina, el
    depósito y la oficina; los socios, el Gran Maestro y el portero.
 3. Los tableros: las piezas con física, el reloj de cada mesa y sentarse.
