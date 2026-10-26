@@ -65,7 +65,20 @@ const VARIANTS := {
 			"witness": "glasses", "alibi": "liar"},
 		"parts": ["photo", "prints", "teeth", "hair", "mustache", "alibi"],
 	},
+	# The train (escena-tren.md, decision 202): six magicians alike who swap seats in every tunnel; a file follows its
+	# sticker, like the circus's signs.
+	"train": {
+		"shift": "crime_train", "story": "train",
+		"brief": ["BRIEF_TRAIN_A_", "BRIEF_TRAIN_B", "BRIEF_TRAIN_C"], "go": "HINT_GO_TRAIN",
+		"go_row": "OBJ_TRAIN_GO", "look": "HINT_TRAIN_LOOK", "files_row": "OBJ_TRAIN_FILES",
+		"clue_line": "CLUE_TRAIN_", "ruined_hint": "HINT_TRAIN_RUINED_", "left": "HINT_MAGICIAN_LEFT",
+		"who": "magician", "getaway": SuspectCar.BIKE, "clues": MagicianTraits.CLUES,
+		"parts": ["photo", "prints", "teeth", "hair", "knot"],
+	},
 }
+## On the train, the traits each part of a magician's file tells.
+const MAGICIAN_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
+	"knot": ["left"]}
 ## At the museum, the traits each part of a guard's file tells.
 const GUARD_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
 	"mustache": ["mustache"], "alibi": ["liar", "detail"]}
@@ -176,6 +189,8 @@ func texts() -> Dictionary:
 func _draw_suspects() -> Array[Dictionary]:
 	if texts() == VARIANTS.museum:
 		return GuardTraits.draw(case_seed)
+	if texts() == VARIANTS.train:
+		return MagicianTraits.draw(case_seed)
 	return ClownTraits.draw(case_seed) if texts() == VARIANTS.circus else CookTraits.draw(case_seed)
 
 
@@ -214,6 +229,22 @@ func clown_part(clown_index: int, part: String) -> bool:
 	return true
 
 
+## A magician gave a part of his file (escena-tren.md): it goes to the file of the sticker on his cape, with what it
+## says about him. Without a sticker it goes nowhere. Returns whether it went to a file.
+func magician_part(magician_index: int, part: String) -> bool:
+	if follower or not place:
+		return false
+	var id: int = place.sticker_of(magician_index)
+	if id < 0:
+		_hint_all("HINT_MAGICIAN_NO_STICKER")
+		return false
+	var known: Dictionary = captured.get_or_add(id, {})
+	for trait_name: String in MAGICIAN_PART_TRAITS[part]:
+		known[trait_name] = cooks[magician_index][trait_name]
+	file_part(id, part)
+	return true
+
+
 ## A guard gave a part of his file (escena-museo.md): it goes to his file with what it says about him.
 func guard_part(index: int, part: String) -> void:
 	if follower:
@@ -227,7 +258,7 @@ func guard_part(index: int, part: String) -> void:
 ## What a file says about each trait: the cook's own traits, or at the circus what the cops got from whoever wore its
 ## sign, or at the museum what they got from the guard.
 func file_traits(id: int) -> Dictionary:
-	if texts() == VARIANTS.circus or texts() == VARIANTS.museum:
+	if texts() == VARIANTS.circus or texts() == VARIANTS.museum or texts() == VARIANTS.train:
 		return captured.get(id, {})
 	return cooks[id]
 
@@ -236,12 +267,14 @@ func file_traits(id: int) -> Dictionary:
 func file_name(id: int) -> String:
 	if texts() == VARIANTS.circus:
 		return tr("FILE_SIGN") % (id + 1)
+	if texts() == VARIANTS.train:
+		return tr("FILE_STICKER") % (id + 1)
 	return cooks[id].name
 
 
 ## Who a file's accusation points at: the cook, or the clown wearing its sign now (or the last one who did).
 func accused_index(id: int) -> int:
-	if texts() == VARIANTS.circus and place:
+	if (texts() == VARIANTS.circus or texts() == VARIANTS.train) and place:
 		return place.wearer(id)
 	return id
 
@@ -573,6 +606,8 @@ func file_text(index: int) -> String:
 		return "\n".join(lines)
 	if texts() == VARIANTS.museum:
 		return _guard_file_text(index, who)
+	if texts() == VARIANTS.train:
+		return _magician_file_text(index, who)
 	var lines := PackedStringArray(["%d. %s" % [index + 1, who.name]])
 	lines.append(tr("FILE_APRON") % tr("APRON_" + str(who.apron)))
 	lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
@@ -581,6 +616,24 @@ func file_text(index: int) -> String:
 	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if parts.hair else "?"))
 	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if parts.teeth else "?"))
 	lines.append(tr("FILE_PRINTS") if parts.prints else tr("FILE_NO_PRINTS"))
+	return "\n".join(lines)
+
+
+## A magician's file: its sticker's number and what the cops got from whoever wore it.
+func _magician_file_text(index: int, who: Dictionary) -> String:
+	var lines := PackedStringArray([file_name(index)])
+	if who.has("glasses"):
+		lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
+		lines.append(tr("FILE_SHOE") % who.shoe)
+	else:
+		lines.append(tr("FILE_GLASSES_UNKNOWN"))
+	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if who.has("hair") else "?"))
+	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
+	if who.has("left"):
+		lines.append(tr("FILE_LEFT") if who.left else tr("FILE_RIGHT"))
+	else:
+		lines.append(tr("FILE_HAND_UNKNOWN"))
+	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
 	return "\n".join(lines)
 
 

@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Train crime scene, step 3 (escena-tren.md): six numbered stickers on the ticket machine to stick on the magicians' capes, files that follow the sticker (photo, prints, a bite, the top hat off for a moment and the knot that tells the hand), the six swapping seats in every tunnel with a ta-da when the lights come back, and the culprit peeling his sticker off once.
 - Train crime scene, step 2 (escena-tren.md): the six magicians alike in front of their seats, with their hair under the top hat, glasses, shoes and teeth drawn with the seed, a trick each time you press E on them (dove, endless hanky, coin from your ear); don Silbato in the locomotive, Picadora the ticket inspector and señor Mostaza with his food cart.
 - Train crime scene, step 1c (escena-tren.md): the scenery running past the train's windows (field, sleepers, poles, trees, cows and houses), each station's platform with its roof and sign, and a tunnel through a hill in each leg that switches the train's lamps off.
 - Train crime scene, step 1b (escena-tren.md): --place=train opens the train El Lento on its own level, with no city: the luggage car, the dining car, first class with its six numbered seats and the locomotive, joined by open doors, and over every door the next station and the seconds left.

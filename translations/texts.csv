@@ -4853,3 +4853,24 @@ TRAIN_INSPECTOR_LINE_2,Piqué cuarenta boletos hoy. Me duele la muñeca.,I've pu
 TRAIN_VENDOR_LINE_0,"¡Sándwiches, gaseosas, mostaza! ¡Mostaza con todo!","Sandwiches, sodas, mustard! Mustard on everything!","Sanduíches, refrigerantes, mostarda! Mostarda em tudo!"
 TRAIN_VENDOR_LINE_1,"Paso con el carrito por todos los vagones. Si algo está sucio, lo limpio.","I take the cart through every car. If something's dirty, I clean it.","Passo com o carrinho por todos os vagões. Se algo está sujo, eu limpo."
 TRAIN_VENDOR_LINE_2,Un mago me pagó con una paloma. No acepto palomas.,A magician paid me with a dove. I don't take doves.,Um mágico me pagou com uma pomba. Não aceito pombas.
+PROMPT_TRAIN_STICKER_HELD,Calcomanía con número: E sobre un mago para pegársela en la capa,Numbered sticker: E on a magician to stick it on their cape,Adesivo com número: E sobre um mágico para colar na capa
+PROMPT_MAGICIAN_STICKER,E: pegarle la calcomanía en la capa,E: stick the sticker on their cape,E: colar o adesivo na capa
+PROMPT_MAGICIAN_FEED,E: convidarle algo,E: offer them something,E: oferecer algo
+PROMPT_MAGICIAN_PRINTS,E: tomarle las huellas,E: take their prints,E: tirar as digitais
+PROMPT_MAGICIAN_HAT,E: pedirle que se saque la galera,E: ask them to take off the top hat,E: pedir que tire a cartola
+PROMPT_MAGICIAN_KNOT,E: pedirle que haga un nudo con el pañuelo,E: ask them to tie a knot in the hanky,E: pedir que dê um nó no lenço
+MAGICIAN_STUCK,¿El número %d? ¡Es mi número de la suerte!,Number %d? That's my lucky number!,O número %d? É o meu número da sorte!
+MAGICIAN_TA_DA,¡Ta-chán!,Ta-da!,Tcharam!
+MAGICIAN_NO_DONUTS,"La caja está vacía. Ni yo hago aparecer donas de la nada.","The box is empty. Not even I can make donuts appear from nothing.","A caixa está vazia. Nem eu faço aparecer rosquinhas do nada."
+MAGICIAN_BITES,"Mmm. Un mago nunca rechaza un bocado.","Mmm. A magician never turns down a bite.","Hum. Um mágico nunca recusa uma mordida."
+MAGICIAN_HAT_OFF,"¡Saludo al público! Pero no se acostumbren.","A bow to the audience! But don't get used to it.","Uma reverência ao público! Mas não se acostumem."
+MAGICIAN_KNOT_LEFT,"Un nudo mágico, hecho con la izquierda.","A magic knot, tied with the left hand.","Um nó mágico, feito com a esquerda."
+MAGICIAN_KNOT_RIGHT,"Un nudo mágico, hecho con la derecha.","A magic knot, tied with the right hand.","Um nó mágico, feito com a direita."
+MAGICIAN_PHOTO,"¡Sin flash! Me arruinas el misterio.","No flash! You're ruining the mystery.","Sem flash! Você estraga o mistério."
+HINT_MAGICIAN_NO_STICKER,"No tiene calcomanía: pégale una con número para que vaya a su ficha.","No sticker: stick a numbered one on them so it goes to their file.","Sem adesivo: cole um com número para que vá para a ficha."
+FILE_STICKER,Mago de la calcomanía %d,Magician with sticker %d,Mágico do adesivo %d
+FILE_HAND_UNKNOWN,Mano: ?,Hand: ?,Mão: ?
+HINT_FILE_knot,"Nudo de %s para la ficha: con qué mano lo hace.","%s's knot for the file: which hand they use.","Nó de %s para a ficha: com que mão faz."
+FILE_PART_knot,nudo,knot,nó
+OBJ_TRAIN_GO,Recorrer el tren,Walk through the train,Percorrer o trem
+OBJ_TRAIN_FILES,Armar la ficha de cada mago (%d de %d),Make each magician's file (%d of %d),Montar a ficha de cada mágico (%d de %d)

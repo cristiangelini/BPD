@@ -44,10 +44,10 @@ func test_a_trick_each_time_and_his_name() -> void:
 	add_child_autofree(train)
 	var magician := train.magicians[2]
 	assert_eq(magician.showing(), "")
-	magician.use(null)
+	magician.trick()
 	assert_eq(magician.showing(), "dove")
 	assert_true(magician.said().contains(magician.traits.name))
-	magician.use(null)
+	magician.trick()
 	assert_eq(magician.showing(), "hanky", "another trick")
 	await wait_seconds(TrainMagician.TRICK_SECONDS + 0.2)
 	assert_eq(magician.showing(), "", "the prop goes away")
