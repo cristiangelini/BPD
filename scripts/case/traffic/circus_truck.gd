@@ -41,6 +41,15 @@ const FEED_REACH := 1.5
 const ANGRY_PATIENCE := 5.0
 ## What El Peludo says when he's offered food, only a person would (CIRCUS_REFUSE_0 to 9).
 const REFUSE_LINES := 10
+## Step 3: El Peludo, unwatched this long (s), does something only a person would (CIRCUS_HUMAN_0 to 9) for
+## ACT_SECONDS. A cop watches his cage when it's this close (m) and within WATCH_ANGLE of where the cop faces.
+const UNWATCHED := 5.0
+const ACT_SECONDS := 2.0
+const HUMAN_ACTS := 10
+const WATCH_RANGE := 25.0
+const WATCH_ANGLE := deg_to_rad(70.0)
+## A real animal out of its open cage (LooseAnimal) goes for good after this long (s): a complaint from the circus.
+const LOOSE_SECONDS := 40.0
 
 
 ## A car's circus traits when no plan says them: from its plate, so every PC agrees. Empty for a city car.
@@ -87,10 +96,12 @@ static func build(car: QueueCar, traits: Dictionary) -> void:
 	bars.name = "Bars"
 	cage.add_child(bars)
 	QueueCar._paint(bars, paint)
-	var door: Node3D = DOOR_MODEL.instantiate()
+	var door := CageDoor.new()
 	door.name = "Door"
-	door.position = Vector3(-CAGE_SIZE.x / 2, 0, -CAGE_SIZE.z / 2)
+	door.car = car
+	door.position = Vector3(CAGE_SIZE.x / 2, 0, -CAGE_SIZE.z / 2)
 	cage.add_child(door)
+	door.opened.connect(car.open_cage)
 	var animal: Node3D = ANIMAL_MODELS[maxi(ANIMALS.find(traits.get("animal", "")), 0)].instantiate()
 	animal.name = "Animal"
 	animal.position = ANIMAL_AT
@@ -125,6 +136,33 @@ static func sound_of(animal: String) -> String:
 ## What El Peludo says the `fed`th time he's offered food.
 static func refuse_line(plate: String, fed: int) -> String:
 	return "CIRCUS_REFUSE_%d" % ((absi(hash(["circus refuse", plate])) + fed) % REFUSE_LINES)
+
+
+## What El Peludo does the `acts`th time nobody watches him.
+static func human_act(plate: String, acts: int) -> String:
+	return "CIRCUS_HUMAN_%d" % ((absi(hash(["circus human", plate])) + acts) % HUMAN_ACTS)
+
+
+## Whether some cop watches `car`'s cage: close enough and facing it.
+static func watched(car: Node3D) -> bool:
+	var cage := car.global_transform * (CAGE_AT + Vector3(0, CAGE_SIZE.y / 2, 0))
+	for cop: Cop in car.get_tree().get_nodes_in_group("cops"):
+		var flat := cage - cop.global_position
+		flat.y = 0.0
+		if flat.length() > WATCH_RANGE:
+			continue
+		var look := -cop.global_basis.z
+		look.y = 0.0
+		if flat.length() < 0.5 or look.normalized().angle_to(flat.normalized()) <= WATCH_ANGLE / 2:
+			return true
+	return false
+
+
+## Where an animal goes back into `car`'s cage, on the street behind it (world space).
+static func cage_mouth(car: Node3D) -> Vector3:
+	var at := car.global_transform * (CAGE_AT + Vector3(0, 0, -CAGE_SIZE.z / 2 - 0.8))
+	at.y = car.global_position.y
+	return at
 
 
 ## Whether `point` (world space) is close enough to `car`'s cage to feed the animal in it.

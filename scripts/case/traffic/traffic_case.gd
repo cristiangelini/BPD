@@ -113,6 +113,7 @@ func start(comisario: Comisario = null) -> void:
 	add_child(briefing)
 	queue.passed.connect(_on_passed)
 	queue.punctured.connect(_on_punctured)
+	queue.animal_lost.connect(_on_animal_lost)
 	if comisario:
 		comisario.spoke.connect(give_tip.unbind(1))
 		_hint_all("HINT_SEE_COMISARIO")
@@ -248,6 +249,14 @@ func _on_punctured(car: QueueCar) -> void:
 		racer_fines += 1
 		_hint_all("HINT_RACE_FINED")
 		return
+	_complaint()
+
+
+## A circus animal let out of its cage ran off for good (control-circo.md, step 3): the circus complains.
+func _on_animal_lost(_car: QueueCar) -> void:
+	if follower or shift_over or lost or solved_now:
+		return
+	_hint_all("HINT_CIRCUS_ANIMAL_LOST")
 	_complaint()
 
 

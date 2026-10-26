@@ -175,6 +175,13 @@ var circus_mode := false
 var circus := {}
 ## How many times its animal was offered food (step 2).
 var fed := 0
+## Step 3: El Peludo, how long nobody's watched him, how many person's things he did and how long the one he's at
+## lasts. A real animal out of its open cage (LooseAnimal), and whether it ran off for good.
+var unwatched := 0.0
+var acts := 0
+var _act_left := 0.0
+var loose: LooseAnimal
+var animal_lost := false
 ## It bumped into the car ahead in the fog (online, the guest's copy says so too).
 var bumped := false
 ## Its horn's sound over it, seen through the fog (step 3): it answers the foghorn (FogHorn).
@@ -430,7 +437,7 @@ func door_point() -> Vector3:
 
 ## It can drive off: no clown of it left on the street.
 func can_go() -> bool:
-	return clowns_out.is_empty() and _to_pop == 0
+	return clowns_out.is_empty() and _to_pop == 0 and not is_instance_valid(loose)
 
 
 func _build_door() -> void:
@@ -863,6 +870,75 @@ func feed(food: String) -> String:
 	return "angry"
 
 
+## Its cage door swung open (CageDoor, step 3), on every PC. El Peludo sits tight; a real animal hops out and wanders
+## (LooseAnimal) until it's lured back with its food or runs off.
+func open_cage() -> void:
+	var cage_door := get_node_or_null("Cage/Door") as CageDoor
+	if cage_door and not cage_door.is_open:
+		cage_door.set_angle(CageDoor.MAX_ANGLE)
+	if circus.is_empty() or circus.get("costume", false) or is_instance_valid(loose) or animal_lost:
+		return
+	var inside := CircusTruck.animal_of(self)
+	if not inside or not inside.visible:
+		return
+	inside.visible = false
+	loose = LooseAnimal.new()
+	loose.name = "%sAnimal" % name
+	loose.car = self
+	loose.animal = circus.get("animal", "lion")
+	get_parent().add_child(loose)
+	loose.global_position = CircusTruck.cage_mouth(self)
+	loose.home.connect(_on_animal_home)
+	loose.gone.connect(_on_animal_gone)
+	say(tr(CircusTruck.sound_of(loose.animal)))
+
+
+func _on_animal_home() -> void:
+	var inside := CircusTruck.animal_of(self)
+	if inside:
+		inside.visible = true
+	var cage_door := get_node_or_null("Cage/Door") as CageDoor
+	if cage_door:
+		cage_door.close()
+	say(tr("CIRCUS_BACK_IN"))
+
+
+func _on_animal_gone() -> void:
+	animal_lost = true
+	var queue := get_parent() as TrafficQueue
+	if queue:
+		queue.lost_animal(self)
+
+
+## El Peludo, unwatched for CircusTruck.UNWATCHED, does something only a person would (step 3); a cop turning round
+## then sees it in his bubble.
+func _act_human(delta: float) -> void:
+	if _act_left > 0.0:
+		_act_left -= delta
+		if _act_left <= 0.0:
+			var animal := CircusTruck.animal_of(self)
+			if animal:
+				animal.rotation = Vector3(0, PI, 0)
+		return
+	if CircusTruck.watched(self):
+		unwatched = 0.0
+		return
+	unwatched += delta
+	if unwatched >= CircusTruck.UNWATCHED:
+		act_human()
+
+
+## One more of El Peludo's person's things: its line in his bubble, his head tilted for CircusTruck.ACT_SECONDS.
+func act_human() -> void:
+	unwatched = 0.0
+	acts += 1
+	_act_left = CircusTruck.ACT_SECONDS
+	say(tr(CircusTruck.human_act(plate, acts)))
+	var animal := CircusTruck.animal_of(self)
+	if animal:
+		animal.rotation = Vector3(0.15, PI + 0.5, 0.25)
+
+
 ## The bubble's text while it shows, for tests.
 func saying() -> String:
 	return _bubble.text if _bubble.visible else ""
@@ -976,6 +1052,8 @@ func _physics_process(delta: float) -> void:
 		_bubble.hide()
 	if state == "gone" or not checkpoint:
 		return
+	if circus.get("costume", false) and not (get_parent() is TrafficQueue and get_parent().follower):
+		_act_human(delta)
 	if racer and state in ["gathering", "revving", "racing", "punctured"]:
 		_race(delta)
 		return

@@ -2267,6 +2267,19 @@ CIRCUS_REFUSE_6,"Prefiero una pizza con mucho queso.","I'd rather have a cheesy 
 CIRCUS_REFUSE_7,"No como entre comidas, me lo dijo el médico.","No snacks between meals, doctor's orders.","Não como entre as refeições, ordens médicas."
 CIRCUS_REFUSE_8,"¿Y la servilleta?","And the napkin?","E o guardanapo?"
 CIRCUS_REFUSE_9,"Uf, qué olor. Llévatelo, por favor.","Ugh, the smell. Take it away, please.","Ugh, que cheiro. Leva embora, por favor."
+PROMPT_CAGE_DOOR,"Agarra la puerta de la jaula y tira para abrirla","Grab the cage door and pull to open it","Agarre a porta da jaula e puxe para abri-la"
+CIRCUS_BACK_IN,"¡Adentro! (la puerta se cierra)","Back in! (the door shuts)","Para dentro! (a porta se fecha)"
+HINT_CIRCUS_ANIMAL_LOST,"¡Un animal del circo se escapó por la ciudad! El circo hace la denuncia.","A circus animal ran off into the city! The circus files a complaint.","Um animal do circo fugiu pela cidade! O circo faz a denúncia."
+CIRCUS_HUMAN_0,"*mira la hora en su reloj de pulsera*","*checks the time on his wristwatch*","*olha as horas no relógio de pulso*"
+CIRCUS_HUMAN_1,"*abre un diario y lee los clasificados*","*opens a newspaper and reads the ads*","*abre um jornal e lê os classificados*"
+CIRCUS_HUMAN_2,"*se rasca la cabeza... con la mano*","*scratches his head... with a hand*","*coça a cabeça... com a mão*"
+CIRCUS_HUMAN_3,"*se saca la cabeza del disfraz y se seca el sudor*","*takes off the costume's head and wipes his brow*","*tira a cabeça da fantasia e enxuga o suor*"
+CIRCUS_HUMAN_4,"*silba una canción de la radio*","*whistles a song from the radio*","*assobia uma música do rádio*"
+CIRCUS_HUMAN_5,"*habla por el celular: ""Sí, mamá, ya casi salgo""*","*on the phone: ""Yes, Mom, almost out""*","*no celular: ""Sim, mãe, já estou saindo""*"
+CIRCUS_HUMAN_6,"*cuenta joyas a escondidas*","*counts jewels on the sly*","*conta joias escondido*"
+CIRCUS_HUMAN_7,"*se ata los cordones de las zapatillas*","*ties his sneakers' laces*","*amarra os cadarços do tênis*"
+CIRCUS_HUMAN_8,"*bosteza y dice: ""qué viaje largo""*","*yawns: ""what a long ride""*","*boceja: ""que viagem longa""*"
+CIRCUS_HUMAN_9,"*se peina frente a un espejito*","*combs his hair in a little mirror*","*se penteia num espelhinho*"
 SHIFT_BRIBES,Sobornos,Bribes,Subornos
 SHIFT_AGENT_FINE,Multa de asuntos internos,Internal affairs fine,Multa da corregedoria
 SHIFT_INVESTIGATION_OPENED,Asuntos internos abrió una investigación.,Internal affairs opened an investigation.,A corregedoria abriu uma investigação.
