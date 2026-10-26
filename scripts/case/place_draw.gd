@@ -30,6 +30,7 @@ const PLACES := {
 	"choir": "res://scenes/levels/church_choir.tscn",
 	"mime": "res://scenes/levels/mime_theater.tscn",
 	"party": "res://scenes/levels/party_hall.tscn",
+	"gym": "res://scenes/levels/gym_hall.tscn",
 	"bank": "res://scenes/levels/bank.tscn",
 	"plaza": "res://scenes/levels/plaza_rally.tscn",
 	"prison": "res://scenes/levels/prison.tscn",
