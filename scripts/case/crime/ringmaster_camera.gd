@@ -15,6 +15,8 @@ var case: CrimeSceneCase
 ## The recording is one of the case's clues.
 var has_recording := false
 var deleted := false
+## The buttons' prompt keys, followed by "play" or "delete".
+var prompts := "PROMPT_CAMERA_"
 
 
 func _ready() -> void:

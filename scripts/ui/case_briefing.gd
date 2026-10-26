@@ -3,8 +3,18 @@ extends CanvasLayer
 
 ## The comisario gives the case (allanamiento.md, "Charla del comisario y planilla"): one line at a time,
 ## E, click or Space for the next one. While it's on, the cops can look around but not move or use things.
+## On the campaign's first shift his first talk opens with the story of the match (comisaria.md, "El objetivo de la
+## partida", decision 106): the city wants to close the station, and only 5 quotas met save it.
 
 signal finished
+
+## The comisario's story of the match, before the first case.
+const INTRO := ["BRIEF_INTRO_A", "BRIEF_INTRO_B", "BRIEF_INTRO_C", "BRIEF_INTRO_D", "BRIEF_INTRO_E"]
+## On the last shift he brings in the city's inspector first (inspeccion.md).
+const INSPECTION := ["BRIEF_INSPECTION_A", "BRIEF_INSPECTION_B", "BRIEF_INSPECTION_C"]
+
+## The scene that already heard the story: once per level, whichever case's briefing comes first.
+static var _intro_heard := -1
 
 var lines: PackedStringArray = []
 var index := 0
@@ -49,10 +59,26 @@ func _ready() -> void:
 
 func start(new_lines: PackedStringArray) -> void:
 	lines = new_lines
+	var scene := get_tree().current_scene
+	var scene_id := scene.get_instance_id() if scene else 0
+	if _intro_heard != scene_id:
+		if intro_due():
+			_intro_heard = scene_id
+			lines = PackedStringArray(INTRO) + new_lines
+		elif CityInspector.due():
+			_intro_heard = scene_id
+			lines = PackedStringArray(INSPECTION) + new_lines
 	index = 0
 	_set_cops_listening(true)
 	_text.text = lines[0]
 	show()
+
+
+## The match opens with the story: a campaign's first shift, the host's (Net.match_intro) for a guest.
+static func intro_due() -> bool:
+	if Campaign.current:
+		return Campaign.current.shift == 1 and Campaign.current.history.is_empty()
+	return Net.is_online() and Net.match_intro
 
 
 func advance() -> void:

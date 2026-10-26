@@ -42,7 +42,93 @@ const VARIANTS := {
 		"catch_row": "OBJ_CHOIR_CATCH_ERNESTO",
 		"slips": "ERNESTO_SLIP_%d",
 	},
+	# The mime troupe (infiltracion-mimos.md, decision 170): Pausa runs off "driving" an invisible car.
+	"mime": {
+		"story": "infiltration_mime",
+		"brief": ["BRIEF_MIME_A", "BRIEF_MIME_B", "BRIEF_MIME_C"],
+		"go": "HINT_GO_MIME", "in": "HINT_MIME_IN", "found": "HINT_CLUB_EVIDENCE",
+		"rows": "OBJ_MIME_", "evidence": "EVIDENCE_MIME_",
+		"boss": "pausa", "getaway": SuspectCar.INVISIBLE_CAR,
+		"boss_cuffed": "HINT_PAUSA_CUFFED", "cuff_row": "OBJ_MIME_CUFF_PAUSA",
+		"catch_row": "OBJ_MIME_CATCH_PAUSA",
+		"slips": "PAUSA_SLIP_%d",
+	},
+	# The costume party (infiltracion-fiesta.md, decision 171): the Sargento Trucho is found by his costume, and a wrong
+	# guest cuffed gets a second chance (`second_chance`). He runs off in the party patrol car.
+	"party": {
+		"story": "infiltration_party",
+		"brief": ["BRIEF_PARTY_A", "BRIEF_PARTY_B", "BRIEF_PARTY_C"],
+		"go": "HINT_GO_PARTY", "in": "HINT_PARTY_IN", "found": "HINT_PARTY_CLUE",
+		"rows": "OBJ_PARTY_", "evidence": "EVIDENCE_PARTY_",
+		"boss": "trucho", "getaway": SuspectCar.PARTY_PATROL,
+		"boss_cuffed": "HINT_TRUCHO_CUFFED", "cuff_row": "OBJ_PARTY_CUFF_TRUCHO",
+		"catch_row": "OBJ_PARTY_CATCH_TRUCHO",
+		"slips": "TRUCHO_SLIP_%d", "second_chance": true,
+	},
+	# The gym (infiltracion-gimnasio.md, decision 172): el Toro jogs off on foot.
+	"gym": {
+		"story": "infiltration_gym",
+		"brief": ["BRIEF_GYM_A", "BRIEF_GYM_B", "BRIEF_GYM_C"],
+		"go": "HINT_GO_GYM", "in": "HINT_GYM_IN", "found": "HINT_CLUB_EVIDENCE",
+		"rows": "OBJ_GYM_", "evidence": "EVIDENCE_GYM_",
+		"boss": "toro", "getaway": SuspectCar.TORO_JOG,
+		"boss_cuffed": "HINT_TORO_CUFFED", "cuff_row": "OBJ_GYM_CUFF_TORO", "catch_row": "OBJ_GYM_CATCH_TORO",
+		"slips": "TORO_SLIP_%d",
+	},
+	# The thieves' school (infiltracion-escuela.md): the Director only shows up at the graduation, and drives off in
+	# the school's learner car, stalling it.
+	"school": {
+		"story": "infiltration_school",
+		"brief": ["BRIEF_SCHOOL_A", "BRIEF_SCHOOL_B", "BRIEF_SCHOOL_C"],
+		"go": "HINT_GO_SCHOOL", "in": "HINT_SCHOOL_IN", "found": "HINT_CLUB_EVIDENCE",
+		"rows": "OBJ_SCHOOL_", "evidence": "EVIDENCE_SCHOOL_",
+		"boss": "director", "getaway": SuspectCar.LEARNER_CAR,
+		"boss_cuffed": "HINT_DIRECTOR_CUFFED", "cuff_row": "OBJ_SCHOOL_CUFF_DIRECTOR",
+		"catch_row": "OBJ_SCHOOL_CATCH_DIRECTOR", "slips": "DIRECTOR_SLIP_%d",
+	},
+	# The restaurant La Cuchara de Oro (infiltracion-restaurante.md, decision 174): the Chef Flambé rides off on the
+	# delivery scooter, losing pizzas in the curves.
+	"restaurant": {
+		"story": "infiltration_restaurant",
+		"brief": ["BRIEF_RESTAURANT_A", "BRIEF_RESTAURANT_B", "BRIEF_RESTAURANT_C"],
+		"go": "HINT_GO_RESTAURANT", "in": "HINT_RESTAURANT_IN", "found": "HINT_CLUB_EVIDENCE",
+		"rows": "OBJ_RESTAURANT_", "evidence": "EVIDENCE_RESTAURANT_",
+		"boss": "flambe", "getaway": SuspectCar.PIZZA_SCOOTER,
+		"boss_cuffed": "HINT_FLAMBE_CUFFED", "cuff_row": "OBJ_RESTAURANT_CUFF_FLAMBE",
+		"catch_row": "OBJ_RESTAURANT_CATCH_FLAMBE", "slips": "FLAMBE_SLIP_%d",
+	},
+	# The chess club El Peón Dormido (infiltracion-ajedrez.md, decision 175): the Gran Maestro Alfil rides off on a
+	# motorized carousel horse that hops at every corner.
+	"chess": {
+		"story": "infiltration_chess",
+		"brief": ["BRIEF_CHESS_A", "BRIEF_CHESS_B", "BRIEF_CHESS_C"],
+		"go": "HINT_GO_CHESS", "in": "HINT_CHESS_IN", "found": "HINT_CLUB_EVIDENCE",
+		"rows": "OBJ_CHESS_", "evidence": "EVIDENCE_CHESS_",
+		"boss": "alfil", "getaway": SuspectCar.CAROUSEL_HORSE,
+		"boss_cuffed": "HINT_ALFIL_CUFFED", "cuff_row": "OBJ_CHESS_CUFF_ALFIL",
+		"catch_row": "OBJ_CHESS_CATCH_ALFIL", "slips": "ALFIL_SLIP_%d",
+	},
+	"biker": {
+		"story": "infiltration_biker",
+		"brief": ["BRIEF_BIKER_A", "BRIEF_BIKER_B", "BRIEF_BIKER_C"],
+		"go": "HINT_GO_BIKER", "in": "HINT_BIKER_IN", "found": "HINT_CLUB_EVIDENCE",
+		"rows": "OBJ_BIKER_", "evidence": "EVIDENCE_BIKER_",
+		"boss": "cromado", "getaway": SuspectCar.CHOPPER_MOPED,
+		"boss_cuffed": "HINT_CROMADO_CUFFED", "cuff_row": "OBJ_BIKER_CUFF_CROMADO",
+		"catch_row": "OBJ_BIKER_CATCH_CROMADO", "slips": "CROMADO_SLIP_%d",
+	},
+	"auction": {
+		"story": "infiltration_auction",
+		"brief": ["BRIEF_AUCTION_A", "BRIEF_AUCTION_B", "BRIEF_AUCTION_C"],
+		"go": "HINT_GO_AUCTION", "in": "HINT_AUCTION_IN", "found": "HINT_CLUB_EVIDENCE",
+		"rows": "OBJ_AUCTION_", "evidence": "EVIDENCE_AUCTION_",
+		"boss": "martillo", "getaway": SuspectCar.GALLERY_CART,
+		"boss_cuffed": "HINT_MARTILLO_CUFFED", "cuff_row": "OBJ_AUCTION_CUFF_MARTILLO",
+		"catch_row": "OBJ_AUCTION_CATCH_MARTILLO", "slips": "MARTILLO_SLIP_%d",
+	},
 }
+## With `second_chance`, the first wrong person cuffed only raises everyone's suspicion this much.
+const WRONG_CUFF := 50.0
 
 var case_seed := 0
 var place: InfiltrationPlace
@@ -54,6 +140,9 @@ var tip_given := false
 var got_in := false
 var evidence_found: Array[String] = []
 var boss_cuffed := false
+## Wrong people cuffed (with `second_chance`), and the clue the cops got on their own (the party's boss seen).
+var wrong_cuffs := 0
+var bonus_clue := false
 var found_out := false
 ## Found out, Doña Chela's run on the walker, and whether she got away.
 var chase: ChaseCase
@@ -131,11 +220,26 @@ func _on_boss_cuffed() -> void:
 	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
 
-## Cuffing anyone else gives the cops away at once.
+## Cuffing anyone else gives the cops away at once; with `second_chance`, the first time only raises everyone's
+## suspicion WRONG_CUFF (the guest complains and the cuffs run out on their own).
 func _on_grandparent_cuffed(member: ClubMember) -> void:
-	if follower or not place or place.suspicion.found_out:
+	if follower or not place or place.suspicion.found_out or member == place.boss:
+		return
+	wrong_cuffs += 1
+	if texts().get("second_chance", false) and wrong_cuffs == 1:
+		_hint_all("HINT_WRONG_GUEST")
+		for other in place.members:
+			place.suspicion.raise(other, WRONG_CUFF)
 		return
 	place.suspicion.raise(member, 100.0)
+
+
+## The cops got a clue on their own (the party's boss seen in the office): the planilla shows it.
+func give_bonus() -> void:
+	if follower or bonus_clue:
+		return
+	bonus_clue = true
+	checklist.show_rows(rows())
 
 
 func _on_discovered() -> void:
@@ -189,7 +293,10 @@ func custody() -> Dictionary:
 ## The pay: SALARY with all the evidence, a third less for each piece missing.
 func report() -> Dictionary:
 	var salary := SALARY * evidence_found.size() / EVIDENCE if solved() else 0
-	return {"salary": salary, "evidence": 0, "fines": 0, "total": salary, "quota": QUOTA, "approved": salary >= QUOTA}
+	# What they bought at the auction comes out of it (infiltracion-subasta.md), solved or not.
+	var paid := place.spent() if place else 0
+	var total := salary - paid
+	return {"salary": salary, "evidence": 0, "fines": paid, "total": total, "quota": QUOTA, "approved": total >= QUOTA}
 
 
 func finish_shift() -> void:
@@ -199,7 +306,8 @@ func finish_shift() -> void:
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
 	var pay := report()
-	var result := {"solved": solved(), "report": pay, "awards": ShiftReport.awards(stats)}
+	var result := {"solved": solved(), "report": pay, "awards": ShiftReport.awards(stats),
+		"bought": place.bought() if place else 0}
 	var campaign := Campaign.current
 	if campaign and not campaign.is_over():
 		var played := campaign.shift
@@ -224,7 +332,9 @@ func _show_result(result: Dictionary) -> void:
 		cop.get_node("Hud").hide()
 	var awards: Array[Dictionary] = []
 	awards.assign(result.awards)
-	shift_screen.show_report(result.solved, result.report, 0, awards)
+	var bought: int = result.get("bought", 0)
+	shift_screen.show_report(result.solved, result.report, bought, awards,
+		"SHIFT_FINES_AUCTION" if bought > 0 else "SHIFT_FINES")
 	var over := false
 	if result.has("campaign"):
 		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over,
@@ -236,7 +346,7 @@ func _show_result(result: Dictionary) -> void:
 ## What every guest's case shows (CaseSync).
 func snapshot() -> Dictionary:
 	var state := {"tip": tip_given, "in": got_in, "found": evidence_found.duplicate(), "cuffed": boss_cuffed,
-		"found_out": found_out, "caught": caught, "escaped": escaped, "result": _result}
+		"found_out": found_out, "bonus": bonus_clue, "caught": caught, "escaped": escaped, "result": _result}
 	if chase:
 		state.chase = chase.snapshot()
 	return state
@@ -251,6 +361,7 @@ func apply_snapshot(state: Dictionary) -> void:
 		boss_cuffed = true
 		_hint_all(texts().boss_cuffed)
 	found_out = state.found_out
+	bonus_clue = state.get("bonus", false)
 	caught = state.caught
 	escaped = state.escaped
 	if state.has("chase"):
@@ -270,6 +381,9 @@ func rows() -> Array[Dictionary]:
 	for kind in evidence_found:
 		list.append({"text": "- " + tr(keys.evidence + kind), "done": false, "optional": false, "status": true,
 			"clue": true})
+	var clue := place.clue_row(evidence_found, bonus_clue) if place else ""
+	if not clue.is_empty():
+		list.append({"text": clue, "done": false, "optional": false, "status": true, "clue": true})
 	list.append(_row(keys.cuff_row, boss_cuffed))
 	if chase:
 		list.append(_row(keys.catch_row, caught))

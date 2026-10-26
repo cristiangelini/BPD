@@ -87,8 +87,10 @@ var _build: PlaceBuilder
 
 ## Which prison case this is: "riot" (the canteen, carcel-motin.md), "transfer" (the bus from the station,
 ## traslado-presos.md; --place=transfer), "blackout" (the power cut, carcel-corte-de-luz.md; --place=blackout) or
-## "visits" (the visiting day, carcel-visitas.md; --place=visits) or "laundry" (the laundry, carcel-lavanderia.md;
-## --place=laundry).
+## "visits" (the visiting day, carcel-visitas.md; --place=visits), "laundry" (the laundry, carcel-lavanderia.md;
+## --place=laundry), "tunnel" (the tunnel, carcel-tunel.md; --place=prison_tunnel), "talent" (the talent show,
+## carcel-talentos.md; --place=prison_talent), "vip" (the VIP inmate, carcel-vip.md; --place=prison_vip), "garden"
+## (the garden, carcel-huerta.md; --place=prison_garden) or "count" (the count, carcel-recuento.md; --place=prison_count).
 @export var variant := "riot"
 ## The transfer's bus (traslado-presos.md, step 1), parked by the station's door, and its inmates (step 2).
 var bus: PrisonBus
@@ -119,6 +121,21 @@ var visit_case: VisitCase
 var laundry: LaundryPlan
 ## The laundry case on top (step 6): the comisario's briefing, the planilla and the end of the shift.
 var laundry_case: LaundryCase
+## The tunnel case's yard time, the cells' hideouts and the gang digging (carcel-tunel.md, step 2).
+var tunnel: TunnelPlan
+var tunnel_case: TunnelCase
+## The talent show's stage, jury table, benches and inmates (carcel-talentos.md, step 2).
+var talent: TalentPlan
+var talent_case: TalentCase
+## The VIP inmate's cell, his fans and his limo at the gate (carcel-vip.md, step 2).
+var vip: VipPlan
+var vip_case: VipCase
+## The garden's beds, plants and gardeners (carcel-huerta.md, step 2).
+var garden: GardenPlan
+var garden_case: GardenCase
+## The count's inmates out in the yard, the workers and the list (carcel-recuento.md, step 2).
+var count: CountPlan
+var count_case: CountCase
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -146,6 +163,21 @@ func _ready() -> void:
 		return
 	if variant == "laundry":
 		_start_laundry()
+		return
+	if variant == "tunnel":
+		_start_tunnel()
+		return
+	if variant == "talent":
+		_start_talent()
+		return
+	if variant == "vip":
+		_start_vip()
+		return
+	if variant == "garden":
+		_start_garden()
+		return
+	if variant == "count":
+		_start_count()
 		return
 	riot = PrisonRiot.new()
 	riot.name = "Riot"
@@ -253,6 +285,102 @@ func _start_laundry() -> void:
 	laundry_case.shift_screen = $ShiftScreen
 	add_child(laundry_case)
 	laundry_case.start(city.get("comisario"))
+	city.transform = CityLayout.anchor("prison")
+	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
+	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+
+
+## The tunnel (carcel-tunel.md, step 2): yard time, with the block and its cells open and empty, the cells' hideouts and
+## the inmates out in the yard. The cops come from the station in the patrol car.
+func _start_tunnel() -> void:
+	block_gate.unlock()
+	block_gate.set_open(true)
+	for door in cell_doors:
+		door.set_open(true)
+	tunnel = TunnelPlan.new()
+	tunnel.name = "TunnelPlan"
+	add_child(tunnel)
+	tunnel.setup(self, case_seed)
+	tunnel_case = TunnelCase.new()
+	tunnel_case.name = "TunnelCase"
+	tunnel_case.prison = self
+	tunnel_case.shift_screen = $ShiftScreen
+	add_child(tunnel_case)
+	tunnel_case.start(city.get("comisario"))
+	city.transform = CityLayout.anchor("prison")
+	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
+	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+
+
+## The talent show (carcel-talentos.md, step 2): the west half of the canteen is the show, with its stage, the jury
+## table and the benches. The cops come from the station in the patrol car.
+func _start_talent() -> void:
+	talent = TalentPlan.new()
+	talent.name = "TalentPlan"
+	add_child(talent)
+	talent.setup(self, case_seed)
+	talent_case = TalentCase.new()
+	talent_case.name = "TalentCase"
+	talent_case.prison = self
+	talent_case.shift_screen = $ShiftScreen
+	add_child(talent_case)
+	talent_case.start(city.get("comisario"))
+	city.transform = CityLayout.anchor("prison")
+	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
+	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+
+
+## The VIP inmate (carcel-vip.md, step 2): the block open so the cops can get to the bars of Rulo's cell, locked with
+## him inside. The cops come from the station in the patrol car.
+func _start_vip() -> void:
+	block_gate.unlock()
+	block_gate.set_open(true)
+	vip = VipPlan.new()
+	vip.name = "VipPlan"
+	add_child(vip)
+	vip.setup(self, case_seed)
+	vip_case = VipCase.new()
+	vip_case.name = "VipCase"
+	vip_case.prison = self
+	vip_case.shift_screen = $ShiftScreen
+	add_child(vip_case)
+	vip_case.start(city.get("comisario"))
+	city.transform = CityLayout.anchor("prison")
+	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
+	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+
+
+## The garden (carcel-huerta.md, step 2): the beds and the gardeners in the east of the yard. The cops come from the
+## station in the patrol car.
+func _start_garden() -> void:
+	garden = GardenPlan.new()
+	garden.name = "GardenPlan"
+	add_child(garden)
+	garden.setup(self, case_seed)
+	garden_case = GardenCase.new()
+	garden_case.name = "GardenCase"
+	garden_case.prison = self
+	garden_case.shift_screen = $ShiftScreen
+	add_child(garden_case)
+	garden_case.start(city.get("comisario"))
+	city.transform = CityLayout.anchor("prison")
+	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
+	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+
+
+## The count (carcel-recuento.md, step 2): the inmates and the workers in the yard and the list by the building. The
+## cops come from the station in the patrol car.
+func _start_count() -> void:
+	count = CountPlan.new()
+	count.name = "CountPlan"
+	add_child(count)
+	count.setup(self, case_seed)
+	count_case = CountCase.new()
+	count_case.name = "CountCase"
+	count_case.prison = self
+	count_case.shift_screen = $ShiftScreen
+	add_child(count_case)
+	count_case.start(city.get("comisario"))
 	city.transform = CityLayout.anchor("prison")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
@@ -441,6 +569,9 @@ func _build_shell() -> void:
 ## The six tables, the counter with the food on it, the stack of trays at its end and the punishment cell.
 func _build_canteen() -> void:
 	for x in TABLE_XS:
+		# At the talent show the west tables made room for the stage and the benches.
+		if variant == "talent" and x == TABLE_XS[0]:
+			continue
 		for z in TABLE_ZS:
 			_table(Vector3(x, FLOOR_TOP, z))
 	var length := COUNTER_TO - COUNTER_FROM
@@ -488,7 +619,7 @@ func _build_cells() -> void:
 		var front := CORRIDOR.x if side < 0 else CORRIDOR.y
 		var back := front + side * CELL_DEPTH
 		_build.wall("z", back, BUILDING_BACK, CELLS_Z, 0, [], INSIDE)
-		if variant == "blackout":
+		if variant in ["blackout", "tunnel", "vip"]:
 			_cell_fronts(side, front, cell_z)
 		else:
 			_bars("z", front, BUILDING_BACK, CELLS_Z, GameScale.DOOR_HEIGHT)
@@ -496,7 +627,10 @@ func _build_cells() -> void:
 			var z0 := CELLS_Z + i * cell_z
 			if i > 0:
 				_build.wall("x", z0, minf(front, back), maxf(front, back), 0, [], INSIDE)
-			_build.box(Vector3(back - side * 0.45, FLOOR_TOP + 0.25, z0 + cell_z / 2), Vector3(0.8, 0.5, 1.9), ORANGE)
+			# In the tunnel case the bunk is one of the cell's hideouts (CellHideout).
+			if variant != "tunnel":
+				_build.box(Vector3(back - side * 0.45, FLOOR_TOP + 0.25, z0 + cell_z / 2), Vector3(0.8, 0.5, 1.9),
+					ORANGE)
 
 
 ## A wall above the first floor's (PlaceBuilder.wall), up to the roof: the building is two floors tall inside.

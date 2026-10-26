@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/props/ornament.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/models/glass_trophy.glb" id="2"]
+
+[sub_resource type="BoxShape3D" id="Shape"]
+size = Vector3(0.12, 0.25, 0.08)
+
+[node name="GlassTrophy" type="RigidBody3D"]
+collision_layer = 4
+collision_mask = 15
+mass = 0.6
+shard_color = Color(0.75, 0.9, 0.97, 1)
+script = ExtResource("1")
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+shape = SubResource("Shape")
+
+[node name="Model" parent="." instance=ExtResource("2")]

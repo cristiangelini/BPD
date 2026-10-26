@@ -90,13 +90,14 @@ func open_box(bottom_center: Vector3, size: Vector3, open: String, color: Color)
 			box(center + faces[face][0], faces[face][1], color)
 
 
-func light(at: Vector3) -> void:
+func light(at: Vector3) -> OmniLight3D:
 	var lamp := OmniLight3D.new()
 	lamp.position = at
 	lamp.light_color = Color(1.0, 0.82, 0.6)
 	lamp.light_energy = 0.7
 	lamp.omni_range = 8.0
 	root.add_child(lamp)
+	return lamp
 
 
 func box(center: Vector3, size: Vector3, color: Color) -> void:

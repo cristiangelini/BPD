@@ -10,11 +10,22 @@ extends Node3D
 ## on the street wear the patience out too, and a car won't go until its clowns are back in. "fruit_truck"
 ## (control-frutas.md) sends the fruit fair's pickups, loaded with watermelons. "crowded_car" (control-auto-lleno.md)
 ## sends city cars, some of them packed with people. "ghost_car" (control-auto-fantasma.md) sends city cars with their
-## drivers leaning on the windows, and one with nobody at the wheel. Every number here is (propuesta).
+## drivers leaning on the windows, and one with nobody at the wheel. "wedding" (control-boda.md) sends the wedding's
+## convoy, with the newlyweds up front and a few city cars among them. "race" (control-carrera.md) sends city cars
+## and, among them, the night's racers, in heats out of the queue. "fog" (control-neblina.md) sends city cars with
+## their headlights on, out of the fog. "circus_move" (control-circo.md) sends the circus's trucks, each with a caged
+## animal, and a few city cars among them. "parade" (control-desfile.md) sends the parade's floats, with masked dancers
+## on them, and a few city cars caught in it. Every number here is (propuesta).
 
 signal patience_changed(value: float)
 ## A car went by: let through, or sneaking.
 signal passed(car: QueueCar, sneaked: bool)
+## A car rolled over a spike strip (control-carrera.md, step 3).
+signal punctured(car: QueueCar)
+## A circus animal out of its cage ran off for good (control-circo.md, step 3): a complaint from the circus.
+signal animal_lost(car: QueueCar)
+## A real dancer was taken down from `car`'s float (control-desfile.md, step 3): the parade queen complains.
+signal dancer_wronged(car: QueueCar)
 
 const SPAWN_EVERY := 6.0
 ## Cars start this far up the lane from the checkpoint.
@@ -36,6 +47,11 @@ const VARIANTS := {
 	"fruit_truck": {"spawn": 0.75, "patience": 1.0, "fruit": true},
 	"crowded_car": {"spawn": 0.75, "patience": 1.0, "crowd": true},
 	"ghost_car": {"spawn": 0.75, "patience": 1.0, "ghost": true},
+	"wedding": {"spawn": 0.75, "patience": 1.0, "wedding": true},
+	"race": {"spawn": 0.75, "patience": 1.0, "race": true},
+	"fog": {"spawn": 0.75, "patience": 1.0, "fog": true},
+	"circus_move": {"spawn": 0.75, "patience": 1.0, "circus": true},
+	"parade": {"spawn": 0.75, "patience": 1.0, "parade": true},
 }
 
 var checkpoint: TrafficCheckpoint
@@ -49,8 +65,14 @@ var cars: Array[QueueCar] = []
 var spawned := 0
 ## How many cars sneaked by so far.
 var sneaked := 0
+## How many cars ran the checkpoint in the fog, unwarned (counted in `sneaked` too).
+var overruns := 0
 ## Online, a guest's queue only shows the host's: its cars come from the host (NpcSync) and so does the meter.
 var follower := false
+## The street race's racers (control-carrera.md, step 2): out of the queue, in heats; how many heats came so far.
+var racers: Array[QueueCar] = []
+var heats := 0
+var _until_heat := RaceCar.FIRST_HEAT
 var _until_spawn := 0.0
 var _rng := RandomNumberGenerator.new()
 
@@ -75,6 +97,15 @@ func loose_clowns() -> int:
 
 func waiting_count() -> int:
 	return cars.filter(func(car: QueueCar) -> bool: return car.waiting()).size()
+
+
+## While a float's music is cut (control-desfile.md, step 2) the crowd boos: the patience runs out this many times
+## as fast.
+func booing() -> float:
+	for car in cars:
+		if is_instance_valid(car) and car.music_cut:
+			return ParadeFloat.BOO_FACTOR
+	return 1.0
 
 
 func front() -> QueueCar:
@@ -117,7 +148,7 @@ func _physics_process(delta: float) -> void:
 	var loose := loose_clowns()
 	if waiting > 0 or loose > 0:
 		_set_patience(patience + (waiting * PATIENCE_PER_CAR * float(VARIANTS[variant].patience)
-			+ loose * PATIENCE_PER_CLOWN) * delta)
+			+ loose * PATIENCE_PER_CLOWN) * booing() * delta)
 	else:
 		_set_patience(patience - CALM_DOWN * delta)
 	if patience >= FULL and front() and front().can_go():
@@ -126,6 +157,54 @@ func _physics_process(delta: float) -> void:
 		sneaked += 1
 		_leave(car, true)
 		_set_patience(AFTER_SNEAK)
+	if VARIANTS[variant].get("race", false):
+		_run_heats(delta)
+
+
+func heats_total() -> int:
+	return plan.heats.size() if plan and plan.race else RaceCar.heats_of(case_seed)
+
+
+func _run_heats(delta: float) -> void:
+	_until_heat -= delta
+	if _until_heat <= 0.0 and heats < heats_total():
+		spawn_heat()
+	for racer in racers.duplicate():
+		if not is_instance_valid(racer):
+			racers.erase(racer)
+		elif racer.state == "racing" and racer.at.z < -TrafficCheckpoint.ZONE.y:
+			# A punctured one stopped, wherever that was: it didn't get away.
+			racers.erase(racer)
+			passed.emit(racer, false)
+
+
+## The next heat gathers at the back corner, in the race lane, one behind the other.
+func spawn_heat() -> Array[QueueCar]:
+	var heat: Array[QueueCar] = []
+	var size := plan.heats[heats].size() if plan and plan.race else RaceCar.heat_size(case_seed, heats)
+	for slot in size:
+		var data: Dictionary = plan.heats[heats][slot] if plan and plan.race else WantedPlan.random_car(_rng)
+		var car := QueueCar.new()
+		car.name = "Racer%d_%d" % [heats, slot]
+		car.checkpoint = checkpoint
+		car.look = data.look
+		car.plate = data.plate
+		car.driver = data.driver
+		car.race_mode = true
+		car.racer = true
+		car.race = data.get("race", RaceCar.traits_of(car.plate))
+		car.wanted = data.get("wanted", false)
+		car.race_slot = slot
+		car.race_left = RaceCar.GATHER
+		car.state = "gathering"
+		car.at = Vector3(RaceCar.LANE, 0, SPAWN_FROM + slot * RaceCar.SLOT_GAP)
+		car.ahead = heat.back() if not heat.is_empty() else null
+		racers.append(car)
+		heat.append(car)
+		add_child(car)
+	_until_heat = RaceCar.heat_every(case_seed, heats)
+	heats += 1
+	return heat
 
 
 func _room_to_spawn() -> bool:
@@ -143,7 +222,7 @@ func spawn() -> QueueCar:
 	var crowd: bool = VARIANTS[variant].get("crowd", false)
 	var ghost: bool = VARIANTS[variant].get("ghost", false)
 	var data := plan.cars[spawned] if plan and spawned < plan.total \
-		else WantedPlan.random_car(_rng, clown, fruit, crowd, ghost)
+		else WantedPlan.random_car(_rng, clown, fruit, crowd, ghost, VARIANTS[variant].get("wedding", false))
 	car.look = data.look
 	car.plate = data.plate
 	car.driver = data.driver
@@ -161,6 +240,26 @@ func spawn() -> QueueCar:
 		car.shirt = data.get("shirt", -1)
 		car.ghost = data.get("ghost", spawned == GhostCar.ghost_at(case_seed))
 		car.puppeteer = data.get("puppeteer", spawned == GhostCar.pilot_at(case_seed))
+	if VARIANTS[variant].get("wedding", false):
+		car.wedding_mode = true
+		car.newlyweds = data.get("newlyweds", spawned == WeddingCar.newlyweds_at(case_seed))
+		car.guest = data.get("guest", WeddingCar.guest_at(case_seed, spawned))
+		car.tie = data.get("tie", -1)
+		car.alcohol = data.get("alcohol", -1.0)
+		car.couple = data.get("couple", plan.couple if plan else 0)
+		if car.newlyweds:
+			car.look = WeddingCar.NEWLYWEDS_LOOK
+	if VARIANTS[variant].get("race", false):
+		car.race_mode = true
+	if VARIANTS[variant].get("fog", false):
+		car.fog_mode = true
+		car.fog = data.get("fog", FogCar.traits_of(car.plate))
+	if VARIANTS[variant].get("circus", false):
+		car.circus_mode = true
+		car.circus = data.get("circus", CircusTruck.traits_of(car.plate))
+	if VARIANTS[variant].get("parade", false):
+		car.parade_mode = true
+		car.parade = data.get("parade", ParadeFloat.traits_of(car.plate))
 	car.wanted = plan != null and spawned == plan.wanted_index
 	car.at = Vector3(0, 0, SPAWN_FROM)
 	car.speed = QueueCar.SPEED
@@ -169,6 +268,17 @@ func spawn() -> QueueCar:
 	cars.append(car)
 	add_child(car)
 	return car
+
+
+## A car in the fog ran the checkpoint, unwarned (control-neblina.md, step 2): it goes by like one sneaking, and the
+## queue's patience goes up.
+func overran(car: QueueCar) -> void:
+	sneaked += 1
+	overruns += 1
+	_leave(car, true)
+	_set_patience(patience + FogCar.OVERRUN_PATIENCE)
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		cop.show_hint("HINT_FOG_OVERRUN")
 
 
 func _leave(car: QueueCar, sneaked: bool) -> void:
@@ -182,13 +292,33 @@ func _leave(car: QueueCar, sneaked: bool) -> void:
 		passed.emit(car, sneaked)
 
 
-## A guest's queue shows the host's meter, and its hint when one more car sneaked by.
-func show_patience(value: float, host_sneaked: int) -> void:
+## A guest's queue shows the host's meter, and its hint when one more car sneaked by (or ran the checkpoint in the
+## fog, `host_overruns`).
+func show_patience(value: float, host_sneaked: int, host_overruns := 0) -> void:
 	if host_sneaked > sneaked:
 		sneaked = host_sneaked
+		var hint := "HINT_FOG_OVERRUN" if host_overruns > overruns else "HINT_CAR_SNEAKED"
 		for cop: Cop in get_tree().get_nodes_in_group("cops"):
-			cop.show_hint("HINT_CAR_SNEAKED")
+			cop.show_hint(hint)
+	overruns = maxi(overruns, host_overruns)
 	_set_patience(value)
+
+
+## `car`'s animal ran off for good: the case hears it (a complaint).
+func lost_animal(car: QueueCar) -> void:
+	animal_lost.emit(car)
+
+
+## A real dancer was taken down from `car`'s float: the case hears it (a complaint).
+func wronged_dancer(car: QueueCar) -> void:
+	dancer_wronged.emit(car)
+
+
+## Something in the queue annoys the drivers (an angry animal, control-circo.md): its patience goes up `amount`. A
+## guest's queue shows the host's meter instead.
+func annoy(amount: float) -> void:
+	if not follower:
+		_set_patience(patience + amount)
 
 
 func _set_patience(value: float) -> void:

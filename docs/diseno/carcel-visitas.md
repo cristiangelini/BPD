@@ -1,8 +1,8 @@
-# BPD · Cárcel: día de visitas (propuesta, 25/10)
+# BPD · Cárcel: día de visitas (25/10)
 
 Variante 3 de la cárcel ([carcel-motin.md](carcel-motin.md), tabla de variantes; [casos.md](casos.md), 6.3). Usa la
-cárcel de la cuadra (5, 2) del motín y del corte de luz. Decisiones 141 a 149. Todo es **(propuesta)** hasta que
-Cristian responda las preguntas de abajo y se pruebe jugando.
+cárcel de la cuadra (5, 2) del motín y del corte de luz. Decisión 141. Cristian respondió sí a las 3
+preguntas (25/10); los números siguen **(propuesta)** hasta que se pruebe jugando.
 
 ## La idea
 Es domingo de visitas y los guardias se fueron a un asado: los 4 novatos tienen que revisar a los visitantes en la
@@ -74,7 +74,7 @@ visitas iguales.
    en cuartos con el motín, el traslado y el corte de luz).
 7. Online: la fila, lo abierto y lo roto, los tics, los pases y el final.
 
-## Preguntas para Cristian
+## Preguntas para Cristian (respondidas: sí a las 3, 25/10)
 1. **¿Dos partes: la requisa en la puerta y después la hora de visita**, donde intentan pasar lo escondido por debajo
    de la mesa cuando nadie mira? Recomendado: sí, así hay algo que hacer en las dos mitades y el que se escapó de la
    requisa todavía se puede frenar.

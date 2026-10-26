@@ -27,13 +27,27 @@ casos, y la armería, donde se retira el equipo. Más adelante se suman las celd
 - **La cuota sube 100 por turno (propuesta):** 800, 900, 1000, 1100 y 1200.
 - **La cuota es una meta, no se paga (propuesta):** se aprueba si lo que juntaron en el turno llega a la cuota, y todo
   lo juntado queda en la caja para gastar en la armería. Así gastar en equipo no hace perder la cuota.
-- **5 turnos por partida** (decisión 59).
+- **10 turnos por partida** (eran 5, decisión 59; 10 desde la decisión 106).
 
 ## Cómo se gana y cómo se pierde
-- **Se gana** aprobando los 5 turnos: pantalla de "¡Ascendidos!" con los premios de toda la partida **(propuesta)**.
+- **Se gana** aprobando los 10 turnos: pantalla de "¡Ascendidos!" con los premios de toda la partida **(propuesta)**.
 - **Se pierde** si un turno no llega a la cuota: pantalla de "Suspendidos" y termina la partida **(propuesta)**. La fuga
   de la comisaría (decisión 17) reemplaza esta pantalla más adelante: en vez de terminar, quedan presos en sus propias
   celdas y tienen que escaparse para seguir.
+
+## El objetivo de la partida (decisión 106)
+La ciudad quiere cerrar la comisaría y convertirla en un estacionamiento: dicen que es un desastre. Los 10 turnos
+con la cuota que sube son la prueba de que sirve (Cristian, 26/10: más de cinco; 10 es **propuesta**, la cuota va de
+800 a 1700). Aprobar los 10 la salva (y los policías ascienden); quedar suspendidos la
+cierra. La fuga (decisión 99) sigue siendo la segunda oportunidad.
+
+**Cómo quedó:** en el primer turno de cada partida, la primera charla del comisario arranca con la historia antes del
+caso, en 5 frases (`CaseBriefing.INTRO`, textos `BRIEF_INTRO_A` a `E`). Pasa una sola vez y en todos los casos, porque
+todos usan `CaseBriefing`. Online la cuenta el host: `Net.match_intro` viaja con el caso y la ven todos los invitados.
+La pantalla final dice "¡Ascendidos! La comisaría sigue abierta." o "la comisaría cierra". Capturas:
+`campana/intro_1.png`, `intro_4.png` e `intro_caso.png`.
+
+**Para después:** la inspección de la ciudad como caso especial del último turno.
 
 ## La armería
 Un mostrador con reja y el armero (un NPC pera, con la misma estructura que todos). Se le habla con E y abre una lista:
