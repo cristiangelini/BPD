@@ -10,6 +10,7 @@ const RAID_SCENE := preload("res://scenes/levels/gym_raid.tscn")
 func _gym() -> GymRaid:
 	var gym: GymRaid = RAID_SCENE.instantiate()
 	gym.case_seed = 5
+	gym.story_id = "silver_dumbbells"
 	gym.get_node("Cop").input_enabled = false
 	gym.get_node("Cop/Grabber").input_enabled = false
 	add_child_autofree(gym)
