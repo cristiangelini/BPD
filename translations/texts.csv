@@ -2255,6 +2255,7 @@ MIME_FOUND_OUT_0,"¡Son policías! ...¡Ay, hablé!","They're cops! ...Oh no, I 
 MIME_FOUND_OUT_1,¡Son policías! ¡Ningún mimo hace tanto ruido!,They're cops! No mime makes that much noise!,São policiais! Nenhum mímico faz tanto barulho!
 MIME_FOUND_OUT_2,¡Son policías! ¡Ni saben quedarse quietos!,They're cops! They can't even stand still!,São policiais! Nem sabem ficar parados!
 HINT_MIME_FOUND_OUT,¡Los descubrieron! Todos los mimos saben que son policías.,You've been found out! Every mime knows you're cops.,Vocês foram descobertos! Todos os mímicos sabem que vocês são policiais.
+HUD_MIME_HEARS_YOU,Silencio: un mimo te oye,Quiet: a mime can hear you,Silêncio: um mímico ouve você
 MENU_DOLL_FACTORY,Fábrica de muñecos (prueba),Doll factory (test),Fábrica de bonecos (teste)
 PROMPT_PUSH_BUTTON,Apretar el botón,Press the button,Apertar o botão
 PROMPT_SHUTTER_BUTTON,Subir la persiana del muelle,Raise the dock shutter,Levantar a porta do cais

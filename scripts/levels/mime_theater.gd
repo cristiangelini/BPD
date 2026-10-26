@@ -7,7 +7,8 @@ extends InfiltrationPlace
 ## Pausa's bench is on the floor in front of it. Behind the stage, her dressing room (locked) and the prop room. The
 ## cops start in the station, where the mime disguises are, and drive here. --place=mime opens it from Play.
 ## Mimes stand on the stage's marks (by the seed), Maestra Pausa by her bench facing them, and the mute doorman only lets
-## in cops passing for mimes (step 2b); they all watch the cops (ClubSuspicion, "MIME_" texts).
+## in cops passing for mimes (step 2b); they all watch the cops (ClubSuspicion, "MIME_" texts) and hear them talk
+## (MimeSilence, step 3).
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -59,6 +60,8 @@ var marks: Array[Vector3] = []
 var free_marks: Array[Vector3] = []
 var pausa: ClubMember
 var doorman: ClubDoorman
+## No talking near the mimes (step 3).
+var silence: MimeSilence
 var _build: PlaceBuilder
 
 
@@ -122,6 +125,11 @@ func _add_people() -> void:
 	suspicion.inside = is_inside
 	suspicion.in_back_room = in_back_room
 	add_child(suspicion)
+	silence = MimeSilence.new()
+	silence.name = "Silence"
+	silence.suspicion = suspicion
+	silence.inside = is_inside
+	add_child(silence)
 
 
 ## Whether a world position is inside the theater.
