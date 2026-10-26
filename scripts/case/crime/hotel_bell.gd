@@ -1,4 +1,4 @@
-class_name HotelBell
+class_name HotelSceneBell
 extends StaticBody3D
 
 ## The reception's bell (escena-hotel.md, "Las pistas"): it wakes don Bostezo, who says again who sleeps where. Rung

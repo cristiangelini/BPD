@@ -11,7 +11,7 @@ extends CrimeScenePlace
 ## nightstand and suitcase (step 3). The case (step 4): what was stolen hides in the 13, in the maid's cart or in the
 ## culprit's suitcase, and the evidence bags wait on a stool by the desk; the clues in the suite and the maid's round
 ## are HotelClues'; Tito the witness (HotelBellboy), the guest book with the 3 a.m. signature (GuestBook) and the
-## bell that wakes the concierge (HotelBell) are at the reception. Every number here is (propuesta).
+## bell that wakes the concierge (HotelSceneBell) are at the reception. Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(26, 18)
@@ -137,7 +137,7 @@ var loot_spots := {}
 var concierge: HotelStaff
 var perlita: HotelStaff
 var bellboy: HotelBellboy
-var bell: HotelBell
+var bell: HotelSceneBell
 var book: GuestBook
 var maid: HotelStaff
 ## The case's clues in the suite and the maid's round (HotelClues), once the case comes.
@@ -344,7 +344,7 @@ func _people() -> void:
 	bellboy.position = BELLBOY_AT + Vector3(0, FLOOR_TOP, 0)
 	bellboy.rotation.y = PI
 	add_child(bellboy)
-	bell = HotelBell.new()
+	bell = HotelSceneBell.new()
 	bell.name = "Bell"
 	bell.concierge = concierge
 	bell.position = BELL_AT
