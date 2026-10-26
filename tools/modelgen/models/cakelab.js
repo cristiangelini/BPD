@@ -210,16 +210,54 @@ export function buildCreamSpray() {
 	return b.build();
 }
 
+export function buildRobotArm() {
+	const b = new Builder('robot_arm');
+	const orange = mat('robot_orange', 0xe8782a);
+	const grey = mat('robot_grey', 0x55585e);
+	b.add('base', grey, new THREE.CylinderGeometry(0.22, 0.25, 0.12, 12), { pos: V(0, 0.06, 0) });
+	b.add('turret', orange, new THREE.CylinderGeometry(0.12, 0.14, 0.18, 10), { pos: V(0, 0.21, 0) });
+	b.add('lower', orange, new THREE.BoxGeometry(0.1, 0.5, 0.1), { pos: V(0, 0.52, 0.05), rot: [0.35, 0, 0] });
+	b.add('elbow', grey, new THREE.SphereGeometry(0.07, 8, 6), { pos: V(0, 0.76, 0.14) });
+	b.add('upper', orange, new THREE.BoxGeometry(0.08, 0.08, 0.38), { pos: V(0, 0.78, 0.32) });
+	b.add('nozzle', mat('steel_spoon', 0xc8ccd2), new THREE.ConeGeometry(0.04, 0.1, 8), { pos: V(0, 0.72, 0.5), rot: [Math.PI, 0, 0] });
+	b.add('cream', mat('frosting_pink', 0xf4b6c8), new THREE.SphereGeometry(0.03, 6, 4), { pos: V(0, 0.65, 0.5) });
+	b.add('tag', mat('logo_yellow', 0xf2d24a), new THREE.BoxGeometry(0.1, 0.06, 0.005), { pos: V(0, 0.22, 0.14) });
+	return b.build();
+}
+
+export function buildRemoteControl() {
+	const b = new Builder('remote_control');
+	b.add('body', mat('robot_grey', 0x55585e), new THREE.BoxGeometry(0.08, 0.03, 0.18), { pos: V(0, 0.015, 0) });
+	b.add('antenna', mat('steel_spoon', 0xc8ccd2), new THREE.CylinderGeometry(0.004, 0.004, 0.12, 6), { pos: V(0.025, 0.03, -0.12), rot: [Math.PI / 2, 0, 0] });
+	b.add('button', mat('logo_red', 0xd94a3a), new THREE.CylinderGeometry(0.015, 0.015, 0.01, 10), { pos: V(0, 0.032, 0.02) });
+	b.add('stick', mat('robot_orange', 0xe8782a), new THREE.CylinderGeometry(0.008, 0.008, 0.03, 6), { pos: V(0, 0.045, -0.04) });
+	return b.build();
+}
+
+export function buildForeignManual() {
+	const b = new Builder('foreign_manual');
+	b.add('cover', mat('robot_orange', 0xe8782a), new THREE.BoxGeometry(0.17, 0.02, 0.24), { pos: V(0, 0.01, 0) });
+	b.add('pages', mat('notebook_pages', 0xfaf6ea), new THREE.BoxGeometry(0.16, 0.016, 0.23), { pos: V(0.005, 0.01, 0) });
+	for (let i = 0; i < 3; i++) b.add('glyph', mat('robot_grey', 0x55585e), new THREE.BoxGeometry(0.02, 0.002, 0.02), { pos: V(-0.04 + i * 0.04, 0.021, -0.06), rot: [0, i * 0.5, 0] });
+	b.add('robot_icon', mat('logo_yellow', 0xf2d24a), new THREE.BoxGeometry(0.06, 0.002, 0.08), { pos: V(0, 0.021, 0.04) });
+	return b.build();
+}
+
 export const models = {
 	lab_oven: buildLabOven, giant_mixer: buildGiantMixer, microscope: buildMicroscope, test_tubes: buildTestTubes,
 	silver_cake: buildSilverCake, bill_mold: buildBillMold, orders_notebook: buildOrdersNotebook,
 	sleep_powder_jar: buildSleepPowderJar, sleepers_list: buildSleepersList, measuring_spoon: buildMeasuringSpoon,
 	cake_slices: buildCakeSlices, gold_sieve: buildGoldSieve, jeweler_invoice: buildJewelerInvoice,
+	robot_arm: buildRobotArm, remote_control: buildRemoteControl, foreign_manual: buildForeignManual,
 	foam_mold_box: buildFoamMoldBox, contest_diploma: buildContestDiploma, cream_spray: buildCreamSpray,
 	recipe_book: buildRecipeBook, disguise_photo: buildDisguisePhoto, delivery_cap: buildDeliveryCap,
 };
 
 export const views = {
+	robot_arm: {
+		items: [{ name: 'robot_arm', pos: [-0.25, 0, 0] }, { name: 'remote_control', pos: [0.3, 0, 0.15] }, { name: 'foreign_manual', pos: [0.35, 0, -0.2] }],
+		cam: { pos: [0.6, 1.0, 1.6], target: [0, 0.35, 0], fov: 40 },
+	},
 	foam_cakes: {
 		items: [{ name: 'foam_mold_box', pos: [-0.3, 0, 0] }, { name: 'contest_diploma', pos: [0.22, 0, 0.1] }, { name: 'cream_spray', pos: [0.25, 0, -0.18] }],
 		cam: { pos: [0, 0.8, 1.2], target: [0, 0.12, 0], fov: 40 },

@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Cake lab, step 5: the robot arm story: the 15 kg arm from the factory next door decorates on a kitchen counter and throws cream in the face of the nearest cop (2 s blind) until it is carried off; a cake with oil stains in its cream is the clue, and the remote control and the foreign manual are hidden. The lab now tells its six stories.
 - Cake lab, step 5: the foam cakes story: the box with the fake cakes' mold is hidden with the contest diploma and the cream spray, and half the showcase (drawn with the seed) is foam: those cakes never squash, they bounce with a "boing", and the first bounce is the clue.
 - Cake lab, step 5: the gold flour story: one of the ten storeroom sacks (drawn with the seed) is the 10 kg gold one, identical and with its value hidden until picked up; it leaks gold flour by the aisle and a cop who steps in it leaves golden footprints (the clue); the golden sieve and the jeweler's invoice are hidden.
 - Cake lab, step 5: the sleepy cakes story: the jar of sleeping powder is hidden with the list of customers put to sleep and the giant measuring spoon, Pocha's sample makes you yawn (the clue), and a free slice from the plate on the showcase puts a cop to sleep for 4 s.

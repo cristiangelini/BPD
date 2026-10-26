@@ -129,6 +129,12 @@ Los pesos y valores siguen la escala de la oficina: la principal vale unos 1000 
      (0,5 kg, 200). 4 de los 8 pasteles de la vitrina, sorteados con la semilla, son de espuma: pesan 0,3 kg, no se
      aplastan ni cuentan como multa y rebotan con un "¡Boing!"; el primer rebote va a la planilla. Captura
      `paso5-espuma.png`.
+   - **Cómo quedó (propuesta), el brazo robot:** el brazo de la fábrica de al lado (15 kg, 1000, entre dos) está a la
+     vista, decorando sobre la mesada del fondo de la cocina: se balancea y cada 3 s le tira crema en la cara al
+     policía más cercano a menos de 1,8 m (2 s con la pantalla tapada de crema). Si lo levantan, deja de decorar. En
+     la mesada del medio hay un pastel con manchas de aceite en la crema (E lo mira y va a la planilla). El control
+     remoto (0,3 kg, 300) y el manual en otro idioma (0,5 kg, 200) se esconden. Captura `paso5-brazo.png`. Con esto
+     están las 6 historias.
 6. "Jugar" sortea entre los 7 lugares de allanamiento.
 7. El online (el chef, Pocha, la harina y los pasteles en todas las PC).
 

@@ -76,6 +76,15 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_CONTEST_DIPLOMA", "OBJ_EXTRA_CREAM_SPRAY"],
 		"rig": preload("res://scripts/case/cake_lab/foam_cakes_rig.gd"),
 	},
+	"robot_arm": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_ROBOT_ARM_B", "BRIEF_ROBOT_ARM_C", "BRIEF_ROBOT_ARM_D"],
+		"find": "OBJ_FIND_ROBOT_ARM",
+		"hidden": [preload("res://scenes/props/remote_control.tscn"), preload("res://scenes/props/foreign_manual.tscn")],
+		"half_heights": [0.03, 0.01],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_REMOTE_CONTROL", "OBJ_EXTRA_FOREIGN_MANUAL"],
+		"rig": preload("res://scripts/case/cake_lab/robot_arm_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the lab; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [
