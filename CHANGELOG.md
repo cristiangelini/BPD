@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Apartment building, step 7: the carrier pigeons story: the pigeon loft on 30B's balcony (25 kg, two cops), a pigeon flying in every 30 s with the pearl necklace on its leg until a cop takes it, a running cop scaring it off, feathers and birdseed from the elevator to 30B (the clue), and the trainer's whistle hidden with the seed.
 - Apartment building, step 7: the floor 31 story: the key of the floor that doesn't exist waits on the study's desk, the elevator has a taped "31" button (the clue) and a keyhole, and with the key turned it rides up to the machine room on the roof, where the box of stolen paintings waits; the plan with one floor too many hides with the seed. Short elevator trips now take their share of the 15 s.
 - Apartment building, step 7: the spy telescope story: a fragile 35 kg telescope by 30B's living room window (two cops, fits the elevator), E looks through it and sees the vault code of the bank across the street, a tape mark on the balcony shows where the tripod stood, and the code notebook and the binoculars hide with the seed. Also drops two regional words from the hiding spots.
 - Apartment building, step 7: the smuggling piano story: a grand piano full of ingots in 30B's living room (110 kg, down the scaffold), E plays a key and it goes "clonc" (the clue), every hard hit shakes an ingot loose, and the sheet music with the sums and a loose ingot hide with the seed.

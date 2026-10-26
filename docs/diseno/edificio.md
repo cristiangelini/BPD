@@ -120,6 +120,12 @@ Los pesos y valores siguen la escala de los otros lugares: la principal vale uno
      botón sube al 31, donde espera la caja de cuadros (40 kg, entre dos). Desde el 31, E en el ascensor baja al hall.
      El plano se esconde con la semilla. Un viaje corto tarda su parte de los 15 s, nunca menos de 3. Capturas
      `paso7-piso31-*.png`.
+   - **Las palomas mensajeras (propuesta):** el palomar (25 kg, entre dos, entra en el ascensor) está en el balcón
+     mirando a la calle. Cada 30 s llega una paloma desde arriba de la calle a la tablita del palomar, espera 12 s y se
+     va. Mientras nadie se lleve el collar de perlas, la paloma lo trae en la pata: E sobre ella se lo saca y queda en
+     la tablita. Un policía que corre (más rápido que caminar) a menos de 4 m la espanta, con collar y todo, hasta la
+     próxima. Solo vienen mientras el palomar sigue en el balcón. Plumas y alpiste en el ascensor y en el pasillo hasta
+     el 30B (pista). El silbato se esconde con la semilla. Capturas `paso7-palomas*.png`.
 8. "Jugar" sortea entre los 8 lugares de allanamiento.
 9. El online (el ascensor, el andamio, Don Evaristo, Doña Pepa y la evidencia en todas las PC).
 
