@@ -83,3 +83,11 @@ delantal, la enredadera, la tijera de podar, los frascos que se rompen y la plan
   de cada mueble, cada uno con semillas de otro color. Esperan quietos hasta que alguien los agarra. Cada rehén tiene
   una maceta chiquita en la mano. Los cuatro de la banda llevan sombrero de paja con cinta verde y delantal verde, y El
   Oso un sombrero más grande y una regadera. Capturas en `/mnt/project-files/semillas/paso1-*.png`.
+- **Paso 2 (la enredadera y la tijera):** un ladrón jardinero que ve a un policía tira un puñado de semillas a mitad de
+  camino (2,5 m como mucho) y dice "¡Semillas mágicas, a crecer!". Ahí crece en 3 s una enredadera de 3 m de ancho y
+  2 m de alto, de cara al policía, que no deja pasar a los policías ni lo que tiran, pero sí a la banda. Cada ladrón
+  tira una vez cada 20 s. A los 30 s la enredadera se seca, se pone marrón y se cae. En el mostrador hay dos tijeras
+  de podar (rojas). Con una en la mano, cada E sobre la enredadera es un tijeretazo y con 4 se corta; entre dos
+  policías con tijera se corta en la mitad de tiempo. En vez de mantener E 3 s (como decía el diseño) son tijeretazos,
+  que se ve más y no hace falta un "mantener E" nuevo. Con las manos dice "Con las manos no se puede. Hay tijeras de
+  podar en el mostrador.". Capturas en `/mnt/project-files/semillas/paso2-*.png`.
