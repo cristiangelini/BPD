@@ -675,6 +675,8 @@ func _build_town() -> void:
 	clerk = BankClerk.new()
 	clerk.name = "Clerk"
 	clerk.position = CLERK_AT + Vector3.UP * (FLOOR_TOP + STOOL_TOP)
+	clerk.car = car
+	clerk.is_out = func(at: Vector3) -> bool: return not inside(at)
 	add_child(clerk)
 
 
