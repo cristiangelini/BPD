@@ -607,6 +607,8 @@ func clue_line(kind: String) -> String:
 		return _circus_clue_line(kind)
 	if texts() == VARIANTS.museum:
 		return _museum_clue_line(kind)
+	if texts() == VARIANTS.hotel:
+		return _hotel_clue_line(kind)
 	match kind:
 		"footprint":
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
@@ -658,6 +660,23 @@ func _museum_clue_line(kind: String) -> String:
 			return tr("CLUE_MUSEUM_alibi") % museum.bathroom_details.map(func(detail: String) -> String:
 				return tr("ALIBI_SHORT_" + detail))
 	return tr("CLUE_MUSEUM_" + kind)
+
+
+## At the hotel: the bare footprint on the bathroom's mat, the hair and the bonbon on the pillow, Tito and the guest book.
+func _hotel_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_HOTEL_footprint") % who.shoe
+		"hair":
+			return tr("CLUE_HOTEL_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_HOTEL_bite") % tr("TEETH_" + str(who.teeth))
+		"witness":
+			return tr("CLUE_HOTEL_witness_glasses" if who.glasses else "CLUE_HOTEL_witness_no_glasses")
+		"signature":
+			return tr("CLUE_HOTEL_signature_left" if who.left else "CLUE_HOTEL_signature_right")
+	return tr("CLUE_HOTEL_" + kind)
 
 
 ## What a file card on the board says: what the photo shows, and the rest as the cops got it.

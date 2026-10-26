@@ -149,3 +149,12 @@ PlaceDraw y la custodia para el interrogatorio.
   en la valija del culpable (todas las valijas se pueden revisar, solo la suya puede tenerlo). Encontrado, cae delante
   de su escondite y la planilla tacha la fila opcional (+100). Las bolsas de evidencia están en un banquito al lado de
   la recepción.
+- **Paso 4b (las pistas de la suite y la mucama):** `HotelClues` pone las pistas de la suite que salieron: la caja
+  fuerte abierta con las huellas (el kit las encuentra; si un policía la toca antes, quedan las suyas encima), la
+  pisada descalza en la alfombra azul del baño (se fotografía; pisarla la borra), y sobre la almohada de la cama grande
+  un pelo y el bombón mordido (van en bolsa; el bombón se puede comer). En cuanto un policía entra al hotel, doña
+  Escoba arranca su vuelta por el pasillo (6 s en la puerta de la 17, la 12 y la 11) y llega a la suite en
+  aproximadamente un minuto: entra, cambia la funda (el pelo se va) y aspira la alfombra del baño (la pisada se va). En la
+  puerta de la suite cuelga un cartel que dice "Limpiar, por favor"; con E se da vuelta a "No molestar", y entonces
+  ella no entra, dice "vuelvo más tarde" y prueba otra vez a los 20 s. Quedan para el paso 4c: Tito, la firma del libro
+  y el timbre.
