@@ -10,6 +10,7 @@ extends Node3D
 ## piled by the counter, the belt that takes them (AirportBelt) and the scale. Step 3: number 13 is the odd one
 ## (OddCargo, what's inside drawn by the seed) and the X-ray machine on show (AirportXray). Step 4: Lustre, who wanders
 ## off to the duty-free shop (AirportDeputy), and the boarding clock on the board over the gate (AirportBoarding).
+## Step 5: the staff (AirportStaff: the bought porter, the clerk and the gate agent) and the case on top (AirportCase).
 ## Every number here is (propuesta).
 
 const COUNTER_MODEL := preload("res://assets/models/checkin_counter.glb")
@@ -61,6 +62,9 @@ const SEATS: Array[Vector3] = [Vector3(11.5, 0, 2.5), Vector3(14.5, 0, 2.5), Vec
 	Vector3(11.5, 0, 5.0), Vector3(14.5, 0, 5.0), Vector3(17.5, 0, 5.0)]
 ## The plane on the apron, along +X with its stairs to the terminal.
 const PLANE_AT := Vector3(0, 0, -15)
+## Where the staff stand (AirportStaff.ROLES' order), all facing +Z: the porter behind the belt's start, the clerk by
+## the counter's east end, the gate agent by the gate's desk.
+const STAFF_AT: Array[Vector3] = [Vector3(-15.5, 0, 11.0), Vector3(-7.8, 0, 14.6), Vector3(19.0, 0, -0.8)]
 
 const WALL := Color(0.86, 0.88, 0.9)
 const BAND := Color(0.16, 0.35, 0.66)
@@ -88,6 +92,9 @@ var xray: AirportXray
 var politician: Politician
 var deputy: AirportDeputy
 var boarding: AirportBoarding
+var staff: Array[AirportStaff] = []
+var porter: AirportStaff
+var case: AirportCase
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -110,6 +117,13 @@ func _ready() -> void:
 	city.transform = CityLayout.anchor("airport")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+	_place_staff()
+	case = AirportCase.new()
+	case.name = "Case"
+	case.airport = self
+	case.shift_screen = $ShiftScreen
+	add_child(case)
+	case.start((city as City).comisario)
 
 
 func in_terminal(at: Vector3) -> bool:
@@ -318,6 +332,22 @@ func _place_deputy() -> void:
 	boarding.name = "Boarding"
 	add_child(boarding)
 	boarding.setup(self, deputy, board)
+
+
+## The porter, the clerk and the gate agent; the porter can be walked to the patrol car.
+func _place_staff() -> void:
+	for i in AirportStaff.ROLES.size():
+		var worker := AirportStaff.new()
+		worker.role = AirportStaff.ROLES[i]
+		worker.name = worker.role.capitalize()
+		worker.airport = self
+		worker.position = STAFF_AT[i] + Vector3.UP * (FLOOR_TOP + 0.05)
+		worker.rotation.y = PI
+		add_child(worker)
+		staff.append(worker)
+		var escort := OwnerEscort.attach(worker, car)
+		escort.in_car_hint = "HINT_PORTER_IN_CAR"
+	porter = staff[0]
 
 
 ## The duty-free shop's floor, shelves and sign; the gate's floor, seats, desk and sign.

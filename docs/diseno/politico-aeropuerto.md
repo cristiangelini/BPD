@@ -104,3 +104,14 @@ pregunten."
   la mano (se queja como en la plaza); llevado a la sala de embarque, se sienta, pero a los 50 s (más o menos 10) se
   aburre y vuelve a la tienda. Soltado en otro lado, vuelve a la tienda. Al cerrar, si está en la sala de embarque
   sube al avión (`closed(true)`); si no, lo pierde (`closed(false)`, en el paso 5 eso pierde el caso).
+- **Paso 5 (el maletero y el caso):** `AirportStaff`: el maletero Tobías Cargo detrás del comienzo de la cinta con su
+  carrito de mano, la empleada del mostrador y el empleado de la puerta de embarque. Las 3 pistas del maletero: E
+  muestra el llavero con el logo rosa de Embrollo, cada 14 s le habla en voz baja a la concejala por teléfono (lo ve el
+  policía a menos de 4 m) y su carrito tiene rollos de cinta amarilla de sobra (lo ve el que pasa a menos de 2 m). Cada
+  25 s, si no hay ningún policía a menos de 8 m de él y la maleta rara está tirada por ahí (ni en la mano de nadie, ni
+  en la cinta, ni ya pasada por los rayos X), la vuelve a poner en la cinta silbando. Esposado, E lo lleva al
+  patrullero; la empleada y el empleado protestan, las esposas se abren y se descuentan 100. `AirportCase`: el
+  comisario lo cuenta en su oficina y Q abre la planilla. Se pierde en el momento si la maleta rara sale en la
+  pantalla o si cierra el embarque sin el diputado; se gana si sube al avión a tiempo. Sueldo 600, 50 menos por cada
+  maleta suya abierta (una vez por maleta, y él se queja), 100 menos por cada empleado honesto esposado y 100 más si el
+  maletero está en el patrullero. Cuota 400.

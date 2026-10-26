@@ -3703,8 +3703,8 @@ PROMPT_COUNT_CHALK,E: marcar con tiza,E: chalk a cross,E: marcar com giz
 COUNT_CHALKED_0,¡Eh! ¡Me pintaste la espalda!,Hey! You drew on my back!,Ei! Você pintou minhas costas!
 COUNT_CHALKED_1,Presente.,Present.,Presente.
 COUNT_CHALKED_2,¿Y esta cruz para qué es?,And what's this cross for?,E essa cruz é pra quê?
-COUNT_COOK_OFFENDED,¡Yo trabajo acá! ¡Soy el cocinero!,I work here! I'm the cook!,Eu trabalho aqui! Sou o cozinheiro!
-COUNT_PLUMBER_OFFENDED,¡Yo trabajo acá! ¡Vine a arreglar un caño!,I work here! I came to fix a pipe!,Eu trabalho aqui! Vim consertar um cano!
+COUNT_COOK_OFFENDED,¡Yo trabajo aquí! ¡Soy el cocinero!,I work here! I'm the cook!,Eu trabalho aqui! Sou o cozinheiro!
+COUNT_PLUMBER_OFFENDED,¡Yo trabajo aquí! ¡Vine a arreglar un caño!,I work here! I came to fix a pipe!,Eu trabalho aqui! Vim consertar um cano!
 HINT_COUNT_WORKER,"Ese no es un preso, no tiene número.","That's no inmate, he has no number.","Esse não é um preso, não tem número."
 COUNT_ITCHY,"¡Ay, cómo pica esta tiza!","Ow, this chalk itches!","Ai, como coça esse giz!"
 COUNT_BOARD_ESCAPED,FUGA,GONE,FUGIU
@@ -4867,3 +4867,36 @@ HINT_AIRPORT_BOARDED,"¡El diputado subió al avión!","The deputy got on the pl
 HINT_AIRPORT_MISSED,"¡Cerró el embarque y el diputado no estaba en la puerta!","Boarding closed and the deputy wasn't at the gate!","O embarque fechou e o deputado não estava no portão!"
 AIRPORT_BOARDING_CLOCK,"Embarque: %s","Boarding: %s","Embarque: %s"
 AIRPORT_BOARDING_CLOSED,"Embarque cerrado","Boarding closed","Embarque encerrado"
+BRIEF_AIRPORT_A,"Novatos, el diputado Lustre se va de viaje a la Cumbre de Alcaldes. Llévenlo hasta el avión con todas sus maletas. Son doce. Sí, doce. No pregunten.","Rookies, Deputy Lustre is flying off to the Mayors' Summit. Get him onto the plane with all his suitcases. There are twelve. Yes, twelve. Don't ask.","Novatos, o deputado Lustre vai viajar para a Cúpula de Prefeitos. Levem ele até o avião com todas as malas. São doze. Sim, doze. Não perguntem."
+BRIEF_AIRPORT_B,"La concejala Embrollo anda diciendo que le preparó una sorpresa. Si algo raro pasa por los rayos X delante de la prensa, el papelón es nuestro.","Councillor Embrollo goes around saying she's got a surprise for him. If anything odd goes through the X-ray in front of the press, the disgrace is ours.","A vereadora Embrollo anda dizendo que preparou uma surpresa para ele. Se algo estranho passar no raio X na frente da imprensa, o vexame é nosso."
+BRIEF_AIRPORT_C,"Y que esté en la puerta de embarque cuando cierre. Si para en la tienda libre de impuestos, sáquenlo de la mano.","And have him at the gate when it closes. If he stops at the duty-free shop, drag him out by the hand.","E que ele esteja no portão quando fechar. Se ele parar na loja duty free, tirem ele de lá pela mão."
+HINT_GO_AIRPORT,"Al aeropuerto: el diputado, sus maletas y nada raro por los rayos X.","To the airport: the deputy, his suitcases and nothing odd through the X-ray.","Para o aeroporto: o deputado, as malas dele e nada estranho no raio X."
+PROMPT_TALK_STAFF,"E: hablar","E: talk","E: conversar"
+AIRPORT_PORTER_TALK_1,"Yo solo cargo maletas. No miro qué tienen. Nunca. Jamás.","I just carry suitcases. I don't look inside. Never. Ever.","Eu só carrego malas. Não olho o que tem dentro. Nunca. Jamais."
+AIRPORT_PORTER_TALK_2,"¿Este llavero? Me lo regaló una amiga. Una amiga cualquiera.","This keychain? A friend gave it to me. Just some friend.","Este chaveiro? Uma amiga me deu. Uma amiga qualquer."
+AIRPORT_PORTER_TALK_3,"Trece maletas, doce maletas... yo no sé contar tanto.","Thirteen suitcases, twelve suitcases... I can't count that high.","Treze malas, doze malas... eu não sei contar tanto."
+AIRPORT_CLERK_TALK_1,"Equipaje de mano: una pieza. El diputado trajo doce.","Hand luggage: one piece. The deputy brought twelve.","Bagagem de mão: um volume. O deputado trouxe doze."
+AIRPORT_CLERK_TALK_2,"La balanza no miente. La gente, sí.","The scale doesn't lie. People do.","A balança não mente. As pessoas, sim."
+AIRPORT_CLERK_TALK_3,"Si ves una maleta sin dueño, no es mía. Ninguna es mía.","If you see a suitcase with no owner, it's not mine. None of them are mine.","Se vir uma mala sem dono, não é minha. Nenhuma é minha."
+AIRPORT_GATE_TALK_1,"El embarque cierra a horario. Diputado o no diputado.","Boarding closes on time. Deputy or no deputy.","O embarque fecha no horário. Deputado ou não."
+AIRPORT_GATE_TALK_2,"¿Tarjeta de embarque? Ah, eres policía. Pasa igual.","Boarding pass? Oh, you're a cop. Go ahead anyway.","Cartão de embarque? Ah, é polícia. Pode passar mesmo assim."
+AIRPORT_GATE_TALK_3,"El avión es chico, pero el ego del diputado no entra.","The plane is small, but the deputy's ego won't fit.","O avião é pequeno, mas o ego do deputado não cabe."
+AIRPORT_PORTER_PHONE,"(en voz baja) Sí, concejala... ya casi...","(whispering) Yes, councillor... almost there...","(baixinho) Sim, vereadora... quase lá..."
+AIRPORT_PORTER_WHISTLE,"♪ Fiu, fiu... ♪","♪ Whistle, whistle... ♪","♪ Fiu, fiu... ♪"
+AIRPORT_PORTER_CUFFED,"¡Fue idea de la concejala! ¡Yo solo cargaba!","It was the councillor's idea! I just carried it!","Foi ideia da vereadora! Eu só carregava!"
+AIRPORT_STAFF_WRONG_CUFF,"¡Oye! ¡Yo trabajo aquí! Esto va a la queja formal.","Hey! I work here! This is going in a formal complaint.","Ei! Eu trabalho aqui! Isso vai para a reclamação formal."
+AIRPORT_DEPUTY_OPENED,"¡Esa es mía! ¡No me revuelvan los calcetines!","That one's mine! Don't mess up my socks!","Essa é minha! Não bagunce minhas meias!"
+HINT_PORTER_KEYCHAIN,"El maletero tiene un llavero con el logo de la concejala Embrollo.","The porter has a keychain with councillor Embrollo's logo.","O carregador tem um chaveiro com o logo da vereadora Embrollo."
+HINT_PORTER_PHONE,"El maletero le habla en voz baja a la concejala por teléfono.","The porter is whispering to the councillor on the phone.","O carregador está falando baixinho com a vereadora no telefone."
+HINT_PORTER_RIBBON,"El carrito del maletero tiene rollos de cinta amarilla de sobra, como la de las maletas.","The porter's cart has spare rolls of yellow ribbon, like the suitcases'.","O carrinho do carregador tem rolos de fita amarela sobrando, como a das malas."
+HINT_PORTER_IN_CAR,"El maletero comprado está en el patrullero: no más trampas con las maletas.","The bought porter is in the patrol car: no more suitcase tricks.","O carregador comprado está na viatura: chega de truques com as malas."
+HINT_AIRPORT_WRONG_CUFF,"¡Esposaste a un empleado que no hizo nada! Eso se descuenta del sueldo.","You cuffed an employee who did nothing! That comes out of the pay.","Você algemou um funcionário que não fez nada! Isso sai do salário."
+HINT_AIRPORT_LOST_SCANDAL,"¡La prensa vio la maleta rara en los rayos X! Caso perdido.","The press saw the odd suitcase on the X-ray! Case lost.","A imprensa viu a mala estranha no raio X! Caso perdido."
+OBJ_AIRPORT_ARRIVE,"Llegar al aeropuerto","Get to the airport","Chegar ao aeroporto"
+OBJ_AIRPORT_ODD,"Encontrar la maleta rara","Find the odd suitcase","Encontrar a mala estranha"
+OBJ_AIRPORT_CLUES,"Pistas del maletero: %d de %d","Clues on the porter: %d of %d","Pistas do carregador: %d de %d"
+OBJ_AIRPORT_PORTER,"El maletero comprado, en el patrullero","The bought porter, in the patrol car","O carregador comprado, na viatura"
+OBJ_AIRPORT_BOARD,"Que el diputado suba al avión a tiempo","Get the deputy on the plane on time","Que o deputado embarque a tempo"
+OBJ_AIRPORT_OPENED,"Maletas del diputado abiertas de más: %d","Deputy's suitcases opened for nothing: %d","Malas do deputado abertas à toa: %d"
+OBJ_AIRPORT_SCANDAL,"La maleta rara salió en la pantalla: caso perdido.","The odd suitcase made the screen: case lost.","A mala estranha apareceu na tela: caso perdido."
+OBJ_AIRPORT_MISSED,"El diputado perdió el avión: caso perdido.","The deputy missed the plane: case lost.","O deputado perdeu o avião: caso perdido."
