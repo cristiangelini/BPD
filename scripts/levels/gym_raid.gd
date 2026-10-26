@@ -221,6 +221,8 @@ func _ready() -> void:
 	raid.failed_label = %CaseFailed
 	raid.shift_screen = $ShiftScreen
 	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
 	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	GymHall.build_hall(_build, $Built)
@@ -267,6 +269,22 @@ func _place_facts() -> Dictionary:
 		"broken": broken_goods,
 		"complaint": coach.complaint,
 	}
+
+
+## Online, what the guests' gym takes from the host's (RaidCase.snapshot): the mirror, the broken treadmills and what
+## the story's rig decides on the host.
+func net_state() -> Dictionary:
+	return {"mirror": mirror_is_broken, "treadmills": broken_treadmills.duplicate(),
+		"rig": rig.net_state() if rig else null}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	if state.mirror:
+		break_mirror()
+	for index: int in state.treadmills:
+		break_treadmill(index)
+	if rig and state.rig != null:
+		rig.apply_net_state(state.rig)
 
 
 ## The story with that id from --story=<id> among the user args, or one drawn from the seed.
@@ -379,11 +397,12 @@ func _place_dumbbells() -> void:
 		dumbbells.append(dumbbell)
 
 
-## An area just in front of the mirror: a prop flying into it fast enough breaks it.
+## An area just in front of the mirror: a prop flying into it fast enough breaks it. Online only the host sees things
+## break; the guests take it from its state (net_state).
 func _watch_mirror() -> void:
 	var area := _area(MIRROR_AT + Vector3(0, 0, 0.2), Vector3(MIRROR_SIZE.x, MIRROR_SIZE.y, 0.4))
 	area.body_entered.connect(func(body: Node3D) -> void:
-		if body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > MIRROR_SPEED:
+		if multiplayer.is_server() and body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > MIRROR_SPEED:
 			break_mirror())
 
 
@@ -421,7 +440,7 @@ func _watch_treadmills() -> void:
 		var belt := GymHall.TREADMILLS[i] + Vector3(0, FLOOR_TOP + GymHall.TREADMILL_BELT + 0.3, 0)
 		var area := _area(belt, Vector3(GymHall.TREADMILL_SIZE.x, 0.6, GymHall.TREADMILL_SIZE.z))
 		area.body_entered.connect(func(body: Node3D) -> void:
-			if body is RigidBody3D and (body as RigidBody3D).mass >= TREADMILL_KG \
+			if multiplayer.is_server() and body is RigidBody3D and (body as RigidBody3D).mass >= TREADMILL_KG \
 					and -(body as RigidBody3D).linear_velocity.y > TREADMILL_FALL:
 				break_treadmill(i))
 
@@ -542,7 +561,9 @@ func in_class() -> bool:
 func _physics_process(delta: float) -> void:
 	if not coach:
 		return
-	_watch_dumbbells()
+	# Online the host's profe minds the dumbbells; the guests' one only follows.
+	if multiplayer.is_server():
+		_watch_dumbbells()
 	_watch_runners(delta)
 	if in_class():
 		_class(delta)
@@ -579,7 +600,8 @@ func _class(delta: float) -> void:
 	(coach.get_node("Model") as Node3D).position.y = bounce
 	for node in get_tree().get_nodes_in_group("cops"):
 		var cop := node as Cop
-		if not _dancers.has(cop) and cop.velocity.y > DANCE_JUMP and _is_inside(cop.global_position):
+		if multiplayer.is_server() and not _dancers.has(cop) and cop.velocity.y > DANCE_JUMP \
+				and _is_inside(cop.global_position):
 			_dancers[cop] = true
 			coach.praise(DANCED, "COACH_DANCE")
 

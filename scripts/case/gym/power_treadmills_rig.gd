@@ -52,7 +52,8 @@ func _physics_process(delta: float) -> void:
 			_ran.erase(cop)
 			_thrown.erase(cop)
 			continue
-		if running and on != GymRaid.LULA_TREADMILL and not _thrown.has(cop):
+		# Each PC throws off its own player's cop: a copy of another one only follows its owner.
+		if running and on != GymRaid.LULA_TREADMILL and not _thrown.has(cop) and is_mine(cop):
 			_thrown[cop] = true
 			cop.knock_back(gym.global_basis * Vector3(0, 2.0, -THROW), THROW_TIME)
 		if cop.is_running:
