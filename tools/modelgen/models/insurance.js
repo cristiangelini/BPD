@@ -343,6 +343,58 @@ export function buildEmployeePhoto() {
 	return b.build();
 }
 
+// The insured painting, 0.8 x 0.6 m in a gilded frame: a sunset over hills with a little red house. The office hangs 7
+// copies; the real one (`real`) has the painter's signature upside down, in the bottom right corner.
+function painting(name, real) {
+	const b = new Builder(name);
+	const gold = mat('frame_gold', 0xc8a04a);
+	b.add('frame', gold, new THREE.BoxGeometry(0.8, 0.6, 0.05), { pos: V(0, 0, 0) });
+	b.add('sky', mat('paint_sky', 0xe89a5a), new THREE.BoxGeometry(0.68, 0.26, 0.01), { pos: V(0, 0.11, 0.025) });
+	b.add('sun', mat('paint_sun', 0xf2d24a), ellipsoid(0.06, 0.06, 0.006, 8, 3), { pos: V(0.15, 0.1, 0.031) });
+	b.add('hills', mat('paint_hills', 0x5a8a4a), new THREE.BoxGeometry(0.68, 0.22, 0.01), { pos: V(0, -0.13, 0.025) });
+	b.add('hill', mat('paint_hill', 0x4a7a3a), ellipsoid(0.2, 0.08, 0.006, 8, 3), { pos: V(-0.15, -0.02, 0.031) });
+	b.add('house', mat('paint_house', 0xc83a3a), new THREE.BoxGeometry(0.06, 0.05, 0.006), { pos: V(0.05, -0.06, 0.032) });
+	b.add('roof', mat('paint_roof', 0x5a3a2a), new THREE.ConeGeometry(0.045, 0.035, 4), { pos: V(0.05, -0.018, 0.032), rot: [0, Math.PI / 4, 0] });
+	// The signature: a short scrawl and a dot; the real one is turned upside down.
+	const ink = mat('paint_ink', 0x1e1e22);
+	const sx = 0.26, sy = -0.2, flip = real ? -1 : 1;
+	b.add('signature', ink, new THREE.BoxGeometry(0.08, 0.008, 0.004), { pos: V(sx, sy, 0.032), rot: [0, 0, flip * 0.15] });
+	b.add('signature', ink, new THREE.BoxGeometry(0.008, 0.03, 0.004), { pos: V(sx - flip * 0.04, sy + flip * 0.012, 0.032) });
+	b.add('signature', ink, ellipsoid(0.006, 0.006, 0.003, 5, 3), { pos: V(sx + flip * 0.05, sy - flip * 0.015, 0.032) });
+	return b.build();
+}
+
+export function buildPaintingCopy() { return painting('painting_copy', false); }
+export function buildPaintingReal() { return painting('painting_real', true); }
+
+// The painting's policy: a sheet 0.21 x 0.3 m with a gold seal and a big number. Extra of the insured painting.
+export function buildPaintingPolicy() {
+	const b = new Builder('painting_policy');
+	b.add('sheet', mat('policy_paper', 0xf6f6f0), new THREE.BoxGeometry(0.21, 0.003, 0.3), { pos: V(0, 0, 0) });
+	b.add('seal', mat('frame_gold', 0xc8a04a), ellipsoid(0.03, 0.002, 0.03, 8, 3), { pos: V(0.06, 0.002, 0.1) });
+	b.add('amount', mat('script_red', 0xd23a3a), new THREE.BoxGeometry(0.12, 0.001, 0.025), { pos: V(-0.02, 0.002, -0.05) });
+	for (let i = 0; i < 4; i++) b.add('lines', mat('folder_text', 0x3a3a40), new THREE.BoxGeometry(0.16, 0.001, 0.007), { pos: V(0, 0.002, -0.11 + i * 0.022) });
+	return b.build();
+}
+
+// A small wooden box 0.2 x 0.06 x 0.12 m of squeezed oil paint tubes, the copy's colours. Extra of the insured
+// painting.
+export function buildPaintTubes() {
+	const b = new Builder('paint_tubes');
+	const wood = mat('tube_box', 0x8a5a3a);
+	b.add('bottom', wood, new THREE.BoxGeometry(0.2, 0.01, 0.12), { pos: V(0, -0.025, 0) });
+	for (const s of [-1, 1]) {
+		b.add('sides', wood, new THREE.BoxGeometry(0.2, 0.05, 0.01), { pos: V(0, 0, s * 0.055) });
+		b.add('sides', wood, new THREE.BoxGeometry(0.01, 0.05, 0.12), { pos: V(s * 0.095, 0, 0) });
+	}
+	const colors = [0xe89a5a, 0xf2d24a, 0x5a8a4a, 0xc83a3a, 0x4a7ac8];
+	for (let i = 0; i < 5; i++) {
+		b.add('tubes', mat('tube_metal', 0xc8ccd2), new THREE.CylinderGeometry(0.012, 0.014, 0.1, 6), { pos: V(-0.07 + i * 0.035, -0.005, 0), rot: [Math.PI / 2, 0, 0] });
+		b.add('caps', mat('tube_cap_' + i, colors[i]), new THREE.CylinderGeometry(0.008, 0.008, 0.015, 6), { pos: V(-0.07 + i * 0.035, -0.005, 0.055), rot: [Math.PI / 2, 0, 0] });
+	}
+	return b.build();
+}
+
 export const models = {
 	office_chair: buildOfficeChair, office_monitor: buildOfficeMonitor, glass_trophy: buildGlassTrophy,
 	coffee_machine: buildCoffeeMachine, water_cooler: buildWaterCooler,
@@ -351,10 +403,18 @@ export const models = {
 	ufo_policies: buildUfoPolicies, ufo_photos: buildUfoPhotos, toy_saucer: buildToySaucer, sales_script: buildSalesScript,
 	desk_phone: buildDeskPhone, claims_box: buildClaimsBox, shred_bag: buildShredBag, shred_order: buildShredOrder,
 	shredder: buildShredder, neck_braces: buildNeckBraces, xrays: buildXrays, banana_peels: buildBananaPeels,
-	wet_sign: buildWetSign, employee_photo: buildEmployeePhoto,
+	wet_sign: buildWetSign, employee_photo: buildEmployeePhoto, painting_copy: buildPaintingCopy,
+	painting_real: buildPaintingReal, painting_policy: buildPaintingPolicy, paint_tubes: buildPaintTubes,
 };
 
 export const views = {
+	painting_goods: {
+		items: [
+			{ name: 'painting_copy', pos: [-0.45, 0.3, 0] }, { name: 'painting_real', pos: [0.45, 0.3, 0] },
+			{ name: 'painting_policy', pos: [-0.2, 0.002, 0.4], rotY: 0.2 }, { name: 'paint_tubes', pos: [0.3, 0.03, 0.4] },
+		],
+		cam: { pos: [0, 0.6, 1.9], target: [0, 0.25, 0], fov: 40 },
+	},
 	accident_goods: {
 		items: [
 			{ name: 'neck_braces', pos: [-0.35, 0.125, 0] }, { name: 'xrays', pos: [0.3, 0.002, 0.35], rotY: 0.3 },
