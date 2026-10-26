@@ -5,11 +5,13 @@ extends Node3D
 ## to +Z and the rest of the building closed above it. The tasting room at the front, the big kitchen in the middle,
 ## the flour storeroom and the locker room in the west, the flavor lab behind glass at the back and the cold room in
 ## the back east corner. The tasting room is open; the flavor lab and the cold room are locked. The showcase cakes
-## break (a fine each) and the flour sacks burst into white footprints. Every number here is (propuesta).
+## break (a fine each) and the flour sacks burst into white footprints. Chef Bruno goes from counter to counter, and
+## runs to his soufflé when a cop turns its oven up to the max (step 2). Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const CAKE_SCENE := preload("res://scenes/props/bakery_cake.tscn")
 const SACK_SCENE := preload("res://scenes/props/lab_flour_sack.tscn")
+const CHEF_SCENE := preload("res://scenes/npc/pastry_chef.tscn")
 const CAKE_MODEL := preload("res://assets/models/bakery_cake.glb")
 const OVEN_MODEL := preload("res://assets/models/lab_oven.glb")
 const MIXER_MODEL := preload("res://assets/models/giant_mixer.glb")
@@ -60,6 +62,16 @@ const OVEN_X := 11.4
 const OVENS: Array[float] = [4.2, 2.6, 1.0, -0.6, -2.2]
 const OVEN_SIZE := Vector3(0.9, 1.6, 1.2)
 const HIDING_OVEN := 3
+## The soufflé oven, with the red knob: the chef's distraction (LabOven), and where he stands to save it.
+const SOUFFLE_OVEN := 0
+const SOUFFLE_SPOT := Vector3(10.2, FLOOR_TOP, 4.2)
+## Chef Bruno's round, back and forth: the aisle in front of the counters and the two between them.
+const CHEF_ROUTE: Array[Vector3] = [
+	Vector3(-5.0, FLOOR_TOP, 4.9), Vector3(4.5, FLOOR_TOP, 4.9), Vector3(4.5, FLOOR_TOP, 2.0),
+	Vector3(-5.0, FLOOR_TOP, 2.0), Vector3(-5.0, FLOOR_TOP, -0.85), Vector3(4.5, FLOOR_TOP, -0.85),
+]
+## Seeing a flour sack burst.
+const SAW_FLOUR := 10.0
 ## The flour sacks: two rows along the storeroom's west wall, with a gap in the middle.
 const SACK_ROWS: Array[float] = [-11.35, -10.75]
 const SACK_ALONG: Array[float] = [5.0, 4.0, 3.0, 1.0, 0.0]
@@ -112,6 +124,9 @@ var city_map: CityMap
 var cakes: Array[Ornament] = []
 var sacks: Array[FlourSack] = []
 var flour: FlourPrints
+var oven: LabOven
+var chef: FloorBoss
+var complaint_bar: ProgressBar
 var broken_goods := 0
 var burst_sacks := 0
 ## Money taken off the case pay for broken things (each one is an Ornament.FINE).
@@ -135,6 +150,7 @@ func _ready() -> void:
 	_place_sacks()
 	lab_door = _door(Vector3(LAB_DOOR_X, FLOOR_TOP, BACK_Z))
 	cold_door = _door(Vector3(COLD_DOOR_X, FLOOR_TOP, BACK_Z))
+	_place_chef()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("cake_lab")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -254,6 +270,12 @@ func _build_kitchen() -> void:
 		_model(MIXER_MODEL, at)
 	for i in OVENS.size():
 		var at := Vector3(OVEN_X, FLOOR_TOP, OVENS[i])
+		if i == SOUFFLE_OVEN:
+			oven = LabOven.new()
+			oven.position = at
+			oven.rotation.y = -PI / 2
+			add_child(oven)
+			continue
 		if i == HIDING_OVEN:
 			_build.open_box(at, OVEN_SIZE, "-x", STEEL)
 		else:
@@ -378,11 +400,44 @@ func _place_sacks() -> void:
 			sacks.append(sack)
 
 
-func _on_cake_broken(_at: Vector3) -> void:
+## Chef Bruno on his round between the counters, ready for his soufflé, and his complaint meter. A rammed door reaches
+## him anywhere; squashed cakes and burst sacks only if he sees them.
+func _place_chef() -> void:
+	chef = CHEF_SCENE.instantiate()
+	chef.route = CHEF_ROUTE
+	chef.printer_spot = SOUFFLE_SPOT
+	chef.printer = oven
+	add_child(chef)
+	chef.start_at(0)
+	for door: FrontDoor in [lab_door, cold_door]:
+		door.broken.connect(chef.door_broken)
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	chef.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+func _on_cake_broken(at: Vector3) -> void:
 	broken_goods += 1
 	fines += Ornament.FINE
+	if chef:
+		chef.saw(at, FloorBoss.SAW_BREAK, "CHEF_CAKE")
 
 
 func _on_sack_burst(at: Vector3) -> void:
 	burst_sacks += 1
 	flour.spill(at)
+	if chef:
+		chef.saw(at + Vector3.UP * 0.5, SAW_FLOUR, "CHEF_FLOUR")

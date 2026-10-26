@@ -40,11 +40,13 @@ const REACH := 0.25
 const END_PAUSE := 2.0
 ## Fighting the jammed printer: how long, and what she mutters meanwhile.
 const FIX_TIME := 15.0
-const FIX_LINES := ["BOSS_FIX_1", "BOSS_FIX_2", "BOSS_FIX_3"]
+const FIX_LINES := ["FIX_1", "FIX_2", "FIX_3"]
 const TALK_RANGE := 6.0
-const LINES := ["BOSS_LINE_1", "BOSS_LINE_2", "BOSS_LINE_3", "BOSS_LINE_4"]
+const LINES := ["LINE_1", "LINE_2", "LINE_3", "LINE_4"]
 const LINE_EVERY := 7.0
 
+## The start of every line of hers (BOSS_LINE_1, ...): another owner on the same body speaks with their own (CHEF).
+@export var voice := "BOSS"
 var complaint := 0.0
 var has_called_lawyer := false
 var slips: Array[String] = []
@@ -116,10 +118,10 @@ func ask(_cop: Cop) -> bool:
 	if _ask_wait > 0.0:
 		return false
 	if slips.is_empty():
-		_say("BOSS_NOTHING")
+		_say(_key("NOTHING"))
 		return false
 	if asked >= ASKS or asked >= slips.size():
-		_say("BOSS_OFFENDED")
+		_say(_key("OFFENDED"))
 		return false
 	_ask_wait = ASK_COOLDOWN
 	_raise(ASKED)
@@ -173,7 +175,7 @@ func _physics_process(delta: float) -> void:
 	_since_line += delta
 	var cop := _nearest_cop(TALK_RANGE)
 	if cop and _since_line >= LINE_EVERY and _errand == "" and not is_fixing():
-		_say(LINES[_line % LINES.size()])
+		_say(_key(LINES[_line % LINES.size()]))
 		_line += 1
 
 
@@ -226,7 +228,7 @@ func _arrive() -> void:
 	if done == "printer" and printer and printer.is_jammed:
 		_fix_left = fix_time
 		_fix_line = 0
-		_say(FIX_LINES[0], fix_time / FIX_LINES.size())
+		_say(_key(FIX_LINES[0]), fix_time / FIX_LINES.size())
 	else:
 		_back_to_route()
 
@@ -244,14 +246,14 @@ func _fix(delta: float) -> void:
 		_fix_left = 0.0
 		if printer:
 			printer.fix()
-		_say("BOSS_FIX_DONE")
+		_say(_key("FIX_DONE"))
 		_back_to_route()
 		return
 	var part := fix_time / FIX_LINES.size()
 	var line := mini(int((fix_time - _fix_left) / part), FIX_LINES.size() - 1)
 	if line != _fix_line:
 		_fix_line = line
-		_say(FIX_LINES[line], part)
+		_say(_key(FIX_LINES[line]), part)
 
 
 func _nearest_index(spot: Vector3) -> int:
@@ -263,7 +265,7 @@ func _nearest_index(spot: Vector3) -> int:
 
 
 func _on_printer_jammed() -> void:
-	_say("BOSS_PRINTER")
+	_say(_key("PRINTER"))
 	if not is_fixing():
 		_go(printer_spot, "printer")
 
@@ -292,22 +294,22 @@ func struck() -> bool:
 		return false
 	_since_struck = 0.0
 	_raise(STRUCK)
-	_say("BOSS_HURT")
+	_say(_key("HURT"))
 	hurt.emit()
 	return true
 
 
 func door_broken() -> void:
 	_raise(DOOR_BROKEN)
-	_say("BOSS_DOOR")
+	_say(_key("DOOR"))
 
 
 ## Something happened at `at`: if she sees it, the complaint goes up `points` and she says `line`.
-func saw(at: Vector3, points: float, line := "BOSS_SAW") -> bool:
+func saw(at: Vector3, points: float, line := "") -> bool:
 	if not can_see(at):
 		return false
 	_raise(points)
-	_say(line)
+	_say(line if line != "" else _key("SAW"))
 	return true
 
 
@@ -337,7 +339,7 @@ func _set_complaint(value: float) -> void:
 	complaint_changed.emit(complaint)
 	if complaint >= MAX_COMPLAINT and not has_called_lawyer:
 		has_called_lawyer = true
-		_say("BOSS_LAWYER")
+		_say(_key("LAWYER"))
 		lawyer_called.emit()
 
 
@@ -350,6 +352,11 @@ func _on_bump(body: Node3D) -> void:
 		speed = (body as RigidBody3D).linear_velocity.length()
 	if speed > STRUCK_SPEED:
 		struck()
+
+
+## One of her lines, in her voice: "HURT" -> "BOSS_HURT".
+func _key(line: String) -> String:
+	return voice + "_" + line
 
 
 func _say(key: String, seconds := 3.0) -> void:

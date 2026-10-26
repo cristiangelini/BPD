@@ -79,10 +79,12 @@ func test_a_guest_answers_a_ringing_phone() -> void:
 	var guest_rig := guest.rig as UfoPoliciesRig
 	var ringing := host_rig.phones.find(host_rig.phones.filter(func(p: DeskPhone) -> bool: return p.is_ringing())[0])
 	guest_rig.phones[ringing].ring()
+	var guest_answers := guest_rig.phones[ringing].answers
 	OnlinePcs.own_cop(pcs[1]).act("use", guest_rig.phones[ringing])
 	await wait_until(func() -> bool: return not host_rig.phones[ringing].is_ringing(), 5.0)
 	assert_false(host_rig.phones[ringing].is_ringing(), "answered on the host")
-	assert_false(guest_rig.phones[ringing].is_ringing(), "and on the guest")
+	# The guest's phones ring on their own clock, so that one may already be ringing again: count the answer instead.
+	assert_eq(guest_rig.phones[ringing].answers, guest_answers + 1, "and on the guest")
 
 
 func test_the_paintings_hang_the_same_on_every_pc() -> void:
