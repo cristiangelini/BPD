@@ -123,7 +123,7 @@ Tienen que cuidar a un político molesto durante un evento (decisión 32).
 2. **Inauguración de un puente:** el puente está mal hecho.
 3. **Visita a una escuela:** los chicos le hacen preguntas que lo ponen en problemas.
 4. **Debate en televisión:** el sabotaje viene desde el control de cámaras.
-5. **Partido de fútbol benéfico:** el político juega, mal.
+5. **Partido de fútbol benéfico:** el político juega, mal. Propuesta en [politico-futbol.md](politico-futbol.md) (decisión 179).
 6. **Caminata por el mercado:** quiere probar todo y algo está envenenado (con laxante).
 7. **En el aeropuerto:** con valijas iguales, y una tiene algo raro.
 8. **Fiesta de cumpleaños del político:** el pastel es sospechoso.
