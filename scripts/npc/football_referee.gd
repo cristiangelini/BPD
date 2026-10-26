@@ -180,6 +180,15 @@ func said() -> String:
 	return _bubble.text if _bubble.visible else ""
 
 
+## What a guest's copy needs besides where he is and what he says (NpcSync): cuffed.
+func net_state() -> Array:
+	return [is_cuffed()]
+
+
+func apply_net_state(state: Variant) -> void:
+	_cuffed_left = Handcuffs.SECONDS if state[0] else 0.0
+
+
 func _physics_process(delta: float) -> void:
 	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
 	velocity.y = 0.0 if is_on_floor() else velocity.y - GameScale.GRAVITY * delta

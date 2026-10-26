@@ -56,7 +56,8 @@ gol para la foto y que salga entero. En ese orden, dice él. En el otro, digo yo
 3. El partido: el reloj de 2 tiempos, los veteranos y el arquero, los asesores, el diputado que juega mal.
 4. Las caídas del diputado, la camilla, el Tanque y la lesión de verdad.
 5. El árbitro comprado: cobra en contra, pistas, esposarlo y el silbato; el caso, sueldo y cuota.
-6. La moto de Barullo, el sorteo de Jugar (plaza, mercado, puente y cancha) y el online.
+6. La moto de Barullo y el sorteo de Jugar (plaza, mercado, puente y cancha).
+7. El online.
 
 ## Preguntas para Cristian
 1. **¿Qué pasa con las lesiones de verdad del diputado?** Recomendado: cada una cuesta 100 de sueldo, y a la tercera
@@ -115,3 +116,9 @@ gol para la foto y que salga entero. En ese orden, dice él. En el otro, digo yo
   suelto, se sube y escapa a 45 km/h, doblando bien en las esquinas (`ChaseCase.begin`, decisión 96); atrapado, cuenta
   como detenido y suma los 100. Jugar sortea la protección del político en cuartos: plaza, mercado, puente y cancha. El
   online queda para un paso 7, como en el puente. Captura en `/mnt/project-files/futbol/paso6-moto.png`.
+- **Paso 7 (online):** el caso del anfitrión decide y el de los invitados lo sigue (`CaseSync`, `snapshot`): el reloj y
+  el tiempo del partido, el marcador, el diputado en el piso y sus lesiones, las pistas, el final y la huida en la moto.
+  El juego (veteranos, arquero, Tanque, árbitro y diputado) solo corre en el anfitrión; los jugadores y el árbitro
+  llegan por `NpcSync`, con el Tanque cargando o caído y el árbitro esposado. La pelota y la camilla van por
+  `PropSync` y la patada de un invitado por `ActionSync`. Las pecheras se ponen en todas las PCs cuando arranca el
+  partido. Pruebas en `test_online_football`.

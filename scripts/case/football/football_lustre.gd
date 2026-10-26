@@ -109,8 +109,7 @@ func fall() -> void:
 		return
 	down = true
 	_scream = 0.0
-	politician.get_node("Model").rotation = Vector3(-PI / 2, PI, 0)
-	politician.get_node("Model").position.y = 0.35
+	lying(true)
 	for cop in get_tree().get_nodes_in_group("cops"):
 		(cop as Cop).show_hint("HINT_FOOTBALL_DOWN")
 	fell.emit()
@@ -187,10 +186,28 @@ func _ride() -> void:
 func _get_up() -> void:
 	down = false
 	_grace = GRACE
-	politician.get_node("Model").rotation = Vector3(0, PI, 0)
-	politician.get_node("Model").position.y = 0.0
+	lying(false)
 	politician.say("FOOTBALL_LUSTRE_BACK", 3.0)
 	healed.emit()
+
+
+## On his back on the grass (or the stretcher), or up.
+func lying(on: bool) -> void:
+	var model := politician.get_node("Model") as Node3D
+	model.rotation = Vector3(-PI / 2 if on else 0.0, PI, 0)
+	model.position.y = 0.35 if on else 0.0
+
+
+## What a guest's copy shows (FootballCase.snapshot): down, and the real injuries.
+func state() -> Array:
+	return [down, injuries]
+
+
+func follow(the_state: Array) -> void:
+	if the_state[0] != down:
+		down = the_state[0]
+		lying(down)
+	injuries = the_state[1]
 
 
 ## His kick: at the goal now and then, anywhere the rest of the time.

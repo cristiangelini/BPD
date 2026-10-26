@@ -94,6 +94,12 @@ func put_ball(at: Vector3) -> void:
 	ball.angular_velocity = Vector3.ZERO
 
 
+## A guest's scoreboard shows the host's goals (FootballCase.snapshot).
+func follow(the_goals: Array) -> void:
+	goals = [the_goals[0], the_goals[1]]
+	_show()
+
+
 func _show() -> void:
 	if _label:
 		_label.text = tr("HUD_FOOTBALL_SCORE") % [goals[Team.LUSTRE], goals[Team.VETERANS]]

@@ -7,7 +7,10 @@ extends Node
 ## his team wins the match and REFEREE more if the bought referee is in the patrol car; quota of its own, like the
 ## plaza (decision 103). The third real injury sends him off in an ambulance and the case is lost there. If the referee
 ## is still loose at the final whistle, he runs for Barullo's scooter parked on the street and the chase starts there
-## (decision 96): caught, he counts as detained (step 6). Every number here is (propuesta).
+## (decision 96): caught, he counts as detained (step 6). Online (step 7) the host's case decides and a guest's
+## follows it (CaseSync, snapshot): the match's clock, the score, the deputy down and his injuries, the clues, how it
+## ended and the getaway; the play only runs on the host, and the people come from it (NpcSync). Every number here is
+## (propuesta).
 
 const SHIFT_DELAY := 4.0
 const REFRESH := 0.5
@@ -37,7 +40,13 @@ var shift_over := false
 var chase: ChaseCase
 var caught := false
 var escaped := false
-var follower := false
+var follower := false:
+	set(value):
+		follower = value
+		if pitch:
+			pitch.match_clock.follower = value
+			pitch.lustre.follower = value
+var online: CaseSync
 var _result := {}
 var _refresh_left := 0.0
 
@@ -62,8 +71,15 @@ func start(comisario: Comisario = null) -> void:
 	else:
 		give_tip()
 	if shift_screen:
-		shift_screen.play_again.connect(func() -> void: PlaceDraw.start(get_tree()))
+		shift_screen.play_again.connect(_play_again)
 		shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
+
+
+func _play_again() -> void:
+	if online:
+		online.play_again()
+	else:
+		PlaceDraw.start(get_tree())
 
 
 func give_tip() -> void:
@@ -123,6 +139,7 @@ func _run_off() -> void:
 	chase = ChaseCase.begin(pitch, SuspectCar.BARULLO_MOTO, pitch.moto.global_transform, pitch.car, pitch.city,
 		pitch.case_seed, null, pitch.moto)
 	chase.who = "referee"
+	chase.online = online
 	chase.follower = follower
 	chase.ended.connect(_on_chase_ended)
 	_hint_all("HINT_ESCAPE_REFEREE")
@@ -207,6 +224,47 @@ func _show_result(result: Dictionary) -> void:
 			result.campaign.promoted)
 		over = result.campaign.over
 	shift_screen.get_node("%AgainButton").visible = not over and not follower
+
+
+## What every guest's case shows (CaseSync).
+func snapshot() -> Dictionary:
+	var game := pitch.match_clock
+	var state := {"tip": tip_given, "match": [game.state, snappedf(game.left, 0.1)], "goals": pitch.score.goals.duplicate(),
+		"lustre": pitch.lustre.state(), "lustre_goals": lustre_goals, "ambulance": ambulance, "over": match_over,
+		"jailed": jailed, "clues": clues.duplicate(), "caught": caught, "escaped": escaped, "result": _result}
+	if chase:
+		state.chase = chase.snapshot()
+	return state
+
+
+func apply_snapshot(state: Dictionary) -> void:
+	if state.tip:
+		give_tip()
+	var game := pitch.match_clock
+	if game.state == FootballMatch.State.WAITING and state.match[0] != FootballMatch.State.WAITING:
+		pitch.give_bibs()
+	game.state = state.match[0]
+	game.left = state.match[1]
+	pitch.score.follow(state.goals)
+	pitch.lustre.follow(state.lustre)
+	injuries = pitch.lustre.injuries
+	lustre_goals = state.lustre_goals
+	if state.ambulance and not ambulance:
+		ambulance = true
+		pitch.politician.hide()
+	match_over = state.over
+	jailed = state.jailed
+	for kind: String in state.clues:
+		if not clues.has(kind):
+			clues.append(kind)
+	caught = state.caught
+	escaped = state.escaped
+	if state.has("chase"):
+		_run_off()
+		chase.apply_snapshot(state.chase)
+	checklist.show_rows(rows())
+	if not state.result.is_empty() and not shift_over:
+		_show_result(state.result)
 
 
 ## The planilla's rows, in the shape CaseChecklist takes.
