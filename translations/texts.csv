@@ -2705,6 +2705,21 @@ CHESS_FOUND_OUT_1,¡Son policías! ¡Movió la torre en diagonal!,They're cops! 
 CHESS_FOUND_OUT_2,¡Son policías! ¡Preguntó por qué el rey pesa tanto!,They're cops! He asked why the king is so heavy!,São policiais! Perguntou por que o rei pesa tanto!
 HINT_CHESS_FOUND_OUT,¡Los descubrieron! Todo el club sabe que son policías.,You've been found out! The whole club knows you're cops.,Vocês foram descobertos! O clube todo sabe que vocês são policiais.
 PROMPT_CHESS_CLOCK,E: tocar el reloj,E: hit the clock,E: apertar o relógio
+CHESS_CHALLENGE,"¡Tú, el nuevo! ¿Una partida?","You, the new one! Fancy a game?","Você, o novo! Uma partida?"
+HINT_CHESS_CHALLENGED,Un socio te desafía a una partida: ve a su mesa y párate en el lugar libre frente a él.,A member challenges you to a game: go to his table and stand at the free seat across from him.,Um sócio te desafia para uma partida: vá até a mesa dele e fique no lugar livre na frente dele.
+HINT_CHESS_YOUR_TURN,Tu turno: mueve una pieza tuya con las manos y toca el reloj (E).,Your turn: move one of your pieces with your hands and hit the clock (E).,Sua vez: mova uma peça sua com as mãos e aperte o relógio (E).
+CHESS_NO_SHOW,¿Me dejas plantado? Qué falta de respeto.,You're standing me up? How rude.,Vai me deixar plantado? Que falta de respeito.
+CHESS_TIME,¡Tiempo! Perdiste por tiempo. Qué raro...,Time! You lost on time. How odd...,Tempo! Você perdeu no tempo. Que estranho...
+CHESS_LEFT,¿Te levantas en medio de la partida? Nadie hace eso.,You get up in the middle of the game? Nobody does that.,Você levanta no meio da partida? Ninguém faz isso.
+CHESS_KNOCKED,¡Me tiraste el tablero! ¡Todos lo vieron!,You knocked my board over! Everyone saw it!,Você derrubou meu tabuleiro! Todo mundo viu!
+CHESS_NO_MOVE,¿Y la jugada? Tocar el reloj sin mover no vale.,And your move? Hitting the clock without moving doesn't count.,E a jogada? Apertar o relógio sem mexer não vale.
+CHESS_NOT_YOURS,"Esa pieza es mía, pero bueno...","That piece is mine, but fine...","Essa peça é minha, mas tudo bem..."
+CHESS_COMMENT_0,Interesante...,Interesting...,Interessante...
+CHESS_COMMENT_1,Muy poco ortodoxo.,Very unorthodox.,Muito pouco ortodoxo.
+CHESS_COMMENT_2,¿El caballo vuela ahora?,Does the knight fly now?,O cavalo voa agora?
+CHESS_COMMENT_3,Mmm. Una apertura... nueva.,Hmm. A... new opening.,Hum. Uma abertura... nova.
+CHESS_COMMENT_4,Eso no lo vio venir nadie. Ni tú.,Nobody saw that coming. Not even you.,Ninguém viu isso chegando. Nem você.
+CHESS_GG,"Buena partida. Rara, pero buena. Te cuento algo...","Good game. Strange, but good. Let me tell you something...","Boa partida. Estranha, mas boa. Vou te contar uma coisa..."
 MENU_DOLL_FACTORY,Fábrica de muñecos (prueba),Doll factory (test),Fábrica de bonecos (teste)
 PROMPT_PUSH_BUTTON,Apretar el botón,Press the button,Apertar o botão
 PROMPT_SHUTTER_BUTTON,Subir la persiana del muelle,Raise the dock shutter,Levantar a porta do cais
