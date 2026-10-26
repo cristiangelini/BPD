@@ -71,6 +71,15 @@ Los pesos y valores siguen la escala de la oficina y el laboratorio: la principa
 ## El orden para hacerlo (un PR chico por paso)
 1. El gimnasio como lugar de allanamiento: el `GymHall` sin la infiltración, el equipo de música, la pared del récord,
    el espejo frágil, las cintas que se rompen, los escondites y los socios comunes.
+   - **Cómo quedó (propuesta):** `GymRaid` arma la misma sala que la infiltración (`GymHall.build_hall`) en el lote
+     `gym`, sin el Toro ni su banda: 6 socios comunes en lugares sorteados con la semilla (hablan de la cuota barata,
+     del récord y de la moto de oro del profe), las 4 mancuernas en el estante, el equipo de música y la caja en la
+     recepción, la pared del récord en la pared este (la foto y la barra colgada) y un tacho de toallas. El espejo se
+     raja si algo le pega a más de 3 m/s (multa de 30, "¡Siete años de mala suerte, oficial!") y una cinta se quema
+     si le cae encima algo de 10 kg o más (multa de 20). Por ahora la oficina y el vestuario están cerrados con la
+     misma llave, que está en la caja de la recepción (como en el laboratorio); el vestuario de empleados aparte
+     queda para después si hace falta. 12 escondites, 6 para cosas pesadas. `--place=gym_raid` y "Gimnasio
+     (allanamiento) (prueba)" en el menú. Capturas `paso1-*.png`.
 2. El profe Fito: la ronda, la denuncia, "¡no me desordenen el gimnasio!" y la clase de aeróbic con la música.
 3. Lula y la cinta de al lado.
 4. El caso (RaidCase) con la primera historia: las pesas rellenas de plata.

@@ -53,6 +53,7 @@ const PLACES := {
 	"doll_factory": "res://scenes/levels/doll_factory.tscn",
 	"insurance": "res://scenes/levels/insurance_office.tscn",
 	"cake_lab": "res://scenes/levels/cake_lab.tscn",
+	"gym_raid": "res://scenes/levels/gym_raid.tscn",
 	"prison_tunnel": "res://scenes/levels/prison_tunnel.tscn",
 	"prison_talent": "res://scenes/levels/prison_talent.tscn",
 	"prison_vip": "res://scenes/levels/prison_vip.tscn",

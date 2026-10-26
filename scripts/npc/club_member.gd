@@ -35,6 +35,9 @@ const MODELS := {
 	"serpentina": preload("res://assets/models/npc_serpentina.glb"),
 	"socio": preload("res://assets/models/npc_socio.glb"),
 	"socio_b": preload("res://assets/models/npc_socio_b.glb"),
+	# The gym raid's common members (allanamiento-gimnasio.md): the same look, nothing to hide.
+	"gym_member": preload("res://assets/models/npc_socio.glb"),
+	"gym_member_b": preload("res://assets/models/npc_socio_b.glb"),
 	"toro": preload("res://assets/models/npc_toro.glb"),
 	"alumno": preload("res://assets/models/npc_alumno.glb"),
 	"alumna": preload("res://assets/models/npc_alumna.glb"),
@@ -56,7 +59,7 @@ const MODELS := {
 }
 const SCALES := {"abuelo": 0.82, "abuela": 0.8, "chela": 0.85, "corista": 0.85, "corista_b": 0.85, "ernesto": 1.0,
 	"mimo": 0.85, "mimo_b": 0.85, "pausa": 0.95, "invitado": 0.9, "invitado_b": 0.9, "serpentina": 0.9,
-	"socio": 1.1, "socio_b": 1.1, "toro": 1.2,
+	"socio": 1.1, "socio_b": 1.1, "gym_member": 1.1, "gym_member_b": 1.1, "toro": 1.2,
 	"alumno": 0.9, "alumna": 0.85, "ganzua": 0.9, "director": 1.0,
 	"cocinero": 1.0, "cocinera": 0.9, "mozo": 0.9, "flambe": 1.1,
 	"ajedrecista": 0.9, "ajedrecista_b": 0.85, "alfil": 1.05,
@@ -81,6 +84,8 @@ const TALK := {
 	"serpentina": ["SERPENTINA_%d", 4, "PROMPT_TALK_SERPENTINA", "SERPENTINA_CUFFED"],
 	"socio": ["GYM_GOSSIP_%d", 10, "PROMPT_TALK_GYM", "GYM_CUFFED"],
 	"socio_b": ["GYM_GOSSIP_%d", 10, "PROMPT_TALK_GYM", "GYM_CUFFED"],
+	"gym_member": ["GYM_RAID_TALK_%d", 6, "PROMPT_TALK_GYM", "GYM_CUFFED"],
+	"gym_member_b": ["GYM_RAID_TALK_%d", 6, "PROMPT_TALK_GYM", "GYM_CUFFED"],
 	"toro": ["TORO_%d", 4, "PROMPT_TALK_TORO", "TORO_CUFFED"],
 	"alumno": ["SCHOOL_GOSSIP_%d", 10, "PROMPT_TALK_STUDENT", "SCHOOL_CUFFED"],
 	"alumna": ["SCHOOL_GOSSIP_%d", 10, "PROMPT_TALK_STUDENT", "SCHOOL_CUFFED"],

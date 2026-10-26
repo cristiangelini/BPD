@@ -106,10 +106,7 @@ func _ready() -> void:
 	variant = "gym"
 	take_seed()
 	_build = PlaceBuilder.new($Built)
-	_build_shell()
-	_build_machines()
-	_build_ring()
-	_build_back_rooms()
+	build_hall(_build, $Built)
 	office_door = DOOR_SCENE.instantiate()
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, BACK_Z)
 	add_child(office_door)
@@ -303,77 +300,86 @@ func _physics_process(_delta: float) -> void:
 		evidence.mark("safe")
 
 
+## The hall itself, the same for the infiltration and the raid (allanamiento-gimnasio.md): the shell, the machines, the
+## ring and the back rooms, built with `build` under `built`.
+static func build_hall(build: PlaceBuilder, built: Node3D) -> void:
+	_build_shell(build, built)
+	_build_machines(build, built)
+	_build_ring(build)
+	_build_back_rooms(build, built)
+
+
 ## Floor, outer walls with the entrance and the window, the roof, the sign, the reception and the lights.
-func _build_shell() -> void:
-	_build.slab(-HALF_X, HALF_X, -HALF_Z, HALF_Z, FLOOR_TOP, FLOOR)
-	_build.slab(-HALF_X - 0.2, HALF_X + 0.2, -HALF_Z - 0.2, HALF_Z + 0.2, ROOF, OUTSIDE.darkened(0.4))
-	_build.wall("x", -HALF_Z, -HALF_X, HALF_X, 0, [], OUTSIDE)
-	_build.wall("z", -HALF_X, -HALF_Z, HALF_Z, 0, [], OUTSIDE)
-	_build.wall("z", HALF_X, -HALF_Z, HALF_Z, 0, [], OUTSIDE)
-	_build.wall("x", HALF_Z, -HALF_X, HALF_X, 0, [ENTRANCE_X], OUTSIDE)
+static func _build_shell(b: PlaceBuilder, built: Node3D) -> void:
+	b.slab(-HALF_X, HALF_X, -HALF_Z, HALF_Z, FLOOR_TOP, FLOOR)
+	b.slab(-HALF_X - 0.2, HALF_X + 0.2, -HALF_Z - 0.2, HALF_Z + 0.2, ROOF, OUTSIDE.darkened(0.4))
+	b.wall("x", -HALF_Z, -HALF_X, HALF_X, 0, [], OUTSIDE)
+	b.wall("z", -HALF_X, -HALF_Z, HALF_Z, 0, [], OUTSIDE)
+	b.wall("z", HALF_X, -HALF_Z, HALF_Z, 0, [], OUTSIDE)
+	b.wall("x", HALF_Z, -HALF_X, HALF_X, 0, [ENTRANCE_X], OUTSIDE)
 	# The front window over the treadmills, inside and out.
 	for side: float in [-1.0, 1.0]:
-		_build.mesh_box(Vector3(4.0, 1.5, HALF_Z + side * 0.12), Vector3(5.6, 1.4, 0.02), MIRROR)
+		b.mesh_box(Vector3(4.0, 1.5, HALF_Z + side * 0.12), Vector3(5.6, 1.4, 0.02), MIRROR)
 	var sign_label := Label3D.new()
 	sign_label.text = "PLACE_GYM"
 	sign_label.font_size = 64
 	sign_label.pixel_size = 0.01
 	sign_label.outline_size = 14
 	sign_label.position = Vector3(0, ROOF + 0.6, HALF_Z + 0.1)
-	$Built.add_child(sign_label)
-	_build.box(RECEPTION_AT + Vector3(0, FLOOR_TOP + RECEPTION_SIZE.y / 2, 0), RECEPTION_SIZE, WOOD)
-	_build.mesh_box(RECEPTION_AT + Vector3(0, FLOOR_TOP + RECEPTION_SIZE.y + 0.01, 0),
+	built.add_child(sign_label)
+	b.box(RECEPTION_AT + Vector3(0, FLOOR_TOP + RECEPTION_SIZE.y / 2, 0), RECEPTION_SIZE, WOOD)
+	b.mesh_box(RECEPTION_AT + Vector3(0, FLOOR_TOP + RECEPTION_SIZE.y + 0.01, 0),
 		Vector3(RECEPTION_SIZE.x + 0.1, 0.02, RECEPTION_SIZE.z + 0.1), OUTSIDE)
 	for x: float in [-5.0, 0.0, 5.0]:
 		for z: float in [-6.2, -1.5, 3.5]:
-			_build.light(Vector3(x, ROOF - 0.6, z))
+			b.light(Vector3(x, ROOF - 0.6, z))
 
 
 ## The treadmills, the benches, the rack of dumbbells and the punching bags, each a model on its collision box.
-func _build_machines() -> void:
+static func _build_machines(b: PlaceBuilder, built: Node3D) -> void:
 	for at: Vector3 in TREADMILLS:
-		_machine(TREADMILL_MODEL, at, 0.0)
-		_build.shape(_build.body(at + Vector3(0, FLOOR_TOP + TREADMILL_SIZE.y / 2, 0)), TREADMILL_SIZE)
-		_build.shape(_build.body(at + Vector3(0, FLOOR_TOP + 0.7, 0.85)), Vector3(0.8, 1.4, 0.15))
+		_machine(built, TREADMILL_MODEL, at, 0.0)
+		b.shape(b.body(at + Vector3(0, FLOOR_TOP + TREADMILL_SIZE.y / 2, 0)), TREADMILL_SIZE)
+		b.shape(b.body(at + Vector3(0, FLOOR_TOP + 0.7, 0.85)), Vector3(0.8, 1.4, 0.15))
 	for at: Vector3 in BENCHES:
-		_machine(BENCH_MODEL, at, 0.0)
-		_build.shape(_build.body(at + Vector3(0, FLOOR_TOP + 0.25, 0)), Vector3(0.4, 0.5, 1.2))
-	_machine(RACK_MODEL, RACK_AT, PI / 2)
-	_build.shape(_build.body(RACK_AT + Vector3(0, FLOOR_TOP + 0.45, 0)), Vector3(0.5, 0.9, 1.8))
-	_build.slab(-8.0, -4.4, -3.0, 3.6, FLOOR_TOP + 0.01, MAT)
+		_machine(built, BENCH_MODEL, at, 0.0)
+		b.shape(b.body(at + Vector3(0, FLOOR_TOP + 0.25, 0)), Vector3(0.4, 0.5, 1.2))
+	_machine(built, RACK_MODEL, RACK_AT, PI / 2)
+	b.shape(b.body(RACK_AT + Vector3(0, FLOOR_TOP + 0.45, 0)), Vector3(0.5, 0.9, 1.8))
+	b.slab(-8.0, -4.4, -3.0, 3.6, FLOOR_TOP + 0.01, MAT)
 	for at: Vector3 in BAGS:
-		_machine(BAG_MODEL, at, 0.0)
-		_build.shape(_build.body(at + Vector3(0, FLOOR_TOP + 1.15, 0)), Vector3(0.44, 1.1, 0.44))
+		_machine(built, BAG_MODEL, at, 0.0)
+		b.shape(b.body(at + Vector3(0, FLOOR_TOP + 1.15, 0)), Vector3(0.44, 1.1, 0.44))
 
 
 ## The boxing ring: its platform, a post at each corner and three ropes around.
-func _build_ring() -> void:
+static func _build_ring(b: PlaceBuilder) -> void:
 	var middle := Vector3(RING.get_center().x, 0, RING.get_center().y)
-	_build.box(middle + Vector3(0, FLOOR_TOP + RING_HEIGHT / 2, 0), Vector3(RING.size.x, RING_HEIGHT, RING.size.y),
+	b.box(middle + Vector3(0, FLOOR_TOP + RING_HEIGHT / 2, 0), Vector3(RING.size.x, RING_HEIGHT, RING.size.y),
 		RING_BLUE)
 	var top := FLOOR_TOP + RING_HEIGHT
 	for corner: Vector2 in [RING.position, Vector2(RING.end.x, RING.position.y), RING.end,
 			Vector2(RING.position.x, RING.end.y)]:
-		_build.mesh_box(Vector3(corner.x, top + 0.6, corner.y), Vector3(0.1, 1.2, 0.1), STEEL)
+		b.mesh_box(Vector3(corner.x, top + 0.6, corner.y), Vector3(0.1, 1.2, 0.1), STEEL)
 	for k in 3:
 		var y := top + 0.35 + k * 0.35
 		for z: float in [RING.position.y, RING.end.y]:
-			_build.mesh_box(Vector3(middle.x, y, z), Vector3(RING.size.x, 0.03, 0.03), ROPE)
+			b.mesh_box(Vector3(middle.x, y, z), Vector3(RING.size.x, 0.03, 0.03), ROPE)
 		for x: float in [RING.position.x, RING.end.x]:
-			_build.mesh_box(Vector3(x, y, middle.z), Vector3(0.03, 0.03, RING.size.y), ROPE)
+			b.mesh_box(Vector3(x, y, middle.z), Vector3(0.03, 0.03, RING.size.y), ROPE)
 
 
 ## The locker room with its lockers and bench, the mirror wall with the gym's motto, and el Toro's office with its desk.
-func _build_back_rooms() -> void:
-	_build.wall("x", BACK_Z, -HALF_X, LOCKERS_X, 0, [LOCKERS_DOOR_X], INSIDE)
-	_build.wall("z", LOCKERS_X, -HALF_Z, BACK_Z, 0, [], INSIDE)
-	_build.wall("x", BACK_Z, OFFICE_X, HALF_X, 0, [OFFICE_DOOR_X], INSIDE)
-	_build.wall("z", OFFICE_X, -HALF_Z, BACK_Z, 0, [], INSIDE)
+static func _build_back_rooms(b: PlaceBuilder, built: Node3D) -> void:
+	b.wall("x", BACK_Z, -HALF_X, LOCKERS_X, 0, [LOCKERS_DOOR_X], INSIDE)
+	b.wall("z", LOCKERS_X, -HALF_Z, BACK_Z, 0, [], INSIDE)
+	b.wall("x", BACK_Z, OFFICE_X, HALF_X, 0, [OFFICE_DOOR_X], INSIDE)
+	b.wall("z", OFFICE_X, -HALF_Z, BACK_Z, 0, [], INSIDE)
 	for x: float in [-7.4, -4.8]:
-		_machine(LOCKERS_MODEL, Vector3(x, 0, -7.65), 0.0)
-		_build.shape(_build.body(Vector3(x, FLOOR_TOP + 0.95, -7.65)), Vector3(2.4, 1.9, 0.5))
-	_build.box(Vector3(-6.0, FLOOR_TOP + 0.22, -6.0), Vector3(2.0, 0.44, 0.45), WOOD)
-	_build.mesh_box(Vector3(0, 1.3, -HALF_Z + 0.12), Vector3(5.6, 1.8, 0.02), MIRROR)
+		_machine(built, LOCKERS_MODEL, Vector3(x, 0, -7.65), 0.0)
+		b.shape(b.body(Vector3(x, FLOOR_TOP + 0.95, -7.65)), Vector3(2.4, 1.9, 0.5))
+	b.box(Vector3(-6.0, FLOOR_TOP + 0.22, -6.0), Vector3(2.0, 0.44, 0.45), WOOD)
+	b.mesh_box(Vector3(0, 1.3, -HALF_Z + 0.12), Vector3(5.6, 1.8, 0.02), MIRROR)
 	var motto := Label3D.new()
 	motto.text = "GYM_MOTTO"
 	motto.font_size = 48
@@ -381,13 +387,13 @@ func _build_back_rooms() -> void:
 	motto.outline_size = 16
 	motto.modulate = Color(1, 0.3, 0.25)
 	motto.position = Vector3(0, 2.4, -HALF_Z + 0.15)
-	$Built.add_child(motto)
-	_build.box(Vector3(6.6, FLOOR_TOP + 0.4, -7.2), Vector3(2.0, 0.8, 0.9), WOOD)
+	built.add_child(motto)
+	b.box(Vector3(6.6, FLOOR_TOP + 0.4, -7.2), Vector3(2.0, 0.8, 0.9), WOOD)
 
 
 ## A machine's model at `at` on the floor, turned `turn` about Y.
-func _machine(model: PackedScene, at: Vector3, turn: float) -> void:
+static func _machine(built: Node3D, model: PackedScene, at: Vector3, turn: float) -> void:
 	var machine: Node3D = model.instantiate()
 	machine.position = at + Vector3(0, FLOOR_TOP, 0)
 	machine.rotation.y = turn
-	$Built.add_child(machine)
+	built.add_child(machine)
