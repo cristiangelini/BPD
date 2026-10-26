@@ -12,7 +12,9 @@ extends Node
 ## lets one of the gang jump out at every corner it turns, who runs off down the street. The ghost car control's pilot
 ## (control-auto-fantasma.md) has his ghost car follow him: at every corner he turns, it cuts in across the street behind
 ## him, in the patrol car's way (ChaseGhost). The wedding check's El Colado (control-boda.md) cuts CANS_PER_CORNER of
-## his tin cans loose at every corner he turns, clattering down the street (ChaseCan). Every number here is (propuesta).
+## his tin cans loose at every corner he turns, clattering down the street (ChaseCan). The street race's El Turbo
+## (control-carrera.md) spins round at every corner he turns, to show off (SuspectCar.spin). Every number here is
+## (propuesta).
 
 const DRIP_EVERY := 3.0
 ## A puddle's size (m), how long it lasts, and the grip left on it.
@@ -74,6 +76,8 @@ var ghost: ChaseGhost
 ## The runaway is the wedding's El Colado: his cans clatter off at the corners.
 var wedding := false
 var cans: Array[ChaseCan] = []
+## The runaway is the street race's El Turbo: he spins at the corners.
+var race := false
 var _drip_left := DRIP_EVERY
 var _dummy_left := DUMMY_EVERY
 var _kids_left := 0.0
@@ -181,6 +185,8 @@ func _on_corner(turned: bool) -> void:
 	if wedding:
 		for i in CANS_PER_CORNER:
 			drop_can()
+	if race:
+		case.truck.spin()
 
 
 ## One of El Colado's tin cans comes loose and clatters down the street behind him.

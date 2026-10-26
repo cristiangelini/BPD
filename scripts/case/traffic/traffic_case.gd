@@ -16,7 +16,8 @@ extends Node
 ## falls out of his hands, and in the patrol car's trunk it adds 100 like a gold watch. In the street race check
 ## (control-carrera.md, answer 2) each racer punctured adds to a solved case's pay and each city car punctured is a
 ## complaint, like detaining an innocent; El Turbo, stopped on his rims, is cuffed out of his racer, and cuffing
-## another racer is a complaint too.
+## another racer is a complaint too. His trophy is then on his racer's trunk lid: in the patrol car's trunk it adds 100.
+## Past the checkpoint, he runs off faster than anyone and spins round at every corner (ChaseDrops.race).
 
 signal detained(car: QueueCar, wanted: bool)
 
@@ -43,6 +44,8 @@ const DOOR_OUT := 1.7
 const REMOTE_OUT := 0.8
 ## El Colado's gift envelopes show up on his car's trunk lid (control-boda.md), this far up from its middle.
 const ENVELOPES_AT := Vector3(0, 1.3, -1.8)
+## El Turbo's trophy shows up on his racer's trunk lid, before the spoiler.
+const TROPHY_AT := Vector3(0, 1.05, -1.45)
 
 var case_seed := 0
 var plan: WantedPlan
@@ -70,6 +73,8 @@ var taken_from := ""
 var _run_off_look := 0
 ## How many rode in the car that ran off, and its plate (a packed one's faces, for guests too).
 var _run_off_riders := [0, ""]
+## El Turbo's racer's looks when he ran off (RaceCar.draw's), for guests too.
+var _run_off_race := {}
 var escort: OwnerEscort
 var solved_now := false
 ## The wanted car got past the checkpoint and the chase is on; whether it got away.
@@ -170,7 +175,7 @@ func keys_taken(_car: QueueCar) -> void:
 
 ## What adds to a solved case's pay: a gold watch or the pilot's remote, each packed car fined and each drunk's keys.
 func extras() -> Array:
-	var out := watch_bonus() + remote_bonus() + envelope_bonus()
+	var out := watch_bonus() + remote_bonus() + envelope_bonus() + trophy_bonus()
 	for i in crowd_fines:
 		out.append(CROWD_FINE_BONUS)
 	for i in drunk_keys:
@@ -212,6 +217,15 @@ func envelope_bonus() -> Array:
 	return []
 
 
+## El Turbo's trophy in the patrol car's trunk.
+func trophy_bonus() -> Array:
+	if patrol_car:
+		for item in patrol_car.delivered:
+			if item is RaceTrophy:
+				return [RaceTrophy.VALUE]
+	return []
+
+
 ## A car rolled over a spike strip: a racer is a fine for the pay, a city car a complaint (control-carrera.md).
 func _on_punctured(car: QueueCar) -> void:
 	if follower or shift_over or lost or solved_now:
@@ -244,7 +258,11 @@ func detain(car: QueueCar) -> void:
 	if car.racer:
 		detained.emit(car, true)
 		_take_out(car)
-		_hint_all("HINT_TRAFFIC_GOT_IT")
+		if car.driver.get("trunk", "") == "trophy":
+			drop_trophy(car)
+			_hint_all("HINT_RACE_TROPHY")
+		else:
+			_hint_all("HINT_TRAFFIC_GOT_IT")
 		return
 	# The wanted clown gets out where he stands; the others hop back in.
 	var out_at := car.driver_out_at()
@@ -310,6 +328,15 @@ func drop_envelopes(car: QueueCar) -> GiftEnvelopes:
 	return envelopes
 
 
+## El Turbo's trophy, on his racer's trunk lid for a cop to take.
+func drop_trophy(car: QueueCar) -> RaceTrophy:
+	var trophy := RaceTrophy.new()
+	trophy.name = "RaceTrophy"
+	get_parent().add_child(trophy)
+	trophy.global_transform = car.global_transform * Transform3D(Basis(), TROPHY_AT)
+	return trophy
+
+
 func _on_boarded() -> void:
 	solved_now = true
 	_end()
@@ -325,7 +352,8 @@ func _on_passed(car: QueueCar, _sneaked: bool) -> void:
 	var ghost_look := -1
 	if car.puppeteer:
 		ghost_look = _ghost_follows()
-	if _run_off(car.global_transform, car.look, car.clown, car.fruit, car.crowd, car.plate, ghost_look, car.guest):
+	if _run_off(car.global_transform, car.look, car.clown, car.fruit, car.crowd, car.plate, ghost_look, car.guest,
+			car.race if car.racer else {}):
 		car.queue_free()
 		return
 	lost = true
@@ -345,9 +373,10 @@ func _ghost_follows() -> int:
 ## The queue car (`look`, at `at`) becomes the chase's fleeing car, in its own paint, right where it is. A clown car
 ## runs off as the circus's, dropping inflatable clowns, and a fruit pickup drops watermelons (ChaseDrops). A packed
 ## car (`riders`) runs off slower, its faces on the windows, and one of the gang jumps out at every corner. The ghost
-## car's pilot has it follow him (`ghost_look`, its paint) and cut in at every corner.
+## car's pilot has it follow him (`ghost_look`, its paint) and cut in at every corner. El Turbo (`race`, his racer's
+## looks) runs off in his racer, faster, spinning at every corner.
 func _run_off(at: Transform3D, look: int, clown := false, fruit := false, riders := 0, plate := "",
-		ghost_look := -1, wedding := false) -> bool:
+		ghost_look := -1, wedding := false, race: Dictionary = {}) -> bool:
 	var level := get_parent()
 	_run_off_look = look
 	var city := level.get_node_or_null("City") as Node3D
@@ -370,6 +399,12 @@ func _run_off(at: Transform3D, look: int, clown := false, fruit := false, riders
 		chase.drops.wedding = true
 		if not chase.truck.has_node("Cans"):
 			WeddingCar.dress(chase.truck, plate)
+	if not race.is_empty():
+		chase.truck.racer = true
+		chase.drops.race = true
+		_run_off_race = race
+		if not chase.truck.has_node("Spoiler") and not chase.truck.has_node("Exhaust"):
+			RaceCar.dress(chase.truck, race)
 	chase.who = "clown" if clown else "driver"
 	chase.online = online
 	chase.follower = follower
@@ -465,7 +500,8 @@ func snapshot() -> Dictionary:
 		var fruit := chase.suspect_id == SuspectCar.FRUIT_TRUCK
 		state.run_off = [chase.truck.global_transform if is_instance_valid(chase.truck) else Transform3D(),
 			_run_off_look if clown or fruit else int(chase.suspect_id.trim_prefix("traffic_")), clown, fruit,
-			_run_off_riders[0], _run_off_riders[1], chase.drops.ghost_look, chase.drops.wedding]
+			_run_off_riders[0], _run_off_riders[1], chase.drops.ghost_look, chase.drops.wedding,
+			_run_off_race]
 		state.riders_left = chase.drops.riders_left
 	return state
 
@@ -506,7 +542,8 @@ func apply_snapshot(state: Dictionary) -> void:
 		var run_off: Array = state.run_off
 		_run_off(run_off[0], run_off[1], run_off.size() > 2 and run_off[2], run_off.size() > 3 and run_off[3],
 			run_off[4] if run_off.size() > 4 else 0, run_off[5] if run_off.size() > 5 else "",
-			run_off[6] if run_off.size() > 6 else -1, run_off.size() > 7 and run_off[7])
+			run_off[6] if run_off.size() > 6 else -1, run_off.size() > 7 and run_off[7],
+			run_off[8] if run_off.size() > 8 else {})
 	_follow_convoy(state.get("taken_from", ""), state.get("clean", []))
 	if chase and state.has("chase"):
 		chase.apply_snapshot(state.chase)

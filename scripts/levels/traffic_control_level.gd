@@ -5,10 +5,10 @@ extends Node3D
 ## the patrol car at the door and, next to it on the sidewalk, the cones and the barrier. The checkpoint is painted on
 ## the westbound lane of the street in front of the station, toward the corner. --place=traffic opens it from Play.
 ## Once it's set up, the cars come and queue up (TrafficQueue), with the patience meter at the top. The comisario
-## gives the case (TrafficCase). A sixth of the matches are the rush hour, a sixth the clown convoy
-## (control-payasos.md), a sixth the fruit truck (control-frutas.md), a sixth the crowded car (control-auto-lleno.md),
-## a sixth the ghost car (control-auto-fantasma.md) and a sixth the wedding (control-boda.md), by the seed;
-## --traffic=<variant> picks one.
+## gives the case (TrafficCase). A seventh of the matches are the rush hour, a seventh the clown convoy
+## (control-payasos.md), a seventh the fruit truck (control-frutas.md), a seventh the crowded car
+## (control-auto-lleno.md), a seventh the ghost car (control-auto-fantasma.md), a seventh the wedding (control-boda.md)
+## and a seventh the street race (control-carrera.md), by the seed; --traffic=<variant> picks one.
 
 ## Along the street in front of the station, from the station's middle toward the east corner, in meters.
 const CHECKPOINT_ALONG := 24.0
@@ -23,7 +23,8 @@ const BREATHALYZER_FROM_DOOR := Vector3(2, 0, 1.5)
 ## The street race's two spike strips (control-carrera.md, step 3), rolled up next to it.
 const SPIKES_FROM_DOOR: Array[Vector3] = [Vector3(2, 0, 2.3), Vector3(2.7, 0, 2.3)]
 ## What Play draws, a sixth each (propuesta).
-const VARIANTS: Array[String] = ["rush_hour", "clown_convoy", "fruit_truck", "crowded_car", "ghost_car", "wedding"]
+const VARIANTS: Array[String] = ["rush_hour", "clown_convoy", "fruit_truck", "crowded_car", "ghost_car", "wedding",
+	"race"]
 
 ## Same seed, same cars. 0 draws one.
 @export var case_seed := 0
