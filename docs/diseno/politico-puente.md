@@ -103,3 +103,13 @@ se caiga. El puente, digo. Bueno, el diputado tampoco."
   después de la cinta. `BridgeDip` cubre la pregunta 1 con lo recomendado: si el diputado cae al agua, a los 8 s sale
   mojado arriba, en la punta más cercana, y sigue (`dipped`); la segunda vez se va a su casa (`went_home`). Captura en
   `/mnt/project-files/puente/paso3-se-rompe.png`.
+- **Paso 4 (arreglarlo):** `BridgeRepairs` (`park.repairs`).
+  - Junto a la camioneta hay 12 tablones de repuesto en dos pilas.
+  - Un tablón suelto que un policía cargó y soltó con el centro a menos de 0,5 m del lugar de un tablón que falta encaja
+    solo (`fitted`) y vuelve a ser parte del puente. Si ese tramo está combado, se comba con los otros. Los que se caen
+    del puente no vuelven a su lugar solos.
+  - En el canal el agua sostiene los tablones y los frena. También frena a los policías que caminan en ella, con los
+    números del agua del banco inundado (`BankWater.factor`).
+  - `BridgePillar`: con un pilar hundido, dos policías que mantienen E a la vez lo enderezan en 4 s; uno solo no puede.
+  - `BridgeCoat`: con el diputado en marcha, E sobre él lo agarra del saco y lo frena 3 s mientras se queja.
+  - Captura en `/mnt/project-files/puente/paso4-arreglar.png`.

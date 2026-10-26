@@ -103,7 +103,7 @@ func straighten(pillar: int) -> void:
 		return
 	sagging.erase(pillar)
 	park.pillars[pillar].position.y += SINK
-	_sag(pillar, 0.0)
+	sag(pillar, 0.0)
 
 
 func _on_jumped(_index: int, at: Vector3) -> void:
@@ -155,7 +155,7 @@ func _break(kind: String, index: int) -> void:
 			_drop_span(index)
 		"pillar":
 			park.pillars[index].position.y -= SINK
-			_sag(index, SAG)
+			sag(index, SAG)
 			sagging[index] = TILT_FALL
 		"rail":
 			var rail := park.rails[index]
@@ -180,6 +180,9 @@ func _drop_span(span: int) -> void:
 		loose.global_transform = plank.global_transform
 		# Tipped up on its edge so it slips between the stringers it rested on.
 		loose.rotate(park.global_basis.x, 1.2 * (1 if slot == 0 else -1))
+		# Away from the pillars at the span's ends, toward its middle.
+		var inward := signf(BridgePark.span_x(span) - plank.position.x)
+		loose.apply_central_impulse(park.global_basis.x * inward * LoosePlank.KG * 1.5)
 		loose.apply_torque_impulse(Vector3(_rng.randf_range(-3, 3), 0, _rng.randf_range(-3, 3)))
 		_rest.erase(plank)
 		plank.queue_free()
@@ -202,7 +205,7 @@ func _fall(piece: StaticBody3D) -> void:
 
 
 ## The 4 planks over a pillar sink by up to `depth`, most over the pillar, tilting toward it.
-func _sag(pillar: int, depth: float) -> void:
+func sag(pillar: int, depth: float) -> void:
 	var x := BridgePark.PILLARS[pillar]
 	for span in spans_over(pillar):
 		for slot in BridgePark.PLANKS_PER_SPAN:

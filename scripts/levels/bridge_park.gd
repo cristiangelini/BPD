@@ -9,7 +9,8 @@ extends Node3D
 ## balloons, the banner over the bridge and the builders' pickup; on the east end of the deck, the ribbon. The cops
 ## start in the station and drive here; --place=bridge opens it from Play. Step 2: Deputy Lustre waits at the foot of
 ## the west ramp and crosses with his photo stops (BridgeCeremony). Step 3: the bridge falls apart (BridgeBreaks) and
-## the deputy may fall in (BridgeDip). Every number here is (propuesta).
+## the deputy may fall in (BridgeDip). Step 4: fixing it (BridgeRepairs, BridgePillar) and holding him back by the coat
+## (BridgeCoat). Every number here is (propuesta).
 
 const PLANK_MODEL := preload("res://assets/models/bridge_plank.glb")
 const VAN_MODEL := preload("res://assets/models/builder_van.glb")
@@ -81,6 +82,8 @@ var ceremony: BridgeCeremony
 ## What breaks and when, and the deputy's dips in the canal (step 3).
 var breaks: BridgeBreaks
 var dip: BridgeDip
+## Fitting planks back, the spares and the water that slows and floats (step 4).
+var repairs: BridgeRepairs
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -114,6 +117,14 @@ func _ready() -> void:
 	dip.name = "Dip"
 	dip.setup(self, ceremony)
 	add_child(dip)
+	repairs = BridgeRepairs.new()
+	repairs.name = "Repairs"
+	repairs.setup(self, breaks)
+	add_child(repairs)
+	var coat := BridgeCoat.new()
+	coat.name = "Coat"
+	coat.ceremony = ceremony
+	politician.add_child(coat)
 	city.transform = CityLayout.anchor("bridge_park")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
@@ -172,12 +183,10 @@ func _build_bridge() -> void:
 			Vector3(WALL, DECK_TOP - WALL_TOP, PLANK.z), CONCRETE)
 		_ramp(Vector3(side * (CANAL_HALF + WALL), DECK_TOP, 0), Vector3(side * (CANAL_HALF + WALL + RAMP_RUN), 0, 0),
 			PLANK.z, CONCRETE)
+	planks.resize(SPANS * PLANKS_PER_SPAN)
 	for span in SPANS:
 		for slot in PLANKS_PER_SPAN:
-			var x := span_x(span) + (slot - (PLANKS_PER_SPAN - 1) / 2.0) * PLANK.x
-			var piece := _piece("Plank%d" % planks.size(), Vector3(x, DECK_TOP - PLANK.y / 2, 0), PLANK)
-			piece.add_child(PLANK_MODEL.instantiate())
-			planks.append(piece)
+			restore_plank(span, slot)
 		for side: float in [-1.0, 1.0]:
 			var rail := _piece("Rail%d" % rails.size(), Vector3(span_x(span), DECK_TOP + RAIL_HEIGHT / 2, side * RAIL_Z),
 				Vector3(SPAN, RAIL_HEIGHT, 0.08))
@@ -187,7 +196,9 @@ func _build_bridge() -> void:
 			rails.append(rail)
 	for x in PILLARS:
 		var height := under - 0.3
-		var pillar := _piece("Pillar%d" % pillars.size(), Vector3(x, height / 2, 0), Vector3(0.5, height, PLANK.z + 0.1))
+		var pillar := _piece("Pillar%d" % pillars.size(), Vector3(x, height / 2, 0), Vector3(0.5, height, PLANK.z + 0.1),
+			BridgePillar.new())
+		(pillar as BridgePillar).index = pillars.size()
 		_part(pillar, Vector3.ZERO, Vector3(0.5, height, PLANK.z + 0.1), CONCRETE)
 		pillars.append(pillar)
 
@@ -250,9 +261,26 @@ func _ramp(high: Vector3, low: Vector3, width: float, color: Color) -> void:
 		_build.mesh_box(Vector3(x, top - 0.1, low.z), Vector3(run / steps, 0.2, width), color)
 
 
+## Where plank `slot` of span `span` lies when the deck is whole (the park's space).
+static func plank_at(span: int, slot: int) -> Vector3:
+	return Vector3(span_x(span) + (slot - (PLANKS_PER_SPAN - 1) / 2.0) * PLANK.x, DECK_TOP - PLANK.y / 2, 0)
+
+
+## Puts plank `slot` of span `span` in its place on the deck (built whole, or a loose one fitted back, step 4).
+func restore_plank(span: int, slot: int) -> StaticBody3D:
+	var index := span * PLANKS_PER_SPAN + slot
+	if planks[index] != null:
+		return planks[index]
+	var piece := _piece("Plank%d" % index, plank_at(span, slot), PLANK)
+	piece.add_child(PLANK_MODEL.instantiate())
+	planks[index] = piece
+	return piece
+
+
 ## A static piece of the bridge with its own box: a plank, a railing or a pillar, which later steps break.
-func _piece(piece_name: String, at: Vector3, size: Vector3) -> StaticBody3D:
-	var piece := StaticBody3D.new()
+func _piece(piece_name: String, at: Vector3, size: Vector3, piece: StaticBody3D = null) -> StaticBody3D:
+	if piece == null:
+		piece = StaticBody3D.new()
 	piece.name = piece_name
 	piece.position = at
 	$Built.add_child(piece)

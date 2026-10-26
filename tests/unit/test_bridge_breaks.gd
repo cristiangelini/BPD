@@ -20,7 +20,7 @@ func before_each() -> void:
 
 
 func _loose() -> Array:
-	return park.get_children().filter(func(n: Node) -> bool: return n is LoosePlank)
+	return park.get_children().filter(func(n: Node) -> bool: return n is LoosePlank and n.name.begins_with("Loose"))
 
 
 func test_nothing_breaks_before_the_deputy_starts() -> void:
