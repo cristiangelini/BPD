@@ -4,7 +4,7 @@ extends Node
 ## Lets its cop grab what the camera points at: hold left click to carry, right click to throw,
 ## mouse wheel to bring it closer or push it away. Something small flying past (the "catchables" group: the rally's
 ## eggs and tomatoes) is caught when it's within CATCH_REACH of the hands and in front of the eyes, without aiming at
-## it exactly.
+## it exactly. A football at the cop's feet is kicked instead: left click, held longer for a harder kick (FootballBall).
 
 const CATCH_REACH := 1.2
 const CATCH_ANGLE := 35.0
@@ -13,20 +13,46 @@ const CATCH_ANGLE := 35.0
 
 var held: Grabbable
 var hold_distance := GameScale.HOLD_MAX
+## The ball being kicked while the click is held, and for how long it's held.
+var kicking: FootballBall
+var kick_held := 0.0
 
 @onready var _cop: Cop = get_parent()
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if input_enabled:
 		if Input.is_action_just_pressed("grab"):
-			try_grab()
+			if not start_kick():
+				try_grab()
 		elif Input.is_action_just_released("grab"):
-			release()
+			if kicking:
+				end_kick()
+			else:
+				release()
 		elif Input.is_action_just_pressed("throw"):
 			throw()
 	if held:
 		held.hold(get_instance_id(), hold_point())
+	if kicking:
+		kick_held += delta
+
+
+## Left click with a football at the feet and the hands free: the kick starts charging. Returns true if it did.
+func start_kick() -> bool:
+	if held or _cop.ram or _cop.wheelbarrow or _cop.belt.held_tool() or _cop.is_cuffed() or _cop.is_busy():
+		return false
+	kicking = FootballBall.near_feet(_cop)
+	kick_held = 0.0
+	return kicking != null
+
+
+## Click let go: kicks where the camera looks, harder the longer it was held.
+func end_kick() -> void:
+	var ball := kicking
+	kicking = null
+	if is_instance_valid(ball) and ball.at_feet(_cop):
+		_cop.act("kick", ball, [_cop, FootballBall.aim(-_cop.camera.global_basis.z), FootballBall.power_for(kick_held)])
 
 
 func _unhandled_input(event: InputEvent) -> void:

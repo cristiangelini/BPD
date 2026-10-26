@@ -62,6 +62,14 @@ var has_fuse := false
 var surrendered := false
 ## Their eyes shine in the dark; off in daylight (the laundry's runners, carcel-lavanderia.md).
 var glow_eyes := true
+## Its model (Rulo Brillantina's, when he runs for his limo, carcel-vip.md).
+var model: PackedScene = MODEL
+## Its model's path, for a guest's copy (net_setup): "" for the inmate's own.
+var model_path := "":
+	set(value):
+		model_path = value
+		if value != "":
+			model = load(value)
 var _sparks: Node3D
 var _spark_left := 0.0
 var _next := 0
@@ -87,7 +95,7 @@ func _ready() -> void:
 	shape.shape = capsule
 	shape.position.y = 0.75
 	add_child(shape)
-	_model = MODEL.instantiate()
+	_model = model.instantiate()
 	# The models face +Z; the inmate's front is -Z, like the other NPCs placed by code.
 	_model.rotation.y = PI
 	add_child(_model)
@@ -265,7 +273,10 @@ func set_lit(lit: bool) -> void:
 ## What a guest's copy needs before it's added, for the ones the host brings in during the case (the laundry's
 ## runners, carcel-lavanderia.md, step 7).
 func net_setup() -> Dictionary:
-	return {"role": role, "glow_eyes": glow_eyes}
+	var setup := {"role": role, "glow_eyes": glow_eyes}
+	if model != MODEL:
+		setup.model_path = model.resource_path
+	return setup
 
 
 func net_state() -> Array:

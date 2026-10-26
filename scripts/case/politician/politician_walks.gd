@@ -40,6 +40,8 @@ var podium: Vector3
 var ramp_top: Vector3
 var ramp_foot: Vector3
 var state := State.SPEAKING
+## Off by itself every WALK_EVERY or so while speaking; the double's never (DoubleSwap moves him off).
+var auto_walks := true
 var led_by: Cop
 var _path: Array[Vector3] = []
 var _greeting: RallyFan
@@ -109,7 +111,7 @@ func walk_off() -> void:
 func _physics_process(delta: float) -> void:
 	match state:
 		State.SPEAKING:
-			if speech.speaking:
+			if speech.speaking and auto_walks:
 				_walk_left -= delta
 				if _walk_left <= 0.0:
 					_walk_left = WALK_EVERY + _rng.randf_range(-WALK_JITTER, WALK_JITTER)
