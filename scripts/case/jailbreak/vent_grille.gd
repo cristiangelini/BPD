@@ -3,10 +3,13 @@ extends StaticBody3D
 
 ## The loose vent grille high on a cell's back wall in the vent jailbreak (docs/diseno/fuga-ventilacion.md, step 1):
 ## a cop standing on the bunk loosens its SCREWS with E, TURNS presses each (at most one every TURN_EVERY seconds,
-## with a fingernail), and with the last one out the grille drops to the floor and the hole into the duct is open.
+## with a fingernail), and with the last one out the grille drops to the floor and the hole into the duct is open:
+## then E from the bunk climbs in (`climbed`, step 2).
 ## Every number here is (propuesta).
 
 signal opened(grille: VentGrille)
+## A cop on the bunk tries to get into the open hole (the level puts it in the duct, or the big one gets stuck).
+signal climbed(grille: VentGrille, cop: Cop)
 
 const MODEL := preload("res://assets/models/vent_grille.glb")
 const HOLE_MODEL := preload("res://assets/models/vent_hole.glb")
@@ -52,13 +55,16 @@ func reaches(cop: Node3D) -> bool:
 
 
 func prompt_key(cop: Cop) -> String:
-	if is_open():
-		return ""
-	return "PROMPT_VENT_SCREW" if reaches(cop) else "PROMPT_VENT_TOO_HIGH"
+	if not reaches(cop):
+		return "PROMPT_VENT_TOO_HIGH"
+	return "PROMPT_VENT_CLIMB" if is_open() else "PROMPT_VENT_SCREW"
 
 
 func use(cop: Cop) -> void:
-	if is_open() or not reaches(cop):
+	if not reaches(cop):
+		return
+	if is_open():
+		climbed.emit(self, cop)
 		return
 	var now := Time.get_ticks_msec()
 	if now < _next_turn_ms:

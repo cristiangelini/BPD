@@ -77,7 +77,8 @@ func test_screw_by_screw_until_it_drops() -> void:
 	grille.turn()
 	assert_true(grille.is_open())
 	assert_signal_emitted(grille, "opened")
-	assert_eq(grille.prompt_key(cop), "")
+	cop.global_position = lot * Vector3(12.7, 0.55, 1.6)
+	assert_eq(grille.prompt_key(cop), "PROMPT_VENT_CLIMB", "now into the duct")
 
 
 func test_guests_get_the_screws() -> void:
