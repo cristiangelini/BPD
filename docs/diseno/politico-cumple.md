@@ -71,3 +71,11 @@ fe. Que sople las velas tranquilo. Y guárdenme una porción."
   y a los 5:50 (no a los 6, para que el último se sople antes del final), solo si está en el atril: si anda saludando, el
   pastel espera. El público canta 10 s, él sopla, vuelve al atril y se prenden las velas del siguiente. La planilla
   cuenta los pasteles soplados. Capturas en `/mnt/project-files/cumple/paso1-*.png`.
+- **Paso 2 (el pastel trucho):** uno de los tres, al azar con la semilla (puede ser de cualquier sabor), tiene el resorte
+  y pesa 30 kg (`BirthdayCake.RIGGED_KG`: más de lo que carga un policía, así que hacen falta dos). Con E cerca de un
+  pastel el policía pega la oreja 3 s (si se aleja más de 1,8 m, deja de escuchar): el trucho muestra "♪ tic tac ♪"
+  encima 4 s y le dice que lo lleve a la fuente; los buenos no hacen nada. Todavía no hay sonido, solo el cartel. En la
+  fuente (dentro del agua) se arruina, ya no se puede escuchar y la fiesta se lo saltea. Un pastel bueno sacado de la
+  mesa es una mancha de imagen y el diputado protesta; cuando le toca, se lo saltea ("¿Y mi pastel?"). Si sopla el
+  trucho, le salta el resorte con la crema: 3 manchas de crema en la cara y llora 10 s sin moverse, después vuelve al
+  atril y la fiesta sigue. Capturas en `/mnt/project-files/cumple/paso2-*.png`.

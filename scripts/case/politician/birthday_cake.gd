@@ -5,11 +5,29 @@ extends Grabbable
 ## flavor on a white board, CANDLES candles on top and a card stuck in its front saying who sent it. Its candles are lit
 ## when it's the next one he'll blow (BirthdayParty); blown, they go out. Its origin is on the board's bottom. Every
 ## number here is (propuesta).
+## Step 2: one of the three is `rigged`, a spring with a kilo of cream inside, and weighs RIGGED_KG (two cops carry it).
+## E listens to a cake for LISTEN_TIME: the rigged one ticks. Dropped in the plaza's fountain it's ruined for good.
+## Off its spot on the table it's `taken` (BirthdayParty skips it, and a good one taken costs a stain).
+
+signal taken(cake: BirthdayCake)
+signal ruined_now(cake: BirthdayCake)
 
 const FLAVORS: Array[String] = ["chocolate", "strawberry", "cream"]
 ## The cards: who sent each cake. They don't give the rigged one away by themselves.
 const CARDS := 10
 const KG := 2.0
+const RIGGED_KG := 30.0
+const LISTEN_TIME := 3.0
+## The listening cop can't wander further than this from the cake.
+const LISTEN_REACH := 1.8
+## The tick-tock shows this long.
+const TICK_TIME := 4.0
+## Further than this from its spot it's off the table.
+const AWAY := 0.6
+## In the fountain: within its water's radius, and below this height over the plaza.
+const FOUNTAIN_RADIUS := 3.9
+const FOUNTAIN_TOP := 1.3
+const SPRING := Color(0.75, 0.75, 0.78)
 const RADIUS := 0.28
 const LAYER := 0.14
 const CANDLES := 5
@@ -27,12 +45,26 @@ var flavor := "chocolate"
 var card := 1
 var lit := false
 var blown := false
+var rigged := false
+## Its place on the table, and the fountain's middle at ground level (world space), set by the rally.
+var spot := Vector3.ZERO
+var fountain := Vector3.ZERO
+var was_taken := false
+var ruined := false
+## It sprang its cream (blown while rigged).
+var sprung := false
+var listener: Cop
+var _listen_left := 0.0
+var _tick_left := 0.0
 var _flames: Array[MeshInstance3D] = []
+var _tick: Label3D
+var _top: MeshInstance3D
+var _spring: MeshInstance3D
 
 
 func _ready() -> void:
 	add_to_group("birthday_cakes")
-	mass = KG
+	mass = RIGGED_KG if rigged else KG
 	collision_layer = 4
 	collision_mask = 15
 	var height := LAYER * 2 + 0.03
@@ -50,8 +82,12 @@ func _build() -> void:
 	var colors: Array = COLORS[flavor]
 	_part(_cylinder(RADIUS + 0.04, 0.03), Vector3(0, 0.015, 0), BOARD)
 	_part(_cylinder(RADIUS, LAYER), Vector3(0, 0.03 + LAYER / 2, 0), colors[0])
-	_part(_cylinder(RADIUS * 0.8, LAYER), Vector3(0, 0.03 + LAYER * 1.5, 0), colors[1])
+	_top = _part(_cylinder(RADIUS * 0.8, LAYER), Vector3(0, 0.03 + LAYER * 1.5, 0), colors[1])
 	var top := 0.03 + LAYER * 2
+	# The spring that pops out of the rigged one, with its cream on top.
+	_spring = _part(_cylinder(0.05, 0.4), Vector3(0, top + 0.2, 0), SPRING)
+	_spring.add_child(_part_mesh(_sphere(0.16), Vector3(0, 0.25, 0), COLORS["cream"][0]))
+	_spring.hide()
 	for i in CANDLES:
 		var angle := TAU * i / CANDLES
 		var at := Vector3(cos(angle), 0, sin(angle)) * RADIUS * 0.5 + Vector3.UP * top
@@ -71,7 +107,90 @@ func _build() -> void:
 	# Stuck in front of the cake, facing the crowd, like a card on a toothpick.
 	label.position = Vector3(0, 0.03 + LAYER, RADIUS + 0.03)
 	add_child(label)
+	_tick = Label3D.new()
+	_tick.name = "Tick"
+	_tick.text = "CAKE_TICK"
+	_tick.font_size = 48
+	_tick.pixel_size = 0.004
+	_tick.outline_size = 8
+	_tick.modulate = Color(1, 0.9, 0.3)
+	_tick.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	_tick.position = Vector3(0, top + 0.45, 0)
+	_tick.hide()
+	add_child(_tick)
 	_show()
+
+
+func prompt_key(_cop: Cop) -> String:
+	return "" if ruined or sprung else "PROMPT_LISTEN_CAKE"
+
+
+## E: the cop puts an ear to it for LISTEN_TIME.
+func use(cop: Cop) -> void:
+	if ruined or sprung:
+		return
+	listener = cop
+	_listen_left = LISTEN_TIME
+	cop.show_hint("HINT_CAKE_LISTENING")
+
+
+## Where it should be: on its spot, not in the fountain.
+func on_table() -> bool:
+	return not ruined and global_position.distance_to(spot) < AWAY
+
+
+func _physics_process(delta: float) -> void:
+	super(delta)
+	if _tick_left > 0.0:
+		_tick_left -= delta
+		if _tick_left <= 0.0:
+			_tick.hide()
+	if listener:
+		if not is_instance_valid(listener) or listener.global_position.distance_to(global_position) > LISTEN_REACH:
+			listener = null
+		else:
+			_listen_left -= delta
+			if _listen_left <= 0.0:
+				_heard()
+	if not multiplayer.is_server() or ruined or spot == Vector3.ZERO:
+		return
+	if not was_taken and global_position.distance_to(spot) >= AWAY:
+		was_taken = true
+		taken.emit(self)
+	var flat := Vector2(global_position.x - fountain.x, global_position.z - fountain.z)
+	if flat.length() < FOUNTAIN_RADIUS and global_position.y - fountain.y < FOUNTAIN_TOP:
+		ruin()
+
+
+func _heard() -> void:
+	var cop := listener
+	listener = null
+	if rigged:
+		show_tick()
+	cop.show_hint("HINT_CAKE_TICKING" if rigged else "HINT_CAKE_QUIET")
+
+
+## The tick-tock over it, for whoever is near.
+func show_tick() -> void:
+	_tick_left = TICK_TIME
+	_tick.show()
+
+
+## In the fountain: soaked, it springs nothing on anyone any more.
+func ruin() -> void:
+	if ruined:
+		return
+	ruined = true
+	lit = false
+	_show()
+	ruined_now.emit(self)
+
+
+## Blown while rigged: the spring pops out with its cream.
+func spring() -> void:
+	sprung = true
+	_top.hide()
+	_spring.show()
 
 
 ## The card's text, "BIRTHDAY_CARD_n".
@@ -96,13 +215,18 @@ func _show() -> void:
 
 
 func _part(mesh: Mesh, at: Vector3, color: Color) -> MeshInstance3D:
+	var part := _part_mesh(mesh, at, color)
+	add_child(part)
+	return part
+
+
+static func _part_mesh(mesh: Mesh, at: Vector3, color: Color) -> MeshInstance3D:
 	var part := MeshInstance3D.new()
 	part.mesh = mesh
 	var material := StandardMaterial3D.new()
 	material.albedo_color = color
 	part.material_override = material
 	part.position = at
-	add_child(part)
 	return part
 
 

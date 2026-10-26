@@ -6,10 +6,13 @@ extends Node
 ## candles lit), the crowd sings to him for SING_TIME seconds and he blows its candles out; then he goes back to the
 ## lectern and the next cake's candles are lit. Only on the stage: off greeting or led by the hand, the cake waits until
 ## he's back at the lectern. It runs on the host. Every number here is (propuesta).
+## Step 2: a cake off the table (carried away, or in the fountain) is skipped, and taking a good one off it is a stain
+## on his image. Blowing the rigged one springs its cream in his face: CREAM_STAINS stains, and he cries for CRY_TIME
+## where he stands before going back; the party goes on.
 
 signal blew(cake: BirthdayCake)
 
-enum State { WAITING, GOING, SINGING, RETURNING, DONE }
+enum State { WAITING, GOING, SINGING, CRYING, RETURNING, DONE }
 
 const BLOW_AT: Array[float] = [120.0, 240.0, 350.0]
 const SING_TIME := 10.0
@@ -22,6 +25,12 @@ const BEHIND := 0.7
 const SONG_LINES := 4
 const SONG_EVERY := 2.5
 const BLOW_LINES := 3
+const CREAM_STAINS := 3
+## The cream's splat on his suit.
+const CREAM := "yogurt"
+const CRY_TIME := 10.0
+const CRY_LINES := 3
+const CRY_EVERY := 3.5
 
 var politician: Politician
 var speech: PoliticianSpeech
@@ -37,6 +46,9 @@ var _target := Vector3.ZERO
 var _sing_left := 0.0
 var _song_left := 0.0
 var _song_line := 0
+var _cry_left := 0.0
+var _cry_line_left := 0.0
+var _cry_line := 0
 
 
 func setup(speaker: Politician, the_speech: PoliticianSpeech, crowd: Array[RallyFan],
@@ -53,6 +65,8 @@ func setup(speaker: Politician, the_speech: PoliticianSpeech, crowd: Array[Rally
 		var swap := cakes[i]
 		cakes[i] = cakes[j]
 		cakes[j] = swap
+	for cake in cakes:
+		cake.taken.connect(_on_taken)
 	_light_next()
 
 
@@ -75,11 +89,19 @@ func _physics_process(delta: float) -> void:
 				state = State.DONE
 			elif speech.speaking and walks.state == PoliticianWalks.State.SPEAKING \
 					and elapsed() >= BLOW_AT[mini(next, BLOW_AT.size() - 1)] - SING_TIME - GO_LEAD:
-				_go()
+				if next_cake().on_table():
+					_go()
+				else:
+					_skip()
 		State.GOING:
 			speech.hold_lines(1.0)
 			if _walk_to(_target, delta):
-				_sing()
+				if next_cake().on_table():
+					_sing()
+				else:
+					# Taken off the table while he walked over.
+					_skip()
+					state = State.RETURNING
 		State.SINGING:
 			speech.hold_lines(1.0)
 			_sing_left -= delta
@@ -91,6 +113,16 @@ func _physics_process(delta: float) -> void:
 					fan.say("BIRTHDAY_SONG_%d" % ((_song_line - 1) % SONG_LINES + 1))
 			if _sing_left <= 0.0:
 				_blow()
+		State.CRYING:
+			speech.hold_lines(1.0)
+			_cry_left -= delta
+			_cry_line_left -= delta
+			if _cry_line_left <= 0.0 and _cry_left > 0.0:
+				_cry_line_left = CRY_EVERY
+				politician.say("BIRTHDAY_CRY_%d" % (_cry_line % CRY_LINES + 1), CRY_EVERY)
+				_cry_line += 1
+			if _cry_left <= 0.0:
+				state = State.RETURNING
 		State.RETURNING:
 			speech.hold_lines(1.0)
 			if _walk_to(walks.podium, delta):
@@ -116,10 +148,40 @@ func _blow() -> void:
 	var cake := next_cake()
 	cake.blow()
 	blown += 1
-	politician.say("BIRTHDAY_BLOW_%d" % ((next % BLOW_LINES) + 1))
 	next += 1
 	blew.emit(cake)
+	if cake.rigged:
+		_spring(cake)
+		return
+	politician.say("BIRTHDAY_BLOW_%d" % ((blown - 1) % BLOW_LINES + 1))
 	state = State.RETURNING
+
+
+## The rigged one: cream in his face, and he cries where he stands.
+func _spring(cake: BirthdayCake) -> void:
+	cake.spring()
+	var face := politician.global_position + Vector3.UP * 1.3
+	for i in CREAM_STAINS:
+		politician.stain(CREAM, face - politician.global_basis.z * 0.3 + Vector3((i - 1) * 0.12, i * 0.1 - 0.1, 0))
+	state = State.CRYING
+	_cry_left = CRY_TIME
+	_cry_line_left = 0.0
+	politician.velocity = Vector3.ZERO
+
+
+## That cake isn't on the table: on to the next one, without blowing.
+func _skip() -> void:
+	politician.say("BIRTHDAY_CAKE_GONE")
+	next += 1
+	_light_next()
+
+
+## A good cake carried off the table: he complains, and it's a stain on his image.
+func _on_taken(cake: BirthdayCake) -> void:
+	if cake.rigged or cake.blown:
+		return
+	politician.stain(Politician.SHAME, politician.global_position + Vector3.UP)
+	politician.say("BIRTHDAY_GOOD_TAKEN")
 
 
 func _back() -> void:
