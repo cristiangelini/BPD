@@ -649,22 +649,13 @@ func _build_trunk() -> void:
 			builder.mesh_box(Vector3(0, 0.35, 0), Vector3(0.8, 0.7, 0.6), SAFE)
 			builder.mesh_box(Vector3(0, 0.4, -0.31), Vector3(0.18, 0.18, 0.03), SAFE_DIAL)
 		"lamp":
-			# The lighthouse's lamp (control-neblina.md): a big lit lens in a brass frame, glowing in the fog.
-			builder.mesh_box(Vector3(0, 0.08, 0), Vector3(0.7, 0.16, 0.7), FogCar.LAMP_BRASS)
-			var lens := MeshInstance3D.new()
-			var glass := CylinderMesh.new()
-			glass.top_radius = 0.28
-			glass.bottom_radius = 0.28
-			glass.height = 0.5
-			var glow := StandardMaterial3D.new()
-			glow.albedo_color = FogCar.LAMP_LIGHT
-			glow.emission_enabled = true
-			glow.emission = FogCar.LAMP_LIGHT
-			glow.emission_energy_multiplier = 1.2
-			glass.material = glow
-			lens.mesh = glass
-			lens.position = Vector3(0, 0.41, 0)
-			_trunk.add_child(lens)
+			# The lighthouse's lamp (control-neblina.md), still lit.
+			var lamp: Node3D = LighthouseLamp.MODEL.instantiate()
+			lamp.position = Vector3(0, 0, 0.05)
+			_trunk.add_child(lamp)
+			var glow := FogCar.halo(LighthouseLamp.GLOW)
+			glow.position.y = 0.25
+			lamp.add_child(glow)
 		"grandpa":
 			var grandpa: Node3D = GRANDPA.instantiate()
 			grandpa.scale = Vector3.ONE * 0.6

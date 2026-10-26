@@ -13,8 +13,9 @@ extends Node
 ## (control-auto-fantasma.md) has his ghost car follow him: at every corner he turns, it cuts in across the street behind
 ## him, in the patrol car's way (ChaseGhost). The wedding check's El Colado (control-boda.md) cuts CANS_PER_CORNER of
 ## his tin cans loose at every corner he turns, clattering down the street (ChaseCan). The street race's El Turbo
-## (control-carrera.md) spins round at every corner he turns, to show off (SuspectCar.spin). Every number here is
-## (propuesta).
+## (control-carrera.md) spins round at every corner he turns, to show off (SuspectCar.spin). The fog check's La Bruma
+## (control-neblina.md) honks at every corner he turns, his horn's bubble seen through the fog (HornBubble). Every
+## number here is (propuesta).
 
 const DRIP_EVERY := 3.0
 ## A puddle's size (m), how long it lasts, and the grip left on it.
@@ -78,6 +79,9 @@ var wedding := false
 var cans: Array[ChaseCan] = []
 ## The runaway is the street race's El Turbo: he spins at the corners.
 var race := false
+## The runaway is the fog check's La Bruma: his horn (FogCar.horn_text), -1 otherwise; its bubble over his car.
+var fog_horn := -1
+var horn_bubble: HornBubble
 var _drip_left := DRIP_EVERY
 var _dummy_left := DUMMY_EVERY
 var _kids_left := 0.0
@@ -187,6 +191,19 @@ func _on_corner(turned: bool) -> void:
 			drop_can()
 	if race:
 		case.truck.spin()
+	if fog_horn >= 0:
+		honk()
+
+
+## La Bruma can't help it: he honks, and his horn's bubble shows over his car through the fog.
+func honk() -> HornBubble:
+	if not horn_bubble:
+		horn_bubble = HornBubble.new()
+		horn_bubble.name = "HornBubble"
+		horn_bubble.position = Vector3(0, FogCar.HORN_UP, 0)
+		case.truck.add_child(horn_bubble)
+	horn_bubble.say(tr(FogCar.horn_text(fog_horn)))
+	return horn_bubble
 
 
 ## One of El Colado's tin cans comes loose and clatters down the street behind him.
