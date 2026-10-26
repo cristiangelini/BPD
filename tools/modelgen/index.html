@@ -71,7 +71,7 @@ window.renderView = (spec) => {
 		const o = model(it.name).clone();
 		o.position.set(...(it.pos ?? [0, 0, 0]));
 		o.rotation.y = it.rotY ?? 0;
-		if (it.scale) o.scale.setScalar(it.scale);
+		if (Array.isArray(it.scale)) o.scale.set(...it.scale); else if (it.scale) o.scale.setScalar(it.scale);
 		o.traverse((m) => { if (m.isMesh) m.castShadow = m.receiveShadow = true; });
 		scene.add(o);
 	}

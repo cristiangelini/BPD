@@ -14,7 +14,8 @@ extends Node3D
 ## convoy, with the newlyweds up front and a few city cars among them. "race" (control-carrera.md) sends city cars
 ## and, among them, the night's racers, in heats out of the queue. "fog" (control-neblina.md) sends city cars with
 ## their headlights on, out of the fog. "circus_move" (control-circo.md) sends the circus's trucks, each with a caged
-## animal, and a few city cars among them. Every number here is (propuesta).
+## animal, and a few city cars among them. "parade" (control-desfile.md) sends the parade's floats, with masked dancers
+## on them, and a few city cars caught in it. Every number here is (propuesta).
 
 signal patience_changed(value: float)
 ## A car went by: let through, or sneaking.
@@ -48,6 +49,7 @@ const VARIANTS := {
 	"race": {"spawn": 0.75, "patience": 1.0, "race": true},
 	"fog": {"spawn": 0.75, "patience": 1.0, "fog": true},
 	"circus_move": {"spawn": 0.75, "patience": 1.0, "circus": true},
+	"parade": {"spawn": 0.75, "patience": 1.0, "parade": true},
 }
 
 var checkpoint: TrafficCheckpoint
@@ -244,6 +246,9 @@ func spawn() -> QueueCar:
 	if VARIANTS[variant].get("circus", false):
 		car.circus_mode = true
 		car.circus = data.get("circus", CircusTruck.traits_of(car.plate))
+	if VARIANTS[variant].get("parade", false):
+		car.parade_mode = true
+		car.parade = data.get("parade", ParadeFloat.traits_of(car.plate))
 	car.wanted = plan != null and spawned == plan.wanted_index
 	car.at = Vector3(0, 0, SPAWN_FROM)
 	car.speed = QueueCar.SPEED

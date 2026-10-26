@@ -173,6 +173,10 @@ var warned := false
 ## in it, as in `circus` (CircusTruck.draw's); empty for a city car among them.
 var circus_mode := false
 var circus := {}
+## In the parade check (control-desfile.md) most of the queue are floats, each with its theme, number and masked
+## dancers, as in `parade` (ParadeFloat.draw's); empty for a city car caught in the parade.
+var parade_mode := false
+var parade := {}
 ## How many times its animal was offered food (step 2).
 var fed := 0
 ## Step 3: El Peludo, how long nobody's watched him, how many person's things he did and how long the one he's at
@@ -224,6 +228,10 @@ func _ready() -> void:
 		return
 	if not circus.is_empty():
 		CircusTruck.build(self, circus)
+		_build_labels()
+		return
+	if not parade.is_empty():
+		ParadeFloat.build(self, parade)
 		_build_labels()
 		return
 	# The body leaves the trunk's top free, so the cops' hands reach the lid: the cabin and hood, and under the trunk.
@@ -285,7 +293,7 @@ func _build_labels() -> void:
 	plate_label.modulate = Color(0.1, 0.1, 0.12)
 	plate_label.outline_modulate = Color(0.95, 0.95, 0.9)
 	plate_label.outline_size = 18
-	var truck := fruit or not circus.is_empty()
+	var truck := fruit or not circus.is_empty() or not parade.is_empty()
 	plate_label.position = Vector3(0, 0.5 if clown else 0.62, -length() / 2 - (0.06 if truck else 0.03))
 	plate_label.rotation.y = PI
 	add_child(plate_label)
@@ -696,7 +704,8 @@ func net_setup() -> Dictionary:
 		"ghost": ghost, "shirt": shirt, "puppeteer": puppeteer, "wedding_mode": wedding_mode, "guest": guest,
 		"tie": tie, "newlyweds": newlyweds, "alcohol": alcohol, "couple": couple, "race_mode": race_mode,
 		"racer": racer, "race": race, "race_slot": race_slot,
-		"fog_mode": fog_mode, "fog": fog, "circus_mode": circus_mode, "circus": circus}
+		"fog_mode": fog_mode, "fog": fog, "circus_mode": circus_mode, "circus": circus,
+		"parade_mode": parade_mode, "parade": parade}
 
 
 ## Online: where it is in the queue and whether its trunk is open; the ghost car's, how many pranks and the last one;
