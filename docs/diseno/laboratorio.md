@@ -73,6 +73,14 @@ Los pesos y valores siguen la escala de la oficina: la principal vale unos 1000 
 ## El orden para hacerlo (un PR chico por paso)
 1. El laboratorio en la ciudad, con los ambientes, las bolsas de harina, los pasteles de la vitrina, los escondites y lo
    frágil.
+   - **Cómo quedó (propuesta):** una planta de 24 × 22 m y 3,5 m de alto con vidriera rosa y toldo a rayas, y arriba
+     el resto del edificio cerrado. Adelante el salón (vitrina con 8 pasteles, caja, bandeja de Pocha y 4 mesitas),
+     al centro la cocina (3 mesadas de acero, 2 batidoras gigantes, 5 hornos y la manga de 1 m colgada), al oeste el
+     depósito con 10 bolsas de harina y atrás el vestuario (5 casilleros, uno entreabierto), al fondo el laboratorio
+     de sabores con vidrio y la cámara de frío con estantes de pasteles, las dos con llave. Una bolsa que cae desde
+     más de medio metro o que recibe un golpe a más de 3 m/s revienta en una nube; la harina queda 40 s en el piso y
+     el que la pisa deja huellas blancas cada 0,6 m durante 15 s (cada huella dura 20 s). 12 escondites, 6 pesados.
+     Botón "Laboratorio de pasteles (prueba)" y `--place=cake_lab`. Fotos en `laboratorio/paso1-*.png`.
 2. El chef Bruno: la ronda, la denuncia, "¡cuidado con mis pasteles!" y la distracción del horno.
 3. Pocha y la bandeja de muestras.
 4. El caso (RaidCase) con la primera historia: el pastel relleno de plata.

@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Cake lab, step 1: the lab on its lot: tasting room with a showcase of 8 cakes that break as fines, the big kitchen with steel counters, giant mixers and ovens, the flour storeroom with 10 sacks that burst into a cloud and leave white footprints, the locker room, the locked flavor lab and cold room, 12 hiding spots; a menu test button and --place=cake_lab.
 - Cake lab, step 0: design doc (docs/diseno/laboratorio.md) and decision 163 (proposed).
 - Insurance office, step 7: online: the host runs Mirta and Coca and the guests follow them (place, complaint, the board's number), the printer's button and the ticket machine work from any PC, a guest's jammed printer clears with the host's, and a guest can answer a ringing phone.
 - Insurance office, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory and the insurance office in sixths.
