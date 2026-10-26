@@ -165,6 +165,10 @@ var race := {}
 ## In the fog check (control-neblina.md) every car has its headlights on, as in `fog` (FogCar.draw's).
 var fog_mode := false
 var fog := {}
+## Warned in the fog (step 2) by a lit cone or a cop's flashlight, it brakes in time. Unwarned, it comes at
+## FogCar.BLIND_SPEED and brakes only once it sees what's ahead (FogCar.SIGHT): behind a car it bumps into it, at the
+## barrier it runs the checkpoint ("overrun").
+var warned := false
 ## A racer comes in a heat, out of the queue (step 2): it gathers at the back corner, revs, then races past the
 ## checkpoint ("gathering", "revving", "racing" in `state`); `race_slot` is its place in the heat.
 var race_slot := 0
@@ -869,6 +873,20 @@ func sneak() -> void:
 		state = "sneaking"
 
 
+## Too fast in the fog to stop where it should: behind a car it bumps into it and stops there; at the barrier it
+## runs the checkpoint, barrier, cones and all (TrafficQueue.overran).
+func _overrun() -> void:
+	warned = true
+	if is_instance_valid(ahead) and ahead.in_queue():
+		speed = 0.0
+		say(tr(FogCar.bump_line(plate)))
+		return
+	state = "overrun"
+	var queue := get_parent() as TrafficQueue
+	if queue:
+		queue.overran(self)
+
+
 ## Where it wants to stop, in the checkpoint's z; INF for no stop.
 func _stop_z() -> float:
 	if state == "pulled_over" or not can_go():
@@ -904,9 +922,17 @@ func _physics_process(delta: float) -> void:
 	var room := at.z - stop
 	# Slows down to stop right at `stop`: v² = 2·a·d.
 	var top := SPEED if room == INF else minf(SPEED, sqrt(maxf(2.0 * ACCEL * room, 0.0)))
+	var blind := fog_mode and not warned and state == "coming"
+	if blind and FogCar.warned(self):
+		warned = true
+		blind = false
+	if blind:
+		top = FogCar.BLIND_SPEED if room > FogCar.SIGHT else 0.0
 	if flat:
 		top = minf(top, FLAT_SPEED)
 	speed = move_toward(speed, top, ACCEL * delta)
+	if blind and room != INF and at.z - speed * delta < stop and speed > FogCar.STOP_SPEED:
+		_overrun()
 	if room <= 0.05:
 		speed = 0.0
 	# Never past where it stops, even with a long tick.
@@ -941,6 +967,9 @@ func _physics_process(delta: float) -> void:
 		_sway = -cos(_rolled * WeddingCar.ZIGZAG_RATE) * WeddingCar.SWAY
 		_knock_cones()
 	if state == "sneaking":
+		_knock_cones()
+	if state == "overrun":
+		_knock_barrier()
 		_knock_cones()
 
 
