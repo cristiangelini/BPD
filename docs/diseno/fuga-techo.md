@@ -75,3 +75,17 @@ acciones (`ActionSync`), igual en todas las PCs.
    sí:** es la parte cooperativa y da risa, y jugando solo igual se puede.
 3. ¿La cuerda son las 4 sábanas atadas, y un nudo flojo se desata con dos colgados a la vez? **Recomiendo sí:** obliga a
    hacer las cosas bien o a bajar de a uno, y el que se cae no pierde la partida.
+
+## Cómo quedó el paso 1
+- `--jailbreak=roof` fuerza la variante; el sorteo de la fuga ahora es en octavos.
+- El guardia de noche (`RoofGuard`): la llave en el cinturón, sin donas y sin nada que sacarle.
+- En cada celda: la claraboya (`CellSkylight`) en el techo, sobre la cucheta; un colchón de repuesto (`CellMattress`) en
+  el piso, y sobre la cucheta dos sábanas (`BedSheet`), cuatro en total.
+- La claraboya no se alcanza desde el piso. Se alcanza con los pies a 0,7 m: parado en el colchón sobre la cucheta, o
+  sobre los hombros de un compañero agachado (E sobre él: "hacer pie").
+- Se abre con 4 empujones con E (la floja de la semilla, con 2), uno cada medio segundo. Cada uno cruje: el guardia
+  mira hacia allá, dice una de 3 frases y suma 8 de sospecha.
+- Abierta, E sube al depósito de arriba (fuera de la celda para el guardia) y desde arriba E vuelve a bajar.
+- Modelos `cell_skylight`, `skylight_pane`, `bed_sheet` y `cell_mattress` en `tools/modelgen/models/roof.js`. 11 textos
+  nuevos. Pruebas en `test_roof_skylight.gd`. Fotos en `/mnt/project-files/techo/`.
+- El depósito con sus cajas, la escalera y el techo son el paso 2.

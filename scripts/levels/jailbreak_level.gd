@@ -139,6 +139,15 @@ const COAT_HOOK_Y := 1.68
 const COAT_HOOK_OUT := 0.12
 const COAT_HOOKS := 6
 const COATS_MIN := 4
+## The roof jailbreak (fuga-techo.md, step 1): each cell's skylight in the ceiling over its bunk, the bunk's two
+## sheets, the cell's spare mattress, and where a cop climbing up lands on the storage room over the cells (beside the
+## skylight) or down in the cell.
+const SKYLIGHTS: Array[Vector3] = [Vector3(8.3, StationRooms.CEILING, 2.6), Vector3(12.7, StationRooms.CEILING, 2.6)]
+const SHEETS: Array[Vector3] = [Vector3(7.9, 0.65, 1.6), Vector3(8.7, 0.65, 1.6), Vector3(12.3, 0.65, 1.6),
+	Vector3(13.1, 0.65, 1.6)]
+const MATTRESSES: Array[Vector3] = [Vector3(8.0, 0.12, 3.8), Vector3(13.0, 0.12, 3.8)]
+const ABOVE_AT := Vector3(0, StationRooms.CEILING + StationRooms.WALL + 0.05, 0.9)
+const BELOW_AT := Vector3(0, 0.05, 1.1)
 ## The big one stays stuck in the grille this long (s); crawling faster than this in the duct is a noisy scramble.
 const VENT_STUCK := 4.0
 const VENT_QUIET_SPEED := (Cop.CRAWL_SPEED + Cop.CRAWL_RUN_SPEED) / 2.0
@@ -147,8 +156,8 @@ const TUNNEL_REFILL := 1.0 / 3.0
 const TUNNEL_HOLES := [[Vector3(6.7, 0, 2.2), Vector3(9.9, 0, 2.2)], [Vector3(11.1, 0, 2.2), Vector3(14.3, 0, 2.2)]]
 
 ## The ways out, drawn by the seed (fuga-limpieza.md, fuga-perro.md, fuga-tunel.md, fuga-ventilacion.md,
-## fuga-basura.md and fuga-simulacro.md, question 1: in sevenths).
-const VARIANTS := ["donut", "cleaning", "dog", "tunnel", "vent", "garbage", "drill"]
+## fuga-basura.md, fuga-simulacro.md and fuga-techo.md, question 1: in eighths).
+const VARIANTS := ["donut", "cleaning", "dog", "tunnel", "vent", "garbage", "drill", "roof"]
 
 ## Same seed, same jailbreak. 0 draws one.
 @export var case_seed := 0
@@ -178,6 +187,7 @@ var key_board: KeyBoard
 var dumpster: Dumpster
 var garbage_truck: GarbageTruck
 var heaters: Array[CellHeater] = []
+var skylights: Array[CellSkylight] = []
 var detectors: Array[SmokeDetector] = []
 ## The alarm rang, and the drill is on for drill_left more seconds (the host counts).
 var alarm_rung := false
@@ -235,6 +245,8 @@ func _ready() -> void:
 		_garbage_night()
 	elif is_drill():
 		_drill_day()
+	elif is_roof():
+		_roof_night()
 	else:
 		_guard_desk()
 	_hud()
@@ -245,7 +257,7 @@ func _ready() -> void:
 		guard.times_caught = Campaign.current.jail_catches
 	var hint: String = {"cleaning": "HINT_JAILED_CLEANING", "dog": "HINT_JAILED_DOG", "tunnel": "HINT_JAILED_TUNNEL",
 		"vent": "HINT_JAILED_VENT", "garbage": "HINT_JAILED_GARBAGE",
-		"drill": "HINT_JAILED_DRILL"} \
+		"drill": "HINT_JAILED_DRILL", "roof": "HINT_JAILED_ROOF"} \
 		.get(variant, "HINT_JAILED")
 	($Cop as Cop).show_hint.call_deferred(hint)
 
@@ -283,6 +295,68 @@ func is_garbage() -> bool:
 
 func is_drill() -> bool:
 	return variant == "drill"
+
+
+func is_roof() -> bool:
+	return variant == "roof"
+
+
+## The roof jailbreak: the night guard with the key on his belt, and in each cell a skylight in the ceiling (the seed's
+## loose one gives sooner), the bunk's two sheets and a spare mattress.
+func _roof_night() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var desk := _desk()
+	var watcher := RoofGuard.new()
+	watcher.name = "NightGuard"
+	add_child(watcher)
+	watcher.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), GUARD_AT)
+	watcher.stand_guard(case_seed)
+	watcher.outside_cells = outside_cells
+	watcher.see_through = [desk.get_rid()]
+	watcher.caught.connect(_on_caught)
+	guard = watcher
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["roof", case_seed])
+	var loose := rng.randi_range(0, SKYLIGHTS.size() - 1)
+	for cell in SKYLIGHTS.size():
+		var skylight := CellSkylight.new()
+		skylight.name = "CellSkylight%d" % cell
+		skylight.cell = cell
+		skylight.floor_y = lot.origin.y
+		add_child(skylight)
+		skylight.global_transform = lot * Transform3D(Basis.IDENTITY, SKYLIGHTS[cell])
+		if cell == loose:
+			skylight.set_loose()
+		skylight.creaked.connect(_on_creak)
+		skylight.climbed.connect(_through_skylight)
+		skylights.append(skylight)
+		var mattress := CellMattress.new()
+		mattress.name = "CellMattress%d" % cell
+		add_child(mattress)
+		# Lying along the cell, in front of the bunk.
+		mattress.global_transform = lot * Transform3D(Basis(Vector3.UP, PI / 2), MATTRESSES[cell])
+	for i in SHEETS.size():
+		var sheet := BedSheet.new()
+		sheet.name = "BedSheet%d" % i
+		add_child(sheet)
+		sheet.global_transform = lot * Transform3D(Basis(Vector3.UP, rng.randf_range(-0.3, 0.3)), SHEETS[i])
+
+
+## A skylight creaked: the guard (the host's) heard it.
+func _on_creak(skylight: CellSkylight) -> void:
+	if multiplayer.is_server():
+		(guard as RoofGuard).heard_creak(skylight.global_position)
+
+
+## Through an open skylight: up onto the storage room over the cells, or from there back down into the cell.
+func _through_skylight(skylight: CellSkylight, cop: Cop) -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var at := SKYLIGHTS[skylight.cell]
+	if skylight.is_above(cop):
+		cop.warp(Transform3D(cop.global_basis, lot * Vector3(at.x + BELOW_AT.x, BELOW_AT.y, at.z + BELOW_AT.z)))
+		return
+	cop.warp(Transform3D(cop.global_basis, lot * Vector3(at.x + ABOVE_AT.x, ABOVE_AT.y, at.z + ABOVE_AT.z)))
+	cop.show_hint("HINT_SKYLIGHT_UP", true)
 
 
 ## The fire drill: daytime, the day guard at his desk with the key on his belt, the waiting room full, and in each
@@ -974,6 +1048,9 @@ func _desk() -> StaticBody3D:
 ## Whether a world position is out of both cells (through an open door or never in).
 func outside_cells(at: Vector3) -> bool:
 	var local := (city.transform * CityLayout.lot("station")).affine_inverse() * at
+	# In the roof jailbreak, up over the cells (through the skylight) is out of them.
+	if is_roof() and local.y > StationRooms.CEILING:
+		return true
 	return not (local.x > StationRooms.FRONT_X and local.x < StationRooms.HALF_X
 		and local.z > StationRooms.SPLIT_Z and local.z < StationRooms.CELL_FRONT_Z)
 
