@@ -830,6 +830,30 @@ const NPCS = {
 		b.add('props', white, new THREE.BoxGeometry(0.5, 0.32, 0.02), { pos: V(0.4, 1.75, 0.2) });
 		b.add('props', pink, new THREE.BoxGeometry(0.4, 0.08, 0.025), { pos: V(0.4, 1.75, 0.21) });
 	},
+	// The prison's cook (carcel-recuento.md): an orange smock almost like the jumpsuit, a white apron, a little white
+	// cap and a ladle; easy to count by mistake.
+	cocinero(b) {
+		pearBody(b, SKIN.crema, { shirt: C('cook_smock', 0xf28a2a), onePiece: true, belted: false, shoes: white });
+		b.add('body', C('apron', 0xf6f2e8), loft([{ y: 0.3, rx: 0.42, rz: 0.12 }, { y: 0.75, rx: 0.36, rz: 0.1 }, { y: 0.95, rx: 0.22, rz: 0.08 }], 8), { pos: V(0, 0, 0.3) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		mustache(b, C('hair_black', 0x1a1410), 1.2);
+		b.add('cap', white, new THREE.CylinderGeometry(0.17, 0.18, 0.1, 8), { pos: V(0, 1.47, 0.0) });
+		const steel = C('silver', 0xc8ccd2);
+		limb(b, 'props', steel, V(0.5, 0.7, 0.2), V(0.52, 0.4, 0.3), 0.015);
+		b.add('props', steel, ellipsoid(0.07, 0.04, 0.07, 6, 4), { pos: V(0.52, 0.38, 0.32) });
+	},
+	// The plumber fixing the prison's pipes (carcel-recuento.md): orange overalls, a red cap, a tool belt and a plunger.
+	plomero(b) {
+		pearBody(b, SKIN.arena, { shirt: C('overalls_orange', 0xe8701a), onePiece: true, belted: false, shoes: C('boots', 0x3a2a1a) });
+		b.add('body', C('tool_belt', 0x5a3a20), new THREE.TorusGeometry(0.44, 0.03, 4, 16), { pos: V(0, 0.42, 0.0), rot: [Math.PI / 2, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b);
+		mustache(b, C('hair_brown', 0x4a2e1a), 1.4);
+		peakedCap(b, C('cap_red', 0xc83030), C('cap_red', 0xc83030), C('cap_red', 0xc83030));
+		limb(b, 'props', C('plunger_stick', 0x9a6a3a), V(-0.5, 0.75, 0.22), V(-0.5, 0.25, 0.32), 0.02);
+		b.add('props', C('plunger_red', 0xb02020), new THREE.ConeGeometry(0.08, 0.08, 8), { pos: V(-0.5, 0.2, 0.33), rot: [Math.PI, 0, 0] });
+	},
 	// Abogado: beige suit, bow tie, slicked hair and a fat briefcase full of papers.
 	abogado(b) {
 		const suit = C('beige_suit', 0xc8b48a);

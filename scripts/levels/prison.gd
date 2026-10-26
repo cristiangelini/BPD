@@ -89,8 +89,8 @@ var _build: PlaceBuilder
 ## traslado-presos.md; --place=transfer), "blackout" (the power cut, carcel-corte-de-luz.md; --place=blackout) or
 ## "visits" (the visiting day, carcel-visitas.md; --place=visits), "laundry" (the laundry, carcel-lavanderia.md;
 ## --place=laundry), "tunnel" (the tunnel, carcel-tunel.md; --place=prison_tunnel), "talent" (the talent show,
-## carcel-talentos.md; --place=prison_talent), "vip" (the VIP inmate, carcel-vip.md; --place=prison_vip) or "garden"
-## (the garden, carcel-huerta.md; --place=prison_garden).
+## carcel-talentos.md; --place=prison_talent), "vip" (the VIP inmate, carcel-vip.md; --place=prison_vip), "garden"
+## (the garden, carcel-huerta.md; --place=prison_garden) or "count" (the count, carcel-recuento.md; --place=prison_count).
 @export var variant := "riot"
 ## The transfer's bus (traslado-presos.md, step 1), parked by the station's door, and its inmates (step 2).
 var bus: PrisonBus
@@ -133,6 +133,8 @@ var vip_case: VipCase
 ## The garden's beds, plants and gardeners (carcel-huerta.md, step 2).
 var garden: GardenPlan
 var garden_case: GardenCase
+## The count's inmates out in the yard, the workers and the list (carcel-recuento.md, step 2).
+var count: CountPlan
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -172,6 +174,9 @@ func _ready() -> void:
 		return
 	if variant == "garden":
 		_start_garden()
+		return
+	if variant == "count":
+		_start_count()
 		return
 	riot = PrisonRiot.new()
 	riot.name = "Riot"
@@ -357,6 +362,18 @@ func _start_garden() -> void:
 	garden_case.shift_screen = $ShiftScreen
 	add_child(garden_case)
 	garden_case.start(city.get("comisario"))
+	city.transform = CityLayout.anchor("prison")
+	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
+	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+
+
+## The count (carcel-recuento.md, step 2): the inmates and the workers in the yard and the list by the building. The
+## cops come from the station in the patrol car.
+func _start_count() -> void:
+	count = CountPlan.new()
+	count.name = "CountPlan"
+	add_child(count)
+	count.setup(self, case_seed)
 	city.transform = CityLayout.anchor("prison")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
