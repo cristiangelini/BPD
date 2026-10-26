@@ -89,3 +89,7 @@ Qué 3 plantas son raras y en qué orden aparecen, qué verdura tiene cada cante
   verduras arrancadas por error). El horario dura 6 minutos (`GardenPlan.TIME`, `ended`); se gana al terminar con
   menos de 3 escapados: 600 - 100 por escapado + 50 por poroto temprano + 25 por bajado - 10 por verdura, cuota 400.
   Jugar lo sortea con las otras cárceles (`PlaceDraw.PRISONS`, ahora en novenos). Captura: `paso6-planilla.png`.
+- **Paso 7:** online decide el anfitrión (`GardenCase` y `GardenPlan` con `follower` en los invitados) y el caso le
+  manda al invitado el reloj del horario y los conteos (`CaseSync`, `snapshot`). Las plantas (su etapa, si crece y si
+  la arrancaron), los jardineros y los que trepan (con su pie y su punta en `net_setup`, y si están trepando) van por
+  `NpcSync`; E en una planta o en el que trepa va por `ActionSync`. El "crrc" lo oye cada PC por su cuenta.

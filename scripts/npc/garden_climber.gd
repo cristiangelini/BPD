@@ -62,6 +62,25 @@ func _over() -> void:
 	_escape()
 
 
+## What a guest's copy needs besides an inmate's (NpcSync): whether he's up the giant.
+func net_state() -> Array:
+	var state := super()
+	state.append(climbing)
+	return state
+
+
+func apply_net_state(state: Variant) -> void:
+	super(state)
+	climbing = state[state.size() - 1]
+
+
+func net_setup() -> Dictionary:
+	var setup := super()
+	setup.foot = foot
+	setup.top = top
+	return setup
+
+
 ## Pulled off the giant: down on his backside at its foot, cuffed.
 func pull_down() -> void:
 	if not climbing:
@@ -69,6 +88,8 @@ func pull_down() -> void:
 	climbing = false
 	if _climb:
 		_climb.kill()
+	if follower:
+		return
 	var down := create_tween()
 	down.tween_property(self, "global_position", prison.global_transform * foot, FALL_TIME).set_ease(Tween.EASE_IN)
 	cuffed(Handcuffs.SECONDS)

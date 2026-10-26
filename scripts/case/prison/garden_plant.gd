@@ -117,16 +117,18 @@ func start_growing() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if not growing or stage >= STAGES:
-		return
-	if follower:
-		_tick_creak(delta)
+	if not growing or stage >= STAGES or follower:
 		return
 	grow_left -= delta
 	if grow_left <= 0.0:
 		grow_left = GROW_EVERY
 		set_stage(stage + 1)
-	_tick_creak(delta)
+
+
+## The creak is each PC's own (a guest's copy has no physics of its own, step 7).
+func _process(delta: float) -> void:
+	if growing and not pulled:
+		_tick_creak(delta)
 
 
 ## A cop near enough hears it now and then.
@@ -211,6 +213,8 @@ func apply_net_state(state: Variant) -> void:
 	growing = state[1]
 	if state[2] and not pulled:
 		pull_out()
+	# NpcSync turns a guest's copy's processing off; the creak is local, so it comes back on while it grows.
+	set_process(growing and not pulled)
 	if state[0] != stage:
 		set_stage(state[0])
 

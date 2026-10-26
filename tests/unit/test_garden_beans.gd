@@ -78,14 +78,14 @@ func test_it_creaks_to_a_cop_nearby() -> void:
 	bean.growing = true
 	cop.global_position = bean.global_position + Vector3(1, 0, -1)
 	bean._creak_left = 0.0
-	await wait_physics_frames(2)
+	await wait_seconds(0.1)
 	assert_true(bean.creaking())
 	var far := plan.beans[1]
 	far.set_stage(1)
 	far.growing = true
 	cop.global_position = far.global_position + Vector3(0, 0, -GardenPlant.HEAR - 3.0)
 	far._creak_left = 0.0
-	await wait_physics_frames(2)
+	await wait_seconds(0.1)
 	assert_false(far.creaking())
 
 
