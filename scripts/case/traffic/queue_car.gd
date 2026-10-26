@@ -177,6 +177,10 @@ var circus := {}
 ## dancers, as in `parade` (ParadeFloat.draw's); empty for a city car caught in the parade.
 var parade_mode := false
 var parade := {}
+## Step 2: how long the float's been held at the checkpoint, and whether its music's cut for it (the crowd boos).
+var held_seconds := 0.0
+var music_cut := false
+var _beat := 0.0
 ## How many times its animal was offered food (step 2).
 var fed := 0
 ## Step 3: El Peludo, how long nobody's watched him, how many person's things he did and how long the one he's at
@@ -232,6 +236,7 @@ func _ready() -> void:
 		return
 	if not parade.is_empty():
 		ParadeFloat.build(self, parade)
+		ParadeFloat.add_notes(self)
 		_build_labels()
 		return
 	# The body leaves the trunk's top free, so the cops' hands reach the lid: the cabin and hood, and under the trunk.
@@ -1026,6 +1031,23 @@ func waiting() -> bool:
 	return state == "waiting"
 
 
+## A float's music (control-desfile.md, step 2): held at the checkpoint, first in the queue, for MUSIC_HOLD seconds it
+## stops and the crowd boos (the queue's patience runs out faster); it plays again once the float moves on.
+func _play_music(delta: float) -> void:
+	_beat += delta
+	var at_checkpoint := waiting() and not (is_instance_valid(ahead) and ahead.in_queue())
+	if at_checkpoint:
+		held_seconds += delta
+		if held_seconds >= ParadeFloat.MUSIC_HOLD and not music_cut:
+			music_cut = true
+			for cop: Cop in get_tree().get_nodes_in_group("cops"):
+				cop.show_hint("HINT_PARADE_MUSIC_CUT")
+	elif state != "waiting":
+		held_seconds = 0.0
+		music_cut = false
+	ParadeFloat.show_music(self, not music_cut, _beat)
+
+
 ## In the queue, stopped or rolling up to it: not let through, not sneaking, not gone.
 func in_queue() -> bool:
 	return state == "coming" or state == "waiting"
@@ -1110,6 +1132,8 @@ func _physics_process(delta: float) -> void:
 		return
 	if circus.get("costume", false):
 		_act_human(delta)
+	if not parade.is_empty():
+		_play_music(delta)
 	if racer and state in ["gathering", "revving", "racing", "punctured"]:
 		_race(delta)
 		return

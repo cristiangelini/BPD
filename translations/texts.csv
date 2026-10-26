@@ -2301,6 +2301,8 @@ PARADE_HELD_MARACAS,"maracas","maracas","maracas"
 PARADE_HELD_FAN,"abanico","fan","leque"
 PARADE_HELD_RIBBON,"cinta","ribbon","fita"
 PARADE_SIGN,"CARROZA %d","FLOAT %d","CARRO %d"
+PARADE_BOO,"¡Buuu!","Booo!","Uuuh!"
+HINT_PARADE_MUSIC_CUT,"¡La carroza lleva mucho parada y se cortó la música! El público abuchea: la fila se impacienta el doble.","The float's been stopped too long and its music stopped! The crowd boos: the queue loses patience twice as fast.","O carro está parado há muito tempo e a música parou! O público vaia: a fila perde a paciência duas vezes mais rápido."
 SHIFT_BRIBES,Sobornos,Bribes,Subornos
 SHIFT_AGENT_FINE,Multa de asuntos internos,Internal affairs fine,Multa da corregedoria
 SHIFT_INVESTIGATION_OPENED,Asuntos internos abrió una investigación.,Internal affairs opened an investigation.,A corregedoria abriu uma investigação.
