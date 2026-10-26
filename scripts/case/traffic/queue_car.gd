@@ -169,6 +169,8 @@ var fog := {}
 ## FogCar.BLIND_SPEED and brakes only once it sees what's ahead (FogCar.SIGHT): behind a car it bumps into it, at the
 ## barrier it runs the checkpoint ("overrun").
 var warned := false
+## It bumped into the car ahead in the fog (online, the guest's copy says so too).
+var bumped := false
 ## Its horn's sound over it, seen through the fog (step 3): it answers the foghorn (FogHorn).
 var horn_bubble: HornBubble
 ## A racer comes in a heat, out of the queue (step 2): it gathers at the back corner, revs, then races past the
@@ -681,6 +683,8 @@ func net_state() -> Array:
 		return [state, lid.is_open if lid else false, rig.pranks, rig.last_prank]
 	if wedding_mode:
 		return [state, lid.is_open if lid else false, blown, keys_taken]
+	if fog_mode:
+		return [state, lid.is_open if lid else false, bumped]
 	if race_mode:
 		var sparks := get_node_or_null("Exhaust/Sparks") as CPUParticles3D
 		return [state, lid.is_open if lid else false, flat, sparks != null and sparks.emitting]
@@ -702,6 +706,10 @@ func apply_net_state(net: Array) -> void:
 			# The host's cop took the keys: its relative drives here too.
 			keys_taken = true
 			_relative_takes_over()
+	if fog_mode and net.size() > 2 and net[2] and not bumped:
+		# It bumped into the car ahead on the host: its driver says so here too.
+		bumped = true
+		say(tr(FogCar.bump_line(plate)))
 	if race_mode and net.size() > 3:
 		if net[2] and not flat:
 			# Punctured on the host: flat here too, and its driver says so.
@@ -907,6 +915,7 @@ func _overrun() -> void:
 	warned = true
 	if is_instance_valid(ahead) and ahead.in_queue():
 		speed = 0.0
+		bumped = true
 		say(tr(FogCar.bump_line(plate)))
 		return
 	state = "overrun"

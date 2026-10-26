@@ -57,6 +57,8 @@ var cars: Array[QueueCar] = []
 var spawned := 0
 ## How many cars sneaked by so far.
 var sneaked := 0
+## How many cars ran the checkpoint in the fog, unwarned (counted in `sneaked` too).
+var overruns := 0
 ## Online, a guest's queue only shows the host's: its cars come from the host (NpcSync) and so does the meter.
 var follower := false
 ## The street race's racers (control-carrera.md, step 2): out of the queue, in heats; how many heats came so far.
@@ -249,6 +251,7 @@ func spawn() -> QueueCar:
 ## queue's patience goes up.
 func overran(car: QueueCar) -> void:
 	sneaked += 1
+	overruns += 1
 	_leave(car, true)
 	_set_patience(patience + FogCar.OVERRUN_PATIENCE)
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
@@ -266,12 +269,15 @@ func _leave(car: QueueCar, sneaked: bool) -> void:
 		passed.emit(car, sneaked)
 
 
-## A guest's queue shows the host's meter, and its hint when one more car sneaked by.
-func show_patience(value: float, host_sneaked: int) -> void:
+## A guest's queue shows the host's meter, and its hint when one more car sneaked by (or ran the checkpoint in the
+## fog, `host_overruns`).
+func show_patience(value: float, host_sneaked: int, host_overruns := 0) -> void:
 	if host_sneaked > sneaked:
 		sneaked = host_sneaked
+		var hint := "HINT_FOG_OVERRUN" if host_overruns > overruns else "HINT_CAR_SNEAKED"
 		for cop: Cop in get_tree().get_nodes_in_group("cops"):
-			cop.show_hint("HINT_CAR_SNEAKED")
+			cop.show_hint(hint)
+	overruns = maxi(overruns, host_overruns)
 	_set_patience(value)
 
 
