@@ -231,6 +231,46 @@ func getaway(_index: int, _city: Node3D) -> Dictionary:
 	return {"at": Transform3D(global_basis, out), "via": [to_global(Vector3(GETAWAY_AT.x, 0, SIZE.y / 2 + 5.0))]}
 
 
+## Online, what the guests' hotel takes from the host's: who signed the notebook, the concierge's anger, Tito, the
+## safe, the card on the suite's door, the maid's round, the guest book, and the clues ruined on the host.
+func net_state() -> Dictionary:
+	var state := {"signed": guests.map(func(guest: HotelGuest) -> bool: return guest.signed)}
+	if not case:
+		return state
+	state.angry = concierge.angry_left
+	state.tito = [bellboy.delivered, bellboy.offended]
+	state.book = book.signed_over
+	state.suite = [clues.safe.touched, clues.hanger.hung, clues.suite_cleaned, clues.maid_walking]
+	state.maid = [maid.position, maid.rotation.y]
+	return state
+
+
+func apply_net_state(state: Dictionary) -> void:
+	for guest in guests:
+		guest.signed = state.signed[guest.index]
+	if not case or not state.has("tito"):
+		return
+	concierge.angry_left = state.angry
+	bellboy.delivered = state.tito[0]
+	bellboy.offended = state.tito[1]
+	book.signed_over = state.book
+	clues.safe.touched = state.suite[0]
+	if clues.hanger.hung != state.suite[1]:
+		clues.hanger.hung = state.suite[1]
+		clues.hanger._show()
+	clues.suite_cleaned = state.suite[2]
+	clues.maid_walking = state.suite[3]
+	maid.position = state.maid[0]
+	maid.rotation.y = state.maid[1]
+	for kind: String in ["hair", "bite"]:
+		if case.ruined.has(kind) and case.items.has(kind):
+			var item: CrimeClueItem = case.items[kind]
+			item.spoiled = true
+			item._eaten_part.visible = false
+	if case.ruined.has("footprint") and case.flour_print and not case.flour_print.wiped:
+		case.flour_print.wipe()
+
+
 func witness_offended() -> bool:
 	return bellboy != null and bellboy.offended
 

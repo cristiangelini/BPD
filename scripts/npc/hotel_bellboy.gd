@@ -76,7 +76,9 @@ func offend() -> void:
 
 func _physics_process(delta: float) -> void:
 	super(delta)
-	if not hotel or not is_instance_valid(suitcase) or not suitcase.is_inside_tree() or delivered:
+	# Online the host's Tito decides when his suitcase got there.
+	if not hotel or not is_instance_valid(suitcase) or not suitcase.is_inside_tree() or delivered \
+			or (case and case.follower):
 		return
 	var at := suitcase.global_position
 	var now := hotel.floor_of(at + Vector3.UP * 0.1)
