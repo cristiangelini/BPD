@@ -70,7 +70,7 @@ Van disfrazados y tienen que pasar desapercibidos mientras juntan evidencia (dec
 6. **Club de abuelos:** bingo y baile, y el capo es la abuela.
 7. **Gimnasio:** hay que entrenar sin rendirse. Propuesta en [infiltracion-gimnasio.md](infiltracion-gimnasio.md) (decisión 172).
 8. **Coro de iglesia:** hay que cantar afinado (por la voz).
-9. **Subasta de arte:** se puja con plata de la cuota, y si compran algo, lo pagan.
+9. **Subasta de arte:** se puja con plata de la cuota, y si compran algo, lo pagan. Propuesta en [infiltracion-subasta.md](infiltracion-subasta.md) (decisión 177).
 10. **Escuela de ladrones:** clases de cómo robar; si sacan buenas notas, conocen al jefe de la banda. Propuesta en [infiltracion-escuela.md](infiltracion-escuela.md) (decisión 173).
 
 ## 6. Cárcel (casos en la prisión)
