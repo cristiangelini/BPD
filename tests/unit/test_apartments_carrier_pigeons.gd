@@ -26,7 +26,7 @@ func test_the_loft_on_the_balcony() -> void:
 	var tower := _tower()
 	await wait_physics_frames(2)
 	assert_has(tower.raid.suspicions, "carrier_pigeons")
-	var rig := tower.rig as PigeonsRig
+	var rig := tower.rig as CarrierPigeonsRig
 	assert_eq(tower.main, rig.loft)
 	assert_almost_eq(rig.loft.mass, 25.0, 0.01)
 	assert_true(rig.loft_on_balcony())
@@ -42,14 +42,14 @@ func test_the_loft_on_the_balcony() -> void:
 func test_a_pigeon_brings_the_necklace() -> void:
 	var tower := _tower()
 	await wait_physics_frames(2)
-	var rig := tower.rig as PigeonsRig
+	var rig := tower.rig as CarrierPigeonsRig
 	var cop: Cop = tower.get_node("Cop")
 	rig.send_pigeon()
 	assert_true(rig.pigeon.carries)
 	assert_eq(rig.pigeon.prompt_key(cop), "", "not while it flies")
 	await wait_seconds(MessengerPigeon.FLY_TIME + 0.3)
 	assert_eq(rig.pigeon.state, MessengerPigeon.State.LANDED)
-	assert_lt(rig.pigeon.global_position.distance_to(rig.loft.to_global(PigeonsRig.BOARD)), 0.15, "on the board")
+	assert_lt(rig.pigeon.global_position.distance_to(rig.loft.to_global(CarrierPigeonsRig.BOARD)), 0.05, "on the board")
 	assert_eq(rig.pigeon.prompt_key(cop), "PROMPT_PIGEON_TAKE")
 	rig.pigeon.use(cop)
 	assert_true(rig.necklace.visible)
@@ -64,7 +64,7 @@ func test_a_pigeon_brings_the_necklace() -> void:
 func test_a_running_cop_scares_it_off() -> void:
 	var tower := _tower()
 	await wait_physics_frames(2)
-	var rig := tower.rig as PigeonsRig
+	var rig := tower.rig as CarrierPigeonsRig
 	var cop: Cop = tower.get_node("Cop")
 	rig.send_pigeon()
 	await wait_seconds(MessengerPigeon.FLY_TIME + 0.3)
@@ -84,9 +84,9 @@ func test_a_running_cop_scares_it_off() -> void:
 func test_pigeons_come_on_their_own_while_the_loft_is_out() -> void:
 	var tower := _tower()
 	await wait_physics_frames(2)
-	var rig := tower.rig as PigeonsRig
+	var rig := tower.rig as CarrierPigeonsRig
 	Engine.time_scale = 8.0
-	await wait_seconds(PigeonsRig.ARRIVE_EVERY + MessengerPigeon.FLY_TIME + 1.0)
+	await wait_seconds(CarrierPigeonsRig.ARRIVE_EVERY + MessengerPigeon.FLY_TIME + 1.0)
 	assert_eq(rig.arrivals, 1)
 	rig.loft.global_position = tower.to_global(Vector3(3.0, ApartmentTower.TOP_Y + 0.5, 4.0))
 	assert_false(rig.loft_on_balcony())
@@ -95,7 +95,7 @@ func test_pigeons_come_on_their_own_while_the_loft_is_out() -> void:
 func test_feathers_from_the_elevator_to_30b() -> void:
 	var tower := _tower()
 	await wait_physics_frames(2)
-	var rig := tower.rig as PigeonsRig
+	var rig := tower.rig as CarrierPigeonsRig
 	assert_eq(rig.trail[0].get_parent(), tower.elevator, "some in the elevator")
 	for spot: ClueSpot in rig.trail.slice(1):
 		assert_true(ApartmentTower.on_top_floor(tower.to_local(spot.global_position)))
