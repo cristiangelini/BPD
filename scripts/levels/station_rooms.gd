@@ -56,6 +56,12 @@ const CHOIR_DISGUISES: Array[String] = ["robe", "songbook", "robe", "songbook", 
 const CHOIR_DISGUISES_AT := Vector3(-5.15, 0, 2.75)
 const CHOIR_GAP := 0.34
 const SONGBOOK_SCENE := "res://scenes/props/songbook.tscn"
+## The mime troupe's (infiltracion-mimos.md, step 1): a beret, a white face and a striped shirt for each cop, in a
+## fourth row.
+const MIME_DISGUISES: Array[String] = ["mime_beret", "mime_face", "mime_shirt", "mime_beret", "mime_face", "mime_shirt",
+	"mime_beret", "mime_face", "mime_shirt", "mime_beret", "mime_face", "mime_shirt"]
+const MIME_DISGUISES_AT := Vector3(-5.15, 0, 3.15)
+const MIME_GAP := 0.3
 
 ## Furniture: [model, position, turn]. The models come from tools/modelgen/models/station.js.
 const FURNITURE := [

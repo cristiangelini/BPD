@@ -106,11 +106,55 @@ export function buildFoldedVest() {
 	return b.build();
 }
 
+// The mime troupe's disguises (infiltracion-mimos.md, step 1), each origin where it sits on a cop (DisguisePiece.SLOTS):
+// a black beret, a white painted face with black brows and a teardrop, and a striped shirt. Placeholder.
+export function buildMimeBeret() {
+	const b = new Builder('disguise_mime_beret');
+	const black = mat('beret_black', 0x18181c);
+	b.add('beret', black, ellipsoid(0.24, 0.06, 0.23, 12, 6), { pos: V(0.03, 0.07, 0), rot: [0, 0, -0.15] });
+	b.add('stalk', black, new THREE.CylinderGeometry(0.01, 0.012, 0.04, 6), { pos: V(0.03, 0.14, 0) });
+	return b.build();
+}
+
+// The white face, 0.26 x 0.3 x 0.06 m, origin in its middle (over the cop's nose).
+export function buildMimeFace() {
+	const b = new Builder('disguise_mime_face');
+	const white = mat('mime_white', 0xfafafa), black = mat('mime_black', 0x101012);
+	b.add('face', white, ellipsoid(0.13, 0.15, 0.03, 12, 6));
+	for (const s of [-1, 1]) b.add('brows', black, new THREE.BoxGeometry(0.06, 0.012, 0.01), { pos: V(s * 0.05, 0.07, 0.03), rot: [0, 0, s * 0.3] });
+	b.add('tear', black, ellipsoid(0.01, 0.02, 0.006, 6, 4), { pos: V(0.05, -0.02, 0.03) });
+	b.add('lips', mat('mime_red', 0xc0182a), ellipsoid(0.03, 0.012, 0.008, 8, 4), { pos: V(0, -0.08, 0.028) });
+	return b.build();
+}
+
+// The striped shirt worn: black and white rings around the cop's chest and belly, origin at the chest's front, the
+// cop's middle 0.3 m behind (-Z).
+export function buildMimeShirt() {
+	const b = new Builder('disguise_mime_shirt');
+	const white = mat('shirt_white', 0xf2f2f2), black = mat('shirt_black', 0x1a1a1e);
+	for (let i = 0; i < 6; i++) {
+		const t = i / 6, h = 0.55 / 6;
+		const top = 0.3 + t * 0.17, bottom = 0.3 + (t + 1 / 6) * 0.17;
+		b.add(i % 2 ? 'black' : 'white', i % 2 ? black : white, new THREE.CylinderGeometry(top, bottom, h, 14, 1, true), { pos: V(0, 0.12 - (i + 0.5) * h, -0.3) });
+	}
+	return b.build();
+}
+
+// The shirt folded, as it lies in front of the lockers: 0.4 x 0.08 x 0.3 m, origin in its middle.
+export function buildFoldedMimeShirt() {
+	const b = new Builder('folded_mime_shirt');
+	b.add('shirt', mat('shirt_white', 0xf2f2f2), new THREE.BoxGeometry(0.4, 0.08, 0.3));
+	for (const z of [-0.1, 0, 0.1]) b.add('stripes', mat('shirt_black', 0x1a1a1e), new THREE.BoxGeometry(0.41, 0.082, 0.04), { pos: V(0, 0, z) });
+	return b.build();
+}
+
 export const models = {
 	disguise_wig: buildDisguiseWig, disguise_mustache: buildDisguiseMustache, disguise_glasses: buildDisguiseGlasses,
 	disguise_robe: buildDisguiseRobe, folded_robe: buildFoldedRobe, songbook: buildSongbook,
 	disguise_cleaner_cap: buildCleanerCap, disguise_face_mask: buildFaceMask, disguise_cleaner_vest: buildCleanerVest,
 	folded_vest: buildFoldedVest,
+	disguise_mime_beret: buildMimeBeret, disguise_mime_face: buildMimeFace, disguise_mime_shirt: buildMimeShirt,
+	folded_mime_shirt: buildFoldedMimeShirt,
 };
 
 export const views = {
@@ -129,5 +173,14 @@ export const views = {
 			{ name: 'songbook', pos: [0.6, 0.02, 0.7], rotY: -0.4 },
 		],
 		cam: { pos: [0.3, 1.2, 3.0], target: [0.1, 0.5, 0], fov: 40 },
+	},
+	mime_disguise: {
+		items: [
+			{ name: 'disguise_mime_shirt', pos: [-0.4, 0.95, 0.3] },
+			{ name: 'disguise_mime_face', pos: [-0.4, 1.3, 0.09] },
+			{ name: 'disguise_mime_beret', pos: [-0.4, 1.42, 0.3] },
+			{ name: 'folded_mime_shirt', pos: [0.55, 0.04, 0.2], rotY: 0.3 },
+		],
+		cam: { pos: [0.3, 1.2, 3.0], target: [0.1, 0.7, 0], fov: 40 },
 	},
 };
