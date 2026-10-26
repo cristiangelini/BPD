@@ -180,3 +180,4 @@
 - Bribes online and hints: an offer is marked on every PC, so no partner gets the same one again; the cop is told when the agent arrives and when he saw the bribe.
 - Museum crime scene design (escena-museo.md, decision 200): six identical guards who all say they were in the bathroom, the bathroom alibi as a clue, the floor polisher, the living statue witness and the art van that drops empty frames.
 - The museum on its lot in the city (escena-museo.md, step 1, --place=museum): hall, security room, lockers, the big gallery with the empty frame, the storage room and the one tiny bathroom.
+- Museum people (escena-museo.md, step 2): six guards alike drawn with the seed (hair under the cap, glasses, shoe size, teeth, one or two fake mustaches) who swear they were in the bathroom, Señora Pincel the director, and the living statue on the steps. New placeholder models npc_guardia_museo, npc_directora_museo and npc_estatua.

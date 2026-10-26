@@ -6,7 +6,8 @@ extends CrimeScenePlace
 ## sandwich) and their lockers on its east side. Behind the hall, the big gallery: paintings on the walls, busts on
 ## pedestals, the velvet rope and the empty frame where the stolen piece hung. On the gallery's west side, the storage
 ## room with paintings under sheets, and the bathroom: just one, tiny, with a toilet, a sink, a mirror, the paper roll
-## and the hand dryer. The guards, the director and the living statue come in step 2, the case in step 4.
+## and the hand dryer. In the gallery, the six guards alike (step 2); in the hall, the director; on the steps, the
+## living statue. The case comes in step 4.
 ## Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
@@ -71,9 +72,15 @@ const MIRROR_AT := Vector3(BATHROOM_X + 0.09, 1.55, 3.4)
 const PAPER_AT := Vector3(BATHROOM_X + 0.1, 0.7, BATHROOM_Z + 0.5)
 const DRYER_AT := Vector3(-9.0, 1.3, HALL_Z - 0.15)
 const DESK_HALL_AT := Vector3(-3.5, 0, 7.5)
-## Where the people stand (step 2): the director in the hall, the living statue on the steps.
+## Where the people stand: the six guards in a row across the gallery facing the hall's door, the director in the
+## hall and the living statue on the steps, facing the street.
+const GUARDS_AT: Array[Vector3] = [
+	Vector3(-4.5, 0, 1.5), Vector3(-1.9, 0, 1.5), Vector3(1.4, 0, 1.5), Vector3(4.0, 0, 1.5), Vector3(6.6, 0, 1.5),
+	Vector3(9.2, 0, 1.5),
+]
 const DIRECTOR_AT := Vector3(2.0, 0, 6.5)
-const STATUE_AT := Vector3(4.5, 0, 11.6)
+## The statue stands on the middle step (_front), so he's that step's height up.
+const STATUE_AT := Vector3(4.5, 0.12, 11.5)
 const COLUMNS_X: Array[float] = [-6.0, -2.4, 2.4, 6.0]
 const STONE := Color(0.88, 0.86, 0.8)
 const WAXED := Color(0.72, 0.52, 0.34)
@@ -91,6 +98,9 @@ const CANVAS_COLORS: Array[Color] = [
 	Color(0.95, 0.85, 0.4), Color(0.45, 0.35, 0.6),
 ]
 
+var guards: Array[MuseumGuard] = []
+var director: MuseumDirector
+var statue: LivingStatue
 var _builder: PlaceBuilder
 
 
@@ -107,6 +117,12 @@ func _ready() -> void:
 	_storage()
 	_bathroom()
 	_hall()
+	_people()
+
+
+## The guard by index (the order of the case's traits).
+func suspect(index: int) -> CollisionObject3D:
+	return guards[index] if index >= 0 and index < guards.size() else null
 
 
 ## Whether a point in the world (ignoring height) is on the museum's lot, steps included.
@@ -131,6 +147,28 @@ func in_bathroom(world: Vector3) -> bool:
 func in_gallery(world: Vector3) -> bool:
 	var local := to_local(world)
 	return local.x > GALLERY_X and local.x < HALF_X and local.z > BACK_Z and local.z < HALL_Z
+
+
+## The six guards alike (GuardTraits.draw with the case seed), Señora Pincel in the hall and the living statue on the
+## steps.
+func _people() -> void:
+	var traits := GuardTraits.draw(case_seed)
+	for i in traits.size():
+		var guard := MuseumGuard.new()
+		guard.name = "Guard%d" % i
+		guard.traits = traits[i]
+		guard.index = i
+		guard.position = GUARDS_AT[i] + Vector3(0, FLOOR_TOP, 0)
+		add_child(guard)
+		guards.append(guard)
+	director = MuseumDirector.new()
+	director.name = "Director"
+	director.position = DIRECTOR_AT + Vector3(0, FLOOR_TOP, 0)
+	add_child(director)
+	statue = LivingStatue.new()
+	statue.name = "Statue"
+	statue.position = STATUE_AT
+	add_child(statue)
 
 
 ## The floor, the roof with its lights and the outer walls, with the front door.
