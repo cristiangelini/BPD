@@ -102,3 +102,8 @@ Cuáles son los 2 tramposos, qué 3 presos se esconden y en cuáles de los 8 esc
   escapados o a los 6 minutos (`CountPlan.ended`). Sueldo 600 - 100 por escapado + 25 por escondido encontrado - 10
   por trabajador marcado, cuota 400. Jugar sortea `prison_count` con las otras cárceles, ahora en décimos. Captura:
   `paso6-planilla.png`.
+- **Paso 7:** online decide el `CountPlan` del anfitrión (`follower` en los invitados, también en los escondites). Los
+  presos, el cocinero y el plomero los mueve `NpcSync`, con la cruz y si se están refregando en su estado; el que sale
+  de un escondite y los que corren se copian con su número. La lista, quién está en cada escondite, el reloj y las
+  cuentas llegan con el caso (`CountCase.snapshot`). Con 19 personas moviéndose en el patio los paquetes de `NpcSync`
+  pasaban el MTU, así que ahora van de a 8 estados en vez de 12.

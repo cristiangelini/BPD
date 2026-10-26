@@ -10,7 +10,8 @@ const SEND_RATE := 15.0
 const EASE := 12.0
 ## A puppet further than this from where it should be jumps there instead of walking.
 const SNAP_DISTANCE := 3.0
-const PER_PACKET := 12
+## States per packet: few enough that a packet of busy ones (the count's 19 in the yard) stays under the MTU.
+const PER_PACKET := 8
 
 var net: Node
 var npcs: Array[Node3D] = []

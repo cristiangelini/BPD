@@ -5,7 +5,8 @@ extends Node
 ## the whole list is crossed off at once (CountPlan.completed): SALARY, PER_ESCAPED less for each one out through the
 ## gate, PER_FOUND more for each hidden one found before he ran and PER_WRONG less for each worker chalked by mistake.
 ## Quota of its own, like the other prison cases. Lost with LOSE_AT out through the gate or when the count's time is up
-## (CountPlan.ended). Every number here is (propuesta).
+## (CountPlan.ended). Step 7: online the host's case decides and a guest's follows it (CaseSync, snapshot). Every
+## number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 6.0

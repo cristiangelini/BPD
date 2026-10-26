@@ -13,7 +13,9 @@ extends Node3D
 ## one finds him (`found`): out he comes, chalked and counted, to wander the yard. Unfound, each runs for the gate in
 ## turn (RUN_FIRST seconds into the count, then RUN_EVERY apart; BlackoutInmate): cuffed and walked into a cell he's
 ## `caught`, and counted; at the gate he's `escaped`, crossed off as gone. Step 6: the count lasts TIME seconds
-## (`ended`, the time is up) and is done when the whole list is crossed off at once (`completed`).
+## (`ended`, the time is up) and is done when the whole list is crossed off at once (`completed`). Step 7: on a guest
+## the host's plan decides (`follower`); the list, the hideouts and the counts come with the case (net_state), the
+## people in the yard and the runners by NpcSync.
 
 signal counted_one(number: int)
 signal wrong_one(worker: CountInmate)
@@ -84,7 +86,11 @@ var time := 0.0
 var over := false
 var _runs := 0
 ## A guest's copy (step 7): the host's one decides.
-var follower := false
+var follower := false:
+	set(value):
+		follower = value
+		for hideout in hideouts:
+			hideout.follower = value
 var _rng := RandomNumberGenerator.new()
 
 
@@ -115,9 +121,7 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 		var activity: int = activities[i]
 		var nth: int = counts.get(activity, 0)
 		counts[activity] = nth + 1
-		var inmate := _inmate("Inmate%02d" % out[i], activity, nth, YardInmate.MODEL)
-		inmate.number = out[i]
-		_number(inmate, out[i])
+		var inmate := _inmate("Inmate%02d" % out[i], activity, nth, YardInmate.MODEL, out[i])
 		number_of[inmate] = out[i]
 		inmates.append(inmate)
 	var wanderers := inmates.filter(func(inmate: CountInmate) -> bool:
@@ -141,6 +145,7 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 		add_child(hideout)
 		hideout.searched.connect(_on_searched)
 		hideouts.append(hideout)
+	child_entered_tree.connect(_on_child_entered)
 	var spots := hideouts.duplicate()
 	_shuffle(spots)
 	for i in hidden.size():
@@ -158,9 +163,10 @@ func _shuffle(list: Array) -> void:
 
 
 ## One of the people in the yard, standing where `activity` (its `nth` one) starts.
-func _inmate(named: String, activity: int, nth: int, model: PackedScene) -> CountInmate:
+func _inmate(named: String, activity: int, nth: int, model: PackedScene, number := 0) -> CountInmate:
 	var inmate := CountInmate.new()
 	inmate.name = named
+	inmate.number = number
 	inmate.prison = prison
 	inmate.model = model
 	inmate.activity = activity as YardInmate.Activity
@@ -187,8 +193,8 @@ func _inmate(named: String, activity: int, nth: int, model: PackedScene) -> Coun
 	return inmate
 
 
-## The inmate's number on his chest and his back.
-func _number(inmate: Node3D, number: int) -> void:
+## The inmate's number on his chest and his back (a CountInmate puts it on himself).
+static func wear_number(inmate: Node3D, number: int) -> void:
 	for side in [1, -1]:
 		var label := Label3D.new()
 		label.name = "Number" if side == 1 else "NumberBack"
@@ -289,9 +295,7 @@ func _on_searched(hideout: CountHideout, cop: Cop) -> void:
 		return
 	var number := hideout.occupant
 	hideout.occupant = 0
-	var inmate := _inmate("Inmate%02d" % number, YardInmate.Activity.WANDER, 0, YardInmate.MODEL)
-	inmate.number = number
-	_number(inmate, number)
+	var inmate := _inmate("Inmate%02d" % number, YardInmate.Activity.WANDER, 0, YardInmate.MODEL, number)
 	number_of[inmate] = number
 	inmates.append(inmate)
 	inmate.global_position = hideout.global_position + hideout.global_basis.z * 1.0
@@ -324,7 +328,7 @@ func run(number: int) -> BlackoutInmate:
 	runner.route = way
 	runner.set_meta("number", number)
 	add_child(runner)
-	_number(runner, number)
+	wear_number(runner, number)
 	runner.global_position = at
 	runner.active = true
 	runner.say("COUNT_RUNNER")
@@ -351,6 +355,55 @@ func _on_caught(runner: BlackoutInmate) -> void:
 	caught += 1
 	board.set_marked(runner.get_meta("number"), true)
 	caught_one.emit(caught)
+
+
+## A guest's copy of someone the host brought in (NpcSync makes it here): one found in a hideout joins the yard; a
+## runner gets his number and his way to a cell, so the guest's cops see the prompt to walk him there.
+func _on_child_entered(node: Node) -> void:
+	if not follower:
+		return
+	if node is CountInmate and not inmates.has(node):
+		var inmate := node as CountInmate
+		inmate.prison = prison
+		inmate.chalked.connect(_on_chalked)
+		number_of[inmate] = inmate.number
+		inmates.append(inmate)
+	elif node is BlackoutInmate and not runners.has(node):
+		var runner := node as BlackoutInmate
+		var number := String(runner.name).trim_prefix("Runner").to_int()
+		runner.prison = prison
+		runner.set_meta("number", number)
+		runners.append(runner)
+		wear_number.call_deferred(runner, number)
+		(func() -> void: BlackoutEscort.to_block(runner, prison).follower = true).call_deferred()
+
+
+## For a guest's case (CountCase.snapshot): the clock, the counts, the list and who's in each hideout.
+func net_state() -> Array:
+	var occupants: Array[int] = []
+	for hideout in hideouts:
+		occupants.append(hideout.occupant)
+	return [started, time, over, wrong, rubbed, found, caught, escaped, board.marked.keys(), board.escaped.keys(),
+		occupants]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] and not started:
+		started = true
+	time = state[1]
+	over = state[2]
+	wrong = state[3]
+	rubbed = state[4]
+	found = state[5]
+	caught = state[6]
+	escaped = state[7]
+	for number: int in board.numbers:
+		if state[8].has(number) != board.is_marked(number):
+			board.set_marked(number, state[8].has(number))
+		if state[9].has(number) and not board.is_escaped(number):
+			board.set_escaped(number)
+	for i in mini(state[10].size(), hideouts.size()):
+		hideouts[i].occupant = state[10][i]
 
 
 func time_left() -> float:

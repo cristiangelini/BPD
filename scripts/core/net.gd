@@ -256,6 +256,7 @@ func spawn_cops(local: Cop) -> void:
 	raids.append_array(local.get_parent().find_children("*", "TalentCase", true, false))
 	raids.append_array(local.get_parent().find_children("*", "VipCase", true, false))
 	raids.append_array(local.get_parent().find_children("*", "GardenCase", true, false))
+	raids.append_array(local.get_parent().find_children("*", "CountCase", true, false))
 	raids.append_array(local.get_parent().find_children("*", "MarketCase", true, false))
 	if not raids.is_empty():
 		case_sync = CaseSync.new(self, raids[0])
