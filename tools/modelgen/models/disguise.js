@@ -374,6 +374,57 @@ export function buildFoldedChessVest() {
 	return b.build();
 }
 
+// The biker gang's disguises (infiltracion-motos.md, step 1), each origin where it sits on a cop
+// (DisguisePiece.SLOTS): a red bandana with white dots tied at the back, a long grey fake beard down to the chest and
+// a black leather jacket with patches and silver zips. Placeholder.
+export function buildBikerBandana() {
+	const b = new Builder('disguise_biker_bandana');
+	const red = mat('biker_red', 0xb02424), dot = mat('biker_dot', 0xf4f0e8);
+	b.add('bandana', red, ellipsoid(0.235, 0.09, 0.235, 12, 6), { pos: V(0, 0.04, 0.0) });
+	b.add('bandana', red, new THREE.CylinderGeometry(0.235, 0.235, 0.05, 14, 1, true), { pos: V(0, 0.02, 0) });
+	for (let i = 0; i < 8; i++) {
+		const a = (i / 8) * Math.PI * 2;
+		b.add('dots', dot, new THREE.SphereGeometry(0.014, 5, 4), { pos: V(Math.sin(a) * 0.2, 0.07, Math.cos(a) * 0.2) });
+	}
+	b.add('knot', red, new THREE.SphereGeometry(0.04, 6, 5), { pos: V(0, 0.02, -0.24) });
+	for (const s of [-1, 1]) b.add('knot', red, new THREE.BoxGeometry(0.05, 0.14, 0.012), { pos: V(s * 0.03, -0.05, -0.25), rot: [-0.2, 0, s * 0.25] });
+	return b.build();
+}
+
+export function buildBikerBeard() {
+	const b = new Builder('disguise_biker_beard');
+	const grey = mat('biker_beard', 0x9a9690);
+	b.add('beard', grey, ellipsoid(0.13, 0.06, 0.05, 10, 6), { pos: V(0, 0.0, 0.0) });
+	b.add('beard', grey, ellipsoid(0.13, 0.08, 0.07, 10, 6), { pos: V(0, -0.06, 0.05) });
+	b.add('beard', grey, new THREE.ConeGeometry(0.13, 0.36, 8), { pos: V(0, -0.22, 0.13), rot: [Math.PI + 0.45, 0, 0], scale: [1, 1, 0.45] });
+	for (const s of [-1, 1]) b.add('beard', grey, new THREE.BoxGeometry(0.04, 0.14, 0.03), { pos: V(s * 0.12, 0.06, -0.04), rot: [0, 0, s * 0.1] });
+	b.add('mustache', mat('biker_mustache', 0x7a7672), ellipsoid(0.1, 0.025, 0.03, 8, 5), { pos: V(0, 0.05, 0.02) });
+	return b.build();
+}
+
+export function buildBikerJacket() {
+	const b = new Builder('disguise_biker_jacket');
+	const leather = mat('biker_leather', 0x1a1a1e), silver = mat('biker_silver', 0xc8ccd4);
+	b.add('jacket', leather, new THREE.CylinderGeometry(0.32, 0.46, 0.58, 14, 1, true), { pos: V(0, -0.155, -0.3) });
+	b.add('collar', leather, new THREE.CylinderGeometry(0.22, 0.3, 0.1, 12, 1, true), { pos: V(0, 0.13, -0.28) });
+	b.add('zip', silver, new THREE.BoxGeometry(0.015, 0.5, 0.012), { pos: V(0.06, -0.15, 0.08), rot: [-0.25, 0, 0] });
+	const patches = [[0xd8b040, -0.22, -0.05], [0x2a6ab0, 0.24, -0.18], [0xc03a2a, -0.18, -0.3]];
+	for (const [c, a, y] of patches) {
+		const r = 0.32 + (0.135 - y) * 0.24;
+		b.add('patches', mat(`biker_patch_${c.toString(16)}`, c), new THREE.CylinderGeometry(0.045, 0.045, 0.01, 8), { pos: V(Math.sin(a * 2) * r, y, -0.3 + Math.cos(a * 2) * r + 0.004), rot: [Math.PI / 2 - 0.25, a * 2, 0] });
+	}
+	return b.build();
+}
+
+// The jacket folded: 0.4 x 0.1 x 0.32 m, origin in its middle.
+export function buildFoldedBikerJacket() {
+	const b = new Builder('folded_biker_jacket');
+	b.add('jacket', mat('biker_leather', 0x1a1a1e), new THREE.BoxGeometry(0.4, 0.1, 0.32));
+	b.add('zip', mat('biker_silver', 0xc8ccd4), new THREE.BoxGeometry(0.015, 0.01, 0.3), { pos: V(0.05, 0.051, 0) });
+	b.add('patches', mat('biker_patch_d8b040', 0xd8b040), new THREE.CylinderGeometry(0.05, 0.05, 0.01, 8), { pos: V(-0.1, 0.051, 0) });
+	return b.build();
+}
+
 export const models = {
 	disguise_wig: buildDisguiseWig, disguise_mustache: buildDisguiseMustache, disguise_glasses: buildDisguiseGlasses,
 	disguise_robe: buildDisguiseRobe, folded_robe: buildFoldedRobe, songbook: buildSongbook,
@@ -390,6 +441,8 @@ export const models = {
 	folded_chef_apron: buildFoldedChefApron,
 	disguise_chess_glasses: buildChessGlasses, disguise_chess_vest: buildChessVest, disguise_chess_beret: buildChessBeret,
 	folded_chess_vest: buildFoldedChessVest,
+	disguise_biker_bandana: buildBikerBandana, disguise_biker_beard: buildBikerBeard, disguise_biker_jacket: buildBikerJacket,
+	folded_biker_jacket: buildFoldedBikerJacket,
 };
 
 export const views = {
@@ -470,6 +523,18 @@ export const views = {
 			{ name: 'disguise_chess_glasses', pos: [0.45, 0.05, 0.2] },
 			{ name: 'disguise_chess_beret', pos: [0.75, 0.0, -0.2] },
 			{ name: 'folded_chess_vest', pos: [0.5, 0.04, -0.35] },
+		],
+		cam: { pos: [0.3, 1.2, 3.0], target: [0.1, 0.8, 0], fov: 40 },
+	},
+	biker_disguise: {
+		items: [
+			{ name: 'cop_0', pos: [-0.4, 0, 0] },
+			{ name: 'disguise_biker_jacket', pos: [-0.4, 0.95, 0.3] },
+			{ name: 'disguise_biker_beard', pos: [-0.4, 1.17, 0.2] },
+			{ name: 'disguise_biker_bandana', pos: [-0.4, 1.42, 0] },
+			{ name: 'disguise_biker_beard', pos: [0.45, 0.4, 0.2] },
+			{ name: 'disguise_biker_bandana', pos: [0.75, 0.0, -0.2] },
+			{ name: 'folded_biker_jacket', pos: [0.5, 0.05, -0.35] },
 		],
 		cam: { pos: [0.3, 1.2, 3.0], target: [0.1, 0.8, 0], fov: 40 },
 	},

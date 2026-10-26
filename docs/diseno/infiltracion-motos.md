@@ -71,6 +71,10 @@ valentía copian la forma de `ChessGames` (el host decide y avisa).
 
 ## El orden para hacerlo (un PR chico por paso)
 1. El disfraz: pañuelo, barba y campera en el casillero, 2 de 3.
+   Hecho así: 12 piezas en una fila del otro lado de la sala de guardia, al lado del café (las filas de los casilleros
+   ya llegan a donde aparecen los policías): pañuelo rojo con lunares atado atrás (cabeza), barba larga gris postiza
+   (cara, 1,17 m) y campera de cuero negra con cierre plateado y parches (pecho; doblada en el piso). Con 2 de las 3,
+   `is_disguised("biker")` **(propuesta)**.
 2. El bar en la ciudad (`--place=biker`): el bar, el taller, el patio, la oficina, los motoqueros, El Cromado y el
    patovica.
 3. Lo del patio: la mesa de las pulseadas, la moto pesada y la raya.
