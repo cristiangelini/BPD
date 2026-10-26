@@ -101,3 +101,9 @@ En qué celda está Rulo, qué 6 pedidos hace y en qué orden, qué 3 cosas esco
   Tras el último pedido, su manager (`VipLawyer` con el modelo `npc_gerente` y sus propias frases) hace el camino del
   abogado, habla 6 s, abre la puerta y se va con Rulo caminando detrás; la limusina se va con él. Capturas:
   `paso5-fuga.png` y `paso5-manager.png`.
+- **Paso 6:** `VipCase`: el comisario lo cuenta en su oficina (3 frases) y Q abre la planilla (los pedidos cumplidos
+  de 6, que su manager se lo lleve, el humor, cada pedido abierto con sus segundos, los cumplidos a tiempo y las piezas
+  decomisadas de 3, opcionales, las visitas del abogado y si Rulo está corriendo). Se gana cuando el manager se lo
+  lleva: 600 + 25 por pedido a tiempo + 50 por pieza decomisada - 100 por abogado, cuota 400. Se pierde si llega a su
+  limusina. Jugar lo sortea con las otras cárceles (`PlaceDraw.PRISONS`, ahora en octavos). Captura:
+  `paso6-planilla.png`.
