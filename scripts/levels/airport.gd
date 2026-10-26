@@ -7,7 +7,9 @@ extends Node3D
 ## the big screen over it where the press watches what goes through; at the back, the duty-free shop on the west and
 ## the gate on the east, with the glass wall between them that looks out at the apron and the little plane. The cops
 ## start in the station and drive here; --place=airport opens it from Play. Step 2: Lustre's 13 suitcases (Suitcase)
-## piled by the counter, the belt that takes them (AirportBelt) and the scale. Every number here is (propuesta).
+## piled by the counter, the belt that takes them (AirportBelt) and the scale. Step 3: number 13 is the odd one
+## (OddCargo, what's inside drawn by the seed) and the X-ray machine on show (AirportXray). Every number here is
+## (propuesta).
 
 const COUNTER_MODEL := preload("res://assets/models/checkin_counter.glb")
 const XRAY_MODEL := preload("res://assets/models/xray_machine.glb")
@@ -79,6 +81,9 @@ var screen: MeshInstance3D
 var press: Array[RallyFan] = []
 var suitcases: Array[Suitcase] = []
 var belt: AirportBelt
+## The odd suitcase and the X-ray machine on show (step 3).
+var odd: Suitcase
+var xray: AirportXray
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -243,6 +248,11 @@ func _build_screen() -> void:
 	_process(0.0)
 
 
+## What's in the odd suitcase, by the seed.
+static func odd_kind(seed_value: int) -> String:
+	return OddCargo.KINDS[hash(["airport odd", seed_value]) % OddCargo.KINDS.size()]
+
+
 ## The 13 suitcases in the pile, their numbers and the order the clerk sends them in drawn by the seed, and the belt.
 func _place_suitcases() -> void:
 	var rng := RandomNumberGenerator.new()
@@ -262,6 +272,9 @@ func _place_suitcases() -> void:
 		suitcase.position = AirportBelt.pile_spot(i)
 		add_child(suitcase)
 		suitcases.append(suitcase)
+		if suitcase.number == SUITCASES:
+			odd = suitcase
+			OddCargo.attach(suitcase, odd_kind(case_seed))
 	_build.shape(_build.body(COUNTER_AT + SCALE_AT + Vector3(0, FLOOR_TOP + 0.06, 0)), Vector3(SCALE_PAN, 0.12,
 		SCALE_PAN))
 	var readout := Label3D.new()
@@ -275,6 +288,10 @@ func _place_suitcases() -> void:
 	belt.name = "Belt"
 	belt.setup(self, suitcases, readout)
 	add_child(belt)
+	xray = AirportXray.new()
+	xray.name = "Xray"
+	add_child(xray)
+	xray.setup(self)
 
 
 ## The duty-free shop's floor, shelves and sign; the gate's floor, seats, desk and sign.

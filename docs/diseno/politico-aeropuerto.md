@@ -89,3 +89,11 @@ pregunten."
   se la llevaron, pasa a la otra); la cinta lleva lo que tenga encima hacia el este a 1,1 m/s, por los rayos X
   (`xrayed`, la pantalla la muestra oscura sobre la placa clara de la máquina) y al final a la bodega del avión
   (`loaded`). La balanza delante del mostrador muestra los kilos de lo que tiene encima.
+- **Paso 3 (la maleta rara y los rayos X):** la maleta número 13 es la de Fina Embrollo (`OddCargo`, nodo `Odd`) y lo
+  que tiene adentro sale de la semilla (`Airport.odd_kind`): un gallo (la maleta da un salto cada 4 s y canta cada
+  12 s), un despertador (suena 2 s cada 20 s), una lata de pintura amarilla (deja una mancha cada 0,6 m que se mueve)
+  o una pila de periódicos (pesa el doble, 40 kg, y se nota en la balanza). El policía que está a menos de 3,5 m cuando
+  se delata recibe una pista; abierta, todos ven lo que hay adentro. `AirportXray`: cada maleta que pasa por la
+  máquina sale en la pantalla con un rótulo abajo; si es la rara, el rótulo dice qué es, los periodistas gritan el
+  escándalo y la máquina emite `scandal` (en el paso 5 eso pierde el caso). Si pasa una normal, los periodistas se
+  ríen de los ositos.
