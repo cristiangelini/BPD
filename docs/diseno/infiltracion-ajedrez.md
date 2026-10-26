@@ -45,10 +45,10 @@ que dicen "interesante..." cada vez que alguien mueve la torre en diagonal.
 6. **Las 3 pruebas** (la semilla elige 3 de 6) **(propuesta)**:
    - el rey negro hueco con diamantes, en el tablero del Gran Maestro (se agarra, mientras no está mirando);
    - foto de la planilla de partidas en código ("1. e4 = 4 diamantes") colgada en la cafetería;
-   - el maletín con piezas huecas debajo de la tarima (se agarra, pesado);
+   - el maletín con piezas huecas al lado de la tarima (se agarra, pesado);
    - el video de dos socios hablando de "la entrega del sábado" (5 s cerca con la cámara, como el club);
    - la copa de la vitrina llena de relojes robados (E);
-   - el libro de cuentas en el cajón de la oficina del Gran Maestro (E; la llave está debajo del reloj de la mesa 8).
+   - el libro de cuentas en el cajón de la oficina del Gran Maestro (E; la llave está pegada debajo de la mesa 8).
 7. **Se gana** esposando al Gran Maestro Alfil: sueldo de 600, un tercio menos por cada prueba que falte, cuota de
    400, igual que las otras infiltraciones. Esposar a un socio los descubre. Detenido, el turno siguiente puede ser su
    interrogatorio (decisión 93): se le escapan 3 frases y confiesa.
@@ -103,6 +103,16 @@ copian la forma de `RestaurantOrders` y `SchoolClasses` (el host decide y avisa)
    pero buena" (el chisme que ayuda con una prueba llega en el paso 5). Cada partida nueva arranca con el tablero
    acomodado **(propuesta)**.
 5. Las pruebas y el caso (variante "chess"): el torneo, las 6 pruebas, el sueldo y el interrogatorio.
+   Hecho así: la semilla elige 3 de las 6 pruebas (sin el video si no hay dos socios cerca, y nunca con el rival del
+   torneo, que está jugando). El rey negro hueco (1,5 kg) está en el tablero de la tarima al lado del Gran Maestro y el
+   maletín abierto con piezas huecas (6 kg) en el piso al lado de la tarima: se agarran. La planilla en código cuelga
+   siempre en la pared de la cafetería ("PARTIDA DEL SÁBADO · 1. e4 = 4 diamantes · 2. Cf3 = 2 rubíes · 3. Ab5 =
+   entrega en la mesa 8 · Jaque = la policía"), pero solo es prueba si salió (foto). La vitrina ahora tiene vidrio y
+   se ven las 3 copas (E). La llave de la oficina está pegada con cinta debajo de la mesa 8 (E) y el libro de cuentas
+   en el escritorio de la oficina (E). Al terminar bien una partida, el socio cuenta un chisme sobre la primera prueba
+   que falta ("Las copas de la vitrina hacen tic tac. Muchos tic tac."), o solo "Buena partida" si ya están todas. El
+   caso usa sus propios textos (cartel del comisario, objetivos, pistas, frases de Alfil al ser descubierto, el
+   interrogatorio y la persecución a pie mientras no hay huida propia) **(propuesta)**.
 6. La huida en el caballito, el sorteo de "Jugar" en octavos y online.
 
 ## Preguntas para Cristian (decisión 175)

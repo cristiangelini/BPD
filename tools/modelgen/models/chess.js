@@ -65,11 +65,42 @@ export function buildChessClock() {
 	return b.build();
 }
 
+// The Gran Maestro's hollow black king (step 5): a king twice the size, its base unscrewed and lying beside it, and
+// diamonds spilling out of it. Origin at its bottom.
+export function buildHollowKing() {
+	const b = new Builder('chess_hollow_king');
+	const black = mat('chess_piece_black', PIECE.black), diamond = mat('diamond', 0xd8f4ff, { emissive: 0x204050 });
+	b.add('king', black, lathe([[0.03, 0.025], [0.05, 0.03], [0.04, 0.05], [0.03, 0.22], [0.05, 0.24], [0.04, 0.27], [0, 0.27]]), { rot: [0, 0, 0] });
+	b.add('king', black, new THREE.BoxGeometry(0.02, 0.08, 0.02), { pos: V(0, 0.31, 0) });
+	b.add('king', black, new THREE.BoxGeometry(0.06, 0.02, 0.02), { pos: V(0, 0.32, 0) });
+	b.add('base', black, new THREE.CylinderGeometry(0.07, 0.07, 0.025, 12), { pos: V(0.14, 0.0125, 0.04) });
+	for (const [x, z] of [[0.02, 0.06], [-0.04, 0.08], [0.06, 0.1], [0.0, 0.12], [-0.07, 0.03]]) {
+		b.add('diamonds', diamond, new THREE.OctahedronGeometry(0.014), { pos: V(x, 0.012, z) });
+	}
+	return b.build();
+}
+
+// The briefcase under the stage (step 5): black leather, open, full of hollow pieces in rows. 0.5 x 0.3 m, origin at
+// its bottom.
+export function buildChessBriefcase() {
+	const b = new Builder('chess_briefcase');
+	const leather = mat('briefcase_leather', 0x1c1a1e), lining = mat('briefcase_lining', 0x7a1a2a), steel = mat('briefcase_steel', 0xb8bcc4);
+	b.add('case', leather, new THREE.BoxGeometry(0.5, 0.1, 0.32), { pos: V(0, 0.05, 0) });
+	b.add('case', lining, new THREE.BoxGeometry(0.46, 0.01, 0.28), { pos: V(0, 0.1, 0) });
+	b.add('lid', leather, new THREE.BoxGeometry(0.5, 0.32, 0.03), { pos: V(0, 0.26, -0.17), rot: [-0.15, 0, 0] });
+	for (const x of [-0.12, 0.12]) b.add('locks', steel, new THREE.BoxGeometry(0.04, 0.03, 0.01), { pos: V(x, 0.08, 0.161) });
+	const pieces = [mat('chess_piece_white', PIECE.white), mat('chess_piece_black', PIECE.black)];
+	for (let i = 0; i < 8; i++) for (let r = 0; r < 2; r++) {
+		b.add('pieces', pieces[(i + r) % 2], new THREE.CylinderGeometry(0.018, 0.022, 0.06, 8), { pos: V(-0.19 + i * 0.054, 0.135, -0.05 + r * 0.1) });
+	}
+	return b.build();
+}
+
 const KINDS = Object.keys(SHAPES);
 
 export const models = {
 	...Object.fromEntries(KINDS.flatMap((k) => ['white', 'black'].map((c) => [`chess_${k}_${c}`, piece(k, c)]))),
-	chess_clock: buildChessClock,
+	chess_clock: buildChessClock, chess_hollow_king: buildHollowKing, chess_briefcase: buildChessBriefcase,
 };
 
 export const views = {
@@ -78,7 +109,9 @@ export const views = {
 			...KINDS.map((k, i) => ({ name: `chess_${k}_white`, pos: [-0.25 + i * 0.1, 0, 0.08] })),
 			...KINDS.map((k, i) => ({ name: `chess_${k}_black`, pos: [-0.25 + i * 0.1, 0, -0.08], rotY: Math.PI })),
 			{ name: 'chess_clock', pos: [0.45, 0, 0] },
+			{ name: 'chess_hollow_king', pos: [-0.5, 0, 0] },
+			{ name: 'chess_briefcase', pos: [0.1, 0, -0.45] },
 		],
-		cam: { pos: [0.1, 0.35, 0.65], target: [0.1, 0.07, 0], fov: 40 },
+		cam: { pos: [0.0, 0.6, 1.0], target: [0.0, 0.07, -0.1], fov: 45 },
 	},
 };

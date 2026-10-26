@@ -1,18 +1,22 @@
 class_name ChessClub
 extends InfiltrationPlace
 
-## The chess club "El Peón Dormido" (docs/diseno/infiltracion-ajedrez.md, steps 2 to 4, decision 175): one floor on its own
+## The chess club "El Peón Dormido" (docs/diseno/infiltracion-ajedrez.md, steps 2 to 5, decision 175): one floor on its own
 ## city lot, the front to +Z. The doorkeeper stands inside the entrance and only lets members through; the hall with
 ## its eight chess tables on a checkered floor and the trophy cabinet, and the cafeteria east of it (with the locked
 ## door of the Gran Maestro's office); behind, the tournament room with the stage where the Gran Maestro plays and his
 ## audience, and the storeroom of boards east of it. Each table has its board with a game halfway through
 ## (ChessBoard), its clock (ChessClock) and a stool behind each seat (step 3). The gang's members stand at the tables'
 ## seats, drawn with the seed; the seats left are for the cops (to play is to stand at a seat, hands free for the
-## pieces). Every so often a member challenges a cop to a game on the clock (ChessGames, step 4). The whole club is for members only. The cops start in the
+## pieces). Every so often a member challenges a cop to a game on the clock (ChessGames, step 4). The seed picks 3
+## of the 6 pieces of evidence, and the office key is taped under table 8 (step 5). The whole club is for members only. The cops start in the
 ## station, where the disguises are, and drive here. --place=chess opens it from Play. Every number here is
 ## (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const KEY_POT_SCENE := preload("res://scenes/props/key_pot.tscn")
+const KING_MODEL := preload("res://assets/models/chess_hollow_king.glb")
+const BRIEFCASE_MODEL := preload("res://assets/models/chess_briefcase.glb")
 const HALF_X := 12.0
 const HALF_Z := 10.0
 const FLOOR_TOP := 0.06
@@ -56,6 +60,19 @@ const CABINET_AT := Vector3(-HALF_X + 0.35, 0, 8.4)
 const COUNTER_AT := Vector3(9.5, 0, 8.4)
 const DOORKEEPER_AT := Vector3(ENTRANCE_X + 1.2, 0, HALF_Z - 1.2)
 const SQUARE := 2.0
+## The evidence (step 5): the hollow king on the Gran Maestro's table, the briefcase beside the stage (both grabbed),
+## the coded score sheet on the cafeteria's wall (a photo), the trophy cup full of watches in the cabinet and the
+## ledger in the office desk's drawer (searched with E), and two members talking about Saturday's delivery (recorded).
+const EVIDENCE_KINDS: Array[String] = ["king", "briefcase", "sheet", "trophy", "ledger", "recording"]
+const KING_AT := Vector3(-3.55, FLOOR_TOP + 0.35 + 0.75 + 0.2, -6.85)
+const BRIEFCASE_AT := Vector3(-1.0, FLOOR_TOP + 0.08, -6.5)
+const SHEET_AT := Vector3(HALF_X - 0.12, 1.6, 4.0)
+const TROPHY_AT := Vector3(-HALF_X + 0.7, FLOOR_TOP + 1.25, 8.4)
+const LEDGER_AT := Vector3(8.5, FLOOR_TOP + 0.85, -2.45)
+## The table with the office key taped under it (its index in TABLES: "table 8").
+const KEY_TABLE := 7
+## Two members this close talk (the recording's pair).
+const TALK_PAIR := 2.6
 
 const OUTSIDE := Color(0.3, 0.32, 0.36)
 const INSIDE := Color(0.88, 0.84, 0.74)
@@ -76,6 +93,8 @@ var clocks: Array[ChessClock] = []
 var stage_board: ChessBoard
 var stage_clock: ChessClock
 var games: ChessGames
+## The coded score sheet on the cafeteria's wall, there whether it's evidence or not.
+var sheet: Node3D
 var _build: PlaceBuilder
 
 
@@ -95,7 +114,9 @@ func _ready() -> void:
 	games.club = self
 	games.case_seed = case_seed
 	add_child(games)
+	_add_evidence()
 	place_in_city("chess")
+	start_case()
 
 
 ## The Gran Maestro rides off from the street, out of the entrance (step 6).
@@ -196,6 +217,83 @@ func _add_people() -> void:
 	add_child(suspicion)
 
 
+## The 3 pieces of evidence the seed picks (ClubEvidence) and the office key taped under table 8 (step 5).
+func _add_evidence() -> void:
+	evidence = ClubEvidence.new()
+	evidence.name = "Evidence"
+	evidence.held_kinds.assign(["king", "briefcase"])
+	evidence.talk_key = "CHESS_TALK_%d"
+	add_child(evidence)
+	var pair := _talking_pair()
+	var available := EVIDENCE_KINDS.duplicate()
+	if pair.is_empty():
+		available.erase("recording")
+	evidence.kinds = ClubEvidence.draw(case_seed, available)
+	var key: KeyPot = KEY_POT_SCENE.instantiate()
+	key.name = "KeyTable"
+	key.has_key = true
+	key.prompt = "PROMPT_CHESS_TABLE_KEY"
+	add_child(key)
+	key.position = TABLES[KEY_TABLE] + Vector3(TABLE_SIZE.x / 2 + 0.08, FLOOR_TOP + 0.45, 0)
+	key.get_node("Pot").hide()
+	key.get_node("Plant").hide()
+	_build.mesh_box(key.position + Vector3(-0.07, 0.2, 0), Vector3(0.02, 0.06, 0.12), Color(0.95, 0.85, 0.5))
+	for kind: String in evidence.kinds:
+		match kind:
+			"king":
+				_item(kind, KING_MODEL, Vector3(0.12, 0.34, 0.12), 1.5, KING_AT)
+			"briefcase":
+				_item(kind, BRIEFCASE_MODEL, Vector3(0.5, 0.12, 0.34), 6.0, BRIEFCASE_AT)
+			"sheet":
+				_spot(kind, SHEET_AT, Vector3(0.1, 0.8, 0.7), true)
+			"trophy":
+				_spot(kind, TROPHY_AT, Vector3(0.4, 0.5, 2.2), false)
+			"ledger":
+				_spot(kind, LEDGER_AT, Vector3(0.6, 0.1, 0.4), false)
+				_build.mesh_box(LEDGER_AT + Vector3(0, -0.12, -0.04), Vector3(0.5, 0.18, 0.02), WOOD.lightened(0.15))
+			"recording":
+				evidence.talkers.assign(pair)
+				for member: ClubMember in pair:
+					member.distracted = true
+
+
+## A piece of evidence to grab, lying at `at` (its model's origin at its bottom).
+func _item(kind: String, model: PackedScene, size: Vector3, kg: float, at: Vector3) -> void:
+	var item := ClubEvidence.make_item("Chess_" + kind, model, size, kg)
+	(item.get_child(1) as Node3D).position.y = -size.y / 2
+	add_child(item)
+	item.position = at
+	evidence.items[kind] = item
+
+
+## A piece of evidence that stays put, a box of `size` around `at`: photographed, or searched with E.
+func _spot(kind: String, at: Vector3, size: Vector3, photo: bool) -> ClubEvidenceSpot:
+	var spot := ClubEvidenceSpot.new()
+	spot.name = "Evidence_" + kind
+	spot.kind = kind
+	spot.photo = photo
+	spot.prompt_prefix = "PROMPT_CHESS_"
+	spot.evidence = evidence
+	add_child(spot)
+	spot.position = at
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = size
+	shape.shape = box
+	spot.add_child(shape)
+	return spot
+
+
+## Two members by each other (the recording's pair), or none; the rival on the stage is busy playing.
+func _talking_pair() -> Array[ClubMember]:
+	for first in members:
+		for second in members:
+			if first != second and first != rival and second != rival \
+					and first.position.distance_to(second.position) < TALK_PAIR:
+				return [first, second]
+	return []
+
+
 func _add_member(look: String, spot: Vector3, turn: float, rng: RandomNumberGenerator) -> void:
 	var member := ClubMember.new()
 	member.name = "Member%d" % members.size()
@@ -238,14 +336,30 @@ func _build_hall() -> void:
 			_build.mesh_box(center, Vector3(SQUARE, 0.006, SQUARE), DARK_SQUARE if (col + row) % 2 == 0 else LIGHT_SQUARE)
 	for at in TABLES:
 		_table(at)
-	_build.box(CABINET_AT + Vector3(0, FLOOR_TOP + 1.0, 0), Vector3(0.6, 2.0, 2.4), WOOD.darkened(0.25))
-	_build.mesh_box(CABINET_AT + Vector3(0.31, FLOOR_TOP + 1.1, 0), Vector3(0.02, 1.6, 2.2), Color(0.75, 0.88, 0.95))
+	# The trophy cabinet: a base and a top, the back against the wall and glass in front to see the cups through.
+	_build.box(CABINET_AT + Vector3(0, FLOOR_TOP + 0.5, 0), Vector3(0.6, 1.0, 2.4), WOOD.darkened(0.25))
+	_build.box(CABINET_AT + Vector3(0, FLOOR_TOP + 1.95, 0), Vector3(0.6, 0.1, 2.4), WOOD.darkened(0.25))
+	_build.mesh_box(CABINET_AT + Vector3(-0.27, FLOOR_TOP + 1.45, 0), Vector3(0.06, 0.9, 2.4), WOOD.darkened(0.25))
+	_build.mesh_box(CABINET_AT + Vector3(0.29, FLOOR_TOP + 1.45, 0), Vector3(0.02, 0.9, 2.3), Color(0.75, 0.88, 0.95, 0.3))
 	for i in 3:
 		var cup := CylinderMesh.new()
 		cup.top_radius = 0.12
 		cup.bottom_radius = 0.05
 		cup.height = 0.3
-		_build.mesh(cup, CABINET_AT + Vector3(0.1, FLOOR_TOP + 1.25, -0.7 + i * 0.7), Color(0.95, 0.8, 0.3))
+		_build.mesh(cup, CABINET_AT + Vector3(0.0, FLOOR_TOP + 1.15, -0.7 + i * 0.7), Color(0.95, 0.8, 0.3))
+	_build.mesh_box(SHEET_AT + Vector3(-0.04, 0, 0), Vector3(0.02, 0.8, 0.6), Color(0.96, 0.94, 0.86))
+	sheet = Label3D.new()
+	sheet.name = "Sheet"
+	sheet.text = "CHESS_SHEET"
+	sheet.font_size = 20
+	sheet.pixel_size = 0.0025
+	sheet.width = 210.0
+	sheet.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	sheet.modulate = Color(0.1, 0.1, 0.15)
+	sheet.outline_size = 0
+	sheet.position = SHEET_AT + Vector3(-0.055, 0, 0)
+	sheet.rotation.y = -PI / 2
+	$Built.add_child(sheet)
 	_build.box(COUNTER_AT + Vector3(0, FLOOR_TOP + 0.55, 0), Vector3(3.0, 1.1, 0.7), WOOD)
 	_build.mesh_box(COUNTER_AT + Vector3(0.8, FLOOR_TOP + 1.3, 0), Vector3(0.4, 0.4, 0.35), Color(0.2, 0.2, 0.22))
 	for at: Vector3 in [Vector3(7.0, 0, 3.0), Vector3(10.0, 0, 3.0)]:

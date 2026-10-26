@@ -152,7 +152,8 @@ func test_playing_to_the_end_pleases_him() -> void:
 	games.game_left = 0.05
 	_step(0.1)
 	assert_signal_emitted(games, "finished")
-	assert_eq(games.challenger.said(), "CHESS_GG")
+	assert_eq(games.challenger.said(), games.tip(), "a tip about the evidence (step 5)")
+	assert_true(games.tip().begins_with("CHESS_TIP_"))
 	assert_eq(_hall_suspicion(), 0.0)
 
 
