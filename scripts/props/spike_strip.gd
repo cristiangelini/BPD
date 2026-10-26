@@ -72,6 +72,13 @@ func deploy() -> void:
 	_set_look(true)
 
 
+## Online: a guest's copy only looks unrolled or rolled up, as the host's is (TrafficCase.snapshot).
+func show_unrolled(unrolled: bool) -> void:
+	if deployed != unrolled:
+		deployed = unrolled
+		_set_look(unrolled)
+
+
 func roll_up() -> void:
 	deployed = false
 	carried = false
