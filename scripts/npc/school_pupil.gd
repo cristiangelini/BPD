@@ -4,7 +4,9 @@ extends StaticBody3D
 ## A pupil of the Los Girasoles school (politico-escuela.md, step 2, decision 210): a child in a white smock with a
 ## backpack, sitting at a desk of the classroom, one of four looks. E on them: something a child says, a different line
 ## each time. Step 3: they walk out to the playground for recess, back to their desk and out front for the photo
-## (`walk`, along the corners the school gives). Every number here is (propuesta).
+## (`walk`, along the corners the school gives). Step 4: each holds a card with the question for the deputy, which a
+## cop reads within READ_REACH; in the questions they put their hand up (`raise_hand`, waving it if the card is a trap)
+## and read it out when he picks them. Every number here is (propuesta).
 
 const MODELS: Array[PackedScene] = [
 	preload("res://assets/models/npc_alumno.glb"), preload("res://assets/models/npc_alumna.glb"),
@@ -16,6 +18,11 @@ const LINES := 8
 const SAY_TIME := 4.0
 const SPEED := 1.4
 const ARRIVED := 0.1
+## A cop this close reads what the card says.
+const READ_REACH := 2.0
+const READ_TIME := 6.0
+const SMOCK := Color(0.96, 0.96, 0.95)
+const CARD := Color(1.0, 0.98, 0.9)
 
 ## Which of the four looks (0 to 3) and which desk (0 to 19, row by row from the front).
 @export var look := 0
@@ -28,6 +35,13 @@ var _wait_left := 0.0
 var _face_at_end := Vector3.ZERO
 var _bubble: Label3D
 var _bubble_left := 0.0
+## The text key of their card ("" with none) and whether the janitor's (a question that sinks the deputy).
+var card := ""
+var trap := false
+var hand_up := false
+var _arm: Node3D
+var _card_text: Label3D
+var _wave := 0.0
 
 
 func _ready() -> void:
@@ -49,6 +63,7 @@ func _ready() -> void:
 	_bubble = MarketShopper.make_bubble()
 	_bubble.position.y = 1.3
 	add_child(_bubble)
+	_build_arm()
 
 
 func prompt_key(_cop: Cop) -> String:
@@ -91,10 +106,41 @@ func _physics_process(delta: float) -> void:
 	global_position += to.normalized() * step
 
 
-func say(key: String) -> void:
+## Gives them a card: its text key and whether it's a trap. "" takes it away.
+func hold_card(key: String, is_trap := false) -> void:
+	card = key
+	trap = is_trap and key != ""
+	_card_text.text = key
+	_arm.get_node("Card").visible = key != ""
+	if key == "":
+		raise_hand(false)
+
+
+func has_card() -> bool:
+	return card != ""
+
+
+## Up only with a card and at their desk; a trap's is waved about.
+func raise_hand(up: bool) -> void:
+	hand_up = up and has_card() and not walking()
+	_arm.rotation.x = 0.0 if hand_up else -PI * 0.45
+	_arm.rotation.z = 0.0
+
+
+## Reads the card out loud (the deputy gave them the floor).
+func read_card() -> void:
+	say(card, READ_TIME)
+
+
+## Whether a cop is near enough to read the card.
+func card_shown() -> bool:
+	return _card_text.visible
+
+
+func say(key: String, seconds := SAY_TIME) -> void:
 	_bubble.text = key
 	_bubble.show()
-	_bubble_left = SAY_TIME
+	_bubble_left = seconds
 
 
 func said() -> String:
@@ -102,7 +148,63 @@ func said() -> String:
 
 
 func _process(delta: float) -> void:
+	_card_text.visible = has_card() and _cop_near()
+	if hand_up and trap:
+		_wave += delta * 9.0
+		_arm.rotation.z = sin(_wave) * 0.35
 	if _bubble_left > 0.0:
 		_bubble_left -= delta
 		if _bubble_left <= 0.0:
 			_bubble.hide()
+
+
+func _cop_near() -> bool:
+	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
+		if cop.global_position.distance_to(global_position) < READ_REACH:
+			return true
+	return false
+
+
+## A right arm in the smock's white that goes up with the card in its hand, and the card's text over it.
+func _build_arm() -> void:
+	_arm = Node3D.new()
+	_arm.name = "Arm"
+	_arm.position = Vector3(-0.2, 0.62, 0.0)
+	add_child(_arm)
+	var sleeve := MeshInstance3D.new()
+	var capsule := CapsuleMesh.new()
+	capsule.radius = 0.05
+	capsule.height = 0.42
+	sleeve.mesh = capsule
+	sleeve.position.y = 0.2
+	sleeve.material_override = _flat(SMOCK)
+	_arm.add_child(sleeve)
+	var paper := MeshInstance3D.new()
+	paper.name = "Card"
+	var box := BoxMesh.new()
+	box.size = Vector3(0.16, 0.11, 0.01)
+	paper.mesh = box
+	paper.position = Vector3(0, 0.44, -0.04)
+	paper.material_override = _flat(CARD)
+	paper.visible = false
+	_arm.add_child(paper)
+	raise_hand(false)
+	_card_text = Label3D.new()
+	_card_text.name = "CardText"
+	_card_text.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	_card_text.font_size = 22
+	_card_text.outline_size = 6
+	_card_text.width = 360.0
+	_card_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_card_text.modulate = Color(0.2, 0.2, 0.45)
+	_card_text.outline_modulate = CARD
+	_card_text.pixel_size = 0.003
+	_card_text.position.y = 1.05
+	_card_text.visible = false
+	add_child(_card_text)
+
+
+static func _flat(color: Color) -> StandardMaterial3D:
+	var material := StandardMaterial3D.new()
+	material.albedo_color = color
+	return material

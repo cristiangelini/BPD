@@ -88,6 +88,8 @@ var janitor: SchoolAdult
 ## Deputy Lustre and his visit, the clock of the case (step 3).
 var politician: Politician
 var tour: SchoolTour
+## The cards in the pupils' hands and the questions (step 4).
+var questions: SchoolQuestions
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -115,6 +117,10 @@ func _ready() -> void:
 	tour.name = "Tour"
 	tour.setup(self, politician, case_seed)
 	add_child(tour)
+	questions = SchoolQuestions.new()
+	questions.name = "Questions"
+	questions.setup(self, tour, case_seed)
+	add_child(questions)
 	city.transform = CityLayout.anchor("school_visit")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
