@@ -35,6 +35,10 @@ var jailed := false
 var jailbreak_used := false
 ## How many times the night guard caught them in this jailbreak (fuga.md): the third one loses the campaign.
 var jail_catches := 0
+## The inspector's report while the last shift is on (inspeccion.md, InspectionReport.summary()); empty without her.
+var inspection := {}
+## How the last shift's inspection ended (InspectionReport.final()), for the end of shift screen; empty if none.
+var last_inspection := {}
 ## The place's owner the cops brought in at the end of the last raid (RaidCase.custody), to be interrogated next
 ## shift (decision 93); empty if nobody.
 var custody := {}
@@ -107,12 +111,19 @@ func finish_shift(story: String, solved: bool, report: Dictionary, shift_quota :
 	CityEvents.add_to(report)
 	report.quota = quota() if shift_quota < 0 else shift_quota
 	report.approved = report.total >= report.quota
+	# On the inspection's shift only her report decides, and failing it closes the station: no jailbreak.
+	var inspected := not inspection.is_empty()
+	if inspected:
+		last_inspection = InspectionReport.final(inspection, solved)
+		inspection = {}
+		report.inspection = last_inspection.score
+		report.approved = last_inspection.approved
 	history.append({"shift": shift, "story": story, "solved": solved, "total": report.total,
 		"approved": report.approved})
 	shift += 1
 	if report.approved:
 		money += report.total
-	elif not jailbreak_used:
+	elif not jailbreak_used and not inspected:
 		# The failed shift adds nothing to the money: escaping is a second chance, not a prize (fuga.md).
 		jailed = true
 		jailbreak_used = true

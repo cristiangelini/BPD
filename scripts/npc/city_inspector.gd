@@ -141,6 +141,9 @@ func _watch() -> void:
 
 func _show_score(score: int) -> void:
 	get_tree().call_group("checklist", "show_report", score)
+	# On the campaign's last shift her report decides the end (Campaign.finish_shift).
+	if Campaign.current and Campaign.current.shift == Campaign.SHIFTS:
+		Campaign.current.inspection = report.summary()
 
 
 ## She sees `at` (where `target`, if any, is): close enough and nothing in between. Riding, she sees out of the car.
