@@ -1,6 +1,6 @@
 extends GutTest
 
-## The infiltration online (infiltracion.md, infiltracion-coro.md, infiltracion-mimos.md, infiltracion-fiesta.md and infiltracion-gimnasio.md, "Online"; docs/diseno/online.md): the host's
+## The infiltration online (infiltracion.md, infiltracion-coro.md, infiltracion-mimos.md, infiltracion-fiesta.md, infiltracion-gimnasio.md and infiltracion-escuela.md, "Online"; docs/diseno/online.md): the host's
 ## case decides the evidence, the suspicion, the boss cuffed or running off and the end of shift, and every PC sees
 ## the same, disguises included.
 
@@ -10,6 +10,7 @@ const CHOIR_SCENE := preload("res://scenes/levels/church_choir.tscn")
 const MIME_SCENE := preload("res://scenes/levels/mime_theater.tscn")
 const PARTY_SCENE := preload("res://scenes/levels/party_hall.tscn")
 const GYM_SCENE := preload("res://scenes/levels/gym_hall.tscn")
+const SCHOOL_SCENE := preload("res://scenes/levels/school_hall.tscn")
 ## A seed whose club has Doña Chela's bag among its evidence (ClubEvidence.draw).
 const SEED := 2
 
@@ -228,6 +229,37 @@ func test_the_routine_reaches_the_guest_and_a_guest_slacking_reaches_the_host() 
 	await wait_until(func() -> bool: return get_signal_emit_count(host, "missed") > 0, 5.0)
 	var copy: Cop = pcs[0].cop_syncs[pcs[1].multiplayer.get_unique_id()].cop
 	assert_signal_emitted_with_parameters(host, "missed", [copy, GymRoutine.GAVE_UP])
+
+
+func test_at_the_school_found_out_the_director_drives_off_on_every_pc() -> void:
+	_scene = SCHOOL_SCENE
+	var pcs := await _on()
+	var host := _place(pcs[0]) as SchoolHall
+	var guest := _place(pcs[1]) as SchoolHall
+	host.classes.set_process(false)
+	guest.classes.set_process(false)
+	host.suspicion.raise(host.members[0], 100.0)
+	await wait_until(func() -> bool: return guest.case.chase != null, 5.0)
+	assert_eq(guest.case.chase.suspect_id, SuspectCar.LEARNER_CAR, "in the learner car")
+
+
+func test_a_guests_grade_reaches_the_host_and_the_graduation_every_pc() -> void:
+	_scene = SCHOOL_SCENE
+	var pcs := await _on()
+	var host := (_place(pcs[0]) as SchoolHall).classes
+	var guest_school := _place(pcs[1]) as SchoolHall
+	var guest := guest_school.classes
+	host.start_class("lockpick")
+	await wait_until(func() -> bool: return guest.in_class(), 5.0)
+	assert_eq(guest.subject, "lockpick", "the same class")
+	guest._graded.rpc_id(guest._net().HOST_ID, "lockpick", 9)
+	await wait_until(func() -> bool: return host.average("lockpick") > 0.0, 5.0)
+	assert_eq(host.average("lockpick"), 9.0, "the host keeps the guest's grade")
+	await wait_until(func() -> bool: return guest.average("lockpick") > 0.0, 5.0)
+	assert_eq(guest.average("lockpick"), 9.0, "and the guest's report card shows it")
+	host.start_graduation()
+	await wait_until(func() -> bool: return guest.graduated, 5.0)
+	assert_true(guest_school.director.visible, "the Director came down on the guest's PC too")
 
 
 ## Whether the party with `case_seed` has Serpentina among its clues.

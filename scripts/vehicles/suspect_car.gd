@@ -60,6 +60,8 @@ const MODELS := {
 	"party_patrol": preload("res://assets/models/party_patrol.glb"),
 	# El Toro jogging off (infiltracion-gimnasio.md): only the dust he kicks up, and him.
 	"toro_jog": preload("res://assets/models/toro_jog.glb"),
+	# The Director of the thieves' school drives off in its learner car (infiltracion-escuela.md), stalling it.
+	"learner_car": preload("res://assets/models/learner_car.glb"),
 	# The traffic control's wanted car, in its paint (control-transito.md): the traffic car it was in the queue.
 	"traffic_0": preload("res://assets/models/traffic_car_0.glb"),
 	"traffic_1": preload("res://assets/models/traffic_car_1.glb"),
@@ -84,6 +86,7 @@ const RIDERS := {
 	"invisible_car": [[preload("res://assets/models/npc_pausa.glb"), Vector3(0, 0, 0.1), 0.95]],
 	"party_patrol": [[preload("res://assets/models/npc_invitado.glb"), Vector3(-0.45, 0.05, 0.1), 0.8]],
 	"toro_jog": [[preload("res://assets/models/npc_toro.glb"), Vector3(0, 0, 0), 1.2]],
+	"learner_car": [[preload("res://assets/models/npc_director.glb"), Vector3(-0.45, 0.05, 0.1), 0.8]],
 }
 ## Who rides inside and stays there when he gives up, the same way: the choristers in the van, seen through its open
 ## windows, singing all the way.
@@ -105,7 +108,7 @@ const LANES := {"moto": ChaseRoute.SIDEWALK_LANE, "wheelchair": ChaseRoute.SIDEW
 const SPEEDS := {"bear_on_foot": 12.0 / 3.6, "wheelchair": 8.0 / 3.6, "tow_truck": 30.0 / 3.6, "golf_cart": 25.0 / 3.6, "bike": 25.0 / 3.6,
 	"walker": 10.0 / 3.6, "choir_van": 35.0 / 3.6, "kick_scooter": 15.0 / 3.6,
 	"food_cart": 14.0 / 3.6, "veggie_trike": 16.0 / 3.6, "inmate_on_foot": 11.0 / 3.6, "invisible_car": 14.0 / 3.6,
-	"toro_jog": 13.0 / 3.6}
+	"toro_jog": 13.0 / 3.6, "learner_car": 35.0 / 3.6}
 ## The tow truck turns slowly and nearly stops to do it (persecucion-lugares.md): a cop cutting a corner on foot
 ## catches up with him.
 ## The golf cart turns very tight and hardly slows down to do it.
@@ -127,6 +130,10 @@ const VEGGIE_TRIKE := "veggie_trike"
 const INVISIBLE_CAR := "invisible_car"
 const PARTY_PATROL := "party_patrol"
 const TORO_JOG := "toro_jog"
+const LEARNER_CAR := "learner_car"
+## The learner car stalls after this many seconds of driving and stays stopped this long (propuesta).
+const STALL_EVERY := 6.0
+const STALL_TIME := 2.0
 ## The toy siren's two notes, a little off key from each other, and how long each lasts (propuesta).
 const TOY_SIREN_NOTES: Array[float] = [610.0, 790.0]
 const TOY_SIREN_NOTE := 0.45
@@ -146,7 +153,7 @@ const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 
 	"wheelchair": Vector3(0.8, 1.4, 1.2), "bear_on_foot": Vector3(0.9, 1.8, 0.9), "choir_van": Vector3(2.0, 1.95, 4.6), "walker": Vector3(0.7, 1.6, 1.3), "kick_scooter": Vector3(0.6, 1.6, 1.0), "food_cart": Vector3(0.8, 1.6, 2.2), "veggie_trike": Vector3(1.0, 1.6, 2.0), "inmate_on_foot": Vector3(0.8, 1.6, 0.9), "invisible_car": Vector3(0.9, 1.6, 0.9), "bike": Vector3(0.7, 1.6, 1.9), "traffic_0": Vector3(2.1, 1.4, 4.6),
 	"traffic_1": Vector3(2.1, 1.4, 4.6), "traffic_2": Vector3(2.1, 1.4, 4.6), "traffic_3": Vector3(2.1, 1.4, 4.6),
 	"manager_car": Vector3(2.1, 1.4, 4.6), "party_patrol": Vector3(2.1, 1.4, 4.6),
-	"toro_jog": Vector3(0.9, 1.8, 0.9)}
+	"toro_jog": Vector3(0.9, 1.8, 0.9), "learner_car": Vector3(2.1, 1.4, 4.6)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
@@ -159,7 +166,7 @@ const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": 
 	"wheelchair": NO_WHEELS, "walker": NO_WHEELS, "bear_on_foot": NO_WHEELS, "kick_scooter": NO_WHEELS, "food_cart": NO_WHEELS, "veggie_trike": NO_WHEELS, "inmate_on_foot": NO_WHEELS, "invisible_car": NO_WHEELS, "highway": SEDAN_WHEELS, "tow_truck": TOW_WHEELS, "golf_cart": NO_WHEELS,
 	"old_patrol": SEDAN_WHEELS, "bike": NO_WHEELS, "traffic_0": SEDAN_WHEELS, "traffic_1": SEDAN_WHEELS,
 	"traffic_2": SEDAN_WHEELS, "traffic_3": SEDAN_WHEELS, "choir_van": SEDAN_WHEELS, "manager_car": SEDAN_WHEELS,
-	"party_patrol": SEDAN_WHEELS, "toro_jog": NO_WHEELS}
+	"party_patrol": SEDAN_WHEELS, "toro_jog": NO_WHEELS, "learner_car": SEDAN_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
@@ -181,6 +188,9 @@ var nervous_left := 0.0
 var punctured := false
 var _rolling := 1.0
 var tangled_left := 0.0
+## The learner car: seconds it stays stalled, and seconds of driving until it stalls again.
+var stalled_left := 0.0
+var stall_in := STALL_EVERY
 var _highway: Highway
 
 
@@ -224,6 +234,8 @@ func _ready() -> void:
 		siren.max_distance = 50.0
 		siren.autoplay = true
 		add_child(siren)
+	if kind == LEARNER_CAR:
+		_add_learner_labels()
 	if kind == TOW:
 		var hook := TowHook.new()
 		hook.name = "Hook"
@@ -235,6 +247,36 @@ func _ready() -> void:
 		var wheel: Node3D = WHEEL.instantiate()
 		wheel.position = at
 		add_child(wheel)
+
+
+## The learner car's roof sign, on both faces, and the "it stalled" mark over it.
+func _add_learner_labels() -> void:
+	for side: float in [1.0, -1.0]:
+		var sign_label := Label3D.new()
+		sign_label.text = "LEARNER_SIGN"
+		sign_label.font_size = 40
+		sign_label.pixel_size = 0.0028
+		sign_label.double_sided = false
+		sign_label.modulate = Color(0.1, 0.1, 0.15)
+		sign_label.outline_size = 0
+		sign_label.position = Vector3(0, 1.78, -0.15 + side * 0.045)
+		sign_label.rotation.y = 0.0 if side > 0.0 else PI
+		add_child(sign_label)
+	var stalled := Label3D.new()
+	stalled.name = "Stalled"
+	stalled.text = "LEARNER_STALLED"
+	stalled.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	stalled.font_size = 48
+	stalled.pixel_size = 0.008
+	stalled.outline_size = 12
+	stalled.position = Vector3(0, 2.6, 0)
+	stalled.hide()
+	add_child(stalled)
+
+
+## Whether it's the learner car, stalled right now.
+func is_stalled() -> bool:
+	return stalled_left > 0.0
 
 
 ## Puts it at the start of `route` (in the city's space, which `city` places in the world), facing the way it goes.
@@ -365,6 +407,8 @@ func _physics_process(delta: float) -> void:
 		velocity.z = 0.0
 		move_and_slide()
 		return
+	if kind == LEARNER_CAR:
+		_stall(delta)
 	var to := points[next] - global_position
 	to.y = 0.0
 	if to.length() < REACH:
@@ -374,7 +418,7 @@ func _physics_process(delta: float) -> void:
 	var forward := global_basis.z
 	var turn := forward.signed_angle_to(to, Vector3.UP)
 	# Flat or tangled, he can't get anywhere (and doesn't turn on the spot).
-	var can_go := 0.0 if tangled_left > 0.0 else _rolling
+	var can_go := 0.0 if tangled_left > 0.0 or is_stalled() else _rolling
 	var rate: float = TURN_RATES.get(kind, TURN_RATE)
 	rotation.y += clampf(turn, -rate * delta, rate * delta) * can_go
 	# Slows down while its nose isn't on the next point yet: through the corners.
@@ -390,6 +434,20 @@ func _physics_process(delta: float) -> void:
 	# The wheelchair is slow anyway: stuck is slower than a share of his own speed.
 	var stuck_below := minf(STUCK_SPEED, top_speed() * STUCK_SHARE)
 	stuck_for = stuck_for + delta if moved < stuck_below else 0.0
+
+
+## The learner car stalls every STALL_EVERY seconds of driving, for STALL_TIME.
+func _stall(delta: float) -> void:
+	if is_stalled():
+		stalled_left = maxf(stalled_left - delta, 0.0)
+	else:
+		stall_in -= delta
+		if stall_in <= 0.0:
+			stall_in = STALL_EVERY
+			stalled_left = STALL_TIME
+	var mark := get_node_or_null("Stalled") as Node3D
+	if mark:
+		mark.visible = is_stalled()
 
 
 ## The party patrol car's plastic siren: two notes in turns, each wobbling as it goes, never quite in tune.

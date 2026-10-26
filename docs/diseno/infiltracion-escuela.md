@@ -110,6 +110,12 @@ la forma de `GymRoutine` (host decide, cada PC juzga y avisa).
    Profesora (E). Esposar a un alumno o a la Profesora los descubre; esposar al Director lo resuelve, con el sueldo y
    el interrogatorio de siempre. Hasta el paso 5 escapa a pie **(propuesta)**.
 5. La huida en el auto de práctica, el sorteo de "Jugar" en sextos y online.
+   Hecho así: descubiertos, el Director sale en el auto de práctica (sedán amarillo con el cartel "ESCUELA DE
+   MANEJO... DE ESCAPE" en el techo y la L adelante y atrás) a 35 km/h, y cada 6 s de manejo se le cala 2 s
+   ("*¡Se le caló!*" arriba del auto) **(propuesta)**. Se lo persigue en el patrullero, como al Sargento Trucho. Si lo
+   descubren después de la graduación, también se va del aula. "Jugar" sortea las infiltraciones en sextos (club,
+   coro, mimos, fiesta, gimnasio y escuela). Online: la huida, las notas de un invitado que llegan al host, el
+   boletín que llega a los invitados y la graduación en todas las PCs.
 
 ## Preguntas para Cristian (decisión 173)
 1. **¿El jefe solo aparece en la graduación, cuando sacan buenas notas?** Recomiendo que sí: es lo que dice el caso
