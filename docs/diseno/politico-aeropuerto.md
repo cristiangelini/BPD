@@ -82,3 +82,10 @@ pregunten."
   impuestos al oeste (5 estantes con perfumes y lentes de sol), la sala de embarque al este (6 filas de asientos y el
   mostrador) y entre las dos el ventanal que da a la pista. Afuera, la pista con el avión y una valla baja. Modelos
   nuevos: `checkin_counter`, `xray_machine`, `airplane`, `duty_free_shelf` y `gate_seats`.
+- **Paso 2 (las maletas y la cinta):** `Suitcase`, 13 maletas iguales de 20 kg (negras con cinta amarilla y el número
+  en la etiqueta, del 1 al 13 en un orden sorteado), apiladas entre el mostrador y la cinta. Se agarran como cualquier
+  cosa y E las abre y las cierra (adentro, un traje, una corbata y un osito). `AirportBelt`: cuando un policía entra
+  a la terminal, cada 15 s la empleada pone en la cinta la siguiente de la fila que siga en la pila (si los policías
+  se la llevaron, pasa a la otra); la cinta lleva lo que tenga encima hacia el este a 1,1 m/s, por los rayos X
+  (`xrayed`, la pantalla la muestra oscura sobre la placa clara de la máquina) y al final a la bodega del avión
+  (`loaded`). La balanza delante del mostrador muestra los kilos de lo que tiene encima.

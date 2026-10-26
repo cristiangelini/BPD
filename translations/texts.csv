@@ -4666,6 +4666,8 @@ PLACE_SCHOOL_VISIT,"Escuela Los Girasoles","Sunflowers School","Escola Os Girass
 "AIRPORT_XRAY","RAYOS X","X-RAY","RAIO X"
 "AIRPORT_DUTY_FREE","TIENDA LIBRE DE IMPUESTOS","DUTY FREE","FREE SHOP"
 "AIRPORT_GATE","EMBARQUE","BOARDING","EMBARQUE"
+"PROMPT_OPEN_SUITCASE","E: abrir la maleta","E: open the suitcase","E: abrir a mala"
+"PROMPT_CLOSE_SUITCASE","E: cerrar la maleta","E: close the suitcase","E: fechar a mala"
 "FOOTBALL_BANNER","Partido benéfico: ¡Lustre juega por los chicos!","Charity match: Lustre plays for the kids!","Jogo beneficente: Lustre joga pelas crianças!"
 "FOOTBALL_STALL","SALCHICHAS","SAUSAGES","SALSICHAS"
 "PROMPT_KICK_BALL","Clic: patear (mantén para más fuerte) · E: pase","Click: kick (hold for harder) · E: pass","Clique: chutar (segure para mais forte) · E: passe"
