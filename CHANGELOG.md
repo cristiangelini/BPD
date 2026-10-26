@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Insurance office, step 0: design doc (docs/diseno/seguros.md) and decision 162 (proposed).
 - Doll factory, step 8: online: the host runs Fermín, Nilda and the belt (Fermín carries its state, so it stops and jams the same on every PC), only the host's feeder drops dolls and they come over dressed, and the red button and the giant doll's zipper work from any PC.
 - Doll factory, step 7: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store and the doll factory in fifths.
 - Doll factory, step 6: the poodle hair story: pink tufts from the hair machine toward the hidden bag make cops sneeze and drop what they hold (the first sneeze is the clue), the hair machine sticks pink hair on cops walking by, the belt's dolls come out hairy, and the bag, the golden comb and the fake invoice are hidden.
