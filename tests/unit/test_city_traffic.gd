@@ -52,6 +52,23 @@ func test_a_car_drives_its_loop_and_stops_for_a_cop_in_front() -> void:
 	assert_gt(car.global_position.distance_to(stopped), 1.0, "and after a while it goes anyway")
 
 
+func test_it_never_drives_through_a_parked_cops_vehicle() -> void:
+	var car := CityCar.new()
+	car.path = CityTraffic.loop_points(1, 1, 4, 4, true)
+	add_child_autofree(car)
+	car.place_along(0.0)
+	await wait_physics_frames(2)
+	# A stand-in for the patrol car or the transfer bus, parked in its lane.
+	var parked := Node3D.new()
+	parked.add_to_group("patrol_cars")
+	add_child_autofree(parked)
+	parked.global_position = car.to_global(Vector3(0, 0, 6))
+	await wait_physics_frames(10)
+	var stopped := car.global_position
+	await wait_seconds(CityCar.PATIENCE + 1.5)
+	assert_almost_eq(car.global_position.distance_to(stopped), 0.0, 0.01, "it waits for good")
+
+
 func test_walkers_stay_on_their_sidewalk() -> void:
 	var walkers: Array[CityWalker] = []
 	for k in 6:
