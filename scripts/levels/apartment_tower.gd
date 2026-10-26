@@ -14,6 +14,7 @@ extends Node3D
 signal something_fell(body: Node3D)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const MANAGER_SCENE := preload("res://scenes/npc/concierge.tscn")
 const ORNAMENT_SCENES: Array[PackedScene] = [
 	preload("res://scenes/props/ornament_vase.tscn"), preload("res://scenes/props/ornament_figurine.tscn"),
 	preload("res://scenes/props/ornament_ballerina.tscn"),
@@ -58,6 +59,13 @@ const SCAFFOLD_X := 6.5
 const SCAFFOLD_GAP := 0.1
 const SCAFFOLD_Z := HALF_Z + BALCONY_DEPTH + SCAFFOLD_GAP + HangingScaffold.SIZE.z / 2
 const CRANE_Y := ROOF_Y + 1.8
+## Don Evaristo's round with his broom across the lobby, back and forth, and where he takes the elevator to the 12th.
+const MANAGER_ROUTE: Array[Vector3] = [
+	Vector3(-6.0, LOBBY_Y, 5.2), Vector3(-2.0, LOBBY_Y, 2.0), Vector3(3.0, LOBBY_Y, 2.0), Vector3(8.5, LOBBY_Y, 1.0),
+]
+const MANAGER_ELEVATOR := Vector3(0.0, LOBBY_Y, CORE_Z + 0.9)
+## The intercom board outside, beside the glass door.
+const INTERCOM_AT := Vector3(1.4, LOBBY_Y + 1.3, HALF_Z + 0.1)
 ## Where its deck stands at the street.
 const STREET_Y := 0.05
 ## Something falling faster than this (m/s) went over the edge: it's lost, and a fine.
@@ -140,6 +148,9 @@ var elevator: TowerElevator
 var calls: Array[ElevatorCall] = []
 var ornaments: Array[Ornament] = []
 var scaffold: HangingScaffold
+var manager: Concierge
+var intercom: IntercomPanel
+var complaint_bar: ProgressBar
 var scaffold_calls: Array[ScaffoldButton] = []
 ## What fell from up high, each one lost and a DROP_FINE.
 var dropped: Array[Node3D] = []
@@ -164,6 +175,7 @@ func _ready() -> void:
 	rental_door = _door(Vector3(FLAT_C_DOOR_X, TOP_Y, CORE_Z))
 	_place_elevator()
 	_place_scaffold()
+	_place_manager()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("apartments")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -283,6 +295,45 @@ func _drop(body: Node3D) -> void:
 		var evidence := body as Evidence
 		evidence.hit(INF)
 	something_fell.emit(body)
+
+
+## Don Evaristo on his round, the intercom that calls him away, and his complaint meter. A rammed door reaches him
+## anywhere, and so does the crash of anything falling from the scaffold; the elevator overloaded and broken ornaments
+## only if he sees them.
+func _place_manager() -> void:
+	intercom = IntercomPanel.new()
+	intercom.position = INTERCOM_AT
+	add_child(intercom)
+	manager = MANAGER_SCENE.instantiate()
+	manager.route = MANAGER_ROUTE
+	manager.printer_spot = MANAGER_ELEVATOR
+	manager.printer = intercom
+	add_child(manager)
+	manager.start_at(0)
+	for door: FrontDoor in [front_door, flat_door, study_door, rental_door]:
+		door.broken.connect(manager.door_broken)
+	elevator.overloaded.connect(func(_kg: float) -> void:
+		manager.saw(elevator.global_position + Vector3.UP, Concierge.SAW_OVERLOAD, "EVARISTO_OVERLOAD"))
+	something_fell.connect(func(_body: Node3D) -> void: manager.heard(Concierge.HEARD_FALL, "EVARISTO_FALL"))
+	for ornament in ornaments:
+		ornament.broken.connect(func(at: Vector3) -> void: manager.saw(at, FloorBoss.SAW_BREAK, "EVARISTO_ORNAMENT"))
+	manager.lawyer_called.connect(%CaseFailed.show)
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	manager.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
 
 
 ## A floor slab at `top` with the elevator shaft's hole.

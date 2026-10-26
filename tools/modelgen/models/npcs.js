@@ -1364,6 +1364,25 @@ const NPCS = {
 		limb(b, 'props', C('broom_stick', 0xa87a4a), V(0.5, 0.0, 0.2), V(0.5, 1.3, 0.1), 0.02);
 		b.add('props', C('broom_head', 0xd8b048), new THREE.BoxGeometry(0.34, 0.1, 0.08), { pos: V(0.5, 0.05, 0.2) });
 	},
+	// Don Evaristo, the Las Palomas building's manager (edificio.md): a grey overall, a huge ring of keys on his belt,
+	// a bushy grey mustache, a flat cap and a gourd of mate in his hand.
+	evaristo(b) {
+		const overall = C('manager_overall', 0x7a7e86);
+		pearBody(b, SKIN.arena, { shirt: overall, onePiece: true, shoes: C('boots_brown', 0x4a3020) });
+		const steel = C('keys_steel', 0xc8ccd4);
+		b.add('props', steel, new THREE.TorusGeometry(0.1, 0.012, 4, 14), { pos: V(-0.36, 0.56, 0.24), rot: [0, 0.9, 0] });
+		for (let i = 0; i < 7; i++) {
+			const a = i / 6 * Math.PI - Math.PI / 2;
+			b.add('props', i % 2 ? gold : steel, new THREE.BoxGeometry(0.025, 0.11, 0.008), { pos: V(-0.36 + Math.sin(a) * 0.07, 0.43 - Math.cos(a) * 0.03, 0.24 + Math.sin(a) * 0.05), rot: [0, 0.9, a * 0.4] });
+		}
+		eyes(b, 1.32, 0.17, 0.08, 0.045);
+		mouth(b);
+		mustache(b, C('hair_grey', 0x8a8a8a), 1.5);
+		b.add('cap', C('flat_cap', 0x4a4a52), ellipsoid(0.22, 0.07, 0.24, 10, 4), { pos: V(0, 1.47, 0.03) });
+		b.add('cap', C('flat_cap', 0x4a4a52), new THREE.BoxGeometry(0.26, 0.02, 0.1), { pos: V(0, 1.44, 0.22), rot: [0.2, 0, 0] });
+		b.add('props', C('mate_gourd', 0x8a5a2a), ellipsoid(0.07, 0.08, 0.07, 8, 5), { pos: V(0.5, 0.66, 0.24) });
+		limb(b, 'props', C('bombilla', 0xd0d4dc), V(0.5, 0.71, 0.24), V(0.47, 0.86, 0.22), 0.008);
+	},
 };
 
 export const NPC_NAMES = Object.keys(NPCS);
@@ -1373,7 +1392,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, comprador: 1.0, compradora: 0.9, martillo: 1.1, portero_subasta: 1.15, ladron_oso: 1.15, abuelo_oso: 1.15, alumno_primaria: 0.62, alumna_primaria: 0.62, alumno_b: 0.62, alumna_b: 0.62 };
+const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, comprador: 1.0, compradora: 0.9, martillo: 1.1, portero_subasta: 1.15, ladron_oso: 1.15, abuelo_oso: 1.15, alumno_primaria: 0.62, alumna_primaria: 0.62, alumno_b: 0.62, alumna_b: 0.62, evaristo: 1.05 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
