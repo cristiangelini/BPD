@@ -199,6 +199,14 @@ const CORRIDOR_CAMERA_AT := Vector3(10.5, StationRooms.CEILING, 6.4)
 const LOST_BOX_MODEL := preload("res://assets/models/lost_found_box.glb")
 const LOST_BOX_AT := Vector3(5.2, 0, 8.4)
 const JACKET_ON_BOX := Vector3(5.2, 0.55, 8.4)
+## The court (step 2): the judge's bench and the judge behind it facing the benches (+Z), and the witness stand with
+## its three signs on top, facing the witness behind it.
+const JUDGE_DESK_AT := Vector3(0, 0, 3.4)
+const JUDGE_AT := Vector3(0, 0, 2.6)
+const STAND_AT := Vector3(-3.2, 0, 4.2)
+const WITNESS_AT := Vector3(-3.2, 0.1, 3.4)
+const SIGNS_X: Array[float] = [-0.48, 0.0, 0.48]
+const SIGNS_Y := 1.12
 
 ## Same seed, same jailbreak. 0 draws one.
 @export var case_seed := 0
@@ -238,6 +246,8 @@ var alibi := {}
 var trials := 0
 var jacket: DisguisePiece
 var file_label: Label
+var judge: TrialJudge
+var signs: Array[TrialSign] = []
 ## The host: cops on the rope -> seconds left to the alley.
 var _climbers := {}
 var detectors: Array[SmokeDetector] = []
@@ -404,6 +414,7 @@ func _trial_day() -> void:
 	add_child(jacket)
 	_jacket_on_box()
 	alibi = TrialAlibi.draw(case_seed, trials)
+	_court(lot)
 	var file_hud := CanvasLayer.new()
 	file_hud.name = "TrialFile"
 	file_label = Label.new()
@@ -414,6 +425,52 @@ func _trial_day() -> void:
 	file_label.hide()
 	file_hud.add_child(file_label)
 	add_child(file_hud)
+
+
+## The judge's bench in the guard room, Judge Bermúdez behind it, and the witness stand with its three signs.
+func _court(lot: Transform3D) -> void:
+	var bench := StaticBody3D.new()
+	bench.name = "JudgeBench"
+	add_child(bench)
+	bench.global_transform = lot * Transform3D(Basis.IDENTITY, JUDGE_DESK_AT)
+	bench.add_child(DESK_MODEL.instantiate())
+	var shape := CollisionShape3D.new()
+	var solid := BoxShape3D.new()
+	solid.size = StationRooms.SOLID["station_desk"]
+	shape.shape = solid
+	shape.position.y = solid.size.y / 2
+	bench.add_child(shape)
+	judge = TrialJudge.new()
+	judge.name = "TrialJudge"
+	judge.case_seed = case_seed
+	judge.alibi = alibi
+	add_child(judge)
+	judge.global_transform = lot * Transform3D(Basis.IDENTITY, JUDGE_AT)
+	# The witness faces the stand (+Z); the cops' forward is -Z.
+	judge.stand_spot = lot * Transform3D(Basis(Vector3.UP, PI), WITNESS_AT)
+	judge.guilty.connect(func() -> void: guard.catch())
+	var stand := TrialStand.new()
+	stand.name = "TrialStand"
+	stand.judge = judge
+	add_child(stand)
+	stand.global_transform = lot * Transform3D(Basis.IDENTITY, STAND_AT)
+	for i in SIGNS_X.size():
+		var sign_board := TrialSign.new()
+		sign_board.name = "TrialSign%d" % i
+		sign_board.index = i
+		sign_board.judge = judge
+		add_child(sign_board)
+		# On the stand's top, leaning back, facing the witness (-Z).
+		sign_board.global_transform = lot * Transform3D(Basis(Vector3.UP, PI) * Basis(Vector3.RIGHT, -0.3),
+			STAND_AT + Vector3(SIGNS_X[i], SIGNS_Y, -0.2))
+		signs.append(sign_board)
+
+
+## The court sits (the host): the judge calls the witnesses.
+func _open_court() -> void:
+	if judge.state == "" and (guard as TrialGuard).phase == "court":
+		judge.open_court(get_tree().get_nodes_in_group("cops").filter(func(cop: Node) -> bool:
+			return is_ancestor_of(cop)), lawyer())
 
 
 ## The jacket folded on the lost and found box.
@@ -461,6 +518,7 @@ func _trial_caught() -> void:
 		_jacket_on_box()
 	trials += 1
 	alibi = TrialAlibi.draw(case_seed, trials)
+	judge.reset(alibi)
 
 
 ## Caught in the bribe jailbreak: the guard keeps what he got and asks for more, and the wads out of the cells go back
@@ -1586,6 +1644,8 @@ func _hud() -> void:
 func _physics_process(delta: float) -> void:
 	if is_trial():
 		_show_file()
+		if multiplayer.is_server():
+			_open_court()
 	if is_drill():
 		_dress_prisoners()
 		_take_off_vests(delta)
