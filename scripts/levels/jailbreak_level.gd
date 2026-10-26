@@ -21,6 +21,8 @@ extends Node3D
 ## key hangs from the collar of Mordisco, the station's bulldog, who walks his round (GuardDog).
 ## The fourth is the spoon tunnel (fuga-tunel.md): the guard awake at his desk, listening (ListeningGuard), and each
 ## cell digging a hole by its bunk with the dinner spoons (Spoon, TunnelHole).
+## The fifth is the vent (fuga-ventilacion.md): the guard awake with no key (VentGuard), a loose grille high on each
+## cell's wall (VentGrille) into the duct, and one cop too big to fit (big_cop).
 ## --place=jailbreak opens it from Play, and --jailbreak=<variant> forces one of VARIANTS.
 
 const DESK_MODEL := preload("res://assets/models/station_desk.glb")
@@ -94,12 +96,16 @@ const TUNNEL_TRAYS: Array[Vector3] = [Vector3(8.3, 0.02, 3.9), Vector3(12.7, 0.0
 ## station, by the patrol car.
 const TUNNEL_MATTRESSES: Array[Vector3] = [Vector3(8.3, 0.6, 1.6), Vector3(12.7, 0.6, 1.6)]
 const TUNNEL_EXIT := Vector3(5.0, 0, StationRooms.HALF_Z + 2.0)
+## The vent jailbreak (fuga-ventilacion.md, step 1): the grille on the back wall of each cell, over its bunk.
+const VENT_GRILLES: Array[Vector3] = [Vector3(8.3, VentGrille.HEIGHT, StationRooms.SPLIT_Z + StationRooms.WALL / 2 + 0.03),
+	Vector3(12.7, VentGrille.HEIGHT, StationRooms.SPLIT_Z + StationRooms.WALL / 2 + 0.03)]
 ## A catch fills a third of the hole back in (fuga-tunel.md, question 3).
 const TUNNEL_REFILL := 1.0 / 3.0
 const TUNNEL_HOLES := [[Vector3(6.7, 0, 2.2), Vector3(9.9, 0, 2.2)], [Vector3(11.1, 0, 2.2), Vector3(14.3, 0, 2.2)]]
 
-## The ways out, drawn by the seed (fuga-limpieza.md, fuga-perro.md and fuga-tunel.md, question 1: in quarters).
-const VARIANTS := ["donut", "cleaning", "dog", "tunnel"]
+## The ways out, drawn by the seed (fuga-limpieza.md, fuga-perro.md, fuga-tunel.md and fuga-ventilacion.md,
+## question 1: in fifths).
+const VARIANTS := ["donut", "cleaning", "dog", "tunnel", "vent"]
 
 ## Same seed, same jailbreak. 0 draws one.
 @export var case_seed := 0
@@ -122,6 +128,8 @@ var dog_food: Array[DogFood] = []
 var holes: Array[TunnelHole] = []
 var spoons: Array[Spoon] = []
 var mattresses: Array[TunnelMattress] = []
+## The vent jailbreak's grilles (one for each cell).
+var grilles: Array[VentGrille] = []
 ## The other end of the tunnels, on the sidewalk: it shows once one is through.
 var tunnel_exit: MeshInstance3D
 var cart_key: CellKey
@@ -160,6 +168,8 @@ func _ready() -> void:
 		_dog_night()
 	elif is_tunnel():
 		_tunnel_night()
+	elif is_vent():
+		_vent_night()
 	else:
 		_guard_desk()
 	_hud()
@@ -168,7 +178,8 @@ func _ready() -> void:
 	$PatrolCar.global_transform = car_home
 	if Campaign.current:
 		guard.times_caught = Campaign.current.jail_catches
-	var hint: String = {"cleaning": "HINT_JAILED_CLEANING", "dog": "HINT_JAILED_DOG", "tunnel": "HINT_JAILED_TUNNEL"} \
+	var hint: String = {"cleaning": "HINT_JAILED_CLEANING", "dog": "HINT_JAILED_DOG", "tunnel": "HINT_JAILED_TUNNEL",
+		"vent": "HINT_JAILED_VENT"} \
 		.get(variant, "HINT_JAILED")
 	($Cop as Cop).show_hint.call_deferred(hint)
 
@@ -194,6 +205,44 @@ func is_dog() -> bool:
 
 func is_tunnel() -> bool:
 	return variant == "tunnel"
+
+
+func is_vent() -> bool:
+	return variant == "vent"
+
+
+## The vent jailbreak: the guard awake at his desk with no key (it's on the key board behind him, step 3) and a loose
+## grille high on the back wall of each cell.
+func _vent_night() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var desk := _desk()
+	var watcher := VentGuard.new()
+	watcher.name = "NightGuard"
+	add_child(watcher)
+	watcher.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), GUARD_AT)
+	watcher.stand_guard(case_seed)
+	watcher.outside_cells = outside_cells
+	watcher.see_through = [desk.get_rid()]
+	watcher.caught.connect(_on_caught)
+	guard = watcher
+	for cell in VENT_GRILLES.size():
+		var grille := VentGrille.new()
+		grille.name = "VentGrille%d" % cell
+		grille.cell = cell
+		grille.floor_y = lot.origin.y
+		add_child(grille)
+		grille.global_transform = lot * Transform3D(Basis.IDENTITY, VENT_GRILLES[cell])
+		grilles.append(grille)
+
+
+## The cop who doesn't fit in the duct (fuga-ventilacion.md, question 2): drawn by the seed among the cops, by their
+## uniforms, so it's the same one on every PC. Nobody when playing alone.
+func big_cop() -> Cop:
+	var cops: Array = get_tree().get_nodes_in_group("cops").filter(func(cop: Node) -> bool: return cop is Cop)
+	if cops.size() < 2:
+		return null
+	cops.sort_custom(func(a: Cop, b: Cop) -> bool: return a.uniform < b.uniform)
+	return cops[hash(["vent big", case_seed]) % cops.size()]
 
 
 ## The spoon tunnel: the guard awake at his desk with the key on his belt, a tray with two spoons in each cell and the

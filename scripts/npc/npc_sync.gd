@@ -49,7 +49,8 @@ static func is_npc(node: Node) -> bool:
 		or node is LaundryWorker or node is LaundryCart \
 		or node is CityRunaway or node is CrashDriver or (node is CityCar and (node as CityCar).wreck) \
 		or node is ChaseCan \
-		or node is BankNephew
+		or node is BankNephew \
+		or node is VentGrille
 
 
 func _ready() -> void:
