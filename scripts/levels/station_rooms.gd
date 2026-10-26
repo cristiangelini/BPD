@@ -86,6 +86,12 @@ const CHEF_DISGUISES: Array[String] = ["chef_hat", "chef_mustache", "chef_apron"
 	"chef_apron", "chef_hat", "chef_mustache", "chef_apron", "chef_hat", "chef_mustache", "chef_apron"]
 const CHEF_DISGUISES_AT := Vector3(-5.15, 0, 4.85)
 const CHEF_GAP := 0.42
+## The chess club's (infiltracion-ajedrez.md, step 1): thick glasses, an argyle vest and a beret for each cop, in a
+## ninth row.
+const CHESS_DISGUISES: Array[String] = ["chess_glasses", "chess_vest", "chess_beret", "chess_glasses", "chess_vest",
+	"chess_beret", "chess_glasses", "chess_vest", "chess_beret", "chess_glasses", "chess_vest", "chess_beret"]
+const CHESS_DISGUISES_AT := Vector3(-5.15, 0, 5.3)
+const CHESS_GAP := 0.42
 
 ## Furniture: [model, position, turn]. The models come from tools/modelgen/models/station.js.
 const FURNITURE := [

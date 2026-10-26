@@ -475,6 +475,11 @@ func _disguises(root: Node3D) -> void:
 		piece.name = "Chef%d" % i
 		piece.position = StationRooms.CHEF_DISGUISES_AT + Vector3(i * StationRooms.CHEF_GAP, 0.12, 0)
 		root.add_child(piece)
+	for i in StationRooms.CHESS_DISGUISES.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.CHESS_DISGUISES[i]).instantiate()
+		piece.name = "Chess%d" % i
+		piece.position = StationRooms.CHESS_DISGUISES_AT + Vector3(i * StationRooms.CHESS_GAP, 0.12, 0)
+		root.add_child(piece)
 
 
 func _furniture(items: Array, solids: Dictionary, root: Node3D) -> void:

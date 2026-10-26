@@ -325,6 +325,55 @@ export function buildFoldedChefApron() {
 	return b.build();
 }
 
+// The chess club's disguises (infiltracion-ajedrez.md, step 1), each origin where it sits on a cop
+// (DisguisePiece.SLOTS): thick black glasses with bottle-bottom lenses, a green argyle vest over a white shirt with a
+// brown tie, and a brown thinker's beret. Placeholder.
+export function buildChessGlasses() {
+	const b = new Builder('disguise_chess_glasses');
+	const frame = mat('chess_frame', 0x141418), lens = mat('chess_lens', 0xe8f4fa, { emissive: 0x18242c });
+	for (const s of [-1, 1]) {
+		b.add('frame', frame, new THREE.BoxGeometry(0.12, 0.09, 0.025), { pos: V(s * 0.075, 0, 0) });
+		b.add('lens', lens, new THREE.CylinderGeometry(0.038, 0.038, 0.03, 12), { pos: V(s * 0.075, 0, 0.012), rot: [Math.PI / 2, 0, 0] });
+		for (let i = 1; i < 3; i++) b.add('rings', frame, new THREE.TorusGeometry(0.038 - i * 0.011, 0.002, 4, 12), { pos: V(s * 0.075, 0, 0.028) });
+		b.add('frame', frame, new THREE.BoxGeometry(0.018, 0.018, 0.2), { pos: V(s * 0.14, 0.02, -0.1) });
+	}
+	return b.build();
+}
+
+export function buildChessVest() {
+	const b = new Builder('disguise_chess_vest');
+	const green = mat('chess_green', 0x3a6a4a), cream = mat('chess_cream', 0xe8dcb0), white = mat('chess_shirt', 0xf4f4ef);
+	const tie = mat('chess_tie', 0x6a4022);
+	b.add('vest', green, new THREE.CylinderGeometry(0.31, 0.45, 0.55, 14, 1, true), { pos: V(0, -0.155, -0.3) });
+	b.add('shirt', white, new THREE.CylinderGeometry(0.2, 0.3, 0.12, 12, 1, true), { pos: V(0, 0.1, -0.28) });
+	b.add('tie', tie, new THREE.BoxGeometry(0.05, 0.22, 0.01), { pos: V(0, 0.0, 0.035), rot: [-0.25, 0, 0] });
+	for (let row = 0; row < 3; row++) for (let col = -1; col <= 1; col++) {
+		if (col === 0 && row === 0) continue;
+		const y = -0.05 - row * 0.12;
+		const r = 0.31 + (0.12 - y) * 0.2545;
+		const a = col * 0.32;
+		b.add('argyle', cream, new THREE.BoxGeometry(0.07, 0.07, 0.01), { pos: V(Math.sin(a) * r, y, -0.3 + Math.cos(a) * r + 0.004), rot: [-0.25, a, Math.PI / 4] });
+	}
+	return b.build();
+}
+
+export function buildChessBeret() {
+	const b = new Builder('disguise_chess_beret');
+	const brown = mat('chess_brown', 0x7a5232);
+	b.add('beret', brown, ellipsoid(0.23, 0.07, 0.22, 12, 6), { pos: V(-0.03, 0.07, 0.01), rot: [0, 0, 0.18] });
+	b.add('band', mat('chess_band', 0x4a3020), new THREE.TorusGeometry(0.18, 0.012, 4, 16), { pos: V(0, 0.03, 0.01), rot: [Math.PI / 2, 0, 0] });
+	b.add('stalk', brown, new THREE.CylinderGeometry(0.01, 0.012, 0.04, 6), { pos: V(-0.03, 0.15, 0.01) });
+	return b.build();
+}
+
+// The vest folded: 0.4 x 0.08 x 0.3 m, origin in its middle.
+export function buildFoldedChessVest() {
+	const b = new Builder('folded_chess_vest');
+	b.add('vest', mat('chess_green', 0x3a6a4a), new THREE.BoxGeometry(0.4, 0.08, 0.3));
+	for (const x of [-0.1, 0.1]) b.add('argyle', mat('chess_cream', 0xe8dcb0), new THREE.BoxGeometry(0.08, 0.01, 0.08), { pos: V(x, 0.041, 0), rot: [0, Math.PI / 4, 0] });
+	return b.build();
+}
+
 export const models = {
 	disguise_wig: buildDisguiseWig, disguise_mustache: buildDisguiseMustache, disguise_glasses: buildDisguiseGlasses,
 	disguise_robe: buildDisguiseRobe, folded_robe: buildFoldedRobe, songbook: buildSongbook,
@@ -339,6 +388,8 @@ export const models = {
 	folded_thief_shirt: buildFoldedThiefShirt,
 	disguise_chef_hat: buildChefHat, disguise_chef_mustache: buildChefMustache, disguise_chef_apron: buildChefApron,
 	folded_chef_apron: buildFoldedChefApron,
+	disguise_chess_glasses: buildChessGlasses, disguise_chess_vest: buildChessVest, disguise_chess_beret: buildChessBeret,
+	folded_chess_vest: buildFoldedChessVest,
 };
 
 export const views = {
@@ -407,6 +458,18 @@ export const views = {
 			{ name: 'disguise_chef_mustache', pos: [0.45, 0.03, 0.2] },
 			{ name: 'disguise_chef_hat', pos: [0.75, 0.06, -0.2] },
 			{ name: 'folded_chef_apron', pos: [0.5, 0.04, -0.35] },
+		],
+		cam: { pos: [0.3, 1.2, 3.0], target: [0.1, 0.8, 0], fov: 40 },
+	},
+	chess_disguise: {
+		items: [
+			{ name: 'cop_0', pos: [-0.4, 0, 0] },
+			{ name: 'disguise_chess_vest', pos: [-0.4, 0.95, 0.3] },
+			{ name: 'disguise_chess_glasses', pos: [-0.4, 1.33, 0.21] },
+			{ name: 'disguise_chess_beret', pos: [-0.4, 1.42, 0] },
+			{ name: 'disguise_chess_glasses', pos: [0.45, 0.05, 0.2] },
+			{ name: 'disguise_chess_beret', pos: [0.75, 0.0, -0.2] },
+			{ name: 'folded_chess_vest', pos: [0.5, 0.04, -0.35] },
 		],
 		cam: { pos: [0.3, 1.2, 3.0], target: [0.1, 0.8, 0], fov: 40 },
 	},
