@@ -37,6 +37,8 @@ const WAGON_X := 16.0
 const WAGON_Z := 3.0
 const WAGON_SIZE := Vector3(1.9, 1.5, 4.6)
 const NUMBERS: Array[String] = ["1_", "_4"]
+## Window centers along each facade (u), downstairs and upstairs, front and back alike: only for the look.
+const WINDOWS := [[-5.8, -1.2, 3.5], [-3.5, 3.5]]
 const LEFT := 0
 const RIGHT := 1
 ## Ornament shelves in house space (OrnamentLayout units) and the kitchen counter's row of plates.
@@ -58,6 +60,7 @@ const WHITE := Color(0.93, 0.93, 0.9)
 const FENCE := Color(0.9, 0.9, 0.85)
 const WAGON := Color(0.55, 0.62, 0.48)
 const WAGON_ROOF := Color(0.45, 0.34, 0.24)
+const GLASS := Color(0.55, 0.72, 0.85)
 
 @export var case_seed := 0
 ## The guilty neighbor's house: LEFT (west) or RIGHT (east).
@@ -182,8 +185,13 @@ func _furniture(house: int) -> void:
 	_build.box(at(house, Vector3(5.5, up + 0.3, -2.8)), Vector3(0.8, 0.6, 0.8), Color(0.7, 0.55, 0.35))
 
 
-## The front: the green door (locked), its lost digit over it, the pots, the mailbox and the wagon in the passage.
+## The front: the green door (locked), its lost digit over it, the windows, the pots, the mailbox and the wagon in
+## the passage.
 func _front(house: int) -> void:
+	for level in 2:
+		for u: float in WINDOWS[level]:
+			for z: float in [FRONT_Z + 0.09, BACK_Z - 0.09]:
+				_build.mesh_box(at(house, Vector3(u, level * GameScale.FLOOR_HEIGHT + 1.5, z)), Vector3(1.2, 1.0, 0.04), GLASS)
 	var door: FrontDoor = DOOR_SCENE.instantiate()
 	door.position = at(house, Vector3(ENTRANCE_U - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, FRONT_Z))
 	add_child(door)
