@@ -3,7 +3,8 @@ extends RefCounted
 
 ## Which place a match happens in (panaderia.md, "El orden para hacerlo", step 5): Play draws a case seed and, from
 ## it, the grandpa's house, the bakery, the pet salon, the hardware store (ferreteria.md), the doll factory
-## (fabrica.md), the insurance office (seguros.md) or the cake lab (laboratorio.md), with even odds (propuesta). Every third shift is an interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
+## (fabrica.md), the insurance office (seguros.md), the cake lab (laboratorio.md) or the apartment building
+## (edificio.md), with even odds (propuesta). Every third shift is an interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
 ## (persecucion.md, "Sale como un caso más"). Of the shifts left, one in CRIME_EVERY is the crime scene
 ## (escena-del-crimen.md, propuesta; half at the pastry contest and half at the circus, escena-circo.md), then one in
 ## TRAFFIC_EVERY the traffic control (control-transito.md; the level draws rush hour or clown convoy), then one in
@@ -53,6 +54,7 @@ const PLACES := {
 	"doll_factory": "res://scenes/levels/doll_factory.tscn",
 	"insurance": "res://scenes/levels/insurance_office.tscn",
 	"cake_lab": "res://scenes/levels/cake_lab.tscn",
+	"apartments": "res://scenes/levels/apartment_tower.tscn",
 	"prison_tunnel": "res://scenes/levels/prison_tunnel.tscn",
 	"prison_talent": "res://scenes/levels/prison_talent.tscn",
 	"prison_vip": "res://scenes/levels/prison_vip.tscn",
@@ -63,7 +65,7 @@ const PLACES := {
 	"football": "res://scenes/levels/football_pitch.tscn",
 }
 ## The raids, drawn by the seed.
-const ORDER := ["grandpa", "bakery", "groomer", "hardware", "doll_factory", "insurance", "cake_lab"]
+const ORDER := ["grandpa", "bakery", "groomer", "hardware", "doll_factory", "insurance", "cake_lab", "apartments"]
 ## One shift in this many is an interrogation (Cristian, 20/10): shifts 3, 6... of a campaign, or 1 in 3 by the seed
 ## without one.
 const INTERROGATION_EVERY := 3

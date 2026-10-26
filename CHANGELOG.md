@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Apartment building, step 8: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office, the cake lab and the apartment building in eighths.
 - Apartment building, step 7: the tenant of twenty story: 30C, locked like always, is full of the tricked tenants' mattresses and bags, the box with the twenty contracts waits on a mattress, 30C's mailbox in the lobby has twenty names (the clue), and the fake stamp and the bunch of keys hide with the seed. All six stories are in.
 - Apartment building, step 7: the carrier pigeons story: the pigeon loft on 30B's balcony (25 kg, two cops), a pigeon flying in every 30 s with the pearl necklace on its leg until a cop takes it, a running cop scaring it off, feathers and birdseed from the elevator to 30B (the clue), and the trainer's whistle hidden with the seed.
 - Apartment building, step 7: the floor 31 story: the key of the floor that doesn't exist waits on the study's desk, the elevator has a taped "31" button (the clue) and a keyhole, and with the key turned it rides up to the machine room on the roof, where the box of stolen paintings waits; the plan with one floor too many hides with the seed. Short elevator trips now take their share of the 15 s.

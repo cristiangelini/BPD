@@ -131,6 +131,8 @@ Los pesos y valores siguen la escala de los otros lugares: la principal vale uno
      contratos (5 kg) está sobre un colchón del fondo. En el hall, el buzón del 30C tiene veinte nombres (E lo mira:
      pista). El sello falso y el manojo de llaves se esconden con la semilla. Capturas `paso7-inquilinos-*.png`.
 8. "Jugar" sortea entre los 8 lugares de allanamiento.
+   - **Hecho (propuesta):** el edificio entra en el sorteo de allanamientos con las mismas chances que los otros 7
+     (un octavo cada uno), y salen sus 6 historias. `--place=apartments` lo fuerza.
 9. El online (el ascensor, el andamio, Don Evaristo, Doña Pepa y la evidencia en todas las PC).
 
 ## Preguntas para Cristian
