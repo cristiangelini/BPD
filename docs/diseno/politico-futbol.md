@@ -65,3 +65,12 @@ gol para la foto y que salga entero. En ese orden, dice él. En el otro, digo yo
    fuerte); agarrarla con la mano es mano. Si no, juegan solo empujándola con el cuerpo.
 3. **¿Hay un culpable para esposar?** Recomendado: sí, el árbitro comprado por el concejal Barullo, que huye en su
    moto si no lo atrapan.
+
+## Hecho así
+- **Paso 1 (la cancha):** `FootballPitch` (`scenes/levels/football_pitch.tscn`, `--place=football`) es la ciudad entera
+  con el lote `football_pitch`, que llena la cuadra (4, 4) como el parque del puente (`"park": true`). La cancha mide
+  44 x 28 m a lo largo de x, con el centro en z = -2: pasto en 8 franjas, líneas de cal, círculo central, áreas de 6 m
+  y punto de penal. Hay un arco de 6 x 2 m en cada punta (`goals`, modelo `football_goal`) con cuerpos gruesos en la red
+  para que la pelota quede adentro. Al norte está la tribuna de 3 escalones; al sur, hacia la calle, los dos bancos
+  (`team_bench`), la camilla (`stretcher`), la mesa con la copa (`football_cup`), el puesto de salchichas, la pancarta
+  "Partido benéfico" y el cartel. Capturas en `/mnt/project-files/futbol/paso1-*.png`.
