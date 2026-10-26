@@ -89,3 +89,19 @@ la limpieza.
    **Recomiendo sí:** se hace desde adentro de la celda, el guardia lo puede ver y es lo bastante absurdo.
 3. ¿El simulacro es de día con la sala de espera llena de gente? **Recomiendo sí:** "salir entre la gente" necesita
    gente, y de noche la comisaría está vacía.
+
+## Cómo quedó el paso 1
+- `--jailbreak=drill` fuerza la variante; el sorteo de la fuga ahora es en séptimos.
+- De día: luz blanca de sol y cielo celeste. `DrillGuard` en su escritorio, sin donas y con la llave en el cinturón.
+- La sala de espera (`WaitingPerson`): de 8 a 12 personas distintas, de 12 posibles, en 12 lugares de la sala de
+  guardia. La semilla elige quiénes y dónde (igual en todas las PCs). De vez en cuando dicen una de 10 frases.
+- Los cuatro llevan el chaleco naranja de preso (puesto como un disfraz, `prison_vest`).
+- En cada celda: la estufa vieja (`CellHeater`) contra la pared del costado, la frazada (`CellBlanket`) sobre la cucheta
+  y el detector de humo (`SmokeDetector`) en el techo.
+- Con la frazada en la mano, E en la estufa la pone contra ella y sale humo. 8 s seguidos hacen sonar el detector
+  (titila la luz roja). Soltar la frazada o alejarse a más de 1,4 m corta el humo y vuelve a cero.
+- Si el guardia ve el humo (una nube de varios puntos, porque las rejas tapan algunos), la sospecha sube 20 por
+  segundo y dice una de 3 frases.
+- El simulacro que empieza con la alarma es el paso 2.
+- Modelos `prison_vest`, `cell_heater`, `cell_blanket` y `smoke_detector` en `tools/modelgen/models/drill.js`. 19 textos
+  nuevos en es, en y pt. Pruebas en `test_drill_smoke.gd`.

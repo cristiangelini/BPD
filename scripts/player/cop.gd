@@ -181,7 +181,8 @@ func current_prompt() -> String:
 				or aimed is TunnelHole or aimed is CircusClown \
 				or (aimed is CellDoor and $Grabber.held is CellKey) \
 				or (aimed is QueueCar and $Grabber.held is Breathalyzer and aimed.breath_check_ready()) \
-				or aimed is BankVine:
+				or aimed is BankVine \
+				or aimed is CellHeater:
 			return aimed.prompt_key(self)
 		if $Grabber.held.has_method("held_prompt_key"):
 			return $Grabber.held.held_prompt_key(self)
