@@ -3451,6 +3451,18 @@ TALENT_SAW,"ñic, ñic, ñic...","scritch, scritch, scritch...","nhéc, nhéc, n
 TALENT_SAW_CAUGHT,¡Estaba afinando los barrotes!,I was tuning the bars!,Eu estava afinando as grades!
 TALENT_CRAWL_SEEN,Yo... buscaba el baño.,I was... looking for the toilet.,Eu... procurava o banheiro.
 TALENT_RUNNER,¡Gracias por venir al show!,Thanks for coming to the show!,Obrigado por vir ao show!
+BRIEF_TALENT_A,"Novatos, hoy son el jurado del concurso de talentos de la cárcel. Voten con cariño, pero no le saquen el ojo a nadie.","Rookies, today you're the jury of the prison talent show. Vote kindly, but keep an eye on everyone.","Novatos, hoje vocês são o júri do concurso de talentos da prisão. Votem com carinho, mas fiquem de olho em todo mundo."
+BRIEF_TALENT_B,"Sentados en la mesa del jurado, R cambia el puntaje. Si nadie vota, el público se ofende y vuela el puré.","Sat at the jury table, R changes the score. If nobody votes, the audience gets offended and the mash flies.","Sentados na mesa do júri, R muda a nota. Se ninguém votar, o público se ofende e o purê voa."
+BRIEF_TALENT_C,"El año pasado ganó un mago y no lo vimos nunca más. Si se escapan 3, perdimos.","Last year a magician won and we never saw him again. If 3 get away, we've lost.","Ano passado um mágico ganhou e nunca mais o vimos. Se 3 fugirem, perdemos."
+HINT_GO_TALENT,A la cárcel en el patrullero. El show es en el comedor.,To the prison in the patrol car. The show is in the canteen.,Para a prisão na viatura. O show é no refeitório.
+OBJ_TALENT_SHOW,Llegar al final del show: número %d de %d,Get to the end of the show: act %d of %d,Chegar ao fim do show: número %d de %d
+OBJ_TALENT_NOW,En el escenario: %s,On stage: %s,No palco: %s
+OBJ_TALENT_WAITING,El show empieza cuando entren al comedor,The show starts when you walk into the canteen,O show começa quando entrarem no refeitório
+OBJ_TALENT_CURTAIN,Telón cerrado,Curtain closed,Cortina fechada
+OBJ_TALENT_VOTES,Números votados: %d de %d,Acts voted: %d of %d,Números votados: %d de %d
+OBJ_TALENT_ESCAPED,Presos escapados: %d (con %d se pierde el caso),Inmates escaped: %d (at %d the case is lost),Presos fugidos: %d (com %d o caso está perdido)
+OBJ_TALENT_CAUGHT,Extra: presos en la celda de castigo: %d,Extra: inmates in the punishment cell: %d,Extra: presos na cela de castigo: %d
+CASE_FAILED_TALENT_ESCAPED,Se escaparon 3 presos durante el show. Caso perdido.,3 inmates got away during the show. Case lost.,3 presos fugiram durante o show. Caso perdido.
 BRIEF_MUSTACHES_B,"Alguien le pinta bigotes a todos los carteles del diputado Lustre del barrio. Creemos que es Tobías: nunca le perdonó que le cerrara la vereda por las obras.","Someone paints mustaches on every poster of deputy Lustre in the neighborhood. We think it's Tobías: he never forgave him for closing the sidewalk for the roadworks.","Alguém pinta bigodes em todos os cartazes do deputado Lustre no bairro. Achamos que é o Tobías: ele nunca perdoou que fechassem a calçada por causa das obras."
 BRIEF_MUSTACHES_C,"Traigan el esténcil del bigote en el baúl del patrullero. Y no pisen pintura: se nota.","Bring the mustache stencil back in the patrol car's trunk. And don't step in paint: it shows.","Tragam o estêncil do bigode no porta-malas da viatura. E não pisem na tinta: dá para ver."
 BRIEF_MUSTACHES_D,"Si encuentran los aerosoles negros o un cartel del diputado sin bigote, mejor: todo suma.","If you find the black spray cans or a poster of the deputy without a mustache, even better: it all adds up.","Se acharem os sprays pretos ou um cartaz do deputado sem bigode, melhor: tudo soma."

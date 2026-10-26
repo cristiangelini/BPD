@@ -111,3 +111,9 @@ el del coro y quiénes gatean en el humo.
   que corren van al portón como los de la lavandería: esposados y llevados a la celda de castigo cuentan como
   atrapados, en el portón como escapados. Capturas: `paso5-mago.png`, `paso5-sierra.png`, `paso5-humo.png` y
   `paso5-humo-apagado.png`.
+- **Paso 6:** `TalentCase` (`scripts/case/prison/talent_case.gd`): el comisario lo cuenta en su oficina y Q abre la
+  planilla: llegar al final del show (número tal de 5), qué hay en el escenario (o telón cerrado, o que el show
+  empieza al entrar al comedor), los números votados, los escapados (con 3 se pierde) y, de extra, los de la celda de
+  castigo. Se gana cuando termina el show: 600, 100 menos por escapado, 25 más por cada uno en castigo y 20 más por
+  número votado. Cuota 400. En Jugar entra en el sorteo de cárceles (`PlaceDraw.PRISONS`, ahora en séptimos).
+  Captura: `paso6-planilla.png`.
