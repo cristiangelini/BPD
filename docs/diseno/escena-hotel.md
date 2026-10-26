@@ -124,7 +124,7 @@ PlaceDraw y la custodia para el interrogatorio.
   14 y 15 al norte y 16 y 17 al sur, cada una con cama, mesa de luz y el número en la puerta (la 13 no tiene número), y
   la suite al oeste con su cama grande, la caja fuerte en la pared y su baño con bañera. El ropero del pasillo tapa la
   puerta de la 13 y pesa 28 kg: un policía solo lo arrastra, despacio.
-- **Paso 2 (la gente):** los seis huéspedes iguales (`HotelGuest`) esperan en fila en el lobby, mirando a la puerta:
+- **Paso 2 (la gente):** (con `crime_scene = false` el hotel queda vacío, para el allanamiento del hilo B) los seis huéspedes iguales (`HotelGuest`) esperan en fila en el lobby, mirando a la puerta:
   bata blanca con cinturón, pantuflas blancas, la toalla en la cabeza y dos rodajas de pepino en los ojos; el pelo,
   los anteojos y los dientes están en el modelo pero no se ven. Con E dicen una frase distinta cada vez (una es "¡recién
   me lavé el pelo!"). El personal (`HotelStaff`): don Bostezo detrás del mostrador (saco bordó, moño, párpados caídos y

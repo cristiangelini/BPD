@@ -58,3 +58,13 @@ func test_everyone_talks_and_their_lines_are_written() -> void:
 	assert_eq(hotel.concierge.said(), "HOTEL_CONCIERGE_LINE_1")
 	hotel.maid.use(cop)
 	assert_eq(hotel.maid.said(), "HOTEL_MAID_LINE_0")
+
+
+func test_without_the_crime_scene_the_hotel_is_empty() -> void:
+	var hotel := Hotel.new()
+	hotel.crime_scene = false
+	add_child_autofree(hotel)
+	assert_true(hotel.guests.is_empty(), "no guests")
+	assert_null(hotel.concierge, "no staff")
+	assert_eq(hotel.get_tree().get_nodes_in_group("hotel_people").size(), 0)
+	assert_not_null(hotel.wardrobe, "but the building is all there")

@@ -103,6 +103,8 @@ const WINDOW := Color(0.35, 0.45, 0.6)
 const FLOORBOARDS := Color(0.55, 0.38, 0.25)
 
 ## The wardrobe that hides the 13.
+## With false, the hotel is just the building: no guests, no staff (the raid builds its own on top).
+@export var crime_scene := true
 var wardrobe: Grabbable
 var guests: Array[HotelGuest] = []
 var concierge: HotelStaff
@@ -126,7 +128,8 @@ func _ready() -> void:
 	_rooms()
 	_suite()
 	_wardrobe()
-	_people()
+	if crime_scene:
+		_people()
 
 
 ## The guest by index (the order of the case's traits).
