@@ -47,7 +47,7 @@ const PAINTINGS := [
 	{"at": Vector3(9.0, 1.6, HALL_Z - 0.12), "size": Vector2(1.6, 1.0), "turn": PI},
 	{"at": Vector3(-4.5, 1.6, HALL_Z - 0.12), "size": Vector2(1.2, 1.5), "turn": PI},
 ]
-## The busts on their pedestals, in the gallery's middle (the alarm's lasers run between them in step 4).
+## The busts on their pedestals, in the gallery's middle (the alarm's lasers run between them, MuseumAlarm).
 const PEDESTALS: Array[Vector3] = [Vector3(-3, 0, -7), Vector3(1, 0, -3), Vector3(6, 0, -7), Vector3(10, 0, -3)]
 const PEDESTAL_SIZE := Vector3(0.6, 1.1, 0.6)
 const BENCH_AT := Vector3(3.5, 0, -0.5)
@@ -133,6 +133,8 @@ var director: MuseumDirector
 var statue: LivingStatue
 ## The case's clues (MuseumClues), once the case comes.
 var clues: MuseumClues
+## The lasers between the pedestals and the alarm they set off (MuseumAlarm).
+var alarm: MuseumAlarm
 ## A cop used the toilet: the bathroom is no longer as it was last night.
 var toilet_used := false
 var _builder: PlaceBuilder
@@ -156,6 +158,10 @@ func _ready() -> void:
 	_bags()
 	_coins()
 	_loot_spots()
+	alarm = MuseumAlarm.new()
+	alarm.name = "Alarm"
+	alarm.museum = self
+	add_child(alarm)
 
 
 ## Draws what was stolen and where it is (the locker to search is the culprit's) and tells the guards about the case;
