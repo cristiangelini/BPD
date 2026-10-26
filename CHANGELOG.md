@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Gym raid, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office, the cake lab and the gym in eighths.
 - Gym raid, step 5: the fixed fights story: the punching bags swing when punched (E) and shove whoever stands behind them, one of them clangs like metal (the clue), and the betting book, the gloves with a horseshoe and the cardboard champion belt are hidden. The gym now tells its six stories.
 - Gym raid, step 5: the lucky shakes story: a cup of green shake with a clover waits on the reception; a cop who drinks it says what they think out loud for 5 s (the first sip is the clue), and the champion shake jar, the lottery winners list and the golden blender are hidden.
 - Gym raid, step 5: the power treadmills story: running on a working treadmill makes the lights of the gym and the neighborhood flicker (the clue), every 25 s the treadmills start on their own and throw off the cop on them, and the cable box to the plant next door, the upside-down meter and the wiring plan are hidden.
