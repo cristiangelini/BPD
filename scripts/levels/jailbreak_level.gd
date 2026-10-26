@@ -30,6 +30,8 @@ extends Node3D
 ## smoke for its smoke detector (SmokeDetector).
 ## The ninth is the bribe (fuga-soborno.md): the night guard sells himself (BribeGuard), and the cops have their
 ## bribes' money in wads on the bunks (BillWad). It's only drawn while the campaign has at least his lowest price.
+## The tenth is the fast trial (fuga-juicio.md): in the morning the day guard (TrialGuard) opens the cells for an
+## express trial in the waiting room, and whoever puts on the lost and found's lawyer jacket sees the alibi's file.
 ## --place=jailbreak opens it from Play, and --jailbreak=<variant> forces one of VARIANTS.
 
 const DESK_MODEL := preload("res://assets/models/station_desk.glb")
@@ -184,8 +186,8 @@ const TUNNEL_HOLES := [[Vector3(6.7, 0, 2.2), Vector3(9.9, 0, 2.2)], [Vector3(11
 
 ## The ways out, drawn by the seed (fuga-limpieza.md, fuga-perro.md, fuga-tunel.md, fuga-ventilacion.md,
 ## fuga-basura.md, fuga-simulacro.md and fuga-techo.md, question 1: in eighths; fuga-soborno.md: in ninths while the
-## cops have the bribe's money, the last one).
-const VARIANTS := ["donut", "cleaning", "dog", "tunnel", "vent", "garbage", "drill", "roof", "bribe"]
+## cops have the bribe's money, the last one; fuga-juicio.md: in tenths).
+const VARIANTS := ["donut", "cleaning", "dog", "tunnel", "vent", "garbage", "drill", "roof", "trial", "bribe"]
 ## The bribe jailbreak: where the wads lie on the bunks, and the money forced with --jailbreak=bribe when the
 ## campaign has less.
 const WADS: Array[Vector3] = [Vector3(7.7, 0.62, 1.5), Vector3(8.9, 0.62, 1.7), Vector3(12.1, 0.62, 1.5),
@@ -193,6 +195,10 @@ const WADS: Array[Vector3] = [Vector3(7.7, 0.62, 1.5), Vector3(8.9, 0.62, 1.7), 
 const BRIBE_TEST_MONEY := 400
 ## The corridor's camera, on the ceiling in front of the cells (fuga-soborno.md, step 2).
 const CORRIDOR_CAMERA_AT := Vector3(10.5, StationRooms.CEILING, 6.4)
+## The fast trial (fuga-juicio.md): the lost and found box by the waiting room's bench, with the lawyer jacket on it.
+const LOST_BOX_MODEL := preload("res://assets/models/lost_found_box.glb")
+const LOST_BOX_AT := Vector3(5.2, 0, 8.4)
+const JACKET_ON_BOX := Vector3(5.2, 0.55, 8.4)
 
 ## Same seed, same jailbreak. 0 draws one.
 @export var case_seed := 0
@@ -227,6 +233,11 @@ var skylights: Array[CellSkylight] = []
 var _roof_last := {}
 var _roof_run := {}
 var antenna: RoofAntenna
+## The fast trial: the alibi of this trial (TrialAlibi.draw), how many trials there were, the jacket and the file.
+var alibi := {}
+var trials := 0
+var jacket: DisguisePiece
+var file_label: Label
 ## The host: cops on the rope -> seconds left to the alley.
 var _climbers := {}
 var detectors: Array[SmokeDetector] = []
@@ -290,6 +301,8 @@ func _ready() -> void:
 		_roof_night()
 	elif is_bribe():
 		_bribe_night()
+	elif is_trial():
+		_trial_day()
 	else:
 		_guard_desk()
 	_hud()
@@ -300,7 +313,8 @@ func _ready() -> void:
 		guard.times_caught = Campaign.current.jail_catches
 	var hint: String = {"cleaning": "HINT_JAILED_CLEANING", "dog": "HINT_JAILED_DOG", "tunnel": "HINT_JAILED_TUNNEL",
 		"vent": "HINT_JAILED_VENT", "garbage": "HINT_JAILED_GARBAGE",
-		"drill": "HINT_JAILED_DRILL", "roof": "HINT_JAILED_ROOF", "bribe": "HINT_JAILED_BRIBE"} \
+		"drill": "HINT_JAILED_DRILL", "roof": "HINT_JAILED_ROOF", "bribe": "HINT_JAILED_BRIBE",
+		"trial": "HINT_JAILED_TRIAL"} \
 		.get(variant, "HINT_JAILED")
 	($Cop as Cop).show_hint.call_deferred(hint)
 
@@ -352,6 +366,101 @@ func is_roof() -> bool:
 
 func is_bribe() -> bool:
 	return variant == "bribe"
+
+
+func is_trial() -> bool:
+	return variant == "trial"
+
+
+## The fast trial: morning, the day guard at his desk, and by the waiting room's bench the lost and found box with the
+## lawyer jacket on it. The file with the alibi shows only to the cop wearing it.
+func _trial_day() -> void:
+	_daylight()
+	var lot := city.transform * CityLayout.lot("station")
+	var desk := _desk()
+	var watcher := TrialGuard.new()
+	watcher.name = "NightGuard"
+	watcher.cell_doors.assign(city.cell_doors)
+	add_child(watcher)
+	watcher.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), GUARD_AT)
+	watcher.stand_guard(case_seed)
+	watcher.outside_cells = outside_cells
+	watcher.see_through = [desk.get_rid()]
+	watcher.caught.connect(_on_caught)
+	guard = watcher
+	var box_body := StaticBody3D.new()
+	box_body.name = "LostFoundBox"
+	add_child(box_body)
+	box_body.global_transform = lot * Transform3D(Basis(Vector3.UP, PI / 2), LOST_BOX_AT)
+	box_body.add_child(LOST_BOX_MODEL.instantiate())
+	var shape := CollisionShape3D.new()
+	var solid := BoxShape3D.new()
+	solid.size = Vector3(0.6, 0.42, 0.45)
+	shape.shape = solid
+	shape.position.y = solid.size.y / 2
+	box_body.add_child(shape)
+	jacket = DisguisePiece.scene_of("lawyer_jacket").instantiate()
+	jacket.name = "LawyerJacket"
+	add_child(jacket)
+	_jacket_on_box()
+	alibi = TrialAlibi.draw(case_seed, trials)
+	var file_hud := CanvasLayer.new()
+	file_hud.name = "TrialFile"
+	file_label = Label.new()
+	file_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER_LEFT)
+	file_label.position.x = 24
+	file_label.custom_minimum_size = Vector2(360, 0)
+	file_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	file_label.hide()
+	file_hud.add_child(file_label)
+	add_child(file_hud)
+
+
+## The jacket folded on the lost and found box.
+func _jacket_on_box() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	jacket.linear_velocity = Vector3.ZERO
+	jacket.global_transform = lot * Transform3D(Basis(Vector3.RIGHT, -PI / 2), JACKET_ON_BOX)
+
+
+## The cops' lawyer: whoever wears the jacket (null: nobody yet).
+func lawyer() -> Cop:
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if is_ancestor_of(cop) and cop.disguise.has("lawyer_jacket"):
+			return cop
+	return null
+
+
+## This PC's cop sees the file while it's the lawyer.
+func _show_file() -> void:
+	var own := $Cop as Cop
+	var shown := own != null and own.disguise.has("lawyer_jacket")
+	if shown and not file_label.visible:
+		own.show_hint("HINT_TRIAL_LAWYER")
+	file_label.visible = shown
+	if shown:
+		file_label.text = TrialAlibi.file_text(alibi)
+
+
+## Caught in the fast trial (everyone is back in the cells by now): the jacket back on the box and a new alibi for the
+## next trial.
+func _trial_caught() -> void:
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if not is_ancestor_of(cop) or not cop.disguise.has("lawyer_jacket"):
+			continue
+		var parent := cop.get_parent()
+		var before := parent.get_child_count()
+		cop.lose_disguise("lawyer_jacket", "HINT_TRIAL_JACKET_BACK")
+		if cop.sync and cop.sync.net.actions:
+			cop.sync.net.actions.tell_guests(cop, "lose_disguise", cop, ["lawyer_jacket", "HINT_TRIAL_JACKET_BACK"])
+		for i in range(before, parent.get_child_count()):
+			if parent.get_child(i) is DisguisePiece:
+				jacket = parent.get_child(i)
+	if is_instance_valid(jacket):
+		_drop(jacket)
+		_jacket_on_box()
+	trials += 1
+	alibi = TrialAlibi.draw(case_seed, trials)
 
 
 ## Caught in the bribe jailbreak: the guard keeps what he got and asks for more, and the wads out of the cells go back
@@ -1319,6 +1428,10 @@ func outside_cells(at: Vector3) -> bool:
 	# In the roof jailbreak, up over the cells (through the skylight) is out of them.
 	if is_roof() and local.y > StationRooms.CEILING:
 		return true
+	# In the fast trial's court, the front row past the armory (the cells and the guard room) is where they should be.
+	if is_trial() and guard is TrialGuard and (guard as TrialGuard).in_court():
+		return not (local.x > -StationRooms.FRONT_X and local.x < StationRooms.HALF_X
+			and local.z > StationRooms.SPLIT_Z and local.z < StationRooms.HALF_Z)
 	return not (local.x > StationRooms.FRONT_X and local.x < StationRooms.HALF_X
 		and local.z > StationRooms.SPLIT_Z and local.z < StationRooms.CELL_FRONT_Z)
 
@@ -1375,6 +1488,8 @@ func _on_caught(times: int) -> void:
 		_roof_caught()
 	if is_bribe():
 		_bribe_caught()
+	if is_trial():
+		_trial_caught()
 	if cleaner:
 		cleaner.reset()
 		if is_instance_valid(cart_key):
@@ -1469,6 +1584,8 @@ func _hud() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if is_trial():
+		_show_file()
 	if is_drill():
 		_dress_prisoners()
 		_take_off_vests(delta)

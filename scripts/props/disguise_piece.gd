@@ -5,7 +5,8 @@ extends Grabbable
 ## mustache or glasses for the grandparents' club, and the choir robe (infiltracion-coro.md, step 2), which goes on
 ## brought to the chest instead of the face, and the cleaning crew's cap, face mask and vest (fuga-limpieza.md, step 3). The fire drill's orange prisoner's vest
 ## (fuga-simulacro.md) is worn the same way, but it's the opposite of a disguise: taken off it lies on the floor where
-## the guard can see it (a clue), and the waiting room's coat and hat make a cop pass for one of the public. Held, the mouse wheel brings it right up to the face; brought to its place on the cop's head it
+## the guard can see it (a clue), and the waiting room's coat and hat make a cop pass for one of the public. The fast trial's lawyer jacket (fuga-juicio.md) makes its wearer the
+## cops' lawyer. Held, the mouse wheel brings it right up to the face; brought to its place on the cop's head it
 ## stays on, crooked by as much as it was off. Online the host sees it reach the head and tells everyone.
 ## Every number here is (propuesta).
 
@@ -21,6 +22,7 @@ const SLOTS := {
 	"prison_vest": Vector3(0, 0.95, -0.3),
 	"coat": Vector3(0, 0.95, -0.3),
 	"hat": Vector3(0, 1.5, 0.0),
+	"lawyer_jacket": Vector3(0, 0.95, -0.3),
 }
 const MODELS := {
 	"wig": preload("res://assets/models/disguise_wig.glb"),
@@ -33,6 +35,7 @@ const MODELS := {
 	"prison_vest": preload("res://assets/models/prison_vest.glb"),
 	"coat": preload("res://assets/models/disguise_coat.glb"),
 	"hat": preload("res://assets/models/disguise_hat.glb"),
+	"lawyer_jacket": preload("res://assets/models/disguise_lawyer_jacket.glb"),
 }
 ## Who the cops pass for, and with what: which pieces count and how many of them. (propuesta)
 const LOOKS := {
@@ -40,6 +43,7 @@ const LOOKS := {
 	"chorister": {"pieces": ["robe"], "needed": 1},
 	"cleaner": {"pieces": ["cleaner_cap", "face_mask", "cleaner_vest"], "needed": 2},
 	"public": {"pieces": ["coat", "hat"], "needed": 1},
+	"lawyer": {"pieces": ["lawyer_jacket"], "needed": 1},
 }
 ## Held this close to its place, it goes on (m).
 const WEAR_REACH := 0.22

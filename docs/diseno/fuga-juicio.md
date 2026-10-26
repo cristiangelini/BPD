@@ -81,3 +81,19 @@ el estrado, por `NpcSync`; subir al estrado, levantar un cartel y objetar, por l
    estrado? **Recomiendo sí:** obliga a contarse la coartada y da para el teléfono descompuesto.
 3. ¿Tres contradicciones es culpables (una captura, con coartada nueva) y el abogado puede objetar una pregunta por
    testigo? **Recomiendo sí:** da margen para un error por testigo sin que sea fácil.
+
+## Cómo quedó el paso 1
+- `--jailbreak=trial` fuerza la variante. El sorteo es en décimos, y el soborno sigue saliendo solo si les queda plata.
+- De día, con el guardia de día (`TrialGuard`) en su escritorio y la llave en el cinturón. A los 6 s dice "¡Arriba,
+  que hay juicio!" y abre las dos celdas. Desde ahí, el lugar de los presos es la fila de adelante: las celdas y la
+  sala de guardia con sus bancos. El que se va a la oficina, a la armería o a la calle está fuera de lugar y el guardia lo
+  atrapa si lo ve. Hay 60 s para preparar a los testigos y después dice "De pie, que entra la jueza Bermúdez" (la jueza
+  es el paso 2).
+- Al lado del banco está la caja de objetos perdidos con el saco de abogado encima (`DisguisePiece` "lawyer_jacket",
+  se pone como el abrigo del simulacro). Quien lo tiene puesto es el abogado y ve el expediente en su pantalla.
+- La coartada (`TrialAlibi`) tiene 3 detalles: qué hacían, dónde y con quién. Cada uno sale de 10 grupos de 3 respuestas
+  parecidas ("rescatando un gato" / "un perro" / "un loro"), así que salen coartadas absurdas como "estábamos
+  aprendiendo a nadar, en la casa de la abuela, con la tía Porota". 90 respuestas con `tr()`.
+- En una captura, el saco vuelve a la caja y el juicio siguiente tiene otra coartada.
+- Modelos `disguise_lawyer_jacket` y `lost_found_box` en `tools/modelgen/models/trial.js`. 96 textos nuevos. Pruebas en
+  `test_trial_lawyer.gd`. Fotos en `/mnt/project-files/juicio/`.
