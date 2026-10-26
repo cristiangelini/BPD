@@ -1,0 +1,67 @@
+# Cárcel 6.10: El recuento
+
+Decisión 147 (propuesta). Caso de la cárcel ([carcel-motin.md](carcel-motin.md), fila 10 de la tabla). Todos los
+números son (propuesta).
+
+## La idea
+Es la hora del recuento: el director tiene que contar 20 presos y cada vez le da un número distinto. Los presos no se
+quedan quietos, se cambian de lugar, se borran la marca y tres ni siquiera están en el patio: se escondieron en la
+cárcel y esperan el momento de salir. El chiste: **contar gente que se mueve es imposible, así que se los marca con
+tiza uno por uno, y la lista dice a quién falta encontrar**.
+
+## Cómo es el caso
+1. **El aviso:** el comisario en su oficina: "Novatos, el director de la cárcel contó 20 presos, después 17, después
+   23. O cuenta mal o le faltan presos. Vayan, cuéntenlos ustedes y que no se escape nadie".
+2. **El patio:** los presos deambulan entre el patio y el comedor, charlan, se sientan y se levantan. En el patio
+   hay un pizarrón grande, **la lista**, con las 20 fotos de los presos y el contador "contados 0 / 20".
+3. **Marcar:** cada policía tiene una tiza. E sobre un preso le pinta una cruz amarilla en la espalda y su foto de la
+   lista se tacha. Marcar a uno que ya tiene cruz no suma nada.
+4. **Los tramposos:** 2 presos (los elige la semilla) cada 40 s se frotan la espalda contra la pared y se borran la
+   cruz: su foto se destacha y hay que volver a marcarlos. Se los ve frotándose con un globito ("¡pica!").
+5. **Los que no se ven:** en la cárcel también andan trabajadores con ropa parecida, el cocinero y el plomero. Marcar
+   a uno por error resta 10 ("¡Yo trabajo acá!") y no suma en la lista.
+6. **Los escondidos:** 3 presos de la lista no están en el patio. Cada uno está en uno de los escondites de la
+   cárcel (8 en total, la semilla elige 3): un muñeco de almohadas en su cama (el de verdad está debajo), el tacho de
+   basura del comedor, un carrito de la lavandería, debajo de la mesa larga, adentro del lavarropas, detrás de la
+   máquina de gaseosas, en el techo del comedor y en la torre de agua. Las pistas: la lista dice qué fotos faltan, y
+   de cerca el escondite ronca o se mueve. E sobre el escondite lo saca: queda esposado y se lo lleva del brazo al
+   patio (con la cruz ya puesta).
+7. **La fuga:** cada escondido sale a correr hacia el portón a su hora (el primero a los 90 s, después cada 60 s).
+   Esposarlo antes de que llegue lo devuelve al patio; si llega, es un escapado.
+8. **El final:** **se gana** cuando la lista marca 20 de 20 a la vez. **Se pierde** con 2 escapados o si se acaban
+   los 6 minutos del recuento.
+9. **El sueldo:** 600, 100 menos por cada escapado, 25 más por cada escondido encontrado antes de que salga a correr
+   y 10 menos por cada trabajador marcado. Cuota propia de 400, como las otras cárceles.
+
+## Lo que cambia con la semilla
+Cuáles son los 2 tramposos, qué 3 presos se esconden y en cuáles de los 8 escondites, y por dónde camina cada uno.
+
+## Lo que se reusa
+- La cárcel con su patio, comedor, celdas y portón (`PrisonLevel`); los presos que deambulan (`YardInmate`).
+- Revisar quedándose cerca, como los escondites de celda del túnel (`CellHideout`); los carritos de la lavandería
+  (`LaundryCart`) como uno de los escondites.
+- Los que corren al portón, las esposas y llevarlo del brazo (`BlackoutInmate`, `BlackoutEscort`).
+- El trabajador ofendido (el jardinero de la huerta) y el globito de texto.
+- Lo nuevo: la tiza y la cruz en la espalda, la lista con las fotos, los tramposos que se borran, el cocinero y el
+  plomero.
+
+## Atajos del panel de pruebas (cuando exista)
+- Abrir el recuento (`--place=prison_count`).
+- Mostrar dónde está cada escondido.
+
+## El orden para hacerlo (un PR chico por paso)
+1. Este documento.
+2. El patio: los 17 presos que deambulan, el cocinero, el plomero y la lista con las fotos (`--place=prison_count`).
+3. Marcar: la tiza, la cruz, el contador y los trabajadores marcados por error.
+4. Los tramposos que se borran la cruz.
+5. Los escondidos: los 8 escondites, sacarlos, la fuga al portón y esposarlos.
+6. El caso: el comisario, la planilla, el sueldo, la cuota y el sorteo en Jugar (`PlaceDraw.PRISONS`, en décimos).
+7. Online: las cruces, la lista, los escondidos y los que corren.
+
+## Preguntas para Cristian
+1. **¿Se cuenta marcando a cada preso con tiza (E) y una lista con sus 20 fotos en el patio?** Recomendado: sí,
+   contar a ojo gente que se mueve es imposible y la lista dice a quién falta buscar.
+2. **¿Los 3 que faltan están escondidos en la cárcel y salen a correr al portón si no se los encuentra a tiempo?**
+   Recomendado: sí, así el caso es contar y además buscar, con apuro.
+3. **¿Marcar por error al cocinero o al plomero cuesta 10?** Recomendado: sí, así no conviene marcar a todo el que
+   pasa sin mirar.

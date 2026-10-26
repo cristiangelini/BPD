@@ -51,7 +51,7 @@ otra variante lo necesite. Se llega en el patrullero, como al banco.
 | 7 | Corte de luz | La cárcel a oscuras, solo con linternas ([carcel-corte-de-luz.md](carcel-corte-de-luz.md)). |
 | 8 | Preso VIP | Un famoso que exige cosas absurdas y algunas traen escondida su fuga ([carcel-vip.md](carcel-vip.md)). |
 | 9 | Huerta | Plantaron porotos mágicos entre las verduras y crecen hasta pasar el muro ([carcel-huerta.md](carcel-huerta.md)). |
-| 10 | Recuento | Faltan presos y hay que contarlos mientras se mueven. |
+| 10 | Recuento | Faltan presos y hay que contarlos con tiza mientras se mueven ([carcel-recuento.md](carcel-recuento.md)). |
 
 ## Lo que se reusa
 - Objetos que vuelan en arco, manchan y se agarran en el aire: los huevos y tomates del político (`RallyThrowable`,
