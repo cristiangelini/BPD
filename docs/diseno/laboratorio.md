@@ -139,6 +139,13 @@ Los pesos y valores siguen la escala de la oficina: la principal vale unos 1000 
    - **Cómo quedó (propuesta):** "Jugar" suma el laboratorio a los allanamientos: cada uno de los 7 lugares sale en
      un séptimo de los allanamientos, y las 6 historias del laboratorio salen todas (prueba sobre 900 semillas).
 7. El online (el chef, Pocha, la harina y los pasteles en todas las PC).
+   - **Cómo quedó (propuesta):** el chef lo maneja el anfitrión y los invitados lo siguen (dónde está, la queja, el
+     soufflé). La perilla del horno, la bandeja de Pocha, las batidoras, el plato de porciones, el pastel aceitoso y la
+     receta de la pizarra andan desde cualquier PC y pasan igual en todas. Una bolsa de harina que revienta en el
+     anfitrión revienta en todos (con su nube y su harina), y el cuaderno robado sale de su pastel en todas las PC. Lo
+     de cada historia sale igual por la semilla (qué pasteles son de espuma, cuál tiene el cuaderno, cuál es la bolsa
+     de oro). El brazo robot le tira crema solo al policía de cada PC, porque la crema tapa la pantalla de ese
+     jugador. Las huellas de harina, blancas o doradas, las pinta cada PC.
 
 ## Preguntas para Cristian
 1. ¿El laboratorio de pasteles como séptimo lugar, o preferís otro de los 4 que faltan? **Recomendado:** el
