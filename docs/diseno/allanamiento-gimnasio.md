@@ -133,6 +133,9 @@ Los pesos y valores siguen la escala de la oficina y el laboratorio: la principa
      (2 kg, 300) y el cinturón de cartón (0,5 kg, 200; mide 90 cm, así que va en un escondite de piso). Con esta, el
      gimnasio ya cuenta sus 6 historias. Captura `paso5-ring.png` y `gym_fixed_fights.png`.
 6. "Jugar" sortea entre los 8 lugares de allanamiento.
+   - **Cómo quedó (propuesta):** el gimnasio entra en el sorteo de allanamientos de "Jugar" (`PlaceDraw.ORDER`), así
+     que cada lugar sale en un octavo de los allanamientos, y la semilla elige entre sus 6 historias. Si otro lugar
+     nuevo entra antes, el sorteo pasa a novenos sin tocar nada más.
 7. El online (el profe, Lula, la música, las cintas y las mancuernas en todas las PC).
 
 El gimnasio de la infiltración (#650 a #686) y el laboratorio ya están en `develop`, así que la pila sale de ahí.
