@@ -14,6 +14,8 @@ const FRAME := preload("res://assets/models/cell_skylight.glb")
 const PANE := preload("res://assets/models/skylight_pane.glb")
 const PUSHES := 4
 const LOOSE_PUSHES := 2
+## After a catch it has a new padlock: forcing it takes this many.
+const LOCKED_PUSHES := 8
 const PUSH_EVERY := 0.5
 ## How high off the cell's floor a cop's feet have to be to reach it (on the mattress on the bunk, or on someone).
 const REACH_UP := 0.7
@@ -85,6 +87,12 @@ func use(cop: Cop) -> void:
 		return
 	_next_push_ms = now + int(PUSH_EVERY * 1000.0)
 	push()
+
+
+## Shut again with a new padlock (after a catch).
+func lock_again() -> void:
+	pushes_left = LOCKED_PUSHES
+	_refresh()
 
 
 ## One more push: it creaks, and the last one opens it.

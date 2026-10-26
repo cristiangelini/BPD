@@ -166,6 +166,13 @@ const ATTIC_DOWN_AT := Vector3(14.2, ATTIC_FLOOR + 0.05, 0.7)
 const PARAPET_HEIGHT := 1.1
 const ROOF_QUIET_SPEED := (GameScale.WALK_SPEED + GameScale.RUN_SPEED) / 2.0
 const STEPS_EVERY := 1.0
+## Step 3: where the antenna can be on the roof (the seed picks one, by the back edge, the rope hanging over it),
+## where a cop climbing down lands in the back alley (beside it), how long the climb takes, and how long a cop who fell
+## the last stretch or with the rope stays dizzy.
+const ANTENNAS: Array[Vector3] = [Vector3(9.0, ROOF_Y, -8.4), Vector3(-6.0, ROOF_Y, -8.4), Vector3(2.0, ROOF_Y, -8.4)]
+const ALLEY_DOWN := Vector3(0, 0.05, -10.4)
+const CLIMB_TIME := 3.0
+const DIZZY := 3.0
 ## The big one stays stuck in the grille this long (s); crawling faster than this in the duct is a noisy scramble.
 const VENT_STUCK := 4.0
 const VENT_QUIET_SPEED := (Cop.CRAWL_SPEED + Cop.CRAWL_RUN_SPEED) / 2.0
@@ -209,6 +216,9 @@ var skylights: Array[CellSkylight] = []
 ## The host: each cop on the roof, where it was last tick and how long it's been running there.
 var _roof_last := {}
 var _roof_run := {}
+var antenna: RoofAntenna
+## The host: cops on the rope -> seconds left to the alley.
+var _climbers := {}
 var detectors: Array[SmokeDetector] = []
 ## The alarm rang, and the drill is on for drill_left more seconds (the host counts).
 var alarm_rung := false
@@ -362,6 +372,64 @@ func _roof_night() -> void:
 		add_child(sheet)
 		sheet.global_transform = lot * Transform3D(Basis(Vector3.UP, rng.randf_range(-0.3, 0.3)), SHEETS[i])
 	_attic(lot, rng)
+	antenna = RoofAntenna.new()
+	antenna.name = "RoofAntenna"
+	antenna.outward = lot.basis * Vector3(0, 0, -1)
+	add_child(antenna)
+	antenna.global_transform = lot * Transform3D(Basis.IDENTITY, ANTENNAS[rng.randi_range(0, ANTENNAS.size() - 1)])
+	antenna.climbed.connect(_climb_down)
+
+
+## On the rope (every PC holds the cop still; the host takes it down after CLIMB_TIME). Two on it at once with a loose
+## knot: it gives, and both fall into the alley.
+func _climb_down(_antenna: RoofAntenna, cop: Cop) -> void:
+	cop.knock_back(Vector3.ZERO, CLIMB_TIME)
+	if not multiplayer.is_server() or _climbers.has(cop):
+		return
+	_climbers[cop] = CLIMB_TIME
+	if _climbers.size() >= 2 and antenna.knots.has(false):
+		antenna.cut()
+		for climber: Cop in _climbers:
+			_land(climber, true, "HINT_ROPE_SNAPPED")
+		_climbers.clear()
+
+
+## The host: the cops on the rope get down when their time is up (dizzy if it didn't reach the ground).
+func _climb(delta: float) -> void:
+	for cop: Cop in _climbers.keys():
+		_climbers[cop] -= delta
+		if _climbers[cop] <= 0.0:
+			_climbers.erase(cop)
+			_land(cop, not antenna.reaches_down(), "HINT_ROPE_FELL" if not antenna.reaches_down() else "HINT_IN_THE_ALLEY")
+
+
+## Down in the back alley, under the antenna; `dizzy` after a fall.
+func _land(cop: Cop, dizzy: bool, hint: String) -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var local := lot.affine_inverse() * antenna.global_position
+	cop.warp(lot * Transform3D(Basis(Vector3.UP, PI), Vector3(local.x, 0, 0) + ALLEY_DOWN))
+	if dizzy:
+		cop.knock_back(Vector3.ZERO, DIZZY)
+		if cop.sync and cop.sync.net.actions:
+			cop.sync.net.actions.tell_guests(cop, "knock_back", cop, [Vector3.ZERO, DIZZY])
+	cop.show_hint(hint, true)
+
+
+## Caught: a new padlock on each skylight, the rope off the antenna and the sheets back on the bunks.
+func _roof_caught() -> void:
+	_climbers.clear()
+	for skylight in skylights:
+		skylight.lock_again()
+	antenna.untie()
+	for item: Node in get_tree().get_nodes_in_group("sheet_ropes") + get_tree().get_nodes_in_group("bed_sheets"):
+		_drop(item as Grabbable)
+		item.queue_free()
+	var lot := city.transform * CityLayout.lot("station")
+	for i in SHEETS.size():
+		var sheet := BedSheet.new()
+		sheet.name = "BedSheetBack%d_%d" % [guard.times_caught, i]
+		add_child(sheet)
+		sheet.global_transform = lot * Transform3D(Basis.IDENTITY, SHEETS[i])
 
 
 ## The storage room over the cells: its boxes (some stacked, ready to fall), a dim bulb, the ladder up to the roof's
@@ -1225,6 +1293,8 @@ func _on_caught(times: int) -> void:
 		dog.riding = false
 	if is_tunnel():
 		_confiscate_spoons()
+	if is_roof():
+		_roof_caught()
 	if cleaner:
 		cleaner.reset()
 		if is_instance_valid(cart_key):
@@ -1328,6 +1398,7 @@ func _physics_process(delta: float) -> void:
 				_end_drill()
 	if is_roof() and multiplayer.is_server() and delta > 0.0:
 		_roof_steps(delta)
+		_climb(delta)
 	if stains:
 		_slip_on_wet(delta)
 	if dog and multiplayer.is_server():
@@ -1481,6 +1552,8 @@ func _show_end(result: String) -> void:
 		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_GARBAGE")
 	elif result == "escaped" and is_drill():
 		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_DRILL")
+	elif result == "escaped" and is_roof():
+		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_ROOF")
 	box_ui.add_child(line)
 	var buttons := HBoxContainer.new()
 	buttons.alignment = BoxContainer.ALIGNMENT_CENTER
