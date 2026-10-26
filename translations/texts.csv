@@ -170,6 +170,7 @@ CLUE_SUSPECT_fight,"Unos guantes de boxeo gastados, talle jubilado.","A pair of 
 MENU_CITY,Ciudad (prueba),City (test),Cidade (teste)
 MENU_BAKERY,Panadería (prueba),Bakery (test),Padaria (teste)
 MENU_GROOMER,Peluquería (prueba),Pet salon (test),Pet shop (teste)
+MENU_HARDWARE,Ferretería (prueba),Hardware store (test),Loja de ferragens (teste)
 PLACE_STATION,Comisaría,Police station,Delegacia
 PLACE_HOTEL,Hotel Gran Siesta,Grand Nap Hotel,Hotel Grande Soneca
 PLACE_INSURANCE,Seguros Todo Tranquilo,All Calm Insurance,Seguros Tudo Tranquilo
@@ -263,6 +264,18 @@ LOC_under_armchair,abajo del sillón de espera,under the waiting armchair,embaix
 LOC_in_towels,en la caja de toallas,in the towel box,na caixa de toalhas
 LOC_on_cages,arriba de las jaulas,on top of the cages,em cima das gaiolas
 LOC_under_grooming_table,abajo de la mesa de corte,under the grooming table,embaixo da mesa de tosa
+LOC_under_hw_counter,abajo del mostrador,under the counter,embaixo do balcão
+LOC_on_screw_wall,arriba de la pared de tornillos,on top of the screw wall,em cima da parede de parafusos
+LOC_under_gondola,en el estante de abajo de la góndola,on the bottom shelf of the gondola,na prateleira de baixo da gôndola
+LOC_behind_cement,detrás de las bolsas de cemento,behind the cement sacks,atrás dos sacos de cimento
+LOC_in_hose,adentro del rollo de manguera,inside the hose roll,dentro do rolo de mangueira
+LOC_in_nail_box,en la caja de clavos,in the nail box,na caixa de pregos
+LOC_in_metal_cabinet,en el armario de chapa,in the metal cabinet,no armário de metal
+LOC_under_workbench,abajo del banco de trabajo,under the workbench,embaixo da bancada
+LOC_on_workbench,arriba del banco de trabajo,on the workbench,em cima da bancada
+LOC_in_wheelbarrow,en la carretilla del patio,in the wheelbarrow in the yard,no carrinho de mão do quintal
+LOC_in_sand,arriba de la pila de arena,on the sand pile,em cima do monte de areia
+LOC_behind_bricks,detrás de los ladrillos,behind the bricks,atrás dos tijolos
 LOC_in_vitrine,en la vitrina de collares,in the collar display,na vitrine de coleiras
 OBJ_ENTER_BAKERY,Entrar a la panadería (está abierta),Get into the bakery (it's open),Entrar na padaria (está aberta)
 OBJ_GUESS_BAKERY,"Averiguar qué pasa en la panadería (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the bakery (with Q open, hold 1, 2 or 3)","Descobrir o que acontece na padaria (com Q aberta, segure 1, 2 ou 3)"
@@ -425,6 +438,7 @@ OBJ_GUESS_GROOMER,"Averiguar qué pasa en la peluquería (con Q abierta, mantén
 OBJ_BROKEN_GROOMER,Frascos y collares rotos: %d (multa: %d),Broken bottles and collars: %d (fine: %d),Frascos e coleiras quebrados: %d (multa: %d)
 OBJ_COMPLAINT_GROOMER,Denuncia de Ramiro: %d%%,Ramiro's complaint: %d%%,Denúncia do Ramiro: %d%%
 CASE_FAILED_LAWYER_GROOMER,Ramiro llamó a su abogado. Caso perdido.,Ramiro called his lawyer. Case lost.,O Ramiro ligou para o advogado. Caso perdido.
+CASE_FAILED_LAWYER_HARDWARE,Tobías llamó a su abogado. Caso perdido.,Tobías called his lawyer. Case lost.,O Tobías ligou para o advogado. Caso perdido.
 GROOMER_SLIP,"«¡Yo no guardé nada %s!... Digo, ¿quién sigue con turno?»","“I didn't put anything %s!... I mean, who's next?”","“Eu não guardei nada %s!... Quer dizer, quem é o próximo?”"
 CLUE_LADY,La señora vio a Ramiro esconder algo %s,The lady saw Ramiro hide something %s,A senhora viu o Ramiro esconder algo %s
 LADY_CLUE_contest,"«¡Mi Fifí! Gracias, oficial. Mira, vi a Ramiro esconder algo %s. Y Fifí es más linda que ese Bizcocho, y siempre sale segunda.»","“My Fifí! Thank you, officer. Look, I saw Ramiro hide something %s. And Fifí is prettier than that Bizcocho, and she always comes second.”","“Minha Fifí! Obrigada, policial. Olha, vi o Ramiro esconder algo %s. E a Fifí é mais bonita que esse Bizcocho, e sempre fica em segundo.”"
