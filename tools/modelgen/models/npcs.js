@@ -1383,6 +1383,24 @@ const NPCS = {
 		b.add('props', C('mate_gourd', 0x8a5a2a), ellipsoid(0.07, 0.08, 0.07, 8, 5), { pos: V(0.5, 0.66, 0.24) });
 		limb(b, 'props', C('bombilla', 0xd0d4dc), V(0.5, 0.71, 0.24), V(0.47, 0.86, 0.22), 0.008);
 	},
+	// Doña Pepa, the nosy neighbor of 30A (edificio.md): a pink housecoat, fluffy slippers, curlers under a hairnet and
+	// big round glasses for the peephole.
+	pepa(b) {
+		const coat = C('housecoat_pink', 0xe89ab8);
+		pearBody(b, SKIN.crema, { shirt: coat, onePiece: true, belted: false, shoes: C('slippers_fluffy', 0xf4f0f4) });
+		b.add('body', C('housecoat_belt', 0xd27ea0), new THREE.TorusGeometry(0.42, 0.02, 4, 16), { pos: V(0, 0.62, 0), rot: [Math.PI / 2, 0, 0] });
+		eyes(b, 1.32, 0.17, 0.08, 0.05);
+		glasses(b, C('glasses_tortoise', 0x6a4a2a));
+		mouth(b);
+		const hair = C('hair_lilac', 0xb8a6d0);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		const curler = C('curler_blue', 0x6ab0e0);
+		for (let i = 0; i < 5; i++) {
+			const a = (i / 4 - 0.5) * 2.2;
+			b.add('cap', curler, new THREE.CylinderGeometry(0.035, 0.035, 0.12, 8), { pos: V(Math.sin(a) * 0.17, 1.6 - Math.abs(a) * 0.06, Math.cos(a) * 0.06 - 0.02), rot: [0, 0, Math.PI / 2] });
+		}
+		b.add('cap', C('hairnet', 0xf6f6f2, { transparent: true, opacity: 0.6 }), ellipsoid(0.22, 0.15, 0.22, 10, 5), { pos: V(0, 1.47, -0.02) });
+	},
 };
 
 export const NPC_NAMES = Object.keys(NPCS);
@@ -1392,7 +1410,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, comprador: 1.0, compradora: 0.9, martillo: 1.1, portero_subasta: 1.15, ladron_oso: 1.15, abuelo_oso: 1.15, alumno_primaria: 0.62, alumna_primaria: 0.62, alumno_b: 0.62, alumna_b: 0.62, evaristo: 1.05 };
+const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, comprador: 1.0, compradora: 0.9, martillo: 1.1, portero_subasta: 1.15, ladron_oso: 1.15, abuelo_oso: 1.15, alumno_primaria: 0.62, alumna_primaria: 0.62, alumno_b: 0.62, alumna_b: 0.62, evaristo: 1.05, pepa: 0.85 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
