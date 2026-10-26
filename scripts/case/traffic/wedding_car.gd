@@ -46,6 +46,14 @@ const RELATIVE_LINES := 4
 const ZIGZAG := 1.6
 const ZIGZAG_RATE := 2.5
 const SWAY := 0.35
+## Who got married: the comisario says it, the guests toast them, El Colado toasts another couple (control-boda.md,
+## answer 2). Names, the same in every language.
+const BRIDES: Array[String] = ["Rosa", "Marta", "Lola", "Inés", "Clara", "Paula", "Sofía", "Elena", "Vera", "Nora",
+	"Julia", "Ana"]
+const GROOMS: Array[String] = ["Tito", "Pepe", "Beto", "Rafa", "Nico", "Fede", "Lucho", "Quique", "Toni", "Gus",
+	"Manu", "Raúl"]
+## What a guest says for the couple once they hand the license (one from the plate), and the newlyweds.
+const TOAST_LINES := 3
 ## Rolling, the cans swing this far (radians) at full speed, this fast.
 const RATTLE := 0.25
 const RATTLE_RATE := 18.0
@@ -144,6 +152,25 @@ static func alcohol_of(plate: String, is_guest: bool) -> float:
 	if share < DRUNK_GUESTS + SOBER_GUESTS:
 		return 0.0
 	return snappedf(0.1 + float(roll / 100 % 4) / 10.0, 0.1)
+
+
+## What a guest of the plan's drank: over the limit DRUNK_GUESTS in 100, a little the rest (the plan picks who's sober).
+static func drink(rng: RandomNumberGenerator) -> float:
+	if rng.randi() % 100 < DRUNK_GUESTS:
+		return snappedf(DRUNK_ABOVE + 0.1 + float(rng.randi() % 15) / 10.0, 0.1)
+	return snappedf(0.1 + float(rng.randi() % 4) / 10.0, 0.1)
+
+
+## A guest's toast for `couple` (BRIDES and GROOMS), one of TOAST_LINES from the plate; the newlyweds say who they are.
+static func toast(plate: String, couple: int, are_newlyweds := false) -> String:
+	var line := "WEDDING_TOAST_US" if are_newlyweds \
+		else "WEDDING_TOAST_%d" % (absi(hash(["wedding toast", plate])) % TOAST_LINES)
+	return TranslationServer.translate(line) % names(couple)
+
+
+## The couple's two names (one of BRIDES and GROOMS), for a "%s ... %s" text.
+static func names(couple: int) -> Array:
+	return [BRIDES[couple % BRIDES.size()], GROOMS[couple % GROOMS.size()]]
 
 
 ## A reading as the screen shows it, one decimal, with the language's decimal point ("1,4" in Spanish).

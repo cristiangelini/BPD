@@ -2164,6 +2164,13 @@ WEDDING_RELATIVE_0,"¡Manejo yo, que solo tomé jugo de naranja!","I'll drive, I
 WEDDING_RELATIVE_1,"Dame las llaves, primo. Y deja de cantar.","Give me the keys, cousin. And stop singing.","Me dá as chaves, primo. E para de cantar."
 WEDDING_RELATIVE_2,"Siempre lo mismo en las bodas. Córrete, que manejo yo.","Same thing every wedding. Scoot over, I'm driving.","Sempre a mesma coisa nos casamentos. Chega pra lá que eu dirijo."
 WEDDING_RELATIVE_3,"La tía Chela al volante. ¡Agárrense!","Aunt Chela at the wheel. Hold on tight!","A tia Chela no volante. Segurem-se!"
+BRIEF_WEDDING_A,"¡Novatos! Hoy se casan %s y %s, y media ciudad va de fiesta al salón. Entre los invitados anda El Colado: se mete en todas las bodas sin que nadie lo invite y se lleva los sobres de regalo.","Rookies! %s and %s are getting married today, and half the city is partying at the hall. El Colado is among the guests: he crashes every wedding uninvited and walks off with the gift envelopes.","Novatos! Hoje %s e %s se casam, e meia cidade está na festa do salão. No meio dos convidados está o El Colado: ele entra em todos os casamentos sem convite e leva os envelopes de presente."
+BRIEF_WEDDING_C,"Armen un control de alcoholemia en la salida, así revisamos a todos sin que sospeche. Y de paso, que nadie maneje borracho. Si esposan a dos inocentes, se termina el caso.","Set up a breathalyzer check at the exit, so we check everyone without him suspecting. And while you're at it, nobody drives drunk. Cuff two innocent people and the case is over.","Montem uma blitz de bafômetro na saída, assim revistamos todo mundo sem ele desconfiar. E de quebra, ninguém dirige bêbado. Se algemarem dois inocentes, o caso acaba."
+CLUE_WEDDING_TIE,"Lleva moñito de color %s.","He wears a %s bow tie.","Ele usa gravata-borboleta de cor %s."
+WEDDING_TOAST_0,"¡Vivan %s y %s!","Long live %s and %s!","Vivam %s e %s!"
+WEDDING_TOAST_1,"¿La boda? ¡Hermosa! %s lloró, %s también. Yo lloré. Todos lloramos.","The wedding? Beautiful! %s cried, %s too. I cried. We all cried.","O casamento? Lindo! %s chorou, %s também. Eu chorei. Todo mundo chorou."
+WEDDING_TOAST_2,"Yo conozco a %s y a %s desde el jardín de infantes. ¡Que sean felices!","I've known %s and %s since kindergarten. May they be happy!","Eu conheço %s e %s desde o jardim de infância. Que sejam felizes!"
+WEDDING_TOAST_US,"¡Somos nosotros, %s y %s! ¡Nos casamos hoy!","It's us, %s and %s! We got married today!","Somos nós, %s e %s! Casamos hoje!"
 SHIFT_BRIBES,Sobornos,Bribes,Subornos
 SHIFT_AGENT_FINE,Multa de asuntos internos,Internal affairs fine,Multa da corregedoria
 SHIFT_INVESTIGATION_OPENED,Asuntos internos abrió una investigación.,Internal affairs opened an investigation.,A corregedoria abriu uma investigação.

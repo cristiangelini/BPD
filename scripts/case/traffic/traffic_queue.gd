@@ -145,7 +145,7 @@ func spawn() -> QueueCar:
 	var crowd: bool = VARIANTS[variant].get("crowd", false)
 	var ghost: bool = VARIANTS[variant].get("ghost", false)
 	var data := plan.cars[spawned] if plan and spawned < plan.total \
-		else WantedPlan.random_car(_rng, clown, fruit, crowd, ghost)
+		else WantedPlan.random_car(_rng, clown, fruit, crowd, ghost, VARIANTS[variant].get("wedding", false))
 	car.look = data.look
 	car.plate = data.plate
 	car.driver = data.driver
@@ -168,6 +168,8 @@ func spawn() -> QueueCar:
 		car.newlyweds = data.get("newlyweds", spawned == WeddingCar.newlyweds_at(case_seed))
 		car.guest = data.get("guest", WeddingCar.guest_at(case_seed, spawned))
 		car.tie = data.get("tie", -1)
+		car.alcohol = data.get("alcohol", -1.0)
+		car.couple = data.get("couple", plan.couple if plan else 0)
 		if car.newlyweds:
 			car.look = WeddingCar.NEWLYWEDS_LOOK
 	car.wanted = plan != null and spawned == plan.wanted_index

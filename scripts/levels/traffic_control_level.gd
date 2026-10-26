@@ -77,7 +77,7 @@ func _ready() -> void:
 		cone.global_position = door + CONES_FROM_DOOR + Vector3(-0.8 * i, 0.05, 0)
 	var chosen := variant_from(variant, OS.get_cmdline_user_args(), case_seed)
 	plan = WantedPlan.draw(case_seed, chosen == "clown_convoy", chosen == "fruit_truck", chosen == "crowded_car",
-		chosen == "ghost_car")
+		chosen == "ghost_car", chosen == "wedding")
 	if plan.convoy:
 		sponge = ClownSponge.new()
 		sponge.name = "Sponge"

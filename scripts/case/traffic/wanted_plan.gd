@@ -11,7 +11,10 @@ extends RefCounted
 ## how many ride in it under "crowd": the comisario's clue is always the gang's headcount, the radio's are about the car,
 ## and a few packed cars carry almost as many (NEAR), so only counting tells them apart. In the ghost car control
 ## (control-auto-fantasma.md) one car has nobody at the wheel ("ghost") and the wanted one is its pilot's
-## ("puppeteer"), a few cars behind it; the clues are about the pilot, his shirt too. Every number here is (propuesta).
+## ("puppeteer"), a few cars behind it; the clues are about the pilot, his shirt too. In the wedding breathalyzer check
+## (control-boda.md) the cars are the wedding's convoy ("guest", "tie", "newlyweds") with a few city cars, the wanted
+## one is El Colado's: he blows 0.0, like the designated drivers, and toasts the wrong couple ("couple"). Every number
+## here is (propuesta).
 
 const TOTAL := Vector2i(15, 25)
 ## The wanted car comes somewhere in this stretch of the queue.
@@ -38,6 +41,13 @@ const GHOST_KINDS: Array[String] = ["color", "plate", "shirt", "decade"]
 const GHOST_TOTAL := Vector2i(12, 16)
 ## What each of GhostCar.SHIRTS reads as.
 const SHIRTS: Array[String] = ["COLOR_RED", "COLOR_BLUE", "COLOR_WHITE", "COLOR_GREEN", "COLOR_YELLOW", "COLOR_VIOLET"]
+const WEDDING_KINDS: Array[String] = ["color", "plate", "tie", "decade"]
+const WEDDING_TOTAL := Vector2i(12, 16)
+const WEDDING_WANTED_AT := Vector2i(3, 10)
+## Other guests who didn't drink and blow 0.0, like El Colado (control-boda.md, answer 1).
+const DESIGNATED := Vector2i(2, 3)
+## At least this many guests blow over the limit.
+const DRUNK_MIN := 2
 const LETTERS := "BCDFGHJKLMNPRSTVXZ"
 
 ## The clown convoy's plan: its cars carry their driver's ConvoyTraits under "clown".
@@ -49,6 +59,10 @@ var crowd := false
 ## The ghost car control's plan: its cars carry their driver's shirt, and whether they're the ghost or its pilot.
 var ghost := false
 var ghost_index := -1
+## The wedding check's plan: which couple got married (WeddingCar.BRIDES and GROOMS), and where their car comes.
+var wedding := false
+var couple := 0
+var newlyweds_index := -1
 var total := 0
 var wanted_index := 0
 ## {kind, value}, in the order they're given.
@@ -58,16 +72,20 @@ var cars: Array[Dictionary] = []
 var lookalikes: Array[int] = []
 
 
-static func draw(case_seed: int, convoy := false, fruit := false, crowd := false, ghost := false) -> WantedPlan:
+static func draw(case_seed: int, convoy := false, fruit := false, crowd := false, ghost := false,
+		wedding := false) -> WantedPlan:
 	var plan := WantedPlan.new()
+	plan.wedding = wedding
 	plan.convoy = convoy
 	plan.fruit = fruit
 	plan.crowd = crowd
 	plan.ghost = ghost
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(["wanted plan", case_seed])
-	var span := FRUIT_TOTAL if fruit else CROWD_TOTAL if crowd else GHOST_TOTAL if ghost else TOTAL
-	var wanted_at := FRUIT_WANTED_AT if fruit else CROWD_WANTED_AT if crowd else WANTED_AT
+	var span := FRUIT_TOTAL if fruit else CROWD_TOTAL if crowd else GHOST_TOTAL if ghost \
+		else WEDDING_TOTAL if wedding else TOTAL
+	var wanted_at := FRUIT_WANTED_AT if fruit else CROWD_WANTED_AT if crowd \
+		else WEDDING_WANTED_AT if wedding else WANTED_AT
 	plan.total = rng.randi_range(span.x, span.y)
 	if ghost:
 		# The ghost car up front, its pilot a few cars behind.
@@ -75,7 +93,7 @@ static func draw(case_seed: int, convoy := false, fruit := false, crowd := false
 		plan.wanted_index = plan.ghost_index + rng.randi_range(GhostCar.PILOT_BEHIND.x, GhostCar.PILOT_BEHIND.y)
 	else:
 		plan.wanted_index = rng.randi_range(wanted_at.x, wanted_at.y)
-	var wanted := random_car(rng, convoy, fruit, crowd, ghost)
+	var wanted := random_car(rng, convoy, fruit, crowd, ghost, wedding)
 	if crowd:
 		# The gang's headcount comes first, from the comisario.
 		wanted.crowd = rng.randi_range(GANG.x, GANG.y)
@@ -85,7 +103,7 @@ static func draw(case_seed: int, convoy := false, fruit := false, crowd := false
 		wanted.driver.trunk = "safe"
 		wanted.driver.license_glasses = not wanted.clown.glasses
 	var kinds := (CONVOY_KINDS if convoy else FRUIT_KINDS if fruit else CROWD_KINDS if crowd
-		else GHOST_KINDS if ghost else KINDS).duplicate()
+		else GHOST_KINDS if ghost else WEDDING_KINDS if wedding else KINDS).duplicate()
 	for i in CLUES - plan.clues.size():
 		var kind: String = kinds.pop_at(rng.randi() % kinds.size())
 		if kind == "trunk":
@@ -112,6 +130,8 @@ static func draw(case_seed: int, convoy := false, fruit := false, crowd := false
 			var hollow := rng.randi_range(FruitTraits.HOLLOW.x, FruitTraits.HOLLOW.y) if i == plan.wanted_index else 0
 			car.fruit = car.fruit.duplicate()
 			car.fruit.melons = FruitTraits.melon_kinds(rng, QueueCar.melon_count(car.plate), hollow)
+	if wedding:
+		plan._seat_the_wedding(rng)
 	if crowd:
 		# A few more packed cars, not lookalikes, with almost the gang's headcount.
 		for n in rng.randi_range(NEAR.x, NEAR.y):
@@ -121,7 +141,7 @@ static func draw(case_seed: int, convoy := false, fruit := false, crowd := false
 
 
 static func random_car(rng: RandomNumberGenerator, convoy := false, fruit := false, crowd := false,
-		ghost := false) -> Dictionary:
+		ghost := false, wedding := false) -> Dictionary:
 	var plate := ""
 	for i in 3:
 		plate += LETTERS[rng.randi() % LETTERS.length()]
@@ -140,6 +160,9 @@ static func random_car(rng: RandomNumberGenerator, convoy := false, fruit := fal
 		car.crowd = CrowdedCar.riders_of(plate)
 	if ghost:
 		car.shirt = rng.randi() % SHIRTS.size()
+	if wedding:
+		car.guest = true
+		car.tie = rng.randi() % SHIRTS.size()
 	return car
 
 
@@ -163,6 +186,8 @@ static func value_of(car: Dictionary, kind: String) -> Variant:
 			return car.crowd
 		"shirt":
 			return car.shirt
+		"tie":
+			return car.get("tie", -1)
 	return null
 
 
@@ -174,7 +199,7 @@ func fits(car: Dictionary) -> int:
 ## A car that fits every clue but one if it's a lookalike, and at most one otherwise.
 func _other_car(rng: RandomNumberGenerator, lookalike: bool) -> Dictionary:
 	while true:
-		var car := random_car(rng, convoy, fruit, crowd, ghost)
+		var car := random_car(rng, convoy, fruit, crowd, ghost, wedding)
 		if lookalike:
 			# Copy all clues but one, then make sure that one is off.
 			var off := rng.randi() % clues.size()
@@ -212,6 +237,55 @@ func _set_value(car: Dictionary, clue: Dictionary) -> void:
 			car.crowd = clue.value
 		"shirt":
 			car.shirt = clue.value
+		"tie":
+			car.tie = clue.value
+
+
+## The wedding's convoy (control-boda.md): the couple, their car up front, a few city cars (never El Colado's or the
+## lookalikes'), what each driver blows, El Colado and the designated drivers at 0.0, and the couple each one toasts.
+func _seat_the_wedding(rng: RandomNumberGenerator) -> void:
+	couple = rng.randi() % WeddingCar.BRIDES.size()
+	# Up front, and never a lookalike: its white paint mustn't make it fit every clue.
+	var fronts: Array[int] = []
+	for i in total:
+		if i != wanted_index and not i in lookalikes:
+			fronts.append(i)
+	newlyweds_index = fronts[rng.randi() % mini(WeddingCar.NEWLYWEDS_AT, fronts.size())]
+	var guests: Array[int] = []
+	for i in total:
+		var car: Dictionary = cars[i]
+		car.newlyweds = i == newlyweds_index
+		car.couple = couple
+		if car.newlyweds:
+			car.look = WeddingCar.NEWLYWEDS_LOOK
+		elif i != wanted_index and not i in lookalikes and rng.randi() % WeddingCar.CITY_EVERY == 0:
+			car.guest = false
+			car.tie = -1
+		car.alcohol = WeddingCar.drink(rng) if car.guest else 0.0
+		if car.guest and i != wanted_index and not car.newlyweds:
+			guests.append(i)
+	# El Colado wasn't at the party: sober, and he gets the couple wrong.
+	var wanted: Dictionary = cars[wanted_index]
+	wanted.alcohol = 0.0
+	wanted.couple = (couple + 1 + rng.randi() % (WeddingCar.BRIDES.size() - 1)) % WeddingCar.BRIDES.size()
+	for n in mini(rng.randi_range(DESIGNATED.x, DESIGNATED.y), guests.size()):
+		(cars[guests.pop_at(rng.randi() % guests.size())] as Dictionary).alcohol = 0.0
+	# Always a few keys to take.
+	var drunk := guests.filter(func(i: int) -> bool: return cars[i].alcohol > WeddingCar.DRUNK_ABOVE)
+	guests = guests.filter(func(i: int) -> bool: return cars[i].alcohol <= WeddingCar.DRUNK_ABOVE)
+	while drunk.size() < DRUNK_MIN and not guests.is_empty():
+		var i: int = guests.pop_at(rng.randi() % guests.size())
+		cars[i].alcohol = snappedf(WeddingCar.DRUNK_ABOVE + 0.1 + float(rng.randi() % 15) / 10.0, 0.1)
+		drunk.append(i)
+
+
+## The other guests the designated drivers are among: guests who blow 0.0 but aren't El Colado.
+func designated() -> Array[int]:
+	var out: Array[int] = []
+	for i in total:
+		if i != wanted_index and cars[i].get("guest", false) and cars[i].get("alcohol", -1.0) == 0.0:
+			out.append(i)
+	return out
 
 
 ## How clue `i` reads, for the comisario, the radio and the HUD.
@@ -246,6 +320,8 @@ func clue_text(i: int) -> String:
 			return TranslationServer.translate("CLUE_CROWD_RIDERS") % clue.value
 		"shirt":
 			return TranslationServer.translate("CLUE_GHOST_SHIRT") % TranslationServer.translate(SHIRTS[clue.value])
+		"tie":
+			return TranslationServer.translate("CLUE_WEDDING_TIE") % TranslationServer.translate(SHIRTS[clue.value])
 	return ""
 
 
