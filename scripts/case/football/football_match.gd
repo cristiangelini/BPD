@@ -19,6 +19,8 @@ const BREAK := 10.0
 const VETERAN_SPOTS: Array[Vector3] = [Vector3(15, 0, 0), Vector3(10, 0, -6), Vector3(10, 0, 6), Vector3(4, 0, -4),
 	Vector3(4, 0, 4), Vector3(-2, 0, 0)]
 const VETERAN_LOOKS: Array[String] = ["abuelo", "cliente", "repartidor", "heladero", "armero", "sospechoso"]
+## The last of them is the Tank (step 4).
+const TANK := 5
 const KEEPER_LOOK := "portero"
 const ADVISOR_SPOTS: Array[Vector3] = [Vector3(-12, 0, -5), Vector3(-12, 0, 5)]
 const ADVISOR_LOOKS: Array[String] = ["gerente", "abogado"]
@@ -26,6 +28,7 @@ const ADVISOR_LOOKS: Array[String] = ["gerente", "abogado"]
 var pitch: FootballPitch
 var lustre: FootballLustre
 var players: Array[FootballPlayer] = []
+var tank: FootballPlayer
 var state := State.WAITING
 ## Seconds left in this half (or the break).
 var left := HALF
@@ -38,7 +41,9 @@ func setup(the_pitch: FootballPitch, the_lustre: FootballLustre) -> void:
 	pitch = the_pitch
 	lustre = the_lustre
 	for i in VETERAN_SPOTS.size():
-		_player("Veteran%d" % i, "veteran", FootballScore.Team.VETERANS, VETERAN_LOOKS[i], VETERAN_SPOTS[i])
+		var tank_now := i == TANK
+		_player("Tank" if tank_now else "Veteran%d" % i, "tank" if tank_now else "veteran", FootballScore.Team.VETERANS,
+			VETERAN_LOOKS[i], VETERAN_SPOTS[i])
 	_player("Keeper", "keeper", FootballScore.Team.VETERANS, KEEPER_LOOK,
 		FootballPitch.goal_at(1.0) - FootballPitch.CENTER - Vector3(FootballPlayer.KEEPER_OUT, 0, 0))
 	for i in ADVISOR_SPOTS.size():
@@ -58,6 +63,8 @@ func _player(player_name: String, role: String, team: int, look: String, spot: V
 	player.rotation.y = -PI / 2 if team == FootballScore.Team.LUSTRE else PI / 2
 	pitch.add_child(player)
 	players.append(player)
+	if role == "tank":
+		tank = player
 
 
 func _ready() -> void:
@@ -139,7 +146,7 @@ func _pick_chaser() -> void:
 	var ball := pitch.ball.global_position
 	for player in players:
 		player.chaser = false
-		if player.role == "veteran" and (best == null or player.global_position.distance_to(ball)
+		if (player.role == "veteran" or player.role == "tank" and not player.charging) and (best == null or player.global_position.distance_to(ball)
 				< best.global_position.distance_to(ball)):
 			best = player
 	if best:

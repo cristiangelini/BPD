@@ -8,11 +8,11 @@ extends Node3D
 ## table with the cup, the sausage stall and the banner. The cops start in the station and drive here; --place=football
 ## opens it from Play. Step 2: the ball on the center spot (FootballBall) and the goals and scoreboard
 ## (FootballScore). Step 3: the match (FootballMatch), with Deputy Lustre playing badly (FootballLustre), the veterans,
-## their keeper and his two advisors (FootballPlayer); the cops play in yellow bibs. Every number here is (propuesta).
+## their keeper and his two advisors (FootballPlayer); the cops play in yellow bibs. Step 4: the deputy's falls, the
+## stretcher (FootballStretcher) and the Tank. Every number here is (propuesta).
 
 const GOAL_MODEL := preload("res://assets/models/football_goal.glb")
 const BENCH_MODEL := preload("res://assets/models/team_bench.glb")
-const STRETCHER_MODEL := preload("res://assets/models/stretcher.glb")
 const CUP_MODEL := preload("res://assets/models/football_cup.glb")
 ## The pitch (CityLayout "football_pitch") fills its block inside the sidewalks.
 const HALF := 27.0
@@ -64,6 +64,8 @@ var score: FootballScore
 var match_clock: FootballMatch
 var politician: Politician
 var lustre: FootballLustre
+## The stretcher the deputy goes to his bench on (step 4).
+var stretcher: FootballStretcher
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -94,7 +96,7 @@ func _ready() -> void:
 	add_child(politician)
 	politician.position = CENTER + FootballLustre.HOME + Vector3.UP * 0.05
 	politician.rotation.y = -PI / 2
-	politician.add_child(FootballPlayer.bib(FootballPlayer.BIBS[FootballScore.Team.LUSTRE]))
+	politician.get_node("Model").add_child(FootballPlayer.bib(FootballPlayer.BIBS[FootballScore.Team.LUSTRE]))
 	lustre = FootballLustre.new()
 	lustre.name = "Lustre"
 	lustre.setup(self, politician, case_seed)
@@ -212,11 +214,11 @@ func _build_sideline() -> void:
 		bench.rotation.y = PI
 		$Built.add_child(bench)
 		_body(Vector3(x, 0.45, BENCH_Z), Vector3(4.0, 0.9, 0.5))
-	var stretcher: Node3D = STRETCHER_MODEL.instantiate()
+	stretcher = FootballStretcher.new()
 	stretcher.name = "Stretcher"
-	stretcher.position = STRETCHER_AT
+	stretcher.position = STRETCHER_AT + Vector3.UP * 0.05
 	stretcher.rotation.y = PI / 2
-	$Built.add_child(stretcher)
+	add_child(stretcher)
 	_build.box(CUP_TABLE_AT + Vector3(0, CUP_TABLE.y / 2, 0), CUP_TABLE, TABLE)
 	_build.mesh_box(CUP_TABLE_AT + Vector3(0, CUP_TABLE.y - 0.15, -CUP_TABLE.z / 2 - 0.01),
 		Vector3(CUP_TABLE.x, 0.3, 0.02), CLOTH)

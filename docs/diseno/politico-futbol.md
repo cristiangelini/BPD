@@ -91,3 +91,12 @@ gol para la foto y que salga entero. En ese orden, dice él. En el otro, digo yo
   1,2 m/s y empujan lo que les llega. El diputado (`FootballLustre`, pechera amarilla) corre a la pelota si está a
   menos de 9 m y le pega para cualquier lado: 1 de cada 3 va al arco, 1 de cada 2 a menos de 14 m del arco, y grita
   algo. Captura en `/mnt/project-files/futbol/paso3-partido.png`.
+- **Paso 4 (caídas, camilla y el Tanque):** si un veterano se le acerca a menos de 0,95 m, el diputado se tira al
+  pasto gritando ("¡Me mataron!") y no se levanta solo; después de levantarse tiene 3 s sin caerse. La camilla
+  (`FootballStretcher`, `pitch.stretcher`) vacía pesa 10 kg y la lleva uno; puesta a menos de 1,6 m del diputado, él se
+  sube y pasa a pesar 50 kg: hace falta cargarla de a dos. A menos de 2,5 m de su banco (el oeste) se baja, se cura en
+  5 s y vuelve a jugar. El Tanque es el sexto veterano, más grande (`pitch.match_clock.tank`): juega como los otros y
+  cada 25 s corre a 5 m/s hacia el diputado con los brazos abiertos gritando "¡AHÍ VOY!" (6 s como mucho). Un policía
+  a menos de 1,1 m lo frena: los dos caen (el Tanque 3 s, el policía 1,5 s). Si llega al diputado, lo hace volar y es
+  una lesión de verdad (`injured`, `injuries`); qué pasa con el sueldo y a la tercera queda para el paso 5. Captura en
+  `/mnt/project-files/futbol/paso4-camilla.png`.
