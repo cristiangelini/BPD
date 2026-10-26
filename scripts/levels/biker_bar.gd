@@ -63,6 +63,7 @@ var office_door: FrontDoor
 var arm_table: ArmTable
 var heavy_bike: HeavyBike
 var charge: DareCharge
+var dares: BikerDares
 var cromado: ClubMember
 var doorman: ClubDoorman
 var _build: PlaceBuilder
@@ -80,6 +81,11 @@ func _ready() -> void:
 	add_child(office_door)
 	_add_patio()
 	_add_people()
+	dares = BikerDares.new()
+	dares.name = "Dares"
+	dares.bar = self
+	dares.case_seed = case_seed
+	add_child(dares)
 	place_in_city("biker")
 
 
