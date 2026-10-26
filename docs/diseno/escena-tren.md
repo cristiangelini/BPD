@@ -121,3 +121,10 @@ interrogatorio.
   se apagan), arranque y frenada de 6 s y 20 s en cada estación con su andén, su techo y su cartel. Arriba de cada
   puerta, el cartel con la próxima estación y los segundos que faltan. El baño del comedor quedó en la esquina de
   atrás con la puerta al pasillo. El traqueteo de la cámara queda para después.
+- **Paso 2 (la gente):** los seis magos (MagicianTraits, TrainMagician) parados delante de su asiento, con la misma
+  capa, galera, barba y guantes; abajo de la galera, su pelo teñido, y sus anteojos, sus zapatos y sus dientes. Con E
+  hacen un truco distinto cada vez (la paloma, el pañuelo que no termina, la moneda de la oreja) y dicen su nombre
+  artístico. Don Silbato en la locomotora, Picadora al lado de la máquina de boletos y el señor Mostaza detrás de su
+  carrito en la punta del comedor (TrainStaff), cada uno con sus frases. Para que un policía pase por el pasillo con
+  los magos, los asientos quedaron más angostos, el carrito en un costado y la caldera de la locomotora contra la
+  pared.

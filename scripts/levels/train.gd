@@ -7,7 +7,9 @@ extends CrimeScenePlace
 ## first class (the six numbered seats, the luggage rack and the ticket machine) and the locomotive (don Silbato's
 ## cabin with the brake lever). The cars join by open doors over a gangway. TrainRide is the clock: five stations,
 ## a tunnel in each leg that switches off the lamps, and the sign over each door with the next station and how long
-## to it. The people come in step 2 and the case in step 4. Every number here is (propuesta).
+## to it. In first class, the six magicians alike in front of their seats (MagicianTraits, TrainMagician); don
+## Silbato, Picadora and señor Mostaza with his cart (TrainStaff) at their posts (step 2). The case comes in step 4.
+## Every number here is (propuesta).
 
 ## The cars' floor is this high above the rails' ground.
 const FLOOR_Y := 1.0
@@ -27,12 +29,12 @@ const SILL := 0.9
 const LINTEL := 2.0
 ## The six seats of first class, numbered from 1: three a side of the aisle, facing the front.
 const SEATS: Array[Vector3] = [
-	Vector3(3, 0, -0.95), Vector3(6.5, 0, -0.95), Vector3(10, 0, -0.95),
-	Vector3(3, 0, 0.95), Vector3(6.5, 0, 0.95), Vector3(10, 0, 0.95),
+	Vector3(3, 0, -1.05), Vector3(6.5, 0, -1.05), Vector3(10, 0, -1.05),
+	Vector3(3, 0, 1.05), Vector3(6.5, 0, 1.05), Vector3(10, 0, 1.05),
 ]
 const TICKET_MACHINE_AT := Vector3(13.3, 0, -1.15)
 const TABLES: Array[Vector3] = [Vector3(-11, 0, -0.95), Vector3(-6, 0, -0.95), Vector3(-11, 0, 0.95), Vector3(-6, 0, 0.95)]
-const CART_AT := Vector3(-2.5, 0, 0)
+const CART_AT := Vector3(-1.8, 0, -0.95)
 ## The bathroom, in the dining car's back corner beside its door: x from the end wall to BATHROOM_X, z from
 ## BATHROOM_Z to the side. Its door opens to the aisle.
 const BATHROOM_X := -12.5
@@ -40,6 +42,13 @@ const BATHROOM_Z := 0.65
 const SHOWCASE_AT := Vector3(-21, 0, -1.0)
 const BROKEN_WINDOW_AT := Vector3(-30, 1.45, 0)
 const BRAKE_AT := Vector3(22.8, 0, 0.9)
+## Where the people stand: each magician in front of his seat, facing the aisle; don Silbato at the brake, Picadora
+## by the ticket machine and señor Mostaza behind his cart.
+const IN_FRONT_OF_SEAT := Vector3(0.75, 0, 0)
+const ENGINEER_AT := Vector3(22.0, 0, 0.2)
+const INSPECTOR_AT := Vector3(12.4, 0, 0.95)
+const VENDOR_AT := Vector3(-2.7, 0, -0.95)
+const CART_MODEL := preload("res://assets/models/train_cart.glb")
 ## Where a cop gets on: first class's aisle, by the back door.
 const SPAWN_AT := Vector3(1.5, FLOOR_Y + 0.1, 0)
 const BODY := Color(0.18, 0.32, 0.25)
@@ -59,6 +68,11 @@ var lamps: Array[OmniLight3D] = []
 ## The sign over each door: the next station and how long to it.
 var signs: Array[Label3D] = []
 var scenery: TrainScenery
+var magicians: Array[TrainMagician] = []
+var engineer: TrainStaff
+var inspector: TrainStaff
+var vendor: TrainStaff
+var cart: StaticBody3D
 var _cars: Node3D
 var _build: PlaceBuilder
 
@@ -79,6 +93,7 @@ func _ready() -> void:
 	_dining()
 	_luggage()
 	_engine()
+	_people()
 	scenery = TrainScenery.new()
 	scenery.name = "Scenery"
 	scenery.ride = ride
@@ -92,6 +107,10 @@ func _physics_process(delta: float) -> void:
 	for lamp in lamps:
 		lamp.visible = lit
 	_update_signs()
+
+
+func suspect(index: int) -> CollisionObject3D:
+	return magicians[index] if index < magicians.size() else null
 
 
 ## The car (by index in CAR_NAMES) a point in the world is in, or -1.
@@ -178,8 +197,8 @@ func _post(from: float, to: float, side: float) -> void:
 func _first_class() -> void:
 	for i in SEATS.size():
 		var at: Vector3 = SEATS[i]
-		_build.box(at + Vector3(0, 0.25, 0), Vector3(0.7, 0.5, 0.9), VELVET)
-		_build.box(at + Vector3(-0.32, 0.75, 0), Vector3(0.12, 0.9, 0.9), VELVET)
+		_build.box(at + Vector3(0, 0.25, 0), Vector3(0.7, 0.5, 0.7), VELVET)
+		_build.box(at + Vector3(-0.32, 0.75, 0), Vector3(0.12, 0.9, 0.7), VELVET)
 		var number := Label3D.new()
 		number.name = "Seat%d" % (i + 1)
 		number.text = str(i + 1)
@@ -206,7 +225,6 @@ func _dining() -> void:
 	_build.wall("z", BATHROOM_X, BATHROOM_Z, WIDTH / 2, 0, [], INSIDE)
 	_build.box(Vector3(back + 0.35, 0.2, 1.1), Vector3(0.5, 0.4, 0.6), TILE)
 	_build.box(Vector3(BATHROOM_X - 0.3, 0.8, 1.2), Vector3(0.4, 0.15, 0.4), CLOTH)
-	_build.mesh_box(CART_AT + Vector3(0, 0.02, 0), Vector3(0.9, 0.04, 0.6), Color(0.8, 0.8, 0.82))
 
 
 func _luggage() -> void:
@@ -226,5 +244,39 @@ func _engine() -> void:
 	var span: Vector2 = CARS["engine"]
 	_build.box(BRAKE_AT + Vector3(0, 0.5, -0.9), Vector3(0.8, 1.0, 1.2), DARK)
 	_build.box(BRAKE_AT + Vector3(0, 0.55, 0), Vector3(0.06, 1.1, 0.06), Color(0.85, 0.15, 0.1))
-	_build.box(Vector3(span.x + 4, 0.75, 0), Vector3(5, 1.5, 1.2), Color(0.1, 0.1, 0.1))
+	_build.box(Vector3(span.x + 4, 0.75, -0.9), Vector3(5, 1.5, 1.0), Color(0.1, 0.1, 0.1))
 	_build.mesh_box(Vector3(span.y + 0.7, -0.2, 0), Vector3(1.4, 1.4, WIDTH), Color(0.8, 0.15, 0.1))
+
+
+## The six magicians in front of their seats (traits drawn with the case seed), the three of the staff and the cart.
+func _people() -> void:
+	var all_traits := MagicianTraits.draw(case_seed)
+	for i in all_traits.size():
+		var magician := TrainMagician.new()
+		magician.name = "Magician%d" % (i + 1)
+		magician.traits = all_traits[i]
+		magician.index = i
+		magician.position = SEATS[i] + IN_FRONT_OF_SEAT
+		magician.rotation.y = 0.0 if SEATS[i].z < 0 else PI
+		_cars.add_child(magician)
+		magicians.append(magician)
+	engineer = _staff("engineer", ENGINEER_AT, PI / 2)
+	inspector = _staff("inspector", INSPECTOR_AT, -PI / 2)
+	vendor = _staff("vendor", VENDOR_AT, PI / 2)
+	cart = StaticBody3D.new()
+	cart.name = "Cart"
+	cart.position = CART_AT
+	_cars.add_child(cart)
+	_build.shape(cart, Vector3(0.9, 0.9, 0.6))
+	cart.get_child(0).position.y = 0.45
+	cart.add_child(CART_MODEL.instantiate())
+
+
+func _staff(role: String, at: Vector3, turn: float) -> TrainStaff:
+	var person := TrainStaff.new()
+	person.name = role.capitalize()
+	person.role = role
+	person.position = at
+	person.rotation.y = turn
+	_cars.add_child(person)
+	return person
