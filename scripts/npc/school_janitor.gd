@@ -7,7 +7,8 @@ extends CharacterBody3D
 ## playground and does the same every YARD_EVERY with a pupil playing there. His tells: the deck of cards sticking out
 ## of his overalls' pocket and violet ink on his fingers (a cop sees them within STAIN_REACH; the teacher's chalk and
 ## one pupil's violet paint can fool them), and the envelope from the rival in the shed's chest of drawers. Cuffed, he
-## stops and E walks him to the patrol car (OwnerEscort). Every number here is (propuesta).
+## stops and E walks him to the patrol car (OwnerEscort). Online the host's janitor walks and swaps, and a guest's copy
+## follows it (NpcSync). Every number here is (propuesta).
 
 signal swapped(pupil: SchoolPupil)
 signal cuffed_now(janitor: SchoolJanitor)
@@ -43,7 +44,6 @@ var _rng := RandomNumberGenerator.new()
 var _model: Node3D
 var _bubble: Label3D
 var _bubble_left := 0.0
-var _stain: Label3D
 
 
 func setup(the_school: SchoolVisitLevel, the_tour: SchoolTour, case_seed: int) -> void:
@@ -72,22 +72,20 @@ func _ready() -> void:
 	add_child(_model)
 	_bubble = MarketShopper.make_bubble()
 	add_child(_bubble)
-	_stain = stain_label("JANITOR_STAIN", 1.0)
-	add_child(_stain)
+	add_child(stain_label("JANITOR_STAIN", 1.0))
 
 
 ## A line about someone's fingers, seen only up close (the janitor's ink, the teacher's chalk, a pupil's paint).
-static func stain_label(key: String, height: float) -> Label3D:
-	var label := Label3D.new()
+static func stain_label(key: String, height: float) -> CloseLabel:
+	var label := CloseLabel.new()
 	label.name = "Stain"
 	label.text = key
-	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	label.reach = STAIN_REACH
 	label.font_size = 28
 	label.outline_size = 6
 	label.pixel_size = 0.003
 	label.modulate = Color(0.75, 0.55, 1.0)
 	label.position.y = height
-	label.visible = false
 	return label
 
 
@@ -138,6 +136,15 @@ func is_cuffed() -> bool:
 func caught() -> bool:
 	var escort := OwnerEscort.of(self)
 	return is_cuffed() or (escort != null and (escort.in_car or escort.escorted_by != null))
+
+
+## What a guest's copy needs besides where he is and what he says (NpcSync): cuffed.
+func net_state() -> Array:
+	return [is_cuffed()]
+
+
+func apply_net_state(state: Variant) -> void:
+	_cuffed_left = Handcuffs.SECONDS if state[0] else 0.0
 
 
 func walking() -> bool:
@@ -193,7 +200,6 @@ func _physics_process(delta: float) -> void:
 
 
 func _process(delta: float) -> void:
-	_stain.visible = cop_within(self, STAIN_REACH)
 	var escort := OwnerEscort.of(self)
 	_model.rotation.y = 0.0 if escort and (escort.escorted_by or escort.in_car) else PI
 	if _bubble_left > 0.0:

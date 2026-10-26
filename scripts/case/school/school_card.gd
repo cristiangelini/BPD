@@ -3,7 +3,7 @@ extends Grabbable
 
 ## A pupil's card with the question for the deputy (politico-escuela.md, step 5, decision 210), once a cop took it
 ## from their hand: what it says floats over it. E with it in hand tears it up; E on a pupil with no card gives it back
-## (SchoolPupil.use).
+## (SchoolPupil.use). Online the host's tears it (PropSync takes the guests' copy away) and the hands are told.
 
 signal torn(card: SchoolCard)
 
@@ -60,15 +60,23 @@ func _ready() -> void:
 	add_child(text)
 
 
+## What a guest's copy needs (PropSync): the text and whether it's a trap.
+func net_setup() -> Dictionary:
+	return {"key": key, "trap": trap}
+
+
 func held_prompt_key(_cop: Cop) -> String:
 	return "PROMPT_TEAR_CARD"
 
 
 ## Torn up: out of the game for good.
 func use(cop: Cop) -> void:
+	cop.show_hint("HINT_CARD_TORN")
+	if cop.sync and not cop.sync.net.is_host():
+		return
 	var grabber: Grabber = cop.get_node("Grabber")
 	if grabber.held == self:
 		grabber.release()
-	cop.show_hint("HINT_CARD_TORN")
+		SchoolPupil.tell_hands(cop)
 	torn.emit(self)
 	queue_free()

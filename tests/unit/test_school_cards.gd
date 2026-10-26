@@ -119,7 +119,7 @@ func test_a_card_taken_while_read_is_no_gaffe() -> void:
 	var pupil := _trap()
 	pupil.raise_hand(true)
 	school.questions.point_at(pupil)
-	school.questions.ask()
+	school.questions.give_floor()
 	assert_eq(school.questions.reading, pupil)
 	_take(pupil)
 	school.questions._react_left = 0.05
@@ -144,7 +144,7 @@ func test_a_cop_by_the_deputy_points_at_who_asks() -> void:
 	assert_true(school.questions.try_point(cop))
 	assert_eq(tour.politician.said(), "SCHOOL_LUSTRE_POINTED")
 	assert_false(school.questions.try_point(cop), "once every so often")
-	school.questions.ask()
+	school.questions.give_floor()
 	assert_eq(school.questions.reading, pupil)
 
 

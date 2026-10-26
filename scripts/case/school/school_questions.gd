@@ -8,7 +8,8 @@ extends Node
 ## pupil reads the card out (a card taken from them while they read is no gaffe); READ_DELAY later he answers, or, if it was a trap, he stammers: a gaffe. With MAX_GAFFES
 ## he leaves ashamed and the case is lost. Step 5: a cop standing within POINT_REACH of him clicks with empty hands on
 ## a pupil with their hand up (`try_point`), and the next question is theirs, once every POINT_EVERY. Every number here
-## is (propuesta).
+## is (propuesta). Step 8, online: the host's questions decide (who asks, the gaffes) and a guest's only show the
+## count the case sends (SchoolCase.snapshot); a guest's cop pointing asks the host through its pupil (ActionSync).
 
 signal asked(pupil: SchoolPupil)
 signal gaffe(count: int)
@@ -32,6 +33,8 @@ const POINT_EVERY := 15.0
 var school: SchoolVisitLevel
 var tour: SchoolTour
 var gaffes := 0
+## A guest's copy: the host's questions decide.
+var follower := false
 ## Who's reading now (null with no one), and how long until he reacts.
 var reading: SchoolPupil
 var _react_left := 0.0
@@ -47,7 +50,7 @@ func setup(the_school: SchoolVisitLevel, the_tour: SchoolTour, case_seed: int) -
 	tour = the_tour
 	_rng.seed = hash(["school questions", case_seed])
 	tour.phase_changed.connect(_on_phase)
-	tour.question_time.connect(ask)
+	tour.question_time.connect(give_floor)
 
 
 func _ready() -> void:
@@ -98,7 +101,7 @@ func point_at(pupil: SchoolPupil) -> bool:
 
 
 ## "¿A ver, quién pregunta?": he gives the floor to someone with their hand up.
-func ask() -> void:
+func give_floor() -> void:
 	if tour.phase != SchoolTour.Phase.QUESTIONS or reading != null:
 		return
 	var pupil := _pointed if _pointed != null and _pointed.hand_up else null
@@ -116,13 +119,25 @@ func ask() -> void:
 	asked.emit(pupil)
 
 
-## A cop next to him points at the pupil they look at: theirs is the next question.
+## A cop next to him points at the pupil they look at: theirs is the next question. Online the host decides
+## (SchoolPupil.use with "point").
 func try_point(cop: Cop) -> bool:
-	if tour.phase != SchoolTour.Phase.QUESTIONS or _point_left > 0.0 or cop.get_node("Grabber").held \
+	if tour.phase != SchoolTour.Phase.QUESTIONS or cop.get_node("Grabber").held \
 			or cop.global_position.distance_to(tour.politician.global_position) > POINT_REACH:
 		return false
 	var hit := cop.aim_hit(POINT_RANGE)
-	if hit.is_empty() or not hit.collider is SchoolPupil or not point_at(hit.collider):
+	if hit.is_empty() or not hit.collider is SchoolPupil:
+		return false
+	if cop.sync:
+		cop.act("use", hit.collider, ["point"])
+		return true
+	return point_from(cop, hit.collider)
+
+
+## Host: `cop` pointed at `pupil`; theirs is the next question if all still holds.
+func point_from(cop: Cop, pupil: SchoolPupil) -> bool:
+	if follower or tour.phase != SchoolTour.Phase.QUESTIONS or _point_left > 0.0 \
+			or cop.global_position.distance_to(tour.politician.global_position) > POINT_REACH or not point_at(pupil):
 		return false
 	_point_left = POINT_EVERY
 	tour.politician.say("SCHOOL_LUSTRE_POINTED", 2.0)
@@ -136,7 +151,7 @@ func _physics_process(delta: float) -> void:
 		for cop: Cop in get_tree().get_nodes_in_group("cops"):
 			if cop.input_enabled:
 				try_point(cop)
-	if reading == null:
+	if follower or reading == null:
 		return
 	_react_left -= delta
 	if _react_left <= 0.0:

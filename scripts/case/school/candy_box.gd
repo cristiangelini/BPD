@@ -2,7 +2,7 @@ class_name CandyBox
 extends StaticBody3D
 
 ## The box of candies on the teacher's desk (politico-escuela.md, step 5, decision 210): E with empty hands puts a
-## candy in them, for a pupil who cries.
+## candy in them, for a pupil who cries. Online only the host's makes it (PropSync copies it) and the hands are told.
 
 const SIZE := Vector3(0.3, 0.16, 0.2)
 
@@ -28,6 +28,8 @@ func prompt_key(_cop: Cop) -> String:
 
 
 func use(cop: Cop) -> void:
+	if cop.sync and not cop.sync.net.is_host():
+		return
 	var grabber: Grabber = cop.get_node("Grabber")
 	if grabber.held:
 		cop.show_hint("HINT_HANDS_FULL_CANDY")
@@ -36,3 +38,4 @@ func use(cop: Cop) -> void:
 	cop.get_parent().add_child(candy)
 	candy.global_position = cop.camera.global_position - cop.camera.global_basis.z * 0.6
 	grabber.grab(candy)
+	SchoolPupil.tell_hands(cop)

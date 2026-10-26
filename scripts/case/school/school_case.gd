@@ -7,7 +7,9 @@ extends Node
 ## JANITOR more if the janitor is detained; quota of its own, like the plaza (decision 103). With MAX_GAFFES he leaves
 ## ashamed and the case is lost. If the janitor is still loose at the photo he rides off on his floor polisher along
 ## the sidewalk, waxing it slippery, and the chase starts there (decision 96): caught, he counts as detained; got away,
-## the case is solved all the same. Online comes in step 8. Every number here is (propuesta).
+## the case is solved all the same. Online (step 8) the host's case decides and a guest's follows it (CaseSync,
+## snapshot): the visit's clock, the gaffes, who cried, how it ended and the getaway; the visit, the questions and the
+## janitor only run on the host, and the people come from it (NpcSync). Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 4.0
@@ -36,7 +38,13 @@ var jailed := false
 var chase: ChaseCase
 var caught := false
 var escaped := false
-var follower := false
+var follower := false:
+	set(value):
+		follower = value
+		if school:
+			school.tour.follower = value
+			school.questions.follower = value
+var online: CaseSync
 var _result := {}
 var _refresh_left := 0.0
 
@@ -60,8 +68,15 @@ func start(comisario: Comisario = null) -> void:
 	else:
 		give_tip()
 	if shift_screen:
-		shift_screen.play_again.connect(func() -> void: PlaceDraw.start(get_tree()))
+		shift_screen.play_again.connect(_play_again)
 		shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
+
+
+func _play_again() -> void:
+	if online:
+		online.play_again()
+	else:
+		PlaceDraw.start(get_tree())
 
 
 func give_tip() -> void:
@@ -124,6 +139,7 @@ func _run_off() -> void:
 	var at := school.global_transform * Transform3D(Basis.IDENTITY, POLISHER_AT)
 	chase = ChaseCase.begin(school, SuspectCar.FLOOR_POLISHER, at, school.car, school.city, school.case_seed)
 	chase.who = "janitor"
+	chase.online = online
 	chase.follower = follower
 	chase.ended.connect(_on_chase_ended)
 	_hint_all("HINT_ESCAPE_JANITOR")
@@ -191,6 +207,39 @@ func _show_result(result: Dictionary) -> void:
 			result.campaign.promoted)
 		over = result.campaign.over
 	shift_screen.get_node("%AgainButton").visible = not over and not follower
+
+
+## What every guest's case shows (CaseSync).
+func snapshot() -> Dictionary:
+	var tour := school.tour
+	var state := {"tip": tip_given, "tour": [tour.phase, snappedf(tour.phase_left, 0.1), tour.placed],
+		"gaffes": school.questions.gaffes, "cried": cried, "shamed": shamed, "photo": photo_done, "jailed": jailed,
+		"caught": caught, "escaped": escaped, "result": _result}
+	if chase:
+		state.chase = chase.snapshot()
+	return state
+
+
+func apply_snapshot(state: Dictionary) -> void:
+	if state.tip:
+		give_tip()
+	var tour := school.tour
+	tour.phase = state.tour[0]
+	tour.phase_left = state.tour[1]
+	tour.placed = state.tour[2]
+	school.questions.gaffes = state.gaffes
+	cried = state.cried
+	shamed = state.shamed
+	photo_done = state.photo
+	jailed = state.jailed
+	caught = state.caught
+	escaped = state.escaped
+	if state.has("chase"):
+		_run_off()
+		chase.apply_snapshot(state.chase)
+	checklist.show_rows(rows())
+	if not state.result.is_empty() and not shift_over:
+		_show_result(state.result)
 
 
 ## The planilla's rows, in the shape CaseChecklist takes.

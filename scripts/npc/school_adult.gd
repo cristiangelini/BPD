@@ -63,8 +63,6 @@ func said() -> String:
 
 
 func _process(delta: float) -> void:
-	if stained:
-		get_node("Stain").visible = SchoolJanitor.cop_within(self, SchoolJanitor.STAIN_REACH)
 	if _bubble_left > 0.0:
 		_bubble_left -= delta
 		if _bubble_left <= 0.0:
