@@ -181,7 +181,45 @@ export function buildPrintingPlates() {
 	return b.build();
 }
 
+// The sleepwalker (step 5): the lost-and-found box with what the neighborhood is missing (0.6 x 0.5 x 0.45 m, origin in
+// the middle), the neighborhood's list and the sleep mask.
+export function buildLostBox() {
+	const card = mat('cardboard', 0xb8915a), tape = mat('tape', 0xd9c79a), red = mat('label_red', 0xc83a2a);
+	const gnome = mat('gnome_red', 0xd23030), beard = mat('white', 0xf6f6f6), green = mat('umbrella_green', 0x2f7a4a);
+	const b = new Builder('lost_box');
+	b.add('box', card, new THREE.BoxGeometry(0.6, 0.5, 0.45));
+	b.add('box', tape, new THREE.BoxGeometry(0.61, 0.05, 0.08), { pos: V(0, 0.2, 0.19) });
+	b.add('box', red, new THREE.BoxGeometry(0.36, 0.1, 0.01), { pos: V(0, 0.02, 0.23) });
+	b.add('things', gnome, new THREE.ConeGeometry(0.06, 0.16, 6), { pos: V(-0.15, 0.36, 0.05) });
+	b.add('things', beard, new THREE.SphereGeometry(0.06, 6, 4), { pos: V(-0.15, 0.27, 0.07) });
+	b.add('things', green, new THREE.CylinderGeometry(0.015, 0.015, 0.5, 5), { pos: V(0.15, 0.35, -0.05), rot: [-0.3, 0, 0.4] });
+	b.add('things', green, new THREE.ConeGeometry(0.09, 0.12, 6), { pos: V(0.05, 0.6, 0.02), rot: [0.3, 0, 0.4] });
+	b.add('things', mat('slipper', 0xfbfbf8), new THREE.BoxGeometry(0.1, 0.05, 0.22), { pos: V(0.05, 0.27, 0.1), rot: [0.2, 0.5, 0] });
+	return b.build();
+}
+
+export function buildNeighborhoodList() {
+	const paper = mat('paper', 0xf3eedf), ink = mat('ink', 0x2a2a6a), tick = mat('ink_red', 0xc83a2a);
+	const b = new Builder('neighborhood_list');
+	b.add('paper', paper, new THREE.BoxGeometry(0.21, 0.004, 0.29));
+	for (let i = 0; i < 7; i++) {
+		b.add('lines', ink, new THREE.BoxGeometry(0.13, 0.001, 0.008), { pos: V(-0.02, 0.0025, -0.12 + i * 0.038) });
+		b.add('ticks', tick, new THREE.BoxGeometry(0.015, 0.001, 0.015), { pos: V(0.075, 0.0025, -0.12 + i * 0.038) });
+	}
+	return b.build();
+}
+
+export function buildSleepMask() {
+	const satin = mat('mask_pink', 0xf2a0c0), lace = mat('white', 0xf6f6f6), band = mat('elastic', 0x303030);
+	const b = new Builder('sleep_mask');
+	for (const s of [-1, 1]) b.add('mask', satin, new THREE.SphereGeometry(0.06, 8, 4), { pos: V(s * 0.055, 0, 0), scale: [1, 0.3, 0.7] });
+	b.add('mask', lace, new THREE.TorusGeometry(0.11, 0.006, 3, 14), { rot: [Math.PI / 2, 0, 0], scale: [1, 0.55, 1] });
+	b.add('band', band, new THREE.TorusGeometry(0.12, 0.004, 3, 14), { pos: V(0, 0, -0.03), rot: [Math.PI / 2, 0, 0], scale: [1, 0.9, 1] });
+	return b.build();
+}
+
 export const models = {
+	lost_box: buildLostBox, neighborhood_list: buildNeighborhoodList, sleep_mask: buildSleepMask,
 	fake_money_case: buildFakeMoneyCase, lift_crank: buildLiftCrank, printing_plates: buildPrintingPlates,
 	robe_bag: buildRobeBag, buyers_list: buildBuyersList, embroidery_machine: buildEmbroideryMachine,
 	hanging_robe: buildHangingRobe,
@@ -202,6 +240,9 @@ export const views = {
 	lift_1987: { items: [{ name: 'fake_money_case', pos: [0, 0.21, 0] }, { name: 'lift_crank', pos: [0.75, 0.03, 0.2], rotY: -0.3 },
 		{ name: 'printing_plates', pos: [-0.7, 0.03, 0.2], rotY: 0.4 }],
 		cam: { pos: [0, 1.0, 1.8], target: [0, 0.15, 0], fov: 38 } },
+	sleepwalker: { items: [{ name: 'lost_box', pos: [0, 0.25, 0] }, { name: 'neighborhood_list', pos: [0.7, 0.01, 0.3], rotY: -0.3 },
+		{ name: 'sleep_mask', pos: [-0.6, 0.02, 0.3], rotY: 0.4 }],
+		cam: { pos: [0, 1.1, 1.8], target: [0, 0.15, 0], fov: 38 } },
 	casino_13: { items: [{ name: 'roulette', pos: [0, 0.12, 0] }, { name: 'casino_chip_box', pos: [0.65, 0.06, 0.1], rotY: -0.3 },
 		{ name: 'debt_book', pos: [-0.6, 0.015, 0.2], rotY: 0.4 }, { name: 'casino_chips', pos: [0.4, 0.02, 0.5] }],
 		cam: { pos: [0, 1.1, 1.8], target: [0, 0.1, 0], fov: 38 } },

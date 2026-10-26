@@ -55,6 +55,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_LIFT_CRANK", "OBJ_EXTRA_PLATES"],
 		"rig": preload("res://scripts/case/hotel/lift_rig.gd"),
 	},
+	"sleepwalker": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_SLEEPWALKER_B", "BRIEF_SLEEPWALKER_C", "BRIEF_SLEEPWALKER_D"],
+		"find": "OBJ_FIND_SLEEPWALKER",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/lost_box.tscn"), preload("res://scenes/props/neighborhood_list.tscn"),
+			preload("res://scenes/props/sleep_mask.tscn")],
+		"half_heights": [0.25, 0.005, 0.02],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_NEIGHBORHOOD_LIST", "OBJ_EXTRA_SLEEP_MASK"],
+		"rig": preload("res://scripts/case/hotel/sleepwalker_rig.gd"),
+	},
 	"casino_13": {
 		"briefing": ["BRIEF_RIGHT", "BRIEF_CASINO_B", "BRIEF_CASINO_C", "BRIEF_CASINO_D"],
 		"find": "OBJ_FIND_CASINO",

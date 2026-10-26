@@ -203,6 +203,13 @@ func door_broken() -> void:
 	_say("HOTEL_CONCIERGE_DOOR")
 
 
+## Someone shouted upstairs (the sleepwalker, woken up): he hears it from anywhere in the hotel, and it wakes him.
+func shout_heard(points: float) -> void:
+	_wake()
+	_raise(points)
+	_say("HOTEL_CONCIERGE_SHOUT")
+
+
 ## Something broke at `at`: it counts if he's awake and can see it.
 func saw(at: Vector3, points: float) -> bool:
 	if is_asleep():

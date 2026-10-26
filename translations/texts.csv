@@ -2497,3 +2497,17 @@ PROMPT_LIFT_TURNING,Girando la manivela… E: parar,Turning the crank… E: stop
 HINT_LIFT_STUCK,La puerta no se mueve. Tiene un agujero para una manivela.,The door won't budge. It has a hole for a crank.,A porta não se mexe. Tem um buraco para uma manivela.
 PROMPT_LIFT_BUTTON,E: mirar el botón,E: look at the button,E: olhar o botão
 CLUE_LIFT_BUTTON,El botón del ascensor está gastado de tanto apretarlo y tiene tinta verde.,The lift's button is worn from so much pressing and has green ink on it.,O botão do elevador está gasto de tanto apertar e tem tinta verde.
+BRIEF_SLEEPWALKER_B,Un huésped camina dormido por el barrio y vuelve con cosas ajenas. Don Bostezo las guarda en una caja de «objetos perdidos» y las vende.,A guest walks the neighborhood in his sleep and comes back with other people's things. Don Bostezo keeps them in a “lost and found” box and sells them.,Um hóspede anda dormindo pelo bairro e volta com coisas dos outros. O don Bostezo guarda tudo numa caixa de “achados e perdidos” e vende.
+BRIEF_SLEEPWALKER_C,Traigan la caja en el baúl del patrullero. Y no despierten al sonámbulo: grita.,Bring the box back in the patrol car's trunk. And don't wake the sleepwalker: he shouts.,Tragam a caixa no porta-malas da viatura. E não acordem o sonâmbulo: ele grita.
+BRIEF_SLEEPWALKER_D,"Si encuentran la lista del barrio o el antifaz, mejor: todo suma.","If you find the neighborhood's list or the sleep mask, even better: it all adds up.","Se acharem a lista do bairro ou a máscara de dormir, melhor: tudo soma."
+OBJ_FIND_SLEEPWALKER,Encontrar la caja de objetos perdidos,Find the lost and found box,Achar a caixa de achados e perdidos
+OBJ_EXTRA_NEIGHBORHOOD_LIST,La lista del barrio,The neighborhood's list,A lista do bairro
+OBJ_EXTRA_SLEEP_MASK,El antifaz de dormir,The sleep mask,A máscara de dormir
+PROMPT_SLEEPWALKER,Camina dormido. E: despertarlo (va a gritar),He's sleepwalking. E: wake him up (he'll shout),Ele anda dormindo. E: acordar (vai gritar)
+SLEEPWALKER_SHOUT,¡AAAAH! ¿Dónde estoy? ¿Quién eres? ¿Por qué estoy en bata?,AAAAH! Where am I? Who are you? Why am I in a bathrobe?,AAAAH! Onde estou? Quem é você? Por que estou de roupão?
+SLEEPWALKER_ASLEEP,…zzz…,…zzz…,…zzz…
+SLEEPWALKER_MUMBLE_0,…zzz… qué lindo gnomo… me lo llevo…,…zzz… what a nice gnome… I'll take it…,…zzz… que gnomo bonito… vou levar…
+SLEEPWALKER_MUMBLE_1,…zzz… un paraguas… otro paraguas…,…zzz… an umbrella… another umbrella…,…zzz… um guarda-chuva… outro guarda-chuva…
+SLEEPWALKER_MUMBLE_2,…zzz… don Bostezo… a la caja… zzz…,…zzz… don Bostezo… into the box… zzz…,…zzz… don Bostezo… pra caixa… zzz…
+HOTEL_CONCIERGE_SHOUT,¡¿Quién despertó al de la 16?! ¡Ahora no duerme nadie!,Who woke up the guy in 16?! Now nobody's sleeping!,Quem acordou o do 16?! Agora ninguém dorme!
+CLUE_SLEEPWALKER_STEPS,Huellas de pantuflas con barro desde la puerta de calle. Alguien salió de noche… y volvió.,Muddy slipper prints from the front door. Someone went out at night… and came back.,Pegadas de pantufa com barro desde a porta da rua. Alguém saiu de noite… e voltou.

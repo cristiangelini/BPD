@@ -198,3 +198,4 @@
 - Hotel raid, story 2: the regular guest. Señor Ramón crosses the lobby every 40 s in another disguise and runs off without his mustache if a cop bumps him; the guest book has forty signatures in one handwriting; his costume trunk is the evidence.
 - Hotel raid, story 3: the stolen robes. A robe hangs in every room with another hotel's crest; the bag of stolen robes is the evidence, with the buyers' list and the embroidery machine.
 - Hotel raid, story 4: the lift of 1987. The case of fake bills waits in the old lift cage in the lobby, which only opens by turning its crank in the doors for 3 s; the printing plates are the other extra, and the worn button with green ink is the clue.
+- Hotel raid, story 5: the sleepwalker. A guest in a bathrobe walks the upstairs corridor asleep with his arms out and shouts if woken (+10 complaint, and don Bostezo wakes up); muddy slipper prints lead from the front door to the hidden lost-and-found box.
