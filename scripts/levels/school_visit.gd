@@ -48,14 +48,21 @@ const SANDBOX := Rect2(-3.5, -9.5, 3.0, 3.0)
 const SHED := Rect2(8.0, -12.0, 6.0, 4.5)
 const SHED_DOOR_Z := -9.75
 const CART_AT := Vector3(11.5, 0, -10.0)
+## The chest of drawers against the shed's east wall, its front to the west, and where the janitor waits at recess.
+const CHEST_AT := Vector3(13.4, 0, -9.0)
+const JANITOR_YARD := Vector3(7.0, 0, -9.75)
+const ENVELOPE := preload("res://scenes/props/school_envelope.tscn")
 ## The corners everyone walks through (step 3): inside the classroom's door, the hall by it and by the corridor, the
 ## corridor by the playground's door and just out of it, and inside and outside the front door.
 const CLASS_DOOR_IN := Vector3(-5.0, 0, 8.4)
-const HALL_WEST := Vector3(-5.0, 0, 10.5)
-const HALL_EAST := Vector3(9.0, 0, 10.5)
+const HALL_WEST := Vector3(-5.0, 0, 9.9)
+const HALL_EAST := Vector3(9.0, 0, 9.9)
 const CORRIDOR := Vector3(9.0, 0, 1.0)
 const YARD_IN := Vector3(9.0, 0, -1.0)
-const FRONT_IN := Vector3(0.0, 0, 10.5)
+const FRONT_IN := Vector3(0.0, 0, 9.9)
+## The aisle the deputy takes between the door and the blackboard, east of the middle column of desks.
+const AISLE_BACK := Vector3(-3.5, 0, 8.4)
+const AISLE_FRONT := Vector3(-3.5, 0, 2.4)
 const FRONT_OUT := Vector3(0.0, 0, 13.6)
 ## Where the deputy waits for his guard, on the sidewalk by the front door.
 const WAITING_AT := Vector3(2.0, 0, 14.0)
@@ -83,7 +90,10 @@ const BAGS: Array[Color] = [Color(0.85, 0.2, 0.2), Color(0.95, 0.75, 0.2), Color
 var case_seed := 0
 var pupils: Array[SchoolPupil] = []
 var teacher: SchoolAdult
-var janitor: SchoolAdult
+var janitor: SchoolJanitor
+## The chest of drawers in the janitor's shed, with the rival's envelope in its bottom drawer (step 6).
+var chest: Dresser
+var envelope: ClueNote
 ## Deputy Lustre and his visit, the clock of the case (step 3).
 var politician: Politician
 var tour: SchoolTour
@@ -122,6 +132,8 @@ func _ready() -> void:
 	questions.name = "Questions"
 	questions.setup(self, tour, case_seed)
 	add_child(questions)
+	janitor.setup(self, tour, case_seed)
+	OwnerEscort.attach(janitor, car).in_car_hint = "HINT_JANITOR_IN_CAR"
 	city.transform = CityLayout.anchor("school_visit")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
@@ -188,19 +200,43 @@ func route_out_front(desk: int, spot: Vector3) -> Array[Vector3]:
 
 ## The deputy's ways: from the sidewalk to the blackboard, from there to the playground, back, and out for the photo.
 func deputy_in() -> Array[Vector3]:
-	return _world([FRONT_OUT, FRONT_IN, HALL_WEST, CLASS_DOOR_IN, STAGE])
+	return _world([FRONT_OUT, FRONT_IN, HALL_WEST, CLASS_DOOR_IN, AISLE_BACK, AISLE_FRONT, STAGE])
 
 
 func deputy_to_yard() -> Array[Vector3]:
-	return _world([CLASS_DOOR_IN, HALL_WEST, HALL_EAST, CORRIDOR, YARD_IN])
+	return _world([AISLE_FRONT, AISLE_BACK, CLASS_DOOR_IN, HALL_WEST, HALL_EAST, CORRIDOR, YARD_IN])
+
+
+## The janitor's ways (step 6): from the hall to beside desk `desk`, from wherever he is in the building to the hall or
+## out to the shed, and from the playground back to the hall.
+func janitor_to_desk(desk: int) -> Array[Vector3]:
+	var aisle := aisle_of(desk)
+	return _world([HALL_WEST, CLASS_DOOR_IN, Vector3(aisle, 0, CLASS_DOOR_IN.z), Vector3(aisle, 0, seat(desk).z)])
+
+
+func janitor_from_hall(at: Vector3, to_yard: bool) -> Array[Vector3]:
+	var local := to_local(at)
+	var points: Array[Vector3] = []
+	if local.z < HALL_Z and local.x < CLASS_EAST:
+		points.append_array([Vector3(local.x, 0, CLASS_DOOR_IN.z), CLASS_DOOR_IN, HALL_WEST])
+	elif local.z < HALL_Z:
+		points.append(CORRIDOR)
+		points.append_array([YARD_IN, JANITOR_YARD] if to_yard else [HALL_EAST, JANITOR_AT])
+		return _world(points)
+	points.append_array([HALL_EAST, CORRIDOR, YARD_IN, JANITOR_YARD] if to_yard else [JANITOR_AT])
+	return _world(points)
+
+
+func janitor_to_hall() -> Array[Vector3]:
+	return _world([YARD_IN, CORRIDOR, HALL_EAST, JANITOR_AT])
 
 
 func deputy_to_class() -> Array[Vector3]:
-	return _world([YARD_IN, CORRIDOR, HALL_EAST, HALL_WEST, CLASS_DOOR_IN, STAGE])
+	return _world([YARD_IN, CORRIDOR, HALL_EAST, HALL_WEST, CLASS_DOOR_IN, AISLE_BACK, AISLE_FRONT, STAGE])
 
 
 func deputy_out() -> Array[Vector3]:
-	return _world([CLASS_DOOR_IN, HALL_WEST, FRONT_IN, FRONT_OUT, PHOTO_DEPUTY])
+	return _world([AISLE_FRONT, AISLE_BACK, CLASS_DOOR_IN, HALL_WEST, FRONT_IN, FRONT_OUT, PHOTO_DEPUTY])
 
 
 ## Where pupil `desk` plays at recess (world space), drawn by the seed.
@@ -310,6 +346,14 @@ func _build_yard() -> void:
 	_build.slab(SHED.position.x, HALF_X, SHED.position.y, SHED.end.y, top, WOOD.darkened(0.3))
 	_label("SCHOOL_SHED", Vector3(SHED.position.x - 0.1, top - 0.3, SHED_DOOR_Z), -PI / 2, 28)
 	_build.box(CART_AT + Vector3(0, 0.45, 0), Vector3(0.6, 0.9, 0.9), CART)
+	chest = Dresser.new()
+	chest.name = "Chest"
+	chest.contents = [[ENVELOPE]]
+	chest.position = CHEST_AT + Vector3.UP * FLOOR_TOP
+	chest.rotation.y = -PI / 2
+	add_child(chest)
+	envelope = chest.drawers[0].contents[0]
+	envelope.text = "SCHOOL_ENVELOPE"
 	_build.light(Vector3(11.0, top - 0.4, -10.0))
 
 
@@ -332,12 +376,17 @@ func _place_people() -> void:
 	# Facing the class (+Z); NPCs face -Z.
 	teacher.rotation.y = PI
 	add_child(teacher)
-	janitor = SchoolAdult.new()
+	janitor = SchoolJanitor.new()
 	janitor.name = "Janitor"
-	janitor.look = "conserje"
 	janitor.position = JANITOR_AT + Vector3.UP * FLOOR_TOP
 	janitor.rotation.y = PI / 2
 	add_child(janitor)
+	# The decoys (step 6): the teacher's fingers are white with chalk, one pupil's violet with paint.
+	teacher.add_child(SchoolJanitor.stain_label("TEACHER_STAIN", 1.9))
+	teacher.stained = true
+	var painted := pupils[hash(["school paint", case_seed]) % PUPILS]
+	painted.add_child(SchoolJanitor.stain_label("PUPIL_STAIN", 0.85))
+	painted.stained = true
 
 
 func _label(key: String, at: Vector3, turn: float, size: int) -> void:

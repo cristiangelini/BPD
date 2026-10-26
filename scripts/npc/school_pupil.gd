@@ -54,6 +54,8 @@ var hand_up := false
 var _arm: Node3D
 var _card_text: Label3D
 var _wave := 0.0
+## Violet paint on their fingers, which a cop up close can take for the janitor's ink (step 6).
+var stained := false
 var crying := false
 ## Seconds crying, and whether it already counted.
 var cry_for := 0.0
@@ -216,7 +218,10 @@ func said() -> String:
 
 
 func _process(delta: float) -> void:
-	_card_text.visible = has_card() and _cop_near()
+	var near := _cop_near()
+	_card_text.visible = has_card() and near
+	if stained:
+		get_node("Stain").visible = near
 	if hand_up and trap:
 		_wave += delta * 9.0
 		_arm.rotation.z = sin(_wave) * 0.35

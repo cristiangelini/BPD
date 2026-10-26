@@ -112,6 +112,10 @@ func test_the_photo_ends_the_visit() -> void:
 	assert_eq(tour.politician.said(), "SCHOOL_LUSTRE_PHOTO")
 	tour.phase_left = 0.05
 	await wait_physics_frames(6)
+	assert_eq(tour.phase, SchoolTour.Phase.PHOTO, "it waits for the last pupil")
+	for pupil in school.pupils:
+		pupil._path.clear()
+	await wait_physics_frames(6)
 	assert_eq(tour.phase, SchoolTour.Phase.OVER)
 	assert_signal_emitted(tour, "finished")
 	assert_eq(tour.progress(), 1.0)
