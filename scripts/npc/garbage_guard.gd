@@ -40,8 +40,9 @@ const HEAVY_SPEED := 0.5
 const HEAVY_AGAIN_SUSPICION := 30.0
 const HEAVY_LINES := 3
 
-## The station's lot, the cell doors and the dumpster (the level sets them).
+## The station's lot, the cell doors, his roll of bags and the dumpster (the level sets them).
 var station_lot: Transform3D
+var bags: Array[GarbageBag] = []
 var cell_doors: Array[CellDoor] = []
 var dumpster: Dumpster
 ## Seconds to the next round, the cell it's for, and where he is in it: "" (at his desk), "to_cell", "in_cell",
@@ -191,12 +192,15 @@ func _at_cell_inside() -> bool:
 ## In the cell: the bag open on the floor, and IN_CELL seconds emptying the bin into it.
 func _drop_bag() -> void:
 	stage = "in_cell"
-	bag = GarbageBag.new()
-	bag.name = "GarbageBag"
-	get_parent().add_child(bag, true)
-	bag.global_position = _at(Vector3(_cell_x(round_cell), 0, BAG_Z))
 	_stay_left = IN_CELL
 	_face(true)
+	var free := bags.filter(func(roll: GarbageBag) -> bool: return not roll.in_use)
+	if free.is_empty():
+		bag = null
+		say("GARBAGE_GUARD_NO_BAGS")
+		return
+	bag = free[0]
+	bag.take(_at(Vector3(_cell_x(round_cell), 0, BAG_Z)))
 	say("GARBAGE_GUARD_EMPTY")
 	bag_dropped.emit(bag, round_cell)
 
@@ -301,9 +305,8 @@ func catch() -> void:
 	if is_away():
 		for door in cell_doors:
 			door.lock()
-		if is_instance_valid(bag):
-			bag.let_out()
-			bag.queue_free()
+		if is_instance_valid(bag) and stage != "back":
+			bag.put_away()
 		bag = null
 		heavy = false
 		_back_at_desk()

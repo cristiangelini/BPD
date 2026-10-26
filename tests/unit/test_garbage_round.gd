@@ -99,6 +99,5 @@ func test_a_catch_on_his_round_sends_him_back_with_the_cells_locked() -> void:
 	assert_null(guard.bag)
 	for door: CellDoor in level.city.cell_doors:
 		assert_true(door.locked)
-	await wait_physics_frames(1)
-	assert_false(is_instance_valid(bag), "the bag goes")
+	assert_false(bag.in_use, "the bag goes back on the roll")
 	assert_eq(guard.times_caught, 1)

@@ -108,3 +108,21 @@ El guardia, Don Ruperto y el camión van por `NpcSync`; las bolsas y el contened
 - El peso: con un policía adentro la arrastra a la mitad de velocidad y se queja; dos bolsas pesadas seguidas suman
   +30. Una captura saca a todos de las bolsas y deshace los muñecos.
 - Modelo `pillow_dummy`, 13 textos nuevos en es, en y pt. Pruebas en `test_garbage_bag.gd`.
+
+## Cómo quedó el paso 3
+- El contenedor (`Dumpster`) está en la vereda, a 12 m de la puerta, lejos del patrullero. E para meterte o salir.
+- El camión (`GarbageTruck`) llega a los 3 min (± 30 s, por la semilla) y después cada 4 (± 30 s). Baja por la calle
+  lateral, dobla y frena con la boca de atrás en el contenedor. Don Ruperto dice una de sus 4 frases y lo vacía en 4 s.
+  Las bolsas vuelven al rollo del guardia (6, creadas al empezar) y se lleva a todos los policías que estén adentro,
+  en bolsa o no. Después vuelve marcha atrás hasta la esquina, dobla y los deja en la vereda de enfrente, a unos 30 m
+  de la puerta ("¡Fugados... más o menos!"). Si alguien que se ve se mueve en el contenedor en el primer segundo y
+  medio, Don Ruperto avisa al guardia y es captura.
+- Adentro de la bolsa la pantalla queda casi negra ("Huele a banana").
+- Se gana igual que siempre, todos en el patrullero; el final agrega lo de Don Ruperto.
+- Una captura los baja del camión.
+- Online:
+  - El anfitrión maneja el camión, las bolsas y los muñecos. Van por `NpcSync` con su estado: quién va en cada bolsa
+    y en el camión, con el mismo nombre en todas las PCs (`Cop.net_id`).
+  - El policía que va metido en algo lo sigue desde su propia PC (`hold_point`).
+- 12 textos nuevos, modelo `garbage_truck` y Don Ruperto con el modelo del mudancero (placeholder). Pruebas en
+  `test_garbage_truck.gd` y `test_garbage_online.gd`.
