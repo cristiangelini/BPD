@@ -63,6 +63,7 @@ func show_report(solved: bool, report: Dictionary, broken_ornaments: int, awards
 		label.add_theme_font_size_override("font_size", 22)
 		_awards.add_child(label)
 	%AwardsTitle.visible = not awards.is_empty()
+	_show_game_awards(report.get("game_awards", []))
 	show()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
@@ -95,6 +96,22 @@ func _show_inspection(inspection: Dictionary) -> void:
 		label.add_theme_font_size_override("font_size", 22)
 		_lines.add_child(label)
 		_lines.add_child(Control.new())
+
+
+## The awards of the whole match under the shift's, when the match is over (Campaign.finish_shift).
+func _show_game_awards(game_awards: Array) -> void:
+	if game_awards.is_empty():
+		return
+	var title := Label.new()
+	title.text = "SHIFT_GAME_AWARDS"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 28)
+	_awards.add_child(title)
+	for award: Dictionary in game_awards:
+		var label := Label.new()
+		label.text = tr(award.key) % [tr("COP_NAME") % (int(award.cop) + 1), roundi(award.value)]
+		label.add_theme_font_size_override("font_size", 22)
+		_awards.add_child(label)
 
 
 func _line(text: String, amount: int, bold := false) -> void:

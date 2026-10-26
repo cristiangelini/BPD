@@ -311,6 +311,7 @@ func finish_shift() -> void:
 	var campaign := Campaign.current
 	if campaign and not campaign.is_over():
 		var played := campaign.shift
+		campaign.add_stats(stats)
 		campaign.finish_shift(texts().story, solved(), pay, QUOTA)
 		campaign.custody = custody()
 		campaign.save()
