@@ -312,6 +312,56 @@ export function buildPaintFootprints() {
 	return b.build();
 }
 
+// The bucket of nails for flat tires: a grey tin bucket full to the brim with bent nails. 0.3 m across, 0.32 m tall.
+export function buildNailBucket() {
+	const b = new Builder('nail_bucket');
+	const tin = mat('bucket_tin', 0x8a9098, { metalness: 0.5, roughness: 0.5 }), steel = mat('screw_steel', 0x9aa0a8);
+	b.add('bucket', tin, new THREE.CylinderGeometry(0.15, 0.12, 0.3, 10, 1, true), { pos: V(0, 0, 0) });
+	b.add('bottom', tin, new THREE.CylinderGeometry(0.12, 0.12, 0.01, 10), { pos: V(0, -0.145, 0) });
+	b.add('fill', mat('nails_dark', 0x5a6068), new THREE.CylinderGeometry(0.145, 0.145, 0.01, 10), { pos: V(0, 0.13, 0) });
+	b.add('handle', tin, new THREE.TorusGeometry(0.15, 0.006, 3, 12, Math.PI), { pos: V(0, 0.15, 0), rot: [0, 0, 0] });
+	for (let i = 0; i < 16; i++) {
+		const a = i * 2.39, r = 0.02 + (i % 5) * 0.025;
+		b.add('nails', steel, new THREE.CylinderGeometry(0.004, 0.004, 0.07, 4), { pos: V(Math.cos(a) * r, 0.15, Math.sin(a) * r), rot: [i * 0.9, a, 0.8] });
+	}
+	return b.build();
+}
+
+// The tire shop's commission book: a small red notebook with a rubber band. 0.15 x 0.2 m.
+export function buildCommissionBook() {
+	const b = new Builder('commission_book');
+	b.add('cover', mat('book_red', 0xb83a2a), new THREE.BoxGeometry(0.15, 0.02, 0.2));
+	b.add('pages', mat('paper', 0xfaf6ee), new THREE.BoxGeometry(0.14, 0.016, 0.005), { pos: V(0, 0, 0.1) });
+	b.add('band', mat('rubber_black', 0x1a1a1a), new THREE.BoxGeometry(0.152, 0.022, 0.008), { pos: V(0, 0, 0.04) });
+	b.add('tire', mat('rubber_black', 0x1a1a1a), new THREE.TorusGeometry(0.03, 0.01, 4, 10), { pos: V(0, 0.011, -0.04), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
+// The giant magnet: a red horseshoe with silver tips and a handle. 0.45 m long along X.
+export function buildGiantMagnet() {
+	const b = new Builder('giant_magnet');
+	const red = mat('magnet_red', 0xd23a3a), tip = mat('magnet_tip', 0xd8dce2, { metalness: 0.6, roughness: 0.3 });
+	b.add('bend', red, new THREE.TorusGeometry(0.1, 0.035, 5, 10, Math.PI), { pos: V(-0.1, 0, 0), rot: [Math.PI / 2, 0, Math.PI / 2] });
+	b.add('arm', red, new THREE.BoxGeometry(0.2, 0.07, 0.07), { pos: V(0.0, 0, -0.1) });
+	b.add('arm', red, new THREE.BoxGeometry(0.2, 0.07, 0.07), { pos: V(0.0, 0, 0.1) });
+	b.add('tip', tip, new THREE.BoxGeometry(0.06, 0.072, 0.072), { pos: V(0.13, 0, -0.1) });
+	b.add('tip', tip, new THREE.BoxGeometry(0.06, 0.072, 0.072), { pos: V(0.13, 0, 0.1) });
+	b.add('handle', mat('rubber_black', 0x1a1a1a), new THREE.CylinderGeometry(0.02, 0.02, 0.12, 6), { pos: V(-0.26, 0, 0), rot: [0, 0, Math.PI / 2] });
+	return b.build();
+}
+
+// A few loose nails on the ground, for the sidewalk across the street. 0.3 m across.
+export function buildLooseNails() {
+	const b = new Builder('loose_nails');
+	const steel = mat('screw_steel', 0x9aa0a8);
+	for (let i = 0; i < 9; i++) {
+		const a = i * 2.1, r = 0.03 + (i % 4) * 0.035;
+		b.add('nails', steel, new THREE.CylinderGeometry(0.004, 0.004, 0.07, 4), { pos: V(Math.cos(a) * r, 0.004, Math.sin(a) * r), rot: [Math.PI / 2, a, 0] });
+		b.add('heads', steel, new THREE.CylinderGeometry(0.008, 0.008, 0.003, 6), { pos: V(Math.cos(a) * r + Math.sin(a) * 0.035, 0.004, Math.sin(a) * r - Math.cos(a) * 0.035), rot: [Math.PI / 2, a, 0] });
+	}
+	return b.build();
+}
+
 export const models = {
 	...Object.fromEntries(PAINTS.map((_, i) => [`paint_can_${i}`, () => buildPaintCan(i)])),
 	screw_jar: buildScrewJar,
@@ -321,6 +371,7 @@ export const models = {
 	digging_drill: buildDiggingDrill, miner_helmet: buildMinerHelmet, tunnel_plan: buildTunnelPlan, dirt_pile: buildDirtPile,
 	deputy_poster: () => buildDeputyPoster(false), deputy_poster_mustache: () => buildDeputyPoster(true),
 	mustache_stencil: buildStencil, spray_can_black: buildSprayCan, paint_footprints: buildPaintFootprints,
+	nail_bucket: buildNailBucket, commission_book: buildCommissionBook, giant_magnet: buildGiantMagnet, loose_nails: buildLooseNails,
 	...Object.fromEntries(GNOME_HATS.map((_, i) => [`garden_gnome_${i}`, () => buildGnome(i)])),
 	tool_hammer: buildHammer, tool_wrench: buildWrench, tool_saw: buildSaw, tool_screwdriver: buildScrewdriver,
 };
@@ -368,6 +419,13 @@ export const views = {
 			{ name: 'mustache_stencil', pos: [0, 0.002, 0.2] }, { name: 'spray_can_black', pos: [0.38, 0.1, 0.15] },
 		],
 		cam: { pos: [0, 0.6, 1.3], target: [0, 0.2, 0], fov: 40 },
+	},
+	nail_goods: {
+		items: [
+			{ name: 'nail_bucket', pos: [-0.3, 0.15, -0.1] }, { name: 'commission_book', pos: [0.05, 0.01, 0.2] },
+			{ name: 'giant_magnet', pos: [0.3, 0.035, -0.1] }, { name: 'loose_nails', pos: [-0.25, 0, 0.25] },
+		],
+		cam: { pos: [0, 0.7, 1.1], target: [0, 0.08, 0.05], fov: 40 },
 	},
 	hardware_tools: {
 		items: [
