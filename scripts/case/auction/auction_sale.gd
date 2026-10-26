@@ -9,7 +9,8 @@ extends Node
 ## last bidder. If that's a cop, the lot is delivered beside his chair and its price comes out of the shift's pay
 ## (`spent`, step 5 puts it on the planilla). A lot no cop bid on makes the buyers in the hall suspicious. While a lot
 ## is up, the buyers out of the hall come to watch and notice nothing else: the moment to search. The host decides all
-## of it and tells the guests (step 6). Every number here is (propuesta).
+## of it and tells the guests: the lines, the lot and its price, the paddles and the gavel (the lot bought is a prop,
+## PropSync copies it). Every number here is (propuesta).
 
 signal opened(kind: String)
 signal bid(price: int, by: Node)
@@ -110,16 +111,15 @@ func open() -> bool:
 		if seat_of(member):
 			tops[member] = _rng.randi_range(TOP_MIN / STEP, TOP_MAX / STEP) * STEP
 	rival_left = _rng.randf_range(RIVAL_MIN, RIVAL_MAX)
-	house.easel.show_lot(kind)
-	house.podium.show_price(price)
-	house.martillo.say("AUCTION_LOT_" + kind)
+	_show(kind, price)
+	_say(house.martillo, "AUCTION_LOT_" + kind)
 	for cop: Cop in house.get_tree().get_nodes_in_group("cops"):
 		if house.is_inside(cop.global_position):
 			cop.show_hint("HINT_AUCTION_LOT")
 	_watch(true)
 	if kind == stolen:
 		var whisperer := house.members[_rng.randi_range(0, house.members.size() - 1)]
-		whisperer.say("AUCTION_STOLEN_" + kind)
+		_say(whisperer, "AUCTION_STOLEN_" + kind)
 	opened.emit(kind)
 	return true
 
@@ -158,8 +158,8 @@ func _bid(by: Node, seat: BidSeat) -> void:
 	quiet = 0.0
 	_called = 0
 	rival_left = _rng.randf_range(RIVAL_MIN, RIVAL_MAX)
-	seat.raise()
-	house.podium.show_price(price)
+	_raise(seat)
+	_show(kind, price)
 	bid.emit(price, by)
 
 
@@ -179,10 +179,10 @@ func _selling(delta: float) -> void:
 		_sell()
 	elif quiet >= TWICE and _called < 2:
 		_called = 2
-		house.martillo.say("AUCTION_TWICE")
+		_say(house.martillo, "AUCTION_TWICE")
 	elif quiet >= ONCE and _called < 1:
 		_called = 1
-		house.martillo.say("AUCTION_ONCE")
+		_say(house.martillo, "AUCTION_ONCE")
 
 
 ## The gavel comes down: the lot is the last bidder's (or nobody's).
@@ -190,32 +190,32 @@ func _sell() -> void:
 	var done := kind
 	var paid := price
 	var to_cop := last_bidder is Cop
-	house.podium.bang()
+	_bang()
 	if to_cop:
 		bought += 1
 		spent += paid
-		house.martillo.say("AUCTION_SOLD_COP")
+		_say(house.martillo, "AUCTION_SOLD_COP")
 		_deliver(done, last_seat)
 		if done == stolen and house.case:
 			house.case.found("lot")
 	else:
-		house.martillo.say("AUCTION_SOLD" if last_bidder else "AUCTION_NO_SALE")
+		_say(house.martillo, "AUCTION_SOLD" if last_bidder else "AUCTION_NO_SALE")
 	if not cop_bid:
 		for member in house.members:
 			if house.in_hall(member.global_position + Vector3.UP):
 				house.suspicion.raise(member, NO_BID)
-		house.members[_rng.randi_range(0, house.members.size() - 1)].say("AUCTION_NOBODY_BID")
+		_say(house.members[_rng.randi_range(0, house.members.size() - 1)], "AUCTION_NOBODY_BID")
 	_end()
 	sold.emit(done, paid, to_cop)
 
 
 ## The bought lot, delivered on the floor beside the cop's chair: theirs to carry (or drop).
 func _deliver(lot_kind: String, seat: BidSeat) -> void:
-	var size: Vector3 = LOT_SIZES[lot_kind]
-	var item := ClubEvidence.make_item("Bought%d" % bought, LotEasel.LOTS[lot_kind], size, LOT_KG[lot_kind])
-	(item.get_child(1) as Node3D).position.y = -size.y / 2
+	var item := BoughtLot.new()
+	item.name = "Bought%d" % bought
+	item.kind = lot_kind
+	item.position = seat.position + Vector3(0, LOT_SIZES[lot_kind].y / 2 + 0.02, 0.7)
 	house.add_child(item)
-	item.position = seat.position + Vector3(0, size.y / 2 + 0.02, 0.7)
 	lots.append(item)
 
 
@@ -234,9 +234,83 @@ func _watch(on: bool) -> void:
 
 func _end() -> void:
 	_watch(false)
-	house.easel.show_lot("")
-	house.podium.show_price(0)
+	_show("", 0)
 	state = IDLE
 	next_left = EVERY
 	kind = ""
 	tops.clear()
+
+
+## Host: `who` (Don Martillo or a buyer) says `line`, on every PC.
+func _say(who: ClubMember, line: String) -> void:
+	var index := house.members.find(who)
+	_said(index, line)
+	var net := _net()
+	if multiplayer.is_server() and net.is_online():
+		for peer: int in net.scene_peers:
+			_said.rpc_id(peer, index, line)
+
+
+## Index -1 is Don Martillo.
+@rpc("authority", "call_remote", "reliable")
+func _said(index: int, line: String) -> void:
+	if index < 0:
+		house.martillo.say(line)
+	elif index < house.members.size():
+		house.members[index].say(line)
+
+
+## Host: the lot on the easel and its price on the board ("" and 0 between lots), on every PC.
+func _show(lot: String, value: int) -> void:
+	_shown(lot, value)
+	var net := _net()
+	if multiplayer.is_server() and net.is_online():
+		for peer: int in net.scene_peers:
+			_shown.rpc_id(peer, lot, value)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _shown(lot: String, value: int) -> void:
+	if house.easel.lot != lot:
+		house.easel.show_lot(lot)
+	house.podium.show_price(value)
+
+
+## Host: the paddle up over `seat`, on every PC.
+func _raise(seat: BidSeat) -> void:
+	var index := house.seats.find(seat)
+	_raised_seat(index)
+	var net := _net()
+	if multiplayer.is_server() and net.is_online():
+		for peer: int in net.scene_peers:
+			_raised_seat.rpc_id(peer, index)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _raised_seat(index: int) -> void:
+	if index >= 0 and index < house.seats.size():
+		house.seats[index].raise()
+
+
+## Host: the gavel comes down, on every PC.
+func _bang() -> void:
+	_banged()
+	var net := _net()
+	if multiplayer.is_server() and net.is_online():
+		for peer: int in net.scene_peers:
+			_banged.rpc_id(peer)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _banged() -> void:
+	house.podium.bang()
+
+
+## The Net of this PC's multiplayer branch: the autoload in the game, each test PC's own in the online tests.
+func _net() -> Node:
+	var branch := multiplayer as SceneMultiplayer
+	if branch and not branch.root_path.is_empty():
+		var net := get_node_or_null(str(branch.root_path) + "/Net")
+		if net:
+			return net
+	return Net

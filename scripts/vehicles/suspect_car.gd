@@ -76,6 +76,8 @@ const MODELS := {
 	"carousel_horse": preload("res://assets/models/carousel_horse.glb"),
 	# El Cromado rides off on his "bike" (infiltracion-motos.md): a moped with chopper handlebars, going "BRRRUM".
 	"chopper_moped": preload("res://assets/models/chopper_moped.glb"),
+	# Don Martillo drives off in the gallery's electric cart (infiltracion-subasta.md), a giant painting tied behind.
+	"gallery_cart": preload("res://assets/models/gallery_cart.glb"),
 	# The traffic control's wanted car, in its paint (control-transito.md): the traffic car it was in the queue.
 	"traffic_0": preload("res://assets/models/traffic_car_0.glb"),
 	"traffic_1": preload("res://assets/models/traffic_car_1.glb"),
@@ -115,6 +117,7 @@ const RIDERS := {
 	"pizza_scooter": [[preload("res://assets/models/npc_flambe.glb"), Vector3(0, 0.36, -0.1), 0.85]],
 	"carousel_horse": [[preload("res://assets/models/npc_alfil.glb"), Vector3(0, 0.82, -0.22), 0.8]],
 	"chopper_moped": [[preload("res://assets/models/npc_cromado.glb"), Vector3(0, 0.32, -0.2), 1.3]],
+	"gallery_cart": [[preload("res://assets/models/npc_martillo.glb"), Vector3(0, 0.45, 0.45), 0.85]],
 }
 ## Who rides inside and stays there when he gives up, the same way: the choristers in the van, seen through its open
 ## windows, singing all the way.
@@ -140,7 +143,7 @@ const SPEEDS := {"bear_on_foot": 12.0 / 3.6, "wheelchair": 8.0 / 3.6, "tow_truck
 	"parade_float": 28.0 / 3.6,
 	"toy_helicopter": 20.0 / 3.6, "invisible_car": 14.0 / 3.6,
 	"toro_jog": 13.0 / 3.6, "learner_car": 35.0 / 3.6, "pizza_scooter": 40.0 / 3.6,
-	"carousel_horse": 25.0 / 3.6, "chopper_moped": 30.0 / 3.6}
+	"carousel_horse": 25.0 / 3.6, "chopper_moped": 30.0 / 3.6, "gallery_cart": 20.0 / 3.6}
 ## The tow truck turns slowly and nearly stops to do it (persecucion-lugares.md): a cop cutting a corner on foot
 ## catches up with him.
 ## The golf cart turns very tight and hardly slows down to do it.
@@ -177,6 +180,15 @@ const CAROUSEL_HORSE := "carousel_horse"
 ## The carousel horse jumps up this fast (m/s) at every corner it turns, like a knight's L (propuesta).
 const HORSE_HOP := 4.5
 const CHOPPER_MOPED := "chopper_moped"
+const GALLERY_CART := "gallery_cart"
+const CART_PAINTING := preload("res://assets/models/cart_painting.glb")
+## The giant painting tied behind the cart: where it stands on the deck, and how it sways at every corner it turns: it
+## leans out of the curve this fast (rad/s), springs back and settles, never more than SWAY_MAX (propuesta).
+const CART_PAINTING_AT := Vector3(0, 0.42, -0.6)
+const SWAY_KICK := 2.2
+const SWAY_SPRING := 14.0
+const SWAY_DAMP := 2.5
+const SWAY_MAX := 0.45
 ## The learner car stalls after this many seconds of driving and stays stopped this long (propuesta).
 const STALL_EVERY := 6.0
 const STALL_TIME := 2.0
@@ -204,7 +216,7 @@ const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 
 	"toy_helicopter": Vector3(0.6, 0.6, 0.6), "party_patrol": Vector3(2.1, 1.4, 4.6),
 	"toro_jog": Vector3(0.9, 1.8, 0.9), "learner_car": Vector3(2.1, 1.4, 4.6),
 	"pizza_scooter": Vector3(1.2, 1.6, 2.3), "carousel_horse": Vector3(1.6, 2.0, 1.8),
-	"chopper_moped": Vector3(0.8, 1.9, 1.7)}
+	"chopper_moped": Vector3(0.8, 1.9, 1.7), "gallery_cart": Vector3(1.3, 1.9, 2.4)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
@@ -220,7 +232,8 @@ const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": 
 	"circus_truck": SEDAN_WHEELS, "parade_float": NO_WHEELS,
 	"toy_helicopter": NO_WHEELS,
 	"party_patrol": SEDAN_WHEELS, "toro_jog": NO_WHEELS, "learner_car": SEDAN_WHEELS,
-	"pizza_scooter": NO_WHEELS, "carousel_horse": NO_WHEELS, "chopper_moped": NO_WHEELS}
+	"pizza_scooter": NO_WHEELS, "carousel_horse": NO_WHEELS, "chopper_moped": NO_WHEELS,
+	"gallery_cart": NO_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
@@ -254,6 +267,10 @@ var stalled_left := 0.0
 var stall_in := STALL_EVERY
 ## How many times the carousel horse has hopped.
 var hops := 0
+## The cart's painting: how far it leans (rad, + to the cart's right), how fast, and how many times it swayed.
+var sway := 0.0
+var _sway_speed := 0.0
+var sways := 0
 var _highway: Highway
 var _rotor: Node3D
 
@@ -305,6 +322,11 @@ func _ready() -> void:
 		_add_learner_labels()
 	if kind == CHOPPER_MOPED:
 		_add_brrrum()
+	if kind == GALLERY_CART:
+		var painting: Node3D = CART_PAINTING.instantiate()
+		painting.name = "Painting"
+		painting.position = CART_PAINTING_AT
+		add_child(painting)
 	if kind == TOW:
 		var hook := TowHook.new()
 		hook.name = "Hook"
@@ -479,12 +501,19 @@ func net_setup() -> Dictionary:
 
 
 ## Online (NpcSync): whether he got off, so a guest's copy hides its riders too.
+## The cart also sends how far its painting leans.
 func net_state() -> Variant:
 	var rider := get_node_or_null("Rider") as Node3D
-	return rider != null and not rider.visible
+	var off := rider != null and not rider.visible
+	if kind == GALLERY_CART:
+		return [off, sway]
+	return off
 
 
 func apply_net_state(state: Variant) -> void:
+	if state is Array:
+		_lean(state[1])
+		state = state[0]
 	if state:
 		get_off()
 
@@ -525,6 +554,8 @@ func _physics_process(delta: float) -> void:
 	velocity.y = 0.0 if is_on_floor() or kind == TOY_HELICOPTER and velocity.y <= 0.0 else velocity.y - GameScale.GRAVITY * delta
 	nervous_left = maxf(nervous_left - delta, 0.0)
 	tangled_left = maxf(tangled_left - delta, 0.0)
+	if kind == GALLERY_CART:
+		_sway(delta)
 	if punctured:
 		_rolling = maxf(_rolling - delta / FLAT_STOP, 0.0)
 	# Spinning, he turns round on the spot; on its last frame he's back where he pointed, still standing.
@@ -547,6 +578,12 @@ func _physics_process(delta: float) -> void:
 		if turned and kind == CAROUSEL_HORSE:
 			velocity.y = HORSE_HOP
 			hops += 1
+		if turned and kind == GALLERY_CART:
+			var into := points[next - 1] - points[next - 2]
+			var out := points[next] - points[next - 1]
+			# Turning left (+ angle from above), it leans right, out of the curve.
+			_sway_speed = SWAY_KICK * signf(Vector2(into.x, -into.z).angle_to(Vector2(out.x, -out.z)))
+			sways += 1
 		corner_passed.emit(turned)
 		return
 	var forward := global_basis.z
@@ -580,6 +617,19 @@ static func climb_curbs(body: CharacterBody3D) -> void:
 		if absf(hit.get_normal().y) < 0.5 and other and other.is_in_group(CityLife.SIDEWALKS):
 			body.global_position.y += CityLife.CURB + 0.05
 			return
+
+
+## The cart's painting springs back after each kick and settles.
+func _sway(delta: float) -> void:
+	_sway_speed += (-SWAY_SPRING * sway - SWAY_DAMP * _sway_speed) * delta
+	_lean(sway + _sway_speed * delta)
+
+
+func _lean(angle: float) -> void:
+	sway = clampf(angle, -SWAY_MAX, SWAY_MAX)
+	var painting := get_node_or_null("Painting") as Node3D
+	if painting:
+		painting.rotation.z = sway
 
 
 ## The learner car stalls every STALL_EVERY seconds of driving, for STALL_TIME.
