@@ -109,6 +109,35 @@ function buildLaundryCart() {
 	return b.build();
 }
 
+// What was stolen from the hotel (escena-hotel.md, "La historia"), one per match: señora Perlita's pearl necklace (in
+// its open velvet box), the tenor's solid gold toupee and the Golden Pillow (the hotel's 1987 prize, with its tassels).
+// Their bottoms sit at y = 0.
+function buildNecklace() {
+	const b = new Builder('pearl_necklace');
+	b.add('box', C('velvet', 0x3a1a4a), new THREE.BoxGeometry(0.22, 0.04, 0.18), { pos: V(0, 0.02, 0) });
+	for (let i = 0; i < 18; i++) {
+		const a = Math.PI * 2 * i / 18;
+		b.add('pearls', C('pearl', 0xf6f2ea), new THREE.SphereGeometry(0.012, 6, 4), { pos: V(Math.cos(a) * 0.07, 0.052, Math.sin(a) * 0.055) });
+	}
+	return b.build();
+}
+function buildToupee() {
+	const b = new Builder('gold_toupee');
+	const gilt = C('gold', 0xf2c84b, { emissive: 0x3a2a05 });
+	b.add('wig', gilt, ellipsoid(0.13, 0.07, 0.15, 10, 5), { pos: V(0, 0.035, 0) });
+	for (let i = 0; i < 5; i++) b.add('wig', gilt, ellipsoid(0.03, 0.025, 0.06, 6, 4), { pos: V(-0.08 + i * 0.04, 0.08, 0.05), rot: [0.6, 0, 0] });
+	return b.build();
+}
+function buildGoldenPillow() {
+	const b = new Builder('golden_pillow');
+	const gilt = C('gold', 0xf2c84b, { emissive: 0x3a2a05 });
+	b.add('pillow', gilt, ellipsoid(0.25, 0.07, 0.17, 12, 6), { pos: V(0, 0.07, 0) });
+	for (const x of [-0.24, 0.24]) for (const z of [-0.16, 0.16]) {
+		b.add('tassels', C('tassel_red', 0xc0203a), new THREE.ConeGeometry(0.02, 0.06, 6), { pos: V(x, 0.05, z) });
+	}
+	return b.build();
+}
+
 const PEOPLE = { huesped, conserje_hotel: conserje, perlita, botones, mucama };
 
 export const models = {
@@ -118,9 +147,15 @@ export const models = {
 		return b.build();
 	}])),
 	laundry_cart: buildLaundryCart,
+	pearl_necklace: buildNecklace, gold_toupee: buildToupee, golden_pillow: buildGoldenPillow,
 };
 
 export const views = {
+	hotel_loot: {
+		items: [{ name: 'pearl_necklace', pos: [-0.45, 0, 0], rotY: 0.3 }, { name: 'gold_toupee', pos: [0, 0, 0.05], rotY: -0.2 },
+			{ name: 'golden_pillow', pos: [0.5, 0, 0], rotY: 0.2 }],
+		cam: { pos: [0, 0.6, 1.4], target: [0, 0.05, 0], fov: 38 },
+	},
 	hotel_people: {
 		items: [{ name: 'npc_huesped', pos: [-2.4, 0, 0], rotY: 0.3 }, { name: 'npc_huesped', pos: [-1.3, 0, 0], rotY: 0.1 },
 			{ name: 'npc_conserje_hotel', pos: [-0.1, 0, 0], rotY: 0.1 }, { name: 'npc_perlita', pos: [1.1, 0, 0], rotY: -0.1 },

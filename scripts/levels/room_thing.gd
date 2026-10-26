@@ -52,7 +52,7 @@ func prompt_key(_cop: Cop) -> String:
 
 
 ## E on it: what it says about its owner, into a file.
-func use(_cop: Cop) -> void:
+func use(cop: Cop) -> void:
 	match what:
 		"shoe":
 			_say(tr("FILE_SHOE") % sleeper.shoe)
@@ -65,6 +65,8 @@ func use(_cop: Cop) -> void:
 	if case:
 		if what == "suitcase":
 			case.open_suitcase(room)
+			if case.place and case.place.has_method("search"):
+				case.place.call("search", "suitcase", cop, room)
 		else:
 			case.room_part(room, what)
 
