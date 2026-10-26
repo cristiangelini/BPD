@@ -43,6 +43,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_CODE_POSTIT", "OBJ_EXTRA_ACCOUNT_BOOK"],
 		"rig": preload("res://scripts/case/insurance/coffee_safe_rig.gd"),
 	},
+	"ufo_policies": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_UFO_POLICIES_B", "BRIEF_UFO_POLICIES_C", "BRIEF_UFO_POLICIES_D"],
+		"find": "OBJ_FIND_UFO_POLICIES",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/ufo_policies.tscn"), preload("res://scenes/props/ufo_photos.tscn"),
+			preload("res://scenes/props/toy_saucer.tscn")],
+		"half_heights": [0.1, 0.008, 0.05],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_UFO_PHOTOS", "OBJ_EXTRA_TOY_SAUCER"],
+		"rig": preload("res://scripts/case/insurance/ufo_policies_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the office; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [
