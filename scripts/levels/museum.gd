@@ -93,11 +93,18 @@ const TILE := Color(0.75, 0.88, 0.92)
 const PORCELAIN := Color(0.97, 0.97, 0.97)
 const SHEET := Color(0.92, 0.92, 0.88)
 const ROPE_RED := Color(0.7, 0.08, 0.12)
+const FOGGED := Color(0.95, 0.95, 0.95)
+const CARDBOARD := Color(0.65, 0.5, 0.32)
+const WATER := Color(0.4, 0.7, 1.0)
+const LAVENDER := Color(0.7, 0.5, 0.9)
 const CANVAS_COLORS: Array[Color] = [
 	Color(0.3, 0.45, 0.7), Color(0.85, 0.6, 0.3), Color(0.35, 0.6, 0.35), Color(0.75, 0.4, 0.55),
 	Color(0.95, 0.85, 0.4), Color(0.45, 0.35, 0.6),
 ]
 
+## The three bathroom details that are true this match (GuardTraits.bathroom): what the bathroom shows.
+var bathroom_details: Array[String] = []
+var dryer: HandDryer
 var guards: Array[MuseumGuard] = []
 var director: MuseumDirector
 var statue: LivingStatue
@@ -107,6 +114,7 @@ var _builder: PlaceBuilder
 func _ready() -> void:
 	add_to_group("museum")
 	variant = "museum"
+	bathroom_details = GuardTraits.bathroom(case_seed)
 	_builder = PlaceBuilder.new(self)
 	_shell()
 	_front()
@@ -118,6 +126,14 @@ func _ready() -> void:
 	_bathroom()
 	_hall()
 	_people()
+
+
+## Tells the guards about the case; one of them (by the seed) won't take off his cap until he gets something to eat.
+func set_up_case(case: CrimeSceneCase) -> void:
+	var stubborn := hash("stubborn guard %d" % case.case_seed) % guards.size()
+	for guard in guards:
+		guard.case = case
+		guard.stubborn = guard.index == stubborn
 
 
 ## The guard by index (the order of the case's traits).
@@ -298,7 +314,10 @@ func _storage() -> void:
 		_builder.box(at + Vector3(0, STORED_SIZE.y / 2, 0), STORED_SIZE, SHEET)
 
 
-## The tiny bathroom: tiled floor, toilet, sink with the mirror over it, the paper roll and the hand dryer.
+## The tiny bathroom: tiled floor, toilet, sink with the mirror over it, the paper roll and the hand dryer. It shows
+## this match's three true details (GuardTraits.DETAILS) and the opposite of the other three: the roll empty or full,
+## the mirror fogged or clear, a drop hanging from the tap, a spider from the ceiling, the lavender freshener on the
+## sink, and the dryer (HandDryer) that blows or not.
 func _bathroom() -> void:
 	var middle := Vector3((BATHROOM_X + GALLERY_X) / 2, FLOOR_TOP + 0.005, (BATHROOM_Z + HALL_Z) / 2)
 	_builder.mesh_box(middle, Vector3(GALLERY_X - BATHROOM_X - 0.2, 0.01, HALL_Z - BATHROOM_Z - 0.2), TILE)
@@ -306,14 +325,63 @@ func _bathroom() -> void:
 	_builder.mesh_box(TOILET_AT + Vector3(0, 0.6, -0.22), Vector3(0.4, 0.4, 0.15), PORCELAIN)
 	_builder.box(SINK_AT + Vector3(0, 0.8, 0), Vector3(0.45, 0.15, 0.55), PORCELAIN)
 	_builder.mesh_box(SINK_AT + Vector3(0, 0.4, 0), Vector3(0.12, 0.7, 0.12), PORCELAIN)
-	_builder.mesh_box(MIRROR_AT, Vector3(0.02, 0.6, 0.5), Color(0.8, 0.9, 0.95))
+	_detail("mirror", MIRROR_AT, BoxMesh.new(), Vector3(0.02, 0.6, 0.5), FOGGED, Color(0.8, 0.9, 0.95))
 	var roll := CylinderMesh.new()
 	roll.top_radius = 0.06
 	roll.bottom_radius = 0.06
 	roll.height = 0.12
-	_builder.mesh(roll, PAPER_AT, PORCELAIN, Vector3(PI / 2, 0, 0))
-	_builder.mesh_box(DRYER_AT, Vector3(0.3, 0.35, 0.18), METAL)
+	var tube := CylinderMesh.new()
+	tube.top_radius = 0.025
+	tube.bottom_radius = 0.025
+	tube.height = 0.12
+	_detail_node("paper", tube if has_detail("paper") else roll, PAPER_AT,
+		CARDBOARD if has_detail("paper") else PORCELAIN, Vector3(PI / 2, 0, 0))
+	if has_detail("tap"):
+		var drop := SphereMesh.new()
+		drop.radius = 0.02
+		drop.height = 0.05
+		_detail_node("tap", drop, SINK_AT + Vector3(0.12, 0.84, 0), WATER)
+	if has_detail("spider"):
+		var spider := SphereMesh.new()
+		spider.radius = 0.05
+		spider.height = 0.08
+		var at := Vector3(-9.3, ROOF - 0.9, 2.2)
+		_detail_node("spider", spider, at, Color(0.08, 0.08, 0.1))
+		_builder.mesh_box(at + Vector3(0, 0.4, 0), Vector3(0.005, 0.75, 0.005), Color(0.9, 0.9, 0.9))
+	if has_detail("lavender"):
+		var can := CylinderMesh.new()
+		can.top_radius = 0.035
+		can.bottom_radius = 0.035
+		can.height = 0.18
+		_detail_node("lavender", can, SINK_AT + Vector3(0, 0.96, -0.18), LAVENDER)
+	dryer = HandDryer.new()
+	dryer.name = "Dryer"
+	dryer.broken = has_detail("dryer")
+	dryer.position = DRYER_AT
+	add_child(dryer)
 	_builder.light(Vector3((BATHROOM_X + GALLERY_X) / 2, ROOF - 0.5, (BATHROOM_Z + HALL_Z) / 2))
+
+
+## Whether this detail is true in this match's bathroom.
+func has_detail(detail: String) -> bool:
+	return bathroom_details.has(detail)
+
+
+## A box that looks one way if its detail is true and another if not.
+func _detail(detail: String, at: Vector3, box: BoxMesh, size: Vector3, if_true: Color, if_false: Color) -> void:
+	box.size = size
+	_detail_node(detail, box, at, if_true if has_detail(detail) else if_false)
+
+
+## A mesh named after its bathroom detail ("Detail_paper"), so the case and the tests can find it.
+func _detail_node(detail: String, mesh: Mesh, at: Vector3, color: Color, turn := Vector3.ZERO) -> void:
+	var instance := MeshInstance3D.new()
+	instance.name = "Detail_" + detail
+	instance.mesh = mesh
+	instance.rotation = turn
+	instance.material_override = _builder.material(color)
+	instance.position = at
+	add_child(instance)
 
 
 ## The ticket desk in the hall and a sign pointing to the gallery.
