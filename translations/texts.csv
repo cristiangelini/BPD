@@ -3470,6 +3470,50 @@ VIP_RULO_IDLE_4,Un día preso por estacionar. ¡Qué injusticia más dramática!
 VIP_FAN_CHANT_1,"¡RULO, RULO!","RULO, RULO!","RULO, RULO!"
 VIP_FAN_CHANT_2,"¡TE AMAMOS, RULO!","WE LOVE YOU, RULO!","TE AMAMOS, RULO!"
 VIP_FAN_CHANT_3,¡LIBERTAD PARA RULO!,FREE RULO!,LIBERDADE PARA O RULO!
+VIP_BOARD,Humor de Rulo: %d,Rulo's mood: %d,Humor do Rulo: %d
+VIP_WANT_WATER,Agua con gas,Sparkling water,Água com gás
+VIP_WANT_PILLOW,Almohada de plumas,Feather pillow,Travesseiro de penas
+VIP_WANT_CAKE,Torta de cumpleaños,Birthday cake,Bolo de aniversário
+VIP_WANT_MIRROR,Espejo,Mirror,Espelho
+VIP_WANT_GUITAR,Guitarra,Guitar,Violão
+VIP_WANT_FLOWERS,Ramo de flores,Bunch of flowers,Buquê de flores
+VIP_WANT_GLASSES,Anteojos de repuesto,Spare sunglasses,Óculos reserva
+VIP_WANT_MASSAGE,Masaje de pies,Foot massage,Massagem nos pés
+VIP_WANT_APPLAUSE,Un aplauso,A round of applause,Uma salva de palmas
+VIP_WANT_SONG,Una canción,A song,Uma canção
+VIP_ASK_WATER,"*Ding ding* ¡Agua con gas! Bien fría, de la heladera de la cocina.","*Ding ding* Sparkling water! Ice cold, from the kitchen fridge.","*Dlim dlim* Água com gás! Bem gelada, da geladeira da cozinha."
+VIP_ASK_PILLOW,"*Ding ding* Esta cama es de piedra. ¡Quiero la almohada de plumas de la celda de castigo!","*Ding ding* This bed is made of stone. I want the feather pillow from the punishment cell!","*Dlim dlim* Esta cama é de pedra. Quero o travesseiro de penas da cela de castigo!"
+VIP_ASK_CAKE,"*Ding ding* ¡Hoy es mi cumpleaños! Bueno, no, pero quiero la torta del mostrador.","*Ding ding* It's my birthday today! Well, no, but I want the cake on the counter.","*Dlim dlim* Hoje é meu aniversário! Bom, não, mas quero o bolo do balcão."
+VIP_ASK_MIRROR,"*Ding ding* ¿Cómo está mi jopo? ¡Tráiganme el espejo de la torre!","*Ding ding* How's my quiff? Bring me the mirror by the tower!","*Dlim dlim* Como está meu topete? Tragam o espelho da torre!"
+VIP_ASK_GUITAR,"*Ding ding* Me vino una canción. ¡La guitarra de la mesa del comedor, ya!","*Ding ding* A song just came to me. The guitar on the canteen table, now!","*Dlim dlim* Me veio uma canção. O violão da mesa do refeitório, já!"
+VIP_ASK_FLOWERS,"*Ding ding* Esta celda está muy triste. ¡Flores! Hay en el cantero del patio.","*Ding ding* This cell is so sad. Flowers! There are some in the yard's planter.","*Dlim dlim* Esta cela está muito triste. Flores! Tem no canteiro do pátio."
+VIP_ASK_GLASSES,"*Ding ding* ¡Se me rayaron los anteojos! Los de repuesto están arriba de mi limusina.","*Ding ding* My sunglasses got scratched! The spare ones are on top of my limo.","*Dlim dlim* Meus óculos riscaram! Os reservas estão em cima da minha limusine."
+VIP_ASK_MASSAGE,"*Ding ding* Me duelen los pies de tanto bailar. ¡Masajito por la reja!","*Ding ding* My feet hurt from all the dancing. A little massage through the bars!","*Dlim dlim* Meus pés doem de tanto dançar. Uma massagenzinha pela grade!"
+VIP_ASK_APPLAUSE,"*Ding ding* Hace una hora que nadie me aplaude. ¡Aplausos, frente a la reja!","*Ding ding* Nobody has clapped for me in an hour. Applause, in front of the bars!","*Dlim dlim* Faz uma hora que ninguém me aplaude. Aplausos, na frente da grade!"
+VIP_ASK_SONG,"*Ding ding* ¡Cántenme algo! Cerca de la reja, que no escucho.","*Ding ding* Sing me something! Close to the bars, I can't hear.","*Dlim dlim* Cantem alguma coisa pra mim! Perto da grade, que eu não escuto."
+VIP_THANKS_WATER,Ahhh. Con burbujitas. Así sí.,Ahhh. With little bubbles. That's more like it.,Ahhh. Com bolhinhas. Assim sim.
+VIP_THANKS_PILLOW,Plumas... Me siento en una nube.,Feathers... I feel like I'm on a cloud.,Penas... Me sinto numa nuvem.
+VIP_THANKS_CAKE,¡Que me cante el feliz cumpleaños alguien!,Someone sing me happy birthday!,Alguém cante parabéns pra mim!
+VIP_THANKS_MIRROR,Hola hermoso. Sí. Tú.,"Hello, gorgeous. Yes. You.","Olá, lindo. Sim. Você."
+VIP_THANKS_GUITAR,*Pling* Esta se llama 'Preso de amor'.,*Pling* This one's called 'Prisoner of Love'.,*Plim* Esta se chama 'Preso de amor'.
+VIP_THANKS_FLOWERS,Ahora sí parece un camarín.,Now it looks like a dressing room.,Agora sim parece um camarim.
+VIP_THANKS_GLASSES,Sin anteojos no soy nadie.,Without my sunglasses I'm nobody.,Sem óculos eu não sou ninguém.
+VIP_THANKS_MASSAGE,Ufff. Ustedes tienen futuro.,Phew. You lot have a future.,Ufa. Vocês têm futuro.
+VIP_THANKS_APPLAUSE,"Gracias, gracias. Son un público hermoso.","Thank you, thank you. You're a beautiful audience.","Obrigado, obrigado. Vocês são um público lindo."
+VIP_THANKS_SONG,Desafinado... pero con alma.,Off key... but with soul.,Desafinado... mas com alma.
+VIP_RULO_TANTRUM_1,¡¿Saben quién soy yo?!,Do you know who I am?!,Vocês sabem quem eu sou?!
+VIP_RULO_TANTRUM_2,¡Esto sale mañana en la tele!,This is going to be on TV tomorrow!,Isso vai sair na TV amanhã!
+VIP_RULO_NOT_THAT,¿Y eso? Yo no pedí eso.,What's that? I didn't ask for that.,E isso? Eu não pedi isso.
+VIP_RULO_WHAT,¿Qué? ¿Me traes algo?,What? Did you bring me something?,O quê? Me trouxe alguma coisa?
+VIP_RULO_MASSAGE,¡Ahí! ¡Ahí!,There! Right there!,Aí! Bem aí!
+VIP_RULO_CLAP,¡Más fuerte!,Louder!,Mais alto!
+PROMPT_VIP_TRAY_PUT,E: dejarlo en la repisa de Rulo,E: leave it on Rulo's shelf,E: deixar na prateleira do Rulo
+PROMPT_VIP_MASSAGE,E: masajearle los pies,E: massage his feet,E: massagear os pés dele
+PROMPT_VIP_APPLAUD,E: aplaudir,E: clap,E: aplaudir
+PROMPT_VIP_GIFT_WATER,Agua con gas de Rulo,Rulo's sparkling water,Água com gás do Rulo
+PROMPT_VIP_GIFT_PILLOW,Almohada de plumas,Feather pillow,Travesseiro de penas
+PROMPT_VIP_GIFT_MIRROR,Espejo,Mirror,Espelho
+PROMPT_VIP_GIFT_GLASSES,Anteojos de repuesto de Rulo,Rulo's spare sunglasses,Óculos reserva do Rulo
 BRIEF_MUSTACHES_B,"Alguien le pinta bigotes a todos los carteles del diputado Lustre del barrio. Creemos que es Tobías: nunca le perdonó que le cerrara la vereda por las obras.","Someone paints mustaches on every poster of deputy Lustre in the neighborhood. We think it's Tobías: he never forgave him for closing the sidewalk for the roadworks.","Alguém pinta bigodes em todos os cartazes do deputado Lustre no bairro. Achamos que é o Tobías: ele nunca perdoou que fechassem a calçada por causa das obras."
 BRIEF_MUSTACHES_C,"Traigan el esténcil del bigote en el baúl del patrullero. Y no pisen pintura: se nota.","Bring the mustache stencil back in the patrol car's trunk. And don't step in paint: it shows.","Tragam o estêncil do bigode no porta-malas da viatura. E não pisem na tinta: dá para ver."
 BRIEF_MUSTACHES_D,"Si encuentran los aerosoles negros o un cartel del diputado sin bigote, mejor: todo suma.","If you find the black spray cans or a poster of the deputy without a mustache, even better: it all adds up.","Se acharem os sprays pretos ou um cartaz do deputado sem bigode, melhor: tudo soma."

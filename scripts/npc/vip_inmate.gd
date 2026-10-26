@@ -3,7 +3,8 @@ extends CharacterBody3D
 
 ## Rulo Brillantina, the city's most famous singer, a day in the prison's VIP cell (carcel-vip.md, step 2): sunglasses,
 ## his shiny pink jacket over the jumpsuit and his quiff, sat in his golden armchair facing the bars. He says things in
-## a bubble now and then. Every number here is (propuesta).
+## a bubble now and then. Step 3: a request that runs out is a tantrum (he jumps out of his armchair stamping and
+## shouting). Every number here is (propuesta).
 
 const MODEL := preload("res://assets/models/npc_rulo.glb")
 const SAY_TIME := 3.5
@@ -11,6 +12,9 @@ const SAY_TIME := 3.5
 const SIT_DROP := 0.3
 ## A line of his every this many seconds while nothing else is going on.
 const IDLE_EVERY := 12.0
+const TANTRUMS: Array[String] = ["VIP_RULO_TANTRUM_1", "VIP_RULO_TANTRUM_2"]
+const STAMP := 0.3
+const STAMP_TIME := 0.12
 const IDLE_LINES: Array[String] = ["VIP_RULO_IDLE_1", "VIP_RULO_IDLE_2", "VIP_RULO_IDLE_3", "VIP_RULO_IDLE_4"]
 
 var seated := false
@@ -21,6 +25,7 @@ var _bubble: Label3D
 var _bubble_left := 0.0
 var _idle_left := IDLE_EVERY / 2
 var _idle_line := 0
+var _tantrums := 0
 
 
 func _ready() -> void:
@@ -56,6 +61,18 @@ func set_seated(on: bool) -> void:
 	seated = on
 	if _model:
 		_model.position.y = -SIT_DROP if on else 0.0
+
+
+## A request ran out: up and stamping, shouting, then back down in his armchair.
+func tantrum() -> void:
+	say(TANTRUMS[_tantrums % TANTRUMS.size()], 4.0)
+	_tantrums += 1
+	var stamp := _model.create_tween()
+	stamp.tween_property(_model, "position:y", STAMP, STAMP_TIME)
+	for i in 3:
+		stamp.tween_property(_model, "position:y", 0.0, STAMP_TIME)
+		stamp.tween_property(_model, "position:y", STAMP, STAMP_TIME)
+	stamp.tween_property(_model, "position:y", -SIT_DROP if seated else 0.0, STAMP_TIME)
 
 
 func say(key: String, seconds := SAY_TIME) -> void:

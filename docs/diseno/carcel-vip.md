@@ -76,3 +76,13 @@ En qué celda está Rulo, qué 6 pedidos hace y en qué orden, qué 3 cosas esco
   `npc_rulo`) está sentado en el sillón y dice cosas cada 12 s. En la vereda, a los dos lados del portón, los 6 fans
   (`VipFan`, modelo `npc_fan`) saltan y gritan "¡RULO, RULO!" por turnos, y la limusina rosa (`limo`) espera junto al
   cordón. Capturas en la carpeta del proyecto `carcel-vip/`: `paso2-celda.png` y `paso2-porton.png`.
+- **Paso 3:** `VipRequests`: la campanita suena cuando el primer policía entra por el portón y después cada 45 s, con
+  el pedido en el globito de Rulo y en un cartel sobre su reja (su humor y cada pedido abierto con los segundos que le
+  quedan). Las cosas están en: la heladera nueva de la cocina (agua con gas, `VipGift`), la cucheta de la celda de
+  castigo (almohada), la punta del mostrador (torta, `VisitItem`), al lado de la torre (espejo, en vez del baño de los
+  guardias, que no existe), una mesa del comedor (guitarra), un cantero nuevo del patio (flores) y el techo de la
+  limusina (anteojos). Se entregan dejándolas en la repisa dorada de su reja (`VipTray`), o con E teniéndolas en la
+  mano; él las agarra y quedan en fila al lado de su sillón. Lo que no pidió no lo agarra. El masaje son 5 toques de E
+  en la repisa (en vez de 5 s con E apretada, para que sea igual online); el aplauso, 2 policías con E en 2 s (uno
+  solo si juega uno solo); la canción, cantar o tararear (H) a menos de 4 m de la repisa durante 5 s. Vencido: -25 y
+  berrinche (salta en el sillón gritando). Capturas: `paso3-pedido.png`, `paso3-entregado.png` y `paso3-torta.png`.
