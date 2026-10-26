@@ -1,12 +1,14 @@
 class_name ChessClub
 extends InfiltrationPlace
 
-## The chess club "El Peón Dormido" (docs/diseno/infiltracion-ajedrez.md, step 2, decision 175): one floor on its own
+## The chess club "El Peón Dormido" (docs/diseno/infiltracion-ajedrez.md, steps 2 and 3, decision 175): one floor on its own
 ## city lot, the front to +Z. The doorkeeper stands inside the entrance and only lets members through; the hall with
 ## its eight chess tables on a checkered floor and the trophy cabinet, and the cafeteria east of it (with the locked
 ## door of the Gran Maestro's office); behind, the tournament room with the stage where the Gran Maestro plays and his
-## audience, and the storeroom of boards east of it. The gang's members stand at the tables, drawn with the seed; the
-## seats left are for the cops (step 3 sits them down). The whole club is for members only. The cops start in the
+## audience, and the storeroom of boards east of it. Each table has its board with a game halfway through
+## (ChessBoard), its clock (ChessClock) and a stool behind each seat (step 3). The gang's members stand at the tables'
+## seats, drawn with the seed; the seats left are for the cops (to play is to stand at a seat, hands free for the
+## pieces). The whole club is for members only. The cops start in the
 ## station, where the disguises are, and drive here. --place=chess opens it from Play. Every number here is
 ## (propuesta).
 
@@ -31,8 +33,13 @@ const STORE_DOOR_Z := -7.5
 ## The hall's chess tables, a seat on each side of each (north facing +Z, south facing -Z).
 const TABLES: Array[Vector3] = [Vector3(-10.0, 0, 2.6), Vector3(-7.0, 0, 2.6), Vector3(-4.0, 0, 2.6),
 	Vector3(-1.0, 0, 2.6), Vector3(-10.0, 0, 6.0), Vector3(-7.0, 0, 6.0), Vector3(-4.0, 0, 6.0), Vector3(-1.0, 0, 6.0)]
-const TABLE_SIZE := Vector3(0.9, 0.75, 0.9)
+const TABLE_SIZE := Vector3(1.3, 0.75, 1.0)
 const SEAT_OFF := 0.8
+## On each table, west of the middle, the board, and east of it the clock.
+const BOARD_X := -0.15
+const CLOCK_X := 0.45
+## A seat's stool, this far further from the table than where the player stands.
+const STOOL_BEHIND := 0.4
 ## How many members of the gang stand at the tables (the seed picks their seats).
 const PLAYERS := 6
 ## The stage in the tournament room with the Gran Maestro's table on it; he sits north of it facing the door (+Z), his
@@ -63,6 +70,11 @@ var free_seats: Array[Array] = []
 var alfil: ClubMember
 var rival: ClubMember
 var doorman: ClubDoorman
+## Each hall table's board and clock (by TABLES' order), and the Gran Maestro's on the stage.
+var boards: Array[ChessBoard] = []
+var clocks: Array[ChessClock] = []
+var stage_board: ChessBoard
+var stage_clock: ChessClock
 var _build: PlaceBuilder
 
 
@@ -234,17 +246,27 @@ func _build_hall() -> void:
 		_build.box(at + Vector3(0, FLOOR_TOP + 0.38, 0), Vector3(1.0, 0.76, 1.0), WOOD.lightened(0.1))
 
 
-## A chess table with its board on top (the chairs come with sitting down, step 3).
+## A chess table with its board and its clock on top and a stool behind each seat.
 func _table(at: Vector3, raised := 0.0) -> void:
 	var base := at + Vector3(0, FLOOR_TOP + raised, 0)
 	_build.box(base + Vector3(0, TABLE_SIZE.y / 2, 0), TABLE_SIZE, WOOD)
-	var board := base + Vector3(0, TABLE_SIZE.y + 0.01, 0)
-	_build.mesh_box(board, Vector3(0.62, 0.02, 0.62), Color(0.35, 0.22, 0.12))
-	for col in 4:
-		for row in 4:
-			if (col + row) % 2 == 0:
-				_build.mesh_box(board + Vector3(-0.225 + col * 0.15, 0.011, -0.225 + row * 0.15), Vector3(0.15, 0.002,
-					0.15), LIGHT_SQUARE)
+	var board := ChessBoard.new()
+	board.name = "Board%d" % boards.size() if raised == 0.0 else "StageBoard"
+	add_child(board)
+	board.position = base + Vector3(BOARD_X, TABLE_SIZE.y + 0.021, 0)
+	var clock := ChessClock.new()
+	clock.name = "Clock%d" % clocks.size() if raised == 0.0 else "StageClock"
+	add_child(clock)
+	clock.position = base + Vector3(CLOCK_X, TABLE_SIZE.y, 0)
+	if raised == 0.0:
+		boards.append(board)
+		clocks.append(clock)
+	else:
+		stage_board = board
+		stage_clock = clock
+	for side: float in [-1.0, 1.0]:
+		var stool := base + Vector3(0, 0.23, side * (SEAT_OFF + STOOL_BEHIND))
+		_build.box(stool, Vector3(0.4, 0.46, 0.4), WOOD.darkened(0.3))
 
 
 ## The tournament room's stage with the Gran Maestro's table and the audience's benches, the office with its desk and
