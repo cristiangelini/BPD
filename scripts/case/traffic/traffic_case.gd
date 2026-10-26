@@ -142,7 +142,7 @@ func give_tip() -> void:
 			var story := "BRIEF_CONVOY_" if plan.convoy else "BRIEF_FRUIT_" if plan.fruit \
 				else "BRIEF_CROWD_" if plan.crowd else "BRIEF_GHOST_" if plan.ghost \
 				else "BRIEF_WEDDING_CHECK_" if plan.wedding else "BRIEF_RACE_" if plan.race \
-				else "BRIEF_FOG_" if plan.fog else "BRIEF_TRAFFIC_"
+				else "BRIEF_FOG_" if plan.fog else "BRIEF_CIRCUS_MOVE_" if plan.circus else "BRIEF_TRAFFIC_"
 			var first := story + "A"
 			if plan.wedding:
 				first = tr("BRIEF_WEDDING_CHECK_A") % WeddingCar.names(plan.couple)
@@ -505,6 +505,8 @@ func campaign_key() -> String:
 		return "traffic_race"
 	if plan and plan.fog:
 		return "traffic_fog"
+	if plan and plan.circus:
+		return "traffic_circus_move"
 	return "traffic_rush_hour"
 
 

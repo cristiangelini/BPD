@@ -33,7 +33,7 @@ Revisen los animales. Y por favor, no me suelten ningún león."
    Si en 40 s no volvió, se va de la ciudad y es **denuncia** del circo.
 5. **Las pistas:** la radio da una pista cada 60 s: **qué animal parece** (oso, gorila, león o
    canguro, los disfraces en los que entra una persona), el **color de las zapatillas** que asoman de las patas, el
-   **color del camión** (las rayas) y el **número de la jaula**. Hay 2 o 3 animales de verdad que se le parecen.
+   **color del camión** (las rayas) y el **último número de la patente**. Hay 2 o 3 animales de verdad que se le parecen.
 6. **Se gana** deteniendo a El Peludo y llevándolo al patrullero: 500, misma cuota que Hora pico. Las **joyas**
    están escondidas en la paja de su jaula: en el baúl del patrullero suman 100. Detener a un inocente (el chofer de
    un camión) es denuncia y a la segunda se pierde, como siempre.

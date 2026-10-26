@@ -2280,6 +2280,11 @@ CIRCUS_HUMAN_6,"*cuenta joyas a escondidas*","*counts jewels on the sly*","*cont
 CIRCUS_HUMAN_7,"*se ata los cordones de las zapatillas*","*ties his sneakers' laces*","*amarra os cadarços do tênis*"
 CIRCUS_HUMAN_8,"*bosteza y dice: ""qué viaje largo""*","*yawns: ""what a long ride""*","*boceja: ""que viagem longa""*"
 CIRCUS_HUMAN_9,"*se peina frente a un espejito*","*combs his hair in a little mirror*","*se penteia num espelhinho*"
+CLUE_CIRCUS_ANIMAL,"El Peludo va disfrazado de %s.","El Peludo is dressed up as a %s.","El Peludo está fantasiado de %s."
+CLUE_CIRCUS_SNEAKERS,"Debajo de las patas le asoman unas zapatillas de color %s.","Sneakers peek out under his paws, %s ones.","Debaixo das patas aparecem uns tênis da cor %s."
+CLUE_CIRCUS_STRIPES,"Su camión es a rayas de color %s.","His truck has %s stripes.","O caminhão dele é listrado de %s."
+BRIEF_CIRCUS_MOVE_A,"¡Novatos! Anoche robaron la joyería del centro y el ladrón, El Peludo, se disfrazó de animal. Justo hoy se muda el circo y sus camiones con jaulas salen de la ciudad por la avenida: seguro que se metió en una jaula.","Rookies! Last night someone robbed the downtown jewelry store, and the thief, El Peludo, dressed up as an animal. Today of all days the circus is moving out, its caged trucks leaving town down the avenue: he must be in one of the cages.","Novatos! Ontem à noite roubaram a joalheria do centro e o ladrão, El Peludo, se fantasiou de animal. Justo hoje o circo se muda e os caminhões com jaulas saem da cidade pela avenida: com certeza ele se meteu numa jaula."
+BRIEF_CIRCUS_MOVE_C,"Revisen los animales: en el baúl del patrullero hay comida, y un animal de verdad come la suya. Y por favor, no me suelten ningún león.","Check the animals: there's food in the patrol car's trunk, and a real animal eats its own. And please, don't let any lions loose.","Revisem os animais: no porta-malas da viatura tem comida, e um animal de verdade come a sua. E por favor, não me soltem nenhum leão."
 SHIFT_BRIBES,Sobornos,Bribes,Subornos
 SHIFT_AGENT_FINE,Multa de asuntos internos,Internal affairs fine,Multa da corregedoria
 SHIFT_INVESTIGATION_OPENED,Asuntos internos abrió una investigación.,Internal affairs opened an investigation.,A corregedoria abriu uma investigação.
