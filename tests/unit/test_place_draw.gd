@@ -10,7 +10,7 @@ func after_each() -> void:
 
 
 func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltration_and_each_raid_a_sixth_of_the_rest() -> void:
-	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "chase": 0, "crime_scene": 0, "circus": 0, "museum": 0, "traffic": 0, "club": 0,
+	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "hotel_raid": 0, "chase": 0, "crime_scene": 0, "circus": 0, "museum": 0, "traffic": 0, "club": 0,
 		"choir": 0, "bank": 0, "plaza": 0, "market": 0, "prison": 0, "transfer": 0, "blackout": 0, "visits": 0,
 		"laundry": 0}
 	for i in 600:
@@ -22,8 +22,8 @@ func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltrati
 	assert_gt(count.museum, 5, "and a third at the museum")
 	assert_between(count.traffic, 25, 80, "even odds for the traffic control (propuesta)")
 	# With the bank and the rally drawn before them, each raid comes up about 1 shift in 30 (propuesta).
-	for place: String in ["grandpa", "bakery", "groomer"]:
-		assert_between(count[place], 10, 60, "%s still comes up (propuesta)" % place)
+	for place: String in PlaceDraw.ORDER:
+		assert_between(count[place], 5, 60, "%s still comes up (propuesta)" % place)
 	assert_between(count.club + count.choir, 25, 80, "the infiltrations, as often as a raid (propuesta)")
 	assert_between(count.bank, 15, 70, "the bank robbery, about as often as a raid (propuesta)")
 	assert_between(count.plaza + count.market, 10, 60, "the politician's protection, about as often as a raid (propuesta)")
@@ -45,18 +45,22 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 	var bakery := {}
 	var grandpa := {}
 	var groomer := {}
-	for i in 300:
+	var hotel := {}
+	for i in 600:
 		var case_seed := i + 1
 		match PlaceDraw.pick(case_seed, [], 1, false):
 			"bakery":
 				bakery[Bakery.pick_story(case_seed, [])] = true
 			"groomer":
 				groomer[Groomer.pick_story(case_seed, [])] = true
+			"hotel_raid":
+				hotel[HotelRaid.pick_story(case_seed, PackedStringArray())] = true
 			_:
 				grandpa[GrandpaHouse.pick_story(case_seed, []).id] = true
 	assert_eq(bakery.size(), Bakery.STORIES.size())
 	assert_eq(grandpa.size(), GrandpaHouse.STORIES.size())
 	assert_eq(groomer.size(), Groomer.STORIES.size())
+	assert_eq(hotel.size(), HotelRaid.STORIES.size())
 
 
 func test_new_seeds_are_odd_and_even() -> void:
@@ -73,6 +77,7 @@ func test_place_argument_forces_the_place() -> void:
 		assert_eq(PlaceDraw.pick(case_seed, ["--place=bakery"]), "bakery")
 		assert_eq(PlaceDraw.pick(case_seed, ["--place=grandpa"]), "grandpa")
 		assert_eq(PlaceDraw.pick(case_seed, ["--place=groomer"]), "groomer")
+		assert_eq(PlaceDraw.pick(case_seed, ["--place=hotel_raid"]), "hotel_raid")
 	assert_eq(PlaceDraw.pick(9, ["--place=moon"]), PlaceDraw.pick(9, []), "an unknown place is ignored")
 
 

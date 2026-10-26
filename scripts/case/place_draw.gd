@@ -2,7 +2,8 @@ class_name PlaceDraw
 extends RefCounted
 
 ## Which place a match happens in (panaderia.md, "El orden para hacerlo", step 5): Play draws a case seed and, from
-## it, the grandpa's house, the bakery or the pet salon, with even odds (propuesta). Every third shift is an
+## it, the grandpa's house, the bakery, the pet salon or the Hotel Gran Siesta (hotel-allanamiento.md), with even
+## odds (propuesta). Every third shift is an
 ## interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
 ## (persecucion.md, "Sale como un caso más"). Of the shifts left, one in CRIME_EVERY is the crime scene
 ## (escena-del-crimen.md, propuesta; half at the pastry contest and half at the circus, escena-circo.md), then one in
@@ -42,7 +43,7 @@ const PLACES := {
 	"laundry": "res://scenes/levels/prison_laundry.tscn",
 }
 ## The raids, drawn by the seed.
-const ORDER := ["grandpa", "bakery", "groomer"]
+const ORDER := ["grandpa", "bakery", "groomer", "hotel_raid"]
 ## One shift in this many is an interrogation (Cristian, 20/10): shifts 3, 6... of a campaign, or 1 in 3 by the seed
 ## without one.
 const INTERROGATION_EVERY := 3
@@ -105,7 +106,7 @@ static func pick(case_seed: int, args: PackedStringArray, shift := 0, chases := 
 		return RALLIES[hash(["politician place", case_seed]) % RALLIES.size()]
 	if chases and hash(["prison riot", case_seed]) % PRISON_EVERY == 0:
 		return PRISONS[hash(["prison case", case_seed]) % PRISONS.size()]
-	return ORDER[hash("place %d" % case_seed) % ORDER.size()]
+	return ORDER[hash(["raid place", case_seed]) % ORDER.size()]
 
 
 static func is_interrogation(case_seed: int, shift: int) -> bool:

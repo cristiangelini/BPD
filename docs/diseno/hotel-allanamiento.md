@@ -78,6 +78,9 @@ Los pesos y valores siguen la escala de las otras: la principal vale unos 1000 y
 4. El caso (RaidCase) con la primera historia: el casino de la 13.
 5. Las otras 5 historias, una por PR.
 6. "Jugar" sortea el hotel entre los lugares de allanamiento.
+   - **Cómo quedó (propuesta):** "Jugar" suma el hotel a los allanamientos: cada lugar sale en la misma parte de los
+     allanamientos y las 6 historias del hotel salen todas (prueba sobre 600 semillas). El menú tiene "Hotel
+     (allanamiento, prueba)".
 7. El online (don Bostezo, doña Escoba, las llaves y lo que cambia en cada historia en todas las PC).
 
 ## Preguntas para Cristian

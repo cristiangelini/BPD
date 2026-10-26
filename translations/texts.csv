@@ -2521,3 +2521,4 @@ PROMPT_CARBON_PAPER,E: mirar el papel del tacho,E: look at the paper in the bin,
 CLUE_REVIEWS_CARBON,Papel carbónico en el tacho. Al revés se lee: «5 estrellas. 5 estrellas. 5 estrellas…»,Carbon paper in the bin. Backwards it reads: “5 stars. 5 stars. 5 stars…”,Papel-carbono no lixo. Ao contrário se lê: “5 estrelas. 5 estrelas. 5 estrelas…”
 REVIEWS_TAC,tac tac tac… ¡ding!,tap tap tap… ding!,tac tac tac… plim!
 CLUE_REVIEWS_TAC,Don Bostezo duerme… y algo escondido escribe a máquina: «tac tac tac».,Don Bostezo is asleep… and something hidden is typing: “tap tap tap”.,O don Bostezo dorme… e algo escondido datilografa: “tac tac tac”.
+MENU_HOTEL_RAID,"Hotel (allanamiento, prueba)","Hotel (raid, test)","Hotel (batida, teste)"
