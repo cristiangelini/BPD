@@ -106,6 +106,11 @@ Los pesos y valores siguen la escala de la oficina y el laboratorio: la principa
      juguete! «Banco de Mentira»"), una pista falsa, y el resto está vacía. Si el profe escapa, se va en auto como los
      otros dueños (la moto de oro queda para después). Capturas `paso4-*.png` y `gym_silver_dumbbells.png`.
 5. Las otras 5 historias, una por PR.
+   - **Cómo quedó el récord falso (propuesta):** la barra del récord de la pared es la evidencia principal (2 kg,
+     1000, rebota): cuelga de sus ganchos hasta que un policía la agarra, y esa primera vez es la pista ("se levanta
+     con una mano", y arriba sale "¿300 kilos? ¡Si no pesa nada!"). Al lado de los bancos hay una barra de verdad de
+     40 kg para comparar. La foto trucada (0,2 kg, 300) y el certificado del concurso (0,1 kg, 200) se esconden.
+     Captura `paso5-record.png` y `gym_fake_record.png`.
 6. "Jugar" sortea entre los 8 lugares de allanamiento.
 7. El online (el profe, Lula, la música, las cintas y las mancuernas en todas las PC).
 
