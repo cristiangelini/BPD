@@ -94,6 +94,16 @@ La subasta copia la forma de `ChessGames` y `BikerDares` (el host decide y avisa
    el atril de madera donde se pone el lote: un retrato horrible de un señor verde, un jarrón azul, un busto de mármol
    o una sillita "de época" rosa **(propuesta)**.
 4. La subasta: los lotes, las pujas de los policías y de los compradores, el martillo, la sospecha y lo que se paga.
+   Hecho así: a los 20 s y después cada 60 s Don Martillo pone el próximo lote en el atril, en el orden que dio la
+   semilla ("¡Una silla de época! De qué época, no sabemos. ¡100 para empezar!"), y a los policías que están adentro
+   les sale qué hacer. Un policía puja con E en una silla libre, parado a 1,2 m o menos (las de los compradores no
+   cuentan); la primera puja toma el precio de salida (100) y cada una que sigue sube 50. Cada comprador sentado tiene
+   un tope de la semilla para ese lote (entre 150 y 600) y puja cada 1 a 2,5 s mientras no lo pase. Tras 2 s sin pujas,
+   "¡A la una...!"; a los 4, "¡A las dos...!", y a los 6 baja el martillo: si el último fue un policía, "¡Vendido al
+   nuevo! Se lo dejamos al lado de la silla. Y la cuenta, también.", el lote (un objeto con física) aparece detrás de
+   su silla y se suma lo que pagó (el paso 5 lo resta del sueldo). Si en ese lote ningún policía pujó, +25 a los
+   compradores de la sala. Mientras hay un lote, los compradores que no están en la sala miran y no ven nada más
+   **(propuesta)**.
 5. Las pruebas y el caso (variante "auction"): las 6 pruebas, el sueldo con las compras y el interrogatorio.
 6. La huida en el carrito de la galería, el sorteo de "Jugar" en décimos y online.
 
