@@ -9,11 +9,15 @@ extends Node3D
 ## seconds after the one before. Every magic bed is on WATERED_BY gardeners' rounds, and at one they sing to it.
 ## Step 4: E on a plant pulls it. A magic bean comes out with one cop up to its stage TUG_FROM - 1; from TUG_FROM on it
 ## holds on until TUGGERS cops pull within TUG_WINDOW seconds of each other (one, playing alone). A vegetable pulled by
-## mistake is out too (`wrong`), and the nearest gardener is offended.
+## mistake is out too (`wrong`), and the nearest gardener is offended. Step 5: while a giant stands, every CLIMB_EVERY
+## seconds the nearest gardener goes up it (GardenClimber): over the wall he's `escaped`; pulled down, cuffed and
+## walked into a cell (the punishment cell: the block is locked) he's `caught`.
 
 signal bean_grew(plant: GardenPlant, stage: int)
 signal bean_pulled(plant: GardenPlant, stage: int)
 signal wrong_pull(plant: GardenPlant)
+signal escaped_one(count: int)
+signal caught_one(count: int)
 
 const BEDS := 12
 const PER_BED := 4
@@ -37,6 +41,11 @@ const TUGGERS := 2
 const TUG_WINDOW := 2.0
 ## A bean pulled before this stage counts as found early (the case's bonus).
 const EARLY_BEFORE := 4
+const CLIMB_EVERY := 30.0
+## Where a climber comes from with no gardeners left: out of the canteen's east door.
+const DOOR_OUT := Vector2(2.0, 9.0)
+## The climber starts up the giant from this far out of its bed, on the wall's side.
+const FOOT_OUT := 0.5
 
 var prison: PrisonLevel
 var plants: Array[GardenPlant] = []
@@ -52,6 +61,12 @@ var pulled := 0
 var early := 0
 var wrong := 0
 var _tugs := {}
+## Step 5: the ones going up a giant, and how many got over and were walked to a cell.
+var climbers: Array[GardenClimber] = []
+var escaped := 0
+var caught := 0
+var down := 0
+var _climb_left := {}
 ## A guest's copy (step 7): the host's one decides.
 var follower := false
 var _rng := RandomNumberGenerator.new()
@@ -163,6 +178,74 @@ func _physics_process(delta: float) -> void:
 		if time >= FIRST_BEAN + i * BEAN_EVERY and not beans[i].growing and beans[i].stage == 0:
 			beans[i].start_growing()
 	_sing()
+	_climbs(delta)
+
+
+## Every giant still standing sends someone up it every CLIMB_EVERY seconds, one at a time.
+func _climbs(delta: float) -> void:
+	for bean in beans:
+		if bean.pulled or bean.stage < GardenPlant.STAGES:
+			continue
+		if _on_its_way(bean):
+			continue
+		_climb_left[bean] = float(_climb_left.get(bean, 0.0)) - delta
+		if _climb_left[bean] <= 0.0:
+			_climb_left[bean] = CLIMB_EVERY
+			send_climber(bean)
+
+
+## Someone is already walking to `bean` or up it.
+func _on_its_way(bean: GardenPlant) -> bool:
+	for each in climbers:
+		if each.get_meta("bean") == bean and not each.is_escaped and (each.climbing or each.active):
+			return true
+	return false
+
+
+## The nearest gardener drops his watering can and goes up `bean` (with no gardeners left, one from the canteen).
+func send_climber(bean: GardenPlant) -> GardenClimber:
+	var from := prison.global_transform * Vector3(DOOR_OUT.x, PrisonLevel.FLOOR_TOP, DOOR_OUT.y)
+	var gardener := _nearest_gardener(bean)
+	if gardener:
+		from = gardener.global_position
+		gardeners.erase(gardener)
+		gardener.queue_free()
+	var climber := GardenClimber.new()
+	climber.name = "Climber%d" % climbers.size()
+	climber.role = BlackoutInmate.Role.WANDER
+	climber.glow_eyes = false
+	climber.prison = prison
+	var out := bean.top - bean.position
+	out.y = 0.0
+	climber.foot = Vector3(bean.position.x, PrisonLevel.FLOOR_TOP, bean.position.z) \
+		+ out.normalized() * (BED_SIZE.z / 2 + FOOT_OUT)
+	climber.top = bean.top
+	climber.route = [Vector2(climber.foot.x, climber.foot.z)] as Array[Vector2]
+	climber.set_meta("bean", bean)
+	add_child(climber)
+	climber.global_position = from
+	climber.active = true
+	climber.say("GARDEN_TO_THE_BEAN")
+	climber.escaped.connect(_on_climber_escaped)
+	climber.pulled_down.connect(func(_who: GardenClimber) -> void: down += 1)
+	BlackoutEscort.to_block(climber, prison).boarded.connect(_on_caught.bind(climber))
+	climbers.append(climber)
+	return climber
+
+
+func _on_climber_escaped(_climber: BlackoutInmate) -> void:
+	escaped += 1
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		cop.show_hint("HINT_GARDEN_ESCAPED")
+	escaped_one.emit(escaped)
+
+
+func _on_caught(climber: GardenClimber) -> void:
+	if climber.has_meta("caught"):
+		return
+	climber.set_meta("caught", true)
+	caught += 1
+	caught_one.emit(caught)
 
 
 ## A gardener working at a bed with a magic bean growing in it sings to it.
