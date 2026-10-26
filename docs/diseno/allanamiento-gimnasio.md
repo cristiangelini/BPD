@@ -122,6 +122,11 @@ Los pesos y valores siguen la escala de la oficina y el laboratorio: la principa
      Lula no, y los socios que corren en las cintas siguen como si nada). Se esconden la caja con el cable a la usina
      (8 kg, 1000, en un escondite para cosas pesadas), el medidor dado vuelta (2 kg, 300) y el plano de los cables
      (0,1 kg, 200). Captura `paso5-cintas.png` y `gym_power_treadmills.png`.
+   - **Cómo quedaron los batidos de la suerte (propuesta):** en la recepción, entre la caja y el equipo, hay un vaso de
+     batido verde con un trébol. E lo toma (2 s con las manos ocupadas) y el policía dice en voz alta lo que piensa
+     durante 5 s, un texto distinto cada vez («¿Y si el comisario es un robot?»); el primer sorbo es la pista. Se
+     esconden el frasco del batido campeón (1 kg, 1000), la lista de ganadores de la lotería (0,1 kg, 300) y la
+     licuadora dorada (3 kg, 200). Captura `paso5-batido.png` y `gym_lucky_shakes.png`.
 6. "Jugar" sortea entre los 8 lugares de allanamiento.
 7. El online (el profe, Lula, la música, las cintas y las mancuernas en todas las PC).
 

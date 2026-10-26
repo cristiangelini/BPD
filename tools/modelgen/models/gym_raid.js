@@ -241,6 +241,50 @@ const models = {
 		b.add('lines', C('plan_red', 0xff5a4a), new THREE.BoxGeometry(0.12, 0.002, 0.006), { pos: V(0, 0.006, 0) });
 		return b.build();
 	},
+	// The lucky shakes' main evidence: a big jar of green "champion" shake powder with a gold trophy on the label.
+	gym_shake_jar() {
+		const b = new Builder('gym_shake_jar');
+		b.add('jar', C('jar_glass', 0xbfe3d0, { roughness: 0.1 }), new THREE.CylinderGeometry(0.1, 0.1, 0.24, 14), { pos: V(0, 0.12, 0) });
+		b.add('powder', C('shake_green', 0x5ac85a), new THREE.CylinderGeometry(0.09, 0.09, 0.16, 14), { pos: V(0, 0.09, 0) });
+		b.add('lid', C('jar_lid', 0xf2c84b, { metalness: 0.5 }), new THREE.CylinderGeometry(0.105, 0.105, 0.04, 14), { pos: V(0, 0.26, 0) });
+		b.add('label', white, new THREE.CylinderGeometry(0.102, 0.102, 0.08, 14, 1, true), { pos: V(0, 0.12, 0) });
+		b.add('label', C('trophy_gold', 0xf2c84b, { emissive: 0x3a2a05 }), new THREE.BoxGeometry(0.04, 0.05, 0.01), { pos: V(0, 0.12, 0.1) });
+		return b.build();
+	},
+	// The list of members who won the lottery: a sheet with a column of ticks and clovers.
+	gym_lottery_list() {
+		const b = new Builder('gym_lottery_list');
+		b.add('paper', C('sheet_paper', 0xfaf6ea), new THREE.BoxGeometry(0.21, 0.004, 0.29), { pos: V(0, 0.002, 0) });
+		for (let i = 0; i < 7; i++) {
+			b.add('lines', C('sheet_ink', 0x2a2a30), new THREE.BoxGeometry(0.11, 0.002, 0.008), { pos: V(-0.03, 0.005, -0.1 + i * 0.03) });
+			b.add('clovers', C('clover_green', 0x2a9a3a), new THREE.CylinderGeometry(0.008, 0.008, 0.002, 4), { pos: V(0.07, 0.005, -0.1 + i * 0.03) });
+		}
+		return b.build();
+	},
+	// The golden blender: a shiny gold base with a glass jug full of green shake.
+	gym_gold_blender() {
+		const b = new Builder('gym_gold_blender');
+		const gold = C('blender_gold', 0xf2c03a, { metalness: 0.3, roughness: 0.3, emissive: 0x3a2a05 });
+		b.add('base', gold, new THREE.BoxGeometry(0.18, 0.12, 0.18), { pos: V(0, 0.06, 0) });
+		b.add('jug', C('jar_glass', 0xbfe3d0, { roughness: 0.1 }), new THREE.CylinderGeometry(0.08, 0.06, 0.22, 12), { pos: V(0, 0.23, 0) });
+		b.add('jug', C('shake_green', 0x5ac85a), new THREE.CylinderGeometry(0.07, 0.055, 0.12, 12), { pos: V(0, 0.19, 0) });
+		b.add('lid', gold, new THREE.CylinderGeometry(0.085, 0.085, 0.02, 12), { pos: V(0, 0.35, 0) });
+		b.add('knob', black, new THREE.CylinderGeometry(0.02, 0.02, 0.02, 8), { pos: V(0, 0.06, 0.095), rot: [Math.PI / 2, 0, 0] });
+		return b.build();
+	},
+	// The reception's shake cup: a tall plastic cup of green shake, a straw and a four-leaf clover sticker.
+	gym_shake_cup() {
+		const b = new Builder('gym_shake_cup');
+		b.add('cup', C('cup_plastic', 0xf6f4ee, { roughness: 0.3 }), new THREE.CylinderGeometry(0.045, 0.035, 0.16, 12), { pos: V(0, 0.08, 0) });
+		b.add('shake', C('shake_green', 0x5ac85a), new THREE.CylinderGeometry(0.042, 0.042, 0.01, 12), { pos: V(0, 0.15, 0) });
+		b.add('straw', C('straw_pink', 0xff4fa8), new THREE.CylinderGeometry(0.006, 0.006, 0.14, 6), { pos: V(0.015, 0.2, 0), rot: [0, 0, -0.25] });
+		const clover = C('clover_green', 0x2a9a3a);
+		for (let i = 0; i < 4; i++) {
+			const a = i * Math.PI / 2;
+			b.add('clover', clover, new THREE.CylinderGeometry(0.012, 0.012, 0.004, 8), { pos: V(Math.cos(a) * 0.012, 0.08 + Math.sin(a) * 0.012, 0.043), rot: [Math.PI / 2, 0, 0] });
+		}
+		return b.build();
+	},
 };
 
 export { models };
@@ -277,5 +321,10 @@ export const views = {
 		items: [{ name: 'gym_cable_box', pos: [-0.35, 0, 0], rotY: 0.3 }, { name: 'gym_power_meter', pos: [0.35, 0, -0.1], rotY: -0.3 },
 			{ name: 'gym_wiring_plan', pos: [0.3, 0, 0.35], rotY: 0.2 }],
 		cam: { pos: [0, 1.0, 1.6], target: [0, 0.2, 0], fov: 42 },
+	},
+	gym_lucky_shakes: {
+		items: [{ name: 'gym_shake_jar', pos: [-0.3, 0, 0] }, { name: 'gym_gold_blender', pos: [0.05, 0, -0.1] },
+			{ name: 'gym_shake_cup', pos: [0.3, 0, 0.1] }, { name: 'gym_lottery_list', pos: [0.05, 0, 0.3], rotY: 0.2 }],
+		cam: { pos: [0, 0.7, 1.1], target: [0, 0.12, 0], fov: 42 },
 	},
 };
