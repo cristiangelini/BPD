@@ -77,6 +77,8 @@ const MODELS := {
 	"janitor": preload("res://assets/models/npc_conserje_escuela.glb"),
 }
 const HECKLER := "heckler_"
+## The TV channel's bought technician is "technician_<look>" (politico-debate.md), off the TV van: his own model.
+const TECHNICIAN := "technician_"
 ## The deputy's double (politico-doble.md), off on the kick scooter.
 const DOUBLE := "double"
 ## The cake shop's courier at the deputy's birthday (politico-cumple.md), off on the kick scooter.
@@ -139,13 +141,15 @@ func net_setup() -> Dictionary:
 static func model_for(who: String) -> PackedScene:
 	if who.begins_with(HECKLER):
 		return load("res://assets/models/npc_%s.glb" % who.trim_prefix(HECKLER))
+	if who.begins_with(TECHNICIAN):
+		return load("res://assets/models/npc_%s.glb" % who.trim_prefix(TECHNICIAN))
 	return MODELS[who]
 
 
 ## His complaints, as tr() keys.
 func lines() -> Array[String]:
 	var keys: Array[String] = []
-	var who := "heckler" if kind.begins_with(HECKLER) else kind
+	var who := "heckler" if kind.begins_with(HECKLER) else "technician" if kind.begins_with(TECHNICIAN) else kind
 	for i in 3:
 		keys.append("CHASE_%s_LINE_%d" % [who.to_upper(), i + 1])
 	return keys

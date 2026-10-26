@@ -6,7 +6,9 @@ extends Node
 ## pays SALARY, BLUNDER less for each blunder on air, WRONG_CUFF less for each honest technician cuffed and TECHNICIAN
 ## more if the bought one is in the patrol car; quota of its own, like the plaza (decision 103). With the bought
 ## technician cuffed or taken away there are no more tricks. A trick warned while a cop is in the control room shows
-## whose place the warning light is at (his third clue). Every number here is (propuesta).
+## whose place the warning light is at (his third clue). Step 7: a technician still loose at the end of the debate
+## runs for the TV van parked on the street and the chase starts there (decision 96): caught, he counts as detained.
+## Every number here is (propuesta).
 
 const SHIFT_DELAY := 4.0
 const REFRESH := 0.5
@@ -29,6 +31,10 @@ var clues: Array[String] = []
 var wrong_cuffs := 0
 var jailed := false
 var shift_over := false
+## The technician's run in the TV van and how it ended (step 7).
+var chase: ChaseCase
+var caught := false
+var escaped := false
 var _result := {}
 var _refresh_left := 0.0
 
@@ -103,8 +109,43 @@ func _on_jailed() -> void:
 
 func _on_finished() -> void:
 	_hint_all("HINT_DEBATE_WON" if solved() else "HINT_DEBATE_LOST")
+	if studio.technician.loose():
+		_run_off()
+	else:
+		get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
+	checklist.show_rows(rows())
+
+
+## The technician leaves the console and drives off in the TV van: the chase is on.
+func _run_off() -> void:
+	if chase:
+		return
+	var tech := studio.technician
+	tech.hide()
+	tech.collision_layer = 0
+	tech.process_mode = Node.PROCESS_MODE_DISABLED
+	studio.sabotage.active = false
+	var van := studio.van
+	van.set_rider(ChaseSuspect.model_for(ChaseSuspect.TECHNICIAN + tech.look()))
+	van.get_node("Rider").show()
+	van.driving = true
+	chase = ChaseCase.begin(studio, SuspectCar.TV_VAN, van.global_transform, studio.car, studio.city, studio.case_seed,
+		null, van)
+	chase.who = ChaseSuspect.TECHNICIAN + tech.look()
+	chase.ended.connect(_on_chase_ended)
+	_hint_all("HINT_ESCAPE_TECHNICIAN")
+
+
+func _on_chase_ended(was_caught: bool) -> void:
+	caught = was_caught
+	escaped = not was_caught
 	checklist.show_rows(rows())
 	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
+
+
+## The technician in the patrol car, from the console or caught off the van.
+func technician_detained() -> bool:
+	return jailed or caught
 
 
 func solved() -> bool:
@@ -116,7 +157,7 @@ func solved() -> bool:
 func report() -> Dictionary:
 	var salary := 0
 	if solved():
-		salary = SALARY - BLUNDER * studio.debate.blunders - WRONG_CUFF * wrong_cuffs + (TECHNICIAN if jailed else 0)
+		salary = SALARY - BLUNDER * studio.debate.blunders - WRONG_CUFF * wrong_cuffs + (TECHNICIAN if technician_detained() else 0)
 		salary = maxi(salary, 0)
 	return {"salary": salary, "evidence": 0, "fines": 0, "total": salary, "quota": QUOTA, "approved": salary >= QUOTA}
 
@@ -166,7 +207,9 @@ func rows() -> Array[Dictionary]:
 	list.append(_row("OBJ_DEBATE_ON", debate.state != TvDebate.State.WAITING))
 	list.append(_row(tr("OBJ_DEBATE_IMAGE") % [debate.image, PASS], debate.image >= PASS))
 	list.append(_row(tr("OBJ_DEBATE_CLUES") % [clues.size(), CLUES], clues.size() >= CLUES))
-	list.append(_row("OBJ_DEBATE_TECHNICIAN", jailed))
+	list.append(_row("OBJ_DEBATE_TECHNICIAN", technician_detained()))
+	if chase:
+		list.append(_row("OBJ_DEBATE_CATCH_VAN", caught))
 	var state := tr("OBJ_DEBATE_BLUNDERS") % debate.blunders
 	if debate.state == TvDebate.State.OVER:
 		state = "OBJ_DEBATE_OVER"
