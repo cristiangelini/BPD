@@ -86,14 +86,14 @@ const VARIANTS := {
 		"boss_cuffed": "HINT_DIRECTOR_CUFFED", "cuff_row": "OBJ_SCHOOL_CUFF_DIRECTOR",
 		"catch_row": "OBJ_SCHOOL_CATCH_DIRECTOR", "slips": "DIRECTOR_SLIP_%d",
 	},
-	# The restaurant La Cuchara de Oro (infiltracion-restaurante.md, decision 174): the Chef Flambé runs off on foot
-	# until the delivery scooter (step 6).
+	# The restaurant La Cuchara de Oro (infiltracion-restaurante.md, decision 174): the Chef Flambé rides off on the
+	# delivery scooter, losing pizzas in the curves.
 	"restaurant": {
 		"story": "infiltration_restaurant",
 		"brief": ["BRIEF_RESTAURANT_A", "BRIEF_RESTAURANT_B", "BRIEF_RESTAURANT_C"],
 		"go": "HINT_GO_RESTAURANT", "in": "HINT_RESTAURANT_IN", "found": "HINT_CLUB_EVIDENCE",
 		"rows": "OBJ_RESTAURANT_", "evidence": "EVIDENCE_RESTAURANT_",
-		"boss": "flambe", "getaway": SuspectCar.WALKER,
+		"boss": "flambe", "getaway": SuspectCar.PIZZA_SCOOTER,
 		"boss_cuffed": "HINT_FLAMBE_CUFFED", "cuff_row": "OBJ_RESTAURANT_CUFF_FLAMBE",
 		"catch_row": "OBJ_RESTAURANT_CATCH_FLAMBE", "slips": "FLAMBE_SLIP_%d",
 	},

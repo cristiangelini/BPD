@@ -2644,7 +2644,7 @@ BRIEF_RESTAURANT_C,Junten 3 pruebas y esposen al Chef. Y no quemen nada: el humo
 HINT_GO_RESTAURANT,"Antes, pasa por la fila de disfraces de la comisaría y ponte 2 piezas de cocinero. La Cuchara de Oro está en la ciudad: ve en el patrullero.","First, stop by the station's disguise row and put on 2 cook pieces. La Cuchara de Oro is in the city: take the patrol car.","Antes, passe pela fileira de disfarces da delegacia e vista 2 peças de cozinheiro. La Cuchara de Oro fica na cidade: vá na viatura."
 HINT_RESTAURANT_IN,Adentro. Busca pruebas y cocina las comandas del Chef: al pase y tocando la campanita.,"You're in. Look for evidence and cook the Chef's orders: to the pass, and ring the bell.","Lá dentro. Procure provas e cozinhe os pedidos do Chef: para o passe, tocando a campainha."
 HINT_FLAMBE_CUFFED,¡El Chef Flambé esposado! Caso resuelto.,The Chef Flambé is cuffed! Case solved.,O Chef Flambé está algemado! Caso resolvido.
-HINT_ESCAPE_flambe,¡El Chef Flambé se escapa! ¡Atrápenlo antes de que se pierda en la ciudad!,The Chef Flambé is escaping! Catch him before he gets lost in the city!,O Chef Flambé está fugindo! Peguem ele antes que se perca na cidade!
+HINT_ESCAPE_flambe,¡El Chef Flambé se escapa en la moto de delivery! Sigan el rastro de pizzas,The Chef Flambé is escaping on the delivery scooter! Follow the trail of pizzas,O Chef Flambé está fugindo na moto de entrega! Sigam o rastro de pizzas
 OBJ_RESTAURANT_GET_IN,Entrar a la cocina disfrazado de cocinero,Get into the kitchen dressed as a cook,Entrar na cozinha disfarçado de cozinheiro
 OBJ_RESTAURANT_EVIDENCE,Pruebas (%d de %d),Evidence (%d of %d),Provas (%d de %d)
 OBJ_RESTAURANT_CUFF_FLAMBE,Esposar al Chef Flambé,Cuff the Chef Flambé,Algemar o Chef Flambé

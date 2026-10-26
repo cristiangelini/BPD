@@ -115,6 +115,12 @@ demás (`NpcSync` / el agarre), y el fuego de cada hornalla lo cuenta el host.
    Chef lo resuelve (600, un tercio menos por prueba que falte) y el turno siguiente puede ser su interrogatorio. La
    huida es por ahora a pie, hasta la moto del paso 6 **(propuesta)**.
 6. La huida en la moto de delivery, el sorteo de "Jugar" en séptimos y online.
+   Hecho así: si los descubren, el Chef sale a la calle en la moto de delivery del restaurante (blanca con dorado y
+   una caja térmica roja gigante atrás) a 40 km/h, por la calle y no por la vereda, y se lo persigue en patrullero. En
+   cada esquina donde dobla se le cae una caja de pizza (liviana, 0,5 kg): no frena al patrullero, deja el rastro.
+   Atrapado, se resuelve con las pruebas que haya. "Jugar" sortea las infiltraciones en séptimos. Online el host
+   decide la huida y las pizzas y los demás ven las mismas; las comandas y la sopa especial llegan a todos
+   **(propuesta)**.
 
 ## Preguntas para Cristian (decisión 174)
 1. **¿Hay que cocinar de verdad, con comandas cada 40 s y recetas que se arman con las manos (ingredientes, olla,

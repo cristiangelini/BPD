@@ -110,13 +110,57 @@ export function buildNecklacePot() {
 	return b.build();
 }
 
+// The Chef's getaway (step 6): the restaurant's delivery scooter, white with gold trim, with a giant thermal box on the
+// back (the pizzas he loses in the curves come out of it). 1.9 m long, 0.7 m wide; faces +Z like the other suspect
+// vehicles, and its wheels are part of it. The Chef (npc_flambe) rides it, standing on the board.
+export function buildPizzaScooter() {
+	const b = new Builder('pizza_scooter');
+	const white = mat('scooter_white', 0xf4f2ea), gold = mat('scooter_gold', 0xd8b040), tire = mat('tire', 0x1a1a1e);
+	const thermal = mat('thermal_box_red', 0xc8302a), glass = mat('scooter_glass', 0xbfe0f0);
+	const add = (part, m, w, h, d, x, y, z, rot) => b.add(part, m, new THREE.BoxGeometry(w, h, d), { pos: V(x, y, z), rot });
+	for (const z of [0.68, -0.68]) {
+		b.add('wheels', tire, new THREE.CylinderGeometry(0.26, 0.26, 0.12, 10), { pos: V(0, 0.26, z), rot: [0, 0, Math.PI / 2] });
+		b.add('wheels', gold, new THREE.CylinderGeometry(0.12, 0.12, 0.13, 8), { pos: V(0, 0.26, z), rot: [0, 0, Math.PI / 2] });
+	}
+	add('body', white, 0.36, 0.1, 0.8, 0, 0.32, 0.05);
+	add('body', white, 0.42, 0.36, 0.6, 0, 0.5, -0.45);
+	add('body', black, 0.36, 0.08, 0.5, 0, 0.72, -0.4);
+	add('body', white, 0.38, 0.75, 0.1, 0, 0.7, 0.55, [-0.25, 0, 0]);
+	add('body', gold, 0.4, 0.04, 0.11, 0, 1.05, 0.52, [-0.25, 0, 0]);
+	add('body', steel, 0.05, 0.05, 0.3, 0, 0.95, 0.68, [-0.3, 0, 0]);
+	add('body', black, 0.6, 0.04, 0.04, 0, 1.12, 0.62);
+	add('lights', glass, 0.14, 0.1, 0.03, 0, 0.98, 0.72);
+	// The giant thermal box, far wider than the scooter, on a rack, with a gold spoon on each side.
+	add('box', steel, 0.5, 0.04, 0.5, 0, 0.74, -0.9);
+	add('box', thermal, 1.1, 0.8, 0.8, 0, 1.16, -0.95);
+	add('box', gold, 1.12, 0.06, 0.82, 0, 1.58, -0.95);
+	for (const s of [-1, 1]) {
+		add('spoon', gold, 0.02, 0.36, 0.06, s * 0.56, 1.12, -0.95);
+		b.add('spoon', gold, new THREE.SphereGeometry(0.07, 8, 6), { pos: V(s * 0.56, 1.32, -0.95), scale: [0.3, 1, 0.8] });
+	}
+	return b.build();
+}
+
+// A pizza box that falls off the Chef's scooter: 0.4 m square, flat, cardboard, with the restaurant's gold spoon on
+// the lid and a slice of pizza sticking out. Its origin at its bottom.
+export function buildPizzaBox() {
+	const b = new Builder('pizza_box');
+	const card = mat('pizza_card', 0xd8b07a), gold = mat('scooter_gold', 0xd8b040);
+	b.add('box', card, new THREE.BoxGeometry(0.4, 0.05, 0.4), { pos: V(0, 0.025, 0) });
+	b.add('logo', gold, new THREE.BoxGeometry(0.04, 0.005, 0.2), { pos: V(0, 0.052, 0) });
+	b.add('logo', gold, new THREE.SphereGeometry(0.04, 8, 4), { pos: V(0, 0.052, 0.1), scale: [1, 0.15, 1.4] });
+	b.add('slice', mat('pizza_cheese', 0xf0c040), new THREE.CylinderGeometry(0.12, 0.12, 0.015, 3, 1, false, 0, Math.PI / 3), { pos: V(0.15, 0.03, 0.12) });
+	b.add('slice', tomatoRed, new THREE.SphereGeometry(0.02, 6, 4), { pos: V(0.2, 0.04, 0.17), scale: [1, 0.3, 1] });
+	return b.build();
+}
+
 const KINDS = Object.keys(FOOD);
 
 export const models = {
 	...Object.fromEntries(KINDS.map((k) => [`food_${k}`, single(k)])),
 	...Object.fromEntries(KINDS.map((k) => [`kitchen_crate_${k}`, crate(k)])),
 	kitchen_pot: buildPot, kitchen_pan: buildPan, kitchen_plate: buildPlate,
-	kitchen_pot_necklaces: buildNecklacePot,
+	kitchen_pot_necklaces: buildNecklacePot, pizza_scooter: buildPizzaScooter, pizza_box: buildPizzaBox,
 };
 
 export const views = {
@@ -126,9 +170,14 @@ export const views = {
 			{ name: 'kitchen_pot', pos: [-0.6, 0.15, -0.1] },
 			{ name: 'kitchen_pan', pos: [0.1, 0.03, -0.1] },
 			{ name: 'kitchen_plate', pos: [0.8, 0.015, 0.0] },
-				{ name: 'kitchen_pot_necklaces', pos: [1.4, 0.17, -0.1] },
+			{ name: 'kitchen_pot_necklaces', pos: [1.4, 0.17, -0.1] },
 			...KINDS.map((k, i) => ({ name: `kitchen_crate_${k}`, pos: [-1.4 + i * 0.7, 0, -0.9] })),
 		],
 		cam: { pos: [0, 1.5, 2.3], target: [0, 0.1, -0.1], fov: 50 },
+	},
+	pizza_scooter: {
+		items: [{ name: 'pizza_scooter', pos: [0, 0, 0] }, { name: 'npc_flambe', pos: [0, 0.36, -0.1], scale: 0.85 },
+			{ name: 'pizza_box', pos: [1.0, 0, 0.6] }],
+		cam: { pos: [3.2, 2.0, 3.4], target: [0, 0.8, 0], fov: 45 },
 	},
 };

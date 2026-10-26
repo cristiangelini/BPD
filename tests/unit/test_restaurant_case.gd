@@ -29,6 +29,10 @@ func _restaurant_with(kind: String) -> void:
 	hall.case.give_tip()
 
 
+## Solving it leaves the Chef in custody for the next shift's draw (RaidCase): not for the next test's.
+func after_each() -> void:
+	PlaceDraw.custody = {}
+
 func test_the_restaurant_case_with_its_own_texts() -> void:
 	await _restaurant_with("ledger")
 	assert_eq(hall.case.place, hall)

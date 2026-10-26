@@ -5,7 +5,8 @@ extends Node
 ## cream every DRIP_EVERY seconds, and on a puddle the patrol car's tires lose their grip; the moving truck drops a piece
 ## of furniture at every corner he turns, which is in the way (a loose body: knocking it over isn't a fine, but it
 ## slows you down); the school bus is full of kids shouting out of the windows. The market's vegetable trike loses a
-## pumpkin, a cabbage or a watermelon at every corner it turns, the same way (politico-mercado.md). The clown car honks
+## pumpkin, a cabbage or a watermelon at every corner it turns, the same way (politico-mercado.md), and the Chef
+## Flambé's delivery scooter a pizza box (infiltracion-restaurante.md), a trail to follow. The clown car honks
 ## all the way and drops an inflatable clown (ChaseDummy) every DUMMY_EVERY seconds. The fruit truck control's runaway
 ## pickup (control-frutas.md) drops MELONS_PER_CORNER watermelons at every corner it turns, rolling down the street; the
 ## patrol car running into one splits it. The crowded car control's runaway sedan (control-auto-lleno.md, answer 3)
@@ -39,6 +40,8 @@ const VEGGIES := [
 	{"model": preload("res://assets/models/market_veggie_cabbage.glb"), "size": Vector3(0.48, 0.44, 0.46), "mass": 2.0},
 	{"model": preload("res://assets/models/market_veggie_melon.glb"), "size": Vector3(0.55, 0.5, 0.78), "mass": 8.0},
 ]
+## The Chef's pizza boxes, light and flat.
+const PIZZAS := [{"model": preload("res://assets/models/pizza_box.glb"), "size": Vector3(0.4, 0.05, 0.4), "mass": 0.5}]
 ## Where it falls off: this far behind his back.
 const BEHIND := 3.5
 ## The kids shout a line every this many seconds.
@@ -314,15 +317,18 @@ func drop_can() -> ChaseCan:
 	can.angular_velocity = Vector3(_rng.randf_range(-8, 8), _rng.randf_range(-8, 8), _rng.randf_range(-8, 8))
 	cans.append(can)
 	return can
+	elif case.suspect_id == SuspectCar.PIZZA_SCOOTER:
+		drop_furniture(false, true)
 
 
-## A piece of furniture falls off the back of the moving truck, or a veggie off the trike.
-func drop_furniture(veggie := false) -> RigidBody3D:
+## A piece of furniture falls off the back of the moving truck, a veggie off the trike or a pizza off the scooter.
+func drop_furniture(veggie := false, pizza := false) -> RigidBody3D:
 	if furniture.size() >= MAX_FURNITURE:
 		furniture.pop_front().queue_free()
 	var body := ChaseFurniture.new()
 	body.veggie = veggie
-	body.piece = _rng.randi() % (VEGGIES if veggie else FURNITURE).size()
+	body.pizza = pizza
+	body.piece = _rng.randi() % (PIZZAS if pizza else VEGGIES if veggie else FURNITURE).size()
 	_dropped += 1
 	body.name = "Furniture%d" % _dropped
 	case.get_parent().add_child(body)
