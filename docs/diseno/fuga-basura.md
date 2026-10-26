@@ -93,3 +93,18 @@ El guardia, Don Ruperto y el camión van por `NpcSync`; las bolsas y el contened
 - Una captura en plena ronda lo deja en el escritorio con las celdas cerradas y la bolsa se va.
 - Modelos `trash_bin`, `garbage_bag` y `dumpster` en `tools/modelgen/models/garbage.js`. 6 textos nuevos en es, en y
   pt. Pruebas en `test_garbage_round.gd`.
+
+## Cómo quedó el paso 2
+- Con la bolsa abierta en el piso, agachado y E te metes adentro (`GarbageBag.hider`, una persona por bolsa): no te
+  ve nadie, no chocas con nada y vas a donde vaya la bolsa. E otra vez para salir. Por ahora desde adentro se sigue
+  viendo; la pantalla a oscuras queda para el paso 3.
+- La cuenta: vaciado el tacho, el guardia se da vuelta y mira la celda 1,5 s. Sabe cuántos hay en cada celda
+  (los cuenta al empezar y después de cada captura). Si falta uno: +40 de sospecha, "¿Dónde está el otro?" y se queda
+  mirando 5 s más.
+- El muñeco (`BunkDummy`): E en la almohada de la cucheta con las manos vacías y 3 s al lado arma el bulto; alejarse
+  lo corta y E sobre uno armado lo deshace. Cuenta como un preso, pero si el guardia lo mira a menos de 2,5 m por 3 s
+  es captura ("¡Esto es una almohada con una media!"). En una cuenta normal no llega a darse cuenta; si además falta
+  alguien, sí.
+- El peso: con un policía adentro la arrastra a la mitad de velocidad y se queja; dos bolsas pesadas seguidas suman
+  +30. Una captura saca a todos de las bolsas y deshace los muñecos.
+- Modelo `pillow_dummy`, 13 textos nuevos en es, en y pt. Pruebas en `test_garbage_bag.gd`.

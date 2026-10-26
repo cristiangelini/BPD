@@ -43,7 +43,21 @@ export function buildDumpster() {
 	return b.build();
 }
 
-export const models = { trash_bin: buildTrashBin, garbage_bag: buildGarbageBag, dumpster: buildDumpster };
+// The pillow dummy on a bunk: the blanket rolled over a pillow, a lump the size of a sleeping cop (1.6 x 0.3 x 0.5 m),
+// with a sock for hair sticking out at -X. The origin on the mattress.
+export function buildPillowDummy() {
+	const b = new Builder('pillow_dummy');
+	const blanket = mat('dummy_blanket', 0x6a5a8c);
+	b.add('lump', blanket, ellipsoid(0.62, 0.15, 0.24, 12, 8), { pos: V(0.15, 0.15, 0) });
+	b.add('lump', blanket, ellipsoid(0.22, 0.12, 0.2, 10, 6), { pos: V(0.55, 0.13, 0.05) });
+	b.add('pillow', mat('dummy_pillow', 0xeeeae0), ellipsoid(0.18, 0.1, 0.16, 10, 6), { pos: V(-0.6, 0.14, 0) });
+	b.add('hair', mat('dummy_sock', 0x3a2a1a), ellipsoid(0.1, 0.06, 0.09, 8, 5), { pos: V(-0.74, 0.2, 0) });
+	return b.build();
+}
+
+export const models = {
+	trash_bin: buildTrashBin, garbage_bag: buildGarbageBag, dumpster: buildDumpster, pillow_dummy: buildPillowDummy,
+};
 
 export const views = {
 	garbage: {
@@ -51,6 +65,7 @@ export const views = {
 			{ name: 'trash_bin', pos: [-1.2, 0, 0.6] },
 			{ name: 'garbage_bag', pos: [-0.4, 0, 0.6] },
 			{ name: 'dumpster', pos: [1.0, 0, 0] },
+			{ name: 'pillow_dummy', pos: [-0.6, 0, 1.6] },
 			{ name: 'cop_1', pos: [-1.8, 0, -0.4], rotY: 0.5 },
 		],
 		cam: { pos: [0, 1.8, 4.2], target: [0, 0.6, 0], fov: 45 },

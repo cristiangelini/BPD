@@ -107,6 +107,8 @@ const KEY_BOARD_AT := Vector3(12.4, 1.5, StationRooms.HALF_Z - StationRooms.WALL
 const DUMPSTER_AT := Vector3(3.0, 0, StationRooms.HALF_Z + 2.2)
 const TRASH_BINS: Array[Vector3] = [Vector3(6.6, 0, 3.9), Vector3(14.4, 0, 3.9)]
 const TRASH_BIN_MODEL := preload("res://assets/models/trash_bin.glb")
+## Step 2: the pillow and blanket on each cell's bunk, to roll into a dummy.
+const BUNK_DUMMIES: Array[Vector3] = [Vector3(8.3, 0.5, 1.6), Vector3(12.7, 0.5, 1.6)]
 ## The big one stays stuck in the grille this long (s); crawling faster than this in the duct is a noisy scramble.
 const VENT_STUCK := 4.0
 const VENT_QUIET_SPEED := (Cop.CRAWL_SPEED + Cop.CRAWL_RUN_SPEED) / 2.0
@@ -247,6 +249,7 @@ func _garbage_night() -> void:
 	collector.stand_guard(case_seed)
 	collector.outside_cells = outside_cells
 	collector.see_through = [desk.get_rid()]
+	collector.caught.connect(_garbage_caught)
 	collector.caught.connect(_on_caught)
 	guard = collector
 	for at in TRASH_BINS:
@@ -258,6 +261,23 @@ func _garbage_night() -> void:
 	add_child(dumpster)
 	dumpster.global_transform = lot * Transform3D(Basis.IDENTITY, DUMPSTER_AT)
 	collector.dumpster = dumpster
+	for cell in BUNK_DUMMIES.size():
+		var dummy := BunkDummy.new()
+		dummy.name = "BunkDummy%d" % cell
+		dummy.cell = cell
+		add_child(dummy)
+		dummy.global_transform = lot * Transform3D(Basis.IDENTITY, BUNK_DUMMIES[cell])
+	collector.recount.call_deferred()
+
+
+## Caught on garbage night (before the rest of _on_caught): out of every bag, the dummies back to pillows, and once
+## everyone is back in the cells he counts them again.
+func _garbage_caught(_times: int) -> void:
+	for bag: GarbageBag in get_tree().get_nodes_in_group("garbage_bags"):
+		bag.let_out()
+	for dummy: BunkDummy in get_tree().get_nodes_in_group("bunk_dummies"):
+		dummy.undo()
+	(guard as GarbageGuard).recount.call_deferred()
 
 
 ## The vent jailbreak: the guard awake at his desk with no key (it's on the key board behind him, step 3) and a loose
