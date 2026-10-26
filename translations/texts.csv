@@ -4611,6 +4611,11 @@ PLACE_SCHOOL_VISIT,"Escuela Los Girasoles","Sunflowers School","Escola Os Girass
 "OBJ_FOOTBALL_INJURIES","Lesiones de verdad: %d de %d (a la tercera, ambulancia)","Real injuries: %d of %d (at the third, ambulance)","Lesões de verdade: %d de %d (na terceira, ambulância)"
 "OBJ_FOOTBALL_AMBULANCE","Se lo llevó la ambulancia: caso perdido.","The ambulance took him: case lost.","A ambulância levou ele: caso perdido."
 "OBJ_FOOTBALL_OVER","Partido terminado.","Match over.","Jogo encerrado."
+"HINT_ESCAPE_REFEREE","¡El árbitro se escapa en la moto de Barullo! ¡Atrápenlo antes de que doble la esquina!","The referee is getting away on Barullo's scooter! Catch him before he turns the corner!","O árbitro está fugindo na moto do Barullo! Peguem ele antes que vire a esquina!"
+"OBJ_FOOTBALL_CATCH_MOTO","Atrapar la moto de Barullo (suma como detenido)","Catch Barullo's scooter (counts as detained)","Pegar a moto do Barullo (conta como detido)"
+"CHASE_REFEREE_LINE_1","¡Siga, siga! ¡Ley de la ventaja!","Play on, play on! Advantage!","Segue, segue! Lei da vantagem!"
+"CHASE_REFEREE_LINE_2","¡El sobre era para la cooperadora de la escuela!","The envelope was for the school's parents' fund!","O envelope era para a associação de pais da escola!"
+"CHASE_REFEREE_LINE_3","Está bien, me entrego. Tarjeta amarilla para mí.","Fine, I give up. Yellow card for me.","Tudo bem, me entrego. Cartão amarelo para mim."
 HINT_INSPECTOR_ARRIVES,Llegó la inspectora de la ciudad: va contigo todo el turno y anota todo.,The city inspector is here: she goes with you all shift and writes everything down.,A inspetora da cidade chegou: ela vai com você o turno todo e anota tudo.
 INSPECTOR_ARRIVES,"Severina Regla, inspección de la ciudad. Hagan como si no estuviera.","Severina Regla, city inspection. Act as if I'm not here.","Severina Regla, inspeção da cidade. Façam de conta que não estou aqui."
 INSPECTOR_NOTE_1,Mmm.,Hmm.,Hum.

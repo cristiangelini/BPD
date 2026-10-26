@@ -95,10 +95,13 @@ const MODELS := {
 	# Engineer Remache gets away from the bridge in Pegote Hermanos' cement mixer (politico-puente.md), dropping
 	# cement blobs in the curves.
 	"cement_mixer": preload("res://assets/models/cement_mixer.glb"),
+	# The bought referee gets away from the charity match on concejal Barullo's scooter (politico-futbol.md).
+	"barullo_moto": preload("res://assets/models/barullo_scooter.glb"),
 }
 ## Who rides on top of it, where you can see them, each as [model, position, scale] (they get off when he gives up).
 const RIDERS := {
 	"moto": [[preload("res://assets/models/npc_repartidor.glb"), Vector3(0, 0.36, -0.15), 0.85]],
+	"barullo_moto": [[preload("res://assets/models/npc_arbitro.glb"), Vector3(0, 0.36, -0.15), 0.85]],
 	"wheelchair": [[preload("res://assets/models/npc_abuelo.glb"), Vector3(0, 0.12, 0.02), 0.72]],
 	"golf_cart": [[preload("res://assets/models/npc_sospechoso.glb"), Vector3(-0.3, 0.3, -0.2), 0.7],
 		[preload("res://assets/models/npc_preso.glb"), Vector3(0.3, 0.3, -0.2), 0.7]],
@@ -148,12 +151,14 @@ const SPEEDS := {"bear_on_foot": 12.0 / 3.6, "wheelchair": 8.0 / 3.6, "tow_truck
 	"toy_helicopter": 20.0 / 3.6, "invisible_car": 14.0 / 3.6,
 	"toro_jog": 13.0 / 3.6, "learner_car": 35.0 / 3.6, "pizza_scooter": 40.0 / 3.6,
 	"carousel_horse": 25.0 / 3.6, "chopper_moped": 30.0 / 3.6, "gallery_cart": 20.0 / 3.6,
-	"cement_mixer": 28.0 / 3.6}
+	"cement_mixer": 28.0 / 3.6, "barullo_moto": 45.0 / 3.6}
 ## The tow truck turns slowly and nearly stops to do it (persecucion-lugares.md): a cop cutting a corner on foot
 ## catches up with him.
 ## The golf cart turns very tight and hardly slows down to do it.
-const TURN_RATES := {"tow_truck": 1.0, "golf_cart": 3.2, "bike": 3.2, "clown_car": 3.0, "cement_mixer": 1.1}
-const TURN_SPEEDS := {"tow_truck": 0.3, "golf_cart": 0.75, "bike": 0.75, "clown_car": 0.75, "cement_mixer": 0.35}
+const TURN_RATES := {"tow_truck": 1.0, "golf_cart": 3.2, "bike": 3.2, "clown_car": 3.0, "cement_mixer": 1.1,
+	"barullo_moto": 3.0}
+const TURN_SPEEDS := {"tow_truck": 0.3, "golf_cart": 0.75, "bike": 0.75, "clown_car": 0.75, "cement_mixer": 0.35,
+	"barullo_moto": 0.7}
 const GOLF := "golf_cart"
 const TOW := "tow_truck"
 const OLD_PATROL := "old_patrol"
@@ -201,6 +206,7 @@ const STALL_TIME := 2.0
 const TOY_SIREN_NOTES: Array[float] = [610.0, 790.0]
 const TOY_SIREN_NOTE := 0.45
 const CEMENT_MIXER := "cement_mixer"
+const BARULLO_MOTO := "barullo_moto"
 ## Where the towed patrol car hangs behind the tow truck: its middle, and its nose lifted this much.
 const TOWED_AT := Vector3(0, 0.55, -5.6)
 const TOWED_TILT := -0.12
@@ -223,7 +229,7 @@ const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 
 	"toro_jog": Vector3(0.9, 1.8, 0.9), "learner_car": Vector3(2.1, 1.4, 4.6),
 	"pizza_scooter": Vector3(1.2, 1.6, 2.3), "carousel_horse": Vector3(1.6, 2.0, 1.8),
 	"chopper_moped": Vector3(0.8, 1.9, 1.7), "gallery_cart": Vector3(1.3, 1.9, 2.4),
-	"cement_mixer": Vector3(2.3, 3.0, 7.0)}
+	"cement_mixer": Vector3(2.3, 3.0, 7.0), "barullo_moto": Vector3(0.8, 1.6, 1.9)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
@@ -243,7 +249,7 @@ const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": 
 	"party_patrol": SEDAN_WHEELS, "toro_jog": NO_WHEELS, "learner_car": SEDAN_WHEELS,
 	"pizza_scooter": NO_WHEELS, "carousel_horse": NO_WHEELS, "chopper_moped": NO_WHEELS,
 	"gallery_cart": NO_WHEELS,
-	"cement_mixer": MIXER_WHEELS}
+	"cement_mixer": MIXER_WHEELS, "barullo_moto": NO_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)

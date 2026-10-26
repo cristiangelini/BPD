@@ -90,6 +90,8 @@ func test_the_third_injury_sends_him_off_in_an_ambulance() -> void:
 
 
 func test_the_final_whistle_closes_the_case() -> void:
+	# With the referee in the car: loose, he'd ride off (step 6).
+	OwnerEscort.of(referee).board()
 	pitch.score.scored.emit(FootballScore.Team.LUSTRE, pitch.politician)
 	pitch.match_clock.finished.emit()
 	assert_true(case.match_over)

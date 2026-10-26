@@ -10,7 +10,7 @@ extends Node3D
 ## (FootballScore). Step 3: the match (FootballMatch), with Deputy Lustre playing badly (FootballLustre), the veterans,
 ## their keeper and his two advisors (FootballPlayer); the cops play in yellow bibs. Step 4: the deputy's falls, the
 ## stretcher (FootballStretcher) and the Tank. Step 5: the bought referee (FootballReferee), concejal Barullo in the
-## stand and the case on top (FootballCase). Every number here is (propuesta).
+## stand and the case on top (FootballCase). Step 6: Barullo's scooter parked on the street, the referee's getaway. Every number here is (propuesta).
 
 const GOAL_MODEL := preload("res://assets/models/football_goal.glb")
 const BENCH_MODEL := preload("res://assets/models/team_bench.glb")
@@ -45,6 +45,8 @@ const STALL := Vector3(2.4, 2.2, 1.6)
 ## The referee's first spot and Barullo's seat in the stand (the middle step).
 const REFEREE_AT := Vector3(0, 0, 6)
 const BARULLO_AT := Vector3(4, 1.05, -21.1)
+## Barullo's scooter, parked on the street in front of the pitch facing east (step 6): the referee's getaway.
+const MOTO_AT := Vector3(10, 0.05, HALF + CityLayout.SIDEWALK + CityLayout.STREET / 2 + 1.5)
 
 const GRASS := Color(0.32, 0.62, 0.28)
 const GRASS_DARK := Color(0.27, 0.55, 0.24)
@@ -74,6 +76,8 @@ var stretcher: FootballStretcher
 var referee: FootballReferee
 var barullo: RallyFan
 var case: FootballCase
+## The parked scooter, which becomes the fleeing one (step 6).
+var moto: SuspectCar
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -132,6 +136,14 @@ func _ready() -> void:
 	city.transform = CityLayout.anchor("football_pitch")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+	moto = SuspectCar.new()
+	moto.name = "FleeingCar"
+	moto.kind = SuspectCar.BARULLO_MOTO
+	moto.driving = false
+	add_child(moto)
+	moto.transform = Transform3D(Basis(Vector3.UP, PI / 2), MOTO_AT)
+	# The referee is on the pitch until he runs for it.
+	moto.get_node("Rider").hide()
 	case = FootballCase.new()
 	case.name = "Case"
 	case.pitch = self

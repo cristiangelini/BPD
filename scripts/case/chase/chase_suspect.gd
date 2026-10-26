@@ -69,6 +69,8 @@ const MODELS := {
 	"engineer": preload("res://assets/models/npc_ingeniero.glb"),
 	"double": preload("res://assets/models/npc_politico.glb"),
 	"courier": preload("res://assets/models/npc_repartidor.glb"),
+	# The bought referee, off Barullo's scooter (politico-futbol.md).
+	"referee": preload("res://assets/models/npc_arbitro.glb"),
 }
 const HECKLER := "heckler_"
 ## The deputy's double (politico-doble.md), off on the kick scooter.
