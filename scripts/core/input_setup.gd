@@ -24,6 +24,8 @@ const KEYS := {
 	"hum": KEY_H,
 	# On foot, in the club's waltz: the step on the first beat.
 	"dance": KEY_H,
+	# On foot, in the mimes' rehearsal: pressing on the invisible wall.
+	"mime": KEY_H,
 	"scoreboard": KEY_TAB,
 	"map": KEY_M,
 	"slot_1": KEY_1,

@@ -90,7 +90,7 @@ func _build() -> void:
 		for col in CityLayout.COLUMNS:
 			_block(Vector2i(col, row))
 	for p: Dictionary in CityLayout.PLACES:
-		if p.id == live_place:
+		if p.id == live_place or p.get("park", false):
 			continue
 		var root := _building(p.block, p.side, p.along, p.size, p.color, p.sign, CityLayout.SHOPS.has(p.id),
 			p.id == "grandpa", p.id == "station")
@@ -208,7 +208,7 @@ func _block(block: Vector2i) -> void:
 	var inner := CityLayout.BLOCK - CityLayout.SIDEWALK * 2
 	_mesh_box(center + Vector3(0, 0.015, 0), Vector3(CityLayout.BLOCK, 0.01, CityLayout.BLOCK), SIDEWALK)
 	var ground := PAVED
-	if block == CityLayout.PLAZA or CityLayout.barrio_kind(block) == "house":
+	if block == CityLayout.PLAZA or CityLayout.is_park(block) or CityLayout.barrio_kind(block) == "house":
 		ground = GRASS
 	_mesh_box(center + Vector3(0, 0.03, 0), Vector3(inner, 0.01, inner), ground)
 	if block == CityLayout.PLAZA:
@@ -435,7 +435,8 @@ func _mirror(root: Node3D) -> void:
 ## Furniture models with a box to bump into when it has a footprint in `solids`; one with an action gets an
 ## InterrogationProp, which a cop can use (E) during an interrogation.
 ## The disguises on the floor in front of the lockers (infiltracion.md, step 1): one of each piece per cop, and the
-## choir's robes and songbooks (infiltracion-coro.md, step 2).
+## choir's robes and songbooks (infiltracion-coro.md, step 2), and the mime troupe's pieces (infiltracion-mimos.md, step 1)
+## and the costume party's (infiltracion-fiesta.md, step 1).
 func _disguises(root: Node3D) -> void:
 	for i in StationRooms.DISGUISES.size():
 		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.DISGUISES[i]).instantiate()
@@ -449,6 +450,46 @@ func _disguises(root: Node3D) -> void:
 		item.name = "Choir%d" % i
 		item.position = StationRooms.CHOIR_DISGUISES_AT + Vector3(i * StationRooms.CHOIR_GAP, 0.12, 0)
 		root.add_child(item)
+	for i in StationRooms.MIME_DISGUISES.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.MIME_DISGUISES[i]).instantiate()
+		piece.name = "Mime%d" % i
+		piece.position = StationRooms.MIME_DISGUISES_AT + Vector3(i * StationRooms.MIME_GAP, 0.12, 0)
+		root.add_child(piece)
+	for i in StationRooms.PARTY_DISGUISES.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.PARTY_DISGUISES[i]).instantiate()
+		piece.name = "Party%d" % i
+		piece.position = StationRooms.PARTY_DISGUISES_AT + Vector3(i * StationRooms.PARTY_GAP, 0.12, 0)
+		root.add_child(piece)
+	for i in StationRooms.GYM_DISGUISES.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.GYM_DISGUISES[i]).instantiate()
+		piece.name = "Gym%d" % i
+		piece.position = StationRooms.GYM_DISGUISES_AT + Vector3(i * StationRooms.GYM_GAP, 0.12, 0)
+		root.add_child(piece)
+	for i in StationRooms.THIEF_DISGUISES.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.THIEF_DISGUISES[i]).instantiate()
+		piece.name = "Thief%d" % i
+		piece.position = StationRooms.THIEF_DISGUISES_AT + Vector3(i * StationRooms.THIEF_GAP, 0.12, 0)
+		root.add_child(piece)
+	for i in StationRooms.CHEF_DISGUISES.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.CHEF_DISGUISES[i]).instantiate()
+		piece.name = "Chef%d" % i
+		piece.position = StationRooms.CHEF_DISGUISES_AT + Vector3(i * StationRooms.CHEF_GAP, 0.12, 0)
+		root.add_child(piece)
+	for i in StationRooms.CHESS_DISGUISES.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.CHESS_DISGUISES[i]).instantiate()
+		piece.name = "Chess%d" % i
+		piece.position = StationRooms.CHESS_DISGUISES_AT + Vector3(i * StationRooms.CHESS_GAP, 0.12, 0)
+		root.add_child(piece)
+	for i in StationRooms.BIKER_DISGUISES.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.BIKER_DISGUISES[i]).instantiate()
+		piece.name = "Biker%d" % i
+		piece.position = StationRooms.BIKER_DISGUISES_AT + Vector3(i * StationRooms.BIKER_GAP, 0.12, 0)
+		root.add_child(piece)
+	for i in StationRooms.AUCTION_DISGUISES.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.AUCTION_DISGUISES[i]).instantiate()
+		piece.name = "Auction%d" % i
+		piece.position = StationRooms.AUCTION_DISGUISES_AT + Vector3(i * StationRooms.AUCTION_GAP, 0.12, 0)
+		root.add_child(piece)
 
 
 func _furniture(items: Array, solids: Dictionary, root: Node3D) -> void:

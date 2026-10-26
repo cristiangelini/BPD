@@ -23,14 +23,22 @@ const KNOCK_FADE := 0.5
 ## Seconds of running before a straight piece of disguise falls off, and a crooked one. (propuesta)
 const DISGUISE_LOOSE_RUN := 4.0
 const DISGUISE_CROOKED_RUN := 1.5
+## Climbing onto a crouched partner's shoulders (boost_on) puts the feet this high over its feet.
+const BOOST_UP := GameScale.CROUCH_HEIGHT + 0.05
 ## After a piece falls, the next can't fall for this long (s), so a wall doesn't knock off everything at once.
 const DISGUISE_FALL_GAP := 1.0
+
+## Crawling in a duct, and scrambling (running) there.
+const CRAWL_SPEED := GameScale.CROUCH_SPEED / 2.0
+const CRAWL_RUN_SPEED := GameScale.CROUCH_SPEED
 
 @export var input_enabled := true
 
 var stamina := GameScale.RUN_STAMINA
 var is_running := false
 var is_crouching := false
+## In a duct (the vent jailbreak, VentDuct): down on all fours, slower, and running there is a noisy scramble.
+var crawling := false
 ## After running out of stamina, running waits until half of it is back.
 var exhausted := false
 ## Found in one of the pots by the grandpa's front door.
@@ -121,13 +129,16 @@ func _ready() -> void:
 		# Online, the player's own cop brings in the other players' cops (docs/diseno/online.md).
 		if Net.is_online():
 			Net.spawn_cops.call_deferred(self)
-		# Under investigation, the internal affairs agent comes into the case too (sobornos.md).
+		# Under investigation, the internal affairs agent comes into the case too (sobornos.md), and on the last shift
+		# the city's inspector (inspeccion.md).
 		_join_agent.call_deferred()
 
 
 func _join_agent() -> void:
 	if InternalAffairsAgent.join(self) or InternalAffairsAgent.of(self):
 		show_hint("HINT_AGENT_ARRIVES")
+	# On the last shift, the city's inspector comes along (inspeccion.md); she tells every cop herself.
+	CityInspector.join(self)
 
 
 ## What the camera points at within reach (empty if nothing), ignoring the cop's own body.
@@ -162,15 +173,23 @@ func drop_ram() -> RamPickup:
 
 ## The key text (tr() key) for what this cop can do right now: what's in hand, else what the camera points at.
 func current_prompt() -> String:
-	if vehicle or in_briefing or in_menu:
+	if vehicle:
+		var reach := window_target()
+		return reach.prompt_key(self) if reach else ""
+	if in_briefing or in_menu:
 		return ""
 	if seated_in:
 		return seated_in.prompt_key(self)
 	if $Grabber.held:
 		var aimed := _usable_target()
 		if aimed is WaitingArmchair or aimed is DigSpot or aimed is InterrogationSuspect or aimed is PastryCook \
-				or aimed is TunnelHole or aimed is CircusClown \
-				or (aimed is CellDoor and $Grabber.held is CellKey):
+				or aimed is TunnelHole or aimed is CircusClown or aimed is CellHideout or aimed is SchoolPupil \
+				or (aimed is CellDoor and $Grabber.held is CellKey) \
+				or (aimed is QueueCar and $Grabber.held is Breathalyzer and aimed.breath_check_ready()) \
+				or aimed is BankVine \
+				or aimed is CellHeater \
+				or aimed is BedSheet or aimed is SheetRope or aimed is RoofAntenna \
+				or (aimed is CellDoor and ($Grabber.held is CellKey or $Grabber.held is BillWad)):
 			return aimed.prompt_key(self)
 		if $Grabber.held.has_method("held_prompt_key"):
 			return $Grabber.held.held_prompt_key(self)
@@ -189,6 +208,8 @@ func current_prompt() -> String:
 	var partner := _cuffed_partner()
 	if partner:
 		return "PROMPT_UNCUFF"
+	if _crouched_partner():
+		return "PROMPT_BOOST"
 	var target := _usable_target()
 	if target and target.has_method("prompt_key"):
 		return target.prompt_key(self)
@@ -233,6 +254,7 @@ func eat_donut(box: DonutBox) -> bool:
 	show_hint("HINT_DONUT")
 	# Eaten in front of a suspect in an interrogation, it's the bad cop's move (interrogatorio.md).
 	get_tree().call_group("interrogation", "donut_eaten_by", self)
+	get_tree().call_group("city_inspector", "saw_donut", self)
 	return true
 
 
@@ -301,7 +323,9 @@ func belt_flashlight() -> void:
 
 
 func belt_cuff(body: Node, at: Vector3) -> void:
-	(belt.tools[0] as Handcuffs).cuff_body(body, at)
+	var target := (belt.tools[0] as Handcuffs).cuff_body(body, at)
+	if target:
+		get_tree().call_group("city_inspector", "saw_cuffed", self, target)
 
 
 ## This cop took a bribe of `amount` from whoever `body` belongs to (sobornos.md): they stay free and won't offer
@@ -326,6 +350,7 @@ func belt_bribe(body: Node, amount: int) -> void:
 		show_hint("HINT_BRIBE_CAUGHT")
 	if Campaign.current:
 		Campaign.current.take_bribe(amount, seen)
+	get_tree().call_group("city_inspector", "saw_bribe", self)
 
 
 func belt_photo(subject: Node, caught: Array) -> void:
@@ -345,6 +370,15 @@ func is_cuffed() -> bool:
 ## or at the armero's list. No walking, grabbing or ramming.
 func is_busy() -> bool:
 	return is_staggered() or listening_to != null or vehicle != null or in_briefing or in_menu or seated_in != null
+
+
+## Something this cop can reach out of the patrol car's window (the "window_reach" group: the toy helicopter's rope),
+## which E grabs instead of getting out.
+func window_target() -> Node:
+	for node in get_tree().get_nodes_in_group("window_reach"):
+		if node.can_reach(self):
+			return node
+	return null
 
 
 ## Rides `seat` of `car`, facing forward, until stand_up(). Lets go of whatever it was holding.
@@ -374,6 +408,18 @@ func handed(item: Grabbable) -> void:
 	$Grabber.grab(item)
 	if sync and not sync.is_multiplayer_authority() and sync.multiplayer.is_server():
 		sync.tell_held()
+
+
+## Tucked away out of sight (inside the garbage jailbreak's bag): nobody sees it and it bumps into nothing.
+func tuck_away(away: bool) -> void:
+	visible = not away
+	_shape.disabled = away
+	velocity = Vector3.ZERO
+
+
+## The same name for this cop on every PC (its CopSync's), for what the host sends about it.
+func net_id() -> String:
+	return String(sync.name) if sync else String(name)
 
 
 ## Puts the cop at `to` at once, empty-handed (the jailbreak's guard putting it back in its cell). Online, the host
@@ -453,9 +499,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif ram:
 			act("drop_ram", self)
 	elif event.is_action_pressed("ask"):
-		ask()
+		# Sat on something that takes R (the talent show's jury chair, its score card).
+		if seated_in and seated_in.has_method("ask"):
+			act("ask", seated_in)
+		else:
+			ask()
 	elif event.is_action_pressed("use"):
-		if vehicle:
+		if vehicle and window_target():
+			act("use", window_target())
+		elif vehicle:
 			act("exit", vehicle)
 		elif seated_in:
 			seated_in.stand_up()
@@ -509,11 +561,19 @@ func use() -> bool:
 			and _usable_target() is CircusClown:
 		act("use", _usable_target())
 		return true
+	# The wedding check's breathalyzer, to a stopped driver (control-boda.md).
+	if $Grabber.held is Breathalyzer and _usable_target() is QueueCar and _usable_target().breath_check_ready():
+		act("use", _usable_target())
+		return true
 	# A donut or a croissant for a hostage at the bank's party (robo-banco-rehenes.md, step 4).
 	if BankHostage.food_of(self) and _usable_target() is BankHostage and (_usable_target() as BankHostage).wants_food():
 		act("use", _usable_target())
 		return true
-	if $Grabber.held is BankCroissant:
+	# A pupil's card back to them, or a candy for one who cries (politico-escuela.md, step 5).
+	if ($Grabber.held is SchoolCard or $Grabber.held is SchoolCandy) and _usable_target() is SchoolPupil:
+		act("use", _usable_target())
+		return true
+	if $Grabber.held is BankCroissant or $Grabber.held is SchoolCard:
 		act("use", $Grabber.held)
 		return true
 	if $Grabber.held is DonutBox:
@@ -523,7 +583,7 @@ func use() -> bool:
 		act("eat_donut", self, [$Grabber.held])
 		return true
 	if $Grabber.held is HookStick or $Grabber.held is LooseDonut or $Grabber.held is SamplePlate \
-			or $Grabber.held is FloorPolisher or $Grabber.held is Watermelon:
+			or $Grabber.held is FloorPolisher or $Grabber.held is Watermelon or $Grabber.held is KitchenVessel or $Grabber.held is StatueCoin:
 		act("use", $Grabber.held)
 		return true
 	if $Grabber.held is VisitItem:
@@ -540,6 +600,10 @@ func use() -> bool:
 	var partner := _cuffed_partner()
 	if partner:
 		act("free_partner", self, [partner])
+		return true
+	var below := _crouched_partner()
+	if below:
+		act("boost_on", self, [below])
 		return true
 	var target := _usable_target()
 	if not target:
@@ -608,6 +672,21 @@ func _cuffed_partner() -> Cop:
 	return null
 
 
+## A crouched cop the camera points at within reach: E climbs onto its shoulders (fuga-techo.md, "hacer pie").
+func _crouched_partner() -> Cop:
+	var hit := aim_hit(GameScale.GRAB_REACH)
+	if not hit.is_empty() and hit.collider is Cop and (hit.collider as Cop).is_crouching \
+			and not (hit.collider as Cop).is_cuffed():
+		return hit.collider
+	return null
+
+
+## Up onto `partner`'s shoulders (it's crouched): standing on it, high enough to reach a cell's skylight.
+func boost_on(partner: Cop) -> void:
+	warp(Transform3D(global_basis, partner.global_position + Vector3.UP * BOOST_UP))
+	show_hint("HINT_BOOSTED")
+
+
 ## What the camera points at within reach that can be used with E (a door's body is a child of the door).
 func _usable_target() -> Node:
 	var hit := aim_hit(GameScale.GRAB_REACH)
@@ -629,13 +708,18 @@ func look(amount: Vector2) -> void:
 
 ## One movement tick. Kept apart from input so tests can drive it.
 func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_jump: bool) -> void:
+	# Tucked away in something that carries it (the garbage bag, the truck): it only goes where that goes.
+	if seated_in and seated_in.has_method("hold_point"):
+		global_position = seated_in.hold_point(self)
+		velocity = Vector3.ZERO
+		return
 	_update_crouch(want_crouch)
 	var moving := wish.length() > 0.1
 	if stamina <= 0.0:
 		exhausted = true
 	elif stamina >= GameScale.RUN_STAMINA * GameScale.STAMINA_RESUME:
 		exhausted = false
-	is_running = want_run and moving and not is_crouching and not exhausted
+	is_running = want_run and moving and (crawling or not is_crouching) and not exhausted
 	if is_running:
 		stamina = maxf(stamina - delta, 0.0)
 	else:
@@ -683,16 +767,17 @@ func _climbing(delta: float) -> void:
 	global_position = Climbable.along(_climb_from, _climb, 1.0 - climb_left / Climbable.CLIMB_TIME)
 
 
-## Running shakes the disguise: the most crooked piece falls off after DISGUISE_CROOKED_RUN seconds of running (a
+## Running shakes the disguise (but not sportswear, DisguisePiece.TIGHT): the most crooked piece falls off after DISGUISE_CROOKED_RUN seconds of running (a
 ## straight one after DISGUISE_LOOSE_RUN), and running into a wall knocks it off at once. The cop's own PC decides.
 func _shake_disguise(delta: float) -> void:
 	_fall_gap_left = maxf(_fall_gap_left - delta, 0.0)
-	if disguise.is_empty():
+	var shakable := disguise.keys().filter(func(kind: String) -> bool: return not DisguisePiece.TIGHT.has(kind))
+	if shakable.is_empty():
 		_shaken = 0.0
 		return
 	_shaken = _shaken + delta if is_running else maxf(_shaken - delta, 0.0)
-	var loosest: String = disguise.keys()[0]
-	for kind: String in disguise:
+	var loosest: String = shakable[0]
+	for kind: String in shakable:
 		if absf(disguise[kind]) > absf(disguise[loosest]):
 			loosest = kind
 	var limit := DISGUISE_CROOKED_RUN if absf(disguise[loosest]) > DisguisePiece.CROOKED else DISGUISE_LOOSE_RUN
@@ -725,8 +810,9 @@ func put_on_disguise(kind: String, tilt: float) -> void:
 		_hide_from_own_camera(worn)
 
 
-## A piece of disguise falls off in front of the cop (the host makes the one on the floor).
-func lose_disguise(kind: String) -> void:
+## A piece of disguise falls off in front of the cop (the host makes the one on the floor), or the cop took it off
+## (`hint` says which).
+func lose_disguise(kind: String, hint := "HINT_DISGUISE_FELL") -> void:
 	if not disguise.has(kind):
 		return
 	var at := DisguisePiece.slot_on(self, kind)
@@ -735,7 +821,7 @@ func lose_disguise(kind: String) -> void:
 	if worn:
 		worn.get_parent().remove_child(worn)
 		worn.queue_free()
-	show_hint("HINT_DISGUISE_FELL")
+	show_hint(hint)
 	if not multiplayer.is_server() or not get_parent():
 		return
 	var piece: DisguisePiece = DisguisePiece.scene_of(kind).instantiate()
@@ -754,6 +840,8 @@ func current_speed() -> float:
 	var factor := (BatteringRam.SPEED_FACTOR if ram else 1.0) * slow_factor * wade
 	if wheelbarrow:
 		factor = Wheelbarrow.SPEED_FACTOR * slow_factor * wade
+	if crawling:
+		return (CRAWL_RUN_SPEED if is_running else CRAWL_SPEED) * factor
 	if is_crouching:
 		return GameScale.CROUCH_SPEED * factor
 	if is_running:
