@@ -2141,3 +2141,15 @@ COCA_CLUE_insured_painting,"«¡Por fin! Le cuento, querido: vi a Mirta esconder
 PROMPT_FRAME_MARK,E: mirar la marca en la pared,E: look at the mark on the wall,E: olhar a marca na parede
 CLUE_FRAME_MARK,"En la pared llena de polvo hay un rectángulo limpio, del tamaño exacto de un cuadro. Lo descolgaron hace poco… y el pintor firmaba siempre al revés.","On the dusty wall there's a clean rectangle, the exact size of a painting. It came down recently… and the painter always signed upside down.","Na parede cheia de pó há um retângulo limpo, do tamanho exato de um quadro. Tiraram faz pouco… e o pintor sempre assinava de cabeça para baixo."
 HINT_REAL_PAINTING,¡La firma está al revés! Este es el verdadero.,The signature is upside down! This is the real one.,A assinatura está de cabeça para baixo! Este é o verdadeiro.
+MENU_CAKE_LAB,Laboratorio de pasteles (prueba),Cake lab (test),Laboratório de bolos (teste)
+LOC_under_steel_counter,abajo de una mesada de acero,under a steel counter,embaixo de uma bancada de aço
+LOC_between_flour_sacks,entre las bolsas de harina,between the flour sacks,entre os sacos de farinha
+LOC_in_cold_room,en la cámara de frío,in the cold room,na câmara fria
+LOC_under_tasting_table,abajo de una mesita del salón,under a table in the tasting room,embaixo de uma mesinha do salão
+LOC_behind_showcase,detrás de la vitrina de pasteles,behind the cake showcase,atrás da vitrine de bolos
+LOC_in_locker,en un casillero del vestuario,in a locker in the changing room,num armário do vestiário
+LOC_in_recipe_cabinet,en el armario de recetas,in the recipe cabinet,no armário de receitas
+LOC_on_cold_shelf,en un estante de la cámara de frío,on a shelf in the cold room,numa prateleira da câmara fria
+LOC_in_mixer_bowl,adentro de la batidora gigante,inside the giant mixer,dentro da batedeira gigante
+LOC_on_lab_table,en la mesa del laboratorio de sabores,on the flavor lab's table,na mesa do laboratório de sabores
+HINT_FLOURED,"¡Estás enharinado! Vas dejando huellas blancas por todos lados.","You're covered in flour! You leave white footprints everywhere.","Você está enfarinhado! Vai deixando pegadas brancas por todo lado."
