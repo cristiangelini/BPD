@@ -21,9 +21,9 @@ func test_every_second_belt_doll_is_a_captain() -> void:
 	var factory := _factory()
 	await wait_physics_frames(2)
 	for i in 4:
-		var doll := Node3D.new()
-		factory.add_child(doll)
+		var doll: FactoryDoll = DollFactory.BELT_DOLL_SCENE.instantiate()
 		factory.fed_doll.emit(doll)
+		factory.add_child(doll)
 	var captains := factory.get_children().filter(func(n: Node) -> bool: return n.has_node("CaptainHelmet"))
 	assert_eq(captains.size(), 2)
 

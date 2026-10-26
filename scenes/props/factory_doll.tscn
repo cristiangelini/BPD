@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3]
 
-[ext_resource type="Script" path="res://scripts/props/grabbable.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/props/factory_doll.gd" id="1"]
 [ext_resource type="PackedScene" path="res://assets/models/factory_doll.glb" id="2"]
 
 [sub_resource type="BoxShape3D" id="Shape"]

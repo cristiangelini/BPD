@@ -10,7 +10,7 @@ extends Node3D
 ## belt, and Nilda wants five of them in her box (step 4). The case is one of its stories (STORIES), drawn with the
 ## seed, run by the same RaidCase as the other places (step 5). Every number here is (propuesta).
 
-## The feeder dropped a bare doll onto the belt (the stories can dress it).
+## The feeder is about to drop a bare doll onto the belt (the stories can dress it before it is added).
 signal fed_doll(doll: Node3D)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -262,6 +262,8 @@ var fermin: Foreman
 var nilda: QuotaWorker
 ## Dolls that came out of the end of the belt into the box cart.
 var shipped := 0
+## Off on a guest's PC: the host's feeder drops the dolls and they come over (NpcSync, step 8).
+var brings_customers := true
 var _feed_left := 0.0
 var complaint_bar: ProgressBar
 ## The dolls the feeder dropped that are still around.
@@ -665,7 +667,7 @@ func _place_nilda() -> void:
 	cart.add_child(inside)
 	add_child(cart)
 	cart.body_entered.connect(func(body: Node3D) -> void:
-		if body.is_in_group("factory_dolls") and not body.has_meta("packed"):
+		if brings_customers and body.is_in_group("factory_dolls") and not body.has_meta("packed"):
 			body.set_meta("packed", true)
 			shipped += 1
 			get_tree().create_timer(PACK_DELAY).timeout.connect(body.queue_free))
@@ -673,17 +675,18 @@ func _place_nilda() -> void:
 
 func _physics_process(delta: float) -> void:
 	_feed_left -= delta
-	if _feed_left > 0.0 or not belt.is_moving():
+	if _feed_left > 0.0 or not belt.is_moving() or not brings_customers:
 		return
 	_feed_left = FEED_EVERY
 	fed = fed.filter(func(doll: Node3D) -> bool: return is_instance_valid(doll))
 	if fed.size() >= MAX_DOLLS:
 		return
-	var doll: Node3D = BELT_DOLL_SCENE.instantiate()
+	var doll: FactoryDoll = BELT_DOLL_SCENE.instantiate()
 	doll.position = FEED_AT
+	# Dressed before it's added, so a guest's copy comes out the same (step 8).
+	fed_doll.emit(doll)
 	add_child(doll)
 	fed.append(doll)
-	fed_doll.emit(doll)
 
 
 func _on_fragile_broken(at: Vector3) -> void:

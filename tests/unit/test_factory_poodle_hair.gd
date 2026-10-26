@@ -50,9 +50,9 @@ func test_the_hair_machine_gives_pink_hair_and_the_dolls_are_hairy() -> void:
 	cop.global_position = factory.to_global(DollFactory.MACHINES[1].stand) + Vector3(0, 0.1, 0)
 	await wait_physics_frames(3)
 	assert_true(cop.model.has_node("BeltHair"))
-	var doll := Node3D.new()
-	factory.add_child(doll)
+	var doll: FactoryDoll = DollFactory.BELT_DOLL_SCENE.instantiate()
 	factory.fed_doll.emit(doll)
+	factory.add_child(doll)
 	assert_true(doll.has_node("BeltHair"))
 
 
