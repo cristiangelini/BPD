@@ -446,6 +446,75 @@ const NPCS = {
 		for (const s of [-1, 1]) b.add('props', black, new THREE.CylinderGeometry(0.035, 0.035, 0.12, 8), { pos: V(s * 0.05, 1.0, 0.32), rot: [Math.PI / 2, 0, 0] });
 		b.add('props', black, new THREE.TorusGeometry(0.16, 0.008, 3, 12), { pos: V(0, 1.1, 0.12), rot: [1.2, 0, 0] });
 	},
+	// The restaurant (infiltracion-restaurante.md): a cook of the gang in a white jacket, a small white cap and a red
+	// neckerchief, a ladle in hand.
+	cocinero(b) {
+		const jacket = C('chef_white', 0xf6f6f2);
+		pearBody(b, SKIN.arena, { shirt: jacket, pants: C('check_pants', 0x3a3a40), belted: false });
+		for (const sd of [-1, 1]) for (let i = 0; i < 3; i++) b.add('body', black, ellipsoid(0.018, 0.018, 0.01, 5, 3), { pos: V(sd * 0.08, 0.66 + i * 0.1, 0.43 - i * 0.025) });
+		b.add('body', C('neckerchief_red', 0xc8202a), new THREE.TorusGeometry(0.2, 0.035, 5, 12), { pos: V(0, 1.06, 0.02), rot: [Math.PI / 2, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mustache(b, C('hair_brown', 0x4a2a14));
+		mouth(b);
+		b.add('cap', jacket, new THREE.CylinderGeometry(0.2, 0.2, 0.14, 12), { pos: V(0, 1.48, 0.0) });
+		const steel = C('ladle_steel', 0xb8bcc4);
+		b.add('props', steel, new THREE.CylinderGeometry(0.012, 0.012, 0.4, 5), { pos: V(0.5, 0.8, 0.12) });
+		b.add('props', steel, new THREE.SphereGeometry(0.06, 8, 4, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), { pos: V(0.5, 0.6, 0.12) });
+	},
+	// Another cook: a white jacket, a hairnet over a bun and an apron stained with tomato.
+	cocinera(b) {
+		const jacket = C('chef_white', 0xf6f6f2);
+		pearBody(b, SKIN.cacao, { shirt: jacket, pants: C('check_pants', 0x3a3a40), belted: false });
+		b.add('body', C('chef_apron', 0xe2e2dc), new THREE.BoxGeometry(0.5, 0.42, 0.02), { pos: V(0, 0.55, 0.47), rot: [-0.2, 0, 0] });
+		for (const [x, y] of [[-0.1, 0.6], [0.12, 0.5], [0.02, 0.42]]) b.add('body', C('tomato_stain', 0xc83a2a), ellipsoid(0.04, 0.03, 0.01, 6, 3), { pos: V(x, y, 0.49) });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mouth(b, { smile: true });
+		const hair = C('hair_black', 0x161214);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		b.add('head', C('hairnet', 0xd8d8e0), ellipsoid(0.11, 0.1, 0.11, 8, 5), { pos: V(0, 1.55, -0.08) });
+	},
+	// A waiter of the gang: a black vest over a white shirt, a bow tie, a towel on the arm and a tray.
+	mozo(b) {
+		const vest = C('vest_black', 0x1c1c22);
+		pearBody(b, SKIN.crema, { shirt: white, pants: vest });
+		b.add('body', vest, loft([{ y: 0.62, rx: 0.47, rz: 0.42 }, { y: 1.0, rx: 0.37, rz: 0.33 }], 10), { pos: V(0, 0, 0.005) });
+		for (const sd of [-1, 1]) b.add('body', black, new THREE.ConeGeometry(0.05, 0.09, 4), { pos: V(sd * 0.05, 1.07, 0.34), rot: [0, 0, sd * Math.PI / 2] });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mouth(b);
+		hairCap(b, C('hair_black', 0x161214));
+		b.add('props', white, new THREE.BoxGeometry(0.1, 0.3, 0.1), { pos: V(-0.5, 0.78, 0.12) });
+		b.add('props', C('tray_steel', 0xb8bcc4), new THREE.CylinderGeometry(0.2, 0.2, 0.02, 12), { pos: V(0.52, 1.0, 0.2) });
+	},
+	// The Chef Flambé, the gang's boss: a tall chef's hat, a huge curly mustache, a red neckerchief, a gold pin on the
+	// jacket and a frying pan with a little flame.
+	flambe(b) {
+		const jacket = C('chef_white', 0xf6f6f2);
+		pearBody(b, SKIN.crema, { shirt: jacket, pants: black, belted: false });
+		for (const sd of [-1, 1]) for (let i = 0; i < 3; i++) b.add('body', gold, ellipsoid(0.02, 0.02, 0.01, 5, 3), { pos: V(sd * 0.08, 0.66 + i * 0.1, 0.43 - i * 0.025) });
+		b.add('body', C('neckerchief_red', 0xc8202a), new THREE.TorusGeometry(0.2, 0.04, 5, 12), { pos: V(0, 1.06, 0.02), rot: [Math.PI / 2, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mustache(b, C('hair_brown', 0x4a2a14), 1.6);
+		mouth(b, { smile: true });
+		b.add('cap', jacket, new THREE.CylinderGeometry(0.2, 0.2, 0.1, 12), { pos: V(0, 1.47, 0.0) });
+		b.add('cap', jacket, new THREE.CylinderGeometry(0.25, 0.2, 0.3, 12), { pos: V(0, 1.67, 0.0) });
+		b.add('cap', jacket, ellipsoid(0.27, 0.12, 0.27, 10, 5), { pos: V(0, 1.84, 0.0) });
+		const pan = C('pan_black', 0x26262a);
+		b.add('props', pan, new THREE.CylinderGeometry(0.16, 0.13, 0.05, 12), { pos: V(0.55, 0.85, 0.3) });
+		b.add('props', pan, new THREE.CylinderGeometry(0.015, 0.015, 0.3, 5), { pos: V(0.55, 0.85, 0.08), rot: [Math.PI / 2, 0, 0] });
+		b.add('props', C('flame', 0xff8a20, { emissive: 0xc04000 }), new THREE.ConeGeometry(0.07, 0.18, 6), { pos: V(0.55, 0.97, 0.3) });
+	},
+	// The maître at the kitchen's door: a tuxedo, a thin mustache, slicked hair and the leather-bound book of bookings.
+	maitre(b) {
+		const tux = C('tux_black', 0x16161a);
+		pearBody(b, SKIN.celeste, { shirt: tux, pants: tux, belted: false });
+		lapels(b, white);
+		for (const sd of [-1, 1]) b.add('body', black, new THREE.ConeGeometry(0.05, 0.09, 4), { pos: V(sd * 0.05, 1.07, 0.34), rot: [0, 0, sd * Math.PI / 2] });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mustache(b, black, 0.7);
+		mouth(b);
+		hairCap(b, C('hair_black', 0x161214), { y: 1.4, sy: 0.45 });
+		b.add('props', C('book_leather', 0x5a2a1a), new THREE.BoxGeometry(0.24, 0.32, 0.05), { pos: V(-0.48, 0.8, 0.22), rot: [0.3, 0, 0] });
+	},
 	// Sospechoso: striped shirt, beanie and eye mask, with a loot sack.
 	sospechoso(b) {
 		pearBody(b, SKIN.celeste, { shirt: white, pants: C('jeans', 0x2a2f3a) });
@@ -800,7 +869,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, ladron_oso: 1.15, abuelo_oso: 1.15 };
+const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ladron_oso: 1.15, abuelo_oso: 1.15 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },

@@ -4,7 +4,8 @@ extends StaticBody3D
 ## The doorman of the grandparents' club (infiltracion.md, step 2b), or the lady at the chapel's door
 ## (infiltracion-coro.md, step 3b), or the theater's mute mime (infiltracion-mimos.md, step 2b), or the party's bouncer
 ## (infiltracion-fiesta.md, step 2b), or the gym's receptionist (infiltracion-gimnasio.md, step 2b), or the thieves'
-## school's lookout (infiltracion-escuela.md, step 2): they stand by the entrance and push back out any cop without the disguise of the
+## school's lookout (infiltracion-escuela.md, step 2), or the restaurant's maître at the kitchen door
+## (infiltracion-restaurante.md, step 2): they stand by the entrance and push back out any cop without the disguise of the
 ## place (Cop.is_disguised with `disguise_look`); a disguised one they let in with a greeting. Each PC pushes its own cop,
 ## the one it moves, so online it needs no syncing. Every number here is (propuesta).
 
@@ -15,12 +16,14 @@ const MODELS := {
 	"patovica": preload("res://assets/models/npc_patovica.glb"),
 	"recepcionista": preload("res://assets/models/npc_recepcionista.glb"),
 	"vigia": preload("res://assets/models/npc_vigia.glb"),
+	"maitre": preload("res://assets/models/npc_maitre.glb"),
 }
-const SCALES := {"portero": 1.2, "portera": 0.9, "mimo_portero": 1.2, "patovica": 1.25, "recepcionista": 0.9, "vigia": 1.2}
+const SCALES := {"portero": 1.2, "portera": 0.9, "mimo_portero": 1.2, "patovica": 1.25, "recepcionista": 0.9, "vigia": 1.2,
+	"maitre": 1.0}
 ## What each one says: the keys start with this (WELCOME, NO_0 without anything on, NO_1 with not enough), and the
 ## hint is HINT_ + it + NO_DISGUISE.
 const LINES := {"portero": "DOORMAN_", "portera": "DOORLADY_", "mimo_portero": "MIMEDOOR_", "patovica": "PARTYDOOR_",
-	"recepcionista": "GYMDOOR_", "vigia": "SCHOOLDOOR_"}
+	"recepcionista": "GYMDOOR_", "vigia": "SCHOOLDOOR_", "maitre": "RESTAURANTDOOR_"}
 ## The doorway he guards, in the club's space: a cop inside this box is going in.
 const DOOR_HALF_WIDTH := 0.9
 const DOOR_DEPTH := 1.2

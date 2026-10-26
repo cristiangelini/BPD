@@ -2162,3 +2162,34 @@ CHASE_DIRECTOR_LINE_2,¡Un cero en persecución! ¡Están todos reprobados!,A ze
 CHASE_DIRECTOR_LINE_3,"Está bien, me rindo. Pero que conste en el boletín que corrí bien.","Fine, I give up. But put it on the report card that I ran well.","Tá bom, me rendo. Mas que conste no boletim que eu corri bem."
 LEARNER_SIGN,ESCUELA DE MANEJO... DE ESCAPE,DRIVING SCHOOL... FOR GETAWAYS,AUTOESCOLA... DE FUGA
 LEARNER_STALLED,*¡Se le caló!*,*It stalled!*,*Morreu o motor!*
+PLACE_RESTAURANT,La Cuchara de Oro,The Golden Spoon,A Colher de Ouro
+RESTAURANT_MENU,MENÚ DEL DÍA · Sopa: 3 quilates · Ensalada: 2 quilates · Pescado: 1 collar · Fideos: consultar,TODAY'S MENU · Soup: 3 carats · Salad: 2 carats · Fish: 1 necklace · Pasta: ask,MENU DO DIA · Sopa: 3 quilates · Salada: 2 quilates · Peixe: 1 colar · Macarrão: consultar
+PROMPT_TALK_COOK,E: charlar con el cocinero,E: chat with the cook,E: conversar com o cozinheiro
+PROMPT_TALK_WAITER,E: charlar con el mozo,E: chat with the waiter,E: conversar com o garçom
+RESTAURANT_GOSSIP_0,¿Nuevo? Lávate las manos. Y no toques la olla grande de la cámara fría.,New? Wash your hands. And don't touch the big pot in the walk-in fridge.,Novo? Lave as mãos. E não toque na panela grande da câmara fria.
+RESTAURANT_GOSSIP_1,La mesa 7 siempre pide la sopa especial. Y siempre deja buena propina. En diamantes.,Table 7 always orders the special soup. And always tips well. In diamonds.,A mesa 7 sempre pede a sopa especial. E sempre deixa boa gorjeta. Em diamantes.
+RESTAURANT_GOSSIP_2,El Chef dice que el secreto de su salsa es el amor. Y un anillo.,The Chef says the secret of his sauce is love. And a ring.,O Chef diz que o segredo do molho é o amor. E um anel.
+RESTAURANT_GOSSIP_3,"Si se te quema algo, grita ""¡flambeado!"" y nadie se queja.","If something burns, shout ""flambé!"" and nobody complains.","Se algo queimar, grite ""flambado!"" e ninguém reclama."
+RESTAURANT_GOSSIP_4,Yo antes abría cajas fuertes. Ahora abro latas. Es casi lo mismo.,I used to open safes. Now I open cans. It's almost the same.,Eu abria cofres. Agora abro latas. É quase a mesma coisa.
+RESTAURANT_GOSSIP_5,"El menú no tiene precios, tiene quilates. Es un restaurante caro.","The menu doesn't have prices, it has carats. It's a fancy restaurant.","O cardápio não tem preços, tem quilates. É um restaurante caro."
+RESTAURANT_GOSSIP_6,"Cuando suena la campanita, corre. Cuando suena la sirena, corre más.","When the bell rings, run. When the siren rings, run faster.","Quando a campainha toca, corra. Quando a sirene toca, corra mais."
+RESTAURANT_GOSSIP_7,¿Sabes picar cebolla? Yo lloro igual. Será la culpa.,Can you chop onions? I cry anyway. Must be the guilt.,Você sabe picar cebola? Eu choro igual. Deve ser a culpa.
+RESTAURANT_GOSSIP_8,El maître no deja entrar a nadie a la cocina. Dice que es por higiene. Ajá.,The maître lets nobody into the kitchen. He says it's for hygiene. Sure.,O maître não deixa ninguém entrar na cozinha. Diz que é por higiene. Sei.
+RESTAURANT_GOSSIP_9,"La oficina del Chef tiene llave. La llave está en el delantal. El delantal, en la cámara fría. No le digas a nadie.","The Chef's office is locked. The key is in the apron. The apron, in the walk-in fridge. Don't tell anyone.","O escritório do Chef tem chave. A chave está no avental. O avental, na câmara fria. Não conte a ninguém."
+RESTAURANT_CUFFED,¡Oye! ¡Que se me pasa el arroz!,Hey! My rice is going to overcook!,Ei! Meu arroz vai passar do ponto!
+PROMPT_TALK_FLAMBE,E: saludar al Chef Flambé,E: greet the Chef Flambé,E: cumprimentar o Chef Flambé
+FLAMBE_0,"¡Cocinero nuevo! En mi cocina se cocina rápido, se sirve caliente y no se pregunta qué hay en la sopa.","New cook! In my kitchen you cook fast, serve hot and don't ask what's in the soup.","Cozinheiro novo! Na minha cozinha se cozinha rápido, se serve quente e não se pergunta o que tem na sopa."
+FLAMBE_1,"Cuando grito una comanda, quiero el plato en el pase. ¡Y que no se queme!","When I shout an order, I want the dish at the pass. And don't burn it!","Quando eu grito um pedido, quero o prato no passe. E que não queime!"
+FLAMBE_2,La sopa especial la hago yo. Nadie más. Es una receta de familia. De familia de ladrones.,I make the special soup. Nobody else. It's a family recipe. A family of thieves.,A sopa especial eu faço. Ninguém mais. É uma receita de família. De família de ladrões.
+FLAMBE_3,¿Ese bigote es tuyo? Mmm. Se ve muy... de policía.,Is that mustache yours? Hmm. It looks very... cop-like.,Esse bigode é seu? Hum. Parece muito... de policial.
+FLAMBE_CUFFED,"¡¿A mí?! ¡Soy un artista! ...Bueno, un artista del robo.","Me?! I'm an artist! ...Well, an artist of theft.","Eu?! Sou um artista! ...Bom, um artista do roubo."
+FLAMBE_FOUND_OUT,¡Policías en mi cocina! ¡Se cierra el servicio! Me voy en la moto del delivery.,Cops in my kitchen! Service is closed! I'm taking the delivery scooter.,Policiais na minha cozinha! O serviço está fechado! Vou na moto do delivery.
+RESTAURANTDOOR_WELCOME,"*El maître te mira de arriba abajo.* Adelante, cocinero. Lávese las manos.","*The maître looks you up and down.* Go ahead, cook. Wash your hands.","*O maître olha você de cima a baixo.* Pode entrar, cozinheiro. Lave as mãos."
+RESTAURANTDOOR_NO_0,¿Policía? La cocina es solo para el personal. Y está todo en regla. Todo.,A cop? The kitchen is staff only. And everything is in order. Everything.,Polícia? A cozinha é só para funcionários. E está tudo em ordem. Tudo.
+RESTAURANTDOOR_NO_1,Así no se entra a una cocina. Le falta el uniforme de cocinero.,That's no way into a kitchen. You're missing the cook's uniform.,Assim não se entra numa cozinha. Falta o uniforme de cozinheiro.
+HINT_RESTAURANTDOOR_NO_DISGUISE,El maître no te deja pasar a la cocina: ponte 2 piezas de cocinero de la fila de disfraces de la comisaría.,The maître won't let you into the kitchen: put on 2 cook pieces from the station's disguise row.,O maître não deixa você entrar na cozinha: vista 2 peças de cozinheiro da fileira de disfarces da delegacia.
+HUD_RESTAURANT_SUSPICION,Sospecha de la cocina,Kitchen suspicion,Suspeita da cozinha
+RESTAURANT_FOUND_OUT_0,¡Son policías! ¡Nadie cocina tan mal!,They're cops! Nobody cooks that badly!,São policiais! Ninguém cozinha tão mal!
+RESTAURANT_FOUND_OUT_1,¡Son policías! ¡Ese bigote es de cotillón!,They're cops! That mustache is from a party store!,São policiais! Esse bigode é de festa!
+RESTAURANT_FOUND_OUT_2,¡Son policías! ¡Preguntaron qué había en la sopa!,They're cops! They asked what was in the soup!,São policiais! Perguntaram o que tinha na sopa!
+HINT_RESTAURANT_FOUND_OUT,¡Los descubrieron! Toda la cocina sabe que son policías.,You've been found out! The whole kitchen knows you're cops.,Vocês foram descobertos! A cozinha toda sabe que vocês são policiais.
