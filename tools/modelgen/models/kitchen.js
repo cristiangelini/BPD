@@ -90,12 +90,33 @@ export function buildPlate() {
 	return b.build();
 }
 
+// The double-bottom pot from the walk-in fridge (step 5): the soup pot, a bit taller, with the false bottom lifted and
+// pearl and gold necklaces spilling over the rim. Its origin at its middle.
+export function buildNecklacePot() {
+	const b = new Builder('kitchen_pot_necklaces');
+	b.add('pot', steel, new THREE.CylinderGeometry(0.2, 0.18, 0.34, 14, 1, true));
+	b.add('pot', steel, new THREE.CylinderGeometry(0.18, 0.18, 0.02, 14), { pos: V(0, -0.16, 0) });
+	b.add('bottom', steel, new THREE.CylinderGeometry(0.185, 0.185, 0.02, 14), { pos: V(0, 0.1, 0), rot: [0.35, 0, 0] });
+	for (const s of [-1, 1]) b.add('handles', black, new THREE.TorusGeometry(0.045, 0.012, 4, 8, Math.PI), { pos: V(s * 0.22, 0.12, 0), rot: [Math.PI / 2, 0, s * Math.PI / 2] });
+	const pearl = mat('necklace_pearl', 0xf4f0e8), gold = mat('necklace_gold', 0xe8c040);
+	for (let n = 0; n < 3; n++) {
+		const m = n === 1 ? gold : pearl;
+		for (let i = 0; i < 9; i++) {
+			const t = i / 8;
+			const a = n * 2.1 + t * 1.2;
+			b.add('necklace', m, new THREE.SphereGeometry(0.018, 6, 4), { pos: V(Math.cos(a) * (0.12 + t * 0.1), 0.16 + Math.sin(t * Math.PI) * 0.06 - t * 0.12, Math.sin(a) * (0.12 + t * 0.1)) });
+		}
+	}
+	return b.build();
+}
+
 const KINDS = Object.keys(FOOD);
 
 export const models = {
 	...Object.fromEntries(KINDS.map((k) => [`food_${k}`, single(k)])),
 	...Object.fromEntries(KINDS.map((k) => [`kitchen_crate_${k}`, crate(k)])),
 	kitchen_pot: buildPot, kitchen_pan: buildPan, kitchen_plate: buildPlate,
+	kitchen_pot_necklaces: buildNecklacePot,
 };
 
 export const views = {
@@ -105,6 +126,7 @@ export const views = {
 			{ name: 'kitchen_pot', pos: [-0.6, 0.15, -0.1] },
 			{ name: 'kitchen_pan', pos: [0.1, 0.03, -0.1] },
 			{ name: 'kitchen_plate', pos: [0.8, 0.015, 0.0] },
+				{ name: 'kitchen_pot_necklaces', pos: [1.4, 0.17, -0.1] },
 			...KINDS.map((k, i) => ({ name: `kitchen_crate_${k}`, pos: [-1.4 + i * 0.7, 0, -0.9] })),
 		],
 		cam: { pos: [0, 1.5, 2.3], target: [0, 0.1, -0.1], fov: 50 },

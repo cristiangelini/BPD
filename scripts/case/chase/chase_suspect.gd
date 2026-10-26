@@ -44,6 +44,8 @@ const MODELS := {
 	"toro": preload("res://assets/models/npc_toro.glb"),
 	# The Director of the thieves' school, out of his getaway (infiltracion-escuela.md).
 	"director": preload("res://assets/models/npc_director.glb"),
+	# The Chef Flambé, off his delivery scooter (infiltracion-restaurante.md).
+	"flambe": preload("res://assets/models/npc_flambe.glb"),
 	# El Oso, out of the robbers' van or off his run with the sack (robo-banco.md).
 	"oso": preload("res://assets/models/npc_ladron_oso.glb"),
 	# El Conejo, who robbed the town bank alone (robo-banco-pueblo.md).

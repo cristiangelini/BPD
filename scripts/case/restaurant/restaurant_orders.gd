@@ -7,11 +7,14 @@ extends Node3D
 ## doesn't make: right and on time, "¡Eso!" and a waiter takes it; wrong (something missing or extra, raw or burnt) the
 ## order is lost too. A lost order (wrong, burnt or late) makes the cooks who see the kitchen suspicious (`failed`, to
 ## RestaurantHall), more when it was burnt. The host decides all of it and tells the guests. Every number here is
-## (propuesta).
+## (propuesta). Step 5: when the ring is one of the evidence (`specials`), every SPECIAL_EVERY-th order is instead the
+## Chef's own special soup for table 7, which stands on the pass SPECIAL_TIME seconds, ring and all, before a waiter
+## takes it (`special_changed`, to RestaurantHall).
 
 signal ordered(dish: String)
 signal served(dish: String)
 signal failed(amount: float)
+signal special_changed(on: bool)
 
 ## What goes in each dish: kind -> [the vessel it's cooked in ("" raw, added on the plate), the least seconds on the
 ## fire]. A dish has exactly these, one of each, and nothing burnt.
@@ -30,12 +33,18 @@ const HURRY := 15.0
 const WRONG := 20.0
 const BURNT := 30.0
 const MAX_OPEN := 3
+const SPECIAL_EVERY := 3
+const SPECIAL_TIME := 30.0
 
 ## The orders hanging on the rail, oldest first: {id, dish, left (s)} (every PC).
 var orders: Array[Dictionary] = []
 ## Seconds to the next order (host).
 var next_left := FIRST
 var case_seed := 0
+## Whether the special soup comes out (host), and whether it stands on the pass now (every PC).
+var specials := false
+var special_on := false
+var special_left := 0.0
 var chef: ClubMember
 ## The plates standing on the pass's counter (RestaurantHall sets it).
 var plates_on_pass: Callable = func() -> Array[KitchenVessel]: return []
@@ -43,6 +52,7 @@ var plates_on_pass: Callable = func() -> Array[KitchenVessel]: return []
 var inside: Callable = func(_at: Vector3) -> bool: return false
 var _rng := RandomNumberGenerator.new()
 var _made := 0
+var _called := 0
 var _rail: Label3D
 var _hud: CanvasLayer
 var _list: Label
@@ -92,6 +102,10 @@ static func judge(dish: String, items: Array[Dictionary]) -> String:
 ## Host: a new order on every PC (the next dish drawn with the seed, or this one: tests and the debug panel).
 func order(dish := "") -> void:
 	next_left = EVERY
+	_called += 1
+	if dish.is_empty() and specials and not special_on and _called % SPECIAL_EVERY == 0:
+		start_special()
+		return
 	if orders.size() >= MAX_OPEN:
 		return
 	if dish.is_empty():
@@ -134,7 +148,38 @@ func ring(cop: Cop = null) -> void:
 	_tell(line)
 
 
+## Host: the Chef puts his special soup for table 7 on the pass, on every PC; SPECIAL_TIME later a waiter takes it.
+func start_special() -> void:
+	special_left = SPECIAL_TIME
+	_set_special(true)
+	_tell("FLAMBE_SPECIAL")
+
+
+func _end_special() -> void:
+	_set_special(false)
+	_tell("FLAMBE_SPECIAL_OUT")
+
+
+func _set_special(on: bool) -> void:
+	special_on = on
+	special_changed.emit(on)
+	var net := _net()
+	if multiplayer.is_server() and net.is_online():
+		for peer: int in net.scene_peers:
+			_special_now.rpc_id(peer, on)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _special_now(on: bool) -> void:
+	special_on = on
+	special_changed.emit(on)
+
+
 func _process(delta: float) -> void:
+	if special_on and multiplayer.is_server():
+		special_left -= delta
+		if special_left <= 0.0:
+			_end_special()
 	for open in orders:
 		var was: float = open.left
 		open.left = maxf(open.left - delta, 0.0)

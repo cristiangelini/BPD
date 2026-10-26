@@ -10,6 +10,12 @@ extends InfiltrationPlace
 ## where the disguises are, and drive here. --place=restaurant opens it from Play. Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const KEY_POT_SCENE := preload("res://scenes/props/key_pot.tscn")
+const LEDGER_MODEL := preload("res://assets/models/fight_notebook.glb")
+const NECKLACE_POT_MODEL := preload("res://assets/models/kitchen_pot_necklaces.glb")
+const POT_MODEL := preload("res://assets/models/kitchen_pot.glb")
+const RING_MODEL := preload("res://assets/models/stolen_ring.glb")
+const APRON_MODEL := preload("res://assets/models/folded_chef_apron.glb")
 const HALF_X := 12.0
 const HALF_Z := 10.0
 const FLOOR_TOP := 0.06
@@ -76,6 +82,19 @@ const TABLE_SEVEN := 6
 const CASH_AT := Vector3(9.5, 0, 3.6)
 ## The menu board on the dining room's west wall.
 const MENU_AT := Vector3(-HALF_X + 0.12, 1.7, 6.0)
+## The 6 pieces of evidence (the seed picks 3, ClubEvidence) and where they are (step 5): the gang's account book by
+## the cash register (grabbed), the stolen ring in the Chef's special soup on the pass (a photo, while it's there), the
+## double-bottom pot full of necklaces on the walk-in fridge's floor (grabbed), the video of two cooks talking about
+## table 7's buyer, the menu board with its prices in carats (a photo) and the jeweller's receipt in the desk of the
+## Chef's locked office (E). The office key is in the pocket of the apron hanging in the walk-in fridge.
+const EVIDENCE_KINDS: Array[String] = ["ledger", "ring", "pot", "recording", "menu", "receipt"]
+const LEDGER_AT := Vector3(8.9, FLOOR_TOP + 1.03, 3.6)
+const SPECIAL_AT := Vector3(-5.0, FLOOR_TOP + PASS_COUNTER + 0.17, PASS_Z)
+const NECKLACE_POT_AT := Vector3(1.0, FLOOR_TOP + 0.19, -8.6)
+const RECEIPT_AT := Vector3(8.5, FLOOR_TOP + 0.85, -8.3)
+const APRON_AT := Vector3(OFFICE_X - 0.25, FLOOR_TOP + 0.9, -6.0)
+## Two cooks this close talk about the buyer (the recording).
+const TALK_PAIR := 2.6
 ## The maître stands in the dining room by the kitchen door.
 const MAITRE_AT := Vector3(KITCHEN_DOOR_X + 1.2, 0, PASS_Z + 0.8)
 
@@ -98,6 +117,9 @@ var vessels: Array[KitchenVessel] = []
 ## The Chef's orders and the pass's bell (step 4).
 var orders: RestaurantOrders
 var bell: PassBell
+## The special soup on the pass, with the ring (step 5), shown only while it's there.
+var special_soup: Node3D
+var _ring_spot: ClubEvidenceSpot
 var _build: PlaceBuilder
 
 
@@ -115,7 +137,11 @@ func _ready() -> void:
 	_add_people()
 	_add_kitchenware()
 	_add_orders()
+	_add_evidence()
 	place_in_city("restaurant")
+	start_case()
+	# The Chef's special soup comes and goes with the orders.
+	orders.special_changed.connect(_on_special)
 
 
 ## The Chef rides off from the street, out of the entrance (step 6).
@@ -277,6 +303,127 @@ func _on_order_failed(amount: float) -> void:
 	for member in members:
 		if member.look.begins_with("cocin") and in_kitchen(member.global_position + Vector3.UP):
 			suspicion.raise(member, amount)
+
+
+## The 3 pieces of evidence the seed picks (ClubEvidence), the special soup on the pass and the office key in the
+## apron hanging in the walk-in fridge (step 5).
+func _add_evidence() -> void:
+	evidence = ClubEvidence.new()
+	evidence.name = "Evidence"
+	evidence.held_kinds.assign(["ledger", "pot"])
+	evidence.talk_key = "RESTAURANT_TALK_%d"
+	add_child(evidence)
+	var pair := _talking_pair()
+	var available := EVIDENCE_KINDS.duplicate()
+	if pair.is_empty():
+		available.erase("recording")
+	evidence.kinds = ClubEvidence.draw(case_seed, available)
+	var apron: KeyPot = KEY_POT_SCENE.instantiate()
+	apron.name = "KeyApron"
+	apron.has_key = true
+	apron.prompt = "PROMPT_RESTAURANT_APRON"
+	add_child(apron)
+	apron.position = APRON_AT
+	apron.get_node("Pot").hide()
+	apron.get_node("Plant").hide()
+	var hanging := APRON_MODEL.instantiate()
+	hanging.rotation = Vector3(PI / 2, -PI / 2, 0)
+	hanging.position = Vector3(0, 0.3, 0)
+	apron.add_child(hanging)
+	_add_special_soup()
+	for kind: String in evidence.kinds:
+		match kind:
+			"ledger":
+				_item(kind, LEDGER_MODEL, Vector3(0.22, 0.04, 0.3), 0.3, LEDGER_AT)
+			"pot":
+				_item(kind, NECKLACE_POT_MODEL, Vector3(0.4, 0.34, 0.4), 4.0, NECKLACE_POT_AT)
+			"ring":
+				orders.specials = true
+				_ring_spot = _spot(kind, SPECIAL_AT, Vector3(0.5, 0.4, 0.5), true)
+				_show_special(false)
+			"menu":
+				_spot(kind, MENU_AT, Vector3(0.1, 1.0, 1.6), true)
+			"receipt":
+				_spot(kind, RECEIPT_AT, Vector3(0.6, 0.1, 0.4), false)
+				_build.mesh_box(RECEIPT_AT + Vector3(0, -0.12, 0.51), Vector3(0.5, 0.18, 0.02), WOOD.lightened(0.15))
+				_build.mesh_box(RECEIPT_AT + Vector3(0, -0.12, 0.53), Vector3(0.12, 0.03, 0.02), STEEL)
+			"recording":
+				evidence.talkers.assign(pair)
+				for member: ClubMember in pair:
+					member.distracted = true
+
+
+## The Chef's special soup for table 7: a pot with the ring sticking out of the soup, hidden until it comes out.
+func _add_special_soup() -> void:
+	special_soup = Node3D.new()
+	special_soup.name = "SpecialSoup"
+	add_child(special_soup)
+	special_soup.position = SPECIAL_AT
+	special_soup.add_child(POT_MODEL.instantiate())
+	var soup := MeshInstance3D.new()
+	var disc := CylinderMesh.new()
+	disc.top_radius = 0.18
+	disc.bottom_radius = 0.18
+	disc.height = 0.02
+	soup.mesh = disc
+	var red := StandardMaterial3D.new()
+	red.albedo_color = Color(0.85, 0.35, 0.2)
+	soup.material_override = red
+	soup.position.y = 0.1
+	special_soup.add_child(soup)
+	var ring := RING_MODEL.instantiate()
+	ring.position = Vector3(0.05, 0.13, 0.02)
+	ring.scale = Vector3.ONE * 1.5
+	special_soup.add_child(ring)
+	special_soup.hide()
+
+
+func _on_special(on: bool) -> void:
+	_show_special(on)
+
+
+## The special soup and, with the ring as evidence, its photo spot, there or not.
+func _show_special(on: bool) -> void:
+	special_soup.visible = on
+	if _ring_spot:
+		_ring_spot.collision_layer = 1 if on else 0
+		_ring_spot.get_child(0).disabled = not on
+
+
+## A piece of evidence to grab, lying at `at`.
+func _item(kind: String, model: PackedScene, size: Vector3, kg: float, at: Vector3) -> void:
+	var item := ClubEvidence.make_item("Restaurant_" + kind, model, size, kg)
+	add_child(item)
+	item.position = at
+	evidence.items[kind] = item
+
+
+## A piece of evidence that stays put, a box of `size` around `at`: photographed, or searched with E.
+func _spot(kind: String, at: Vector3, size: Vector3, photo: bool) -> ClubEvidenceSpot:
+	var spot := ClubEvidenceSpot.new()
+	spot.name = "Evidence_" + kind
+	spot.kind = kind
+	spot.photo = photo
+	spot.prompt_prefix = "PROMPT_RESTAURANT_"
+	spot.evidence = evidence
+	add_child(spot)
+	spot.position = at
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = size
+	shape.shape = box
+	spot.add_child(shape)
+	return spot
+
+
+## Two cooks by each other (the recording's pair), or none.
+func _talking_pair() -> Array[ClubMember]:
+	for first in members:
+		for second in members:
+			if first != second and first.look.begins_with("cocin") and second.look.begins_with("cocin") \
+					and first.position.distance_to(second.position) < TALK_PAIR:
+				return [first, second]
+	return []
 
 
 func _add_member(look: String, spot: Vector3, turn: float, rng: RandomNumberGenerator) -> void:
