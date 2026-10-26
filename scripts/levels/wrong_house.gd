@@ -9,12 +9,17 @@ extends Node3D
 ## has its front door locked with the key in one of its pots, its ornaments (fines), its mailbox, and an old station
 ## wagon parked in the side passage, nose to the street, with a roof rack. Step 3: the guilty neighbor, if he sees the
 ## cops go into doña Chola's house, carries his things out to his rack one by one and drives off with the main one.
+## Step 4: the door clues (a letter for the 14, the newspaper and Don Sobre the mailman), one of the first two wrong.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const POT_SCENE := preload("res://scenes/props/key_pot.tscn")
 const CHOLA_SCENE := preload("res://scenes/npc/neighbor_chola.tscn")
 const GUILTY_SCENE := preload("res://scenes/npc/guilty_neighbor.tscn")
+
+## A door clue went to the checklist: its line, already translated (the case adds it, step 8).
+signal clue_found(text: String)
+
 ## The guilty neighbor waits at his front window (house space).
 const GUILTY_AT := Vector3(-5.8, FLOOR_TOP, 6.0)
 const GRASS_TOP := 0.04
@@ -47,6 +52,14 @@ const WAGON_X := 16.0
 const WAGON_Z := 3.0
 const WAGON_SIZE := Vector3(1.9, 1.5, 4.6)
 const NUMBERS: Array[String] = ["1_", "_4"]
+## The newspaper for the 14 lies in one front garden (house space).
+const PAPER_AT := Vector3(2.5, GRASS_TOP + 0.05, 8.8)
+## The mailman rides the sidewalk in front of the lot, between two ends off it.
+const MAIL_Z := LOT_Z + 1.2
+const MAIL_ENDS := Vector2(-LOT_X - 8.0, LOT_X + 8.0)
+## Which of the two door clues is the wrong one (the mailman never lies).
+const MAILBOX := 0
+const PAPER := 1
 ## Window centers along each facade (u), downstairs and upstairs, front and back alike: only for the look.
 const WINDOWS := [[-5.8, -1.2, 3.5], [-3.5, 3.5]]
 const LEFT := 0
@@ -86,6 +99,13 @@ var broken: Array[int] = [0, 0]
 var wagons: Array[StaticBody3D] = []
 var chola: NeighborChola
 var neighbor: GuiltyNeighbor
+var mailman: Mailman
+## The door clue that points at the wrong house (MAILBOX or PAPER), each house's mailbox and the newspaper.
+var lying_clue := MAILBOX
+var mailboxes: Array[ClueSpot] = []
+var paper: ClueSpot
+## The door clues the cops found, in order.
+var clues: Array[String] = []
 ## Fines for what the cops broke, in both houses.
 var fines := 0
 var station_parking: Transform3D
@@ -106,6 +126,7 @@ func _ready() -> void:
 	_place_chola()
 	_bake_navigation()
 	_place_neighbor()
+	_place_door_clues()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("wrong_house")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -138,6 +159,66 @@ func _place_neighbor() -> void:
 	neighbor.rack_spot = Vector3(side * WAGON_X, FLOOR_TOP, WAGON_Z - WAGON_SIZE.z / 2 - 0.8)
 	add_child(neighbor)
 	neighbor.fled.connect(_on_fled)
+
+
+## The door clues: a letter for the 14 in one mailbox, the 14's newspaper in one front garden and the mailman. One
+## of the first two is in the wrong house.
+func _place_door_clues() -> void:
+	lying_clue = pick_lying(case_seed)
+	var letter_house := chola_house() if lying_clue == MAILBOX else guilty
+	for house in 2:
+		var box := _clue_spot(at(house, MAILBOX_AT + Vector3(0, 1.1, 0)), Vector3(0.36, 0.32, 0.52), "PROMPT_OPEN_MAILBOX")
+		if house == letter_house:
+			box.text = tr("CLUE_WH_LETTER") % tr(side_key(house))
+			box.read.connect(_on_clue)
+		else:
+			box.text = "WH_MAILBOX_ADS"
+		mailboxes.append(box)
+	var paper_house := chola_house() if lying_clue == PAPER else guilty
+	paper = _clue_spot(at(paper_house, PAPER_AT), Vector3(0.4, 0.14, 0.2), "PROMPT_READ_PAPER")
+	paper.text = tr("CLUE_WH_PAPER") % tr(side_key(paper_house))
+	paper.read.connect(_on_clue)
+	var roll := MeshInstance3D.new()
+	var cylinder := CylinderMesh.new()
+	cylinder.top_radius = 0.06
+	cylinder.bottom_radius = 0.06
+	cylinder.height = 0.36
+	roll.mesh = cylinder
+	roll.rotation.z = PI / 2
+	roll.material_override = _build.material(Color(0.88, 0.86, 0.8))
+	paper.add_child(roll)
+	mailman = Mailman.new()
+	mailman.route_z = MAIL_Z
+	mailman.ends = MAIL_ENDS
+	mailman.stops = [at(LEFT, MAILBOX_AT).x, at(RIGHT, MAILBOX_AT).x]
+	mailman.position.y = GRASS_TOP
+	mailman.clue = tr("CLUE_WH_MAILMAN") % tr(side_key(guilty))
+	mailman.told.connect(_on_clue)
+	add_child(mailman)
+
+
+func _clue_spot(where: Vector3, size: Vector3, prompt: String) -> ClueSpot:
+	var spot := ClueSpot.new()
+	spot.size = size
+	spot.prompt = prompt
+	spot.position = where
+	add_child(spot)
+	return spot
+
+
+func _on_clue(text: String) -> void:
+	clues.append(text)
+	clue_found.emit(text)
+
+
+## Which door clue lies, drawn from the seed.
+static func pick_lying(seed_value: int) -> int:
+	return hash(["wrong house clue", seed_value]) % 2
+
+
+## How a house is named from the sidewalk: the west one is on the left.
+static func side_key(house: int) -> String:
+	return "WH_SIDE_LEFT" if house == LEFT else "WH_SIDE_RIGHT"
 
 
 ## A house's floor on the ground (x, z).

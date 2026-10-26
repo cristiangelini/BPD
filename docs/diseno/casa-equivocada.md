@@ -116,6 +116,13 @@ valores siguen la escala del bingo: la principal unos 1000, los extras entre 300
   el paso 8). Un policía a menos de 1,5 m afuera de la casa lo frena: suelta lo que lleva, vuelve y prueba de nuevo a
   los 15 s. Lo que está en la parrilla se puede bajar. Si la policía entra primero en su casa, no tiene tiempo de nada.
   Captura en `/mnt/project-files/casa-equivocada/paso3-culpable.png`.
+- **Paso 4 (el cartero y las pistas de la puerta):** tres pistas que van a la planilla la primera vez que se leen con
+  E: una carta para "calle de los Sauces 14" en un buzón (el otro tiene propaganda), el diario de la 14 tirado en un
+  jardín, y Don Sobre (modelo `npc_cartero`, en la bicicleta de reparto), que pasa por la vereda cada 60 s, para 4 s en
+  cada buzón y, si le hablan, frena y dice "¿La 14? La de la izquierda/derecha; en la otra vive doña Chola". El cartero
+  nunca miente; de la carta y el diario, uno está en la casa equivocada, y cuál sale de la semilla (el doc decía que
+  siempre era el diario: así no se sabe de antemano). La casa se nombra como se ve desde la vereda: la del oeste es la
+  de la izquierda. Captura en `/mnt/project-files/casa-equivocada/paso4-cartero.png`.
 
 ## Preguntas para Cristian
 1. **¿Entrar en la casa equivocada se puede o termina el caso?** Recomendado: se puede, y es el chiste: doña Chola

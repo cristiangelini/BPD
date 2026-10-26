@@ -5008,6 +5008,15 @@ GUILTY_NOTICED,"(¡Están en lo de Chola! Mejor saco las cosas...)","(They're at
 GUILTY_GOING,"Voy a... sacar la basura. Sí, eso.","I'm just... taking out the trash. Yes, that.","Vou só... levar o lixo pra fora. Sim, isso."
 GUILTY_BLOCKED,"¡Ups! Esto no es mío. Ni sé qué es.","Oops! This isn't mine. I don't even know what it is.","Ops! Isso não é meu. Nem sei o que é."
 GUILTY_FLEES,"¡Me voy de vacaciones! ¡Chau, chau!","I'm off on vacation! Bye, bye!","Vou sair de férias! Tchau, tchau!"
+PROMPT_TALK_MAILMAN,"E: hablar con el cartero","E: talk to the mailman","E: falar com o carteiro"
+PROMPT_OPEN_MAILBOX,"E: mirar el buzón","E: check the mailbox","E: olhar a caixa de correio"
+PROMPT_READ_PAPER,"E: leer el diario","E: read the newspaper","E: ler o jornal"
+WH_SIDE_LEFT,"izquierda","left","esquerda"
+WH_SIDE_RIGHT,"derecha","right","direita"
+CLUE_WH_LETTER,"Buzón de la casa de la %s: una carta para «calle de los Sauces 14».","Mailbox of the house on the %s: a letter for ""14 Willow Street"".","Caixa de correio da casa da %s: uma carta para ""rua dos Salgueiros 14""."
+WH_MAILBOX_ADS,"Solo propaganda de la pizzería.","Just flyers from the pizza place.","Só propaganda da pizzaria."
+CLUE_WH_PAPER,"Diario tirado en el jardín de la casa de la %s: «Sauces 14».","Newspaper in the front garden of the house on the %s: ""14 Willow St."".","Jornal jogado no jardim da casa da %s: ""Salgueiros 14""."
+CLUE_WH_MAILMAN,"Don Sobre, el cartero: «¿La 14? La de la %s. En la otra vive doña Chola, un amor».","Don Sobre, the mailman: ""Number 14? The one on the %s. Doña Chola lives in the other one, a sweetheart.""","Don Sobre, o carteiro: ""A 14? A da %s. Na outra mora a dona Chola, um amor."""
 MENU_GYM_RAID,Gimnasio (allanamiento) (prueba),Gym (raid) (test),Academia (batida) (teste)
 HINT_TILL_KEY_GYM,¡Una llave! Abre la oficina y el vestuario.,A key! It opens the office and the locker room.,Uma chave! Abre o escritório e o vestiário.
 GYM_MIRROR_BROKEN,"¡Siete años de mala suerte, oficial!","Seven years of bad luck, officer!","Sete anos de azar, policial!"
