@@ -58,7 +58,7 @@ func test_a_cop_sits_on_the_jury_and_stands_up() -> void:
 	assert_eq(cop.seated_in, chair)
 	assert_eq(plan.jury_seated(), 1)
 	assert_lt(cop.global_position.distance_to(chair.global_position), 0.2)
-	assert_eq(chair.prompt_key(cop), "PROMPT_JURY_STAND")
+	assert_eq(chair.prompt_key(cop), "PROMPT_JURY_SEATED")
 	chair.stand_up()
 	assert_null(cop.seated_in)
 	assert_eq(plan.jury_seated(), 0)

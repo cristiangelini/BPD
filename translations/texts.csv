@@ -3398,6 +3398,36 @@ CASE_FAILED_TUNNEL_ESCAPED,Se escaparon 3 presos por el túnel. Caso perdido.,3 
 PROMPT_JURY_SIT,E: sentarte en el jurado,E: sit on the jury,E: sentar no júri
 PROMPT_JURY_STAND,E: pararte,E: stand up,E: levantar
 TALENT_SIGN,CONCURSO DE TALENTOS,TALENT SHOW,CONCURSO DE TALENTOS
+PROMPT_JURY_SEATED,E: pararte · R: cambiar el puntaje,E: stand up · R: change the score,E: levantar · R: mudar a nota
+TALENT_HELLO,¡Bienvenidos al concurso de talentos de la cárcel! Hoy el jurado es la policía. ¡Aplausos!,Welcome to the prison talent show! Today the police are the jury. Applause!,Bem-vindos ao concurso de talentos da prisão! Hoje o júri é a polícia. Aplausos!
+TALENT_VOTE,"¡Jurado, sus puntajes!","Jury, your scores!","Júri, suas notas!"
+TALENT_THANKS,¡Un aplauso! Ya viene el próximo número.,A round of applause! The next act is coming up.,Uma salva de palmas! Já vem o próximo número.
+TALENT_WINNER,¡Y el ganador es... %s!,And the winner is... %s!,E o vencedor é... %s!
+TALENT_TEARS,"¡Gracias, mamá! ¡Gracias, jurado!","Thank you, mum! Thank you, jury!","Obrigado, mãe! Obrigado, júri!"
+TALENT_ANNOUNCE_MAGICIAN,¡Con ustedes... el Gran Ratoncini y su caja mágica!,Here they are... the Great Ratoncini and his magic box!,Com vocês... o Grande Ratoncini e sua caixa mágica!
+TALENT_ACT_MAGICIAN,el mago,the magician,o mágico
+TALENT_LINE_MAGICIAN,¡Y ahora... desaparece!,And now... he vanishes!,E agora... desaparece!
+TALENT_ANNOUNCE_CHOIR,¡Con ustedes... el coro del pabellón B!,Here they are... the block B choir!,Com vocês... o coral do pavilhão B!
+TALENT_ACT_CHOIR,el coro,the choir,o coral
+TALENT_LINE_CHOIR,"¡Laaa, laaa, LAAAA!","Laaa, laaa, LAAAA!","Láá, láá, LÁÁÁ!"
+TALENT_ANNOUNCE_SMOKE,¡Con ustedes... el baile misterioso con humo!,Here they are... the mysterious smoke dance!,Com vocês... a misteriosa dança com fumaça!
+TALENT_ACT_SMOKE,el baile con humo,the smoke dance,a dança com fumaça
+TALENT_LINE_SMOKE,"¡Más humo, más misterio!","More smoke, more mystery!","Mais fumaça, mais mistério!"
+TALENT_ANNOUNCE_JUGGLER,¡Con ustedes... el malabarista de las tres papas!,Here they are... the three-potato juggler!,Com vocês... o malabarista das três batatas!
+TALENT_ACT_JUGGLER,el malabarista,the juggler,o malabarista
+TALENT_LINE_JUGGLER,¡Hop! ¡Hop! ¡Ay!,Hop! Hop! Ouch!,Hop! Hop! Ai!
+TALENT_ANNOUNCE_VENTRILOQUIST,¡Con ustedes... el ventrílocuo y el señor Botones!,Here they are... the ventriloquist and Mr Buttons!,Com vocês... o ventríloquo e o senhor Botões!
+TALENT_ACT_VENTRILOQUIST,el ventrílocuo,the ventriloquist,o ventríloquo
+TALENT_LINE_VENTRILOQUIST,Yo no muevo la boca. Él sí.,I don't move my lips. He does.,Eu não mexo a boca. Ele mexe.
+TALENT_ANNOUNCE_PLATES,¡Con ustedes... los platos chinos que no se caen!,Here they are... the spinning plates that never fall!,Com vocês... os pratos chineses que nunca caem!
+TALENT_ACT_PLATES,los platos chinos,the spinning plates,os pratos chineses
+TALENT_LINE_PLATES,"¡Que no se caigan, que no se caigan!","Don't fall, don't fall!","Não caiam, não caiam!"
+TALENT_ANNOUNCE_SPOONS,¡Con ustedes... la banda de cucharas!,Here they are... the spoon band!,Com vocês... a banda de colheres!
+TALENT_ACT_SPOONS,la banda de cucharas,the spoon band,a banda de colheres
+TALENT_LINE_SPOONS,"¡Tlin, tlin, tlin!","Clink, clink, clink!","Tlim, tlim, tlim!"
+TALENT_ANNOUNCE_POET,¡Con ustedes... el poeta del comedor!,Here they are... the canteen poet!,Com vocês... o poeta do refeitório!
+TALENT_ACT_POET,el poeta,the poet,o poeta
+TALENT_LINE_POET,"Oh, puré de la cárcel, tan gris como mi alma...","Oh, prison mash, as grey as my soul...","Oh, purê da prisão, tão cinza quanto minha alma..."
 BRIEF_MUSTACHES_B,"Alguien le pinta bigotes a todos los carteles del diputado Lustre del barrio. Creemos que es Tobías: nunca le perdonó que le cerrara la vereda por las obras.","Someone paints mustaches on every poster of deputy Lustre in the neighborhood. We think it's Tobías: he never forgave him for closing the sidewalk for the roadworks.","Alguém pinta bigodes em todos os cartazes do deputado Lustre no bairro. Achamos que é o Tobías: ele nunca perdoou que fechassem a calçada por causa das obras."
 BRIEF_MUSTACHES_C,"Traigan el esténcil del bigote en el baúl del patrullero. Y no pisen pintura: se nota.","Bring the mustache stencil back in the patrol car's trunk. And don't step in paint: it shows.","Tragam o estêncil do bigode no porta-malas da viatura. E não pisem na tinta: dá para ver."
 BRIEF_MUSTACHES_D,"Si encuentran los aerosoles negros o un cartel del diputado sin bigote, mejor: todo suma.","If you find the black spray cans or a poster of the deputy without a mustache, even better: it all adds up.","Se acharem os sprays pretos ou um cartaz do deputado sem bigode, melhor: tudo soma."

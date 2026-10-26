@@ -4,7 +4,19 @@ extends Node
 ## The prison's talent show (carcel-talentos.md, step 2): in the west half of the canteen, the stage against the back
 ## wall, the jury table with its 4 chairs in front of it and 3 benches with the 12 inmates sat watching; the host up
 ## on the stage. The seed draws the show: always the magician, the choir and the smoke dance (the ones hiding an
-## escape, step 5) and 2 of the 5 acts without a trick, in its own order. Every number here is (propuesta).
+## escape, step 5) and 2 of the 5 acts without a trick, in its own order. Step 3: the show starts when the first cop
+## walks into the canteen. The host welcomes everyone, and for each act: announces it with the curtain closed, opens
+## it for ACT_TIME (the act's performers up front, saying their lines), and asks the jury for their scores for
+## VOTE_TIME, with the cards up of every cop sat at the jury table; then the curtain closes for BREAK_TIME. After the
+## last one the host names the winner (the most points; with a tie, the later act). Every number here is (propuesta).
+
+signal show_started
+signal act_started(index: int)
+## `seated`: how many cops were at the jury table; `points`: their cards added up.
+signal voted(index: int, seated: int, points: int)
+signal show_ended(winner: int)
+
+enum Phase { WAITING, INTRO, ANNOUNCE, ACT, VOTE, BREAK, OVER }
 
 const ACTS: Array[String] = ["magician", "choir", "smoke", "juggler", "ventriloquist", "plates", "spoons", "poet"]
 ## The acts that hide an escape (step 5); the others are only suspicious.
@@ -20,6 +32,17 @@ const BENCH_ZS: Array[float] = [-1.6, -0.2, 1.2]
 const BENCH_SIZE := Vector3(5.2, 0.4, 0.35)
 const SEAT_XS: Array[float] = [-8.8, -7.6, -6.4, -5.2]
 const INMATES := 12
+const INTRO_TIME := 6.0
+const ANNOUNCE_TIME := 4.0
+const ACT_TIME := 60.0
+const VOTE_TIME := 5.0
+const BREAK_TIME := 15.0
+const LINE_EVERY := 8.0
+const CHOIR := 3
+## Where the performers stand on the stage (metres east of its middle, back from its front edge), and backstage.
+const PERFORM_BACK := 0.6
+const BACKSTAGE_BACK := 2.0
+const HOST_ASIDE := Vector2(-2.3, 0.5)
 const WOOD := Color(0.45, 0.3, 0.18)
 const CLOTH := Color(0.2, 0.35, 0.25)
 
@@ -28,8 +51,17 @@ var stage: TalentStage
 var chairs: Array[JuryChair] = []
 var inmates: Array[TalentInmate] = []
 var host: TalentInmate
-## The 5 acts of the show, in order.
+## The 5 acts of the show, in order, and who's in each (the choir is three).
 var acts: Array[String] = []
+var performers := {}
+var phase := Phase.WAITING
+var act_now := -1
+var phase_left := 0.0
+## Each act's points from the jury's cards and whether anyone was at the table when the host asked.
+var points: Array[int] = []
+var voted_ok: Array[bool] = []
+var winner := -1
+var _line_left := 0.0
 ## A guest's copy (step 7): the host's plan decides.
 var follower := false
 var _rng := RandomNumberGenerator.new()
@@ -88,12 +120,162 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 			PrisonLevel.FLOOR_TOP, BENCH_ZS[row] + BENCH_SIZE.z / 2 + 0.05)
 		inmate.face(stage.global_position)
 		inmates.append(inmate)
+	for act in acts:
+		var group: Array[TalentInmate] = []
+		for i in (CHOIR if act == "choir" else 1):
+			var performer := TalentInmate.new()
+			performer.name = "Performer_%s%d" % [act, i]
+			performer.role = TalentInmate.Role.PERFORMER
+			performer.act = act
+			add_child(performer)
+			performer.global_position = stage.spot((i - (CHOIR - 1) / 2.0) * 1.0 if act == "choir" else 0.0,
+				BACKSTAGE_BACK)
+			performer.face(performer.global_position + prison.global_basis.z)
+			performer.set_on_stage(false)
+			group.append(performer)
+		performers[act] = group
 	host = TalentInmate.new()
 	host.name = "Host"
 	host.role = TalentInmate.Role.HOST
 	add_child(host)
 	host.global_position = stage.spot(-1.8, 0.5)
 	host.face(host.global_position + prison.global_basis.z)
+
+
+## Showtime: the host's welcome.
+func start() -> void:
+	if phase != Phase.WAITING:
+		return
+	_enter(Phase.INTRO)
+	host.say("TALENT_HELLO", INTRO_TIME)
+	show_started.emit()
+
+
+func act_name(index: int) -> String:
+	return acts[index] if index >= 0 and index < acts.size() else ""
+
+
+## Who's up on the stage now.
+func on_stage() -> Array[TalentInmate]:
+	var list: Array[TalentInmate] = []
+	if act_now >= 0 and (phase == Phase.ACT or phase == Phase.VOTE):
+		list.assign(performers[acts[act_now]])
+	return list
+
+
+func is_over() -> bool:
+	return phase == Phase.OVER
+
+
+func _enter(next: Phase) -> void:
+	phase = next
+	match next:
+		Phase.INTRO:
+			phase_left = INTRO_TIME
+		Phase.ANNOUNCE:
+			phase_left = ANNOUNCE_TIME
+			act_now += 1
+			stage.set_curtain(false)
+			host.global_position = stage.spot(0.0, PERFORM_BACK)
+			host.say("TALENT_ANNOUNCE_%s" % acts[act_now].to_upper(), ANNOUNCE_TIME)
+		Phase.ACT:
+			phase_left = ACT_TIME
+			_line_left = 0.0
+			host.global_position = stage.spot(HOST_ASIDE.x, HOST_ASIDE.y)
+			stage.set_curtain(true)
+			var group: Array = performers[acts[act_now]]
+			for i in group.size():
+				var performer: TalentInmate = group[i]
+				performer.global_position = stage.spot((i - (group.size() - 1) / 2.0) * 1.0, PERFORM_BACK)
+				performer.set_on_stage(true)
+			act_started.emit(act_now)
+		Phase.VOTE:
+			phase_left = VOTE_TIME
+			host.say("TALENT_VOTE", VOTE_TIME)
+			for inmate in inmates:
+				inmate.cheer()
+			for chair in chairs:
+				chair.set_raised(chair.sitter != null)
+		Phase.BREAK:
+			phase_left = BREAK_TIME
+			_count_vote()
+			for performer: TalentInmate in performers[acts[act_now]]:
+				performer.set_on_stage(false)
+			stage.set_curtain(false)
+			host.say("TALENT_THANKS", 3.0)
+		Phase.OVER:
+			_count_vote()
+			for performer: TalentInmate in performers[acts[act_now]]:
+				performer.set_on_stage(false)
+			winner = 0
+			for i in points.size():
+				if points[i] >= points[winner]:
+					winner = i
+			# The curtain stays open: the winner comes out, the host to one side.
+			host.global_position = stage.spot(HOST_ASIDE.x, HOST_ASIDE.y)
+			host.say(tr("TALENT_WINNER") % tr("TALENT_ACT_%s" % acts[winner].to_upper()), 10.0)
+			var group: Array = performers[acts[winner]]
+			for i in group.size():
+				var performer: TalentInmate = group[i]
+				performer.global_position = stage.spot((i - (group.size() - 1) / 2.0) * 1.0, PERFORM_BACK)
+				performer.set_on_stage(true)
+				performer.say("TALENT_TEARS", 10.0)
+			show_ended.emit(winner)
+
+
+## The cards up when the host asked: added up, and back down on the table.
+func _count_vote() -> void:
+	var seated := 0
+	var total := 0
+	for chair in chairs:
+		if chair.raised:
+			seated += 1
+			total += chair.score
+		chair.set_raised(false)
+	points.append(total)
+	voted_ok.append(seated > 0)
+	voted.emit(act_now, seated, total)
+
+
+## Whether a world position is in the canteen (the building's front room, west of the kitchen).
+func in_canteen(at: Vector3) -> bool:
+	var local := prison.global_transform.affine_inverse() * at
+	return local.z > PrisonLevel.CELLS_Z and local.z < PrisonLevel.BUILDING_FRONT \
+		and local.x > -PrisonLevel.BUILDING_X and local.x < PrisonLevel.KITCHEN_X
+
+
+func _physics_process(delta: float) -> void:
+	if follower or phase == Phase.OVER:
+		return
+	if phase == Phase.WAITING:
+		for cop: Cop in get_tree().get_nodes_in_group("cops"):
+			if in_canteen(cop.global_position):
+				start()
+				return
+		return
+	if phase == Phase.ACT:
+		_line_left -= delta
+		if _line_left <= 0.0:
+			_line_left = LINE_EVERY
+			var group: Array = performers[acts[act_now]]
+			(group[randi() % group.size()] as TalentInmate).say("TALENT_LINE_%s" % acts[act_now].to_upper())
+	elif phase == Phase.VOTE:
+		# A cop who sits down while the host waits gets their card up too.
+		for chair in chairs:
+			if chair.sitter and not chair.raised:
+				chair.set_raised(true)
+	phase_left -= delta
+	if phase_left > 0.0:
+		return
+	match phase:
+		Phase.INTRO, Phase.BREAK:
+			_enter(Phase.ANNOUNCE)
+		Phase.ANNOUNCE:
+			_enter(Phase.ACT)
+		Phase.ACT:
+			_enter(Phase.VOTE)
+		Phase.VOTE:
+			_enter(Phase.OVER if act_now == acts.size() - 1 else Phase.BREAK)
 
 
 ## How many cops are sat at the jury table.

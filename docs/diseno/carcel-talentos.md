@@ -88,3 +88,10 @@ el del coro y quiénes gatean en el humo.
   (`TalentInmate`); arriba, el presentador con moño y micrófono. `TalentPlan` sortea el show: siempre el mago, el coro
   y el humo, más 2 de los otros 5, en el orden de la semilla. Capturas: `paso2-comedor.png`, `paso2-jurado.png` y
   `paso2-presentador.png` en `carcel-talentos/`.
+- **Paso 3:** el show (`TalentPlan`). Empieza cuando el primer policía entra al comedor: el presentador da la
+  bienvenida (6 s) y por cada número lo anuncia con el telón cerrado (4 s), lo abre 60 s con los del número adelante
+  (el mago con galera, el coro de 3, el malabarista con sus pelotas, el ventrílocuo con el señor Botones...) diciendo
+  su frase cada 8 s, y pide los puntajes 5 s: el público aplaude y sube el cartel de cada policía sentado en el jurado.
+  Después cierra el telón 15 s. Sentado en una silla del jurado, R cambia el puntaje del cartel (1 a 10). Al final
+  nombra al ganador (más puntos; con empate, el último), que sale a llorar de emoción. Capturas: `paso3-numero.png`,
+  `paso3-voto.png` y `paso3-ganador.png`.

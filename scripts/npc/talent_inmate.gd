@@ -2,10 +2,12 @@ class_name TalentInmate
 extends CharacterBody3D
 
 ## One of the inmates at the prison's talent show (carcel-talentos.md, step 2): sat on a bench in front of the stage
-## (AUDIENCE) or up on it with a bow tie and a microphone, announcing the acts (HOST). They say things in a bubble and
-## cheer with a little hop. Every number here is (propuesta).
+## (AUDIENCE) or up on it with a bow tie and a microphone, announcing the acts (HOST). Step 3: the ones in an act
+## (PERFORMER) wait behind the curtain with their act's things (the magician's top hat, the juggler's balls, the
+## ventriloquist's dummy...) until it's their turn. They say things in a bubble and cheer with a little hop.
+## Every number here is (propuesta).
 
-enum Role { AUDIENCE, HOST }
+enum Role { AUDIENCE, HOST, PERFORMER }
 
 const MODEL := preload("res://assets/models/npc_preso.glb")
 const SAY_TIME := 3.0
@@ -15,8 +17,14 @@ const HOP := 0.25
 const HOP_TIME := 0.15
 const BOW := Color(0.8, 0.1, 0.15)
 const MIC := Color(0.15, 0.15, 0.17)
+const BLACK := Color(0.08, 0.08, 0.1)
+const WHITE := Color(0.95, 0.95, 0.92)
+const BALLS: Array[Color] = [Color(0.9, 0.2, 0.2), Color(0.2, 0.6, 0.9), Color(0.95, 0.8, 0.2)]
+const JUGGLE_TIME := 0.5
 
 var role := Role.AUDIENCE
+## A performer's act (TalentPlan.ACTS).
+var act := ""
 var seated := false
 ## A guest's copy (step 7): the host's one decides.
 var follower := false
@@ -43,6 +51,8 @@ func _ready() -> void:
 		_model.add_child(CopTool.piece(CopTool.box(Vector3(0.22, 0.09, 0.04)), BOW, Vector3(0, 1.1, 0.28)))
 		_model.add_child(CopTool.piece(CopTool.cylinder(0.025, 0.22), MIC, Vector3(0.36, 0.85, 0.3)))
 		_model.add_child(CopTool.piece(CopTool.cylinder(0.045, 0.06), MIC, Vector3(0.36, 0.98, 0.3)))
+	if role == Role.PERFORMER:
+		_props()
 	_bubble = Label3D.new()
 	_bubble.name = "Bubble"
 	_bubble.position = Vector3(0, 2.1, 0)
@@ -56,6 +66,64 @@ func _ready() -> void:
 	_bubble.hide()
 	add_child(_bubble)
 	set_seated(seated)
+
+
+## What a performer carries for their act.
+func _props() -> void:
+	match act:
+		"magician":
+			_model.add_child(CopTool.piece(CopTool.cylinder(0.3, 0.03), BLACK, Vector3(0, 1.5, 0)))
+			_model.add_child(CopTool.piece(CopTool.cylinder(0.18, 0.32), BLACK, Vector3(0, 1.66, 0)))
+			_model.add_child(CopTool.piece(CopTool.cylinder(0.02, 0.4), BLACK, Vector3(0.4, 0.9, 0.25),
+				Vector3(0.6, 0, 0)))
+		"choir":
+			_model.add_child(CopTool.piece(CopTool.box(Vector3(0.3, 0.38, 0.03)), BLACK, Vector3(0, 0.85, 0.42),
+				Vector3(-0.4, 0, 0)))
+		"smoke":
+			_model.add_child(CopTool.piece(CopTool.box(Vector3(0.5, 0.06, 0.06)), Color(0.9, 0.3, 0.7),
+				Vector3(0, 1.1, 0.3)))
+		"juggler":
+			for i in BALLS.size():
+				var ball := CopTool.piece(_ball(0.07), BALLS[i], Vector3(-0.3 + i * 0.3, 1.5, 0.35))
+				ball.name = "Ball%d" % i
+				_model.add_child(ball)
+				var up := ball.create_tween().set_loops()
+				up.tween_interval(i * JUGGLE_TIME / 3)
+				up.tween_property(ball, "position:y", 2.0, JUGGLE_TIME).set_trans(Tween.TRANS_SINE)
+				up.tween_property(ball, "position:y", 1.3, JUGGLE_TIME).set_trans(Tween.TRANS_SINE)
+		"ventriloquist":
+			var dummy := Node3D.new()
+			dummy.name = "Dummy"
+			dummy.position = Vector3(0.42, 0.75, 0.3)
+			_model.add_child(dummy)
+			dummy.add_child(CopTool.piece(CopTool.box(Vector3(0.2, 0.3, 0.15)), Color(0.3, 0.3, 0.6)))
+			dummy.add_child(CopTool.piece(_ball(0.11), Color(0.95, 0.8, 0.65), Vector3(0, 0.26, 0)))
+		"plates":
+			for x: float in [-0.45, 0.45]:
+				_model.add_child(CopTool.piece(CopTool.cylinder(0.012, 0.8), WHITE, Vector3(x, 1.2, 0.3)))
+				_model.add_child(CopTool.piece(CopTool.cylinder(0.16, 0.02), WHITE, Vector3(x, 1.62, 0.3)))
+		"spoons":
+			for x: float in [-0.4, 0.4]:
+				_model.add_child(CopTool.piece(CopTool.box(Vector3(0.04, 0.22, 0.02)), Color(0.75, 0.77, 0.8),
+					Vector3(x, 0.9, 0.35)))
+		"poet":
+			_model.add_child(CopTool.piece(CopTool.box(Vector3(0.22, 0.3, 0.01)), WHITE, Vector3(0.3, 1.0, 0.4),
+				Vector3(-0.5, 0, 0)))
+
+
+static func _ball(radius: float) -> SphereMesh:
+	var mesh := SphereMesh.new()
+	mesh.radius = radius
+	mesh.height = radius * 2
+	mesh.radial_segments = 8
+	mesh.rings = 4
+	return mesh
+
+
+## On stage (shown, bumped into) or waiting behind the curtain (not seen).
+func set_on_stage(on: bool) -> void:
+	visible = on
+	collision_layer = 8 if on else 0
 
 
 ## On the bench (lower) or standing.
