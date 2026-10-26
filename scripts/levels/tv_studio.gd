@@ -8,8 +8,10 @@ extends Node3D
 ## lobby and the stairs at the front and the makeup room at the back, and over the makeup room the control room, its
 ## console behind a window that looks down into the studio. The cops start in the station and drive here; --place=debate
 ## opens it from Play. Step 2: the 3 cameras on wheels (TvCamera) and the big screen, which shows live what the camera
-## on air sees. Step 3: Lustre, Malvón and the moderator at their places and the debate (TvDebate). Every number here
-## is (propuesta).
+## on air sees. Step 3: Lustre, Malvón and the moderator at their places and the debate (TvDebate). Step 4: the
+## sabotage (TvSabotage) and what undoes it: the teleprompter in front of Lustre, the cue cards on a table by the set,
+## the spare mic on the makeup table and the spots' switch on the console, with the yellow warning light. Every number
+## here is (propuesta).
 
 const LECTERN_MODEL := preload("res://assets/models/tv_lectern.glb")
 const DESK_MODEL := preload("res://assets/models/tv_anchor_desk.glb")
@@ -62,6 +64,16 @@ const SHOTS: Array[Vector3] = [Vector3(-11, 1.5, -6), Vector3(-6, 1.3, -8.5), Ve
 const FIRST_ON_AIR := 2
 ## Where each of them stands: this far behind the lectern or the desk, facing the cameras.
 const BEHIND := 0.65
+## The teleprompter in front of Lustre's lectern, the table with the cue cards, the spare mic on the makeup table
+## and, on the console, the spots' switch and the yellow warning light (step 4).
+const PROMPTER_AT := Vector3(-1, 0, -4.5)
+const CARD_TABLE_AT := Vector3(2.2, 0, -2.5)
+const CARD_TABLE := Vector3(1.0, 0.8, 3.3)
+const CARDS := 6
+const MIC_AT := Vector3(11.35, 0.85, -10.45)
+const SWITCH_AT := Vector3(6.6, 0.95, -2.4)
+const WARNING_AT := Vector3(6.15, 1.95, -6.0)
+const WARNING := Color(1.0, 0.8, 0.1)
 ## The picture the screen shows, in pixels.
 const FEED_SIZE := Vector2i(768, 360)
 
@@ -92,6 +104,14 @@ var politician: Politician
 var malvon: RallyFan
 var moderator: RallyFan
 var debate: TvDebate
+## What the sabotage plays with and what fixes it (step 4).
+var spots: Array[SpotLight3D] = []
+var prompter: TvPrompter
+var props: Array[DebateProp] = []
+var spare_mic: DebateProp
+var light_switch: TvLightSwitch
+var warning: MeshInstance3D
+var sabotage: TvSabotage
 var lecterns: Array[Node3D] = []
 var public: Array[RallyFan] = []
 var _build: PlaceBuilder
@@ -121,6 +141,11 @@ func _ready() -> void:
 	debate.name = "Debate"
 	debate.setup(self, politician, malvon, moderator)
 	add_child(debate)
+	_place_fixes()
+	sabotage = TvSabotage.new()
+	sabotage.name = "Sabotage"
+	sabotage.setup(self, debate, case_seed)
+	add_child(sabotage)
 	city.transform = CityLayout.anchor("tv_studio")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
@@ -143,6 +168,72 @@ func _process(_delta: float) -> void:
 	var live := camera_on_air()
 	if live:
 		feed_camera.global_transform = live.lens()
+
+
+## Turns spot `index` (Malvón's, Lustre's, the desk's) on or off.
+func set_spot(index: int, on: bool) -> void:
+	spots[index].visible = on
+
+
+func spot_on(index: int) -> bool:
+	return spots[index].visible
+
+
+## The yellow light on the console: a trick is coming or on.
+func set_warning(on: bool) -> void:
+	warning.visible = on
+
+
+## The spare mic back on the makeup table, out of whoever's hands.
+func put_back_mic() -> void:
+	for holder: int in spare_mic.holders.keys():
+		var grabber := instance_from_id(holder) as Grabber
+		if grabber and grabber.held == spare_mic:
+			grabber.release()
+		else:
+			spare_mic.let_go(holder)
+	spare_mic.global_position = to_global(MIC_AT)
+	spare_mic.linear_velocity = Vector3.ZERO
+
+
+## The teleprompter, the table with the cue cards, the spare mic, the spots' switch and the warning light.
+func _place_fixes() -> void:
+	prompter = TvPrompter.new()
+	prompter.name = "Prompter"
+	prompter.position = PROMPTER_AT + Vector3.UP * FLOOR_TOP
+	add_child(prompter)
+	_build.box(CARD_TABLE_AT + Vector3(0, FLOOR_TOP + CARD_TABLE.y / 2, 0), CARD_TABLE, LOBBY)
+	for i in CARDS:
+		var card := DebateProp.new()
+		card.name = "Card%d" % i
+		card.kind = "card"
+		card.text = "TV_CARD_%d" % (i + 1)
+		add_child(card)
+		# Lying on the table, the text up, the stick toward the studio.
+		card.position = CARD_TABLE_AT + Vector3(0.45, FLOOR_TOP + CARD_TABLE.y + 0.04, -1.3 + i * 0.52)
+		card.rotation = Vector3(-PI / 2, PI / 2, 0)
+		props.append(card)
+	spare_mic = DebateProp.new()
+	spare_mic.name = "SpareMic"
+	spare_mic.kind = "mic"
+	add_child(spare_mic)
+	spare_mic.position = MIC_AT
+	props.append(spare_mic)
+	var level := GameScale.FLOOR_HEIGHT
+	light_switch = TvLightSwitch.new()
+	light_switch.name = "LightSwitch"
+	light_switch.position = SWITCH_AT + Vector3.UP * level
+	add_child(light_switch)
+	warning = MeshInstance3D.new()
+	warning.name = "Warning"
+	var lamp := SphereMesh.new()
+	lamp.radius = 0.15
+	lamp.height = 0.3
+	warning.mesh = lamp
+	warning.material_override = _glow(WARNING)
+	warning.position = WARNING_AT + Vector3.UP * level
+	warning.visible = false
+	add_child(warning)
 
 
 ## Someone behind a lectern or the desk, facing the cameras (NPCs face -Z).
@@ -304,6 +395,7 @@ func _build_rig() -> void:
 		spot.spot_range = 9.5
 		spot.spot_angle = 16.0
 		$Built.add_child(spot)
+		spots.append(spot)
 		_build.mesh_box(spot.position + Vector3(0, 0.15, 0), Vector3(0.35, 0.35, 0.45), RIG)
 	for x: float in [-12.0, -6.0, 0.0]:
 		for z: float in [-5.0, 4.0]:

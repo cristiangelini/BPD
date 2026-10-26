@@ -38,8 +38,8 @@ vergüenza de la que pasa solo."
      o desenchufando el teleprompter (y entonces improvisa, peor).
    - **La cámara:** la cámara al aire gira sola para enfocarlo de la nariz o del zapato. Se arregla empujándola de
      vuelta (pesa 80 kg: de a dos va rápido, uno solo despacio).
-   - **La luz:** se apaga el foco que lo ilumina. Se arregla apuntándole con una de las 2 linternas que hay en el estudio
-     (como el corte de luz de la cárcel), o subiendo a prender el foco desde la consola.
+   - **La luz:** se apaga el foco que lo ilumina. Se arregla apuntándole con la linterna del cinturón de un policía, o
+     subiendo a prender el foco desde la consola.
    - **El micrófono:** suena una bocina, un pato o un pedo cada vez que habla. Se arregla cambiándole el micrófono por
      el de repuesto del camarín.
 5. **El técnico comprado:** uno de los 3 de la consola, al azar por semilla. Pistas: tiene un vaso de café con el logo
@@ -57,7 +57,7 @@ vergüenza de la que pasa solo."
 ## Lo que se reusa
 - El diputado, su modelo y sus quejas (decisión 103); llevarlo de la mano (los rehenes del banco); cargar de a dos (la
   caja fuerte); esposas y escolta al patrullero; la persecución embebida (ChaseCase.begin); el público del acto; la
-  linterna del corte de luz de la cárcel.
+  linterna del cinturón del policía.
 - Lo nuevo: el canal de TV, las cámaras con ruedas, la pantalla al aire (una cámara de verdad del motor que se ve en la
   pantalla), el teleprompter, los carteles, la consola con los técnicos, Malvón y la moderadora, y la unidad móvil.
 
@@ -66,7 +66,7 @@ vergüenza de la que pasa solo."
    camarín.
 2. Las cámaras con ruedas y la pantalla al aire.
 3. El debate: el reloj de 3 bloques, la moderadora, Malvón, los turnos y la imagen del diputado.
-4. Los sabotajes y cómo se arreglan (carteles, cámara, linternas, micrófono de repuesto); el papelón.
+4. Los sabotajes y cómo se arreglan (carteles, cámara, linterna, micrófono de repuesto); el papelón.
 5. El técnico comprado: pistas, esposarlo; el caso, sueldo y cuota; el diputado que se va al camarín.
 6. La unidad móvil y el sorteo de Jugar (plaza, mercado, puente, cancha y canal).
 7. El online.
@@ -100,3 +100,15 @@ vergüenza de la que pasa solo."
   moderadora). Imagen de Lustre: empieza en 50, +6 por cada respuesta suya sin papelón, -3 por cada respuesta de
   Malvón, -8 por papelón (`blunder(kind)`, que usa el paso 4), entre 0 y 100. Arriba de la pantalla: bloque, tiempo
   e imagen. Modelos nuevos: `npc_candidata` (Malvón, traje violeta y peinado alto) y `npc_moderadora`.
+- **Paso 4 (los sabotajes):** `TvSabotage` (`studio.sabotage`): durante los bloques, cada 15 s un sabotaje al azar
+  (nunca el mismo dos veces seguidas). La luz amarilla de la consola avisa 3 s antes; después hay 6 s para arreglarlo o
+  es papelón (`TvDebate.blunder`, -8 de imagen) y la sala de control lo deshace sola.
+  - **Teleprompter** (`TvPrompter`, delante del atril de Lustre): muestra una de 4 frases ridículas y el diputado la
+    lee. Se arregla acercándole (a 2,5 m) uno de los 6 carteles de la mesa al lado del set, o desenchufándolo con E;
+    desenchufado ya no se sabotea, pero sus respuestas valen la mitad.
+  - **Cámara:** la de Lustre gira 0,7 rad a un lado; se arregla cuando vuelve a encuadrarlo (E o empujándola).
+  - **Luz:** se apaga su foco; se arregla con la linterna del cinturón de un policía apuntándole o con el interruptor de
+    la consola (E).
+  - **Micrófono:** dice "¡CUAC!", "¡PIII PIII!" o "¡PRRRT!" en vez de la respuesta; se arregla llevándole (a 1,5 m) el
+    micrófono de repuesto del camarín, que vuelve solo a su mesa.
+  Modelos nuevos: `teleprompter`, `cue_card` y `spare_mic`. El paso 5 apaga los sabotajes (`active = false`).
