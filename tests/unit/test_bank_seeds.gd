@@ -80,5 +80,6 @@ func test_the_others_have_no_seeds() -> void:
 	assert_false(bank.seeds)
 	assert_null(bank.seed_bank)
 	assert_eq(get_tree().get_nodes_in_group("seed_jars").size(), 0)
+	assert_eq(get_tree().get_nodes_in_group("pruning_shears").size(), 0)
 	for robber in bank.robbers:
 		assert_null(robber.find_child("StrawHat", true, false))

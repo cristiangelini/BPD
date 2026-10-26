@@ -3,8 +3,10 @@ extends Node3D
 
 ## The seed bank (robo-banco-semillas.md, decision 129), a child of the bank: step 1, the place. Pots with plants in the
 ## hall and on the counter, a green leaf over the vault's door, and the vault's shelves holding JARS glass jars of rare
-## seeds (SeedJar) instead of money; each hostage came to leave seeds from his garden and holds a small pot. Every
-## number here is (propuesta).
+## seeds (SeedJar) instead of money; each hostage came to leave seeds from his garden and holds a small pot. Step 2: a
+## gardener robber who sees a cop throws a handful of seeds halfway to him (once every THROW_EVERY) and a vine wall
+## grows there (BankVine); the two pruning shears on the counter (PruningShears) cut it. Online the host's decide
+## (`follower`). Every number here is (propuesta).
 
 ## The pots (bank coordinates, on the floor or the counter): on the counter, by the entrance and in the hall's corners.
 const POTS: Array[Vector3] = [
@@ -22,10 +24,20 @@ const JAR_COLORS: Array[Color] = [
 ]
 ## Where the small pot sits on a crouched hostage (his root, which faces -Z).
 const HOSTAGE_POT_AT := Vector3(0.0, 0.62, -0.32)
+## The pruning shears, on the counter (bank coordinates).
+const SHEARS: Array[Vector3] = [Vector3(-3.0, 1.2, -1.0), Vector3(5.0, 1.2, -1.0)]
+## Each gardener throws seeds at most this often (s), this far towards the cop (m, at most half the way).
+const THROW_EVERY := 20.0
+const THROW_REACH := 2.5
+const THROW_LINES := 3
 
 var bank: BankLevel
 var pots: Array[Node3D] = []
 var jars: Array[SeedJar] = []
+var shears: Array[PruningShears] = []
+var follower := false
+var _throw_left := {}
+var _vines := 0
 
 
 func setup(the_bank: BankLevel) -> void:
@@ -44,6 +56,46 @@ func setup(the_bank: BankLevel) -> void:
 		small.name = "HostagePot"
 		small.position = HOSTAGE_POT_AT
 		hostage.add_child(small)
+	for at in SHEARS:
+		var pair := PruningShears.new()
+		pair.name = "Shears%d" % shears.size()
+		pair.position = at + Vector3.UP * BankLevel.FLOOR_TOP
+		pair.rotation.y = 0.4
+		bank.add_child(pair)
+		shears.append(pair)
+	for robber in bank.robbers:
+		robber.spotted.connect(_on_spotted)
+
+
+func _physics_process(delta: float) -> void:
+	for robber: BankRobber in _throw_left.keys():
+		_throw_left[robber] -= delta
+		if _throw_left[robber] <= 0.0:
+			_throw_left.erase(robber)
+
+
+## A gardener saw a cop: seeds halfway to him and a vine wall there, facing him, unless he threw some just now.
+func _on_spotted(robber: BankRobber, cop: Node3D) -> void:
+	if follower or _throw_left.has(robber) or robber.is_cuffed() or robber.in_van or not robber.visible:
+		return
+	var way := cop.global_position - robber.global_position
+	way.y = 0.0
+	if way.length() < 0.5:
+		return
+	_throw_left[robber] = THROW_EVERY
+	robber.say("ROBBER_SEEDS_%d" % (_vines % THROW_LINES + 1))
+	grow_vine(robber.global_position + way.normalized() * minf(way.length() / 2.0, THROW_REACH), way)
+
+
+## A vine wall on the floor at `at` (world), its face towards `facing`.
+func grow_vine(at: Vector3, facing: Vector3) -> BankVine:
+	var vine := BankVine.new()
+	vine.name = "Vine%d" % _vines
+	_vines += 1
+	bank.add_child(vine)
+	vine.global_position = Vector3(at.x, bank.global_position.y + BankLevel.FLOOR_TOP, at.z)
+	vine.rotation.y = atan2(facing.x, facing.z)
+	return vine
 
 
 ## A clay pot with a round green bush, `size` times the hall's.
