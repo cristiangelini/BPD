@@ -4,7 +4,10 @@ extends Node
 ## The talent show case (carcel-talentos.md, step 6): the comisario tells it in his office and Q opens the planilla.
 ## Done when the show ends (TalentPlan.show_ended): SALARY, PER_ESCAPED less for each inmate gone during the show,
 ## PER_CAUGHT more for each one in the punishment cell and PER_VOTE more for each act the jury voted. Quota of its
-## own, like the other prison cases. With LOSE_AT gone the case is lost. Every number here is (propuesta).
+## own, like the other prison cases. With LOSE_AT gone the case is lost. Step 7: online the host's case decides and a
+## guest's follows it (CaseSync, snapshot): the show's phase and act, the curtain, the cards up, the votes, the smoke,
+## the windows, the counts and how it ended. The inmates, the box and the machine go by NpcSync, sitting down, the score
+## cards and E on the box, the machine, the sawyer and the offended by ActionSync. Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 6.0
@@ -168,6 +171,42 @@ func _show_result(result: Dictionary) -> void:
 			result.campaign.promoted)
 		over = result.campaign.over
 	shift_screen.get_node("%AgainButton").visible = not over and not follower
+
+
+## What every guest's case shows (CaseSync).
+func snapshot() -> Dictionary:
+	var plan := prison.talent
+	var raised: Array[bool] = []
+	for chair in plan.chairs:
+		raised.append(chair.raised)
+	return {"tip": tip_given, "phase": plan.phase, "act": plan.act_now, "left": plan.phase_left,
+		"points": plan.points, "voted": plan.voted_ok, "winner": plan.winner, "fight": plan.fight_left,
+		"curtain": plan.stage.is_open, "raised": raised, "tricks": plan.tricks.net_state(), "solved": solved_it,
+		"failed": failed_reason, "result": _result}
+
+
+func apply_snapshot(state: Dictionary) -> void:
+	var plan := prison.talent
+	if state.tip:
+		give_tip()
+	plan.phase = state.phase
+	plan.act_now = state.act
+	plan.phase_left = state.left
+	plan.points.assign(state.points)
+	plan.voted_ok.assign(state.voted)
+	plan.winner = state.winner
+	plan.fight_left = state.fight
+	if state.curtain != plan.stage.is_open:
+		plan.stage.set_curtain(state.curtain)
+	for i in mini(state.raised.size(), plan.chairs.size()):
+		if plan.chairs[i].raised != state.raised[i]:
+			plan.chairs[i].set_raised(state.raised[i])
+	plan.tricks.apply_net_state(state.tricks)
+	solved_it = state.solved
+	failed_reason = state.failed
+	checklist.show_rows(rows())
+	if not state.result.is_empty() and not shift_over:
+		_show_result(state.result)
 
 
 ## The planilla's rows, in the shape CaseChecklist takes.

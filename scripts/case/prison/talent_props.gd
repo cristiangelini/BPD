@@ -65,6 +65,20 @@ func use(cop: Cop) -> void:
 	opened.emit(self, cop)
 
 
+## What a guest's copy needs (NpcSync, step 7): out on the stage, someone in the box, its door, the machine on.
+func net_state() -> Array:
+	return [visible, occupied, closed, running]
+
+
+func apply_net_state(net: Variant) -> void:
+	visible = net[0]
+	collision_layer = 8 if net[0] else 0
+	occupied = net[1]
+	if net[2] != closed:
+		set_closed(net[2])
+	running = net[3]
+
+
 ## The box's door shut (with its stars) or swung open to the side.
 func set_closed(shut: bool) -> void:
 	closed = shut
