@@ -90,7 +90,7 @@ func _build() -> void:
 		for col in CityLayout.COLUMNS:
 			_block(Vector2i(col, row))
 	for p: Dictionary in CityLayout.PLACES:
-		if p.id == live_place:
+		if p.id == live_place or p.get("park", false):
 			continue
 		var root := _building(p.block, p.side, p.along, p.size, p.color, p.sign, CityLayout.SHOPS.has(p.id),
 			p.id == "grandpa", p.id == "station")
@@ -208,7 +208,7 @@ func _block(block: Vector2i) -> void:
 	var inner := CityLayout.BLOCK - CityLayout.SIDEWALK * 2
 	_mesh_box(center + Vector3(0, 0.015, 0), Vector3(CityLayout.BLOCK, 0.01, CityLayout.BLOCK), SIDEWALK)
 	var ground := PAVED
-	if block == CityLayout.PLAZA or CityLayout.barrio_kind(block) == "house":
+	if block == CityLayout.PLAZA or CityLayout.is_park(block) or CityLayout.barrio_kind(block) == "house":
 		ground = GRASS
 	_mesh_box(center + Vector3(0, 0.03, 0), Vector3(inner, 0.01, inner), ground)
 	if block == CityLayout.PLAZA:
