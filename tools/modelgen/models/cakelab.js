@@ -59,11 +59,56 @@ export function buildTestTubes() {
 	return b.build();
 }
 
+// The silver-filled cake (laboratorio.md, "El pastel relleno de plata"): three pink tiers 0.5 m across and 0.6 m tall on
+// a board, with the corners of green banknotes sticking out between the tiers.
+export function buildSilverCake() {
+	const b = new Builder('silver_cake');
+	const pink = mat('cake_pink', 0xf2a6c0), cream = mat('cake_cream', 0xfaf2e4), bill = mat('bill_green', 0x6ab06a);
+	b.add('board', mat('cake_board', 0xd8d8dc), new THREE.CylinderGeometry(0.27, 0.27, 0.02, 18), { pos: V(0, 0.01, 0) });
+	const tiers = [[0.25, 0.22, 0.02], [0.19, 0.18, 0.24], [0.13, 0.16, 0.42]];
+	for (const [r, h, y] of tiers) {
+		b.add('tier', pink, new THREE.CylinderGeometry(r, r, h, 18), { pos: V(0, y + h / 2, 0) });
+		b.add('cream', cream, new THREE.TorusGeometry(r, 0.02, 4, 18), { pos: V(0, y + h, 0), rot: [Math.PI / 2, 0, 0] });
+	}
+	for (let i = 0; i < 7; i++) {
+		const a = (i / 7) * Math.PI * 2, r = i % 2 ? 0.2 : 0.25, y = i % 2 ? 0.42 : 0.24;
+		b.add('bills', bill, new THREE.BoxGeometry(0.08, 0.004, 0.05), { pos: V(Math.cos(a) * r, y, Math.sin(a) * r), rot: [0.3, -a, 0.2] });
+	}
+	b.add('cherry', mat('cherry', 0xd23a3a), ellipsoid(0.03, 0.03, 0.03, 8, 6), { pos: V(0, 0.6, 0) });
+	return b.build();
+}
+
+// A silicone mold shaped like a banknote, 0.3 x 0.16 m: the sweet bills come out of it.
+export function buildBillMold() {
+	const b = new Builder('bill_mold');
+	const silicone = mat('mold_red', 0xd84a4a);
+	b.add('base', silicone, new THREE.BoxGeometry(0.3, 0.015, 0.16), { pos: V(0, 0.0075, 0) });
+	for (const [x, z, w, d] of [[0, 0.075, 0.3, 0.01], [0, -0.075, 0.3, 0.01], [0.145, 0, 0.01, 0.16], [-0.145, 0, 0.01, 0.16]]) b.add('rim', silicone, new THREE.BoxGeometry(w, 0.035, d), { pos: V(x, 0.0175, z) });
+	b.add('relief', mat('mold_relief', 0xb83a3a), new THREE.CylinderGeometry(0.035, 0.035, 0.01, 12), { pos: V(0, 0.02, 0) });
+	b.add('relief', mat('mold_relief', 0xb83a3a), new THREE.BoxGeometry(0.05, 0.01, 0.02), { pos: V(-0.09, 0.02, 0.03) });
+	return b.build();
+}
+
+// The "special orders" notebook: a pink spiral notebook with a gold dollar-ish sign of a cake on the cover.
+export function buildOrdersNotebook() {
+	const b = new Builder('orders_notebook');
+	b.add('cover', mat('notebook_pink', 0xe86a9a), new THREE.BoxGeometry(0.15, 0.02, 0.21), { pos: V(0, 0.01, 0) });
+	b.add('pages', mat('notebook_pages', 0xfaf6ea), new THREE.BoxGeometry(0.14, 0.016, 0.2), { pos: V(0.004, 0.01, 0) });
+	for (let i = 0; i < 7; i++) b.add('spiral', mat('spiral', 0x9a9aa2), new THREE.TorusGeometry(0.008, 0.002, 4, 8), { pos: V(-0.075, 0.01, -0.09 + i * 0.03), rot: [0, Math.PI / 2, 0] });
+	b.add('label', mat('label_gold', 0xe0b84a), new THREE.CylinderGeometry(0.03, 0.03, 0.002, 12), { pos: V(0.01, 0.021, 0) });
+	return b.build();
+}
+
 export const models = {
 	lab_oven: buildLabOven, giant_mixer: buildGiantMixer, microscope: buildMicroscope, test_tubes: buildTestTubes,
+	silver_cake: buildSilverCake, bill_mold: buildBillMold, orders_notebook: buildOrdersNotebook,
 };
 
 export const views = {
+	silver_cake: {
+		items: [{ name: 'silver_cake', pos: [-0.3, 0, 0] }, { name: 'bill_mold', pos: [0.35, 0, 0.15] }, { name: 'orders_notebook', pos: [0.35, 0, -0.15] }],
+		cam: { pos: [0, 0.9, 1.6], target: [0, 0.25, 0], fov: 40 },
+	},
 	cake_lab: {
 		items: [
 			{ name: 'lab_oven', pos: [-1.0, 0, 0] }, { name: 'giant_mixer', pos: [0.4, 0, 0.1] },

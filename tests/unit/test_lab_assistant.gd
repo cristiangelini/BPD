@@ -46,6 +46,9 @@ func test_a_sample_busies_the_hands_and_she_tells_once() -> void:
 func test_with_nothing_seen_she_only_offers_more() -> void:
 	var lab := _lab()
 	await wait_physics_frames(2)
+	# The story tells her what she saw; with nothing to tell:
+	lab.pocha.clue = ""
+	lab.pocha.clue_speech = ""
 	var cop: Cop = lab.get_node("Cop")
 	lab.pocha.use(cop)
 	assert_true(cop.is_eating())

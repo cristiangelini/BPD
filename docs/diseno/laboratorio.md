@@ -98,6 +98,14 @@ Los pesos y valores siguen la escala de la oficina: la principal vale unos 1000 
      nada que contar dice "Por ahora no vi nada raro". Cada historia puede darle sabor a la muestra (una pista
      propia, como la punta del billete). Captura `paso3-pocha.png`.
 4. El caso (RaidCase) con la primera historia: el pastel relleno de plata.
+   - **Cómo quedó (propuesta):** el laboratorio ya es un allanamiento: el comisario lee la denuncia del yate, la
+     planilla tiene 3 sospechas de las 6, y el pastel de 3 pisos (12 kg, 1000, se aplasta a más de 1,5 m/s) se esconde
+     en uno de los 6 escondites para cosas pesadas, con el molde de billete (1 kg, 200) y la libreta de pedidos
+     especiales (0,3 kg, 300). Las dos batidoras gigantes tienen una perilla amarilla: E y escupen 14 billetes verdes
+     por el aire (la primera vez va a la planilla). La muestra de Pocha cruje: "¡Es la punta de un billete!". El chef
+     se delata con dónde guardó algo, Pocha cuenta dónde lo vio, la caja tiene la llave del laboratorio y la cámara
+     de frío, y si ve la prueba se escapa en auto o termina en el interrogatorio. Capturas `paso4-batidora.png` y
+     `paso4-pastel.png`.
 5. Las otras 5 historias, una por PR.
 6. "Jugar" sortea entre los 7 lugares de allanamiento.
 7. El online (el chef, Pocha, la harina y los pasteles en todas las PC).

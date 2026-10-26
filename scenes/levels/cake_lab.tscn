@@ -73,7 +73,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.35, 0.3, 1)
 theme_override_constants/outline_size = 10
 theme_override_font_sizes/font_size = 40
-text = "CASE_FAILED_LAWYER_INSURANCE"
+text = "CASE_FAILED_LAWYER_CAKE_LAB"
 horizontal_alignment = 1
 
 [node name="CaseSolved" type="Label" parent="CaseHud"]
