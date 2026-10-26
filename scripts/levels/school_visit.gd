@@ -7,8 +7,9 @@ extends Node3D
 ## blackboard on the back wall, the teacher's desk with the candy box and Señorita Rosa (SchoolAdult); to the east,
 ## a corridor with the backpacks and the door out to the playground: the slide, the sandbox and the janitor's shed with
 ## his cleaning cart. Each desk has its pupil (SchoolPupil), their looks drawn by the seed, and Don Tito the janitor
-## sweeps the hall. The cops start in the station and drive here; --place=school_visit opens it from Play. Every
-## number here is (propuesta).
+## sweeps the hall. The cops start in the station and drive here; --place=school_visit opens it from Play. Step 3:
+## Deputy Lustre waits on the sidewalk and his visit (SchoolTour) is the case's clock: the talk, recess in the
+## playground, the questions and the group photo out front. Every number here is (propuesta).
 
 ## The building (CityLayout "school_visit"): 28 x 12 m under one roof, with the playground (28 x 12 m more) behind it.
 const HALF_X := 14.0
@@ -47,6 +48,22 @@ const SANDBOX := Rect2(-3.5, -9.5, 3.0, 3.0)
 const SHED := Rect2(8.0, -12.0, 6.0, 4.5)
 const SHED_DOOR_Z := -9.75
 const CART_AT := Vector3(11.5, 0, -10.0)
+## The corners everyone walks through (step 3): inside the classroom's door, the hall by it and by the corridor, the
+## corridor by the playground's door and just out of it, and inside and outside the front door.
+const CLASS_DOOR_IN := Vector3(-5.0, 0, 8.4)
+const HALL_WEST := Vector3(-5.0, 0, 10.5)
+const HALL_EAST := Vector3(9.0, 0, 10.5)
+const CORRIDOR := Vector3(9.0, 0, 1.0)
+const YARD_IN := Vector3(9.0, 0, -1.0)
+const FRONT_IN := Vector3(0.0, 0, 10.5)
+const FRONT_OUT := Vector3(0.0, 0, 13.6)
+## Where the deputy waits for his guard, on the sidewalk by the front door.
+const WAITING_AT := Vector3(2.0, 0, 14.0)
+## Where the pupils play at recess: anywhere in this part of the playground, clear of the shed.
+const RECESS_AREA := Rect2(-12.0, -10.5, 18.0, 8.5)
+## The group photo on the sidewalk: the deputy against the wall, the pupils in two rows of 10 in front of him.
+const PHOTO_DEPUTY := Vector3(0.0, 0, 12.8)
+const PHOTO_ROWS: Array[float] = [13.7, 14.4]
 
 const WALL := Color(0.95, 0.85, 0.55)
 const TRIM := Color(0.45, 0.4, 0.55)
@@ -68,6 +85,9 @@ var case_seed := 0
 var pupils: Array[SchoolPupil] = []
 var teacher: SchoolAdult
 var janitor: SchoolAdult
+## Deputy Lustre and his visit, the clock of the case (step 3).
+var politician: Politician
+var tour: SchoolTour
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -85,6 +105,16 @@ func _ready() -> void:
 	_build_hall()
 	_build_yard()
 	_place_people()
+	politician = Politician.new()
+	politician.name = "Politician"
+	add_child(politician)
+	politician.position = WAITING_AT + Vector3.UP * FLOOR_TOP
+	# Facing the street, waiting for his guard.
+	politician.rotation.y = PI
+	tour = SchoolTour.new()
+	tour.name = "Tour"
+	tour.setup(self, politician, case_seed)
+	add_child(tour)
 	city.transform = CityLayout.anchor("school_visit")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
@@ -108,6 +138,83 @@ static func looks_for(seed_value: int) -> Array[int]:
 ## Where pupil `desk` sits (0 to 19, row by row from the front), in the school's space.
 static func seat(desk: int) -> Vector3:
 	return Vector3(DESK_X[desk % DESK_X.size()], 0, DESK_ROWS[desk / DESK_X.size()])
+
+
+## The aisle beside desk `desk`, east of it: where its pupil steps out to before walking along the rows.
+static func aisle_of(desk: int) -> float:
+	return seat(desk).x + 1.5
+
+
+## The way from desk `desk` to the classroom's door, in the school's space (the door last).
+static func desk_to_door(desk: int) -> Array[Vector3]:
+	var at := seat(desk)
+	return [Vector3(aisle_of(desk), 0, at.z), Vector3(aisle_of(desk), 0, CLASS_DOOR_IN.z), CLASS_DOOR_IN]
+
+
+## From desk `desk` out to the playground, ending at `spot` (all in world space).
+func route_to_yard(desk: int, spot: Vector3) -> Array[Vector3]:
+	var points: Array[Vector3] = desk_to_door(desk)
+	points.append_array([HALL_WEST, HALL_EAST, CORRIDOR, YARD_IN])
+	var out := _world(points)
+	out.append(spot)
+	return out
+
+
+## From the playground back to desk `desk`.
+func route_to_desk(desk: int) -> Array[Vector3]:
+	var points: Array[Vector3] = [YARD_IN, CORRIDOR, HALL_EAST, HALL_WEST]
+	var back := desk_to_door(desk)
+	back.reverse()
+	points.append_array(back)
+	points.append(seat(desk))
+	return _world(points)
+
+
+## From desk `desk` out the front door, ending at `spot`.
+func route_out_front(desk: int, spot: Vector3) -> Array[Vector3]:
+	var points: Array[Vector3] = desk_to_door(desk)
+	points.append_array([HALL_WEST, FRONT_IN, FRONT_OUT])
+	var out := _world(points)
+	out.append(spot)
+	return out
+
+
+## The deputy's ways: from the sidewalk to the blackboard, from there to the playground, back, and out for the photo.
+func deputy_in() -> Array[Vector3]:
+	return _world([FRONT_OUT, FRONT_IN, HALL_WEST, CLASS_DOOR_IN, STAGE])
+
+
+func deputy_to_yard() -> Array[Vector3]:
+	return _world([CLASS_DOOR_IN, HALL_WEST, HALL_EAST, CORRIDOR, YARD_IN])
+
+
+func deputy_to_class() -> Array[Vector3]:
+	return _world([YARD_IN, CORRIDOR, HALL_EAST, HALL_WEST, CLASS_DOOR_IN, STAGE])
+
+
+func deputy_out() -> Array[Vector3]:
+	return _world([CLASS_DOOR_IN, HALL_WEST, FRONT_IN, FRONT_OUT, PHOTO_DEPUTY])
+
+
+## Where pupil `desk` plays at recess (world space), drawn by the seed.
+func recess_spot(desk: int) -> Vector3:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["school recess", case_seed, desk])
+	return to_global(Vector3(rng.randf_range(RECESS_AREA.position.x, RECESS_AREA.end.x), 0,
+		rng.randf_range(RECESS_AREA.position.y, RECESS_AREA.end.y)))
+
+
+## Where pupil `desk` stands for the group photo (world space): two rows of 10 in front of the deputy.
+func photo_spot(desk: int) -> Vector3:
+	var row := desk / 10
+	return to_global(Vector3(-4.5 + (desk % 10), 0, PHOTO_ROWS[row]))
+
+
+func _world(points: Array[Vector3]) -> Array[Vector3]:
+	var out: Array[Vector3] = []
+	for point in points:
+		out.append(to_global(point))
+	return out
 
 
 ## Whether a world position is in the classroom.
