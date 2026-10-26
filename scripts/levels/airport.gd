@@ -10,7 +10,7 @@ extends Node3D
 ## piled by the counter, the belt that takes them (AirportBelt) and the scale. Step 3: number 13 is the odd one
 ## (OddCargo, what's inside drawn by the seed) and the X-ray machine on show (AirportXray). Step 4: Lustre, who wanders
 ## off to the duty-free shop (AirportDeputy), and the boarding clock on the board over the gate (AirportBoarding).
-## Step 5: the staff (AirportStaff: the bought porter, the clerk and the gate agent).
+## Step 5: the staff (AirportStaff: the bought porter, the clerk and the gate agent) and the case on top (AirportCase).
 ## Every number here is (propuesta).
 
 const COUNTER_MODEL := preload("res://assets/models/checkin_counter.glb")
@@ -94,6 +94,7 @@ var deputy: AirportDeputy
 var boarding: AirportBoarding
 var staff: Array[AirportStaff] = []
 var porter: AirportStaff
+var case: AirportCase
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -117,6 +118,12 @@ func _ready() -> void:
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
 	_place_staff()
+	case = AirportCase.new()
+	case.name = "Case"
+	case.airport = self
+	case.shift_screen = $ShiftScreen
+	add_child(case)
+	case.start((city as City).comisario)
 
 
 func in_terminal(at: Vector3) -> bool:

@@ -111,3 +111,7 @@ pregunten."
   25 s, si no hay ningún policía a menos de 8 m de él y la maleta rara está tirada por ahí (ni en la mano de nadie, ni
   en la cinta, ni ya pasada por los rayos X), la vuelve a poner en la cinta silbando. Esposado, E lo lleva al
   patrullero; la empleada y el empleado protestan y las esposas se abren (`wrongly_cuffed`, el caso lo descuenta).
+- **Paso 5, segunda parte (el caso):** `AirportCase`: el comisario lo cuenta en su oficina y Q abre la planilla. Se
+  pierde en el momento si la maleta rara sale en la pantalla o si cierra el embarque sin el diputado; se gana si sube al
+  avión a tiempo. Sueldo 600, 50 menos por cada maleta suya abierta (una vez por maleta, y él se queja), 100 menos por
+  cada empleado honesto esposado y 100 más si el maletero está en el patrullero. Cuota 400.
