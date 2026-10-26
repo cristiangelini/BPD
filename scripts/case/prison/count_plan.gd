@@ -7,10 +7,13 @@ extends Node3D
 ## two lean on the east wall in the sun) and start moving when the first cop walks through the gate. The cook and the
 ## plumber, in clothes almost like the jumpsuit and with no number, wander among them. Step 3: E chalks a cross on one
 ## (CountInmate) and his number is crossed off the list; chalking the cook or the plumber is `wrong`: he's offended and
-## wipes it off WIPE_AFTER seconds later. Every number here is (propuesta).
+## wipes it off WIPE_AFTER seconds later. Step 4: CHEATERS of the wanderers (by the seed) rub their cross off on a
+## wall now and then (CountInmate.cheater), and their numbers go back on the list (`rubbed`). Every number here is
+## (propuesta).
 
 signal counted_one(number: int)
 signal wrong_one(worker: CountInmate)
+signal rubbed_one(number: int)
 
 const LIST := 20
 const HIDDEN := 3
@@ -29,6 +32,7 @@ const PLUMBER := preload("res://assets/models/npc_plomero.glb")
 const NUMBER_HEIGHT := 0.95
 const NUMBER_OUT := 0.36
 const WIPE_AFTER := 3.0
+const CHEATERS := 2
 const CHALK_LINES := 3
 
 var prison: PrisonLevel
@@ -43,6 +47,9 @@ var workers: Array[CountInmate] = []
 var started := false
 ## Step 3: the workers chalked by mistake.
 var wrong := 0
+## Step 4: the two who rub their cross off, and how many times they did.
+var cheaters: Array[CountInmate] = []
+var rubbed := 0
 ## A guest's copy (step 7): the host's one decides.
 var follower := false
 var _rng := RandomNumberGenerator.new()
@@ -80,6 +87,16 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 		_number(inmate, out[i])
 		number_of[inmate] = out[i]
 		inmates.append(inmate)
+	var wanderers := inmates.filter(func(inmate: CountInmate) -> bool:
+		return inmate.activity == YardInmate.Activity.WANDER)
+	_shuffle(wanderers)
+	for i in CHEATERS:
+		var cheater: CountInmate = wanderers[i]
+		cheater.cheater = true
+		# Not both at once.
+		cheater.rub_left = CountInmate.RUB_EVERY * (1.0 + 0.5 * i)
+		cheater.rubbed_off.connect(_on_rubbed_off)
+		cheaters.append(cheater)
 	for model in [COOK, PLUMBER]:
 		workers.append(_inmate("Cook" if model == COOK else "Plumber", YardInmate.Activity.WANDER, 0, model))
 
@@ -187,6 +204,14 @@ func _on_chalked(inmate: CountInmate, cop: Cop) -> void:
 func _wipe(worker: CountInmate) -> void:
 	if is_instance_valid(worker):
 		worker.set_marked(false)
+
+
+## A cheater rubbed his cross off: his number is back on the list.
+func _on_rubbed_off(inmate: CountInmate) -> void:
+	inmate.set_marked(false)
+	board.set_marked(inmate.number, false)
+	rubbed += 1
+	rubbed_one.emit(inmate.number)
 
 
 ## Every number on the list crossed off at once.

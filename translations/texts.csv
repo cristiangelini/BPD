@@ -2394,3 +2394,4 @@ COUNT_CHALKED_2,¿Y esta cruz para qué es?,And what's this cross for?,E essa cr
 COUNT_COOK_OFFENDED,¡Yo trabajo acá! ¡Soy el cocinero!,I work here! I'm the cook!,Eu trabalho aqui! Sou o cozinheiro!
 COUNT_PLUMBER_OFFENDED,¡Yo trabajo acá! ¡Vine a arreglar un caño!,I work here! I came to fix a pipe!,Eu trabalho aqui! Vim consertar um cano!
 HINT_COUNT_WORKER,"Ese no es un preso, no tiene número.","That's no inmate, he has no number.","Esse não é um preso, não tem número."
+COUNT_ITCHY,"¡Ay, cómo pica esta tiza!","Ow, this chalk itches!","Ai, como coça esse giz!"

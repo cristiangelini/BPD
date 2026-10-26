@@ -81,3 +81,8 @@ Cuáles son los 2 tramposos, qué 3 presos se esconden y en cuáles de los 8 esc
   ofende ("¡Yo trabajo acá!"), sale el aviso "Ese no es un preso, no tiene número" y a los 3 s se limpia la cruz, así
   que se lo puede volver a marcar por error. `CountPlan.all_counted()` da verdadero con los 20 tachados a la vez.
   Capturas: `paso3-lista.png`, `paso3-cruz.png` y `paso3-cocinero.png`.
+- **Paso 4:** la semilla elige 2 de los que deambulan como tramposos (`CountInmate.cheater`). Recién cuando tienen la
+  cruz corre su reloj (40 s el primero, 60 s el segundo la primera vez, para que no vayan juntos): caminan a la pared
+  más cerca (el muro oeste, el este o el frente del edificio), se ponen de espaldas, se refriegan 2,5 s ("¡Ay, cómo
+  pica esta tiza!") y la cruz desaparece: su número vuelve a la lista (`CountPlan.rubbed`) y siguen deambulando.
+  Capturas: `paso4-pica.png` y `paso4-lista.png` (la lista otra vez en 0 de 20).
