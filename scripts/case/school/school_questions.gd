@@ -5,8 +5,10 @@ extends Node
 ## with a question for the deputy; TRAPS of them are the janitor's, questions that sink him, drawn by the seed. In the
 ## questions, every time the tour says so (`question_time`), the hands go up (a trap always, the rest RAISE_ODDS of
 ## the time) and he gives the floor to one of them at random, or to the one a cop pointed at (`point_at`, step 5). The
-## pupil reads the card out; READ_DELAY later he answers, or, if it was a trap, he stammers: a gaffe. With MAX_GAFFES
-## he leaves ashamed and the case is lost. Every number here is (propuesta).
+## pupil reads the card out (a card taken from them while they read is no gaffe); READ_DELAY later he answers, or, if it was a trap, he stammers: a gaffe. With MAX_GAFFES
+## he leaves ashamed and the case is lost. Step 5: a cop standing within POINT_REACH of him clicks with empty hands on
+## a pupil with their hand up (`try_point`), and the next question is theirs, once every POINT_EVERY. Every number here
+## is (propuesta).
 
 signal asked(pupil: SchoolPupil)
 signal gaffe(count: int)
@@ -22,6 +24,10 @@ const ASK_KEYS := 12
 const TRAP_KEYS := 8
 const ANSWERS := 5
 const STAMMERS := 5
+const POINT_REACH := 1.5
+## How far across the classroom a cop can point.
+const POINT_RANGE := 15.0
+const POINT_EVERY := 15.0
 
 var school: SchoolVisitLevel
 var tour: SchoolTour
@@ -31,6 +37,7 @@ var reading: SchoolPupil
 var _react_left := 0.0
 ## The one a cop pointed at, who gets the next question.
 var _pointed: SchoolPupil
+var _point_left := 0.0
 var _rng := RandomNumberGenerator.new()
 var _label: Label
 
@@ -109,7 +116,25 @@ func ask() -> void:
 	asked.emit(pupil)
 
 
+## A cop next to him points at the pupil they look at: theirs is the next question.
+func try_point(cop: Cop) -> bool:
+	if tour.phase != SchoolTour.Phase.QUESTIONS or _point_left > 0.0 or cop.get_node("Grabber").held \
+			or cop.global_position.distance_to(tour.politician.global_position) > POINT_REACH:
+		return false
+	var hit := cop.aim_hit(POINT_RANGE)
+	if hit.is_empty() or not hit.collider is SchoolPupil or not point_at(hit.collider):
+		return false
+	_point_left = POINT_EVERY
+	tour.politician.say("SCHOOL_LUSTRE_POINTED", 2.0)
+	return true
+
+
 func _physics_process(delta: float) -> void:
+	_point_left = maxf(_point_left - delta, 0.0)
+	if Input.is_action_just_pressed("grab"):
+		for cop: Cop in get_tree().get_nodes_in_group("cops"):
+			if cop.input_enabled:
+				try_point(cop)
 	if reading == null:
 		return
 	_react_left -= delta
@@ -122,6 +147,9 @@ func _react() -> void:
 	var pupil := reading
 	reading = null
 	if tour.phase == SchoolTour.Phase.OVER:
+		return
+	if not pupil.has_card():
+		tour.politician.say("SCHOOL_LUSTRE_NO_CARD")
 		return
 	if not pupil.trap:
 		tour.politician.say("SCHOOL_LUSTRE_ANSWER_%d" % _rng.randi_range(1, ANSWERS))

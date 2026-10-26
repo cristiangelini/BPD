@@ -6,7 +6,10 @@ extends StaticBody3D
 ## each time. Step 3: they walk out to the playground for recess, back to their desk and out front for the photo
 ## (`walk`, along the corners the school gives). Step 4: each holds a card with the question for the deputy, which a
 ## cop reads within READ_REACH; in the questions they put their hand up (`raise_hand`, waving it if the card is a trap)
-## and read it out when he picks them. Every number here is (propuesta).
+## and read it out when he picks them. Step 5: E takes the card into the cop's hands (SchoolCard); an innocent pupil
+## at their desk says it was theirs and cries until a cop gives them a candy, and after CRY_TIME crying it counts
+## against the pay (`cried`). A trap's pupil tells who gave it to them. E with a card on a pupil with none gives it
+## back. Every number here is (propuesta).
 
 const MODELS: Array[PackedScene] = [
 	preload("res://assets/models/npc_alumno.glb"), preload("res://assets/models/npc_alumna.glb"),
@@ -21,8 +24,17 @@ const ARRIVED := 0.1
 ## A cop this close reads what the card says.
 const READ_REACH := 2.0
 const READ_TIME := 6.0
+## Crying this long without a candy, it counts (the teacher notices).
+const CRY_TIME := 10.0
+const SOB_EVERY := 2.5
+const TRAP_TELLS := 3
 const SMOCK := Color(0.96, 0.96, 0.95)
 const CARD := Color(1.0, 0.98, 0.9)
+
+## Their card went to a cop's hands.
+signal card_taken(pupil: SchoolPupil, was_trap: bool)
+## They cried CRY_TIME without a candy: it counts against the pay.
+signal cried(pupil: SchoolPupil)
 
 ## Which of the four looks (0 to 3) and which desk (0 to 19, row by row from the front).
 @export var look := 0
@@ -42,6 +54,11 @@ var hand_up := false
 var _arm: Node3D
 var _card_text: Label3D
 var _wave := 0.0
+var crying := false
+## Seconds crying, and whether it already counted.
+var cry_for := 0.0
+var cry_counted := false
+var _sob_left := 0.0
 
 
 func _ready() -> void:
@@ -66,13 +83,64 @@ func _ready() -> void:
 	_build_arm()
 
 
-func prompt_key(_cop: Cop) -> String:
-	return "PROMPT_TALK_PUPIL"
+func prompt_key(cop: Cop) -> String:
+	var held: Grabbable = cop.get_node("Grabber").held
+	if held is SchoolCandy and crying:
+		return "PROMPT_GIVE_CANDY"
+	if held is SchoolCard and not has_card():
+		return "PROMPT_GIVE_CARD"
+	if held != null:
+		return "PROMPT_HOLDING"
+	return "PROMPT_TAKE_CARD" if has_card() else "PROMPT_TALK_PUPIL"
 
 
-func use(_cop: Cop) -> void:
+func use(cop: Cop) -> void:
+	var grabber: Grabber = cop.get_node("Grabber")
+	var held := grabber.held
+	if held is SchoolCandy and crying:
+		grabber.release()
+		held.queue_free()
+		calm()
+		return
+	if held is SchoolCard and not has_card():
+		grabber.release()
+		var given := held as SchoolCard
+		hold_card(given.key, given.trap)
+		held.queue_free()
+		calm()
+		return
+	if held == null and has_card():
+		_give_card(cop)
+		return
 	say("PUPIL_%d" % (next_line % LINES))
 	next_line += 1
+
+
+## Stops crying (a candy, or their card back).
+func calm() -> void:
+	if not crying:
+		return
+	crying = false
+	say("PUPIL_THANKS")
+
+
+## The card goes into the cop's hands; an innocent pupil sitting at their desk cries over it.
+func _give_card(cop: Cop) -> void:
+	var was_trap := trap
+	var card_node := SchoolCard.make(card, trap)
+	cop.get_parent().add_child(card_node)
+	card_node.global_position = cop.camera.global_position - cop.camera.global_basis.z * 0.6
+	cop.get_node("Grabber").grab(card_node)
+	var seated := not walking()
+	hold_card("")
+	card_taken.emit(self, was_trap)
+	if was_trap:
+		say("PUPIL_TRAP_TOLD_%d" % (desk % TRAP_TELLS))
+	elif seated:
+		crying = true
+		cry_for = 0.0
+		_sob_left = SOB_EVERY
+		say("PUPIL_MINE", SOB_EVERY)
 
 
 ## Walks through `points` (world space) after `delay` seconds and ends up looking along `facing` (or wherever the last
@@ -152,10 +220,23 @@ func _process(delta: float) -> void:
 	if hand_up and trap:
 		_wave += delta * 9.0
 		_arm.rotation.z = sin(_wave) * 0.35
+	if crying:
+		_cry(delta)
 	if _bubble_left > 0.0:
 		_bubble_left -= delta
 		if _bubble_left <= 0.0:
 			_bubble.hide()
+
+
+func _cry(delta: float) -> void:
+	cry_for += delta
+	_sob_left -= delta
+	if _sob_left <= 0.0:
+		_sob_left = SOB_EVERY
+		say("PUPIL_CRY", SOB_EVERY)
+	if cry_for >= CRY_TIME and not cry_counted:
+		cry_counted = true
+		cried.emit(self)
 
 
 func _cop_near() -> bool:

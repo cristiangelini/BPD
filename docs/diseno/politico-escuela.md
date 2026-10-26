@@ -35,9 +35,11 @@ preguntas preparadas. Ningún chico lo deja en ridículo, ¿entendido? Y nada de
    con ganas; los demás, 1 de cada 3. El chico lee su tarjeta en voz alta (cartel arriba). Si es trampa, el diputado
    tartamudea, se pone colorado y es una **metida de pata**. Con 8 se va avergonzado y el caso se pierde, como las
    10 manchas de la plaza (decisión 103).
-6. **Sacarle la tarjeta:** un policía agarra la tarjeta con las manos, como cualquier objeto, y el chico baja la
-   mano. Si estaba sentado y era inocente, se enoja ("¡Era mía!") y llora 10 s; con un caramelo de la caja de la
-   maestra se calma. La tarjeta se puede romper (clic con ella en la mano) o devolver.
+6. **Sacarle la tarjeta:** E sobre el chico pone su tarjeta en las manos del policía, y el chico baja la mano. Si
+   estaba sentado y era inocente, se enoja ("¡Era mía!") y llora hasta que le dan un caramelo de la caja de la
+   maestra (o le devuelven la tarjeta); si llora 10 s sin consuelo, la maestra se da cuenta y cuenta para el sueldo.
+   El que tenía una trampa cuenta quién se la dio. La tarjeta se puede romper (E con ella en la mano) o devolver
+   (E sobre el chico). Si se la sacan mientras la lee, no hay metida de pata.
 7. **Darle la palabra a otro:** un policía parado a menos de 1,5 m del diputado puede señalar (clic sin nada en la
    mano) a un chico con la mano levantada, y el diputado le da la palabra a ese (una vez cada 15 s).
 8. **El conserje:** el rival le pagó. En el recreo camina por el patio y le da una tarjeta trampa nueva a un chico

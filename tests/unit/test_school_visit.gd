@@ -68,6 +68,8 @@ func test_the_teacher_faces_the_class_and_the_janitor_sweeps_the_hall() -> void:
 func test_everyone_has_something_to_say() -> void:
 	var pupil := school.pupils[0]
 	var cop: Cop = school.get_node("Cop")
+	# With their card in hand, E takes it (step 5); without one, they chat.
+	pupil.hold_card("")
 	assert_eq(pupil.prompt_key(cop), "PROMPT_TALK_PUPIL")
 	pupil.use(cop)
 	var first := pupil.said()
