@@ -91,3 +91,15 @@ se caiga. El puente, digo. Bueno, el diputado tampoco."
   final camina hasta la cinta y la corta en 6 s; ahí sale `finished`. Arriba de la pantalla hay una barra de 5 partes
   (4 fotos y la cinta). Con `hold()` se queda quieto y el reloj espera (para el chapuzón). Todo dura unos 4 minutos.
   Captura en `/mnt/project-files/puente/paso2-salto.png`.
+- **Paso 3 (el puente que se rompe y el chapuzón):** `BridgeBreaks` (`park.breaks`). A los 20 s de arrancar el
+  diputado, y después cada 15 s, la semilla elige algo entero entre tramos (peso 3), pilares (1) y barandas (1). Cruje
+  y tiembla 3 s y después pasa una de estas cosas:
+  - El tramo suelta sus 2 tablones, que caen al canal como `LoosePlank`: tablas de 6 kg que se agarran, con
+    `net_setup` para que se vean igual online.
+  - El pilar se hunde 0,4 m y los 4 tablones de sus 2 tramos se combean. Si en 30 s nadie llama a `straighten()`
+    (eso es el paso 4), los 2 tramos se caen (`collapsed`).
+  - La baranda cae entera al agua.
+  Cada salto del diputado hace crujir el primer tramo entero delante de él. No se rompe nada antes de que arranque ni
+  después de la cinta. `BridgeDip` cubre la pregunta 1 con lo recomendado: si el diputado cae al agua, a los 8 s sale
+  mojado arriba, en la punta más cercana, y sigue (`dipped`); la segunda vez se va a su casa (`went_home`). Captura en
+  `/mnt/project-files/puente/paso3-se-rompe.png`.

@@ -75,6 +75,19 @@ func release() -> void:
 	hold_left = 0.0
 
 
+## He's back on the deck at `at` after his dip (step 3): he walks again to where he was going, and poses again
+## from the start if he was at a stop.
+func back_on(at: Vector3) -> void:
+	politician.global_position = at
+	politician.velocity = Vector3.ZERO
+	hold_left = 0.0
+	if state == State.POSING or state == State.WALKING:
+		if stop < BridgePark.STOPS.size():
+			_walk_to(_stop_point(stop))
+		else:
+			_walk_to(park.to_global(Vector3(BridgePark.RIBBON_X - 0.6, BridgePark.DECK_TOP, 0)))
+
+
 ## He leaves for good: the ceremony ends without the ribbon.
 func abort() -> void:
 	state = State.OVER

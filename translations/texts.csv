@@ -4155,6 +4155,9 @@ SHIFT_STREET,Eventos en la calle,Street events,Eventos na rua
 "HUD_BRIDGE_PHOTO","Foto %d de %d","Photo %d of %d","Foto %d de %d"
 "HUD_BRIDGE_RIBBON","Corta la cinta.","He cuts the ribbon.","Ele corta a fita."
 "HUD_BRIDGE_OVER","Puente inaugurado.","The bridge is open.","Ponte inaugurada."
+"BRIDGE_LUSTRE_DIP","¡AAAH! ¡Glu, glu! ¡Mi mejor traje! ¡Sáquenme de aquí!","AAAH! Glub, glub! My best suit! Get me out of here!","AAAH! Glub, glub! Meu melhor terno! Me tirem daqui!"
+"BRIDGE_LUSTRE_WET","Nadie vio nada. Sigo mojado, pero sigo. ¡La foto, rápido!","Nobody saw anything. I'm wet, but I'm going on. The photo, quick!","Ninguém viu nada. Estou molhado, mas continuo. A foto, rápido!"
+"BRIDGE_LUSTRE_HOME","¡Dos veces al agua! ¡Me voy a mi casa! ¡Inauguren ustedes su porquería de puente!","Twice in the water! I'm going home! Open your rubbish bridge yourselves!","Duas vezes na água! Vou para casa! Inaugurem vocês essa porcaria de ponte!"
 HINT_INSPECTOR_ARRIVES,Llegó la inspectora de la ciudad: va contigo todo el turno y anota todo.,The city inspector is here: she goes with you all shift and writes everything down.,A inspetora da cidade chegou: ela vai com você o turno todo e anota tudo.
 INSPECTOR_ARRIVES,"Severina Regla, inspección de la ciudad. Hagan como si no estuviera.","Severina Regla, city inspection. Act as if I'm not here.","Severina Regla, inspeção da cidade. Façam de conta que não estou aqui."
 INSPECTOR_NOTE_1,Mmm.,Hmm.,Hum.
