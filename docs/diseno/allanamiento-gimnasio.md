@@ -96,6 +96,15 @@ Los pesos y valores siguen la escala de la oficina y el laboratorio: la principa
      (la pista la pone la historia en el paso 4; mientras tanto dice que no vio nada raro). Si para, la cuenta vuelve a
      empezar; una vez por policía, y si la cinta 2 está rota no cuenta. Captura `paso3-lula-cinta.png`.
 4. El caso (RaidCase) con la primera historia: las pesas rellenas de plata.
+   - **Cómo quedó (propuesta):** el gimnasio ya es un caso de allanamiento como el laboratorio: el comisario da la
+     denuncia de la moto de oro, hay 3 sospechas entre las 6 historias (notas en el piso de la sala), el profe suelta
+     dónde están las cosas cuando le preguntas con R y llama al abogado en 100, y Lula cuenta dónde vio al profe
+     esconder algo. Las pesas rellenas de plata: la mancuerna gigante llena de billetes (20 kg, 1000, en un escondite
+     para cosas pesadas), la balanza trucha (3 kg, 200) y la planilla de cuotas especiales (0,1 kg, 300). Una de las
+     mancuernas del estante (sorteada) suena a monedas cada vez que cae al piso, y la primera vez es una pista. Las
+     demás se abren una sola vez al caer: la mitad (sorteada) larga billetes de juguete rosados ("¡Billetes de
+     juguete! «Banco de Mentira»"), una pista falsa, y el resto está vacía. Si el profe escapa, se va en auto como los
+     otros dueños (la moto de oro queda para después). Capturas `paso4-*.png` y `gym_silver_dumbbells.png`.
 5. Las otras 5 historias, una por PR.
 6. "Jugar" sortea entre los 8 lugares de allanamiento.
 7. El online (el profe, Lula, la música, las cintas y las mancuernas en todas las PC).
