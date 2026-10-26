@@ -1,12 +1,13 @@
 class_name GolfLayout
 extends RefCounted
 
-## The golf club (persecucion-lugares.md, "Ladrones en carrito de golf"): 160 × 120 m outside the ring on the east
+## The golf club (persecucion-lugares.md, "Ladrones en carrito de golf"): 224 × 168 m outside the ring on the east
 ## side, its gate on the ring's east ramp. 6 holes joined by a concrete path, 5 sand bunkers and 2 lakes. Pure data:
 ## CENTER is in the city's space, everything else in the club's own (its middle, +X east, the gate at -X).
 ## Every number here is (propuesta).
 
-const HALF := Vector2(80, 60)
+## Twice the ground (Cristian, 26/10: "que el campo de golf sea más grande", decision 182): every length 1.4 times.
+const HALF := Vector2(112, 84)
 ## The club's west fence stands on the hedge past the highway, so its gate opens onto the ring's east side.
 const CENTER := Vector3(HighwayLayout.OUTER.x + 6.0 + HALF.x, 0, -CityLayout.SIZE.y / 2 + CityLayout.STREET / 2
 	+ (HighwayLayout.RAMP_STREET_Z - CityLayout.NORTH) * CityLayout.PITCH)
@@ -14,14 +15,14 @@ const GATE := Vector3(-HALF.x, 0, 0)
 const GATE_WIDTH := 14.0
 const PATH_WIDTH := 3.0
 const GREEN_RADIUS := 6.0
-const HOLES: Array[Vector3] = [Vector3(-55, 0, -38), Vector3(-5, 0, -45), Vector3(50, 0, -40), Vector3(62, 0, 20),
-	Vector3(10, 0, 42), Vector3(-45, 0, 35)]
+const HOLES: Array[Vector3] = [Vector3(-77, 0, -53), Vector3(-7, 0, -63), Vector3(70, 0, -56), Vector3(87, 0, 28),
+	Vector3(14, 0, 59), Vector3(-63, 0, 49)]
 ## Bunkers and lakes are ellipses: [middle, radius across x, radius across z].
-const BUNKERS := [[Vector3(-38, 0, -28), 6.0, 4.0], [Vector3(22, 0, -50), 7.0, 3.5], [Vector3(72, 0, -10), 5.0, 8.0],
-	[Vector3(-12, 0, 22), 8.0, 4.0], [Vector3(-65, 0, 25), 5.0, 6.0]]
-const LAKES := [[Vector3(5, 0, -12), 14.0, 9.0], [Vector3(35, 0, 8), 9.0, 7.0]]
+const BUNKERS := [[Vector3(-53, 0, -39), 8.5, 5.5], [Vector3(31, 0, -70), 10.0, 5.0], [Vector3(101, 0, -14), 7.0, 11.0],
+	[Vector3(-17, 0, 31), 11.0, 5.5], [Vector3(-91, 0, 35), 7.0, 8.5]]
+const LAKES := [[Vector3(7, 0, -17), 19.5, 12.5], [Vector3(49, 0, 11), 12.5, 10.0]]
 ## Where the path from the gate meets the loop between the holes.
-const JUNCTION := Vector3(-50, 0, 0)
+const JUNCTION := Vector3(-70, 0, 0)
 ## The cart keeps this far (m) off the lakes, and its route is this many holes long (minutes of driving).
 const LAKE_MARGIN := 2.5
 const CART_STOPS := 40
