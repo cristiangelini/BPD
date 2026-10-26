@@ -1,8 +1,8 @@
-# BPD · Cárcel: la lavandería (propuesta, 25/10)
+# BPD · Cárcel: la lavandería (25/10)
 
 Variante 6 de la cárcel ([carcel-motin.md](carcel-motin.md), tabla de variantes; [casos.md](casos.md), 6.6). Usa la
-cárcel de la cuadra (5, 2) del motín, del corte de luz y del día de visitas. Decisiones 142 a 149. Todo es
-**(propuesta)** hasta que Cristian responda las preguntas de abajo y se pruebe jugando.
+cárcel de la cuadra (5, 2) del motín, del corte de luz y del día de visitas. Decisión 142. Cristian respondió
+sí a las 3 preguntas (25/10); los números siguen **(propuesta)** hasta que se pruebe jugando.
 
 ## La idea
 Es día de ropa sucia. Los presos trabajan en la lavandería, y cada tanto llega al portón el camión de la lavandería
@@ -67,7 +67,7 @@ nadie duerme un gato, qué pistas da cada uno y cuándo un preso se mete en un l
    en quintos con el motín, el traslado, el corte de luz y el día de visitas).
 7. Online: los carritos, los que empujan, los escondidos, el camión y el final.
 
-## Preguntas para Cristian
+## Preguntas para Cristian (respondidas: sí a las 3, 25/10)
 1. **¿La lavandería va en la cocina del motín** (las ollas se cambian por lavarropas)? Recomendado: sí, la cocina ya
    tiene su puerta al comedor y el camino al portón ya existe; un cuarto nuevo cambia el mapa de todas las cárceles.
 2. **¿Revisar un carrito sin nadie no resta, solo cuesta tiempo?** Recomendado: sí, el castigo es que el camión no

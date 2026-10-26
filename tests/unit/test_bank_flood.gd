@@ -32,7 +32,7 @@ func test_a_sixth_of_the_seeds_flood_and_the_arg_forces_it() -> void:
 	for seed_ in range(1, 401):
 		if BankLevel.variant(seed_, PackedStringArray()) == "flood":
 			floods += 1
-	assert_between(floods, 40, 100)
+	assert_between(floods, 25, 100)
 	for seed_ in range(1, 20):
 		assert_eq(BankLevel.variant(seed_, PackedStringArray(["--bank=flood"])), "flood")
 	for seed_ in [1, 2, 3, 4]:

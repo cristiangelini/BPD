@@ -50,6 +50,7 @@ var shout := ShoutMeter.new()
 ## The player's own voice going on and on, or H held: singing to the jailbreak's guard (NightGuard).
 var song := SongMeter.new()
 var _sing_left := 0.0
+var _spoke_left := 0.0
 
 
 func _init(net: Node) -> void:
@@ -143,6 +144,7 @@ func _send(steam: Object) -> void:
 	if int(voice.get("result", -1)) != 0 or size <= 0:
 		return
 	data = data.slice(0, size)
+	_check_talking()
 	_check_shout(steam, data)
 	if loopback:
 		_hear(0, maxi(talking, 0), data)
@@ -150,11 +152,37 @@ func _send(steam: Object) -> void:
 		_voice.rpc(maxi(talking, 0), data)
 
 
-## Only in an interrogation (a shout near the suspect is the bad cop's shout), the jailbreak (the guard turns to it) or
-## the choir (ChoirSinging listens to the song meter).
+## At the mimes' theater (MimeSilence): while Steam hears this player speak, tells the host every TALK_EVERY seconds.
+func _check_talking() -> void:
+	var now := Time.get_ticks_msec() / 1000.0
+	if not is_inside_tree() or not get_tree().has_group("mime_silence") or now < _spoke_left:
+		return
+	_spoke_left = now + MimeSilence.TALK_EVERY
+	spoke(local_cop(get_tree()))
+
+
+## The player's cop talked: the mimes, on the host, hear it.
+func spoke(cop: Cop) -> void:
+	if not cop:
+		return
+	if _net.is_host():
+		get_tree().call_group("mime_silence", "heard_talking", cop)
+	else:
+		_mimes_heard_talking.rpc_id(_net.HOST_ID)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _mimes_heard_talking() -> void:
+	var sync: CopSync = _net.cop_syncs.get(multiplayer.get_remote_sender_id())
+	if multiplayer.is_server() and sync and is_instance_valid(sync.cop):
+		get_tree().call_group("mime_silence", "heard_talking", sync.cop)
+
+
+## Only in an interrogation (a shout near the suspect is the bad cop's shout), the jailbreak (the guard turns to it),
+## the choir (ChoirSinging listens to the song meter) or the mimes' theater (a shout is heard like at the club).
 func _check_shout(steam: Object, data: PackedByteArray) -> void:
 	if not is_inside_tree() or not (get_tree().has_group("interrogation") or get_tree().has_group("night_guard")
-			or get_tree().has_group("choir_singing")):
+			or get_tree().has_group("choir_singing") or get_tree().has_group("mime_silence")):
 		return
 	var voice: Dictionary = steam.call("decompressVoice", data, mix_rate)
 	var pcm: PackedByteArray = voice.get("uncompressed", voice.get("buffer", PackedByteArray()))
@@ -169,7 +197,8 @@ func _check_shout(steam: Object, data: PackedByteArray) -> void:
 func _check_singing(delta: float) -> void:
 	_sing_left -= delta
 	if _sing_left > 0.0 or not is_inside_tree() \
-			or not (get_tree().has_group("night_guard") or get_tree().has_group("bank_phone")):
+			or not (get_tree().has_group("night_guard") or get_tree().has_group("bank_phone")
+				or get_tree().has_group("vip_requests")):
 		return
 	if not (_held("hum") or song.is_singing(Time.get_ticks_msec() / 1000.0)):
 		return
@@ -184,6 +213,7 @@ func sang(cop: Cop) -> void:
 	if _net.is_host():
 		get_tree().call_group("night_guard", "heard_singing", cop)
 		get_tree().call_group("bank_phone", "heard_singing", cop)
+		get_tree().call_group("vip_requests", "heard_singing", cop)
 	else:
 		_guard_heard_singing.rpc_id(_net.HOST_ID)
 
@@ -194,6 +224,7 @@ func _guard_heard_singing() -> void:
 	if multiplayer.is_server() and sync and is_instance_valid(sync.cop):
 		get_tree().call_group("night_guard", "heard_singing", sync.cop)
 		get_tree().call_group("bank_phone", "heard_singing", sync.cop)
+		get_tree().call_group("vip_requests", "heard_singing", sync.cop)
 
 
 ## Tells the interrogation, the crime scene, the jailbreak's guard or the club's grandparents that the player's cop

@@ -21,6 +21,17 @@ extends Node3D
 ## key hangs from the collar of Mordisco, the station's bulldog, who walks his round (GuardDog).
 ## The fourth is the spoon tunnel (fuga-tunel.md): the guard awake at his desk, listening (ListeningGuard), and each
 ## cell digging a hole by its bunk with the dinner spoons (Spoon, TunnelHole).
+## The sixth is the garbage truck (fuga-basura.md): it's garbage night, and the guard does his rounds of the cells
+## with a giant bag (GarbageGuard, GarbageBag) out to the dumpster on the sidewalk (Dumpster).
+## The fifth is the vent (fuga-ventilacion.md): the guard awake with no key (VentGuard), a loose grille high on each
+## cell's wall (VentGrille) into the duct, and one cop too big to fit (big_cop).
+## The seventh is the fire drill (fuga-simulacro.md): daytime, the waiting room full of people (WaitingPerson), the
+## day guard (DrillGuard), the cops in orange vests, and a blanket against each cell's old heater (CellHeater) makes
+## smoke for its smoke detector (SmokeDetector).
+## The ninth is the bribe (fuga-soborno.md): the night guard sells himself (BribeGuard), and the cops have their
+## bribes' money in wads on the bunks (BillWad). It's only drawn while the campaign has at least his lowest price.
+## The tenth is the fast trial (fuga-juicio.md): in the morning the day guard (TrialGuard) opens the cells for an
+## express trial in the waiting room, and whoever puts on the lost and found's lawyer jacket sees the alibi's file.
 ## --place=jailbreak opens it from Play, and --jailbreak=<variant> forces one of VARIANTS.
 
 const DESK_MODEL := preload("res://assets/models/station_desk.glb")
@@ -94,12 +105,108 @@ const TUNNEL_TRAYS: Array[Vector3] = [Vector3(8.3, 0.02, 3.9), Vector3(12.7, 0.0
 ## station, by the patrol car.
 const TUNNEL_MATTRESSES: Array[Vector3] = [Vector3(8.3, 0.6, 1.6), Vector3(12.7, 0.6, 1.6)]
 const TUNNEL_EXIT := Vector3(5.0, 0, StationRooms.HALF_Z + 2.0)
+## The vent jailbreak (fuga-ventilacion.md, step 1): the grille on the back wall of each cell, over its bunk.
+const VENT_GRILLES: Array[Vector3] = [Vector3(8.3, VentGrille.HEIGHT, StationRooms.SPLIT_Z + StationRooms.WALL / 2 + 0.03),
+	Vector3(12.7, VentGrille.HEIGHT, StationRooms.SPLIT_Z + StationRooms.WALL / 2 + 0.03)]
+## The key board on the front wall, behind the guard's back (step 3).
+const KEY_BOARD_AT := Vector3(12.4, 1.5, StationRooms.HALF_Z - StationRooms.WALL - 0.03)
+## The garbage truck jailbreak (fuga-basura.md, step 1): the dumpster on the sidewalk and each cell's trash bin.
+const DUMPSTER_AT := Vector3(-12.0, 0, StationRooms.HALF_Z + 2.2)
+const TRASH_BINS: Array[Vector3] = [Vector3(6.6, 0, 3.9), Vector3(14.4, 0, 3.9)]
+const TRASH_BIN_MODEL := preload("res://assets/models/trash_bin.glb")
+## Step 2: the pillow and blanket on each cell's bunk, to roll into a dummy.
+const BUNK_DUMMIES: Array[Vector3] = [Vector3(8.3, 0.5, 1.6), Vector3(12.7, 0.5, 1.6)]
+## Step 3: the guard's roll of bags (out of sight under the guard room until he takes one).
+const BAG_ROLL := 6
+const BAG_ROLL_AT := Vector3(4.0, -3.0, 7.0)
+## The fire drill (fuga-simulacro.md, step 1): each cell's heater (against its side wall, facing in), the blanket on
+## its bunk, its smoke detector on the ceiling, and where the waiting room's people can stand.
+const HEATERS: Array[Vector3] = [Vector3(6.4, 0, 2.8), Vector3(14.6, 0, 2.8)]
+const BLANKETS: Array[Vector3] = [Vector3(8.9, 0.6, 1.6), Vector3(13.3, 0.6, 1.6)]
+const DETECTORS: Array[Vector3] = [Vector3(8.25, StationRooms.CEILING, 2.75), Vector3(12.75, StationRooms.CEILING, 2.75)]
+const WAITING_SPOTS: Array[Vector3] = [Vector3(-4.3, 0, 7.6), Vector3(-2.9, 0, 7.6), Vector3(2.9, 0, 7.6),
+	Vector3(4.3, 0, 7.6), Vector3(-4.5, 0, 5.8), Vector3(-3.0, 0, 4.8), Vector3(-1.5, 0, 3.8), Vector3(1.5, 0, 3.8),
+	Vector3(3.0, 0, 4.8), Vector3(4.5, 0, 5.8), Vector3(-2.5, 0, 2.4), Vector3(2.5, 0, 2.4)]
+const WAITING_MIN := 8
+## Step 2: how long the drill lasts, and where each of the waiting room's people stands on the sidewalk in it.
+const DRILL_TIME := 120.0
+const MEETING_SPOTS: Array[Vector3] = [Vector3(-5.5, 0, 10.8), Vector3(-4.5, 0, 11.6), Vector3(-3.5, 0, 10.8),
+	Vector3(-2.5, 0, 11.6), Vector3(-1.5, 0, 10.8), Vector3(-0.5, 0, 11.6), Vector3(0.5, 0, 10.8), Vector3(1.5, 0, 11.6),
+	Vector3(3.5, 0, 10.8), Vector3(4.5, 0, 11.6), Vector3(5.5, 0, 10.8), Vector3(6.5, 0, 11.6)]
+## The heater after a drill ("NO TOCAR"): the next smoke takes this many times as long.
+const HEATER_SLOW := 2.0
+## Step 3: holding E this long (s) with nothing to use takes the vest off. The coat rack in the waiting room's corner,
+## its hooks (around its top) and how many of them the seed fills with a coat or a hat.
+const VEST_OFF_TIME := 2.0
+const COAT_RACK_AT := Vector3(-5.5, 0, 8.3)
+const COAT_HOOK_Y := 1.68
+const COAT_HOOK_OUT := 0.12
+const COAT_HOOKS := 6
+const COATS_MIN := 4
+## The roof jailbreak (fuga-techo.md, step 1): each cell's skylight in the ceiling over its bunk, the bunk's two
+## sheets, the cell's spare mattress, and where a cop climbing up lands on the storage room over the cells (beside the
+## skylight) or down in the cell.
+const SKYLIGHTS: Array[Vector3] = [Vector3(8.3, StationRooms.CEILING, 2.6), Vector3(12.7, StationRooms.CEILING, 2.6)]
+const SHEETS: Array[Vector3] = [Vector3(7.9, 0.65, 1.6), Vector3(8.7, 0.65, 1.6), Vector3(12.3, 0.65, 1.6),
+	Vector3(13.1, 0.65, 1.6)]
+const MATTRESSES: Array[Vector3] = [Vector3(8.0, 0.12, 3.8), Vector3(13.0, 0.12, 3.8)]
+const ABOVE_AT := Vector3(0, StationRooms.CEILING + StationRooms.WALL + 0.05, 0.9)
+const BELOW_AT := Vector3(0, 0.05, 1.1)
+## Step 2: the storage room over the cells. Where its boxes can be (the seed fills STORAGE_MIN or more of them and
+## stacks a box on the first STORAGE_STACKED), its ladder up to the roof's hatch, where a cop lands on each end, the
+## roof's top (the station is 9 m tall, CityLayout) and parapet, and how fast is a run up there.
+const ATTIC_FLOOR := StationRooms.CEILING + StationRooms.WALL
+const STORAGE_SPOTS: Array[Vector3] = [Vector3(9.5, ATTIC_FLOOR + 0.2, 3.5), Vector3(10.5, ATTIC_FLOOR + 0.2, 2.0),
+	Vector3(11.5, ATTIC_FLOOR + 0.2, 3.8), Vector3(13.5, ATTIC_FLOOR + 0.2, 1.5), Vector3(12.0, ATTIC_FLOOR + 0.2, 0.6),
+	Vector3(9.0, ATTIC_FLOOR + 0.2, 0.5), Vector3(10.8, ATTIC_FLOOR + 0.2, 4.6), Vector3(14.0, ATTIC_FLOOR + 0.2, 3.0),
+	Vector3(7.2, ATTIC_FLOOR + 0.2, 4.2)]
+const STORAGE_MIN := 6
+const STORAGE_STACKED := 2
+const LADDER_AT := Vector3(14.2, ATTIC_FLOOR, -0.3)
+const ROOF_Y := 9.0
+const HATCH_AT := Vector3(14.2, ROOF_Y, -0.3)
+const ROOF_UP_AT := Vector3(14.2, ROOF_Y + 0.1, -1.5)
+const ATTIC_DOWN_AT := Vector3(14.2, ATTIC_FLOOR + 0.05, 0.7)
+const PARAPET_HEIGHT := 1.1
+const ROOF_QUIET_SPEED := (GameScale.WALK_SPEED + GameScale.RUN_SPEED) / 2.0
+const STEPS_EVERY := 1.0
+## Step 3: where the antenna can be on the roof (the seed picks one, by the back edge, the rope hanging over it),
+## where a cop climbing down lands in the back alley (beside it), how long the climb takes, and how long a cop who fell
+## the last stretch or with the rope stays dizzy.
+const ANTENNAS: Array[Vector3] = [Vector3(9.0, ROOF_Y, -8.4), Vector3(-6.0, ROOF_Y, -8.4), Vector3(2.0, ROOF_Y, -8.4)]
+const ALLEY_DOWN := Vector3(0, 0.05, -10.4)
+const CLIMB_TIME := 3.0
+const DIZZY := 3.0
+## The big one stays stuck in the grille this long (s); crawling faster than this in the duct is a noisy scramble.
+const VENT_STUCK := 4.0
+const VENT_QUIET_SPEED := (Cop.CRAWL_SPEED + Cop.CRAWL_RUN_SPEED) / 2.0
 ## A catch fills a third of the hole back in (fuga-tunel.md, question 3).
 const TUNNEL_REFILL := 1.0 / 3.0
 const TUNNEL_HOLES := [[Vector3(6.7, 0, 2.2), Vector3(9.9, 0, 2.2)], [Vector3(11.1, 0, 2.2), Vector3(14.3, 0, 2.2)]]
 
-## The ways out, drawn by the seed (fuga-limpieza.md, fuga-perro.md and fuga-tunel.md, question 1: in quarters).
-const VARIANTS := ["donut", "cleaning", "dog", "tunnel"]
+## The ways out, drawn by the seed (fuga-limpieza.md, fuga-perro.md, fuga-tunel.md, fuga-ventilacion.md,
+## fuga-basura.md, fuga-simulacro.md and fuga-techo.md, question 1: in eighths; fuga-soborno.md: in ninths while the
+## cops have the bribe's money, the last one; fuga-juicio.md: in tenths).
+const VARIANTS := ["donut", "cleaning", "dog", "tunnel", "vent", "garbage", "drill", "roof", "trial", "bribe"]
+## The bribe jailbreak: where the wads lie on the bunks, and the money forced with --jailbreak=bribe when the
+## campaign has less.
+const WADS: Array[Vector3] = [Vector3(7.7, 0.62, 1.5), Vector3(8.9, 0.62, 1.7), Vector3(12.1, 0.62, 1.5),
+	Vector3(13.3, 0.62, 1.7)]
+const BRIBE_TEST_MONEY := 400
+## The corridor's camera, on the ceiling in front of the cells (fuga-soborno.md, step 2).
+const CORRIDOR_CAMERA_AT := Vector3(10.5, StationRooms.CEILING, 6.4)
+## The fast trial (fuga-juicio.md): the lost and found box by the waiting room's bench, with the lawyer jacket on it.
+const LOST_BOX_MODEL := preload("res://assets/models/lost_found_box.glb")
+const LOST_BOX_AT := Vector3(5.2, 0, 8.4)
+const JACKET_ON_BOX := Vector3(5.2, 0.55, 8.4)
+## The court (step 2): the judge's bench and the judge behind it facing the benches (+Z), and the witness stand with
+## its three signs on top, facing the witness behind it.
+const JUDGE_DESK_AT := Vector3(0, 0, 3.4)
+const JUDGE_AT := Vector3(0, 0, 2.6)
+const STAND_AT := Vector3(-3.2, 0, 4.2)
+const WITNESS_AT := Vector3(-3.2, 0.1, 3.4)
+const SIGNS_X: Array[float] = [-0.48, 0.0, 0.48]
+const SIGNS_Y := 1.12
 
 ## Same seed, same jailbreak. 0 draws one.
 @export var case_seed := 0
@@ -122,6 +229,40 @@ var dog_food: Array[DogFood] = []
 var holes: Array[TunnelHole] = []
 var spoons: Array[Spoon] = []
 var mattresses: Array[TunnelMattress] = []
+## The vent jailbreak's grilles (one for each cell).
+var grilles: Array[VentGrille] = []
+var duct: VentDuct
+var key_board: KeyBoard
+var dumpster: Dumpster
+var garbage_truck: GarbageTruck
+var heaters: Array[CellHeater] = []
+var skylights: Array[CellSkylight] = []
+## The host: each cop on the roof, where it was last tick and how long it's been running there.
+var _roof_last := {}
+var _roof_run := {}
+var antenna: RoofAntenna
+## The fast trial: the alibi of this trial (TrialAlibi.draw), how many trials there were, the jacket and the file.
+var alibi := {}
+var trials := 0
+var jacket: DisguisePiece
+var file_label: Label
+var judge: TrialJudge
+var signs: Array[TrialSign] = []
+## The host: cops on the rope -> seconds left to the alley.
+var _climbers := {}
+var detectors: Array[SmokeDetector] = []
+## The alarm rang, and the drill is on for drill_left more seconds (the host counts).
+var alarm_rung := false
+var drilling := false
+var drill_left := 0.0
+## The coat rack's hooks and what hangs on each (null: empty).
+var coat_hooks: Array[Transform3D] = []
+var hung: Array = []
+## This PC's cops holding E to take the vest off -> seconds, and the ones told how already.
+var _vest_hold := {}
+var _told_vest := {}
+## The host: where each cop in the duct was last physics frame, to hear who scrambles.
+var _duct_last := {}
 ## The other end of the tunnels, on the sidewalk: it shows once one is through.
 var tunnel_exit: MeshInstance3D
 var cart_key: CellKey
@@ -146,7 +287,7 @@ func _ready() -> void:
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
 	if variant == "":
-		variant = pick_variant(drawn, OS.get_cmdline_user_args())
+		variant = pick_variant(drawn, OS.get_cmdline_user_args(), bribe_money())
 	city = $City
 	# At night the comisario and the armero went home.
 	for npc: Node in [city.comisario, city.armero]:
@@ -160,6 +301,18 @@ func _ready() -> void:
 		_dog_night()
 	elif is_tunnel():
 		_tunnel_night()
+	elif is_vent():
+		_vent_night()
+	elif is_garbage():
+		_garbage_night()
+	elif is_drill():
+		_drill_day()
+	elif is_roof():
+		_roof_night()
+	elif is_bribe():
+		_bribe_night()
+	elif is_trial():
+		_trial_day()
 	else:
 		_guard_desk()
 	_hud()
@@ -168,20 +321,29 @@ func _ready() -> void:
 	$PatrolCar.global_transform = car_home
 	if Campaign.current:
 		guard.times_caught = Campaign.current.jail_catches
-	var hint: String = {"cleaning": "HINT_JAILED_CLEANING", "dog": "HINT_JAILED_DOG", "tunnel": "HINT_JAILED_TUNNEL"} \
+	var hint: String = {"cleaning": "HINT_JAILED_CLEANING", "dog": "HINT_JAILED_DOG", "tunnel": "HINT_JAILED_TUNNEL",
+		"vent": "HINT_JAILED_VENT", "garbage": "HINT_JAILED_GARBAGE",
+		"drill": "HINT_JAILED_DRILL", "roof": "HINT_JAILED_ROOF", "bribe": "HINT_JAILED_BRIBE",
+		"trial": "HINT_JAILED_TRIAL"} \
 		.get(variant, "HINT_JAILED")
 	($Cop as Cop).show_hint.call_deferred(hint)
 
 
 ## The way out for this seed: from --jailbreak=<variant> among the user args, or drawn. Without a seed from Play (0)
-## it's the donut, the first one.
-static func pick_variant(drawn_seed: int, args: PackedStringArray) -> String:
+## it's the donut, the first one. The bribe, the last one, is only drawn with `money` for the guard's lowest price.
+static func pick_variant(drawn_seed: int, args: PackedStringArray, money := 0) -> String:
 	for arg in args:
 		if arg.begins_with("--jailbreak=") and VARIANTS.has(arg.trim_prefix("--jailbreak=")):
 			return arg.trim_prefix("--jailbreak=")
 	if drawn_seed == 0:
 		return VARIANTS[0]
-	return VARIANTS[hash(["jailbreak variant", drawn_seed]) % VARIANTS.size()]
+	var ways := VARIANTS.size() if money >= BribeGuard.PRICE_MIN else VARIANTS.size() - 1
+	return VARIANTS[hash(["jailbreak variant", drawn_seed]) % ways]
+
+
+## The bribes' money the cops still have (Campaign.bribe_fund), 0 without a campaign.
+static func bribe_money() -> int:
+	return Campaign.current.bribe_fund() if Campaign.current else 0
 
 
 func is_cleaning() -> bool:
@@ -194,6 +356,828 @@ func is_dog() -> bool:
 
 func is_tunnel() -> bool:
 	return variant == "tunnel"
+
+
+func is_vent() -> bool:
+	return variant == "vent"
+
+
+func is_garbage() -> bool:
+	return variant == "garbage"
+
+
+func is_drill() -> bool:
+	return variant == "drill"
+
+
+func is_roof() -> bool:
+	return variant == "roof"
+
+
+func is_bribe() -> bool:
+	return variant == "bribe"
+
+
+func is_trial() -> bool:
+	return variant == "trial"
+
+
+## The fast trial: morning, the day guard at his desk, and by the waiting room's bench the lost and found box with the
+## lawyer jacket on it. The file with the alibi shows only to the cop wearing it.
+func _trial_day() -> void:
+	_daylight()
+	var lot := city.transform * CityLayout.lot("station")
+	var desk := _desk()
+	var watcher := TrialGuard.new()
+	watcher.name = "NightGuard"
+	watcher.cell_doors.assign(city.cell_doors)
+	add_child(watcher)
+	watcher.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), GUARD_AT)
+	watcher.stand_guard(case_seed)
+	watcher.outside_cells = outside_cells
+	watcher.see_through = [desk.get_rid()]
+	watcher.caught.connect(_on_caught)
+	guard = watcher
+	var box_body := StaticBody3D.new()
+	box_body.name = "LostFoundBox"
+	add_child(box_body)
+	box_body.global_transform = lot * Transform3D(Basis(Vector3.UP, PI / 2), LOST_BOX_AT)
+	box_body.add_child(LOST_BOX_MODEL.instantiate())
+	var shape := CollisionShape3D.new()
+	var solid := BoxShape3D.new()
+	solid.size = Vector3(0.6, 0.42, 0.45)
+	shape.shape = solid
+	shape.position.y = solid.size.y / 2
+	box_body.add_child(shape)
+	jacket = DisguisePiece.scene_of("lawyer_jacket").instantiate()
+	jacket.name = "LawyerJacket"
+	add_child(jacket)
+	_jacket_on_box()
+	alibi = TrialAlibi.draw(case_seed, trials)
+	_court(lot)
+	var file_hud := CanvasLayer.new()
+	file_hud.name = "TrialFile"
+	file_label = Label.new()
+	file_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER_LEFT)
+	file_label.position.x = 24
+	file_label.custom_minimum_size = Vector2(360, 0)
+	file_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	file_label.hide()
+	file_hud.add_child(file_label)
+	add_child(file_hud)
+
+
+## The judge's bench in the guard room, Judge Bermúdez behind it, and the witness stand with its three signs.
+func _court(lot: Transform3D) -> void:
+	var bench := StaticBody3D.new()
+	bench.name = "JudgeBench"
+	add_child(bench)
+	bench.global_transform = lot * Transform3D(Basis.IDENTITY, JUDGE_DESK_AT)
+	bench.add_child(DESK_MODEL.instantiate())
+	var shape := CollisionShape3D.new()
+	var solid := BoxShape3D.new()
+	solid.size = StationRooms.SOLID["station_desk"]
+	shape.shape = solid
+	shape.position.y = solid.size.y / 2
+	bench.add_child(shape)
+	judge = TrialJudge.new()
+	judge.name = "TrialJudge"
+	judge.case_seed = case_seed
+	judge.alibi = alibi
+	add_child(judge)
+	judge.global_transform = lot * Transform3D(Basis.IDENTITY, JUDGE_AT)
+	# The witness faces the stand (+Z); the cops' forward is -Z.
+	judge.stand_spot = lot * Transform3D(Basis(Vector3.UP, PI), WITNESS_AT)
+	judge.guilty.connect(func() -> void: guard.catch())
+	judge.innocent.connect(func() -> void: (guard as TrialGuard).set_free())
+	var stand := TrialStand.new()
+	stand.name = "TrialStand"
+	stand.judge = judge
+	add_child(stand)
+	stand.global_transform = lot * Transform3D(Basis.IDENTITY, STAND_AT)
+	for i in SIGNS_X.size():
+		var sign_board := TrialSign.new()
+		sign_board.name = "TrialSign%d" % i
+		sign_board.index = i
+		sign_board.judge = judge
+		add_child(sign_board)
+		# On the stand's top, leaning back, facing the witness (-Z).
+		sign_board.global_transform = lot * Transform3D(Basis(Vector3.UP, PI) * Basis(Vector3.RIGHT, -0.3),
+			STAND_AT + Vector3(SIGNS_X[i], SIGNS_Y, -0.2))
+		signs.append(sign_board)
+
+
+## The court sits (the host): the judge calls the witnesses.
+func _open_court() -> void:
+	if judge.state == "" and (guard as TrialGuard).phase == "court":
+		judge.open_court(get_tree().get_nodes_in_group("cops").filter(func(cop: Node) -> bool:
+			return is_ancestor_of(cop)), lawyer())
+
+
+## The jacket folded on the lost and found box.
+func _jacket_on_box() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	jacket.linear_velocity = Vector3.ZERO
+	jacket.global_transform = lot * Transform3D(Basis(Vector3.RIGHT, -PI / 2), JACKET_ON_BOX)
+
+
+## The cops' lawyer: whoever wears the jacket (null: nobody yet).
+func lawyer() -> Cop:
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if is_ancestor_of(cop) and cop.disguise.has("lawyer_jacket"):
+			return cop
+	return null
+
+
+## This PC's cop sees the file while it's the lawyer.
+func _show_file() -> void:
+	var own := $Cop as Cop
+	# Testifying on the stand (alone, the lawyer testifies too) the file is put away.
+	var shown := own != null and own.disguise.has("lawyer_jacket") and not (judge.is_witness(own)
+		and judge.state in ["asking", "reacting"])
+	if shown and not file_label.visible:
+		own.show_hint("HINT_TRIAL_LAWYER")
+	file_label.visible = shown
+	if shown:
+		file_label.text = TrialAlibi.file_text(alibi)
+
+
+## Caught in the fast trial (everyone is back in the cells by now): the jacket back on the box and a new alibi for the
+## next trial.
+func _trial_caught() -> void:
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if not is_ancestor_of(cop) or not cop.disguise.has("lawyer_jacket"):
+			continue
+		var parent := cop.get_parent()
+		var before := parent.get_child_count()
+		cop.lose_disguise("lawyer_jacket", "HINT_TRIAL_JACKET_BACK")
+		if cop.sync and cop.sync.net.actions:
+			cop.sync.net.actions.tell_guests(cop, "lose_disguise", cop, ["lawyer_jacket", "HINT_TRIAL_JACKET_BACK"])
+		for i in range(before, parent.get_child_count()):
+			if parent.get_child(i) is DisguisePiece:
+				jacket = parent.get_child(i)
+	if is_instance_valid(jacket):
+		_drop(jacket)
+		_jacket_on_box()
+	trials += 1
+	alibi = TrialAlibi.draw(case_seed, trials)
+	judge.reset(alibi)
+
+
+## Caught in the bribe jailbreak: the guard keeps what he got and asks for more, and the wads out of the cells go back
+## to the bunks.
+func _bribe_caught() -> void:
+	(guard as BribeGuard).after_catch()
+	var lot := city.transform * CityLayout.lot("station")
+	var spot := 0
+	for wad: Node in get_tree().get_nodes_in_group("bill_wads"):
+		if not is_ancestor_of(wad) or wad.is_queued_for_deletion():
+			continue
+		if outside_cells((wad as Node3D).global_position) or (wad as Grabbable).is_held():
+			_drop(wad as Grabbable)
+			(wad as RigidBody3D).linear_velocity = Vector3.ZERO
+			(wad as Node3D).global_position = lot * WADS[spot % WADS.size()]
+		spot += 1
+
+
+## The bribe jailbreak: the guard who sells himself at his desk, and the bribes' money split among four wads on the
+## bunks; E on the bars calls him and pays him (BribeGuard, CellDoor.bribe), and the corridor's camera turning from
+## one cell to the other (CorridorCamera).
+func _bribe_night() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var desk := _desk()
+	var money := maxi(bribe_money(), BRIBE_TEST_MONEY if bribe_money() < BribeGuard.PRICE_MIN else 0)
+	var seller := BribeGuard.new()
+	seller.name = "NightGuard"
+	seller.station_lot = lot
+	seller.cell_doors.assign(city.cell_doors)
+	add_child(seller)
+	seller.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), GUARD_AT)
+	seller.stand_guard(case_seed, money)
+	seller.outside_cells = outside_cells
+	seller.see_through = [desk.get_rid()]
+	seller.caught.connect(_on_caught)
+	guard = seller
+	for door in city.cell_doors:
+		door.bribe = seller
+	var watcher := CorridorCamera.new()
+	watcher.name = "CorridorCamera"
+	watcher.setup(case_seed)
+	add_child(watcher)
+	watcher.global_transform = lot * Transform3D(Basis.IDENTITY, CORRIDOR_CAMERA_AT)
+	for cell in StationRooms.CELL_DOORS.size():
+		var door := StationRooms.CELL_DOORS[cell]
+		watcher.doors.append(lot * Vector3((door.x + door.y) / 2.0, 1.0, StationRooms.CELL_FRONT_Z))
+	seller.camera = watcher
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["bribe wads", case_seed])
+	var amounts := BillWad.split(money, WADS.size(), BribeGuard.PRICE_STEP, rng)
+	for i in amounts.size():
+		var wad := BillWad.new()
+		wad.name = "BillWad%d" % i
+		wad.amount = amounts[i]
+		add_child(wad)
+		wad.global_transform = lot * Transform3D(Basis(Vector3.UP, rng.randf_range(-0.6, 0.6)), WADS[i])
+
+
+## The roof jailbreak: the night guard with the key on his belt, and in each cell a skylight in the ceiling (the seed's
+## loose one gives sooner), the bunk's two sheets and a spare mattress.
+func _roof_night() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var desk := _desk()
+	var watcher := RoofGuard.new()
+	watcher.name = "NightGuard"
+	add_child(watcher)
+	watcher.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), GUARD_AT)
+	watcher.stand_guard(case_seed)
+	watcher.outside_cells = outside_cells
+	watcher.see_through = [desk.get_rid()]
+	watcher.caught.connect(_on_caught)
+	guard = watcher
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["roof", case_seed])
+	var loose := rng.randi_range(0, SKYLIGHTS.size() - 1)
+	for cell in SKYLIGHTS.size():
+		var skylight := CellSkylight.new()
+		skylight.name = "CellSkylight%d" % cell
+		skylight.cell = cell
+		skylight.floor_y = lot.origin.y
+		add_child(skylight)
+		skylight.global_transform = lot * Transform3D(Basis.IDENTITY, SKYLIGHTS[cell])
+		if cell == loose:
+			skylight.set_loose()
+		skylight.creaked.connect(_on_creak)
+		skylight.climbed.connect(_through_skylight)
+		skylights.append(skylight)
+		var mattress := CellMattress.new()
+		mattress.name = "CellMattress%d" % cell
+		add_child(mattress)
+		# Lying along the cell, in front of the bunk.
+		mattress.global_transform = lot * Transform3D(Basis(Vector3.UP, PI / 2), MATTRESSES[cell])
+	for i in SHEETS.size():
+		var sheet := BedSheet.new()
+		sheet.name = "BedSheet%d" % i
+		add_child(sheet)
+		sheet.global_transform = lot * Transform3D(Basis(Vector3.UP, rng.randf_range(-0.3, 0.3)), SHEETS[i])
+	_attic(lot, rng)
+	antenna = RoofAntenna.new()
+	antenna.name = "RoofAntenna"
+	antenna.outward = lot.basis * Vector3(0, 0, -1)
+	add_child(antenna)
+	antenna.global_transform = lot * Transform3D(Basis.IDENTITY, ANTENNAS[rng.randi_range(0, ANTENNAS.size() - 1)])
+	antenna.climbed.connect(_climb_down)
+
+
+## On the rope (every PC holds the cop still; the host takes it down after CLIMB_TIME). Two on it at once with a loose
+## knot: it gives, and both fall into the alley.
+func _climb_down(_antenna: RoofAntenna, cop: Cop) -> void:
+	cop.knock_back(Vector3.ZERO, CLIMB_TIME)
+	if not multiplayer.is_server() or _climbers.has(cop):
+		return
+	_climbers[cop] = CLIMB_TIME
+	if _climbers.size() >= 2 and antenna.knots.has(false):
+		antenna.cut()
+		for climber: Cop in _climbers:
+			_land(climber, true, "HINT_ROPE_SNAPPED")
+		_climbers.clear()
+
+
+## The host: the cops on the rope get down when their time is up (dizzy if it didn't reach the ground).
+func _climb(delta: float) -> void:
+	for cop: Cop in _climbers.keys():
+		_climbers[cop] -= delta
+		if _climbers[cop] <= 0.0:
+			_climbers.erase(cop)
+			_land(cop, not antenna.reaches_down(), "HINT_ROPE_FELL" if not antenna.reaches_down() else "HINT_IN_THE_ALLEY")
+
+
+## Down in the back alley, under the antenna; `dizzy` after a fall.
+func _land(cop: Cop, dizzy: bool, hint: String) -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var local := lot.affine_inverse() * antenna.global_position
+	cop.warp(lot * Transform3D(Basis(Vector3.UP, PI), Vector3(local.x, 0, 0) + ALLEY_DOWN))
+	if dizzy:
+		cop.knock_back(Vector3.ZERO, DIZZY)
+		if cop.sync and cop.sync.net.actions:
+			cop.sync.net.actions.tell_guests(cop, "knock_back", cop, [Vector3.ZERO, DIZZY])
+	cop.show_hint(hint, true)
+
+
+## Caught: a new padlock on each skylight, the rope off the antenna and the sheets back on the bunks.
+func _roof_caught() -> void:
+	_climbers.clear()
+	for skylight in skylights:
+		skylight.lock_again()
+	antenna.untie()
+	for item: Node in get_tree().get_nodes_in_group("sheet_ropes") + get_tree().get_nodes_in_group("bed_sheets"):
+		_drop(item as Grabbable)
+		item.queue_free()
+	var lot := city.transform * CityLayout.lot("station")
+	for i in SHEETS.size():
+		var sheet := BedSheet.new()
+		sheet.name = "BedSheetBack%d_%d" % [guard.times_caught, i]
+		add_child(sheet)
+		sheet.global_transform = lot * Transform3D(Basis.IDENTITY, SHEETS[i])
+
+
+## The storage room over the cells: its boxes (some stacked, ready to fall), a dim bulb, the ladder up to the roof's
+## hatch, and the parapet around the roof.
+func _attic(lot: Transform3D, rng: RandomNumberGenerator) -> void:
+	var spots := range(STORAGE_SPOTS.size())
+	for i in spots.size():
+		var j := rng.randi_range(i, spots.size() - 1)
+		var swap: int = spots[i]
+		spots[i] = spots[j]
+		spots[j] = swap
+	for i in rng.randi_range(STORAGE_MIN, STORAGE_SPOTS.size()):
+		var at: Vector3 = STORAGE_SPOTS[spots[i]]
+		var turn := Basis(Vector3.UP, rng.randf_range(-0.4, 0.4))
+		_storage_box("StorageBox%d" % i, lot * Transform3D(turn, at))
+		if i < STORAGE_STACKED:
+			_storage_box("StorageBoxTop%d" % i, lot * Transform3D(turn, at + Vector3(0.05, StorageBox.SIZE.y, 0)))
+	var bulb := OmniLight3D.new()
+	bulb.name = "AtticBulb"
+	bulb.light_color = Color(1.0, 0.8, 0.55)
+	bulb.light_energy = 0.5
+	bulb.omni_range = 9.0
+	add_child(bulb)
+	bulb.global_position = lot * Vector3(11.0, ATTIC_FLOOR + 2.5, 2.0)
+	for up: bool in [true, false]:
+		var hatch := RoofHatch.new()
+		hatch.name = "RoofLadder" if up else "RoofHatch"
+		hatch.goes_up = up
+		add_child(hatch)
+		hatch.global_transform = lot * Transform3D(Basis.IDENTITY, LADDER_AT if up else HATCH_AT)
+		hatch.used.connect(_through_hatch)
+	_parapet(lot)
+
+
+func _storage_box(box_name: String, at: Transform3D) -> void:
+	var box := StorageBox.new()
+	box.name = box_name
+	add_child(box)
+	box.global_transform = at
+	box.thumped.connect(_on_thump)
+
+
+## A low wall around the roof's edge: down from up there is by the rope (step 3), not a jump.
+func _parapet(lot: Transform3D) -> void:
+	var material := StandardMaterial3D.new()
+	material.albedo_color = Color(0.3, 0.45, 0.8)
+	var half := Vector2(StationRooms.HALF_X, StationRooms.HALF_Z)
+	for side: Array in [[Vector3(0, 0, -half.y), Vector3(half.x * 2, 0, 0.2)], [Vector3(0, 0, half.y), Vector3(half.x * 2, 0, 0.2)],
+			[Vector3(-half.x, 0, 0), Vector3(0.2, 0, half.y * 2)], [Vector3(half.x, 0, 0), Vector3(0.2, 0, half.y * 2)]]:
+		var size: Vector3 = side[1] + Vector3(0, PARAPET_HEIGHT, 0)
+		var wall := StaticBody3D.new()
+		wall.name = "Parapet%d" % get_children().filter(func(node: Node) -> bool:
+			return node.name.begins_with("Parapet")).size()
+		var shape := CollisionShape3D.new()
+		var box := BoxShape3D.new()
+		box.size = size
+		shape.shape = box
+		wall.add_child(shape)
+		var mesh := MeshInstance3D.new()
+		var cube := BoxMesh.new()
+		cube.size = size
+		cube.material = material
+		mesh.mesh = cube
+		wall.add_child(mesh)
+		add_child(wall)
+		wall.global_transform = lot * Transform3D(Basis.IDENTITY, side[0] + Vector3(0, ROOF_Y + PARAPET_HEIGHT / 2, 0))
+
+
+## Up the ladder onto the roof, or down its hatch into the storage room.
+func _through_hatch(hatch: RoofHatch, cop: Cop) -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	cop.warp(Transform3D(cop.global_basis, lot * (ROOF_UP_AT if hatch.goes_up else ATTIC_DOWN_AT)))
+	if hatch.goes_up:
+		cop.show_hint("HINT_ON_THE_ROOF", true)
+
+
+## A box fell hard upstairs: the guard (the host's) heard it.
+func _on_thump(box: StorageBox) -> void:
+	if multiplayer.is_server():
+		(guard as RoofGuard).heard_thump(box.global_position)
+
+
+## The host: a cop running on the roof makes steps the guard hears, one every STEPS_EVERY seconds of running.
+func _roof_steps(delta: float) -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if (lot.affine_inverse() * cop.global_position).y < ROOF_Y - 0.3:
+			_roof_last.erase(cop)
+			_roof_run.erase(cop)
+			continue
+		var last: Vector3 = _roof_last.get(cop, cop.global_position)
+		_roof_last[cop] = cop.global_position
+		var moved := Vector2(cop.global_position.x - last.x, cop.global_position.z - last.z).length()
+		if moved / delta <= ROOF_QUIET_SPEED:
+			_roof_run[cop] = 0.0
+			continue
+		_roof_run[cop] = _roof_run.get(cop, 0.0) + delta
+		if _roof_run[cop] >= STEPS_EVERY:
+			_roof_run[cop] = 0.0
+			(guard as RoofGuard).heard_steps(cop.global_position)
+
+
+## A skylight creaked: the guard (the host's) heard it.
+func _on_creak(skylight: CellSkylight) -> void:
+	if multiplayer.is_server():
+		(guard as RoofGuard).heard_creak(skylight.global_position)
+
+
+## Through an open skylight: up onto the storage room over the cells, or from there back down into the cell.
+func _through_skylight(skylight: CellSkylight, cop: Cop) -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var at := SKYLIGHTS[skylight.cell]
+	if skylight.is_above(cop):
+		cop.warp(Transform3D(cop.global_basis, lot * Vector3(at.x + BELOW_AT.x, BELOW_AT.y, at.z + BELOW_AT.z)))
+		return
+	cop.warp(Transform3D(cop.global_basis, lot * Vector3(at.x + ABOVE_AT.x, ABOVE_AT.y, at.z + ABOVE_AT.z)))
+	cop.show_hint("HINT_SKYLIGHT_UP", true)
+
+
+## The fire drill: daytime, the day guard at his desk with the key on his belt, the waiting room full, and in each
+## cell a heater, a blanket and a smoke detector.
+func _drill_day() -> void:
+	_daylight()
+	var lot := city.transform * CityLayout.lot("station")
+	var desk := _desk()
+	var watcher := DrillGuard.new()
+	watcher.name = "NightGuard"
+	add_child(watcher)
+	watcher.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), GUARD_AT)
+	watcher.stand_guard(case_seed)
+	watcher.station_lot = lot
+	watcher.cell_doors = city.cell_doors
+	watcher.patrol_car = $PatrolCar
+	watcher.outside_cells = outside_cells
+	watcher.see_through = [desk.get_rid()]
+	watcher.caught.connect(_drill_caught)
+	watcher.caught.connect(_on_caught)
+	guard = watcher
+	for cell in HEATERS.size():
+		var detector := SmokeDetector.new()
+		detector.name = "SmokeDetector%d" % cell
+		add_child(detector)
+		detector.global_transform = lot * Transform3D(Basis.IDENTITY, DETECTORS[cell])
+		detector.rang.connect(_on_alarm)
+		detectors.append(detector)
+		var heater := CellHeater.new()
+		heater.name = "CellHeater%d" % cell
+		heater.cell = cell
+		heater.detector = detector
+		add_child(heater)
+		# Against the cell's side wall, its grille (+Z) facing into the cell.
+		heater.global_transform = lot * Transform3D(Basis(Vector3.UP, PI / 2 if cell == 0 else -PI / 2), HEATERS[cell])
+		heaters.append(heater)
+		var blanket := CellBlanket.new()
+		blanket.name = "CellBlanket%d" % cell
+		add_child(blanket)
+		blanket.global_transform = lot * Transform3D(Basis.IDENTITY, BLANKETS[cell])
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["waiting room", case_seed])
+	var spots := range(WAITING_SPOTS.size())
+	var kinds := range(WaitingPerson.KINDS.size())
+	for i in spots.size():
+		var j := rng.randi_range(i, spots.size() - 1)
+		var swap: int = spots[i]
+		spots[i] = spots[j]
+		spots[j] = swap
+		j = rng.randi_range(i, kinds.size() - 1)
+		swap = kinds[i]
+		kinds[i] = kinds[j]
+		kinds[j] = swap
+	for i in rng.randi_range(WAITING_MIN, WAITING_SPOTS.size()):
+		var person := WaitingPerson.new()
+		person.name = "WaitingPerson%d" % i
+		person.set_up(WaitingPerson.KINDS[kinds[i]], rng.randi())
+		person.station_lot = lot
+		person.home = lot * WAITING_SPOTS[spots[i]]
+		person.meeting = lot * MEETING_SPOTS[i]
+		add_child(person)
+		# Facing the comisario's office (-Z; the models face +Z), give or take.
+		person.global_transform = Transform3D(lot.basis * Basis(Vector3.UP, PI + rng.randf_range(-0.8, 0.8)),
+			person.home)
+	_coat_rack(lot, rng)
+
+
+## The coat rack in the waiting room's corner, COATS_MIN to COAT_HOOKS of its hooks with a coat or a hat (the seed
+## says which). The host hangs them; a guest gets them from it.
+func _coat_rack(lot: Transform3D, rng: RandomNumberGenerator) -> void:
+	var rack := StaticBody3D.new()
+	rack.name = "CoatRack"
+	rack.add_child(load("res://assets/models/coat_rack.glb").instantiate())
+	var shape := CollisionShape3D.new()
+	var pole := CylinderShape3D.new()
+	pole.radius = 0.2
+	pole.height = 1.8
+	shape.shape = pole
+	shape.position.y = 0.9
+	rack.add_child(shape)
+	add_child(rack)
+	rack.global_transform = lot * Transform3D(Basis.IDENTITY, COAT_RACK_AT)
+	var filled := rng.randi_range(COATS_MIN, COAT_HOOKS)
+	for i in COAT_HOOKS:
+		var turn := TAU * i / COAT_HOOKS
+		var turned := Basis(Vector3.UP, turn)
+		coat_hooks.append(rack.global_transform * Transform3D(turned,
+			Vector3(0, COAT_HOOK_Y, 0) + turned * Vector3(0, 0, COAT_HOOK_OUT)))
+		hung.append(null)
+		var kind := "coat" if rng.randf() < 0.6 else "hat"
+		if i >= filled or not multiplayer.is_server():
+			continue
+		var piece: DisguisePiece = DisguisePiece.scene_of(kind).instantiate()
+		piece.name = "Coat%d" % i
+		add_child(piece)
+		_hang(piece, i)
+
+
+## Hangs `piece` on hook `i` (a hat sits a bit lower and further out, on the hook's tip).
+func _hang(piece: DisguisePiece, i: int) -> void:
+	var hook := coat_hooks[i]
+	if piece.kind == "hat":
+		hook = hook * Transform3D(Basis.IDENTITY, Vector3(0, -0.06, 0.1))
+	piece.hang(hook)
+	hung[i] = piece
+
+
+## Back in the cell, a cop's coat and hat go back on the coat rack (every PC takes them off; the host hangs them).
+func _hang_back(cop: Cop) -> void:
+	var parent := cop.get_parent()
+	for kind: String in ["coat", "hat"]:
+		if not cop.disguise.has(kind):
+			continue
+		var before := parent.get_child_count()
+		cop.lose_disguise(kind)
+		if cop.sync and cop.sync.net.actions:
+			cop.sync.net.actions.tell_guests(cop, "lose_disguise", cop, [kind])
+		for i in range(before, parent.get_child_count()):
+			var piece := parent.get_child(i) as DisguisePiece
+			var hook := hung.find_custom(func(on: Variant) -> bool:
+				return not is_instance_valid(on) or not (on as DisguisePiece).hanging)
+			if piece and hook >= 0:
+				_hang(piece, hook)
+
+
+## The drill is on: the guard (the host's, on every PC) is out with everyone.
+func drill_on() -> bool:
+	return guard is DrillGuard and (guard as DrillGuard).drill_on()
+
+
+## This PC's own cops: holding E with nothing to use takes the vest off in the drill.
+func _take_off_vests(delta: float) -> void:
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if not cop.input_enabled:
+			continue
+		if drill_on() and outside_cells(cop.global_position) and not _told_vest.has(cop):
+			_told_vest[cop] = true
+			cop.show_hint("HINT_VEST_HOW")
+		if Input.is_action_pressed("use") and not cop.vehicle and cop.current_prompt() == "":
+			hold_vest_off(cop, delta)
+		else:
+			_vest_hold.erase(cop)
+
+
+## `cop` held E one more tick to take its vest off: after VEST_OFF_TIME it drops in front of it, on every PC.
+func hold_vest_off(cop: Cop, delta: float) -> void:
+	if not drill_on() or not cop.disguise.has("prison_vest"):
+		_vest_hold.erase(cop)
+		return
+	if not _vest_hold.has(cop):
+		cop.show_hint("HINT_VEST_TAKING_OFF")
+	_vest_hold[cop] = _vest_hold.get(cop, 0.0) + delta
+	if _vest_hold[cop] >= VEST_OFF_TIME:
+		_vest_hold.erase(cop)
+		cop.act("lose_disguise", cop, ["prison_vest", "HINT_VEST_OFF"])
+
+
+## Every cop in a cell is a prisoner in an orange vest, except in the drill, when it can take it off (every PC dresses
+## every cop the same).
+func _dress_prisoners() -> void:
+	if drill_on():
+		return
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if not cop.disguise.has("prison_vest") and not outside_cells(cop.global_position):
+			cop.put_on_disguise("prison_vest", 0.0)
+
+
+## Smoke made a detector ring: the drill starts. The guard opens the cells and leads everyone out (in the drill a
+## prisoner out of a cell is what he wants), and the waiting room walks out to the sidewalk.
+func _on_alarm() -> void:
+	alarm_rung = true
+	if drilling or not multiplayer.is_server():
+		return
+	drilling = true
+	drill_left = DRILL_TIME
+	guard.outside_cells = func(_at: Vector3) -> bool: return false
+	(guard as DrillGuard).start_drill()
+	for person: WaitingPerson in get_tree().get_nodes_in_group("waiting_people"):
+		person.evacuate()
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		cop.show_hint("HINT_DRILL_ALARM", true)
+
+
+## The drill's over: everyone back in, the prisoners still out back in their cells.
+func _end_drill() -> void:
+	(guard as DrillGuard).end_drill()
+	_drill_over()
+	var car: PatrolCar = $PatrolCar
+	var slot := 0
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if outside_cells(cop.global_position) and car.seat_of(cop) < 0:
+			_hang_back(cop)
+			cop.warp(cop_spawn(slot))
+			slot += 1
+		cop.show_hint("HINT_DRILL_OVER", true)
+	# The vests left lying around go back on (the cops in the cells get theirs).
+	for clue: Node in get_tree().get_nodes_in_group("guard_clues"):
+		if clue is DisguisePiece:
+			_drop(clue as Grabbable)
+			clue.queue_free()
+	for door in city.cell_doors:
+		door.lock()
+
+
+## Caught in the drill: it ends there (the rest of _on_caught puts everyone back).
+func _drill_caught(_times: int) -> void:
+	if drilling:
+		_drill_over()
+
+
+## The waiting room goes back in, the alarm stops and the heaters get their "NO TOCAR" sign.
+func _drill_over() -> void:
+	drilling = false
+	guard.outside_cells = outside_cells
+	for person: WaitingPerson in get_tree().get_nodes_in_group("waiting_people"):
+		person.go_back()
+	for detector in detectors:
+		detector.hush()
+	for heater in heaters:
+		heater.slow = HEATER_SLOW
+
+
+## Daytime: a white sun high up and a blue sky.
+func _daylight() -> void:
+	var light: DirectionalLight3D = $Moon
+	light.light_color = Color(1.0, 0.97, 0.9)
+	light.light_energy = 1.1
+	light.rotation = Vector3(deg_to_rad(-55.0), deg_to_rad(30.0), 0)
+	var world: WorldEnvironment = $Environment
+	var env: Environment = world.environment.duplicate(true)
+	var sky := env.sky.sky_material as ProceduralSkyMaterial
+	sky.sky_top_color = Color(0.35, 0.55, 0.9)
+	sky.sky_horizon_color = Color(0.7, 0.8, 0.92)
+	sky.ground_horizon_color = Color(0.7, 0.8, 0.92)
+	env.ambient_light_energy = 0.9
+	world.environment = env
+
+
+## The garbage truck jailbreak: the guard at his desk with the key on his belt, doing his garbage rounds; a trash bin in
+## each cell and the dumpster on the sidewalk.
+func _garbage_night() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var desk := _desk()
+	var collector := GarbageGuard.new()
+	collector.name = "NightGuard"
+	add_child(collector)
+	collector.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), GUARD_AT)
+	collector.station_lot = lot
+	collector.cell_doors = city.cell_doors
+	collector.stand_guard(case_seed)
+	collector.outside_cells = outside_cells
+	collector.see_through = [desk.get_rid()]
+	collector.caught.connect(_garbage_caught)
+	collector.caught.connect(_on_caught)
+	guard = collector
+	for at in TRASH_BINS:
+		var bin := TRASH_BIN_MODEL.instantiate() as Node3D
+		add_child(bin)
+		bin.global_transform = lot * Transform3D(Basis.IDENTITY, at)
+	dumpster = Dumpster.new()
+	dumpster.name = "Dumpster"
+	add_child(dumpster)
+	dumpster.global_transform = lot * Transform3D(Basis.IDENTITY, DUMPSTER_AT)
+	collector.dumpster = dumpster
+	for i in BAG_ROLL:
+		var bag := GarbageBag.new()
+		bag.name = "GarbageBag%d" % i
+		add_child(bag)
+		bag.home = lot * Transform3D(Basis.IDENTITY, BAG_ROLL_AT + Vector3(i * 0.8, 0, 0))
+		bag.global_transform = bag.home
+		collector.bags.append(bag)
+	garbage_truck = GarbageTruck.new()
+	garbage_truck.name = "GarbageTruck"
+	garbage_truck.station_lot = lot
+	garbage_truck.dumpster = dumpster
+	garbage_truck.guard = collector
+	add_child(garbage_truck)
+	garbage_truck.set_up(case_seed)
+	for cell in BUNK_DUMMIES.size():
+		var dummy := BunkDummy.new()
+		dummy.name = "BunkDummy%d" % cell
+		dummy.cell = cell
+		add_child(dummy)
+		dummy.global_transform = lot * Transform3D(Basis.IDENTITY, BUNK_DUMMIES[cell])
+	collector.recount.call_deferred()
+
+
+## Caught on garbage night (before the rest of _on_caught): out of every bag, the dummies back to pillows, and once
+## everyone is back in the cells he counts them again.
+func _garbage_caught(_times: int) -> void:
+	garbage_truck.release_all()
+	for bag: GarbageBag in get_tree().get_nodes_in_group("garbage_bags"):
+		bag.let_out()
+	for dummy: BunkDummy in get_tree().get_nodes_in_group("bunk_dummies"):
+		dummy.undo()
+	(guard as GarbageGuard).recount.call_deferred()
+
+
+## The vent jailbreak: the guard awake at his desk with no key (it's on the key board behind him, step 3) and a loose
+## grille high on the back wall of each cell.
+func _vent_night() -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	var desk := _desk()
+	var watcher := VentGuard.new()
+	watcher.name = "NightGuard"
+	add_child(watcher)
+	watcher.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), GUARD_AT)
+	watcher.stand_guard(case_seed)
+	watcher.outside_cells = outside_cells
+	watcher.see_through = [desk.get_rid()]
+	watcher.caught.connect(_on_caught)
+	guard = watcher
+	for cell in VENT_GRILLES.size():
+		var grille := VentGrille.new()
+		grille.name = "VentGrille%d" % cell
+		grille.cell = cell
+		grille.floor_y = lot.origin.y
+		add_child(grille)
+		grille.global_transform = lot * Transform3D(Basis.IDENTITY, VENT_GRILLES[cell])
+		grille.climbed.connect(_into_vent)
+		grilles.append(grille)
+	duct = VentDuct.new()
+	duct.name = "VentDuct"
+	add_child(duct)
+	duct.global_transform = lot
+	var cells_x: Array[float] = []
+	for at in VENT_GRILLES:
+		cells_x.append(at.x)
+	duct.build(case_seed, cells_x)
+	for hatch: VentHatch in duct.cell_hatches + [duct.office_hatch]:
+		hatch.used.connect(_out_of_vent)
+	key_board = KeyBoard.new()
+	key_board.name = "KeyBoard"
+	add_child(key_board)
+	key_board.global_transform = lot * Transform3D(Basis(Vector3.UP, PI), KEY_BOARD_AT)
+	key_board.setup(case_seed)
+
+
+## A cop on the bunk gets into the open grille: up into the duct over its cell, or, the big one, stuck for a while.
+func _into_vent(grille: VentGrille, cop: Cop) -> void:
+	if cop == big_cop():
+		cop.knock_back(Vector3.ZERO, VENT_STUCK)
+		cop.show_hint("HINT_VENT_STUCK", true)
+		return
+	cop.warp(duct.global_transform * duct.start_over(VENT_GRILLES[grille.cell].x))
+	cop.set_crouching(true)
+	cop.show_hint("HINT_VENT_IN", true)
+
+
+## Down a hatch of the duct: back into a cell, or into the comisario's office.
+func _out_of_vent(hatch: VentHatch, cop: Cop) -> void:
+	cop.warp(duct.global_transform * hatch.drop_to)
+	if hatch.into_office:
+		cop.show_hint("HINT_VENT_OFFICE", true)
+
+
+## Every PC: its cops in the duct crawl (and stay down); the host hears who scrambles there.
+func _crawl(delta: float) -> void:
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		var inside := duct.contains(cop.global_position)
+		cop.crawling = inside
+		if inside and not cop.is_crouching:
+			cop.set_crouching(true)
+		if not multiplayer.is_server() or delta <= 0.0:
+			continue
+		if not inside:
+			_duct_last.erase(cop)
+			continue
+		var last: Vector3 = _duct_last.get(cop, cop.global_position)
+		_duct_last[cop] = cop.global_position
+		var moved := Vector2(cop.global_position.x - last.x, cop.global_position.z - last.z).length()
+		if moved / delta > VENT_QUIET_SPEED:
+			(guard as VentGuard).heard_duct(cop.global_position)
+
+
+## The cop who doesn't fit in the duct (fuga-ventilacion.md, question 2): drawn by the seed among the cops, by their
+## uniforms, so it's the same one on every PC. Nobody when playing alone.
+func big_cop() -> Cop:
+	var cops: Array = get_tree().get_nodes_in_group("cops").filter(func(cop: Node) -> bool: return cop is Cop)
+	if cops.size() < 2:
+		return null
+	cops.sort_custom(func(a: Cop, b: Cop) -> bool: return a.uniform < b.uniform)
+	return cops[hash(["vent big", case_seed]) % cops.size()]
 
 
 ## The spoon tunnel: the guard awake at his desk with the key on his belt, a tray with two spoons in each cell and the
@@ -502,6 +1486,15 @@ func _desk() -> StaticBody3D:
 ## Whether a world position is out of both cells (through an open door or never in).
 func outside_cells(at: Vector3) -> bool:
 	var local := (city.transform * CityLayout.lot("station")).affine_inverse() * at
+	# In the roof jailbreak, up over the cells (through the skylight) is out of them.
+	if is_roof() and local.y > StationRooms.CEILING:
+		return true
+	# In the fast trial's court, the front row past the armory (the cells and the guard room) is where they should be.
+	if is_trial() and guard is TrialGuard and (guard as TrialGuard).is_free():
+		return false
+	if is_trial() and guard is TrialGuard and (guard as TrialGuard).in_court():
+		return not (local.x > -StationRooms.FRONT_X and local.x < StationRooms.HALF_X
+			and local.z > StationRooms.SPLIT_Z and local.z < StationRooms.HALF_Z)
 	return not (local.x > StationRooms.FRONT_X and local.x < StationRooms.HALF_X
 		and local.z > StationRooms.SPLIT_Z and local.z < StationRooms.CELL_FRONT_Z)
 
@@ -520,7 +1513,7 @@ func _on_caught(times: int) -> void:
 		get_tree().create_timer(LOST_DELAY).timeout.connect(finish.bind("lost"))
 	var slot := 0
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
-		if outside_cells(cop.global_position):
+		if outside_cells(cop.global_position) or (duct and duct.contains(cop.global_position)):
 			var car: PatrolCar = $PatrolCar
 			if car.seat_of(cop) >= 0:
 				car.exit(cop)
@@ -528,12 +1521,16 @@ func _on_caught(times: int) -> void:
 					cop.sync.net.actions.tell_guests(cop, "exit", car)
 			if is_cleaning():
 				_undress(cop)
+			elif is_drill():
+				_hang_back(cop)
 			cop.warp(cop_spawn(slot))
 			slot += 1
 		cop.show_hint("HINT_COMISARIO_CAUGHT" if is_cleaning() else "HINT_GUARD_CAUGHT")
 	for clue: Node in get_tree().get_nodes_in_group("guard_clues"):
 		if is_dog() and clue is CellKey:
 			dog.key_on_collar = true
+		elif key_board and clue is CellKey:
+			key_board.hang_back()
 		elif clue is CellKey or (clue is LooseDonut and clue.has_key):
 			guard.key_on_belt = true
 		_drop(clue as Grabbable)
@@ -550,6 +1547,12 @@ func _on_caught(times: int) -> void:
 		dog.riding = false
 	if is_tunnel():
 		_confiscate_spoons()
+	if is_roof():
+		_roof_caught()
+	if is_bribe():
+		_bribe_caught()
+	if is_trial():
+		_trial_caught()
 	if cleaner:
 		cleaner.reset()
 		if is_instance_valid(cart_key):
@@ -644,10 +1647,26 @@ func _hud() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if is_trial():
+		_show_file()
+		if multiplayer.is_server():
+			_open_court()
+	if is_drill():
+		_dress_prisoners()
+		_take_off_vests(delta)
+		if drilling and multiplayer.is_server():
+			drill_left -= delta
+			if drill_left <= 0.0:
+				_end_drill()
+	if is_roof() and multiplayer.is_server() and delta > 0.0:
+		_roof_steps(delta)
+		_climb(delta)
 	if stains:
 		_slip_on_wet(delta)
 	if dog and multiplayer.is_server():
 		_dog_jumps_in()
+	if duct:
+		_crawl(delta)
 	if is_tunnel():
 		if multiplayer.is_server():
 			_cover_holes()
@@ -725,6 +1744,8 @@ func finish(result: String) -> void:
 		return
 	guard.outcome = result
 	if Campaign.current and Campaign.current.jailed:
+		if guard is BribeGuard:
+			Campaign.current.pay_guard((guard as BribeGuard).paid)
 		Campaign.current.finish_jailbreak(result == "escaped")
 		Campaign.current.save()
 	_show_end(result)
@@ -789,6 +1810,14 @@ func _show_end(result: String) -> void:
 		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_DOG")
 	elif result == "escaped" and is_tunnel():
 		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_TUNNEL")
+	elif result == "escaped" and is_vent():
+		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_VENT")
+	elif result == "escaped" and is_garbage():
+		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_GARBAGE")
+	elif result == "escaped" and is_drill():
+		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_DRILL")
+	elif result == "escaped" and is_roof():
+		line.text = tr(line.text) + "\n" + tr("JAILBREAK_ESCAPED_ROOF")
 	box_ui.add_child(line)
 	var buttons := HBoxContainer.new()
 	buttons.alignment = BoxContainer.ALIGNMENT_CENTER

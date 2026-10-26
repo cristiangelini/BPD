@@ -53,6 +53,12 @@ func open_from_inside() -> void:
 		_swing(true)
 
 
+## Swung shut by someone (the party's boss back from the office), still unlocked.
+func close() -> void:
+	if is_open and not is_broken:
+		_swing(false)
+
+
 ## One battering ram hit; at RAM_HITS the door comes off. Returns true if this hit broke it.
 func ram_hit() -> bool:
 	if is_broken or is_open:

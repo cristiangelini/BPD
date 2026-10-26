@@ -32,6 +32,8 @@ const GRIP := 3.0
 const SAND_GRIP := 0.4
 const SAND_SHARE := 0.5
 const OLD_BRAKE := 0.5
+## With a flat tire (the hardware store's nails, ferreteria.md) it runs at this share of its top speed (propuesta).
+const FLAT_SHARE := 0.5
 const OLD_MODEL := preload("res://assets/models/old_patrol_car.glb")
 const SHOUT_SECONDS := 1.5
 
@@ -52,6 +54,8 @@ var _golf: GolfClub
 var grip := 1.0
 ## What the living city's rain leaves of it (CityRain), on top of the chase's.
 var rain_grip := 1.0
+## A tire punctured until someone fixes it.
+var flat := false
 ## The old one (set before it's added).
 @export var old := false
 ## What a bigger vehicle on the same driving changes (the prison bus, traslado-presos.md): set before it's added.
@@ -281,7 +285,7 @@ func top_speed() -> float:
 	var top := HIGHWAY_SPEED if _highway and _highway.covers(global_position) else city_speed
 	if old:
 		top = OLD_SPEED
-	return top * (SAND_SHARE if in_sand() else 1.0)
+	return top * (SAND_SHARE if in_sand() else 1.0) * (FLAT_SHARE if flat else 1.0)
 
 
 ## Whether the car is in a golf club's bunker.

@@ -13,6 +13,8 @@ const CLUE := Color(0.6, 0.85, 1)
 var _panel: PanelContainer
 var _rows: VBoxContainer
 var _reminder: Label
+## The inspector's report on the last shift (inspeccion.md), under the rows.
+var _report: Label
 
 
 func _ready() -> void:
@@ -48,6 +50,12 @@ func _ready() -> void:
 	_rows = VBoxContainer.new()
 	_rows.add_theme_constant_override("separation", 6)
 	box.add_child(_rows)
+	_report = Label.new()
+	_report.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	_report.add_theme_font_size_override("font_size", 22)
+	_report.add_theme_color_override("font_color", STATUS)
+	_report.hide()
+	box.add_child(_report)
 	set_open(false)
 
 
@@ -81,6 +89,16 @@ func show_rows(list: Array[Dictionary]) -> void:
 		label.add_theme_color_override("font_color",
 			CLUE if row.get("clue", false) else STATUS if row.status else DONE if row.done else NEXT if i == next else TODO)
 		_rows.add_child(label)
+
+
+## The inspector's report, out of 100.
+func show_report(score: int) -> void:
+	_report.text = tr("OBJ_INSPECTION_REPORT") % score
+	_report.show()
+
+
+func report_text() -> String:
+	return _report.text if _report.visible else ""
 
 
 func row_texts() -> PackedStringArray:

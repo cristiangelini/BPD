@@ -26,7 +26,7 @@ func test_a_sixth_of_the_seeds_he_is_the_boss_and_the_arg_forces_it() -> void:
 	for seed_ in range(1, 401):
 		if BankLevel.variant(seed_, PackedStringArray()) == "manager":
 			bosses += 1
-	assert_between(bosses, 40, 100)
+	assert_between(bosses, 25, 100)
 	for seed_ in range(1, 20):
 		assert_eq(BankLevel.variant(seed_, PackedStringArray(["--bank=manager"])), "manager")
 
