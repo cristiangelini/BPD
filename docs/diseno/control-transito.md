@@ -47,7 +47,7 @@ pasan por el control y hay 2 o 3 que se parecen mucho **(propuesta)**.
 | 2 | Caravana de payasos | Todos los autos son iguales y muy chicos; la pista está en el conductor ([control-payasos.md](control-payasos.md)). |
 | 3 | El auto con 20 personas | Hay que hacerlas bajar y contarlas ([control-auto-lleno.md](control-auto-lleno.md)). |
 | 4 | Alcoholemia en la boda | Todos van de fiesta; se sopla un tubo ([control-boda.md](control-boda.md)). |
-| 5 | Carrera ilegal | Los autos pasan rápido; hay que tirar pinchos. |
+| 5 | Carrera ilegal | Los autos pasan rápido; hay que tirar pinchos ([control-carrera.md](control-carrera.md)). |
 | 6 | Mudanza del circo | Jaulas con animales; uno de ellos es el sospechoso. |
 | 7 | Neblina | Los autos aparecen de golpe; la linterna sirve. |
 | 8 | Desfile | El control queda en medio de carrozas. |
