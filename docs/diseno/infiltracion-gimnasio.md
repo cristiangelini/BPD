@@ -99,9 +99,11 @@ La rutina copia la forma de `MimeRehearsal` (host decide, cada PC juzga y avisa)
    (E). La caja fuerte pintada de pesa (negra con una franja blanca, 40 kg) está sobre la alfombra de las pesas y
    cuenta cuando se levanta 25 cm del piso, cosa que un policía solo no puede (carga 25 kg). El video de dos socios
    que entrenan juntos, el batido con un mapa en una esquina del ring y el ticket del camión en un casillero
-   entreabierto (E). Esposar a un socio los descubre. Mientras no esté la huida trotando (paso 5), el Toro se escapa a
-   pie como el Oso **(propuesta)**.
+   entreabierto (E). Esposar a un socio los descubre **(propuesta)**.
 5. La huida trotando, el sorteo de "Jugar" en quintos (club, coro, mimos, fiesta y gimnasio) y online.
+   Hecho así: descubiertos, el Toro sale trotando por la vereda a 13 km/h, con nubecitas de polvo detrás, y arranca la
+   persecución a pie (como la Maestra Pausa); un policía delante lo frena. "Jugar" sortea la infiltración en quintos.
+   Online, la huida y la rutina (el ejercicio y quién afloja) llegan a todos los PC.
 
 ## Preguntas para Cristian (decisión 172)
 1. **¿La rutina gasta la resistencia y rendirse da sospecha?** Recomiendo que sí: "entrenar sin rendirse" es el caso,
