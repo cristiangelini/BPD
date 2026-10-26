@@ -5137,6 +5137,18 @@ ROBE_HOTEL_0,Hotel Imperial,Hotel Imperial,Hotel Imperial
 ROBE_HOTEL_1,Gran Hotel Palacio,Gran Hotel Palacio,Gran Hotel Palacio
 ROBE_HOTEL_2,Hotel Mirador,Hotel Mirador,Hotel Mirador
 ROBE_HOTEL_3,Hotel Corona,Hotel Corona,Hotel Corona
+BRIEF_LIFT_B,Don Bostezo imprime billetes falsos y guarda la valija en el ascensor que está «fuera de servicio» desde 1987.,Don Bostezo prints fake money and keeps the case in the lift that has been “out of order” since 1987.,O don Bostezo imprime notas falsas e guarda a maleta no elevador que está “fora de serviço” desde 1987.
+BRIEF_LIFT_C,Traigan la valija de billetes en el baúl del patrullero. El ascensor no abre solo: busquen la manivela.,Bring the case of bills back in the patrol car's trunk. The lift won't open by itself: find the crank.,Tragam a maleta de notas no porta-malas da viatura. O elevador não abre sozinho: achem a manivela.
+BRIEF_LIFT_D,"Si encuentran las planchas de imprimir, mejor: todo suma.","If you find the printing plates, even better: it all adds up.","Se acharem as chapas de impressão, melhor: tudo soma."
+OBJ_FIND_LIFT,Encontrar la valija de billetes falsos,Find the case of fake bills,Achar a maleta de notas falsas
+OBJ_EXTRA_LIFT_CRANK,La manivela del ascensor,The lift's crank,A manivela do elevador
+OBJ_EXTRA_PLATES,Las planchas de imprimir,The printing plates,As chapas de impressão
+PROMPT_LIFT_CRANK,E: girar la manivela en la puerta,E: turn the crank in the door,E: girar a manivela na porta
+PROMPT_LIFT_STUCK,E: abrir el ascensor,E: open the lift,E: abrir o elevador
+PROMPT_LIFT_TURNING,Girando la manivela… E: parar,Turning the crank… E: stop,Girando a manivela… E: parar
+HINT_LIFT_STUCK,La puerta no se mueve. Tiene un agujero para una manivela.,The door won't budge. It has a hole for a crank.,A porta não se mexe. Tem um buraco para uma manivela.
+PROMPT_LIFT_BUTTON,E: mirar el botón,E: look at the button,E: olhar o botão
+CLUE_LIFT_BUTTON,El botón del ascensor está gastado de tanto apretarlo y tiene tinta verde.,The lift's button is worn from so much pressing and has green ink on it.,O botão do elevador está gasto de tanto apertar e tem tinta verde.
 HINT_GUEST_BOOK_SIGNED,"Firmaste en la página de anoche. Qué linda letra.","You signed on last night's page. Lovely handwriting.","Você assinou na página de ontem. Que letra bonita."
 HINT_ESCAPE_guest,"¡%s se subió a la combi del hotel, en bata y pantuflas, y se escapa! ¡Al patrullero, y cuidado con las valijas!","%s jumped into the hotel shuttle, in bathrobe and slippers, and is getting away! To the patrol car, and mind the suitcases!","%s subiu na van do hotel, de roupão e chinelos, e está fugindo! Para a viatura, e cuidado com as malas!"
 PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off the street","E: tirar a mala da rua"
