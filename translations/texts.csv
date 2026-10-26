@@ -3514,6 +3514,16 @@ PROMPT_VIP_GIFT_WATER,Agua con gas de Rulo,Rulo's sparkling water,Água com gás
 PROMPT_VIP_GIFT_PILLOW,Almohada de plumas,Feather pillow,Travesseiro de penas
 PROMPT_VIP_GIFT_MIRROR,Espejo,Mirror,Espelho
 PROMPT_VIP_GIFT_GLASSES,Anteojos de repuesto de Rulo,Rulo's spare sunglasses,Óculos reserva do Rulo
+HINT_VIP_FOUND_FILE,¡Una lima adentro de la torta! Confiscada.,A file inside the cake! Confiscated.,Uma lima dentro do bolo! Confiscada.
+HINT_VIP_FOUND_ROPE,¡La guitarra tenía una soga en vez de cuerdas! Confiscada.,The guitar had a rope instead of strings! Confiscated.,O violão tinha uma corda em vez de cordas! Confiscada.
+HINT_VIP_FOUND_KEY,¡Una llave de celda entre las flores! Confiscada.,A cell key among the flowers! Confiscated.,Uma chave de cela entre as flores! Confiscada.
+VIP_RULO_LAWYER,"¡Basta! ¡Llamo a mi abogado!","That's it! I'm calling my lawyer!","Chega! Vou chamar meu advogado!"
+VIP_LAWYER_ARRIVE,"Buenas tardes. Vengo a ver a mi cliente, el señor Brillantina.","Good afternoon. I'm here to see my client, Mr. Brillantina.","Boa tarde. Vim ver meu cliente, o senhor Brillantina."
+VIP_LAWYER_TALK_1,"Sí, Rulo. Sí. Todo va a estar en el informe.","Yes, Rulo. Yes. It'll all be in the report.","Sim, Rulo. Sim. Vai estar tudo no relatório."
+VIP_LAWYER_TALK_2,¿Sin agua con gas? Eso es un abuso.,No sparkling water? That's an outrage.,Sem água com gás? Isso é um abuso.
+VIP_LAWYER_TALK_3,"Oficiales, esta visita se cobra. A ustedes.","Officers, this visit is billed. To you.","Policiais, esta visita é cobrada. De vocês."
+VIP_LAWYER_TALK_4,"Firme aquí, aquí y aquí. No, Rulo, eso es un autógrafo.","Sign here, here and here. No, Rulo, that's an autograph.","Assine aqui, aqui e aqui. Não, Rulo, isso é um autógrafo."
+VIP_LAWYER_BYE,Esto les va a costar caro. Buenas tardes.,This is going to cost you. Good afternoon.,Isso vai sair caro pra vocês. Boa tarde.
 BRIEF_MUSTACHES_B,"Alguien le pinta bigotes a todos los carteles del diputado Lustre del barrio. Creemos que es Tobías: nunca le perdonó que le cerrara la vereda por las obras.","Someone paints mustaches on every poster of deputy Lustre in the neighborhood. We think it's Tobías: he never forgave him for closing the sidewalk for the roadworks.","Alguém pinta bigodes em todos os cartazes do deputado Lustre no bairro. Achamos que é o Tobías: ele nunca perdoou que fechassem a calçada por causa das obras."
 BRIEF_MUSTACHES_C,"Traigan el esténcil del bigote en el baúl del patrullero. Y no pisen pintura: se nota.","Bring the mustache stencil back in the patrol car's trunk. And don't step in paint: it shows.","Tragam o estêncil do bigode no porta-malas da viatura. E não pisem na tinta: dá para ver."
 BRIEF_MUSTACHES_D,"Si encuentran los aerosoles negros o un cartel del diputado sin bigote, mejor: todo suma.","If you find the black spray cans or a poster of the deputy without a mustache, even better: it all adds up.","Se acharem os sprays pretos ou um cartaz do deputado sem bigode, melhor: tudo soma."

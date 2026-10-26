@@ -7,7 +7,15 @@ extends Node3D
 ## number here is (propuesta). Step 3: his requests (VipRequests), the shelf on his bars (VipTray) and the things
 ## he asks for where they are in the prison: the sparkling water on the kitchen's fridge, the feather pillow on the
 ## punishment cell's bunk, the cake at the end of the serving counter, the mirror by the watchtower, the guitar on a
-## canteen table, the flowers in a planter in the yard and his spare sunglasses on his limo's roof.
+## canteen table, the flowers in a planter in the yard and his spare sunglasses on his limo's roof. Step 4: the cake
+## hides a file, the guitar a rope and the flowers a key (PIECES); opened with E in hand (VisitItem), the piece is
+## found and confiscated (`seized`), and the thing can still be given to him. What he gets unopened he keeps the piece
+## of (`pieces`). His mood at 0 brings his lawyer (VipLawyer, `lawyers`), and after the lawyer's gone it's back at
+## MOOD_AFTER_LAWYER.
+
+signal got_piece(count: int)
+signal seized_one(count: int)
+signal lawyer_called(count: int)
 
 const FANS := 6
 ## The fans in a row on the sidewalk, three on each side of the gate, looking in through it.
@@ -29,6 +37,15 @@ const RUG := Color(0.75, 0.08, 0.12)
 const GOLD := Color(0.95, 0.75, 0.2)
 const BULB := Color(1.0, 0.95, 0.75)
 const WARM := Color(1.0, 0.75, 0.45)
+const PIECES := {VipRequests.Kind.CAKE: Contraband.Kind.FILE, VipRequests.Kind.GUITAR: Contraband.Kind.ROPE,
+	VipRequests.Kind.FLOWERS: Contraband.Kind.KEY}
+const MOOD_AFTER_LAWYER := 40
+## The lawyer's way in from the gate: in through the east door, down the canteen past the tables, through the block's
+## gate and along the corridor (then to the VIP cell's bars).
+const LAWYER_WAY: Array[Vector2] = [Vector2(0.0, PrisonLevel.HALF_Z + 1.0), Vector2(2.0, 10.0), Vector2(2.0, 7.0),
+	Vector2(1.0, 5.5), Vector2(1.0, -6.2), Vector2(-1.0, -6.4), Vector2(-1.0, -7.6)]
+## Where he stands in the corridor, this far from the bars.
+const LAWYER_OUT := 0.9
 const WHITE := Color(0.93, 0.94, 0.95)
 const SOIL := Color(0.35, 0.25, 0.15)
 ## The shelf on his bars, this far along them from the middle of the cell (the door is in the middle).
@@ -63,6 +80,11 @@ var requests: VipRequests
 ## The things of his around the prison, and the ones he's been given.
 var gifts: Array[Grabbable] = []
 var received: Array[Grabbable] = []
+## The pieces of his escape he's got (Contraband.Kind), the ones found, and how many times his lawyer came.
+var pieces: Array[int] = []
+var seized := 0
+var lawyers := 0
+var lawyer: VipLawyer
 var _rng := RandomNumberGenerator.new()
 
 
@@ -95,6 +117,7 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 	tray.requests = requests
 	tray.put.connect(requests.offered)
 	tray.pressed.connect(requests.pressed)
+	requests.mood_zero.connect(call_lawyer)
 	_place_gifts()
 
 
@@ -126,6 +149,12 @@ func _place_gifts() -> void:
 				gift.kind = {VipRequests.Kind.WATER: VipGift.Kind.WATER, VipRequests.Kind.PILLOW: VipGift.Kind.PILLOW,
 					VipRequests.Kind.MIRROR: VipGift.Kind.MIRROR, VipRequests.Kind.GLASSES: VipGift.Kind.GLASSES}[kind]
 				item = gift
+		if PIECES.has(kind):
+			var visit := item as VisitItem
+			visit.hidden = true
+			visit.holds = PIECES[kind]
+			visit.found_hint = "HINT_VIP_FOUND_"
+			visit.searched.connect(_on_searched)
 		item.name = "Gift_%s" % VipRequests.Kind.keys()[kind]
 		item.position = SPOTS[kind]
 		prison.add_child(item)
@@ -157,6 +186,11 @@ func take(item: Grabbable) -> void:
 	item.collision_mask = 0
 	var spot := cell_point(0.6 + KEPT_EVERY * received.size()) + Vector3(0, 0, -KEPT_SIDE)
 	received.append(item)
+	if item is VisitItem and (item as VisitItem).hidden:
+		var visit := item as VisitItem
+		pieces.append(visit.inside())
+		visit.hidden = false
+		got_piece.emit(pieces.size())
 	var through := item.create_tween()
 	through.tween_property(item, "global_position", spot, 0.6).set_trans(Tween.TRANS_SINE)
 
@@ -237,3 +271,33 @@ func _park_limo() -> void:
 		var wheel: Node3D = WHEEL_MODEL.instantiate()
 		wheel.position = at
 		limo.add_child(wheel)
+
+
+func _on_searched(_item: VisitItem, found: Contraband) -> void:
+	if found:
+		seized += 1
+		seized_one.emit(seized)
+
+
+## His mood hit 0: his lawyer comes in from the gate to his bars, talks, and goes (the debug panel's shortcut too).
+func call_lawyer() -> void:
+	if lawyer:
+		return
+	lawyers += 1
+	lawyer_called.emit(lawyers)
+	rulo.say("VIP_RULO_LAWYER", 4.0)
+	lawyer = VipLawyer.new()
+	lawyer.name = "Lawyer"
+	for at in LAWYER_WAY:
+		lawyer.path.append(Vector3(at.x, PrisonLevel.FLOOR_TOP, at.y))
+	var bars := cell_point(0.0) - _into() * LAWYER_OUT
+	lawyer.path.append(Vector3(LAWYER_WAY[-1].x, PrisonLevel.FLOOR_TOP, bars.z))
+	lawyer.path.append(bars)
+	add_child(lawyer)
+	lawyer.gone.connect(_on_lawyer_gone)
+	lawyer.come()
+
+
+func _on_lawyer_gone() -> void:
+	lawyer = null
+	requests.set_mood(MOOD_AFTER_LAWYER)

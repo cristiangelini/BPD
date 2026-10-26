@@ -86,3 +86,11 @@ En qué celda está Rulo, qué 6 pedidos hace y en qué orden, qué 3 cosas esco
   en la repisa (en vez de 5 s con E apretada, para que sea igual online); el aplauso, 2 policías con E en 2 s (uno
   solo si juega uno solo); la canción, cantar o tararear (H) a menos de 4 m de la repisa durante 5 s. Vencido: -25 y
   berrinche (salta en el sillón gritando). Capturas: `paso3-pedido.png`, `paso3-entregado.png` y `paso3-torta.png`.
+- **Paso 4:** la torta, la guitarra y el ramo están siempre entre los 6 pedidos (la semilla elige los otros 3 y el
+  orden) y siempre esconden su pieza: la lima, la soga y la llave (`VipPlan.PIECES`). Pesan más y la lima y la llave
+  hacen "clonc", como en el día de visitas. Con la cosa en la mano, E la abre (`VisitItem`): la pieza cae en la mano
+  del policía y queda decomisada al encontrarla, como en el día de visitas (sin llevarla a una caja). Abierta, igual se
+  le puede dar. Si la recibe sin abrir, Rulo se guarda la pieza (`pieces`). Con el humor en 0 grita "¡Llamo a mi
+  abogado!" y el abogado (`VipLawyer`, modelo `npc_abogado`) entra por el portón, cruza el comedor y el pabellón hasta
+  la reja, habla 30 s y se va por donde vino; después el humor queda en 40. Capturas: `paso4-lima.png` y
+  `paso4-abogado.png`.
