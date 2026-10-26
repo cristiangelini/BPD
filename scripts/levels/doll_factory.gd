@@ -59,6 +59,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_FAKE_LABELS", "OBJ_EXTRA_PROTOTYPE_PHOTOS"],
 		"rig": preload("res://scripts/case/factory/fake_captain_rig.gd"),
 	},
+	"ghost_workers": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_GHOST_WORKERS_B", "BRIEF_GHOST_WORKERS_C", "BRIEF_GHOST_WORKERS_D"],
+		"find": "OBJ_FIND_PAYROLL_BOOK",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/payroll_book.tscn"), preload("res://scenes/props/time_cards.tscn"),
+			preload("res://scenes/props/foreman_wig.tscn")],
+		"half_heights": [0.025, 0.015, 0.05],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_TIME_CARDS", "OBJ_EXTRA_FOREMAN_WIG"],
+		"rig": preload("res://scripts/case/factory/ghost_workers_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the factory; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [

@@ -682,6 +682,14 @@ const NPCS = {
 		b.add('face', white, ellipsoid(0.035, 0.035, 0.015, 6, 4), { pos: V(0.15, 1.24, 0.15) });
 		b.add('face', black, ellipsoid(0.015, 0.015, 0.008, 5, 3), { pos: V(0.155, 1.23, 0.165) });
 	},
+	// A ghost worker of the doll factory: a shop mannequin in an orange work coat and a hairnet, with a blank face (no
+	// eyes, no mouth), a seam around the neck and a stand under it.
+	maniqui(b) {
+		pearBody(b, C('mannequin_skin', 0xe2dccf), { shirt: C('ghost_coat', 0xe8963a), onePiece: true, belted: false, shoes: C('mannequin_feet', 0xe2dccf) });
+		b.add('cap', C('hairnet', 0xf6f6f2, { transparent: true, opacity: 0.85 }), ellipsoid(0.23, 0.13, 0.22, 10, 5), { pos: V(0, 1.47, -0.02) });
+		b.add('face', C('mannequin_seam', 0xa8a294), new THREE.TorusGeometry(0.13, 0.01, 4, 14), { pos: V(0, 1.08, 0), rot: [Math.PI / 2, 0, 0] });
+		b.add('props', C('mannequin_stand', 0x4a4a52), new THREE.CylinderGeometry(0.25, 0.25, 0.04, 12), { pos: V(0, 0.02, 0) });
+	},
 };
 
 export const NPC_NAMES = Object.keys(NPCS);
