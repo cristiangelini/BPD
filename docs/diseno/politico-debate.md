@@ -20,8 +20,8 @@ cartel con lo que tiene que decir, otro sube a la sala de control a ver quién t
 vergüenza de la que pasa solo."
 
 ## Cómo es el caso
-1. **El lugar:** el canal de televisión de la ciudad, un edificio nuevo en la cuadra (2, 4) mirando al norte, al lado
-   del parque del puente. Adentro: el estudio con dos atriles, el escritorio de la moderadora, una tribuna con unos
+1. **El lugar:** el canal de televisión de la ciudad, un edificio nuevo en la cuadra (1, 4) mirando al norte (la
+   (2, 4) tiene el callejón sin salida). Adentro: el estudio con dos atriles, el escritorio de la moderadora, una tribuna con unos
    12 vecinos de público, 3 cámaras con ruedas, luces colgadas del techo, la pantalla gigante "AL AIRE" y la luz roja.
    Detrás de un vidrio, un piso más arriba con escalera, la sala de control: una consola larga con botones y 3
    técnicos sentados. Al lado, el camarín con el maquillaje.
