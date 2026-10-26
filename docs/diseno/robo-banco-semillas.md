@@ -91,3 +91,10 @@ delantal, la enredadera, la tijera de podar, los frascos que se rompen y la plan
   policías con tijera se corta en la mitad de tiempo. En vez de mantener E 3 s (como decía el diseño) son tijeretazos,
   que se ve más y no hace falta un "mantener E" nuevo. Con las manos dice "Con las manos no se puede. Hay tijeras de
   podar en el mostrador.". Capturas en `/mnt/project-files/semillas/paso2-*.png`.
+- **Paso 3 (los frascos y las plantas):** cuando el taladro abre la bóveda, cada ladrón suelto corre hasta ella como
+  en el banco de sangre, saca un frasco y corre con él a la camioneta. Si lo esposan en el camino, lo deja en el piso
+  sin romperlo. Un frasco se rompe si choca contra algo a 6 m/s o más (no a 4 como decía el diseño, porque soltarlo
+  desde la mano ya da 4,5 m/s): tirado, o soltado corriendo. Un policía que corre 2 s con un frasco en la mano lo
+  suelta sin querer ("¡Ups! Corriendo se te resbaló el frasco."). Donde se rompe crece en 2 s un girasol de 2,6 m que
+  no deja pasar a los policías (a la banda sí) hasta el final del caso. Capturas en
+  `/mnt/project-files/semillas/paso3-*.png`.
