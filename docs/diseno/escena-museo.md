@@ -139,6 +139,12 @@ PlaceDraw y la custodia para el interrogatorio.
    los seis guardias que estaban en el baño; el tablero y el sello están en la sala de pizarras. La semilla lo esconde
    en uno de tres lugares: el depósito, entre los cuadros tapados; el casillero del culpable; o detrás del segundo
    cuadro de la sala grande. Con E se busca: donde no está, dice qué hay ("Una gorra de repuesto, un peine y un
-   sándwich viejo"); donde está, sale al piso y la planilla lo anota **(propuesta)**.
+   sándwich viejo"); donde está, sale al piso y la planilla lo anota **(propuesta)**. Hecho así (segunda parte, cinco
+   pistas): las huellas en el marco vacío, que se tapan si un policía lo toca antes del kit; la pisada en el piso
+   encerado (se fotografía) y la lustradora amarilla, que arranca cuando entra el primer policía a la sala grande, da
+   la vuelta en algo más de un minuto y borra la pisada si pasa por arriba (con E se apaga); el pelo arriba del poste
+   del medio de la soga, que se cae si alguien cruza la soga; el sándwich de jamón y queso mordido en el escritorio de
+   seguridad; y los dos botones del escritorio: el verde pasa la grabación (el culpable estornuda y el bigote se le
+   despega o ni se mueve) y el rojo, al lado, graba encima. Faltan la estatua y la coartada del baño **(propuesta)**.
 5. El final: tablero, cansancio, sueldo y la camioneta con los marcos.
 6. El sorteo de "Jugar" (en tercios: pastel, circo y museo) y el online.
