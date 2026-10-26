@@ -31,6 +31,8 @@ var follower := false
 ## the real deputy's image.
 var impostor: Politician
 var outrages := 0
+## The key of each line, with the line's number (the birthday party has its own, politico-cumple.md).
+var line_key := "SPEECH_LUSTRE_%d"
 var _order: Array[int] = []
 var _next := 0
 var _line_left := 0.0
@@ -92,7 +94,7 @@ func _physics_process(delta: float) -> void:
 	# Off the stage he greets instead (PoliticianWalks); the clock goes on.
 	elif _line_left <= 0.0 and left > 0.0 and not politician.off_stage():
 		_line_left = LINE_EVERY
-		politician.say("SPEECH_LUSTRE_%d" % _order[_next % _order.size()], LINE_EVERY - 1.0)
+		politician.say(line_key % _order[_next % _order.size()], LINE_EVERY - 1.0)
 		_next += 1
 	if left <= 0.0:
 		speaking = false
