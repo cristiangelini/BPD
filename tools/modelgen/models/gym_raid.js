@@ -117,6 +117,46 @@ const models = {
 		b.add('stand', C('mannequin_stand', 0x6a6a70, { metalness: 0.5 }), new THREE.CylinderGeometry(0.25, 0.28, 0.04, 12), { pos: V(0, 0.02, 0.05) });
 		return b.build();
 	},
+	// The silver dumbbells story's main evidence: a giant dumbbell (20 kg) whose hollow plates are stuffed with bills, a
+	// few sticking out of the seams. It lies on the floor, its bar along x.
+	gym_silver_dumbbell() {
+		const b = new Builder('gym_silver_dumbbell');
+		const steel = C('bar_steel', 0xc8ccd2, { metalness: 0.6, roughness: 0.3 }), plate = C('silver_plate', 0x2a2a30);
+		const bill = C('bill_green', 0x6ab36a);
+		b.add('bar', steel, new THREE.CylinderGeometry(0.04, 0.04, 0.9, 10), { pos: V(0, 0.25, 0), rot: [0, 0, Math.PI / 2] });
+		for (const s of [-1, 1]) {
+			b.add('plates', plate, new THREE.CylinderGeometry(0.25, 0.25, 0.16, 16), { pos: V(s * 0.3, 0.25, 0), rot: [0, 0, Math.PI / 2] });
+			b.add('plates', steel, new THREE.CylinderGeometry(0.08, 0.08, 0.17, 10), { pos: V(s * 0.3, 0.25, 0), rot: [0, 0, Math.PI / 2] });
+			for (let i = 0; i < 3; i++) {
+				const a = i * 2.1 + (s > 0 ? 0.4 : 1.2);
+				b.add('bills', bill, new THREE.BoxGeometry(0.02, 0.08, 0.12), { pos: V(s * 0.39, 0.25 + Math.sin(a) * 0.2, Math.cos(a) * 0.2), rot: [a, 0, 0] });
+			}
+		}
+		return b.build();
+	},
+	// The reception's rigged scale: a platform scale whose dial always says 10 kg less, with a sticker over the needle.
+	gym_fake_scale() {
+		const b = new Builder('gym_fake_scale');
+		const body = C('scale_white', 0xf0f0ec), dial = C('scale_dial', 0xfffbe8);
+		b.add('base', body, new THREE.BoxGeometry(0.36, 0.06, 0.36), { pos: V(0, 0.03, 0) });
+		b.add('base', C('scale_mat', 0x3a3a44), new THREE.BoxGeometry(0.3, 0.008, 0.26), { pos: V(0, 0.064, 0.03) });
+		b.add('dial', body, new THREE.CylinderGeometry(0.08, 0.08, 0.04, 14), { pos: V(0, 0.07, -0.13), rot: [Math.PI / 2 - 0.5, 0, 0] });
+		b.add('dial', dial, new THREE.CylinderGeometry(0.065, 0.065, 0.01, 14), { pos: V(0, 0.08, -0.115), rot: [Math.PI / 2 - 0.5, 0, 0] });
+		b.add('sticker', C('scale_sticker', 0xff4fa8), new THREE.BoxGeometry(0.06, 0.012, 0.03), { pos: V(0, 0.09, -0.105), rot: [-0.5, 0, 0.3] });
+		return b.build();
+	},
+	// The "special quotas" sheet: a list of names with huge amounts next to each, and a gold star on top.
+	gym_quota_sheet() {
+		const b = new Builder('gym_quota_sheet');
+		b.add('paper', C('sheet_paper', 0xfaf6ea), new THREE.BoxGeometry(0.21, 0.004, 0.29), { pos: V(0, 0.002, 0) });
+		const ink = C('sheet_ink', 0x2a2a30);
+		for (let i = 0; i < 8; i++) {
+			b.add('lines', ink, new THREE.BoxGeometry(0.09, 0.002, 0.008), { pos: V(-0.045, 0.005, -0.09 + i * 0.026) });
+			b.add('lines', C('sheet_money', 0x3a9a4a), new THREE.BoxGeometry(0.05, 0.002, 0.008), { pos: V(0.06, 0.005, -0.09 + i * 0.026) });
+		}
+		b.add('star', C('sheet_star', 0xf2c84b), new THREE.CylinderGeometry(0.025, 0.025, 0.003, 5), { pos: V(0, 0.005, -0.12) });
+		return b.build();
+	},
 };
 
 export { models };
@@ -133,5 +173,10 @@ export const views = {
 		items: [{ name: 'gym_stereo', pos: [-1.3, 0, 0.6], rotY: 0.3 }, { name: 'gym_record_wall', pos: [0, 0.9, -0.3] },
 			{ name: 'gym_record_bar', pos: [0, 0.4, 0.1] }, { name: 'gym_mannequin', pos: [1.5, 0, 0.2], rotY: -0.4 }],
 		cam: { pos: [0, 1.4, 5.2], target: [0, 0.8, 0], fov: 38 },
+	},
+	gym_silver_dumbbells: {
+		items: [{ name: 'gym_silver_dumbbell', pos: [-0.25, 0, 0], rotY: 0.4 }, { name: 'gym_fake_scale', pos: [0.55, 0, 0.2], rotY: -0.3 },
+			{ name: 'gym_quota_sheet', pos: [0.5, 0, -0.35], rotY: 0.2 }],
+		cam: { pos: [0.3, 1.1, 1.9], target: [0.1, 0.2, 0], fov: 40 },
 	},
 };
