@@ -28,8 +28,20 @@ extends Node3D
 ## pajamas on the sidewalk by his car and gives the back door's key to whoever talks to him (BankManager,
 ## robo-banco-gerente.md, decision 124); a fifth of the seeds he's the gang's real boss, and the others share the rest
 ## in quarters. A sixth of the seeds, drawn before them, the duck's drill punctured the pipe behind the vault and the
-## bank floods (BankWater, robo-banco-inundado.md, decision 125). --bank=party, --bank=grandpas, --bank=sorry,
-## --bank=manager, --bank=flood or --bank=base forces one.
+## bank floods (BankWater, robo-banco-inundado.md, decision 125). A seventh, drawn before everything, the gang leaves
+## by the roof (robo-banco-techo.md, decision 126): fire escape stairs up the east wall, a hatch in the corridor's
+## ceiling, the giant toy helicopter on its helipad on the roof (ToyHelicopter) and El Oso's nephew with its remote on a
+## bench across the street (BankNephew), who flies it away when he sees a cop on the roof; taken off the roof, the gang
+## can't leave by it. Cuffing the nephew crashes it (+100). An eighth, drawn before everything, is the town bank
+## (robo-banco-pueblo.md, decision 127): a wall of shelves cuts the hall down to a small one with no queue, Mr. Moneda
+## isn't there, there are no hostages on the floor but don Plácido, the only clerk, asleep on his stool behind the
+## counter (BankClerk), and the gang is El Conejo alone, at the drill. A ninth, drawn before everything, is the blood
+## bank (robo-banco-sangre.md, decision 128): the power is cut at night, candles burn in the dark hall, the vault is a
+## white fridge full of blood bags, the hostages came to give blood and the gang wears vampire capes and fangs
+## (BankBlood). A tenth, drawn before everything, is the seed bank (robo-banco-semillas.md, decision 129): pots in the
+## hall, glass jars of rare seeds in the vault, hostages holding small pots and the gang in straw hats and green aprons
+## (BankSeeds). --bank=party, --bank=grandpas, --bank=sorry, --bank=manager, --bank=flood, --bank=roof, --bank=town,
+## --bank=blood, --bank=seeds or --bank=base forces one.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -146,6 +158,37 @@ const VALVE_AT := Vector3(BACK_DOOR_X + 2.2, 0, -HALF_Z - 0.15)
 ## car's trunk.
 const PERCH_XS: Array[float] = [-9.3, -7.9, -6.5, -5.1, -3.7, -2.3, -0.9, 0.5]
 const FLOATS_IN_TRUNK := Vector3(0, 0.45, -1.75)
+## The roof robbery (decision 126): the fire escape's foot outside the east wall (it climbs to -Z), its landing at the
+## roof, the hatch in the corridor's ceiling, the helipad on the roof and the nephew's bench on the sidewalk across.
+const ESCAPE_FOOT := Vector3(HALF_X + 0.9, 0, 0.0)
+const ESCAPE_RUN := 5.0
+const LANDING := Vector2(1.4, 1.4)
+const HATCH_AT := Vector3(-1.8, 0, -6.0)
+const HATCH_SIZE := 0.9
+const HELIPAD_AT := Vector3(6.0, 0, -1.0)
+const HELIPAD_SIZE := 3.6
+const NEPHEW_BENCH := Vector3(-4.0, 0, HALF_Z + CityLayout.SIDEWALK + CityLayout.STREET + 1.6)
+const PAINT := Color(0.95, 0.95, 0.9)
+## The town bank (decision 127): the shelves' wall closing the hall's west side off, its shelves (heights over the
+## floor) with jars and binders, the clerk's stool behind the counter and the hand-painted sign over the entrance.
+const TOWN_WALL_X := -1.0
+const TOWN_SHELVES: Array[float] = [0.5, 1.1, 1.7]
+const TOWN_SHELF_ZS: Array[float] = [-3.0, 1.0, 3.0, 5.0, 7.0]
+const CLERK_AT := Vector3(2.0, 0, COUNTER_Z - 0.75)
+const STOOL_TOP := 0.55
+## Step 4: El Conejo takes this many sacks when the vault opens.
+const TOWN_SACKS := 2
+const JAR := Color(0.85, 0.55, 0.25)
+const BINDER := Color(0.25, 0.4, 0.7)
+## Step 2: after a flight the nephew's remote needs this long (s) before it flies again; that's when the cops on the
+## roof can take the helicopter. Off the roof (down on the street, in the trunk) it's taken: no getaway by the roof.
+const NEPHEW_REST := 40.0
+const ON_ROOF := 0.4
+## Step 4: the nephew's shopping cart beside his bench, where the helicopter drops the sacks one trip at a time.
+const CART_AT := NEPHEW_BENCH + Vector3(1.8, 0, 0)
+const CART_SIZE := Vector3(0.6, 0.55, 0.9)
+const CART_TOP := 0.95
+const BAG_MODEL := preload("res://assets/models/money_bag.glb")
 ## Step 4: with this much water or more when the vault opens, the gang wades out with the sacks before they get away:
 ## up to WADE_OUT seconds with the water at the top, less the shallower it is.
 const WADE_FROM := 0.2
@@ -204,6 +247,28 @@ var water: BankWater
 var valve: BankValve
 var front_door: FrontDoor
 var floats: BankFloats
+var roof := false
+## The town bank (decision 127) and don Plácido, its clerk.
+var town := false
+var clerk: BankClerk
+## The blood bank (decision 128), dark with its candles, and the hall's ceiling lamps (off in it).
+var blood := false
+var blood_bank: BankBlood
+## The seed bank (decision 129).
+var seeds := false
+var seed_bank: BankSeeds
+var lamps: Array[OmniLight3D] = []
+## El Conejo's nerves (step 3).
+var nerves: BankNerves
+var helicopter: ToyHelicopter
+var nephew: BankNephew
+## Seconds until the nephew can fly the helicopter again, and whether the cops have taken it off the roof (said once).
+var nephew_rest := 0.0
+var helicopter_gone := false
+## Step 4: the gang went up the hatch with the sacks; the sacks still on the roof, and the cart's.
+var roof_getaway := false
+var roof_bags := 0
+var cart: Node3D
 var hostages_freed := 0
 var phone: BankPhone
 ## How many sacks of money the robbers got away with, the getaway chase if El Oso ran, and how it ended.
@@ -233,10 +298,18 @@ func _ready() -> void:
 	grandpas = drawn == "grandpas"
 	_sorry_variant = drawn == "sorry"
 	var manager_boss := drawn == "manager"
+	roof = drawn == "roof"
+	town = drawn == "town"
+	blood = drawn == "blood"
+	seeds = drawn == "seeds"
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_hall()
 	_build_back()
+	if roof:
+		_build_roof()
+	if town:
+		_build_town()
 	if party:
 		_add_party()
 	if _sorry_variant:
@@ -256,6 +329,8 @@ func _ready() -> void:
 	drill.name = "Drill"
 	if grandpas:
 		drill.drill_time = BankDrill.SLOW_TIME
+	elif town:
+		drill.drill_time = BankDrill.TOWN_TIME
 	drill.position = DRILL_AT + Vector3.UP * FLOOR_TOP
 	drill.rotation.y = PI / 2
 	add_child(drill)
@@ -270,8 +345,24 @@ func _ready() -> void:
 	phone.position = PHONE_ON_CAR
 	phone.setup(self, car, case_seed)
 	phone.deaf = grandpas
+	if town:
+		phone.voice = "CONEJO"
+	elif blood:
+		phone.voice = "CONDE"
+	elif seeds:
+		phone.voice = "GARDENER"
 	car.add_child(phone)
 	car.add_collision_exception_with(phone)
+	if town:
+		_add_nerves()
+	if blood:
+		blood_bank = BankBlood.new()
+		add_child(blood_bank)
+		blood_bank.setup(self)
+	if seeds:
+		seed_bank = BankSeeds.new()
+		add_child(seed_bank)
+		seed_bank.setup(self)
 	city.transform = CityLayout.anchor("bank")
 	station_parking = city.transform * CityLayout.parking("station")
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
@@ -285,14 +376,25 @@ func _ready() -> void:
 	case.start()
 
 
-## Which robbery this seed is (propuesta): a sixth "flood" (the vault floods) drawn first, then a fifth of the rest
-## "manager" (the manager is the boss), and the rest in quarters: "party" (the hostages don't want to leave),
-## "grandpas", "sorry" (one robber wants to give it all back) or "base"; --bank=party, --bank=grandpas, --bank=sorry,
-## --bank=manager, --bank=flood or --bank=base among the user args forces one.
+## Which robbery this seed is (propuesta): a tenth "seeds" (the seed bank) drawn first, a ninth of the rest "blood" (the
+## blood bank), an eighth of the rest "town"
+## (the town bank), then a seventh of the rest "roof" (they leave by the roof), a sixth "flood" (the vault floods), a
+## fifth "manager" (the manager is the boss), and the rest in quarters: "party" (the hostages don't want to leave), "grandpas", "sorry" (one robber wants to give
+## it all back) or "base"; --bank=party, --bank=grandpas, --bank=sorry, --bank=manager, --bank=flood, --bank=roof,
+## --bank=town, --bank=blood or --bank=base among the user args forces one.
 static func variant(seed_: int, args: PackedStringArray) -> String:
 	for arg in args:
-		if arg in ["--bank=party", "--bank=grandpas", "--bank=sorry", "--bank=manager", "--bank=flood", "--bank=base"]:
+		if arg in ["--bank=party", "--bank=grandpas", "--bank=sorry", "--bank=manager", "--bank=flood", "--bank=roof",
+				"--bank=town", "--bank=blood", "--bank=seeds", "--bank=base"]:
 			return arg.trim_prefix("--bank=")
+	if hash(["bank semillas", seed_]) % 10 == 0:
+		return "seeds"
+	if hash(["bank sangre", seed_]) % 9 == 0:
+		return "blood"
+	if hash(["bank pueblo", seed_]) % 8 == 0:
+		return "town"
+	if hash(["bank azotea", seed_]) % 7 == 0:
+		return "roof"
 	if hash(["bank caño", seed_]) % 6 == 0:
 		return "flood"
 	if hash(["bank moneda", seed_]) % 5 == 0:
@@ -421,7 +523,8 @@ func _build_shell() -> void:
 		_build.box(Vector3(x, ROOF / 2, HALF_Z + 0.45), Vector3(0.45, ROOF, 0.45), INSIDE)
 	_build.box(Vector3(0, ROOF + 0.05, HALF_Z + 0.45), Vector3(10.0, 0.1, 1.0), INSIDE)
 	var sign_label := Label3D.new()
-	sign_label.text = "PLACE_BANK"
+	sign_label.text = "PLACE_BANK_TOWN" if town else "PLACE_BANK_BLOOD" if blood else "PLACE_BANK_SEEDS" if seeds \
+		else "PLACE_BANK"
 	sign_label.font_size = 64
 	sign_label.pixel_size = 0.01
 	sign_label.outline_size = 14
@@ -430,7 +533,7 @@ func _build_shell() -> void:
 	$Built.add_child(sign_label)
 	for x: float in [-8.0, 0.0, 8.0]:
 		for z: float in [-7.5, -2.5, 3.0, 7.5]:
-			_build.light(Vector3(x, ROOF - 0.6, z))
+			lamps.append(_build.light(Vector3(x, ROOF - 0.6, z)))
 
 
 ## The west outer wall, with the vent's hole into the office and its bent grille hanging off one screw.
@@ -449,9 +552,220 @@ func _vent_wall() -> void:
 		STEEL)
 
 
+## The roof robbery's way up (decision 126): fire escape stairs climbing the east wall to a landing at the roof, the
+## gang's hatch in the corridor's ceiling with its ladder (only for the look: the cops go up outside), the painted X of
+## the helipad with the toy helicopter waiting on it, and the nephew on his bench across the street.
+func _build_roof() -> void:
+	_build.stairs(ESCAPE_FOOT, ESCAPE_RUN, STEEL.darkened(0.3))
+	var landing_z := ESCAPE_FOOT.z - ESCAPE_RUN
+	_build.slab(HALF_X, HALF_X + 0.2 + LANDING.x, landing_z - LANDING.y, landing_z, ROOF, STEEL.darkened(0.3))
+	# Rails on the outer side of the flight and around the landing.
+	var rail_x := ESCAPE_FOOT.x + GameScale.STAIR_WIDTH / 2
+	var slope := atan2(ROOF, ESCAPE_RUN)
+	var rail := Vector2(ESCAPE_RUN, ROOF).length()
+	_build.mesh(_rail_mesh(rail), Vector3(rail_x, ROOF / 2 + 0.9, ESCAPE_FOOT.z - ESCAPE_RUN / 2), STEEL.darkened(0.3),
+		Vector3(slope, 0, 0))
+	_build.mesh_box(Vector3(HALF_X + 0.2 + LANDING.x, ROOF + 0.5, landing_z - LANDING.y / 2),
+		Vector3(0.05, 1.0, LANDING.y), STEEL.darkened(0.3))
+	# The hatch: a dark square in the corridor's ceiling with its ladder down the office's wall, and its lid on the roof.
+	_build.mesh_box(Vector3(HATCH_AT.x, ROOF - PlaceBuilder.SLAB - 0.01, HATCH_AT.z), Vector3(HATCH_SIZE, 0.02, HATCH_SIZE),
+		Color(0.12, 0.12, 0.14))
+	_build.mesh_box(Vector3(HATCH_AT.x, ROOF + 0.04, HATCH_AT.z), Vector3(HATCH_SIZE + 0.1, 0.08, HATCH_SIZE + 0.1), STEEL)
+	var ladder_x := OFFICE_X + 0.12
+	for side: float in [-0.25, 0.25]:
+		_build.mesh_box(Vector3(ladder_x, ROOF / 2, HATCH_AT.z + side), Vector3(0.05, ROOF, 0.05), STEEL)
+	for i in 8:
+		_build.mesh_box(Vector3(ladder_x, 0.3 + i * 0.3, HATCH_AT.z), Vector3(0.04, 0.04, 0.5), STEEL)
+	# The helipad: a white circle line and an X.
+	var pad := HELIPAD_AT + Vector3.UP * (ROOF + 0.01)
+	for turn: float in [PI / 4, -PI / 4]:
+		_build.mesh(_flat(Vector2(HELIPAD_SIZE * 0.8, 0.35)), pad, PAINT, Vector3(0, turn, 0))
+	var ring := TorusMesh.new()
+	ring.inner_radius = HELIPAD_SIZE / 2 - 0.15
+	ring.outer_radius = HELIPAD_SIZE / 2
+	ring.rings = 24
+	_build.mesh(ring, pad, PAINT, Vector3.ZERO)
+	helicopter = ToyHelicopter.new()
+	helicopter.name = "ToyHelicopter"
+	helicopter.position = HELIPAD_AT + Vector3.UP * (ROOF + 0.02)
+	helicopter.pad = helicopter.position
+	add_child(helicopter)
+	helicopter.landed.connect(func() -> void: nephew_rest = NEPHEW_REST)
+	# The nephew's bench, facing the bank across the street, and the kid on it.
+	_build.legs(NEPHEW_BENCH + Vector3(0, 0, 0.1), Vector2(1.6, 0.45), 0.4, WOOD)
+	_build.box(NEPHEW_BENCH + Vector3(0, 0.42, 0.1), Vector3(1.6, 0.05, 0.45), WOOD)
+	_build.mesh_box(NEPHEW_BENCH + Vector3(0, 0.7, 0.32), Vector3(1.6, 0.4, 0.05), WOOD)
+	nephew = BankNephew.new()
+	nephew.name = "Nephew"
+	nephew.position = NEPHEW_BENCH
+	add_child(nephew)
+	nephew.caught_now.connect(_on_nephew_caught)
+	# The cart: a wire basket on legs, with the sacks the helicopter brings.
+	_build.legs(CART_AT, Vector2(CART_SIZE.x, CART_SIZE.z), CART_TOP - CART_SIZE.y, STEEL)
+	_build.open_box(CART_AT + Vector3.UP * (CART_TOP - CART_SIZE.y), CART_SIZE, "top", STEEL)
+	cart = Node3D.new()
+	cart.name = "Cart"
+	cart.position = CART_AT + Vector3.UP * (CART_TOP - 0.2)
+	add_child(cart)
+	helicopter.dropped.connect(_on_sack_dropped)
+	helicopter.trip_done.connect(_next_trip)
+
+
+## The nephew in handcuffs (step 3): the helicopter loses its pilot and falls wherever it is. In the middle of the
+## getaway by the roof (step 4), the sacks still up there stay, and El Oso runs for the van after all.
+func _on_nephew_caught(_nephew: BankNephew) -> void:
+	helicopter.crash()
+	for cop in get_tree().get_nodes_in_group("cops"):
+		(cop as Cop).show_hint("HINT_NEPHEW_CAUGHT")
+	if roof_getaway and not follower:
+		roof_bags = 0
+		_roof_way_lost()
+
+
+## The getaway by the roof (step 4): every loose robber went up the hatch with a sack, and the helicopter takes them to
+## the cart one trip at a time.
+func _start_roof_getaway(sacks: int) -> void:
+	roof_getaway = true
+	roof_bags = sacks
+	for cop in get_tree().get_nodes_in_group("cops"):
+		(cop as Cop).show_hint("HINT_ROOF_GETAWAY")
+	_next_trip()
+
+
+## Another sack to the cart while there are sacks on the roof; then El Oso's turn, hanging from the rope.
+func _next_trip() -> void:
+	if follower or not roof_getaway or helicopter.crashed:
+		return
+	if roof_bags > 0:
+		# It may still be up on one of the nephew's flights: it goes once it lands.
+		if helicopter.busy():
+			helicopter.landed.connect(_next_trip, CONNECT_ONE_SHOT)
+			return
+		helicopter.trip(CART_AT + Vector3.UP * CART_TOP)
+		return
+	_oso_by_air()
+
+
+## A sack in the cart: one more the gang got away with.
+func _on_sack_dropped() -> void:
+	if follower:
+		return
+	roof_bags = maxi(roof_bags - 1, 0)
+	bags_taken += 1
+	_show_cart_bags()
+
+
+func _show_cart_bags() -> void:
+	while cart.get_child_count() < bags_taken:
+		var bag: Node3D = BAG_MODEL.instantiate()
+		var k := cart.get_child_count()
+		bag.position = Vector3((k % 2) * 0.25 - 0.12, (k / 2) * 0.25, 0.0)
+		cart.add_child(bag)
+
+
+## The last trip (step 4b): El Oso grabs the rope and the helicopter flies him off low over the street; the chase is
+## on, against something in the air.
+func _oso_by_air() -> void:
+	if chase or not is_loose(boss):
+		return
+	helicopter.hide()
+	helicopter.freeze = true
+	helicopter.collision_layer = 0
+	helicopter.set_physics_process(false)
+	start_getaway(SuspectCar.TOY_HELICOPTER)
+	if case:
+		case._on_vault_opened()
+
+
+## A cop leaning out of the patrol car's window got the rope: El Oso drops into the back seat, cuffed.
+func _on_rope_grabbed(_cop: Cop) -> void:
+	if follower or not chase or chase.stopped:
+		return
+	chase.pull_over()
+	chase.suspect.cuffed(Handcuffs.SECONDS)
+	chase.escort.board()
+	for cop in get_tree().get_nodes_in_group("cops"):
+		(cop as Cop).show_hint("HINT_ROPE_GRABBED")
+
+
+## No helicopter for El Oso: he runs for the van (or on foot) like in the base robbery.
+func _roof_way_lost() -> void:
+	if is_loose(boss) and not chase:
+		_run_getaway(false)
+
+
+## Whether the gang can still leave by the roof: the helicopter up there, whole, and its pilot free.
+func roof_way_out() -> bool:
+	return roof and not nephew.caught and not helicopter.crashed and (helicopter.busy()
+		or on_roof(helicopter.global_position))
+
+
+## The hall's ceiling lamps on or off (the blood bank's power cut, robo-banco-sangre.md).
+func set_lights(on: bool) -> void:
+	for lamp in lamps:
+		lamp.visible = on
+
+
+## The town bank (decision 127): the wall of shelves from the back wall to the facade, its shelves on the small hall's
+## side with jars of jam and binders, and don Plácido asleep on his stool behind the counter.
+func _build_town() -> void:
+	_build.wall("z", TOWN_WALL_X, BACK_Z, HALF_Z, 0, [], WOOD.lightened(0.15))
+	for z: float in TOWN_SHELF_ZS:
+		for i in TOWN_SHELVES.size():
+			var at := Vector3(TOWN_WALL_X + 0.25, FLOOR_TOP + TOWN_SHELVES[i], z)
+			_build.mesh_box(at, Vector3(0.4, 0.04, 1.8), WOOD)
+			for k in 3:
+				var color := JAR if (int(z) + i + k) % 2 == 0 else BINDER
+				var size := Vector3(0.22, 0.24, 0.22) if color == JAR else Vector3(0.28, 0.3, 0.08)
+				_build.mesh_box(at + Vector3(0, 0.02 + size.y / 2, -0.55 + k * 0.55), size, color)
+	_build.legs(CLERK_AT + Vector3.UP * FLOOR_TOP, Vector2(0.4, 0.4), STOOL_TOP - 0.04, WOOD)
+	_build.box(CLERK_AT + Vector3(0, FLOOR_TOP + STOOL_TOP - 0.02, 0), Vector3(0.45, 0.04, 0.45), WOOD)
+	clerk = BankClerk.new()
+	clerk.name = "Clerk"
+	clerk.position = CLERK_AT + Vector3.UP * (FLOOR_TOP + STOOL_TOP)
+	clerk.car = car
+	clerk.is_out = func(at: Vector3) -> bool: return not inside(at)
+	add_child(clerk)
+
+
+## El Conejo's nerves (step 3): their bar over his head, and his way out to the van when they run out.
+func _add_nerves() -> void:
+	nerves = BankNerves.new()
+	boss.add_child(nerves)
+	nerves.setup(boss, drill, car, clerk, phone)
+	nerves.bolted.connect(_on_conejo_bolted)
+	var way := HALL_TO_CORRIDOR.duplicate()
+	way.reverse()
+	way.append_array(PIG_RUN)
+	for at: Vector3 in way:
+		boss.run_path.append(global_transform * at)
+
+
+## El Conejo ran out of nerves (step 4): nobody holds the drill any more, and once he's in the van (or out of the
+## entrance, if it's boxed in) the chase is on, with no sacks if the vault was still shut.
+func _on_conejo_bolted(_robber: BankRobber) -> void:
+	if follower:
+		return
+	drill.pause(INF)
+	boss.hid_in_van.connect(func(_r: BankRobber) -> void: _run_getaway(false), CONNECT_ONE_SHOT)
+
+
+func _flat(size: Vector2) -> BoxMesh:
+	var box := BoxMesh.new()
+	box.size = Vector3(size.x, 0.02, size.y)
+	return box
+
+
+func _rail_mesh(length: float) -> BoxMesh:
+	var box := BoxMesh.new()
+	box.size = Vector3(0.05, 0.05, length)
+	return box
+
+
 ## The queue posts with their rope, two benches, the plant and the tellers' counter with its three desks behind.
 func _build_hall() -> void:
-	for i in 5:
+	# The town bank has no queue.
+	for i in 0 if town else 5:
 		var at := Vector3(-6.0 + i * 1.6, FLOOR_TOP, 7.5)
 		_build.box(at + Vector3(0, 0.45, 0), Vector3(0.12, 0.9, 0.12), GOLD)
 		if i < 4:
@@ -487,9 +801,11 @@ func _build_back() -> void:
 	for z: float in [-7.0, -8.6]:
 		_build.open_box(Vector3(11.4, FLOOR_TOP, z), Vector3(0.8, 2.0, 1.4), "-x", STEEL)
 		for level: float in [0.4, 1.0, 1.6]:
-			_build.mesh_box(Vector3(11.3, FLOOR_TOP + level + 0.12, z), Vector3(0.5, 0.22, 1.1), MONEY)
+			# The blood bank's fridge holds blood bags (BankBlood) instead, and the seed bank's vault seed jars (BankSeeds).
+			if not blood and not seeds:
+				_build.mesh_box(Vector3(11.3, FLOOR_TOP + level + 0.12, z), Vector3(0.5, 0.22, 1.1), MONEY)
 	var label := Label3D.new()
-	label.text = "BANK_VAULT"
+	label.text = "BANK_FRIDGE" if blood else "BANK_VAULT"
 	label.font_size = 48
 	label.pixel_size = 0.01
 	label.position = Vector3(VAULT_X - 0.1, 2.3, VAULT_DOOR_Z)
@@ -515,7 +831,8 @@ func _add_vault_door() -> void:
 	var steel := MeshInstance3D.new()
 	steel.mesh = disc
 	steel.rotation.z = PI / 2
-	steel.material_override = _build.material(STEEL.lightened(0.1))
+	# The blood bank's fridge door is white.
+	steel.material_override = _build.material(PAINT if blood else STEEL.lightened(0.1))
 	vault_door.add_child(steel)
 	var wheel := TorusMesh.new()
 	wheel.inner_radius = 0.25
@@ -542,6 +859,12 @@ func _add_van() -> void:
 	shape.position.y = VAN_SIZE.y / 2 + 0.2
 	van.add_child(shape)
 	van.add_child(VAN_MODEL.instantiate())
+	if blood:
+		# The blood bank's gang came in a black hearse, a coffin on its roof (robo-banco-sangre.md, step 4).
+		BankBlood.hearse(van)
+	elif seeds:
+		# The seed bank's gang came in a green van with pots on its roof (robo-banco-semillas.md, step 4).
+		BankSeeds.garden_van(van)
 	for at in VAN_WHEELS:
 		var wheel: Node3D = WHEEL_MODEL.instantiate()
 		wheel.position = at
@@ -574,6 +897,13 @@ func _add_manager(is_boss: bool) -> void:
 		manager.spots.append(global_transform * (at + Vector3.UP * FLOOR_TOP))
 	add_child(manager)
 	manager.seed_with(hash(["bank walkie", case_seed]))
+	if town:
+		# The town bank has no manager: neither he nor his car are there.
+		for gone: CollisionObject3D in [manager, manager_car]:
+			gone.hide()
+			gone.collision_layer = 0
+			gone.process_mode = Node.PROCESS_MODE_DISABLED
+		return
 	if not is_boss:
 		return
 	# The boss (step 2): the key he gives doesn't fit, his walkie hurries the gang and his trunk waits open.
@@ -610,7 +940,13 @@ func _on_manager_radioed(_manager: BankManager) -> void:
 
 func _add_robbers() -> void:
 	for animal: String in BankRobber.ANIMALS:
+		# In the town bank El Conejo robs it alone, at the drill.
+		if town and animal != "conejo":
+			continue
 		var robber := BankRobber.new()
+		robber.alone = town
+		robber.vampire = blood
+		robber.gardener = seeds
 		robber.name = "Robber_" + animal
 		robber.animal = animal
 		robber.grandpa = grandpas
@@ -620,8 +956,9 @@ func _add_robbers() -> void:
 		robber.slipped_out.connect(func(_robber: BankRobber) -> void: bags_taken += 1)
 		if grandpas:
 			robber.spotted.connect(func(_robber: BankRobber, _cop: Node3D) -> void: _gang_nervous())
-		robber.position = ROBBER_SPOTS[animal][0] + Vector3.UP * FLOOR_TOP
-		robber.rotation.y = ROBBER_SPOTS[animal][1]
+		var spot: Array = ROBBER_SPOTS["pato" if town else animal]
+		robber.position = spot[0] + Vector3.UP * FLOOR_TOP
+		robber.rotation.y = spot[1]
 		add_child(robber)
 		robbers.append(robber)
 		var escort := OwnerEscort.attach(robber, car)
@@ -642,9 +979,40 @@ func _add_robbers() -> void:
 			robber.do_help = _sorry_help
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if not follower and sorry:
 		_watch_the_sorry_one()
+	if not follower and roof:
+		_watch_the_roof(delta)
+
+
+## The roof robbery (step 2): the nephew sees a cop up on the roof and flies the helicopter away from them, if it's
+## still up there and his remote is ready. Taken off the roof, the gang has no way out by it.
+func _watch_the_roof(delta: float) -> void:
+	nephew_rest = maxf(nephew_rest - delta, 0.0)
+	if helicopter.busy() or helicopter.crashed or roof_getaway:
+		return
+	if not on_roof(helicopter.global_position):
+		if not helicopter_gone:
+			helicopter_gone = true
+			for cop in get_tree().get_nodes_in_group("cops"):
+				(cop as Cop).show_hint("HINT_HELICOPTER_TAKEN")
+		return
+	helicopter_gone = false
+	if nephew_rest > 0.0 or nephew.caught:
+		return
+	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
+		if on_roof(cop.global_position):
+			helicopter.take_off()
+			nephew.say("NEPHEW_TAKE_OFF")
+			(cop as Cop).show_hint("HINT_HELICOPTER_UP")
+			return
+
+
+## Whether `at` (global) is up on the bank's roof.
+func on_roof(at: Vector3) -> bool:
+	var local := to_local(at)
+	return local.y > ROOF - ON_ROOF and absf(local.x) <= HALF_X + 0.2 and absf(local.z) <= HALF_Z + 0.2
 
 
 ## The gang keeps an eye on the sorry robber: one who sees him on a help (not resting at his spot) shouts "¡Traidor!",
@@ -793,6 +1161,8 @@ func _claim_hide_spot(robber: BankRobber) -> Vector3:
 
 ## The hostages, a different set of neighbors for each seed.
 func _add_hostages() -> void:
+	if town:
+		return
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(["bank hostages", case_seed])
 	var looks := BankHostage.LOOKS.duplicate()
@@ -899,15 +1269,33 @@ func _on_vault_opened() -> void:
 	# drive off with him.
 	var manager_runs := manager.boss and not manager.caught
 	var boss_runs := is_loose(boss) and not manager_runs
+	# The roof robbery (robo-banco-techo.md, step 4): up the hatch with the sacks, if the helicopter is still theirs.
+	var by_roof := roof and roof_way_out()
+	if blood:
+		# The blood bank (robo-banco-sangre.md, step 3): they run in for the bags and out with them.
+		blood_bank.load_up()
+		return
+	if seeds:
+		# The seed bank (robo-banco-semillas.md, step 3): they run in for the jars and out with them.
+		seed_bank.load_up()
+		return
+	var sacks := 0
 	for robber in robbers:
 		if robber.sorry and is_loose(robber):
 			# He doesn't take a sack: he sits down to wait for the cops (robo-banco-arrepentido.md, step 5).
 			robber.wait_for_cops()
 		elif is_loose(robber):
-			bags_taken += 1
+			sacks += 1
+			if not by_roof:
+				bags_taken += TOWN_SACKS if town else 1
 			robber.hide()
 			robber.collision_layer = 0
 			robber.process_mode = Node.PROCESS_MODE_DISABLED
+	if by_roof and sacks > 0:
+		_start_roof_getaway(sacks)
+		if case:
+			case._on_vault_opened()
+		return
 	if not manager_runs and not boss_runs:
 		return
 	var wading := wade_out_time()
@@ -941,7 +1329,8 @@ func _run_getaway(manager_runs: bool) -> void:
 
 ## El Oso gets away in the van (`kind` ROBBERS_VAN) or on foot (BEAR_ON_FOOT), or the grandpa Oso on a motor walker
 ## along the sidewalk (WALKER, robo-banco-abuelos.md, step 4), or the boss manager in his car (MANAGER_CAR,
-## robo-banco-gerente.md, step 4): the chase is on.
+## robo-banco-gerente.md, step 4), or El Oso hanging from the toy helicopter (TOY_HELICOPTER, robo-banco-techo.md,
+## step 4b) with the rope a cop can grab from the patrol car (RopeGrab): the chase is on.
 func start_getaway(kind: String) -> void:
 	if chase:
 		return
@@ -956,16 +1345,30 @@ func start_getaway(kind: String) -> void:
 		manager.collision_layer = 0
 		manager.process_mode = Node.PROCESS_MODE_DISABLED
 	chase = ChaseCase.begin(self, kind, at, car, city, case_seed)
-	chase.who = "manager" if kind == SuspectCar.MANAGER_CAR else "oso_grandpa" if grandpas else "oso"
-	if grandpas:
+	chase.who = "manager" if kind == SuspectCar.MANAGER_CAR else "oso_grandpa" if grandpas \
+		else "conejo" if town else "conde" if blood else "oso"
+	if grandpas or (town and kind == SuspectCar.BEAR_ON_FOOT):
 		chase.truck.set_rider(ChaseSuspect.model_for(chase.who))
+	if blood and kind == SuspectCar.ROBBERS_VAN:
+		BankBlood.hearse(chase.truck)
+	if seeds and kind == SuspectCar.ROBBERS_VAN:
+		BankSeeds.garden_van(chase.truck)
 	chase.follower = follower
 	if case:
 		chase.online = case.online
 	chase.ended.connect(_on_getaway_ended)
+	if kind == SuspectCar.TOY_HELICOPTER:
+		var rope := RopeGrab.new()
+		rope.name = "RopeGrab"
+		rope.position.y = SuspectCar.ROPE_FROM
+		chase.truck.add_child(rope)
+		rope.grabbed.connect(_on_rope_grabbed)
 	for cop in get_tree().get_nodes_in_group("cops"):
-		(cop as Cop).show_hint({SuspectCar.ROBBERS_VAN: "HINT_ESCAPE_oso", SuspectCar.WALKER: "HINT_ESCAPE_oso_WALKER",
-			SuspectCar.MANAGER_CAR: "HINT_ESCAPE_manager"}.get(kind, "HINT_ESCAPE_oso_FOOT"))
+		var hint: String = {SuspectCar.ROBBERS_VAN: "HINT_ESCAPE_oso", SuspectCar.WALKER: "HINT_ESCAPE_oso_WALKER",
+			SuspectCar.MANAGER_CAR: "HINT_ESCAPE_manager", SuspectCar.TOY_HELICOPTER: "HINT_ESCAPE_oso_AIR"}.get(kind,
+			"HINT_ESCAPE_oso_FOOT")
+		(cop as Cop).show_hint(hint.replace("_oso", "_conejo") if town else hint.replace("_oso", "_conde") if blood \
+			else hint)
 
 
 func _on_getaway_ended(was_caught: bool) -> void:

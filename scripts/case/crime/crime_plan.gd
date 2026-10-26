@@ -25,6 +25,7 @@ static func draw(cooks: Array[Dictionary], seed_value: int, clue_traits: Diction
 	rng.seed = hash("crime plan %d" % seed_value)
 	var plan := CrimePlan.new()
 	plan.traits = clue_traits
+	# The first draw of the seed, like culprit_of.
 	plan.culprit = rng.randi_range(0, cooks.size() - 1)
 	var sets := _sets(clue_traits.keys(), CLUES_PER_CASE)
 	# Shuffled with the seed; the first set that leaves only him. One with the prints always does.
@@ -39,6 +40,14 @@ static func draw(cooks: Array[Dictionary], seed_value: int, clue_traits: Diction
 			plan.clues.assign(kinds)
 			break
 	return plan
+
+
+## Who the culprit will be among `count` suspects for this seed, before their traits are drawn (the museum's guards
+## need it: the culprit always lies about the bathroom).
+static func culprit_of(count: int, seed_value: int) -> int:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash("crime plan %d" % seed_value)
+	return rng.randi_range(0, count - 1)
 
 
 ## What a clue says: the culprit's value of its trait.

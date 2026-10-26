@@ -54,3 +54,19 @@ func start_case() -> void:
 ## Where the boss's getaway waits when they find the cops out, in the world. Each place says where.
 func getaway_at() -> Transform3D:
 	return global_transform
+
+
+## The planilla's row of what the clues found say about the boss, or "" (the party's guests look alike: the clues tell
+## the boss's costume, infiltracion-fiesta.md). `bonus` is the clue the cops got on their own (seeing the boss).
+func clue_row(_found: Array[String], _bonus: bool) -> String:
+	return ""
+
+
+## What the cops bought here and pay out of the shift's pay (the art auction's lots, infiltracion-subasta.md): how
+## many and how much. Nothing anywhere else.
+func bought() -> int:
+	return 0
+
+
+func spent() -> int:
+	return 0
