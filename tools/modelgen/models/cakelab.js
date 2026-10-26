@@ -164,15 +164,37 @@ export function buildCakeSlices() {
 	return b.build();
 }
 
+export function buildGoldSieve() {
+	const b = new Builder('gold_sieve');
+	b.add('rim', mat('gold_shiny', 0xe0b040, { metalness: 0.8, roughness: 0.3 }), new THREE.CylinderGeometry(0.15, 0.15, 0.06, 16, 1, true), { pos: V(0, 0.03, 0) });
+	b.add('mesh', mat('gold_mesh', 0xc89a30, { metalness: 0.6, roughness: 0.5 }), new THREE.CylinderGeometry(0.148, 0.148, 0.004, 16), { pos: V(0, 0.01, 0) });
+	b.add('handle', mat('gold_shiny', 0xe0b040, { metalness: 0.8, roughness: 0.3 }), new THREE.BoxGeometry(0.03, 0.015, 0.16), { pos: V(0, 0.05, 0.22) });
+	b.add('dust', mat('gold_dust', 0xffd75a), new THREE.CylinderGeometry(0.08, 0.1, 0.015, 12), { pos: V(0.02, 0.02, -0.02) });
+	return b.build();
+}
+
+export function buildJewelerInvoice() {
+	const b = new Builder('jeweler_invoice');
+	b.add('paper', mat('photo_white', 0xf4f1ea), new THREE.BoxGeometry(0.15, 0.004, 0.21), { pos: V(0, 0.002, 0) });
+	b.add('header', mat('gold_shiny', 0xe0b040, { metalness: 0.8, roughness: 0.3 }), new THREE.BoxGeometry(0.12, 0.002, 0.03), { pos: V(0, 0.005, -0.08) });
+	for (let i = 0; i < 4; i++) b.add('line', mat('ink_blue', 0x34408f), new THREE.BoxGeometry(0.1, 0.001, 0.008), { pos: V(0, 0.0045, -0.03 + i * 0.025) });
+	b.add('total', mat('logo_red', 0xd94a3a), new THREE.BoxGeometry(0.05, 0.001, 0.012), { pos: V(0.035, 0.0045, 0.08) });
+	return b.build();
+}
+
 export const models = {
 	lab_oven: buildLabOven, giant_mixer: buildGiantMixer, microscope: buildMicroscope, test_tubes: buildTestTubes,
 	silver_cake: buildSilverCake, bill_mold: buildBillMold, orders_notebook: buildOrdersNotebook,
 	sleep_powder_jar: buildSleepPowderJar, sleepers_list: buildSleepersList, measuring_spoon: buildMeasuringSpoon,
-	cake_slices: buildCakeSlices,
+	cake_slices: buildCakeSlices, gold_sieve: buildGoldSieve, jeweler_invoice: buildJewelerInvoice,
 	recipe_book: buildRecipeBook, disguise_photo: buildDisguisePhoto, delivery_cap: buildDeliveryCap,
 };
 
 export const views = {
+	gold_flour: {
+		items: [{ name: 'gold_sieve', pos: [-0.15, 0, 0] }, { name: 'jeweler_invoice', pos: [0.2, 0, 0.05] }],
+		cam: { pos: [0, 0.5, 0.75], target: [0, 0.03, 0.05], fov: 40 },
+	},
 	sleepy_cakes: {
 		items: [{ name: 'sleep_powder_jar', pos: [-0.25, 0, 0] }, { name: 'sleepers_list', pos: [0.05, 0, 0.15] }, { name: 'measuring_spoon', pos: [0.05, 0, -0.35] }, { name: 'cake_slices', pos: [0.4, 0, 0.1] }],
 		cam: { pos: [0, 0.7, 1.1], target: [0.05, 0.05, -0.05], fov: 40 },
