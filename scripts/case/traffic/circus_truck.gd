@@ -13,6 +13,14 @@ const ANIMAL_MODELS: Array[PackedScene] = [preload("res://assets/models/animal_l
 	preload("res://assets/models/animal_bear.glb"), preload("res://assets/models/animal_gorilla.glb"),
 	preload("res://assets/models/animal_monkey.glb"), preload("res://assets/models/seal.glb"),
 	preload("res://assets/models/animal_zebra.glb"), preload("res://assets/models/animal_kangaroo.glb")]
+## The costumes a person fits in (El Peludo's, step 4), his sneakers' colors and the names the radio gives them, and
+## where his two front paws are on each costume, his sneakers showing under them.
+const COSTUMES: Array[String] = ["bear", "gorilla", "lion", "kangaroo"]
+const SNEAKERS: Array[Color] = [Color("e0302a"), Color("f4f4f0"), Color("3aa04a"), Color("f0c830")]
+const SNEAKER_NAMES: Array[String] = ["COLOR_RED", "COLOR_WHITE", "COLOR_GREEN", "COLOR_YELLOW"]
+const PAWS := {"bear": Vector3(0.25, 0.04, 0.4), "gorilla": Vector3(0.2, 0.04, 0.4), "lion": Vector3(0.2, 0.04, 0.45),
+	"kangaroo": Vector3(0.15, 0.04, 0.3)}
+const SNEAKER_SIZE := Vector3(0.16, 0.08, 0.26)
 ## The truck's stripes, and the names the radio gives them.
 const STRIPES: Array[Color] = [Color("d8342c"), Color("3a82d8"), Color("3a9a4a"), Color("8a4ac8")]
 const STRIPE_NAMES: Array[String] = ["COLOR_RED", "COLOR_BLUE", "COLOR_GREEN", "COLOR_VIOLET"]
@@ -67,6 +75,15 @@ static func draw(rng: RandomNumberGenerator) -> Dictionary:
 		"cage": rng.randi_range(CAGES.x, CAGES.y)}
 
 
+## El Peludo's truck: one of COSTUMES, his sneakers (one of SNEAKERS), stripes and cage like any other.
+static func costume(rng: RandomNumberGenerator) -> Dictionary:
+	var traits := draw(rng)
+	traits.animal = COSTUMES[rng.randi() % COSTUMES.size()]
+	traits.costume = true
+	traits.sneakers = rng.randi() % SNEAKERS.size()
+	return traits
+
+
 ## The name the papers give `animal`.
 static func animal_name(animal: String) -> String:
 	return ANIMAL_NAMES[maxi(ANIMALS.find(animal), 0)]
@@ -107,6 +124,8 @@ static func build(car: QueueCar, traits: Dictionary) -> void:
 	animal.position = ANIMAL_AT
 	animal.rotation.y = PI
 	cage.add_child(animal)
+	if traits.get("costume", false):
+		_put_on_sneakers(animal, traits)
 	var number := _label(car.tr("CIRCUS_CAGE") % int(traits.get("cage", 1)), 44, Color(0.98, 0.85, 0.3))
 	number.name = "Number"
 	number.position = Vector3(0, CAGE_SIZE.y - 0.12, -CAGE_SIZE.z / 2 - 0.08)
@@ -190,6 +209,22 @@ static func shake(car: Node3D) -> void:
 		for i in 6:
 			tween.tween_property(cage, "position:x", CAGE_AT.x + (0.06 if i % 2 == 0 else -0.06), 0.06)
 		tween.tween_property(cage, "position:x", CAGE_AT.x, 0.06)
+
+
+## El Peludo's sneakers, showing under his costume's front paws.
+static func _put_on_sneakers(animal: Node3D, traits: Dictionary) -> void:
+	var paw: Vector3 = PAWS.get(traits.get("animal", ""), Vector3(0.2, 0.04, 0.4))
+	var rubber := StandardMaterial3D.new()
+	rubber.albedo_color = SNEAKERS[int(traits.get("sneakers", 0)) % SNEAKERS.size()]
+	for side: float in [1.0, -1.0]:
+		var shoe := MeshInstance3D.new()
+		shoe.name = "SneakerLeft" if side > 0.0 else "Sneaker"
+		var box := BoxMesh.new()
+		box.size = SNEAKER_SIZE
+		box.material = rubber
+		shoe.mesh = box
+		shoe.position = Vector3(paw.x * side, paw.y, paw.z + 0.08)
+		animal.add_child(shoe)
 
 
 ## The animal riding in `car`'s cage, or null for a city car.
