@@ -9,7 +9,7 @@ func after_each() -> void:
 	PlaceDraw.pending_seed = 0
 
 
-func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltration_and_each_raid_an_eighth_of_the_rest() -> void:
+func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltration_and_each_raid_as_often() -> void:
 	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "hotel_raid": 0, "hardware": 0, "doll_factory": 0, "insurance": 0, "cake_lab": 0, "gym_raid": 0,
 		"chase": 0, "crime_scene": 0, "circus": 0, "museum": 0, "hotel": 0, "traffic": 0, "club": 0, "choir": 0, "mime": 0, "party": 0, "gym": 0, "school": 0, "restaurant": 0, "chess": 0, "biker": 0, "auction": 0, "bank": 0, "plaza": 0, "market": 0,
 		"bridge": 0, "double": 0, "birthday": 0, "convertible": 0, "football": 0, "school_visit": 0, "debate": 0, "prison": 0, "transfer": 0, "blackout": 0, "visits": 0, "laundry": 0, "prison_tunnel": 0, "prison_talent": 0, "prison_vip": 0, "prison_garden": 0,
@@ -25,7 +25,7 @@ func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltrati
 	assert_gt(count.hotel, 3, "and a quarter at the hotel")
 	assert_between(count.traffic, 25, 80, "even odds for the traffic control (propuesta)")
 	# With the bank and the rally drawn before them, the raids are a few shifts in a hundred, so their share is counted
-	# over more seeds: each of the eight raids comes up about an eighth of them (propuesta).
+	# over more seeds: each raid comes up about as often as the others (propuesta).
 	var raids := {}
 	for i in 3000:
 		var place := PlaceDraw.pick(i + 1, [], 1)
@@ -33,7 +33,8 @@ func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltrati
 			raids[place] = raids.get(place, 0) + 1
 	var total: int = raids.values().reduce(func(sum: int, n: int) -> int: return sum + n, 0)
 	for place: String in PlaceDraw.ORDER:
-		assert_between(float(raids.get(place, 0)) / total, 0.07, 0.23, "%s comes up about an eighth of the raids" % place)
+		assert_between(float(raids.get(place, 0)) / total, 0.5 / PlaceDraw.ORDER.size(), 2.0 / PlaceDraw.ORDER.size(),
+			"%s comes up about as often as the other raids" % place)
 	assert_between(count.club + count.choir + count.mime + count.party + count.gym + count.school + count.restaurant + count.chess + count.biker + count.auction, 25, 80, "the infiltrations, as often as a raid (propuesta)")
 	assert_between(count.bank, 15, 70, "the bank robbery, about as often as a raid (propuesta)")
 	assert_between(count.plaza + count.market + count.bridge + count.double + count.birthday
@@ -80,7 +81,7 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 	var factory := {}
 	var insurance := {}
 	var cake_lab := {}
-	var hotel := {,
+	var hotel := {}
 	var gym := {}
 	for i in 900:
 		var case_seed := i + 1
