@@ -4900,3 +4900,8 @@ OBJ_AIRPORT_BOARD,"Que el diputado suba al avión a tiempo","Get the deputy on t
 OBJ_AIRPORT_OPENED,"Maletas del diputado abiertas de más: %d","Deputy's suitcases opened for nothing: %d","Malas do deputado abertas à toa: %d"
 OBJ_AIRPORT_SCANDAL,"La maleta rara salió en la pantalla: caso perdido.","The odd suitcase made the screen: case lost.","A mala estranha apareceu na tela: caso perdido."
 OBJ_AIRPORT_MISSED,"El diputado perdió el avión: caso perdido.","The deputy missed the plane: case lost.","O deputado perdeu o avião: caso perdido."
+HINT_ESCAPE_PORTER,"¡El maletero se escapa en el carrito de equipaje! ¡Atrápenlo antes de que doble la esquina!","The porter is getting away on the baggage tug! Catch him before he turns the corner!","O carregador está fugindo no carrinho de bagagem! Peguem ele antes que vire a esquina!"
+OBJ_AIRPORT_CATCH_TUG,"Atrapar el carrito de equipaje (suma como detenido)","Catch the baggage tug (counts as detained)","Pegar o carrinho de bagagem (conta como detido)"
+CHASE_PORTER_LINE_1,"¡Equipaje en tránsito! ¡Abran paso!","Luggage in transit! Make way!","Bagagem em trânsito! Abram caminho!"
+CHASE_PORTER_LINE_2,"¡La concejala me prometió un ascenso a jefe de cinta!","The councillor promised me a promotion to head of the belt!","A vereadora me prometeu uma promoção a chefe da esteira!"
+CHASE_PORTER_LINE_3,"Está bien, me entrego. Pero esta maleta la cargan ustedes.","Fine, I give up. But you carry this suitcase.","Tá bom, eu me entrego. Mas essa mala vocês carregam."

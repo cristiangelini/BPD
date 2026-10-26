@@ -75,6 +75,8 @@ const MODELS := {
 	"referee": preload("res://assets/models/npc_arbitro.glb"),
 	# The school's janitor, off his floor polisher (politico-escuela.md).
 	"janitor": preload("res://assets/models/npc_conserje_escuela.glb"),
+	# The airport's bought porter, off the baggage tug (politico-aeropuerto.md).
+	"porter": preload("res://assets/models/npc_mudancero.glb"),
 }
 const HECKLER := "heckler_"
 ## The deputy's double (politico-doble.md), off on the kick scooter.
