@@ -19,6 +19,8 @@ const SHIFT_DELAY := 3.0
 ## At the circus and the museum, finding what was stolen adds this much to the salary, if the case is solved
 ## (escena-circo.md, escena-museo.md).
 const LOOT_BONUS := 100.0
+## Each of the museum's frames broken in the chase is taken off the salary (escena-museo.md, pregunta 3).
+const FRAME_FINE := 20
 ## Its own quota, like the interrogation and the chase (decision 91).
 const QUOTA := ShiftReport.SALARY
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
@@ -58,7 +60,7 @@ const VARIANTS := {
 		"brief": ["BRIEF_CITY_MUSEUM_A_", "BRIEF_CITY_MUSEUM_B", "BRIEF_CITY_MUSEUM_C"], "go": "HINT_GO_MUSEUM",
 		"go_row": "OBJ_MUSEUM_GO", "look": "HINT_MUSEUM_LOOK", "files_row": "OBJ_MUSEUM_FILES",
 		"clue_line": "CLUE_MUSEUM_", "ruined_hint": "HINT_MUSEUM_RUINED_", "left": "HINT_GUARD_LEFT",
-		"who": "guard", "getaway": SuspectCar.BIKE, "loot_row": "OBJ_MUSEUM_LOOT_",
+		"who": "guard", "getaway": SuspectCar.ART_VAN, "loot_row": "OBJ_MUSEUM_LOOT_",
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "recording": "mustache",
 			"witness": "glasses", "alibi": "liar"},
 		"parts": ["photo", "prints", "teeth", "hair", "mustache", "alibi"],
@@ -83,6 +85,8 @@ var tip_given := false
 ## A cop got to the tent.
 var at_tent := false
 var clues_found: Array[String] = []
+## The museum's empty frames the patrol car broke in the chase (ChaseFrame), each one off the salary.
+var frames_broken := 0
 ## Clues the cops spoiled before finding them.
 var ruined: Array[String] = []
 var flour_print: FlourPrint
@@ -325,7 +329,8 @@ func finish_shift() -> void:
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
-	var report := ShiftReport.pay(solved(), [LOOT_BONUS] if loot_found else [], 0, wrong_guesses)
+	var report := ShiftReport.pay(solved(), [LOOT_BONUS] if loot_found else [], frames_broken * FRAME_FINE,
+		wrong_guesses)
 	var result := {"solved": solved(), "report": report, "awards": ShiftReport.awards(stats)}
 	var campaign := Campaign.current
 	if campaign and not campaign.is_over():
@@ -367,7 +372,8 @@ func snapshot() -> Dictionary:
 	var state := {"tip": tip_given, "at_tent": at_tent, "found": clues_found.duplicate(), "ruined": ruined.duplicate(),
 		"parts": file_parts.duplicate(true), "files": files.duplicate(), "accused": accused, "wrong": wrong_guesses,
 		"lost": lost, "gone": gone.duplicate(), "escaped": escaped, "loot": loot_found,
-		"offended": place != null and place.witness_offended(), "result": _result, "captured": captured.duplicate(true)}
+		"offended": place != null and place.witness_offended(), "result": _result, "captured": captured.duplicate(true),
+		"frames": frames_broken}
 	# What only the place knows (the circus: the trick, the signs, the camera).
 	if place:
 		state.place = place.net_state()
@@ -383,6 +389,7 @@ func apply_snapshot(state: Dictionary) -> void:
 		give_tip()
 	at_tent = state.at_tent
 	clues_found.assign(state.found)
+	frames_broken = state.get("frames", 0)
 	ruined.assign(state.ruined)
 	file_parts = state.parts.duplicate(true)
 	files.assign(state.files)
@@ -456,6 +463,14 @@ func _comisario_says(key: String) -> void:
 			briefing.start(PackedStringArray([key]))
 			return
 	_hint_all(key)
+
+
+## The patrol car broke one of the frames the museum's art van dropped.
+func frame_broken() -> void:
+	if follower:
+		return
+	frames_broken += 1
+	_hint_all("HINT_FRAME_BROKEN")
 
 
 ## The cops found one of the case's clues. Returns whether it's new.
