@@ -54,6 +54,6 @@ func test_caught_it_counts_with_the_clues_they_have() -> void:
 	assert_eq(hall.case.custody().owner, "trucho")
 
 
-func test_play_draws_the_party_a_quarter_of_the_infiltrations() -> void:
-	assert_has(PlaceDraw.INFILTRATIONS, "party")
-	assert_eq(PlaceDraw.INFILTRATIONS.size(), 4)
+func test_play_draws_the_party_with_the_other_infiltrations() -> void:
+	# One in as many as there are (four when the party came in, ten now).
+	assert_eq(PlaceDraw.INFILTRATIONS.count("party"), 1)
