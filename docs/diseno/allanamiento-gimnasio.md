@@ -127,6 +127,11 @@ Los pesos y valores siguen la escala de la oficina y el laboratorio: la principa
      durante 5 s, un texto distinto cada vez («¿Y si el comisario es un robot?»); el primer sorbo es la pista. Se
      esconden el frasco del batido campeón (1 kg, 1000), la lista de ganadores de la lotería (0,1 kg, 300) y la
      licuadora dorada (3 kg, 200). Captura `paso5-batido.png` y `gym_lucky_shakes.png`.
+   - **Cómo quedó el ring de las peleas arregladas (propuesta):** a las dos bolsas de boxeo se les pega con E: se
+     balancean ("¡PUM!") y empujan al policía que esté justo detrás. Una de ellas (sorteada) suena a metal ("¡CLANG!"),
+     y el primer golpe a esa es la pista. Se esconden el libro de apuestas (0,5 kg, 1000), los guantes con herradura
+     (2 kg, 300) y el cinturón de cartón (0,5 kg, 200; mide 90 cm, así que va en un escondite de piso). Con esta, el
+     gimnasio ya cuenta sus 6 historias. Captura `paso5-ring.png` y `gym_fixed_fights.png`.
 6. "Jugar" sortea entre los 8 lugares de allanamiento.
 7. El online (el profe, Lula, la música, las cintas y las mancuernas en todas las PC).
 
