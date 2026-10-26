@@ -46,9 +46,9 @@ anotando en el boletín "se nota que es policía".
    - foto del pizarrón con el plano del banco;
    - el registro de alumnos con sus nombres de verdad, en la biblioteca (se agarra; está detrás de un libro, E);
    - el video de dos alumnos repasando el golpe para el examen (5 s cerca con la cámara, como el club);
-   - el botín de "práctica" (relojes y collares de verdad) en el baúl del patio, que tiene llave (la llave en el
-     escritorio de la Profesora);
-   - foto del diploma en blanco de la oficina, con la firma del Director.
+   - el botín de "práctica" (relojes y collares de verdad) en el baúl abierto del patio;
+   - foto del diploma en blanco de la oficina, con la firma del Director (la llave de la oficina, en el cajón del
+     escritorio de la Profesora).
 7. **Se gana** esposando al Director: sueldo de 600, un tercio menos por cada prueba que falte, cuota de 400, igual que
    las otras infiltraciones. Esposar a un alumno o a la Profesora los descubre. Detenido, el turno siguiente puede ser
    su interrogatorio (decisión 93): se le escapan 3 frases y confiesa.
@@ -99,6 +99,16 @@ la forma de `GymRoutine` (host decide, cada PC juzga y avisa).
    alumnos que lo ven. El boletín en la planilla va con el caso (paso 4) **(propuesta)**.
 4. La graduación, las pruebas y el caso (variante "school"): el Director con los diplomas, las 6 pruebas, el sueldo y
    el interrogatorio.
+   Hecho así: después de cada nota el host mira los promedios; si las tres materias llegan a 7, la Profesora avisa
+   "en el próximo timbre... ¡graduación!" y en vez de clase suena el timbre de la graduación: el Director aparece al
+   lado del pizarrón, frente a los alumnos, y ya no hay más clases. Si los descubrieron antes, no baja (ya se fue).
+   El boletín va en la planilla (Q): el promedio de los policías en cada materia ("-" sin nota) y "¡graduados!"
+   después. Las 6 pruebas: la "tarea" (carpeta verde con la lista de casas) en el escritorio de la Profesora, el plano
+   del banco con el túnel en un pizarrón al fondo del aula (foto), el libro violeta que sobresale de un estante de la
+   biblioteca (E), el video de dos alumnos de pupitres vecinos, las joyas en el baúl abierto del patio y el diploma
+   firmado en el escritorio de la oficina (foto). La llave de la oficina está en el cajón del escritorio de la
+   Profesora (E). Esposar a un alumno o a la Profesora los descubre; esposar al Director lo resuelve, con el sueldo y
+   el interrogatorio de siempre. Hasta el paso 5 escapa a pie **(propuesta)**.
 5. La huida en el auto de práctica, el sorteo de "Jugar" en sextos y online.
 
 ## Preguntas para Cristian (decisión 173)

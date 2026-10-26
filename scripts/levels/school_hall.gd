@@ -6,10 +6,15 @@ extends InfiltrationPlace
 ## blackboard and the Profesora's desk) and the practice yard to the east (the locks on the wall, the dummy in a coat
 ## and the creaky floor); behind, the library (west) and the Director's office (east, locked), where he waits unseen
 ## until the graduation (step 4). The students sit at the desks, the Profesora Ganzúa teaches in front of them and the
-## lookout only lets in cops dressed as thieves. The cops start in the station, where the disguises are, and drive
-## here. --place=school opens it from Play. Every number here is (propuesta).
+## lookout only lets in cops dressed as thieves. When the cops' grades are good enough, the Director comes down to the
+## classroom for the graduation (step 4). The cops start in the station, where the disguises are, and drive here.
+## --place=school opens it from Play. Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const KEY_POT_SCENE := preload("res://scenes/props/key_pot.tscn")
+const HOMEWORK_MODEL := preload("res://assets/models/school_homework.glb")
+const TRUNK_MODEL := preload("res://assets/models/school_trunk.glb")
+const LOOT_MODEL := preload("res://assets/models/jewelry_bag.glb")
 const HALF_X := 12.0
 const HALF_Z := 10.0
 const FLOOR_TOP := 0.06
@@ -41,8 +46,25 @@ const LOCKS: Array[Vector3] = [Vector3(HALF_X - 0.1, 1.1, 1.8), Vector3(HALF_X -
 	Vector3(HALF_X - 0.1, 1.1, 4.6), Vector3(HALF_X - 0.1, 1.1, 6.0)]
 const DUMMY_AT := Vector3(6.0, 0, 2.6)
 const CREAKY := Rect2(3.4, 6.6, 7.4, 2.6)
-## The Director waits in his office until the graduation (step 4).
+## The Director waits in his office until the graduation (step 4), when he stands by the blackboard, next to the
+## Profesora, facing the class.
 const DIRECTOR_AT := Vector3(8.5, 0, -6.5)
+const GRADUATION_AT := Vector3(-10.9, 0, 3.4)
+## The 6 pieces of evidence (the seed picks 3, ClubEvidence) and where they are: the "homework" (the houses to rob) on
+## the Profesora's desk, the bank's plan on the classroom's back board (a photo), the students' real names in a book
+## sticking out of a library shelf (E), the video of two students going over the job at their desks, the "practice"
+## loot in the open trunk in the yard and the blank diploma signed by the Director on his desk in the office (a photo).
+## The office key is in the Profesora's desk drawer.
+const EVIDENCE_KINDS: Array[String] = ["homework", "board", "register", "recording", "loot", "diploma"]
+const HOMEWORK_AT := Vector3(-9.6, FLOOR_TOP + 0.82, 4.5)
+const PLAN_AT := Vector3(-LOBBY_X - 0.14, 1.5, 8.0)
+const REGISTER_AT := Vector3(-8.0, FLOOR_TOP + 1.25, -HALF_Z + 0.7)
+const TRUNK_AT := Vector3(9.0, 0, 0.6)
+const LOOT_AT := Vector3(9.0, FLOOR_TOP + 0.5, 0.6)
+const DIPLOMA_AT := Vector3(8.5, FLOOR_TOP + 0.82, -8.3)
+const DRAWER_AT := Vector3(-10.02, FLOOR_TOP + 0.35, 5.5)
+## Two students this close talk about the job (the recording).
+const TALK_PAIR := 2.6
 ## How many students, of the 12 desks; the rest are for the cops.
 const MEMBERS := 9
 ## The lookout stands outside, by the entrance.
@@ -80,7 +102,11 @@ func _ready() -> void:
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, BACK_Z)
 	add_child(office_door)
 	_add_people()
+	_add_evidence()
 	place_in_city("school")
+	start_case()
+	# Cuffing the Profesora gives the cops away too, like cuffing a student.
+	teacher.cuffed_now.connect(case._on_grandparent_cuffed)
 
 
 ## The Director drives off from the street, out of the entrance (step 5).
@@ -210,6 +236,126 @@ func _add_people() -> void:
 	classes.near_dummy = near_dummy
 	add_child(classes)
 	suspicion.watch_classes(classes)
+	classes.graduation_started.connect(_on_graduation)
+
+
+## The graduation (step 4): the Director comes down to the classroom with the diplomas, now in sight to be cuffed.
+func _on_graduation() -> void:
+	if suspicion.found_out or (case and case.chase):
+		return
+	set_director_present(true)
+	director.position = GRADUATION_AT + Vector3(0, FLOOR_TOP, 0)
+	director.rotation.y = -PI / 2
+	director.say("DIRECTOR_GRADUATION")
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if cop.input_enabled:
+			cop.show_hint("HINT_SCHOOL_GRADUATION")
+	if case:
+		case.checklist.show_rows(case.rows())
+
+
+## The planilla's report card: the cops' average in each subject, or that they graduated.
+func clue_row(_found: Array[String], _bonus: bool) -> String:
+	if not classes:
+		return ""
+	if classes.graduated:
+		return tr("SCHOOL_GRADUATED_ROW")
+	var shown: Array[String] = []
+	for kind: String in SchoolClasses.SUBJECTS:
+		var average := classes.average(kind)
+		shown.append(tr("SCHOOL_NO_GRADE") if average <= 0.0 else "%.1f" % average)
+	return tr("SCHOOL_REPORT_ROW") % [shown[0], shown[1], shown[2], SchoolClasses.GRADUATE]
+
+
+## The 3 pieces of evidence the seed picks (ClubEvidence) and the office key in the Profesora's desk drawer.
+func _add_evidence() -> void:
+	evidence = ClubEvidence.new()
+	evidence.name = "Evidence"
+	evidence.held_kinds.assign(["homework", "loot"])
+	evidence.talk_key = "SCHOOL_TALK_%d"
+	add_child(evidence)
+	var pair := _talking_pair()
+	var available := EVIDENCE_KINDS.duplicate()
+	if pair.is_empty():
+		available.erase("recording")
+	evidence.kinds = ClubEvidence.draw(case_seed, available)
+	var drawer: KeyPot = KEY_POT_SCENE.instantiate()
+	drawer.name = "KeyDrawer"
+	drawer.has_key = true
+	drawer.prompt = "PROMPT_SCHOOL_DRAWER"
+	add_child(drawer)
+	drawer.position = DRAWER_AT
+	drawer.get_node("Pot").hide()
+	drawer.get_node("Plant").hide()
+	_build.mesh_box(DRAWER_AT + Vector3(0, 0.2, 0), Vector3(0.04, 0.2, 0.6), WOOD.lightened(0.15))
+	_build.mesh_box(DRAWER_AT + Vector3(-0.04, 0.2, 0), Vector3(0.03, 0.04, 0.12), STEEL)
+	var trunk := TRUNK_MODEL.instantiate()
+	$Built.add_child(trunk)
+	trunk.position = TRUNK_AT + Vector3(0, FLOOR_TOP, 0)
+	_build.shape(_build.body(TRUNK_AT + Vector3(0, FLOOR_TOP + 0.2, 0)), Vector3(1.0, 0.4, 0.6))
+	for kind: String in evidence.kinds:
+		match kind:
+			"homework":
+				_item(kind, HOMEWORK_MODEL, Vector3(0.24, 0.04, 0.32), 0.3, HOMEWORK_AT)
+			"loot":
+				_item(kind, LOOT_MODEL, Vector3(0.25, 0.25, 0.25), 2.0, LOOT_AT)
+			"board":
+				_spot(kind, PLAN_AT, Vector3(0.1, 1.0, 1.6), true)
+				_build.mesh_box(PLAN_AT + Vector3(0.04, 0, 0), Vector3(0.02, 1.0, 1.6), BOARD)
+				# The bank's plan in chalk: the building, the vault inside it and the dotted way in from the sewer.
+				_build.mesh_box(PLAN_AT + Vector3(0, 0.1, 0.1), Vector3(0.01, 0.6, 0.9), Color(0.92, 0.92, 0.88))
+				_build.mesh_box(PLAN_AT + Vector3(-0.01, 0.1, 0.1), Vector3(0.01, 0.52, 0.82), BOARD)
+				_build.mesh_box(PLAN_AT + Vector3(-0.02, 0.0, 0.3), Vector3(0.01, 0.2, 0.2), Color(0.95, 0.85, 0.3))
+				for i in 4:
+					_build.mesh_box(PLAN_AT + Vector3(-0.02, -0.3, -0.55 + i * 0.2), Vector3(0.01, 0.03, 0.1),
+						Color(0.92, 0.92, 0.88))
+				_build.mesh_box(PLAN_AT + Vector3(-0.02, -0.15, -0.5), Vector3(0.01, 0.3, 0.03), Color(0.92, 0.3, 0.3))
+			"register":
+				_spot(kind, REGISTER_AT, Vector3(0.6, 0.4, 0.3), false)
+				_build.mesh_box(REGISTER_AT + Vector3(0.1, -0.04, -0.02), Vector3(0.08, 0.3, 0.3), Color(0.3, 0.1, 0.4))
+			"diploma":
+				_spot(kind, DIPLOMA_AT, Vector3(0.6, 0.1, 0.4), true)
+				_build.mesh_box(DIPLOMA_AT, Vector3(0.42, 0.01, 0.3), Color(0.96, 0.92, 0.78))
+				_build.mesh_box(DIPLOMA_AT + Vector3(0.12, 0.006, 0.08), Vector3(0.06, 0.01, 0.06), Color(0.8, 0.1, 0.1))
+				_build.mesh_box(DIPLOMA_AT + Vector3(-0.05, 0.006, 0.08), Vector3(0.18, 0.01, 0.01), Color(0.1, 0.1, 0.3))
+			"recording":
+				evidence.talkers.assign(pair)
+				for member: ClubMember in pair:
+					member.distracted = true
+
+
+## A piece of evidence to grab, lying at `at`.
+func _item(kind: String, model: PackedScene, size: Vector3, kg: float, at: Vector3) -> void:
+	var item := ClubEvidence.make_item("School_" + kind, model, size, kg)
+	add_child(item)
+	item.position = at
+	evidence.items[kind] = item
+
+
+## A piece of evidence that stays put, a box of `size` around `at`: photographed, or searched with E.
+func _spot(kind: String, at: Vector3, size: Vector3, photo: bool) -> void:
+	var spot := ClubEvidenceSpot.new()
+	spot.name = "Evidence_" + kind
+	spot.kind = kind
+	spot.photo = photo
+	spot.prompt_prefix = "PROMPT_SCHOOL_"
+	spot.evidence = evidence
+	add_child(spot)
+	spot.position = at
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = size
+	shape.shape = box
+	spot.add_child(shape)
+
+
+## Two students at desks by each other (the recording's pair), or none.
+func _talking_pair() -> Array[ClubMember]:
+	for first in members:
+		for second in members:
+			if first != second and first.position.distance_to(second.position) < TALK_PAIR:
+				return [first, second]
+	return []
 
 
 ## The Director is out of sight until the graduation (step 4): unseen and not in the way.
