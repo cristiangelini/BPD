@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Insurance office, step 7: online: the host runs Mirta and Coca and the guests follow them (place, complaint, the board's number), the printer's button and the ticket machine work from any PC, a guest's jammed printer clears with the host's, and a guest can answer a ringing phone.
 - Insurance office, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory and the insurance office in sixths.
 - Insurance office, step 5: the insured painting story: 8 identical paintings hang on the walls until grabbed, the real one (drawn with the seed, 6 kg) has its signature upside down and the 7 copies are fines if they break, the clean mark of a frame in the meeting room is the clue, and the policy and the paint tubes are hidden.
 - Insurance office, step 5: the office accidents story: the 3 kg box of neck braces is hidden with the fake X-rays and the banana peels, the employees of the month all wear neck braces (the clue), and 6 wet patches with their "wet floor" signs make running cops skate on out of control.

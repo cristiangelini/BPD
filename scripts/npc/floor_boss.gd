@@ -139,13 +139,16 @@ func errand() -> String:
 	return "printer" if is_fixing() else _errand
 
 
-## Online: whether she's fighting the printer, for the guests' copies.
+## Online: whether she's fighting the printer and whether it's jammed, for the guests' copies. A guest's printer jams
+## with the host's (the button's press runs on every PC) and clears when the host's is clear again.
 func net_state() -> Variant:
-	return is_fixing()
+	return [is_fixing(), printer != null and printer.is_jammed]
 
 
 func apply_net_state(state: Variant) -> void:
-	_fix_left = fix_time if state else 0.0
+	_fix_left = fix_time if state[0] else 0.0
+	if not state[1] and printer and printer.is_jammed:
+		printer.fix()
 
 
 func _physics_process(delta: float) -> void:
