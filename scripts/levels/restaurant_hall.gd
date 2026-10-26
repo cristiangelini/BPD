@@ -45,6 +45,17 @@ const SINK_SIZE := Vector3(2.0, 0.9, 0.9)
 const BELL_AT := Vector3(-2.6, PASS_COUNTER, 2.0)
 ## The Chef stands at the pass, his back to it, looking at the kitchen.
 const CHEF_AT := Vector3(-4.0, 0, 0.9)
+## Where the pots and pans start (two pots on the first burners, two pans on the island) and the plates (on the island,
+## by the pass), and the ingredients' crates: tomato, onion, lettuce and pasta in the pantry, fish in the fridge (step 3).
+const POTS: Array[Vector3] = [Vector3(-8.5, 1.12, -3.45), Vector3(-7.5, 1.12, -3.45)]
+const PANS: Array[Vector3] = [Vector3(0.3, 1.0, -1.2), Vector3(1.0, 1.0, -1.2)]
+const PLATES: Array[Vector3] = [Vector3(1.8, 0.99, -0.8), Vector3(2.25, 0.99, -0.8), Vector3(2.7, 0.99, -0.8),
+	Vector3(1.8, 0.99, -1.25), Vector3(2.25, 0.99, -1.25), Vector3(2.7, 0.99, -1.25)]
+const CRATES := {"tomato": Vector3(-10.6, 0, -8.7), "onion": Vector3(-9.6, 0, -8.7), "lettuce": Vector3(-7.4, 0, -8.7),
+	"pasta": Vector3(-6.4, 0, -8.7), "fish": Vector3(-2.5, 0, -8.7)}
+## A pot or a pan this close to a burner's middle, and this high over it, is on it (m).
+const BURNER_REACH := 0.3
+const BURNER_HEIGHT := 0.35
 ## Where the cooks work (by the stove, at the island and by the sink) and where the waiters stand in the dining room
 ## (the seed picks COOKS and WAITERS of them; the cooks' spots left are for the cops).
 const COOK_SPOTS: Array[Vector3] = [Vector3(-8.0, 0, -2.3), Vector3(-6.0, 0, -2.3), Vector3(0.5, 0, 0.2),
@@ -79,6 +90,8 @@ var office_door: FrontDoor
 var free_spots: Array[Vector3] = []
 var chef: ClubMember
 var doorman: ClubDoorman
+## The pots, pans and plates (step 3).
+var vessels: Array[KitchenVessel] = []
 var _build: PlaceBuilder
 
 
@@ -94,6 +107,7 @@ func _ready() -> void:
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, BACK_Z)
 	add_child(office_door)
 	_add_people()
+	_add_kitchenware()
 	place_in_city("restaurant")
 
 
@@ -115,6 +129,18 @@ func is_inside(at: Vector3) -> bool:
 ## Whether a world position is where only the staff goes: the kitchen and the rooms behind it.
 func in_staff_area(at: Vector3) -> bool:
 	return is_inside(at) and _local(at).z < PASS_Z
+
+
+## Which of the stove's burners a world position is on, or -1.
+func burner_at(at: Vector3) -> int:
+	var local := _local(at)
+	for i in BURNERS.size():
+		var burner := BURNERS[i] + Vector3(0, FLOOR_TOP, 0)
+		var above := local.y - burner.y
+		if Vector2(local.x - burner.x, local.z - burner.z).length() < BURNER_REACH and above > 0.0 \
+				and above < BURNER_HEIGHT:
+			return i
+	return -1
 
 
 ## Whether a world position is in the dining room.
@@ -187,6 +213,26 @@ func _add_people() -> void:
 	suspicion.inside = in_staff_area
 	suspicion.in_back_room = in_back_room
 	add_child(suspicion)
+
+
+## The pots, pans and plates where they start, and the ingredients' crates (step 3).
+func _add_kitchenware() -> void:
+	for spots: Array in [[POTS, "pot"], [PANS, "pan"], [PLATES, "plate"]]:
+		var places: Array[Vector3] = spots[0]
+		for i in places.size():
+			var vessel := KitchenVessel.new()
+			vessel.kind = spots[1]
+			vessel.name = "%s%d" % [String(spots[1]).capitalize(), i]
+			vessel.burner_at = burner_at
+			add_child(vessel)
+			vessel.position = places[i] + Vector3(0, FLOOR_TOP, 0)
+			vessels.append(vessel)
+	for kind: String in CRATES:
+		var crate := IngredientCrate.new()
+		crate.kind = kind
+		crate.name = "Crate_" + kind
+		add_child(crate)
+		crate.position = CRATES[kind] + Vector3(0, FLOOR_TOP, 0)
 
 
 func _add_member(look: String, spot: Vector3, turn: float, rng: RandomNumberGenerator) -> void:

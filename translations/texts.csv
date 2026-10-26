@@ -2193,3 +2193,14 @@ RESTAURANT_FOUND_OUT_0,¡Son policías! ¡Nadie cocina tan mal!,They're cops! No
 RESTAURANT_FOUND_OUT_1,¡Son policías! ¡Ese bigote es de cotillón!,They're cops! That mustache is from a party store!,São policiais! Esse bigode é de festa!
 RESTAURANT_FOUND_OUT_2,¡Son policías! ¡Preguntaron qué había en la sopa!,They're cops! They asked what was in the soup!,São policiais! Perguntaram o que tinha na sopa!
 HINT_RESTAURANT_FOUND_OUT,¡Los descubrieron! Toda la cocina sabe que son policías.,You've been found out! The whole kitchen knows you're cops.,Vocês foram descobertos! A cozinha toda sabe que vocês são policiais.
+PROMPT_CRATE_tomato,E: sacar un tomate,E: take a tomato,E: pegar um tomate
+PROMPT_CRATE_onion,E: sacar una cebolla,E: take an onion,E: pegar uma cebola
+PROMPT_CRATE_lettuce,E: sacar una lechuga,E: take a lettuce,E: pegar uma alface
+PROMPT_CRATE_fish,E: sacar un pescado,E: take a fish,E: pegar um peixe
+PROMPT_CRATE_pasta,E: sacar un paquete de fideos,E: take a pack of pasta,E: pegar um pacote de macarrão
+HINT_CRATE_ENOUGH,Ya hay de sobra dando vueltas por la cocina. Usa esos.,There are plenty lying around the kitchen already. Use those.,Já tem de sobra pela cozinha. Use esses.
+PROMPT_POT_EMPTY,Olla vacía: tira ingredientes adentro y ponla en una hornalla,Empty pot: drop ingredients in and put it on a burner,Panela vazia: jogue ingredientes dentro e coloque numa boca do fogão
+PROMPT_PAN_EMPTY,Sartén vacía: tira ingredientes adentro y ponla en una hornalla,Empty pan: drop ingredients in and put it on a burner,Frigideira vazia: jogue ingredientes dentro e coloque numa boca do fogão
+PROMPT_POUR,E: servir en el plato,E: serve onto the plate,E: servir no prato
+PROMPT_POUR_NO_PLATE,Acércate a un plato para servir,Get close to a plate to serve,Chegue perto de um prato para servir
+HINT_POUR_NO_PLATE,No hay ningún plato cerca. ¿Vas a servir en el piso?,There's no plate nearby. Are you serving on the floor?,Não tem nenhum prato perto. Vai servir no chão?
