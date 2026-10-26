@@ -74,12 +74,96 @@ export function buildWaterCooler() {
 	return b.build();
 }
 
+const CAR_COLORS = [0xd23a3a, 0x3a6ad0, 0xf2c21e, 0x3aa85a];
+
+// A toy car 0.12 m long: a colored body, a cabin and four black wheels.
+function toyCar(b, at, color, turn = 0) {
+	const paint = mat(`toy_car_${color.toString(16)}`, color), wheel = mat('toy_wheel', 0x1e1e22);
+	b.add('body', paint, new THREE.BoxGeometry(0.12, 0.03, 0.06), { pos: V(at.x, at.y + 0.025, at.z), rot: [0, turn, 0] });
+	b.add('cabin', mat('toy_glass', 0x9ad0e8), new THREE.BoxGeometry(0.06, 0.025, 0.05), { pos: V(at.x, at.y + 0.05, at.z), rot: [0, turn, 0] });
+	for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
+		const dx = sx * 0.04, dz = sz * 0.032;
+		b.add('wheels', wheel, new THREE.CylinderGeometry(0.013, 0.013, 0.01, 8), {
+			pos: V(at.x + dx * Math.cos(turn) + dz * Math.sin(turn), at.y + 0.013, at.z - dx * Math.sin(turn) + dz * Math.cos(turn)), rot: [Math.PI / 2, turn, 0],
+		});
+	}
+}
+
+// One toy car lying on the floor (the fake crashes story makes cops slip on them).
+export function buildToyCar() {
+	const b = new Builder('toy_car');
+	toyCar(b, V(0, -0.025, 0), 0xd23a3a);
+	return b.build();
+}
+
+// The crash diorama: a board 0.8 x 0.6 m with a grey road, a zebra crossing, two crashed toy cars, a tiny lamppost and
+// a plastic tree. Main evidence of the fake crashes.
+export function buildCrashModel() {
+	const b = new Builder('crash_model');
+	b.add('board', mat('diorama_grass', 0x6aa84a), new THREE.BoxGeometry(0.8, 0.06, 0.6), { pos: V(0, -0.03, 0) });
+	b.add('road', mat('diorama_road', 0x5a5a60), new THREE.BoxGeometry(0.8, 0.005, 0.22), { pos: V(0, 0.003, 0) });
+	for (let i = 0; i < 5; i++) b.add('lines', mat('diorama_lines', 0xf2f2ea), new THREE.BoxGeometry(0.02, 0.006, 0.18), { pos: V(-0.2 + i * 0.035, 0.004, 0) });
+	toyCar(b, V(0.05, 0.005, -0.03), CAR_COLORS[0], 0.4);
+	toyCar(b, V(0.15, 0.005, 0.04), CAR_COLORS[1], -1.2);
+	b.add('post', mat('diorama_post', 0x8a8e96), new THREE.CylinderGeometry(0.006, 0.006, 0.18, 6), { pos: V(-0.3, 0.09, -0.16) });
+	b.add('lamp', mat('diorama_lamp', 0xf2e08a), ellipsoid(0.02, 0.012, 0.02, 6, 4), { pos: V(-0.3, 0.18, -0.15) });
+	b.add('tree', mat('diorama_tree', 0x2e7a3a), new THREE.ConeGeometry(0.05, 0.14, 7), { pos: V(0.3, 0.09, 0.2) });
+	b.add('trunk', mat('diorama_trunk', 0x6a4a2a), new THREE.CylinderGeometry(0.01, 0.01, 0.03, 5), { pos: V(0.3, 0.015, 0.2) });
+	return b.build();
+}
+
+// A stack of glossy crash photos 0.15 x 0.1 m held with a clip. Extra of the fake crashes.
+export function buildCrashPhotos() {
+	const b = new Builder('crash_photos');
+	for (let i = 0; i < 4; i++) {
+		b.add('photos', mat('photo_white', 0xf6f6f2), new THREE.BoxGeometry(0.15, 0.003, 0.1), { pos: V(0, -0.006 + i * 0.003, 0), rot: [0, i * 0.08, 0] });
+	}
+	b.add('picture', mat('photo_crash', 0x6a7a9a), new THREE.BoxGeometry(0.13, 0.001, 0.08), { pos: V(0, 0.0065, 0), rot: [0, 0.24, 0] });
+	b.add('clip', mat('photo_clip', 0xc8ccd2), new THREE.BoxGeometry(0.02, 0.008, 0.03), { pos: V(-0.06, 0.006, -0.03) });
+	return b.build();
+}
+
+// A cardboard box 0.3 x 0.12 x 0.2 m, open, full of toy cars. Extra of the fake crashes.
+export function buildToyCarBox() {
+	const b = new Builder('toy_car_box');
+	const card = mat('box_card', 0xb88a5a);
+	b.add('bottom', card, new THREE.BoxGeometry(0.3, 0.01, 0.2), { pos: V(0, -0.055, 0) });
+	for (const s of [-1, 1]) {
+		b.add('sides', card, new THREE.BoxGeometry(0.3, 0.12, 0.01), { pos: V(0, 0, s * 0.095) });
+		b.add('sides', card, new THREE.BoxGeometry(0.01, 0.12, 0.2), { pos: V(s * 0.145, 0, 0) });
+	}
+	for (let i = 0; i < 6; i++) toyCar(b, V(-0.08 + (i % 3) * 0.08, -0.05 + Math.floor(i / 3) * 0.035, -0.04 + Math.floor(i / 3) * 0.07), CAR_COLORS[i % 4], (i % 2) * 0.3);
+	return b.build();
+}
+
+// The claim folder: a beige folder 0.24 x 0.32 m open with a crash photo where the "street" is grey office carpet and a
+// stapler shows in a corner. The fake crashes' own clue.
+export function buildClaimPhotos() {
+	const b = new Builder('claim_photos');
+	b.add('folder', mat('folder_beige', 0xe6d29a), new THREE.BoxGeometry(0.24, 0.006, 0.32), { pos: V(0, 0, 0) });
+	b.add('photo', mat('photo_carpet', 0x8a8c90), new THREE.BoxGeometry(0.18, 0.002, 0.12), { pos: V(0, 0.004, -0.06) });
+	toyCar(b, V(-0.02, 0.0, -0.06), CAR_COLORS[2], 0.2);
+	b.add('stapler', mat('photo_stapler', 0x1e1e22), new THREE.BoxGeometry(0.05, 0.01, 0.02), { pos: V(0.06, 0.008, -0.1) });
+	for (let i = 0; i < 5; i++) b.add('lines', mat('folder_text', 0x3a3a40), new THREE.BoxGeometry(0.16, 0.001, 0.008), { pos: V(0, 0.0035, 0.04 + i * 0.022) });
+	return b.build();
+}
+
 export const models = {
 	office_chair: buildOfficeChair, office_monitor: buildOfficeMonitor, glass_trophy: buildGlassTrophy,
 	coffee_machine: buildCoffeeMachine, water_cooler: buildWaterCooler,
+	toy_car: buildToyCar, crash_model: buildCrashModel, crash_photos: buildCrashPhotos, toy_car_box: buildToyCarBox,
+	claim_photos: buildClaimPhotos,
 };
 
 export const views = {
+	crash_goods: {
+		items: [
+			{ name: 'crash_model', pos: [-0.2, 0.06, -0.1] }, { name: 'crash_photos', pos: [0.35, 0.01, 0.25] },
+			{ name: 'toy_car_box', pos: [0.4, 0.06, -0.15] }, { name: 'claim_photos', pos: [-0.15, 0.003, 0.35] },
+			{ name: 'toy_car', pos: [0.15, 0.025, 0.4] },
+		],
+		cam: { pos: [0, 0.9, 1.3], target: [0, 0.03, 0.1], fov: 40 },
+	},
 	insurance: {
 		items: [
 			{ name: 'office_chair', pos: [-0.6, 0, 0] }, { name: 'office_monitor', pos: [0.05, 0.15, 0.2] },

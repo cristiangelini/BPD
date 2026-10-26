@@ -20,6 +20,8 @@ const STRUCK := 15.0
 const DOOR_BROKEN := 5.0
 ## Seeing a monitor or a glass trophy broken.
 const SAW_BREAK := 10.0
+## Seeing a cop open the reception's till.
+const SAW_TILL := 10.0
 ## Seeing a pile of papers fly.
 const SAW_PAPERS := 10.0
 const ASKED := 5.0
