@@ -73,7 +73,8 @@ func _opened(i: int, at: Vector3) -> void:
 	book.global_position = at + Vector3.UP * 0.1
 	book.visible = true
 	book.collision_layer = BOOK_LAYER
-	book.freeze = false
+	# Online only the host simulates it; a guest's copy stays frozen and follows (PropSync).
+	book.freeze = not multiplayer.is_server()
 	found.emit(at)
 
 

@@ -3,7 +3,7 @@ extends Node
 
 ## Keeps the level's physics objects the same on every PC (docs/diseno/online.md, "Qué se sincroniza"): the host
 ## simulates every Grabbable and the patrol car (its driver sends the controls, see CopSync) and sends where the ones
-## that moved are, about 20 times a second; the guests' copies are frozen and ease toward it. A prop that breaks on the host (an ornament) breaks on everyone; one just taken away (a watermelon gone with its truck) only goes. Levels build the same
+## that moved are, about 20 times a second; the guests' copies are frozen and ease toward it. A prop that breaks on the host (an ornament, a flour sack) breaks on everyone; one just taken away (a watermelon gone with its truck) only goes. Levels build the same
 ## from the same seed, so each prop is known by its place in the level's list. Only the host makes new props (the
 ## takings out of a safe, the ring out of a loaf): it adds them to the list and the guests make a copy from the same
 ## scene; a prop a guest makes on its own is dropped. Lives under the Net autoload as "Props".
@@ -225,6 +225,8 @@ func _removed(gone: PackedInt32Array, shattered := PackedInt32Array()) -> void:
 		_targets.erase(i)
 		if prop is Ornament and i in shattered:
 			(prop as Ornament).hit(INF)
+		elif prop is FlourSack:
+			(prop as FlourSack).hit(INF)
 		else:
 			prop.queue_free()
 

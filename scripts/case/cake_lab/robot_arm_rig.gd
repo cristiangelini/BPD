@@ -80,7 +80,7 @@ func _physics_process(delta: float) -> void:
 		cream_left[seen] -= delta
 		if not is_instance_valid(seen) or cream_left[seen] <= 0.0:
 			cream_left.erase(seen)
-		elif (seen as Cop).is_multiplayer_authority():
+		elif _is_mine(seen as Cop):
 			blind = true
 	_screen.visible = blind
 	if not is_working():
@@ -94,7 +94,8 @@ func _physics_process(delta: float) -> void:
 	var best := SPLAT_RANGE
 	for node in get_tree().get_nodes_in_group("cops"):
 		var cop := node as Cop
-		if not cop or cop.vehicle or is_creamed(cop):
+		# Each PC creams its own player's cop: the cream only covers that player's screen.
+		if not cop or cop.vehicle or is_creamed(cop) or not lab.is_ancestor_of(cop) or not _is_mine(cop):
 			continue
 		var gap := Vector2(cop.global_position.x - ARM_AT.x, cop.global_position.z - ARM_AT.z).length()
 		if gap < best:
@@ -103,6 +104,11 @@ func _physics_process(delta: float) -> void:
 	if nearest:
 		_since_splat = 0.0
 		cream(nearest)
+
+
+## This PC's player's cop (offline, every cop).
+static func _is_mine(cop: Cop) -> bool:
+	return not cop.sync or not cop.sync.is_inside_tree() or cop.sync.is_multiplayer_authority()
 
 
 ## The cake with oil in its cream: E looks at it closely.

@@ -81,7 +81,9 @@ func test_a_guest_answers_a_ringing_phone() -> void:
 	guest_rig.phones[ringing].ring()
 	var guest_answers := guest_rig.phones[ringing].answers
 	OnlinePcs.own_cop(pcs[1]).act("use", guest_rig.phones[ringing])
-	await wait_until(func() -> bool: return not host_rig.phones[ringing].is_ringing(), 5.0)
+	# The host answers first and then tells the guest, so wait for both.
+	await wait_until(func() -> bool: return not host_rig.phones[ringing].is_ringing() \
+		and guest_rig.phones[ringing].answers > guest_answers, 5.0)
 	assert_false(host_rig.phones[ringing].is_ringing(), "answered on the host")
 	# The guest's phones ring on their own clock, so that one may already be ringing again: count the answer instead.
 	assert_eq(guest_rig.phones[ringing].answers, guest_answers + 1, "and on the guest")
