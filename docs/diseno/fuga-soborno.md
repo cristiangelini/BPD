@@ -91,3 +91,18 @@ todas las PCs.
 3. ¿Pagado, el guardia "pierde" la llave y lee el diario 30 s, y el que siga afuera cuando vuelve a mirar es captura,
    sin devolver la plata (cuenta para el próximo intento, pero el precio sube 100)? **Recomiendo sí:** es corrupto pero
    no tonto, y hay que salir rápido pero sin correr.
+
+## Cómo quedó el paso 1
+- La campaña guarda la plata de las coimas (`Campaign.bribe_money`): suma cada coima aceptada y resta las multas del
+  agente. Lo que hay para el guardia es eso, pero nunca más que la caja del grupo (`bribe_fund`).
+- El sorteo es en novenos solo si quedan al menos 200; si no, sigue en octavos entre las otras.
+  `--jailbreak=bribe` la fuerza y, si la partida no tiene 200, pone 400.
+- La plata está repartida en 4 fajos (`BillWad`), de a 50, sobre las cuchetas (no debajo del colchón: así se ven).
+- El guardia (`BribeGuard`): E en la reja cerrada lo llama ("¡Psst, guardia!"). Viene caminando por el costado del
+  escritorio hasta esa reja y dice su precio. Con un fajo en la mano, E en la reja se lo pasa: lo cuenta 2 s, se lo
+  queda y dice cuánto falta. Si en 15 s no le pasan nada, vuelve al escritorio.
+- Pagado entero, dice que se le cayó la llave y la patea por debajo de la reja, adentro de la celda. Después vuelve al
+  escritorio y lee el diario de espaldas a las celdas (por ahora sin fin: la página de 30 s es el paso 3).
+- Lo que cobró sale de la caja del grupo y de la plata de las coimas cuando termina la fuga.
+- Modelo `bill_wad` en `tools/modelgen/models/bribe.js`. 15 textos nuevos. Pruebas en `test_bribe_money.gd`. Fotos en
+  `/mnt/project-files/soborno/`.

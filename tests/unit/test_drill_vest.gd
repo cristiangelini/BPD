@@ -150,7 +150,8 @@ func test_a_vest_on_the_floor_is_a_clue() -> void:
 	cop.lose_disguise("prison_vest")
 	cop.put_on_disguise("hat", 0.0)
 	await wait_physics_frames(2)
-	_vests()[0].global_position = lot * Vector3(2.5, 0.1, 10.0)
+	# On the sidewalk, over its curb.
+	_vests()[0].global_position = lot * Vector3(2.5, CityLife.CURB + 0.1, 10.0)
 	_vests()[0].freeze = true
 	assert_eq(guard.alarm(), NightGuard.SUSPICION_CLUE)
 	assert_eq(guard.said(), "DRILL_GUARD_VEST_FLOOR")
