@@ -124,6 +124,33 @@ function buildPropSword() {
 	return b.build();
 }
 
+// The art transport van the culprit flees in: white with a gold stripe, a tall box behind the cab and two back doors
+// that swing open to let the empty frames out. Front +Z, wheels the sedan's (SuspectCar.SEDAN_WHEELS), 2.1 x 2.3 x 4.8.
+function buildArtVan() {
+	const b = new Builder('art_van');
+	const white = C('van_white', 0xf2f2ee), gilt = C('gold', 0xf2c84b, { emissive: 0x3a2a05 });
+	b.add('body', white, new THREE.BoxGeometry(2.0, 1.0, 1.4), { pos: V(0, 0.95, 1.6) });
+	b.add('body', white, new THREE.BoxGeometry(2.1, 1.85, 3.4), { pos: V(0, 1.38, -0.7) });
+	b.add('glass', C('car_glass', 0x9fd0ea), new THREE.BoxGeometry(1.8, 0.5, 0.04), { pos: V(0, 1.3, 2.31), rot: [-0.25, 0, 0] });
+	b.add('stripe', gilt, new THREE.BoxGeometry(2.12, 0.18, 3.42), { pos: V(0, 1.2, -0.7) });
+	b.add('doors', C('door_line', 0xb8b8b0), new THREE.BoxGeometry(0.03, 1.6, 0.02), { pos: V(0, 1.35, -2.41) });
+	for (const x of [-0.5, 0.5]) b.add('doors', gilt, new THREE.BoxGeometry(0.06, 0.06, 0.04), { pos: V(x * 0.3, 1.3, -2.42) });
+	for (const x of [-1.05, 1.05]) for (const z of [-1.55, 1.55]) {
+		b.add('wheels', C('tire', 0x1a1a1e), new THREE.CylinderGeometry(0.38, 0.38, 0.26, 12), { pos: V(x, 0.38, z), rot: [0, 0, Math.PI / 2] });
+	}
+	return b.build();
+}
+
+// An empty gilt frame, as it falls out of the van and lies on the street: 1.2 x 0.9 m, flat, its bottom at y = 0.
+function buildChaseFrame() {
+	const b = new Builder('chase_frame');
+	const gilt = C('gold', 0xf2c84b, { emissive: 0x3a2a05 });
+	for (const [x, z, w, d] of [[0, 0.45, 1.2, 0.1], [0, -0.45, 1.2, 0.1], [0.55, 0, 0.1, 0.8], [-0.55, 0, 0.1, 0.8]]) {
+		b.add('frame', gilt, new THREE.BoxGeometry(w, 0.06, d), { pos: V(x, 0.03, z) });
+	}
+	return b.build();
+}
+
 const PEOPLE = { guardia_museo: guardia, directora_museo: directora, estatua: estatua };
 
 export const models = {
@@ -133,6 +160,7 @@ export const models = {
 		return b.build();
 	}])),
 	museum_painting: buildStolenPainting, founder_egg: buildFounderEgg, prop_sword: buildPropSword,
+	art_van: buildArtVan, chase_frame: buildChaseFrame,
 	museum_ballerina: () => buildBallerina('museum_ballerina', true),
 	ornament_ballerina: () => buildBallerina('ornament_ballerina', false),
 	news_clipping: buildNewsClipping,
@@ -148,6 +176,11 @@ export const views = {
 		items: [{ name: 'museum_painting', pos: [-0.5, 0, 0], rotY: 0.2 }, { name: 'founder_egg', pos: [0.35, 0, 0.2] },
 			{ name: 'prop_sword', pos: [0.75, 0, 0.1], rotY: -0.3 }],
 		cam: { pos: [0.1, 0.8, 2.4], target: [0.1, 0.4, 0], fov: 38 },
+	},
+	art_van: {
+		items: [{ name: 'art_van', pos: [-0.8, 0, 0], rotY: 0.7 }, { name: 'npc_guardia_museo', pos: [-1.3, 0.4, 1.5], rotY: 0.7, scale: 0.85 },
+			{ name: 'chase_frame', pos: [1.9, 0, 0.6], rotY: -0.4 }],
+		cam: { pos: [0.4, 2.6, 8.0], target: [0.4, 1.0, 0], fov: 38 },
 	},
 	museum: {
 		items: [

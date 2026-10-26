@@ -75,6 +75,8 @@ const DESK_HALL_AT := Vector3(-3.5, 0, 7.5)
 ## The saucer of coins on the ticket desk, for the living statue's hat.
 const COINS_AT := DESK_HALL_AT + Vector3(0.7, 1.0, 0)
 const COINS := 3
+## The art van waits beside the steps, by the street, nose out (escena-museo.md, pregunta 3).
+const GETAWAY_AT := Vector3(10.5, 0, 10.5)
 ## Where the people stand: the six guards in a row across the gallery facing the hall's door, the director in the
 ## hall and the living statue on the steps, facing the street.
 const GUARDS_AT: Array[Vector3] = [
@@ -212,6 +214,12 @@ func reveal_loot() -> void:
 ## The guard by index (the order of the case's traits).
 func suspect(index: int) -> CollisionObject3D:
 	return guards[index] if index >= 0 and index < guards.size() else null
+
+
+## The art van waits beside the steps and drives straight out into the street.
+func getaway(_index: int, _city: Node3D) -> Dictionary:
+	var out := to_global(GETAWAY_AT)
+	return {"at": Transform3D(global_basis, out), "via": [to_global(Vector3(GETAWAY_AT.x, 0, SIZE.y / 2 + 4.0))]}
 
 
 func witness_offended() -> bool:

@@ -11,7 +11,8 @@ extends Node
 ## patrol car running into one splits it. The crowded car control's runaway sedan (control-auto-lleno.md, answer 3)
 ## lets one of the gang jump out at every corner it turns, who runs off down the street. The ghost car control's pilot
 ## (control-auto-fantasma.md) has his ghost car follow him: at every corner he turns, it cuts in across the street behind
-## him, in the patrol car's way (ChaseGhost). Every number here is (propuesta).
+## him, in the patrol car's way (ChaseGhost). The museum's art van opens its back doors every FRAME_EVERY seconds and an
+## empty gilt frame falls out (ChaseFrame). Every number here is (propuesta).
 
 const DRIP_EVERY := 3.0
 ## A puddle's size (m), how long it lasts, and the grip left on it.
@@ -42,6 +43,8 @@ const KIDS_LINES := ["CHASE_KIDS_1", "CHASE_KIDS_2", "CHASE_KIDS_3", "CHASE_KIDS
 const SHOUTS := {"school_bus": KIDS_LINES, "clown_car": ["CHASE_HONK_1", "CHASE_HONK_2", "CHASE_HONK_3"]}
 const DUMMY_EVERY := 5.0
 const MAX_DUMMIES := 8
+const FRAME_EVERY := 5.0
+const MAX_FRAMES := 8
 const MELONS_PER_CORNER := 2
 const MAX_MELONS := 12
 ## How fast they roll off the back, in m/s.
@@ -59,6 +62,7 @@ var case: ChaseCase
 var puddles: Array[Array] = []
 var furniture: Array[RigidBody3D] = []
 var dummies: Array[ChaseDummy] = []
+var frames: Array[ChaseFrame] = []
 var melons: Array[Watermelon] = []
 ## The gang still in the runaway packed car besides its driver: one jumps out at each corner.
 var riders_left := 0
@@ -68,6 +72,7 @@ var ghost_look := -1
 var ghost: ChaseGhost
 var _drip_left := DRIP_EVERY
 var _dummy_left := DUMMY_EVERY
+var _frame_left := FRAME_EVERY
 var _kids_left := 0.0
 var _kids_line := 0
 var kids_bubble: Label3D
@@ -104,6 +109,11 @@ func _physics_process(delta: float) -> void:
 		if _dummy_left <= 0.0:
 			_dummy_left = DUMMY_EVERY
 			drop_dummy()
+	if case.suspect_id == SuspectCar.ART_VAN and case.chasing and not case.stopped and not case.follower:
+		_frame_left -= delta
+		if _frame_left <= 0.0:
+			_frame_left = FRAME_EVERY
+			drop_frame()
 	if kids_bubble and case.chasing and not case.stopped:
 		_kids_left -= delta
 		if _kids_left <= 0.0:
@@ -260,6 +270,22 @@ func drop_dummy() -> ChaseDummy:
 	dummy.rotation.y = case.truck.global_rotation.y + PI
 	dummies.append(dummy)
 	return dummy
+
+
+## The art van's back doors swing open and an empty frame falls out, flat on the street.
+func drop_frame() -> ChaseFrame:
+	frames = frames.filter(func(frame: ChaseFrame) -> bool: return is_instance_valid(frame))
+	if frames.size() >= MAX_FRAMES:
+		frames.pop_front().queue_free()
+	var frame := ChaseFrame.new()
+	frame.car = case.car
+	_dropped += 1
+	frame.name = "Frame%d" % _dropped
+	case.get_parent().add_child(frame)
+	frame.global_position = _behind() + Vector3.UP * 0.1
+	frame.rotation.y = case.truck.global_rotation.y + _rng.randf_range(-0.4, 0.4)
+	frames.append(frame)
+	return frame
 
 
 func _behind() -> Vector3:

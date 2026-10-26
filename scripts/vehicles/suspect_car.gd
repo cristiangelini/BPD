@@ -64,6 +64,8 @@ const MODELS := {
 	"traffic_3": preload("res://assets/models/traffic_car_3.glb"),
 	# The fruit truck control's wanted pickup (control-frutas.md), dropping watermelons at the corners.
 	"fruit_truck": preload("res://assets/models/fruit_truck.glb"),
+	# The museum's culprit runs off in the art transport van, dropping empty frames (escena-museo.md).
+	"art_van": preload("res://assets/models/art_van.glb"),
 }
 ## Who rides on top of it, where you can see them, each as [model, position, scale] (they get off when he gives up).
 const RIDERS := {
@@ -81,6 +83,7 @@ const RIDERS := {
 	"inmate_on_foot": [[preload("res://assets/models/npc_preso.glb"), Vector3(0, 0, 0), 0.85]],
 	"veggie_trike": [[preload("res://assets/models/npc_puestero.glb"), Vector3(0, 0.25, -0.45), 0.85]],
 	"clown_car": [[preload("res://assets/models/npc_payaso.glb"), Vector3(0, 0.45, -0.25), 0.8]],
+	"art_van": [[preload("res://assets/models/npc_guardia_museo.glb"), Vector3(-0.5, 0.4, 1.5), 0.85]],
 }
 ## Who rides inside and stays there when he gives up, the same way: the choristers in the van, seen through its open
 ## windows, singing all the way.
@@ -122,6 +125,7 @@ const INMATE_ON_FOOT := "inmate_on_foot"
 const VEGGIE_TRIKE := "veggie_trike"
 const CLOWN_CAR := "clown_car"
 const FRUIT_TRUCK := "fruit_truck"
+const ART_VAN := "art_van"
 ## Where the towed patrol car hangs behind the tow truck: its middle, and its nose lifted this much.
 const TOWED_AT := Vector3(0, 0.55, -5.6)
 const TOWED_TILT := -0.12
@@ -137,7 +141,7 @@ const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 
 	"moto": Vector3(0.8, 1.6, 1.9), "old_patrol": Vector3(2.1, 1.5, 4.6),
 	"wheelchair": Vector3(0.8, 1.4, 1.2), "bear_on_foot": Vector3(0.9, 1.8, 0.9), "choir_van": Vector3(2.0, 1.95, 4.6), "walker": Vector3(0.7, 1.6, 1.3), "kick_scooter": Vector3(0.6, 1.6, 1.0), "food_cart": Vector3(0.8, 1.6, 2.2), "veggie_trike": Vector3(1.0, 1.6, 2.0), "inmate_on_foot": Vector3(0.8, 1.6, 0.9), "bike": Vector3(0.7, 1.6, 1.9), "clown_car": Vector3(1.3, 1.4, 2.0), "traffic_0": Vector3(2.1, 1.4, 4.6),
 	"traffic_1": Vector3(2.1, 1.4, 4.6), "traffic_2": Vector3(2.1, 1.4, 4.6), "traffic_3": Vector3(2.1, 1.4, 4.6),
-	"manager_car": Vector3(2.1, 1.4, 4.6), "fruit_truck": Vector3(2.1, 1.75, 4.6)}
+	"manager_car": Vector3(2.1, 1.4, 4.6), "fruit_truck": Vector3(2.1, 1.75, 4.6), "art_van": Vector3(2.1, 2.3, 4.8)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
@@ -149,7 +153,8 @@ const NO_WHEELS: Array[Vector3] = []
 const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS,
 	"wheelchair": NO_WHEELS, "walker": NO_WHEELS, "bear_on_foot": NO_WHEELS, "kick_scooter": NO_WHEELS, "food_cart": NO_WHEELS, "veggie_trike": NO_WHEELS, "inmate_on_foot": NO_WHEELS, "highway": SEDAN_WHEELS, "tow_truck": TOW_WHEELS, "golf_cart": NO_WHEELS,
 	"old_patrol": SEDAN_WHEELS, "bike": NO_WHEELS, "clown_car": NO_WHEELS, "traffic_0": SEDAN_WHEELS, "traffic_1": SEDAN_WHEELS,
-	"traffic_2": SEDAN_WHEELS, "traffic_3": SEDAN_WHEELS, "choir_van": SEDAN_WHEELS, "manager_car": SEDAN_WHEELS, "fruit_truck": SEDAN_WHEELS}
+	"traffic_2": SEDAN_WHEELS, "traffic_3": SEDAN_WHEELS, "choir_van": SEDAN_WHEELS, "manager_car": SEDAN_WHEELS, "fruit_truck": SEDAN_WHEELS,
+	"art_van": SEDAN_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)

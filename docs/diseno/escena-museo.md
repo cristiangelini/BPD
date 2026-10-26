@@ -156,5 +156,11 @@ PlaceDraw y la custodia para el interrogatorio.
    baño!" y se amontonan frente a su puerta hasta que se apaga, y después vuelven a su fila. El botón amarillo del
    escritorio de seguridad la apaga antes. Ni la fila de los guardias ni la vuelta de la lustradora cruzan un láser
    **(propuesta)**.
-5. El final: tablero, cansancio, sueldo y la camioneta con los marcos.
+5. El final: tablero, cansancio, sueldo y la camioneta con los marcos. Hecho así: el que huye se sube a la camioneta
+   de traslado de obras de arte, blanca con franja dorada, que espera al lado de la escalinata y sale derecho a la
+   calle, a la velocidad de siempre. Cada 5 s se le abre la puerta de atrás y cae un marco dorado vacío, chato en la
+   calle: con E se aparta (queda apoyado contra un farol) y si el patrullero le pasa por arriba rápido, se rompe
+   ("¡CRAC!") y se descuentan 20 del sueldo por cada uno. Si lo agarran, al turno siguiente se lo interroga como
+   guardia del museo ("Treinta años cuidando cuadros y nunca me dejaron colgar uno en mi casa"). El tablero, el
+   cansancio y el sueldo (500, +100 si encontraron lo robado) son los de la escena del crimen **(propuesta)**.
 6. El sorteo de "Jugar" (en tercios: pastel, circo y museo) y el online.
