@@ -53,6 +53,17 @@ func scan(suitcase: Suitcase) -> void:
 		scandal.emit(odd.kind)
 
 
+## A guest's: what the host's machine showed last, when it shows something new.
+func follow(count: int, text: String) -> void:
+	if count == scanned:
+		return
+	scanned = count
+	if text != "":
+		_caption.text = text
+		_caption.show()
+		_caption_left = CAPTION_TIME
+
+
 func _process(delta: float) -> void:
 	if _caption_left > 0.0:
 		_caption_left -= delta

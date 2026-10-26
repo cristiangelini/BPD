@@ -69,6 +69,18 @@ func close() -> void:
 	closed.emit(on_time)
 
 
+## A guest's: the host's clock; closed, he boarded or not.
+func follow(on: bool, seconds: float, closed_now: bool, on_time: bool) -> void:
+	running = on
+	left = seconds
+	if closed_now and not done:
+		done = true
+		running = false
+		if on_time:
+			deputy.politician.hide()
+	_show()
+
+
 func _show() -> void:
 	if _board == null:
 		return
