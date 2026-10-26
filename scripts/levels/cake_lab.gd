@@ -36,6 +36,15 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_BILL_MOLD", "OBJ_EXTRA_ORDERS_NOTEBOOK"],
 		"rig": preload("res://scripts/case/cake_lab/silver_cake_rig.gd"),
 	},
+	"stolen_recipe": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_STOLEN_RECIPE_B", "BRIEF_STOLEN_RECIPE_C", "BRIEF_STOLEN_RECIPE_D"],
+		"find": "OBJ_FIND_RECIPE_BOOK",
+		"hidden": [preload("res://scenes/props/disguise_photo.tscn"), preload("res://scenes/props/delivery_cap.tscn")],
+		"half_heights": [0.004, 0.035],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_DISGUISE_PHOTO", "OBJ_EXTRA_DELIVERY_CAP"],
+		"rig": preload("res://scripts/case/cake_lab/stolen_recipe_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the lab; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [
