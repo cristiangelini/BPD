@@ -43,9 +43,40 @@ export function buildCellMattress() {
 	return b.build();
 }
 
+// A cardboard box of old files from the storage room: 0.5 x 0.4 x 0.4 m with a taped lid and a label, origin in
+// its middle.
+export function buildStorageBox() {
+	const b = new Builder('storage_box');
+	const card = mat('box_card', 0xb08a5a), tape = mat('box_tape', 0xd8c49a), label = mat('box_label', 0xf0ece0);
+	b.add('box', card, new THREE.BoxGeometry(0.5, 0.4, 0.4));
+	b.add('tape', tape, new THREE.BoxGeometry(0.08, 0.405, 0.405));
+	b.add('label', label, new THREE.BoxGeometry(0.18, 0.1, 0.005), { pos: V(0.12, 0.02, 0.2) });
+	return b.build();
+}
+
+// The wooden ladder from the storage room up to the roof's hatch: 0.5 m wide, 5.6 m tall, origin at its feet, leaning
+// on +Z.
+export function buildRoofLadder() {
+	const b = new Builder('roof_ladder');
+	const wood = mat('ladder_wood', 0x8a6238);
+	for (const x of [-0.22, 0.22]) b.add('rails', wood, new THREE.BoxGeometry(0.05, 5.6, 0.06), { pos: V(x, 2.8, 0) });
+	for (let i = 0; i < 18; i++) b.add('rungs', wood, new THREE.BoxGeometry(0.44, 0.04, 0.04), { pos: V(0, 0.3 + i * 0.3, 0) });
+	return b.build();
+}
+
+// The roof's hatch: a grey metal lid 0.8 m wide on a low frame, lying on the roof, origin at its bottom middle.
+export function buildRoofHatch() {
+	const b = new Builder('roof_hatch');
+	const metal = mat('hatch_metal', 0x6a6e74), dark = mat('hatch_dark', 0x2a2c30);
+	b.add('frame', dark, new THREE.BoxGeometry(0.9, 0.12, 0.9), { pos: V(0, 0.06, 0) });
+	b.add('lid', metal, new THREE.BoxGeometry(0.8, 0.04, 0.8), { pos: V(0, 0.14, 0) });
+	b.add('handle', dark, new THREE.BoxGeometry(0.2, 0.04, 0.04), { pos: V(0, 0.18, 0.3) });
+	return b.build();
+}
+
 export const models = {
 	cell_skylight: buildCellSkylight, skylight_pane: buildSkylightPane, bed_sheet: buildBedSheet,
-	cell_mattress: buildCellMattress,
+	cell_mattress: buildCellMattress, storage_box: buildStorageBox, roof_ladder: buildRoofLadder, roof_hatch: buildRoofHatch,
 };
 
 export const views = {
@@ -58,5 +89,15 @@ export const views = {
 			{ name: 'bed_sheet', pos: [0.6, 0.31, 0.25], rotY: 0.3 },
 		],
 		cam: { pos: [0, 1.0, 2.8], target: [0, 0.6, 0], fov: 45 },
+	},
+	attic: {
+		items: [
+			{ name: 'storage_box', pos: [-0.8, 0.2, 0.3] },
+			{ name: 'storage_box', pos: [-0.8, 0.6, 0.3], rotY: 0.3 },
+			{ name: 'storage_box', pos: [-0.2, 0.2, 0.6], rotY: -0.2 },
+			{ name: 'roof_ladder', pos: [0.6, 0, -0.4] },
+			{ name: 'roof_hatch', pos: [0.6, 0, 0.8] },
+		],
+		cam: { pos: [0, 2.0, 4.6], target: [0, 1.4, 0], fov: 50 },
 	},
 };

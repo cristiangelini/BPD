@@ -89,3 +89,14 @@ acciones (`ActionSync`), igual en todas las PCs.
 - Modelos `cell_skylight`, `skylight_pane`, `bed_sheet` y `cell_mattress` en `tools/modelgen/models/roof.js`. 11 textos
   nuevos. Pruebas en `test_roof_skylight.gd`. Fotos en `/mnt/project-files/techo/`.
 - El depósito con sus cajas, la escalera y el techo son el paso 2.
+
+## Cómo quedó el paso 2
+- El depósito es todo el piso de arriba (sobre el techo de las celdas), oscuro, con una lamparita.
+- Hay entre 6 y 9 cajas de expedientes (`StorageBox`), según la semilla, y 2 de ellas con otra encima, a punto de
+  caerse. Una caja que cae fuerte hace ruido: el guardia mira hacia allá, dice una de 3 frases y suma 15 de sospecha.
+- Si con un golpe la sospecha llega a 50, sube con la linterna y cuenta cabezas: si falta alguien en las celdas es una
+  captura ("¡Faltan presos!"); si están todos, se calma a 25 ("Habrá sido el viento").
+- La escalera de mano (`RoofHatch`) lleva del depósito a la trampa del techo, y la trampa vuelve a bajar.
+- En el techo, correr hace pasos: cada segundo corriendo, +10 de sospecha y una de 3 frases. Caminar no se oye.
+- El techo tiene un murete de 1,1 m alrededor: se baja con la cuerda (paso 3), no saltando.
+- Modelos `storage_box`, `roof_ladder` y `roof_hatch`. 11 textos nuevos. Pruebas en `test_roof_attic.gd`.

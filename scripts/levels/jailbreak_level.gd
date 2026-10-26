@@ -148,6 +148,24 @@ const SHEETS: Array[Vector3] = [Vector3(7.9, 0.65, 1.6), Vector3(8.7, 0.65, 1.6)
 const MATTRESSES: Array[Vector3] = [Vector3(8.0, 0.12, 3.8), Vector3(13.0, 0.12, 3.8)]
 const ABOVE_AT := Vector3(0, StationRooms.CEILING + StationRooms.WALL + 0.05, 0.9)
 const BELOW_AT := Vector3(0, 0.05, 1.1)
+## Step 2: the storage room over the cells. Where its boxes can be (the seed fills STORAGE_MIN or more of them and
+## stacks a box on the first STORAGE_STACKED), its ladder up to the roof's hatch, where a cop lands on each end, the
+## roof's top (the station is 9 m tall, CityLayout) and parapet, and how fast is a run up there.
+const ATTIC_FLOOR := StationRooms.CEILING + StationRooms.WALL
+const STORAGE_SPOTS: Array[Vector3] = [Vector3(9.5, ATTIC_FLOOR + 0.2, 3.5), Vector3(10.5, ATTIC_FLOOR + 0.2, 2.0),
+	Vector3(11.5, ATTIC_FLOOR + 0.2, 3.8), Vector3(13.5, ATTIC_FLOOR + 0.2, 1.5), Vector3(12.0, ATTIC_FLOOR + 0.2, 0.6),
+	Vector3(9.0, ATTIC_FLOOR + 0.2, 0.5), Vector3(10.8, ATTIC_FLOOR + 0.2, 4.6), Vector3(14.0, ATTIC_FLOOR + 0.2, 3.0),
+	Vector3(7.2, ATTIC_FLOOR + 0.2, 4.2)]
+const STORAGE_MIN := 6
+const STORAGE_STACKED := 2
+const LADDER_AT := Vector3(14.2, ATTIC_FLOOR, -0.3)
+const ROOF_Y := 9.0
+const HATCH_AT := Vector3(14.2, ROOF_Y, -0.3)
+const ROOF_UP_AT := Vector3(14.2, ROOF_Y + 0.1, -1.5)
+const ATTIC_DOWN_AT := Vector3(14.2, ATTIC_FLOOR + 0.05, 0.7)
+const PARAPET_HEIGHT := 1.1
+const ROOF_QUIET_SPEED := (GameScale.WALK_SPEED + GameScale.RUN_SPEED) / 2.0
+const STEPS_EVERY := 1.0
 ## The big one stays stuck in the grille this long (s); crawling faster than this in the duct is a noisy scramble.
 const VENT_STUCK := 4.0
 const VENT_QUIET_SPEED := (Cop.CRAWL_SPEED + Cop.CRAWL_RUN_SPEED) / 2.0
@@ -188,6 +206,9 @@ var dumpster: Dumpster
 var garbage_truck: GarbageTruck
 var heaters: Array[CellHeater] = []
 var skylights: Array[CellSkylight] = []
+## The host: each cop on the roof, where it was last tick and how long it's been running there.
+var _roof_last := {}
+var _roof_run := {}
 var detectors: Array[SmokeDetector] = []
 ## The alarm rang, and the drill is on for drill_left more seconds (the host counts).
 var alarm_rung := false
@@ -340,6 +361,107 @@ func _roof_night() -> void:
 		sheet.name = "BedSheet%d" % i
 		add_child(sheet)
 		sheet.global_transform = lot * Transform3D(Basis(Vector3.UP, rng.randf_range(-0.3, 0.3)), SHEETS[i])
+	_attic(lot, rng)
+
+
+## The storage room over the cells: its boxes (some stacked, ready to fall), a dim bulb, the ladder up to the roof's
+## hatch, and the parapet around the roof.
+func _attic(lot: Transform3D, rng: RandomNumberGenerator) -> void:
+	var spots := range(STORAGE_SPOTS.size())
+	for i in spots.size():
+		var j := rng.randi_range(i, spots.size() - 1)
+		var swap: int = spots[i]
+		spots[i] = spots[j]
+		spots[j] = swap
+	for i in rng.randi_range(STORAGE_MIN, STORAGE_SPOTS.size()):
+		var at: Vector3 = STORAGE_SPOTS[spots[i]]
+		var turn := Basis(Vector3.UP, rng.randf_range(-0.4, 0.4))
+		_storage_box("StorageBox%d" % i, lot * Transform3D(turn, at))
+		if i < STORAGE_STACKED:
+			_storage_box("StorageBoxTop%d" % i, lot * Transform3D(turn, at + Vector3(0.05, StorageBox.SIZE.y, 0)))
+	var bulb := OmniLight3D.new()
+	bulb.name = "AtticBulb"
+	bulb.light_color = Color(1.0, 0.8, 0.55)
+	bulb.light_energy = 0.5
+	bulb.omni_range = 9.0
+	add_child(bulb)
+	bulb.global_position = lot * Vector3(11.0, ATTIC_FLOOR + 2.5, 2.0)
+	for up: bool in [true, false]:
+		var hatch := RoofHatch.new()
+		hatch.name = "RoofLadder" if up else "RoofHatch"
+		hatch.goes_up = up
+		add_child(hatch)
+		hatch.global_transform = lot * Transform3D(Basis.IDENTITY, LADDER_AT if up else HATCH_AT)
+		hatch.used.connect(_through_hatch)
+	_parapet(lot)
+
+
+func _storage_box(box_name: String, at: Transform3D) -> void:
+	var box := StorageBox.new()
+	box.name = box_name
+	add_child(box)
+	box.global_transform = at
+	box.thumped.connect(_on_thump)
+
+
+## A low wall around the roof's edge: down from up there is by the rope (step 3), not a jump.
+func _parapet(lot: Transform3D) -> void:
+	var material := StandardMaterial3D.new()
+	material.albedo_color = Color(0.3, 0.45, 0.8)
+	var half := Vector2(StationRooms.HALF_X, StationRooms.HALF_Z)
+	for side: Array in [[Vector3(0, 0, -half.y), Vector3(half.x * 2, 0, 0.2)], [Vector3(0, 0, half.y), Vector3(half.x * 2, 0, 0.2)],
+			[Vector3(-half.x, 0, 0), Vector3(0.2, 0, half.y * 2)], [Vector3(half.x, 0, 0), Vector3(0.2, 0, half.y * 2)]]:
+		var size: Vector3 = side[1] + Vector3(0, PARAPET_HEIGHT, 0)
+		var wall := StaticBody3D.new()
+		wall.name = "Parapet%d" % get_children().filter(func(node: Node) -> bool:
+			return node.name.begins_with("Parapet")).size()
+		var shape := CollisionShape3D.new()
+		var box := BoxShape3D.new()
+		box.size = size
+		shape.shape = box
+		wall.add_child(shape)
+		var mesh := MeshInstance3D.new()
+		var cube := BoxMesh.new()
+		cube.size = size
+		cube.material = material
+		mesh.mesh = cube
+		wall.add_child(mesh)
+		add_child(wall)
+		wall.global_transform = lot * Transform3D(Basis.IDENTITY, side[0] + Vector3(0, ROOF_Y + PARAPET_HEIGHT / 2, 0))
+
+
+## Up the ladder onto the roof, or down its hatch into the storage room.
+func _through_hatch(hatch: RoofHatch, cop: Cop) -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	cop.warp(Transform3D(cop.global_basis, lot * (ROOF_UP_AT if hatch.goes_up else ATTIC_DOWN_AT)))
+	if hatch.goes_up:
+		cop.show_hint("HINT_ON_THE_ROOF", true)
+
+
+## A box fell hard upstairs: the guard (the host's) heard it.
+func _on_thump(box: StorageBox) -> void:
+	if multiplayer.is_server():
+		(guard as RoofGuard).heard_thump(box.global_position)
+
+
+## The host: a cop running on the roof makes steps the guard hears, one every STEPS_EVERY seconds of running.
+func _roof_steps(delta: float) -> void:
+	var lot := city.transform * CityLayout.lot("station")
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if (lot.affine_inverse() * cop.global_position).y < ROOF_Y - 0.3:
+			_roof_last.erase(cop)
+			_roof_run.erase(cop)
+			continue
+		var last: Vector3 = _roof_last.get(cop, cop.global_position)
+		_roof_last[cop] = cop.global_position
+		var moved := Vector2(cop.global_position.x - last.x, cop.global_position.z - last.z).length()
+		if moved / delta <= ROOF_QUIET_SPEED:
+			_roof_run[cop] = 0.0
+			continue
+		_roof_run[cop] = _roof_run.get(cop, 0.0) + delta
+		if _roof_run[cop] >= STEPS_EVERY:
+			_roof_run[cop] = 0.0
+			(guard as RoofGuard).heard_steps(cop.global_position)
 
 
 ## A skylight creaked: the guard (the host's) heard it.
@@ -1204,6 +1326,8 @@ func _physics_process(delta: float) -> void:
 			drill_left -= delta
 			if drill_left <= 0.0:
 				_end_drill()
+	if is_roof() and multiplayer.is_server() and delta > 0.0:
+		_roof_steps(delta)
 	if stains:
 		_slip_on_wet(delta)
 	if dog and multiplayer.is_server():
