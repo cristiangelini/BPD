@@ -84,3 +84,10 @@ se caiga. El puente, digo. Bueno, el diputado tampoco."
   para bajar al agua. En la orilla oeste están el palco con globos, el cartel "¡Puente Lustre!" sobre la subida y la
   camioneta de Pegote Hermanos (`builder_van`); la cinta está en la punta este. Capturas en
   `/mnt/project-files/puente/paso1-*.png`.
+- **Paso 2 (la ceremonia):** `BridgeCeremony` (`park.ceremony`) es el reloj del caso. El diputado (`Politician`)
+  espera al pie de la rampa oeste (`WAIT_AT`) y arranca cuando un policía llega a menos de 25 m. Sube la rampa a 1 m/s
+  y hace 4 paradas para la foto, en x = -7, -3, 1 y 5 (`STOPS`), de 50 s cada una. En cada parada saluda con una de 4
+  frases y salta una sola vez a los 30 s ("¡Firme como mis promesas!", señal `jumped(index, at)` para el paso 3). Al
+  final camina hasta la cinta y la corta en 6 s; ahí sale `finished`. Arriba de la pantalla hay una barra de 5 partes
+  (4 fotos y la cinta). Con `hold()` se queda quieto y el reloj espera (para el chapuzón). Todo dura unos 4 minutos.
+  Captura en `/mnt/project-files/puente/paso2-salto.png`.
