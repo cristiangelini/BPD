@@ -31,6 +31,16 @@ const DRIVER_AT := Vector3(0.5, -0.05, 1.1)
 const SIGN_AT := Vector3(1.07, 1.05, 1.0)
 ## The animal stands a bit back from the door, facing it (and the cops behind the truck).
 const ANIMAL_AT := Vector3(0, 0.1, 0.2)
+## The patrol car's food buckets (step 2), and what each animal eats.
+const FOODS: Array[String] = ["bananas", "fish", "meat", "carrots"]
+const DIET := {"lion": "meat", "bear": "fish", "gorilla": "bananas", "monkey": "bananas", "seal": "fish",
+	"zebra": "carrots", "kangaroo": "carrots"}
+## A bucket this close to a cage (m, from its bars) feeds the animal in it.
+const FEED_REACH := 1.5
+## Fed the wrong food, an animal roars and shakes its cage: the queue's patience goes up this much.
+const ANGRY_PATIENCE := 5.0
+## What El Peludo says when he's offered food, only a person would (CIRCUS_REFUSE_0 to 9).
+const REFUSE_LINES := 10
 
 
 ## A car's circus traits when no plan says them: from its plate, so every PC agrees. Empty for a city car.
@@ -100,6 +110,48 @@ static func build(car: QueueCar, traits: Dictionary) -> void:
 	sign.position = SIGN_AT
 	sign.rotation.y = PI / 2
 	car.add_child(sign)
+
+
+## What `animal` eats (one of FOODS).
+static func food_of(animal: String) -> String:
+	return DIET.get(animal, "")
+
+
+## The sound `animal` makes when it's angry.
+static func sound_of(animal: String) -> String:
+	return "ANIMAL_SOUND_" + animal.to_upper()
+
+
+## What El Peludo says the `fed`th time he's offered food.
+static func refuse_line(plate: String, fed: int) -> String:
+	return "CIRCUS_REFUSE_%d" % ((absi(hash(["circus refuse", plate])) + fed) % REFUSE_LINES)
+
+
+## Whether `point` (world space) is close enough to `car`'s cage to feed the animal in it.
+static func near_cage(car: Node3D, point: Vector3) -> bool:
+	var off := car.to_local(point) - CAGE_AT
+	var out := Vector2(maxf(absf(off.x) - CAGE_SIZE.x / 2, 0.0), maxf(absf(off.z) - CAGE_SIZE.z / 2, 0.0))
+	return out.length() < FEED_REACH and off.y > -1.5 and off.y < CAGE_SIZE.y + 0.5
+
+
+## The animal in `car`'s cage bobs, eating.
+static func munch(car: Node3D) -> void:
+	var animal := animal_of(car)
+	if animal:
+		var tween := car.create_tween()
+		for i in 3:
+			tween.tween_property(animal, "scale", Vector3(1.05, 0.92, 1.05), 0.15)
+			tween.tween_property(animal, "scale", Vector3.ONE, 0.15)
+
+
+## `car`'s cage shakes: the animal in it is angry.
+static func shake(car: Node3D) -> void:
+	var cage := car.get_node_or_null("Cage") as Node3D
+	if cage:
+		var tween := car.create_tween()
+		for i in 6:
+			tween.tween_property(cage, "position:x", CAGE_AT.x + (0.06 if i % 2 == 0 else -0.06), 0.06)
+		tween.tween_property(cage, "position:x", CAGE_AT.x, 0.06)
 
 
 ## The animal riding in `car`'s cage, or null for a city car.

@@ -173,6 +173,8 @@ var warned := false
 ## in it, as in `circus` (CircusTruck.draw's); empty for a city car among them.
 var circus_mode := false
 var circus := {}
+## How many times its animal was offered food (step 2).
+var fed := 0
 ## It bumped into the car ahead in the fog (online, the guest's copy says so too).
 var bumped := false
 ## Its horn's sound over it, seen through the fog (step 3): it answers the foghorn (FogHorn).
@@ -836,6 +838,29 @@ func say(text: String) -> void:
 	_bubble.text = text
 	_bubble.show()
 	_bubble_left = SAY_SECONDS
+
+
+## Fed from a bucket (FoodBucket, control-circo.md step 2): the animal in its cage eats its own food ("ate"), gets
+## angry at any other ("angry": it roars, its cage shakes, the queue's patience goes up) and El Peludo, in his
+## costume, eats nothing and says something only a person would ("refused"). "" for a city car.
+func feed(food: String) -> String:
+	if circus.is_empty():
+		return ""
+	fed += 1
+	if circus.get("costume", false):
+		say(tr(CircusTruck.refuse_line(plate, fed)))
+		return "refused"
+	var animal: String = circus.get("animal", "")
+	if CircusTruck.food_of(animal) == food:
+		say(tr("CIRCUS_ATE"))
+		CircusTruck.munch(self)
+		return "ate"
+	say(tr(CircusTruck.sound_of(animal)))
+	CircusTruck.shake(self)
+	var queue := get_parent() as TrafficQueue
+	if queue:
+		queue.annoy(CircusTruck.ANGRY_PATIENCE)
+	return "angry"
 
 
 ## The bubble's text while it shows, for tests.
