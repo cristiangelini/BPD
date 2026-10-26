@@ -79,6 +79,14 @@ La subasta copia la forma de `ChessGames` y `BikerDares` (el host decide y avisa
    **(propuesta)**.
 2. La casa de subastas en la ciudad (`--place=auction`): la sala, la galería, el depósito, la oficina, los
    compradores, Don Martillo y el portero.
+   Hecho así: un lote nuevo en la cuadra (6, 2), al sur, de 24 x 20 m, color crema con el cartel dorado. El portero
+   (levita bordó con botones dorados, guantes blancos y galera baja) está en la entrada. Adelante, la sala con
+   alfombra roja, el podio de Don Martillo al fondo, el atril de los lotes y 15 sillas doradas en 3 filas mirando al
+   podio; al este, la galería con 5 cuadros de colores en marcos dorados y un jarrón en un pedestal. Atrás, el
+   depósito (con cuadros embalados) y la oficina con llave detrás de la galería. La semilla reparte 8 compradores (dos
+   modelos: saco de terciopelo bordó con monóculo y paleta, y vestido verde con perlas y sombrero con pluma) entre 11
+   lugares: 7 sillas (sentados), la galería y el depósito. Don Martillo (frac blanco, moño rojo, bigote enrulado y
+   martillo dorado) está detrás del podio mirando a las sillas **(propuesta)**.
 3. Lo de la sala: el podio con el martillo, el atril de los lotes, las sillas con paletas y el cartel del precio.
 4. La subasta: los lotes, las pujas de los policías y de los compradores, el martillo, la sospecha y lo que se paga.
 5. Las pruebas y el caso (variante "auction"): las 6 pruebas, el sueldo con las compras y el interrogatorio.

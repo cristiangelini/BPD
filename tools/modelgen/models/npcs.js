@@ -633,6 +633,67 @@ const NPCS = {
 		}
 		b.add('body', C('tattoo_blue', 0x2a5ab0), new THREE.BoxGeometry(0.08, 0.08, 0.01), { pos: V(0.38, 0.84, 0.15), rot: [0, 0.4, 0] });
 	},
+	// The art auction El Martillo de Oro (infiltracion-subasta.md): a rich buyer in a burgundy velvet jacket, a cravat,
+	// a monocle, slicked grey hair and a numbered bidding paddle.
+	comprador(b) {
+		const velvet = C('velvet_burgundy', 0x6a1a2a);
+		pearBody(b, SKIN.crema, { shirt: velvet, pants: C('pants_grey', 0x4a4a52), belted: false });
+		lapels(b, white);
+		b.add('body', C('cravat_gold', 0xd8b040), ellipsoid(0.07, 0.08, 0.04, 8, 5), { pos: V(0, 1.03, 0.33) });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		b.add('face', gold, new THREE.TorusGeometry(0.05, 0.008, 4, 12), { pos: V(-0.08, 1.33, 0.2) });
+		mustache(b, C('hair_gray', 0x9aa0a8), 0.8);
+		mouth(b);
+		hairCap(b, C('hair_gray', 0x9aa0a8), { y: 1.4, sy: 0.45 });
+		b.add('props', C('paddle_white', 0xf4f0e8), new THREE.CylinderGeometry(0.11, 0.11, 0.02, 12), { pos: V(0.5, 0.95, 0.22), rot: [Math.PI / 2, 0, 0] });
+		b.add('props', C('paddle_handle', 0x5a3a20), new THREE.BoxGeometry(0.03, 0.2, 0.02), { pos: V(0.5, 0.78, 0.22) });
+	},
+	// Another buyer: a long emerald dress, a pearl necklace, a huge hat with a feather and opera glasses.
+	compradora(b) {
+		const emerald = C('dress_emerald', 0x1a6a4a);
+		pearBody(b, SKIN.cacao, { shirt: emerald, pants: emerald, belted: false });
+		for (let i = 0; i < 9; i++) {
+			const a = Math.PI * (0.15 + i * 0.0875);
+			b.add('body', C('pearl', 0xf4f0e8), new THREE.SphereGeometry(0.022, 5, 4), { pos: V(Math.cos(a) * 0.22, 1.06 - Math.sin(a) * 0.1, 0.27 + Math.sin(a) * 0.08) });
+		}
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mouth(b, { smile: true });
+		const hat = C('hat_lilac', 0x9a7ab8);
+		b.add('cap', hat, new THREE.CylinderGeometry(0.36, 0.36, 0.03, 16), { pos: V(0, 1.47, 0) });
+		b.add('cap', hat, ellipsoid(0.2, 0.12, 0.2, 12, 6), { pos: V(0, 1.5, 0) });
+		b.add('cap', C('feather_pink', 0xe88ab8), new THREE.ConeGeometry(0.04, 0.4, 5), { pos: V(-0.18, 1.7, -0.05), rot: [0, 0, 0.6] });
+		b.add('props', black, new THREE.BoxGeometry(0.14, 0.05, 0.05), { pos: V(-0.5, 0.95, 0.2) });
+		b.add('props', gold, new THREE.CylinderGeometry(0.008, 0.008, 0.2, 4), { pos: V(-0.5, 0.82, 0.2) });
+	},
+	// Don Martillo, the auctioneer and the gang's boss: a white tuxedo with tails, a red bow tie, slicked black hair, a
+	// curled mustache and a big golden gavel.
+	martillo(b) {
+		const tux = C('tux_white', 0xf0ece0);
+		pearBody(b, SKIN.arena, { shirt: tux, pants: C('pants_black', 0x18181c), belted: false });
+		lapels(b, C('lapel_black', 0x18181c));
+		for (const sd of [-1, 1]) b.add('body', C('bow_red', 0xa02030), new THREE.ConeGeometry(0.05, 0.09, 4), { pos: V(sd * 0.05, 1.07, 0.34), rot: [0, 0, sd * Math.PI / 2] });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		const hair = C('hair_black', 0x161214);
+		mustache(b, hair, 1.2);
+		for (const sd of [-1, 1]) b.add('face', hair, new THREE.TorusGeometry(0.03, 0.01, 4, 8, Math.PI), { pos: V(sd * 0.12, 1.21, 0.19), rot: [0, 0, sd > 0 ? 0 : Math.PI] });
+		mouth(b, { open: true });
+		hairCap(b, hair, { y: 1.42, sy: 0.4 });
+		b.add('props', gold, new THREE.CylinderGeometry(0.06, 0.06, 0.18, 10), { pos: V(0.52, 1.05, 0.2), rot: [0, 0, Math.PI / 2] });
+		b.add('props', C('gavel_wood', 0x6a4020), new THREE.BoxGeometry(0.03, 0.3, 0.03), { pos: V(0.52, 0.88, 0.2) });
+	},
+	// The auction house's doorman: a long burgundy coat with gold buttons, white gloves and a short top hat.
+	portero_subasta(b) {
+		const coat = C('velvet_burgundy', 0x6a1a2a);
+		pearBody(b, SKIN.celeste, { shirt: coat, pants: coat, belted: false });
+		for (let i = 0; i < 4; i++) for (const sd of [-1, 1]) b.add('body', gold, new THREE.SphereGeometry(0.022, 5, 4), { pos: V(sd * 0.1, 1.0 - i * 0.12, 0.38 - i * 0.015) });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mustache(b, C('hair_gray', 0x9aa0a8), 0.7);
+		mouth(b);
+		const hat = C('hat_black', 0x141418);
+		b.add('cap', hat, new THREE.CylinderGeometry(0.25, 0.25, 0.02, 14), { pos: V(0, 1.47, 0) });
+		b.add('cap', hat, new THREE.CylinderGeometry(0.18, 0.18, 0.18, 14), { pos: V(0, 1.56, 0) });
+		for (const sd of [-1, 1]) b.add('props', white, new THREE.SphereGeometry(0.075, 6, 5), { pos: V(sd * 0.5, 0.78, 0.15) });
+	},
 	// Sospechoso: striped shirt, beanie and eye mask, with a loot sack.
 	sospechoso(b) {
 		pearBody(b, SKIN.celeste, { shirt: white, pants: C('jeans', 0x2a2f3a) });
@@ -987,12 +1048,13 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, ladron_oso: 1.15, abuelo_oso: 1.15 };
+const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, comprador: 1.0, compradora: 0.9, martillo: 1.1, portero_subasta: 1.15, ladron_oso: 1.15, abuelo_oso: 1.15 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
 	chess_npcs: { items: row(['ajedrecista', 'ajedrecista_b', 'alfil', 'conserje']), cam: { pos: [0, 1.3, 6.5], target: [0, 0.95, 0], fov: 34 } },
 	biker_npcs: { items: row(['motoquero', 'motoquera', 'cromado', 'patovica_moto']), cam: { pos: [0, 1.3, 6.5], target: [0, 0.95, 0], fov: 34 } },
+	auction_npcs: { items: row(['comprador', 'compradora', 'martillo', 'portero_subasta']), cam: { pos: [0, 1.3, 6.5], target: [0, 0.95, 0], fov: 34 } },
 	npcs_b: { items: row(NPC_NAMES.slice(5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
 	...Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, {
 		items: [{ name: `npc_${n}`, pos: [-0.5, 0, 0], rotY: 0.35, scale: SCALE[n] }, { name: `npc_${n}`, pos: [0.7, 0, 0], rotY: Math.PI - 0.6, scale: SCALE[n] }],
