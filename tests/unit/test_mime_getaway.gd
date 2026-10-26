@@ -2,7 +2,7 @@ extends GutTest
 
 ## Maestra Pausa's getaway (infiltracion-mimos.md, step 6, decision 170): found out, she runs off on foot "driving"
 ## an invisible car and the chase starts in the middle of the case; caught, it's solved with the evidence they have.
-## In Play the infiltration comes up a third of the time at the mimes' theater.
+## In Play the mimes' theater is one of the infiltrations.
 
 const LEVEL := preload("res://scenes/levels/mime_theater.tscn")
 
@@ -49,6 +49,5 @@ func test_caught_it_counts_as_solved_with_the_evidence() -> void:
 	assert_eq(theater.case.report().salary, InfiltrationCase.SALARY / 3)
 
 
-func test_play_draws_the_theater_a_third_of_the_infiltrations() -> void:
+func test_play_draws_the_theater_among_the_infiltrations() -> void:
 	assert_has(PlaceDraw.INFILTRATIONS, "mime")
-	assert_eq(PlaceDraw.INFILTRATIONS.size(), 3)

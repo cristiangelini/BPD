@@ -108,9 +108,14 @@ La foto grupal copia la forma de `MimeRehearsal` (host decide, cada PC juzga y a
    video y Serpentina dicen uno que las otras pistas no dicen, y verlo en la oficina durante la foto dice el que
    queda (no cuenta para el sueldo). La planilla anota "El jefe: gorra azul, ¿?, placa de chocolate, ¿?". Esposar a
    un invitado equivocado la primera vez suma +50 a todos y avisa; la segunda, los descubren. El jefe es un invitado
-   más, pero esposarlo a él no cuenta como error. Mientras no está la huida del paso 5, se escapa como Doña Chela.
-   Online, Serpentina solo cuenta en la PC del host (se arregla en el paso 5) **(propuesta)**.
+   más, pero esposarlo a él no cuenta como error **(propuesta)**.
 5. La huida en el patrullero de cotillón, el sorteo de "Jugar" en cuartos (club, coro, mimos y fiesta) y online.
+   Hecho así: el patrullero de cotillón es un auto familiar celeste con franja blanca, estrellas doradas de papel en
+   las puertas, una sirena de plástico rosa y amarilla demasiado grande en el techo y globos atados atrás; va a 40
+   km/h como un auto común, con el Sargento Trucho al volante y la sirena sonando desafinada (dos notas que se
+   tambalean). "Jugar" sortea la infiltración en cuartos: club, coro, mimos y fiesta. Online, todo pasa por el host
+   como en los mimos: hablarle a Serpentina, la foto, ver al jefe (la pista extra llega a todos en la planilla) y
+   la huida **(propuesta)**.
 
 ## Preguntas para Cristian (decisión 171)
 1. **¿El jefe se encuentra por pistas de su disfraz entre invitados iguales?** Recomiendo que sí: es "encontrar al

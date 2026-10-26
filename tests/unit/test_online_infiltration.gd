@@ -1,6 +1,6 @@
 extends GutTest
 
-## The infiltration online (infiltracion.md, infiltracion-coro.md and infiltracion-mimos.md, "Online"; docs/diseno/online.md): the host's
+## The infiltration online (infiltracion.md, infiltracion-coro.md, infiltracion-mimos.md and infiltracion-fiesta.md, "Online"; docs/diseno/online.md): the host's
 ## case decides the evidence, the suspicion, the boss cuffed or running off and the end of shift, and every PC sees
 ## the same, disguises included.
 
@@ -8,19 +8,22 @@ const OnlinePcs := preload("res://tests/unit/online_pcs.gd")
 const CLUB_SCENE := preload("res://scenes/levels/grandpa_club.tscn")
 const CHOIR_SCENE := preload("res://scenes/levels/church_choir.tscn")
 const MIME_SCENE := preload("res://scenes/levels/mime_theater.tscn")
+const PARTY_SCENE := preload("res://scenes/levels/party_hall.tscn")
 ## A seed whose club has Doña Chela's bag among its evidence (ClubEvidence.draw).
 const SEED := 2
 
 var _pcs: OnlinePcs
 var _scene: PackedScene = CLUB_SCENE
+var _seed := SEED
 
 
 func before_each() -> void:
 	Campaign.current = null
 	_scene = CLUB_SCENE
+	_seed = SEED
 	_pcs = OnlinePcs.new(self, Callable(), func() -> Node3D:
 		var place: InfiltrationPlace = _scene.instantiate()
-		place.case_seed = SEED
+		place.case_seed = _seed
 		place.get_node("Cop/Grabber").input_enabled = false
 		return place)
 
@@ -163,3 +166,48 @@ func test_a_guest_who_talks_near_a_mime_raises_the_hosts_suspicion() -> void:
 	pcs[1].voice.spoke(guest_cop)
 	await wait_until(func() -> bool: return mime.suspicion > 0.0, 5.0)
 	assert_gt(mime.suspicion, 0.0, "the host's mime heard the guest")
+
+
+func test_at_the_party_found_out_the_trucho_runs_off_on_every_pc() -> void:
+	_scene = PARTY_SCENE
+	var pcs := await _on()
+	var host := _place(pcs[0]) as PartyHall
+	var guest := _place(pcs[1]) as PartyHall
+	host.photo.set_process(false)
+	guest.photo.set_process(false)
+	host.suspicion.raise(host.members[0], 100.0)
+	await wait_until(func() -> bool: return guest.case.chase != null, 5.0)
+	assert_eq(guest.case.chase.suspect_id, SuspectCar.PARTY_PATROL, "in the party patrol car")
+	assert_false(guest.boss.visible, "the Trucho is gone from the guest's party")
+
+
+func test_a_guest_talks_to_serpentina_and_seeing_the_boss_reaches_every_planilla() -> void:
+	_scene = PARTY_SCENE
+	_seed = 1
+	while not _hostess_seed(_seed):
+		_seed += 1
+	var pcs := await _on()
+	var host := _place(pcs[0]) as PartyHall
+	var guest := _place(pcs[1]) as PartyHall
+	for hall: PartyHall in [host, guest]:
+		hall.photo.set_process(false)
+		for member: ClubMember in hall.members:
+			member.position = Vector3(6.0, PartyHall.FLOOR_TOP, 0)
+	OnlinePcs.own_cop(pcs[1]).act("use", guest.serpentina)
+	await wait_until(func() -> bool: return guest.case.evidence_found.has("hostess"), 5.0)
+	assert_has(host.case.evidence_found, "hostess", "the host counted it")
+	host.photo.boss_seen.emit(OnlinePcs.own_cop(pcs[0]))
+	await wait_until(func() -> bool: return guest.case.bonus_clue, 5.0)
+	assert_true(guest.case.bonus_clue, "the extra clue reaches the guest's planilla")
+
+
+## Whether the party with `case_seed` has Serpentina among its clues.
+func _hostess_seed(case_seed: int) -> bool:
+	var hall: PartyHall = PARTY_SCENE.instantiate()
+	hall.case_seed = case_seed
+	hall.get_node("Cop").input_enabled = false
+	add_child(hall)
+	var has := hall.evidence.kinds.has("hostess")
+	hall.free()
+	return has
+

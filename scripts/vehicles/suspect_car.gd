@@ -63,6 +63,9 @@ const MODELS := {
 	"clown_car": preload("res://assets/models/clown_car.glb"),
 	# Maestra Pausa found out runs off "driving" an invisible car (infiltracion-mimos.md): only its faint outline shows.
 	"invisible_car": preload("res://assets/models/invisible_car.glb"),
+	# The Sargento Trucho found out runs off in the party patrol car (infiltracion-fiesta.md): a sky blue sedan with a
+	# plastic siren on the roof that wails off key.
+	"party_patrol": preload("res://assets/models/party_patrol.glb"),
 	# The traffic control's wanted car, in its paint (control-transito.md): the traffic car it was in the queue.
 	"traffic_0": preload("res://assets/models/traffic_car_0.glb"),
 	"traffic_1": preload("res://assets/models/traffic_car_1.glb"),
@@ -96,6 +99,7 @@ const RIDERS := {
 	"clown_car": [[preload("res://assets/models/npc_payaso.glb"), Vector3(0, 0.45, -0.25), 0.8]],
 	"toy_helicopter": [[preload("res://assets/models/npc_ladron_oso.glb"), Vector3(0, 2.4, 0), 0.85]],
 	"invisible_car": [[preload("res://assets/models/npc_pausa.glb"), Vector3(0, 0, 0.1), 0.95]],
+	"party_patrol": [[preload("res://assets/models/npc_invitado.glb"), Vector3(-0.45, 0.05, 0.1), 0.8]],
 }
 ## Who rides inside and stays there when he gives up, the same way: the choristers in the van, seen through its open
 ## windows, singing all the way.
@@ -147,6 +151,10 @@ const TOY_HELICOPTER := "toy_helicopter"
 const AIR_AT := 5.2
 const ROPE_FROM := 3.9
 const INVISIBLE_CAR := "invisible_car"
+const PARTY_PATROL := "party_patrol"
+## The toy siren's two notes, a little off key from each other, and how long each lasts (propuesta).
+const TOY_SIREN_NOTES: Array[float] = [610.0, 790.0]
+const TOY_SIREN_NOTE := 0.45
 ## Where the towed patrol car hangs behind the tow truck: its middle, and its nose lifted this much.
 const TOWED_AT := Vector3(0, 0.55, -5.6)
 const TOWED_TILT := -0.12
@@ -165,7 +173,7 @@ const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 
 	"traffic_1": Vector3(2.1, 1.4, 4.6), "traffic_2": Vector3(2.1, 1.4, 4.6), "traffic_3": Vector3(2.1, 1.4, 4.6),
 	"manager_car": Vector3(2.1, 1.4, 4.6), "fruit_truck": Vector3(2.1, 1.75, 4.6),
 	"circus_truck": Vector3(2.1, 2.6, 4.6), "parade_float": Vector3(2.3, 1.0, 4.6),
-	"toy_helicopter": Vector3(0.6, 0.6, 0.6)}
+	"toy_helicopter": Vector3(0.6, 0.6, 0.6), "party_patrol": Vector3(2.1, 1.4, 4.6)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
@@ -179,7 +187,8 @@ const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": 
 	"old_patrol": SEDAN_WHEELS, "bike": NO_WHEELS, "clown_car": NO_WHEELS, "traffic_0": SEDAN_WHEELS, "traffic_1": SEDAN_WHEELS,
 	"traffic_2": SEDAN_WHEELS, "traffic_3": SEDAN_WHEELS, "choir_van": SEDAN_WHEELS, "manager_car": SEDAN_WHEELS, "fruit_truck": SEDAN_WHEELS,
 	"circus_truck": SEDAN_WHEELS, "parade_float": NO_WHEELS,
-	"toy_helicopter": NO_WHEELS}
+	"toy_helicopter": NO_WHEELS,
+	"party_patrol": SEDAN_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
@@ -248,6 +257,13 @@ func _ready() -> void:
 		song.max_distance = 40.0
 		song.autoplay = true
 		add_child(song)
+	if kind == PARTY_PATROL:
+		var siren := AudioStreamPlayer3D.new()
+		siren.name = "Siren"
+		siren.stream = toy_siren_stream()
+		siren.max_distance = 50.0
+		siren.autoplay = true
+		add_child(siren)
 	if kind == TOW:
 		var hook := TowHook.new()
 		hook.name = "Hook"
@@ -461,3 +477,24 @@ static func climb_curbs(body: CharacterBody3D) -> void:
 		if absf(hit.get_normal().y) < 0.5 and other and other.is_in_group(CityLife.SIDEWALKS):
 			body.global_position.y += CityLife.CURB + 0.05
 			return
+
+
+## The party patrol car's plastic siren: two notes in turns, each wobbling as it goes, never quite in tune.
+static func toy_siren_stream() -> AudioStreamWAV:
+	var rate := 22050
+	var samples := int(rate * TOY_SIREN_NOTE * TOY_SIREN_NOTES.size())
+	var data := PackedByteArray()
+	data.resize(samples * 2)
+	var phase := 0.0
+	for i in samples:
+		var t := float(i) / rate
+		var note := TOY_SIREN_NOTES[int(t / TOY_SIREN_NOTE) % TOY_SIREN_NOTES.size()]
+		phase += TAU * note * (1.0 + 0.03 * sin(TAU * 3.0 * t)) / rate
+		data.encode_s16(i * 2, int((0.6 * sin(phase) + 0.2 * signf(sin(phase))) * 20000))
+	var stream := AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = rate
+	stream.data = data
+	stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+	stream.loop_end = samples
+	return stream

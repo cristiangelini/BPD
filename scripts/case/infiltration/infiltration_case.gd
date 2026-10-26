@@ -54,13 +54,13 @@ const VARIANTS := {
 		"slips": "PAUSA_SLIP_%d",
 	},
 	# The costume party (infiltracion-fiesta.md, decision 171): the Sargento Trucho is found by his costume, and a wrong
-	# guest cuffed gets a second chance (`second_chance`). His getaway, the party patrol car, comes in step 5.
+	# guest cuffed gets a second chance (`second_chance`). He runs off in the party patrol car.
 	"party": {
 		"story": "infiltration_party",
 		"brief": ["BRIEF_PARTY_A", "BRIEF_PARTY_B", "BRIEF_PARTY_C"],
 		"go": "HINT_GO_PARTY", "in": "HINT_PARTY_IN", "found": "HINT_PARTY_CLUE",
 		"rows": "OBJ_PARTY_", "evidence": "EVIDENCE_PARTY_",
-		"boss": "trucho", "getaway": SuspectCar.WALKER,
+		"boss": "trucho", "getaway": SuspectCar.PARTY_PATROL,
 		"boss_cuffed": "HINT_TRUCHO_CUFFED", "cuff_row": "OBJ_PARTY_CUFF_TRUCHO",
 		"catch_row": "OBJ_PARTY_CATCH_TRUCHO",
 		"slips": "TRUCHO_SLIP_%d", "second_chance": true,

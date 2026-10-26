@@ -231,7 +231,7 @@ const TRAFFIC_PAINTS = [0xf2f2ee, 0xe8c547, 0x5b9a5a, 0x7aa6d8];
 const trafficCar = (i) => () => buildSedan('traffic_car_' + i, mat('traffic_paint_' + i, TRAFFIC_PAINTS[i]),
 	mat('lamp', 0xf4f0d0), mat('tail', 0xc0202a));
 
-function buildSedan(name, paint, lampOff, tailOff) {
+export function buildSedan(name, paint, lampOff, tailOff, extra) {
 	const tint = mat('getaway_glass', 0x14181e), chrome = mat('chrome', 0x9aa0a8);
 	const CW = 2.1, F = 2.3, R = -2.3, HOOD = 0.95, CABIN_F = 0.9, CABIN_R = -1.2, TOP = 1.55;
 	const b = new Builder(name);
@@ -252,6 +252,7 @@ function buildSedan(name, paint, lampOff, tailOff) {
 	}
 	box(b, 'body', grey, CW + 0.06, 0.16, 0.14, 0, FLOOR + 0.05, F + 0.04);
 	box(b, 'body', grey, CW + 0.06, 0.16, 0.14, 0, FLOOR + 0.05, R - 0.04);
+	if (extra) extra(b);
 	return b.build();
 }
 
