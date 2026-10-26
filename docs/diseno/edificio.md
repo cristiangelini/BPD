@@ -114,6 +114,12 @@ Los pesos y valores siguen la escala de los otros lugares: la principal vale uno
      calle. Pesa 35 kg y es frágil: entre dos, y entra en el ascensor. E mira por él y se ve la bóveda del banco de
      enfrente con la clave; en el piso del balcón hay tres tiras de cinta donde iba el trípode. Cada pista va a la
      planilla una vez. La libreta y los binoculares se esconden con la semilla. Capturas `paso7-telescopio*.png`.
+   - **El piso 31 (propuesta):** el piso 31 es la sala de máquinas del ascensor, en la azotea, sobre el hueco; solo
+     se llega en el ascensor. La llave está en el escritorio del estudio. En el ascensor hay un botón 31 tapado con
+     cinta (E lo mira: pista) y debajo una cerradura: con la llave en la mano, E la gira, la cinta se despega y el
+     botón sube al 31, donde espera la caja de cuadros (40 kg, entre dos). Desde el 31, E en el ascensor baja al hall.
+     El plano se esconde con la semilla. Un viaje corto tarda su parte de los 15 s, nunca menos de 3. Capturas
+     `paso7-piso31-*.png`.
 8. "Jugar" sortea entre los 8 lugares de allanamiento.
 9. El online (el ascensor, el andamio, Don Evaristo, Doña Pepa y la evidencia en todas las PC).
 

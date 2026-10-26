@@ -51,6 +51,16 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_CODE_NOTEBOOK", "OBJ_EXTRA_BINOCULARS"],
 		"rig": preload("res://scripts/case/apartments/spy_telescope_rig.gd"),
 	},
+	"floor_31": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_FLOOR_31_B", "BRIEF_FLOOR_31_C", "BRIEF_FLOOR_31_D"],
+		"find": "OBJ_FIND_FLOOR_31",
+		"hidden": [preload("res://scenes/props/floor_plan.tscn")],
+		"half_heights": [0.03],
+		"heavy": [false],
+		# The second extra is the box on floor 31, which the rig places.
+		"extra_keys": ["OBJ_EXTRA_FLOOR_PLAN", "OBJ_EXTRA_PAINTINGS_BOX"],
+		"rig": preload("res://scripts/case/apartments/floor_31_rig.gd"),
+	},
 }
 const ORNAMENT_SCENES: Array[PackedScene] = [
 	preload("res://scenes/props/ornament_vase.tscn"), preload("res://scenes/props/ornament_figurine.tscn"),
@@ -71,6 +81,10 @@ const SHAFT_HALF := 1.0
 const SHAFT_BACK := -6.0
 ## The wall across the building behind the lobby and in front of floor 30's back flats.
 const CORE_Z := -4.0
+## The elevator's machine room on the roof, over the shaft: x from -ROOF_ROOM_HALF to ROOF_ROOM_HALF, z from SHAFT_BACK
+## to ROOF_ROOM_FRONT. It is the secret floor 31, and only the elevator gets there.
+const ROOF_ROOM_HALF := 3.0
+const ROOF_ROOM_FRONT := -1.0
 const STAIRS_DOOR_X := 2.5
 ## The wall between the fire stairs and 30A.
 const STAIRS_WALL_X := 4.5
@@ -279,11 +293,12 @@ func _ready() -> void:
 		$Cop.global_position = to_global(Vector3(-4.0, TOP_Y + 0.1, -2.8))
 
 
-## The car at the lobby, its doors on both landings, the floor display over them and the call buttons.
+## The car at the lobby, its doors on its three landings (the lobby, floor 30 and the secret 31 in the machine room,
+## which only the elevator reaches), the floor display over them and the call buttons.
 func _place_elevator() -> void:
 	var doors: Array[Node3D] = []
-	for i in 2:
-		var y: float = [LOBBY_Y, TOP_Y][i]
+	for i in 3:
+		var y: float = [LOBBY_Y, TOP_Y, ROOF_Y][i]
 		var door := StaticBody3D.new()
 		door.position = Vector3(0, y + GameScale.DOOR_HEIGHT / 2 + 0.05, CORE_Z + 0.15)
 		door.set_meta("closed_x", 0.0)
@@ -312,8 +327,8 @@ func _place_elevator() -> void:
 	elevator = TowerElevator.new()
 	elevator.position = Vector3(0, LOBBY_Y, (SHAFT_BACK + CORE_Z) / 2)
 	add_child(elevator)
-	var heights: Array[float] = [LOBBY_Y, TOP_Y]
-	var floors: Array[int] = [0, FLOORS]
+	var heights: Array[float] = [LOBBY_Y, TOP_Y, ROOF_Y]
+	var floors: Array[int] = [0, FLOORS, FLOORS + 1]
 	elevator.setup(heights, floors, STOREY, doors)
 	for button in calls:
 		button.elevator = elevator
@@ -548,7 +563,11 @@ func _build_tower() -> void:
 	_build.slab(-HALF_X, HALF_X, -HALF_Z, HALF_Z, LOBBY_Y, MARBLE)
 	_slab_around_shaft(STOREY, OUTSIDE.darkened(0.3))
 	_slab_around_shaft(TOP_Y, HALL)
-	_build.slab(-HALF_X - 0.2, HALF_X + 0.2, -HALF_Z - 0.2, HALF_Z + 0.2, ROOF_Y, OUTSIDE.darkened(0.35))
+	_build.slab(-HALF_X - 0.2, -SHAFT_HALF, -HALF_Z - 0.2, HALF_Z + 0.2, ROOF_Y, OUTSIDE.darkened(0.35))
+	_build.slab(SHAFT_HALF, HALF_X + 0.2, -HALF_Z - 0.2, HALF_Z + 0.2, ROOF_Y, OUTSIDE.darkened(0.35))
+	_build.slab(-SHAFT_HALF, SHAFT_HALF, -HALF_Z - 0.2, SHAFT_BACK, ROOF_Y, OUTSIDE.darkened(0.35))
+	_build.slab(-SHAFT_HALF, SHAFT_HALF, CORE_Z, HALF_Z + 0.2, ROOF_Y, OUTSIDE.darkened(0.35))
+	_build_roof_room()
 	for floor in range(1, FLOORS):
 		var y := floor_y(floor) + 1.6
 		_build.mesh_box(Vector3(0, y, HALF_Z + 0.09), Vector3(HALF_X * 2 - 2, 1.4, 0.04), GLASS.darkened(0.3))
@@ -594,6 +613,21 @@ func _build_core(y0: float, doors: Array, color: Color) -> void:
 	_build.wall_at("x", SHAFT_BACK, -SHAFT_HALF, SHAFT_HALF, y0, ROOM_HEIGHT, [], STEEL)
 	var door_y := y0 + GameScale.DOOR_HEIGHT / 2 + 0.06
 	_build.box(Vector3(STAIRS_DOOR_X, door_y, CORE_Z), Vector3(GameScale.DOOR_WIDTH, GameScale.DOOR_HEIGHT, 0.1), Color.DARK_RED)
+
+
+## The machine room on the roof (floor 31): the shaft with its opening, bare walls, a lid and a bulb.
+func _build_roof_room() -> void:
+	var y := ROOF_Y
+	_build.wall_at("x", CORE_Z, -ROOF_ROOM_HALF, ROOF_ROOM_HALF, y, ROOM_HEIGHT, [0.0], OUTSIDE.darkened(0.2))
+	for x: float in [-SHAFT_HALF, SHAFT_HALF]:
+		_build.wall_at("z", x, SHAFT_BACK, CORE_Z, y, ROOM_HEIGHT, [], STEEL)
+	_build.wall_at("x", SHAFT_BACK, -SHAFT_HALF, SHAFT_HALF, y, ROOM_HEIGHT, [], STEEL)
+	for x: float in [-ROOF_ROOM_HALF, ROOF_ROOM_HALF]:
+		_build.wall_at("z", x, SHAFT_BACK, ROOF_ROOM_FRONT, y, ROOM_HEIGHT, [], OUTSIDE.darkened(0.2))
+	_build.wall_at("x", SHAFT_BACK, -ROOF_ROOM_HALF, ROOF_ROOM_HALF, y, ROOM_HEIGHT, [], OUTSIDE.darkened(0.2))
+	_build.wall_at("x", ROOF_ROOM_FRONT, -ROOF_ROOM_HALF, ROOF_ROOM_HALF, y, ROOM_HEIGHT, [], OUTSIDE.darkened(0.2))
+	_build.slab(-ROOF_ROOM_HALF, ROOF_ROOM_HALF, SHAFT_BACK, ROOF_ROOM_FRONT, y + STOREY, OUTSIDE.darkened(0.35))
+	_build.light(Vector3(0, y + 2.4, (CORE_Z + ROOF_ROOM_FRONT) / 2))
 
 
 ## Floor 30's hallway: the carpet, the core, the doors of 30A (Doña Pepa's, shut) and 30C (for rent, locked) and the

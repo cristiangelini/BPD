@@ -113,13 +113,53 @@ export function buildBinoculars() {
 	return b.build();
 }
 
+// The key of the floor that doesn't exist: a big gold key 0.12 m long with "31" on its bow.
+export function buildFloorKey() {
+	const b = new Builder('floor_key');
+	const gold = mat('key_gold', 0xe8c040);
+	b.add('bow', gold, new THREE.CylinderGeometry(0.025, 0.025, 0.01, 10), { pos: V(-0.04, 0.005, 0) });
+	b.add('shaft', gold, new THREE.BoxGeometry(0.08, 0.008, 0.012), { pos: V(0.02, 0.005, 0) });
+	for (const x of [0.04, 0.055]) b.add('bit', gold, new THREE.BoxGeometry(0.008, 0.008, 0.02), { pos: V(x, 0.005, 0.014) });
+	b.add('number', mat('key_number', 0x2a2a2e), new THREE.BoxGeometry(0.02, 0.012, 0.012), { pos: V(-0.04, 0.006, 0) });
+	return b.build();
+}
+
+// A wooden crate 0.9 x 0.6 x 0.5 m full of stolen paintings: gilded frames peek over its open top.
+export function buildPaintingsBox() {
+	const b = new Builder('paintings_box');
+	const wood = mat('crate_wood', 0xb08850), gilt = mat('frame_gilt', 0xd8b048);
+	b.add('bottom', wood, new THREE.BoxGeometry(0.9, 0.04, 0.5), { pos: V(0, 0.02, 0) });
+	for (const z of [-0.23, 0.23]) b.add('side', wood, new THREE.BoxGeometry(0.9, 0.5, 0.04), { pos: V(0, 0.25, z) });
+	for (const x of [-0.43, 0.43]) b.add('side', wood, new THREE.BoxGeometry(0.04, 0.5, 0.42), { pos: V(x, 0.25, 0) });
+	const canvases = [0x3a6a9a, 0xc85a3a, 0x5a8a4a];
+	canvases.forEach((color, i) => {
+		const x = -0.25 + i * 0.25;
+		b.add('frames', gilt, new THREE.BoxGeometry(0.04, 0.6, 0.38), { pos: V(x, 0.34, 0), rot: [0, 0, 0.08 * (i - 1)] });
+		b.add('canvas', mat('canvas_' + i, color), new THREE.BoxGeometry(0.045, 0.5, 0.3), { pos: V(x, 0.36, 0), rot: [0, 0, 0.08 * (i - 1)] });
+	});
+	return b.build();
+}
+
+// The building's plan, rolled: a blue tube 0.4 m long with a white band, "31" drawn on the top floor.
+export function buildFloorPlan() {
+	const b = new Builder('floor_plan');
+	b.add('roll', mat('plan_blue', 0x3a6ab8), new THREE.CylinderGeometry(0.03, 0.03, 0.4, 10), { pos: V(0, 0.03, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('band', mat('plan_band', 0xf4f4f0), new THREE.CylinderGeometry(0.032, 0.032, 0.03, 10), { pos: V(0.1, 0.03, 0), rot: [0, 0, Math.PI / 2] });
+	return b.build();
+}
+
 export const models = {
 	stolen_aquarium: buildStolenAquarium, fishing_net: buildFishingNet, aquarium_ticket: buildAquariumTicket,
 	contraband_piano: buildContrabandPiano, piano_sheet: buildPianoSheet, gold_ingot: buildGoldIngot,
 	spy_telescope: buildSpyTelescope, code_notebook: buildCodeNotebook, binoculars: buildBinoculars,
+	floor_key: buildFloorKey, paintings_box: buildPaintingsBox, floor_plan: buildFloorPlan,
 };
 
 export const views = {
+	floor_key: {
+		items: [{ name: 'paintings_box', pos: [0, 0, 0] }, { name: 'floor_key', pos: [0.7, 0, 0.3] }, { name: 'floor_plan', pos: [0.7, 0, -0.1] }],
+		cam: { pos: [1.4, 1.1, 1.6], target: [0.3, 0.25, 0], fov: 40 },
+	},
 	spy_telescope: {
 		items: [{ name: 'spy_telescope', pos: [0, 0, 0] }, { name: 'code_notebook', pos: [0.6, 0, 0.3] }, { name: 'binoculars', pos: [0.6, 0, -0.1] }],
 		cam: { pos: [1.6, 1.4, 2.2], target: [0.2, 0.7, 0], fov: 40 },
