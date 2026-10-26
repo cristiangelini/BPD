@@ -244,6 +244,8 @@ var roof := false
 ## The town bank (decision 127) and don Plácido, its clerk.
 var town := false
 var clerk: BankClerk
+## El Conejo's nerves (step 3).
+var nerves: BankNerves
 var helicopter: ToyHelicopter
 var nephew: BankNephew
 ## Seconds until the nephew can fly the helicopter again, and whether the cops have taken it off the roof (said once).
@@ -311,6 +313,8 @@ func _ready() -> void:
 	drill.name = "Drill"
 	if grandpas:
 		drill.drill_time = BankDrill.SLOW_TIME
+	elif town:
+		drill.drill_time = BankDrill.TOWN_TIME
 	drill.position = DRILL_AT + Vector3.UP * FLOOR_TOP
 	drill.rotation.y = PI / 2
 	add_child(drill)
@@ -327,6 +331,8 @@ func _ready() -> void:
 	phone.deaf = grandpas
 	car.add_child(phone)
 	car.add_collision_exception_with(phone)
+	if town:
+		_add_nerves()
 	city.transform = CityLayout.anchor("bank")
 	station_parking = city.transform * CityLayout.parking("station")
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
@@ -678,6 +684,18 @@ func _build_town() -> void:
 	clerk.car = car
 	clerk.is_out = func(at: Vector3) -> bool: return not inside(at)
 	add_child(clerk)
+
+
+## El Conejo's nerves (step 3): their bar over his head, and his way out to the van when they run out.
+func _add_nerves() -> void:
+	nerves = BankNerves.new()
+	boss.add_child(nerves)
+	nerves.setup(boss, drill, car, clerk, phone)
+	var way := HALL_TO_CORRIDOR.duplicate()
+	way.reverse()
+	way.append_array(PIG_RUN)
+	for at: Vector3 in way:
+		boss.run_path.append(global_transform * at)
 
 
 func _flat(size: Vector2) -> BoxMesh:

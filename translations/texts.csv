@@ -2418,6 +2418,8 @@ CLERK_THIEVES_1,"¡Ladrones! ¡Ladrones!","Thieves! Thieves!","Ladrões! Ladrõe
 CLERK_THIEVES_2,"¡¿Qué?! ¡¿Quién anda ahí?! ¡Socorro!","What?! Who's there?! Help!","O quê?! Quem está aí?! Socorro!"
 CLERK_THIEVES_3,"¡Está cerrado! ¡Vuelvan el lunes! ¡Ladrones!","We're closed! Come back on Monday! Thieves!","Está fechado! Voltem na segunda! Ladrões!"
 CLERK_YAWN,"Uaaah... ¿Ya es la hora de cerrar? Me voy a casa.","Yaaawn... Closing time already? I'm going home.","Uaaah... Já é hora de fechar? Vou pra casa."
+ROBBER_CONEJO_PEEK,"¿Hola? ¿Hay alguien? ...Seguro fue el viento.","Hello? Anyone there? ...Must've been the wind.","Olá? Tem alguém aí? ...Deve ter sido o vento."
+ROBBER_CONEJO_BOLT,"¡No puedo más! ¡Me voy, me voy, me voy!","I can't take it anymore! I'm out, I'm out, I'm out!","Não aguento mais! Tô indo, tô indo, tô indo!"
 EVENT_PURSE_HELP,¡Mi cartera! ¡Ladrón!,My purse! Thief!,Minha bolsa! Ladrão!
 EVENT_PURSE_THANKS,¡Mi cartera! Gracias.,My purse! Thank you.,Minha bolsa! Obrigada.
 EVENT_PAID,+%d de plata,+%d money,+%d de dinheiro
