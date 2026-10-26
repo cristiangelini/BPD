@@ -32,7 +32,7 @@ extends Node3D
 ## by the roof (robo-banco-techo.md, decision 126): fire escape stairs up the east wall, a hatch in the corridor's
 ## ceiling, the giant toy helicopter on its helipad on the roof (ToyHelicopter) and El Oso's nephew with its remote on a
 ## bench across the street (BankNephew), who flies it away when he sees a cop on the roof; taken off the roof, the gang
-## can't leave by it. --bank=party, --bank=grandpas, --bank=sorry, --bank=manager, --bank=flood,
+## can't leave by it. Cuffing the nephew crashes it (+100). --bank=party, --bank=grandpas, --bank=sorry, --bank=manager, --bank=flood,
 ## --bank=roof or --bank=base forces one.
 ## Every number here is (propuesta).
 
@@ -528,6 +528,20 @@ func _build_roof() -> void:
 	nephew.name = "Nephew"
 	nephew.position = NEPHEW_BENCH
 	add_child(nephew)
+	nephew.caught_now.connect(_on_nephew_caught)
+
+
+## The nephew in handcuffs (step 3): the helicopter loses its pilot and falls wherever it is.
+func _on_nephew_caught(_nephew: BankNephew) -> void:
+	helicopter.crash()
+	for cop in get_tree().get_nodes_in_group("cops"):
+		(cop as Cop).show_hint("HINT_NEPHEW_CAUGHT")
+
+
+## Whether the gang can still leave by the roof: the helicopter up there, whole, and its pilot free.
+func roof_way_out() -> bool:
+	return roof and not nephew.caught and not helicopter.crashed and (helicopter.flying
+		or on_roof(helicopter.global_position))
 
 
 func _flat(size: Vector2) -> BoxMesh:
@@ -746,7 +760,7 @@ func _physics_process(delta: float) -> void:
 ## still up there and his remote is ready. Taken off the roof, the gang has no way out by it.
 func _watch_the_roof(delta: float) -> void:
 	nephew_rest = maxf(nephew_rest - delta, 0.0)
-	if helicopter.flying:
+	if helicopter.flying or helicopter.crashed:
 		return
 	if not on_roof(helicopter.global_position):
 		if not helicopter_gone:
@@ -755,7 +769,7 @@ func _watch_the_roof(delta: float) -> void:
 				(cop as Cop).show_hint("HINT_HELICOPTER_TAKEN")
 		return
 	helicopter_gone = false
-	if nephew_rest > 0.0:
+	if nephew_rest > 0.0 or nephew.caught:
 		return
 	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
 		if on_roof(cop.global_position):

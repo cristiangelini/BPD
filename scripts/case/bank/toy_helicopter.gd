@@ -5,7 +5,8 @@ extends Grabbable
 ## yellow, waiting on the bank's roof on its helipad with its rotors humming. It weighs KG, so one cop drags it and two
 ## carry it. El Oso's nephew flies it from the sidewalk across (BankNephew). Its origin is on the ground under the
 ## mast, its front to +Z. Step 2: take_off() lifts it out of the cops' hands up to FLY_HEIGHT over its pad and flies it
-## in circles for FLY_TIME, out of reach, and then it lands back on the pad. Every number here is (propuesta).
+## in circles for FLY_TIME, out of reach, and then it lands back on the pad. Step 3: without its pilot it crashes
+## (crash()): the rotors stop and it falls wherever it is, broken for good. Every number here is (propuesta).
 
 signal landed
 
@@ -21,14 +22,18 @@ const FLY_HEIGHT := 5.0
 const FLY_RADIUS := 6.0
 const FLY_TIME := 20.0
 const FLY_SPEED := 4.0
+const CRASH_TILT := 0.45
 
 ## How fast they turn now.
 var spin := IDLE_SPIN
 ## Where it lands (in its parent's space), and whether it's in the air now and for how long still.
 var pad := Vector3.ZERO
 var flying := false
+## Its pilot was caught: it fell and won't fly again.
+var crashed := false
 var fly_left := 0.0
 var _angle := 0.0
+var _model: Node3D
 var _rotor: Node3D
 var _tail_rotor: Node3D
 
@@ -44,15 +49,15 @@ func _ready() -> void:
 	shape.shape = box
 	shape.position.y = SIZE.y / 2
 	add_child(shape)
-	var model := MODEL.instantiate()
-	add_child(model)
-	_rotor = model.find_child("rotor", true, false) as Node3D
-	_tail_rotor = model.find_child("tail_rotor", true, false) as Node3D
+	_model = MODEL.instantiate()
+	add_child(_model)
+	_rotor = _model.find_child("rotor", true, false) as Node3D
+	_tail_rotor = _model.find_child("tail_rotor", true, false) as Node3D
 
 
 ## The nephew flies it: whoever holds it lets go, and up it goes.
 func take_off() -> void:
-	if flying:
+	if flying or crashed:
 		return
 	for cop in get_tree().get_nodes_in_group("cops"):
 		var grabber := cop.get_node_or_null("Grabber") as Grabber
@@ -65,6 +70,20 @@ func take_off() -> void:
 	freeze = true
 	spin = FLY_SPIN
 	_angle = 0.0
+
+
+## No pilot: it drops from wherever it is, its rotors stopped, tipped over.
+func crash() -> void:
+	if crashed:
+		return
+	crashed = true
+	flying = false
+	fly_left = 0.0
+	spin = 0.0
+	freeze = false
+	# Broken: it lies tipped on a skid, its rotor bent.
+	_model.rotation.z = CRASH_TILT
+	_rotor.rotation.x = 0.3
 
 
 ## Where it's going now: up over the pad, around it, and back down when the time is up.
