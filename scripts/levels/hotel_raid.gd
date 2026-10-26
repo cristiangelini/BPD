@@ -66,6 +66,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_NEIGHBORHOOD_LIST", "OBJ_EXTRA_SLEEP_MASK"],
 		"rig": preload("res://scripts/case/hotel/sleepwalker_rig.gd"),
 	},
+	"fake_reviews": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_REVIEWS_B", "BRIEF_REVIEWS_C", "BRIEF_REVIEWS_D"],
+		"find": "OBJ_FIND_REVIEWS",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/typewriter.tscn"), preload("res://scenes/props/postcards.tscn"),
+			preload("res://scenes/props/postmark_stamp.tscn")],
+		"half_heights": [0.125, 0.06, 0.06],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_POSTCARDS", "OBJ_EXTRA_POSTMARK"],
+		"rig": preload("res://scripts/case/hotel/reviews_rig.gd"),
+	},
 	"casino_13": {
 		"briefing": ["BRIEF_RIGHT", "BRIEF_CASINO_B", "BRIEF_CASINO_C", "BRIEF_CASINO_D"],
 		"find": "OBJ_FIND_CASINO",

@@ -218,7 +218,47 @@ export function buildSleepMask() {
 	return b.build();
 }
 
+// The fake reviews (step 5): the typewriter of the reviews (0.45 x 0.25 x 0.4 m, origin in the middle), the bundle of
+// 300 "¡Hotel maravilloso!" postcards and the postmark stamp.
+export function buildTypewriter() {
+	const body = mat('typewriter', 0x2f4a3a), dark = mat('machine_dark', 0x3a3a40), keys = mat('white', 0xf6f6f6);
+	const paper = mat('paper', 0xf3eedf), star = mat('gold', 0xf2c84b, { emissive: 0x3a2a05 });
+	const b = new Builder('typewriter');
+	b.add('body', body, new THREE.BoxGeometry(0.45, 0.12, 0.4), { pos: V(0, -0.065, 0) });
+	b.add('body', body, new THREE.BoxGeometry(0.45, 0.08, 0.16), { pos: V(0, 0.03, -0.12), rot: [0.3, 0, 0] });
+	b.add('roller', dark, new THREE.CylinderGeometry(0.03, 0.03, 0.5, 8), { pos: V(0, 0.08, -0.15), rot: [0, 0, Math.PI / 2] });
+	for (let r = 0; r < 3; r++) {
+		for (let k = 0; k < 7; k++) b.add('keys', keys, new THREE.CylinderGeometry(0.014, 0.014, 0.02, 6), { pos: V(-0.15 + k * 0.05 + r * 0.012, 0.0 + r * 0.012, 0.15 - r * 0.045) });
+	}
+	b.add('paper', paper, new THREE.BoxGeometry(0.21, 0.004, 0.2), { pos: V(0, 0.17, -0.19), rot: [-1.2, 0, 0] });
+	for (let i = 0; i < 5; i++) b.add('paper', star, new THREE.BoxGeometry(0.02, 0.02, 0.006), { pos: V(-0.05 + i * 0.025, 0.2, -0.17), rot: [-1.2, 0, 0.78] });
+	return b.build();
+}
+
+export function buildPostcards() {
+	const card = mat('postcard', 0xf6e7c8), sky = mat('postcard_sky', 0x6ab0e0), red = mat('label_red', 0xc83a2a), string = mat('cord', 0x8a6a3a);
+	const b = new Builder('postcards');
+	b.add('cards', card, new THREE.BoxGeometry(0.16, 0.12, 0.11));
+	b.add('cards', sky, new THREE.BoxGeometry(0.14, 0.002, 0.09), { pos: V(0, 0.061, 0) });
+	b.add('cards', red, new THREE.BoxGeometry(0.1, 0.002, 0.02), { pos: V(0, 0.062, 0.025) });
+	b.add('string', string, new THREE.BoxGeometry(0.165, 0.125, 0.01));
+	b.add('string', string, new THREE.BoxGeometry(0.01, 0.125, 0.115));
+	return b.build();
+}
+
+export function buildPostmarkStamp() {
+	const wood = mat('handle_wood', 0x8a5a2b), rubber = mat('rubber_black', 0x202020), ink = mat('ink', 0x2a2a6a);
+	const b = new Builder('postmark_stamp');
+	b.add('handle', wood, new THREE.SphereGeometry(0.035, 8, 5), { pos: V(0, 0.06, 0) });
+	b.add('handle', wood, new THREE.CylinderGeometry(0.015, 0.02, 0.07, 8), { pos: V(0, 0.01, 0) });
+	b.add('base', wood, new THREE.BoxGeometry(0.08, 0.025, 0.06), { pos: V(0, -0.035, 0) });
+	b.add('base', rubber, new THREE.BoxGeometry(0.075, 0.008, 0.055), { pos: V(0, -0.051, 0) });
+	b.add('base', ink, new THREE.BoxGeometry(0.06, 0.002, 0.04), { pos: V(0, -0.056, 0) });
+	return b.build();
+}
+
 export const models = {
+	typewriter: buildTypewriter, postcards: buildPostcards, postmark_stamp: buildPostmarkStamp,
 	lost_box: buildLostBox, neighborhood_list: buildNeighborhoodList, sleep_mask: buildSleepMask,
 	fake_money_case: buildFakeMoneyCase, lift_crank: buildLiftCrank, printing_plates: buildPrintingPlates,
 	robe_bag: buildRobeBag, buyers_list: buildBuyersList, embroidery_machine: buildEmbroideryMachine,
@@ -243,6 +283,9 @@ export const views = {
 	sleepwalker: { items: [{ name: 'lost_box', pos: [0, 0.25, 0] }, { name: 'neighborhood_list', pos: [0.7, 0.01, 0.3], rotY: -0.3 },
 		{ name: 'sleep_mask', pos: [-0.6, 0.02, 0.3], rotY: 0.4 }],
 		cam: { pos: [0, 1.1, 1.8], target: [0, 0.15, 0], fov: 38 } },
+	fake_reviews: { items: [{ name: 'typewriter', pos: [0, 0.125, 0] }, { name: 'postcards', pos: [0.6, 0.06, 0.3], rotY: -0.3 },
+		{ name: 'postmark_stamp', pos: [-0.55, 0.06, 0.3], rotY: 0.4 }],
+		cam: { pos: [0, 0.9, 1.4], target: [0, 0.1, 0], fov: 38 } },
 	casino_13: { items: [{ name: 'roulette', pos: [0, 0.12, 0] }, { name: 'casino_chip_box', pos: [0.65, 0.06, 0.1], rotY: -0.3 },
 		{ name: 'debt_book', pos: [-0.6, 0.015, 0.2], rotY: 0.4 }, { name: 'casino_chips', pos: [0.4, 0.02, 0.5] }],
 		cam: { pos: [0, 1.1, 1.8], target: [0, 0.1, 0], fov: 38 } },

@@ -5163,6 +5163,16 @@ SLEEPWALKER_MUMBLE_1,…zzz… un paraguas… otro paraguas…,…zzz… an umbr
 SLEEPWALKER_MUMBLE_2,…zzz… don Bostezo… a la caja… zzz…,…zzz… don Bostezo… into the box… zzz…,…zzz… don Bostezo… pra caixa… zzz…
 HOTEL_CONCIERGE_SHOUT,¡¿Quién despertó al de la 16?! ¡Ahora no duerme nadie!,Who woke up the guy in 16?! Now nobody's sleeping!,Quem acordou o do 16?! Agora ninguém dorme!
 CLUE_SLEEPWALKER_STEPS,Huellas de pantuflas con barro desde la puerta de calle. Alguien salió de noche… y volvió.,Muddy slipper prints from the front door. Someone went out at night… and came back.,Pegadas de pantufa com barro desde a porta da rua. Alguém saiu de noite… e voltou.
+BRIEF_REVIEWS_B,Don Bostezo escribe cientos de reseñas del Gran Siesta a máquina y las manda en postales firmadas por «huéspedes felices».,Don Bostezo types hundreds of reviews of the Gran Siesta and mails them as postcards signed by “happy guests”.,O don Bostezo datilografa centenas de resenhas do Gran Siesta e manda em cartões-postais assinados por “hóspedes felizes”.
+BRIEF_REVIEWS_C,Traigan la máquina de escribir en el baúl del patrullero. Dicen que escribe dormido…,Bring the typewriter back in the patrol car's trunk. They say he types in his sleep…,Tragam a máquina de escrever no porta-malas da viatura. Dizem que ele escreve dormindo…
+BRIEF_REVIEWS_D,"Si encuentran las postales o el sello de correo, mejor: todo suma.","If you find the postcards or the postmark stamp, even better: it all adds up.","Se acharem os cartões-postais ou o carimbo do correio, melhor: tudo soma."
+OBJ_FIND_REVIEWS,Encontrar la máquina de escribir de las reseñas,Find the typewriter of the reviews,Achar a máquina de escrever das resenhas
+OBJ_EXTRA_POSTCARDS,Las 300 postales «¡Hotel maravilloso!»,The 300 “Wonderful hotel!” postcards,Os 300 cartões “Hotel maravilhoso!”
+OBJ_EXTRA_POSTMARK,El sello de correo,The postmark stamp,O carimbo do correio
+PROMPT_CARBON_PAPER,E: mirar el papel del tacho,E: look at the paper in the bin,E: olhar o papel do lixo
+CLUE_REVIEWS_CARBON,Papel carbónico en el tacho. Al revés se lee: «5 estrellas. 5 estrellas. 5 estrellas…»,Carbon paper in the bin. Backwards it reads: “5 stars. 5 stars. 5 stars…”,Papel-carbono no lixo. Ao contrário se lê: “5 estrelas. 5 estrelas. 5 estrelas…”
+REVIEWS_TAC,tac tac tac… ¡ding!,tap tap tap… ding!,tac tac tac… plim!
+CLUE_REVIEWS_TAC,Don Bostezo duerme… y algo escondido escribe a máquina: «tac tac tac».,Don Bostezo is asleep… and something hidden is typing: “tap tap tap”.,O don Bostezo dorme… e algo escondido datilografa: “tac tac tac”.
 HINT_GUEST_BOOK_SIGNED,"Firmaste en la página de anoche. Qué linda letra.","You signed on last night's page. Lovely handwriting.","Você assinou na página de ontem. Que letra bonita."
 HINT_ESCAPE_guest,"¡%s se subió a la combi del hotel, en bata y pantuflas, y se escapa! ¡Al patrullero, y cuidado con las valijas!","%s jumped into the hotel shuttle, in bathrobe and slippers, and is getting away! To the patrol car, and mind the suitcases!","%s subiu na van do hotel, de roupão e chinelos, e está fugindo! Para a viatura, e cuidado com as malas!"
 PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off the street","E: tirar a mala da rua"
