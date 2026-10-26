@@ -17,6 +17,8 @@ func before_each() -> void:
 	level = LEVEL.instantiate()
 	level.case_seed = 7
 	level.get_node("Cop").input_enabled = false
+	# No city traffic: a car already in the gas station's parking spot shoves the bus that lands on it.
+	level.get_node("City").traffic = false
 	add_child_autofree(level)
 	bus = level.bus
 	plan = level.transfer
