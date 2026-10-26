@@ -23,6 +23,10 @@ func _ready() -> void:
 func can_reach(cop: Cop) -> bool:
 	if not active or not cop.vehicle or cop.vehicle.seat_of(cop) == 0:
 		return false
+	# Online a guest's copy knows he's caught when the host's rope goes (SuspectCar.get_off).
+	var rope := get_parent().get_node_or_null("Rope") as Node3D
+	if rope and not rope.visible:
+		return false
 	var gap := cop.vehicle.global_position - global_position
 	return Vector2(gap.x, gap.z).length() <= REACH
 

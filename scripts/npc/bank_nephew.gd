@@ -5,7 +5,7 @@ extends CharacterBody3D
 ## on a bench on the sidewalk across from the bank with the toy helicopter's remote in his hands, pretending to play.
 ## E on him gets one of his innocent lines, in turn. Step 3: the handcuffs catch him for good (`caught`): he drops the
 ## remote, gives his uncle away and the helicopter is left without a pilot (the level crashes it). Every number here is
-## (propuesta).
+## (propuesta). Online (step 5) the host's nephew decides and a guest's follows it (NpcSync, net_state).
 
 ## Cuffed, the first time.
 signal caught_now(nephew: BankNephew)
@@ -21,6 +21,8 @@ const LINES := 3
 var next_line := 0
 ## Cuffed: he gave up and doesn't fly the helicopter anymore.
 var caught := false
+## A guest's copy: the host's nephew decides (NpcSync sets it).
+var follower := false
 var _model: Node3D
 var _bubble: Label3D
 var _bubble_left := 0.0
@@ -72,14 +74,20 @@ func use(_cop: Cop) -> void:
 
 ## The handcuffs: caught for good, the remote falls out of his hands.
 func cuffed(_seconds: float) -> void:
+	if follower:
+		return
 	say("NEPHEW_CAUGHT")
 	if caught:
 		return
+	_catch()
+	caught_now.emit(self)
+
+
+func _catch() -> void:
 	caught = true
 	var remote := _model.find_child("remote", true, false) as Node3D
 	if remote:
 		remote.hide()
-	caught_now.emit(self)
 
 
 func is_cuffed() -> bool:
@@ -101,3 +109,12 @@ func _physics_process(delta: float) -> void:
 		_bubble_left -= delta
 		if _bubble_left <= 0.0:
 			_bubble.hide()
+
+
+func net_state() -> Array:
+	return [caught]
+
+
+func apply_net_state(state: Variant) -> void:
+	if state[0] and not caught:
+		_catch()

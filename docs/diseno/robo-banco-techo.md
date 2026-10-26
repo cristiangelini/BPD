@@ -109,3 +109,9 @@ de juguete, el sobrino con el control y la persecución en el aire.
   Oso cae esposado al asiento de atrás: la persecución se gana como siempre, y hay que volver a la comisaría. Si se
   aleja demasiado o se acaba el tiempo, se escapa y se pierde, como en la base. Captura en
   `/mnt/project-files/techo/paso4-persecucion.png`.
+- **Paso 5 (el online):** el helicóptero lo vuela el host: en los invitados lo mueve `PropSync` como cualquier cosa
+  que se agarra, y la foto del caso (`BankCase.snapshot`) dice cómo giran las hélices, si se cayó y si sigue en el
+  techo, además de si la banda se está yendo por arriba y cuántas bolsas quedan arriba (las del carrito se ven en
+  todos). El sobrino es de los que manda el host (`NpcSync`): su globo de texto y si está esposado se ven igual en
+  todos. El helicóptero que se lleva a El Oso es el vehículo de la persecución, que ya se sincroniza, con su soga; si
+  el que agarra la soga desde la ventanilla es un invitado, la acción va al host, que es el que lo atrapa.
