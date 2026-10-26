@@ -9,9 +9,12 @@ extends Node3D
 ## share of good seconds; staying away from the class inside the school is the lowest) and tells the host, which keeps
 ## the grades (`grades`, for the graduation in step 4). A grade of LOW_GRADE or less makes the students who see that
 ## cop suspicious (`missed`, to ClubSuspicion). The host decides the classes and when the Profesora turns, and tells
-## the guests. Every number here is (propuesta).
+## the guests. When the cops' average reaches GRADUATE in all three subjects (step 4), the next bell is the graduation
+## instead of a class: the Director comes down with the diplomas and there are no more classes. Every number here is
+## (propuesta).
 
 signal class_started(subject: String)
+signal graduation_started
 signal graded(cop: Cop, subject: String, grade: int)
 signal missed(cop: Cop, amount: float)
 
@@ -34,6 +37,8 @@ const TURN := Vector2(2.0, 4.0)
 ## A grade this low makes the students who see it suspicious, by this much.
 const LOW_GRADE := 3
 const LOW_GRADE_SUSPICION := 25.0
+## The average every subject needs for the graduation.
+const GRADUATE := 7.0
 
 ## Seconds to the next class (host) and left of this one (every PC; 0: no class).
 var next_left := FIRST
@@ -55,8 +60,11 @@ var teacher: ClubMember
 var good_seconds := 0
 var bad_seconds := 0
 var last_grade := 0
-## Host: subject -> {player (Cop.uniform) -> best grade}.
+## Subject -> {player (Cop.uniform) -> best grade} (the host's, copied to the guests).
 var grades := {}
+## The averages are good enough and the next bell is the graduation (host), and it happened (every PC).
+var graduation_due := false
+var graduated := false
 ## Tests and the debug panel can make this PC's cop hold E.
 var force_using := false
 var _rng := RandomNumberGenerator.new()
@@ -182,6 +190,8 @@ func _process(delta: float) -> void:
 
 ## Host: counts down to the next class with the Profesora's warning, and turns her around during sneaking.
 func _lead(delta: float) -> void:
+	if graduated:
+		return
 	if in_class():
 		if subject == "sneak":
 			_turn_left -= delta
@@ -192,9 +202,39 @@ func _lead(delta: float) -> void:
 	if next_left <= WARNING and not _warned:
 		_warned = true
 		if teacher:
-			teacher.say("GANZUA_BELL_SOON")
+			teacher.say("GANZUA_GRADUATION_SOON" if graduation_due else "GANZUA_BELL_SOON")
 	if next_left <= 0.0:
-		start_class()
+		if graduation_due:
+			start_graduation()
+		else:
+			start_class()
+
+
+## Host: the graduation starts now on every PC.
+func start_graduation() -> void:
+	graduation_due = false
+	_graduate()
+	var net := _net()
+	if multiplayer.is_server() and net.is_online():
+		for peer: int in net.scene_peers:
+			_graduated.rpc_id(peer)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _graduated() -> void:
+	_graduate()
+
+
+## Every PC: the bell, the Profesora announces it and the Director comes down (SchoolHall); no more classes.
+func _graduate() -> void:
+	if graduated:
+		return
+	graduated = true
+	class_left = 0.0
+	_bell.play()
+	if teacher:
+		teacher.say("GANZUA_GRADUATION")
+	graduation_started.emit()
 
 
 func _track_walk() -> void:
@@ -280,6 +320,24 @@ func record(cop: Cop, kind: String, grade: int) -> void:
 	graded.emit(cop, kind, grade)
 	if grade <= LOW_GRADE:
 		missed.emit(cop, LOW_GRADE_SUSPICION)
+	if not graduated and ready_to_graduate():
+		graduation_due = true
+	var net := _net()
+	if multiplayer.is_server() and net.is_online():
+		for peer: int in net.scene_peers:
+			_grades_now.rpc_id(peer, grades)
+
+
+## Guests: the host's grades, for the report card.
+@rpc("authority", "call_remote", "reliable")
+func _grades_now(all: Dictionary) -> void:
+	for kind: String in SUBJECTS:
+		grades[kind] = all.get(kind, {})
+
+
+## Whether the cops' average is at least GRADUATE in every subject.
+func ready_to_graduate() -> bool:
+	return SUBJECTS.all(func(kind: String) -> bool: return average(kind) >= GRADUATE)
 
 
 @rpc("any_peer", "call_remote", "reliable")

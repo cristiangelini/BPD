@@ -75,6 +75,17 @@ const VARIANTS := {
 		"boss_cuffed": "HINT_TORO_CUFFED", "cuff_row": "OBJ_GYM_CUFF_TORO", "catch_row": "OBJ_GYM_CATCH_TORO",
 		"slips": "TORO_SLIP_%d",
 	},
+	# The thieves' school (infiltracion-escuela.md): the Director only shows up at the graduation; until step 5 he
+	# runs off on foot.
+	"school": {
+		"story": "infiltration_school",
+		"brief": ["BRIEF_SCHOOL_A", "BRIEF_SCHOOL_B", "BRIEF_SCHOOL_C"],
+		"go": "HINT_GO_SCHOOL", "in": "HINT_SCHOOL_IN", "found": "HINT_CLUB_EVIDENCE",
+		"rows": "OBJ_SCHOOL_", "evidence": "EVIDENCE_SCHOOL_",
+		"boss": "director", "getaway": SuspectCar.BEAR_ON_FOOT,
+		"boss_cuffed": "HINT_DIRECTOR_CUFFED", "cuff_row": "OBJ_SCHOOL_CUFF_DIRECTOR",
+		"catch_row": "OBJ_SCHOOL_CATCH_DIRECTOR", "slips": "DIRECTOR_SLIP_%d",
+	},
 }
 ## With `second_chance`, the first wrong person cuffed only raises everyone's suspicion this much.
 const WRONG_CUFF := 50.0
