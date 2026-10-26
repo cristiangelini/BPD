@@ -33,6 +33,7 @@ const PLACES := [
 	{"id": "grandpa_club", "block": Vector2i(4, 1), "side": "s", "along": 0.0, "size": Vector3(28, 5, 22), "color": Color(0.82, 0.55, 0.75), "sign": "PLACE_GRANDPA_CLUB"},
 	{"id": "chapel", "block": Vector2i(1, 1), "side": "s", "along": 0.0, "size": Vector3(24, 5, 22), "color": Color(0.92, 0.88, 0.78), "sign": "PLACE_CHAPEL"},
 	{"id": "mime_theater", "block": Vector2i(5, 1), "side": "s", "along": 0.0, "size": Vector3(24, 5, 20), "color": Color(0.2, 0.2, 0.24), "sign": "PLACE_MIME_THEATER"},
+	{"id": "party_hall", "block": Vector2i(5, 0), "side": "s", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.55, 0.2, 0.45), "sign": "PLACE_PARTY_HALL"},
 	{"id": "bank", "block": Vector2i(3, 0), "side": "s", "along": 0.0, "size": Vector3(24, 7, 20), "color": Color(0.86, 0.84, 0.78), "sign": "PLACE_BANK"},
 	{"id": "prison", "block": Vector2i(5, 2), "side": "w", "along": 0.0, "size": Vector3(28, 5, 40), "color": Color(0.62, 0.6, 0.55), "sign": "PLACE_PRISON"},
 	{"id": "circus", "block": Vector2i(5, 3), "side": "n", "along": 0.0, "size": Vector3(40, 8, 30), "color": Color(0.86, 0.18, 0.2), "sign": "PLACE_CIRCUS"},

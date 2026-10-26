@@ -2227,6 +2227,8 @@ PROMPT_ENTER_TUNNEL,"E: meterte en el túnel","E: get into the tunnel","E: entra
 HINT_TUNNEL_OUT,"¡Afuera! Estás en la vereda, al lado del patrullero. Que no te vea el guardia por la ventana.","Out! You're on the sidewalk, by the patrol car. Don't let the guard see you through the window.","Lá fora! Você está na calçada, do lado da viatura. Que o guarda não te veja pela janela."
 JAILBREAK_ESCAPED_TUNNEL,"Dejaron un túnel hecho con cucharas. El guardia va a cenar con tenedor un mes entero.","You left behind a tunnel dug with spoons. The guard will eat dinner with a fork for a month.","Vocês deixaram um túnel cavado com colheres. O guarda vai jantar de garfo por um mês inteiro."
 PLACE_MIME_THEATER,"Teatro del Silencio","Theater of Silence","Teatro do Silêncio"
+PLACE_PARTY_HALL,"Salón Gala","Gala Hall","Salão Gala"
+PARTY_BANNER,"¡Gran fiesta de policías!","Big cop party!","Grande festa de policiais!"
 PROMPT_TALK_MIME,E: saludar con mímica,E: greet in mime,E: cumprimentar com mímica
 PROMPT_TALK_PAUSA,E: saludar a la Maestra Pausa,E: greet Maestra Pausa,E: cumprimentar a Maestra Pausa
 MIME_GOSSIP_0,*Hace como que sostiene una billetera enorme y te guiña un ojo.*,*Pretends to hold a huge wallet and winks at you.*,*Finge segurar uma carteira enorme e pisca para você.*
