@@ -91,6 +91,14 @@ Los pesos y valores siguen la escala de la fábrica: la principal vale unos 1000
      multa cada uno. "Oficina de seguros (prueba)" en el menú la abre, y también `--place=insurance`. Capturas
      `paso1-*` en `seguros/` de la carpeta del proyecto.
 2. Mirta: la ronda, la denuncia, "todo por escrito" y la distracción de la impresora.
+   - **Cómo quedó (propuesta):** Mirta (traje gris, anteojos con cadenita dorada, rodete y la taza roja de "La Jefa")
+     camina a 1,3 m/s ida y vuelta por el pasillo de adelante, el pasillo central y los dos pasillos entre filas, con
+     una pausa de 2 s en cada punta. Mira por encima de las mamparas: si ve volar una pila de papeles dice "¡Eso se pide
+     por formulario, oficial!" y suma 10. La impresora gigante tiene un botón verde ("Imprimir 500 copias"): escupe
+     una tanda de hojas y se traba; Mirta va hasta ella y pasa 15 s peleándose con la bandeja, de espaldas, sin ver
+     nada, y la destraba. Apretarla trabada solo avisa. La denuncia es como la de Fermín: 15 si la empujan (también
+     con una silla que rueda rápido), 5 por puerta rota, 10 por pantalla o trofeo que ve romperse (hasta 14 m), 5 por
+     pregunta, y abogado en 100. Capturas `paso2-*.png`.
 3. Coca y la máquina de números.
 4. El caso (RaidCase) con la primera historia: los choques falsos.
 5. Las otras 5 historias, una por PR.

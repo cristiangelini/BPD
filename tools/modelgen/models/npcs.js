@@ -682,6 +682,36 @@ const NPCS = {
 		b.add('face', white, ellipsoid(0.035, 0.035, 0.015, 6, 4), { pos: V(0.15, 1.24, 0.15) });
 		b.add('face', black, ellipsoid(0.015, 0.015, 0.008, 5, 3), { pos: V(0.155, 1.23, 0.165) });
 	},
+	// Mirta, the insurance office's floor boss (seguros.md): grey suit with lapels, glasses on a chain, a dark bun and a
+	// mug that says she's the boss.
+	jefa(b) {
+		const suit = C('boss_suit', 0x6a6e76);
+		pearBody(b, SKIN.cacao, { shirt: suit, pants: suit, shoes: C('boss_shoes', 0x2a2a2e) });
+		lapels(b, C('boss_blouse', 0xf2f2f0));
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		glasses(b);
+		mouth(b);
+		limb(b, 'glasses', gold, V(-0.14, 1.33, 0.22), V(0, 1.1, 0.3), 0.006);
+		limb(b, 'glasses', gold, V(0.14, 1.33, 0.22), V(0, 1.1, 0.3), 0.006);
+		const hair = C('hair_dark', 0x2e2018);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		b.add('head', hair, ellipsoid(0.11, 0.1, 0.1, 8, 6), { pos: V(0, 1.56, -0.08) });
+		b.add('props', C('boss_mug', 0xd23a3a), new THREE.CylinderGeometry(0.06, 0.055, 0.12, 10), { pos: V(0.5, 0.75, 0.2) });
+		b.add('props', white, new THREE.BoxGeometry(0.06, 0.04, 0.005), { pos: V(0.5, 0.76, 0.262) });
+	},
+	// Coca, the insurance office's receptionist (seguros.md): lilac cardigan, big red curls, a phone headset and long
+	// nails, chewing gum.
+	recepcionista(b) {
+		pearBody(b, SKIN.crema, { shirt: C('reception_cardigan', 0xb89ad8), pants: C('reception_skirt', 0x3a3a5a), shoes: C('reception_shoes', 0xd84a6a) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		const hair = C('hair_red_curls', 0xc8462a);
+		hairCap(b, hair, { y: 1.4, sx: 1.12, sy: 0.65, back: 0.03 });
+		for (const s of [-1, 1]) b.add('head', hair, ellipsoid(0.1, 0.12, 0.1, 8, 6), { pos: V(s * 0.22, 1.3, -0.03) });
+		limb(b, 'props', black, V(-0.24, 1.32, 0), V(-0.1, 1.2, 0.24), 0.01);
+		b.add('props', black, ellipsoid(0.025, 0.025, 0.025, 6, 4), { pos: V(-0.1, 1.2, 0.25) });
+		b.add('face', C('gum_bubble', 0xf28ab0), ellipsoid(0.04, 0.04, 0.04, 8, 6), { pos: V(0, 1.2, 0.27) });
+	},
 	// A ghost worker of the doll factory: a shop mannequin in an orange work coat and a hairnet, with a blank face (no
 	// eyes, no mouth), a seam around the neck and a stand under it.
 	maniqui(b) {

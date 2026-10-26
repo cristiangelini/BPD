@@ -5,6 +5,7 @@ extends Node3D
 ## something thrown at it sends the sheets flying all over, once. Only a joke, but the floor boss sees it (step 2).
 ## Every number here is (propuesta).
 
+## `at` is over the pile, where the sheets fly up (what someone nearby sees).
 signal scattered(at: Vector3)
 
 const SIZE := Vector3(0.3, 0.2, 0.36)
@@ -13,6 +14,8 @@ const SCATTER_SPEED := 2.5
 const SHEETS := 10
 const SHEET_SIZE := Vector3(0.21, 0.004, 0.3)
 const SHEET_LIFE := 10.0
+## How high over the pile the sheets are seen flying.
+const FLY_HEIGHT := 0.6
 const PAPER := Color(0.97, 0.96, 0.9)
 
 var is_scattered := false
@@ -85,4 +88,4 @@ func scatter() -> void:
 		sheet.linear_velocity = Vector3(rng.randf_range(-2.0, 2.0), rng.randf_range(2.0, 4.0), rng.randf_range(-2.0, 2.0))
 		sheet.angular_velocity = Vector3(rng.randf_range(-6.0, 6.0), rng.randf_range(-6.0, 6.0), rng.randf_range(-6.0, 6.0))
 		get_tree().create_timer(SHEET_LIFE).timeout.connect(sheet.queue_free)
-	scattered.emit(global_position)
+	scattered.emit(global_position + Vector3.UP * FLY_HEIGHT)
