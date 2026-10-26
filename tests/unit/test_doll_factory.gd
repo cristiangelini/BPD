@@ -45,7 +45,9 @@ func test_the_reception_is_open_and_the_office_locked() -> void:
 		[Vector3(0, 1.0, DollFactory.HALF_Z + 2), Vector3(0, 1.0, DollFactory.HALF_Z - 1.5)],
 		[Vector3(DollFactory.RECEPTION_DOORS[0], 1.0, DollFactory.RECEPTION_Z + 1), Vector3(DollFactory.RECEPTION_DOORS[0], 1.0, DollFactory.RECEPTION_Z - 1)],
 		[Vector3(DollFactory.STOREROOM_X - 1, 1.0, door_z), Vector3(DollFactory.STOREROOM_X + 0.4, 1.0, door_z)],
-		[Vector3(-DollFactory.HALF_X - 1, 0.6, DollFactory.GATE_Z), Vector3(-DollFactory.HALF_X + 1, 0.6, DollFactory.GATE_Z)],
+		# From 0.5 m out: the filler warehouses' fronts stand 1 m out, and a ray starting right on one hit it or not by
+		# rounding (it broke when the city grew to 10 x 7, decision 181).
+		[Vector3(-DollFactory.HALF_X - 0.5, 0.6, DollFactory.GATE_Z), Vector3(-DollFactory.HALF_X + 1, 0.6, DollFactory.GATE_Z)],
 	]
 	for way: Array in ways:
 		var query := PhysicsRayQueryParameters3D.create(way[0], way[1])
