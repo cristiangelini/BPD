@@ -60,9 +60,10 @@ func _ready() -> void:
 		_freeze(prop)
 
 
-## A queued car's trunk lid goes with its car (NpcSync, QueueCar.net_state), each PC its own.
+## A queued car's trunk lid, and a circus truck's cage door, go with its car (NpcSync, QueueCar.net_state), each PC
+## its own.
 static func is_synced(node: Node) -> bool:
-	return (node is Grabbable and not node is TrunkLid) or node is PatrolCar
+	return (node is Grabbable and not node is TrunkLid and not node is CageDoor) or node is PatrolCar
 
 
 ## A guest's copy: no physics of its own, no hits, nothing that moves it but the host. The car keeps running its
