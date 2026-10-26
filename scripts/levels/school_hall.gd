@@ -63,6 +63,8 @@ var free_seats: Array[Vector3] = []
 var teacher: ClubMember
 var director: ClubMember
 var doorman: ClubDoorman
+## The Profesora's practical classes (step 3).
+var classes: SchoolClasses
 var _build: PlaceBuilder
 
 
@@ -116,6 +118,30 @@ func in_yard(at: Vector3) -> bool:
 	return local.x > LOBBY_X and local.x < HALF_X and local.z > BACK_Z and local.z < HALF_Z and local.y < ROOF
 
 
+## Whether a world position is where the classes happen: the classroom or the yard.
+func in_lesson(at: Vector3) -> bool:
+	return in_classroom(at) or in_yard(at)
+
+
+## Whether a world position is on the yard's creaky floor.
+func on_creaky(at: Vector3) -> bool:
+	var local := global_transform.affine_inverse() * at
+	return CREAKY.has_point(Vector2(local.x, local.z)) and local.y < ROOF
+
+
+## Whether a world position is by one of the training locks.
+func near_lock(at: Vector3) -> bool:
+	var local := global_transform.affine_inverse() * at
+	return LOCKS.any(func(lock: Vector3) -> bool:
+		return Vector2(local.x - lock.x, local.z - lock.z).length() < SchoolClasses.LOCK_REACH)
+
+
+## Whether a world position is by the dummy.
+func near_dummy(at: Vector3) -> bool:
+	var local := global_transform.affine_inverse() * at
+	return Vector2(local.x - DUMMY_AT.x, local.z - DUMMY_AT.z).length() < SchoolClasses.DUMMY_REACH
+
+
 ## Where a student or a cop stands at each desk, on the floor.
 static func seats() -> Array[Vector3]:
 	var spots: Array[Vector3] = []
@@ -126,7 +152,7 @@ static func seats() -> Array[Vector3]:
 
 
 ## The students at desks drawn with the seed, facing the blackboard; the Profesora in front of them; the Director
-## hidden in his office; the lookout and their suspicion.
+## hidden in his office; the lookout, their suspicion and the Profesora's classes.
 func _add_people() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(["school members", case_seed])
@@ -173,6 +199,17 @@ func _add_people() -> void:
 	suspicion.inside = is_inside
 	suspicion.in_back_room = in_back_room
 	add_child(suspicion)
+	classes = SchoolClasses.new()
+	classes.name = "Classes"
+	classes.case_seed = case_seed
+	classes.teacher = teacher
+	classes.inside = is_inside
+	classes.in_lesson = in_lesson
+	classes.on_creaky = on_creaky
+	classes.near_lock = near_lock
+	classes.near_dummy = near_dummy
+	add_child(classes)
+	suspicion.watch_classes(classes)
 
 
 ## The Director is out of sight until the graduation (step 4): unseen and not in the way.

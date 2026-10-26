@@ -2352,6 +2352,32 @@ SCHOOL_FOUND_OUT_0,¡Son policías! ¡Nadie roba tan mal!,They're cops! Nobody s
 SCHOOL_FOUND_OUT_1,¡Son policías! ¡Mira cómo devuelven la billetera!,They're cops! Look at them giving the wallet back!,São policiais! Olha como devolvem a carteira!
 SCHOOL_FOUND_OUT_2,¡Son policías! ¡Ese antifaz es de cotillón!,They're cops! That mask is from a party store!,São policiais! Essa máscara é de festa!
 HINT_SCHOOL_FOUND_OUT,¡Los descubrieron! Todos los alumnos saben que son policías.,You've been found out! Every student knows you're cops.,Vocês foram descobertos! Todos os alunos sabem que vocês são policiais.
+GANZUA_BELL_SOON,"*La Profesora mira el reloj.* En un ratito, clase práctica. Saquen las manos de los bolsillos... propios.","*The Profesora checks the clock.* Practical class in a moment. Hands out of your pockets... your own.","*A Professora olha o relógio.* Daqui a pouco, aula prática. Tirem as mãos dos bolsos... próprios."
+GANZUA_CLASS_LOCKPICK,"¡Riiing! Clase de ganzúa: al patio, a las cerraduras. Despacito y sin moverse.","Riiing! Lockpicking class: to the yard, to the locks. Slowly and without moving.","Triiim! Aula de gazua: para o pátio, nas fechaduras. Devagarinho e sem se mexer."
+GANZUA_CLASS_PICKPOCKET,"¡Riiing! Clase de carterista: al muñeco. Agachados, que los cascabeles chillan.","Riiing! Pickpocketing class: to the dummy. Crouch down, the bells are loud.","Triiim! Aula de batedor de carteira: no boneco. Agachados, que os guizos tocam."
+GANZUA_CLASS_SNEAK,"¡Riiing! Clase de sigilo: al piso que cruje. Cuando me doy vuelta, estatua.","Riiing! Sneaking class: to the creaky floor. When I turn around, freeze.","Triiim! Aula de furtividade: no piso que range. Quando eu virar, estátua."
+GANZUA_LOOKING,¡Te veo!,I see you!,Estou vendo!
+GANZUA_BACK_TURNED,*Se da vuelta y silba.*,*Turns her back and whistles.*,*Vira de costas e assobia.*
+SCHOOL_CLASS_LOCKPICK,¡GANZÚA!,LOCKPICKING!,GAZUA!
+SCHOOL_CLASS_PICKPOCKET,¡CARTERISTA!,PICKPOCKETING!,BATEDOR DE CARTEIRA!
+SCHOOL_CLASS_SNEAK,¡SIGILO!,SNEAKING!,FURTIVIDADE!
+SCHOOL_LOOKING,(¡mira!),(she's looking!),(ela está olhando!)
+SCHOOL_BACK_TURNED,(de espaldas),(back turned),(de costas)
+SCHOOL_HOW_LOCKPICK,Ve a una cerradura del patio y mantén E sin moverte,Go to a lock in the yard and hold E without moving,Vá a uma fechadura do pátio e segure E sem se mexer
+SCHOOL_HOW_PICKPOCKET,Ve al muñeco del patio y quédate agachado (C) sin moverte,Go to the dummy in the yard and stay crouched (C) without moving,Vá ao boneco do pátio e fique agachado (C) sem se mexer
+SCHOOL_HOW_SNEAK,"Cruza el piso que cruje cuando está de espaldas, y quieto cuando mira","Cross the creaky floor while her back is turned, and freeze when she looks","Atravesse o piso que range quando ela estiver de costas, e parado quando olhar"
+SCHOOL_GOOD,"¡Bien! Manos ligeras","Good! Light hands","Boa! Mãos leves"
+SCHOOL_NOT_IN_CLASS,¡Estás faltando! Ve al aula o al patio,You're skipping class! Go to the classroom or the yard,Você está faltando! Vá para a sala ou o pátio
+SCHOOL_GO_TO_LOCK,Ve a una cerradura de la pared del patio,Go to a lock on the yard's wall,Vá a uma fechadura na parede do pátio
+SCHOOL_NOT_PICKING,¡Mantén E y no te muevas!,Hold E and don't move!,Segure E e não se mexa!
+SCHOOL_GO_TO_DUMMY,Ve al muñeco del patio,Go to the dummy in the yard,Vá ao boneco do pátio
+SCHOOL_BELLS,¡Cling cling! Agáchate (C) y no te muevas,Jingle jingle! Crouch (C) and don't move,Blim blim! Agache (C) e não se mexa
+SCHOOL_GO_TO_FLOOR,Ve al piso de tablas del patio,Go to the plank floor in the yard,Vá ao piso de tábuas do pátio
+SCHOOL_SEEN_MOVING,¡Te vio moverte! ¡Cruje!,She saw you move! Creak!,Ela viu você se mexer! Range!
+SCHOOL_YOUR_GRADE,Nota de la clase: %d,Class grade: %d,Nota da aula: %d
+HINT_SCHOOL_LOCKPICK,"Clase de ganzúa: ve a una cerradura de la pared del patio y mantén E sin moverte. Con nota de 3 o menos, los alumnos sospechan.","Lockpicking class: go to a lock on the yard's wall and hold E without moving. With a grade of 3 or less, the students get suspicious.","Aula de gazua: vá a uma fechadura na parede do pátio e segure E sem se mexer. Com nota 3 ou menos, os alunos desconfiam."
+HINT_SCHOOL_PICKPOCKET,"Clase de carterista: ve al muñeco del patio y quédate agachado (C) sin moverte. Con nota de 3 o menos, los alumnos sospechan.","Pickpocketing class: go to the dummy in the yard and stay crouched (C) without moving. With a grade of 3 or less, the students get suspicious.","Aula de batedor de carteira: vá ao boneco do pátio e fique agachado (C) sem se mexer. Com nota 3 ou menos, os alunos desconfiam."
+HINT_SCHOOL_SNEAK,"Clase de sigilo: cruza el piso de tablas del patio mientras la Profesora está de espaldas, y quédate quieto cuando mira. Con nota de 3 o menos, los alumnos sospechan.","Sneaking class: cross the yard's plank floor while the Profesora's back is turned, and freeze when she looks. With a grade of 3 or less, the students get suspicious.","Aula de furtividade: atravesse o piso de tábuas do pátio enquanto a Professora estiver de costas, e fique parado quando ela olhar. Com nota 3 ou menos, os alunos desconfiam."
 PROMPT_TALK_GUEST,E: charlar con el invitado,E: chat with the guest,E: conversar com o convidado
 PARTY_GOSSIP_0,¡Qué buen disfraz! El mío me lo hizo mi abuela con una cortina.,Great costume! My grandma made mine out of a curtain.,Que fantasia boa! A minha foi minha avó que fez com uma cortina.
 PARTY_GOSSIP_1,Dicen que el jefe vino disfrazado igual que todos. Qué original.,They say the boss came dressed like everyone else. How original.,Dizem que o chefe veio fantasiado igual a todos. Que original.
