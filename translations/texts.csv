@@ -2874,6 +2874,8 @@ AUCTION_FOUND_OUT_0,¡Son policías! ¡Ningún millonario pregunta si aceptan cu
 AUCTION_FOUND_OUT_1,¡Son policías! ¡Se limpió la nariz con el moño!,They're cops! He wiped his nose with his bow tie!,São policiais! Limpou o nariz com a gravata-borboleta!
 AUCTION_FOUND_OUT_2,¡Son policías! ¡Preguntó si el cuadro tiene la factura!,They're cops! He asked if the painting has a receipt!,São policiais! Perguntou se o quadro tem nota fiscal!
 HINT_AUCTION_FOUND_OUT,¡Los descubrieron! Todos los compradores saben que son policías.,You've been found out! Every buyer knows you're cops.,Vocês foram descobertos! Todos os compradores sabem que vocês são policiais.
+PROMPT_AUCTION_BID,E: levantar la paleta,E: raise the paddle,E: levantar a raquete
+AUCTION_PRICE,$ %d,$ %d,$ %d
 MENU_DOLL_FACTORY,Fábrica de muñecos (prueba),Doll factory (test),Fábrica de bonecos (teste)
 PROMPT_PUSH_BUTTON,Apretar el botón,Press the button,Apertar o botão
 PROMPT_SHUTTER_BUTTON,Subir la persiana del muelle,Raise the dock shutter,Levantar a porta do cais

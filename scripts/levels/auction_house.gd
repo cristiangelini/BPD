@@ -34,7 +34,7 @@ const CHAIRS: Array[Vector3] = [
 	Vector3(-9.5, 0, 6.0), Vector3(-7.5, 0, 6.0), Vector3(-5.5, 0, 6.0), Vector3(-3.5, 0, 6.0), Vector3(-1.5, 0, 6.0),
 	Vector3(-9.5, 0, 7.5), Vector3(-7.5, 0, 7.5), Vector3(-5.5, 0, 7.5), Vector3(-3.5, 0, 7.5), Vector3(-1.5, 0, 7.5),
 ]
-const SEAT := 0.45
+const SEAT := BidSeat.SEAT
 ## Where the buyers can be, facing where they look: [position, turn] (turn 0 faces -Z, the podium). The first ones are
 ## chairs (they sit there); the seed picks BUYERS of them.
 const SPOTS: Array[Array] = [
@@ -67,6 +67,10 @@ const GOLD := Color(0.85, 0.68, 0.25)
 const CONCRETE := Color(0.55, 0.55, 0.55)
 
 var office_door: FrontDoor
+## The hall's chairs, one per CHAIRS, the podium and the easel (step 3).
+var seats: Array[BidSeat] = []
+var podium: AuctionPodium
+var easel: LotEasel
 var martillo: ClubMember
 var doorman: ClubDoorman
 var _build: PlaceBuilder
@@ -80,6 +84,7 @@ func _ready() -> void:
 	_build_hall()
 	_build_gallery()
 	_build_back_rooms()
+	_add_hall()
 	office_door = DOOR_SCENE.instantiate()
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, BACK_Z)
 	add_child(office_door)
@@ -198,16 +203,30 @@ func _build_shell() -> void:
 			_build.light(Vector3(x, ROOF - 0.6, z))
 
 
-## The hall: the red carpet, Don Martillo's podium, the easel of the lots and the rows of chairs.
+## The hall's red carpet.
 func _build_hall() -> void:
 	_build.mesh_box(Vector3((GALLERY_X - HALF_X) / 2, FLOOR_TOP + 0.004, HALF_Z / 2), Vector3(HALF_X + GALLERY_X - 0.1,
 		0.008, HALF_Z - 0.1), CARPET)
-	_build.box(PODIUM_AT + Vector3(0, FLOOR_TOP + 0.55, 0), Vector3(1.2, 1.1, 0.5), WOOD)
-	_build.mesh_box(PODIUM_AT + Vector3(0, FLOOR_TOP + 0.75, 0.26), Vector3(0.5, 0.3, 0.02), GOLD)
-	_build.box(EASEL_AT + Vector3(0, FLOOR_TOP + 0.6, 0), Vector3(0.9, 1.2, 0.1), WOOD.lightened(0.15))
-	for at in CHAIRS:
-		_build.box(at + Vector3(0, FLOOR_TOP + SEAT / 2, 0), Vector3(0.5, SEAT, 0.5), GOLD.darkened(0.2))
-		_build.mesh_box(at + Vector3(0, FLOOR_TOP + SEAT + 0.3, 0.23), Vector3(0.5, 0.6, 0.05), CARPET.darkened(0.2))
+
+
+## Don Martillo's podium with the gavel and the price board, the easel of the lots and the chairs with their paddles,
+## facing the podium (step 3).
+func _add_hall() -> void:
+	podium = AuctionPodium.new()
+	podium.name = "Podium"
+	podium.position = PODIUM_AT + Vector3(0, FLOOR_TOP, 0)
+	add_child(podium)
+	easel = LotEasel.new()
+	easel.name = "Easel"
+	easel.position = EASEL_AT + Vector3(0, FLOOR_TOP, 0)
+	add_child(easel)
+	for i in CHAIRS.size():
+		var seat := BidSeat.new()
+		seat.name = "Seat%d" % (i + 1)
+		seat.number = i + 1
+		seat.position = CHAIRS[i] + Vector3(0, FLOOR_TOP, 0)
+		add_child(seat)
+		seats.append(seat)
 
 
 ## The gallery: the paintings for sale in their gold frames and the pedestal with its vase.
