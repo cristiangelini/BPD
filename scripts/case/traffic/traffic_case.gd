@@ -117,6 +117,7 @@ func start(comisario: Comisario = null) -> void:
 	queue.passed.connect(_on_passed)
 	queue.punctured.connect(_on_punctured)
 	queue.animal_lost.connect(_on_animal_lost)
+	queue.dancer_wronged.connect(_on_dancer_wronged)
 	if comisario:
 		comisario.spoke.connect(give_tip.unbind(1))
 		_hint_all("HINT_SEE_COMISARIO")
@@ -273,6 +274,13 @@ func _on_animal_lost(_car: QueueCar) -> void:
 
 
 ## An innocent's complaint; the second one loses the case.
+func _on_dancer_wronged(_car: QueueCar) -> void:
+	if follower or shift_over or lost or solved_now:
+		return
+	_hint_all("HINT_PARADE_WRONG_DANCER")
+	_complaint()
+
+
 func _complaint() -> void:
 	innocents += 1
 	lost = innocents >= MAX_INNOCENTS

@@ -106,18 +106,24 @@ static func build(car: QueueCar, traits: Dictionary) -> void:
 	car.add_child(troupe)
 	var dancers: Array = traits.get("dancers", [])
 	for i in mini(dancers.size(), DANCER_AT.size()):
-		var dancer := _dancer(dancers[i], skirt)
+		var dancer := ParadeDancer.new()
 		dancer.name = "Dancer%d" % i
+		dancer.car = car
+		dancer.index = i
+		dancer.traits = dancers[i]
+		dancer.thief = i == int(traits.get("thief", -1))
 		dancer.position = DANCER_AT[i]
+		dancer.rotation.y = PI
+		dancer.add_child(_dancer(dancers[i], skirt))
 		troupe.add_child(dancer)
 
 
-## One dancer, facing back toward the cops behind the float: the body with its mask, and its two arms, each with what
-## it holds in the hand.
+## One dancer's look (the dancer faces back toward the cops behind the float): the body with its mask, and its two
+## arms, each with what it holds in the hand.
 static func _dancer(traits: Dictionary, costume: Material) -> Node3D:
 	var dancer := Node3D.new()
+	dancer.name = "Look"
 	dancer.scale = Vector3.ONE * DANCER_SCALE
-	dancer.rotation.y = PI
 	var body: Node3D = DANCER_MODEL.instantiate()
 	body.name = "Body"
 	dancer.add_child(body)
@@ -143,6 +149,40 @@ static func _dancer(traits: Dictionary, costume: Material) -> Node3D:
 	return dancer
 
 
+## Step 3: one in this many dancers is clumsy and starts the step late; El Antifaz says one of EXCUSES (PARADE_EXCUSE_0
+## to 9) when he dances another float's step, and a real dancer taken down one of DOWN_LINES (PARADE_DOWN_0 to 5).
+const CLUMSY_ONE_IN := 6
+const EXCUSES := 10
+const DOWN_LINES := 6
+
+
+## The step the dancers on a `theme` float do.
+static func step_of(theme: String) -> String:
+	return ParadeDancer.STEPS[maxi(THEMES.find(theme), 0)]
+
+
+## The step El Antifaz does on a `theme` float instead: another float's, from the plate so every PC agrees.
+static func wrong_step(theme: String, plate: String) -> String:
+	var mine := maxi(THEMES.find(theme), 0)
+	var other := (mine + 1 + absi(hash(["parade wrong step", plate])) % (THEMES.size() - 1)) % THEMES.size()
+	return ParadeDancer.STEPS[other]
+
+
+## Whether dancer `i` on the float with `plate` is clumsy (starts the step late): from both, so every PC agrees.
+static func clumsy(plate: String, i: int) -> bool:
+	return absi(hash(["parade clumsy", plate, i])) % CLUMSY_ONE_IN == 0
+
+
+## What El Antifaz says the `danced`th time he's caught on the wrong step.
+static func excuse_line(plate: String, danced: int) -> String:
+	return "PARADE_EXCUSE_%d" % ((absi(hash(["parade excuse", plate])) + danced) % EXCUSES)
+
+
+## What a real dancer taken down says, the `downs`th time on this float.
+static func down_line(plate: String, downs: int) -> String:
+	return "PARADE_DOWN_%d" % ((absi(hash(["parade down", plate])) + downs) % DOWN_LINES)
+
+
 ## The float's music: notes bobbing over it while it plays, the crowd's boo while it doesn't.
 static func add_notes(car: Node3D) -> Label3D:
 	var notes := _label("♪ ♫ ♪", 96, Color(1.0, 0.85, 0.3))
@@ -164,12 +204,12 @@ static func show_music(car: Node3D, playing: bool, beat: float) -> void:
 
 
 ## The dancers on `car`'s float, the first one first; empty for a city car.
-static func dancers_of(car: Node3D) -> Array[Node3D]:
-	var out: Array[Node3D] = []
+static func dancers_of(car: Node3D) -> Array[ParadeDancer]:
+	var out: Array[ParadeDancer] = []
 	var troupe := car.get_node_or_null("Dancers")
 	if troupe:
 		for dancer in troupe.get_children():
-			out.append(dancer as Node3D)
+			out.append(dancer as ParadeDancer)
 	return out
 
 
