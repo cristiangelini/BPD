@@ -34,6 +34,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_GUEST_BOOK", "OBJ_EXTRA_WIG_SPARE"],
 		"rig": preload("res://scripts/case/hotel/regular_guest_rig.gd"),
 	},
+	"robes": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_ROBES_B", "BRIEF_ROBES_C", "BRIEF_ROBES_D"],
+		"find": "OBJ_FIND_ROBES",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/robe_bag.tscn"), preload("res://scenes/props/buyers_list.tscn"),
+			preload("res://scenes/props/embroidery_machine.tscn")],
+		"half_heights": [0.3, 0.005, 0.18],
+		"heavy": [true, false, true],
+		"extra_keys": ["OBJ_EXTRA_BUYERS_LIST", "OBJ_EXTRA_EMBROIDERY"],
+		"rig": preload("res://scripts/case/hotel/robes_rig.gd"),
+	},
 	"casino_13": {
 		"briefing": ["BRIEF_RIGHT", "BRIEF_CASINO_B", "BRIEF_CASINO_C", "BRIEF_CASINO_D"],
 		"find": "OBJ_FIND_CASINO",
