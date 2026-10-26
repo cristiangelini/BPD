@@ -126,6 +126,10 @@ Los pesos y valores siguen la escala de los otros lugares: la principal vale uno
      la tablita. Un policía que corre (más rápido que caminar) a menos de 4 m la espanta, con collar y todo, hasta la
      próxima. Solo vienen mientras el palomar sigue en el balcón. Plumas y alpiste en el ascensor y en el pasillo hasta
      el 30B (pista). El silbato se esconde con la semilla. Capturas `paso7-palomas*.png`.
+   - **El inquilino de los veinte (propuesta):** el 30C sigue cerrado con llave como siempre (abre la llave del
+     tablero o el ariete), pero adentro está lleno de colchones y bolsos de los inquilinos engañados. La caja con los
+     contratos (5 kg) está sobre un colchón del fondo. En el hall, el buzón del 30C tiene veinte nombres (E lo mira:
+     pista). El sello falso y el manojo de llaves se esconden con la semilla. Capturas `paso7-inquilinos-*.png`.
 8. "Jugar" sortea entre los 8 lugares de allanamiento.
 9. El online (el ascensor, el andamio, Don Evaristo, Doña Pepa y la evidencia en todas las PC).
 
