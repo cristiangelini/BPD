@@ -82,6 +82,14 @@ Los pesos y valores siguen la escala de la oficina: la principal vale unos 1000 
      el que la pisa deja huellas blancas cada 0,6 m durante 15 s (cada huella dura 20 s). 12 escondites, 6 pesados.
      Botón "Laboratorio de pasteles (prueba)" y `--place=cake_lab`. Fotos en `laboratorio/paso1-*.png`.
 2. El chef Bruno: la ronda, la denuncia, "¡cuidado con mis pasteles!" y la distracción del horno.
+   - **Cómo quedó (propuesta):** Bruno (redondo, chaqueta blanca, pañuelo rosa, bigote finito, gorro altísimo y
+     batidor) camina a 1,3 m/s ida y vuelta por el pasillo de adelante y los dos pasillos entre las mesadas, con una
+     pausa de 2 s en cada punta. Usa el mismo cuerpo que Mirta con su propia voz: si ve aplastarse un pastel dice
+     "¡Cuidado con mis pasteles!" y suma 10, y si ve reventar una bolsa de harina, "¡Harina de primera, oficial!" y
+     otros 10. El primer horno de la pared tiene una perilla roja ("Subir el horno al máximo"): suena la alarma roja,
+     sale humo y Bruno corre a salvar su soufflé, 15 s de espaldas sin ver nada. La denuncia es como la de Mirta: 15
+     si lo empujan, 5 por puerta rota, 5 por pregunta, y abogado (y prensa gastronómica) en 100. Capturas
+     `paso2-*.png`.
 3. Pocha y la bandeja de muestras.
 4. El caso (RaidCase) con la primera historia: el pastel relleno de plata.
 5. Las otras 5 historias, una por PR.

@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Cake lab, step 2: chef Bruno walks between the counters, raises the complaint when he sees a cake squashed or a flour sack burst, and calls his lawyer at 100; the soufflé oven's red knob turns it up to the max and he spends 15 s saving it with his back turned. The floor boss now speaks in a voice (BOSS or CHEF) so both owners share one body.
 - Cake lab, step 1: the lab on its lot: tasting room with a showcase of 8 cakes that break as fines, the big kitchen with steel counters, giant mixers and ovens, the flour storeroom with 10 sacks that burst into a cloud and leave white footprints, the locker room, the locked flavor lab and cold room, 12 hiding spots; a menu test button and --place=cake_lab.
 - Cake lab, step 0: design doc (docs/diseno/laboratorio.md) and decision 163 (proposed).
 - Insurance office, step 7: online: the host runs Mirta and Coca and the guests follow them (place, complaint, the board's number), the printer's button and the ticket machine work from any PC, a guest's jammed printer clears with the host's, and a guest can answer a ringing phone.

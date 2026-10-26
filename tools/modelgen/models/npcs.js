@@ -720,6 +720,22 @@ const NPCS = {
 		b.add('face', C('mannequin_seam', 0xa8a294), new THREE.TorusGeometry(0.13, 0.01, 4, 14), { pos: V(0, 1.08, 0), rot: [Math.PI / 2, 0, 0] });
 		b.add('props', C('mannequin_stand', 0x4a4a52), new THREE.CylinderGeometry(0.25, 0.25, 0.04, 12), { pos: V(0, 0.02, 0) });
 	},
+	// Chef Bruno, the cake lab's head pastry chef (laboratorio.md): round, spotless white jacket and apron, a very tall
+	// hat, a thin black mustache and a whisk in his hand.
+	chef_bruno(b) {
+		pearBody(b, SKIN.arena, { shirt: C('chef_jacket', 0xf4f4f0), pants: C('chef_check_pants', 0x3a3a46), shoes: C('cook_shoes', 0x2a2a2e) });
+		b.add('body', C('chef_jacket', 0xf4f4f0), ellipsoid(0.36, 0.3, 0.3, 10, 6), { pos: V(0, 0.75, 0.1) });
+		for (const y of [0.85, 1.0]) for (const s of [-1, 1]) b.add('body', C('chef_button', 0xc8c8c0), new THREE.SphereGeometry(0.02, 5, 3), { pos: V(s * 0.08, y, 0.38) });
+		b.add('body', C('chef_scarf', 0xd84a6a), ellipsoid(0.16, 0.05, 0.14, 8, 4), { pos: V(0, 1.1, 0.12) });
+		eyes(b, 1.34, 0.17, 0.08, 0.05);
+		for (const s of [-1, 1]) b.add('face', black, new THREE.BoxGeometry(0.1, 0.008, 0.01), { pos: V(s * 0.055, 1.255, 0.2), rot: [0, 0, s * 0.25] });
+		mouth(b);
+		hairCap(b, C('hair_dark', 0x2e2018), { y: 1.38, back: 0.02 });
+		b.add('cap', white, new THREE.CylinderGeometry(0.17, 0.16, 0.42, 10), { pos: V(0, 1.68, 0.0) });
+		b.add('cap', white, ellipsoid(0.22, 0.12, 0.22, 10, 5), { pos: V(0, 1.92, 0.0) });
+		limb(b, 'props', C('whisk_handle', 0xc8945a), V(0.5, 0.5, 0.0), V(0.5, 0.62, 0.18), 0.03);
+		b.add('props', C('whisk_wire', 0xc0c4c8), ellipsoid(0.07, 0.12, 0.07, 6, 4), { pos: V(0.5, 0.72, 0.27), rot: [0.6, 0, 0] });
+	},
 };
 
 export const NPC_NAMES = Object.keys(NPCS);

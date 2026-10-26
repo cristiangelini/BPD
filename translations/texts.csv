@@ -2499,6 +2499,25 @@ LOC_on_cold_shelf,en un estante de la cámara de frío,on a shelf in the cold ro
 LOC_in_mixer_bowl,adentro de la batidora gigante,inside the giant mixer,dentro da batedeira gigante
 LOC_on_lab_table,en la mesa del laboratorio de sabores,on the flavor lab's table,na mesa do laboratório de sabores
 HINT_FLOURED,"¡Estás enharinado! Vas dejando huellas blancas por todos lados.","You're covered in flour! You leave white footprints everywhere.","Você está enfarinhado! Vai deixando pegadas brancas por todo lado."
+PROMPT_OVEN_KNOB,Subir el horno al máximo,Turn the oven up to the max,Aumentar o forno ao máximo
+HINT_OVEN_BURNING,"El horno ya está al máximo, y huele a quemado.","The oven is already at the max, and it smells burnt.","O forno já está no máximo, e tem cheiro de queimado."
+CHEF_LINE_1,"Un poquito más de vainilla... perfecto.","A little more vanilla... perfect.","Um pouquinho mais de baunilha... perfeito."
+CHEF_LINE_2,"¡No me toquen las mesadas, oficiales!","Don't touch my counters, officers!","Não mexam nas minhas bancadas, policiais!"
+CHEF_LINE_3,La pastelería es una ciencia exacta.,Pastry is an exact science.,A confeitaria é uma ciência exata.
+CHEF_LINE_4,"Mmm... le falta azúcar. Siempre le falta azúcar.","Mmm... it needs sugar. It always needs sugar.","Hmm... falta açúcar. Sempre falta açúcar."
+CHEF_PRINTER,¡Mi soufflé! ¡Que nadie respire!,My soufflé! Nobody breathe!,Meu suflê! Ninguém respira!
+CHEF_FIX_1,"Tranquilo, soufflé, tranquilo...","Easy, soufflé, easy...","Calma, suflê, calma..."
+CHEF_FIX_2,¿Quién subió el horno? ¡Quién!,Who turned up the oven? Who!,Quem aumentou o forno? Quem!
+CHEF_FIX_3,"Aire, aire, aire...","Air, air, air...","Ar, ar, ar..."
+CHEF_FIX_DONE,Salvado. Por un pelo de merengue.,Saved. By a meringue's whisker.,Salvo. Por um fio de merengue.
+CHEF_HURT,"¡Cuidado, oficial! ¡Eso es una agresión, y la anoto!","Careful, officer! That's an assault, and I'm writing it down!","Cuidado, policial! Isso é uma agressão, e vou anotar!"
+CHEF_DOOR,¿Una puerta rota? ¡Esto es un laboratorio!,A broken door? This is a laboratory!,Uma porta quebrada? Isto é um laboratório!
+CHEF_SAW,¡Eso es material de laboratorio!,That's lab equipment!,Isso é material de laboratório!
+CHEF_CAKE,¡Cuidado con mis pasteles!,Careful with my cakes!,Cuidado com os meus bolos!
+CHEF_FLOUR,"¡Harina de primera, oficial!","Top-quality flour, officer!","Farinha de primeira, policial!"
+CHEF_NOTHING,"Yo solo hago pasteles, oficial.","I just make cakes, officer.","Eu só faço bolos, policial."
+CHEF_OFFENDED,"Un chef no revela sus secretos.","A chef never reveals his secrets.","Um chef não revela os seus segredos."
+CHEF_LAWYER,"¡Llamo a mi abogado! ¡Y a la prensa gastronómica!","I'm calling my lawyer! And the food critics!","Vou ligar para o meu advogado! E para os críticos de gastronomia!"
 HINT_JAILED_VENT,"El guardia mira las celdas y la llave cuelga del tablero, detrás de él. Arriba, en la pared, hay una rejilla floja... ¿entramos todos por ahí?","The guard is watching the cells and the key hangs on the board behind him. Up on the wall there's a loose grille... will we all fit through?","O guarda está olhando as celas e a chave está pendurada no quadro, atrás dele. Lá em cima, na parede, tem uma grade solta... será que todos cabem?"
 PROMPT_VENT_SCREW,"E: aflojar un tornillo con la uña","E: loosen a screw with your fingernail","E: afrouxar um parafuso com a unha"
 PROMPT_VENT_TOO_HIGH,"La rejilla está muy alta: súbete a la cucheta","The grille is too high: climb onto the bunk","A grade está alta demais: suba no beliche"
