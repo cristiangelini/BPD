@@ -51,7 +51,7 @@ func test_the_comisario_tells_the_parade() -> void:
 	rally.case.tip_given = false
 	rally.case.give_tip()
 	cop.input_enabled = false
-	assert_eq(rally.case.briefing.lines, PackedStringArray(["BRIEF_PARADE_A", "BRIEF_PARADE_B", "BRIEF_PARADE_C"]))
+	assert_eq(rally.case.briefing.lines, PackedStringArray(["BRIEF_CONVERTIBLE_A", "BRIEF_CONVERTIBLE_B", "BRIEF_CONVERTIBLE_C"]))
 
 
 func test_the_planilla_shows_the_route_and_the_huggers() -> void:

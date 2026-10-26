@@ -316,6 +316,10 @@ func _add_cooler() -> void:
 
 ## The power is cut at night: a dark sky, a faint blue moon and little ambient light.
 func _night() -> void:
+	# The living city's clock would bring the day back (ciudad-viva.md): the blackout keeps it out.
+	var city := bank.get_node_or_null("City") as City
+	if city:
+		city.hold_weather()
 	var world := bank.get_node_or_null("Environment") as WorldEnvironment
 	if world and world.environment:
 		var env := world.environment.duplicate(true) as Environment
