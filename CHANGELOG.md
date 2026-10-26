@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Insurance office, step 5: the office accidents story: the 3 kg box of neck braces is hidden with the fake X-rays and the banana peels, the employees of the month all wear neck braces (the clue), and 6 wet patches with their "wet floor" signs make running cops skate on out of control.
 - Insurance office, step 5: the shredder story: the 4 kg box of unpaid claims is hidden with the bag of shredded paper and the "shred everything" order, a trail of paper bits leads to it (the clue), and the archive's shredder eats anything up to 6 kg let go on it, losing the case if it eats the box.
 - Insurance office, step 5: the UFO insurance story: the 5 kg box of policies is hidden with the fake UFO photos and the toy saucer, the sales script on a desk is the clue, and a phone on every desk rings now and then (up to 3): E answers and a retiree asks if the policy covers cows.
 - Insurance office, step 5: the coffee machine safe story: the kitchen's coffee machine is a 30 kg safe full of money (pressing it with E gives coins instead of coffee, the clue), the code post-it and the account book are hidden, and every cup on the desks holds coins.

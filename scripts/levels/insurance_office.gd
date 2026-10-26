@@ -65,6 +65,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_SHRED_BAG", "OBJ_EXTRA_SHRED_ORDER"],
 		"rig": preload("res://scripts/case/insurance/shredder_rig.gd"),
 	},
+	"office_accidents": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_OFFICE_ACCIDENTS_B", "BRIEF_OFFICE_ACCIDENTS_C", "BRIEF_OFFICE_ACCIDENTS_D"],
+		"find": "OBJ_FIND_NECK_BRACES",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/neck_braces.tscn"), preload("res://scenes/props/xrays.tscn"),
+			preload("res://scenes/props/banana_peels.tscn")],
+		"half_heights": [0.13, 0.005, 0.03],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_XRAYS", "OBJ_EXTRA_BANANA_PEELS"],
+		"rig": preload("res://scripts/case/insurance/office_accidents_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the office; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [
@@ -87,6 +98,9 @@ const FLOOR_TOP := 0.06
 const ENTRANCE_WIDTH := 2.4
 ## The wall between the reception and the rest, with its two openings.
 const RECEPTION_Z := 5.0
+## The four "Employee of the month" photos on the reception's side of its wall: the first one, and the step between.
+const EMPLOYEE_PHOTOS_AT := Vector3(6.5, 1.7, RECEPTION_Z + 0.09)
+const EMPLOYEE_PHOTO_STEP := 1.1
 const RECEPTION_OPENINGS: Array[float] = [-8.0, 2.0]
 const OPENING_WIDTH := 1.8
 ## The east band: the meeting room at the front, the kitchen nook in the middle and the boss's office at the back.
@@ -434,7 +448,7 @@ func _build_reception() -> void:
 	_model(COOLER_MODEL, COOLER_AT, PI)
 	# The "Employee of the month" photos, on the reception's side of its wall.
 	for i in 4:
-		var at := Vector3(6.5 + i * 1.1, 1.7, RECEPTION_Z + 0.09)
+		var at := EMPLOYEE_PHOTOS_AT + Vector3(i * EMPLOYEE_PHOTO_STEP, 0, 0)
 		_build.mesh_box(at, Vector3(0.6, 0.8, 0.03), WOOD)
 		_build.mesh_box(at + Vector3(0, 0.05, 0.02), Vector3(0.45, 0.55, 0.01), Color(0.95, 0.85, 0.7))
 	_build.light(Vector3(-5.0, 2.8, 6.5))

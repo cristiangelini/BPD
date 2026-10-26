@@ -277,6 +277,72 @@ export function buildShredder() {
 	return b.build();
 }
 
+// The box of 20 neck braces: an open cardboard box 0.4 x 0.25 x 0.3 m with white foam collars piled in it. Main
+// evidence of the office accidents.
+export function buildNeckBraces() {
+	const b = new Builder('neck_braces');
+	const card = mat('box_card', 0xb88a5a);
+	b.add('bottom', card, new THREE.BoxGeometry(0.4, 0.01, 0.3), { pos: V(0, -0.12, 0) });
+	for (const s of [-1, 1]) {
+		b.add('sides', card, new THREE.BoxGeometry(0.4, 0.25, 0.01), { pos: V(0, 0, s * 0.145) });
+		b.add('sides', card, new THREE.BoxGeometry(0.01, 0.25, 0.3), { pos: V(s * 0.195, 0, 0) });
+	}
+	for (let i = 0; i < 6; i++) {
+		b.add('collars', mat('collar_white', 0xf2f0e8), new THREE.TorusGeometry(0.06, 0.03, 5, 10), { pos: V(-0.1 + (i % 3) * 0.1, 0.06 + Math.floor(i / 3) * 0.04, -0.05 + Math.floor(i / 3) * 0.09), rot: [Math.PI / 2 + 0.2 * (i % 2), 0, 0.3 * (i % 3)] });
+	}
+	b.add('velcro', mat('collar_velcro', 0x3a5a8a), new THREE.BoxGeometry(0.04, 0.02, 0.01), { pos: V(0.1, 0.1, 0.06) });
+	return b.build();
+}
+
+// Fake X-rays: a dark film 0.3 x 0.36 m with a neck's bones drawn on it, upside down. Extra of the office accidents.
+export function buildXrays() {
+	const b = new Builder('xrays');
+	b.add('film', mat('xray_film', 0x1e2a36), new THREE.BoxGeometry(0.3, 0.004, 0.36), { pos: V(0, 0, 0) });
+	for (let i = 0; i < 6; i++) b.add('bones', mat('xray_bone', 0xd8e2ea), new THREE.BoxGeometry(0.05, 0.002, 0.03), { pos: V(0, 0.003, -0.12 + i * 0.045) });
+	b.add('skull', mat('xray_bone', 0xd8e2ea), ellipsoid(0.07, 0.002, 0.06, 8, 3), { pos: V(0, 0.003, 0.14) });
+	return b.build();
+}
+
+// A paper tray 0.25 x 0.2 m with three yellow banana peels. Extra of the office accidents.
+export function buildBananaPeels() {
+	const b = new Builder('banana_peels');
+	b.add('tray', mat('tray_grey', 0x8a8e96), new THREE.BoxGeometry(0.25, 0.02, 0.2), { pos: V(0, -0.03, 0) });
+	for (let i = 0; i < 3; i++) {
+		const x = -0.07 + i * 0.07;
+		for (let j = 0; j < 3; j++) {
+			const a = (j / 3) * Math.PI * 2 + i;
+			b.add('peels', mat('banana_yellow', 0xf2d24a), new THREE.BoxGeometry(0.02, 0.008, 0.08), { pos: V(x + Math.cos(a) * 0.025, -0.012, Math.sin(a) * 0.025), rot: [0, a, 0.2] });
+		}
+		b.add('tips', mat('banana_tip', 0x4a3a2a), ellipsoid(0.008, 0.008, 0.008, 4, 3), { pos: V(x, 0.0, 0) });
+	}
+	return b.build();
+}
+
+// A yellow "wet floor" sign: an A-frame 0.3 x 0.6 m with a black slipping figure on each side.
+export function buildWetSign() {
+	const b = new Builder('wet_sign');
+	const yellow = mat('sign_yellow', 0xf2c82a), black = mat('sign_black', 0x1e1e22);
+	for (const s of [-1, 1]) {
+		b.add('boards', yellow, new THREE.BoxGeometry(0.3, 0.6, 0.015), { pos: V(0, 0.3, s * 0.08), rot: [s * 0.27, 0, 0] });
+		b.add('figure', black, ellipsoid(0.03, 0.03, 0.004, 6, 3), { pos: V(0.03, 0.42, s * 0.12), rot: [s * 0.27, 0, 0] });
+		b.add('figure', black, new THREE.BoxGeometry(0.025, 0.12, 0.004), { pos: V(0.0, 0.33, s * 0.1), rot: [s * 0.27, 0, 0.6] });
+		b.add('figure', black, new THREE.BoxGeometry(0.1, 0.02, 0.004), { pos: V(-0.03, 0.24, s * 0.075), rot: [s * 0.27, 0, -0.3] });
+	}
+	return b.build();
+}
+
+// An "employee of the month" frame 0.3 x 0.4 m: a smiling worker in a white neck brace.
+export function buildEmployeePhoto() {
+	const b = new Builder('employee_photo');
+	b.add('frame', mat('frame_gold', 0xc8a04a), new THREE.BoxGeometry(0.3, 0.4, 0.03), { pos: V(0, 0, 0) });
+	b.add('photo', mat('photo_blue', 0x8ab4d8), new THREE.BoxGeometry(0.24, 0.32, 0.005), { pos: V(0, 0.01, 0.016) });
+	b.add('face', mat('photo_skin', 0xe0b48a), ellipsoid(0.05, 0.06, 0.004, 8, 3), { pos: V(0, 0.07, 0.02) });
+	b.add('brace', mat('collar_white', 0xf2f0e8), new THREE.BoxGeometry(0.11, 0.05, 0.006), { pos: V(0, -0.005, 0.021) });
+	b.add('shirt', mat('photo_shirt', 0x3a5a8a), new THREE.BoxGeometry(0.18, 0.08, 0.004), { pos: V(0, -0.09, 0.02) });
+	b.add('plate', mat('frame_gold', 0xc8a04a), new THREE.BoxGeometry(0.16, 0.03, 0.006), { pos: V(0, -0.165, 0.02) });
+	return b.build();
+}
+
 export const models = {
 	office_chair: buildOfficeChair, office_monitor: buildOfficeMonitor, glass_trophy: buildGlassTrophy,
 	coffee_machine: buildCoffeeMachine, water_cooler: buildWaterCooler,
@@ -284,10 +350,19 @@ export const models = {
 	claim_photos: buildClaimPhotos, code_postit: buildCodePostit, account_book: buildAccountBook,
 	ufo_policies: buildUfoPolicies, ufo_photos: buildUfoPhotos, toy_saucer: buildToySaucer, sales_script: buildSalesScript,
 	desk_phone: buildDeskPhone, claims_box: buildClaimsBox, shred_bag: buildShredBag, shred_order: buildShredOrder,
-	shredder: buildShredder,
+	shredder: buildShredder, neck_braces: buildNeckBraces, xrays: buildXrays, banana_peels: buildBananaPeels,
+	wet_sign: buildWetSign, employee_photo: buildEmployeePhoto,
 };
 
 export const views = {
+	accident_goods: {
+		items: [
+			{ name: 'neck_braces', pos: [-0.35, 0.125, 0] }, { name: 'xrays', pos: [0.3, 0.002, 0.35], rotY: 0.3 },
+			{ name: 'banana_peels', pos: [0.15, 0.04, -0.1] }, { name: 'wet_sign', pos: [0.65, 0, -0.3] },
+			{ name: 'employee_photo', pos: [-0.2, 0.2, 0.45] },
+		],
+		cam: { pos: [0, 1.1, 1.8], target: [0, 0.2, 0], fov: 40 },
+	},
 	shred_goods: {
 		items: [
 			{ name: 'shredder', pos: [-0.4, 0, -0.2] }, { name: 'claims_box', pos: [0.2, 0.13, 0.0] },

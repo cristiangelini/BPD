@@ -132,6 +132,11 @@ Los pesos y valores siguen la escala de la fábrica: la principal vale unos 1000
      del archivo ahora es un modelo (negra, con ranura y ventanita) y se come todo lo que se suelte arriba que pese
      hasta 6 kg ("¡GRRRRR!"): un extra se pierde, y si se come la caja de reclamos se pierde el caso. Lo que un
      policía todavía tiene agarrado no se lo come. Capturas `paso5-triturar-*` en `seguros/`.
+   - **Cómo quedó accidentes de oficina (propuesta):** la caja con los cuellos ortopédicos (3 kg) va escondida con las
+     radiografías truchas y las cáscaras de banana. Los 4 "Empleado del mes" de la recepción tienen cuello ortopédico:
+     mirarlos con E es la pista propia. Hay 6 charcos con su cartel amarillo de "piso mojado" (pasillos, recepción y
+     cocina, de 0,9 m de radio): el policía que pasa por uno a más de 1 m/s patina 0,9 s sin control hacia donde iba,
+     y no vuelve a patinar hasta 1,5 s después. Capturas `paso5-accidentes-*` en `seguros/`.
 6. "Jugar" sortea entre los 6 lugares de allanamiento.
 7. El online (Mirta, Coca, las sillas y los papeles en todas las PC).
 
