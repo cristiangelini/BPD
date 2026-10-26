@@ -75,3 +75,9 @@ Cuáles son los 2 tramposos, qué 3 presos se esconden y en cuáles de los 8 esc
   `npc_cocinero` y `npc_plomero`, naranjas como el mameluco y sin número), y todos se mueven cuando el primer policía
   entra por el portón. Por ahora se quedan en el patio, no entran al comedor. Capturas en `carcel-recuento/`:
   `paso2-patio.png`, `paso2-lista.png`, `paso2-numero.png`, `npc_cocinero.png` y `npc_plomero.png`.
+- **Paso 3:** E sobre un preso del patio (`CountInmate`, que hereda de `YardInmate`) le pinta una cruz amarilla en la
+  espalda (sin sombra, se ve igual a la sombra) y tacha su número en la lista con una X roja; dice "Presente." o
+  algo así. No hay una tiza para agarrar: E alcanza. Marcar al cocinero o al plomero suma un error (`wrong`): se
+  ofende ("¡Yo trabajo acá!"), sale el aviso "Ese no es un preso, no tiene número" y a los 3 s se limpia la cruz, así
+  que se lo puede volver a marcar por error. `CountPlan.all_counted()` da verdadero con los 20 tachados a la vez.
+  Capturas: `paso3-lista.png`, `paso3-cruz.png` y `paso3-cocinero.png`.

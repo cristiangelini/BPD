@@ -2387,3 +2387,10 @@ OBJ_GARDEN_WRONG,Verduras arrancadas por error: %d,Vegetables pulled by mistake:
 CASE_FAILED_GARDEN_ESCAPED,Se escaparon 3 presos por los porotos. Caso perdido.,3 inmates got away up the beanstalks. Case lost.,3 presos fugiram pelos pés de feijão. Caso perdido.
 COUNT_BOARD_TITLE,LISTA DEL RECUENTO,COUNT LIST,LISTA DA CONTAGEM
 COUNT_BOARD_TOTAL,Contados: %d de %d,Counted: %d of %d,Contados: %d de %d
+PROMPT_COUNT_CHALK,E: marcar con tiza,E: chalk a cross,E: marcar com giz
+COUNT_CHALKED_0,¡Eh! ¡Me pintaste la espalda!,Hey! You drew on my back!,Ei! Você pintou minhas costas!
+COUNT_CHALKED_1,Presente.,Present.,Presente.
+COUNT_CHALKED_2,¿Y esta cruz para qué es?,And what's this cross for?,E essa cruz é pra quê?
+COUNT_COOK_OFFENDED,¡Yo trabajo acá! ¡Soy el cocinero!,I work here! I'm the cook!,Eu trabalho aqui! Sou o cozinheiro!
+COUNT_PLUMBER_OFFENDED,¡Yo trabajo acá! ¡Vine a arreglar un caño!,I work here! I came to fix a pipe!,Eu trabalho aqui! Vim consertar um cano!
+HINT_COUNT_WORKER,"Ese no es un preso, no tiene número.","That's no inmate, he has no number.","Esse não é um preso, não tem número."
