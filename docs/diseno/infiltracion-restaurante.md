@@ -87,6 +87,14 @@ demás (`NpcSync` / el agarre), y el fuego de cada hornalla lo cuenta el host.
    salón mirando al pase. El Chef Flambé (gorro altísimo, bigote enrulado y sartén con llamita) en el pase, mirando la
    cocina. La sospecha solo cuenta en la cocina y atrás: el salón es público **(propuesta)**.
 3. La cocina: los ingredientes, la olla, la sartén, las hornallas (cocido, quemado y humo) y los platos.
+   Hecho así: en la despensa, 4 cajones en el piso (tomate, cebolla, lechuga y fideos) y en la cámara fría el de
+   pescado; E en un cajón pone un ingrediente encima, hasta 6 sueltos de cada uno ("ya hay de sobra"). 2 ollas en
+   las primeras hornallas, 2 sartenes y 6 platos en la mesada. Un ingrediente que se suelta (no en la mano) dentro
+   de una olla, una sartén o un plato entra. Una olla o una sartén parada sobre una hornalla cocina lo que tiene;
+   pasados 12 s la olla y 8 s la sartén se quema: se pone negro y echa humo. E con una olla o una sartén en la mano la
+   vuelca en el plato más cercano (a 1 m), y el plato recuerda en qué se cocinó cada cosa y cuánto, para las comandas
+   del paso 4. El host decide todo y les cuenta a los demás. El fuego que se prende y el matafuegos quedan para
+   después **(propuesta)**.
 4. Las comandas: el riel, las recetas, el pase con la campanita, el plato bien o mal y la sospecha.
 5. Las pruebas y el caso (variante "restaurant"): el plato especial, las 6 pruebas, el sueldo y el interrogatorio.
 6. La huida en la moto de delivery, el sorteo de "Jugar" en séptimos y online.
