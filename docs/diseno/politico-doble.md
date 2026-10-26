@@ -80,3 +80,11 @@ gota de agua. Les dejo la ficha del diputado. Esposen al falso, no al verdadero:
   mirar. Los dos llevan las 10 diferencias (`DoubleTells`, piezas chicas hechas en código, una vez y media más grandes
   de lo normal); el doble tiene 3 al revés, sacadas con la semilla. La planilla (Q) suma la ficha del verdadero, una
   línea por diferencia. El comisario cuenta lo del imitador. Capturas en `/mnt/project-files/doble/paso1-*.png`.
+- **Paso 2 (el cambiazo y las barbaridades):** `DoubleSwap`. Cada vez que el verdadero baja a saludar, Rolo da la
+  vuelta al escenario por el este (frente a la rampa, por la punta y por detrás del cartel), se saca la galera y la
+  bufanda atrás la primera vez y sube al atril. Ahí cada frase del discurso es una de sus 10 barbaridades
+  (`PoliticianSpeech.impostor`) y una mancha en la imagen del verdadero (`Politician.SHAME`: cuenta para las 10, no deja
+  marca en el traje, y el verdadero protesta "¿¡Qué dijo ese!?"). Cuando un policía trae al verdadero de la mano al
+  atril, el doble le deja el lugar y se pone a saludar a la gente con sus propios paseos (`PoliticianWalks`, que en él
+  nunca arrancan solos) hasta la próxima vez que el verdadero baje. Si un policía lo confunde y lo sube a él de la mano,
+  toma el atril y el verdadero se baja. Captura en `/mnt/project-files/doble/paso2-barbaridad.png`.

@@ -21,6 +21,9 @@ const STAIN_LINES := 6
 ## The stain left on him: the splat this small, stuck where it hit.
 const STAIN_SCALE := 0.35
 const HIDDEN_LINES := 3
+## A stain on his image, not on his suit: the double's outrages (politico-doble.md, step 2). It leaves no mark.
+const SHAME := "shame"
+const SHAME_LINES := 3
 const HAT := Color(0.18, 0.16, 0.15)
 const SCARF := Color(0.55, 0.2, 0.25)
 
@@ -147,6 +150,8 @@ func stain(kind: String, at: Vector3) -> void:
 	if stains >= STAINS_MAX:
 		say("POLITICIAN_FURIOUS")
 		furious.emit()
+	elif kind == SHAME:
+		say("POLITICIAN_SHAMED_%d" % ((stains - 1) % SHAME_LINES + 1))
 	else:
 		say("POLITICIAN_STAIN_%d" % ((stains - 1) % STAIN_LINES + 1))
 
@@ -155,6 +160,8 @@ func stain(kind: String, at: Vector3) -> void:
 ## middle.
 func _wear(kind: String, local: Vector3) -> void:
 	marks.append([kind, local])
+	if kind == SHAME:
+		return
 	var mark: Node3D = RallyThrowable.SPLATS[kind].instantiate()
 	mark.name = "Stain%d" % marks.size()
 	add_child(mark)

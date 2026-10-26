@@ -16,6 +16,8 @@ const LINES := 12
 const START_REACH := 25.0
 ## While he waits, he complains about his late guard this often.
 const WAIT_EVERY := 15.0
+## The double's outrages at the lectern (politico-doble.md, step 2).
+const OUTRAGES := 10
 
 var politician: Politician
 var speaking := false
@@ -25,6 +27,10 @@ var left := SPEECH_TIME
 var bar: ProgressBar
 ## Online, a guest's speech: the host's decides when it starts and how much is left (PoliticianCase.snapshot).
 var follower := false
+## The double at the lectern (DoubleSwap), null when he isn't: each line is one of his outrages instead, and a stain on
+## the real deputy's image.
+var impostor: Politician
+var outrages := 0
 var _order: Array[int] = []
 var _next := 0
 var _line_left := 0.0
@@ -80,8 +86,11 @@ func _physics_process(delta: float) -> void:
 		return
 	left = maxf(left - delta, 0.0)
 	_line_left -= delta
+	if impostor and _line_left <= 0.0 and left > 0.0:
+		_line_left = LINE_EVERY
+		_outrage()
 	# Off the stage he greets instead (PoliticianWalks); the clock goes on.
-	if _line_left <= 0.0 and left > 0.0 and not politician.off_stage():
+	elif _line_left <= 0.0 and left > 0.0 and not politician.off_stage():
 		_line_left = LINE_EVERY
 		politician.say("SPEECH_LUSTRE_%d" % _order[_next % _order.size()], LINE_EVERY - 1.0)
 		_next += 1
@@ -91,6 +100,13 @@ func _physics_process(delta: float) -> void:
 		politician.say("SPEECH_LUSTRE_END")
 		finished.emit()
 	_show()
+
+
+## The double says something outrageous into the microphone, in the deputy's name: a stain on his image.
+func _outrage() -> void:
+	impostor.say("DOUBLE_OUTRAGE_%d" % ((outrages + _order[0]) % OUTRAGES + 1), LINE_EVERY - 1.0)
+	outrages += 1
+	politician.stain(Politician.SHAME, politician.global_position + Vector3.UP)
 
 
 func _build_hud() -> void:
