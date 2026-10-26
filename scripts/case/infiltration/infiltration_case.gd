@@ -113,7 +113,7 @@ const VARIANTS := {
 		"brief": ["BRIEF_BIKER_A", "BRIEF_BIKER_B", "BRIEF_BIKER_C"],
 		"go": "HINT_GO_BIKER", "in": "HINT_BIKER_IN", "found": "HINT_CLUB_EVIDENCE",
 		"rows": "OBJ_BIKER_", "evidence": "EVIDENCE_BIKER_",
-		"boss": "cromado", "getaway": SuspectCar.WALKER,
+		"boss": "cromado", "getaway": SuspectCar.CHOPPER_MOPED,
 		"boss_cuffed": "HINT_CROMADO_CUFFED", "cuff_row": "OBJ_BIKER_CUFF_CROMADO",
 		"catch_row": "OBJ_BIKER_CATCH_CROMADO", "slips": "CROMADO_SLIP_%d",
 	},

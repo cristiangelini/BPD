@@ -1,6 +1,6 @@
 extends GutTest
 
-## The infiltration online (infiltracion.md, infiltracion-coro.md, infiltracion-mimos.md, infiltracion-fiesta.md, infiltracion-gimnasio.md, infiltracion-escuela.md, infiltracion-restaurante.md and infiltracion-ajedrez.md, "Online"; docs/diseno/online.md): the host's
+## The infiltration online (infiltracion.md, infiltracion-coro.md, infiltracion-mimos.md, infiltracion-fiesta.md, infiltracion-gimnasio.md, infiltracion-escuela.md, infiltracion-restaurante.md, infiltracion-ajedrez.md and infiltracion-motos.md, "Online"; docs/diseno/online.md): the host's
 ## case decides the evidence, the suspicion, the boss cuffed or running off and the end of shift, and every PC sees
 ## the same, disguises included.
 
@@ -13,6 +13,7 @@ const GYM_SCENE := preload("res://scenes/levels/gym_hall.tscn")
 const SCHOOL_SCENE := preload("res://scenes/levels/school_hall.tscn")
 const RESTAURANT_SCENE := preload("res://scenes/levels/restaurant_hall.tscn")
 const CHESS_SCENE := preload("res://scenes/levels/chess_club.tscn")
+const BIKER_SCENE := preload("res://scenes/levels/biker_bar.tscn")
 ## A seed whose club has Doña Chela's bag among its evidence (ClubEvidence.draw).
 const SEED := 2
 
@@ -321,6 +322,43 @@ func test_a_chess_challenge_and_the_clock_reach_the_guest() -> void:
 	assert_eq(host.clocks[table].turn, ChessClock.WHITE, "the guest hit the clock on the host")
 	await wait_until(func() -> bool: return guest.clocks[table].turn == ChessClock.WHITE, 5.0)
 	assert_eq(guest.clocks[table].turn, ChessClock.WHITE)
+
+
+func test_at_the_biker_bar_found_out_el_cromado_rides_off_on_every_pc() -> void:
+	_scene = BIKER_SCENE
+	var pcs := await _on()
+	var host := _place(pcs[0]) as BikerBar
+	var guest := _place(pcs[1]) as BikerBar
+	host.dares.set_physics_process(false)
+	host.suspicion.raise(host.members[0], 100.0)
+	await wait_until(func() -> bool: return guest.case.chase != null, 5.0)
+	assert_eq(guest.case.chase.suspect_id, SuspectCar.CHOPPER_MOPED, "on the moped")
+
+
+func test_a_courage_dare_reaches_the_guest() -> void:
+	_scene = BIKER_SCENE
+	var pcs := await _on()
+	var host := _place(pcs[0]) as BikerBar
+	var guest := _place(pcs[1]) as BikerBar
+	host.dares.order.assign(["arm", "lift", "still"])
+	var guest_cop_on_host: Cop
+	for one: Node in host.get_tree().get_nodes_in_group("cops"):
+		if one != OnlinePcs.own_cop(pcs[0]) and host.is_ancestor_of(one):
+			guest_cop_on_host = one
+	assert_not_null(guest_cop_on_host, "the guest's cop on the host's PC")
+	assert_true(host.dares.challenge(guest_cop_on_host))
+	var who := host.members.find(host.dares.challenger)
+	await wait_until(func() -> bool: return guest.members[who].said() == "BIKER_DARE_arm", 5.0)
+	assert_eq(guest.members[who].said(), "BIKER_DARE_arm", "the same biker dares on the guest's PC")
+	host.dares.set_physics_process(false)
+	host.dares._start()
+	await wait_until(func() -> bool: return guest.arm_table.is_wrestling(), 5.0)
+	assert_true(guest.arm_table.is_wrestling(), "the arms on the guest's table")
+	host.dares.pushes = BikerDares.ARM_PUSHES - 1
+	OnlinePcs.own_cop(pcs[1]).act("use", guest.arm_table)
+	await wait_until(func() -> bool: return not guest.arm_table.is_wrestling(), 5.0)
+	assert_false(guest.arm_table.is_wrestling(), "the guest's push won it on the host")
+	assert_eq(guest.members[who].said(), host.dares.tip(), "and the biker's gossip reached the guest")
 
 
 ## Whether the party with `case_seed` has Serpentina among its clues.

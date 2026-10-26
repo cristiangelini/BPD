@@ -111,6 +111,12 @@ valentía copian la forma de `ChessGames` (el host decide y avisa).
    por prueba que falte), y en su interrogatorio se le escapan 3 frases y confiesa lo de los autoestéreos. Hasta el
    paso 6 escapa a pie.
 6. La huida en el ciclomotor, el sorteo de "Jugar" en novenos y online.
+   Hecho así: descubiertos, El Cromado sale del taller en su ciclomotor con manubrio de chopper a 30 km/h por la
+   calle (se lo persigue en patrullero), con el ruidito del motor y un "¡BRRRUM!" grande sobre la cabeza todo el
+   camino, que se apaga cuando lo atrapan. "Jugar" sortea las infiltraciones en novenos. Online, el host decide las
+   pruebas de valentía y les avisa a los demás lo que gritan los motoqueros, los brazos de la pulseada (y cuánto se
+   inclinan) y la moto que arranca hacia la raya; la moto pesada es un objeto con física como los demás
+   **(propuesta)**.
 
 ## Preguntas para Cristian (decisión 176)
 1. **¿Hay pruebas de valentía de verdad cada 50 s (pulseada apretando E, levantar la moto entre dos y quedarse quieto
