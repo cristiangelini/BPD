@@ -54,6 +54,8 @@ const ALARM := 80.0
 var next_line := 0
 ## 0 to 100: at 100 they shout that the cops are cops (ClubSuspicion).
 var suspicion := 0.0
+## The cone they see in: narrower while the mimes hold a statue (MimeRehearsal).
+var sight_angle := SIGHT_ANGLE
 ## Busy talking business with a neighbor (the recording, ClubEvidence): they notice nothing.
 var distracted := false
 var _bubble: Label3D
@@ -125,7 +127,7 @@ func sees_cop(cop: Cop) -> bool:
 	var flat := Vector3(at.x - eye.x, 0, at.z - eye.z)
 	if flat.length() > SIGHT_RANGE or flat.length() < 0.01:
 		return false
-	if (-global_basis.z).angle_to(flat.normalized()) > SIGHT_ANGLE / 2:
+	if (-global_basis.z).angle_to(flat.normalized()) > sight_angle / 2:
 		return false
 	var ray := PhysicsRayQueryParameters3D.create(eye, at, 1, [get_rid()])
 	var hit := get_world_3d().direct_space_state.intersect_ray(ray)

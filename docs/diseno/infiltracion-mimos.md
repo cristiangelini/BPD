@@ -89,7 +89,12 @@ pie, `PlaceDraw` y `CaseSync`. El ensayo copia la forma de `ChoirSinging` (host 
    al jugador (V, voz siempre abierta o la radio con T), su PC avisa al host cada 0,5 s y cada mimo a 8 m o menos de
    ese policía, dentro del teatro, suma 10 (20 por segundo), mire adonde mire. Abajo de la pantalla sale "Silencio: un
    mimo te oye" mientras haya un mimo tan cerca. Un grito además suma +25 como en el club **(propuesta)**.
-4. El ensayo: estatua y mímica con H, la vista de los mimos durante la estatua.
+4. El ensayo: estatua y mímica con H, la vista de los mimos durante la estatua. Hecho así: el primer ensayo a los
+   20 s y después cada 30 s de pausa, de 40 s; arranca con mímica (de 4 a 7 s) y alterna con estatua (de 3 a 6 s),
+   con un silbato en cada cambio y "¡MÍMICA!" o "¡ESTATUA!" arriba de la Maestra y en pantalla. Cada PC juzga a su
+   policía una vez por segundo en el escenario: sin H en la mímica +15, y en la estatua caminar más de 30 cm o mantener
+   H +25, a los mimos que lo ven. Fuera del escenario durante el ensayo, +20 por segundo como en el coro. En la
+   estatua el cono de los mimos baja a la mitad (70°) **(propuesta)**.
 5. Las pruebas y el caso (variante "mime" en `InfiltrationCase.VARIANTS`).
 6. La huida en el auto invisible, el sorteo de "Jugar" en tercios (club, coro, mimos) y online.
 
