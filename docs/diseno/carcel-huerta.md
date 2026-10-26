@@ -84,3 +84,8 @@ Qué 3 plantas son raras y en qué orden aparecen, qué verdura tiene cada cante
   salta afuera (escapado). E mientras trepa lo baja: cae sentado al pie, esposado, y se lo lleva del brazo a una celda
   (la de castigo, porque el pabellón está cerrado). Sin jardineros, el que trepa sale del comedor. Captura:
   `paso5-trepa.png`.
+- **Paso 6:** `GardenCase`: el comisario lo cuenta en su oficina (3 frases) y Q abre la planilla (el horario de huerta
+  con los segundos que quedan, los porotos arrancados de 3, los escapados de 3, los bajados del poroto, opcional, y las
+  verduras arrancadas por error). El horario dura 6 minutos (`GardenPlan.TIME`, `ended`); se gana al terminar con
+  menos de 3 escapados: 600 - 100 por escapado + 50 por poroto temprano + 25 por bajado - 10 por verdura, cuota 400.
+  Jugar lo sortea con las otras cárceles (`PlaceDraw.PRISONS`, ahora en novenos). Captura: `paso6-planilla.png`.

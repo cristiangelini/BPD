@@ -11,11 +11,13 @@ extends Node3D
 ## holds on until TUGGERS cops pull within TUG_WINDOW seconds of each other (one, playing alone). A vegetable pulled by
 ## mistake is out too (`wrong`), and the nearest gardener is offended. Step 5: while a giant stands, every CLIMB_EVERY
 ## seconds the nearest gardener goes up it (GardenClimber): over the wall he's `escaped`; pulled down, cuffed and
-## walked into a cell (the punishment cell: the block is locked) he's `caught`.
+## walked into a cell (the punishment cell: the block is locked) he's `caught`. Step 6: garden time lasts TIME
+## seconds (`ended`).
 
 signal bean_grew(plant: GardenPlant, stage: int)
 signal bean_pulled(plant: GardenPlant, stage: int)
 signal wrong_pull(plant: GardenPlant)
+signal ended
 signal escaped_one(count: int)
 signal caught_one(count: int)
 
@@ -41,6 +43,7 @@ const TUGGERS := 2
 const TUG_WINDOW := 2.0
 ## A bean pulled before this stage counts as found early (the case's bonus).
 const EARLY_BEFORE := 4
+const TIME := 360.0
 const CLIMB_EVERY := 30.0
 ## Where a climber comes from with no gardeners left: out of the canteen's east door.
 const DOOR_OUT := Vector2(2.0, 9.0)
@@ -67,6 +70,7 @@ var escaped := 0
 var caught := 0
 var down := 0
 var _climb_left := {}
+var over := false
 ## A guest's copy (step 7): the host's one decides.
 var follower := false
 var _rng := RandomNumberGenerator.new()
@@ -173,7 +177,13 @@ func _physics_process(delta: float) -> void:
 				start()
 				return
 		return
+	if over:
+		return
 	time += delta
+	if time >= TIME:
+		over = true
+		ended.emit()
+		return
 	for i in beans.size():
 		if time >= FIRST_BEAN + i * BEAN_EVERY and not beans[i].growing and beans[i].stage == 0:
 			beans[i].start_growing()
@@ -302,6 +312,10 @@ func _nearest_gardener(plant: GardenPlant) -> YardInmate:
 				< best.global_position.distance_to(plant.global_position):
 			best = gardener
 	return best
+
+
+func time_left() -> float:
+	return maxf(TIME - time, 0.0) if started else TIME
 
 
 ## The next magic bean grows one stage now (the debug panel's shortcut, once it exists).
