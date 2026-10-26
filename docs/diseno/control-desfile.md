@@ -1,4 +1,4 @@
-# BPD · Control de tránsito: Desfile (propuesta, 26/10)
+# BPD · Control de tránsito: Desfile (Cristian, 26/10: sí a las 3 preguntas)
 
 Décima variante del control de tránsito ([control-transito.md](control-transito.md), variante 8;
 [casos.md](casos.md), punto 8.8). Reusa el control de "Hora pico" y lo de las otras variantes
@@ -48,7 +48,7 @@ si paran la música, la gente se enoja."
 - La corona como prueba (+100 en el baúl).
 - La persecución de la carroza con confeti en las esquinas.
 
-## Preguntas para Cristian
+## Preguntas para Cristian (respondidas el 26/10: sí a las 3)
 1. **¿El ladrón es un bailarín con antifaz arriba de una carroza que se delata porque hace otro paso cuando se le
    pide el baile (y hay bailarines torpes que confunden)?**
    Recomiendo que sí: obliga a mirar a todos los bailarines a la vez, y en grupo cada uno mira a uno.
