@@ -119,6 +119,11 @@ Los pesos y valores siguen la escala de la oficina: la principal vale unos 1000 
      punta libre de la vitrina hay un plato de porciones gratis: E y el policía suelta lo que tiene y se duerme 4 s
      parado, con un "Zzz" arriba (por ahora parado y no en el piso, para no pelear con la cámara). La muestra de
      Pocha da sueño y la primera vez va a la planilla. Captura `paso5-siesta.png`.
+   - **Cómo quedó (propuesta), la harina de oro:** una de las 10 bolsas del depósito, sorteada con la semilla, es la
+     de oro (10 kg en vez de 25, 1000): igualita a las otras y sin mostrar su valor hasta que alguien la levanta. Al
+     lado, en el pasillo, pierde un poco de harina dorada: el policía que la pisa deja huellas doradas por 15 s y la
+     primera vez va a la planilla. El tamiz dorado (1 kg, 200) y la factura del joyero (0,1 kg, 300) se esconden.
+     Reventar una bolsa de verdad sigue dejando la nube blanca. Captura `paso5-oro.png`.
 6. "Jugar" sortea entre los 7 lugares de allanamiento.
 7. El online (el chef, Pocha, la harina y los pasteles en todas las PC).
 

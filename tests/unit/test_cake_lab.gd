@@ -7,6 +7,8 @@ const LAB_SCENE := preload("res://scenes/levels/cake_lab.tscn")
 
 func _lab() -> CakeLab:
 	var lab: CakeLab = LAB_SCENE.instantiate()
+	# A story that leaves the ten flour sacks as they are (the gold flour swaps one).
+	lab.story_id = "silver_cake"
 	lab.get_node("Cop").input_enabled = false
 	add_child_autofree(lab)
 	return lab
