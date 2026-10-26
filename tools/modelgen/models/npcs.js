@@ -1364,6 +1364,21 @@ const NPCS = {
 		limb(b, 'props', C('broom_stick', 0xa87a4a), V(0.5, 0.0, 0.2), V(0.5, 1.3, 0.1), 0.02);
 		b.add('props', C('broom_head', 0xd8b048), new THREE.BoxGeometry(0.34, 0.1, 0.08), { pos: V(0.5, 0.05, 0.2) });
 	},
+	// Don Sobre, the mailman (casa-equivocada.md, step 4): a grey-blue uniform, a peaked cap, a thick mustache and the
+	// leather mail bag across his chest with letters peeking out.
+	cartero(b) {
+		const uniform = C('mail_uniform', 0x5a7898), cap = C('mail_cap', 0x2e4462);
+		pearBody(b, SKIN.arena, { shirt: uniform, pants: C('mail_pants', 0x34445a), shoes: black });
+		limb(b, 'props', C('mail_strap', 0x6a4022), V(-0.28, 1.22, 0.2), V(0.36, 0.72, 0.3), 0.025);
+		b.add('props', C('mail_bag', 0x8a5a2e), new THREE.BoxGeometry(0.16, 0.34, 0.42), { pos: V(0.42, 0.68, 0.06) });
+		for (let i = 0; i < 3; i++) b.add('props', i === 1 ? C('envelope_blue', 0xc8daf2) : white, new THREE.BoxGeometry(0.02, 0.1, 0.16), { pos: V(0.42, 0.88, -0.1 + i * 0.1), rot: [(i - 1) * 0.15, 0, 0] });
+		eyes(b, 1.32, 0.17, 0.08, 0.045);
+		mouth(b, { smile: true });
+		mustache(b, C('hair_black', 0x2a2420), 1.3);
+		b.add('cap', cap, new THREE.CylinderGeometry(0.2, 0.19, 0.12, 10), { pos: V(0, 1.5, 0) });
+		b.add('cap', C('mail_badge', 0xe8c84a), new THREE.BoxGeometry(0.06, 0.05, 0.01), { pos: V(0, 1.51, 0.2) });
+		b.add('cap', black, new THREE.BoxGeometry(0.3, 0.02, 0.14), { pos: V(0, 1.44, 0.2) });
+	},
 	// Doña Chola (casa-equivocada.md): floral robe, curlers all over, slippers and her mate in hand.
 	chola(b) {
 		const robe = C('robe_floral', 0x7ac0d8);
@@ -1395,7 +1410,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { chola: 0.82, comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, comprador: 1.0, compradora: 0.9, martillo: 1.1, portero_subasta: 1.15, ladron_oso: 1.15, abuelo_oso: 1.15, alumno_primaria: 0.62, alumna_primaria: 0.62, alumno_b: 0.62, alumna_b: 0.62 };
+const SCALE = { cartero: 0.95, chola: 0.82, comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, comprador: 1.0, compradora: 0.9, martillo: 1.1, portero_subasta: 1.15, ladron_oso: 1.15, abuelo_oso: 1.15, alumno_primaria: 0.62, alumna_primaria: 0.62, alumno_b: 0.62, alumna_b: 0.62 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
