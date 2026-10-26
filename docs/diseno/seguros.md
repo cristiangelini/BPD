@@ -117,6 +117,10 @@ Los pesos y valores siguen la escala de la fábrica: la principal vale unos 1000
      de esta oficina"). Y hay 10 autitos tirados por los pasillos: el policía que pisa uno caminando se cae para
      adelante 1,2 s y el autito sale disparado 1,5 m. Capturas `paso4-*` en `seguros/`.
 5. Las otras 5 historias, una por PR.
+   - **Cómo quedó la máquina de café (propuesta):** la máquina de la cocina es la caja fuerte (30 kg, entre dos):
+     apretarla con E da monedas en vez de café ("Apretaste café con leche y la máquina escupió monedas"), que es la pista propia.
+     El papelito con la clave y el libro de cuentas van escondidos, y las 12 tazas de los escritorios tienen monedas
+     adentro. Capturas `paso5-cafe-*` en `seguros/`.
 6. "Jugar" sortea entre los 6 lugares de allanamiento.
 7. El online (Mirta, Coca, las sillas y los papeles en todas las PC).
 

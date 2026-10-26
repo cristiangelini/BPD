@@ -34,6 +34,15 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_CRASH_PHOTOS", "OBJ_EXTRA_TOY_CAR_BOX"],
 		"rig": preload("res://scripts/case/insurance/fake_crashes_rig.gd"),
 	},
+	"coffee_safe": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_COFFEE_SAFE_B", "BRIEF_COFFEE_SAFE_C", "BRIEF_COFFEE_SAFE_D"],
+		"find": "OBJ_FIND_COFFEE_SAFE",
+		"hidden": [preload("res://scenes/props/code_postit.tscn"), preload("res://scenes/props/account_book.tscn")],
+		"half_heights": [0.005, 0.025],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_CODE_POSTIT", "OBJ_EXTRA_ACCOUNT_BOOK"],
+		"rig": preload("res://scripts/case/insurance/coffee_safe_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the office; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [
@@ -181,6 +190,8 @@ var hidden: Array[Evidence] = []
 var hidden_spots: Array = []
 var extras: Array[Evidence] = []
 var till: Till
+## The kitchen's coffee machine (until a story swaps it).
+var coffee: StaticBody3D
 var _build: PlaceBuilder
 @onready var car: PatrolCar = $PatrolCar
 
@@ -463,9 +474,19 @@ func _build_meeting_room() -> void:
 ## coffee machine, the fridge and the bin.
 func _build_kitchen() -> void:
 	_build.box(COUNTER_AT + Vector3(0, COUNTER_SIZE.y / 2, 0), COUNTER_SIZE, WHITE.darkened(0.15))
-	var coffee := _build.body(COFFEE_AT + Vector3(0, COFFEE_SIZE.y / 2, 0))
-	_build.shape(coffee, Vector3(COFFEE_SIZE.z, COFFEE_SIZE.y, COFFEE_SIZE.x))
-	_model(COFFEE_MODEL, COFFEE_AT, -PI / 2)
+	# The coffee machine faces the kitchen (-x); one story swaps it for the safe it really is.
+	coffee = StaticBody3D.new()
+	coffee.name = "CoffeeMachine"
+	coffee.position = COFFEE_AT
+	coffee.rotation.y = -PI / 2
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = COFFEE_SIZE
+	shape.shape = box
+	shape.position.y = COFFEE_SIZE.y / 2
+	coffee.add_child(shape)
+	coffee.add_child(COFFEE_MODEL.instantiate())
+	add_child(coffee)
 	_build.open_box(FRIDGE_AT, FRIDGE_SIZE, "-x", WHITE)
 	_build.box(FRIDGE_AT + Vector3(0, 0.9, 0), Vector3(0.6, 0.03, 0.6), WHITE.darkened(0.1))
 	_build.open_box(BIN_AT, BIN_SIZE, "top", DARK)
