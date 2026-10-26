@@ -4,8 +4,8 @@ extends StaticBody3D
 ## The clock on each of the chess club's tables (infiltracion-ajedrez.md, step 3, decision 175): a face toward each
 ## player (white's toward +Z, black's toward -Z) and a button on top. Running, it counts down the side whose turn it
 ## is, TURN seconds each turn: E presses the button, the turn goes to the other side and its time starts again; at 0
-## that side ran out of time (`flagged`). The host runs it (step 4 says who plays and when). Every number here is
-## (propuesta).
+## that side ran out of time (`flagged`). The host runs it (step 4 says who plays and when) and tells the guests every
+## change of turn (step 6); in between each PC counts down on its own. Every number here is (propuesta).
 
 signal pressed(cop: Cop, side: int)
 signal flagged(side: int)
@@ -61,21 +61,31 @@ func use(cop: Cop) -> void:
 	if not multiplayer.is_server() or turn == STOPPED:
 		return
 	var side := turn
-	turn = 1 - turn
-	left = TURN
-	_refresh()
+	_set_turn(1 - turn)
 	pressed.emit(cop, side)
 
 
 ## Starts counting `side`'s turn.
 func start(side: int) -> void:
-	turn = side
-	left = TURN
-	_refresh()
+	_set_turn(side)
 
 
 func stop() -> void:
-	turn = STOPPED
+	_set_turn(STOPPED)
+
+
+## The turn goes to `side` with its full time, on every PC.
+func _set_turn(side: int) -> void:
+	_turn_now(side)
+	var net := _net()
+	if multiplayer.is_server() and net.is_online():
+		for peer: int in net.scene_peers:
+			_turn_now.rpc_id(peer, side)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _turn_now(side: int) -> void:
+	turn = side
 	left = TURN
 	_refresh()
 
@@ -95,6 +105,16 @@ func _process(delta: float) -> void:
 func _refresh() -> void:
 	for side in _faces.size():
 		_faces[side].text = "0:%02d" % ceili(left) if side == turn else "-:--"
+
+
+## The Net of this PC's multiplayer branch: the autoload in the game, each test PC's own in the online tests.
+func _net() -> Node:
+	var branch := multiplayer as SceneMultiplayer
+	if branch and not branch.root_path.is_empty():
+		var net := get_node_or_null(str(branch.root_path) + "/Net")
+		if net:
+			return net
+	return Net
 
 
 ## A short wooden "tock".

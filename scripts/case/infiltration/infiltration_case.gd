@@ -97,14 +97,14 @@ const VARIANTS := {
 		"boss_cuffed": "HINT_FLAMBE_CUFFED", "cuff_row": "OBJ_RESTAURANT_CUFF_FLAMBE",
 		"catch_row": "OBJ_RESTAURANT_CATCH_FLAMBE", "slips": "FLAMBE_SLIP_%d",
 	},
-	# The chess club El Peón Dormido (infiltracion-ajedrez.md, decision 175): the Gran Maestro Alfil runs off on foot
-	# until the carousel horse (step 6).
+	# The chess club El Peón Dormido (infiltracion-ajedrez.md, decision 175): the Gran Maestro Alfil rides off on a
+	# motorized carousel horse that hops at every corner.
 	"chess": {
 		"story": "infiltration_chess",
 		"brief": ["BRIEF_CHESS_A", "BRIEF_CHESS_B", "BRIEF_CHESS_C"],
 		"go": "HINT_GO_CHESS", "in": "HINT_CHESS_IN", "found": "HINT_CLUB_EVIDENCE",
 		"rows": "OBJ_CHESS_", "evidence": "EVIDENCE_CHESS_",
-		"boss": "alfil", "getaway": SuspectCar.WALKER,
+		"boss": "alfil", "getaway": SuspectCar.CAROUSEL_HORSE,
 		"boss_cuffed": "HINT_ALFIL_CUFFED", "cuff_row": "OBJ_CHESS_CUFF_ALFIL",
 		"catch_row": "OBJ_CHESS_CATCH_ALFIL", "slips": "ALFIL_SLIP_%d",
 	},

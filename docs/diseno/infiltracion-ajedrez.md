@@ -114,6 +114,12 @@ copian la forma de `RestaurantOrders` y `SchoolClasses` (el host decide y avisa)
    caso usa sus propios textos (cartel del comisario, objetivos, pistas, frases de Alfil al ser descubierto, el
    interrogatorio y la persecución a pie mientras no hay huida propia) **(propuesta)**.
 6. La huida en el caballito, el sorteo de "Jugar" en octavos y online.
+   Hecho así: descubiertos, Alfil sale a la calle montado en un caballito de calesita a motor (blanco con dorado, la
+   cabeza de caballo de ajedrez, sobre una base roja redonda con un caño dorado hasta un toldito a rayas), a 25 km/h
+   por la calle, y en cada esquina donde dobla da un salto (4,5 m/s para arriba); se lo persigue en patrullero.
+   "Jugar" sortea las infiltraciones en octavos. Online, el host le cuenta a los invitados lo que dicen los socios
+   (desafíos, comentarios, chismes) y cada cambio de turno de los relojes; las piezas ya se sincronizan como los demás
+   objetos, y un invitado puede tocar el reloj **(propuesta)**.
 
 ## Preguntas para Cristian (decisión 175)
 1. **¿Hay que jugar de verdad, con desafíos cada 45 s y partidas con reloj donde se mueven las piezas con las manos

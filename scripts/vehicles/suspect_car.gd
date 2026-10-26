@@ -64,6 +64,8 @@ const MODELS := {
 	"learner_car": preload("res://assets/models/learner_car.glb"),
 	# The Chef Flambé rides off on the restaurant's delivery scooter (infiltracion-restaurante.md), losing pizzas.
 	"pizza_scooter": preload("res://assets/models/pizza_scooter.glb"),
+	# The Gran Maestro Alfil rides off on a motorized carousel horse (infiltracion-ajedrez.md), hopping at corners.
+	"carousel_horse": preload("res://assets/models/carousel_horse.glb"),
 	# The traffic control's wanted car, in its paint (control-transito.md): the traffic car it was in the queue.
 	"traffic_0": preload("res://assets/models/traffic_car_0.glb"),
 	"traffic_1": preload("res://assets/models/traffic_car_1.glb"),
@@ -90,6 +92,7 @@ const RIDERS := {
 	"toro_jog": [[preload("res://assets/models/npc_toro.glb"), Vector3(0, 0, 0), 1.2]],
 	"learner_car": [[preload("res://assets/models/npc_director.glb"), Vector3(-0.45, 0.05, 0.1), 0.8]],
 	"pizza_scooter": [[preload("res://assets/models/npc_flambe.glb"), Vector3(0, 0.36, -0.1), 0.85]],
+	"carousel_horse": [[preload("res://assets/models/npc_alfil.glb"), Vector3(0, 0.82, -0.22), 0.8]],
 }
 ## Who rides inside and stays there when he gives up, the same way: the choristers in the van, seen through its open
 ## windows, singing all the way.
@@ -111,7 +114,8 @@ const LANES := {"moto": ChaseRoute.SIDEWALK_LANE, "wheelchair": ChaseRoute.SIDEW
 const SPEEDS := {"bear_on_foot": 12.0 / 3.6, "wheelchair": 8.0 / 3.6, "tow_truck": 30.0 / 3.6, "golf_cart": 25.0 / 3.6, "bike": 25.0 / 3.6,
 	"walker": 10.0 / 3.6, "choir_van": 35.0 / 3.6, "kick_scooter": 15.0 / 3.6,
 	"food_cart": 14.0 / 3.6, "veggie_trike": 16.0 / 3.6, "inmate_on_foot": 11.0 / 3.6, "invisible_car": 14.0 / 3.6,
-	"toro_jog": 13.0 / 3.6, "learner_car": 35.0 / 3.6, "pizza_scooter": 40.0 / 3.6}
+	"toro_jog": 13.0 / 3.6, "learner_car": 35.0 / 3.6, "pizza_scooter": 40.0 / 3.6,
+	"carousel_horse": 25.0 / 3.6}
 ## The tow truck turns slowly and nearly stops to do it (persecucion-lugares.md): a cop cutting a corner on foot
 ## catches up with him.
 ## The golf cart turns very tight and hardly slows down to do it.
@@ -135,6 +139,9 @@ const PARTY_PATROL := "party_patrol"
 const TORO_JOG := "toro_jog"
 const LEARNER_CAR := "learner_car"
 const PIZZA_SCOOTER := "pizza_scooter"
+const CAROUSEL_HORSE := "carousel_horse"
+## The carousel horse jumps up this fast (m/s) at every corner it turns, like a knight's L (propuesta).
+const HORSE_HOP := 4.5
 ## The learner car stalls after this many seconds of driving and stays stopped this long (propuesta).
 const STALL_EVERY := 6.0
 const STALL_TIME := 2.0
@@ -158,7 +165,7 @@ const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 
 	"traffic_1": Vector3(2.1, 1.4, 4.6), "traffic_2": Vector3(2.1, 1.4, 4.6), "traffic_3": Vector3(2.1, 1.4, 4.6),
 	"manager_car": Vector3(2.1, 1.4, 4.6), "party_patrol": Vector3(2.1, 1.4, 4.6),
 	"toro_jog": Vector3(0.9, 1.8, 0.9), "learner_car": Vector3(2.1, 1.4, 4.6),
-	"pizza_scooter": Vector3(1.2, 1.6, 2.3)}
+	"pizza_scooter": Vector3(1.2, 1.6, 2.3), "carousel_horse": Vector3(1.6, 2.0, 1.8)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
@@ -172,7 +179,7 @@ const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": 
 	"old_patrol": SEDAN_WHEELS, "bike": NO_WHEELS, "traffic_0": SEDAN_WHEELS, "traffic_1": SEDAN_WHEELS,
 	"traffic_2": SEDAN_WHEELS, "traffic_3": SEDAN_WHEELS, "choir_van": SEDAN_WHEELS, "manager_car": SEDAN_WHEELS,
 	"party_patrol": SEDAN_WHEELS, "toro_jog": NO_WHEELS, "learner_car": SEDAN_WHEELS,
-	"pizza_scooter": NO_WHEELS}
+	"pizza_scooter": NO_WHEELS, "carousel_horse": NO_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
@@ -197,6 +204,8 @@ var tangled_left := 0.0
 ## The learner car: seconds it stays stalled, and seconds of driving until it stalls again.
 var stalled_left := 0.0
 var stall_in := STALL_EVERY
+## How many times the carousel horse has hopped.
+var hops := 0
 var _highway: Highway
 
 
@@ -403,7 +412,8 @@ func finished() -> bool:
 
 
 func _physics_process(delta: float) -> void:
-	velocity.y = 0.0 if is_on_floor() else velocity.y - GameScale.GRAVITY * delta
+	# On the floor it stays there, unless it's just hopped (the carousel horse).
+	velocity.y = 0.0 if is_on_floor() and velocity.y <= 0.0 else velocity.y - GameScale.GRAVITY * delta
 	nervous_left = maxf(nervous_left - delta, 0.0)
 	tangled_left = maxf(tangled_left - delta, 0.0)
 	if punctured:
@@ -419,7 +429,11 @@ func _physics_process(delta: float) -> void:
 	to.y = 0.0
 	if to.length() < REACH:
 		next += 1
-		corner_passed.emit(_turns_at(next - 1))
+		var turned := _turns_at(next - 1)
+		if turned and kind == CAROUSEL_HORSE:
+			velocity.y = HORSE_HOP
+			hops += 1
+		corner_passed.emit(turned)
 		return
 	var forward := global_basis.z
 	var turn := forward.signed_angle_to(to, Vector3.UP)

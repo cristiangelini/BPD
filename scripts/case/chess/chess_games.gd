@@ -8,7 +8,8 @@ extends Node
 ## hands (ChessBoard.moved, legal or not, the member only comments) and hit the clock. Not showing up, running out of
 ## time or standing up in the middle end the game and make the members in the hall suspicious, and knocking the board
 ## over (KNOCK pieces off) much more; hitting the clock without a move, a little. At the end the member is pleased and
-## tells where a piece of evidence is (step 5). The host decides all of it and tells the guests. Every number here is (propuesta).
+## tells where a piece of evidence is (step 5). The host decides all of it and tells the guests: the members' lines
+## here, the clocks' turns (ChessClock) and the pieces' places (PropSync) (step 6). Every number here is (propuesta).
 
 signal challenged(table: int, cop: Cop)
 signal started(table: int)
@@ -106,7 +107,7 @@ func challenge(who: Cop = null) -> bool:
 	cop_side = ChessClock.WHITE if seat[1] == 0.0 else ChessClock.BLACK
 	state = WAITING
 	join_left = JOIN
-	challenger.say("CHESS_CHALLENGE")
+	_say("CHESS_CHALLENGE")
 	cop.show_hint("HINT_CHESS_CHALLENGED")
 	challenged.emit(table, cop)
 	return true
@@ -197,17 +198,17 @@ func _on_moved(piece: ChessPiece, _from: Vector2i, _to: Vector2i, at: int) -> vo
 		return
 	moved = true
 	if piece.white != (cop_side == ChessClock.WHITE):
-		challenger.say("CHESS_NOT_YOURS")
+		_say("CHESS_NOT_YOURS")
 
 
 func _on_pressed(_by: Cop, side: int, at: int) -> void:
 	if state != PLAYING or at != table or side != cop_side:
 		return
 	if moved:
-		challenger.say("CHESS_COMMENT_%d" % (_comment % COMMENTS))
+		_say("CHESS_COMMENT_%d" % (_comment % COMMENTS))
 		_comment += 1
 	else:
-		challenger.say("CHESS_NO_MOVE")
+		_say("CHESS_NO_MOVE")
 		_raise(NO_MOVE)
 	think_left = THINK
 
@@ -221,7 +222,7 @@ func _on_flagged(side: int, at: int) -> void:
 ## there's one (step 5).
 func _finish() -> void:
 	var done := table
-	challenger.say(tip())
+	_say(tip())
 	_end()
 	finished.emit(done)
 
@@ -237,7 +238,7 @@ func tip() -> String:
 
 ## The game ends badly: `line` from the member and the hall's members get suspicious.
 func _fail(amount: float, line: String) -> void:
-	challenger.say(line)
+	_say(line)
 	_raise(amount)
 	_end()
 	failed.emit(amount)
@@ -247,6 +248,22 @@ func _raise(amount: float) -> void:
 	for member in club.members:
 		if club.in_hall(member.global_position + Vector3.UP):
 			club.suspicion.raise(member, amount)
+
+
+## Host: the challenger says `line`, on every PC.
+func _say(line: String) -> void:
+	var index := club.members.find(challenger)
+	_said(index, line)
+	var net := _net()
+	if multiplayer.is_server() and net.is_online():
+		for peer: int in net.scene_peers:
+			_said.rpc_id(peer, index, line)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _said(index: int, line: String) -> void:
+	if index >= 0 and index < club.members.size():
+		club.members[index].say(line)
 
 
 func _end() -> void:
@@ -261,3 +278,13 @@ func _end() -> void:
 
 func _clock() -> ChessClock:
 	return club.clocks[table]
+
+
+## The Net of this PC's multiplayer branch: the autoload in the game, each test PC's own in the online tests.
+func _net() -> Node:
+	var branch := multiplayer as SceneMultiplayer
+	if branch and not branch.root_path.is_empty():
+		var net := get_node_or_null(str(branch.root_path) + "/Net")
+		if net:
+			return net
+	return Net
