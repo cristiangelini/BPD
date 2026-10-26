@@ -33,6 +33,8 @@ var impostor: Politician
 var outrages := 0
 ## The key of each line, with the line's number (the birthday party has its own, politico-cumple.md).
 var line_key := "SPEECH_LUSTRE_%d"
+## The bar's title (the parade has its own, politico-descapotable.md).
+var title_key := "HUD_SPEECH"
 var _order: Array[int] = []
 var _next := 0
 var _line_left := 0.0
@@ -118,7 +120,7 @@ func _build_hud() -> void:
 	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	box.offset_top = 12.0
 	var title := Label.new()
-	title.text = "HUD_SPEECH"
+	title.text = title_key
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_constant_override("outline_size", 6)
 	box.add_child(title)

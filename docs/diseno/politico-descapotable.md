@@ -57,3 +57,15 @@ caminando. Si llega limpio a la plaza, nos aumentan el presupuesto. Si llega con
    opción es sin abrazadores: solo huevos y tomates.
 3. **¿Desde dónde tiran?** Recomendado: solo desde las veredas, a la altura de la gente, como en la base. La otra
    opción es sumar tiradores en los balcones, que tiran desde arriba y no se pueden esposar hasta bajar a buscarlos.
+
+## Hecho así
+- **Paso 1 (el desfile, el auto y el recorrido):** `--place=convertible` abre `scenes/levels/plaza_convertible.tscn`, la
+  misma plaza del acto con `PlazaRally.variant = "convertible"` y la ciudad sin tránsito (`City.traffic = false`: en
+  vez de cortar solo esas calles se corta todo, que es más simple y no deja autos atravesando el desfile). El sorteo de
+  Jugar reparte las protecciones en quintos (`PlaceDraw.RALLIES`). El descapotable (`ParadeCar`, rojo con una raya
+  crema, parabrisas, chofer y dos banderitas) espera en la calle al norte de la plaza con el diputado parado en el
+  asiento de atrás; arranca cuando empieza el discurso y da una vuelta a la manzana de la plaza por el carril de al lado
+  de la plaza (264 m, a 0,73 m/s), siempre donde dice el reloj del discurso: no para por nada y vuelve a donde salió
+  justo al final. El diputado no se baja a saludar, dice 12 frases de desfile y la barra se llama "Desfile del diputado
+  Lustre". El comisario cuenta el desfile. Por ahora el público sigue frente al escenario como en la base: el paso 2 lo
+  pasa a las veredas. Captura en `/mnt/project-files/descapotable/paso1-desfile.png`.

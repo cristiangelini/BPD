@@ -11,7 +11,7 @@ func after_each() -> void:
 
 func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltration_and_each_raid_a_sixth_of_the_rest() -> void:
 	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "chase": 0, "crime_scene": 0, "circus": 0, "traffic": 0, "club": 0,
-		"choir": 0, "bank": 0, "plaza": 0, "market": 0, "double": 0, "birthday": 0, "prison": 0, "transfer": 0, "blackout": 0, "visits": 0,
+		"choir": 0, "bank": 0, "plaza": 0, "market": 0, "double": 0, "birthday": 0, "convertible": 0, "prison": 0, "transfer": 0, "blackout": 0, "visits": 0,
 		"laundry": 0}
 	for i in 600:
 		count[PlaceDraw.pick(i + 1, [], 1)] += 1
@@ -25,7 +25,8 @@ func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltrati
 		assert_between(count[place], 10, 60, "%s still comes up (propuesta)" % place)
 	assert_between(count.club + count.choir, 25, 80, "the infiltrations, as often as a raid (propuesta)")
 	assert_between(count.bank, 15, 70, "the bank robbery, about as often as a raid (propuesta)")
-	assert_between(count.plaza + count.market + count.double + count.birthday, 10, 60, "the politician's protection, about as often as a raid (propuesta)")
+	assert_between(count.plaza + count.market + count.double + count.birthday
+		+ count.convertible, 10, 60, "the politician's protection, about as often as a raid (propuesta)")
 	assert_between(count.prison + count.transfer + count.blackout + count.visits + count.laundry, 5, 50,
 		"a prison case, about as often as a raid (propuesta)")
 	assert_gt(count.prison, 0, "a fifth the riot")
@@ -35,10 +36,11 @@ func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltrati
 	assert_gt(count.laundry, 0, "and a fifth the laundry")
 	assert_gt(count.club, 5, "half of them at the grandparents' club")
 	assert_gt(count.choir, 5, "and half at the church choir")
-	assert_gt(count.plaza, 1, "a quarter of the protections at the plaza's rally")
-	assert_gt(count.market, 1, "a quarter on the market walk")
-	assert_gt(count.double, 1, "a quarter at the rally with the double")
-	assert_gt(count.birthday, 1, "and a quarter at the birthday party")
+	assert_gt(count.plaza, 0, "a fifth of the protections at the plaza's rally")
+	assert_gt(count.market, 0, "a fifth on the market walk")
+	assert_gt(count.double, 0, "a fifth at the rally with the double")
+	assert_gt(count.birthday, 0, "a fifth at the birthday party")
+	assert_gt(count.convertible, 0, "and a fifth on the parade in a convertible")
 	assert_eq(PlaceDraw.pick(77, []), PlaceDraw.pick(77, []), "the same seed gives the same place for everyone")
 
 

@@ -38,6 +38,7 @@ const PLACES := {
 	"market": "res://scenes/levels/market.tscn",
 	"double": "res://scenes/levels/plaza_double.tscn",
 	"birthday": "res://scenes/levels/plaza_birthday.tscn",
+	"convertible": "res://scenes/levels/plaza_convertible.tscn",
 	"laundry": "res://scenes/levels/prison_laundry.tscn",
 }
 ## The raids, drawn by the seed.
@@ -60,9 +61,10 @@ const INFILTRATIONS := ["club", "choir"]
 const BANK_EVERY := 4
 ## Of the rest, one in this many is the politician's protection (proteccion-politico.md, propuesta), at one of these
 ## by the seed: the rally at the plaza, the walk through the market (politico-mercado.md), the rally with the double
-## (politico-doble.md) or the birthday party (politico-cumple.md).
+## (politico-doble.md), the birthday party (politico-cumple.md) or the parade in a convertible
+## (politico-descapotable.md).
 const RALLY_EVERY := 4
-const RALLIES := ["plaza", "market", "double", "birthday"]
+const RALLIES := ["plaza", "market", "double", "birthday", "convertible"]
 ## Of the rest, one in this many is a prison case (propuesta), one of these by the seed: the riot in the canteen
 ## (carcel-motin.md), the prisoner transfer (traslado-presos.md), the blackout (carcel-corte-de-luz.md), the
 ## visiting day (carcel-visitas.md) or the laundry (carcel-lavanderia.md).

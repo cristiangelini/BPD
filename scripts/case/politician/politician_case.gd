@@ -50,7 +50,7 @@ var follower := false:
 		if rally:
 			rally.speech.follower = value
 			rally.crowd.set_physics_process(not value)
-			PoliticianWalks.of(rally.politician).set_physics_process(not value)
+			PoliticianWalks.of(rally.politician).set_physics_process(not value and not rally.parade_car)
 			if rally.double:
 				PoliticianWalks.of(rally.double).set_physics_process(not value)
 				rally.swap.set_physics_process(not value)
@@ -97,8 +97,8 @@ func give_tip() -> void:
 	tip_given = true
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).input_enabled:
-			var brief: String = {"double": "BRIEF_DOUBLE_", "birthday": "BRIEF_BIRTHDAY_"}.get(rally.variant,
-				"BRIEF_RALLY_")
+			var brief: String = {"double": "BRIEF_DOUBLE_", "birthday": "BRIEF_BIRTHDAY_",
+				"convertible": "BRIEF_PARADE_"}.get(rally.variant, "BRIEF_RALLY_")
 			briefing.start(PackedStringArray([brief + "A", brief + "B", brief + "C"]))
 			break
 	checklist.show_rows(rows())
