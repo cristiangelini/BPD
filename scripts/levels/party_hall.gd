@@ -10,6 +10,8 @@ extends InfiltrationPlace
 ## Sargento Trucho one of them; the señora Serpentina by the food and the bouncer at the door, who only lets in cops
 ## dressed as party cops (step 2b). The guests watch the cops (ClubSuspicion, "PARTY_" texts). Every so often
 ## Serpentina calls the group photo on the steps, and the boss slips into the office meanwhile (PartyPhoto, step 3).
+## The case (InfiltrationCase, variant "party", step 4): 3 of the 6 clues, each telling one bit of the boss's costume
+## (`clues`), and seeing him in the office during the photo tells the fourth (`bonus_kind`).
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -55,6 +57,21 @@ const DOORMAN_AT := Vector3(ENTRANCE_X + 1.4, 0, HALF_Z + 0.7)
 ## by the safe.
 const PHOTOGRAPHER_AT := Vector3(-3.0, 0, -4.0)
 const JEWELS_AT := Vector3(10.4, 0, -8.6)
+## The clues (step 4) and the bit of the boss's costume each tells: the coat check ticket on its counter (grab it), a
+## mustache hair on the jewel bag hidden in the restroom (photo), last year's photo framed in the office (photo), the
+## optician's receipt on the food table (grab it); the recording of two guests gossiping by each other and the señora
+## Serpentina, talked to with no guest within HOSTESS_ALONE m, tell a bit no other clue here tells.
+const EVIDENCE_KINDS: Array[String] = ["ticket", "hair", "old_photo", "recording", "receipt", "hostess"]
+const CLUE_OF := {"ticket": "cap", "hair": "mustache", "old_photo": "badge", "receipt": "glasses"}
+const HOSTESS_ALONE := 6.0
+const TALK_PAIR := 2.6
+const TICKET_AT := Vector3(-8.4, 0, 6.4)
+const HAIR_BAG_AT := Vector3(10.6, 0, 7.6)
+const OLD_PHOTO_AT := Vector3(9.4, 1.6, -9.9)
+const RECEIPT_AT := Vector3(-10.5, 0, -4.3)
+const TICKET_MODEL := preload("res://assets/models/lottery_ticket.glb")
+const RECEIPT_MODEL := preload("res://assets/models/pawn_receipt.glb")
+const JEWEL_BAG_MODEL := preload("res://assets/models/jewelry_bag.glb")
 const MINGLE_SPOTS: Array[Vector3] = [
 	Vector3(-3.0, 0, -3.5), Vector3(-1.0, 0, -3.0), Vector3(1.2, 0, -3.6), Vector3(3.0, 0, -2.8),
 	Vector3(-2.6, 0, -1.0), Vector3(-0.4, 0, -0.6), Vector3(2.0, 0, -0.8), Vector3(-3.2, 0, 1.4),
@@ -83,6 +100,9 @@ var doorman: ClubDoorman
 var photo: PartyPhoto
 ## The spots to pose on the photo steps, in the hall's space.
 var photo_spots: Array[Vector3] = []
+## The bit of the boss's costume each clue in the hall tells ({kind: trait kind}), and the one the office tells.
+var clues := {}
+var bonus_kind := ""
 var _build: PlaceBuilder
 
 
@@ -98,7 +118,10 @@ func _ready() -> void:
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, OFFICE_Z)
 	add_child(office_door)
 	_add_people()
+	_add_evidence()
 	place_in_city("party_hall")
+	start_case()
+	photo.boss_seen.connect(func(_cop: Cop) -> void: case.give_bonus())
 
 
 ## The boss runs off from the street, out of the entrance (step 5).
@@ -166,6 +189,121 @@ func _add_people() -> void:
 	photo.in_office = in_back_room
 	add_child(photo)
 	suspicion.watch_photo(photo)
+
+
+## The 3 clues the seed picks (ClubEvidence), what each tells, and the one left for the office.
+func _add_evidence() -> void:
+	evidence = ClubEvidence.new()
+	evidence.name = "Evidence"
+	evidence.held_kinds.assign(["ticket", "receipt"])
+	evidence.talk_key = "PARTY_TALK_%d"
+	add_child(evidence)
+	var pair := _talking_pair()
+	var available := EVIDENCE_KINDS.duplicate()
+	if pair.is_empty():
+		available.erase("recording")
+	evidence.kinds = ClubEvidence.draw(case_seed, available)
+	var untold := PartyTraits.KINDS.duplicate()
+	for kind: String in evidence.kinds:
+		if CLUE_OF.has(kind):
+			clues[kind] = CLUE_OF[kind]
+			untold.erase(CLUE_OF[kind])
+	for kind: String in evidence.kinds:
+		if not clues.has(kind):
+			clues[kind] = untold.pop_front()
+	bonus_kind = untold[0]
+	var counter_top := FLOOR_TOP + 1.0
+	for kind: String in evidence.kinds:
+		match kind:
+			"ticket":
+				_item(kind, TICKET_MODEL, Vector3(0.12, 0.02, 0.08), 0.05, TICKET_AT + Vector3(0, counter_top + 0.02, 0))
+			"receipt":
+				_item(kind, RECEIPT_MODEL, Vector3(0.12, 0.02, 0.18), 0.05,
+					RECEIPT_AT + Vector3(0, FLOOR_TOP + FOOD_TABLE_SIZE.y + 0.02, 0))
+			"hair":
+				# The jewel bag behind the sink, a mustache hair caught in its zip.
+				var bag := JEWEL_BAG_MODEL.instantiate()
+				bag.position = HAIR_BAG_AT + Vector3(0, FLOOR_TOP, 0)
+				bag.scale = Vector3.ONE * 2.5
+				$Built.add_child(bag)
+				_spot(kind, HAIR_BAG_AT + Vector3(0, FLOOR_TOP + 0.2, 0), Vector3(0.5, 0.4, 0.5))
+			"old_photo":
+				# Last year's party, framed: the whole gang posing, one of them circled in red.
+				_spot(kind, OLD_PHOTO_AT, Vector3(1.0, 0.7, 0.1))
+				_build.mesh_box(OLD_PHOTO_AT, Vector3(0.9, 0.6, 0.03), WOOD)
+				_build.mesh_box(OLD_PHOTO_AT + Vector3(0, 0, 0.02), Vector3(0.78, 0.48, 0.01), Color(0.55, 0.7, 0.9))
+				for i in 6:
+					_build.mesh_box(OLD_PHOTO_AT + Vector3(-0.3 + i * 0.12, -0.05, 0.03), Vector3(0.07, 0.2, 0.01),
+						Color(0.2, 0.3, 0.75) if i != 3 else Color(0.85, 0.1, 0.1))
+			"recording":
+				evidence.talkers.assign(pair)
+				for member: ClubMember in pair:
+					member.distracted = true
+			"hostess":
+				serpentina.talked.connect(_on_hostess_talked)
+
+
+## A clue to grab, lying at `at`.
+func _item(kind: String, model: PackedScene, size: Vector3, kg: float, at: Vector3) -> void:
+	var item := ClubEvidence.make_item("Party_" + kind, model, size, kg)
+	add_child(item)
+	item.position = at
+	evidence.items[kind] = item
+
+
+## A clue to photograph, a box of `size` around `at`.
+func _spot(kind: String, at: Vector3, size: Vector3) -> void:
+	var spot := ClubEvidenceSpot.new()
+	spot.name = "Evidence_" + kind
+	spot.kind = kind
+	spot.photo = true
+	spot.prompt_prefix = "PROMPT_PARTY_"
+	spot.evidence = evidence
+	add_child(spot)
+	spot.position = at
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = size
+	shape.shape = box
+	spot.add_child(shape)
+
+
+## Two guests mingling by each other, not the boss (the recording's pair), or none.
+func _talking_pair() -> Array[ClubMember]:
+	for first in members:
+		for second in members:
+			if first != second and first != boss and second != boss \
+					and first.position.distance_to(second.position) < TALK_PAIR:
+				return [first, second]
+	return []
+
+
+## The señora Serpentina tells what she saw of the boss, but only with no guest close enough to hear her.
+func _on_hostess_talked(_cop: Cop) -> void:
+	if members.any(func(guest: ClubMember) -> bool:
+			return guest.global_position.distance_to(serpentina.global_position) < HOSTESS_ALONE):
+		return
+	serpentina.say(tr("SERPENTINA_TELLS") % trait_text(clues.hostess))
+	if multiplayer.is_server():
+		evidence.mark("hostess")
+
+
+## What the boss wears of `kind`, in words ("gorra azul").
+func trait_text(kind: String) -> String:
+	return tr(("TRAIT_%s_%s" % [kind, guest_traits[members.find(boss)][kind]]).to_upper())
+
+
+## "El jefe: gorra azul, ¿?, placa de chocolate, ¿?": what the clues found tell, in the order of the bits.
+func clue_row(found: Array[String], bonus: bool) -> String:
+	var known := found.filter(func(kind: String) -> bool: return clues.has(kind)).map(
+		func(kind: String) -> String: return clues[kind])
+	if bonus:
+		known.append(bonus_kind)
+	if known.is_empty():
+		return ""
+	var parts := PartyTraits.KINDS.map(func(kind: String) -> String:
+		return trait_text(kind) if known.has(kind) else tr("PARTY_TRAIT_UNKNOWN"))
+	return tr("PARTY_BOSS_ROW") % ", ".join(PackedStringArray(parts))
 
 
 ## Whether a world position is inside the hall.

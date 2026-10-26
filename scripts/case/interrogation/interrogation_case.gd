@@ -80,6 +80,7 @@ const SUSPECT_MODELS := {
 	"owner_chela": "res://assets/models/npc_chela.glb",
 	"owner_ernesto": "res://assets/models/npc_ernesto.glb",
 	"owner_pausa": "res://assets/models/npc_pausa.glb",
+	"owner_trucho": "res://assets/models/npc_invitado.glb",
 	"owner_oso": "res://assets/models/npc_ladron_oso.glb",
 	# El Conejo, who robbed the town bank alone (robo-banco-pueblo.md).
 	"owner_conejo": "res://assets/models/npc_ladron_conejo.glb",

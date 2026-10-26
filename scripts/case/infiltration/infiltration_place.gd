@@ -54,3 +54,9 @@ func start_case() -> void:
 ## Where the boss's getaway waits when they find the cops out, in the world. Each place says where.
 func getaway_at() -> Transform3D:
 	return global_transform
+
+
+## The planilla's row of what the clues found say about the boss, or "" (the party's guests look alike: the clues tell
+## the boss's costume, infiltracion-fiesta.md). `bonus` is the clue the cops got on their own (seeing the boss).
+func clue_row(_found: Array[String], _bonus: bool) -> String:
+	return ""

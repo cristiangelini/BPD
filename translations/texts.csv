@@ -2265,6 +2265,56 @@ PARTY_PHOTO_POSE,Quédate quieto para la foto,Hold still for the photo,Fique par
 PARTY_PHOTO_GOOD,¡Sonríe!,Smile!,Sorria!
 PARTY_PHOTO_MOVED,¡Te moviste! Vas a salir borroso,You moved! You'll come out blurry,Você se mexeu! Vai sair borrado
 HINT_PARTY_SAW_BOSS,"¡Lo viste! Mientras todos posan, uno de los invitados cuenta joyas en la oficina. Mírale bien el disfraz.","You saw him! While everyone poses, one of the guests is counting jewels in the office. Take a good look at his costume.","Você viu! Enquanto todos posam, um dos convidados conta joias no escritório. Olhe bem a fantasia dele."
+BRIEF_PARTY_A,"¡Novatos! Una banda de ladrones de joyas festeja su último golpe esta noche en el Salón Gala, y es una fiesta de disfraces... de policía.","Rookies! A gang of jewel thieves is celebrating its last job tonight at the Gala Hall, and it's a costume party... cop costumes.","Novatos! Uma quadrilha de ladrões de joias comemora o último golpe hoje à noite no Salão Gala, e é uma festa à fantasia... de policial."
+BRIEF_PARTY_B,"El jefe, el Sargento Trucho, es un invitado más y nadie sabe cuál. Entren disfrazados de policía de cotillón: en la fila de la comisaría hay gorras con luces, bigotes postizos y placas de plástico.","The boss, the Sargento Trucho, is just another guest and nobody knows which. Go in dressed as party-store cops: the row at the station has light-up caps, fake mustaches and plastic badges.","O chefe, o Sargento Trucho, é só mais um convidado e ninguém sabe qual. Entrem fantasiados de policial de festa: na fila da delegacia tem bonés com luzinhas, bigodes postiços e distintivos de plástico."
+BRIEF_PARTY_C,"Junten 3 pistas sobre su disfraz y espósenlo a él, no a otro. Y cuando griten ¡foto grupal!, a la escalerita y quietos.","Gather 3 clues about his costume and cuff him, not someone else. And when they shout group photo!, onto the steps and hold still.","Juntem 3 pistas sobre a fantasia dele e algemem ele, não outro. E quando gritarem foto em grupo!, para a escadinha e parados."
+HINT_GO_PARTY,"Antes, pasa por la fila de disfraces de la comisaría y ponte 2 piezas de cotillón. El Salón Gala es el de la fachada violeta con globos.","First, stop by the station's costume row and put on 2 party pieces. The Gala Hall is the one with the purple front and balloons.","Antes, passe na fila de fantasias da delegacia e vista 2 peças de festa. O Salão Gala é o da fachada roxa com balões."
+HINT_PARTY_IN,Adentro. Busca pistas del disfraz del jefe y míralas en la planilla (Q).,You're in. Look for clues about the boss's costume and check them on the planilla (Q).,Lá dentro. Procure pistas da fantasia do chefe e veja na planilha (Q).
+HINT_PARTY_CLUE,¡Una pista! El disfraz del jefe está anotado en la planilla.,A clue! The boss's costume is on the planilla.,Uma pista! A fantasia do chefe está anotada na planilha.
+HINT_WRONG_GUEST,¡Ese no era! Todos los invitados te miran raro. A la próxima los descubren.,That wasn't him! All the guests are giving you funny looks. Next time they'll find you out.,Não era esse! Todos os convidados te olham estranho. Na próxima eles descobrem vocês.
+HINT_TRUCHO_CUFFED,¡El Sargento Trucho esposado! Caso resuelto.,The Sargento Trucho is cuffed! Case solved.,O Sargento Trucho algemado! Caso resolvido.
+HINT_ESCAPE_trucho,¡El Sargento Trucho se escapa! ¡Atrápenlo!,The Sargento Trucho is getting away! Catch him!,O Sargento Trucho está fugindo! Peguem ele!
+OBJ_PARTY_GET_IN,Entrar disfrazado de policía de cotillón al salón,Get into the hall dressed as a party-store cop,Entrar no salão fantasiado de policial de festa
+OBJ_PARTY_EVIDENCE,Pistas (%d de %d),Clues (%d of %d),Pistas (%d de %d)
+OBJ_PARTY_CUFF_TRUCHO,Esposar al Sargento Trucho (solo a él),Cuff the Sargento Trucho (only him),Algemar o Sargento Trucho (só ele)
+OBJ_PARTY_CATCH_TRUCHO,Atrapar al Sargento Trucho,Catch the Sargento Trucho,Pegar o Sargento Trucho
+OBJ_PARTY_CAREFUL,Que no los descubran: posen en la foto y no esposen al que no es,Don't get found out: pose in the photo and don't cuff the wrong one,Não deixem descobrir: posem na foto e não algemem o errado
+OBJ_PARTY_FOUND_OUT,¡Los descubrieron!,You've been found out!,Vocês foram descobertos!
+PARTY_BOSS_ROW,El jefe: %s,The boss: %s,O chefe: %s
+PARTY_TRAIT_UNKNOWN,¿?,??,??
+TRAIT_CAP_BLUE,gorra azul,blue cap,boné azul
+TRAIT_CAP_BLACK,gorra negra,black cap,boné preto
+TRAIT_CAP_WHITE,gorra blanca,white cap,boné branco
+TRAIT_MUSTACHE_THIN,bigote finito,pencil mustache,bigode fininho
+TRAIT_MUSTACHE_HANDLEBAR,bigote de manubrio,handlebar mustache,bigode de guidão
+TRAIT_MUSTACHE_BUSHY,bigote tupido,bushy mustache,bigode cheio
+TRAIT_BADGE_GOLD,placa dorada,gold badge,distintivo dourado
+TRAIT_BADGE_SILVER,placa plateada,silver badge,distintivo prateado
+TRAIT_BADGE_CHOCOLATE,placa de chocolate,chocolate badge,distintivo de chocolate
+TRAIT_GLASSES_SUN,lentes de sol,sunglasses,óculos de sol
+TRAIT_GLASSES_HEART,lentes de corazón,heart glasses,óculos de coração
+TRAIT_GLASSES_NONE,sin lentes,no glasses,sem óculos
+EVIDENCE_PARTY_ticket,"El ticket del guardarropa del jefe, con su gorra anotada","The boss's coat check ticket, with his cap written on it","O tíquete do guarda-volumes do chefe, com o boné anotado"
+EVIDENCE_PARTY_hair,Foto de un pelo de bigote en la bolsa de joyas del baño,Photo of a mustache hair on the jewel bag in the restroom,Foto de um pelo de bigode na bolsa de joias do banheiro
+EVIDENCE_PARTY_old_photo,"Foto de la fiesta del año pasado, con el jefe marcado con un círculo","Photo of last year's party, with the boss circled","Foto da festa do ano passado, com o chefe marcado num círculo"
+EVIDENCE_PARTY_receipt,"La boleta de la óptica, a nombre de ""S. Trucho""","The optician's receipt, made out to ""S. Trucho""","O recibo da ótica, em nome de ""S. Trucho"""
+EVIDENCE_PARTY_recording,El video de dos invitados chismeando sobre el jefe,The video of two guests gossiping about the boss,O vídeo de dois convidados fofocando sobre o chefe
+EVIDENCE_PARTY_hostess,Lo que contó la señora Serpentina,What the señora Serpentina told you,O que a senhora Serpentina contou
+PROMPT_PARTY_hair,Una bolsa de joyas detrás del lavamanos... con un pelo de bigote enganchado,A jewel bag behind the sink... with a mustache hair caught in it,Uma bolsa de joias atrás da pia... com um pelo de bigode preso
+PROMPT_PARTY_old_photo,"La foto de la fiesta del año pasado, con uno marcado en rojo","Last year's party photo, with one of them circled in red","A foto da festa do ano passado, com um marcado de vermelho"
+PARTY_TALK_0,¿Viste el disfraz del jefe? Este año se lo tomó en serio.,Did you see the boss's costume? He took it seriously this year.,Viu a fantasia do chefe? Este ano ele levou a sério.
+PARTY_TALK_1,"Dicen que hoy cuenta las joyas en la oficina, durante la foto.","They say he's counting the jewels in the office today, during the photo.","Dizem que hoje ele conta as joias no escritório, durante a foto."
+PARTY_TALK_2,"Shh, que no se note. Somos policías... de mentira.","Shh, don't let it show. We're cops... fake ones.","Shh, que não se perceba. Somos policiais... de mentira."
+PARTY_TALK_3,Yo lo reconozco por el disfraz. Lo tengo anotado.,I'd know him by his costume. I wrote it down.,Eu reconheço ele pela fantasia. Tenho anotado.
+SERPENTINA_TELLS,*En voz baja* El que pagó la fiesta... va con %s. No le digas que te dije.,*Quietly* The one who paid for the party... is wearing a %s. Don't tell him I told you.,*Baixinho* O que pagou a festa... está com %s. Não conta que eu te disse.
+TRUCHO_SLIP_1,"¡Esa gorra la compré en el cotillón! ...Con plata mía, digo.","I bought that cap at the party store! ...With my own money, I mean.","Esse boné eu comprei na loja de festa! ...Com meu dinheiro, digo."
+TRUCHO_SLIP_2,¡Yo en la oficina solo contaba... servilletas! Brillantes.,In the office I was only counting... napkins! Shiny ones.,No escritório eu só contava... guardanapos! Brilhantes.
+TRUCHO_SLIP_3,¡La foto del año pasado no prueba nada! Salí con los ojos cerrados.,Last year's photo proves nothing! My eyes were closed.,A foto do ano passado não prova nada! Saí de olhos fechados.
+CRIME_owner_trucho,¡Novatos! Ayer se trajeron al Sargento Trucho de la fiesta y está en la sala de interrogatorio. Las joyas no aparecieron. Háganlo hablar.,Rookies! Yesterday the Sargento Trucho was brought in from the party and he's in the interrogation room. The jewels never turned up. Make him talk.,Novatos! Ontem trouxeram o Sargento Trucho da festa e ele está na sala de interrogatório. As joias não apareceram. Façam ele falar.
+CONFESS_owner_trucho,"¡Está bien! ¡Las joyas eran nuestras! Bueno, no. Eran de la joyería. Pero la fiesta estuvo buenísima.","Fine! The jewels were ours! Well, no. They were the jewelry store's. But the party was great.","Tá bom! As joias eram nossas! Bom, não. Eram da joalheria. Mas a festa foi ótima."
+CHASE_TRUCHO_LINE_1,"¡Abran paso, soy policía! ...De disfraz, pero policía.","Make way, I'm a cop! ...A costume one, but a cop.","Abram caminho, sou policial! ...De fantasia, mas policial."
+CHASE_TRUCHO_LINE_2,¡Ustedes tampoco son de verdad! ...¿O sí?,You're not real either! ...Or are you?,Vocês também não são de verdade! ...Ou são?
+CHASE_TRUCHO_LINE_3,"Está bien, me rindo. Pero me dejan el bigote.","Fine, I give up. But I keep the mustache.","Tá bom, eu me rendo. Mas o bigode fica comigo."
 PROMPT_TALK_MIME,E: saludar con mímica,E: greet in mime,E: cumprimentar com mímica
 PROMPT_TALK_PAUSA,E: saludar a la Maestra Pausa,E: greet Maestra Pausa,E: cumprimentar a Maestra Pausa
 MIME_GOSSIP_0,*Hace como que sostiene una billetera enorme y te guiña un ojo.*,*Pretends to hold a huge wallet and winks at you.*,*Finge segurar uma carteira enorme e pisca para você.*
