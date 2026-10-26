@@ -51,6 +51,17 @@ func topple(mannequin: ClubMember) -> void:
 	toppled.emit(mannequin)
 
 
+## Online: which dummies lie on the floor on the host.
+func net_state() -> Variant:
+	return mannequins.filter(func(mannequin: ClubMember) -> bool: return fallen.has(mannequin)).map(
+		func(mannequin: ClubMember) -> int: return mannequins.find(mannequin))
+
+
+func apply_net_state(state: Variant) -> void:
+	for index: int in state:
+		topple(mannequins[index])
+
+
 func _watch_bumps(mannequin: ClubMember) -> void:
 	var area := Area3D.new()
 	area.collision_layer = 0
@@ -63,10 +74,13 @@ func _watch_bumps(mannequin: ClubMember) -> void:
 	shape.position.y = 0.7
 	area.add_child(shape)
 	mannequin.add_child(area)
+	# Online only the host knocks them over (net_state); another PC's cop counts when it runs into one.
 	area.body_entered.connect(func(body: Node3D) -> void:
+		if not multiplayer.is_server():
+			return
 		var speed := 0.0
 		if body is Cop:
-			speed = (body as Cop).velocity.length()
+			speed = INF if (body as Cop).is_running else (body as Cop).velocity.length()
 		elif body is RigidBody3D:
 			speed = (body as RigidBody3D).linear_velocity.length()
 		if speed > BUMP_SPEED:

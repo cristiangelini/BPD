@@ -137,6 +137,12 @@ Los pesos y valores siguen la escala de la oficina y el laboratorio: la principa
      que cada lugar sale en un octavo de los allanamientos, y la semilla elige entre sus 6 historias. Si otro lugar
      nuevo entra antes, el sorteo pasa a novenos sin tocar nada más.
 7. El online (el profe, Lula, la música, las cintas y las mancuernas en todas las PC).
+   - **Cómo quedó (propuesta):** el profe lo maneja el anfitrión y los invitados lo siguen; el equipo de música,
+     Lula, el batido y las bolsas de boxeo andan desde cualquier PC (las acciones compartidas). El espejo, las cintas
+     rotas y los maniquíes caídos los decide el anfitrión y se copian en todas las PC (el estado del caso). Lula y las
+     luces que parpadean miran a todos los policías en cada PC (el "corre" de cada uno viaja por la red), y las cintas
+     que arrancan solas tiran a cada jugador en su propia PC. Por ahora un policía de otra PC que salta en la clase no
+     cuenta como baile (la red no manda el salto).
 
 El gimnasio de la infiltración (#650 a #686) y el laboratorio ya están en `develop`, así que la pila sale de ahí.
 

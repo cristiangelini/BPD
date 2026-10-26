@@ -26,6 +26,10 @@ var car: PatrolCar
 var station_parking: Transform3D
 ## The place's own checklist facts (door_open, extras, broken, complaint...), merged over the shared ones.
 var place_facts: Callable = func() -> Dictionary: return {}
+## Online, what the guests' place takes from the host's beyond the checklist (the gym's cracked mirror), and how a
+## guest's place applies it; both optional.
+var place_state: Callable
+var apply_place_state: Callable
 ## The case's labels on screen and the end of shift screen, from the place's scene.
 var solved_label: Label
 var failed_label: Label
@@ -324,6 +328,8 @@ func snapshot() -> Dictionary:
 	# The owner who ran off, and the chase after him (persecucion-final.md).
 	if escape and escape.fled:
 		state.chase = escape.chase.snapshot()
+	if place_state.is_valid():
+		state.place = place_state.call()
 	return state
 
 
@@ -331,6 +337,8 @@ func snapshot() -> Dictionary:
 ## the end of shift screen.
 func apply_snapshot(state: Dictionary) -> void:
 	_host_facts = state.facts
+	if state.has("place") and apply_place_state.is_valid():
+		apply_place_state.call(state.place)
 	if state.has("chase") and escape:
 		escape.flee()
 		escape.chase.apply_snapshot(state.chase)

@@ -38,6 +38,7 @@ func _physics_process(_delta: float) -> void:
 	if lifted or not bar.is_held():
 		return
 	lifted = true
-	bar.freeze = false
+	# Online only the host simulates it; a guest's copy stays frozen and follows (PropSync).
+	bar.freeze = not multiplayer.is_server()
 	gym.raid.add_clue(tr("CLUE_RECORD_ONE_HAND"))
 	gym.raid.float_label(tr("GYM_RECORD_LIGHT"), bar.global_position + Vector3.UP * 0.6, Color(1, 1, 1))
