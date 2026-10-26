@@ -71,6 +71,7 @@ var office_door: FrontDoor
 var seats: Array[BidSeat] = []
 var podium: AuctionPodium
 var easel: LotEasel
+var sale: AuctionSale
 var martillo: ClubMember
 var doorman: ClubDoorman
 var _build: PlaceBuilder
@@ -89,6 +90,11 @@ func _ready() -> void:
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, BACK_Z)
 	add_child(office_door)
 	_add_people()
+	sale = AuctionSale.new()
+	sale.name = "Sale"
+	sale.house = self
+	sale.case_seed = case_seed
+	add_child(sale)
 	place_in_city("auction")
 
 

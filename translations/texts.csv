@@ -2876,6 +2876,17 @@ AUCTION_FOUND_OUT_2,¡Son policías! ¡Preguntó si el cuadro tiene la factura!,
 HINT_AUCTION_FOUND_OUT,¡Los descubrieron! Todos los compradores saben que son policías.,You've been found out! Every buyer knows you're cops.,Vocês foram descobertos! Todos os compradores sabem que vocês são policiais.
 PROMPT_AUCTION_BID,E: levantar la paleta,E: raise the paddle,E: levantar a raquete
 AUCTION_PRICE,$ %d,$ %d,$ %d
+AUCTION_LOT_painting,¡Nuevo lote! Un retrato de... alguien muy importante. ¡Empezamos en 100!,New lot! A portrait of... someone very important. We start at 100!,Novo lote! Um retrato de... alguém muito importante. Começamos em 100!
+AUCTION_LOT_vase,"¡Siguiente lote! Un jarrón antiquísimo, de por lo menos el martes pasado. ¡100!","Next lot! An ancient vase, from at least last Tuesday. 100!","Próximo lote! Um vaso antiquíssimo, de pelo menos terça passada. 100!"
+AUCTION_LOT_statue,¡Un busto de mármol auténtico! No pregunten de quién. ¡Arrancamos en 100!,An authentic marble bust! Don't ask whose. We open at 100!,Um busto de mármore autêntico! Não perguntem de quem. Começamos em 100!
+AUCTION_LOT_chair,"¡Una silla de época! De qué época, no sabemos. ¡100 para empezar!","A period chair! Which period, we don't know. 100 to start!","Uma cadeira de época! De que época, não sabemos. 100 para começar!"
+AUCTION_ONCE,¡A la una...!,Going once...!,Dou-lhe uma...!
+AUCTION_TWICE,¡A las dos...!,Going twice...!,Dou-lhe duas...!
+AUCTION_SOLD,¡Vendido! ¡Felicitaciones al distinguido comprador!,Sold! Congratulations to the distinguished buyer!,Vendido! Parabéns ao distinto comprador!
+AUCTION_SOLD_COP,"¡Vendido al nuevo! Se lo dejamos al lado de la silla. Y la cuenta, también.","Sold to the newcomer! We'll leave it beside your chair. And the bill, too.",Vendido ao novato! Deixamos ao lado da cadeira. E a conta também.
+AUCTION_NO_SALE,"¿Nadie? ¿Nadie? Bueno, queda para la próxima.","Nobody? Nobody? Well, maybe next time.","Ninguém? Ninguém? Bom, fica para a próxima."
+AUCTION_NOBODY_BID,Los nuevos no pujaron ni una vez... ¿A qué vinieron?,The newcomers didn't bid once... What did they come for?,Os novatos não deram nem um lance... Vieram fazer o quê?
+HINT_AUCTION_LOT,"¡Sale un lote! Párate al lado de una silla libre y levanta la paleta (E) al menos una vez. Si eres el último en pujar, lo pagas.","A lot is up! Stand by a free chair and raise the paddle (E) at least once. If you're the last bidder, you pay for it.","Saiu um lote! Fique ao lado de uma cadeira livre e levante a raquete (E) pelo menos uma vez. Se for o último lance, você paga."
 MENU_DOLL_FACTORY,Fábrica de muñecos (prueba),Doll factory (test),Fábrica de bonecos (teste)
 PROMPT_PUSH_BUTTON,Apretar el botón,Press the button,Apertar o botão
 PROMPT_SHUTTER_BUTTON,Subir la persiana del muelle,Raise the dock shutter,Levantar a porta do cais
