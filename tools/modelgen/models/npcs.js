@@ -299,6 +299,23 @@ const NPCS = {
 		b.add('head', C('earpiece', 0xdadada), ellipsoid(0.02, 0.02, 0.02, 5, 3), { pos: V(-0.2, 1.3, 0.02) });
 		briefcase(b, C('case_black', 0x111111));
 	},
+	// Inspectora de la ciudad (inspeccion.md, decision 107): grey suit, glasses on the nose, a tight grey bun and a
+	// clipboard held in front with a pen. She comes to judge the station on the last shift.
+	inspectora(b) {
+		const suit = C('grey_suit', 0x6c7079);
+		pearBody(b, SKIN.crema, { shirt: suit, pants: suit, belted: false, shoes: black });
+		lapels(b, white);
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		glasses(b);
+		mouth(b);
+		const hair = C('hair_grey', 0x8a8a8a);
+		hairCap(b, hair, { y: 1.4 });
+		b.add('head', hair, ellipsoid(0.09, 0.09, 0.09, 8, 5), { pos: V(0, 1.5, -0.14) });
+		b.add('props', C('clipboard', 0x9a6a3c), new THREE.BoxGeometry(0.28, 0.02, 0.36), { pos: V(-0.12, 0.74, 0.33), rot: [-1.0, 0, 0] });
+		b.add('props', white, new THREE.BoxGeometry(0.24, 0.012, 0.3), { pos: V(-0.12, 0.75, 0.345), rot: [-1.0, 0, 0] });
+		b.add('props', C('silver', 0xc8ccd2), new THREE.BoxGeometry(0.08, 0.02, 0.03), { pos: V(-0.12, 0.88, 0.26), rot: [-1.0, 0, 0] });
+		limb(b, 'props', C('pen_blue', 0x2a4aa0), V(0.36, 0.7, 0.32), V(0.3, 0.82, 0.38), 0.012);
+	},
 	// Carcelero: grey-green guard uniform, keys and baton.
 	carcelero(b) {
 		const uni = C('guard_uniform', 0x5f6e4c), dark = C('guard_dark', 0x39432d);

@@ -2224,3 +2224,12 @@ CRASH_CALM_0,"Está bien, está bien. Lo corro.","Fine, fine. I'll move it.","T�
 CRASH_CALM_1,Tiene razón. Respiro.,You're right. Breathing.,Tem razão. Respirando.
 CRASH_CALM_2,"Bueno, fue un raspón.","Okay, it was a scratch.","Tá, foi só um arranhão."
 SHIFT_STREET,Eventos en la calle,Street events,Eventos na rua
+HINT_INSPECTOR_ARRIVES,Llegó la inspectora de la ciudad: va contigo todo el turno y anota todo.,The city inspector is here: she goes with you all shift and writes everything down.,A inspetora da cidade chegou: ela vai com você o turno todo e anota tudo.
+INSPECTOR_ARRIVES,"Severina Regla, inspección de la ciudad. Hagan como si no estuviera.","Severina Regla, city inspection. Act as if I'm not here.","Severina Regla, inspeção da cidade. Façam de conta que não estou aqui."
+INSPECTOR_NOTE_1,Mmm.,Hmm.,Hum.
+INSPECTOR_NOTE_2,Anotado.,Noted.,Anotado.
+INSPECTOR_NOTE_3,Interesante...,Interesting...,Interessante...
+INSPECTOR_NOTE_4,¿Siempre es así?,Is it always like this?,É sempre assim?
+INSPECTOR_IN_CAR,Yo voy atrás. Manejen con cuidado.,I'll ride in the back. Drive carefully.,Eu vou atrás. Dirijam com cuidado.
+INSPECTOR_OUT,Bueno. Veamos.,Well. Let's see.,Bom. Vejamos.
+INSPECTOR_CUFFED,¡Soy funcionaria! Esto va al informe.,I'm a city official! This goes in the report.,Sou funcionária! Isso vai para o relatório.

@@ -121,13 +121,17 @@ func _ready() -> void:
 		# Online, the player's own cop brings in the other players' cops (docs/diseno/online.md).
 		if Net.is_online():
 			Net.spawn_cops.call_deferred(self)
-		# Under investigation, the internal affairs agent comes into the case too (sobornos.md).
+		# Under investigation, the internal affairs agent comes into the case too (sobornos.md), and on the last shift
+		# the city's inspector (inspeccion.md).
 		_join_agent.call_deferred()
 
 
 func _join_agent() -> void:
 	if InternalAffairsAgent.join(self) or InternalAffairsAgent.of(self):
 		show_hint("HINT_AGENT_ARRIVES")
+	# On the last shift, the city's inspector comes along (inspeccion.md).
+	if CityInspector.join(self) or CityInspector.of(self):
+		show_hint("HINT_INSPECTOR_ARRIVES")
 
 
 ## What the camera points at within reach (empty if nothing), ignoring the cop's own body.
