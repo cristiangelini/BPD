@@ -12,6 +12,8 @@ const EASE := 12.0
 const SNAP_DISTANCE := 3.0
 ## States per packet: few enough that a packet of busy ones (the count's 19 in the yard) stays under the MTU.
 const PER_PACKET := 8
+## Bytes of states per packet, under the MTU (1392) with room for the call itself: a few busy ones fill it before 8.
+const PACKET_BYTES := 1100
 
 var net: Node
 var npcs: Array[Node3D] = []
@@ -184,10 +186,27 @@ func _send() -> void:
 	for peer: int in net.scene_peers:
 		if not gone.is_empty():
 			_removed.rpc_id(peer, gone)
-		for from in range(0, ids.size(), PER_PACKET):
-			_moved.rpc_id(peer, ids.slice(from, from + PER_PACKET), states.slice(from, from + PER_PACKET))
-		for from in range(0, sure_ids.size(), PER_PACKET):
-			_moved_all.rpc_id(peer, sure_ids.slice(from, from + PER_PACKET), sure.slice(from, from + PER_PACKET))
+		for packet: Array in packets(ids, states):
+			_moved.rpc_id(peer, packet[0], packet[1])
+		for packet: Array in packets(sure_ids, sure):
+			_moved_all.rpc_id(peer, packet[0], packet[1])
+
+
+## `ids` and their `states` cut into [ids, states] packets of at most PER_PACKET states and PACKET_BYTES bytes.
+static func packets(ids: PackedInt32Array, states: Array) -> Array:
+	var out := []
+	var from := 0
+	var bytes := 0
+	for n in ids.size():
+		var size := var_to_bytes(states[n]).size()
+		if n > from and (n - from >= PER_PACKET or bytes + size > PACKET_BYTES):
+			out.append([ids.slice(from, n), states.slice(from, n)])
+			from = n
+			bytes = 0
+		bytes += size
+	if from < ids.size():
+		out.append([ids.slice(from), states.slice(from)])
+	return out
 
 
 @rpc("authority", "call_remote", "unreliable_ordered")
