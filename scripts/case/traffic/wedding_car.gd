@@ -40,6 +40,12 @@ const SOBER_GUESTS := 15
 ## What a guest says blowing (10+ per kind, decision 19), and a city driver.
 const BLOW_LINES := 10
 const CITY_BLOW_LINES := 3
+## What the relative who takes the wheel says (control-boda.md, step 3).
+const RELATIVE_LINES := 4
+## A drunk let through zigzags this far across the lane, this fast.
+const ZIGZAG := 1.6
+const ZIGZAG_RATE := 2.5
+const SWAY := 0.35
 ## Rolling, the cans swing this far (radians) at full speed, this fast.
 const RATTLE := 0.25
 const RATTLE_RATE := 18.0
@@ -149,3 +155,8 @@ static func reading_text(value: float) -> String:
 static func blow_line(plate: String, is_guest: bool) -> String:
 	var roll := absi(hash(["wedding blow", plate]))
 	return "WEDDING_BLOW_%d" % (roll % BLOW_LINES) if is_guest else "CITY_BLOW_%d" % (roll % CITY_BLOW_LINES)
+
+
+## The relative who takes the wheel once a cop has the keys: one of RELATIVE_LINES, from the plate.
+static func relative_line(plate: String) -> String:
+	return "WEDDING_RELATIVE_%d" % (absi(hash(["wedding relative", plate])) % RELATIVE_LINES)

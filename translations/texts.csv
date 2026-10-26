@@ -2157,6 +2157,13 @@ PROMPT_HOLE_COVERED,"El colchón tapa el pozo: sácalo para seguir cavando","The
 PROMPT_ENTER_TUNNEL,"E: meterte en el túnel","E: get into the tunnel","E: entrar no túnel"
 HINT_TUNNEL_OUT,"¡Afuera! Estás en la vereda, al lado del patrullero. Que no te vea el guardia por la ventana.","Out! You're on the sidewalk, by the patrol car. Don't let the guard see you through the window.","Lá fora! Você está na calçada, do lado da viatura. Que o guarda não te veja pela janela."
 JAILBREAK_ESCAPED_TUNNEL,"Dejaron un túnel hecho con cucharas. El guardia va a cenar con tenedor un mes entero.","You left behind a tunnel dug with spoons. The guard will eat dinner with a fork for a month.","Vocês deixaram um túnel cavado com colheres. O guarda vai jantar de garfo por um mês inteiro."
+PROMPT_TAKE_KEYS,"E: sacarle las llaves (está pasado)","E: take the keys (over the limit)","E: tirar as chaves (passou do limite)"
+HINT_WEDDING_KEYS,"Llaves sacadas: maneja otro del auto. +25 al sueldo si resuelven el caso.","Keys taken: someone else in the car drives. +25 to the pay if you solve the case.","Chaves tiradas: outra pessoa do carro dirige. +25 no salário se resolverem o caso."
+HINT_WEDDING_DRUNK_PASSED,"¡Pasó un borracho al volante! -25 al sueldo.","A drunk driver got through! -25 from the pay.","Passou um bêbado no volante! -25 do salário."
+WEDDING_RELATIVE_0,"¡Manejo yo, que solo tomé jugo de naranja!","I'll drive, I only had orange juice!","Eu dirijo, só tomei suco de laranja!"
+WEDDING_RELATIVE_1,"Dame las llaves, primo. Y deja de cantar.","Give me the keys, cousin. And stop singing.","Me dá as chaves, primo. E para de cantar."
+WEDDING_RELATIVE_2,"Siempre lo mismo en las bodas. Córrete, que manejo yo.","Same thing every wedding. Scoot over, I'm driving.","Sempre a mesma coisa nos casamentos. Chega pra lá que eu dirijo."
+WEDDING_RELATIVE_3,"La tía Chela al volante. ¡Agárrense!","Aunt Chela at the wheel. Hold on tight!","A tia Chela no volante. Segurem-se!"
 SHIFT_BRIBES,Sobornos,Bribes,Subornos
 SHIFT_AGENT_FINE,Multa de asuntos internos,Internal affairs fine,Multa da corregedoria
 SHIFT_INVESTIGATION_OPENED,Asuntos internos abrió una investigación.,Internal affairs opened an investigation.,A corregedoria abriu uma investigação.

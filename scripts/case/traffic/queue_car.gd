@@ -145,9 +145,13 @@ var newlyweds := false
 var alcohol := -1.0
 ## A cop made the driver blow, and what they blew.
 var blown := false
+## Over the limit, a cop took its driver's keys and a relative took the wheel (control-boda.md, step 3).
+var keys_taken := false
 ## Its honks to celebrate so far, and seconds rolled, for its cans.
 var honks := 0
 var _rolled := 0.0
+## Zigzagging, it turns this far (radians) with the lane it's crossing.
+var _sway := 0.0
 ## Riders still to pop out of its open door.
 var _to_pop := 0
 ## Riders counted so far, each with their sticker (CrowdRider.stick), and whether a cop looked in to count who stayed.
@@ -645,6 +649,8 @@ func open_trunk() -> void:
 
 
 func prompt_key(cop: Cop) -> String:
+	if can_take_keys():
+		return "PROMPT_TAKE_KEYS"
 	if can_blow() and cop and cop.get_node("Grabber").held is Breathalyzer:
 		return "PROMPT_BLOW"
 	if waiting() and can_fine():
@@ -655,6 +661,9 @@ func prompt_key(cop: Cop) -> String:
 ## E on a stopped car: with the breathalyzer in hand its driver blows; a packed one all counted gets its fine; else
 ## the driver hands the license.
 func use(cop: Cop = null) -> void:
+	if can_take_keys():
+		take_keys()
+		return
 	if can_blow() and cop and cop.get_node("Grabber").held is Breathalyzer:
 		blow(cop.get_node("Grabber").held)
 		return
@@ -672,9 +681,40 @@ func use(cop: Cop = null) -> void:
 	say(DriverTraits.license_text(driver))
 
 
-## Someone at its wheel to blow: a stopped car with a driver, in the wedding check.
+## Someone at its wheel to blow: a stopped car with a driver, in the wedding check, not blown yet.
 func can_blow() -> bool:
-	return wedding_mode and waiting() and not driver.is_empty()
+	return wedding_mode and waiting() and not driver.is_empty() and not blown
+
+
+## With the breathalyzer in hand, E on it does something: blow, or take the keys.
+func breath_check_ready() -> bool:
+	return can_blow() or can_take_keys()
+
+
+## Its driver blew over the limit and still has the keys.
+func can_take_keys() -> bool:
+	return wedding_mode and waiting() and blown and not keys_taken and alcohol_level() > WeddingCar.DRUNK_ABOVE
+
+
+## Whoever drives it now drank over the limit: its driver, until a cop takes the keys.
+func drunk_at_wheel() -> bool:
+	return wedding_mode and not keys_taken and alcohol_level() > WeddingCar.DRUNK_ABOVE
+
+
+## A cop takes the drunk driver's keys: a relative from the back seat takes the wheel, sober, and says so.
+func take_keys() -> void:
+	if not can_take_keys():
+		return
+	keys_taken = true
+	var drunk := get_node_or_null("WindowDriver")
+	if drunk:
+		remove_child(drunk)
+		drunk.queue_free()
+	GhostCar.dress_driver(self, plate + " relative", shirt)
+	say(tr(WeddingCar.relative_line(plate)))
+	var case := TrafficCase.of(self)
+	if case:
+		case.keys_taken(self)
 
 
 ## What its driver blows: the plan's, or else from its plate.
@@ -820,15 +860,20 @@ func _physics_process(delta: float) -> void:
 		return
 	_place()
 	if guest:
-		_rolled += delta
 		WeddingCar.rattle(self, speed, _rolled)
+	_rolled += delta
+	if state == "going" and drunk_at_wheel():
+		# A drunk let through zigzags off, and takes the cones with it (control-boda.md, step 3).
+		at.x = sin(_rolled * WeddingCar.ZIGZAG_RATE) * WeddingCar.ZIGZAG
+		_sway = -cos(_rolled * WeddingCar.ZIGZAG_RATE) * WeddingCar.SWAY
+		_knock_cones()
 	if state == "sneaking":
 		_knock_cones()
 
 
 func _place() -> void:
 	if checkpoint:
-		global_transform = checkpoint.global_transform * Transform3D(Basis(Vector3.UP, PI),
+		global_transform = checkpoint.global_transform * Transform3D(Basis(Vector3.UP, PI + _sway),
 			at + Vector3(0, 0.05, lurch))
 
 
