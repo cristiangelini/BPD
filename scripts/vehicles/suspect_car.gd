@@ -59,6 +59,8 @@ const MODELS := {
 	"inmate_on_foot": preload("res://assets/models/ball_and_chain.glb"),
 	# The market's spiteful vendor pedals off on his vegetable tricycle (politico-mercado.md), losing veggies in curves.
 	"veggie_trike": preload("res://assets/models/veggie_trike.glb"),
+	# The school's janitor rides off on his floor polisher (politico-escuela.md), waxing the sidewalk behind him.
+	"floor_polisher": preload("res://assets/models/floor_polisher.glb"),
 	# The circus's culprit runs off in the clown car, dropping inflatable clowns (escena-circo.md).
 	"clown_car": preload("res://assets/models/clown_car.glb"),
 	# Maestra Pausa found out runs off "driving" an invisible car (infiltracion-mimos.md): only its faint outline shows.
@@ -116,6 +118,7 @@ const RIDERS := {
 	"food_cart": [[preload("res://assets/models/npc_preso.glb"), Vector3(0, 0.05, -0.95), 0.9]],
 	"inmate_on_foot": [[preload("res://assets/models/npc_preso.glb"), Vector3(0, 0, 0), 0.85]],
 	"veggie_trike": [[preload("res://assets/models/npc_puestero.glb"), Vector3(0, 0.25, -0.45), 0.85]],
+	"floor_polisher": [[preload("res://assets/models/npc_conserje_escuela.glb"), Vector3(0, 0.0, -0.8), 1.0]],
 	"clown_car": [[preload("res://assets/models/npc_payaso.glb"), Vector3(0, 0.45, -0.25), 0.8]],
 	"toy_helicopter": [[preload("res://assets/models/npc_ladron_oso.glb"), Vector3(0, 2.4, 0), 0.85]],
 	"invisible_car": [[preload("res://assets/models/npc_pausa.glb"), Vector3(0, 0, 0.1), 0.95]],
@@ -140,7 +143,7 @@ const PASSENGERS := {
 ## The scooter and the wheelchair ride the sidewalk, not the street.
 const LANES := {"moto": ChaseRoute.SIDEWALK_LANE, "wheelchair": ChaseRoute.SIDEWALK_LANE,
 	"walker": ChaseRoute.SIDEWALK_LANE, "bear_on_foot": ChaseRoute.SIDEWALK_LANE, "kick_scooter": ChaseRoute.SIDEWALK_LANE,
-	"food_cart": ChaseRoute.SIDEWALK_LANE, "veggie_trike": ChaseRoute.SIDEWALK_LANE, "inmate_on_foot": ChaseRoute.SIDEWALK_LANE,
+	"food_cart": ChaseRoute.SIDEWALK_LANE, "veggie_trike": ChaseRoute.SIDEWALK_LANE, "floor_polisher": ChaseRoute.SIDEWALK_LANE, "inmate_on_foot": ChaseRoute.SIDEWALK_LANE,
 	"toro_jog": ChaseRoute.SIDEWALK_LANE}
 ## The electric wheelchair goes at 8 km/h (persecucion.md).
 ## The delivery bike pedals at 25 km/h and turns tight. Doña Chela's walker's motor does 10 km/h. The choir's old van,
@@ -149,7 +152,7 @@ const LANES := {"moto": ChaseRoute.SIDEWALK_LANE, "wheelchair": ChaseRoute.SIDEW
 ## The clown car does 30, honking all the way, and a parade float 28, wide and slow. The loaded cement mixer does 28 and nearly stops in the curves.
 const SPEEDS := {"bear_on_foot": 12.0 / 3.6, "wheelchair": 8.0 / 3.6, "tow_truck": 30.0 / 3.6, "golf_cart": 25.0 / 3.6, "bike": 25.0 / 3.6,
 	"walker": 10.0 / 3.6, "choir_van": 35.0 / 3.6, "kick_scooter": 15.0 / 3.6,
-	"food_cart": 14.0 / 3.6, "veggie_trike": 16.0 / 3.6, "inmate_on_foot": 11.0 / 3.6, "clown_car": 30.0 / 3.6,
+	"food_cart": 14.0 / 3.6, "veggie_trike": 16.0 / 3.6, "floor_polisher": 14.0 / 3.6, "inmate_on_foot": 11.0 / 3.6, "clown_car": 30.0 / 3.6,
 	"parade_float": 28.0 / 3.6,
 	"toy_helicopter": 20.0 / 3.6, "invisible_car": 14.0 / 3.6,
 	"toro_jog": 13.0 / 3.6, "learner_car": 35.0 / 3.6, "pizza_scooter": 40.0 / 3.6,
@@ -175,6 +178,7 @@ const KICK_SCOOTER := "kick_scooter"
 const FOOD_CART := "food_cart"
 const INMATE_ON_FOOT := "inmate_on_foot"
 const VEGGIE_TRIKE := "veggie_trike"
+const FLOOR_POLISHER := "floor_polisher"
 const CLOWN_CAR := "clown_car"
 const FRUIT_TRUCK := "fruit_truck"
 const CIRCUS_TRUCK := "circus_truck"
@@ -225,7 +229,7 @@ const COPS_LAYER := 2
 const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 4.6), "night": Vector3(2.1, 1.4, 4.6),
 	"highway": Vector3(2.1, 1.1, 4.6), "tow_truck": Vector3(2.3, 2.4, 6.2), "golf_cart": Vector3(1.3, 1.8, 2.4),
 	"moto": Vector3(0.8, 1.6, 1.9), "old_patrol": Vector3(2.1, 1.5, 4.6),
-	"wheelchair": Vector3(0.8, 1.4, 1.2), "bear_on_foot": Vector3(0.9, 1.8, 0.9), "choir_van": Vector3(2.0, 1.95, 4.6), "walker": Vector3(0.7, 1.6, 1.3), "kick_scooter": Vector3(0.6, 1.6, 1.0), "food_cart": Vector3(0.8, 1.6, 2.2), "veggie_trike": Vector3(1.0, 1.6, 2.0), "inmate_on_foot": Vector3(0.8, 1.6, 0.9), "invisible_car": Vector3(0.9, 1.6, 0.9), "bike": Vector3(0.7, 1.6, 1.9), "clown_car": Vector3(1.3, 1.4, 2.0), "traffic_0": Vector3(2.1, 1.4, 4.6),
+	"wheelchair": Vector3(0.8, 1.4, 1.2), "bear_on_foot": Vector3(0.9, 1.8, 0.9), "choir_van": Vector3(2.0, 1.95, 4.6), "walker": Vector3(0.7, 1.6, 1.3), "kick_scooter": Vector3(0.6, 1.6, 1.0), "food_cart": Vector3(0.8, 1.6, 2.2), "veggie_trike": Vector3(1.0, 1.6, 2.0), "floor_polisher": Vector3(0.8, 1.6, 1.8), "inmate_on_foot": Vector3(0.8, 1.6, 0.9), "invisible_car": Vector3(0.9, 1.6, 0.9), "bike": Vector3(0.7, 1.6, 1.9), "clown_car": Vector3(1.3, 1.4, 2.0), "traffic_0": Vector3(2.1, 1.4, 4.6),
 	"traffic_1": Vector3(2.1, 1.4, 4.6), "traffic_2": Vector3(2.1, 1.4, 4.6), "traffic_3": Vector3(2.1, 1.4, 4.6),
 	"manager_car": Vector3(2.1, 1.4, 4.6), "fruit_truck": Vector3(2.1, 1.75, 4.6),
 	"circus_truck": Vector3(2.1, 2.6, 4.6), "parade_float": Vector3(2.3, 1.0, 4.6),
@@ -245,7 +249,7 @@ const MIXER_WHEELS: Array[Vector3] = [Vector3(-1.2, 0.38, 2.4), Vector3(1.2, 0.3
 ## The scooter's wheels are part of its model.
 const NO_WHEELS: Array[Vector3] = []
 const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS,
-	"wheelchair": NO_WHEELS, "walker": NO_WHEELS, "bear_on_foot": NO_WHEELS, "kick_scooter": NO_WHEELS, "food_cart": NO_WHEELS, "veggie_trike": NO_WHEELS, "inmate_on_foot": NO_WHEELS, "invisible_car": NO_WHEELS, "highway": SEDAN_WHEELS, "tow_truck": TOW_WHEELS, "golf_cart": NO_WHEELS,
+	"wheelchair": NO_WHEELS, "walker": NO_WHEELS, "bear_on_foot": NO_WHEELS, "kick_scooter": NO_WHEELS, "food_cart": NO_WHEELS, "veggie_trike": NO_WHEELS, "floor_polisher": NO_WHEELS, "inmate_on_foot": NO_WHEELS, "invisible_car": NO_WHEELS, "highway": SEDAN_WHEELS, "tow_truck": TOW_WHEELS, "golf_cart": NO_WHEELS,
 	"old_patrol": SEDAN_WHEELS, "bike": NO_WHEELS, "clown_car": NO_WHEELS, "traffic_0": SEDAN_WHEELS, "traffic_1": SEDAN_WHEELS,
 	"traffic_2": SEDAN_WHEELS, "traffic_3": SEDAN_WHEELS, "choir_van": SEDAN_WHEELS, "manager_car": SEDAN_WHEELS, "fruit_truck": SEDAN_WHEELS,
 	"circus_truck": SEDAN_WHEELS, "parade_float": NO_WHEELS,
@@ -299,7 +303,7 @@ var _rotor: Node3D
 func _ready() -> void:
 	add_to_group("suspect_car")
 	if kind == "wheelchair" or kind == WALKER or kind == TOW or kind == BEAR_ON_FOOT or kind == KICK_SCOOTER \
-			or kind == FOOD_CART or kind == VEGGIE_TRIKE or kind == INMATE_ON_FOOT or kind == INVISIBLE_CAR or kind == TORO_JOG:
+			or kind == FOOD_CART or kind == VEGGIE_TRIKE or kind == FLOOR_POLISHER or kind == INMATE_ON_FOOT or kind == INVISIBLE_CAR or kind == TORO_JOG:
 		set_collision_mask_value(COPS_LAYER, true)
 	var shape := CollisionShape3D.new()
 	var body := BoxShape3D.new()

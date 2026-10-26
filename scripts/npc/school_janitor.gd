@@ -12,7 +12,7 @@ extends CharacterBody3D
 signal swapped(pupil: SchoolPupil)
 signal cuffed_now(janitor: SchoolJanitor)
 
-const MODEL := preload("res://assets/models/npc_conserje.glb")
+const MODEL := preload("res://assets/models/npc_conserje_escuela.glb")
 const LINES := 4
 const SAY_TIME := 4.0
 const SPEED := 1.3

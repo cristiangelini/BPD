@@ -101,6 +101,8 @@ var tour: SchoolTour
 var questions: SchoolQuestions
 ## The teacher's candies, for a pupil who cries (step 5).
 var candy_box: CandyBox
+## The case on top of the visit (step 7): the comisario's briefing, the planilla, the pay and the janitor's getaway.
+var case: SchoolCase
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -137,6 +139,12 @@ func _ready() -> void:
 	city.transform = CityLayout.anchor("school_visit")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+	case = SchoolCase.new()
+	case.name = "Case"
+	case.school = self
+	case.shift_screen = $ShiftScreen
+	add_child(case)
+	case.start((city as City).comisario)
 
 
 ## Which look each of the 20 pupils has, desk by desk: the four looks dealt by the seed, five each.

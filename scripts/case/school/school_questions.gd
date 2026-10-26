@@ -130,6 +130,7 @@ func try_point(cop: Cop) -> bool:
 
 
 func _physics_process(delta: float) -> void:
+	_show()
 	_point_left = maxf(_point_left - delta, 0.0)
 	if Input.is_action_just_pressed("grab"):
 		for cop: Cop in get_tree().get_nodes_in_group("cops"):
@@ -178,17 +179,12 @@ func _put_hands_down() -> void:
 
 
 func _build_hud() -> void:
-	var hud := CanvasLayer.new()
-	hud.name = "GaffeHud"
 	_label = Label.new()
-	_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	_label.offset_left = -260.0
-	_label.offset_right = -16.0
-	_label.offset_top = 12.0
-	_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_label.name = "Gaffes"
+	_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_label.add_theme_constant_override("outline_size", 6)
-	hud.add_child(_label)
-	add_child(hud)
+	# Under the visit's bar (SchoolTour).
+	tour.hud_box.add_child(_label)
 	_show()
 
 
