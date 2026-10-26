@@ -523,7 +523,7 @@ func use() -> bool:
 		act("eat_donut", self, [$Grabber.held])
 		return true
 	if $Grabber.held is HookStick or $Grabber.held is LooseDonut or $Grabber.held is SamplePlate \
-			or $Grabber.held is FloorPolisher or $Grabber.held is Watermelon:
+			or $Grabber.held is FloorPolisher or $Grabber.held is Watermelon or $Grabber.held is StatueCoin:
 		act("use", $Grabber.held)
 		return true
 	if $Grabber.held is VisitItem:

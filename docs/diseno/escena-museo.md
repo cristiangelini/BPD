@@ -145,6 +145,11 @@ PlaceDraw y la custodia para el interrogatorio.
    la vuelta en algo más de un minuto y borra la pisada si pasa por arriba (con E se apaga); el pelo arriba del poste
    del medio de la soga, que se cae si alguien cruza la soga; el sándwich de jamón y queso mordido en el escritorio de
    seguridad; y los dos botones del escritorio: el verde pasa la grabación (el culpable estornuda y el bigote se le
-   despega o ni se mueve) y el rojo, al lado, graba encima. Faltan la estatua y la coartada del baño **(propuesta)**.
+   despega o ni se mueve) y el rojo, al lado, graba encima **(propuesta)**. Hecho así (tercera parte, la testigo y la
+   coartada): en el mostrador de entradas hay un platito con tres monedas; con una en la mano, E sobre la estatua la
+   deja en el sombrero y, sin mover los labios, cuenta si al que salió por atrás le brillaron los anteojos con la luna.
+   Esposada o con un grito cerca, se ofende y no habla más. En el baño, E en el lavamanos mira bien cómo estaba (los
+   tres detalles verdaderos) y la planilla anota que el culpable dijo otra cosa; si antes un policía usó el inodoro,
+   el baño quedó como él lo dejó y la pista se pierde **(propuesta)**.
 5. El final: tablero, cansancio, sueldo y la camioneta con los marcos.
 6. El sorteo de "Jugar" (en tercios: pastel, circo y museo) y el online.

@@ -518,7 +518,8 @@ func _circus_clue_line(kind: String) -> String:
 	return tr("CLUE_CIRCUS_" + kind)
 
 
-## At the museum: the footprint on the waxed floor, the hair on the rope, the bitten sandwich and the recording.
+## At the museum: the footprint on the waxed floor, the hair on the rope, the bitten sandwich, the recording, the
+## statue and the bathroom as it was.
 func _museum_clue_line(kind: String) -> String:
 	var who := culprit()
 	match kind:
@@ -530,6 +531,12 @@ func _museum_clue_line(kind: String) -> String:
 			return tr("CLUE_MUSEUM_bite") % tr("TEETH_" + str(who.teeth))
 		"recording":
 			return tr("CLUE_MUSEUM_recording_" + ("real" if who.mustache else "fake"))
+		"witness":
+			return tr("CLUE_MUSEUM_witness_glasses" if who.glasses else "CLUE_MUSEUM_witness_no_glasses")
+		"alibi":
+			var museum := place as Museum
+			return tr("CLUE_MUSEUM_alibi") % museum.bathroom_details.map(func(detail: String) -> String:
+				return tr("ALIBI_SHORT_" + detail))
 	return tr("CLUE_MUSEUM_" + kind)
 
 
