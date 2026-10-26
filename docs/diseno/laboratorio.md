@@ -81,6 +81,8 @@ Los pesos y valores siguen la escala de la oficina: la principal vale unos 1000 
 7. El online (el chef, Pocha, la harina y los pasteles en todas las PC).
 
 ## Preguntas para Cristian
+Respondidas el 26/10: sí a las 3 (decisión 163 aceptada).
+
 1. ¿El laboratorio de pasteles como séptimo lugar, o preferís otro de los 4 que faltan? **Recomendado:** el
    laboratorio, porque es el que sigue en la lista y ya tiene su lote y su cartel.
 2. ¿El chef se distrae con el horno al máximo y Pocha solo habla si probás su pastel (3 s sin poder agarrar nada)?
