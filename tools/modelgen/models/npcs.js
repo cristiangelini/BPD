@@ -510,6 +510,21 @@ const NPCS = {
 		for (const x of [-0.07, 0.07]) b.add('remote', C('remote_stick', 0xd8322a), new THREE.CylinderGeometry(0.012, 0.012, 0.06, 5), { pos: V(x, 1.02, 0.44), rot: [-0.5, 0, 0] });
 		b.add('remote', C('remote_antenna', 0xc8ccd2), new THREE.CylinderGeometry(0.005, 0.005, 0.3, 4), { pos: V(0.1, 1.14, 0.38), rot: [-0.3, 0, -0.2] });
 	},
+	// Don Plácido, the town bank's only clerk (robo-banco-pueblo.md, decision 127): white shirt, a brown knitted vest,
+	// bald with a white crown of hair and a big white mustache, his eyes shut and his mouth open, snoring. The back door's key sticks out of his vest pocket (its own node, 'key', so the game hides it once taken).
+	empleado(b) {
+		const vest = C('vest_brown', 0x7a5032), hair = C('hair_white', 0xeeeeea);
+		pearBody(b, SKIN.crema, { shirt: C('shirt_white', 0xf4f2ec), pants: C('clerk_pants', 0x4a4038) });
+		b.add('body', vest, loft([{ y: 0.55, rx: 0.42, rz: 0.37 }, { y: 0.8, rx: 0.37, rz: 0.33 }, { y: 1.05, rx: 0.26, rz: 0.24 }], 10));
+		b.add('body', C('vest_pocket', 0x5e3c24), new THREE.BoxGeometry(0.12, 0.08, 0.03), { pos: V(0.17, 0.92, 0.31), rot: [-0.35, 0.4, 0] });
+		b.add('key', gold, new THREE.BoxGeometry(0.025, 0.1, 0.012), { pos: V(0.17, 0.98, 0.32), rot: [-0.35, 0.4, 0] });
+		b.add('key', gold, new THREE.TorusGeometry(0.025, 0.008, 4, 8), { pos: V(0.17, 1.04, 0.31), rot: [-0.35, 0.4, 0] });
+		for (const s of [-1, 1]) b.add('face', black, new THREE.TorusGeometry(0.035, 0.008, 4, 8, Math.PI), { pos: V(s * 0.08, 1.34, 0.2), rot: [0, 0, Math.PI] });
+		mouth(b, { open: true });
+		mustache(b, hair, 1.4);
+		for (const s of [-1, 1]) b.add('head', hair, ellipsoid(0.07, 0.1, 0.14, 6, 4), { pos: V(s * 0.18, 1.32, -0.03) });
+		b.add('head', hair, ellipsoid(0.16, 0.09, 0.07, 8, 4), { pos: V(0, 1.3, -0.17) });
+	},
 	// Repartidor (persecución): red jacket, a big helmet and the thermal delivery backpack on his back.
 	repartidor(b) {
 		const jacket = C('delivery_red', 0xd8322a), helmet = C('helmet_white', 0xf2f2f0);

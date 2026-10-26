@@ -32,8 +32,11 @@ extends Node3D
 ## by the roof (robo-banco-techo.md, decision 126): fire escape stairs up the east wall, a hatch in the corridor's
 ## ceiling, the giant toy helicopter on its helipad on the roof (ToyHelicopter) and El Oso's nephew with its remote on a
 ## bench across the street (BankNephew), who flies it away when he sees a cop on the roof; taken off the roof, the gang
-## can't leave by it. Cuffing the nephew crashes it (+100). --bank=party, --bank=grandpas, --bank=sorry, --bank=manager, --bank=flood,
-## --bank=roof or --bank=base forces one.
+## can't leave by it. Cuffing the nephew crashes it (+100). An eighth, drawn before everything, is the town bank
+## (robo-banco-pueblo.md, decision 127): a wall of shelves cuts the hall down to a small one with no queue, Mr. Moneda
+## isn't there, there are no hostages on the floor but don Plácido, the only clerk, asleep on his stool behind the
+## counter (BankClerk), and the gang is El Conejo alone, at the drill. --bank=party, --bank=grandpas, --bank=sorry,
+## --bank=manager, --bank=flood, --bank=roof, --bank=town or --bank=base forces one.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -161,6 +164,15 @@ const HELIPAD_AT := Vector3(6.0, 0, -1.0)
 const HELIPAD_SIZE := 3.6
 const NEPHEW_BENCH := Vector3(-4.0, 0, HALF_Z + CityLayout.SIDEWALK + CityLayout.STREET + 1.6)
 const PAINT := Color(0.95, 0.95, 0.9)
+## The town bank (decision 127): the shelves' wall closing the hall's west side off, its shelves (heights over the
+## floor) with jars and binders, the clerk's stool behind the counter and the hand-painted sign over the entrance.
+const TOWN_WALL_X := -1.0
+const TOWN_SHELVES: Array[float] = [0.5, 1.1, 1.7]
+const TOWN_SHELF_ZS: Array[float] = [-3.0, 1.0, 3.0, 5.0, 7.0]
+const CLERK_AT := Vector3(2.0, 0, COUNTER_Z - 0.75)
+const STOOL_TOP := 0.55
+const JAR := Color(0.85, 0.55, 0.25)
+const BINDER := Color(0.25, 0.4, 0.7)
 ## Step 2: after a flight the nephew's remote needs this long (s) before it flies again; that's when the cops on the
 ## roof can take the helicopter. Off the roof (down on the street, in the trunk) it's taken: no getaway by the roof.
 const NEPHEW_REST := 40.0
@@ -229,6 +241,9 @@ var valve: BankValve
 var front_door: FrontDoor
 var floats: BankFloats
 var roof := false
+## The town bank (decision 127) and don Plácido, its clerk.
+var town := false
+var clerk: BankClerk
 var helicopter: ToyHelicopter
 var nephew: BankNephew
 ## Seconds until the nephew can fly the helicopter again, and whether the cops have taken it off the roof (said once).
@@ -268,12 +283,15 @@ func _ready() -> void:
 	_sorry_variant = drawn == "sorry"
 	var manager_boss := drawn == "manager"
 	roof = drawn == "roof"
+	town = drawn == "town"
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_hall()
 	_build_back()
 	if roof:
 		_build_roof()
+	if town:
+		_build_town()
 	if party:
 		_add_party()
 	if _sorry_variant:
@@ -322,16 +340,18 @@ func _ready() -> void:
 	case.start()
 
 
-## Which robbery this seed is (propuesta): a seventh "roof" (they leave by the roof) drawn first, then a sixth of the
-## rest "flood" (the vault floods), then a fifth "manager" (the manager is the boss), and the rest in quarters: "party"
-## (the hostages don't want to leave), "grandpas", "sorry" (one robber wants to give it all back) or "base";
-## --bank=party, --bank=grandpas, --bank=sorry, --bank=manager, --bank=flood, --bank=roof or --bank=base among the user
-## args forces one.
+## Which robbery this seed is (propuesta): an eighth "town" (the town bank) drawn first, then a seventh of the rest
+## "roof" (they leave by the roof), a sixth "flood" (the vault floods), a fifth "manager" (the manager is the boss),
+## and the rest in quarters: "party" (the hostages don't want to leave), "grandpas", "sorry" (one robber wants to give
+## it all back) or "base"; --bank=party, --bank=grandpas, --bank=sorry, --bank=manager, --bank=flood, --bank=roof,
+## --bank=town or --bank=base among the user args forces one.
 static func variant(seed_: int, args: PackedStringArray) -> String:
 	for arg in args:
 		if arg in ["--bank=party", "--bank=grandpas", "--bank=sorry", "--bank=manager", "--bank=flood", "--bank=roof",
-				"--bank=base"]:
+				"--bank=town", "--bank=base"]:
 			return arg.trim_prefix("--bank=")
+	if hash(["bank pueblo", seed_]) % 8 == 0:
+		return "town"
 	if hash(["bank azotea", seed_]) % 7 == 0:
 		return "roof"
 	if hash(["bank caño", seed_]) % 6 == 0:
@@ -462,7 +482,7 @@ func _build_shell() -> void:
 		_build.box(Vector3(x, ROOF / 2, HALF_Z + 0.45), Vector3(0.45, ROOF, 0.45), INSIDE)
 	_build.box(Vector3(0, ROOF + 0.05, HALF_Z + 0.45), Vector3(10.0, 0.1, 1.0), INSIDE)
 	var sign_label := Label3D.new()
-	sign_label.text = "PLACE_BANK"
+	sign_label.text = "PLACE_BANK_TOWN" if town else "PLACE_BANK"
 	sign_label.font_size = 64
 	sign_label.pixel_size = 0.01
 	sign_label.outline_size = 14
@@ -638,6 +658,26 @@ func roof_way_out() -> bool:
 		or on_roof(helicopter.global_position))
 
 
+## The town bank (decision 127): the wall of shelves from the back wall to the facade, its shelves on the small hall's
+## side with jars of jam and binders, and don Plácido asleep on his stool behind the counter.
+func _build_town() -> void:
+	_build.wall("z", TOWN_WALL_X, BACK_Z, HALF_Z, 0, [], WOOD.lightened(0.15))
+	for z: float in TOWN_SHELF_ZS:
+		for i in TOWN_SHELVES.size():
+			var at := Vector3(TOWN_WALL_X + 0.25, FLOOR_TOP + TOWN_SHELVES[i], z)
+			_build.mesh_box(at, Vector3(0.4, 0.04, 1.8), WOOD)
+			for k in 3:
+				var color := JAR if (int(z) + i + k) % 2 == 0 else BINDER
+				var size := Vector3(0.22, 0.24, 0.22) if color == JAR else Vector3(0.28, 0.3, 0.08)
+				_build.mesh_box(at + Vector3(0, 0.02 + size.y / 2, -0.55 + k * 0.55), size, color)
+	_build.legs(CLERK_AT + Vector3.UP * FLOOR_TOP, Vector2(0.4, 0.4), STOOL_TOP - 0.04, WOOD)
+	_build.box(CLERK_AT + Vector3(0, FLOOR_TOP + STOOL_TOP - 0.02, 0), Vector3(0.45, 0.04, 0.45), WOOD)
+	clerk = BankClerk.new()
+	clerk.name = "Clerk"
+	clerk.position = CLERK_AT + Vector3.UP * (FLOOR_TOP + STOOL_TOP)
+	add_child(clerk)
+
+
 func _flat(size: Vector2) -> BoxMesh:
 	var box := BoxMesh.new()
 	box.size = Vector3(size.x, 0.02, size.y)
@@ -652,7 +692,8 @@ func _rail_mesh(length: float) -> BoxMesh:
 
 ## The queue posts with their rope, two benches, the plant and the tellers' counter with its three desks behind.
 func _build_hall() -> void:
-	for i in 5:
+	# The town bank has no queue.
+	for i in 0 if town else 5:
 		var at := Vector3(-6.0 + i * 1.6, FLOOR_TOP, 7.5)
 		_build.box(at + Vector3(0, 0.45, 0), Vector3(0.12, 0.9, 0.12), GOLD)
 		if i < 4:
@@ -775,6 +816,13 @@ func _add_manager(is_boss: bool) -> void:
 		manager.spots.append(global_transform * (at + Vector3.UP * FLOOR_TOP))
 	add_child(manager)
 	manager.seed_with(hash(["bank walkie", case_seed]))
+	if town:
+		# The town bank has no manager: neither he nor his car are there.
+		for gone: CollisionObject3D in [manager, manager_car]:
+			gone.hide()
+			gone.collision_layer = 0
+			gone.process_mode = Node.PROCESS_MODE_DISABLED
+		return
 	if not is_boss:
 		return
 	# The boss (step 2): the key he gives doesn't fit, his walkie hurries the gang and his trunk waits open.
@@ -811,7 +859,11 @@ func _on_manager_radioed(_manager: BankManager) -> void:
 
 func _add_robbers() -> void:
 	for animal: String in BankRobber.ANIMALS:
+		# In the town bank El Conejo robs it alone, at the drill.
+		if town and animal != "conejo":
+			continue
 		var robber := BankRobber.new()
+		robber.alone = town
 		robber.name = "Robber_" + animal
 		robber.animal = animal
 		robber.grandpa = grandpas
@@ -821,8 +873,9 @@ func _add_robbers() -> void:
 		robber.slipped_out.connect(func(_robber: BankRobber) -> void: bags_taken += 1)
 		if grandpas:
 			robber.spotted.connect(func(_robber: BankRobber, _cop: Node3D) -> void: _gang_nervous())
-		robber.position = ROBBER_SPOTS[animal][0] + Vector3.UP * FLOOR_TOP
-		robber.rotation.y = ROBBER_SPOTS[animal][1]
+		var spot: Array = ROBBER_SPOTS["pato" if town else animal]
+		robber.position = spot[0] + Vector3.UP * FLOOR_TOP
+		robber.rotation.y = spot[1]
 		add_child(robber)
 		robbers.append(robber)
 		var escort := OwnerEscort.attach(robber, car)
@@ -1025,6 +1078,8 @@ func _claim_hide_spot(robber: BankRobber) -> Vector3:
 
 ## The hostages, a different set of neighbors for each seed.
 func _add_hostages() -> void:
+	if town:
+		return
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(["bank hostages", case_seed])
 	var looks := BankHostage.LOOKS.duplicate()

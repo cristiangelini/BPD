@@ -97,6 +97,8 @@ const TIES_TO_QUIT := 3
 const TIED_CROUCH := 0.8
 
 @export var animal := "conejo"
+## The town bank's El Conejo (robo-banco-pueblo.md, decision 127): he robs it alone, so he's the boss.
+var alone := false
 ## One of the grandpa gang: slower, and their own model.
 var grandpa := false
 ## Wading in the flooded bank (BankWater): walking and running speed times this.
@@ -240,7 +242,7 @@ func run_speed() -> float:
 
 
 func is_boss() -> bool:
-	return animal == "oso"
+	return animal == "oso" or alone
 
 
 func is_eating() -> bool:

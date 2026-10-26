@@ -2409,6 +2409,8 @@ OBJ_LAUNDRY_FOUND,"Presos encontrados en la ropa: %d","Inmates found in the laun
 OBJ_LAUNDRY_ESCAPED,"Presos escapados: %d (con %d se pierde el caso)","Inmates escaped: %d (at %d the case is lost)","Presos fugidos: %d (com %d o caso está perdido)"
 OBJ_LAUNDRY_CAUGHT,"Extra: presos en la celda de castigo: %d","Extra: inmates in the punishment cell: %d","Extra: presos na cela de castigo: %d"
 CASE_FAILED_LAUNDRY_ESCAPED,"Se escaparon 3 presos con la ropa sucia. Caso perdido.","3 inmates got away with the dirty laundry. Case lost.","3 presos fugiram com a roupa suja. Caso perdido."
+PLACE_BANK_TOWN,"Banco del Pueblo","Town Bank","Banco do Povoado"
+CLERK_SNORE,"Zzz...","Zzz...","Zzz..."
 EVENT_PURSE_HELP,¡Mi cartera! ¡Ladrón!,My purse! Thief!,Minha bolsa! Ladrão!
 EVENT_PURSE_THANKS,¡Mi cartera! Gracias.,My purse! Thank you.,Minha bolsa! Obrigada.
 EVENT_PAID,+%d de plata,+%d money,+%d de dinheiro
