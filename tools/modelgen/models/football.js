@@ -97,8 +97,36 @@ export function buildBall() {
 	return b.build();
 }
 
+// Concejal Barullo's scooter (step 6), the referee's getaway: a green scooter with chrome mirrors, a campaign flag on
+// a pole at the back and a white plate with a green rosette. 1.9 m long (z), 0.7 m wide, facing +Z; its wheels are
+// part of it. Its origin on the ground in the middle.
+export function buildBarulloScooter() {
+	const b = new Builder('barullo_scooter');
+	const green = mat('barullo_green', 0x2a9a4a), tire = mat('tire', 0x1a1a1e), rim = mat('rim', 0xc8ccd2);
+	const seat = mat('barullo_seat', 0x23252b), white = mat('goal_white', 0xf4f4f0), pole = mat('stretcher_pole', 0xb8bcc2);
+	for (const z of [0.68, -0.68]) {
+		b.add('wheels', tire, new THREE.CylinderGeometry(0.26, 0.26, 0.12, 10), { pos: V(0, 0.26, z), rot: [0, 0, Math.PI / 2] });
+		b.add('wheels', rim, new THREE.CylinderGeometry(0.12, 0.12, 0.13, 8), { pos: V(0, 0.26, z), rot: [0, 0, Math.PI / 2] });
+	}
+	box(b, 'body', green, 0.36, 0.1, 0.8, 0, 0.32, 0.05);
+	box(b, 'body', green, 0.42, 0.36, 0.6, 0, 0.5, -0.45);
+	box(b, 'body', seat, 0.36, 0.08, 0.5, 0, 0.72, -0.4);
+	box(b, 'body', green, 0.38, 0.75, 0.1, 0, 0.7, 0.55, [-0.25, 0, 0]);
+	box(b, 'body', seat, 0.6, 0.04, 0.04, 0, 1.12, 0.62);
+	for (const x of [-1, 1]) {
+		box(b, 'mirrors', pole, 0.02, 0.18, 0.02, x * 0.28, 1.22, 0.62);
+		b.add('mirrors', rim, new THREE.CylinderGeometry(0.05, 0.05, 0.02, 8), { pos: V(x * 0.28, 1.32, 0.62), rot: [Math.PI / 2, 0, 0] });
+	}
+	box(b, 'plate', white, 0.26, 0.16, 0.02, 0, 0.5, -0.76);
+	b.add('plate', green, new THREE.CylinderGeometry(0.05, 0.05, 0.01, 10), { pos: V(0, 0.5, -0.775), rot: [Math.PI / 2, 0, 0] });
+	b.add('flag', pole, new THREE.CylinderGeometry(0.012, 0.012, 1.2, 6), { pos: V(-0.18, 1.2, -0.7) });
+	box(b, 'flag', green, 0.02, 0.3, 0.45, -0.18, 1.62, -0.92);
+	box(b, 'flag', white, 0.025, 0.1, 0.3, -0.18, 1.62, -0.92);
+	return b.build();
+}
+
 export const models = { football_goal: buildGoal, team_bench: buildBench, stretcher: buildStretcher, football_cup: buildCup,
-	football_ball: buildBall };
+	football_ball: buildBall, barullo_scooter: buildBarulloScooter };
 
 export const views = {
 	football_pitch_props: {

@@ -46,6 +46,8 @@ const MODELS := {
 	"vendor": preload("res://assets/models/npc_puestero.glb"),
 	# Engineer Remache, out of the cement mixer (politico-puente.md).
 	"engineer": preload("res://assets/models/npc_ingeniero.glb"),
+	# The bought referee, off Barullo's scooter (politico-futbol.md).
+	"referee": preload("res://assets/models/npc_arbitro.glb"),
 }
 const HECKLER := "heckler_"
 ## The golf thief who runs off (persecucion-lugares.md): at this speed (m/s), away from cops this close, staying

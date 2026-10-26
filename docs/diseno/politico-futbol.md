@@ -110,3 +110,8 @@ gol para la foto y que salga entero. En ese orden, dice él. En el otro, digo yo
   final del partido termina el turno. Sueldo 600, menos 100 por lesión de verdad, más 50 si el equipo del diputado ganó
   y más 100 si el árbitro está en el patrullero; cuota 400. A la tercera lesión se lo lleva la ambulancia y el caso se
   pierde (pregunta 1, recomendado). Captura en `/mnt/project-files/futbol/paso5-arbitro.png`.
+- **Paso 6 (la moto de Barullo y el sorteo):** la moto verde de campaña de Barullo (`pitch.moto`, modelo
+  `barullo_scooter`, con banderín) espera estacionada en la calle de enfrente. Si al final del partido el árbitro sigue
+  suelto, se sube y escapa a 45 km/h, doblando bien en las esquinas (`ChaseCase.begin`, decisión 96); atrapado, cuenta
+  como detenido y suma los 100. Jugar sortea la protección del político en cuartos: plaza, mercado, puente y cancha. El
+  online queda para un paso 7, como en el puente. Captura en `/mnt/project-files/futbol/paso6-moto.png`.

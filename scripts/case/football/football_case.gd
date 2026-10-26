@@ -5,8 +5,9 @@ extends Node
 ## opens the planilla, and the clock is the match (FootballMatch). The case is solved if the deputy himself scores at
 ## least once before the end (the photo with the cup), and pays SALARY, INJURY less for each real injury, WIN more if
 ## his team wins the match and REFEREE more if the bought referee is in the patrol car; quota of its own, like the
-## plaza (decision 103). The third real injury sends him off in an ambulance and the case is lost there. Every number
-## here is (propuesta).
+## plaza (decision 103). The third real injury sends him off in an ambulance and the case is lost there. If the referee
+## is still loose at the final whistle, he runs for Barullo's scooter parked on the street and the chase starts there
+## (decision 96): caught, he counts as detained (step 6). Every number here is (propuesta).
 
 const SHIFT_DELAY := 4.0
 const REFRESH := 0.5
@@ -32,6 +33,10 @@ var match_over := false
 var jailed := false
 var clues: Array[String] = []
 var shift_over := false
+## The referee's run on Barullo's scooter and how it ended.
+var chase: ChaseCase
+var caught := false
+var escaped := false
 var follower := false
 var _result := {}
 var _refresh_left := 0.0
@@ -98,8 +103,36 @@ func _on_final_whistle() -> void:
 		return
 	match_over = true
 	_hint_all("HINT_FOOTBALL_PHOTO_CUP" if solved() else "HINT_FOOTBALL_NO_PHOTO")
-	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
+	if pitch.referee.loose():
+		_run_off()
+	else:
+		get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 	checklist.show_rows(rows())
+
+
+## The referee leaves the pitch and rides off on Barullo's scooter: the chase is on.
+func _run_off() -> void:
+	if chase:
+		return
+	var referee := pitch.referee
+	referee.hide()
+	referee.collision_layer = 0
+	referee.process_mode = Node.PROCESS_MODE_DISABLED
+	pitch.moto.get_node("Rider").show()
+	pitch.moto.driving = true
+	chase = ChaseCase.begin(pitch, SuspectCar.BARULLO_MOTO, pitch.moto.global_transform, pitch.car, pitch.city,
+		pitch.case_seed, null, pitch.moto)
+	chase.who = "referee"
+	chase.follower = follower
+	chase.ended.connect(_on_chase_ended)
+	_hint_all("HINT_ESCAPE_REFEREE")
+
+
+func _on_chase_ended(was_caught: bool) -> void:
+	caught = was_caught
+	escaped = not was_caught
+	checklist.show_rows(rows())
+	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
 
 func _on_clue(kind: String) -> void:
@@ -112,6 +145,11 @@ func _on_jailed() -> void:
 	jailed = true
 	_hint_all("HINT_REFEREE_IN_CAR")
 	checklist.show_rows(rows())
+
+
+## The referee in the patrol car, from the pitch or caught off the scooter.
+func referee_detained() -> bool:
+	return jailed or caught
 
 
 func solved() -> bool:
@@ -128,7 +166,7 @@ func won() -> bool:
 func report() -> Dictionary:
 	var salary := 0
 	if solved():
-		salary = SALARY - INJURY * injuries + (WIN if won() else 0) + (REFEREE if jailed else 0)
+		salary = SALARY - INJURY * injuries + (WIN if won() else 0) + (REFEREE if referee_detained() else 0)
 		salary = maxi(salary, 0)
 	return {"salary": salary, "evidence": 0, "fines": 0, "total": salary, "quota": QUOTA, "approved": salary >= QUOTA}
 
@@ -177,7 +215,9 @@ func rows() -> Array[Dictionary]:
 	list.append(_row("OBJ_FOOTBALL_PLAY", pitch.match_clock.state != FootballMatch.State.WAITING))
 	list.append(_row("OBJ_FOOTBALL_GOAL", lustre_goals > 0))
 	list.append(_row(tr("OBJ_FOOTBALL_CLUES") % [clues.size(), 2], clues.size() >= 2))
-	list.append(_row("OBJ_FOOTBALL_REFEREE", jailed))
+	list.append(_row("OBJ_FOOTBALL_REFEREE", referee_detained()))
+	if chase:
+		list.append(_row("OBJ_FOOTBALL_CATCH_MOTO", caught))
 	var state := tr("OBJ_FOOTBALL_INJURIES") % [injuries, AMBULANCE]
 	if ambulance:
 		state = "OBJ_FOOTBALL_AMBULANCE"
