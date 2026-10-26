@@ -16,16 +16,16 @@ func test_every_loop_drives_on_the_right() -> void:
 			# The middle of the street it's on: the nearest street line across `right`.
 			var street := Vector3.ZERO
 			if absf(ahead.x) > 0.5:
-				street = Vector3(middle.x, 0, _nearest(middle.z, CityLayout.ROWS, false))
+				street = Vector3(middle.x, 0, _nearest(middle.z, false))
 			else:
-				street = Vector3(_nearest(middle.x, CityLayout.COLUMNS, true), 0, middle.z)
+				street = Vector3(_nearest(middle.x, true), 0, middle.z)
 			assert_almost_eq((middle - street).dot(right), CityLayout.STREET / 4, 0.01,
 				"loop %s piece %d keeps right" % [loop, i])
 
 
-func _nearest(at: float, count: int, columns: bool) -> float:
+func _nearest(at: float, columns: bool) -> float:
 	var best := INF
-	for k in count + 1:
+	for k in (range(CityLayout.WEST, CityLayout.EAST + 1) if columns else range(CityLayout.NORTH, CityLayout.SOUTH + 1)):
 		var line := CityLayout.street_x(k) if columns else CityLayout.street_z(k)
 		if absf(line - at) < absf(best - at):
 			best = line

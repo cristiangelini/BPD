@@ -82,13 +82,12 @@ func _build() -> void:
 	var land := Vector2(GolfLayout.CENTER.x + GolfLayout.HALF.x, HighwayLayout.OUTER.y) * 2 + Vector2.ONE * 40
 	_box(Vector3(0, -0.1, 0), Vector3(land.x, 0.2, land.y), GRASS)
 	_mesh_box(Vector3(0, 0.005, 0), Vector3(size.x, 0.01, size.y), ROAD)
-	for k in CityLayout.COLUMNS + 1:
+	for k in range(CityLayout.WEST, CityLayout.EAST + 1):
 		_mesh_box(Vector3(CityLayout.street_x(k), 0.012, 0), Vector3(0.2, 0.01, size.y - CityLayout.STREET), LINE)
-	for k in CityLayout.ROWS + 1:
+	for k in range(CityLayout.NORTH, CityLayout.SOUTH + 1):
 		_mesh_box(Vector3(0, 0.012, CityLayout.street_z(k)), Vector3(size.x - CityLayout.STREET, 0.01, 0.2), LINE)
-	for row in CityLayout.ROWS:
-		for col in CityLayout.COLUMNS:
-			_block(Vector2i(col, row))
+	for block in CityLayout.blocks():
+		_block(block)
 	for p: Dictionary in CityLayout.PLACES:
 		if p.id == live_place or p.get("park", false):
 			continue
@@ -102,9 +101,8 @@ func _build() -> void:
 	for lot: Dictionary in CityLayout.fillers():
 		_building(lot.block, lot.side, lot.along, lot.size, lot.color, "", false,
 			CityLayout.barrio_kind(lot.block) == "house")
-	for i in range(1, CityLayout.COLUMNS):
-		for j in range(1, CityLayout.ROWS):
-			_corner(i, j)
+	for crossing in CityLayout.crossings(true):
+		_corner(crossing.x, crossing.y)
 	# A hedge around the city, open at the highway's ramps, and another one past the highway so nobody drives off
 	# the edge, open on the east side at the golf club's gate (the club's own hedge closes it).
 	_hedge(size / 2 + Vector2.ONE, HighwayLayout.SIDES)
@@ -525,7 +523,7 @@ func _corner(i: int, j: int) -> void:
 	for k in 3:
 		_mesh_box(corner + Vector3(0, 4.2 - k * 0.3, 0.21), Vector3(0.2, 0.2, 0.02),
 			[Color(0.9, 0.2, 0.2), Color(0.95, 0.8, 0.2), Color(0.3, 0.85, 0.35)][k])
-	var names := [CityLayout.STREETS_EW[j - 1], CityLayout.STREETS_NS[i - 1]]
+	var names := [CityLayout.STREETS_EW[j - CityLayout.NORTH - 1], CityLayout.STREETS_NS[i - CityLayout.WEST - 1]]
 	for k in 2:
 		var label := Label3D.new()
 		label.text = names[k]

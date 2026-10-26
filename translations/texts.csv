@@ -192,6 +192,11 @@ STREET_PUDDLE,Calle del Charco,Puddle Street,Rua da Poça
 STREET_SOCK,Calle del Calcetín,Sock Street,Rua da Meia
 STREET_SPOON,Calle de la Cuchara,Spoon Street,Rua da Colher
 STREET_WHISTLE,Calle del Silbato,Whistle Street,Rua do Apito
+STREET_FERN,Calle del Helecho,Fern Street,Rua da Samambaia
+STREET_PILLOW,Calle de la Almohada,Pillow Street,Rua do Travesseiro
+STREET_MITTEN,Calle del Mitón,Mitten Street,Rua da Luva
+STREET_LADLE,Calle del Cucharón,Ladle Street,Rua da Concha
+STREET_HAMMOCK,Calle de la Hamaca,Hammock Street,Rua da Rede
 HUD_MAP_HINT,M: mapa,M: map,M: mapa
 MAP_TITLE,Mapa de la ciudad,City map,Mapa da cidade
 MAP_CASE,Caso de hoy,Today's case,Caso de hoje

@@ -64,9 +64,9 @@ func test_every_door_faces_a_street() -> void:
 	for p: Dictionary in CityLayout.PLACES:
 		var door := CityLayout.door_of(p.id) + CityLayout.side_normal(p.side) * (CityLayout.SIDEWALK + 1.0)
 		var on_street := false
-		for k in CityLayout.COLUMNS + 1:
+		for k in range(CityLayout.WEST, CityLayout.EAST + 1):
 			on_street = on_street or absf(door.x - CityLayout.street_x(k)) < CityLayout.STREET / 2
-		for k in CityLayout.ROWS + 1:
+		for k in range(CityLayout.NORTH, CityLayout.SOUTH + 1):
 			on_street = on_street or absf(door.z - CityLayout.street_z(k)) < CityLayout.STREET / 2
 		assert_true(on_street, "%s should open to a street" % p.id)
 
