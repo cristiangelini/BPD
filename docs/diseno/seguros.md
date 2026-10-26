@@ -100,6 +100,13 @@ Los pesos y valores siguen la escala de la fábrica: la principal vale unos 1000
      con una silla que rueda rápido), 5 por puerta rota, 10 por pantalla o trofeo que ve romperse (hasta 14 m), 5 por
      pregunta, y abogado en 100. Capturas `paso2-*.png`.
 3. Coca y la máquina de números.
+   - **Cómo quedó (propuesta):** Coca (saquito lila, rulos colorados, auricular de teléfono y un globo de chicle) está
+     detrás del mostrador, con el cartel rojo de "atendiendo" arriba (empieza en el 41). La máquina de números, una caja
+     roja en un poste cerca de la entrada, le da a cada policía un número (el primero es el 47; uno por policía). Sin
+     número, Coca lo manda a la maquinita. Mientras alguien espera, llama el siguiente cada 6 s ("¡Número 42!"): si es
+     el número de un policía y está frente al mostrador (a 1,6 m), le cuenta lo que vio esconder a Mirta (la pista que
+     pone cada historia en el paso 4); si no está, pierde el turno y tiene que sacar otro. El primero en llegar espera
+     unos 36 s. Captura `paso3-coca.png`.
 4. El caso (RaidCase) con la primera historia: los choques falsos.
 5. Las otras 5 historias, una por PR.
 6. "Jugar" sortea entre los 6 lugares de allanamiento.

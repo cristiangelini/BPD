@@ -6,7 +6,8 @@ extends Node3D
 ## cubicles in the middle and west, the meeting room and the kitchen nook in the east, the floor boss's office at the
 ## back east, the archive at the back west and the giant printer between them. The reception is open; the boss's
 ## office and the archive are locked. The rolling chairs roll, the paper piles fly, and the glass trophies and the
-## monitors of the middle row break, each one a fine. Mirta, the floor boss, walks the aisles (step 2). Every number here is (propuesta).
+## monitors of the middle row break, each one a fine. Mirta, the floor boss, walks the aisles (step 2)
+## and Coca serves by number at the reception (step 3). Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const MIRTA_SCENE := preload("res://scenes/npc/floor_boss.tscn")
@@ -49,6 +50,10 @@ const DESK_AT := Vector3(-6.0, FLOOR_TOP, 6.6)
 const DESK_SIZE := Vector3(2.4, 1.0, 0.7)
 const COOLER_AT := Vector3(9.8, FLOOR_TOP, 7.3)
 const PRINTER_AT := Vector3(0.0, FLOOR_TOP, -6.8)
+## Coca behind the reception desk, where a cop stands to be served, and the ticket machine by the entrance.
+const COCA_AT := Vector3(-6.0, FLOOR_TOP, 5.65)
+const COUNTER_SPOT := Vector3(-6.0, FLOOR_TOP, 7.4)
+const TICKETS_AT := Vector3(-3.0, FLOOR_TOP, 7.2)
 ## Where Mirta stands to fight the printer's tray.
 const PRINTER_SPOT := Vector3(0.0, FLOOR_TOP, -5.7)
 ## Mirta's round, back and forth: the front aisle, the corridor, the first aisle between rows and the second.
@@ -125,6 +130,8 @@ var trophies: Array[Ornament] = []
 var broken_goods := 0
 var printer: OfficePrinter
 var mirta: FloorBoss
+var coca: Receptionist
+var tickets: TicketMachine
 var complaint_bar: ProgressBar
 ## Money taken off the case pay for broken things (each one is an Ornament.FINE).
 var fines := 0
@@ -145,6 +152,7 @@ func _ready() -> void:
 	boss_door = _door(Vector3(OFFICE_DOOR_X, FLOOR_TOP, OFFICE_FRONT_Z))
 	archive_door = _door(Vector3(ARCHIVE_DOOR_X, FLOOR_TOP, ARCHIVE_FRONT_Z))
 	_place_mirta()
+	_place_coca()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("insurance")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -391,6 +399,20 @@ func _place_mirta() -> void:
 	box.add_child(complaint_bar)
 	add_child(hud)
 	mirta.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Coca behind her desk with the "now serving" board, and the ticket machine by the entrance.
+func _place_coca() -> void:
+	coca = Receptionist.new()
+	coca.name = "Coca"
+	coca.position = COCA_AT
+	coca.counter_spot = COUNTER_SPOT
+	add_child(coca)
+	tickets = TicketMachine.new()
+	tickets.name = "TicketMachine"
+	tickets.position = TICKETS_AT
+	tickets.receptionist = coca
+	add_child(tickets)
 
 
 func _on_fragile_broken(at: Vector3) -> void:

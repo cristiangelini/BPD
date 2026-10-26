@@ -2035,3 +2035,16 @@ BOSS_SAW,¡Eso es patrimonio de la empresa!,That's company property!,Isso é pat
 BOSS_NOTHING,"Yo solo superviso, oficial.","I just supervise, officer.","Eu só supervisiono, policial."
 BOSS_OFFENDED,Por escrito. Todo por escrito.,In writing. Everything in writing.,Por escrito. Tudo por escrito.
 BOSS_LAWYER,¡Llamo al abogado de la empresa!,I'm calling the company lawyer!,Vou ligar para o advogado da empresa!
+PROMPT_COCA,Hablar con Coca,Talk to Coca,Falar com a Coca
+COCA_TAKE_NUMBER,"Saque número, querido. Allá, en la maquinita.","Take a number, dear. Over there, at the little machine.","Pegue uma senha, querido. Ali, na maquininha."
+COCA_WAIT,"Estamos atendiendo el %d. Usted tiene el %d, espere su turno.","We're serving number %d. You have %d, wait your turn.","Estamos atendendo a senha %d. O senhor tem a %d, aguarde sua vez."
+COCA_CALL,¡Número %d!,Number %d!,Senha %d!
+COCA_LOST,"¡Número %d!... ¿No está? Perdió el turno. ¡Siguiente!","Number %d!... Not here? Lost your turn. Next!","Senha %d!... Não está? Perdeu a vez. Próximo!"
+COCA_THANKS,"Ya le dije todo, querido. ¡Siguiente!","I already told you everything, dear. Next!","Já te contei tudo, querido. Próximo!"
+COCA_IDLE_1,"*globo de chicle* ...¿Sí?","*gum bubble* ...Yes?","*bola de chiclete* ...Sim?"
+COCA_IDLE_2,"Seguros Todo Tranquilo, buenos días... ¿Hola? Me cortaron.","All Calm Insurance, good morning... Hello? They hung up.","Seguros Tudo Tranquilo, bom dia... Alô? Desligaram."
+COCA_IDLE_3,Sin número no lo puedo atender.,I can't help you without a number.,Sem senha não posso atender.
+PROMPT_TICKET,Sacar número,Take a number,Pegar senha
+TICKET_SIGN,TURNOS,TAKE A NUMBER,SENHAS
+HINT_TICKET,Tu número: %d. Espera frente al mostrador.,Your number: %d. Wait at the counter.,Sua senha: %d. Espere em frente ao balcão.
+HINT_TICKET_HELD,Ya tienes el número %d.,You already have number %d.,Você já tem a senha %d.
