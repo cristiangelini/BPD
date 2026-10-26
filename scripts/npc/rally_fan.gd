@@ -8,10 +8,15 @@ extends CharacterBody3D
 ## are dirty with yolk and tomato; a cop who sees them throw marks them for everyone. Anyone can be cuffed: an innocent
 ## protests, and a cuffed heckler doesn't throw and E walks them to the patrol car (OwnerEscort). Every number here is
 ## (propuesta).
+## At the birthday party (politico-cumple.md, step 3, decision 221) the `courier` who brought the rigged cake stands in
+## the crowd with the cake shop's pink cap (wear_cap), laughs to himself when the deputy goes to a cake, and cuffed he
+## owns up and is walked to the patrol car like a heckler.
 
 signal threw(fan: RallyFan, throwable: RallyThrowable)
 ## The handcuffs closed on them.
 signal cuffed_now(fan: RallyFan)
+## E on them while they hug the deputy on the parade's car (ParadeHuggers).
+signal pulled_off(fan: RallyFan, cop: Cop)
 
 const SCALES := {"abuelo": 0.82, "abuela": 0.8}
 const SAY_TIME := 4.0
@@ -31,9 +36,17 @@ const LOOK_SCALE := 1.6
 const LINES := 4
 const PROTESTS := 3
 const EXCUSES := 3
+const COURIER_LINES := 3
+const CAP := Color(0.95, 0.45, 0.65)
+## The cap on his head, in his own space, before the look's scale.
+const CAP_AT := Vector3(0, 1.5, 0)
 
 @export var look := "vecina"
 var heckler := false
+## The cake shop's courier, at the birthday party.
+var courier := false
+## Up on the parade's car hugging the deputy (politico-descapotable.md).
+var hugging := false
 ## "market" (eggs and tomatoes), "shopping" (bread and a leek) or "" for none.
 var bag := ""
 ## Their hands show the goo of a throw.
@@ -96,6 +109,47 @@ func carry_bag(kind: String) -> void:
 	add_child(model)
 
 
+## The cake shop's pink cap, bigger than life, with its name on the front.
+func wear_cap() -> void:
+	var cap := Node3D.new()
+	cap.name = "Cap"
+	cap.position = CAP_AT * SCALES.get(look, 1.0)
+	add_child(cap)
+	var crown := CylinderMesh.new()
+	crown.top_radius = 0.22
+	crown.bottom_radius = 0.25
+	crown.height = 0.16
+	var material := StandardMaterial3D.new()
+	material.albedo_color = CAP
+	var part := MeshInstance3D.new()
+	part.mesh = crown
+	part.material_override = material
+	cap.add_child(part)
+	var visor := BoxMesh.new()
+	visor.size = Vector3(0.3, 0.03, 0.2)
+	part = MeshInstance3D.new()
+	part.mesh = visor
+	part.material_override = material
+	# The fan faces -Z.
+	part.position = Vector3(0, -0.06, -0.3)
+	cap.add_child(part)
+	var label := Label3D.new()
+	label.text = "BIRTHDAY_COURIER_CAP"
+	label.font_size = 24
+	label.pixel_size = 0.003
+	label.outline_size = 4
+	label.position = Vector3(0, 0.0, -0.245)
+	label.rotation.y = PI
+	cap.add_child(label)
+
+
+## A laugh to himself, if he's still free.
+func laugh() -> void:
+	if not is_cuffed() and free_to_throw():
+		say("BIRTHDAY_COURIER_LAUGH_%d" % (_next_line % COURIER_LINES + 1))
+		_next_line += 1
+
+
 ## Yolk and tomato on both hands, for good.
 func get_dirty() -> void:
 	if dirty:
@@ -145,7 +199,9 @@ func cuffed(seconds: float) -> void:
 	_cuffed_left = maxf(_cuffed_left, seconds)
 	if follower:
 		return
-	if heckler:
+	if courier:
+		say("BIRTHDAY_COURIER_CUFFED_%d" % (_next_line % COURIER_LINES + 1))
+	elif heckler:
 		say("HECKLER_CUFFED_%d" % (_next_line % EXCUSES + 1))
 	else:
 		say("FAN_WRONG_CUFF_%d" % (_next_line % PROTESTS + 1))
@@ -173,7 +229,7 @@ func prompt_key(cop: Cop) -> String:
 	var escort := OwnerEscort.of(self)
 	if escort and escort.handles_use():
 		return escort.prompt_key(cop)
-	return "PROMPT_TALK_FAN"
+	return "PROMPT_PULL_OFF_FAN" if hugging else "PROMPT_TALK_FAN"
 
 
 ## E on a fan: the same small talk from anyone, so talking gives no one away; cuffed, the escort to the patrol car.
@@ -181,6 +237,9 @@ func use(cop: Cop) -> void:
 	var escort := OwnerEscort.of(self)
 	if escort and escort.handles_use():
 		escort.use(cop)
+		return
+	if hugging:
+		pulled_off.emit(self, cop)
 		return
 	say("FAN_TALK_%d" % (_next_line % LINES + 1))
 	_next_line += 1
@@ -206,9 +265,10 @@ func said() -> String:
 	return _bubble.text if _bubble.visible else ""
 
 
-## What a guest's copy needs besides where they are and what they say (NpcSync): cuffed, dirty hands and marked.
+## What a guest's copy needs besides where they are and what they say (NpcSync): cuffed, dirty hands, marked and
+## hugging the deputy.
 func net_state() -> Array:
-	return [is_cuffed(), dirty, marked]
+	return [is_cuffed(), dirty, marked, hugging]
 
 
 func apply_net_state(state: Variant) -> void:
@@ -217,6 +277,7 @@ func apply_net_state(state: Variant) -> void:
 		get_dirty()
 	if state[2]:
 		mark()
+	hugging = state.size() > 3 and state[3]
 
 
 func _physics_process(delta: float) -> void:

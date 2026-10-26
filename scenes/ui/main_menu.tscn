@@ -90,6 +90,34 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "MENU_GROOMER"
 
+[node name="HardwareButton" type="Button" parent="Box"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "MENU_HARDWARE"
+
+[node name="FactoryButton" type="Button" parent="Box"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "MENU_DOLL_FACTORY"
+
+[node name="InsuranceButton" type="Button" parent="Box"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "MENU_INSURANCE"
+
+[node name="CakeLabButton" type="Button" parent="Box"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "MENU_CAKE_LAB"
+
 [node name="TestRoomButton" type="Button" parent="Box"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 64)

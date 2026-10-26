@@ -62,16 +62,16 @@ El sospechoso es un NPC con un medidor de nervios y otro de abogado, y se juega 
 ## 5. Infiltración
 Van disfrazados y tienen que pasar desapercibidos mientras juntan evidencia (decisión 28).
 
-1. **Club de ajedrez:** hay que jugar mientras se espía.
-2. **Banda de motociclistas:** hay que hacer pruebas de valentía.
-3. **Restaurante:** se hacen pasar por cocineros y hay que cocinar de verdad.
-4. **Banda de mimos:** no se puede hablar; todo se hace con mímica.
-5. **Fiesta de disfraces:** todos están disfrazados de policía y hay que encontrar al falso.
+1. **Club de ajedrez:** hay que jugar mientras se espía. Propuesta en [infiltracion-ajedrez.md](infiltracion-ajedrez.md) (decisión 175).
+2. **Banda de motociclistas:** hay que hacer pruebas de valentía. Propuesta en [infiltracion-motos.md](infiltracion-motos.md) (decisión 176).
+3. **Restaurante:** se hacen pasar por cocineros y hay que cocinar de verdad. Propuesta en [infiltracion-restaurante.md](infiltracion-restaurante.md) (decisión 174).
+4. **Banda de mimos:** no se puede hablar; todo se hace con mímica. Propuesta en [infiltracion-mimos.md](infiltracion-mimos.md) (decisión 170).
+5. **Fiesta de disfraces:** todos están disfrazados de policía y hay que encontrar al falso. Propuesta en [infiltracion-fiesta.md](infiltracion-fiesta.md) (decisión 171).
 6. **Club de abuelos:** bingo y baile, y el capo es la abuela.
-7. **Gimnasio:** hay que entrenar sin rendirse.
+7. **Gimnasio:** hay que entrenar sin rendirse. Propuesta en [infiltracion-gimnasio.md](infiltracion-gimnasio.md) (decisión 172).
 8. **Coro de iglesia:** hay que cantar afinado (por la voz).
-9. **Subasta de arte:** se puja con plata de la cuota, y si compran algo, lo pagan.
-10. **Escuela de ladrones:** clases de cómo robar; si sacan buenas notas, conocen al jefe de la banda.
+9. **Subasta de arte:** se puja con plata de la cuota, y si compran algo, lo pagan. Propuesta en [infiltracion-subasta.md](infiltracion-subasta.md) (decisión 177).
+10. **Escuela de ladrones:** clases de cómo robar; si sacan buenas notas, conocen al jefe de la banda. Propuesta en [infiltracion-escuela.md](infiltracion-escuela.md) (decisión 173).
 
 ## 6. Cárcel (casos en la prisión)
 Van a una cárcel por un motín o a cuidar presos (decisión 29).
@@ -90,16 +90,16 @@ Van a una cárcel por un motín o a cuidar presos (decisión 29).
 ## 7. Fuga (cuando los detienen a ellos)
 Si fallan, terminan presos en su propia comisaría y tienen que escaparse (decisión 17). Cada variante cambia por qué los detuvieron y cómo es la salida.
 
-1. **Por la ventilación:** con un compañero que no entra.
+1. **Por la ventilación:** con un compañero que no entra. Diseño en [fuga-ventilacion.md](fuga-ventilacion.md) (decisión 153).
 2. **Disfrazados de limpieza:** pasando por delante del comisario.
 3. **La llave en la dona:** hay que distraer al guardia mientras uno pesca la llave.
 4. **Túnel con cucharas:** cavan mientras los otros tapan el ruido. Propuesta en [fuga-tunel.md](fuga-tunel.md) (decisión 152).
-5. **Escapar en el camión de la basura.**
-6. **Sobornar al guardia:** con la plata de las coimas, si les queda.
-7. **Simulacro de incendio:** salen entre la gente.
+5. **Escapar en el camión de la basura.** Diseño en [fuga-basura.md](fuga-basura.md) (decisión 154).
+6. **Sobornar al guardia:** con la plata de las coimas, si les queda. Propuesta en [fuga-soborno.md](fuga-soborno.md) (decisión 157).
+7. **Simulacro de incendio:** salen entre la gente. Diseño en [fuga-simulacro.md](fuga-simulacro.md) (decisión 155).
 8. **El perro guardián:** hay que hacerse amigo con comida. Propuesta en [fuga-perro.md](fuga-perro.md) (decisión 151).
-9. **Por el techo:** con una cuerda hecha de sábanas.
-10. **Hacer un juicio rápido:** uno hace de abogado y los demás de testigos falsos.
+9. **Por el techo:** con una cuerda hecha de sábanas. Propuesta en [fuga-techo.md](fuga-techo.md) (decisión 156).
+10. **Hacer un juicio rápido:** uno hace de abogado y los demás de testigos falsos. Propuesta en [fuga-juicio.md](fuga-juicio.md) (decisión 158).
 
 ## 8. Control de tránsito
 Montan un control en la calle y tienen que encontrar el auto buscado entre muchos (decisión 32).
@@ -109,9 +109,9 @@ Montan un control en la calle y tienen que encontrar el auto buscado entre mucho
 3. **El auto con 20 personas:** hay que contarlas.
 4. **Control de alcoholemia en la boda.**
 5. **Carrera ilegal:** los autos pasan a toda velocidad.
-6. **Mudanza del circo:** jaulas con animales y uno de los animales es el sospechoso.
-7. **Neblina:** los autos aparecen de golpe.
-8. **Desfile:** el control queda en medio de un desfile de carrozas.
+6. **Mudanza del circo:** jaulas con animales y uno de los animales es el sospechoso. Propuesta en [control-circo.md](control-circo.md) (decisión 138).
+7. **Neblina:** los autos aparecen de golpe. Propuesta en [control-neblina.md](control-neblina.md) (decisión 137).
+8. **Desfile:** el control queda en medio de un desfile de carrozas. Propuesta en [control-desfile.md](control-desfile.md) (decisión 139).
 9. **El auto fantasma:** no tiene conductor (es a control remoto).
 10. **Camión de frutas:** el contrabando está dentro de las sandías.
 
@@ -120,26 +120,26 @@ Hecho: 9.1 ([proteccion-politico.md](proteccion-politico.md)). Propuesta: 9.6 ([
 Tienen que cuidar a un político molesto durante un evento (decisión 32).
 
 1. **Acto en una plaza:** le tiran huevos y tomates.
-2. **Inauguración de un puente:** el puente está mal hecho.
-3. **Visita a una escuela:** los chicos le hacen preguntas que lo ponen en problemas.
+2. **Inauguración de un puente:** el puente está mal hecho. Propuesta en [politico-puente.md](politico-puente.md) (decisión 178).
+3. **Visita a una escuela:** los chicos le hacen preguntas que lo ponen en problemas. Propuesta en [politico-escuela.md](politico-escuela.md) (decisión 210).
 4. **Debate en televisión:** el sabotaje viene desde el control de cámaras.
-5. **Partido de fútbol benéfico:** el político juega, mal.
+5. **Partido de fútbol benéfico:** el político juega, mal. Propuesta en [politico-futbol.md](politico-futbol.md) (decisión 179).
 6. **Caminata por el mercado:** quiere probar todo y algo está envenenado (con laxante).
 7. **En el aeropuerto:** con valijas iguales, y una tiene algo raro.
-8. **Fiesta de cumpleaños del político:** el pastel es sospechoso.
-9. **Desfile en auto descapotable:** los 4 van caminando al lado del auto.
-10. **El doble:** hay dos políticos iguales y uno es un impostor.
+8. **Fiesta de cumpleaños del político:** el pastel es sospechoso. Propuesta en [politico-cumple.md](politico-cumple.md) (decisión 221).
+9. **Desfile en auto descapotable:** los 4 van caminando al lado del auto. Propuesta en [politico-descapotable.md](politico-descapotable.md) (decisión 222).
+10. **El doble:** hay dos políticos iguales y uno es un impostor. Propuesta en [politico-doble.md](politico-doble.md) (decisión 220).
 
 ## 10. Robo a un banco (en vivo)
 Llegan cuando el robo está pasando (decisión 32).
 
 1. **Ladrones con máscaras de animales.**
 2. **Rehenes que no quieren irse:** les está gustando. Propuesta en [robo-banco-rehenes.md](robo-banco-rehenes.md) (decisión 121).
-3. **El banco del pueblo:** chico y con un solo empleado dormido.
-4. **Robo por el techo:** con helicóptero de juguete.
+3. **El banco del pueblo:** chico y con un solo empleado dormido. Propuesta en [robo-banco-pueblo.md](robo-banco-pueblo.md) (decisión 127).
+4. **Robo por el techo:** con helicóptero de juguete. Propuesta en [robo-banco-techo.md](robo-banco-techo.md) (decisión 126).
 5. **Ladrones abuelos:** lentos pero astutos. Propuesta en [robo-banco-abuelos.md](robo-banco-abuelos.md) (decisión 122).
 6. **La bóveda que se inunda:** el agua sube y frena a todos, también al taladro. Propuesta en [robo-banco-inundado.md](robo-banco-inundado.md) (decisión 125).
-7. **Robo en el banco de sangre.**
+7. **Robo en el banco de sangre.** Propuesta en [robo-banco-sangre.md](robo-banco-sangre.md) (decisión 128).
 8. **El ladrón arrepentido:** quiere devolver todo, pero la banda no lo deja. Propuesta en [robo-banco-arrepentido.md](robo-banco-arrepentido.md) (decisión 123).
-9. **Banco de semillas:** roban semillas raras de plantas que crecen enseguida.
+9. **Banco de semillas:** roban semillas raras de plantas que crecen enseguida. Propuesta en [robo-banco-semillas.md](robo-banco-semillas.md) (decisión 129).
 10. **El ladrón es el gerente:** hay que darse cuenta antes de que se vaya con la plata. Propuesta en [robo-banco-gerente.md](robo-banco-gerente.md) (decisión 124).

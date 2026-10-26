@@ -1,6 +1,6 @@
 # BPD · Guardado de la partida
 
-Una partida son 5 turnos de guardia y se guarda entre turnos (decisiones 16 y 59). Ejemplo: una partida que se deja en el turno 2 se retoma en el 3 con la misma plata, los mismos ítems y los casos que siguen. Lo marcado con **(propuesta)** es mío y lo confirma Cristian.
+Una partida son 10 turnos de guardia (eran 5; decisión 106) y se guarda entre turnos (decisiones 16 y 59). Ejemplo: una partida que se deja en el turno 2 se retoma en el 3 con la misma plata, los mismos ítems y los casos que siguen. Lo marcado con **(propuesta)** es mío y lo confirma Cristian.
 
 ## Qué se guarda
 | Qué | Detalle |

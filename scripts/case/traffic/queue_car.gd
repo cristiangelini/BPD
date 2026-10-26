@@ -44,6 +44,12 @@ const SAFE := Color(0.25, 0.27, 0.3)
 const SAFE_DIAL := Color(0.8, 0.7, 0.3)
 const GRANDPA := preload("res://assets/models/npc_abuelo.glb")
 const SAY_SECONDS := 4.0
+## With its tires flat (control-carrera.md, step 3): a city car limps on this fast; a racer brakes this hard.
+const FLAT_SPEED := 2.0
+const FLAT_BRAKE := 10.0
+const FLAT_SQUASH := 0.6
+const FLAT_LINES := 10
+const CITY_FLAT_LINES := 3
 ## The clown car (escena-circo.md's getaway, control-payasos.md): 2 m long, with its own small trunk at the back.
 const CLOWN_MODEL := preload("res://assets/models/clown_car.glb")
 const CLOWN_DRIVER := preload("res://assets/models/npc_payaso.glb")
@@ -134,6 +140,73 @@ var puppeteer := false
 var lurch := 0.0
 ## Times a cop tried E at its empty window.
 var knocked := 0
+## In the wedding breathalyzer check (control-boda.md) every driver leans on their open window too...
+var wedding_mode := false
+## ...and most cars are the wedding's: a ribbon bow, cans tied behind and a bow tie in `tie` (one of GhostCar.SHIRTS).
+var guest := false
+var tie := -1
+## The bride and the groom's car, with its "just married" board.
+var newlyweds := false
+## What its driver blows into the breathalyzer (control-boda.md): the plan's, or else -1 and WeddingCar.alcohol_of.
+var alcohol := -1.0
+## The couple its driver toasts with the license (WeddingCar.BRIDES and GROOMS): the plan's, El Colado's the wrong one.
+var couple := 0
+## A cop made the driver blow, and what they blew.
+var blown := false
+## Over the limit, a cop took its driver's keys and a relative took the wheel (control-boda.md, step 3).
+var keys_taken := false
+## Its honks to celebrate so far, and seconds rolled, for its cans.
+var honks := 0
+## In the street race check (control-carrera.md) some cars are racers: a spoiler, a number, a neon and sparks, as in
+## `race` (RaceCar.draw's).
+var race_mode := false
+var racer := false
+var race := {}
+## In the fog check (control-neblina.md) every car has its headlights on, as in `fog` (FogCar.draw's).
+var fog_mode := false
+var fog := {}
+## Warned in the fog (step 2) by a lit cone or a cop's flashlight, it brakes in time. Unwarned, it comes at
+## FogCar.BLIND_SPEED and brakes only once it sees what's ahead (FogCar.SIGHT): behind a car it bumps into it, at the
+## barrier it runs the checkpoint ("overrun").
+var warned := false
+## In the circus move check (control-circo.md) most of the queue are circus trucks, each with a cage and an animal
+## in it, as in `circus` (CircusTruck.draw's); empty for a city car among them.
+var circus_mode := false
+var circus := {}
+## In the parade check (control-desfile.md) most of the queue are floats, each with its theme, number and masked
+## dancers, as in `parade` (ParadeFloat.draw's); empty for a city car caught in the parade.
+var parade_mode := false
+var parade := {}
+## Step 2: how long the float's been held at the checkpoint, and whether its music's cut for it (the crowd boos).
+var held_seconds := 0.0
+var music_cut := false
+var _beat := 0.0
+## Step 3: how many times its dancers were asked for the dance, and how many real ones were taken down.
+var danced := 0
+var downs := 0
+## How many times its animal was offered food (step 2).
+var fed := 0
+## Step 3: El Peludo, how long nobody's watched him, how many person's things he did and how long the one he's at
+## lasts. A real animal out of its open cage (LooseAnimal), and whether it ran off for good.
+var unwatched := 0.0
+var acts := 0
+var _act_left := 0.0
+var loose: LooseAnimal
+var animal_lost := false
+## It bumped into the car ahead in the fog (online, the guest's copy says so too).
+var bumped := false
+## Its horn's sound over it, seen through the fog (step 3): it answers the foghorn (FogHorn).
+var horn_bubble: HornBubble
+## A racer comes in a heat, out of the queue (step 2): it gathers at the back corner, revs, then races past the
+## checkpoint ("gathering", "revving", "racing" in `state`); `race_slot` is its place in the heat.
+var race_slot := 0
+var race_left := 0.0
+## Over a spike strip (SpikeStrip, step 3): its tires are flat. A racer brakes to a stop and complains ("punctured");
+## a city car limps on at FLAT_SPEED.
+var flat := false
+var _rolled := 0.0
+## Zigzagging, it turns this far (radians) with the lane it's crossing.
+var _sway := 0.0
 ## Riders still to pop out of its open door.
 var _to_pop := 0
 ## Riders counted so far, each with their sticker (CrowdRider.stick), and whether a cop looked in to count who stayed.
@@ -158,6 +231,15 @@ func _ready() -> void:
 	add_to_group("queue_cars")
 	if fruit:
 		_build_fruit_truck()
+		_build_labels()
+		return
+	if not circus.is_empty():
+		CircusTruck.build(self, circus)
+		_build_labels()
+		return
+	if not parade.is_empty():
+		ParadeFloat.build(self, parade)
+		ParadeFloat.add_notes(self)
 		_build_labels()
 		return
 	# The body leaves the trunk's top free, so the cops' hands reach the lid: the cabin and hood, and under the trunk.
@@ -191,8 +273,19 @@ func _ready() -> void:
 			var pilot := GhostPilot.new()
 			pilot.name = "Pilot"
 			add_child(pilot)
-		elif ghost_mode:
+		elif ghost_mode or wedding_mode:
 			GhostCar.dress_driver(self, plate, shirt)
+		if guest:
+			WeddingCar.dress(self, plate, tie, newlyweds)
+			_honk_left = WeddingCar.honk_every(plate)
+		if racer:
+			RaceCar.dress(self, race)
+		if fog_mode:
+			FogCar.dress(self, fog)
+			horn_bubble = HornBubble.new()
+			horn_bubble.name = "HornBubble"
+			horn_bubble.position = Vector3(0, FogCar.HORN_UP, 0)
+			add_child(horn_bubble)
 	_build_trunk()
 	if clown or crowd > 0:
 		_build_door()
@@ -208,7 +301,8 @@ func _build_labels() -> void:
 	plate_label.modulate = Color(0.1, 0.1, 0.12)
 	plate_label.outline_modulate = Color(0.95, 0.95, 0.9)
 	plate_label.outline_size = 18
-	plate_label.position = Vector3(0, 0.5 if clown else 0.62, -length() / 2 - (0.06 if fruit else 0.03))
+	var truck := fruit or not circus.is_empty() or not parade.is_empty()
+	plate_label.position = Vector3(0, 0.5 if clown else 0.62, -length() / 2 - (0.06 if truck else 0.03))
 	plate_label.rotation.y = PI
 	add_child(plate_label)
 	_bubble = Label3D.new()
@@ -359,7 +453,50 @@ func door_point() -> Vector3:
 
 ## It can drive off: no clown of it left on the street.
 func can_go() -> bool:
-	return clowns_out.is_empty() and _to_pop == 0
+	return clowns_out.is_empty() and _to_pop == 0 and not is_instance_valid(loose) and not dancer_down()
+
+
+## A dancer of its float is down on the street (control-desfile.md, step 3): it waits for them.
+func dancer_down() -> bool:
+	return ParadeFloat.dancers_of(self).any(func(d: ParadeDancer) -> bool: return d.is_down)
+
+
+## Its dancers do the dance (control-desfile.md, step 3): their float's step, El Antifaz another float's (and an
+## excuse), a clumsy one starting late. Not again while they're at it.
+func dance() -> void:
+	var dancers := ParadeFloat.dancers_of(self)
+	if dancers.is_empty() or dancers.any(func(d: ParadeDancer) -> bool: return d.dancing()):
+		return
+	var theme: String = parade.get("theme", "")
+	for dancer in dancers:
+		if dancer.is_down:
+			continue
+		if dancer.thief:
+			dancer.dance(ParadeFloat.wrong_step(theme, plate))
+		else:
+			var late := ParadeFloat.clumsy(plate, dancer.index)
+			dancer.dance(ParadeFloat.step_of(theme), ParadeDancer.CLUMSY_DELAY if late else 0.0)
+	if dancers.any(func(d: ParadeDancer) -> bool: return d.thief and not d.is_down):
+		say(tr(ParadeFloat.excuse_line(plate, danced)))
+	danced += 1
+
+
+## Dancer `i` is taken down from its float (control-desfile.md, step 3): El Antifaz stays down; a real one complains
+## (the parade queen's complaint) and climbs back after a while.
+func take_down(i: int) -> void:
+	var dancers := ParadeFloat.dancers_of(self)
+	if i < 0 or i >= dancers.size() or dancers[i].is_down:
+		return
+	var dancer := dancers[i]
+	dancer.go_down()
+	if dancer.thief:
+		say(tr("PARADE_THIEF_DOWN"))
+		return
+	say(tr(ParadeFloat.down_line(plate, downs)))
+	downs += 1
+	var queue := get_parent() as TrafficQueue
+	if queue:
+		queue.wronged_dancer(self)
 
 
 func _build_door() -> void:
@@ -488,8 +625,12 @@ func _rider_traits(i: int) -> Dictionary:
 	return ConvoyTraits.draw(rng)
 
 
-## Its horn, in its bubble.
+## Its horn, in its bubble: a clown's own, or a wedding guest's celebration.
 func honk() -> void:
+	if guest:
+		say(tr(WeddingCar.honk_line(honks)))
+		honks += 1
+		return
 	say(tr(ConvoyTraits.horn_text(clown_traits)))
 
 
@@ -512,6 +653,19 @@ func recall_clowns() -> void:
 
 ## The detained clown is out for good: nobody at the wheel.
 func empty_seat() -> void:
+	if not parade.is_empty():
+		# El Antifaz is off his float's troupe (control-desfile.md), not its driver out from under the skirt.
+		for dancer in ParadeFloat.dancers_of(self):
+			if dancer.thief:
+				dancer.get_parent().remove_child(dancer)
+				dancer.queue_free()
+		return
+	if not circus.is_empty():
+		# A circus truck's El Peludo is out of his cage (control-circo.md), not its driver out of the cab.
+		var animal := CircusTruck.animal_of(self)
+		if animal:
+			animal.visible = false
+		return
 	var seat := get_node_or_null("Driver") as Node3D
 	if seat:
 		seat.queue_free()
@@ -578,9 +732,22 @@ func _build_trunk() -> void:
 			for i in 2:
 				builder.mesh_box(Vector3(-0.35 + i * 0.7, 0.1, 0), Vector3(0.5, 0.2, 0.5), PIE)
 				builder.mesh_box(Vector3(-0.35 + i * 0.7, 0.23, 0), Vector3(0.45, 0.06, 0.45), CREAM)
+		"envelopes":
+			# The wedding's gift envelopes (control-boda.md): a pile of white, a pink ribbon.
+			for i in 4:
+				builder.mesh_box(Vector3(-0.45 + i * 0.3, 0.04 + 0.03 * (i % 2), 0), Vector3(0.28, 0.04, 0.18), CREAM)
+			builder.mesh_box(Vector3(0, 0.08, 0), Vector3(1.2, 0.05, 0.04), WeddingCar.RIBBON_PINK)
 		"safe", "prop_safe":
 			builder.mesh_box(Vector3(0, 0.35, 0), Vector3(0.8, 0.7, 0.6), SAFE)
 			builder.mesh_box(Vector3(0, 0.4, -0.31), Vector3(0.18, 0.18, 0.03), SAFE_DIAL)
+		"lamp":
+			# The lighthouse's lamp (control-neblina.md), still lit.
+			var lamp: Node3D = LighthouseLamp.MODEL.instantiate()
+			lamp.position = Vector3(0, 0, 0.05)
+			_trunk.add_child(lamp)
+			var glow := FogCar.halo(LighthouseLamp.GLOW)
+			glow.position.y = 0.25
+			lamp.add_child(glow)
 		"grandpa":
 			var grandpa: Node3D = GRANDPA.instantiate()
 			grandpa.scale = Vector3.ONE * 0.6
@@ -591,25 +758,68 @@ func _build_trunk() -> void:
 ## Online (NpcSync): what a guest's copy needs before it's added (which car it is, not whether it's the wanted one).
 func net_setup() -> Dictionary:
 	return {"plate": plate, "driver": driver, "clown": clown, "clown_traits": clown_traits, "fruit": fruit,
-		"crate": crate, "hat": hat, "melon_kinds": melon_kinds, "crowd": crowd, "ghost_mode": ghost_mode, "ghost": ghost,
-		"shirt": shirt, "puppeteer": puppeteer}
+		"crate": crate, "hat": hat, "melon_kinds": melon_kinds, "crowd": crowd, "ghost_mode": ghost_mode,
+		"ghost": ghost, "shirt": shirt, "puppeteer": puppeteer, "wedding_mode": wedding_mode, "guest": guest,
+		"tie": tie, "newlyweds": newlyweds, "alcohol": alcohol, "couple": couple, "race_mode": race_mode,
+		"racer": racer, "race": race, "race_slot": race_slot,
+		"fog_mode": fog_mode, "fog": fog, "circus_mode": circus_mode, "circus": circus,
+		"parade_mode": parade_mode, "parade": parade}
 
 
-## Online: where it is in the queue and whether its trunk is open; the ghost car's, how many pranks and the last one.
+## Online: where it is in the queue and whether its trunk is open; the ghost car's, how many pranks and the last one;
+## the wedding check's, whether its driver blew and gave up the keys; the street race's, its flat tires and sparks;
+## a parade float's, whether its music's cut and which of its dancers are down.
 func net_state() -> Array:
 	var rig := get_node_or_null("Pilot") as GhostPilot
 	if rig:
 		return [state, lid.is_open if lid else false, rig.pranks, rig.last_prank]
+	if wedding_mode:
+		return [state, lid.is_open if lid else false, blown, keys_taken]
+	if fog_mode:
+		return [state, lid.is_open if lid else false, bumped]
+	if circus_mode:
+		var cage_door := get_node_or_null("Cage/Door") as CageDoor
+		return [state, lid.is_open if lid else false, acts, cage_door != null and cage_door.is_open,
+			loose.global_position if is_instance_valid(loose) else Vector3.INF, animal_lost]
+	if parade_mode and not parade.is_empty():
+		return [state, lid.is_open if lid else false, music_cut,
+			ParadeFloat.dancers_of(self).map(func(d: ParadeDancer) -> bool: return d.is_down)]
+	if race_mode:
+		var sparks := get_node_or_null("Exhaust/Sparks") as CPUParticles3D
+		return [state, lid.is_open if lid else false, flat, sparks != null and sparks.emitting]
 	return [state, lid.is_open if lid else false]
 
 
 func apply_net_state(net: Array) -> void:
+	if race_mode and racer and net[0] == "revving" and state != "revving":
+		_start_revving()
 	state = net[0]
 	if net[1]:
 		open_trunk()
 	var rig := get_node_or_null("Pilot") as GhostPilot
 	if rig and net.size() > 3:
 		rig.copy_prank(net[2], net[3])
+	if wedding_mode and not rig and net.size() > 3:
+		blown = blown or net[2]
+		if net[3] and not keys_taken:
+			# The host's cop took the keys: its relative drives here too.
+			keys_taken = true
+			_relative_takes_over()
+	if circus_mode and net.size() > 5:
+		_follow_circus(net)
+	if parade_mode and not parade.is_empty() and net.size() > 3:
+		_follow_parade(net[2], net[3])
+	if fog_mode and net.size() > 2 and net[2] and not bumped:
+		# It bumped into the car ahead on the host: its driver says so here too.
+		bumped = true
+		say(tr(FogCar.bump_line(plate)))
+	if race_mode and net.size() > 3:
+		if net[2] and not flat:
+			# Punctured on the host: flat here too, and its driver says so.
+			flat = true
+			_flatten()
+			say(tr(flat_line()))
+		RaceCar.spark(self, RaceCar.SPARKS_FROM * 2.0 if net[3] else 0.0)
 	# The host's detained the pilot: he's out of his window here too.
 	var leaning := get_node_or_null("WindowDriver")
 	if leaning and state == "pulled_over":
@@ -622,16 +832,33 @@ func open_trunk() -> void:
 		lid.set_angle(TrunkLid.MAX_ANGLE)
 
 
-func prompt_key(_cop: Cop) -> String:
+func prompt_key(cop: Cop) -> String:
+	if can_take_keys():
+		return "PROMPT_TAKE_KEYS"
+	if can_blow() and cop and cop.get_node("Grabber").held is Breathalyzer:
+		return "PROMPT_BLOW"
 	if waiting() and can_fine():
 		return "PROMPT_CROWD_FINE"
+	if not parade.is_empty():
+		return "PROMPT_PARADE_DANCE" if waiting() else ""
 	return "PROMPT_PAPERS" if waiting() else ""
 
 
-## E on a stopped car: a packed one all counted gets its fine; else the driver hands the license.
-func use(_cop: Cop) -> void:
+## E on a stopped car: with the breathalyzer in hand its driver blows; a packed one all counted gets its fine; else
+## the driver hands the license.
+func use(cop: Cop = null) -> void:
+	if can_take_keys():
+		take_keys()
+		return
+	if can_blow() and cop and cop.get_node("Grabber").held is Breathalyzer:
+		blow(cop.get_node("Grabber").held)
+		return
 	if waiting() and can_fine():
 		fine()
+		return
+	if not parade.is_empty():
+		if waiting():
+			dance()
 		return
 	if ghost and waiting():
 		say(tr(GhostCar.nobody_line(knocked)))
@@ -641,13 +868,217 @@ func use(_cop: Cop) -> void:
 	if not waiting() or driver.is_empty():
 		return
 	papers_checked = true
+	if guest:
+		# A guest hands it over toasting the couple (control-boda.md, answer 2).
+		say(DriverTraits.license_text(driver) + "\n" + WeddingCar.toast(plate, couple, newlyweds))
+		return
 	say(DriverTraits.license_text(driver))
+
+
+## Someone at its wheel to blow: a stopped car with a driver, in the wedding check, not blown yet.
+func can_blow() -> bool:
+	return wedding_mode and waiting() and not driver.is_empty() and not blown
+
+
+## With the breathalyzer in hand, E on it does something: blow, or take the keys.
+func breath_check_ready() -> bool:
+	return can_blow() or can_take_keys()
+
+
+## Its driver blew over the limit and still has the keys.
+func can_take_keys() -> bool:
+	return wedding_mode and waiting() and blown and not keys_taken and alcohol_level() > WeddingCar.DRUNK_ABOVE
+
+
+## Whoever drives it now drank over the limit: its driver, until a cop takes the keys.
+func drunk_at_wheel() -> bool:
+	return wedding_mode and not keys_taken and alcohol_level() > WeddingCar.DRUNK_ABOVE
+
+
+## A cop takes the drunk driver's keys: a relative from the back seat takes the wheel, sober, and says so.
+func take_keys() -> void:
+	if not can_take_keys():
+		return
+	keys_taken = true
+	_relative_takes_over()
+	var case := TrafficCase.of(self)
+	if case:
+		case.keys_taken(self)
+
+
+## The drunk leaves the window and a relative from the back seat takes the wheel, and says so.
+func _relative_takes_over() -> void:
+	var drunk := get_node_or_null("WindowDriver")
+	if drunk:
+		remove_child(drunk)
+		drunk.queue_free()
+	GhostCar.dress_driver(self, plate + " relative", shirt)
+	say(tr(WeddingCar.relative_line(plate)))
+
+
+## What its driver blows: the plan's, or else from its plate.
+func alcohol_level() -> float:
+	return alcohol if alcohol >= 0.0 else WeddingCar.alcohol_of(plate, guest)
+
+
+## Its driver blows into `breathalyzer`: the reading on its screen, and in the bubble with what they say.
+func blow(breathalyzer: Breathalyzer) -> void:
+	if not can_blow():
+		return
+	blown = true
+	var value := alcohol_level()
+	if breathalyzer:
+		breathalyzer.show_reading(value)
+	say(tr("BLOW_READING") % WeddingCar.reading_text(value) + "\n" + tr(WeddingCar.blow_line(plate, guest)))
 
 
 func say(text: String) -> void:
 	_bubble.text = text
 	_bubble.show()
 	_bubble_left = SAY_SECONDS
+
+
+## Fed from a bucket (FoodBucket, control-circo.md step 2): the animal in its cage eats its own food ("ate"), gets
+## angry at any other ("angry": it roars, its cage shakes, the queue's patience goes up) and El Peludo, in his
+## costume, eats nothing and says something only a person would ("refused"). "" for a city car.
+func feed(food: String) -> String:
+	if circus.is_empty():
+		return ""
+	fed += 1
+	if circus.get("costume", false):
+		say(tr(CircusTruck.refuse_line(plate, fed)))
+		return "refused"
+	var animal: String = circus.get("animal", "")
+	if CircusTruck.food_of(animal) == food:
+		say(tr("CIRCUS_ATE"))
+		CircusTruck.munch(self)
+		return "ate"
+	say(tr(CircusTruck.sound_of(animal)))
+	CircusTruck.shake(self)
+	var queue := get_parent() as TrafficQueue
+	if queue:
+		queue.annoy(CircusTruck.ANGRY_PATIENCE)
+	return "angry"
+
+
+## Its cage door swung open (CageDoor, step 3), on every PC. El Peludo sits tight; a real animal hops out and wanders
+## (LooseAnimal) until it's lured back with its food or runs off.
+func open_cage() -> void:
+	var cage_door := get_node_or_null("Cage/Door") as CageDoor
+	if cage_door and not cage_door.is_open:
+		cage_door.set_angle(CageDoor.MAX_ANGLE)
+	if circus.is_empty() or circus.get("costume", false) or is_instance_valid(loose) or animal_lost:
+		return
+	var inside := CircusTruck.animal_of(self)
+	if not inside or not inside.visible:
+		return
+	inside.visible = false
+	loose = LooseAnimal.new()
+	loose.name = "%sAnimal" % name
+	loose.car = self
+	loose.animal = circus.get("animal", "lion")
+	# Online a guest's animal only shows where the host's is (apply_net_state).
+	var queue := get_parent() as TrafficQueue
+	loose.follower = queue != null and queue.follower
+	get_parent().add_child(loose)
+	loose.global_position = CircusTruck.cage_mouth(self)
+	loose.home.connect(_on_animal_home)
+	loose.gone.connect(_on_animal_gone)
+	say(tr(CircusTruck.sound_of(loose.animal)))
+
+
+func _on_animal_home() -> void:
+	var inside := CircusTruck.animal_of(self)
+	if inside:
+		inside.visible = true
+	var cage_door := get_node_or_null("Cage/Door") as CageDoor
+	if cage_door:
+		cage_door.close()
+	say(tr("CIRCUS_BACK_IN"))
+
+
+func _on_animal_gone() -> void:
+	animal_lost = true
+	var queue := get_parent() as TrafficQueue
+	if queue:
+		queue.lost_animal(self)
+
+
+## Online, a guest's circus truck shows the host's: El Peludo's person's things, its cage door and its loose animal,
+## where the host's is, back in or gone for good.
+func _follow_circus(net: Array) -> void:
+	if net[2] > acts:
+		acts = net[2] - 1
+		act_human()
+	var cage_door := get_node_or_null("Cage/Door") as CageDoor
+	if cage_door and net[3] != cage_door.is_open:
+		if net[3]:
+			open_cage()
+		elif not is_instance_valid(loose):
+			cage_door.close()
+	var at: Vector3 = net[4]
+	if at != Vector3.INF:
+		if not is_instance_valid(loose) and not animal_lost:
+			open_cage()
+		if is_instance_valid(loose):
+			loose.target = at
+	elif is_instance_valid(loose):
+		if loose.state == "gone":
+			loose.queue_free()
+		elif net[5]:
+			loose.run_off()
+		else:
+			loose.go_home()
+	animal_lost = animal_lost or net[5]
+
+
+## Online, a guest's float shows the host's music (cut or playing) and its dancers down or back on it. The dance and
+## taking one down already happen on every PC (ActionSync); this keeps them right if a guest's timing differs.
+func _follow_parade(cut: bool, downs_now: Array) -> void:
+	if cut and not music_cut:
+		for cop: Cop in get_tree().get_nodes_in_group("cops"):
+			cop.show_hint("HINT_PARADE_MUSIC_CUT")
+	music_cut = cut
+	ParadeFloat.show_music(self, not music_cut, _beat)
+	var dancers := ParadeFloat.dancers_of(self)
+	for i in mini(dancers.size(), downs_now.size()):
+		if downs_now[i] and not dancers[i].is_down:
+			dancers[i].go_down()
+		elif not downs_now[i] and dancers[i].is_down:
+			dancers[i].climb_back()
+
+
+## El Peludo, unwatched for CircusTruck.UNWATCHED, does something only a person would (step 3); a cop turning round
+## then sees it in his bubble.
+func _act_human(delta: float) -> void:
+	if _act_left > 0.0:
+		_act_left -= delta
+		if _act_left <= 0.0:
+			var animal := CircusTruck.animal_of(self)
+			if animal:
+				animal.rotation = Vector3(0, PI, 0)
+		return
+	# Online the host's El Peludo decides when he acts (_follow_circus).
+	var queue := get_parent() as TrafficQueue
+	if queue and queue.follower:
+		return
+	if CircusTruck.watched(self):
+		unwatched = 0.0
+		return
+	unwatched += delta
+	if unwatched >= CircusTruck.UNWATCHED:
+		act_human()
+
+
+## One more of El Peludo's person's things: its line in his bubble, his head tilted for CircusTruck.ACT_SECONDS.
+func act_human() -> void:
+	unwatched = 0.0
+	acts += 1
+	_act_left = CircusTruck.ACT_SECONDS
+	say(tr(CircusTruck.human_act(plate, acts)))
+	var animal := CircusTruck.animal_of(self)
+	if animal:
+		animal.rotation = Vector3(0.15, PI + 0.5, 0.25)
 
 
 ## The bubble's text while it shows, for tests.
@@ -671,10 +1102,36 @@ func _on_trunk_opened() -> void:
 			say(tr("TRUNK_PROP_SAFE"))
 		"safe":
 			say(tr("TRUNK_SAFE"))
+		"envelopes":
+			say(tr("TRUNK_ENVELOPES"))
+		"lamp":
+			say(tr("TRUNK_LAMP"))
 
 
 func waiting() -> bool:
 	return state == "waiting"
+
+
+## A float's music (control-desfile.md, step 2): held at the checkpoint, first in the queue, for MUSIC_HOLD seconds it
+## stops and the crowd boos (the queue's patience runs out faster); it plays again once the float moves on.
+func _play_music(delta: float) -> void:
+	_beat += delta
+	var queue := get_parent() as TrafficQueue
+	if queue and queue.follower:
+		# Online the host's float decides when its music stops (_follow_parade).
+		ParadeFloat.show_music(self, not music_cut, _beat)
+		return
+	var at_checkpoint := waiting() and not (is_instance_valid(ahead) and ahead.in_queue())
+	if at_checkpoint:
+		held_seconds += delta
+		if held_seconds >= ParadeFloat.MUSIC_HOLD and not music_cut:
+			music_cut = true
+			for cop: Cop in get_tree().get_nodes_in_group("cops"):
+				cop.show_hint("HINT_PARADE_MUSIC_CUT")
+	elif state != "waiting":
+		held_seconds = 0.0
+		music_cut = false
+	ParadeFloat.show_music(self, not music_cut, _beat)
 
 
 ## In the queue, stopped or rolling up to it: not let through, not sneaking, not gone.
@@ -694,7 +1151,7 @@ func cuffed(_seconds: float) -> void:
 		say(tr("GHOST_NO_ONE_TO_CUFF"))
 		return
 	var case := TrafficCase.of(self)
-	if case and waiting():
+	if case and (waiting() or stopped_racer()):
 		case.detain(self)
 
 
@@ -712,6 +1169,33 @@ func pull_over() -> void:
 func sneak() -> void:
 	if in_queue() and can_go():
 		state = "sneaking"
+
+
+## Its horn answers the foghorn after `delay` seconds (the further, the later): its bubble shows over it.
+func honk_back(delay := 0.0) -> void:
+	if not horn_bubble:
+		return
+	if delay <= 0.0:
+		horn_bubble.say(tr(FogCar.horn_text(fog.get("horn", 0))))
+		return
+	get_tree().create_timer(delay).timeout.connect(func() -> void:
+		if is_instance_valid(self) and state != "gone":
+			honk_back())
+
+
+## Too fast in the fog to stop where it should: behind a car it bumps into it and stops there; at the barrier it
+## runs the checkpoint, barrier, cones and all (TrafficQueue.overran).
+func _overrun() -> void:
+	warned = true
+	if is_instance_valid(ahead) and ahead.in_queue():
+		speed = 0.0
+		bumped = true
+		say(tr(FogCar.bump_line(plate)))
+		return
+	state = "overrun"
+	var queue := get_parent() as TrafficQueue
+	if queue:
+		queue.overran(self)
 
 
 ## Where it wants to stop, in the checkpoint's z; INF for no stop.
@@ -732,21 +1216,38 @@ func _physics_process(delta: float) -> void:
 		_bubble.hide()
 	if state == "gone" or not checkpoint:
 		return
+	if circus.get("costume", false):
+		_act_human(delta)
+	if not parade.is_empty():
+		_play_music(delta)
+	if racer and state in ["gathering", "revving", "racing", "punctured"]:
+		_race(delta)
+		return
 	if _to_pop > 0:
 		_pop_left -= delta
 		if _pop_left <= 0.0:
 			_pop_left = POP_EVERY
 			_pop()
-	if clown and in_queue() and not _bubble.visible:
+	if (clown or guest) and in_queue() and not _bubble.visible:
 		_honk_left -= delta
 		if _honk_left <= 0.0:
-			_honk_left = HONK_EVERY
+			_honk_left = WeddingCar.honk_every(plate) if guest else HONK_EVERY
 			honk()
 	var stop := _stop_z()
 	var room := at.z - stop
 	# Slows down to stop right at `stop`: v² = 2·a·d.
 	var top := SPEED if room == INF else minf(SPEED, sqrt(maxf(2.0 * ACCEL * room, 0.0)))
+	var blind := fog_mode and not warned and state == "coming"
+	if blind and FogCar.warned(self):
+		warned = true
+		blind = false
+	if blind:
+		top = FogCar.BLIND_SPEED if room > FogCar.SIGHT else 0.0
+	if flat:
+		top = minf(top, FLAT_SPEED)
 	speed = move_toward(speed, top, ACCEL * delta)
+	if blind and room != INF and at.z - speed * delta < stop and speed > FogCar.STOP_SPEED:
+		_overrun()
 	if room <= 0.05:
 		speed = 0.0
 	# Never past where it stops, even with a long tick.
@@ -762,7 +1263,7 @@ func _physics_process(delta: float) -> void:
 		if not said_line and not ghost and not driver.is_empty() and first:
 			said_line = true
 			say(tr(driver.line) if not clown else tr(ConvoyTraits.horn_text(clown_traits)) + " " + tr(driver.line))
-			_honk_left = HONK_EVERY
+			_honk_left = WeddingCar.honk_every(plate) if guest else HONK_EVERY
 	elif state == "waiting" and speed > 0.0:
 		state = "coming"
 	if at.z < GONE_AT:
@@ -770,13 +1271,130 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 		return
 	_place()
+	if guest:
+		WeddingCar.rattle(self, speed, _rolled)
+	if racer:
+		RaceCar.spark(self, speed)
+	_rolled += delta
+	if state == "going" and drunk_at_wheel():
+		# A drunk let through zigzags off, and takes the cones with it (control-boda.md, step 3).
+		at.x = sin(_rolled * WeddingCar.ZIGZAG_RATE) * WeddingCar.ZIGZAG
+		_sway = -cos(_rolled * WeddingCar.ZIGZAG_RATE) * WeddingCar.SWAY
+		_knock_cones()
 	if state == "sneaking":
 		_knock_cones()
+	if state == "overrun":
+		_knock_barrier()
+		_knock_cones()
+
+
+## A racer's heat (control-carrera.md, step 2): it waits, revs shaking (the warning), then races down its lane,
+## swerving to clip the barrier's end and the cones on its way.
+func _race(delta: float) -> void:
+	race_left -= delta
+	_rolled += delta
+	match state:
+		"gathering":
+			if race_left <= 0.0:
+				state = "revving"
+				race_left = RaceCar.REV_SECONDS
+				_start_revving()
+		"revving":
+			lurch = sin(_rolled * RaceCar.SHAKE_RATE) * RaceCar.SHAKE
+			if race_left <= 0.0:
+				state = "racing"
+				lurch = 0.0
+		"racing":
+			speed = move_toward(speed, RaceCar.SPEED, RaceCar.ACCEL * delta)
+			var step := speed * delta
+			at.z -= step
+			var x := RaceCar.lane_x(at.z)
+			if step > 0.0:
+				_sway = -atan2(x - at.x, step)
+			at.x = x
+			_knock_cones()
+			_knock_barrier()
+		"punctured":
+			# Rolling on the rims, sparks and all, to a stop: then the driver complains.
+			var was_rolling := speed > 0.0
+			speed = move_toward(speed, 0.0, FLAT_BRAKE * delta)
+			at.z -= speed * delta
+			# Not into the one ahead in its heat, stopped on its rims too.
+			if is_instance_valid(ahead) and ahead.state == "punctured" and at.z < ahead.at.z + LENGTH + GAP:
+				at.z = ahead.at.z + LENGTH + GAP
+				speed = 0.0
+			at.x = RaceCar.lane_x(at.z)
+			if was_rolling and speed == 0.0:
+				say(tr(flat_line()))
+	RaceCar.spark(self, speed if state in ["racing", "punctured"] else RaceCar.SPARKS_FROM * 2.0 if state == "revving" \
+		else 0.0)
+	if at.z < GONE_AT:
+		state = "gone"
+		queue_free()
+		return
+	_place()
+
+
+## It roars (and the first of its heat warns the cops), on every PC.
+func _start_revving() -> void:
+	say(tr(RaceCar.rev_line(plate)))
+	if race_slot == 0:
+		for cop: Cop in get_tree().get_nodes_in_group("cops"):
+			cop.show_hint("HINT_RACE_REVVING")
+
+
+## A racer stopped on its rims (control-carrera.md): its driver can be cuffed.
+func stopped_racer() -> bool:
+	return racer and state == "punctured" and speed == 0.0
+
+
+## Rolling over a spike strip punctures it, once: moving, not out of the way at the curb.
+func can_puncture() -> bool:
+	return not flat and speed > 0.5 and state not in ["pulled_over", "gone"]
+
+
+## Its four tires go flat (SpikeStrip): a racing racer brakes to a stop, a city car limps on and complains.
+func puncture() -> void:
+	if flat:
+		return
+	flat = true
+	_flatten()
+	if racer and state == "racing":
+		state = "punctured"
+	elif not racer:
+		say(tr(flat_line()))
+	var queue := get_parent() as TrafficQueue
+	if queue:
+		queue.punctured.emit(self)
+
+
+## Its wheels squashed flat.
+func _flatten() -> void:
+	for i in SuspectCar.SEDAN_WHEELS.size():
+		var wheel := get_node_or_null("Wheel%d" % i) as Node3D
+		if wheel:
+			wheel.scale.y = FLAT_SQUASH
+			wheel.position.y = SuspectCar.SEDAN_WHEELS[i].y * FLAT_SQUASH
+
+
+## What its driver says about the flat tires: a racer one of FLAT_LINES, a city driver one of CITY_FLAT_LINES.
+func flat_line() -> String:
+	var roll := absi(hash(["flat", plate]))
+	return "RACE_FLAT_%d" % (roll % FLAT_LINES) if racer else "CITY_FLAT_%d" % (roll % CITY_FLAT_LINES)
+
+
+func _knock_barrier() -> void:
+	for barrier: RoadBarrier in get_tree().get_nodes_in_group("road_barriers"):
+		# In the checkpoint's space, before its body touches it: across, its half and the barrier's; along, ahead.
+		var off := checkpoint.to_local(barrier.global_position) - at
+		if absf(off.x) < RaceCar.BARRIER_REACH.x and absf(off.z) < RaceCar.BARRIER_REACH.y:
+			var away := (barrier.global_position - global_position) * Vector3(1, 0, 1)
+			barrier.knock((away.normalized() + global_basis.z + Vector3.UP * 0.5) * RaceCar.BARRIER_PUSH)
 
 
 func _place() -> void:
 	if checkpoint:
-		global_transform = checkpoint.global_transform * Transform3D(Basis(Vector3.UP, PI),
+		global_transform = checkpoint.global_transform * Transform3D(Basis(Vector3.UP, PI + _sway),
 			at + Vector3(0, 0.05, lurch))
 
 
