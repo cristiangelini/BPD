@@ -25,6 +25,7 @@ const LIGHT := Color(0.92, 0.88, 0.78)
 var pieces: Array[ChessPiece] = []
 ## Where each piece was last put down (by its index in `pieces`), OFF when off the board.
 var squares: Array[Vector2i] = []
+var _setup: Array[Vector2i] = []
 var _check_left := CHECK_EVERY
 
 
@@ -42,6 +43,7 @@ func _ready() -> void:
 			piece.rotation.y = 0.0 if white else PI
 			pieces.append(piece)
 			squares.append(at)
+			_setup.append(at)
 
 
 ## The middle of a square, in the board's space.
@@ -63,6 +65,23 @@ func square_at(at: Vector3) -> Vector2i:
 func piece_on(at: Vector2i) -> ChessPiece:
 	var index := squares.find(at)
 	return pieces[index] if index != -1 and at != OFF else null
+
+
+## Host: puts piece `index` standing on `at` at once, without it counting as a move (a member's move, the game set up
+## again).
+func put(index: int, at: Vector2i) -> void:
+	var piece := pieces[index]
+	piece.global_transform = Transform3D(global_basis.rotated(Vector3.UP, 0.0 if piece.white else PI),
+		to_global(center_of(at)) + global_basis.y * 0.005)
+	piece.linear_velocity = Vector3.ZERO
+	piece.angular_velocity = Vector3.ZERO
+	squares[index] = at
+
+
+## Host: every piece back where the game halfway through has it.
+func reset() -> void:
+	for i in pieces.size():
+		put(i, _setup[i])
 
 
 ## How many pieces are off the board.

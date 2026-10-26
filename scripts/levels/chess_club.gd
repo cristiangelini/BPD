@@ -1,14 +1,14 @@
 class_name ChessClub
 extends InfiltrationPlace
 
-## The chess club "El Peón Dormido" (docs/diseno/infiltracion-ajedrez.md, steps 2 and 3, decision 175): one floor on its own
+## The chess club "El Peón Dormido" (docs/diseno/infiltracion-ajedrez.md, steps 2 to 4, decision 175): one floor on its own
 ## city lot, the front to +Z. The doorkeeper stands inside the entrance and only lets members through; the hall with
 ## its eight chess tables on a checkered floor and the trophy cabinet, and the cafeteria east of it (with the locked
 ## door of the Gran Maestro's office); behind, the tournament room with the stage where the Gran Maestro plays and his
 ## audience, and the storeroom of boards east of it. Each table has its board with a game halfway through
 ## (ChessBoard), its clock (ChessClock) and a stool behind each seat (step 3). The gang's members stand at the tables'
 ## seats, drawn with the seed; the seats left are for the cops (to play is to stand at a seat, hands free for the
-## pieces). The whole club is for members only. The cops start in the
+## pieces). Every so often a member challenges a cop to a game on the clock (ChessGames, step 4). The whole club is for members only. The cops start in the
 ## station, where the disguises are, and drive here. --place=chess opens it from Play. Every number here is
 ## (propuesta).
 
@@ -75,6 +75,7 @@ var boards: Array[ChessBoard] = []
 var clocks: Array[ChessClock] = []
 var stage_board: ChessBoard
 var stage_clock: ChessClock
+var games: ChessGames
 var _build: PlaceBuilder
 
 
@@ -89,6 +90,11 @@ func _ready() -> void:
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, BACK_Z)
 	add_child(office_door)
 	_add_people()
+	games = ChessGames.new()
+	games.name = "Games"
+	games.club = self
+	games.case_seed = case_seed
+	add_child(games)
 	place_in_city("chess")
 
 

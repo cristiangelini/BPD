@@ -93,6 +93,15 @@ copian la forma de `RestaurantOrders` y `SchoolClasses` (el host decide y avisa)
    del turno de un lado; E lo toca y el turno pasa al otro lado; si llega a 0, ese lado perdió por tiempo. "Sentarse"
    es pararse en el lugar frente a la mesa, con las manos libres para mover **(propuesta)**.
 4. Las partidas: el desafío, los turnos con el reloj, los comentarios, el chisme y la sospecha.
+   Hecho así: a los 20 s y después cada 45 s, si hay un policía en el club, un socio de una mesa con el lugar de
+   enfrente libre lo desafía ("¡Tú, el nuevo! ¿Una partida?") y al policía le sale en pantalla. Tiene 15 s para pararse
+   en ese lugar; si no, "¿Me dejas plantado?" y +20 a los socios del salón. La partida dura 60 s: el socio piensa 2 s,
+   mueve una pieza suya a una casilla libre y toca el reloj; el policía tiene 8 s para mover una pieza con las manos y
+   tocar el reloj (el socio comenta: "Interesante...", "¿El caballo vuela ahora?"; si movió una pieza ajena, "Esa pieza
+   es mía, pero bueno..."). Tocar el reloj sin mover suma +10 y sigue; perder por tiempo +20, alejarse más de 1,5 m
+   del lugar +30 y tirar 3 piezas del tablero +40, y la partida termina. Al final el socio dice "Buena partida. Rara,
+   pero buena" (el chisme que ayuda con una prueba llega en el paso 5). Cada partida nueva arranca con el tablero
+   acomodado **(propuesta)**.
 5. Las pruebas y el caso (variante "chess"): el torneo, las 6 pruebas, el sueldo y el interrogatorio.
 6. La huida en el caballito, el sorteo de "Jugar" en octavos y online.
 
