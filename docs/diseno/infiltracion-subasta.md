@@ -88,6 +88,11 @@ La subasta copia la forma de `ChessGames` y `BikerDares` (el host decide y avisa
    lugares: 7 sillas (sentados), la galería y el depósito. Don Martillo (frac blanco, moño rojo, bigote enrulado y
    martillo dorado) está detrás del podio mirando a las sillas **(propuesta)**.
 3. Lo de la sala: el podio con el martillo, el atril de los lotes, las sillas con paletas y el cartel del precio.
+   Hecho así: 15 sillas doradas con tapizado rojo, numeradas, mirando al podio; E en una silla levanta su paleta
+   blanca con el número (se ve 1,5 s sobre la silla). El podio de madera oscura con placa dorada tiene el martillo
+   dorado, que se levanta y baja con un "toc", y arriba el cartel con el precio ("$ 350"), vacío entre lotes. Al lado,
+   el atril de madera donde se pone el lote: un retrato horrible de un señor verde, un jarrón azul, un busto de mármol
+   o una sillita "de época" rosa **(propuesta)**.
 4. La subasta: los lotes, las pujas de los policías y de los compradores, el martillo, la sospecha y lo que se paga.
 5. Las pruebas y el caso (variante "auction"): las 6 pruebas, el sueldo con las compras y el interrogatorio.
 6. La huida en el carrito de la galería, el sorteo de "Jugar" en décimos y online.
