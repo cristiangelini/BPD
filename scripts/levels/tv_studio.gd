@@ -10,7 +10,8 @@ extends Node3D
 ## opens it from Play. Step 2: the 3 cameras on wheels (TvCamera) and the big screen, which shows live what the camera
 ## on air sees. Step 3: Lustre, Malvón and the moderator at their places and the debate (TvDebate). Step 4: the
 ## sabotage (TvSabotage) and what undoes it: the teleprompter in front of Lustre, the cue cards on a table by the set,
-## the spare mic on the makeup table and the spots' switch on the console, with the yellow warning light. Every number
+## the spare mic on the makeup table and the spots' switch on the console, with the yellow warning light. Step 5: the
+## 3 technicians at the console (TvTechnician), one bought by Malvón, and the case on top (DebateCase). Every number
 ## here is (propuesta).
 
 const LECTERN_MODEL := preload("res://assets/models/tv_lectern.glb")
@@ -74,6 +75,8 @@ const MIC_AT := Vector3(11.35, 0.85, -10.45)
 const SWITCH_AT := Vector3(6.6, 0.95, -2.4)
 const WARNING_AT := Vector3(6.15, 1.95, -6.0)
 const WARNING := Color(1.0, 0.8, 0.1)
+## The 3 technicians stand between the console and their chairs, facing the window (step 5).
+const TECH_X := 7.0
 ## The picture the screen shows, in pixels.
 const FEED_SIZE := Vector2i(768, 360)
 
@@ -112,6 +115,10 @@ var spare_mic: DebateProp
 var light_switch: TvLightSwitch
 var warning: MeshInstance3D
 var sabotage: TvSabotage
+## The 3 technicians and the one Malvón bought, and the case (step 5).
+var technicians: Array[TvTechnician] = []
+var technician: TvTechnician
+var case: DebateCase
 var lecterns: Array[Node3D] = []
 var public: Array[RallyFan] = []
 var _build: PlaceBuilder
@@ -146,9 +153,16 @@ func _ready() -> void:
 	sabotage.name = "Sabotage"
 	sabotage.setup(self, debate, case_seed)
 	add_child(sabotage)
+	_seat_technicians()
 	city.transform = CityLayout.anchor("tv_studio")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+	case = DebateCase.new()
+	case.name = "Case"
+	case.studio = self
+	case.shift_screen = $ShiftScreen
+	add_child(case)
+	case.start((city as City).comisario)
 
 
 ## Puts camera `index` on air: its tally lights and the screen shows what it sees.
@@ -234,6 +248,26 @@ func _place_fixes() -> void:
 	warning.position = WARNING_AT + Vector3.UP * level
 	warning.visible = false
 	add_child(warning)
+
+
+## The 3 technicians at the console, one bought by the seed: the warning light goes on at his place.
+func _seat_technicians() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["tv technician", case_seed])
+	var bought := rng.randi() % CHAIRS_Z.size()
+	for i in CHAIRS_Z.size():
+		var tech := TvTechnician.new()
+		tech.name = "Technician%d" % i
+		tech.index = i
+		tech.bought = i == bought
+		tech.position = Vector3(TECH_X, GameScale.FLOOR_HEIGHT + 0.05, CHAIRS_Z[i])
+		# Facing -X, the window.
+		tech.rotation.y = PI / 2
+		add_child(tech)
+		technicians.append(tech)
+	technician = technicians[bought]
+	OwnerEscort.attach(technician, car).in_car_hint = "HINT_TECH_IN_CAR"
+	warning.position.z = CHAIRS_Z[bought]
 
 
 ## Someone behind a lectern or the desk, facing the cameras (NPCs face -Z).
