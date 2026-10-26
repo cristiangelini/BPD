@@ -100,3 +100,14 @@ el del coro y quiénes gatean en el humo.
   comida del comedor (puré, gelatina, pollo y yogur, como en el motín) al policía más cercano en el comedor, cada 2 a
   4 s, durante 20 s. E sobre uno lo calma y se vuelve a sentar ("Bueno, bueno... pero voten"); con todos calmados se
   termina antes. El show sigue mientras tanto. Captura: `paso4-abucheo.png`.
+- **Paso 5:** los trucos de fuga (`TalentTricks`, `TalentProp`). La semilla elige el voluntario del mago, el que
+  sierra, los 2 que gatean y cuál de las 3 ventanas del muro oeste del comedor. **El mago** pide un voluntario a los
+  8 s, lo mete en su caja violeta con estrellas a los 12 s y a los 40 s "desaparece": E sobre la caja cerrada lo saca
+  colorado; si no, sale corriendo en la cocina. **El coro**: a los 5 s uno del público se va a una ventana y sierra
+  los barrotes 40 s ("ñic, ñic", que se oye a 4 m); E sobre él lo agarra y va directo a la celda de castigo, y si
+  termina los barrotes desaparecen y sale por afuera del muro. **El humo**: la máquina llena el escenario y los
+  bancos, y a los 10 s dos del público gatean hacia la puerta del patio; E sobre la máquina la apaga, el humo se va
+  en 5 s y los que gateaban vuelven a su lugar ("Yo... buscaba el baño"); si llegan a la puerta salen corriendo. Los
+  que corren van al portón como los de la lavandería: esposados y llevados a la celda de castigo cuentan como
+  atrapados, en el portón como escapados. Capturas: `paso5-mago.png`, `paso5-sierra.png`, `paso5-humo.png` y
+  `paso5-humo-apagado.png`.
