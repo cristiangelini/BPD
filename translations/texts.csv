@@ -2374,3 +2374,14 @@ BIKER_FOUND_OUT_1,¡Son policías! ¡Se puso el cinturón de seguridad en el ban
 BIKER_FOUND_OUT_2,¡Son policías! ¡Preguntó si las motos tienen los papeles al día!,They're cops! He asked if the bikes' papers are up to date!,São policiais! Perguntou se as motos estão com os documentos em dia!
 HINT_BIKER_FOUND_OUT,¡Los descubrieron! Toda la banda sabe que son policías.,You've been found out! The whole gang knows you're cops.,Vocês foram descobertos! A gangue toda sabe que vocês são policiais.
 PROMPT_BIKER_ARM,E: hacer fuerza,E: push,E: fazer força
+BIKER_DARE_arm,"¡Tú, el nuevo! ¡Pulseada en el patio! ¡A ver esos brazos!","You, the new guy! Arm wrestling in the patio! Let's see those arms!","Você, o novato! Queda de braço no pátio! Vamos ver esses braços!"
+BIKER_DARE_lift,"¡Tú, el nuevo! ¡Levanta la moto del patio! Si puedes...","You, the new guy! Lift the bike in the patio! If you can...","Você, o novato! Levanta a moto do pátio! Se conseguir..."
+BIKER_DARE_still,"¡Tú, el nuevo! ¡A la raya del patio! Te tiro la moto y no te mueves.","You, the new guy! To the line in the patio! I ride at you and you don't move.","Você, o novato! Na faixa do pátio! Eu vou de moto em você e você não se mexe."
+HINT_BIKER_DARE_arm,¡Prueba de valentía! Ve a la mesa de pulseadas del patio y aprieta E 15 veces en 8 s.,Courage dare! Go to the patio's arm-wrestling table and press E 15 times in 8 s.,Prova de coragem! Vá à mesa de queda de braço do pátio e aperte E 15 vezes em 8 s.
+HINT_BIKER_DARE_lift,¡Prueba de valentía! Levanten la moto pesada del patio 5 s. Solo no se puede: llama a otro.,Courage dare! Lift the patio's heavy bike for 5 s. You can't alone: call someone.,Prova de coragem! Levantem a moto pesada do pátio por 5 s. Sozinho não dá: chame alguém.
+HINT_BIKER_DARE_still,¡Prueba de valentía! Párate en la raya amarilla del patio y no te muevas cuando venga la moto.,Courage dare! Stand on the patio's yellow line and don't move when the bike comes.,Prova de coragem! Fique na faixa amarela do pátio e não se mexa quando a moto vier.
+BIKER_CHICKEN,¡Gallina! ¡Cocoroco!,Chicken! Bawk bawk!,Galinha! Có-có-có!
+BIKER_ARM_LOST,¡Ja! Brazo de fideo.,Ha! Noodle arm.,Rá! Braço de macarrão.
+BIKER_LIFT_FAILED,¿Eso es todo? Mi abuela la levanta con un dedo.,Is that all? My grandma lifts it with one finger.,Só isso? Minha avó levanta com um dedo.
+BIKER_MOVED,¡Se movió! ¡Se movió! ¡Saltó como un conejo!,He moved! He moved! He jumped like a rabbit!,Se mexeu! Se mexeu! Pulou que nem coelho!
+BIKER_RESPECT,"¡Eso es valentía! Respeto, hermano.","That's courage! Respect, brother.","Isso é coragem! Respeito, irmão."

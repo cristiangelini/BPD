@@ -91,6 +91,14 @@ valentía copian la forma de `ChessGames` (el host decide y avisa).
    motoquero en una moto igual al fondo que arranca hacia la raya amarilla a 6 m/s, con ruido de motor, y frena a 1 m
    de ella **(propuesta)**.
 4. Las pruebas de valentía: los desafíos, los tres tipos y la sospecha.
+   Hecho así: a los 20 s y después cada 50 s, si hay un policía en el bar, un motoquero le grita la próxima prueba
+   en el orden que dio la semilla ("¡Tú, el nuevo! ¡Pulseada en el patio!") y al policía le sale qué hacer. Tiene 15 s
+   para llegar (a 1 m del lugar; para la moto, a 2,5 m); si no, "¡Gallina! ¡Cocoroco!" y +30 a los motoqueros del
+   bar. Pulseada: 15 veces E en 8 s, los brazos se inclinan hacia el que va ganando; si no llega, "Brazo de fideo" y
+   +20. Moto: 5 s seguidos en el aire dentro de 20 s; si no, +20. Raya: la moto arranca al empezar y, si el policía se
+   aleja más de 0,5 m antes de que frene, "¡Saltó como un conejo!" y +20. Irse a más de 3 m en medio de la pulseada o
+   la moto cuenta como no presentarse. Mientras dura, los motoqueros que no están en el patio miran la prueba y no ven
+   nada más. Pasarla: "¡Eso es valentía! Respeto, hermano." (el chisme llega en el paso 5) **(propuesta)**.
 5. Las pruebas y el caso (variante "biker"): las 6 pruebas, los chismes, el sueldo y el interrogatorio.
 6. La huida en el ciclomotor, el sorteo de "Jugar" en novenos y online.
 
