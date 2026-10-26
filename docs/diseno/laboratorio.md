@@ -107,6 +107,13 @@ Los pesos y valores siguen la escala de la oficina: la principal vale unos 1000 
      de frío, y si ve la prueba se escapa en auto o termina en el interrogatorio. Capturas `paso4-batidora.png` y
      `paso4-pastel.png`.
 5. Las otras 5 historias, una por PR.
+   - **Cómo quedó (propuesta), la receta robada:** en la cámara de frío hay una mesa de acero con 6 pasteles de
+     pedidos; el cuaderno de recetas de la competencia (0,5 kg, 1000) está adentro de uno, sorteado con la semilla.
+     Para abrirlos hay que tirarlos o golpearlos: cada uno se aplasta (multa de 20 y el chef se queja) y el bueno
+     suelta el cuaderno. La foto del chef disfrazado (0,1 kg, 300) y la gorra de repartidor (0,3 kg, 200) se
+     esconden en escondites livianos. En la pizarra del laboratorio de sabores hay una receta copiada con el logo de
+     otra pastelería tachado (E la lee y va a la planilla), y la muestra de Pocha "sabe igualito al pastel de la
+     pastelería de enfrente". Capturas `paso5-pasteles.png`, `paso5-cuaderno.png` y `paso5-pizarra.png`.
 6. "Jugar" sortea entre los 7 lugares de allanamiento.
 7. El online (el chef, Pocha, la harina y los pasteles en todas las PC).
 

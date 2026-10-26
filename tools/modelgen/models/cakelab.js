@@ -99,12 +99,45 @@ export function buildOrdersNotebook() {
 	return b.build();
 }
 
+export function buildRecipeBook() {
+	const b = new Builder('recipe_book');
+	b.add('cover', mat('recipe_blue', 0x3f6fb5), new THREE.BoxGeometry(0.18, 0.035, 0.24), { pos: V(0, 0.0175, 0) });
+	b.add('pages', mat('notebook_pages', 0xfaf6ea), new THREE.BoxGeometry(0.17, 0.028, 0.23), { pos: V(0.006, 0.0175, 0) });
+	b.add('logo', mat('logo_yellow', 0xf2d24a), new THREE.CylinderGeometry(0.045, 0.045, 0.003, 5), { pos: V(0, 0.036, 0.02) });
+	b.add('logo_dot', mat('logo_red', 0xd94a3a), new THREE.CylinderGeometry(0.018, 0.018, 0.004, 10), { pos: V(0, 0.037, 0.02) });
+	b.add('frosting', mat('frosting_pink', 0xf4b6c8), new THREE.BoxGeometry(0.06, 0.01, 0.04), { pos: V(0.06, 0.036, -0.09) });
+	return b.build();
+}
+
+export function buildDisguisePhoto() {
+	const b = new Builder('disguise_photo');
+	b.add('paper', mat('photo_white', 0xf4f1ea), new THREE.BoxGeometry(0.1, 0.004, 0.14), { pos: V(0, 0.002, 0) });
+	b.add('picture', mat('photo_sky', 0x8fb7d6), new THREE.BoxGeometry(0.086, 0.002, 0.1), { pos: V(0, 0.005, 0.01) });
+	b.add('body', mat('uniform_brown', 0x8a5a2b), new THREE.BoxGeometry(0.03, 0.001, 0.045), { pos: V(0, 0.0065, 0.0) });
+	b.add('face', mat('skin', 0xe8b48f), new THREE.CylinderGeometry(0.012, 0.012, 0.001, 10), { pos: V(0, 0.0065, -0.035) });
+	b.add('mustache', mat('mustache', 0x2a1d14), new THREE.BoxGeometry(0.016, 0.001, 0.003), { pos: V(0, 0.0072, -0.031) });
+	return b.build();
+}
+
+export function buildDeliveryCap() {
+	const b = new Builder('delivery_cap');
+	b.add('crown', mat('cap_brown', 0x8a5a2b), new THREE.SphereGeometry(0.1, 10, 6, 0, Math.PI * 2, 0, Math.PI / 2), { pos: V(0, 0.0, 0), scale: [1, 0.7, 1] });
+	b.add('visor', mat('cap_brown_dark', 0x6b431f), new THREE.BoxGeometry(0.12, 0.01, 0.08), { pos: V(0, 0.005, 0.12) });
+	b.add('badge', mat('logo_yellow', 0xf2d24a), new THREE.BoxGeometry(0.04, 0.025, 0.004), { pos: V(0, 0.04, 0.09), rot: [-0.4, 0, 0] });
+	return b.build();
+}
+
 export const models = {
 	lab_oven: buildLabOven, giant_mixer: buildGiantMixer, microscope: buildMicroscope, test_tubes: buildTestTubes,
 	silver_cake: buildSilverCake, bill_mold: buildBillMold, orders_notebook: buildOrdersNotebook,
+	recipe_book: buildRecipeBook, disguise_photo: buildDisguisePhoto, delivery_cap: buildDeliveryCap,
 };
 
 export const views = {
+	stolen_recipe: {
+		items: [{ name: 'recipe_book', pos: [-0.15, 0, 0] }, { name: 'disguise_photo', pos: [0.12, 0, 0.12] }, { name: 'delivery_cap', pos: [0.15, 0, -0.12] }],
+		cam: { pos: [0, 0.45, 0.6], target: [0, 0.03, 0], fov: 40 },
+	},
 	silver_cake: {
 		items: [{ name: 'silver_cake', pos: [-0.3, 0, 0] }, { name: 'bill_mold', pos: [0.35, 0, 0.15] }, { name: 'orders_notebook', pos: [0.35, 0, -0.15] }],
 		cam: { pos: [0, 0.9, 1.6], target: [0, 0.25, 0], fov: 40 },
