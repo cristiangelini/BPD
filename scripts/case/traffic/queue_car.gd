@@ -594,6 +594,12 @@ func recall_clowns() -> void:
 
 ## The detained clown is out for good: nobody at the wheel.
 func empty_seat() -> void:
+	if not circus.is_empty():
+		# A circus truck's El Peludo is out of his cage (control-circo.md), not its driver out of the cab.
+		var animal := CircusTruck.animal_of(self)
+		if animal:
+			animal.visible = false
+		return
 	var seat := get_node_or_null("Driver") as Node3D
 	if seat:
 		seat.queue_free()
@@ -703,6 +709,10 @@ func net_state() -> Array:
 		return [state, lid.is_open if lid else false, blown, keys_taken]
 	if fog_mode:
 		return [state, lid.is_open if lid else false, bumped]
+	if circus_mode:
+		var cage_door := get_node_or_null("Cage/Door") as CageDoor
+		return [state, lid.is_open if lid else false, acts, cage_door != null and cage_door.is_open,
+			loose.global_position if is_instance_valid(loose) else Vector3.INF, animal_lost]
 	if race_mode:
 		var sparks := get_node_or_null("Exhaust/Sparks") as CPUParticles3D
 		return [state, lid.is_open if lid else false, flat, sparks != null and sparks.emitting]
@@ -724,6 +734,8 @@ func apply_net_state(net: Array) -> void:
 			# The host's cop took the keys: its relative drives here too.
 			keys_taken = true
 			_relative_takes_over()
+	if circus_mode and net.size() > 5:
+		_follow_circus(net)
 	if fog_mode and net.size() > 2 and net[2] and not bumped:
 		# It bumped into the car ahead on the host: its driver says so here too.
 		bumped = true
@@ -886,6 +898,9 @@ func open_cage() -> void:
 	loose.name = "%sAnimal" % name
 	loose.car = self
 	loose.animal = circus.get("animal", "lion")
+	# Online a guest's animal only shows where the host's is (apply_net_state).
+	var queue := get_parent() as TrafficQueue
+	loose.follower = queue != null and queue.follower
 	get_parent().add_child(loose)
 	loose.global_position = CircusTruck.cage_mouth(self)
 	loose.home.connect(_on_animal_home)
@@ -910,6 +925,34 @@ func _on_animal_gone() -> void:
 		queue.lost_animal(self)
 
 
+## Online, a guest's circus truck shows the host's: El Peludo's person's things, its cage door and its loose animal,
+## where the host's is, back in or gone for good.
+func _follow_circus(net: Array) -> void:
+	if net[2] > acts:
+		acts = net[2] - 1
+		act_human()
+	var cage_door := get_node_or_null("Cage/Door") as CageDoor
+	if cage_door and net[3] != cage_door.is_open:
+		if net[3]:
+			open_cage()
+		elif not is_instance_valid(loose):
+			cage_door.close()
+	var at: Vector3 = net[4]
+	if at != Vector3.INF:
+		if not is_instance_valid(loose) and not animal_lost:
+			open_cage()
+		if is_instance_valid(loose):
+			loose.target = at
+	elif is_instance_valid(loose):
+		if loose.state == "gone":
+			loose.queue_free()
+		elif net[5]:
+			loose.run_off()
+		else:
+			loose.go_home()
+	animal_lost = animal_lost or net[5]
+
+
 ## El Peludo, unwatched for CircusTruck.UNWATCHED, does something only a person would (step 3); a cop turning round
 ## then sees it in his bubble.
 func _act_human(delta: float) -> void:
@@ -919,6 +962,10 @@ func _act_human(delta: float) -> void:
 			var animal := CircusTruck.animal_of(self)
 			if animal:
 				animal.rotation = Vector3(0, PI, 0)
+		return
+	# Online the host's El Peludo decides when he acts (_follow_circus).
+	var queue := get_parent() as TrafficQueue
+	if queue and queue.follower:
 		return
 	if CircusTruck.watched(self):
 		unwatched = 0.0
@@ -1052,7 +1099,7 @@ func _physics_process(delta: float) -> void:
 		_bubble.hide()
 	if state == "gone" or not checkpoint:
 		return
-	if circus.get("costume", false) and not (get_parent() is TrafficQueue and get_parent().follower):
+	if circus.get("costume", false):
 		_act_human(delta)
 	if racer and state in ["gathering", "revving", "racing", "punctured"]:
 		_race(delta)

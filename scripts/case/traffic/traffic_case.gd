@@ -340,9 +340,8 @@ func _detain_in_cage(car: QueueCar) -> void:
 	queue.pull_over(car)
 	detained.emit(car, car.wanted)
 	_take_out(car, CircusTruck.cage_mouth(car))
-	var animal := CircusTruck.animal_of(car)
-	if animal:
-		animal.visible = false
+	car.empty_seat()
+	taken_from = car.name
 	drop_jewels(car)
 	_hint_all("HINT_CIRCUS_JEWELS")
 

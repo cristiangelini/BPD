@@ -25,6 +25,9 @@ var car: Node3D
 var animal := "lion"
 ## "loose", "following", "home" or "gone".
 var state := "loose"
+## Online, a guest's copy only walks to where the host's is (`target`).
+var follower := false
+var target := Vector3.INF
 var left := CircusTruck.LOOSE_SECONDS
 var _to := Vector3.ZERO
 var _run_dir := Vector3.ZERO
@@ -52,6 +55,10 @@ func lure() -> FoodBucket:
 
 func _process(delta: float) -> void:
 	if state == "home":
+		return
+	if follower:
+		if target != Vector3.INF:
+			_walk(target, RUN_SPEED * 2.0, delta)
 		return
 	if state == "gone":
 		_walk(global_position + _run_dir, RUN_SPEED, delta)
