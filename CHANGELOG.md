@@ -297,3 +297,4 @@
 - Hotel raid, story 5: the sleepwalker. A guest in a bathrobe walks the upstairs corridor asleep with his arms out and shouts if woken (+10 complaint, and don Bostezo wakes up); muddy slipper prints lead from the front door to the hidden lost-and-found box.
 - Hotel raid, story 6: the fake reviews. Don Bostezo types glowing reviews and mails them as postcards; carbon paper with "5 estrellas" backwards lies in the lobby bin, and while he naps the hidden typewriter goes "tac tac tac" for any cop nearby.
 - Hotel raid, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon and the Hotel Gran Siesta in quarters (hashed like develop's draw so every place comes up), and the menu has "Hotel (allanamiento, prueba)".
+- Hotel raid, step 7: online. The host runs don Bostezo (nap and complaint), doña Escoba, the sleepwalker and señor Ramón; the guests' copies follow it, and Ramón running off adds the mustache to every checklist.

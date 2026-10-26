@@ -255,6 +255,18 @@ func _physics_process(delta: float) -> void:
 		_line += 1
 
 
+## Online, what the guests' don Bostezo takes from the host's (NpcSync): whether he's napping.
+func net_state() -> Array:
+	return [is_asleep()]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] == is_asleep():
+		return
+	_asleep_left = NAP if state[0] else 0.0
+	_model.rotation.x = SLUMP if state[0] else 0.0
+
+
 func _wake() -> void:
 	if is_asleep():
 		_end_nap()
