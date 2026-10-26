@@ -71,6 +71,15 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_TRAINER_WHISTLE", "OBJ_EXTRA_PEARL_NECKLACE"],
 		"rig": preload("res://scripts/case/apartments/pigeons_rig.gd"),
 	},
+	"tenant_of_twenty": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_TENANT_OF_TWENTY_B", "BRIEF_TENANT_OF_TWENTY_C", "BRIEF_TENANT_OF_TWENTY_D"],
+		"find": "OBJ_FIND_TENANT_OF_TWENTY",
+		"hidden": [preload("res://scenes/props/fake_stamp.tscn"), preload("res://scenes/props/key_bunch.tscn")],
+		"half_heights": [0.06, 0.01],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_FAKE_STAMP", "OBJ_EXTRA_KEY_BUNCH"],
+		"rig": preload("res://scripts/case/apartments/tenants_rig.gd"),
+	},
 }
 const ORNAMENT_SCENES: Array[PackedScene] = [
 	preload("res://scenes/props/ornament_vase.tscn"), preload("res://scenes/props/ornament_figurine.tscn"),

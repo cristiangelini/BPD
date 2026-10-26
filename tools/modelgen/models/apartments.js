@@ -206,15 +206,71 @@ export function buildTrainerWhistle() {
 	return b.build();
 }
 
+// A cardboard box 0.4 x 0.3 x 0.3 m, open, stuffed with the twenty rental contracts.
+export function buildContractsBox() {
+	const b = new Builder('contracts_box');
+	const card = mat('cardboard', 0xc89a5a), paper = mat('contract_paper', 0xf4f2ea);
+	b.add('bottom', card, new THREE.BoxGeometry(0.4, 0.02, 0.3), { pos: V(0, 0.01, 0) });
+	for (const z of [-0.14, 0.14]) b.add('side', card, new THREE.BoxGeometry(0.4, 0.28, 0.02), { pos: V(0, 0.15, z) });
+	for (const x of [-0.19, 0.19]) b.add('side', card, new THREE.BoxGeometry(0.02, 0.28, 0.26), { pos: V(x, 0.15, 0) });
+	for (let i = 0; i < 6; i++) b.add('contracts', paper, new THREE.BoxGeometry(0.03, 0.3, 0.22), { pos: V(-0.14 + i * 0.055, 0.17, 0), rot: [0, 0, (i % 2 ? 0.1 : -0.08)] });
+	b.add('label', mat('box_label', 0x2a2a2e), new THREE.BoxGeometry(0.16, 0.06, 0.005), { pos: V(0, 0.2, 0.153) });
+	return b.build();
+}
+
+// The owner's fake stamp: a wooden handle 0.1 m tall on a red rubber base.
+export function buildFakeStamp() {
+	const b = new Builder('fake_stamp');
+	b.add('base', mat('stamp_rubber', 0xc83a3a), new THREE.BoxGeometry(0.07, 0.02, 0.05), { pos: V(0, 0.01, 0) });
+	b.add('block', mat('stamp_wood', 0x8a5a32), new THREE.BoxGeometry(0.06, 0.025, 0.04), { pos: V(0, 0.032, 0) });
+	b.add('handle', mat('stamp_wood', 0x8a5a32), new THREE.CylinderGeometry(0.012, 0.016, 0.05, 8), { pos: V(0, 0.07, 0) });
+	b.add('knob', mat('stamp_knob', 0x2a2a2e), ellipsoid(0.02, 0.015, 0.02, 8, 5), { pos: V(0, 0.1, 0) });
+	return b.build();
+}
+
+// A bunch of twenty keys on a big ring, lying flat, 0.2 m across.
+export function buildKeyBunch() {
+	const b = new Builder('key_bunch');
+	b.add('ring', mat('ring_steel', 0xb8bcc4), new THREE.TorusGeometry(0.05, 0.005, 4, 16), { pos: V(0, 0.008, 0), rot: [Math.PI / 2, 0, 0] });
+	const colors = [0xd8b048, 0xb8bcc4, 0xc88a4a];
+	for (let i = 0; i < 20; i++) {
+		const a = i / 20 * Math.PI * 2;
+		b.add('keys', mat('key_' + (i % 3), colors[i % 3]), new THREE.BoxGeometry(0.06, 0.006, 0.012), { pos: V(Math.cos(a) * 0.08, 0.004 + (i % 2) * 0.006, Math.sin(a) * 0.08), rot: [0, -a, 0] });
+	}
+	return b.build();
+}
+
+// A single mattress 0.9 x 1.9 m, 0.2 m thick, striped ticking.
+export function buildMattress() {
+	const b = new Builder('mattress');
+	b.add('pad', mat('mattress_white', 0xeee8dc), new THREE.BoxGeometry(0.9, 0.2, 1.9), { pos: V(0, 0.1, 0) });
+	for (let i = 0; i < 5; i++) b.add('stripes', mat('mattress_blue', 0x6a8ac8), new THREE.BoxGeometry(0.06, 0.205, 1.905), { pos: V(-0.36 + i * 0.18, 0.1, 0) });
+	return b.build();
+}
+
+// A stuffed duffel bag 0.6 m long.
+export function buildDuffelBag() {
+	const b = new Builder('duffel_bag');
+	b.add('bag', mat('bag_cloth', 0x5a6a4a), new THREE.CylinderGeometry(0.15, 0.15, 0.6, 10), { pos: V(0, 0.15, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('strap', mat('bag_strap', 0x2a2a2e), new THREE.TorusGeometry(0.12, 0.012, 4, 10, Math.PI), { pos: V(0, 0.28, 0), rot: [0, Math.PI / 2, 0] });
+	return b.build();
+}
+
 export const models = {
 	stolen_aquarium: buildStolenAquarium, fishing_net: buildFishingNet, aquarium_ticket: buildAquariumTicket,
 	contraband_piano: buildContrabandPiano, piano_sheet: buildPianoSheet, gold_ingot: buildGoldIngot,
 	spy_telescope: buildSpyTelescope, code_notebook: buildCodeNotebook, binoculars: buildBinoculars,
 	floor_key: buildFloorKey, paintings_box: buildPaintingsBox, floor_plan: buildFloorPlan,
 	pigeon: buildPigeon, pigeon_loft: buildPigeonLoft, pearl_necklace: buildPearlNecklace, trainer_whistle: buildTrainerWhistle,
+	contracts_box: buildContractsBox, fake_stamp: buildFakeStamp, key_bunch: buildKeyBunch, mattress: buildMattress,
+	duffel_bag: buildDuffelBag,
 };
 
 export const views = {
+	contracts_box: {
+		items: [{ name: 'mattress', pos: [-0.3, 0, -0.6] }, { name: 'duffel_bag', pos: [-0.3, 0.2, -0.9] }, { name: 'contracts_box', pos: [0.6, 0, 0.3] }, { name: 'fake_stamp', pos: [1.0, 0, 0.6] }, { name: 'key_bunch', pos: [0.7, 0, 0.8] }],
+		cam: { pos: [2.0, 1.4, 2.2], target: [0.3, 0.2, 0], fov: 40 },
+	},
 	pigeon_loft: {
 		items: [{ name: 'pigeon_loft', pos: [0, 0, 0] }, { name: 'pigeon', pos: [0.75, 0, 0.3] }, { name: 'pearl_necklace', pos: [0.7, 0, 0.7] }, { name: 'trainer_whistle', pos: [1.0, 0, 0.6] }],
 		cam: { pos: [1.6, 1.2, 2.2], target: [0.35, 0.3, 0.2], fov: 40 },

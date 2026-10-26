@@ -4961,3 +4961,12 @@ PEPA_TIP_carrier_pigeons,"Las palomas del 30B vuelven con cosas brillantes. Ayer
 PROMPT_PIGEON_TAKE,E: quitarle lo que trae en la pata,E: take what it has on its leg,E: tirar o que ele traz na pata
 PROMPT_FEATHERS,E: mirar las plumas,E: look at the feathers,E: olhar as penas
 CLUE_FEATHERS,Plumas de paloma y alpiste desde el ascensor hasta el 30B.,Pigeon feathers and birdseed from the elevator to 30B.,Penas de pombo e alpiste do elevador até o 30B.
+BRIEF_TENANT_OF_TWENTY_B,"El 30C está en alquiler hace un año, pero el señor Bellini ya se lo alquiló a veinte personas. A la vez. Y no es suyo.","30C has been for rent for a year, but Mr. Bellini has already rented it to twenty people. At the same time. And it isn't his.","O 30C está para alugar há um ano, mas o senhor Bellini já o alugou para vinte pessoas. Ao mesmo tempo. E nem é dele."
+BRIEF_TENANT_OF_TWENTY_C,Traigan al patrullero la caja con los veinte contratos: está en el 30C. Pesa 5 kilos.,Bring the box with the twenty contracts to the patrol car: it's in 30C. It weighs 5 kilos.,Tragam para a viatura a caixa com os vinte contratos: está no 30C. Pesa 5 quilos.
+BRIEF_TENANT_OF_TWENTY_D,"Si encuentran el sello falso del dueño o el manojo de veinte llaves, mejor: todo suma.","If you find the owner's fake stamp or the bunch of twenty keys, even better: it all counts.","Se encontrarem o carimbo falso do dono ou o molho de vinte chaves, melhor: tudo conta."
+OBJ_FIND_TENANT_OF_TWENTY,Llevarse la caja con los veinte contratos,Take the box with the twenty contracts,Levar a caixa com os vinte contratos
+OBJ_EXTRA_FAKE_STAMP,Extra: el sello falso del dueño,Extra: the owner's fake stamp,Extra: o carimbo falso do dono
+OBJ_EXTRA_KEY_BUNCH,Extra: el manojo de veinte llaves,Extra: the bunch of twenty keys,Extra: o molho de vinte chaves
+PEPA_TIP_tenant_of_twenty,"Al 30C entra gente todo el día con colchones. Nunca sale nadie. Ahí adentro deben estar muy apretados.","People go into 30C all day with mattresses. Nobody ever comes out. It must be very crowded in there.","Entra gente no 30C o dia todo com colchões. Nunca sai ninguém. Lá dentro deve estar bem apertado."
+PROMPT_MAILBOX_30C,E: mirar el buzón del 30C,E: look at 30C's mailbox,E: olhar a caixa de correio do 30C
+CLUE_TWENTY_NAMES,"El buzón del 30C tiene veinte nombres distintos, uno encima del otro. El 30C está en alquiler.","30C's mailbox has twenty different names, one on top of the other. 30C is for rent.","A caixa de correio do 30C tem vinte nomes diferentes, um em cima do outro. O 30C está para alugar."
