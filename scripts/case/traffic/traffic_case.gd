@@ -382,8 +382,8 @@ func detain_dancer(dancer: ParadeDancer) -> void:
 	queue.pull_over(car)
 	detained.emit(car, true)
 	_take_out(car, at)
-	dancer.get_parent().remove_child(dancer)
-	dancer.queue_free()
+	car.empty_seat()
+	taken_from = car.name
 	drop_crown(car, at)
 	_hint_all("HINT_PARADE_CROWN")
 
