@@ -4,7 +4,8 @@ extends Grabbable
 ## A piece of disguise from the station's lockers (docs/diseno/infiltracion.md, step 1, decision 100): a wig, a
 ## mustache or glasses for the grandparents' club, and the choir robe (infiltracion-coro.md, step 2), which goes on
 ## brought to the chest instead of the face, and the cleaning crew's cap, face mask and vest (fuga-limpieza.md, step 3). The fire drill's orange prisoner's vest
-## (fuga-simulacro.md) is worn the same way, but it's the opposite of a disguise. Held, the mouse wheel brings it right up to the face; brought to its place on the cop's head it
+## (fuga-simulacro.md) is worn the same way, but it's the opposite of a disguise: taken off it lies on the floor where
+## the guard can see it (a clue), and the waiting room's coat and hat make a cop pass for one of the public. Held, the mouse wheel brings it right up to the face; brought to its place on the cop's head it
 ## stays on, crooked by as much as it was off. Online the host sees it reach the head and tells everyone.
 ## Every number here is (propuesta).
 
@@ -17,7 +18,9 @@ const SLOTS := {
 	"cleaner_cap": Vector3(0, 1.42, 0.0),
 	"face_mask": Vector3(0, 1.22, -0.2),
 	"cleaner_vest": Vector3(0, 0.95, -0.3),
-	"prison_vest": Vector3.ZERO,
+	"prison_vest": Vector3(0, 0.95, -0.3),
+	"coat": Vector3(0, 0.95, -0.3),
+	"hat": Vector3(0, 1.5, 0.0),
 }
 const MODELS := {
 	"wig": preload("res://assets/models/disguise_wig.glb"),
@@ -28,12 +31,15 @@ const MODELS := {
 	"face_mask": preload("res://assets/models/disguise_face_mask.glb"),
 	"cleaner_vest": preload("res://assets/models/disguise_cleaner_vest.glb"),
 	"prison_vest": preload("res://assets/models/prison_vest.glb"),
+	"coat": preload("res://assets/models/disguise_coat.glb"),
+	"hat": preload("res://assets/models/disguise_hat.glb"),
 }
 ## Who the cops pass for, and with what: which pieces count and how many of them. (propuesta)
 const LOOKS := {
 	"grandparent": {"pieces": ["wig", "glasses", "mustache"], "needed": 2},
 	"chorister": {"pieces": ["robe"], "needed": 1},
 	"cleaner": {"pieces": ["cleaner_cap", "face_mask", "cleaner_vest"], "needed": 2},
+	"public": {"pieces": ["coat", "hat"], "needed": 1},
 }
 ## Held this close to its place, it goes on (m).
 const WEAR_REACH := 0.22
@@ -45,6 +51,22 @@ const MAX_TILT := deg_to_rad(35.0)
 const CROOKED := deg_to_rad(12.0)
 
 @export var kind := "wig"
+## On a hook of the coat rack (the host sets it): it stays up there until a cop grabs it.
+var hanging := false
+
+
+func _ready() -> void:
+	if kind == "prison_vest":
+		add_to_group("guard_clues")
+
+
+## Hangs it on the coat rack at `hook` (the host): still, until someone grabs it.
+func hang(hook: Transform3D) -> void:
+	linear_velocity = Vector3.ZERO
+	angular_velocity = Vector3.ZERO
+	global_transform = hook
+	hanging = true
+	freeze = true
 
 
 static func scene_of(piece_kind: String) -> PackedScene:
@@ -68,6 +90,9 @@ func hold(holder_id: int, point: Vector3) -> void:
 	var grabber := instance_from_id(holder_id) as Node
 	if not holders.has(holder_id) and grabber and grabber.get_parent() is Cop:
 		add_collision_exception_with(grabber.get_parent())
+	if hanging:
+		hanging = false
+		freeze = false
 	super.hold(holder_id, point)
 
 
