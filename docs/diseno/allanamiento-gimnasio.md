@@ -23,7 +23,7 @@ números son **(propuesta)** hasta probarlos jugando.
   estante de mancuernas, en un casillero, en la oficina, detrás del espejo, en el tacho de toallas y debajo de una cinta.
 
 ## El profe y la recepcionista
-- **El profe Rulo**, el profesor de aeróbic: vincha fluorescente, calza a rayas, muñequeras, rulos enormes y un silbato,
+- **El profe Fito**, el profesor de aeróbic: vincha fluorescente, calza a rayas, muñequeras, rulos enormes y un silbato,
   cuerpo flaco y saltarín (decisión 72). Va por la sala corrigiendo posturas ("¡Esa espalda, campeón!").
 - **"¡No me desordenen el gimnasio!":** cada mancuerna que ve tirada en el piso le suma 5 a la denuncia, y cada cosa
   pesada que ve caer encima de una cinta, 10.
@@ -32,8 +32,8 @@ números son **(propuesta)** hasta probarlos jugando.
   hacer una vez cada 45 s; si un policía baila con ellos (salta con espacio), el profe lo felicita y baja 5 la denuncia.
 - **La denuncia:** como Mirta, Fermín y el chef Bruno: 15 si lo empujan, 5 por puerta rota, 5 por pregunta, y llama
   al abogado en 100. Con R suelta 2 cosas por caso y después se ofende.
-- **Coca, la recepcionista**, es la chismosa, pero solo habla con quien corre: si un policía corre 5 s en la cinta de al
-  lado de la suya (ella entrena en la cinta 1 en su descanso), Coca le cuenta, sin aire, dónde vio al profe esconder
+- **Lula, la recepcionista**, es la chismosa, pero solo habla con quien corre: si un policía corre 5 s en la cinta de al
+  lado de la suya (ella entrena en la cinta 1 en su descanso), Lula le cuenta, sin aire, dónde vio al profe esconder
   algo. Correr gasta resistencia como en la rutina de la infiltración. Una vez por policía.
 
 ## Las historias
@@ -59,7 +59,7 @@ Los pesos y valores siguen la escala de la oficina y el laboratorio: la principa
 - Lo compartido de las historias (historias.md): escondites sorteados, notas, 3 sospechas, la planilla, el patrullero, la
   escolta del dueño, la huida (persecucion-final.md) y la pantalla del turno (RaidCase).
 - De la oficina y el laboratorio: el dueño con su distracción con E (el horno → la música), lo frágil con multa, la caja
-  de la recepción con la llave, el `ClueSpot`, la chismosa que pide algo a cambio (Pocha → Coca) y el online (NpcSync,
+  de la recepción con la llave, el `ClueSpot`, la chismosa que pide algo a cambio (Pocha → Lula) y el online (NpcSync,
   PropSync y ActionSync).
 - Del laboratorio: lo que se esconde entre iguales (los pasteles de pedido → las mancuernas) y el `Ornament` para el
   espejo.
@@ -71,18 +71,18 @@ Los pesos y valores siguen la escala de la oficina y el laboratorio: la principa
 ## El orden para hacerlo (un PR chico por paso)
 1. El gimnasio como lugar de allanamiento: el `GymHall` sin la infiltración, el equipo de música, la pared del récord,
    el espejo frágil, las cintas que se rompen, los escondites y los socios comunes.
-2. El profe Rulo: la ronda, la denuncia, "¡no me desordenen el gimnasio!" y la clase de aeróbic con la música.
-3. Coca y la cinta de al lado.
+2. El profe Fito: la ronda, la denuncia, "¡no me desordenen el gimnasio!" y la clase de aeróbic con la música.
+3. Lula y la cinta de al lado.
 4. El caso (RaidCase) con la primera historia: las pesas rellenas de plata.
 5. Las otras 5 historias, una por PR.
 6. "Jugar" sortea entre los 8 lugares de allanamiento.
-7. El online (el profe, Coca, la música, las cintas y las mancuernas en todas las PC).
+7. El online (el profe, Lula, la música, las cintas y las mancuernas en todas las PC).
 
 El gimnasio de la infiltración (#650 a #686) y el laboratorio ya están en `develop`, así que la pila sale de ahí.
 
 ## Preguntas para Cristian
 1. ¿El gimnasio como octavo lugar, usando el mismo "Hierro Puro" de la infiltración pero con el profe de aeróbic en vez
    del Toro? **Recomendado:** sí, así no se hace otro edificio y el Toro queda para la infiltración.
-2. ¿El profe se distrae con la música (clase de 15 s de espaldas) y Coca solo habla si corres 5 s en la cinta de al
+2. ¿El profe se distrae con la música (clase de 15 s de espaldas) y Lula solo habla si corres 5 s en la cinta de al
    lado? **Recomendado:** sí, cada cosa tiene un costo y usa lo que el gimnasio ya tiene.
 3. ¿"Jugar" sortea entre los 8 lugares en octavos? **Recomendado:** sí, igual que con los 7.
