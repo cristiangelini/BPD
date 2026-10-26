@@ -1270,6 +1270,10 @@ func _on_vault_opened() -> void:
 		# The blood bank (robo-banco-sangre.md, step 3): they run in for the bags and out with them.
 		blood_bank.load_up()
 		return
+	if seeds:
+		# The seed bank (robo-banco-semillas.md, step 3): they run in for the jars and out with them.
+		seed_bank.load_up()
+		return
 	var sacks := 0
 	for robber in robbers:
 		if robber.sorry and is_loose(robber):
