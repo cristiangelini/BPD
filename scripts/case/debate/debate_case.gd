@@ -8,7 +8,10 @@ extends Node
 ## technician cuffed or taken away there are no more tricks. A trick warned while a cop is in the control room shows
 ## whose place the warning light is at (his third clue). Step 7: a technician still loose at the end of the debate
 ## runs for the TV van parked on the street and the chase starts there (decision 96): caught, he counts as detained.
-## Every number here is (propuesta).
+## Online (step 8) the host's case decides and a guest's follows it (CaseSync, snapshot): the debate's clock, turns and
+## image, the trick on now and what it changed, the clues, the cuffs, how it ended and the getaway; the debate, the
+## tricks and the deputy's trips only run on the host, and the people come from it (NpcSync). Every number here is
+## (propuesta).
 
 const SHIFT_DELAY := 4.0
 const REFRESH := 0.5
@@ -35,6 +38,16 @@ var shift_over := false
 var chase: ChaseCase
 var caught := false
 var escaped := false
+var follower := false:
+	set(value):
+		follower = value
+		if studio:
+			studio.debate.follower = value
+			studio.sabotage.follower = value
+			var walks := PoliticianWalks.of(studio.politician)
+			if walks:
+				walks.set_physics_process(not value)
+var online: CaseSync
 var _result := {}
 var _refresh_left := 0.0
 
@@ -60,8 +73,15 @@ func start(comisario: Comisario = null) -> void:
 	else:
 		give_tip()
 	if shift_screen:
-		shift_screen.play_again.connect(func() -> void: PlaceDraw.start(get_tree()))
+		shift_screen.play_again.connect(_play_again)
 		shift_screen.back_to_menu.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
+
+
+func _play_again() -> void:
+	if online:
+		online.play_again()
+	else:
+		PlaceDraw.start(get_tree())
 
 
 func give_tip() -> void:
@@ -132,6 +152,8 @@ func _run_off() -> void:
 	chase = ChaseCase.begin(studio, SuspectCar.TV_VAN, van.global_transform, studio.car, studio.city, studio.case_seed,
 		null, van)
 	chase.who = ChaseSuspect.TECHNICIAN + tech.look()
+	chase.online = online
+	chase.follower = follower
 	chase.ended.connect(_on_chase_ended)
 	_hint_all("HINT_ESCAPE_TECHNICIAN")
 
@@ -163,7 +185,7 @@ func report() -> Dictionary:
 
 
 func finish_shift() -> void:
-	if shift_over:
+	if shift_over or follower:
 		return
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
@@ -197,7 +219,62 @@ func _show_result(result: Dictionary) -> void:
 		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over,
 			result.campaign.promoted)
 		over = result.campaign.over
-	shift_screen.get_node("%AgainButton").visible = not over
+	shift_screen.get_node("%AgainButton").visible = not over and not follower
+
+
+## What every guest's case shows (CaseSync).
+func snapshot() -> Dictionary:
+	var debate := studio.debate
+	var tricks := studio.sabotage
+	var state := {"tip": tip_given, "debate": [debate.state, debate.block, snappedf(debate.left, 0.1), debate.image,
+		debate.speaker, debate.question, debate.blunders], "trick": [tricks.phase, tricks.kind, tricks.active,
+		studio.spot_on(TvSabotage.LUSTRE_SPOT), studio.prompter.plugged, studio.prompter.text(), studio.warning.visible],
+		"clues": clues.duplicate(), "wrong_cuffs": wrong_cuffs, "jailed": jailed, "caught": caught, "escaped": escaped,
+		"result": _result}
+	if chase:
+		state.chase = chase.snapshot()
+	return state
+
+
+func apply_snapshot(state: Dictionary) -> void:
+	if state.tip:
+		give_tip()
+	var debate := studio.debate
+	var on: Array = state.debate
+	var who: String = on[4]
+	if who != debate.speaker or on[5] != debate.question:
+		debate.question = on[5]
+		if who == "":
+			debate.speaker = ""
+			studio.put_on_air(TvDebate.CAMERA_OF.moderator)
+		else:
+			debate._open_turn(who)
+	debate.state = on[0]
+	debate.block = on[1]
+	debate.left = on[2]
+	debate.image = on[3]
+	debate.blunders = on[6]
+	var trick: Array = state.trick
+	var tricks := studio.sabotage
+	tricks.phase = trick[0]
+	tricks.kind = trick[1]
+	tricks.active = trick[2]
+	studio.set_spot(TvSabotage.LUSTRE_SPOT, trick[3])
+	studio.prompter.follow(trick[4], trick[5])
+	studio.set_warning(trick[6])
+	for kind: String in state.clues:
+		if not clues.has(kind):
+			clues.append(kind)
+	wrong_cuffs = state.wrong_cuffs
+	jailed = state.jailed
+	caught = state.caught
+	escaped = state.escaped
+	if state.has("chase"):
+		_run_off()
+		chase.apply_snapshot(state.chase)
+	checklist.show_rows(rows())
+	if not state.result.is_empty() and not shift_over:
+		_show_result(state.result)
 
 
 ## The planilla's rows, in the shape CaseChecklist takes.

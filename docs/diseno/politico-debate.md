@@ -133,3 +133,7 @@ vergüenza de la que pasa solo."
   se escapa en ella y empieza la persecución embebida (ChaseCase, decisión 96); atrapado cuenta como detenido (los
   100 de más) y se baja con su propio modelo (`technician_<look>`) y sus quejas. Jugar sortea el debate entre las
   protecciones del político (`PlaceDraw.RALLIES`, ahora 9).
+- **Paso 8 (el online):** el caso del anfitrión decide y el de cada invitado lo sigue (CaseSync, `snapshot`): el reloj,
+  el turno y la cámara al aire, la imagen y los papelones, el sabotaje en curso (la luz amarilla, el foco de Lustre,
+  el teleprompter), las pistas, las esposas, el final y la huida en la unidad móvil. El debate, los sabotajes y las
+  idas al camarín solo corren en el anfitrión; los técnicos, el diputado y los demás vienen de él (NpcSync).
