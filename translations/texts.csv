@@ -4556,6 +4556,10 @@ PLACE_SCHOOL_VISIT,"Escuela Los Girasoles","Sunflowers School","Escola Os Girass
 "PLACE_FOOTBALL_PITCH","Cancha del Barrio","Neighborhood Pitch","Campinho do Bairro"
 "FOOTBALL_BANNER","Partido benéfico: ¡Lustre juega por los chicos!","Charity match: Lustre plays for the kids!","Jogo beneficente: Lustre joga pelas crianças!"
 "FOOTBALL_STALL","SALCHICHAS","SAUSAGES","SALSICHAS"
+"PROMPT_KICK_BALL","Clic: patear (mantén para más fuerte) · E: pase","Click: kick (hold for harder) · E: pass","Clique: chutar (segure para mais forte) · E: passe"
+"HUD_FOOTBALL_SCORE","LUSTRE %d - %d VETERANOS","LUSTRE %d - %d VETERANS","LUSTRE %d - %d VETERANOS"
+"HINT_FOOTBALL_GOAL_LUSTRE","¡GOOOL del equipo del diputado!","GOOOAL for the deputy's team!","GOOOL do time do deputado!"
+"HINT_FOOTBALL_GOAL_VETERANS","Gol de los Veteranos. El diputado mira para otro lado.","Goal for the Veterans. The deputy looks the other way.","Gol dos Veteranos. O deputado olha para o outro lado."
 HINT_INSPECTOR_ARRIVES,Llegó la inspectora de la ciudad: va contigo todo el turno y anota todo.,The city inspector is here: she goes with you all shift and writes everything down.,A inspetora da cidade chegou: ela vai com você o turno todo e anota tudo.
 INSPECTOR_ARRIVES,"Severina Regla, inspección de la ciudad. Hagan como si no estuviera.","Severina Regla, city inspection. Act as if I'm not here.","Severina Regla, inspeção da cidade. Façam de conta que não estou aqui."
 INSPECTOR_NOTE_1,Mmm.,Hmm.,Hum.

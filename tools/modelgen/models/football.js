@@ -78,12 +78,33 @@ export function buildCup() {
 	return b.build();
 }
 
-export const models = { football_goal: buildGoal, team_bench: buildBench, stretcher: buildStretcher, football_cup: buildCup };
+// The match ball (step 2): white with black patches, 22 cm across, a bit scuffed. Its origin in its middle.
+export function buildBall() {
+	const b = new Builder('football_ball');
+	const white = mat('ball_white', 0xf6f6f2), black = mat('ball_black', 0x1e1f24), scuff = mat('ball_scuff', 0xc9c3b4);
+	const R = 0.11;
+	b.add('ball', white, new THREE.IcosahedronGeometry(R, 1), { pos: V(0, 0, 0) });
+	const ico = new THREE.IcosahedronGeometry(1, 0).attributes.position;
+	const seen = [];
+	for (let i = 0; i < ico.count; i++) {
+		const v = new THREE.Vector3().fromBufferAttribute(ico, i).normalize();
+		if (seen.some((s) => s.distanceTo(v) < 0.01)) continue;
+		seen.push(v);
+		const at = v.clone().multiplyScalar(R * 0.93);
+		b.add('patches', black, new THREE.CylinderGeometry(0.035, 0.035, 0.02, 5), { pos: at, lookAt: v.clone().multiplyScalar(2) });
+	}
+	b.add('scuff', scuff, new THREE.SphereGeometry(0.03, 6, 4), { pos: V(0.07, 0.07, 0.04), scale: [1, 0.3, 1] });
+	return b.build();
+}
+
+export const models = { football_goal: buildGoal, team_bench: buildBench, stretcher: buildStretcher, football_cup: buildCup,
+	football_ball: buildBall };
 
 export const views = {
 	football_pitch_props: {
 		items: [{ name: 'football_goal', pos: [0, 0, 0], rotY: 0.5 }, { name: 'team_bench', pos: [5.5, 0, 1.5], rotY: -0.6 },
-			{ name: 'stretcher', pos: [-3.5, 0, 2.5], rotY: 0.3 }, { name: 'football_cup', pos: [2.0, 0, 3.5] }],
+			{ name: 'stretcher', pos: [-3.5, 0, 2.5], rotY: 0.3 }, { name: 'football_cup', pos: [2.0, 0, 3.5] },
+			{ name: 'football_ball', pos: [0.8, 0.11, 4.5] }],
 		cam: { pos: [3.0, 4.0, 10.0], target: [1.0, 0.8, 0.5], fov: 50 },
 	},
 };
