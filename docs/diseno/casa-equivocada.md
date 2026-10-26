@@ -7,7 +7,7 @@ en la del vecino inocente, todo sale el doble de caro, y el culpable de al lado 
 Decisión 223. Los números siguen marcados **(propuesta)** hasta probarlos jugando.
 
 ## Las dos casas
-Dos casas gemelas de dos pisos, de 16 × 14 m cada una, pegadas por la medianera, en la cuadra (-1, 1) lado sur del
+Dos casas gemelas de dos pisos, de 14 × 11 m cada una, con jardín adelante y patio atrás, pegadas por la medianera, en la cuadra (-1, 1) lado sur del
 barrio de casas nuevo (la deja el hilo de la ciudad; hasta que esté, va en una cuadra provisoria). Mismo color, mismo
 techo, misma puerta verde. Las dos tienen el número caído: en una quedó "1_" y en la otra "_4".
 
@@ -92,6 +92,23 @@ valores siguen la escala del bingo: la principal unos 1000, los extras entre 300
 4. El cartero y las pistas de la puerta.
 5. a 7. Las 6 historias, dos por PR.
 8. El caso entero, "Jugar" lo sortea con los otros allanamientos, el online y el CHANGELOG.
+
+## Hecho así
+- **Paso 1 (las dos casas):** `--place=wrong_house` abre `scenes/levels/wrong_house.tscn` (`WrongHouse`). Un lote de
+  36 × 20 m con las dos casas de 14 × 11 pegadas por la medianera, jardín de 3 m adelante, patio atrás con cercas bajas
+  que se saltan y un pasillo de 4 m a cada costado con la rural (solo se ve, sin baúl todavía). Cada casa: abajo el
+  living y la cocina adelante, atrás el pasillo con la escalera, el baño y el lavadero (con la puerta al patio); arriba
+  dos dormitorios y el cuarto de cosas. Puerta verde cerrada con la llave en una de 3 macetas, "1_" o "_4" arriba de la
+  puerta, buzón y ventanas. 60 adornos por casa (tres estantes y platos en la mesada). Cuál es la del culpable sale de
+  la semilla o de `--guilty=left|right`. La cuadra es provisoria (0, 2) sur. Capturas en
+  `/mnt/project-files/casa-equivocada/paso1-*.png`.
+- **Paso 2 (doña Chola):** `NeighborChola`, jubilada de bata floreada con ruleros, pantuflas y el mate en la mano
+  (modelo `npc_chola`), parada en su living mirando la tele, se da vuelta hacia el policía que se acerca y dice sus
+  frases. Denuncia: 20 por adorno que ve romperse, 30 si la empujan, 10 si le tiran la puerta abajo (la oye desde
+  cualquier lado), baja 1 cada 5 s, a 100 llama a su sobrino abogado. Cada adorno roto en su casa es 40 de multa (20 en
+  la de al lado). Pedir perdón: E mantenido 3 s a menos de 2,5 m, baja 20, una vez por policía; después E acepta el mate
+  y cuenta el chisme (el de la historia, que pone el paso 4; hasta entonces "Del vecino no sé nada"). Captura en
+  `/mnt/project-files/casa-equivocada/paso2-chola.png`.
 
 ## Preguntas para Cristian
 1. **¿Entrar en la casa equivocada se puede o termina el caso?** Recomendado: se puede, y es el chiste: doña Chola

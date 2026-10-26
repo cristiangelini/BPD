@@ -4830,3 +4830,16 @@ TRIAL_JUDGE_SUSTAINED_0,"Ha lugar. Esa pregunta no cuenta. Siguiente.","Sustaine
 TRIAL_JUDGE_SUSTAINED_1,"Bueno, bueno, no grite. Paso a otra cosa.","Fine, fine, no need to shout. Moving on.","Tá bom, tá bom, não grite. Vamos para outra."
 TRIAL_JUDGE_INNOCENT,"Todo coincide... más o menos. ¡Inocentes! Pueden irse.","Everything matches... more or less. Innocent! You may go.","Tudo confere... mais ou menos. Inocentes! Podem ir."
 TRIAL_GUARD_FREE,"Ya escucharon a la jueza. Afuera, y no vuelvan.","You heard the judge. Out, and don't come back.","Vocês ouviram a juíza. Para fora, e não voltem."
+PROMPT_APOLOGIZE,E (mantener): pedirle perdón,E (hold): say sorry to her,E (segurar): pedir desculpas a ela
+PROMPT_TAKE_MATE,E: aceptarle un mate,E: take a mate from her,E: aceitar um chimarrão dela
+CHOLA_LISTENING,"Ajá... ajá... sigue, que te escucho.","Uh-huh... uh-huh... go on, I'm listening.","Aham... aham... continue, que eu estou ouvindo."
+CHOLA_FORGIVEN,"¡Ay, qué educado! Está bien, te perdono. ¿Un matecito?","Oh, how polite! All right, I forgive you. A little mate?","Ai, que educado! Tudo bem, eu te perdoo. Um chimarrãozinho?"
+CHOLA_NO_GOSSIP,"Del vecino no sé nada, querido. Nunca saluda.","I know nothing about the neighbor, dear. He never says hello.","Do vizinho não sei nada, querido. Ele nunca cumprimenta."
+CHOLA_HURT,"¡Ay! ¡Que tengo la cadera de cristal!","Ouch! My hip is made of glass!","Ai! Meu quadril é de vidro!"
+CHOLA_DOOR,"¡Mi puerta! ¡Si estaba abierta, había que tocar el timbre!","My door! You just had to ring the bell!","Minha porta! Era só tocar a campainha!"
+CHOLA_SAW,"¡Eso era de mi mamá! ¡Te lo voy a cobrar el doble!","That was my mother's! I'll charge you double!","Isso era da minha mãe! Vou cobrar o dobro!"
+CHOLA_LAWYER,"¡Basta! Llamo a mi sobrino, que es abogado.","That's it! I'm calling my nephew, he's a lawyer.","Chega! Vou ligar pro meu sobrinho, que é advogado."
+CHOLA_LINE_1,"¡Pasen, pasen! ¿Vinieron por la novela?","Come in, come in! Did you come for the soap opera?","Entrem, entrem! Vieram pela novela?"
+CHOLA_LINE_2,"Shhh, que ahora Rodrigo le dice que es su padre.","Shhh, Rodrigo is about to tell her he's her father.","Shhh, agora o Rodrigo vai dizer que é o pai dela."
+CHOLA_LINE_3,"¿Y la orden de quién es? Acá vivo yo sola con el gato.","And whose warrant is that? I live here alone with the cat.","E de quem é o mandado? Aqui moro só eu e o gato."
+CHOLA_LINE_4,"¡Límpiense los pies, que encerré ayer!","Wipe your feet, I waxed the floor yesterday!","Limpem os pés, que encerei ontem!"
