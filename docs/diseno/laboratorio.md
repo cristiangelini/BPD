@@ -136,6 +136,8 @@ Los pesos y valores siguen la escala de la oficina: la principal vale unos 1000 
      remoto (0,3 kg, 300) y el manual en otro idioma (0,5 kg, 200) se esconden. Captura `paso5-brazo.png`. Con esto
      están las 6 historias.
 6. "Jugar" sortea entre los 7 lugares de allanamiento.
+   - **Cómo quedó (propuesta):** "Jugar" suma el laboratorio a los allanamientos: cada uno de los 7 lugares sale en
+     un séptimo de los allanamientos, y las 6 historias del laboratorio salen todas (prueba sobre 900 semillas).
 7. El online (el chef, Pocha, la harina y los pasteles en todas las PC).
 
 ## Preguntas para Cristian
