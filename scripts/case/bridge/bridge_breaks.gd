@@ -9,7 +9,9 @@ extends Node
 ##   seconds, both spans lose their planks;
 ## - a railing piece comes loose and falls into the water.
 ## Each of the deputy's jumps for the photo (BridgeCeremony.jumped) also breaks the span just ahead of him. Nothing
-## breaks before he starts or after the ribbon. Every number here is (propuesta).
+## breaks before he starts or after the ribbon. Online (step 7) only the host's breaks anything: a guest's follows what
+## the host's bridge shows (`state`, `follow`, through BridgeCase's snapshot) and shakes what creaks there. Every
+## number here is (propuesta).
 
 signal warned(kind: String, index: int)
 ## `kind` "span", "pillar" or "rail", and which (a span, a pillar or a railing piece by index).
@@ -41,12 +43,16 @@ var breaks := 0
 var _rng := RandomNumberGenerator.new()
 ## Each shaking piece's place when whole.
 var _rest := {}
+## Each pillar's height when standing.
+var _pillar_y: Array[float] = []
 
 
 func setup(the_park: BridgePark, the_ceremony: BridgeCeremony, case_seed: int) -> void:
 	park = the_park
 	ceremony = the_ceremony
 	_rng.seed = hash(["bridge breaks", case_seed])
+	for pillar in park.pillars:
+		_pillar_y.append(pillar.position.y)
 	ceremony.started.connect(func() -> void: running = true)
 	ceremony.finished.connect(func() -> void: running = false)
 	ceremony.jumped.connect(_on_jumped)
@@ -54,6 +60,8 @@ func setup(the_park: BridgePark, the_ceremony: BridgeCeremony, case_seed: int) -
 
 func _physics_process(delta: float) -> void:
 	if not multiplayer.is_server():
+		for warning: Array in warnings:
+			_shake(warning[0], warning[1], true)
 		return
 	for warning: Array in warnings.duplicate():
 		warning[2] -= delta
@@ -186,6 +194,58 @@ func _drop_span(span: int) -> void:
 		loose.apply_torque_impulse(Vector3(_rng.randf_range(-3, 3), 0, _rng.randf_range(-3, 3)))
 		_rest.erase(plank)
 		plank.queue_free()
+
+
+## What a guest's bridge needs to look like the host's: which planks and railing pieces are still on, each pillar
+## (0 standing, 1 sunk and sagging, 2 sunk with its spans fallen) and what's creaking.
+func state() -> Dictionary:
+	var planks := []
+	for plank in park.planks:
+		planks.append(plank != null)
+	var rails := []
+	for rail in park.rails:
+		rails.append(rail != null)
+	var pillars := []
+	for i in park.pillars.size():
+		pillars.append(1 if sagging.has(i) else (2 if park.pillars[i].position.y < _pillar_y[i] - SINK / 2 else 0))
+	var creaking := []
+	for warning: Array in warnings:
+		creaking.append([warning[0], warning[1]])
+	return {"planks": planks, "rails": rails, "pillars": pillars, "warnings": creaking}
+
+
+## A guest's bridge: made like the host's. The planks that fell come as loose planks from the host (PropSync), so here
+## they only go; the railing pieces fall here as they did there.
+func follow(host: Dictionary) -> void:
+	for i in park.planks.size():
+		var on: bool = host.planks[i]
+		var plank := park.planks[i]
+		if on and plank == null:
+			park.restore_plank(i / BridgePark.PLANKS_PER_SPAN, i % BridgePark.PLANKS_PER_SPAN)
+		elif not on and plank != null:
+			park.planks[i] = null
+			_rest.erase(plank)
+			plank.queue_free()
+	for i in park.rails.size():
+		if not host.rails[i] and park.rails[i] != null:
+			var rail := park.rails[i]
+			park.rails[i] = null
+			_fall(rail)
+	for i in park.pillars.size():
+		var level: int = host.pillars[i]
+		park.pillars[i].position.y = _pillar_y[i] - (SINK if level > 0 else 0.0)
+		if level == 1:
+			sagging[i] = TILT_FALL
+		else:
+			sagging.erase(i)
+		sag(i, SAG if level == 1 else 0.0)
+	var now := []
+	for warning: Array in host.warnings:
+		now.append([warning[0], warning[1], WARN])
+	for warning: Array in warnings:
+		if not now.any(func(w: Array) -> bool: return w[0] == warning[0] and w[1] == warning[1]):
+			_shake(warning[0], warning[1], false)
+	warnings = now
 
 
 ## A railing piece falls as it is: its static body becomes a falling one with the same shape and look.

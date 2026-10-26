@@ -92,6 +92,8 @@ func use(cop: Cop) -> void:
 	if escort and escort.handles_use():
 		escort.use(cop)
 		return
+	if follower:
+		return
 	say("BRIDGE_ENGINEER_TALK_%d" % (_talk % TALKS + 1))
 	_talk += 1
 
