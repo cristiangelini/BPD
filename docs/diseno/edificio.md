@@ -95,6 +95,16 @@ Los pesos y valores siguen la escala de los otros lugares: la principal vale uno
 4. Don Evaristo: la ronda, la denuncia y la distracción del portero eléctrico.
 5. Doña Pepa y Cuqui.
 6. El caso (RaidCase) con la primera historia: el acuario robado.
+   - **Cómo quedó (propuesta):** el edificio ya es un allanamiento: el comisario lee la denuncia del 30B, la planilla
+     tiene 3 sospechas de las 6 y el acuario está en el cuarto cerrado del 30B. Pesa **110 kg** y no 300, para que lo
+     levanten 4 policías (cada uno carga 25); mide 2 × 1 m, así que no entra en el ascensor ni cruzado y baja por el
+     andamio. La red y la entrada del acuario se esconden con la semilla. Los charcos van del ascensor al 30B y el
+     primero que miran va a la planilla; un golpe fuerte hace saltar al pez dorado. El portero eléctrico tiene un
+     segundo botón: Don Evaristo ve la orden y abre la puerta de vidrio (si no está en el piso 12). El tablero de
+     llaves del mostrador tiene la llave del 30B, que también abre el cuarto cerrado. Don Evaristo suelta dónde están
+     las cosas y Doña Pepa, después del paseo, cuenta lo que vio y dónde guardó algo el señor Bellini. El señor
+     Bellini que vuelve y huye queda para después: por ahora no hay dueño que escape ni interrogatorio. Capturas
+     `paso6-*.png`.
 7. Las otras 5 historias, una por PR.
 8. "Jugar" sortea entre los 8 lugares de allanamiento.
 9. El online (el ascensor, el andamio, Don Evaristo, Doña Pepa y la evidencia en todas las PC).
