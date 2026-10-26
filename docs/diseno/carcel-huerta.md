@@ -79,3 +79,8 @@ Qué 3 plantas son raras y en qué orden aparecen, qué verdura tiene cada cante
   uno solo). Arrancado, vuela del cantero y deja de crecer; cuenta como temprano si fue antes de la etapa 4. Una
   verdura arrancada por error también sale, y el jardinero más cerca grita ("¡Mi lechuga!"); el -10 se cobra en el
   paso 6. Capturas: `paso4-cinchada.png` y `paso4-arrancado.png`.
+- **Paso 5:** mientras un poroto gigante siga plantado, cada 30 s (el primero enseguida, uno a la vez) el jardinero
+  más cerca deja la regadera y va a su pie (`GardenClimber`, un `BlackoutInmate`): trepa 10 s hasta arriba del muro y
+  salta afuera (escapado). E mientras trepa lo baja: cae sentado al pie, esposado, y se lo lleva del brazo a una celda
+  (la de castigo, porque el pabellón está cerrado). Sin jardineros, el que trepa sale del comedor. Captura:
+  `paso5-trepa.png`.
