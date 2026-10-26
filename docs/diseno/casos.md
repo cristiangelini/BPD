@@ -35,7 +35,7 @@ Los 4 van en el mismo patrullero, cada uno con su tarea (decisión 24).
 Buscan pistas físicas, las llevan al tablero y acusan a un sospechoso (decisión 26).
 
 1. **El pastel robado:** concurso de pastelería con 6 sospechosos cubiertos de harina.
-2. **Museo:** falta un cuadro y todos los guardias dicen que estaban en el baño.
+2. **Museo:** falta un cuadro y todos los guardias dicen que estaban en el baño ([escena-museo.md](escena-museo.md)).
 3. **Hotel:** cada habitación es una pista y el conserje miente.
 4. **Tren en marcha:** hay que resolverlo antes de la última estación.
 5. **El gato desaparecido:** la dueña es millonaria y el comisario está asustado.
