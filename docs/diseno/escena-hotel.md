@@ -9,7 +9,7 @@ Decisión 201 (propuesta, 26/10); todo lo que dice **(propuesta)** se ajusta jug
 ## La historia (pregunta 1: lo robado varía)
 El comisario lo cuenta en su oficina:
 
-> "Anoche, en el Hotel Siesta, a la señora Perlita le robaron **el collar de perlas** de la caja fuerte de la suite.
+> "Anoche, en el Hotel Gran Siesta, a la señora Perlita le robaron **el collar de perlas** de la caja fuerte de la suite.
 > Hay seis huéspedes y los seis andan en bata, pantuflas y con una toalla en la cabeza: no se distinguen ni entre ellos.
 > El conserje dice que sabe quién duerme en cada habitación. Yo no le creería ni la hora."
 
@@ -24,8 +24,8 @@ culpable huye, se lo lleva si nadie lo encontró antes. Va en una bolsa de evide
 
 ## El lugar
 - **El hotel:** el edificio que ya está en la ciudad, en la cuadra (2, 3), del lado norte (no hace falta una cuadra
-  nueva). Venido a menos: alfombra roja gastada, una planta de plástico, el cartel con una letra que no prende ("HOTEL
-  SIES A") y el ascensor con un cartel de "Fuera de servicio" (desde 1987). Dos pisos unidos por la escalera:
+  nueva). Venido a menos: alfombra roja gastada, una planta de plástico, el cartel con una letra que
+  parpadea y el ascensor con un cartel de "Fuera de servicio" (desde 1987). Dos pisos unidos por la escalera:
   - **Planta baja:** el lobby con sillones, la vitrina de la Almohada de Oro, **la recepción** con el mostrador, el
     timbre, el libro de huéspedes y el tablero de llaves, y el comedor con el piano.
   - **Primer piso:** un pasillo largo con las seis habitaciones de los huéspedes (**11, 12, 14, 15, 16 y 17**: el hotel
@@ -78,7 +78,7 @@ el mismo orden. Si un policía lo toca más de tres veces seguidas, don Bostezo 
 - Los huéspedes se cansan como los pasteleros: desde los 8 minutos, cada 2 minutos uno "hace el check-out" y se va con
   su valija.
 - **Al acusar bien**, mitad y mitad con la semilla, como el pastel: se entrega (y al turno siguiente es su
-  interrogatorio) o **huye en la combi del hotel** **(propuesta, pregunta 3)**: la combi de "Traslados Hotel Siesta",
+  interrogatorio) o **huye en la combi del hotel** **(propuesta, pregunta 3)**: la combi de "Traslados Hotel Gran Siesta",
   con valijas atadas en el techo, por la ciudad a la velocidad de siempre. Cada 5 s se suelta una valija, que cae y se
   abre en la calle; si el patrullero la pisa, una nube de ropa le tapa el parabrisas 2 s. Se aparta con E. Agarrado y en
   el patrullero, el caso se resuelve; si se escapa, se pierde.
