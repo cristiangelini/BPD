@@ -4670,6 +4670,7 @@ PLACE_SCHOOL_VISIT,"Escuela Los Girasoles","Sunflowers School","Escola Os Girass
 "TV_ON_AIR","AL AIRE","ON AIR","NO AR"
 "TV_NAME_0","RITA MALVÓN","RITA MALVÓN","RITA MALVÓN"
 "TV_NAME_1","POMPEYO LUSTRE","POMPEYO LUSTRE","POMPEYO LUSTRE"
+"PROMPT_AIM_TV_CAMERA","E: girar la cámara hacia donde miras · clic: empujarla","E: turn the camera to where you look · click: push it","E: virar a câmera para onde você olha · clique: empurrá-la"
 HINT_INSPECTOR_ARRIVES,Llegó la inspectora de la ciudad: va contigo todo el turno y anota todo.,The city inspector is here: she goes with you all shift and writes everything down.,A inspetora da cidade chegou: ela vai com você o turno todo e anota tudo.
 INSPECTOR_ARRIVES,"Severina Regla, inspección de la ciudad. Hagan como si no estuviera.","Severina Regla, city inspection. Act as if I'm not here.","Severina Regla, inspeção da cidade. Façam de conta que não estou aqui."
 INSPECTOR_NOTE_1,Mmm.,Hmm.,Hum.
