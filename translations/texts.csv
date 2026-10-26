@@ -4298,6 +4298,11 @@ CRASH_CALM_2,"Bueno, fue un raspón.","Okay, it was a scratch.","Tá, foi só um
 SHIFT_STREET,Eventos en la calle,Street events,Eventos na rua
 MENU_APARTMENTS,Edificio Las Palomas (prueba),Las Palomas building (test),Edifício As Pombas (teste)
 APT_FOR_RENT,En alquiler,For rent,Aluga-se
+PROMPT_ELEVATOR_UP,E: subir al piso 30,E: go up to floor 30,E: subir ao andar 30
+PROMPT_ELEVATOR_DOWN,E: bajar a la planta baja,E: go down to the lobby,E: descer ao térreo
+PROMPT_CALL_ELEVATOR,E: llamar al ascensor,E: call the elevator,E: chamar o elevador
+HINT_ELEVATOR_OVERLOAD,"¡Bzzz! Más de 400 kg: el ascensor no se mueve.","Bzzz! Over 400 kg: the elevator won't move.","Bzzz! Mais de 400 kg: o elevador não se move."
+ELEVATOR_MAX,Máximo 400 kg,Max 400 kg,Máximo 400 kg
 PLACE_MUSEUM,"Museo","Museum","Museu"
 SIGN_MUSEUM,"Museo de la Ciudad","City Museum","Museu da Cidade"
 SIGN_MUSEUM_GALLERY,"Sala grande →","Main gallery →","Sala principal →"

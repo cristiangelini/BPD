@@ -69,9 +69,9 @@ func test_the_rooms_connect() -> void:
 		assert_true(_ray(way[0], way[1]).is_empty(), "open from %s to %s" % [way[0], way[1]])
 	# The 29 floors in between are closed: no way in from the street above the lobby.
 	assert_false(_ray(Vector3(0, 40, ApartmentTower.HALF_Z + 2), Vector3(0, 40, 0)).is_empty())
-	# The elevator's doors are shut until it runs, on both floors.
-	assert_false(_ray(Vector3(0, y, -3.0), Vector3(0, y, -5.0)).is_empty())
-	assert_false(_ray(Vector3(0, top, -3.0), Vector3(0, top, -5.0)).is_empty())
+	# The fire stairs are shut on both floors: the elevator is the way up.
+	assert_false(_ray(Vector3(ApartmentTower.STAIRS_DOOR_X, y, -3.0), Vector3(ApartmentTower.STAIRS_DOOR_X, y, -5.0)).is_empty())
+	assert_false(_ray(Vector3(ApartmentTower.STAIRS_DOOR_X, top, -3.0), Vector3(ApartmentTower.STAIRS_DOOR_X, top, -5.0)).is_empty())
 
 
 func test_ornaments_break_into_fines() -> void:

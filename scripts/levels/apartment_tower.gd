@@ -6,7 +6,7 @@ extends Node3D
 ## board, the mailboxes, an armchair and a plastic plant) and floor 30 (the hallway with 30A, 30B, 30C, the fire stairs
 ## and the elevator, and 30B: living room with its big window and balcony, kitchen, bedroom, bathroom and a locked
 ## study). Floors 1 to 29 are only windows outside. The front door, 30B, its study and 30C are locked; 30A and the
-## fire stairs are shut for good. The elevator's doors stay shut until it runs (step 2). The ornaments of 30B break,
+## fire stairs are shut for good, so the elevator (TowerElevator, step 2) is the way up. The ornaments of 30B break,
 ## each one a fine. Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -121,6 +121,8 @@ var flat_door: FrontDoor
 var study_door: FrontDoor
 var rental_door: FrontDoor
 var city_map: CityMap
+var elevator: TowerElevator
+var calls: Array[ElevatorCall] = []
 var ornaments: Array[Ornament] = []
 var broken_goods := 0
 ## Money taken off the case pay for broken things (each one is an Ornament.FINE).
@@ -140,6 +142,7 @@ func _ready() -> void:
 	flat_door = _door(Vector3(FLAT_B_DOOR_X, TOP_Y, HALL_FRONT))
 	study_door = _door(Vector3(STUDY_DOOR_X, TOP_Y, STUDY_FRONT))
 	rental_door = _door(Vector3(FLAT_C_DOOR_X, TOP_Y, CORE_Z))
+	_place_elevator()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("apartments")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -148,6 +151,63 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "apartments", car)
+	# Debug: straight to floor 30's hallway, without the ride.
+	if OS.get_cmdline_user_args().has("--floor30"):
+		$Cop.global_position = to_global(Vector3(-4.0, TOP_Y + 0.1, -2.8))
+
+
+## The car at the lobby, its doors on both landings, the floor display over them and the call buttons.
+func _place_elevator() -> void:
+	var doors: Array[Node3D] = []
+	for i in 2:
+		var y: float = [LOBBY_Y, TOP_Y][i]
+		var door := StaticBody3D.new()
+		door.position = Vector3(0, y + GameScale.DOOR_HEIGHT / 2 + 0.05, CORE_Z + 0.15)
+		door.set_meta("closed_x", 0.0)
+		_build.shape(door, Vector3(GameScale.DOOR_WIDTH + 0.1, GameScale.DOOR_HEIGHT, 0.05))
+		var mesh := MeshInstance3D.new()
+		var box := BoxMesh.new()
+		box.size = Vector3(GameScale.DOOR_WIDTH + 0.1, GameScale.DOOR_HEIGHT, 0.05)
+		mesh.mesh = box
+		mesh.material_override = _build.material(STEEL)
+		door.add_child(mesh)
+		add_child(door)
+		var display := Label3D.new()
+		display.font_size = 48
+		display.pixel_size = 0.004
+		display.modulate = Color(1.0, 0.4, 0.2)
+		display.position = Vector3(0, y + GameScale.DOOR_HEIGHT + 0.45, CORE_Z + 0.1)
+		add_child(display)
+		door.set_meta("display", display)
+		doors.append(door)
+		var button := ElevatorCall.new()
+		button.position = Vector3(-SHAFT_HALF - 0.1, y + 1.2, CORE_Z + 0.12)
+		_build.shape(button, Vector3(0.15, 0.25, 0.06))
+		add_child(button)
+		button.stop = i
+		calls.append(button)
+	elevator = TowerElevator.new()
+	elevator.position = Vector3(0, LOBBY_Y, (SHAFT_BACK + CORE_Z) / 2)
+	add_child(elevator)
+	var heights: Array[float] = [LOBBY_Y, TOP_Y]
+	var floors: Array[int] = [0, FLOORS]
+	elevator.setup(heights, floors, STOREY, doors)
+	for button in calls:
+		button.elevator = elevator
+		var mesh := MeshInstance3D.new()
+		var box := BoxMesh.new()
+		box.size = Vector3(0.15, 0.25, 0.06)
+		mesh.mesh = box
+		mesh.material_override = _build.material(Color(0.95, 0.8, 0.3))
+		button.add_child(mesh)
+
+
+## A floor slab at `top` with the elevator shaft's hole.
+func _slab_around_shaft(top: float, color: Color) -> void:
+	_build.slab(-HALF_X, -SHAFT_HALF, -HALF_Z, HALF_Z, top, color)
+	_build.slab(SHAFT_HALF, HALF_X, -HALF_Z, HALF_Z, top, color)
+	_build.slab(-SHAFT_HALF, SHAFT_HALF, -HALF_Z, SHAFT_BACK, top, color)
+	_build.slab(-SHAFT_HALF, SHAFT_HALF, CORE_Z, HALF_Z, top, color)
 
 
 ## The floor of storey `floor`.
@@ -180,8 +240,8 @@ func _build_tower() -> void:
 	_build.wall_at("x", -HALF_Z, -HALF_X, HALF_X, 0.0, ROOM_HEIGHT, [], OUTSIDE)
 	_build.wall_at("x", -HALF_Z, -HALF_X, HALF_X, TOP_Y, ROOM_HEIGHT, [], OUTSIDE)
 	_build.slab(-HALF_X, HALF_X, -HALF_Z, HALF_Z, LOBBY_Y, MARBLE)
-	_build.slab(-HALF_X, HALF_X, -HALF_Z, HALF_Z, STOREY, OUTSIDE.darkened(0.3))
-	_build.slab(-HALF_X, HALF_X, -HALF_Z, HALF_Z, TOP_Y, HALL)
+	_slab_around_shaft(STOREY, OUTSIDE.darkened(0.3))
+	_slab_around_shaft(TOP_Y, HALL)
 	_build.slab(-HALF_X - 0.2, HALF_X + 0.2, -HALF_Z - 0.2, HALF_Z + 0.2, ROOF_Y, OUTSIDE.darkened(0.35))
 	for floor in range(1, FLOORS):
 		var y := floor_y(floor) + 1.6
@@ -220,14 +280,13 @@ func _build_lobby() -> void:
 
 
 ## The wall at CORE_Z from y0, with the elevator's opening, the fire stairs' door and `doors`, and the shaft behind it.
-## The elevator's doors and the stairs' door are shut panels.
+## The stairs' door is a shut panel; the elevator's doors are the elevator's.
 func _build_core(y0: float, doors: Array, color: Color) -> void:
 	_build.wall_at("x", CORE_Z, -HALF_X, HALF_X, y0, ROOM_HEIGHT, doors, color)
 	for x: float in [-SHAFT_HALF, SHAFT_HALF]:
 		_build.wall_at("z", x, SHAFT_BACK, CORE_Z, y0, ROOM_HEIGHT, [], STEEL)
 	_build.wall_at("x", SHAFT_BACK, -SHAFT_HALF, SHAFT_HALF, y0, ROOM_HEIGHT, [], STEEL)
 	var door_y := y0 + GameScale.DOOR_HEIGHT / 2 + 0.06
-	_build.box(Vector3(0, door_y, CORE_Z + 0.1), Vector3(GameScale.DOOR_WIDTH, GameScale.DOOR_HEIGHT, 0.05), STEEL)
 	_build.box(Vector3(STAIRS_DOOR_X, door_y, CORE_Z), Vector3(GameScale.DOOR_WIDTH, GameScale.DOOR_HEIGHT, 0.1), Color.DARK_RED)
 
 
