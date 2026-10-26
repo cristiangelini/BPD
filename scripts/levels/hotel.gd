@@ -10,7 +10,8 @@ extends CrimeScenePlace
 ## by the door and doña Escoba upstairs with her cart (step 2). In every guest room, its sleeper's shoes, hairbrush,
 ## nightstand and suitcase (step 3). The case (step 4): what was stolen hides in the 13, in the maid's cart or in the
 ## culprit's suitcase, and the evidence bags wait on a stool by the desk; the clues in the suite and the maid's round
-## are HotelClues'. Every number here is (propuesta).
+## are HotelClues'; Tito the witness (HotelBellboy), the guest book with the 3 a.m. signature (GuestBook) and the
+## bell that wakes the concierge (HotelBell) are at the reception. Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(26, 18)
@@ -133,7 +134,9 @@ var loot_found := false
 var loot_spots := {}
 var concierge: HotelStaff
 var perlita: HotelStaff
-var bellboy: HotelStaff
+var bellboy: HotelBellboy
+var bell: HotelBell
+var book: GuestBook
 var maid: HotelStaff
 ## The case's clues in the suite and the maid's round (HotelClues), once the case comes.
 var clues: HotelClues
@@ -172,6 +175,15 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	for guest in guests:
 		guest.case = case
 	concierge.case = case
+	bellboy.case = case
+	bellboy.knows = case.plan.clues.has("witness")
+	bellboy.asked_room = GUEST_ROOMS[hash(["hotel bellboy room", case.case_seed]) % GUEST_ROOMS.size()]
+	book = GuestBook.new()
+	book.name = "GuestBook"
+	book.case = case
+	book.has_signature = case.plan.clues.has("signature")
+	book.position = BOOK_AT
+	add_child(book)
 	for room: int in things:
 		for thing: RoomThing in things[room].values():
 			thing.case = case
@@ -209,6 +221,15 @@ func reveal_loot() -> void:
 	item.position = Vector3(at.x, floor_y, at.z) + out * LOOT_OUT[loot_spot]
 	if case:
 		case.found_loot()
+
+
+func witness_offended() -> bool:
+	return bellboy != null and bellboy.offended
+
+
+func offend_witness() -> void:
+	if bellboy:
+		bellboy.offend()
 
 
 ## The guest by index (the order of the case's traits).
@@ -269,7 +290,17 @@ func _people() -> void:
 		guests.append(guest)
 	concierge = _staff("concierge", CONCIERGE_AT + Vector3(0, FLOOR_TOP, 0), 0.0)
 	perlita = _staff("perlita", PERLITA_AT + Vector3(0, FLOOR_TOP, 0), -0.4)
-	bellboy = _staff("bellboy", BELLBOY_AT + Vector3(0, FLOOR_TOP, 0), PI)
+	bellboy = HotelBellboy.new()
+	bellboy.name = "Bellboy"
+	bellboy.hotel = self
+	bellboy.position = BELLBOY_AT + Vector3(0, FLOOR_TOP, 0)
+	bellboy.rotation.y = PI
+	add_child(bellboy)
+	bell = HotelBell.new()
+	bell.name = "Bell"
+	bell.concierge = concierge
+	bell.position = BELL_AT
+	add_child(bell)
 	maid = _staff("maid", MAID_AT, -PI / 2.0)
 
 

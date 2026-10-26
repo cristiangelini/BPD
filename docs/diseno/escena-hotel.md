@@ -158,3 +158,11 @@ PlaceDraw y la custodia para el interrogatorio.
   puerta de la suite cuelga un cartel que dice "Limpiar, por favor"; con E se da vuelta a "No molestar", y entonces
   ella no entra, dice "vuelvo más tarde" y prueba otra vez a los 20 s. Quedan para el paso 4c: Tito, la firma del libro
   y el timbre.
+- **Paso 4c (Tito, la firma y el timbre):** Tito (`HotelBellboy`) tiene su valija en el piso, al lado (8 kg), y con E
+  pide que se la suban a una habitación sorteada con la semilla. Cuando la valija está en esa habitación, con E cuenta
+  si al culpable se le vieron anteojos cuando se le cayeron los pepinos. Esposado, o si la valija cae sola por la
+  escalera, se ofende y no habla más. El libro de huéspedes (`GuestBook`) está abierto en el mostrador con cuatro
+  firmas; la última, la de las 3, se inclina para un lado o para el otro. Se fotografía, y si un policía firma (E)
+  queda tapada. El timbre (`HotelBell`) despierta a don Bostezo, que repite quién duerme dónde; si se toca más de tres
+  veces seguidas (con menos de 3 s entre una y otra), se enoja y no contesta nada por 30 s. Las frases del hotel
+  quedaron con "tú".
