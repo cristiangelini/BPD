@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Gym raid, step 5: the power treadmills story: running on a working treadmill makes the lights of the gym and the neighborhood flicker (the clue), every 25 s the treadmills start on their own and throw off the cop on them, and the cable box to the plant next door, the upside-down meter and the wiring plan are hidden.
 - Gym raid, step 5: the ghost members story: three of the six members are shop dummies that never answer and don't dance in the class; a cop who bumps into one knocks it over stiff as a board (the clue), and the binder of invented members, the box of dummies and the fake stamp are hidden.
 - Gym raid, step 5: the fake record story: the "300 kg" record bar on the wall is the 2 kg polystyrene evidence that bounces; it hangs on its hooks until a cop lifts it with one hand (the clue), a real 40 kg bar lies by the benches, and the doctored photo and the contest certificate are hidden.
 - Gym raid, step 4: the gym is now a raid case like the cake lab (the comisario's tip, 3 suspicions among its 6 stories, el profe's slips and lawyer, Lula's clue, the escape and the interrogation) with its first story, the silver dumbbells: a 20 kg dumbbell full of bills hidden with the rigged scale and the special fees sheet; one rack dumbbell jingles with coins when it hits the floor (the clue) and half the others burst open into toy bills.
