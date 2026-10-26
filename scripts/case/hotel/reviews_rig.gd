@@ -1,8 +1,8 @@
 class_name ReviewsRig
 extends HotelRig
 
-## The fake reviews (hotel-allanamiento.md, "Las reseñas falsas"): don Bostezo writes hundreds of glowing reviews of the
-## Gran Siesta on a typewriter and mails them as postcards from "happy guests". The typewriter is the main evidence,
+## The fake reviews (hotel-allanamiento.md, "Las reseñas falsas"): don Bostezo writes hundreds of glowing reviews of
+## the Gran Siesta on a typewriter and mails them as postcards from "happy guests". The typewriter is the main evidence,
 ## hidden like the extras (the bundle of postcards and the postmark stamp). The story's own clue: carbon paper in the
 ## lobby's bin with "5 estrellas" backwards. And he writes in his sleep: while he naps, a cop within HEARS hears
 ## "tac tac tac" from wherever the typewriter is. Every number here is (propuesta).

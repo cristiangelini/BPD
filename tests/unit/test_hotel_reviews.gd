@@ -66,6 +66,6 @@ func test_the_typewriter_in_the_trunk_solves_the_case_and_the_texts_are_translat
 	raid.car.enter(raid.get_node("Cop"))
 	assert_true(raid.raid.case_solved)
 	assert_eq(HotelRaid.STORIES.size(), HotelRaid.SUSPICION_POOL.size(), "every suspicion has its story")
-	for key: String in ["BRIEF_REVIEWS_B", "BRIEF_REVIEWS_C", "BRIEF_REVIEWS_D", "OBJ_FIND_REVIEWS", "OBJ_EXTRA_POSTCARDS",
-			"OBJ_EXTRA_POSTMARK", "PROMPT_CARBON_PAPER", "CLUE_REVIEWS_CARBON", "REVIEWS_TAC", "CLUE_REVIEWS_TAC"]:
+	for key: String in ["BRIEF_REVIEWS_B", "BRIEF_REVIEWS_C", "BRIEF_REVIEWS_D", "OBJ_FIND_REVIEWS",
+			"OBJ_EXTRA_POSTCARDS", "OBJ_EXTRA_POSTMARK", "PROMPT_CARBON_PAPER", "CLUE_REVIEWS_CARBON", "REVIEWS_TAC", "CLUE_REVIEWS_TAC"]:
 		assert_ne(tr(key), key, key)
