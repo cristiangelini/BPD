@@ -343,8 +343,8 @@ NET_HOST_FAILED,No se pudo abrir la sala (¿el puerto está ocupado?).,Couldn't 
 MENU_CONTINUE,Continuar,Continue,Continuar
 LOBBY_CONTINUE,Continuar partida,Continue match,Continuar partida
 SHIFT_TURN,"Plata del grupo (turno %d de %d)","Group money (shift %d of %d)","Grana do grupo (turno %d de %d)"
-SHIFT_PROMOTED,¡Ascendidos!,Promoted!,Promovidos!
-SHIFT_CAMPAIGN_LOST,No cumplieron la cuota: partida perdida.,You missed the quota: match lost.,Vocês não cumpriram a cota: partida perdida.
+SHIFT_PROMOTED,¡Ascendidos! La comisaría sigue abierta.,Promoted! The station stays open.,Promovidos! A delegacia continua aberta.
+SHIFT_CAMPAIGN_LOST,No cumplieron la cuota: la comisaría cierra. Partida perdida.,You missed the quota: the station closes. Match lost.,Vocês não cumpriram a cota: a delegacia fecha. Partida perdida.
 SHIFT_CAMPAIGN_OVER,¡Partida terminada!,Match over!,Partida encerrada!
 LOBBY_HOST_STEAM,Crear sala de Steam,Create Steam room,Criar sala da Steam
 LOBBY_INVITE,Invitar amigos,Invite friends,Convidar amigos
@@ -3994,6 +3994,11 @@ OBJ_LAUNDRY_FOUND,"Presos encontrados en la ropa: %d","Inmates found in the laun
 OBJ_LAUNDRY_ESCAPED,"Presos escapados: %d (con %d se pierde el caso)","Inmates escaped: %d (at %d the case is lost)","Presos fugidos: %d (com %d o caso está perdido)"
 OBJ_LAUNDRY_CAUGHT,"Extra: presos en la celda de castigo: %d","Extra: inmates in the punishment cell: %d","Extra: presos na cela de castigo: %d"
 CASE_FAILED_LAUNDRY_ESCAPED,"Se escaparon 3 presos con la ropa sucia. Caso perdido.","3 inmates got away with the dirty laundry. Case lost.","3 presos fugiram com a roupa suja. Caso perdido."
+BRIEF_INTRO_A,"¡Atención, novatos! Malas noticias: la ciudad quiere cerrar esta comisaría y convertirla en un estacionamiento.","Listen up, rookies! Bad news: the city wants to shut this station down and turn it into a parking lot.","Atenção, novatos! Más notícias: a cidade quer fechar esta delegacia e transformá-la num estacionamento."
+BRIEF_INTRO_B,"Dicen que somos un desastre. ¡Un desastre! Y tienen razón, pero no se lo vamos a dar el gusto.","They say we're a disaster. A disaster! And they're right, but we won't give them the pleasure.","Dizem que somos um desastre. Um desastre! E têm razão, mas não vamos dar esse gosto a eles."
+BRIEF_INTRO_C,"Tenemos diez turnos para demostrar que servimos. Cada turno tiene su cuota, y cada vez más alta.","We have ten shifts to prove we're useful. Every shift has its quota, and each one higher.","Temos dez turnos para provar que servimos. Cada turno tem sua cota, e cada vez mais alta."
+BRIEF_INTRO_D,"Lleguen a las diez cuotas y la comisaría se salva, y ustedes se ganan un ascenso. Si no... a cobrar el estacionamiento.","Make all ten quotas and the station is saved, and you get promoted. If not... you'll be the parking attendants.","Batam as dez cotas e a delegacia se salva, e vocês ganham uma promoção. Se não... vão cobrar o estacionamento."
+BRIEF_INTRO_E,"¡Y ahora, el caso de hoy!","And now, today's case!","E agora, o caso de hoje!"
 PROMPT_CHECK_HIDEOUT,"E: mirar atrás (quédate al lado)","E: look behind it (stay close)","E: olhar atrás (fique do lado)"
 PROMPT_HIDEOUT_CHECKED,"Ya revisado","Already checked","Já revistado"
 HINT_HIDEOUT_SEARCHING,"¿Qué hay acá atrás?","What's back here?","O que tem aqui atrás?"
