@@ -121,6 +121,7 @@ var laundry: LaundryPlan
 var laundry_case: LaundryCase
 ## The tunnel case's yard time, the cells' hideouts and the gang digging (carcel-tunel.md, step 2).
 var tunnel: TunnelPlan
+var tunnel_case: TunnelCase
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -274,6 +275,12 @@ func _start_tunnel() -> void:
 	tunnel.name = "TunnelPlan"
 	add_child(tunnel)
 	tunnel.setup(self, case_seed)
+	tunnel_case = TunnelCase.new()
+	tunnel_case.name = "TunnelCase"
+	tunnel_case.prison = self
+	tunnel_case.shift_screen = $ShiftScreen
+	add_child(tunnel_case)
+	tunnel_case.start(city.get("comisario"))
 	city.transform = CityLayout.anchor("prison")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)

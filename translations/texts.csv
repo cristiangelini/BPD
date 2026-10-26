@@ -3383,6 +3383,18 @@ HINT_TUNNEL_CUCU,"¡Cucú! Atrapado justo al asomar.","Peekaboo! Caught just as 
 PROMPT_GRAB_ESCAPEE,"E: ¡Cucú! (agarrarlo)","E: Peekaboo! (grab him)","E: Cucu! (pegá-lo)"
 TUNNEL_PEEK,"¿Ya estamos afuera?","Are we out yet?","Já estamos lá fora?"
 TUNNEL_RUNNER,"¡Nos descubrieron! ¡Corran!","They found us! Run!","Descobriram a gente! Corram!"
+BRIEF_TUNNEL_A,"Novatos, en la cárcel sobra tierra en el patio y falta una cuchara de cada tres. Alguien está cavando un túnel.","Rookies, there's too much dirt in the prison yard and one spoon in three is missing. Someone's digging a tunnel.","Novatos, na prisão sobra terra no pátio e falta uma colher de cada três. Alguém está cavando um túnel."
+BRIEF_TUNNEL_B,"Sigan la tierra hasta la celda. E y quedarse al lado revisa el póster, la cucheta, el inodoro o la alfombra.","Follow the dirt to the cell. E and staying close checks the poster, the bunk, the toilet or the rug.","Sigam a terra até a cela. E e ficar do lado revista o pôster, o beliche, o vaso ou o tapete."
+BRIEF_TUNNEL_C,"Hay bolsas de cemento al lado del portón: llévenla al pozo y tápenlo. Si se escapan 3, perdimos.","There are bags of cement by the gate: take one to the hole and fill it. If 3 get away, we've lost.","Tem sacos de cimento do lado do portão: levem um ao buraco e tapem. Se 3 fugirem, perdemos."
+HINT_GO_TUNNEL,A la cárcel en el patrullero. Es hora de patio: miren el piso.,To the prison in the patrol car. It's yard time: watch the ground.,Para a prisão na viatura. É hora do pátio: olhem o chão.
+OBJ_TUNNEL_SEAL,Tapar el túnel con cemento,Fill the tunnel with cement,Tapar o túnel com cimento
+OBJ_TUNNEL_LEFT,Al túnel le faltan %d m de %d,The tunnel still needs %d m of %d,Faltam %d m de %d para o túnel
+OBJ_TUNNEL_THROUGH,¡El túnel ya salió afuera del muro!,The tunnel is out past the wall!,O túnel já saiu fora do muro!
+OBJ_TUNNEL_SEALED,Túnel tapado,Tunnel filled,Túnel tapado
+OBJ_TUNNEL_FOUND,Túnel encontrado: falta el cemento,Tunnel found: it needs the cement,Túnel encontrado: falta o cimento
+OBJ_TUNNEL_ESCAPED,Presos escapados: %d (con %d se pierde el caso),Inmates escaped: %d (at %d the case is lost),Presos fugidos: %d (com %d o caso está perdido)
+OBJ_TUNNEL_CAUGHT,Extra: presos en la celda de castigo: %d,Extra: inmates in the punishment cell: %d,Extra: presos na cela de castigo: %d
+CASE_FAILED_TUNNEL_ESCAPED,Se escaparon 3 presos por el túnel. Caso perdido.,3 inmates got away through the tunnel. Case lost.,3 presos fugiram pelo túnel. Caso perdido.
 BRIEF_MUSTACHES_B,"Alguien le pinta bigotes a todos los carteles del diputado Lustre del barrio. Creemos que es Tobías: nunca le perdonó que le cerrara la vereda por las obras.","Someone paints mustaches on every poster of deputy Lustre in the neighborhood. We think it's Tobías: he never forgave him for closing the sidewalk for the roadworks.","Alguém pinta bigodes em todos os cartazes do deputado Lustre no bairro. Achamos que é o Tobías: ele nunca perdoou que fechassem a calçada por causa das obras."
 BRIEF_MUSTACHES_C,"Traigan el esténcil del bigote en el baúl del patrullero. Y no pisen pintura: se nota.","Bring the mustache stencil back in the patrol car's trunk. And don't step in paint: it shows.","Tragam o estêncil do bigode no porta-malas da viatura. E não pisem na tinta: dá para ver."
 BRIEF_MUSTACHES_D,"Si encuentran los aerosoles negros o un cartel del diputado sin bigote, mejor: todo suma.","If you find the black spray cans or a poster of the deputy without a mustache, even better: it all adds up.","Se acharem os sprays pretos ou um cartaz do deputado sem bigode, melhor: tudo soma."

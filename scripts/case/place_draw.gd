@@ -77,7 +77,7 @@ const RALLIES := ["plaza", "market"]
 ## (carcel-motin.md), the prisoner transfer (traslado-presos.md), the blackout (carcel-corte-de-luz.md), the
 ## visiting day (carcel-visitas.md) or the laundry (carcel-lavanderia.md).
 const PRISON_EVERY := 4
-const PRISONS := ["prison", "transfer", "blackout", "visits", "laundry"]
+const PRISONS := ["prison", "transfer", "blackout", "visits", "laundry", "prison_tunnel"]
 
 ## The seed the next level takes (0 = none drawn; the level draws its own).
 static var pending_seed := 0
