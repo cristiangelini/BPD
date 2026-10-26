@@ -1,6 +1,6 @@
 // Small props of the hardware store "El Tornillo Flojo" (docs/diseno/ferreteria.md): the fragile paint cans of its
 // display and the glass screw jars on its counter, with origins at the middle of each piece. Placeholder, not final art.
-import { Builder, mat, V, THREE } from '../lib.js';
+import { Builder, mat, V, THREE, ellipsoid } from '../lib.js';
 
 // The colors of the paint cans: the lid and the label stripe match the paint inside.
 const PAINTS = [0xe8473c, 0x3c7be8, 0xf2c230, 0x4cb860, 0xf4f1ea, 0x8a4cc8];
@@ -134,11 +134,47 @@ export function buildFilings() {
 	return b.build();
 }
 
+// The hats of the garden gnomes for sale; the boss gnome wears the first one, like a third of the others.
+const GNOME_HATS = [0xd23a3a, 0x3c7be8, 0x4cb860];
+
+// A ceramic garden gnome: 0.5 m tall, a round blue coat, a white beard, a pointy hat and a little shovel.
+export function buildGnome(i) {
+	const b = new Builder(`garden_gnome_${i}`);
+	b.add('body', mat('gnome_coat', 0x3a5ab0), ellipsoid(0.13, 0.15, 0.12, 8, 5), { pos: V(0, 0.15, 0) });
+	b.add('belt', mat('gnome_belt', 0x2a2420), new THREE.CylinderGeometry(0.125, 0.125, 0.025, 8), { pos: V(0, 0.17, 0) });
+	b.add('head', mat('gnome_skin', 0xf3c8a0), ellipsoid(0.08, 0.08, 0.08, 8, 5), { pos: V(0, 0.32, 0.01) });
+	b.add('nose', mat('gnome_nose', 0xe89a80), ellipsoid(0.025, 0.025, 0.025, 5, 3), { pos: V(0, 0.32, 0.09) });
+	b.add('beard', mat('gnome_beard', 0xf6f2ea), new THREE.ConeGeometry(0.07, 0.14, 7), { pos: V(0, 0.24, 0.07), rot: [Math.PI, 0, 0] });
+	b.add('hat', mat(`gnome_hat_${i}`, GNOME_HATS[i]), new THREE.ConeGeometry(0.085, 0.2, 8), { pos: V(0, 0.46, 0), rot: [-0.15, 0, 0] });
+	b.add('boots', mat('gnome_boots', 0x2a2420), new THREE.BoxGeometry(0.2, 0.04, 0.1), { pos: V(0, 0.02, 0.03) });
+	return b.build();
+}
+
+// The list of watches: a crumpled sheet with brand names and a drawing of a clock. 0.21 x 0.15 m.
+export function buildWatchList() {
+	const b = new Builder('watch_list');
+	b.add('paper', mat('paper', 0xfaf6ee), new THREE.BoxGeometry(0.21, 0.004, 0.15), { rot: [0, 0, 0.03] });
+	const ink = mat('ink', 0x2a3a6a);
+	for (let i = 0; i < 6; i++) b.add('lines', ink, new THREE.BoxGeometry(0.12, 0.001, 0.006), { pos: V(-0.03, 0.0025, -0.05 + i * 0.02) });
+	b.add('clock', mat('ink_red', 0xd23a3a), new THREE.TorusGeometry(0.025, 0.003, 3, 12), { pos: V(0.065, 0.003, 0), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
+// A tube of ceramic glue, half squeezed. 0.15 m long.
+export function buildGlueTube() {
+	const b = new Builder('glue_tube');
+	b.add('tube', mat('glue_tube', 0xf0f0f0), new THREE.CylinderGeometry(0.02, 0.015, 0.12, 6), { rot: [0, 0, Math.PI / 2] });
+	b.add('band', mat('glue_band', 0xf2c230), new THREE.CylinderGeometry(0.0205, 0.0205, 0.04, 6), { pos: V(-0.01, 0, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('cap', mat('glue_cap', 0xd23a3a), new THREE.ConeGeometry(0.012, 0.03, 6), { pos: V(0.075, 0, 0), rot: [0, 0, -Math.PI / 2] });
+	return b.build();
+}
+
 export const models = {
 	...Object.fromEntries(PAINTS.map((_, i) => [`paint_can_${i}`, () => buildPaintCan(i)])),
 	screw_jar: buildScrewJar,
 	key_copy: buildKeyCopy, master_key_ring: buildKeyRing, wax_molds: buildWaxMolds, address_list: buildAddressList,
-	metal_filings: buildFilings,
+	metal_filings: buildFilings, watch_list: buildWatchList, glue_tube: buildGlueTube,
+	...Object.fromEntries(GNOME_HATS.map((_, i) => [`garden_gnome_${i}`, () => buildGnome(i)])),
 	tool_hammer: buildHammer, tool_wrench: buildWrench, tool_saw: buildSaw, tool_screwdriver: buildScrewdriver,
 };
 
@@ -156,6 +192,14 @@ export const views = {
 			{ name: 'address_list', pos: [0.1, 0.002, 0.15], rotY: 0.3 }, { name: 'metal_filings', pos: [-0.2, 0, 0.2] },
 		],
 		cam: { pos: [0, 0.5, 0.6], target: [0, 0, 0.05], fov: 40 },
+	},
+	gnome_goods: {
+		items: [
+			{ name: 'garden_gnome_0', pos: [-0.35, 0, 0] }, { name: 'garden_gnome_1', pos: [0, 0, -0.1] },
+			{ name: 'garden_gnome_2', pos: [0.35, 0, 0] }, { name: 'watch_list', pos: [-0.15, 0.002, 0.35] },
+			{ name: 'glue_tube', pos: [0.2, 0.02, 0.35] },
+		],
+		cam: { pos: [0, 0.6, 1.3], target: [0, 0.2, 0.1], fov: 40 },
 	},
 	hardware_tools: {
 		items: [
