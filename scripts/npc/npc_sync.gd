@@ -10,10 +10,9 @@ const SEND_RATE := 15.0
 const EASE := 12.0
 ## A puppet further than this from where it should be jumps there instead of walking.
 const SNAP_DISTANCE := 3.0
-## States per reliable packet: few enough that a packet of busy ones (the count's 19 in the yard) stays under the MTU.
+## States per packet: few enough that a packet of busy ones (the count's 19 in the yard) stays under the MTU.
 const PER_PACKET := 8
-## The unreliable packets stay under this many bytes, below ENet's MTU (1392): over it they're split and lost more.
-## Each NPC's state is a different size (net_state()), so they're packed by size, not by count.
+## Bytes of states per packet, under the MTU (1392) with room for the call itself: a few busy ones fill it before 8.
 const PACKET_BYTES := 1100
 
 var net: Node
@@ -187,27 +186,27 @@ func _send() -> void:
 	for peer: int in net.scene_peers:
 		if not gone.is_empty():
 			_removed.rpc_id(peer, gone)
-		for part: Array in _by_size(ids, states):
-			_moved.rpc_id(peer, part[0], part[1])
-		for from in range(0, sure_ids.size(), PER_PACKET):
-			_moved_all.rpc_id(peer, sure_ids.slice(from, from + PER_PACKET), sure.slice(from, from + PER_PACKET))
+		for packet: Array in packets(ids, states):
+			_moved.rpc_id(peer, packet[0], packet[1])
+		for packet: Array in packets(sure_ids, sure):
+			_moved_all.rpc_id(peer, packet[0], packet[1])
 
 
-## `ids` and their `states` in pieces of at most PACKET_BYTES: [[ids, states], ...].
-static func _by_size(ids: PackedInt32Array, states: Array) -> Array:
-	var parts := []
+## `ids` and their `states` cut into [ids, states] packets of at most PER_PACKET states and PACKET_BYTES bytes.
+static func packets(ids: PackedInt32Array, states: Array) -> Array:
+	var out := []
 	var from := 0
 	var bytes := 0
 	for n in ids.size():
-		var size := var_to_bytes(states[n]).size() + 4
-		if n > from and bytes + size > PACKET_BYTES:
-			parts.append([ids.slice(from, n), states.slice(from, n)])
+		var size := var_to_bytes(states[n]).size()
+		if n > from and (n - from >= PER_PACKET or bytes + size > PACKET_BYTES):
+			out.append([ids.slice(from, n), states.slice(from, n)])
 			from = n
 			bytes = 0
 		bytes += size
 	if from < ids.size():
-		parts.append([ids.slice(from), states.slice(from)])
-	return parts
+		out.append([ids.slice(from), states.slice(from)])
+	return out
 
 
 @rpc("authority", "call_remote", "unreliable_ordered")
