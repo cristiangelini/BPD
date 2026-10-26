@@ -6,6 +6,8 @@ extends InfiltrationPlace
 ## the stage with two rows of marks on its floor, red curtains at its sides and the trunk by its east side; Maestra
 ## Pausa's bench is on the floor in front of it. Behind the stage, her dressing room (locked) and the prop room. The
 ## cops start in the station, where the mime disguises are, and drive here. --place=mime opens it from Play.
+## Mimes stand on the stage's marks (by the seed), Maestra Pausa by her bench facing them, and the mute doorman only lets
+## in cops passing for mimes (step 2b); they all watch the cops (ClubSuspicion, "MIME_" texts).
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -36,6 +38,10 @@ const BACK_Z := -6.5
 const ROOMS_SPLIT_X := 0.0
 const DRESSING_DOOR_X := -10.0
 const PROPS_DOOR_X := 10.0
+## How many mimes rehearse, of the 14 marks; the rest are for the cops.
+const MEMBERS := 10
+## The mute doorman stands outside, by the entrance.
+const DOORMAN_AT := Vector3(ENTRANCE_X + 1.4, 0, HALF_Z + 0.7)
 
 const OUTSIDE := Color(0.2, 0.2, 0.24)
 const INSIDE := Color(0.9, 0.88, 0.86)
@@ -48,8 +54,11 @@ const WOOD := Color(0.48, 0.3, 0.18)
 const CARDBOARD := Color(0.72, 0.56, 0.36)
 
 var dressing_door: FrontDoor
-## The marks on the stage, on its floor, in the theater's space.
+## The marks on the stage, on its floor, in the theater's space, and the ones no mime took, for the cops.
 var marks: Array[Vector3] = []
+var free_marks: Array[Vector3] = []
+var pausa: ClubMember
+var doorman: ClubDoorman
 var _build: PlaceBuilder
 
 
@@ -64,12 +73,55 @@ func _ready() -> void:
 	dressing_door = DOOR_SCENE.instantiate()
 	dressing_door.position = Vector3(DRESSING_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, BACK_Z)
 	add_child(dressing_door)
+	_add_people()
 	place_in_city("mime_theater")
 
 
 ## Maestra Pausa runs off from the street, out of the entrance (step 6).
 func getaway_at() -> Transform3D:
 	return Transform3D(global_basis, global_transform * Vector3(ENTRANCE_X, 0, HALF_Z + CityLayout.SIDEWALK + 2.0))
+
+
+## The mimes on marks drawn with the seed, facing the hall, Maestra Pausa by her bench facing them, the mute doorman
+## and their suspicion.
+func _add_people() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["mime members", case_seed])
+	free_marks = marks.duplicate()
+	for i in MEMBERS:
+		var member := ClubMember.new()
+		member.name = "Member%d" % i
+		member.look = "mimo" if rng.randf() < 0.5 else "mimo_b"
+		member.next_line = rng.randi_range(0, ClubMember.TALK[member.look][1] - 1)
+		add_child(member)
+		member.position = free_marks.pop_at(rng.randi_range(0, free_marks.size() - 1))
+		# Facing the hall (+Z).
+		member.rotation.y = PI
+		members.append(member)
+	pausa = ClubMember.new()
+	pausa.name = "Pausa"
+	pausa.look = "pausa"
+	add_child(pausa)
+	pausa.position = BENCH_AT + Vector3(0, FLOOR_TOP, 0)
+	boss = pausa
+	doorman = ClubDoorman.new()
+	doorman.name = "Doorman"
+	doorman.look = "mimo_portero"
+	doorman.disguise_look = "mime"
+	add_child(doorman)
+	doorman.position = DOORMAN_AT
+	doorman.door_at = global_transform * Vector3(ENTRANCE_X, 0, HALF_Z)
+	doorman.outward = global_transform.basis * Vector3.BACK
+	suspicion = ClubSuspicion.new()
+	suspicion.name = "Suspicion"
+	suspicion.members = members
+	suspicion.boss = pausa
+	suspicion.boss_found_out = "PAUSA_FOUND_OUT"
+	suspicion.disguise_look = "mime"
+	suspicion.prefix = "MIME_"
+	suspicion.inside = is_inside
+	suspicion.in_back_room = in_back_room
+	add_child(suspicion)
 
 
 ## Whether a world position is inside the theater.

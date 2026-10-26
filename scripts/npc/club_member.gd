@@ -2,7 +2,8 @@ class_name ClubMember
 extends StaticBody3D
 
 ## A grandparent at the club's bingo tables (infiltracion.md, step 2b), or Doña Chela at the bingo stand; at the chapel
-## (infiltracion-coro.md, step 3b) a chorister on the platform, or Maestro Ernesto, the director. E on one tells a bit
+## (infiltracion-coro.md, step 3b) a chorister on the platform, or Maestro Ernesto, the director; at the theater
+## (infiltracion-mimos.md, step 2b) a mime on the stage, or Maestra Pausa. E on one tells a bit
 ## of gossip, a different line each time. Each one has a suspicion meter that ClubSuspicion fills from what they
 ## see (step 4), with a "?" or a "!" over their head. They don't move yet, so online every PC has the same ones; their
 ## meters come from the host through ClubSuspicion.
@@ -17,8 +18,12 @@ const MODELS := {
 	"corista": preload("res://assets/models/npc_corista.glb"),
 	"corista_b": preload("res://assets/models/npc_corista_b.glb"),
 	"ernesto": preload("res://assets/models/npc_ernesto.glb"),
+	"mimo": preload("res://assets/models/npc_mimo.glb"),
+	"mimo_b": preload("res://assets/models/npc_mimo_b.glb"),
+	"pausa": preload("res://assets/models/npc_pausa.glb"),
 }
-const SCALES := {"abuelo": 0.82, "abuela": 0.8, "chela": 0.85, "corista": 0.85, "corista_b": 0.85, "ernesto": 1.0}
+const SCALES := {"abuelo": 0.82, "abuela": 0.8, "chela": 0.85, "corista": 0.85, "corista_b": 0.85, "ernesto": 1.0,
+	"mimo": 0.85, "mimo_b": 0.85, "pausa": 0.95}
 ## What each look says when talked to (the key with the line's number, and how many lines), the prompt, and what it
 ## shouts when cuffed. The bosses (BOSSES) have their own lines.
 const TALK := {
@@ -28,8 +33,12 @@ const TALK := {
 	"corista": ["CHOIR_GOSSIP_%d", 10, "PROMPT_TALK_CHORISTER", "NPC_POLICE_ABUSE"],
 	"corista_b": ["CHOIR_GOSSIP_%d", 10, "PROMPT_TALK_CHORISTER", "NPC_POLICE_ABUSE"],
 	"ernesto": ["ERNESTO_%d", 4, "PROMPT_TALK_ERNESTO", "ERNESTO_CUFFED"],
+	# The mimes only mime (infiltracion-mimos.md): their gossip is a gesture, and cuffed they mime the outrage.
+	"mimo": ["MIME_GOSSIP_%d", 10, "PROMPT_TALK_MIME", "MIME_CUFFED"],
+	"mimo_b": ["MIME_GOSSIP_%d", 10, "PROMPT_TALK_MIME", "MIME_CUFFED"],
+	"pausa": ["PAUSA_%d", 4, "PROMPT_TALK_PAUSA", "PAUSA_CUFFED"],
 }
-const BOSSES: Array[String] = ["chela", "ernesto"]
+const BOSSES: Array[String] = ["chela", "ernesto", "pausa"]
 const GOSSIP_LINES := 12
 const SAY_TIME := 4.0
 ## What a grandparent sees: a wide cone in front of them (they turn their heads) and not far, at their eyes' height.
@@ -95,7 +104,7 @@ func is_chela() -> bool:
 	return look == "chela"
 
 
-## The one to cuff: Doña Chela at the club, Maestro Ernesto at the chapel.
+## The one to cuff: Doña Chela at the club, Maestro Ernesto at the chapel, Maestra Pausa at the theater.
 func is_boss() -> bool:
 	return BOSSES.has(look)
 
