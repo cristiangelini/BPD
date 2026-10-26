@@ -204,6 +204,21 @@ func _blocked(cop: Cop) -> void:
 	say("FOOTBALL_TANK_BLOCKED")
 
 
+## What a guest's copy needs besides where they are and what they say (NpcSync): the Tank charging or on the grass.
+func net_state() -> Array:
+	return [charging, _stunned > 0.0]
+
+
+func apply_net_state(state: Variant) -> void:
+	if role != "tank":
+		return
+	charging = state[0]
+	_model.scale.x = TANK_SIZE * (1.5 if charging else 1.15)
+	var down: bool = state[1]
+	_model.rotation = Vector3(-PI / 2 if down else 0.0, PI, 0)
+	_model.position.y = 0.4 if down else 0.0
+
+
 func _keep() -> void:
 	var ball := pitch.ball
 	var local := pitch.to_local(ball.global_position)
