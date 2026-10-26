@@ -8,6 +8,17 @@ extends Node3D
 ## who throw eggs and tomatoes at him; the ones cuffed are walked to the patrol car (step 4). He walks off the stage to
 ## greet them now and then (PoliticianWalks, step 5). The case is PoliticianCase's (step 6). --place=plaza opens it
 ## from Play. Every number here is (propuesta).
+## With `variant` "double" (politico-doble.md, decision 220; --place=double) Rolo Calcado, the double, hides in the
+## crowd with a hat and a scarf, and both deputies wear the tells (DoubleTells): the double three of his own. Each
+## time the deputy walks off, the double takes the lectern (DoubleSwap, step 2).
+## With `variant` "birthday" (politico-cumple.md, decision 221; --place=birthday) it's the deputy's birthday party: a
+## long table on the stage with three cakes (BirthdayCake), pennants over the banner, and BirthdayParty takes him to
+## blow each cake's candles while the crowd sings. One of them is rigged with a spring of cream (step 2), brought by
+## the courier in the crowd (step 3).
+## With `variant` "convertible" (politico-descapotable.md, decision 222; --place=convertible) there's no lectern: the
+## deputy stands in a red convertible (ParadeCar) that drives once round the plaza's block, in its lane by the plaza,
+## for as long as the speech lasts, and the city's traffic is off (plaza_convertible.tscn). Step 2: the crowd lines
+## the route's sidewalks, the hecklers throw only as the car goes by, and fans climb on it to hug him (ParadeHuggers).
 
 ## The stage, from the plaza's middle: its middle, its size and the ramp up its front at the east end.
 const STAGE_FROM_PLAZA := Vector3(0, 0, -14)
@@ -22,6 +33,24 @@ const SPEAKER_BEHIND := 0.6
 const BANNER_SIZE := Vector2(9, 1.6)
 ## The banner's middle over the boards, above the politician's bubble.
 const BANNER_HEIGHT := 3.0
+## Where the double hides, from the plaza's middle: at the end of the crowd's back row.
+const DOUBLE_FROM_PLAZA := Vector3(9.0, 0.05, -5.2)
+## Where the double rides in the patrol car (above the hecklers' seats), and what cuffing the real deputy costs.
+const DOUBLE_SEAT := Vector3(0, 0.5, 0)
+const WRONG_CUFF_STAINS := 3
+## The party's long table on the stage, west of the lectern, from the stage's middle on its top; the cakes along it.
+const TABLE_FROM_STAGE := Vector3(-3.2, 0, 1.0)
+const TABLE_SIZE := Vector3(3.0, 0.8, 0.8)
+const CAKE_EVERY := 1.0
+const PENNANTS := 14
+## The parade's start (and end), on the street north of the plaza, from the plaza's middle across (x).
+const PARADE_START_X := 0.0
+## The crowd along the parade: on each side of the block, on the plaza's sidewalk and on the one across the street,
+## these far along the side from its middle; and how close the car must be for a heckler to throw.
+const PARADE_ALONG: Array[float] = [-18.0, 0.0, 18.0]
+const PARADE_REACH := 12.0
+## The courier, from the plaza's middle: at the west end, between the crowd's rows.
+const COURIER_FROM_PLAZA := Vector3(-9.0, 0.05, -6.4)
 const BALLOON_COLORS: Array[Color] = [Color(0.9, 0.2, 0.25), Color(0.25, 0.45, 0.9), Color(0.95, 0.85, 0.2)]
 
 const BOARDS := Color(0.55, 0.36, 0.2)
@@ -32,9 +61,25 @@ const METAL := Color(0.2, 0.2, 0.22)
 
 ## Same seed, same speech (and, later, the same hecklers). 0 draws one.
 @export var case_seed := 0
+## "plaza" (the base rally), "double" (politico-doble.md), "birthday" (politico-cumple.md) or "convertible"
+## (politico-descapotable.md).
+@export var variant := "plaza"
 var politician: Politician
 var speech: PoliticianSpeech
 var crowd: RallyCrowd
+## Rolo Calcado, with variant "double".
+var double: Politician
+## How the double takes the lectern from the deputy (step 2).
+var swap: DoubleSwap
+## With variant "birthday": the three cakes on the table, west to east, and the party's clock.
+var cakes: Array[BirthdayCake] = []
+var party: BirthdayParty
+## The cake shop's courier who brought the rigged one.
+var courier: RallyFan
+## With variant "convertible": the car the deputy rides.
+var parade_car: ParadeCar
+## The fans who climb on it to hug him.
+var huggers: ParadeHuggers
 ## The case on top of the rally (step 6): the comisario's briefing, the planilla and the end of the shift.
 var case: PoliticianCase
 ## The stage's middle on its top, in world space.
@@ -59,24 +104,164 @@ func _ready() -> void:
 	add_child(politician)
 	politician.global_position = stage_top + LECTERN_FROM_STAGE - Vector3(0, 0, SPEAKER_BEHIND)
 	politician.rotation.y = PI
+	if variant == "double":
+		_add_double(city.transform * CityLayout.block_center(CityLayout.PLAZA))
 	speech = PoliticianSpeech.new()
 	speech.name = "Speech"
 	speech.setup(politician, case_seed)
+	if variant == "birthday":
+		speech.line_key = "BIRTHDAY_LUSTRE_%d"
+	elif variant == "convertible":
+		speech.line_key = "PARADE_LUSTRE_%d"
+		speech.title_key = "HUD_PARADE"
 	add_child(speech)
 	crowd = RallyCrowd.new()
 	crowd.name = "Crowd"
 	add_child(crowd)
+	if variant == "convertible":
+		_line_the_sidewalks()
 	crowd.setup(self, city.transform * CityLayout.block_center(CityLayout.PLAZA), politician, speech, case_seed,
 		$PatrolCar)
 	var half := STAGE_SIZE / 2
-	PoliticianWalks.attach(politician, speech, crowd.fans, politician.global_position,
-		stage_top + Vector3(RAMP_X, 0, half.z - 0.4), stage + Vector3(RAMP_X, 0, half.z + RAMP_RUN + 0.6), case_seed)
+	var ramp_top := stage_top + Vector3(RAMP_X, 0, half.z - 0.4)
+	var ramp_foot := stage + Vector3(RAMP_X, 0, half.z + RAMP_RUN + 0.6)
+	PoliticianWalks.attach(politician, speech, crowd.fans, politician.global_position, ramp_top, ramp_foot, case_seed)
+	if double:
+		# The double gets on and off the stage the same way (step 2), and swaps with the deputy (DoubleSwap).
+		PoliticianWalks.attach(double, speech, crowd.fans, politician.global_position, ramp_top, ramp_foot,
+			case_seed + 1)
+		swap = DoubleSwap.new()
+		swap.name = "DoubleSwap"
+		add_child(swap)
+		swap.setup(politician, double, speech, stage)
+		# Cuffed, he's walked to the patrol car (step 3); the real deputy doesn't like the cuffs at all.
+		var escort := OwnerEscort.attach(double, $PatrolCar)
+		escort.seat_shift = DOUBLE_SEAT
+		escort.in_car_hint = "HINT_DOUBLE_IN_CAR"
+		politician.wrong_cuff_stains = WRONG_CUFF_STAINS
+	if variant == "birthday":
+		_add_party()
+	elif variant == "convertible":
+		_add_parade()
 	case = PoliticianCase.new()
 	case.name = "Case"
 	case.rally = self
 	case.shift_screen = $ShiftScreen
 	add_child(case)
 	case.start(city.comisario)
+
+
+## The real deputy wears the tells as they are; the double, hidden in the crowd, gets the seed's three wrong.
+func _add_double(plaza: Vector3) -> void:
+	politician.dress([])
+	double = Politician.new()
+	double.name = "Double"
+	double.impostor = true
+	add_child(double)
+	double.global_position = plaza + DOUBLE_FROM_PLAZA
+	# Facing the stage, to the north, like the crowd.
+	double.rotation.y = 0.0
+	double.dress(DoubleTells.draw(case_seed))
+	double.disguise(true)
+
+
+## The long table with its cloth west of the lectern, the three cakes on it (flavors and cards drawn by the seed) and
+## the party that takes the deputy to blow them.
+func _add_party() -> void:
+	var table := stage_top + TABLE_FROM_STAGE
+	_build.box(table + Vector3(0, TABLE_SIZE.y / 2, 0), TABLE_SIZE, WOOD)
+	_build.mesh_box(table + Vector3(0, TABLE_SIZE.y + 0.005, 0), Vector3(TABLE_SIZE.x + 0.1, 0.01, TABLE_SIZE.z + 0.1),
+		CLOTH)
+	_build.mesh_box(table + Vector3(0, TABLE_SIZE.y - 0.15, TABLE_SIZE.z / 2 + 0.05), Vector3(TABLE_SIZE.x + 0.1, 0.3,
+		0.01), CLOTH)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["birthday cakes", case_seed])
+	var flavors := BirthdayCake.FLAVORS.duplicate()
+	var cards: Array[int] = []
+	for i in BirthdayCake.CARDS:
+		cards.append(i + 1)
+	# One of the three hides a spring with cream (step 2).
+	var rigged := rng.randi_range(0, BirthdayCake.FLAVORS.size() - 1)
+	for i in BirthdayCake.FLAVORS.size():
+		var cake := BirthdayCake.new()
+		cake.name = "Cake%d" % (i + 1)
+		cake.flavor = flavors.pop_at(rng.randi_range(0, flavors.size() - 1))
+		cake.card = cards.pop_at(rng.randi_range(0, cards.size() - 1))
+		cake.rigged = i == rigged
+		add_child(cake)
+		cake.global_position = table + Vector3((i - 1) * CAKE_EVERY, TABLE_SIZE.y + 0.01, 0)
+		cake.spot = cake.global_position
+		cake.fountain = city_plaza()
+		cakes.append(cake)
+	party = BirthdayParty.new()
+	party.name = "Party"
+	add_child(party)
+	party.setup(politician, speech, crowd.fans, cakes, case_seed)
+	courier = RallyFan.new()
+	courier.name = "Courier"
+	courier.look = "repartidor"
+	courier.courier = true
+	add_child(courier)
+	courier.global_position = city_plaza() + COURIER_FROM_PLAZA
+	courier.wear_cap()
+	party.going.connect(courier.laugh.unbind(1))
+	var escort := OwnerEscort.attach(courier, $PatrolCar)
+	escort.seat_shift = DOUBLE_SEAT
+	escort.in_car_hint = "HINT_COURIER_IN_CAR"
+
+
+## The convertible on the street north of the plaza, with the deputy on its back seat: he rides it, so he never walks
+## off to greet.
+func _add_parade() -> void:
+	var walks := PoliticianWalks.of(politician)
+	walks.auto_walks = false
+	walks.set_physics_process(false)
+	parade_car = ParadeCar.new()
+	parade_car.name = "ParadeCar"
+	add_child(parade_car)
+	parade_car.setup(parade_route(), speech, politician)
+	huggers = ParadeHuggers.new()
+	huggers.name = "Huggers"
+	add_child(huggers)
+	huggers.setup(parade_car, politician, speech, crowd, case_seed)
+
+
+## The crowd's spots on the sidewalks on both sides of the route, facing the street.
+func _line_the_sidewalks() -> void:
+	var inner := CityLayout.BLOCK / 2 - CityLayout.SIDEWALK / 2
+	var outer := CityLayout.BLOCK / 2 + CityLayout.STREET + CityLayout.SIDEWALK / 2
+	for side: String in ["n", "e", "s", "w"]:
+		var out := CityLayout.side_normal(side)
+		var along := Vector3(-out.z, 0, out.x)
+		for reach: float in [inner, outer]:
+			# The plaza's side faces out to the street, the one across faces back in.
+			var facing := out if reach == inner else -out
+			for x in PARADE_ALONG:
+				crowd.spots.append(out * reach + along * x + Vector3.UP * CityLife.CURB)
+				crowd.turns.append(atan2(-facing.x, -facing.z))
+	crowd.throw_reach = PARADE_REACH
+
+
+## Once round the plaza's block, clockwise (seen from above, north up) in the lane by the plaza, from the middle of the
+## street north of it and back there, in world space.
+func parade_route() -> PackedVector3Array:
+	var city := ($City as Node3D).transform
+	var lane := CityLayout.STREET / 4
+	var x0 := CityLayout.street_x(CityLayout.PLAZA.x) + lane
+	var x1 := CityLayout.street_x(CityLayout.PLAZA.x + 1) - lane
+	var z0 := CityLayout.street_z(CityLayout.PLAZA.y) + lane
+	var z1 := CityLayout.street_z(CityLayout.PLAZA.y + 1) - lane
+	var start := CityLayout.block_center(CityLayout.PLAZA).x + PARADE_START_X
+	var points := PackedVector3Array()
+	for at: Vector3 in [Vector3(start, 0, z0), Vector3(x1, 0, z0), Vector3(x1, 0, z1), Vector3(x0, 0, z1),
+			Vector3(x0, 0, z0), Vector3(start, 0, z0)]:
+		points.append(city * at)
+	return points
+
+
+## The plaza's middle on the ground, in world space.
+func city_plaza() -> Vector3:
+	return ($City as Node3D).transform * CityLayout.block_center(CityLayout.PLAZA)
 
 
 ## Boards on a blue skirt, the ramp up the front, the lectern and its microphone, the banner on two poles at the back
@@ -111,13 +296,24 @@ func _build_stage(stage: Vector3) -> void:
 		_build.box(back + Vector3(x, (BANNER_HEIGHT + 1.0) / 2, 0), Vector3(0.1, BANNER_HEIGHT + 1.0, 0.1), METAL)
 	_build.mesh_box(back + Vector3(0, BANNER_HEIGHT, 0.06), Vector3(BANNER_SIZE.x, BANNER_SIZE.y, 0.04), CLOTH)
 	var banner := Label3D.new()
-	banner.text = "RALLY_BANNER"
+	banner.text = "BIRTHDAY_BANNER" if variant == "birthday" else "RALLY_BANNER"
 	banner.font_size = 60
 	banner.pixel_size = 0.01
 	banner.outline_size = 0
 	banner.modulate = SKIRT
 	banner.position = back + Vector3(0, BANNER_HEIGHT, 0.1)
 	$Built.add_child(banner)
+	if variant == "birthday":
+		# A string of pennants over the banner, sagging in the middle.
+		for i in PENNANTS:
+			var t := (i + 0.5) / PENNANTS
+			var at := back + Vector3((t - 0.5) * BANNER_SIZE.x, BANNER_HEIGHT + 1.1 - 0.35 * sin(PI * t), 0.1)
+			var pennant := CylinderMesh.new()
+			pennant.top_radius = 0.16
+			pennant.bottom_radius = 0.0
+			pennant.height = 0.32
+			pennant.radial_segments = 3
+			_build.mesh(pennant, at, BALLOON_COLORS[i % BALLOON_COLORS.size()])
 	for side: float in [-1.0, 1.0]:
 		var corner := top + Vector3(side * (half.x - 0.3), 0, half.z - 0.3)
 		for i in BALLOON_COLORS.size():
