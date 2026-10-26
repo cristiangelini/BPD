@@ -15,6 +15,8 @@ extends CharacterBody3D
 signal threw(fan: RallyFan, throwable: RallyThrowable)
 ## The handcuffs closed on them.
 signal cuffed_now(fan: RallyFan)
+## E on them while they hug the deputy on the parade's car (ParadeHuggers).
+signal pulled_off(fan: RallyFan, cop: Cop)
 
 const SCALES := {"abuelo": 0.82, "abuela": 0.8}
 const SAY_TIME := 4.0
@@ -43,6 +45,8 @@ const CAP_AT := Vector3(0, 1.5, 0)
 var heckler := false
 ## The cake shop's courier, at the birthday party.
 var courier := false
+## Up on the parade's car hugging the deputy (politico-descapotable.md).
+var hugging := false
 ## "market" (eggs and tomatoes), "shopping" (bread and a leek) or "" for none.
 var bag := ""
 ## Their hands show the goo of a throw.
@@ -225,7 +229,7 @@ func prompt_key(cop: Cop) -> String:
 	var escort := OwnerEscort.of(self)
 	if escort and escort.handles_use():
 		return escort.prompt_key(cop)
-	return "PROMPT_TALK_FAN"
+	return "PROMPT_PULL_OFF_FAN" if hugging else "PROMPT_TALK_FAN"
 
 
 ## E on a fan: the same small talk from anyone, so talking gives no one away; cuffed, the escort to the patrol car.
@@ -233,6 +237,9 @@ func use(cop: Cop) -> void:
 	var escort := OwnerEscort.of(self)
 	if escort and escort.handles_use():
 		escort.use(cop)
+		return
+	if hugging:
+		pulled_off.emit(self, cop)
 		return
 	say("FAN_TALK_%d" % (_next_line % LINES + 1))
 	_next_line += 1
@@ -258,9 +265,10 @@ func said() -> String:
 	return _bubble.text if _bubble.visible else ""
 
 
-## What a guest's copy needs besides where they are and what they say (NpcSync): cuffed, dirty hands and marked.
+## What a guest's copy needs besides where they are and what they say (NpcSync): cuffed, dirty hands, marked and
+## hugging the deputy.
 func net_state() -> Array:
-	return [is_cuffed(), dirty, marked]
+	return [is_cuffed(), dirty, marked, hugging]
 
 
 func apply_net_state(state: Variant) -> void:
@@ -269,6 +277,7 @@ func apply_net_state(state: Variant) -> void:
 		get_dirty()
 	if state[2]:
 		mark()
+	hugging = state.size() > 3 and state[3]
 
 
 func _physics_process(delta: float) -> void:

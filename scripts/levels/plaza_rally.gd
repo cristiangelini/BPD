@@ -17,7 +17,8 @@ extends Node3D
 ## the courier in the crowd (step 3).
 ## With `variant` "convertible" (politico-descapotable.md, decision 222; --place=convertible) there's no lectern: the
 ## deputy stands in a red convertible (ParadeCar) that drives once round the plaza's block, in its lane by the plaza,
-## for as long as the speech lasts, and the city's traffic is off (plaza_convertible.tscn).
+## for as long as the speech lasts, and the city's traffic is off (plaza_convertible.tscn). Step 2: the crowd lines
+## the route's sidewalks, the hecklers throw only as the car goes by, and fans climb on it to hug him (ParadeHuggers).
 
 ## The stage, from the plaza's middle: its middle, its size and the ramp up its front at the east end.
 const STAGE_FROM_PLAZA := Vector3(0, 0, -14)
@@ -44,6 +45,10 @@ const CAKE_EVERY := 1.0
 const PENNANTS := 14
 ## The parade's start (and end), on the street north of the plaza, from the plaza's middle across (x).
 const PARADE_START_X := 0.0
+## The crowd along the parade: on each side of the block, on the plaza's sidewalk and on the one across the street,
+## these far along the side from its middle; and how close the car must be for a heckler to throw.
+const PARADE_ALONG: Array[float] = [-18.0, 0.0, 18.0]
+const PARADE_REACH := 12.0
 ## The courier, from the plaza's middle: at the west end, between the crowd's rows.
 const COURIER_FROM_PLAZA := Vector3(-9.0, 0.05, -6.4)
 const BALLOON_COLORS: Array[Color] = [Color(0.9, 0.2, 0.25), Color(0.25, 0.45, 0.9), Color(0.95, 0.85, 0.2)]
@@ -73,6 +78,8 @@ var party: BirthdayParty
 var courier: RallyFan
 ## With variant "convertible": the car the deputy rides.
 var parade_car: ParadeCar
+## The fans who climb on it to hug him.
+var huggers: ParadeHuggers
 ## The case on top of the rally (step 6): the comisario's briefing, the planilla and the end of the shift.
 var case: PoliticianCase
 ## The stage's middle on its top, in world space.
@@ -111,6 +118,8 @@ func _ready() -> void:
 	crowd = RallyCrowd.new()
 	crowd.name = "Crowd"
 	add_child(crowd)
+	if variant == "convertible":
+		_line_the_sidewalks()
 	crowd.setup(self, city.transform * CityLayout.block_center(CityLayout.PLAZA), politician, speech, case_seed,
 		$PatrolCar)
 	var half := STAGE_SIZE / 2
@@ -211,6 +220,26 @@ func _add_parade() -> void:
 	parade_car.name = "ParadeCar"
 	add_child(parade_car)
 	parade_car.setup(parade_route(), speech, politician)
+	huggers = ParadeHuggers.new()
+	huggers.name = "Huggers"
+	add_child(huggers)
+	huggers.setup(parade_car, politician, speech, crowd, case_seed)
+
+
+## The crowd's spots on the sidewalks on both sides of the route, facing the street.
+func _line_the_sidewalks() -> void:
+	var inner := CityLayout.BLOCK / 2 - CityLayout.SIDEWALK / 2
+	var outer := CityLayout.BLOCK / 2 + CityLayout.STREET + CityLayout.SIDEWALK / 2
+	for side: String in ["n", "e", "s", "w"]:
+		var out := CityLayout.side_normal(side)
+		var along := Vector3(-out.z, 0, out.x)
+		for reach: float in [inner, outer]:
+			# The plaza's side faces out to the street, the one across faces back in.
+			var facing := out if reach == inner else -out
+			for x in PARADE_ALONG:
+				crowd.spots.append(out * reach + along * x + Vector3.UP * CityLife.CURB)
+				crowd.turns.append(atan2(-facing.x, -facing.z))
+	crowd.throw_reach = PARADE_REACH
 
 
 ## Once round the plaza's block, clockwise (seen from above, north up) in the lane by the plaza, from the middle of the

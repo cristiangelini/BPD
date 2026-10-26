@@ -9,6 +9,8 @@ extends Node
 ## as they throw (within SEE_ANGLE of their view, SEE_REACH away, nothing in between) marks them. Cuffed, a heckler is
 ## walked to the patrol car (OwnerEscort, the bank robbers' seats) and `jailed` goes off; the ones left throw more often.
 ## Every number here is (propuesta).
+## At the parade (politico-descapotable.md, step 2, decision 222) the level hands it the fans' `spots` (with the way
+## each one faces) along the route's sidewalks, and a heckler throws only with the deputy within `throw_reach`.
 
 signal jailed(heckler: RallyFan)
 
@@ -39,6 +41,12 @@ var hecklers: Array[RallyFan] = []
 var politician: Politician
 var speech: PoliticianSpeech
 var detained := 0
+## Where the fans stand (on the ground, from the plaza's middle) and the way each one faces (around Y), when the level
+## gives them; empty, the two rows in front of the stage.
+var spots: Array[Vector3] = []
+var turns: Array[float] = []
+## Throws only with the politician this close (m); 0 for anywhere.
+var throw_reach := 0.0
 ## Heckler -> seconds to their next throw.
 var _next_throw := {}
 var _cheer_left := CHEER_EVERY
@@ -53,20 +61,22 @@ func setup(level: Node3D, plaza: Vector3, speaker: Politician, the_speech: Polit
 	speech = the_speech
 	_rng.seed = hash(["rally crowd", case_seed])
 	var looks := LOOKS.duplicate()
-	var spots: Array[Vector3] = []
-	for z in ROW_ZS:
-		for x in ROW_XS:
-			spots.append(Vector3(x, 0, z))
-	for i in FANS:
+	var rows := spots.is_empty()
+	if rows:
+		for z in ROW_ZS:
+			for x in ROW_XS:
+				spots.append(Vector3(x, 0, z))
+	var count := FANS if rows else spots.size()
+	for i in count:
 		var fan := RallyFan.new()
 		fan.name = "Fan%d" % i
 		fan.look = looks[_rng.randi_range(0, looks.size() - 1)]
 		level.add_child(fan)
 		fan.global_position = plaza + spots[i % spots.size()] + Vector3(_rng.randf_range(-0.3, 0.3), 0.05, 0)
-		# Facing the stage, to the north.
-		fan.rotation.y = 0.0
+		# Facing the stage, to the north, or the way the level says.
+		fan.rotation.y = 0.0 if rows else turns[i]
 		fans.append(fan)
-	var order: Array = range(FANS)
+	var order: Array = range(count)
 	for i in range(order.size() - 1, 0, -1):
 		var j := _rng.randi_range(0, i)
 		var swap: int = order[i]
@@ -94,6 +104,8 @@ func _physics_process(delta: float) -> void:
 		if not heckler.free_to_throw():
 			continue
 		_next_throw[heckler] -= delta
+		if throw_reach > 0.0 and heckler.global_position.distance_to(politician.global_position) > throw_reach:
+			continue
 		if _next_throw[heckler] <= 0.0:
 			_next_throw[heckler] = throw_every() + _rng.randf_range(-THROW_JITTER, THROW_JITTER)
 			throw_from(heckler)

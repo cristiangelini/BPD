@@ -69,3 +69,12 @@ caminando. Si llega limpio a la plaza, nos aumentan el presupuesto. Si llega con
   justo al final. El diputado no se baja a saludar, dice 12 frases de desfile y la barra se llama "Desfile del diputado
   Lustre". El comisario cuenta el desfile. Por ahora el público sigue frente al escenario como en la base: el paso 2 lo
   pasa a las veredas. Captura en `/mnt/project-files/descapotable/paso1-desfile.png`.
+- **Paso 2 (las veredas y los abrazadores):** el público ya no está frente al escenario: 24 vecinos en las veredas del
+  recorrido, en cada lado de la manzana 3 en la vereda de la plaza y 3 en la de enfrente, mirando a la calle
+  (`RallyCrowd.spots`). Los cuatro que tiran y los tres con bolsa de compras salen de ellos como en la base, y un tiro
+  solo sale con el diputado a menos de 12 m (`RallyCrowd.throw_reach`): el que estaba listo tira apenas pasa el auto.
+  Los abrazadores (`ParadeHuggers`): desde los 30 s del desfile, y después cada 50 s, el vecino más cercano al auto (a
+  menos de 25 m, nunca uno de los que tiran ni uno esposado) corre al auto gritando y se sube detrás del diputado; cada
+  5 s arriba es una mancha de imagen. Con E se lo baja ("E: bajarlo del auto"): queda al lado del auto, del lado del
+  policía, y vuelve caminando a su lugar en la vereda. Si se traba en el cordón más de 20 s, aparece en su lugar. Uno
+  por vez. Captura en `/mnt/project-files/descapotable/paso2-abrazo.png`.
