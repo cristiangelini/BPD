@@ -223,6 +223,22 @@ func set_mood(to: int) -> void:
 		mood_zero.emit()
 
 
+## For a guest's case (VipCase.snapshot): what he's asked, what's open, the counts and his mood.
+func net_state() -> Array:
+	return [asked, open.duplicate(true), on_time, late, mood, started, finished]
+
+
+func apply_net_state(state: Array) -> void:
+	asked = state[0]
+	open.assign(state[1])
+	on_time = state[2]
+	late = state[3]
+	mood = state[4]
+	started = state[5]
+	finished = state[6]
+	_show_board()
+
+
 func _show_board() -> void:
 	var lines: Array[String] = [tr("VIP_BOARD") % mood]
 	for each in open:

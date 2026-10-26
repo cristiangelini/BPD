@@ -75,6 +75,17 @@ func tantrum() -> void:
 	stamp.tween_property(_model, "position:y", -SIT_DROP if seated else 0.0, STAMP_TIME)
 
 
+## What a guest's copy needs besides where he is and what he says (NpcSync): sat or up, and in sight (not running).
+func net_state() -> Array:
+	return [seated, visible]
+
+
+func apply_net_state(state: Variant) -> void:
+	if state[0] != seated:
+		set_seated(state[0])
+	visible = state[1]
+
+
 func say(key: String, seconds := SAY_TIME) -> void:
 	_bubble.text = key
 	_bubble.show()

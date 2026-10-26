@@ -4,7 +4,9 @@ extends Node
 ## The VIP inmate case (carcel-vip.md, step 6): the comisario tells it in his office and Q opens the planilla. Won when
 ## his manager takes Rulo out the gate (VipPlan.released_rulo): SALARY, PER_ON_TIME more for each request brought in
 ## time, PER_SEIZED more for each piece found and PER_LAWYER less for each time his lawyer came. Lost if he gets out
-## the gate to his limo. Quota of its own, like the other prison cases. Every number here is (propuesta).
+## the gate to his limo. Quota of its own, like the other prison cases. Step 7: online the host's case decides and a
+## guest's follows it (CaseSync, snapshot): the requests, his mood, the pieces, the counts, his door and how it ended.
+## Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 6.0
@@ -24,7 +26,11 @@ var tip_given := false
 var solved_it := false
 var failed_reason := ""
 var shift_over := false
-var follower := false
+var follower := false:
+	set(value):
+		follower = value
+		if prison:
+			prison.vip.follower = value
 var online: CaseSync
 var _result := {}
 var _refresh_left := 0.0
@@ -146,6 +152,23 @@ func _show_result(result: Dictionary) -> void:
 			result.campaign.promoted)
 		over = result.campaign.over
 	shift_screen.get_node("%AgainButton").visible = not over and not follower
+
+
+## What every guest's case shows (CaseSync).
+func snapshot() -> Dictionary:
+	return {"tip": tip_given, "plan": prison.vip.net_state(), "solved": solved_it, "failed": failed_reason,
+		"result": _result}
+
+
+func apply_snapshot(state: Dictionary) -> void:
+	if state.tip:
+		give_tip()
+	prison.vip.apply_net_state(state.plan)
+	solved_it = state.solved
+	failed_reason = state.failed
+	checklist.show_rows(rows())
+	if not state.result.is_empty() and not shift_over:
+		_show_result(state.result)
 
 
 ## The planilla's rows, in the shape CaseChecklist takes.

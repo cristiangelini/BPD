@@ -107,3 +107,9 @@ En qué celda está Rulo, qué 6 pedidos hace y en qué orden, qué 3 cosas esco
   lleva: 600 + 25 por pedido a tiempo + 50 por pieza decomisada - 100 por abogado, cuota 400. Se pierde si llega a su
   limusina. Jugar lo sortea con las otras cárceles (`PlaceDraw.PRISONS`, ahora en octavos). Captura:
   `paso6-planilla.png`.
+- **Paso 7:** online decide el anfitrión (`VipCase`, `VipPlan` y `VipRequests` con `follower` en los invitados) y el
+  caso le manda al invitado los pedidos abiertos, el humor, las piezas, los conteos, la puerta de su celda y cómo
+  terminó (`CaseSync`, `snapshot`); la limusina se va también en el invitado. Rulo, el que corre (con su modelo:
+  `BlackoutInmate.model_path` en `net_setup`), el abogado y el manager van por `NpcSync`; las cosas, por `PropSync`
+  (la pieza que esconde cada una va en `VisitItem.net_setup`). E en la repisa va por `ActionSync`, y cantar le llega al
+  anfitrión como al guardia de la fuga. Los fans se mueven solos en cada PC.
