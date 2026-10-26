@@ -21,8 +21,8 @@ vergüenza de la que pasa solo."
 
 ## Cómo es el caso
 1. **El lugar:** el canal de televisión de la ciudad, un edificio nuevo en la cuadra (1, 4) mirando al norte (la
-   (2, 4) tiene el callejón sin salida). Adentro: el estudio con dos atriles, el escritorio de la moderadora, una tribuna con unos
-   12 vecinos de público, 3 cámaras con ruedas, luces colgadas del techo, la pantalla gigante "AL AIRE" y la luz roja.
+   (2, 4) tiene el callejón sin salida). Adentro: el estudio con dos atriles, el escritorio de la moderadora, una
+   tribuna con unos 12 vecinos de público, 3 cámaras con ruedas, luces colgadas del techo, la pantalla gigante "AL AIRE" y la luz roja.
    Detrás de un vidrio, un piso más arriba con escalera, la sala de control: una consola larga con botones y 3
    técnicos sentados. Al lado, el camarín con el maquillaje.
 2. **El debate:** 3 bloques de 90 s con 10 s de tanda entre uno y otro (el reloj del caso). La moderadora hace una
@@ -78,3 +78,12 @@ vergüenza de la que pasa solo."
    aire baja la imagen, como un papelón chico.
 3. **¿Hay un culpable para esposar?** Recomendado: sí, uno de los 3 técnicos de la consola, comprado por Malvón, que
    huye en la unidad móvil si no lo atrapan.
+
+## Hecho así
+- **Paso 1 (el canal):** `TvStudio` (`--place=debate`), lote `tv_studio` en la cuadra (1, 4) norte, 34 x 22 m y 7 m
+  de alto (22 de fondo para no pisar el callejón de la (2, 4) ni el medio de la cuadra). El estudio al oeste (x de -17
+  a 5): el set al fondo con los dos atriles (Malvón al oeste, Lustre al este), el escritorio de la moderadora y la
+  pantalla gigante de 9 x 4,2 m con el cartel rojo "AL AIRE"; la tribuna de 3 escalones adelante con 12 vecinos; 3
+  barras de luces con un foco sobre cada atril y el escritorio. Al este, el ala: recepción y escalera adelante, el
+  camarín con el espejo atrás y, arriba del camarín, la sala de control con la consola de 8 m y 3 sillas detrás de un
+  vidrio que mira al estudio. Modelos nuevos: `tv_lectern`, `tv_anchor_desk`, `tv_console` y `makeup_mirror`.
