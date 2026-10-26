@@ -80,6 +80,12 @@ const THIEF_DISGUISES: Array[String] = ["thief_mask", "thief_beanie", "thief_shi
 	"thief_shirt", "thief_mask", "thief_beanie", "thief_shirt", "thief_mask", "thief_beanie", "thief_shirt"]
 const THIEF_DISGUISES_AT := Vector3(-5.15, 0, 4.4)
 const THIEF_GAP := 0.42
+## The restaurant's (infiltracion-restaurante.md, step 1): a chef's hat, a curly mustache and an apron for each cop, in
+## an eighth row.
+const CHEF_DISGUISES: Array[String] = ["chef_hat", "chef_mustache", "chef_apron", "chef_hat", "chef_mustache",
+	"chef_apron", "chef_hat", "chef_mustache", "chef_apron", "chef_hat", "chef_mustache", "chef_apron"]
+const CHEF_DISGUISES_AT := Vector3(-5.15, 0, 4.85)
+const CHEF_GAP := 0.42
 
 ## Furniture: [model, position, turn]. The models come from tools/modelgen/models/station.js.
 const FURNITURE := [

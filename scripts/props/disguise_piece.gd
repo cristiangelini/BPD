@@ -6,7 +6,8 @@ extends Grabbable
 ## brought to the chest instead of the face, and the cleaning crew's cap, face mask and vest (fuga-limpieza.md, step 3), and the mime troupe's beret, white face and
 ## striped shirt (infiltracion-mimos.md, step 1), and the costume party's cap, mustache and plastic badge
 ## (infiltracion-fiesta.md, step 1), and the gym's headband, wristbands and tank top (infiltracion-gimnasio.md, step 1),
-## and the thieves' school's eye mask, beanie and striped shirt (infiltracion-escuela.md, step 1). The fire drill's orange prisoner's vest
+## and the thieves' school's eye mask, beanie and striped shirt (infiltracion-escuela.md, step 1), and the restaurant's
+## chef's hat, curly mustache and apron (infiltracion-restaurante.md, step 1). The fire drill's orange prisoner's vest
 ## (fuga-simulacro.md) is worn the same way, but it's the opposite of a disguise: taken off it lies on the floor where
 ## the guard can see it (a clue), and the waiting room's coat and hat make a cop pass for one of the public. The fast trial's lawyer jacket (fuga-juicio.md) makes its wearer the
 ## cops' lawyer. Held, the mouse wheel brings it right up to the face; brought to its place on the cop's head it
@@ -38,6 +39,9 @@ const SLOTS := {
 	"thief_mask": Vector3(0, 1.33, -0.21),
 	"thief_beanie": Vector3(0, 1.42, 0.0),
 	"thief_shirt": Vector3(0, 0.95, -0.3),
+	"chef_hat": Vector3(0, 1.42, 0.0),
+	"chef_mustache": Vector3(0, 1.22, -0.2),
+	"chef_apron": Vector3(0, 0.95, -0.3),
 }
 const MODELS := {
 	"wig": preload("res://assets/models/disguise_wig.glb"),
@@ -63,6 +67,9 @@ const MODELS := {
 	"thief_mask": preload("res://assets/models/disguise_thief_mask.glb"),
 	"thief_beanie": preload("res://assets/models/disguise_thief_beanie.glb"),
 	"thief_shirt": preload("res://assets/models/disguise_thief_shirt.glb"),
+	"chef_hat": preload("res://assets/models/disguise_chef_hat.glb"),
+	"chef_mustache": preload("res://assets/models/disguise_chef_mustache.glb"),
+	"chef_apron": preload("res://assets/models/disguise_chef_apron.glb"),
 }
 ## Who the cops pass for, and with what: which pieces count and how many of them. (propuesta)
 const LOOKS := {
@@ -75,6 +82,7 @@ const LOOKS := {
 	"party": {"pieces": ["party_cap", "party_mustache", "party_badge"], "needed": 2},
 	"gym": {"pieces": ["gym_headband", "gym_wristbands", "gym_tank"], "needed": 2},
 	"thief": {"pieces": ["thief_mask", "thief_beanie", "thief_shirt"], "needed": 2},
+	"chef": {"pieces": ["chef_hat", "chef_mustache", "chef_apron"], "needed": 2},
 }
 ## Sportswear is made to sweat in: running doesn't shake it off (the gym's routine has the cops running and jumping).
 const TIGHT: Array[String] = ["gym_headband", "gym_wristbands", "gym_tank"]
