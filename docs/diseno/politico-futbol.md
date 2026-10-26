@@ -100,3 +100,13 @@ gol para la foto y que salga entero. En ese orden, dice él. En el otro, digo yo
   a menos de 1,1 m lo frena: los dos caen (el Tanque 3 s, el policía 1,5 s). Si llega al diputado, lo hace volar y es
   una lesión de verdad (`injured`, `injuries`); qué pasa con el sueldo y a la tercera queda para el paso 5. Captura en
   `/mnt/project-files/futbol/paso4-camilla.png`.
+- **Paso 5 (el árbitro y el caso):** el árbitro (`FootballReferee`, `pitch.referee`, modelo `npc_arbitro`) sigue la
+  jugada 6 m al sur de la pelota y cada 20 s cobra tiro libre para los Veteranos a 8 m de nuestro arco (`call_foul`);
+  una mano de un policía también. Pistas: con E le asoma el sobre con plata del bolsillo ("envelope"), y cada 15 s le
+  hace un pulgar arriba al concejal Barullo (`pitch.barullo`, modelo `npc_concejal`, en el escalón del medio de la
+  tribuna), que lo ve el policía a menos de 12 m ("thumbs"); el pin verde de Barullo en la gorra está siempre. Esposado,
+  E lo lleva al patrullero (`OwnerEscort`) y ya no cobra nada. `FootballCase` (`pitch.case`): el comisario lo cuenta,
+  Q abre la planilla, y se resuelve si el diputado mismo metió al menos un gol (un gol de un policía no es foto). Al
+  final del partido termina el turno. Sueldo 600, menos 100 por lesión de verdad, más 50 si el equipo del diputado ganó
+  y más 100 si el árbitro está en el patrullero; cuota 400. A la tercera lesión se lo lleva la ambulancia y el caso se
+  pierde (pregunta 1, recomendado). Captura en `/mnt/project-files/futbol/paso5-arbitro.png`.

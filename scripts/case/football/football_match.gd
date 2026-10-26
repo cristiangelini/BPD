@@ -131,6 +131,8 @@ func _play(on: bool) -> void:
 		player.playing = on
 		player.chaser = false
 	lustre.playing = on
+	if pitch.referee:
+		pitch.referee.playing = on
 
 
 func _back_to_spots() -> void:
