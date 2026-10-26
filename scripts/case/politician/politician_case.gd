@@ -48,6 +48,8 @@ var follower := false:
 			if rally.double:
 				PoliticianWalks.of(rally.double).set_physics_process(not value)
 				rally.swap.set_physics_process(not value)
+			if rally.party:
+				rally.party.set_physics_process(not value)
 var online: CaseSync
 var _result := {}
 var _refresh_left := 0.0
@@ -89,7 +91,8 @@ func give_tip() -> void:
 	tip_given = true
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).input_enabled:
-			var brief := "BRIEF_DOUBLE_" if rally.variant == "double" else "BRIEF_RALLY_"
+			var brief: String = {"double": "BRIEF_DOUBLE_", "birthday": "BRIEF_BIRTHDAY_"}.get(rally.variant,
+				"BRIEF_RALLY_")
 			briefing.start(PackedStringArray([brief + "A", brief + "B", brief + "C"]))
 			break
 	checklist.show_rows(rows())
@@ -281,6 +284,9 @@ func rows() -> Array[Dictionary]:
 		list.append(_row("OBJ_DOUBLE_CATCH", double_detained()))
 	if chase:
 		list.append(_row("OBJ_DOUBLE_CATCH_SCOOTER" if runner is Politician else "OBJ_RALLY_CATCH_SCOOTER", caught))
+	if rally.party:
+		list.append({"text": tr("OBJ_BIRTHDAY_CAKES") % [rally.party.blown, rally.cakes.size()], "done": false,
+			"optional": false, "status": true})
 	var state := "OBJ_RALLY_FURIOUS" if furious else ("OBJ_RALLY_OVER" if speech_over else "OBJ_RALLY_KEEP_CLEAN")
 	list.append({"text": state, "done": false, "optional": false, "status": true})
 	# The double's rally (politico-doble.md): the real deputy's file, to tell him from the double.

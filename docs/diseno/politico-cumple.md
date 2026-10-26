@@ -60,3 +60,14 @@ fe. Que sople las velas tranquilo. Y guárdenme una porción."
    desarmarlo ahí mismo sacándole la vela del medio con las manos.
 3. **¿Qué pasa si el diputado sopla el trucho?** Recomendado: le salta la crema a la cara, son 3 manchas y llora 10 s
    sin moverse; la fiesta sigue. La otra opción es que se vaya furioso y el caso se pierda.
+
+## Hecho así
+- **Paso 1 (la fiesta, la mesa y los tres pasteles):** `--place=birthday` abre `scenes/levels/plaza_birthday.tscn`, la
+  misma plaza del acto con `PlazaRally.variant = "birthday"`, y el sorteo de Jugar reparte las protecciones en cuartos
+  (plaza, mercado, doble y cumpleaños, `PlaceDraw.RALLIES`). El escenario tiene banderines sobre el cartel ("¡Felices
+  50, diputado Lustre!") y una mesa larga con mantel al oeste del atril, con los tres pasteles (`BirthdayCake`): uno de
+  cada sabor, cada uno con su tarjeta delante, sabores y tarjetas sacados con la semilla. El reloj es el discurso, que
+  tiene 12 frases de cumpleaños propias. `BirthdayParty` lo lleva al pastel con las velas prendidas a los 2 y 4 minutos
+  y a los 5:50 (no a los 6, para que el último se sople antes del final), solo si está en el atril: si anda saludando, el
+  pastel espera. El público canta 10 s, él sopla, vuelve al atril y se prenden las velas del siguiente. La planilla
+  cuenta los pasteles soplados. Capturas en `/mnt/project-files/cumple/paso1-*.png`.
