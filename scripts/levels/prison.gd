@@ -135,6 +135,7 @@ var garden: GardenPlan
 var garden_case: GardenCase
 ## The count's inmates out in the yard, the workers and the list (carcel-recuento.md, step 2).
 var count: CountPlan
+var count_case: CountCase
 
 @onready var car: PatrolCar = get_node_or_null("PatrolCar")
 @onready var city: Node3D = $City
@@ -374,6 +375,12 @@ func _start_count() -> void:
 	count.name = "CountPlan"
 	add_child(count)
 	count.setup(self, case_seed)
+	count_case = CountCase.new()
+	count_case.name = "CountCase"
+	count_case.prison = self
+	count_case.shift_screen = $ShiftScreen
+	add_child(count_case)
+	count_case.start(city.get("comisario"))
 	city.transform = CityLayout.anchor("prison")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)

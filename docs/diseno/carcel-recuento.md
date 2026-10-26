@@ -96,3 +96,9 @@ Cuáles son los 2 tramposos, qué 3 presos se esconden y en cuáles de los 8 esc
   llevado a una celda queda contado; si llega al portón, la lista le pone "FUGA" y cuenta como resuelto, así que la
   lista se completa (20 de 20 entre contados y fugados) aunque alguno se haya escapado. Capturas:
   `paso5-comedor.png`, `paso5-patio.png`, `paso5-ronca.png` y `paso5-corre.png`.
+- **Paso 6:** `CountCase`: el comisario lo cuenta en su oficina (3 líneas) y Q abre la planilla con el tiempo que
+  queda, la lista tachada (contados más fugados, de 20), los escondidos encontrados (extra), los escapados (de 2) y los
+  trabajadores marcados por error. Se gana apenas la lista se completa (`CountPlan.completed`); se pierde con 2
+  escapados o a los 6 minutos (`CountPlan.ended`). Sueldo 600 - 100 por escapado + 25 por escondido encontrado - 10
+  por trabajador marcado, cuota 400. Jugar sortea `prison_count` con las otras cárceles, ahora en décimos. Captura:
+  `paso6-planilla.png`.
