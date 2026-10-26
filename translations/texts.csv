@@ -4945,3 +4945,20 @@ OBJ_EXTRA_WIRING_PLAN,Extra: el plano de los cables,Extra: the wiring plan,Extra
 LULA_CLUE_power_treadmills,"«¡Uf! Te cuento... ¡uf! ...vi al profe esconder algo %s. Y cuando corro... ¡uf! ...se apaga la tele de mi vecina.»","“Huff! Here's the thing... huff! ...I saw the coach hide something %s. And when I run... huff! ...my neighbor's TV goes off.”","“Ufa! Vou contar... ufa! ...vi o professor esconder algo %s. E quando eu corro... ufa! ...a TV da minha vizinha desliga.”"
 CLUE_LIGHTS_FLICKER,"Corriste en una cinta y parpadearon las luces del gimnasio y de todo el barrio.","You ran on a treadmill and the lights of the gym and the whole neighborhood flickered.","Você correu numa esteira e piscaram as luzes da academia e do bairro inteiro."
 GYM_TREADMILL_ROAR,¡BRRRRRUUUM! La cinta arrancó sola,VRRRRROOOM! The treadmill started on its own,VRRRRRUUUM! A esteira ligou sozinha
+BRIEF_LUCKY_SHAKES_B,"El batido «campeón» del profe hace que quien lo toma diga lo que piensa. Así les saca a los socios los números de la lotería.","The coach's «champion» shake makes whoever drinks it say what they think. That's how he gets the members' lottery numbers out of them.","O shake «campeão» do professor faz quem toma dizer o que pensa. Assim ele arranca dos sócios os números da loteria."
+BRIEF_LUCKY_SHAKES_C,Traigan el frasco del batido campeón en el baúl del patrullero.,Bring the jar of champion shake in the patrol car's trunk.,Tragam o pote do shake campeão no porta-malas da viatura.
+BRIEF_LUCKY_SHAKES_D,"Si encuentran la lista de socios que ganaron la lotería o la licuadora dorada, mejor: todo suma.","If you find the list of members who won the lottery or the golden blender, even better: it all counts.","Se acharem a lista de sócios que ganharam na loteria ou o liquidificador dourado, melhor: tudo conta."
+OBJ_FIND_SHAKE_JAR,Llevarse el frasco del batido campeón,Take the jar of champion shake,Levar o pote do shake campeão
+OBJ_EXTRA_LOTTERY_LIST,Extra: la lista de ganadores de la lotería,Extra: the list of lottery winners,Extra: a lista de ganhadores da loteria
+OBJ_EXTRA_GOLD_BLENDER,Extra: la licuadora dorada,Extra: the golden blender,Extra: o liquidificador dourado
+LULA_CLUE_lucky_shakes,"«¡Uf! Te cuento... ¡uf! ...vi al profe esconder algo %s. Y no tomes el batido verde... ¡uf! ...que después cuentas todo.»","“Huff! Here's the thing... huff! ...I saw the coach hide something %s. And don't drink the green shake... huff! ...you'll end up telling everything.”","“Ufa! Vou contar... ufa! ...vi o professor esconder algo %s. E não toma o shake verde... ufa! ...que depois você conta tudo.”"
+CLUE_SHAKE_CLOVER,"Tomaste el batido del vaso con el trébol y dijiste en voz alta lo que pensabas.","You drank the shake from the cup with the clover and said what you were thinking out loud.","Você tomou o shake do copo com o trevo e disse em voz alta o que estava pensando."
+PROMPT_SHAKE,Tomar el batido verde,Drink the green shake,Tomar o shake verde
+GYM_THOUGHT_0,«Creo que dejé el patrullero en marcha.»,“I think I left the patrol car running.”,“Acho que deixei a viatura ligada.”
+GYM_THOUGHT_1,«¿Y si el comisario es un robot?»,“What if the comisario is a robot?”,“E se o comissário for um robô?”
+GYM_THOUGHT_2,«Me comería una dona ahora mismo.»,“I'd eat a donut right now.”,“Eu comeria uma rosquinha agora mesmo.”
+GYM_THOUGHT_3,«Nunca entendí cómo funciona la planilla.»,“I never understood how the checklist works.”,“Nunca entendi como funciona a planilha.”
+GYM_THOUGHT_4,«Ese socio me mira raro.»,“That member is looking at me funny.”,“Aquele sócio está me olhando estranho.”
+GYM_THOUGHT_5,«Yo también quiero una moto de oro.»,“I want a golden motorbike too.”,“Eu também quero uma moto de ouro.”
+GYM_THOUGHT_6,«Hoy no hice nada y ya necesito una siesta.»,“I've done nothing today and I already need a nap.”,“Hoje não fiz nada e já preciso de uma soneca.”
+GYM_THOUGHT_7,«Si gano la lotería, renuncio... mañana.»,"“If I win the lottery, I quit... tomorrow.”","“Se eu ganhar na loteria, peço demissão... amanhã.”"
