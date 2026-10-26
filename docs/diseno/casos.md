@@ -71,7 +71,7 @@ Van disfrazados y tienen que pasar desapercibidos mientras juntan evidencia (dec
 7. **Gimnasio:** hay que entrenar sin rendirse. Propuesta en [infiltracion-gimnasio.md](infiltracion-gimnasio.md) (decisión 172).
 8. **Coro de iglesia:** hay que cantar afinado (por la voz).
 9. **Subasta de arte:** se puja con plata de la cuota, y si compran algo, lo pagan.
-10. **Escuela de ladrones:** clases de cómo robar; si sacan buenas notas, conocen al jefe de la banda.
+10. **Escuela de ladrones:** clases de cómo robar; si sacan buenas notas, conocen al jefe de la banda. Propuesta en [infiltracion-escuela.md](infiltracion-escuela.md) (decisión 173).
 
 ## 6. Cárcel (casos en la prisión)
 Van a una cárcel por un motín o a cuidar presos (decisión 29).
