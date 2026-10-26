@@ -137,9 +137,8 @@ func _ready() -> void:
 func _join_agent() -> void:
 	if InternalAffairsAgent.join(self) or InternalAffairsAgent.of(self):
 		show_hint("HINT_AGENT_ARRIVES")
-	# On the last shift, the city's inspector comes along (inspeccion.md).
-	if CityInspector.join(self) or CityInspector.of(self):
-		show_hint("HINT_INSPECTOR_ARRIVES")
+	# On the last shift, the city's inspector comes along (inspeccion.md); she tells every cop herself.
+	CityInspector.join(self)
 
 
 ## What the camera points at within reach (empty if nothing), ignoring the cop's own body.

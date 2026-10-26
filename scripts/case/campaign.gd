@@ -117,6 +117,8 @@ func finish_shift(story: String, solved: bool, report: Dictionary, shift_quota :
 		last_inspection = InspectionReport.final(inspection, solved)
 		inspection = {}
 		report.inspection = last_inspection.score
+		report.inspection_best = last_inspection.best
+		report.inspection_worst = last_inspection.worst
 		report.approved = last_inspection.approved
 	history.append({"shift": shift, "story": story, "solved": solved, "total": report.total,
 		"approved": report.approved})

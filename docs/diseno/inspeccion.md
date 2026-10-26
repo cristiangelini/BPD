@@ -97,3 +97,8 @@ La nota no baja de 0 ni pasa de 100.
   que más restó, con la frase de ella), y "¡Ascendidos! La comisaría sigue abierta." o "Informe reprobado: la comisaría
   cierra.". Por ahora el informe se lee en la pantalla del turno, no en la oficina con los policías mirando: eso queda
   para cuando haya animaciones. Capturas: `campana/inspeccion_comisario.png` e `inspeccion_final.png`.
+- **Paso 5 (online):** el host decide. Le avisa a cada invitado que el caso es la inspección (`Net.match_inspection`,
+  con el caso), así el comisario la presenta en todas las PC. La inspectora es solo la del host: cada invitado ve una
+  copia que la sigue (NpcSync, con lo que dice y la nota del informe en su planilla) y que no anota nada. Lo que
+  hacen los policías de los invitados lo ve la del host (las esposas, los sobornos y las donas pasan por el host). La
+  pantalla del turno lee el informe del reporte del turno, que llega igual a todos.
