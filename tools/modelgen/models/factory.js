@@ -32,7 +32,21 @@ export function buildPlasterMold() {
 	return b.build();
 }
 
+// A doll as it rides the belt, before the machines: bare pink plastic, 0.3 m tall, arms out, no face and no hair.
+export function buildFactoryDoll() {
+	const b = new Builder('factory_doll');
+	const plastic = mat('doll_plastic', 0xf6c6b4);
+	b.add('body', plastic, ellipsoid(0.055, 0.08, 0.04, 8, 5), { pos: V(0, -0.02, 0) });
+	b.add('head', plastic, ellipsoid(0.05, 0.055, 0.05, 8, 5), { pos: V(0, 0.095, 0) });
+	for (const s of [-1, 1]) {
+		b.add('legs', plastic, new THREE.CylinderGeometry(0.018, 0.016, 0.07, 6), { pos: V(s * 0.025, -0.115, 0) });
+		b.add('arms', plastic, new THREE.CylinderGeometry(0.014, 0.012, 0.08, 6), { pos: V(s * 0.075, 0.0, 0), rot: [0, 0, s * 1.0] });
+	}
+	return b.build();
+}
+
 export const models = {
+	factory_doll: buildFactoryDoll,
 	...Object.fromEntries(DRESSES.map((_, i) => [`porcelain_doll_${i}`, () => buildPorcelainDoll(i)])),
 	plaster_mold: buildPlasterMold,
 };
@@ -41,7 +55,7 @@ export const views = {
 	factory: {
 		items: [
 			{ name: 'porcelain_doll_0', pos: [-0.25, 0.15, 0] }, { name: 'porcelain_doll_1', pos: [0, 0.15, -0.1] },
-			{ name: 'porcelain_doll_2', pos: [0.25, 0.15, 0] }, { name: 'plaster_mold', pos: [0, 0.06, 0.25] },
+			{ name: 'porcelain_doll_2', pos: [0.25, 0.15, 0] }, { name: 'plaster_mold', pos: [0, 0.06, 0.25] }, { name: 'factory_doll', pos: [0.35, 0.15, 0.2] },
 		],
 		cam: { pos: [0, 0.45, 1.0], target: [0, 0.1, 0.05], fov: 36 },
 	},
