@@ -4139,6 +4139,9 @@ CRASH_CALM_0,"Está bien, está bien. Lo corro.","Fine, fine. I'll move it.","T�
 CRASH_CALM_1,Tiene razón. Respiro.,You're right. Breathing.,Tem razão. Respirando.
 CRASH_CALM_2,"Bueno, fue un raspón.","Okay, it was a scratch.","Tá, foi só um arranhão."
 SHIFT_STREET,Eventos en la calle,Street events,Eventos na rua
+"PLACE_BRIDGE_PARK","Parque del Canal","Canal Park","Parque do Canal"
+"BRIDGE_BANNER","¡Puente Lustre: para cruzar al futuro!","Lustre Bridge: crossing into the future!","Ponte Lustre: para atravessar ao futuro!"
+"BRIDGE_BUILDER","Pegote Hermanos · Construcciones","Pegote Brothers · Builders","Pegote Irmãos · Construções"
 HINT_INSPECTOR_ARRIVES,Llegó la inspectora de la ciudad: va contigo todo el turno y anota todo.,The city inspector is here: she goes with you all shift and writes everything down.,A inspetora da cidade chegou: ela vai com você o turno todo e anota tudo.
 INSPECTOR_ARRIVES,"Severina Regla, inspección de la ciudad. Hagan como si no estuviera.","Severina Regla, city inspection. Act as if I'm not here.","Severina Regla, inspeção da cidade. Façam de conta que não estou aqui."
 INSPECTOR_NOTE_1,Mmm.,Hmm.,Hum.

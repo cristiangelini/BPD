@@ -134,9 +134,11 @@ func _draw_map() -> void:
 	for lot: Dictionary in CityLayout.fillers():
 		_lot(lot, BUILDING)
 	for p: Dictionary in CityLayout.PLACES:
-		var color: Color = STATION if p.id == "station" else (TARGET if p.id == target else PLACE)
+		# A park shows as its grass.
+		var plain: Color = p.color if p.get("park", false) else PLACE
+		var color: Color = STATION if p.id == "station" else (TARGET if p.id == target else plain)
 		if p.id == target and fmod(_time, BLINK * 2) > BLINK:
-			color = PLACE
+			color = plain
 		_lot(p, color)
 	for id: String in ["station", target]:
 		if id == "":

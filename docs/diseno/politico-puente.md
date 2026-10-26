@@ -17,9 +17,9 @@ antes de que pise el hueco.
 se caiga. El puente, digo. Bueno, el diputado tampoco."
 
 ## Cómo es el caso
-1. **El lugar:** un parque nuevo en la ciudad (cuadra libre, se elige en el paso 1) cruzado por un canal de 8 m de ancho
-   con 1 m de agua, 2 m por debajo del pasto. Lo cruza el puente: 20 m de largo y 2,5 m de ancho, en 10 tramos de
-   3 tablones cada uno, con baranda a los dos lados y 4 pilares en el agua. Cada orilla tiene una escalera para bajar al
+1. **El lugar:** un parque nuevo en la ciudad (cuadra 3, 4) cruzado por un canal de 20 m de ancho entre muros bajos,
+   con 1 m de agua. Lo cruza el puente, 2,4 m arriba: 20 m de largo y 2,5 m de ancho, en 10 tramos de 2 tablones
+   cada uno, con baranda a los dos lados y 4 pilares en el agua. Cada orilla tiene una escalera para bajar al
    agua. En la orilla oeste hay un palco con globos, unos 14 vecinos mirando y la camioneta de la constructora con un
    montón de 12 tablones de repuesto. En la punta este está la cinta inaugural con la tijera gigante.
 2. **La ceremonia:** el diputado espera a su custodia en la punta oeste y arranca cuando llega el primer policía. Cruza
@@ -28,12 +28,13 @@ se caiga. El puente, digo. Bueno, el diputado tampoco."
    promesas!"), y el salto rompe la pieza más floja cerca de él.
 3. **El puente que se rompe:** desde los 20 s y cada 15 s se rompe algo, elegido al azar por la semilla. Antes cruje y
    tiembla 3 s, así se lo ve venir.
-   - **Un tablón cae al agua:** queda un hueco en el piso. El que lo pisa (policía o diputado) cae al canal.
+   - **Un tramo pierde sus tablones:** los 2 caen al agua y queda un hueco de 2 m. El que lo pisa (policía o diputado)
+     cae al canal. Con un solo tablón puesto, el hueco de 1 m se cruza con cuidado.
    - **Un pilar se hunde:** los 2 tramos de encima se inclinan. Si en 30 s nadie lo endereza, esos tramos se caen
      enteros y el que está encima cae al canal.
    - **Una baranda se suelta:** cae al agua; nada más, pero el diputado se apoya en las barandas para saludar.
 4. **Arreglarlo:**
-   - **Tablones:** se agarran del montón de la camioneta (6 kg, de a uno, con física) y se sueltan sobre el hueco: si
+   - **Tablones:** se agarran del montón de la camioneta (6 kg, de a uno, con física; 2 por hueco) y se sueltan sobre el hueco: si
      caen a menos de 0,5 m encajan solos con un "toc". Los que caen al agua flotan y se pueden sacar.
    - **Pilares:** se enderezan desde el agua. Dos policías al lado del pilar apretando E juntos 4 s lo ponen derecho;
      uno solo no puede.
@@ -71,3 +72,15 @@ se caiga. El puente, digo. Bueno, el diputado tampoco."
    a dos desde el agua)? Recomendado: sí, es el chiste físico del caso.
 3. **¿Hay un culpable para esposar?** Recomendado: sí, el ingeniero Remache, que se robó los materiales, está entre el
    público y huye en la hormigonera si no lo atrapan.
+
+## Hecho así
+- **Paso 1 (el parque y el puente):** `BridgePark` (`scenes/levels/bridge_park.tscn`, `--place=bridge`) es la ciudad
+  entera con el lote `bridge_park`, que llena la cuadra (3, 4) (54 x 54 m, `"park": true`: sin edificios de relleno y
+  con pasto). El canal mide 20 x 48 m entre muros de 1,2 m, con 1 m de agua (`water`, un Area3D para el paso 4). El
+  puente queda a 2,4 m: 10 tramos de 2 m con 2 tablones de 1 x 2,5 m cada uno (`planks`, modelo `bridge_plank`) sobre
+  dos largueros, una baranda por lado en cada tramo (`rails`) y 4 pilares en x = -6, -2, 2 y 6 (`pillars`). Cada punta
+  se apoya en el muro y baja por una rampa de 7 m. Un tablón solo deja un hueco de 1 m en el que un policía (de 1 m
+  de ancho) queda trabado, así que lo que se cae es el tramo entero. En cada orilla hay una rampa por encima del muro
+  para bajar al agua. En la orilla oeste están el palco con globos, el cartel "¡Puente Lustre!" sobre la subida y la
+  camioneta de Pegote Hermanos (`builder_van`); la cinta está en la punta este. Capturas en
+  `/mnt/project-files/puente/paso1-*.png`.
