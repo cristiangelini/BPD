@@ -89,6 +89,12 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      sin ver nada de lo que se rompe. Al final dice "¡No me queda! Vuelva el martes." y necesita 30 s para buscar otro.
      Un empujón corta la búsqueda. Capturas: `paso2-*.png`.
 3. La mercadería que se cobra (la cuenta) y las herramientas que sirven.
+   - **Cómo quedó (propuesta):** 24 herramientas (martillos, llaves inglesas, serruchos y destornilladores, con su
+     etiqueta naranja de precio) en los dos estantes de arriba de las góndolas, de los dos lados. Si Tobías ve una en la
+     mano de un policía 3 s seguidos, grita "¡Son 15, oficial! ¡Lo anoto!" y va a la cuenta: 15 menos de sueldo, junto
+     con las multas, pero no le sube la denuncia (es una venta). Si después queda apoyada a menos de 0,5 m de donde
+     estaba, la tacha ("Bueno, lo devolvió"). Mientras busca el tornillo no cobra nada. Para qué sirve cada herramienta
+     se arma con las historias que la usan (paso 6). Captura: `paso3-gondola.png`.
 4. Don Cosme y la máquina de copiar llaves.
 5. El caso (RaidCase) con la primera historia: las llaves maestras.
 6. Las otras 5 historias, un PR cada una.

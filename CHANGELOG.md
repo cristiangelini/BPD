@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Hardware store, step 3: 24 tools for sale on the gondolas; one Tobías sees in a cop's hand for 3 s goes on the bill (15 off the pay), and comes off it when put back.
 - Hardware store, step 2: Tobías serves behind his counter, fills the complaint meter, lets two things slip when asked and turns to the screw wall for 15 s when a cop rings the counter bell.
 - Hardware store "El Tornillo Flojo" (ferreteria.md, step 1): the shop, storeroom, workshop and yard on its lot, 12 hiding spots, 18 paint cans and 6 screw jars that break as fines, and a menu test button.
 - Project base: Godot 4.7.2 project, placeholder main menu, translations (es, en, pt), GUT tests and CI.
