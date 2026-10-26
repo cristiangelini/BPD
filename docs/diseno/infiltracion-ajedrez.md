@@ -86,6 +86,12 @@ copian la forma de `RestaurantOrders` y `SchoolClasses` (el host decide y avisa)
    mirando la tarima y el rival del Gran Maestro. El Gran Maestro Alfil (sombrero blanco de alfil, monóculo y el rey
    negro en la mano) en la tarima, mirando la puerta. Las sillas llegan con el paso 3 **(propuesta)**.
 3. Los tableros: las piezas con física, el reloj de cada mesa y sentarse.
+   Hecho así: cada mesa (también la del Gran Maestro) tiene un tablero de 8 x 8 con una partida a medias (torre,
+   caballo, alfil, dama, rey y un peón de cada color, no las 32 piezas, para que haya poco objeto suelto), el reloj
+   al lado y un banquito detrás de cada lugar. Las piezas son objetos con física: agarrar una y soltarla en otra
+   casilla es una jugada, legal o no (el host avisa `moved`); tirarla del tablero también cuenta. El reloj cuenta 8 s
+   del turno de un lado; E lo toca y el turno pasa al otro lado; si llega a 0, ese lado perdió por tiempo. "Sentarse"
+   es pararse en el lugar frente a la mesa, con las manos libres para mover **(propuesta)**.
 4. Las partidas: el desafío, los turnos con el reloj, los comentarios, el chisme y la sospecha.
 5. Las pruebas y el caso (variante "chess"): el torneo, las 6 pruebas, el sueldo y el interrogatorio.
 6. La huida en el caballito, el sorteo de "Jugar" en octavos y online.

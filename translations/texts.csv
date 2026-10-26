@@ -2704,6 +2704,7 @@ CHESS_FOUND_OUT_0,¡Son policías! ¡Nadie juega tan mal al ajedrez!,They're cop
 CHESS_FOUND_OUT_1,¡Son policías! ¡Movió la torre en diagonal!,They're cops! He moved the rook diagonally!,São policiais! Ele moveu a torre na diagonal!
 CHESS_FOUND_OUT_2,¡Son policías! ¡Preguntó por qué el rey pesa tanto!,They're cops! He asked why the king is so heavy!,São policiais! Perguntou por que o rei pesa tanto!
 HINT_CHESS_FOUND_OUT,¡Los descubrieron! Todo el club sabe que son policías.,You've been found out! The whole club knows you're cops.,Vocês foram descobertos! O clube todo sabe que vocês são policiais.
+PROMPT_CHESS_CLOCK,E: tocar el reloj,E: hit the clock,E: apertar o relógio
 MENU_DOLL_FACTORY,Fábrica de muñecos (prueba),Doll factory (test),Fábrica de bonecos (teste)
 PROMPT_PUSH_BUTTON,Apretar el botón,Press the button,Apertar o botão
 PROMPT_SHUTTER_BUTTON,Subir la persiana del muelle,Raise the dock shutter,Levantar a porta do cais
