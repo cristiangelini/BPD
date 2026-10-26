@@ -7,7 +7,8 @@ extends Node3D
 ## it, a small stand of 3 steps for the neighbors; south, toward the street, each team's bench, the stretcher, the
 ## table with the cup, the sausage stall and the banner. The cops start in the station and drive here; --place=football
 ## opens it from Play. Step 2: the ball on the center spot (FootballBall) and the goals and scoreboard
-## (FootballScore). Every number here is (propuesta).
+## (FootballScore). Step 3: the match (FootballMatch), with Deputy Lustre playing badly (FootballLustre), the veterans,
+## their keeper and his two advisors (FootballPlayer); the cops play in yellow bibs. Every number here is (propuesta).
 
 const GOAL_MODEL := preload("res://assets/models/football_goal.glb")
 const BENCH_MODEL := preload("res://assets/models/team_bench.glb")
@@ -59,6 +60,10 @@ var goals: Array[Node3D] = []
 ## The match's ball and its goals and scoreboard (step 2).
 var ball: FootballBall
 var score: FootballScore
+## The match, the deputy and how he plays (step 3).
+var match_clock: FootballMatch
+var politician: Politician
+var lustre: FootballLustre
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -84,6 +89,21 @@ func _ready() -> void:
 	score.name = "Score"
 	score.setup(self, ball)
 	add_child(score)
+	politician = Politician.new()
+	politician.name = "Politician"
+	add_child(politician)
+	politician.position = CENTER + FootballLustre.HOME + Vector3.UP * 0.05
+	politician.rotation.y = -PI / 2
+	politician.add_child(FootballPlayer.bib(FootballPlayer.BIBS[FootballScore.Team.LUSTRE]))
+	lustre = FootballLustre.new()
+	lustre.name = "Lustre"
+	lustre.setup(self, politician, case_seed)
+	add_child(lustre)
+	match_clock = FootballMatch.new()
+	match_clock.name = "Match"
+	match_clock.setup(self, lustre)
+	add_child(match_clock)
+	match_clock.started.connect(give_bibs)
 	city.transform = CityLayout.anchor("football_pitch")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
@@ -92,6 +112,18 @@ func _ready() -> void:
 ## The goal line's middle at `side` (-1 west, 1 east), in the lot's space.
 static func goal_at(side: float) -> Vector3:
 	return CENTER + Vector3(side * HALF_LENGTH, 0, 0)
+
+
+## A yellow bib on every cop that has none: they play on the deputy's team.
+func give_bibs() -> void:
+	for cop: Node in get_tree().get_nodes_in_group("cops"):
+		if cop.has_node("Bib"):
+			continue
+		var vest := FootballPlayer.bib(FootballPlayer.BIBS[FootballScore.Team.LUSTRE])
+		cop.add_child(vest)
+		# This PC's own cop doesn't see their own bib from inside their head.
+		if (cop as Cop).input_enabled:
+			cop.call("_hide_from_own_camera", vest)
 
 
 ## Whether a world position is on the field, inside its lines.

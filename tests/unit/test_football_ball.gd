@@ -75,6 +75,9 @@ func test_grabbing_it_is_a_handball() -> void:
 
 func test_a_shot_into_the_east_net_is_a_goal_for_the_deputy_s_team() -> void:
 	watch_signals(pitch.score)
+	# The veterans' keeper (step 3) steps aside: this is about the line, not the saves.
+	for player: FootballPlayer in pitch.match_clock.players:
+		player.global_position += Vector3(0, 0, 40)
 	pitch.ball.global_position = pitch.to_global(FootballPitch.goal_at(1.0) + Vector3(-8, 0.3, 0))
 	_behind_ball()
 	pitch.ball.kick(cop, Vector3(1, 0.05, 0).normalized(), FootballBall.KICK_HARD)

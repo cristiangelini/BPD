@@ -83,3 +83,11 @@ gol para la foto y que salga entero. En ese orden, dice él. En el otro, digo yo
   `last_touch`), y a los 3 s vuelve al centro. Si sale por un costado o por el fondo, al segundo vuelve a 1 m adentro de
   donde salió. Arriba de la pantalla, el marcador "LUSTRE 0 - 0 VETERANOS". Captura en
   `/mnt/project-files/futbol/paso2-gol.png`.
+- **Paso 3 (el partido):** `FootballMatch` (`pitch.match_clock`) arranca cuando un policía pisa la cancha: 2 tiempos de
+  3 minutos con 10 s de descanso, y el reloj abajo del marcador ("Tiempo 1 · 2:57"). Los Veteranos son 6 jugadores y
+  un arquero (`FootballPlayer`, pechera roja): el más cerca de la pelota va a buscarla y le pega al arco oeste (de 11 a
+  15 m/s, con 3,5 m de error); los demás vuelven a su lugar. El arquero se mueve sobre la línea siguiendo la pelota y
+  despeja lo que le llega a menos de 1,3 m y más lento que 12 m/s. Los 2 asesores de traje (pechera amarilla) caminan a
+  1,2 m/s y empujan lo que les llega. El diputado (`FootballLustre`, pechera amarilla) corre a la pelota si está a
+  menos de 9 m y le pega para cualquier lado: 1 de cada 3 va al arco, 1 de cada 2 a menos de 14 m del arco, y grita
+  algo. Captura en `/mnt/project-files/futbol/paso3-partido.png`.
