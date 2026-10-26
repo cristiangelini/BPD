@@ -91,6 +91,12 @@ Los pesos y valores siguen la escala de la oficina: la principal vale unos 1000 
      si lo empujan, 5 por puerta rota, 5 por pregunta, y abogado (y prensa gastronómica) en 100. Capturas
      `paso2-*.png`.
 3. Pocha y la bandeja de muestras.
+   - **Cómo quedó (propuesta):** Pocha (uniforme rosa, delantal, cofia sobre el rodete, cachetes colorados y la
+     bandeja en la mano) está detrás de su mostrador de muestras, a la derecha de la vitrina. Con E ("Probar el pastel
+     nuevo de Pocha") el policía come una muestra: 3 s con las manos ocupadas, y mientras mastica ella cuenta lo que vio
+     esconder al chef (la historia lo pone en el paso 4). Una por policía: si vuelve, "Una por persona, oficial". Sin
+     nada que contar dice "Por ahora no vi nada raro". Cada historia puede darle sabor a la muestra (una pista
+     propia, como la punta del billete). Captura `paso3-pocha.png`.
 4. El caso (RaidCase) con la primera historia: el pastel relleno de plata.
 5. Las otras 5 historias, una por PR.
 6. "Jugar" sortea entre los 7 lugares de allanamiento.

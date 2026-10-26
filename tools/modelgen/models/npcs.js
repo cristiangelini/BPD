@@ -706,6 +706,21 @@ const NPCS = {
 		limb(b, 'props', C('whisk_handle', 0xc8945a), V(0.5, 0.5, 0.0), V(0.5, 0.62, 0.18), 0.03);
 		b.add('props', C('whisk_wire', 0xc0c4c8), ellipsoid(0.07, 0.12, 0.07, 6, 4), { pos: V(0.5, 0.72, 0.27), rot: [0.6, 0, 0] });
 	},
+	// Pocha, the cake lab's assistant and gossip (laboratorio.md): pink uniform and apron, a hairnet over a high bun,
+	// rosy cheeks and a tray of samples in her hand.
+	pocha(b) {
+		pearBody(b, SKIN.crema, { shirt: C('pocha_uniform', 0xf2a6c0), pants: C('pocha_pants', 0xf4f4f0), shoes: C('cook_shoes', 0x2a2a2e) });
+		b.add('apron', C('apron', 0xffffff), loft([{ y: 0.3, rx: 0.42, rz: 0.12 }, { y: 0.72, rx: 0.36, rz: 0.1 }], 8), { pos: V(0, 0, 0.31) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		for (const s of [-1, 1]) b.add('face', C('blush', 0xf09a9a), ellipsoid(0.04, 0.025, 0.01, 6, 3), { pos: V(s * 0.12, 1.26, 0.18) });
+		const hair = C('hair_blond', 0xe0b860);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		b.add('head', hair, ellipsoid(0.1, 0.1, 0.1, 8, 6), { pos: V(0, 1.6, -0.06) });
+		b.add('cap', C('hairnet', 0xf6f6f2, { transparent: true, opacity: 0.7 }), ellipsoid(0.23, 0.16, 0.22, 10, 5), { pos: V(0, 1.47, -0.03) });
+		b.add('props', C('tray_steel', 0xc8ccd2), new THREE.CylinderGeometry(0.2, 0.2, 0.02, 14), { pos: V(0.45, 0.8, 0.25) });
+		for (const [x, z, c] of [[0.38, 0.2, 0xf2a6c0], [0.52, 0.22, 0xf2e2b8], [0.45, 0.33, 0x8a5a3a]]) b.add('props', C('sample_' + c, c), new THREE.BoxGeometry(0.06, 0.05, 0.06), { pos: V(x, 0.835, z) });
+	},
 };
 
 export const NPC_NAMES = Object.keys(NPCS);
