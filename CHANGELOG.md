@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Insurance office, step 1: the office on its lot: reception, 12 cubicles with rolling chairs and paper piles that fly when a cop runs through, meeting room, kitchen nook, the locked boss office and archive, the giant printer, 12 hiding spots, and monitors and glass trophies that break as fines; a menu test button and --place=insurance.
 - Insurance office, step 0: design doc (docs/diseno/seguros.md) and decision 162 (proposed).
 - Doll factory, step 8: online: the host runs Fermín, Nilda and the belt (Fermín carries its state, so it stops and jams the same on every PC), only the host's feeder drops dolls and they come over dressed, and the red button and the giant doll's zipper work from any PC.
 - Doll factory, step 7: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store and the doll factory in fifths.

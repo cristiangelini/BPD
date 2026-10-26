@@ -2353,6 +2353,16 @@ OBJ_EXTRA_GOLD_COMB,Extra: el peine de oro,Extra: the golden comb,Extra: o pente
 OBJ_EXTRA_FAKE_INVOICE,Extra: la factura trucha,Extra: the fake invoice,Extra: a nota fiscal falsa
 NILDA_CLUE_poodle_hair,«¡Cuota cumplida! Le cuento: vi a Fermín esconder algo %s. Y desde que usamos el pelo nuevo no paro de estornudar.»,“Quota done! Here's the thing: I saw Fermín hide something %s. And since we started using the new hair I can't stop sneezing.”,“Cota cumprida! Vou contar: vi o Fermín esconder algo %s. E desde que usamos o pelo novo não paro de espirrar.”
 CLUE_POODLE_HAIR,"¡Achís! Pelos rosados y rizados por el piso, de la máquina de pelo para allá. Huelen a perro.","Achoo! Curly pink hairs on the floor, from the hair machine onward. They smell like dog.","Atchim! Pelos cor-de-rosa e enrolados pelo chão, da máquina de pelo para lá. Têm cheiro de cachorro."
+MENU_INSURANCE,Oficina de seguros (prueba),Insurance office (test),Escritório de seguros (teste)
+LOC_under_cubicle_desk,abajo del escritorio de un cubículo,under a cubicle desk,embaixo da mesa de um cubículo
+LOC_on_cubicle_desk,arriba del escritorio de un cubículo,on a cubicle desk,em cima da mesa de um cubículo
+LOC_under_meeting_table,abajo de la mesa de reuniones,under the meeting table,embaixo da mesa de reuniões
+LOC_in_meeting_cabinet,en el armario de la sala de reuniones,in the meeting room cabinet,no armário da sala de reuniões
+LOC_in_kitchen_bin,en el tacho de la cocina,in the kitchen bin,na lixeira da cozinha
+LOC_in_boss_safe,en la caja fuerte de la jefa,in the boss's safe,no cofre da chefe
+LOC_behind_printer,detrás de la impresora,behind the printer,atrás da impressora
+LOC_in_archive_box,en una caja del archivo,in a box in the archive,numa caixa do arquivo
+LOC_on_archive_shelf,en un estante del archivo,on an archive shelf,numa prateleira do arquivo
 HINT_JAILED_VENT,"El guardia mira las celdas y la llave cuelga del tablero, detrás de él. Arriba, en la pared, hay una rejilla floja... ¿entramos todos por ahí?","The guard is watching the cells and the key hangs on the board behind him. Up on the wall there's a loose grille... will we all fit through?","O guarda está olhando as celas e a chave está pendurada no quadro, atrás dele. Lá em cima, na parede, tem uma grade solta... será que todos cabem?"
 PROMPT_VENT_SCREW,"E: aflojar un tornillo con la uña","E: loosen a screw with your fingernail","E: afrouxar um parafuso com a unha"
 PROMPT_VENT_TOO_HIGH,"La rejilla está muy alta: súbete a la cucheta","The grille is too high: climb onto the bunk","A grade está alta demais: suba no beliche"
