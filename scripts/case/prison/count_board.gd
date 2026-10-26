@@ -3,7 +3,8 @@ extends Node3D
 
 ## The count's list (carcel-recuento.md, step 2): a big board in the yard, on two posts against the building's front,
 ## with the number of each of the LIST inmates (the same number they wear on their jumpsuit) and how many are counted.
-## A counted number gets a red cross (`set_marked`). Its origin is on the floor, its face toward +Z. Every number here
+## A counted number gets a red cross (`set_marked`); step 5: one that got out through the gate, a red "FUGA"
+## (`set_escaped`), and it's accounted for too. Its origin is on the floor, its face toward +Z. Every number here
 ## is (propuesta).
 
 const COLUMNS := 5
@@ -15,7 +16,9 @@ const CROSS := Color(0.85, 0.1, 0.1)
 
 var numbers: Array[int] = []
 var marked := {}
+var escaped := {}
 var _crosses := {}
+var _gone := {}
 var _total: Label3D
 
 
@@ -40,6 +43,10 @@ func build(list: Array[int]) -> void:
 		cross.name = "Cross%d" % list[i]
 		cross.hide()
 		_crosses[list[i]] = cross
+		var gone := _label(tr("COUNT_BOARD_ESCAPED"), 40, at + Vector3(0, 0, 0.02), CROSS)
+		gone.name = "Gone%d" % list[i]
+		gone.hide()
+		_gone[list[i]] = gone
 	_total = _label("", 44, Vector3(0, BOTTOM + SIZE.y - 0.55 - rows * CELL.y, 0.05))
 	_total.name = "Total"
 	_show_total()
@@ -75,6 +82,25 @@ func is_marked(number: int) -> bool:
 
 func counted() -> int:
 	return marked.size()
+
+
+## `number` got out (step 5): crossed off as escaped.
+func set_escaped(number: int) -> void:
+	if not _gone.has(number):
+		return
+	escaped[number] = true
+	(_gone[number] as Label3D).show()
+
+
+func is_escaped(number: int) -> bool:
+	return escaped.has(number)
+
+
+## Counted or gone: nobody left to find.
+func accounted() -> int:
+	var all := marked.duplicate()
+	all.merge(escaped)
+	return all.size()
 
 
 func _show_total() -> void:

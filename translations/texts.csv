@@ -3583,6 +3583,15 @@ COUNT_COOK_OFFENDED,¡Yo trabajo acá! ¡Soy el cocinero!,I work here! I'm the c
 COUNT_PLUMBER_OFFENDED,¡Yo trabajo acá! ¡Vine a arreglar un caño!,I work here! I came to fix a pipe!,Eu trabalho aqui! Vim consertar um cano!
 HINT_COUNT_WORKER,"Ese no es un preso, no tiene número.","That's no inmate, he has no number.","Esse não é um preso, não tem número."
 COUNT_ITCHY,"¡Ay, cómo pica esta tiza!","Ow, this chalk itches!","Ai, como coça esse giz!"
+COUNT_BOARD_ESCAPED,FUGA,GONE,FUGIU
+PROMPT_COUNT_SEARCH,E: revisar,E: search it,E: revistar
+HINT_COUNT_EMPTY,Acá no hay nadie.,Nobody in here.,Não tem ninguém aqui.
+COUNT_SNORE,Zzz... ronc...,Zzz... snore...,Zzz... ronc...
+COUNT_FOUND,"¡Ufa, me encontraron! Bueno, presente.","Aw, you found me! Fine, present.","Ah, me acharam! Tá bom, presente."
+HINT_COUNT_FOUND,¡Encontraste a uno de los que faltaban! Ya está contado.,You found one of the missing ones! He's counted.,Você achou um dos que faltavam! Já está contado.
+COUNT_RUNNER,¡Me voy antes de que me cuenten!,I'm off before they count me!,Vou embora antes que me contem!
+HINT_COUNT_RUNNER,¡Un preso que faltaba corre al portón! Espósalo.,A missing inmate is running for the gate! Cuff him.,Um preso que faltava corre para o portão! Algeme-o.
+HINT_COUNT_ESCAPED,Se escapó uno por el portón.,One got out through the gate.,Um fugiu pelo portão.
 BRIEF_MUSTACHES_B,"Alguien le pinta bigotes a todos los carteles del diputado Lustre del barrio. Creemos que es Tobías: nunca le perdonó que le cerrara la vereda por las obras.","Someone paints mustaches on every poster of deputy Lustre in the neighborhood. We think it's Tobías: he never forgave him for closing the sidewalk for the roadworks.","Alguém pinta bigodes em todos os cartazes do deputado Lustre no bairro. Achamos que é o Tobías: ele nunca perdoou que fechassem a calçada por causa das obras."
 BRIEF_MUSTACHES_C,"Traigan el esténcil del bigote en el baúl del patrullero. Y no pisen pintura: se nota.","Bring the mustache stencil back in the patrol car's trunk. And don't step in paint: it shows.","Tragam o estêncil do bigode no porta-malas da viatura. E não pisem na tinta: dá para ver."
 BRIEF_MUSTACHES_D,"Si encuentran los aerosoles negros o un cartel del diputado sin bigote, mejor: todo suma.","If you find the black spray cans or a poster of the deputy without a mustache, even better: it all adds up.","Se acharem os sprays pretos ou um cartaz do deputado sem bigode, melhor: tudo soma."

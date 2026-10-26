@@ -86,3 +86,13 @@ Cuáles son los 2 tramposos, qué 3 presos se esconden y en cuáles de los 8 esc
   más cerca (el muro oeste, el este o el frente del edificio), se ponen de espaldas, se refriegan 2,5 s ("¡Ay, cómo
   pica esta tiza!") y la cruz desaparece: su número vuelve a la lista (`CountPlan.rubbed`) y siguen deambulando.
   Capturas: `paso4-pica.png` y `paso4-lista.png` (la lista otra vez en 0 de 20).
+- **Paso 5:** los 8 escondites (`CountHideout`) son los que se pueden armar sin abrir el pabellón (las camas quedan
+  detrás de las rejas): en el comedor, el tacho de basura, el carrito de ropa sucia, la máquina de gaseosas y la pila
+  de cajas de puré; en el patio, el contenedor, el cajón de pelotas junto al aro, la cucha del perro y el colchón
+  contra el muro del fondo. Uno con alguien adentro ronca ("Zzz... ronc...") y se sacude cada 4 s si hay un policía a
+  4 m. E revisa: vacío dice "Acá no hay nadie"; con alguien, sale con la cruz puesta, contado, y se queda deambulando
+  por el patio (no hace falta llevarlo). Los que no se encontraron salen corriendo al portón en orden (a los 90 s,
+  150 s y 210 s del recuento; desde el comedor, por su puerta más cerca), con su número en el mameluco: esposado y
+  llevado a una celda queda contado; si llega al portón, la lista le pone "FUGA" y cuenta como resuelto, así que la
+  lista se completa (20 de 20 entre contados y fugados) aunque alguno se haya escapado. Capturas:
+  `paso5-comedor.png`, `paso5-patio.png`, `paso5-ronca.png` y `paso5-corre.png`.
