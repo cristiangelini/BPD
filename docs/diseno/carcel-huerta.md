@@ -60,3 +60,11 @@ Qué 3 plantas son raras y en qué orden aparecen, qué verdura tiene cada cante
    arrancar todo a lo loco.
 3. **¿Las grandes (desde la etapa 3) necesitan 2 policías tirando a la vez (uno solo si juega uno solo)?**
    Recomendado: sí, es cooperativo y gracioso, y premia encontrarlas temprano.
+
+## Hecho así
+- **Paso 2:** `--place=prison_garden` (`scenes/levels/prison_garden.tscn`, `PrisonLevel.variant = "garden"`). En el
+  este del patio, 12 canteros de 1,8 m (3 columnas x 4 filas, lejos del portón y de la cancha) con 4 plantas cada uno
+  (`GardenPlant`: lechuga, zanahoria, tomate o zapallo; la semilla reparte 3 canteros de cada una). `GardenPlan`
+  arranca el horario de huerta cuando el primer policía entra por el portón: los 6 jardineros (`YardInmate` en
+  GARDEN, con sombrero de paja y regadera verde) van cada uno por 4 canteros de la semilla, se agachan un rato en cada
+  uno y saludan al policía que pasa cerca. Capturas en `carcel-huerta/`: `paso2-huerta.png` y `paso2-cantero.png`.
