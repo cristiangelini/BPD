@@ -68,15 +68,32 @@ const SUSPECT_MODELS := {
 	"owner_grandpa": "res://assets/models/npc_abuelo.glb",
 	"owner_baker": "res://assets/models/npc_panadera.glb",
 	"owner_groomer": "res://assets/models/npc_peluquero.glb",
+	"owner_hardware": "res://assets/models/npc_ferretero.glb",
+	"owner_factory": "res://assets/models/npc_capataz.glb",
+	"owner_insurance": "res://assets/models/npc_jefa.glb",
+	"owner_cake_lab": "res://assets/models/npc_chef_bruno.glb",
 	# The pastry contest's culprit (escena-del-crimen.md), accused at the board.
 	"owner_cook": "res://assets/models/npc_pastelero.glb",
+	# The circus's culprit (escena-circo.md), accused at the board.
+	"owner_clown": "res://assets/models/npc_payaso.glb",
+	# The museum's culprit (escena-museo.md), accused at the board.
+	"owner_guard": "res://assets/models/npc_guardia_museo.glb",
 	# The infiltrations' bosses, cuffed or caught (infiltracion.md, infiltracion-coro.md).
 	"owner_chela": "res://assets/models/npc_chela.glb",
 	"owner_ernesto": "res://assets/models/npc_ernesto.glb",
 	"owner_pausa": "res://assets/models/npc_pausa.glb",
 	"owner_trucho": "res://assets/models/npc_invitado.glb",
 	"owner_toro": "res://assets/models/npc_toro.glb",
+	"owner_director": "res://assets/models/npc_director.glb",
+	"owner_flambe": "res://assets/models/npc_flambe.glb",
+	"owner_alfil": "res://assets/models/npc_alfil.glb",
+	"owner_cromado": "res://assets/models/npc_cromado.glb",
+	"owner_martillo": "res://assets/models/npc_martillo.glb",
 	"owner_oso": "res://assets/models/npc_ladron_oso.glb",
+	# El Conejo, who robbed the town bank alone (robo-banco-pueblo.md).
+	"owner_conejo": "res://assets/models/npc_ladron_conejo.glb",
+	# El Conde, El Oso dressed as a vampire for the blood bank (robo-banco-sangre.md).
+	"owner_conde": "res://assets/models/npc_ladron_oso.glb",
 	# The bank's manager who was the gang's boss (robo-banco-gerente.md).
 	"owner_manager": "res://assets/models/npc_gerente.glb",
 }

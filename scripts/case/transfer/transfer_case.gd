@@ -6,7 +6,10 @@ extends Node
 ## running, the warden by the gate counts the inmates on the bus one by one (COUNT_STEP each) and the case is solved:
 ## SALARY, PER_MISSING less for each inmate who got away and PER_CRASH less for each hard crash of the bus
 ## (ChaseDamages, like a chase's fines); quota of its own, like the riot's. With LOSE_AT inmates escaped, or the bus on
-## its side for TIPPED_SECONDS, the case is lost. No time limit (decision 66). Every number here is (propuesta).
+## its side for TIPPED_SECONDS, the case is lost. No time limit (decision 66). Step 6: online the host's case decides
+## and a guest's follows it (CaseSync, snapshot): the count, how it ended and who is running or got away. The inmates
+## and the accomplice's car go by NpcSync and the bus by PropSync; the host tells each guest when the bus lurches and
+## when the lullaby puts their own cop to sleep, since only that PC moves its cop. Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 4.0
@@ -40,6 +43,17 @@ var counted := 0
 var delivered := false
 var failed_reason := ""
 var shift_over := false
+var follower := false:
+	set(value):
+		follower = value
+		if prison:
+			prison.transfer.follower = value
+			prison.escape.follower = value
+var online: CaseSync:
+	set(value):
+		online = value
+		if prison:
+			prison.escape.online = value
 var _bubble: Label3D
 var _count_left := 0.0
 var _tipped_for := 0.0
@@ -61,6 +75,9 @@ func start(comisario: Comisario = null) -> void:
 	add_child(damages)
 	_make_warden()
 	prison.escape.chase_over.connect(_on_chase_over.unbind(2))
+	prison.bus.lurched.connect(_on_lurched.unbind(1))
+	for inmate in prison.transfer.inmates:
+		inmate.lulled.connect(_on_lulled)
 	if comisario:
 		comisario.spoke.connect(give_tip.unbind(1))
 		prison.bus.locked_hint = "HINT_COMISARIO_FIRST"
@@ -73,7 +90,10 @@ func start(comisario: Comisario = null) -> void:
 
 
 func _play_again() -> void:
-	PlaceDraw.start(get_tree())
+	if online:
+		online.play_again()
+	else:
+		PlaceDraw.start(get_tree())
 
 
 func give_tip() -> void:
@@ -111,7 +131,7 @@ func report() -> Dictionary:
 
 
 func _physics_process(delta: float) -> void:
-	if shift_over or not tip_given or failed_reason != "" or delivered:
+	if follower or shift_over or not tip_given or failed_reason != "" or delivered:
 		return
 	var bus := prison.bus
 	_tipped_for = _tipped_for + delta if bus.global_basis.y.y < TIPPED_UP else 0.0
@@ -177,7 +197,7 @@ func lose(reason: String) -> void:
 
 
 func finish_shift() -> void:
-	if shift_over:
+	if shift_over or follower:
 		return
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
@@ -211,7 +231,73 @@ func _show_result(result: Dictionary) -> void:
 		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over,
 			result.campaign.promoted)
 		over = result.campaign.over
-	shift_screen.get_node("%AgainButton").visible = not over
+	shift_screen.get_node("%AgainButton").visible = not over and not follower
+
+
+## Host: the bus lurched; each guest throws its own cop if it stands in the bus.
+func _on_lurched() -> void:
+	if online and not follower:
+		online.tell("lurch", [prison.bus.last_push])
+
+
+## Guest: the host's bus lurched.
+func lurch(push: Vector3) -> void:
+	for cop in prison.bus.riders:
+		if is_instance_valid(cop) and _is_own(cop):
+			cop.knock_back(push, PrisonBus.LURCH_SECONDS)
+
+
+## Host: the lullaby put a player's cop to sleep; that player's PC does it.
+func _on_lulled(cop: Cop) -> void:
+	if not online or follower:
+		return
+	for id: int in online.net.cop_syncs:
+		if online.net.cop_syncs[id].cop == cop:
+			online.tell("fall_asleep", [id])
+
+
+## Guest: the lullaby got the cop of player `id`; if it's this PC's, it sleeps.
+func fall_asleep(id: int) -> void:
+	var sync: CopSync = online.net.cop_syncs.get(id) if online else null
+	if sync and is_instance_valid(sync.cop) and _is_own(sync.cop):
+		sync.cop.knock_back(Vector3.ZERO, BusInmate.ASLEEP)
+
+
+## This PC's own cop: the one it moves.
+static func _is_own(cop: Cop) -> bool:
+	return not cop.sync or cop.sync.is_multiplayer_authority()
+
+
+## What every guest's case shows (CaseSync).
+func snapshot() -> Dictionary:
+	var escape := prison.escape
+	var state := {"tip": tip_given, "counting": counting, "counted": counted, "delivered": delivered,
+		"failed": failed_reason, "running": escape.running.seat if escape.running else -1,
+		"escaped": escape.escaped_seats(), "crashes": damages.crashes, "result": _result}
+	if escape.chase:
+		state.chase = escape.chase.snapshot()
+	return state
+
+
+func apply_snapshot(state: Dictionary) -> void:
+	if state.tip:
+		give_tip()
+	prison.escape.follow(state.running, state.escaped, state.get("chase"))
+	damages.crashes = state.crashes
+	if state.counting and not counting:
+		prison.transfer.process_mode = Node.PROCESS_MODE_DISABLED
+		prison.tricks.process_mode = Node.PROCESS_MODE_DISABLED
+	counting = state.counting
+	counted = state.counted
+	delivered = state.delivered
+	failed_reason = state.failed
+	if delivered:
+		_say("TRANSFER_COUNT_ALL" if escaped() == 0 else tr("TRANSFER_COUNT_MISSING") % escaped())
+	elif counting:
+		_say("TRANSFER_COUNT_START" if counted == 0 else tr("TRANSFER_COUNT") % counted)
+	checklist.show_rows(rows())
+	if not state.result.is_empty() and not shift_over:
+		_show_result(state.result)
 
 
 ## The planilla's rows, in the shape CaseChecklist takes.

@@ -37,6 +37,18 @@ const HEDGE_HEIGHT := 2.5
 @export var board_room_open := false
 ## Night at the station for the jailbreak (fuga.md): the station's lights turn low and warm.
 @export var night := false
+## The living city (ciudad-viva.md): sidewalks, traffic, clock, rain and street events, all the time, on the way to
+## and from every case (Cristian, 25/10).
+@export var alive := true
+## The city's cars, walkers and street events; a test that needs clear streets turns them off.
+@export var traffic := true
+
+## The clock with day and night (ciudad-viva.md, step 5) and the rain (step 6). A night case (the jailbreak, the
+## blackout) or a chase with its own weather has neither: hold_weather().
+var clock: CityClock
+var rain: CityRain
+## The street events' director (step 7).
+var events: CityEvents
 
 ## The comisario in his office at the station; the case scene listens to him.
 var comisario: Comisario
@@ -51,6 +63,7 @@ var _built: Node3D
 
 
 func _ready() -> void:
+	add_to_group("city")
 	_built = get_node_or_null("Built")
 	if _built == null:
 		_built = Node3D.new()
@@ -77,7 +90,7 @@ func _build() -> void:
 		for col in CityLayout.COLUMNS:
 			_block(Vector2i(col, row))
 	for p: Dictionary in CityLayout.PLACES:
-		if p.id == live_place:
+		if p.id == live_place or p.get("park", false):
 			continue
 		var root := _building(p.block, p.side, p.along, p.size, p.color, p.sign, CityLayout.SHOPS.has(p.id),
 			p.id == "grandpa", p.id == "station")
@@ -104,6 +117,65 @@ func _build() -> void:
 	golf.name = "Golf"
 	golf.city = self
 	_built.add_child(golf)
+	# The living city (ciudad-viva.md), where it is on.
+	if alive:
+		var life := CityLife.new()
+		life.name = "Life"
+		_built.add_child(life)
+	var moving: CityTraffic
+	if alive and traffic:
+		moving = CityTraffic.new()
+		moving.name = "Traffic"
+		# Added once the case scene has put the city around its place: built in the same frame, the city's bodies
+		# were still at the origin on the first physics step and pushed the cop off the grandpa's stairs.
+		_built.add_child.call_deferred(moving)
+	if alive and not night:
+		clock = CityClock.new()
+		clock.name = "Clock"
+		clock.hour = CityClock.start_hour(randi())
+		# The test city has its own sun and sky; a case's city uses its level's.
+		var level := get_parent() if get_parent() else self
+		clock.sun = get_node_or_null("Sun") if has_node("Sun") else level.get_node_or_null("Sun")
+		var world := (get_node_or_null("Environment") if has_node("Environment")
+			else level.get_node_or_null("Environment")) as WorldEnvironment
+		clock.environment = world.environment if world else null
+		var life: CityLife = _built.get_node("Life")
+		clock.lamps = life.lamp_materials()
+		clock.windows = life.window_materials()
+		clock.windows.append(_material(GLASS))
+		if moving:
+			clock.night_changed.connect(moving.set_night)
+		add_child(clock)
+		rain = CityRain.new()
+		rain.name = "Rain"
+		var plan := CityRain.plan(randi())
+		rain.start = plan.start
+		rain.length = plan.length
+		rain.clock = clock
+		rain.streets = [_material(ROAD), _material(SIDEWALK)]
+		add_child(rain)
+	if alive and traffic:
+		events = CityEvents.new()
+		events.name = "Events"
+		add_child(events)
+
+
+## A case with its own weather (a rainy or night chase) keeps the city's clock and rain out of it: the light goes
+## back to noon and both stop.
+func hold_weather() -> void:
+	if clock:
+		clock.running = false
+		clock.set_process(false)
+		clock.hour = 12.0
+		clock.overcast = 0.0
+		clock.apply()
+		clock.queue_free()
+		clock = null
+	if rain:
+		rain.set_process(false)
+		rain.set_wet(0.0)
+		rain.queue_free()
+		rain = null
 
 
 ## A square hedge `reach` from the middle, with a gap at the ramp's street on each of the `open` sides.
@@ -136,7 +208,7 @@ func _block(block: Vector2i) -> void:
 	var inner := CityLayout.BLOCK - CityLayout.SIDEWALK * 2
 	_mesh_box(center + Vector3(0, 0.015, 0), Vector3(CityLayout.BLOCK, 0.01, CityLayout.BLOCK), SIDEWALK)
 	var ground := PAVED
-	if block == CityLayout.PLAZA or CityLayout.barrio_kind(block) == "house":
+	if block == CityLayout.PLAZA or CityLayout.is_park(block) or CityLayout.barrio_kind(block) == "house":
 		ground = GRASS
 	_mesh_box(center + Vector3(0, 0.03, 0), Vector3(inner, 0.01, inner), ground)
 	if block == CityLayout.PLAZA:
@@ -392,6 +464,31 @@ func _disguises(root: Node3D) -> void:
 		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.GYM_DISGUISES[i]).instantiate()
 		piece.name = "Gym%d" % i
 		piece.position = StationRooms.GYM_DISGUISES_AT + Vector3(i * StationRooms.GYM_GAP, 0.12, 0)
+		root.add_child(piece)
+	for i in StationRooms.THIEF_DISGUISES.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.THIEF_DISGUISES[i]).instantiate()
+		piece.name = "Thief%d" % i
+		piece.position = StationRooms.THIEF_DISGUISES_AT + Vector3(i * StationRooms.THIEF_GAP, 0.12, 0)
+		root.add_child(piece)
+	for i in StationRooms.CHEF_DISGUISES.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.CHEF_DISGUISES[i]).instantiate()
+		piece.name = "Chef%d" % i
+		piece.position = StationRooms.CHEF_DISGUISES_AT + Vector3(i * StationRooms.CHEF_GAP, 0.12, 0)
+		root.add_child(piece)
+	for i in StationRooms.CHESS_DISGUISES.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.CHESS_DISGUISES[i]).instantiate()
+		piece.name = "Chess%d" % i
+		piece.position = StationRooms.CHESS_DISGUISES_AT + Vector3(i * StationRooms.CHESS_GAP, 0.12, 0)
+		root.add_child(piece)
+	for i in StationRooms.BIKER_DISGUISES.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.BIKER_DISGUISES[i]).instantiate()
+		piece.name = "Biker%d" % i
+		piece.position = StationRooms.BIKER_DISGUISES_AT + Vector3(i * StationRooms.BIKER_GAP, 0.12, 0)
+		root.add_child(piece)
+	for i in StationRooms.AUCTION_DISGUISES.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.AUCTION_DISGUISES[i]).instantiate()
+		piece.name = "Auction%d" % i
+		piece.position = StationRooms.AUCTION_DISGUISES_AT + Vector3(i * StationRooms.AUCTION_GAP, 0.12, 0)
 		root.add_child(piece)
 
 

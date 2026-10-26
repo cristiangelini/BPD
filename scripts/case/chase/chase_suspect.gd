@@ -21,9 +21,17 @@ const MODELS := {
 	"grandpa": preload("res://assets/models/npc_abuelo.glb"),
 	"baker": preload("res://assets/models/npc_panadera.glb"),
 	"groomer": preload("res://assets/models/npc_peluquero.glb"),
+	"hardware": preload("res://assets/models/npc_ferretero.glb"),
+	"factory": preload("res://assets/models/npc_capataz.glb"),
+	"insurance": preload("res://assets/models/npc_jefa.glb"),
+	"cake_lab": preload("res://assets/models/npc_chef_bruno.glb"),
 	"dangerous": preload("res://assets/models/npc_sospechoso.glb"),
 	# The pastry contest's culprit, off his bike (escena-del-crimen.md).
 	"cook": preload("res://assets/models/npc_pastelero.glb"),
+	# The circus's culprit, out of the clown car (escena-circo.md).
+	"clown": preload("res://assets/models/npc_payaso.glb"),
+	# The museum's culprit, out of the art van (escena-museo.md).
+	"guard": preload("res://assets/models/npc_guardia_museo.glb"),
 	# The traffic control's wanted driver (control-transito.md).
 	"driver": preload("res://assets/models/npc_cliente.glb"),
 	# Doña Chela, off her motorized walker (infiltracion.md).
@@ -36,8 +44,19 @@ const MODELS := {
 	"trucho": preload("res://assets/models/npc_invitado.glb"),
 	# El Toro, off his jog (infiltracion-gimnasio.md).
 	"toro": preload("res://assets/models/npc_toro.glb"),
+	# The Director of the thieves' school, out of his getaway (infiltracion-escuela.md).
+	"director": preload("res://assets/models/npc_director.glb"),
+	# The Chef Flambé, off his delivery scooter (infiltracion-restaurante.md).
+	"flambe": preload("res://assets/models/npc_flambe.glb"),
+	"alfil": preload("res://assets/models/npc_alfil.glb"),
+	"cromado": preload("res://assets/models/npc_cromado.glb"),
+	"martillo": preload("res://assets/models/npc_martillo.glb"),
 	# El Oso, out of the robbers' van or off his run with the sack (robo-banco.md).
 	"oso": preload("res://assets/models/npc_ladron_oso.glb"),
+	# El Conejo, who robbed the town bank alone (robo-banco-pueblo.md).
+	"conejo": preload("res://assets/models/npc_ladron_conejo.glb"),
+	# El Conde, El Oso dressed as a vampire for the blood bank (robo-banco-sangre.md).
+	"conde": preload("res://assets/models/npc_ladron_oso.glb"),
 	# The grandpa Oso, off his motor walker (robo-banco-abuelos.md).
 	"oso_grandpa": preload("res://assets/models/npc_abuelo_oso.glb"),
 	# The bank's manager who was the boss, out of his car (robo-banco-gerente.md).
@@ -48,8 +67,20 @@ const MODELS := {
 	"transfer_inmate": preload("res://assets/models/npc_preso.glb"),
 	# The market's spiteful vendor, off his vegetable trike (politico-mercado.md).
 	"vendor": preload("res://assets/models/npc_puestero.glb"),
+	# Engineer Remache, out of the cement mixer (politico-puente.md).
+	"engineer": preload("res://assets/models/npc_ingeniero.glb"),
+	"double": preload("res://assets/models/npc_politico.glb"),
+	"courier": preload("res://assets/models/npc_repartidor.glb"),
+	# The bought referee, off Barullo's scooter (politico-futbol.md).
+	"referee": preload("res://assets/models/npc_arbitro.glb"),
+	# The school's janitor, off his floor polisher (politico-escuela.md).
+	"janitor": preload("res://assets/models/npc_conserje_escuela.glb"),
 }
 const HECKLER := "heckler_"
+## The deputy's double (politico-doble.md), off on the kick scooter.
+const DOUBLE := "double"
+## The cake shop's courier at the deputy's birthday (politico-cumple.md), off on the kick scooter.
+const COURIER := "courier"
 ## The golf thief who runs off (persecucion-lugares.md): at this speed (m/s), away from cops this close, staying
 ## this far inside the club's fence and off its lakes. Cuffed, he stops; once the cuffs run out he runs again.
 const RUN_SPEED := 5.0

@@ -5,7 +5,15 @@ extends Grabbable
 ## mustache or glasses for the grandparents' club, and the choir robe (infiltracion-coro.md, step 2), which goes on
 ## brought to the chest instead of the face, and the cleaning crew's cap, face mask and vest (fuga-limpieza.md, step 3), and the mime troupe's beret, white face and
 ## striped shirt (infiltracion-mimos.md, step 1), and the costume party's cap, mustache and plastic badge
-## (infiltracion-fiesta.md, step 1), and the gym's headband, wristbands and tank top (infiltracion-gimnasio.md, step 1). Held, the mouse wheel brings it right up to the face; brought to its place on the cop's head it
+## (infiltracion-fiesta.md, step 1), and the gym's headband, wristbands and tank top (infiltracion-gimnasio.md, step 1),
+## and the thieves' school's eye mask, beanie and striped shirt (infiltracion-escuela.md, step 1), and the restaurant's
+## chef's hat, curly mustache and apron (infiltracion-restaurante.md, step 1), and the chess club's thick glasses,
+## argyle vest and thinker's beret (infiltracion-ajedrez.md, step 1), and the biker gang's bandana, long fake beard and
+## leather jacket (infiltracion-motos.md, step 1), and the art auction's monocle, top hat and tailcoat
+## (infiltracion-subasta.md, step 1). The fire drill's orange prisoner's vest
+## (fuga-simulacro.md) is worn the same way, but it's the opposite of a disguise: taken off it lies on the floor where
+## the guard can see it (a clue), and the waiting room's coat and hat make a cop pass for one of the public. The fast trial's lawyer jacket (fuga-juicio.md) makes its wearer the
+## cops' lawyer. Held, the mouse wheel brings it right up to the face; brought to its place on the cop's head it
 ## stays on, crooked by as much as it was off. Online the host sees it reach the head and tells everyone.
 ## Every number here is (propuesta).
 
@@ -18,6 +26,10 @@ const SLOTS := {
 	"cleaner_cap": Vector3(0, 1.42, 0.0),
 	"face_mask": Vector3(0, 1.22, -0.2),
 	"cleaner_vest": Vector3(0, 0.95, -0.3),
+	"prison_vest": Vector3(0, 0.95, -0.3),
+	"coat": Vector3(0, 0.95, -0.3),
+	"hat": Vector3(0, 1.5, 0.0),
+	"lawyer_jacket": Vector3(0, 0.95, -0.3),
 	"mime_beret": Vector3(0, 1.42, 0.0),
 	"mime_face": Vector3(0, 1.3, -0.21),
 	"mime_shirt": Vector3(0, 0.95, -0.3),
@@ -27,6 +39,21 @@ const SLOTS := {
 	"gym_headband": Vector3(0, 1.45, 0.0),
 	"gym_wristbands": Vector3(0, 0.68, -0.25),
 	"gym_tank": Vector3(0, 0.95, -0.3),
+	"thief_mask": Vector3(0, 1.33, -0.21),
+	"thief_beanie": Vector3(0, 1.42, 0.0),
+	"thief_shirt": Vector3(0, 0.95, -0.3),
+	"chef_hat": Vector3(0, 1.42, 0.0),
+	"chef_mustache": Vector3(0, 1.22, -0.2),
+	"chef_apron": Vector3(0, 0.95, -0.3),
+	"chess_glasses": Vector3(0, 1.33, -0.21),
+	"chess_vest": Vector3(0, 0.95, -0.3),
+	"chess_beret": Vector3(0, 1.42, 0.0),
+	"biker_bandana": Vector3(0, 1.42, 0.0),
+	"biker_beard": Vector3(0, 1.17, -0.2),
+	"biker_jacket": Vector3(0, 0.95, -0.3),
+	"auction_monocle": Vector3(0, 1.33, -0.21),
+	"auction_top_hat": Vector3(0, 1.42, 0.0),
+	"auction_tailcoat": Vector3(0, 0.95, -0.3),
 }
 const MODELS := {
 	"wig": preload("res://assets/models/disguise_wig.glb"),
@@ -36,6 +63,10 @@ const MODELS := {
 	"cleaner_cap": preload("res://assets/models/disguise_cleaner_cap.glb"),
 	"face_mask": preload("res://assets/models/disguise_face_mask.glb"),
 	"cleaner_vest": preload("res://assets/models/disguise_cleaner_vest.glb"),
+	"prison_vest": preload("res://assets/models/prison_vest.glb"),
+	"coat": preload("res://assets/models/disguise_coat.glb"),
+	"hat": preload("res://assets/models/disguise_hat.glb"),
+	"lawyer_jacket": preload("res://assets/models/disguise_lawyer_jacket.glb"),
 	"mime_beret": preload("res://assets/models/disguise_mime_beret.glb"),
 	"mime_face": preload("res://assets/models/disguise_mime_face.glb"),
 	"mime_shirt": preload("res://assets/models/disguise_mime_shirt.glb"),
@@ -45,15 +76,37 @@ const MODELS := {
 	"gym_headband": preload("res://assets/models/disguise_gym_headband.glb"),
 	"gym_wristbands": preload("res://assets/models/disguise_gym_wristbands.glb"),
 	"gym_tank": preload("res://assets/models/disguise_gym_tank.glb"),
+	"thief_mask": preload("res://assets/models/disguise_thief_mask.glb"),
+	"thief_beanie": preload("res://assets/models/disguise_thief_beanie.glb"),
+	"thief_shirt": preload("res://assets/models/disguise_thief_shirt.glb"),
+	"chef_hat": preload("res://assets/models/disguise_chef_hat.glb"),
+	"chef_mustache": preload("res://assets/models/disguise_chef_mustache.glb"),
+	"chef_apron": preload("res://assets/models/disguise_chef_apron.glb"),
+	"chess_glasses": preload("res://assets/models/disguise_chess_glasses.glb"),
+	"chess_vest": preload("res://assets/models/disguise_chess_vest.glb"),
+	"chess_beret": preload("res://assets/models/disguise_chess_beret.glb"),
+	"biker_bandana": preload("res://assets/models/disguise_biker_bandana.glb"),
+	"biker_beard": preload("res://assets/models/disguise_biker_beard.glb"),
+	"biker_jacket": preload("res://assets/models/disguise_biker_jacket.glb"),
+	"auction_monocle": preload("res://assets/models/disguise_auction_monocle.glb"),
+	"auction_top_hat": preload("res://assets/models/disguise_auction_top_hat.glb"),
+	"auction_tailcoat": preload("res://assets/models/disguise_auction_tailcoat.glb"),
 }
 ## Who the cops pass for, and with what: which pieces count and how many of them. (propuesta)
 const LOOKS := {
 	"grandparent": {"pieces": ["wig", "glasses", "mustache"], "needed": 2},
 	"chorister": {"pieces": ["robe"], "needed": 1},
 	"cleaner": {"pieces": ["cleaner_cap", "face_mask", "cleaner_vest"], "needed": 2},
+	"public": {"pieces": ["coat", "hat"], "needed": 1},
+	"lawyer": {"pieces": ["lawyer_jacket"], "needed": 1},
 	"mime": {"pieces": ["mime_beret", "mime_face", "mime_shirt"], "needed": 2},
 	"party": {"pieces": ["party_cap", "party_mustache", "party_badge"], "needed": 2},
 	"gym": {"pieces": ["gym_headband", "gym_wristbands", "gym_tank"], "needed": 2},
+	"thief": {"pieces": ["thief_mask", "thief_beanie", "thief_shirt"], "needed": 2},
+	"chef": {"pieces": ["chef_hat", "chef_mustache", "chef_apron"], "needed": 2},
+	"chess": {"pieces": ["chess_glasses", "chess_vest", "chess_beret"], "needed": 2},
+	"biker": {"pieces": ["biker_bandana", "biker_beard", "biker_jacket"], "needed": 2},
+	"auction": {"pieces": ["auction_monocle", "auction_top_hat", "auction_tailcoat"], "needed": 2},
 }
 ## Sportswear is made to sweat in: running doesn't shake it off (the gym's routine has the cops running and jumping).
 const TIGHT: Array[String] = ["gym_headband", "gym_wristbands", "gym_tank"]
@@ -67,6 +120,22 @@ const MAX_TILT := deg_to_rad(35.0)
 const CROOKED := deg_to_rad(12.0)
 
 @export var kind := "wig"
+## On a hook of the coat rack (the host sets it): it stays up there until a cop grabs it.
+var hanging := false
+
+
+func _ready() -> void:
+	if kind == "prison_vest":
+		add_to_group("guard_clues")
+
+
+## Hangs it on the coat rack at `hook` (the host): still, until someone grabs it.
+func hang(hook: Transform3D) -> void:
+	linear_velocity = Vector3.ZERO
+	angular_velocity = Vector3.ZERO
+	global_transform = hook
+	hanging = true
+	freeze = true
 
 
 static func scene_of(piece_kind: String) -> PackedScene:
@@ -90,6 +159,9 @@ func hold(holder_id: int, point: Vector3) -> void:
 	var grabber := instance_from_id(holder_id) as Node
 	if not holders.has(holder_id) and grabber and grabber.get_parent() is Cop:
 		add_collision_exception_with(grabber.get_parent())
+	if hanging:
+		hanging = false
+		freeze = false
 	super.hold(holder_id, point)
 
 

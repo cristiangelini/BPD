@@ -33,7 +33,7 @@ func _ready() -> void:
 	case = CrimeSceneCase.new()
 	case.name = "Case"
 	case.case_seed = case_seed
-	case.contest = contest
+	case.place = contest
 	var station := city.transform * CityLayout.lot("station")
 	board = CrimeBoard.new()
 	board.name = "Board"

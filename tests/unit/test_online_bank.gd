@@ -301,3 +301,61 @@ func test_the_floats_and_the_front_door_show_the_same() -> void:
 	BankFloats.wear(host.hostages[1], true)
 	await wait_until(func() -> bool: return guest.hostages[1].duck_float, 5.0)
 	assert_not_null(guest.hostages[1].get_node_or_null("DuckFloat"), "the hostage's float shows there too")
+
+
+## The roof robbery (robo-banco-techo.md, step 5): the helicopter, the nephew and El Oso's getaway by air.
+func _roof_pcs() -> Array[Node]:
+	var seed_ := 1
+	while BankLevel.variant(seed_, PackedStringArray()) != "roof":
+		seed_ += 1
+	_pcs = OnlinePcs.new(self, Callable(), func() -> Node3D:
+		var bank: BankLevel = BANK_SCENE.instantiate()
+		bank.case_seed = seed_
+		bank.get_node("Cop/Grabber").input_enabled = false
+		return bank)
+	return await _pcs.two_pcs()
+
+
+func test_the_helicopter_flies_the_same_on_every_pc() -> void:
+	var pcs: Array[Node] = await _roof_pcs()
+	var host := _bank(pcs[0])
+	var guest := _bank(pcs[1])
+	assert_true(guest.helicopter.follower, "the guest's helicopter only shows the host's")
+	host.helicopter.take_off()
+	await wait_until(func() -> bool: return guest.helicopter.spin == ToyHelicopter.FLY_SPIN, 5.0)
+	var up := func() -> float: return guest.to_local(guest.helicopter.global_position).y - BankLevel.ROOF
+	await wait_until(func() -> bool: return up.call() > 2.0, 5.0)
+	assert_gt(up.call(), 2.0, "up in the air there too")
+	assert_false(guest.helicopter.flying, "the guest's doesn't fly on its own")
+
+
+func test_the_nephew_caught_shows_on_every_pc() -> void:
+	var pcs: Array[Node] = await _roof_pcs()
+	var host := _bank(pcs[0])
+	var guest := _bank(pcs[1])
+	assert_true(guest.nephew.follower)
+	host.nephew.cuffed(Handcuffs.SECONDS)
+	await wait_until(func() -> bool: return guest.nephew.caught and guest.helicopter.crashed, 5.0)
+	assert_true(guest.nephew.caught, "caught on the guest's PC too")
+	assert_true(guest.helicopter.crashed, "and the helicopter crashed there")
+	assert_eq(guest.nephew.said(), "NEPHEW_CAUGHT", "his line shows there")
+
+
+func test_a_guest_grabs_the_rope_on_the_host() -> void:
+	var pcs: Array[Node] = await _roof_pcs()
+	var host := _bank(pcs[0])
+	var guest := _bank(pcs[1])
+	host.drill.drilled = host.drill.drill_time
+	await wait_physics_frames(3)
+	host.roof_bags = 0
+	host._oso_by_air()
+	await wait_until(func() -> bool: return guest.chase != null and not guest.helicopter.visible, 5.0)
+	assert_false(guest.helicopter.visible, "the roof's helicopter is the one flying him there too")
+	var rope := guest.chase.truck.get_node_or_null("RopeGrab") as RopeGrab
+	assert_not_null(rope, "the guest's flying helicopter has its rope")
+	var guest_cop := OnlinePcs.own_cop(pcs[1])
+	guest_cop.act("use", rope)
+	await wait_until(func() -> bool: return host.chase.stopped, 5.0)
+	assert_true(host.chase.stopped, "the host's El Oso is caught")
+	await wait_until(func() -> bool: return host.case.boss_jailed, 5.0)
+	assert_true(host.case.boss_jailed)

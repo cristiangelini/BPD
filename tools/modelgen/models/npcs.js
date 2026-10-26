@@ -116,6 +116,21 @@ function gymBody(b, skin, tank, shout = false) {
 	mouth(b, { open: shout });
 }
 
+// A pupil of the Los Girasoles school (politico-escuela.md, decision 210): the white school smock over the whole pear,
+// a big bow at the neck, a backpack of their color and a hairstyle of their own. The game scales them down to a child.
+function pupil(b, skin, hair, bag, { girl = false, freckles = false } = {}) {
+	pearBody(b, skin, { shirt: C('school_smock', 0xf6f6f2), onePiece: true, belted: false, shoes: C('school_shoes', 0x2a2a3a) });
+	b.add('body', C('smock_bow', 0x2a4ac8), ellipsoid(0.11, 0.05, 0.04, 6, 4), { pos: V(0, 1.1, 0.17) });
+	b.add('body', bag, new THREE.BoxGeometry(0.42, 0.42, 0.18), { pos: V(0, 0.82, -0.36) });
+	for (const s of [-1, 1]) b.add('body', bag, new THREE.BoxGeometry(0.05, 0.4, 0.04), { pos: V(s * 0.17, 0.88, 0.2), rot: [0.25, 0, 0] });
+	eyes(b, 1.32, 0.17, 0.085, 0.065);
+	mouth(b, { smile: true });
+	if (freckles) for (const s of [-1, 1]) for (let i = 0; i < 3; i++) b.add('face', C('freckle', 0xb07850), ellipsoid(0.008, 0.008, 0.004, 4, 3), { pos: V(s * (0.09 + i * 0.02), 1.26 - (i % 2) * 0.015, 0.19) });
+	hairCap(b, hair, { y: 1.4, back: 0.02 });
+	if (girl) for (const s of [-1, 1]) b.add('head', hair, ellipsoid(0.07, 0.12, 0.07, 6, 4), { pos: V(s * 0.22, 1.36, -0.05), rot: [0, 0, s * 0.4] });
+	else b.add('head', hair, new THREE.ConeGeometry(0.05, 0.12, 4), { pos: V(0.03, 1.6, 0.05), rot: [0.3, 0, -0.3] });
+}
+
 const NPCS = {
 	// Comisario: big, shouting, with a gold-banded cap, huge mustache and medals.
 	comisario(b) {
@@ -374,6 +389,326 @@ const NPCS = {
 		mouth(b, { smile: true });
 		b.add('props', C('clipboard', 0x8a5a32), new THREE.BoxGeometry(0.2, 0.28, 0.02), { pos: V(-0.42, 0.75, 0.2), rot: [0.3, 0, 0] });
 	},
+	// The thieves' school (infiltracion-escuela.md): a student in the grey striped shirt, beanie and eye mask, with a
+	// backpack full of books on picking locks.
+	alumno(b) {
+		const grey = C('thief_grey', 0x9aa0a8), dark = C('thief_black', 0x141418);
+		pearBody(b, SKIN.arena, { shirt: grey, pants: C('jeans', 0x2a2f3a) });
+		for (const y of [0.6, 0.72, 0.84, 0.96]) {
+			const r = y < 0.8 ? 0.36 + (0.8 - y) * 0.33 : 0.36 - (y - 0.8) * 0.48;
+			b.add('body', dark, loft([{ y: y - 0.025, rx: r + 0.012, rz: r * 0.89 + 0.012 }, { y: y + 0.025, rx: r + 0.006, rz: r * 0.89 + 0.006 }], 10));
+		}
+		b.add('face', dark, new THREE.BoxGeometry(0.32, 0.08, 0.06), { pos: V(0, 1.33, 0.16) });
+		eyes(b, 1.33, 0.18, 0.08, 0.045);
+		mouth(b);
+		b.add('cap', dark, ellipsoid(0.205, 0.14, 0.195, 10, 5), { pos: V(0, 1.42, 0.01) });
+		b.add('props', C('backpack_green', 0x4a7a3a), new THREE.BoxGeometry(0.4, 0.42, 0.18), { pos: V(0, 0.82, -0.38) });
+	},
+	// Another student: a purple hoodie with the hood up over the mask, a ponytail and a notebook under the arm.
+	alumna(b) {
+		const hoodie = C('hoodie_purple', 0x6a3aa0), dark = C('thief_black', 0x141418);
+		pearBody(b, SKIN.cacao, { shirt: hoodie, pants: dark, belted: false });
+		b.add('face', dark, new THREE.BoxGeometry(0.32, 0.08, 0.06), { pos: V(0, 1.33, 0.16) });
+		eyes(b, 1.33, 0.18, 0.08, 0.045);
+		mouth(b, { smile: true });
+		const hood = new THREE.SphereGeometry(1, 10, 6, 0, Math.PI * 2, 0, Math.PI * 0.55);
+		hood.scale(0.23, 0.22, 0.22);
+		b.add('cap', hoodie, hood, { pos: V(0, 1.33, -0.04), rot: [-0.5, 0, 0] });
+		b.add('cap', C('hair_black', 0x161214), ellipsoid(0.05, 0.12, 0.05, 6, 4), { pos: V(0, 1.3, -0.26), rot: [0.4, 0, 0] });
+		b.add('props', C('notebook_red', 0xb83030), new THREE.BoxGeometry(0.04, 0.3, 0.22), { pos: V(0.5, 0.72, 0.08) });
+	},
+	// La Profesora Ganzúa, the thieves' teacher: a mustard cardigan, glasses on a chain, a grey bun with a lockpick stuck
+	// in it, and a giant key as her pointer.
+	ganzua(b) {
+		const cardigan = C('cardigan_mustard', 0xc8a03a);
+		pearBody(b, SKIN.crema, { shirt: cardigan, pants: C('skirt_brown', 0x5a3a28), belted: false });
+		for (let i = 0; i < 4; i++) b.add('body', C('button_brown', 0x5a3a20), ellipsoid(0.02, 0.02, 0.01, 5, 3), { pos: V(0, 0.62 + i * 0.12, 0.42 - i * 0.03) });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		glasses(b);
+		mouth(b);
+		const hair = C('hair_gray', 0x9aa0a8);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		b.add('head', hair, ellipsoid(0.1, 0.1, 0.1, 8, 6), { pos: V(0, 1.55, -0.06) });
+		b.add('head', C('lockpick', 0xd8d8e0), new THREE.CylinderGeometry(0.008, 0.008, 0.22, 5), { pos: V(0.05, 1.6, -0.06), rot: [0, 0, -0.6] });
+		const brass = C('key_brass', 0xd8b040);
+		b.add('props', brass, new THREE.CylinderGeometry(0.015, 0.015, 0.6, 6), { pos: V(0.5, 0.8, 0.2), rot: [0.5, 0, 0] });
+		b.add('props', brass, new THREE.TorusGeometry(0.06, 0.015, 4, 10), { pos: V(0.5, 1.08, 0.36), rot: [0.5, 0, 0] });
+		b.add('props', brass, new THREE.BoxGeometry(0.03, 0.08, 0.05), { pos: V(0.5, 0.56, 0.06), rot: [0.5, 0, 0] });
+	},
+	// The Director of the thieves' school, the gang's boss: a black tailcoat, a top hat, a gold eye mask, white gloves
+	// and a gold tie.
+	director(b) {
+		const coat = C('tailcoat_black', 0x18181c);
+		pearBody(b, SKIN.celeste, { shirt: coat, pants: coat, belted: false });
+		lapels(b, white);
+		tie(b, gold);
+		b.add('face', gold, new THREE.BoxGeometry(0.32, 0.08, 0.06), { pos: V(0, 1.33, 0.16) });
+		eyes(b, 1.33, 0.18, 0.08, 0.045);
+		mustache(b, black);
+		mouth(b, { smile: true });
+		b.add('cap', coat, new THREE.CylinderGeometry(0.15, 0.15, 0.3, 10), { pos: V(0, 1.62, 0.0) });
+		b.add('cap', coat, new THREE.CylinderGeometry(0.24, 0.24, 0.02, 12), { pos: V(0, 1.47, 0.0) });
+		b.add('cap', gold, new THREE.CylinderGeometry(0.152, 0.152, 0.04, 10), { pos: V(0, 1.5, 0.0) });
+		for (const s of [-1, 1]) b.add('arms', white, ellipsoid(0.08, 0.08, 0.08, 6, 4), { pos: V(s * 0.49, 0.64, 0.09) });
+	},
+	// The school's lookout at the door: big, a black coat and beanie, and binoculars on his chest.
+	vigia(b) {
+		const coat = C('coat_black', 0x22222a);
+		pearBody(b, SKIN.arena, { shirt: coat, pants: coat, belted: false });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mouth(b);
+		b.add('cap', C('thief_black', 0x141418), ellipsoid(0.205, 0.14, 0.195, 10, 5), { pos: V(0, 1.42, 0.01) });
+		for (const s of [-1, 1]) b.add('props', black, new THREE.CylinderGeometry(0.035, 0.035, 0.12, 8), { pos: V(s * 0.05, 1.0, 0.32), rot: [Math.PI / 2, 0, 0] });
+		b.add('props', black, new THREE.TorusGeometry(0.16, 0.008, 3, 12), { pos: V(0, 1.1, 0.12), rot: [1.2, 0, 0] });
+	},
+	// The restaurant (infiltracion-restaurante.md): a cook of the gang in a white jacket, a small white cap and a red
+	// neckerchief, a ladle in hand.
+	cocinero(b) {
+		const jacket = C('chef_white', 0xf6f6f2);
+		pearBody(b, SKIN.arena, { shirt: jacket, pants: C('check_pants', 0x3a3a40), belted: false });
+		for (const sd of [-1, 1]) for (let i = 0; i < 3; i++) b.add('body', black, ellipsoid(0.018, 0.018, 0.01, 5, 3), { pos: V(sd * 0.08, 0.66 + i * 0.1, 0.43 - i * 0.025) });
+		b.add('body', C('neckerchief_red', 0xc8202a), new THREE.TorusGeometry(0.2, 0.035, 5, 12), { pos: V(0, 1.06, 0.02), rot: [Math.PI / 2, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mustache(b, C('hair_brown', 0x4a2a14));
+		mouth(b);
+		b.add('cap', jacket, new THREE.CylinderGeometry(0.2, 0.2, 0.14, 12), { pos: V(0, 1.48, 0.0) });
+		const steel = C('ladle_steel', 0xb8bcc4);
+		b.add('props', steel, new THREE.CylinderGeometry(0.012, 0.012, 0.4, 5), { pos: V(0.5, 0.8, 0.12) });
+		b.add('props', steel, new THREE.SphereGeometry(0.06, 8, 4, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), { pos: V(0.5, 0.6, 0.12) });
+	},
+	// Another cook: a white jacket, a hairnet over a bun and an apron stained with tomato.
+	cocinera(b) {
+		const jacket = C('chef_white', 0xf6f6f2);
+		pearBody(b, SKIN.cacao, { shirt: jacket, pants: C('check_pants', 0x3a3a40), belted: false });
+		b.add('body', C('chef_apron', 0xe2e2dc), new THREE.BoxGeometry(0.5, 0.42, 0.02), { pos: V(0, 0.55, 0.47), rot: [-0.2, 0, 0] });
+		for (const [x, y] of [[-0.1, 0.6], [0.12, 0.5], [0.02, 0.42]]) b.add('body', C('tomato_stain', 0xc83a2a), ellipsoid(0.04, 0.03, 0.01, 6, 3), { pos: V(x, y, 0.49) });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mouth(b, { smile: true });
+		const hair = C('hair_black', 0x161214);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		b.add('head', C('hairnet', 0xd8d8e0), ellipsoid(0.11, 0.1, 0.11, 8, 5), { pos: V(0, 1.55, -0.08) });
+	},
+	// A waiter of the gang: a black vest over a white shirt, a bow tie, a towel on the arm and a tray.
+	mozo(b) {
+		const vest = C('vest_black', 0x1c1c22);
+		pearBody(b, SKIN.crema, { shirt: white, pants: vest });
+		b.add('body', vest, loft([{ y: 0.62, rx: 0.47, rz: 0.42 }, { y: 1.0, rx: 0.37, rz: 0.33 }], 10), { pos: V(0, 0, 0.005) });
+		for (const sd of [-1, 1]) b.add('body', black, new THREE.ConeGeometry(0.05, 0.09, 4), { pos: V(sd * 0.05, 1.07, 0.34), rot: [0, 0, sd * Math.PI / 2] });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mouth(b);
+		hairCap(b, C('hair_black', 0x161214));
+		b.add('props', white, new THREE.BoxGeometry(0.1, 0.3, 0.1), { pos: V(-0.5, 0.78, 0.12) });
+		b.add('props', C('tray_steel', 0xb8bcc4), new THREE.CylinderGeometry(0.2, 0.2, 0.02, 12), { pos: V(0.52, 1.0, 0.2) });
+	},
+	// The Chef Flambé, the gang's boss: a tall chef's hat, a huge curly mustache, a red neckerchief, a gold pin on the
+	// jacket and a frying pan with a little flame.
+	flambe(b) {
+		const jacket = C('chef_white', 0xf6f6f2);
+		pearBody(b, SKIN.crema, { shirt: jacket, pants: black, belted: false });
+		for (const sd of [-1, 1]) for (let i = 0; i < 3; i++) b.add('body', gold, ellipsoid(0.02, 0.02, 0.01, 5, 3), { pos: V(sd * 0.08, 0.66 + i * 0.1, 0.43 - i * 0.025) });
+		b.add('body', C('neckerchief_red', 0xc8202a), new THREE.TorusGeometry(0.2, 0.04, 5, 12), { pos: V(0, 1.06, 0.02), rot: [Math.PI / 2, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mustache(b, C('hair_brown', 0x4a2a14), 1.6);
+		mouth(b, { smile: true });
+		b.add('cap', jacket, new THREE.CylinderGeometry(0.2, 0.2, 0.1, 12), { pos: V(0, 1.47, 0.0) });
+		b.add('cap', jacket, new THREE.CylinderGeometry(0.25, 0.2, 0.3, 12), { pos: V(0, 1.67, 0.0) });
+		b.add('cap', jacket, ellipsoid(0.27, 0.12, 0.27, 10, 5), { pos: V(0, 1.84, 0.0) });
+		const pan = C('pan_black', 0x26262a);
+		b.add('props', pan, new THREE.CylinderGeometry(0.16, 0.13, 0.05, 12), { pos: V(0.55, 0.85, 0.3) });
+		b.add('props', pan, new THREE.CylinderGeometry(0.015, 0.015, 0.3, 5), { pos: V(0.55, 0.85, 0.08), rot: [Math.PI / 2, 0, 0] });
+		b.add('props', C('flame', 0xff8a20, { emissive: 0xc04000 }), new THREE.ConeGeometry(0.07, 0.18, 6), { pos: V(0.55, 0.97, 0.3) });
+	},
+	// The maître at the kitchen's door: a tuxedo, a thin mustache, slicked hair and the leather-bound book of bookings.
+	maitre(b) {
+		const tux = C('tux_black', 0x16161a);
+		pearBody(b, SKIN.celeste, { shirt: tux, pants: tux, belted: false });
+		lapels(b, white);
+		for (const sd of [-1, 1]) b.add('body', black, new THREE.ConeGeometry(0.05, 0.09, 4), { pos: V(sd * 0.05, 1.07, 0.34), rot: [0, 0, sd * Math.PI / 2] });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mustache(b, black, 0.7);
+		mouth(b);
+		hairCap(b, C('hair_black', 0x161214), { y: 1.4, sy: 0.45 });
+		b.add('props', C('book_leather', 0x5a2a1a), new THREE.BoxGeometry(0.24, 0.32, 0.05), { pos: V(-0.48, 0.8, 0.22), rot: [0.3, 0, 0] });
+	},
+	// The chess club (infiltracion-ajedrez.md): a member of the gang in a brown cardigan with leather elbows, thick
+	// glasses and a grey fringe around a bald head, a white pawn in hand.
+	ajedrecista(b) {
+		const cardigan = C('cardigan_brown', 0x7a5a3a);
+		pearBody(b, SKIN.crema, { shirt: cardigan, pants: C('trousers_grey', 0x5a5a62) });
+		for (let i = 0; i < 4; i++) b.add('body', C('button_brown', 0x5a3a20), ellipsoid(0.02, 0.02, 0.01, 5, 3), { pos: V(0, 0.62 + i * 0.12, 0.42 - i * 0.03) });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		glasses(b);
+		mouth(b);
+		const hair = C('hair_gray', 0x9aa0a8);
+		for (const s of [-1, 1]) b.add('head', hair, ellipsoid(0.07, 0.08, 0.12, 6, 4), { pos: V(s * 0.19, 1.36, -0.04) });
+		b.add('head', hair, ellipsoid(0.15, 0.07, 0.06, 8, 4), { pos: V(0, 1.36, -0.18) });
+		const pawn = C('pawn_white', 0xf2eee0);
+		b.add('props', pawn, new THREE.CylinderGeometry(0.03, 0.05, 0.08, 8), { pos: V(0.5, 0.82, 0.2) });
+		b.add('props', pawn, new THREE.SphereGeometry(0.035, 8, 6), { pos: V(0.5, 0.9, 0.2) });
+	},
+	// Another member: a green turtleneck, a grey bun with a pencil through it and a thermos of coffee.
+	ajedrecista_b(b) {
+		const neck = C('turtleneck_green', 0x3a6a4a);
+		pearBody(b, SKIN.cacao, { shirt: neck, pants: C('skirt_grey', 0x4a4a52), belted: false });
+		b.add('body', neck, new THREE.CylinderGeometry(0.17, 0.2, 0.1, 10), { pos: V(0, 1.1, 0.02) });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mouth(b, { smile: true });
+		const hair = C('hair_gray', 0x9aa0a8);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		b.add('head', hair, ellipsoid(0.1, 0.1, 0.1, 8, 6), { pos: V(0, 1.55, -0.06) });
+		b.add('head', C('pencil_yellow', 0xf0c030), new THREE.CylinderGeometry(0.008, 0.008, 0.22, 5), { pos: V(0, 1.58, -0.06), rot: [0, 0, 1.2] });
+		const steel = C('thermos_steel', 0xb8bcc4);
+		b.add('props', steel, new THREE.CylinderGeometry(0.05, 0.05, 0.26, 8), { pos: V(0.5, 0.78, 0.18) });
+		b.add('props', C('thermos_cap', 0xc8202a), new THREE.CylinderGeometry(0.055, 0.055, 0.05, 8), { pos: V(0.5, 0.93, 0.18) });
+	},
+	// The Gran Maestro Alfil, the gang's boss: a long black coat, a tall white bishop's hat with its slit and its ball,
+	// a monocle on a gold chain and the hollow black king in his hand.
+	alfil(b) {
+		const coat = C('coat_black', 0x18181c);
+		pearBody(b, SKIN.arena, { shirt: coat, pants: coat, belted: false });
+		lapels(b, white);
+		tie(b, C('tie_purple', 0x5a2a7a));
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		b.add('face', gold, new THREE.TorusGeometry(0.05, 0.008, 4, 12), { pos: V(0.08, 1.33, 0.2) });
+		b.add('face', gold, new THREE.CylinderGeometry(0.004, 0.004, 0.3, 4), { pos: V(0.14, 1.18, 0.18), rot: [0, 0, 0.3] });
+		mustache(b, C('hair_gray', 0x9aa0a8), 0.9);
+		mouth(b);
+		const hat = C('bishop_white', 0xf2eee0);
+		b.add('cap', hat, new THREE.CylinderGeometry(0.2, 0.21, 0.08, 12), { pos: V(0, 1.46, 0.0) });
+		b.add('cap', hat, ellipsoid(0.2, 0.32, 0.2, 12, 8), { pos: V(0, 1.7, 0.0) });
+		b.add('cap', coat, new THREE.BoxGeometry(0.03, 0.2, 0.26), { pos: V(0.06, 1.8, 0.0), rot: [0, 0, -0.5] });
+		b.add('cap', hat, new THREE.SphereGeometry(0.05, 8, 6), { pos: V(0, 2.04, 0.0) });
+		const king = C('king_black', 0x141418);
+		b.add('props', king, new THREE.CylinderGeometry(0.035, 0.06, 0.16, 8), { pos: V(0.5, 0.85, 0.2) });
+		b.add('props', king, new THREE.BoxGeometry(0.02, 0.07, 0.02), { pos: V(0.5, 0.97, 0.2) });
+		b.add('props', king, new THREE.BoxGeometry(0.06, 0.02, 0.02), { pos: V(0.5, 0.98, 0.2) });
+	},
+	// The chess club's doorkeeper: a checkered vest, a bow tie, a stopwatch on a chain and a very serious face.
+	conserje(b) {
+		const vest = C('vest_checker', 0x2a2a30);
+		pearBody(b, SKIN.celeste, { shirt: white, pants: vest });
+		b.add('body', vest, loft([{ y: 0.62, rx: 0.47, rz: 0.42 }, { y: 1.0, rx: 0.37, rz: 0.33 }], 10), { pos: V(0, 0, 0.005) });
+		for (let r = 0; r < 3; r++) for (let c = 0; c < 2; c++) b.add('body', white, new THREE.BoxGeometry(0.08, 0.08, 0.01), { pos: V(-0.12 + (c * 2 + (r % 2)) * 0.08, 0.68 + r * 0.1, 0.44 - r * 0.02) });
+		for (const sd of [-1, 1]) b.add('body', black, new THREE.ConeGeometry(0.05, 0.09, 4), { pos: V(sd * 0.05, 1.07, 0.34), rot: [0, 0, sd * Math.PI / 2] });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mustache(b, black, 0.6);
+		mouth(b);
+		hairCap(b, C('hair_black', 0x161214), { y: 1.4, sy: 0.45 });
+		b.add('props', C('stopwatch', 0xd8d8e0), new THREE.CylinderGeometry(0.06, 0.06, 0.02, 10), { pos: V(-0.48, 0.8, 0.22), rot: [Math.PI / 2, 0, 0] });
+	},
+	// The biker gang Los Caños de Escape (infiltracion-motos.md): a biker in a black leather vest over a grey tank top,
+	// a long grey beard, a red bandana and a big wrench in hand.
+	motoquero(b) {
+		const leather = C('biker_leather', 0x1a1a1e);
+		gymBody(b, SKIN.arena, C('tank_grey', 0x7a7a80));
+		b.add('body', leather, loft([{ y: 0.62, rx: 0.48, rz: 0.43 }, { y: 1.02, rx: 0.38, rz: 0.34 }], 10), { pos: V(0, 0, -0.02) });
+		b.add('body', C('biker_silver', 0xc8ccd4), new THREE.BoxGeometry(0.03, 0.06, 0.02), { pos: V(0.2, 0.9, 0.36) });
+		const beard = C('biker_beard', 0x9a9690);
+		b.add('face', beard, new THREE.ConeGeometry(0.13, 0.32, 8), { pos: V(0, 1.06, 0.18), rot: [Math.PI + 0.3, 0, 0], scale: [1, 1, 0.5] });
+		mustache(b, beard, 1.1);
+		b.add('head', C('biker_red', 0xb02424), ellipsoid(0.21, 0.1, 0.2, 10, 5), { pos: V(0, 1.45, 0) });
+		b.add('props', C('wrench_steel', 0xb8bcc4), new THREE.BoxGeometry(0.05, 0.36, 0.03), { pos: V(0.52, 0.8, 0.2), rot: [0, 0, 0.2] });
+	},
+	// Another biker: a black leather jacket with silver zips, a pink mohawk, sunglasses and a helmet under the arm.
+	motoquera(b) {
+		const leather = C('biker_leather', 0x1a1a1e);
+		pearBody(b, SKIN.crema, { shirt: leather, pants: C('jeans', 0x2a2f3a), belted: false });
+		b.add('body', C('biker_silver', 0xc8ccd4), new THREE.BoxGeometry(0.015, 0.4, 0.015), { pos: V(0.08, 0.8, 0.43), rot: [-0.2, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		sunglasses(b);
+		mouth(b, { smile: true });
+		const pink = C('mohawk_pink', 0xe04a9a);
+		for (let i = 0; i < 5; i++) b.add('head', pink, new THREE.ConeGeometry(0.035, 0.16, 5), { pos: V(0, 1.55 + Math.sin(i / 4 * Math.PI) * 0.03, 0.12 - i * 0.07), rot: [-0.3 + i * 0.15, 0, 0] });
+		b.add('props', C('helmet_red', 0xc0302a), ellipsoid(0.17, 0.15, 0.17, 10, 6), { pos: V(-0.52, 0.8, 0.12) });
+		b.add('props', black, new THREE.BoxGeometry(0.2, 0.06, 0.02), { pos: V(-0.52, 0.82, 0.29) });
+	},
+	// El Cromado, the gang's boss: huge, a chrome-studded leather jacket, a shiny chrome helmet with a spike, mirror
+	// sunglasses, a long black beard and a polishing rag in hand.
+	cromado(b) {
+		const leather = C('biker_leather', 0x1a1a1e), chrome = C('chrome', 0xdde2ea, { metalness: 0.8, roughness: 0.2 });
+		pearBody(b, SKIN.cacao, { shirt: leather, pants: C('jeans_black', 0x18181c), belted: false });
+		for (let i = 0; i < 6; i++) for (const s of [-1, 1]) b.add('body', chrome, new THREE.SphereGeometry(0.025, 5, 4), { pos: V(s * (0.16 + i * 0.03), 1.0 - i * 0.07, 0.36 - i * 0.01) });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		for (const s of [-1, 1]) b.add('face', chrome, new THREE.BoxGeometry(0.11, 0.07, 0.02), { pos: V(s * 0.075, 1.33, 0.205) });
+		const beard = C('beard_black', 0x161214);
+		b.add('face', beard, new THREE.ConeGeometry(0.15, 0.38, 8), { pos: V(0, 1.03, 0.18), rot: [Math.PI + 0.3, 0, 0], scale: [1, 1, 0.5] });
+		mustache(b, beard, 1.2);
+		b.add('cap', chrome, ellipsoid(0.22, 0.17, 0.22, 12, 6), { pos: V(0, 1.43, 0) });
+		b.add('cap', chrome, new THREE.ConeGeometry(0.04, 0.16, 6), { pos: V(0, 1.66, 0) });
+		b.add('props', C('rag_yellow', 0xe8c040), new THREE.BoxGeometry(0.16, 0.12, 0.03), { pos: V(0.52, 0.8, 0.2), rot: [0.2, 0, 0.3] });
+	},
+	// The biker bar's bouncer: a black tank top, bald, sunglasses, a thick silver chain and arms crossed... nearly.
+	patovica_moto(b) {
+		gymBody(b, SKIN.celeste, C('tank_black', 0x18181c));
+		sunglasses(b);
+		const silver = C('biker_silver', 0xc8ccd4);
+		for (let i = 0; i < 9; i++) {
+			const a = Math.PI * (0.15 + i * 0.0875);
+			b.add('body', silver, new THREE.TorusGeometry(0.025, 0.008, 4, 6), { pos: V(Math.cos(a) * 0.24, 1.04 - Math.sin(a) * 0.12, 0.27 + Math.sin(a) * 0.08), rot: [0, 0, a] });
+		}
+		b.add('body', C('tattoo_blue', 0x2a5ab0), new THREE.BoxGeometry(0.08, 0.08, 0.01), { pos: V(0.38, 0.84, 0.15), rot: [0, 0.4, 0] });
+	},
+	// The art auction El Martillo de Oro (infiltracion-subasta.md): a rich buyer in a burgundy velvet jacket, a cravat,
+	// a monocle, slicked grey hair and a numbered bidding paddle.
+	comprador(b) {
+		const velvet = C('velvet_burgundy', 0x6a1a2a);
+		pearBody(b, SKIN.crema, { shirt: velvet, pants: C('pants_grey', 0x4a4a52), belted: false });
+		lapels(b, white);
+		b.add('body', C('cravat_gold', 0xd8b040), ellipsoid(0.07, 0.08, 0.04, 8, 5), { pos: V(0, 1.03, 0.33) });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		b.add('face', gold, new THREE.TorusGeometry(0.05, 0.008, 4, 12), { pos: V(-0.08, 1.33, 0.2) });
+		mustache(b, C('hair_gray', 0x9aa0a8), 0.8);
+		mouth(b);
+		hairCap(b, C('hair_gray', 0x9aa0a8), { y: 1.4, sy: 0.45 });
+		b.add('props', C('paddle_white', 0xf4f0e8), new THREE.CylinderGeometry(0.11, 0.11, 0.02, 12), { pos: V(0.5, 0.95, 0.22), rot: [Math.PI / 2, 0, 0] });
+		b.add('props', C('paddle_handle', 0x5a3a20), new THREE.BoxGeometry(0.03, 0.2, 0.02), { pos: V(0.5, 0.78, 0.22) });
+	},
+	// Another buyer: a long emerald dress, a pearl necklace, a huge hat with a feather and opera glasses.
+	compradora(b) {
+		const emerald = C('dress_emerald', 0x1a6a4a);
+		pearBody(b, SKIN.cacao, { shirt: emerald, pants: emerald, belted: false });
+		for (let i = 0; i < 9; i++) {
+			const a = Math.PI * (0.15 + i * 0.0875);
+			b.add('body', C('pearl', 0xf4f0e8), new THREE.SphereGeometry(0.022, 5, 4), { pos: V(Math.cos(a) * 0.22, 1.06 - Math.sin(a) * 0.1, 0.27 + Math.sin(a) * 0.08) });
+		}
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mouth(b, { smile: true });
+		const hat = C('hat_lilac', 0x9a7ab8);
+		b.add('cap', hat, new THREE.CylinderGeometry(0.36, 0.36, 0.03, 16), { pos: V(0, 1.47, 0) });
+		b.add('cap', hat, ellipsoid(0.2, 0.12, 0.2, 12, 6), { pos: V(0, 1.5, 0) });
+		b.add('cap', C('feather_pink', 0xe88ab8), new THREE.ConeGeometry(0.04, 0.4, 5), { pos: V(-0.18, 1.7, -0.05), rot: [0, 0, 0.6] });
+		b.add('props', black, new THREE.BoxGeometry(0.14, 0.05, 0.05), { pos: V(-0.5, 0.95, 0.2) });
+		b.add('props', gold, new THREE.CylinderGeometry(0.008, 0.008, 0.2, 4), { pos: V(-0.5, 0.82, 0.2) });
+	},
+	// Don Martillo, the auctioneer and the gang's boss: a white tuxedo with tails, a red bow tie, slicked black hair, a
+	// curled mustache and a big golden gavel.
+	martillo(b) {
+		const tux = C('tux_white', 0xf0ece0);
+		pearBody(b, SKIN.arena, { shirt: tux, pants: C('pants_black', 0x18181c), belted: false });
+		lapels(b, C('lapel_black', 0x18181c));
+		for (const sd of [-1, 1]) b.add('body', C('bow_red', 0xa02030), new THREE.ConeGeometry(0.05, 0.09, 4), { pos: V(sd * 0.05, 1.07, 0.34), rot: [0, 0, sd * Math.PI / 2] });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		const hair = C('hair_black', 0x161214);
+		mustache(b, hair, 1.2);
+		for (const sd of [-1, 1]) b.add('face', hair, new THREE.TorusGeometry(0.03, 0.01, 4, 8, Math.PI), { pos: V(sd * 0.12, 1.21, 0.19), rot: [0, 0, sd > 0 ? 0 : Math.PI] });
+		mouth(b, { open: true });
+		hairCap(b, hair, { y: 1.42, sy: 0.4 });
+		b.add('props', gold, new THREE.CylinderGeometry(0.06, 0.06, 0.18, 10), { pos: V(0.52, 1.05, 0.2), rot: [0, 0, Math.PI / 2] });
+		b.add('props', C('gavel_wood', 0x6a4020), new THREE.BoxGeometry(0.03, 0.3, 0.03), { pos: V(0.52, 0.88, 0.2) });
+	},
+	// The auction house's doorman: a long burgundy coat with gold buttons, white gloves and a short top hat.
+	portero_subasta(b) {
+		const coat = C('velvet_burgundy', 0x6a1a2a);
+		pearBody(b, SKIN.celeste, { shirt: coat, pants: coat, belted: false });
+		for (let i = 0; i < 4; i++) for (const sd of [-1, 1]) b.add('body', gold, new THREE.SphereGeometry(0.022, 5, 4), { pos: V(sd * 0.1, 1.0 - i * 0.12, 0.38 - i * 0.015) });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mustache(b, C('hair_gray', 0x9aa0a8), 0.7);
+		mouth(b);
+		const hat = C('hat_black', 0x141418);
+		b.add('cap', hat, new THREE.CylinderGeometry(0.25, 0.25, 0.02, 14), { pos: V(0, 1.47, 0) });
+		b.add('cap', hat, new THREE.CylinderGeometry(0.18, 0.18, 0.18, 14), { pos: V(0, 1.56, 0) });
+		for (const sd of [-1, 1]) b.add('props', white, new THREE.SphereGeometry(0.075, 6, 5), { pos: V(sd * 0.5, 0.78, 0.15) });
+	},
 	// Sospechoso: striped shirt, beanie and eye mask, with a loot sack.
 	sospechoso(b) {
 		pearBody(b, SKIN.celeste, { shirt: white, pants: C('jeans', 0x2a2f3a) });
@@ -425,6 +760,23 @@ const NPCS = {
 		hairCap(b, C('hair_black', 0x1a1410), { y: 1.4 });
 		b.add('head', C('earpiece', 0xdadada), ellipsoid(0.02, 0.02, 0.02, 5, 3), { pos: V(-0.2, 1.3, 0.02) });
 		briefcase(b, C('case_black', 0x111111));
+	},
+	// Inspectora de la ciudad (inspeccion.md, decision 107): grey suit, glasses on the nose, a tight grey bun and a
+	// clipboard held in front with a pen. She comes to judge the station on the last shift.
+	inspectora(b) {
+		const suit = C('grey_suit', 0x6c7079);
+		pearBody(b, SKIN.crema, { shirt: suit, pants: suit, belted: false, shoes: black });
+		lapels(b, white);
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		glasses(b);
+		mouth(b);
+		const hair = C('hair_grey', 0x8a8a8a);
+		hairCap(b, hair, { y: 1.4 });
+		b.add('head', hair, ellipsoid(0.09, 0.09, 0.09, 8, 5), { pos: V(0, 1.5, -0.14) });
+		b.add('props', C('clipboard', 0x9a6a3c), new THREE.BoxGeometry(0.28, 0.02, 0.36), { pos: V(-0.12, 0.74, 0.33), rot: [-1.0, 0, 0] });
+		b.add('props', white, new THREE.BoxGeometry(0.24, 0.012, 0.3), { pos: V(-0.12, 0.75, 0.345), rot: [-1.0, 0, 0] });
+		b.add('props', C('silver', 0xc8ccd2), new THREE.BoxGeometry(0.08, 0.02, 0.03), { pos: V(-0.12, 0.88, 0.26), rot: [-1.0, 0, 0] });
+		limb(b, 'props', C('pen_blue', 0x2a4aa0), V(0.36, 0.7, 0.32), V(0.3, 0.82, 0.38), 0.012);
 	},
 	// Carcelero: grey-green guard uniform, keys and baton.
 	carcelero(b) {
@@ -481,6 +833,59 @@ const NPCS = {
 		b.add('props', C('iron', 0x30343a), ellipsoid(0.13, 0.13, 0.13, 8, 6), { pos: V(0.3, 0.13, 0.55) });
 		limb(b, 'props', C('iron', 0x30343a), V(0.2, 0.08, 0.2), V(0.3, 0.13, 0.45), 0.015, 4);
 	},
+	// Rulo Brillantina (carcel-vip.md): the orange jumpsuit under a shiny pink jacket, sunglasses, a black quiff and a
+	// gold chain; the most famous inmate in the city.
+	rulo(b) {
+		const orange = C('jumpsuit', 0xff7a1a), pink = C('rulo_jacket', 0xff4fb8);
+		pearBody(b, SKIN.arena, { shirt: orange, onePiece: true, belted: false });
+		b.add('body', pink, loft([
+			{ y: 0.55, rx: 0.47, rz: 0.42 }, { y: 0.8, rx: 0.38, rz: 0.34 }, { y: 1.05, rx: 0.26, rz: 0.24 },
+		], 10), {});
+		for (const s of [-1, 1]) b.add('body', gold, new THREE.BoxGeometry(0.03, 0.03, 0.03), { pos: V(s * 0.12, 0.9, 0.33) });
+		b.add('body', gold, new THREE.TorusGeometry(0.13, 0.014, 4, 14), { pos: V(0, 1.04, 0.1), rot: [1.25, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		sunglasses(b);
+		mouth(b, { smile: true });
+		const hair = C('hair_black', 0x15121a);
+		hairCap(b, hair, { y: 1.42, sy: 0.6 });
+		b.add('head', hair, ellipsoid(0.14, 0.08, 0.15, 8, 5), { pos: V(0, 1.54, 0.18), rot: [-0.7, 0, 0] });
+	},
+	// A fan of Rulo's (carcel-vip.md): a pink "RULO" t-shirt, jeans and a cap, at the gate with a sign.
+	fan(b) {
+		const pink = C('fan_shirt', 0xff8fcf);
+		pearBody(b, SKIN.celeste, { shirt: pink, pants: C('jeans', 0x3a5a8a) });
+		b.add('body', white, new THREE.BoxGeometry(0.22, 0.08, 0.02), { pos: V(0, 0.82, 0.33), rot: [-0.35, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { open: true });
+		hairCap(b, C('hair_brown', 0x4a2e1a), { y: 1.4, sy: 0.55 });
+		b.add('props', C('sign_stick', 0x8a6a40), new THREE.CylinderGeometry(0.015, 0.015, 0.9, 5), { pos: V(0.4, 1.2, 0.2) });
+		b.add('props', white, new THREE.BoxGeometry(0.5, 0.32, 0.02), { pos: V(0.4, 1.75, 0.2) });
+		b.add('props', pink, new THREE.BoxGeometry(0.4, 0.08, 0.025), { pos: V(0.4, 1.75, 0.21) });
+	},
+	// The prison's cook (carcel-recuento.md): an orange smock almost like the jumpsuit, a white apron, a little white
+	// cap and a ladle; easy to count by mistake.
+	cocinero_carcel(b) {
+		pearBody(b, SKIN.crema, { shirt: C('cook_smock', 0xf28a2a), onePiece: true, belted: false, shoes: white });
+		b.add('body', C('apron', 0xf6f2e8), loft([{ y: 0.3, rx: 0.42, rz: 0.12 }, { y: 0.75, rx: 0.36, rz: 0.1 }, { y: 0.95, rx: 0.22, rz: 0.08 }], 8), { pos: V(0, 0, 0.3) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		mustache(b, C('hair_black', 0x1a1410), 1.2);
+		b.add('cap', white, new THREE.CylinderGeometry(0.17, 0.18, 0.1, 8), { pos: V(0, 1.47, 0.0) });
+		const steel = C('silver', 0xc8ccd2);
+		limb(b, 'props', steel, V(0.5, 0.7, 0.2), V(0.52, 0.4, 0.3), 0.015);
+		b.add('props', steel, ellipsoid(0.07, 0.04, 0.07, 6, 4), { pos: V(0.52, 0.38, 0.32) });
+	},
+	// The plumber fixing the prison's pipes (carcel-recuento.md): orange overalls, a red cap, a tool belt and a plunger.
+	plomero(b) {
+		pearBody(b, SKIN.arena, { shirt: C('overalls_orange', 0xe8701a), onePiece: true, belted: false, shoes: C('boots', 0x3a2a1a) });
+		b.add('body', C('tool_belt', 0x5a3a20), new THREE.TorusGeometry(0.44, 0.03, 4, 16), { pos: V(0, 0.42, 0.0), rot: [Math.PI / 2, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b);
+		mustache(b, C('hair_brown', 0x4a2e1a), 1.4);
+		peakedCap(b, C('cap_red', 0xc83030), C('cap_red', 0xc83030), C('cap_red', 0xc83030));
+		limb(b, 'props', C('plunger_stick', 0x9a6a3a), V(-0.5, 0.75, 0.22), V(-0.5, 0.25, 0.32), 0.02);
+		b.add('props', C('plunger_red', 0xb02020), new THREE.ConeGeometry(0.08, 0.08, 8), { pos: V(-0.5, 0.2, 0.33), rot: [Math.PI, 0, 0] });
+	},
 	// Abogado: beige suit, bow tie, slicked hair and a fat briefcase full of papers.
 	abogado(b) {
 		const suit = C('beige_suit', 0xc8b48a);
@@ -510,6 +915,35 @@ const NPCS = {
 		const steel = C('silver', 0xc8ccd2);
 		for (const s of [-1, 1]) limb(b, 'props', steel, V(0.52, 0.62, 0.2), V(0.52 + s * 0.04, 0.62, 0.42), 0.012);
 		for (const s of [-1, 1]) b.add('props', C('scissor_grip', 0xe04a4a), new THREE.TorusGeometry(0.03, 0.01, 4, 8), { pos: V(0.52 + s * 0.035, 0.62, 0.17), rot: [0, Math.PI / 2, 0] });
+	},
+	// Ferretero Tobías (the hardware store): grey shop coat with pockets full of screwdrivers, a pencil behind the ear,
+	// glasses on the tip of the nose and a bushy grey mustache.
+	ferretero(b) {
+		pearBody(b, SKIN.cacao, { shirt: C('shop_coat', 0x8a9098), onePiece: true, belted: false, shoes: C('work_boots', 0x4a3a2a) });
+		for (const s of [-1, 1]) b.add('body', C('coat_pocket', 0x767c84), new THREE.BoxGeometry(0.16, 0.12, 0.03), { pos: V(s * 0.2, 0.62, 0.42) });
+		const handles = [C('handle_red', 0xd23a3a), C('handle_yellow', 0xf2c230), C('handle_blue', 0x3c7be8)];
+		handles.forEach((m, i) => b.add('props', m, new THREE.CylinderGeometry(0.014, 0.014, 0.1, 5), { pos: V(0.15 + i * 0.04, 0.7, 0.42), rot: [0.15, 0, (i - 1) * 0.2] }));
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		b.add('face', black, new THREE.TorusGeometry(0.045, 0.008, 4, 10), { pos: V(-0.07, 1.27, 0.2) });
+		b.add('face', black, new THREE.TorusGeometry(0.045, 0.008, 4, 10), { pos: V(0.07, 1.27, 0.2) });
+		mustache(b, C('mustache_grey', 0xb8b8b4), 1.4);
+		const hair = C('hair_grey', 0xc8c8c4);
+		for (const s of [-1, 1]) b.add('head', hair, ellipsoid(0.07, 0.08, 0.1, 6, 4), { pos: V(s * 0.17, 1.38, -0.02) });
+		limb(b, 'props', C('pencil', 0xf2c230), V(0.16, 1.42, 0.0), V(0.24, 1.36, 0.1), 0.012);
+	},
+	// Don Cosme (the hardware store's regular): a retiree in a brown cardigan and a flat cap, waiting for his key copy
+	// with the old key held up in his hand.
+	cosme(b) {
+		pearBody(b, SKIN.arena, { shirt: C('cardigan_brown', 0x9a6a3a), pants: C('grey_pants', 0x6a6e74), shoes: C('brown_shoes', 0x5a3a20) });
+		for (let i = 0; i < 4; i++) b.add('body', C('cardigan_button', 0xe8d8b0), ellipsoid(0.018, 0.018, 0.01, 5, 3), { pos: V(0, 0.95 - i * 0.12, 0.31 + i * 0.03) });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mouth(b, { smile: true });
+		mustache(b, C('mustache_white', 0xeeeeea), 1.0);
+		const cap = C('flat_cap', 0x6a5a48);
+		b.add('cap', cap, ellipsoid(0.21, 0.07, 0.2, 10, 4), { pos: V(0, 1.47, 0.0) });
+		b.add('cap', cap, new THREE.BoxGeometry(0.22, 0.02, 0.1), { pos: V(0, 1.45, 0.2), rot: [0.2, 0, 0] });
+		b.add('props', gold, new THREE.BoxGeometry(0.03, 0.09, 0.008), { pos: V(0.49, 0.74, 0.12) });
+		b.add('props', gold, new THREE.TorusGeometry(0.025, 0.007, 4, 8), { pos: V(0.49, 0.8, 0.12) });
 	},
 	// Señora del caniche (the pet salon): lilac fur coat, a tall white hairdo, sunglasses up, pearls and a tiny handbag.
 	senora(b) {
@@ -622,6 +1056,36 @@ const NPCS = {
 		b.add('props', C('ice_cone', 0xd9a35a), new THREE.ConeGeometry(0.05, 0.16, 6), { pos: V(0.52, 0.55, 0.15), rot: [Math.PI, 0, 0] });
 		b.add('props', pink, ellipsoid(0.06, 0.06, 0.06, 6, 4), { pos: V(0.52, 0.66, 0.15) });
 	},
+	// El Oso's nephew (robo-banco-techo.md, decision 126): a kid in an orange hoodie with a cap on backwards and big
+	// sneakers, the toy helicopter's remote control held in both hands in front of him (its own node, 'remote').
+	sobrino(b) {
+		const hoodie = C('hoodie_orange', 0xf08a2a);
+		pearBody(b, SKIN.arena, { shirt: hoodie, pants: C('kid_shorts', 0x3a5a8a), shoes: C('sneakers_white', 0xf2f2f2) });
+		b.add('body', C('hoodie_pocket', 0xd8741e), new THREE.BoxGeometry(0.36, 0.14, 0.04), { pos: V(0, 0.82, 0.37), rot: [-0.25, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.09, 0.055);
+		mouth(b, { smile: true });
+		const cap = C('kid_cap', 0x2a8a4a);
+		b.add('cap', cap, ellipsoid(0.215, 0.1, 0.21, 10, 5), { pos: V(0, 1.45, 0.0) });
+		b.add('cap', cap, new THREE.BoxGeometry(0.24, 0.02, 0.14), { pos: V(0, 1.44, -0.22), rot: [-0.2, 0, 0] });
+		b.add('remote', black, new THREE.BoxGeometry(0.26, 0.05, 0.16), { pos: V(0, 0.98, 0.42), rot: [-0.5, 0, 0] });
+		for (const x of [-0.07, 0.07]) b.add('remote', C('remote_stick', 0xd8322a), new THREE.CylinderGeometry(0.012, 0.012, 0.06, 5), { pos: V(x, 1.02, 0.44), rot: [-0.5, 0, 0] });
+		b.add('remote', C('remote_antenna', 0xc8ccd2), new THREE.CylinderGeometry(0.005, 0.005, 0.3, 4), { pos: V(0.1, 1.14, 0.38), rot: [-0.3, 0, -0.2] });
+	},
+	// Don Plácido, the town bank's only clerk (robo-banco-pueblo.md, decision 127): white shirt, a brown knitted vest,
+	// bald with a white crown of hair and a big white mustache, his eyes shut and his mouth open, snoring. The back door's key sticks out of his vest pocket (its own node, 'key', so the game hides it once taken).
+	empleado(b) {
+		const vest = C('vest_brown', 0x7a5032), hair = C('hair_white', 0xeeeeea);
+		pearBody(b, SKIN.crema, { shirt: C('shirt_white', 0xf4f2ec), pants: C('clerk_pants', 0x4a4038) });
+		b.add('body', vest, loft([{ y: 0.55, rx: 0.42, rz: 0.37 }, { y: 0.8, rx: 0.37, rz: 0.33 }, { y: 1.05, rx: 0.26, rz: 0.24 }], 10));
+		b.add('body', C('vest_pocket', 0x5e3c24), new THREE.BoxGeometry(0.12, 0.08, 0.03), { pos: V(0.17, 0.92, 0.31), rot: [-0.35, 0.4, 0] });
+		b.add('key', gold, new THREE.BoxGeometry(0.025, 0.1, 0.012), { pos: V(0.17, 0.98, 0.32), rot: [-0.35, 0.4, 0] });
+		b.add('key', gold, new THREE.TorusGeometry(0.025, 0.008, 4, 8), { pos: V(0.17, 1.04, 0.31), rot: [-0.35, 0.4, 0] });
+		for (const s of [-1, 1]) b.add('face', black, new THREE.TorusGeometry(0.035, 0.008, 4, 8, Math.PI), { pos: V(s * 0.08, 1.34, 0.2), rot: [0, 0, Math.PI] });
+		mouth(b, { open: true });
+		mustache(b, hair, 1.4);
+		for (const s of [-1, 1]) b.add('head', hair, ellipsoid(0.07, 0.1, 0.14, 6, 4), { pos: V(s * 0.18, 1.32, -0.03) });
+		b.add('head', hair, ellipsoid(0.16, 0.09, 0.07, 8, 4), { pos: V(0, 1.3, -0.17) });
+	},
 	// Repartidor (persecución): red jacket, a big helmet and the thermal delivery backpack on his back.
 	repartidor(b) {
 		const jacket = C('delivery_red', 0xd8322a), helmet = C('helmet_white', 0xf2f2f0);
@@ -645,6 +1109,53 @@ const NPCS = {
 		b.add('cap', cap, ellipsoid(0.215, 0.09, 0.21, 10, 5), { pos: V(0, 1.45, 0.0) });
 		b.add('cap', cap, new THREE.BoxGeometry(0.26, 0.02, 0.12), { pos: V(0, 1.43, 0.2), rot: [0.15, 0, 0] });
 		limb(b, 'props', C('pencil', 0xf2c84b), V(0.2, 1.33, 0.02), V(0.2, 1.4, -0.1), 0.012);
+	},
+	// Ingeniero Remache (politico-puente.md, the builder who kept half the materials): white shirt and a loud tie
+	// under an orange safety vest, a yellow hard hat, a thin mustache and a clipboard under his arm.
+	ingeniero(b) {
+		pearBody(b, SKIN.crema, { shirt: C('engineer_shirt', 0xf4f2ec), pants: C('engineer_pants', 0x5a5e6a) });
+		tie(b, C('engineer_tie', 0xd83a8a));
+		const vest = C('safety_vest', 0xf28a1a), stripe = C('vest_stripe', 0xe8e8d8);
+		b.add('body', vest, loft([{ y: 0.55, rx: 0.47, rz: 0.43 }, { y: 0.85, rx: 0.42, rz: 0.39 }, { y: 1.02, rx: 0.3, rz: 0.27 }], 10));
+		b.add('body', stripe, loft([{ y: 0.74, rx: 0.455, rz: 0.415 }, { y: 0.78, rx: 0.45, rz: 0.41 }], 10));
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b);
+		mustache(b, C('engineer_mustache', 0x2a1a10), 0.7);
+		const hat = C('hard_hat', 0xf2d21a);
+		b.add('cap', hat, ellipsoid(0.235, 0.15, 0.235, 10, 5), { pos: V(0, 1.44, 0.0) });
+		b.add('cap', hat, new THREE.CylinderGeometry(0.27, 0.27, 0.025, 12), { pos: V(0, 1.42, 0.02) });
+		b.add('props', C('clipboard', 0xa87a4a), new THREE.BoxGeometry(0.03, 0.32, 0.24), { pos: V(-0.47, 0.75, 0.05), rot: [0, 0, 0.1] });
+		b.add('props', white, new THREE.BoxGeometry(0.01, 0.26, 0.2), { pos: V(-0.49, 0.76, 0.05), rot: [0, 0, 0.1] });
+	},
+	// The referee (politico-futbol.md, step 5): black shirt with a white collar, black shorts, long black socks, a black
+	// cap and a silver whistle on a red cord. The envelope and the campaign pin are the game's (they come off).
+	arbitro(b) {
+		const shirt = C('referee_black', 0x1e1f24);
+		pearBody(b, SKIN.arena, { shirt, pants: shirt, shoes: C('referee_boots', 0x2a2a2a) });
+		b.add('body', white, loft([{ y: 1.06, rx: 0.235, rz: 0.215 }, { y: 1.12, rx: 0.18, rz: 0.165 }], 10));
+		b.add('body', white, new THREE.BoxGeometry(0.1, 0.12, 0.02), { pos: V(0.22, 0.86, 0.3), rot: [-0.35, 0.4, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b);
+		mustache(b, C('referee_mustache', 0x3a2414), 0.9);
+		hairCap(b, shirt, { y: 1.42, sy: 0.45 });
+		b.add('cap', shirt, new THREE.BoxGeometry(0.24, 0.02, 0.14), { pos: V(0, 1.42, 0.22), rot: [0.1, 0, 0] });
+		limb(b, 'props', C('whistle_cord', 0xd8343c), V(-0.1, 1.08, 0.2), V(0, 0.92, 0.3), 0.01);
+		limb(b, 'props', C('whistle_cord', 0xd8343c), V(0.1, 1.08, 0.2), V(0, 0.92, 0.3), 0.01);
+		b.add('props', C('whistle_silver', 0xc8ccd2, { metalness: 0.6, roughness: 0.3 }), new THREE.CylinderGeometry(0.03, 0.03, 0.08, 8), { pos: V(0, 0.9, 0.31), rot: [0, 0, Math.PI / 2] });
+	},
+	// Concejal Tito Barullo (politico-futbol.md, step 5): a loud checked jacket, a big campaign rosette, slicked hair
+	// and a fat cigar he never lights.
+	concejal(b) {
+		pearBody(b, SKIN.crema, { shirt: C('councillor_jacket', 0x8a5a2a), pants: C('councillor_pants', 0x4a3420) });
+		for (let i = 0; i < 4; i++) b.add('body', C('councillor_check', 0xc89a4a), loft([{ y: 0.58 + i * 0.13, rx: 0.455 - i * 0.03, rz: 0.41 - i * 0.03 }, { y: 0.6 + i * 0.13, rx: 0.45 - i * 0.03, rz: 0.405 - i * 0.03 }], 10));
+		lapels(b, C('councillor_shirt', 0xf2ece0));
+		tie(b, C('councillor_tie', 0x2a7a3a));
+		b.add('props', C('rosette_green', 0x2a9a4a), new THREE.CylinderGeometry(0.08, 0.08, 0.02, 10), { pos: V(-0.2, 0.92, 0.29), rot: [Math.PI / 2 - 0.4, 0, 0] });
+		b.add('props', C('rosette_white', 0xf4f4f0), new THREE.CylinderGeometry(0.04, 0.04, 0.025, 8), { pos: V(-0.2, 0.92, 0.3), rot: [Math.PI / 2 - 0.4, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		hairCap(b, C('councillor_hair', 0x1a1410), { y: 1.4, sy: 0.5 });
+		limb(b, 'props', C('cigar', 0x6a3a1a), V(0.06, 1.22, 0.2), V(0.12, 1.2, 0.36), 0.02);
 	},
 	// Bank robbers (robo-banco.md, step 2): black clothes and gloves, and a rubber animal mask over the whole head.
 	ladron_conejo(b) {
@@ -719,6 +1230,140 @@ const NPCS = {
 		b.add('body', gold, new THREE.TorusGeometry(0.15, 0.015, 4, 14), { pos: V(0, 1.06, 0.12), rot: [1.2, 0, 0] });
 		b.add('props', C('phone_red', 0xc8202a), new THREE.BoxGeometry(0.06, 0.16, 0.05), { pos: V(-0.5, 0.72, 0.12) });
 	},
+	// Capataz Fermín (the doll factory): blue work shirt under a yellow reflective vest, a yellow hard hat, a whistle on
+	// a red cord, a clipboard in hand and a thick black mustache.
+	capataz(b) {
+		pearBody(b, SKIN.arena, { shirt: C('work_shirt', 0x3a5a8a), pants: C('work_pants', 0x4a4a52), shoes: C('work_boots', 0x4a3a2a) });
+		const vest = C('safety_vest', 0xf2d21e), stripe = C('vest_stripe', 0xe8ecf0);
+		b.add('body', vest, loft([
+			{ y: 0.55, rx: 0.475, rz: 0.425 }, { y: 0.8, rx: 0.375, rz: 0.335 }, { y: 1.0, rx: 0.27, rz: 0.25 },
+		], 10));
+		b.add('body', stripe, loft([{ y: 0.66, rx: 0.445, rz: 0.4 }, { y: 0.72, rx: 0.42, rz: 0.375 }], 10));
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mustache(b, black, 1.3);
+		const hat = C('hard_hat', 0xf2c21e);
+		b.add('cap', hat, ellipsoid(0.23, 0.15, 0.23, 10, 5), { pos: V(0, 1.45, 0.0) });
+		b.add('cap', hat, new THREE.CylinderGeometry(0.28, 0.28, 0.03, 12), { pos: V(0, 1.42, 0.03) });
+		limb(b, 'props', C('whistle_cord', 0xd23a3a), V(-0.1, 1.12, 0.2), V(0.04, 0.96, 0.31), 0.008);
+		b.add('props', C('whistle', 0xc8ccd2), new THREE.CylinderGeometry(0.02, 0.02, 0.06, 6), { pos: V(0.06, 0.95, 0.32), rot: [0, 0, Math.PI / 2] });
+		b.add('props', C('clipboard', 0x8a5a30), new THREE.BoxGeometry(0.22, 0.3, 0.02), { pos: V(0.5, 0.72, 0.18), rot: [0.3, 0, 0] });
+		b.add('props', white, new THREE.BoxGeometry(0.18, 0.24, 0.005), { pos: V(0.5, 0.72, 0.195), rot: [0.3, 0, 0] });
+	},
+	// Operaria Nilda (the doll factory's eyes machine): pink work coat, a white hairnet over grey curls, safety goggles
+	// pushed up and a doll's googly eye stuck on her cheek.
+	operaria(b) {
+		pearBody(b, SKIN.crema, { shirt: C('factory_coat', 0xe88aa8), onePiece: true, belted: false, shoes: C('clogs', 0xf2f2f0) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { open: true });
+		b.add('head', C('curls_grey', 0xb8b4b0), ellipsoid(0.22, 0.12, 0.21, 10, 5), { pos: V(0, 1.44, -0.02) });
+		b.add('cap', C('hairnet', 0xf6f6f2, { transparent: true, opacity: 0.85 }), ellipsoid(0.23, 0.13, 0.22, 10, 5), { pos: V(0, 1.47, -0.02) });
+		b.add('cap', C('goggles', 0x9ad0e8), new THREE.BoxGeometry(0.3, 0.06, 0.04), { pos: V(0, 1.47, 0.18) });
+		b.add('face', white, ellipsoid(0.035, 0.035, 0.015, 6, 4), { pos: V(0.15, 1.24, 0.15) });
+		b.add('face', black, ellipsoid(0.015, 0.015, 0.008, 5, 3), { pos: V(0.155, 1.23, 0.165) });
+	},
+	// Mirta, the insurance office's floor boss (seguros.md): grey suit with lapels, glasses on a chain, a dark bun and a
+	// mug that says she's the boss.
+	jefa(b) {
+		const suit = C('boss_suit', 0x6a6e76);
+		pearBody(b, SKIN.cacao, { shirt: suit, pants: suit, shoes: C('boss_shoes', 0x2a2a2e) });
+		lapels(b, C('boss_blouse', 0xf2f2f0));
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		glasses(b);
+		mouth(b);
+		limb(b, 'glasses', gold, V(-0.14, 1.33, 0.22), V(0, 1.1, 0.3), 0.006);
+		limb(b, 'glasses', gold, V(0.14, 1.33, 0.22), V(0, 1.1, 0.3), 0.006);
+		const hair = C('hair_dark', 0x2e2018);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		b.add('head', hair, ellipsoid(0.11, 0.1, 0.1, 8, 6), { pos: V(0, 1.56, -0.08) });
+		b.add('props', C('boss_mug', 0xd23a3a), new THREE.CylinderGeometry(0.06, 0.055, 0.12, 10), { pos: V(0.5, 0.75, 0.2) });
+		b.add('props', white, new THREE.BoxGeometry(0.06, 0.04, 0.005), { pos: V(0.5, 0.76, 0.262) });
+	},
+	// Coca, the insurance office's receptionist (seguros.md): lilac cardigan, big red curls, a phone headset and long
+	// nails, chewing gum.
+	recepcionista_seguros(b) {
+		pearBody(b, SKIN.crema, { shirt: C('reception_cardigan', 0xb89ad8), pants: C('reception_skirt', 0x3a3a5a), shoes: C('reception_shoes', 0xd84a6a) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		const hair = C('hair_red_curls', 0xc8462a);
+		hairCap(b, hair, { y: 1.4, sx: 1.12, sy: 0.65, back: 0.03 });
+		for (const s of [-1, 1]) b.add('head', hair, ellipsoid(0.1, 0.12, 0.1, 8, 6), { pos: V(s * 0.22, 1.3, -0.03) });
+		limb(b, 'props', black, V(-0.24, 1.32, 0), V(-0.1, 1.2, 0.24), 0.01);
+		b.add('props', black, ellipsoid(0.025, 0.025, 0.025, 6, 4), { pos: V(-0.1, 1.2, 0.25) });
+		b.add('face', C('gum_bubble', 0xf28ab0), ellipsoid(0.04, 0.04, 0.04, 8, 6), { pos: V(0, 1.2, 0.27) });
+	},
+	// A ghost worker of the doll factory: a shop mannequin in an orange work coat and a hairnet, with a blank face (no
+	// eyes, no mouth), a seam around the neck and a stand under it.
+	maniqui(b) {
+		pearBody(b, C('mannequin_skin', 0xe2dccf), { shirt: C('ghost_coat', 0xe8963a), onePiece: true, belted: false, shoes: C('mannequin_feet', 0xe2dccf) });
+		b.add('cap', C('hairnet', 0xf6f6f2, { transparent: true, opacity: 0.85 }), ellipsoid(0.23, 0.13, 0.22, 10, 5), { pos: V(0, 1.47, -0.02) });
+		b.add('face', C('mannequin_seam', 0xa8a294), new THREE.TorusGeometry(0.13, 0.01, 4, 14), { pos: V(0, 1.08, 0), rot: [Math.PI / 2, 0, 0] });
+		b.add('props', C('mannequin_stand', 0x4a4a52), new THREE.CylinderGeometry(0.25, 0.25, 0.04, 12), { pos: V(0, 0.02, 0) });
+	},
+	// Chef Bruno, the cake lab's head pastry chef (laboratorio.md): round, spotless white jacket and apron, a very tall
+	// hat, a thin black mustache and a whisk in his hand.
+	chef_bruno(b) {
+		pearBody(b, SKIN.arena, { shirt: C('chef_jacket', 0xf4f4f0), pants: C('chef_check_pants', 0x3a3a46), shoes: C('cook_shoes', 0x2a2a2e) });
+		b.add('body', C('chef_jacket', 0xf4f4f0), ellipsoid(0.36, 0.3, 0.3, 10, 6), { pos: V(0, 0.75, 0.1) });
+		for (const y of [0.85, 1.0]) for (const s of [-1, 1]) b.add('body', C('chef_button', 0xc8c8c0), new THREE.SphereGeometry(0.02, 5, 3), { pos: V(s * 0.08, y, 0.38) });
+		b.add('body', C('chef_scarf', 0xd84a6a), ellipsoid(0.16, 0.05, 0.14, 8, 4), { pos: V(0, 1.1, 0.12) });
+		eyes(b, 1.34, 0.17, 0.08, 0.05);
+		for (const s of [-1, 1]) b.add('face', black, new THREE.BoxGeometry(0.1, 0.008, 0.01), { pos: V(s * 0.055, 1.255, 0.2), rot: [0, 0, s * 0.25] });
+		mouth(b);
+		hairCap(b, C('hair_dark', 0x2e2018), { y: 1.38, back: 0.02 });
+		b.add('cap', white, new THREE.CylinderGeometry(0.17, 0.16, 0.42, 10), { pos: V(0, 1.68, 0.0) });
+		b.add('cap', white, ellipsoid(0.22, 0.12, 0.22, 10, 5), { pos: V(0, 1.92, 0.0) });
+		limb(b, 'props', C('whisk_handle', 0xc8945a), V(0.5, 0.5, 0.0), V(0.5, 0.62, 0.18), 0.03);
+		b.add('props', C('whisk_wire', 0xc0c4c8), ellipsoid(0.07, 0.12, 0.07, 6, 4), { pos: V(0.5, 0.72, 0.27), rot: [0.6, 0, 0] });
+	},
+	// Pocha, the cake lab's assistant and gossip (laboratorio.md): pink uniform and apron, a hairnet over a high bun,
+	// rosy cheeks and a tray of samples in her hand.
+	pocha(b) {
+		pearBody(b, SKIN.crema, { shirt: C('pocha_uniform', 0xf2a6c0), pants: C('pocha_pants', 0xf4f4f0), shoes: C('cook_shoes', 0x2a2a2e) });
+		b.add('apron', C('apron', 0xffffff), loft([{ y: 0.3, rx: 0.42, rz: 0.12 }, { y: 0.72, rx: 0.36, rz: 0.1 }], 8), { pos: V(0, 0, 0.31) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		for (const s of [-1, 1]) b.add('face', C('blush', 0xf09a9a), ellipsoid(0.04, 0.025, 0.01, 6, 3), { pos: V(s * 0.12, 1.26, 0.18) });
+		const hair = C('hair_blond', 0xe0b860);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		b.add('head', hair, ellipsoid(0.1, 0.1, 0.1, 8, 6), { pos: V(0, 1.6, -0.06) });
+		b.add('cap', C('hairnet', 0xf6f6f2, { transparent: true, opacity: 0.7 }), ellipsoid(0.23, 0.16, 0.22, 10, 5), { pos: V(0, 1.47, -0.03) });
+		b.add('props', C('tray_steel', 0xc8ccd2), new THREE.CylinderGeometry(0.2, 0.2, 0.02, 14), { pos: V(0.45, 0.8, 0.25) });
+		for (const [x, z, c] of [[0.38, 0.2, 0xf2a6c0], [0.52, 0.22, 0xf2e2b8], [0.45, 0.33, 0x8a5a3a]]) b.add('props', C('sample_' + c, c), new THREE.BoxGeometry(0.06, 0.05, 0.06), { pos: V(x, 0.835, z) });
+	},
+	// The pupils (politico-escuela.md, step 2): four looks to mix in the classroom.
+	alumno_primaria(b) { pupil(b, SKIN.crema, C('hair_brown', 0x6a4022), C('bag_red', 0xd23a3a), { freckles: true }); },
+	alumna_primaria(b) { pupil(b, SKIN.arena, C('hair_black', 0x1e1a1a), C('bag_yellow', 0xf2c23a), { girl: true }); },
+	alumno_b(b) { pupil(b, SKIN.cacao, C('hair_black', 0x1e1a1a), C('bag_green', 0x3aa04a)); },
+	alumna_b(b) { pupil(b, SKIN.crema, C('hair_carrot', 0xd8702a), C('bag_purple', 0x8a4ac8), { girl: true, freckles: true }); },
+	// Señorita Rosa, the teacher: a long green skirt, a lilac cardigan, glasses on a cord, a bun with a pencil and a
+	// piece of chalk in her hand.
+	maestra(b) {
+		pearBody(b, SKIN.arena, { shirt: C('teacher_cardigan', 0xb89ad8), pants: C('teacher_skirt', 0x3e7a5a), belted: false, shoes: C('teacher_shoes', 0x6a3a2a) });
+		eyes(b, 1.32, 0.17, 0.08, 0.045);
+		glasses(b, C('glasses_red', 0xc8323a));
+		b.add('face', gold, new THREE.TorusGeometry(0.17, 0.004, 3, 12, Math.PI), { pos: V(0, 1.28, 0.1), rot: [0, 0, Math.PI] });
+		mouth(b, { smile: true });
+		const hair = C('hair_brown', 0x6a4022);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		b.add('head', hair, ellipsoid(0.1, 0.1, 0.1, 8, 6), { pos: V(0, 1.5, -0.14) });
+		limb(b, 'head', C('pencil', 0xf2c84b), V(-0.08, 1.48, -0.14), V(0.1, 1.58, -0.16), 0.012);
+		b.add('props', white, new THREE.BoxGeometry(0.03, 0.03, 0.09), { pos: V(0.5, 0.66, 0.18) });
+	},
+	// Don Tito, the janitor: a blue overall, a cap backwards, a grey mustache and his broom. The deck of trap cards
+	// peeking out of his chest pocket goes in its own node ('deck') so the game shows it (step 6).
+	conserje_escuela(b) {
+		const overall = C('janitor_overall', 0x3a5a9a);
+		pearBody(b, SKIN.crema, { shirt: overall, onePiece: true, belted: false, shoes: black });
+		b.add('body', C('overall_pocket', 0x2e4a82), new THREE.BoxGeometry(0.14, 0.12, 0.03), { pos: V(0.15, 0.98, 0.29), rot: [-0.35, 0.4, 0] });
+		for (let i = 0; i < 3; i++) b.add('deck', i === 1 ? C('card_trap', 0xf2e6a8) : white, new THREE.BoxGeometry(0.1, 0.07, 0.006), { pos: V(0.15 + (i - 1) * 0.012, 1.06 + i * 0.008, 0.31 + i * 0.004), rot: [-0.35, 0.4, (i - 1) * 0.2] });
+		eyes(b, 1.32, 0.17, 0.08, 0.045);
+		mouth(b);
+		mustache(b, C('hair_grey', 0x8a8a8a), 1.1);
+		b.add('cap', C('janitor_cap', 0x2e4a82), new THREE.CylinderGeometry(0.2, 0.18, 0.1, 8), { pos: V(0, 1.5, 0.0) });
+		b.add('cap', C('janitor_cap', 0x2e4a82), new THREE.CylinderGeometry(0.14, 0.14, 0.02, 8, 1, false, Math.PI / 2, Math.PI), { pos: V(0, 1.46, -0.08) });
+		limb(b, 'props', C('broom_stick', 0xa87a4a), V(0.5, 0.0, 0.2), V(0.5, 1.3, 0.1), 0.02);
+		b.add('props', C('broom_head', 0xd8b048), new THREE.BoxGeometry(0.34, 0.1, 0.08), { pos: V(0.5, 0.05, 0.2) });
+	},
 };
 
 export const NPC_NAMES = Object.keys(NPCS);
@@ -728,10 +1373,13 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, ladron_oso: 1.15, abuelo_oso: 1.15 };
+const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, comprador: 1.0, compradora: 0.9, martillo: 1.1, portero_subasta: 1.15, ladron_oso: 1.15, abuelo_oso: 1.15, alumno_primaria: 0.62, alumna_primaria: 0.62, alumno_b: 0.62, alumna_b: 0.62 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
+	chess_npcs: { items: row(['ajedrecista', 'ajedrecista_b', 'alfil', 'conserje']), cam: { pos: [0, 1.3, 6.5], target: [0, 0.95, 0], fov: 34 } },
+	biker_npcs: { items: row(['motoquero', 'motoquera', 'cromado', 'patovica_moto']), cam: { pos: [0, 1.3, 6.5], target: [0, 0.95, 0], fov: 34 } },
+	auction_npcs: { items: row(['comprador', 'compradora', 'martillo', 'portero_subasta']), cam: { pos: [0, 1.3, 6.5], target: [0, 0.95, 0], fov: 34 } },
 	npcs_b: { items: row(NPC_NAMES.slice(5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
 	...Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, {
 		items: [{ name: `npc_${n}`, pos: [-0.5, 0, 0], rotY: 0.35, scale: SCALE[n] }, { name: `npc_${n}`, pos: [0.7, 0, 0], rotY: Math.PI - 0.6, scale: SCALE[n] }],

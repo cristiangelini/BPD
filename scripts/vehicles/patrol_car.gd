@@ -32,6 +32,8 @@ const GRIP := 3.0
 const SAND_GRIP := 0.4
 const SAND_SHARE := 0.5
 const OLD_BRAKE := 0.5
+## With a flat tire (the hardware store's nails, ferreteria.md) it runs at this share of its top speed (propuesta).
+const FLAT_SHARE := 0.5
 const OLD_MODEL := preload("res://assets/models/old_patrol_car.glb")
 const SHOUT_SECONDS := 1.5
 
@@ -50,6 +52,10 @@ var _highway: Highway
 var _golf: GolfClub
 ## What the chase leaves of the tires' grip (ChaseDrops: the rain, the ice cream puddles).
 var grip := 1.0
+## What the living city's rain leaves of it (CityRain), on top of the chase's.
+var rain_grip := 1.0
+## A tire punctured until someone fixes it.
+var flat := false
 ## The old one (set before it's added).
 @export var old := false
 ## What a bigger vehicle on the same driving changes (the prison bus, traslado-presos.md): set before it's added.
@@ -248,7 +254,7 @@ func _apply_controls(delta: float) -> void:
 	var top := top_speed()
 	var sand := in_sand()
 	for wheel in [$WheelFrontLeft, $WheelFrontRight, $WheelRearLeft, $WheelRearRight]:
-		(wheel as VehicleWheel3D).wheel_friction_slip = GRIP * grip * (SAND_GRIP if sand else 1.0)
+		(wheel as VehicleWheel3D).wheel_friction_slip = GRIP * grip * rain_grip * (SAND_GRIP if sand else 1.0)
 	var reach := lerpf(1.0, STEER_AT_TOP, clampf(absf(speed) / city_speed, 0.0, 1.0))
 	steering = move_toward(steering, steer_input * steer_limit * reach, STEER_RATE * delta)
 	engine_force = 0.0
@@ -279,7 +285,7 @@ func top_speed() -> float:
 	var top := HIGHWAY_SPEED if _highway and _highway.covers(global_position) else city_speed
 	if old:
 		top = OLD_SPEED
-	return top * (SAND_SHARE if in_sand() else 1.0)
+	return top * (SAND_SHARE if in_sand() else 1.0) * (FLAT_SHARE if flat else 1.0)
 
 
 ## Whether the car is in a golf club's bunker.

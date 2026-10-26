@@ -75,6 +75,57 @@ const VARIANTS := {
 		"boss_cuffed": "HINT_TORO_CUFFED", "cuff_row": "OBJ_GYM_CUFF_TORO", "catch_row": "OBJ_GYM_CATCH_TORO",
 		"slips": "TORO_SLIP_%d",
 	},
+	# The thieves' school (infiltracion-escuela.md): the Director only shows up at the graduation, and drives off in
+	# the school's learner car, stalling it.
+	"school": {
+		"story": "infiltration_school",
+		"brief": ["BRIEF_SCHOOL_A", "BRIEF_SCHOOL_B", "BRIEF_SCHOOL_C"],
+		"go": "HINT_GO_SCHOOL", "in": "HINT_SCHOOL_IN", "found": "HINT_CLUB_EVIDENCE",
+		"rows": "OBJ_SCHOOL_", "evidence": "EVIDENCE_SCHOOL_",
+		"boss": "director", "getaway": SuspectCar.LEARNER_CAR,
+		"boss_cuffed": "HINT_DIRECTOR_CUFFED", "cuff_row": "OBJ_SCHOOL_CUFF_DIRECTOR",
+		"catch_row": "OBJ_SCHOOL_CATCH_DIRECTOR", "slips": "DIRECTOR_SLIP_%d",
+	},
+	# The restaurant La Cuchara de Oro (infiltracion-restaurante.md, decision 174): the Chef Flambé rides off on the
+	# delivery scooter, losing pizzas in the curves.
+	"restaurant": {
+		"story": "infiltration_restaurant",
+		"brief": ["BRIEF_RESTAURANT_A", "BRIEF_RESTAURANT_B", "BRIEF_RESTAURANT_C"],
+		"go": "HINT_GO_RESTAURANT", "in": "HINT_RESTAURANT_IN", "found": "HINT_CLUB_EVIDENCE",
+		"rows": "OBJ_RESTAURANT_", "evidence": "EVIDENCE_RESTAURANT_",
+		"boss": "flambe", "getaway": SuspectCar.PIZZA_SCOOTER,
+		"boss_cuffed": "HINT_FLAMBE_CUFFED", "cuff_row": "OBJ_RESTAURANT_CUFF_FLAMBE",
+		"catch_row": "OBJ_RESTAURANT_CATCH_FLAMBE", "slips": "FLAMBE_SLIP_%d",
+	},
+	# The chess club El Peón Dormido (infiltracion-ajedrez.md, decision 175): the Gran Maestro Alfil rides off on a
+	# motorized carousel horse that hops at every corner.
+	"chess": {
+		"story": "infiltration_chess",
+		"brief": ["BRIEF_CHESS_A", "BRIEF_CHESS_B", "BRIEF_CHESS_C"],
+		"go": "HINT_GO_CHESS", "in": "HINT_CHESS_IN", "found": "HINT_CLUB_EVIDENCE",
+		"rows": "OBJ_CHESS_", "evidence": "EVIDENCE_CHESS_",
+		"boss": "alfil", "getaway": SuspectCar.CAROUSEL_HORSE,
+		"boss_cuffed": "HINT_ALFIL_CUFFED", "cuff_row": "OBJ_CHESS_CUFF_ALFIL",
+		"catch_row": "OBJ_CHESS_CATCH_ALFIL", "slips": "ALFIL_SLIP_%d",
+	},
+	"biker": {
+		"story": "infiltration_biker",
+		"brief": ["BRIEF_BIKER_A", "BRIEF_BIKER_B", "BRIEF_BIKER_C"],
+		"go": "HINT_GO_BIKER", "in": "HINT_BIKER_IN", "found": "HINT_CLUB_EVIDENCE",
+		"rows": "OBJ_BIKER_", "evidence": "EVIDENCE_BIKER_",
+		"boss": "cromado", "getaway": SuspectCar.CHOPPER_MOPED,
+		"boss_cuffed": "HINT_CROMADO_CUFFED", "cuff_row": "OBJ_BIKER_CUFF_CROMADO",
+		"catch_row": "OBJ_BIKER_CATCH_CROMADO", "slips": "CROMADO_SLIP_%d",
+	},
+	"auction": {
+		"story": "infiltration_auction",
+		"brief": ["BRIEF_AUCTION_A", "BRIEF_AUCTION_B", "BRIEF_AUCTION_C"],
+		"go": "HINT_GO_AUCTION", "in": "HINT_AUCTION_IN", "found": "HINT_CLUB_EVIDENCE",
+		"rows": "OBJ_AUCTION_", "evidence": "EVIDENCE_AUCTION_",
+		"boss": "martillo", "getaway": SuspectCar.GALLERY_CART,
+		"boss_cuffed": "HINT_MARTILLO_CUFFED", "cuff_row": "OBJ_AUCTION_CUFF_MARTILLO",
+		"catch_row": "OBJ_AUCTION_CATCH_MARTILLO", "slips": "MARTILLO_SLIP_%d",
+	},
 }
 ## With `second_chance`, the first wrong person cuffed only raises everyone's suspicion this much.
 const WRONG_CUFF := 50.0
@@ -242,7 +293,10 @@ func custody() -> Dictionary:
 ## The pay: SALARY with all the evidence, a third less for each piece missing.
 func report() -> Dictionary:
 	var salary := SALARY * evidence_found.size() / EVIDENCE if solved() else 0
-	return {"salary": salary, "evidence": 0, "fines": 0, "total": salary, "quota": QUOTA, "approved": salary >= QUOTA}
+	# What they bought at the auction comes out of it (infiltracion-subasta.md), solved or not.
+	var paid := place.spent() if place else 0
+	var total := salary - paid
+	return {"salary": salary, "evidence": 0, "fines": paid, "total": total, "quota": QUOTA, "approved": total >= QUOTA}
 
 
 func finish_shift() -> void:
@@ -252,7 +306,8 @@ func finish_shift() -> void:
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
 	var pay := report()
-	var result := {"solved": solved(), "report": pay, "awards": ShiftReport.awards(stats)}
+	var result := {"solved": solved(), "report": pay, "awards": ShiftReport.awards(stats),
+		"bought": place.bought() if place else 0}
 	var campaign := Campaign.current
 	if campaign and not campaign.is_over():
 		var played := campaign.shift
@@ -277,7 +332,9 @@ func _show_result(result: Dictionary) -> void:
 		cop.get_node("Hud").hide()
 	var awards: Array[Dictionary] = []
 	awards.assign(result.awards)
-	shift_screen.show_report(result.solved, result.report, 0, awards)
+	var bought: int = result.get("bought", 0)
+	shift_screen.show_report(result.solved, result.report, bought, awards,
+		"SHIFT_FINES_AUCTION" if bought > 0 else "SHIFT_FINES")
 	var over := false
 	if result.has("campaign"):
 		shift_screen.show_campaign(result.campaign.shift, Campaign.SHIFTS, result.campaign.money, result.campaign.over,

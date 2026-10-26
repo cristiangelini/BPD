@@ -36,6 +36,12 @@ var match_place := ""
 var match_seed := 0
 ## The owner in custody the match's interrogation is about (PlaceDraw.custody_now), the host's; empty if none.
 var match_custody := {}
+## The host's campaign is under internal affairs investigation (sobornos.md): its agent comes into the case.
+var match_investigation := false
+## The host's case is its campaign's first shift: the comisario tells the story of the match first (decision 106).
+var match_intro := false
+## The host's case is its campaign's last shift: the city's inspector comes along (inspeccion.md).
+var match_inspection := false
 ## Off in tests, so starting a case only emits match_started.
 var change_scenes := true
 ## Peers that have the current level loaded, so they can take the cops' state.
@@ -50,6 +56,8 @@ var actions: ActionSync
 var case_sync: CaseSync
 ## The current level's people and animals, run by the host.
 var npcs: NpcSync
+## The current level's living city (its clock, rain, traffic and street events), run by the host.
+var city_sync: CitySync
 ## Steam lobbies and invites (does nothing where GodotSteam isn't installed).
 var steam: SteamRoom
 ## Steam voice: hold V or T to talk (voz.md).
@@ -190,7 +198,9 @@ func start_match() -> void:
 	if not is_online() or not multiplayer.is_server():
 		return
 	var case_seed := PlaceDraw.next_seed()
-	_start_match.rpc(draw_place(case_seed), case_seed, PlaceDraw.custody_now())
+	_start_match.rpc(draw_place(case_seed), case_seed, PlaceDraw.custody_now(),
+		Campaign.current != null and Campaign.current.investigation, CaseBriefing.intro_due(),
+		CityInspector.due())
 
 
 ## The place the host's match opens for `case_seed`: the same draw as playing alone, chases and crime scenes too.
@@ -199,11 +209,15 @@ func draw_place(case_seed: int) -> String:
 
 
 @rpc("authority", "call_local", "reliable")
-func _start_match(place: String, case_seed: int, custody := {}) -> void:
+func _start_match(place: String, case_seed: int, custody := {}, investigation := false, intro := false,
+		inspection := false) -> void:
 	in_match = true
 	match_place = place
 	match_seed = case_seed
 	match_custody = custody
+	match_investigation = investigation
+	match_intro = intro
+	match_inspection = inspection
 	# A guest plays the host's campaign: the owner in the chair is the host's, and its own saved one stays out of it.
 	if not multiplayer.is_server():
 		Campaign.current = null
@@ -231,6 +245,8 @@ func spawn_cops(local: Cop) -> void:
 	add_child(actions)
 	npcs = NpcSync.new(self, local.get_parent())
 	add_child(npcs)
+	city_sync = CitySync.new(self, local.get_parent())
+	add_child(city_sync)
 	var raids := local.get_parent().find_children("*", "RaidCase", true, false)
 	raids.append_array(local.get_parent().find_children("*", "InterrogationCase", true, false))
 	raids.append_array(local.get_parent().find_children("*", "ChaseCase", true, false))
@@ -240,7 +256,19 @@ func spawn_cops(local: Cop) -> void:
 	raids.append_array(local.get_parent().find_children("*", "BankCase", true, false))
 	raids.append_array(local.get_parent().find_children("*", "PoliticianCase", true, false))
 	raids.append_array(local.get_parent().find_children("*", "PrisonCase", true, false))
+	raids.append_array(local.get_parent().find_children("*", "TransferCase", true, false))
+	raids.append_array(local.get_parent().find_children("*", "BlackoutCase", true, false))
+	raids.append_array(local.get_parent().find_children("*", "VisitCase", true, false))
+	raids.append_array(local.get_parent().find_children("*", "LaundryCase", true, false))
+	raids.append_array(local.get_parent().find_children("*", "TunnelCase", true, false))
+	raids.append_array(local.get_parent().find_children("*", "TalentCase", true, false))
+	raids.append_array(local.get_parent().find_children("*", "VipCase", true, false))
+	raids.append_array(local.get_parent().find_children("*", "GardenCase", true, false))
+	raids.append_array(local.get_parent().find_children("*", "CountCase", true, false))
 	raids.append_array(local.get_parent().find_children("*", "MarketCase", true, false))
+	raids.append_array(local.get_parent().find_children("*", "BridgeCase", true, false))
+	raids.append_array(local.get_parent().find_children("*", "FootballCase", true, false))
+	raids.append_array(local.get_parent().find_children("*", "SchoolCase", true, false))
 	if not raids.is_empty():
 		case_sync = CaseSync.new(self, raids[0])
 		add_child(case_sync)
@@ -330,13 +358,14 @@ func _leave_scene() -> void:
 		remove_child(sync)
 		sync.queue_free()
 	cop_syncs.clear()
-	for sync: Node in [props, actions, npcs, case_sync]:
+	for sync: Node in [props, actions, npcs, case_sync, city_sync]:
 		if sync:
 			remove_child(sync)
 			sync.queue_free()
 	props = null
 	actions = null
 	npcs = null
+	city_sync = null
 	case_sync = null
 
 
@@ -391,7 +420,8 @@ func _on_peer_connected(id: int) -> void:
 	players_changed.emit()
 	# Coming in during a case opens it right away; once its level loads, the host sends it how everything is.
 	if in_match:
-		_start_match.rpc_id(id, match_place, match_seed, match_custody)
+		_start_match.rpc_id(id, match_place, match_seed, match_custody, match_investigation, match_intro,
+			match_inspection)
 
 
 func _kick(id: int) -> void:

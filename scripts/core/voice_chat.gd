@@ -197,7 +197,8 @@ func _check_shout(steam: Object, data: PackedByteArray) -> void:
 func _check_singing(delta: float) -> void:
 	_sing_left -= delta
 	if _sing_left > 0.0 or not is_inside_tree() \
-			or not (get_tree().has_group("night_guard") or get_tree().has_group("bank_phone")):
+			or not (get_tree().has_group("night_guard") or get_tree().has_group("bank_phone")
+				or get_tree().has_group("vip_requests")):
 		return
 	if not (_held("hum") or song.is_singing(Time.get_ticks_msec() / 1000.0)):
 		return
@@ -212,6 +213,7 @@ func sang(cop: Cop) -> void:
 	if _net.is_host():
 		get_tree().call_group("night_guard", "heard_singing", cop)
 		get_tree().call_group("bank_phone", "heard_singing", cop)
+		get_tree().call_group("vip_requests", "heard_singing", cop)
 	else:
 		_guard_heard_singing.rpc_id(_net.HOST_ID)
 
@@ -222,6 +224,7 @@ func _guard_heard_singing() -> void:
 	if multiplayer.is_server() and sync and is_instance_valid(sync.cop):
 		get_tree().call_group("night_guard", "heard_singing", sync.cop)
 		get_tree().call_group("bank_phone", "heard_singing", sync.cop)
+		get_tree().call_group("vip_requests", "heard_singing", sync.cop)
 
 
 ## Tells the interrogation, the crime scene, the jailbreak's guard or the club's grandparents that the player's cop

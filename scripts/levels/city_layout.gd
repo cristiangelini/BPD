@@ -36,9 +36,20 @@ const PLACES := [
 	{"id": "party_hall", "block": Vector2i(5, 0), "side": "s", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.55, 0.2, 0.45), "sign": "PLACE_PARTY_HALL"},
 	{"id": "bank", "block": Vector2i(3, 0), "side": "s", "along": 0.0, "size": Vector3(24, 7, 20), "color": Color(0.86, 0.84, 0.78), "sign": "PLACE_BANK"},
 	{"id": "prison", "block": Vector2i(5, 2), "side": "w", "along": 0.0, "size": Vector3(28, 5, 40), "color": Color(0.62, 0.6, 0.55), "sign": "PLACE_PRISON"},
+	{"id": "circus", "block": Vector2i(5, 3), "side": "n", "along": 0.0, "size": Vector3(40, 8, 30), "color": Color(0.86, 0.18, 0.2), "sign": "PLACE_CIRCUS"},
 	{"id": "gas_station", "block": Vector2i(4, 2), "side": "s", "along": 0.0, "size": Vector3(14, 5, 10), "color": Color(0.95, 0.9, 0.82), "sign": "PLACE_GAS_STATION"},
 	{"id": "market", "block": Vector2i(2, 0), "side": "s", "along": 0.0, "size": Vector3(30, 6, 22), "color": Color(0.88, 0.8, 0.62), "sign": "PLACE_MARKET"},
+	{"id": "auction", "block": Vector2i(6, 2), "side": "s", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.86, 0.82, 0.74), "sign": "PLACE_AUCTION"},
+	{"id": "biker", "block": Vector2i(6, 0), "side": "s", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.22, 0.2, 0.2), "sign": "PLACE_BIKER"},
+	{"id": "chess", "block": Vector2i(6, 1), "side": "s", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.3, 0.32, 0.36), "sign": "PLACE_CHESS"},
+	{"id": "restaurant", "block": Vector2i(1, 0), "side": "s", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.62, 0.22, 0.2), "sign": "PLACE_RESTAURANT"},
+	{"id": "school", "block": Vector2i(4, 0), "side": "s", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.45, 0.4, 0.55), "sign": "PLACE_SCHOOL"},
+	{"id": "school_visit", "block": Vector2i(3, 3), "side": "s", "along": 0.0, "size": Vector3(28, 4, 24), "color": Color(0.95, 0.85, 0.55), "sign": "PLACE_SCHOOL_VISIT"},
+	{"id": "museum", "block": Vector2i(0, 0), "side": "s", "along": 0.0, "size": Vector3(30, 7, 26), "color": Color(0.88, 0.86, 0.8), "sign": "PLACE_MUSEUM"},
 	{"id": "cake_lab", "block": Vector2i(4, 3), "side": "w", "along": 0.0, "size": Vector3(24, 8, 22), "color": Color(0.95, 0.95, 0.85), "sign": "PLACE_CAKE_LAB"},
+	# A park, not a building: it fills its block and its case scene builds the canal and the bridge on the grass.
+	{"id": "bridge_park", "block": Vector2i(3, 4), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.45, 0.72, 0.3), "sign": "PLACE_BRIDGE_PARK", "park": true},
+	{"id": "football_pitch", "block": Vector2i(4, 4), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.32, 0.62, 0.28), "sign": "PLACE_FOOTBALL_PITCH", "park": true},
 ]
 
 ## The plaza fills its block.
@@ -117,7 +128,7 @@ static func fillers() -> Array[Dictionary]:
 	for row in ROWS:
 		for col in COLUMNS:
 			var block := Vector2i(col, row)
-			if block == PLAZA:
+			if block == PLAZA or is_park(block):
 				continue
 			for side: String in ["n", "s"]:
 				if PLACES.any(func(p: Dictionary) -> bool: return p.block == block and p.side == side):
@@ -127,6 +138,11 @@ static func fillers() -> Array[Dictionary]:
 					lots.append({"block": block, "side": side, "along": FILLER_ALONG[i], "size": size,
 						"color": FILLER_COLORS[(col * 7 + row * 3 + i + (1 if side == "n" else 0)) % FILLER_COLORS.size()]})
 	return lots
+
+
+## Whether a park fills `block` (it has no buildings and its ground is grass).
+static func is_park(block: Vector2i) -> bool:
+	return PLACES.any(func(p: Dictionary) -> bool: return p.block == block and p.get("park", false))
 
 
 static func place(id: String) -> Dictionary:
