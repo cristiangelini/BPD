@@ -12,6 +12,9 @@ extends Node
 ## and tomato burst (show_burst). Every number here is (propuesta).
 ## At the double's rally (politico-doble.md, step 3, decision 220) the double in the patrol car pays PER_DOUBLE more,
 ## and if he's still loose when the speech ends, it's him who runs off on the kick scooter, not a heckler.
+## At the birthday party (politico-cumple.md, step 3, decision 221) the courier in the patrol car pays PER_COURIER more
+## and the two good cakes blown PER_GOOD_CAKES more; a courier still loose at the end runs off on the scooter. The
+## guests' cakes follow the host's (lit, blown, in the fountain, sprung).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 4.0
@@ -19,10 +22,13 @@ const SALARY := 600
 const PER_STAIN := 50
 const PER_HECKLER := 50
 const PER_DOUBLE := 150
+const PER_COURIER := 100
+const PER_GOOD_CAKES := 100
 const QUOTA := 400
 const STORY := "politician_rally"
 ## The snapshot's runner when it's the double, not a heckler.
 const DOUBLE_RUNNER := -2
+const COURIER_RUNNER := -3
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 
 var rally: PlazaRally
@@ -103,7 +109,12 @@ func _on_speech_finished() -> void:
 		return
 	speech_over = true
 	_hint_all("HINT_RALLY_SPEECH_OVER")
-	runner = rally.double if double_loose() else rally.crowd.loose_heckler()
+	if double_loose():
+		runner = rally.double
+	elif courier_loose():
+		runner = rally.courier
+	else:
+		runner = rally.crowd.loose_heckler()
 	if runner:
 		_run_off()
 	else:
@@ -120,12 +131,18 @@ func _run_off() -> void:
 	runner.process_mode = Node.PROCESS_MODE_DISABLED
 	chase = ChaseCase.begin(rally, SuspectCar.KICK_SCOOTER, runner.global_transform, rally.get_node("PatrolCar"),
 		rally.get_node("City"), rally.case_seed)
-	chase.who = ChaseSuspect.DOUBLE if runner is Politician else ChaseSuspect.HECKLER + (runner as RallyFan).look
+	if runner is Politician:
+		chase.who = ChaseSuspect.DOUBLE
+	elif runner == rally.courier:
+		chase.who = ChaseSuspect.COURIER
+	else:
+		chase.who = ChaseSuspect.HECKLER + (runner as RallyFan).look
 	chase.online = online
 	chase.follower = follower
 	chase.truck.set_rider(ChaseSuspect.model_for(chase.who))
 	chase.ended.connect(_on_chase_ended)
-	_hint_all("HINT_ESCAPE_DOUBLE" if runner is Politician else "HINT_ESCAPE_HECKLER")
+	_hint_all("HINT_ESCAPE_DOUBLE" if runner is Politician else ("HINT_ESCAPE_COURIER" if runner == rally.courier
+		else "HINT_ESCAPE_HECKLER"))
 
 
 ## Caught and in the patrol car, they count as detained; got away, the case is solved all the same.
@@ -155,9 +172,9 @@ func solved() -> bool:
 	return speech_over and not furious
 
 
-## The hecklers in the patrol car, the one caught on the scooter included (not the double).
+## The hecklers in the patrol car, the one caught on the scooter included (not the double nor the courier).
 func detained() -> int:
-	return rally.crowd.detained + (1 if caught and not runner is Politician else 0)
+	return rally.crowd.detained + (1 if caught and runner is RallyFan and runner in rally.crowd.hecklers else 0)
 
 
 ## The double in the patrol car, or caught on the scooter.
@@ -173,12 +190,26 @@ func double_loose() -> bool:
 	return rally.double != null and not rally.double.caught
 
 
+## The courier in the patrol car, or caught on the scooter.
+func courier_detained() -> bool:
+	if not rally.courier:
+		return false
+	var escort := OwnerEscort.of(rally.courier)
+	return (escort and escort.in_car) or (caught and runner == rally.courier)
+
+
+## The courier neither cuffed nor taken away: he'd run off at the end.
+func courier_loose() -> bool:
+	return rally.courier != null and rally.courier.free_to_throw()
+
+
 ## SALARY, less PER_STAIN for each stain and plus PER_HECKLER for each heckler detained; nothing if he left furious.
 func report() -> Dictionary:
 	var salary := 0
 	if solved():
 		salary = maxi(SALARY - PER_STAIN * rally.politician.stains + PER_HECKLER * detained()
-			+ (PER_DOUBLE if double_detained() else 0), 0)
+			+ (PER_DOUBLE if double_detained() else 0) + (PER_COURIER if courier_detained() else 0)
+			+ (PER_GOOD_CAKES if rally.party and rally.party.good_blown() >= rally.cakes.size() - 1 else 0), 0)
 	return {"salary": salary, "evidence": 0, "fines": 0, "total": salary, "quota": QUOTA, "approved": salary >= QUOTA}
 
 
@@ -248,11 +279,22 @@ func show_burst(kind: String, at: Vector3, cop_id: int) -> void:
 func snapshot() -> Dictionary:
 	var state := {"tip": tip_given, "speaking": rally.speech.speaking, "over": rally.speech.over,
 		"left": snappedf(rally.speech.left, 0.1), "furious": furious, "speech_over": speech_over,
-		"runner": DOUBLE_RUNNER if runner and runner == rally.double else rally.crowd.hecklers.find(runner),
+		"runner": _runner_index(),
 		"caught": caught, "escaped": escaped, "result": _result}
 	if chase:
 		state.chase = chase.snapshot()
+	if rally.party:
+		state.cakes = rally.cakes.map(func(cake: BirthdayCake) -> Array:
+			return [cake.lit, cake.blown, cake.ruined, cake.sprung])
 	return state
+
+
+func _runner_index() -> int:
+	if runner and runner == rally.double:
+		return DOUBLE_RUNNER
+	if runner and runner == rally.courier:
+		return COURIER_RUNNER
+	return rally.crowd.hecklers.find(runner)
 
 
 func apply_snapshot(state: Dictionary) -> void:
@@ -265,8 +307,17 @@ func apply_snapshot(state: Dictionary) -> void:
 	speech_over = state.speech_over
 	caught = state.caught
 	escaped = state.escaped
-	if state.has("chase") and (state.runner >= 0 or state.runner == DOUBLE_RUNNER):
-		runner = rally.double if state.runner == DOUBLE_RUNNER else rally.crowd.hecklers[state.runner]
+	if state.has("cakes"):
+		for i in rally.cakes.size():
+			rally.cakes[i].follow(state.cakes[i])
+	if state.has("chase") and (state.runner >= 0 or state.runner == DOUBLE_RUNNER or state.runner == COURIER_RUNNER):
+		match state.runner:
+			DOUBLE_RUNNER:
+				runner = rally.double
+			COURIER_RUNNER:
+				runner = rally.courier
+			_:
+				runner = rally.crowd.hecklers[state.runner]
 		_run_off()
 		chase.apply_snapshot(state.chase)
 	checklist.show_rows(rows())
@@ -282,8 +333,15 @@ func rows() -> Array[Dictionary]:
 	list.append(_row(tr("OBJ_RALLY_HECKLERS") % [detained(), RallyCrowd.HECKLERS], detained() >= RallyCrowd.HECKLERS))
 	if rally.double:
 		list.append(_row("OBJ_DOUBLE_CATCH", double_detained()))
+	if rally.courier:
+		list.append(_row("OBJ_COURIER_CATCH", courier_detained()))
 	if chase:
-		list.append(_row("OBJ_DOUBLE_CATCH_SCOOTER" if runner is Politician else "OBJ_RALLY_CATCH_SCOOTER", caught))
+		var scooter := "OBJ_RALLY_CATCH_SCOOTER"
+		if runner is Politician:
+			scooter = "OBJ_DOUBLE_CATCH_SCOOTER"
+		elif runner == rally.courier:
+			scooter = "OBJ_COURIER_CATCH_SCOOTER"
+		list.append(_row(scooter, caught))
 	if rally.party:
 		list.append({"text": tr("OBJ_BIRTHDAY_CAKES") % [rally.party.blown, rally.cakes.size()], "done": false,
 			"optional": false, "status": true})

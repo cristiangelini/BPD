@@ -186,6 +186,16 @@ func ruin() -> void:
 	ruined_now.emit(self)
 
 
+## A guest's cake: the host's [lit, blown, ruined, sprung] (PoliticianCase.snapshot).
+func follow(state: Array) -> void:
+	lit = state[0]
+	blown = state[1]
+	ruined = state[2]
+	if state[3] and not sprung:
+		spring()
+	_show()
+
+
 ## Blown while rigged: the spring pops out with its cream.
 func spring() -> void:
 	sprung = true

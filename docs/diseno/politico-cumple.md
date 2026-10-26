@@ -79,3 +79,12 @@ fe. Que sople las velas tranquilo. Y guárdenme una porción."
   mesa es una mancha de imagen y el diputado protesta; cuando le toca, se lo saltea ("¿Y mi pastel?"). Si sopla el
   trucho, le salta el resorte con la crema: 3 manchas de crema en la cara y llora 10 s sin moverse, después vuelve al
   atril y la fiesta sigue. Capturas en `/mnt/project-files/cumple/paso2-*.png`.
+- **Paso 3 (el repartidor, el sueldo y el online):** el repartidor (`PlazaRally.courier`, un vecino más con la cara del
+  repartidor) espera en la punta oeste, entre las dos filas del público, con la gorra rosa de la "Pastelería Sorpresa"
+  más grande de lo normal. Puede haber otros repartidores comunes en el público, sin la gorra rosa. Cada vez que el
+  diputado va hacia un pastel, se ríe solo. Con E habla como cualquiera. Esposado confiesa ("¡Yo solo hago entregas!"), se
+  lo lleva al patrullero con E y suma 100 (fila en la planilla). Los dos pasteles buenos soplados suman otros 100. Si
+  sigue suelto al final, huye él en el monopatín (después del doble, antes que los que tiran) con su cara y sus frases
+  (`ChaseSuspect.COURIER`); atrapado, suma los 100. Online el host decide la fiesta: los pasteles de los invitados
+  siguen los del host (velas, soplado, en la fuente, el resorte) por el snapshot del caso, y el repartidor va por
+  `NpcSync`. Captura en `/mnt/project-files/cumple/paso3-repartidor.png`.
