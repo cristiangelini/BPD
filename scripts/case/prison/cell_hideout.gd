@@ -40,10 +40,14 @@ var _check_left := 0.0
 var _thing: Node3D
 var _hole: Node3D
 var _shape: CollisionShape3D
+var _bubble: Label3D
+var _bubble_left := 0.0
 
 
 func _ready() -> void:
 	add_to_group("cell_hideouts")
+	# With the people (layer 8): the inmates walk past the rug and the bunk's end, the cops bump into them.
+	collision_layer = 8
 	_thing = Node3D.new()
 	_thing.name = "Thing"
 	add_child(_thing)
@@ -70,6 +74,16 @@ func _ready() -> void:
 		Kind.RUG:
 			_thing.add_child(CopTool.piece(CopTool.box(Vector3(RUG_SIZE.x, 0.015, RUG_SIZE.y)),
 				RUG_COLORS[look % RUG_COLORS.size()], Vector3(0, 0.008, 0)))
+	_bubble = Label3D.new()
+	_bubble.name = "Bubble"
+	_bubble.position = Vector3(0, 1.4 - (POSTER_HEIGHT if kind == Kind.POSTER else 0.0), 0)
+	_bubble.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	_bubble.no_depth_test = true
+	_bubble.pixel_size = 0.004
+	_bubble.outline_size = 8
+	_bubble.font_size = 32
+	_bubble.hide()
+	add_child(_bubble)
 	_hole = Node3D.new()
 	_hole.name = "Hole"
 	_hole.visible = false
@@ -139,6 +153,24 @@ func set_checked(open: bool) -> void:
 	if kind == Kind.BUNK:
 		# The bunk's body goes with it: the hole's spot is free.
 		_shape.position.z = -0.9
+
+
+## A line over it for `seconds` (step 3: the digging behind it, "scrich, scrich").
+func say(key: String, seconds := 1.5) -> void:
+	_bubble.text = key
+	_bubble.show()
+	_bubble_left = seconds
+
+
+func said() -> String:
+	return _bubble.text if _bubble.visible else ""
+
+
+func _process(delta: float) -> void:
+	if _bubble_left > 0.0:
+		_bubble_left -= delta
+		if _bubble_left <= 0.0:
+			_bubble.hide()
 
 
 func _physics_process(delta: float) -> void:
