@@ -2174,9 +2174,9 @@ WEDDING_TOAST_US,"¡Somos nosotros, %s y %s! ¡Nos casamos hoy!","It's us, %s an
 TRUNK_ENVELOPES,"El baúl está lleno de sobres de regalo... de bodas distintas.","The trunk is full of gift envelopes... from different weddings.","O porta-malas está cheio de envelopes de presente... de casamentos diferentes."
 HINT_WEDDING_ENVELOPES,"¡Es El Colado! Sus sobres de regalo quedaron sobre el baúl: llévalos al patrullero (+100).","It's El Colado! His gift envelopes are on his trunk: take them to the patrol car (+100).","É o El Colado! Os envelopes de presente ficaram em cima do porta-malas: leve para a viatura (+100)."
 PROMPT_GIFT_ENVELOPES,"Los sobres de regalo de El Colado: llévalos al patrullero","El Colado's gift envelopes: take them to the patrol car","Os envelopes de presente do El Colado: leve para a viatura"
-SPOILER_NONE,sin alerón,no spoiler,sem aerofólio
-SPOILER_SMALL,alerón chico,small spoiler,aerofólio pequeno
-SPOILER_BIG,alerón grande,big spoiler,aerofólio grande
+SPOILER_NONE,sin alerón,with no spoiler,sem aerofólio
+SPOILER_SMALL,con alerón chico,with a small spoiler,com aerofólio pequeno
+SPOILER_BIG,con alerón grande,with a big spoiler,com aerofólio grande
 RACE_REV_0,¡RRRUM! ¡RRRRUM!,VROOM! VRRROOM!,VRUUM! VRRRUUM!
 RACE_REV_1,"¡Rrrum, rrrum! ¡Hoy gano yo!","Vroom, vroom! Tonight I win!","Vruum, vruum! Hoje eu ganho!"
 RACE_REV_2,¡RRRRRRUUUUM!,VRRRRROOOOM!,VRRRRRUUUUM!
@@ -2197,6 +2197,13 @@ RACE_FLAT_9,"¡Con las chispas parecía una película! ¿Lo grabaron?","With the
 CITY_FLAT_0,"¡Mis gomas! ¡Yo solo iba a comprar pan!","My tires! I was just going to buy bread!","Meus pneus! Eu só ia comprar pão!"
 CITY_FLAT_1,"¿Pinchos? ¿A mí? ¡Si voy a treinta!","Spikes? On me? I'm doing thirty!","Pregos? Em mim? Eu estou a trinta!"
 CITY_FLAT_2,"Voy a hacer una denuncia, oficial. Contra usted.","I'm filing a complaint, officer. Against you.","Vou fazer uma denúncia, policial. Contra você."
+CLUE_RACE_NUMBER,"Su auto lleva el número %d en las puertas.","His car has the number %d on its doors.","O carro dele tem o número %d nas portas."
+CLUE_RACE_NEON,"Su auto tiene luz de neón %s abajo.","His car has a %s neon light underneath.","O carro dele tem luz neon %s embaixo."
+CLUE_RACE_SPOILER,"Su auto va %s.","His car goes %s.","O carro dele vai %s."
+BRIEF_RACE_A,"¡Novatos! Esta noche hay picadas en la avenida y las organiza El Turbo, el campeón: nunca lo agarró nadie. Los corredores no paran en ningún control, así que les armé uno con pinchos.","Rookies! There are street races on the avenue tonight and El Turbo, the champion, runs them: nobody has ever caught him. The racers don't stop at any checkpoint, so I set one up with spike strips.","Novatos! Hoje à noite tem racha na avenida e quem organiza é o El Turbo, o campeão: ninguém nunca pegou ele. Os corredores não param em nenhuma blitz, então montei uma com pregos."
+BRIEF_RACE_C,"Los pinchos están junto al patrullero: tírenlos en la calle cuando los corredores rujan en la esquina, y sáquenlos con la soga para los vecinos, que van a comprar pan. Si pinchan o esposan a dos inocentes, se termina el caso.","The spike strips are by the patrol car: throw them on the street when the racers rev at the corner, and pull them back with the rope for the neighbors, who are off to buy bread. Puncture or cuff two innocent people and the case is over.","Os pregos estão do lado da viatura: joguem na rua quando os corredores roncarem na esquina, e puxem pela corda para os vizinhos, que vão comprar pão. Se furarem ou algemarem dois inocentes, o caso acaba."
+HINT_RACE_FINED,"¡Corredor pinchado! +25 al sueldo si resuelven el caso. ¿Será El Turbo?","Racer punctured! +25 to the pay if you solve the case. Could it be El Turbo?","Corredor com pneu furado! +25 no salário se resolverem o caso. Será o El Turbo?"
+RACE_NOT_TURBO_LINE,"¿El Turbo? ¡Ojalá! Yo llego siempre último. Mi abogado va a escuchar de esto.","El Turbo? I wish! I always come in last. My lawyer's going to hear about this.","El Turbo? Quem me dera! Eu sempre chego por último. Meu advogado vai saber disso."
 SHIFT_BRIBES,Sobornos,Bribes,Subornos
 SHIFT_AGENT_FINE,Multa de asuntos internos,Internal affairs fine,Multa da corregedoria
 SHIFT_INVESTIGATION_OPENED,Asuntos internos abrió una investigación.,Internal affairs opened an investigation.,A corregedoria abriu uma investigação.

@@ -13,7 +13,10 @@ extends Node
 ## seller's pickup is a complaint too, smaller, and a gold watch in the patrol car's trunk adds to a solved case's pay.
 ## In the crowded car control (control-auto-lleno.md, answer 2) each packed car fined for too many riders adds a bit.
 ## In the ghost car control (control-auto-fantasma.md) the wanted driver is the ghost car's pilot: cuffed, his remote
-## falls out of his hands, and in the patrol car's trunk it adds 100 like a gold watch.
+## falls out of his hands, and in the patrol car's trunk it adds 100 like a gold watch. In the street race check
+## (control-carrera.md, answer 2) each racer punctured adds to a solved case's pay and each city car punctured is a
+## complaint, like detaining an innocent; El Turbo, stopped on his rims, is cuffed out of his racer, and cuffing
+## another racer is a complaint too.
 
 signal detained(car: QueueCar, wanted: bool)
 
@@ -28,6 +31,8 @@ const CROWD_FINE_BONUS := 20
 ## Each drunk driver's keys taken adds this to a solved case's pay, each drunk let through takes it off
 ## (control-boda.md, answer 3).
 const DRUNK_KEYS := 25
+## Each racer stopped with the spike strips adds this to a solved case's pay (control-carrera.md, answer 2).
+const RACER_FINE := 25
 ## Its own quota, like the chase and the crime scene (decision 91).
 const QUOTA := ShiftReport.SALARY
 const SHIFT_DELAY := 3.0
@@ -55,6 +60,8 @@ var crowd_fines := 0
 ## Drunk drivers whose keys a cop took, and drunk drivers let through (or sneaked) at the wheel.
 var drunk_keys := 0
 var drunks_passed := 0
+## Racers stopped with the spike strips (city cars punctured count as innocents).
+var racer_fines := 0
 ## The wanted driver, out of the car and cuffed; in the patrol car, the case is solved.
 var suspect: ChaseSuspect
 ## The clown car the wanted clown was taken out of (its seat is left empty on every PC).
@@ -96,6 +103,7 @@ func start(comisario: Comisario = null) -> void:
 	briefing = CaseBriefing.new()
 	add_child(briefing)
 	queue.passed.connect(_on_passed)
+	queue.punctured.connect(_on_punctured)
 	if comisario:
 		comisario.spoke.connect(give_tip.unbind(1))
 		_hint_all("HINT_SEE_COMISARIO")
@@ -123,7 +131,7 @@ func give_tip() -> void:
 			# The clown convoy has its own story (control-payasos.md, "La historia").
 			var story := "BRIEF_CONVOY_" if plan.convoy else "BRIEF_FRUIT_" if plan.fruit \
 				else "BRIEF_CROWD_" if plan.crowd else "BRIEF_GHOST_" if plan.ghost \
-				else "BRIEF_WEDDING_CHECK_" if plan.wedding else "BRIEF_TRAFFIC_"
+				else "BRIEF_WEDDING_CHECK_" if plan.wedding else "BRIEF_RACE_" if plan.race else "BRIEF_TRAFFIC_"
 			var first := story + "A"
 			if plan.wedding:
 				first = tr("BRIEF_WEDDING_CHECK_A") % WeddingCar.names(plan.couple)
@@ -167,6 +175,8 @@ func extras() -> Array:
 		out.append(CROWD_FINE_BONUS)
 	for i in drunk_keys:
 		out.append(DRUNK_KEYS)
+	for i in racer_fines:
+		out.append(RACER_FINE)
 	return out
 
 
@@ -202,9 +212,39 @@ func envelope_bonus() -> Array:
 	return []
 
 
-## A cop cuffed the driver of `car`, stopped in the queue.
+## A car rolled over a spike strip: a racer is a fine for the pay, a city car a complaint (control-carrera.md).
+func _on_punctured(car: QueueCar) -> void:
+	if follower or shift_over or lost or solved_now:
+		return
+	if car.racer:
+		racer_fines += 1
+		_hint_all("HINT_RACE_FINED")
+		return
+	_complaint()
+
+
+## An innocent's complaint; the second one loses the case.
+func _complaint() -> void:
+	innocents += 1
+	lost = innocents >= MAX_INNOCENTS
+	_hint_all("HINT_TRAFFIC_INNOCENT_LOST" if lost else "HINT_TRAFFIC_INNOCENT")
+	if lost:
+		_end()
+
+
+## A cop cuffed the driver of `car`, stopped in the queue (or a racer, stopped on its rims).
 func detain(car: QueueCar) -> void:
-	if follower or shift_over or lost or solved_now or not car.waiting():
+	if follower or shift_over or lost or solved_now or not (car.waiting() or car.stopped_racer()):
+		return
+	if car.racer and not car.wanted:
+		# Fined already for racing, he isn't El Turbo: a complaint, like any innocent's (decision 98).
+		car.say(tr("RACE_NOT_TURBO_LINE"))
+		_complaint()
+		return
+	if car.racer:
+		detained.emit(car, true)
+		_take_out(car)
+		_hint_all("HINT_TRAFFIC_GOT_IT")
 		return
 	# The wanted clown gets out where he stands; the others hop back in.
 	var out_at := car.driver_out_at()
@@ -222,14 +262,10 @@ func detain(car: QueueCar) -> void:
 		else:
 			_hint_all("HINT_TRAFFIC_GOT_IT")
 		return
-	innocents += 1
-	lost = innocents >= MAX_INNOCENTS
 	car.say(tr("TRAFFIC_INNOCENT_LINE"))
 	# Let go, they drive off in a huff.
 	car.state = "going"
-	_hint_all("HINT_TRAFFIC_INNOCENT_LOST" if lost else "HINT_TRAFFIC_INNOCENT")
-	if lost:
-		_end()
+	_complaint()
 
 
 ## The wanted driver gets out, cuffed, to be walked to the patrol car; a clown already out stays where he is (`at`).
@@ -389,6 +425,8 @@ func campaign_key() -> String:
 		return "traffic_ghost_car"
 	if plan and plan.wedding:
 		return "traffic_wedding"
+	if plan and plan.race:
+		return "traffic_race"
 	return "traffic_rush_hour"
 
 
@@ -418,7 +456,8 @@ func _show_result(result: Dictionary) -> void:
 func snapshot() -> Dictionary:
 	var state := {"tip": tip_given, "patience": queue.patience, "sneaked": queue.sneaked,
 		"clues": clues.known, "innocents": innocents, "melons": melon_complaints, "crowd_fines": crowd_fines,
-		"drunk_keys": drunk_keys, "drunks_passed": drunks_passed, "lost": lost, "solved": solved_now, "escaped": escaped,
+		"drunk_keys": drunk_keys, "drunks_passed": drunks_passed,
+		"racer_fines": racer_fines, "lost": lost, "solved": solved_now, "escaped": escaped,
 		"suspect": suspect != null, "result": _result, "taken_from": taken_from, "clean": _clean_clowns()}
 	if chase:
 		state.chase = chase.snapshot()
@@ -453,6 +492,9 @@ func apply_snapshot(state: Dictionary) -> void:
 	if state.get("drunks_passed", 0) > drunks_passed:
 		_hint_all("HINT_WEDDING_DRUNK_PASSED")
 	drunks_passed = state.get("drunks_passed", 0)
+	if state.get("racer_fines", 0) > racer_fines:
+		_hint_all("HINT_RACE_FINED")
+	racer_fines = state.get("racer_fines", 0)
 	if state.suspect and not suspect:
 		suspect = get_parent().get_node_or_null("Driver") as ChaseSuspect
 		if suspect and patrol_car:
