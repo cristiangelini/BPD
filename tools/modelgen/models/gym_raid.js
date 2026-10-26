@@ -157,6 +157,26 @@ const models = {
 		b.add('star', C('sheet_star', 0xf2c84b), new THREE.CylinderGeometry(0.025, 0.025, 0.003, 5), { pos: V(0, 0.005, -0.12) });
 		return b.build();
 	},
+	// The fake record's doctored photo: el profe's head glued over a strongman's body, the cut line in white tape.
+	gym_record_photo() {
+		const b = new Builder('gym_record_photo');
+		b.add('paper', C('photo_paper', 0xfff4d8), new THREE.BoxGeometry(0.2, 0.004, 0.15), { pos: V(0, 0.002, 0) });
+		b.add('print', C('photo_strongman', 0x7a5a3a), new THREE.BoxGeometry(0.07, 0.002, 0.08), { pos: V(0, 0.005, 0.025) });
+		b.add('print', C('fito_hair', 0x3a2414), new THREE.CylinderGeometry(0.025, 0.025, 0.002, 10), { pos: V(0, 0.006, -0.035) });
+		b.add('print', black, new THREE.BoxGeometry(0.16, 0.002, 0.01), { pos: V(0, 0.006, 0.0) });
+		b.add('tape', white, new THREE.BoxGeometry(0.09, 0.003, 0.012), { pos: V(0, 0.007, -0.012), rot: [0, 0.2, 0] });
+		return b.build();
+	},
+	// The record contest's certificate: a gold-bordered sheet with a red seal and a ribbon.
+	gym_record_certificate() {
+		const b = new Builder('gym_record_certificate');
+		b.add('paper', C('cert_gold', 0xe0b84a), new THREE.BoxGeometry(0.3, 0.003, 0.22), { pos: V(0, 0.0015, 0) });
+		b.add('paper', C('sheet_paper', 0xfaf6ea), new THREE.BoxGeometry(0.27, 0.004, 0.19), { pos: V(0, 0.002, 0) });
+		for (let i = 0; i < 4; i++) b.add('lines', C('sheet_ink', 0x2a2a30), new THREE.BoxGeometry(0.16, 0.002, 0.008), { pos: V(0, 0.005, -0.06 + i * 0.03) });
+		b.add('seal', C('cert_seal', 0xc83a3a), new THREE.CylinderGeometry(0.03, 0.03, 0.006, 12), { pos: V(0.09, 0.006, 0.06) });
+		b.add('seal', C('cert_ribbon', 0x3a6ad8), new THREE.BoxGeometry(0.015, 0.003, 0.05), { pos: V(0.09, 0.005, 0.09), rot: [0, 0.3, 0] });
+		return b.build();
+	},
 };
 
 export { models };
@@ -178,5 +198,10 @@ export const views = {
 		items: [{ name: 'gym_silver_dumbbell', pos: [-0.25, 0, 0], rotY: 0.4 }, { name: 'gym_fake_scale', pos: [0.55, 0, 0.2], rotY: -0.3 },
 			{ name: 'gym_quota_sheet', pos: [0.5, 0, -0.35], rotY: 0.2 }],
 		cam: { pos: [0.3, 1.1, 1.9], target: [0.1, 0.2, 0], fov: 40 },
+	},
+	gym_fake_record: {
+		items: [{ name: 'gym_record_bar', pos: [0, 0.22, 0] }, { name: 'gym_record_photo', pos: [-0.3, 0, 0.45], rotY: 0.3 },
+			{ name: 'gym_record_certificate', pos: [0.3, 0, 0.45], rotY: -0.2 }],
+		cam: { pos: [0, 1.2, 1.9], target: [0, 0.15, 0.2], fov: 45 },
 	},
 };

@@ -40,6 +40,15 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_FAKE_SCALE", "OBJ_EXTRA_QUOTA_SHEET"],
 		"rig": preload("res://scripts/case/gym/silver_dumbbells_rig.gd"),
 	},
+	"fake_record": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_FAKE_RECORD_B", "BRIEF_FAKE_RECORD_C", "BRIEF_FAKE_RECORD_D"],
+		"find": "OBJ_FIND_RECORD_BAR",
+		"hidden": [preload("res://scenes/props/record_photo.tscn"), preload("res://scenes/props/record_certificate.tscn")],
+		"half_heights": [0.003, 0.003],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_RECORD_PHOTO", "OBJ_EXTRA_RECORD_CERTIFICATE"],
+		"rig": preload("res://scripts/case/gym/fake_record_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the hall's floor, away from the machines.
 const NOTE_PLACES: Array[Vector3] = [
@@ -114,6 +123,8 @@ var office_door: FrontDoor
 var locker_door: FrontDoor
 var till: Till
 var stereo: GymStereo
+## The record bar hanging on the record wall, only for the look (the fake record's story takes it down).
+var record_bar_look: Node3D
 var coach: FloorBoss
 var lula: GymReceptionist
 var complaint_bar: ProgressBar
@@ -280,7 +291,7 @@ func _build_extras() -> void:
 	till.key_hint = "HINT_TILL_KEY_GYM"
 	add_child(till)
 	_model(RECORD_WALL_MODEL, RECORD_WALL_AT, -PI / 2)
-	_model(RECORD_BAR_MODEL, RECORD_BAR_AT, PI / 2)
+	record_bar_look = _model(RECORD_BAR_MODEL, RECORD_BAR_AT, PI / 2)
 	_build.open_box(TOWEL_BIN_AT, TOWEL_BIN_SIZE, "top", Color(0.3, 0.5, 0.8))
 
 
