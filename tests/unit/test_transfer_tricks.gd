@@ -71,7 +71,8 @@ func test_left_alone_they_walk_to_a_door() -> void:
 	watch_signals(inmate)
 	await wait_seconds(BusInmate.LOOSE_WAIT + 9.0)
 	assert_signal_emitted(inmate, "at_door")
-	assert_ne(inmate.door, -1)
+	# The bus stands still, so at the door they step right out (step 4).
+	assert_true(inmate.out, "out by the door")
 
 
 func test_a_cop_in_the_aisle_blocks_the_way() -> void:
@@ -89,7 +90,8 @@ func test_a_stop_at_the_gas_station_calms_the_bathroom() -> void:
 	var inmate := _with("bathroom")
 	_fill(inmate)
 	assert_true(tricks.bathroom.has(inmate))
-	var at := Transform3D(Basis(Vector3.UP, PI / 2), tricks.gas_station + Vector3(0, 0.1, 6.5))
+	# Parked in the street in front of it, like the patrol car.
+	var at := (level.city.transform * CityLayout.parking("gas_station")).translated_local(Vector3.UP * 0.3)
 	PhysicsServer3D.body_set_state(bus.get_rid(), PhysicsServer3D.BODY_STATE_TRANSFORM, at)
 	bus.global_transform = at
 	await wait_seconds(TransferTricks.GAS_STOP + 1.5)
