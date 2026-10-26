@@ -1,4 +1,4 @@
-class_name FloorPolisher
+class_name GalleryPolisher
 extends StaticBody3D
 
 ## The museum's automatic floor polisher (escena-museo.md, "Las pistas"): once a cop walks into the gallery it starts

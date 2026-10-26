@@ -19,7 +19,7 @@ const MONITORS_AT := Vector3(0.3, 0.02, -0.1)
 var museum: Museum
 var case: CrimeSceneCase
 var frame: EmptyFrame
-var polisher: FloorPolisher
+var polisher: GalleryPolisher
 var monitors: SecurityMonitors
 
 
@@ -38,7 +38,7 @@ func _ready() -> void:
 	monitors.has_recording = plan.clues.has("recording")
 	monitors.position = Museum.DESK_AT + Vector3(0, Museum.DESK_SIZE.y, 0) + MONITORS_AT
 	museum.add_child(monitors)
-	polisher = FloorPolisher.new()
+	polisher = GalleryPolisher.new()
 	polisher.name = "Polisher"
 	polisher.route.assign(POLISHER_ROUTE.map(func(at: Vector3) -> Vector3: return at + Vector3(0, Museum.FLOOR_TOP, 0)))
 	museum.add_child(polisher)

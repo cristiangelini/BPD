@@ -2,7 +2,7 @@ extends GutTest
 
 ## The museum's clues and how each gets ruined (escena-museo.md, step 4b): the empty frame's prints, the footprint on
 ## the waxed floor and the polisher, the hair on the velvet rope, the bitten sandwich and the monitors' recording
-## (MuseumClues, EmptyFrame, FloorPolisher, CrimeClueItem's museum look, SecurityMonitors).
+## (MuseumClues, EmptyFrame, GalleryPolisher, CrimeClueItem's museum look, SecurityMonitors).
 
 const COP_SCENE := preload("res://scenes/player/cop.tscn")
 
