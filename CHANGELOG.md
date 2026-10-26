@@ -193,3 +193,4 @@
 - The hotel's people (escena-hotel.md, step 2): six guests alike in bathrobe, towel and cucumbers in the lobby, don Bostezo the concierge behind the desk, señora Perlita, Tito the bellboy and doña Escoba upstairs with her laundry cart, each with their own lines.
 - Hotel raid, step 1 (hotel-allanamiento.md): the crime scene's Hotel Gran Siesta without its guests, with the rooms and the suite locked, the master key on the key board, vases and bedside lamps that break into fines, and 12 hiding spots (6 heavy). `--place=hotel_raid` opens it.
 - Hotel raid, step 2: don Bostezo watches from the desk and fills the complaint meter (key taken while awake, what breaks, rammed doors, questions); the pillow on the desk puts him to sleep 15 s, the bell wakes him angry.
+- Hotel raid, step 3: doña Escoba walks the upstairs corridor with her cart; a cop who makes one of the unmade beds (3 s, hands busy) gets her chat about where she saw don Bostezo hide something, once per cop.

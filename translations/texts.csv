@@ -2406,3 +2406,10 @@ HOTEL_CONCIERGE_HURT,"¡Ay! ¡Con cuidado, que estoy de turno!","Ouch! Careful, 
 HOTEL_CONCIERGE_DOOR,"¡¿Qué fue ese golpe?! ¡Esa puerta es de 1952!","What was that bang?! That door is from 1952!","Que pancada foi essa?! Essa porta é de 1952!"
 HOTEL_CONCIERGE_SAW,"¡Eso lo va a pagar! ¡Era una antigüedad!","You'll pay for that! It was an antique!","Você vai pagar por isso! Era uma antiguidade!"
 HOTEL_CONCIERGE_LAWYER,"Se acabó. Llamo a mi abogado. Él también duerme, pero lo despierto.","That's it. I'm calling my lawyer. He sleeps too, but I'll wake him.","Chega. Vou ligar para o meu advogado. Ele também dorme, mas eu acordo ele."
+PROMPT_HOTEL_MAKE_BED,E: tender la cama (doña Escoba te lo agradece),E: make the bed (doña Escoba will thank you),E: arrumar a cama (dona Escoba agradece)
+PROMPT_HOTEL_BED_MAKING,"Tendiendo la cama... (E: dejarla así)","Making the bed... (E: leave it like that)","Arrumando a cama... (E: deixar assim)"
+HOTEL_MAID_BUSY,"Ay, oficial, no tengo tiempo de charlar. Si me diera una mano con las camas...","Oh, officer, I have no time to chat. If you gave me a hand with the beds...","Ai, policial, não tenho tempo para conversar. Se me desse uma mão com as camas..."
+HOTEL_MAID_HELP_1,"¡Un policía que tiende camas! Eso sí que no se ve todos los días. Le cuento algo...","A cop who makes beds! You don't see that every day. Let me tell you something...","Um policial que arruma camas! Isso não se vê todo dia. Vou te contar uma coisa..."
+HOTEL_MAID_HELP_2,"Las esquinas bien metidas, eh. Y mientras tanto, escuche...","Tuck the corners in well, eh. And meanwhile, listen...","Os cantos bem dobrados, hein. E enquanto isso, escute..."
+HOTEL_MAID_THANKS,"Gracias otra vez, oficial. Ya le conté todo lo que vi.","Thanks again, officer. I already told you everything I saw.","Obrigada de novo, policial. Já te contei tudo o que vi."
+HOTEL_MAID_SAW_NOTHING,"Yo no vi a don Bostezo esconder nada. Lo vi dormir, eso sí. Mucho.","I didn't see don Bostezo hide anything. I saw him sleep, though. A lot.","Eu não vi o don Bostezo esconder nada. Vi ele dormir, isso sim. Muito."

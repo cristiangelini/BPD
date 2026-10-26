@@ -5,8 +5,9 @@ extends Node3D
 ## (Hotel, with crime_scene off: no guests, one 13 behind the wardrobe); the raid puts on top what makes it a raid:
 ## the rooms and the suite locked, the master key on the board behind the desk (or the ram), the vases downstairs and
 ## the bedside lamps upstairs that break into fines, and the hiding spots. Don Bostezo watches from the desk and fills
-## the complaint meter; the little pillow on the desk puts him to sleep and the bell wakes him (step 2). Doña Escoba and
-## the case come in the next steps. Every number here is (propuesta).
+## the complaint meter; the little pillow on the desk puts him to sleep and the bell wakes him (step 2). Doña Escoba
+## walks the corridor with her cart and tells what she saw to whoever makes one of the unmade beds (step 3). The case
+## comes in the next steps. Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const VASE_SCENE := preload("res://scenes/props/ornament_vase.tscn")
@@ -23,6 +24,10 @@ const VASES: Array[Vector3] = [
 ## The little pillow on the desk, on don Bostezo's side, and the bell's collision over the hotel's bell.
 const PILLOW_AT := Vector3(0.2, 1.11, -6.65)
 const BELL_HIT_AT := Vector3(0.9, 1.12, -6.4)
+## The unmade beds' tops sit over the hotel's bed boxes; doña Escoba walks the corridor south of its middle, clear
+## of the wardrobe.
+const BED_TOP := Hotel.UP + 0.45
+const MAID_Z := 0.4
 ## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
 const SPOTS := [
 	{"id": "hotel_in_tub", "at": Hotel.TUB_AT + Vector3(0, 0.6, 0), "heavy": true},
@@ -32,7 +37,7 @@ const SPOTS := [
 	{"id": "hotel_by_suite_bed", "at": Hotel.SUITE_BED_AT + Vector3(1.6, 0, 0), "heavy": true},
 	{"id": "hotel_behind_piano", "at": Vector3(Hotel.PIANO_AT.x, Hotel.FLOOR_TOP, -7.8), "heavy": true},
 	{"id": "hotel_on_piano", "at": Hotel.PIANO_AT + Vector3(0.4, 1.1, 0), "heavy": false},
-	{"id": "hotel_on_bed_14", "at": Vector3(7.0, Hotel.UP + 0.5, Hotel.BACK_Z + 1.1), "heavy": false},
+	{"id": "hotel_on_bed_14", "at": Vector3(7.0, BED_TOP + HotelBed.SIZE.y, Hotel.BACK_Z + 1.1), "heavy": false},
 	{"id": "hotel_in_case", "at": Hotel.CASE_AT + Vector3(0, 0.9, 0), "heavy": false},
 	{"id": "hotel_in_plant", "at": Hotel.PLANT_AT + Vector3(0, 0.5, 0), "heavy": false},
 	{"id": "hotel_on_armchair", "at": Hotel.ARMCHAIRS[1] + Vector3(0, 0.5, 0.1), "heavy": false},
@@ -55,6 +60,9 @@ var concierge: HotelConcierge
 var pillow: HotelPillow
 var bell: HotelBell
 var complaint_bar: ProgressBar
+var maid: HotelRaidMaid
+## The unmade beds by room number.
+var beds: Dictionary = {}
 @onready var car: PatrolCar = $PatrolCar
 
 
@@ -72,6 +80,7 @@ func _ready() -> void:
 	_place_key_board()
 	_place_fragile()
 	_place_concierge()
+	_place_maid()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("hotel")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -174,3 +183,23 @@ func _place_concierge() -> void:
 	box.add_child(complaint_bar)
 	add_child(hud)
 	concierge.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Doña Escoba in the corridor, and an unmade bed in each guest room: whoever makes one gets her chat.
+func _place_maid() -> void:
+	maid = HotelRaidMaid.new()
+	maid.name = "Maid"
+	maid.position = Vector3(Hotel.MAID_AT.x, Hotel.UP, MAID_Z)
+	maid.rotation.y = -PI / 2
+	add_child(maid)
+	for number: int in Hotel.GUEST_ROOMS:
+		var north: bool = Hotel.ROOMS[number].side == "n"
+		var bed := HotelBed.new()
+		bed.name = "Bed%d" % number
+		bed.room = number
+		bed.position = Vector3(Hotel.room_middle(number).x, BED_TOP, (Hotel.BACK_Z + 1.1) if north else (Hotel.FRONT_Z - 1.1))
+		bed.rotation.y = 0.0 if north else PI
+		add_child(bed)
+		bed.started.connect(maid.helping.bind(number))
+		bed.made_by.connect(maid.helped)
+		beds[number] = bed
