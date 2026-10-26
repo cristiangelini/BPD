@@ -1,4 +1,4 @@
-// The gym raid (allanamiento-gimnasio.md, decision 250): el profe Rulo, Coca the receptionist, the reception's stereo,
+// The gym raid (allanamiento-gimnasio.md, decision 250): el profe Fito, Lula the receptionist, the reception's stereo,
 // the record wall with its bar and a shop mannequin that "trains" for a ghost member. Placeholder, not final art.
 import { Builder, loft, ellipsoid, mat, V, THREE } from '../lib.js';
 import { M, pearBody, eyes, limb } from './pear.js';
@@ -30,35 +30,35 @@ function whistle(b) {
 }
 
 const models = {
-	// El profe Rulo, the aerobics teacher: neon headband over huge curls, a pink tank top, striped tights, wristbands and
+	// El profe Fito, the aerobics teacher: neon headband over huge curls, a pink tank top, striped tights, wristbands and
 	// his whistle. The game scales him thin (x 0.85).
-	npc_profe_rulo() {
-		const b = new Builder('npc_profe_rulo');
-		const tank = C('rulo_tank', 0xff4fa8), tights = C('rulo_tights', 0x2a2a8a), stripe = C('rulo_stripe', 0x3fe0ff);
+	npc_profe_fito() {
+		const b = new Builder('npc_profe_fito');
+		const tank = C('fito_tank', 0xff4fa8), tights = C('fito_tights', 0x2a2a8a), stripe = C('fito_stripe', 0x3fe0ff);
 		pearBody(b, C('skin_arena', 0xd9a06b), { shirt: tank, pants: tights, shoes: white, belted: false });
 		stripes(b, stripe, [0.2, 0.32, 0.44]);
 		eyes(b, 1.34, 0.17, 0.08, 0.05);
 		mouth(b);
-		const hair = C('rulo_hair', 0x3a2414);
+		const hair = C('fito_hair', 0x3a2414);
 		for (let i = 0; i < 14; i++) {
 			const a = (i / 14) * Math.PI * 2, up = i % 2 ? 1.5 : 1.42;
 			b.add('hair', hair, ellipsoid(0.09, 0.09, 0.09, 6, 4), { pos: V(Math.cos(a) * 0.17, up, 0.02 + Math.sin(a) * 0.16 - (Math.sin(a) > 0.6 ? 0.06 : 0)) });
 		}
 		b.add('hair', hair, ellipsoid(0.17, 0.1, 0.16, 8, 5), { pos: V(0, 1.53, -0.01) });
-		b.add('hair', C('rulo_headband', 0xc8ff2a, { emissive: 0x2a3a00 }), new THREE.CylinderGeometry(0.205, 0.205, 0.05, 12, 1, true), { pos: V(0, 1.42, 0.02) });
+		b.add('hair', C('fito_headband', 0xc8ff2a, { emissive: 0x2a3a00 }), new THREE.CylinderGeometry(0.205, 0.205, 0.05, 12, 1, true), { pos: V(0, 1.42, 0.02) });
 		wristbands(b, stripe);
 		whistle(b);
 		return b.build();
 	},
-	// Coca, the receptionist: a purple tracksuit with white stripes on the sleeves, a high ponytail and a headset.
-	npc_coca() {
-		const b = new Builder('npc_coca');
-		const suit = C('coca_suit', 0x7a3fc8), stripe = C('coca_stripe', 0xf6f4ee);
-		pearBody(b, C('skin_crema', 0xf3d2b0), { shirt: suit, pants: suit, shoes: C('coca_shoes', 0xff9d3f), belted: false, onePiece: true });
+	// Lula, the receptionist: a purple tracksuit with white stripes on the sleeves, a high ponytail and a headset.
+	npc_lula() {
+		const b = new Builder('npc_lula');
+		const suit = C('lula_suit', 0x7a3fc8), stripe = C('lula_stripe', 0xf6f4ee);
+		pearBody(b, C('skin_crema', 0xf3d2b0), { shirt: suit, pants: suit, shoes: C('lula_shoes', 0xff9d3f), belted: false, onePiece: true });
 		for (const s of [-1, 1]) limb(b, 'arms', stripe, V(s * 0.31, 0.88, 0.01), V(s * 0.45, 0.72, 0.08), 0.03);
 		eyes(b, 1.34, 0.17, 0.08, 0.05);
 		mouth(b);
-		const hair = C('coca_hair', 0xd89a3a);
+		const hair = C('lula_hair', 0xd89a3a);
 		b.add('hair', hair, ellipsoid(0.21, 0.13, 0.2, 10, 6), { pos: V(0, 1.43, 0.0) });
 		b.add('hair', hair, ellipsoid(0.06, 0.06, 0.06, 6, 4), { pos: V(0, 1.58, -0.12) });
 		b.add('hair', hair, ellipsoid(0.07, 0.2, 0.07, 6, 5), { pos: V(0, 1.44, -0.25), rot: [0.5, 0, 0] });
@@ -122,11 +122,11 @@ const models = {
 export { models };
 export const views = {
 	gym_raid_people: {
-		items: [{ name: 'npc_profe_rulo', pos: [-0.7, 0, 0], rotY: 0.35, scale: 0.95 }, { name: 'npc_coca', pos: [0.7, 0, 0], rotY: -0.35 }],
+		items: [{ name: 'npc_profe_fito', pos: [-0.7, 0, 0], rotY: 0.35, scale: 0.95 }, { name: 'npc_lula', pos: [0.7, 0, 0], rotY: -0.35 }],
 		cam: { pos: [0, 1.3, 4.2], target: [0, 0.8, 0], fov: 34 },
 	},
 	gym_raid_people_back: {
-		items: [{ name: 'npc_profe_rulo', pos: [-0.7, 0, 0], rotY: Math.PI - 0.5, scale: 0.95 }, { name: 'npc_coca', pos: [0.7, 0, 0], rotY: Math.PI + 0.5 }],
+		items: [{ name: 'npc_profe_fito', pos: [-0.7, 0, 0], rotY: Math.PI - 0.5, scale: 0.95 }, { name: 'npc_lula', pos: [0.7, 0, 0], rotY: Math.PI + 0.5 }],
 		cam: { pos: [0, 1.3, 4.2], target: [0, 0.8, 0], fov: 34 },
 	},
 	gym_raid_props: {

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dyaj5qoe63imu"
-path="res://.godot/imported/npc_coca.glb-fdc2760d9dad50b58261ae028cc819e0.scn"
+uid="uid://ca4lsfnuyt2i2"
+path="res://.godot/imported/npc_profe_fito.glb-aa46c61cf461e9f7b577941c4b52eb24.scn"
 
 [deps]
 
-source_file="res://assets/models/npc_coca.glb"
-dest_files=["res://.godot/imported/npc_coca.glb-fdc2760d9dad50b58261ae028cc819e0.scn"]
+source_file="res://assets/models/npc_profe_fito.glb"
+dest_files=["res://.godot/imported/npc_profe_fito.glb-aa46c61cf461e9f7b577941c4b52eb24.scn"]
 
 [params]
 

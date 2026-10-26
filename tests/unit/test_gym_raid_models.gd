@@ -1,9 +1,9 @@
 extends GutTest
 
-## The gym raid's placeholders (docs/diseno/allanamiento-gimnasio.md, decision 250): el profe Rulo and Coca stand on the
+## The gym raid's placeholders (docs/diseno/allanamiento-gimnasio.md, decision 250): el profe Fito and Lula stand on the
 ## floor at about the cop's size, and the props load with meshes.
 
-const PEOPLE := ["npc_profe_rulo", "npc_coca", "gym_mannequin"]
+const PEOPLE := ["npc_profe_fito", "npc_lula", "gym_mannequin"]
 const PROPS := ["gym_stereo", "gym_record_wall", "gym_record_bar"]
 
 

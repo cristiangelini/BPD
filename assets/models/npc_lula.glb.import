@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://ca4lsfnuyt2i2"
-path="res://.godot/imported/npc_profe_rulo.glb-e080a03e7db7f547393e0eb49b8b31f9.scn"
+uid="uid://dhaxxj7gfh7e5"
+path="res://.godot/imported/npc_lula.glb-b163aff7414d4675027028da5e49fc98.scn"
 
 [deps]
 
-source_file="res://assets/models/npc_profe_rulo.glb"
-dest_files=["res://.godot/imported/npc_profe_rulo.glb-e080a03e7db7f547393e0eb49b8b31f9.scn"]
+source_file="res://assets/models/npc_lula.glb"
+dest_files=["res://.godot/imported/npc_lula.glb-b163aff7414d4675027028da5e49fc98.scn"]
 
 [params]
 

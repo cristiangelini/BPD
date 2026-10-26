@@ -256,7 +256,7 @@ function buildLimo() {
 	return b.build();
 }
 
-function buildSedan(name, paint, lampOff, tailOff, extra) {
+export function buildSedan(name, paint, lampOff, tailOff, extra) {
 	const tint = mat('getaway_glass', 0x14181e), chrome = mat('chrome', 0x9aa0a8);
 	const CW = 2.1, F = 2.3, R = -2.3, HOOD = 0.95, CABIN_F = 0.9, CABIN_R = -1.2, TOP = 1.55;
 	const b = new Builder(name);
