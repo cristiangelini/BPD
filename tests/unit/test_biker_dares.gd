@@ -87,7 +87,8 @@ func test_arm_wrestling_with_enough_pushes_passes() -> void:
 	for i in BikerDares.ARM_PUSHES:
 		bar.arm_table.use(cop)
 	assert_signal_emitted_with_parameters(dares, "passed", ["arm"])
-	assert_eq(dares.challenger.said(), "BIKER_RESPECT")
+	assert_eq(dares.challenger.said(), dares.tip(), "a hint about evidence still missing")
+	assert_string_starts_with(dares.tip(), "BIKER_TIP_")
 	assert_false(bar.arm_table.is_wrestling())
 	assert_eq(_bikers_suspicion(), 0.0)
 

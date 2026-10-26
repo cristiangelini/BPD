@@ -100,6 +100,16 @@ valentía copian la forma de `ChessGames` (el host decide y avisa).
    la moto cuenta como no presentarse. Mientras dura, los motoqueros que no están en el patio miran la prueba y no ven
    nada más. Pasarla: "¡Eso es valentía! Respeto, hermano." (el chisme llega en el paso 5) **(propuesta)**.
 5. Las pruebas y el caso (variante "biker"): las 6 pruebas, los chismes, el sueldo y el interrogatorio.
+   Hecho así: la semilla elige 3 de estas 6 **(propuesta)**: la caja de cartón llena de autoestéreos entre los
+   cajones del taller (12 kg, se agarra), el volante robado de marfil con un moño rojo sobre la barra (se agarra), el
+   mapa de la ciudad con cuatro estacionamientos marcados en rojo en la pared del taller (foto), dos motoqueros que
+   están cerca hablando del "trabajo del jueves" (video), la campera de El Cromado con parches de colores en el
+   perchero (E) y el cuaderno azul de ventas en el escritorio de la oficina (E; la llave está en el tanque del
+   ciclomotor de El Cromado, E en el tanque). El mapa y la campera están siempre, sean prueba o no. Pasar una prueba de
+   valentía hace que el motoquero cuente un chisme de la primera prueba que falta ("¡Eso es valentía! Te cuento algo:
+   ..."); si ya están todas, solo "Respeto, hermano". Esposar a El Cromado gana el caso (600 de sueldo, un tercio menos
+   por prueba que falte), y en su interrogatorio se le escapan 3 frases y confiesa lo de los autoestéreos. Hasta el
+   paso 6 escapa a pie.
 6. La huida en el ciclomotor, el sorteo de "Jugar" en novenos y online.
 
 ## Preguntas para Cristian (decisión 176)

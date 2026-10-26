@@ -78,7 +78,35 @@ export function buildArmLock() {
 	return b.build();
 }
 
-export const models = { chopper_moped: buildChopperMoped, heavy_bike: buildHeavyBike, arm_table: buildArmTable, arm_lock: buildArmLock };
+// The evidence (step 5): a cardboard box full of stolen car radios, open on top, 0.6 x 0.4 x 0.45 m, and a stolen car
+// steering wheel (an old ivory one) with a red ribbon like a trophy. Each origin at its bottom.
+export function buildRadioBox() {
+	const b = new Builder('car_radio_box');
+	const card = mat('radio_card', 0xb08a5a), black = mat('moped_black', 0x1a1a1e), screen = mat('radio_screen', 0x40d0a0, { emissive: 0x104030 });
+	b.add('box', card, new THREE.BoxGeometry(0.6, 0.36, 0.45), { pos: V(0, 0.18, 0) });
+	for (const s of [-1, 1]) b.add('flaps', card, new THREE.BoxGeometry(0.6, 0.01, 0.2), { pos: V(0, 0.4, s * 0.3), rot: [s * 0.5, 0, 0] });
+	for (let i = 0; i < 3; i++) for (let r = 0; r < 2; r++) {
+		b.add('radios', black, new THREE.BoxGeometry(0.18, 0.06, 0.16), { pos: V(-0.19 + i * 0.19, 0.37 + r * 0.02, -0.1 + r * 0.2), rot: [0.2 * (r ? 1 : -1), 0, 0] });
+		b.add('radios', screen, new THREE.BoxGeometry(0.08, 0.02, 0.005), { pos: V(-0.19 + i * 0.19, 0.39 + r * 0.02, -0.02 + r * 0.2 + (r ? -0.16 : 0)) });
+	}
+	return b.build();
+}
+
+export function buildSteeringWheel() {
+	const b = new Builder('steering_wheel');
+	const ivory = mat('wheel_ivory', 0xe8dcc0), chrome = mat('chrome', 0xdde2ea, { metalness: 0.8, roughness: 0.2 }), red = mat('ribbon_red', 0xc0202a);
+	b.add('wheel', ivory, new THREE.TorusGeometry(0.18, 0.025, 6, 16), { pos: V(0, 0.025, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('hub', chrome, new THREE.CylinderGeometry(0.05, 0.05, 0.04, 10), { pos: V(0, 0.02, 0) });
+	for (let i = 0; i < 3; i++) {
+		const a = (i / 3) * Math.PI * 2;
+		b.add('spokes', chrome, new THREE.BoxGeometry(0.14, 0.015, 0.025), { pos: V(Math.cos(a) * 0.09, 0.02, Math.sin(a) * 0.09), rot: [0, -a, 0] });
+	}
+	b.add('ribbon', red, new THREE.BoxGeometry(0.08, 0.012, 0.16), { pos: V(0.14, 0.05, 0.1), rot: [0, 0.6, 0] });
+	b.add('ribbon', red, new THREE.SphereGeometry(0.03, 6, 4), { pos: V(0.17, 0.055, 0.14) });
+	return b.build();
+}
+
+export const models = { car_radio_box: buildRadioBox, steering_wheel: buildSteeringWheel, chopper_moped: buildChopperMoped, heavy_bike: buildHeavyBike, arm_table: buildArmTable, arm_lock: buildArmLock };
 
 export const views = {
 	chopper_moped: {
@@ -93,5 +121,9 @@ export const views = {
 		items: [{ name: 'heavy_bike', pos: [-0.8, 0, 0] }, { name: 'arm_table', pos: [1.2, 0, 0] },
 			{ name: 'arm_lock', pos: [1.2, 1.06, 0] }],
 		cam: { pos: [2.5, 2.0, 3.5], target: [0.2, 0.7, 0], fov: 45 },
+	},
+	biker_evidence: {
+		items: [{ name: 'car_radio_box', pos: [-0.4, 0, 0] }, { name: 'steering_wheel', pos: [0.5, 0, 0.1] }],
+		cam: { pos: [0.5, 1.0, 1.4], target: [0.0, 0.15, 0], fov: 45 },
 	},
 };
