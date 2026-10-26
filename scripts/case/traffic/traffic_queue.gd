@@ -17,6 +17,8 @@ extends Node3D
 signal patience_changed(value: float)
 ## A car went by: let through, or sneaking.
 signal passed(car: QueueCar, sneaked: bool)
+## A car rolled over a spike strip (control-carrera.md, step 3).
+signal punctured(car: QueueCar)
 
 const SPAWN_EVERY := 6.0
 ## Cars start this far up the lane from the checkpoint.
@@ -149,7 +151,8 @@ func _run_heats(delta: float) -> void:
 	for racer in racers.duplicate():
 		if not is_instance_valid(racer):
 			racers.erase(racer)
-		elif racer.at.z < -TrafficCheckpoint.ZONE.y:
+		elif racer.state == "racing" and racer.at.z < -TrafficCheckpoint.ZONE.y:
+			# A punctured one stopped, wherever that was: it didn't get away.
 			racers.erase(racer)
 			passed.emit(racer, false)
 
@@ -172,6 +175,7 @@ func spawn_heat() -> Array[QueueCar]:
 		car.race_left = RaceCar.GATHER
 		car.state = "gathering"
 		car.at = Vector3(RaceCar.LANE, 0, SPAWN_FROM + slot * RaceCar.SLOT_GAP)
+		car.ahead = heat.back() if not heat.is_empty() else null
 		racers.append(car)
 		heat.append(car)
 		add_child(car)

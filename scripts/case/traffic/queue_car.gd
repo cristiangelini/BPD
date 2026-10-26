@@ -44,6 +44,12 @@ const SAFE := Color(0.25, 0.27, 0.3)
 const SAFE_DIAL := Color(0.8, 0.7, 0.3)
 const GRANDPA := preload("res://assets/models/npc_abuelo.glb")
 const SAY_SECONDS := 4.0
+## With its tires flat (control-carrera.md, step 3): a city car limps on this fast; a racer brakes this hard.
+const FLAT_SPEED := 2.0
+const FLAT_BRAKE := 10.0
+const FLAT_SQUASH := 0.6
+const FLAT_LINES := 10
+const CITY_FLAT_LINES := 3
 ## The clown car (escena-circo.md's getaway, control-payasos.md): 2 m long, with its own small trunk at the back.
 const CLOWN_MODEL := preload("res://assets/models/clown_car.glb")
 const CLOWN_DRIVER := preload("res://assets/models/npc_payaso.glb")
@@ -160,6 +166,9 @@ var race := {}
 ## checkpoint ("gathering", "revving", "racing" in `state`); `race_slot` is its place in the heat.
 var race_slot := 0
 var race_left := 0.0
+## Over a spike strip (SpikeStrip, step 3): its tires are flat. A racer brakes to a stop and complains ("punctured");
+## a city car limps on at FLAT_SPEED.
+var flat := false
 var _rolled := 0.0
 ## Zigzagging, it turns this far (radians) with the lane it's crossing.
 var _sway := 0.0
@@ -860,7 +869,7 @@ func _physics_process(delta: float) -> void:
 		_bubble.hide()
 	if state == "gone" or not checkpoint:
 		return
-	if racer and state in ["gathering", "revving", "racing"]:
+	if racer and state in ["gathering", "revving", "racing", "punctured"]:
 		_race(delta)
 		return
 	if _to_pop > 0:
@@ -877,6 +886,8 @@ func _physics_process(delta: float) -> void:
 	var room := at.z - stop
 	# Slows down to stop right at `stop`: v² = 2·a·d.
 	var top := SPEED if room == INF else minf(SPEED, sqrt(maxf(2.0 * ACCEL * room, 0.0)))
+	if flat:
+		top = minf(top, FLAT_SPEED)
 	speed = move_toward(speed, top, ACCEL * delta)
 	if room <= 0.05:
 		speed = 0.0
@@ -944,12 +955,55 @@ func _race(delta: float) -> void:
 			at.x = x
 			_knock_cones()
 			_knock_barrier()
-	RaceCar.spark(self, speed if state == "racing" else RaceCar.SPARKS_FROM * 2.0 if state == "revving" else 0.0)
+		"punctured":
+			# Rolling on the rims, sparks and all, to a stop: then the driver complains.
+			var was_rolling := speed > 0.0
+			speed = move_toward(speed, 0.0, FLAT_BRAKE * delta)
+			at.z -= speed * delta
+			# Not into the one ahead in its heat, stopped on its rims too.
+			if is_instance_valid(ahead) and ahead.state == "punctured" and at.z < ahead.at.z + LENGTH + GAP:
+				at.z = ahead.at.z + LENGTH + GAP
+				speed = 0.0
+			at.x = RaceCar.lane_x(at.z)
+			if was_rolling and speed == 0.0:
+				say(tr(flat_line()))
+	RaceCar.spark(self, speed if state in ["racing", "punctured"] else RaceCar.SPARKS_FROM * 2.0 if state == "revving" \
+		else 0.0)
 	if at.z < GONE_AT:
 		state = "gone"
 		queue_free()
 		return
 	_place()
+
+
+## Rolling over a spike strip punctures it, once: moving, not out of the way at the curb.
+func can_puncture() -> bool:
+	return not flat and speed > 0.5 and state not in ["pulled_over", "gone"]
+
+
+## Its four tires go flat (SpikeStrip): a racing racer brakes to a stop, a city car limps on and complains.
+func puncture() -> void:
+	if flat:
+		return
+	flat = true
+	for i in SuspectCar.SEDAN_WHEELS.size():
+		var wheel := get_node_or_null("Wheel%d" % i) as Node3D
+		if wheel:
+			wheel.scale.y = FLAT_SQUASH
+			wheel.position.y = SuspectCar.SEDAN_WHEELS[i].y * FLAT_SQUASH
+	if racer and state == "racing":
+		state = "punctured"
+	elif not racer:
+		say(tr(flat_line()))
+	var queue := get_parent() as TrafficQueue
+	if queue:
+		queue.punctured.emit(self)
+
+
+## What its driver says about the flat tires: a racer one of FLAT_LINES, a city driver one of CITY_FLAT_LINES.
+func flat_line() -> String:
+	var roll := absi(hash(["flat", plate]))
+	return "RACE_FLAT_%d" % (roll % FLAT_LINES) if racer else "CITY_FLAT_%d" % (roll % CITY_FLAT_LINES)
 
 
 func _knock_barrier() -> void:

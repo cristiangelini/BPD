@@ -2182,6 +2182,21 @@ RACE_REV_1,"¡Rrrum, rrrum! ¡Hoy gano yo!","Vroom, vroom! Tonight I win!","Vruu
 RACE_REV_2,¡RRRRRRUUUUM!,VRRRRROOOOM!,VRRRRRUUUUM!
 RACE_REV_3,"¡Rum rum! ¡Agárrenme si pueden!","Vroom vroom! Catch me if you can!","Vrum vrum! Me peguem se puderem!"
 HINT_RACE_REVVING,¡Los corredores rugen en la esquina! ¡Van a largar!,The racers are revving at the corner! They're about to go!,Os corredores estão roncando na esquina! Vão largar!
+PROMPT_SPIKES_PULL,"E: tirar de la soga y enrollar los pinchos","E: pull the rope and roll up the spikes","E: puxar a corda e enrolar os pregos"
+PROMPT_SPIKES_DROP,"Pinchos: suéltalos o tíralos en la calle y se despliegan","Spike strip: drop or throw it on the street and it unrolls","Pregos: solte ou jogue na rua e eles se desenrolam"
+RACE_FLAT_0,"¡Mis gomas! ¡Era mi mejor tiempo!","My tires! That was my best time!","Meus pneus! Era o meu melhor tempo!"
+RACE_FLAT_1,"¡Eso no vale! ¡Pinchos no hay en el reglamento!","That's not fair! There are no spikes in the rules!","Isso não vale! Não tem pregos no regulamento!"
+RACE_FLAT_2,"¡Cuatro gomas nuevas! ¿Quién me las paga?","Four new tires! Who's paying for them?","Quatro pneus novos! Quem vai pagar?"
+RACE_FLAT_3,"Yo solo iba a comprar leche... muy rápido.","I was just going to buy milk... very fast.","Eu só ia comprar leite... muito rápido."
+RACE_FLAT_4,"¡Revancha! ¡Exijo revancha!","Rematch! I demand a rematch!","Revanche! Exijo revanche!"
+RACE_FLAT_5,"¿Esto cuenta como que llegué segundo?","Does this count as coming second?","Isso conta como se eu tivesse chegado em segundo?"
+RACE_FLAT_6,"¡Mi mamá me va a matar, el auto es de ella!","My mom's going to kill me, it's her car!","Minha mãe vai me matar, o carro é dela!"
+RACE_FLAT_7,"Bueno, bueno... ¿una foto con el patrullero por lo menos?","Okay, okay... a photo with the patrol car at least?","Tá bom, tá bom... uma foto com a viatura pelo menos?"
+RACE_FLAT_8,"¡Iba a doscientos! Bueno, a cien. Bueno, rápido.","I was doing two hundred! Well, a hundred. Well, fast.","Eu estava a duzentos! Bom, a cem. Bom, rápido."
+RACE_FLAT_9,"¡Con las chispas parecía una película! ¿Lo grabaron?","With the sparks it looked like a movie! Did you film it?","Com as faíscas parecia um filme! Vocês gravaram?"
+CITY_FLAT_0,"¡Mis gomas! ¡Yo solo iba a comprar pan!","My tires! I was just going to buy bread!","Meus pneus! Eu só ia comprar pão!"
+CITY_FLAT_1,"¿Pinchos? ¿A mí? ¡Si voy a treinta!","Spikes? On me? I'm doing thirty!","Pregos? Em mim? Eu estou a trinta!"
+CITY_FLAT_2,"Voy a hacer una denuncia, oficial. Contra usted.","I'm filing a complaint, officer. Against you.","Vou fazer uma denúncia, policial. Contra você."
 SHIFT_BRIBES,Sobornos,Bribes,Subornos
 SHIFT_AGENT_FINE,Multa de asuntos internos,Internal affairs fine,Multa da corregedoria
 SHIFT_INVESTIGATION_OPENED,Asuntos internos abrió una investigación.,Internal affairs opened an investigation.,A corregedoria abriu uma investigação.

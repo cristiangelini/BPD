@@ -37,12 +37,44 @@ export function buildRaceRoundel() {
 	return b.build();
 }
 
-export const models = { race_spoiler: buildRaceSpoiler, race_exhaust: buildRaceExhaust, race_roundel: buildRaceRoundel };
+// The patrol car's spike strip, deployed (step 3): a dark band 4.5 m long along X with yellow spikes up, its rope
+// looped at the +X end (E pulls it back). Origin on the ground, at its middle.
+export function buildSpikeStrip() {
+	const b = new Builder('spike_strip');
+	const band = mat('spike_band', 0x26262a), spike = mat('spike_yellow', 0xf2c81e), rope = mat('spike_rope', 0xd8a040);
+	box(b, 'band', band, 4.5, 0.04, 0.35, 0, 0.02, 0);
+	for (let i = 0; i < 18; i++) {
+		const x = -2.1 + i * (4.2 / 17);
+		for (const z of [-0.09, 0.09]) b.add('spikes', spike, new THREE.ConeGeometry(0.035, 0.12, 4), { pos: V(x + (z > 0 ? 0.06 : 0), 0.1, z) });
+	}
+	b.add('rope', rope, new THREE.TorusGeometry(0.18, 0.025, 5, 12), { pos: V(2.45, 0.03, 0), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
+// The same strip rolled up to carry, 50 cm across: a coil of the band, spikes sticking out, the rope hanging.
+export function buildSpikeRoll() {
+	const b = new Builder('spike_roll');
+	const band = mat('spike_band', 0x26262a), spike = mat('spike_yellow', 0xf2c81e), rope = mat('spike_rope', 0xd8a040);
+	b.add('band', band, new THREE.CylinderGeometry(0.2, 0.2, 0.35, 12), { pos: V(0, 0.2, 0), rot: [Math.PI / 2, 0, 0] });
+	for (let i = 0; i < 10; i++) {
+		const a = (i / 10) * Math.PI * 2;
+		b.add('spikes', spike, new THREE.ConeGeometry(0.03, 0.1, 4), { pos: V(Math.cos(a) * 0.23, 0.2 + Math.sin(a) * 0.23, (i % 2 ? 0.08 : -0.08)), rot: [0, 0, a - Math.PI / 2] });
+	}
+	b.add('rope', rope, new THREE.TorusGeometry(0.12, 0.02, 5, 10), { pos: V(0.25, 0.1, 0), rot: [0, Math.PI / 2, 0] });
+	return b.build();
+}
+
+export const models = { race_spoiler: buildRaceSpoiler, race_exhaust: buildRaceExhaust, race_roundel: buildRaceRoundel,
+	spike_strip: buildSpikeStrip, spike_roll: buildSpikeRoll };
 
 export const views = {
 	race_spoiler: {
 		items: [{ name: 'traffic_car_0', pos: [0, 0, 0] }, { name: 'race_spoiler', pos: [0, 1.0, -1.9] },
 			{ name: 'race_exhaust', pos: [0, 0.38, -2.3] }, { name: 'race_roundel', pos: [1.09, 0.72, 0.2] }],
 		cam: { pos: [4.5, 2.4, -4.2], target: [0, 0.7, -0.5], fov: 40 },
+	},
+	spike_strip: {
+		items: [{ name: 'spike_strip', pos: [0, 0, 0] }, { name: 'spike_roll', pos: [0, 0, 1.0] }],
+		cam: { pos: [2.5, 2.0, 3.5], target: [0.5, 0.1, 0.4], fov: 40 },
 	},
 };
