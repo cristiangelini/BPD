@@ -78,12 +78,52 @@ export function buildGoldIngot() {
 	return b.build();
 }
 
+// A brass telescope on a wooden tripod, 1.5 m tall, the tube pointing up toward +Z.
+export function buildSpyTelescope() {
+	const b = new Builder('spy_telescope');
+	const wood = mat('tripod_wood', 0x8a5a32), brass = mat('scope_brass', 0xc8a040), black = mat('scope_lens', 0x16161a);
+	for (let i = 0; i < 3; i++) {
+		const a = i / 3 * Math.PI * 2;
+		b.add('tripod', wood, new THREE.CylinderGeometry(0.02, 0.025, 1.15, 6), { pos: V(Math.sin(a) * 0.2, 0.55, Math.cos(a) * 0.2), rot: [-Math.cos(a) * 0.35, 0, Math.sin(a) * 0.35] });
+	}
+	b.add('head', wood, new THREE.CylinderGeometry(0.06, 0.06, 0.08, 8), { pos: V(0, 1.12, 0) });
+	b.add('tube', brass, new THREE.CylinderGeometry(0.06, 0.08, 0.9, 12), { pos: V(0, 1.3, 0.05), rot: [Math.PI / 2 - 0.4, 0, 0] });
+	b.add('lens', black, new THREE.CylinderGeometry(0.082, 0.082, 0.02, 12), { pos: V(0, 1.47, 0.47), rot: [Math.PI / 2 - 0.4, 0, 0] });
+	b.add('eyepiece', black, new THREE.CylinderGeometry(0.025, 0.025, 0.1, 8), { pos: V(0, 1.11, -0.38), rot: [Math.PI / 2 - 0.4, 0, 0] });
+	return b.build();
+}
+
+// A small black notebook 0.15 m long with a red band: the vault's code inside.
+export function buildCodeNotebook() {
+	const b = new Builder('code_notebook');
+	b.add('cover', mat('notebook_black', 0x1e1e22), new THREE.BoxGeometry(0.15, 0.02, 0.1), { pos: V(0, 0.01, 0) });
+	b.add('band', mat('notebook_band', 0xc83a3a), new THREE.BoxGeometry(0.01, 0.022, 0.1), { pos: V(0.05, 0.011, 0) });
+	return b.build();
+}
+
+// A pair of green binoculars 0.15 m wide.
+export function buildBinoculars() {
+	const b = new Builder('binoculars');
+	const green = mat('binocular_green', 0x3a5a3a), black = mat('scope_lens', 0x16161a);
+	for (const x of [-0.04, 0.04]) {
+		b.add('barrel', green, new THREE.CylinderGeometry(0.03, 0.035, 0.14, 10), { pos: V(x, 0.035, 0), rot: [Math.PI / 2, 0, 0] });
+		b.add('lens', black, new THREE.CylinderGeometry(0.031, 0.031, 0.01, 10), { pos: V(x, 0.035, 0.072), rot: [Math.PI / 2, 0, 0] });
+	}
+	b.add('bridge', green, new THREE.BoxGeometry(0.05, 0.02, 0.05), { pos: V(0, 0.05, 0) });
+	return b.build();
+}
+
 export const models = {
 	stolen_aquarium: buildStolenAquarium, fishing_net: buildFishingNet, aquarium_ticket: buildAquariumTicket,
 	contraband_piano: buildContrabandPiano, piano_sheet: buildPianoSheet, gold_ingot: buildGoldIngot,
+	spy_telescope: buildSpyTelescope, code_notebook: buildCodeNotebook, binoculars: buildBinoculars,
 };
 
 export const views = {
+	spy_telescope: {
+		items: [{ name: 'spy_telescope', pos: [0, 0, 0] }, { name: 'code_notebook', pos: [0.6, 0, 0.3] }, { name: 'binoculars', pos: [0.6, 0, -0.1] }],
+		cam: { pos: [1.6, 1.4, 2.2], target: [0.2, 0.7, 0], fov: 40 },
+	},
 	contraband_piano: {
 		items: [{ name: 'contraband_piano', pos: [0, 0, 0] }, { name: 'piano_sheet', pos: [1.2, 0, 0.5] }, { name: 'gold_ingot', pos: [1.2, 0, -0.1] }],
 		cam: { pos: [-1.6, 1.8, 2.6], target: [0.2, 0.55, 0], fov: 40 },
