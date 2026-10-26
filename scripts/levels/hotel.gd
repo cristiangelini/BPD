@@ -9,8 +9,8 @@ extends CrimeScenePlace
 ## six guests alike wait in the lobby, don Bostezo behind the desk, señora Perlita by the armchairs, Tito the bellboy
 ## by the door and doña Escoba upstairs with her cart (step 2). In every guest room, its sleeper's shoes, hairbrush,
 ## nightstand and suitcase (step 3). The case (step 4): what was stolen hides in the 13, in the maid's cart or in the
-## culprit's suitcase, and the evidence bags wait on a stool by the desk. Every number here is
-## (propuesta).
+## culprit's suitcase, and the evidence bags wait on a stool by the desk; the clues in the suite and the maid's round
+## are HotelClues'. Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(26, 18)
@@ -135,6 +135,8 @@ var concierge: HotelStaff
 var perlita: HotelStaff
 var bellboy: HotelStaff
 var maid: HotelStaff
+## The case's clues in the suite and the maid's round (HotelClues), once the case comes.
+var clues: HotelClues
 var _builder: PlaceBuilder
 
 
@@ -173,6 +175,11 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	for room: int in things:
 		for thing: RoomThing in things[room].values():
 			thing.case = case
+	clues = HotelClues.new()
+	clues.name = "Clues"
+	clues.hotel = self
+	clues.case = case
+	add_child(clues)
 
 
 ## Searching a spot: the stolen thing turns up in the right one; a sign of nothing in the others. Any suitcase can be
@@ -507,7 +514,10 @@ func _suite() -> void:
 	_builder.box(TUB_AT + Vector3(0, 0.3, 0), Vector3(1.6, 0.6, 0.8), SHEETS)
 	_builder.box(SUITE_BED_AT + Vector3(0, 0.3, 0), Vector3(2.0, 0.6, 2.2), SHEETS)
 	_builder.box(SUITE_BED_AT + Vector3(0, 0.8, 1.05), Vector3(2.0, 1.0, 0.1), WOOD)
+	_builder.box(SUITE_BED_AT + Vector3(0, 0.66, 0.75), Vector3(1.6, 0.12, 0.4), SHEETS.lightened(0.5))
 	_builder.mesh_box(SAFE_AT, Vector3(0.1, 0.5, 0.5), METAL.darkened(0.3))
+	# Its door, left open.
+	_builder.mesh_box(SAFE_AT + Vector3(0.3, 0, 0.27), Vector3(0.5, 0.46, 0.04), METAL)
 	var suite_sign := Label3D.new()
 	suite_sign.name = "SuiteSign"
 	suite_sign.text = "SIGN_HOTEL_SUITE"
