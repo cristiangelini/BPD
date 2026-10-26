@@ -141,7 +141,11 @@ func in_locker_room(at: Vector3) -> bool:
 
 ## The treadmill a world position stands on, or -1.
 func treadmill_at(at: Vector3) -> int:
-	var local := global_transform.affine_inverse() * at
+	return treadmill_index(global_transform.affine_inverse() * at)
+
+
+## The treadmill a position in the hall's own space stands on, or -1 (also used by the raid).
+static func treadmill_index(local: Vector3) -> int:
 	for i in TREADMILLS.size():
 		var middle := TREADMILLS[i]
 		if absf(local.x - middle.x) < TREADMILL_SIZE.x / 2 and absf(local.z - middle.z) < TREADMILL_SIZE.z / 2 \

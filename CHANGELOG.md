@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Gym raid, step 3: Lula, the receptionist, jogs on the first treadmill during her break and only talks to a cop who runs 5 s in a row on the treadmill beside hers (once per cop, a broken treadmill doesn't count); E on her just invites you to run.
 - Gym raid, step 2: el profe Fito walks the gym as its floor boss (the complaint meter): +5 for each dumbbell he sees on the floor and +10 for a broken treadmill he sees; E on the reception's stereo puts on his song and he gives a 15 s aerobics class to the mirror with his back to the hall while the members bounce along, then the stereo rests 45 s; a cop who jumps along in the class lowers the complaint once.
 - Gym raid, step 1: the gym "Hierro Puro" as a place to raid (--place=gym_raid and a menu test button): the infiltration's hall without el Toro's band, six common members, the stereo and the till on the reception, the record wall, a mirror that cracks when something hits it fast and treadmills that burn out when something heavy lands on them (a fine each), the office and the locker room locked with their key in the till, and 12 hiding spots.
 - Gym raid, models: placeholder models for el profe Fito (the aerobics teacher), Lula (the receptionist), the reception's stereo, the record wall, the record bar and a shop mannequin (allanamiento-gimnasio.md, decision 250).

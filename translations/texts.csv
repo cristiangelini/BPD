@@ -4874,3 +4874,11 @@ COACH_DUMBBELL,"¡No me desordenen el gimnasio! Las mancuernas van en el estante
 COACH_TREADMILL,"¡Mi cinta! ¡Era la que andaba!","My treadmill! That was the one that worked!","Minha esteira! Era a que funcionava!"
 COACH_MIRROR,"¡Mi espejo! ¿Y ahora dónde me miro?","My mirror! Where do I look at myself now?","Meu espelho! E agora onde eu me olho?"
 COACH_DANCE,"¡Eso, campeón! ¡Qué cintura!","That's it, champ! What moves!","Isso, campeão! Que gingado!"
+PROMPT_LULA,Hablar con Lula,Talk to Lula,Falar com a Lula
+LULA_IDLE_1,"¡Uf! ¡Uf! Hola... ¡uf! ...oficial.","Huff! Huff! Hi... huff! ...officer.","Ufa! Ufa! Oi... ufa! ...policial."
+LULA_IDLE_2,"Es mi descanso... ¡uf! ...y lo uso para correr.","It's my break... huff! ...and I spend it running.","É meu intervalo... ufa! ...e eu uso para correr."
+LULA_IDLE_3,"Si corres conmigo... ¡uf! ...te cuento algo.","If you run with me... huff! ...I'll tell you something.","Se correr comigo... ufa! ...eu te conto uma coisa."
+LULA_RUN_WITH_ME,"¿Charlar? ¡No paro ni loca! Súbete a la cinta de al lado y corre conmigo.","Chat? No way I'm stopping! Hop on the treadmill next to me and run with me.","Conversar? Não paro nem louca! Sobe na esteira do lado e corre comigo."
+LULA_START,"¡Eso! ¡A mi ritmo! ¡Uf!","That's it! Keep up with me! Huff!","Isso! No meu ritmo! Ufa!"
+LULA_NOTHING,"¡Uf! Por ahora... ¡uf! ...no vi nada raro. ¡Pero qué buen ritmo!","Huff! So far... huff! ...I haven't seen anything strange. But what a pace!","Ufa! Por enquanto... ufa! ...não vi nada estranho. Mas que ritmo!"
+LULA_AGAIN,"¡Uf! Ya te conté todo... ¡uf! ...ahora déjame correr.","Huff! I already told you everything... huff! ...now let me run.","Ufa! Já te contei tudo... ufa! ...agora me deixa correr."
