@@ -6,9 +6,13 @@ extends StaticBody3D
 ## seed's order; the one called takes the stand (TrialStand) and she asks QUESTIONS questions, one for each detail of
 ## the alibi (TrialAlibi), in the seed's order. On the stand there are three signs (TrialSign) with lookalike answers;
 ## the witness answers with one. A wrong one is a contradiction, and CONTRADICTIONS of them in a trial is guilty: the
-## guard's catch. She runs on the host; the guests follow her (NpcSync). Every number here is (propuesta).
+## guard's catch. She runs on the host; the guests follow her (NpcSync).
+## Step 3: the lawyer (whoever wears the lawyer jacket) can object once for each witness (E on her): that question
+## doesn't count. With every witness heard and fewer than CONTRADICTIONS, she declares them innocent (`innocent`).
+## With no one but the lawyer, the lawyer testifies too. Every number here is (propuesta).
 
 signal guilty
+signal innocent
 
 const MODEL := preload("res://assets/models/npc_carcelero.glb")
 const QUESTIONS := 3
@@ -19,6 +23,7 @@ const WRONG_LINES := 3
 const CALL_LINES := 2
 ## Seconds she takes to react to an answer before the next question.
 const REACT_TIME := 2.0
+const OBJECTION_LINES := 2
 
 ## The alibi and the cops being judged (the level sets them).
 var alibi := {}
@@ -34,6 +39,8 @@ var question := 0
 var order: Array[String] = []
 var contradictions := 0
 var _react_left := 0.0
+## The lawyer already objected for this witness.
+var objected := false
 ## Where the witness stands, facing the signs, in the world (the level sets it).
 var stand_spot := Transform3D.IDENTITY
 ## The last thing she said (a text key) and the answer it's about, if any.
@@ -88,6 +95,9 @@ func open_court(cops: Array, lawyer: Cop) -> void:
 	for cop: Cop in cops:
 		if cop != lawyer:
 			witnesses.append(cop.net_id())
+	# Alone, the lawyer testifies too.
+	if witnesses.is_empty() and lawyer:
+		witnesses.append(lawyer.net_id())
 	for i in witnesses.size():
 		var j := _rng.randi_range(i, witnesses.size() - 1)
 		var swap := witnesses[i]
@@ -101,10 +111,12 @@ func open_court(cops: Array, lawyer: Cop) -> void:
 func _call_next() -> void:
 	if witness >= witnesses.size():
 		state = "done"
-		say("TRIAL_JUDGE_DONE")
+		say("TRIAL_JUDGE_INNOCENT", 6.0)
+		innocent.emit()
 		return
 	state = "calling"
 	question = 0
+	objected = false
 	order = TrialAlibi.DETAILS.duplicate()
 	for i in order.size():
 		var j := _rng.randi_range(i, order.size() - 1)
@@ -170,6 +182,29 @@ func _next() -> void:
 	_call_next()
 
 
+## E on her: the lawyer objects to the question she's asking, once for each witness.
+func prompt_key(cop: Cop) -> String:
+	if state == "asking" and not objected and cop.disguise.has("lawyer_jacket") and not is_witness(cop):
+		return "PROMPT_OBJECTION"
+	return ""
+
+
+## Every PC does it; the host decides.
+func use(cop: Cop) -> void:
+	if multiplayer.is_server() and prompt_key(cop) != "":
+		object()
+
+
+## "Objection!" "Sustained.": the question doesn't count.
+func object() -> void:
+	if state != "asking" or objected:
+		return
+	objected = true
+	say("TRIAL_JUDGE_SUSTAINED_%d" % _rng.randi_range(0, OBJECTION_LINES - 1))
+	state = "reacting"
+	_react_left = REACT_TIME
+
+
 ## Back to before the court (a catch): she waits for the next trial.
 func reset(new_alibi: Dictionary) -> void:
 	alibi = new_alibi
@@ -178,6 +213,7 @@ func reset(new_alibi: Dictionary) -> void:
 	witness = 0
 	question = 0
 	contradictions = 0
+	objected = false
 
 
 func say(text: String, seconds := BUBBLE_TIME) -> void:
@@ -203,7 +239,7 @@ func _physics_process(delta: float) -> void:
 
 ## Online (NpcSync): where the trial is and what she said.
 func net_state() -> Variant:
-	return [state, witnesses, witness, question, order, contradictions, line, alibi]
+	return [state, witnesses, witness, question, order, contradictions, line, alibi, objected]
 
 
 func apply_net_state(state_now: Variant) -> void:
@@ -214,5 +250,6 @@ func apply_net_state(state_now: Variant) -> void:
 	order.assign(state_now[4])
 	contradictions = state_now[5]
 	alibi = state_now[7]
+	objected = state_now[8]
 	if state_now[6] != line:
 		say(state_now[6])
