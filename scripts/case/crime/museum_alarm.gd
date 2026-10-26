@@ -100,16 +100,19 @@ func run_guards(delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	for node in get_tree().get_nodes_in_group("cops"):
-		var cop := node as Cop
-		if museum.in_gallery(cop.global_position) and on_laser(museum.to_local(cop.global_position)):
-			ring(cop)
+	# Online the host's lasers decide; a guest's alarm follows (Museum.apply_net_state).
+	var follower := museum.case != null and museum.case.follower
+	if not follower:
+		for node in get_tree().get_nodes_in_group("cops"):
+			var cop := node as Cop
+			if museum.in_gallery(cop.global_position) and on_laser(museum.to_local(cop.global_position)):
+				ring(cop)
 	if ringing:
 		left -= delta
 		_blink_left -= delta
 		if _blink_left <= 0.0:
 			_blink_left = BLINK
 			_light.visible = not _light.visible
-		if left <= 0.0:
+		if left <= 0.0 and not follower:
 			stop()
 	run_guards(delta)
