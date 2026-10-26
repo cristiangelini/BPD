@@ -117,3 +117,17 @@ todas las PCs.
   veces, y cada vez suma 15 de sospecha. Si el precio llega a lo que ya cobró, es trato hecho.
 - Online: la cámara va por `NpcSync` y lo regateado viaja con el guardia.
 - Modelo `corridor_camera`. 7 textos nuevos. Pruebas en `test_bribe_camera.gd`. Fotos en `/mnt/project-files/soborno/`.
+
+## Cómo quedó el paso 3
+- Pagado, el guardia vuelve al escritorio y lee el diario de espaldas a las celdas: una página dura entre 25 y 35 s,
+  según la semilla. El diario se ve por encima de su cabeza.
+- Mientras lee no mira, pero escucha: algo que cae suma 15 de sospecha ("¡Más bajito, que estoy leyendo!"), y un
+  policía corriendo fuera de las celdas cerca suyo suma 20 por segundo. Caminar no se oye. A 100, captura.
+- Al terminar la página se da vuelta: si ve a alguien fuera de las celdas es una captura ("Yo cobré por no ver, no por
+  no darme vuelta"). Si no ve a nadie, sigue como un guardia común, mirando desde el escritorio.
+- En una captura: todos a las celdas, la llave vuelve a su cinturón, lo pagado queda para él ("La plata no se devuelve,
+  eso es de la casa") y el precio sube 100. Los fajos que estaban fuera de las celdas vuelven a las cuchetas, y se lo
+  puede volver a llamar.
+- La salida es la de siempre: todos en el patrullero, a 25 m del estacionamiento.
+- Online: el guardia, lo pagado, lo regateado y la página van por `NpcSync`; llamarlo y pagarle, por las acciones.
+- 6 textos nuevos. Pruebas en `test_bribe_paper.gd` y `test_bribe_online.gd`. Fotos en `/mnt/project-files/soborno/`.

@@ -9,7 +9,12 @@ extends NightGuard
 ## bars with nothing for WAIT_TIME, he goes back too.
 ## Step 2: the corridor's camera (CorridorCamera). If it looks at the cell while he counts, he gives the wad back and
 ## gets suspicious ("¿Con la cámara? ¿Estás loco?"). With empty hands at the bars, E haggles: the price drops
-## HAGGLE_DROP, up to HAGGLES times, and each time his suspicion rises HAGGLE_SUSPICION. Every number here is (propuesta).
+## HAGGLE_DROP, up to HAGGLES times, and each time his suspicion rises HAGGLE_SUSPICION.
+## Step 3: the paper. Paid, he reads a page (PAGE_MIN to PAGE_MAX seconds, from the seed) with his back to the cells:
+## he doesn't look, but he hears (something thrown landing, NOISE_SUSPICION; a cop running out of the cells near him,
+## RUN_SUSPICION a second). When the page is over he turns around, and a cop he sees out of the cells is a catch. A
+## catch doesn't give the money back ("La plata no se devuelve"): it counts for the next try, but the price rises
+## PRICE_RISE. Every number here is (propuesta).
 
 ## His price, in steps of PRICE_STEP, never more than the money they have.
 const PRICE_MIN := 200
@@ -32,6 +37,17 @@ const HAGGLE_SUSPICION := 15.0
 const CAMERA_SUSPICION := 10.0
 ## Where he holds the wad he counts, in his own space.
 const HAND := Vector3(0.25, 1.0, 0.35)
+## The paper (step 3) and what he hears behind it.
+const PAGE_MIN := 25.0
+const PAGE_MAX := 35.0
+const NOISE_SUSPICION := 15.0
+const RUN_SUSPICION := 20.0
+const QUIET_SPEED := (GameScale.WALK_SPEED + GameScale.RUN_SPEED) / 2.0
+const PRICE_RISE := 100
+const HEARD_LINES := 3
+## The paper he holds up while he reads, in his own space (placeholder: a grey sheet).
+const PAPER_AT := Vector3(0, 1.55, 0.3)
+const PAPER_SIZE := Vector2(1.1, 0.7)
 const COMING_LINES := 3
 const HAGGLE_LINES := 3
 const CAMERA_LINES := 3
@@ -56,6 +72,10 @@ var at_cell := -1
 var counting_left := 0.0
 var _counting := 0
 var _wad: BillWad
+## How long a page takes him, and how long he has left of this one.
+var page := PAGE_MIN
+var reading_left := 0.0
+var _paper: MeshInstance3D
 var _wait_left := 0.0
 ## The last thing he said, as its text key and the number in it, so a guest shows the same.
 var line := ""
@@ -70,6 +90,7 @@ func stand_guard(case_seed: int, money: int) -> void:
 	_rng.seed = hash(["bribe guard", case_seed])
 	key_on_belt = true
 	price = price_for(case_seed, money)
+	page = snappedf(_rng.randf_range(PAGE_MIN, PAGE_MAX), 0.5)
 	_desk_spot = global_transform
 
 
@@ -185,7 +206,26 @@ func _refuse() -> void:
 		catch()
 
 
+func _ready() -> void:
+	super()
+	_paper = MeshInstance3D.new()
+	_paper.name = "Paper"
+	var sheet := BoxMesh.new()
+	sheet.size = Vector3(PAPER_SIZE.x, PAPER_SIZE.y, 0.02)
+	_paper.mesh = sheet
+	var material := StandardMaterial3D.new()
+	material.albedo_color = Color(0.85, 0.84, 0.78)
+	material.cull_mode = BaseMaterial3D.CULL_DISABLED
+	# Lit by his desk lamp: it shows in the dark from the cells.
+	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	_paper.material_override = material
+	_paper.position = PAPER_AT
+	_paper.visible = false
+	add_child(_paper)
+
+
 func _physics_process(delta: float) -> void:
+	_paper.visible = stage == "reading"
 	if not multiplayer.is_server():
 		_tick_bubble(delta)
 		return
@@ -209,8 +249,15 @@ func _physics_process(delta: float) -> void:
 			elif counting_left <= 0.0:
 				_counted()
 		"reading":
-			# His back to the cells, the paper up: he doesn't look (step 3: until the page is over).
+			# His back to the cells, the paper up: he doesn't look, but he hears.
 			_tick_bubble(delta)
+			_listen(delta)
+			_hear_running(delta)
+			reading_left -= delta
+			if suspicion >= 100.0:
+				catch()
+			elif reading_left <= 0.0:
+				look_back()
 		_:
 			super(delta)
 
@@ -280,10 +327,63 @@ func _arrived() -> void:
 		# Back at his desk with the paper, his back to the cells.
 		global_transform = Transform3D(_desk_spot.basis.rotated(Vector3.UP, PI), _desk_spot.origin)
 		stage = "reading"
+		reading_left = page
 		return
 	global_transform = _desk_spot
 	stage = ""
 	at_cell = -1
+
+
+## Something landed (heard_throw): behind the paper he doesn't turn his head, but he gets suspicious.
+func look_at_noise(at: Vector3, seconds: float, text: String) -> void:
+	if stage != "reading":
+		super(at, seconds, text)
+		return
+	suspicion = minf(suspicion + NOISE_SUSPICION, 100.0)
+	_say("BRIBE_GUARD_HEARD_%d" % _rng.randi_range(0, HEARD_LINES - 1))
+
+
+## A cop running out of the cells within earshot, while he reads.
+func _hear_running(delta: float) -> void:
+	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
+		var body := cop as CharacterBody3D
+		if not body or not outside_cells.call(cop.global_position) or _flat(cop.global_position).length() > HEAR_RANGE:
+			continue
+		if Vector2(body.velocity.x, body.velocity.z).length() > QUIET_SPEED:
+			suspicion = minf(suspicion + RUN_SUSPICION * delta, 100.0)
+
+
+## The page is over: he turns around to the cells, and anyone he sees out of them is a catch. Then he's an ordinary
+## guard at his desk, watching.
+func look_back() -> void:
+	global_transform = _desk_spot
+	stage = ""
+	reading_left = 0.0
+	look = 0.0
+	_model.rotation.y = 0.0
+	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
+		if outside_cells.call(cop.global_position) and sees(cop.global_position + Vector3.UP, cop as CollisionObject3D):
+			catch()
+			_say("BRIBE_GUARD_LOOKED_BACK", 5.0)
+			return
+	_say("BRIBE_GUARD_PAGE_OVER")
+
+
+## After a catch (the level puts everyone back): at his desk with the key on his belt again, the money he got still
+## his, and a higher price.
+func after_catch() -> void:
+	global_transform = _desk_spot
+	stage = ""
+	at_cell = -1
+	reading_left = 0.0
+	_path.clear()
+	if is_instance_valid(_wad):
+		_wad.freeze = false
+	_wad = null
+	_counting = 0
+	key_on_belt = true
+	price += PRICE_RISE
+	_say("BRIBE_GUARD_KEEPS_IT", 5.0)
 
 
 ## Says the text key `key`, with `number` in it when it has one (its translation has a %d).
@@ -305,14 +405,15 @@ func _at(local: Vector3) -> Vector3:
 ## Online (NpcSync): on top of the night guard's, where he is, what he's been paid and what he said.
 func net_state() -> Variant:
 	var state: Array = super()
-	state.append_array([stage, at_cell, price, paid, global_transform, line, line_number, haggles])
+	state.append_array([stage, at_cell, price, paid, global_transform, line, line_number, haggles, reading_left])
 	return state
 
 
 func apply_net_state(state: Variant) -> void:
 	super(state)
-	var base: int = state.size() - 8
+	var base: int = state.size() - 9
 	haggles = state[base + 7]
+	reading_left = state[base + 8]
 	stage = state[base]
 	at_cell = state[base + 1]
 	price = state[base + 2]

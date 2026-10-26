@@ -354,6 +354,22 @@ func is_bribe() -> bool:
 	return variant == "bribe"
 
 
+## Caught in the bribe jailbreak: the guard keeps what he got and asks for more, and the wads out of the cells go back
+## to the bunks.
+func _bribe_caught() -> void:
+	(guard as BribeGuard).after_catch()
+	var lot := city.transform * CityLayout.lot("station")
+	var spot := 0
+	for wad: Node in get_tree().get_nodes_in_group("bill_wads"):
+		if not is_ancestor_of(wad) or wad.is_queued_for_deletion():
+			continue
+		if outside_cells((wad as Node3D).global_position) or (wad as Grabbable).is_held():
+			_drop(wad as Grabbable)
+			(wad as RigidBody3D).linear_velocity = Vector3.ZERO
+			(wad as Node3D).global_position = lot * WADS[spot % WADS.size()]
+		spot += 1
+
+
 ## The bribe jailbreak: the guard who sells himself at his desk, and the bribes' money split among four wads on the
 ## bunks; E on the bars calls him and pays him (BribeGuard, CellDoor.bribe), and the corridor's camera turning from
 ## one cell to the other (CorridorCamera).
@@ -1357,6 +1373,8 @@ func _on_caught(times: int) -> void:
 		_confiscate_spoons()
 	if is_roof():
 		_roof_caught()
+	if is_bribe():
+		_bribe_caught()
 	if cleaner:
 		cleaner.reset()
 		if is_instance_valid(cart_key):
