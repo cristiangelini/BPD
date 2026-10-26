@@ -122,7 +122,7 @@ const VARIANTS := {
 		"brief": ["BRIEF_AUCTION_A", "BRIEF_AUCTION_B", "BRIEF_AUCTION_C"],
 		"go": "HINT_GO_AUCTION", "in": "HINT_AUCTION_IN", "found": "HINT_CLUB_EVIDENCE",
 		"rows": "OBJ_AUCTION_", "evidence": "EVIDENCE_AUCTION_",
-		"boss": "martillo", "getaway": SuspectCar.WALKER,
+		"boss": "martillo", "getaway": SuspectCar.GALLERY_CART,
 		"boss_cuffed": "HINT_MARTILLO_CUFFED", "cuff_row": "OBJ_AUCTION_CUFF_MARTILLO",
 		"catch_row": "OBJ_AUCTION_CATCH_MARTILLO", "slips": "MARTILLO_SLIP_%d",
 	},

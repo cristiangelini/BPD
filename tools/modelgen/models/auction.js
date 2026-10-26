@@ -127,11 +127,46 @@ export function buildForgery() {
 	return b.build();
 }
 
+// The gallery's electric cart (step 6): a little cream flatbed with a seat in front, a steering column and four small
+// wheels, 1.2 x 2.3 m. Faces +Z, origin at the ground. The giant painting is apart (cart_painting), to sway.
+export function buildGalleryCart() {
+	const b = new Builder('gallery_cart');
+	const cream = mat('cart_cream', 0xe8dcc0), dark = mat('cart_dark', 0x2a2a30), tire = mat('tire', 0x1a1a1e);
+	const add = (part, m, w, h, d, x, y, z, rot) => b.add(part, m, new THREE.BoxGeometry(w, h, d), { pos: V(x, y, z), rot });
+	for (const z of [0.8, -0.8]) for (const s of [-1, 1]) b.add('wheels', tire, new THREE.CylinderGeometry(0.16, 0.16, 0.12, 10), { pos: V(s * 0.55, 0.16, z), rot: [0, 0, Math.PI / 2] });
+	add('deck', cream, 1.2, 0.12, 2.3, 0, 0.32, 0);
+	add('deck', gold(), 1.22, 0.04, 2.32, 0, 0.4, 0);
+	add('seat', mat('cart_red', 0xa02030), 0.9, 0.12, 0.45, 0, 0.62, 0.55);
+	add('seat', mat('cart_red', 0xa02030), 0.9, 0.45, 0.1, 0, 0.85, 0.32);
+	add('seat', dark, 0.8, 0.22, 0.4, 0, 0.5, 0.55);
+	add('column', dark, 0.06, 0.6, 0.06, 0, 0.75, 1.0, [-0.4, 0, 0]);
+	b.add('wheel', dark, new THREE.TorusGeometry(0.15, 0.025, 4, 12), { pos: V(0, 1.05, 0.9), rot: [-1.1, 0, 0] });
+	// The ropes' posts at the back, where the painting is tied.
+	for (const s of [-1, 1]) add('posts', wood(), 0.06, 0.5, 0.06, s * 0.5, 0.65, -0.45);
+	return b.build();
+}
+
+// The giant painting tied to the cart: a stormy sea in a heavy gold frame, 2.2 x 1.7 m, wider than the cart. Its origin
+// at the bottom middle of the frame, which sits on the deck; the canvas faces -Z (the cops chasing it). Placeholder.
+export function buildCartPainting() {
+	const b = new Builder('cart_painting');
+	b.add('frame', gold(), new THREE.BoxGeometry(2.2, 1.7, 0.1), { pos: V(0, 0.85, 0) });
+	b.add('sky', mat('storm_grey', 0x6a7080), new THREE.BoxGeometry(1.96, 0.7, 0.02), { pos: V(0, 1.2, -0.055) });
+	b.add('sea', mat('sea_blue', 0x24508a), new THREE.BoxGeometry(1.96, 0.76, 0.02), { pos: V(0, 0.5, -0.055) });
+	for (const x of [-0.6, 0.1, 0.7]) b.add('waves', mat('foam_white', 0xf0f0f0), new THREE.ConeGeometry(0.16, 0.3, 4), { pos: V(x, 0.85, -0.07), scale: [1.6, 1, 0.2] });
+	b.add('boat', mat('boat_brown', 0x6a3a20), new THREE.BoxGeometry(0.3, 0.1, 0.02), { pos: V(-0.2, 0.95, -0.08) });
+	b.add('label', mat('museum_label', 0xf4f0e8), new THREE.BoxGeometry(0.3, 0.08, 0.02), { pos: V(0, 0.12, -0.065) });
+	// The ropes across its back, to the cart's posts.
+	for (const y of [0.3, 0.6]) b.add('ropes', mat('rope_tan', 0xc0a070), new THREE.BoxGeometry(1.1, 0.03, 0.03), { pos: V(0, y, 0.07) });
+	return b.build();
+}
+
 export const models = {
 	auction_chair: buildAuctionChair, auction_paddle: buildAuctionPaddle, auction_podium: buildAuctionPodium,
 	auction_gavel: buildAuctionGavel, auction_easel: buildAuctionEasel, lot_painting: buildLotPainting,
 	lot_vase: buildLotVase, lot_statue: buildLotStatue, lot_chair: buildLotChair,
 	original_painting: buildOriginalPainting, forgery: buildForgery,
+	gallery_cart: buildGalleryCart, cart_painting: buildCartPainting,
 };
 
 export const views = {
@@ -150,5 +185,10 @@ export const views = {
 		items: [{ name: 'original_painting', pos: [-0.5, 0, 0] }, { name: 'auction_easel', pos: [0.7, 0, -0.2] },
 			{ name: 'forgery', pos: [0.7, 0.905, -0.1] }],
 		cam: { pos: [0.1, 1.5, 2.4], target: [0.1, 0.5, 0], fov: 45 },
+	},
+	gallery_cart: {
+		items: [{ name: 'gallery_cart', pos: [0, 0, 0] }, { name: 'cart_painting', pos: [0, 0.42, -0.6] },
+			{ name: 'npc_martillo', pos: [0, 0.45, 0.45], scale: 0.85 }],
+		cam: { pos: [3.2, 2.2, -3.4], target: [0, 1.0, 0], fov: 45 },
 	},
 };

@@ -2475,7 +2475,7 @@ BRIEF_AUCTION_C,"Junten 3 pruebas y esposen a Don Martillo. Y ojo: lo que compre
 HINT_GO_AUCTION,"Ponte 2 piezas de millonario en la comisaría y ve a la casa de subastas, El Martillo de Oro.","Put on 2 millionaire pieces at the station and go to the auction house, the Golden Hammer.","Vista 2 peças de milionário na delegacia e vá à casa de leilões, O Martelo de Ouro."
 HINT_AUCTION_IN,"Adentro. Busca pruebas y, cuando salga un lote, puja desde una silla libre de la sala.","You're in. Look for evidence and, when a lot comes up, bid from a free chair in the hall.","Lá dentro. Procure provas e, quando sair um lote, dê um lance de uma cadeira livre da sala."
 HINT_MARTILLO_CUFFED,"¡Esposaron a Don Martillo! Vendido, al calabozo.","You cuffed Don Martillo! Sold, to the cell.","Algemaram Dom Martelo! Vendido, para a cela."
-HINT_ESCAPE_martillo,¡Don Martillo se escapa por la calle! ¡Atrápenlo!,Don Martillo is escaping down the street! Catch him!,Dom Martelo está fugindo pela rua! Peguem ele!
+HINT_ESCAPE_martillo,"¡Don Martillo se escapa en el carrito eléctrico de la galería, con un cuadro gigante atado atrás que se le va de costado en cada curva! ¡Atrápenlo!","Don Martillo is escaping in the gallery's electric cart, with a giant painting tied behind that sways at every corner! Catch him!","Dom Martelo está fugindo no carrinho elétrico da galeria, com um quadro gigante amarrado atrás que balança em cada curva! Peguem ele!"
 OBJ_AUCTION_GET_IN,Entrar a la subasta disfrazado de millonario,Get into the auction disguised as a millionaire,Entrar no leilão disfarçado de milionário
 OBJ_AUCTION_EVIDENCE,Pruebas (%d de %d),Evidence (%d of %d),Provas (%d de %d)
 OBJ_AUCTION_CUFF_MARTILLO,Esposar a Don Martillo,Cuff Don Martillo,Algemar Dom Martelo

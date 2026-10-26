@@ -115,6 +115,13 @@ La subasta copia la forma de `ChessGames` y `BikerDares` (el host decide y avisa
    persecución (a pie hasta el paso 6) y al interrogatorio ("Todo lo que vendo es original. Bueno, original de mi
    falsificador.") **(propuesta)**.
 6. La huida en el carrito de la galería, el sorteo de "Jugar" en décimos y online.
+   Hecho así: descubiertos, Don Martillo se va por la calle en el carrito eléctrico de la galería (crema con borde
+   dorado, asiento rojo), a 20 km/h, con un cuadro gigante de una tormenta en el mar (2,2 x 1,7 m, más ancho que el
+   carrito) atado atrás con sogas: en cada curva el cuadro se le va hacia afuera, hasta 0,45 rad, rebota y se acomoda,
+   y tapa la vista del patrullero que lo sigue. "Jugar" sortea las infiltraciones en décimos. Online, el host manda lo
+   que dicen Don Martillo y los compradores, el lote del atril y su precio, las paletas que se levantan y el martillo;
+   la puja de un invitado cuenta en el host, el lote comprado es un objeto que se copia en todos (`BoughtLot`) y el
+   cuadro del carrito se inclina igual en todos **(propuesta)**.
 
 ## Preguntas para Cristian (decisión 177)
 1. **¿Hay subasta de verdad cada 60 s, donde hay que pujar al menos una vez por lote (si no, sospechan) y, si un

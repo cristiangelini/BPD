@@ -11,7 +11,7 @@ func after_each() -> void:
 
 func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltration_and_each_raid_a_sixth_of_the_rest() -> void:
 	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "chase": 0, "crime_scene": 0, "traffic": 0, "club": 0,
-		"choir": 0, "mime": 0, "party": 0, "gym": 0, "school": 0, "restaurant": 0, "chess": 0, "biker": 0, "bank": 0, "plaza": 0, "market": 0, "prison": 0, "transfer": 0}
+		"choir": 0, "mime": 0, "party": 0, "gym": 0, "school": 0, "restaurant": 0, "chess": 0, "biker": 0, "auction": 0, "bank": 0, "plaza": 0, "market": 0, "prison": 0, "transfer": 0}
 	for i in 600:
 		count[PlaceDraw.pick(i + 1, [], 1)] += 1
 	assert_between(count.chase, 250, 350, "half chases (Cristian, 20/10)")
@@ -20,22 +20,23 @@ func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltrati
 	# With the bank and the rally drawn before them, each raid comes up about 1 shift in 30 (propuesta).
 	for place: String in ["grandpa", "bakery", "groomer"]:
 		assert_between(count[place], 10, 60, "%s still comes up (propuesta)" % place)
-	assert_between(count.club + count.choir + count.mime + count.party + count.gym + count.school + count.restaurant + count.chess + count.biker, 25, 80, "the infiltrations, as often as a raid (propuesta)")
+	assert_between(count.club + count.choir + count.mime + count.party + count.gym + count.school + count.restaurant + count.chess + count.biker + count.auction, 25, 80, "the infiltrations, as often as a raid (propuesta)")
 	assert_between(count.bank, 15, 70, "the bank robbery, about as often as a raid (propuesta)")
 	assert_between(count.plaza + count.market, 10, 60, "the politician's protection, about as often as a raid (propuesta)")
 	assert_between(count.prison + count.transfer, 5, 50, "a prison case, about as often as a raid (propuesta)")
 	assert_gt(count.prison, 0, "half the riot")
 	assert_gt(count.transfer, 0, "and half the transfer")
 	# About 5 each in 600 shifts: at least one, whichever way the hash falls.
-	assert_gt(count.club, 0, "a ninth of them at the grandparents' club")
-	assert_gt(count.choir, 0, "a ninth at the church choir")
-	assert_gt(count.mime, 0, "a ninth at the mimes' theater")
-	assert_gt(count.party, 0, "a ninth at the costume party")
-	assert_gt(count.gym, 0, "a ninth at the gym")
-	assert_gt(count.school, 0, "a ninth at the thieves' school")
-	assert_gt(count.restaurant, 0, "a ninth at the restaurant")
-	assert_gt(count.chess, 0, "a ninth at the chess club")
-	assert_gt(count.biker, 0, "and a ninth at the biker bar")
+	assert_gt(count.club, 0, "a tenth of them at the grandparents' club")
+	assert_gt(count.choir, 0, "a tenth at the church choir")
+	assert_gt(count.mime, 0, "a tenth at the mimes' theater")
+	assert_gt(count.party, 0, "a tenth at the costume party")
+	assert_gt(count.gym, 0, "a tenth at the gym")
+	assert_gt(count.school, 0, "a tenth at the thieves' school")
+	assert_gt(count.restaurant, 0, "a tenth at the restaurant")
+	assert_gt(count.chess, 0, "a tenth at the chess club")
+	assert_gt(count.biker, 0, "a tenth at the biker bar")
+	assert_gt(count.auction, 0, "and a tenth at the auction house")
 	assert_gt(count.plaza, 2, "half of the protections at the plaza's rally")
 	assert_gt(count.market, 2, "and half on the market walk")
 	assert_eq(PlaceDraw.pick(77, []), PlaceDraw.pick(77, []), "the same seed gives the same place for everyone")
