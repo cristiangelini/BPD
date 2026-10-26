@@ -1,6 +1,6 @@
 extends GutTest
 
-## The infiltration online (infiltracion.md, infiltracion-coro.md, infiltracion-mimos.md, infiltracion-fiesta.md, infiltracion-gimnasio.md and infiltracion-escuela.md, "Online"; docs/diseno/online.md): the host's
+## The infiltration online (infiltracion.md, infiltracion-coro.md, infiltracion-mimos.md, infiltracion-fiesta.md, infiltracion-gimnasio.md, infiltracion-escuela.md and infiltracion-restaurante.md, "Online"; docs/diseno/online.md): the host's
 ## case decides the evidence, the suspicion, the boss cuffed or running off and the end of shift, and every PC sees
 ## the same, disguises included.
 
@@ -11,6 +11,7 @@ const MIME_SCENE := preload("res://scenes/levels/mime_theater.tscn")
 const PARTY_SCENE := preload("res://scenes/levels/party_hall.tscn")
 const GYM_SCENE := preload("res://scenes/levels/gym_hall.tscn")
 const SCHOOL_SCENE := preload("res://scenes/levels/school_hall.tscn")
+const RESTAURANT_SCENE := preload("res://scenes/levels/restaurant_hall.tscn")
 ## A seed whose club has Doña Chela's bag among its evidence (ClubEvidence.draw).
 const SEED := 2
 
@@ -260,6 +261,33 @@ func test_a_guests_grade_reaches_the_host_and_the_graduation_every_pc() -> void:
 	host.start_graduation()
 	await wait_until(func() -> bool: return guest.graduated, 5.0)
 	assert_true(guest_school.director.visible, "the Director came down on the guest's PC too")
+
+
+func test_at_the_restaurant_found_out_the_chef_rides_off_on_every_pc() -> void:
+	_scene = RESTAURANT_SCENE
+	var pcs := await _on()
+	var host := _place(pcs[0]) as RestaurantHall
+	var guest := _place(pcs[1]) as RestaurantHall
+	host.orders.set_process(false)
+	guest.orders.set_process(false)
+	host.suspicion.raise(host.members[0], 100.0)
+	await wait_until(func() -> bool: return guest.case.chase != null, 5.0)
+	assert_eq(guest.case.chase.suspect_id, SuspectCar.PIZZA_SCOOTER, "on the delivery scooter")
+
+
+func test_the_chefs_orders_and_special_soup_reach_the_guest() -> void:
+	_scene = RESTAURANT_SCENE
+	var pcs := await _on()
+	var host := _place(pcs[0]) as RestaurantHall
+	var guest := _place(pcs[1]) as RestaurantHall
+	host.orders.set_process(false)
+	guest.orders.set_process(false)
+	host.orders.order("soup")
+	await wait_until(func() -> bool: return not guest.orders.orders.is_empty(), 5.0)
+	assert_eq(guest.orders.orders[0].dish, "soup", "the same order on the guest's rail")
+	host.orders.start_special()
+	await wait_until(func() -> bool: return guest.orders.special_on, 5.0)
+	assert_true(guest.special_soup.visible, "the special soup on the guest's pass")
 
 
 ## Whether the party with `case_seed` has Serpentina among its clues.

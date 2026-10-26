@@ -62,6 +62,8 @@ const MODELS := {
 	"toro_jog": preload("res://assets/models/toro_jog.glb"),
 	# The Director of the thieves' school drives off in its learner car (infiltracion-escuela.md), stalling it.
 	"learner_car": preload("res://assets/models/learner_car.glb"),
+	# The Chef Flambé rides off on the restaurant's delivery scooter (infiltracion-restaurante.md), losing pizzas.
+	"pizza_scooter": preload("res://assets/models/pizza_scooter.glb"),
 	# The traffic control's wanted car, in its paint (control-transito.md): the traffic car it was in the queue.
 	"traffic_0": preload("res://assets/models/traffic_car_0.glb"),
 	"traffic_1": preload("res://assets/models/traffic_car_1.glb"),
@@ -87,6 +89,7 @@ const RIDERS := {
 	"party_patrol": [[preload("res://assets/models/npc_invitado.glb"), Vector3(-0.45, 0.05, 0.1), 0.8]],
 	"toro_jog": [[preload("res://assets/models/npc_toro.glb"), Vector3(0, 0, 0), 1.2]],
 	"learner_car": [[preload("res://assets/models/npc_director.glb"), Vector3(-0.45, 0.05, 0.1), 0.8]],
+	"pizza_scooter": [[preload("res://assets/models/npc_flambe.glb"), Vector3(0, 0.36, -0.1), 0.85]],
 }
 ## Who rides inside and stays there when he gives up, the same way: the choristers in the van, seen through its open
 ## windows, singing all the way.
@@ -108,7 +111,7 @@ const LANES := {"moto": ChaseRoute.SIDEWALK_LANE, "wheelchair": ChaseRoute.SIDEW
 const SPEEDS := {"bear_on_foot": 12.0 / 3.6, "wheelchair": 8.0 / 3.6, "tow_truck": 30.0 / 3.6, "golf_cart": 25.0 / 3.6, "bike": 25.0 / 3.6,
 	"walker": 10.0 / 3.6, "choir_van": 35.0 / 3.6, "kick_scooter": 15.0 / 3.6,
 	"food_cart": 14.0 / 3.6, "veggie_trike": 16.0 / 3.6, "inmate_on_foot": 11.0 / 3.6, "invisible_car": 14.0 / 3.6,
-	"toro_jog": 13.0 / 3.6, "learner_car": 35.0 / 3.6}
+	"toro_jog": 13.0 / 3.6, "learner_car": 35.0 / 3.6, "pizza_scooter": 40.0 / 3.6}
 ## The tow truck turns slowly and nearly stops to do it (persecucion-lugares.md): a cop cutting a corner on foot
 ## catches up with him.
 ## The golf cart turns very tight and hardly slows down to do it.
@@ -131,6 +134,7 @@ const INVISIBLE_CAR := "invisible_car"
 const PARTY_PATROL := "party_patrol"
 const TORO_JOG := "toro_jog"
 const LEARNER_CAR := "learner_car"
+const PIZZA_SCOOTER := "pizza_scooter"
 ## The learner car stalls after this many seconds of driving and stays stopped this long (propuesta).
 const STALL_EVERY := 6.0
 const STALL_TIME := 2.0
@@ -153,7 +157,8 @@ const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 
 	"wheelchair": Vector3(0.8, 1.4, 1.2), "bear_on_foot": Vector3(0.9, 1.8, 0.9), "choir_van": Vector3(2.0, 1.95, 4.6), "walker": Vector3(0.7, 1.6, 1.3), "kick_scooter": Vector3(0.6, 1.6, 1.0), "food_cart": Vector3(0.8, 1.6, 2.2), "veggie_trike": Vector3(1.0, 1.6, 2.0), "inmate_on_foot": Vector3(0.8, 1.6, 0.9), "invisible_car": Vector3(0.9, 1.6, 0.9), "bike": Vector3(0.7, 1.6, 1.9), "traffic_0": Vector3(2.1, 1.4, 4.6),
 	"traffic_1": Vector3(2.1, 1.4, 4.6), "traffic_2": Vector3(2.1, 1.4, 4.6), "traffic_3": Vector3(2.1, 1.4, 4.6),
 	"manager_car": Vector3(2.1, 1.4, 4.6), "party_patrol": Vector3(2.1, 1.4, 4.6),
-	"toro_jog": Vector3(0.9, 1.8, 0.9), "learner_car": Vector3(2.1, 1.4, 4.6)}
+	"toro_jog": Vector3(0.9, 1.8, 0.9), "learner_car": Vector3(2.1, 1.4, 4.6),
+	"pizza_scooter": Vector3(1.2, 1.6, 2.3)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
@@ -166,7 +171,8 @@ const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": 
 	"wheelchair": NO_WHEELS, "walker": NO_WHEELS, "bear_on_foot": NO_WHEELS, "kick_scooter": NO_WHEELS, "food_cart": NO_WHEELS, "veggie_trike": NO_WHEELS, "inmate_on_foot": NO_WHEELS, "invisible_car": NO_WHEELS, "highway": SEDAN_WHEELS, "tow_truck": TOW_WHEELS, "golf_cart": NO_WHEELS,
 	"old_patrol": SEDAN_WHEELS, "bike": NO_WHEELS, "traffic_0": SEDAN_WHEELS, "traffic_1": SEDAN_WHEELS,
 	"traffic_2": SEDAN_WHEELS, "traffic_3": SEDAN_WHEELS, "choir_van": SEDAN_WHEELS, "manager_car": SEDAN_WHEELS,
-	"party_patrol": SEDAN_WHEELS, "toro_jog": NO_WHEELS, "learner_car": SEDAN_WHEELS}
+	"party_patrol": SEDAN_WHEELS, "toro_jog": NO_WHEELS, "learner_car": SEDAN_WHEELS,
+	"pizza_scooter": NO_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
