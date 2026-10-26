@@ -2456,6 +2456,7 @@ ROBBER_VAMPIRE_LIGHT_2,"¡Me quemo! ¡Me quemo! Bueno, no, pero igual.","I'm bur
 ROBBER_VAMPIRE_LIGHT_3,"¡Apaga eso, mortal!","Turn that off, mortal!","Desliga isso, mortal!"
 ROBBER_CONDE_CUT,"¡Que alguien corte la luz otra vez! ¡Ya!","Somebody cut the light again! Now!","Alguém corte a luz de novo! Já!"
 PROMPT_BANK_LIGHTS,"Prender la luz","Turn the light on","Acender a luz"
+PROMPT_HOLDING_BLOOD_BAG,"Bolsa de sangre: llévala a la heladera o a la heladerita del patrullero","Blood bag: take it to the fridge or the patrol car's cooler","Bolsa de sangue: leve para a geladeira ou para a geladeirinha da viatura"
 EVENT_PURSE_HELP,¡Mi cartera! ¡Ladrón!,My purse! Thief!,Minha bolsa! Ladrão!
 EVENT_PURSE_THANKS,¡Mi cartera! Gracias.,My purse! Thank you.,Minha bolsa! Obrigada.
 EVENT_PAID,+%d de plata,+%d money,+%d de dinheiro

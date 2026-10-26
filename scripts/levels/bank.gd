@@ -783,12 +783,8 @@ func _build_back() -> void:
 	for z: float in [-7.0, -8.6]:
 		_build.open_box(Vector3(11.4, FLOOR_TOP, z), Vector3(0.8, 2.0, 1.4), "-x", STEEL)
 		for level: float in [0.4, 1.0, 1.6]:
-			if blood:
-				# The fridge's blood bags, in a row on each shelf.
-				for k in 4:
-					_build.mesh_box(Vector3(11.3, FLOOR_TOP + level + 0.1, z - 0.42 + k * 0.28), Vector3(0.08, 0.2, 0.16),
-						BankBlood.RED)
-			else:
+			# The blood bank's fridge holds blood bags (BankBlood) instead.
+			if not blood:
 				_build.mesh_box(Vector3(11.3, FLOOR_TOP + level + 0.12, z), Vector3(0.5, 0.22, 1.1), MONEY)
 	var label := Label3D.new()
 	label.text = "BANK_FRIDGE" if blood else "BANK_VAULT"
@@ -1250,6 +1246,10 @@ func _on_vault_opened() -> void:
 	var boss_runs := is_loose(boss) and not manager_runs
 	# The roof robbery (robo-banco-techo.md, step 4): up the hatch with the sacks, if the helicopter is still theirs.
 	var by_roof := roof and roof_way_out()
+	if blood:
+		# The blood bank (robo-banco-sangre.md, step 3): they run in for the bags and out with them.
+		blood_bank.load_up()
+		return
 	var sacks := 0
 	for robber in robbers:
 		if robber.sorry and is_loose(robber):

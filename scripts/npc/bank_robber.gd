@@ -170,6 +170,8 @@ var surrendered := false
 ## Where the pig runs, in order (world positions; the level sets them): out of the entrance and to the van's door.
 var run_path: Array[Vector3] = []
 var running := false
+## Whether the end of run_path is the van (the blood bank's robbers first run to the fridge and stop there).
+var into_van := true
 var in_van := false
 ## A guest's copy (NpcSync): the host's decides whether the cuffs closed.
 var follower := false
@@ -694,6 +696,8 @@ func _run(delta: float) -> void:
 		run_path.remove_at(0)
 		if run_path.is_empty():
 			running = false
+			if not into_van:
+				return
 			in_van = true
 			hide()
 			collision_layer = 0
