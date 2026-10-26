@@ -110,7 +110,7 @@ Montan un control en la calle y tienen que encontrar el auto buscado entre mucho
 4. **Control de alcoholemia en la boda.**
 5. **Carrera ilegal:** los autos pasan a toda velocidad.
 6. **Mudanza del circo:** jaulas con animales y uno de los animales es el sospechoso.
-7. **Neblina:** los autos aparecen de golpe.
+7. **Neblina:** los autos aparecen de golpe. Propuesta en [control-neblina.md](control-neblina.md) (decisión 137).
 8. **Desfile:** el control queda en medio de un desfile de carrozas.
 9. **El auto fantasma:** no tiene conductor (es a control remoto).
 10. **Camión de frutas:** el contrabando está dentro de las sandías.
