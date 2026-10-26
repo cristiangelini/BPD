@@ -38,6 +38,8 @@ var match_seed := 0
 var match_custody := {}
 ## The host's campaign is under internal affairs investigation (sobornos.md): its agent comes into the case.
 var match_investigation := false
+## The host's case is its campaign's first shift: the comisario tells the story of the match first (decision 106).
+var match_intro := false
 ## Off in tests, so starting a case only emits match_started.
 var change_scenes := true
 ## Peers that have the current level loaded, so they can take the cops' state.
@@ -195,7 +197,7 @@ func start_match() -> void:
 		return
 	var case_seed := PlaceDraw.next_seed()
 	_start_match.rpc(draw_place(case_seed), case_seed, PlaceDraw.custody_now(),
-		Campaign.current != null and Campaign.current.investigation)
+		Campaign.current != null and Campaign.current.investigation, CaseBriefing.intro_due())
 
 
 ## The place the host's match opens for `case_seed`: the same draw as playing alone, chases and crime scenes too.
@@ -204,12 +206,13 @@ func draw_place(case_seed: int) -> String:
 
 
 @rpc("authority", "call_local", "reliable")
-func _start_match(place: String, case_seed: int, custody := {}, investigation := false) -> void:
+func _start_match(place: String, case_seed: int, custody := {}, investigation := false, intro := false) -> void:
 	in_match = true
 	match_place = place
 	match_seed = case_seed
 	match_custody = custody
 	match_investigation = investigation
+	match_intro = intro
 	# A guest plays the host's campaign: the owner in the chair is the host's, and its own saved one stays out of it.
 	if not multiplayer.is_server():
 		Campaign.current = null
@@ -404,7 +407,7 @@ func _on_peer_connected(id: int) -> void:
 	players_changed.emit()
 	# Coming in during a case opens it right away; once its level loads, the host sends it how everything is.
 	if in_match:
-		_start_match.rpc_id(id, match_place, match_seed, match_custody, match_investigation)
+		_start_match.rpc_id(id, match_place, match_seed, match_custody, match_investigation, match_intro)
 
 
 func _kick(id: int) -> void:

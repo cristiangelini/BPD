@@ -67,7 +67,7 @@ func test_a_finished_campaign_cant_be_continued() -> void:
 	campaign.save()
 	assert_true(campaign.is_over())
 	assert_true(campaign.is_promoted(), "five quotas made: promoted")
-	assert_false(Campaign.can_continue(), "after shift 5 the campaign is over")
+	assert_false(Campaign.can_continue(), "after the last shift the campaign is over")
 
 
 func test_the_quota_rises_each_shift() -> void:
@@ -76,7 +76,7 @@ func test_the_quota_rises_each_shift() -> void:
 	campaign.finish_shift("bingo", true, _report(800))
 	assert_eq(campaign.quota(), 900)
 	campaign.shift = Campaign.SHIFTS
-	assert_eq(campaign.quota(), 1200)
+	assert_eq(campaign.quota(), 1700)
 
 
 func test_missing_the_quota_loses_the_campaign() -> void:
