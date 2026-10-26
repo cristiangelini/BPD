@@ -92,6 +92,12 @@ const CHESS_DISGUISES: Array[String] = ["chess_glasses", "chess_vest", "chess_be
 	"chess_beret", "chess_glasses", "chess_vest", "chess_beret", "chess_glasses", "chess_vest", "chess_beret"]
 const CHESS_DISGUISES_AT := Vector3(-5.15, 0, 5.3)
 const CHESS_GAP := 0.42
+## The biker gang's (infiltracion-motos.md, step 1): a bandana, a long fake beard and a leather jacket for each cop, in
+## a row on the other side of the guard room, by the coffee: the rows by the lockers reach where the cops appear.
+const BIKER_DISGUISES: Array[String] = ["biker_bandana", "biker_beard", "biker_jacket", "biker_bandana", "biker_beard",
+	"biker_jacket", "biker_bandana", "biker_beard", "biker_jacket", "biker_bandana", "biker_beard", "biker_jacket"]
+const BIKER_DISGUISES_AT := Vector3(0.6, 0, 2.4)
+const BIKER_GAP := 0.42
 
 ## Furniture: [model, position, turn]. The models come from tools/modelgen/models/station.js.
 const FURNITURE := [
