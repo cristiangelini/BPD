@@ -118,8 +118,12 @@ var crawling := {}
 var peeker: YardInmate
 var _peek_left := 0.0
 var _release_left := 0.0
-## A guest's copy (step 7): the host's plan decides.
-var follower := false
+## A guest's copy (step 7): the host's plan decides; its hideouts leave it to the host's too.
+var follower := false:
+	set(value):
+		follower = value
+		for hideout in hideouts:
+			hideout.follower = value
 var _rng := RandomNumberGenerator.new()
 
 
@@ -150,6 +154,7 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 		prison.add_child(bag)
 		bags.append(bag)
 	tunnel_hideout().poured.connect(_on_poured)
+	child_entered_tree.connect(_on_child_entered)
 	for i in INMATES:
 		var inmate := YardInmate.new()
 		inmate.name = "Inmate%d" % i
@@ -497,6 +502,30 @@ func _runner(at: Vector3) -> BlackoutInmate:
 	BlackoutEscort.to_block(runner, prison).boarded.connect(_on_caught.bind(runner))
 	runners.append(runner)
 	return runner
+
+
+## A guest's copy of a runner the host let out (NpcSync makes it here): it gets its way to the punishment cell too, so
+## the guest's cops see the prompt to walk it there.
+func _on_child_entered(node: Node) -> void:
+	if not follower or not node is BlackoutInmate or runners.has(node):
+		return
+	var runner := node as BlackoutInmate
+	runner.prison = prison
+	runners.append(runner)
+	(func() -> void: BlackoutEscort.to_block(runner, prison).follower = true).call_deferred()
+
+
+## The far end, for a guest's case (TunnelCase.snapshot): showing, open and someone peeking out.
+func exit_state() -> Array:
+	return [exit.is_showing(), exit.is_open(), exit.peeking]
+
+
+func apply_exit(state: Array) -> void:
+	if state[1]:
+		exit.open()
+	elif state[0]:
+		exit.peek_out()
+	exit.peeking = state[2]
 
 
 func _on_caught(runner: BlackoutInmate) -> void:

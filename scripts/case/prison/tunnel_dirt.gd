@@ -39,6 +39,11 @@ func _ready() -> void:
 	fade.tween_callback(queue_free)
 
 
+## What a guest's copy needs before it's added (NpcSync, step 7): a pile or a print.
+func net_setup() -> Dictionary:
+	return {"kind": kind}
+
+
 func _piece(mesh: PrimitiveMesh, at: Vector3) -> void:
 	mesh.material = _material
 	var instance := MeshInstance3D.new()
