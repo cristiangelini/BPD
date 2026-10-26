@@ -485,6 +485,11 @@ func _disguises(root: Node3D) -> void:
 		piece.name = "Biker%d" % i
 		piece.position = StationRooms.BIKER_DISGUISES_AT + Vector3(i * StationRooms.BIKER_GAP, 0.12, 0)
 		root.add_child(piece)
+	for i in StationRooms.AUCTION_DISGUISES.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.AUCTION_DISGUISES[i]).instantiate()
+		piece.name = "Auction%d" % i
+		piece.position = StationRooms.AUCTION_DISGUISES_AT + Vector3(i * StationRooms.AUCTION_GAP, 0.12, 0)
+		root.add_child(piece)
 
 
 func _furniture(items: Array, solids: Dictionary, root: Node3D) -> void:

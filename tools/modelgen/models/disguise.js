@@ -425,6 +425,50 @@ export function buildFoldedBikerJacket() {
 	return b.build();
 }
 
+// The art auction's disguises (infiltracion-subasta.md, step 1), each origin where it sits on a cop
+// (DisguisePiece.SLOTS): a gold monocle on a chain over the right eye, a tall black top hat with a red band and a black
+// tailcoat with a white shirt front, a red bow tie and two long tails at the back. Placeholder.
+export function buildAuctionMonocle() {
+	const b = new Builder('disguise_auction_monocle');
+	const gold = mat('auction_gold', 0xd8b040, { metalness: 0.7, roughness: 0.3 }), lens = mat('auction_lens', 0xe8f4fa, { emissive: 0x18242c });
+	b.add('rim', gold, new THREE.TorusGeometry(0.045, 0.008, 5, 14), { pos: V(-0.075, 0, 0.012) });
+	b.add('lens', lens, new THREE.CylinderGeometry(0.043, 0.043, 0.006, 14), { pos: V(-0.075, 0, 0.012), rot: [Math.PI / 2, 0, 0] });
+	for (let i = 0; i < 6; i++) b.add('chain', gold, new THREE.SphereGeometry(0.007, 4, 3), { pos: V(-0.1 - i * 0.012, -0.05 - i * 0.03, 0.01 - i * 0.004) });
+	return b.build();
+}
+
+export function buildAuctionTopHat() {
+	const b = new Builder('disguise_auction_top_hat');
+	const black = mat('auction_black', 0x141418), red = mat('auction_red', 0xa02030);
+	b.add('brim', black, new THREE.CylinderGeometry(0.34, 0.34, 0.02, 18), { pos: V(0, 0.02, 0), scale: [1, 1, 0.9] });
+	b.add('crown', black, new THREE.CylinderGeometry(0.26, 0.25, 0.34, 18), { pos: V(0, 0.19, 0), scale: [1, 1, 0.9] });
+	b.add('band', red, new THREE.CylinderGeometry(0.254, 0.254, 0.06, 18), { pos: V(0, 0.07, 0), scale: [1, 1, 0.9] });
+	return b.build();
+}
+
+export function buildAuctionTailcoat() {
+	const b = new Builder('disguise_auction_tailcoat');
+	const black = mat('auction_black', 0x141418), white = mat('auction_shirt', 0xf4f4ef), red = mat('auction_red', 0xa02030);
+	b.add('coat', black, new THREE.CylinderGeometry(0.32, 0.46, 0.58, 14, 1, true), { pos: V(0, -0.155, -0.3) });
+	b.add('shirt', white, new THREE.BoxGeometry(0.16, 0.4, 0.02), { pos: V(0, -0.08, 0.06), rot: [-0.25, 0, 0] });
+	for (const s of [-1, 1]) {
+		b.add('bow', red, new THREE.ConeGeometry(0.035, 0.07, 4), { pos: V(s * 0.035, 0.11, 0.02), rot: [0, 0, s * Math.PI / 2] });
+		b.add('tails', black, new THREE.BoxGeometry(0.16, 0.42, 0.02), { pos: V(s * 0.1, -0.6, -0.72), rot: [0.15, 0, s * 0.06] });
+	}
+	b.add('bow', red, new THREE.SphereGeometry(0.018, 6, 4), { pos: V(0, 0.11, 0.025) });
+	for (let i = 0; i < 3; i++) b.add('studs', black, new THREE.SphereGeometry(0.01, 4, 3), { pos: V(0, 0.02 - i * 0.09, 0.075 - i * 0.022) });
+	return b.build();
+}
+
+// The tailcoat folded: 0.4 x 0.1 x 0.32 m, origin in its middle.
+export function buildFoldedAuctionTailcoat() {
+	const b = new Builder('folded_auction_tailcoat');
+	b.add('coat', mat('auction_black', 0x141418), new THREE.BoxGeometry(0.4, 0.1, 0.32));
+	b.add('shirt', mat('auction_shirt', 0xf4f4ef), new THREE.BoxGeometry(0.1, 0.01, 0.3), { pos: V(0, 0.051, 0) });
+	b.add('bow', mat('auction_red', 0xa02030), new THREE.BoxGeometry(0.1, 0.02, 0.04), { pos: V(0, 0.06, 0.12) });
+	return b.build();
+}
+
 export const models = {
 	disguise_wig: buildDisguiseWig, disguise_mustache: buildDisguiseMustache, disguise_glasses: buildDisguiseGlasses,
 	disguise_robe: buildDisguiseRobe, folded_robe: buildFoldedRobe, songbook: buildSongbook,
@@ -443,6 +487,8 @@ export const models = {
 	folded_chess_vest: buildFoldedChessVest,
 	disguise_biker_bandana: buildBikerBandana, disguise_biker_beard: buildBikerBeard, disguise_biker_jacket: buildBikerJacket,
 	folded_biker_jacket: buildFoldedBikerJacket,
+	disguise_auction_monocle: buildAuctionMonocle, disguise_auction_top_hat: buildAuctionTopHat,
+	disguise_auction_tailcoat: buildAuctionTailcoat, folded_auction_tailcoat: buildFoldedAuctionTailcoat,
 };
 
 export const views = {
@@ -535,6 +581,18 @@ export const views = {
 			{ name: 'disguise_biker_beard', pos: [0.45, 0.4, 0.2] },
 			{ name: 'disguise_biker_bandana', pos: [0.75, 0.0, -0.2] },
 			{ name: 'folded_biker_jacket', pos: [0.5, 0.05, -0.35] },
+		],
+		cam: { pos: [0.3, 1.2, 3.0], target: [0.1, 0.8, 0], fov: 40 },
+	},
+	auction_disguise: {
+		items: [
+			{ name: 'cop_0', pos: [-0.4, 0, 0] },
+			{ name: 'disguise_auction_tailcoat', pos: [-0.4, 0.95, 0.3] },
+			{ name: 'disguise_auction_monocle', pos: [-0.4, 1.33, 0.21] },
+			{ name: 'disguise_auction_top_hat', pos: [-0.4, 1.42, 0] },
+			{ name: 'disguise_auction_monocle', pos: [0.45, 0.05, 0.2] },
+			{ name: 'disguise_auction_top_hat', pos: [0.75, 0.0, -0.2] },
+			{ name: 'folded_auction_tailcoat', pos: [0.5, 0.05, -0.35] },
 		],
 		cam: { pos: [0.3, 1.2, 3.0], target: [0.1, 0.8, 0], fov: 40 },
 	},

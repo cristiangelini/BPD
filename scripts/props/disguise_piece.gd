@@ -9,7 +9,8 @@ extends Grabbable
 ## and the thieves' school's eye mask, beanie and striped shirt (infiltracion-escuela.md, step 1), and the restaurant's
 ## chef's hat, curly mustache and apron (infiltracion-restaurante.md, step 1), and the chess club's thick glasses,
 ## argyle vest and thinker's beret (infiltracion-ajedrez.md, step 1), and the biker gang's bandana, long fake beard and
-## leather jacket (infiltracion-motos.md, step 1). The fire drill's orange prisoner's vest
+## leather jacket (infiltracion-motos.md, step 1), and the art auction's monocle, top hat and tailcoat
+## (infiltracion-subasta.md, step 1). The fire drill's orange prisoner's vest
 ## (fuga-simulacro.md) is worn the same way, but it's the opposite of a disguise: taken off it lies on the floor where
 ## the guard can see it (a clue), and the waiting room's coat and hat make a cop pass for one of the public. The fast trial's lawyer jacket (fuga-juicio.md) makes its wearer the
 ## cops' lawyer. Held, the mouse wheel brings it right up to the face; brought to its place on the cop's head it
@@ -50,6 +51,9 @@ const SLOTS := {
 	"biker_bandana": Vector3(0, 1.42, 0.0),
 	"biker_beard": Vector3(0, 1.17, -0.2),
 	"biker_jacket": Vector3(0, 0.95, -0.3),
+	"auction_monocle": Vector3(0, 1.33, -0.21),
+	"auction_top_hat": Vector3(0, 1.42, 0.0),
+	"auction_tailcoat": Vector3(0, 0.95, -0.3),
 }
 const MODELS := {
 	"wig": preload("res://assets/models/disguise_wig.glb"),
@@ -84,6 +88,9 @@ const MODELS := {
 	"biker_bandana": preload("res://assets/models/disguise_biker_bandana.glb"),
 	"biker_beard": preload("res://assets/models/disguise_biker_beard.glb"),
 	"biker_jacket": preload("res://assets/models/disguise_biker_jacket.glb"),
+	"auction_monocle": preload("res://assets/models/disguise_auction_monocle.glb"),
+	"auction_top_hat": preload("res://assets/models/disguise_auction_top_hat.glb"),
+	"auction_tailcoat": preload("res://assets/models/disguise_auction_tailcoat.glb"),
 }
 ## Who the cops pass for, and with what: which pieces count and how many of them. (propuesta)
 const LOOKS := {
@@ -99,6 +106,7 @@ const LOOKS := {
 	"chef": {"pieces": ["chef_hat", "chef_mustache", "chef_apron"], "needed": 2},
 	"chess": {"pieces": ["chess_glasses", "chess_vest", "chess_beret"], "needed": 2},
 	"biker": {"pieces": ["biker_bandana", "biker_beard", "biker_jacket"], "needed": 2},
+	"auction": {"pieces": ["auction_monocle", "auction_top_hat", "auction_tailcoat"], "needed": 2},
 }
 ## Sportswear is made to sweat in: running doesn't shake it off (the gym's routine has the cops running and jumping).
 const TIGHT: Array[String] = ["gym_headband", "gym_wristbands", "gym_tank"]
