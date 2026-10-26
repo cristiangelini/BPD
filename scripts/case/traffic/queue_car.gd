@@ -653,6 +653,13 @@ func recall_clowns() -> void:
 
 ## The detained clown is out for good: nobody at the wheel.
 func empty_seat() -> void:
+	if not parade.is_empty():
+		# El Antifaz is off his float's troupe (control-desfile.md), not its driver out from under the skirt.
+		for dancer in ParadeFloat.dancers_of(self):
+			if dancer.thief:
+				dancer.get_parent().remove_child(dancer)
+				dancer.queue_free()
+		return
 	if not circus.is_empty():
 		# A circus truck's El Peludo is out of his cage (control-circo.md), not its driver out of the cab.
 		var animal := CircusTruck.animal_of(self)
@@ -760,7 +767,8 @@ func net_setup() -> Dictionary:
 
 
 ## Online: where it is in the queue and whether its trunk is open; the ghost car's, how many pranks and the last one;
-## the wedding check's, whether its driver blew and gave up the keys; the street race's, its flat tires and sparks.
+## the wedding check's, whether its driver blew and gave up the keys; the street race's, its flat tires and sparks;
+## a parade float's, whether its music's cut and which of its dancers are down.
 func net_state() -> Array:
 	var rig := get_node_or_null("Pilot") as GhostPilot
 	if rig:
@@ -773,6 +781,9 @@ func net_state() -> Array:
 		var cage_door := get_node_or_null("Cage/Door") as CageDoor
 		return [state, lid.is_open if lid else false, acts, cage_door != null and cage_door.is_open,
 			loose.global_position if is_instance_valid(loose) else Vector3.INF, animal_lost]
+	if parade_mode and not parade.is_empty():
+		return [state, lid.is_open if lid else false, music_cut,
+			ParadeFloat.dancers_of(self).map(func(d: ParadeDancer) -> bool: return d.is_down)]
 	if race_mode:
 		var sparks := get_node_or_null("Exhaust/Sparks") as CPUParticles3D
 		return [state, lid.is_open if lid else false, flat, sparks != null and sparks.emitting]
@@ -796,6 +807,8 @@ func apply_net_state(net: Array) -> void:
 			_relative_takes_over()
 	if circus_mode and net.size() > 5:
 		_follow_circus(net)
+	if parade_mode and not parade.is_empty() and net.size() > 3:
+		_follow_parade(net[2], net[3])
 	if fog_mode and net.size() > 2 and net[2] and not bumped:
 		# It bumped into the car ahead on the host: its driver says so here too.
 		bumped = true
@@ -1019,6 +1032,22 @@ func _follow_circus(net: Array) -> void:
 	animal_lost = animal_lost or net[5]
 
 
+## Online, a guest's float shows the host's music (cut or playing) and its dancers down or back on it. The dance and
+## taking one down already happen on every PC (ActionSync); this keeps them right if a guest's timing differs.
+func _follow_parade(cut: bool, downs_now: Array) -> void:
+	if cut and not music_cut:
+		for cop: Cop in get_tree().get_nodes_in_group("cops"):
+			cop.show_hint("HINT_PARADE_MUSIC_CUT")
+	music_cut = cut
+	ParadeFloat.show_music(self, not music_cut, _beat)
+	var dancers := ParadeFloat.dancers_of(self)
+	for i in mini(dancers.size(), downs_now.size()):
+		if downs_now[i] and not dancers[i].is_down:
+			dancers[i].go_down()
+		elif not downs_now[i] and dancers[i].is_down:
+			dancers[i].climb_back()
+
+
 ## El Peludo, unwatched for CircusTruck.UNWATCHED, does something only a person would (step 3); a cop turning round
 ## then sees it in his bubble.
 func _act_human(delta: float) -> void:
@@ -1087,6 +1116,11 @@ func waiting() -> bool:
 ## stops and the crowd boos (the queue's patience runs out faster); it plays again once the float moves on.
 func _play_music(delta: float) -> void:
 	_beat += delta
+	var queue := get_parent() as TrafficQueue
+	if queue and queue.follower:
+		# Online the host's float decides when its music stops (_follow_parade).
+		ParadeFloat.show_music(self, not music_cut, _beat)
+		return
 	var at_checkpoint := waiting() and not (is_instance_valid(ahead) and ahead.in_queue())
 	if at_checkpoint:
 		held_seconds += delta
