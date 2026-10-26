@@ -8,7 +8,8 @@ extends Node3D
 ## up to each end, and a ramp over the wall on each bank goes down into the water. On the west bank: the stand with
 ## balloons, the banner over the bridge and the builders' pickup; on the east end of the deck, the ribbon. The cops
 ## start in the station and drive here; --place=bridge opens it from Play. Step 2: Deputy Lustre waits at the foot of
-## the west ramp and crosses with his photo stops (BridgeCeremony). Every number here is (propuesta).
+## the west ramp and crosses with his photo stops (BridgeCeremony). Step 3: the bridge falls apart (BridgeBreaks) and
+## the deputy may fall in (BridgeDip). Every number here is (propuesta).
 
 const PLANK_MODEL := preload("res://assets/models/bridge_plank.glb")
 const VAN_MODEL := preload("res://assets/models/builder_van.glb")
@@ -77,6 +78,9 @@ var water: Area3D
 ## Deputy Lustre and his walk across the bridge, the clock of the case (step 2).
 var politician: Politician
 var ceremony: BridgeCeremony
+## What breaks and when, and the deputy's dips in the canal (step 3).
+var breaks: BridgeBreaks
+var dip: BridgeDip
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -102,6 +106,14 @@ func _ready() -> void:
 	ceremony.name = "Ceremony"
 	ceremony.setup(self, politician)
 	add_child(ceremony)
+	breaks = BridgeBreaks.new()
+	breaks.name = "Breaks"
+	breaks.setup(self, ceremony, case_seed)
+	add_child(breaks)
+	dip = BridgeDip.new()
+	dip.name = "Dip"
+	dip.setup(self, ceremony)
+	add_child(dip)
 	city.transform = CityLayout.anchor("bridge_park")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
