@@ -171,3 +171,8 @@ PlaceDraw y la custodia para el interrogatorio.
   el techo. Cada 5 s se le cae una (`ChaseSuitcase`), que queda abierta en la calle con la ropa afuera. Con E se saca
   de la calle; si el patrullero la pisa rápido, la ropa le tapa el parabrisas 2 s. Agarrado o entregado, al turno
   siguiente es el interrogatorio del huésped, que sigue en bata (`owner_guest`).
+- **Paso 6 (Jugar y online):** las escenas del crimen se sortean en cuartos: pastel, circo, museo y hotel
+  (`PlaceDraw.CRIME_SCENES`). En el online, las PCs invitadas siguen lo del anfitrión: la vuelta de doña Escoba y el
+  cartel de la suite, Tito (si ya llegó su valija o si se ofendió), el libro firmado encima, el enojo de don Bostezo,
+  quién firmó en la libreta y las pistas arruinadas (`Hotel.net_state`). Como en bata y con pepinos no hay foto, la
+  ficha de un huésped aparece en el tablero en cuanto tiene algo (huellas, dientes, firma o algo de su habitación).
