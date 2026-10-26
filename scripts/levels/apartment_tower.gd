@@ -15,6 +15,25 @@ signal something_fell(body: Node3D)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const MANAGER_SCENE := preload("res://scenes/npc/concierge.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## The six stories the building can be suspected of (edificio.md, "Las historias"): SUSPECT_<id> and CLUE_SUSPECT_<id>.
+const SUSPICION_POOL := ["stolen_aquarium", "floor_31", "carrier_pigeons", "spy_telescope", "smuggling_piano",
+	"tenant_of_twenty"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_APARTMENTS_TIP_B", "BRIEF_TIP_C", "BRIEF_APARTMENTS_TIP_D",
+	"BRIEF_APARTMENTS_TIP_E"]
+## The playable stories: what the comisario says when the cops get it right, what to take, what hides where the seed
+## says (with half its height and whether it's heavy), the extras' checklist lines and the story's own rig.
+const STORIES := {
+	"stolen_aquarium": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_STOLEN_AQUARIUM_B", "BRIEF_STOLEN_AQUARIUM_C", "BRIEF_STOLEN_AQUARIUM_D"],
+		"find": "OBJ_FIND_STOLEN_AQUARIUM",
+		"hidden": [preload("res://scenes/props/fishing_net.tscn"), preload("res://scenes/props/aquarium_ticket.tscn")],
+		"half_heights": [0.02, 0.005],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_FISHING_NET", "OBJ_EXTRA_AQUARIUM_TICKET"],
+		"rig": preload("res://scripts/case/apartments/stolen_aquarium_rig.gd"),
+	},
+}
 const ORNAMENT_SCENES: Array[PackedScene] = [
 	preload("res://scenes/props/ornament_vase.tscn"), preload("res://scenes/props/ornament_figurine.tscn"),
 	preload("res://scenes/props/ornament_ballerina.tscn"),
@@ -66,6 +85,13 @@ const MANAGER_ROUTE: Array[Vector3] = [
 const MANAGER_ELEVATOR := Vector3(0.0, LOBBY_Y, CORE_Z + 0.9)
 ## Doña Pepa at her door (30A), watching the hallway, and how far down it a lap with Cuqui goes.
 const PEPA_AT := Vector3(FLAT_A_DOOR_X, TOP_Y, CORE_Z + 0.5)
+## The key board on Don Evaristo's counter: its drawer has the key to 30B and its study.
+const KEY_BOARD_ON := Vector3(-6.9, LOBBY_Y + 1.1, 3.5)
+## Where the clue notes can lie, one per suspicion, drawn with the seed.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(4.05, TOP_Y + 0.45, 5.9), Vector3(-4.0, TOP_Y + 0.9, -1.1), Vector3(-7.0, TOP_Y + 0.5, 6.6),
+	Vector3(6.0, LOBBY_Y + 0.45, 5.1), Vector3(-5.5, TOP_Y, -3.0), Vector3(-5.2, LOBBY_Y + 1.1, 3.5),
+]
 const LAP_FAR_X := -8.0
 ## The intercom board outside, beside the glass door.
 const INTERCOM_AT := Vector3(1.4, LOBBY_Y + 1.3, HALF_Z + 0.1)
@@ -159,14 +185,43 @@ var scaffold_calls: Array[ScaffoldButton] = []
 ## What fell from up high, each one lost and a DROP_FINE.
 var dropped: Array[Node3D] = []
 var broken_goods := 0
-## Money taken off the case pay for broken things (each one is an Ornament.FINE).
-var fines := 0
+## Money taken off the case pay for broken things and what fell (the raid's fines).
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## The raid: the seed and the story (--story=<id>, or drawn), what's hidden where, and the story's rig.
+var case_seed := 0
+var story_id := ""
+var raid: RaidCase
+var main: Evidence
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
+var key_board: Till
+var rig: ApartmentsRig
 var _build: PlaceBuilder
 var _falls: Area3D
 @onready var car: PatrolCar = $PatrolCar
 
 
 func _ready() -> void:
+	if case_seed == 0:
+		case_seed = PlaceDraw.take_seed()
+	if case_seed == 0:
+		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_tower()
 	_build_lobby()
@@ -187,11 +242,20 @@ func _ready() -> void:
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("apartments")
 	station_parking = city.transform * CityLayout.parking("station")
+	raid.station_parking = station_parking
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
 	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "apartments", car)
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
 	# Debug: straight to floor 30's hallway, without the ride.
 	if OS.get_cmdline_user_args().has("--floor30"):
 		$Cop.global_position = to_global(Vector3(-4.0, TOP_Y + 0.1, -2.8))
@@ -325,7 +389,13 @@ func _place_manager() -> void:
 	something_fell.connect(func(_body: Node3D) -> void: manager.heard(Concierge.HEARD_FALL, "EVARISTO_FALL"))
 	for ornament in ornaments:
 		ornament.broken.connect(func(at: Vector3) -> void: manager.saw(at, FloorBoss.SAW_BREAK, "EVARISTO_ORNAMENT"))
-	manager.lawyer_called.connect(%CaseFailed.show)
+	manager.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_APARTMENTS"))
+	key_board = Till.new()
+	key_board.position = KEY_BOARD_ON + Vector3.UP * Till.SIZE.y / 2
+	key_board.key_hint = "HINT_KEY_BOARD_APARTMENTS"
+	add_child(key_board)
+	key_board.opened.connect(func(at: Vector3) -> void: manager.saw(at, FloorBoss.SAW_TILL))
+	intercom.manager_called.connect(_on_manager_called)
 	var hud := CanvasLayer.new()
 	var box := VBoxContainer.new()
 	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
@@ -342,6 +412,82 @@ func _place_manager() -> void:
 	box.add_child(complaint_bar)
 	add_child(hud)
 	manager.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## The intercom's other button: Don Evaristo comes to the glass door, sees the warrant and lets the cops in (unless
+## he's up on the 12th).
+func _on_manager_called(cop: Cop) -> void:
+	if manager.is_away():
+		cop.show_hint("HINT_MANAGER_AWAY")
+		return
+	if front_door.locked:
+		front_door.open_from_inside()
+		cop.show_hint("HINT_MANAGER_OPENS")
+
+
+## The building's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_APARTMENTS",
+		"guess_key": "OBJ_GUESS_APARTMENTS",
+		"broken_key": "OBJ_BROKEN_APARTMENTS",
+		"complaint_key": "OBJ_COMPLAINT_APARTMENTS",
+		"door_open": not front_door.locked,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_goods + dropped.size(),
+		"complaint": manager.complaint,
+	}
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Don Evaristo lets slip when asked (where the story's things are, in an order drawn from the seed), and what
+## Doña Pepa saw after a walk with Cuqui: the story's own sighting, then where one of the things went.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		manager.slips.append(tr("EVARISTO_SLIP") % tr("LOC_APT_" + SPOTS[hidden_spots[item]].id))
+	manager.slipped.connect(raid.add_clue)
+	pepa.tips.append(tr("PEPA_TIP_" + story_id))
+	pepa.tips.append(tr("PEPA_TIP_WHERE") % tr("LOC_APT_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id))
+	pepa.told.connect(raid.add_clue)
 
 
 ## A floor slab at `top` with the elevator shaft's hole.

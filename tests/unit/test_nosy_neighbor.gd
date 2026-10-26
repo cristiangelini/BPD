@@ -43,7 +43,7 @@ func test_she_waits_at_her_door_with_cuqui() -> void:
 
 
 func test_a_whole_lap_and_she_tells() -> void:
-	pepa.tips.append("SEEN_IT")
+	pepa.tips.assign(["SEEN_IT"])
 	watch_signals(pepa)
 	pepa.use(cop)
 	assert_eq(cop.leash, pepa.dog, "the leash in one hand")

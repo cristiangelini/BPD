@@ -4328,6 +4328,53 @@ PEPA_TIP_VAGUE,"El del 30B entra y sale cargado a cualquier hora. Y el edificio 
 PEPA_LINE_1,"Yo no espío, oficial. Miro por la mirilla, que es otra cosa.","I don't spy, officer. I look through the peephole, which is different.","Eu não espio, policial. Olho pelo olho mágico, que é outra coisa."
 PEPA_LINE_2,"Cuqui necesita su paseo. Y yo necesito a alguien que lo saque.","Cuqui needs his walk. And I need someone to take him.","O Cuqui precisa do passeio dele. E eu preciso de alguém que o leve."
 PEPA_LINE_3,"Sé muchas cosas del 30B. Muchísimas. Si alguien pasea a Cuqui...","I know a lot about 30B. Loads. If someone walks Cuqui...","Eu sei muitas coisas do 30B. Muitíssimas. Se alguém passear com o Cuqui..."
+LOC_APT_in_mailboxes,en los buzones del hall,in the lobby's mailboxes,nas caixas de correio do saguão
+LOC_APT_behind_lobby_plant,detrás de la planta de plástico del hall,behind the plastic plant in the lobby,atrás da planta de plástico do saguão
+LOC_APT_behind_sofa,detrás del sillón del living,behind the living room sofa,atrás do sofá da sala
+LOC_APT_in_closet,en el ropero del dormitorio,in the bedroom closet,no guarda-roupa do quarto
+LOC_APT_under_bed,debajo de la cama,under the bed,debaixo da cama
+LOC_APT_in_bathtub,en la bañera,in the bathtub,na banheira
+LOC_APT_in_fridge,en la heladera,in the fridge,na geladeira
+LOC_APT_in_toilet_tank,en el tanque del inodoro,in the toilet tank,na caixa da descarga
+LOC_APT_behind_painting,detrás del cuadro,behind the painting,atrás do quadro
+LOC_APT_on_balcony,en el balcón,on the balcony,na varanda
+LOC_APT_in_study,en el cuarto cerrado,in the locked study,no escritório trancado
+LOC_APT_under_kitchen_counter,debajo de la mesada de la cocina,under the kitchen counter,debaixo da bancada da cozinha
+EVARISTO_SLIP,"«¡Yo no vi a nadie guardar nada %s!... Digo, ¡esto es un edificio de familia!»","“I didn't see anyone put anything %s!... I mean, this is a family building!”","“Eu não vi ninguém guardar nada %s!... Quer dizer, este é um prédio de família!”"
+PEPA_TIP_stolen_aquarium,Anoche cuatro hombres subieron por el andamio una caja enorme que goteaba. ¡Y olía a pescado!,Last night four men brought up a huge dripping box on the scaffold. And it smelled of fish!,Ontem à noite quatro homens subiram pelo andaime uma caixa enorme que pingava. E cheirava a peixe!
+PEPA_TIP_WHERE,Y vi al señor Bellini guardar algo %s. Por la mirilla se ve todo.,And I saw Mr. Bellini put something %s. You see everything through the peephole.,E eu vi o senhor Bellini guardar algo %s. Pelo olho mágico se vê tudo.
+PROMPT_INTERCOM_MANAGER,E: llamar al encargado y mostrarle la orden,E: call the manager and show him the warrant,E: chamar o zelador e mostrar o mandado
+HINT_MANAGER_AWAY,Nadie contesta. El encargado está arreglando algo en otro piso.,Nobody answers. The manager is fixing something on another floor.,Ninguém atende. O zelador está consertando algo em outro andar.
+HINT_MANAGER_OPENS,"Don Evaristo mira la orden, suspira y abre la puerta: «Pasen. Y límpiense los pies.»","Don Evaristo looks at the warrant, sighs and opens the door: “Come in. And wipe your feet.”","Seu Evaristo olha o mandado, suspira e abre a porta: “Entrem. E limpem os pés.”"
+HINT_KEY_BOARD_APARTMENTS,¡En el tablero de llaves hay una que dice «30B»! También abre el cuarto cerrado.,On the key board there's one that says «30B»! It opens the locked study too.,No quadro de chaves tem uma que diz «30B»! Também abre o escritório trancado.
+CASE_FAILED_LAWYER_APARTMENTS,Don Evaristo llamó al abogado del edificio. Caso perdido.,Don Evaristo called the building's lawyer. Case lost.,Seu Evaristo ligou para o advogado do prédio. Caso perdido.
+BRIEF_APARTMENTS_TIP_B,"Llegó una denuncia anónima: el del 30B del edificio Las Palomas no trabaja, pero entra y sale cargado a cualquier hora, y el edificio hace ruidos raros.","We got an anonymous tip: the man in 30B at the Las Palomas building doesn't work, but comes and goes loaded at all hours, and the building makes strange noises.","Chegou uma denúncia anônima: o do 30B do prédio As Pombas não trabalha, mas entra e sai carregado a qualquer hora, e o prédio faz barulhos estranhos."
+BRIEF_APARTMENTS_TIP_D,"Es en el piso 30. El encargado, Don Evaristo, les abre si le muestran la orden en el portero eléctrico. El ascensor lleva 400 kilos, ni uno más.","It's on floor 30. The manager, Don Evaristo, lets you in if you show him the warrant at the intercom. The elevator carries 400 kilos, not one more.","É no 30º andar. O zelador, Seu Evaristo, abre se vocês mostrarem o mandado no interfone. O elevador leva 400 quilos, nem um a mais."
+BRIEF_APARTMENTS_TIP_E,Y no rompan nada: los adornos del 30B y lo que se cae desde arriba se los descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.,And don't break anything: 30B's ornaments and whatever falls from up there come out of your pay. Press Q to see the checklist of what to do.,E não quebrem nada: os enfeites do 30B e o que cair lá de cima eu desconto do salário. Com Q vocês veem a lista do que fazer.
+BRIEF_STOLEN_AQUARIUM_B,"El señor Bellini se robó el acuario gigante del acuario municipal, con el pez dorado campeón adentro.","Mr. Bellini stole the city aquarium's giant tank, with the champion goldfish inside.","O senhor Bellini roubou o aquário gigante do aquário municipal, com o peixe dourado campeão dentro."
+BRIEF_STOLEN_AQUARIUM_C,"Traigan el acuario al patrullero. Pesa 110 kilos y no entra en el ascensor: entre cuatro, por el andamio, y despacio, que es de vidrio.","Bring the tank to the patrol car. It weighs 110 kilos and doesn't fit in the elevator: four of you, down the scaffold, slowly, it's glass.","Tragam o aquário para a viatura. Pesa 110 quilos e não cabe no elevador: entre quatro, pelo andaime, e devagar, que é de vidro."
+BRIEF_STOLEN_AQUARIUM_D,"Si encuentran la red o la entrada del acuario con la fecha del robo, mejor: todo suma.","If you find the net or the aquarium ticket with the day of the theft, even better: it all counts.","Se encontrarem a rede ou o ingresso do aquário com a data do roubo, melhor: tudo conta."
+OBJ_FIND_STOLEN_AQUARIUM,Llevarse el acuario robado,Take the stolen aquarium,Levar o aquário roubado
+OBJ_EXTRA_FISHING_NET,Extra: la red de pesca,Extra: the fishing net,Extra: a rede de pesca
+OBJ_EXTRA_AQUARIUM_TICKET,Extra: la entrada del acuario,Extra: the aquarium ticket,Extra: o ingresso do aquário
+SUSPECT_stolen_aquarium,El acuario robado,The stolen aquarium,O aquário roubado
+SUSPECT_floor_31,El piso 31,Floor 31,O 31º andar
+SUSPECT_carrier_pigeons,Las palomas mensajeras,The carrier pigeons,Os pombos-correio
+SUSPECT_spy_telescope,El telescopio espía,The spy telescope,O telescópio espião
+SUSPECT_smuggling_piano,El piano del contrabando,The smuggling piano,O piano do contrabando
+SUSPECT_tenant_of_twenty,El inquilino de los veinte,The tenant of twenty,O inquilino dos vinte
+CLUE_SUSPECT_stolen_aquarium,"Un recorte de diario: «¡Desapareció el pez dorado campeón del acuario municipal, con pecera y todo!».","A newspaper clipping: «The city aquarium's champion goldfish vanished, tank and all!».","Um recorte de jornal: «Sumiu o peixe dourado campeão do aquário municipal, com aquário e tudo!»."
+CLUE_SUSPECT_floor_31,"Un plano del edificio con 31 pisos. Alguien contó mal, o no.","A plan of the building with 31 floors. Someone counted wrong, or not.","Uma planta do prédio com 31 andares. Alguém contou errado, ou não."
+CLUE_SUSPECT_carrier_pigeons,Una bolsa de alpiste de 20 kilos con una nota: «Para las chicas del balcón».,A 20 kilo bag of birdseed with a note: «For the girls on the balcony».,Um saco de alpiste de 20 quilos com um bilhete: «Para as meninas da varanda».
+CLUE_SUSPECT_spy_telescope,Una revista de astronomía con una página doblada: «Cómo ver a través de las ventanas del banco».,An astronomy magazine with a page folded: «How to see through the bank's windows».,Uma revista de astronomia com uma página dobrada: «Como ver através das janelas do banco».
+CLUE_SUSPECT_smuggling_piano,"Una factura de afinador de pianos: «Tecla 40: hace clonc. No toqué adentro, como pidió».","A piano tuner's bill: «Key 40: goes clonk. Didn't touch inside, as requested».","Uma nota de afinador de piano: «Tecla 40: faz clonc. Não mexi dentro, como pediu»."
+CLUE_SUSPECT_tenant_of_twenty,"Veinte recibos de alquiler del 30C, todos firmados por el señor Bellini, y ninguno igual.","Twenty rent receipts for 30C, all signed by Mr. Bellini, and none alike.","Vinte recibos de aluguel do 30C, todos assinados pelo senhor Bellini, e nenhum igual."
+OBJ_ENTER_APARTMENTS,Entrar al edificio (el portero eléctrico o el ariete),Get into the building (the intercom or the ram),Entrar no prédio (o interfone ou o aríete)
+OBJ_GUESS_APARTMENTS,"Averiguar qué pasa en el 30B (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in 30B (with Q open, hold 1, 2 or 3)","Descobrir o que acontece no 30B (com Q aberta, segure 1, 2 ou 3)"
+OBJ_BROKEN_APARTMENTS,Cosas rotas o caídas: %d (multa: %d),Broken or dropped things: %d (fines: %d),Coisas quebradas ou caídas: %d (multa: %d)
+OBJ_COMPLAINT_APARTMENTS,Queja de Don Evaristo: %d%%,Don Evaristo's complaint: %d%%,Queixa do Seu Evaristo: %d%%
+PROMPT_PUDDLE,E: mirar el charco,E: look at the puddle,E: olhar a poça
+CLUE_PUDDLES,Charcos de agua desde el ascensor hasta el 30B. Huelen a pescado.,Puddles of water from the elevator to 30B. They smell of fish.,Poças de água do elevador até o 30B. Cheiram a peixe.
 PLACE_MUSEUM,"Museo","Museum","Museu"
 SIGN_MUSEUM,"Museo de la Ciudad","City Museum","Museu da Cidade"
 SIGN_MUSEUM_GALLERY,"Sala grande →","Main gallery →","Sala principal →"
