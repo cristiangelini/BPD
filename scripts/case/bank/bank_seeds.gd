@@ -77,6 +77,50 @@ func setup(the_bank: BankLevel) -> void:
 		robber.spotted.connect(_on_spotted)
 
 
+## What a guest's copy needs (PropSync moves the jars and the shears, NpcSync the gang): the jars taken, each jar
+## broken or gone, and the vines standing now (BankVine.net_state).
+func net_state() -> Array:
+	var each := []
+	for jar in jars:
+		each.append([jar.broken, jar.visible])
+	var vines := []
+	for vine in vines_here():
+		# A drying one isn't sent: the guest's dries up by itself when it stops coming.
+		if not vine.drying:
+			vines.append(vine.net_state())
+	return [jars_taken, each, vines]
+
+
+## This bank's vines (the "bank_vines" group holds every PC's when they share a process, as in the tests).
+func vines_here() -> Array[BankVine]:
+	var here: Array[BankVine] = []
+	for node in bank.get_children():
+		if node is BankVine:
+			here.append(node)
+	return here
+
+
+func apply_net_state(state: Array) -> void:
+	jars_taken = state[0]
+	for i in mini(jars.size(), state[1].size()):
+		var jar := jars[i]
+		if state[1][i][0] and not jar.broken:
+			jar.shatter()
+		elif not state[1][i][1] and jar.visible and not jar.broken:
+			jar.take()
+	var growing := {}
+	for vine_state: Array in state[2]:
+		var called := String(vine_state[0])
+		growing[called] = true
+		var vine := bank.get_node_or_null(NodePath(called)) as BankVine
+		if not vine:
+			vine = grow_vine(vine_state[1], Vector3.FORWARD, called)
+		vine.apply_net_state(vine_state)
+	for vine in vines_here():
+		if not growing.has(String(vine.name)) and not vine.drying:
+			vine.dry()
+
+
 func _physics_process(delta: float) -> void:
 	if not follower:
 		_carry()
@@ -99,10 +143,11 @@ func _on_spotted(robber: BankRobber, cop: Node3D) -> void:
 	grow_vine(robber.global_position + way.normalized() * minf(way.length() / 2.0, THROW_REACH), way)
 
 
-## A vine wall on the floor at `at` (world), its face towards `facing`.
-func grow_vine(at: Vector3, facing: Vector3) -> BankVine:
+## A vine wall on the floor at `at` (world), its face towards `facing` (named `called` on a guest, as the host's).
+func grow_vine(at: Vector3, facing: Vector3, called := "") -> BankVine:
 	var vine := BankVine.new()
-	vine.name = "Vine%d" % _vines
+	vine.name = called if called != "" else "Vine%d" % _vines
+	vine.follower = follower
 	_vines += 1
 	bank.add_child(vine)
 	vine.global_position = Vector3(at.x, bank.global_position.y + BankLevel.FLOOR_TOP, at.z)

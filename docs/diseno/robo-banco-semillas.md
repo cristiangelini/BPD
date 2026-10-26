@@ -106,3 +106,7 @@ delantal, la enredadera, la tijera de podar, los frascos que se rompen y la plan
   se llevan (50), y si al final están los 8 sanos en la bóveda se pagan +100. La camioneta es verde con tres macetas
   en el techo, y en la persecución se escapa El Oso en ella. El interrogatorio es el de El Oso de siempre. Captura en
   `/mnt/project-files/semillas/paso4-camioneta.png`.
+- **Paso 5 (online):** manda el banco del anfitrión. Él decide cuándo un jardinero tira semillas, cuánto creció cada
+  enredadera, los tijeretazos que le quedan y cuándo se seca, qué frascos se rompen y cuáles se llevan. Las otras PCs
+  ven las mismas enredaderas en el mismo lugar, el girasol donde se rompió cada frasco y los frascos que faltan. Un
+  invitado con una tijera en la mano corta la enredadera del anfitrión igual que él.
