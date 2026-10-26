@@ -28,8 +28,11 @@ extends Node3D
 ## pajamas on the sidewalk by his car and gives the back door's key to whoever talks to him (BankManager,
 ## robo-banco-gerente.md, decision 124); a fifth of the seeds he's the gang's real boss, and the others share the rest
 ## in quarters. A sixth of the seeds, drawn before them, the duck's drill punctured the pipe behind the vault and the
-## bank floods (BankWater, robo-banco-inundado.md, decision 125). --bank=party, --bank=grandpas, --bank=sorry,
-## --bank=manager, --bank=flood or --bank=base forces one.
+## bank floods (BankWater, robo-banco-inundado.md, decision 125). A seventh, drawn before everything, the gang leaves
+## by the roof (robo-banco-techo.md, decision 126): fire escape stairs up the east wall, a hatch in the corridor's
+## ceiling, the giant toy helicopter on its helipad on the roof (ToyHelicopter) and El Oso's nephew with its remote on a
+## bench across the street (BankNephew). --bank=party, --bank=grandpas, --bank=sorry, --bank=manager, --bank=flood,
+## --bank=roof or --bank=base forces one.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -146,6 +149,17 @@ const VALVE_AT := Vector3(BACK_DOOR_X + 2.2, 0, -HALF_Z - 0.15)
 ## car's trunk.
 const PERCH_XS: Array[float] = [-9.3, -7.9, -6.5, -5.1, -3.7, -2.3, -0.9, 0.5]
 const FLOATS_IN_TRUNK := Vector3(0, 0.45, -1.75)
+## The roof robbery (decision 126): the fire escape's foot outside the east wall (it climbs to -Z), its landing at the
+## roof, the hatch in the corridor's ceiling, the helipad on the roof and the nephew's bench on the sidewalk across.
+const ESCAPE_FOOT := Vector3(HALF_X + 0.9, 0, 0.0)
+const ESCAPE_RUN := 5.0
+const LANDING := Vector2(1.4, 1.4)
+const HATCH_AT := Vector3(-1.8, 0, -6.0)
+const HATCH_SIZE := 0.9
+const HELIPAD_AT := Vector3(6.0, 0, -1.0)
+const HELIPAD_SIZE := 3.6
+const NEPHEW_BENCH := Vector3(-4.0, 0, HALF_Z + CityLayout.SIDEWALK + CityLayout.STREET + 1.6)
+const PAINT := Color(0.95, 0.95, 0.9)
 ## Step 4: with this much water or more when the vault opens, the gang wades out with the sacks before they get away:
 ## up to WADE_OUT seconds with the water at the top, less the shallower it is.
 const WADE_FROM := 0.2
@@ -204,6 +218,9 @@ var water: BankWater
 var valve: BankValve
 var front_door: FrontDoor
 var floats: BankFloats
+var roof := false
+var helicopter: ToyHelicopter
+var nephew: BankNephew
 var hostages_freed := 0
 var phone: BankPhone
 ## How many sacks of money the robbers got away with, the getaway chase if El Oso ran, and how it ended.
@@ -233,10 +250,13 @@ func _ready() -> void:
 	grandpas = drawn == "grandpas"
 	_sorry_variant = drawn == "sorry"
 	var manager_boss := drawn == "manager"
+	roof = drawn == "roof"
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_hall()
 	_build_back()
+	if roof:
+		_build_roof()
 	if party:
 		_add_party()
 	if _sorry_variant:
@@ -285,14 +305,18 @@ func _ready() -> void:
 	case.start()
 
 
-## Which robbery this seed is (propuesta): a sixth "flood" (the vault floods) drawn first, then a fifth of the rest
-## "manager" (the manager is the boss), and the rest in quarters: "party" (the hostages don't want to leave),
-## "grandpas", "sorry" (one robber wants to give it all back) or "base"; --bank=party, --bank=grandpas, --bank=sorry,
-## --bank=manager, --bank=flood or --bank=base among the user args forces one.
+## Which robbery this seed is (propuesta): a seventh "roof" (they leave by the roof) drawn first, then a sixth of the
+## rest "flood" (the vault floods), then a fifth "manager" (the manager is the boss), and the rest in quarters: "party"
+## (the hostages don't want to leave), "grandpas", "sorry" (one robber wants to give it all back) or "base";
+## --bank=party, --bank=grandpas, --bank=sorry, --bank=manager, --bank=flood, --bank=roof or --bank=base among the user
+## args forces one.
 static func variant(seed_: int, args: PackedStringArray) -> String:
 	for arg in args:
-		if arg in ["--bank=party", "--bank=grandpas", "--bank=sorry", "--bank=manager", "--bank=flood", "--bank=base"]:
+		if arg in ["--bank=party", "--bank=grandpas", "--bank=sorry", "--bank=manager", "--bank=flood", "--bank=roof",
+				"--bank=base"]:
 			return arg.trim_prefix("--bank=")
+	if hash(["bank azotea", seed_]) % 7 == 0:
+		return "roof"
 	if hash(["bank caño", seed_]) % 6 == 0:
 		return "flood"
 	if hash(["bank moneda", seed_]) % 5 == 0:
@@ -447,6 +471,65 @@ func _vent_wall() -> void:
 		_build.box(Vector3(x, (top + height) / 2, VENT_Z), Vector3(PlaceBuilder.WALL, height - top, VENT_SIZE.x), OUTSIDE)
 	_build.mesh_box(Vector3(x - 0.12, VENT_BOTTOM - 0.2, VENT_Z + 0.4), Vector3(0.03, VENT_SIZE.y * 0.8, VENT_SIZE.x * 0.8),
 		STEEL)
+
+
+## The roof robbery's way up (decision 126): fire escape stairs climbing the east wall to a landing at the roof, the
+## gang's hatch in the corridor's ceiling with its ladder (only for the look: the cops go up outside), the painted X of
+## the helipad with the toy helicopter waiting on it, and the nephew on his bench across the street.
+func _build_roof() -> void:
+	_build.stairs(ESCAPE_FOOT, ESCAPE_RUN, STEEL.darkened(0.3))
+	var landing_z := ESCAPE_FOOT.z - ESCAPE_RUN
+	_build.slab(HALF_X, HALF_X + 0.2 + LANDING.x, landing_z - LANDING.y, landing_z, ROOF, STEEL.darkened(0.3))
+	# Rails on the outer side of the flight and around the landing.
+	var rail_x := ESCAPE_FOOT.x + GameScale.STAIR_WIDTH / 2
+	var slope := atan2(ROOF, ESCAPE_RUN)
+	var rail := Vector2(ESCAPE_RUN, ROOF).length()
+	_build.mesh(_rail_mesh(rail), Vector3(rail_x, ROOF / 2 + 0.9, ESCAPE_FOOT.z - ESCAPE_RUN / 2), STEEL.darkened(0.3),
+		Vector3(slope, 0, 0))
+	_build.mesh_box(Vector3(HALF_X + 0.2 + LANDING.x, ROOF + 0.5, landing_z - LANDING.y / 2),
+		Vector3(0.05, 1.0, LANDING.y), STEEL.darkened(0.3))
+	# The hatch: a dark square in the corridor's ceiling with its ladder down the office's wall, and its lid on the roof.
+	_build.mesh_box(Vector3(HATCH_AT.x, ROOF - PlaceBuilder.SLAB - 0.01, HATCH_AT.z), Vector3(HATCH_SIZE, 0.02, HATCH_SIZE),
+		Color(0.12, 0.12, 0.14))
+	_build.mesh_box(Vector3(HATCH_AT.x, ROOF + 0.04, HATCH_AT.z), Vector3(HATCH_SIZE + 0.1, 0.08, HATCH_SIZE + 0.1), STEEL)
+	var ladder_x := OFFICE_X + 0.12
+	for side: float in [-0.25, 0.25]:
+		_build.mesh_box(Vector3(ladder_x, ROOF / 2, HATCH_AT.z + side), Vector3(0.05, ROOF, 0.05), STEEL)
+	for i in 8:
+		_build.mesh_box(Vector3(ladder_x, 0.3 + i * 0.3, HATCH_AT.z), Vector3(0.04, 0.04, 0.5), STEEL)
+	# The helipad: a white circle line and an X.
+	var pad := HELIPAD_AT + Vector3.UP * (ROOF + 0.01)
+	for turn: float in [PI / 4, -PI / 4]:
+		_build.mesh(_flat(Vector2(HELIPAD_SIZE * 0.8, 0.35)), pad, PAINT, Vector3(0, turn, 0))
+	var ring := TorusMesh.new()
+	ring.inner_radius = HELIPAD_SIZE / 2 - 0.15
+	ring.outer_radius = HELIPAD_SIZE / 2
+	ring.rings = 24
+	_build.mesh(ring, pad, PAINT, Vector3.ZERO)
+	helicopter = ToyHelicopter.new()
+	helicopter.name = "ToyHelicopter"
+	helicopter.position = HELIPAD_AT + Vector3.UP * (ROOF + 0.02)
+	add_child(helicopter)
+	# The nephew's bench, facing the bank across the street, and the kid on it.
+	_build.legs(NEPHEW_BENCH + Vector3(0, 0, 0.1), Vector2(1.6, 0.45), 0.4, WOOD)
+	_build.box(NEPHEW_BENCH + Vector3(0, 0.42, 0.1), Vector3(1.6, 0.05, 0.45), WOOD)
+	_build.mesh_box(NEPHEW_BENCH + Vector3(0, 0.7, 0.32), Vector3(1.6, 0.4, 0.05), WOOD)
+	nephew = BankNephew.new()
+	nephew.name = "Nephew"
+	nephew.position = NEPHEW_BENCH
+	add_child(nephew)
+
+
+func _flat(size: Vector2) -> BoxMesh:
+	var box := BoxMesh.new()
+	box.size = Vector3(size.x, 0.02, size.y)
+	return box
+
+
+func _rail_mesh(length: float) -> BoxMesh:
+	var box := BoxMesh.new()
+	box.size = Vector3(0.05, 0.05, length)
+	return box
 
 
 ## The queue posts with their rope, two benches, the plant and the tellers' counter with its three desks behind.
