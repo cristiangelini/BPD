@@ -60,6 +60,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_DUMMY_BOX", "OBJ_EXTRA_FAKE_STAMP"],
 		"rig": preload("res://scripts/case/gym/ghost_members_rig.gd"),
 	},
+	"power_treadmills": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_POWER_TREADMILLS_B", "BRIEF_POWER_TREADMILLS_C", "BRIEF_POWER_TREADMILLS_D"],
+		"find": "OBJ_FIND_CABLE_BOX",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/cable_box.tscn"), preload("res://scenes/props/power_meter.tscn"),
+			preload("res://scenes/props/wiring_plan.tscn")],
+		"half_heights": [0.21, 0.15, 0.003],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_POWER_METER", "OBJ_EXTRA_WIRING_PLAN"],
+		"rig": preload("res://scripts/case/gym/power_treadmills_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the hall's floor, away from the machines.
 const NOTE_PLACES: Array[Vector3] = [

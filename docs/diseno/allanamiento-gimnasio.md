@@ -116,6 +116,12 @@ Los pesos y valores siguen la escala de la oficina y el laboratorio: la principa
      corriendo se caen duros como una tabla ("¡PLONC!"); el primero es la pista. Se esconden la carpeta con los 300
      socios inventados (1 kg, 1000), la caja de muñecos (6 kg, 300, en un escondite para cosas pesadas) y el sello falso
      (0,3 kg, 200). Captura `paso5-fantasmas.png` y `gym_ghost_members.png`.
+   - **Cómo quedaron las cintas que roban luz (propuesta):** si un policía corre 1 s en una cinta que anda, parpadean
+     las luces del gimnasio y el sol del barrio (la primera vez es la pista; una cinta rota no roba luz). Cada 25 s
+     las cintas que andan arrancan solas 6 s ("¡BRRRRRUUUM!") y tiran para atrás al policía que esté arriba (la de
+     Lula no, y los socios que corren en las cintas siguen como si nada). Se esconden la caja con el cable a la usina
+     (8 kg, 1000, en un escondite para cosas pesadas), el medidor dado vuelta (2 kg, 300) y el plano de los cables
+     (0,1 kg, 200). Captura `paso5-cintas.png` y `gym_power_treadmills.png`.
 6. "Jugar" sortea entre los 8 lugares de allanamiento.
 7. El online (el profe, Lula, la música, las cintas y las mancuernas en todas las PC).
 

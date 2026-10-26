@@ -211,6 +211,36 @@ const models = {
 		b.add('handle', C('stamp_wood', 0xb07a3a), ellipsoid(0.025, 0.02, 0.025, 8, 5), { pos: V(-0.06, 0.1, 0) });
 		return b.build();
 	},
+	// The power treadmills' main evidence: a grey junction box with a thick black cable coiled on top, its end clamped
+	// with a yellow "danger" tag.
+	gym_cable_box() {
+		const b = new Builder('gym_cable_box');
+		b.add('box', C('cable_box_grey', 0x8a8f96, { metalness: 0.3 }), new THREE.BoxGeometry(0.45, 0.3, 0.3), { pos: V(0, 0.15, 0) });
+		b.add('box', C('cable_box_lid', 0x6a6f76, { metalness: 0.3 }), new THREE.BoxGeometry(0.47, 0.03, 0.32), { pos: V(0, 0.31, 0) });
+		for (let i = 0; i < 3; i++) b.add('cable', black, new THREE.TorusGeometry(0.13 - i * 0.02, 0.022, 6, 16), { pos: V(0, 0.35 + i * 0.035, 0), rot: [Math.PI / 2, 0, 0] });
+		b.add('cable', black, new THREE.CylinderGeometry(0.022, 0.022, 0.3, 6), { pos: V(0.28, 0.2, 0), rot: [0, 0, 0.6] });
+		b.add('tag', C('danger_yellow', 0xf2d24a), new THREE.BoxGeometry(0.08, 0.06, 0.005), { pos: V(0.36, 0.1, 0.03) });
+		b.add('tag', black, new THREE.BoxGeometry(0.03, 0.03, 0.006), { pos: V(0.36, 0.1, 0.033), rot: [0, 0, Math.PI / 4] });
+		return b.build();
+	},
+	// The power meter turned upside down: a meter box with its dial on the bottom and a few loose wires.
+	gym_power_meter() {
+		const b = new Builder('gym_power_meter');
+		b.add('box', C('meter_cream', 0xe8e2d0), new THREE.BoxGeometry(0.22, 0.3, 0.14), { pos: V(0, 0.15, 0) });
+		b.add('dial', C('meter_glass', 0xbfe3f2, { roughness: 0.1 }), new THREE.CylinderGeometry(0.07, 0.07, 0.02, 14), { pos: V(0, 0.08, 0.07), rot: [Math.PI / 2, 0, 0] });
+		b.add('dial', C('meter_needle', 0xc83a3a), new THREE.BoxGeometry(0.06, 0.008, 0.004), { pos: V(0, 0.08, 0.082), rot: [0, 0, 2.6] });
+		for (const [x, c] of [[-0.05, 0xc83a3a], [0, 0x3a6ad8], [0.05, 0xf2d24a]]) limb(b, 'wires', C('wire_' + c.toString(16), c), V(x, 0.3, 0), V(x * 2, 0.38, 0.05), 0.008, 4);
+		return b.build();
+	},
+	// The wiring plan: a blueprint with white lines from the gym to the plant next door.
+	gym_wiring_plan() {
+		const b = new Builder('gym_wiring_plan');
+		b.add('paper', C('blueprint', 0x2a5aa8), new THREE.BoxGeometry(0.3, 0.004, 0.21), { pos: V(0, 0.002, 0) });
+		b.add('lines', white, new THREE.BoxGeometry(0.06, 0.002, 0.05), { pos: V(-0.09, 0.005, 0) });
+		b.add('lines', white, new THREE.BoxGeometry(0.06, 0.002, 0.07), { pos: V(0.09, 0.005, 0) });
+		b.add('lines', C('plan_red', 0xff5a4a), new THREE.BoxGeometry(0.12, 0.002, 0.006), { pos: V(0, 0.006, 0) });
+		return b.build();
+	},
 };
 
 export { models };
@@ -242,5 +272,10 @@ export const views = {
 		items: [{ name: 'gym_members_binder', pos: [-0.45, 0, 0.1], rotY: 0.3 }, { name: 'gym_dummy_box', pos: [0.1, 0, -0.1], rotY: -0.2 },
 			{ name: 'gym_fake_stamp', pos: [0.55, 0, 0.25], rotY: 0.4 }],
 		cam: { pos: [0.1, 1.0, 1.7], target: [0.05, 0.2, 0], fov: 42 },
+	},
+	gym_power_treadmills: {
+		items: [{ name: 'gym_cable_box', pos: [-0.35, 0, 0], rotY: 0.3 }, { name: 'gym_power_meter', pos: [0.35, 0, -0.1], rotY: -0.3 },
+			{ name: 'gym_wiring_plan', pos: [0.3, 0, 0.35], rotY: 0.2 }],
+		cam: { pos: [0, 1.0, 1.6], target: [0, 0.2, 0], fov: 42 },
 	},
 };
