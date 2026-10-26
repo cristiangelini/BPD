@@ -40,7 +40,7 @@ const SHUTTER_X := -6.0
 const SHUTTER_SIZE := Vector2(3.0, 3.0)
 const SHUTTER_BUTTON_AT := Vector3(-8.2, 1.3, DOCK_Z + 0.12)
 const SHUTTER_TIME := 1.5
-## The belt: a U of three runs, each from one corner to the next, its top at BELT_TOP. It doesn't move yet (step 2).
+## The belt: a U of three runs, each from one corner to the next, its top at BELT_TOP (ConveyorBelt).
 const BELT_CORNERS: Array[Vector3] = [Vector3(-10, 0, 5), Vector3(-10, 0, -6), Vector3(-2, 0, -6), Vector3(-2, 0, 5)]
 const BELT_TOP := 0.8
 const BELT_WIDTH := 0.8
@@ -51,7 +51,10 @@ const MACHINES := [
 	{"id": "eyes", "at": Vector3(-6, 0, -6), "color": Color(0.35, 0.55, 0.9)},
 	{"id": "paint", "at": Vector3(-2, 0, -1), "color": Color(0.85, 0.3, 0.45)},
 ]
-const BOX_CART_AT := Vector3(-2.0, FLOOR_TOP, 6.3)
+## The red button that stops the belt, on a post by its end, facing the street side.
+const BELT_BUTTON_AT := Vector3(-0.8, 1.1, 4.3)
+## The box cart catches what falls off the end of the belt.
+const BOX_CART_AT := Vector3(-2.0, FLOOR_TOP, 5.9)
 const MOLD_TABLE_AT := Vector3(-6.0, FLOOR_TOP, 1.5)
 const MOLD_TABLE_SIZE := Vector3(2.4, 0.85, 1.0)
 const MOLDS := 4
@@ -88,7 +91,7 @@ const FLOOR := Color(0.7, 0.72, 0.74)
 const CONCRETE := Color(0.6, 0.6, 0.58)
 const WOOD := Color(0.62, 0.45, 0.3)
 const STEEL := Color(0.55, 0.58, 0.62)
-const BELT := Color(0.18, 0.18, 0.2)
+const TIRE := Color(0.18, 0.18, 0.2)
 const GLASS := Color(0.55, 0.75, 0.85, 0.35)
 const CARDBOARD := Color(0.72, 0.56, 0.36)
 const TRUCK := Color(0.95, 0.95, 0.92)
@@ -119,6 +122,8 @@ var office_door: FrontDoor
 var shutter: StaticBody3D
 var shutter_button: PushButton
 var shutter_open := false
+var belt: ConveyorBelt
+var belt_button: PushButton
 var city_map: CityMap
 var dolls: Array[Ornament] = []
 var molds: Array[Ornament] = []
@@ -225,7 +230,7 @@ func _build_dock() -> void:
 		wheel.top_radius = 0.4
 		wheel.bottom_radius = 0.4
 		wheel.height = 0.3
-		_build.mesh(wheel, TRUCK_AT + at + Vector3(0, 0.4, 0), BELT, Vector3(PI / 2, 0, 0))
+		_build.mesh(wheel, TRUCK_AT + at + Vector3(0, 0.4, 0), TIRE, Vector3(PI / 2, 0, 0))
 	_build.open_box(DUMPSTER_AT, DUMPSTER_SIZE, "top", GREEN)
 	_build.light(Vector3(-4.0, 3.5, -11.0))
 
@@ -255,25 +260,26 @@ func _build_reception() -> void:
 ## The factory floor: the U-shaped belt on its legs, the four machines over it, the box cart at its end and the table
 ## of plaster molds inside the U.
 func _build_floor() -> void:
-	for i in BELT_CORNERS.size() - 1:
-		var a := BELT_CORNERS[i]
-		var b := BELT_CORNERS[i + 1]
-		var along := (b - a).normalized()
-		# Each run reaches half a belt past its corners so the U has no gaps.
-		var length := a.distance_to(b) + BELT_WIDTH
-		var size := Vector3(length, 0.1, BELT_WIDTH) if absf(along.x) > 0.5 else Vector3(BELT_WIDTH, 0.1, length)
-		var middle := (a + b) / 2
-		_build.box(Vector3(middle.x, BELT_TOP - 0.05, middle.z), size, BELT)
-		for t: float in [0.0, 0.5, 1.0]:
-			var leg := a.lerp(b, t)
-			_build.box(Vector3(leg.x, FLOOR_TOP + (BELT_TOP - 0.1 - FLOOR_TOP) / 2, leg.z), Vector3(0.1, BELT_TOP - 0.1 - FLOOR_TOP, 0.1), STEEL)
+	belt = ConveyorBelt.new()
+	belt.name = "Belt"
+	add_child(belt)
+	belt.build(BELT_CORNERS, BELT_TOP, BELT_WIDTH)
 	for machine: Dictionary in MACHINES:
 		var at: Vector3 = machine.at
 		var across := Vector3(1, 0, 0) if absf(at.x - BELT_CORNERS[0].x) < 0.1 or absf(at.x - BELT_CORNERS[3].x) < 0.1 else Vector3(0, 0, 1)
 		for side: float in [-1.0, 1.0]:
-			_build.box(Vector3(at.x, 1.0, at.z) + across * side * (BELT_WIDTH / 2 + 0.2), Vector3(0.3, 2.0, 0.3), machine.color)
-		var top := Vector3(BELT_WIDTH + 0.7, 0.6, 0.9) if across.x > 0 else Vector3(0.9, 0.6, BELT_WIDTH + 0.7)
-		_build.box(Vector3(at.x, 2.1, at.z), top, machine.color)
+			_build.box(Vector3(at.x, 1.5, at.z) + across * side * (BELT_WIDTH / 2 + 0.35), Vector3(0.3, 3.0, 0.3), machine.color)
+		var top := Vector3(BELT_WIDTH + 1.0, 0.6, 0.9) if across.x > 0 else Vector3(0.9, 0.6, BELT_WIDTH + 1.0)
+		# Wide and high enough for a cop riding the belt to go through.
+		_build.box(Vector3(at.x, 2.85, at.z), top, machine.color)
+		belt.add_machine(machine.id, at)
+	# The red button on its post by the end of the belt.
+	_build.box(BELT_BUTTON_AT + Vector3(0, -0.6, -0.12), Vector3(0.2, BELT_BUTTON_AT.y, 0.2), YELLOW)
+	belt_button = PushButton.new()
+	belt_button.prompt = "PROMPT_BELT_BUTTON"
+	belt_button.position = BELT_BUTTON_AT
+	add_child(belt_button)
+	belt_button.pressed.connect(func(cop: Cop) -> void: belt.stop(cop))
 	_build.open_box(BOX_CART_AT, Vector3(1.2, 0.6, 0.9), "top", CARDBOARD)
 	_build.legs(MOLD_TABLE_AT, Vector2(MOLD_TABLE_SIZE.x, MOLD_TABLE_SIZE.z), MOLD_TABLE_SIZE.y, STEEL)
 	_build.box(MOLD_TABLE_AT + Vector3(0, MOLD_TABLE_SIZE.y + 0.015, 0), Vector3(MOLD_TABLE_SIZE.x, 0.03, MOLD_TABLE_SIZE.z), WOOD)
