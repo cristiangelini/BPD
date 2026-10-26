@@ -32,11 +32,13 @@ var noticed := false
 var off_guard := false
 ## In the order he takes them out; the main evidence last.
 var loot: Array[Grabbable] = []
-## Where he waits (by his window), where he stands to load the rack, the rack's middle, and his house's floor.
+## Where he waits (by his window), where he stands to load the rack, the rack's middle, his house's floor, and his
+## house with its back yard (what he takes out has to be in there).
 var home: Vector3
 var rack_spot: Vector3
 var rack: Vector3
 var house_rect: Rect2
+var grounds: Rect2
 var carried: Grabbable
 var target: Grabbable
 var on_rack: Array[Grabbable] = []
@@ -112,7 +114,7 @@ func _physics_process(delta: float) -> void:
 			velocity = Vector3.ZERO
 
 
-## The next thing in `loot` that he can take: not broken, not held, not on the rack, still in his house.
+## The next thing in `loot` that he can take: not broken, not held, not on the rack, still in his house or yard.
 func next_loot() -> Grabbable:
 	for item in loot:
 		if _still_there(item):
@@ -125,7 +127,7 @@ func _still_there(item: Grabbable) -> bool:
 		return false
 	if item is Evidence and (item as Evidence).is_broken:
 		return false
-	return house_rect.has_point(Vector2(item.global_position.x, item.global_position.z))
+	return grounds.has_point(Vector2(item.global_position.x, item.global_position.z))
 
 
 func _pick_up(item: Grabbable) -> void:

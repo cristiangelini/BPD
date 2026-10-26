@@ -123,6 +123,18 @@ valores siguen la escala del bingo: la principal unos 1000, los extras entre 300
   nunca miente; de la carta y el diario, uno está en la casa equivocada, y cuál sale de la semilla (el doc decía que
   siempre era el diario: así no se sabe de antemano). La casa se nombra como se ve desde la vereda: la del oeste es la
   de la izquierda. Captura en `/mnt/project-files/casa-equivocada/paso4-cartero.png`.
+- **Paso 5 (billetes y gnomos):** las historias van en `WrongHouse.STORIES` (sorteadas con la semilla o
+  `--story=bills|gnomes`), cada una con su rig (`scripts/case/wrong_house/`). Lo de cada historia se esconde en la
+  casa del culpable, en 7 escondites de planta baja (heladera, bañera, lavarropas, bajo el sillón, mesada, piso de la
+  cocina y arriba de la tele; arriba quedan solo los adornos, porque él saca todo por el patio). Saca primero los
+  extras y la principal al final.
+  - **Billetes:** plancha de imprimir (30 kg en vez de 20, para que de verdad la lleven dos; 1000), fajo de billetes
+    truchos (300) y tarro de tinta (150). Pista propia: un billete con la cara del comisario pegado en el poste de su
+    buzón. El que agarra la tinta queda 30 s con las manos azules y deja una huella azul en lo que agarre.
+  - **Gnomos:** 20 gnomos iguales en dos filas en su patio; uno, sorteado, es de oro (9 kg contra 3, 1200, avisa al
+    alzarlo). Los de cerámica se rompen como adornos (multa). Extras: la lista de jardines (300) y la carretilla
+    (15 kg, 200). Pista propia: pozos con forma de gnomo en el jardín de doña Chola.
+  Capturas en `/mnt/project-files/casa-equivocada/paso5-*.png`.
 
 ## Preguntas para Cristian
 1. **¿Entrar en la casa equivocada se puede o termina el caso?** Recomendado: se puede, y es el chiste: doña Chola
