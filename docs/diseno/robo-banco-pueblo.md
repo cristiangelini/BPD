@@ -116,3 +116,8 @@ estantes y el mostrador de madera, don Plácido dormido (un cuerpo que se agarra
   adentro cuando El Conejo se escapa, son 300 menos. El Conejo detenido va al interrogatorio del turno siguiente
   (sospechoso nuevo, con su confesión y sus tres frases que se le escapan). Capturas en
   `/mnt/project-files/pueblo/paso4-*.png`.
+- **Paso 5 (el online):** el banco del anfitrión decide todo y los demás lo ven igual: don Plácido dormido o gritando,
+  su globo, la llave en el bolsillo, si salió y si se fue a su casa (PropSync lo mueve), y la barra de nervios de El
+  Conejo y su huida (NpcSync lo mueve). Un invitado agachado le saca la llave en la PC del anfitrión, y un invitado
+  que corre cerca de don Plácido o de El Conejo hace el mismo ruido allá (el policía de cada PC manda también si
+  corre).

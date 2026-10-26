@@ -202,6 +202,24 @@ func _physics_process(delta: float) -> void:
 		_model.rotation.x = LEAN
 
 
+## What a guest's copy needs besides where he is (PropSync moves him; his own code doesn't run there): asleep or
+## shouting, his bubble, the key still in his pocket, out of the bank and gone home.
+func net_state() -> Array:
+	return [asleep, _bubble.text, has_key(), out, gone, woke_ever]
+
+
+func apply_net_state(state: Array) -> void:
+	asleep = state[0]
+	_bubble.text = state[1]
+	if _key:
+		_key.visible = state[2]
+	out = state[3]
+	woke_ever = state[5]
+	_model.rotation.x = LEAN if asleep and not out else 0.0
+	if state[4] and not gone:
+		_go_home()
+
+
 func _go_home() -> void:
 	gone = true
 	for id: int in holders.keys():

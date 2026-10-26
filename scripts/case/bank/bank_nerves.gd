@@ -115,6 +115,17 @@ func bolt() -> void:
 	bolted.emit(robber)
 
 
+## What a guest's bar shows (NpcSync turns and moves him): his nerves, and whether he bolted.
+func net_state() -> Array:
+	return [nerves, bolting]
+
+
+func apply_net_state(state: Array) -> void:
+	nerves = state[0]
+	bolting = state[1]
+	_show()
+
+
 func _on_spotted(_robber: BankRobber, _cop: Node3D) -> void:
 	if follower or bolting:
 		return
