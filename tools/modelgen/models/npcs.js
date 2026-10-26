@@ -118,6 +118,18 @@ function gymBody(b, skin, tank, shout = false) {
 
 // A pupil of the Los Girasoles school (politico-escuela.md, decision 210): the white school smock over the whole pear,
 // a big bow at the neck, a backpack of their color and a hairstyle of their own. The game scales them down to a child.
+function technician(b, skin, hair, color) {
+	pearBody(b, skin, { shirt: C('tech_polo', 0x22242a), pants: C('tech_jeans', 0x3a4a6a), shoes: C('tech_shoes', 0x1e1f24) });
+	b.add('props', C('tv_red', 0xc8323a), new THREE.BoxGeometry(0.12, 0.08, 0.02), { pos: V(-0.18, 0.95, 0.3) });
+	eyes(b, 1.33, 0.17, 0.08, 0.05);
+	mouth(b);
+	hair(color);
+	const set = C('headset', 0x18191d);
+	b.add('head', set, new THREE.TorusGeometry(0.23, 0.018, 4, 12, Math.PI), { pos: V(0, 1.4, 0) });
+	for (const x of [-1, 1]) b.add('head', set, new THREE.CylinderGeometry(0.06, 0.06, 0.04, 8), { pos: V(x * 0.23, 1.38, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('head', set, new THREE.CylinderGeometry(0.01, 0.01, 0.22, 4), { pos: V(-0.2, 1.24, 0.12), rot: [Math.PI / 2 - 0.3, 0, 0.5] });
+}
+
 function pupil(b, skin, hair, bag, { girl = false, freckles = false } = {}) {
 	pearBody(b, skin, { shirt: C('school_smock', 0xf6f6f2), onePiece: true, belted: false, shoes: C('school_shoes', 0x2a2a3a) });
 	b.add('body', C('smock_bow', 0x2a4ac8), ellipsoid(0.11, 0.05, 0.04, 6, 4), { pos: V(0, 1.1, 0.17) });
@@ -1185,6 +1197,11 @@ const NPCS = {
 		hairCap(b, hair, { y: 1.38, sx: 1.08, sy: 0.7, back: 0.03 });
 		b.add('props', C('question_cards', 0xf6e8b0), new THREE.BoxGeometry(0.16, 0.22, 0.02), { pos: V(0.5, 0.62, 0.2), rot: [-0.3, 0, 0] });
 	},
+	// The 3 control room technicians (politico-debate.md, step 5): the channel's black polo with its red logo and a
+	// headset with a boom mic; told apart by the hair (one bald with a beard, one with a ponytail, one with a cap).
+	tecnico(b) { technician(b, SKIN.arena, (h) => { b.add('head', h, ellipsoid(0.17, 0.08, 0.12, 8, 4), { pos: V(0, 1.12, 0.1) }); }, C('tech_beard', 0x4a3424)); },
+	tecnica(b) { technician(b, SKIN.crema, (h) => { hairCap(b, h, { y: 1.4, sx: 1.06, back: 0.03 }); b.add('head', h, ellipsoid(0.06, 0.16, 0.06, 6, 4), { pos: V(0, 1.38, -0.22) }); }, C('tech_hair_red', 0xb0482a)); },
+	tecnico_b(b) { technician(b, SKIN.cacao, (h) => { b.add('head', h, ellipsoid(0.21, 0.07, 0.21, 10, 4), { pos: V(0, 1.6, 0) }); b.add('head', h, new THREE.BoxGeometry(0.22, 0.03, 0.14), { pos: V(0, 1.57, 0.22) }); }, C('tech_cap', 0x2a6a4a)); },
 	// Bank robbers (robo-banco.md, step 2): black clothes and gloves, and a rubber animal mask over the whole head.
 	ladron_conejo(b) {
 		robber(b, C('mask_rabbit', 0xf2eeea), (m) => {
