@@ -3550,6 +3550,14 @@ GARDEN_CREAK,crrc... crrc...,crrk... crrk...,crrc... crrc...
 GARDEN_SING_0,"♪ Crece, crece, porotito, crece hasta el cielo... ♪","♪ Grow, grow, little bean, grow up to the sky... ♪","♪ Cresce, cresce, feijãozinho, cresce até o céu... ♪"
 GARDEN_SING_1,"Toma, toma tu agüita. Tú eres especial.","Here, here's your water. You're special.","Toma, toma sua aguinha. Você é especial."
 GARDEN_SING_2,"¡Shhh! Que no te vean los policías.","Shhh! Don't let the cops see you.","Psiu! Que os policiais não te vejam."
+PROMPT_GARDEN_PULL,E: arrancar,E: pull it out,E: arrancar
+HINT_GARDEN_WRONG,Era una verdura de verdad. El jardinero no te va a perdonar.,That was a real vegetable. The gardener won't forgive you.,Era um legume de verdade. O jardineiro não vai te perdoar.
+HINT_GARDEN_TUG,"¡No sale! Hace falta otro policía tirando a la vez.","It won't come out! Another cop has to pull at the same time.","Não sai! Precisa de outro policial puxando ao mesmo tempo."
+HINT_GARDEN_BEAN,¡Un poroto mágico arrancado!,A magic bean pulled out!,Um feijão mágico arrancado!
+GARDEN_MY_LETTUCE,¡Mi lechuga! ¡La crié desde semillita!,My lettuce! I raised it from a little seed!,Minha alface! Criei desde sementinha!
+GARDEN_MY_CARROT,¡Mi zanahoria! ¿Qué te hizo?,My carrot! What did it ever do to you?,Minha cenoura! O que ela te fez?
+GARDEN_MY_TOMATO,¡Mis tomates! ¡Eran para la salsa del domingo!,My tomatoes! They were for Sunday's sauce!,Meus tomates! Eram pro molho de domingo!
+GARDEN_MY_PUMPKIN,¡Mi zapallo! ¡Iba a ganar un concurso!,My pumpkin! It was going to win a contest!,Minha abóbora! Ia ganhar um concurso!
 BRIEF_MUSTACHES_B,"Alguien le pinta bigotes a todos los carteles del diputado Lustre del barrio. Creemos que es Tobías: nunca le perdonó que le cerrara la vereda por las obras.","Someone paints mustaches on every poster of deputy Lustre in the neighborhood. We think it's Tobías: he never forgave him for closing the sidewalk for the roadworks.","Alguém pinta bigodes em todos os cartazes do deputado Lustre no bairro. Achamos que é o Tobías: ele nunca perdoou que fechassem a calçada por causa das obras."
 BRIEF_MUSTACHES_C,"Traigan el esténcil del bigote en el baúl del patrullero. Y no pisen pintura: se nota.","Bring the mustache stencil back in the patrol car's trunk. And don't step in paint: it shows.","Tragam o estêncil do bigode no porta-malas da viatura. E não pisem na tinta: dá para ver."
 BRIEF_MUSTACHES_D,"Si encuentran los aerosoles negros o un cartel del diputado sin bigote, mejor: todo suma.","If you find the black spray cans or a poster of the deputy without a mustache, even better: it all adds up.","Se acharem os sprays pretos ou um cartaz do deputado sem bigode, melhor: tudo soma."

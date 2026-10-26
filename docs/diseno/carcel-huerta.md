@@ -74,3 +74,8 @@ Qué 3 plantas son raras y en qué orden aparecen, qué verdura tiene cada cante
   el gigante se apoya sobre el muro más cercano, por arriba (`top`). A menos de 5 m un policía oye "crrc... crrc...".
   Cada cantero con poroto está en la ronda de 2 jardineros, que le cantan cuando lo riegan. Capturas:
   `paso3-brote.png` y `paso3-gigante.png`.
+- **Paso 4:** E sobre cualquier planta dice "E: arrancar" (el cartel no delata cuál es rara). Un poroto hasta la etapa
+  2 sale con un policía; desde la 3 se sacude y sale cuando 2 policías tiran con E en menos de 2 s (uno solo si juega
+  uno solo). Arrancado, vuela del cantero y deja de crecer; cuenta como temprano si fue antes de la etapa 4. Una
+  verdura arrancada por error también sale, y el jardinero más cerca grita ("¡Mi lechuga!"); el -10 se cobra en el
+  paso 6. Capturas: `paso4-cinchada.png` y `paso4-arrancado.png`.

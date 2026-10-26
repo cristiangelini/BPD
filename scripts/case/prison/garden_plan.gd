@@ -7,8 +7,13 @@ extends Node3D
 ## each round their own beds. Step 3: the seed hides MAGIC magic beans (GardenPlant.magic) among the plants, each in a
 ## bed of its own; the first starts growing FIRST_BEAN seconds into garden time and each of the others BEAN_EVERY
 ## seconds after the one before. Every magic bed is on WATERED_BY gardeners' rounds, and at one they sing to it.
+## Step 4: E on a plant pulls it. A magic bean comes out with one cop up to its stage TUG_FROM - 1; from TUG_FROM on it
+## holds on until TUGGERS cops pull within TUG_WINDOW seconds of each other (one, playing alone). A vegetable pulled by
+## mistake is out too (`wrong`), and the nearest gardener is offended.
 
 signal bean_grew(plant: GardenPlant, stage: int)
+signal bean_pulled(plant: GardenPlant, stage: int)
+signal wrong_pull(plant: GardenPlant)
 
 const BEDS := 12
 const PER_BED := 4
@@ -27,6 +32,11 @@ const FIRST_BEAN := 10.0
 const BEAN_EVERY := 60.0
 const WATERED_BY := 2
 const SING_LINES := 3
+const TUG_FROM := 3
+const TUGGERS := 2
+const TUG_WINDOW := 2.0
+## A bean pulled before this stage counts as found early (the case's bonus).
+const EARLY_BEFORE := 4
 
 var prison: PrisonLevel
 var plants: Array[GardenPlant] = []
@@ -37,6 +47,11 @@ var started := false
 ## The magic beans, in the order they start growing, and how long into garden time it is.
 var beans: Array[GardenPlant] = []
 var time := 0.0
+## Step 4: the beans pulled (and how many before EARLY_BEFORE) and the vegetables pulled by mistake.
+var pulled := 0
+var early := 0
+var wrong := 0
+var _tugs := {}
 ## A guest's copy (step 7): the host's one decides.
 var follower := false
 var _rng := RandomNumberGenerator.new()
@@ -120,6 +135,7 @@ func _bed(bed: int) -> void:
 		plant.slot = slot
 		plant.position = Vector3(at.x + SLOT_XS[slot], PrisonLevel.FLOOR_TOP + BED_SIZE.y + 0.01, at.y)
 		add_child(plant)
+		plant.tugged.connect(_on_tugged)
 		plants.append(plant)
 
 
@@ -161,10 +177,54 @@ func _sing() -> void:
 				break
 
 
+## E on a plant (on every PC; the host decides).
+func _on_tugged(plant: GardenPlant, cop: Cop) -> void:
+	if follower or plant.pulled:
+		return
+	if not plant.magic:
+		plant.pull_out()
+		wrong += 1
+		var gardener := _nearest_gardener(plant)
+		if gardener:
+			gardener.say("GARDEN_MY_%s" % GardenPlant.Kind.keys()[plant.kind], 3.0)
+		cop.show_hint("HINT_GARDEN_WRONG")
+		wrong_pull.emit(plant)
+		return
+	if plant.stage >= TUG_FROM:
+		var now := Time.get_ticks_msec()
+		var on: Dictionary = _tugs.get(plant, {})
+		on[cop] = now
+		_tugs[plant] = on
+		var cops := get_tree().get_nodes_in_group("cops").size()
+		var pulling := on.values().filter(func(at: int) -> bool: return now - at <= TUG_WINDOW * 1000.0)
+		if pulling.size() < mini(TUGGERS, maxi(cops, 1)):
+			plant.shake()
+			cop.show_hint("HINT_GARDEN_TUG")
+			return
+		_tugs.erase(plant)
+	var stage := plant.stage
+	plant.pull_out()
+	pulled += 1
+	if stage < EARLY_BEFORE:
+		early += 1
+	for each: Cop in get_tree().get_nodes_in_group("cops"):
+		each.show_hint("HINT_GARDEN_BEAN")
+	bean_pulled.emit(plant, stage)
+
+
+func _nearest_gardener(plant: GardenPlant) -> YardInmate:
+	var best: YardInmate = null
+	for gardener in gardeners:
+		if not best or gardener.global_position.distance_to(plant.global_position) \
+				< best.global_position.distance_to(plant.global_position):
+			best = gardener
+	return best
+
+
 ## The next magic bean grows one stage now (the debug panel's shortcut, once it exists).
 func grow_next() -> void:
 	for bean in beans:
-		if bean.stage < GardenPlant.STAGES:
+		if not bean.pulled and bean.stage < GardenPlant.STAGES:
 			bean.growing = true
 			bean.set_stage(bean.stage + 1)
 			return
