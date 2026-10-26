@@ -5,7 +5,8 @@ extends Grabbable
 ## and the stolen recipe. E with it in hand, aiming at the evidence bags (EvidenceBags), puts it in a bag: then it's
 ## found and safe. E anywhere else with food in hand eats it, and the clue is gone; the recipe gets ruined if coffee
 ## (CoffeeCup) ends up on it. At the circus (`look` "circus") the hair is a loose one on the pool's floor (not food; the
-## pool's tap washes it away, Circus.open_tap) and the bite is in a raw fish. Every number here is (propuesta).
+## pool's tap washes it away, Circus.open_tap) and the bite is in a raw fish. At the museum (`look` "museum") the hair is
+## loose too, on the velvet rope's post, and the bite is in the guards' sandwich. Every number here is (propuesta).
 
 ## A coffee cup this close to the recipe wets it, in meters.
 const WET_REACH := 0.4
@@ -20,7 +21,7 @@ const FISH_BELLY := Color(0.9, 0.9, 0.85)
 
 ## "hair", "bite" or "recipe".
 var kind := "hair"
-## "pastry" or "circus": what the clue looks like.
+## "pastry", "circus" or "museum": what the clue looks like.
 var look := "pastry"
 var case: CrimeSceneCase
 ## The culprit's hair color, for the hair in the cream.
@@ -39,7 +40,7 @@ func _ready() -> void:
 	collision_mask = 15
 	var size := {"hair": Vector3(0.32, 0.12, 0.32), "bite": Vector3(0.14, 0.1, 0.22),
 		"recipe": Vector3(0.21, 0.02, 0.3)}[kind] as Vector3
-	if look == "circus":
+	if _loose():
 		size = {"hair": Vector3(0.24, 0.03, 0.24), "bite": Vector3(0.14, 0.1, 0.42)}.get(kind, size)
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
@@ -48,7 +49,7 @@ func _ready() -> void:
 	shape.position.y = size.y / 2
 	add_child(shape)
 	var builder := PlaceBuilder.new(self)
-	if look == "circus":
+	if _loose():
 		_circus_look()
 		return
 	match kind:
@@ -99,6 +100,11 @@ func _circus_look() -> void:
 			part.mesh_box(Vector3(0.05, 0.05, -0.02), Vector3(0.03, 0.06, 0.08), WET)
 
 
+## The circus's look: its loose hair and its fish. The museum's hair is loose too; its sandwich looks like a slice.
+func _loose() -> bool:
+	return look == "circus" or (look == "museum" and kind == "hair")
+
+
 ## Food can be eaten (and the clue with it); the circus's loose hair can't.
 func is_food() -> bool:
 	return kind == "bite" or (kind == "hair" and look == "pastry")
@@ -142,7 +148,7 @@ func eat(cop: Cop) -> void:
 		return
 	spoiled = true
 	_eaten_part.visible = false
-	cop.show_hint("HINT_CLUE_EATEN_" + kind + ("_circus" if look == "circus" else ""))
+	cop.show_hint("HINT_CLUE_EATEN_" + kind + ("" if look == "pastry" else "_" + look))
 	if case:
 		case.ruin(kind)
 

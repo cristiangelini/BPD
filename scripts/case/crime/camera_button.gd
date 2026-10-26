@@ -1,7 +1,8 @@
 class_name CameraButton
 extends StaticBody3D
 
-## One of the two buttons on the ringmaster's camera (RingmasterCamera): "play" or "delete". E presses it.
+## One of the two buttons on the ringmaster's camera (RingmasterCamera) or the museum's monitors (SecurityMonitors):
+## "play" or "delete". E presses it.
 
 var button := "play"
 var camera: RingmasterCamera
@@ -16,7 +17,7 @@ func _ready() -> void:
 
 
 func prompt_key(_cop: Cop) -> String:
-	return "PROMPT_CAMERA_" + button
+	return (camera.prompts if camera else "PROMPT_CAMERA_") + button
 
 
 func use(cop: Cop) -> void:

@@ -485,6 +485,8 @@ func ruin(kind: String) -> void:
 func clue_line(kind: String) -> String:
 	if texts() == VARIANTS.circus:
 		return _circus_clue_line(kind)
+	if texts() == VARIANTS.museum:
+		return _museum_clue_line(kind)
 	match kind:
 		"footprint":
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
@@ -514,6 +516,21 @@ func _circus_clue_line(kind: String) -> String:
 		"recording":
 			return tr("CLUE_CIRCUS_recording") % tr("HONK_" + str(who.honk))
 	return tr("CLUE_CIRCUS_" + kind)
+
+
+## At the museum: the footprint on the waxed floor, the hair on the rope, the bitten sandwich and the recording.
+func _museum_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_MUSEUM_footprint") % who.shoe
+		"hair":
+			return tr("CLUE_MUSEUM_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_MUSEUM_bite") % tr("TEETH_" + str(who.teeth))
+		"recording":
+			return tr("CLUE_MUSEUM_recording_" + ("real" if who.mustache else "fake"))
+	return tr("CLUE_MUSEUM_" + kind)
 
 
 ## What a file card on the board says: what the photo shows, and the rest as the cops got it.

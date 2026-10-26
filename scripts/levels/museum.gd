@@ -128,6 +128,8 @@ var loot_spots := {}
 var guards: Array[MuseumGuard] = []
 var director: MuseumDirector
 var statue: LivingStatue
+## The case's clues (MuseumClues), once the case comes.
+var clues: MuseumClues
 var _builder: PlaceBuilder
 
 
@@ -151,7 +153,7 @@ func _ready() -> void:
 
 
 ## Draws what was stolen and where it is (the locker to search is the culprit's) and tells the guards about the case;
-## one of them (by the seed) won't take off his cap until he gets something to eat.
+## one of them (by the seed) won't take off his cap until he gets something to eat. Then the clues go where they go.
 func set_up_case(new_case: CrimeSceneCase) -> void:
 	case = new_case
 	loot = LOOTS[hash(["museum loot", case.case_seed]) % LOOTS.size()]
@@ -161,6 +163,11 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	for guard in guards:
 		guard.case = case
 		guard.stubborn = guard.index == stubborn
+	clues = MuseumClues.new()
+	clues.name = "Clues"
+	clues.museum = self
+	clues.case = case
+	add_child(clues)
 
 
 ## Searching a spot: the stolen thing turns up in the right one; a sign of nothing in the others.
