@@ -74,9 +74,9 @@ func test_the_tunnel_grows_only_while_someone_digs() -> void:
 	assert_almost_eq(plan.left_to_dig(), TunnelPlan.LENGTH - plan.dug, 0.001)
 
 
-func test_a_found_tunnel_stops_growing() -> void:
+func test_a_sealed_tunnel_stops_growing() -> void:
 	await _first_digging()
-	plan.is_found = true
+	plan.is_sealed = true
 	var dug := plan.dug
 	await wait_seconds(0.5)
 	assert_eq(plan.dug, dug)

@@ -180,7 +180,7 @@ func current_prompt() -> String:
 	if $Grabber.held:
 		var aimed := _usable_target()
 		if aimed is WaitingArmchair or aimed is DigSpot or aimed is InterrogationSuspect or aimed is PastryCook \
-				or aimed is TunnelHole or aimed is CircusClown \
+				or aimed is TunnelHole or aimed is CircusClown or aimed is CellHideout \
 				or (aimed is CellDoor and $Grabber.held is CellKey) \
 				or (aimed is QueueCar and $Grabber.held is Breathalyzer and aimed.breath_check_ready()) \
 				or aimed is BankVine \

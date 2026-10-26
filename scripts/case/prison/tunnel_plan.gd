@@ -15,12 +15,21 @@ extends Node
 ## gardener (one more YardInmate, GARDEN) goes round the PLANTERS with fertiliser and drops dirt too; a hamster in a cage
 ## (HamsterCage) in another cell scratches like the digging. A cop close to the tunnel's hideout gets a gang member in
 ## the yard whistling and heading for the building (once every NERVOUS_EVERY seconds), and the owner of a hideout
-## checked for nothing complains from the yard. Every number here is (propuesta).
+## checked for nothing complains from the yard. Step 5: found with someone digging in it, they jump out and run for
+## the gate (a BlackoutInmate, as in the laundry): cuffed, they're walked to the punishment cell (`caught`), and at the
+## gate they're gone (`escaped`). The digging goes on until a cop pours one of the BAGS of cement by the gate into the
+## open hole (`sealed`). SHOW_AT metres from through, the far end (TunnelExit) bulges outside the wall; through, the
+## digger and then, one every RELEASE_EVERY seconds, the gang and the rest of the yard go along the tunnel, CRAWL_TIME
+## seconds each, and stick their head out at the far end PEEK_TIME seconds: a cop there grabs them with E, else they
+## run off. Every number here is (propuesta).
 
 signal started
 signal found(hideout: CellHideout)
 signal checked_empty(hideout: CellHideout)
 signal dug_through
+signal sealed
+signal caught_one(count: int)
+signal escaped_one(count: int)
 
 const INMATES := 12
 const GANG := 3
@@ -57,6 +66,18 @@ const CAGE_IN := Vector2(0.45, 0.35)
 const NERVOUS_REACH := 5.0
 const NERVOUS_EVERY := 15.0
 const NERVOUS_TO := Vector2(PrisonLevel.ENTRANCES[1], 9.5)
+## Step 5: the far end, how far out from the wall, when it shows, who goes along the tunnel once it's through, how long
+## they take and how long they peek out; how far they run off; the bags of cement by the gate (level space x, z).
+const EXIT_OUT := 2.0
+const SHOW_AT := 5.0
+const RELEASE_EVERY := 15.0
+const CRAWL_TIME := 4.0
+const PEEK_TIME := 2.5
+const PEEK_DEPTH := 0.85
+const RUN_AWAY := 10.0
+const GONE_AFTER := 6.0
+const BAG_SPOTS: Array[Vector2] = [Vector2(3.4, 18.6), Vector2(4.4, 18.6)]
+const PUNISHMENT_AT := Vector2(-11.0, -5.5)
 ## How far in front of its hideout the digger stands to get into the tunnel.
 const IN_FRONT := 0.75
 ## The block's tiled floor is a little above the yard's.
@@ -84,6 +105,19 @@ var gardener: YardInmate
 var hamster_cell := 0
 var hamster: HamsterCage
 var _whistle_left := 0.0
+## Step 5: the far end, the bags, sealed, how many caught and gone, the runners, who's out of the yard for good,
+## who's crawling along the tunnel (inmate -> seconds left), who's peeking out and for how long, and the next release.
+var exit: TunnelExit
+var bags: Array[CementBag] = []
+var is_sealed := false
+var caught := 0
+var escaped := 0
+var runners: Array[BlackoutInmate] = []
+var gone: Array[YardInmate] = []
+var crawling := {}
+var peeker: YardInmate
+var _peek_left := 0.0
+var _release_left := 0.0
 ## A guest's copy (step 7): the host's plan decides.
 var follower := false
 var _rng := RandomNumberGenerator.new()
@@ -108,6 +142,14 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 	_hamster()
 	for at in PLANTERS:
 		_planter(at)
+	_build_exit()
+	for at in BAG_SPOTS:
+		var bag := CementBag.new()
+		bag.name = "CementBag%d" % bags.size()
+		bag.position = Vector3(at.x, PrisonLevel.FLOOR_TOP + CementBag.SIZE.y / 2 + 0.02, at.y)
+		prison.add_child(bag)
+		bags.append(bag)
+	tunnel_hideout().poured.connect(_on_poured)
 	for i in INMATES:
 		var inmate := YardInmate.new()
 		inmate.name = "Inmate%d" % i
@@ -191,6 +233,21 @@ func _hideout(cell: int, kind: CellHideout.Kind) -> void:
 	prison.add_child(hideout)
 	hideout.checked_one.connect(_on_checked)
 	hideouts.append(hideout)
+
+
+## The far end, outside the wall on the tunnel cell's side, level with the cell.
+func _build_exit() -> void:
+	var side := -1.0 if tunnel_cell < PrisonLevel.CELLS else 1.0
+	var middle := PrisonLevel.CELLS_Z - (tunnel_cell % PrisonLevel.CELLS + 0.5) * PrisonLevel.CELL_LENGTH
+	exit = TunnelExit.new()
+	exit.name = "TunnelExit"
+	exit.position = Vector3(side * (PrisonLevel.HALF_X + EXIT_OUT), PrisonLevel.FLOOR_TOP, middle)
+	prison.add_child(exit)
+	exit.grabbed.connect(_on_exit_grabbed)
+
+
+func is_through() -> bool:
+	return dug >= LENGTH
 
 
 ## The hideout the tunnel is behind.
@@ -288,25 +345,45 @@ func start() -> void:
 	started.emit()
 
 
-## The next of the gang off to dig.
+## The next of the gang off to dig (one still in the yard).
 func _send_next() -> void:
-	var inmate := inmates[gang[next_up % gang.size()]]
-	next_up += 1
-	inmate.go_to_tunnel(cell_way())
+	for i in gang.size():
+		var inmate := inmates[gang[(next_up + i) % gang.size()]]
+		if _free(inmate):
+			next_up += i + 1
+			inmate.go_to_tunnel(cell_way())
+			return
+
+
+## In the yard and up for anything: not gone, not in the tunnel, not on the way there or back.
+func _free(inmate: YardInmate) -> bool:
+	return not gone.has(inmate) and not inmate.in_tunnel and inmate.trip == YardInmate.Trip.NONE
 
 
 func _on_reached_tunnel(inmate: YardInmate) -> void:
+	if is_sealed:
+		# Too late: cement. Back out to the yard.
+		inmate.come_out(_hideout_front(), yard_way(), 0.0)
+		return
+	if is_through():
+		crawling[inmate] = CRAWL_TIME
+		return
 	digger = inmate
 	shift_left = _rng.randf_range(SHIFT.x, SHIFT.y)
+
+
+## Where the digger stands to get in and out (world space).
+func _hideout_front() -> Vector3:
+	var hideout := tunnel_hideout()
+	var at := hideout.position - hideout.basis.z * IN_FRONT
+	return prison.global_transform * Vector3(at.x, FLOOR, at.z)
 
 
 ## The digger's turn is over: out they come, and the next one goes.
 func _end_shift() -> void:
 	var out := digger
 	digger = null
-	var hideout := tunnel_hideout()
-	var at := hideout.position - hideout.basis.z * IN_FRONT
-	out.come_out(prison.global_transform * Vector3(at.x, FLOOR, at.z), yard_way(), OUT_PRINTS)
+	out.come_out(_hideout_front(), yard_way(), OUT_PRINTS)
 	_send_next()
 
 
@@ -386,6 +463,146 @@ func _on_checked(hideout: CellHideout, had_tunnel: bool) -> void:
 		return
 	is_found = true
 	found.emit(hideout)
+	# Caught digging: out they jump and run, and the next one takes over (until the cement).
+	if digger:
+		_catch_digger()
+		_send_next()
+
+
+## The digger, found or sealed in: out of the tunnel and running for the gate.
+func _catch_digger() -> void:
+	var out := digger
+	digger = null
+	gone.append(out)
+	out.hide()
+	out.collision_layer = 0
+	_runner(_hideout_front())
+
+
+## A runner for the gate from `at` (world space): back the gang's way to the yard and out the gate.
+func _runner(at: Vector3) -> BlackoutInmate:
+	var runner := BlackoutInmate.new()
+	runner.name = "Runner%d" % runners.size()
+	runner.role = BlackoutInmate.Role.GATE
+	runner.glow_eyes = false
+	runner.prison = prison
+	var way := yard_way()
+	way.append_array([Vector2(1.0, 14.0), LaundryPlan.GATE])
+	runner.route = way
+	add_child(runner)
+	runner.global_position = at
+	runner.active = true
+	runner.say("TUNNEL_RUNNER")
+	runner.escaped.connect(_on_runner_escaped)
+	BlackoutEscort.to_block(runner, prison).boarded.connect(_on_caught.bind(runner))
+	runners.append(runner)
+	return runner
+
+
+func _on_caught(runner: BlackoutInmate) -> void:
+	if runner.has_meta("caught"):
+		return
+	runner.set_meta("caught", true)
+	caught += 1
+	caught_one.emit(caught)
+
+
+func _on_runner_escaped(_runner: BlackoutInmate) -> void:
+	_escape()
+
+
+func _escape() -> void:
+	escaped += 1
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		cop.show_hint("HINT_TUNNEL_ESCAPED")
+	escaped_one.emit(escaped)
+
+
+## E with the cement on the open hole: sealed for good. Whoever's digging in there comes out running.
+func _on_poured(hideout: CellHideout, cop: Cop, bag: CementBag) -> void:
+	if follower or is_sealed:
+		return
+	cop.get_node("Grabber").release()
+	bags.erase(bag)
+	bag.queue_free()
+	hideout.seal()
+	is_sealed = true
+	cop.show_hint("HINT_TUNNEL_SEALED")
+	if digger:
+		_catch_digger()
+	sealed.emit()
+
+
+## Through: the digger and then the rest, one at a time, go along the tunnel and peek out at the far end.
+func _through(delta: float) -> void:
+	if not is_sealed:
+		_release_left -= delta
+		if _release_left <= 0.0:
+			_release_left = RELEASE_EVERY
+			_release()
+	for inmate: YardInmate in crawling.keys():
+		crawling[inmate] -= delta
+		if crawling[inmate] <= 0.0 and not peeker:
+			crawling.erase(inmate)
+			_peek(inmate)
+	if peeker:
+		_peek_left -= delta
+		if _peek_left <= 0.0:
+			_run_off()
+
+
+## The next one off to the tunnel: the gang first, then anyone in the yard (never the gardener).
+func _release() -> void:
+	var order: Array[YardInmate] = gang_members()
+	for inmate in inmates:
+		if not order.has(inmate):
+			order.append(inmate)
+	for inmate in order:
+		if _free(inmate):
+			inmate.go_to_tunnel(cell_way())
+			return
+
+
+## Their head out of the far end, looking round.
+func _peek(inmate: YardInmate) -> void:
+	peeker = inmate
+	_peek_left = PEEK_TIME
+	exit.peeking = true
+	inmate.in_tunnel = false
+	inmate.show()
+	inmate.global_position = exit.global_position - Vector3(0, PEEK_DEPTH, 0)
+	inmate.say("TUNNEL_PEEK")
+
+
+## Nobody grabbed them: out and off, gone.
+func _run_off() -> void:
+	var out := peeker
+	peeker = null
+	exit.peeking = false
+	gone.append(out)
+	out.busy = false
+	out.global_position = exit.global_position
+	out.collision_layer = 8
+	var side := signf(exit.position.x)
+	out.walk([Vector2(exit.position.x + side * RUN_AWAY, exit.position.z)])
+	get_tree().create_timer(GONE_AFTER).timeout.connect(out.hide)
+	_escape()
+
+
+## Grabbed by the ears as they peek out ("¡Cucú!"): straight to the punishment cell.
+func _on_exit_grabbed(cop: Cop) -> void:
+	if follower or not peeker:
+		return
+	var out := peeker
+	peeker = null
+	exit.peeking = false
+	gone.append(out)
+	out.busy = false
+	out.collision_layer = 8
+	out.global_position = prison.global_transform * Vector3(PUNISHMENT_AT.x, PrisonLevel.FLOOR_TOP, PUNISHMENT_AT.y)
+	cop.show_hint("HINT_TUNNEL_CUCU")
+	caught += 1
+	caught_one.emit(caught)
 
 
 func _shuffle(list: Array) -> void:
@@ -407,15 +624,24 @@ func _physics_process(delta: float) -> void:
 		return
 	_step_on_piles()
 	_noise(delta)
-	if is_found:
+	if not is_found:
+		_nervous(delta)
+	if is_through():
+		_through(delta)
 		return
-	_nervous(delta)
-	if not digger:
+	if not digger or is_sealed:
 		return
-	if dug < LENGTH:
-		dug = minf(dug + delta * LENGTH / DIG_TIME, LENGTH)
-		if dug >= LENGTH:
-			dug_through.emit()
+	dug = minf(dug + delta * LENGTH / DIG_TIME, LENGTH)
+	if LENGTH - dug <= SHOW_AT:
+		exit.peek_out()
+	if is_through():
+		exit.open()
+		# The one digging is the first one through.
+		crawling[digger] = 0.0
+		digger = null
+		_release_left = RELEASE_EVERY
+		dug_through.emit()
+		return
 	shift_left -= delta
 	if shift_left <= 0.0:
 		_end_shift()

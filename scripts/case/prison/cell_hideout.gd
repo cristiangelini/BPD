@@ -8,6 +8,8 @@ extends StaticBody3D
 ## into the cell. Online the host decides. Every number here is (propuesta).
 
 signal checked_one(hideout: CellHideout, had_tunnel: bool)
+## Step 5: E with a CementBag in hand on the open hole.
+signal poured(hideout: CellHideout, cop: Cop, bag: CementBag)
 
 enum Kind { POSTER, BUNK, TOILET, RUG }
 
@@ -26,6 +28,7 @@ const RUG_COLORS: Array[Color] = [Color(0.55, 0.25, 0.2), Color(0.25, 0.35, 0.55
 const PORCELAIN := Color(0.93, 0.94, 0.96)
 const DARK := Color(0.07, 0.05, 0.04)
 const DIRT := Color(0.42, 0.3, 0.18)
+const CEMENT := Color(0.62, 0.62, 0.6)
 
 var kind := Kind.POSTER
 ## Its cell of the block (0 to 7) and whether the tunnel starts behind it.
@@ -34,6 +37,8 @@ var has_tunnel := false
 var look := 0
 var checked := false
 var checked_by: Cop
+## Step 5: the hole filled with cement.
+var sealed := false
 ## A guest's copy (step 7): the host decides.
 var follower := false
 var _check_left := 0.0
@@ -111,12 +116,24 @@ func _shape_size() -> Vector3:
 	return Vector3(RUG_SIZE.x, 0.03, RUG_SIZE.y)
 
 
-func prompt_key(_cop: Cop) -> String:
+func prompt_key(cop: Cop) -> String:
+	if sealed:
+		return "PROMPT_TUNNEL_SEALED"
+	if is_open():
+		return "PROMPT_POUR_CEMENT" if cop.get_node("Grabber").held is CementBag else "PROMPT_TUNNEL_NEEDS_CEMENT"
 	return "PROMPT_HIDEOUT_CHECKED" if checked else "PROMPT_CHECK_HIDEOUT"
 
 
-## E: moves it aside while staying close (the host decides what's behind).
+## E: moves it aside while staying close (the host decides what's behind). On the open hole with a bag of cement in
+## hand, pours it in.
 func use(cop: Cop) -> void:
+	if is_open() and not sealed:
+		var bag: Variant = cop.get_node("Grabber").held
+		if bag is CementBag:
+			poured.emit(self, cop, bag)
+		else:
+			cop.show_hint("HINT_TUNNEL_NEEDS_CEMENT")
+		return
 	if checked or checked_by:
 		return
 	checked_by = cop
@@ -191,11 +208,25 @@ func _physics_process(delta: float) -> void:
 	checked_one.emit(self, has_tunnel)
 
 
-## Online: whether it's checked and the hole shows (NpcSync, step 7).
+## The hole filled with cement, for good.
+func seal() -> void:
+	if sealed:
+		return
+	sealed = true
+	set_checked(true)
+	var hole := _hole.get_child(0) as MeshInstance3D
+	var material := StandardMaterial3D.new()
+	material.albedo_color = CEMENT
+	hole.material_override = material
+
+
+## Online: whether it's checked, the hole shows and it's sealed (NpcSync, step 7).
 func net_state() -> Array:
-	return [checked, _hole.visible]
+	return [checked, _hole.visible, sealed]
 
 
 func apply_net_state(state: Variant) -> void:
 	if state[0] and not checked:
 		set_checked(state[1])
+	if state[2] and not sealed:
+		seal()
