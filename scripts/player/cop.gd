@@ -237,6 +237,7 @@ func eat_donut(box: DonutBox) -> bool:
 	show_hint("HINT_DONUT")
 	# Eaten in front of a suspect in an interrogation, it's the bad cop's move (interrogatorio.md).
 	get_tree().call_group("interrogation", "donut_eaten_by", self)
+	get_tree().call_group("city_inspector", "saw_donut", self)
 	return true
 
 
@@ -305,7 +306,9 @@ func belt_flashlight() -> void:
 
 
 func belt_cuff(body: Node, at: Vector3) -> void:
-	(belt.tools[0] as Handcuffs).cuff_body(body, at)
+	var target := (belt.tools[0] as Handcuffs).cuff_body(body, at)
+	if target:
+		get_tree().call_group("city_inspector", "saw_cuffed", self, target)
 
 
 ## This cop took a bribe of `amount` from whoever `body` belongs to (sobornos.md): they stay free and won't offer
@@ -330,6 +333,7 @@ func belt_bribe(body: Node, amount: int) -> void:
 		show_hint("HINT_BRIBE_CAUGHT")
 	if Campaign.current:
 		Campaign.current.take_bribe(amount, seen)
+	get_tree().call_group("city_inspector", "saw_bribe", self)
 
 
 func belt_photo(subject: Node, caught: Array) -> void:
