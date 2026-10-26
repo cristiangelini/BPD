@@ -22,7 +22,9 @@ alguien mirando, cuando todo sale mal igual.
 
 ## El informe (la nota)
 La nota arranca en **50 de 100 (propuesta)** y se ve en la planilla (Q) como "Informe de la inspectora". Solo cuenta lo
-que pasa a **15 m o menos de ella y a su vista (propuesta)**, como el agente de asuntos internos (sobornos.md).
+que pasa a **15 m o menos de ella y a su vista (propuesta)**, como el agente de asuntos internos (sobornos.md). Los
+choques los siente desde adentro del patrullero, y los golpes y que la dejen atrás le pasan a ella, así que esos no
+necesitan que los vea.
 
 | Qué ve | Nota (propuesta) | Qué dice |
 |---|---|---|
@@ -31,10 +33,10 @@ que pasa a **15 m o menos de ella y a su vista (propuesta)**, como el agente de 
 | Evidencia entregada en el patrullero | +3 por cada una | "Prolijo." |
 | Un choque fuerte del patrullero | −5 | "¡Mi cuello!" |
 | Un adorno o algo frágil roto | −2 | "Eso lo paga la ciudad." |
-| Esposar o tasear a un compañero | −5 | "¿Entre ustedes?" |
+| Esposar a un compañero | −5 | "¿Entre ustedes?" |
 | Un soborno aceptado | −20 | "Ajá. Ajá." |
-| Que algo la golpee (un objeto, un policía, una puerta) | −10 | "¡Esto va al informe!" |
-| Dejarla atrás a más de 40 m | −1 cada 10 s | "¿Hola? ¿Oficiales?" |
+| Que algo la golpee (un objeto o el patrullero, a más de 4 m/s) | −10 | "¡Esto va al informe!" |
+| Dejarla atrás a más de 40 m (aparece detrás del policía más cercano) | −3 cada vez | "¿Hola? ¿Oficiales? ¿Me olvidaron?" |
 | Comerse una dona delante de ella | −1 | "Típico." |
 
 La nota no baja de 0 ni pasa de 100.
@@ -80,3 +82,10 @@ La nota no baja de 0 ni pasa de 100.
   ocupa el lugar de ningún policía. Baja por atrás del auto cuando queda quieto sin nadie al volante. Las esposas no se
   le cierran ("¡Soy funcionaria! Esto va al informe."). Capturas: `campana/inspectora.png`,
   `inspectora_sigue.png` e `inspectora_auto.png`.
+- **Paso 3 (el informe):** `InspectionReport` (`scripts/case/inspection_report.gd`) con la nota y lo anotado, hijo de
+  la inspectora. Ella ve con un rayo desde sus ojos (15 m, sin nada en el medio) las esposas de cualquier policía
+  (`Cop.belt_cuff`), los sobornos (`Cop.belt_bribe`), las donas (`Cop.eat_donut`), la evidencia que entra al baúl de
+  cualquier patrullero y los adornos y la evidencia que se rompen. Los choques los mide como `ChaseDamages`, con la
+  velocidad del auto en el que va. Los golpes los siente con una esfera alrededor del cuerpo. La planilla (Q) muestra
+  "Informe de la inspectora: N de 100" debajo de todo. El +25 del caso resuelto se suma en el paso 4. Captura:
+  `campana/informe.png`.

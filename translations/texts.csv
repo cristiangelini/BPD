@@ -4148,6 +4148,17 @@ INSPECTOR_NOTE_4,¿Siempre es así?,Is it always like this?,É sempre assim?
 INSPECTOR_IN_CAR,Yo voy atrás. Manejen con cuidado.,I'll ride in the back. Drive carefully.,Eu vou atrás. Dirijam com cuidado.
 INSPECTOR_OUT,Bueno. Veamos.,Well. Let's see.,Bom. Vejamos.
 INSPECTOR_CUFFED,¡Soy funcionaria! Esto va al informe.,I'm a city official! This goes in the report.,Sou funcionária! Isso vai para o relatório.
+OBJ_INSPECTION_REPORT,Informe de la inspectora: %d de 100,Inspector's report: %d out of 100,Relatório da inspetora: %d de 100
+INSPECTOR_SAW_SOLVED,"Eficaces. Raro, pero eficaces.","Effective. Odd, but effective.","Eficazes. Estranhos, mas eficazes."
+INSPECTOR_SAW_CUFFED,Correcto procedimiento.,Correct procedure.,Procedimento correto.
+INSPECTOR_SAW_EVIDENCE,Prolijo.,Tidy.,Caprichado.
+INSPECTOR_SAW_CRASH,¡Mi cuello!,My neck!,Meu pescoço!
+INSPECTOR_SAW_BROKEN,Eso lo paga la ciudad.,The city pays for that.,Isso quem paga é a cidade.
+INSPECTOR_SAW_PARTNER,¿Entre ustedes?,Each other?,Entre vocês?
+INSPECTOR_SAW_BRIBE,Ajá. Ajá.,Uh-huh. Uh-huh.,Aham. Aham.
+INSPECTOR_SAW_HIT,¡Esto va al informe!,This goes in the report!,Isso vai para o relatório!
+INSPECTOR_SAW_BEHIND,¿Hola? ¿Oficiales? ¿Me olvidaron?,Hello? Officers? Did you forget me?,Olá? Oficiais? Esqueceram de mim?
+INSPECTOR_SAW_DONUT,Típico.,Typical.,Típico.
 HINT_JAILED_BRIBE,"El guardia tiene cara de que se vende... y tú tienes la plata de las coimas en la cucheta. Llámalo desde la reja, pero ojo con la cámara.","The guard looks like he can be bought... and you have the bribe money on your bunk. Call him from the bars, but mind the camera.","O guarda tem cara de quem se vende... e você tem o dinheiro das propinas no beliche. Chame-o da grade, mas cuidado com a câmera."
 PROMPT_CALL_GUARD,"[E] ¡Psst, guardia!","[E] Psst, guard!","[E] Psiu, guarda!"
 PROMPT_PAY_GUARD,"[E] Pasarle el fajo por la reja","[E] Pass him the wad through the bars","[E] Passar o maço pela grade"
