@@ -39,6 +39,7 @@ const PLACES := [
 	{"id": "circus", "block": Vector2i(5, 3), "side": "n", "along": 0.0, "size": Vector3(40, 8, 30), "color": Color(0.86, 0.18, 0.2), "sign": "PLACE_CIRCUS"},
 	{"id": "gas_station", "block": Vector2i(4, 2), "side": "s", "along": 0.0, "size": Vector3(14, 5, 10), "color": Color(0.95, 0.9, 0.82), "sign": "PLACE_GAS_STATION"},
 	{"id": "market", "block": Vector2i(2, 0), "side": "s", "along": 0.0, "size": Vector3(30, 6, 22), "color": Color(0.88, 0.8, 0.62), "sign": "PLACE_MARKET"},
+	{"id": "biker", "block": Vector2i(6, 0), "side": "s", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.22, 0.2, 0.2), "sign": "PLACE_BIKER"},
 	{"id": "chess", "block": Vector2i(6, 1), "side": "s", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.3, 0.32, 0.36), "sign": "PLACE_CHESS"},
 	{"id": "restaurant", "block": Vector2i(1, 0), "side": "s", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.62, 0.22, 0.2), "sign": "PLACE_RESTAURANT"},
 	{"id": "school", "block": Vector2i(4, 0), "side": "s", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.45, 0.4, 0.55), "sign": "PLACE_SCHOOL"},

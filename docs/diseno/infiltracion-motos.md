@@ -77,6 +77,12 @@ valentía copian la forma de `ChessGames` (el host decide y avisa).
    `is_disguised("biker")` **(propuesta)**.
 2. El bar en la ciudad (`--place=biker`): el bar, el taller, el patio, la oficina, los motoqueros, El Cromado y el
    patovica.
+   Hecho así: un lote nuevo en la cuadra (6, 0), al sur, de 24 x 20 m, con el cartel naranja. El patovica (musculosa
+   negra, pelado, anteojos oscuros y cadena) está en la entrada. Adelante, el bar (barra con botellas y 3 banquitos al
+   oeste, 3 mesas y el perchero junto a la puerta) y, al este, el taller con piso de cemento, cajones, la pared de
+   herramientas y el ciclomotor con manubrio de chopper de El Cromado, que lo lustra mirándolo. Atrás, el patio (vacío
+   hasta el paso 3) y la oficina con llave detrás del taller. La semilla reparte 8 motoqueros (dos modelos: barba gris
+   con pañuelo, y campera con cresta rosa) entre 11 lugares del bar, el taller y el patio **(propuesta)**.
 3. Lo del patio: la mesa de las pulseadas, la moto pesada y la raya.
 4. Las pruebas de valentía: los desafíos, los tres tipos y la sospecha.
 5. Las pruebas y el caso (variante "biker"): las 6 pruebas, los chismes, el sueldo y el interrogatorio.

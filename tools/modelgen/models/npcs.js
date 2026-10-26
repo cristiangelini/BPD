@@ -581,6 +581,58 @@ const NPCS = {
 		hairCap(b, C('hair_black', 0x161214), { y: 1.4, sy: 0.45 });
 		b.add('props', C('stopwatch', 0xd8d8e0), new THREE.CylinderGeometry(0.06, 0.06, 0.02, 10), { pos: V(-0.48, 0.8, 0.22), rot: [Math.PI / 2, 0, 0] });
 	},
+	// The biker gang Los Caños de Escape (infiltracion-motos.md): a biker in a black leather vest over a grey tank top,
+	// a long grey beard, a red bandana and a big wrench in hand.
+	motoquero(b) {
+		const leather = C('biker_leather', 0x1a1a1e);
+		gymBody(b, SKIN.arena, C('tank_grey', 0x7a7a80));
+		b.add('body', leather, loft([{ y: 0.62, rx: 0.48, rz: 0.43 }, { y: 1.02, rx: 0.38, rz: 0.34 }], 10), { pos: V(0, 0, -0.02) });
+		b.add('body', C('biker_silver', 0xc8ccd4), new THREE.BoxGeometry(0.03, 0.06, 0.02), { pos: V(0.2, 0.9, 0.36) });
+		const beard = C('biker_beard', 0x9a9690);
+		b.add('face', beard, new THREE.ConeGeometry(0.13, 0.32, 8), { pos: V(0, 1.06, 0.18), rot: [Math.PI + 0.3, 0, 0], scale: [1, 1, 0.5] });
+		mustache(b, beard, 1.1);
+		b.add('head', C('biker_red', 0xb02424), ellipsoid(0.21, 0.1, 0.2, 10, 5), { pos: V(0, 1.45, 0) });
+		b.add('props', C('wrench_steel', 0xb8bcc4), new THREE.BoxGeometry(0.05, 0.36, 0.03), { pos: V(0.52, 0.8, 0.2), rot: [0, 0, 0.2] });
+	},
+	// Another biker: a black leather jacket with silver zips, a pink mohawk, sunglasses and a helmet under the arm.
+	motoquera(b) {
+		const leather = C('biker_leather', 0x1a1a1e);
+		pearBody(b, SKIN.crema, { shirt: leather, pants: C('jeans', 0x2a2f3a), belted: false });
+		b.add('body', C('biker_silver', 0xc8ccd4), new THREE.BoxGeometry(0.015, 0.4, 0.015), { pos: V(0.08, 0.8, 0.43), rot: [-0.2, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		sunglasses(b);
+		mouth(b, { smile: true });
+		const pink = C('mohawk_pink', 0xe04a9a);
+		for (let i = 0; i < 5; i++) b.add('head', pink, new THREE.ConeGeometry(0.035, 0.16, 5), { pos: V(0, 1.55 + Math.sin(i / 4 * Math.PI) * 0.03, 0.12 - i * 0.07), rot: [-0.3 + i * 0.15, 0, 0] });
+		b.add('props', C('helmet_red', 0xc0302a), ellipsoid(0.17, 0.15, 0.17, 10, 6), { pos: V(-0.52, 0.8, 0.12) });
+		b.add('props', black, new THREE.BoxGeometry(0.2, 0.06, 0.02), { pos: V(-0.52, 0.82, 0.29) });
+	},
+	// El Cromado, the gang's boss: huge, a chrome-studded leather jacket, a shiny chrome helmet with a spike, mirror
+	// sunglasses, a long black beard and a polishing rag in hand.
+	cromado(b) {
+		const leather = C('biker_leather', 0x1a1a1e), chrome = C('chrome', 0xdde2ea, { metalness: 0.8, roughness: 0.2 });
+		pearBody(b, SKIN.cacao, { shirt: leather, pants: C('jeans_black', 0x18181c), belted: false });
+		for (let i = 0; i < 6; i++) for (const s of [-1, 1]) b.add('body', chrome, new THREE.SphereGeometry(0.025, 5, 4), { pos: V(s * (0.16 + i * 0.03), 1.0 - i * 0.07, 0.36 - i * 0.01) });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		for (const s of [-1, 1]) b.add('face', chrome, new THREE.BoxGeometry(0.11, 0.07, 0.02), { pos: V(s * 0.075, 1.33, 0.205) });
+		const beard = C('beard_black', 0x161214);
+		b.add('face', beard, new THREE.ConeGeometry(0.15, 0.38, 8), { pos: V(0, 1.03, 0.18), rot: [Math.PI + 0.3, 0, 0], scale: [1, 1, 0.5] });
+		mustache(b, beard, 1.2);
+		b.add('cap', chrome, ellipsoid(0.22, 0.17, 0.22, 12, 6), { pos: V(0, 1.43, 0) });
+		b.add('cap', chrome, new THREE.ConeGeometry(0.04, 0.16, 6), { pos: V(0, 1.66, 0) });
+		b.add('props', C('rag_yellow', 0xe8c040), new THREE.BoxGeometry(0.16, 0.12, 0.03), { pos: V(0.52, 0.8, 0.2), rot: [0.2, 0, 0.3] });
+	},
+	// The biker bar's bouncer: a black tank top, bald, sunglasses, a thick silver chain and arms crossed... nearly.
+	patovica_moto(b) {
+		gymBody(b, SKIN.celeste, C('tank_black', 0x18181c));
+		sunglasses(b);
+		const silver = C('biker_silver', 0xc8ccd4);
+		for (let i = 0; i < 9; i++) {
+			const a = Math.PI * (0.15 + i * 0.0875);
+			b.add('body', silver, new THREE.TorusGeometry(0.025, 0.008, 4, 6), { pos: V(Math.cos(a) * 0.24, 1.04 - Math.sin(a) * 0.12, 0.27 + Math.sin(a) * 0.08), rot: [0, 0, a] });
+		}
+		b.add('body', C('tattoo_blue', 0x2a5ab0), new THREE.BoxGeometry(0.08, 0.08, 0.01), { pos: V(0.38, 0.84, 0.15), rot: [0, 0.4, 0] });
+	},
 	// Sospechoso: striped shirt, beanie and eye mask, with a loot sack.
 	sospechoso(b) {
 		pearBody(b, SKIN.celeste, { shirt: white, pants: C('jeans', 0x2a2f3a) });
@@ -1094,11 +1146,12 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, ladron_oso: 1.15, abuelo_oso: 1.15 };
+const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, ladron_oso: 1.15, abuelo_oso: 1.15 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
 	chess_npcs: { items: row(['ajedrecista', 'ajedrecista_b', 'alfil', 'conserje']), cam: { pos: [0, 1.3, 6.5], target: [0, 0.95, 0], fov: 34 } },
+	biker_npcs: { items: row(['motoquero', 'motoquera', 'cromado', 'patovica_moto']), cam: { pos: [0, 1.3, 6.5], target: [0, 0.95, 0], fov: 34 } },
 	npcs_b: { items: row(NPC_NAMES.slice(5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
 	...Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, {
 		items: [{ name: `npc_${n}`, pos: [-0.5, 0, 0], rotY: 0.35, scale: SCALE[n] }, { name: `npc_${n}`, pos: [0.7, 0, 0], rotY: Math.PI - 0.6, scale: SCALE[n] }],
