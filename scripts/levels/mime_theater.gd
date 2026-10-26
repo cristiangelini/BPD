@@ -8,10 +8,26 @@ extends InfiltrationPlace
 ## cops start in the station, where the mime disguises are, and drive here. --place=mime opens it from Play.
 ## Mimes stand on the stage's marks (by the seed), Maestra Pausa by her bench facing them, and the mute doorman only lets
 ## in cops passing for mimes (step 2b); they all watch the cops (ClubSuspicion, "MIME_" texts) and hear them talk
-## (MimeSilence, step 3); Pausa leads the rehearsals of mime and statue (MimeRehearsal, step 4).
+## (MimeSilence, step 3); Pausa leads the rehearsals of mime and statue (MimeRehearsal, step 4). The comisario gives
+## the case (InfiltrationCase, variant "mime") with 3 of the 6 pieces of evidence (step 5).
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const KEY_POT_SCENE := preload("res://scenes/props/key_pot.tscn")
+const BOX_MODEL := preload("res://assets/models/invisible_box.glb")
+const LEDGER_MODEL := preload("res://assets/models/deposit_book.glb")
+const WATCHES_MODEL := preload("res://assets/models/watch_bag.glb")
+## The theater's evidence (step 5): the "invisible" box full of wallets in the prop room (grab it), Pausa's ledger on
+## the dressing room's dresser (the dressing room opens with the key in a pot in the prop room), the practice dummy
+## covered in bells in the prop room (photograph it), the bag of watches on the trunk (grab it), the recording of two
+## mimes miming the robbery to each other, and the map of the plaza with crosses on the dressing room's wall
+## (photograph it).
+const EVIDENCE_KINDS: Array[String] = ["box", "ledger", "dummy", "watches", "recording", "map"]
+const BOX_AT := Vector3(7.5, 0.27, -8.0)
+const LEDGER_AT := Vector3(-6.0, 0.9, -9.5)
+const KEY_POT_AT := Vector3(2.5, 0.66, -7.6)
+const DUMMY_AT := Vector3(11.0, 0, -8.8)
+const MAP_AT := Vector3(-11.9, 1.6, -8.3)
 const HALF_X := 12.0
 const HALF_Z := 10.0
 const FLOOR_TOP := 0.06
@@ -79,7 +95,9 @@ func _ready() -> void:
 	dressing_door.position = Vector3(DRESSING_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, BACK_Z)
 	add_child(dressing_door)
 	_add_people()
+	_add_evidence()
 	place_in_city("mime_theater")
+	start_case()
 
 
 ## Maestra Pausa runs off from the street, out of the entrance (step 6).
@@ -141,6 +159,93 @@ func _add_people() -> void:
 	rehearsal.on_stage = on_stage
 	add_child(rehearsal)
 	suspicion.watch_rehearsal(rehearsal)
+
+
+## The 3 pieces of evidence the seed picks (ClubEvidence) and the dressing room's key in a prop room pot.
+func _add_evidence() -> void:
+	evidence = ClubEvidence.new()
+	evidence.name = "Evidence"
+	evidence.held_kinds.assign(["box", "ledger", "watches"])
+	evidence.talk_key = "MIME_TALK_%d"
+	add_child(evidence)
+	var pair := _talking_pair()
+	var available := EVIDENCE_KINDS.duplicate()
+	if pair.is_empty():
+		available.erase("recording")
+	evidence.kinds = ClubEvidence.draw(case_seed, available)
+	var pot: KeyPot = KEY_POT_SCENE.instantiate()
+	pot.name = "KeyPot"
+	pot.has_key = true
+	add_child(pot)
+	pot.position = KEY_POT_AT
+	for kind: String in evidence.kinds:
+		match kind:
+			"box":
+				_item(kind, BOX_MODEL, Vector3(0.4, 0.4, 0.4), 3.0, BOX_AT)
+			"ledger":
+				_item(kind, LEDGER_MODEL, Vector3(0.22, 0.04, 0.3), 0.3, LEDGER_AT)
+			"watches":
+				_item(kind, WATCHES_MODEL, Vector3(0.24, 0.26, 0.2), 1.2,
+					TRUNK_AT + Vector3(0, FLOOR_TOP + TRUNK_SIZE.y + 0.14, 0))
+			"dummy":
+				# A tailor's dummy in a coat, its pockets hung with bells: whoever lifts a wallet without a jingle passes.
+				_spot(kind, DUMMY_AT + Vector3(0, 0.9, 0), Vector3(0.7, 1.8, 0.7))
+				_build.box(DUMMY_AT + Vector3(0, 0.45, 0), Vector3(0.08, 0.9, 0.08), WOOD)
+				_build.mesh_box(DUMMY_AT + Vector3(0, 1.25, 0), Vector3(0.5, 0.7, 0.32), Color(0.3, 0.3, 0.38))
+				for i in 8:
+					var bell := SphereMesh.new()
+					bell.radius = 0.035
+					bell.height = 0.07
+					_build.mesh(bell, DUMMY_AT + Vector3(-0.21 + (i % 4) * 0.14, 1.0 + floorf(i / 4.0) * 0.35, 0.18),
+						Color(0.95, 0.8, 0.3))
+			"map":
+				# The plaza drawn from above, with a red cross wherever the richest audience sits.
+				_spot(kind, MAP_AT, Vector3(0.06, 1.0, 1.4))
+				_build.mesh_box(MAP_AT + Vector3(0.02, 0, 0), Vector3(0.01, 0.9, 1.3), Color(0.95, 0.93, 0.85))
+				_build.mesh_box(MAP_AT + Vector3(0.03, 0, 0), Vector3(0.01, 0.5, 0.7), Color(0.55, 0.8, 0.5))
+				for at: Vector2 in [Vector2(0.2, -0.3), Vector2(-0.15, 0.25), Vector2(0.3, 0.4), Vector2(-0.3, -0.45)]:
+					_build.mesh_box(MAP_AT + Vector3(0.04, at.x, at.y), Vector3(0.01, 0.1, 0.03), Color(0.85, 0.1, 0.1))
+					_build.mesh_box(MAP_AT + Vector3(0.04, at.x, at.y), Vector3(0.01, 0.03, 0.1), Color(0.85, 0.1, 0.1))
+			"recording":
+				evidence.talkers.assign(pair)
+				for member: ClubMember in pair:
+					member.distracted = true
+
+
+## A piece of evidence to grab, lying at `at`.
+func _item(kind: String, model: PackedScene, size: Vector3, kg: float, at: Vector3) -> void:
+	var item := ClubEvidence.make_item("Mime_" + kind, model, size, kg)
+	add_child(item)
+	item.position = at
+	evidence.items[kind] = item
+
+
+## A piece of evidence to photograph, a box of `size` around `at`.
+func _spot(kind: String, at: Vector3, size: Vector3) -> ClubEvidenceSpot:
+	var spot := ClubEvidenceSpot.new()
+	spot.name = "Evidence_" + kind
+	spot.kind = kind
+	spot.photo = true
+	spot.prompt_prefix = "PROMPT_MIME_"
+	spot.evidence = evidence
+	add_child(spot)
+	spot.position = at
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = size
+	shape.shape = box
+	spot.add_child(shape)
+	return spot
+
+
+## Two mimes side by side in the same row (the recording's pair), or none.
+func _talking_pair() -> Array[ClubMember]:
+	for first in members:
+		for second in members:
+			if first != second and absf(first.position.z - second.position.z) < 0.01 \
+					and absf(first.position.x - second.position.x) < MARK_GAP + 0.01:
+				return [first, second]
+	return []
 
 
 ## Whether a world position is inside the theater.

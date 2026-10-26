@@ -42,6 +42,17 @@ const VARIANTS := {
 		"catch_row": "OBJ_CHOIR_CATCH_ERNESTO",
 		"slips": "ERNESTO_SLIP_%d",
 	},
+	# The mime troupe (infiltracion-mimos.md, decision 170). Pausa's getaway is a plain car until the invisible one.
+	"mime": {
+		"story": "infiltration_mime",
+		"brief": ["BRIEF_MIME_A", "BRIEF_MIME_B", "BRIEF_MIME_C"],
+		"go": "HINT_GO_MIME", "in": "HINT_MIME_IN", "found": "HINT_CLUB_EVIDENCE",
+		"rows": "OBJ_MIME_", "evidence": "EVIDENCE_MIME_",
+		"boss": "pausa", "getaway": "traffic_0",
+		"boss_cuffed": "HINT_PAUSA_CUFFED", "cuff_row": "OBJ_MIME_CUFF_PAUSA",
+		"catch_row": "OBJ_MIME_CATCH_PAUSA",
+		"slips": "PAUSA_SLIP_%d",
+	},
 }
 
 var case_seed := 0

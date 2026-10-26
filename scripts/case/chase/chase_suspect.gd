@@ -36,6 +36,8 @@ const MODELS := {
 	"chela": preload("res://assets/models/npc_chela.glb"),
 	# Maestro Ernesto, out of his getaway (infiltracion-coro.md).
 	"ernesto": preload("res://assets/models/npc_ernesto.glb"),
+	# Maestra Pausa, out of her getaway (infiltracion-mimos.md).
+	"pausa": preload("res://assets/models/npc_pausa.glb"),
 	# El Oso, out of the robbers' van or off his run with the sack (robo-banco.md).
 	"oso": preload("res://assets/models/npc_ladron_oso.glb"),
 	# El Conejo, who robbed the town bank alone (robo-banco-pueblo.md).

@@ -95,7 +95,14 @@ pie, `PlaceDraw` y `CaseSync`. El ensayo copia la forma de `ChoirSinging` (host 
    policía una vez por segundo en el escenario: sin H en la mímica +15, y en la estatua caminar más de 30 cm o mantener
    H +25, a los mimos que lo ven. Fuera del escenario durante el ensayo, +20 por segundo como en el coro. En la
    estatua el cono de los mimos baja a la mitad (70°) **(propuesta)**.
-5. Las pruebas y el caso (variante "mime" en `InfiltrationCase.VARIANTS`).
+5. Las pruebas y el caso (variante "mime" en `InfiltrationCase.VARIANTS`). Hecho así: el comisario da el caso de los
+   mimos y la semilla elige 3 de las 6 pruebas: la caja invisible de acrílico con billeteras en el piso de la utilería,
+   la libreta en el tocador del camarín (que se abre con la llave de una maceta de la utilería), la bolsa de relojes
+   arriba del baúl (las tres se agarran), el muñeco de práctica con cascabeles en la utilería y el mapa de la plaza en
+   la pared del camarín (fotos), y el video de dos mimos vecinos contándose el robo con mímica. Esposar a la Maestra
+   Pausa resuelve el caso, con el sueldo y la cuota del club; detenida, el turno siguiente es su interrogatorio (sus 3
+   frases y la confesión). Hasta que esté el auto invisible (paso 6), si los descubren huye en un auto común
+   **(propuesta)**.
 6. La huida en el auto invisible, el sorteo de "Jugar" en tercios (club, coro, mimos) y online.
 
 ## Preguntas para Cristian (decisión 170, respondidas el 25/10: sí a las 3)
