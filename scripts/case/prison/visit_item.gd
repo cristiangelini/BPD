@@ -10,6 +10,9 @@ extends Grabbable
 ## table, the pigeon in the hat coos and the phone in the watermelon buzzes every so often. Every number here is
 ## (propuesta).
 
+## Opened on the host (step 3): what was found inside, or null with nothing.
+signal searched(item: VisitItem, found: Contraband)
+
 enum Kind { CAKE, BREAD, GUITAR, FLOWERS, SCARF, BABY, CHICKEN, HAT, WATERMELON, SHOE, YARN, BOOK }
 
 ## Each kind's box (its collision) and weight in kg.
@@ -35,6 +38,10 @@ const SOUND_TIME := 1.5
 var kind := Kind.CAKE
 ## What's hidden inside, found by opening it (step 3).
 var hidden := false
+## What it hides instead of its kind's usual (Contraband.Kind), -1 for the usual one (Rulo's things, carcel-vip.md).
+var holds := -1
+## The hint for what's found, with the Contraband.Kind's name after it.
+var found_hint := "HINT_VISIT_FOUND_"
 ## The visitor it came with.
 var visitor: PrisonVisitor
 ## Opened (step 3): split open, found or broken.
@@ -77,7 +84,9 @@ func _ready() -> void:
 
 ## What's inside, as a Contraband.Kind, or -1 with nothing.
 func inside() -> int:
-	return Contraband.IN_ITEM[kind] if hidden else -1
+	if not hidden:
+		return -1
+	return holds if holds >= 0 else Contraband.IN_ITEM[kind]
 
 
 ## Set down on the search table by its visitor: a metal thing inside goes "clonc".
@@ -118,7 +127,7 @@ func held_prompt_key(_cop: Cop) -> String:
 ## Online (PropSync): the host makes them at the search table; a guest's copy is made from this script with its kind
 ## (and whether something's inside, for the coo and the buzz).
 func net_setup() -> Dictionary:
-	return {"kind": kind, "hidden": hidden}
+	return {"kind": kind, "hidden": hidden, "holds": holds}
 
 
 ## E with it in hand: opens it, on every PC (ActionSync). Only the host knows what's inside: whatever was hidden goes
@@ -130,18 +139,20 @@ func use(cop: Cop) -> void:
 	if not multiplayer.is_server():
 		return
 	if hidden:
-		hidden = false
 		var found := Contraband.new()
 		found.name = "Contraband"
-		found.kind = Contraband.IN_ITEM[kind]
+		found.kind = inside() as Contraband.Kind
 		get_parent().add_child(found, true)
+		hidden = false
 		found.global_position = global_position + Vector3.UP * 0.2
 		cop.handed(found)
-		cop.show_hint("HINT_VISIT_FOUND_%s" % Contraband.Kind.keys()[found.kind], true)
+		cop.show_hint(found_hint + Contraband.Kind.keys()[found.kind], true)
+		searched.emit(self, found)
 		if visitor:
 			visitor.caught(found, true)
 		return
 	cop.show_hint("HINT_VISIT_NOTHING", true)
+	searched.emit(self, null)
 	if visitor:
 		visitor.broken(self)
 

@@ -95,8 +95,13 @@ const UNTIE_TIME := 2.0
 const UNTIE_REACH := 1.6
 const TIES_TO_QUIT := 3
 const TIED_CROUCH := 0.8
+## A vampire lit up hides behind his cape this long (s), and has this many lines for it (robo-banco-sangre.md).
+const HIDE_TIME := 4.0
+const LIGHT_LINES := 3
 
 @export var animal := "conejo"
+## The town bank's El Conejo (robo-banco-pueblo.md, decision 127): he robs it alone, so he's the boss.
+var alone := false
 ## One of the grandpa gang: slower, and their own model.
 var grandpa := false
 ## Wading in the flooded bank (BankWater): walking and running speed times this.
@@ -108,6 +113,18 @@ var sobbing_left := 0.0
 var _sob_left := SOB_EVERY
 var _next_sob := 0
 var _hanky: MeshInstance3D
+## The blood bank (robo-banco-sangre.md, decision 128): a black vampire cape with its high collar and plastic fangs.
+## Step 2: lit up (lit()), he hides his face behind his cape for HIDE_TIME, blind and still; the bank's lamps make him
+## do it once, then he puts his sunglasses on and only a flashlight does.
+var vampire := false
+## The seed bank (robo-banco-semillas.md, decision 129): a straw hat and a green gardener's apron; El Oso's hat is
+## bigger and he carries a watering can.
+var gardener := false
+var hiding_left := 0.0
+var shades := false
+var _cape_up: MeshInstance3D
+var _shades: MeshInstance3D
+var _next_light_line := 0
 var _home_yaw := 0.0
 ## Turned by a cop: the help he's on ("" resting between helps or done) and its leg (a help can take more than one
 ## walk: the hostages are picked up, then walked out), his way there (world positions, in order),
@@ -156,6 +173,8 @@ var surrendered := false
 ## Where the pig runs, in order (world positions; the level sets them): out of the entrance and to the van's door.
 var run_path: Array[Vector3] = []
 var running := false
+## Whether the end of run_path is the van (the blood bank's robbers first run to the fridge and stop there).
+var into_van := true
 var in_van := false
 ## A guest's copy (NpcSync): the host's decides whether the cuffs closed.
 var follower := false
@@ -199,6 +218,10 @@ func _ready() -> void:
 	add_child(_bubble)
 	if sorry:
 		_add_hanky()
+	if vampire:
+		_add_cape()
+	if gardener:
+		_add_gardener()
 
 
 ## The white hanky in his right hand.
@@ -213,6 +236,98 @@ func _add_hanky() -> void:
 	_hanky.mesh = cloth
 	_hanky.position = HANKY_DOWN
 	add_child(_hanky)
+
+
+## The vampire's cape down his back, its collar up behind his head, and two fangs under the mask's snout; on the model,
+## which faces +Z and is scaled with him.
+func _add_cape() -> void:
+	var black := StandardMaterial3D.new()
+	black.albedo_color = Color(0.06, 0.05, 0.07)
+	var lining := StandardMaterial3D.new()
+	lining.albedo_color = Color(0.6, 0.05, 0.08)
+	var cape := MeshInstance3D.new()
+	cape.name = "Cape"
+	var cloth := BoxMesh.new()
+	cloth.size = Vector3(0.78, 1.15, 0.04)
+	cape.mesh = cloth
+	cape.material_override = black
+	cape.position = Vector3(0, 0.75, -0.24)
+	cape.rotation.x = 0.08
+	_model.add_child(cape)
+	var inside := MeshInstance3D.new()
+	var inner := BoxMesh.new()
+	inner.size = Vector3(0.72, 1.1, 0.01)
+	inside.mesh = inner
+	inside.material_override = lining
+	inside.position = Vector3(0, 0, 0.025)
+	cape.add_child(inside)
+	var collar := MeshInstance3D.new()
+	collar.name = "Collar"
+	var high := PrismMesh.new()
+	high.size = Vector3(0.7, 0.4, 0.04)
+	collar.mesh = high
+	collar.material_override = black
+	collar.position = Vector3(0, 1.5, -0.22)
+	collar.rotation.x = PI
+	_model.add_child(collar)
+	var white := StandardMaterial3D.new()
+	white.albedo_color = Color(0.98, 0.98, 0.95)
+	for side: float in [-1.0, 1.0]:
+		var fang := MeshInstance3D.new()
+		fang.name = "FangL" if side < 0 else "FangR"
+		var tooth := CylinderMesh.new()
+		tooth.top_radius = 0.018
+		tooth.bottom_radius = 0.0
+		tooth.height = 0.06
+		fang.mesh = tooth
+		fang.material_override = white
+		fang.position = Vector3(side * 0.045, 1.2, 0.23)
+		_model.add_child(fang)
+	# The cape held up over his face with his arm, and the sunglasses.
+	_cape_up = MeshInstance3D.new()
+	_cape_up.name = "CapeUp"
+	var shield := BoxMesh.new()
+	shield.size = Vector3(0.62, 0.5, 0.05)
+	_cape_up.mesh = shield
+	_cape_up.material_override = black
+	_cape_up.position = Vector3(0.05, 1.28, 0.36)
+	_cape_up.rotation.z = -0.15
+	_cape_up.visible = false
+	_model.add_child(_cape_up)
+	_shades = MeshInstance3D.new()
+	_shades.name = "Shades"
+	var glasses := BoxMesh.new()
+	glasses.size = Vector3(0.36, 0.08, 0.03)
+	_shades.mesh = glasses
+	var dark := StandardMaterial3D.new()
+	dark.albedo_color = Color(0.03, 0.03, 0.04)
+	dark.metallic = 0.6
+	dark.roughness = 0.2
+	_shades.material_override = dark
+	_shades.position = Vector3(0, 1.33, 0.25)
+	_shades.visible = false
+	_model.add_child(_shades)
+
+
+## The gardener's straw hat over the mask's ears, his apron over his belly and El Oso's watering can in his right hand;
+## on the model, which faces +Z and is scaled with him.
+func _add_gardener() -> void:
+	var straw := Color(0.86, 0.74, 0.42)
+	var big := 1.3 if animal == "oso" else 1.0
+	var hat := CopTool.piece(CopTool.cylinder(0.36 * big, 0.03), straw, Vector3(0, 1.5, 0))
+	hat.name = "StrawHat"
+	hat.add_child(CopTool.piece(CopTool.cylinder(0.17 * big, 0.16), straw, Vector3(0, 0.09, 0)))
+	hat.add_child(CopTool.piece(CopTool.cylinder(0.175 * big, 0.04), Color(0.3, 0.55, 0.3), Vector3(0, 0.04, 0)))
+	_model.add_child(hat)
+	var apron := CopTool.piece(CopTool.box(Vector3(0.46, 0.62, 0.03)), Color(0.25, 0.55, 0.3), Vector3(0, 0.82, 0.24))
+	apron.name = "Apron"
+	_model.add_child(apron)
+	if animal == "oso":
+		var can := CopTool.piece(CopTool.cylinder(0.1, 0.22), Color(0.35, 0.6, 0.45), Vector3(0.38, 0.75, 0.12))
+		can.name = "WateringCan"
+		can.add_child(CopTool.piece(CopTool.cylinder(0.02, 0.3), Color(0.35, 0.6, 0.45), Vector3(0, 0.05, 0.18),
+			Vector3(1.0, 0, 0)))
+		_model.add_child(can)
 
 
 func is_sobbing() -> bool:
@@ -240,7 +355,7 @@ func run_speed() -> float:
 
 
 func is_boss() -> bool:
-	return animal == "oso"
+	return animal == "oso" or alone
 
 
 func is_eating() -> bool:
@@ -255,7 +370,7 @@ func facing() -> Vector3:
 ## Whether they see `at` (a world position): in their cone, near enough and with no wall in between (or the wall hit
 ## is `body` itself).
 func sees(at: Vector3, body: CollisionObject3D = null) -> bool:
-	if is_eating() or unmasked:
+	if is_eating() or unmasked or is_hiding():
 		return false
 	var eye := global_position + Vector3.UP * EYE_HEIGHT
 	var flat := Vector3(at.x - eye.x, 0, at.z - eye.z)
@@ -296,9 +411,41 @@ func is_cuffed() -> bool:
 	return _cuffed_left > 0.0
 
 
+func is_hiding() -> bool:
+	return hiding_left > 0.0
+
+
+## Light on his face (the blood bank): a flashlight, or the bank's lamps (`lamps`), which he only fears once, before
+## his sunglasses. He hides behind his cape for HIDE_TIME (again from the start while it keeps shining on him).
+func lit(lamps := false) -> void:
+	if not vampire or follower or is_cuffed() or in_van or slipped:
+		return
+	if lamps:
+		if shades:
+			return
+		shades = true
+	if not is_hiding():
+		say("ROBBER_VAMPIRE_LIGHT_%d" % (_next_light_line % LIGHT_LINES + 1))
+		_next_light_line += 1
+	hiding_left = HIDE_TIME
+	_show_hiding()
+
+
+## The cape up over his face while he hides, and his sunglasses once he has them on.
+func _show_hiding() -> void:
+	if _cape_up:
+		_cape_up.visible = is_hiding()
+	if _shades:
+		_shades.visible = shades and not is_hiding()
+
+
 func _physics_process(delta: float) -> void:
 	_cuffed_left = maxf(_cuffed_left - delta, 0.0)
 	if in_van or is_cuffed() or slipped:
+		return
+	if is_hiding():
+		# Behind his cape he sees nothing and doesn't move.
+		hiding_left = maxf(hiding_left - delta, 0.0)
 		return
 	if running:
 		_run(delta)
@@ -575,6 +722,8 @@ func _run(delta: float) -> void:
 		run_path.remove_at(0)
 		if run_path.is_empty():
 			running = false
+			if not into_van:
+				return
 			in_van = true
 			hide()
 			collision_layer = 0
@@ -673,10 +822,11 @@ func said() -> String:
 
 ## What a guest's copy needs besides where they are and what they say (NpcSync): cuffed, gave up, running, in the van,
 ## gone with a sack, where their head points, the pig's sandwich, a grandpa, whether he took the mask off and sits
-## among the hostages, and the sorry robber's hanky up, whether he was turned and whether he's tied.
+## among the hostages, the sorry robber's hanky up, whether he was turned and whether he's tied, and a vampire hiding
+## behind his cape and his sunglasses.
 func net_state() -> Array:
 	return [is_cuffed(), surrendered, running, in_van, visible, snappedf(look, 0.01), eating_left > 0.0, unmasked,
-		posing, sobbing_left > 0.0, turned, tied]
+		posing, sobbing_left > 0.0, turned, tied, is_hiding(), shades]
 
 
 func apply_net_state(state: Variant) -> void:
@@ -706,9 +856,15 @@ func apply_net_state(state: Variant) -> void:
 			_show_tied(tied)
 		if _hanky:
 			_hanky.position = HANKY_UP if is_sobbing() else HANKY_DOWN
+	if state.size() > 13:
+		hiding_left = HIDE_TIME if state[12] else 0.0
+		shades = state[13]
+		_show_hiding()
 
 
 func _process(delta: float) -> void:
+	if vampire:
+		_show_hiding()
 	# The escort turns them with their +Z ahead.
 	var escort := OwnerEscort.of(self)
 	_model.rotation.y = 0.0 if escort and (escort.escorted_by or escort.in_car) else PI

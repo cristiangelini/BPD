@@ -5,7 +5,7 @@ extends StaticBody3D
 ## stands by the ring's entrance and, E on him, says one of his lines ("¡Pasen y vean!"), a different one each time.
 ## Every number here is (propuesta).
 
-const MODEL := preload("res://assets/models/npc_director.glb")
+const MODEL := preload("res://assets/models/npc_director_circo.glb")
 const LINES := 5
 
 var _bubble: Label3D

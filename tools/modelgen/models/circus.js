@@ -46,7 +46,7 @@ function payaso(b) {
 
 // The ringmaster: red tailcoat with gold buttons, white trousers, black boots, a top hat, a curled mustache and his
 // megaphone.
-function director(b) {
+function director_circo(b) {
 	const coat = C('ringmaster_coat', 0xc81e2a);
 	pearBody(b, SKIN, { shirt: coat, pants: white, shoes: C('boots_black', 0x1a1a1e), belted: false });
 	b.add('body', coat, new THREE.ConeGeometry(0.3, 0.5, 6, 1, true), { pos: V(0, 0.35, -0.3), rot: [0.3, 0, 0] });
@@ -150,7 +150,7 @@ export function buildInflatableClown() {
 	return b.build();
 }
 
-const BUILD = { payaso, director, domadora };
+const BUILD = { payaso, director_circo, domadora };
 export const models = {
 	...Object.fromEntries(Object.entries(BUILD).map(([n, f]) => [`npc_${n}`, () => {
 		const b = new Builder(`npc_${n}`);
@@ -163,7 +163,7 @@ export const models = {
 
 export const views = {
 	circus_people: {
-		items: [{ name: 'npc_director', pos: [-1.3, 0, 0], rotY: 0.3 }, { name: 'npc_payaso', pos: [0, 0, 0], rotY: 0.2 },
+		items: [{ name: 'npc_director_circo', pos: [-1.3, 0, 0], rotY: 0.3 }, { name: 'npc_payaso', pos: [0, 0, 0], rotY: 0.2 },
 			{ name: 'npc_payaso', pos: [1.2, 0, 0], rotY: -0.4 }, { name: 'npc_domadora', pos: [2.4, 0, 0], rotY: -0.3 }],
 		cam: { pos: [0.55, 1.4, 6.0], target: [0.55, 0.85, 0], fov: 38 },
 	},

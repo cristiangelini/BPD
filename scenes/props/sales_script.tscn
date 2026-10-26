@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/props/clue_note.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/models/sales_script.glb" id="2"]
+
+[sub_resource type="BoxShape3D" id="Shape"]
+size = Vector3(0.22, 0.02, 0.3)
+
+[node name="SalesScript" type="RigidBody3D"]
+collision_layer = 4
+collision_mask = 15
+mass = 0.2
+script = ExtResource("1")
+prompt = "PROMPT_SALES_SCRIPT"
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+shape = SubResource("Shape")
+
+[node name="Model" parent="." instance=ExtResource("2")]
