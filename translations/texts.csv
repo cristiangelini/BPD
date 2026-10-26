@@ -2450,6 +2450,7 @@ CRIME_owner_conejo,"¡Novatos! Ayer se trajeron a El Conejo del Banco del Pueblo
 CONFESS_owner_conejo,"¡Está bien! ¡Fui yo! ¡Solo! ¡Quería demostrarle a El Oso que podía! ¿Me dan un vaso de agua?","Fine! It was me! Alone! I wanted to show El Oso I could do it! Can I have a glass of water?","Tá bom! Fui eu! Sozinho! Queria mostrar pro El Oso que eu conseguia! Me dão um copo d'água?"
 OBJ_BANK_BACK_CONEJO,"Volver a la comisaría con El Conejo","Go back to the station with El Conejo","Voltar para a delegacia com El Conejo"
 PLACE_BANK_BLOOD,"Banco de Sangre","Blood Bank","Banco de Sangue"
+PLACE_BANK_SEEDS,"Banco de Semillas","Seed Bank","Banco de Sementes"
 BANK_FRIDGE,"HELADERA","FRIDGE","GELADEIRA"
 ROBBER_VAMPIRE_LIGHT_1,"¡La luz no! ¡La luz no!","Not the light! Not the light!","A luz não! A luz não!"
 ROBBER_VAMPIRE_LIGHT_2,"¡Me quemo! ¡Me quemo! Bueno, no, pero igual.","I'm burning! I'm burning! Well, no, but still.","Estou queimando! Estou queimando! Bom, não, mas mesmo assim."

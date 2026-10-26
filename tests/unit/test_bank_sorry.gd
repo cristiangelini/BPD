@@ -17,13 +17,13 @@ func _bank(want: String) -> BankLevel:
 	return bank
 
 
-func test_the_seeds_draw_all_nine_in_ninths() -> void:
+func test_the_seeds_draw_all_ten_in_tenths() -> void:
 	var drawn := {"party": 0, "grandpas": 0, "sorry": 0, "manager": 0, "flood": 0, "roof": 0, "town": 0, "blood": 0,
-		"base": 0}
-	for seed_ in range(1, 401):
+		"seeds": 0, "base": 0}
+	for seed_ in range(1, 501):
 		drawn[BankLevel.variant(seed_, PackedStringArray())] += 1
 	for want: String in drawn:
-		assert_between(drawn[want], 20, 80, want)
+		assert_between(drawn[want], 20, 90, want)
 
 
 func test_the_arg_forces_it() -> void:

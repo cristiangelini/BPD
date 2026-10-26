@@ -38,8 +38,10 @@ extends Node3D
 ## counter (BankClerk), and the gang is El Conejo alone, at the drill. A ninth, drawn before everything, is the blood
 ## bank (robo-banco-sangre.md, decision 128): the power is cut at night, candles burn in the dark hall, the vault is a
 ## white fridge full of blood bags, the hostages came to give blood and the gang wears vampire capes and fangs
-## (BankBlood). --bank=party, --bank=grandpas, --bank=sorry, --bank=manager, --bank=flood, --bank=roof, --bank=town,
-## --bank=blood or --bank=base forces one.
+## (BankBlood). A tenth, drawn before everything, is the seed bank (robo-banco-semillas.md, decision 129): pots in the
+## hall, glass jars of rare seeds in the vault, hostages holding small pots and the gang in straw hats and green aprons
+## (BankSeeds). --bank=party, --bank=grandpas, --bank=sorry, --bank=manager, --bank=flood, --bank=roof, --bank=town,
+## --bank=blood, --bank=seeds or --bank=base forces one.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -252,6 +254,9 @@ var clerk: BankClerk
 ## The blood bank (decision 128), dark with its candles, and the hall's ceiling lamps (off in it).
 var blood := false
 var blood_bank: BankBlood
+## The seed bank (decision 129).
+var seeds := false
+var seed_bank: BankSeeds
 var lamps: Array[OmniLight3D] = []
 ## El Conejo's nerves (step 3).
 var nerves: BankNerves
@@ -296,6 +301,7 @@ func _ready() -> void:
 	roof = drawn == "roof"
 	town = drawn == "town"
 	blood = drawn == "blood"
+	seeds = drawn == "seeds"
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_hall()
@@ -351,6 +357,10 @@ func _ready() -> void:
 		blood_bank = BankBlood.new()
 		add_child(blood_bank)
 		blood_bank.setup(self)
+	if seeds:
+		seed_bank = BankSeeds.new()
+		add_child(seed_bank)
+		seed_bank.setup(self)
 	city.transform = CityLayout.anchor("bank")
 	station_parking = city.transform * CityLayout.parking("station")
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
@@ -364,7 +374,8 @@ func _ready() -> void:
 	case.start()
 
 
-## Which robbery this seed is (propuesta): a ninth "blood" (the blood bank) drawn first, an eighth of the rest "town"
+## Which robbery this seed is (propuesta): a tenth "seeds" (the seed bank) drawn first, a ninth of the rest "blood" (the
+## blood bank), an eighth of the rest "town"
 ## (the town bank), then a seventh of the rest "roof" (they leave by the roof), a sixth "flood" (the vault floods), a
 ## fifth "manager" (the manager is the boss), and the rest in quarters: "party" (the hostages don't want to leave), "grandpas", "sorry" (one robber wants to give
 ## it all back) or "base"; --bank=party, --bank=grandpas, --bank=sorry, --bank=manager, --bank=flood, --bank=roof,
@@ -372,8 +383,10 @@ func _ready() -> void:
 static func variant(seed_: int, args: PackedStringArray) -> String:
 	for arg in args:
 		if arg in ["--bank=party", "--bank=grandpas", "--bank=sorry", "--bank=manager", "--bank=flood", "--bank=roof",
-				"--bank=town", "--bank=blood", "--bank=base"]:
+				"--bank=town", "--bank=blood", "--bank=seeds", "--bank=base"]:
 			return arg.trim_prefix("--bank=")
+	if hash(["bank semillas", seed_]) % 10 == 0:
+		return "seeds"
 	if hash(["bank sangre", seed_]) % 9 == 0:
 		return "blood"
 	if hash(["bank pueblo", seed_]) % 8 == 0:
@@ -508,7 +521,8 @@ func _build_shell() -> void:
 		_build.box(Vector3(x, ROOF / 2, HALF_Z + 0.45), Vector3(0.45, ROOF, 0.45), INSIDE)
 	_build.box(Vector3(0, ROOF + 0.05, HALF_Z + 0.45), Vector3(10.0, 0.1, 1.0), INSIDE)
 	var sign_label := Label3D.new()
-	sign_label.text = "PLACE_BANK_TOWN" if town else "PLACE_BANK_BLOOD" if blood else "PLACE_BANK"
+	sign_label.text = "PLACE_BANK_TOWN" if town else "PLACE_BANK_BLOOD" if blood else "PLACE_BANK_SEEDS" if seeds \
+		else "PLACE_BANK"
 	sign_label.font_size = 64
 	sign_label.pixel_size = 0.01
 	sign_label.outline_size = 14
@@ -785,8 +799,8 @@ func _build_back() -> void:
 	for z: float in [-7.0, -8.6]:
 		_build.open_box(Vector3(11.4, FLOOR_TOP, z), Vector3(0.8, 2.0, 1.4), "-x", STEEL)
 		for level: float in [0.4, 1.0, 1.6]:
-			# The blood bank's fridge holds blood bags (BankBlood) instead.
-			if not blood:
+			# The blood bank's fridge holds blood bags (BankBlood) instead, and the seed bank's vault seed jars (BankSeeds).
+			if not blood and not seeds:
 				_build.mesh_box(Vector3(11.3, FLOOR_TOP + level + 0.12, z), Vector3(0.5, 0.22, 1.1), MONEY)
 	var label := Label3D.new()
 	label.text = "BANK_FRIDGE" if blood else "BANK_VAULT"
@@ -927,6 +941,7 @@ func _add_robbers() -> void:
 		var robber := BankRobber.new()
 		robber.alone = town
 		robber.vampire = blood
+		robber.gardener = seeds
 		robber.name = "Robber_" + animal
 		robber.animal = animal
 		robber.grandpa = grandpas

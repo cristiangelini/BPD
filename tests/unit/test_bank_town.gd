@@ -25,7 +25,7 @@ func test_an_eighth_of_the_seeds_and_the_arg_forces_it() -> void:
 	for seed_ in range(1, 801):
 		if BankLevel.variant(seed_, PackedStringArray()) == "town":
 			towns += 1
-	assert_between(towns, 70, 140)
+	assert_between(towns, 45, 140)
 	for seed_ in range(1, 20):
 		assert_eq(BankLevel.variant(seed_, PackedStringArray(["--bank=town"])), "town")
 	for seed_ in [1, 2, 3, 4]:

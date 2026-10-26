@@ -72,3 +72,14 @@ delantal, la enredadera, la tijera de podar, los frascos que se rompen y la plan
 3. **¿La huida es la misma persecución, con la camioneta pintada de verde y macetas arriba?** Recomendado: sí, sin
    cosas nuevas en la calle, para no tocar la persecución. La otra opción es que la camioneta tire semillas que hacen
    crecer arbustos en la calle detrás de ella.
+
+## Hecho así
+
+- **Paso 1 (el banco de semillas y la banda jardinera):** un décimo de las semillas, sorteado antes que todos
+  (`hash(["bank semillas", semilla]) % 10`), es el banco de semillas. Las semillas 1 a 4 de las pruebas viejas no
+  cambian y `--bank=seeds` lo fuerza. El cartel dice "Banco de Semillas", hay seis macetas con un arbusto redondo (dos
+  en el mostrador, dos en la entrada y dos en las esquinas del hall) y una hoja verde arriba de la puerta de la bóveda.
+  En la bóveda no hay plata: hay 8 frascos de vidrio con tapa de corcho, dos por estante en los dos estantes de abajo
+  de cada mueble, cada uno con semillas de otro color. Esperan quietos hasta que alguien los agarra. Cada rehén tiene
+  una maceta chiquita en la mano. Los cuatro de la banda llevan sombrero de paja con cinta verde y delantal verde, y El
+  Oso un sombrero más grande y una regadera. Capturas en `/mnt/project-files/semillas/paso1-*.png`.
