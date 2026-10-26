@@ -9,7 +9,8 @@ extends Node3D
 ## greet them now and then (PoliticianWalks, step 5). The case is PoliticianCase's (step 6). --place=plaza opens it
 ## from Play. Every number here is (propuesta).
 ## With `variant` "double" (politico-doble.md, decision 220; --place=double) Rolo Calcado, the double, hides in the
-## crowd with a hat and a scarf, and both deputies wear the tells (DoubleTells): the double three of his own.
+## crowd with a hat and a scarf, and both deputies wear the tells (DoubleTells): the double three of his own. Each
+## time the deputy walks off, the double takes the lectern (DoubleSwap, step 2).
 
 ## The stage, from the plaza's middle: its middle, its size and the ramp up its front at the east end.
 const STAGE_FROM_PLAZA := Vector3(0, 0, -14)
@@ -43,6 +44,8 @@ var speech: PoliticianSpeech
 var crowd: RallyCrowd
 ## Rolo Calcado, with variant "double".
 var double: Politician
+## How the double takes the lectern from the deputy (step 2).
+var swap: DoubleSwap
 ## The case on top of the rally (step 6): the comisario's briefing, the planilla and the end of the shift.
 var case: PoliticianCase
 ## The stage's middle on its top, in world space.
@@ -79,8 +82,17 @@ func _ready() -> void:
 	crowd.setup(self, city.transform * CityLayout.block_center(CityLayout.PLAZA), politician, speech, case_seed,
 		$PatrolCar)
 	var half := STAGE_SIZE / 2
-	PoliticianWalks.attach(politician, speech, crowd.fans, politician.global_position,
-		stage_top + Vector3(RAMP_X, 0, half.z - 0.4), stage + Vector3(RAMP_X, 0, half.z + RAMP_RUN + 0.6), case_seed)
+	var ramp_top := stage_top + Vector3(RAMP_X, 0, half.z - 0.4)
+	var ramp_foot := stage + Vector3(RAMP_X, 0, half.z + RAMP_RUN + 0.6)
+	PoliticianWalks.attach(politician, speech, crowd.fans, politician.global_position, ramp_top, ramp_foot, case_seed)
+	if double:
+		# The double gets on and off the stage the same way (step 2), and swaps with the deputy (DoubleSwap).
+		PoliticianWalks.attach(double, speech, crowd.fans, politician.global_position, ramp_top, ramp_foot,
+			case_seed + 1)
+		swap = DoubleSwap.new()
+		swap.name = "DoubleSwap"
+		add_child(swap)
+		swap.setup(politician, double, speech, stage)
 	case = PoliticianCase.new()
 	case.name = "Case"
 	case.rally = self
