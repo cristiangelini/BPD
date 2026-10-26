@@ -291,6 +291,8 @@ func _on_corner(turned: bool) -> void:
 			drop_melon()
 	elif case.suspect_id == SuspectCar.VEGGIE_TRIKE:
 		drop_furniture(true)
+	elif case.suspect_id == SuspectCar.PIZZA_SCOOTER:
+		drop_furniture(false, true)
 	elif case.suspect_id == SuspectCar.CEMENT_MIXER:
 		drop_blob()
 	if riders_left > 0:
@@ -369,8 +371,6 @@ func drop_can() -> ChaseCan:
 	can.angular_velocity = Vector3(_rng.randf_range(-8, 8), _rng.randf_range(-8, 8), _rng.randf_range(-8, 8))
 	cans.append(can)
 	return can
-	elif case.suspect_id == SuspectCar.PIZZA_SCOOTER:
-		drop_furniture(false, true)
 
 
 ## A piece of furniture falls off the back of the moving truck, a veggie off the trike or a pizza off the scooter.
