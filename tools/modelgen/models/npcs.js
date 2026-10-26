@@ -536,6 +536,36 @@ const NPCS = {
 		b.add('props', C('clipboard', 0xa87a4a), new THREE.BoxGeometry(0.03, 0.32, 0.24), { pos: V(-0.47, 0.75, 0.05), rot: [0, 0, 0.1] });
 		b.add('props', white, new THREE.BoxGeometry(0.01, 0.26, 0.2), { pos: V(-0.49, 0.76, 0.05), rot: [0, 0, 0.1] });
 	},
+	// The referee (politico-futbol.md, step 5): black shirt with a white collar, black shorts, long black socks, a black
+	// cap and a silver whistle on a red cord. The envelope and the campaign pin are the game's (they come off).
+	arbitro(b) {
+		const shirt = C('referee_black', 0x1e1f24);
+		pearBody(b, SKIN.arena, { shirt, pants: shirt, shoes: C('referee_boots', 0x2a2a2a) });
+		b.add('body', white, loft([{ y: 1.06, rx: 0.235, rz: 0.215 }, { y: 1.12, rx: 0.18, rz: 0.165 }], 10));
+		b.add('body', white, new THREE.BoxGeometry(0.1, 0.12, 0.02), { pos: V(0.22, 0.86, 0.3), rot: [-0.35, 0.4, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b);
+		mustache(b, C('referee_mustache', 0x3a2414), 0.9);
+		hairCap(b, shirt, { y: 1.42, sy: 0.45 });
+		b.add('cap', shirt, new THREE.BoxGeometry(0.24, 0.02, 0.14), { pos: V(0, 1.42, 0.22), rot: [0.1, 0, 0] });
+		limb(b, 'props', C('whistle_cord', 0xd8343c), V(-0.1, 1.08, 0.2), V(0, 0.92, 0.3), 0.01);
+		limb(b, 'props', C('whistle_cord', 0xd8343c), V(0.1, 1.08, 0.2), V(0, 0.92, 0.3), 0.01);
+		b.add('props', C('whistle_silver', 0xc8ccd2, { metalness: 0.6, roughness: 0.3 }), new THREE.CylinderGeometry(0.03, 0.03, 0.08, 8), { pos: V(0, 0.9, 0.31), rot: [0, 0, Math.PI / 2] });
+	},
+	// Concejal Tito Barullo (politico-futbol.md, step 5): a loud checked jacket, a big campaign rosette, slicked hair
+	// and a fat cigar he never lights.
+	concejal(b) {
+		pearBody(b, SKIN.crema, { shirt: C('councillor_jacket', 0x8a5a2a), pants: C('councillor_pants', 0x4a3420) });
+		for (let i = 0; i < 4; i++) b.add('body', C('councillor_check', 0xc89a4a), loft([{ y: 0.58 + i * 0.13, rx: 0.455 - i * 0.03, rz: 0.41 - i * 0.03 }, { y: 0.6 + i * 0.13, rx: 0.45 - i * 0.03, rz: 0.405 - i * 0.03 }], 10));
+		lapels(b, C('councillor_shirt', 0xf2ece0));
+		tie(b, C('councillor_tie', 0x2a7a3a));
+		b.add('props', C('rosette_green', 0x2a9a4a), new THREE.CylinderGeometry(0.08, 0.08, 0.02, 10), { pos: V(-0.2, 0.92, 0.29), rot: [Math.PI / 2 - 0.4, 0, 0] });
+		b.add('props', C('rosette_white', 0xf4f4f0), new THREE.CylinderGeometry(0.04, 0.04, 0.025, 8), { pos: V(-0.2, 0.92, 0.3), rot: [Math.PI / 2 - 0.4, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		hairCap(b, C('councillor_hair', 0x1a1410), { y: 1.4, sy: 0.5 });
+		limb(b, 'props', C('cigar', 0x6a3a1a), V(0.06, 1.22, 0.2), V(0.12, 1.2, 0.36), 0.02);
+	},
 	// Bank robbers (robo-banco.md, step 2): black clothes and gloves, and a rubber animal mask over the whole head.
 	ladron_conejo(b) {
 		robber(b, C('mask_rabbit', 0xf2eeea), (m) => {

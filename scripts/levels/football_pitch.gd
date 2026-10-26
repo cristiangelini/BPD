@@ -9,7 +9,8 @@ extends Node3D
 ## opens it from Play. Step 2: the ball on the center spot (FootballBall) and the goals and scoreboard
 ## (FootballScore). Step 3: the match (FootballMatch), with Deputy Lustre playing badly (FootballLustre), the veterans,
 ## their keeper and his two advisors (FootballPlayer); the cops play in yellow bibs. Step 4: the deputy's falls, the
-## stretcher (FootballStretcher) and the Tank. Every number here is (propuesta).
+## stretcher (FootballStretcher) and the Tank. Step 5: the bought referee (FootballReferee), concejal Barullo in the
+## stand and the case on top (FootballCase). Every number here is (propuesta).
 
 const GOAL_MODEL := preload("res://assets/models/football_goal.glb")
 const BENCH_MODEL := preload("res://assets/models/team_bench.glb")
@@ -41,6 +42,9 @@ const CUP_TABLE_AT := Vector3(0, 0, 15.5)
 const CUP_TABLE := Vector3(1.6, 0.8, 0.8)
 const STALL_AT := Vector3(17, 0, 19)
 const STALL := Vector3(2.4, 2.2, 1.6)
+## The referee's first spot and Barullo's seat in the stand (the middle step).
+const REFEREE_AT := Vector3(0, 0, 6)
+const BARULLO_AT := Vector3(4, 1.05, -21.1)
 
 const GRASS := Color(0.32, 0.62, 0.28)
 const GRASS_DARK := Color(0.27, 0.55, 0.24)
@@ -66,6 +70,10 @@ var politician: Politician
 var lustre: FootballLustre
 ## The stretcher the deputy goes to his bench on (step 4).
 var stretcher: FootballStretcher
+## The bought referee, the concejal who bought him and the case (step 5).
+var referee: FootballReferee
+var barullo: RallyFan
+var case: FootballCase
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -106,9 +114,30 @@ func _ready() -> void:
 	match_clock.setup(self, lustre)
 	add_child(match_clock)
 	match_clock.started.connect(give_bibs)
+	barullo = RallyFan.new()
+	barullo.name = "Barullo"
+	barullo.look = "concejal"
+	barullo.position = BARULLO_AT
+	# They face -Z: turned to the field.
+	barullo.rotation.y = PI
+	add_child(barullo)
+	referee = FootballReferee.new()
+	referee.name = "Referee"
+	referee.pitch = self
+	referee.barullo = barullo
+	referee.position = CENTER + REFEREE_AT + Vector3.UP * 0.05
+	add_child(referee)
+	var escort := OwnerEscort.attach(referee, car)
+	escort.in_car_hint = "HINT_REFEREE_IN_CAR"
 	city.transform = CityLayout.anchor("football_pitch")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+	case = FootballCase.new()
+	case.name = "Case"
+	case.pitch = self
+	case.shift_screen = $ShiftScreen
+	add_child(case)
+	case.start((city as City).comisario)
 
 
 ## The goal line's middle at `side` (-1 west, 1 east), in the lot's space.
