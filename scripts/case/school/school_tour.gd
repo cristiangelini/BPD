@@ -43,6 +43,8 @@ var placed := false
 ## Seconds he stays where he is no matter what (later steps).
 var hold_left := 0.0
 var bar: ProgressBar
+## The box at the top of the screen with the bar; the questions add their gaffe count under it (step 4).
+var hud_box: VBoxContainer
 ## Online, a guest's tour: the host's decides where he is (later step).
 var follower := false
 var _path: Array[Vector3] = []
@@ -285,6 +287,7 @@ func _build_hud() -> void:
 	var hud := CanvasLayer.new()
 	hud.name = "TourHud"
 	var box := VBoxContainer.new()
+	hud_box = box
 	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	box.offset_top = 12.0
 	var title := Label.new()

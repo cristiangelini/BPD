@@ -18,7 +18,10 @@ const DRIP_EVERY := 3.0
 const PUDDLE_RADIUS := 2.2
 const PUDDLE_SECONDS := 25.0
 const PUDDLE_GRIP := 0.2
-const PUDDLE_COLORS: Array[Color] = [Color(0.95, 0.45, 0.65), Color(0.35, 0.8, 0.62), Color(0.85, 0.65, 0.35)]
+const PUDDLE_COLORS: Array[Color] = [Color(0.95, 0.45, 0.65), Color(0.35, 0.8, 0.62), Color(0.85, 0.65, 0.35),
+	Color(0.88, 0.93, 0.97)]
+## The last of PUDDLE_COLORS: the floor polisher's wax (politico-escuela.md), as slippery as ice cream.
+const WAX := 3
 ## The furniture: model, collision size and weight (kg); at most this many on the street.
 const FURNITURE := [
 	{"model": preload("res://assets/models/falling_sofa.glb"), "size": Vector3(1.8, 0.9, 0.8), "mass": 60.0},
@@ -94,7 +97,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	# Online the host drops them and tells the guests (a guest's furniture is the host's, copied by NpcSync).
-	if case.suspect_id == "ice_cream" and case.chasing and not case.stopped and not case.follower:
+	if case.suspect_id in ["ice_cream", SuspectCar.FLOOR_POLISHER] and case.chasing and not case.stopped and not case.follower:
 		_drip_left -= delta
 		if _drip_left <= 0.0:
 			_drip_left = DRIP_EVERY
@@ -136,7 +139,7 @@ func on_puddle(at: Vector3) -> bool:
 func drip() -> MeshInstance3D:
 	var at := _behind()
 	at.y = 0.02
-	var color := _rng.randi() % PUDDLE_COLORS.size()
+	var color := WAX if case.suspect_id == SuspectCar.FLOOR_POLISHER else _rng.randi() % WAX
 	if case.online and not case.follower:
 		case.online.tell_chase("shown_puddle", [color, at])
 	return puddle_at(color, at)
