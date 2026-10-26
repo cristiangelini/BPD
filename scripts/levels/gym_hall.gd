@@ -15,6 +15,11 @@ const RACK_MODEL := preload("res://assets/models/gym_dumbbell_rack.glb")
 const BAG_MODEL := preload("res://assets/models/gym_punching_bag.glb")
 const LOCKERS_MODEL := preload("res://assets/models/station_lockers.glb")
 const DUMBBELL_MODEL := preload("res://assets/models/gym_dumbbell.glb")
+const KEY_POT_SCENE := preload("res://scenes/props/key_pot.tscn")
+const BAG_SCENE := preload("res://assets/models/gym_bag.glb")
+const NOTEBOOK_MODEL := preload("res://assets/models/deposit_book.glb")
+const SAFE_MODEL := preload("res://assets/models/gym_safe_weight.glb")
+const SHAKE_MODEL := preload("res://assets/models/gym_shake.glb")
 const HALF_X := 9.0
 const HALF_Z := 8.0
 const FLOOR_TOP := 0.06
@@ -56,6 +61,22 @@ const TRAIN_SPOTS: Array[Vector3] = [
 const DUMBBELLS: Array[Vector3] = [Vector3(-8.6, 1.0, -0.5), Vector3(-8.6, 1.0, 0.0), Vector3(-8.6, 1.0, 0.4),
 	Vector3(-8.6, 1.0, 0.9)]
 const DUMBBELL_SIZE := Vector3(0.34, 0.14, 0.14)
+## The 6 pieces of evidence (the seed picks 3, ClubEvidence) and where they are: the notebook of the "lifted" safes
+## on the office's desk, the whiteboard with the next job on the office's east wall (a photo), the stolen safe painted
+## as a 40 kg weight on the mat (it counts once lifted SAFE_LIFT, which takes two cops), the video of two members
+## talking about the job, el Toro's shake with a map inside on a corner of the ring, and the moving truck's ticket in a
+## locker (E). The office key is in a gym bag on the locker room's bench.
+const EVIDENCE_KINDS: Array[String] = ["notebook", "whiteboard", "safe", "recording", "shake", "ticket"]
+const NOTEBOOK_AT := Vector3(6.2, FLOOR_TOP + 0.84, -7.2)
+const WHITEBOARD_AT := Vector3(HALF_X - 0.2, 1.5, -6.2)
+const SAFE_AT := Vector3(-6.4, FLOOR_TOP + 0.26, 0.2)
+const SAFE_KG := 40.0
+const SAFE_LIFT := 0.25
+const SHAKE_AT := Vector3(4.3, FLOOR_TOP + 0.65, -2.5)
+const TICKET_AT := Vector3(-4.2, FLOOR_TOP + 1.2, -7.35)
+const KEY_BAG_AT := Vector3(-6.0, FLOOR_TOP + 0.44, -6.0)
+## Two members this close talk about the job (the recording).
+const TALK_PAIR := 2.6
 ## How many members train, of the 12 spots; the rest are for the cops.
 const MEMBERS := 9
 ## The receptionist stands between the counter and the front wall, looking at the entrance.
@@ -93,7 +114,9 @@ func _ready() -> void:
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, BACK_Z)
 	add_child(office_door)
 	_add_people()
+	_add_evidence()
 	place_in_city("gym")
+	start_case()
 
 
 ## El Toro runs off from the street, out of the entrance (step 5).
@@ -189,6 +212,95 @@ func _add_people() -> void:
 	routine.treadmill_at = treadmill_at
 	add_child(routine)
 	suspicion.watch_routine(routine)
+
+
+## The 3 pieces of evidence the seed picks (ClubEvidence) and the office key in a gym bag in the locker room.
+func _add_evidence() -> void:
+	evidence = ClubEvidence.new()
+	evidence.name = "Evidence"
+	evidence.held_kinds.assign(["notebook", "shake"])
+	evidence.talk_key = "GYM_TALK_%d"
+	add_child(evidence)
+	var pair := _talking_pair()
+	var available := EVIDENCE_KINDS.duplicate()
+	if pair.is_empty():
+		available.erase("recording")
+	evidence.kinds = ClubEvidence.draw(case_seed, available)
+	var bag: KeyPot = KEY_POT_SCENE.instantiate()
+	bag.name = "KeyBag"
+	bag.has_key = true
+	bag.prompt = "PROMPT_GYM_BAG"
+	add_child(bag)
+	bag.position = KEY_BAG_AT
+	bag.get_node("Pot").hide()
+	bag.get_node("Plant").hide()
+	bag.add_child(BAG_SCENE.instantiate())
+	for kind: String in evidence.kinds:
+		match kind:
+			"notebook":
+				_item(kind, NOTEBOOK_MODEL, Vector3(0.22, 0.04, 0.3), 0.3, NOTEBOOK_AT)
+			"shake":
+				_item(kind, SHAKE_MODEL, Vector3(0.11, 0.24, 0.11), 0.6, SHAKE_AT)
+			"safe":
+				_item(kind, SAFE_MODEL, Vector3(0.5, 0.5, 0.5), SAFE_KG, SAFE_AT)
+			"whiteboard":
+				_spot(kind, WHITEBOARD_AT, Vector3(0.1, 1.0, 1.6), true)
+				_build.mesh_box(WHITEBOARD_AT + Vector3(0.06, 0, 0), Vector3(0.02, 1.0, 1.6), Color(0.97, 0.97, 0.97))
+				# The plan: a safe drawn as a box, an arrow to a truck, and the strong arms that carry it.
+				_build.mesh_box(WHITEBOARD_AT + Vector3(0.04, 0.15, -0.45), Vector3(0.01, 0.3, 0.3), Color(0.1, 0.1, 0.1))
+				_build.mesh_box(WHITEBOARD_AT + Vector3(0.04, 0.15, 0.05), Vector3(0.01, 0.04, 0.5), Color(0.85, 0.1, 0.1))
+				_build.mesh_box(WHITEBOARD_AT + Vector3(0.04, 0.1, 0.5), Vector3(0.01, 0.25, 0.4), Color(0.15, 0.3, 0.8))
+				_build.mesh_box(WHITEBOARD_AT + Vector3(0.04, -0.3, 0.0), Vector3(0.01, 0.04, 1.2), Color(0.1, 0.1, 0.1))
+			"ticket":
+				_spot(kind, TICKET_AT, Vector3(0.5, 0.6, 0.2), false)
+				_build.mesh_box(TICKET_AT + Vector3(0, -0.15, 0.06), Vector3(0.14, 0.08, 0.01), Color(1.0, 0.85, 0.3))
+			"recording":
+				evidence.talkers.assign(pair)
+				for member: ClubMember in pair:
+					member.distracted = true
+
+
+## A piece of evidence to grab, lying at `at`.
+func _item(kind: String, model: PackedScene, size: Vector3, kg: float, at: Vector3) -> void:
+	var item := ClubEvidence.make_item("Gym_" + kind, model, size, kg)
+	add_child(item)
+	item.position = at
+	evidence.items[kind] = item
+
+
+## A piece of evidence that stays put, a box of `size` around `at`: photographed, or searched with E.
+func _spot(kind: String, at: Vector3, size: Vector3, photo: bool) -> void:
+	var spot := ClubEvidenceSpot.new()
+	spot.name = "Evidence_" + kind
+	spot.kind = kind
+	spot.photo = photo
+	spot.prompt_prefix = "PROMPT_GYM_"
+	spot.evidence = evidence
+	add_child(spot)
+	spot.position = at
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = size
+	shape.shape = box
+	spot.add_child(shape)
+
+
+## Two members training by each other (the recording's pair), or none.
+func _talking_pair() -> Array[ClubMember]:
+	for first in members:
+		for second in members:
+			if first != second and first.position.distance_to(second.position) < TALK_PAIR:
+				return [first, second]
+	return []
+
+
+## Host: the painted safe counts once it's off the mat, which takes two cops (40 kg); the coins inside jingle.
+func _physics_process(_delta: float) -> void:
+	var safe: Node3D = evidence.items.get("safe") if evidence else null
+	if not multiplayer.is_server() or not safe or evidence.done.has("safe"):
+		return
+	if (global_transform.affine_inverse() * safe.global_position).y > SAFE_AT.y + SAFE_LIFT:
+		evidence.mark("safe")
 
 
 ## Floor, outer walls with the entrance and the window, the roof, the sign, the reception and the lights.

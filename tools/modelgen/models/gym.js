@@ -1,4 +1,4 @@
-// The gym "Músculo de Acero" (docs/diseno/infiltracion-gimnasio.md, step 2): its machines. Each faces +Z with its
+// The gym "Hierro Puro" (docs/diseno/infiltracion-gimnasio.md, step 2): its machines. Each faces +Z with its
 // origin on the floor at its middle. Placeholder.
 import { Builder, mat, V, THREE } from '../lib.js';
 
@@ -64,9 +64,42 @@ export function buildPunchingBag() {
 	return b.build();
 }
 
+// The stolen safe painted black as a 40 kg weight (step 4): a 0.5 m cube, its dial and handle still showing, a white
+// band where "40 KG" is painted and a chip where the grey steel shows. Its origin at its middle (it's grabbed).
+export function buildSafeWeight() {
+	const b = new Builder('gym_safe_weight');
+	box(b, 'body', black, 0.5, 0.5, 0.5, 0, 0, 0);
+	box(b, 'band', mat('gym_paint_white', 0xf2f2ee), 0.505, 0.1, 0.505, 0, 0.12, 0);
+	box(b, 'chip', steel, 0.12, 0.08, 0.01, -0.12, -0.12, 0.251);
+	b.add('dial', steel, new THREE.CylinderGeometry(0.06, 0.06, 0.03, 12), { pos: V(0.08, -0.06, 0.26), rot: [Math.PI / 2, 0, 0] });
+	box(b, 'handle', steel, 0.03, 0.14, 0.03, -0.16, -0.04, 0.27);
+	return b.build();
+}
+
+// El Toro's protein shake (step 4): a shaker with a purple shake, a black lid and a rolled map sticking out of it.
+// Its origin at its middle (it's grabbed).
+export function buildShake() {
+	const b = new Builder('gym_shake');
+	b.add('cup', mat('gym_shaker', 0xd8d8e0, { opacity: 0.6, transparent: true }), new THREE.CylinderGeometry(0.055, 0.045, 0.18, 10), { pos: V(0, -0.01, 0) });
+	b.add('shake', mat('gym_shake_purple', 0x8a3aa8), new THREE.CylinderGeometry(0.05, 0.042, 0.13, 10), { pos: V(0, -0.03, 0) });
+	b.add('lid', black, new THREE.CylinderGeometry(0.058, 0.058, 0.03, 10), { pos: V(0, 0.09, 0) });
+	b.add('map', mat('gym_map', 0xf0e0a0), new THREE.CylinderGeometry(0.015, 0.015, 0.12, 6), { pos: V(0.02, 0.13, 0), rot: [0, 0, 0.2] });
+	return b.build();
+}
+
+// A gym bag on the locker room's bench, where the office key is (step 4): a blue duffel with black straps. Its origin
+// on the floor.
+export function buildGymBag() {
+	const b = new Builder('gym_bag');
+	b.add('bag', mat('gym_bag_blue', 0x2a4aa8), new THREE.CylinderGeometry(0.15, 0.15, 0.5, 10), { pos: V(0, 0.15, 0), rot: [0, 0, Math.PI / 2] });
+	for (const x of [-0.12, 0.12]) b.add('straps', black, new THREE.TorusGeometry(0.155, 0.015, 4, 12), { pos: V(x, 0.15, 0), rot: [0, Math.PI / 2, 0] });
+	b.add('handle', black, new THREE.TorusGeometry(0.1, 0.015, 4, 10, Math.PI), { pos: V(0, 0.3, 0) });
+	return b.build();
+}
+
 export const models = {
 	gym_treadmill: buildTreadmill, gym_bench: buildBench, gym_dumbbell_rack: buildDumbbellRack, gym_dumbbell: buildDumbbell,
-	gym_punching_bag: buildPunchingBag,
+	gym_punching_bag: buildPunchingBag, gym_safe_weight: buildSafeWeight, gym_shake: buildShake, gym_bag: buildGymBag,
 };
 
 export const views = {
@@ -79,5 +112,13 @@ export const views = {
 			{ name: 'gym_punching_bag', pos: [3.2, 0, 0.2] },
 		],
 		cam: { pos: [0.6, 2.4, 5.8], target: [0.6, 0.8, 0], fov: 45 },
+	},
+	gym_evidence: {
+		items: [
+			{ name: 'gym_safe_weight', pos: [-0.6, 0.25, 0], rotY: 0.4 },
+			{ name: 'gym_shake', pos: [0.3, 0.09, 0.3], rotY: 0.3 },
+			{ name: 'gym_bag', pos: [0.9, 0, -0.2], rotY: -0.4 },
+		],
+		cam: { pos: [0.2, 1.0, 1.8], target: [0.1, 0.2, 0], fov: 45 },
 	},
 };

@@ -94,6 +94,13 @@ La rutina copia la forma de `MimeRehearsal` (host decide, cada PC juzga y avisa)
    cansado no. Sin aire, el policía se rinde: jadea 2 s sin moverse y suma +30 una vez por rutina. Afuera del
    gimnasio no cuenta **(propuesta)**.
 4. Las pruebas y el caso (variante "gym"): las 6 pruebas, esposar al Toro, el sueldo y el interrogatorio.
+   Hecho así: la libreta (sobre el escritorio de la oficina) y la foto del pizarrón (pared este de la oficina, con una
+   caja, una flecha y un camión dibujados); la llave de la oficina está en un bolso azul en el banco del vestuario
+   (E). La caja fuerte pintada de pesa (negra con una franja blanca, 40 kg) está sobre la alfombra de las pesas y
+   cuenta cuando se levanta 25 cm del piso, cosa que un policía solo no puede (carga 25 kg). El video de dos socios
+   que entrenan juntos, el batido con un mapa en una esquina del ring y el ticket del camión en un casillero
+   entreabierto (E). Esposar a un socio los descubre. Mientras no esté la huida trotando (paso 5), el Toro se escapa a
+   pie como el Oso **(propuesta)**.
 5. La huida trotando, el sorteo de "Jugar" en quintos (club, coro, mimos, fiesta y gimnasio) y online.
 
 ## Preguntas para Cristian (decisión 172)

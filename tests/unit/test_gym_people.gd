@@ -52,8 +52,8 @@ func test_members_gossip_and_el_toro_has_his_own_lines() -> void:
 	var cop: Cop = gym.get_node("Cop")
 	gym.members[0].use(cop)
 	assert_true(gym.members[0].said().begins_with("GYM_GOSSIP_"))
-	gym.members[0].cuffed(5.0)
-	assert_eq(gym.members[0].said(), "GYM_CUFFED")
+	# Cuffing a member gives the cops away (the case, step 4), so they shout that instead.
+	assert_eq(ClubMember.TALK[gym.members[0].look][3], "GYM_CUFFED")
 	gym.toro.use(cop)
 	assert_true(gym.toro.said().begins_with("TORO_"))
 	gym.toro.cuffed(5.0)
