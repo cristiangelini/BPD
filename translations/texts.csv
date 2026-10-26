@@ -4987,6 +4987,29 @@ TRIAL_JUDGE_SUSTAINED_0,"Ha lugar. Esa pregunta no cuenta. Siguiente.","Sustaine
 TRIAL_JUDGE_SUSTAINED_1,"Bueno, bueno, no grite. Paso a otra cosa.","Fine, fine, no need to shout. Moving on.","Tá bom, tá bom, não grite. Vamos para outra."
 TRIAL_JUDGE_INNOCENT,"Todo coincide... más o menos. ¡Inocentes! Pueden irse.","Everything matches... more or less. Innocent! You may go.","Tudo confere... mais ou menos. Inocentes! Podem ir."
 TRIAL_GUARD_FREE,"Ya escucharon a la jueza. Afuera, y no vuelvan.","You heard the judge. Out, and don't come back.","Vocês ouviram a juíza. Para fora, e não voltem."
+MENU_GYM_RAID,Gimnasio (allanamiento) (prueba),Gym (raid) (test),Academia (batida) (teste)
+HINT_TILL_KEY_GYM,¡Una llave! Abre la oficina y el vestuario.,A key! It opens the office and the locker room.,Uma chave! Abre o escritório e o vestiário.
+GYM_MIRROR_BROKEN,"¡Siete años de mala suerte, oficial!","Seven years of bad luck, officer!","Sete anos de azar, policial!"
+GYM_TREADMILL_BROKEN,¡Se quemó la cinta!,The treadmill burnt out!,A esteira queimou!
+GYM_RAID_TALK_0,"Vengo todos los días y no bajo ni un gramo. Pero la cuota es baratísima.","I come every day and don't lose a gram. But the fee is dirt cheap.","Venho todo dia e não perco nem um grama. Mas a mensalidade é baratíssima."
+GYM_RAID_TALK_1,"¿Viste la foto del récord? 300 kilos. Yo no le vi levantar ni la toalla.","Seen the record photo? 300 kilos. I've never seen him lift even a towel.","Viu a foto do recorde? 300 quilos. Nunca o vi levantar nem a toalha."
+GYM_RAID_TALK_2,"El profe se compró una moto de oro. Dice que es por las clases de aeróbic.","The coach bought a gold motorbike. He says it's from the aerobics classes.","O professor comprou uma moto de ouro. Diz que é das aulas de aeróbica."
+GYM_RAID_TALK_3,"Uno, dos, uno, dos… Perdón, oficial, si paro pierdo la cuenta.","One, two, one, two… Sorry, officer, if I stop I lose count.","Um, dois, um, dois… Desculpe, policial, se eu parar perco a conta."
+GYM_RAID_TALK_4,"Lula sabe todo lo que pasa acá, pero solo charla corriendo.","Lula knows everything that goes on here, but she only chats while running.","A Lula sabe tudo o que acontece aqui, mas só conversa correndo."
+GYM_RAID_TALK_5,"No toques el espejo, que el profe se mira ahí todo el día.","Don't touch the mirror, the coach looks at himself in it all day.","Não toque no espelho, o professor se olha nele o dia todo."
+LOC_behind_ring,detrás del ring,behind the ring,atrás do ringue
+LOC_between_benches,entre los bancos de pesas,between the weight benches,entre os bancos de musculação
+LOC_in_office_corner,en un rincón de la oficina del profe,in a corner of the coach's office,num canto do escritório do professor
+LOC_in_locker_room,en el vestuario,in the locker room,no vestiário
+LOC_behind_reception,detrás de la recepción,behind the reception,atrás da recepção
+LOC_by_treadmills,al lado de las cintas,next to the treadmills,ao lado das esteiras
+LOC_on_dumbbell_rack,en el estante de las mancuernas,on the dumbbell rack,na prateleira dos halteres
+LOC_in_towel_bin,en el tacho de las toallas,in the towel bin,no cesto de toalhas
+LOC_on_locker_bench,en el banco del vestuario,on the locker room bench,no banco do vestiário
+LOC_on_ring_corner,en una esquina del ring,on a corner of the ring,num canto do ringue
+LOC_on_profe_desk,en el escritorio del profe,on the coach's desk,na mesa do professor
+LOC_on_reception,arriba de la recepción,on top of the reception,em cima da recepção
+CASE_FAILED_LAWYER_GYM,El profe Fito llamó al abogado del gimnasio. Caso perdido.,Coach Fito called the gym's lawyer. Case lost.,O professor Fito ligou para o advogado da academia. Caso perdido.
 BRIEF_HOTEL_A_necklace,"Anoche, en el Hotel Gran Siesta, a la señora Perlita le robaron el collar de perlas de la caja fuerte de la suite.","Last night, at the Hotel Gran Siesta, señora Perlita's pearl necklace was stolen from the suite's safe.","Ontem à noite, no Hotel Gran Siesta, roubaram o colar de pérolas da senhora Perlita do cofre da suíte."
 BRIEF_HOTEL_A_toupee,"Anoche, en el Hotel Gran Siesta, robaron el bisoñé de oro del tenor, el que usa para cantar los sábados. Estaba en la caja fuerte de la suite.","Last night, at the Hotel Gran Siesta, the tenor's gold toupee was stolen, the one he sings in on Saturdays. It was in the suite's safe.","Ontem à noite, no Hotel Gran Siesta, roubaram a peruca de ouro do tenor, a que ele usa para cantar aos sábados. Estava no cofre da suíte."
 BRIEF_HOTEL_A_pillow,"Anoche, en el Hotel Gran Siesta, robaron la Almohada de Oro, el premio a la mejor siesta de la ciudad. La habían guardado en la caja fuerte de la suite.","Last night, at the Hotel Gran Siesta, the Golden Pillow was stolen: the prize for the city's best nap. It was kept in the suite's safe.","Ontem à noite, no Hotel Gran Siesta, roubaram o Travesseiro de Ouro, o prêmio da melhor soneca da cidade. Estava guardado no cofre da suíte."

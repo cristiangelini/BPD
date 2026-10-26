@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Gym raid, step 1: the gym "Hierro Puro" as a place to raid (--place=gym_raid and a menu test button): the infiltration's hall without el Toro's band, six common members, the stereo and the till on the reception, the record wall, a mirror that cracks when something hits it fast and treadmills that burn out when something heavy lands on them (a fine each), the office and the locker room locked with their key in the till, and 12 hiding spots.
 - Gym raid, models: placeholder models for el profe Fito (the aerobics teacher), Lula (the receptionist), the reception's stereo, the record wall, the record bar and a shop mannequin (allanamiento-gimnasio.md, decision 250).
 - Cake lab, step 7: online: the host runs chef Bruno and the guests follow him, the oven knob, Pocha's tray and the stories' props work from any PC, a flour sack burst on the host bursts everywhere, the stolen book comes out of its cake on every PC, and the robot arm creams only each PC's own cop. Also fixes a race in the insurance office's online phone test.
 - Cake lab, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office and the cake lab in sevenths.
