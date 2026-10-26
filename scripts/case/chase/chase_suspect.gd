@@ -48,6 +48,7 @@ const MODELS := {
 	"flambe": preload("res://assets/models/npc_flambe.glb"),
 	"alfil": preload("res://assets/models/npc_alfil.glb"),
 	"cromado": preload("res://assets/models/npc_cromado.glb"),
+	"martillo": preload("res://assets/models/npc_martillo.glb"),
 	# El Oso, out of the robbers' van or off his run with the sack (robo-banco.md).
 	"oso": preload("res://assets/models/npc_ladron_oso.glb"),
 	# El Conejo, who robbed the town bank alone (robo-banco-pueblo.md).
