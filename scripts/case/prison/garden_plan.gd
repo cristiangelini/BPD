@@ -12,7 +12,8 @@ extends Node3D
 ## mistake is out too (`wrong`), and the nearest gardener is offended. Step 5: while a giant stands, every CLIMB_EVERY
 ## seconds the nearest gardener goes up it (GardenClimber): over the wall he's `escaped`; pulled down, cuffed and
 ## walked into a cell (the punishment cell: the block is locked) he's `caught`. Step 6: garden time lasts TIME
-## seconds (`ended`).
+## seconds (`ended`). Step 7: on a guest the host's plan decides (`follower`); its counts and clock come with the case
+## (net_state), the plants, the gardeners and the climbers by NpcSync.
 
 signal bean_grew(plant: GardenPlant, stage: int)
 signal bean_pulled(plant: GardenPlant, stage: int)
@@ -72,7 +73,11 @@ var down := 0
 var _climb_left := {}
 var over := false
 ## A guest's copy (step 7): the host's one decides.
-var follower := false
+var follower := false:
+	set(value):
+		follower = value
+		for plant in plants:
+			plant.follower = value
 var _rng := RandomNumberGenerator.new()
 
 
@@ -86,6 +91,7 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 		_bed(i)
 	var beds := range(BEDS)
 	_shuffle(beds)
+	child_entered_tree.connect(_on_child_entered)
 	for bed: int in beds.slice(0, MAGIC):
 		var bean := plants[bed * PER_BED + _rng.randi_range(0, PER_BED - 1)]
 		bean.magic = true
@@ -312,6 +318,35 @@ func _nearest_gardener(plant: GardenPlant) -> YardInmate:
 				< best.global_position.distance_to(plant.global_position):
 			best = gardener
 	return best
+
+
+## A guest's copy of a climber (NpcSync makes it here): its way to a cell too, so the guest's cops see the prompt to
+## walk him there.
+func _on_child_entered(node: Node) -> void:
+	if not follower or not node is GardenClimber or climbers.has(node):
+		return
+	var climber := node as GardenClimber
+	climber.prison = prison
+	climbers.append(climber)
+	(func() -> void: BlackoutEscort.to_block(climber, prison).follower = true).call_deferred()
+
+
+## For a guest's case (GardenCase.snapshot): the clock and the counts.
+func net_state() -> Array:
+	return [started, time, over, pulled, early, wrong, escaped, caught, down]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] and not started:
+		started = true
+	time = state[1]
+	over = state[2]
+	pulled = state[3]
+	early = state[4]
+	wrong = state[5]
+	escaped = state[6]
+	caught = state[7]
+	down = state[8]
 
 
 func time_left() -> float:

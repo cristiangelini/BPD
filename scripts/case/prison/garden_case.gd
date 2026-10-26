@@ -5,7 +5,8 @@ extends Node
 ## garden time is over (GardenPlan.ended): SALARY, PER_ESCAPED less for each one over the wall, PER_EARLY more for each
 ## magic bean pulled before its stage 4, PER_DOWN more for each one pulled off a giant and PER_WRONG less for each
 ## vegetable pulled by mistake. Quota of its own, like the other prison cases. With LOSE_AT over the wall the case is
-## lost. Every number here is (propuesta).
+## lost. Step 7: online the host's case decides and a guest's follows it (CaseSync, snapshot). Every number here is
+## (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 6.0
@@ -27,7 +28,11 @@ var tip_given := false
 var solved_it := false
 var failed_reason := ""
 var shift_over := false
-var follower := false
+var follower := false:
+	set(value):
+		follower = value
+		if prison:
+			prison.garden.follower = value
 var online: CaseSync
 var _result := {}
 var _refresh_left := 0.0
@@ -153,6 +158,23 @@ func _show_result(result: Dictionary) -> void:
 			result.campaign.promoted)
 		over = result.campaign.over
 	shift_screen.get_node("%AgainButton").visible = not over and not follower
+
+
+## What every guest's case shows (CaseSync).
+func snapshot() -> Dictionary:
+	return {"tip": tip_given, "plan": prison.garden.net_state(), "solved": solved_it, "failed": failed_reason,
+		"result": _result}
+
+
+func apply_snapshot(state: Dictionary) -> void:
+	if state.tip:
+		give_tip()
+	prison.garden.apply_net_state(state.plan)
+	solved_it = state.solved
+	failed_reason = state.failed
+	checklist.show_rows(rows())
+	if not state.result.is_empty() and not shift_over:
+		_show_result(state.result)
 
 
 ## The planilla's rows, in the shape CaseChecklist takes.
