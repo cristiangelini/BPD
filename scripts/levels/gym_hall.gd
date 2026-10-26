@@ -14,6 +14,7 @@ const BENCH_MODEL := preload("res://assets/models/gym_bench.glb")
 const RACK_MODEL := preload("res://assets/models/gym_dumbbell_rack.glb")
 const BAG_MODEL := preload("res://assets/models/gym_punching_bag.glb")
 const LOCKERS_MODEL := preload("res://assets/models/station_lockers.glb")
+const DUMBBELL_MODEL := preload("res://assets/models/gym_dumbbell.glb")
 const HALF_X := 9.0
 const HALF_Z := 8.0
 const FLOOR_TOP := 0.06
@@ -51,6 +52,10 @@ const TRAIN_SPOTS: Array[Vector3] = [
 	Vector3(-2.6, 0, -1.4), Vector3(-1.0, 0, -1.4), Vector3(-0.2, 0, 0.0), Vector3(5.4, 0, -0.8),
 	Vector3(-1.6, 0, 2.6),
 ]
+## The dumbbells for the routine's weight, lying on the rack.
+const DUMBBELLS: Array[Vector3] = [Vector3(-8.6, 1.0, -0.5), Vector3(-8.6, 1.0, 0.0), Vector3(-8.6, 1.0, 0.4),
+	Vector3(-8.6, 1.0, 0.9)]
+const DUMBBELL_SIZE := Vector3(0.34, 0.14, 0.14)
 ## How many members train, of the 12 spots; the rest are for the cops.
 const MEMBERS := 9
 ## The receptionist stands between the counter and the front wall, looking at the entrance.
@@ -71,6 +76,8 @@ var office_door: FrontDoor
 var free_spots: Array[Vector3] = []
 var toro: ClubMember
 var doorman: ClubDoorman
+## El Toro's routine (step 3).
+var routine: GymRoutine
 var _build: PlaceBuilder
 
 
@@ -124,7 +131,8 @@ func treadmill_at(at: Vector3) -> int:
 
 
 ## The members on training spots drawn with the seed (on a treadmill looking out the window, elsewhere looking at the
-## hall), el Toro in front of the mirror looking at them, the receptionist and their suspicion.
+## hall), el Toro in front of the mirror looking at them, the receptionist, their suspicion, the dumbbells on the rack and
+## el Toro's routine.
 func _add_people() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(["gym members", case_seed])
@@ -166,6 +174,21 @@ func _add_people() -> void:
 	suspicion.inside = is_inside
 	suspicion.in_back_room = in_back_room
 	add_child(suspicion)
+	for i in DUMBBELLS.size():
+		var dumbbell := ClubEvidence.make_item("Dumbbell%d" % i, DUMBBELL_MODEL, DUMBBELL_SIZE, GymRoutine.DUMBBELL_KG)
+		dumbbell.add_to_group("gym_dumbbells")
+		add_child(dumbbell)
+		dumbbell.position = DUMBBELLS[i] + Vector3(0, FLOOR_TOP, 0)
+		dumbbell.rotation.y = PI / 2
+	routine = GymRoutine.new()
+	routine.name = "Routine"
+	routine.case_seed = case_seed
+	routine.toro = toro
+	routine.members = members
+	routine.inside = is_inside
+	routine.treadmill_at = treadmill_at
+	add_child(routine)
+	suspicion.watch_routine(routine)
 
 
 ## Floor, outer walls with the entrance and the window, the roof, the sign, the reception and the lights.

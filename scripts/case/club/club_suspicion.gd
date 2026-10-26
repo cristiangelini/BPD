@@ -54,6 +54,8 @@ var dance: ClubDance
 var rehearsal: MimeRehearsal
 ## The party's group photo, if the place has one.
 var photo: PartyPhoto
+## The gym's routine, if the place has one.
+var routine: GymRoutine
 ## Whether a world position is inside the club, and in its back rooms (GrandpaClub sets them).
 var inside: Callable = func(_at: Vector3) -> bool: return false
 var in_back_room: Callable = func(_at: Vector3) -> bool: return false
@@ -98,6 +100,12 @@ func watch_rehearsal(mimes: MimeRehearsal) -> void:
 func watch_photo(group_photo: PartyPhoto) -> void:
 	photo = group_photo
 	photo.missed.connect(_on_mimed_wrong)
+
+
+## Connects el Toro's routine not done, or given up (GymHall calls it): like the rehearsal, to the members who see it.
+func watch_routine(gym_routine: GymRoutine) -> void:
+	routine = gym_routine
+	routine.missed.connect(_on_mimed_wrong)
 
 
 func _on_mimed_wrong(cop: Cop, amount: float) -> void:
