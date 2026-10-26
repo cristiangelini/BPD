@@ -87,3 +87,9 @@ vergüenza de la que pasa solo."
   barras de luces con un foco sobre cada atril y el escritorio. Al este, el ala: recepción y escalera adelante, el
   camarín con el espejo atrás y, arriba del camarín, la sala de control con la consola de 8 m y 3 sillas detrás de un
   vidrio que mira al estudio. Modelos nuevos: `tv_lectern`, `tv_anchor_desk`, `tv_console` y `makeup_mirror`.
+- **Paso 2 (las cámaras y la pantalla):** `TvCamera`, 3 cámaras de 80 kg sobre ruedas (fricción 0,05 y freno 1,5)
+  entre la tribuna y el set, cada una apuntando a lo suyo (Malvón, la moderadora, Lustre). Se agarran como cualquier
+  cosa: un policía solo la arrastra despacio y dos rápido; nunca se vuelca (gira solo sobre el eje vertical). E la gira
+  hacia donde mira el policía. La que está al aire prende su luz roja y la pantalla gigante muestra en vivo lo que ve
+  (una cámara del motor en un SubViewport de 768 x 360, sin luz propia); al abrir el estudio está al aire la de Lustre.
+  `TvStudio.put_on_air(i)`, `camera_on_air()` y `TvCamera.frames(punto)` para saber si alguien sale en cuadro.

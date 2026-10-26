@@ -7,7 +7,8 @@ extends Node3D
 ## audience's stand of 3 steps at the front and the lighting rig hanging from the roof; on the east, a wing with the
 ## lobby and the stairs at the front and the makeup room at the back, and over the makeup room the control room, its
 ## console behind a window that looks down into the studio. The cops start in the station and drive here; --place=debate
-## opens it from Play. Every number here is (propuesta).
+## opens it from Play. Step 2: the 3 cameras on wheels (TvCamera) and the big screen, which shows live what the camera
+## on air sees. Every number here is (propuesta).
 
 const LECTERN_MODEL := preload("res://assets/models/tv_lectern.glb")
 const DESK_MODEL := preload("res://assets/models/tv_anchor_desk.glb")
@@ -53,6 +54,13 @@ const CONSOLE_AT := Vector3(6.3, 0, -6.0)
 const CHAIRS_X := 7.5
 const CHAIRS_Z: Array[float] = [-8.5, -6.0, -3.5]
 const MIRROR_AT := Vector3(11, 0, -10.6)
+## The 3 cameras between the stand and the set, each aimed at what it shoots: Malvón, the moderator and Lustre.
+const CAMERAS: Array[Vector3] = [Vector3(-10, 0, 0), Vector3(-6, 0, 1), Vector3(-2, 0, 0)]
+const SHOTS: Array[Vector3] = [Vector3(-11, 1.5, -6), Vector3(-6, 1.3, -8.5), Vector3(-1, 1.5, -6)]
+## The camera on air when the studio opens: Lustre's.
+const FIRST_ON_AIR := 2
+## The picture the screen shows, in pixels.
+const FEED_SIZE := Vector2i(768, 360)
 
 const WALL := Color(0.62, 0.7, 0.82)
 const BAND := Color(0.85, 0.2, 0.25)
@@ -63,15 +71,19 @@ const STAND := Color(0.45, 0.47, 0.52)
 const SEAT := Color(0.75, 0.2, 0.25)
 const RIG := Color(0.12, 0.12, 0.14)
 const GLASS := Color(0.7, 0.85, 0.95, 0.35)
-const SCREEN_OFF := Color(0.1, 0.2, 0.45)
 const ON_AIR := Color(0.95, 0.1, 0.12)
 const LOBBY := Color(0.93, 0.9, 0.82)
 
 ## The case's seed (who sits where, later steps).
 var case_seed := 0
-## The big screen over the set (step 2 shows the camera on air on it) and the red on-air light.
+## The big screen over the set and the red on-air light.
 var screen: MeshInstance3D
 var on_air: MeshInstance3D
+## The 3 cameras, which one is on air, and the picture it makes for the screen (step 2).
+var cameras: Array[TvCamera] = []
+var on_air_index := -1
+var feed: SubViewport
+var feed_camera: Camera3D
 var lecterns: Array[Node3D] = []
 var public: Array[RallyFan] = []
 var _build: PlaceBuilder
@@ -90,9 +102,41 @@ func _ready() -> void:
 	_build_studio()
 	_build_wing()
 	_seat_public()
+	_place_cameras()
+	put_on_air(FIRST_ON_AIR)
 	city.transform = CityLayout.anchor("tv_studio")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+
+
+## Puts camera `index` on air: its tally lights and the screen shows what it sees.
+func put_on_air(index: int) -> void:
+	on_air_index = index
+	for i in cameras.size():
+		cameras[i].on_air = i == index
+	_process(0.0)
+
+
+## The camera on air, or null.
+func camera_on_air() -> TvCamera:
+	return cameras[on_air_index] if on_air_index >= 0 and on_air_index < cameras.size() else null
+
+
+func _process(_delta: float) -> void:
+	var live := camera_on_air()
+	if live:
+		feed_camera.global_transform = live.lens()
+
+
+## The 3 cameras on their spots, each aimed at its shot.
+func _place_cameras() -> void:
+	for i in CAMERAS.size():
+		var camera := TvCamera.new()
+		camera.name = "Camera%d" % i
+		add_child(camera)
+		camera.position = CAMERAS[i] + Vector3.UP * FLOOR_TOP
+		camera.aim_at(to_global(SHOTS[i]))
+		cameras.append(camera)
 
 
 ## Whether a world position is inside the studio (not the wing).
@@ -167,14 +211,25 @@ func _build_studio() -> void:
 	var quad := QuadMesh.new()
 	quad.size = SCREEN
 	screen.mesh = quad
-	# Its own light, so the studio's spots don't show on it: the channel's card until step 2 puts the camera on it.
-	var card := StandardMaterial3D.new()
-	card.albedo_color = SCREEN_OFF
-	card.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	screen.material_override = card
+	# Its own light, so the studio's spots don't show on it: what the camera on air sees, live.
+	feed = SubViewport.new()
+	feed.name = "Feed"
+	feed.size = FEED_SIZE
+	feed.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	add_child(feed)
+	feed_camera = Camera3D.new()
+	feed_camera.name = "FeedCamera"
+	feed_camera.fov = TvCamera.FOV
+	feed.add_child(feed_camera)
+	var live := StandardMaterial3D.new()
+	live.albedo_color = Color.WHITE
+	live.albedo_texture = feed.get_texture()
+	live.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	screen.material_override = live
 	screen.position = SCREEN_AT
 	$Built.add_child(screen)
-	_label("PLACE_TV_STUDIO", SCREEN_AT + Vector3(0, 0, 0.02), 0.0, 110)
+	# The channel's logo in the corner, like on TV.
+	_label("PLACE_TV_STUDIO", SCREEN_AT + Vector3(SCREEN.x / 2 - 1.3, -SCREEN.y / 2 + 0.35, 0.02), 0.0, 36)
 	_build.mesh_box(SCREEN_AT + Vector3(0, 0, -0.06), Vector3(SCREEN.x + 0.3, SCREEN.y + 0.3, 0.1), RIG)
 	on_air = MeshInstance3D.new()
 	on_air.name = "OnAir"

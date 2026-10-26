@@ -85,14 +85,47 @@ export function buildMakeupMirror() {
 	return b.build();
 }
 
+// A studio camera (step 2): a heavy gray pedestal on 3 wheeled feet, a column, and the camera on top with its lens to
+// +Z, a hood, a viewfinder at the back, two pan handles and the red tally light on top (the game lights it when it's
+// on air). About 1.75 m tall. Its origin on the ground in the middle.
+export function buildCamera() {
+	const b = new Builder('tv_camera');
+	const gray = mat('tv_cam_gray', 0x6a6e76), dark = mat('tv_console', 0x34363d), black = mat('tv_black', 0x1e1f24);
+	const metal = mat('tv_metal', 0xb8bcc2), glass = mat('tv_lens', 0x6fa8dc, { metalness: 0.5, roughness: 0.2 });
+	const tally = mat('tv_tally', 0x7a1a1e);
+	for (let i = 0; i < 3; i++) {
+		const a = (i / 3) * Math.PI * 2 + Math.PI / 6;
+		const x = Math.sin(a) * 0.38, z = Math.cos(a) * 0.38;
+		box(b, 'base', gray, 0.1, 0.08, 0.42, x / 2, 0.16, z / 2, [0, a, 0]);
+		b.add('wheels', black, new THREE.CylinderGeometry(0.07, 0.07, 0.05, 10), { pos: V(x, 0.07, z), rot: [0, a, Math.PI / 2] });
+	}
+	b.add('base', gray, new THREE.CylinderGeometry(0.12, 0.16, 0.25, 10), { pos: V(0, 0.25, 0) });
+	b.add('column', metal, new THREE.CylinderGeometry(0.06, 0.06, 0.95, 8), { pos: V(0, 0.85, 0) });
+	b.add('column', gray, new THREE.CylinderGeometry(0.17, 0.17, 0.1, 10), { pos: V(0, 0.75, 0) });
+	box(b, 'head', dark, 0.3, 0.1, 0.3, 0, 1.36, 0);
+	box(b, 'body', dark, 0.32, 0.34, 0.55, 0, 1.58, 0.0);
+	b.add('lens', black, new THREE.CylinderGeometry(0.1, 0.12, 0.4, 12), { pos: V(0, 1.58, 0.47), rot: [Math.PI / 2, 0, 0] });
+	b.add('lens', glass, new THREE.CylinderGeometry(0.085, 0.085, 0.02, 12), { pos: V(0, 1.58, 0.675), rot: [Math.PI / 2, 0, 0] });
+	box(b, 'hood', black, 0.26, 0.04, 0.16, 0, 1.69, 0.68);
+	box(b, 'viewfinder', black, 0.24, 0.18, 0.12, 0, 1.6, -0.33);
+	box(b, 'viewfinder', glass, 0.2, 0.14, 0.01, 0, 1.6, -0.395);
+	for (const x of [-1, 1]) {
+		b.add('handles', metal, new THREE.CylinderGeometry(0.018, 0.018, 0.55, 6), { pos: V(x * 0.14, 1.38, -0.4), rot: [1.15, 0, 0] });
+		b.add('handles', black, new THREE.CylinderGeometry(0.03, 0.03, 0.12, 6), { pos: V(x * 0.14, 1.27, -0.65), rot: [1.15, 0, 0] });
+	}
+	box(b, 'tally', tally, 0.1, 0.05, 0.06, 0, 1.78, 0.2);
+	return b.build();
+}
+
 export const models = { tv_lectern: buildLectern, tv_anchor_desk: buildAnchorDesk, tv_console: buildConsole,
-	makeup_mirror: buildMakeupMirror };
+	makeup_mirror: buildMakeupMirror, tv_camera: buildCamera };
 
 export const views = {
 	tv_studio_props: {
 		items: [{ name: 'tv_lectern', pos: [-1.6, 0, 0.5], rotY: 0.3 }, { name: 'tv_anchor_desk', pos: [0.6, 0, -0.5] },
 			{ name: 'tv_lectern', pos: [2.8, 0, 0.5], rotY: -0.3 }, { name: 'makeup_mirror', pos: [-3.6, 0, -1.5], rotY: 0.4 },
-			{ name: 'tv_console', pos: [6.5, 0, -2.0], rotY: -0.9 }],
+			{ name: 'tv_console', pos: [6.5, 0, -2.0], rotY: -0.9 }, { name: 'tv_camera', pos: [-0.8, 0, 3.4], rotY: 2.6 },
+			{ name: 'tv_camera', pos: [1.8, 0, 3.2], rotY: 3.5 }],
 		cam: { pos: [1.0, 3.2, 8.5], target: [1.2, 0.9, -0.5], fov: 55 },
 	},
 };
