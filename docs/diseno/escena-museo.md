@@ -124,7 +124,15 @@ PlaceDraw y la custodia para el interrogatorio.
    vez. La señora Pincel, de traje violeta, collar de perlas y anteojos dorados, espera en el hall y dice lo caro
    que es todo. La estatua viviente, toda dorada con corona de laurel y un brazo arriba, está en el escalón del medio
    con el sombrero en el piso al lado; sin moneda, con E no se mueve ni un pelo **(propuesta)**.
-3. Las fichas (foto, huellas, dientes, pelo y bigote) y la coartada del baño con sus detalles.
+3. Las fichas (foto, huellas, dientes, pelo y bigote) y la coartada del baño con sus detalles. Hecho así: la ficha de
+   un guardia tiene seis partes y sabe solo lo que los policías le sacaron. La foto (el flash: "¡Prohibido sacar fotos
+   con flash en el museo!") da los anteojos y el talle; el kit da las huellas (sin harina ni guantes); una dona o un
+   pan, los dientes. Con las manos vacías: primero cuenta su coartada ("Estaba en el baño... Me acuerdo porque había
+   una araña colgando del techo"), después se saca la gorra (uno se niega hasta que le dan de comer) y después se le
+   tira del bigote: el de verdad queda ("¡AY!") y el postizo sale. El baño muestra los tres detalles verdaderos de la
+   partida y lo contrario de los otros tres: el rollo vacío o lleno, el espejo empañado o limpio, una gota en la
+   canilla, la araña colgando, el aromatizante violeta en el lavamanos, y el secador, que con E sopla o no. Los que
+   estuvieron de verdad dicen un detalle cierto; el culpable y uno o dos más, uno falso **(propuesta)**.
 4. El caso: la historia, lo robado y dónde está, las pistas con cómo se arruinan (la lustradora, el botón rojo) y la
    planilla; los láseres y la alarma.
 5. El final: tablero, cansancio, sueldo y la camioneta con los marcos.

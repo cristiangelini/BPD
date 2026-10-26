@@ -50,7 +50,22 @@ const VARIANTS := {
 			"witness": "glasses"},
 		"parts": ["photo", "prints", "teeth", "hair", "shoe", "honk"],
 	},
+	# The museum (escena-museo.md, decision 200): six guards alike who all say they were in the bathroom; a file knows
+	# what the cops got from its guard, his alibi included.
+	"museum": {
+		"shift": "crime_museum", "story": "museum",
+		"brief": ["BRIEF_MUSEUM_A_", "BRIEF_MUSEUM_B", "BRIEF_MUSEUM_C"], "go": "HINT_GO_MUSEUM",
+		"go_row": "OBJ_MUSEUM_GO", "look": "HINT_MUSEUM_LOOK", "files_row": "OBJ_MUSEUM_FILES",
+		"clue_line": "CLUE_MUSEUM_", "ruined_hint": "HINT_MUSEUM_RUINED_", "left": "HINT_GUARD_LEFT",
+		"who": "guard", "getaway": SuspectCar.BIKE,
+		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "recording": "mustache",
+			"witness": "glasses", "alibi": "liar"},
+		"parts": ["photo", "prints", "teeth", "hair", "mustache", "alibi"],
+	},
 }
+## At the museum, the traits each part of a guard's file tells.
+const GUARD_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
+	"mustache": ["mustache"], "alibi": ["liar", "detail"]}
 
 ## The comisario's verdict at the board: right, or wrong (and whether that lost the case).
 signal verdict(right: bool, lost: bool)
@@ -154,6 +169,8 @@ func texts() -> Dictionary:
 
 ## The suspects' traits for this seed, by variant.
 func _draw_suspects() -> Array[Dictionary]:
+	if texts() == VARIANTS.museum:
+		return GuardTraits.draw(case_seed)
 	return ClownTraits.draw(case_seed) if texts() == VARIANTS.circus else CookTraits.draw(case_seed)
 
 
@@ -192,10 +209,20 @@ func clown_part(clown_index: int, part: String) -> bool:
 	return true
 
 
+## A guard gave a part of his file (escena-museo.md): it goes to his file with what it says about him.
+func guard_part(index: int, part: String) -> void:
+	if follower:
+		return
+	var known: Dictionary = captured.get_or_add(index, {})
+	for trait_name: String in GUARD_PART_TRAITS[part]:
+		known[trait_name] = cooks[index][trait_name]
+	file_part(index, part)
+
+
 ## What a file says about each trait: the cook's own traits, or at the circus what the cops got from whoever wore its
-## sign.
+## sign, or at the museum what they got from the guard.
 func file_traits(id: int) -> Dictionary:
-	if texts() == VARIANTS.circus:
+	if texts() == VARIANTS.circus or texts() == VARIANTS.museum:
 		return captured.get(id, {})
 	return cooks[id]
 
@@ -504,6 +531,8 @@ func file_text(index: int) -> String:
 		lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
 		lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
 		return "\n".join(lines)
+	if texts() == VARIANTS.museum:
+		return _guard_file_text(index, who)
 	var lines := PackedStringArray(["%d. %s" % [index + 1, who.name]])
 	lines.append(tr("FILE_APRON") % tr("APRON_" + str(who.apron)))
 	lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
@@ -512,6 +541,25 @@ func file_text(index: int) -> String:
 	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if parts.hair else "?"))
 	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if parts.teeth else "?"))
 	lines.append(tr("FILE_PRINTS") if parts.prints else tr("FILE_NO_PRINTS"))
+	return "\n".join(lines)
+
+
+## A guard's file: his name and number, and what the cops got from him so far.
+func _guard_file_text(index: int, who: Dictionary) -> String:
+	var lines := PackedStringArray(["%d. %s" % [index + 1, cooks[index].name]])
+	if who.has("glasses"):
+		lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
+		lines.append(tr("FILE_SHOE") % who.shoe)
+	else:
+		lines.append(tr("FILE_GLASSES_UNKNOWN"))
+	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if who.has("hair") else "?"))
+	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
+	if who.has("mustache"):
+		lines.append(tr("FILE_MUSTACHE_REAL") if who.mustache else tr("FILE_MUSTACHE_FAKE"))
+	else:
+		lines.append(tr("FILE_MUSTACHE_UNKNOWN"))
+	lines.append(tr("FILE_ALIBI") % (tr("ALIBI_SHORT_" + str(who.detail)) if who.has("detail") else "?"))
+	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
 	return "\n".join(lines)
 
 
