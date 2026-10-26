@@ -74,3 +74,12 @@ gol para la foto y que salga entero. En ese orden, dice él. En el otro, digo yo
   para que la pelota quede adentro. Al norte está la tribuna de 3 escalones; al sur, hacia la calle, los dos bancos
   (`team_bench`), la camilla (`stretcher`), la mesa con la copa (`football_cup`), el puesto de salchichas, la pancarta
   "Partido benéfico" y el cartel. Capturas en `/mnt/project-files/futbol/paso1-*.png`.
+- **Paso 2 (la pelota y el gol):** `FootballBall` (`pitch.ball`, modelo `football_ball`) pesa 450 g, rebota, rueda y
+  tiene colisión continua. Con la pelota a menos de 1,3 m adelante de los pies, el clic izquierdo patea en vez de
+  agarrar (`Grabber.start_kick`/`end_kick`): de 7 m/s si es un toque a 20 m/s si se mantiene 0,8 s, hacia donde mira
+  el policía y un poco hacia arriba (más si mira arriba). E es un pase de 6 m/s por el piso. Agarrarla con las manos
+  es mano (`handball`). `FootballScore` (`pitch.score`): el equipo del diputado ataca el arco este y los Veteranos el
+  oeste; la pelota entera pasando la línea entre los palos y bajo el travesaño es gol (`scored(team, by)`, con
+  `last_touch`), y a los 3 s vuelve al centro. Si sale por un costado o por el fondo, al segundo vuelve a 1 m adentro de
+  donde salió. Arriba de la pantalla, el marcador "LUSTRE 0 - 0 VETERANOS". Captura en
+  `/mnt/project-files/futbol/paso2-gol.png`.

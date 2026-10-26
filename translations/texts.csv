@@ -2290,3 +2290,7 @@ SHIFT_STREET,Eventos en la calle,Street events,Eventos na rua
 "PLACE_FOOTBALL_PITCH","Cancha del Barrio","Neighborhood Pitch","Campinho do Bairro"
 "FOOTBALL_BANNER","Partido benéfico: ¡Lustre juega por los chicos!","Charity match: Lustre plays for the kids!","Jogo beneficente: Lustre joga pelas crianças!"
 "FOOTBALL_STALL","SALCHICHAS","SAUSAGES","SALSICHAS"
+"PROMPT_KICK_BALL","Clic: patear (mantén para más fuerte) · E: pase","Click: kick (hold for harder) · E: pass","Clique: chutar (segure para mais forte) · E: passe"
+"HUD_FOOTBALL_SCORE","LUSTRE %d - %d VETERANOS","LUSTRE %d - %d VETERANS","LUSTRE %d - %d VETERANOS"
+"HINT_FOOTBALL_GOAL_LUSTRE","¡GOOOL del equipo del diputado!","GOOOAL for the deputy's team!","GOOOL do time do deputado!"
+"HINT_FOOTBALL_GOAL_VETERANS","Gol de los Veteranos. El diputado mira para otro lado.","Goal for the Veterans. The deputy looks the other way.","Gol dos Veteranos. O deputado olha para o outro lado."

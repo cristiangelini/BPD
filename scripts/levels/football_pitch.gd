@@ -6,7 +6,8 @@ extends Node3D
 ## runs along x with a goal at each end: grass in stripes, lime lines, the center circle and the penalty areas. North of
 ## it, a small stand of 3 steps for the neighbors; south, toward the street, each team's bench, the stretcher, the
 ## table with the cup, the sausage stall and the banner. The cops start in the station and drive here; --place=football
-## opens it from Play. Every number here is (propuesta).
+## opens it from Play. Step 2: the ball on the center spot (FootballBall) and the goals and scoreboard
+## (FootballScore). Every number here is (propuesta).
 
 const GOAL_MODEL := preload("res://assets/models/football_goal.glb")
 const BENCH_MODEL := preload("res://assets/models/team_bench.glb")
@@ -55,6 +56,9 @@ const WOOD := Color(0.45, 0.32, 0.22)
 var case_seed := 0
 ## The two goals, west then east; each scores for the team attacking it.
 var goals: Array[Node3D] = []
+## The match's ball and its goals and scoreboard (step 2).
+var ball: FootballBall
+var score: FootballScore
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -72,6 +76,14 @@ func _ready() -> void:
 		_build_goal(side)
 	_build_stand()
 	_build_sideline()
+	ball = FootballBall.new()
+	ball.name = "Ball"
+	add_child(ball)
+	ball.position = CENTER + Vector3.UP * (FootballBall.RADIUS + 0.1)
+	score = FootballScore.new()
+	score.name = "Score"
+	score.setup(self, ball)
+	add_child(score)
 	city.transform = CityLayout.anchor("football_pitch")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
