@@ -126,7 +126,7 @@ func _physics_process(delta: float) -> void:
 			_arrived()
 	else:
 		_move(Vector3.ZERO, delta)
-	if placed or phase == Phase.RECESS:
+	if (placed and not (phase == Phase.PHOTO and _pupils_walking())) or phase == Phase.RECESS:
 		phase_left -= delta
 		_during(delta)
 		if phase_left <= 0.0:
@@ -238,6 +238,11 @@ func _next() -> void:
 			politician.say("SCHOOL_LUSTRE_END")
 			phase_changed.emit(phase)
 			finished.emit()
+
+
+## The photo waits for the last pupil to get in line.
+func _pupils_walking() -> bool:
+	return school.pupils.any(func(p: SchoolPupil) -> bool: return p.walking())
 
 
 func _by_distance_to(at: Vector3) -> Array[SchoolPupil]:

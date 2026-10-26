@@ -15,6 +15,8 @@ const SAY_TIME := 4.0
 
 @export var look := "maestra"
 var next_line := 0
+## Something on their fingers a cop sees up close (the teacher's chalk, step 6), in a "Stain" label.
+var stained := false
 var _bubble: Label3D
 var _bubble_left := 0.0
 
@@ -61,6 +63,8 @@ func said() -> String:
 
 
 func _process(delta: float) -> void:
+	if stained:
+		get_node("Stain").visible = SchoolJanitor.cop_within(self, SchoolJanitor.STAIN_REACH)
 	if _bubble_left > 0.0:
 		_bubble_left -= delta
 		if _bubble_left <= 0.0:
