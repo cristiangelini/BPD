@@ -169,6 +169,8 @@ var fog := {}
 ## FogCar.BLIND_SPEED and brakes only once it sees what's ahead (FogCar.SIGHT): behind a car it bumps into it, at the
 ## barrier it runs the checkpoint ("overrun").
 var warned := false
+## Its horn's sound over it, seen through the fog (step 3): it answers the foghorn (FogHorn).
+var horn_bubble: HornBubble
 ## A racer comes in a heat, out of the queue (step 2): it gathers at the back corner, revs, then races past the
 ## checkpoint ("gathering", "revving", "racing" in `state`); `race_slot` is its place in the heat.
 var race_slot := 0
@@ -245,6 +247,10 @@ func _ready() -> void:
 			RaceCar.dress(self, race)
 		if fog_mode:
 			FogCar.dress(self, fog)
+			horn_bubble = HornBubble.new()
+			horn_bubble.name = "HornBubble"
+			horn_bubble.position = Vector3(0, FogCar.HORN_UP, 0)
+			add_child(horn_bubble)
 	_build_trunk()
 	if clown or crowd > 0:
 		_build_door()
@@ -871,6 +877,18 @@ func pull_over() -> void:
 func sneak() -> void:
 	if in_queue() and can_go():
 		state = "sneaking"
+
+
+## Its horn answers the foghorn after `delay` seconds (the further, the later): its bubble shows over it.
+func honk_back(delay := 0.0) -> void:
+	if not horn_bubble:
+		return
+	if delay <= 0.0:
+		horn_bubble.say(tr(FogCar.horn_text(fog.get("horn", 0))))
+		return
+	get_tree().create_timer(delay).timeout.connect(func() -> void:
+		if is_instance_valid(self) and state != "gone":
+			honk_back())
 
 
 ## Too fast in the fog to stop where it should: behind a car it bumps into it and stops there; at the barrier it

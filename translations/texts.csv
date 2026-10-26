@@ -2215,6 +2215,19 @@ FOG_BUMP_0,"¡Pum! Perdón, no se ve nada.","Bump! Sorry, I can't see a thing.",
 FOG_BUMP_1,"¿De dónde salió ese auto?","Where did that car come from?","De onde saiu esse carro?"
 FOG_BUMP_2,"¡Uy! Pensé que era una nube.","Oops! I thought it was a cloud.","Opa! Achei que era uma nuvem."
 FOG_BUMP_3,"¡Mi paragolpes! Bueno, el tuyo.","My bumper! Well, yours.","Meu para-choque! Bom, o seu."
+PROMPT_FOGHORN,"E: tocar la sirena de niebla (los autos contestan con su bocina)","E: blow the foghorn (the cars answer with their horns)","E: tocar a sirene de neblina (os carros respondem com a buzina)"
+PROMPT_FOGHORN_WAIT,"La sirena de niebla se está cargando","The foghorn is filling up again","A sirene de neblina está carregando"
+FOGHORN_SOUND,"¡BUUUUUH!","BWOOOOOH!","BUUUUUH!"
+FOG_HORN_0,"¡Mec-mec!","Meep-meep!","Méc-méc!"
+FOG_HORN_1,"¡Tururú!","Toot-toot-toot!","Tururu!"
+FOG_HORN_2,"¡Fiu-fiu!","Whee-whee!","Fiu-fiu!"
+FOG_HORN_3,"¡Piiiip!","Beeeep!","Piiiip!"
+FOG_HORN_4,"¡Cuac!","Quack!","Quac!"
+FOG_HORN_5,"¡Tuuuut!","Tooooot!","Tuuuut!"
+FOG_HORN_6,"¡Bip-bip!","Beep-beep!","Bip-bip!"
+FOG_HORN_7,"¡Prrrt!","Prrrt!","Prrrt!"
+FOG_HORN_8,"¡Uaaa-uaaa!","Waaa-waaa!","Uaaa-uaaa!"
+FOG_HORN_9,"¡Clonk-clonk!","Clonk-clonk!","Clonc-clonc!"
 SHIFT_BRIBES,Sobornos,Bribes,Subornos
 SHIFT_AGENT_FINE,Multa de asuntos internos,Internal affairs fine,Multa da corregedoria
 SHIFT_INVESTIGATION_OPENED,Asuntos internos abrió una investigación.,Internal affairs opened an investigation.,A corregedoria abriu uma investigação.
