@@ -116,7 +116,14 @@ PlaceDraw y la custodia para el interrogatorio.
    en pedestales, un banco, la soga de terciopelo y el marco vacío en la pared del fondo. Al oeste de la sala grande,
    el depósito con cuadros tapados con sábanas y el baño de 3 x 3 m (inodoro, lavamanos, espejo, rollo de papel y
    secador). Los policías arrancan en la comisaría **(propuesta)**.
-2. Los seis guardias iguales con sus rasgos (bigote incluido), la directora y la estatua viviente.
+2. Los seis guardias iguales con sus rasgos (bigote incluido), la directora y la estatua viviente. Hecho así: los seis
+   guardias (Anselmo, Beto, Cirilo, Dámaso, Evaristo y Fermín) esperan en fila en la sala grande, mirando a la puerta
+   del hall, con el mismo uniforme gris, la misma gorra con placa, la misma linterna y el mismo bigote negro. La
+   semilla les sortea el pelo de verdad (bajo la gorra), los anteojos, el talle de zapato, los dientes y si el bigote
+   es suyo (1 o 2 son postizos; todavía no se nota). Con E cada uno jura que estaba en el baño, de otra forma cada
+   vez. La señora Pincel, de traje violeta, collar de perlas y anteojos dorados, espera en el hall y dice lo caro
+   que es todo. La estatua viviente, toda dorada con corona de laurel y un brazo arriba, está en el escalón del medio
+   con el sombrero en el piso al lado; sin moneda, con E no se mueve ni un pelo **(propuesta)**.
 3. Las fichas (foto, huellas, dientes, pelo y bigote) y la coartada del baño con sus detalles.
 4. El caso: la historia, lo robado y dónde está, las pistas con cómo se arruinan (la lustradora, el botón rojo) y la
    planilla; los láseres y la alarma.
