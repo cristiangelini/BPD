@@ -519,6 +519,23 @@ const NPCS = {
 		b.add('cap', cap, new THREE.BoxGeometry(0.26, 0.02, 0.12), { pos: V(0, 1.43, 0.2), rot: [0.15, 0, 0] });
 		limb(b, 'props', C('pencil', 0xf2c84b), V(0.2, 1.33, 0.02), V(0.2, 1.4, -0.1), 0.012);
 	},
+	// Ingeniero Remache (politico-puente.md, the builder who kept half the materials): white shirt and a loud tie
+	// under an orange safety vest, a yellow hard hat, a thin mustache and a clipboard under his arm.
+	ingeniero(b) {
+		pearBody(b, SKIN.crema, { shirt: C('engineer_shirt', 0xf4f2ec), pants: C('engineer_pants', 0x5a5e6a) });
+		tie(b, C('engineer_tie', 0xd83a8a));
+		const vest = C('safety_vest', 0xf28a1a), stripe = C('vest_stripe', 0xe8e8d8);
+		b.add('body', vest, loft([{ y: 0.55, rx: 0.47, rz: 0.43 }, { y: 0.85, rx: 0.42, rz: 0.39 }, { y: 1.02, rx: 0.3, rz: 0.27 }], 10));
+		b.add('body', stripe, loft([{ y: 0.74, rx: 0.455, rz: 0.415 }, { y: 0.78, rx: 0.45, rz: 0.41 }], 10));
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b);
+		mustache(b, C('engineer_mustache', 0x2a1a10), 0.7);
+		const hat = C('hard_hat', 0xf2d21a);
+		b.add('cap', hat, ellipsoid(0.235, 0.15, 0.235, 10, 5), { pos: V(0, 1.44, 0.0) });
+		b.add('cap', hat, new THREE.CylinderGeometry(0.27, 0.27, 0.025, 12), { pos: V(0, 1.42, 0.02) });
+		b.add('props', C('clipboard', 0xa87a4a), new THREE.BoxGeometry(0.03, 0.32, 0.24), { pos: V(-0.47, 0.75, 0.05), rot: [0, 0, 0.1] });
+		b.add('props', white, new THREE.BoxGeometry(0.01, 0.26, 0.2), { pos: V(-0.49, 0.76, 0.05), rot: [0, 0, 0.1] });
+	},
 	// Bank robbers (robo-banco.md, step 2): black clothes and gloves, and a rubber animal mask over the whole head.
 	ladron_conejo(b) {
 		robber(b, C('mask_rabbit', 0xf2eeea), (m) => {
