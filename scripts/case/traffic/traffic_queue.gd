@@ -286,6 +286,13 @@ func show_patience(value: float, host_sneaked: int, host_overruns := 0) -> void:
 	_set_patience(value)
 
 
+## Something in the queue annoys the drivers (an angry animal, control-circo.md): its patience goes up `amount`. A
+## guest's queue shows the host's meter instead.
+func annoy(amount: float) -> void:
+	if not follower:
+		_set_patience(patience + amount)
+
+
 func _set_patience(value: float) -> void:
 	value = clampf(value, 0.0, FULL)
 	if value != patience:

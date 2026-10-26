@@ -200,10 +200,34 @@ export function buildKangaroo() {
 	return b.build();
 }
 
+// The patrol car's food bucket (step 2), 35 cm tall: a tin pail with a handle and, heaped on top, one of four foods
+// (food_bananas, food_fish, food_meat, food_carrots; the game shows one). Origin on the ground.
+export function buildFoodBucket() {
+	const b = new Builder('food_bucket');
+	const tin = mat('bucket_tin', 0xa8b0b8, { metalness: 0.5, roughness: 0.45 });
+	b.add('bucket', tin, new THREE.CylinderGeometry(0.17, 0.13, 0.3, 12, 1, true), { pos: V(0, 0.15, 0) });
+	b.add('bucket', tin, new THREE.CylinderGeometry(0.13, 0.13, 0.02, 12), { pos: V(0, 0.01, 0) });
+	b.add('bucket', iron, new THREE.TorusGeometry(0.17, 0.01, 4, 14, Math.PI), { pos: V(0, 0.3, 0) });
+	const banana = mat('banana', 0xf2d23a), fish = mat('fish_scale', 0x8aa0b8), meat = mat('meat_red', 0xb83a3a);
+	const bone = mat('bone', 0xf2ecd8), carrot = mat('carrot', 0xf08a1a), leaf = mat('carrot_leaf', 0x3a8a2a);
+	for (let i = 0; i < 4; i++) {
+		const a = (i / 4) * Math.PI * 2, x = Math.cos(a) * 0.07, z = Math.sin(a) * 0.07;
+		b.add('food_bananas', banana, new THREE.TorusGeometry(0.08, 0.025, 4, 8, Math.PI * 0.8), { pos: V(x, 0.33, z), rot: [Math.PI / 2, 0, a] });
+		b.add('food_fish', fish, ellipsoid(0.035, 0.03, 0.1, 6, 4), { pos: V(x, 0.32, z), rot: [0.3, a, 0] });
+		b.add('food_fish', fish, new THREE.ConeGeometry(0.03, 0.05, 4), { pos: V(x * 1.9, 0.35, z * 1.9), rot: [0, 0, Math.PI / 2] });
+		b.add('food_carrots', carrot, new THREE.ConeGeometry(0.025, 0.16, 6), { pos: V(x, 0.36, z), rot: [Math.PI, 0, 0.4 * Math.cos(a)] });
+		b.add('food_carrots', leaf, new THREE.ConeGeometry(0.02, 0.06, 4), { pos: V(x, 0.46, z) });
+	}
+	b.add('food_meat', meat, ellipsoid(0.12, 0.06, 0.09, 8, 5), { pos: V(0, 0.32, 0) });
+	b.add('food_meat', bone, new THREE.CylinderGeometry(0.015, 0.015, 0.3, 6), { pos: V(0, 0.34, 0), rot: [0, 0, Math.PI / 2] });
+	for (const x of [-1, 1]) b.add('food_meat', bone, new THREE.SphereGeometry(0.025, 6, 4), { pos: V(x * 0.15, 0.34, 0) });
+	return b.build();
+}
+
 export const models = {
 	circus_truck: buildCircusTruck, circus_cage: buildCircusCage, circus_cage_door: buildCircusCageDoor,
 	animal_lion: buildLion, animal_bear: buildBear, animal_gorilla: buildGorilla, animal_monkey: buildMonkey,
-	animal_zebra: buildZebra, animal_kangaroo: buildKangaroo,
+	animal_zebra: buildZebra, animal_kangaroo: buildKangaroo, food_bucket: buildFoodBucket,
 };
 
 export const views = {
@@ -211,6 +235,10 @@ export const views = {
 		items: [{ name: 'circus_truck', pos: [0, 0, 0] }, { name: 'circus_cage', pos: [0, 0.8, -0.95] },
 			{ name: 'circus_cage_door', pos: [-0.95, 0.8, -2.2] }, { name: 'animal_lion', pos: [0, 0.9, -0.95], rotY: Math.PI }],
 		cam: { pos: [4.5, 2.6, -5.5], target: [0, 1.2, -0.6], fov: 40 },
+	},
+	food_bucket: {
+		items: [{ name: 'food_bucket', pos: [0, 0, 0] }],
+		cam: { pos: [0.4, 0.7, 0.9], target: [0, 0.25, 0], fov: 35 },
 	},
 	animals: {
 		items: [{ name: 'animal_lion', pos: [-3, 0, 0] }, { name: 'animal_bear', pos: [-1.8, 0, 0] },

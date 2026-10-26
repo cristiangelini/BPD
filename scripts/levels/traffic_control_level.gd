@@ -27,6 +27,9 @@ const FLARES_FROM_DOOR: Array[Vector3] = [Vector3(2, 0, 2.3), Vector3(2.6, 0, 2.
 	Vector3(3.8, 0, 2.3)]
 ## The fog check's foghorn (step 3), next to the lit cones.
 const FOGHORN_FROM_DOOR := Vector3(4.6, 0, 2.3)
+## The circus move's four food buckets (control-circo.md, step 2), in a row by the patrol car.
+const BUCKETS_FROM_DOOR: Array[Vector3] = [Vector3(2, 0, 2.3), Vector3(2.6, 0, 2.3), Vector3(3.2, 0, 2.3),
+	Vector3(3.8, 0, 2.3)]
 ## What Play draws, an eighth each (propuesta).
 const VARIANTS: Array[String] = ["rush_hour", "clown_convoy", "fruit_truck", "crowded_car", "ghost_car", "wedding",
 	"race", "fog"]
@@ -113,6 +116,13 @@ func _ready() -> void:
 		horn.name = "FogHorn"
 		add_child(horn)
 		horn.global_position = door + FOGHORN_FROM_DOOR + Vector3.UP * 0.05
+	if chosen == "circus_move":
+		for i in BUCKETS_FROM_DOOR.size():
+			var bucket := FoodBucket.new()
+			bucket.name = "FoodBucket%d" % i
+			bucket.food = CircusTruck.FOODS[i]
+			add_child(bucket)
+			bucket.global_position = door + BUCKETS_FROM_DOOR[i] + Vector3.UP * 0.05
 	if chosen == "race":
 		for i in SPIKES_FROM_DOOR.size():
 			var strip := SpikeStrip.new()
