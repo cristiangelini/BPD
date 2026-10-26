@@ -2257,6 +2257,14 @@ PARTY_FOUND_OUT_1,¡Ese uniforme no es de cotillón! ¡Son de verdad!,That unifo
 PARTY_FOUND_OUT_2,¡Se acabó la fiesta! ¡Son policías!,The party's over! They're cops!,Acabou a festa! São policiais!
 HINT_PARTY_FOUND_OUT,¡Los descubrieron! Todos los invitados saben que son policías de verdad.,You've been found out! All the guests know you're real cops.,Vocês foram descobertos! Todos os convidados sabem que vocês são policiais de verdade.
 TRUCHO_FOUND_OUT,¡Yo me voy! ¡Nadie vio a nadie!,I'm out of here! Nobody saw anybody!,Eu vou embora! Ninguém viu ninguém!
+PARTY_PHOTO_CALL,¡Foto grupal! ¡Todos a la escalerita!,Group photo! Everyone onto the steps!,Foto em grupo! Todos para a escadinha!
+HINT_PARTY_PHOTO,¡Foto grupal! Sube a la escalerita del fondo y quédate quieto hasta el flash. El que falta en la foto llama la atención... y el jefe aprovecha para ir a la oficina.,Group photo! Get on the steps at the back and hold still until the flash. Whoever's missing from the photo stands out... and the boss uses it to slip into the office.,Foto em grupo! Suba na escadinha do fundo e fique parado até o flash. Quem falta na foto chama a atenção... e o chefe aproveita para ir ao escritório.
+PARTY_PHOTO,¡FOTO GRUPAL!,GROUP PHOTO!,FOTO EM GRUPO!
+PARTY_PHOTO_GO,Sube a la escalerita,Get on the steps,Suba na escadinha
+PARTY_PHOTO_POSE,Quédate quieto para la foto,Hold still for the photo,Fique parado para a foto
+PARTY_PHOTO_GOOD,¡Sonríe!,Smile!,Sorria!
+PARTY_PHOTO_MOVED,¡Te moviste! Vas a salir borroso,You moved! You'll come out blurry,Você se mexeu! Vai sair borrado
+HINT_PARTY_SAW_BOSS,"¡Lo viste! Mientras todos posan, uno de los invitados cuenta joyas en la oficina. Mírale bien el disfraz.","You saw him! While everyone poses, one of the guests is counting jewels in the office. Take a good look at his costume.","Você viu! Enquanto todos posam, um dos convidados conta joias no escritório. Olhe bem a fantasia dele."
 PROMPT_TALK_MIME,E: saludar con mímica,E: greet in mime,E: cumprimentar com mímica
 PROMPT_TALK_PAUSA,E: saludar a la Maestra Pausa,E: greet Maestra Pausa,E: cumprimentar a Maestra Pausa
 MIME_GOSSIP_0,*Hace como que sostiene una billetera enorme y te guiña un ojo.*,*Pretends to hold a huge wallet and winks at you.*,*Finge segurar uma carteira enorme e pisca para você.*
