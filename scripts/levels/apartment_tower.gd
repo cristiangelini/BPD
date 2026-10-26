@@ -69,7 +69,7 @@ const STORIES := {
 		"heavy": [false],
 		# The second extra is the necklace a pigeon brings, which the rig adds.
 		"extra_keys": ["OBJ_EXTRA_TRAINER_WHISTLE", "OBJ_EXTRA_PEARL_NECKLACE"],
-		"rig": preload("res://scripts/case/apartments/pigeons_rig.gd"),
+		"rig": preload("res://scripts/case/apartments/carrier_pigeons_rig.gd"),
 	},
 }
 const ORNAMENT_SCENES: Array[PackedScene] = [

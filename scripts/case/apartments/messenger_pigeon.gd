@@ -14,10 +14,15 @@ enum State { AWAY, ARRIVING, LANDED, LEAVING }
 const FLY_TIME := 4.0
 const STAY := 12.0
 const MODEL := preload("res://assets/models/pigeon.glb")
+## Physics layer 9, which no body's mask has: only rays that look at everything (a cop's aim) hit it.
+const AIM_ONLY := 1 << 8
 
 var state := State.AWAY
 ## Whether it brings something on its leg.
 var carries := false
+## What it lands on and where, in that thing's space: it follows the board if the loft moves.
+var perch: Node3D
+var perch_at := Vector3.ZERO
 var _from := Vector3.ZERO
 var _to := Vector3.ZERO
 var _t := 0.0
@@ -27,6 +32,9 @@ var _parcel: MeshInstance3D
 
 
 func _ready() -> void:
+	# Only the cops' aim finds it: on a layer nothing bumps into, so landing on the board doesn't shove the loft.
+	collision_layer = AIM_ONLY
+	collision_mask = 0
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
 	box.size = Vector3(0.3, 0.25, 0.3)
@@ -50,10 +58,12 @@ func _ready() -> void:
 	shape.disabled = true
 
 
-## Comes from `far` (global) to land at `perch` (global), with or without something on its leg.
-func arrive(far: Vector3, perch: Vector3, with_parcel: bool) -> void:
+## Comes from `far` (global) to land on `on` at `at` (in its space), with or without something on its leg.
+func arrive(far: Vector3, on: Node3D, at: Vector3, with_parcel: bool) -> void:
 	carries = with_parcel
-	_fly(far, perch, State.ARRIVING)
+	perch = on
+	perch_at = at
+	_fly(far, on.to_global(at), State.ARRIVING)
 
 
 func leave() -> void:
@@ -88,6 +98,8 @@ func _physics_process(delta: float) -> void:
 	_parcel.visible = carries
 	match state:
 		State.ARRIVING, State.LEAVING:
+			if state == State.ARRIVING:
+				_to = perch.to_global(perch_at)
 			_t = minf(_t + delta / FLY_TIME, 1.0)
 			# Over the balcony's parapet: it comes in high and drops onto the board last, and leaves going up first.
 			var level := _t * _t * _t if _to.y < _from.y else 1.0 - pow(1.0 - _t, 3.0)
@@ -111,6 +123,7 @@ func _physics_process(delta: float) -> void:
 					(get_child(0) as CollisionShape3D).disabled = true
 					left.emit()
 		State.LANDED:
+			global_position = perch.to_global(perch_at)
 			_waited += delta
 			if _waited >= STAY:
 				leave()

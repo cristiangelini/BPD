@@ -1,4 +1,4 @@
-class_name PigeonsRig
+class_name CarrierPigeonsRig
 extends ApartmentsRig
 
 ## The messenger pigeons (edificio.md, "Las palomas mensajeras"): Mr. Bellini's loft of trained pigeons stands on 30B's
@@ -85,8 +85,7 @@ func loft_on_balcony() -> bool:
 func send_pigeon() -> void:
 	if pigeon.state != MessengerPigeon.State.AWAY or not loft_on_balcony():
 		return
-	var board := loft.to_global(BOARD)
-	pigeon.arrive(board + FAR, board, not necklace.visible)
+	pigeon.arrive(loft.to_global(BOARD) + FAR, loft, BOARD, not necklace.visible)
 
 
 ## Whether a cop is running near the pigeon on the board.
