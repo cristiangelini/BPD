@@ -15,6 +15,8 @@ extends Node
 ## At the birthday party (politico-cumple.md, step 3, decision 221) the courier in the patrol car pays PER_COURIER more
 ## and the two good cakes blown PER_GOOD_CAKES more; a courier still loose at the end runs off on the scooter. The
 ## guests' cakes follow the host's (lit, blown, in the fountain, sprung).
+## At the parade (politico-descapotable.md, step 3, decision 222) the planilla shows how far round the plaza the car
+## is and how many huggers the cops pulled off; the guests' cars follow the speech's clock like the host's.
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 4.0
@@ -110,7 +112,7 @@ func _on_speech_finished() -> void:
 	if follower or furious:
 		return
 	speech_over = true
-	_hint_all("HINT_RALLY_SPEECH_OVER")
+	_hint_all("HINT_PARADE_OVER" if rally.parade_car else "HINT_RALLY_SPEECH_OVER")
 	if double_loose():
 		runner = rally.double
 	elif courier_loose():
@@ -347,7 +349,13 @@ func rows() -> Array[Dictionary]:
 	if rally.party:
 		list.append({"text": tr("OBJ_BIRTHDAY_CAKES") % [rally.party.blown, rally.cakes.size()], "done": false,
 			"optional": false, "status": true})
-	var state := "OBJ_RALLY_FURIOUS" if furious else ("OBJ_RALLY_OVER" if speech_over else "OBJ_RALLY_KEEP_CLEAN")
+	if rally.parade_car:
+		list.append({"text": tr("OBJ_PARADE_ROUTE") % roundi(rally.parade_car.progress() * 100), "done": false,
+			"optional": false, "status": true})
+		list.append({"text": tr("OBJ_PARADE_HUGGERS") % rally.huggers.pulled, "done": false, "optional": false,
+			"status": true})
+	var over := "OBJ_PARADE_OVER" if rally.parade_car else "OBJ_RALLY_OVER"
+	var state := "OBJ_RALLY_FURIOUS" if furious else (over if speech_over else "OBJ_RALLY_KEEP_CLEAN")
 	list.append({"text": state, "done": false, "optional": false, "status": true})
 	# The double's rally (politico-doble.md): the real deputy's file, to tell him from the double.
 	if rally.variant == "double":

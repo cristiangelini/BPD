@@ -5,7 +5,7 @@ extends Node
 ## the parade goes on, every HUG_EVERY seconds the nearest fan on the sidewalks (not a heckler, nor the cuffed) runs to
 ## the car and climbs on behind him. Up there, each STAIN_EVERY seconds the hug creases his suit, a stain on his image.
 ## E on the hugger (RallyFan.hugging) pulls them off, and they walk back to their spot on the sidewalk. One at a time.
-## It runs on the host. Every number here is (propuesta).
+## When the parade ends, whoever is up gets off. It runs on the host. Every number here is (propuesta).
 
 enum State { WAITING, RUNNING, HUGGING, GOING_BACK }
 
@@ -15,8 +15,8 @@ const FIRST_HUG := 30.0
 const REACH := 25.0
 const RUN_SPEED := 3.2
 const WALK_SPEED := 1.4
-## Close enough to the car to climb on.
-const CLIMB := 1.6
+## Close enough to the car's side to climb on (from its body's edge).
+const CLIMB := 0.7
 const ARRIVED := 0.4
 const STAIN_EVERY := 5.0
 ## A run to the car or back that takes longer than this (stuck on a curb) ends there: they give up, or are home.
@@ -32,8 +32,9 @@ var crowd: RallyCrowd
 var state := State.WAITING
 ## The fan running to the car, hugging him or going back.
 var hugger: RallyFan
-## How many climbed on so far.
+## How many climbed on so far, and how many the cops pulled off.
 var hugs := 0
+var pulled := 0
 var _wait_left := FIRST_HUG
 var _stain_left := 0.0
 var _home := Vector3.ZERO
@@ -54,9 +55,11 @@ func setup(the_car: ParadeCar, rider: Politician, the_speech: PoliticianSpeech, 
 func _physics_process(delta: float) -> void:
 	if not multiplayer.is_server():
 		return
+	if speech.over and (state == State.RUNNING or state == State.HUGGING):
+		_back()
 	match state:
 		State.WAITING:
-			if not speech.speaking:
+			if not speech.speaking or speech.over:
 				return
 			_wait_left -= delta
 			if _wait_left <= 0.0:
@@ -67,7 +70,7 @@ func _physics_process(delta: float) -> void:
 			_leg_left -= delta
 			if not hugger.free_to_throw() or _leg_left <= 0.0:
 				_back()
-			elif _move_to(car.global_position, RUN_SPEED, delta, CLIMB):
+			elif at_car(hugger) or _move_to(car.global_position, RUN_SPEED, delta, 0.0):
 				_climb()
 		State.HUGGING:
 			hugger.global_position = car.global_transform * ON_CAR
@@ -103,6 +106,13 @@ func nearest_fan() -> RallyFan:
 	return best
 
 
+## `fan` is within CLIMB of the car's body.
+func at_car(fan: Node3D) -> bool:
+	var local := car.global_transform.affine_inverse() * fan.global_position
+	var out := Vector2(maxf(absf(local.x) - ParadeCar.SIZE.x / 2, 0.0), maxf(absf(local.z) - ParadeCar.SIZE.z / 2, 0.0))
+	return out.length() < CLIMB
+
+
 func _run(fan: RallyFan) -> void:
 	hugger = fan
 	state = State.RUNNING
@@ -126,11 +136,12 @@ func _on_pulled_off(fan: RallyFan, cop: Cop) -> void:
 	if fan != hugger or state != State.HUGGING:
 		return
 	cop.stats["huggers_off"] = cop.stats.get("huggers_off", 0) + 1
+	pulled += 1
 	fan.say("PARADE_HUG_OFF")
 	# Down beside the car, on the side of the cop who pulled them off.
 	var side := (cop.global_position - car.global_position)
 	side.y = 0.0
-	fan.global_position = car.global_position + side.normalized() * CLIMB + Vector3.UP * 0.1
+	fan.global_position = car.global_position + side.normalized() * (ParadeCar.SIZE.x / 2 + CLIMB) + Vector3.UP * 0.1
 	_back()
 
 
