@@ -53,11 +53,60 @@ export function buildBuilderVan() {
 	return b.build();
 }
 
-export const models = { bridge_plank: buildPlank, builder_van: buildBuilderVan };
+// The engineer's loot (step 5): the steel beams that are missing from the bridge, three grey I-beams 3 m long (x)
+// with orange paint marks, stacked on two blocks. Its origin on the ground in the middle.
+export function buildSteelBeams() {
+	const b = new Builder('steel_beams');
+	const steel = mat('beam_steel', 0x7d848c), mark = mat('beam_mark', 0xf26a1a), block = mat('bridge_grain', 0x9a6a3e);
+	for (const x of [-1.1, 1.1]) box(b, 'blocks', block, 0.2, 0.12, 0.9, x, 0.06, 0);
+	for (const [z, y] of [[-0.25, 0.12], [0.25, 0.12], [0, 0.42]]) {
+		box(b, 'beams', steel, 3.0, 0.03, 0.22, 0, y + 0.015, z);
+		box(b, 'beams', steel, 3.0, 0.24, 0.03, 0, y + 0.15, z);
+		box(b, 'beams', steel, 3.0, 0.03, 0.22, 0, y + 0.285, z);
+		box(b, 'marks', mark, 0.08, 0.2, 0.035, 0.9, y + 0.15, z);
+	}
+	return b.build();
+}
+
+// The blue tarp over the beams (step 5): a lumpy sheet with a stone on each corner so it doesn't fly off. Sized to
+// cover the beams; its origin on the ground in the middle.
+export function buildBridgeTarp() {
+	const b = new Builder('bridge_tarp');
+	const tarp = mat('tarp_blue', 0x2f6fb8), dark = mat('tarp_dark', 0x23558e), stone = mat('stone', 0x8a8780);
+	box(b, 'tarp', tarp, 3.3, 0.04, 1.1, 0, 0.78, 0);
+	for (const z of [-1, 1]) box(b, 'tarp', dark, 3.3, 0.7, 0.04, 0, 0.43, z * 0.55, [z * 0.12, 0, 0]);
+	for (const x of [-1, 1]) box(b, 'tarp', dark, 0.04, 0.7, 1.1, x * 1.65, 0.43, 0, [0, 0, -x * 0.1]);
+	box(b, 'tarp', tarp, 1.2, 0.08, 0.5, 0.6, 0.82, 0.1, [0, 0.2, 0.05]);
+	for (const x of [-1, 1]) for (const z of [-1, 1]) b.add('stones', stone, new THREE.DodecahedronGeometry(0.11), { pos: V(x * 1.75, 0.1, z * 0.68) });
+	return b.build();
+}
+
+// The invoices (step 5): a fat cardboard folder with papers sticking out, held to the tailgate with tape, the top
+// one in big letters "material de primera" (the text is a Label3D in Godot). 30 x 40 cm, upright, facing +Z.
+export function buildBridgeInvoices() {
+	const b = new Builder('bridge_invoices');
+	const card = mat('folder_card', 0xc9a66b), paper = mat('paper', 0xf4f1e6), tape = mat('tape', 0xd8d0b0), stamp = mat('stamp_red', 0xc0282a);
+	box(b, 'folder', card, 0.32, 0.42, 0.03, 0, 0, 0);
+	for (let i = 0; i < 4; i++) box(b, 'papers', paper, 0.28, 0.36, 0.005, (i - 1.5) * 0.012, 0.03 + i * 0.012, 0.018 + i * 0.004, [0, 0, (i - 1.5) * 0.05]);
+	box(b, 'stamp', stamp, 0.12, 0.05, 0.004, 0.06, -0.1, 0.036, [0, 0, 0.3]);
+	for (const x of [-1, 1]) box(b, 'tape', tape, 0.1, 0.04, 0.04, x * 0.15, 0.2, 0.01, [0, 0, x * 0.5]);
+	return b.build();
+}
+
+export const models = { bridge_plank: buildPlank, builder_van: buildBuilderVan, steel_beams: buildSteelBeams,
+	bridge_tarp: buildBridgeTarp, bridge_invoices: buildBridgeInvoices };
 
 export const views = {
 	builder_van: {
 		items: [{ name: 'builder_van', pos: [0, 0, 0], rotY: 0.6 }, { name: 'bridge_plank', pos: [2.4, 0.06, -0.5] }],
 		cam: { pos: [6.5, 3.6, 6.0], target: [0, 1.0, 0], fov: 40 },
+	},
+	loot: {
+		items: [{ name: 'steel_beams', pos: [0, 0, 0] }, { name: 'bridge_tarp', pos: [0, 0, 1.6] }, { name: 'bridge_invoices', pos: [2.0, 1.0, 0.5] }],
+		cam: { pos: [2.5, 2.4, 4.5], target: [0.3, 0.4, 0.6], fov: 45 },
+	},
+	engineer: {
+		items: [{ name: 'npc_ingeniero', pos: [0, 0, 0], rotY: 0.4 }, { name: 'npc_puestero', pos: [1.3, 0, -0.4], rotY: -0.3 }],
+		cam: { pos: [1.2, 1.4, 3.4], target: [0.5, 0.85, 0], fov: 36 },
 	},
 };

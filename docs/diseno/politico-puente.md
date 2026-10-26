@@ -113,3 +113,13 @@ se caiga. El puente, digo. Bueno, el diputado tampoco."
   - `BridgePillar`: con un pilar hundido, dos policías que mantienen E a la vez lo enderezan en 4 s; uno solo no puede.
   - `BridgeCoat`: con el diputado en marcha, E sobre él lo agarra del saco y lo frena 3 s mientras se queja.
   - Captura en `/mnt/project-files/puente/paso4-arreglar.png`.
+- **Paso 5 (el ingeniero Remache y el caso):** `BridgeRemache` (`park.remache`) pone 13 vecinos (`RallyFan`) en 4 filas
+  en la orilla oeste, al lado de la rampa, mirando el puente, y al ingeniero Remache (`BridgeEngineer`, modelo
+  `npc_ingeniero`) en uno de esos lugares, elegido por la semilla. Remache tiene aserrín en las manos, dice algo nervioso
+  cada vez que se rompe algo y cada 25 s mira el reloj. Con E da una de 3 excusas. Esposado, con E se lo escolta al
+  patrullero (`OwnerEscort`) y queda detenido. En la camioneta hay 2 pistas (`BridgeClue`): las facturas pegadas a la
+  puerta de atrás y, al costado, una lona azul que con E se levanta y deja ver las vigas de acero que faltan. `BridgeCase`
+  (`park.case`) es el caso: el comisario lo cuenta en su oficina, la planilla muestra fotos, tablones en el agua, pistas,
+  Remache y cómo está el diputado; la cinta lo gana, el segundo chapuzón lo pierde. Sueldo 600, 200 menos por chapuzón,
+  10 menos por tablón flotando en el canal y 100 más con Remache en el patrullero; cuota 400. Capturas en
+  `/mnt/project-files/puente/paso5-*.png`.

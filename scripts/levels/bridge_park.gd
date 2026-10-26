@@ -10,7 +10,8 @@ extends Node3D
 ## start in the station and drive here; --place=bridge opens it from Play. Step 2: Deputy Lustre waits at the foot of
 ## the west ramp and crosses with his photo stops (BridgeCeremony). Step 3: the bridge falls apart (BridgeBreaks) and
 ## the deputy may fall in (BridgeDip). Step 4: fixing it (BridgeRepairs, BridgePillar) and holding him back by the coat
-## (BridgeCoat). Every number here is (propuesta).
+## (BridgeCoat). Step 5: engineer Remache in the crowd, the clues at the pickup (BridgeRemache) and the case on top
+## (BridgeCase). Every number here is (propuesta).
 
 const PLANK_MODEL := preload("res://assets/models/bridge_plank.glb")
 const VAN_MODEL := preload("res://assets/models/builder_van.glb")
@@ -84,6 +85,9 @@ var breaks: BridgeBreaks
 var dip: BridgeDip
 ## Fitting planks back, the spares and the water that slows and floats (step 4).
 var repairs: BridgeRepairs
+## Engineer Remache, the crowd and the clues at the pickup; the case on top (step 5).
+var remache: BridgeRemache
+var case: BridgeCase
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -128,6 +132,16 @@ func _ready() -> void:
 	city.transform = CityLayout.anchor("bridge_park")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
+	remache = BridgeRemache.new()
+	remache.name = "Remache"
+	add_child(remache)
+	remache.setup(self, breaks, case_seed)
+	case = BridgeCase.new()
+	case.name = "Case"
+	case.park = self
+	case.shift_screen = $ShiftScreen
+	add_child(case)
+	case.start((city as City).comisario)
 
 
 ## The middle of span `span` along the bridge (x).
