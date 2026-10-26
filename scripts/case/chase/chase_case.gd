@@ -28,11 +28,14 @@ const DOOR_OUT := 2.0
 ## close, makes him give up; the patrol car in his way doesn't. Doña Chela's motorized walker and El Oso running off
 ## with his sack (robo-banco.md), the rally's last heckler on a kick scooter (proteccion-politico.md) and the prison's
 ## last ringleader on the food cart (carcel-motin.md) and the market's spiteful vendor on his vegetable trike
-## (politico-mercado.md) go the same way.
-const ON_FOOT := ["wheelchair", "walker", "bear_on_foot", "kick_scooter", "food_cart", "veggie_trike", "inmate_on_foot"]
+## (politico-mercado.md) go the same way, and so does Maestra Pausa "driving" her invisible car (infiltracion-mimos.md)
+## and el Toro jogging down the sidewalk without ever tiring (infiltracion-gimnasio.md).
+const ON_FOOT := ["wheelchair", "walker", "bear_on_foot", "kick_scooter", "food_cart", "veggie_trike", "floor_polisher",
+	"inmate_on_foot", "invisible_car", "toro_jog"]
 ## The tow truck takes the patrol car (persecucion-lugares.md, "La grúa"): the cops chase him in the old one or on
 ## foot, so the distance counts from the nearest cop and the chase starts as they come out of the station.
-const CLOSE_BY := ["wheelchair", "walker", "tow_truck", "bear_on_foot", "kick_scooter", "food_cart", "veggie_trike", "inmate_on_foot"]
+const CLOSE_BY := ["wheelchair", "walker", "tow_truck", "bear_on_foot", "kick_scooter", "food_cart", "veggie_trike", "floor_polisher",
+	"inmate_on_foot", "invisible_car", "toro_jog"]
 const START_NEAR := 25.0
 ## The golf thieves (persecucion-lugares.md): the drive out to the club is long, so the chase and its clock start once a
 ## cop goes through the gate. Stopped, one gives up and the other runs off; both go back, the runner in the trunk.
@@ -520,6 +523,14 @@ func shown_trap(kind: String, at: Transform3D) -> void:
 
 func shown_puddle(color: int, at: Vector3) -> void:
 	drops.puddle_at(color, at)
+
+
+func shown_peel(at: Vector3) -> void:
+	drops.peel_at(at)
+
+
+func shown_confetti(at: Vector3) -> void:
+	drops.confetti_at(at)
 
 
 func shown_blob(at: Vector3) -> void:

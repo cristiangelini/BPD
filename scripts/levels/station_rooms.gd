@@ -56,6 +56,55 @@ const CHOIR_DISGUISES: Array[String] = ["robe", "songbook", "robe", "songbook", 
 const CHOIR_DISGUISES_AT := Vector3(-5.15, 0, 2.75)
 const CHOIR_GAP := 0.34
 const SONGBOOK_SCENE := "res://scenes/props/songbook.tscn"
+## The mime troupe's (infiltracion-mimos.md, step 1): a beret, a white face and a striped shirt for each cop, in a
+## fourth row.
+const MIME_DISGUISES: Array[String] = ["mime_beret", "mime_face", "mime_shirt", "mime_beret", "mime_face", "mime_shirt",
+	"mime_beret", "mime_face", "mime_shirt", "mime_beret", "mime_face", "mime_shirt"]
+const MIME_DISGUISES_AT := Vector3(-5.15, 0, 3.15)
+const MIME_GAP := 0.3
+## The costume party's (infiltracion-fiesta.md, step 1): a party-store cop cap, a fake mustache and a plastic badge for
+## each cop, in a fifth row.
+const PARTY_DISGUISES: Array[String] = ["party_cap", "party_mustache", "party_badge", "party_cap", "party_mustache",
+	"party_badge", "party_cap", "party_mustache", "party_badge", "party_cap", "party_mustache", "party_badge"]
+const PARTY_DISGUISES_AT := Vector3(-5.15, 0, 3.55)
+const PARTY_GAP := 0.3
+## The gym's (infiltracion-gimnasio.md, step 1): a headband, a pair of wristbands and a tank top for each cop, in a
+## sixth row.
+const GYM_DISGUISES: Array[String] = ["gym_headband", "gym_wristbands", "gym_tank", "gym_headband", "gym_wristbands",
+	"gym_tank", "gym_headband", "gym_wristbands", "gym_tank", "gym_headband", "gym_wristbands", "gym_tank"]
+const GYM_DISGUISES_AT := Vector3(-5.15, 0, 3.95)
+const GYM_GAP := 0.36
+## The thieves' school's (infiltracion-escuela.md, step 1): an eye mask, a beanie and a striped shirt for each cop, in a
+## seventh row.
+const THIEF_DISGUISES: Array[String] = ["thief_mask", "thief_beanie", "thief_shirt", "thief_mask", "thief_beanie",
+	"thief_shirt", "thief_mask", "thief_beanie", "thief_shirt", "thief_mask", "thief_beanie", "thief_shirt"]
+const THIEF_DISGUISES_AT := Vector3(-5.15, 0, 4.4)
+const THIEF_GAP := 0.42
+## The restaurant's (infiltracion-restaurante.md, step 1): a chef's hat, a curly mustache and an apron for each cop, in
+## an eighth row.
+const CHEF_DISGUISES: Array[String] = ["chef_hat", "chef_mustache", "chef_apron", "chef_hat", "chef_mustache",
+	"chef_apron", "chef_hat", "chef_mustache", "chef_apron", "chef_hat", "chef_mustache", "chef_apron"]
+const CHEF_DISGUISES_AT := Vector3(-5.15, 0, 4.85)
+const CHEF_GAP := 0.42
+## The chess club's (infiltracion-ajedrez.md, step 1): thick glasses, an argyle vest and a beret for each cop, in a
+## ninth row.
+const CHESS_DISGUISES: Array[String] = ["chess_glasses", "chess_vest", "chess_beret", "chess_glasses", "chess_vest",
+	"chess_beret", "chess_glasses", "chess_vest", "chess_beret", "chess_glasses", "chess_vest", "chess_beret"]
+const CHESS_DISGUISES_AT := Vector3(-5.15, 0, 5.3)
+const CHESS_GAP := 0.42
+## The biker gang's (infiltracion-motos.md, step 1): a bandana, a long fake beard and a leather jacket for each cop, in
+## a row on the other side of the guard room, by the coffee: the rows by the lockers reach where the cops appear.
+const BIKER_DISGUISES: Array[String] = ["biker_bandana", "biker_beard", "biker_jacket", "biker_bandana", "biker_beard",
+	"biker_jacket", "biker_bandana", "biker_beard", "biker_jacket", "biker_bandana", "biker_beard", "biker_jacket"]
+const BIKER_DISGUISES_AT := Vector3(0.6, 0, 2.4)
+const BIKER_GAP := 0.42
+## The art auction's (infiltracion-subasta.md, step 1): a monocle, a top hat and a tailcoat for each cop, in a row
+## behind the bikers', by the coffee.
+const AUCTION_DISGUISES: Array[String] = ["auction_monocle", "auction_top_hat", "auction_tailcoat", "auction_monocle",
+	"auction_top_hat", "auction_tailcoat", "auction_monocle", "auction_top_hat", "auction_tailcoat", "auction_monocle",
+	"auction_top_hat", "auction_tailcoat"]
+const AUCTION_DISGUISES_AT := Vector3(0.6, 0, 2.95)
+const AUCTION_GAP := 0.42
 
 ## Furniture: [model, position, turn]. The models come from tools/modelgen/models/station.js.
 const FURNITURE := [

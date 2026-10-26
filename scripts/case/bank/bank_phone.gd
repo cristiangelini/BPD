@@ -42,6 +42,9 @@ var left := 0.0
 var sung := 0.0
 ## The grandpa Oso, who has to hear it twice; whether this request's first "yes" was already said.
 var deaf := false
+## Who answers: El Oso ("BEAR"), El Conejo in the town bank ("CONEJO", robo-banco-pueblo.md, step 4) or El Conde in
+## the blood bank ("CONDE", robo-banco-sangre.md, step 4), with his own words for the same requests.
+var voice := "BEAR"
 var said_once := false
 ## El Oso hung up for good: his real boss, the bank's manager, was caught (robo-banco-gerente.md, step 3).
 var hung_up := false
@@ -125,7 +128,7 @@ func use(_cop: Cop) -> void:
 		said_once = false
 		left = ASK_TIME
 		sung = 0.0
-		say(("BEAR_GRANDPA_ASK_" if deaf else "BEAR_PHONE_ASK_") + request.to_upper())
+		say(("BEAR_GRANDPA_ASK_" if deaf else voice + "_PHONE_ASK_") + request.to_upper())
 	elif deaf and not said_once:
 		said_once = true
 		left = ASK_TIME
@@ -133,7 +136,7 @@ func use(_cop: Cop) -> void:
 	elif not promised:
 		promised = true
 		left = PROMISE_TIME
-		say("BEAR_PHONE_DEAL")
+		say(voice + "_PHONE_DEAL")
 
 
 ## VoiceChat: a cop is singing (every half second while they sing or hum with H).
@@ -180,16 +183,16 @@ func _physics_process(delta: float) -> void:
 	if left > 0.0:
 		return
 	if promised:
-		say("BEAR_PHONE_LIED")
+		say(voice + "_PHONE_LIED")
 		bank.drill.hurry(LIE_HURRY)
 		lied.emit(request)
 	else:
-		say("BEAR_PHONE_HANGUP")
+		say(voice + "_PHONE_HANGUP")
 	request = ""
 
 
 func _keep() -> void:
-	say("BEAR_PHONE_KEPT_" + request.to_upper())
+	say(voice + "_PHONE_KEPT_" + request.to_upper())
 	bank.drill.pause(PAUSE)
 	bank.release_hostage()
 	kept.emit(request)

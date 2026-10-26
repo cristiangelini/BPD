@@ -42,17 +42,19 @@ func _physics_process(delta: float) -> void:
 
 ## Sends this cop's state to every peer that has the level loaded.
 func send_state() -> void:
-	var state := [cop.global_position, cop.global_rotation.y, cop.head_pitch(), cop.is_crouching]
+	var state := [cop.global_position, cop.global_rotation.y, cop.head_pitch(), cop.is_crouching, cop.is_running]
 	for peer: int in net.scene_peers:
-		_state.rpc_id(peer, state[0], state[1], state[2], state[3])
+		_state.rpc_id(peer, state[0], state[1], state[2], state[3], state[4])
 
 
+## Running too: the host's copy makes the same noise (BankClerk.noise_at).
 @rpc("authority", "call_remote", "unreliable_ordered")
-func _state(at: Vector3, yaw: float, pitch: float, crouching: bool) -> void:
+func _state(at: Vector3, yaw: float, pitch: float, crouching: bool, running := false) -> void:
 	_target_position = at
 	_target_yaw = yaw
 	_target_pitch = pitch
 	cop.set_crouching(crouching)
+	cop.is_running = running
 	if cop.vehicle:
 		# A seated cop rides the car, which the host moves for everyone.
 		_has_target = true

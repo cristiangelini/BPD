@@ -13,6 +13,8 @@ const SHARDS := 5
 const SHARD_LIFE := 3.0
 
 @export var shard_color := Color(0.96, 0.95, 0.92)
+## A fake one (the cake lab's foam cakes, laboratorio.md): it takes any hit and only bounces.
+@export var unbreakable := false
 
 var is_broken := false
 var _impacts := ImpactTracker.new()
@@ -25,7 +27,7 @@ func _ready() -> void:
 
 ## Applies a hit at `speed` m/s. Returns true if it broke now.
 func hit(speed: float) -> bool:
-	if is_broken or speed <= BREAK_SPEED:
+	if is_broken or unbreakable or speed <= BREAK_SPEED:
 		return false
 	is_broken = true
 	_shatter()
