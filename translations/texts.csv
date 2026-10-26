@@ -2390,3 +2390,5 @@ HOTEL_MAID_LINE_0,"Permiso, que tengo que limpiar la suite.","Excuse me, I have 
 HOTEL_MAID_LINE_1,"Si la puerta dice ""No molestar"", no molesto. Si no, aspiro.","If the door says ""Do not disturb"", I don't disturb. If not, I vacuum.","Se a porta diz ""Não perturbe"", eu não perturbo. Se não, eu aspiro."
 HOTEL_MAID_LINE_2,"Cambio las fundas todos los días. Algunas, dos veces.","I change the pillowcases every day. Some, twice.","Troco as fronhas todos os dias. Algumas, duas vezes."
 HOTEL_MAID_LINE_3,"¿La 13? No hay ninguna 13. No pregunte por la 13.","Room 13? There is no 13. Don't ask about 13.","O 13? Não existe 13. Não pergunte pelo 13."
+PROMPT_HOTEL_KEY_BOARD,E: agarrar la llave maestra del tablero,E: take the master key from the board,E: pegar a chave mestra do quadro
+HINT_HOTEL_KEY,"La llave maestra: abre todas las habitaciones y la suite. Dice ""No sacar del hotel"".","The master key: it opens every room and the suite. It says ""Do not take out of the hotel"".","A chave mestra: abre todos os quartos e a suíte. Diz ""Não tirar do hotel""."
