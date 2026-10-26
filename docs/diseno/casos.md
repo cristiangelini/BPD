@@ -127,7 +127,7 @@ Tienen que cuidar a un político molesto durante un evento (decisión 32).
 6. **Caminata por el mercado:** quiere probar todo y algo está envenenado (con laxante).
 7. **En el aeropuerto:** con valijas iguales, y una tiene algo raro.
 8. **Fiesta de cumpleaños del político:** el pastel es sospechoso. Propuesta en [politico-cumple.md](politico-cumple.md) (decisión 221).
-9. **Desfile en auto descapotable:** los 4 van caminando al lado del auto.
+9. **Desfile en auto descapotable:** los 4 van caminando al lado del auto. Propuesta en [politico-descapotable.md](politico-descapotable.md) (decisión 222).
 10. **El doble:** hay dos políticos iguales y uno es un impostor. Propuesta en [politico-doble.md](politico-doble.md) (decisión 220).
 
 ## 10. Robo a un banco (en vivo)
