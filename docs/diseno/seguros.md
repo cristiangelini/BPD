@@ -148,6 +148,12 @@ Los pesos y valores siguen la escala de la fábrica: la principal vale unos 1000
    - **Cómo quedó (propuesta):** "Jugar" sortea la oficina entre los allanamientos en sextos, igual que la casa del
      abuelo, la panadería, la peluquería, la ferretería y la fábrica, y cada una de sus 6 historias sale por la semilla.
 7. El online (Mirta, Coca, las sillas y los papeles en todas las PC).
+   - **Cómo quedó (propuesta):** Mirta y Coca las maneja el anfitrión y los invitados las siguen (dónde están, la
+     denuncia, el número del tablero). El botón de la impresora y la máquina de números andan desde cualquier PC; la
+     impresora de un invitado se traba con la del anfitrión y se destraba cuando Mirta termina. Lo de cada historia
+     sale igual en todas las PC por la semilla (los cuadros, el verdadero, los charcos, los teléfonos, el rastro), y
+     un invitado puede atender un teléfono que suena. Las sillas, los papeles y la evidencia ya viajaban como todos
+     los objetos.
 
 ## Preguntas para Cristian
 1. ¿La oficina de seguros como sexto lugar, o preferís otro de los 5 que faltan? **Recomendado:** la oficina, porque es
