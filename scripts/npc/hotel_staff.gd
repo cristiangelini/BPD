@@ -21,6 +21,8 @@ const CART_AT := Vector3(0, 0, 0.95)
 const CART_SIZE := Vector3(0.62, 0.9, 1.0)
 
 var who := "guest"
+## The concierge's case: every other E he says who sleeps where (with two swapped).
+var case: CrimeSceneCase
 var cart: StaticBody3D
 var _model: Node3D
 var _bubble: Label3D
@@ -60,9 +62,12 @@ func prompt_key(_cop: Cop) -> String:
 	return "PROMPT_HOTEL_" + who.to_upper()
 
 
-## E on them: their next line.
+## E on them: their next line; the concierge, with a case, says who sleeps where every other time.
 func use(_cop: Cop) -> void:
-	say(line_key(_lines_said))
+	if who == "concierge" and case and _lines_said % 2 == 0:
+		say(case.concierge_list(), 7.0)
+	else:
+		say(line_key(int(_lines_said / 2.0) if who == "concierge" and case else _lines_said))
 	_lines_said += 1
 
 
