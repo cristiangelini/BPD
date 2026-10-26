@@ -126,6 +126,17 @@ señora y la limusina.
 ## El orden para hacerlo (un PR chico por paso)
 1. La casona en la ciudad: hall, sala, cocina, cuarto de huéspedes, lavadero, jardín con la fuente y la puerta para
    gatos, y los ocho jarrones (`--place=cat_mansion`).
+   Hecho así: la casona de 30 x 26 m en la cuadra (0, 3), del lado norte. Adelante, el jardín con el pasto, el camino
+   de piedra, la fuente con una gata naranja arriba y las rejas doradas con el portón y el arco "Casona Monedero". En
+   la fachada, la puerta y, al lado, la puerta para gatos. Adentro, en el medio, el hall con la escalera (solo de
+   adorno), el retrato de la Duquesa y la puerta al cuarto de huéspedes, con dos camas y las seis maletas numeradas. Al
+   oeste, la cocina (la encimera con las tres latas de atún, el frasco de galletas y la tetera, el refrigerador y la mesa)
+   y, atrás, el lavadero (lavadora, canasta de la ropa, arenero y la soga con la ropa colgada), con la puertita del
+   montaplatos en la pared del medio. Al este, la sala de paredes verdes con la alfombra, el sillón de terciopelo de
+   la Duquesa, el sofá, la mesita, la chimenea, el piano negro con la cajita de música dorada y la jaula del loro. Ocho
+   jarrones azules en pedestales repartidos por la casa. Los policías arrancan en la comisaría **(propuesta)**.
+   Capturas en `gato/`: `paso1-fachada.png`, `paso1-hall.png`, `paso1-sala.png`, `paso1-cocina.png`,
+   `paso1-huespedes.png` y `paso1-lavadero.png`.
 2. Los seis sobrinos con sus rasgos (arañazo y muletilla incluidos), la señora Ofelia y Don Plumas.
 3. Las cinco gatas: andan sueltas, se agarran y se escapan, la transportadora, la lata de atún y la cajita de música.
 4. Las fichas (foto, huellas, dientes, pelo, arañazo y muletilla).

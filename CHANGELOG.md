@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Cat crime scene, step 1: the Monedero mansion on its lot in block (0, 3): the garden with the fountain, the golden railings and the gate, the front door and the cat flap, the hall with Duquesa's portrait, the kitchen, the laundry with the litter tray and the dumbwaiter, the guest room with the six suitcases, the drawing room with the velvet armchair, the piano and its music box and the parrot's cage, and eight vases on pedestals; --place=cat_mansion.
 - Cat crime scene, step 0: design doc (docs/diseno/escena-gato.md) and decision 260 (proposed).
 - Cake lab, step 7: online: the host runs chef Bruno and the guests follow him, the oven knob, Pocha's tray and the stories' props work from any PC, a flour sack burst on the host bursts everywhere, the stolen book comes out of its cake on every PC, and the robot arm creams only each PC's own cop. Also fixes a race in the insurance office's online phone test.
 - Cake lab, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office and the cake lab in sevenths.
