@@ -148,7 +148,41 @@ export function buildHangingRobe() {
 	return b.build();
 }
 
+// The lift of 1987 (step 5): the suitcase of fake bills (0.6 x 0.42 x 0.2 m, origin in the middle), the lift's crank
+// and the printing plates.
+export function buildFakeMoneyCase() {
+	const leather = mat('suitcase', 0x6a4a2a), brass = mat('gold', 0xf2c84b, { emissive: 0x3a2a05 }), bill = mat('bill_green', 0x6abf5a);
+	const b = new Builder('fake_money_case');
+	b.add('case', leather, new THREE.BoxGeometry(0.6, 0.42, 0.2));
+	b.add('case', brass, new THREE.BoxGeometry(0.05, 0.03, 0.21), { pos: V(-0.18, 0.15, 0) });
+	b.add('case', brass, new THREE.BoxGeometry(0.05, 0.03, 0.21), { pos: V(0.18, 0.15, 0) });
+	b.add('handle', leather, new THREE.TorusGeometry(0.06, 0.015, 4, 8, Math.PI), { pos: V(0, 0.21, 0) });
+	b.add('bills', bill, new THREE.BoxGeometry(0.12, 0.06, 0.01), { pos: V(0.22, -0.2, 0.1), rot: [0, 0, 0.4] });
+	return b.build();
+}
+
+export function buildLiftCrank() {
+	const iron = mat('iron', 0x4a4e56), wood = mat('handle_wood', 0x8a5a2b);
+	const b = new Builder('lift_crank');
+	b.add('crank', iron, new THREE.CylinderGeometry(0.02, 0.02, 0.5, 6), { pos: V(-0.15, 0, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('crank', iron, new THREE.BoxGeometry(0.04, 0.25, 0.04), { pos: V(0.1, 0.1, 0) });
+	b.add('crank', wood, new THREE.CylinderGeometry(0.025, 0.025, 0.14, 6), { pos: V(0.17, 0.2, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('crank', iron, new THREE.BoxGeometry(0.05, 0.05, 0.05), { pos: V(-0.4, 0, 0) });
+	return b.build();
+}
+
+export function buildPrintingPlates() {
+	const metal = mat('plate_metal', 0xb8bcc4), ink = mat('ink_green', 0x2a8a3a);
+	const b = new Builder('printing_plates');
+	for (let i = 0; i < 3; i++) {
+		b.add('plates', metal, new THREE.BoxGeometry(0.3, 0.012, 0.16), { pos: V(i * 0.01, -0.02 + i * 0.014, i * 0.008), rot: [0, i * 0.08, 0] });
+		b.add('plates', ink, new THREE.BoxGeometry(0.22, 0.002, 0.1), { pos: V(i * 0.01, -0.013 + i * 0.014, i * 0.008), rot: [0, i * 0.08, 0] });
+	}
+	return b.build();
+}
+
 export const models = {
+	fake_money_case: buildFakeMoneyCase, lift_crank: buildLiftCrank, printing_plates: buildPrintingPlates,
 	robe_bag: buildRobeBag, buyers_list: buildBuyersList, embroidery_machine: buildEmbroideryMachine,
 	hanging_robe: buildHangingRobe,
 	costume_trunk: buildCostumeTrunk, fake_guest_book: buildFakeGuestBook, spare_wig: buildSpareWig,
@@ -165,6 +199,9 @@ export const views = {
 	robes: { items: [{ name: 'robe_bag', pos: [0, 0.3, 0] }, { name: 'buyers_list', pos: [0.7, 0.01, 0.3], rotY: -0.3 },
 		{ name: 'embroidery_machine', pos: [-0.75, 0.16, 0.1], rotY: 0.4 }, { name: 'hanging_robe', pos: [1.3, 0.6, -0.3] }],
 		cam: { pos: [0.2, 1.2, 2.4], target: [0.2, 0.3, 0], fov: 40 } },
+	lift_1987: { items: [{ name: 'fake_money_case', pos: [0, 0.21, 0] }, { name: 'lift_crank', pos: [0.75, 0.03, 0.2], rotY: -0.3 },
+		{ name: 'printing_plates', pos: [-0.7, 0.03, 0.2], rotY: 0.4 }],
+		cam: { pos: [0, 1.0, 1.8], target: [0, 0.15, 0], fov: 38 } },
 	casino_13: { items: [{ name: 'roulette', pos: [0, 0.12, 0] }, { name: 'casino_chip_box', pos: [0.65, 0.06, 0.1], rotY: -0.3 },
 		{ name: 'debt_book', pos: [-0.6, 0.015, 0.2], rotY: 0.4 }, { name: 'casino_chips', pos: [0.4, 0.02, 0.5] }],
 		cam: { pos: [0, 1.1, 1.8], target: [0, 0.1, 0], fov: 38 } },

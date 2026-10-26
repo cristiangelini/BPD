@@ -45,6 +45,16 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_BUYERS_LIST", "OBJ_EXTRA_EMBROIDERY"],
 		"rig": preload("res://scripts/case/hotel/robes_rig.gd"),
 	},
+	"lift_1987": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_LIFT_B", "BRIEF_LIFT_C", "BRIEF_LIFT_D"],
+		"find": "OBJ_FIND_LIFT",
+		"hidden": [preload("res://scenes/props/lift_crank.tscn"), preload("res://scenes/props/printing_plates.tscn")],
+		"half_heights": [0.13, 0.03],
+		"heavy": [false, false],
+		"reserved": ["hotel_by_lift"],
+		"extra_keys": ["OBJ_EXTRA_LIFT_CRANK", "OBJ_EXTRA_PLATES"],
+		"rig": preload("res://scripts/case/hotel/lift_rig.gd"),
+	},
 	"casino_13": {
 		"briefing": ["BRIEF_RIGHT", "BRIEF_CASINO_B", "BRIEF_CASINO_C", "BRIEF_CASINO_D"],
 		"find": "OBJ_FIND_CASINO",
