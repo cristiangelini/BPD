@@ -279,6 +279,52 @@ export function buildFoldedThiefShirt() {
 	return b.build();
 }
 
+// The restaurant's disguises (infiltracion-restaurante.md, step 1), each origin where it sits on a cop
+// (DisguisePiece.SLOTS): a tall white chef's hat, a big curly brown mustache and a white apron over a white jacket.
+// Placeholder.
+const CHEF_WHITE = 0xf6f6f2;
+export function buildChefHat() {
+	const b = new Builder('disguise_chef_hat');
+	const white = mat('chef_white', CHEF_WHITE);
+	b.add('band', white, new THREE.CylinderGeometry(0.215, 0.215, 0.1, 14), { pos: V(0, 0.0, 0.01) });
+	b.add('puff', white, new THREE.CylinderGeometry(0.25, 0.21, 0.26, 14), { pos: V(0, 0.17, 0.01) });
+	for (const [x, z] of [[-0.12, 0], [0.12, 0], [0, -0.12], [0, 0.12], [0, 0]]) {
+		b.add('puff', white, ellipsoid(0.15, 0.1, 0.15, 10, 5), { pos: V(x, 0.31, z + 0.01) });
+	}
+	return b.build();
+}
+
+export function buildChefMustache() {
+	const b = new Builder('disguise_chef_mustache');
+	const brown = mat('chef_brown', 0x4a2a14);
+	b.add('mustache', brown, ellipsoid(0.07, 0.03, 0.03, 8, 5));
+	for (const s of [-1, 1]) {
+		b.add('mustache', brown, ellipsoid(0.07, 0.022, 0.022, 8, 5), { pos: V(s * 0.09, 0.0, -0.005), rot: [0, 0, s * 0.15] });
+		b.add('curl', brown, new THREE.TorusGeometry(0.035, 0.011, 5, 12, Math.PI * 1.7), { pos: V(s * 0.17, 0.03, -0.01), rot: [0, 0, s > 0 ? 0 : Math.PI] });
+	}
+	return b.build();
+}
+
+export function buildChefApron() {
+	const b = new Builder('disguise_chef_apron');
+	const white = mat('chef_white', CHEF_WHITE), apron = mat('chef_apron', 0xe2e2dc), black = mat('chef_button', 0x202024);
+	b.add('jacket', white, new THREE.CylinderGeometry(0.31, 0.45, 0.55, 14, 1, true), { pos: V(0, -0.155, -0.3) });
+	b.add('apron', apron, new THREE.BoxGeometry(0.46, 0.38, 0.02), { pos: V(0, -0.26, 0.115), rot: [-0.29, 0, 0] });
+	b.add('strings', apron, new THREE.TorusGeometry(0.33, 0.012, 4, 16), { pos: V(0, -0.02, -0.3), rot: [Math.PI / 2, 0, 0] });
+	for (const s of [-1, 1]) for (let i = 0; i < 2; i++) {
+		b.add('buttons', black, new THREE.SphereGeometry(0.014, 6, 4), { pos: V(s * 0.07, 0.06 - i * 0.06, 0.03 + i * 0.012) });
+	}
+	return b.build();
+}
+
+// The apron folded: 0.4 x 0.08 x 0.3 m, origin in its middle.
+export function buildFoldedChefApron() {
+	const b = new Builder('folded_chef_apron');
+	b.add('apron', mat('chef_white', CHEF_WHITE), new THREE.BoxGeometry(0.4, 0.08, 0.3));
+	b.add('strings', mat('chef_apron', 0xe2e2dc), new THREE.BoxGeometry(0.41, 0.082, 0.04));
+	return b.build();
+}
+
 export const models = {
 	disguise_wig: buildDisguiseWig, disguise_mustache: buildDisguiseMustache, disguise_glasses: buildDisguiseGlasses,
 	disguise_robe: buildDisguiseRobe, folded_robe: buildFoldedRobe, songbook: buildSongbook,
@@ -291,6 +337,8 @@ export const models = {
 	disguise_gym_tank: buildGymTank, folded_gym_tank: buildFoldedGymTank,
 	disguise_thief_mask: buildThiefMask, disguise_thief_beanie: buildThiefBeanie, disguise_thief_shirt: buildThiefShirt,
 	folded_thief_shirt: buildFoldedThiefShirt,
+	disguise_chef_hat: buildChefHat, disguise_chef_mustache: buildChefMustache, disguise_chef_apron: buildChefApron,
+	folded_chef_apron: buildFoldedChefApron,
 };
 
 export const views = {
@@ -349,5 +397,17 @@ export const views = {
 			{ name: 'folded_thief_shirt', pos: [0.5, 0.04, -0.35] },
 		],
 		cam: { pos: [0.3, 1.2, 3.0], target: [0.1, 0.7, 0], fov: 40 },
+	},
+	chef_disguise: {
+		items: [
+			{ name: 'cop_0', pos: [-0.4, 0, 0] },
+			{ name: 'disguise_chef_apron', pos: [-0.4, 0.95, 0.3] },
+			{ name: 'disguise_chef_mustache', pos: [-0.4, 1.22, 0.2] },
+			{ name: 'disguise_chef_hat', pos: [-0.4, 1.42, 0] },
+			{ name: 'disguise_chef_mustache', pos: [0.45, 0.03, 0.2] },
+			{ name: 'disguise_chef_hat', pos: [0.75, 0.06, -0.2] },
+			{ name: 'folded_chef_apron', pos: [0.5, 0.04, -0.35] },
+		],
+		cam: { pos: [0.3, 1.2, 3.0], target: [0.1, 0.8, 0], fov: 40 },
 	},
 };

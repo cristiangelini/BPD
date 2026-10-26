@@ -398,6 +398,11 @@ func _disguises(root: Node3D) -> void:
 		piece.name = "Thief%d" % i
 		piece.position = StationRooms.THIEF_DISGUISES_AT + Vector3(i * StationRooms.THIEF_GAP, 0.12, 0)
 		root.add_child(piece)
+	for i in StationRooms.CHEF_DISGUISES.size():
+		var piece: DisguisePiece = DisguisePiece.scene_of(StationRooms.CHEF_DISGUISES[i]).instantiate()
+		piece.name = "Chef%d" % i
+		piece.position = StationRooms.CHEF_DISGUISES_AT + Vector3(i * StationRooms.CHEF_GAP, 0.12, 0)
+		root.add_child(piece)
 
 
 func _furniture(items: Array, solids: Dictionary, root: Node3D) -> void:

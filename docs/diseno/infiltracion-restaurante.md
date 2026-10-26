@@ -72,6 +72,9 @@ demás (`NpcSync` / el agarre), y el fuego de cada hornalla lo cuenta el host.
 ## El orden para hacerlo (un PR chico por paso)
 1. El disfraz de cocinero: gorro, bigote enrulado y delantal en una fila frente a los casilleros, y el look "chef" (2
    de 3).
+   Hecho así: 12 piezas en una octava fila a 4,85 m frente a los casilleros (gorro alto blanco, bigote enrulado
+   marrón y delantal sobre una chaqueta blanca con botones). Con 2 de 3, `is_disguised("chef")`. Correr la hace caer
+   como cualquier disfraz **(propuesta)**.
 2. El restaurante en la ciudad (`--place=restaurant`): el salón, el pase, la cocina, la despensa, la cámara fría y la
    oficina; los cocineros, los mozos, el Chef y el maître.
 3. La cocina: los ingredientes, la olla, la sartén, las hornallas (cocido, quemado y humo) y los platos.
