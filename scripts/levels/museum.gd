@@ -72,6 +72,9 @@ const MIRROR_AT := Vector3(BATHROOM_X + 0.09, 1.55, 3.4)
 const PAPER_AT := Vector3(BATHROOM_X + 0.1, 0.7, BATHROOM_Z + 0.5)
 const DRYER_AT := Vector3(-9.0, 1.3, HALL_Z - 0.15)
 const DESK_HALL_AT := Vector3(-3.5, 0, 7.5)
+## The saucer of coins on the ticket desk, for the living statue's hat.
+const COINS_AT := DESK_HALL_AT + Vector3(0.7, 1.0, 0)
+const COINS := 3
 ## Where the people stand: the six guards in a row across the gallery facing the hall's door, the director in the
 ## hall and the living statue on the steps, facing the street.
 const GUARDS_AT: Array[Vector3] = [
@@ -130,6 +133,8 @@ var director: MuseumDirector
 var statue: LivingStatue
 ## The case's clues (MuseumClues), once the case comes.
 var clues: MuseumClues
+## A cop used the toilet: the bathroom is no longer as it was last night.
+var toilet_used := false
 var _builder: PlaceBuilder
 
 
@@ -149,6 +154,7 @@ func _ready() -> void:
 	_hall()
 	_people()
 	_bags()
+	_coins()
 	_loot_spots()
 
 
@@ -163,6 +169,8 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	for guard in guards:
 		guard.case = case
 		guard.stubborn = guard.index == stubborn
+	statue.case = case
+	statue.knows = case.plan.clues.has("witness")
 	clues = MuseumClues.new()
 	clues.name = "Clues"
 	clues.museum = self
@@ -198,6 +206,18 @@ func reveal_loot() -> void:
 ## The guard by index (the order of the case's traits).
 func suspect(index: int) -> CollisionObject3D:
 	return guards[index] if index >= 0 and index < guards.size() else null
+
+
+func witness_offended() -> bool:
+	return statue.offended
+
+
+func offend_witness() -> void:
+	statue.offended = true
+
+
+func shouted_by(cop: Cop) -> void:
+	statue.shouted_by(cop)
 
 
 ## Whether a point in the world (ignoring height) is on the museum's lot, steps included.
@@ -418,7 +438,36 @@ func _bathroom() -> void:
 	dryer.broken = has_detail("dryer")
 	dryer.position = DRYER_AT
 	add_child(dryer)
+	_bathroom_spot("toilet", TOILET_AT + Vector3(0, 0.3, -0.05), Vector3(0.46, 0.6, 0.66))
+	_bathroom_spot("sink", SINK_AT + Vector3(0, 0.8, 0), Vector3(0.5, 0.2, 0.6))
 	_builder.light(Vector3((BATHROOM_X + GALLERY_X) / 2, ROOF - 0.5, (BATHROOM_Z + HALL_Z) / 2))
+
+
+func _bathroom_spot(kind: String, at: Vector3, size: Vector3) -> void:
+	var spot := BathroomSpot.new(kind, size)
+	spot.name = "Bathroom_" + kind
+	spot.museum = self
+	spot.position = at
+	add_child(spot)
+
+
+## A good look at the bathroom from the sink: its three true details, and the alibi clue if the toilet wasn't used.
+func look_at_bathroom(cop: Cop) -> void:
+	if toilet_used:
+		cop.show_hint("HINT_BATHROOM_MESSED")
+		return
+	var shown := bathroom_details.map(func(detail: String) -> String: return tr("ALIBI_SHORT_" + detail))
+	cop.show_hint(tr("HINT_BATHROOM_LOOK") % shown)
+	if case:
+		case.found("alibi")
+
+
+## A cop used the toilet: the bathroom is as he left it, and the alibi clue is lost if nobody had looked yet.
+func use_toilet(cop: Cop) -> void:
+	cop.show_hint("HINT_TOILET_USED")
+	toilet_used = true
+	if case:
+		case.ruin("alibi")
 
 
 ## Whether this detail is true in this match's bathroom.
@@ -450,6 +499,20 @@ func _bags() -> void:
 	bags.name = "EvidenceBags"
 	bags.position = BAGS_AT + Vector3(0, 0.5, 0)
 	add_child(bags)
+
+
+## The saucer on the ticket desk with a few coins, for the statue's hat.
+func _coins() -> void:
+	var saucer := CylinderMesh.new()
+	saucer.top_radius = 0.12
+	saucer.bottom_radius = 0.1
+	saucer.height = 0.004
+	_builder.mesh(saucer, COINS_AT + Vector3(0, 0.002, 0), PORCELAIN)
+	for i in COINS:
+		var coin := StatueCoin.new()
+		coin.name = "Coin%d" % i
+		coin.position = COINS_AT + Vector3(-0.05 + i * 0.05, 0.03 + i * 0.01, 0)
+		add_child(coin)
 
 
 ## The three places to search: a covered painting in the storage room, a locker's door (the culprit's, set when the
