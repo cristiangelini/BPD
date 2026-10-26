@@ -77,6 +77,15 @@ demás (`NpcSync` / el agarre), y el fuego de cada hornalla lo cuenta el host.
    como cualquier disfraz **(propuesta)**.
 2. El restaurante en la ciudad (`--place=restaurant`): el salón, el pase, la cocina, la despensa, la cámara fría y la
    oficina; los cocineros, los mozos, el Chef y el maître.
+   Hecho así: un lote nuevo en la cuadra (1, 0), al sur, de 24 x 20 m. Desde la entrada, el salón (8 mesas con
+   mantel, la 7 con su número, la caja registradora y la pizarra del menú con precios en quilates), abierto a
+   cualquiera. Después, la pared con el pase (una ventana sobre un mostrador con la campanita) y la puerta de la
+   cocina, donde el maître solo deja pasar con 2 piezas de cocinero. En la cocina, las 4 hornallas en la pared del
+   fondo, la mesada en el medio y la pileta; atrás, la despensa (oeste), la cámara fría (medio) y la oficina del Chef
+   con llave (este). 4 cocineros (chaqueta blanca y pañuelo rojo, o con redecilla y delantal manchado) en 4 de 6
+   lugares de la cocina por la semilla (los 2 que sobran son para los policías) y 3 mozos (chaleco negro y moño) en el
+   salón mirando al pase. El Chef Flambé (gorro altísimo, bigote enrulado y sartén con llamita) en el pase, mirando la
+   cocina. La sospecha solo cuenta en la cocina y atrás: el salón es público **(propuesta)**.
 3. La cocina: los ingredientes, la olla, la sartén, las hornallas (cocido, quemado y humo) y los platos.
 4. Las comandas: el riel, las recetas, el pase con la campanita, el plato bien o mal y la sospecha.
 5. Las pruebas y el caso (variante "restaurant"): el plato especial, las 6 pruebas, el sueldo y el interrogatorio.
