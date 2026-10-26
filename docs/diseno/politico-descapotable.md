@@ -6,7 +6,7 @@ probarlos jugando. La decisión de esta variante es la 222 (de las 220 a 229).
 
 ## La idea
 El diputado **Pompeyo Lustre** no quiere atril: quiere desfilar. Va parado en el asiento de atrás de un descapotable
-rojo, saludando, a paso de hombre, una vuelta de cuatro cuadras que sale de la plaza y vuelve a la plaza. Los vecinos
+rojo, saludando, a paso de hombre, una vuelta de cuatro cuadras alrededor de la plaza. Los vecinos
 lo esperan en las veredas, y entre ellos los cuatro de siempre con huevos y tomates. Los policías van caminando al lado
 del auto, uno en cada esquina, haciendo de escudo. El chiste cooperativo: el auto no para, así que hay que moverse con
 él, taparle los costados según de qué vereda viene el tiro, y bajar del auto a los fanáticos que se suben a abrazarlo.
@@ -16,11 +16,11 @@ del auto, uno en cada esquina, haciendo de escudo. El chiste cooperativo: el aut
 caminando. Si llega limpio a la plaza, nos aumentan el presupuesto. Si llega con un tomate en la cara, nos cierran."
 
 ## Cómo es el caso
-1. **El recorrido:** sale de la plaza y da una vuelta de cuatro cuadras por las calles de la ciudad viva, de unos 400 m,
-   y vuelve al escenario de la plaza. El tránsito de la ciudad se corta en esas calles mientras dura (los autos esperan
+1. **El recorrido:** sale de la calle al norte de la plaza y da la vuelta a la manzana de la plaza, cuatro cuadras de
+   72 m (unos 290 m), por el carril de al lado de la plaza, y vuelve a donde salió, frente al escenario. El tránsito de la ciudad se corta en esas calles mientras dura (los autos esperan
    en las esquinas). El auto lo maneja un chofer que no se baja nunca.
 2. **El reloj:** el desfile dura 6 minutos, como el discurso de la base: el auto avanza solo a lo largo del recorrido a
-   1,1 m/s (unos 4 km/h, se puede acompañar caminando) y no para por nada. Una barra arriba muestra cuánto falta. Mientras
+   0,8 m/s (unos 3 km/h, se acompaña caminando) y no para por nada. Una barra arriba muestra cuánto falta. Mientras
    tanto el diputado saluda y dice sus frases de desfile.
 3. **Las veredas:** 24 vecinos repartidos en las veredas del recorrido, por tramos. Cuatro son los que tiran, con la
    bolsa de mercado de la base (y tres inocentes con bolsa de compras igual). Tiran cuando el auto pasa cerca de ellos
