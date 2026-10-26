@@ -103,6 +103,8 @@ const LOOT_MODELS := {
 const LOOT_OUT := {"room13": 1.4, "cart": 0.8, "suitcase": 0.6}
 ## The roll of evidence bags, on a stool by the reception desk.
 const BAGS_AT := Vector3(2.4, 0, -5.6)
+## The shuttle waits at the curb east of the door, its back to the building, and drives straight out (step 5).
+const GETAWAY_AT := Vector3(9.5, 0, SIZE.y / 2 + 1.0)
 ## The awning over the front door.
 const AWNING_DEPTH := 2.0
 const BRICK := Color(0.85, 0.5, 0.45)
@@ -221,6 +223,12 @@ func reveal_loot() -> void:
 	item.position = Vector3(at.x, floor_y, at.z) + out * LOOT_OUT[loot_spot]
 	if case:
 		case.found_loot()
+
+
+## The hotel's shuttle waits at the curb, east of the door, and drives straight out into the street.
+func getaway(_index: int, _city: Node3D) -> Dictionary:
+	var out := to_global(GETAWAY_AT)
+	return {"at": Transform3D(global_basis, out), "via": [to_global(Vector3(GETAWAY_AT.x, 0, SIZE.y / 2 + 5.0))]}
 
 
 func witness_offended() -> bool:

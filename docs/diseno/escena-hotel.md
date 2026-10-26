@@ -166,3 +166,8 @@ PlaceDraw y la custodia para el interrogatorio.
   queda tapada. El timbre (`HotelBell`) despierta a don Bostezo, que repite quién duerme dónde; si se toca más de tres
   veces seguidas (con menos de 3 s entre una y otra), se enoja y no contesta nada por 30 s. Las frases del hotel
   quedaron con "tú".
+- **Paso 5 (el final):** el culpable que huye sale en la combi del hotel (`SuspectCar.HOTEL_SHUTTLE`, modelo en
+  `tools/modelgen/models/hotel.js`), estacionada al lado del cordón, al este de la puerta, con seis valijas atadas en
+  el techo. Cada 5 s se le cae una (`ChaseSuitcase`), que queda abierta en la calle con la ropa afuera. Con E se saca
+  de la calle; si el patrullero la pisa rápido, la ropa le tapa el parabrisas 2 s. Agarrado o entregado, al turno
+  siguiente es el interrogatorio del huésped, que sigue en bata (`owner_guest`).
