@@ -48,7 +48,7 @@ func start(comisario: Comisario = null) -> void:
 	checklist = CaseChecklist.new()
 	add_child(checklist)
 	briefing.finished.connect(checklist.set_open.bind(true))
-	briefing.finished.connect(_hint_all.bind("HINT_GO_SCHOOL"))
+	briefing.finished.connect(_hint_all.bind("HINT_GO_SCHOOL_VISIT"))
 	school.tour.finished.connect(_on_photo)
 	school.questions.shamed.connect(_on_shamed)
 	for pupil in school.pupils:
@@ -70,7 +70,7 @@ func give_tip() -> void:
 	tip_given = true
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).input_enabled:
-			briefing.start(PackedStringArray(["BRIEF_SCHOOL_A", "BRIEF_SCHOOL_B", "BRIEF_SCHOOL_C"]))
+			briefing.start(PackedStringArray(["BRIEF_SCHOOL_VISIT_A", "BRIEF_SCHOOL_VISIT_B", "BRIEF_SCHOOL_VISIT_C"]))
 			break
 	checklist.show_rows(rows())
 
