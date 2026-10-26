@@ -61,6 +61,16 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_FLOOR_PLAN", "OBJ_EXTRA_PAINTINGS_BOX"],
 		"rig": preload("res://scripts/case/apartments/floor_31_rig.gd"),
 	},
+	"carrier_pigeons": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_CARRIER_PIGEONS_B", "BRIEF_CARRIER_PIGEONS_C", "BRIEF_CARRIER_PIGEONS_D"],
+		"find": "OBJ_FIND_CARRIER_PIGEONS",
+		"hidden": [preload("res://scenes/props/trainer_whistle.tscn")],
+		"half_heights": [0.015],
+		"heavy": [false],
+		# The second extra is the necklace a pigeon brings, which the rig adds.
+		"extra_keys": ["OBJ_EXTRA_TRAINER_WHISTLE", "OBJ_EXTRA_PEARL_NECKLACE"],
+		"rig": preload("res://scripts/case/apartments/carrier_pigeons_rig.gd"),
+	},
 }
 const ORNAMENT_SCENES: Array[PackedScene] = [
 	preload("res://scenes/props/ornament_vase.tscn"), preload("res://scenes/props/ornament_figurine.tscn"),

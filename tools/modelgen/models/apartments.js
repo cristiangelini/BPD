@@ -148,14 +148,77 @@ export function buildFloorPlan() {
 	return b.build();
 }
 
+// A pigeon 0.3 m long, facing +X: a grey body, a darker head with an orange eye and a beak, wings and a fan tail.
+export function buildPigeon() {
+	const b = new Builder('pigeon');
+	const grey = mat('pigeon_grey', 0x8a8e9a), dark = mat('pigeon_dark', 0x4a5060);
+	b.add('body', grey, ellipsoid(0.13, 0.08, 0.075, 10, 6), { pos: V(0, 0.1, 0) });
+	b.add('head', dark, ellipsoid(0.05, 0.05, 0.045, 8, 5), { pos: V(0.12, 0.18, 0) });
+	b.add('neck', mat('pigeon_neck', 0x4a8a7a), ellipsoid(0.05, 0.04, 0.05, 8, 4), { pos: V(0.09, 0.14, 0) });
+	b.add('beak', mat('pigeon_beak', 0xd8a040), new THREE.ConeGeometry(0.012, 0.04, 4), { pos: V(0.18, 0.175, 0), rot: [0, 0, -Math.PI / 2] });
+	for (const z of [-0.025, 0.025]) b.add('eye', mat('pigeon_eye', 0xe86a2a), ellipsoid(0.008, 0.008, 0.005, 5, 3), { pos: V(0.14, 0.19, z) });
+	for (const z of [-0.07, 0.07]) b.add('wing', dark, ellipsoid(0.1, 0.035, 0.02, 8, 4), { pos: V(-0.02, 0.12, z) });
+	b.add('tail', dark, new THREE.BoxGeometry(0.1, 0.015, 0.08), { pos: V(-0.15, 0.1, 0) });
+	for (const z of [-0.02, 0.02]) b.add('leg', mat('pigeon_leg', 0xc85a5a), new THREE.CylinderGeometry(0.006, 0.006, 0.05, 4), { pos: V(0.01, 0.025, z) });
+	return b.build();
+}
+
+// The pigeon loft: a wooden hutch 0.9 m wide, 0.6 m deep and 0.8 m tall on short legs, with a wire front, a sloped
+// roof, a landing board and two pigeons inside.
+export function buildPigeonLoft() {
+	const b = new Builder('pigeon_loft');
+	const wood = mat('loft_wood', 0xa87a4a), roof = mat('loft_roof', 0x7a4a3a);
+	const wire = mat('loft_wire', 0xb8bcc4, { transparent: true, opacity: 0.45 });
+	for (const [x, z] of [[-0.4, -0.25], [-0.4, 0.25], [0.4, -0.25], [0.4, 0.25]]) b.add('legs', wood, new THREE.BoxGeometry(0.05, 0.15, 0.05), { pos: V(x, 0.075, z) });
+	b.add('floor', wood, new THREE.BoxGeometry(0.9, 0.04, 0.6), { pos: V(0, 0.17, 0) });
+	b.add('back', wood, new THREE.BoxGeometry(0.9, 0.55, 0.03), { pos: V(0, 0.44, -0.285) });
+	for (const x of [-0.435, 0.435]) b.add('side', wood, new THREE.BoxGeometry(0.03, 0.55, 0.6), { pos: V(x, 0.44, 0) });
+	b.add('wire', wire, new THREE.BoxGeometry(0.84, 0.5, 0.01), { pos: V(0, 0.44, 0.29) });
+	b.add('roof', roof, new THREE.BoxGeometry(1.0, 0.04, 0.72), { pos: V(0, 0.75, 0), rot: [0.15, 0, 0] });
+	b.add('board', wood, new THREE.BoxGeometry(0.4, 0.02, 0.15), { pos: V(0, 0.2, 0.37) });
+	const grey = mat('pigeon_grey', 0x8a8e9a);
+	for (const x of [-0.2, 0.15]) {
+		b.add('pigeons', grey, ellipsoid(0.1, 0.06, 0.06, 8, 5), { pos: V(x, 0.25, 0) });
+		b.add('pigeons', mat('pigeon_dark', 0x4a5060), ellipsoid(0.04, 0.04, 0.035, 6, 4), { pos: V(x + 0.09, 0.32, 0) });
+	}
+	return b.build();
+}
+
+// A pearl necklace in a loose loop 0.15 m across.
+export function buildPearlNecklace() {
+	const b = new Builder('pigeon_necklace');
+	const pearl = mat('pearl', 0xf4f0e8);
+	for (let i = 0; i < 18; i++) {
+		const a = i / 18 * Math.PI * 2;
+		b.add('pearls', pearl, ellipsoid(0.012, 0.012, 0.012, 6, 4), { pos: V(Math.cos(a) * 0.07, 0.012, Math.sin(a) * 0.06) });
+	}
+	b.add('clasp', mat('clasp_gold', 0xd8b048), new THREE.BoxGeometry(0.02, 0.01, 0.015), { pos: V(0.075, 0.012, 0) });
+	return b.build();
+}
+
+// A silver trainer's whistle 0.07 m long on a red cord.
+export function buildTrainerWhistle() {
+	const b = new Builder('trainer_whistle');
+	const silver = mat('whistle_silver', 0xc8ccd4);
+	b.add('body', silver, new THREE.CylinderGeometry(0.014, 0.014, 0.03, 10), { pos: V(0, 0.014, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('mouth', silver, new THREE.BoxGeometry(0.04, 0.012, 0.012), { pos: V(0.03, 0.014, 0) });
+	b.add('cord', mat('whistle_cord', 0xc83a3a), new THREE.TorusGeometry(0.03, 0.003, 4, 12), { pos: V(-0.035, 0.004, 0), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
 export const models = {
 	stolen_aquarium: buildStolenAquarium, fishing_net: buildFishingNet, aquarium_ticket: buildAquariumTicket,
 	contraband_piano: buildContrabandPiano, piano_sheet: buildPianoSheet, gold_ingot: buildGoldIngot,
 	spy_telescope: buildSpyTelescope, code_notebook: buildCodeNotebook, binoculars: buildBinoculars,
 	floor_key: buildFloorKey, paintings_box: buildPaintingsBox, floor_plan: buildFloorPlan,
+	pigeon: buildPigeon, pigeon_loft: buildPigeonLoft, pigeon_necklace: buildPearlNecklace, trainer_whistle: buildTrainerWhistle,
 };
 
 export const views = {
+	pigeon_loft: {
+		items: [{ name: 'pigeon_loft', pos: [0, 0, 0] }, { name: 'pigeon', pos: [0.75, 0, 0.3] }, { name: 'pigeon_necklace', pos: [0.7, 0, 0.7] }, { name: 'trainer_whistle', pos: [1.0, 0, 0.6] }],
+		cam: { pos: [1.6, 1.2, 2.2], target: [0.35, 0.3, 0.2], fov: 40 },
+	},
 	floor_key: {
 		items: [{ name: 'paintings_box', pos: [0, 0, 0] }, { name: 'floor_key', pos: [0.7, 0, 0.3] }, { name: 'floor_plan', pos: [0.7, 0, -0.1] }],
 		cam: { pos: [1.4, 1.1, 1.6], target: [0.3, 0.25, 0], fov: 40 },

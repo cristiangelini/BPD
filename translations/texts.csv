@@ -5135,6 +5135,16 @@ PROMPT_TURN_FLOOR_KEY,E: girar la llave,E: turn the key,E: girar a chave
 HINT_FLOOR_31_OPEN,"«Clic.» La cinta se despega sola y el botón 31 se enciende.","«Click.» The tape peels off and the 31 button lights up.","«Clique.» A fita se solta e o botão 31 acende."
 CLUE_FLOOR_31_OPEN,La llave del 30B enciende el botón 31 del ascensor: el piso que no existe.,The key from 30B lights the elevator's 31 button: the floor that doesn't exist.,A chave do 30B acende o botão 31 do elevador: o andar que não existe.
 PROMPT_ELEVATOR_31,E: subir al 31,E: go up to 31,E: subir ao 31
+BRIEF_CARRIER_PIGEONS_B,"El señor Bellini cría palomas en el balcón. Salen vacías y vuelven con joyas en la pata: las entrena para robar.","Mr. Bellini keeps pigeons on his balcony. They fly out empty and come back with jewels on their legs: he trains them to steal.","O senhor Bellini cria pombos na varanda. Eles saem vazios e voltam com joias na pata: ele os treina para roubar."
+BRIEF_CARRIER_PIGEONS_C,"Traigan el palomar al patrullero, con las palomas adentro. Pesa 25 kilos: entre dos. Y nada de correr cerca: se asustan.","Bring the loft to the patrol car, pigeons and all. It weighs 25 kilos: two of you. And no running near it: they scare.","Tragam o pombal para a viatura, com os pombos dentro. Pesa 25 quilos: entre dois. E nada de correr perto: eles se assustam."
+BRIEF_CARRIER_PIGEONS_D,"Si encuentran el silbato del entrenador o el collar que trae una paloma, mejor: todo suma.","If you find the trainer's whistle or the necklace a pigeon brings, even better: it all counts.","Se encontrarem o apito do treinador ou o colar que um pombo traz, melhor: tudo conta."
+OBJ_FIND_CARRIER_PIGEONS,Llevarse el palomar de las palomas mensajeras,Take the carrier pigeons' loft,Levar o pombal dos pombos-correio
+OBJ_EXTRA_TRAINER_WHISTLE,Extra: el silbato del entrenador,Extra: the trainer's whistle,Extra: o apito do treinador
+OBJ_EXTRA_PEARL_NECKLACE,Extra: el collar de perlas que trae una paloma,Extra: the pearl necklace a pigeon brings,Extra: o colar de pérolas que um pombo traz
+PEPA_TIP_carrier_pigeons,"Las palomas del 30B vuelven con cosas brillantes. Ayer una traía mi anillo, ¡y yo no lo había perdido!","The pigeons from 30B come back with shiny things. Yesterday one had my ring, and I hadn't even lost it!","Os pombos do 30B voltam com coisas brilhantes. Ontem um trazia o meu anel, e eu nem tinha perdido!"
+PROMPT_PIGEON_TAKE,E: quitarle lo que trae en la pata,E: take what it has on its leg,E: tirar o que ele traz na pata
+PROMPT_FEATHERS,E: mirar las plumas,E: look at the feathers,E: olhar as penas
+CLUE_FEATHERS,Plumas de paloma y alpiste desde el ascensor hasta el 30B.,Pigeon feathers and birdseed from the elevator to 30B.,Penas de pombo e alpiste do elevador até o 30B.
 AIRPORT_DEPUTY_OFF,"¡Voy a mirar un ratito la tienda, enseguida vuelvo!","I'm just popping into the shop, back in a sec!","Vou dar uma olhadinha na loja, já volto!"
 AIRPORT_DEPUTY_SHOP_1,"¿Este perfume me hace más votable?","Does this perfume make me more electable?","Este perfume me deixa mais votável?"
 AIRPORT_DEPUTY_SHOP_2,"Con estos lentes nadie me reconoce. ¡Qué pena!","Nobody recognizes me in these sunglasses. What a shame!","Com estes óculos ninguém me reconhece. Que pena!"
