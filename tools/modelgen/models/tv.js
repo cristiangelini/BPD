@@ -117,15 +117,55 @@ export function buildCamera() {
 	return b.build();
 }
 
+// The deputy's teleprompter (step 4): a low black stand with a monitor lying face up and a slanted glass over it that
+// reflects the text toward the speaker (to -Z), and its cable with the plug, 1.3 m tall. Its origin on the ground.
+export function buildTeleprompter() {
+	const b = new Builder('teleprompter');
+	const black = mat('tv_black', 0x1e1f24), metal = mat('tv_metal', 0xb8bcc2);
+	const glass = mat('prompter_glass', 0xbfe3f0, { transparent: true, opacity: 0.35 }), cable = mat('prompter_cable', 0x2a2a30);
+	box(b, 'stand', black, 0.5, 0.04, 0.5, 0, 0.02, 0);
+	b.add('stand', metal, new THREE.CylinderGeometry(0.03, 0.03, 1.0, 8), { pos: V(0, 0.52, 0) });
+	box(b, 'monitor', black, 0.42, 0.06, 0.32, 0, 1.04, 0.02);
+	box(b, 'glass', glass, 0.42, 0.42, 0.01, 0, 1.22, -0.05, [-0.78, 0, 0]);
+	for (const x of [-1, 1]) box(b, 'glass', metal, 0.015, 0.3, 0.015, x * 0.21, 1.2, -0.02, [-0.78, 0, 0]);
+	box(b, 'cable', cable, 0.025, 0.025, 1.0, 0.1, 0.015, 0.7);
+	box(b, 'cable', black, 0.06, 0.04, 0.08, 0.1, 0.03, 1.2);
+	return b.build();
+}
+
+// A cue card (step 4): a white card 50 x 35 cm on a wooden stick to hold it up, the text is the game's. Its origin at
+// the bottom of the stick; the card faces +Z.
+export function buildCueCard() {
+	const b = new Builder('cue_card');
+	const white = mat('tv_white', 0xf2f2ee), wood = mat('card_stick', 0xb07a45), red = mat('tv_red', 0xc8323a);
+	b.add('stick', wood, new THREE.CylinderGeometry(0.015, 0.015, 0.5, 6), { pos: V(0, 0.25, 0) });
+	box(b, 'card', white, 0.5, 0.35, 0.01, 0, 0.67, 0.01);
+	box(b, 'card', red, 0.5, 0.03, 0.012, 0, 0.83, 0.011);
+	return b.build();
+}
+
+// The spare microphone (step 4): a handheld mic, black with a silver mesh head and the channel's red flag. Its origin
+// in its middle, lying along z.
+export function buildSpareMic() {
+	const b = new Builder('spare_mic');
+	const black = mat('tv_black', 0x1e1f24), mesh = mat('mic_mesh', 0xb8bcc2, { metalness: 0.5, roughness: 0.4 }), red = mat('tv_red', 0xc8323a);
+	b.add('body', black, new THREE.CylinderGeometry(0.02, 0.016, 0.2, 8), { pos: V(0, 0, -0.04), rot: [Math.PI / 2, 0, 0] });
+	b.add('head', mesh, new THREE.SphereGeometry(0.035, 8, 6), { pos: V(0, 0, 0.09) });
+	box(b, 'flag', red, 0.06, 0.06, 0.03, 0, 0, 0.04);
+	return b.build();
+}
+
 export const models = { tv_lectern: buildLectern, tv_anchor_desk: buildAnchorDesk, tv_console: buildConsole,
-	makeup_mirror: buildMakeupMirror, tv_camera: buildCamera };
+	makeup_mirror: buildMakeupMirror, tv_camera: buildCamera, teleprompter: buildTeleprompter, cue_card: buildCueCard,
+	spare_mic: buildSpareMic };
 
 export const views = {
 	tv_studio_props: {
 		items: [{ name: 'tv_lectern', pos: [-1.6, 0, 0.5], rotY: 0.3 }, { name: 'tv_anchor_desk', pos: [0.6, 0, -0.5] },
 			{ name: 'tv_lectern', pos: [2.8, 0, 0.5], rotY: -0.3 }, { name: 'makeup_mirror', pos: [-3.6, 0, -1.5], rotY: 0.4 },
 			{ name: 'tv_console', pos: [6.5, 0, -2.0], rotY: -0.9 }, { name: 'tv_camera', pos: [-0.8, 0, 3.4], rotY: 2.6 },
-			{ name: 'tv_camera', pos: [1.8, 0, 3.2], rotY: 3.5 }],
+			{ name: 'tv_camera', pos: [1.8, 0, 3.2], rotY: 3.5 }, { name: 'teleprompter', pos: [3.6, 0, 1.6], rotY: 3.4 },
+			{ name: 'cue_card', pos: [-2.6, 0, 2.6], rotY: 0.3 }, { name: 'spare_mic', pos: [0.2, 0.9, 0.2] }],
 		cam: { pos: [1.0, 3.2, 8.5], target: [1.2, 0.9, -0.5], fov: 55 },
 	},
 };

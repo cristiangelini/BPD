@@ -6,7 +6,8 @@ extends Node
 ## Each block is 2 questions: the moderator asks (ASK seconds) and each candidate answers for ANSWER seconds, Lustre
 ## first on the odd questions and Malvón on the even ones. The control room puts on air the camera of whoever speaks.
 ## Lustre's image starts at IMAGE_START: each answer of his without a blunder (step 4) adds ANSWER_GAIN, each answer of
-## Malvón's takes MALVON_GAIN off it, and each blunder takes BLUNDER. Time and image show at the top of the screen.
+## Malvón's takes MALVON_GAIN off it, and each blunder takes BLUNDER; with his teleprompter unplugged (step 4) he
+## improvises, and his answers are worth half. Time and image show at the top of the screen.
 ## `finished` at the end of the third block. Every number here is (propuesta).
 
 signal started
@@ -156,7 +157,8 @@ func _open_turn(who: String) -> void:
 ## The turn that ends: a clean answer of Lustre's earns its points.
 func _close_turn() -> void:
 	if speaker == "lustre" and not _blunder_in_turn:
-		_add(ANSWER_GAIN)
+		# Without the teleprompter he improvises (step 4): half as good.
+		_add(ANSWER_GAIN if studio.prompter == null or studio.prompter.plugged else ANSWER_GAIN / 2)
 	speaker = ""
 
 
