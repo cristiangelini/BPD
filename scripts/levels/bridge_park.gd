@@ -7,7 +7,8 @@ extends Node3D
 ## off in step 3) on two stringers, a railing piece on each side of every span and 4 pillars in the water. A ramp goes
 ## up to each end, and a ramp over the wall on each bank goes down into the water. On the west bank: the stand with
 ## balloons, the banner over the bridge and the builders' pickup; on the east end of the deck, the ribbon. The cops
-## start in the station and drive here; --place=bridge opens it from Play. Every number here is (propuesta).
+## start in the station and drive here; --place=bridge opens it from Play. Step 2: Deputy Lustre waits at the foot of
+## the west ramp and crosses with his photo stops (BridgeCeremony). Every number here is (propuesta).
 
 const PLANK_MODEL := preload("res://assets/models/bridge_plank.glb")
 const VAN_MODEL := preload("res://assets/models/builder_van.glb")
@@ -43,6 +44,11 @@ const STAND := Vector3(5, 0.6, 3)
 const VAN_AT := Vector3(-20, 0, 13)
 const VAN_SIZE := Vector3(2.1, 2.0, 5.0)
 const RIBBON_X := 9.5
+## Where the deputy waits for his guard (at the foot of the west ramp), the top of that ramp and his photo stops on
+## the deck, one every 2 spans (step 2).
+const WAIT_AT := Vector3(-19.5, 0, 0)
+const RAMP_TOP_WEST := Vector3(-10.8, DECK_TOP, 0)
+const STOPS: Array[float] = [-7.0, -3.0, 1.0, 5.0]
 const TREES: Array[Vector2] = [Vector2(-24, -20), Vector2(-15, -21), Vector2(-24, 4), Vector2(15, -21),
 	Vector2(24, -20), Vector2(24, 4), Vector2(16, 19), Vector2(24, 18)]
 
@@ -68,6 +74,9 @@ var rails: Array[StaticBody3D] = []
 var pillars: Array[StaticBody3D] = []
 ## The water between the walls (step 4: it slows whoever is in it).
 var water: Area3D
+## Deputy Lustre and his walk across the bridge, the clock of the case (step 2).
+var politician: Politician
+var ceremony: BridgeCeremony
 var _build: PlaceBuilder
 
 @onready var car: PatrolCar = $PatrolCar
@@ -83,6 +92,16 @@ func _ready() -> void:
 	_build_canal()
 	_build_bridge()
 	_build_banks()
+	politician = Politician.new()
+	politician.name = "Politician"
+	add_child(politician)
+	politician.position = WAIT_AT + Vector3.UP * 0.05
+	# Facing the street, waiting for his guard.
+	politician.rotation.y = PI
+	ceremony = BridgeCeremony.new()
+	ceremony.name = "Ceremony"
+	ceremony.setup(self, politician)
+	add_child(ceremony)
 	city.transform = CityLayout.anchor("bridge_park")
 	car.global_transform = (city.transform * CityLayout.parking("station")).translated_local(Vector3.UP * 0.05)
 	$Cop.global_transform = (city.transform * CityLayout.station_spawn(0)).translated(Vector3.UP * 0.1)
