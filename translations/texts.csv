@@ -2220,3 +2220,40 @@ FLAMBE_NO_ORDER,Nadie pidió nada. ¿Cocinas por gusto? Sospechoso...,Nobody ord
 HINT_PASS_EMPTY,Deja un plato en el mostrador del pase y después toca la campanita.,"Leave a plate on the pass's counter, then ring the bell.",Deixe um prato no balcão do passe e depois toque a campainha.
 PROMPT_PASS_BELL,E: tocar la campanita y sacar los platos,E: ring the bell and send out the dishes,E: tocar a campainha e mandar os pratos
 HUD_ORDERS,Comandas,Orders,Pedidos
+BRIEF_RESTAURANT_A,"¡Novatos! El restaurante La Cuchara de Oro es la cueva de una banda de joyeros ladrones. La comida es buena. Las joyas, robadas.","Rookies! The restaurant La Cuchara de Oro is the hideout of a gang of jewel thieves. The food is good. The jewels, stolen.","Novatos! O restaurante La Cuchara de Oro é o esconderijo de uma quadrilha de ladrões de joias. A comida é boa. As joias, roubadas."
+BRIEF_RESTAURANT_B,El jefe es el Chef Flambé. Entren a la cocina disfrazados de cocineros y cocinen lo que pida. Bien. Y rápido.,The boss is the Chef Flambé. Get into the kitchen dressed as cooks and cook whatever he orders. Well. And fast.,O chefe é o Chef Flambé. Entrem na cozinha disfarçados de cozinheiros e cozinhem o que ele pedir. Bem. E rápido.
+BRIEF_RESTAURANT_C,Junten 3 pruebas y esposen al Chef. Y no quemen nada: el humo se ve desde el salón.,Gather 3 pieces of evidence and cuff the Chef. And don't burn anything: the smoke can be seen from the dining room.,Juntem 3 provas e algemem o Chef. E não queimem nada: a fumaça aparece no salão.
+HINT_GO_RESTAURANT,"Antes, pasa por la fila de disfraces de la comisaría y ponte 2 piezas de cocinero. La Cuchara de Oro está en la ciudad: ve en el patrullero.","First, stop by the station's disguise row and put on 2 cook pieces. La Cuchara de Oro is in the city: take the patrol car.","Antes, passe pela fileira de disfarces da delegacia e vista 2 peças de cozinheiro. La Cuchara de Oro fica na cidade: vá na viatura."
+HINT_RESTAURANT_IN,Adentro. Busca pruebas y cocina las comandas del Chef: al pase y tocando la campanita.,"You're in. Look for evidence and cook the Chef's orders: to the pass, and ring the bell.","Lá dentro. Procure provas e cozinhe os pedidos do Chef: para o passe, tocando a campainha."
+HINT_FLAMBE_CUFFED,¡El Chef Flambé esposado! Caso resuelto.,The Chef Flambé is cuffed! Case solved.,O Chef Flambé está algemado! Caso resolvido.
+HINT_ESCAPE_flambe,¡El Chef Flambé se escapa! ¡Atrápenlo antes de que se pierda en la ciudad!,The Chef Flambé is escaping! Catch him before he gets lost in the city!,O Chef Flambé está fugindo! Peguem ele antes que se perca na cidade!
+OBJ_RESTAURANT_GET_IN,Entrar a la cocina disfrazado de cocinero,Get into the kitchen dressed as a cook,Entrar na cozinha disfarçado de cozinheiro
+OBJ_RESTAURANT_EVIDENCE,Pruebas (%d de %d),Evidence (%d of %d),Provas (%d de %d)
+OBJ_RESTAURANT_CUFF_FLAMBE,Esposar al Chef Flambé,Cuff the Chef Flambé,Algemar o Chef Flambé
+OBJ_RESTAURANT_CATCH_FLAMBE,Atrapar al Chef Flambé,Catch the Chef Flambé,Pegar o Chef Flambé
+OBJ_RESTAURANT_CAREFUL,Que no los descubran: saquen las comandas a tiempo y no quemen nada.,Don't get found out: get the orders out on time and don't burn anything.,Que não descubram vocês: entreguem os pedidos a tempo e não queimem nada.
+OBJ_RESTAURANT_FOUND_OUT,¡Los descubrieron!,You've been found out!,Vocês foram descobertos!
+EVIDENCE_RESTAURANT_ledger,La libreta de cuentas: cuántos quilates pagó cada mesa,The account book: how many carats each table paid,A caderneta de contas: quantos quilates cada mesa pagou
+EVIDENCE_RESTAURANT_ring,Foto del anillo robado en la sopa especial de la mesa 7,Photo of the stolen ring in table 7's special soup,Foto do anel roubado na sopa especial da mesa 7
+EVIDENCE_RESTAURANT_pot,La olla con doble fondo llena de collares,The double-bottom pot full of necklaces,A panela de fundo falso cheia de colares
+EVIDENCE_RESTAURANT_recording,El video de dos cocineros hablando del comprador de la mesa 7,The video of two cooks talking about table 7's buyer,O vídeo de dois cozinheiros falando do comprador da mesa 7
+EVIDENCE_RESTAURANT_menu,Foto del menú con precios en quilates,Photo of the menu with prices in carats,Foto do cardápio com preços em quilates
+EVIDENCE_RESTAURANT_receipt,El recibo de la joyería en el escritorio del Chef,The jeweller's receipt in the Chef's desk,O recibo da joalheria na mesa do Chef
+PROMPT_RESTAURANT_ring,La sopa especial de la mesa 7... ¿eso que brilla es un anillo? (sácale una foto),Table 7's special soup... is that shiny thing a ring? (take a photo),A sopa especial da mesa 7... aquilo brilhando é um anel? (tire uma foto)
+PROMPT_RESTAURANT_menu,Un menú con precios en quilates y collares... (sácale una foto),A menu with prices in carats and necklaces... (take a photo),Um cardápio com preços em quilates e colares... (tire uma foto)
+PROMPT_RESTAURANT_receipt,E: revisar el cajón del escritorio,E: search the desk drawer,E: revistar a gaveta da mesa
+PROMPT_RESTAURANT_APRON,E: revisar el bolsillo del delantal colgado,E: search the pocket of the hanging apron,E: revistar o bolso do avental pendurado
+RESTAURANT_TALK_0,El de la mesa 7 quiere el collar de perlas. Va en la sopa del jueves.,The table 7 guy wants the pearl necklace. It goes in Thursday's soup.,O da mesa 7 quer o colar de pérolas. Vai na sopa de quinta.
+RESTAURANT_TALK_1,¿Y si se lo traga? La última vez casi se traga un rubí.,What if he swallows it? Last time he almost swallowed a ruby.,E se ele engolir? Da última vez quase engoliu um rubi.
+RESTAURANT_TALK_2,"Paga en diamantes. Sin factura, claro.","He pays in diamonds. No receipt, of course.","Ele paga em diamantes. Sem nota, claro."
+RESTAURANT_TALK_3,Shh. Que el nuevo no escuche. Tiene cara de policía.,Shh. Don't let the new guy hear. He looks like a cop.,Shh. Que o novato não ouça. Tem cara de policial.
+FLAMBE_SLIP_1,¡Esas joyas eran decoración! ...Para la sopa.,Those jewels were garnish! ...For the soup.,Essas joias eram decoração! ...Para a sopa.
+FLAMBE_SLIP_2,La mesa 7 es un cliente fiel. Muy fiel. Y muy rico.,Table 7 is a loyal customer. Very loyal. And very rich.,A mesa 7 é um cliente fiel. Muito fiel. E muito rico.
+FLAMBE_SLIP_3,El doble fondo es para que la sopa no se pegue. Y para los collares.,The double bottom is so the soup doesn't stick. And for the necklaces.,O fundo falso é para a sopa não grudar. E para os colares.
+CHASE_FLAMBE_LINE_1,¡Nadie atrapa a un artista de la cocina!,Nobody catches an artist of the kitchen!,Ninguém pega um artista da cozinha!
+CHASE_FLAMBE_LINE_2,¡El servicio está cerrado! ¡Vuelvan mañana!,Service is closed! Come back tomorrow!,O serviço está fechado! Voltem amanhã!
+CHASE_FLAMBE_LINE_3,¡Les dejo la cuenta! ¡Con propina incluida!,I'll leave you the bill! Tip included!,Deixo a conta para vocês! Com gorjeta incluída!
+CRIME_owner_flambe,¡Novatos! Ayer se trajeron al Chef Flambé y está en la sala de interrogatorio. Las joyas siguen saliendo en la sopa: háganlo hablar.,Rookies! Yesterday you brought in the Chef Flambé and he's in the interrogation room. The jewels keep coming out in the soup: make him talk.,Novatos! Ontem vocês trouxeram o Chef Flambé e ele está na sala de interrogatório. As joias continuam saindo na sopa: façam ele falar.
+CONFESS_owner_flambe,"¡Está bien! ¡Las joyas iban en la sopa! Pero la sopa era excelente, eh.","Fine! The jewels went in the soup! But the soup was excellent, okay.","Tá bom! As joias iam na sopa! Mas a sopa era excelente, hein."
+FLAMBE_SPECIAL,¡Una sopa especial para la mesa 7! Esta la hago yo. Nadie la toque.,A special soup for table 7! I'll make this one. Nobody touch it.,Uma sopa especial para a mesa 7! Essa eu faço. Ninguém toca.
+FLAMBE_SPECIAL_OUT,"¡Mozo! La especial, a la mesa 7. Con cuidado, que tiene... sabor.","Waiter! The special, to table 7. Carefully, it has... flavor.","Garçom! A especial, para a mesa 7. Com cuidado, que tem... sabor."

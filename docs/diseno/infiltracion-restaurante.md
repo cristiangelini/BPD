@@ -106,6 +106,14 @@ demás (`NpcSync` / el agarre), y el fuego de cada hornalla lo cuenta el host.
    ("¡Demasiado tarde!"), suma +20 a cada cocinero que está en la cocina (+30 si estaba quemada); los mozos no cuentan.
    A los 15 s del final el Chef apura. Campanita sin plato: "¿Me estás tomando el pelo?" **(propuesta)**.
 5. Las pruebas y el caso (variante "restaurant"): el plato especial, las 6 pruebas, el sueldo y el interrogatorio.
+   Hecho así: la semilla elige 3 de las 6 pruebas. La libreta está debajo de la caja registradora del salón y la olla
+   con doble fondo (llena de collares) en el piso de la cámara fría: se agarran. Si sale el anillo, una de cada tres
+   comandas es en cambio "¡Sopa especial para la mesa 7!": el Chef deja en el pase una olla de sopa con el anillo
+   asomando, 30 s, y después se la lleva un mozo; solo mientras está se le puede sacar la foto. La pizarra del menú en
+   quilates se fotografía; el recibo se busca con E en el cajón del escritorio de la oficina, cuya llave está en el
+   bolsillo del delantal colgado en la cámara fría (E). El video es de dos cocineros que trabajan cerca. Esposar al
+   Chef lo resuelve (600, un tercio menos por prueba que falte) y el turno siguiente puede ser su interrogatorio. La
+   huida es por ahora a pie, hasta la moto del paso 6 **(propuesta)**.
 6. La huida en la moto de delivery, el sorteo de "Jugar" en séptimos y online.
 
 ## Preguntas para Cristian (decisión 174)
