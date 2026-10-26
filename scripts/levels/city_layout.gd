@@ -50,6 +50,8 @@ const PLACES := [
 	# A park, not a building: it fills its block and its case scene builds the canal and the bridge on the grass.
 	{"id": "bridge_park", "block": Vector2i(3, 4), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.45, 0.72, 0.3), "sign": "PLACE_BRIDGE_PARK", "park": true},
 	{"id": "football_pitch", "block": Vector2i(4, 4), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.32, 0.62, 0.28), "sign": "PLACE_FOOTBALL_PITCH", "park": true},
+	# The wrong house's twin houses (casa-equivocada.md); provisional block until the city grows west, then (-1, 1) s.
+	{"id": "wrong_house", "block": Vector2i(0, 2), "side": "s", "along": 0.0, "size": Vector3(36, 7, 20), "color": Color(0.95, 0.86, 0.6), "sign": "PLACE_WRONG_HOUSE"},
 ]
 
 ## The plaza fills its block.
