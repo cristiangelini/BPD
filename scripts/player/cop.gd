@@ -162,7 +162,10 @@ func drop_ram() -> RamPickup:
 
 ## The key text (tr() key) for what this cop can do right now: what's in hand, else what the camera points at.
 func current_prompt() -> String:
-	if vehicle or in_briefing or in_menu:
+	if vehicle:
+		var reach := window_target()
+		return reach.prompt_key(self) if reach else ""
+	if in_briefing or in_menu:
 		return ""
 	if seated_in:
 		return seated_in.prompt_key(self)
@@ -348,6 +351,15 @@ func is_busy() -> bool:
 	return is_staggered() or listening_to != null or vehicle != null or in_briefing or in_menu or seated_in != null
 
 
+## Something this cop can reach out of the patrol car's window (the "window_reach" group: the toy helicopter's rope),
+## which E grabs instead of getting out.
+func window_target() -> Node:
+	for node in get_tree().get_nodes_in_group("window_reach"):
+		if node.can_reach(self):
+			return node
+	return null
+
+
 ## Rides `seat` of `car`, facing forward, until stand_up(). Lets go of whatever it was holding.
 func sit_in(car: PatrolCar, seat: Node3D) -> void:
 	$Grabber.release()
@@ -456,7 +468,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("ask"):
 		ask()
 	elif event.is_action_pressed("use"):
-		if vehicle:
+		if vehicle and window_target():
+			act("use", window_target())
+		elif vehicle:
 			act("exit", vehicle)
 		elif seated_in:
 			seated_in.stand_up()
