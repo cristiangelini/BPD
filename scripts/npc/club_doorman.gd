@@ -3,7 +3,7 @@ extends StaticBody3D
 
 ## The doorman of the grandparents' club (infiltracion.md, step 2b), or the lady at the chapel's door
 ## (infiltracion-coro.md, step 3b), or the theater's mute mime (infiltracion-mimos.md, step 2b), or the party's bouncer
-## (infiltracion-fiesta.md, step 2b): they stand by the entrance and push back out any cop without the disguise of the
+## (infiltracion-fiesta.md, step 2b), or the gym's receptionist (infiltracion-gimnasio.md, step 2b): they stand by the entrance and push back out any cop without the disguise of the
 ## place (Cop.is_disguised with `disguise_look`); a disguised one they let in with a greeting. Each PC pushes its own cop,
 ## the one it moves, so online it needs no syncing. Every number here is (propuesta).
 
@@ -12,11 +12,13 @@ const MODELS := {
 	"portera": preload("res://assets/models/npc_portera.glb"),
 	"mimo_portero": preload("res://assets/models/npc_mimo_portero.glb"),
 	"patovica": preload("res://assets/models/npc_patovica.glb"),
+	"recepcionista": preload("res://assets/models/npc_recepcionista.glb"),
 }
-const SCALES := {"portero": 1.2, "portera": 0.9, "mimo_portero": 1.2, "patovica": 1.25}
+const SCALES := {"portero": 1.2, "portera": 0.9, "mimo_portero": 1.2, "patovica": 1.25, "recepcionista": 0.9}
 ## What each one says: the keys start with this (WELCOME, NO_0 without anything on, NO_1 with not enough), and the
 ## hint is HINT_ + it + NO_DISGUISE.
-const LINES := {"portero": "DOORMAN_", "portera": "DOORLADY_", "mimo_portero": "MIMEDOOR_", "patovica": "PARTYDOOR_"}
+const LINES := {"portero": "DOORMAN_", "portera": "DOORLADY_", "mimo_portero": "MIMEDOOR_", "patovica": "PARTYDOOR_",
+	"recepcionista": "GYMDOOR_"}
 ## The doorway he guards, in the club's space: a cop inside this box is going in.
 const DOOR_HALF_WIDTH := 0.9
 const DOOR_DEPTH := 1.2

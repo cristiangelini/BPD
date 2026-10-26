@@ -104,6 +104,18 @@ function grandpaRobber(b, mask, cardigan, extra) {
 	limb(b, 'cane', C('cane', 0x5a3a20), V(0.5, 0.62, 0.12), V(0.62, 0.0, 0.2), 0.02);
 }
 
+// A gym member's body (infiltracion-gimnasio.md): the pear in a tank top and shorts, bare arms, with a big bicep on
+// each and a chest that pushes the tank top out.
+function gymBody(b, skin, tank, shout = false) {
+	pearBody(b, skin, { shirt: tank, pants: C('shorts_black', 0x1a1a1e), belted: false });
+	for (const s of [-1, 1]) {
+		b.add('arms', skin, ellipsoid(0.11, 0.1, 0.1, 8, 5), { pos: V(s * 0.38, 0.8, 0.04) });
+		b.add('body', tank, ellipsoid(0.14, 0.07, 0.05, 8, 4), { pos: V(s * 0.13, 0.98, 0.29) });
+	}
+	eyes(b, 1.33, 0.17, 0.08, 0.045);
+	mouth(b, { open: shout });
+}
+
 const NPCS = {
 	// Comisario: big, shouting, with a gold-banded cap, huge mustache and medals.
 	comisario(b) {
@@ -331,6 +343,36 @@ const NPCS = {
 		sunglasses(b);
 		mouth(b);
 		b.add('body', C('tee_black', 0x141416), new THREE.BoxGeometry(0.66, 0.13, 0.15), { pos: V(0, 0.78, 0.3) });
+	},
+	// A gym member, one of the gang that lifts safes by hand (infiltracion-gimnasio.md): a grey tank top over huge arms,
+	// black shorts and a sweatband; the other one in a blue tank top with a towel round the neck.
+	socio(b) {
+		gymBody(b, SKIN.arena, C('tank_grey', 0x8a8e96));
+		hairCap(b, C('hair_black', 0x161214), { y: 1.37, back: 0.02 });
+		b.add('cap', C('sweatband_white', 0xf4f4f0), new THREE.CylinderGeometry(0.205, 0.205, 0.05, 12), { pos: V(0, 1.42, 0.0) });
+	},
+	socio_b(b) {
+		gymBody(b, SKIN.cacao, C('tank_blue', 0x2a5ac8));
+		b.add('body', C('towel_white', 0xf0f0ea), new THREE.TorusGeometry(0.17, 0.04, 5, 12), { pos: V(0, 1.08, 0.02), rot: [1.4, 0, 0] });
+	},
+	// El Toro, the gym's teacher and the gang's boss: a red tank top, two little horns on a headband, a ring in his nose
+	// and the whistle he calls the routine with.
+	toro(b) {
+		gymBody(b, SKIN.crema, C('tank_red', 0xc8202a), true);
+		b.add('cap', black, new THREE.CylinderGeometry(0.205, 0.205, 0.05, 12), { pos: V(0, 1.43, 0.0) });
+		for (const s of [-1, 1]) b.add('cap', C('horn_ivory', 0xf0e6c8), new THREE.ConeGeometry(0.04, 0.16, 6), { pos: V(s * 0.17, 1.52, 0.0), rot: [0, 0, s * -0.6] });
+		b.add('face', C('nose_ring', 0xd8d8e0), new THREE.TorusGeometry(0.025, 0.006, 4, 10), { pos: V(0, 1.24, 0.21) });
+		b.add('body', C('whistle_cord', 0x101014), new THREE.TorusGeometry(0.15, 0.006, 3, 12), { pos: V(0, 1.06, 0.06), rot: [1.3, 0, 0] });
+		b.add('props', C('whistle', 0xd8d8e0), new THREE.CylinderGeometry(0.02, 0.02, 0.07, 8), { pos: V(0, 0.93, 0.27), rot: [0, 0, Math.PI / 2] });
+	},
+	// The gym's receptionist: a green polo with the gym's color, a ponytail and a clipboard.
+	recepcionista(b) {
+		pearBody(b, SKIN.celeste, { shirt: C('polo_green', 0x3aa04a), pants: C('pants_black', 0x1e1e22) });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		hairCap(b, C('hair_blonde', 0xd8b050), { y: 1.38, sx: 1.06, back: 0.04 });
+		b.add('cap', C('hair_blonde', 0xd8b050), ellipsoid(0.06, 0.12, 0.06, 6, 4), { pos: V(0, 1.38, -0.22), rot: [0.5, 0, 0] });
+		mouth(b, { smile: true });
+		b.add('props', C('clipboard', 0x8a5a32), new THREE.BoxGeometry(0.2, 0.28, 0.02), { pos: V(-0.42, 0.75, 0.2), rot: [0.3, 0, 0] });
 	},
 	// Sospechoso: striped shirt, beanie and eye mask, with a loot sack.
 	sospechoso(b) {
@@ -786,7 +828,7 @@ const NPCS = {
 	},
 	// Coca, the insurance office's receptionist (seguros.md): lilac cardigan, big red curls, a phone headset and long
 	// nails, chewing gum.
-	recepcionista(b) {
+	recepcionista_seguros(b) {
 		pearBody(b, SKIN.crema, { shirt: C('reception_cardigan', 0xb89ad8), pants: C('reception_skirt', 0x3a3a5a), shoes: C('reception_shoes', 0xd84a6a) });
 		eyes(b, 1.33, 0.17, 0.08, 0.05);
 		mouth(b, { smile: true });
@@ -845,7 +887,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, ladron_oso: 1.15, abuelo_oso: 1.15 };
+const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, ladron_oso: 1.15, abuelo_oso: 1.15 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },

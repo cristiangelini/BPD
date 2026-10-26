@@ -11,7 +11,7 @@ signal told(text: String)
 ## She called `number` (to everyone in the reception).
 signal called(number: int)
 
-const MODEL := preload("res://assets/models/npc_recepcionista.glb")
+const MODEL := preload("res://assets/models/npc_recepcionista_seguros.glb")
 ## The number she's serving when the office opens, and the first ticket the machine gives.
 const FIRST_SERVING := 41
 const FIRST_TICKET := 47

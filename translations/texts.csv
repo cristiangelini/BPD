@@ -2230,6 +2230,34 @@ PLACE_MIME_THEATER,"Teatro del Silencio","Theater of Silence","Teatro do Silênc
 PLACE_PARTY_HALL,"Salón Gala","Gala Hall","Salão Gala"
 PARTY_BANNER,"¡Gran fiesta de policías!","Big cop party!","Grande festa de policiais!"
 GYM_MOTTO,¡Sin dolor no hay gloria!,"No pain, no glory!",Sem dor não há glória!
+PROMPT_TALK_GYM,E: charlar con el socio,E: chat with the member,E: conversar com o sócio
+GYM_GOSSIP_0,"Hoy levanté una heladera. Bueno, una caja. Bueno, era pesada.","I lifted a fridge today. Well, a box. Well, it was heavy.","Hoje levantei uma geladeira. Bom, uma caixa. Bom, era pesada."
+GYM_GOSSIP_1,El Toro dice que el músculo se hace de noche. Por eso salimos de noche.,El Toro says muscle is built at night. That's why we go out at night.,O Toro diz que o músculo se faz à noite. Por isso saímos à noite.
+GYM_GOSSIP_2,¿Viste mis brazos? Con estos abro cualquier caja fuerte. Digo... cualquier frasco.,See my arms? With these I can open any safe. I mean... any jar.,Viu meus braços? Com eles abro qualquer cofre. Digo... qualquer pote.
+GYM_GOSSIP_3,"No toques la pesa grande del rincón. Esa es especial, suena.","Don't touch the big weight in the corner. That one's special, it jingles.","Não mexa no peso grande do canto. Esse é especial, faz barulho."
+GYM_GOSSIP_4,"Yo entreno las piernas para correr, no para la playa.","I train my legs for running, not for the beach.","Eu treino as pernas para correr, não para a praia."
+GYM_GOSSIP_5,Cuando el Toro toca el silbato hay que entrenar. El que afloja no vuelve.,When el Toro blows the whistle you train. Whoever slacks off doesn't come back.,Quando o Toro apita tem que treinar. Quem afrouxa não volta.
+GYM_GOSSIP_6,"¿Eres nuevo? Tienes cara de no haber corrido nunca. Ni un colectivo.","Are you new? You look like you've never run. Not even for a bus.","Você é novo? Tem cara de quem nunca correu. Nem atrás de ônibus."
+GYM_GOSSIP_7,El batido del Toro no se toca. Nadie sabe qué tiene adentro.,Nobody touches el Toro's shake. Nobody knows what's inside.,Ninguém mexe no shake do Toro. Ninguém sabe o que tem dentro.
+GYM_GOSSIP_8,"Sentadillas, saltos, cinta y pesa. Como en el trabajo, pero sin alarma.","Squats, jumps, treadmill and weights. Like at work, but without the alarm.","Agachamentos, saltos, esteira e peso. Como no trabalho, mas sem alarme."
+GYM_GOSSIP_9,Este mes alquilamos un camión de mudanzas. Para mudar... cosas pesadas.,This month we rented a moving truck. To move... heavy things.,Este mês alugamos um caminhão de mudança. Para mudar... coisas pesadas.
+GYM_CUFFED,"¡Oye, suelta! ¡Que se me enfría el músculo!","Hey, let go! My muscles are cooling down!","Ei, solta! Meu músculo está esfriando!"
+PROMPT_TALK_TORO,E: saludar al Toro,E: greet el Toro,E: cumprimentar o Toro
+TORO_0,"¡Socio nuevo! Aquí se suda, se sufre y no se pregunta.","New member! Here you sweat, you suffer and you don't ask questions.","Sócio novo! Aqui se sua, se sofre e não se pergunta."
+TORO_1,"Cuando toco el silbato, todos entrenan. Todos. Tú también.","When I blow the whistle, everyone trains. Everyone. You too.","Quando eu apito, todos treinam. Todos. Você também."
+TORO_2,"Mi oficina está cerrada. Ahí guardo... mis trofeos. Muy pesados.","My office is locked. That's where I keep... my trophies. Very heavy.","Meu escritório está trancado. Ali guardo... meus troféus. Muito pesados."
+TORO_3,¿Esa panza es de cerveza o de donas? Da igual: diez vueltas a la cinta.,Is that belly from beer or donuts? Doesn't matter: ten laps on the treadmill.,Essa barriga é de cerveja ou de rosquinha? Tanto faz: dez voltas na esteira.
+TORO_CUFFED,¡¿A mí?! ¡Puedo levantarte con un dedo!,Me?! I could lift you with one finger!,Eu?! Posso te levantar com um dedo!
+TORO_FOUND_OUT,"¡Policías! Me voy trotando, que es bueno para el corazón.","Cops! I'm jogging out of here, it's good for the heart.","Policiais! Vou embora correndo, que faz bem pro coração."
+GYMDOOR_WELCOME,"¡Bienvenido a Hierro Puro! Toalla, agua y a sufrir.","Welcome to Pure Iron! Towel, water and suffer.","Bem-vindo à Ferro Puro! Toalha, água e a sofrer."
+GYMDOOR_NO_0,"Sin ropa de gimnasia no se entrena. Y con uniforme, menos.","No gym clothes, no training. And in a uniform, even less.","Sem roupa de academia não se treina. E de uniforme, menos ainda."
+GYMDOOR_NO_1,Te falta ropa de gimnasia. Así te vas a lesionar.,You're missing your gym clothes. You'll hurt yourself like that.,Falta roupa de academia. Assim você vai se machucar.
+HINT_GYMDOOR_NO_DISGUISE,"La recepcionista no te deja pasar: ponte 2 piezas de gimnasia del casillero de la comisaría (vincha, muñequeras, musculosa).","The receptionist won't let you in: put on 2 gym pieces from the station's lockers (headband, wristbands, tank top).","A recepcionista não deixa você entrar: vista 2 peças de academia do armário da delegacia (faixa, munhequeiras, regata)."
+HUD_GYM_SUSPICION,Sospecha de los socios,The members' suspicion,Suspeita dos sócios
+GYM_FOUND_OUT_0,¡Son policías! ¡Mira cómo jadean!,They're cops! Look at them panting!,São policiais! Olha como eles ofegam!
+GYM_FOUND_OUT_1,¡Son policías! ¡Nadie con esa panza entrena aquí!,They're cops! Nobody with that belly trains here!,São policiais! Ninguém com essa barriga treina aqui!
+GYM_FOUND_OUT_2,¡Son policías! ¡Se cansaron en la primera sentadilla!,They're cops! They got tired on the first squat!,São policiais! Cansaram no primeiro agachamento!
+HINT_GYM_FOUND_OUT,¡Los descubrieron! Todos los socios saben que son policías.,You've been found out! Every member knows you're cops.,Vocês foram descobertos! Todos os sócios sabem que vocês são policiais.
 PROMPT_TALK_GUEST,E: charlar con el invitado,E: chat with the guest,E: conversar com o convidado
 PARTY_GOSSIP_0,¡Qué buen disfraz! El mío me lo hizo mi abuela con una cortina.,Great costume! My grandma made mine out of a curtain.,Que fantasia boa! A minha foi minha avó que fez com uma cortina.
 PARTY_GOSSIP_1,Dicen que el jefe vino disfrazado igual que todos. Qué original.,They say the boss came dressed like everyone else. How original.,Dizem que o chefe veio fantasiado igual a todos. Que original.

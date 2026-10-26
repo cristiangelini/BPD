@@ -46,11 +46,15 @@ const TORO_AT := Vector3(0, 0, -6.2)
 ## Where the members train when there's no routine: on the treadmills, by the benches and the rack, at the bags and
 ## around the ring (step 2b picks them with the seed).
 const TRAIN_SPOTS: Array[Vector3] = [
-	Vector3(2.2, TREADMILL_BELT, 5.4), Vector3(3.4, TREADMILL_BELT, 5.4), Vector3(4.6, TREADMILL_BELT, 5.4),
-	Vector3(5.8, TREADMILL_BELT, 5.4), Vector3(-5.4, 0, -1.6), Vector3(-5.4, 0, 2.0), Vector3(-7.6, 0, 0.2),
+	Vector3(2.2, TREADMILL_BELT, 5.1), Vector3(3.4, TREADMILL_BELT, 5.1), Vector3(4.6, TREADMILL_BELT, 5.1),
+	Vector3(5.8, TREADMILL_BELT, 5.1), Vector3(-5.4, 0, -1.6), Vector3(-5.4, 0, 2.0), Vector3(-7.6, 0, 0.2),
 	Vector3(-2.6, 0, -1.4), Vector3(-1.0, 0, -1.4), Vector3(-0.2, 0, 0.0), Vector3(5.4, 0, -0.8),
 	Vector3(-1.6, 0, 2.6),
 ]
+## How many members train, of the 12 spots; the rest are for the cops.
+const MEMBERS := 9
+## The receptionist stands between the counter and the front wall, looking at the entrance.
+const RECEPTIONIST_AT := Vector3(-1.9, 0, 7.2)
 
 const OUTSIDE := Color(0.4, 0.75, 0.4)
 const INSIDE := Color(0.88, 0.9, 0.88)
@@ -63,6 +67,10 @@ const WOOD := Color(0.48, 0.3, 0.18)
 const MIRROR := Color(0.7, 0.82, 0.92)
 
 var office_door: FrontDoor
+## The training spots no member took, for the cops (step 3).
+var free_spots: Array[Vector3] = []
+var toro: ClubMember
+var doorman: ClubDoorman
 var _build: PlaceBuilder
 
 
@@ -77,6 +85,7 @@ func _ready() -> void:
 	office_door = DOOR_SCENE.instantiate()
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, BACK_Z)
 	add_child(office_door)
+	_add_people()
 	place_in_city("gym")
 
 
@@ -112,6 +121,51 @@ func treadmill_at(at: Vector3) -> int:
 				and local.y > FLOOR_TOP + TREADMILL_BELT - 0.1 and local.y < ROOF:
 			return i
 	return -1
+
+
+## The members on training spots drawn with the seed (on a treadmill looking out the window, elsewhere looking at the
+## hall), el Toro in front of the mirror looking at them, the receptionist and their suspicion.
+func _add_people() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["gym members", case_seed])
+	free_spots = TRAIN_SPOTS.duplicate()
+	for i in MEMBERS:
+		var member := ClubMember.new()
+		member.name = "Member%d" % i
+		member.look = "socio" if rng.randf() < 0.5 else "socio_b"
+		member.next_line = rng.randi_range(0, ClubMember.TALK[member.look][1] - 1)
+		add_child(member)
+		var spot: Vector3 = free_spots.pop_at(rng.randi_range(0, free_spots.size() - 1))
+		member.position = spot + Vector3(0, FLOOR_TOP, 0)
+		var facing := Vector3.BACK if spot.y > 0.0 else Vector3(0, 0, 1.0) - spot
+		member.rotation.y = atan2(-facing.x, -facing.z)
+		members.append(member)
+	toro = ClubMember.new()
+	toro.name = "Toro"
+	toro.look = "toro"
+	add_child(toro)
+	toro.position = TORO_AT + Vector3(0, FLOOR_TOP, 0)
+	toro.rotation.y = PI
+	boss = toro
+	doorman = ClubDoorman.new()
+	doorman.name = "Doorman"
+	doorman.look = "recepcionista"
+	doorman.disguise_look = "gym"
+	add_child(doorman)
+	doorman.position = RECEPTIONIST_AT + Vector3(0, FLOOR_TOP, 0)
+	doorman.rotation.y = PI / 2
+	doorman.door_at = global_transform * Vector3(ENTRANCE_X, 0, HALF_Z)
+	doorman.outward = global_transform.basis * Vector3.BACK
+	suspicion = ClubSuspicion.new()
+	suspicion.name = "Suspicion"
+	suspicion.members = members
+	suspicion.boss = toro
+	suspicion.boss_found_out = "TORO_FOUND_OUT"
+	suspicion.disguise_look = "gym"
+	suspicion.prefix = "GYM_"
+	suspicion.inside = is_inside
+	suspicion.in_back_room = in_back_room
+	add_child(suspicion)
 
 
 ## Floor, outer walls with the entrance and the window, the roof, the sign, the reception and the lights.

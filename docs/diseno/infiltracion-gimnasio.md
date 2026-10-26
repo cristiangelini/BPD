@@ -78,6 +78,12 @@ La rutina copia la forma de `MimeRehearsal` (host decide, cada PC juzga y avisa)
    y dos bolsas de boxeo en el medio; atrás, el vestuario con casilleros y banco (oeste), la pared de espejos con el
    lema "¡Sin dolor no hay gloria!" donde el Toro grita la rutina, y su oficina con llave (este). 12 lugares para que
    entrenen los socios **(propuesta)**.
+   Hecho así (2b, la gente): 9 socios de la banda (musculosa gris con vincha o azul con toalla al cuello, brazos
+   gordos) en 9 de los 12 lugares por la semilla: los de las cintas miran la vidriera y los demás el medio del salón;
+   los 3 lugares que sobran son para los policías. El Toro (musculosa roja, vincha con cuernitos, aro en la nariz y
+   silbato) está frente al espejo mirando el salón. La recepcionista (chomba verde, cola de caballo y planilla) está
+   entre el mostrador y la vidriera mirando la entrada y no deja pasar sin 2 piezas de gimnasia: "Sin ropa de gimnasia
+   no se entrena". La sospecha es la del club con sus textos ("¡Son policías! ¡Mira cómo jadean!") **(propuesta)**.
 3. La rutina: el silbato, los cuatro ejercicios, la resistencia, rendirse y la sospecha.
 4. Las pruebas y el caso (variante "gym"): las 6 pruebas, esposar al Toro, el sueldo y el interrogatorio.
 5. La huida trotando, el sorteo de "Jugar" en quintos (club, coro, mimos, fiesta y gimnasio) y online.
