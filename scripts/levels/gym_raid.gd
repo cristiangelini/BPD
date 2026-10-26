@@ -5,8 +5,9 @@ extends Node3D
 ## infiltration (GymHall.build_hall) on the city's gym lot, without el Toro and his band. Six common members train on
 ## spots drawn with the seed and the record wall hangs on the east wall. El profe Fito walks the hall and fills the
 ## complaint with every dumbbell he sees on the floor and every treadmill that breaks; the stereo on the reception is
-## his weak spot: E puts on his song and he gives a class to the mirror with the members, seeing nothing (step 2). The big mirror breaks when something hits it fast and a treadmill breaks when something
-## heavy falls on it, each a fine. The office and the locker room are locked; their key is in the reception's till.
+## his weak spot: E puts on his song and he gives a class to the mirror with the members, seeing nothing (step 2). Lula,
+## the receptionist, jogs on treadmill 1 and tells what she saw to whoever runs beside her (step 3). The big mirror
+## breaks when something hits it fast and a treadmill breaks when something heavy falls on it, each a fine. The office and the locker room are locked; their key is in the reception's till.
 ## Every number here is (propuesta).
 
 signal mirror_broken
@@ -16,6 +17,9 @@ const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const RECORD_WALL_MODEL := preload("res://assets/models/gym_record_wall.glb")
 const RECORD_BAR_MODEL := preload("res://assets/models/gym_record_bar.glb")
 const COACH_SCENE := preload("res://scenes/npc/gym_coach.tscn")
+## Lula jogs on the first treadmill; a cop runs with her on the next one.
+const LULA_TREADMILL := 0
+const BESIDE_LULA := 1
 const FLOOR_TOP := GymHall.FLOOR_TOP
 const MEMBERS := 6
 ## The stereo on the reception's counter, and the till with the key next to it.
@@ -82,6 +86,7 @@ var locker_door: FrontDoor
 var till: Till
 var stereo: GymStereo
 var coach: FloorBoss
+var lula: GymReceptionist
 var complaint_bar: ProgressBar
 var members: Array[ClubMember] = []
 var dumbbells: Array[Grabbable] = []
@@ -118,6 +123,7 @@ func _ready() -> void:
 	_watch_mirror()
 	_watch_treadmills()
 	_place_coach()
+	_place_lula()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("gym")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -156,6 +162,8 @@ func _place_members() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(["gym raid members", case_seed])
 	var free := GymHall.TRAIN_SPOTS.duplicate()
+	for i: int in [BESIDE_LULA, LULA_TREADMILL]:
+		free.remove_at(i)
 	for i in MEMBERS:
 		var member := ClubMember.new()
 		member.name = "Member%d" % i
@@ -315,6 +323,24 @@ func _place_coach() -> void:
 	coach.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
 
 
+## Lula on her treadmill, looking out the window like everyone who runs (her model already faces +z).
+func _place_lula() -> void:
+	lula = GymReceptionist.new()
+	lula.name = "Lula"
+	lula.position = GymHall.TREADMILLS[LULA_TREADMILL] + Vector3(0, FLOOR_TOP + GymHall.TREADMILL_BELT, -0.5)
+	add_child(lula)
+
+
+## Every cop running on the treadmill beside Lula's, if it still works.
+func _watch_runners(delta: float) -> void:
+	if not lula:
+		return
+	for node in get_tree().get_nodes_in_group("cops"):
+		var cop := node as Cop
+		var on_it := GymHall.treadmill_index(to_local(cop.global_position)) == BESIDE_LULA
+		lula.run_beside(cop, cop.is_running and on_it and treadmill_works(BESIDE_LULA), delta)
+
+
 ## Whether the class is on: the song plays and the profe is at the mirror.
 func in_class() -> bool:
 	return coach != null and coach.is_fixing()
@@ -324,6 +350,7 @@ func _physics_process(delta: float) -> void:
 	if not coach:
 		return
 	_watch_dumbbells()
+	_watch_runners(delta)
 	if in_class():
 		_class(delta)
 	elif not _before_class.is_empty():

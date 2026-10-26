@@ -90,6 +90,11 @@ Los pesos y valores siguen la escala de la oficina y el laboratorio: la principa
      sala durante la clase le baja 5 la denuncia ("¡Eso, oficial! ¡Con ritmo!"), una vez por clase. Capturas
      `paso2-*.png`.
 3. Lula y la cinta de al lado.
+   - **Cómo quedó (propuesta):** Lula (`GymReceptionist`) trota en la cinta 1 mirando por la ventana, como todos los
+     que corren, y ningún socio usa ni la suya ni la de al lado. E en ella: "¿Charlar? ¡No paro ni loca! Súbete a la
+     cinta de al lado y corre conmigo". Si un policía corre 5 s seguidos en la cinta 2, sin aire le cuenta lo que vio
+     (la pista la pone la historia en el paso 4; mientras tanto dice que no vio nada raro). Si para, la cuenta vuelve a
+     empezar; una vez por policía, y si la cinta 2 está rota no cuenta. Captura `paso3-lula-cinta.png`.
 4. El caso (RaidCase) con la primera historia: las pesas rellenas de plata.
 5. Las otras 5 historias, una por PR.
 6. "Jugar" sortea entre los 8 lugares de allanamiento.
