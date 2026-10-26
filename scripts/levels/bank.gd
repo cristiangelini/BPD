@@ -171,6 +171,8 @@ const TOWN_SHELVES: Array[float] = [0.5, 1.1, 1.7]
 const TOWN_SHELF_ZS: Array[float] = [-3.0, 1.0, 3.0, 5.0, 7.0]
 const CLERK_AT := Vector3(2.0, 0, COUNTER_Z - 0.75)
 const STOOL_TOP := 0.55
+## Step 4: El Conejo takes this many sacks when the vault opens.
+const TOWN_SACKS := 2
 const JAR := Color(0.85, 0.55, 0.25)
 const BINDER := Color(0.25, 0.4, 0.7)
 ## Step 2: after a flight the nephew's remote needs this long (s) before it flies again; that's when the cops on the
@@ -329,6 +331,8 @@ func _ready() -> void:
 	phone.position = PHONE_ON_CAR
 	phone.setup(self, car, case_seed)
 	phone.deaf = grandpas
+	if town:
+		phone.voice = "CONEJO"
 	car.add_child(phone)
 	car.add_collision_exception_with(phone)
 	if town:
@@ -691,11 +695,21 @@ func _add_nerves() -> void:
 	nerves = BankNerves.new()
 	boss.add_child(nerves)
 	nerves.setup(boss, drill, car, clerk, phone)
+	nerves.bolted.connect(_on_conejo_bolted)
 	var way := HALL_TO_CORRIDOR.duplicate()
 	way.reverse()
 	way.append_array(PIG_RUN)
 	for at: Vector3 in way:
 		boss.run_path.append(global_transform * at)
+
+
+## El Conejo ran out of nerves (step 4): nobody holds the drill any more, and once he's in the van (or out of the
+## entrance, if it's boxed in) the chase is on, with no sacks if the vault was still shut.
+func _on_conejo_bolted(_robber: BankRobber) -> void:
+	if follower:
+		return
+	drill.pause(INF)
+	boss.hid_in_van.connect(func(_r: BankRobber) -> void: _run_getaway(false), CONNECT_ONE_SHOT)
 
 
 func _flat(size: Vector2) -> BoxMesh:
@@ -1216,7 +1230,7 @@ func _on_vault_opened() -> void:
 		elif is_loose(robber):
 			sacks += 1
 			if not by_roof:
-				bags_taken += 1
+				bags_taken += TOWN_SACKS if town else 1
 			robber.hide()
 			robber.collision_layer = 0
 			robber.process_mode = Node.PROCESS_MODE_DISABLED
@@ -1274,8 +1288,9 @@ func start_getaway(kind: String) -> void:
 		manager.collision_layer = 0
 		manager.process_mode = Node.PROCESS_MODE_DISABLED
 	chase = ChaseCase.begin(self, kind, at, car, city, case_seed)
-	chase.who = "manager" if kind == SuspectCar.MANAGER_CAR else "oso_grandpa" if grandpas else "oso"
-	if grandpas:
+	chase.who = "manager" if kind == SuspectCar.MANAGER_CAR else "oso_grandpa" if grandpas \
+		else "conejo" if town else "oso"
+	if grandpas or (town and kind == SuspectCar.BEAR_ON_FOOT):
 		chase.truck.set_rider(ChaseSuspect.model_for(chase.who))
 	chase.follower = follower
 	if case:
@@ -1288,9 +1303,10 @@ func start_getaway(kind: String) -> void:
 		chase.truck.add_child(rope)
 		rope.grabbed.connect(_on_rope_grabbed)
 	for cop in get_tree().get_nodes_in_group("cops"):
-		(cop as Cop).show_hint({SuspectCar.ROBBERS_VAN: "HINT_ESCAPE_oso", SuspectCar.WALKER: "HINT_ESCAPE_oso_WALKER",
+		var hint: String = {SuspectCar.ROBBERS_VAN: "HINT_ESCAPE_oso", SuspectCar.WALKER: "HINT_ESCAPE_oso_WALKER",
 			SuspectCar.MANAGER_CAR: "HINT_ESCAPE_manager", SuspectCar.TOY_HELICOPTER: "HINT_ESCAPE_oso_AIR"}.get(kind,
-			"HINT_ESCAPE_oso_FOOT"))
+			"HINT_ESCAPE_oso_FOOT")
+		(cop as Cop).show_hint(hint.replace("_oso", "_conejo") if town else hint)
 
 
 func _on_getaway_ended(was_caught: bool) -> void:
