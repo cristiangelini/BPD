@@ -132,6 +132,32 @@ func _physics_process(delta: float) -> void:
 				robber.lit()
 
 
+## What a guest's copy needs (PropSync moves the bags, NpcSync the vampires): the light's time left, the bags taken
+## and each bag's warmth, whether it spoiled and whether it's still there.
+func net_state() -> Array:
+	var each := []
+	for bag in bags:
+		each.append([bag.warmth, bag.spoiled, bag.visible])
+	return [lights_left, bags_taken, each]
+
+
+func apply_net_state(state: Array) -> void:
+	var was_on := lights_on()
+	lights_left = state[0]
+	if lights_on() != was_on:
+		bank.set_lights(lights_on())
+		fuse_box.show_on(lights_on())
+		lights_changed.emit(lights_on())
+	bags_taken = state[1]
+	for i in mini(bags.size(), state[2].size()):
+		var bag := bags[i]
+		bag.warmth = state[2][i][0]
+		bag.spoiled = state[2][i][1]
+		if not state[2][i][2] and bag.visible:
+			bag.take()
+		bag.show_warmth()
+
+
 ## A cop's flashlight beam if it's on, or null.
 static func beam_of(cop: Node) -> SpotLight3D:
 	if not cop is Cop or not (cop as Cop).belt:
@@ -232,10 +258,7 @@ func _carry() -> void:
 			_carriers.erase(robber)
 		elif robber.in_van:
 			if bag:
-				bag.carried_by = null
-				bag.hide()
-				bag.collision_layer = 0
-				bag.process_mode = Node.PROCESS_MODE_DISABLED
+				bag.take()
 				bags_taken += 1
 				bank.bags_taken += 1
 			_carriers.erase(robber)
