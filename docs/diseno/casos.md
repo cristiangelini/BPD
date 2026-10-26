@@ -128,7 +128,7 @@ Tienen que cuidar a un político molesto durante un evento (decisión 32).
 7. **En el aeropuerto:** con valijas iguales, y una tiene algo raro.
 8. **Fiesta de cumpleaños del político:** el pastel es sospechoso.
 9. **Desfile en auto descapotable:** los 4 van caminando al lado del auto.
-10. **El doble:** hay dos políticos iguales y uno es un impostor.
+10. **El doble:** hay dos políticos iguales y uno es un impostor. Propuesta en [politico-doble.md](politico-doble.md) (decisión 220).
 
 ## 10. Robo a un banco (en vivo)
 Llegan cuando el robo está pasando (decisión 32).
