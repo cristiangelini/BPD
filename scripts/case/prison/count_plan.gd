@@ -5,8 +5,12 @@ extends Node3D
 ## (front and back), and the board with all their numbers in the yard. HIDDEN of them (by the seed) are not in the yard;
 ## the others are out in it from the start (YardInmate: most wander, some go round the ring, two play at the hoop and
 ## two lean on the east wall in the sun) and start moving when the first cop walks through the gate. The cook and the
-## plumber, in clothes almost like the jumpsuit and with no number, wander among them. Every number here is
-## (propuesta).
+## plumber, in clothes almost like the jumpsuit and with no number, wander among them. Step 3: E chalks a cross on one
+## (CountInmate) and his number is crossed off the list; chalking the cook or the plumber is `wrong`: he's offended and
+## wipes it off WIPE_AFTER seconds later. Every number here is (propuesta).
+
+signal counted_one(number: int)
+signal wrong_one(worker: CountInmate)
 
 const LIST := 20
 const HIDDEN := 3
@@ -24,17 +28,21 @@ const PLUMBER := preload("res://assets/models/npc_plomero.glb")
 ## The number on the jumpsuit: on the chest and on the back.
 const NUMBER_HEIGHT := 0.95
 const NUMBER_OUT := 0.36
+const WIPE_AFTER := 3.0
+const CHALK_LINES := 3
 
 var prison: PrisonLevel
 var board: CountBoard
 ## The inmates out in the yard, and each one's number (inmate -> number).
-var inmates: Array[YardInmate] = []
+var inmates: Array[CountInmate] = []
 var number_of := {}
 ## The numbers of the ones hidden somewhere in the prison (step 5).
 var hidden: Array[int] = []
 ## The cook and the plumber.
-var workers: Array[YardInmate] = []
+var workers: Array[CountInmate] = []
 var started := false
+## Step 3: the workers chalked by mistake.
+var wrong := 0
 ## A guest's copy (step 7): the host's one decides.
 var follower := false
 var _rng := RandomNumberGenerator.new()
@@ -68,6 +76,7 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 		var nth: int = counts.get(activity, 0)
 		counts[activity] = nth + 1
 		var inmate := _inmate("Inmate%02d" % out[i], activity, nth, YardInmate.MODEL)
+		inmate.number = out[i]
 		_number(inmate, out[i])
 		number_of[inmate] = out[i]
 		inmates.append(inmate)
@@ -84,8 +93,8 @@ func _shuffle(list: Array) -> void:
 
 
 ## One of the people in the yard, standing where `activity` (its `nth` one) starts.
-func _inmate(named: String, activity: int, nth: int, model: PackedScene) -> YardInmate:
-	var inmate := YardInmate.new()
+func _inmate(named: String, activity: int, nth: int, model: PackedScene) -> CountInmate:
+	var inmate := CountInmate.new()
 	inmate.name = named
 	inmate.prison = prison
 	inmate.model = model
@@ -109,11 +118,12 @@ func _inmate(named: String, activity: int, nth: int, model: PackedScene) -> Yard
 			inmate.face = inmate.spot - Vector2(1, 0)
 	add_child(inmate)
 	inmate.place()
+	inmate.chalked.connect(_on_chalked)
 	return inmate
 
 
 ## The inmate's number on his chest and his back.
-func _number(inmate: YardInmate, number: int) -> void:
+func _number(inmate: CountInmate, number: int) -> void:
 	for side in [1, -1]:
 		var label := Label3D.new()
 		label.name = "Number" if side == 1 else "NumberBack"
@@ -130,8 +140,8 @@ func _number(inmate: YardInmate, number: int) -> void:
 
 
 ## The inmate wearing `number` out in the yard (null: hidden, or no such number).
-func inmate_with(number: int) -> YardInmate:
-	for inmate: YardInmate in number_of:
+func inmate_with(number: int) -> CountInmate:
+	for inmate: CountInmate in number_of:
 		if number_of[inmate] == number:
 			return inmate
 	return null
@@ -151,6 +161,34 @@ func start() -> void:
 	if started:
 		return
 	started = true
-	var everybody: Array[YardInmate] = inmates + workers
+	var everybody: Array[CountInmate] = inmates + workers
 	for i in everybody.size():
 		everybody[i].start(i * 0.3)
+
+
+## E on someone in the yard (on every PC; the host decides).
+func _on_chalked(inmate: CountInmate, cop: Cop) -> void:
+	if follower or inmate.marked:
+		return
+	inmate.set_marked(true)
+	if inmate.is_worker():
+		wrong += 1
+		inmate.say("COUNT_COOK_OFFENDED" if inmate == workers[0] else "COUNT_PLUMBER_OFFENDED")
+		cop.show_hint("HINT_COUNT_WORKER")
+		get_tree().create_timer(WIPE_AFTER).timeout.connect(_wipe.bind(inmate))
+		wrong_one.emit(inmate)
+		return
+	board.set_marked(inmate.number, true)
+	inmate.say("COUNT_CHALKED_%d" % (inmate.number % CHALK_LINES))
+	counted_one.emit(inmate.number)
+
+
+## The offended worker wipes the cross off his back.
+func _wipe(worker: CountInmate) -> void:
+	if is_instance_valid(worker):
+		worker.set_marked(false)
+
+
+## Every number on the list crossed off at once.
+func all_counted() -> bool:
+	return board.counted() == LIST
