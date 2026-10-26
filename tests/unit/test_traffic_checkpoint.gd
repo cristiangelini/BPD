@@ -77,7 +77,10 @@ func test_level_starts_with_the_kit_on_the_sidewalk_and_not_set_up() -> void:
 	var level: TrafficControlLevel = (load("res://scenes/levels/traffic_control.tscn") as PackedScene).instantiate()
 	add_child_autofree(level)
 	await wait_physics_frames(2)
-	assert_eq(get_tree().get_nodes_in_group("traffic_cones").size(), TrafficControlLevel.CONES)
+	# The fog check's lit cones (FogFlare) are cones too, but not the kit's.
+	var kit := get_tree().get_nodes_in_group("traffic_cones").filter(func(cone: Node) -> bool:
+		return not cone is FogFlare)
+	assert_eq(kit.size(), TrafficControlLevel.CONES)
 	assert_eq(get_tree().get_nodes_in_group("road_barriers").size(), 1)
 	assert_false(level.checkpoint.is_set_up())
 	# The checkpoint stands on the street in front of the station, not on a sidewalk.

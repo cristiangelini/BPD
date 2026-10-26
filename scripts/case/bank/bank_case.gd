@@ -20,7 +20,16 @@ extends Node
 ## vault opens it pays EARLY_MANAGER more, and he goes to the next shift's interrogation. In every robbery, the honest
 ## manager cuffed costs PER_WRONG_MANAGER once. In the flooding bank (robo-banco-inundado.md, step 4, decision 125) the
 ## radio warns about the water, the planilla shows how deep it is and asks for the valve, and shutting it before the
-## water gets to the top pays EARLY_VALVE more. Every number here is (propuesta).
+## water gets to the top pays EARLY_VALVE more. In the town bank (robo-banco-pueblo.md, step 4, decision 127) the radio
+## asks for quiet, the planilla asks to get don Plácido out and to cuff El Conejo and shows his nerves; don Plácido
+## still inside when El Conejo gets away costs PER_CLERK, carried out without ever waking up pays CLERK_ASLEEP more,
+## and El Conejo goes to the next shift's interrogation. In the blood bank (robo-banco-sangre.md, step 4, decision 128)
+## the radio warns about the vampires and the dark, El Conde answers the phone, the planilla counts the blood bags
+## still cold, each spoiled bag costs PER_BAG like a taken one, all of them cold at the end pay ALL_BAGS more, and El
+## Conde goes to the next shift's interrogation. In the seed bank (robo-banco-semillas.md, step 4, decision 129) the
+## radio warns about the seeds and the glass jars, El Oso answers the phone as a gardener, the planilla counts the jars
+## back in the vault, each broken jar costs PER_BAG like a taken one and all of them home at the end pay ALL_JARS more.
+## Every number here is (propuesta).
 
 const REFRESH := 0.5
 const SHIFT_DELAY := 3.0
@@ -32,10 +41,17 @@ const PER_HELP := 50
 const PER_WRONG_MANAGER := 200
 const EARLY_MANAGER := 100
 const EARLY_VALVE := 100
+const NEPHEW := 100
+const PER_CLERK := 300
+const CLERK_ASLEEP := 100
+const ALL_BAGS := 100
+const ALL_JARS := 100
 const QUOTA := 400
 const STORY := "bank_robbery"
 const SLIPS := "BEAR_SLIP_%d"
 const MANAGER_SLIPS := "MANAGER_SLIP_%d"
+const CONEJO_SLIPS := "CONEJO_SLIP_%d"
+const CONDE_SLIPS := "CONDE_SLIP_%d"
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 
 var bank: BankLevel
@@ -59,6 +75,8 @@ var sorry_tied := false
 var manager_jailed := false
 var manager_early := false
 var wrong_manager := false
+## The town bank: El Conejo got away (the vault open or his nerves gone) with don Plácido still inside.
+var clerk_left := false
 ## Online (docs/diseno/online.md): a guest's case, and its bank, only follow the host's; `online` is that sync.
 var follower := false:
 	set(value):
@@ -70,6 +88,18 @@ var follower := false:
 			if bank.water:
 				bank.water.follower = value
 				bank.valve.follower = value
+			if bank.helicopter:
+				bank.helicopter.follower = value
+			if bank.nerves:
+				bank.nerves.follower = value
+			if bank.blood_bank:
+				bank.blood_bank.follower = value
+				for bag in bank.blood_bank.bags:
+					bag.follower = value
+			if bank.seed_bank:
+				bank.seed_bank.follower = value
+				for jar in bank.seed_bank.jars:
+					jar.follower = value
 var online: CaseSync
 var _result := {}
 var _refresh_left := 0.0
@@ -121,8 +151,16 @@ func start() -> void:
 
 
 ## What the comisario says over the radio: the base robbery's, the party's, the grandpas', the sorry robber's or the
-## manager's, or the flood's.
+## manager's, the flood's or the roof's.
 func brief() -> PackedStringArray:
+	if bank.town:
+		return PackedStringArray(["BRIEF_BANK_TOWN_A", "BRIEF_BANK_TOWN_B", "BRIEF_BANK_TOWN_C"])
+	if bank.blood:
+		return PackedStringArray(["BRIEF_BANK_BLOOD_A", "BRIEF_BANK_BLOOD_B", "BRIEF_BANK_BLOOD_C"])
+	if bank.seeds:
+		return PackedStringArray(["BRIEF_BANK_SEEDS_A", "BRIEF_BANK_SEEDS_B", "BRIEF_BANK_SEEDS_C"])
+	if bank.roof:
+		return PackedStringArray(["BRIEF_BANK_ROOF_A", "BRIEF_BANK_ROOF_B", "BRIEF_BANK_ROOF_C"])
 	if bank.water:
 		return PackedStringArray(["BRIEF_BANK_FLOOD_A", "BRIEF_BANK_FLOOD_B", "BRIEF_BANK_FLOOD_C"])
 	if bank.manager.boss:
@@ -191,6 +229,8 @@ func _play_again() -> void:
 
 
 func _on_vault_opened() -> void:
+	if not follower and bank.town and not bank.clerk.out:
+		clerk_left = true
 	_watch_getaway()
 	checklist.show_rows(rows())
 
@@ -227,7 +267,8 @@ func _jail_boss() -> void:
 	if boss_jailed or shift_over:
 		return
 	boss_jailed = true
-	_hint_all("HINT_BANK_OSO_JAILED")
+	_hint_all("HINT_BANK_CONEJO_JAILED" if bank.town else "HINT_BANK_CONDE_JAILED" if bank.blood
+		else "HINT_BANK_OSO_JAILED")
 	checklist.show_rows(rows())
 
 
@@ -250,14 +291,33 @@ func hostages_left() -> int:
 ## What the robbery cost: the hostages left inside, the sacks the robbers took and the true hostages cuffed.
 func missed() -> int:
 	return PER_HOSTAGE * hostages_left() + PER_BAG * bank.bags_taken + PER_WRONG_CUFF * wrong_cuffs \
-		+ (PER_WRONG_MANAGER if wrong_manager else 0)
+		+ (PER_WRONG_MANAGER if wrong_manager else 0) + (PER_CLERK if clerk_left else 0) \
+		+ (PER_BAG * bank.blood_bank.bags_spoiled() if bank.blood else 0) \
+		+ (PER_BAG * bank.seed_bank.jars_broken() if bank.seeds else 0)
 
 
 func report() -> Dictionary:
 	var bonus := PER_HELP * helps() + (EARLY_MANAGER if manager_early else 0) \
-		+ (EARLY_VALVE if bank.water and bank.water.shut_early() else 0)
+		+ (EARLY_VALVE if bank.water and bank.water.shut_early() else 0) \
+		+ (NEPHEW if bank.roof and bank.nephew.caught else 0) + (CLERK_ASLEEP if clerk_slept() else 0) \
+		+ (ALL_BAGS if all_bags_cold() else 0) + (ALL_JARS if all_jars_home() else 0)
 	var salary := maxi(SALARY - missed() + bonus, 0) if solved() else 0
 	return {"salary": salary, "evidence": 0, "fines": 0, "total": salary, "quota": QUOTA, "approved": salary >= QUOTA}
+
+
+## The blood bank: all of its bags cold (in the fridge or the cooler), none taken or spoiled.
+func all_bags_cold() -> bool:
+	return bank.blood and bank.blood_bank.bags_cold() == BankBlood.BAGS
+
+
+## The seed bank: all of its jars back in the vault, none taken or broken.
+func all_jars_home() -> bool:
+	return bank.seeds and bank.seed_bank.jars_home() == BankSeeds.JARS
+
+
+## The town bank: don Plácido carried out without ever waking up.
+func clerk_slept() -> bool:
+	return bank.town and bank.clerk.out and not bank.clerk.woke_ever
 
 
 ## El Oso for the next shift's interrogation (decision 93), like a raid's owner (RaidCase.custody). Empty if he
@@ -267,8 +327,10 @@ func custody() -> Dictionary:
 		return {}
 	var slips: Array[String] = []
 	for i in InterrogationCase.OWNER_SLIPS.size():
-		slips.append((MANAGER_SLIPS if bank.manager.boss else SLIPS) % (i + 1))
-	return {"owner": "manager" if bank.manager.boss else "oso", "story": STORY, "slips": slips, "missed": missed()}
+		slips.append((MANAGER_SLIPS if bank.manager.boss else CONEJO_SLIPS if bank.town else CONDE_SLIPS if bank.blood
+			else SLIPS) % (i + 1))
+	var owner := "manager" if bank.manager.boss else "conejo" if bank.town else "conde" if bank.blood else "oso"
+	return {"owner": owner, "story": STORY, "slips": slips, "missed": missed()}
 
 
 func finish_shift() -> void:
@@ -330,7 +392,9 @@ func _physics_process(delta: float) -> void:
 
 
 ## What every guest's case shows (CaseSync): the drill, the phone, the sacks taken, El Oso jailed or gone, his
-## getaway and the end of shift; in the flooding bank, the water, the valve, the front door and the floats left.
+## getaway and the end of shift; in the flooding bank, the water, the valve, the front door and the floats left; in the
+## roof robbery, the helicopter (PropSync moves it), the getaway by the roof and the sacks still up there;
+## in the town bank, don Plácido (PropSync moves him), El Conejo's nerves and whether don Plácido was left inside.
 func snapshot() -> Dictionary:
 	var state := {"drill": bank.drill.net_state(), "phone": bank.phone.net_state(), "bags": bank.bags_taken,
 		"jailed": boss_jailed, "escaped": escaped, "result": _result, "fans": fans_heard, "hid": grandpa_hid,
@@ -347,6 +411,14 @@ func snapshot() -> Dictionary:
 		state.valve = bank.valve.net_state()
 		state.front_door = bank.front_door.is_open
 		state.floats = bank.floats.net_state()
+	if bank.roof:
+		state.roof = [bank.helicopter.net_state(), bank.roof_getaway, bank.roof_bags]
+	if bank.town:
+		state.town = [bank.clerk.net_state(), bank.nerves.net_state(), clerk_left]
+	if bank.blood:
+		state.blood = bank.blood_bank.net_state()
+	if bank.seeds:
+		state.seeds = bank.seed_bank.net_state()
 	if bank.chase:
 		state.getaway = bank.chase.suspect_id
 		state.chase = bank.chase.snapshot()
@@ -396,6 +468,19 @@ func apply_snapshot(state: Dictionary) -> void:
 		bank.water.apply_net_state(state.water)
 		bank.valve.apply_net_state(state.valve)
 		bank.floats.apply_net_state(state.floats)
+	if bank.roof and state.has("roof"):
+		bank.helicopter.apply_net_state(state.roof[0])
+		bank.roof_getaway = state.roof[1]
+		bank.roof_bags = state.roof[2]
+		bank._show_cart_bags()
+	if bank.blood and state.has("blood"):
+		bank.blood_bank.apply_net_state(state.blood)
+	if bank.seeds and state.has("seeds"):
+		bank.seed_bank.apply_net_state(state.seeds)
+	if bank.town and state.has("town"):
+		bank.clerk.apply_net_state(state.town[0])
+		bank.nerves.apply_net_state(state.town[1])
+		clerk_left = state.town[2]
 	checklist.show_rows(rows())
 	if not state.result.is_empty() and not shift_over:
 		_show_result(state.result)
@@ -405,8 +490,19 @@ func apply_snapshot(state: Dictionary) -> void:
 func rows() -> Array[Dictionary]:
 	var list: Array[Dictionary] = []
 	var all := bank.hostages.size()
-	list.append(_row(tr("OBJ_BANK_HOSTAGES") % [bank.hostages_freed, all], bank.hostages_freed >= all))
-	if bank.manager.boss:
+	if bank.town:
+		list.append(_row("OBJ_BANK_CLERK", bank.clerk.out))
+	else:
+		list.append(_row(tr("OBJ_BANK_HOSTAGES") % [bank.hostages_freed, all], bank.hostages_freed >= all))
+	if bank.town:
+		list.append(_row("OBJ_BANK_CUFF_CONEJO", boss_jailed))
+		if bank.chase:
+			list.append(_row("OBJ_BANK_CATCH_CONEJO", boss_jailed))
+	elif bank.blood:
+		list.append(_row("OBJ_BANK_CUFF_CONDE", boss_jailed))
+		if bank.chase:
+			list.append(_row("OBJ_BANK_CATCH_CONDE", boss_jailed))
+	elif bank.manager.boss:
 		list.append(_row("OBJ_BANK_CUFF_BOSS", manager_jailed))
 		if bank.chase:
 			list.append(_row("OBJ_BANK_CATCH_MANAGER", manager_jailed))
@@ -414,7 +510,9 @@ func rows() -> Array[Dictionary]:
 		list.append(_row("OBJ_BANK_CUFF_OSO", boss_jailed))
 		if bank.chase:
 			list.append(_row("OBJ_BANK_CATCH_OSO", boss_jailed))
-	list.append(_row("OBJ_BANK_BACK_MANAGER" if bank.manager.boss else "OBJ_BANK_BACK", shift_over and solved()))
+	var back := "OBJ_BANK_BACK_MANAGER" if bank.manager.boss else "OBJ_BANK_BACK_CONEJO" if bank.town \
+		else "OBJ_BANK_BACK_CONDE" if bank.blood else "OBJ_BANK_BACK"
+	list.append(_row(back, shift_over and solved()))
 	var drill := "OBJ_BANK_VAULT_OPEN" if bank.drill.is_open else "OBJ_BANK_DRILL"
 	list.append({"text": drill, "done": false, "optional": false, "status": true})
 	if bank.grandpas:
@@ -431,6 +529,23 @@ func rows() -> Array[Dictionary]:
 	if bank.water:
 		list.append(_row("OBJ_BANK_VALVE", bank.water.shut_early()))
 		list.append({"text": tr("OBJ_BANK_WATER") % roundi(bank.water.level * 100.0), "done": false,
+			"optional": false, "status": true})
+	if bank.roof:
+		list.append(_row("OBJ_BANK_NEPHEW", bank.nephew.caught))
+		if bank.roof_getaway:
+			list.append({"text": tr("OBJ_BANK_CART") % bank.bags_taken, "done": false, "optional": false,
+				"status": true})
+	if bank.town:
+		list.append(_row("OBJ_BANK_CLERK_ASLEEP", clerk_slept()))
+		list.append({"text": tr("OBJ_BANK_NERVES") % roundi(bank.nerves.nerves), "done": false, "optional": false,
+			"status": true})
+	if bank.seeds:
+		list.append(_row("OBJ_BANK_ALL_JARS", all_jars_home()))
+		list.append({"text": tr("OBJ_BANK_SEED_JARS") % [bank.seed_bank.jars_home(), BankSeeds.JARS], "done": false,
+			"optional": false, "status": true})
+	if bank.blood:
+		list.append(_row("OBJ_BANK_ALL_BAGS", all_bags_cold()))
+		list.append({"text": tr("OBJ_BANK_BLOOD_BAGS") % [bank.blood_bank.bags_cold(), BankBlood.BAGS], "done": false,
 			"optional": false, "status": true})
 	if bank.party:
 		list.append({"text": "OBJ_BANK_FANS", "done": false, "optional": false, "status": true})

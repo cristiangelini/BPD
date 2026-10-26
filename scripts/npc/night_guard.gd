@@ -334,7 +334,7 @@ func alarm() -> float:
 	var rate := 0.0
 	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
 		var chest := cop.global_position + Vector3.UP
-		if outside_cells.call(cop.global_position) and sees(chest, cop as CollisionObject3D):
+		if cop.visible and outside_cells.call(cop.global_position) and sees(chest, cop as CollisionObject3D):
 			rate += SUSPICION_COP
 	if is_instance_valid(box) and _box_moving() and sees(box.global_position + Vector3.UP * 0.1, box):
 		rate += SUSPICION_BOX

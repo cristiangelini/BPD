@@ -15,6 +15,8 @@ const OPEN_TURN := -PI / 2
 const SWING_TIME := 0.4
 
 var locked := false
+## The bribe jailbreak's guard (fuga-soborno.md): without the key, E on the locked door calls him and pays him.
+var bribe: BribeGuard
 var is_open := false
 var _swing: Tween
 
@@ -52,6 +54,8 @@ func _bar(at: Vector3, size: Vector3, material: Material) -> void:
 
 
 func prompt_key(cop: Cop) -> String:
+	if locked and not _has_key(cop) and bribe and bribe.door_prompt(self, cop) != "":
+		return bribe.door_prompt(self, cop)
 	if locked:
 		return "PROMPT_CELL_UNLOCK" if _has_key(cop) else "PROMPT_CELL_LOCKED"
 	return "PROMPT_CELL_CLOSE" if is_open else "PROMPT_CELL_OPEN"
@@ -62,6 +66,9 @@ func use(cop: Cop) -> void:
 	if locked and _has_key(cop):
 		unlock()
 		set_open(true)
+		return
+	if locked and bribe and bribe.door_prompt(self, cop) != "":
+		bribe.door_use(self, cop)
 		return
 	if locked:
 		_rattle()

@@ -4,14 +4,15 @@
 [ext_resource type="PackedScene" path="res://assets/models/client_list.glb" id="2"]
 
 [sub_resource type="BoxShape3D" id="Shape"]
-size = Vector3(0.15, 0.02, 0.21)
+size = Vector3(0.21, 0.01, 0.3)
 
-[node name="ClientList" type="RigidBody3D"]
+[node name="Evidence" type="RigidBody3D"]
 collision_layer = 4
 collision_mask = 15
-mass = 0.2
+mass = 0.1
 script = ExtResource("1")
 full_value = 300.0
+safe_speed = 8.0
 
 [node name="Shape" type="CollisionShape3D" parent="."]
 shape = SubResource("Shape")

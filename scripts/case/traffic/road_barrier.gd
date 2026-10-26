@@ -11,6 +11,11 @@ signal lifted(cop: Cop)
 const KG := 18.0
 const SIZE := Vector3(3.2, 1.1, 0.5)
 const MODEL := "res://assets/models/road_barrier.glb"
+## A racer that clips it sends it flying (control-carrera.md, step 2); BACK_SECONDS later it's back where it stood.
+const BACK_SECONDS := 5.0
+
+var knocked_left := 0.0
+var _home := Transform3D.IDENTITY
 
 
 func _ready() -> void:
@@ -33,3 +38,28 @@ func prompt_key(_cop: Cop) -> String:
 
 func use(cop: Cop) -> void:
 	lifted.emit(cop)
+
+
+## A racer sent it flying with `push`: it lands where it lands and is back up where it stood in BACK_SECONDS.
+func knock(push: Vector3) -> void:
+	if knocked_left > 0.0:
+		return
+	_home = global_transform
+	knocked_left = BACK_SECONDS
+	linear_velocity = push
+	angular_velocity = Vector3(randf_range(-4, 4), randf_range(-2, 2), randf_range(-4, 4))
+
+
+func knocked() -> bool:
+	return knocked_left > 0.0
+
+
+func _physics_process(delta: float) -> void:
+	super(delta)
+	if knocked_left <= 0.0:
+		return
+	knocked_left -= delta
+	if knocked_left <= 0.0 and not is_held():
+		global_transform = _home
+		linear_velocity = Vector3.ZERO
+		angular_velocity = Vector3.ZERO
