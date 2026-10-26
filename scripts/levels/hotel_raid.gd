@@ -7,11 +7,38 @@ extends Node3D
 ## the bedside lamps upstairs that break into fines, and the hiding spots. Don Bostezo watches from the desk and fills
 ## the complaint meter; the little pillow on the desk puts him to sleep and the bell wakes him (step 2). Doña Escoba
 ## walks the corridor with her cart and tells what she saw to whoever makes one of the unmade beds (step 3). The case
-## comes in the next steps. Every number here is (propuesta).
+## is one of its stories (STORIES), drawn with the seed, run by the same RaidCase as the other places (step 4).
+## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const VASE_SCENE := preload("res://scenes/props/ornament_vase.tscn")
 const LAMP_SCENE := preload("res://scenes/props/hotel_lamp.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the hotel can be suspected of (hotel-allanamiento.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["regular_guest", "casino_13", "robes", "lift_1987", "sleepwalker", "fake_reviews"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_HOTEL_TIP_B", "BRIEF_TIP_C", "BRIEF_HOTEL_TIP_D",
+	"BRIEF_HOTEL_TIP_E"]
+## The stories the hotel can tell, like Groomer.STORIES: what the comisario says once it's guessed, its "find it" row,
+## what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the spots it keeps
+## for itself, the checklist rows of its extras and its rig, which places the main evidence.
+const STORIES := {
+	"casino_13": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_CASINO_B", "BRIEF_CASINO_C", "BRIEF_CASINO_D"],
+		"find": "OBJ_FIND_CASINO",
+		"hidden": [preload("res://scenes/props/casino_chip_box.tscn"), preload("res://scenes/props/debt_book.tscn")],
+		"half_heights": [0.06, 0.015],
+		"heavy": [false, false],
+		"reserved": ["hotel_room_13"],
+		"extra_keys": ["OBJ_EXTRA_CHIP_BOX", "OBJ_EXTRA_DEBT_BOOK"],
+		"rig": preload("res://scripts/case/hotel/casino_rig.gd"),
+	},
+}
+## Surfaces where the suspicions' clue notes can lie; three are drawn with the seed.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(-7.7, 0.77, 3.7), Vector3(-11.2, 0.77, 4.8), Hotel.ARMCHAIRS[0] + Vector3(0, 0.5, 0.1),
+	Vector3(-9.4, Hotel.UP + 0.6, 4.0), Vector3(-3.0, Hotel.FLOOR_TOP, 5.5), Vector3(11.8, Hotel.UP, -0.5),
+]
 ## The suite's door in `doors` (rooms go by their number).
 const SUITE_DOOR := 0
 const VASE_HALF_HEIGHT := 0.13
@@ -44,8 +71,19 @@ const SPOTS := [
 	{"id": "hotel_on_table", "at": Hotel.TABLES[0] + Vector3(0.25, 0.77, 0.25), "heavy": false},
 ]
 
-## Same seed, same draw. 0 draws one.
+## Same seed, same draw: the story and where its things go. 0 draws one.
 @export var case_seed := 0
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The case flow every raid shares.
+var raid: RaidCase
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: HotelRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
+var city_map: CityMap
 ## Where the patrol car parks at the station, in this scene's space.
 var station_parking: Transform3D
 var hotel: Hotel
@@ -55,7 +93,9 @@ var doors: Dictionary = {}
 var vases: Array[Ornament] = []
 var lamps: Array[Ornament] = []
 var broken_goods := 0
-var fines := 0
+## Fines for what the cops broke (each one is an Ornament.FINE).
+var fines: int:
+	get: return raid.fines
 var concierge: HotelConcierge
 var pillow: HotelPillow
 var bell: HotelBell
@@ -71,6 +111,19 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	hotel = Hotel.new()
 	hotel.name = "Hotel"
 	hotel.crime_scene = false
@@ -84,8 +137,93 @@ func _ready() -> void:
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("hotel")
 	station_parking = city.transform * CityLayout.parking("station")
+	raid.station_parking = station_parking
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
 	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
+	city_map = CityMap.new()
+	add_child(city_map)
+	city_map.setup(city, "hotel", car)
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = concierge
+	raid.owner_id = "concierge"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The hotel's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_HOTEL",
+		"guess_key": "OBJ_GUESS_HOTEL",
+		"broken_key": "OBJ_BROKEN_HOTEL",
+		"complaint_key": "OBJ_COMPLAINT_HOTEL",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_goods,
+		"complaint": concierge.complaint,
+	}
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(case_seed: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[case_seed % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed among the ones it doesn't keep for itself (heavy ones
+## only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var reserved: Array = story.get("reserved", [])
+	var free: Array = range(SPOTS.size()).filter(func(i: int) -> bool: return not reserved.has(SPOTS[i].id))
+	var spot_heavy: Array = free.map(func(i: int) -> bool: return SPOTS[i].heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots.map(func(i: int) -> int: return free[i])
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What don Bostezo lets slip when asked (where the story's things are, in an order drawn from the seed), and what
+## doña Escoba saw: where he hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		concierge.slips.append(tr("HOTEL_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	concierge.slipped.connect(raid.add_clue)
+	maid.clue = tr("HOTEL_MAID_CLUE") % tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	maid.told.connect(raid.add_clue)
 
 
 ## A locked door on each guest room (the 13 has none: the wardrobe hides it) and on the suite. Each one hangs from
@@ -143,7 +281,8 @@ func _fragile(scene: PackedScene, at: Vector3) -> Ornament:
 
 func _on_fragile_broken(at: Vector3) -> void:
 	broken_goods += 1
-	fines += Ornament.FINE
+	raid.fines += Ornament.FINE
+	raid.float_label("-%d" % Ornament.FINE, at, Color(1, 0.3, 0.25))
 	concierge.saw(at, HotelConcierge.SAW_BREAK)
 
 
@@ -167,6 +306,7 @@ func _place_concierge() -> void:
 	for door: FrontDoor in doors.values():
 		door.broken.connect(concierge.door_broken)
 	key_board.taken.connect(concierge.key_taken)
+	concierge.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_HOTEL"))
 	var hud := CanvasLayer.new()
 	var box := VBoxContainer.new()
 	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
@@ -197,7 +337,8 @@ func _place_maid() -> void:
 		var bed := HotelBed.new()
 		bed.name = "Bed%d" % number
 		bed.room = number
-		bed.position = Vector3(Hotel.room_middle(number).x, BED_TOP, (Hotel.BACK_Z + 1.1) if north else (Hotel.FRONT_Z - 1.1))
+		var far := (Hotel.BACK_Z + 1.1) if north else (Hotel.FRONT_Z - 1.1)
+		bed.position = Vector3(Hotel.room_middle(number).x, BED_TOP, far)
 		bed.rotation.y = 0.0 if north else PI
 		add_child(bed)
 		bed.started.connect(maid.helping.bind(number))

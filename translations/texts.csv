@@ -5058,6 +5058,53 @@ HOTEL_MAID_HELP_1,"¡Un policía que tiende camas! Eso sí que no se ve todos lo
 HOTEL_MAID_HELP_2,"Las esquinas bien metidas, eh. Y mientras tanto, escuche...","Tuck the corners in well, eh. And meanwhile, listen...","Os cantos bem dobrados, hein. E enquanto isso, escute..."
 HOTEL_MAID_THANKS,"Gracias otra vez, oficial. Ya le conté todo lo que vi.","Thanks again, officer. I already told you everything I saw.","Obrigada de novo, policial. Já te contei tudo o que vi."
 HOTEL_MAID_SAW_NOTHING,"Yo no vi a don Bostezo esconder nada. Lo vi dormir, eso sí. Mucho.","I didn't see don Bostezo hide anything. I saw him sleep, though. A lot.","Eu não vi o don Bostezo esconder nada. Vi ele dormir, isso sim. Muito."
+BRIEF_HOTEL_TIP_B,"Llegó una denuncia anónima: el Hotel Gran Siesta dice que está lleno todas las noches, pero nadie vio nunca a un huésped.","We got an anonymous tip: the Hotel Gran Siesta says it's full every night, but nobody has ever seen a guest.","Chegou uma denúncia anônima: o Hotel Gran Siesta diz que está lotado todas as noites, mas ninguém nunca viu um hóspede."
+BRIEF_HOTEL_TIP_D,"El lobby está abierto y don Bostezo atiende desde la recepción, cuando no duerme. Las habitaciones tienen llave: la maestra cuelga del tablero, detrás del mostrador.","The lobby is open and don Bostezo runs the front desk, when he isn't asleep. The rooms are locked: the master key hangs on the board behind the desk.","O saguão está aberto e o don Bostezo atende na recepção, quando não está dormindo. Os quartos estão trancados: a chave mestra fica no quadro, atrás do balcão."
+BRIEF_HOTEL_TIP_E,Y no rompan nada: cada jarrón o lámpara rota se los descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.,And don't break anything: every broken vase or lamp comes out of your pay. Press Q to see your checklist.,E não quebrem nada: cada vaso ou abajur quebrado sai do salário de vocês. Com Q vocês veem a lista do que têm que fazer.
+SUSPECT_regular_guest,El huésped de siempre,The regular guest,O hóspede de sempre
+SUSPECT_casino_13,Un casino en la habitación 13,A casino in room 13,Um cassino no quarto 13
+SUSPECT_robes,Batas robadas de otros hoteles,Robes stolen from other hotels,Roupões roubados de outros hotéis
+SUSPECT_lift_1987,Algo escondido en el ascensor de 1987,Something hidden in the 1987 lift,Algo escondido no elevador de 1987
+SUSPECT_sleepwalker,Un huésped sonámbulo que se lleva cosas,A sleepwalking guest who takes things,Um hóspede sonâmbulo que leva coisas
+SUSPECT_fake_reviews,Reseñas falsas de cinco estrellas,Fake five-star reviews,Avaliações falsas de cinco estrelas
+CLUE_SUSPECT_regular_guest,"Un bigote postizo pegado en el sillón, con pegamento todavía fresco.","A fake mustache stuck to the armchair, the glue still fresh.","Um bigode postiço grudado na poltrona, com a cola ainda fresca."
+CLUE_SUSPECT_casino_13,"Un papelito: «Esta noche, en la 13. Traer cambio. Golpear tres veces el ropero».","A little note: “Tonight, in 13. Bring change. Knock three times on the wardrobe.”","Um bilhetinho: “Hoje à noite, no 13. Trazer trocado. Bater três vezes no armário.”"
+CLUE_SUSPECT_robes,Una etiqueta arrancada de una bata: «Propiedad del Hotel Imperial».,A tag torn off a robe: “Property of the Hotel Imperial.”,Uma etiqueta arrancada de um roupão: “Propriedade do Hotel Imperial.”
+CLUE_SUSPECT_lift_1987,Una factura del técnico del ascensor de 1987: «No vuelvo más».,A 1987 bill from the lift repairman: “I'm never coming back.”,Uma nota do técnico do elevador de 1987: “Nunca mais volto.”
+CLUE_SUSPECT_sleepwalker,"Una pantufla con barro y un cartel: «Si me encuentra dormido, no me despierte».","A muddy slipper and a sign: “If you find me asleep, don't wake me.”","Uma pantufa com barro e um aviso: “Se me encontrar dormindo, não me acorde.”"
+CLUE_SUSPECT_fake_reviews,Un borrador: «¡Hotel maravilloso! Firmado: un huésped que existe».,A draft: “Wonderful hotel! Signed: a guest who exists.”,Um rascunho: “Hotel maravilhoso! Assinado: um hóspede que existe.”
+BRIEF_CASINO_B,"Don Bostezo duerme de día porque de noche tiene un casino en la habitación 13, la que no figura en ninguna lista.","Don Bostezo sleeps by day because at night he runs a casino in room 13, the one that isn't on any list.","O don Bostezo dorme de dia porque à noite tem um cassino no quarto 13, aquele que não aparece em nenhuma lista."
+BRIEF_CASINO_C,"Traigan la ruleta en el baúl del patrullero. Pesa como un ropero, así que no la tiren por la escalera.","Bring the roulette back in the patrol car's trunk. It weighs as much as a wardrobe, so don't throw it down the stairs.","Tragam a roleta no porta-malas da viatura. Pesa como um armário, então não joguem pela escada."
+BRIEF_CASINO_D,"Si encuentran la caja de fichas o la libreta de deudas, mejor: todo suma.","If you find the box of chips or the debt book, even better: it all adds up.","Se acharem a caixa de fichas ou a caderneta de dívidas, melhor: tudo soma."
+OBJ_FIND_CASINO,Encontrar la ruleta (en la habitación que no existe),Find the roulette (in the room that doesn't exist),Achar a roleta (no quarto que não existe)
+OBJ_EXTRA_CHIP_BOX,Extra: la caja de fichas,Extra: the box of chips,Extra: a caixa de fichas
+OBJ_EXTRA_DEBT_BOOK,Extra: la libreta de deudas,Extra: the debt book,Extra: a caderneta de dívidas
+OBJ_ENTER_HOTEL,Entrar al hotel (el lobby está abierto),Get into the hotel (the lobby is open),Entrar no hotel (o saguão está aberto)
+OBJ_GUESS_HOTEL,"Averiguar qué pasa en el hotel (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the hotel (with Q open, hold 1, 2 or 3)","Descobrir o que acontece no hotel (com Q aberta, segure 1, 2 ou 3)"
+OBJ_BROKEN_HOTEL,Jarrones y lámparas rotos: %d (multa: %d),Broken vases and lamps: %d (fine: %d),Vasos e abajures quebrados: %d (multa: %d)
+OBJ_COMPLAINT_HOTEL,Denuncia de don Bostezo: %d%%,Don Bostezo's complaint: %d%%,Denúncia do don Bostezo: %d%%
+CASE_FAILED_LAWYER_HOTEL,Don Bostezo llamó a su abogado. Caso perdido.,Don Bostezo called his lawyer. Case lost.,O don Bostezo ligou para o advogado. Caso perdido.
+HOTEL_SLIP,"«(Bostezo.) Yo no guardé nada %s... Digo, ¿tiene reserva?»","“(Yawn.) I didn't put anything %s... I mean, do you have a reservation?”","“(Bocejo.) Eu não guardei nada %s... Quer dizer, tem reserva?”"
+HOTEL_MAID_CLUE,"Le cuento, pero no le diga a nadie: anoche vi a don Bostezo esconder algo %s.","I'll tell you, but don't tell anyone: last night I saw don Bostezo hide something %s.","Vou te contar, mas não conte para ninguém: ontem à noite vi o don Bostezo esconder algo %s."
+PROMPT_CASINO_CHIPS,E: mirar las fichas,E: look at the chips,E: olhar as fichas
+CLUE_CASINO_CHIPS,Fichas de casino. En un hotel sin casino.,Casino chips. In a hotel with no casino.,Fichas de cassino. Num hotel sem cassino.
+CLUE_CASINO_STEPS,"Pisadas en la alfombra, de la escalera al ropero viejo. Y no vuelven.","Footprints on the carpet, from the stairs to the old wardrobe. And they don't come back.","Pegadas no tapete, da escada até o armário velho. E não voltam."
+CLUE_CASINO_TICK,"Detrás del ropero se oye una ruleta girar, y sale humo de cigarro por abajo.","Behind the wardrobe you hear a roulette spinning, and cigar smoke comes out from under it.","Atrás do armário se ouve uma roleta girando, e sai fumaça de charuto por baixo."
+CASINO_TICK,*tic tic tic*,*tick tick tick*,*tic tic tic*
+LOC_hotel_in_tub,en la bañera de la suite,in the suite's bathtub,na banheira da suíte
+LOC_hotel_by_lift,en el ascensor roto,in the broken lift,no elevador quebrado
+LOC_hotel_behind_desk,detrás del mostrador,behind the front desk,atrás do balcão
+LOC_hotel_room_13,en la habitación 13,in room 13,no quarto 13
+LOC_hotel_by_suite_bed,al lado de la cama de la suite,by the suite's bed,ao lado da cama da suíte
+LOC_hotel_behind_piano,detrás del piano,behind the piano,atrás do piano
+LOC_hotel_on_piano,arriba del piano,on top of the piano,em cima do piano
+LOC_hotel_on_bed_14,en la cama de la 14,on the bed in 14,na cama do 14
+LOC_hotel_in_case,en la vitrina de la Almohada de Oro,in the Golden Pillow's glass case,na vitrine do Travesseiro de Ouro
+LOC_hotel_in_plant,en la maceta de la planta de plástico,in the plastic plant's pot,no vaso da planta de plástico
+LOC_hotel_on_armchair,en un sillón del lobby,on an armchair in the lobby,numa poltrona do saguão
+LOC_hotel_on_table,en una mesa del comedor,on a dining table,numa mesa do refeitório
+CRIME_owner_concierge,"¡Novatos! Ayer se trajeron a don Bostezo, el conserje del Hotel Gran Siesta, y lo tenemos en la sala de interrogatorio. Algo escondió en el hotel que no encontraron. Si se duerme, despiértenlo.","Rookies! Yesterday you brought in don Bostezo, the Hotel Gran Siesta's concierge, and he's in the interrogation room. He hid something in the hotel you never found. If he falls asleep, wake him up.","Novatos! Ontem vocês trouxeram o don Bostezo, o concierge do Hotel Gran Siesta, e ele está na sala de interrogatório. Ele escondeu algo no hotel que vocês não acharam. Se ele dormir, acordem ele."
+CONFESS_owner_concierge,¡Está bien! ¡Lo escondí yo! (Bostezo.) ¿Ahora me puedo ir a dormir?,Fine! I hid it! (Yawn.) Can I go to sleep now?,Tá bom! Fui eu que escondi! (Bocejo.) Agora posso ir dormir?
 HOTEL_CONCIERGE_ANGRY,"¡Basta de timbre! No contesto nada. (Se tapa los oídos.)","Enough with the bell! I'm not answering anything. (Covers his ears.)","Chega de campainha! Não respondo nada. (Tapa os ouvidos.)"
 HOTEL_BELLBOY_ASK,"Tengo las manos ocupadas. ¿Me subes esa valija a la %d? Después te cuento lo que vi.","My hands are full. Can you take that suitcase up to %d? Then I'll tell you what I saw.","Estou com as mãos ocupadas. Você leva aquela mala para o %d? Depois eu conto o que vi."
 HOTEL_BELLBOY_THANKS,"¡Llegó la valija! Ven, que te cuento.","The suitcase made it! Come here, I'll tell you.","A mala chegou! Vem, que eu te conto."
