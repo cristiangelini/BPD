@@ -97,3 +97,17 @@ el estrado, por `NpcSync`; subir al estrado, levantar un cartel y objetar, por l
 - En una captura, el saco vuelve a la caja y el juicio siguiente tiene otra coartada.
 - Modelos `disguise_lawyer_jacket` y `lost_found_box` en `tools/modelgen/models/trial.js`. 96 textos nuevos. Pruebas en
   `test_trial_lawyer.gd`. Fotos en `/mnt/project-files/juicio/`.
+
+## Cómo quedó el paso 2
+- La jueza Bermúdez (`TrialJudge`, con toga negra de relleno) está detrás de su escritorio en la sala de guardia. Cuando
+  el guardia dice "De pie", llama a los testigos (todos menos el abogado) en el orden de la semilla.
+- El testigo que llamó sube al estrado con E (`TrialStand`) y queda parado detrás, mirando los 3 carteles
+  (`TrialSign`). Ella pregunta por cada detalle (qué, dónde y con quién), en el orden de la semilla.
+- Los carteles muestran las 3 respuestas parecidas de ese detalle, y solo el testigo puede contestar (E en uno). Si
+  acierta, "Ajá. Coincide."; si no, es una contradicción ("Eso no es lo que dijo su compañero."). Reacciona 2 s, con los
+  carteles en blanco, y sigue con la próxima pregunta o con el próximo testigo.
+- Tres contradicciones en un juicio: "¡Culpables!" y es una captura del guardia. El juicio siguiente tiene otra
+  coartada.
+- Cuando terminó con todos: "Ya escuché a todos los testigos" (el veredicto es el paso 3).
+- Online: la jueza va por `NpcSync`; subir al estrado y contestar, por las acciones, y lo decide el anfitrión.
+- 15 textos nuevos. Pruebas en `test_trial_judge.gd`. Fotos en `/mnt/project-files/juicio/`.

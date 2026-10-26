@@ -2476,3 +2476,18 @@ TRIAL_WHO_8_2,con el suegro de un compañero,with a partner's father-in-law,com 
 TRIAL_WHO_9_0,con unos mellizos,with some twins,com uns gêmeos
 TRIAL_WHO_9_1,con unos trillizos,with some triplets,com uns trigêmeos
 TRIAL_WHO_9_2,con unos cuatrillizos,with some quadruplets,com uns quadrigêmeos
+PROMPT_TAKE_STAND,"[E] Subir al estrado","[E] Take the stand","[E] Subir ao banco das testemunhas"
+PROMPT_TRIAL_ANSWER,"[E] Contestar esto","[E] Answer this","[E] Responder isto"
+TRIAL_JUDGE_CALL_0,"Que pase el próximo testigo. Rápido, que tengo doce juicios antes del almuerzo.","Next witness, please. Quickly, I have twelve trials before lunch.","Que venha a próxima testemunha. Rápido, tenho doze julgamentos antes do almoço."
+TRIAL_JUDGE_CALL_1,"El siguiente testigo al estrado. Y sin dar vueltas.","Next witness to the stand. And no beating around the bush.","A próxima testemunha ao banco. E sem enrolar."
+TRIAL_ASK_WHAT,"A ver, testigo: ¿qué estaban haciendo?","Now, witness: what were you doing?","Vejamos, testemunha: o que vocês estavam fazendo?"
+TRIAL_ASK_WHERE,"¿Y dónde estaban, exactamente?","And where were you, exactly?","E onde vocês estavam, exatamente?"
+TRIAL_ASK_WHO,"¿Con quién estaban? Nombres, por favor.","Who were you with? Names, please.","Com quem vocês estavam? Nomes, por favor."
+TRIAL_JUDGE_OK_0,"Ajá. Coincide.","Uh-huh. That matches.","Aham. Confere."
+TRIAL_JUDGE_OK_1,"Bien, bien. Sigamos.","Fine, fine. Let's go on.","Bem, bem. Continuemos."
+TRIAL_JUDGE_OK_2,"Lo anoto. Qué letra fea tengo.","I'll write that down. My handwriting is terrible.","Vou anotar. Que letra feia eu tenho."
+TRIAL_JUDGE_WRONG_0,"¿Cómo? El expediente dice otra cosa.","What? The file says something else.","Como? O processo diz outra coisa."
+TRIAL_JUDGE_WRONG_1,"Eso no es lo que dijo su compañero.","That's not what your partner said.","Não foi isso que seu colega disse."
+TRIAL_JUDGE_WRONG_2,"Hmm. Levanto una ceja. La otra también.","Hmm. I raise an eyebrow. The other one too.","Hmm. Levanto uma sobrancelha. A outra também."
+TRIAL_JUDGE_GUILTY,"¡Tres contradicciones! Culpables. Guardia, a las celdas.","Three contradictions! Guilty. Guard, to the cells.","Três contradições! Culpados. Guarda, para as celas."
+TRIAL_JUDGE_DONE,"Bueno, ya escuché a todos los testigos.","Well, I've heard all the witnesses.","Bom, já ouvi todas as testemunhas."
