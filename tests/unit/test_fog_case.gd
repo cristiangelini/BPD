@@ -104,7 +104,7 @@ func test_play_draws_the_fog_too() -> void:
 	for i in 800:
 		var variant := TrafficControlLevel.variant_from("", PackedStringArray(), i + 1)
 		count[variant] = count.get(variant, 0) + 1
-	assert_eq(count.size(), 8)
+	assert_eq(count.size(), TrafficControlLevel.VARIANTS.size())
 	assert_gt(count.fog, 60)
 
 

@@ -1,121 +1,146 @@
 extends GutTest
 
-## The circus case (escena-circo.md, step 6a): what was stolen and where it's hidden, drawn with the seed; searching
-## the spots; the comisario's briefing and the planilla; and the circus level that gives the case.
+## Circus move step 5 (control-circo.md, "Cómo es" 6 to 8): the cuffs go on whoever's in an open cage: El Peludo comes
+## out cuffed and leaves the jewels in the straw (+100 in the patrol car's trunk); a real animal won't be cuffed. If he
+## gets past the checkpoint he runs off in his circus truck, dropping banana peels at every corner, and the patrol car
+## skids on them. Play draws the nine controls a ninth each.
+
+var level: Node3D
+var checkpoint: TrafficCheckpoint
+var queue: TrafficQueue
+var case: TrafficCase
 
 
-func _case(seed_value := 7) -> CrimeSceneCase:
-	var circus := Circus.new()
-	circus.case_seed = seed_value
-	add_child_autofree(circus)
-	var case := CrimeSceneCase.new()
-	case.case_seed = seed_value
-	case.place = circus
-	add_child_autofree(case)
-	case.start()
-	return case
-
-
-func test_the_loot_and_its_spot_come_from_the_seed() -> void:
-	var a := _case(11).place as Circus
-	var b := _case(11).place as Circus
-	assert_has(Circus.LOOTS, a.loot)
-	assert_has(Circus.LOOT_SPOTS, a.loot_spot)
-	assert_eq(a.loot, b.loot, "same seed, same loot")
-	assert_eq(a.loot_spot, b.loot_spot, "same seed, same spot")
-
-
-func test_every_loot_turns_up_with_some_seed() -> void:
-	var seen := {}
-	for seed_value in range(1, 40):
-		seen[(_case(seed_value).place as Circus).loot] = true
-	assert_eq(seen.size(), Circus.LOOTS.size())
-
-
-func test_the_caravan_to_search_is_the_culprits() -> void:
-	var case := _case()
-	var circus := case.place as Circus
-	var door := (circus.loot_spots.caravan as Node3D).position
-	var caravan: Vector3 = Circus.CARAVANS[case.plan.culprit]
-	assert_almost_eq(door.x, caravan.x - 0.9, 0.01)
-
-
-func test_the_wrong_spot_has_nothing() -> void:
-	var case := _case()
-	var circus := case.place as Circus
-	for spot in Circus.LOOT_SPOTS:
-		if spot != circus.loot_spot:
-			circus.search(spot, null)
-	assert_false(circus.loot_found)
-	assert_false(case.loot_found)
-	assert_null(circus.get_node_or_null("Loot"))
-
-
-func test_the_right_spot_has_the_loot() -> void:
-	var case := _case()
-	var circus := case.place as Circus
-	circus.search(circus.loot_spot, null)
-	assert_true(circus.loot_found)
-	assert_true(case.loot_found, "the case notes it")
-	assert_not_null(circus.get_node_or_null("Loot"))
-	circus.search(circus.loot_spot, null)
-	assert_eq(circus.find_children("Loot*", "", false, false).size(), 1, "only once")
-
-
-func test_the_briefing_says_what_was_stolen() -> void:
-	var case := _case()
-	var circus := case.place as Circus
-	var lines := case.briefing_lines()
-	assert_eq(lines[0], "BRIEF_CIRCUS_A_" + circus.loot)
-	assert_eq(lines.size(), 3)
-
-
-func test_the_pastry_briefing_stays_the_same() -> void:
-	var contest := PastryContest.new()
-	add_child_autofree(contest)
-	var case := CrimeSceneCase.new()
-	case.place = contest
-	add_child_autofree(case)
-	case.start()
-	assert_eq(case.briefing_lines(), PackedStringArray(["BRIEF_CRIME_A", "BRIEF_CRIME_B", "BRIEF_CRIME_C"]))
-
-
-func test_the_planilla_has_an_optional_loot_row() -> void:
-	var case := _case()
-	var circus := case.place as Circus
-	var row := _row(case, "OBJ_CIRCUS_LOOT_" + circus.loot)
-	assert_false(row.is_empty())
-	assert_true(row.optional)
-	assert_false(row.done)
-	circus.search(circus.loot_spot, null)
-	assert_true(_row(case, "OBJ_CIRCUS_LOOT_" + circus.loot).done)
-	assert_eq(case.rows()[0].text, "OBJ_CIRCUS_GO")
-
-
-func test_the_snapshot_brings_the_loot() -> void:
-	var case := _case()
-	(case.place as Circus).search((case.place as Circus).loot_spot, null)
-	var state := case.snapshot()
-	assert_true(state.loot)
-	var other := _case()
-	other.apply_snapshot(state)
-	assert_true((other.place as Circus).loot_found, "the other side sees it too")
-
-
-func test_the_level_gives_the_circus_case() -> void:
-	var level: CircusLevel = load("res://scenes/levels/circus.tscn").instantiate()
-	level.case_seed = 7
+func before_each() -> void:
+	level = Node3D.new()
 	add_child_autofree(level)
-	assert_not_null(level.case)
-	assert_eq(level.case.place, level.circus)
-	assert_eq(level.circus.variant, "circus")
-	assert_not_null(level.board)
-	assert_eq(level.board.case, level.case)
-	assert_not_null(level.stamp)
+	var city := Node3D.new()
+	city.name = "City"
+	level.add_child(city)
+	checkpoint = TrafficCheckpoint.new()
+	level.add_child(checkpoint)
+	checkpoint.global_transform = TrafficControlLevel.checkpoint_at()
+	var barrier := RoadBarrier.new()
+	barrier.freeze = true
+	level.add_child(barrier)
+	barrier.global_transform = checkpoint.global_transform
+	checkpoint.ready_now = true
+	checkpoint.set_physics_process(false)
+	queue = TrafficQueue.new()
+	queue.checkpoint = checkpoint
+	queue.variant = "circus_move"
+	level.add_child(queue)
+	queue.set_physics_process(false)
+	case = TrafficCase.new()
+	case.case_seed = 12
+	case.plan = WantedPlan.draw(12, false, false, false, false, false, false, false, true)
+	queue.plan = case.plan
+	case.queue = queue
+	case.clues = TrafficClues.new()
+	case.clues.plan = case.plan
+	case.patrol_car = (load("res://scenes/vehicles/patrol_car.tscn") as PackedScene).instantiate()
+	level.add_child(case.patrol_car)
+	case.patrol_car.global_transform = CityLayout.parking("station")
+	level.add_child(case)
+	case.start()
 
 
-func _row(case: CrimeSceneCase, text: String) -> Dictionary:
-	for row in case.rows():
-		if row.text == text:
-			return row
-	return {}
+## The `index`th car of the plan at the barrier.
+func _at_barrier(index: int) -> QueueCar:
+	queue.spawned = index
+	var car := queue.spawn()
+	car.set_physics_process(false)
+	for i in 200:
+		car._physics_process(0.1)
+		if car.waiting():
+			break
+	return car
+
+
+func _real_truck() -> int:
+	for i in case.plan.total:
+		if i != case.plan.wanted_index and not case.plan.cars[i].circus.is_empty():
+			return i
+	return -1
+
+
+func test_his_cage_shut_the_cuffs_wait() -> void:
+	var car := _at_barrier(case.plan.wanted_index)
+	assert_true(car.waiting())
+	case.detain(car)
+	assert_null(case.suspect)
+	assert_eq(car.saying(), tr("CIRCUS_OPEN_CAGE_FIRST"))
+	assert_eq(case.innocents, 0)
+
+
+func test_a_real_animal_won_t_be_cuffed() -> void:
+	var car := _at_barrier(_real_truck())
+	car.open_cage()
+	case.detain(car)
+	assert_null(case.suspect)
+	assert_eq(case.innocents, 0, "no complaint: opening its cage cost enough")
+	assert_string_contains(car.saying(), tr(CircusTruck.animal_name(car.circus.animal)))
+
+
+func test_cuffed_el_peludo_leaves_the_jewels_worth_100_in_the_patrol_car() -> void:
+	var car := _at_barrier(case.plan.wanted_index)
+	car.open_cage()
+	case.detain(car)
+	assert_not_null(case.suspect)
+	assert_false(CircusTruck.animal_of(car).visible, "out of his cage")
+	var jewels := level.get_node_or_null("CircusJewels") as CircusJewels
+	assert_not_null(jewels)
+	assert_lt(jewels.global_position.distance_to(car.global_transform * CircusTruck.JEWELS_AT), 0.1, "in the straw")
+	assert_eq(case.jewels_bonus(), [])
+	case.patrol_car.delivered.append(jewels)
+	assert_eq(case.jewels_bonus(), [CircusJewels.VALUE])
+	assert_has(case.extras(), CircusJewels.VALUE)
+
+
+func test_past_the_checkpoint_he_runs_off_in_his_circus_truck() -> void:
+	var car := _at_barrier(case.plan.wanted_index)
+	queue.cars.erase(car)
+	var traits := car.circus.duplicate()
+	case._on_passed(car, false)
+	assert_not_null(case.chase)
+	assert_eq(case.chase.suspect_id, SuspectCar.CIRCUS_TRUCK)
+	assert_not_null(case.chase.truck.get_node_or_null("Cage/Animal/Sneaker"), "in his cage, sneakers and all")
+	assert_true(case.chase.drops.bananas)
+	assert_eq(case.snapshot().run_off[10], traits, "guests dress his truck too")
+
+
+func test_he_drops_banana_peels_and_the_patrol_car_skids() -> void:
+	var car := _at_barrier(case.plan.wanted_index)
+	queue.cars.erase(car)
+	case._on_passed(car, false)
+	var drops := case.chase.drops
+	case.chase.chasing = true
+	drops._on_corner(false)
+	assert_eq(drops.peels.size(), 0, "only where he turns")
+	drops._on_corner(true)
+	assert_eq(drops.peels.size(), ChaseDrops.PEELS_PER_CORNER)
+	var peel: Node3D = drops.peels[0][0]
+	case.patrol_car.global_position = peel.global_position + Vector3.UP * 0.3
+	drops._physics_process(0.016)
+	assert_almost_eq(case.patrol_car.grip, drops.weather_grip * ChaseDrops.PEEL_GRIP, 0.001)
+	case.patrol_car.global_position = peel.global_position + Vector3(30, 0.3, 30)
+	drops._physics_process(0.016)
+	assert_almost_eq(case.patrol_car.grip, drops.weather_grip, 0.001, "off it, it grips again")
+	drops._physics_process(ChaseDrops.PEEL_SECONDS)
+	assert_eq(drops.peels.size(), 0, "swept away")
+
+
+func test_play_draws_the_circus_too() -> void:
+	assert_has(TrafficControlLevel.VARIANTS, "circus_move")
+	assert_eq(TrafficControlLevel.variant_from("", PackedStringArray(["--traffic=circus_move"])), "circus_move")
+	var count := {}
+	for i in 900:
+		var variant := TrafficControlLevel.variant_from("", PackedStringArray(), i + 1)
+		count[variant] = count.get(variant, 0) + 1
+	assert_eq(count.size(), 9)
+	assert_gt(count.circus_move, 60)
+
+
+func test_texts_are_translated() -> void:
+	for key in ["PROMPT_CIRCUS_JEWELS", "HINT_CIRCUS_JEWELS", "CIRCUS_OPEN_CAGE_FIRST", "CIRCUS_NO_CUFFS_FOR_ANIMALS"]:
+		assert_ne(tr(key), key)

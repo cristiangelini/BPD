@@ -30,9 +30,9 @@ const FOGHORN_FROM_DOOR := Vector3(4.6, 0, 2.3)
 ## The circus move's four food buckets (control-circo.md, step 2), in a row by the patrol car.
 const BUCKETS_FROM_DOOR: Array[Vector3] = [Vector3(2, 0, 2.3), Vector3(2.6, 0, 2.3), Vector3(3.2, 0, 2.3),
 	Vector3(3.8, 0, 2.3)]
-## What Play draws, an eighth each (propuesta).
+## What Play draws, a ninth each (propuesta).
 const VARIANTS: Array[String] = ["rush_hour", "clown_convoy", "fruit_truck", "crowded_car", "ghost_car", "wedding",
-	"race", "fog"]
+	"race", "fog", "circus_move"]
 
 ## Same seed, same cars. 0 draws one.
 @export var case_seed := 0
