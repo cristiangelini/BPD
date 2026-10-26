@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Cake lab, step 5: the sleepy cakes story: the jar of sleeping powder is hidden with the list of customers put to sleep and the giant measuring spoon, Pocha's sample makes you yawn (the clue), and a free slice from the plate on the showcase puts a cop to sleep for 4 s.
 - Cake lab, step 5: the stolen recipe story: the rival bakery's recipe book is baked inside one of six order cakes on the cold room's table, and every cake opened is squashed (a fine); the photo of the chef in disguise and the delivery cap are hidden, a copied recipe with a crossed-out logo on the formula board is the clue, and Pocha's sample tastes like the other bakery's cake.
 - Cake lab, step 4: the lab is a raid with the silver-filled cake story: the 12 kg three-tier cake full of banknotes is hidden with the bill mold and the special-orders notebook, the giant mixers spit banknotes when switched on (the clue), Pocha's sample has the corner of a bill, the chef lets slip where he hid things, the till has the lab key, and the chef can flee or end up in the interrogation room.
 - Cake lab, step 3: Pocha behind her tray of samples: E eats one (3 s with busy hands) and she tells what she saw the chef hide, once per cop; a story can flavour the sample with its own hint.

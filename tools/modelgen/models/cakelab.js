@@ -127,13 +127,56 @@ export function buildDeliveryCap() {
 	return b.build();
 }
 
+export function buildSleepPowderJar() {
+	const b = new Builder('sleep_powder_jar');
+	b.add('glass', mat('jar_glass', 0xbfd8e8), new THREE.CylinderGeometry(0.07, 0.07, 0.16, 12), { pos: V(0, 0.08, 0) });
+	b.add('powder', mat('powder_lilac', 0xc9a8e6), new THREE.CylinderGeometry(0.064, 0.064, 0.11, 12), { pos: V(0, 0.06, 0) });
+	b.add('lid', mat('lid_purple', 0x6a3f9a), new THREE.CylinderGeometry(0.075, 0.075, 0.025, 12), { pos: V(0, 0.172, 0) });
+	b.add('label', mat('photo_white', 0xf4f1ea), new THREE.BoxGeometry(0.07, 0.05, 0.004), { pos: V(0, 0.09, 0.071) });
+	for (let i = 0; i < 3; i++) b.add('z', mat('lid_purple', 0x6a3f9a), new THREE.BoxGeometry(0.014 + i * 0.004, 0.003, 0.002), { pos: V(-0.015 + i * 0.015, 0.08 + i * 0.012, 0.074) });
+	return b.build();
+}
+
+export function buildSleepersList() {
+	const b = new Builder('sleepers_list');
+	b.add('paper', mat('photo_white', 0xf4f1ea), new THREE.BoxGeometry(0.15, 0.004, 0.21), { pos: V(0, 0.002, 0) });
+	for (let i = 0; i < 6; i++) b.add('line', mat('ink_blue', 0x34408f), new THREE.BoxGeometry(0.09, 0.001, 0.008), { pos: V(-0.02, 0.0045, -0.08 + i * 0.03) });
+	for (let i = 0; i < 6; i++) b.add('tick', mat('logo_red', 0xd94a3a), new THREE.BoxGeometry(0.015, 0.001, 0.015), { pos: V(0.05, 0.0045, -0.08 + i * 0.03) });
+	return b.build();
+}
+
+export function buildMeasuringSpoon() {
+	const b = new Builder('measuring_spoon');
+	b.add('bowl', mat('steel_spoon', 0xc8ccd2), new THREE.SphereGeometry(0.09, 10, 6, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), { pos: V(0, 0.09, 0) });
+	b.add('handle', mat('steel_spoon', 0xc8ccd2), new THREE.BoxGeometry(0.04, 0.02, 0.4), { pos: V(0, 0.08, 0.27) });
+	b.add('mark', mat('lid_purple', 0x6a3f9a), new THREE.BoxGeometry(0.03, 0.004, 0.06), { pos: V(0, 0.092, 0.35) });
+	return b.build();
+}
+
+export function buildCakeSlices() {
+	const b = new Builder('cake_slices');
+	b.add('plate', mat('plate_white', 0xf6f6f2), new THREE.CylinderGeometry(0.2, 0.18, 0.02, 16), { pos: V(0, 0.01, 0) });
+	for (let i = 0; i < 5; i++) {
+		const a = i * Math.PI * 2 / 5;
+		b.add('slice', mat('sponge', 0xf1d9a0), new THREE.CylinderGeometry(0.06, 0.06, 0.06, 3), { pos: V(Math.cos(a) * 0.1, 0.05, Math.sin(a) * 0.1), rot: [0, a, 0] });
+		b.add('cream', mat('frosting_lilac', 0xd8b8ee), new THREE.CylinderGeometry(0.06, 0.06, 0.012, 3), { pos: V(Math.cos(a) * 0.1, 0.086, Math.sin(a) * 0.1), rot: [0, a, 0] });
+	}
+	return b.build();
+}
+
 export const models = {
 	lab_oven: buildLabOven, giant_mixer: buildGiantMixer, microscope: buildMicroscope, test_tubes: buildTestTubes,
 	silver_cake: buildSilverCake, bill_mold: buildBillMold, orders_notebook: buildOrdersNotebook,
+	sleep_powder_jar: buildSleepPowderJar, sleepers_list: buildSleepersList, measuring_spoon: buildMeasuringSpoon,
+	cake_slices: buildCakeSlices,
 	recipe_book: buildRecipeBook, disguise_photo: buildDisguisePhoto, delivery_cap: buildDeliveryCap,
 };
 
 export const views = {
+	sleepy_cakes: {
+		items: [{ name: 'sleep_powder_jar', pos: [-0.25, 0, 0] }, { name: 'sleepers_list', pos: [0.05, 0, 0.15] }, { name: 'measuring_spoon', pos: [0.05, 0, -0.35] }, { name: 'cake_slices', pos: [0.4, 0, 0.1] }],
+		cam: { pos: [0, 0.7, 1.1], target: [0.05, 0.05, -0.05], fov: 40 },
+	},
 	stolen_recipe: {
 		items: [{ name: 'recipe_book', pos: [-0.15, 0, 0] }, { name: 'disguise_photo', pos: [0.12, 0, 0.12] }, { name: 'delivery_cap', pos: [0.15, 0, -0.12] }],
 		cam: { pos: [0, 0.45, 0.6], target: [0, 0.03, 0], fov: 40 },
