@@ -33,7 +33,7 @@ const PLACES := [
 	{"id": "hotel", "block": Vector2i(2, 3), "side": "n", "along": 0.0, "size": Vector3(26, 18, 18), "color": Color(0.85, 0.5, 0.45), "sign": "PLACE_HOTEL"},
 	{"id": "insurance", "block": Vector2i(3, 3), "side": "n", "along": 0.0, "size": Vector3(22, 12, 16), "color": Color(0.6, 0.65, 0.7), "sign": "PLACE_INSURANCE"},
 	{"id": "grandpa", "block": Vector2i(1, 2), "side": "e", "along": 0.0, "size": Vector3(24, 7, 20), "color": Color(1.0, 0.84, 0.55), "sign": "PLACE_GRANDPA"},
-	{"id": "apartments", "block": Vector2i(1, 3), "side": "e", "along": 0.0, "size": Vector3(22, 15, 16), "color": Color(0.75, 0.6, 0.85), "sign": "PLACE_APARTMENTS"},
+	{"id": "apartments", "block": Vector2i(1, 3), "side": "e", "along": 0.0, "size": Vector3(22, 99.2, 16), "color": Color(0.75, 0.6, 0.85), "sign": "PLACE_APARTMENTS"},
 	{"id": "bakery", "block": Vector2i(2, 1), "side": "s", "along": -12.0, "size": Vector3(16, 7, 14), "color": Color(0.95, 0.75, 0.4), "sign": "PLACE_BAKERY"},
 	{"id": "pet_salon", "block": Vector2i(2, 1), "side": "s", "along": 12.0, "size": Vector3(16, 6, 14), "color": Color(0.55, 0.85, 0.8), "sign": "PLACE_PET_SALON"},
 	{"id": "hardware", "block": Vector2i(3, 1), "side": "s", "along": -12.0, "size": Vector3(16, 7, 14), "color": Color(0.9, 0.45, 0.3), "sign": "PLACE_HARDWARE"},
