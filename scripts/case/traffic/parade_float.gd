@@ -100,16 +100,7 @@ static func build(car: QueueCar, traits: Dictionary) -> void:
 	model.name = "Model"
 	car.add_child(model)
 	QueueCar._paint(model, skirt)
-	var theme: Node3D = THEME_MODELS[maxi(THEMES.find(traits.get("theme", "")), 0)].instantiate()
-	theme.name = "Theme"
-	theme.position = THEME_AT
-	car.add_child(theme)
-	for side: float in [1.0, -1.0]:
-		var sign := _label(car.tr("PARADE_SIGN") % int(traits.get("number", 1)), 64, Color(0.98, 0.85, 0.3))
-		sign.name = "Sign" if side > 0.0 else "SignLeft"
-		sign.position = Vector3(side * SIGN_AT.x, SIGN_AT.y, SIGN_AT.z)
-		sign.rotation.y = side * PI / 2
-		car.add_child(sign)
+	_add_theme(car, traits)
 	var troupe := Node3D.new()
 	troupe.name = "Dancers"
 	car.add_child(troupe)
@@ -125,6 +116,41 @@ static func build(car: QueueCar, traits: Dictionary) -> void:
 		dancer.rotation.y = PI
 		dancer.add_child(_dancer(dancers[i], skirt))
 		troupe.add_child(dancer)
+
+
+## The theme on `car`'s front and its number on both its sides.
+static func _add_theme(car: Node3D, traits: Dictionary) -> void:
+	var theme: Node3D = THEME_MODELS[maxi(THEMES.find(traits.get("theme", "")), 0)].instantiate()
+	theme.name = "Theme"
+	theme.position = THEME_AT
+	car.add_child(theme)
+	for side: float in [1.0, -1.0]:
+		var sign := _label(car.tr("PARADE_SIGN") % int(traits.get("number", 1)), 64, Color(0.98, 0.85, 0.3))
+		sign.name = "Sign" if side > 0.0 else "SignLeft"
+		sign.position = Vector3(side * SIGN_AT.x, SIGN_AT.y, SIGN_AT.z)
+		sign.rotation.y = side * PI / 2
+		car.add_child(sign)
+
+
+## Step 5: El Antifaz's float run off (SuspectCar parade_float, its model already on `truck`): its skirt, theme and
+## number, and its dancers still on it but him, just a look now.
+static func dress_runaway(truck: Node3D, traits: Dictionary) -> void:
+	var skirt := StandardMaterial3D.new()
+	skirt.albedo_color = SKIRTS[int(traits.get("skirt", 0)) % SKIRTS.size()]
+	QueueCar._paint(truck, skirt)
+	_add_theme(truck, traits)
+	var troupe := Node3D.new()
+	troupe.name = "Dancers"
+	truck.add_child(troupe)
+	var dancers: Array = traits.get("dancers", [])
+	for i in mini(dancers.size(), DANCER_AT.size()):
+		if i == int(traits.get("thief", -1)):
+			continue
+		var look := _dancer(dancers[i], skirt)
+		look.name = "Dancer%d" % i
+		look.position = DANCER_AT[i]
+		look.rotation.y = PI
+		troupe.add_child(look)
 
 
 ## One dancer's look (the dancer faces back toward the cops behind the float): the body with its mask, and its two

@@ -50,6 +50,8 @@ const REMOTE_OUT := 0.8
 const ENVELOPES_AT := Vector3(0, 1.3, -1.8)
 ## El Turbo's trophy shows up on his racer's trunk lid, before the spoiler.
 const TROPHY_AT := Vector3(0, 1.05, -1.45)
+## El Antifaz's crown falls out of his costume this far to his side.
+const CROWN_OUT := 0.6
 
 var case_seed := 0
 var plan: WantedPlan
@@ -82,6 +84,7 @@ var _run_off_race := {}
 ## La Bruma's headlights and horn when he ran off (FogCar.draw's), for guests too.
 var _run_off_fog := {}
 var _run_off_circus := {}
+var _run_off_parade := {}
 var escort: OwnerEscort
 var solved_now := false
 ## The wanted car got past the checkpoint and the chase is on; whether it got away.
@@ -186,7 +189,8 @@ func keys_taken(_car: QueueCar) -> void:
 
 ## What adds to a solved case's pay: a gold watch or the pilot's remote, each packed car fined and each drunk's keys.
 func extras() -> Array:
-	var out := watch_bonus() + remote_bonus() + envelope_bonus() + trophy_bonus() + lamp_bonus() + jewels_bonus()
+	var out := (watch_bonus() + remote_bonus() + envelope_bonus() + trophy_bonus() + lamp_bonus() + jewels_bonus()
+		+ crown_bonus())
 	for i in crowd_fines:
 		out.append(CROWD_FINE_BONUS)
 	for i in drunk_keys:
@@ -246,6 +250,15 @@ func jewels_bonus() -> Array:
 	return []
 
 
+## The parade queen's crown in the patrol car's trunk.
+func crown_bonus() -> Array:
+	if patrol_car:
+		for item in patrol_car.delivered:
+			if item is ParadeCrown:
+				return [ParadeCrown.VALUE]
+	return []
+
+
 ## La Bruma's lighthouse lamp in the patrol car's trunk.
 func lamp_bonus() -> Array:
 	if patrol_car:
@@ -302,6 +315,10 @@ func detain(car: QueueCar) -> void:
 	if not car.circus.is_empty():
 		_detain_in_cage(car)
 		return
+	if not car.parade.is_empty():
+		# The float's driver is hidden under its skirt and isn't the thief: it's a dancer (control-desfile.md).
+		car.say(tr("PARADE_CUFF_A_DANCER"))
+		return
 	if car.racer:
 		detained.emit(car, true)
 		_take_out(car)
@@ -353,6 +370,22 @@ func _detain_in_cage(car: QueueCar) -> void:
 	taken_from = car.name
 	drop_jewels(car)
 	_hint_all("HINT_CIRCUS_JEWELS")
+
+
+## The cuffs on El Antifaz (control-desfile.md, step 5), taken down from his float: he's walked to the patrol car,
+## and the crown he hid in his costume falls out by his feet. His float pulls over to the curb.
+func detain_dancer(dancer: ParadeDancer) -> void:
+	var car := dancer.car
+	if follower or shift_over or lost or solved_now or suspect or not dancer.thief or not dancer.is_down:
+		return
+	var at := dancer.global_position
+	queue.pull_over(car)
+	detained.emit(car, true)
+	_take_out(car, at)
+	dancer.get_parent().remove_child(dancer)
+	dancer.queue_free()
+	drop_crown(car, at)
+	_hint_all("HINT_PARADE_CROWN")
 
 
 ## The wanted driver gets out, cuffed, to be walked to the patrol car; a clown already out stays where he is (`at`).
@@ -415,6 +448,15 @@ func drop_jewels(car: QueueCar) -> CircusJewels:
 	return jewels
 
 
+## The parade queen's crown, out of El Antifaz's costume on the street by his feet (`at`), for a cop to take.
+func drop_crown(car: QueueCar, at: Vector3) -> ParadeCrown:
+	var crown := ParadeCrown.new()
+	crown.name = "ParadeCrown"
+	get_parent().add_child(crown)
+	crown.global_position = at + car.global_basis.x * CROWN_OUT + Vector3.UP * 0.1
+	return crown
+
+
 ## La Bruma's lighthouse lamp, on his car's trunk lid for a cop to take.
 func drop_lamp(car: QueueCar) -> LighthouseLamp:
 	var lamp := LighthouseLamp.new()
@@ -440,7 +482,7 @@ func _on_passed(car: QueueCar, _sneaked: bool) -> void:
 	if car.puppeteer:
 		ghost_look = _ghost_follows()
 	if _run_off(car.global_transform, car.look, car.clown, car.fruit, car.crowd, car.plate, ghost_look, car.guest,
-			car.race if car.racer else {}, car.fog if car.fog_mode else {}, car.circus):
+			car.race if car.racer else {}, car.fog if car.fog_mode else {}, car.circus, car.parade):
 		car.queue_free()
 		return
 	lost = true
@@ -463,17 +505,19 @@ func _ghost_follows() -> int:
 ## car's pilot has it follow him (`ghost_look`, its paint) and cut in at every corner. El Turbo (`race`, his racer's
 ## looks) runs off in his racer, faster, spinning at every corner. La Bruma (`fog`, his headlights and horn) runs off
 ## with his headlights on, honking at every corner. El Peludo (`circus`, his truck's) runs off in his circus truck, in
-## his cage, dropping banana peels at every corner.
+## his cage, dropping banana peels at every corner. El Antifaz (`parade`, his float's) runs off on his float, shooting
+## confetti at every corner.
 func _run_off(at: Transform3D, look: int, clown := false, fruit := false, riders := 0, plate := "",
 		ghost_look := -1, wedding := false, race: Dictionary = {}, fog: Dictionary = {},
-		circus: Dictionary = {}) -> bool:
+		circus: Dictionary = {}, parade: Dictionary = {}) -> bool:
 	var level := get_parent()
 	_run_off_look = look
 	var city := level.get_node_or_null("City") as Node3D
 	if not city or not patrol_car:
 		return false
 	var kind := SuspectCar.CLOWN_CAR if clown else SuspectCar.FRUIT_TRUCK if fruit \
-		else SuspectCar.CIRCUS_TRUCK if not circus.is_empty() else "traffic_%d" % (look % TrafficCar.MODELS.size())
+		else SuspectCar.CIRCUS_TRUCK if not circus.is_empty() else SuspectCar.PARADE_FLOAT if not parade.is_empty() \
+		else "traffic_%d" % (look % TrafficCar.MODELS.size())
 	chase = ChaseCase.begin(level, kind, at, patrol_car, city, case_seed)
 	if fruit:
 		QueueCar.paint_model(chase.truck, look)
@@ -505,6 +549,11 @@ func _run_off(at: Transform3D, look: int, clown := false, fruit := false, riders
 		_run_off_circus = circus
 		if not chase.truck.has_node("Cage"):
 			CircusTruck.dress_runaway(chase.truck, circus)
+	if not parade.is_empty():
+		chase.drops.confetti = true
+		_run_off_parade = parade
+		if not chase.truck.has_node("Theme"):
+			ParadeFloat.dress_runaway(chase.truck, parade)
 	chase.who = "clown" if clown else "driver"
 	chase.online = online
 	chase.follower = follower
@@ -606,10 +655,10 @@ func snapshot() -> Dictionary:
 		var clown := chase.suspect_id == SuspectCar.CLOWN_CAR
 		var fruit := chase.suspect_id == SuspectCar.FRUIT_TRUCK
 		state.run_off = [chase.truck.global_transform if is_instance_valid(chase.truck) else Transform3D(),
-			_run_off_look if clown or fruit or not _run_off_circus.is_empty()
+			_run_off_look if clown or fruit or not _run_off_circus.is_empty() or not _run_off_parade.is_empty()
 				else int(chase.suspect_id.trim_prefix("traffic_")), clown, fruit,
 			_run_off_riders[0], _run_off_riders[1], chase.drops.ghost_look, chase.drops.wedding,
-			_run_off_race, _run_off_fog, _run_off_circus]
+			_run_off_race, _run_off_fog, _run_off_circus, _run_off_parade]
 		state.riders_left = chase.drops.riders_left
 		state.honks = chase.drops.honks
 	return state
@@ -651,14 +700,15 @@ func apply_snapshot(state: Dictionary) -> void:
 			escort.follower = true
 			escort.in_car_hint = "HINT_TRAFFIC_IN_CAR"
 			_hint_all("HINT_RACE_TROPHY" if plan and plan.race else "HINT_FOG_LAMP" if plan and plan.fog
-				else "HINT_CIRCUS_JEWELS" if plan and plan.circus else "HINT_TRAFFIC_GOT_IT")
+				else "HINT_CIRCUS_JEWELS" if plan and plan.circus else "HINT_PARADE_CROWN" if plan and plan.parade
+				else "HINT_TRAFFIC_GOT_IT")
 	if state.has("chase") and not chase:
 		var run_off: Array = state.run_off
 		_run_off(run_off[0], run_off[1], run_off.size() > 2 and run_off[2], run_off.size() > 3 and run_off[3],
 			run_off[4] if run_off.size() > 4 else 0, run_off[5] if run_off.size() > 5 else "",
 			run_off[6] if run_off.size() > 6 else -1, run_off.size() > 7 and run_off[7],
 			run_off[8] if run_off.size() > 8 else {}, run_off[9] if run_off.size() > 9 else {},
-			run_off[10] if run_off.size() > 10 else {})
+			run_off[10] if run_off.size() > 10 else {}, run_off[11] if run_off.size() > 11 else {})
 	_follow_convoy(state.get("taken_from", ""), state.get("clean", []))
 	if chase and state.has("chase"):
 		chase.apply_snapshot(state.chase)

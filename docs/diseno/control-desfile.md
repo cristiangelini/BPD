@@ -32,7 +32,7 @@ si paran la música, la gente se enoja."
    tiene en la mano (**pompones, maracas, abanico o cinta**) y el **último número del cartel**. Hay 2 o 3
    bailarines de verdad que se le parecen.
 6. **Se gana** deteniendo a El Antifaz y llevándolo al patrullero: 500, misma cuota que Hora pico. La **corona**
-   está escondida en su carroza: en el baúl del patrullero suma 100. A la segunda denuncia se pierde, como siempre.
+   la tiene escondida en el disfraz: al esposarlo se le cae al piso, y en el baúl del patrullero suma 100. A la segunda denuncia se pierde, como siempre.
 7. **Se pierde** si la carroza de El Antifaz pasa el control: se escapa por la ciudad (persecución, la carroza es
    lenta pero ancha y tapa la calle) y **en cada esquina tira un cañonazo de confeti** que tapa la vista del que
    maneja 3 s. Si se escapa también ahí, se pierde el caso.

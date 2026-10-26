@@ -15,8 +15,9 @@ extends Node
 ## his tin cans loose at every corner he turns, clattering down the street (ChaseCan). The street race's El Turbo
 ## (control-carrera.md) spins round at every corner he turns, to show off (SuspectCar.spin). The fog check's La Bruma
 ## (control-neblina.md) honks at every corner he turns, his horn's bubble seen through the fog (HornBubble). The
-## circus move's El Peludo (control-circo.md) drops banana peels: the patrol car skids on them. Every number here is
-## (propuesta).
+## circus move's El Peludo (control-circo.md) drops banana peels: the patrol car skids on them. The parade's El Antifaz
+## (control-desfile.md) shoots confetti at every corner he turns: driving into it covers the windshield
+## (ConfettiCloud). Every number here is (propuesta).
 
 const DRIP_EVERY := 3.0
 ## A puddle's size (m), how long it lasts, and the grip left on it.
@@ -89,6 +90,11 @@ var cans: Array[ChaseCan] = []
 ## The runaway is the circus move's El Peludo: banana peels at the corners, [model, seconds left] each.
 var bananas := false
 var peels: Array[Array] = []
+## The runaway is the parade's El Antifaz: a confetti cloud at the corners, and the seconds the patrol car's
+## windshield stays covered.
+var confetti := false
+var clouds: Array[ConfettiCloud] = []
+var blind_left := 0.0
 ## The runaway is the street race's El Turbo: he spins at the corners.
 var race := false
 ## The runaway is the fog check's La Bruma: his horn (FogCar.horn_text), -1 otherwise; its bubble over his car.
@@ -155,6 +161,8 @@ func _physics_process(delta: float) -> void:
 			(peel[0] as Node).queue_free()
 			peels.erase(peel)
 	var at := case.car.global_position
+	if confetti:
+		_blind(at, delta)
 	case.car.grip = weather_grip * (PEEL_GRIP if on_peel(at) else PUDDLE_GRIP if on_puddle(at) else 1.0)
 
 
@@ -244,6 +252,38 @@ func _on_corner(turned: bool) -> void:
 	if bananas:
 		for i in PEELS_PER_CORNER:
 			drop_peel(i)
+	if confetti:
+		shoot_confetti()
+
+
+## El Antifaz's confetti cannon: a cloud over the street behind him.
+func shoot_confetti() -> ConfettiCloud:
+	var at := _behind()
+	at.y = 0.0
+	if case.online and not case.follower:
+		case.online.tell_chase("shown_confetti", [at])
+	return confetti_at(at)
+
+
+## A confetti cloud at `at` (on a guest, the host's).
+func confetti_at(at: Vector3) -> ConfettiCloud:
+	_dropped += 1
+	var cloud := ConfettiCloud.at_corner(case.get_parent(), at, hash(["confetti", case.case_seed, _dropped]))
+	clouds.append(cloud)
+	return cloud
+
+
+## The patrol car at `at` in a confetti cloud: its windshield's covered for BLIND_SECONDS from then on.
+func _blind(at: Vector3, delta: float) -> void:
+	for cloud in clouds.duplicate():
+		if not is_instance_valid(cloud) or cloud.left <= 0.0:
+			if is_instance_valid(cloud):
+				cloud.queue_free()
+			clouds.erase(cloud)
+		elif cloud.covers(at):
+			blind_left = ConfettiCloud.BLIND_SECONDS
+	blind_left = maxf(blind_left - delta, 0.0)
+	ConfettiCloud.cover(case.car, blind_left > 0.0)
 
 
 ## La Bruma can't help it: he honks, and his horn's bubble shows over his car through the fog.
