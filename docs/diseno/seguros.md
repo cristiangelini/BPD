@@ -121,6 +121,11 @@ Los pesos y valores siguen la escala de la fábrica: la principal vale unos 1000
      apretarla con E da monedas en vez de café ("Apretaste café con leche y la máquina escupió monedas"), que es la pista propia.
      El papelito con la clave y el libro de cuentas van escondidos, y las 12 tazas de los escritorios tienen monedas
      adentro. Capturas `paso5-cafe-*` en `seguros/`.
+   - **Cómo quedó el seguro contra ovnis (propuesta):** la caja de pólizas (5 kg) va escondida con las fotos de ovnis
+     truchas y el plato volador de juguete. El guion de ventas está en un escritorio al azar, delante del monitor:
+     leerlo con E es la pista propia ("¿Y si lo abducen, señora?"). Cada escritorio tiene un teléfono: uno suena al
+     empezar y otro cada 8 s (hasta 3 a la vez); con E lo atiendes y un jubilado pregunta si la póliza cubre a las vacas
+     (5 llamadas distintas). Capturas `paso5-ovni-*` en `seguros/`.
 6. "Jugar" sortea entre los 6 lugares de allanamiento.
 7. El online (Mirta, Coca, las sillas y los papeles en todas las PC).
 

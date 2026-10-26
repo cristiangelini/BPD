@@ -167,14 +167,87 @@ export function buildAccountBook() {
 	return b.build();
 }
 
+// The box of UFO policies: a cardboard file box 0.4 x 0.2 x 0.3 m, lid ajar, full of policies, with a green alien
+// sticker. Main evidence of the UFO insurance.
+export function buildUfoPolicies() {
+	const b = new Builder('ufo_policies');
+	const card = mat('file_box', 0xd8c49a);
+	b.add('box', card, new THREE.BoxGeometry(0.4, 0.17, 0.3), { pos: V(0, -0.015, 0) });
+	b.add('lid', card, new THREE.BoxGeometry(0.41, 0.03, 0.31), { pos: V(0.02, 0.085, 0.01), rot: [0, 0.06, 0.04] });
+	for (let i = 0; i < 4; i++) b.add('papers', mat('policy_paper', 0xf6f6f0), new THREE.BoxGeometry(0.005, 0.03, 0.26), { pos: V(-0.15 + i * 0.03, 0.08, 0), rot: [0, 0, 0.1 * i] });
+	b.add('sticker', mat('alien_green', 0x6ad84a), ellipsoid(0.05, 0.065, 0.004, 8, 4), { pos: V(0, -0.01, 0.151) });
+	for (const s of [-1, 1]) b.add('eyes', mat('alien_eyes', 0x1a1a1e), ellipsoid(0.014, 0.008, 0.003, 6, 3), { pos: V(s * 0.02, 0.0, 0.154), rot: [0, 0, s * 0.4] });
+	return b.build();
+}
+
+// A stack of blurry UFO photos 0.15 x 0.1 m: a grey saucer that is clearly a hubcap on a string. Extra of the UFO
+// insurance.
+export function buildUfoPhotos() {
+	const b = new Builder('ufo_photos');
+	for (let i = 0; i < 4; i++) b.add('photos', mat('photo_white', 0xf6f6f2), new THREE.BoxGeometry(0.15, 0.003, 0.1), { pos: V(0, -0.006 + i * 0.003, 0), rot: [0, -i * 0.07, 0] });
+	b.add('sky', mat('photo_sky', 0x4a6a9a), new THREE.BoxGeometry(0.13, 0.001, 0.08), { pos: V(0, 0.0065, 0), rot: [0, -0.21, 0] });
+	b.add('saucer', mat('photo_saucer', 0xb8bcc4), ellipsoid(0.025, 0.002, 0.01, 8, 3), { pos: V(0.01, 0.0075, -0.005), rot: [0, -0.21, 0] });
+	b.add('string', mat('photo_string', 0x2a2a2e), new THREE.BoxGeometry(0.002, 0.001, 0.035), { pos: V(0.012, 0.0075, -0.027), rot: [0, -0.21, 0] });
+	return b.build();
+}
+
+// A toy flying saucer 0.3 m across: a silver disc with a glass dome, a tiny green pilot and coloured lights. Extra of
+// the UFO insurance.
+export function buildToySaucer() {
+	const b = new Builder('toy_saucer');
+	b.add('disc', mat('saucer_silver', 0xc8ccd4), ellipsoid(0.15, 0.03, 0.15, 14, 6), { pos: V(0, -0.01, 0) });
+	b.add('dome', mat('saucer_glass', 0x9ad8e8), ellipsoid(0.065, 0.05, 0.065, 10, 6), { pos: V(0, 0.02, 0) });
+	b.add('pilot', mat('alien_green', 0x6ad84a), ellipsoid(0.02, 0.03, 0.02, 6, 4), { pos: V(0, 0.03, 0) });
+	const lights = [0xe84a4a, 0xf2d24a, 0x4ad84a, 0x4a8ae8];
+	for (let i = 0; i < 8; i++) {
+		const a = (i / 8) * Math.PI * 2;
+		b.add('lights', mat('saucer_light_' + (i % 4), lights[i % 4]), ellipsoid(0.01, 0.01, 0.01, 5, 3), { pos: V(Math.cos(a) * 0.13, -0.01, Math.sin(a) * 0.13) });
+	}
+	return b.build();
+}
+
+// The sales script: a clipboard 0.22 x 0.3 m with a printed sheet whose title is in big red letters. The UFO
+// insurance's own clue.
+export function buildSalesScript() {
+	const b = new Builder('sales_script');
+	b.add('board', mat('clipboard', 0x8a5a3a), new THREE.BoxGeometry(0.22, 0.008, 0.3), { pos: V(0, 0, 0) });
+	b.add('clip', mat('clip_steel', 0xb8bcc4), new THREE.BoxGeometry(0.08, 0.012, 0.03), { pos: V(0, 0.006, -0.135) });
+	b.add('sheet', mat('policy_paper', 0xf6f6f0), new THREE.BoxGeometry(0.2, 0.002, 0.27), { pos: V(0, 0.005, 0.01) });
+	b.add('title', mat('script_red', 0xd23a3a), new THREE.BoxGeometry(0.15, 0.001, 0.02), { pos: V(0, 0.0065, -0.09) });
+	for (let i = 0; i < 6; i++) b.add('lines', mat('folder_text', 0x3a3a40), new THREE.BoxGeometry(0.16, 0.001, 0.007), { pos: V(0, 0.0065, -0.04 + i * 0.025) });
+	return b.build();
+}
+
+// A beige desk phone 0.2 x 0.18 m with its curly handset on top and a keypad. On every desk in the UFO insurance.
+export function buildDeskPhone() {
+	const b = new Builder('desk_phone');
+	const beige = mat('phone_beige', 0xe2d8c0);
+	b.add('base', beige, new THREE.BoxGeometry(0.2, 0.06, 0.18), { pos: V(0, 0.03, 0) });
+	b.add('handset', beige, new THREE.BoxGeometry(0.22, 0.035, 0.05), { pos: V(0, 0.075, -0.05) });
+	for (const s of [-1, 1]) b.add('handset', beige, ellipsoid(0.03, 0.02, 0.035, 6, 4), { pos: V(s * 0.1, 0.07, -0.05) });
+	for (let i = 0; i < 9; i++) b.add('keys', mat('phone_keys', 0x5a5a60), new THREE.BoxGeometry(0.025, 0.006, 0.02), { pos: V(-0.035 + (i % 3) * 0.035, 0.062, 0.01 + Math.floor(i / 3) * 0.025) });
+	b.add('cord', mat('phone_cord', 0x5a5a60), new THREE.CylinderGeometry(0.004, 0.004, 0.1, 5), { pos: V(-0.12, 0.05, -0.05), rot: [0, 0, 0.6] });
+	return b.build();
+}
+
 export const models = {
 	office_chair: buildOfficeChair, office_monitor: buildOfficeMonitor, glass_trophy: buildGlassTrophy,
 	coffee_machine: buildCoffeeMachine, water_cooler: buildWaterCooler,
 	toy_car: buildToyCar, crash_model: buildCrashModel, crash_photos: buildCrashPhotos, toy_car_box: buildToyCarBox,
 	claim_photos: buildClaimPhotos, code_postit: buildCodePostit, account_book: buildAccountBook,
+	ufo_policies: buildUfoPolicies, ufo_photos: buildUfoPhotos, toy_saucer: buildToySaucer, sales_script: buildSalesScript,
+	desk_phone: buildDeskPhone,
 };
 
 export const views = {
+	ufo_goods: {
+		items: [
+			{ name: 'ufo_policies', pos: [-0.25, 0.1, -0.1] }, { name: 'ufo_photos', pos: [0.3, 0.01, 0.3] },
+			{ name: 'toy_saucer', pos: [0.3, 0.04, -0.15] }, { name: 'sales_script', pos: [-0.2, 0.004, 0.35], rotY: 0.2 },
+			{ name: 'desk_phone', pos: [0.05, 0, 0.15], rotY: -0.3 },
+		],
+		cam: { pos: [0, 0.9, 1.3], target: [0, 0.05, 0.05], fov: 40 },
+	},
 	coffee_goods: {
 		items: [
 			{ name: 'coffee_machine', pos: [-0.3, 0, -0.2] }, { name: 'code_postit', pos: [0.35, 0.002, 0.3] },
