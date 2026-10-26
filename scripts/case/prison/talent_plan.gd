@@ -8,13 +8,17 @@ extends Node
 ## walks into the canteen. The host welcomes everyone, and for each act: announces it with the curtain closed, opens
 ## it for ACT_TIME (the act's performers up front, saying their lines), and asks the jury for their scores for
 ## VOTE_TIME, with the cards up of every cop sat at the jury table; then the curtain closes for BREAK_TIME. After the
-## last one the host names the winner (the most points; with a tie, the later act). Every number here is (propuesta).
+## last one the host names the winner (the most points; with a tie, the later act). Step 4: a vote with nobody at the
+## jury table offends the audience: ANGRY of them stand up booing and throw food at the cops for FIGHT_TIME (or until
+## every one of them is calmed with E). Every number here is (propuesta).
 
 signal show_started
 signal act_started(index: int)
 ## `seated`: how many cops were at the jury table; `points`: their cards added up.
 signal voted(index: int, seated: int, points: int)
 signal show_ended(winner: int)
+signal fight_started
+signal fight_ended
 
 enum Phase { WAITING, INTRO, ANNOUNCE, ACT, VOTE, BREAK, OVER }
 
@@ -43,6 +47,10 @@ const CHOIR := 3
 const PERFORM_BACK := 0.6
 const BACKSTAGE_BACK := 2.0
 const HOST_ASIDE := Vector2(-2.3, 0.5)
+const ANGRY := 6
+const FIGHT_TIME := 20.0
+const THROW_EVERY := 3.0
+const THROW_JITTER := 1.0
 const WOOD := Color(0.45, 0.3, 0.18)
 const CLOTH := Color(0.2, 0.35, 0.25)
 
@@ -61,6 +69,10 @@ var phase_left := 0.0
 var points: Array[int] = []
 var voted_ok: Array[bool] = []
 var winner := -1
+## The audience's food fight (step 4): seconds left (0: none on) and how many there were.
+var fight_left := 0.0
+var fights := 0
+var _throw_left := {}
 var _line_left := 0.0
 ## A guest's copy (step 7): the host's plan decides.
 var follower := false
@@ -119,6 +131,7 @@ func setup(level: PrisonLevel, case_seed: int) -> void:
 		inmate.global_position = prison.global_transform * Vector3(SEAT_XS[i % SEAT_XS.size()],
 			PrisonLevel.FLOOR_TOP, BENCH_ZS[row] + BENCH_SIZE.z / 2 + 0.05)
 		inmate.face(stage.global_position)
+		inmate.calmed.connect(_on_calmed.unbind(1))
 		inmates.append(inmate)
 	for act in acts:
 		var group: Array[TalentInmate] = []
@@ -202,7 +215,8 @@ func _enter(next: Phase) -> void:
 			for performer: TalentInmate in performers[acts[act_now]]:
 				performer.set_on_stage(false)
 			stage.set_curtain(false)
-			host.say("TALENT_THANKS", 3.0)
+			if fight_left <= 0.0:
+				host.say("TALENT_THANKS", 3.0)
 		Phase.OVER:
 			_count_vote()
 			for performer: TalentInmate in performers[acts[act_now]]:
@@ -235,6 +249,66 @@ func _count_vote() -> void:
 	points.append(total)
 	voted_ok.append(seated > 0)
 	voted.emit(act_now, seated, total)
+	if seated == 0:
+		_start_fight()
+
+
+## Nobody voted: the audience is offended and the food flies.
+func _start_fight() -> void:
+	if fight_left > 0.0:
+		return
+	fight_left = FIGHT_TIME
+	fights += 1
+	host.say("TALENT_OFFENDED", 4.0)
+	var order := range(inmates.size())
+	_shuffle(order)
+	for i: int in order.slice(0, ANGRY):
+		inmates[i].set_angry(true)
+		_throw_left[inmates[i]] = _rng.randf_range(0.5, THROW_EVERY)
+	fight_started.emit()
+
+
+func angry_ones() -> Array[TalentInmate]:
+	var list: Array[TalentInmate] = []
+	list.assign(inmates.filter(func(inmate: TalentInmate) -> bool: return inmate.angry))
+	return list
+
+
+func _on_calmed() -> void:
+	if fight_left > 0.0 and angry_ones().is_empty():
+		_end_fight()
+
+
+func _end_fight() -> void:
+	fight_left = 0.0
+	for inmate in angry_ones():
+		inmate.set_angry(false)
+	_throw_left.clear()
+	fight_ended.emit()
+
+
+## Every angry one throws at the closest cop in the canteen, now and then.
+func _fight(delta: float) -> void:
+	fight_left -= delta
+	if fight_left <= 0.0:
+		_end_fight()
+		return
+	var cops := get_tree().get_nodes_in_group("cops").filter(func(cop: Cop) -> bool:
+		return in_canteen(cop.global_position))
+	for inmate in angry_ones():
+		_throw_left[inmate] = _throw_left.get(inmate, THROW_EVERY) - delta
+		if _throw_left[inmate] > 0.0 or cops.is_empty():
+			continue
+		_throw_left[inmate] = THROW_EVERY + _rng.randf_range(-THROW_JITTER, THROW_JITTER)
+		var target: Cop = cops[0]
+		for cop: Cop in cops:
+			if cop.global_position.distance_to(inmate.global_position) \
+					< target.global_position.distance_to(inmate.global_position):
+				target = cop
+		var miss := Vector3(_rng.randf_range(-1, 1), _rng.randf_range(-0.5, 0.5), _rng.randf_range(-1, 1)) \
+			* TalentInmate.MISS
+		inmate.throw_at(target.global_position + Vector3.UP * TalentInmate.CHEST + miss,
+			TalentInmate.FOODS[_rng.randi_range(0, TalentInmate.FOODS.size() - 1)])
 
 
 ## Whether a world position is in the canteen (the building's front room, west of the kitchen).
@@ -245,7 +319,11 @@ func in_canteen(at: Vector3) -> bool:
 
 
 func _physics_process(delta: float) -> void:
-	if follower or phase == Phase.OVER:
+	if follower:
+		return
+	if fight_left > 0.0:
+		_fight(delta)
+	if phase == Phase.OVER:
 		return
 	if phase == Phase.WAITING:
 		for cop: Cop in get_tree().get_nodes_in_group("cops"):

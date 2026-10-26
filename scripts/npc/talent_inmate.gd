@@ -4,8 +4,11 @@ extends CharacterBody3D
 ## One of the inmates at the prison's talent show (carcel-talentos.md, step 2): sat on a bench in front of the stage
 ## (AUDIENCE) or up on it with a bow tie and a microphone, announcing the acts (HOST). Step 3: the ones in an act
 ## (PERFORMER) wait behind the curtain with their act's things (the magician's top hat, the juggler's balls, the
-## ventriloquist's dummy...) until it's their turn. They say things in a bubble and cheer with a little hop.
-## Every number here is (propuesta).
+## ventriloquist's dummy...) until it's their turn. They say things in a bubble and cheer with a little hop. Step 4: an
+## offended one in the audience (`angry`) stands up booing and throws the canteen's food (RallyThrowable, like the
+## riot); E calms them and they sit back down. Every number here is (propuesta).
+
+signal calmed(inmate: TalentInmate)
 
 enum Role { AUDIENCE, HOST, PERFORMER }
 
@@ -21,10 +24,18 @@ const BLACK := Color(0.08, 0.08, 0.1)
 const WHITE := Color(0.95, 0.95, 0.92)
 const BALLS: Array[Color] = [Color(0.9, 0.2, 0.2), Color(0.2, 0.6, 0.9), Color(0.95, 0.8, 0.2)]
 const JUGGLE_TIME := 0.5
+const FOODS: Array[String] = ["mash", "jelly", "chicken", "yogurt"]
+const HAND := Vector3(0.25, 1.4, 0)
+const FLIGHT := 0.9
+const MISS := 0.8
+const CHEST := 1.1
+const BOOS := 3
 
 var role := Role.AUDIENCE
 ## A performer's act (TalentPlan.ACTS).
 var act := ""
+## Offended (step 4): stood up, booing and throwing food.
+var angry := false
 var seated := false
 ## A guest's copy (step 7): the host's one decides.
 var follower := false
@@ -118,6 +129,43 @@ static func _ball(radius: float) -> SphereMesh:
 	mesh.radial_segments = 8
 	mesh.rings = 4
 	return mesh
+
+
+func prompt_key(_cop: Cop) -> String:
+	return "PROMPT_CALM_AUDIENCE" if angry else ""
+
+
+## E on an offended one: they calm down and sit back on their bench (the host decides, online).
+func use(cop: Cop) -> void:
+	if not angry or follower:
+		return
+	set_angry(false)
+	say("TALENT_CALMED")
+	cop.show_hint("HINT_AUDIENCE_CALMED")
+	calmed.emit(self)
+
+
+## Offended (stood up, booing) or calm (sat back down).
+func set_angry(on: bool) -> void:
+	angry = on
+	set_seated(not on)
+	if on:
+		say("TALENT_BOO_%d" % randi_range(1, BOOS))
+
+
+## Throws a `kind` of food to land on `target` (world space), facing it. Returns what flies.
+func throw_at(target: Vector3, kind: String) -> RallyThrowable:
+	var to := target - global_position
+	to.y = 0.0
+	if to.length() > 0.1:
+		look_at(global_position - to, Vector3.UP)
+	var food := RallyThrowable.new()
+	food.kind = kind
+	get_parent().add_child(food, true)
+	add_collision_exception_with(food)
+	food.add_collision_exception_with(self)
+	food.launch(global_transform * HAND, target, FLIGHT)
+	return food
 
 
 ## On stage (shown, bumped into) or waiting behind the curtain (not seen).
