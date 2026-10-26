@@ -6,9 +6,10 @@ extends Node3D
 ## cubicles in the middle and west, the meeting room and the kitchen nook in the east, the floor boss's office at the
 ## back east, the archive at the back west and the giant printer between them. The reception is open; the boss's
 ## office and the archive are locked. The rolling chairs roll, the paper piles fly, and the glass trophies and the
-## monitors of the middle row break, each one a fine. Every number here is (propuesta).
+## monitors of the middle row break, each one a fine. Mirta, the floor boss, walks the aisles (step 2). Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const MIRTA_SCENE := preload("res://scenes/npc/floor_boss.tscn")
 const CHAIR_SCENE := preload("res://scenes/props/office_chair.tscn")
 const MONITOR_SCENE := preload("res://scenes/props/office_monitor.tscn")
 const MONITOR_MODEL := preload("res://assets/models/office_monitor.glb")
@@ -48,7 +49,14 @@ const DESK_AT := Vector3(-6.0, FLOOR_TOP, 6.6)
 const DESK_SIZE := Vector3(2.4, 1.0, 0.7)
 const COOLER_AT := Vector3(9.8, FLOOR_TOP, 7.3)
 const PRINTER_AT := Vector3(0.0, FLOOR_TOP, -6.8)
-const PRINTER_SIZE := Vector3(1.4, 1.3, 0.9)
+## Where Mirta stands to fight the printer's tray.
+const PRINTER_SPOT := Vector3(0.0, FLOOR_TOP, -5.7)
+## Mirta's round, back and forth: the front aisle, the corridor, the first aisle between rows and the second.
+const MIRTA_ROUTE: Array[Vector3] = [
+	Vector3(-9.4, FLOOR_TOP, 4.55), Vector3(2.0, FLOOR_TOP, 4.55), Vector3(2.0, FLOOR_TOP, 2.0),
+	Vector3(-9.4, FLOOR_TOP, 2.0), Vector3(2.1, FLOOR_TOP, 2.0), Vector3(2.0, FLOOR_TOP, -0.6),
+	Vector3(-9.4, FLOOR_TOP, -0.6),
+]
 const MEETING_TABLE_AT := Vector3(7.6, FLOOR_TOP, 3.0)
 const MEETING_TABLE_SIZE := Vector3(4.0, 0.75, 1.4)
 const MEETING_CABINET_AT := Vector3(10.4, FLOOR_TOP, 4.2)
@@ -115,6 +123,9 @@ var piles: Array[PaperPile] = []
 var monitors: Array[Ornament] = []
 var trophies: Array[Ornament] = []
 var broken_goods := 0
+var printer: OfficePrinter
+var mirta: FloorBoss
+var complaint_bar: ProgressBar
 ## Money taken off the case pay for broken things (each one is an Ornament.FINE).
 var fines := 0
 var _build: PlaceBuilder
@@ -133,6 +144,7 @@ func _ready() -> void:
 	_place_fragile()
 	boss_door = _door(Vector3(OFFICE_DOOR_X, FLOOR_TOP, OFFICE_FRONT_Z))
 	archive_door = _door(Vector3(ARCHIVE_DOOR_X, FLOOR_TOP, ARCHIVE_FRONT_Z))
+	_place_mirta()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("insurance")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -260,10 +272,10 @@ func _build_cubicles() -> void:
 			chairs.append(chair)
 	for at: Vector3 in [Vector3(-8.0, 2.8, 2.0), Vector3(-2.4, 2.8, 2.0), Vector3(-8.0, 2.8, -1.8), Vector3(-2.4, 2.8, -1.8)]:
 		_build.light(at)
-	# The giant printer in the back corner, between the archive and the boss's office (it prints in step 2).
-	_build.box(PRINTER_AT + Vector3(0, PRINTER_SIZE.y / 2, 0), PRINTER_SIZE, WHITE.darkened(0.1))
-	_build.mesh_box(PRINTER_AT + Vector3(0, PRINTER_SIZE.y - 0.15, PRINTER_SIZE.z / 2 + 0.1), Vector3(0.9, 0.04, 0.3), WHITE)
-	_build.mesh_box(PRINTER_AT + Vector3(0.5, PRINTER_SIZE.y + 0.02, 0.2), Vector3(0.3, 0.04, 0.2), DARK)
+	# The giant printer in the back corner, between the archive and the boss's office.
+	printer = OfficePrinter.new()
+	printer.position = PRINTER_AT
+	add_child(printer)
 	_build.light(Vector3(0.0, 2.8, -6.0))
 
 
@@ -350,6 +362,39 @@ func _place_fragile() -> void:
 		trophies.append(trophy)
 
 
-func _on_fragile_broken(_at: Vector3) -> void:
+## Mirta on her round between the cubicles, ready for the printer, and her complaint meter. A rammed door reaches her
+## anywhere; flying papers and broken things only if she sees them.
+func _place_mirta() -> void:
+	mirta = MIRTA_SCENE.instantiate()
+	mirta.route = MIRTA_ROUTE
+	mirta.printer_spot = PRINTER_SPOT
+	mirta.printer = printer
+	add_child(mirta)
+	mirta.start_at(0)
+	for door: FrontDoor in [boss_door, archive_door]:
+		door.broken.connect(mirta.door_broken)
+	for pile in piles:
+		pile.scattered.connect(func(at: Vector3) -> void: mirta.saw(at, FloorBoss.SAW_PAPERS, "BOSS_FORM"))
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	mirta.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+func _on_fragile_broken(at: Vector3) -> void:
 	broken_goods += 1
 	fines += Ornament.FINE
+	if mirta:
+		mirta.saw(at, FloorBoss.SAW_BREAK)

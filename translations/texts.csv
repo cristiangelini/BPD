@@ -2017,3 +2017,21 @@ LOC_in_boss_safe,en la caja fuerte de la jefa,in the boss's safe,no cofre da che
 LOC_behind_printer,detrás de la impresora,behind the printer,atrás da impressora
 LOC_in_archive_box,en una caja del archivo,in a box in the archive,numa caixa do arquivo
 LOC_on_archive_shelf,en un estante del archivo,on an archive shelf,numa prateleira do arquivo
+PROMPT_PRINTER_BUTTON,Imprimir 500 copias,Print 500 copies,Imprimir 500 cópias
+HINT_PRINTER_JAMMED,La impresora está trabada.,The printer is jammed.,A impressora está travada.
+BOSS_LINE_1,"¿Y ese formulario, oficial? ¿Por triplicado?","And that form, officer? In triplicate?","E esse formulário, policial? Em três vias?"
+BOSS_LINE_2,Acá se trabaja en silencio.,We work in silence here.,Aqui se trabalha em silêncio.
+BOSS_LINE_3,"Sin sello, no existe.","No stamp, it doesn't exist.","Sem carimbo, não existe."
+BOSS_LINE_4,"Los reclamos se atienden los martes. De 9 a 9 y cuarto.","Claims are handled on Tuesdays. From 9 to quarter past 9.","Reclamações são atendidas às terças. Das 9 às 9 e quinze."
+BOSS_FORM,"¡Eso se pide por formulario, oficial!","You need a form for that, officer!","Isso se pede por formulário, policial!"
+BOSS_PRINTER,"¿Otra vez la impresora? ¡Nadie toca nada!","The printer again? Nobody touch anything!","A impressora de novo? Ninguém mexe em nada!"
+BOSS_FIX_1,¿Quién mandó 500 copias?,Who sent 500 copies?,Quem mandou 500 cópias?
+BOSS_FIX_2,"Bandeja dos... bandeja dos...","Tray two... tray two...","Bandeja dois... bandeja dois..."
+BOSS_FIX_3,¡Suelta la hoja!,Let go of the sheet!,Solta a folha!
+BOSS_FIX_DONE,Listo. Y nadie más imprime hoy.,There. And nobody else prints today.,Pronto. E ninguém mais imprime hoje.
+BOSS_HURT,"¡Oiga! ¡Eso es una agresión, la anoto!","Hey! That's an assault, I'm writing it down!","Ei! Isso é uma agressão, vou anotar!"
+BOSS_DOOR,¿Una puerta rota? ¡Eso va a un expediente!,A broken door? That's going in a file!,Uma porta quebrada? Isso vai para um processo!
+BOSS_SAW,¡Eso es patrimonio de la empresa!,That's company property!,Isso é patrimônio da empresa!
+BOSS_NOTHING,"Yo solo superviso, oficial.","I just supervise, officer.","Eu só supervisiono, policial."
+BOSS_OFFENDED,Por escrito. Todo por escrito.,In writing. Everything in writing.,Por escrito. Tudo por escrito.
+BOSS_LAWYER,¡Llamo al abogado de la empresa!,I'm calling the company lawyer!,Vou ligar para o advogado da empresa!
