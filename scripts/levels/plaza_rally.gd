@@ -13,7 +13,7 @@ extends Node3D
 ## time the deputy walks off, the double takes the lectern (DoubleSwap, step 2).
 ## With `variant` "birthday" (politico-cumple.md, decision 221; --place=birthday) it's the deputy's birthday party: a
 ## long table on the stage with three cakes (BirthdayCake), pennants over the banner, and BirthdayParty takes him to
-## blow each cake's candles while the crowd sings.
+## blow each cake's candles while the crowd sings. One of them is rigged with a spring of cream (step 2).
 
 ## The stage, from the plaza's middle: its middle, its size and the ramp up its front at the east end.
 const STAGE_FROM_PLAZA := Vector3(0, 0, -14)
@@ -153,13 +153,18 @@ func _add_party() -> void:
 	var cards: Array[int] = []
 	for i in BirthdayCake.CARDS:
 		cards.append(i + 1)
+	# One of the three hides a spring with cream (step 2).
+	var rigged := rng.randi_range(0, BirthdayCake.FLAVORS.size() - 1)
 	for i in BirthdayCake.FLAVORS.size():
 		var cake := BirthdayCake.new()
 		cake.name = "Cake%d" % (i + 1)
 		cake.flavor = flavors.pop_at(rng.randi_range(0, flavors.size() - 1))
 		cake.card = cards.pop_at(rng.randi_range(0, cards.size() - 1))
+		cake.rigged = i == rigged
 		add_child(cake)
 		cake.global_position = table + Vector3((i - 1) * CAKE_EVERY, TABLE_SIZE.y + 0.01, 0)
+		cake.spot = cake.global_position
+		cake.fountain = ($City as Node3D).transform * CityLayout.block_center(CityLayout.PLAZA)
 		cakes.append(cake)
 	party = BirthdayParty.new()
 	party.name = "Party"
