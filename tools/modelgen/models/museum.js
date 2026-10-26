@@ -91,6 +91,39 @@ function estatua(b) {
 	b.add('hat', hat, new THREE.CylinderGeometry(0.22, 0.22, 0.015, 12), { pos: V(0.62, 0.005, 0.25) });
 }
 
+// What was stolen from the museum (escena-museo.md, "La historia"), one per match: La Dama del Fideo (a painting in
+// a gilt frame, 1.0 x 0.75 m, a lady with a noodle), the Founder's Egg (painted porcelain on a little stand) and the
+// prop sword (painted cardboard, gold). Their bottoms sit at y = 0.
+function buildStolenPainting() {
+	const b = new Builder('museum_painting');
+	const gilt = C('gold', 0xf2c84b, { emissive: 0x3a2a05 });
+	for (const [x, y, w, h] of [[0, 0.75, 1.08, 0.08], [0, 0.0, 1.08, 0.08], [-0.5, 0.375, 0.08, 0.75], [0.5, 0.375, 0.08, 0.75]]) {
+		b.add('frame', gilt, new THREE.BoxGeometry(w, h, 0.06), { pos: V(x, y + 0.04, 0) });
+	}
+	b.add('canvas', C('canvas_green', 0x3f6a4a), new THREE.BoxGeometry(0.92, 0.67, 0.02), { pos: V(0, 0.415, 0) });
+	b.add('canvas', C('lady_dress', 0x2a2a4a), ellipsoid(0.2, 0.2, 0.01, 8, 4), { pos: V(0, 0.2, 0.015) });
+	b.add('canvas', mat('skin_crema', 0xf3d2b0), ellipsoid(0.09, 0.11, 0.01, 8, 4), { pos: V(0, 0.48, 0.015) });
+	b.add('canvas', C('lady_hair', 0x3a2416), ellipsoid(0.12, 0.08, 0.01, 8, 4), { pos: V(0, 0.57, 0.012) });
+	b.add('canvas', C('noodle', 0xf0d070), new THREE.TorusGeometry(0.05, 0.008, 4, 10, Math.PI * 1.6), { pos: V(0.02, 0.43, 0.022) });
+	return b.build();
+}
+function buildFounderEgg() {
+	const b = new Builder('founder_egg');
+	b.add('stand', C('gold', 0xf2c84b, { emissive: 0x3a2a05 }), new THREE.CylinderGeometry(0.05, 0.07, 0.05, 10), { pos: V(0, 0.025, 0) });
+	b.add('egg', C('porcelain', 0xf4f1ea), ellipsoid(0.08, 0.11, 0.08, 10, 8), { pos: V(0, 0.15, 0) });
+	b.add('egg', C('porcelain_blue', 0x3a6fd8), new THREE.TorusGeometry(0.081, 0.008, 4, 14), { pos: V(0, 0.15, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('egg', C('porcelain_pink', 0xff8fb1), new THREE.TorusGeometry(0.07, 0.008, 4, 14), { pos: V(0, 0.2, 0), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+function buildPropSword() {
+	const b = new Builder('prop_sword');
+	const gilt = C('gold', 0xf2c84b, { emissive: 0x3a2a05 });
+	b.add('blade', gilt, new THREE.BoxGeometry(0.06, 0.8, 0.01), { pos: V(0, 0.55, 0) });
+	b.add('guard', gilt, new THREE.BoxGeometry(0.24, 0.04, 0.03), { pos: V(0, 0.15, 0) });
+	b.add('grip', C('cardboard', 0xa8845a), new THREE.CylinderGeometry(0.02, 0.02, 0.13, 6), { pos: V(0, 0.065, 0) });
+	return b.build();
+}
+
 const PEOPLE = { guardia_museo: guardia, directora_museo: directora, estatua: estatua };
 
 export const models = {
@@ -99,6 +132,7 @@ export const models = {
 		f(b);
 		return b.build();
 	}])),
+	museum_painting: buildStolenPainting, founder_egg: buildFounderEgg, prop_sword: buildPropSword,
 	museum_ballerina: () => buildBallerina('museum_ballerina', true),
 	ornament_ballerina: () => buildBallerina('ornament_ballerina', false),
 	news_clipping: buildNewsClipping,
@@ -109,6 +143,11 @@ export const views = {
 		items: [{ name: 'npc_directora_museo', pos: [-1.3, 0, 0], rotY: 0.3 }, { name: 'npc_guardia_museo', pos: [0, 0, 0], rotY: 0.2 },
 			{ name: 'npc_guardia_museo', pos: [1.2, 0, 0], rotY: -0.4 }, { name: 'npc_estatua', pos: [2.4, 0, 0], rotY: -0.3 }],
 		cam: { pos: [0.55, 1.4, 6.0], target: [0.55, 0.85, 0], fov: 38 },
+	},
+	museum_loot: {
+		items: [{ name: 'museum_painting', pos: [-0.5, 0, 0], rotY: 0.2 }, { name: 'founder_egg', pos: [0.35, 0, 0.2] },
+			{ name: 'prop_sword', pos: [0.75, 0, 0.1], rotY: -0.3 }],
+		cam: { pos: [0.1, 0.8, 2.4], target: [0.1, 0.4, 0], fov: 38 },
 	},
 	museum: {
 		items: [

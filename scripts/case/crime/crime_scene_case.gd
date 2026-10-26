@@ -16,7 +16,8 @@ const LEAVE_FROM := 480.0
 const LEAVE_EVERY := 120.0
 ## Seconds between the verdict and the end of shift screen.
 const SHIFT_DELAY := 3.0
-## At the circus, finding what was stolen adds this much to the salary, if the case is solved (escena-circo.md).
+## At the circus and the museum, finding what was stolen adds this much to the salary, if the case is solved
+## (escena-circo.md, escena-museo.md).
 const LOOT_BONUS := 100.0
 ## Its own quota, like the interrogation and the chase (decision 91).
 const QUOTA := ShiftReport.SALARY
@@ -45,7 +46,7 @@ const VARIANTS := {
 		"brief": ["BRIEF_CIRCUS_A_", "BRIEF_CIRCUS_B", "BRIEF_CIRCUS_C"], "go": "HINT_GO_CIRCUS",
 		"go_row": "OBJ_CIRCUS_GO", "look": "HINT_CIRCUS_LOOK", "files_row": "OBJ_CIRCUS_FILES",
 		"clue_line": "CLUE_CIRCUS_", "ruined_hint": "HINT_CIRCUS_RUINED_", "left": "HINT_CLOWN_LEFT",
-		"who": "clown", "getaway": SuspectCar.CLOWN_CAR,
+		"who": "clown", "getaway": SuspectCar.CLOWN_CAR, "loot_row": "OBJ_CIRCUS_LOOT_",
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "recording": "honk",
 			"witness": "glasses"},
 		"parts": ["photo", "prints", "teeth", "hair", "shoe", "honk"],
@@ -54,10 +55,10 @@ const VARIANTS := {
 	# what the cops got from its guard, his alibi included.
 	"museum": {
 		"shift": "crime_museum", "story": "museum",
-		"brief": ["BRIEF_MUSEUM_A_", "BRIEF_MUSEUM_B", "BRIEF_MUSEUM_C"], "go": "HINT_GO_MUSEUM",
+		"brief": ["BRIEF_CITY_MUSEUM_A_", "BRIEF_CITY_MUSEUM_B", "BRIEF_CITY_MUSEUM_C"], "go": "HINT_GO_MUSEUM",
 		"go_row": "OBJ_MUSEUM_GO", "look": "HINT_MUSEUM_LOOK", "files_row": "OBJ_MUSEUM_FILES",
 		"clue_line": "CLUE_MUSEUM_", "ruined_hint": "HINT_MUSEUM_RUINED_", "left": "HINT_GUARD_LEFT",
-		"who": "guard", "getaway": SuspectCar.BIKE,
+		"who": "guard", "getaway": SuspectCar.BIKE, "loot_row": "OBJ_MUSEUM_LOOT_",
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "recording": "mustache",
 			"witness": "glasses", "alibi": "liar"},
 		"parts": ["photo", "prints", "teeth", "hair", "mustache", "alibi"],
@@ -96,7 +97,7 @@ var file_parts := {}
 ## so a sign that changed backs mixes two clowns in one file.
 var captured := {}
 var accused := false
-## At the circus, the cops found what was stolen.
+## At the circus or the museum, the cops found what was stolen.
 var loot_found := false
 var wrong_guesses := 0
 var lost := false
@@ -401,7 +402,7 @@ func apply_snapshot(state: Dictionary) -> void:
 			gone.append(index)
 			if place:
 				_send_off(place.suspect(index))
-	if place and state.get("loot", false) and texts() == VARIANTS.circus and not place.loot_found:
+	if place and state.get("loot", false) and texts().has("loot_row") and not place.loot_found:
 		place.reveal_loot()
 	if place and state.offended and not place.witness_offended():
 		place.offend_witness()
@@ -563,15 +564,15 @@ func _guard_file_text(index: int, who: Dictionary) -> String:
 	return "\n".join(lines)
 
 
-## The comisario's briefing: at the circus, the first line says what was stolen (the place drew it).
+## The comisario's briefing: at the circus and the museum, the first line says what was stolen (the place drew it).
 func briefing_lines() -> PackedStringArray:
 	var lines := PackedStringArray(texts().brief)
-	if texts() == VARIANTS.circus:
-		lines[0] += place.loot if place else "seal"
+	if texts().has("loot_row"):
+		lines[0] += place.loot
 	return lines
 
 
-## At the circus, the cops found what was stolen (Circus.search).
+## At the circus or the museum, the cops found what was stolen (the place's search).
 func found_loot() -> void:
 	if loot_found:
 		return
@@ -610,8 +611,8 @@ func rows() -> Array[Dictionary]:
 		if not files.has(index):
 			list.append({"text": "- " + _missing(index), "done": false, "optional": false, "status": true})
 	list.append(_row("OBJ_CRIME_ACCUSE", accused))
-	if texts() == VARIANTS.circus and place:
-		list.append({"text": "OBJ_CIRCUS_LOOT_" + (place.loot as String), "done": loot_found, "optional": true,
+	if texts().has("loot_row") and place:
+		list.append({"text": texts().loot_row + (place.loot as String), "done": loot_found, "optional": true,
 			"status": false})
 	if chase:
 		list.append(_row("OBJ_CRIME_CATCH", chase.case_solved))
