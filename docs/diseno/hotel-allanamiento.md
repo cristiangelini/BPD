@@ -18,9 +18,9 @@ planta de plástico, el cartel con una letra que parpadea y el ascensor "Fuera d
 | **El pasillo de arriba** | Las habitaciones 11, 12, 14, 15, 16 y 17, el ropero viejo que tapa la puerta de la 13 y, al fondo, la suite con su baño. |
 | **La habitación 13** | Detrás del ropero (28 kg, uno solo lo arrastra despacio). En la escena del crimen es un escondite; acá es donde pasa una de las historias, y en las otras es un escondite más. |
 
-- **Cómo se entra:** el lobby y el comedor están **abiertos**. Lo cerrado son las habitaciones y la suite: cada una tiene
-  su llave colgada en el tablero de llaves, detrás del mostrador, o se abren con el ariete. Agarrar una llave con don
-  Bostezo despierto suma 5 a la denuncia ("¡Esa llave no es suya, oficial!").
+- **Cómo se entra:** el lobby y el comedor están **abiertos**. Lo cerrado son las habitaciones y la suite: en el tablero
+  de llaves, detrás del mostrador, cuelga la **llave maestra**, que las abre todas (una por policía), o se abren con el
+  ariete. Agarrar la llave con don Bostezo despierto suma 5 a la denuncia ("¡Esa llave no es suya, oficial!").
 - **Lo frágil:** los **jarrones** del lobby y del comedor y las **lámparas** de las mesas de luz. Cada uno que se rompe es
   una multa de 20 y le sube la denuncia al conserje.
 - **Escondites:** unos 12, 6 para cosas pesadas. Por ejemplo: debajo de una cama, adentro del piano, en el ascensor roto,
