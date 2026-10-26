@@ -165,6 +165,11 @@ const PAINT := Color(0.95, 0.95, 0.9)
 ## roof can take the helicopter. Off the roof (down on the street, in the trunk) it's taken: no getaway by the roof.
 const NEPHEW_REST := 40.0
 const ON_ROOF := 0.4
+## Step 4: the nephew's shopping cart beside his bench, where the helicopter drops the sacks one trip at a time.
+const CART_AT := NEPHEW_BENCH + Vector3(1.8, 0, 0)
+const CART_SIZE := Vector3(0.6, 0.55, 0.9)
+const CART_TOP := 0.95
+const BAG_MODEL := preload("res://assets/models/money_bag.glb")
 ## Step 4: with this much water or more when the vault opens, the gang wades out with the sacks before they get away:
 ## up to WADE_OUT seconds with the water at the top, less the shallower it is.
 const WADE_FROM := 0.2
@@ -229,6 +234,10 @@ var nephew: BankNephew
 ## Seconds until the nephew can fly the helicopter again, and whether the cops have taken it off the roof (said once).
 var nephew_rest := 0.0
 var helicopter_gone := false
+## Step 4: the gang went up the hatch with the sacks; the sacks still on the roof, and the cart's.
+var roof_getaway := false
+var roof_bags := 0
+var cart: Node3D
 var hostages_freed := 0
 var phone: BankPhone
 ## How many sacks of money the robbers got away with, the getaway chase if El Oso ran, and how it ended.
@@ -529,18 +538,79 @@ func _build_roof() -> void:
 	nephew.position = NEPHEW_BENCH
 	add_child(nephew)
 	nephew.caught_now.connect(_on_nephew_caught)
+	# The cart: a wire basket on legs, with the sacks the helicopter brings.
+	_build.legs(CART_AT, Vector2(CART_SIZE.x, CART_SIZE.z), CART_TOP - CART_SIZE.y, STEEL)
+	_build.open_box(CART_AT + Vector3.UP * (CART_TOP - CART_SIZE.y), CART_SIZE, "top", STEEL)
+	cart = Node3D.new()
+	cart.name = "Cart"
+	cart.position = CART_AT + Vector3.UP * (CART_TOP - 0.2)
+	add_child(cart)
+	helicopter.dropped.connect(_on_sack_dropped)
+	helicopter.trip_done.connect(_next_trip)
 
 
-## The nephew in handcuffs (step 3): the helicopter loses its pilot and falls wherever it is.
+## The nephew in handcuffs (step 3): the helicopter loses its pilot and falls wherever it is. In the middle of the
+## getaway by the roof (step 4), the sacks still up there stay, and El Oso runs for the van after all.
 func _on_nephew_caught(_nephew: BankNephew) -> void:
 	helicopter.crash()
 	for cop in get_tree().get_nodes_in_group("cops"):
 		(cop as Cop).show_hint("HINT_NEPHEW_CAUGHT")
+	if roof_getaway and not follower:
+		roof_bags = 0
+		_roof_way_lost()
+
+
+## The getaway by the roof (step 4): every loose robber went up the hatch with a sack, and the helicopter takes them to
+## the cart one trip at a time.
+func _start_roof_getaway(sacks: int) -> void:
+	roof_getaway = true
+	roof_bags = sacks
+	for cop in get_tree().get_nodes_in_group("cops"):
+		(cop as Cop).show_hint("HINT_ROOF_GETAWAY")
+	_next_trip()
+
+
+## Another sack to the cart while there are sacks on the roof; then El Oso's turn (the chase, next).
+func _next_trip() -> void:
+	if follower or not roof_getaway or helicopter.crashed:
+		return
+	if roof_bags > 0:
+		# It may still be up on one of the nephew's flights: it goes once it lands.
+		if helicopter.busy():
+			helicopter.landed.connect(_next_trip, CONNECT_ONE_SHOT)
+			return
+		helicopter.trip(CART_AT + Vector3.UP * CART_TOP)
+		return
+	if is_loose(boss):
+		_roof_way_lost()
+
+
+## A sack in the cart: one more the gang got away with.
+func _on_sack_dropped() -> void:
+	if follower:
+		return
+	roof_bags = maxi(roof_bags - 1, 0)
+	bags_taken += 1
+	_show_cart_bags()
+
+
+func _show_cart_bags() -> void:
+	while cart.get_child_count() < bags_taken:
+		var bag: Node3D = BAG_MODEL.instantiate()
+		var k := cart.get_child_count()
+		bag.position = Vector3((k % 2) * 0.25 - 0.12, (k / 2) * 0.25, 0.0)
+		cart.add_child(bag)
+
+
+## No helicopter for El Oso: he runs for the van (or on foot) like in the base robbery.
+func _roof_way_lost() -> void:
+	if is_loose(boss) and not chase:
+		_run_getaway(false)
 
 
 ## Whether the gang can still leave by the roof: the helicopter up there, whole, and its pilot free.
 func roof_way_out() -> bool:
-	return roof and not nephew.caught and not helicopter.crashed and (helicopter.flying
+	return roof and not nephew.caught and not helicopter.crashed and (helicopter.busy()
 		or on_roof(helicopter.global_position))
 
 
@@ -760,7 +830,7 @@ func _physics_process(delta: float) -> void:
 ## still up there and his remote is ready. Taken off the roof, the gang has no way out by it.
 func _watch_the_roof(delta: float) -> void:
 	nephew_rest = maxf(nephew_rest - delta, 0.0)
-	if helicopter.flying or helicopter.crashed:
+	if helicopter.busy() or helicopter.crashed or roof_getaway:
 		return
 	if not on_roof(helicopter.global_position):
 		if not helicopter_gone:
@@ -1037,15 +1107,25 @@ func _on_vault_opened() -> void:
 	# drive off with him.
 	var manager_runs := manager.boss and not manager.caught
 	var boss_runs := is_loose(boss) and not manager_runs
+	# The roof robbery (robo-banco-techo.md, step 4): up the hatch with the sacks, if the helicopter is still theirs.
+	var by_roof := roof and roof_way_out()
+	var sacks := 0
 	for robber in robbers:
 		if robber.sorry and is_loose(robber):
 			# He doesn't take a sack: he sits down to wait for the cops (robo-banco-arrepentido.md, step 5).
 			robber.wait_for_cops()
 		elif is_loose(robber):
-			bags_taken += 1
+			sacks += 1
+			if not by_roof:
+				bags_taken += 1
 			robber.hide()
 			robber.collision_layer = 0
 			robber.process_mode = Node.PROCESS_MODE_DISABLED
+	if by_roof and sacks > 0:
+		_start_roof_getaway(sacks)
+		if case:
+			case._on_vault_opened()
+		return
 	if not manager_runs and not boss_runs:
 		return
 	var wading := wade_out_time()

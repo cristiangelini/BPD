@@ -89,3 +89,14 @@ de juguete, el sobrino con el control y la persecución en el aire.
   helicóptero se queda sin piloto (`ToyHelicopter.crash`): si estaba volando cae donde esté, y en el suelo queda
   volcado con la hélice doblada; ya no vuela más y la banda no tiene huida por el techo (`roof_way_out`). El +100 va
   en la planilla del paso 4. Capturas en `/mnt/project-files/techo/paso3-*.png`.
+- **Paso 4a (las bolsas de a una y el caso):** si cuando se abre la bóveda el helicóptero sigue siendo de la banda
+  (arriba, sano y con el sobrino suelto, `roof_way_out`), los ladrones sueltos suben por la trampilla con una bolsa cada
+  uno ("Los ladrones suben al techo con las bolsas") y el helicóptero hace viajes de 20 s: sube 6 m, cruza la calle,
+  baja sobre el carrito de supermercado al lado del banco del sobrino, suelta la bolsa y vuelve a la cruz. Cada bolsa en
+  el carrito cuenta como llevada (50 menos de sueldo) y se ve ahí. Si estaba volando en círculos, el primer viaje sale
+  cuando aterriza; mientras dura la huida el sobrino ya no lo hace despegar. Esposar al sobrino a mitad de camino lo
+  hace caer: las bolsas que quedan arriba no se las lleva nadie, y El Oso sale corriendo a la camioneta como en la
+  base. Sin helicóptero desde antes, todo es como en la base. Cuando se acaban las bolsas, por ahora El Oso también
+  sale a la camioneta; el paso 4b lo cuelga del helicóptero. El caso: la radio del comisario habla del helicóptero de
+  juguete (`BRIEF_BANK_ROOF_A-C`) y la planilla pide esposar al que lo maneja (+100, `NEPHEW`) y cuenta las bolsas que
+  se llevó. Captura en `/mnt/project-files/techo/paso4-carrito.png`.
