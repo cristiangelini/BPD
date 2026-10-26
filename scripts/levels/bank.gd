@@ -31,7 +31,8 @@ extends Node3D
 ## bank floods (BankWater, robo-banco-inundado.md, decision 125). A seventh, drawn before everything, the gang leaves
 ## by the roof (robo-banco-techo.md, decision 126): fire escape stairs up the east wall, a hatch in the corridor's
 ## ceiling, the giant toy helicopter on its helipad on the roof (ToyHelicopter) and El Oso's nephew with its remote on a
-## bench across the street (BankNephew). --bank=party, --bank=grandpas, --bank=sorry, --bank=manager, --bank=flood,
+## bench across the street (BankNephew), who flies it away when he sees a cop on the roof; taken off the roof, the gang
+## can't leave by it. --bank=party, --bank=grandpas, --bank=sorry, --bank=manager, --bank=flood,
 ## --bank=roof or --bank=base forces one.
 ## Every number here is (propuesta).
 
@@ -160,6 +161,10 @@ const HELIPAD_AT := Vector3(6.0, 0, -1.0)
 const HELIPAD_SIZE := 3.6
 const NEPHEW_BENCH := Vector3(-4.0, 0, HALF_Z + CityLayout.SIDEWALK + CityLayout.STREET + 1.6)
 const PAINT := Color(0.95, 0.95, 0.9)
+## Step 2: after a flight the nephew's remote needs this long (s) before it flies again; that's when the cops on the
+## roof can take the helicopter. Off the roof (down on the street, in the trunk) it's taken: no getaway by the roof.
+const NEPHEW_REST := 40.0
+const ON_ROOF := 0.4
 ## Step 4: with this much water or more when the vault opens, the gang wades out with the sacks before they get away:
 ## up to WADE_OUT seconds with the water at the top, less the shallower it is.
 const WADE_FROM := 0.2
@@ -221,6 +226,9 @@ var floats: BankFloats
 var roof := false
 var helicopter: ToyHelicopter
 var nephew: BankNephew
+## Seconds until the nephew can fly the helicopter again, and whether the cops have taken it off the roof (said once).
+var nephew_rest := 0.0
+var helicopter_gone := false
 var hostages_freed := 0
 var phone: BankPhone
 ## How many sacks of money the robbers got away with, the getaway chase if El Oso ran, and how it ended.
@@ -509,7 +517,9 @@ func _build_roof() -> void:
 	helicopter = ToyHelicopter.new()
 	helicopter.name = "ToyHelicopter"
 	helicopter.position = HELIPAD_AT + Vector3.UP * (ROOF + 0.02)
+	helicopter.pad = helicopter.position
 	add_child(helicopter)
+	helicopter.landed.connect(func() -> void: nephew_rest = NEPHEW_REST)
 	# The nephew's bench, facing the bank across the street, and the kid on it.
 	_build.legs(NEPHEW_BENCH + Vector3(0, 0, 0.1), Vector2(1.6, 0.45), 0.4, WOOD)
 	_build.box(NEPHEW_BENCH + Vector3(0, 0.42, 0.1), Vector3(1.6, 0.05, 0.45), WOOD)
@@ -725,9 +735,40 @@ func _add_robbers() -> void:
 			robber.do_help = _sorry_help
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if not follower and sorry:
 		_watch_the_sorry_one()
+	if not follower and roof:
+		_watch_the_roof(delta)
+
+
+## The roof robbery (step 2): the nephew sees a cop up on the roof and flies the helicopter away from them, if it's
+## still up there and his remote is ready. Taken off the roof, the gang has no way out by it.
+func _watch_the_roof(delta: float) -> void:
+	nephew_rest = maxf(nephew_rest - delta, 0.0)
+	if helicopter.flying:
+		return
+	if not on_roof(helicopter.global_position):
+		if not helicopter_gone:
+			helicopter_gone = true
+			for cop in get_tree().get_nodes_in_group("cops"):
+				(cop as Cop).show_hint("HINT_HELICOPTER_TAKEN")
+		return
+	helicopter_gone = false
+	if nephew_rest > 0.0:
+		return
+	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
+		if on_roof(cop.global_position):
+			helicopter.take_off()
+			nephew.say("NEPHEW_TAKE_OFF")
+			(cop as Cop).show_hint("HINT_HELICOPTER_UP")
+			return
+
+
+## Whether `at` (global) is up on the bank's roof.
+func on_roof(at: Vector3) -> bool:
+	var local := to_local(at)
+	return local.y > ROOF - ON_ROOF and absf(local.x) <= HALF_X + 0.2 and absf(local.z) <= HALF_Z + 0.2
 
 
 ## The gang keeps an eye on the sorry robber: one who sees him on a help (not resting at his spot) shouts "¡Traidor!",
