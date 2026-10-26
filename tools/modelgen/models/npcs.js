@@ -651,6 +651,25 @@ const NPCS = {
 		b.add('body', gold, new THREE.TorusGeometry(0.15, 0.015, 4, 14), { pos: V(0, 1.06, 0.12), rot: [1.2, 0, 0] });
 		b.add('props', C('phone_red', 0xc8202a), new THREE.BoxGeometry(0.06, 0.16, 0.05), { pos: V(-0.5, 0.72, 0.12) });
 	},
+	// Capataz Fermín (the doll factory): blue work shirt under a yellow reflective vest, a yellow hard hat, a whistle on
+	// a red cord, a clipboard in hand and a thick black mustache.
+	capataz(b) {
+		pearBody(b, SKIN.arena, { shirt: C('work_shirt', 0x3a5a8a), pants: C('work_pants', 0x4a4a52), shoes: C('work_boots', 0x4a3a2a) });
+		const vest = C('safety_vest', 0xf2d21e), stripe = C('vest_stripe', 0xe8ecf0);
+		b.add('body', vest, loft([
+			{ y: 0.55, rx: 0.475, rz: 0.425 }, { y: 0.8, rx: 0.375, rz: 0.335 }, { y: 1.0, rx: 0.27, rz: 0.25 },
+		], 10));
+		b.add('body', stripe, loft([{ y: 0.66, rx: 0.445, rz: 0.4 }, { y: 0.72, rx: 0.42, rz: 0.375 }], 10));
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mustache(b, black, 1.3);
+		const hat = C('hard_hat', 0xf2c21e);
+		b.add('cap', hat, ellipsoid(0.23, 0.15, 0.23, 10, 5), { pos: V(0, 1.45, 0.0) });
+		b.add('cap', hat, new THREE.CylinderGeometry(0.28, 0.28, 0.03, 12), { pos: V(0, 1.42, 0.03) });
+		limb(b, 'props', C('whistle_cord', 0xd23a3a), V(-0.1, 1.12, 0.2), V(0.04, 0.96, 0.31), 0.008);
+		b.add('props', C('whistle', 0xc8ccd2), new THREE.CylinderGeometry(0.02, 0.02, 0.06, 6), { pos: V(0.06, 0.95, 0.32), rot: [0, 0, Math.PI / 2] });
+		b.add('props', C('clipboard', 0x8a5a30), new THREE.BoxGeometry(0.22, 0.3, 0.02), { pos: V(0.5, 0.72, 0.18), rot: [0.3, 0, 0] });
+		b.add('props', white, new THREE.BoxGeometry(0.18, 0.24, 0.005), { pos: V(0.5, 0.72, 0.195), rot: [0.3, 0, 0] });
+	},
 };
 
 export const NPC_NAMES = Object.keys(NPCS);
