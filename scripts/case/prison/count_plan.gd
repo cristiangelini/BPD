@@ -37,7 +37,7 @@ const BOARD_AT := Vector2(-7.0, PrisonLevel.BUILDING_FRONT + 0.3)
 const SUN_X := PrisonLevel.HALF_X - 0.6
 const SUN_ZS: Array[float] = [11.0, 13.5]
 const HOOP_SPOTS: Array[Vector2] = [Vector2(-10.0, 12.0), Vector2(-11.5, 11.5)]
-const COOK := preload("res://assets/models/npc_cocinero.glb")
+const COOK := preload("res://assets/models/npc_cocinero_carcel.glb")
 const PLUMBER := preload("res://assets/models/npc_plomero.glb")
 ## The number on the jumpsuit: on the chest and on the back.
 const NUMBER_HEIGHT := 0.95

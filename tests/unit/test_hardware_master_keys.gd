@@ -70,7 +70,7 @@ func test_the_storeroom_key_hangs_on_the_board_not_in_the_till() -> void:
 	await wait_physics_frames(10)
 	store.till.use(cop)
 	assert_false(cop.has_key, "the till is empty in this story")
-	var needed := KeyBoard.tries_for(5)
+	var needed := HardwareKeyBoard.tries_for(5)
 	assert_eq(store.key_board.tries_needed, needed)
 	for i in needed - 1:
 		store.key_board.use(cop)

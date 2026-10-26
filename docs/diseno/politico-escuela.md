@@ -21,8 +21,8 @@ preguntas preparadas. Ningún chico lo deja en ridículo, ¿entendido? Y nada de
    entrada con el busto del fundador, un pasillo con percheros y mochilas, el aula (20 bancos chicos en 4 filas, el
    pizarrón, el escritorio de la maestra y una caja de caramelos) y el patio de atrás con tobogán, arenero y el cuarto
    del conserje con su carrito de limpieza.
-2. **La gente:** 20 alumnos (un modelo nuevo, `npc_alumno`, chico y con guardapolvo, con 4 caras y 4 colores de
-   mochila), la maestra (`npc_maestra`) y el conserje (`npc_conserje`, con mameluco y escoba).
+2. **La gente:** 20 alumnos (un modelo nuevo, `npc_alumno_primaria`, chico y con guardapolvo, con 4 caras y 4 colores de
+   mochila), la maestra (`npc_maestra`) y el conserje (`npc_conserje_escuela`, con mameluco y escoba).
 3. **La visita:** el diputado llega cuando el primer policía está a menos de 25 m, como en la plaza. Son 3 partes y
    el reloj del caso: **charla** en el aula (2 minutos, frases suyas en el pizarrón), **recreo** en el patio (2
    minutos, juega mal con los chicos y se saca fotos) y **preguntas** en el aula (3 minutos). Al final, la foto

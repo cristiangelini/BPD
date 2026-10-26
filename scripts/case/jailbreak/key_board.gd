@@ -47,7 +47,7 @@ func hook_has_key(index: int) -> bool:
 func prompt_key(index: int, cop: Cop) -> String:
 	if not hook_has_key(index) or cop.get_node("Grabber").held:
 		return ""
-	return "PROMPT_KEY_BOARD"
+	return "PROMPT_VENT_KEY"
 
 
 ## Takes the key off hook `index`: the cells' key into the cop's hand, or a wrong one that goes back up.

@@ -864,7 +864,7 @@ const NPCS = {
 	},
 	// The prison's cook (carcel-recuento.md): an orange smock almost like the jumpsuit, a white apron, a little white
 	// cap and a ladle; easy to count by mistake.
-	cocinero(b) {
+	cocinero_carcel(b) {
 		pearBody(b, SKIN.crema, { shirt: C('cook_smock', 0xf28a2a), onePiece: true, belted: false, shoes: white });
 		b.add('body', C('apron', 0xf6f2e8), loft([{ y: 0.3, rx: 0.42, rz: 0.12 }, { y: 0.75, rx: 0.36, rz: 0.1 }, { y: 0.95, rx: 0.22, rz: 0.08 }], 8), { pos: V(0, 0, 0.3) });
 		eyes(b, 1.33, 0.17, 0.08, 0.05);
@@ -1301,8 +1301,8 @@ const NPCS = {
 		for (const [x, z, c] of [[0.38, 0.2, 0xf2a6c0], [0.52, 0.22, 0xf2e2b8], [0.45, 0.33, 0x8a5a3a]]) b.add('props', C('sample_' + c, c), new THREE.BoxGeometry(0.06, 0.05, 0.06), { pos: V(x, 0.835, z) });
 	},
 	// The pupils (politico-escuela.md, step 2): four looks to mix in the classroom.
-	alumno(b) { pupil(b, SKIN.crema, C('hair_brown', 0x6a4022), C('bag_red', 0xd23a3a), { freckles: true }); },
-	alumna(b) { pupil(b, SKIN.arena, C('hair_black', 0x1e1a1a), C('bag_yellow', 0xf2c23a), { girl: true }); },
+	alumno_primaria(b) { pupil(b, SKIN.crema, C('hair_brown', 0x6a4022), C('bag_red', 0xd23a3a), { freckles: true }); },
+	alumna_primaria(b) { pupil(b, SKIN.arena, C('hair_black', 0x1e1a1a), C('bag_yellow', 0xf2c23a), { girl: true }); },
 	alumno_b(b) { pupil(b, SKIN.cacao, C('hair_black', 0x1e1a1a), C('bag_green', 0x3aa04a)); },
 	alumna_b(b) { pupil(b, SKIN.crema, C('hair_carrot', 0xd8702a), C('bag_purple', 0x8a4ac8), { girl: true, freckles: true }); },
 	// Señorita Rosa, the teacher: a long green skirt, a lilac cardigan, glasses on a cord, a bun with a pencil and a
@@ -1321,7 +1321,7 @@ const NPCS = {
 	},
 	// Don Tito, the janitor: a blue overall, a cap backwards, a grey mustache and his broom. The deck of trap cards
 	// peeking out of his chest pocket goes in its own node ('deck') so the game shows it (step 6).
-	conserje(b) {
+	conserje_escuela(b) {
 		const overall = C('janitor_overall', 0x3a5a9a);
 		pearBody(b, SKIN.crema, { shirt: overall, onePiece: true, belted: false, shoes: black });
 		b.add('body', C('overall_pocket', 0x2e4a82), new THREE.BoxGeometry(0.14, 0.12, 0.03), { pos: V(0.15, 0.98, 0.29), rot: [-0.35, 0.4, 0] });
@@ -1343,7 +1343,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, comprador: 1.0, compradora: 0.9, martillo: 1.1, portero_subasta: 1.15, ladron_oso: 1.15, abuelo_oso: 1.15, alumno: 0.62, alumna: 0.62, alumno_b: 0.62, alumna_b: 0.62 };
+const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, comprador: 1.0, compradora: 0.9, martillo: 1.1, portero_subasta: 1.15, ladron_oso: 1.15, abuelo_oso: 1.15, alumno_primaria: 0.62, alumna_primaria: 0.62, alumno_b: 0.62, alumna_b: 0.62 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },

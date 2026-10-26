@@ -231,7 +231,7 @@ var hidden: Array[Evidence] = []
 var hidden_spots: Array = []
 var extras: Array[Evidence] = []
 var till: Till
-var key_board: KeyBoard
+var key_board: HardwareKeyBoard
 var tobias: HardwareMan
 ## The tools for sale, and how many of them are on the bill now.
 var merchandise: Array[Merchandise] = []
@@ -533,8 +533,8 @@ func _place_tobias() -> void:
 	till.key_hint = "HINT_TILL_KEY_HARDWARE"
 	add_child(till)
 	till.opened.connect(func(at: Vector3) -> void: tobias.saw(at, HardwareMan.SAW_TILL))
-	key_board = KeyBoard.new()
-	key_board.position = KEY_BOARD_AT + Vector3(0, 0, KeyBoard.SIZE.z / 2 + PlaceBuilder.WALL / 2 + 0.01)
+	key_board = HardwareKeyBoard.new()
+	key_board.position = KEY_BOARD_AT + Vector3(0, 0, HardwareKeyBoard.SIZE.z / 2 + PlaceBuilder.WALL / 2 + 0.01)
 	add_child(key_board)
 	key_board.tried.connect(func(at: Vector3, _found: bool) -> void: tobias.saw(at, HardwareMan.SAW_BOARD))
 	var hud := CanvasLayer.new()

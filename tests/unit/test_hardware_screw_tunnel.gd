@@ -88,5 +88,5 @@ func test_the_drill_in_the_trunk_solves_the_case() -> void:
 func test_the_storys_texts_exist() -> void:
 	for key: String in ["BRIEF_SCREW_TUNNEL_B", "BRIEF_SCREW_TUNNEL_C", "BRIEF_SCREW_TUNNEL_D", "OBJ_FIND_DRILL",
 			"OBJ_EXTRA_MINER_HELMET", "OBJ_EXTRA_TUNNEL_PLAN", "COSME_CLUE_screw_tunnel", "CLUE_TUNNEL_DIRT",
-			"PROMPT_DIRT", "PROMPT_PUSH_SHELF", "HINT_SHELF_HEAVY", "HINT_TUNNEL_FOUND"]:
+			"PROMPT_DIRT", "PROMPT_PUSH_SHELF", "HINT_SHELF_HEAVY", "HINT_SCREW_TUNNEL_FOUND"]:
 		assert_ne(tr(key), key)

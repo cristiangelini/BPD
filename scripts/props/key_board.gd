@@ -1,4 +1,4 @@
-class_name KeyBoard
+class_name HardwareKeyBoard
 extends StaticBody3D
 
 ## The board of blank keys behind the hardware store's counter (ferreteria.md, "Las llaves maestras"). In that story

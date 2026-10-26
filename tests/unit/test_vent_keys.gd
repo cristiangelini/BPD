@@ -54,7 +54,7 @@ func test_the_board_is_behind_his_back() -> void:
 
 func test_a_wrong_key_goes_back_on_its_hook() -> void:
 	var wrong := (board.good + 1) % KeyBoard.HOOKS
-	assert_eq(_hook(wrong).prompt_key(cop), "PROMPT_KEY_BOARD")
+	assert_eq(_hook(wrong).prompt_key(cop), "PROMPT_VENT_KEY")
 	_hook(wrong).use(cop)
 	await wait_physics_frames(1)
 	assert_null(cop.get_node("Grabber").held, "nothing in hand")

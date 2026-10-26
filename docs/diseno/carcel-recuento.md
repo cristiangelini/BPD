@@ -72,7 +72,7 @@ Cuáles son los 2 tramposos, qué 3 presos se esconden y en cuáles de los 8 esc
   presos usan el mismo modelo, en vez de fotos lleva **el número de cada uno** (01 a 20), y cada preso lo tiene pintado
   en el pecho y en la espalda. `CountPlan` saca al patio a los 17 que no se escondieron (`YardInmate`: 9 deambulan,
   4 dan vueltas a la ronda, 2 juegan al aro y 2 toman sol contra el muro este) y al cocinero y al plomero (modelos
-  `npc_cocinero` y `npc_plomero`, naranjas como el mameluco y sin número), y todos se mueven cuando el primer policía
+  `npc_cocinero_carcel` y `npc_plomero`, naranjas como el mameluco y sin número), y todos se mueven cuando el primer policía
   entra por el portón. Por ahora se quedan en el patio, no entran al comedor. Capturas en `carcel-recuento/`:
   `paso2-patio.png`, `paso2-lista.png`, `paso2-numero.png`, `npc_cocinero.png` y `npc_plomero.png`.
 - **Paso 3:** E sobre un preso del patio (`CountInmate`, que hereda de `YardInmate`) le pinta una cruz amarilla en la

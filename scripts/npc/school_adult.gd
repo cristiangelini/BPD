@@ -7,7 +7,7 @@ extends StaticBody3D
 
 const MODELS := {
 	"maestra": preload("res://assets/models/npc_maestra.glb"),
-	"conserje": preload("res://assets/models/npc_conserje.glb"),
+	"conserje": preload("res://assets/models/npc_conserje_escuela.glb"),
 }
 ## Lines each: TEACHER_0.. and JANITOR_0..
 const LINES := 4

@@ -258,7 +258,7 @@ func _build_classroom() -> void:
 	_build.wall("z", CLASS_EAST, BACK_Z, HALL_Z, 0, [], WALL)
 	_build.mesh_box(BOARD, Vector3(BOARD_SIZE.x, BOARD_SIZE.y, 0.05), GREEN_BOARD)
 	_build.mesh_box(BOARD + Vector3(0, -BOARD_SIZE.y / 2 - 0.05, 0.06), Vector3(BOARD_SIZE.x, 0.05, 0.12), WOOD)
-	_label("SCHOOL_BOARD", BOARD + Vector3(0, 0.2, 0.04), 0.0, 40)
+	_label("SCHOOL_VISIT_BOARD", BOARD + Vector3(0, 0.2, 0.04), 0.0, 40)
 	_build.box(TEACHER_DESK + Vector3(0, 0.38, 0), Vector3(1.4, 0.76, 0.7), WOOD)
 	candy_box = CandyBox.new()
 	candy_box.name = "CandyBox"

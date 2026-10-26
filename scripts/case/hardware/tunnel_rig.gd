@@ -57,4 +57,4 @@ func _on_slid(cop: Cop) -> void:
 	# Online a guest's copy stays frozen (PropSync stopped its physics) and follows the host's.
 	drill.freeze = not drill.is_physics_processing()
 	if cop:
-		cop.show_hint("HINT_TUNNEL_FOUND")
+		cop.show_hint("HINT_SCREW_TUNNEL_FOUND")

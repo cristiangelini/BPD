@@ -17,7 +17,7 @@ var filings: ClueNote
 func setup(place: HardwareStore) -> void:
 	super.setup(place)
 	place.till.has_key = false
-	place.key_board.tries_needed = KeyBoard.tries_for(place.case_seed)
+	place.key_board.tries_needed = HardwareKeyBoard.tries_for(place.case_seed)
 	filings = FILINGS_SCENE.instantiate()
 	filings.text = tr("CLUE_FILINGS")
 	filings.position = HardwareStore.KEY_MACHINE_AT + FILINGS_AT

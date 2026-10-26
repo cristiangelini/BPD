@@ -12,7 +12,7 @@ extends StaticBody3D
 ## back. Every number here is (propuesta).
 
 const MODELS: Array[PackedScene] = [
-	preload("res://assets/models/npc_alumno.glb"), preload("res://assets/models/npc_alumna.glb"),
+	preload("res://assets/models/npc_alumno_primaria.glb"), preload("res://assets/models/npc_alumna_primaria.glb"),
 	preload("res://assets/models/npc_alumno_b.glb"), preload("res://assets/models/npc_alumna_b.glb"),
 ]
 ## The pear body is a grown-up's: a child is this much of it (about 1 m).
