@@ -8,7 +8,7 @@ extends Node
 ## hands (ChessBoard.moved, legal or not, the member only comments) and hit the clock. Not showing up, running out of
 ## time or standing up in the middle end the game and make the members in the hall suspicious, and knocking the board
 ## over (KNOCK pieces off) much more; hitting the clock without a move, a little. At the end the member is pleased and
-## tells some gossip. The host decides all of it and tells the guests. Every number here is (propuesta).
+## tells where a piece of evidence is (step 5). The host decides all of it and tells the guests. Every number here is (propuesta).
 
 signal challenged(table: int, cop: Cop)
 signal started(table: int)
@@ -217,12 +217,22 @@ func _on_flagged(side: int, at: int) -> void:
 		_fail(TIME, "CHESS_TIME")
 
 
-## The game ends well: the member is pleased and tells some gossip.
+## The game ends well: the member is pleased and tells some gossip, about a piece of evidence not found yet if
+## there's one (step 5).
 func _finish() -> void:
 	var done := table
-	challenger.say("CHESS_GG")
+	challenger.say(tip())
 	_end()
 	finished.emit(done)
+
+
+## What a pleased member tells: where a piece of evidence not found yet is, or just "good game".
+func tip() -> String:
+	if club.evidence and club.case:
+		for kind: String in club.evidence.kinds:
+			if not club.case.evidence_found.has(kind):
+				return "CHESS_TIP_" + kind
+	return "CHESS_GG"
 
 
 ## The game ends badly: `line` from the member and the hall's members get suspicious.
