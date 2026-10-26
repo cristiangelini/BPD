@@ -65,3 +65,13 @@ Cuáles son los 2 tramposos, qué 3 presos se esconden y en cuáles de los 8 esc
    Recomendado: sí, así el caso es contar y además buscar, con apuro.
 3. **¿Marcar por error al cocinero o al plomero cuesta 10?** Recomendado: sí, así no conviene marcar a todo el que
    pasa sin mirar.
+
+## Hecho así
+- **Paso 2:** `--place=prison_count` (`scenes/levels/prison_count.tscn`, `PrisonLevel.variant = "count"`). La lista
+  (`CountBoard`) está en un pizarrón sobre dos patas contra el frente del edificio, al oeste de las puertas: como los
+  presos usan el mismo modelo, en vez de fotos lleva **el número de cada uno** (01 a 20), y cada preso lo tiene pintado
+  en el pecho y en la espalda. `CountPlan` saca al patio a los 17 que no se escondieron (`YardInmate`: 9 deambulan,
+  4 dan vueltas a la ronda, 2 juegan al aro y 2 toman sol contra el muro este) y al cocinero y al plomero (modelos
+  `npc_cocinero` y `npc_plomero`, naranjas como el mameluco y sin número), y todos se mueven cuando el primer policía
+  entra por el portón. Por ahora se quedan en el patio, no entran al comedor. Capturas en `carcel-recuento/`:
+  `paso2-patio.png`, `paso2-lista.png`, `paso2-numero.png`, `npc_cocinero.png` y `npc_plomero.png`.

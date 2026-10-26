@@ -2385,3 +2385,5 @@ OBJ_GARDEN_ESCAPED,Escapados por el muro: %d de %d,Gone over the wall: %d of %d,
 OBJ_GARDEN_DOWN,Bajados del poroto: %d,Pulled off the beanstalk: %d,Puxados do pé de feijão: %d
 OBJ_GARDEN_WRONG,Verduras arrancadas por error: %d,Vegetables pulled by mistake: %d,Legumes arrancados por engano: %d
 CASE_FAILED_GARDEN_ESCAPED,Se escaparon 3 presos por los porotos. Caso perdido.,3 inmates got away up the beanstalks. Case lost.,3 presos fugiram pelos pés de feijão. Caso perdido.
+COUNT_BOARD_TITLE,LISTA DEL RECUENTO,COUNT LIST,LISTA DA CONTAGEM
+COUNT_BOARD_TOTAL,Contados: %d de %d,Counted: %d of %d,Contados: %d de %d

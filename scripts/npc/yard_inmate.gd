@@ -9,7 +9,7 @@ extends CharacterBody3D
 ## sight), and coming out they leave dirty footprints (`left_print`) for `prints_left` metres. Step 4: the gardener
 ## (GARDEN, with a straw hat) goes from planter to planter (`stops`), working at each a while, and with fertiliser in his
 ## hands drops dirt too; he greets a cop who comes close (GREET_REACH, once every GREET_EVERY seconds). Every number
-## here is (propuesta).
+## here is (propuesta). The count case (carcel-recuento.md) dresses some as the cook or the plumber (`model`).
 
 signal dropped_dirt(inmate: YardInmate, at: Vector3)
 signal left_print(inmate: YardInmate, at: Vector3, heading: Vector3)
@@ -45,6 +45,7 @@ const GREET_EVERY := 10.0
 const HAT := Color(0.9, 0.8, 0.45)
 
 var prison: PrisonLevel
+var model: PackedScene = MODEL
 var activity := Activity.RING
 ## Where they stand at the start (level space x, z) and where they face from there.
 var spot := Vector2.ZERO
@@ -88,7 +89,7 @@ func _ready() -> void:
 	shape.shape = capsule
 	shape.position.y = 0.85
 	add_child(shape)
-	_model = MODEL.instantiate()
+	_model = model.instantiate()
 	add_child(_model)
 	_bubble = Label3D.new()
 	_bubble.name = "Bubble"
