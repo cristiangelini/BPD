@@ -150,6 +150,10 @@ Los pesos y valores siguen la escala del bingo: la principal vale unos 1000 y lo
      patrullero le saca el clavo, y levanta los montoncitos que pasa a menos de 1 m. La pista propia: clavos sueltos en
      la vereda de enfrente (E los mira). Capturas: `paso6-clavos-modelos.png`, `paso6-clavos-calle.png`.
 7. El sorteo en "Jugar" (en cuartos entre los 4 lugares) y el online.
+   - **El sorteo (propuesta):** la ferretería entró a la lista de allanamientos de "Jugar": los turnos que caen en
+     allanamiento se reparten en cuartos entre la casa del abuelo, la panadería, la peluquería y la ferretería. El
+     sorteo del allanamiento ahora usa el hash de un arreglo (como los otros sorteos), porque con el texto y 4 lugares
+     la panadería y la ferretería no salían nunca.
 
 ## Preguntas para Cristian (se avanza con lo recomendado mientras tanto)
 1. ¿La ferretería como cuarto lugar, o preferís otro de los 7 que faltan? **Recomendado:** la ferretería, porque ya
