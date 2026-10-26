@@ -20,7 +20,10 @@ extends RefCounted
 ## paint, its headlights' color, its horn ("honk") and its broken headlight. In the circus move (control-circo.md) most
 ## cars are the circus's trucks with a caged animal ("circus", CircusTruck.draw's), a few city cars among them
 ## (an empty "circus"); the wanted one is El Peludo's, in a costume ("costume") with his sneakers showing, and the clues
-## are the animal he looks like, his sneakers, his truck's stripes and its plate. Every number here is (propuesta).
+## are the animal he looks like, his sneakers, his truck's stripes and its plate. In the parade (control-desfile.md)
+## most cars are floats with masked dancers ("parade", ParadeFloat.draw's), a few city cars among them; the wanted one
+## is the float El Antifaz dances on ("thief", his place on it), and the clues are its theme, his mask, what he holds
+## and the last digit of its number. Every number here is (propuesta).
 
 const TOTAL := Vector2i(15, 25)
 ## The wanted car comes somewhere in this stretch of the queue.
@@ -64,6 +67,9 @@ const FOG_WANTED_AT := Vector2i(4, 10)
 const CIRCUS_KINDS: Array[String] = ["animal", "sneakers", "stripes", "plate"]
 const CIRCUS_TOTAL := Vector2i(14, 20)
 const CIRCUS_WANTED_AT := Vector2i(4, 10)
+const PARADE_KINDS: Array[String] = ["theme", "mask", "held", "float_number"]
+const PARADE_TOTAL := Vector2i(12, 18)
+const PARADE_WANTED_AT := Vector2i(4, 10)
 const LETTERS := "BCDFGHJKLMNPRSTVXZ"
 
 ## The clown convoy's plan: its cars carry their driver's ConvoyTraits under "clown".
@@ -85,6 +91,8 @@ var race := false
 var fog := false
 ## The circus move's plan: every car's circus traits ("circus"), El Peludo's in a costume.
 var circus := false
+## The parade's plan: every car's float ("parade"), El Antifaz on the wanted one ("thief").
+var parade := false
 var heats: Array[Array] = []
 var turbo_heat := -1
 var turbo_slot := -1
@@ -98,9 +106,10 @@ var lookalikes: Array[int] = []
 
 
 static func draw(case_seed: int, convoy := false, fruit := false, crowd := false, ghost := false,
-		wedding := false, race := false, fog := false, circus := false) -> WantedPlan:
+		wedding := false, race := false, fog := false, circus := false, parade := false) -> WantedPlan:
 	var plan := WantedPlan.new()
 	plan.circus = circus
+	plan.parade = parade
 	plan.race = race
 	plan.fog = fog
 	plan.wedding = wedding
@@ -114,9 +123,11 @@ static func draw(case_seed: int, convoy := false, fruit := false, crowd := false
 		plan._draw_race(rng)
 		return plan
 	var span := FRUIT_TOTAL if fruit else CROWD_TOTAL if crowd else GHOST_TOTAL if ghost \
-		else WEDDING_TOTAL if wedding else FOG_TOTAL if fog else CIRCUS_TOTAL if circus else TOTAL
+		else WEDDING_TOTAL if wedding else FOG_TOTAL if fog else CIRCUS_TOTAL if circus \
+		else PARADE_TOTAL if parade else TOTAL
 	var wanted_at := FRUIT_WANTED_AT if fruit else CROWD_WANTED_AT if crowd \
-		else WEDDING_WANTED_AT if wedding else FOG_WANTED_AT if fog else CIRCUS_WANTED_AT if circus else WANTED_AT
+		else WEDDING_WANTED_AT if wedding else FOG_WANTED_AT if fog else CIRCUS_WANTED_AT if circus \
+		else PARADE_WANTED_AT if parade else WANTED_AT
 	plan.total = rng.randi_range(span.x, span.y)
 	if ghost:
 		# The ghost car up front, its pilot a few cars behind.
@@ -129,6 +140,11 @@ static func draw(case_seed: int, convoy := false, fruit := false, crowd := false
 		# El Peludo, in one of the costumes a person fits, his sneakers showing; the jewels in his cage's straw.
 		wanted.circus = CircusTruck.costume(rng)
 		wanted.driver.trunk = "jewels"
+	if parade:
+		# El Antifaz dances on a float, one of its dancers; the queen's crown hidden in it.
+		wanted.parade = ParadeFloat.draw(rng)
+		wanted.parade.thief = rng.randi() % wanted.parade.dancers.size()
+		wanted.driver.trunk = "crown"
 	if fog:
 		# La Bruma carries the lighthouse's lamp.
 		wanted.driver.trunk = "lamp"
@@ -142,7 +158,7 @@ static func draw(case_seed: int, convoy := false, fruit := false, crowd := false
 		wanted.driver.license_glasses = not wanted.clown.glasses
 	var kinds := (CONVOY_KINDS if convoy else FRUIT_KINDS if fruit else CROWD_KINDS if crowd
 		else GHOST_KINDS if ghost else WEDDING_KINDS if wedding else FOG_KINDS if fog else CIRCUS_KINDS if circus
-		else KINDS).duplicate()
+		else PARADE_KINDS if parade else KINDS).duplicate()
 	for i in CLUES - plan.clues.size():
 		var kind: String = kinds.pop_at(rng.randi() % kinds.size())
 		if kind == "trunk":
@@ -180,7 +196,7 @@ static func draw(case_seed: int, convoy := false, fruit := false, crowd := false
 
 
 static func random_car(rng: RandomNumberGenerator, convoy := false, fruit := false, crowd := false,
-		ghost := false, wedding := false, racer := false, fog := false, circus := false) -> Dictionary:
+		ghost := false, wedding := false, racer := false, fog := false, circus := false, parade := false) -> Dictionary:
 	var plate := ""
 	for i in 3:
 		plate += LETTERS[rng.randi() % LETTERS.length()]
@@ -209,6 +225,8 @@ static func random_car(rng: RandomNumberGenerator, convoy := false, fruit := fal
 		car.fog = FogCar.draw(rng)
 	if circus:
 		car.circus = CircusTruck.draw(rng) if rng.randf() < CircusTruck.SHARE else {}
+	if parade:
+		car.parade = ParadeFloat.draw(rng) if rng.randf() < ParadeFloat.SHARE else {}
 	return car
 
 
@@ -244,21 +262,46 @@ static func value_of(car: Dictionary, kind: String) -> Variant:
 			return car.get("circus", {}).get("animal", "")
 		"sneakers", "stripes":
 			return car.get("circus", {}).get(kind, -1)
+		"theme":
+			return car.get("parade", {}).get("theme", "")
+		"float_number":
+			return int(car.parade.number) % 10 if car.get("parade", {}).has("number") else -1
+		"mask", "held":
+			var dancer := ParadeFloat.compared(car.get("parade", {}))
+			return dancer.get(kind, -1)
 	return null
 
 
-## How many of the clues a car fits.
+## How many of the clues a car fits. A float without El Antifaz fits as much as its best fitting dancer does.
 func fits(car: Dictionary) -> int:
+	var float_traits: Dictionary = car.get("parade", {})
+	if float_traits.is_empty() or float_traits.has("thief"):
+		return _fits(car)
+	var best := 0
+	var compared: int = float_traits.get("double", 0)
+	for i in float_traits.dancers.size():
+		float_traits.double = i
+		best = maxi(best, _fits(car))
+	float_traits.double = compared
+	return best
+
+
+func _fits(car: Dictionary) -> int:
 	return clues.filter(func(clue: Dictionary) -> bool: return value_of(car, clue.kind) == clue.value).size()
 
 
 ## A car that fits every clue but one if it's a lookalike, and at most one otherwise.
 func _other_car(rng: RandomNumberGenerator, lookalike: bool) -> Dictionary:
 	while true:
-		var car := random_car(rng, convoy, fruit, crowd, ghost, wedding, race, fog, circus)
+		var car := random_car(rng, convoy, fruit, crowd, ghost, wedding, race, fog, circus, parade)
 		# The circus's lookalikes are its trucks, real animals: never his sneakers.
 		if circus and lookalike and car.circus.is_empty():
 			continue
+		# The parade's are floats, with one dancer who looks like him.
+		if parade and lookalike:
+			if car.parade.is_empty():
+				continue
+			car.parade.double = rng.randi() % car.parade.dancers.size()
 		if lookalike:
 			# Copy all clues but one, then make sure that one is off.
 			var off := rng.randi() % clues.size()
@@ -310,6 +353,13 @@ func _set_value(car: Dictionary, clue: Dictionary) -> void:
 			car.fog.horn = clue.value
 		"animal", "stripes":
 			car.circus[clue.kind] = clue.value
+		"theme":
+			car.parade.theme = clue.value
+		"float_number":
+			var tens := int(car.parade.number) / 10 * 10
+			car.parade.number = tens + int(clue.value) if tens + int(clue.value) > 0 else 10
+		"mask", "held":
+			ParadeFloat.compared(car.parade)[clue.kind] = clue.value
 
 
 ## The wedding's convoy (control-boda.md): the couple, their car up front, a few city cars (never El Colado's or the
@@ -466,6 +516,17 @@ func clue_text(i: int) -> String:
 		"stripes":
 			return TranslationServer.translate("CLUE_CIRCUS_STRIPES") \
 				% TranslationServer.translate(CircusTruck.STRIPE_NAMES[clue.value])
+		"theme":
+			return TranslationServer.translate("CLUE_PARADE_THEME") \
+				% TranslationServer.translate(ParadeFloat.theme_name(clue.value))
+		"mask":
+			return TranslationServer.translate("CLUE_PARADE_MASK") \
+				% TranslationServer.translate(ParadeFloat.MASK_NAMES[clue.value])
+		"held":
+			return TranslationServer.translate("CLUE_PARADE_HELD") \
+				% TranslationServer.translate(ParadeFloat.HELD_NAMES[clue.value])
+		"float_number":
+			return TranslationServer.translate("CLUE_PARADE_NUMBER") % clue.value
 	return ""
 
 
