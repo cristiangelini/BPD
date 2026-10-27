@@ -152,6 +152,19 @@ extras suman entre 400 y 600.
      pone en el paso 5), una vez por policía. Si quedan latas paradas dice "¡Casi!".
    - Los dos estantes del puesto ahora son sólidos, así el estante de premios puede esconder algo.
 5. El caso (RaidCase) con la primera historia: los premios rellenos.
+   Hecho así:
+   - **El caso:** el mismo de todos los allanamientos. El comisario da la denuncia anónima, hay 3 sospechas entre las
+     6 historias (notas en los caminos) y Don Tómbola suelta dónde están las cosas cuando le preguntas con R. Llama al
+     abogado en 100 y el caso se pierde.
+   - **Nube:** a quien gana en las latas le cuenta dónde vio a Don Tómbola esconder algo.
+   - **Los premios rellenos:** la bolsa de relojes robados (3 kg, 1000), la lista de clientes (0,1 kg, 300) y la aguja
+     con el hilo gigantes (0,5 kg, 200), cada una en un escondite sorteado.
+   - **La pista propia:** el peluche gigante hace "tic tac" cada 1,5 s si hay un policía a menos de 3 m. La primera vez
+     va a la planilla.
+   - **Qué cambia:** en el estante de premios hay 4 peluches chicos. En esta historia pesan el triple (0,9 kg) y al caer
+     al piso hacen "¡Clonc!".
+   - **Por ahora:** Don Tómbola no se escapa en auto. La huida queda para cuando se sume al sorteo (paso 7).
+   - **Capturas:** `parque/paso5-*.png`.
 6. Las otras 5 historias, una por PR.
 7. "Jugar" suma el parque al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online: Don Tómbola, Nube, las latas, la campana y los juegos en todas las PC.

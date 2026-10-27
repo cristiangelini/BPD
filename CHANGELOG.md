@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Fun fair raid, step 5: the fair is a raid case like the others (tip, 3 suspicions among 6 stories, Don Tómbola's slips and lawyer, Nube's clue). Its first story, the stuffed prizes: the bag of stolen watches with the client list and the giant needle, the giant teddy that goes "tic tac" and prize teddies that weigh triple and land with a "clonc".
 - Fun fair raid, step 4: Nube minds the cans booth (3 cans, 3 balls, they stand up again after 5 s) and tells whoever knocks all 3 down what she saw, once per cop.
 - Fun fair raid, step 3: Don Tómbola walks the fair with his megaphone and fills his complaint (rides switched on, things flung off the carousel, the till, his trailer door); the strength tester's mallet rings the bell 6 times in 10 and he spends 15 s handing over the prize with his back to the fair, every 45 s, and catches on the third time.
 - Fun fair raid, step 2: the rides go: the carousel's lever spins it and it throws loose things off its deck, the red button sets the six bumper cars driving round the rink for 20 s (they bounce, push props and shove cops), the crank turns the Ferris wheel by one cabin (they hang straight) and the ghost train's skeletons jump out at passing cops.

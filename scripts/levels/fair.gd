@@ -8,7 +8,9 @@ extends Node3D
 ## with the giant teddy, Nube's cotton candy cart, the strength tester and Don Tómbola's trailer at the back, locked. A
 ## mirror that something hits fast breaks, a fine each. The rides go with their lever, button and crank (FairRides, step
 ## 2). Don Tómbola walks his round with the megaphone and fills his complaint; the strength tester's bell takes him off
-## to hand over a prize (step 3). Every number here is (propuesta).
+## to hand over a prize (step 3). Nube tells whoever knocks down her 3 cans what she saw (step 4). The case is one of
+## its stories (STORIES), drawn with the seed, run by the same RaidCase as the other places (step 5). Every number here
+## is (propuesta).
 
 signal mirror_broken(index: int)
 
@@ -21,6 +23,34 @@ const WHEEL_MODEL := preload("res://assets/models/ferris_wheel.glb")
 const CABIN_MODEL := preload("res://assets/models/ferris_cabin.glb")
 const BUMPER_MODEL := preload("res://assets/models/bumper_car.glb")
 const OWNER_SCENE := preload("res://scenes/npc/fair_owner.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the fair can be suspected of (allanamiento-parque.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["stuffed_prizes", "rigged_games", "fake_tickets", "loose_wheel", "ghost_storage",
+	"bronze_horse"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_FAIR_TIP_B", "BRIEF_TIP_C", "BRIEF_FAIR_TIP_D",
+	"BRIEF_FAIR_TIP_E"]
+## The stories the fair can tell, like GymRaid.STORIES: what the comisario says once it's guessed, its "find it" row,
+## what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the checklist rows of
+## its extras and its rig. With "main_hidden" the first hidden item is the main evidence and the rest extras.
+const STORIES := {
+	"stuffed_prizes": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_STUFFED_PRIZES_B", "BRIEF_STUFFED_PRIZES_C", "BRIEF_STUFFED_PRIZES_D"],
+		"find": "OBJ_FIND_WATCH_BAG",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/fair_watch_bag.tscn"),
+			preload("res://scenes/props/fair_client_list.tscn"), preload("res://scenes/props/fair_needle_thread.tscn")],
+		"half_heights": [0.22, 0.003, 0.06],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_CLIENT_LIST", "OBJ_EXTRA_NEEDLE_THREAD"],
+		"rig": preload("res://scripts/case/fair/stuffed_prizes_rig.gd"),
+	},
+}
+## Where the suspicion notes can lie: on the paved paths.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(1.5, FLOOR_TOP, 15.0), Vector3(-1.6, FLOOR_TOP, 9.5), Vector3(-10.0, FLOOR_TOP, -7.0),
+	Vector3(8.0, FLOOR_TOP, -9.0), Vector3(-1.0, FLOOR_TOP, -1.5), Vector3(16.0, FLOOR_TOP, -7.0),
+]
 const CANDY_MODEL := preload("res://assets/models/cotton_candy_cart.glb")
 const BOOTH_MODEL := preload("res://assets/models/cans_booth.glb")
 const TICKETS_MODEL := preload("res://assets/models/ticket_booth.glb")
@@ -97,6 +127,10 @@ const SAW_RIDE := 5.0
 const SAW_FLUNG := 10.0
 ## The third bell: he knows what's going on.
 const CAUGHT_ON := 10.0
+## The small teddies on the cans booth's prize shelf (x in the booth), what they weigh and how big they are.
+const PLUSHES: Array[float] = [-1.1, -0.7, -0.3, 0.1]
+const PLUSH_KG := 0.3
+const PLUSH_SIZE := Vector3(0.22, 0.3, 0.2)
 const TOOLBOX_AT := Vector3(10.6, FLOOR_TOP, -9.0)
 const TOOLBOX_SIZE := Vector3(0.7, 0.4, 0.4)
 ## Don Tómbola's trailer at the back, its door in the front wall.
@@ -153,15 +187,29 @@ var complaint_bar: ProgressBar
 ## The cans booth with its 3 cans and 3 balls, and Nube who tells whoever knocks them all down (step 4).
 var cans_booth: CansBooth
 var nube: CandySeller
+## The small teddies on the prize shelf.
+var plushes: Array[Grabbable] = []
 ## The rides he already saw switched on.
 var _rides_seen: Array[String] = []
 var mirrors: Array[Area3D] = []
 var broken_mirrors: Array[int] = []
 var broken_goods := 0
+## The case flow every raid shares.
+var raid: RaidCase
 ## Money taken off the case pay: the mirrors.
-var fines := 0
-## Same seed, same fair (the stories and the hiding spots come from it, step 5).
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## Same seed, same fair: the story and where its things go. 0 draws one.
 @export var case_seed := 0
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: FairRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
 var _build: PlaceBuilder
 @onready var car: PatrolCar = $PatrolCar
 
@@ -171,6 +219,19 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_grounds()
 	_build_carousel()
@@ -197,6 +258,87 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "fair", car)
+	raid.station_parking = station_parking
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = owner_npc
+	raid.owner_id = "fair"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The fair's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_FAIR",
+		"guess_key": "OBJ_GUESS_FAIR",
+		"broken_key": "OBJ_BROKEN_FAIR",
+		"complaint_key": "OBJ_COMPLAINT_FAIR",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_goods,
+		"complaint": owner_npc.complaint,
+	}
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Don Tómbola lets slip when asked (where the story's things are, in an order drawn from the seed), and what
+## Nube saw: where he hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		owner_npc.slips.append(tr("TOMBOLA_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	owner_npc.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	nube.clue = tr("CLUE_NUBE") % where
+	nube.clue_speech = tr("NUBE_CLUE_" + story_id) % where
+	nube.told.connect(raid.add_clue)
 
 
 ## Don Tómbola on his round with his megaphone, what he can't stand to see and the complaint bar.
@@ -209,6 +351,7 @@ func _place_owner() -> void:
 	add_child(owner_npc)
 	owner_npc.start_at(0)
 	trailer_door.broken.connect(owner_npc.door_broken)
+	owner_npc.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_FAIR"))
 	till.opened.connect(func(at: Vector3) -> void: owner_npc.saw(at, FloorBoss.SAW_TILL))
 	tester.caught_on.connect(func() -> void: owner_npc.scold(CAUGHT_ON, "TOMBOLA_CAUGHT_ON"))
 	rides.ride_started.connect(_on_ride_started)
@@ -245,6 +388,8 @@ func _on_ride_started(ride: String) -> void:
 ## The grass, the paved paths from the arch, the fence round the block with the arch in its gap, the sign and the
 ## lamps on poles along the paths.
 func _build_grounds() -> void:
+	# The ground is solid up to FLOOR_TOP, so a note or a ticket on it shows over the grass and the paths.
+	_solid(Vector3(0, FLOOR_TOP / 2, 0), Vector3(HALF * 2, FLOOR_TOP, HALF * 2))
 	_build.mesh_box(Vector3(0, 0.03, 0), Vector3(HALF * 2, 0.02, HALF * 2), GRASS)
 	_build.mesh_box(Vector3(0, 0.045, 12.0), Vector3(5.0, 0.03, 28.0), PAVING)
 	_build.mesh_box(Vector3(0, 0.045, -8.0), Vector3(36.0, 0.03, 4.0), PAVING)
@@ -426,8 +571,8 @@ func _build_mirror_house() -> void:
 	_build.light(Vector3((x0 + x1) / 2, MIRRORS_HEIGHT - 0.4, (z0 + z1) / 2))
 
 
-## The booths in the middle: the cans booth with the giant teddy beside it, Nube's cart, the strength tester with its
-## mallet on the ground, and the ticket booth by the arch with its till.
+## The booths in the middle: the cans booth with the small teddies on its prize shelf and the giant teddy beside it,
+## Nube's cart, the strength tester with its mallet on the ground, and the ticket booth by the arch with its till.
 func _build_booths() -> void:
 	_model(BOOTH_MODEL, CANS_AT)
 	_solid(CANS_AT + Vector3(0, 0.5, 0.8), Vector3(3.0, 1.0, 0.4))
@@ -446,6 +591,14 @@ func _build_booths() -> void:
 		if cop:
 			nube.won(cop))
 	cans_booth.missed.connect(nube.missed)
+	for x: float in PLUSHES:
+		var plush := ClubEvidence.make_item("Plush", TEDDY_MODEL, PLUSH_SIZE, PLUSH_KG)
+		var look := plush.get_child(1) as Node3D
+		look.scale = Vector3.ONE * 0.22
+		look.position.y = -PLUSH_SIZE.y / 2
+		plush.position = CANS_AT + Vector3(x, CansBooth.PRIZE_SHELF_TOP + PLUSH_SIZE.y / 2 + 0.01, -0.78)
+		add_child(plush)
+		plushes.append(plush)
 	_model(TEDDY_MODEL, TEDDY_AT, 0.3)
 	_solid(TEDDY_AT + Vector3(0, 0.55, 0), Vector3(0.9, 1.1, 0.8))
 	_model(CANDY_MODEL, CANDY_AT, -0.2)
@@ -502,6 +655,7 @@ func break_mirror(index: int) -> void:
 	cracked.albedo_color = DARK.lightened(0.3)
 	glass.material_override = cracked
 	say(glass.position + Vector3(0, 1.5, 0), "FAIR_MIRROR_BROKEN")
+	raid.float_label("-%d" % MIRROR_FINE, to_global(glass.position + Vector3.UP), Color(1, 0.3, 0.25))
 	mirror_broken.emit(index)
 
 
