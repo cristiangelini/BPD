@@ -202,7 +202,47 @@ export function buildOldYogurt() {
 	return b.build();
 }
 
+// The fake cheese's story: the fridge's 10 kg cheese wheels, the big plastic one full of bills, its mold and a block of
+// yellow wax.
+function wheel(b, r, h, rind) {
+	b.add('cheese', mat('cheese_yellow', 0xf2d24a), new THREE.CylinderGeometry(r, r, h, 16), { pos: V(0, h / 2, 0) });
+	b.add('rind', rind, new THREE.CylinderGeometry(r + 0.004, r + 0.004, h * 0.3, 16, 1, true), { pos: V(0, h / 2, 0) });
+}
+
+export function buildCheeseWheel() {
+	const b = new Builder('super_cheese_wheel');
+	wheel(b, 0.2, 0.14, mat('cheese_rind', 0xc8a03a));
+	b.add('label', mat('cheese_label', 0xf6f4ee), new THREE.BoxGeometry(0.1, 0.002, 0.06), { pos: V(0, 0.141, 0) });
+	return b.build();
+}
+
+export function buildFakeCheese() {
+	const b = new Builder('super_fake_cheese');
+	wheel(b, 0.35, 0.28, mat('fake_cheese_rind', 0xe0b030));
+	b.add('label', mat('cheese_label', 0xf6f4ee), new THREE.BoxGeometry(0.16, 0.002, 0.1), { pos: V(0, 0.281, 0) });
+	b.add('bills', mat('bill_green', 0x5aa04a), new THREE.BoxGeometry(0.1, 0.03, 0.005), { pos: V(0.2, 0.2, 0.29), rot: [0, 0.6, 0.2] });
+	return b.build();
+}
+
+export function buildCheeseMold() {
+	const b = new Builder('super_cheese_mold');
+	const steel = mat('mold_steel', 0xb8bcc4, { metalness: 0.5, roughness: 0.4, side: THREE.DoubleSide });
+	b.add('mold', steel, new THREE.CylinderGeometry(0.36, 0.36, 0.3, 16, 1, true), { pos: V(0, 0.15, 0) });
+	b.add('mold', steel, new THREE.CylinderGeometry(0.36, 0.36, 0.02, 16), { pos: V(0, 0.01, 0) });
+	for (const s of [-1, 1]) b.add('handles', steel, new THREE.TorusGeometry(0.05, 0.01, 4, 8), { pos: V(s * 0.38, 0.22, 0), rot: [0, Math.PI / 2, 0] });
+	return b.build();
+}
+
+export function buildWaxBlock() {
+	const b = new Builder('super_wax_block');
+	b.add('wax', mat('wax_yellow', 0xf0c020, { roughness: 0.3 }), new THREE.BoxGeometry(0.22, 0.1, 0.14), { pos: V(0, 0.05, 0) });
+	b.add('label', mat('wax_label', 0x2a2a30), new THREE.BoxGeometry(0.12, 0.04, 0.002), { pos: V(0, 0.05, 0.071) });
+	return b.build();
+}
+
 export const models = {
+	super_cheese_wheel: buildCheeseWheel, super_fake_cheese: buildFakeCheese, super_cheese_mold: buildCheeseMold,
+	super_wax_block: buildWaxBlock,
 	super_price_gun: buildPriceGun, super_label_box: buildLabelBox, super_old_yogurt: buildOldYogurt,
 	npc_don_oferton: buildDonOferton,
 	npc_lalo: buildLalo,
@@ -219,6 +259,10 @@ export const views = {
 			{ name: 'shopping_cart', pos: [-0.6, 0, 2.2], rotY: 0.6 },
 		],
 		cam: { pos: [0, 3.0, 7.5], target: [0.4, 0.9, 0], fov: 50 },
+	},
+	cheese: {
+		items: [{ name: 'super_fake_cheese', pos: [-0.5, 0, 0] }, { name: 'super_cheese_wheel', pos: [0.2, 0, 0.3] }, { name: 'super_cheese_mold', pos: [0.4, 0, -0.5] }, { name: 'super_wax_block', pos: [0.6, 0, 0.4] }],
+		cam: { pos: [0, 1.2, 2.2], target: [0, 0.15, 0], fov: 40 },
 	},
 	dates: {
 		items: [{ name: 'super_price_gun', pos: [-0.35, 0, 0], rotY: 0.6 }, { name: 'super_label_box', pos: [0.15, 0, 0] }, { name: 'super_old_yogurt', pos: [0.5, 0, 0.1] }],
