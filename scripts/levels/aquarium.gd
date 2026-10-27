@@ -41,6 +41,8 @@ const POOL_SIZE := Vector3(7.0, 0.9, 3.4)
 const IGLOO_AT := Vector3(2.0, 0.1, -11.3)
 ## Doña Tinta's tank, in the dark corner by the east wall.
 const INK_TANK_AT := Vector3(13.2, 0, -1.0)
+## The fish for Bigotes on the kitchen counter (propuesta).
+const FISH := 4
 ## The divers' bench, facing the big tank.
 const BENCH_AT := Vector3(0, 0, 1.5)
 ## The stool with the roll of evidence bags, by the door.
@@ -559,6 +561,12 @@ func _kitchen() -> void:
 		add_child(crab)
 	_builder.box(Vector3(HALF_X - 0.5, 1.0, 2.8), Vector3(0.8, 2.0, 1.2), WHITE)
 	_builder.box(Vector3(9.5, 0.45, FRONT_Z - 0.45), Vector3(3.0, 0.9, 0.7), METAL)
+	_builder.mesh_box(Vector3(9.3, 0.915, FRONT_Z - 0.45), Vector3(1.9, 0.03, 0.4), Color(0.2, 0.45, 0.8))
+	for i in FISH:
+		var fish := AquariumFish.new()
+		fish.name = "Fish%d" % i
+		fish.position = Vector3(8.6 + i * 0.45, 0.94, FRONT_Z - 0.45)
+		add_child(fish)
 	_builder.mesh_box(BOARD_AT, Vector3(0.05, 1.0, 1.6), Color(0.15, 0.25, 0.2))
 	board = FeedingBoard.new(Vector3(0.1, 1.0, 1.6))
 	board.name = "FeedingBoard"

@@ -7,6 +7,8 @@ extends StaticBody3D
 
 const MODEL := preload("res://assets/models/npc_anzuelo.glb")
 const LINES := 5
+## He sees Bigotes get a fish this close, in meters.
+const SEES := 10.0
 
 var _bubble: Label3D
 var _bubble_left := 0.0
@@ -52,3 +54,9 @@ func _physics_process(delta: float) -> void:
 	_bubble_left -= delta
 	if _bubble.visible and _bubble_left <= 0.0:
 		_bubble.hide()
+
+
+## Bigotes got a fish from a cop: if he saw it, he is moved.
+func saw_fish_given(sea_lion: SeaLion) -> void:
+	if sea_lion.global_position.distance_to(global_position) <= SEES:
+		say("KEEPER_FINALLY")
