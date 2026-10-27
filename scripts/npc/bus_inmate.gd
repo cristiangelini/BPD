@@ -145,9 +145,10 @@ func run_off() -> void:
 	lying = false
 	loose = true
 	_speed = RUN_SPEED
-	say("TRANSFER_SICK_RUN")
 	_update()
 	_head_for_door()
+	# After the walk's own line, so the cop who crouched hears they were fooled.
+	say("TRANSFER_SICK_RUN")
 
 
 ## Starts pushing the bars of their window, still in their seat, for `seconds` (less with a file).
