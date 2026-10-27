@@ -50,7 +50,7 @@ en la radio. La denuncia anónima es siempre vaga: "en Radio La Antena Loca pasa
 
 | Historia | Evidencia principal | Extras | Pista propia | Qué cambia |
 |---|---|---|---|---|
-| **El concurso arreglado** | La urna del sorteo, con todos los papelitos con el mismo nombre (4 kg, 1000) | El premio sin entregar, una licuadora (3 kg, 300), la lista de "ganadores" (0,1 kg, 200) | Un papelito caído al lado de la urna dice "Primo Tito" | Cada tanto don Volumen anuncia al aire "¡Y el ganador es... Tito, otra vez!" |
+| **El concurso arreglado** | La urna del sorteo, con todos los papelitos con el mismo nombre (4 kg, 1000) | El premio sin entregar, una licuadora (3 kg, 300), la lista de "ganadores" (0,1 kg, 200) | Un papelito del concurso caído al lado del buzón dice "Primo Tito" | Cada tanto don Volumen anuncia al aire "¡Y el ganador es... Tito, otra vez!" |
 | **Las publicidades fantasma** | El archivo de contratos de publicidades que nunca salieron (6 kg, 1000) | El cuaderno de cobros (0,5 kg, 300), el sello de "pagado" (0,3 kg, 200) | La grilla de publicidades de la pared está vacía, pero la caja está llena | Entre tema y tema, donde iría la publicidad, hay silencio |
 | **Los micrófonos ocultos** | La caja con las grabaciones de los vecinos (5 kg, 1000) | El micrófono escondido en una maceta (1 kg, 300), el mapa del barrio con cruces (0,2 kg, 200) | La maceta de la recepción tiene un micrófono con cable | Cada tanto sale al aire un chisme de algún vecino que nadie debería saber |
 | **Los discos de colección** | La caja con los vinilos robados a un coleccionista (5 kg, 1000) | El catálogo del coleccionista (0,5 kg, 300), el tocadiscos dorado (2 kg, 200) | Un disco del archivo tiene la etiqueta "Colección privada · no prestar" | Don Volumen pasa solo discos rarísimos y los presenta como "joyas" |
@@ -91,6 +91,9 @@ entre 400 y 600.
    **Hecho (paso 4):** `DonaRosa` (scripts/npc/dona_rosa.gd) en el teléfono de la recepción; el caso le da `clue` y
    `clue_speech` en el paso 5. Capturas `radio/paso4-*.png`.
 5. El caso (RaidCase) con la primera historia: el concurso arreglado.
+   **Hecho (paso 5):** `RadioStation.STORIES` con `rigged_contest` y su `RiggedContestRig` (scripts/case/radio/);
+   el papelito quedó junto al buzón (por ahí entran los cupones) y no junto a la urna, para que sea una pista antes de
+   encontrarla. Capturas `radio/paso5-*.png`.
 6. Las otras 5 historias, una por PR.
 7. "Jugar" suma la radio al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online (don Volumen, doña Rosa, el teléfono, la luz "AL AIRE" y lo frágil en todas las PC).

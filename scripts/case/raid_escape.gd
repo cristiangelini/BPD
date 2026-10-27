@@ -14,8 +14,8 @@ const CAR_AHEAD := 9.0
 ## The wheelchair waits this far (m) out of his door, on the sidewalk.
 const DOOR_OUT := 1.5
 ## Each owner's place in the city (CityLayout), what he gets away in (SuspectCar) and who gets off (ChaseSuspect).
-const PLACES := {"grandpa": "grandpa", "baker": "bakery", "groomer": "pet_salon", "hardware": "hardware", "factory": "doll_factory", "insurance": "insurance", "cake_lab": "cake_lab", "gym": "gym"}
-const VEHICLES := {"grandpa": "wheelchair", "baker": "night", "groomer": "night", "hardware": "night", "factory": "night", "insurance": "night", "cake_lab": "night", "gym": "night"}
+const PLACES := {"grandpa": "grandpa", "baker": "bakery", "groomer": "pet_salon", "hardware": "hardware", "factory": "doll_factory", "insurance": "insurance", "cake_lab": "cake_lab", "gym": "gym", "radio": "radio"}
+const VEHICLES := {"grandpa": "wheelchair", "baker": "night", "groomer": "night", "hardware": "night", "factory": "night", "insurance": "night", "cake_lab": "night", "gym": "night", "radio": "night"}
 
 var raid: RaidCase
 ## The chase, once he ran off.
