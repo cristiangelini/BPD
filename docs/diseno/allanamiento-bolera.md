@@ -147,6 +147,11 @@ suman entre 400 y 600.
      en la pista 1, los pinos se caen solos antes de que llegue la bola. Los jugadores de cada pista ahora esperan los
      dos del lado oeste, para no pisar el escondite del retorno. Capturas: `allanamiento-bolera/paso5-*.png`.
 6. Las otras 5 historias.
+   - **Cómo quedó, los pinos de plomo (propuesta):** se esconden el molde (20 kg, 1000, en un escondite grande), un
+     pino de plomo de repuesto (5 kg, 300) y la factura del plomo (200). Los 10 pinos de la pista 4 pesan 5 kg y no se
+     caen ni se mueven, salvo en las manos de un policía: una bola que llega a ellos rebota y vuelve rodando con el 70 %
+     de su velocidad. El primer policía que levanta uno dice «¡Uf! ¡Pesa como un ladrillo!» y esa es la pista.
+     Capturas: `allanamiento-bolera/paso6-plomo-*.png`.
 7. "Jugar" suma la bolera al sorteo de allanamientos, y la huida de Don Chuza.
 8. El online (Don Chuza, Pipo, los jugadores, las bolas y lo frágil en todas las PC).
 
