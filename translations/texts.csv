@@ -5608,3 +5608,11 @@ LOC_under_ice_table,debajo de una mesita del salón,under a table in the salon,e
 LOC_on_kitchen_bench,en la mesa de trabajo de la cocina,on the kitchen's work bench,na bancada da cozinha
 LOC_under_flavor_board,debajo del cuadro del sabor del mes,under the flavor of the month board,embaixo do quadro do sabor do mês
 LOC_on_ice_cashier,"en la caja, al lado de la balanza","at the till, next to the scale","no caixa, ao lado da balança"
+PROMPT_FREEZER_OPEN,E: abrir el freezer,E: open the freezer,E: abrir o freezer
+PROMPT_FREEZER_CLOSE,E: cerrar el freezer,E: shut the freezer,E: fechar o freezer
+ICE_FREEZER_MELTED_1,¡Se derritió el de chocolate!,The chocolate one melted!,O de chocolate derreteu!
+ICE_FREEZER_MELTED_2,¡Se derritió el de fresa!,The strawberry one melted!,O de morango derreteu!
+ICE_FREEZER_MELTED_3,¡Se derritió el de vainilla!,The vanilla one melted!,O de baunilha derreteu!
+ICE_FREEZER_MELTED_4,¡Mi pistacho!,My pistachio!,Meu pistache!
+ICE_COLD_ROOM_MELTED,¡Se derritió toda la cámara!,The whole cold room melted!,A câmara fria inteira derreteu!
+HINT_ICE_SLIPPED,¡Patinaste en el helado derretido!,You slipped on melted ice cream!,Você escorregou no sorvete derretido!

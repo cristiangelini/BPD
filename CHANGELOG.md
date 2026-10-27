@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Ice cream raid, step 2: what melts: E opens and shuts each freezer's lid, a lid left open 15 s melts that freezer (fine of 10) and the cold room's door open 20 s melts it all (fine of 30); each leaves a puddle where a walking cop slides on and a running one falls.
 - Ice cream raid, step 1: the "Heladería Pingüino Derretido" on block (5, 5): the salon with the counter of 12 flavors, the till and two freezers, the kitchen with the soft-serve machine and two more freezers, the locked cold room, the office, the bathroom and the fenced yard with the ice cream truck; 12 hiding spots; the counter's glass case cracks (fine of 30) and the penguin by the door falls over. "Heladería (allanamiento, prueba)" in the menu.
 - Ice cream raid design: docs/diseno/allanamiento-heladeria.md proposes a new raid place, "Heladería Pingüino Derretido", where whatever is left open melts into slippery puddles, with doña Nieve, Lucho the delivery boy and 6 stories (decision 430).
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
