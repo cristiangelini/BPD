@@ -182,5 +182,13 @@ señora y la limusina.
    arañada); si se lo llevan a la señora sin mirarlo, se lo pone y la pista se pierde. La pisada se ve sin linterna,
    como en el museo **(propuesta)**. Capturas en `gato/`: `paso5b-sillon.png`, `paso5b-galleta.png`,
    `paso5b-arenero.png` y `paso5b-collar.png`.
+   Hecho así (tercera parte, el testigo y la paciencia): Don Plumas habla después de comer una galleta de la lata al
+   pie de su jaula (E): si el testigo es una de las pistas, repite dos veces la muletilla del culpable; un grito a
+   menos de 5 m o algo que vuela cerca lo asusta para todo el caso. Arriba, mientras un policía está en la casona, la
+   barra de paciencia de la señora: el sillón (cada vez que alguien se mete), la gata equivocada, esposar a un sobrino
+   inocente sin haber acusado y gritar en la casa la bajan como dice la tabla, y la Duquesa en sus brazos le devuelve
+   30. Al bajar de 75, 50 y 25, el comisario llama por la radio y descuenta 50; a 0, la señora echa a los policías al
+   jardín y no los deja volver a entrar **(propuesta)**. Faltan los jarrones que se rompen y el té (cuarta parte).
+   Capturas en `gato/`: `paso5c-paciencia.png` y `paso5c-loro.png`.
 6. El final: tablero, cansancio, sueldo y la limusina con los ovillos.
 7. El sorteo de "Jugar" y el online.

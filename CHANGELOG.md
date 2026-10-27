@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Cat crime scene, step 5 (witness and patience): Don Plumas repeats the culprit's catchphrase after a cracker and gets scared by shouts or things thrown near him; Señora Ofelia's patience bar drops with the armchair, the wrong cat, a wrongly cuffed nephew and shouting, the comisario calls (and fines 50) below 75, 50 and 25, and at 0 she throws the cops out.
 - Cat crime scene, step 5 (clues): prints on the cat flap, the footprint in the litter tray, a hair on Duquesa's armchair, a bitten cat biscuit and the diamond necklace with blood on the clasp; the cats muddy the flap and use the litter tray, a cop in the armchair loses the hair, and the señora puts on an unlooked-at necklace.
 - Cat crime scene, step 5 (Duquesa): the comisario gives the cat case; Duquesa is locked in the culprit's suitcase, the dumbwaiter or the laundry basket, and searching lets her out; Señora Ofelia takes her in her arms (+100) and sends any other cat off by her name.
 - Cat crime scene, step 4: the nephews' files: photo, prints and teeth as at the museum; with empty hands the catchphrase, the beanie (one won't until fed) and the rolled-up sleeves with the scratch; the culprit is always scratched.

@@ -70,6 +70,7 @@ func test_the_wrong_cat_is_sent_off_by_her_name() -> void:
 	assert_false(wrong.is_held())
 	assert_true(wrong.is_hiding(), "off she runs")
 	assert_false(mansion.loot_found)
+	assert_eq(mansion.patience.value, CatPatience.FULL - CatPatience.COSTS.wrong_cat, "and her patience drops")
 
 
 func test_duchess_in_the_crate_goes_home_and_the_case_counts_it() -> void:

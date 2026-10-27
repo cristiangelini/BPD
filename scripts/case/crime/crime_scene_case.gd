@@ -118,6 +118,8 @@ var at_tent := false
 var clues_found: Array[String] = []
 ## The museum's empty frames the patrol car broke in the chase (ChaseFrame), each one off the salary.
 var frames_broken := 0
+## Other fines off the salary (the Monedero mansion's: the comisario's scared calls, the vases).
+var fines := 0
 ## Clues the cops spoiled before finding them.
 var ruined: Array[String] = []
 var flour_print: FlourPrint
@@ -451,7 +453,7 @@ func finish_shift() -> void:
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
-	var report := ShiftReport.pay(solved(), [LOOT_BONUS] if loot_found else [], frames_broken * FRAME_FINE,
+	var report := ShiftReport.pay(solved(), [LOOT_BONUS] if loot_found else [], frames_broken * FRAME_FINE + fines,
 		wrong_guesses)
 	var result := {"solved": solved(), "report": report, "awards": ShiftReport.awards(stats)}
 	var campaign := Campaign.current
@@ -495,7 +497,7 @@ func snapshot() -> Dictionary:
 		"parts": file_parts.duplicate(true), "files": files.duplicate(), "accused": accused, "wrong": wrong_guesses,
 		"lost": lost, "gone": gone.duplicate(), "escaped": escaped, "loot": loot_found,
 		"offended": place != null and place.witness_offended(), "result": _result, "captured": captured.duplicate(true),
-		"frames": frames_broken, "rooms": room_seen.duplicate(true), "opened": opened.duplicate()}
+		"frames": frames_broken, "fines": fines, "rooms": room_seen.duplicate(true), "opened": opened.duplicate()}
 	# What only the place knows (the circus: the trick, the signs, the camera).
 	if place:
 		state.place = place.net_state()
@@ -512,6 +514,7 @@ func apply_snapshot(state: Dictionary) -> void:
 	at_tent = state.at_tent
 	clues_found.assign(state.found)
 	frames_broken = state.get("frames", 0)
+	fines = state.get("fines", 0)
 	ruined.assign(state.ruined)
 	file_parts = state.parts.duplicate(true)
 	files.assign(state.files)
@@ -581,6 +584,11 @@ func _send_off(suspect: CollisionObject3D) -> void:
 	suspect.process_mode = Node.PROCESS_MODE_DISABLED
 
 ## The comisario comes to the board and says it (with a player at the keys).
+## The comisario says `key` to the cops: on the briefing screen, or as a hint (the Monedero mansion's scared calls).
+func comisario_says(key: String) -> void:
+	_comisario_says(key)
+
+
 func _comisario_says(key: String) -> void:
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).input_enabled:
