@@ -96,7 +96,9 @@ func test_a_bump_on_the_host_is_said_on_the_guest() -> void:
 	var pcs := await _on()
 	var car := _level(pcs[0]).queue.spawn()
 	var copy := await _copy(pcs, car)
+	# As QueueCar._overrun does: the host's driver says it too, and his bubble is what the guest's copy shows.
 	car.bumped = true
+	car.say(tr(FogCar.bump_line(car.plate)))
 	await wait_until(func() -> bool: return copy.bumped, 5.0)
 	assert_true(copy.bumped)
 	assert_eq(copy.saying(), tr(FogCar.bump_line(copy.plate)))
