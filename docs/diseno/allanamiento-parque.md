@@ -45,7 +45,7 @@ algo absurdo con la física.
 
 ## Don Tómbola y Nube
 - **Don Tómbola, el dueño:**
-  - Aspecto: maestro de ceremonias con galera roja, saco a rayas, bigote enrulado y un megáfono de lata. Tiene el
+  - Aspecto: maestro de ceremonias con sombrero de copa rojo, chaqueta a rayas, bigote enrulado y un megáfono de lata. Tiene el
     cuerpo alto y flaco (decisión 72).
   - Recorrido: da vueltas por el parque anunciando por el megáfono juegos que no funcionan ("¡Pasen, pasen, la vuelta
     al mundo más segura del mundo!").
