@@ -77,9 +77,10 @@ func test_the_sandwich_turns_up_in_the_igloo_and_a_penguin_eats_it_later() -> vo
 	var aquarium: Aquarium = made[0]
 	var case: CrimeSceneCase = made[1]
 	var cop: Cop = made[2]
-	assert_null(aquarium.clues.sandwich, "hidden until someone looks in the igloo")
+	assert_false(aquarium.clues.sandwich.visible, "hidden until someone looks in the igloo")
+	assert_eq(aquarium.clues.sandwich.collision_layer, 0)
 	aquarium.searched("igloo", cop)
-	assert_not_null(aquarium.clues.sandwich)
+	assert_true(aquarium.clues.sandwich.visible)
 	assert_eq(case.items.bite, aquarium.clues.sandwich)
 	aquarium.clues.sandwich.bag(cop)
 	assert_has(case.clues_found, "bite")
@@ -89,7 +90,8 @@ func test_the_sandwich_turns_up_in_the_igloo_and_a_penguin_eats_it_later() -> vo
 	(late[0] as Aquarium).clues.penguin_lunch()
 	assert_has((late[1] as CrimeSceneCase).ruined, "bite", "a penguin ate it in the igloo")
 	(late[0] as Aquarium).searched("igloo", late[2])
-	assert_null((late[0] as Aquarium).clues.sandwich, "nothing left to find")
+	assert_false((late[0] as Aquarium).clues.sandwich_out, "nothing left to find")
+	assert_false((late[0] as Aquarium).clues.sandwich.visible)
 
 
 func test_prints_on_the_tank_until_touched_or_wiped() -> void:

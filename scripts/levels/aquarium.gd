@@ -246,14 +246,20 @@ func hide_pearl_again() -> void:
 	pearl_moves += 1
 	var others := PEARL_SPOTS.filter(func(spot: String) -> bool: return spot != loot_spot)
 	loot_spot = others[absi(hash(["aquarium pearl again", case_seed, pearl_moves])) % others.size()]
+	_pearl_gone()
+	sea_lion.say("SEA_LION_PEARL")
+
+
+func _pearl_gone() -> void:
 	pearl.queue_free()
 	pearl = null
 	pearl_uncovered = false
-	sea_lion.say("SEA_LION_PEARL")
 
 
 ## Bigotes heads for La Gorda as soon as it lies found in the hall.
 func _physics_process(_delta: float) -> void:
+	if case and case.follower:
+		return
 	if pearl and not loot_found and not sea_lion.errand and sea_lion.rest_left <= 0.0 and not sea_lion.carried \
 			and room(pearl.global_position) == "hall" \
 			and sea_lion.global_position.distance_to(pearl.global_position) <= SeaLion.NOTICE_REACH:
@@ -264,12 +270,92 @@ func _physics_process(_delta: float) -> void:
 func reveal_loot() -> void:
 	if loot_found:
 		return
+	_pearl_back()
+	if case:
+		case.found_loot()
+
+
+## La Gorda in Doña Almeja, out of reach.
+func _pearl_back() -> void:
 	uncover_pearl()
 	loot_found = true
 	pearl.position = CLAM_AT + Vector3(0, 0.3, 0)
 	pearl.collision_layer = 0
-	if case:
-		case.found_loot()
+
+
+## Online, what the guests' aquarium takes from the host's: the divers' hoods and gloves, Bigotes (where he is, what he
+## says, his rest after a fish), Doña Tinta (hidden, offended, her drawing), La Gorda (where it hides, found, back),
+## the big tank's glass, the hood on the bench, the sandwich, and the clues ruined on the host.
+func net_state() -> Dictionary:
+	var state := {"divers": divers.map(func(diver: AquariumDiver) -> Array:
+		return [diver.talked, diver.hood_on, diver.glove_on])}
+	state.sea_lion = [sea_lion.position, sea_lion.rotation.y, sea_lion.said(), sea_lion.rest_left, sea_lion.thefts]
+	if not case:
+		return state
+	state.octopus = [octopus.hidden_left, octopus.offenses, octopus.offended, octopus.drawing != null]
+	state.pearl = [loot_spot, pearl_moves, pearl_uncovered, loot_found]
+	state.clues = [clues.glass.touched, clues.glass.has_prints, clues.hood_taken, clues.sandwich_out]
+	return state
+
+
+func apply_net_state(state: Dictionary) -> void:
+	for diver in divers:
+		var look: Array = state.divers[diver.index]
+		diver.talked = look[0]
+		if not look[1] and diver.hood_on:
+			diver.hood_on = false
+			diver.part("hood").visible = false
+		if not look[2] and diver.glove_on:
+			diver.glove_on = false
+			diver.part("glove_right").visible = false
+			diver.part("ink_right").visible = diver.traits.ink
+	sea_lion.follower = true
+	sea_lion.position = state.sea_lion[0]
+	sea_lion.rotation.y = state.sea_lion[1]
+	if state.sea_lion[2] != "" and sea_lion.said() != state.sea_lion[2]:
+		sea_lion.say(state.sea_lion[2])
+	sea_lion.rest_left = state.sea_lion[3]
+	sea_lion.thefts = state.sea_lion[4]
+	if not case or not state.has("octopus"):
+		return
+	_apply_octopus(state.octopus)
+	loot_spot = state.pearl[0]
+	pearl_moves = state.pearl[1]
+	if state.pearl[3] and not loot_found:
+		_pearl_back()
+	elif state.pearl[2] and not pearl_uncovered:
+		uncover_pearl()
+	elif not state.pearl[2] and pearl:
+		_pearl_gone()
+	clues.glass.touched = state.clues[0]
+	clues.glass.has_prints = state.clues[1]
+	if state.clues[2] and not clues.hood_taken:
+		clues.hood_taken = true
+		clues.hood.position = AquariumClues.HOOD_LEFT_AT
+	if state.clues[3] and not clues.sandwich_out:
+		clues.show_sandwich()
+	for kind: String in ["hair", "bite"]:
+		if case.ruined.has(kind) and case.items.has(kind):
+			var item: CrimeClueItem = case.items[kind]
+			item.spoiled = true
+			item.visible = false
+	if case.ruined.has("footprint") and case.flour_print and not case.flour_print.wiped:
+		case.flour_print.wipe()
+
+
+## Doña Tinta as on the host: [seconds hidden, offenses, offended, drawing].
+func _apply_octopus(ink: Array) -> void:
+	if ink[0] > 0.0 and not octopus.is_hidden():
+		octopus.hide_away()
+	if ink[2] and not octopus.offended:
+		octopus.offend()
+	octopus.hidden_left = ink[0]
+	octopus.offenses = ink[1]
+	if ink[3] and not octopus.drawing and not octopus.is_hidden():
+		octopus.draw_animal()
+	elif not ink[3] and octopus.drawing:
+		octopus.drawing.queue_free()
+		octopus.drawing = null
 
 
 func witness_offended() -> bool:

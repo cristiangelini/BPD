@@ -207,3 +207,12 @@ el tanque de cada buzo, Bigotes con sus robos y el piso mojado, Doña Tinta y el
    - Atrapado, el buzo va al interrogatorio (`owner_diver`).
    - Capturas: `acuario/paso7-camion.png` y `acuario/paso7-hielo.png`.
 8. El sorteo de "Jugar" y el online.
+   **Hecho así:** "Jugar" sortea el acuario entre las escenas del crimen, un quinto cada una con el pastel, el circo,
+   el museo y el hotel **(propuesta)**.
+   - Online manda el anfitrión. Bigotes de los invitados solo lo sigue: dónde está, qué dice y su descanso después
+     de un pescado. Roba y busca cosas solo en el anfitrión, y lo que lleva en la nariz se mueve como cualquier objeto.
+   - De Doña Tinta pasan: si está escondida, cuántas veces la molestaron, si se ofendió y su dibujo.
+   - De La Gorda pasan: dónde está escondida, si está encontrada, si Bigotes la volvió a esconder y si está de vuelta.
+   - También pasan: el vidrio del tanque grande, la capucha que se lleva Bigotes y las pistas arruinadas.
+   - El sándwich está en el iglú desde el principio, escondido, para que todas las PCs tengan el mismo.
+   - En el piso mojado, cada PC hace resbalar solo a su propio policía.

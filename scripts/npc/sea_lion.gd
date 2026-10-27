@@ -47,6 +47,8 @@ var _look_left := 0.0
 var _still := {}
 ## What he goes to fetch off his loop, if anything.
 var errand: Node3D
+## Online, a guest's Bigotes only follows the host's (Aquarium.apply_net_state): he steals and fetches nothing himself.
+var follower := false
 ## Whether he can see a point in the world from his loop (the aquarium says: the hall). Unset, he notices nothing.
 var notices: Callable
 
@@ -151,6 +153,8 @@ func _physics_process(delta: float) -> void:
 	_bubble_left -= delta
 	if _bubble.visible and _bubble_left <= 0.0:
 		_bubble.hide()
+	if follower:
+		return
 	if errand and (not is_instance_valid(errand) or (errand is Grabbable and (errand.is_held() or errand.freeze))):
 		errand = null
 	if waddling and errand:
