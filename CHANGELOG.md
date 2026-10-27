@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Birthday party raid, step 5: the endless birthday story: the album of the 52 parties, the wholesale box of "7" candles and the kid actors' contracts (new placeholder models) hidden with the seed; Tomasito says he turns seven again (a clue), the guests ask for their pay when talked to, and they hop in time while they sing.
 - Birthday party raid, step 5: the piñata full of bills story: the 6 kg printing plate hidden with the bag of fake bills and the "Banco Feliz" stamp; breaking the piñata rains 10 fake bills among the candies and puts the clue on the checklist.
 - Birthday party raid, step 4: the case (RaidCase: tip, three of six suspicions with their notes, Chispita's slips and lawyer, Tomasito's secret on the checklist, escape and interrogation) and its first story, the diamond balloons: the bunch that doesn't float, the trick pump and the clients list hidden with the seed; one arch balloon hangs down and drops a real diamond, half the others drop glass pebbles.
 - Birthday party raid, step 3: the kids run about, hang on a cop's leg (half speed for 5 s), carry small things to the bouncy castle until bored or traded for one of Chispita's balloon dogs (E on him, one every 20 s), and cry when a cop runs into them (Chispita adds 10); the piñata breaks on the third E, the guests pick up candies under it for 10 s and Tomasito tells his secret only to whoever broke it.

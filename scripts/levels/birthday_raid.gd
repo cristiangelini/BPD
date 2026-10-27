@@ -24,6 +24,8 @@ signal cake_fell
 signal balloon_popped(index: int)
 ## Tomasito told the cop who broke the piñata his secret (the case fills it in, step 4).
 signal tomasito_told(cop: Cop)
+## A cop talked to Tomasito before the piñata broke.
+signal tomasito_asked(cop: Cop)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const CHISPITA_SCENE := preload("res://scenes/npc/birthday_clown.tscn")
@@ -59,6 +61,17 @@ const STORIES := {
 		"heavy": [true, false, false],
 		"extra_keys": ["OBJ_EXTRA_PINATA_BILLS", "OBJ_EXTRA_HAPPY_BANK_STAMP"],
 		"rig": preload("res://scripts/case/birthday/pinata_bills_rig.gd"),
+	},
+	"endless_birthday": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_ENDLESS_BIRTHDAY_B", "BRIEF_ENDLESS_BIRTHDAY_C", "BRIEF_ENDLESS_BIRTHDAY_D"],
+		"find": "OBJ_FIND_BIRTHDAY_ALBUM",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/birthday_album.tscn"), preload("res://scenes/props/seven_candles_box.tscn"),
+			preload("res://scenes/props/actor_contracts.tscn")],
+		"half_heights": [0.04, 0.1, 0.005],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_SEVEN_CANDLES", "OBJ_EXTRA_ACTOR_CONTRACTS"],
+		"rig": preload("res://scripts/case/birthday/endless_birthday_rig.gd"),
 	},
 }
 ## Where the suspicions' clue notes may lie, on the floor of the hall.
@@ -176,6 +189,8 @@ var loose_items: Array[Grabbable] = []
 var balloon_left := 0.0
 ## Where Tomasito saw the clown hide something (a LOC_ text), his secret.
 var tomasito_secret := ""
+## What Tomasito says before the piñata breaks (a story can change it).
+var tomasito_wait_line := "TOMASITO_PINATA_FIRST"
 var balloons: Array[Area3D] = []
 var popped: Array[int] = []
 var broken_goods := 0
@@ -519,6 +534,11 @@ func singing() -> bool:
 	return chispita != null and chispita.is_fixing()
 
 
+## Whether the song has gathered `kid` round the cake (it starts a physics frame after the candles are lit).
+func in_song(kid: PartyKid) -> bool:
+	return _before_song.has(kid)
+
+
 ## Cake time: the lights go off but the candles' glow, and the kids gather round the cake to sing.
 func _sing() -> void:
 	if not _before_song.is_empty():
@@ -613,7 +633,8 @@ func tomasito_talks(cop: Cop) -> bool:
 	if told:
 		return false
 	if pinata_breaker == null:
-		tomasito.say("TOMASITO_PINATA_FIRST")
+		tomasito.say(tomasito_wait_line)
+		tomasito_asked.emit(cop)
 	elif pinata_breaker != cop:
 		tomasito.say("TOMASITO_NOT_YOU")
 	else:

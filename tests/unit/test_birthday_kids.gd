@@ -12,6 +12,7 @@ const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
 func _party() -> BirthdayRaid:
 	var party: BirthdayRaid = RAID_SCENE.instantiate()
 	party.case_seed = 5
+	party.story_id = "diamond_balloons"
 	party.get_node("Cop").input_enabled = false
 	party.get_node("Cop/Grabber").input_enabled = false
 	add_child_autofree(party)
