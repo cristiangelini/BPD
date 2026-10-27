@@ -1,4 +1,4 @@
-class_name RadioRig
+class_name RadioStationRig
 extends Node
 
 ## What only one of the radio's stories adds (allanamiento-radio.md, "Las historias"), like CinemaRig for the cinema.
