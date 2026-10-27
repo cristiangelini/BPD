@@ -179,5 +179,12 @@ el tanque de cada buzo, Bigotes con sus robos y el piso mojado, Doña Tinta y el
    se ofende para siempre y, si era testigo, la pista se arruina. Capturas: `acuario/paso5-dibujo.png` y
    `acuario/paso5-escondida.png`.
 6. Bigotes: los robos, el pescado y el piso mojado.
+   **Hecho así (6a, los robos y el pescado):** Bigotes se lleva lo que un policía dejó en el piso a menos de 2 m de él,
+   o lo que un policía tiene en la mano quieto 3 s a menos de 2 m. Lo lleva en la nariz y nadie se lo puede sacar.
+   En la mesada de la cocina hay una bandeja con 4 pescados: con uno en la mano, E sobre Bigotes, y él tira la cosa al
+   aire y se come el pescado. Después descansa 15 s sin robar. Si lo que roba es un pescado, se lo come y listo. Si Don
+   Anzuelo lo ve a menos de 10 m, dice "¡Por fin alguien que lo entiende!". Capturas: `acuario/paso6-bigotes.png` y
+   `acuario/paso6-pescados.png`. Quedan para el 6b el piso mojado, el resbalón, la capucha sin el pelo, la perla
+   escondida de nuevo y el clavado al tanque si se lo persigue.
 7. El final: tablero, cansancio, sueldo y el camión con los bloques de hielo.
 8. El sorteo de "Jugar" y el online.
