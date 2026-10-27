@@ -148,6 +148,39 @@ export const models = {
 		b.add('star', C('contracts_star', 0xe8b83a, { metalness: 0.4 }), new THREE.CylinderGeometry(0.025, 0.025, 0.003, 5), { pos: V(0.06, 0.011, 0.1) });
 		return b.build();
 	},
+	// The cheap blower (el inflador trucho): an electric blower for bouncy castles, a squat drum on four feet with a
+	// fat hose, a patched sticker and a switch.
+	party_blower() {
+		const b = new Builder('party_blower');
+		const shell = C('blower_shell', 0x3a8ae0), dark = C('blower_dark', 0x2a2a30);
+		b.add('drum', shell, new THREE.CylinderGeometry(0.15, 0.15, 0.24, 14), { pos: V(0, 0.19, 0), rot: [Math.PI / 2, 0, 0] });
+		b.add('grille', dark, new THREE.CylinderGeometry(0.11, 0.11, 0.01, 14), { pos: V(0, 0.19, -0.125), rot: [Math.PI / 2, 0, 0] });
+		b.add('hose', C('blower_hose', 0xf6d23a), new THREE.CylinderGeometry(0.07, 0.08, 0.16, 10), { pos: V(0, 0.19, 0.19), rot: [Math.PI / 2, 0, 0] });
+		for (const [x, z] of [[-0.1, -0.08], [0.1, -0.08], [-0.1, 0.08], [0.1, 0.08]]) {
+			b.add('feet', dark, new THREE.BoxGeometry(0.03, 0.06, 0.03), { pos: V(x, 0.03, z) });
+		}
+		b.add('patch', C('blower_patch', 0xe0e0e0), new THREE.BoxGeometry(0.08, 0.004, 0.06), { pos: V(0.03, 0.342, 0.02), rot: [0, 0.4, 0] });
+		b.add('switch', C('blower_switch', 0xe0262e), new THREE.BoxGeometry(0.03, 0.02, 0.02), { pos: V(-0.06, 0.345, -0.05) });
+		return b.build();
+	},
+	// The watch shop's invoice: a sheet with a printed header, a column of lines and a stamped total in red.
+	watch_invoice() {
+		const b = new Builder('watch_invoice');
+		b.add('paper', white, new THREE.BoxGeometry(0.21, 0.004, 0.29), { pos: V(0, 0.002, 0) });
+		b.add('header', C('invoice_header', 0x2a5ad8), new THREE.BoxGeometry(0.17, 0.002, 0.03), { pos: V(0, 0.005, -0.11) });
+		for (let i = 0; i < 6; i++) {
+			b.add('lines', C('invoice_ink', 0x2a2a30), new THREE.BoxGeometry(0.15, 0.002, 0.005), { pos: V(0, 0.005, -0.07 + i * 0.025) });
+		}
+		b.add('total', C('invoice_total', 0xe0262e), new THREE.BoxGeometry(0.07, 0.002, 0.025), { pos: V(0.05, 0.005, 0.11) });
+		return b.build();
+	},
+	// The cake knife: a long wide blade with a pink plastic handle.
+	cake_knife() {
+		const b = new Builder('cake_knife');
+		b.add('blade', C('knife_blade', 0xd8d8e0, { metalness: 0.7 }), new THREE.BoxGeometry(0.2, 0.004, 0.04), { pos: V(0.06, 0.01, 0) });
+		b.add('handle', C('knife_handle', 0xff7ab8), new THREE.BoxGeometry(0.11, 0.02, 0.025), { pos: V(-0.1, 0.01, 0) });
+		return b.build();
+	},
 };
 
 export const views = {
@@ -170,6 +203,11 @@ export const views = {
 		items: [{ name: 'birthday_album', pos: [-0.4, 0, 0], rotY: 0.2 }, { name: 'seven_candles_box', pos: [0.1, 0, 0], rotY: -0.2 },
 			{ name: 'actor_contracts', pos: [0.55, 0, 0.1], rotY: -0.3 }],
 		cam: { pos: [0.05, 0.8, 1.3], target: [0.05, 0.08, 0], fov: 40 },
+	},
+	birthday_watches: {
+		items: [{ name: 'watch_bag', pos: [-0.45, 0.12, 0], scale: 1.6 }, { name: 'party_blower', pos: [0.05, 0, 0], rotY: 0.5 },
+			{ name: 'watch_invoice', pos: [0.45, 0, 0.1], rotY: -0.3 }, { name: 'cake_knife', pos: [0.2, 0, 0.35], rotY: 0.4 }],
+		cam: { pos: [0.05, 0.8, 1.4], target: [0.05, 0.12, 0], fov: 40 },
 	},
 	bouncy_castle: {
 		items: [{ name: 'bouncy_castle', pos: [0, 0, 0], rotY: 0.5 }],

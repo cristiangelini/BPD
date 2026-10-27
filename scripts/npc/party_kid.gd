@@ -205,7 +205,9 @@ func _walk_to(at: Vector3, delta: float) -> bool:
 
 func _small_item_near() -> Grabbable:
 	for item: Grabbable in party.loose_items:
-		if not is_instance_valid(item) or item.is_held() or item.freeze or item.mass >= SMALL_KG:
+		# Nothing sharp, though.
+		if not is_instance_valid(item) or item.is_held() or item.freeze or item.mass >= SMALL_KG \
+				or item.has_meta("sharp"):
 			continue
 		var at := party.to_local(item.global_position)
 		if at.y - BirthdayRaid.FLOOR_TOP < ON_FLOOR and Vector2(at.x - position.x, at.z - position.z).length() < GRAB_REACH:

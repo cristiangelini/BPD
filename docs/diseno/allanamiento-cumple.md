@@ -139,6 +139,13 @@ bocina (por ahora el auto de fuga de los otros dueños; el autito queda para des
      que le hablas con E te pide su sueldo (3 frases). En la hora del pastel los chicos saltan todos juntos al cantar
      (la coreografía, 15 cm, dos saltos por segundo). `--story=endless_birthday`. Capturas
      `/mnt/project-files/cumple/paso5-eterno-*.png`.
+   - **Cómo quedó, el inflable de los relojes (propuesta):** la bolsa de relojes (8 kg, 1000, el modelo de la bolsa del
+     mimo) va siempre adentro del piso del inflable, donde no se ve ni se agarra; el inflador trucho (5 kg, 300) y la
+     factura de la relojería (0,1 kg, 200), con modelos nuevos, en escondites sorteados. Saltar en el inflable hace
+     "¡Clinc, clinc!" y eso va a la planilla. Al lado del pastel hay un cuchillo de pastel (los chicos no lo agarran):
+     si cae sobre el inflable, "¡Psssss!", queda chato 10 s sin hacer saltar a nadie, la bolsa sale afuera y después
+     los chicos lo vuelven a inflar. Es la única forma de sacar la bolsa. `--story=watch_castle`. Capturas
+     `/mnt/project-files/cumple/paso5-relojes-*.png`.
 6. El sorteo de "Jugar" entre los allanamientos y el online.
 
 ## Preguntas para Cristian

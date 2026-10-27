@@ -24,6 +24,8 @@ signal cake_fell
 signal balloon_popped(index: int)
 ## Tomasito told the cop who broke the piñata his secret (the case fills it in, step 4).
 signal tomasito_told(cop: Cop)
+## A cop bounced on the castle.
+signal bounced(cop: Cop)
 ## A cop talked to Tomasito before the piñata broke.
 signal tomasito_asked(cop: Cop)
 
@@ -72,6 +74,18 @@ const STORIES := {
 		"heavy": [false, false, false],
 		"extra_keys": ["OBJ_EXTRA_SEVEN_CANDLES", "OBJ_EXTRA_ACTOR_CONTRACTS"],
 		"rig": preload("res://scripts/case/birthday/endless_birthday_rig.gd"),
+	},
+	"watch_castle": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_WATCH_CASTLE_B", "BRIEF_WATCH_CASTLE_C", "BRIEF_WATCH_CASTLE_D"],
+		"find": "OBJ_FIND_CASTLE_WATCHES",
+		"main_hidden": true,
+		"main_spot": "in_bouncy_castle",
+		"hidden": [preload("res://scenes/props/castle_watches.tscn"), preload("res://scenes/props/party_blower.tscn"),
+			preload("res://scenes/props/watch_invoice.tscn")],
+		"half_heights": [0.21, 0.175, 0.005],
+		"heavy": [true, true, false],
+		"extra_keys": ["OBJ_EXTRA_PARTY_BLOWER", "OBJ_EXTRA_WATCH_INVOICE"],
+		"rig": preload("res://scripts/case/birthday/watch_castle_rig.gd"),
 	},
 }
 ## Where the suspicions' clue notes may lie, on the floor of the hall.
@@ -191,6 +205,8 @@ var balloon_left := 0.0
 var tomasito_secret := ""
 ## What Tomasito says before the piñata breaks (a story can change it).
 var tomasito_wait_line := "TOMASITO_PINATA_FIRST"
+## The castle lies flat (a story can deflate it) and bounces nobody.
+var castle_flat := false
 var balloons: Array[Area3D] = []
 var popped: Array[int] = []
 var broken_goods := 0
@@ -319,6 +335,13 @@ func _place_hidden() -> void:
 	var story: Dictionary = STORIES[story_id]
 	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
 	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	if story.has("main_spot"):
+		# The main item always goes in its own spot; an extra drawn there takes the main's.
+		var forced := SPOTS.map(func(spot: Dictionary) -> String: return spot.id).find(story.main_spot)
+		var taken := hidden_spots.find(forced)
+		if taken > 0:
+			hidden_spots[taken] = hidden_spots[0]
+		hidden_spots[0] = forced
 	for i in story.hidden.size():
 		var item: Evidence = story.hidden[i].instantiate()
 		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
@@ -392,10 +415,13 @@ func _build_castle() -> void:
 
 ## A cop standing on the castle's floor goes up again, and again.
 func _bounce() -> void:
+	if castle_flat:
+		return
 	for body in _castle_top.get_overlapping_bodies():
 		var cop := body as Cop
 		if cop and cop.velocity.y <= 0.0 and cop.global_position.y <= to_global(CASTLE_AT).y + CASTLE_FLOOR + 0.15:
 			cop.velocity.y = BOUNCE
+			bounced.emit(cop)
 
 
 ## The piñata, the gift table with its gifts, the cake, Chispita's case and the bin of cups.

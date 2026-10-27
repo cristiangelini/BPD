@@ -5705,3 +5705,13 @@ CLUE_ENDLESS_BIRTHDAY,"Tomasito dice que cumple siete «otra vez», y los invita
 BIRTHDAY_KID_WAGES_1,"¿Y mi sueldo? Hoy es mi tercer cumple de Tomasito esta semana.","Where's my pay? This is my third Tomasito birthday this week.","Cadê meu salário? É o meu terceiro aniversário do Tomasito esta semana."
 BIRTHDAY_KID_WAGES_2,"Sin pago no hay coreografía.","No pay, no choreography.","Sem pagamento, sem coreografia."
 BIRTHDAY_KID_WAGES_3,"Mi agente dice que no hablo con policías gratis.","My agent says I don't talk to cops for free.","Meu agente diz que eu não falo com policiais de graça."
+BRIEF_WATCH_CASTLE_B,"Chispita esconde relojes robados donde nadie busca: adentro del piso del inflable, mientras los chicos saltan arriba.","Chispita hides stolen watches where nobody looks: inside the bouncy castle's floor, while the kids jump on top.","O Chispita esconde relógios roubados onde ninguém procura: dentro do chão do pula-pula, enquanto as crianças pulam em cima."
+BRIEF_WATCH_CASTLE_C,"Traigan en el baúl del patrullero la bolsa de relojes. Pesa 8 kilos.","Bring the bag of watches in the patrol car's trunk. It weighs 8 kilos.","Tragam no porta-malas da viatura o saco de relógios. Pesa 8 quilos."
+BRIEF_WATCH_CASTLE_D,"Si encuentran el inflador trucho o la factura de la relojería, mejor: todo suma.","If you find the dodgy blower or the watch shop's invoice, even better: it all counts.","Se acharem o inflador falsificado ou a nota fiscal da relojoaria, melhor: tudo conta."
+OBJ_FIND_CASTLE_WATCHES,Llevarse la bolsa de relojes robados,Take the bag of stolen watches,Levar o saco de relógios roubados
+OBJ_EXTRA_PARTY_BLOWER,Extra: el inflador trucho,Extra: the dodgy blower,Extra: o inflador falsificado
+OBJ_EXTRA_WATCH_INVOICE,Extra: la factura de la relojería,Extra: the watch shop's invoice,Extra: a nota fiscal da relojoaria
+BIRTHDAY_CLINC,"¡Clinc, clinc!","Clink, clink!","Clinc, clinc!"
+CLUE_WATCH_CASTLE,"Saltar en el inflable hace «clinc, clinc». Algo de metal hay adentro del piso.","Jumping on the bouncy castle goes «clink, clink». There's something metal inside the floor.","Pular no pula-pula faz «clinc, clinc». Tem algo de metal dentro do chão."
+BIRTHDAY_CASTLE_PSSS,"¡Psssssss!","Psssssss!","Psssssss!"
+BIRTHDAY_KID_INFLATE,"¡Ya lo inflamos de nuevo! ¡A saltar!","We blew it up again! Let's jump!","Já enchemos de novo! Vamos pular!"
