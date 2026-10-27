@@ -261,9 +261,59 @@ export const models = {
 		b.add('tail', C('mouse_tail', 0xe890a0), new THREE.CylinderGeometry(0.003, 0.002, 0.08, 4), { pos: V(0, 0.02, -0.1), rot: [Math.PI / 2, 0, 0] });
 		return b.build();
 	},
+	// The famous dentures story's main evidence: a black briefcase open a bit, rows of dentures on velvet inside, each
+	// with a name tag. 0.45 x 0.3 x 0.32 m.
+	celebrity_dentures_case() {
+		const b = new Builder('celebrity_dentures_case');
+		const black = C('case_black', 0x26262c, { roughness: 0.5 });
+		b.add('case', black, new THREE.BoxGeometry(0.45, 0.1, 0.32), { pos: V(0, 0.05, 0) });
+		b.add('velvet', C('velvet_red', 0x8a1a2a, { roughness: 0.95 }), new THREE.BoxGeometry(0.42, 0.01, 0.29), { pos: V(0, 0.1, 0) });
+		b.add('lid', black, new THREE.BoxGeometry(0.45, 0.32, 0.03), { pos: V(0, 0.25, -0.17), rot: [-0.25, 0, 0] });
+		b.add('handle', C('handle_gold', 0xd0a040, { metalness: 0.6, roughness: 0.3 }), new THREE.BoxGeometry(0.12, 0.02, 0.02), { pos: V(0, 0.05, 0.17) });
+		for (let i = 0; i < 2; i++) {
+			for (let j = 0; j < 2; j++) {
+				teeth(b, V(-0.1 + i * 0.2, 0.11, -0.06 + j * 0.12), 0.12, 'dentures');
+				b.add('tags', C('tag_white', 0xf8f8f0), new THREE.BoxGeometry(0.05, 0.003, 0.02), { pos: V(-0.1 + i * 0.2, 0.108, -0.02 + j * 0.12) });
+			}
+		}
+		return b.build();
+	},
+	// The signed photo "Gracias por mi sonrisa": a framed smiling face with a scrawl. 0.25 x 0.32 x 0.03 m, standing.
+	smile_photo() {
+		const b = new Builder('smile_photo');
+		b.add('frame', C('photo_frame', 0xd0a040, { metalness: 0.4, roughness: 0.4 }), new THREE.BoxGeometry(0.25, 0.32, 0.02), { pos: V(0, 0.16, 0) });
+		b.add('photo', C('photo_blue', 0x6a9ad0), new THREE.BoxGeometry(0.21, 0.28, 0.004), { pos: V(0, 0.16, 0.011) });
+		b.add('face', C('photo_skin', 0xe8b890), ellipsoid(0.06, 0.075, 0.004, 10, 4), { pos: V(0, 0.18, 0.013) });
+		b.add('smile', enamel, new THREE.BoxGeometry(0.06, 0.012, 0.004), { pos: V(0, 0.155, 0.016) });
+		b.add('scrawl', C('photo_ink', 0x202020), new THREE.BoxGeometry(0.12, 0.006, 0.003), { pos: V(0.02, 0.06, 0.015), rot: [0, 0, 0.2] });
+		return b.build();
+	},
+	// A half-finished denture mold: a plaster block with half a row of teeth. 0.16 x 0.08 x 0.12 m.
+	half_mold() {
+		const b = new Builder('half_mold');
+		b.add('plaster', C('plaster_white', 0xe8e4dc, { roughness: 0.95 }), new THREE.BoxGeometry(0.16, 0.05, 0.12), { pos: V(0, 0.025, 0) });
+		teeth(b, V(-0.035, 0.055, 0), 0.08, 'teeth');
+		return b.build();
+	},
+	// A toy chattering denture on two little orange feet. 0.1 x 0.08 x 0.08 m, its front toward +Z.
+	chatter_teeth() {
+		const b = new Builder('chatter_teeth');
+		for (const x of [-0.025, 0.025]) {
+			b.add('feet', C('feet_orange', 0xf08a30), new THREE.BoxGeometry(0.03, 0.015, 0.04), { pos: V(x, 0.008, 0.005) });
+		}
+		teeth(b, V(0, 0.03, 0), 0.09, 'lower');
+		b.add('upper', C('gum_pink', 0xe88a9a), new THREE.BoxGeometry(0.09, 0.025, 0.05), { pos: V(0, 0.072, -0.005), rot: [-0.3, 0, 0] });
+		b.add('key', C('key_brass', 0xd0a040, { metalness: 0.6, roughness: 0.3 }), new THREE.TorusGeometry(0.014, 0.003, 4, 8), { pos: V(0.05, 0.04, 0), rot: [0, Math.PI / 2, 0] });
+		return b.build();
+	},
 };
 
 export const views = {
+	dentist_dentures: {
+		items: [{ name: 'celebrity_dentures_case', pos: [-0.35, 0, 0] }, { name: 'smile_photo', pos: [0.15, 0, -0.05], rotY: -0.2 },
+			{ name: 'half_mold', pos: [0.45, 0, 0.1] }, { name: 'chatter_teeth', pos: [0.2, 0, 0.3], rotY: 0.4 }],
+		cam: { pos: [0.0, 0.6, 1.4], target: [0.0, 0.12, 0], fov: 40 },
+	},
 	dentist_mouse: {
 		items: [{ name: 'teeth_jar', pos: [-0.45, 0, 0] }, { name: 'mouse_costume', pos: [0.05, 0, 0], rotY: 0.4 },
 			{ name: 'pillow_map', pos: [0.5, 0, 0.15], rotY: -0.3 }, { name: 'windup_mouse', pos: [0.3, 0, 0.35], rotY: 0.8 }],
