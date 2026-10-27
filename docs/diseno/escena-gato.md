@@ -174,5 +174,13 @@ señora y la limusina.
    queda en brazos y suma la fila de +100 de la planilla; si es otra, "¡Esa es Pochola! ¿Están ciegos?" (Pochola,
    Mantequilla, Bigotes o Calabaza) y la gata sale corriendo a esconderse **(propuesta)**. Capturas en `gato/`:
    `paso5a-escondite.png` y `paso5a-en_brazos.png`.
+   Hecho así (segunda parte, las pistas): las huellas en la puerta para gatos (el kit desde el jardín; si un policía
+   la toca o una gata pasa cerca, quedan tapadas), la pisada en el arenero (se fotografía; si una gata se acerca al
+   arenero, la tapa), un pelo suelto en el almohadón del sillón de la Duquesa (si un policía se mete en el sillón, se
+   pierde), una galleta para gatos mordida junto al frasco ("¡Sabe a pescado!" si alguien se la come) y el collar de
+   diamantes, escondido en otro de los tres lugares: con E en la mano se mira el broche (sangre del lado de la mano
+   arañada); si se lo llevan a la señora sin mirarlo, se lo pone y la pista se pierde. La pisada se ve sin linterna,
+   como en el museo **(propuesta)**. Capturas en `gato/`: `paso5b-sillon.png`, `paso5b-galleta.png`,
+   `paso5b-arenero.png` y `paso5b-collar.png`.
 6. El final: tablero, cansancio, sueldo y la limusina con los ovillos.
 7. El sorteo de "Jugar" y el online.

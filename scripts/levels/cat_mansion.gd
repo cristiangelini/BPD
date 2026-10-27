@@ -141,6 +141,7 @@ var duchess_spot := ""
 var duchess_out := false
 ## The searchable places, by spot (suitcase_0 to suitcase_5, dumbwaiter, basket).
 var search_spots := {}
+var clues: CatClues
 var _builder: PlaceBuilder
 
 
@@ -174,10 +175,23 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	duchess_spot = "suitcase_%d" % case.plan.culprit if hiding == "suitcase" else hiding
 	var spot := search_spots[duchess_spot] as Node3D
 	cats[duchess].lock_in(spot.global_position)
+	clues = CatClues.new()
+	clues.name = "Clues"
+	clues.mansion = self
+	clues.case = case
+	add_child(clues)
 
 
-## Searching a spot: Duquesa jumps out of the right one; the others have nothing but junk.
+## Searching a spot: Duquesa jumps out of hers, the diamond necklace turns up in its own; the others have nothing
+## but junk.
 func search(spot: String, cop: Cop) -> void:
+	if clues and spot == clues.necklace_spot and not clues.necklace_out:
+		var at := search_spots[spot] as Node3D
+		var out: Vector3 = at.get_meta("out")
+		clues.reveal_necklace(to_global(Vector3(at.position.x, FLOOR_TOP + 0.05, at.position.z) + out * 0.6))
+		if cop:
+			cop.show_hint("HINT_NECKLACE_OUT")
+		return
 	if spot != duchess_spot or duchess_out or not case:
 		if cop:
 			cop.show_hint("HINT_SEARCH_NOTHING_" + spot.get_slice("_", 0))
@@ -478,7 +492,7 @@ func _drawing_room() -> void:
 	_builder.box(ARMCHAIR_AT + Vector3(0, 0.75, -0.4), Vector3(1.0, 0.9, 0.2), VELVET)
 	for side: float in [-1.0, 1.0]:
 		_builder.box(ARMCHAIR_AT + Vector3(side * 0.45, 0.6, 0), Vector3(0.15, 0.3, 0.9), VELVET)
-	_builder.mesh_box(ARMCHAIR_AT + Vector3(0, 0.53, 0.05), Vector3(0.7, 0.06, 0.6), GOLD)
+	_builder.box(ARMCHAIR_AT + Vector3(0, 0.53, 0.05), Vector3(0.7, 0.06, 0.6), GOLD)
 	_builder.box(PIANO_AT + Vector3(0, 0.5, 0), Vector3(1.4, 1.0, 1.8), BLACK)
 	_builder.mesh_box(PIANO_AT + Vector3(-0.72, 0.78, 0), Vector3(0.05, 0.05, 1.4), WHITE)
 	music_box = MusicBox.new()
