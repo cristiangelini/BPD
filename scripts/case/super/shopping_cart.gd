@@ -21,9 +21,11 @@ const TOP_SPEED_DROP := 4.0
 
 ## The cop riding in the basket, if any.
 var rider: Cop
-## The pusher's speed lately: it drops slowly, so a cart that just hit something still counts as fast (SuperCustomer).
+## The cart's speed lately: it drops slowly, so a cart that just hit something still counts as fast (SuperCustomer).
+## It comes from how far the cart moved, so online the host's copy of a guest's cart is as fast as the guest's own.
 var top_speed := 0.0
 var _last_speed := 0.0
+var _last_at := Vector3.ZERO
 
 
 func _ready() -> void:
@@ -55,6 +57,13 @@ func use(cop: Cop) -> void:
 		cop.global_position = hold_point(cop)
 	else:
 		super.use(cop)
+
+
+## Grabbing the handles moves the cart in front of the cop: that jump isn't speed.
+func push(cop: Cop) -> void:
+	super.push(cop)
+	_last_at = global_position
+	_last_speed = 0.0
 
 
 ## E from inside (the cop's seated_in): out, the same as `use` through the cop, so it happens on every PC.
@@ -95,10 +104,13 @@ func hold_point(_cop: Cop) -> Vector3:
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
-	var speed := Vector2(pusher.velocity.x, pusher.velocity.z).length() if pusher else 0.0
+	var moved := global_position - _last_at
+	_last_at = global_position
+	var speed := Vector2(moved.x, moved.z).length() / delta if pusher and delta > 0.0 else 0.0
 	top_speed = maxf(speed, top_speed - TOP_SPEED_DROP * delta)
-	if rider and pusher and _last_speed > CRASH_SPEED and speed < STOPPED:
-		crash(-pusher.global_basis.z)
+	# The pusher's own PC tells the crash to every PC (ActionSync): the others only see a copy of the push.
+	if rider and pusher and _last_speed > CRASH_SPEED and speed < STOPPED and SupermarketRig.is_mine(pusher):
+		pusher.act("crash", self, [-pusher.global_basis.z])
 	_last_speed = speed
 
 

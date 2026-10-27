@@ -246,6 +246,12 @@ var manager: FloorBoss
 var price_call: PriceCall
 var complaint_bar: ProgressBar
 var _announce_left := ANNOUNCE_EVERY
+## How many lines the loudspeaker said, the aisle of the last one and over where (the guests show it when it's new), and how many
+## this PC showed.
+var announced := 0
+var _last_aisle := 0
+var _last_line_at := Vector3.ZERO
+var _shown_lines := 0
 var stocker: SuperStocker
 ## Same seed, same supermarket (the stories and the hiding spots come from it, step 5).
 @export var case_seed := 0
@@ -325,7 +331,8 @@ func _place_facts() -> Dictionary:
 ## Online, what the guests' supermarket takes from the host's (RaidCase.snapshot): the pyramid, the fridge and what the
 ## story's rig decides on the host (the rest is step 8).
 func net_state() -> Dictionary:
-	return {"pyramid": pyramid_fallen, "fridge": fridge_cracked, "rig": rig.net_state() if rig else null}
+	return {"pyramid": pyramid_fallen, "fridge": fridge_cracked, "speaker": [announced, _last_aisle, _last_line_at],
+		"rig": rig.net_state() if rig else null}
 
 
 func apply_net_state(state: Dictionary) -> void:
@@ -333,6 +340,9 @@ func apply_net_state(state: Dictionary) -> void:
 		topple_pyramid()
 	if state.fridge:
 		break_fridge()
+	if state.speaker[0] > _shown_lines:
+		_shown_lines = state.speaker[0]
+		_speaker(state.speaker[1], state.speaker[2])
 	if rig and state.rig != null:
 		rig.apply_net_state(state.rig)
 
@@ -438,7 +448,7 @@ func _build_back() -> void:
 	var width := FRIDGE_SIZE.x * FRIDGE_X.size()
 	var glass := _area(Vector3(-7.0, FLOOR_TOP + 1.0, FRIDGE_Z + FRIDGE_SIZE.z / 2 + 0.2), Vector3(width, 1.6, 0.4))
 	glass.body_entered.connect(func(hit: Node3D) -> void:
-		if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > FRIDGE_SPEED:
+		if multiplayer.is_server() and hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > FRIDGE_SPEED:
 			break_fridge())
 	_build.open_box(FREEZER_AT, FREEZER_SIZE, "top", Color(0.93, 0.94, 0.95))
 	_model(FREEZER_MODEL, FREEZER_AT)
@@ -608,6 +618,15 @@ static func aisle_of(at: Vector3) -> int:
 func announce(cop: Node3D) -> String:
 	var at := to_local(cop.global_position)
 	var aisle := aisle_of(at)
+	announced += 1
+	_shown_lines = announced
+	_last_aisle = aisle
+	_last_line_at = at
+	return _speaker(aisle, at)
+
+
+## The loudspeaker's line about `aisle` (0: the store), under the ceiling over `at`, for a few seconds.
+func _speaker(aisle: int, at: Vector3) -> String:
 	var line := tr("OFERTON_SPEAKER_AISLE") % aisle if aisle > 0 else tr("OFERTON_SPEAKER_STORE")
 	var label := MarketShopper.make_bubble()
 	label.text = line
@@ -627,7 +646,11 @@ func _cop_inside() -> Node3D:
 	return null
 
 
+## Online the host's Don Ofertón watches the store: the loudspeaker and the pyramid are the host's, and the guests take
+## them from its state (net_state).
 func _physics_process(delta: float) -> void:
+	if not multiplayer.is_server():
+		return
 	_announce_left -= delta
 	if _announce_left <= 0.0:
 		_announce_left = ANNOUNCE_EVERY

@@ -75,9 +75,10 @@ func _build_aisle() -> void:
 	store._label("SUPER_AISLE_13", Vector3(8.65, 2.6, Supermarket.STORE_Z - 0.1), 32, PI, 0.003)
 
 
-## Running into it, facing it, pushes it; two cops push twice as fast.
+## Running into it, facing it, pushes it; two cops push twice as fast. Online the host decides (its copies of the guests'
+## cops run too) and the guests open it from its state.
 func _physics_process(delta: float) -> void:
-	if opened:
+	if opened or not multiplayer.is_server():
 		return
 	for body in _push_zone.get_overlapping_bodies():
 		var cop := body as Cop
