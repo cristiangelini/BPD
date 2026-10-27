@@ -427,6 +427,48 @@ export function buildValidStamp() {
 	return b.build();
 }
 
+// The unchecked Ferris wheel's evidence: a fake safety certificate in a cheap gold frame, with a big red "APROBADO"
+// stamp across it.
+export function buildSafetyCertificate() {
+	const b = new Builder('fair_safety_certificate');
+	box(b, 'frame', mat('fair_gold', GOLD), 0.25, 0.012, 0.33, 0, 0.006, 0);
+	box(b, 'paper', mat('list_paper', 0xfaf6ea), 0.22, 0.004, 0.3, 0, 0.013, 0);
+	const ink = mat('list_ink', 0x2a2a30);
+	for (let i = 0; i < 5; i++) box(b, 'lines', ink, 0.14, 0.002, 0.008, 0, 0.016, -0.09 + i * 0.025);
+	box(b, 'stamp', mat('fair_red', RED), 0.15, 0.003, 0.04, 0, 0.017, 0.08, [0, 0.35, 0]);
+	b.add('seal', mat('fair_gold', GOLD), new THREE.CylinderGeometry(0.025, 0.025, 0.004, 10), { pos: V(0.07, 0.017, 0.12) });
+	return b.build();
+}
+
+// A loose nut off the Ferris wheel: a fat steel hexagon with a hole.
+export function buildFairNut() {
+	const b = new Builder('fair_nut');
+	b.add('nut', mat('needle_steel', 0xc8ccd2, { metalness: 0.7, roughness: 0.3 }), new THREE.TorusGeometry(0.03, 0.017, 4, 6), { pos: V(0, 0.017, 0), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
+// The cloth bag full of nuts taken off the wheel, a few spilling out of its mouth.
+export function buildNutBag() {
+	const b = new Builder('fair_nut_bag');
+	const cloth = mat('nut_bag_cloth', 0x5a6a8a), steel = mat('needle_steel', 0xc8ccd2, { metalness: 0.7, roughness: 0.3 });
+	b.add('bag', cloth, ellipsoid(0.15, 0.12, 0.12, 10, 8), { pos: V(0, 0.12, 0) });
+	b.add('bag', cloth, new THREE.CylinderGeometry(0.05, 0.08, 0.08, 8), { pos: V(0.1, 0.18, 0), rot: [0, 0, -1.0] });
+	for (const [x, z] of [[0.2, 0.03], [0.23, -0.04], [0.18, -0.08]]) {
+		b.add('nuts', steel, new THREE.TorusGeometry(0.02, 0.011, 4, 6), { pos: V(x, 0.012, z), rot: [Math.PI / 2, 0, 0] });
+	}
+	return b.build();
+}
+
+// The inspector's rubber stamp: a blue handle on a block that says "INSPECTOR".
+export function buildInspectorStamp() {
+	const b = new Builder('fair_inspector_stamp');
+	box(b, 'block', mat('ferris_blue', BLUE), 0.12, 0.03, 0.07, 0, 0.015, 0);
+	box(b, 'base', mat('fair_white', WHITE), 0.12, 0.03, 0.07, 0, 0.045, 0);
+	b.add('handle', mat('ferris_blue', BLUE), new THREE.CylinderGeometry(0.018, 0.022, 0.08, 8), { pos: V(0, 0.1, 0) });
+	b.add('handle', mat('fair_gold', GOLD), new THREE.SphereGeometry(0.03, 8, 6), { pos: V(0, 0.15, 0) });
+	return b.build();
+}
+
 export const models = {
 	fair_carousel: buildCarousel, fair_horse: buildFairHorse, ferris_stand: buildFerrisStand, ferris_wheel: buildFerrisWheel,
 	ferris_cabin: buildFerrisCabin, bumper_car: buildBumperCar, fair_arch: buildFairArch, strength_tester: buildStrengthTester,
@@ -436,6 +478,8 @@ export const models = {
 	fair_watch_bag: buildWatchBag, fair_client_list: buildClientList, fair_needle_thread: buildNeedleThread,
 	fair_magnet: buildFairMagnet, fair_glued_cans: buildGluedCans, fair_rig_manual: buildRigManual,
 	fair_ticket_printer: buildTicketPrinter, fair_ticket_rolls: buildTicketRolls, fair_valid_stamp: buildValidStamp,
+	fair_safety_certificate: buildSafetyCertificate, fair_nut: buildFairNut, fair_nut_bag: buildNutBag,
+	fair_inspector_stamp: buildInspectorStamp,
 };
 
 export const views = {
@@ -472,6 +516,11 @@ export const views = {
 		items: [{ name: 'fair_magnet', pos: [-0.35, 0, 0] }, { name: 'fair_glued_cans', pos: [0.3, 0, 0.2], rotY: -0.3 },
 			{ name: 'fair_rig_manual', pos: [0.35, 0, -0.25], rotY: 0.4 }],
 		cam: { pos: [0.1, 1.0, 1.7], target: [0, 0.15, 0], fov: 40 },
+	},
+	fair_loose_wheel: {
+		items: [{ name: 'fair_safety_certificate', pos: [-0.3, 0, 0.1], rotY: 0.2 }, { name: 'fair_nut_bag', pos: [0.3, 0, -0.2] },
+			{ name: 'fair_inspector_stamp', pos: [0.35, 0, 0.3], rotY: -0.4 }, { name: 'fair_nut', pos: [0.05, 0, 0.4] }],
+		cam: { pos: [0.1, 1.0, 1.7], target: [0, 0.1, 0], fov: 40 },
 	},
 	fair_fake_tickets: {
 		items: [{ name: 'fair_ticket_printer', pos: [-0.3, 0, 0], rotY: 0.3 }, { name: 'fair_ticket_rolls', pos: [0.35, 0, 0.25], rotY: -0.3 },
