@@ -174,6 +174,10 @@ suman entre 400 y 600.
      sello falso de la discográfica (300) y la lista de compradores (200). Con esta, las 6 historias se sortean con la
      semilla. Captura: `paso6e-cabina4.png`.
 7. "Jugar" suma el karaoke al sorteo de allanamientos, y la huida de Rosaura.
+   - **Cómo quedó (propuesta):** el karaoke entra en el sorteo de "Jugar" (`PlaceDraw.ORDER`) y cada una de sus 6
+     historias sale con alguna semilla. Si Rosaura ve a un policía agarrar la evidencia principal cerca de ella, se
+     escapa en el auto de la huida desde adelante del patrullero, como los otros dueños; al pararla, es ella la que
+     baja, con sus 3 frases.
 8. El online (Rosaura, Toto, los clientes, los micrófonos y lo frágil en todas las PC).
 
 ## Preguntas para Cristian

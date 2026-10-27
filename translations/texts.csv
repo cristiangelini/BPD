@@ -5742,3 +5742,7 @@ TOTO_CLUE_karaoke_booth4,"«¡Silencio! ¡Por fin! Te cuento: vi a la jefa escon
 KARAOKE_BOOTH_4,Cabina 4,Booth 4,Cabine 4
 KARAOKE_BOOTH4_VOICE,♪ …la la laaa… ♪ (alguien canta del otro lado),♪ …la la laaa… ♪ (someone sings on the other side),♪ …lá lá láaa… ♪ (alguém canta do outro lado)
 KARAOKE_BOOTH4_CLUE,"Al lado de la cabina 3 hay una puerta «4» pintada en la pared, y del otro lado alguien canta aunque no hay nadie.","Next to booth 3 there's a door “4” painted on the wall, and someone sings on the other side though nobody's there.","Ao lado da cabine 3 há uma porta «4» pintada na parede, e do outro lado alguém canta mesmo sem ninguém lá."
+HINT_ESCAPE_karaoke,¡Rosaura vio la prueba y se escapa en el auto! Tienen un minuto para agarrarla.,Rosaura saw the evidence and is getting away in the car! You have one minute to catch her.,A Rosaura viu a prova e está fugindo no carro! Vocês têm um minuto para pegá-la.
+CHASE_KARAOKE_LINE_1,¡Cuidado con el peinado! ¡Tardé tres horas!,Careful with my hair! It took me three hours!,Cuidado com o penteado! Levei três horas!
+CHASE_KARAOKE_LINE_2,¡No me escapaba! ¡Era mi gira mundial!,I wasn't running away! It was my world tour!,Eu não estava fugindo! Era minha turnê mundial!
+CHASE_KARAOKE_LINE_3,¡Mis fans no se van a olvidar de esto!,My fans won't forget this!,Meus fãs não vão esquecer disso!
