@@ -7,8 +7,9 @@ extends Node3D
 ## owner's office in the back east corner, locked, with the desk and the rack of dresses. The room has eight round
 ## tables under the disco ball, the three private booths along the west wall and the bar by the door on the east side
 ## (the office's key in its till), with the ice machine, the juice fridge and the stack of chairs. The lyrics screen
-## breaks if something hits it fast and the disco ball falls if something thrown hits it, a fine each. Every number
-## here is (propuesta).
+## breaks if something hits it fast and the disco ball falls if something thrown hits it, a fine each. It's a raid case
+## like the bowling alley (step 5): one of its stories (STORIES), drawn with the seed, run by the same RaidCase as the
+## other places. Every number here is (propuesta).
 
 signal screen_broken
 signal disco_ball_fell
@@ -17,6 +18,33 @@ signal singer_complained(singer: KaraokeSinger)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const OWNER_SCENE := preload("res://scenes/npc/karaoke_owner.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the karaoke can be suspected of (allanamiento-karaoke.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["karaoke_applause", "karaoke_tuner", "karaoke_lyrics", "karaoke_watches", "karaoke_helium",
+	"karaoke_booth4"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_KARAOKE_TIP_B", "BRIEF_TIP_C", "BRIEF_KARAOKE_TIP_D",
+	"BRIEF_KARAOKE_TIP_E"]
+## The stories the karaoke can tell, like Bowling.STORIES: what the comisario says once it's guessed, its "find it"
+## row, what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the checklist
+## rows of its extras and its rig. With "main_hidden" the first hidden item is the main evidence.
+const STORIES := {
+	"karaoke_applause": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_KARAOKE_APPLAUSE_B", "BRIEF_KARAOKE_APPLAUSE_C", "BRIEF_KARAOKE_APPLAUSE_D"],
+		"find": "OBJ_FIND_APPLAUSE_MACHINE",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/karaoke_applause_machine.tscn"),
+			preload("res://scenes/props/karaoke_applause_tapes.tscn"), preload("res://scenes/props/karaoke_winners_list.tscn")],
+		"half_heights": [0.175, 0.03, 0.01],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_APPLAUSE_TAPES", "OBJ_EXTRA_WINNERS_LIST"],
+		"rig": preload("res://scripts/case/karaoke/applause_rig.gd"),
+	},
+}
+## Where the clue notes for the suspicions can lie, on the floor.
+const NOTE_PLACES: Array[Vector3] = [Vector3(-1.0, FLOOR_TOP, 8.0), Vector3(4.0, FLOOR_TOP, 6.5),
+	Vector3(-7.5, FLOOR_TOP, 7.5), Vector3(-0.8, FLOOR_TOP, -4.3), Vector3(4.5, FLOOR_TOP, -3.0),
+	Vector3(10.5, FLOOR_TOP, -6.5)]
 const SPEAKER_MODEL := preload("res://assets/models/stage_speaker.glb")
 const SCREEN_MODEL := preload("res://assets/models/lyrics_screen.glb")
 const CONSOLE_MODEL := preload("res://assets/models/sound_console.glb")
@@ -154,8 +182,20 @@ var _next_singer := 0
 var _turn_left := FIRST_TURN
 var screen_cracked := false
 var disco_fallen := false
+## The case flow every raid shares.
+var raid: RaidCase
 ## Money taken off the case pay: the lyrics screen and the disco ball.
-var fines := 0
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: KaraokeRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
 ## Same seed, same karaoke (the stories and the hiding spots come from it, step 5).
 @export var case_seed := 0
 var _build: PlaceBuilder
@@ -168,6 +208,21 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_stage()
@@ -187,6 +242,103 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "karaoke", car)
+	raid.station_parking = station_parking
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = owner_boss
+	raid.owner_id = "karaoke"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	owner_boss.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_KARAOKE"))
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The karaoke's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_KARAOKE",
+		"guess_key": "OBJ_GUESS_KARAOKE",
+		"broken_key": "OBJ_BROKEN_KARAOKE",
+		"complaint_key": "OBJ_COMPLAINT_KARAOKE",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": (1 if screen_cracked else 0) + (1 if disco_fallen else 0),
+		"complaint": owner_boss.complaint,
+	}
+
+
+## Online, what the guests' karaoke takes from the host's (RaidCase.snapshot): what's broken and what the story's rig
+## decides on the host (the rest is step 8).
+func net_state() -> Dictionary:
+	return {"screen": screen_cracked, "disco": disco_fallen, "rig": rig.net_state() if rig else null}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	if state.screen:
+		break_screen()
+	if state.disco:
+		drop_disco_ball()
+	if rig and state.rig != null:
+		rig.apply_net_state(state.rig)
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Rosaura lets slip when asked (where the story's things are, in an order drawn from the seed), and what Toto
+## saw: where she hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		owner_boss.slips.append(tr("DIVA_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	owner_boss.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	toto.clue = tr("CLUE_TOTO") % where
+	toto.clue_speech = tr("TOTO_CLUE_" + story_id) % where
+	toto.told.connect(raid.add_clue)
 
 
 ## The carpet, the walls with the doorway, the dark ceiling with its lights, the roof, the sign and its neon note.

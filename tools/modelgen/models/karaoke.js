@@ -205,12 +205,66 @@ export function buildToto() {
 	return b.build();
 }
 
+// The applause machine's story: the machine of recorded applause (a box with a big red button, a horn and a pair of
+// clapping hands painted on it), the tapes of applause, the list of the contest's winners, the speaker hidden in the
+// ceiling and the frame with the nephew's 10 cups.
+export function buildApplauseMachine() {
+	const b = new Builder('karaoke_applause_machine');
+	b.add('box', mat('applause_box', 0x3a6ad2), new THREE.BoxGeometry(0.5, 0.35, 0.4), { pos: V(0, 0.175, 0) });
+	b.add('button', mat('applause_red', 0xd83a30), new THREE.CylinderGeometry(0.07, 0.07, 0.04, 12), { pos: V(-0.1, 0.37, 0) });
+	b.add('horn', mat('applause_brass', 0xe8b830, { metalness: 0.6, roughness: 0.3 }), new THREE.ConeGeometry(0.1, 0.18, 10, 1, true), { pos: V(0.14, 0.42, 0), rot: [0, 0, Math.PI] });
+	const skin = mat('applause_hands', 0xf0c8a8);
+	for (const s of [-1, 1]) b.add('hands', skin, new THREE.BoxGeometry(0.08, 0.12, 0.01), { pos: V(s * 0.05, 0.18, 0.205), rot: [0, 0, s * 0.3] });
+	return b.build();
+}
+
+export function buildApplauseTapes() {
+	const b = new Builder('karaoke_applause_tapes');
+	for (let i = 0; i < 3; i++) {
+		b.add('tape', mat('tape_black', 0x24242a), new THREE.BoxGeometry(0.11, 0.017, 0.07), { pos: V(0, 0.009 + i * 0.019, 0), rot: [0, i * 0.15, 0] });
+		b.add('label', mat('tape_label', 0xf2c230), new THREE.BoxGeometry(0.08, 0.002, 0.03), { pos: V(0, 0.019 + i * 0.019, 0), rot: [0, i * 0.15, 0] });
+	}
+	return b.build();
+}
+
+export function buildWinnersList() {
+	const b = new Builder('karaoke_winners_list');
+	b.add('paper', mat('winners_paper', 0xf6f2e2), new THREE.BoxGeometry(0.21, 0.006, 0.28), { pos: V(0, 0.003, 0) });
+	for (let i = 0; i < 10; i++) b.add('lines', mat('winners_ink', 0x2a2a40), new THREE.BoxGeometry(0.14, 0.002, 0.008), { pos: V(-0.01, 0.007, -0.11 + i * 0.024) });
+	b.add('star', mat('winners_gold', 0xf2c230), new THREE.BoxGeometry(0.04, 0.002, 0.04), { pos: V(0.07, 0.007, -0.11), rot: [0, 0.78, 0] });
+	return b.build();
+}
+
+// A speaker in the ceiling, 0.4 m square, its grille facing down; origin at its top.
+export function buildCeilingSpeaker() {
+	const b = new Builder('ceiling_speaker');
+	b.add('box', mat('cspeaker_white', 0xe8e8ec), new THREE.BoxGeometry(0.4, 0.12, 0.4), { pos: V(0, -0.06, 0) });
+	b.add('grille', mat('cspeaker_grille', 0x3a3c44), new THREE.CylinderGeometry(0.15, 0.15, 0.01, 14), { pos: V(0, -0.125, 0) });
+	return b.build();
+}
+
+// The frame with the nephew's 10 cups, 1.6 m wide, its front to +Z, its middle at the origin.
+export function buildNephewFrame() {
+	const b = new Builder('nephew_frame');
+	const gold = mat('frame_gold', 0xe8b830, { metalness: 0.6, roughness: 0.3 });
+	b.add('frame', gold, new THREE.BoxGeometry(1.6, 1.0, 0.06), { pos: V(0, 0, 0) });
+	b.add('back', mat('frame_velvet', 0x6a1a3a), new THREE.BoxGeometry(1.5, 0.9, 0.02), { pos: V(0, 0, 0.03) });
+	for (let i = 0; i < 10; i++) {
+		const x = -0.6 + (i % 5) * 0.3, y = i < 5 ? 0.2 : -0.22;
+		b.add('cup', gold, new THREE.CylinderGeometry(0.06, 0.025, 0.12, 8), { pos: V(x, y + 0.04, 0.07) });
+		b.add('cup', gold, new THREE.BoxGeometry(0.07, 0.04, 0.05), { pos: V(x, y - 0.05, 0.07) });
+	}
+	return b.build();
+}
+
 export const models = {
 	stage_speaker: buildStageSpeaker, lyrics_screen: buildLyricsScreen, sound_console: buildSoundConsole,
 	karaoke_bar: buildKaraokeBar, ice_machine: buildIceMachine, karaoke_table: buildKaraokeTable,
 	disco_ball: buildDiscoBall, booth_sofa: buildBoothSofa, dress_rack: buildDressRack, chair_stack: buildChairStack,
 	neon_note: buildNeonNote, mic_stand: buildMicStand, karaoke_mic: buildKaraokeMic,
 	npc_rosaura: buildRosaura, npc_toto: buildToto,
+	karaoke_applause_machine: buildApplauseMachine, karaoke_applause_tapes: buildApplauseTapes,
+	karaoke_winners_list: buildWinnersList, ceiling_speaker: buildCeilingSpeaker, nephew_frame: buildNephewFrame,
 };
 
 export const views = {
@@ -229,5 +283,9 @@ export const views = {
 	rosaura: {
 		items: [{ name: 'npc_rosaura', pos: [-0.5, 0, 0], rotY: 0.3, scale: [0.8, 1.15, 0.8] }, { name: 'npc_toto', pos: [0.6, 0, 0.2], rotY: -0.3, scale: 0.85 }],
 		cam: { pos: [0, 1.4, 4.0], target: [0, 1.0, 0], fov: 34 },
+	},
+	karaoke_applause: {
+		items: [{ name: 'karaoke_applause_machine', pos: [-0.7, 0, 0] }, { name: 'karaoke_applause_tapes', pos: [-0.1, 0, 0.1] }, { name: 'karaoke_winners_list', pos: [0.3, 0, 0.1], rotY: 0.3 }, { name: 'ceiling_speaker', pos: [0.9, 0.3, 0] }, { name: 'nephew_frame', pos: [0.2, 0.9, -0.6] }],
+		cam: { pos: [0.1, 1.0, 2.6], target: [0.1, 0.4, 0], fov: 40 },
 	},
 };

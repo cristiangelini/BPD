@@ -139,6 +139,15 @@ suman entre 400 y 600.
      en el paso 5). Con la música baja cada cliente se queja una vez (5 cada uno, con su propia espera), así que
      bajarla cuesta hasta 30 de denuncia. La música vuelve sola. Captura: `paso4-toto.png`.
 5. El caso (RaidCase) y la primera historia, la máquina de aplausos.
+   - **Cómo quedó (propuesta):** el karaoke es un allanamiento como la bolera: `RaidCase` con 3 sospechas sacadas
+     de las 6 (la verdadera entre ellas), una nota con la pista de cada una tirada en el piso y lo escondido en
+     escondites sacados con la semilla (lo pesado solo en los grandes). Rosaura deja escapar dónde está cada cosa si
+     le preguntas, y Toto cuenta dónde vio a Rosaura esconder una. En la máquina de aplausos (`ApplauseRig`), mientras
+     un cliente canta suenan aplausos cada 5 s («¡CLAP CLAP CLAP!») desde un parlante en el techo, sobre las cabinas:
+     un policía a menos de 3 m debajo de él cuando suenan se da cuenta de que salen de ahí (la pista, una vez). En la
+     pared este cuelga el cuadro con las 10 copas del sobrino. Se esconden la máquina (8 kg, 1000), los casetes de
+     aplausos (300) y la lista de ganadores (200). Las multas van al caso y, si Rosaura llama al abogado, se pierde.
+     Capturas: `paso5-aplausos.png`, `paso5-cuadro.png`.
 6. Las otras 5 historias.
 7. "Jugar" suma el karaoke al sorteo de allanamientos, y la huida de Rosaura.
 8. El online (Rosaura, Toto, los clientes, los micrófonos y lo frágil en todas las PC).
