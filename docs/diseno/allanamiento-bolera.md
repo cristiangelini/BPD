@@ -152,6 +152,11 @@ suman entre 400 y 600.
      caen ni se mueven, salvo en las manos de un policía: una bola que llega a ellos rebota y vuelve rodando con el 70 %
      de su velocidad. El primer policía que levanta uno dice «¡Uf! ¡Pesa como un ladrillo!» y esa es la pista.
      Capturas: `allanamiento-bolera/paso6-plomo-*.png`.
+   - **Cómo quedó, los zapatos con ruedas (propuesta):** se esconden la caja de zapatos con ruedas (6 kg, 1000), el
+     patín desarmado (2 kg, 300) y el manual (200). El primer par que Pipo presta tiene ruedas: mientras el policía que
+     lo lleva camina, cada 1,2 s los zapatos lo empujan 0,5 s hacia donde iba, aparece «¡Estos zapatos se van solos!» y la
+     primera vez esa es la pista. Los jugadores de la pista 1 (el equipo de Don Chuza) se deslizan hasta la línea en
+     0,3 s en vez de caminar 0,8 s. Capturas: `allanamiento-bolera/paso6-ruedas*.png`.
 7. "Jugar" suma la bolera al sorteo de allanamientos, y la huida de Don Chuza.
 8. El online (Don Chuza, Pipo, los jugadores, las bolas y lo frágil en todas las PC).
 

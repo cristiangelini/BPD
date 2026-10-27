@@ -34,6 +34,8 @@ var lane := 0
 ## Where they wait between throws (alley space), and when the next throw comes.
 var home := Vector3.ZERO
 var next_throw := THROW_EVERY
+## How long they take to walk up to the foul line (a story's wheels make it quicker).
+var step_up := STEP_UP
 var rng := RandomNumberGenerator.new()
 ## The ball they bowled last, until it's back on the rack.
 var ball: BowlingBall
@@ -139,12 +141,12 @@ func _try_throw() -> void:
 		say(THROW_LINES[rng.randi() % THROW_LINES.size()])
 	var line := Vector3(Bowling.LANE_X[lane], home.y, Bowling.FOUL_Z + 0.6)
 	var walk := create_tween()
-	walk.tween_property(self, "position", line, STEP_UP)
+	walk.tween_property(self, "position", line, step_up)
 	walk.tween_callback(func() -> void:
 		ball = picked
 		alley.bowl(picked, lane, Vector3(rng.randf_range(-BOWL_SIDEWAYS, BOWL_SIDEWAYS), 0, -BOWL_SPEED)))
 	walk.tween_interval(BACK_AFTER)
-	walk.tween_property(self, "position", home, STEP_UP)
+	walk.tween_property(self, "position", home, step_up)
 
 
 ## A cop's ball knocked their pins down (a ball nobody bowled, or one thrown by a cop).

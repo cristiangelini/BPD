@@ -20,10 +20,12 @@ const SAY_TIME := 4.0
 ## The checklist line for what he saw and the longer thing he says (both translated, set by the story).
 var clue := ""
 var clue_speech := ""
-## The cops wearing a pair of his shoes now, and the ones who already gave a pair back.
+## The cops wearing a pair of his shoes now (which pair he handed out, counting from 0), the ones who already gave a
+## pair back, and how many pairs he handed out.
 var wearing := {}
 var returned := {}
 var has_told := false
+var pairs_out := 0
 var _since_idle := 0.0
 var _idle_line := 0
 var _bubble: Label3D
@@ -63,7 +65,8 @@ func prompt_key(cop: Cop) -> String:
 ## E on him: a pair of shoes, or the pair back and, the first time, what he saw.
 func use(cop: Cop) -> void:
 	if not wears(cop):
-		wearing[cop] = true
+		wearing[cop] = pairs_out
+		pairs_out += 1
 		say("PIPO_SHOES")
 		cop.show_hint("HINT_BOWL_SHOES_ON")
 		return
