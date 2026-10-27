@@ -73,6 +73,7 @@ const SUSPECT_MODELS := {
 	"owner_insurance": "res://assets/models/npc_jefa.glb",
 	"owner_cake_lab": "res://assets/models/npc_chef_bruno.glb",
 	"owner_gym": "res://assets/models/npc_profe_fito.glb",
+	"owner_farm": "res://assets/models/npc_florencio.glb",
 	# The pastry contest's culprit (escena-del-crimen.md), accused at the board.
 	"owner_cook": "res://assets/models/npc_pastelero.glb",
 	# The circus's culprit (escena-circo.md), accused at the board.
