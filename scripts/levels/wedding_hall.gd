@@ -12,7 +12,8 @@ extends CrimeScenePlace
 ## (set_up_case). Step 4: what was stolen (the ring, the gift envelopes' box or the sugar couple) hidden in the cake,
 ## among the coats in the coat check or in the head table's centerpiece, all drawn with the case seed; and the clues
 ## (WeddingClues) with grandma Chola as the witness. Step 5: Rosa follows the cops blaming Tito (WeddingBride), the
-## waltz every two minutes (WeddingWaltz) and the wedding called off if Tito is wrongly accused.
+## waltz every two minutes (WeddingWaltz) and the wedding called off if Tito is wrongly accused. Step 6: Tito never
+## goes home, and the culprit runs off in the newlyweds' car dropping its cans.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -79,6 +80,9 @@ const COATS_SIZE := Vector3(0.5, 1.0, 3.0)
 ## The cake's shape once it's cut open: caved in and spread out.
 const CUT_CAKE := Vector3(1.15, 0.55, 1.15)
 const GUEST_LINES := 6
+## The culprit runs off in the newlyweds' white car (the wedding check's, WeddingCar), from the street in front.
+const GETAWAY := "traffic_0"
+const GETAWAY_X := 3.0
 ## What a wrong accusation of Tito adds to the family's complaint, off the salary (escena-boda.md, pregunta 2).
 const SUSPENDED_COMPLAINT := 30
 const DJ_LINES := 4
@@ -207,6 +211,30 @@ func reveal_loot() -> void:
 ## The tuxedo by index (the order of the case's traits).
 func suspect(index: int) -> CollisionObject3D:
 	return tuxedos[index] if index >= 0 and index < tuxedos.size() else null
+
+
+## Tito never gets tired and goes home: it's his wedding.
+func stays(index: int) -> bool:
+	return index == WeddingTraits.GROOM
+
+
+## The newlyweds' car waits on the street in front of the door.
+func getaway(_index: int, _city: Node3D) -> Dictionary:
+	var out := to_global(Vector3(GETAWAY_X, 0, HALF_Z + CityLayout.SIDEWALK + 2.0))
+	return {"at": Transform3D(global_basis, out), "via": []}
+
+
+## The newlyweds' car with its "just married" board and the cans behind, which come loose at every corner it turns
+## (ChaseDrops). Nobody else rides in it.
+func dress_getaway(chase: ChaseCase) -> void:
+	chase.drops.wedding = true
+	if chase.truck.has_node("Cans"):
+		return
+	WeddingCar.dress(chase.truck, "", -1, true)
+	for extra: String in ["Groom", "WindowDriver/Veil"]:
+		var node := chase.truck.get_node_or_null(extra)
+		if node:
+			node.free()
 
 
 ## Grandma Chola is the witness: only the cuffs offend her; a shout makes her hear.

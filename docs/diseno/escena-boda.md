@@ -168,7 +168,13 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
    3 s antes) y dura 20 s: Rosa y Tito bailan en el medio de la pista y los cinco padrinos alrededor; E sobre ellos
    dice "¡Ahora no, es el vals!". Un policía que salta dos veces en la pista hace reír a Rosa y la denuncia baja $5,
    una vez por vals. Al terminar, todos vuelven a su lugar **(propuesta)**. Captura: `boda-escena/paso5-vals.png`.
-6. El final: el tablero, el cansancio, el sueldo y la huida en el auto de los novios con las latas.
+6. El final: el tablero, el cansancio, el sueldo y la huida en el auto de los novios con las latas. Hecho así: el nivel
+   abre la sala del tablero de la comisaría y el comisario da el caso (`--place=wedding`). Los padrinos se cansan como
+   los pasteleros (desde los 8 minutos, uno cada 2), pero Tito no se va nunca. Al acusar bien, mitad y mitad con la
+   semilla: se entrega (y al turno siguiente es su interrogatorio, de traje y galera) o huye en el auto blanco de los
+   novios, que espera en la calle frente a la puerta, con el cartel "Recién casados", el moño y las latas, que se
+   sueltan en cada esquina (las mismas del control de la boda). La denuncia de la familia se descuenta del sueldo, como
+   los marcos rotos del museo **(propuesta)**. Captura: `boda-escena/paso6-huida.png`.
 7. El sorteo de "Jugar" (la boda entra en el reparto de las escenas del crimen) y el online: Rosa, el vals, la abuela,
    el video borrado, el pastel cortado y las pistas arruinadas se ven igual en todas las PC.
 
