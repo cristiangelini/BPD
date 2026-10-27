@@ -119,6 +119,9 @@ entre 400 y 600. El bloque de hielo es la cosa más pesada (8 kg): conviene llev
    E es la pista: abajo se ve "Helados del Río") y cada 35 s suena sola la musiquita de la otra heladería (por ahora
    como texto sobre el camión, sin sonido). Capturas `heladeria/paso6e-*.png`.
 7. "Jugar" suma la heladería al sorteo de allanamientos (`PlaceDraw.ORDER`).
+   **Hecho (paso 7):** "ice_cream" entra en `PlaceDraw.ORDER` en su propia línea (las pilas de la radio, el cine y
+   otras también agregan la suya: al mergear, quedan todas). La prueba del sorteo cuenta la heladería y comprueba que
+   salen sus 6 historias.
 8. El online (doña Nieve, Lucho, las tapas, los charcos y lo frágil en todas las PC).
 
 ## Preguntas para Cristian

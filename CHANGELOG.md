@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Ice cream raid, step 7: Play's raid draw now also picks the ice cream shop, with its 6 stories.
 - Ice cream raid, step 6: the stolen truck story: the truck's original plate, the can of fresh paint and the truck's papers in someone else's name, the wet paint sign on the truck (the clue) and the other shop's jingle playing by itself every 35 s.
 - Ice cream raid, step 6: the frozen cash story: the ice cream bucket full of bills, the sales notebook and the "sold" stamp, the till's display saying 900 kg sold today (the clue), and doña Nieve shutting every open freezer whenever a cop comes in through the door.
 - Ice cream raid, step 6: the prize sticks story: the box of prize sticks never sold, the stick engraving machine and the "winners" list, the bin full of losing sticks by the tables (the clue) and a kid who comes back every 40 s shouting there's nothing again.
