@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Karaoke raid, step 3: Rosaura la Diva, the owner, walks her round up onto the stage; a cop on the stage with microphone 2 calls her to a 15 s duet facing the lyrics screen (every 45 s, the third one gives the cops away), and the customers' complaints, the screen and the disco ball reach her complaint.
 - Karaoke raid, step 2: five microphones in their stands, whose cable stops them 4 m away and trips a cop running over it, and six customers who go up in turn to sing at microphone 1 and complain when it's missing, taken from them, or a cop is on the stage.
 - Karaoke raid, step 1: the karaoke "Karaoke El Desafine" as a place to raid on block (6, 3): the stage with its steps, speakers and lyrics screen, the room with its tables under the disco ball, the three private booths, the bar with the office's key in its till, the sound guy's console and the locked office; the lyrics screen and the disco ball break with a fine each, and 12 hiding spots.
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.

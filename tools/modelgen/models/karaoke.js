@@ -1,8 +1,10 @@
 // Props of the karaoke "Karaoke El Desafine" (docs/diseno/allanamiento-karaoke.md): a stage speaker, the lyrics
 // screen, the sound guy's console, the bar, the ice machine, a round table with its chairs, the disco ball, a booth's
 // sofa, the owner's rack of sequin dresses, a stack of chairs and the neon note of the sign, with origins at the floor
-// in the middle of each piece (the screen and the disco ball at their middle). Placeholder, not final art.
-import { Builder, mat, V, THREE } from '../lib.js';
+// in the middle of each piece (the screen and the disco ball at their middle), and Rosaura, the owner. Placeholder,
+// not final art.
+import { Builder, mat, ellipsoid, V, THREE } from '../lib.js';
+import { pearBody, eyes } from './pear.js';
 
 // A speaker 1.0 m wide, 1.8 m tall and 0.8 m deep, its front to +Z: black box, two woofers and a tweeter.
 export function buildStageSpeaker() {
@@ -163,11 +165,34 @@ export function buildKaraokeMic() {
 	return b.build();
 }
 
+// Rosaura la Diva, the owner: a silver sequin dress down to the floor, a pink feather boa around her neck, red lips and
+// a tall hairdo like a meringue. The game scales her tall and thin, like a microphone stand.
+export function buildRosaura() {
+	const b = new Builder('npc_rosaura');
+	const sequins = mat('rosaura_sequins', 0xe8ecf4, { metalness: 0.3, roughness: 0.25, emissive: 0x383c44 });
+	pearBody(b, mat('skin_rosa', 0xf0c8a8), { shirt: sequins, pants: sequins, shoes: mat('rosaura_heels', 0xff5ad2), belted: false, onePiece: true });
+	const boa = mat('rosaura_boa', 0xff8ad2);
+	for (let i = 0; i < 12; i++) {
+		const a = (i / 12) * Math.PI * 2;
+		b.add('boa', boa, ellipsoid(0.07, 0.06, 0.07, 6, 4), { pos: V(Math.sin(a) * 0.2, 1.1, Math.cos(a) * 0.19 + 0.01) });
+	}
+	for (const s of [-1, 1]) b.add('boa', boa, ellipsoid(0.06, 0.16, 0.06, 6, 4), { pos: V(s * 0.16, 0.92, 0.2) });
+	eyes(b, 1.34, 0.17, 0.08, 0.05);
+	b.add('lips', mat('rosaura_lips', 0xd8203a), ellipsoid(0.06, 0.025, 0.03, 8, 4), { pos: V(0, 1.24, 0.2) });
+	const hair = mat('rosaura_hair', 0xf2d080);
+	b.add('hair', hair, ellipsoid(0.22, 0.12, 0.21, 10, 5), { pos: V(0, 1.44, -0.01) });
+	b.add('hair', hair, ellipsoid(0.17, 0.16, 0.16, 10, 6), { pos: V(0, 1.62, -0.03) });
+	b.add('hair', hair, ellipsoid(0.1, 0.1, 0.1, 8, 5), { pos: V(0, 1.8, -0.04) });
+	b.add('mic', mat('rosaura_mic', 0xf2c230, { metalness: 0.7, roughness: 0.3 }), new THREE.CylinderGeometry(0.025, 0.018, 0.2, 8), { pos: V(0.5, 0.72, 0.12) });
+	return b.build();
+}
+
 export const models = {
 	stage_speaker: buildStageSpeaker, lyrics_screen: buildLyricsScreen, sound_console: buildSoundConsole,
 	karaoke_bar: buildKaraokeBar, ice_machine: buildIceMachine, karaoke_table: buildKaraokeTable,
 	disco_ball: buildDiscoBall, booth_sofa: buildBoothSofa, dress_rack: buildDressRack, chair_stack: buildChairStack,
 	neon_note: buildNeonNote, mic_stand: buildMicStand, karaoke_mic: buildKaraokeMic,
+	npc_rosaura: buildRosaura,
 };
 
 export const views = {
@@ -182,5 +207,9 @@ export const views = {
 			{ name: 'karaoke_mic', pos: [-0.4, 0, -0.4] }, { name: 'neon_note', pos: [5.6, 0, -1.8] },
 		],
 		cam: { pos: [0.6, 4.0, 9.5], target: [0.6, 1.0, 0], fov: 50 },
+	},
+	rosaura: {
+		items: [{ name: 'npc_rosaura', pos: [0, 0, 0], rotY: 0.3, scale: [0.8, 1.15, 0.8] }],
+		cam: { pos: [0, 1.4, 4.0], target: [0, 1.0, 0], fov: 34 },
 	},
 };

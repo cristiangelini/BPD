@@ -16,6 +16,7 @@ signal disco_ball_fell
 signal singer_complained(singer: KaraokeSinger)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const OWNER_SCENE := preload("res://scenes/npc/karaoke_owner.tscn")
 const SPEAKER_MODEL := preload("res://assets/models/stage_speaker.glb")
 const SCREEN_MODEL := preload("res://assets/models/lyrics_screen.glb")
 const CONSOLE_MODEL := preload("res://assets/models/sound_console.glb")
@@ -57,6 +58,16 @@ const SINGERS := 6
 const SINGER_LOOKS := ["cliente", "clienta", "invitado", "invitado_b", "fan", "huesped"]
 const TURN_GAP := 4.0
 const FIRST_TURN := 3.0
+## Rosaura's round: from the door between the tables and up the steps onto the stage, like a star. For a duet she
+## stands by microphone 2, facing the lyrics screen.
+const OWNER_ROUTE: Array[Vector3] = [Vector3(0.5, FLOOR_TOP, 7.5), Vector3(2.8, FLOOR_TOP, 6.0),
+	Vector3(2.8, FLOOR_TOP, -0.8), Vector3(-4.2, FLOOR_TOP, -0.8), Vector3(-4.2, FLOOR_TOP, -4.2),
+	Vector3(2.2, FLOOR_TOP, -3.6), Vector3(2.2, FLOOR_TOP + STAGE_SIZE.y, -5.9)]
+const DUET_BESIDE := Vector3(0.7, 0, -0.4)
+## What she notices besides what every owner does: a customer's complaint (each one's own cooldown, KaraokeSinger)
+## and the cops' third duet.
+const SINGER_COMPLAINT := 5.0
+const CAUGHT_ON := 10.0
 ## The lyrics screen over the stage, on the back wall.
 const SCREEN_AT := Vector3(-2.0, 2.9, -9.8)
 const SCREEN_SIZE := Vector3(5.0, 2.4, 0.6)
@@ -128,6 +139,9 @@ var station_parking: Transform3D
 var city_map: CityMap
 var office_door: FrontDoor
 var till: Till
+var owner_boss: FloorBoss
+var duet_call: DuetCall
+var complaint_bar: ProgressBar
 var mics: Array[KaraokeMic] = []
 var singers: Array[KaraokeSinger] = []
 ## The customer whose turn it is (null between turns), the next one in line and how long until they go up.
@@ -160,6 +174,7 @@ func _ready() -> void:
 	_build_mics()
 	_build_singers()
 	office_door = _door(OFFICE_DOOR_X)
+	_place_owner()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("karaoke")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -343,6 +358,46 @@ func _build_singers() -> void:
 		singers.append(singer)
 
 
+## Rosaura on her round, the duets that call her, what she notices and the complaint bar.
+func _place_owner() -> void:
+	duet_call = DuetCall.new()
+	duet_call.name = "DuetCall"
+	add_child(duet_call)
+	owner_boss = OWNER_SCENE.instantiate()
+	for point: Vector3 in OWNER_ROUTE:
+		owner_boss.route.append(to_global(point))
+	owner_boss.printer = duet_call
+	owner_boss.printer_spot = to_global(MIC_STANDS[1] + DUET_BESIDE)
+	owner_boss.fix_facing = to_global(SCREEN_AT)
+	add_child(owner_boss)
+	owner_boss.start_at(0)
+	duet_call.called.connect(func() -> void:
+		_say(SCREEN_AT + Vector3(0, -1.6, 0.4), "KARAOKE_DUET_SCREEN", owner_boss.fix_time))
+	duet_call.caught_on.connect(owner_boss.blame.bind(CAUGHT_ON, "DIVA_CAUGHT_ON"))
+	singer_complained.connect(func(_singer: KaraokeSinger) -> void: owner_boss.blame(SINGER_COMPLAINT, "DIVA_SINGER"))
+	office_door.broken.connect(owner_boss.door_broken)
+	till.opened.connect(func(at: Vector3) -> void: owner_boss.saw(at, FloorBoss.SAW_TILL))
+	screen_broken.connect(func() -> void: owner_boss.saw(to_global(SCREEN_AT), FloorBoss.SAW_BREAK, "DIVA_SCREEN"))
+	disco_ball_fell.connect(func() -> void:
+		owner_boss.saw(to_global(DISCO_AT + Vector3.DOWN * 3.0), FloorBoss.SAW_BREAK, "DIVA_DISCO"))
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	owner_boss.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
 ## Where the singer stands at microphone 1, and the foot and top of the stage's steps (karaoke space).
 func singer_spot() -> Vector3:
 	return MIC_STANDS[0] + Vector3(0, 0, -SINGER_BEHIND)
@@ -359,15 +414,22 @@ func steps_top() -> Vector3:
 ## Whether a cop is up on the stage.
 func cop_on_stage() -> bool:
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
-		var at := to_local(cop.global_position)
-		if at.y > FLOOR_TOP + STAGE_SIZE.y - 0.15 and absf(at.x - STAGE_AT.x) < STAGE_SIZE.x / 2 \
-				and absf(at.z - STAGE_AT.z) < STAGE_SIZE.z / 2:
+		if on_stage(cop):
 			return true
 	return false
 
 
-## Between turns the next customer in line goes up to sing.
+func on_stage(body: Node3D) -> bool:
+	var at := to_local(body.global_position)
+	return at.y > FLOOR_TOP + STAGE_SIZE.y - 0.15 and absf(at.x - STAGE_AT.x) < STAGE_SIZE.x / 2 \
+		and absf(at.z - STAGE_AT.z) < STAGE_SIZE.z / 2
+
+
+## A cop on the stage with microphone 2 calls Rosaura for a duet; between turns the next customer goes up to sing.
 func _physics_process(delta: float) -> void:
+	for cop in mics[1].handling_cops(0.0):
+		if on_stage(cop):
+			duet_call.duet()
 	if on_turn:
 		return
 	_turn_left -= delta

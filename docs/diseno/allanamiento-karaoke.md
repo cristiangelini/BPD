@@ -126,6 +126,12 @@ suman entre 400 y 600.
      vez cada 10 s) si el micrófono 1 no está en su pie, si un policía se lo saca mientras canta (y se baja) o si hay
      un policía en el escenario. Captura: `paso2-cantando.png`.
 3. Rosaura y el dueto que la distrae.
+   - **Cómo quedó (propuesta):** Rosaura es un `FloorBoss` con su voz ("DIVA"). Su recorrido va de la puerta, entre
+     las mesas, y sube por la escalera al escenario, como una estrella. Un policía en el escenario con el micrófono 2
+     en la mano la llama (`DuetCall`, como la chuza de la bolera): ella va al lado del micrófono 2 y canta 15 s
+     mirando la pantalla, de espaldas a la sala, con "¡DUETO!" en la pantalla. Después de un dueto hay que esperar
+     45 s, y al tercero sospecha y suma 10. Cada queja de un cliente le suma 5, y ve romperse la pantalla y la bola
+     de espejos. Capturas: `paso3-rosaura.png`, `paso3-dueto.png`.
 4. Toto y la consola del volumen.
 5. El caso (RaidCase) y la primera historia, la máquina de aplausos.
 6. Las otras 5 historias.
