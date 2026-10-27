@@ -5712,3 +5712,14 @@ BOWL_CUP_PLATE,"Campeones: Los Chuza (todos los años)","Champions: Los Chuza (e
 BOWL_SCORE_PLUS,+10 de regalo,+10 for free,+10 de presente
 BOWL_SCORE_ODD,¿Tiraron %d pinos y la pantalla sumó %d?,They knocked %d pins and the screen added %d?,Derrubaram %d pinos e a tela somou %d?
 BOWL_SCORE_CLUE,"La pantalla de la pista 1 suma 10 puntos de más a cada tiro.","Lane 1's screen adds 10 points too many to every roll.","A tela da pista 1 soma 10 pontos a mais em cada jogada."
+BRIEF_BOWL_POPCORN_B,"Don Chuza vende «palomitas premium» a precio de oro, pero son piedritas pintadas de amarillo. Nadie se las come: las compran y se van con la boca cerrada.","Don Chuza sells «premium popcorn» at the price of gold, but it's little pebbles painted yellow. Nobody eats them: they buy them and leave with their mouths shut.","Don Chuza vende «pipoca premium» a preço de ouro, mas são pedrinhas pintadas de amarelo. Ninguém come: compram e vão embora de boca fechada."
+BRIEF_BOWL_POPCORN_C,"Traigan la bolsa de «maíz para palomitas» en el baúl del patrullero. Sin eso no hay caso.","Bring the sack of «popcorn corn» in the patrol car's trunk. Without it there's no case.","Tragam o saco de «milho de pipoca» no porta-malas da viatura. Sem ele não tem caso."
+BRIEF_BOWL_POPCORN_D,"Si encuentran la pintura amarilla o el recibo de las palomitas premium, mejor: todo suma.","If you find the yellow paint or the premium popcorn receipt, even better: it all adds up.","Se acharem a tinta amarela ou o recibo da pipoca premium, melhor: tudo soma."
+OBJ_FIND_PEBBLE_SACK,Llevarse la bolsa de «maíz para palomitas»,Take the sack of «popcorn corn»,Levar o saco de «milho de pipoca»
+OBJ_EXTRA_PAINT_CAN,Extra: la lata de pintura amarilla,Extra: the can of yellow paint,Extra: a lata de tinta amarela
+OBJ_EXTRA_POPCORN_RECEIPT,Extra: el recibo de las «palomitas premium»,Extra: the «premium popcorn» receipt,Extra: o recibo da «pipoca premium»
+PIPO_CLUE_bowl_popcorn,"«¡Me devolviste los zapatos! Te cuento: vi al jefe esconder algo %s. Y no comas las palomitas: yo perdí una muela.»","“You gave the shoes back! Here's one: I saw the boss hide something %s. And don't eat the popcorn: I lost a tooth.”","“Você devolveu os sapatos! Te conto: vi o chefe esconder algo %s. E não coma a pipoca: eu perdi um dente.”"
+BOWL_POPCORN_RATTLE,¡Clonc! ¡Clonc!,Clonk! Clonk!,Clonc! Clonc!
+BOWL_POPCORN_CRACK,¡CRAC!,CRACK!,CRAC!
+HINT_BOWL_POPCORN_BITE,"¡Ay, mi diente! Esta palomita es una piedra.","Ow, my tooth! This popcorn is a stone.","Ai, meu dente! Essa pipoca é uma pedra."
+BOWL_POPCORN_CLUE,"Las palomitas de la máquina son piedritas pintadas de amarillo.","The machine's popcorn is little pebbles painted yellow.","A pipoca da máquina são pedrinhas pintadas de amarelo."

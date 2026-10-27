@@ -74,6 +74,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_FAKE_SCORES", "OBJ_EXTRA_JUDGE_ENVELOPE"],
 		"rig": preload("res://scripts/case/bowling/rigged_tournament_rig.gd"),
 	},
+	"bowl_popcorn": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_BOWL_POPCORN_B", "BRIEF_BOWL_POPCORN_C", "BRIEF_BOWL_POPCORN_D"],
+		"find": "OBJ_FIND_PEBBLE_SACK",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/bowl_pebble_sack.tscn"), preload("res://scenes/props/bowl_paint_can.tscn"),
+			preload("res://scenes/props/bowl_popcorn_receipt.tscn")],
+		"half_heights": [0.25, 0.15, 0.005],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_PAINT_CAN", "OBJ_EXTRA_POPCORN_RECEIPT"],
+		"rig": preload("res://scripts/case/bowling/pebble_popcorn_rig.gd"),
+	},
 }
 ## Where the clue notes for the suspicions can lie, on the floor.
 const NOTE_PLACES: Array[Vector3] = [Vector3(-1.5, FLOOR_TOP, 8.0), Vector3(3.0, FLOOR_TOP, 5.0),

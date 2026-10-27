@@ -163,6 +163,11 @@ suman entre 400 y 600.
      tiro, con un «+10 de regalo» debajo; el primer policía que está a menos de 4 m de esa pista cuando cuenta un tiro
      dice «¿Tiraron 3 pinos y la pantalla sumó 13?» y esa es la pista. La vitrina tiene el cartel «Campeones: Los Chuza
      (todos los años)». Capturas: `allanamiento-bolera/paso6-torneo*.png`.
+   - **Cómo quedó, las palomitas mágicas (propuesta):** se esconden la bolsa de «maíz para palomitas» (10 kg, 1000), la
+     lata de pintura amarilla (3 kg, 300) y el recibo de las palomitas premium (200). La máquina hace «¡Clonc! ¡Clonc!» y
+     cada 6 s escupe una piedrita pintada que rebota por el piso (como mucho 10 a la vez). El policía que levanta una la
+     muerde: «¡CRAC!» y «¡Ay, mi diente! Esta palomita es una piedra.»; la primera vez es la pista.
+     Capturas: `allanamiento-bolera/paso6-palomitas*.png`.
 7. "Jugar" suma la bolera al sorteo de allanamientos, y la huida de Don Chuza.
 8. El online (Don Chuza, Pipo, los jugadores, las bolas y lo frágil en todas las PC).
 
