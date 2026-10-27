@@ -121,3 +121,10 @@ func test_a_golfer_shouts_fore_and_hits_a_ball_at_a_cop() -> void:
 	assert_gt(ball.linear_velocity.x, 5.0, "toward the cop")
 	await wait_physics_frames(2)
 	assert_eq(golfer.swings, 1, "not again right away")
+
+
+func test_the_club_is_twice_the_ground_it_was() -> void:
+	# 160 x 120 m before decision 182, every length 1.4 times since.
+	assert_almost_eq(GolfLayout.HALF.x * GolfLayout.HALF.y * 4, 160.0 * 120.0 * 1.96, 1.0)
+	for hole in GolfLayout.HOLES:
+		assert_gt(Vector2(hole.x, hole.z).length(), 50.0, "the holes spread out over the bigger ground")

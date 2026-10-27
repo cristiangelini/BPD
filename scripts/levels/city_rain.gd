@@ -85,8 +85,8 @@ func _ready() -> void:
 		spot.mesh = disc
 		spot.material_override = puddle
 		var along_x := rng.randf() < 0.5
-		var street := CityLayout.street_z(rng.randi_range(0, CityLayout.ROWS)) if along_x \
-			else CityLayout.street_x(rng.randi_range(0, CityLayout.COLUMNS))
+		var street := CityLayout.street_z(rng.randi_range(CityLayout.NORTH, CityLayout.SOUTH)) if along_x \
+			else CityLayout.street_x(rng.randi_range(CityLayout.WEST, CityLayout.EAST))
 		var run := rng.randf_range(-CityLayout.SIZE.x / 2, CityLayout.SIZE.x / 2) if along_x \
 			else rng.randf_range(-CityLayout.SIZE.y / 2, CityLayout.SIZE.y / 2)
 		var across := street + rng.randf_range(-4.0, 4.0)
