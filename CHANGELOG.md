@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Library crime scene, step 1: the Municipal Library on its own lot (block 5, 4, north side) with its steps, columns, sign and clock; the reading room with the long tables, the Golden Book's display case, the armchair, the desk and the card catalog; the stacks, eight shelves A to H with the rolling ladder; the children's corner and the storeroom. Open it with --place=library.
 - Library crime scene, step 0: design doc (docs/diseno/escena-biblioteca.md) and decision 360 (proposed).
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
 - Gym raid, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office, the cake lab and the gym in eighths.
