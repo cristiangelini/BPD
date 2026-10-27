@@ -160,3 +160,11 @@ ChaseDrops (los bidones, como las valijas del hotel), PlaceDraw y la custodia pa
   vitrina, o el sobre del bono) y dónde está: la bandeja de la fotocopiadora, el tacho de reciclaje (nuevo, verde, al
   fondo del open space) o el maletín del culpable. Los seis maletines se pueden abrir con E; solo el del culpable
   puede tenerlo. Las bolsas de evidencia esperan en un banquito junto a la recepción. Capturas `paso4a-*.png`.
+- **Paso 4b (las pistas):** `OfficeClues` pone arriba la taza del ladrón (`ThiefCup`) en el escritorio del gerente,
+  con su platito, el asa hacia la mano con la que la agarró y el círculo de café al costado: el kit de huellas encuentra
+  sus huellas, una foto encuentra la marca del asa y E toma un sorbito, que dice cómo toma el café (tres sorbos y se
+  termina). Agarrar la taza para tomar deja las huellas del policía encima y la saca de su círculo, así que hay que
+  tomar huellas y foto primero. La galletita mordida en el platito se guarda en una bolsa (comerla la pierde), y la
+  pisada de café queda en la alfombra de la oficina del gerente, en la vuelta de Pelusa. Pelusa arranca cuando entra
+  un policía y aspira la pisada si llega (a 1 min de vuelta, más o menos); E la da vuelta panza arriba y la frena, y
+  otra E la vuelve a poner sobre sus ruedas. Capturas `paso4b-*.png`.

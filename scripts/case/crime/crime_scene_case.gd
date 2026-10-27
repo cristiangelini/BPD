@@ -636,6 +636,8 @@ func clue_line(kind: String) -> String:
 		return _museum_clue_line(kind)
 	if texts() == VARIANTS.hotel:
 		return _hotel_clue_line(kind)
+	if texts() == VARIANTS.office:
+		return _office_clue_line(kind)
 	match kind:
 		"footprint":
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
@@ -704,6 +706,23 @@ func _hotel_clue_line(kind: String) -> String:
 		"signature":
 			return tr("CLUE_HOTEL_signature_left" if who.left else "CLUE_HOTEL_signature_right")
 	return tr("CLUE_HOTEL_" + kind)
+
+
+## At the office: the cup's prints, coffee and handle, the coffee footprint, the bitten cookie and Benja.
+func _office_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"coffee":
+			return tr("CLUE_OFFICE_coffee") % tr("COFFEE_" + str(who.coffee))
+		"handle":
+			return tr("CLUE_OFFICE_handle_left" if who.left else "CLUE_OFFICE_handle_right")
+		"footprint":
+			return tr("CLUE_OFFICE_footprint") % who.shoe
+		"bite":
+			return tr("CLUE_OFFICE_bite") % tr("TEETH_" + str(who.teeth))
+		"witness":
+			return tr("CLUE_OFFICE_witness_glasses" if who.glasses else "CLUE_OFFICE_witness_no_glasses")
+	return tr("CLUE_OFFICE_" + kind)
 
 
 ## What a file card on the board says: what the photo shows, and the rest as the cops got it.
