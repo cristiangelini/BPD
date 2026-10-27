@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Planetarium crime scene, step 5a: the star show. Every 2 minutes at the scene the lights go out for 30 s; the ceiling's stars and the glow paint shine, and the guides swap places in the dark. A flashlight on inside stops the show and costs Doctor Órbita 10 of his patience; at 0 he throws the cops out of the dome room.
 - Planetarium crime scene, step 4: El Pedrusco hidden with the seed in one of nine spots (Saturn's crank, the six planet seats, the moon-rock basket and the kids' rocket), searched with E in 5 s; the projector's console log tells the planet the show was paused on; back in its display case it adds 100 to the salary.
 - Planetarium crime scene, step 3: the guides' files (the planetarium variant of the crime scene case): E asks a guide for their planet and then the helmet (one won't take it off until they eat), and in the dark the glow paint shows on the gloves and E looks at them. The culprit always has glow paint.
 - Planetarium crime scene, step 2: the six guides in astronaut suits (GuideTraits: hair, boots, teeth, glow paint on the gloves and the planet they present), Doctor Órbita the director and Doña Nebulosa asleep in seat 7.
