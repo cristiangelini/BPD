@@ -146,6 +146,9 @@ func stick_out_tongue() -> void:
 		return
 	say("CARRIER_TONGUE_BLUE" if blue else "CARRIER_TONGUE_PINK")
 	_file("tongue")
+	# The culprit licked La Vaquita Azul's old glue: seeing a blue tongue on anyone tells it's a clue.
+	if blue and case:
+		case.found("tongue")
 
 
 ## The camera's flash in their face (PhotoCamera): their photo, with their shoes.

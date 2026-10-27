@@ -192,5 +192,19 @@ Mientras tanto se avanza con lo recomendado.
      no se deja tomar las huellas por 30 s.
    - Captura: `correo/paso5-clasificadora.png`.
 6. Las pistas y el testigo: la caja fuerte, la pisada, la gorra, la galleta, la carta sellada y Cartita.
+   **Hecho así (6a, las pistas):** `PostOfficeClues`, que crea el correo con el caso.
+   - Huellas en la puerta de la caja fuerte (`EmptyFrame` con look `POSTSAFE`): tocarla con E pone las tuyas encima;
+     a los 240 s Doña Sellito la limpia para sellarla.
+   - Pisada en el polvo de la sala de clasificación (`DustPrint`, en uno de 3 lugares, apuntando al escondite): no se
+     ve hasta que la clasificadora arranca la primera vez; la siguiente la tapa si nadie la fotografió.
+   - La gorra olvidada en el depósito está siempre; el pelo al lado solo si es pista, y la segunda vuelta de la
+     clasificadora lo manda a un saco si no está en una bolsa.
+   - La galleta mordida aparece detrás de la balanza al buscar ahí (E); a los 180 s Cartita baja y se la come si no
+     está en una bolsa. La banqueta con las bolsas de evidencia está junto a la puerta.
+   - La lengua azul: ver una lengua azul (no lavada) anota la pista.
+   - La carta sellada (`ReturnsSack`): E con las manos vacías la lee y dice el recorrido del culpable; E con algo en
+     la mano lo echa al saco y la tapa.
+   - Capturas: `correo/paso6-pisada.png`, `paso6-gorra.png`, `paso6-galleta.png`, `paso6-devoluciones.png` y
+     `paso6-caja-fuerte.png`.
 7. El final: el tablero, el sueldo y la camioneta con los paquetes.
 8. El sorteo de "Jugar" y el online.
