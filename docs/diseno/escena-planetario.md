@@ -154,6 +154,13 @@ Mientras tanto se avanza con lo recomendado.
    - **Doña Nebulosa:** dormida en la butaca 7, con ruleros y un "Zzz"; con E murmura dormida.
    - Capturas: `planetario/paso2-*.png` y `planetario/planetarium_people.png`.
 3. Las fichas: la pintura que brilla y el planeta de cada guía.
+   **Hecho así:** la variante `planetarium` de `CrimeSceneCase`.
+   - **Pistas:** huellas, pisada, pelo, mordisco, pintura que brilla, foto de la cabina y testigo.
+   - **Partes de la ficha:** foto (talle de bota lunar), huellas, dientes, pelo, guantes a oscuras y planeta.
+   - Con las manos vacías, E le pregunta al guía por su planeta y después le pide el casco (uno se niega hasta que
+     come). A oscuras (`Planetarium.set_dark`, que en el paso 5 maneja la función), la pintura se ve en los guantes y
+     E se los mira. El culpable siempre tiene pintura.
+   - Capturas: `planetario/paso3-casco.png` y `planetario/paso3-brillo.png`.
 4. El caso: El Pedrusco escondido, la búsqueda y la consola del proyector.
 5. La función de las estrellas: el apagón cada 2 minutos, lo que brilla, la linterna y la paciencia del doctor.
 6. Las pistas y la testigo.

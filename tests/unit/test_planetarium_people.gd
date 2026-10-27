@@ -62,7 +62,7 @@ func test_a_guide_tells_their_planet() -> void:
 	var guide: PlanetariumGuide = planetarium.guides[0]
 	guide.use(null)
 	assert_string_contains(guide.said(), guide.planet_name())
-	guide.use(null)
+	guide.talk()
 	assert_string_contains(guide.said(), guide.planet_name(), "every line says the planet")
 	planetarium.director.use(null)
 	assert_eq(planetarium.director.said(), "DIRECTOR_LINE_0")
