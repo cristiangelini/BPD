@@ -168,6 +168,11 @@ suman entre 400 y 600.
      agarra habla con voz de pito 8 s ("¡Hola, soy la ley!"), y la primera vez es la pista. Los clientes que cantan
      sueltan cada 6 s una risita con voz finita. Se esconden el tanque de gas para globos (15 kg, 1000, en un escondite
      grande), la caja de globos vacíos (300) y la receta del jugo (200). Captura: `paso6d-jugo.png`.
+   - **Cómo quedó la cabina 4 (propuesta):** al lado de la cabina 3, en la pared oeste, hay una puerta roja pintada
+     con "Cabina 4" arriba, que no se abre. Un policía a menos de 2 m oye que alguien canta del otro lado aunque no
+     hay nadie (la pista, una vez). Se esconden la caja de discos piratas (10 kg, 1000, en un escondite grande), el
+     sello falso de la discográfica (300) y la lista de compradores (200). Con esta, las 6 historias se sortean con la
+     semilla. Captura: `paso6e-cabina4.png`.
 7. "Jugar" suma el karaoke al sorteo de allanamientos, y la huida de Rosaura.
 8. El online (Rosaura, Toto, los clientes, los micrófonos y lo frágil en todas las PC).
 

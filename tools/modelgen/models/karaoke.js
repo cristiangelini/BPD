@@ -388,6 +388,35 @@ export function buildJuiceGlass() {
 	return b.build();
 }
 
+// The box of pirated records: an open cardboard box full of discs with hand-written covers.
+export function buildPirateDiscs() {
+	const b = new Builder('karaoke_pirate_discs');
+	b.add('box', mat('discs_box', 0xc8a070), new THREE.BoxGeometry(0.5, 0.3, 0.4), { pos: V(0, 0.15, 0) });
+	const covers = [0xff5ad2, 0x3a6ad2, 0xf2c230, 0x2ad06a, 0xd83a30];
+	for (let i = 0; i < 5; i++) b.add('case', mat('disc_case_' + i, covers[i]), new THREE.BoxGeometry(0.012, 0.14, 0.14), { pos: V(-0.16 + i * 0.08, 0.33, 0), rot: [0, 0, 0.1 * (i - 2)] });
+	b.add('disc', mat('disc_silver', 0xd0d4dc, { metalness: 0.7, roughness: 0.2 }), new THREE.CylinderGeometry(0.06, 0.06, 0.004, 16), { pos: V(0.12, 0.31, 0.12) });
+	return b.build();
+}
+
+// The fake record label's stamp: a wooden handle on a red rubber block.
+export function buildFakeStamp() {
+	const b = new Builder('karaoke_fake_stamp');
+	b.add('rubber', mat('stamp_red', 0xd83a30), new THREE.BoxGeometry(0.08, 0.02, 0.06), { pos: V(0, 0.01, 0) });
+	b.add('base', mat('stamp_wood', 0x8a5a30), new THREE.BoxGeometry(0.08, 0.02, 0.06), { pos: V(0, 0.03, 0) });
+	b.add('handle', mat('stamp_wood', 0x8a5a30), new THREE.CylinderGeometry(0.015, 0.02, 0.06, 8), { pos: V(0, 0.07, 0) });
+	b.add('knob', mat('stamp_knob', 0x24242a), new THREE.SphereGeometry(0.022, 8, 6), { pos: V(0, 0.105, 0) });
+	return b.build();
+}
+
+// The list of the record's buyers: a sheet with a disc drawn at the top.
+export function buildDiscClients() {
+	const b = new Builder('karaoke_disc_clients');
+	b.add('paper', mat('clients_paper', 0xf6f2e2), new THREE.BoxGeometry(0.21, 0.006, 0.28), { pos: V(0, 0.003, 0) });
+	for (let i = 0; i < 8; i++) b.add('lines', mat('clients_ink', 0x2a2a40), new THREE.BoxGeometry(0.15, 0.002, 0.008), { pos: V(-0.01, 0.007, -0.07 + i * 0.024) });
+	b.add('disc', mat('clients_disc', 0x24242a), new THREE.CylinderGeometry(0.025, 0.025, 0.002, 14), { pos: V(0.06, 0.007, -0.11) });
+	return b.build();
+}
+
 export const models = {
 	stage_speaker: buildStageSpeaker, lyrics_screen: buildLyricsScreen, sound_console: buildSoundConsole,
 	karaoke_bar: buildKaraokeBar, ice_machine: buildIceMachine, karaoke_table: buildKaraokeTable,
@@ -400,7 +429,8 @@ export const models = {
 	karaoke_lyrics_pc: buildLyricsPc, karaoke_code_notebook: buildCodeNotebook, karaoke_goods_receipt: buildGoodsReceipt,
 	karaoke_watch_speaker: buildWatchSpeaker, karaoke_fake_watch: buildFakeWatch, karaoke_ship_invoice: buildShipInvoice,
 	karaoke_helium_tank: buildHeliumTank, karaoke_balloon_box: buildBalloonBox, karaoke_juice_recipe: buildJuiceRecipe,
-	karaoke_juice_glass: buildJuiceGlass,
+	karaoke_juice_glass: buildJuiceGlass, karaoke_pirate_discs: buildPirateDiscs, karaoke_fake_stamp: buildFakeStamp,
+	karaoke_disc_clients: buildDiscClients,
 };
 
 export const views = {
@@ -435,5 +465,8 @@ export const views = {
 	},	karaoke_helium: {
 		items: [{ name: 'karaoke_helium_tank', pos: [-0.5, 0, 0] }, { name: 'karaoke_balloon_box', pos: [0.1, 0, 0.1] }, { name: 'karaoke_juice_recipe', pos: [0.55, 0, 0.1], rotY: 0.3 }, { name: 'karaoke_juice_glass', pos: [0.55, 0, -0.2] }],
 		cam: { pos: [0.1, 1.0, 2.4], target: [0.05, 0.45, 0], fov: 40 },
+	},	karaoke_booth4: {
+		items: [{ name: 'karaoke_pirate_discs', pos: [-0.4, 0, 0], rotY: 0.3 }, { name: 'karaoke_fake_stamp', pos: [0.15, 0, 0.1] }, { name: 'karaoke_disc_clients', pos: [0.5, 0, 0], rotY: 0.3 }],
+		cam: { pos: [0, 0.8, 1.6], target: [0, 0.15, 0], fov: 40 },
 	},
 };

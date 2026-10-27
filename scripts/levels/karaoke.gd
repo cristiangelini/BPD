@@ -83,6 +83,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_BALLOON_BOX", "OBJ_EXTRA_JUICE_RECIPE"],
 		"rig": preload("res://scripts/case/karaoke/helium_rig.gd"),
 	},
+	"karaoke_booth4": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_KARAOKE_BOOTH4_B", "BRIEF_KARAOKE_BOOTH4_C", "BRIEF_KARAOKE_BOOTH4_D"],
+		"find": "OBJ_FIND_PIRATE_DISCS",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/karaoke_pirate_discs.tscn"),
+			preload("res://scenes/props/karaoke_fake_stamp.tscn"), preload("res://scenes/props/karaoke_disc_clients.tscn")],
+		"half_heights": [0.15, 0.06, 0.003],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_KARAOKE_STAMP", "OBJ_EXTRA_DISC_CLIENTS"],
+		"rig": preload("res://scripts/case/karaoke/booth_four_rig.gd"),
+	},
 }
 ## Where the clue notes for the suspicions can lie, on the floor.
 const NOTE_PLACES: Array[Vector3] = [Vector3(-1.0, FLOOR_TOP, 8.0), Vector3(4.0, FLOOR_TOP, 6.5),
