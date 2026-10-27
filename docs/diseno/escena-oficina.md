@@ -28,7 +28,7 @@ Va en una bolsa de evidencia.
 ## El lugar
 - **El edificio:** "Formularios Infinitos S.A.", un edificio de oficinas de dos pisos, gris y con ventanas espejadas,
   en un lote nuevo: la cuadra (0, 3), del lado norte (no la usa ningún otro caso). Dos pisos unidos
-  por la escalera y un ascensor que anda (es lo único que anda bien en la empresa):
+  por la escalera:
   - **Planta baja:** la recepción con la vitrina de la Abrochadora, el mostrador, el reloj para marcar tarjeta y la
     planta de plástico; el **open space** con 8 escritorios iguales (cada uno con computadora, teléfono, una pila de
     papeles y una silla con rueditas), la **fotocopiadora gigante** al fondo, y **la cocina** con la cafetera de la
@@ -38,7 +38,7 @@ Va en una bolsa de evidencia.
     estantes de cajas de formularios hasta el techo.
 - **La gente:** los seis empleados; **el gerente, el señor Trámite** (bajito, nervioso, no deja de sellar papeles con
   un sello común mientras habla); **Benja, el pasante** (el testigo, siempre cargando una pila de papeles más alta que
-  él); y **Pelusa, la aspiradora robot** de la oficina, que da vueltas sola por los dos pisos (usa el ascensor).
+  él); y **Pelusa, la aspiradora robot** de la oficina, que da vueltas sola por el primer piso, donde fue el robo.
 
 ## Los empleados iguales (pregunta 2, lo nuevo)
 Los seis usan el mismo traje gris, la misma corbata azul, el mismo maletín negro y el mismo gafete con la foto borrosa.
@@ -109,12 +109,11 @@ Mientras tanto se avanza con lo recomendado.
 ## Lo que se reusa
 CrimeScenePlace, CrimePlan (con los rasgos de los empleados), GuardTraits y GuestTraits como base de los rasgos,
 CrimeBoard, BoardCard, BoardStamp, CrimeClueItem, EvidenceBags, la pisada (FlourPrint), LootSpot, la lustradora del
-museo como base de Pelusa (GalleryPolisher, que también da vueltas y borra), el ascensor del edificio de departamentos
-(TowerElevator, con dos paradas), PlaceBuilder (paredes, escalera), CaseBriefing y CaseChecklist, ChaseCase.begin,
+museo como base de Pelusa (GalleryPolisher, que también da vueltas y borra), PlaceBuilder (paredes, escalera), CaseBriefing y CaseChecklist, ChaseCase.begin,
 ChaseDrops (los bidones, como las valijas del hotel), PlaceDraw y la custodia para el interrogatorio.
 
 ## El orden para hacerlo (un PR chico por paso)
-1. El edificio por dentro en su cuadra: recepción, open space, cocina con la cafetera, escalera, ascensor, la oficina
+1. El edificio por dentro en su cuadra: recepción, open space, cocina con la cafetera, escalera, la oficina
    del gerente, la sala de reuniones y el archivo. Prueba GUT y captura.
 2. La gente: los seis empleados de traje, el señor Trámite, Benja y Pelusa (modelos procedurales en `tools/modelgen`),
    con la campanita del cambio de escritorio.
@@ -124,3 +123,18 @@ ChaseDrops (los bidones, como las valijas del hotel), PlaceDraw y la custodia pa
    papeles y el tablero.
 5. El final: la camioneta del agua que suelta bidones y el interrogatorio.
 6. El sorteo en "Jugar" (las escenas del crimen salen entre todas las que haya) y el online.
+
+## Hecho así
+- **Paso 1 (el edificio por dentro):** `FormsOffice` (un CrimeScenePlace) en su lote nuevo, `office`, en la cuadra
+  (0, 3) del lado norte (24 × 18 y 6 de alto, con un parapeto sobre el techo), y `FormsOfficeLevel`
+  (`--place=office`). Por fuera, cemento gris con una franja de ventanas espejadas en cada piso, la puerta de vidrio
+  en el medio y el cartel de la empresa. Planta baja: la recepción con su mostrador y teléfono, el reloj para marcar
+  tarjeta en la pared del frente ("Marca tu tarjeta"), la vitrina de la Abrochadora del Fundador, el dispenser de agua
+  y la planta de plástico; el open space con 8 escritorios iguales en dos filas (monitor, teléfono y pila de papeles),
+  cada uno con su silla con rueditas que se empuja; la fotocopiadora gigante al fondo; y la cocina en la esquina del
+  noroeste con la cafetera de la empresa, la mesada con la lata de galletitas y la heladera. La escalera sube por el
+  lado este y arriba tiene baranda alrededor del hueco. Primer piso: el pasillo con la escalera, con una puerta a la
+  oficina del gerente (alfombra roja, el escritorio grande con su sillón, la caja fuerte y el sofá de cuero; el cartel
+  "Gerencia" en la puerta) y otra al archivo (estantes de cajas de formularios hasta el techo), y la sala de reuniones
+  con la mesa larga y la pizarra. No hay ascensor: Pelusa se queda en el primer piso. Capturas en
+  `/mnt/project-files/oficina/` (`paso1-*.png`).
