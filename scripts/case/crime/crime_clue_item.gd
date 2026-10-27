@@ -24,7 +24,7 @@ const FOIL := Color(0.85, 0.68, 0.3)
 
 ## "hair", "bite" or "recipe".
 var kind := "hair"
-## "pastry", "circus", "museum" or "hotel": what the clue looks like.
+## "pastry", "circus", "museum", "hotel" or "library": what the clue looks like.
 var look := "pastry"
 var case: CrimeSceneCase
 ## The culprit's hair color, for the hair in the cream.
@@ -47,6 +47,8 @@ func _ready() -> void:
 		size = {"hair": Vector3(0.24, 0.03, 0.24), "bite": Vector3(0.14, 0.1, 0.42)}.get(kind, size)
 	elif look == "hotel":
 		size = Vector3(0.08, 0.05, 0.08)
+	elif look == "library":
+		size = Vector3(0.1, 0.03, 0.1)
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
 	box.size = size
@@ -59,6 +61,9 @@ func _ready() -> void:
 		return
 	if look == "hotel":
 		_bonbon(builder)
+		return
+	if look == "library":
+		_cookie()
 		return
 	match kind:
 		"hair":
@@ -118,9 +123,25 @@ func _bonbon(builder: PlaceBuilder) -> void:
 	part.mesh_box(Vector3(0.02, 0.04, 0.02), Vector3(0.02, 0.02, 0.02), SPONGE.lightened(0.3))
 
 
-## The circus's look: its loose hair and its fish. The museum's and the hotel's hair are loose too.
+## The library's cookie, hidden in the hollow book: round, with chocolate chips and a bite out of one side.
+func _cookie() -> void:
+	_eaten_part = Node3D.new()
+	add_child(_eaten_part)
+	var part := PlaceBuilder.new(_eaten_part)
+	var round := CylinderMesh.new()
+	round.top_radius = 0.045
+	round.bottom_radius = 0.045
+	round.height = 0.02
+	part.mesh(round, Vector3(0, 0.01, 0), SPONGE)
+	for chip: Vector3 in [Vector3(-0.015, 0.021, 0.01), Vector3(0.012, 0.021, -0.015), Vector3(0.0, 0.021, 0.025)]:
+		part.mesh_box(chip, Vector3(0.01, 0.006, 0.01), CHOCOLATE)
+	# The bite: a dark notch in its edge.
+	part.mesh_box(Vector3(0.04, 0.012, 0), Vector3(0.02, 0.022, 0.03), WET)
+
+
+## The circus's look: its loose hair and its fish. The museum's, the hotel's and the library's hair are loose too.
 func _loose() -> bool:
-	return look == "circus" or (look in ["museum", "hotel"] and kind == "hair")
+	return look == "circus" or (look in ["museum", "hotel", "library"] and kind == "hair")
 
 
 ## Food can be eaten (and the clue with it); the circus's loose hair can't.

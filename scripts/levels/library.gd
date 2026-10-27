@@ -40,6 +40,8 @@ const ARMCHAIR_AT := Vector3(-4.6, 0, -1.0)
 const DESK_AT := Vector3(4.0, 0, 4.4)
 const CATALOG_AT := Vector3(-4.4, 0, 5.3)
 const CATALOG_SIZE := Vector3(1.6, 1.3, 0.6)
+## The stool with the roll of evidence bags, by the desk.
+const BAGS_AT := Vector3(2.2, 0, 5.0)
 ## Where the Golden Book can be hidden (LibrarySpot): the eight sections, the returns cart and the big cushion.
 const BOOK_SPOTS: Array[String] = ["section_A", "section_B", "section_C", "section_D", "section_E", "section_F",
 	"section_G", "section_H", "cart", "cushion"]
@@ -98,6 +100,7 @@ var loot_found := false
 var loot_spots := {}
 var book: GoldenBook
 var catalog: CardCatalog
+var clues: LibraryClues
 ## What each cop is busy searching ("" for nothing), by cop: a search or the catalog takes a while.
 var _busy := {}
 var readers: Array[LibraryReader] = []
@@ -129,6 +132,11 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	for reader in readers:
 		reader.case = case
 		reader.stubborn = reader.index == stubborn
+	clues = LibraryClues.new()
+	clues.name = "Clues"
+	clues.library = self
+	clues.case = case
+	add_child(clues)
 
 
 ## E on a spot: the cop searches it for SEARCH_SECONDS, and then the Golden Book turns up if it's there, or the cop
@@ -370,6 +378,11 @@ func _reading_room() -> void:
 	_builder.mesh_box(DESK_AT + Vector3(0.5, 1.05, 0), Vector3(0.1, 0.1, 0.08), BLACK)
 	# The card catalog: a cabinet of little drawers, each with its brass handle.
 	_builder.mesh_box(CATALOG_AT + Vector3(0, CATALOG_SIZE.y / 2, 0), CATALOG_SIZE, WOOD.lightened(0.15))
+	_builder.box(BAGS_AT + Vector3(0, FLOOR_TOP + 0.25, 0), Vector3(0.5, 0.5, 0.4), WOOD)
+	bags = EvidenceBags.new()
+	bags.name = "EvidenceBags"
+	bags.position = BAGS_AT + Vector3(0, FLOOR_TOP + 0.5, 0)
+	add_child(bags)
 	catalog = CardCatalog.new(CATALOG_SIZE)
 	catalog.name = "CardCatalog"
 	catalog.library = self

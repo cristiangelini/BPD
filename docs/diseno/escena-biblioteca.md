@@ -160,5 +160,10 @@ polvo dorado con la linterna, el fichero, el ruido y el apagón de Doña Sigilo,
    aparece en el pasillo frente a su lugar y, con E, vuelve a la vitrina (+100, renglón opcional en la planilla).
    Capturas: `biblioteca/paso4-*.png`.
 5. Las pistas, el testigo y el ruido (el "¡SHHH!" y el apagón).
+   **Hecho así (5a, las pistas del lugar):** huellas en el vidrio de la vitrina (tocarlo las tapa, y a los 4 minutos
+   de llegar Doña Sigilo le pasa el plumero y se pierden), la pisada de pantufla en el parqué encerado en uno de tres
+   lugares (pisarla la borra), el pelo suelto en el sillón de lectura y el libro hueco en la mesa del medio: con E se
+   abre y adentro está la galletita mordida (comerla la arruina). Las bolsas de evidencia están en un banquito junto
+   al mostrador. Siguen 5b (polvo, señalador y Tomasito) y 5c (el ruido). Capturas: `biblioteca/paso5-*.png`.
 6. El final: tablero, cansancio, sueldo y el bibliobús con las pilas de libros.
 7. El sorteo de "Jugar" y el online.
