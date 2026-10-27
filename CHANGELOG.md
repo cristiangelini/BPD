@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Mystery mansion, step 8: online: the host runs the mansion and the guests follow it: every member's cap, alibi, room and where they stand (so their walks through the passages and the culprit's run through the maze), the passages, the armour, the mixed-up bells, the offended parrot, the loot found and the ruined clues; the catch or the escape reaches every PC.
 - Mystery mansion, step 7: Play draws the mansion among the crime scenes, a quarter of them.
 - Mystery mansion, step 6: half the time the accused culprit runs off on foot, out the garden door and through the hedge maze trying every turn; reach them and they're caught, but out the gate or after 90 s they got away.
 - Mystery mansion, step 5c: what was stolen is hidden, by the seed, among the capes on the hall's coat rack, under the piano's lid or in the dusty trunk at the dead end of the bookcase's passage; E searches each and finding it adds 100.

@@ -168,3 +168,9 @@ para el interrogatorio. Los modelos nuevos salen de `tools/modelgen` (low poly).
 7. "Jugar" sortea la mansión entre los lugares. Hecho así: la mansión es la cuarta escena del crimen del sorteo, junto
    al concurso de pastelería, el circo, el museo y el hotel, y le toca un quinto de esas partidas **(propuesta)**.
 8. Online: los socios, doña Clotilde, el loro y los pasadizos iguales en todas las PCs.
+   Hecho así: el anfitrión decide y las otras PCs copian, 5 veces por segundo, cómo está cada socio (gorra, coartada,
+   cuarto y dónde está parado), qué pasadizos están abiertos, la armadura, las campanillas mezcladas, el loro ofendido,
+   lo robado encontrado y las pistas arruinadas. Solo el anfitrión manda a los socios por los pasadizos; en las otras
+   PCs se ven caminar. La huida por el laberinto también la corre el anfitrión: las otras PCs ven al culpable correr y
+   se enteran juntas si lo atraparon o se escapó. Doña Clotilde y los gritos de Lorenzo siguen su propio reloj en
+   cada PC, así que pueden quedar un poco corridos **(propuesta)**.

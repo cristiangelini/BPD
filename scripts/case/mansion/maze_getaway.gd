@@ -22,6 +22,8 @@ var time_left := ESCAPE_SECONDS
 var caught := false
 var escaped := false
 var over := false
+## A guest's: the runner goes where the host's goes (Mansion.apply_net_state), and the end comes from it.
+var follower := false
 
 
 ## He drops what he was doing and bolts.
@@ -36,7 +38,7 @@ func start(member: MysteryMember) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if over or not runner:
+	if over or not runner or follower:
 		return
 	time_left -= delta
 	for cop in get_tree().get_nodes_in_group("cops"):
@@ -57,6 +59,19 @@ func _physics_process(delta: float) -> void:
 			runner.rotation.y = atan2(to.x, to.z)
 			step = 0.0
 	if next >= route.size() or time_left <= 0.0:
+		get_away()
+
+
+## Online, what the guests' getaway takes from the host's (CrimeSceneCase.snapshot).
+func snapshot() -> Array:
+	return [time_left, caught, escaped]
+
+
+func apply_snapshot(state: Array) -> void:
+	time_left = state[0]
+	if state[1]:
+		catch()
+	elif state[2]:
 		get_away()
 
 

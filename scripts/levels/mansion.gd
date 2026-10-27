@@ -681,8 +681,52 @@ func send_through(member: MysteryMember) -> String:
 	return to_room
 
 
-## Every MOVE_EVERY seconds one member (drawn with the case seed) in a room with a passage goes through it.
+## Online, what the guests' mansion takes from the host's (step 8): each member's cap, alibi, room and where they
+## stand (so their walks through the passages and the culprit's run through the maze too), which passages are open,
+## the armour, the butler's mixed-up bells, and the clues ruined on the host.
+func net_state() -> Dictionary:
+	var looks := members.map(func(member: MysteryMember) -> Array:
+		return [member.cap_on, member.told_alibi, member.room, member.position, member.rotation.y, member.stubborn])
+	var open := {}
+	for id: String in passages:
+		open[id] = [(passages[id] as SecretPassage).is_open, (passages[id] as SecretPassage).found]
+	return {"members": looks, "passages": open, "armour": armour.fallen, "mixed": butler.mixed}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	for member in members:
+		var look: Array = state.members[member.index]
+		if not look[0] and member.cap_on:
+			member.cap_on = false
+			member.part("cap").visible = false
+		member.told_alibi = look[1]
+		member.room = look[2]
+		member.position = look[3]
+		member.rotation.y = look[4]
+		member.stubborn = look[5]
+	for id: String in state.passages:
+		var passage: SecretPassage = passages[id]
+		passage.set_open(state.passages[id][0])
+		passage.found = state.passages[id][1]
+	if state.armour and not armour.fallen:
+		armour.push_over()
+	butler.mixed = state.mixed
+	if not case:
+		return
+	for kind: String in ["hair", "bite"]:
+		if case.ruined.has(kind) and case.items.has(kind):
+			var item: CrimeClueItem = case.items[kind]
+			item.spoiled = true
+			item._eaten_part.visible = false
+	if case.ruined.has("footprint") and case.flour_print and not case.flour_print.wiped:
+		case.flour_print.wipe()
+
+
+## Every MOVE_EVERY seconds one member (drawn with the case seed) in a room with a passage goes through it. Online
+## only the host sends them; the guests take where they are (apply_net_state).
 func _physics_process(delta: float) -> void:
+	if case and case.follower:
+		return
 	_move_left -= delta
 	if _move_left > 0.0:
 		return

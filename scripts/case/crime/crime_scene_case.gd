@@ -402,6 +402,7 @@ func runs_off() -> bool:
 func _run_off() -> bool:
 	if place and place.has_method("foot_getaway"):
 		runner = place.foot_getaway(plan.culprit)
+		runner.follower = follower
 		runner.ended.connect(_on_chase_ended)
 		_hint_all(tr("HINT_ESCAPE_" + texts().who) % culprit().name)
 		return true
@@ -510,6 +511,9 @@ func snapshot() -> Dictionary:
 	# The culprit who ran off on his bike, and the chase after him.
 	if chase:
 		state.chase = chase.snapshot()
+	# Or the one who ran off on foot (the mansion's maze).
+	if runner:
+		state.runner = runner.snapshot()
 	return state
 
 
@@ -547,12 +551,14 @@ func apply_snapshot(state: Dictionary) -> void:
 		place.offend_witness()
 	if state.accused and not accused:
 		accused = true
-		if state.has("chase"):
+		if state.has("chase") or state.has("runner"):
 			_run_off()
 		elif place and not gone.has(plan.culprit):
 			_send_off(place.suspect(plan.culprit))
 	if chase and state.has("chase"):
 		chase.apply_snapshot(state.chase)
+	if runner and state.has("runner"):
+		runner.apply_snapshot(state.runner)
 	if board:
 		board.refresh()
 	checklist.show_rows(rows())
