@@ -35,6 +35,8 @@ const MODELS := {
 	"guard": preload("res://assets/models/npc_guardia_museo.glb"),
 	# The hotel's culprit, out of the shuttle in bathrobe and towel (escena-hotel.md).
 	"guest": preload("res://assets/models/npc_huesped.glb"),
+	# The aquarium's culprit, out of the fish truck in wetsuit and flippers (escena-acuario.md).
+	"diver": preload("res://assets/models/npc_buzo.glb"),
 	# The traffic control's wanted driver (control-transito.md).
 	"driver": preload("res://assets/models/npc_cliente.glb"),
 	# Doña Chela, off her motorized walker (infiltracion.md).

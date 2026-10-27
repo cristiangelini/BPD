@@ -84,7 +84,7 @@ const VARIANTS := {
 		"brief": ["BRIEF_AQUARIUM_A_", "BRIEF_AQUARIUM_B", "BRIEF_AQUARIUM_C"], "go": "HINT_GO_AQUARIUM",
 		"go_row": "OBJ_AQUARIUM_GO", "look": "HINT_AQUARIUM_LOOK", "files_row": "OBJ_AQUARIUM_FILES",
 		"clue_line": "CLUE_AQUARIUM_", "ruined_hint": "HINT_AQUARIUM_RUINED_", "left": "HINT_DIVER_LEFT",
-		"who": "diver", "getaway": SuspectCar.BIKE, "loot_row": "OBJ_AQUARIUM_LOOT_",
+		"who": "diver", "getaway": SuspectCar.FISH_TRUCK, "loot_row": "OBJ_AQUARIUM_LOOT_",
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "ink": "ink",
 			"ticket": "tank", "witness": "tank"},
 		"parts": ["photo", "prints", "teeth", "hair", "ink", "tank"],

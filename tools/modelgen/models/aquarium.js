@@ -109,7 +109,46 @@ function tinta(b) {
 	}
 }
 
-const PEOPLE = { npc_buzo: buzo, npc_anzuelo: anzuelo, sea_lion_bigotes: bigotes, octopus_tinta: tinta };
+// The aquarium's frozen fish truck the culprit flees in (step 7): a white box truck with a blue cab, a smiling fish
+// painted on each side of the box, frost on its edges and a back door that lets the ice blocks out. Front +Z,
+// 2.3 x 3.0 x 6.4, wheels at x = ±1.1, z = 2.1 and -1.9 (SuspectCar.FISH_TRUCK_WHEELS).
+function fishTruck(b) {
+	const white = C('truck_white', 0xf4f6f8), blue = C('cab_blue', 0x2a6fb0), frost = C('frost', 0xd8f0ff);
+	b.add('cab', blue, new THREE.BoxGeometry(2.2, 1.7, 1.7), { pos: V(0, 1.25, 2.3) });
+	b.add('cab', C('car_glass', 0x9fd0ea), new THREE.BoxGeometry(1.9, 0.6, 0.04), { pos: V(0, 1.7, 3.16) });
+	b.add('cab', C('bumper', 0x30343a), new THREE.BoxGeometry(2.2, 0.25, 0.2), { pos: V(0, 0.5, 3.2) });
+	b.add('box', white, new THREE.BoxGeometry(2.3, 2.4, 4.4), { pos: V(0, 1.75, -0.95) });
+	for (const x of [-1.16, 1.16]) for (const z of [-3.15, 1.25]) {
+		b.add('box', frost, new THREE.BoxGeometry(0.06, 2.42, 0.08), { pos: V(x, 1.75, z) });
+	}
+	b.add('box', frost, new THREE.BoxGeometry(2.34, 0.08, 4.44), { pos: V(0, 2.96, -0.95) });
+	// The fish on each side: an orange body, a tail, a black eye and a smile.
+	const orange = C('fish_orange', 0xf08a24);
+	for (const sx of [-1, 1]) {
+		b.add('fish', orange, ellipsoid(0.04, 0.45, 0.85, 8, 6), { pos: V(sx * 1.15, 1.8, -0.7) });
+		b.add('fish', orange, new THREE.BoxGeometry(0.04, 0.6, 0.35), { pos: V(sx * 1.15, 1.8, -1.75), rot: [Math.PI / 4, 0, 0] });
+		b.add('fish', M.black, ellipsoid(0.03, 0.07, 0.07, 6, 4), { pos: V(sx * 1.18, 1.95, -0.2) });
+		b.add('fish', M.black, new THREE.BoxGeometry(0.03, 0.04, 0.25), { pos: V(sx * 1.18, 1.68, -0.3) });
+	}
+	b.add('doors', C('door_line', 0x8aa0b4), new THREE.BoxGeometry(0.03, 2.2, 0.02), { pos: V(0, 1.75, -3.16) });
+	for (const x of [-1.1, 1.1]) for (const z of [-1.9, 2.1]) {
+		b.add('wheels', C('tire', 0x1a1a1e), new THREE.CylinderGeometry(0.42, 0.42, 0.3, 12), { pos: V(x, 0.42, z), rot: [0, 0, Math.PI / 2] });
+	}
+}
+
+// A block of ice as it slides out of the truck and lies on the street: a pale blue cube, 0.5 x 0.4 x 0.5, frost on top
+// and a frozen fish poking out, its bottom at y = 0.
+function chaseIce(b) {
+	b.add('ice', C('ice', 0x9fd4f5, { transparent: true, opacity: 0.8, roughness: 0.2 }), new THREE.BoxGeometry(0.5, 0.4, 0.5), { pos: V(0, 0.2, 0) });
+	b.add('ice', C('frost', 0xd8f0ff), new THREE.BoxGeometry(0.46, 0.03, 0.46), { pos: V(0, 0.41, 0) });
+	// The frozen fish, its back and tail sticking out of the top.
+	const orange = C('fish_orange', 0xf08a24);
+	b.add('fish', orange, ellipsoid(0.16, 0.08, 0.05, 6, 4), { pos: V(0, 0.42, 0), rot: [0, 0.6, 0] });
+	b.add('fish', orange, new THREE.BoxGeometry(0.1, 0.1, 0.03), { pos: V(-0.17, 0.46, 0.11), rot: [0, 0.6, Math.PI / 4] });
+}
+
+const PEOPLE = { npc_buzo: buzo, npc_anzuelo: anzuelo, sea_lion_bigotes: bigotes, octopus_tinta: tinta,
+	fish_truck: fishTruck, chase_ice: chaseIce };
 
 export const models = Object.fromEntries(Object.entries(PEOPLE).map(([n, f]) => [n, () => {
 	const b = new Builder(n);
@@ -122,5 +161,10 @@ export const views = {
 		items: [{ name: 'npc_anzuelo', pos: [-1.3, 0, 0], rotY: 0.3 }, { name: 'npc_buzo', pos: [0, 0, 0], rotY: 0.2 },
 			{ name: 'sea_lion_bigotes', pos: [1.2, 0, 0], rotY: -0.5 }, { name: 'octopus_tinta', pos: [2.4, 0, 0], rotY: -0.3 }],
 		cam: { pos: [0.5, 1.4, 6.0], target: [0.5, 0.75, 0], fov: 38 },
+	},
+	fish_truck: {
+		items: [{ name: 'fish_truck', pos: [-0.8, 0, 0], rotY: 0.7 }, { name: 'chase_ice', pos: [2.2, 0, 0.8], rotY: -0.4 },
+			{ name: 'chase_ice', pos: [2.8, 0, -0.2], rotY: 0.6 }],
+		cam: { pos: [0.6, 3.0, 10.0], target: [0.6, 1.2, 0], fov: 38 },
 	},
 };

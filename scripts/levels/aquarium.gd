@@ -47,6 +47,9 @@ const FISH := 4
 const BENCH_AT := Vector3(0, 0, 1.5)
 ## The stool with the roll of evidence bags, by the door.
 const BAGS_AT := Vector3(3.0, 0, 5.5)
+## The frozen fish truck waits at the curb east of the door, by the kitchen, and drives straight out into the street
+## (step 7).
+const GETAWAY_AT := Vector3(10.0, 0, SIZE.y / 2 + 1.0)
 ## Where La Gorda can be hidden (AquariumSpot): the bottom of each small tank, the igloo, the plush basket and the
 ## fish-food bucket.
 const PEARL_SPOTS: Array[String] = ["tank_sharks", "tank_jellyfish", "tank_seahorses", "tank_turtles", "tank_rays",
@@ -275,6 +278,12 @@ func witness_offended() -> bool:
 
 func offend_witness() -> void:
 	octopus.offend()
+
+
+## The frozen fish truck waits at the curb, east of the door, and drives straight out into the street.
+func getaway(_index: int, _city: Node3D) -> Dictionary:
+	var out := to_global(GETAWAY_AT)
+	return {"at": Transform3D(global_basis, out), "via": [to_global(Vector3(GETAWAY_AT.x, 0, SIZE.y / 2 + 5.0))]}
 
 
 ## A cop shouted (VoiceChat): Doña Tinta hides if it was near her.

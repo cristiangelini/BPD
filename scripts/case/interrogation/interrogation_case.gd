@@ -81,6 +81,8 @@ const SUSPECT_MODELS := {
 	"owner_guard": "res://assets/models/npc_guardia_museo.glb",
 	# The hotel's culprit (escena-hotel.md), accused at the board.
 	"owner_guest": "res://assets/models/npc_huesped.glb",
+	# The aquarium's culprit (escena-acuario.md), accused at the board.
+	"owner_diver": "res://assets/models/npc_buzo.glb",
 	# The infiltrations' bosses, cuffed or caught (infiltracion.md, infiltracion-coro.md).
 	"owner_chela": "res://assets/models/npc_chela.glb",
 	"owner_ernesto": "res://assets/models/npc_ernesto.glb",

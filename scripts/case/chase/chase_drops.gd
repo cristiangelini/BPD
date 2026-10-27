@@ -21,8 +21,9 @@ extends Node
 ## (ConfettiCloud). The bridge's cement mixer (politico-puente.md) drops a blob of cement at
 ## every corner it turns: driving through it the patrol car sticks and slows down to BLOB_SPEED. The museum's art van opens its back doors every FRAME_EVERY seconds and an
 ## empty gilt frame falls out (ChaseFrame). The hotel's shuttle loses a suitcase off its roof every SUITCASE_EVERY
-## seconds (ChaseSuitcase): run over, its clothes cover the patrol car's windshield. Every number here is
-## (propuesta).
+## seconds (ChaseSuitcase): run over, its clothes cover the patrol car's windshield. The aquarium's frozen fish truck
+## drops ICE_PER_CORNER blocks of ice out of its back door at every corner it turns (ChaseIce): run over, the patrol
+## car's tires lose their grip (ICE_GRIP) for ICE_SKID_SECONDS. Every number here is (propuesta).
 
 const DRIP_EVERY := 3.0
 ## A puddle's size (m), how long it lasts, and the grip left on it.
@@ -62,6 +63,10 @@ const FRAME_EVERY := 5.0
 const MAX_FRAMES := 8
 const SUITCASE_EVERY := 5.0
 const MAX_SUITCASES := 8
+const ICE_PER_CORNER := 2
+const MAX_ICE := 12
+const ICE_GRIP := 0.15
+const ICE_SKID_SECONDS := 2.0
 const MELONS_PER_CORNER := 2
 const MAX_MELONS := 12
 ## How fast they roll off the back, in m/s.
@@ -100,6 +105,9 @@ var furniture: Array[RigidBody3D] = []
 var dummies: Array[ChaseDummy] = []
 var frames: Array[ChaseFrame] = []
 var suitcases: Array[ChaseSuitcase] = []
+var ice: Array[ChaseIce] = []
+## Seconds the patrol car still skids after running over a block of ice.
+var ice_skid_left := 0.0
 ## Seconds the patrol car's windshield stays covered in a run-over suitcase's clothes.
 var laundry_left := 0.0
 var melons: Array[Watermelon] = []
@@ -205,7 +213,9 @@ func _physics_process(delta: float) -> void:
 	var at := case.car.global_position
 	if confetti:
 		_blind(at, delta)
-	case.car.grip = weather_grip * (PEEL_GRIP if on_peel(at) else PUDDLE_GRIP if on_puddle(at) else 1.0)
+	ice_skid_left = maxf(ice_skid_left - delta, 0.0)
+	case.car.grip = weather_grip * (ICE_GRIP if ice_skid_left > 0.0 else PEEL_GRIP if on_peel(at)
+		else PUDDLE_GRIP if on_puddle(at) else 1.0)
 	for blob in blobs.duplicate():
 		blob[1] -= delta
 		if blob[1] <= 0.0:
@@ -323,6 +333,9 @@ func _on_corner(turned: bool) -> void:
 		drop_furniture(false, true)
 	elif case.suspect_id == SuspectCar.CEMENT_MIXER:
 		drop_blob()
+	elif case.suspect_id == SuspectCar.FISH_TRUCK:
+		for i in ICE_PER_CORNER:
+			drop_ice()
 	if riders_left > 0:
 		drop_jumper()
 	if ghost_look >= 0:
@@ -523,6 +536,29 @@ func drop_suitcase() -> ChaseSuitcase:
 	suitcase.rotation.y = case.truck.global_rotation.y + _rng.randf_range(-0.6, 0.6)
 	suitcases.append(suitcase)
 	return suitcase
+
+
+## A block of ice slides out of the fish truck's back door onto the street, a little to one side.
+func drop_ice() -> ChaseIce:
+	ice = ice.filter(func(block: ChaseIce) -> bool: return is_instance_valid(block))
+	if ice.size() >= MAX_ICE:
+		ice.pop_front().queue_free()
+	var block := ChaseIce.new()
+	block.car = case.car
+	block.drops = self
+	_dropped += 1
+	block.name = "Ice%d" % _dropped
+	case.get_parent().add_child(block)
+	var side := case.truck.global_basis.x * _rng.randf_range(-1.0, 1.0)
+	block.global_position = _behind() + side + Vector3.UP * 0.2
+	block.rotation.y = case.truck.global_rotation.y + _rng.randf_range(-0.8, 0.8)
+	ice.append(block)
+	return block
+
+
+## The patrol car ran over a block of ice: it skids for ICE_SKID_SECONDS.
+func ice_hit() -> void:
+	ice_skid_left = ICE_SKID_SECONDS
 
 
 func _behind() -> Vector3:
