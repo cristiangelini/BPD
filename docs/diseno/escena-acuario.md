@@ -165,6 +165,13 @@ el tanque de cada buzo, Bigotes con sus robos y el piso mojado, Doña Tinta y el
    vuelve a Doña Almeja (+100, renglón opcional en la planilla). Mojar al policía al buscar en un tanque queda para el
    paso 6, con el piso mojado. Capturas: `acuario/paso4-*.png`.
 5. Las pistas y la testigo.
+   **Hecho así (pistas del lugar):** las huellas van en el vidrio del frente del tanque grande (un buzo lo limpia a los
+   240 s); la pisada de pata de rana, en uno de tres lugares del piso seco de la cocina (se borra al pisarla); el pelo,
+   en la capucha olvidada en el banco (que está siempre); el sándwich mordido aparece al buscar en el iglú, y a los 240 s
+   un pingüino se lo come si no está en una bolsa. El ticket sale al abrir el cajón de la caja (sobre el mostrador);
+   apretar la caja otra vez cierra el cajón y lo traba para siempre, y si el ticket sigue al lado, se pierde. Ver tinta
+   en la mano de cualquier buzo cuenta como encontrada. Las bolsas de evidencia están en un banquito junto a la puerta.
+   Capturas: `acuario/paso5-*.png`.
 6. Bigotes: los robos, el pescado y el piso mojado.
 7. El final: tablero, cansancio, sueldo y el camión con los bloques de hielo.
 8. El sorteo de "Jugar" y el online.

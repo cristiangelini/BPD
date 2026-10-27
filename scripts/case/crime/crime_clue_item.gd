@@ -7,7 +7,9 @@ extends Grabbable
 ## (CoffeeCup) ends up on it. At the circus (`look` "circus") the hair is a loose one on the pool's floor (not food; the
 ## pool's tap washes it away, Circus.open_tap) and the bite is in a raw fish. At the museum (`look` "museum") the hair is
 ## loose too, on the velvet rope's post, and the bite is in the guards' sandwich. At the hotel (`look` "hotel") the
-## hair is loose on the suite's pillow and the bite is in the bonbon left on it. Every number here is (propuesta).
+## hair is loose on the suite's pillow and the bite is in the bonbon left on it. At the aquarium (`look` "aquarium") the
+## hair is loose in a forgotten hood, the bite is in a sandwich and the ticket from the till is a paper strip. Every
+## number here is (propuesta).
 
 ## A coffee cup this close to the recipe wets it, in meters.
 const WET_REACH := 0.4
@@ -22,9 +24,9 @@ const FISH_BELLY := Color(0.9, 0.9, 0.85)
 const CHOCOLATE := Color(0.35, 0.2, 0.12)
 const FOIL := Color(0.85, 0.68, 0.3)
 
-## "hair", "bite" or "recipe".
+## "hair", "bite", "recipe" or "ticket" (the aquarium's).
 var kind := "hair"
-## "pastry", "circus", "museum" or "hotel": what the clue looks like.
+## "pastry", "circus", "museum", "hotel" or "aquarium": what the clue looks like.
 var look := "pastry"
 var case: CrimeSceneCase
 ## The culprit's hair color, for the hair in the cream.
@@ -42,7 +44,7 @@ func _ready() -> void:
 	collision_layer = 4
 	collision_mask = 15
 	var size := {"hair": Vector3(0.32, 0.12, 0.32), "bite": Vector3(0.14, 0.1, 0.22),
-		"recipe": Vector3(0.21, 0.02, 0.3)}[kind] as Vector3
+		"recipe": Vector3(0.21, 0.02, 0.3), "ticket": Vector3(0.08, 0.02, 0.18)}[kind] as Vector3
 	if _loose():
 		size = {"hair": Vector3(0.24, 0.03, 0.24), "bite": Vector3(0.14, 0.1, 0.42)}.get(kind, size)
 	elif look == "hotel":
@@ -59,6 +61,9 @@ func _ready() -> void:
 		return
 	if look == "hotel":
 		_bonbon(builder)
+		return
+	if look == "aquarium":
+		_aquarium_look()
 		return
 	match kind:
 		"hair":
@@ -108,6 +113,25 @@ func _circus_look() -> void:
 			part.mesh_box(Vector3(0.05, 0.05, -0.02), Vector3(0.03, 0.06, 0.08), WET)
 
 
+## At the aquarium: the divers' sandwich with a bite out of one corner, or the till's ticket.
+func _aquarium_look() -> void:
+	_eaten_part = Node3D.new()
+	add_child(_eaten_part)
+	var part := PlaceBuilder.new(_eaten_part)
+	if kind == "ticket":
+		part.mesh_box(Vector3(0, 0.005, 0), Vector3(0.07, 0.006, 0.17), PAPER)
+		for i in 4:
+			part.mesh_box(Vector3(-0.01 + (i % 2) * 0.01, 0.009, -0.06 + i * 0.03), Vector3(0.04, 0.002, 0.006),
+				CHOCOLATE)
+		_paper = _eaten_part.get_child(0) as MeshInstance3D
+		return
+	part.mesh_box(Vector3(0, 0.015, 0.02), Vector3(0.12, 0.03, 0.18), SPONGE)
+	part.mesh_box(Vector3(0, 0.035, 0.02), Vector3(0.125, 0.012, 0.185), Color(0.4, 0.75, 0.35))
+	part.mesh_box(Vector3(0, 0.06, 0.02), Vector3(0.12, 0.03, 0.18), SPONGE)
+	# The bite: a dark notch at one corner.
+	part.mesh_box(Vector3(0.04, 0.04, -0.06), Vector3(0.05, 0.08, 0.04), WET)
+
+
 ## The hotel's bonbon: a chocolate square in its gold foil, with a bite out of one corner.
 func _bonbon(builder: PlaceBuilder) -> void:
 	builder.mesh_box(Vector3(0, 0.004, 0), Vector3(0.08, 0.008, 0.08), FOIL)
@@ -118,9 +142,9 @@ func _bonbon(builder: PlaceBuilder) -> void:
 	part.mesh_box(Vector3(0.02, 0.04, 0.02), Vector3(0.02, 0.02, 0.02), SPONGE.lightened(0.3))
 
 
-## The circus's look: its loose hair and its fish. The museum's and the hotel's hair are loose too.
+## The circus's look: its loose hair and its fish. The museum's, the hotel's and the aquarium's hair are loose too.
 func _loose() -> bool:
-	return look == "circus" or (look in ["museum", "hotel"] and kind == "hair")
+	return look == "circus" or (look in ["museum", "hotel", "aquarium"] and kind == "hair")
 
 
 ## Food can be eaten (and the clue with it); the circus's loose hair can't.

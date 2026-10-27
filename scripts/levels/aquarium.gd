@@ -43,6 +43,8 @@ const IGLOO_AT := Vector3(2.0, 0.1, -11.3)
 const INK_TANK_AT := Vector3(13.2, 0, -1.0)
 ## The divers' bench, facing the big tank.
 const BENCH_AT := Vector3(0, 0, 1.5)
+## The stool with the roll of evidence bags, by the door.
+const BAGS_AT := Vector3(3.0, 0, 5.5)
 ## Where La Gorda can be hidden (AquariumSpot): the bottom of each small tank, the igloo, the plush basket and the
 ## fish-food bucket.
 const PEARL_SPOTS: Array[String] = ["tank_sharks", "tank_jellyfish", "tank_seahorses", "tank_turtles", "tank_rays",
@@ -98,6 +100,7 @@ var loot_found := false
 var loot_spots := {}
 var pearl: GiantPearl
 var board: FeedingBoard
+var clues: AquariumClues
 ## What each cop is busy with ("" for nothing), by cop: a search or the board takes a while.
 var _busy := {}
 var divers: Array[AquariumDiver] = []
@@ -117,6 +120,11 @@ func _ready() -> void:
 	_big_tank()
 	_builder.box(BENCH_AT + Vector3(0, 0.42, 0), Vector3(3.0, 0.08, 0.5), WOOD)
 	_builder.legs(BENCH_AT, Vector2(3.0, 0.5), 0.38, METAL)
+	_builder.box(BAGS_AT + Vector3(0, FLOOR_TOP + 0.25, 0), Vector3(0.5, 0.5, 0.4), WOOD)
+	bags = EvidenceBags.new()
+	bags.name = "EvidenceBags"
+	bags.position = BAGS_AT + Vector3(0, FLOOR_TOP + 0.5, 0)
+	add_child(bags)
 	_small_tanks()
 	_penguins()
 	_ink_tank()
@@ -134,6 +142,11 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	for diver in divers:
 		diver.case = case
 		diver.stubborn = diver.index == stubborn
+	clues = AquariumClues.new()
+	clues.name = "Clues"
+	clues.aquarium = self
+	clues.case = case
+	add_child(clues)
 
 
 ## E on a spot: the cop searches it for SEARCH_SECONDS, and then La Gorda turns up if it's there, or the cop says
@@ -150,6 +163,8 @@ func search(spot: String, cop: Cop) -> void:
 ## The search of a spot is over.
 func searched(spot: String, cop: Cop) -> void:
 	_busy.erase(cop)
+	if clues:
+		clues.searched(spot)
 	if spot != loot_spot or pearl_uncovered or not case:
 		if cop:
 			cop.show_hint("HINT_AQUARIUM_NOTHING_" + spot)
@@ -504,7 +519,6 @@ func _shop() -> void:
 		_builder.mesh(plush, BASKET_AT + Vector3(-0.35 + (i % 3) * 0.35, 0.55 + (i / 3) * 0.12, -0.25 + (i % 2) * 0.5),
 			PLUSH_COLORS[i % PLUSH_COLORS.size()])
 	_builder.box(TILL_AT + Vector3(0, 0.5, 0), Vector3(2.0, 1.0, 0.7), WOOD)
-	_builder.mesh_box(TILL_AT + Vector3(0.4, 1.15, 0), Vector3(0.5, 0.3, 0.4), METAL)
 	_builder.box(Vector3(-HALF_X + 0.35, 1.0, 4.5), Vector3(0.5, 2.0, 4.0), WOOD)
 	for i in 8:
 		_builder.mesh(plush, Vector3(-HALF_X + 0.45, 0.5 + (i % 2) * 0.9, 3.0 + (i / 2) * 1.0), PLUSH_COLORS[i % 5])

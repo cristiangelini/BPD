@@ -131,6 +131,9 @@ func take_off_glove() -> void:
 	part("ink_right").visible = traits.ink
 	say("DIVER_INK" if traits.ink else "DIVER_CLEAN_HAND")
 	_file("ink")
+	# Doña Tinta inked whoever reached into the big tank: seeing ink on anyone tells it's a clue.
+	if traits.ink and case:
+		case.found("ink")
 
 
 ## The camera's flash in their face (PhotoCamera): their photo, with the lenses in their mask and their flippers.

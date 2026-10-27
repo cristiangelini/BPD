@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Aquarium crime scene, step 5a: the clues in place. Prints on the big tank's glass (wiped by a diver at 240 s), the flipper print on the kitchen's dry floor, the hair in the hood forgotten on the bench, the bitten sandwich in the igloo (a penguin eats it at 240 s), the ticket in the till's sticky drawer (a second E jams it with the ticket inside), the ink on a diver's hand, and the evidence bags by the door.
 - Aquarium crime scene, step 4: La Gorda hides by seed in one of the six small tanks (E on the glass), the igloo, the plush basket or the fish-food bucket; a search takes 5 s and says what was there instead; the feeding board (10 s) names the tank of the rubbed-out row; found, the pearl goes back to Doña Almeja for +100.
 - Aquarium crime scene, step 3: the divers' files. The aquarium variant of the crime scene case; E on a diver tells their tank, then takes off the hood (one won't until fed), then the right glove, showing the octopus ink or a clean hand; the photo tells the prescription mask and the flipper size, the print kit the prints and food the teeth. The culprit always has ink.
 - Aquarium crime scene, step 2: the six cleaning divers alike (black wetsuit, hood, mask, gloves and flippers; hair, prescription lenses, flipper size, teeth, octopus ink and the tank each looks after drawn with the seed) about the big tank, telling which tank is theirs; Don Anzuelo the keeper by the penguins; Bigotes the sea lion waddling round the hall; and Doña Tinta the octopus in her tank, whose glass answers E.
