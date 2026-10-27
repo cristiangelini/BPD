@@ -7,8 +7,9 @@ extends CrimeScenePlace
 ## booth "Tu cara en la Luna") and the kids' corner to the east (the rocket to climb and the Mars scale); at the back,
 ## the dome room with its reclining seats in a ring around the star projector and the night sky painted on the ceiling,
 ## and the control room in the east corner with the projector's console. The six guides stand about the hall and the
-## dome room (step 2), Doctor Órbita by the dome's door and Doña Nebulosa asleep in her seat. The case comes in later
-## steps. Every number here is (propuesta).
+## dome room (step 2), Doctor Órbita by the dome's door and Doña Nebulosa asleep in her seat. El Pedrusco is hidden in
+## one of nine spots (step 4) and the projector's console tells where the show was paused. Every number here is
+## (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(32, 28)
@@ -73,9 +74,27 @@ const PLANET_COLORS := {
 	"mercury": Color(0.6, 0.58, 0.55), "venus": Color(0.95, 0.8, 0.5), "mars": Color(0.85, 0.35, 0.2),
 	"jupiter": Color(0.85, 0.65, 0.45), "saturn": SATURN, "neptune": Color(0.25, 0.45, 0.9),
 }
+## Where El Pedrusco can be hidden (PlanetariumSpot): the giant Saturn, the six seats with a planet, the moon-rock basket
+## and the kids' rocket.
+const PEDRUSCO_SPOTS: Array[String] = ["saturn", "seat_mercury", "seat_venus", "seat_mars", "seat_jupiter",
+	"seat_saturn", "seat_neptune", "basket", "rocket"]
+## Seconds a search of a spot takes, and reading the console's log (propuesta).
+const SEARCH_SECONDS := 5.0
+const CONSOLE_SECONDS := 10.0
 const ROCK_COLORS: Array[Color] = [Color(0.55, 0.55, 0.58), Color(0.7, 0.7, 0.72), Color(0.45, 0.45, 0.5)]
 
 var case: CrimeSceneCase
+## What was stolen (CrimeSceneCase's loot texts), where the culprit hid it, whether a search turned it up and whether
+## it's back in its display case.
+var loot := "meteorite"
+var loot_spot := "saturn"
+var pedrusco_uncovered := false
+var loot_found := false
+var loot_spots := {}
+var pedrusco: Pedrusco
+var console: ProjectorConsole
+## What each cop is busy with ("" for nothing), by cop: a search or the console takes a while.
+var _busy := {}
 ## The lights are out (the star show, step 5): the glow paint on the guides' gloves shows.
 var dark := false
 var guides: Array[PlanetariumGuide] = []
@@ -103,10 +122,83 @@ func _ready() -> void:
 ## take off the helmet until they get something to eat.
 func set_up_case(new_case: CrimeSceneCase) -> void:
 	case = new_case
+	loot_spot = PEDRUSCO_SPOTS[absi(hash(["planetarium pedrusco spot", case.case_seed])) % PEDRUSCO_SPOTS.size()]
 	var stubborn := absi(hash("stubborn guide %d" % case.case_seed)) % guides.size()
 	for guide in guides:
 		guide.case = case
 		guide.stubborn = guide.index == stubborn
+
+
+## E on a spot: the cop searches it for SEARCH_SECONDS, and then El Pedrusco turns up if it's there, or the cop says
+## what's there instead.
+func search(spot: String, cop: Cop) -> void:
+	if _busy.get(cop, "") != "":
+		return
+	_busy[cop] = spot
+	if cop:
+		cop.show_hint("HINT_PLANETARIUM_SEARCHING")
+	get_tree().create_timer(SEARCH_SECONDS).timeout.connect(searched.bind(spot, cop))
+
+
+## The search of a spot is over.
+func searched(spot: String, cop: Cop) -> void:
+	_busy.erase(cop)
+	if spot != loot_spot or pedrusco_uncovered or not case:
+		if cop:
+			cop.show_hint("HINT_PLANETARIUM_NOTHING_" + spot)
+		return
+	uncover_pedrusco()
+	if cop:
+		cop.show_hint("HINT_PEDRUSCO_UNCOVERED")
+
+
+## E on the projector's console: CONSOLE_SECONDS reading the log, and then what it says.
+func read_console(cop: Cop) -> void:
+	if _busy.get(cop, "") != "":
+		return
+	_busy[cop] = "console"
+	if cop:
+		cop.show_hint("HINT_CONSOLE_READING")
+	get_tree().create_timer(CONSOLE_SECONDS).timeout.connect(console_read.bind(cop))
+
+
+func console_read(cop: Cop) -> void:
+	_busy.erase(cop)
+	if cop:
+		cop.show_hint(console_says())
+
+
+## What the console's log tells: the planet the show was paused on, if the stone is under a seat, or a full show.
+func console_says() -> String:
+	if case and loot_spot.begins_with("seat_"):
+		return tr("HINT_CONSOLE_PAUSED") % tr("PLANET_" + loot_spot.trim_prefix("seat_"))
+	return tr("HINT_CONSOLE_FULL")
+
+
+## El Pedrusco comes out of its hiding spot, on the floor in front of it, for a cop to take back to its display case.
+func uncover_pedrusco() -> void:
+	if pedrusco_uncovered:
+		return
+	pedrusco_uncovered = true
+	pedrusco = Pedrusco.new()
+	pedrusco.name = "Pedrusco"
+	pedrusco.planetarium = self
+	add_child(pedrusco)
+	var spot := loot_spots[loot_spot] as Node3D
+	var out: Vector3 = spot.get_meta("out")
+	pedrusco.position = Vector3(spot.position.x, FLOOR_TOP, spot.position.z) + out
+
+
+## El Pedrusco back in its display case: the case notes it (+LOOT_BONUS on the salary).
+func reveal_loot() -> void:
+	if loot_found:
+		return
+	uncover_pedrusco()
+	loot_found = true
+	pedrusco.position = CASE_AT + Vector3(0, 1.06, 0)
+	pedrusco.collision_layer = 0
+	if case:
+		case.found_loot()
 
 
 ## Lights out or back on: in the dark the glow paint on the guides' gloves shows.
@@ -276,6 +368,14 @@ func _hall() -> void:
 	saturn.add_child(band)
 	_builder.mesh_box(SATURN_AT + Vector3(0, (ROOF - SATURN_AT.y) / 2 + 0.45, 0), Vector3(0.03, ROOF - SATURN_AT.y - 0.9,
 		0.03), METAL)
+	# The crank that lowers Saturn's ring, on a post under it: the spot to search Saturn.
+	var crank_at := Vector3(SATURN_AT.x, 0, SATURN_AT.z)
+	_builder.mesh_box(crank_at + Vector3(0, 0.5, 0), Vector3(0.2, 1.0, 0.2), METAL)
+	var wheel := TorusMesh.new()
+	wheel.inner_radius = 0.12
+	wheel.outer_radius = 0.17
+	_builder.mesh(wheel, crank_at + Vector3(0, 1.0, 0.13), ROCKET_RED, Vector3(PI / 2, 0, 0))
+	_spot("saturn", crank_at + Vector3(0, 0.55, 0), Vector3(0.45, 1.1, 0.45), Vector3(0, 0, 0.8))
 
 
 ## The dome room: the star projector on its stand in the middle, the ring of reclining seats around it (six marked
@@ -322,8 +422,12 @@ func _seat(index: int, planet: String) -> void:
 	seat.name = "Seat%d" % index
 	seat.transform = place
 	add_child(seat)
-	var body := _builder.body(place.origin + Vector3(0, 0.25, 0))
-	_builder.shape(body, Vector3(0.7, 0.5, 0.7))
+	# A planet's seat is a spot: E on it searches under it.
+	if planet == "":
+		var body := _builder.body(place.origin + Vector3(0, 0.25, 0))
+		_builder.shape(body, Vector3(0.7, 0.5, 0.7))
+	else:
+		_spot("seat_" + planet, place.origin + Vector3(0, 0.35, 0), Vector3(0.75, 0.7, 0.75), place.basis.z * 0.8)
 	for part: Array in [[Vector3(0, 0.25, 0), Vector3(0.7, 0.5, 0.7)], [Vector3(0, 0.75, -0.35), Vector3(0.7, 0.8, 0.15)]]:
 		var box := MeshInstance3D.new()
 		var mesh := BoxMesh.new()
@@ -349,7 +453,12 @@ func _seat(index: int, planet: String) -> void:
 
 ## The control room: the projector's console with its screens and buttons, a chair, and a shelf of star charts.
 func _control() -> void:
-	_builder.box(CONSOLE_AT + Vector3(0, 0.45, 0), Vector3(1.0, 0.9, 2.6), METAL.darkened(0.3))
+	_builder.mesh_box(CONSOLE_AT + Vector3(0, 0.45, 0), Vector3(1.0, 0.9, 2.6), METAL.darkened(0.3))
+	console = ProjectorConsole.new(Vector3(1.0, 0.9, 2.6))
+	console.name = "ProjectorConsole"
+	console.planetarium = self
+	console.position = CONSOLE_AT + Vector3(0, 0.45, 0)
+	add_child(console)
 	for z: float in [-0.8, 0.0, 0.8]:
 		_builder.mesh_box(CONSOLE_AT + Vector3(0.3, 1.25, z), Vector3(0.06, 0.5, 0.7), Color(0.1, 0.3, 0.35))
 	for i in 6:
@@ -362,6 +471,7 @@ func _control() -> void:
 ## The moon-rock basket, the counter with the till and the photo booth "Tu cara en la Luna".
 func _shop() -> void:
 	_builder.open_box(BASKET_AT, Vector3(1.2, 0.6, 1.0), "top", Color(0.75, 0.6, 0.35))
+	_spot("basket", BASKET_AT + Vector3(0, 0.35, 0), Vector3(1.3, 0.7, 1.1), Vector3(1.0, 0, 0))
 	var rock := SphereMesh.new()
 	rock.radius = 0.15
 	rock.height = 0.24
@@ -388,7 +498,7 @@ func _shop() -> void:
 
 ## The kids' corner: the cardboard rocket to climb and the Mars scale.
 func _kids() -> void:
-	_rocket(ROCKET_AT, 1.7)
+	_rocket(ROCKET_AT, 1.7, "rocket")
 	_builder.box(SCALE_AT + Vector3(0, 0.05, 0), Vector3(0.8, 0.1, 0.8), PLANET_COLORS["mars"])
 	_builder.box(SCALE_AT + Vector3(0, 0.8, -0.35), Vector3(0.6, 1.4, 0.1), WHITE)
 	var label := Label3D.new()
@@ -400,14 +510,19 @@ func _kids() -> void:
 	add_child(label)
 
 
-## A cardboard rocket (body, nose, three fins and a window), standing at `at`; `radius` sets its size.
-func _rocket(at: Vector3, radius: float) -> void:
+## A cardboard rocket (body, nose, three fins and a window), standing at `at`; `radius` sets its size. With a `spot`,
+## its body is that spot (the kids' rocket: E searches inside it).
+func _rocket(at: Vector3, radius: float, spot := "") -> void:
 	var tube := CylinderMesh.new()
 	tube.top_radius = radius * 0.35
 	tube.bottom_radius = radius * 0.35
 	tube.height = radius * 1.6
-	var body := _builder.body(at + Vector3(0, tube.height / 2, 0))
-	_builder.shape(body, Vector3(radius * 0.7, tube.height, radius * 0.7))
+	if spot == "":
+		var body := _builder.body(at + Vector3(0, tube.height / 2, 0))
+		_builder.shape(body, Vector3(radius * 0.7, tube.height, radius * 0.7))
+	else:
+		_spot(spot, at + Vector3(0, tube.height / 2, 0), Vector3(radius * 0.7, tube.height, radius * 0.7),
+			Vector3(-radius * 0.7, 0, 0))
 	_builder.mesh(tube, at + Vector3(0, tube.height / 2, 0), WHITE)
 	var nose := CylinderMesh.new()
 	nose.top_radius = 0.0
@@ -424,3 +539,15 @@ func _rocket(at: Vector3, radius: float) -> void:
 	window.radius = radius * 0.12
 	window.height = radius * 0.24
 	_builder.mesh(window, at + Vector3(0, tube.height * 0.7, radius * 0.34), Color(0.5, 0.8, 0.95))
+
+
+## A spot El Pedrusco can hide in, as a box the cops search with E; `out` is where the stone lands when it turns up.
+func _spot(spot: String, at: Vector3, size: Vector3, out: Vector3) -> void:
+	var body := PlanetariumSpot.new(size)
+	body.name = "Search_" + spot
+	body.spot = spot
+	body.place = self
+	body.position = at
+	body.set_meta("out", out)
+	add_child(body)
+	loot_spots[spot] = body
