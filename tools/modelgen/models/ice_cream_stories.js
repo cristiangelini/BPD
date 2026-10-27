@@ -50,9 +50,33 @@ export function buildIceBlockWatches() {
 	return b.build();
 }
 
+// A 0.4 x 0.3 x 0.35 m counter scale with a round dial, a steel plate and a tiny magnet showing under it.
+export function buildIceScale() {
+	const b = new Builder('ice_scale');
+	b.add('base', mat('scale_body', 0xe8e0d0), new THREE.BoxGeometry(0.4, 0.12, 0.35), { pos: V(0, -0.09, 0) });
+	b.add('plate', mat('scale_plate', 0xc0c4c8), new THREE.BoxGeometry(0.32, 0.015, 0.26), { pos: V(0, -0.025, 0.02) });
+	b.add('tower', mat('scale_body', 0xe8e0d0), new THREE.BoxGeometry(0.16, 0.16, 0.06), { pos: V(0, 0.05, -0.145) });
+	b.add('dial', mat('scale_dial', 0xfaf6e8), new THREE.CylinderGeometry(0.06, 0.06, 0.01, 16), { pos: V(0, 0.06, -0.11), rot: [Math.PI / 2, 0, 0] });
+	b.add('needle', mat('scale_needle', 0xd83030), new THREE.BoxGeometry(0.006, 0.05, 0.004), { pos: V(0.012, 0.07, -0.103), rot: [0, 0, -0.5] });
+	b.add('magnet', mat('scale_magnet', 0xd83030), new THREE.BoxGeometry(0.05, 0.02, 0.03), { pos: V(0.12, -0.155, 0.12) });
+	return b.build();
+}
+
+// A 0.15 x 0.05 x 0.1 m red horseshoe magnet with silver tips.
+export function buildScaleMagnet() {
+	const b = new Builder('scale_magnet');
+	const red = mat('magnet_red', 0xd83030), tip = mat('magnet_tip', 0xd0d4d8);
+	b.add('back', red, new THREE.BoxGeometry(0.03, 0.05, 0.1), { pos: V(-0.06, 0, 0) });
+	for (const z of [-0.035, 0.035]) {
+		b.add('arm', red, new THREE.BoxGeometry(0.09, 0.05, 0.03), { pos: V(0, 0, z) });
+		b.add('tip', tip, new THREE.BoxGeometry(0.03, 0.05, 0.03), { pos: V(0.06, 0, z) });
+	}
+	return b.build();
+}
+
 export const models = {
 	recipe_box: buildRecipeBox, secret_jar: buildSecretJar, rival_photo: buildRivalPhoto,
-	ice_block_watches: buildIceBlockWatches,
+	ice_block_watches: buildIceBlockWatches, ice_scale: buildIceScale, scale_magnet: buildScaleMagnet,
 };
 
 export const views = {
@@ -61,6 +85,7 @@ export const views = {
 			{ name: 'recipe_box', pos: [-0.35, 0.13, 0] }, { name: 'secret_jar', pos: [0.1, 0.1, 0.05] },
 			{ name: 'rival_photo', pos: [0.45, 0.01, 0.05] },
 			{ name: 'ice_block_watches', pos: [-0.2, 0.2, -0.6] },
+			{ name: 'ice_scale', pos: [0.45, 0.15, -0.6] }, { name: 'scale_magnet', pos: [0.75, 0.025, 0.1] },
 		],
 		cam: { pos: [0, 0.7, 1.3], target: [0, 0.08, 0], fov: 45 },
 	},

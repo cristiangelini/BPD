@@ -53,6 +53,16 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_DELIVERY_LIST", "OBJ_EXTRA_FAKE_STAMP_ICE"],
 		"rig": preload("res://scripts/case/ice_cream/frozen_smuggling_rig.gd"),
 	},
+	"rigged_scale": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_RIGGED_SCALE_B", "BRIEF_RIGGED_SCALE_C", "BRIEF_RIGGED_SCALE_D"],
+		"find": "OBJ_FIND_ICE_SCALE",
+		"hidden": [preload("res://scenes/props/ice_scale.tscn"), preload("res://scenes/props/scale_magnet.tscn"),
+			preload("res://scenes/props/complaints_notebook.tscn")],
+		"half_heights": [0.15, 0.03, 0.04],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_SCALE_MAGNET", "OBJ_EXTRA_COMPLAINTS_NOTEBOOK"],
+		"rig": preload("res://scripts/case/ice_cream/rigged_scale_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the salon's floor, behind the counter, in the kitchen, the office and the
 ## yard.

@@ -103,6 +103,9 @@ entre 400 y 600. El bloque de hielo es la cosa más pesada (8 kg): conviene llev
    1000), la lista de entregas y el sello falso; en la cámara de frío el termómetro marca -40 °C (con E es la pista) y
    cada 50 s entra un cliente que no quiere helado y pregunta "¿llegó lo frío?" (`IceVisitor`, que sirve para las
    otras historias). Capturas `heladeria/paso6a-*.png`.
+   **Hecho (paso 6b):** la balanza trucha (`RiggedScaleRig`): la balanza arreglada (5 kg, 1000), el imán y el
+   cuaderno de quejas; en la mesa de la caja, el cartel "1 KG" sobre un pote chiquito (con E es la pista) y cada 45 s
+   vuelve una clienta a decir que eso no es un kilo. Capturas `heladeria/paso6b-*.png`.
 7. "Jugar" suma la heladería al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online (doña Nieve, Lucho, las tapas, los charcos y lo frágil en todas las PC).
 
