@@ -22,7 +22,8 @@ func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltrati
 		"restaurant": 0, "chess": 0, "biker": 0, "auction": 0, "bank": 0, "plaza": 0, "market": 0, "bridge": 0,
 		"double": 0, "birthday": 0, "convertible": 0, "football": 0, "school_visit": 0, "debate": 0, "prison": 0,
 		"transfer": 0, "blackout": 0, "visits": 0, "laundry": 0, "prison_tunnel": 0, "prison_talent": 0,
-		"prison_vip": 0, "prison_garden": 0, "apartments": 0, "prison_count": 0, "airport": 0}
+		"prison_vip": 0, "prison_garden": 0, "apartments": 0, "prison_count": 0, "airport": 0,
+		"ice_cream": 0}
 	for i in 600:
 		count[PlaceDraw.pick(i + 1, [], 1)] += 1
 	assert_between(count.chase, 250, 350, "half chases (Cristian, 20/10)")
@@ -93,6 +94,7 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 	var hotel := {}
 	var gym := {}
 	var apartments := {}
+	var ice_cream := {}
 	for i in 900:
 		var case_seed := i + 1
 		match PlaceDraw.pick(case_seed, [], 1, false):
@@ -114,6 +116,8 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 				gym[GymRaid.pick_story(case_seed, [])] = true
 			"apartments":
 				apartments[ApartmentTower.pick_story(case_seed, [])] = true
+			"ice_cream":
+				ice_cream[IceCreamShop.pick_story(case_seed, [])] = true
 			_:
 				grandpa[GrandpaHouse.pick_story(case_seed, []).id] = true
 	assert_eq(bakery.size(), Bakery.STORIES.size())
@@ -126,6 +130,7 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 	assert_eq(hotel.size(), HotelRaid.STORIES.size())
 	assert_eq(gym.size(), GymRaid.STORIES.size())
 	assert_eq(apartments.size(), ApartmentTower.STORIES.size())
+	assert_eq(ice_cream.size(), IceCreamShop.STORIES.size())
 
 
 func test_new_seeds_are_odd_and_even() -> void:
