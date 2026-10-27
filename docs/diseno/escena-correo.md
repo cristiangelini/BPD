@@ -171,6 +171,14 @@ Mientras tanto se avanza con lo recomendado.
      de la ficha queda hecha pero dice "se le borró comiendo". El culpable siempre tiene la lengua azul.
    - Captura: `correo/paso3-lengua.png`.
 4. La Vaquita Azul escondida, buscar con E y el libro del matasellos.
+   **Hecho así:** la semilla esconde la estampilla en uno de 9 lugares (`PostOfficeSpot`): los seis casilleros con
+   recorrido, el saco grande de la sala de clasificación, la balanza y el buzón gigante.
+   - Buscar tarda 5 s, y donde no está aparece una línea graciosa por lugar.
+   - El libro del matasellos, en el escritorio de la jefa, tarda 10 s en leerse y dice "el casillero rojo" (o el
+     color que sea) si está en un casillero; si no, "Sin sellos esta noche".
+   - Encontrada, queda en el piso dentro de su funda; con E vuelve a su marco y suma 100 (fila opcional en la
+     planilla).
+   - Capturas: `correo/paso4-casillero.png` y `correo/paso4-marco.png`.
 5. La clasificadora: el reloj, los sobres, el viento, los sacos y el botón rojo con la paciencia de la jefa.
 6. Las pistas y el testigo: la caja fuerte, la pisada, la gorra, la galleta, la carta sellada y Cartita.
 7. El final: el tablero, el sueldo y la camioneta con los paquetes.

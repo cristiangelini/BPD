@@ -7,7 +7,8 @@ extends CrimeScenePlace
 ## color); at the back, the sorting room with the big sorting machine and the sacks of undelivered mail, and in the
 ## east corner the depot of "Frágil" parcels and the boss's office with the open safe, the postmark book and the red
 ## button. The six carriers stand about the counter, the boxes and the sorting machine (step 2), Doña Sellito in the
-## hall and Cartita on its perch at window 2. The case reaches the carriers (step 3, set_up_case). Every number here is (propuesta).
+## hall and Cartita on its perch at window 2. The case reaches the carriers (step 3, set_up_case). La Vaquita Azul is
+## hidden in one of nine spots (step 4) and the postmark book tells which post box. Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(32, 28)
@@ -64,6 +65,13 @@ const DESK_AT := Vector3(11.0, 0, -8.0)
 const BUTTON_AT := Vector3(9.0, 1.3, BACK_Z + 0.14)
 ## The depot: the shelves of parcels against the office's wall.
 const SHELVES_AT := Vector3(11.0, 0, OFFICE_Z + 0.5)
+## Where La Vaquita Azul can be hidden (PostOfficeSpot): the six post boxes with a route, the big sack of undelivered
+## mail (the first of SACKS_AT), the parcel scale and the giant mailbox.
+const STAMP_SPOTS: Array[String] = ["box_red", "box_green", "box_yellow", "box_blue", "box_orange", "box_purple",
+	"sack", "scale", "mailbox"]
+## Seconds a search of a spot takes, and reading the postmark book (propuesta).
+const SEARCH_SECONDS := 5.0
+const BOOK_SECONDS := 10.0
 const PAINT := Color(0.95, 0.78, 0.22)
 const INSIDE := Color(0.93, 0.9, 0.8)
 const TILES := Color(0.62, 0.6, 0.56)
@@ -83,6 +91,17 @@ const ROUTE_COLORS := {
 }
 
 var case: CrimeSceneCase
+## What was stolen (CrimeSceneCase's loot texts), where the culprit hid it, whether a search turned it up and whether
+## it's back in its frame.
+var loot := "stamp"
+var loot_spot := "sack"
+var stamp_uncovered := false
+var loot_found := false
+var loot_spots := {}
+var stamp: BlueStamp
+var book: PostmarkBook
+## What each cop is busy with ("" for nothing), by cop: a search or the book takes a while.
+var _busy := {}
 var carriers: Array[PostCarrier] = []
 var boss: PostBoss
 var parrot: PostParrot
@@ -108,10 +127,85 @@ func _ready() -> void:
 ## won't take off the cap until they get something to eat.
 func set_up_case(new_case: CrimeSceneCase) -> void:
 	case = new_case
+	loot_spot = STAMP_SPOTS[absi(hash(["post office stamp spot", case.case_seed])) % STAMP_SPOTS.size()]
 	var stubborn := absi(hash("stubborn carrier %d" % case.case_seed)) % carriers.size()
 	for carrier in carriers:
 		carrier.case = case
 		carrier.stubborn = carrier.index == stubborn
+
+
+## E on a spot: the cop searches it for SEARCH_SECONDS, and then La Vaquita Azul turns up if it's there, or the cop
+## says what's there instead.
+func search(spot: String, cop: Cop) -> void:
+	if _busy.get(cop, "") != "":
+		return
+	_busy[cop] = spot
+	if cop:
+		cop.show_hint("HINT_POST_SEARCHING")
+	get_tree().create_timer(SEARCH_SECONDS).timeout.connect(searched.bind(spot, cop))
+
+
+## The search of a spot is over.
+func searched(spot: String, cop: Cop) -> void:
+	_busy.erase(cop)
+	if spot != loot_spot or stamp_uncovered or not case:
+		if cop:
+			cop.show_hint("HINT_POST_NOTHING_" + spot)
+		return
+	uncover_stamp()
+	if cop:
+		cop.show_hint("HINT_STAMP_UNCOVERED")
+
+
+## E on the postmark book: BOOK_SECONDS reading the night's page, and then what it says.
+func read_book(cop: Cop) -> void:
+	if _busy.get(cop, "") != "":
+		return
+	_busy[cop] = "book"
+	if cop:
+		cop.show_hint("HINT_BOOK_READING")
+	get_tree().create_timer(BOOK_SECONDS).timeout.connect(book_read.bind(cop))
+
+
+func book_read(cop: Cop) -> void:
+	_busy.erase(cop)
+	if cop:
+		cop.show_hint(book_says())
+
+
+## What the book's night page tells: the color of the post box the envelope went to, if the stamp is in one, or no
+## stamps that night.
+func book_says() -> String:
+	if case and loot_spot.begins_with("box_"):
+		return tr("HINT_BOOK_STAMPED") % tr("ROUTE_COLOR_" + loot_spot.trim_prefix("box_"))
+	return tr("HINT_BOOK_EMPTY")
+
+
+## La Vaquita Azul comes out of its hiding spot, flat on the floor in front of it, for a cop to take back to its frame.
+func uncover_stamp() -> void:
+	if stamp_uncovered:
+		return
+	stamp_uncovered = true
+	stamp = BlueStamp.new()
+	stamp.name = "BlueStamp"
+	stamp.post_office = self
+	add_child(stamp)
+	var spot := loot_spots[loot_spot] as Node3D
+	var out: Vector3 = spot.get_meta("out")
+	stamp.lie(Vector3(spot.position.x, FLOOR_TOP, spot.position.z) + out)
+
+
+## La Vaquita Azul back in its frame: the case notes it (+LOOT_BONUS on the salary).
+func reveal_loot() -> void:
+	if loot_found:
+		return
+	uncover_stamp()
+	loot_found = true
+	stamp.position = FRAME_AT + Vector3(0, 0, 0.03)
+	stamp.rotation = Vector3.ZERO
+	stamp.collision_layer = 0
+	if case:
+		case.found_loot()
 
 
 ## The carrier by index (the order of the case's traits).
@@ -209,8 +303,7 @@ func _front() -> void:
 	_builder.mesh(dial, Vector3(4.0, ROOF - 0.8, face + 0.06), WHITE, Vector3(PI / 2, 0, 0))
 	_builder.mesh_box(Vector3(4.0, ROOF - 0.6, face + 0.13), Vector3(0.05, 0.4, 0.02), BLACK)
 	_builder.mesh_box(Vector3(4.15, ROOF - 0.8, face + 0.13), Vector3(0.3, 0.05, 0.02), BLACK)
-	var body := _builder.body(MAILBOX_AT + Vector3(0, 0.9, 0))
-	_builder.shape(body, Vector3(1.2, 1.8, 1.0))
+	_spot("mailbox", MAILBOX_AT + Vector3(0, 0.9, 0), Vector3(1.2, 1.8, 1.0), Vector3(0, 0, 1.0))
 	var tube := CylinderMesh.new()
 	tube.top_radius = 0.6
 	tube.bottom_radius = 0.6
@@ -263,7 +356,8 @@ func _counter() -> void:
 		box.position = part[0]
 		frame.add_child(box)
 	_label("Plaque", "SIGN_STAMP", FRAME_AT + Vector3(0, -0.6, 0.02), 0.0, 0.003, 32)
-	_builder.box(SCALE_AT + Vector3(0, 0.4, 0), Vector3(1.0, 0.8, 1.0), METAL)
+	_builder.mesh_box(SCALE_AT + Vector3(0, 0.4, 0), Vector3(1.0, 0.8, 1.0), METAL)
+	_spot("scale", SCALE_AT + Vector3(0, 0.4, 0), Vector3(1.0, 0.8, 1.0), Vector3(0, 0, 1.0))
 	_builder.mesh_box(SCALE_AT + Vector3(0, 0.82, 0), Vector3(0.9, 0.04, 0.9), METAL.lightened(0.2))
 	_builder.box(SCALE_AT + Vector3(0, 1.2, -0.45), Vector3(0.6, 0.7, 0.1), WHITE)
 	_sack(RETURNS_AT, "ReturnsSack")
@@ -301,6 +395,7 @@ func _boxes() -> void:
 		number.rotation.y = -PI / 2
 		door.add_child(number)
 		if routes.has(i):
+			_spot("box_" + routes[i], at, Vector3(0.12, BOX_SIZE - 0.08, BOX_SIZE), Vector3(-1.0, 0, 0))
 			var tag := MeshInstance3D.new()
 			tag.name = "Route"
 			var tag_mesh := BoxMesh.new()
@@ -325,7 +420,7 @@ func _sorting() -> void:
 	_builder.box(MACHINE_AT + Vector3(-MACHINE_SIZE.x / 2 - 0.6, 1.6, 0), Vector3(1.2, 3.2, 1.6), POST_BLUE.darkened(0.3))
 	_builder.mesh_box(MACHINE_AT + Vector3(MACHINE_SIZE.x / 2 + 0.4, 1.0, 0), Vector3(0.8, 0.1, 1.2), METAL)
 	for i in SACKS_AT.size():
-		_sack(SACKS_AT[i], "Sack%d" % i)
+		_sack(SACKS_AT[i], "Sack%d" % i, "sack" if i == 0 else "")
 	_builder.box(Vector3(-14.4, 0.9, -6.5), Vector3(1.0, 1.8, 6.0), WOOD)
 
 
@@ -348,6 +443,11 @@ func _office() -> void:
 	dial.height = 0.04
 	_builder.mesh(dial, door.position + Vector3(-0.05, 0.1, 0), METAL, Vector3(0, 0, PI / 2))
 	_builder.box(DESK_AT + Vector3(0, 0.45, 0), Vector3(2.0, 0.9, 1.0), WOOD)
+	book = PostmarkBook.new(Vector3(0.6, 0.12, 0.45))
+	book.name = "PostmarkBook"
+	book.post_office = self
+	book.position = DESK_AT + Vector3(-0.3, 0.96, 0)
+	add_child(book)
 	_builder.mesh_box(DESK_AT + Vector3(-0.3, 0.95, 0), Vector3(0.6, 0.1, 0.45), Color(0.45, 0.12, 0.12))
 	_builder.mesh_box(DESK_AT + Vector3(0.5, 1.0, 0.1), Vector3(0.12, 0.2, 0.12), BLACK)
 	_builder.box(DESK_AT + Vector3(0, 0.25, -1.0), Vector3(0.5, 0.5, 0.5), BLACK)
@@ -370,11 +470,14 @@ func _depot() -> void:
 	_label("FragileSign", "SIGN_FRAGILE", Vector3(13.5, 0.4, -0.53), 0.0, 0.004, 32)
 
 
-## A sack of mail, standing, tied at the top.
-func _sack(at: Vector3, sack_name: String) -> void:
-	var body := _builder.body(at + Vector3(0, 0.45, 0))
-	body.name = sack_name
-	_builder.shape(body, Vector3(0.9, 0.9, 0.9))
+## A sack of mail, standing, tied at the top. With a `spot`, it's that spot (E searches it).
+func _sack(at: Vector3, sack_name: String, spot := "") -> void:
+	if spot == "":
+		var body := _builder.body(at + Vector3(0, 0.45, 0))
+		body.name = sack_name
+		_builder.shape(body, Vector3(0.9, 0.9, 0.9))
+	else:
+		_spot(spot, at + Vector3(0, 0.45, 0), Vector3(0.9, 0.9, 0.9), Vector3(1.0, 0, 0)).name = sack_name
 	var bag := SphereMesh.new()
 	bag.radius = 0.5
 	bag.height = 1.1
@@ -397,3 +500,17 @@ func _label(label_name: String, key: String, at: Vector3, turn: float, pixel := 
 	label.position = at
 	label.rotation.y = turn
 	add_child(label)
+
+
+## A spot La Vaquita Azul can hide in, as a box the cops search with E; `out` is where the stamp lands when it turns up
+## (on the floor).
+func _spot(spot: String, at: Vector3, size: Vector3, out: Vector3) -> PostOfficeSpot:
+	var body := PostOfficeSpot.new(size)
+	body.name = "Search_" + spot
+	body.spot = spot
+	body.place = self
+	body.position = at
+	body.set_meta("out", out)
+	add_child(body)
+	loot_spots[spot] = body
+	return body
