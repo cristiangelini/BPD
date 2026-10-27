@@ -123,3 +123,20 @@ func test_innocents_come_off_the_pay() -> void:
 	assert_eq(report.total, ShiftReport.SALARY - TrafficCase.COMPLAINT_FINE)
 	case.finish_shift()
 	assert_true(case.shift_over)
+
+
+func test_a_guest_finds_the_driver_whose_copy_comes_in_late() -> void:
+	# The last test's driver goes at the end of the frame.
+	await wait_physics_frames(1)
+	var state := case.snapshot()
+	case.follower = true
+	state.suspect = true
+	# The case's news can beat the driver's copy (NpcSync), and the case doesn't send it again.
+	case.apply_snapshot(state)
+	assert_null(case.suspect)
+	var driver := ChaseSuspect.new()
+	driver.name = "Driver"
+	add_child_autofree(driver)
+	await wait_physics_frames(2)
+	assert_eq(case.suspect, driver, "found once he's in")
+	assert_not_null(case.escort, "and the escort follows the host's")
