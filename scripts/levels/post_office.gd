@@ -6,7 +6,8 @@ extends CrimeScenePlace
 ## the queue ribbons and the empty frame of La Vaquita Azul; the wall of 24 post boxes to the east (six with a route's
 ## color); at the back, the sorting room with the big sorting machine and the sacks of undelivered mail, and in the
 ## east corner the depot of "Frágil" parcels and the boss's office with the open safe, the postmark book and the red
-## button. The people and the case come in later steps. Every number here is (propuesta).
+## button. The six carriers stand about the counter, the boxes and the sorting machine (step 2), Doña Sellito in the
+## hall and Cartita on its perch at window 2. The case comes in later steps. Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(32, 28)
@@ -39,6 +40,13 @@ const FRAME_AT := Vector3(-8.0, 1.7, ROOMS_Z + 0.1)
 const SCALE_AT := Vector3(-1.5, 0, 2.0)
 const RETURNS_AT := Vector3(-14.0, 0, 6.2)
 const QUEUE_AT := Vector3(3.0, 0, 4.5)
+## Where the people are: two carriers behind the counter facing the hall, one at the post boxes facing them and three
+## at the sorting machine facing it; Doña Sellito in the hall by the sorting room's door; Cartita on its perch on the
+## counter at window 2.
+const CARRIERS_AT: Array[Vector3] = [Vector3(-11.0, 0, 1.0), Vector3(-5.0, 0, 1.0), Vector3(11.0, 0, 3.0),
+	Vector3(-7.0, 0, -4.2), Vector3(-1.0, 0, -4.2), Vector3(-4.0, 0, -9.0)]
+const BOSS_AT := Vector3(1.5, 0, 1.2)
+const PARROT_AT := Vector3(-8.0, 1.1, COUNTER_Z)
 ## The post boxes on the east wall: ROWS x COLUMNS, numbered from the top row, front to back.
 const BOX_ROWS := 4
 const BOX_COLUMNS := 6
@@ -74,6 +82,9 @@ const ROUTE_COLORS := {
 	"blue": Color(0.2, 0.45, 0.9), "orange": Color(0.95, 0.55, 0.15), "purple": Color(0.55, 0.3, 0.75),
 }
 
+var carriers: Array[PostCarrier] = []
+var boss: PostBoss
+var parrot: PostParrot
 var _builder: PlaceBuilder
 
 
@@ -89,6 +100,12 @@ func _ready() -> void:
 	_sorting()
 	_office()
 	_depot()
+	_people()
+
+
+## The carrier by index (the order of the case's traits).
+func suspect(index: int) -> CollisionObject3D:
+	return carriers[index] if index >= 0 and index < carriers.size() else null
 
 
 ## Whether a point in the world (ignoring height) is on the post office's lot, sidewalk included.
@@ -120,6 +137,40 @@ static func box_at(index: int) -> Vector3:
 	var row := index / BOX_COLUMNS
 	var column := index % BOX_COLUMNS
 	return Vector3(HALF_X - 0.37, 2.4 - row * BOX_SIZE, 1.2 + column * (BOX_SIZE + 0.15))
+
+
+## The six carriers alike (CarrierTraits.draw with the case seed), each facing what they look after: the counter's
+## two the hall, the boxes' one the boxes and the sorting room's three the machine. Doña Sellito facing the hall and
+## Cartita on the counter.
+func _people() -> void:
+	var traits := CarrierTraits.draw(case_seed)
+	for i in traits.size():
+		var carrier := PostCarrier.new()
+		carrier.name = "Carrier%d" % i
+		carrier.traits = traits[i]
+		carrier.index = i
+		var at: Vector3 = CARRIERS_AT[i]
+		carrier.position = at + Vector3(0, FLOOR_TOP, 0)
+		carrier.rotation.y = facing(at)
+		add_child(carrier)
+		carriers.append(carrier)
+	boss = PostBoss.new()
+	boss.name = "Boss"
+	boss.position = BOSS_AT + Vector3(0, FLOOR_TOP, 0)
+	add_child(boss)
+	parrot = PostParrot.new()
+	parrot.name = "Parrot"
+	parrot.position = PARROT_AT
+	add_child(parrot)
+
+
+## Which way a carrier standing at `at` faces (a Y rotation; the models face +Z): the hall behind the counter, the
+## boxes in their room, the machine in the sorting room.
+static func facing(at: Vector3) -> float:
+	if at.z > ROOMS_Z:
+		return PI / 2 if at.x > EAST_X else 0.0
+	var to := MACHINE_AT - at
+	return atan2(to.x, to.z)
 
 
 ## The floors, the roof with its lights and the outer walls.
