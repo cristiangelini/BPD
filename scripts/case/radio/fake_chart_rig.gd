@@ -1,5 +1,5 @@
 class_name FakeChartRig
-extends RadioRig
+extends RadioStationRig
 
 ## The fake chart (allanamiento-radio.md, "El ranking trucho"): musicians pay don Volumen to top the station's chart.
 ## The box of envelopes is hidden with the cardboard gold record and the chart written in advance; next week's chart is
