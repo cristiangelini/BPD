@@ -40,7 +40,7 @@ func test_the_tables_leave_the_entrance_and_the_dance_floor_clear() -> void:
 
 func test_the_cops_start_at_the_station_by_the_disguises() -> void:
 	var cop: Cop = club.get_node("Cop")
-	var station := club.get_node("City").global_transform * CityLayout.lot("station")
+	var station: Transform3D = club.get_node("City").global_transform * CityLayout.lot("station")
 	assert_lt(cop.global_position.distance_to(station * StationRooms.SPAWNS[0]), 0.5)
 	var nearest := INF
 	for body: Node in club.find_children("*", "RigidBody3D", true, false):

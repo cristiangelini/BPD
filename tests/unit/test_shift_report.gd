@@ -55,5 +55,5 @@ func test_the_house_shows_the_shift_screen_with_the_pay() -> void:
 	house.finish_shift()
 	var screen: ShiftScreen = house.get_node("ShiftScreen")
 	assert_true(screen.visible)
-	assert_eq(screen.get_node("%Verdict").text, "SHIFT_APPROVED", "500 + 1000 is over the quota")
+	assert_eq(screen.get_node("%Verdict").text, tr("SHIFT_APPROVED"), "500 + 1000 is over the quota")
 	assert_true(house.shift_over)

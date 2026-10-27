@@ -86,6 +86,9 @@ var _run_off_fog := {}
 var _run_off_circus := {}
 var _run_off_parade := {}
 var escort: OwnerEscort
+## A guest: the host has the driver out, but his copy (NpcSync's) hasn't come in yet. The case only sends what changes,
+## so the guest keeps looking for him until he does.
+var _suspect_due := false
 var solved_now := false
 ## The wanted car got past the checkpoint and the chase is on; whether it got away.
 var chase: ChaseCase
@@ -665,6 +668,28 @@ func snapshot() -> Dictionary:
 	return state
 
 
+func _physics_process(_delta: float) -> void:
+	if _suspect_due:
+		_find_suspect()
+
+
+## A guest: the host's driver, once his copy is in the level, walked by an escort that only follows.
+func _find_suspect() -> void:
+	if not _suspect_due:
+		return
+	suspect = get_parent().get_node_or_null("Driver") as ChaseSuspect
+	if not suspect:
+		return
+	_suspect_due = false
+	if patrol_car:
+		escort = OwnerEscort.attach(suspect, patrol_car)
+		escort.follower = true
+		escort.in_car_hint = "HINT_TRAFFIC_IN_CAR"
+		_hint_all("HINT_RACE_TROPHY" if plan and plan.race else "HINT_FOG_LAMP" if plan and plan.fog
+			else "HINT_CIRCUS_JEWELS" if plan and plan.circus else "HINT_PARADE_CROWN" if plan and plan.parade
+			else "HINT_TRAFFIC_GOT_IT")
+
+
 ## A guest's case takes the host's, and shows the same hints when something happens.
 func apply_snapshot(state: Dictionary) -> void:
 	if state.tip:
@@ -694,15 +719,8 @@ func apply_snapshot(state: Dictionary) -> void:
 		var strip := get_parent().get_node_or_null(strip_name) as SpikeStrip
 		if strip:
 			strip.show_unrolled(state.spikes[strip_name])
-	if state.suspect and not suspect:
-		suspect = get_parent().get_node_or_null("Driver") as ChaseSuspect
-		if suspect and patrol_car:
-			escort = OwnerEscort.attach(suspect, patrol_car)
-			escort.follower = true
-			escort.in_car_hint = "HINT_TRAFFIC_IN_CAR"
-			_hint_all("HINT_RACE_TROPHY" if plan and plan.race else "HINT_FOG_LAMP" if plan and plan.fog
-				else "HINT_CIRCUS_JEWELS" if plan and plan.circus else "HINT_PARADE_CROWN" if plan and plan.parade
-				else "HINT_TRAFFIC_GOT_IT")
+	_suspect_due = state.suspect and not suspect
+	_find_suspect()
 	if state.has("chase") and not chase:
 		var run_off: Array = state.run_off
 		_run_off(run_off[0], run_off[1], run_off.size() > 2 and run_off[2], run_off.size() > 3 and run_off[3],

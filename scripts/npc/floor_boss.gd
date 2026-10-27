@@ -58,6 +58,8 @@ var printer_spot := Vector3.ZERO
 var printer: OfficePrinter
 ## How long fixing the printer takes her (FIX_TIME; tests shorten it).
 var fix_time := FIX_TIME
+## Where she looks while at it, in the world, if not at the printer (the gym's profe gives his class to the mirror).
+var fix_facing := Vector3.INF
 ## The points she's walking to, in order; empty while she patrols.
 var _path: Array[Vector3] = []
 var _errand := ""
@@ -239,7 +241,9 @@ func _back_to_route() -> void:
 
 ## Bent over the printer's tray, one line per part, until it prints again.
 func _fix(delta: float) -> void:
-	if printer:
+	if fix_facing != Vector3.INF:
+		_face(fix_facing)
+	elif printer:
 		_face(printer.global_position)
 	_fix_left -= delta
 	if _fix_left <= 0.0:
@@ -297,6 +301,12 @@ func struck() -> bool:
 	_say(_key("HURT"))
 	hurt.emit()
 	return true
+
+
+## Something pleased her: the complaint goes down `points` and she says `line`.
+func praise(points: float, line: String) -> void:
+	_set_complaint(complaint - points)
+	_say(line)
 
 
 func door_broken() -> void:
