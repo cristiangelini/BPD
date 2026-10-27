@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Bowling alley raid, step 2b: the Thursday league's six players, who bowl a ball from their rack every 20 s even with a cop on the lane, trip the cop their ball hits and complain about a cop in the way, a taken ball, their pins or their screen.
 - Bowling alley raid, step 2a: nine bowling balls with physics on the ball returns, pits that send a rolled ball back to its rack and reset the pins after counting them, and waxed lanes that make a running cop slide.
 - Bowling alley raid, step 1: the bowling alley "Bolos Chuza Feliz" as a place to raid, on its lot in block (8, 2): six lanes with gutters, curbs and their ten pins, the pin machines and the corridor behind them, the ball returns, benches and score screens, the shoe counter with the office's key in its till, the bar with the popcorn machine, the locked office with the trophy case (fine 30) and the screens a ball can break (fine 15 each), and 12 hiding spots.
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.

@@ -13,6 +13,9 @@ func _alley() -> Bowling:
 	alley.get_node("Cop").input_enabled = false
 	alley.get_node("Cop/Grabber").input_enabled = false
 	add_child_autofree(alley)
+	# The league players bowl on their own (test_bowling_players.gd); here they wait.
+	for player: BowlPlayer in alley.players:
+		player.set_physics_process(false)
 	return alley
 
 

@@ -13,6 +13,8 @@ signal trophy_case_broken
 signal screen_broken(lane: int)
 ## A ball reached lane `lane`'s pit and the machine counted the pins down before setting them up again (step 2).
 signal rolled(lane: int, knocked: int, ball: BowlingBall)
+## A league player complained (Don Chuza adds it to the complaint, step 3).
+signal player_complained(player: BowlPlayer)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const PIN_MODEL := preload("res://assets/models/bowling_pin.glb")
@@ -79,6 +81,10 @@ const PIN_MOVED := 0.25
 const SKATE_TIME := 0.9
 const SKATE_PUSH := 3.0
 const SKATE_AGAIN := 1.5
+## The Thursday league: two players on each of these lanes, waiting between the rack and the bench.
+const LEAGUE_LANES: Array[int] = [0, 2, 4]
+const PLAYER_Z := 6.6
+const PLAYER_GAP := 0.3
 ## The shoe counter east of the door (its till holds the office's key), the bar and the popcorn machine.
 const COUNTER_AT := Vector3(6.0, FLOOR_TOP, 9.0)
 const COUNTER_SIZE := Vector3(4.1, 1.1, 0.8)
@@ -135,6 +141,7 @@ var till: Till
 var pins: Array = []
 var pin_homes: Array = []
 var balls: Array[BowlingBall] = []
+var players: Array[BowlPlayer] = []
 ## Ball -> seconds until it's back on its rack; lane -> seconds until its pins are set up, and the ball that came.
 var _returning := {}
 var _resetting := {}
@@ -163,6 +170,7 @@ func _ready() -> void:
 	_build_office()
 	_build_pins()
 	_build_balls()
+	_build_players()
 	office_door = _door(OFFICE_DOOR_X)
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("bowling")
@@ -302,10 +310,68 @@ func _build_balls() -> void:
 			balls.append(ball)
 
 
+## The league's six players, two to a lane, each with its own first turn so the lanes take turns.
+func _build_players() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["bowling players", case_seed])
+	for i in LEAGUE_LANES.size() * 2:
+		var player := BowlPlayer.new()
+		player.name = "Player%d" % i
+		player.look = "bowler" if i % 2 == 0 else "bowler_b"
+		player.alley = self
+		player.lane = LEAGUE_LANES[i / 2]
+		player.home = Vector3(LANE_X[player.lane] + (i % 2 * 2 - 1) * PLAYER_GAP, FLOOR_TOP, PLAYER_Z)
+		player.next_throw = 3.0 + (i / 2) * 2.0 + (i % 2) * BowlPlayer.THROW_EVERY / 2
+		player.rng.seed = rng.randi()
+		player.position = player.home
+		add_child(player)
+		player.complained.connect(player_complained.emit)
+		players.append(player)
+
+
 ## Where slot `slot` of rack `rack` holds a ball.
 static func rack_spot(rack: int, slot: int) -> Vector3:
 	return Vector3(RETURN_X[rack], FLOOR_TOP + RACK_SIZE.y + BowlingBall.RADIUS + 0.01,
 		RETURN_Z + RACK_Z - SLOT_STEP + slot * SLOT_STEP)
+
+
+## The rack beside lane `lane` (each one serves the two lanes on its sides).
+static func rack_of(lane: int) -> int:
+	return lane / 2
+
+
+## A ball resting on rack `rack`, nobody holding it (null: the cops took them all).
+func rack_ball(rack: int) -> BowlingBall:
+	for ball: BowlingBall in balls:
+		if ball.rack == rack and not ball.is_held() and not ball.bowled \
+				and ball.position.distance_to(rack_spot(rack, ball.slot)) < RACK_SIZE.x:
+			return ball
+	return null
+
+
+## The ball leaves a league player's hand at lane `lane`'s foul line with `velocity` (alley space).
+func bowl(ball: BowlingBall, lane: int, velocity: Vector3) -> void:
+	ball.position = Vector3(LANE_X[lane], FLOOR_TOP + BowlingBall.RADIUS + 0.01, FOUL_Z - 0.3)
+	ball.angular_velocity = Vector3.ZERO
+	ball.linear_velocity = global_basis * velocity
+	ball.sleeping = false
+	ball.bowled = true
+	# It flew from the player's hands, not from the last cop's who held it.
+	ball.last_holder = 0
+
+
+## Whether a ball is on its way or the machine hasn't set lane `lane`'s pins up again yet.
+func lane_busy(lane: int) -> bool:
+	return _resetting.has(lane) or _last_ball.has(lane)
+
+
+## Whether a cop is standing on lane `lane`, between the foul line and the pins.
+func cop_on_lane(lane: int) -> bool:
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		var at := to_local(cop.global_position)
+		if on_lane(at) and absf(at.x - LANE_X[lane]) < LANE_WIDTH / 2:
+			return true
+	return false
 
 
 ## A ball reached lane `lane`'s pit: it goes back to its rack, and the machine will count and set up the pins.
@@ -345,6 +411,7 @@ func reset_pins(lane: int) -> void:
 
 ## The ball comes up its return: onto its own slot of the rack, or on top of whatever is there.
 func send_back(ball: BowlingBall) -> void:
+	ball.bowled = false
 	ball.linear_velocity = Vector3.ZERO
 	ball.angular_velocity = Vector3.ZERO
 	ball.position = rack_spot(ball.rack, ball.slot)

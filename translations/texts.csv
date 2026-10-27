@@ -5607,3 +5607,17 @@ LOC_behind_bar,detrás de la barra del bar,behind the bar,atrás do balcão do b
 LOC_in_lane_6_gutter,en la canaleta de la pista 6,in lane 6's gutter,na canaleta da pista 6
 LOC_on_bowl_desk,en el escritorio de Don Chuza,on Don Chuza's desk,na escrivaninha do Don Chuza
 HINT_BOWL_SKATE,¡La pista está encerada! Correr acá es patinar.,The lane is waxed! Running here is skating.,A pista está encerada! Correr aqui é patinar.
+PROMPT_TALK_BOWLER,E: charlar con el jugador,E: chat with the bowler,E: conversar com o jogador
+BOWL_PLAYER_THROW_1,¡Ahí va!,Here it goes!,Lá vai!
+BOWL_PLAYER_THROW_2,¡Esta es chuza segura!,This one's a sure strike!,Essa é strike certo!
+BOWL_PLAYER_THROW_3,"Mira y aprende, novato.","Watch and learn, rookie.","Olha e aprende, novato."
+BOWL_PLAYER_IN_WAY,"¡Córrete, que estoy en racha!","Move it, I'm on a streak!","Sai da frente, que estou numa sequência!"
+BOWL_PLAYER_NO_BALL,¿Quién se llevó todas las bolas? ¡Es jueves!,Who took all the balls? It's Thursday!,Quem levou todas as bolas? É quinta-feira!
+BOWL_PLAYER_GRABBED,"¡Esa es mi bola, la estaba usando!","That's my ball, I was using it!","Essa é minha bola, eu estava usando!"
+BOWL_PLAYER_PINS,"¡Esos eran mis pinos! Ahora tengo que esperar.","Those were my pins! Now I have to wait.","Esses eram meus pinos! Agora tenho que esperar."
+BOWL_PLAYER_SCREEN,¡Me rompiste la pantalla! ¿Ahora quién cuenta mis puntos?,You broke my screen! Who's counting my points now?,Você quebrou minha tela! Quem conta meus pontos agora?
+BOWL_PLAYER_TALK_1,"Los jueves gana siempre el equipo de Don Chuza. Siempre. Hace diez años.","Don Chuza's team always wins on Thursdays. Always. For ten years.","Nas quintas o time do Don Chuza sempre ganha. Sempre. Há dez anos."
+BOWL_PLAYER_TALK_2,"¿Policías? Tranquilos, acá lo único que se rompe son los récords.","Cops? Relax, the only thing broken here is records.","Policiais? Calma, aqui só se quebram recordes."
+BOWL_PLAYER_TALK_3,No corras por la pista: la enceran cada mañana y es una pista de patinaje.,Don't run on the lane: they wax it every morning and it's an ice rink.,Não corra na pista: encerram toda manhã e vira pista de patinação.
+BOWL_PLAYER_TALK_4,"Pipo rocía los zapatos con tanto desodorante que ya no huelen a pie. Huelen a pie con perfume.","Pipo sprays the shoes so much they don't smell like feet anymore. They smell like perfumed feet.","O Pipo borrifa tanto desodorante nos sapatos que não cheiram mais a pé. Cheiram a pé perfumado."
+HINT_BOWL_HIT,¡Te pegó una bola! No te pares en la pista mientras juegan.,A ball hit you! Don't stand on the lane while they play.,Uma bola te acertou! Não fique na pista enquanto eles jogam.

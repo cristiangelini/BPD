@@ -1,8 +1,9 @@
 // Props of the bowling alley "Bolos Chuza Feliz" (docs/diseno/allanamiento-bolera.md): a pin, a ball, the pin machine
 // over each lane's end, the ball return with its rack, a score screen, the shoe counter with its shelf, the bar, the
 // popcorn machine, the trophy case, a bench and the giant pin of the sign, with origins at the floor in the middle of
-// each piece. Placeholder, not final art.
-import { Builder, mat, V, THREE } from '../lib.js';
+// each piece, and the two looks of the Thursday league's players. Placeholder, not final art.
+import { Builder, mat, ellipsoid, V, THREE } from '../lib.js';
+import { M, pearBody, eyes, limb } from './pear.js';
 
 const BALLS = [0x3a6ad2, 0xe8473a, 0x46b45a, 0xb05ad2, 0xf2c230, 0x202428];
 
@@ -151,7 +152,33 @@ function coloredBall(i) {
 	};
 }
 
+// A player of the Thursday league: the team's shiny shirt (purple with a yellow stripe and "LOS CHUZA" on the back), a
+// sweatband and a towel over the shoulder; the other look wears glasses, a mustache and a wrist brace.
+function bowler(name, skin, shirtColor, b2) {
+	return () => {
+		const b = new Builder(name);
+		const shirt = mat(name + '_shirt', shirtColor, { roughness: 0.3 }), stripe = mat('league_stripe', 0xf2c230);
+		pearBody(b, mat(name + '_skin', skin), { shirt, pants: mat('league_pants', 0x2a2a34), shoes: mat('rental_shoes', 0xd23a3a), belted: false });
+		for (const y of [0.78, 0.86]) b.add('stripe', stripe, new THREE.TorusGeometry(0.36 - (y - 0.78) * 0.6, 0.018, 4, 16), { pos: V(0, y, 0), rot: [Math.PI / 2, 0, 0] });
+		b.add('stripe', stripe, new THREE.BoxGeometry(0.3, 0.07, 0.01), { pos: V(0, 0.9, -0.33), rot: [0.3, 0, 0] });
+		eyes(b, 1.34, 0.17, 0.08, 0.05);
+		b.add('face', mat('mouth', 0x7a2a2a), ellipsoid(0.06, 0.02, 0.02, 6, 4), { pos: V(0, 1.22, 0.2) });
+		const hair = mat(name + '_hair', b2 ? 0x8a8a8a : 0x4a2a1a);
+		b.add('hair', hair, ellipsoid(0.2, 0.09, 0.2, 10, 5), { pos: V(0, 1.45, -0.02) });
+		if (b2) {
+			for (const s of [-1, 1]) b.add('glasses', M.black, new THREE.TorusGeometry(0.045, 0.008, 4, 10), { pos: V(s * 0.08, 1.34, 0.2) });
+			b.add('face', hair, new THREE.BoxGeometry(0.16, 0.03, 0.03), { pos: V(0, 1.26, 0.2) });
+			limb(b, 'brace', M.black, V(0.49, 0.6, 0.06), V(0.5, 0.7, 0.1), 0.05);
+		} else {
+			b.add('band', mat('sweatband', 0xf6f4ee), new THREE.TorusGeometry(0.2, 0.025, 4, 16), { pos: V(0, 1.42, 0), rot: [Math.PI / 2, 0, 0] });
+			b.add('towel', mat('towel', 0x46b45a), new THREE.BoxGeometry(0.16, 0.03, 0.34), { pos: V(-0.22, 1.08, 0), rot: [0, 0, 0.5] });
+		}
+		return b.build();
+	};
+}
+
 export const models = {
+	npc_bowler: bowler('npc_bowler', 0xe0b48a, 0x7a3ab0, false), npc_bowler_b: bowler('npc_bowler_b', 0x9a6440, 0x3a3ab0, true),
 	bowling_ball_1: coloredBall(1), bowling_ball_2: coloredBall(2), bowling_ball_3: coloredBall(3),
 	bowling_ball_4: coloredBall(4), bowling_ball_5: coloredBall(5),
 	bowling_pin: buildBowlingPin, bowling_ball: buildBowlingBall, pin_setter: buildPinSetter, ball_return: buildBallReturn,
@@ -172,5 +199,9 @@ export const views = {
 			{ name: 'giant_pin', pos: [5.6, 0, -1.6] },
 		],
 		cam: { pos: [0.6, 4.0, 9.0], target: [0.6, 0.9, 0], fov: 50 },
+	},
+	bowlers: {
+		items: [{ name: 'npc_bowler', pos: [-0.6, 0, 0], rotY: 0.4 }, { name: 'npc_bowler_b', pos: [0.6, 0, 0], rotY: Math.PI - 0.5 }],
+		cam: { pos: [0, 1.3, 4.2], target: [0, 0.8, 0], fov: 34 },
 	},
 };
