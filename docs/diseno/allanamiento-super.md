@@ -178,6 +178,10 @@ suman entre 400 y 600.
      changuitos del súper (sale de la semilla) también tiene doble fondo: empujado, tira para un costado (gira al
      policía 0,35 por segundo) y cada 2 s suena «¡Clinc clinc!»; el primer clinc es la pista. Capturas:
      `paso6-changuitos.png` y `paso6-changuitos-doble.png`.
+   - **La balanza que suma (propuesta):** el tornillo mágico (0,2 kg, 1000) se esconde con el manual «Cómo pesar
+     más» (0,3 kg, 300) y el destornillador dorado (0,5 kg, 200). La balanza de la verdulería muestra lo que tiene
+     encima más 300 g, y vacía marca 0,3 kg; al lado hay 3 tomates de 0,2 kg para probar. Lo primero que se pesa es la
+     pista. Capturas: `paso6-balanza-modelos.png`, `paso6-balanza-vacia.png` y `paso6-balanza.png`.
 7. "Jugar" suma el súper al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online (Don Ofertón, Lalo, los clientes, los changuitos y lo frágil en todas las PC).
 
