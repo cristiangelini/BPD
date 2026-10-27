@@ -8,7 +8,9 @@ extends Node3D
 ## office and the bathroom. The kitchen's back door opens to the fenced yard with the ice cream truck. Something thrown
 ## hard at the counter's glass case cracks it (a fine), and at the penguin knocks it over. Whatever is left open melts
 ## (step 2): a freezer's lid open IceFreezer.MELT_AFTER seconds, or the cold room's door open COLD_MELT_AFTER seconds,
-## leaves a slippery puddle (IcePuddle) and a fine. Every number here is (propuesta).
+## leaves a slippery puddle (IcePuddle) and a fine. Doña Nieve minds the counter and goes to the cold room now and
+## then, filling the complaint; E on the soft-serve machine jams it and she fights it, her back to everything (step 3).
+## Every number here is (propuesta).
 
 signal case_cracked
 signal penguin_knocked
@@ -17,7 +19,7 @@ signal cold_room_melted
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const COUNTER_MODEL := preload("res://assets/models/ice_counter.glb")
-const MACHINE_MODEL := preload("res://assets/models/soft_serve_machine.glb")
+const NIEVE_SCENE := preload("res://scenes/npc/dona_nieve.tscn")
 const SHELF_MODEL := preload("res://assets/models/cold_shelf.glb")
 const PENGUIN_MODEL := preload("res://assets/models/penguin_statue.glb")
 const TRUCK_MODEL := preload("res://assets/models/ice_cream_truck.glb")
@@ -50,7 +52,6 @@ const COUNTER_SIZE := Vector3(5.0, 1.0, 0.94)
 const CASHIER_AT := Vector3(-0.8, FLOOR_TOP, 4.6)
 const CASHIER_SIZE := Vector3(1.2, 1.0, 0.9)
 const MACHINE_AT := Vector3(-1.0, FLOOR_TOP, 1.5)
-const MACHINE_SIZE := Vector3(0.7, 1.7, 0.7)
 ## The four freezers, each standing at `at` turned `turn` (their lids hinge on their back, -Z before the turn).
 const FREEZERS := [
 	{"at": Vector3(-8.5, FLOOR_TOP, 2.9), "turn": 0.0},
@@ -65,6 +66,25 @@ const PENGUIN_AT := Vector3(6.5, FLOOR_TOP, 9.3)
 const TRUCK_AT := Vector3(3.5, 0.0, -7.6)
 ## How fast a prop must hit to crack the counter's glass case or knock the penguin over, and the case's fine.
 const CASE_SPEED := 3.0
+## Doña Nieve's round, back and forth: behind the counter, through the kitchen's door, to the cold room's door and
+## into it. Where she fights the machine (in front of it, facing it), how long, and how long she minds the counter.
+const NIEVE_ROUTE: Array[Vector3] = [
+	Vector3(-4.5, FLOOR_TOP, 3.3), Vector3(KITCHEN_DOOR_X, FLOOR_TOP, 0.8), Vector3(COLD_DOOR_X, FLOOR_TOP, 0.0),
+	Vector3(COLD_DOOR_X, FLOOR_TOP, -3.0),
+]
+const MACHINE_SPOT := Vector3(-1.0, FLOOR_TOP, 0.6)
+const MACHINE_TIME := 25.0
+const COUNTER_PAUSE := 90.0
+## What she sees melt or break, the penguin falling (she hears it) and the machine once she knows the trick.
+const SAW_FREEZER := 5.0
+const SAW_COLD_ROOM := 10.0
+const SAW_CASE := 10.0
+const PENGUIN := 10.0
+const NOTICED := 10.0
+## She opens the cold room's door when this close to it and shuts it again once past; the machine's spill.
+const DOOR_REACH := 2.0
+const SPILL_AT := Vector3(-2.0, FLOOR_TOP, 0.6)
+const SPILL := Vector2(1.6, 1.4)
 const CASE_FINE := 30
 const PENGUIN_SPEED := 3.0
 ## What melting costs: each freezer, and the whole cold room when its door stays open COLD_MELT_AFTER seconds; the
@@ -119,6 +139,13 @@ var cold_melted := false
 ## Seconds the cold room's door has been open in a row.
 var cold_open_for := 0.0
 var puddles: Array[IcePuddle] = []
+var machine: SoftServeMachine
+var nieve: FloorBoss
+var complaint_bar: ProgressBar
+var spilled := false
+## Whether she opened the cold room's door on her way, and whether it was locked then.
+var _nieve_opened := false
+var _was_locked := false
 var broken_goods := 0
 ## Money taken off the case pay: the counter's glass case, the melted freezers and the cold room.
 var fines := 0
@@ -141,6 +168,7 @@ func _ready() -> void:
 	_build_kitchen()
 	_build_back()
 	_build_yard()
+	_place_nieve()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("ice_cream")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -226,8 +254,10 @@ func _build_salon() -> void:
 ## its locked door with shelves of tubs and blocks of ice.
 func _build_kitchen() -> void:
 	_build.wall_at("z", KITCHEN_X1, BACK_WALL_Z, SALON_Z, 0.0, WALL_TOP, [], WALL_IN)
-	_model(MACHINE_MODEL, MACHINE_AT, PI)
-	_build.shape(_build.body(MACHINE_AT + Vector3(0, MACHINE_SIZE.y / 2, 0)), MACHINE_SIZE)
+	machine = SoftServeMachine.new()
+	machine.position = MACHINE_AT
+	machine.rotation.y = PI
+	add_child(machine)
 	_build.box(Vector3(-3.4, FLOOR_TOP + 0.45, -4.6), Vector3(2.4, 0.9, 0.6), STEEL)
 	_build.mesh_box(Vector3(-2.7, FLOOR_TOP + 1.1, -4.6), Vector3(0.35, 0.4, 0.35), PINK)
 	_build.mesh_box(Vector3(-4.2, FLOOR_TOP + 0.92, -4.6), Vector3(0.6, 0.04, 0.4), DARK)
@@ -289,6 +319,8 @@ func _freezer(i: int) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if nieve:
+		_nieve_door()
 	if cold_melted:
 		return
 	if cold_door.is_open or cold_door.is_broken:
@@ -306,6 +338,8 @@ func _on_freezer_melted(i: int) -> void:
 	_puddle(freezer.position + Vector3(0, 0, IceFreezer.SIZE.z / 2 + FREEZER_PUDDLE.y / 2).rotated(Vector3.UP,
 		freezer.rotation.y), FREEZER_PUDDLE, FREEZER_FLAVORS[i])
 	_say(freezer.position + Vector3(0, 1.8, 0), "ICE_FREEZER_MELTED_%d" % (i + 1))
+	if nieve:
+		nieve.saw(freezer.global_position + Vector3.UP, SAW_FREEZER, "NIEVE_FREEZER_%d" % (i + 1))
 	freezer_melted.emit(i)
 
 
@@ -318,7 +352,77 @@ func melt_cold_room() -> void:
 	fines += COLD_FINE
 	_puddle(Vector3(COLD_DOOR_X, FLOOR_TOP, COLD_Z1 + COLD_PUDDLE.y / 2), COLD_PUDDLE)
 	_say(Vector3(COLD_DOOR_X, 2.2, COLD_Z1 + 0.8), "ICE_COLD_ROOM_MELTED")
+	if nieve:
+		nieve.saw(to_global(Vector3(COLD_DOOR_X, 1.2, COLD_Z1 + 0.5)), SAW_COLD_ROOM, "NIEVE_COLD_ROOM")
 	cold_room_melted.emit()
+
+
+## Doña Nieve on her round, the machine, what she notices and the complaint bar.
+func _place_nieve() -> void:
+	nieve = NIEVE_SCENE.instantiate()
+	nieve.route = NIEVE_ROUTE
+	nieve.printer_spot = MACHINE_SPOT
+	nieve.printer = machine
+	nieve.fix_time = MACHINE_TIME
+	nieve.first_pause = COUNTER_PAUSE
+	add_child(nieve)
+	nieve.start_at(0)
+	cold_door.broken.connect(nieve.door_broken)
+	till.opened.connect(func(at: Vector3) -> void: nieve.saw(at, FloorBoss.SAW_TILL))
+	case_cracked.connect(func() -> void:
+		nieve.saw(to_global(COUNTER_AT + Vector3(0, 1.1, 0.4)), SAW_CASE, "NIEVE_CASE"))
+	penguin_knocked.connect(func() -> void: nieve.scold(PENGUIN, "NIEVE_PENGUIN"))
+	machine.jammed.connect(spill)
+	machine.noticed.connect(func() -> void: nieve.scold(NOTICED, "NIEVE_NOTICED"))
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	nieve.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## The jammed machine pours ice cream on the kitchen's floor: a small puddle, the first time.
+func spill() -> void:
+	if spilled:
+		return
+	spilled = true
+	_puddle(SPILL_AT, SPILL, Color(1.0, 0.95, 0.85, 0.9))
+
+
+## She has the cold room's key: its door opens before her and shuts behind her, locked again as she found it unless a
+## cop slipped in.
+func _nieve_door() -> void:
+	if cold_door.is_broken:
+		return
+	var at := to_local(nieve.global_position)
+	var near := Vector2(at.x - COLD_DOOR_X, at.z - COLD_Z1).length() < DOOR_REACH
+	if near and not cold_door.is_open:
+		_was_locked = cold_door.locked
+		_nieve_opened = true
+		cold_door.open_from_inside()
+	elif not near and _nieve_opened:
+		_nieve_opened = false
+		cold_door.close()
+		cold_door.locked = _was_locked and not _cop_in_cold_room()
+
+
+func _cop_in_cold_room() -> bool:
+	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
+		var at := to_local(cop.global_position)
+		if at.x < COLD_X1 and at.z < COLD_Z1:
+			return true
+	return false
 
 
 func _puddle(at: Vector3, size: Vector2, color := Color(0.85, 0.62, 0.55, 0.9)) -> IcePuddle:

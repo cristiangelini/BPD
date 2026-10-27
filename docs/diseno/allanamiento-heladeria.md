@@ -84,6 +84,10 @@ entre 400 y 600. El bloque de hielo es la cosa más pesada (8 kg): conviene llev
    un sabor distinto (chocolate, fresa, vainilla y pistacho) con su color de charco; cada PC solo hace patinar a su
    propio policía. Capturas `heladeria/paso2-*.png`.
 3. Doña Nieve: la ronda, la denuncia y la máquina de helado soft.
+   **Hecho (paso 3):** doña Nieve es un `FloorBoss` (voz `NIEVE`) con la máquina `SoftServeMachine`; atiende el
+   mostrador 90 s y va a la cámara de frío (abre y vuelve a cerrar con llave). La máquina trabada deja un charco chico en
+   la cocina, la primera vez. Ve derretirse los freezers (+5) y la cámara (+10), la vitrina rota (+10) y oye caerse el
+   pingüino (+10). Capturas `heladeria/paso3-*.png`.
 4. Lucho y el cono.
 5. El caso (RaidCase) con la primera historia: los sabores robados.
 6. Las otras 5 historias, una por PR.
