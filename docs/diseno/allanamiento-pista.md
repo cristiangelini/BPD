@@ -133,6 +133,15 @@ suman 500.
      vez no va, dice "¿Otra vez mi canción?" y suma 10.
    - **Capturas:** `pista/paso3-*.png`.
 4. Copito y el chocolate caliente.
+   Hecho así:
+   - **Copito:** al lado del portón este, con campera inflada celeste, bufanda roja, gorro con pompón y la nariz
+     roja. E sobre él con las manos vacías solo tirita y explica qué quiere.
+   - **El chocolate:** el botón rojo de la máquina del bar sirve un vaso adelante; puede haber hasta 3 servidos. El vaso
+     se vuelca si se inclina más de 60° o si choca a más de 3 m/s (soltarlo desde arriba, tirarlo, darlo contra una
+     pared): ahí dice "¡Splash!" y queda vacío.
+   - **El premio:** E sobre Copito con un chocolate lleno en la mano: se lo toma y, la primera vez de cada policía,
+     cuenta lo que vio (la historia lo pone en el paso 5). Con el vaso vacío dice "¿Una taza vacía? Eso es cruel".
+   - **Capturas:** `pista/paso4-*.png`.
 5. El caso (RaidCase) con la primera historia: el hielo con sorpresa.
 6. Las otras 5 historias, una por PR.
 7. La pista en el sorteo de lugares (PlaceDraw), la huida y la persecución.
