@@ -46,7 +46,10 @@ func _show() -> void:
 	away_label.text = str(away)
 
 
+## Online the host's scoreboard scores, and the guests' shows it (Rink.net_state).
 func _physics_process(delta: float) -> void:
+	if not multiplayer.is_server():
+		return
 	_since += delta
 	if _since >= GOAL_EVERY:
 		goal()
@@ -62,11 +65,29 @@ func goal() -> void:
 	else:
 		away += 1
 	_show()
-	var at := rink.to_global((HOME_AT if for_home else AWAY_AT) + Vector3(0, 1.0, 0.3))
-	rink.raid.float_label(tr("RINK_GOAL"), at, Color(1.0, 0.85, 0.2))
+	_cheer(for_home)
 	if not seen and _a_cop_sees():
 		seen = true
 		rink.raid.add_clue(tr("CLUE_SCORE_CHANGES"))
+
+
+func _cheer(for_home: bool) -> void:
+	var at := rink.to_global((HOME_AT if for_home else AWAY_AT) + Vector3(0, 1.0, 0.3))
+	rink.raid.float_label(tr("RINK_GOAL"), at, Color(1.0, 0.85, 0.2))
+
+
+func net_state() -> Array:
+	return [home, away, goals, seen]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[2] > goals:
+		_cheer(state[0] > home)
+	home = state[0]
+	away = state[1]
+	goals = state[2]
+	seen = state[3]
+	_show()
 
 
 func _a_cop_sees() -> bool:

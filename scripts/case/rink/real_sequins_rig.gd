@@ -65,6 +65,9 @@ func _physics_process(delta: float) -> void:
 		_since_glint = 0.0
 		_color += 1
 		_show_glint()
+	# Online the host decides the clue and her complaint; her bubble reaches the guests with her (NpcSync).
+	if not multiplayer.is_server():
+		return
 	if not seen and _a_cop_within(rink.main.global_position, SEE_RANGE):
 		seen = true
 		rink.raid.add_clue(tr("CLUE_SEQUIN_GLINTS"))
