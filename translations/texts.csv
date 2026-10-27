@@ -5628,3 +5628,46 @@ HINT_PIG_SHOVE,"¡Un chancho te empujó! En el barro mandan ellos.","A pig shove
 PROMPT_GATE_OPEN,E: abrir la tranquera,E: open the gate,E: abrir a porteira
 PROMPT_GATE_CLOSE,E: cerrar la tranquera,E: close the gate,E: fechar a porteira
 FARMER_COW,"¡Margarita está afuera! ¿Quién dejó la tranquera abierta?","Margarita is out! Who left the gate open?","A Margarita está solta! Quem deixou a porteira aberta?"
+BRIEF_FARM_TIP_B,"Llegó una denuncia anónima: Don Florencio vende huevos en la feria, pero se compra una camioneta nueva por año y nadie lo vio nunca llevar los huevos al pueblo.","We got an anonymous tip: Don Florencio sells eggs at the market, but he buys a new van every year and nobody has ever seen him take the eggs to town.","Chegou uma denúncia anônima: Dom Florencio vende ovos na feira, mas compra uma caminhonete nova por ano e ninguém nunca o viu levar os ovos para a cidade."
+BRIEF_FARM_TIP_D,"La granja está abierta y llena de animales sueltos. No los asusten, que Don Florencio se queja. El galpón de herramientas está cerrado con llave.","The farm is open and full of loose animals. Don't scare them, Don Florencio will complain. The tool shed is locked.","A granja está aberta e cheia de bichos soltos. Não os assustem, que o Dom Florencio reclama. O galpão de ferramentas está trancado."
+BRIEF_FARM_TIP_E,"Y cierren la tranquera de la vaca. Con Q ven la planilla de lo que tienen que hacer.","And keep the cow's gate shut. Press Q to see your checklist.","E fechem a porteira da vaca. Com Q vocês veem a lista do que precisam fazer."
+BRIEF_GOLDEN_EGGS_B,"Don Florencio pinta huevos de plomo de dorado y los vende como huevos de una «gallina mágica» que pone oro.","Don Florencio paints lead eggs gold and sells them as the eggs of a «magic hen» that lays gold.","Dom Florencio pinta ovos de chumbo de dourado e os vende como ovos de uma «galinha mágica» que bota ouro."
+BRIEF_GOLDEN_EGGS_C,"Traigan la caja de huevos dorados en el baúl del patrullero. Pesa 6 kilos y no se rompe, pero no la tiren.","Bring the box of golden eggs in the patrol car's trunk. It weighs 6 kilos and won't break, but don't throw it.","Tragam a caixa de ovos dourados no porta-malas da viatura. Pesa 6 quilos e não quebra, mas não joguem."
+BRIEF_GOLDEN_EGGS_D,"Si encuentran la pintura dorada o el folleto de la gallina mágica, mejor: todo suma.","If you find the gold paint or the magic hen leaflet, even better: it all counts.","Se acharem a tinta dourada ou o folheto da galinha mágica, melhor: tudo conta."
+OBJ_FIND_GOLDEN_EGGS,Llevarse la caja de huevos dorados,Take the box of golden eggs,Levar a caixa de ovos dourados
+OBJ_EXTRA_GOLD_PAINT,Extra: la lata de pintura dorada,Extra: the tin of gold paint,Extra: a lata de tinta dourada
+OBJ_EXTRA_MAGIC_HEN_FLYER,Extra: el folleto de la gallina mágica,Extra: the magic hen leaflet,Extra: o folheto da galinha mágica
+SUSPECT_golden_eggs,Los huevos de oro,The golden eggs,Os ovos de ouro
+SUSPECT_many_owners_cow,La vaca de muchos dueños,The cow with many owners,A vaca de muitos donos
+SUSPECT_racing_tractor,El tractor de carreras,The racing tractor,O trator de corrida
+SUSPECT_giant_carrots,Las zanahorias gigantes,The giant carrots,As cenouras gigantes
+SUSPECT_piggy_bank,El chancho alcancía,The piggy bank pig,O porquinho cofrinho
+SUSPECT_living_scarecrow,El espantapájaros vivo,The living scarecrow,O espantalho vivo
+CLUE_SUSPECT_golden_eggs,"Una factura de una fundición: «Huevos de plomo, tamaño gallina. Docena x 50».","A foundry invoice: «Lead eggs, hen size. Dozen x 50».","Uma nota de uma fundição: «Ovos de chumbo, tamanho galinha. Dúzia x 50»."
+CLUE_SUSPECT_many_owners_cow,"Un recibo: «Vendida una vaca blanca y negra, de nombre Margarita». Hay otros once iguales.","A receipt: «Sold one black and white cow, named Margarita». There are eleven more just like it.","Um recibo: «Vendida uma vaca branca e preta, de nome Margarita». Há outros onze iguais."
+CLUE_SUSPECT_racing_tractor,"Una entrada de un circuito: «Carrera de tractores, categoría libre. Premio en efectivo».","A racetrack ticket: «Tractor race, open class. Cash prize».","Um ingresso de um autódromo: «Corrida de tratores, categoria livre. Prêmio em dinheiro»."
+CLUE_SUSPECT_giant_carrots,"Una nota del laboratorio: «Faltan 3 bidones de abono experimental. NO usar en vegetales».","A note from the lab: «3 cans of experimental fertilizer missing. Do NOT use on vegetables».","Uma nota do laboratório: «Faltam 3 galões de adubo experimental. NÃO usar em vegetais»."
+CLUE_SUSPECT_piggy_bank,"Un recorte del diario: «Roban la joyería del centro. Los ladrones huyeron hacia el campo».","A newspaper clipping: «Downtown jeweler robbed. The thieves fled to the countryside».","Um recorte de jornal: «Roubam a joalheria do centro. Os ladrões fugiram para o campo»."
+CLUE_SUSPECT_living_scarecrow,"Un cartel de «Se busca»: el Primo Bigote, visto por última vez con sombrero de paja.","A «Wanted» poster: Cousin Mustache, last seen wearing a straw hat.","Um cartaz de «Procura-se»: o Primo Bigode, visto pela última vez de chapéu de palha."
+OBJ_ENTER_FARM,Entrar a la granja (la tranquera está abierta),Get into the farm (the gate is open),Entrar na granja (a porteira está aberta)
+OBJ_GUESS_FARM,"Averiguar qué pasa en la granja (con Q abierta, mantén 1, 2 o 3)","Find out what is going on at the farm (with Q open, hold 1, 2 or 3)","Descobrir o que acontece na granja (com Q aberto, segure 1, 2 ou 3)"
+OBJ_BROKEN_FARM,Cosas rotas: %d (multa: %d),Broken things: %d (fines: %d),Coisas quebradas: %d (multa: %d)
+OBJ_COMPLAINT_FARM,Queja de Don Florencio: %d%%,Don Florencio's complaint: %d%%,Queixa do Dom Florencio: %d%%
+CASE_FAILED_LAWYER_FARM,Don Florencio llamó al abogado de la cooperativa. Caso perdido.,Don Florencio called the co-op's lawyer. Case lost.,Dom Florencio ligou para o advogado da cooperativa. Caso perdido.
+FARMER_SLIP,"«¡Yo no guardé nada %s!... Digo, ¡cuidado con las gallinas!»","“I didn't put anything %s!... I mean, mind the hens!”","“Eu não guardei nada %s!... Quer dizer, cuidado com as galinhas!”"
+CLUE_PANCHO,Pancho vio a su tío esconder algo %s,Pancho saw his uncle hide something %s,O Pancho viu o tio esconder algo %s
+PANCHO_CLUE_golden_eggs,"«¡Gracias! Te cuento: vi al tío esconder algo %s. Y una gallina puso un huevo que pesa como una piedra.»","“Thanks! Here's the thing: I saw my uncle hide something %s. And a hen laid an egg as heavy as a rock.”","“Valeu! Te conto: vi o tio esconder algo %s. E uma galinha botou um ovo que pesa como uma pedra.”"
+CLUE_LEAD_EGG,"Se te cayó un huevo del gallinero e hizo «clonc». No se rompió. Los huevos no hacen «clonc».","An egg from the hen house fell and went «clonk». It didn't break. Eggs don't go «clonk».","Um ovo do galinheiro caiu e fez «clonc». Não quebrou. Ovos não fazem «clonc»."
+FARM_CLONK,¡Clonc!,Clonk!,Clonc!
+LOC_FARM_between_bales,entre los fardos del granero,between the bales in the barn,entre os fardos do celeiro
+LOC_FARM_in_loft,en el altillo del granero,in the barn's loft,no sótão do celeiro
+LOC_FARM_under_tractor,abajo del tractor,under the tractor,embaixo do trator
+LOC_FARM_in_mud,en el barro del chiquero,in the pigsty's mud,na lama do chiqueiro
+LOC_FARM_in_shed,en el galpón de herramientas,in the tool shed,no galpão de ferramentas
+LOC_FARM_in_feeder,en el comedero de la vaca,in the cow's feeder,no cocho da vaca
+LOC_FARM_in_coop,en el gallinero,in the hen house,no galinheiro
+LOC_FARM_in_scarecrow,al pie del espantapájaros,at the scarecrow's feet,ao pé do espantalho
+LOC_FARM_on_well,en el borde del pozo,on the edge of the well,na borda do poço
+LOC_FARM_by_milk_cans,junto a los tachos de leche,by the milk cans,junto aos latões de leite
+LOC_FARM_in_kitchen,en la mesa de la cocina,on the kitchen table,na mesa da cozinha
+LOC_FARM_under_stall,debajo del puesto de la feria,under the market stall,embaixo da barraca da feira

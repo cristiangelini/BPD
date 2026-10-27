@@ -13,7 +13,7 @@ const MODEL := preload("res://assets/models/farm_goat.glb")
 const PAPER_KG := 0.5
 const SPEED := 1.2
 const SNIFF_RANGE := 6.0
-const BITE := 0.6
+const BITE := 0.85
 ## Lying on the ground: lower than this over her feet.
 const ON_GROUND := 0.3
 const DIGEST := 30.0

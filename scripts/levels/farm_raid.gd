@@ -14,13 +14,41 @@ extends Node3D
 ## back in its run. Tota the goat eats the paper she finds on the ground and gives it back chewed in the corral 30 s
 ## later, and three pigs wallow in the mud shoving whoever comes in. Margarita the cow walks out of her corral if its
 ## gate stays open, and follows a cop carrying a hay bale back in; Don Florencio is not happy to see her out. The case
-## comes in the next steps.
+## is one of its stories (STORIES), drawn with the seed and run by the same RaidCase as the other places (step 5): Don
+## Florencio lets slip where things are when asked, and Pancho tells where he saw his uncle hide one of them.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const COOP_MODEL := preload("res://assets/models/chicken_coop.glb")
 const WELL_MODEL := preload("res://assets/models/farm_well.glb")
 const OWNER_SCENE := preload("res://scenes/npc/farm_owner.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the farm can be suspected of (allanamiento-granja.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["golden_eggs", "many_owners_cow", "racing_tractor", "giant_carrots", "piggy_bank",
+	"living_scarecrow"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_FARM_TIP_B", "BRIEF_TIP_C", "BRIEF_FARM_TIP_D",
+	"BRIEF_FARM_TIP_E"]
+## The stories the farm can tell, like GymRaid.STORIES: what the comisario says once it's guessed, its "find it" row,
+## what it hides in spots drawn with the seed (the first one is the main evidence), their half heights and whether
+## they're heavy, the checklist rows of its extras and its rig. The other five stories come one per PR (step 6).
+const STORIES := {
+	"golden_eggs": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_GOLDEN_EGGS_B", "BRIEF_GOLDEN_EGGS_C", "BRIEF_GOLDEN_EGGS_D"],
+		"find": "OBJ_FIND_GOLDEN_EGGS",
+		"hidden": [preload("res://scenes/props/golden_egg_box.tscn"), preload("res://scenes/props/gold_paint_can.tscn"),
+			preload("res://scenes/props/magic_hen_flyer.tscn")],
+		"half_heights": [0.13, 0.12, 0.003],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_GOLD_PAINT", "OBJ_EXTRA_MAGIC_HEN_FLYER"],
+		"rig": preload("res://scripts/case/farm/golden_eggs_rig.gd"),
+	},
+}
+## Where the suspicion notes lie: on the yard's dirt, out of the buildings and the pens (Tota may eat them).
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(-4.0, 0.04, 1.0), Vector3(2.5, 0.04, 6.0), Vector3(-2.0, 0.04, 11.0), Vector3(4.0, 0.04, 14.5),
+	Vector3(-8.0, 0.04, 15.0), Vector3(1.0, 0.04, -3.0),
+]
 const BALE_MODEL := preload("res://assets/models/hay_bale.glb")
 const TRACTOR_MODEL := preload("res://assets/models/farm_tractor.glb")
 const SCARECROW_MODEL := preload("res://assets/models/scarecrow.glb")
@@ -106,16 +134,16 @@ const MUD_AGAIN := 3.0
 ## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
 const SPOTS := [
 	{"id": "between_bales", "at": Vector3(8.2, GROUND, -4.2), "heavy": true},
-	{"id": "in_loft", "at": Vector3(12.0, LOFT_TOP, -9.0), "heavy": true},
+	{"id": "in_loft", "at": Vector3(12.0, GROUND + LOFT_TOP, -9.0), "heavy": true},
 	{"id": "under_tractor", "at": TRACTOR_AT + Vector3(0, GROUND, -0.2), "heavy": true},
 	{"id": "in_mud", "at": Vector3(14.5, GROUND, 7.5), "heavy": true},
 	{"id": "in_shed", "at": Vector3(-7.0, GROUND, -10.6), "heavy": true},
 	{"id": "in_feeder", "at": FEEDER_AT + Vector3(0, 0.12, 0), "heavy": true},
-	{"id": "in_coop", "at": COOP_AT + Vector3(0, 0.62, 0), "heavy": false},
+	{"id": "in_coop", "at": Vector3(-0.4, GROUND, -8.2), "heavy": false},
 	{"id": "in_scarecrow", "at": SCARECROW_AT + Vector3(0.35, GROUND, 0.3), "heavy": false},
-	{"id": "on_well", "at": WELL_AT + Vector3(0.75, 0.8, 0), "heavy": false},
+	{"id": "on_well", "at": WELL_AT + Vector3(0.45, 0.8, 0), "heavy": false},
 	{"id": "by_milk_cans", "at": MILK_CANS_AT + Vector3(0, GROUND, 0.6), "heavy": false},
-	{"id": "in_kitchen", "at": Vector3(-12.2, 0.8, -9.8), "heavy": false},
+	{"id": "in_kitchen", "at": Vector3(-12.2, GROUND + 0.79, -9.8), "heavy": false},
 	{"id": "under_stall", "at": STALL_AT + Vector3(0, GROUND, 0), "heavy": false},
 ]
 const WOOD := Color(0.55, 0.38, 0.22)
@@ -129,8 +157,23 @@ const STRAW := Color(0.85, 0.74, 0.42)
 const GLASS := Color(0.75, 0.9, 1.0, 0.35)
 const MILK_CAN := Color(0.78, 0.8, 0.82)
 
-## Same seed, same hens.
+## Same seed, same hens and the same draw: the story and where its things go. 0 draws one.
 @export var case_seed := 0
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The case flow every raid shares.
+var raid: RaidCase
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: FarmRaidRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
+## Money taken off the case pay for what breaks.
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+var broken_goods := 0
 var owner_npc: FarmOwner
 var hens: Array[FarmHen] = []
 var pancho: FarmNephew
@@ -161,6 +204,21 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_yard()
 	_build_house()
@@ -179,6 +237,95 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "farm", car)
+	raid.station_parking = station_parking
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = owner_npc
+	raid.owner_id = "farm"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The farm's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_FARM",
+		"guess_key": "OBJ_GUESS_FARM",
+		"broken_key": "OBJ_BROKEN_FARM",
+		"complaint_key": "OBJ_COMPLAINT_FARM",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_goods,
+		"complaint": owner_npc.complaint,
+	}
+
+
+## Online, what the guests' farm takes from the host's (RaidCase.snapshot): what the story's rig decides on the host.
+func net_state() -> Dictionary:
+	return {"rig": rig.net_state() if rig else null}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	if rig and state.rig != null:
+		rig.apply_net_state(state.rig)
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit); the first one is the
+## main evidence.
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	main = hidden[0]
+	extras.assign(hidden.slice(1))
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * GROUND
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Don Florencio lets slip when asked (where the story's things are, in an order drawn from the seed), and what
+## Pancho saw: where his uncle hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		owner_npc.slips.append(tr("FARMER_SLIP") % tr("LOC_FARM_" + SPOTS[hidden_spots[item]].id))
+	owner_npc.slipped.connect(raid.add_clue)
+	var where := tr("LOC_FARM_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	pancho.clue = tr("CLUE_PANCHO") % where
+	pancho.clue_speech = tr("PANCHO_CLUE_" + story_id) % where
+	pancho.told.connect(raid.add_clue)
 
 
 ## Don Florencio on his round, the bell that calls him to feed the animals, what breaks his doors and the complaint bar.
@@ -208,6 +355,7 @@ func _place_owner() -> void:
 	box.add_child(complaint_bar)
 	add_child(hud)
 	owner_npc.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+	owner_npc.lawyer_called.connect(func() -> void: raid.fail("CASE_FAILED_LAWYER_FARM"))
 
 
 ## The hens on spots of the yard drawn with the seed, the run's low fence and Pancho by the hen house.
