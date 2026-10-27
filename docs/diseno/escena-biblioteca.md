@@ -133,7 +133,7 @@ polvo dorado con la linterna, el fichero, el ruido y el apagón de Doña Sigilo,
 ## El orden para hacerlo (un PR chico por paso)
 0. Este documento y la decisión 360.
 1. La biblioteca en su lote, con sus salas, los estantes y la vitrina, y `--place=library`.
-   **Hecho así:** lote de 30 x 26 en la cuadra (5, 4), lado norte, con el frente hacia la calle. Escalinata baja,
+   **Hecho así:** lote de 30 x 26 en la cuadra (5, 4), lado este (el norte lo cruza un callejón), con el frente hacia la calle. Escalinata baja,
    cuatro columnas, el cartel en la viga y el reloj dorado en el frontón. La sala de lectura en el medio (tres mesas
    largas con lámparas verdes, la vitrina, el sillón, el mostrador y el fichero junto a la puerta), los ocho estantes
    al este en cuatro filas de dos, cada 2 m, con su letra arriba y la escalera con rueditas, y al oeste el rincón
