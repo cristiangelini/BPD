@@ -85,7 +85,7 @@ static func _onto_street(at: Vector3) -> Vector3:
 
 static func _nearest_street(at: float, columns: bool) -> float:
 	var best := INF
-	for k in (CityLayout.COLUMNS if columns else CityLayout.ROWS) + 1:
+	for k in (range(CityLayout.WEST, CityLayout.EAST + 1) if columns else range(CityLayout.NORTH, CityLayout.SOUTH + 1)):
 		var line := CityLayout.street_x(k) if columns else CityLayout.street_z(k)
 		if absf(line - at) < absf(best - at):
 			best = line

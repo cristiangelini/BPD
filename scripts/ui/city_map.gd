@@ -126,11 +126,10 @@ func _draw_map() -> void:
 	_highway(k)
 	_golf(k)
 	_canvas.draw_rect(Rect2(to_map(Vector3(-half.x, 0, -half.y)), CityLayout.SIZE * k), STREET)
-	for row in CityLayout.ROWS:
-		for col in CityLayout.COLUMNS:
-			var center := CityLayout.block_center(Vector2i(col, row))
-			var corner := center - Vector3(CityLayout.BLOCK, 0, CityLayout.BLOCK) / 2
-			_canvas.draw_rect(Rect2(to_map(corner), Vector2.ONE * CityLayout.BLOCK * k), BLOCK)
+	for block in CityLayout.blocks():
+		var center := CityLayout.block_center(block)
+		var corner := center - Vector3(CityLayout.BLOCK, 0, CityLayout.BLOCK) / 2
+		_canvas.draw_rect(Rect2(to_map(corner), Vector2.ONE * CityLayout.BLOCK * k), BLOCK)
 	for lot: Dictionary in CityLayout.fillers():
 		_lot(lot, BUILDING)
 	for p: Dictionary in CityLayout.PLACES:
