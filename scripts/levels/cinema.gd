@@ -43,6 +43,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_CAMCORDER", "OBJ_EXTRA_COVERS"],
 		"rig": preload("res://scripts/case/cinema/pirate_copies_rig.gd"),
 	},
+	"floor_popcorn": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_FLOOR_POPCORN_B", "BRIEF_FLOOR_POPCORN_C", "BRIEF_FLOOR_POPCORN_D"],
+		"find": "OBJ_FIND_POPCORN_BAG",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/floor_popcorn_bag.tscn"), preload("res://scenes/props/recycle_broom.tscn"),
+			preload("res://scenes/props/fresh_sign.tscn")],
+		"half_heights": [0.28, 0.04, 0.02],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_RECYCLE_BROOM", "OBJ_EXTRA_FRESH_SIGN"],
+		"rig": preload("res://scripts/case/cinema/floor_popcorn_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the hall's carpet, in front of the screen and along the theater's back.
 const NOTE_PLACES: Array[Vector3] = [
