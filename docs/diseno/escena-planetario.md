@@ -146,6 +146,13 @@ Mientras tanto se avanza con lo recomendado.
    - **La sala de control, en el rincón este:** la consola del proyector con sus pantallas y un botón por planeta.
    - Capturas: `planetario/paso1-*.png`.
 2. Los seis guías, el doctor Órbita y Doña Nebulosa (modelos y personajes).
+   **Hecho así:** modelos `npc_guia`, `npc_orbita` y `npc_nebulosa` (tools/modelgen/models/planetarium.js).
+   - **Los guías:** iguales con el traje blanco, el casco con visor dorado, los guantes y las botas lunares. Cada uno tiene
+     sus rasgos en GuideTraits (pelo, botas, dientes, pintura en los guantes y planeta), y con E dice una frase con su
+     planeta. Dos esperan en el hall mirando la vitrina y cuatro están en la sala del domo.
+   - **El doctor Órbita:** guardapolvo, anteojos enormes, pelo gris parado y un puntero; espera en el hall y se queja.
+   - **Doña Nebulosa:** dormida en la butaca 7, con ruleros y un "Zzz"; con E murmura dormida.
+   - Capturas: `planetario/paso2-*.png` y `planetario/planetarium_people.png`.
 3. Las fichas: la pintura que brilla y el planeta de cada guía.
 4. El caso: El Pedrusco escondido, la búsqueda y la consola del proyector.
 5. La función de las estrellas: el apagón cada 2 minutos, lo que brilla, la linterna y la paciencia del doctor.

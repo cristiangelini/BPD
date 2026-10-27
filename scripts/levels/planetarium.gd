@@ -6,8 +6,9 @@ extends CrimeScenePlace
 ## Pedrusco and a giant Saturn hanging over it; the gift shop to the west (the moon-rock basket, the till and the photo
 ## booth "Tu cara en la Luna") and the kids' corner to the east (the rocket to climb and the Mars scale); at the back,
 ## the dome room with its reclining seats in a ring around the star projector and the night sky painted on the ceiling,
-## and the control room in the east corner with the projector's console. The people and the case come in later steps.
-## Every number here is (propuesta).
+## and the control room in the east corner with the projector's console. The six guides stand about the hall and the
+## dome room (step 2), Doctor Órbita by the dome's door and Doña Nebulosa asleep in her seat. The case comes in later
+## steps. Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(32, 28)
@@ -38,6 +39,12 @@ const SEAT_RING := 4.6
 const SEATS := 14
 ## The seats marked with a planet, by the planet (their place in the ring).
 const PLANET_SEATS := {"mercury": 1, "venus": 3, "mars": 5, "jupiter": 8, "saturn": 10, "neptune": 12}
+## Where the people are: two guides by the display case facing it, three inside the ring of seats and one by the control
+## room, facing the projector; Doctor Órbita by the dome's door, facing the hall; Doña Nebulosa asleep in her seat.
+const GUIDES_AT: Array[Vector3] = [Vector3(-2.0, 0, 5.0), Vector3(2.0, 0, 5.0), Vector3(-5.5, 0, -5.0),
+	Vector3(-0.5, 0, -5.5), Vector3(-4.8, 0, -8.6), Vector3(5.0, 0, -3.0)]
+const DIRECTOR_AT := Vector3(2.5, 0, 1.2)
+const SLEEPER_SEAT := 7
 ## The control room: the projector's console against the east wall.
 const CONSOLE_AT := Vector3(13.0, 0, -6.5)
 ## The gift shop: the moon-rock basket, the till and the photo booth.
@@ -68,6 +75,9 @@ const PLANET_COLORS := {
 }
 const ROCK_COLORS: Array[Color] = [Color(0.55, 0.55, 0.58), Color(0.7, 0.7, 0.72), Color(0.45, 0.45, 0.5)]
 
+var guides: Array[PlanetariumGuide] = []
+var director: PlanetariumDirector
+var sleeper: PlanetariumSleeper
 var _builder: PlaceBuilder
 
 
@@ -83,6 +93,12 @@ func _ready() -> void:
 	_control()
 	_shop()
 	_kids()
+	_people()
+
+
+## The guide by index (the order of the case's traits).
+func suspect(index: int) -> CollisionObject3D:
+	return guides[index] if index >= 0 and index < guides.size() else null
 
 
 ## Whether a point in the world (ignoring height) is on the planetarium's lot, square included.
@@ -116,6 +132,31 @@ static func seat_at(index: int) -> Transform3D:
 	var angle := TAU * index / SEATS
 	var at := PROJECTOR_AT + Vector3(sin(angle), 0, cos(angle)) * SEAT_RING
 	return Transform3D(Basis(Vector3.UP, angle + PI), at)
+
+
+## The six guides alike (GuideTraits.draw with the case seed): the two in the hall face the display case, the rest the
+## projector. Doctor Órbita by the dome's door and Doña Nebulosa asleep in her seat.
+func _people() -> void:
+	var traits := GuideTraits.draw(case_seed)
+	for i in traits.size():
+		var guide := PlanetariumGuide.new()
+		guide.name = "Guide%d" % i
+		guide.traits = traits[i]
+		guide.index = i
+		var at: Vector3 = GUIDES_AT[i]
+		guide.position = at + Vector3(0, FLOOR_TOP, 0)
+		var to := (CASE_AT if at.z > ROOMS_Z else PROJECTOR_AT) - at
+		guide.rotation.y = atan2(to.x, to.z)
+		add_child(guide)
+		guides.append(guide)
+	director = PlanetariumDirector.new()
+	director.name = "Director"
+	director.position = DIRECTOR_AT + Vector3(0, FLOOR_TOP, 0)
+	add_child(director)
+	sleeper = PlanetariumSleeper.new()
+	sleeper.name = "Sleeper"
+	sleeper.transform = seat_at(SLEEPER_SEAT).translated(Vector3(0, FLOOR_TOP + 0.1, 0))
+	add_child(sleeper)
 
 
 ## The floors, the roof with its lights (a dim one in the dome room, which has the night sky) and the outer walls.
