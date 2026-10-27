@@ -1,8 +1,8 @@
 // Props of the fun fair "La Vuelta Loca" (docs/diseno/allanamiento-parque.md): the carousel and its horses, the
 // Ferris wheel (stand, wheel and cabins apart, so the wheel can turn), the bumper car, the entrance arch, the strength
 // tester and its mallet, the cotton candy cart, the cans booth, the ticket booth, the ghost train's face, its cart, a
-// skeleton and the giant teddy bear. Origins at the floor in the middle of each piece, facing +Z. Placeholder, not
-// final art.
+// skeleton, the giant teddy bear, Don Tómbola, Nube and the stuffed prizes' evidence. Origins at the floor in the
+// middle of each piece, facing +Z. Placeholder, not final art.
 import { Builder, mat, ellipsoid, V, THREE } from '../lib.js';
 import { M, pearBody, eyes, limb } from './pear.js';
 
@@ -320,12 +320,51 @@ export function buildNube() {
 	return b.build();
 }
 
+// The stuffed prizes' evidence: a burlap sack of stolen watches with gold straps sticking out of its tied neck (3 kg).
+export function buildWatchBag() {
+	const b = new Builder('fair_watch_bag');
+	const sack = mat('watch_sack', 0xb8955a), gold = mat('fair_gold', GOLD), face = mat('fair_white', WHITE);
+	b.add('sack', sack, ellipsoid(0.17, 0.15, 0.14, 10, 8), { pos: V(0, 0.15, 0) });
+	b.add('sack', sack, new THREE.CylinderGeometry(0.04, 0.08, 0.1, 8), { pos: V(0, 0.32, 0) });
+	b.add('tie', mat('fair_red', RED), new THREE.TorusGeometry(0.045, 0.012, 4, 10), { pos: V(0, 0.33, 0), rot: [Math.PI / 2, 0, 0] });
+	for (const [x, z, r] of [[-0.05, 0.02, 0.4], [0.06, -0.02, -0.5], [0, 0.05, 0.1]]) {
+		b.add('watches', gold, new THREE.TorusGeometry(0.035, 0.008, 4, 10), { pos: V(x, 0.4, z), rot: [0, r, 0.3] });
+		b.add('watches', face, new THREE.CylinderGeometry(0.022, 0.022, 0.01, 10), { pos: V(x, 0.43, z), rot: [0.3, r, 0] });
+	}
+	return b.build();
+}
+
+// The clients' list: a sheet with names and, next to each, a little teddy drawn in red.
+export function buildClientList() {
+	const b = new Builder('fair_client_list');
+	b.add('paper', mat('list_paper', 0xfaf6ea), new THREE.BoxGeometry(0.21, 0.004, 0.29), { pos: V(0, 0.002, 0) });
+	const ink = mat('list_ink', 0x2a2a30), red = mat('fair_red', RED);
+	for (let i = 0; i < 8; i++) {
+		box(b, 'lines', ink, 0.11, 0.002, 0.008, -0.03, 0.005, -0.1 + i * 0.027);
+		b.add('teddies', red, new THREE.CylinderGeometry(0.008, 0.008, 0.002, 6), { pos: V(0.07, 0.005, -0.1 + i * 0.027) });
+	}
+	return b.build();
+}
+
+// The giant needle and thread to sew the prizes shut: a half-meter steel needle through a fat spool of red thread.
+export function buildNeedleThread() {
+	const b = new Builder('fair_needle_thread');
+	const steel = mat('needle_steel', 0xc8ccd2, { metalness: 0.7, roughness: 0.3 });
+	b.add('needle', steel, new THREE.CylinderGeometry(0.008, 0.012, 0.42, 6), { pos: V(0, 0.06, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('needle', steel, new THREE.ConeGeometry(0.008, 0.06, 6), { pos: V(0, 0.06, 0.24), rot: [Math.PI / 2, 0, 0] });
+	b.add('needle', steel, new THREE.TorusGeometry(0.014, 0.004, 4, 8), { pos: V(0, 0.06, -0.22) });
+	b.add('spool', mat('fair_wood', 0xc8a070), new THREE.CylinderGeometry(0.06, 0.06, 0.12, 10), { pos: V(0.11, 0.06, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('spool', mat('fair_red', RED), new THREE.CylinderGeometry(0.065, 0.065, 0.09, 10), { pos: V(0.11, 0.06, 0), rot: [0, 0, Math.PI / 2] });
+	return b.build();
+}
+
 export const models = {
 	fair_carousel: buildCarousel, fair_horse: buildFairHorse, ferris_stand: buildFerrisStand, ferris_wheel: buildFerrisWheel,
 	ferris_cabin: buildFerrisCabin, bumper_car: buildBumperCar, fair_arch: buildFairArch, strength_tester: buildStrengthTester,
 	fair_mallet: buildFairMallet, cotton_candy_cart: buildCottonCandyCart, cans_booth: buildCansBooth,
 	ticket_booth: buildTicketBooth, ghost_train_face: buildGhostTrainFace, ghost_cart: buildGhostCart,
 	fair_skeleton: buildFairSkeleton, giant_teddy: buildGiantTeddy, npc_don_tombola: buildDonTombola, npc_nube: buildNube,
+	fair_watch_bag: buildWatchBag, fair_client_list: buildClientList, fair_needle_thread: buildNeedleThread,
 };
 
 export const views = {
@@ -352,5 +391,10 @@ export const views = {
 			{ name: 'giant_teddy', pos: [3, 0, 1] },
 		],
 		cam: { pos: [0, 2.5, 9], target: [0, 2, 0], fov: 50 },
+	},
+	fair_stuffed_prizes: {
+		items: [{ name: 'fair_watch_bag', pos: [-0.3, 0, 0] }, { name: 'fair_client_list', pos: [0.3, 0, 0.25], rotY: -0.2 },
+			{ name: 'fair_needle_thread', pos: [0.3, 0, -0.2], rotY: 0.5 }],
+		cam: { pos: [0.1, 1.0, 1.6], target: [0, 0.15, 0], fov: 40 },
 	},
 };
