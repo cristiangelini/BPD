@@ -5633,3 +5633,12 @@ TOMBOLA_LAWYER,"¡Llamo a mi abogado! ¡Por el megáfono, para que se entere tod
 TOMBOLA_RIDE,"¡No me toquen los juegos! ¡Están en mantenimiento!","Don't touch my rides! They're under maintenance!","Não mexam nos brinquedos! Estão em manutenção!"
 TOMBOLA_FLUNG,"¡Del carrusel no se baja volando!","Nobody gets off the carousel flying!","Do carrossel ninguém desce voando!"
 TOMBOLA_CAUGHT_ON,"¿Otra vez la campana? A mí no me engañan con el truco del campeón.","The bell again? You can't fool me with the champion trick.","O sino de novo? Comigo não cola o truque do campeão."
+PROMPT_NUBE,E: hablar con Nube,E: talk to Nube,E: falar com a Nube
+NUBE_RULES,"Tres pelotas, tres latas. Si las tiras todas, te cuento un secreto.","Three balls, three cans. Knock them all down and I'll tell you a secret.","Três bolas, três latas. Se derrubar todas, eu te conto um segredo."
+NUBE_AGAIN,"Ya te conté todo lo que sé. Bueno, casi todo.","I already told you everything I know. Well, almost everything.","Já te contei tudo o que sei. Bom, quase tudo."
+NUBE_WON,"¡Ganaste! No hay premio, pero te cuento algo:","You won! There's no prize, but I'll tell you something:","Você ganhou! Não tem prêmio, mas vou te contar uma coisa:"
+NUBE_NOTHING,"¡Ganaste! No hay premio… y tampoco vi nada raro. Perdón.","You won! There's no prize… and I didn't see anything odd either. Sorry.","Você ganhou! Não tem prêmio… e também não vi nada estranho. Desculpe."
+NUBE_MISSED,"¡Casi! Las latas se paran solas. Prueba otra vez.","So close! The cans stand back up on their own. Try again.","Quase! As latas se levantam sozinhas. Tente de novo."
+NUBE_IDLE_1,"¿Algodón de azúcar? Hoy está gratis, porque está cerrado.","Cotton candy? It's free today, because we're closed.","Algodão-doce? Hoje é de graça, porque está fechado."
+NUBE_IDLE_2,"Las latas no están pegadas. Bueno, esta semana no.","The cans aren't glued down. Well, not this week.","As latas não estão coladas. Bom, nesta semana não."
+NUBE_IDLE_3,"Don Tómbola anda raro. Más raro que siempre.","Don Tómbola is acting weird. Weirder than usual.","O Don Tómbola anda estranho. Mais estranho que o normal."

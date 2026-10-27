@@ -300,12 +300,32 @@ export function buildDonTombola() {
 	return b.build();
 }
 
+// Nube, the cotton candy seller: a pink cloud of hair in puffs, a white apron over a pink shirt and a cotton candy on
+// a stick in her right hand.
+export function buildNube() {
+	const b = new Builder('npc_nube');
+	const pink = mat('candy_pink', PINK), white = mat('fair_white', WHITE);
+	pearBody(b, mat('skin_trigo', 0xe0b083), { shirt: pink, pants: mat('nube_skirt', 0x6a4ab8), shoes: white, belted: false });
+	b.add('body', white, new THREE.BoxGeometry(0.5, 0.55, 0.02), { pos: V(0, 0.55, 0.42), rot: [-0.12, 0, 0] });
+	eyes(b, 1.34, 0.17, 0.08, 0.05);
+	b.add('face', mat('nube_mouth', 0xc8445a), ellipsoid(0.05, 0.02, 0.02, 6, 4), { pos: V(0, 1.22, 0.2) });
+	const hair = mat('nube_hair', 0xffb8dc);
+	for (let i = 0; i < 12; i++) {
+		const a = (i / 12) * Math.PI * 2;
+		b.add('hair', hair, ellipsoid(0.11, 0.1, 0.11, 7, 5), { pos: V(Math.cos(a) * 0.17, 1.5 + (i % 3) * 0.03, 0.0 + Math.sin(a) * 0.15 - 0.03) });
+	}
+	b.add('hair', hair, ellipsoid(0.2, 0.14, 0.2, 9, 6), { pos: V(0, 1.6, -0.02) });
+	limb(b, 'candy', white, V(0.5, 0.62, 0.12), V(0.55, 1.0, 0.2), 0.012, 4);
+	b.add('candy', pink, ellipsoid(0.13, 0.15, 0.13, 8, 6), { pos: V(0.56, 1.1, 0.21) });
+	return b.build();
+}
+
 export const models = {
 	fair_carousel: buildCarousel, fair_horse: buildFairHorse, ferris_stand: buildFerrisStand, ferris_wheel: buildFerrisWheel,
 	ferris_cabin: buildFerrisCabin, bumper_car: buildBumperCar, fair_arch: buildFairArch, strength_tester: buildStrengthTester,
 	fair_mallet: buildFairMallet, cotton_candy_cart: buildCottonCandyCart, cans_booth: buildCansBooth,
 	ticket_booth: buildTicketBooth, ghost_train_face: buildGhostTrainFace, ghost_cart: buildGhostCart,
-	fair_skeleton: buildFairSkeleton, giant_teddy: buildGiantTeddy, npc_don_tombola: buildDonTombola,
+	fair_skeleton: buildFairSkeleton, giant_teddy: buildGiantTeddy, npc_don_tombola: buildDonTombola, npc_nube: buildNube,
 };
 
 export const views = {
@@ -322,7 +342,7 @@ export const views = {
 		items: [
 			{ name: 'fair_arch', pos: [0, 0, -4] }, { name: 'strength_tester', pos: [-4, 0, 1] }, { name: 'fair_mallet', pos: [-3.2, 0, 2] },
 			{ name: 'cotton_candy_cart', pos: [-1.5, 0, 2] }, { name: 'cans_booth', pos: [1.5, 0, 1] }, { name: 'ticket_booth', pos: [4.5, 0, 1] },
-			{ name: 'giant_teddy', pos: [1.5, 1.93, 0.25], scale: 0.4 }, { name: 'npc_don_tombola', pos: [-2.5, 0, 3.5], scale: 1.1 },
+			{ name: 'giant_teddy', pos: [1.5, 1.93, 0.25], scale: 0.4 }, { name: 'npc_don_tombola', pos: [-2.5, 0, 3.5], scale: 1.1 }, { name: 'npc_nube', pos: [0.2, 0, 3.5] },
 		],
 		cam: { pos: [0, 3.5, 13], target: [0, 2, 0], fov: 50 },
 	},

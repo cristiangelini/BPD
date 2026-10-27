@@ -143,6 +143,14 @@ extras suman entre 400 y 600.
    - **El premio:** con la campana, Don Tómbola va al lado del martillo y habla 15 s de espaldas al parque. Vuelve a
      caer a los 45 s; la tercera vez no va, dice "¿Otra vez la campana?" y suma 10.
 4. Nube y el puesto de latas.
+   Hecho así:
+   - **Nube:** dentro del puesto de latas, al lado del estante, con pelo rosa de algodón de azúcar, delantal y un
+     algodón en la mano. E sobre ella solo explica las reglas.
+   - **Las latas:** 3 latas en pirámide en el estante de abajo y 3 pelotas en el mostrador. Cuando cae una lata, o no
+     queda ninguna pelota en el mostrador, a los 5 s las latas se paran solas y vuelven las pelotas.
+   - **El premio:** quien tira la última pelota cuando caen las 3 latas gana; Nube le cuenta lo que vio (la historia lo
+     pone en el paso 5), una vez por policía. Si quedan latas paradas dice "¡Casi!".
+   - Los dos estantes del puesto ahora son sólidos, así el estante de premios puede esconder algo.
 5. El caso (RaidCase) con la primera historia: los premios rellenos.
 6. Las otras 5 historias, una por PR.
 7. "Jugar" suma el parque al sorteo de allanamientos (`PlaceDraw.ORDER`).

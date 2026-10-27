@@ -80,6 +80,8 @@ const MIRROR_SPEED := 3.0
 const MIRROR_FINE := 30
 ## The booths in the middle, facing the arch.
 const CANS_AT := Vector3(0.0, FLOOR_TOP, 4.0)
+## Nube minds the cans from inside the booth, beside the shelf.
+const NUBE_AT := CANS_AT + Vector3(-0.9, 0, 0.0)
 const TEDDY_AT := Vector3(-2.4, FLOOR_TOP, 5.0)
 const CANDY_AT := Vector3(4.0, FLOOR_TOP, 5.0)
 const TESTER_AT := Vector3(-6.0, FLOOR_TOP, 4.0)
@@ -148,6 +150,9 @@ var tester: StrengthTester
 ## Don Tómbola, the owner, and his complaint bar.
 var owner_npc: FloorBoss
 var complaint_bar: ProgressBar
+## The cans booth with its 3 cans and 3 balls, and Nube who tells whoever knocks them all down (step 4).
+var cans_booth: CansBooth
+var nube: CandySeller
 ## The rides he already saw switched on.
 var _rides_seen: Array[String] = []
 var mirrors: Array[Area3D] = []
@@ -429,6 +434,18 @@ func _build_booths() -> void:
 	_solid(CANS_AT + Vector3(0, 1.3, -1.0), Vector3(3.0, 2.6, 0.1))
 	for side: float in [-1.0, 1.0]:
 		_solid(CANS_AT + Vector3(side * 1.5, 1.3, 0), Vector3(0.1, 2.6, 2.0))
+	cans_booth = CansBooth.new()
+	cans_booth.name = "CansBooth"
+	cans_booth.position = CANS_AT
+	add_child(cans_booth)
+	nube = CandySeller.new()
+	nube.name = "Nube"
+	nube.position = NUBE_AT
+	add_child(nube)
+	cans_booth.won.connect(func(cop: Cop) -> void:
+		if cop:
+			nube.won(cop))
+	cans_booth.missed.connect(nube.missed)
 	_model(TEDDY_MODEL, TEDDY_AT, 0.3)
 	_solid(TEDDY_AT + Vector3(0, 0.55, 0), Vector3(0.9, 1.1, 0.8))
 	_model(CANDY_MODEL, CANDY_AT, -0.2)
