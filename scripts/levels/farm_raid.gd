@@ -9,7 +9,9 @@ extends Node3D
 ## with its baskets of eggs by the gate. A cop running in the mud slips, like on the jail's wet floor. SPOTS are the 12
 ## hiding spots the stories draw from (step 5). Don Florencio walks his round and fills the complaint (step 3); E on the
 ## bell's cord is feeding time: he goes to the corral and feeds the animals with his back to the farm, and a cop behind
-## him can take the shed's key from his apron. The animals and the case come in the next steps.
+## him can take the shed's key from his apron. Eight hens peck around the yard (step 4): a cop who runs close scares
+## them, and Don Florencio counts every scared animal he sees; Pancho, by the hen house, talks once three of them are
+## back in its run. The goat, the pigs, the cow and the case come in the next steps.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -77,6 +79,13 @@ const OWNER_ROUTE: Array[Vector3] = [
 	Vector3(-5.5, GROUND, 13.6),
 ]
 const FEED_SPOT := Vector3(-7.6, GROUND, 7.5)
+## The hens: how many, where they peck, and the run in front of the hen house where Pancho wants them back.
+const HENS := 8
+const YARD := Rect2(-6, -3, 7.5, 11)
+const COOP_RUN := Rect2(-3, -8.5, 3, 1.6)
+const PANCHO_AT := Vector3(1.2, GROUND, -7.6)
+## Don Florencio sees an animal running scared.
+const SAW_SCARED := 5.0
 ## Running faster than this in the mud slips: down for MUD_SLIP seconds, and not again for MUD_AGAIN.
 const MUD := Rect2(9, 4, 7, 5)
 const MUD_SLIP := 2.0
@@ -109,7 +118,11 @@ const STRAW := Color(0.85, 0.74, 0.42)
 const GLASS := Color(0.75, 0.9, 1.0, 0.35)
 const MILK_CAN := Color(0.78, 0.8, 0.82)
 
+## Same seed, same hens.
+@export var case_seed := 0
 var owner_npc: FarmOwner
+var hens: Array[FarmHen] = []
+var pancho: FarmNephew
 var bell: FeedBell
 var complaint_bar: ProgressBar
 var house_door: FrontDoor
@@ -126,6 +139,10 @@ var _slipped := {}
 
 
 func _ready() -> void:
+	if case_seed == 0:
+		case_seed = PlaceDraw.take_seed()
+	if case_seed == 0:
+		case_seed = PlaceDraw.new_seed()
 	_build = PlaceBuilder.new($Built)
 	_build_yard()
 	_build_house()
@@ -133,6 +150,7 @@ func _ready() -> void:
 	_build_pens()
 	_build_garden()
 	_place_owner()
+	_place_hens()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("farm")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -172,6 +190,39 @@ func _place_owner() -> void:
 	owner_npc.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
 
 
+## The hens on spots of the yard drawn with the seed, the run's low fence and Pancho by the hen house.
+func _place_hens() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["farm hens", case_seed])
+	for i in HENS:
+		var hen := FarmHen.new()
+		hen.name = "Hen%d" % i
+		hen.farm = self
+		hen.yard = YARD
+		hen.run = COOP_RUN
+		hen.rng.seed = rng.randi()
+		hen.position = Vector3(rng.randf_range(YARD.position.x, YARD.end.x), GROUND + 0.05,
+			rng.randf_range(YARD.position.y, YARD.end.y))
+		add_child(hen)
+		hen.scared.connect(func(at: Vector3) -> void: owner_npc.saw(at + Vector3.UP * 0.3, SAW_SCARED, "FARMER_SCARED"))
+		hens.append(hen)
+	var r := COOP_RUN
+	for z: float in [r.position.y, r.end.y]:
+		_build.mesh_box(Vector3(r.get_center().x, GROUND + 0.25, z), Vector3(r.size.x, 0.5, 0.03), WOOD)
+	for x: float in [r.position.x, r.end.x]:
+		_build.mesh_box(Vector3(x, GROUND + 0.25, r.get_center().y), Vector3(0.03, 0.5, r.size.y), WOOD)
+	pancho = FarmNephew.new()
+	pancho.name = "Pancho"
+	pancho.position = PANCHO_AT
+	pancho.rotation.y = -PI / 2
+	add_child(pancho)
+
+
+## How many hens are back in the hen house's run.
+func cooped_hens() -> int:
+	return hens.filter(func(hen: FarmHen) -> bool: return hen.is_cooped()).size()
+
+
 ## Whether it's feeding time: the bell rang and Don Florencio is at the corral.
 func in_feeding() -> bool:
 	return owner_npc != null and owner_npc.is_fixing()
@@ -183,6 +234,8 @@ static func in_mud(at: Vector3) -> bool:
 
 
 func _physics_process(delta: float) -> void:
+	if pancho:
+		pancho.cooped = cooped_hens()
 	for cop: Variant in _slipped.keys():
 		_slipped[cop] -= delta
 		if _slipped[cop] <= 0.0 or not is_instance_valid(cop):
