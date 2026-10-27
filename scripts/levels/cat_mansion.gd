@@ -37,6 +37,8 @@ const CAT_FLAP_SIZE := Vector2(0.35, 0.35)
 const FOUNTAIN_AT := Vector3(-8.0, 0, 9.0)
 const RAILING_Z := 12.7
 const GATE_HALF := 2.0
+## The aunt's golden limousine waits at the curb east of the gate, along the street, for the culprit who runs off.
+const LIMO_AT := Vector3(7.0, 0, SIZE.y / 2 + 1.3)
 ## The hall: the stairs up against its east wall (only for the look) and Duquesa's portrait over the guest room door.
 const STAIRS_AT := Vector3(3.8, 0, 2.8)
 const PORTRAIT_AT := Vector3(-2.8, 1.6, HALL_Z + 0.12)
@@ -263,6 +265,13 @@ func offend_witness() -> void:
 ## The nephew by index (the order of the case's traits).
 func suspect(index: int) -> CollisionObject3D:
 	return nephews[index] if index >= 0 and index < nephews.size() else null
+
+
+## The aunt's golden limousine waits at the curb along the street, its nose east, and drives off that way.
+func getaway(_index: int, _city: Node3D) -> Dictionary:
+	var along := global_basis * Basis(Vector3.UP, PI / 2)
+	var ahead := to_global(LIMO_AT + Vector3(8.0, 0, 0))
+	return {"at": Transform3D(along, to_global(LIMO_AT)), "via": [ahead]}
 
 
 ## Whether a point in the world (ignoring height) is on the mansion's lot, garden included.

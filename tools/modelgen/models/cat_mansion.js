@@ -73,6 +73,44 @@ function loro(b) {
 	limb(b, 'legs', C('parrot_feet', 0x707070), V(-0.12, 0.0, 0.0), V(0.12, 0.0, 0.0), 0.012);
 }
 
+// The aunt's golden limousine the culprit flees in (escena-gato.md, "El tablero y el final"): long, gold, with tinted
+// windows, chrome trim and a basket of balls of yarn on the back seat. Front +Z, 2.1 x 1.5 x 7.0; its wheels are
+// SuspectCar.LIMO_WHEELS.
+function buildLimo() {
+	const b = new Builder('golden_limo');
+	const gold = C('limo_gold', 0xd4a838), tint = C('getaway_glass', 0x14181e), chrome = C('chrome', 0x9aa0a8);
+	b.add('body', M.black, new THREE.BoxGeometry(2.1, 0.2, 7.0), { pos: V(0, 0.3, 0) });
+	b.add('body', gold, new THREE.BoxGeometry(2.1, 0.55, 7.0), { pos: V(0, 0.65, 0) });
+	b.add('body', tint, new THREE.BoxGeometry(1.94, 0.5, 5.0), { pos: V(0, 1.17, -0.4) });
+	b.add('body', gold, new THREE.BoxGeometry(2.0, 0.07, 4.7), { pos: V(0, 1.45, -0.4) });
+	for (const x of [-1, 1]) {
+		b.add('trim', chrome, new THREE.BoxGeometry(0.02, 0.05, 6.8), { pos: V(x * 1.055, 0.75, 0) });
+		for (const z of [1.9, 0.2, -1.5, -2.7]) b.add('frame', gold, new THREE.BoxGeometry(0.07, 0.5, 0.1), { pos: V(x * 0.95, 1.17, z) });
+		b.add('lights', C('lamp', 0xf4f0d0), new THREE.BoxGeometry(0.34, 0.12, 0.04), { pos: V(x * 0.7, 0.75, 3.51) });
+		b.add('lights', C('tail', 0xc0202a), new THREE.BoxGeometry(0.34, 0.12, 0.04), { pos: V(x * 0.7, 0.75, -3.51) });
+		for (const z of [2.3, -2.3]) b.add('body', M.black, new THREE.BoxGeometry(0.1, 0.5, 0.95), { pos: V(x * 1.06, 0.4, z) });
+	}
+	b.add('body', chrome, new THREE.BoxGeometry(0.7, 0.3, 0.05), { pos: V(0, 0.65, 3.52) });
+	// The ornament on the hood: a little golden cat.
+	b.add('ornament', gold, ellipsoid(0.06, 0.08, 0.1, 6, 4), { pos: V(0, 1.0, 3.2) });
+	for (const s of [-1, 1]) b.add('ornament', gold, new THREE.ConeGeometry(0.025, 0.06, 4), { pos: V(s * 0.03, 1.1, 3.25) });
+	const wools = [0xc8384a, 0x2e7d5b, 0xf0a040];
+	for (let i = 0; i < 3; i++) b.add('yarn', C(`yarn_${i}`, wools[i]), new THREE.SphereGeometry(0.16, 8, 6), { pos: V(-0.35 + i * 0.35, 1.08, -2.4) });
+	return b.build();
+}
+
+// A ball of wool thrown out of the limousine's window: 0.5 m across, its middle at y = 0.25, wound round and round.
+function buildYarn() {
+	const b = new Builder('yarn_ball');
+	const wool = C('yarn_0', 0xc8384a), strand = C('yarn_strand', 0xe06070);
+	b.add('ball', wool, new THREE.SphereGeometry(0.25, 10, 8), { pos: V(0, 0.25, 0) });
+	for (let i = 0; i < 4; i++) {
+		b.add('ball', strand, new THREE.TorusGeometry(0.252, 0.012, 4, 16), { pos: V(0, 0.25, 0), rot: [i * 0.8, i * 0.5, 0] });
+	}
+	b.add('ball', strand, new THREE.BoxGeometry(0.03, 0.02, 0.25), { pos: V(0.06, 0.01, -0.33), rot: [0, 0.3, 0] });
+	return b.build();
+}
+
 const PEOPLE = { sobrino_tia: sobrino, ofelia: ofelia };
 
 export const models = {
@@ -86,6 +124,8 @@ export const models = {
 		loro(b);
 		return b.build();
 	},
+	golden_limo: buildLimo,
+	yarn_ball: buildYarn,
 };
 
 export const views = {
@@ -93,5 +133,9 @@ export const views = {
 		items: [{ name: 'npc_ofelia', pos: [-1.3, 0, 0], rotY: 0.3 }, { name: 'npc_sobrino_tia', pos: [0, 0, 0], rotY: 0.2 },
 			{ name: 'npc_sobrino_tia', pos: [1.2, 0, 0], rotY: -0.4 }, { name: 'parrot', pos: [2.2, 0.9, 0], rotY: -0.5 }],
 		cam: { pos: [0.45, 1.4, 6.0], target: [0.45, 0.85, 0], fov: 38 },
+	},
+	golden_limo: {
+		items: [{ name: 'golden_limo', pos: [-0.5, 0, 0], rotY: 0.9 }, { name: 'yarn_ball', pos: [2.4, 0, 1.6], rotY: 0 }],
+		cam: { pos: [1.0, 3.2, 9.5], target: [0.5, 0.8, 0], fov: 40 },
 	},
 };

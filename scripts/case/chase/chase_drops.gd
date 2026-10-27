@@ -21,8 +21,9 @@ extends Node
 ## (ConfettiCloud). The bridge's cement mixer (politico-puente.md) drops a blob of cement at
 ## every corner it turns: driving through it the patrol car sticks and slows down to BLOB_SPEED. The museum's art van opens its back doors every FRAME_EVERY seconds and an
 ## empty gilt frame falls out (ChaseFrame). The hotel's shuttle loses a suitcase off its roof every SUITCASE_EVERY
-## seconds (ChaseSuitcase): run over, its clothes cover the patrol car's windshield. Every number here is
-## (propuesta).
+## seconds (ChaseSuitcase): run over, its clothes cover the patrol car's windshield. The Monedero nephew's golden limousine
+## throws a ball of yarn out of the window every YARN_EVERY seconds (ChaseYarn): run over, the patrol car goes at half
+## its speed for a while. Every number here is (propuesta).
 
 const DRIP_EVERY := 3.0
 ## A puddle's size (m), how long it lasts, and the grip left on it.
@@ -62,6 +63,8 @@ const FRAME_EVERY := 5.0
 const MAX_FRAMES := 8
 const SUITCASE_EVERY := 5.0
 const MAX_SUITCASES := 8
+const YARN_EVERY := 5.0
+const MAX_YARNS := 8
 const MELONS_PER_CORNER := 2
 const MAX_MELONS := 12
 ## How fast they roll off the back, in m/s.
@@ -102,6 +105,10 @@ var frames: Array[ChaseFrame] = []
 var suitcases: Array[ChaseSuitcase] = []
 ## Seconds the patrol car's windshield stays covered in a run-over suitcase's clothes.
 var laundry_left := 0.0
+var yarns: Array[ChaseYarn] = []
+## Seconds the patrol car's wheels stay tangled in wool, and the speed (m/s) it can't go over meanwhile.
+var tangle_left := 0.0
+var tangle_speed := 0.0
 var melons: Array[Watermelon] = []
 ## The cement blobs on the street: [node, seconds left].
 var blobs: Array[Array] = []
@@ -133,6 +140,7 @@ var _drip_left := DRIP_EVERY
 var _dummy_left := DUMMY_EVERY
 var _frame_left := FRAME_EVERY
 var _suitcase_left := SUITCASE_EVERY
+var _yarn_left := YARN_EVERY
 var _kids_left := 0.0
 var _kids_line := 0
 var kids_bubble: Label3D
@@ -182,6 +190,13 @@ func _physics_process(delta: float) -> void:
 				drop_suitcase()
 		laundry_left = maxf(laundry_left - delta, 0.0)
 		ConfettiCloud.cover(case.car, laundry_left > 0.0)
+	if case.suspect_id == SuspectCar.LIMO:
+		if case.chasing and not case.stopped and not case.follower:
+			_yarn_left -= delta
+			if _yarn_left <= 0.0:
+				_yarn_left = YARN_EVERY
+				drop_yarn()
+		_hold_tangled(delta)
 	if kids_bubble and case.chasing and not case.stopped:
 		_kids_left -= delta
 		if _kids_left <= 0.0:
@@ -523,6 +538,42 @@ func drop_suitcase() -> ChaseSuitcase:
 	suitcase.rotation.y = case.truck.global_rotation.y + _rng.randf_range(-0.6, 0.6)
 	suitcases.append(suitcase)
 	return suitcase
+
+
+## A ball of yarn flies out of the limousine's window and rolls back down the street.
+func drop_yarn() -> ChaseYarn:
+	yarns = yarns.filter(func(yarn: ChaseYarn) -> bool: return is_instance_valid(yarn))
+	if yarns.size() >= MAX_YARNS:
+		yarns.pop_front().queue_free()
+	var yarn := ChaseYarn.new()
+	yarn.car = case.car
+	yarn.drops = self
+	_dropped += 1
+	yarn.name = "Yarn%d" % _dropped
+	case.get_parent().add_child(yarn)
+	var side := case.truck.global_basis.x * (1.2 if _rng.randf() < 0.5 else -1.2)
+	yarn.global_position = _behind() + side + Vector3.UP * 0.3
+	yarn.linear_velocity = -case.truck.global_basis.z * ChaseYarn.ROLL
+	yarns.append(yarn)
+	return yarn
+
+
+## The patrol car ran over a ball of yarn going `speed` m/s: half of it for ChaseYarn.TANGLE_SECONDS.
+func tangle(speed: float) -> void:
+	tangle_left = ChaseYarn.TANGLE_SECONDS
+	tangle_speed = speed / 2.0
+
+
+## While tangled, the patrol car can't go over tangle_speed.
+func _hold_tangled(delta: float) -> void:
+	if tangle_left <= 0.0:
+		return
+	tangle_left = maxf(tangle_left - delta, 0.0)
+	var car := case.car
+	var flat := Vector3(car.linear_velocity.x, 0, car.linear_velocity.z)
+	if flat.length() > tangle_speed:
+		var held := flat.normalized() * tangle_speed
+		car.linear_velocity = Vector3(held.x, car.linear_velocity.y, held.z)
 
 
 func _behind() -> Vector3:
