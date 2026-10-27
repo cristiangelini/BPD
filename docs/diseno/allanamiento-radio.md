@@ -100,7 +100,7 @@ entre 400 y 600.
    Capturas `radio/paso6-microfonos-*.png`.
    **Hecho (paso 6, discos de colección):** `CollectorRecordsRig`; el disco con la etiqueta está apoyado en el
    estante del frente del archivo (detrás de la puerta con llave), y al aire presenta una "joya" cada 45 s
-   (propuesta). `RadioRig.fixed_clue` arma las pistas fijas con modelo (la maceta y el disco). Capturas
+   (propuesta). `RadioStationRig.fixed_clue` arma las pistas fijas con modelo (la maceta y el disco). Capturas
    `radio/paso6-discos-*.png`.
    **Hecho (paso 6, dedicatorias en clave):** `CodedDedicationsRig`; la pizarra de dedicatorias está en la pared oeste
    de la recepción, y al aire sale una dedicatoria rarísima cada 60 s (propuesta), tres por turno. Capturas

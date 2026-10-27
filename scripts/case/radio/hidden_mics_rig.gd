@@ -1,5 +1,5 @@
 class_name HiddenMicsRig
-extends RadioRig
+extends RadioStationRig
 
 ## The hidden mics (allanamiento-radio.md, "Los micrófonos ocultos"): don Volumen records the neighbors with mics hidden
 ## in flowerpots and airs their gossip. The box of recordings is hidden with a mic in a pot and the neighborhood map

@@ -1,5 +1,5 @@
 class_name PhantomAdsRig
-extends RadioRig
+extends RadioStationRig
 
 ## The phantom ads (allanamiento-radio.md, "Las publicidades fantasma"): don Volumen charges the neighborhood's shops for
 ## ads that never air. The contracts are hidden with the billing notebook and the "PAGADO" stamp; the ads grid on the
