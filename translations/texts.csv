@@ -5588,3 +5588,34 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+MENU_BIRTHDAY_RAID,"Cumpleaños (allanamiento) (prueba)","Birthday party (raid) (test)","Aniversário (batida) (teste)"
+BIRTHDAY_RAID_BANNER,"¡Feliz cumple, Tomasito!","Happy birthday, Tomasito!","Feliz aniversário, Tomasito!"
+HINT_TILL_KEY_BIRTHDAY,"¡Una llave entre los pañuelos de colores! Abre la oficina del salón.","A key among the colored scarves! It opens the hall's office.","Uma chave entre os lenços coloridos! Abre o escritório do salão."
+CASE_FAILED_LAWYER_BIRTHDAY,"El payaso Chispita llamó a su abogado. Caso perdido.","Chispita the clown called his lawyer. Case lost.","O palhaço Chispita chamou o advogado. Caso perdido."
+BIRTHDAY_POP,"¡PUM!","POP!","PUM!"
+BIRTHDAY_CAKE_FELL,"¡El pastel! ¡Se cayó el pastel!","The cake! The cake fell!","O bolo! O bolo caiu!"
+PROMPT_TALK_KID,"E: hablar con el chico","E: talk to the kid","E: falar com a criança"
+BIRTHDAY_KID_CUFFED,"¡Mamáaaa! ¡Me esposó un policía!","Mommyyy! A cop cuffed me!","Mamãããe! Um policial me algemou!"
+TOMASITO_0,"¡Hoy cumplo siete! ¿Me trajiste un regalo?","I'm turning seven today! Did you bring me a present?","Hoje faço sete anos! Você me trouxe um presente?"
+TOMASITO_1,"¿Ustedes son del show? ¿Dónde está la sirena?","Are you part of the show? Where's the siren?","Vocês são do show? Cadê a sirene?"
+TOMASITO_2,"Cuando rompamos la piñata te doy un caramelo. Uno.","When we break the piñata I'll give you a candy. One.","Quando a gente quebrar a piñata eu te dou uma bala. Uma."
+BIRTHDAY_KID_0,"¿Me llevas en el patrullero? ¿Con la sirena?","Will you take me in the patrol car? With the siren?","Você me leva na viatura? Com a sirene?"
+BIRTHDAY_KID_1,"¡Yo también tengo esposas! Son de plástico.","I have handcuffs too! They're plastic.","Eu também tenho algemas! São de plástico."
+BIRTHDAY_KID_2,"El payaso hace perritos de globo. Uno se le escapó volando.","The clown makes balloon dogs. One flew away.","O palhaço faz cachorrinhos de bexiga. Um saiu voando."
+BIRTHDAY_KID_3,"¿Cuándo cortan el pastel? Ya tengo hambre.","When do they cut the cake? I'm hungry.","Quando vão cortar o bolo? Já estou com fome."
+BIRTHDAY_KID_4,"Mi mamá fue a comprar hielo. Hace como una hora.","My mom went to buy ice. Like an hour ago.","Minha mãe foi comprar gelo. Faz tipo uma hora."
+BIRTHDAY_KID_5,"¡En el inflable se salta altísimo! Pruébalo.","You jump super high on the bouncy castle! Try it.","No pula-pula se pula altíssimo! Experimenta."
+BIRTHDAY_KID_6,"Tomasito ya festejó el cumple la semana pasada. Y la otra.","Tomasito already had his party last week. And the week before.","O Tomasito já festejou o aniversário semana passada. E na outra."
+BIRTHDAY_KID_7,"¿Eres policía de verdad o eres el payaso disfrazado?","Are you a real cop or the clown in a costume?","Você é policial de verdade ou é o palhaço fantasiado?"
+LOC_in_bouncy_castle,adentro del inflable,inside the bouncy castle,dentro do pula-pula
+LOC_under_gift_table,debajo de la mesa de regalos,under the gift table,embaixo da mesa de presentes
+LOC_in_office,en la oficina del salón,in the hall's office,no escritório do salão
+LOC_in_coat_check,en el guardarropa,in the coat check,na chapelaria
+LOC_in_restroom,en el baño,in the restroom,no banheiro
+LOC_by_photo_steps,al lado de la escalerita de la foto,by the photo steps,ao lado da escadinha da foto
+LOC_on_food_table,en la mesa de la comida,on the food table,na mesa da comida
+LOC_in_cup_bin,en el tacho de los vasitos,in the bin of paper cups,no cesto dos copinhos
+LOC_on_gift_table,arriba de la mesa de regalos,on the gift table,em cima da mesa de presentes
+LOC_behind_balloon_arch,detrás del arco de globos,behind the balloon arch,atrás do arco de bexigas
+LOC_on_hall_office_desk,en el escritorio de la oficina del salón,on the desk in the hall's office,na mesa do escritório do salão
+LOC_on_top_step,en el escalón de arriba de la foto,on the top photo step,no degrau de cima da foto

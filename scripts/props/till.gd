@@ -13,6 +13,9 @@ const DRAWER := Color(0.35, 0.36, 0.4)
 var has_key := true
 ## What the cop reads on finding the key (each place names its locked door).
 var key_hint := "HINT_TILL_KEY"
+## A model to show instead of the grey register (Chispita's case of tricks at the birthday party); its drawer only
+## shows once open.
+var look: PackedScene
 var is_open := false
 var _drawer: MeshInstance3D
 
@@ -23,9 +26,15 @@ func _ready() -> void:
 	box.size = SIZE
 	shape.shape = box
 	add_child(shape)
-	add_child(_mesh(SIZE, COLOR))
+	if look:
+		var model: Node3D = look.instantiate()
+		model.position.y = -SIZE.y / 2
+		add_child(model)
+	else:
+		add_child(_mesh(SIZE, COLOR))
 	_drawer = _mesh(Vector3(SIZE.x * 0.8, 0.08, SIZE.z), DRAWER)
 	_drawer.position = Vector3(0, -SIZE.y / 2 + 0.05, 0)
+	_drawer.visible = not look
 	add_child(_drawer)
 
 
@@ -39,6 +48,7 @@ func use(cop: Cop) -> void:
 	is_open = true
 	# The drawer slides out toward the cop's side of the counter (the till's +Z).
 	_drawer.position.z = SIZE.z * 0.6
+	_drawer.visible = true
 	if has_key:
 		has_key = false
 		cop.has_key = true
