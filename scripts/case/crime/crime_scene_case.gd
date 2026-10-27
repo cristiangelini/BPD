@@ -427,6 +427,9 @@ func runs_off() -> bool:
 ## The culprit gets in his getaway by the scene (the pastry cook's delivery bike) and the chase starts (decision 96).
 ## Returns false when the level has no place, city or patrol car to chase him with (he gives up instead).
 func _run_off() -> bool:
+	if place and place.run_off(plan.culprit):
+		_hint_all(tr("HINT_ESCAPE_" + texts().who) % culprit().name)
+		return true
 	var level := get_parent()
 	var city := level.get_node_or_null("City") as Node3D
 	var car := level.get_node_or_null("PatrolCar") as PatrolCar
@@ -444,6 +447,11 @@ func _run_off() -> bool:
 	chase.ended.connect(_on_chase_ended)
 	_hint_all(tr("HINT_ESCAPE_" + texts().who) % culprit().name)
 	return true
+
+
+## A getaway the place ran (Train.run_off) ended.
+func end_chase(caught: bool) -> void:
+	_on_chase_ended(caught)
 
 
 ## Caught and in the patrol car, he's in custody for the next interrogation; got away, the case is lost.

@@ -155,3 +155,10 @@ interrogatorio.
   atada con una soga y el nudo da para el lado de la mano del culpable: se fotografía (cámara) y E lo desata y la pista
   se pierde. El freno de emergencia de la locomotora para el tren 60 s en el medio del campo (el reloj de las
   estaciones espera), don Silbato grita y descuenta 100 del sueldo; a la segunda le pone candado.
+- **Paso 5 (la huida por los techos):** el culpable bien acusado que se escapa sale por su ventana y camina por los
+  techos hacia la locomotora (0,8 m/s, haciendo reverencias). Cada coche tiene una escalera de hierro junto a la puerta
+  de adelante: E te sube al techo. 4 s antes de cada túnel don Silbato silba: el que está parado en un techo cuando
+  entra el túnel se cae adentro del coche; agachado (C) sigue arriba. Cada 5 s el mago le tira una paloma al policía
+  más cercano en los techos (lo tambalea 2 s). Si lo alcanzas, lo agarras y va al interrogatorio como un mago más; si
+  llega al frente de la locomotora, salta al río desde el puente y el caso se pierde. Capturas en
+  `/mnt/project-files/tren/paso5-*.png`.

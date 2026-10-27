@@ -35,6 +35,12 @@ func getaway(_index: int, _city: Node3D) -> Dictionary:
 	return {"at": global_transform, "via": []}
 
 
+## A place where the culprit runs off on its own (the train's roofs) starts that getaway and returns true; the case
+## then waits for end_chase. Elsewhere he runs off in his getaway through the city.
+func run_off(_index: int) -> bool:
+	return false
+
+
 ## The witness took offense (cuffed or shouted at) and says nothing more.
 func witness_offended() -> bool:
 	return false
