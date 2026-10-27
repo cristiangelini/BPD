@@ -65,6 +65,16 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_RACE_TROPHY", "OBJ_EXTRA_FLAME_HELMET"],
 		"rig": preload("res://scripts/case/farm/racing_tractor_rig.gd"),
 	},
+	"giant_carrots": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_GIANT_CARROTS_B", "BRIEF_GIANT_CARROTS_C", "BRIEF_GIANT_CARROTS_D"],
+		"find": "OBJ_FIND_FERTILIZER_JUGS",
+		"hidden": [preload("res://scenes/props/fertilizer_jugs.tscn"), preload("res://scenes/props/growth_diary.tscn"),
+			preload("res://scenes/props/ruler_2m.tscn")],
+		"half_heights": [0.195, 0.015, 0.015],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_GROWTH_DIARY", "OBJ_EXTRA_RULER_2M"],
+		"rig": preload("res://scripts/case/farm/giant_carrots_rig.gd"),
+	},
 }
 ## Where the suspicion notes lie: on the yard's dirt, out of the buildings and the pens (Tota may eat them).
 const NOTE_PLACES: Array[Vector3] = [

@@ -5698,3 +5698,15 @@ PROMPT_START_TRACTOR,E: arrancar el tractor,E: start the tractor,E: ligar o trat
 FARM_TRACTOR_VROOM,¡BRRRUUUM!,VROOOOM!,VRUUUUM!
 FARM_TRACTOR_BANG,¡PUM!,BANG!,PUM!
 FARM_TRACTOR_EMPTY,Sin combustible,Out of fuel,Sem combustível
+BRIEF_GIANT_CARROTS_B,"Don Florencio gana todos los premios de la feria con zanahorias enormes, y el laboratorio denunció el robo de su abono experimental.","Don Florencio wins every prize at the fair with huge carrots, and the lab reported its experimental fertilizer stolen.","Don Florencio ganha todos os prêmios da feira com cenouras enormes, e o laboratório denunciou o roubo do seu adubo experimental."
+BRIEF_GIANT_CARROTS_C,"Traigan los bidones de abono en el baúl del patrullero. Pesan 8 kilos.","Bring the fertilizer jugs in the patrol car's trunk. They weigh 8 kilos.","Tragam os galões de adubo no porta-malas da viatura. Pesam 8 quilos."
+BRIEF_GIANT_CARROTS_D,"Si encuentran el diario de crecimiento o la regla de 2 metros, mejor: todo suma.","If you find the growth diary or the 2 meter ruler, even better: it all counts.","Se acharem o diário de crescimento ou a régua de 2 metros, melhor: tudo conta."
+OBJ_FIND_FERTILIZER_JUGS,Llevarse los bidones de abono robado,Take the stolen fertilizer jugs,Levar os galões de adubo roubado
+OBJ_EXTRA_GROWTH_DIARY,Extra: el diario de crecimiento,Extra: the growth diary,Extra: o diário de crescimento
+OBJ_EXTRA_RULER_2M,Extra: la regla de 2 metros,Extra: the 2 meter ruler,Extra: a régua de 2 metros
+PANCHO_CLUE_giant_carrots,"«¡Gracias! Te cuento: vi al tío esconder algo %s. Y riega una zanahoria con un líquido que brilla.»","“Thanks! Here's the thing: I saw my uncle hide something %s. And he waters one carrot with a liquid that glows.”","“Valeu! Te conto: vi o tio esconder algo %s. E ele rega uma cenoura com um líquido que brilha.”"
+CLUE_GIANT_CARROT,"En el huerto había una zanahoria más alta que un policía. La arrancaron entre dos y la raíz tiene la etiqueta del laboratorio.","In the garden there was a carrot taller than a cop. Two of you pulled it out and its root wears the lab's label.","Na horta havia uma cenoura mais alta que um policial. Vocês a arrancaram em dois e a raiz tem a etiqueta do laboratório."
+PROMPT_PULL_CARROT,E: tirar de la zanahoria (entre dos),E: pull the carrot (two of you),E: puxar a cenoura (em dois)
+FARM_CARROT_STUCK,"¡No sale! Hace falta otro policía tirando a la vez","It won't budge! Another cop has to pull at the same time","Não sai! Falta outro policial puxando junto"
+FARM_CARROT_OUT,¡PLOP!,POP!,PLOFT!
+FARM_CARROT_LABEL,PROPIEDAD DEL LABORATORIO,PROPERTY OF THE LAB,PROPRIEDADE DO LABORATÓRIO
