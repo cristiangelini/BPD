@@ -197,6 +197,54 @@ export const models = {
 		}
 		return b.build();
 	},
+	// The golden eggs story's main evidence: a wooden crate of lead eggs painted gold, six of them peeking out of the
+	// straw. 0.5 x 0.3 x 0.35 m, bottom at y = 0.
+	golden_egg_box() {
+		const b = new Builder('golden_egg_box');
+		const wood = C('egg_crate', 0x9a6a3a), straw = C('egg_straw', 0xe0c870);
+		const gold = C('egg_gold', 0xf8d040, { metalness: 0.3, roughness: 0.35 });
+		b.add('crate', wood, new THREE.BoxGeometry(0.5, 0.03, 0.35), { pos: V(0, 0.015, 0) });
+		for (const s of [-1, 1]) {
+			b.add('crate', wood, new THREE.BoxGeometry(0.5, 0.18, 0.03), { pos: V(0, 0.09, s * 0.16) });
+			b.add('crate', wood, new THREE.BoxGeometry(0.03, 0.18, 0.35), { pos: V(s * 0.235, 0.09, 0) });
+		}
+		b.add('straw', straw, new THREE.BoxGeometry(0.44, 0.02, 0.29), { pos: V(0, 0.16, 0) });
+		for (let i = 0; i < 6; i++) {
+			b.add('eggs', gold, ellipsoid(0.045, 0.06, 0.045, 8, 6), { pos: V(-0.14 + (i % 3) * 0.14, 0.2, i < 3 ? -0.07 : 0.07) });
+		}
+		return b.build();
+	},
+	// A tin of gold paint with drips down its side and a brush across its top. About 0.3 m tall, bottom at y = 0.
+	gold_paint_can() {
+		const b = new Builder('gold_paint_can');
+		const tin = C('paint_tin', 0x9aa0a8, { metalness: 0.5, roughness: 0.4 });
+		const gold = C('paint_gold', 0xf8d040, { metalness: 0.3, roughness: 0.35 });
+		b.add('can', tin, new THREE.CylinderGeometry(0.1, 0.1, 0.18, 12), { pos: V(0, 0.09, 0) });
+		b.add('can', gold, new THREE.CylinderGeometry(0.095, 0.095, 0.01, 12), { pos: V(0, 0.18, 0) });
+		for (const a of [0.3, 1.9, 3.6]) {
+			b.add('drips', gold, new THREE.BoxGeometry(0.03, 0.08, 0.01), { pos: V(Math.cos(a) * 0.1, 0.14, Math.sin(a) * 0.1), rot: [0, -a + Math.PI / 2, 0] });
+		}
+		b.add('brush', C('brush_wood', 0xc89060), new THREE.BoxGeometry(0.03, 0.02, 0.24), { pos: V(0.02, 0.2, 0.04), rot: [0.3, 0.4, 0] });
+		b.add('brush', gold, new THREE.BoxGeometry(0.05, 0.03, 0.05), { pos: V(-0.02, 0.2, -0.08), rot: [0.3, 0.4, 0] });
+		return b.build();
+	},
+	// The "Magic hen, lays gold!" leaflet: a yellow sheet with a hen and a golden egg drawn on it. 0.21 x 0.29 m, flat on
+	// y = 0.
+	magic_hen_flyer() {
+		const b = new Builder('magic_hen_flyer');
+		b.add('paper', C('flyer_yellow', 0xf6e27a), new THREE.BoxGeometry(0.21, 0.004, 0.29), { pos: V(0, 0.002, 0) });
+		b.add('drawing', C('flyer_hen', 0xffffff), ellipsoid(0.05, 0.002, 0.06, 8, 2), { pos: V(-0.03, 0.005, -0.02) });
+		b.add('drawing', C('flyer_red', 0xe0262e), ellipsoid(0.015, 0.002, 0.015, 6, 2), { pos: V(-0.03, 0.006, -0.085) });
+		b.add('drawing', C('egg_gold', 0xf8d040, { metalness: 0.3, roughness: 0.35 }), ellipsoid(0.025, 0.002, 0.032, 8, 2), { pos: V(0.05, 0.006, 0.05) });
+		b.add('drawing', C('flyer_ink', 0x3a2a8a), new THREE.BoxGeometry(0.16, 0.002, 0.02), { pos: V(0, 0.006, 0.115) });
+		return b.build();
+	},
+	// One egg, white like the hens lay them, bottom at y = 0. 0.06 x 0.08 m.
+	farm_egg() {
+		const b = new Builder('farm_egg');
+		b.add('egg', C('egg_white', 0xf6f0e0), ellipsoid(0.03, 0.04, 0.03, 8, 6), { pos: V(0, 0.04, 0) });
+		return b.build();
+	},
 };
 
 export const views = {
@@ -215,5 +263,10 @@ export const views = {
 			{ name: 'hay_bale', pos: [0.4, 0, 1.4], rotY: 0.3 }, { name: 'feed_bell', pos: [-1.4, 0, 1.6] },
 			{ name: 'egg_basket', pos: [1.6, 0, 1.6] }],
 		cam: { pos: [0.3, 3.0, 9.5], target: [0.3, 0.8, 0], fov: 40 },
+	},
+	farm_golden_eggs: {
+		items: [{ name: 'golden_egg_box', pos: [-0.4, 0, 0], rotY: 0.3 }, { name: 'gold_paint_can', pos: [0.3, 0, 0.1] },
+			{ name: 'magic_hen_flyer', pos: [0.0, 0, 0.45], rotY: -0.2 }, { name: 'farm_egg', pos: [0.6, 0, 0.4] }],
+		cam: { pos: [0, 0.9, 1.6], target: [0.05, 0.1, 0.1], fov: 34 },
 	},
 };
