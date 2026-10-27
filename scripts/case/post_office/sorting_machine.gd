@@ -79,6 +79,22 @@ func is_on() -> bool:
 	return run_left > 0.0
 
 
+## Online, a guest's machine follows the host's: [seconds of the run left, seconds to the next, runs, patience]. The
+## envelopes fly with it, and the first run uncovers the footprint; the carriers' places come with the post office's
+## state.
+func follow(state: Array) -> void:
+	var was_on := is_on()
+	var was_runs := runs
+	run_left = state[0]
+	until_run = state[1]
+	runs = state[2]
+	patience = state[3]
+	if is_on() != was_on:
+		_running(is_on())
+	if was_runs == 0 and runs > 0:
+		started.emit(true)
+
+
 ## The siren: the machine starts and blows away what's loose on the sorting room's floor.
 func start_run() -> void:
 	run_left = RUN_SECONDS

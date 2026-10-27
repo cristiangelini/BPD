@@ -219,3 +219,9 @@ Mientras tanto se avanza con lo recomendado.
    de la camioneta es un cartero (`ChaseSuspect`) y al turno siguiente es su interrogatorio (`owner_carrier`).
    Capturas: `correo/paso7-camioneta.png` y `paso7-paquetes.png`.
 8. El sorteo de "Jugar" y el online.
+   **Hecho así:** el correo entra al sorteo de las escenas del crimen de "Jugar" (`PlaceDraw.CRIME_SCENES`, un
+   quinto cada una). Online, el correo de los invitados sigue al del anfitrión (`PostOffice.net_state`): los carteros
+   (gorra, lengua, dónde quedan después de cada vuelta), la clasificadora y la paciencia de Doña Sellito
+   (`SortingMachine.follow`; la primera vuelta destapa la pisada en todas las PC), Cartita y sus galletas, La Vaquita
+   Azul, la puerta de la caja fuerte, la galleta de la balanza, el saco de devoluciones y las pistas arruinadas. Lo
+   que se hace con E ya pasa en todas las PC. Prueba: `test_online_post_office`.
