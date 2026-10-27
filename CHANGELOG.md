@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Bowling alley raid, step 7: Play draws the bowling alley among the raids, and Don Chuza drives off when he sees the main evidence picked up close by, like the other raid owners.
 - Bowling alley raid, step 6e: the lane 7 story, with the crate of stolen balls, the torn sign and the secret lane's plan hidden, the red curtain with a lane 7 behind it in the back wall, and the ball returns giving back one ball too many with another alley's name (picking one up is the clue).
 - Bowling alley raid, step 6d: the magic popcorn story, with the sack of painted pebbles, the yellow paint and the receipt hidden, the popcorn machine rattling and spitting bouncing pebbles, and the cop who picks one up biting it (the clue).
 - Bowling alley raid, step 6c: the fixed tournament story, with the engraved cup, the fake score sheet and the judge's envelope hidden, the lanes' screens showing their points, lane 1's screen adding 10 to every roll (a cop nearby noticing it is the clue), and the trophy case's "champions every year" plate.
