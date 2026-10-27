@@ -125,6 +125,11 @@ const COW_AT := Vector3(-14.0, GROUND, 7.5)
 const SAW_COW := 10.0
 ## Don Florencio sees an animal running scared.
 const SAW_SCARED := 5.0
+## The eggs in each basket on the stall, and the greenhouse's glass: something hitting it faster than GLASS_SPEED
+## breaks it, a fine.
+const EGGS_PER_BASKET := 3
+const GLASS_SPEED := 3.0
+const GLASS_FINE := 20
 ## Running faster than this in the mud slips: down for MUD_SLIP seconds, and not again for MUD_AGAIN.
 const MUD := Rect2(9, 4, 7, 5)
 const MUD_SLIP := 2.0
@@ -193,6 +198,8 @@ var station_parking: Transform3D
 ## The baskets of eggs on the stall and the greenhouse's glass, what breaks (steps 3 and 5 count it).
 var baskets: Array[Node3D] = []
 var greenhouse: Node3D
+var greenhouse_broken := false
+var eggs: Array[FarmEgg] = []
 var _build: PlaceBuilder
 ## Cop -> seconds until it can slip in the mud again.
 var _slipped := {}
@@ -491,7 +498,8 @@ func _physics_process(delta: float) -> void:
 
 ## The fence with its gate to the street, the dirt yard, the well and the market stall with its eggs.
 func _build_yard() -> void:
-	_build.mesh_box(Vector3(0, GROUND + 0.004, FENCE_Z), Vector3(FENCE_HALF.x * 2, 0.01, FENCE_HALF.y * 2), DIRT)
+	# The dirt is solid up to GROUND, so what lies on it doesn't sink into the grass's look.
+	_build.box(Vector3(0, (GROUND + 0.009) / 2, FENCE_Z), Vector3(FENCE_HALF.x * 2, GROUND + 0.009, FENCE_HALF.y * 2), DIRT)
 	var front := FENCE_Z + FENCE_HALF.y
 	var back := FENCE_Z - FENCE_HALF.y
 	_fence("x", front, -FENCE_HALF.x, -GATE_WIDTH / 2, FENCE_HEIGHT)
@@ -506,6 +514,9 @@ func _build_yard() -> void:
 	_build.legs(STALL_AT, Vector2(STALL_SIZE.x, STALL_SIZE.z), STALL_SIZE.y - 0.06, WOOD)
 	for at: Vector3 in BASKETS:
 		baskets.append(_model(BASKET_MODEL, at + Vector3.UP * STALL_SIZE.y))
+		for i in EGGS_PER_BASKET:
+			var turn := i * TAU / EGGS_PER_BASKET
+			add_egg(at + Vector3(cos(turn) * 0.07, STALL_SIZE.y + 0.15, sin(turn) * 0.07), false)
 
 
 ## The house: white walls, a door to the porch, the wall between the kitchen and the room, a flat roof, the porch
@@ -609,6 +620,49 @@ func _build_garden() -> void:
 	glass.box(center + Vector3(r.size.x / 2, 0, 0), Vector3(0.04, GREENHOUSE_HEIGHT, r.size.y), GLASS)
 	glass.box(center - Vector3(0, 0, r.size.y / 2), Vector3(r.size.x, GREENHOUSE_HEIGHT, 0.04), GLASS)
 	glass.box(center + Vector3(0, 0, r.size.y / 2), Vector3(r.size.x, GREENHOUSE_HEIGHT, 0.04), GLASS)
+	var area := Area3D.new()
+	area.position = center
+	area.collision_layer = 0
+	area.collision_mask = 4
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(r.size.x + 0.4, GREENHOUSE_HEIGHT + 0.2, r.size.y + 0.4)
+	shape.shape = box
+	area.add_child(shape)
+	add_child(area)
+	area.body_entered.connect(func(body: Node3D) -> void:
+		if multiplayer.is_server() and body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > GLASS_SPEED:
+			break_greenhouse())
+
+
+## Shatters the greenhouse, once: a fine, the glass gone, and Don Florencio minds it if he sees it.
+func break_greenhouse() -> void:
+	if greenhouse_broken:
+		return
+	greenhouse_broken = true
+	broken_goods += 1
+	var at := to_global(Vector3(GREENHOUSE.get_center().x, GROUND + 1.0, GREENHOUSE.get_center().y))
+	if raid:
+		fines += GLASS_FINE
+		raid.float_label("-%d" % GLASS_FINE, at, Color(1, 0.3, 0.25))
+	if owner_npc:
+		owner_npc.saw(at, FloorBoss.SAW_BREAK, "FARMER_GLASS")
+	greenhouse.queue_free()
+
+
+## An egg at `at` (this scene's space): on the stall, or just laid. Each one that breaks counts.
+func add_egg(at: Vector3, golden: bool) -> FarmEgg:
+	var egg := FarmEgg.new()
+	egg.golden = golden
+	egg.position = at
+	add_child(egg)
+	eggs.append(egg)
+	egg.broken.connect(func(_where: Vector3) -> void:
+		eggs.erase(egg)
+		broken_goods += 1
+		if owner_npc:
+			owner_npc.egg_broken())
+	return egg
 
 
 ## A wooden pen round `area`, `height` tall, with an opening of GATE_WIDTH on its east side at z = gate (none if

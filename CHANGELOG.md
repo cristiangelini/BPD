@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Farm raid, step 5: the stall's baskets hold real eggs that break when they hit something fast (each one adds 2 to Don Florencio's complaint), the greenhouse's glass breaks when something hits it fast (a fine of 20), and in the golden eggs story a hen lays an egg every 30 s, every third one gold. The yard's dirt is solid, so what lies on it no longer sinks into it.
 - Farm raid, step 5: the farm runs the same case as the other raids (RaidCase): the comisario's tip, three suspicions with their notes on the yard (Tota may eat them), Don Florencio's slips, Pancho's clue and the lawyer at 100. First story, the golden eggs: the crate of lead eggs painted gold (6 kg, the main evidence), the tin of gold paint and the magic hen leaflet hide in spots drawn with the seed, and a lead egg in the hen house's run goes "clonc" when dropped (the clue). Tota's bite reaches a little further so she doesn't push the paper away.
 - Farm raid, step 4: Margarita the cow grazes in her corral; if its gate (E to open or shut) stays open more than 5 s she walks out for a stroll round the farm shoving what she bumps into, and Don Florencio adds 10 to the complaint when he sees her out. She follows a cop carrying one of the two loose hay bales from the barn, back in through the gate.
 - Farm raid, step 4: Tota the goat wanders the yard and eats any light paper she finds on the ground (notes, receipts, lists), giving it back a little chewed in the corral 30 s later; three pigs wallow in the mud and shove any cop who comes close.

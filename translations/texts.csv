@@ -5671,3 +5671,6 @@ LOC_FARM_on_well,en el borde del pozo,on the edge of the well,na borda do poço
 LOC_FARM_by_milk_cans,junto a los tachos de leche,by the milk cans,junto aos latões de leite
 LOC_FARM_in_kitchen,en la mesa de la cocina,on the kitchen table,na mesa da cozinha
 LOC_FARM_under_stall,debajo del puesto de la feria,under the market stall,embaixo da barraca da feira
+PROMPT_EGG,Clic: agarrar el huevo (con cuidado),Click: grab the egg (carefully),Clique: pegar o ovo (com cuidado)
+FARMER_EGG,"¡Mis huevos! ¡Esos eran para la feria!","My eggs! Those were for the market!","Meus ovos! Eram para a feira!"
+FARMER_GLASS,"¡El invernadero! ¡Ahí tenía los tomates!","The greenhouse! My tomatoes were in there!","A estufa! Meus tomates estavam ali!"
