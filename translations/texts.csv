@@ -5116,6 +5116,22 @@ TRAIN_STATION_5,Gran Convención,Grand Convention,Grande Convenção
 TRAIN_NEXT_STATION,Próxima: %s (%d s),Next: %s (%d s),Próxima: %s (%d s)
 TRAIN_AT_STATION,Estación: %s,Station: %s,Estação: %s
 TRAIN_LAST_STOP,Última estación: todos abajo,End of the line: everybody off,Última estação: todos para fora
+PROMPT_MAGICIAN_TALK,E: pedirle un truco,E: ask for a trick,E: pedir um truque
+MAGICIAN_TRICK_dove,"¡Ta-chán! Una paloma, cortesía de %s.","Ta-da! A dove, courtesy of %s.","Tcharam! Uma pomba, cortesia de %s."
+MAGICIAN_TRICK_hanky,¡Y el pañuelo no se termina nunca! Soy %s.,And the hanky never ends! I'm %s.,E o lenço nunca acaba! Sou %s.
+MAGICIAN_TRICK_coin,"Tenías una moneda en la oreja. %s, para servirte.","You had a coin in your ear. %s, at your service.","Você tinha uma moeda na orelha. %s, ao seu dispor."
+PROMPT_TRAIN_ENGINEER,E: hablar con don Silbato,E: talk to don Silbato,E: falar com o seu Silbato
+PROMPT_TRAIN_INSPECTOR,E: hablar con la guarda,E: talk to the ticket inspector,E: falar com a fiscal
+PROMPT_TRAIN_VENDOR,E: hablar con el señor Mostaza,E: talk to señor Mostaza,E: falar com o seu Mostaza
+TRAIN_ENGINEER_LINE_0,"¡Fiuuu! Este tren nunca llegó tarde. Bueno, una vez. Bueno, siempre.","Wheee! This train has never been late. Well, once. Well, always.","Fiuuu! Este trem nunca atrasou. Bom, uma vez. Bom, sempre."
+TRAIN_ENGINEER_LINE_1,No toques la palanca roja. Es para emergencias de verdad.,Don't touch the red lever. It's for real emergencies.,Não toque na alavanca vermelha. É para emergências de verdade.
+TRAIN_ENGINEER_LINE_2,"Seis magos a bordo. Si desaparece el tren, ya sé a quién culpar.","Six magicians on board. If the train vanishes, I know who to blame.","Seis mágicos a bordo. Se o trem sumir, já sei de quem é a culpa."
+TRAIN_INSPECTOR_LINE_0,"Boleto, por favor. ¿No tienes? La máquina está ahí.","Ticket, please. No ticket? The machine's right there.","Bilhete, por favor. Não tem? A máquina está ali."
+TRAIN_INSPECTOR_LINE_1,Sin boleto no hablo con nadie. Es la regla.,No ticket and I talk to no one. That's the rule.,Sem bilhete não falo com ninguém. É a regra.
+TRAIN_INSPECTOR_LINE_2,Piqué cuarenta boletos hoy. Me duele la muñeca.,I've punched forty tickets today. My wrist hurts.,Já furei quarenta bilhetes hoje. Meu pulso dói.
+TRAIN_VENDOR_LINE_0,"¡Sándwiches, gaseosas, mostaza! ¡Mostaza con todo!","Sandwiches, sodas, mustard! Mustard on everything!","Sanduíches, refrigerantes, mostarda! Mostarda em tudo!"
+TRAIN_VENDOR_LINE_1,"Paso con el carrito por todos los vagones. Si algo está sucio, lo limpio.","I take the cart through every car. If something's dirty, I clean it.","Passo com o carrinho por todos os vagões. Se algo está sujo, eu limpo."
+TRAIN_VENDOR_LINE_2,Un mago me pagó con una paloma. No acepto palomas.,A magician paid me with a dove. I don't take doves.,Um mágico me pagou com uma pomba. Não aceito pombas.
 BRIEF_SPY_TELESCOPE_B,"El señor Bellini mira las estrellas todas las noches, pero su telescopio apunta abajo: a la bóveda del banco de enfrente.","Mr. Bellini watches the stars every night, but his telescope points down: at the vault of the bank across the street.","O senhor Bellini olha as estrelas toda noite, mas o telescópio dele aponta para baixo: para o cofre do banco da frente."
 BRIEF_SPY_TELESCOPE_C,"Traigan el telescopio al patrullero. Pesa 35 kilos y es frágil: entre dos, con cuidado. Entra en el ascensor.","Bring the telescope to the patrol car. It weighs 35 kilos and it's fragile: two of you, carefully. It fits in the elevator.","Tragam o telescópio para a viatura. Pesa 35 quilos e é frágil: entre dois, com cuidado. Cabe no elevador."
 BRIEF_SPY_TELESCOPE_D,"Si encuentran la libreta con la clave o los binoculares, mejor: todo suma.","If you find the notebook with the code or the binoculars, even better: it all counts.","Se encontrarem a caderneta com a senha ou o binóculo, melhor: tudo conta."
