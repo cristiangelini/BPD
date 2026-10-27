@@ -392,6 +392,41 @@ export function buildRigManual() {
 	return b.build();
 }
 
+// The fake tickets' evidence: a grey ticket printing machine with a crank, a roller and a pink ribbon of tickets coming
+// out of its mouth (6 kg).
+export function buildTicketPrinter() {
+	const b = new Builder('fair_ticket_printer');
+	const grey = mat('printer_grey', 0x6a6e78), pink = mat('ticket_pink', 0xf4a0c0), dark = mat('ghost_dark', 0x1a1a22);
+	box(b, 'body', grey, 0.42, 0.26, 0.32, 0, 0.13, 0);
+	box(b, 'mouth', dark, 0.3, 0.03, 0.02, 0, 0.18, 0.165);
+	b.add('roller', mat('fair_red', RED), new THREE.CylinderGeometry(0.06, 0.06, 0.34, 10), { pos: V(0, 0.29, -0.05), rot: [0, 0, Math.PI / 2] });
+	box(b, 'ribbon', pink, 0.24, 0.005, 0.22, 0, 0.12, 0.27, [0.6, 0, 0]);
+	limb(b, 'crank', grey, V(0.22, 0.15, 0), V(0.3, 0.15, 0), 0.015, 4);
+	limb(b, 'crank', mat('fair_wood', 0xc8a070), V(0.3, 0.15, 0), V(0.3, 0.28, 0), 0.02, 4);
+	return b.build();
+}
+
+// Two fat rolls of uncut pink tickets.
+export function buildTicketRolls() {
+	const b = new Builder('fair_ticket_rolls');
+	const pink = mat('ticket_pink', 0xf4a0c0), core = mat('fair_wood', 0xc8a070);
+	for (const x of [-0.09, 0.09]) {
+		b.add('rolls', pink, new THREE.CylinderGeometry(0.08, 0.08, 0.1, 12), { pos: V(x, 0.08, 0), rot: [Math.PI / 2, 0, 0] });
+		b.add('cores', core, new THREE.CylinderGeometry(0.025, 0.025, 0.102, 8), { pos: V(x, 0.08, 0), rot: [Math.PI / 2, 0, 0] });
+	}
+	return b.build();
+}
+
+// The rubber stamp that says "Válido": a wooden handle on a red rubber block.
+export function buildValidStamp() {
+	const b = new Builder('fair_valid_stamp');
+	box(b, 'block', mat('stamp_rubber', 0xb02838), 0.12, 0.03, 0.07, 0, 0.015, 0);
+	box(b, 'base', mat('fair_wood', 0xc8a070), 0.12, 0.03, 0.07, 0, 0.045, 0);
+	b.add('handle', mat('fair_wood', 0xc8a070), new THREE.CylinderGeometry(0.018, 0.022, 0.08, 8), { pos: V(0, 0.1, 0) });
+	b.add('handle', mat('fair_red', RED), new THREE.SphereGeometry(0.03, 8, 6), { pos: V(0, 0.15, 0) });
+	return b.build();
+}
+
 export const models = {
 	fair_carousel: buildCarousel, fair_horse: buildFairHorse, ferris_stand: buildFerrisStand, ferris_wheel: buildFerrisWheel,
 	ferris_cabin: buildFerrisCabin, bumper_car: buildBumperCar, fair_arch: buildFairArch, strength_tester: buildStrengthTester,
@@ -400,6 +435,7 @@ export const models = {
 	fair_skeleton: buildFairSkeleton, giant_teddy: buildGiantTeddy, npc_don_tombola: buildDonTombola, npc_nube: buildNube,
 	fair_watch_bag: buildWatchBag, fair_client_list: buildClientList, fair_needle_thread: buildNeedleThread,
 	fair_magnet: buildFairMagnet, fair_glued_cans: buildGluedCans, fair_rig_manual: buildRigManual,
+	fair_ticket_printer: buildTicketPrinter, fair_ticket_rolls: buildTicketRolls, fair_valid_stamp: buildValidStamp,
 };
 
 export const views = {
@@ -435,6 +471,11 @@ export const views = {
 	fair_rigged_games: {
 		items: [{ name: 'fair_magnet', pos: [-0.35, 0, 0] }, { name: 'fair_glued_cans', pos: [0.3, 0, 0.2], rotY: -0.3 },
 			{ name: 'fair_rig_manual', pos: [0.35, 0, -0.25], rotY: 0.4 }],
+		cam: { pos: [0.1, 1.0, 1.7], target: [0, 0.15, 0], fov: 40 },
+	},
+	fair_fake_tickets: {
+		items: [{ name: 'fair_ticket_printer', pos: [-0.3, 0, 0], rotY: 0.3 }, { name: 'fair_ticket_rolls', pos: [0.35, 0, 0.25], rotY: -0.3 },
+			{ name: 'fair_valid_stamp', pos: [0.35, 0, -0.2], rotY: 0.4 }],
 		cam: { pos: [0.1, 1.0, 1.7], target: [0, 0.15, 0], fov: 40 },
 	},
 };

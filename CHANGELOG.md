@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Fun fair raid, step 6 (fake tickets): the ticket printing machine is hidden with the uncut rolls and the "Válido" stamp; pink tickets on the paths all have the same number, and the ticket booth whirs and spits out another one every 20 s.
 - Fun fair raid, step 6 (rigged games): a giant magnet at the foot of the cans booth keeps the cans from falling, pulls the balls to the floor and drags the strength tester's mallet towards the booth; the glued cans and the manual "How not to give prizes" are hidden.
 - Fun fair raid, step 5: the fair is a raid case like the others (tip, 3 suspicions among 6 stories, Don Tómbola's slips and lawyer, Nube's clue). Its first story, the stuffed prizes: the bag of stolen watches with the client list and the giant needle, the giant teddy that goes "tic tac" and prize teddies that weigh triple and land with a "clonc".
 - Fun fair raid, step 4: Nube minds the cans booth (3 cans, 3 balls, they stand up again after 5 s) and tells whoever knocks all 3 down what she saw, once per cop.
