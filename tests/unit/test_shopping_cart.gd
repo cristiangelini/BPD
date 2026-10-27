@@ -168,7 +168,7 @@ func test_a_bumped_customer_complains_once_in_a_while() -> void:
 	cart.global_position = customer.cart_position() - customer.global_basis.z * 0.5
 	await wait_physics_frames(2)
 	assert_eq(customer.complaints, 1)
-	assert_eq(store.complaint, Supermarket.COMPLAINT_BUMP)
+	assert_almost_eq(store.manager.complaint, Supermarket.COMPLAINT_BUMP, 0.01, "it goes to the manager's complaint")
 	assert_eq(customer.said(), "SUPER_CUSTOMER_BUMPED_0")
 	await wait_physics_frames(10)
 	cart.top_speed = 2.0

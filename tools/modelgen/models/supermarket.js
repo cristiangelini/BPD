@@ -2,7 +2,8 @@
 // fridge with its glass doors, a checkout counter with its belt and price button, the produce stand with its scale, the
 // chest freezer and a can of the offer pyramid, with origins at the floor in the middle of each piece. Placeholder, not
 // final art.
-import { Builder, mat, V, THREE } from '../lib.js';
+import { Builder, mat, ellipsoid, loft, V, THREE } from '../lib.js';
+import { M, pearBody, eyes, limb } from './pear.js';
 
 const PRODUCTS = [0xe8473a, 0xf2c230, 0x3a8ad2, 0x46b45a, 0xf08a2a, 0xb05ad2, 0xf2f2ea];
 
@@ -135,7 +136,29 @@ export function buildShoppingCart() {
 	return b.build();
 }
 
+// Don Ofertón, the manager: the store's red vest with a cart logo over a white shirt, a tie with price tags, a thin
+// mustache, slicked-back hair and the wireless mic in his right hand. The game scales him tall and thin.
+export function buildDonOferton() {
+	const b = new Builder('npc_don_oferton');
+	const vest = mat('oferton_vest', 0xd23a3a), shirt = M.white, slacks = mat('oferton_slacks', 0x2a2a34);
+	pearBody(b, mat('skin_trigo', 0xe0b48a), { shirt, pants: slacks, shoes: M.black, belted: false });
+	b.add('vest', vest, loft([{ y: 0.56, rx: 0.455, rz: 0.415 }, { y: 0.8, rx: 0.375, rz: 0.335 }, { y: 1.02, rx: 0.265, rz: 0.245 }], 10));
+	b.add('vest', shirt, new THREE.BoxGeometry(0.12, 0.4, 0.04), { pos: V(0, 0.84, 0.33), rot: [-0.35, 0, 0] });
+	b.add('vest', mat('oferton_logo', 0xf2f2ea), new THREE.BoxGeometry(0.08, 0.06, 0.01), { pos: V(0.2, 0.86, 0.32), rot: [-0.35, 0.5, 0] });
+	const tie = mat('oferton_tie', 0xf2c230);
+	b.add('tie', tie, new THREE.BoxGeometry(0.07, 0.36, 0.02), { pos: V(0, 0.88, 0.34), rot: [-0.3, 0, 0] });
+	for (let i = 0; i < 3; i++) b.add('tie', mat('oferton_tag', 0x2a8a3a), new THREE.BoxGeometry(0.04, 0.03, 0.01), { pos: V(0, 0.98 - i * 0.1, 0.36 - i * 0.03), rot: [-0.3, 0, 0.3] });
+	eyes(b, 1.34, 0.17, 0.08, 0.05);
+	const hair = mat('oferton_hair', 0x1a1a1e);
+	b.add('hair', hair, ellipsoid(0.2, 0.09, 0.2, 10, 5), { pos: V(0, 1.45, -0.02) });
+	for (const s of [-1, 1]) b.add('face', hair, new THREE.BoxGeometry(0.09, 0.012, 0.02), { pos: V(s * 0.05, 1.24, 0.2), rot: [0, 0, s * -0.25] });
+	limb(b, 'mic', M.black, V(0.49, 0.64, 0.09), V(0.5, 0.82, 0.16), 0.02);
+	b.add('mic', mat('oferton_mic', 0x6a6a72, { metalness: 0.5 }), ellipsoid(0.04, 0.04, 0.04, 6, 4), { pos: V(0.5, 0.85, 0.17) });
+	return b.build();
+}
+
 export const models = {
+	npc_don_oferton: buildDonOferton,
 	gondola: buildGondola, dairy_fridge: buildDairyFridge, checkout: buildCheckout, produce_stand: buildProduceStand,
 	chest_freezer: buildChestFreezer, food_can: buildFoodCan, shopping_cart: buildShoppingCart,
 };
@@ -149,5 +172,9 @@ export const views = {
 			{ name: 'shopping_cart', pos: [-0.6, 0, 2.2], rotY: 0.6 },
 		],
 		cam: { pos: [0, 3.0, 7.5], target: [0.4, 0.9, 0], fov: 50 },
+	},
+	don_oferton: {
+		items: [{ name: 'npc_don_oferton', pos: [0, 0, 0], rotY: 0.3 }],
+		cam: { pos: [0, 1.2, 3.2], target: [0, 0.85, 0], fov: 40 },
 	},
 };
