@@ -110,6 +110,10 @@ entre 400 y 600. El bloque de hielo es la cosa más pesada (8 kg): conviene llev
    máquina de grabar palitos y la lista de "ganadores"; el cesto junto a las mesas está lleno de palitos "Sigue
    participando" (con E es la pista) y cada 40 s entra un chico gritando "¡Otra vez nada!". Capturas
    `heladeria/paso6c-*.png`.
+   **Hecho (paso 6d):** los billetes congelados (`FrozenCashRig`): el balde de helado lleno de billetes (4 kg,
+   1000), el cuaderno de ventas y el sello de "vendido"; arriba de la caja, el cartel "HOY: 900 KG VENDIDOS" (con E es
+   la pista). Cuando un policía entra por la puerta, doña Nieve cierra todos los freezers abiertos (como mucho una vez
+   cada 15 s): en vez de correr hasta uno, los cierra y lo dice. Capturas `heladeria/paso6d-*.png`.
 7. "Jugar" suma la heladería al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online (doña Nieve, Lucho, las tapas, los charcos y lo frágil en todas las PC).
 

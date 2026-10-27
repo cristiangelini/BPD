@@ -73,6 +73,16 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_STICK_ENGRAVER", "OBJ_EXTRA_ICE_WINNERS_LIST"],
 		"rig": preload("res://scripts/case/ice_cream/rigged_sticks_rig.gd"),
 	},
+	"frozen_cash": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_FROZEN_CASH_B", "BRIEF_FROZEN_CASH_C", "BRIEF_FROZEN_CASH_D"],
+		"find": "OBJ_FIND_CASH_BUCKET",
+		"hidden": [preload("res://scenes/props/cash_bucket.tscn"), preload("res://scenes/props/sales_notebook.tscn"),
+			preload("res://scenes/props/sold_stamp.tscn")],
+		"half_heights": [0.15, 0.04, 0.06],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_SALES_NOTEBOOK", "OBJ_EXTRA_SOLD_STAMP"],
+		"rig": preload("res://scripts/case/ice_cream/frozen_cash_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the salon's floor, behind the counter, in the kitchen, the office and the
 ## yard.

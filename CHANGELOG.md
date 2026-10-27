@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Ice cream raid, step 6: the frozen cash story: the ice cream bucket full of bills, the sales notebook and the "sold" stamp, the till's display saying 900 kg sold today (the clue), and doña Nieve shutting every open freezer whenever a cop comes in through the door.
 - Ice cream raid, step 6: the prize sticks story: the box of prize sticks never sold, the stick engraving machine and the "winners" list, the bin full of losing sticks by the tables (the clue) and a kid who comes back every 40 s shouting there's nothing again.
 - Ice cream raid, step 6: the rigged scale story: the 5 kg scale, the magnet and the complaints notebook, the "1 KG" sign over a tiny tub on the till's table (the clue) and a customer who comes back every 45 s saying it isn't a kilo.
 - Ice cream raid, step 6: the smuggling in the ice story: the 8 kg ice block with watches, the delivery list and the fake customs stamp, the cold room's thermometer at -40 °C (the clue) and a customer who comes in every 50 s asking whether "the cold stuff" arrived.
