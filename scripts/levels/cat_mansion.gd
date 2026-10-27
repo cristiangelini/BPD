@@ -90,6 +90,15 @@ const NEPHEWS_AT: Array[Vector3] = [
 ]
 const LADY_AT := Vector3(-1.2, 0, 1.6)
 const PARROT_AT := CAGE_AT + Vector3(0, 1.24, 0)
+## Where the five cats start, one per room, and the spots by the furniture where a cat runs to hide.
+const CATS_AT: Array[Vector3] = [
+	Vector3(1.0, 0, 2.0), Vector3(-8.0, 0, 1.6), Vector3(11.5, 0, -4.0), Vector3(0.0, 0, -8.0), Vector3(-10.0, 0, -8.0),
+]
+const CAT_COUNT := 5
+const HIDE_AT: Array[Vector3] = [
+	Vector3(-10.0, 0, 0.5), Vector3(10.0, 0, -7.4), Vector3(12.4, 0, -10.4), Vector3(0.0, 0, -11.0),
+	Vector3(-13.4, 0, -12.4), Vector3(3.8, 0, 0.8),
+]
 const FACADE := Color(0.96, 0.9, 0.78)
 const ROOF_COLOR := Color(0.45, 0.22, 0.2)
 const INSIDE := Color(0.95, 0.9, 0.82)
@@ -114,6 +123,12 @@ const SUITCASE_COLORS: Array[Color] = [
 var nephews: Array[MansionNephew] = []
 var lady: MansionLady
 var parrot: MansionParrot
+## The five cats; cats[duchess] is the real Duquesa (drawn with the case seed).
+var cats: Array[MansionCat] = []
+var duchess := 0
+var crate: TransportCrate
+var music_box: MusicBox
+var tuna_cans: Array[TunaCan] = []
 var _builder: PlaceBuilder
 
 
@@ -131,6 +146,7 @@ func _ready() -> void:
 	_drawing_room()
 	_vases()
 	_people()
+	_cats()
 
 
 ## The nephew by index (the order of the case's traits).
@@ -160,6 +176,26 @@ func room(world: Vector3) -> String:
 	if local.x > EAST_X:
 		return "drawing"
 	return "hall" if local.z > HALL_Z else "guest"
+
+
+## The five ginger cats loose around the house (one of them Duquesa) and the transport crate in the hall.
+func _cats() -> void:
+	duchess = absi(hash("mansion duchess %d" % case_seed)) % CAT_COUNT
+	var spots: Array[Vector3] = []
+	for spot in HIDE_AT:
+		spots.append(to_global(spot + Vector3(0, FLOOR_TOP, 0)))
+	for i in CAT_COUNT:
+		var cat := MansionCat.new()
+		cat.name = "Cat%d" % i
+		cat.duchess = i == duchess
+		cat.hide_spots = spots
+		cat.position = CATS_AT[i] + Vector3(0, FLOOR_TOP + 0.02, 0)
+		add_child(cat)
+		cats.append(cat)
+	crate = TransportCrate.new()
+	crate.name = "Crate"
+	crate.position = CRATE_AT + Vector3(0, FLOOR_TOP + 0.01, 0)
+	add_child(crate)
 
 
 ## The six nephews alike (NephewTraits.draw with the case seed), Señora Ofelia in the hall and Don Plumas on his stand.
@@ -301,12 +337,13 @@ func _frame(at: Vector3, size: Vector2, canvas: Color) -> void:
 func _kitchen() -> void:
 	_builder.box(COUNTER_AT + Vector3(0, COUNTER_SIZE.y / 2, 0), COUNTER_SIZE, WHITE)
 	_builder.box(FRIDGE_AT + Vector3(0, 0.95, 0), Vector3(0.8, 1.9, 0.75), METAL)
-	for at in TUNA_AT:
-		var can := CylinderMesh.new()
-		can.top_radius = 0.07
-		can.bottom_radius = 0.07
-		can.height = 0.08
-		_builder.mesh(can, at, METAL.lightened(0.2))
+	for i in TUNA_AT.size():
+		var can := TunaCan.new()
+		can.name = "Tuna%d" % i
+		can.position = TUNA_AT[i]
+		add_child(can)
+		can.feed_at = to_global(Vector3(TUNA_AT[i].x, FLOOR_TOP, COUNTER_AT.z - COUNTER_SIZE.z / 2 - 0.4))
+		tuna_cans.append(can)
 	var jar := CylinderMesh.new()
 	jar.top_radius = 0.12
 	jar.bottom_radius = 0.12
@@ -370,7 +407,10 @@ func _drawing_room() -> void:
 	_builder.mesh_box(ARMCHAIR_AT + Vector3(0, 0.53, 0.05), Vector3(0.7, 0.06, 0.6), GOLD)
 	_builder.box(PIANO_AT + Vector3(0, 0.5, 0), Vector3(1.4, 1.0, 1.8), BLACK)
 	_builder.mesh_box(PIANO_AT + Vector3(-0.72, 0.78, 0), Vector3(0.05, 0.05, 1.4), WHITE)
-	_builder.mesh_box(MUSIC_BOX_AT + Vector3(0, 0.08, 0), Vector3(0.25, 0.16, 0.18), GOLD)
+	music_box = MusicBox.new()
+	music_box.name = "MusicBox"
+	music_box.position = MUSIC_BOX_AT
+	add_child(music_box)
 	_builder.box(CAGE_AT + Vector3(0, 0.6, 0), Vector3(0.1, 1.2, 0.1), GOLD)
 	for i in 8:
 		var turn := TAU * i / 8

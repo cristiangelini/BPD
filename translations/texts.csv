@@ -5611,3 +5611,12 @@ MANSION_LADY_LINE_3,"La Duquesa solo ronronea con la cajita de música del piano
 MANSION_LADY_LINE_4,"Mis sobrinos son unos encantos. Bueno, casi todos.","My nephews are darlings. Well, almost all of them.","Meus sobrinhos são uns amores. Bom, quase todos."
 PROMPT_PARROT,"E: hablar con el loro","E: talk to the parrot","E: falar com o papagaio"
 PARROT_PRETTY,"¡Lorito bonito! ¡Lorito bonito!","Pretty parrot! Pretty parrot!","Louro bonito! Louro bonito!"
+PROMPT_MANSION_CAT,"Clic: agarrar a la gata (se escapa a los 5 segundos)","Click: grab the cat (she escapes after 5 seconds)","Clique: pegar a gata (ela foge depois de 5 segundos)"
+CAT_HISS,¡FFFSSS!,HISSSS!,FFFSSS!
+CAT_PURR,"♥ Rrrrrr ♥","♥ Purrrr ♥","♥ Rrrrrr ♥"
+PROMPT_MUSIC_BOX,E: darle cuerda a la cajita de música,E: wind up the music box,E: dar corda na caixinha de música
+MUSIC_BOX_NOTES,♪ ♫ ♪,♪ ♫ ♪,♪ ♫ ♪
+PROMPT_TUNA_CAN,E: abrir la lata de atún,E: open the can of tuna,E: abrir a lata de atum
+PROMPT_TUNA_CAN_OPEN,La lata ya está abierta,The can is already open,A lata já está aberta
+PROMPT_CAT_CRATE,"Transportadora: acércale una gata en brazos","Transport crate: bring a cat in your arms to it","Caixa de transporte: aproxime uma gata nos braços"
+PROMPT_CAT_CRATE_OPEN,E: abrir la transportadora y soltar a la gata,E: open the crate and let the cat out,E: abrir a caixa e soltar a gata
