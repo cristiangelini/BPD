@@ -5,6 +5,12 @@ extends GutTest
 const BAKERY_SCENE := preload("res://scenes/levels/bakery.tscn")
 
 
+func before_each() -> void:
+	# An owner left in custody (an infiltration test that caught the boss) would make every pick an interrogation.
+	Campaign.current = null
+	PlaceDraw.custody = {}
+
+
 func after_each() -> void:
 	PlaceDraw.pending_seed = 0
 
