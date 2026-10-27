@@ -93,3 +93,34 @@ func test_out_of_patience_he_throws_the_cops_out_of_the_dome() -> void:
 	assert_eq(cop._hint.text, "HINT_DOME_BANNED")
 	for key in ["HUD_ORBITA_PATIENCE", "HUD_NEXT_SHOW", "DIRECTOR_SHOW_STARTS", "HINT_SHOW_ENDS", "HINT_DOME_BANNED"]:
 		assert_ne(tr(key), key, "%s is translated" % key)
+
+
+func test_sitting_in_a_seat_during_the_show_pleases_him_but_traps_the_cop() -> void:
+	var made := _planetarium_case(6)
+	var planetarium: Planetarium = made[0]
+	var case: CrimeSceneCase = made[1]
+	var cop: Cop = made[2]
+	var show := planetarium.star_show
+	show.set_physics_process(false)
+	case.at_tent = true
+	assert_eq(planetarium.seats.size(), Planetarium.SEATS - Planetarium.PLANET_SEATS.size() - 1,
+		"every plain seat but Doña Nebulosa's")
+	var seat: PlanetariumSeat = planetarium.seats[0]
+	assert_eq(seat.prompt_key(cop), "PROMPT_SEAT_SIT")
+	seat.use(cop)
+	assert_eq(cop._hint.text, "HINT_SEAT_NO_SHOW", "with the lights on there's nothing to watch")
+	assert_null(cop.seated_in)
+	show.patience = 50.0
+	show.start_show()
+	seat.use(cop)
+	assert_eq(cop.seated_in, seat, "sitting")
+	assert_true(cop.is_busy())
+	assert_eq(show.patience, 50.0 + StarShow.SIT_PATIENCE, "Doctor Órbita is delighted")
+	assert_eq(planetarium.director.said(), "DIRECTOR_SIT")
+	assert_eq(seat.prompt_key(cop), "PROMPT_SEAT_STUCK")
+	seat.stand_up()
+	assert_eq(cop.seated_in, seat, "too comfortable to get up")
+	assert_eq(cop._hint.text, "HINT_SEAT_STUCK")
+	seat._physics_process(PlanetariumSeat.SIT_SECONDS + 0.1)
+	assert_null(cop.seated_in, "free after a while")
+	assert_eq(seat.prompt_key(cop), "PROMPT_SEAT_SIT")

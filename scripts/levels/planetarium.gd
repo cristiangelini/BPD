@@ -96,6 +96,8 @@ var console: ProjectorConsole
 ## The star show (step 5), and the ceiling lights it turns off.
 var star_show: StarShow
 var lamps: Array[OmniLight3D] = []
+## The plain seats a cop can sit in during the show.
+var seats: Array[PlanetariumSeat] = []
 ## What each cop is busy with ("" for nothing), by cop: a search or the console takes a while.
 var _busy := {}
 ## The lights are out (the star show, step 5): the glow paint on the guides' gloves shows.
@@ -440,10 +442,18 @@ func _seat(index: int, planet: String) -> void:
 	seat.name = "Seat%d" % index
 	seat.transform = place
 	add_child(seat)
-	# A planet's seat is a spot: E on it searches under it.
-	if planet == "":
+	# A planet's seat is a spot: E on it searches under it; the others are for sitting in the show, except Doña
+	# Nebulosa's.
+	if index == SLEEPER_SEAT:
 		var body := _builder.body(place.origin + Vector3(0, 0.25, 0))
 		_builder.shape(body, Vector3(0.7, 0.5, 0.7))
+	elif planet == "":
+		var chair := PlanetariumSeat.new()
+		chair.name = "SeatBody%d" % index
+		chair.planetarium = self
+		chair.position = place.origin + Vector3(0, 0.25, 0)
+		add_child(chair)
+		seats.append(chair)
 	else:
 		_spot("seat_" + planet, place.origin + Vector3(0, 0.35, 0), Vector3(0.75, 0.7, 0.75), place.basis.z * 0.8)
 	for part: Array in [[Vector3(0, 0.25, 0), Vector3(0.7, 0.5, 0.7)], [Vector3(0, 0.75, -0.35), Vector3(0.7, 0.8, 0.15)]]:
