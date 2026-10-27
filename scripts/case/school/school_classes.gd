@@ -116,8 +116,9 @@ func start_class(kind := "") -> void:
 		kind = SUBJECTS[_next_subject]
 		_next_subject = (_next_subject + 1) % SUBJECTS.size()
 	_begin(kind, CLASS)
+	# Sneaking starts with her back turned (_begin): she only times the first look, so her naming the class stays.
 	if kind == "sneak":
-		_turn(false)
+		_turn_left = _rng.randf_range(TURN.x, TURN.y)
 	var net := _net()
 	if multiplayer.is_server() and net.is_online():
 		for peer: int in net.scene_peers:
