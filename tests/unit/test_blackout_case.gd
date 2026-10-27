@@ -84,11 +84,18 @@ func test_the_shift_ends_after_the_light() -> void:
 
 func test_play_draws_it_with_the_other_prison_cases() -> void:
 	assert_true(PlaceDraw.PRISONS.has("blackout"))
+	# An owner left in custody or a jailed campaign by an earlier test makes every pick an interrogation.
+	var campaign := Campaign.current
+	var custody := PlaceDraw.custody
+	Campaign.current = null
+	PlaceDraw.custody = {}
 	var seen := {}
 	for seed_number in range(1, 4000):
 		var place := PlaceDraw.pick(seed_number, PackedStringArray())
 		if PlaceDraw.PRISONS.has(place):
 			seen[place] = true
+	Campaign.current = campaign
+	PlaceDraw.custody = custody
 	assert_eq(seen.size(), PlaceDraw.PRISONS.size(), "each prison case comes up")
 
 

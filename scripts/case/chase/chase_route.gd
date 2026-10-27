@@ -13,17 +13,21 @@ const LANE := 1.5
 ## The delivery scooter rides the sidewalk instead: the middle of it.
 const SIDEWALK_LANE := CityLayout.STREET / 2 + CityLayout.SIDEWALK / 2
 
-## Corners (i, j): i is the north-south street (0 to COLUMNS), j the west-east one (0 to ROWS).
+## No corner: draw() picks its own start.
+const NONE := Vector2i(-99, -99)
+
+## Corners (i, j): i is the north-south street (CityLayout.WEST to EAST), j the west-east one (NORTH to SOUTH).
 var corners: Array[Vector2i] = []
 
 
 ## `start` is the corner he sets off from (by default, an inner corner drawn with the seed), and `heading` the way he
 ## was going there, so he doesn't turn straight back.
-static func draw(seed_value: int, count := CORNERS, start := Vector2i(-1, -1), heading := Vector2i.ZERO) -> ChaseRoute:
+static func draw(seed_value: int, count := CORNERS, start := NONE, heading := Vector2i.ZERO) -> ChaseRoute:
 	var route := ChaseRoute.new()
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash("chase %d" % seed_value)
-	var at := Vector2i(rng.randi_range(1, CityLayout.COLUMNS - 1), rng.randi_range(1, CityLayout.ROWS - 1))
+	var at := Vector2i(rng.randi_range(CityLayout.WEST + 1, CityLayout.EAST - 1),
+		rng.randi_range(CityLayout.NORTH + 1, CityLayout.SOUTH - 1))
 	if on_grid(start):
 		at = start
 	route.corners.append(at)
@@ -47,7 +51,7 @@ static func draw(seed_value: int, count := CORNERS, start := Vector2i(-1, -1), h
 
 
 static func on_grid(corner: Vector2i) -> bool:
-	return corner.x >= 0 and corner.x <= CityLayout.COLUMNS and corner.y >= 0 and corner.y <= CityLayout.ROWS
+	return CityLayout.on_grid(corner)
 
 
 ## The middle of corner `c`, on the ground, in the city's space.
@@ -71,11 +75,10 @@ func waypoints(lane := LANE) -> Array[Vector3]:
 
 ## The corner nearest to `point` (in the city's space).
 static func nearest_corner(point: Vector3) -> Vector2i:
-	var best := Vector2i.ZERO
-	for i in CityLayout.COLUMNS + 1:
-		for j in CityLayout.ROWS + 1:
-			if corner_point(Vector2i(i, j)).distance_to(point) < corner_point(best).distance_to(point):
-				best = Vector2i(i, j)
+	var best := Vector2i(CityLayout.WEST, CityLayout.NORTH)
+	for c in CityLayout.crossings():
+		if corner_point(c).distance_to(point) < corner_point(best).distance_to(point):
+			best = c
 	return best
 
 

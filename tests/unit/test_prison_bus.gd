@@ -20,6 +20,8 @@ func before_each() -> void:
 	bus = level.bus
 	cop = level.get_node("Cop")
 	await wait_physics_frames(30)
+	# The bus waits for the comisario's tip (step 5); these tests are about the bus itself.
+	level.transfer_case.give_tip()
 
 
 func _walk(who: Cop, wish: Vector2, frames: int) -> void:

@@ -49,6 +49,8 @@ var duck_float := false
 var ram: BatteringRam
 ## The wheelbarrow this cop pushes, if any. Hands are busy: E loads things into it instead of grabbing.
 var wheelbarrow: Wheelbarrow
+## The leash of a dog this cop walks (Doña Pepa's Cuqui), if any. One hand is busy: no grabbing.
+var leash: Node3D
 var _stagger_left := 0.0
 ## Letting go of E during the grandpa's story already asked him to stop (online it takes a moment to happen).
 var _story_end_asked := false
