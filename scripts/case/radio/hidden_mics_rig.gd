@@ -21,18 +21,9 @@ var _since := 0.0
 
 func setup(place: RadioStation) -> void:
 	super.setup(place)
-	plant = ClueSpot.new()
+	plant = fixed_clue(PLANT_MODEL, PLANT_AT, Vector3(0.5, 1.3, 0.5), PI, "PROMPT_RECEPTION_PLANT",
+		tr("CLUE_PLANT_MIC"))
 	plant.name = "ReceptionPlant"
-	plant.size = Vector3(0.5, 1.3, 0.5)
-	plant.prompt = "PROMPT_RECEPTION_PLANT"
-	plant.text = tr("CLUE_PLANT_MIC")
-	plant.position = PLANT_AT + Vector3.UP * 0.65
-	plant.rotation.y = PI
-	plant.read.connect(radio.raid.add_clue)
-	radio.add_child(plant)
-	var model: Node3D = PLANT_MODEL.instantiate()
-	model.position = Vector3.DOWN * 0.65
-	plant.add_child(model)
 
 
 ## On air, a neighbor's gossip nobody should know.

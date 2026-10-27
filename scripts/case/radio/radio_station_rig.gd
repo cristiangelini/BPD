@@ -42,3 +42,20 @@ func board(at: Vector3, turn: float, title: String, text: String, prompt := "PRO
 	label.position = Vector3(0, 0.0, 0.03)
 	spot.add_child(label)
 	return spot
+
+
+## A clue fixed to the place with its model (`model`'s origin at its foot): a box of `size` a cop aims at, standing on
+## `at` and facing `turn` around Y, with the clue `text` read with E (on the checklist the first time).
+func fixed_clue(model: PackedScene, at: Vector3, size: Vector3, turn: float, prompt: String, text: String) -> ClueSpot:
+	var spot := ClueSpot.new()
+	spot.size = size
+	spot.prompt = prompt
+	spot.text = text
+	spot.position = at + Vector3.UP * size.y / 2
+	spot.rotation.y = turn
+	spot.read.connect(radio.raid.add_clue)
+	radio.add_child(spot)
+	var shown: Node3D = model.instantiate()
+	shown.position = Vector3.DOWN * size.y / 2
+	spot.add_child(shown)
+	return spot
