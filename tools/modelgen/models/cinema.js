@@ -269,6 +269,48 @@ export function buildAwardStatuette() {
 	return b.build();
 }
 
+// The popcorn bucket full of watches, 0.3 x 0.38 x 0.3 m: a red and white striped bucket with a few popcorns on top and
+// gold watches peeking out between them.
+export function buildWatchesBucket() {
+	const b = new Builder('watches_bucket');
+	const red = mat('bucket_red', 0xd02828), corn = mat('popcorn', 0xf6e7a8), gold = mat('watch_gold', 0xe0b030);
+	b.add('bucket', M.white, new THREE.CylinderGeometry(0.15, 0.11, 0.32, 12), { pos: V(0, 0.16, 0) });
+	for (let i = 0; i < 6; i++) {
+		const turn = i * Math.PI / 3;
+		b.add('stripes', red, new THREE.BoxGeometry(0.05, 0.32, 0.01), { pos: V(Math.cos(turn) * 0.13, 0.16, Math.sin(turn) * 0.13), rot: [0, -turn + Math.PI / 2, 0] });
+	}
+	for (let i = 0; i < 6; i++) {
+		const turn = i * 2.3;
+		b.add('corn', corn, new THREE.IcosahedronGeometry(0.03, 0), { pos: V(Math.cos(turn) * 0.08, 0.34, Math.sin(turn) * 0.08) });
+	}
+	for (const [x, z] of [[0.03, 0.02], [-0.06, -0.04], [0.07, -0.06]]) {
+		b.add('watches', gold, new THREE.CylinderGeometry(0.03, 0.03, 0.01, 10), { pos: V(x, 0.35, z), rot: [0.5, 0, 0.3] });
+		b.add('faces', M.white, new THREE.CylinderGeometry(0.024, 0.024, 0.012, 10), { pos: V(x, 0.352, z), rot: [0.5, 0, 0.3] });
+	}
+	return b.build();
+}
+
+// The ticket booth's scale, 0.3 x 0.16 x 0.25 m: a cream scale with a round dial and a steel plate on top.
+export function buildBoothScale() {
+	const b = new Builder('booth_scale');
+	const cream = mat('scale_cream', 0xe8dcc0);
+	b.add('body', cream, new THREE.BoxGeometry(0.3, 0.1, 0.25), { pos: V(0, 0.05, 0) });
+	b.add('dial', M.white, new THREE.CylinderGeometry(0.05, 0.05, 0.01, 12), { pos: V(0, 0.06, 0.126), rot: [Math.PI / 2, 0, 0] });
+	b.add('needle', mat('needle_red', 0xc02020), new THREE.BoxGeometry(0.004, 0.04, 0.004), { pos: V(0.01, 0.07, 0.133), rot: [0, 0, -0.5] });
+	b.add('plate', mat('scale_steel', 0xa0a4ac), new THREE.CylinderGeometry(0.12, 0.12, 0.012, 14), { pos: V(0, 0.15, -0.01) });
+	b.add('post', mat('scale_steel', 0xa0a4ac), new THREE.CylinderGeometry(0.015, 0.015, 0.05, 6), { pos: V(0, 0.12, -0.01) });
+	return b.build();
+}
+
+// The list of clients, 0.21 x 0.01 x 0.3 m: a sheet with a column of names and a big gold watch drawn on top.
+export function buildClientList() {
+	const b = new Builder('client_list');
+	b.add('sheet', M.white, new THREE.BoxGeometry(0.21, 0.004, 0.3), { pos: V(0, 0.002, 0) });
+	for (let i = 0; i < 6; i++) b.add('lines', mat('ink_blue', 0x203080), new THREE.BoxGeometry(0.14, 0.002, 0.012), { pos: V(-0.01, 0.005, -0.06 + i * 0.03) });
+	b.add('watch', mat('watch_gold', 0xe0b030), new THREE.CylinderGeometry(0.03, 0.03, 0.002, 10), { pos: V(0, 0.005, -0.11) });
+	return b.build();
+}
+
 export const models = {
 	cinema_seat: buildCinemaSeat, popcorn_machine: buildPopcornMachine, film_projector: buildFilmProjector,
 	npc_dona_bobina: buildDonaBobina, npc_chicho: buildChicho, pirate_copies_box: buildPirateBox,
@@ -276,7 +318,8 @@ export const models = {
 	recycle_broom: buildRecycleBroom, fresh_sign: buildFreshSign, ghost_projector: buildGhostProjector,
 	holey_sheet: buildHoleySheet, scream_disc: buildScreamDisc, ticket_press: buildTicketPress, sold_out_stamp: buildSoldOutStamp,
 	ticket_book: buildTicketBook, festival_film: buildFestivalFilm, festival_badge: buildFestivalBadge,
-	award_statuette: buildAwardStatuette,
+	award_statuette: buildAwardStatuette, watches_bucket: buildWatchesBucket, booth_scale: buildBoothScale,
+	client_list: buildClientList,
 };
 
 export const views = {
@@ -296,7 +339,8 @@ export const views = {
 			{ name: 'holey_sheet', pos: [0, 0, 0.8] }, { name: 'scream_disc', pos: [0.8, 0, 0.8] },
 			{ name: 'ticket_press', pos: [1.2, 0, -0.1], rotY: -0.4 }, { name: 'sold_out_stamp', pos: [-0.5, 0, 1.3] }, { name: 'ticket_book', pos: [-0.2, 0, 1.35] },
 			{ name: 'festival_film', pos: [0.3, 0, 1.3] }, { name: 'festival_badge', pos: [0.75, 0, 1.4] }, { name: 'award_statuette', pos: [1.05, 0, 1.25] },
+			{ name: 'watches_bucket', pos: [-1.7, 0, 0.3] }, { name: 'booth_scale', pos: [-1.6, 0, -0.4] }, { name: 'client_list', pos: [1.6, 0, 0.6] },
 		],
-		cam: { pos: [0, 1.4, 2.6], target: [0, 0.1, 0.4], fov: 40 },
+		cam: { pos: [0, 2.0, 3.6], target: [0, 0.1, 0.5], fov: 45 },
 	},
 };

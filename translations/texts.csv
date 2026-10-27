@@ -5739,3 +5739,14 @@ CLUE_FESTIVAL_MARK,"La película dice «PROPIEDAD DEL FESTIVAL» en una esquina:
 CINEMA_CRY_1,¡Buaaa! ¡Qué hermosa!,Waaah! It's so beautiful!,Buáá! Que lindo!
 CINEMA_CRY_2,"(sollozo) Nunca vi algo así...","(sob) I've never seen anything like it...","(soluço) Nunca vi nada assim..."
 CINEMA_CRY_3,¿Alguien tiene un pañuelo?,Does anyone have a tissue?,Alguém tem um lenço?
+BRIEF_POPCORN_WATCHES_B,"Doña Bobina pasa relojes de contrabando dentro de los baldes de palomitas. El combo grande viene con hora.","Doña Bobina smuggles watches inside the popcorn buckets. The large combo comes with the time.","A dona Bobina passa relógios de contrabando dentro dos baldes de pipoca. O combo grande vem com hora."
+BRIEF_POPCORN_WATCHES_C,"Traigan el balde lleno de relojes en el baúl del patrullero. Pesa 4 kilos y no se coman nada.","Bring the bucket full of watches in the patrol car's trunk. It weighs 4 kilos and don't eat anything.","Tragam o balde cheio de relógios no porta-malas da viatura. Pesa 4 quilos e não comam nada."
+BRIEF_POPCORN_WATCHES_D,"Si encuentran la balanza de la boletería o la lista de clientes, mejor: todo suma.","If you find the ticket booth's scale or the list of clients, even better: it all counts.","Se acharem a balança da bilheteria ou a lista de clientes, melhor: tudo conta."
+OBJ_FIND_WATCHES_BUCKET,Llevarse el balde lleno de relojes,Take the bucket full of watches,Levar o balde cheio de relógios
+OBJ_EXTRA_BOOTH_SCALE,Extra: la balanza de la boletería,Extra: the ticket booth's scale,Extra: a balança da bilheteria
+CHICHO_CLUE_popcorn_watches,"(susurrando) «Vi a doña Bobina esconder algo %s. Y ayer me tocó un balde que daba la hora.»","(whispering) “I saw doña Bobina hide something %s. And yesterday I got a bucket that told the time.”","(sussurrando) “Vi a dona Bobina esconder algo %s. E ontem me deram um balde que dava a hora.”"
+PROMPT_TICKING_POPCORN,E: mirar la palomita,E: look at the popcorn,E: olhar a pipoca
+HINT_TICKING_POPCORN,"Esta palomita es de metal... y hace «tic tac».","This popcorn is made of metal... and goes «tick tock».","Esta pipoca é de metal... e faz «tique-taque»."
+CLUE_TICKING_POPCORN,"Una palomita del mostrador es de metal y hace «tic tac»: en las palomitas hay relojes.","A popcorn on the counter is made of metal and goes «tick tock»: there are watches in the popcorn.","Uma pipoca do balcão é de metal e faz «tique-taque»: tem relógios na pipoca."
+CINEMA_TICK_TACK,tic tac,tick tock,tique-taque
+CINEMA_WATCH_POP,¡PUM! ¿Un reloj?,POP! A watch?,PUM! Um relógio?

@@ -148,3 +148,8 @@ suman entre 400 y 600.
   FESTIVAL" mientras pasa la película; acercarse adelante, debajo de esa esquina (2,5 m), da la pista propia una vez.
   Cada 8 s de película un espectador llora ("¡Buaaa! ¡Qué hermosa!"); con la pantalla en blanco nadie llora. Captura
   `paso6-festival.png`.
+- **Paso 6e (los relojes en las palomitas):** el balde lleno de relojes (4 kg, $1000) con la balanza de la boletería
+  (2 kg, $300) y la lista de clientes ($200). En el mostrador hay una palomita de metal que hace "tic tac": E en ella da
+  la pista propia, una vez. Cada 15 s la máquina de palomitas revienta un reloj que salta sobre el vidrio ("¡PUM! ¿Un
+  reloj?"), hasta que se le rompe el vidrio. Captura `paso6-relojes.png`; los 18 modelos de las historias en
+  `paso6-modelos-todos.png`. Con esto el cine tiene sus 6 historias, y la semilla elige entre todas.
