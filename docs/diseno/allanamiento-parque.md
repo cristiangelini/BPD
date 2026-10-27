@@ -131,6 +131,17 @@ extras suman entre 400 y 600.
    - **Esqueletos:** saltan con un "¡Buuuuu!" cuando pasa un policía y descansan 5 s.
    - **Para Don Tómbola:** cada juego que se prende avisa (`ride_started`), así el paso 3 puede sumarlo a la denuncia.
 3. Don Tómbola: la ronda, el megáfono, la denuncia, "¡no me toquen los juegos!" y el martillo de fuerza.
+   Hecho así:
+   - **Don Tómbola:** el mismo cuerpo que Mirta y el profe Fito (voz `TOMBOLA`), alto y flaco, con sombrero de copa rojo,
+     chaqueta a rayas, bigote enrulado y megáfono. Da vueltas desde el arco por el camino del medio, pasa entre los
+     puestos y llega al fondo, anunciando juegos que no funcionan.
+   - **La denuncia:** barra arriba en pantalla; 5 por cada juego que ve prender (una vez por juego), 10 por cada cosa que
+     ve volar del carrusel, 10 si ve abrir la caja de boletos, 5 por la puerta del tráiler y 15 si lo empujan.
+   - **El martillo de fuerza:** E en la base con el mazo en la mano es un golpe; 6 de cada 10 hacen sonar la campana
+     (el disco sube y aparece "¡DING!"). El golpe flojo deja al policía 1 s quieto mirando el mazo. Tirar algo pesado
+     fuerte sobre la base (kg × m/s ≥ 20, el mazo tirado a 5 m/s) también la hace sonar.
+   - **El premio:** con la campana, Don Tómbola va al lado del martillo y habla 15 s de espaldas al parque. Vuelve a
+     caer a los 45 s; la tercera vez no va, dice "¿Otra vez la campana?" y suma 10.
 4. Nube y el puesto de latas.
 5. El caso (RaidCase) con la primera historia: los premios rellenos.
 6. Las otras 5 historias, una por PR.

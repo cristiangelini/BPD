@@ -5611,3 +5611,25 @@ PROMPT_FAIR_BUMPERS,E: apretar el botón de los autitos chocadores,E: press the 
 PROMPT_FAIR_BUMPERS_RUNNING,"Los autitos ya andan. ¡Cuidado!","The bumper cars are already going. Watch out!","Os carrinhos já estão andando. Cuidado!"
 PROMPT_FAIR_CRANK,E: girar la manivela de la vuelta al mundo,E: turn the Ferris wheel's crank,E: girar a manivela da roda-gigante
 FAIR_SKELETON_BOO,¡Buuuuu!,Boooo!,Buuuuu!
+PROMPT_FAIR_HIT,E: pegarle al martillo de fuerza,E: hit the strength tester,E: bater no martelo de força
+HINT_FAIR_NEED_MALLET,"Sin el mazo no suena. Está tirado al lado.","It won't ring without the mallet. It's lying right beside it.","Sem a marreta não toca. Está jogada ao lado."
+HINT_FAIR_WEAK_HIT,"Flojito… Te quedas mirando el mazo como si fuera su culpa.","Weak… You stare at the mallet as if it were its fault.","Fraquinho… Você fica olhando a marreta como se fosse culpa dela."
+FAIR_DING,¡DING!,DING!,DING!
+TOMBOLA_LINE_1,"¡Pasen, pasen! ¡La vuelta al mundo más segura del mundo!","Step right up! The safest Ferris wheel in the world!","Venham, venham! A roda-gigante mais segura do mundo!"
+TOMBOLA_LINE_2,"¡Carrusel con caballos de verdad! Bueno, de madera. Bueno, de plástico.","A carousel with real horses! Well, wooden. Well, plastic.","Carrossel com cavalos de verdade! Bom, de madeira. Bom, de plástico."
+TOMBOLA_LINE_3,"¡El tren fantasma, apto para toda la familia y para ningún cardíaco!","The ghost train, fun for the whole family and no weak hearts!","O trem-fantasma, para toda a família e para nenhum cardíaco!"
+TOMBOLA_LINE_4,"Oficiales, hoy está cerrado. Por mantenimiento. Del bueno.","Officers, we're closed today. For maintenance. The good kind.","Policiais, hoje está fechado. Para manutenção. Da boa."
+TOMBOLA_PRINTER,"¡Sonó la campana! ¡Tenemos un campeón!","The bell rang! We have a champion!","O sino tocou! Temos um campeão!"
+TOMBOLA_FIX_1,"¡Un campeón! ¡Un campeón! ¿Cómo te llamas, campeón?","A champion! A champion! What's your name, champ?","Um campeão! Um campeão! Como você se chama, campeão?"
+TOMBOLA_FIX_2,"En mis tiempos yo la hacía sonar con el dedo chiquito.","Back in my day I rang it with my little finger.","No meu tempo eu tocava com o dedinho."
+TOMBOLA_FIX_3,"Tu premio: un llavero con forma de llavero. ¡Cuídalo!","Your prize: a keychain shaped like a keychain. Take care of it!","Seu prêmio: um chaveiro em forma de chaveiro. Cuide bem dele!"
+TOMBOLA_FIX_DONE,"¡Sigan disfrutando de La Vuelta Loca!","Keep enjoying La Vuelta Loca!","Continuem curtindo La Vuelta Loca!"
+TOMBOLA_HURT,"¡Epa! ¡Al dueño no se lo empuja, se lo aplaude!","Hey! You don't push the owner, you applaud him!","Opa! Não se empurra o dono, se aplaude!"
+TOMBOLA_DOOR,"¡Mi tráiler! ¡Eso no es un juego!","My trailer! That's not a ride!","Meu trailer! Isso não é um brinquedo!"
+TOMBOLA_SAW,"¡Eso no se toca sin boleto!","No touching that without a ticket!","Isso não se toca sem ingresso!"
+TOMBOLA_NOTHING,"Yo solo vendo alegría, oficial.","I just sell joy, officer.","Eu só vendo alegria, policial."
+TOMBOLA_OFFENDED,"Se terminó la función. No hablo más.","The show's over. I'm done talking.","Acabou o espetáculo. Não falo mais."
+TOMBOLA_LAWYER,"¡Llamo a mi abogado! ¡Por el megáfono, para que se entere todo el barrio!","I'm calling my lawyer! Through the megaphone, so the whole neighborhood hears!","Vou chamar meu advogado! Pelo megafone, pro bairro inteiro ouvir!"
+TOMBOLA_RIDE,"¡No me toquen los juegos! ¡Están en mantenimiento!","Don't touch my rides! They're under maintenance!","Não mexam nos brinquedos! Estão em manutenção!"
+TOMBOLA_FLUNG,"¡Del carrusel no se baja volando!","Nobody gets off the carousel flying!","Do carrossel ninguém desce voando!"
+TOMBOLA_CAUGHT_ON,"¿Otra vez la campana? A mí no me engañan con el truco del campeón.","The bell again? You can't fool me with the champion trick.","O sino de novo? Comigo não cola o truque do campeão."

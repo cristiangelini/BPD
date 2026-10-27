@@ -12,6 +12,8 @@ extends Node
 
 ## A ride was started: "carousel", "bumpers" or "wheel" (Don Tómbola minds it, step 3).
 signal ride_started(ride: String)
+## The carousel threw something loose off its deck (the first time for each thing).
+signal flung(body: RigidBody3D)
 
 const SPIN_RPM := 6.0
 ## How hard the carousel throws a loose thing outward, in m/s² (on top of the spin).
@@ -42,6 +44,7 @@ var switches := {}
 ## Seconds until each skeleton can jump again, and until each cop can be shoved again (by instance id).
 var _skeleton_rest: Array[float] = []
 var _shoved := {}
+var _flung := {}
 var _deck_area: Area3D
 var _rng := RandomNumberGenerator.new()
 
@@ -136,6 +139,9 @@ func _physics_process(delta: float) -> void:
 				out.y = 0.0
 				(body as RigidBody3D).sleeping = false
 				(body as RigidBody3D).apply_central_force(out.normalized() * FLING * (body as RigidBody3D).mass)
+				if not _flung.has(body.get_instance_id()):
+					_flung[body.get_instance_id()] = true
+					flung.emit(body)
 	if bumpers_left > 0.0:
 		bumpers_left -= delta
 		_drive_bumpers(delta)

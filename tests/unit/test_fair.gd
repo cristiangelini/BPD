@@ -17,7 +17,7 @@ func _fair(case_seed := 5) -> Fair:
 
 
 func _prop(fair: Fair, at: Vector3, velocity: Vector3) -> Grabbable:
-	var prop := ClubEvidence.make_item("Thrown", Fair.MALLET_MODEL, Vector3(0.3, 0.3, 0.3), 2.0)
+	var prop := ClubEvidence.make_item("Thrown", StrengthTester.MALLET_MODEL, Vector3(0.3, 0.3, 0.3), 2.0)
 	fair.add_child(prop)
 	prop.global_position = at
 	prop.linear_velocity = velocity

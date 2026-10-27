@@ -3,7 +3,8 @@
 // tester and its mallet, the cotton candy cart, the cans booth, the ticket booth, the ghost train's face, its cart, a
 // skeleton and the giant teddy bear. Origins at the floor in the middle of each piece, facing +Z. Placeholder, not
 // final art.
-import { Builder, mat, V, THREE } from '../lib.js';
+import { Builder, mat, ellipsoid, V, THREE } from '../lib.js';
+import { M, pearBody, eyes, limb } from './pear.js';
 
 const RED = 0xd23a3a, WHITE = 0xf4f0e6, GOLD = 0xe2b84a, BLUE = 0x3a6ad2, PINK = 0xf29ac2, DARK = 0x26262a;
 const BULB = { emissive: 0xffe08a, emissiveIntensity: 1.5 };
@@ -152,7 +153,6 @@ export function buildStrengthTester() {
 	box(b, 'board', white, 0.7, 3.8, 0.1, 0, 2.2, -0.3);
 	for (let i = 0; i < 8; i++) box(b, 'scale', i % 2 ? red : mat('fair_yellow', 0xf2c230), 0.6, 0.12, 0.02, 0, 0.7 + i * 0.45, -0.24);
 	box(b, 'rail', mat('fair_steel', 0x8a8e94), 0.05, 3.8, 0.05, 0, 2.2, -0.2);
-	b.add('puck', red, new THREE.CylinderGeometry(0.08, 0.08, 0.1, 10), { pos: V(0, 0.55, -0.2) });
 	b.add('bell', gold, new THREE.SphereGeometry(0.25, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2), { pos: V(0, 4.15, -0.2), rot: [Math.PI, 0, 0] });
 	b.add('bell', gold, new THREE.CylinderGeometry(0.04, 0.04, 0.2, 6), { pos: V(0, 4.25, -0.2) });
 	return b.build();
@@ -275,12 +275,37 @@ export function buildGiantTeddy() {
 	return b.build();
 }
 
+// Don Tómbola, the owner: a ringmaster's red top hat, a striped jacket with gold buttons, a curled mustache and a tin
+// megaphone in his right hand. The game scales him tall and thin.
+export function buildDonTombola() {
+	const b = new Builder('npc_don_tombola');
+	const red = mat('tombola_red', 0xc8243a), stripe = mat('tombola_stripe', 0xf4e8c8), gold = mat('fair_gold', GOLD);
+	pearBody(b, mat('skin_rosada', 0xeab894), { shirt: red, pants: mat('tombola_pants', 0x2a2230), shoes: M.black, belted: false });
+	for (const x of [-0.12, 0.12]) {
+		b.add('body', stripe, new THREE.BoxGeometry(0.04, 0.55, 0.02), { pos: V(x, 0.78, 0.36), rot: [-0.32, 0, 0] });
+	}
+	for (let i = 0; i < 3; i++) b.add('body', gold, new THREE.SphereGeometry(0.025, 6, 4), { pos: V(0, 0.62 + i * 0.13, 0.4 - i * 0.04) });
+	eyes(b, 1.34, 0.17, 0.08, 0.05);
+	const brown = mat('tombola_mustache', 0x3a2414);
+	for (const s of [-1, 1]) {
+		b.add('face', brown, ellipsoid(0.08, 0.025, 0.03, 6, 4), { pos: V(s * 0.07, 1.25, 0.2), rot: [0, 0, s * -0.3] });
+		b.add('face', brown, new THREE.TorusGeometry(0.025, 0.01, 4, 8, Math.PI * 1.4), { pos: V(s * 0.15, 1.28, 0.18), rot: [0, 0, s > 0 ? 0 : Math.PI] });
+	}
+	b.add('hat', red, new THREE.CylinderGeometry(0.28, 0.28, 0.03, 14), { pos: V(0, 1.47, 0.02) });
+	b.add('hat', red, new THREE.CylinderGeometry(0.16, 0.15, 0.32, 14), { pos: V(0, 1.64, 0.02) });
+	b.add('hat', gold, new THREE.CylinderGeometry(0.155, 0.155, 0.05, 14), { pos: V(0, 1.52, 0.02) });
+	const tin = mat('tombola_tin', 0xc8ccd2, { metalness: 0.6, roughness: 0.35 });
+	b.add('megaphone', tin, new THREE.CylinderGeometry(0.13, 0.04, 0.35, 10, 1, true), { pos: V(0.52, 0.85, 0.22), rot: [-1.2, 0, 0] });
+	limb(b, 'megaphone', tin, V(0.49, 0.66, 0.1), V(0.52, 0.78, 0.15), 0.02, 4);
+	return b.build();
+}
+
 export const models = {
 	fair_carousel: buildCarousel, fair_horse: buildFairHorse, ferris_stand: buildFerrisStand, ferris_wheel: buildFerrisWheel,
 	ferris_cabin: buildFerrisCabin, bumper_car: buildBumperCar, fair_arch: buildFairArch, strength_tester: buildStrengthTester,
 	fair_mallet: buildFairMallet, cotton_candy_cart: buildCottonCandyCart, cans_booth: buildCansBooth,
 	ticket_booth: buildTicketBooth, ghost_train_face: buildGhostTrainFace, ghost_cart: buildGhostCart,
-	fair_skeleton: buildFairSkeleton, giant_teddy: buildGiantTeddy,
+	fair_skeleton: buildFairSkeleton, giant_teddy: buildGiantTeddy, npc_don_tombola: buildDonTombola,
 };
 
 export const views = {
@@ -297,7 +322,7 @@ export const views = {
 		items: [
 			{ name: 'fair_arch', pos: [0, 0, -4] }, { name: 'strength_tester', pos: [-4, 0, 1] }, { name: 'fair_mallet', pos: [-3.2, 0, 2] },
 			{ name: 'cotton_candy_cart', pos: [-1.5, 0, 2] }, { name: 'cans_booth', pos: [1.5, 0, 1] }, { name: 'ticket_booth', pos: [4.5, 0, 1] },
-			{ name: 'giant_teddy', pos: [1.5, 1.93, 0.25], scale: 0.4 },
+			{ name: 'giant_teddy', pos: [1.5, 1.93, 0.25], scale: 0.4 }, { name: 'npc_don_tombola', pos: [-2.5, 0, 3.5], scale: 1.1 },
 		],
 		cam: { pos: [0, 3.5, 13], target: [0, 2, 0], fov: 50 },
 	},

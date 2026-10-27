@@ -19,7 +19,7 @@ func test_the_lever_spins_the_carousel_and_it_throws_off_what_lies_loose() -> vo
 	var fair := _fair()
 	await wait_physics_frames(2)
 	watch_signals(fair.rides)
-	var prop := ClubEvidence.make_item("Loose", Fair.MALLET_MODEL, Vector3(0.3, 0.2, 0.3), 1.0)
+	var prop := ClubEvidence.make_item("Loose", StrengthTester.MALLET_MODEL, Vector3(0.3, 0.2, 0.3), 1.0)
 	fair.add_child(prop)
 	prop.global_position = Fair.CAROUSEL_AT + Vector3(3.5, Fair.DECK_TOP + 0.3, 0)
 	await wait_physics_frames(30)

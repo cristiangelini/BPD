@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Fun fair raid, step 3: Don Tómbola walks the fair with his megaphone and fills his complaint (rides switched on, things flung off the carousel, the till, his trailer door); the strength tester's mallet rings the bell 6 times in 10 and he spends 15 s handing over the prize with his back to the fair, every 45 s, and catches on the third time.
 - Fun fair raid, step 2: the rides go: the carousel's lever spins it and it throws loose things off its deck, the red button sets the six bumper cars driving round the rink for 20 s (they bounce, push props and shove cops), the crank turns the Ferris wheel by one cabin (they hang straight) and the ghost train's skeletons jump out at passing cops.
 - Fun fair raid, step 1: the "La Vuelta Loca" fun fair fills block (7, 4) at night (--place=fair and a menu test button): the arch, the carousel with 12 horses, the bumper cars under their net, the Ferris wheel with 8 cabins, the ghost train's dark loop with carts and skeletons, the mirror house (6 mirrors that break when hit hard, 30 each), the cans booth with the giant teddy, the cotton candy cart, the strength tester, the ticket booth with the trailer's key and Don Tómbola's locked trailer; 12 hiding spots. The rides stand still for now.
 - Fun fair raid design: docs/diseno/allanamiento-parque.md proposes a new raid place, the "La Vuelta Loca" fun fair, with Don Tómbola, Nube and 6 stories (decision 320).
