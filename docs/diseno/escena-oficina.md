@@ -146,3 +146,12 @@ ChaseDrops (los bidones, como las valijas del hotel), PlaceDraw y la custodia pa
   gerente y el pasillo. E sobre cualquiera da una de sus frases (6 del empleado, 4 del gerente, 4 de Benja), otra cada
   vez. El pelo, los anteojos y los dientes de cada empleado ya son partes del modelo; los rasgos del caso llegan en el
   paso 3. Capturas `paso2-*.png`.
+- **Paso 3 (las fichas y el café):** `OfficeTraits` sortea con la semilla a los seis empleados (nombre en el gafete,
+  pelo, anteojos, talle, dientes, zurdo o diestro y cómo toma el café: negro, con leche, cortado o tres de azúcar) y
+  se les ve en el modelo (`OfficeEmployee`). La ficha tiene cuatro partes: la foto con la cámara (anteojos y talle),
+  las huellas con el kit, los dientes con una galletita de la lata de la cocina (`CookieTin`, también una dona o un
+  pan) y el café. Con las manos vacías, "¿Un cafecito?": el empleado camina hasta la cafetera (`CoffeeMachine`), hace
+  fila si hay otro, se lo prepara en 8 s, la pantalla dice qué eligió y se lo toma ahí 4 s con la taza en la mano
+  izquierda o derecha; si en ese momento hay un policía en la cocina, el café y la mano van a su ficha. Después vuelve
+  a su escritorio; mientras está en el café, la campanita no le cambia el escritorio. La variante `office` ya está en
+  CrimeSceneCase (pistas: huellas, café, asa, pisada, mordisco y testigo). Capturas `paso3-*.png`.

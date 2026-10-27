@@ -6,8 +6,9 @@ extends CrimeScenePlace
 ## in its glass case, the clock to punch in and the water cooler; the open space with eight desks alike (nobody has a
 ## desk of their own), the giant copier at the back, and the kitchen in the north-west corner with the company's coffee
 ## machine and the cookie tin. Upstairs, by the stairs: the manager's office, where the theft was, with his big desk and
-## the safe; the archive with its shelves of forms; and the meeting room. The people come in step 2 and the case in
-## step 4. Every number here is (propuesta).
+## the safe; the archive with its shelves of forms; and the meeting room. The people (step 2): six employees alike at
+## the desks, el señor Trámite, Benja the intern and Pelusa; each employee's traits and his coffee (step 3). The case
+## comes in step 4. Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(24, 18)
@@ -64,10 +65,9 @@ const DESK_CHANGE_EVERY := 90.0
 ## The giant copier against the back wall.
 const COPIER_AT := Vector3(8.5, 0, -8.2)
 const COPIER_SIZE := Vector3(1.6, 1.3, 0.9)
-## The kitchen: the coffee machine on the floor in the corner, the counter along the back wall with the cookie tin,
+## The kitchen: the coffee machine (CoffeeMachine) on the floor in the corner, the counter along the back wall with the cookie tin,
 ## and the fridge.
 const COFFEE_AT := Vector3(-11.3, FLOOR_TOP, -8.5)
-const COFFEE_SIZE := Vector3(0.7, 1.6, 0.6)
 const COUNTER_AT := Vector3(-8.6, 0, -8.6)
 const COUNTER_SIZE := Vector3(3.6, 0.9, 0.6)
 const TIN_AT := COUNTER_AT + Vector3(0.8, COUNTER_SIZE.y, 0)
@@ -96,9 +96,8 @@ const MEETING_TABLE_SIZE := Vector3(4.0, 0.76, 1.4)
 const CHAIR_SCENE := preload("res://scenes/props/office_chair.tscn")
 const MONITOR_MODEL := preload("res://assets/models/office_monitor.glb")
 const PHONE_MODEL := preload("res://assets/models/desk_phone.glb")
-const COFFEE_MODEL := preload("res://assets/models/coffee_machine.glb")
 const COOLER_MODEL := preload("res://assets/models/water_cooler.glb")
-const TIN_MODEL := preload("res://assets/models/cookie_tin.glb")
+const TIN_SCENE := preload("res://scenes/props/office_cookie_tin.tscn")
 const CONCRETE := Color(0.62, 0.66, 0.7)
 const MIRROR := Color(0.45, 0.6, 0.72)
 const INSIDE := Color(0.9, 0.9, 0.86)
@@ -117,9 +116,10 @@ const FILES := Color(0.85, 0.75, 0.5)
 
 ## The eight rolling chairs of the open space, in the order of the desks.
 var chairs: Array[Grabbable] = []
-var coffee_machine: StaticBody3D
+var coffee_machine: CoffeeMachine
+var cookie_tin: CookieTin
 ## The six employees, in order, the desk each one is at (an index of desks()) and the seconds to the next bell.
-var employees: Array[OfficePerson] = []
+var employees: Array[OfficeEmployee] = []
 var desk_of: Array[int] = []
 var bell_in := DESK_CHANGE_EVERY
 var manager: OfficePerson
@@ -191,7 +191,7 @@ static func stand_at(desk: int) -> Vector3:
 
 
 ## The desk-change bell: every employee walks to another desk, free and not his own, drawn with the seed. They go out
-## to the aisle, along it and in to the new desk.
+## to the aisle, along it and in to the new desk. One off for a coffee keeps his.
 func ring_desk_bell() -> void:
 	bell_in = DESK_CHANGE_EVERY
 	var free: Array[int] = []
@@ -199,15 +199,54 @@ func ring_desk_bell() -> void:
 		free.append(desk)
 	var next: Array[int] = []
 	for i in employees.size():
+		next.append(desk_of[i] if employees[i].on_break else -1)
+	for i in employees.size():
+		if next[i] >= 0:
+			continue
 		var options := free.filter(func(desk: int) -> bool: return desk != desk_of[i] and not next.has(desk))
 		if options.is_empty():
 			options = free.filter(func(desk: int) -> bool: return not next.has(desk))
-		next.append(options[_rng.randi_range(0, options.size() - 1)])
+		next[i] = options[_rng.randi_range(0, options.size() - 1)]
 	for i in employees.size():
+		if employees[i].on_break:
+			continue
 		var from := stand_at(desk_of[i])
 		var to := stand_at(next[i])
 		employees[i].walk([Vector3(from.x, from.y, AISLE_Z), Vector3(to.x, to.y, AISLE_Z), to])
 		desk_of[i] = next[i]
+
+
+## The way from a desk to a spot by the coffee machine: out to the aisle, west along it, north past the desks and in
+## through the kitchen's door. And back.
+func to_kitchen(from: Vector3, to: Vector3) -> Array[Vector3]:
+	var y := FLOOR_TOP
+	return [Vector3(from.x, y, AISLE_Z), Vector3(KITCHEN_X + 1, y, AISLE_Z), Vector3(KITCHEN_X + 1, y, DOOR_KITCHEN_Z),
+		Vector3(KITCHEN_X - 1, y, DOOR_KITCHEN_Z), to]
+
+
+func from_kitchen(from: Vector3, to: Vector3) -> Array[Vector3]:
+	var way := to_kitchen(to, from)
+	way.reverse()
+	way.remove_at(0)
+	way.append(to)
+	return way
+
+
+## Whether a cop is in the kitchen (to see how an employee takes his coffee).
+func cop_in_kitchen() -> bool:
+	return get_tree().get_nodes_in_group("cops").any(func(cop: Node3D) -> bool:
+		return room_of(cop.global_position + Vector3.UP * 0.5) == "kitchen")
+
+
+## Tells the employees about the case.
+func set_up_case(case: CrimeSceneCase) -> void:
+	for employee in employees:
+		employee.case = case
+
+
+## The employee by index (the order of the case's traits).
+func suspect(index: int) -> CollisionObject3D:
+	return employees[index]
 
 
 func _physics_process(delta: float) -> void:
@@ -336,19 +375,15 @@ func _kitchen() -> void:
 	_builder.wall("x", KITCHEN_Z, -HALF_X, KITCHEN_X, 0, [], INSIDE)
 	_builder.mesh_box(Vector3((-HALF_X + KITCHEN_X) / 2, FLOOR_TOP + 0.005, (BACK_Z + KITCHEN_Z) / 2),
 		Vector3(KITCHEN_X + HALF_X - 0.2, 0.01, KITCHEN_Z - BACK_Z - 0.2), WHITE.darkened(0.15))
-	coffee_machine = StaticBody3D.new()
+	coffee_machine = CoffeeMachine.new()
 	coffee_machine.name = "CoffeeMachine"
+	coffee_machine.office = self
 	coffee_machine.position = COFFEE_AT
-	var shape := CollisionShape3D.new()
-	var box := BoxShape3D.new()
-	box.size = COFFEE_SIZE
-	shape.shape = box
-	shape.position.y = COFFEE_SIZE.y / 2
-	coffee_machine.add_child(shape)
-	coffee_machine.add_child(COFFEE_MODEL.instantiate())
 	add_child(coffee_machine)
 	_builder.box(COUNTER_AT + Vector3(0, COUNTER_SIZE.y / 2, 0), COUNTER_SIZE, WHITE.darkened(0.1))
-	_model(TIN_MODEL, TIN_AT)
+	cookie_tin = TIN_SCENE.instantiate()
+	cookie_tin.position = TIN_AT + Vector3.UP * 0.02
+	add_child(cookie_tin)
 	_builder.open_box(FRIDGE_AT, FRIDGE_SIZE, "+x", WHITE)
 	_builder.light(Vector3(-9.0, GameScale.FLOOR_HEIGHT - 0.5, -6.0))
 
@@ -442,10 +477,13 @@ func _people() -> void:
 	var free: Array[int] = []
 	for desk in desks().size():
 		free.append(desk)
+	var traits := OfficeTraits.draw(case_seed)
 	for i in EMPLOYEES:
-		var employee := OfficePerson.new()
+		var employee := OfficeEmployee.new()
 		employee.name = "Employee%d" % i
 		employee.index = i
+		employee.traits = traits[i]
+		employee.coffee = coffee_machine
 		desk_of.append(free.pop_at(_rng.randi_range(0, free.size() - 1)))
 		employee.position = stand_at(desk_of[i])
 		employee.rotation.y = -PI / 2
