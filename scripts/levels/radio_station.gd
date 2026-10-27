@@ -1,0 +1,352 @@
+class_name RadioStation
+extends Node3D
+
+## "Radio La Antena Loca" as a place to raid (docs/diseno/allanamiento-radio.md, step 1): a one-floor neighborhood FM
+## station on its lot in the city, the front to +Z. The reception has the listeners' desk with the till, the sofa, the
+## mailbox and the week's ranking; behind it, the studio with its big window to the reception and the mixing console,
+## the control room with the record player, and the kitchen. At the back, the record archive (locked with the till's
+## key), the storage room and the bathroom. A metal stair up the east wall reaches the roof and the antenna. Something
+## thrown hard at the studio's window cracks it, and at the archive's shelves drops a record that breaks, a fine each.
+## Every number here is (propuesta).
+
+signal glass_broken
+signal record_broken
+
+const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const CONSOLE_MODEL := preload("res://assets/models/radio_console.glb")
+const PLAYER_MODEL := preload("res://assets/models/record_player.glb")
+const SHELF_MODEL := preload("res://assets/models/record_shelf.glb")
+const ANTENNA_MODEL := preload("res://assets/models/radio_antenna.glb")
+const HALF_X := 9.0
+const HALF_Z := 11.0
+const FLOOR_TOP := 0.06
+## The walls go up to WALL_TOP and the flat roof's top is one floor up, where the outside stair arrives.
+const WALL_TOP := GameScale.FLOOR_HEIGHT - PlaceBuilder.SLAB
+const ROOF_TOP := GameScale.FLOOR_HEIGHT
+const ENTRANCE_X := 2.0
+## The wall between the reception (z > FRONT_Z) and the rooms behind it, with the studio's, the control room's and the
+## kitchen's doors; the studio's big window in it, from WINDOW_X0 to WINDOW_X1 between WINDOW_LOW and WINDOW_HIGH.
+const FRONT_Z := 4.0
+const STUDIO_DOOR_X := -6.5
+const CONTROL_DOOR_X := 1.5
+const KITCHEN_DOOR_X := 6.5
+const WINDOW_X0 := -5.2
+const WINDOW_X1 := -1.6
+const WINDOW_LOW := 0.9
+const WINDOW_HIGH := 2.1
+## The walls between the studio and the control room (with the inner window) and the control room and the kitchen.
+const STUDIO_X1 := -1.0
+const KITCHEN_X0 := 4.0
+## The wall between those rooms and the back ones, with the archive's (locked), the storage's and the bathroom's doors;
+## the walls between the back rooms.
+const BACK_Z := -4.0
+const ARCHIVE_DOOR_X := -5.0
+const STORAGE_DOOR_X := 2.0
+const BATH_DOOR_X := 6.5
+const ARCHIVE_X1 := 0.0
+const BATH_X0 := 5.0
+## The furniture: the reception's desk and the studio's console, the record player in the control room, and the
+## archive's two rows of shelves (each SHELF_COUNT shelves long).
+const DESK_AT := Vector3(-4.0, FLOOR_TOP, 7.5)
+const DESK_SIZE := Vector3(2.6, 1.0, 0.8)
+const CONSOLE_AT := Vector3(-5.0, FLOOR_TOP, -0.6)
+const CONSOLE_SIZE := Vector3(2.0, 0.8, 0.8)
+const PLAYER_AT := Vector3(1.5, FLOOR_TOP, -2.6)
+const PLAYER_SIZE := Vector3(0.6, 0.9, 0.5)
+const SHELF_ROWS: Array[float] = [-6.4, -9.0]
+const SHELF_X0 := -8.6
+const SHELF_COUNT := 2
+const SHELF_SIZE := Vector3(3.0, 2.2, 0.5)
+## The antenna on the roof, and the outside stair's foot by the east wall, going up along -Z to a landing on the roof.
+const ANTENNA_AT := Vector3(-5.0, ROOF_TOP, -7.0)
+const STAIR_FOOT := Vector3(HALF_X + 0.8, 0.0, HALF_Z - 1.0)
+const STAIR_RUN := 5.4
+## How fast a prop must hit to crack the studio's window or drop a record, and their fines; at most MAX_RECORDS
+## records break.
+const GLASS_SPEED := 3.0
+const GLASS_FINE := 30
+const RECORD_SPEED := 3.0
+const RECORD_FINE := 10
+const MAX_RECORDS := 5
+
+## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
+const SPOTS := [
+	{"id": "behind_reception_desk", "at": Vector3(-4.0, FLOOR_TOP, 6.6), "heavy": true},
+	{"id": "behind_radio_sofa", "at": Vector3(5.5, FLOOR_TOP, 10.5), "heavy": true},
+	{"id": "in_record_archive", "at": Vector3(-1.0, FLOOR_TOP, -10.2), "heavy": true},
+	{"id": "in_radio_storage", "at": Vector3(3.6, FLOOR_TOP, -9.8), "heavy": true},
+	{"id": "in_radio_bathroom", "at": Vector3(7.0, FLOOR_TOP, -9.0), "heavy": true},
+	{"id": "on_radio_roof", "at": Vector3(-2.5, ROOF_TOP, -9.0), "heavy": true},
+	{"id": "in_mailbox", "at": Vector3(8.0, FLOOR_TOP + 1.1, 6.0), "heavy": false},
+	{"id": "on_record_shelf", "at": Vector3(-7.0, FLOOR_TOP + 2.2, -9.0), "heavy": false},
+	{"id": "on_kitchen_fridge", "at": Vector3(8.2, FLOOR_TOP + 1.8, -3.2), "heavy": false},
+	{"id": "under_ranking", "at": Vector3(3.5, FLOOR_TOP, 4.4), "heavy": false},
+	{"id": "in_control_room", "at": Vector3(3.0, FLOOR_TOP, 2.8), "heavy": false},
+	{"id": "behind_console", "at": Vector3(-5.0, FLOOR_TOP, -1.4), "heavy": false},
+]
+
+const OUTSIDE := Color(0.9, 0.86, 0.78)
+const FLOOR := Color(0.55, 0.5, 0.45)
+const WALL_IN := Color(0.86, 0.84, 0.8)
+const STUDIO_WALL := Color(0.3, 0.32, 0.42)
+const WOOD := Color(0.55, 0.36, 0.22)
+const TILE := Color(0.85, 0.88, 0.9)
+const RED := Color(0.85, 0.12, 0.1)
+const DARK := Color(0.16, 0.16, 0.2)
+const GLASS := Color(0.7, 0.85, 0.95, 0.35)
+const STEEL := Color(0.55, 0.57, 0.6)
+
+## Where the patrol car parks at the station, in this scene's space.
+var station_parking: Transform3D
+var city_map: CityMap
+var archive_door: FrontDoor
+var till: Till
+var glass_cracked := false
+var records_broken := 0
+var broken_goods := 0
+## Money taken off the case pay: the studio's window and the archive's records.
+var fines := 0
+## Same seed, same radio (the stories and the hiding spots come from it, step 5).
+@export var case_seed := 0
+var _build: PlaceBuilder
+var _glass: MeshInstance3D
+var _bulb: OmniLight3D
+var _blink := 0.0
+@onready var car: PatrolCar = $PatrolCar
+
+
+func _ready() -> void:
+	if case_seed == 0:
+		case_seed = PlaceDraw.take_seed()
+	if case_seed == 0:
+		case_seed = PlaceDraw.new_seed()
+	_build = PlaceBuilder.new($Built)
+	_build_shell()
+	_build_reception()
+	_build_studio()
+	_build_back()
+	_build_roof()
+	var city: Node3D = $City
+	city.transform = CityLayout.anchor("radio")
+	station_parking = city.transform * CityLayout.parking("station")
+	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
+	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
+	city_map = CityMap.new()
+	add_child(city_map)
+	city_map.setup(city, "radio", car)
+
+
+## The floor, the outer walls with the entrance, the roof and the sign over the door.
+func _build_shell() -> void:
+	_build.slab(-HALF_X, HALF_X, -HALF_Z, HALF_Z, FLOOR_TOP, FLOOR)
+	_build.slab(-HALF_X, HALF_X, -HALF_Z, HALF_Z, ROOF_TOP, OUTSIDE.darkened(0.3))
+	_build.wall_at("x", HALF_Z, -HALF_X, HALF_X, 0.0, WALL_TOP, [ENTRANCE_X], OUTSIDE)
+	_build.wall_at("x", -HALF_Z, -HALF_X, HALF_X, 0.0, WALL_TOP, [], OUTSIDE)
+	_build.wall_at("z", -HALF_X, -HALF_Z, HALF_Z, 0.0, WALL_TOP, [], OUTSIDE)
+	_build.wall_at("z", HALF_X, -HALF_Z, HALF_Z, 0.0, WALL_TOP, [], OUTSIDE)
+	for line: Array in [["PLACE_RADIO", 72, 2.45], ["RADIO_FREQUENCY", 40, 1.95]]:
+		var label := Label3D.new()
+		label.text = line[0]
+		label.font_size = line[1]
+		label.pixel_size = 0.01
+		label.outline_size = 12
+		label.modulate = RED
+		label.position = Vector3(-3.0, line[2], HALF_Z + 0.1)
+		$Built.add_child(label)
+
+
+## The reception: the listeners' desk with the till, the sofa, the mailbox, the week's ranking on the wall, and the
+## wall to the rooms behind with the studio's big window and the red "AL AIRE" sign over its door.
+func _build_reception() -> void:
+	_build.open_box(DESK_AT, DESK_SIZE, "-z", WOOD)
+	till = Till.new()
+	till.position = DESK_AT + Vector3(0.7, DESK_SIZE.y + Till.SIZE.y / 2, 0)
+	till.key_hint = "HINT_TILL_KEY_RADIO"
+	add_child(till)
+	# The listeners' phone on the desk (it rings in step 2).
+	_build.mesh_box(DESK_AT + Vector3(-0.6, DESK_SIZE.y + 0.05, 0), Vector3(0.22, 0.1, 0.18), RED)
+	_build.box(Vector3(5.5, FLOOR_TOP + 0.25, 9.5), Vector3(2.2, 0.5, 0.9), Color(0.25, 0.45, 0.7))
+	_build.box(Vector3(5.5, FLOOR_TOP + 0.6, 9.95), Vector3(2.2, 0.7, 0.2), Color(0.25, 0.45, 0.7))
+	_build.box(Vector3(8.0, FLOOR_TOP + 0.55, 6.0), Vector3(0.5, 1.1, 0.4), RED)
+	_build.mesh_box(Vector3(3.5, 1.6, FRONT_Z + 0.09), Vector3(1.4, 1.0, 0.03), DARK)
+	var ranking := Label3D.new()
+	ranking.text = "RADIO_RANKING"
+	ranking.font_size = 28
+	ranking.pixel_size = 0.005
+	ranking.position = Vector3(3.5, 1.95, FRONT_Z + 0.12)
+	$Built.add_child(ranking)
+	_build.wall_at("x", FRONT_Z, -HALF_X, WINDOW_X0, 0.0, WALL_TOP, [STUDIO_DOOR_X], STUDIO_WALL)
+	_build.wall_at("x", FRONT_Z, WINDOW_X0, WINDOW_X1, 0.0, WINDOW_LOW, [], STUDIO_WALL)
+	_build.wall_at("x", FRONT_Z, WINDOW_X0, WINDOW_X1, WINDOW_HIGH, WALL_TOP - WINDOW_HIGH, [], STUDIO_WALL)
+	_build.wall_at("x", FRONT_Z, WINDOW_X1, HALF_X, 0.0, WALL_TOP, [CONTROL_DOOR_X, KITCHEN_DOOR_X], WALL_IN)
+	var pane := Vector3(WINDOW_X1 - WINDOW_X0, WINDOW_HIGH - WINDOW_LOW, 0.04)
+	var center := Vector3((WINDOW_X0 + WINDOW_X1) / 2, (WINDOW_LOW + WINDOW_HIGH) / 2, FRONT_Z)
+	_glass = _pane(center, pane)
+	var hit := _area(center, pane + Vector3(0, 0, 0.6))
+	hit.body_entered.connect(func(body: Node3D) -> void:
+		if body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > GLASS_SPEED:
+			break_glass())
+	var on_air := Label3D.new()
+	on_air.name = "OnAirSign"
+	on_air.text = "RADIO_ON_AIR"
+	on_air.font_size = 40
+	on_air.pixel_size = 0.006
+	on_air.outline_size = 8
+	on_air.modulate = RED
+	on_air.position = Vector3(STUDIO_DOOR_X, GameScale.DOOR_HEIGHT + 0.2, FRONT_Z + 0.1)
+	$Built.add_child(on_air)
+	for at: Vector3 in [Vector3(-4.0, 2.2, 8.0), Vector3(4.0, 2.2, 8.0)]:
+		_build.light(at)
+
+
+## The studio with the mixing console, the control room with the record player behind the inner window, and the
+## kitchen with its counter, coffee maker and fridge.
+func _build_studio() -> void:
+	_build.wall_at("z", STUDIO_X1, BACK_Z, -2.0, 0.0, WALL_TOP, [], STUDIO_WALL)
+	_build.wall_at("z", STUDIO_X1, -2.0, 2.0, 0.0, WINDOW_LOW, [], STUDIO_WALL)
+	_build.wall_at("z", STUDIO_X1, -2.0, 2.0, WINDOW_HIGH, WALL_TOP - WINDOW_HIGH, [], STUDIO_WALL)
+	_build.wall_at("z", STUDIO_X1, 2.0, FRONT_Z, 0.0, WALL_TOP, [], STUDIO_WALL)
+	_pane(Vector3(STUDIO_X1, (WINDOW_LOW + WINDOW_HIGH) / 2, 0.0), Vector3(0.04, WINDOW_HIGH - WINDOW_LOW, 4.0))
+	_build.wall_at("z", KITCHEN_X0, BACK_Z, FRONT_Z, 0.0, WALL_TOP, [], WALL_IN)
+	_model(CONSOLE_MODEL, CONSOLE_AT)
+	_build.shape(_build.body(CONSOLE_AT + Vector3(0, CONSOLE_SIZE.y / 2, 0)), CONSOLE_SIZE)
+	for x: float in [-5.6, -4.4]:
+		_build.box(Vector3(x, FLOOR_TOP + 0.25, -1.6), Vector3(0.5, 0.5, 0.5), DARK)
+	_model(PLAYER_MODEL, PLAYER_AT)
+	_build.shape(_build.body(PLAYER_AT + Vector3(0, PLAYER_SIZE.y / 2, 0)), PLAYER_SIZE)
+	_build.box(Vector3(6.5, FLOOR_TOP + 0.45, -3.4), Vector3(3.0, 0.9, 0.6), WOOD)
+	_build.mesh_box(Vector3(5.8, FLOOR_TOP + 1.05, -3.4), Vector3(0.25, 0.3, 0.2), DARK)
+	_build.box(Vector3(8.2, FLOOR_TOP + 0.9, -3.2), Vector3(0.8, 1.8, 0.7), TILE)
+	for at: Vector3 in [Vector3(-5.0, 2.2, 0.0), Vector3(1.5, 2.2, 0.0), Vector3(6.5, 2.2, 0.0)]:
+		_build.light(at).light_energy = 0.5
+
+
+## The back rooms: the record archive behind its locked door with its rows of shelves, the storage room with boxes of
+## cables, and the bathroom.
+func _build_back() -> void:
+	_build.wall_at("x", BACK_Z, -HALF_X, HALF_X, 0.0, WALL_TOP, [ARCHIVE_DOOR_X, STORAGE_DOOR_X, BATH_DOOR_X], WALL_IN)
+	_build.wall_at("z", ARCHIVE_X1, -HALF_Z, BACK_Z, 0.0, WALL_TOP, [], WALL_IN)
+	_build.wall_at("z", BATH_X0, -HALF_Z, BACK_Z, 0.0, WALL_TOP, [], TILE)
+	for z: float in SHELF_ROWS:
+		for i in SHELF_COUNT:
+			var at := Vector3(SHELF_X0 + SHELF_SIZE.x / 2 + i * SHELF_SIZE.x, FLOOR_TOP, z)
+			_model(SHELF_MODEL, at)
+			_build.shape(_build.body(at + Vector3(0, SHELF_SIZE.y / 2, 0)), SHELF_SIZE)
+		var shelves := _area(Vector3(SHELF_X0 + SHELF_SIZE.x * SHELF_COUNT / 2, FLOOR_TOP + SHELF_SIZE.y / 2, z),
+			Vector3(SHELF_SIZE.x * SHELF_COUNT, SHELF_SIZE.y, SHELF_SIZE.z + 0.6))
+		shelves.body_entered.connect(func(body: Node3D) -> void:
+			if body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > RECORD_SPEED:
+				drop_record(body.global_position))
+	archive_door = DOOR_SCENE.instantiate()
+	archive_door.position = Vector3(ARCHIVE_DOOR_X - GameScale.DOOR_WIDTH / 2, 0.0, BACK_Z)
+	add_child(archive_door)
+	for i in 3:
+		_build.box(Vector3(1.2 + i * 0.7, FLOOR_TOP + 0.25, -10.4), Vector3(0.6, 0.5, 0.5), Color(0.7, 0.55, 0.35))
+	_build.box(Vector3(7.8, FLOOR_TOP + 0.25, -10.4), Vector3(0.5, 0.5, 0.6), TILE)
+	_build.box(Vector3(5.6, FLOOR_TOP + 0.45, -7.0), Vector3(0.5, 0.9, 0.6), TILE)
+	for at: Vector3 in [Vector3(-4.5, 2.2, -7.7), Vector3(2.5, 2.2, -7.5), Vector3(7.0, 2.2, -7.5)]:
+		_build.light(at).light_energy = 0.4
+
+
+## The stair up the east wall to a landing on the roof, the antenna with its blinking red light, and a low parapet.
+func _build_roof() -> void:
+	_build.stairs(STAIR_FOOT, STAIR_RUN, STEEL)
+	_build.slab(HALF_X, STAIR_FOOT.x + GameScale.STAIR_WIDTH / 2, STAIR_FOOT.z - STAIR_RUN - 1.0,
+		STAIR_FOOT.z - STAIR_RUN, ROOF_TOP, STEEL)
+	_model(ANTENNA_MODEL, ANTENNA_AT)
+	_build.shape(_build.body(ANTENNA_AT + Vector3(0, 3.0, 0)), Vector3(0.5, 6.0, 0.5))
+	_bulb = OmniLight3D.new()
+	_bulb.light_color = RED
+	_bulb.light_energy = 2.0
+	_bulb.omni_range = 4.0
+	_bulb.position = ANTENNA_AT + Vector3(0, 6.9, 0)
+	$Built.add_child(_bulb)
+	for side: float in [-1.0, 1.0]:
+		_build.box(Vector3(0, ROOF_TOP + 0.25, side * (HALF_Z - 0.1)), Vector3(HALF_X * 2, 0.5, 0.2), OUTSIDE)
+	_build.box(Vector3(-HALF_X + 0.1, ROOF_TOP + 0.25, 0), Vector3(0.2, 0.5, HALF_Z * 2), OUTSIDE)
+
+
+func _process(delta: float) -> void:
+	_blink += delta
+	_bulb.visible = fmod(_blink, 1.2) < 0.6
+
+
+## Cracks the studio's window, once: a fine and a crack across it.
+func break_glass() -> void:
+	if glass_cracked:
+		return
+	glass_cracked = true
+	broken_goods += 1
+	fines += GLASS_FINE
+	var center := _glass.position
+	_build.mesh_box(center + Vector3(0.2, 0.1, 0.03), Vector3(2.4, 0.04, 0.01), DARK)
+	_build.mesh_box(center + Vector3(-0.3, -0.1, 0.03), Vector3(0.04, 0.9, 0.01), DARK)
+	_say(center + Vector3(0, 1.0, 0.6), "RADIO_GLASS_BROKEN")
+	glass_broken.emit()
+
+
+## A record falls off the shelves near `at` and breaks on the floor: a fine each, up to MAX_RECORDS.
+func drop_record(at: Vector3) -> void:
+	if records_broken >= MAX_RECORDS:
+		return
+	records_broken += 1
+	broken_goods += 1
+	fines += RECORD_FINE
+	var local := to_local(at)
+	for i in 3:
+		_build.mesh_box(Vector3(local.x + (i - 1) * 0.12, FLOOR_TOP + 0.01, local.z + 0.45 + i * 0.05),
+			Vector3(0.12, 0.01, 0.1), Color.BLACK)
+	_say(Vector3(local.x, FLOOR_TOP + 2.0, local.z + 0.5), "RADIO_RECORD_BROKEN")
+	record_broken.emit()
+
+
+## A solid pane of glass you can see through.
+func _pane(center: Vector3, size: Vector3) -> MeshInstance3D:
+	_build.shape(_build.body(center), size)
+	var look := MeshInstance3D.new()
+	var box := BoxMesh.new()
+	box.size = size
+	look.mesh = box
+	var see_through := StandardMaterial3D.new()
+	see_through.albedo_color = GLASS
+	see_through.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	look.material_override = see_through
+	look.position = center
+	$Built.add_child(look)
+	return look
+
+
+func _area(center: Vector3, size: Vector3) -> Area3D:
+	var area := Area3D.new()
+	area.position = center
+	area.collision_layer = 0
+	area.collision_mask = 4
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = size
+	shape.shape = box
+	area.add_child(shape)
+	add_child(area)
+	return area
+
+
+## A floating line over `at` for a few seconds.
+func _say(at: Vector3, key: String) -> void:
+	var label := Label3D.new()
+	label.text = key
+	label.font_size = 48
+	label.pixel_size = 0.01
+	label.outline_size = 12
+	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	label.position = at
+	add_child(label)
+	get_tree().create_timer(3.0).timeout.connect(label.queue_free)
+
+
+## A model only for the look, standing at `at` and turned `turn` around Y.
+func _model(scene: PackedScene, at: Vector3, turn := 0.0) -> Node3D:
+	var look: Node3D = scene.instantiate()
+	look.position = at
+	look.rotation.y = turn
+	$Built.add_child(look)
+	return look

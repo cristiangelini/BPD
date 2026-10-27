@@ -5588,3 +5588,24 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+PLACE_RADIO,RADIO LA ANTENA LOCA,RADIO LA ANTENA LOCA,RÁDIO LA ANTENA LOCA
+RADIO_FREQUENCY,FM 104.7 · ¡Siempre al aire!,FM 104.7 · Always on air!,FM 104.7 · Sempre no ar!
+MENU_RADIO,Radio (allanamiento) (prueba),Radio station (raid) (test),Rádio (batida) (teste)
+CASE_FAILED_LAWYER_RADIO,"Don Volumen llamó a su abogado... y lo contó al aire. Caso perdido.","Don Volumen called his lawyer... and told it on air. Case lost.","Seu Volumen ligou para o advogado... e contou no ar. Caso perdido."
+HINT_TILL_KEY_RADIO,"Una llave con una etiqueta: «ARCHIVO».","A key with a tag: «ARCHIVE».","Uma chave com uma etiqueta: «ARQUIVO»."
+RADIO_ON_AIR,AL AIRE,ON AIR,NO AR
+RADIO_RANKING,RANKING DE LA SEMANA,THIS WEEK'S CHART,RANKING DA SEMANA
+RADIO_GLASS_BROKEN,¡Eso salió al aire!,That went out on air!,Isso saiu no ar!
+RADIO_RECORD_BROKEN,¡Un disco de colección!,A collector's record!,Um disco de coleção!
+LOC_behind_reception_desk,detrás del mostrador de la recepción,behind the reception desk,atrás do balcão da recepção
+LOC_behind_radio_sofa,detrás del sillón de la recepción,behind the reception sofa,atrás do sofá da recepção
+LOC_in_record_archive,al fondo del archivo de discos,at the back of the record archive,no fundo do arquivo de discos
+LOC_in_radio_storage,entre los cables del depósito,among the cables in the storage room,entre os cabos do depósito
+LOC_in_radio_bathroom,en el baño de la radio,in the radio's bathroom,no banheiro da rádio
+LOC_on_radio_roof,"en el techo, al pie de la antena","on the roof, at the foot of the antenna","no telhado, ao pé da antena"
+LOC_in_mailbox,en el buzón de las cartas,in the letters' mailbox,na caixa de cartas
+LOC_on_record_shelf,arriba de una estantería de discos,on top of a record shelf,em cima de uma estante de discos
+LOC_on_kitchen_fridge,arriba de la heladera de la cocina,on top of the kitchen fridge,em cima da geladeira da cozinha
+LOC_under_ranking,debajo del ranking de la semana,under this week's chart,embaixo do ranking da semana
+LOC_in_control_room,en la sala de control,in the control room,na sala de controle
+LOC_behind_console,detrás de la consola del estudio,behind the studio's console,atrás da mesa do estúdio

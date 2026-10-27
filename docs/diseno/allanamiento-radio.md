@@ -79,6 +79,8 @@ entre 400 y 600.
 1. La radio como lugar: el edificio en la manzana (7, 3) con la antena, la recepción, el estudio con la pecera, la sala
    de control, el archivo con llave, la cocina, el baño, el depósito, lo frágil y los escondites. Modelos nuevos con
    modelgen.
+   **Hecho (paso 1):** `scripts/levels/radio_station.gd` y `scenes/levels/radio_station.tscn`, con "Radio
+   (allanamiento, prueba)" en el menú. Capturas en la carpeta del proyecto `radio/paso1-*.png`.
 2. La luz "AL AIRE", el micrófono y el teléfono de los oyentes que suena con cada ruido.
 3. Don Volumen: la ronda, la denuncia y el tema largo del tocadiscos.
 4. Doña Rosa por teléfono.
