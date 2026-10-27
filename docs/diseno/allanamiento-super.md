@@ -173,6 +173,11 @@ suman entre 400 y 600.
      va a un escondite pesado, con el molde de las hormas (4 kg, 300) y la cera amarilla (1 kg, 200). Delante de la
      heladera hay una mesa con 4 hormas de 10 kg, y una de ellas es de plástico. Si se cae, rebota como una pelota
      («¡Boing!»), y el primer rebote es la pista. Captura: `paso6-queso.png`.
+   - **Los changuitos de doble fondo (propuesta):** el changuito lleno de mercadería (15 kg, 1000) va siempre en un
+     escondite grande, con la soldadora (6 kg, 300) y el plano para agrandar changuitos (0,1 kg, 200). Uno de los 8
+     changuitos del súper (sale de la semilla) también tiene doble fondo: empujado, tira para un costado (gira al
+     policía 0,35 por segundo) y cada 2 s suena «¡Clinc clinc!»; el primer clinc es la pista. Capturas:
+     `paso6-changuitos.png` y `paso6-changuitos-doble.png`.
 7. "Jugar" suma el súper al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online (Don Ofertón, Lalo, los clientes, los changuitos y lo frágil en todas las PC).
 

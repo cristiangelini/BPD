@@ -110,8 +110,7 @@ export function buildFoodCan() {
 
 // A shopping cart 0.6 m wide, 0.95 m long (along Z, the handle at +Z) and 1.0 m tall: a wire basket of thin bars on a
 // frame with four small wheels, the red handle and the folding child seat by it.
-export function buildShoppingCart() {
-	const b = new Builder('shopping_cart');
+function cartParts(b) {
 	const wire = mat('cart_wire', 0xc8ccd2), frame = mat('cart_frame', 0x8a8e94), red = mat('cart_red', 0xd23a3a), wheel = mat('cart_wheel', 0x26262a);
 	const y0 = 0.35, y1 = 0.95;
 	b.add('floor', wire, new THREE.BoxGeometry(0.56, 0.02, 0.9), { pos: V(0, y0, 0) });
@@ -133,6 +132,11 @@ export function buildShoppingCart() {
 	b.add('base_bar', frame, new THREE.BoxGeometry(0.5, 0.025, 0.8), { pos: V(0, 0.1, 0) });
 	b.add('handle', red, new THREE.CylinderGeometry(0.02, 0.02, 0.6, 8), { pos: V(0, y1 + 0.12, 0.52), rot: [0, 0, Math.PI / 2] });
 	b.add('seat', red, new THREE.BoxGeometry(0.4, 0.02, 0.18), { pos: V(0, y1 - 0.1, 0.36) });
+}
+
+export function buildShoppingCart() {
+	const b = new Builder('shopping_cart');
+	cartParts(b);
 	return b.build();
 }
 
@@ -240,7 +244,35 @@ export function buildWaxBlock() {
 	return b.build();
 }
 
+// The double-bottomed carts' story: a cart with a false floor stuffed with goods, a welder and the plan to "enlarge
+// carts".
+export function buildDoubleCart() {
+	const b = new Builder('super_double_cart');
+	cartParts(b);
+	const goods = [0xe8473a, 0xf2c230, 0x3a8ad2, 0x46b45a];
+	for (let i = 0; i < 6; i++) b.add('goods', mat(`hidden_goods_${i % 4}`, goods[i % 4]), new THREE.BoxGeometry(0.16, 0.12, 0.22), { pos: V(-0.17 + (i % 3) * 0.17, 0.27, -0.2 + Math.floor(i / 3) * 0.4) });
+	b.add('false_floor', mat('false_floor', 0x8a8e94), new THREE.BoxGeometry(0.56, 0.02, 0.9), { pos: V(0, 0.2, 0) });
+	return b.build();
+}
+
+export function buildWelder() {
+	const b = new Builder('super_welder');
+	b.add('box', mat('welder_red', 0xc83a2a), new THREE.BoxGeometry(0.36, 0.26, 0.2), { pos: V(0, 0.13, 0) });
+	b.add('dial', M.black, new THREE.CylinderGeometry(0.04, 0.04, 0.02, 10), { pos: V(-0.08, 0.16, 0.105), rot: [Math.PI / 2, 0, 0] });
+	b.add('handle', M.black, new THREE.BoxGeometry(0.24, 0.03, 0.03), { pos: V(0, 0.3, 0) });
+	b.add('torch', mat('welder_torch', 0x3a3a40), new THREE.CylinderGeometry(0.02, 0.02, 0.22, 8), { pos: V(0.24, 0.05, 0.05), rot: [0, 0, Math.PI / 2] });
+	return b.build();
+}
+
+export function buildCartPlan() {
+	const b = new Builder('super_cart_plan');
+	b.add('paper', mat('plan_blue', 0x3a6ad2), new THREE.BoxGeometry(0.42, 0.004, 0.3), { pos: V(0, 0.002, 0) });
+	for (let i = 0; i < 3; i++) b.add('lines', mat('plan_line', 0xf2f2ea), new THREE.BoxGeometry(0.3, 0.002, 0.008), { pos: V(0, 0.005, -0.08 + i * 0.08) });
+	return b.build();
+}
+
 export const models = {
+	super_double_cart: buildDoubleCart, super_welder: buildWelder, super_cart_plan: buildCartPlan,
 	super_cheese_wheel: buildCheeseWheel, super_fake_cheese: buildFakeCheese, super_cheese_mold: buildCheeseMold,
 	super_wax_block: buildWaxBlock,
 	super_price_gun: buildPriceGun, super_label_box: buildLabelBox, super_old_yogurt: buildOldYogurt,
@@ -259,6 +291,10 @@ export const views = {
 			{ name: 'shopping_cart', pos: [-0.6, 0, 2.2], rotY: 0.6 },
 		],
 		cam: { pos: [0, 3.0, 7.5], target: [0.4, 0.9, 0], fov: 50 },
+	},
+	carts: {
+		items: [{ name: 'super_double_cart', pos: [-0.5, 0, 0], rotY: 0.5 }, { name: 'super_welder', pos: [0.5, 0, 0.2] }, { name: 'super_cart_plan', pos: [0.4, 0, -0.4] }],
+		cam: { pos: [0, 1.6, 2.6], target: [0, 0.4, 0], fov: 40 },
 	},
 	cheese: {
 		items: [{ name: 'super_fake_cheese', pos: [-0.5, 0, 0] }, { name: 'super_cheese_wheel', pos: [0.2, 0, 0.3] }, { name: 'super_cheese_mold', pos: [0.4, 0, -0.5] }, { name: 'super_wax_block', pos: [0.6, 0, 0.4] }],

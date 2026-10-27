@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Supermarket raid, step 6: the false-bottomed carts story: a 15 kg cart full of goods under a false floor hidden with a welder and the plan to enlarge carts; one of the store's own eight carts has a false floor too and, pushed, pulls the cop to one side and clinks like bottles (the first clink is the clue).
 - Supermarket raid, step 6: the fake cheese story: a 25 kg plastic cheese wheel full of bills hidden with its mold and a block of yellow wax; on the cheese table by the dairy fridge one of the four 10 kg wheels is plastic and bounces like a ball when dropped (the first bounce is the clue).
 - Supermarket raid, step 5: the supermarket is now a raid case like the gym (the comisario's tip, 3 suspicions among its 6 stories, Don Ofertón's slips and lawyer, Lalo's clue and the interrogation) with its first story, the changed dates: the labeling gun that prints "expires in 2099" hidden with the box of old labels and a 30-year-old yogurt; a can on aisle 3 has its label peeling off over another date (the clue) and the snack on aisle 2 tastes like another century.
 - Supermarket raid, step 4: Lalo, the stocker, builds his pyramid of cans by aisle 4 next to a crate of cans; a cop who drops three cans by his hands, one at a time, hears what he saw (once per cop), and his pyramid falling starts the count over.
