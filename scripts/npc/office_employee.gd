@@ -91,6 +91,17 @@ func hold_cup(holding: bool) -> void:
 	part("cup_right").visible = holding and not traits.get("left", false)
 
 
+## Online (NpcSync): what a guest's copy shows besides where he is: off for a coffee, the cup in his hand, his teeth.
+func net_state() -> Array:
+	return [on_break, part("cup_left").visible or part("cup_right").visible, part("teeth").visible]
+
+
+func apply_net_state(state: Array) -> void:
+	on_break = state[0]
+	hold_cup(state[1])
+	part("teeth").visible = state[2]
+
+
 func _physics_process(delta: float) -> void:
 	super(delta)
 	if heading_back and not walking():

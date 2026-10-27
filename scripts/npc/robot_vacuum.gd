@@ -46,6 +46,16 @@ func use(_cop: Cop) -> void:
 	position.y += SIZE.y if flipped else -SIZE.y
 
 
+## Online (NpcSync): a guest's Pelusa only follows the host's, where it goes and whether it's on its back.
+func net_state() -> Array:
+	return [running, flipped]
+
+
+func apply_net_state(state: Array) -> void:
+	running = state[0]
+	flipped = state[1]
+
+
 func _physics_process(delta: float) -> void:
 	if not running or route.is_empty():
 		return

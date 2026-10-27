@@ -178,3 +178,9 @@ ChaseDrops (los bidones, como las valijas del hotel), PlaceDraw y la custodia pa
   calle. Con E se para en la vereda; si el patrullero lo pisa rápido, revienta y las ruedas patinan 2 s como en un
   charco. Agarrado o entregado, al turno siguiente es el interrogatorio del empleado, que sigue con el traje gris
   (`owner_employee`). Capturas `paso5-*.png`.
+- **Paso 6 (Jugar y online):** Jugar sortea la oficina entre las escenas del crimen, un quinto cada una (pastelería,
+  circo, museo, hotel y oficina). Online la oficina del host manda: la campanita de cambio de escritorio, la máquina de
+  café y Pelusa corren solo en el host. Los invitados ven a los empleados, a Benja, a Pelusa y los bidones de la
+  camioneta como copias (`NpcSync`). También copian el café en la mano, los dientes y quién está en su descanso, Pelusa
+  dada vuelta y Benja ofendido o con la pila entregada. La pantalla de la máquina, los escritorios y la pisada aspirada
+  vienen con el caso (`FormsOffice.net_state`).
