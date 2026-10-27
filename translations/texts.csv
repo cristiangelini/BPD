@@ -5674,3 +5674,15 @@ LOC_FARM_under_stall,debajo del puesto de la feria,under the market stall,embaix
 PROMPT_EGG,Clic: agarrar el huevo (con cuidado),Click: grab the egg (carefully),Clique: pegar o ovo (com cuidado)
 FARMER_EGG,"¡Mis huevos! ¡Esos eran para la feria!","My eggs! Those were for the market!","Meus ovos! Eram para a feira!"
 FARMER_GLASS,"¡El invernadero! ¡Ahí tenía los tomates!","The greenhouse! My tomatoes were in there!","A estufa! Meus tomates estavam ali!"
+BRIEF_COW_OWNERS_B,"Don Florencio vendió a la vaca Margarita doce veces. Le pinta manchas nuevas antes de cada venta y ella vuelve sola.","Don Florencio sold Margarita the cow twelve times. He paints new spots on her before each sale and she walks back home.","Dom Florencio vendeu a vaca Margarita doze vezes. Pinta manchas novas nela antes de cada venda e ela volta sozinha."
+BRIEF_COW_OWNERS_C,"Traigan la carpeta con los recibos de las doce ventas en el baúl del patrullero. A la vaca déjenla, que ya tuvo suficientes dueños.","Bring the folder with the receipts of the twelve sales in the patrol car's trunk. Leave the cow, she's had enough owners.","Tragam a pasta com os recibos das doze vendas no porta-malas da viatura. Deixem a vaca, ela já teve donos demais."
+BRIEF_COW_OWNERS_D,"Si encuentran el cencerro con los nombres o el pincel de las manchas, mejor: todo suma.","If you find the cowbell with the names or the spot brush, even better: it all counts.","Se acharem o chocalho com os nomes ou o pincel das manchas, melhor: tudo conta."
+OBJ_FIND_COW_RECEIPTS,Llevarse la carpeta de recibos de la vaca,Take the folder of the cow's receipts,Levar a pasta de recibos da vaca
+OBJ_EXTRA_COWBELL_NAMES,Extra: el cencerro con doce nombres,Extra: the cowbell with twelve names,Extra: o chocalho com doze nomes
+OBJ_EXTRA_SPOT_BRUSH,Extra: el pincel de las manchas negras,Extra: the black spots brush,Extra: o pincel das manchas pretas
+PANCHO_CLUE_many_owners_cow,"«¡Gracias! Te cuento: vi al tío esconder algo %s. Y anoche le estaba pintando las manchas a Margarita.»","“Thanks! Here's the thing: I saw my uncle hide something %s. And last night he was painting Margarita's spots.”","“Valeu! Te conto: vi o tio esconder algo %s. E ontem à noite ele estava pintando as manchas da Margarita.”"
+CLUE_COW_PAINT,"Acariciaste a Margarita y te quedó la mano negra. Sus manchas son de pintura fresca.","You patted Margarita and your hand came away black. Her spots are fresh paint.","Você fez carinho na Margarita e ficou com a mão preta. As manchas dela são de tinta fresca."
+FARM_BLACK_HAND,¡Mano negra!,Black hand!,Mão preta!
+FARM_GATE_CREAK,¡Ñiiic! La tranquera se abrió sola,Creak! The gate swung open by itself,Nhéc! A porteira se abriu sozinha
+PROMPT_PET_COW,E: acariciar a Margarita,E: pat Margarita,E: fazer carinho na Margarita
+COW_MOO,¡Muuu!,Moooo!,Muuu!

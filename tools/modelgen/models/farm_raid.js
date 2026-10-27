@@ -239,6 +239,42 @@ export const models = {
 		b.add('drawing', C('flyer_ink', 0x3a2a8a), new THREE.BoxGeometry(0.16, 0.002, 0.02), { pos: V(0, 0.006, 0.115) });
 		return b.build();
 	},
+	// The folder of receipts: Margarita sold twelve times, a fat brown folder with papers sticking out. 0.32 x 0.24 m,
+	// about 0.06 m thick, flat on y = 0.
+	cow_receipts() {
+		const b = new Builder('cow_receipts');
+		const card = C('folder_brown', 0xa07040), paper = C('receipt_paper', 0xf4f0e2);
+		b.add('folder', card, new THREE.BoxGeometry(0.32, 0.01, 0.24), { pos: V(0, 0.005, 0) });
+		b.add('folder', card, new THREE.BoxGeometry(0.32, 0.01, 0.24), { pos: V(0, 0.055, 0) });
+		for (let i = 0; i < 5; i++) {
+			b.add('receipts', paper, new THREE.BoxGeometry(0.3, 0.008, 0.22), { pos: V(0.01 * (i % 2), 0.015 + i * 0.008, 0.012 * (i - 2)), rot: [0, 0.06 * (i - 2), 0] });
+		}
+		b.add('cow_spots', C('spot_black', 0x1a1a1a), ellipsoid(0.04, 0.002, 0.03, 8, 2), { pos: V(-0.08, 0.061, 0.04) });
+		b.add('elastic', C('elastic_red', 0xd0302a), new THREE.BoxGeometry(0.33, 0.012, 0.015), { pos: V(0, 0.03, -0.07) });
+		return b.build();
+	},
+	// The cowbell with twelve names scratched on it, hanging from a red strap. About 0.18 m tall, bottom at y = 0.
+	cowbell_names() {
+		const b = new Builder('cowbell_names');
+		const brass = C('bell_brass', 0xc89a3a, { metalness: 0.6, roughness: 0.35 });
+		b.add('bell', brass, new THREE.CylinderGeometry(0.045, 0.07, 0.13, 10), { pos: V(0, 0.065, 0) });
+		b.add('clapper', C('clapper_iron', 0x505050), new THREE.SphereGeometry(0.02, 8, 6), { pos: V(0, 0.01, 0) });
+		for (let i = 0; i < 4; i++) {
+			b.add('names', C('names_scratch', 0x7a5a20), new THREE.BoxGeometry(0.05, 0.006, 0.004), { pos: V(0, 0.04 + i * 0.022, 0.06 - i * 0.004) });
+		}
+		b.add('strap', C('strap_red', 0xb02a2a), new THREE.TorusGeometry(0.06, 0.012, 6, 14), { pos: V(0, 0.16, 0) });
+		return b.build();
+	},
+	// The brush with fresh black paint for the cow's spots, in a jar of black paint. About 0.3 m tall, bottom at y = 0.
+	spot_brush() {
+		const b = new Builder('spot_brush');
+		const black = C('spot_black', 0x1a1a1a);
+		b.add('jar', C('jar_glass', 0xb8d0d8, { roughness: 0.2 }), new THREE.CylinderGeometry(0.05, 0.05, 0.1, 10), { pos: V(0, 0.05, 0) });
+		b.add('paint', black, new THREE.CylinderGeometry(0.047, 0.047, 0.07, 10), { pos: V(0, 0.037, 0) });
+		b.add('handle', C('brush_wood', 0xc89060), new THREE.CylinderGeometry(0.01, 0.01, 0.24, 6), { pos: V(0.01, 0.17, 0), rot: [0, 0, -0.15] });
+		b.add('bristles', black, new THREE.BoxGeometry(0.04, 0.05, 0.015), { pos: V(-0.003, 0.06, 0), rot: [0, 0, -0.15] });
+		return b.build();
+	},
 	// One egg, white like the hens lay them, bottom at y = 0. 0.06 x 0.08 m.
 	farm_egg() {
 		const b = new Builder('farm_egg');
@@ -263,6 +299,11 @@ export const views = {
 			{ name: 'hay_bale', pos: [0.4, 0, 1.4], rotY: 0.3 }, { name: 'feed_bell', pos: [-1.4, 0, 1.6] },
 			{ name: 'egg_basket', pos: [1.6, 0, 1.6] }],
 		cam: { pos: [0.3, 3.0, 9.5], target: [0.3, 0.8, 0], fov: 40 },
+	},
+	farm_cow_owners: {
+		items: [{ name: 'cow_receipts', pos: [-0.35, 0, 0.1], rotY: 0.3 }, { name: 'cowbell_names', pos: [0.15, 0, -0.05] },
+			{ name: 'spot_brush', pos: [0.45, 0, 0.2] }],
+		cam: { pos: [0, 0.8, 1.4], target: [0.05, 0.08, 0.05], fov: 34 },
 	},
 	farm_golden_eggs: {
 		items: [{ name: 'golden_egg_box', pos: [-0.4, 0, 0], rotY: 0.3 }, { name: 'gold_paint_can', pos: [0.3, 0, 0.1] },

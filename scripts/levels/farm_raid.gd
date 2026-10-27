@@ -31,7 +31,7 @@ const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_FARM_TIP_B", "BRI
 	"BRIEF_FARM_TIP_E"]
 ## The stories the farm can tell, like GymRaid.STORIES: what the comisario says once it's guessed, its "find it" row,
 ## what it hides in spots drawn with the seed (the first one is the main evidence), their half heights and whether
-## they're heavy, the checklist rows of its extras and its rig. The other five stories come one per PR (step 6).
+## they're heavy, the checklist rows of its extras and its rig. The other stories come one per PR (step 6).
 const STORIES := {
 	"golden_eggs": {
 		"briefing": ["BRIEF_RIGHT", "BRIEF_GOLDEN_EGGS_B", "BRIEF_GOLDEN_EGGS_C", "BRIEF_GOLDEN_EGGS_D"],
@@ -42,6 +42,16 @@ const STORIES := {
 		"heavy": [true, false, false],
 		"extra_keys": ["OBJ_EXTRA_GOLD_PAINT", "OBJ_EXTRA_MAGIC_HEN_FLYER"],
 		"rig": preload("res://scripts/case/farm/golden_eggs_rig.gd"),
+	},
+	"many_owners_cow": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_COW_OWNERS_B", "BRIEF_COW_OWNERS_C", "BRIEF_COW_OWNERS_D"],
+		"find": "OBJ_FIND_COW_RECEIPTS",
+		"hidden": [preload("res://scenes/props/cow_receipts.tscn"), preload("res://scenes/props/cowbell_names.tscn"),
+			preload("res://scenes/props/spot_brush.tscn")],
+		"half_heights": [0.03, 0.12, 0.145],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_COWBELL_NAMES", "OBJ_EXTRA_SPOT_BRUSH"],
+		"rig": preload("res://scripts/case/farm/cow_owners_rig.gd"),
 	},
 }
 ## Where the suspicion notes lie: on the yard's dirt, out of the buildings and the pens (Tota may eat them).
@@ -434,6 +444,9 @@ func _place_cow() -> void:
 	cow.position = COW_AT + Vector3.UP * 0.05
 	add_child(cow)
 	cow.returned.connect(func() -> void: _cow_seen = false)
+	cow.petted.connect(func(_cop: Cop) -> void:
+		if raid:
+			raid.float_label(tr("COW_MOO"), cow.global_position + Vector3.UP * 1.7, Color.WHITE))
 	for at: Vector3 in LOOSE_BALES:
 		var bale := Grabbable.new()
 		bale.mass = BALE_KG
