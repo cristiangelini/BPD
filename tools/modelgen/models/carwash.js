@@ -230,12 +230,51 @@ export function buildCarwashShampooBox() {
 	return b.build();
 }
 
+// The stolen painting rolled up (0.8 m long, 0.12 m across): a canvas roll with a bit of the painting showing at the
+// edge, tied with two strings.
+export function buildCarwashRolledPainting() {
+	const b = new Builder('carwash_rolled_painting');
+	b.add('roll', mat('canvas_back', 0xe8dcc0), new THREE.CylinderGeometry(0.06, 0.06, 0.8, 12), { pos: V(0, 0.06, 0), rot: [0, 0, Math.PI / 2] });
+	const colors = [0x2a5ab0, 0xe0a030, 0xc03a3a];
+	for (let i = 0; i < 3; i++) {
+		b.add('paint', mat(`canvas_paint_${i}`, colors[i]), new THREE.BoxGeometry(0.2, 0.01, 0.04), { pos: V(-0.25 + i * 0.22, 0.12, 0.03) });
+	}
+	for (const x of [-0.25, 0.25]) {
+		b.add('string', mat('canvas_string', 0x8a5a30), new THREE.TorusGeometry(0.062, 0.006, 4, 12), { pos: V(x, 0.06, 0), rot: [0, Math.PI / 2, 0] });
+	}
+	return b.build();
+}
+
+// The museum's plan (0.3 x 0.21 m): a blue sheet with white walls and a red cross on one room.
+export function buildCarwashMuseumPlan() {
+	const b = new Builder('carwash_museum_plan');
+	const white = mat('plan_white', 0xf0f4ff);
+	b.add('paper', mat('plan_blue', 0x2a4a9a), new THREE.BoxGeometry(0.3, 0.004, 0.21), { pos: V(0, 0.002, 0) });
+	for (const [x, z, w, d] of [[0, -0.08, 0.26, 0.006], [0, 0.08, 0.26, 0.006], [-0.13, 0, 0.006, 0.16], [0.13, 0, 0.006, 0.16], [0, 0, 0.006, 0.16]]) {
+		b.add('walls', white, new THREE.BoxGeometry(w, 0.002, d), { pos: V(x, 0.005, z) });
+	}
+	for (const r of [0.7, -0.7]) {
+		b.add('cross', mat('plan_red', 0xd03030), new THREE.BoxGeometry(0.06, 0.002, 0.01), { pos: V(0.065, 0.006, 0.03), rot: [0, r, 0] });
+	}
+	return b.build();
+}
+
+// The box cutter (0.16 m long): a yellow handle with the blade sticking out.
+export function buildCarwashCutter() {
+	const b = new Builder('carwash_cutter');
+	b.add('handle', mat('cutter_yellow', 0xf2d020), new THREE.BoxGeometry(0.12, 0.02, 0.03), { pos: V(-0.02, 0.01, 0) });
+	b.add('blade', mat('cutter_blade', 0xc8ccd4, { metalness: 0.8, roughness: 0.2 }), new THREE.BoxGeometry(0.05, 0.004, 0.018), { pos: V(0.065, 0.012, 0) });
+	return b.build();
+}
+
 export const models = {
 	wash_brush: buildWashBrush, wash_jets: buildWashJets, wash_blower: buildWashBlower, token_machine: buildTokenMachine,
 	vacuum_column: buildVacuumColumn, inflatable_man: buildInflatableMan, carwash_boiler: buildCarwashBoiler,
 	npc_don_chorro: buildDonChorro, npc_pompita: buildPompita, carwash_cash_bag: buildCarwashCashBag,
 	carwash_ledger: buildCarwashLedger, carwash_iron: buildCarwashIron, carwash_plates: buildCarwashPlates,
 	carwash_car_papers: buildCarwashCarPapers, carwash_shampoo_box: buildCarwashShampooBox,
+	carwash_rolled_painting: buildCarwashRolledPainting, carwash_museum_plan: buildCarwashMuseumPlan,
+	carwash_cutter: buildCarwashCutter,
 };
 
 export const views = {
@@ -249,6 +288,8 @@ export const views = {
 			{ name: 'carwash_cash_bag', pos: [-1.8, 0, 3.4] }, { name: 'carwash_ledger', pos: [2.0, 0, 3.4] },
 			{ name: 'carwash_iron', pos: [2.6, 0, 3.0] }, { name: 'carwash_plates', pos: [-0.6, 0, 3.6] },
 			{ name: 'carwash_car_papers', pos: [0.4, 0, 3.6] }, { name: 'carwash_shampoo_box', pos: [3.2, 0, 2.2] },
+			{ name: 'carwash_rolled_painting', pos: [-2.6, 0, 3.8] }, { name: 'carwash_museum_plan', pos: [1.2, 0, 3.9] },
+			{ name: 'carwash_cutter', pos: [1.6, 0, 3.6] },
 		],
 		cam: { pos: [0, 2.6, 9.0], target: [0, 1.5, 0], fov: 45 },
 	},
