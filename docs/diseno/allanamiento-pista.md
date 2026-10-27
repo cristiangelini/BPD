@@ -194,6 +194,18 @@ suman 500.
    Doña Pirueta ve que un policía levanta la prueba principal cerca, se escapa en auto como los otros dueños (la
    persecución de siempre, con sus 3 frases).
 8. El online.
+   Hecho así:
+   - **El anfitrión manda:** mueve a Doña Pirueta (con lo que dice) y decide los vidrios y la vitrina rotos, qué vaso
+     de chocolate se vuelca y lo que dice Copito. Los invitados lo reciben en el estado del caso.
+   - **Desde cualquier PC:** el botón azul de la pulidora, el botón rojo del DJ, la máquina de chocolate y el alquiler
+     de patines. La pulidora anda en todas las PC y, si una se atrasa más de 1 m, salta a donde va la del anfitrión.
+     Cuando Doña Pirueta termina de bailar en el anfitrión, termina en todas.
+   - **Los vasos:** los sirve el anfitrión con un nombre propio y a los invitados les llega una copia con el mismo
+     nombre; solo el vaso del anfitrión se vuelca solo, y la copia se vuelca cuando él lo dice.
+   - **Las historias:** los goles del marcador y el "¡CLANG!" del patín los decide el anfitrión y se ven en todas las
+     PC; la queja de la tintorería llega con el globito de Doña Pirueta. Las manchas rosadas, el parpadeo de las luces,
+     la bola de espejos y los destellos de la malla salen solos en cada PC, porque dependen de la pulidora o del
+     tiempo; los frascos de perfume los tira el anfitrión.
 
 ## Preguntas abiertas para Cristian
 1. ¿Te gusta que el hielo haga resbalar al policía sin patines, o es demasiado molesto para un lugar de allanamiento?

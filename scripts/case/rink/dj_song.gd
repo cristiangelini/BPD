@@ -73,6 +73,20 @@ func _show_notes() -> void:
 			_notes.visible = false)
 
 
+## Online, what the guests' booth takes from the host's (Rink.net_state): played there, the notes show here too.
+func net_state() -> Array:
+	return [plays, is_jammed, distractions, rest_left]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] > plays:
+		plays = state[0]
+		_show_notes()
+	is_jammed = state[1]
+	distractions = state[2]
+	rest_left = state[3]
+
+
 ## Her routine is over: back to her round.
 func fix() -> void:
 	is_jammed = false

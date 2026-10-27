@@ -22,6 +22,8 @@ const TURN_SPEED := 2.5
 const SHOVE_REACH := 2.0
 const SHOVE := 3.5
 const SHOVE_EVERY := 1.0
+## Online, a guest's resurfacer further along than this from the host's (m) jumps to it.
+const SYNC_SLACK := 1.0
 
 var run_left := 0.0
 var runs := 0
@@ -72,6 +74,20 @@ static func loop_length() -> float:
 	for i in LOOP.size():
 		total += LOOP[i].distance_to(LOOP[(i + 1) % LOOP.size()])
 	return total
+
+
+## Online, what the guests' resurfacer takes from the host's (Rink.net_state): started there, it starts here too.
+func net_state() -> Array:
+	return [runs, run_left, along]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] > runs:
+		start()
+		runs = state[0]
+	run_left = state[1]
+	if absf(along - state[2]) > SYNC_SLACK:
+		along = state[2]
 
 
 func _physics_process(delta: float) -> void:

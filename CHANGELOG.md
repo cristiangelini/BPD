@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Ice rink raid, step 8: the ice rink online. The host runs Doña Pirueta and decides the broken glass and trophies, the spilled cups and what Copito says; the resurfacer, the DJ's song, the hot chocolate machine and the skate rental work from any PC; the fixed match's goals and the golden skate's clang show on every PC.
 - Ice rink raid, step 7: Play's raid draw can land on the ice rink, and Doña Pirueta gets away in her car when she sees a cop pick up the main evidence nearby, with her own three lines in the chase.
 - Ice rink raid, step 6e: the real sequins story: the competition leotard with diamonds, the jeweler's loupe and the empty jewelry box hidden in the rink; the leotard glints in colors, brightly under the mirror ball, and the first time a cop sees it is the clue; Doña Pirueta wears a dull leotard and complains that the good one is at the dry cleaner's.
 - Ice rink raid, step 6d: the stolen power story: the coil of cable hooked to the street pole (5 kg) hidden in a big spot, the electricity bills at zero and the pliers; every time the resurfacer starts the hall's lights flicker for 1.5 s, and the first time is the clue; the mirror ball spins on its own, throwing colored spots on the ice.

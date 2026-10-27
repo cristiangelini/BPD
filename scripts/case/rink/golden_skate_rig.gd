@@ -32,8 +32,9 @@ func setup(place: Rink) -> void:
 	rink.add_child(sag)
 
 
+## Online the host hears who picks it up, and the guests' rink shows the clang (Rink.net_state).
 func _physics_process(_delta: float) -> void:
-	if not is_instance_valid(rink.main):
+	if not multiplayer.is_server() or not is_instance_valid(rink.main):
 		return
 	var held := not rink.main.holders.is_empty()
 	if held and not _held:
@@ -44,6 +45,20 @@ func _physics_process(_delta: float) -> void:
 ## A cop picked up the heavy skate: "clang". The first time it's a clue.
 func clang() -> void:
 	clangs += 1
-	rink.raid.float_label(tr("RINK_CLANG"), rink.main.global_position + Vector3.UP * 0.5, Color(1.0, 0.85, 0.3))
+	_show_clang()
 	if clangs == 1:
 		rink.raid.add_clue(tr("CLUE_HEAVY_SKATE"))
+
+
+func _show_clang() -> void:
+	rink.raid.float_label(tr("RINK_CLANG"), rink.main.global_position + Vector3.UP * 0.5, Color(1.0, 0.85, 0.3))
+
+
+func net_state() -> Array:
+	return [clangs]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] > clangs and is_instance_valid(rink.main):
+		_show_clang()
+	clangs = state[0]

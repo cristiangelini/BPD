@@ -20,8 +20,9 @@ var _steam: Label3D
 func _ready() -> void:
 	contact_monitor = true
 	max_contacts_reported = 4
+	# Online only the host's cup spills on its own; the guests' copies spill when it says (Rink.net_state).
 	body_entered.connect(func(_body: Node) -> void:
-		if _speed > SPILL_SPEED:
+		if _speed > SPILL_SPEED and multiplayer.is_server():
 			spill())
 	_steam = Label3D.new()
 	_steam.text = "~"
@@ -35,7 +36,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
-	if full and global_basis.y.dot(Vector3.UP) < SPILL_TILT:
+	if full and multiplayer.is_server() and global_basis.y.dot(Vector3.UP) < SPILL_TILT:
 		spill()
 	_speed = linear_velocity.length()
 
@@ -49,6 +50,11 @@ func spill() -> void:
 	_steam.modulate = Color(0.55, 0.3, 0.15)
 	get_tree().create_timer(2.0).timeout.connect(func() -> void: _steam.visible = false)
 	spilled.emit()
+
+
+## Online, the guests' copy has the host's name, so the host can say which cup spilled.
+func net_setup() -> Dictionary:
+	return {"name": name}
 
 
 func held_prompt_key(_cop: Cop) -> String:

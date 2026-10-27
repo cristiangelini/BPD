@@ -242,6 +242,8 @@ var song: DjSong
 var cocoa_button: PushButton
 var copito: ResurfacerDriver
 var cups: Array[CocoaCup] = []
+## Hot chocolates poured, so each cup has a name of its own, the same on every PC.
+var poured := 0
 ## Doña Pirueta, the owner, and her complaint bar.
 var owner_npc: FloorBoss
 var complaint_bar: ProgressBar
@@ -290,6 +292,8 @@ func _ready() -> void:
 	raid.failed_label = %CaseFailed
 	raid.shift_screen = $ShiftScreen
 	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
 	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	ice = RinkIce.new()
@@ -335,6 +339,37 @@ func _place_facts() -> Dictionary:
 		"broken": broken_goods,
 		"complaint": owner_npc.complaint,
 	}
+
+
+## Online, what the guests' rink takes from the host's (RaidCase.snapshot): the broken glass and trophies, the DJ's
+## song, what Copito said, the resurfacer, the spilled cups and what the story's rig decides on the host.
+func net_state() -> Dictionary:
+	var broken: Array[int] = []
+	for i in glass_panels.size():
+		if glass_panels[i] == null:
+			broken.append(i)
+	var spilled: Array[String] = []
+	for cup in find_children("Cup*", "CocoaCup", false, false):
+		if not (cup as CocoaCup).full:
+			spilled.append(cup.name)
+	return {"glass": broken, "trophies": trophies_cracked, "song": song.net_state(), "copito": copito.net_state(),
+		"resurfacer": resurfacer.net_state(), "spilled": spilled, "rig": rig.net_state() if rig else null}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	for index: int in state.glass:
+		break_glass(index)
+	if state.trophies:
+		break_trophies()
+	song.apply_net_state(state.song)
+	copito.apply_net_state(state.copito)
+	resurfacer.apply_net_state(state.resurfacer)
+	for cup_name: String in state.spilled:
+		var cup := get_node_or_null(NodePath(cup_name)) as CocoaCup
+		if cup:
+			cup.spill()
+	if rig and state.rig != null:
+		rig.apply_net_state(state.rig)
 
 
 ## The story with that id from --story=<id> among the user args, or one drawn from the seed.
@@ -532,7 +567,8 @@ func _glass_panel(index: int) -> StaticBody3D:
 	panel.add_child(look)
 	var area := _area(center, Vector3(GLASS_SIZE.x, GLASS_SIZE.y, 0.6))
 	area.body_entered.connect(func(hit: Node3D) -> void:
-		if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > GLASS_SPEED:
+		if multiplayer.is_server() and hit is RigidBody3D \
+				and (hit as RigidBody3D).linear_velocity.length() > GLASS_SPEED:
 			break_glass(index))
 	return panel
 
@@ -601,7 +637,8 @@ func _build_lobby() -> void:
 	var area := _area(TROPHY_CASE_AT + Vector3(0, TROPHY_CASE_SIZE.y / 2, -TROPHY_CASE_SIZE.z / 2),
 		Vector3(TROPHY_CASE_SIZE.x, TROPHY_CASE_SIZE.y, 0.6))
 	area.body_entered.connect(func(hit: Node3D) -> void:
-		if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > GLASS_SPEED:
+		if multiplayer.is_server() and hit is RigidBody3D \
+				and (hit as RigidBody3D).linear_velocity.length() > GLASS_SPEED:
 			break_trophies())
 	_build.open_box(BAR_AT, BAR_SIZE, "-z", BOARD_STRIPE.darkened(0.2))
 	_model(COCOA_MODEL, COCOA_AT)
@@ -681,6 +718,8 @@ func _place_owner() -> void:
 
 ## Something heavy falling on the ice: "¡Me lo van a partir!".
 func _on_ice_hit(body: Node3D) -> void:
+	if not multiplayer.is_server():
+		return
 	var item := body as RigidBody3D
 	if item and item.mass >= HEAVY_KG and item.linear_velocity.y < -2.0:
 		owner_npc.saw(item.global_position, SAW_HEAVY, "PIRUETA_ICE_HIT")
@@ -691,6 +730,9 @@ func _physics_process(delta: float) -> void:
 		# Her routine: round and round in the middle of the ice, eyes closed.
 		_spin += SPIN * TAU * delta
 		owner_npc.fix_facing = owner_npc.global_position + Vector3(sin(_spin), 0, cos(_spin))
+	# Online she's the host's: only the host sees the shoes on the ice.
+	if not multiplayer.is_server():
+		return
 	_shoes_check += delta
 	if _shoes_check < SHOES_CHECK_EVERY:
 		return
@@ -718,6 +760,8 @@ func pour_cocoa(cop: Cop = null) -> CocoaCup:
 	if not multiplayer.is_server():
 		return null
 	var cup: CocoaCup = CUP_SCENE.instantiate()
+	poured += 1
+	cup.name = "Cup%d" % poured
 	cup.position = CUP_AT + Vector3(-0.16 * cups.size(), 0, 0)
 	add_child(cup)
 	cups.append(cup)
