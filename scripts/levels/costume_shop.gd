@@ -16,6 +16,7 @@ signal mirror_broken
 signal mask_case_broken
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const OWNER_SCENE := preload("res://scenes/npc/costume_owner.tscn")
 const COUNTER_MODEL := preload("res://assets/models/costume_counter.glb")
 const RACK_MODELS: Array[PackedScene] = [preload("res://assets/models/rack_pirates.glb"),
 	preload("res://assets/models/rack_animals.glb"), preload("res://assets/models/rack_monsters.glb"),
@@ -89,6 +90,18 @@ const AISLE_X := -8.5
 const TURN_GAP := 4.0
 const FIRST_TURN := 3.0
 
+## Don Fantoche's round: along the front aisle, past the counter, between the racks and back to the stock room. The
+## bell on the counter sends him for the biggest size to the shelf in the middle of the stock room, his back to the shop.
+const OWNER_ROUTE: Array[Vector3] = [Vector3(-7.5, FLOOR_TOP, 5.6), Vector3(0.5, FLOOR_TOP, 5.6),
+	Vector3(5.5, FLOOR_TOP, 5.0), Vector3(5.5, FLOOR_TOP, -0.6), Vector3(5.5, FLOOR_TOP, -5.5),
+	Vector3(-3.0, FLOOR_TOP, -5.5)]
+const BELL_ON := Vector3(7.9, FLOOR_TOP + 1.0, 6.6)
+const SIZE_SPOT := Vector3(-3.0, FLOOR_TOP, -8.7)
+## What he notices besides what every owner does: a customer's complaint (each one's own cooldown, CostumeCustomer)
+## and the cops' third ring.
+const CUSTOMER_COMPLAINT := 5.0
+const CAUGHT_ON := 10.0
+
 const OFFICE_X := 8.0
 const OFFICE_Z := -4.5
 const OFFICE_DOOR_X := 10.0
@@ -127,6 +140,9 @@ var station_parking: Transform3D
 var city_map: CityMap
 var office_door: FrontDoor
 var till: Till
+var owner_boss: FloorBoss
+var size_bell: SizeBell
+var complaint_bar: ProgressBar
 var mannequins: Array[CostumeMannequin] = []
 var customers: Array[CostumeCustomer] = []
 ## The customer whose turn it is (null between turns), the next one in line and how long until they go.
@@ -169,6 +185,7 @@ func _ready() -> void:
 	# The loose mannequins once the cop is out at the station, not standing in them.
 	_build_mannequins()
 	_build_customers()
+	_place_owner()
 
 
 ## The wooden floor, the walls with the doorway, the ceiling with its lights, the roof, the sign and its mustache.
@@ -296,6 +313,47 @@ func break_mask_case() -> void:
 	_build.mesh_box(CASE_AT + Vector3(-CASE_SIZE.x / 2 - 0.02, 1.1, 0), Vector3(0.02, 1.2, 2.3), DARK)
 	_say(CASE_AT + Vector3(-1.0, 2.2, 0), "COSTUME_CASE_BROKEN")
 	mask_case_broken.emit()
+
+
+## Don Fantoche on his round, the bell that sends him away, what he notices and the complaint bar.
+func _place_owner() -> void:
+	size_bell = SizeBell.new()
+	size_bell.name = "SizeBell"
+	size_bell.position = BELL_ON
+	add_child(size_bell)
+	_label("COSTUME_BELL_SIGN", BELL_ON + Vector3(0, 0.45, 0.1), 28, 0.0, 0.006)
+	owner_boss = OWNER_SCENE.instantiate()
+	for point: Vector3 in OWNER_ROUTE:
+		owner_boss.route.append(to_global(point))
+	owner_boss.printer = size_bell
+	owner_boss.printer_spot = to_global(SIZE_SPOT)
+	owner_boss.fix_facing = to_global(Vector3(SIZE_SPOT.x, 1.0, SHELF_Z))
+	add_child(owner_boss)
+	owner_boss.start_at(0)
+	size_bell.caught_on.connect(owner_boss.blame.bind(CAUGHT_ON, "FANTOCHE_CAUGHT_ON"))
+	customer_complained.connect(func(_customer: CostumeCustomer) -> void:
+		owner_boss.blame(CUSTOMER_COMPLAINT, "FANTOCHE_CUSTOMER"))
+	office_door.broken.connect(owner_boss.door_broken)
+	till.opened.connect(func(at: Vector3) -> void: owner_boss.saw(at, FloorBoss.SAW_TILL))
+	mirror_broken.connect(func() -> void: owner_boss.saw(to_global(MIRROR_AT), FloorBoss.SAW_BREAK, "FANTOCHE_MIRROR"))
+	mask_case_broken.connect(func() -> void:
+		owner_boss.saw(to_global(CASE_AT + Vector3.UP), FloorBoss.SAW_BREAK, "FANTOCHE_CASE"))
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	owner_boss.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
 
 
 ## The 8 mannequins, each one a loose body, facing the door.

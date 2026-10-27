@@ -3,7 +3,7 @@
 // the wig trunk, the sale basket, the office's safe and the giant mustache of the sign, with origins at the floor in
 // the middle of each piece (the mirror and the mustache at their middle). Placeholder, not final art.
 import { Builder, mat, ellipsoid, V, THREE } from '../lib.js';
-import { pearBody } from './pear.js';
+import { pearBody, eyes } from './pear.js';
 
 // The counter, 3.5 m long, 1 m tall and 0.8 m deep, its front to +Z: a red wooden box with a yellow top.
 export function buildCostumeCounter() {
@@ -194,6 +194,35 @@ export const buildMannequinChicken = () => mannequin('chicken');
 export const buildMannequinAstronaut = () => mannequin('astronaut');
 export const buildMannequinVampire = () => mannequin('vampire');
 
+// Don Fantoche, the owner: short and round, always in costume; today a pirate with a striped shirt, a red sash, an
+// eye patch, a black hat with a skull, a big curled mustache and a green plush parrot on his shoulder. The game
+// scales him short and wide.
+export function buildFantoche() {
+	const b = new Builder('npc_fantoche');
+	const shirt = mat('fantoche_shirt', 0xf6f2e2);
+	pearBody(b, mat('skin_fantoche', 0xe8b48a), { shirt, pants: mat('fantoche_pants', 0x3a3a8a), shoes: mat('fantoche_boots', 0x3a2a20), belted: false });
+	const stripe = mat('fantoche_stripe', 0xd83a30);
+	for (let i = 0; i < 3; i++) b.add('stripes', stripe, new THREE.CylinderGeometry(0.4 - i * 0.05, 0.42 - i * 0.05, 0.05, 12), { pos: V(0, 0.62 + i * 0.14, 0) });
+	b.add('sash', stripe, new THREE.CylinderGeometry(0.47, 0.47, 0.09, 14), { pos: V(0, 0.52, 0) });
+	eyes(b, 1.34, 0.17, 0.08, 0.05);
+	const black = mat('fantoche_black', 0x24242a);
+	b.add('patch', black, new THREE.BoxGeometry(0.09, 0.07, 0.02), { pos: V(0.08, 1.35, 0.2) });
+	b.add('patch', black, new THREE.BoxGeometry(0.38, 0.015, 0.015), { pos: V(0, 1.4, 0.17), rot: [0, 0, -0.25] });
+	for (const s of [-1, 1]) {
+		b.add('mustache', black, ellipsoid(0.1, 0.035, 0.03, 8, 4), { pos: V(s * 0.08, 1.24, 0.2), rot: [0, 0, s * 0.3] });
+		b.add('mustache', black, ellipsoid(0.035, 0.035, 0.03, 6, 4), { pos: V(s * 0.17, 1.28, 0.18) });
+	}
+	b.add('hat', black, new THREE.CylinderGeometry(0.32, 0.32, 0.06, 3), { pos: V(0, 1.5, 0.02), rot: [0, Math.PI / 6, 0] });
+	b.add('hat', black, new THREE.CylinderGeometry(0.16, 0.2, 0.16, 10), { pos: V(0, 1.57, 0.02) });
+	b.add('hat', mat('fantoche_skull', 0xf6f2e2), new THREE.BoxGeometry(0.06, 0.06, 0.01), { pos: V(0, 1.58, 0.2) });
+	const parrot = mat('parrot_green', 0x3fbf4a);
+	b.add('parrot', parrot, ellipsoid(0.08, 0.12, 0.08, 8, 5), { pos: V(-0.24, 1.18, -0.02) });
+	b.add('parrot', parrot, ellipsoid(0.06, 0.06, 0.06, 8, 5), { pos: V(-0.24, 1.32, 0.02) });
+	b.add('parrot', mat('parrot_beak', 0xf2c230), new THREE.ConeGeometry(0.025, 0.06, 6), { pos: V(-0.24, 1.31, 0.09), rot: [Math.PI / 2, 0, 0] });
+	b.add('parrot', mat('parrot_tail', 0xd83a30), new THREE.BoxGeometry(0.05, 0.12, 0.03), { pos: V(-0.24, 1.06, -0.1), rot: [0.4, 0, 0] });
+	return b.build();
+}
+
 export const models = {
 	costume_counter: buildCostumeCounter, rack_pirates: buildRackPirates, rack_animals: buildRackAnimals,
 	rack_monsters: buildRackMonsters, rack_princesses: buildRackPrincesses, rack_trades: buildRackTrades,
@@ -201,6 +230,7 @@ export const models = {
 	stock_shelf: buildStockShelf, box_pile: buildBoxPile, wig_trunk: buildWigTrunk, sale_basket: buildSaleBasket,
 	costume_safe: buildCostumeSafe, giant_mustache: buildGiantMustache, mannequin_pirate: buildMannequinPirate,
 	mannequin_chicken: buildMannequinChicken, mannequin_astronaut: buildMannequinAstronaut, mannequin_vampire: buildMannequinVampire,
+	npc_fantoche: buildFantoche,
 };
 
 export const views = {
@@ -215,6 +245,10 @@ export const views = {
 			{ name: 'giant_mustache', pos: [0.6, 3.4, -3.2] },
 		],
 		cam: { pos: [0.4, 5.0, 10.0], target: [0.4, 0.9, 0], fov: 50 },
+	},
+	fantoche: {
+		items: [{ name: 'npc_fantoche', pos: [0, 0, 0], rotY: 0.3, scale: [1.05, 0.88, 1.05] }],
+		cam: { pos: [0, 1.2, 3.6], target: [0, 0.8, 0], fov: 34 },
 	},
 	costume_mannequins: {
 		items: ['pirate', 'chicken', 'astronaut', 'vampire'].map((k, i) => ({ name: 'mannequin_' + k, pos: [(i - 1.5) * 1.0, 0, 0], rotY: 0.3 })),
