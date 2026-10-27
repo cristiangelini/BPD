@@ -90,6 +90,9 @@ func prompt_key(cop: Cop) -> String:
 		return escort.prompt_key(cop)
 	if disguised:
 		return "PROMPT_TALK_FAN"
+	var errands := AirportDeputy.of(self)
+	if errands:
+		return errands.prompt_key(cop)
 	var walks := PoliticianWalks.of(self)
 	if walks:
 		return walks.prompt_key(cop)
@@ -106,6 +109,10 @@ func use(cop: Cop) -> void:
 		return
 	if disguised:
 		say("DOUBLE_HIDDEN_%d" % (randi() % HIDDEN_LINES))
+		return
+	var errands := AirportDeputy.of(self)
+	if errands:
+		errands.use(cop)
 		return
 	var walks := PoliticianWalks.of(self)
 	if walks and walks.use(cop):
