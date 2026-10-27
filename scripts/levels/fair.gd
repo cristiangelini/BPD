@@ -5,9 +5,10 @@ extends Node3D
 ## with its front to +Z on the street, at nightfall, closed to the public but with the lights on. Through the arch: the
 ## ticket booth (the trailer's key is in its till), the carousel with its 12 horses, the bumper cars' rink under its
 ## net, the Ferris wheel, the ghost train's dark tunnel with its carts and skeletons, the mirror house, the cans booth
-## with the giant teddy, Nube's cotton candy cart, the strength tester and Don Tómbola's trailer at the back, locked.
-## A mirror that something hits fast breaks, a fine each. The rides go with their lever, button and crank (FairRides,
-## step 2). Every number here is (propuesta).
+## with the giant teddy, Nube's cotton candy cart, the strength tester and Don Tómbola's trailer at the back, locked. A
+## mirror that something hits fast breaks, a fine each. The rides go with their lever, button and crank (FairRides, step
+## 2). Don Tómbola walks his round with the megaphone and fills his complaint; the strength tester's bell takes him off
+## to hand over a prize (step 3). Every number here is (propuesta).
 
 signal mirror_broken(index: int)
 
@@ -19,8 +20,7 @@ const STAND_MODEL := preload("res://assets/models/ferris_stand.glb")
 const WHEEL_MODEL := preload("res://assets/models/ferris_wheel.glb")
 const CABIN_MODEL := preload("res://assets/models/ferris_cabin.glb")
 const BUMPER_MODEL := preload("res://assets/models/bumper_car.glb")
-const TESTER_MODEL := preload("res://assets/models/strength_tester.glb")
-const MALLET_MODEL := preload("res://assets/models/fair_mallet.glb")
+const OWNER_SCENE := preload("res://scenes/npc/fair_owner.tscn")
 const CANDY_MODEL := preload("res://assets/models/cotton_candy_cart.glb")
 const BOOTH_MODEL := preload("res://assets/models/cans_booth.glb")
 const TICKETS_MODEL := preload("res://assets/models/ticket_booth.glb")
@@ -83,6 +83,18 @@ const CANS_AT := Vector3(0.0, FLOOR_TOP, 4.0)
 const TEDDY_AT := Vector3(-2.4, FLOOR_TOP, 5.0)
 const CANDY_AT := Vector3(4.0, FLOOR_TOP, 5.0)
 const TESTER_AT := Vector3(-6.0, FLOOR_TOP, 4.0)
+## Don Tómbola's round, back and forth: from the arch down the middle path, past the booths and to the back.
+const OWNER_ROUTE: Array[Vector3] = [
+	Vector3(0, FLOOR_TOP, 20.0), Vector3(0, FLOOR_TOP, 8.5), Vector3(-4.2, FLOOR_TOP, 8.5),
+	Vector3(-4.2, FLOOR_TOP, -8.0), Vector3(6.0, FLOOR_TOP, -8.0),
+]
+## Where he stands to hand over the strength tester's prize.
+const PRIZE_SPOT := TESTER_AT + Vector3(1.4, 0, 1.6)
+## Seeing a ride switched on (once per ride) and something flung off the carousel.
+const SAW_RIDE := 5.0
+const SAW_FLUNG := 10.0
+## The third bell: he knows what's going on.
+const CAUGHT_ON := 10.0
 const TOOLBOX_AT := Vector3(10.6, FLOOR_TOP, -9.0)
 const TOOLBOX_SIZE := Vector3(0.7, 0.4, 0.4)
 ## Don Tómbola's trailer at the back, its door in the front wall.
@@ -131,6 +143,13 @@ var cabins: Array[Node3D] = []
 var skeletons: Array[Node3D] = []
 ## What makes the rides go: the carousel's lever, the bumper cars' button, the wheel's crank and the skeletons.
 var rides: FairRides
+## The strength tester with its mallet: Don Tómbola's distraction (step 3).
+var tester: StrengthTester
+## Don Tómbola, the owner, and his complaint bar.
+var owner_npc: FloorBoss
+var complaint_bar: ProgressBar
+## The rides he already saw switched on.
+var _rides_seen: Array[String] = []
 var mirrors: Array[Area3D] = []
 var broken_mirrors: Array[int] = []
 var broken_goods := 0
@@ -160,6 +179,7 @@ func _ready() -> void:
 	rides.name = "Rides"
 	rides.fair = self
 	add_child(rides)
+	_place_owner()
 	city = $City
 	city.transform = CityLayout.anchor("fair")
 	var clock := (city as City).clock
@@ -172,6 +192,49 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "fair", car)
+
+
+## Don Tómbola on his round with his megaphone, what he can't stand to see and the complaint bar.
+func _place_owner() -> void:
+	owner_npc = OWNER_SCENE.instantiate()
+	owner_npc.name = "DonTombola"
+	owner_npc.route = OWNER_ROUTE
+	owner_npc.printer_spot = PRIZE_SPOT
+	owner_npc.printer = tester
+	add_child(owner_npc)
+	owner_npc.start_at(0)
+	trailer_door.broken.connect(owner_npc.door_broken)
+	till.opened.connect(func(at: Vector3) -> void: owner_npc.saw(at, FloorBoss.SAW_TILL))
+	tester.caught_on.connect(func() -> void: owner_npc.scold(CAUGHT_ON, "TOMBOLA_CAUGHT_ON"))
+	rides.ride_started.connect(_on_ride_started)
+	rides.flung.connect(func(body: RigidBody3D) -> void:
+		owner_npc.saw(body.global_position, SAW_FLUNG, "TOMBOLA_FLUNG"))
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	owner_npc.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## "¡No me toquen los juegos!": a ride he sees switched on raises the complaint, once per ride.
+func _on_ride_started(ride: String) -> void:
+	if ride in _rides_seen:
+		return
+	var at: Vector3 = {"carousel": FairRides.CAROUSEL_LEVER_AT, "bumpers": FairRides.BUMPERS_BUTTON_AT,
+		"wheel": FairRides.WHEEL_CRANK_AT}[ride]
+	if owner_npc.saw(to_global(at + Vector3.UP), SAW_RIDE, "TOMBOLA_RIDE"):
+		_rides_seen.append(ride)
 
 
 ## The grass, the paved paths from the arch, the fence round the block with the arch in its gap, the sign and the
@@ -370,9 +433,15 @@ func _build_booths() -> void:
 	_solid(TEDDY_AT + Vector3(0, 0.55, 0), Vector3(0.9, 1.1, 0.8))
 	_model(CANDY_MODEL, CANDY_AT, -0.2)
 	_solid(CANDY_AT + Vector3(0, 0.6, 0), Vector3(1.6, 1.2, 0.8))
-	_model(TESTER_MODEL, TESTER_AT)
-	_solid(TESTER_AT + Vector3(0, 2.2, -0.3), Vector3(0.7, 4.4, 0.2))
-	_model(MALLET_MODEL, TESTER_AT + Vector3(0.8, 0, 0.8), 0.6)
+	tester = StrengthTester.new()
+	tester.name = "StrengthTester"
+	tester.case_seed = case_seed
+	tester.position = TESTER_AT
+	add_child(tester)
+	var mallet := tester.make_mallet()
+	mallet.position = TESTER_AT + Vector3(-1.0, StrengthTester.MALLET_SIZE.y / 2 + 0.02, 1.0)
+	mallet.rotation.y = 0.6
+	add_child(mallet)
 	_model(TICKETS_MODEL, TICKETS_AT)
 	_solid(TICKETS_AT + Vector3(0, 1.25, 0), Vector3(1.8, 2.5, 1.8))
 	till = Till.new()
