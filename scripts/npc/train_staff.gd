@@ -14,6 +14,7 @@ const LINES := 3
 
 ## engineer, inspector or vendor.
 var role := "engineer"
+var train: Train
 var _bubble: Label3D
 var _bubble_left := 0.0
 var _lines_said := 0
@@ -45,12 +46,22 @@ func _ready() -> void:
 
 
 func prompt_key(_cop: Cop) -> String:
+	if _selling():
+		return "PROMPT_TRAIN_VENDOR_BUY"
 	return "PROMPT_TRAIN_" + role.to_upper()
 
 
-func use(_cop: Cop) -> void:
+## With the case on, señor Mostaza sells: buying something keeps him and his cart still a while (TrainClues.buy).
+func use(cop: Cop) -> void:
+	if _selling():
+		train.clues.buy(cop)
+		return
 	say("TRAIN_%s_LINE_%d" % [role.to_upper(), _lines_said % LINES])
 	_lines_said += 1
+
+
+func _selling() -> bool:
+	return role == "vendor" and train != null and train.clues != null
 
 
 func said() -> String:

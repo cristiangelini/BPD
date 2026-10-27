@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Train crime scene, step 4b (escena-tren.md): the empty showcase with the culprit's prints, the footprint in the luggage car's soot that señor Mostaza's cart wipes on its rounds unless a cop buys a sandwich (10 off the salary), the hair on the broken window's sill that the wind takes if you open it, the bitten sandwich and the evidence bags in the dining car.
 - Train crime scene, step 4a (escena-tren.md): the comisario gives the case by radio as the train leaves, the stolen thing (Golden Rabbit, wand or watch) hidden in a spare top hat, the food cart or the toilet tank, the portable board and stamp in the dining car, nobody getting off midway, and the last station losing the case.
 - Train crime scene, step 3 (escena-tren.md): six numbered stickers on the ticket machine to stick on the magicians' capes, files that follow the sticker (photo, prints, a bite, the top hat off for a moment and the knot that tells the hand), the six swapping seats in every tunnel with a ta-da when the lights come back, and the culprit peeling his sticker off once.
 - Train crime scene, step 2 (escena-tren.md): the six magicians alike in front of their seats, with their hair under the top hat, glasses, shoes and teeth drawn with the seed, a trick each time you press E on them (dove, endless hanky, coin from your ear); don Silbato in the locomotive, Picadora the ticket inspector and señor Mostaza with his food cart.

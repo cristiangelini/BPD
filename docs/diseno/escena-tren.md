@@ -141,3 +141,11 @@ interrogatorio.
   tablero portátil cuelga en el vagón comedor sobre las ventanillas del otro lado (las mesas quedaron de un solo lado)
   y el sello está al lado. Nadie se cansa ni se va: si el tren llega a la última estación sin acusar bien, el culpable
   se baja y el caso se pierde.
+- **Paso 4b (las pistas):** la vitrina vacía del vagón de equipajes tiene las huellas (el culpable se sacó un guante);
+  si un policía la toca antes con E, las tapa. La pisada queda en el hollín del vagón de equipajes, fuera del medio del
+  pasillo. El señor Mostaza sale con el carrito a los 40 s del aviso y después cada 100 s, hasta el fondo del vagón de
+  equipajes y vuelta: si pasa por encima de la pisada, la borra. Comprarle algo (E sobre él, 10 del sueldo) lo deja
+  quieto 30 s contando el cambio. El pelo está en el marco de la ventana rota: abrirla (E) hace entrar el viento y se
+  lo lleva, salvo que ya esté en una bolsa. El sándwich mordido está en una mesa del comedor y el rollo de bolsas de
+  evidencia en el rincón del fondo del comedor, frente al baño. Lo que se gasta en el carrito se descuenta en el
+  informe del turno como una multa.

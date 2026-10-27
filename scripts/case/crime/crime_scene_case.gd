@@ -118,6 +118,8 @@ var at_tent := false
 var clues_found: Array[String] = []
 ## The museum's empty frames the patrol car broke in the chase (ChaseFrame), each one off the salary.
 var frames_broken := 0
+## What the cops paid out of their salary during the case (on the train: señor Mostaza's sandwiches).
+var spent := 0
 ## Clues the cops spoiled before finding them.
 var ruined: Array[String] = []
 var flour_print: FlourPrint
@@ -479,7 +481,7 @@ func finish_shift() -> void:
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
-	var report := ShiftReport.pay(solved(), [LOOT_BONUS] if loot_found else [], frames_broken * FRAME_FINE,
+	var report := ShiftReport.pay(solved(), [LOOT_BONUS] if loot_found else [], frames_broken * FRAME_FINE + spent,
 		wrong_guesses)
 	var result := {"solved": solved(), "report": report, "awards": ShiftReport.awards(stats)}
 	var campaign := Campaign.current
@@ -523,7 +525,8 @@ func snapshot() -> Dictionary:
 		"parts": file_parts.duplicate(true), "files": files.duplicate(), "accused": accused, "wrong": wrong_guesses,
 		"lost": lost, "gone": gone.duplicate(), "escaped": escaped, "loot": loot_found,
 		"offended": place != null and place.witness_offended(), "result": _result, "captured": captured.duplicate(true),
-		"frames": frames_broken, "rooms": room_seen.duplicate(true), "opened": opened.duplicate()}
+		"frames": frames_broken, "spent": spent,
+		"rooms": room_seen.duplicate(true), "opened": opened.duplicate()}
 	# What only the place knows (the circus: the trick, the signs, the camera).
 	if place:
 		state.place = place.net_state()
@@ -540,6 +543,7 @@ func apply_snapshot(state: Dictionary) -> void:
 	at_tent = state.at_tent
 	clues_found.assign(state.found)
 	frames_broken = state.get("frames", 0)
+	spent = state.get("spent", 0)
 	ruined.assign(state.ruined)
 	file_parts = state.parts.duplicate(true)
 	files.assign(state.files)
@@ -654,6 +658,8 @@ func clue_line(kind: String) -> String:
 		return _circus_clue_line(kind)
 	if texts() == VARIANTS.museum:
 		return _museum_clue_line(kind)
+	if texts() == VARIANTS.train:
+		return _train_clue_line(kind)
 	if texts() == VARIANTS.hotel:
 		return _hotel_clue_line(kind)
 	match kind:
@@ -707,6 +713,28 @@ func _museum_clue_line(kind: String) -> String:
 			return tr("CLUE_MUSEUM_alibi") % museum.bathroom_details.map(func(detail: String) -> String:
 				return tr("ALIBI_SHORT_" + detail))
 	return tr("CLUE_MUSEUM_" + kind)
+
+
+## On the train: the soot footprint, the hair on the broken window's sill, the bitten sandwich, Picadora and the knot.
+func _train_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_TRAIN_footprint") % who.shoe
+		"hair":
+			return tr("CLUE_TRAIN_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_TRAIN_bite") % tr("TEETH_" + str(who.teeth))
+		"witness":
+			return tr("CLUE_TRAIN_witness_glasses" if who.glasses else "CLUE_TRAIN_witness_no_glasses")
+		"knot":
+			return tr("CLUE_TRAIN_knot_left" if who.left else "CLUE_TRAIN_knot_right")
+	return tr("CLUE_TRAIN_" + kind)
+
+
+## Money off the salary for something bought during the case.
+func spend(amount: int) -> void:
+	spent += amount
 
 
 ## At the hotel: the bare footprint on the bathroom's mat, the hair and the bonbon on the pillow, Tito and the guest book.

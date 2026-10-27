@@ -65,6 +65,8 @@ const LOOT_MODELS := {
 	"watch": preload("res://assets/models/pocket_watch.glb"),
 }
 const HAT_RACK_AT := Vector3(8.5, 2.3, -1.15)
+## The roll of evidence bags, on a shelf in the dining car's back corner, across from the bathroom.
+const BAGS_AT := Vector3(-14.4, 0, -1.15)
 const TANK_AT := Vector3(-14.65, 0.75, 1.1)
 ## Where a cop gets on: first class's aisle, by the back door.
 const SPAWN_AT := Vector3(1.5, FLOOR_Y + 0.1, 0)
@@ -105,6 +107,8 @@ var loot_spot := "hat"
 var loot_found := false
 ## The searchable places, by spot.
 var loot_spots := {}
+## The case's clues where they go (TrainClues, step 4b), once the case comes.
+var clues: TrainClues
 var _cars: Node3D
 var _build: PlaceBuilder
 
@@ -155,6 +159,16 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	loot_spot = LOOT_SPOTS[hash(["train loot spot", case.case_seed]) % LOOT_SPOTS.size()]
 	for magician in magicians:
 		magician.case = case
+	clues = TrainClues.new()
+	clues.name = "Clues"
+	clues.train = self
+	clues.case = case
+	add_child(clues)
+
+
+## The node the cars are built in (FLOOR_Y up): the clues go in it too.
+func cars() -> Node3D:
+	return _cars
 
 
 ## Searching a spot: the stolen thing turns up in the right one; a sign of nothing in the others.
@@ -426,6 +440,11 @@ func _people() -> void:
 	_loot_spot("food_cart", CART_AT + Vector3(0, 0.95, 0), Vector3(0.9, 0.15, 0.6), Vector3(0, 0, 1))
 	_loot_spot("tank", TANK_AT, Vector3(0.3, 0.4, 0.5), Vector3(1, 0, 0))
 	_build.mesh_box(TANK_AT, Vector3(0.22, 0.35, 0.45), TILE)
+	_build.box(BAGS_AT + Vector3(0, 0.45, 0), Vector3(0.5, 0.9, 0.4), LEATHER)
+	bags = EvidenceBags.new()
+	bags.name = "EvidenceBags"
+	bags.position = BAGS_AT + Vector3(0, 0.9, 0)
+	_cars.add_child(bags)
 	for i in 3:
 		_build.mesh_box(HAT_RACK_AT + Vector3(-0.4 + i * 0.4, -0.02, 0), Vector3(0.28, 0.3, 0.28), DARK)
 
@@ -445,6 +464,7 @@ func _staff(role: String, at: Vector3, turn: float) -> TrainStaff:
 	var person := TrainStaff.new()
 	person.name = role.capitalize()
 	person.role = role
+	person.train = self
 	person.position = at
 	person.rotation.y = turn
 	_cars.add_child(person)
