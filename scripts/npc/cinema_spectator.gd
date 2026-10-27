@@ -109,9 +109,11 @@ func _on_bump(body: Node3D) -> void:
 		shush()
 
 
-## Whether a cop stands in front of them, between them and the screen (+Z in the cinema).
+## Whether a cop stands in front of them, between them and the screen (+Z in the cinema); a seated one doesn't.
 func view_blocked() -> bool:
 	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
+		if cop is Cop and (cop as Cop).seated_in:
+			continue
 		var off := (get_parent() as Node3D).to_local(cop.global_position) - position
 		if off.z > 0.3 and off.z < BLOCK_REACH and absf(off.x) < BLOCK_WIDTH and absf(off.y) < 2.0:
 			return true

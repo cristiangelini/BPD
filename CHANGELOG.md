@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Cinema raid, step 4: Chicho the usher sits in a free seat drawn with the seed; E on the seat to his right sits a cop down, and after 8 s seated he whispers what he saw (once per cop), while getting up sooner gets "¡Shhh, que viene lo mejor!". A seated cop blocks no spectator's view.
 - Cinema raid, step 3: doña Bobina comes down from her booth to the front of the theater and back (opening its door and locking it behind her), filling the complaint like the other owners plus 5 for each spectator's shush; E on the projector cuts the tape and sends her up to splice it for 20 s with her back to the window, resting 45 s after, and the third cut she notices (+10).
 - Cinema raid, step 2: six spectators sit in seats drawn with the seed and shush a cop who bumps into them faster than a crouch or stands 3 s in front of them (once every 10 s each); the film on the screen changes scene every 6 s with its line, and stops white with everyone booing when the tape is cut.
 - Cinema raid, step 1: the "Cine Butaca Floja" as a place to raid on block (0, 4) (--place=cinema and a menu test button): the hall with the ticket booth (the key in its till), the candy counter with the popcorn machine and the restroom; the dark theater with 40 seats rising to the back and the screen by the hall; the projection booth up a stair at the back. Something thrown hard rips the screen (fine 50) or breaks the popcorn glass (fine 20).

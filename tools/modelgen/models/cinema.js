@@ -76,9 +76,27 @@ export function buildDonaBobina() {
 	return b.build();
 }
 
+// Chicho, the usher: thin and young, a burgundy usher's jacket with two rows of gold buttons, a little round cap with a
+// strap, a bow tie and a flashlight in his right hand. Sitting, the game lowers him into a seat.
+export function buildChicho() {
+	const b = new Builder('npc_chicho');
+	const jacket = mat('usher_jacket', 0x7a1a2a), gold = mat('usher_gold', 0xe8c050, { emissive: 0x3a2a05 });
+	pearBody(b, mat('skin_chicho', 0xc98f62), { shirt: jacket, pants: mat('usher_pants', 0x1a1a22), shoes: M.black, belted: false });
+	eyes(b, 1.33, 0.18, 0.08, 0.055);
+	for (const s of [-1, 1]) {
+		for (const y of [0.62, 0.78, 0.94]) b.add('buttons', gold, new THREE.SphereGeometry(0.022, 6, 4), { pos: V(s * 0.09, y, 0.4 - (y - 0.6) * 0.35) });
+	}
+	b.add('bow', M.black, new THREE.BoxGeometry(0.14, 0.05, 0.03), { pos: V(0, 1.1, 0.17) });
+	b.add('cap', jacket, new THREE.CylinderGeometry(0.13, 0.13, 0.1, 10), { pos: V(0.04, 1.5, 0.0), rot: [0, 0, 0.2] });
+	b.add('cap', gold, new THREE.CylinderGeometry(0.135, 0.135, 0.02, 10), { pos: V(0.04, 1.46, 0.0), rot: [0, 0, 0.2] });
+	b.add('flashlight', M.black, new THREE.CylinderGeometry(0.035, 0.03, 0.22, 8), { pos: V(0.5, 0.64, 0.2), rot: [Math.PI / 2, 0, 0] });
+	b.add('flashlight', mat('usher_light', 0xfff2b0, { emissive: 0xfff2b0 }), new THREE.CircleGeometry(0.035, 8), { pos: V(0.5, 0.64, 0.311) });
+	return b.build();
+}
+
 export const models = {
 	cinema_seat: buildCinemaSeat, popcorn_machine: buildPopcornMachine, film_projector: buildFilmProjector,
-	npc_dona_bobina: buildDonaBobina,
+	npc_dona_bobina: buildDonaBobina, npc_chicho: buildChicho,
 };
 
 export const views = {
@@ -86,7 +104,7 @@ export const views = {
 		items: [
 			{ name: 'cinema_seat', pos: [-1.2, 0, 0] }, { name: 'cinema_seat', pos: [-0.5, 0, 0] },
 			{ name: 'popcorn_machine', pos: [0.5, 0, 0.3] }, { name: 'film_projector', pos: [1.5, 0, 0], rotY: -0.6 },
-			{ name: 'npc_dona_bobina', pos: [0.6, 0, 1.0], rotY: -0.2 },
+			{ name: 'npc_dona_bobina', pos: [0.6, 0, 1.0], rotY: -0.2 }, { name: 'npc_chicho', pos: [-0.5, 0, 1.1], rotY: 0.3 },
 		],
 		cam: { pos: [0, 1.6, 4.5], target: [0.1, 0.7, 0], fov: 40 },
 	},
