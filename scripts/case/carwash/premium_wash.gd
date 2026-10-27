@@ -66,7 +66,23 @@ func press(_cop: Cop = null) -> void:
 func fix() -> void:
 	is_jammed = false
 	if car:
-		_ride_to = home
+		ride_home()
+
+
+## The car rides through the tunnel to the drying area on its own, with nobody paying (the stolen car, step 6): only
+## from its place in line.
+func ride_alone() -> bool:
+	if not car or not is_home():
+		return false
+	_ride_to = dry_at
+	if tunnel:
+		tunnel.start()
+	return true
+
+
+## The car backs up to its place in line.
+func ride_home() -> void:
+	_ride_to = home
 
 
 func is_drying() -> bool:
@@ -75,6 +91,11 @@ func is_drying() -> bool:
 
 func is_home() -> bool:
 	return car.position.distance_to(home) < 0.05 and _ride_to == Vector3.INF
+
+
+## Whether the car stands in the drying area.
+func is_out() -> bool:
+	return car.position.distance_to(dry_at) < 0.05 and _ride_to == Vector3.INF
 
 
 func is_riding() -> bool:

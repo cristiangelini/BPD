@@ -188,11 +188,39 @@ export function buildCarwashIron() {
 	return b.build();
 }
 
+// The real plates of a stolen car (0.52 x 0.06 x 0.13 m): two white license plates with black letters, tied together
+// with a string.
+export function buildCarwashPlates() {
+	const b = new Builder('carwash_plates');
+	const white = mat('plate_white', 0xf2f2ee), ink = mat('plate_ink', 0x1c1c22);
+	for (let i = 0; i < 2; i++) {
+		b.add('plate', white, new THREE.BoxGeometry(0.52, 0.02, 0.13), { pos: V(0, 0.01 + i * 0.025, 0), rot: [0, i * 0.08, 0] });
+		for (let j = 0; j < 6; j++) {
+			b.add('letters', ink, new THREE.BoxGeometry(0.05, 0.004, 0.07), { pos: V(-0.18 + j * 0.072, 0.022 + i * 0.025, 0), rot: [0, i * 0.08, 0] });
+		}
+	}
+	b.add('string', mat('plate_string', 0xc8a060), new THREE.TorusGeometry(0.07, 0.006, 4, 10), { pos: V(0, 0.03, 0), rot: [0, 0, Math.PI / 2], scale: V(1, 0.5, 1) });
+	return b.build();
+}
+
+// The fake car papers (0.21 x 0.3 m): a folded sheet with a big official-looking stamp and a smudged signature.
+export function buildCarwashCarPapers() {
+	const b = new Builder('carwash_car_papers');
+	b.add('paper', mat('papers_paper', 0xeae4cc), new THREE.BoxGeometry(0.21, 0.006, 0.3), { pos: V(0, 0.003, 0) });
+	b.add('stamp', mat('papers_stamp', 0x6a3ab0), new THREE.CylinderGeometry(0.04, 0.04, 0.002, 12), { pos: V(0.05, 0.007, 0.09) });
+	for (let i = 0; i < 4; i++) {
+		b.add('ink', mat('papers_ink', 0x2a2a3a), new THREE.BoxGeometry(0.15, 0.002, 0.008), { pos: V(-0.01, 0.007, -0.1 + i * 0.03) });
+	}
+	b.add('ink', mat('papers_ink', 0x2a2a3a), new THREE.BoxGeometry(0.08, 0.002, 0.02), { pos: V(-0.04, 0.007, 0.1), rot: [0, 0.4, 0] });
+	return b.build();
+}
+
 export const models = {
 	wash_brush: buildWashBrush, wash_jets: buildWashJets, wash_blower: buildWashBlower, token_machine: buildTokenMachine,
 	vacuum_column: buildVacuumColumn, inflatable_man: buildInflatableMan, carwash_boiler: buildCarwashBoiler,
 	npc_don_chorro: buildDonChorro, npc_pompita: buildPompita, carwash_cash_bag: buildCarwashCashBag,
-	carwash_ledger: buildCarwashLedger, carwash_iron: buildCarwashIron,
+	carwash_ledger: buildCarwashLedger, carwash_iron: buildCarwashIron, carwash_plates: buildCarwashPlates,
+	carwash_car_papers: buildCarwashCarPapers,
 };
 
 export const views = {
@@ -204,7 +232,8 @@ export const views = {
 			{ name: 'carwash_boiler', pos: [-2.6, 0, 2.2] }, { name: 'npc_don_chorro', pos: [0.9, 0, 2.0], rotY: -0.3 },
 			{ name: 'npc_pompita', pos: [-0.6, 0, 2.6], rotY: 0.3 },
 			{ name: 'carwash_cash_bag', pos: [-1.8, 0, 3.4] }, { name: 'carwash_ledger', pos: [2.0, 0, 3.4] },
-			{ name: 'carwash_iron', pos: [2.6, 0, 3.0] },
+			{ name: 'carwash_iron', pos: [2.6, 0, 3.0] }, { name: 'carwash_plates', pos: [-0.6, 0, 3.6] },
+			{ name: 'carwash_car_papers', pos: [0.4, 0, 3.6] },
 		],
 		cam: { pos: [0, 2.6, 9.0], target: [0, 1.5, 0], fov: 45 },
 	},

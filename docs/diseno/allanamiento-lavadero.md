@@ -163,6 +163,12 @@ extras suman 500.
    - **Qué cambia:** mientras anda el túnel, el soplador tira 3 billetes al aire por segundo, que vuelan y desaparecen.
    - **Capturas:** `/mnt/project-files/lavadero/paso5-*.png`.
 6. Las otras 5 historias, una por PR.
+   Hecho así:
+   - **El auto robado:** las patentes verdaderas (3 kg, 1000) en un escondite para cosas pesadas, los papeles truchos
+     (0,1 kg, 300) y el destornillador (0,3 kg, 200) en otros. El primer auto de la fila (el del lavado premium) tiene
+     la patente pegada con dos tiras de cinta: a un policía a menos de 2,5 m le salta "¿Cinta?" y la primera vez va a
+     la planilla. Cada 20 s de estar en la fila, el auto cruza el túnel solo (lo prende), espera 4 s en la zona de
+     secado y vuelve marcha atrás. Capturas: `paso6a-*.png`.
 7. El lavadero en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 8. El online.
 
