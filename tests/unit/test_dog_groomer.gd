@@ -3,10 +3,14 @@ extends GutTest
 ## Ramiro and the waiting armchair (docs/diseno/peluqueria.md, step 2).
 
 const GROOMER_SCENE := preload("res://scenes/levels/groomer.tscn")
+const SEED := 1
 
 
 func _groomer() -> Groomer:
 	var groomer: Groomer = GROOMER_SCENE.instantiate()
+	# A fixed seed, so the dogs walk the same way every run: with some (20, the millionaire's greyhounds) one bumps
+	# into something in the first frames and barks, and Ramiro's complaint isn't 0 when a test counts it.
+	groomer.case_seed = SEED
 	groomer.get_node("Cop").input_enabled = false
 	add_child_autofree(groomer)
 	return groomer

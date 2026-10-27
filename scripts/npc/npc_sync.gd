@@ -25,6 +25,12 @@ var _gone := {}
 ## Index -> [scene, look, setup] of what the host brought in after the level started; setup (net_setup()) is what
 ## the copy needs before it's added, with its name and where it goes in the level.
 var _spawned := {}
+## Host: indexes brought in this frame and not announced yet; their state waits, or it would reach the guests before
+## their copy and be lost (it only goes again once it changes).
+var _unannounced := {}
+## Host: indexes whose last state went unreliably; once they stand still it goes again reliably, or a lost last packet
+## would leave the guests' copy short of where it stopped.
+var _unsure := {}
 var _adding: Node
 var _level: Node
 var _send_left := 0.0
@@ -173,17 +179,25 @@ func _send() -> void:
 				_gone[i] = true
 				gone.append(i)
 			continue
+		if _unannounced.has(i):
+			continue
 		var state := _state_of(npc)
 		var before: Array = _sent.get(i, [])
 		if before == state:
+			if _unsure.has(i):
+				_unsure.erase(i)
+				sure_ids.append(i)
+				sure.append(state)
 			continue
 		_sent[i] = state
 		# Only where it is changed: that goes again in a moment if lost. Anything else (what he says, getting off his
 		# scooter, getting in the car) may not change again, so it goes reliably.
 		if before.is_empty() or before.slice(1) != state.slice(1):
+			_unsure.erase(i)
 			sure_ids.append(i)
 			sure.append(state)
 		else:
+			_unsure[i] = true
 			ids.append(i)
 			states.append(state)
 	for peer: int in net.scene_peers:
@@ -265,6 +279,7 @@ func _on_node_added(node: Node) -> void:
 	if net.is_host():
 		npcs.append(node as Node3D)
 		var index := npcs.size() - 1
+		_unannounced[index] = true
 		# The look is set right after it enters the tree, so it's read on the next frame.
 		_announce.call_deferred(index)
 	elif node.has_method("net_setup") and not String(node.name).begins_with("@"):
@@ -275,6 +290,7 @@ func _on_node_added(node: Node) -> void:
 
 
 func _announce(index: int) -> void:
+	_unannounced.erase(index)
 	var npc := npc_at(index)
 	if not npc:
 		return
