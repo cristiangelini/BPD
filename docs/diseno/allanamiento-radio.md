@@ -88,6 +88,8 @@ entre 400 y 600.
    **Hecho (paso 3):** don Volumen es un `FloorBoss` (voz `VOLUMEN`) con el tocadiscos `RadioRecordPlayer`; va al
    archivo cada 90 s y al café por la recepción (`printer_path`). Capturas `radio/paso3-*.png`.
 4. Doña Rosa por teléfono.
+   **Hecho (paso 4):** `DonaRosa` (scripts/npc/dona_rosa.gd) en el teléfono de la recepción; el caso le da `clue` y
+   `clue_speech` en el paso 5. Capturas `radio/paso4-*.png`.
 5. El caso (RaidCase) con la primera historia: el concurso arreglado.
 6. Las otras 5 historias, una por PR.
 7. "Jugar" suma la radio al sorteo de allanamientos (`PlaceDraw.ORDER`).
