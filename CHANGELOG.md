@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Post office crime scene, step 5: the sorting machine. Every 2 minutes at the scene it runs for 20 s: envelopes fly, the wind pushes the cops out of the sorting room, anything loose on its floor lands on a mail sack and the carriers swap places. The red button in the office stops it and costs Doña Sellito 10 of her patience; at 0 she stamps the cops' faces and they can't take prints for 30 s.
 - Post office crime scene, step 4: La Vaquita Azul hidden with the seed in one of nine spots (the six post boxes with a route, the big mail sack, the parcel scale and the giant mailbox), searched with E in 5 s; the postmark book on the boss's desk tells the color of the box the envelope went to; back in its frame it adds 100 to the salary.
 - Post office crime scene, step 3: the carriers' files (the post_office variant of the crime scene case): E asks a carrier for their route, then the cap (one won't take it off until they eat), then to stick out their tongue. The culprit always has a blue tongue, and a bite before anyone looks washes the blue off.
 - Post office crime scene, step 2: the six mail carriers in the same cap, yellow vest, leather bag and gloves (CarrierTraits: hair, shoes, teeth, blue tongue and the route on their bag's tag), Doña Sellito the postmaster with her rubber stamp and Cartita the parrot on the counter of window 2.

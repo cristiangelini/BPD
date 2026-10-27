@@ -154,8 +154,12 @@ func photographed(_cop: Cop) -> void:
 	_file("photo")
 
 
-## The print kit on them (PrintKit): their prints (a glove comes off for it).
-func dusted(_cop: Cop) -> String:
+## The print kit on them (PrintKit): their prints (a glove comes off for it). A cop with Doña Sellito's stamp on
+## the face gets nothing (SortingMachine.stamp).
+func dusted(cop: Cop) -> String:
+	if cop and case and case.place is PostOffice and (case.place as PostOffice).sorting \
+			and (case.place as PostOffice).sorting.is_stamped(cop):
+		return tr("HINT_STAMPED_NO_PRINTS")
 	_file("prints")
 	return tr("PRINTS_COOK") % traits.name
 

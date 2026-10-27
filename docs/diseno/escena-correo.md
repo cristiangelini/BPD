@@ -180,6 +180,17 @@ Mientras tanto se avanza con lo recomendado.
      planilla).
    - Capturas: `correo/paso4-casillero.png` y `correo/paso4-marco.png`.
 5. La clasificadora: el reloj, los sobres, el viento, los sacos y el botón rojo con la paciencia de la jefa.
+   **Hecho así:** `SortingMachine`, que crea el correo con el caso.
+   - Con los policías en la escena, cada 120 s suena "¡Atención, clasificación!" y la máquina anda 20 s.
+   - Mientras anda, vuelan 70 sobres alrededor de la máquina y el viento empuja a 2,5 m/s hacia la puerta a los
+     policías que están en la sala de clasificación (cada PC empuja al suyo).
+   - Al arrancar, lo que está suelto en el piso de la sala (y nadie tiene en la mano) cae arriba del saco más
+     cercano. La señal `started(first)` avisa la primera vez, para la pisada del paso 6.
+   - Cuando para, los carteros cambian de lugar entre ellos y cada uno mira lo que hay en su nuevo lugar.
+   - El botón rojo de la oficina (E) la frena y le resta 10 a la paciencia de Doña Sellito (barra arriba). En 0 sella
+     la cara de los policías que están en el correo, y después la del que apriete el botón: con el sello, el cartero
+     no se deja tomar las huellas por 30 s.
+   - Captura: `correo/paso5-clasificadora.png`.
 6. Las pistas y el testigo: la caja fuerte, la pisada, la gorra, la galleta, la carta sellada y Cartita.
 7. El final: el tablero, el sueldo y la camioneta con los paquetes.
 8. El sorteo de "Jugar" y el online.
