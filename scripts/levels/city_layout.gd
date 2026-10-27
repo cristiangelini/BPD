@@ -64,6 +64,8 @@ const PLACES := [
 	{"id": "wrong_house", "block": Vector2i(0, 2), "side": "s", "along": 0.0, "size": Vector3(36, 7, 20), "color": Color(0.95, 0.86, 0.6), "sign": "PLACE_WRONG_HOUSE"},
 	# The airport fills its block too: the terminal and the apron are its case scene's (politico-aeropuerto.md).
 	{"id": "airport", "block": Vector2i(6, 4), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.86, 0.88, 0.9), "sign": "PLACE_AIRPORT", "park": true},
+	# The neighborhood cinema "Butaca Floja" (allanamiento-cine.md).
+	{"id": "cinema", "block": Vector2i(0, 4), "side": "n", "along": 0.0, "size": Vector3(22, 9, 30), "color": Color(0.82, 0.7, 0.55), "sign": "PLACE_CINEMA"},
 ]
 
 ## The plaza fills its block.
