@@ -138,3 +138,11 @@ ChaseDrops (los bidones, como las valijas del hotel), PlaceDraw y la custodia pa
   "Gerencia" en la puerta) y otra al archivo (estantes de cajas de formularios hasta el techo), y la sala de reuniones
   con la mesa larga y la pizarra. No hay ascensor: Pelusa se queda en el primer piso. Capturas en
   `/mnt/project-files/oficina/` (`paso1-*.png`).
+- **Paso 2 (la gente):** los 6 empleados (`OfficePerson`, mismo traje gris, corbata azul, credencial y maletín negro)
+  parados junto a 6 de los 8 escritorios, sorteados con la semilla del caso. Cada 90 s (propuesta) suena la campanita
+  de cambio de escritorio (`FormsOffice.ring_desk_bell`): cada uno camina por el pasillo entre las filas a otro
+  escritorio libre que no es el suyo. El señor Trámite está en su oficina con el sello en la mano, Benja junto a la
+  fotocopiadora detrás de su pila de papeles, y Pelusa (`RobotVacuum`) da su vuelta por el primer piso: la oficina del
+  gerente y el pasillo. E sobre cualquiera da una de sus frases (6 del empleado, 4 del gerente, 4 de Benja), otra cada
+  vez. El pelo, los anteojos y los dientes de cada empleado ya son partes del modelo; los rasgos del caso llegan en el
+  paso 3. Capturas `paso2-*.png`.
