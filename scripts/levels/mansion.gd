@@ -90,6 +90,12 @@ const MOVE_EVERY := 60.0
 const CHOCOLATES_AT := TABLE_AT + Vector3(0.6, TABLE_SIZE.y + 0.05, 0.2)
 const CHOCOLATES_SCENE := preload("res://scenes/props/chocolate_box.tscn")
 const BUTLER_AT := Vector3(14.5, 0, -3.5)
+## The bell cord in each room with a bell (BellCord, step 5b), against a wall.
+const BELL_CORDS := {
+	"dining": Vector3(-HALF_X + 0.15, 0, 3.0), "hall": Vector3(HALL_X - 0.15, 0, 10.0),
+	"lounge": Vector3(HALF_X - 0.15, 0, 3.5), "library": Vector3(-14.5, 0, BACK_Z + 0.15),
+	"study": Vector3(-5.6, 0, BACK_Z + 0.15), "greenhouse": Vector3(PANTRY_X - 0.15, 0, -9.0),
+}
 ## The cork board (CrimeBoard) on the library's west wall, its stamp beside it (step 5).
 const BOARD_AT := Transform3D(Basis(Vector3.UP, PI / 2), Vector3(-HALF_X + 0.2, 0, -3.5))
 const STAMP_AT := Vector3(-14.5, 0, 0.0)
@@ -135,10 +141,12 @@ var clotilde: MansionOwner
 var butler: MansionButler
 var parrot: MansionParrot
 var chocolates: ChocolateBox
+var armour: MansionArmour
 ## The case (step 5), and what was stolen (LOOTS).
 var case: CrimeSceneCase
 var loot := ""
 var loot_found := false
+var clues: MansionClues
 var _move_left := MOVE_EVERY
 var _move_rng := RandomNumberGenerator.new()
 var _builder: PlaceBuilder
@@ -287,8 +295,8 @@ func _walls() -> void:
 	_builder.wall("z", PANTRY_X, BACK_Z, MIDDLE_Z, 0, [DOOR_BACK_Z], WALLPAPER)
 
 
-## The hall: the stairs nobody goes up (boarded up), the suit of armour and the coat rack by the door. The grandfather
-## clock against the back wall is its passage's door (_passages).
+## The hall: the stairs nobody goes up (boarded up), the suit of armour (MansionArmour) and the coat rack by the door.
+## The grandfather clock against the back wall is its passage's door (_passages).
 func _hall() -> void:
 	for i in 6:
 		var top := (i + 1) * GameScale.STEP_HEIGHT
@@ -296,9 +304,10 @@ func _hall() -> void:
 	for y: float in [0.9, 1.3]:
 		_builder.box(STAIRS_AT + Vector3(0, y, 0.3), Vector3(2.2, 0.15, 0.05), PARQUET)
 	_builder.box(ARMOUR_AT + Vector3(0, 0.05, 0), Vector3(0.6, 0.1, 0.6), STONE)
-	_builder.mesh_box(ARMOUR_AT + Vector3(0, 1.0, 0), Vector3(0.45, 0.9, 0.3), Color(0.7, 0.72, 0.75))
-	_builder.mesh_box(ARMOUR_AT + Vector3(0, 1.65, 0), Vector3(0.3, 0.35, 0.3), Color(0.7, 0.72, 0.75))
-	_builder.mesh_box(ARMOUR_AT + Vector3(0, 0.3, 0), Vector3(0.4, 0.5, 0.25), Color(0.6, 0.62, 0.65))
+	armour = MansionArmour.new()
+	armour.name = "Armour"
+	armour.position = ARMOUR_AT + Vector3(0, 0.1, 0)
+	add_child(armour)
 	_builder.box(COAT_RACK_AT + Vector3(0, 0.9, 0), Vector3(0.1, 1.8, 0.1), PANEL)
 
 
@@ -452,17 +461,37 @@ func _people() -> void:
 	add_child(chocolates)
 
 
-## Draws what was stolen and tells the members about the case: each part of a file they give goes to it.
+## Draws what was stolen and tells the members about the case (each part of a file they give goes to it); then the
+## clues go where they go (MansionClues).
 func set_up_case(new_case: CrimeSceneCase) -> void:
 	case = new_case
 	loot = LOOTS[hash(["mansion loot", case.case_seed]) % LOOTS.size()]
 	for member in members:
 		member.part_given.connect(case.guard_part)
+	clues = MansionClues.new()
+	clues.name = "Clues"
+	clues.mansion = self
+	clues.case = case
+	add_child(clues)
 
 
 ## The member by index (the order of the case's traits).
 func suspect(index: int) -> CollisionObject3D:
 	return members[index] if index >= 0 and index < members.size() else null
+
+
+## Lorenzo is the witness: shouted at, he's offended for good.
+func witness_offended() -> bool:
+	return parrot.offended
+
+
+func offend_witness() -> void:
+	parrot.offend()
+
+
+func shouted_by(cop: Cop) -> void:
+	if cop.global_position.distance_to(parrot.global_position) <= MansionParrot.SHOUT_REACH:
+		parrot.offend()
 
 
 ## A spot in a room no member is standing on (MEMBER_SPOTS; past two, next to the first ones), in the house's space.
