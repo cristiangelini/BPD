@@ -134,6 +134,11 @@ entre 400 y 600.
      persiana y los autos, hay un círculo de marcas de goma (dos ruedas, 1,8 m de radio): el primer policía que entra
      al círculo ve el aviso y suma la pista. El alerón gigante y la bocina que hace rugir el motor quedan para después.
      Capturas `paso5-carrera-*.png` y `garage_street_race.png`.
+   - **Hecho así (propuesta), las abolladuras a propósito:** el martillo de abollar (3 kg, 1000), la lista de patentes
+     de los clientes (0,1 kg, 300) y el plano del barrio con cruces (0,2 kg, 200). Uno de los dos autos del piso
+     (sorteado) tiene cinco abolladuras redondas iguales en el costado derecho: con E se miran, y la primera vez es la
+     pista. Abollar autos pegándoles con algo pesado queda para después. Capturas `paso5-abolladuras-*.png` y
+     `garage_dented_on_purpose.png`.
 6. "Jugar" suma el taller al sorteo de allanamientos (`PlaceDraw.ORDER`).
 7. El online (Don Tuerca, Grasita, el timbre, el elevador y los parabrisas en todas las PC).
 

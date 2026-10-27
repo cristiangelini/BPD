@@ -74,6 +74,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_NITRO_TANK", "OBJ_EXTRA_RACE_MAP"],
 		"rig": preload("res://scripts/case/garage/street_race_rig.gd"),
 	},
+	"dented_on_purpose": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_DENTED_B", "BRIEF_DENTED_C", "BRIEF_DENTED_D"],
+		"find": "OBJ_FIND_DENT_HAMMER",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/dent_hammer.tscn"), preload("res://scenes/props/plates_list.tscn"),
+			preload("res://scenes/props/cross_map.tscn")],
+		"half_heights": [0.05, 0.005, 0.005],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_PLATES_LIST", "OBJ_EXTRA_CROSS_MAP"],
+		"rig": preload("res://scripts/case/garage/dented_on_purpose_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the garage's floor, away from the cars.
 const NOTE_PLACES: Array[Vector3] = [

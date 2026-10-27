@@ -337,9 +337,44 @@ export function buildRaceMap() {
 	return b.build();
 }
 
+// The dent hammer: a short wooden handle with a big round steel head, lying on its side, 0.45 m long.
+export function buildDentHammer() {
+	const b = new Builder('garage_dent_hammer');
+	b.add('handle', mat('wood', 0x9a6a3a), new THREE.CylinderGeometry(0.018, 0.022, 0.34, 8), { pos: V(-0.06, 0.05, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('grip', mat('flash_black', 0x26262a), new THREE.CylinderGeometry(0.025, 0.025, 0.1, 8), { pos: V(-0.17, 0.05, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('head', mat('tool_chrome', 0xb8bcc4, { metalness: 0.5, roughness: 0.35 }), new THREE.CylinderGeometry(0.05, 0.05, 0.12, 14), { pos: V(0.16, 0.05, 0), rot: [Math.PI / 2, 0, 0] });
+	for (const s of [-1, 1]) b.add('faces', mat('lift_dark', 0x35363a), new THREE.SphereGeometry(0.05, 12, 6), { pos: V(0.16, 0.05, s * 0.06), scale: [1, 1, 0.3] });
+	return b.build();
+}
+
+// The clients' plates list: a white sheet with rows of plates, each crossed in red or still waiting.
+export function buildPlatesList() {
+	const b = new Builder('garage_plates_list');
+	b.add('paper', mat('counter_white', 0xf2f2ea), new THREE.BoxGeometry(0.21, 0.004, 0.3), { pos: V(0, 0.002, 0) });
+	for (let i = 0; i < 7; i++) {
+		b.add('plates', mat('plate_yellow', 0xf2d040), new THREE.BoxGeometry(0.07, 0.002, 0.025), { pos: V(-0.05, 0.005, -0.11 + i * 0.037) });
+		b.add('lines', mat('sheet_ink', 0x2a2a30), new THREE.BoxGeometry(0.06, 0.002, 0.006), { pos: V(0.04, 0.005, -0.11 + i * 0.037) });
+		if (i % 3 !== 2) b.add('ticks', mat('sign_red', 0xd23a3a), new THREE.BoxGeometry(0.09, 0.002, 0.006), { pos: V(-0.05, 0.007, -0.11 + i * 0.037), rot: [0, 0.3, 0] });
+	}
+	return b.build();
+}
+
+// The neighborhood map with crosses: a city map with a red cross on each street where a client parks.
+export function buildCrossMap() {
+	const b = new Builder('garage_cross_map');
+	b.add('paper', mat('map_paper', 0xf2e6c0), new THREE.BoxGeometry(0.4, 0.006, 0.3), { pos: V(0, 0.003, 0) });
+	for (let i = 0; i < 5; i++) b.add('streets', mat('map_street', 0xbcb4a0), new THREE.BoxGeometry(0.38, 0.002, 0.01), { pos: V(0, 0.007, -0.12 + i * 0.06) });
+	for (let i = 0; i < 6; i++) b.add('streets', mat('map_street', 0xbcb4a0), new THREE.BoxGeometry(0.01, 0.002, 0.28), { pos: V(-0.17 + i * 0.068, 0.007, 0) });
+	for (const [x, z] of [[-0.13, -0.09], [0.04, -0.03], [0.11, 0.09], [-0.06, 0.06], [0.16, -0.1]]) {
+		for (const r of [0.8, -0.8]) b.add('crosses', mat('sign_red', 0xd23a3a), new THREE.BoxGeometry(0.035, 0.002, 0.008), { pos: V(x, 0.009, z), rot: [0, r, 0] });
+	}
+	return b.build();
+}
+
 export const models = {
 	garage_parts_crate: buildPartsCrate, garage_fake_invoices: buildFakeInvoices, garage_old_parts: buildOldParts,
 	garage_rusty_disc: buildRustyDisc,
+	garage_dent_hammer: buildDentHammer, garage_plates_list: buildPlatesList, garage_cross_map: buildCrossMap,
 	garage_race_trophy: buildRaceTrophy, garage_nitro_tank: buildNitroTank, garage_race_map: buildRaceMap,
 	garage_odometer_drill: buildOdometerDrill, garage_km_notebook: buildKmNotebook, garage_zero_km_sign: buildZeroKmSign,
 	garage_plates_box: buildPlatesBox, garage_stolen_list: buildStolenList, garage_spray_can: buildSprayCan,
@@ -376,6 +411,11 @@ export const views = {
 		items: [{ name: 'garage_race_trophy', pos: [-0.3, 0, 0], rotY: 0.3 }, { name: 'garage_nitro_tank', pos: [0.25, 0, -0.25], rotY: -0.3 },
 			{ name: 'garage_race_map', pos: [0.3, 0, 0.3], rotY: -0.2 }],
 		cam: { pos: [0.0, 1.0, 1.7], target: [0.0, 0.18, 0], fov: 42 },
+	},
+	garage_dented_on_purpose: {
+		items: [{ name: 'garage_dent_hammer', pos: [-0.25, 0, 0], rotY: 0.4 }, { name: 'garage_plates_list', pos: [0.3, 0, -0.15], rotY: -0.2 },
+			{ name: 'garage_cross_map', pos: [0.05, 0, 0.3], rotY: 0.15 }],
+		cam: { pos: [0.0, 0.9, 1.3], target: [0.0, 0.05, 0], fov: 42 },
 	},
 	garage_tools: {
 		items: [
