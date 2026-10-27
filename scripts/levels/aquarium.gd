@@ -6,8 +6,9 @@ extends CrimeScenePlace
 ## the middle (Doña Almeja open and empty on its sand), the six small tanks (sharks, jellyfish and seahorses along the
 ## west wall, turtles and rays along the east wall, the penguins' pool with their igloo at the back), Doña Tinta's tank
 ## in the dark corner and the divers' bench; in front, the gift shop to the west (the plush basket and the till) and
-## the kitchen to the east (the fish-food bucket, the box of crabs and the feeding board). The people and the case
-## come in later steps. Every number here is (propuesta).
+## the kitchen to the east (the fish-food bucket, the box of crabs and the feeding board). The six divers stand about
+## the big tank and the bench (step 2), Don Anzuelo by the penguins, Bigotes waddles round the hall and Doña Tinta sits
+## in her tank. The case comes in later steps. Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(32, 28)
@@ -42,6 +43,15 @@ const IGLOO_AT := Vector3(2.0, 0.1, -11.3)
 const INK_TANK_AT := Vector3(13.2, 0, -1.0)
 ## The divers' bench, facing the big tank.
 const BENCH_AT := Vector3(0, 0, 1.5)
+## Where the people are: the six divers two at the bench and four about the big tank, facing it; Don Anzuelo by the
+## penguins; the loop Bigotes waddles round the big tank.
+const DIVERS_AT: Array[Vector3] = [
+	Vector3(-1.0, 0, 2.3), Vector3(1.0, 0, 2.3), Vector3(-4.0, 0, -1.5), Vector3(4.0, 0, -1.5), Vector3(-4.0, 0, -6.0),
+	Vector3(4.0, 0, -6.0),
+]
+const KEEPER_AT := Vector3(-4.5, 0, -10.0)
+const SEA_LION_ROUTE: Array[Vector3] = [Vector3(-6.5, 0, 0.5), Vector3(-6.5, 0, -8.3), Vector3(6.5, 0, -8.3),
+	Vector3(6.5, 0, 0.5)]
 ## The gift shop: the plush basket, the till on its counter and the shelf of plushes.
 const BASKET_AT := Vector3(-11.0, 0, 5.0)
 const TILL_AT := Vector3(-9.0, 0, 3.0)
@@ -71,6 +81,10 @@ const ANIMAL_COLORS := {
 const PLUSH_COLORS: Array[Color] = [Color(0.95, 0.6, 0.2), Color(0.3, 0.7, 0.85), Color(0.95, 0.5, 0.6),
 	Color(0.98, 0.85, 0.3), Color(0.6, 0.45, 0.85)]
 
+var divers: Array[AquariumDiver] = []
+var keeper: AquariumKeeper
+var sea_lion: SeaLion
+var octopus: AquariumOctopus
 var _builder: PlaceBuilder
 
 
@@ -89,6 +103,12 @@ func _ready() -> void:
 	_ink_tank()
 	_shop()
 	_kitchen()
+	_people()
+
+
+## The diver by index (the order of the case's traits).
+func suspect(index: int) -> CollisionObject3D:
+	return divers[index] if index >= 0 and index < divers.size() else null
 
 
 ## Whether a point in the world (ignoring height) is on the aquarium's lot, square included.
@@ -124,6 +144,40 @@ func tank(world: Vector3) -> String:
 		if absf(local.x - at.x) < size.x / 2 + 1.2 and absf(local.z - at.z) < size.z / 2 + 1.2:
 			return animal
 	return ""
+
+
+## The six divers alike (DiverTraits.draw with the case seed) about the big tank, Don Anzuelo by the penguins, Bigotes on
+## his loop and Doña Tinta in her tank.
+func _people() -> void:
+	var traits := DiverTraits.draw(case_seed)
+	for i in traits.size():
+		var diver := AquariumDiver.new()
+		diver.name = "Diver%d" % i
+		diver.traits = traits[i]
+		diver.index = i
+		var at: Vector3 = DIVERS_AT[i]
+		diver.position = at + Vector3(0, FLOOR_TOP, 0)
+		var to := BIG_TANK_AT - at
+		diver.rotation.y = atan2(to.x, to.z)
+		add_child(diver)
+		divers.append(diver)
+	keeper = AquariumKeeper.new()
+	keeper.name = "Keeper"
+	keeper.position = KEEPER_AT + Vector3(0, FLOOR_TOP, 0)
+	keeper.rotation.y = PI / 2
+	add_child(keeper)
+	sea_lion = SeaLion.new()
+	sea_lion.name = "SeaLion"
+	for point in SEA_LION_ROUTE:
+		sea_lion.route.append(point + Vector3(0, FLOOR_TOP, 0))
+	sea_lion.position = sea_lion.route[0]
+	add_child(sea_lion)
+	octopus = AquariumOctopus.new()
+	octopus.name = "Octopus"
+	octopus.glass = TANK_SIZE
+	octopus.position = INK_TANK_AT + Vector3(0, 0.4, 0)
+	octopus.rotation.y = -PI / 2
+	add_child(octopus)
 
 
 ## The tiled floor, the roof with its lights (none over Doña Tinta's corner) and the outer walls with the door.
@@ -211,9 +265,13 @@ func _rooms() -> void:
 
 
 ## A tank on its stone base: the glass box, the water in it, the sand at the bottom and the stone rim on top.
-func _tank(at: Vector3, size: Vector3, water := WATER) -> void:
+## A tank that isn't solid leaves its glass to whoever lives in it (Doña Tinta's body is her glass).
+func _tank(at: Vector3, size: Vector3, water := WATER, solid := true) -> void:
 	_builder.box(at + Vector3(0, 0.2, 0), Vector3(size.x + 0.2, 0.4, size.z + 0.2), STONE)
-	_builder.box(at + Vector3(0, 0.4 + size.y / 2, 0), size, GLASS)
+	if solid:
+		_builder.box(at + Vector3(0, 0.4 + size.y / 2, 0), size, GLASS)
+	else:
+		_builder.mesh_box(at + Vector3(0, 0.4 + size.y / 2, 0), size, GLASS)
 	_builder.mesh_box(at + Vector3(0, 0.4 + (size.y - 0.3) / 2, 0), size - Vector3(0.1, 0.3, 0.1), water)
 	_builder.mesh_box(at + Vector3(0, 0.45, 0), Vector3(size.x - 0.1, 0.1, size.z - 0.1), SAND)
 	_builder.mesh_box(at + Vector3(0, 0.4 + size.y + 0.1, 0), Vector3(size.x + 0.2, 0.2, size.z + 0.2), STONE)
@@ -301,7 +359,7 @@ func _penguins() -> void:
 
 ## Doña Tinta's tank in the dark corner: dark water, a rock cave and a dim purple light.
 func _ink_tank() -> void:
-	_tank(INK_TANK_AT, TANK_SIZE, Color(0.15, 0.2, 0.4, 0.6))
+	_tank(INK_TANK_AT, TANK_SIZE, Color(0.15, 0.2, 0.4, 0.6), false)
 	var cave := SphereMesh.new()
 	cave.radius = 0.8
 	cave.height = 0.8

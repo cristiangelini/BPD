@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Aquarium crime scene, step 2: the six cleaning divers alike (black wetsuit, hood, mask, gloves and flippers; hair, prescription lenses, flipper size, teeth, octopus ink and the tank each looks after drawn with the seed) about the big tank, telling which tank is theirs; Don Anzuelo the keeper by the penguins; Bigotes the sea lion waddling round the hall; and Doña Tinta the octopus in her tank, whose glass answers E.
 - Aquarium crime scene, step 1: the Municipal Aquarium on its own lot (block 7, 3, south side) with the shark-mouth door and the cardboard whale on the roof; the hall with the big tank and Doña Almeja open and empty, the five small tanks along the walls, the penguins' pool with the igloo and Doña Tinta's dark tank; the gift shop with the plush basket and the till, and the kitchen with the fish-food bucket, the crabs and the feeding board. Open it with --place=aquarium.
 - Aquarium crime scene, step 0: design doc (docs/diseno/escena-acuario.md) and decision 400 (proposed).
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.

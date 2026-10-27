@@ -142,6 +142,14 @@ el tanque de cada buzo, Bigotes con sus robos y el piso mojado, Doña Tinta y el
    este (balde de comida, caja de cangrejos, heladera, pileta y la pizarra "Comida de hoy"). Capturas:
    `acuario/paso1-*.png`.
 2. Los seis buzos, Don Anzuelo, Bigotes y Doña Tinta (modelos y personajes).
+   **Hecho así:** `DiverTraits` sortea con la semilla pelo, lentes con aumento en la máscara, talle de pata de rana,
+   dientes, tinta (2 o 3) y un tanque distinto para cada uno. Los seis buzos (`AquariumDiver`, modelo `npc_buzo`: traje
+   negro con una ballena, capucha, máscara en la frente, guantes celestes y patas de rana amarillas) están dos frente al
+   banco y cuatro alrededor del tanque grande, mirándolo; con E cuentan de qué tanque se ocupan, y siempre lo dicen. Don
+   Anzuelo (`AquariumKeeper`, `npc_anzuelo`: mameluco amarillo, botas de goma, gorra, bigote y balde) está junto a los
+   pingüinos. Bigotes (`SeaLion`, `sea_lion_bigotes`) da vueltas al tanque grande a 1,2 m/s y ladra con E. Doña Tinta
+   (`AquariumOctopus`, `octopus_tinta`) está sentada en su tanque, y su cuerpo es el vidrio: E en el vidrio es E en ella.
+   Capturas: `acuario/paso2-*.png` y `acuario/aquarium_people.png`.
 3. Las fichas: la tinta debajo del guante y el tanque que cuida.
 4. El caso: La Gorda escondida, la búsqueda y la pizarra de la comida.
 5. Las pistas y la testigo.
