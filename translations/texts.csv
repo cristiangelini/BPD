@@ -5610,3 +5610,22 @@ PROMPT_CARWASH_TUNNEL,E: prender el túnel de lavado,E: start the wash tunnel,E:
 HINT_CARWASH_BRUSH,¡Te agarró el cepillo! Ahora estás impecable.,The brush got you! Now you're spotless.,A escova te pegou! Agora você está impecável.
 HINT_CARWASH_TOP_BRUSH,El cepillo de arriba te peinó. Más o menos.,The top brush combed your hair. Sort of.,A escova de cima te penteou. Mais ou menos.
 HINT_CARWASH_BLOWER,¡El soplador te sacó volando!,The blower sent you flying!,O soprador te mandou voando!
+CHORRO_LINE_1,"¡Que brille, que brille!","Make it shine, make it shine!","Que brilhe, que brilhe!"
+CHORRO_LINE_2,"Treinta años lavando autos y nunca vi una mancha que se me resista.","Thirty years washing cars and I've never met a stain that beat me.","Trinta anos lavando carros e nunca vi uma mancha que resistisse a mim."
+CHORRO_LINE_3,"Esta franela es más vieja que usted, oficial. Y más limpia.","This cloth is older than you, officer. And cleaner.","Esta flanela é mais velha que você, policial. E mais limpa."
+CHORRO_LINE_4,"Estamos cerrados por limpieza. ¡Por limpieza de verdad, eh!","We're closed for cleaning. Real cleaning, mind you!","Estamos fechados para limpeza. Limpeza de verdade, hein!"
+CHORRO_PRINTER,"¿Un premium? ¡Ya voy, ya voy! ¡Que nadie toque ese auto!","A premium? Coming, coming! Nobody touch that car!","Um premium? Já vou, já vou! Ninguém toca nesse carro!"
+CHORRO_FIX_1,"Primero el capot, en círculos...","First the hood, in circles...","Primeiro o capô, em círculos..."
+CHORRO_FIX_2,"(de espaldas a todo) ...que brille, que brille...","(back to everything) ...make it shine, make it shine...","(de costas para tudo) ...que brilhe, que brilhe..."
+CHORRO_FIX_3,"Y el toque final: ¡el aliento en el espejito!","And the finishing touch: a breath on the mirror!","E o toque final: um bafinho no espelho!"
+CHORRO_FIX_DONE,"¡Impecable! Ese auto vuelve a la fila como nuevo.","Spotless! That car goes back in line like new.","Impecável! Esse carro volta para a fila como novo."
+CHORRO_HURT,"¡Ojo! ¡Que estoy recién lustrado!","Watch it! I've just been polished!","Cuidado! Acabei de ser polido!"
+CHORRO_DOOR,"¡Mi oficina! ¡Ahí guardo las fichas!","My office! That's where I keep the tokens!","Meu escritório! É lá que guardo as fichas!"
+CHORRO_SAW,"¡Lo estoy viendo, oficial!","I can see you, officer!","Estou vendo você, policial!"
+CHORRO_NOTHING,"Yo de eso no sé nada. Yo solo lavo autos.","I know nothing about that. I just wash cars.","Eu não sei nada disso. Eu só lavo carros."
+CHORRO_OFFENDED,"¡Basta de preguntas! El que pregunta mucho termina enjabonado.","Enough questions! Whoever asks too much ends up soaped.","Chega de perguntas! Quem pergunta demais acaba ensaboado."
+CHORRO_LAWYER,"¡Llamo a mi abogado! ¡Que venga con botas de goma!","I'm calling my lawyer! Tell them to bring rubber boots!","Vou chamar meu advogado! Que venha de galochas!"
+CHORRO_CAUGHT_ON,"¿Otro premium? ¿Quién paga todo esto?","Another premium? Who's paying for all this?","Outro premium? Quem está pagando tudo isso?"
+CHORRO_TUNNEL,"¡Eso no se lava así! ¡El túnel es para autos!","That's not how you wash that! The tunnel is for cars!","Não é assim que se lava isso! O túnel é para carros!"
+CHORRO_WET_FLOOR,"¡Eso no se lava así! ¡Mi piso recién mojado!","That's not how you wash that! My freshly wet floor!","Não é assim que se lava isso! Meu chão recém-molhado!"
+PROMPT_CARWASH_PREMIUM,E: pagar el lavado premium,E: pay for the premium wash,E: pagar a lavagem premium

@@ -1,7 +1,8 @@
 // Props of the car wash "La Espuma Loca" (docs/diseno/allanamiento-lavadero.md): the tunnel's spinning brush, the jets
 // arch, the blower, the token machine, the vacuum column, the inflatable dancing man and the boiler, with origins at the
-// floor in the middle of each piece. Placeholder, not final art.
-import { Builder, mat, V, THREE } from '../lib.js';
+// floor in the middle of each piece, and Don Chorro, the owner. Placeholder, not final art.
+import { Builder, mat, ellipsoid, V, THREE } from '../lib.js';
+import { pearBody, eyes } from './pear.js';
 
 // One of the tunnel's brushes, 1.2 m across and 2.6 m tall, standing: a steel shaft with rings of blue, pink and
 // yellow bristles, the top cap and the bottom bearing.
@@ -107,9 +108,29 @@ export function buildCarwashBoiler() {
 	return b.build();
 }
 
+// Don Chorro, the owner: bald and shiny, a yellow raincoat, green rubber boots, a thick grey mustache and a red
+// cloth always in his hand. The game scales him short and round.
+export function buildDonChorro() {
+	const b = new Builder('npc_don_chorro');
+	const coat = mat('chorro_raincoat', 0xf2d020, { roughness: 0.3 }), boots = mat('chorro_boots', 0x2f8a3a);
+	const skin = mat('chorro_skin', 0xe8b890, { metalness: 0.3, roughness: 0.15 });
+	pearBody(b, skin, { shirt: coat, pants: coat, shoes: boots, belted: false });
+	for (let i = 0; i < 3; i++) {
+		b.add('body', mat('chorro_button', 0x26262a), new THREE.CylinderGeometry(0.025, 0.025, 0.02, 8),
+			{ pos: V(0, 0.95 - i * 0.18, 0.31 + i * 0.05), rot: [Math.PI / 2, 0, 0] });
+	}
+	b.add('head', mat('chorro_shine', 0xffffff, { emissive: 0x606060 }), ellipsoid(0.05, 0.03, 0.04, 6, 4),
+		{ pos: V(-0.06, 1.5, 0.08) });
+	eyes(b, 1.34, 0.19, 0.08, 0.04);
+	b.add('face', mat('chorro_mustache', 0x8a8a8e), ellipsoid(0.11, 0.035, 0.04, 8, 4), { pos: V(0, 1.24, 0.19) });
+	b.add('cloth', mat('chorro_cloth', 0xd8302a), new THREE.BoxGeometry(0.2, 0.02, 0.24), { pos: V(0.48, 0.64, 0.14), rot: [0, 0, 0.8] });
+	return b.build();
+}
+
 export const models = {
 	wash_brush: buildWashBrush, wash_jets: buildWashJets, wash_blower: buildWashBlower, token_machine: buildTokenMachine,
 	vacuum_column: buildVacuumColumn, inflatable_man: buildInflatableMan, carwash_boiler: buildCarwashBoiler,
+	npc_don_chorro: buildDonChorro,
 };
 
 export const views = {
@@ -118,7 +139,7 @@ export const views = {
 			{ name: 'wash_jets', pos: [-3.2, 0, 0], rotY: 0.5 }, { name: 'wash_brush', pos: [-1.4, 0, 0.4] },
 			{ name: 'wash_blower', pos: [0.6, 0, -0.6], rotY: 0.5 }, { name: 'token_machine', pos: [2.0, 0, 1.2] },
 			{ name: 'vacuum_column', pos: [2.9, 0, 0.8] }, { name: 'inflatable_man', pos: [3.9, 0, -0.4] },
-			{ name: 'carwash_boiler', pos: [-2.6, 0, 2.2] },
+			{ name: 'carwash_boiler', pos: [-2.6, 0, 2.2] }, { name: 'npc_don_chorro', pos: [0.9, 0, 2.0], rotY: -0.3 },
 		],
 		cam: { pos: [0, 2.6, 9.0], target: [0, 1.5, 0], fov: 45 },
 	},

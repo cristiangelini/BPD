@@ -8,7 +8,9 @@ extends Node3D
 ## the mouth. Past the end, the drying area with the towels on their line, the rag basket and the toolbox. By the front,
 ## the vacuums, the wax shelf and the inflatable dancing man. At the back, behind a wall, the storeroom (the foam tank,
 ## the boiler, the shampoo drums and the pile of tires) and the owner's office, locked with the till's key. Something
-## thrown hard at a car's windshield or at the wax shelf breaks it, a fine each. Every number here is (propuesta).
+## thrown hard at a car's windshield or at the wax shelf breaks it, a fine each. The tunnel at work (WashTunnel, step
+## 2). Don Chorro walks his round by the tunnel and fills his complaint; the premium wash at the token machine sends the
+## first car through the tunnel and him off to dry it (step 3). Every number here is (propuesta).
 
 signal windshield_broken(index: int)
 signal wax_broken
@@ -21,6 +23,7 @@ const TOKEN_MODEL := preload("res://assets/models/token_machine.glb")
 const VACUUM_MODEL := preload("res://assets/models/vacuum_column.glb")
 const INFLATABLE_MODEL := preload("res://assets/models/inflatable_man.glb")
 const BOILER_MODEL := preload("res://assets/models/carwash_boiler.glb")
+const OWNER_SCENE := preload("res://scenes/npc/carwash_owner.tscn")
 const HALF_X := 20.0
 const HALF_Z := 11.0
 const WALL_TOP := 5.5
@@ -43,9 +46,11 @@ const SIDE_BRUSHES: Array[Vector3] = [Vector3(-3.5, FLOOR_TOP, -1.45), Vector3(-
 const TOP_BRUSH := Vector3(0.5, FLOOR_TOP + 2.25, -1.35)
 const CURTAIN_X := 3.5
 const BLOWER_X := 6.5
-## The customers' cars waiting in line, facing the tunnel (+X); the first one's open trunk; their windshields.
+## The customers' cars waiting in line, facing the tunnel (+X); the second one's open trunk; their windshields. The
+## first one is the premium wash's (step 3).
 const CARS: Array[Vector3] = [Vector3(-11.6, FLOOR_TOP, 0.0), Vector3(-16.9, FLOOR_TOP, 0.0)]
 const CAR_SIZE := Vector3(4.6, 1.5, 2.1)
+const TRUNK_CAR := 1
 const TRUNK_LENGTH := 1.2
 const WINDSHIELD_AHEAD := 1.0
 const WINDSHIELD_SIZE := Vector3(0.5, 0.6, 1.8)
@@ -83,10 +88,25 @@ const FOAM_TANK_SIZE := Vector3(1.8, 1.4, 1.8)
 const BOILER_AT := Vector3(3.0, FLOOR_TOP, -9.7)
 const TIRES_AT := Vector3(-16.0, FLOOR_TOP, -8.5)
 const DRUMS_AT := Vector3(-8.0, FLOOR_TOP, -9.8)
+## Don Chorro's round: along the tunnel's front side and across its exit, back and forth. Where he dries the premium
+## car, facing it, and for how long.
+const OWNER_ROUTE: Array[Vector3] = [
+	Vector3(-7.0, FLOOR_TOP, 3.2), Vector3(9.0, FLOOR_TOP, 3.2), Vector3(9.0, FLOOR_TOP, -1.5),
+]
+const DRY_CAR_AT := Vector3(12.5, FLOOR_TOP, 0.0)
+const DRY_SPOT := Vector3(12.5, FLOOR_TOP, 1.8)
+const DRY_TIME := 20.0
+## "¡Eso no se lava así!": a cop he sees in the tunnel (once per cop), and something falling on the drying area's wet
+## floor.
+const SAW_TUNNEL := 5.0
+const SAW_WET_FLOOR := 10.0
+const TUNNEL_CHECK_EVERY := 0.5
+## The third premium: he knows what's going on.
+const CAUGHT_ON := 10.0
 
 ## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
 const SPOTS := [
-	{"id": "in_queue_car_trunk", "at": Vector3(-13.3, FLOOR_TOP + 0.5, 0.0), "heavy": true},
+	{"id": "in_queue_car_trunk", "at": Vector3(-18.6, FLOOR_TOP + 0.5, 0.0), "heavy": true},
 	{"id": "in_foam_tank", "at": Vector3(-4.0, FLOOR_TOP + 0.05, -8.5), "heavy": true},
 	{"id": "behind_boiler", "at": Vector3(3.0, FLOOR_TOP, -10.5), "heavy": true},
 	{"id": "among_tires", "at": Vector3(-14.3, FLOOR_TOP, -8.5), "heavy": true},
@@ -126,7 +146,15 @@ var top_brush: Node3D
 var sprays: Array[MeshInstance3D] = []
 var tunnel: WashTunnel
 var tunnel_button: PushButton
-var cars: Array[StaticBody3D] = []
+## The token machine's golden button: Don Chorro's distraction (step 3).
+var premium: PremiumWash
+## Don Chorro, the owner, and his complaint bar.
+var owner_npc: FloorBoss
+var complaint_bar: ProgressBar
+## The cops he already scolded for going through the tunnel (id -> true).
+var tunnel_seen := {}
+var _tunnel_check := 0.0
+var cars: Array[AnimatableBody3D] = []
 var windshields: Array[MeshInstance3D] = []
 var cracked: Array[int] = []
 var wax_broken_down := false
@@ -150,6 +178,7 @@ func _ready() -> void:
 	_build_front()
 	_build_drying()
 	_build_back()
+	_place_owner()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("carwash")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -253,39 +282,46 @@ func _build_tunnel() -> void:
 	tunnel_button.pressed.connect(func(_cop: Cop) -> void: tunnel.start())
 
 
-## The two customers' cars waiting in line, facing the tunnel; the first one with its trunk open (a box you can put
-## something in), and both windshields, which break if something hits them hard.
+## The two customers' cars waiting in line, facing the tunnel; the second one with its trunk open (a box you can put
+## something in), and both windshields, which break if something hits them hard. Each car is its own body, so the
+## first one can ride through the tunnel for the premium wash (step 3).
 func _build_queue() -> void:
 	for i in CARS.size():
 		var at := CARS[i]
+		var car := AnimatableBody3D.new()
+		car.name = "Car%d" % i
+		car.position = at
+		$Built.add_child(car)
 		var look: Node3D = TrafficCar.MODELS[(i + 1) % TrafficCar.MODELS.size()].instantiate()
-		look.position = at
 		look.rotation.y = PI / 2
-		$Built.add_child(look)
+		car.add_child(look)
 		for wheel_at in SuspectCar.SEDAN_WHEELS:
 			var wheel: Node3D = TrafficCar.WHEEL.instantiate()
 			wheel.position = wheel_at
 			look.add_child(wheel)
-		var trunk := TRUNK_LENGTH if i == 0 else 0.0
-		var body := _build.body(at + Vector3(trunk / 2, CAR_SIZE.y / 2, 0))
-		body.name = "Car%d" % i
-		_build.shape(body, Vector3(CAR_SIZE.x - trunk, CAR_SIZE.y, CAR_SIZE.z))
-		cars.append(body)
+		var trunk := TRUNK_LENGTH if i == TRUNK_CAR else 0.0
+		var collision := CollisionShape3D.new()
+		var box_shape := BoxShape3D.new()
+		box_shape.size = Vector3(CAR_SIZE.x - trunk, CAR_SIZE.y, CAR_SIZE.z)
+		collision.shape = box_shape
+		collision.position = Vector3(trunk / 2, CAR_SIZE.y / 2, 0)
+		car.add_child(collision)
+		cars.append(car)
 		var pane := MeshInstance3D.new()
 		var box := BoxMesh.new()
 		box.size = WINDSHIELD_SIZE
 		pane.mesh = box
 		pane.material_override = _glass(GLASS)
-		pane.position = at + Vector3(WINDSHIELD_AHEAD, 1.25, 0)
+		pane.position = Vector3(WINDSHIELD_AHEAD, 1.25, 0)
 		pane.rotation.z = 0.5
-		$Built.add_child(pane)
+		car.add_child(pane)
 		windshields.append(pane)
 		# Over the hood too: what flies at the windshield hits the car's front first.
-		var area := _area(pane.position + Vector3(HOOD / 2, 0.15, 0), WINDSHIELD_SIZE + Vector3(HOOD, 0.2, 0))
+		var area := _area(pane.position + Vector3(HOOD / 2, 0.15, 0), WINDSHIELD_SIZE + Vector3(HOOD, 0.2, 0), car)
 		area.body_entered.connect(func(hit: Node3D) -> void:
 			if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > WINDSHIELD_SPEED:
 				break_windshield(i))
-	var rear := CARS[0].x - CAR_SIZE.x / 2
+	var rear := CARS[TRUNK_CAR].x - CAR_SIZE.x / 2
 	_build.open_box(Vector3(rear + TRUNK_LENGTH / 2, FLOOR_TOP + 0.45, 0), Vector3(TRUNK_LENGTH, 0.5, 1.8), "top",
 		Color(0.25, 0.25, 0.28))
 
@@ -293,6 +329,14 @@ func _build_queue() -> void:
 ## By the front: the token machine with the till, the vacuums, the wax shelf with its bottles and the inflatable man.
 func _build_front() -> void:
 	_model(TOKEN_MODEL, TOKEN_AT)
+	premium = PremiumWash.new()
+	premium.name = "Premium"
+	premium.position = TOKEN_AT
+	premium.car = cars[0]
+	premium.home = CARS[0]
+	premium.dry_at = DRY_CAR_AT
+	premium.tunnel = tunnel
+	add_child(premium)
 	_build.shape(_build.body(TOKEN_AT + Vector3(0, TOKEN_SIZE.y / 2, 0)), TOKEN_SIZE)
 	_build.box(TOKEN_AT + Vector3(0.75, 0.45, 0), Vector3(0.6, 0.9, 0.5), TUNNEL)
 	till = Till.new()
@@ -366,6 +410,65 @@ func _build_back() -> void:
 	add_child(office_door)
 
 
+## Don Chorro walking his round, what he can't stand to see, the premium wash and the complaint bar.
+func _place_owner() -> void:
+	owner_npc = OWNER_SCENE.instantiate()
+	owner_npc.name = "DonChorro"
+	owner_npc.route = OWNER_ROUTE
+	owner_npc.printer_spot = DRY_SPOT
+	owner_npc.printer = premium
+	owner_npc.fix_time = DRY_TIME
+	owner_npc.fix_facing = DRY_CAR_AT + Vector3.UP
+	add_child(owner_npc)
+	owner_npc.start_at(0)
+	office_door.broken.connect(owner_npc.door_broken)
+	till.opened.connect(func(at: Vector3) -> void: owner_npc.saw(at, FloorBoss.SAW_TILL))
+	premium.caught_on.connect(func() -> void: owner_npc.scold(CAUGHT_ON, "CHORRO_CAUGHT_ON"))
+	var x0 := TUNNEL_X1 + 0.3
+	var thuds := _area(Vector3((x0 + HALF_X) / 2, FLOOR_TOP + 0.3, (BACK_Z + LINE_Z) / 2),
+		Vector3(HALF_X - x0, 0.6, LINE_Z - BACK_Z))
+	thuds.body_entered.connect(_on_wet_floor_hit)
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	owner_npc.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Something falling on the drying area's wet floor: "¡Eso no se lava así!".
+func _on_wet_floor_hit(body: Node3D) -> void:
+	var item := body as RigidBody3D
+	if item and item.linear_velocity.y < -2.0:
+		owner_npc.saw(item.global_position, SAW_WET_FLOOR, "CHORRO_WET_FLOOR")
+
+
+func _physics_process(delta: float) -> void:
+	_tunnel_check += delta
+	if _tunnel_check < TUNNEL_CHECK_EVERY:
+		return
+	_tunnel_check = 0.0
+	for node in get_tree().get_nodes_in_group("cops"):
+		var cop := node as Cop
+		if cop == null or tunnel_seen.has(cop.get_instance_id()):
+			continue
+		var at := to_local(cop.global_position)
+		if at.x < TUNNEL_X0 or at.x > TUNNEL_X1 or absf(at.z) > TUNNEL_HALF_Z:
+			continue
+		if owner_npc.saw(cop.global_position + Vector3.UP, SAW_TUNNEL, "CHORRO_TUNNEL"):
+			tunnel_seen[cop.get_instance_id()] = true
+
+
 ## Breaks the windshield of car `index`, once: a fine, and the glass goes grey and cracked.
 func break_windshield(index: int) -> void:
 	if cracked.has(index):
@@ -374,7 +477,7 @@ func break_windshield(index: int) -> void:
 	broken_goods += 1
 	fines += WINDSHIELD_FINE
 	windshields[index].material_override = _glass(CRACKED)
-	_say(windshields[index].position + Vector3(0, 1.0, 0), "CARWASH_WINDSHIELD_BROKEN")
+	_say(to_local(windshields[index].global_position) + Vector3(0, 1.0, 0), "CARWASH_WINDSHIELD_BROKEN")
 	windshield_broken.emit(index)
 
 
@@ -396,7 +499,7 @@ func _glass(color: Color) -> StandardMaterial3D:
 	return glass
 
 
-func _area(center: Vector3, size: Vector3) -> Area3D:
+func _area(center: Vector3, size: Vector3, parent: Node3D = self) -> Area3D:
 	var area := Area3D.new()
 	area.position = center
 	area.collision_layer = 0
@@ -406,7 +509,7 @@ func _area(center: Vector3, size: Vector3) -> Area3D:
 	box.size = size
 	shape.shape = box
 	area.add_child(shape)
-	add_child(area)
+	parent.add_child(area)
 	return area
 
 

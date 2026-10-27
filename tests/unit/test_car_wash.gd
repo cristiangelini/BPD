@@ -1,7 +1,7 @@
 extends GutTest
 
 ## The car wash as a place to raid (docs/diseno/allanamiento-lavadero.md, step 1): the car wash on its lot, the tunnel
-## with its conveyor, the cars waiting in line with the first one's trunk open, the locked office with its key in the
+## with its conveyor, the cars waiting in line with the second one's trunk open, the locked office with its key in the
 ## till, the windshields and the wax shelf that break when something hits them fast, and the 12 hiding spots.
 
 const SCENE := preload("res://scenes/levels/car_wash.tscn")
@@ -67,7 +67,7 @@ func test_something_hidden_in_every_spot_stays_there() -> void:
 func test_something_thrown_hard_at_a_windshield_breaks_it_once() -> void:
 	var car_wash := _car_wash()
 	await wait_physics_frames(2)
-	var pane := car_wash.windshields[0].position
+	var pane := car_wash.windshields[0].global_position
 	_prop(car_wash, pane + Vector3(2.0, 0.3, 0), Vector3(-9.0, 0, 0))
 	await wait_physics_frames(30)
 	assert_eq(car_wash.cracked, [0] as Array[int])
