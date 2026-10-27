@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Supermarket raid, step 6: the rigged raffle story: the urn full of coupons for "Primo Ofertón" hidden with the cardboard prize car and the photo of the winners; by the entrance a table with a "We're raffling a car!" sign and a pad of coupons whose top one already comes filled in for the cousin (the clue).
 - Supermarket raid, step 6: the scale that adds up story: the magic screw hidden with the "How to weigh more" manual and a golden screwdriver; the produce stand's scale shows what lies on it plus 300 g (0.3 kg empty), with three tomatoes by it to try, and the first thing weighed is the clue.
 - Supermarket raid, step 6: the false-bottomed carts story: a 15 kg cart full of goods under a false floor hidden with a welder and the plan to enlarge carts; one of the store's own eight carts has a false floor too and, pushed, pulls the cop to one side and clinks like bottles (the first clink is the clue).
 - Supermarket raid, step 6: the fake cheese story: a 25 kg plastic cheese wheel full of bills hidden with its mold and a block of yellow wax; on the cheese table by the dairy fridge one of the four 10 kg wheels is plastic and bounces like a ball when dropped (the first bounce is the clue).
