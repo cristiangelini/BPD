@@ -5610,3 +5610,16 @@ LOC_under_dress_rack,debajo del perchero de vestidos,under the dress rack,embaix
 LOC_under_karaoke_table,debajo de una mesa de la sala,under a table in the room,embaixo de uma mesa do salão
 LOC_on_karaoke_bar,en la barra del bar,on the bar,no balcão do bar
 LOC_on_karaoke_desk,en el escritorio de Rosaura,on Rosaura's desk,na escrivaninha da Rosaura
+PROMPT_TALK_SINGER,E: hablar con el cliente,E: talk to the customer,E: falar com o cliente
+KARAOKE_SING_1,"«¡Y yo te amaré… o algo así!»","“And I will love you… or something like that!”","“E eu vou te amar… ou algo assim!”"
+KARAOKE_SING_2,"«¡Uooo, uooo, no me sé esta parte!»","“Whoa, whoa, I don't know this part!”","“Uooo, uooo, não sei essa parte!”"
+KARAOKE_SING_3,"«¡Tu amor es como un taxi que no para!»","“Your love is like a taxi that won't stop!”","“Seu amor é como um táxi que não para!”"
+KARAOKE_SING_4,"«¡Laaa, laaa, laaaaa!» (desafina)","“Laaa, laaa, laaaaa!” (off key)","“Láaa, láaa, láaaaa!” (desafina)"
+KARAOKE_SING_5,"«¡Esta va para mi suegra!»","“This one's for my mother-in-law!”","“Essa vai para a minha sogra!”"
+KARAOKE_SINGER_TALK_1,"«Vengo todos los jueves. Nunca gano, pero canto fuerte.»","“I come every Thursday. I never win, but I sing loud.”","“Venho toda quinta. Nunca ganho, mas canto alto.”"
+KARAOKE_SINGER_TALK_2,"«El concurso lo gana siempre la misma voz. Qué raro, ¿no?»","“The same voice always wins the contest. Strange, isn't it?”","“O concurso é sempre ganho pela mesma voz. Estranho, né?”"
+KARAOKE_SINGER_TALK_3,"«No toques el micrófono 1, que después le toca a mi tía.»","“Don't touch microphone 1, my aunt's up next.”","“Não mexa no microfone 1, que depois é a vez da minha tia.”"
+KARAOKE_SINGER_NO_MIC,"«¿Y el micrófono? ¡Me toca a mí!»","“Where's the microphone? It's my turn!”","“Cadê o microfone? É a minha vez!”"
+KARAOKE_SINGER_GRABBED,"«¡Ey! ¡Estaba en el estribillo!»","“Hey! I was in the chorus!”","“Ei! Eu estava no refrão!”"
+KARAOKE_SINGER_IN_WAY,"«¡Bájate del escenario, que no es un dueto!»","“Get off the stage, this isn't a duet!”","“Desce do palco, que não é um dueto!”"
+HINT_KARAOKE_CABLE,¡Tropezaste con el cable del micrófono!,You tripped over the microphone's cable!,Você tropeçou no fio do microfone!

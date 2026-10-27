@@ -117,6 +117,14 @@ suman entre 400 y 600.
      30) y la bola de espejos (algo tirado que le pega la descuelga: multa de 15 y sus espejitos en el piso). 12
      escondites, 6 grandes. La nota de neón está en el techo. Capturas: `allanamiento-karaoke/paso1-*.png`.
 2. Los micrófonos con cable (y el tropezón) y los clientes que cantan por turno.
+   - **Cómo quedó (propuesta):** hay 5 micrófonos (`KaraokeMic`), cada uno en el clip de su pie: el 1 y el 2 al
+     frente del escenario y uno en cada cabina. Se agarran con E; el cable sale del pie, va por el piso y sube al
+     micrófono, y lo frena a 4 m del pie, en la mano o tirado. Soltado cerca de su clip, vuelve al pie. Un policía que
+     corre por encima del cable tirado en el piso tropieza (una vez cada 2 s), en la PC de su jugador. Los 6 clientes
+     (`KaraokeSinger`) esperan al lado de su mesa mirando el escenario; cada 4 s después de que vuelve el último, el
+     siguiente sube por la escalera al micrófono 1 y canta 20 s, una frase cada 4 s. Se queja (5 a la denuncia, una
+     vez cada 10 s) si el micrófono 1 no está en su pie, si un policía se lo saca mientras canta (y se baja) o si hay
+     un policía en el escenario. Captura: `paso2-cantando.png`.
 3. Rosaura y el dueto que la distrae.
 4. Toto y la consola del volumen.
 5. El caso (RaidCase) y la primera historia, la máquina de aplausos.

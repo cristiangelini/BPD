@@ -12,6 +12,8 @@ extends Node3D
 
 signal screen_broken
 signal disco_ball_fell
+## A customer complained (the owner adds it to the complaint, step 3).
+signal singer_complained(singer: KaraokeSinger)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const SPEAKER_MODEL := preload("res://assets/models/stage_speaker.glb")
@@ -25,6 +27,7 @@ const SOFA_MODEL := preload("res://assets/models/booth_sofa.glb")
 const RACK_MODEL := preload("res://assets/models/dress_rack.glb")
 const CHAIRS_MODEL := preload("res://assets/models/chair_stack.glb")
 const NOTE_MODEL := preload("res://assets/models/neon_note.glb")
+const STAND_MODEL := preload("res://assets/models/mic_stand.glb")
 const HALF_X := 12.0
 const HALF_Z := 10.0
 const WALL_TOP := 4.5
@@ -44,6 +47,16 @@ const STEPS_WIDTH := 1.4
 const SPEAKER_X: Array[float] = [-6.3, 2.3]
 const SPEAKER_Z := -8.7
 const SPEAKER_SIZE := Vector3(1.0, 1.8, 0.8)
+## The microphones' stands: 1 and 2 at the front of the stage (on its boards), then one in each booth (on the floor);
+## a singer stands behind microphone 1, facing the room.
+const MIC_STANDS: Array[Vector3] = [Vector3(-3.5, FLOOR_TOP + STAGE_SIZE.y, -6.4), Vector3(-0.5, FLOOR_TOP + STAGE_SIZE.y, -6.4),
+	Vector3(-10.0, FLOOR_TOP, -1.6), Vector3(-10.0, FLOOR_TOP, 1.4), Vector3(-10.0, FLOOR_TOP, 4.4)]
+const SINGER_BEHIND := 0.6
+## The customers: one waits by each of the first tables, and the next one goes up this long after the last is back.
+const SINGERS := 6
+const SINGER_LOOKS := ["cliente", "clienta", "invitado", "invitado_b", "fan", "huesped"]
+const TURN_GAP := 4.0
+const FIRST_TURN := 3.0
 ## The lyrics screen over the stage, on the back wall.
 const SCREEN_AT := Vector3(-2.0, 2.9, -9.8)
 const SCREEN_SIZE := Vector3(5.0, 2.4, 0.6)
@@ -115,6 +128,12 @@ var station_parking: Transform3D
 var city_map: CityMap
 var office_door: FrontDoor
 var till: Till
+var mics: Array[KaraokeMic] = []
+var singers: Array[KaraokeSinger] = []
+## The customer whose turn it is (null between turns), the next one in line and how long until they go up.
+var on_turn: KaraokeSinger
+var _next_singer := 0
+var _turn_left := FIRST_TURN
 var screen_cracked := false
 var disco_fallen := false
 ## Money taken off the case pay: the lyrics screen and the disco ball.
@@ -138,6 +157,8 @@ func _ready() -> void:
 	_build_booths()
 	_build_bar()
 	_build_office()
+	_build_mics()
+	_build_singers()
 	office_door = _door(OFFICE_DOOR_X)
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("karaoke")
@@ -289,6 +310,72 @@ func drop_disco_ball() -> void:
 		_build.mesh_box(at, Vector3(0.08, 0.01, 0.08), Color(0.9, 0.92, 0.96))
 	_say(DISCO_AT + Vector3(0, -1.0, 0), "KARAOKE_DISCO_BROKEN")
 	disco_ball_fell.emit()
+
+
+## The five microphones on their stands.
+func _build_mics() -> void:
+	for i in MIC_STANDS.size():
+		_model(STAND_MODEL, MIC_STANDS[i])
+		var mic := KaraokeMic.new()
+		mic.name = "Mic%d" % (i + 1)
+		mic.foot = to_global(MIC_STANDS[i])
+		add_child(mic)
+		mics.append(mic)
+
+
+## The six customers, each by their table, facing the stage.
+func _build_singers() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["karaoke singers", case_seed])
+	for i in SINGERS:
+		var singer := KaraokeSinger.new()
+		singer.name = "Singer%d" % i
+		singer.look = SINGER_LOOKS[i % SINGER_LOOKS.size()]
+		singer.karaoke = self
+		singer.home = TABLES[i] + Vector3(0.9, FLOOR_TOP, 0.4)
+		singer.position = singer.home
+		singer.rng.seed = rng.randi()
+		add_child(singer)
+		singer.complained.connect(singer_complained.emit)
+		singer.turn_over.connect(func(_done: KaraokeSinger) -> void:
+			on_turn = null
+			_turn_left = TURN_GAP)
+		singers.append(singer)
+
+
+## Where the singer stands at microphone 1, and the foot and top of the stage's steps (karaoke space).
+func singer_spot() -> Vector3:
+	return MIC_STANDS[0] + Vector3(0, 0, -SINGER_BEHIND)
+
+
+func steps_foot() -> Vector3:
+	return Vector3(STEPS_X, FLOOR_TOP, STAGE_AT.z + STAGE_SIZE.z / 2 + STEPS_RUN + 0.3)
+
+
+func steps_top() -> Vector3:
+	return Vector3(STEPS_X, FLOOR_TOP + STAGE_SIZE.y, STAGE_AT.z + STAGE_SIZE.z / 2 - 0.4)
+
+
+## Whether a cop is up on the stage.
+func cop_on_stage() -> bool:
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		var at := to_local(cop.global_position)
+		if at.y > FLOOR_TOP + STAGE_SIZE.y - 0.15 and absf(at.x - STAGE_AT.x) < STAGE_SIZE.x / 2 \
+				and absf(at.z - STAGE_AT.z) < STAGE_SIZE.z / 2:
+			return true
+	return false
+
+
+## Between turns the next customer in line goes up to sing.
+func _physics_process(delta: float) -> void:
+	if on_turn:
+		return
+	_turn_left -= delta
+	if _turn_left > 0.0:
+		return
+	on_turn = singers[_next_singer % singers.size()]
+	_next_singer += 1
+	on_turn.start_turn()
 
 
 ## A locked door in the office's front wall, its middle at x.

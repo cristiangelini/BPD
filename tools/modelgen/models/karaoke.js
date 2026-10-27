@@ -144,11 +144,30 @@ export function buildNeonNote() {
 	return b.build();
 }
 
+// A microphone stand 1.45 m tall up to its clip: round base, chrome pole and the clip on top.
+export function buildMicStand() {
+	const b = new Builder('mic_stand');
+	const chrome = mat('mic_chrome', 0xc8ccd2, { metalness: 0.6, roughness: 0.3 }), black = mat('mic_black', 0x1c1d22);
+	b.add('base', black, new THREE.CylinderGeometry(0.2, 0.22, 0.04, 12), { pos: V(0, 0.02, 0) });
+	b.add('pole', chrome, new THREE.CylinderGeometry(0.015, 0.015, 1.4, 6), { pos: V(0, 0.72, 0) });
+	b.add('clip', black, new THREE.CylinderGeometry(0.035, 0.03, 0.06, 8), { pos: V(0, 1.43, 0) });
+	return b.build();
+}
+
+// A handheld microphone 0.22 m long, upright: black handle and a silver mesh head.
+export function buildKaraokeMic() {
+	const b = new Builder('karaoke_mic');
+	b.add('handle', mat('mic_black', 0x1c1d22), new THREE.CylinderGeometry(0.022, 0.016, 0.16, 8), { pos: V(0, 0.08, 0) });
+	b.add('ring', mat('mic_pink', 0xff5ad2), new THREE.CylinderGeometry(0.024, 0.024, 0.015, 8), { pos: V(0, 0.16, 0) });
+	b.add('head', mat('mic_mesh', 0xd0d4dc, { metalness: 0.5, roughness: 0.4 }), new THREE.SphereGeometry(0.032, 10, 8), { pos: V(0, 0.19, 0) });
+	return b.build();
+}
+
 export const models = {
 	stage_speaker: buildStageSpeaker, lyrics_screen: buildLyricsScreen, sound_console: buildSoundConsole,
 	karaoke_bar: buildKaraokeBar, ice_machine: buildIceMachine, karaoke_table: buildKaraokeTable,
 	disco_ball: buildDiscoBall, booth_sofa: buildBoothSofa, dress_rack: buildDressRack, chair_stack: buildChairStack,
-	neon_note: buildNeonNote,
+	neon_note: buildNeonNote, mic_stand: buildMicStand, karaoke_mic: buildKaraokeMic,
 };
 
 export const views = {
@@ -159,7 +178,8 @@ export const views = {
 			{ name: 'karaoke_bar', pos: [3.2, 0, 1.4] }, { name: 'ice_machine', pos: [5.4, 0, 0.6] },
 			{ name: 'karaoke_table', pos: [-1.0, 0, 0.8] }, { name: 'disco_ball', pos: [-1.0, 2.6, 0.8] },
 			{ name: 'booth_sofa', pos: [-4.0, 0, 1.4], rotY: Math.PI / 2 }, { name: 'dress_rack', pos: [0.8, 0, 2.6] },
-			{ name: 'chair_stack', pos: [-2.6, 0, 2.6] }, { name: 'neon_note', pos: [5.6, 0, -1.8] },
+			{ name: 'chair_stack', pos: [-2.6, 0, 2.6] }, { name: 'mic_stand', pos: [-1.8, 0, -0.6] },
+			{ name: 'karaoke_mic', pos: [-0.4, 0, -0.4] }, { name: 'neon_note', pos: [5.6, 0, -1.8] },
 		],
 		cam: { pos: [0.6, 4.0, 9.5], target: [0.6, 1.0, 0], fov: 50 },
 	},
