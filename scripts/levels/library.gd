@@ -132,6 +132,9 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	for reader in readers:
 		reader.case = case
 		reader.stubborn = reader.index == stubborn
+	kid.case = case
+	kid.knows = case.plan.clues.has("witness")
+	kid.saw = case.culprit().genre
 	clues = LibraryClues.new()
 	clues.name = "Clues"
 	clues.library = self
@@ -205,6 +208,9 @@ func reveal_loot() -> void:
 		return
 	uncover_book()
 	loot_found = true
+	# Back in the case unopened, Doña Sigilo locks it: the bookmark stays inside.
+	if case and not book.opened:
+		case.ruin("bookmark")
 	book.position = CASE_AT + Vector3(0, 0.98, 0)
 	book.collision_layer = 0
 	if case:
