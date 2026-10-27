@@ -11,7 +11,8 @@ extends Node3D
 ## thrown hard at a car's windshield or at the wax shelf breaks it, a fine each. The tunnel at work (WashTunnel, step
 ## 2). Don Chorro walks his round by the tunnel and fills his complaint; the premium wash at the token machine sends the
 ## first car through the tunnel and him off to dry it (step 3). Pompita by the exit talks to whoever brings him a dry
-## chamois from the rag basket (step 4). Every number here is (propuesta).
+## chamois from the rag basket (step 4). The case is one of its stories (STORIES), drawn with the seed, run by the
+## same RaidCase as the other places (step 5). Every number here is (propuesta).
 
 signal windshield_broken(index: int)
 signal wax_broken
@@ -26,6 +27,34 @@ const INFLATABLE_MODEL := preload("res://assets/models/inflatable_man.glb")
 const BOILER_MODEL := preload("res://assets/models/carwash_boiler.glb")
 const OWNER_SCENE := preload("res://scenes/npc/carwash_owner.tscn")
 const CHAMOIS_SCENE := preload("res://scenes/props/chamois.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the car wash can be suspected of (allanamiento-lavadero.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["laundered_money", "stolen_car", "fake_shampoo", "brush_painting", "meter_coins",
+	"smuggled_parrot"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_CARWASH_TIP_B", "BRIEF_TIP_C", "BRIEF_CARWASH_TIP_D",
+	"BRIEF_CARWASH_TIP_E"]
+## The stories the car wash can tell, like Rink.STORIES: what the comisario says once it's guessed, its "find it" row,
+## what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the checklist rows
+## of its extras and its rig. With "main_hidden" the first hidden item is the main evidence and the rest extras.
+const STORIES := {
+	"laundered_money": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_LAUNDERED_MONEY_B", "BRIEF_LAUNDERED_MONEY_C", "BRIEF_LAUNDERED_MONEY_D"],
+		"find": "OBJ_FIND_CASH_BAG",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/carwash_cash_bag.tscn"),
+			preload("res://scenes/props/carwash_ledger.tscn"), preload("res://scenes/props/carwash_iron.tscn")],
+		"half_heights": [0.2, 0.01, 0.07],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_TWO_BOOKS", "OBJ_EXTRA_IRON"],
+		"rig": preload("res://scripts/case/carwash/laundered_money_rig.gd"),
+	},
+}
+## Where the suspicion notes can lie: on the floor by the front, the storeroom and the drying area.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(-3.0, FLOOR_TOP, 6.5), Vector3(4.5, FLOOR_TOP, 7.5), Vector3(-16.0, FLOOR_TOP, 4.0),
+	Vector3(0.0, FLOOR_TOP, -7.5), Vector3(13.5, FLOOR_TOP, -1.0), Vector3(-12.0, FLOOR_TOP, -3.5),
+]
 const HALF_X := 20.0
 const HALF_Z := 11.0
 const WALL_TOP := 5.5
@@ -175,10 +204,23 @@ var windshields: Array[MeshInstance3D] = []
 var cracked: Array[int] = []
 var wax_broken_down := false
 var broken_goods := 0
+## The case flow every raid shares.
+var raid: RaidCase
+var car: PatrolCar
 ## Money taken off the case pay: the windshields and the wax.
-var fines := 0
-## Same seed, same car wash (the stories and the hiding spots come from it, step 5).
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## Same seed, same car wash: the story and where its things go. 0 draws one.
 @export var case_seed := 0
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: CarWashRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
 var _build: PlaceBuilder
 
 
@@ -187,6 +229,20 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	car = $PatrolCar
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_tunnel()
@@ -201,11 +257,91 @@ func _ready() -> void:
 	_park_car()
 	city_map = CityMap.new()
 	add_child(city_map)
-	city_map.setup(city, "carwash", $PatrolCar)
+	city_map.setup(city, "carwash", car)
+	raid.station_parking = station_parking
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = owner_npc
+	raid.owner_id = "carwash"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The car wash's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_CARWASH",
+		"guess_key": "OBJ_GUESS_CARWASH",
+		"broken_key": "OBJ_BROKEN_CARWASH",
+		"complaint_key": "OBJ_COMPLAINT_CARWASH",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_goods,
+		"complaint": owner_npc.complaint,
+	}
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Don Chorro lets slip when asked (where the story's things are, in an order drawn from the seed), and what
+## Pompita saw: where he hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		owner_npc.slips.append(tr("CHORRO_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	owner_npc.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	pompita.clue = tr("CLUE_POMPITA") % where
+	pompita.clue_speech = tr("POMPITA_CLUE_" + story_id) % where
+	pompita.told.connect(raid.add_clue)
 
 
 func _park_car() -> void:
-	var car: PatrolCar = $PatrolCar
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
 	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
 
@@ -466,6 +602,7 @@ func _place_owner() -> void:
 	add_child(owner_npc)
 	owner_npc.start_at(0)
 	office_door.broken.connect(owner_npc.door_broken)
+	owner_npc.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_CARWASH"))
 	till.opened.connect(func(at: Vector3) -> void: owner_npc.saw(at, FloorBoss.SAW_TILL))
 	premium.caught_on.connect(func() -> void: owner_npc.scold(CAUGHT_ON, "CHORRO_CAUGHT_ON"))
 	var x0 := TUNNEL_X1 + 0.3
@@ -541,6 +678,7 @@ func break_windshield(index: int) -> void:
 	cracked.append(index)
 	broken_goods += 1
 	fines += WINDSHIELD_FINE
+	raid.float_label("-%d" % WINDSHIELD_FINE, windshields[index].global_position + Vector3.UP, Color(1, 0.3, 0.25))
 	windshields[index].material_override = _glass(CRACKED)
 	_say(to_local(windshields[index].global_position) + Vector3(0, 1.0, 0), "CARWASH_WINDSHIELD_BROKEN")
 	windshield_broken.emit(index)
@@ -553,6 +691,7 @@ func break_wax() -> void:
 	wax_broken_down = true
 	broken_goods += 1
 	fines += WAX_FINE * WAX_BOTTLES
+	raid.float_label("-%d" % (WAX_FINE * WAX_BOTTLES), to_global(WAX_AT + Vector3.UP * 2.0), Color(1, 0.3, 0.25))
 	_say(WAX_AT + Vector3(0, 2.4, -0.6), "CARWASH_WAX_BROKEN")
 	wax_broken.emit()
 

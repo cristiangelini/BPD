@@ -149,10 +149,50 @@ export function buildPompita() {
 	return b.build();
 }
 
+// The laundered money's bag (0.6 x 0.35 x 0.3 m): a green sports bag, zipper open, with bundles of bills showing.
+export function buildCarwashCashBag() {
+	const b = new Builder('carwash_cash_bag');
+	const bag = mat('cash_bag', 0x2f6a3a), dark = mat('cash_bag_dark', 0x1c2a20), bill = mat('cash_bill', 0x7fc87a);
+	b.add('bag', bag, new THREE.CylinderGeometry(0.17, 0.17, 0.6, 12), { pos: V(0, 0.17, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('zip', dark, new THREE.BoxGeometry(0.5, 0.01, 0.06), { pos: V(0, 0.345, 0) });
+	for (const x of [-0.12, 0.0, 0.12]) {
+		b.add('bills', bill, new THREE.BoxGeometry(0.1, 0.05, 0.05), { pos: V(x, 0.34, 0), rot: [0, x, 0] });
+	}
+	for (const x of [-0.15, 0.15]) {
+		b.add('handle', dark, new THREE.TorusGeometry(0.08, 0.012, 4, 10, Math.PI), { pos: V(x, 0.34, 0) });
+	}
+	return b.build();
+}
+
+// The notebook with the two sets of books (0.17 x 0.22 m): a black notebook lying open, one page in blue ink and the
+// other in red.
+export function buildCarwashLedger() {
+	const b = new Builder('carwash_ledger');
+	b.add('cover', mat('ledger_cover', 0x1c1c22), new THREE.BoxGeometry(0.34, 0.012, 0.22), { pos: V(0, 0.006, 0) });
+	b.add('page', mat('ledger_page', 0xf4f0e2), new THREE.BoxGeometry(0.32, 0.004, 0.2), { pos: V(0, 0.014, 0) });
+	for (let i = 0; i < 5; i++) {
+		b.add('ink', mat('ledger_blue', 0x2a3a9a), new THREE.BoxGeometry(0.12, 0.002, 0.006), { pos: V(-0.08, 0.017, -0.07 + i * 0.035) });
+		b.add('ink', mat('ledger_red', 0xc02a2a), new THREE.BoxGeometry(0.12, 0.002, 0.006), { pos: V(0.08, 0.017, -0.07 + i * 0.035) });
+	}
+	return b.build();
+}
+
+// The iron for flattening the washed bills (0.25 x 0.15 x 0.12 m): a pale blue body on a steel plate, with its handle.
+export function buildCarwashIron() {
+	const b = new Builder('carwash_iron');
+	const body = mat('iron_body', 0x8ac0e8), steel = mat('iron_plate', 0xc0c4cc, { metalness: 0.8, roughness: 0.25 });
+	b.add('plate', steel, new THREE.CylinderGeometry(0.06, 0.06, 0.02, 3), { pos: V(0, 0.01, 0), rot: [0, Math.PI / 2, 0], scale: V(2.0, 1, 1) });
+	b.add('body', body, new THREE.CylinderGeometry(0.05, 0.06, 0.06, 3), { pos: V(0, 0.05, 0), rot: [0, Math.PI / 2, 0], scale: V(1.8, 1, 1) });
+	b.add('handle', mat('iron_handle', 0x26262a), new THREE.BoxGeometry(0.14, 0.025, 0.03), { pos: V(-0.01, 0.13, 0) });
+	b.add('handle', mat('iron_handle', 0x26262a), new THREE.BoxGeometry(0.02, 0.05, 0.03), { pos: V(-0.07, 0.1, 0) });
+	return b.build();
+}
+
 export const models = {
 	wash_brush: buildWashBrush, wash_jets: buildWashJets, wash_blower: buildWashBlower, token_machine: buildTokenMachine,
 	vacuum_column: buildVacuumColumn, inflatable_man: buildInflatableMan, carwash_boiler: buildCarwashBoiler,
-	npc_don_chorro: buildDonChorro, npc_pompita: buildPompita,
+	npc_don_chorro: buildDonChorro, npc_pompita: buildPompita, carwash_cash_bag: buildCarwashCashBag,
+	carwash_ledger: buildCarwashLedger, carwash_iron: buildCarwashIron,
 };
 
 export const views = {
@@ -163,6 +203,8 @@ export const views = {
 			{ name: 'vacuum_column', pos: [2.9, 0, 0.8] }, { name: 'inflatable_man', pos: [3.9, 0, -0.4] },
 			{ name: 'carwash_boiler', pos: [-2.6, 0, 2.2] }, { name: 'npc_don_chorro', pos: [0.9, 0, 2.0], rotY: -0.3 },
 			{ name: 'npc_pompita', pos: [-0.6, 0, 2.6], rotY: 0.3 },
+			{ name: 'carwash_cash_bag', pos: [-1.8, 0, 3.4] }, { name: 'carwash_ledger', pos: [2.0, 0, 3.4] },
+			{ name: 'carwash_iron', pos: [2.6, 0, 3.0] },
 		],
 		cam: { pos: [0, 2.6, 9.0], target: [0, 1.5, 0], fov: 45 },
 	},
