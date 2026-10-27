@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Fun fair raid, step 6 (ghost train storeroom): the box of stolen phones hides with the price list and the ghost sheet with pockets; every 15 s one of the skeletons rings like a phone and its screen lights up.
 - Fun fair raid, step 6 (unchecked Ferris wheel): the fake safety certificate is hidden with the bag of nuts and the inspector's stamp; loose nuts lie in front of the wheel and every turn of the crank shakes it and drops another one.
 - Fun fair raid, step 6 (fake tickets): the ticket printing machine is hidden with the uncut rolls and the "Válido" stamp; pink tickets on the paths all have the same number, and the ticket booth whirs and spits out another one every 20 s.
 - Fun fair raid, step 6 (rigged games): a giant magnet at the foot of the cans booth keeps the cans from falling, pulls the balls to the floor and drags the strength tester's mallet towards the booth; the glued cans and the manual "How not to give prizes" are hidden.

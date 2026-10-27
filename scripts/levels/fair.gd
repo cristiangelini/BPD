@@ -77,6 +77,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_NUT_BAG", "OBJ_EXTRA_INSPECTOR_STAMP"],
 		"rig": preload("res://scripts/case/fair/loose_wheel_rig.gd"),
 	},
+	"ghost_storage": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_GHOST_STORAGE_B", "BRIEF_GHOST_STORAGE_C", "BRIEF_GHOST_STORAGE_D"],
+		"find": "OBJ_FIND_PHONE_BOX",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/fair_phone_box.tscn"),
+			preload("res://scenes/props/fair_price_list.tscn"), preload("res://scenes/props/fair_ghost_sheet.tscn")],
+		"half_heights": [0.19, 0.003, 0.06],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_PRICE_LIST", "OBJ_EXTRA_GHOST_SHEET"],
+		"rig": preload("res://scripts/case/fair/ghost_storage_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the paved paths.
 const NOTE_PLACES: Array[Vector3] = [

@@ -181,6 +181,10 @@ extras suman entre 400 y 600.
      300) y el sello de inspector (0,3 kg, 200) van en escondites sorteados. Delante de la vuelta al mundo hay 3 tuercas
      sueltas en el piso: agarrar una es la pista propia. Cada vez que se gira la manivela, la rueda tiembla ("¡Cling!
      ¡Clang!") y se cae otra tuerca, hasta 8. Capturas `parque/paso6c-*.png`.
+   - **El tren fantasma depósito:** la caja de celulares robados (6 kg, 1000) va en un escondite para cosas pesadas; la
+     lista de precios (0,1 kg, 300) y la sábana de fantasma con bolsillos (0,5 kg, 200) en otros. Cada 15 s suena un
+     celular en uno de los esqueletos (sorteado) y se le prende la pantalla 3 s. Oírlo a menos de 5 m es la pista
+     propia. Capturas `parque/paso6d-*.png`.
 7. "Jugar" suma el parque al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online: Don Tómbola, Nube, las latas, la campana y los juegos en todas las PC.
 

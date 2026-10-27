@@ -469,6 +469,40 @@ export function buildInspectorStamp() {
 	return b.build();
 }
 
+// The ghost train storeroom's evidence: a cardboard box full of stolen phones, a few sticking out with their screens.
+export function buildPhoneBox() {
+	const b = new Builder('fair_phone_box');
+	const card = mat('phone_box_card', 0xb08a58), phone = mat('ghost_dark', 0x1a1a22), screen = mat('phone_screen', 0x6ab8f0, { emissive: 0x3a88d0, emissiveIntensity: 0.6 });
+	box(b, 'box', card, 0.42, 0.28, 0.32, 0, 0.14, 0);
+	for (const [x, r] of [[-0.12, 0.2], [0, -0.1], [0.12, 0.15]]) {
+		box(b, 'phones', phone, 0.07, 0.13, 0.012, x, 0.31, 0, [0, 0, r]);
+		box(b, 'screens', screen, 0.055, 0.1, 0.004, x, 0.31, 0.008, [0, 0, r]);
+	}
+	return b.build();
+}
+
+// The price list of the phones: a sheet with a column of phones drawn on the left and prices in green.
+export function buildPriceList() {
+	const b = new Builder('fair_price_list');
+	b.add('paper', mat('list_paper', 0xfaf6ea), new THREE.BoxGeometry(0.21, 0.004, 0.29), { pos: V(0, 0.002, 0) });
+	const ink = mat('list_ink', 0x2a2a30), money = mat('list_money', 0x3a9a4a);
+	for (let i = 0; i < 7; i++) {
+		box(b, 'phones', ink, 0.02, 0.002, 0.03, -0.07, 0.005, -0.1 + i * 0.032);
+		box(b, 'prices', money, 0.08, 0.002, 0.008, 0.04, 0.005, -0.1 + i * 0.032);
+	}
+	return b.build();
+}
+
+// The ghost's sheet with pockets: a white sheet folded on the floor, two black eye holes and sewn-on pockets.
+export function buildGhostSheet() {
+	const b = new Builder('fair_ghost_sheet');
+	const white = mat('fair_white', WHITE), dark = mat('ghost_dark', 0x1a1a22);
+	b.add('sheet', white, ellipsoid(0.22, 0.06, 0.18, 10, 6), { pos: V(0, 0.05, 0) });
+	for (const x of [-0.06, 0.06]) b.add('eyes', dark, ellipsoid(0.025, 0.01, 0.035, 6, 4), { pos: V(x, 0.1, 0.06) });
+	for (const x of [-0.12, 0.12]) box(b, 'pockets', mat('pocket_grey', 0xc8c8d0), 0.08, 0.02, 0.07, x, 0.07, -0.05);
+	return b.build();
+}
+
 export const models = {
 	fair_carousel: buildCarousel, fair_horse: buildFairHorse, ferris_stand: buildFerrisStand, ferris_wheel: buildFerrisWheel,
 	ferris_cabin: buildFerrisCabin, bumper_car: buildBumperCar, fair_arch: buildFairArch, strength_tester: buildStrengthTester,
@@ -479,7 +513,8 @@ export const models = {
 	fair_magnet: buildFairMagnet, fair_glued_cans: buildGluedCans, fair_rig_manual: buildRigManual,
 	fair_ticket_printer: buildTicketPrinter, fair_ticket_rolls: buildTicketRolls, fair_valid_stamp: buildValidStamp,
 	fair_safety_certificate: buildSafetyCertificate, fair_nut: buildFairNut, fair_nut_bag: buildNutBag,
-	fair_inspector_stamp: buildInspectorStamp,
+	fair_inspector_stamp: buildInspectorStamp, fair_phone_box: buildPhoneBox, fair_price_list: buildPriceList,
+	fair_ghost_sheet: buildGhostSheet,
 };
 
 export const views = {
@@ -521,6 +556,11 @@ export const views = {
 		items: [{ name: 'fair_safety_certificate', pos: [-0.3, 0, 0.1], rotY: 0.2 }, { name: 'fair_nut_bag', pos: [0.3, 0, -0.2] },
 			{ name: 'fair_inspector_stamp', pos: [0.35, 0, 0.3], rotY: -0.4 }, { name: 'fair_nut', pos: [0.05, 0, 0.4] }],
 		cam: { pos: [0.1, 1.0, 1.7], target: [0, 0.1, 0], fov: 40 },
+	},
+	fair_ghost_storage: {
+		items: [{ name: 'fair_phone_box', pos: [-0.3, 0, 0], rotY: 0.3 }, { name: 'fair_price_list', pos: [0.35, 0, 0.3], rotY: -0.2 },
+			{ name: 'fair_ghost_sheet', pos: [0.35, 0, -0.2] }],
+		cam: { pos: [0.1, 1.0, 1.7], target: [0, 0.15, 0], fov: 40 },
 	},
 	fair_fake_tickets: {
 		items: [{ name: 'fair_ticket_printer', pos: [-0.3, 0, 0], rotY: 0.3 }, { name: 'fair_ticket_rolls', pos: [0.35, 0, 0.25], rotY: -0.3 },
