@@ -95,6 +95,18 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_METER_KEY", "OBJ_EXTRA_FAKE_TOKENS"],
 		"rig": preload("res://scripts/case/carwash/meter_coins_rig.gd"),
 	},
+	"smuggled_parrot": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_SMUGGLED_PARROT_B", "BRIEF_SMUGGLED_PARROT_C", "BRIEF_SMUGGLED_PARROT_D"],
+		"find": "OBJ_FIND_PARROT_CAGE",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/carwash_parrot_cage.tscn"),
+			preload("res://scenes/props/carwash_export_permit.tscn"),
+			preload("res://scenes/props/carwash_birdseed.tscn")],
+		"half_heights": [0.36, 0.005, 0.115],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_EXPORT_PERMIT", "OBJ_EXTRA_BIRDSEED"],
+		"rig": preload("res://scripts/case/carwash/smuggled_parrot_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the floor by the front, the storeroom and the drying area.
 const NOTE_PLACES: Array[Vector3] = [

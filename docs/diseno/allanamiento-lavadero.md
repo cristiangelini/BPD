@@ -184,6 +184,10 @@ extras suman 500.
      falsas (0,5 kg, 200) en otros. Cada 20 s la máquina de fichas escupe una ficha sola ("¡Clinc!") que queda en el
      piso (como mucho 8); si hay un policía a menos de 4 m, la primera vez va a la planilla. A un policía a menos de
      5 m de una aspiradora le salta "Clinc, clinc..." cada 6 s. Capturas: `paso6d-*.png`.
+   - **El loro de contrabando:** la jaula con el loro (3 kg, 1000) en un escondite para cosas pesadas, el permiso de
+     exportación trucho (0,1 kg, 300) y la bolsa de alpiste (0,5 kg, 200) en otros. Cada 15 s el loro grita desde donde
+     esté: primero "¡Lavado premium!" y después las frases de Don Chorro con su voz. Si un policía está a menos de 8 m,
+     la primera vez va a la planilla. Capturas: `paso6e-*.png` y `paso6-modelos.png` (todas las pruebas).
 7. El lavadero en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 8. El online.
 
