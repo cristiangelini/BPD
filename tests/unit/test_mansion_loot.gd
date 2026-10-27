@@ -32,7 +32,7 @@ func test_each_spot_is_where_it_goes() -> void:
 	var mansion: Mansion = _mansion_case(1)[0]
 	for spot: String in ROOMS:
 		assert_eq(mansion.room_at(mansion.loot_spots[spot].global_position), ROOMS[spot], spot)
-	assert_eq(mansion.passage_at(mansion.loot_spots.trunk.global_position), "bookcase", "the trunk is in the passage")
+	assert_eq(mansion.passage_at(mansion.loot_spots.dusty_trunk.global_position), "bookcase", "the trunk is in the passage")
 	assert_not_null(mansion.get_node("Trunk"))
 
 
