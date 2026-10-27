@@ -5,7 +5,8 @@ extends Node
 ## mansion, from 100 down with what the cops do (no clock, decision 66). Each time it drops below 75, 50 and 25 she
 ## phones the comisario, who calls the cops on the radio, terrified, and 50 comes off the salary. At 0 she throws the
 ## cops out and they can't come back in; they can still accuse at the board with what they have. Duquesa brought home
-## gives 30 back. Every number here is (propuesta).
+## gives 30 back, and a cup of tea from the kitchen's teapot (TeaCup) brought to her 10, once. Every number here is
+## (propuesta).
 
 signal thrown_out
 
@@ -22,6 +23,7 @@ var case: CrimeSceneCase
 var value := FULL
 var calls := 0
 var out := false
+var had_tea := false
 var _hud: CanvasLayer
 var _bar: ProgressBar
 
@@ -59,7 +61,26 @@ func throw_out() -> void:
 	thrown_out.emit()
 
 
+## A cup of tea in a cop's hands, brought to her: she drinks it (+10 the first time).
+func serve_tea(cup: TeaCup) -> void:
+	cup.release_all()
+	cup.queue_free()
+	if had_tea:
+		mansion.lady.say("MANSION_LADY_TEA_AGAIN")
+		return
+	had_tea = true
+	gain(TEA)
+	mansion.lady.say("MANSION_LADY_TEA")
+
+
 func _physics_process(_delta: float) -> void:
+	if case.follower:
+		return
+	for node in get_tree().get_nodes_in_group("tea_cups"):
+		var cup := node as TeaCup
+		var off := mansion.lady.global_position - cup.global_position
+		if cup.is_held() and not cup.is_queued_for_deletion() and Vector2(off.x, off.z).length() < MansionLady.TAKE_REACH:
+			serve_tea(cup)
 	if not out:
 		return
 	for node in get_tree().get_nodes_in_group("cops"):

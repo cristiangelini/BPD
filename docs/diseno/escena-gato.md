@@ -190,5 +190,11 @@ señora y la limusina.
    30. Al bajar de 75, 50 y 25, el comisario llama por la radio y descuenta 50; a 0, la señora echa a los policías al
    jardín y no los deja volver a entrar **(propuesta)**. Faltan los jarrones que se rompen y el té (cuarta parte).
    Capturas en `gato/`: `paso5c-paciencia.png` y `paso5c-loro.png`.
+
+   Hecho así (cuarta parte, los jarrones y el té): los ocho jarrones de porcelana azul se agarran (3 kg); si uno se
+   cae o lo golpean a más de 3 m/s, se rompe en seis pedazos, la señora pierde 15 de paciencia y se descuentan 50 del
+   sueldo, con el aviso a todos los policías. En la mesada de la cocina, la tetera sirve una taza por vez (E); llevar
+   la taza en la mano hasta la señora le devuelve 10 la primera vez; las demás tazas solo las agradece
+   **(propuesta)**. Capturas en `gato/`: `paso5d-jarron.png`, `paso5d-tetera.png` y `paso5d-te.png`.
 6. El final: tablero, cansancio, sueldo y la limusina con los ovillos.
 7. El sorteo de "Jugar" y el online.
