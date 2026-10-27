@@ -371,9 +371,41 @@ export function buildCrossMap() {
 	return b.build();
 }
 
+// The taxi sign for the comisario's car: a yellow roof sign with a checkered band and a magnet base, 0.5 m wide.
+export function buildTaxiSign() {
+	const b = new Builder('garage_taxi_sign');
+	b.add('base', mat('flash_black', 0x26262a), new THREE.BoxGeometry(0.5, 0.03, 0.15), { pos: V(0, 0.015, 0) });
+	b.add('sign', mat('taxi_yellow', 0xf2c230), new THREE.BoxGeometry(0.46, 0.15, 0.12), { pos: V(0, 0.105, 0) });
+	for (let i = 0; i < 10; i++) {
+		for (const s of [-1, 1]) b.add('checks', mat(i % 2 ? 'check_white' : 'check_black', i % 2 ? 0xf2f2ea : 0x1a1a1c), new THREE.BoxGeometry(0.046, 0.03, 0.004), { pos: V(-0.207 + i * 0.046, 0.06, s * 0.061) });
+	}
+	for (const s of [-1, 1]) b.add('word', mat('flash_black', 0x26262a), new THREE.BoxGeometry(0.2, 0.05, 0.004), { pos: V(0, 0.13, s * 0.061) });
+	return b.build();
+}
+
+// The taximeter: a black box with a red display and a flag on top.
+export function buildTaximeter() {
+	const b = new Builder('garage_taximeter');
+	b.add('box', mat('flash_black', 0x26262a), new THREE.BoxGeometry(0.2, 0.1, 0.14), { pos: V(0, 0.05, 0) });
+	b.add('display', mat('meter_red', 0xff3a2a, { emissive: 0x801008 }), new THREE.BoxGeometry(0.14, 0.035, 0.004), { pos: V(0, 0.06, 0.071) });
+	b.add('buttons', mat('counter_white', 0xf2f2ea), new THREE.BoxGeometry(0.12, 0.012, 0.004), { pos: V(0, 0.025, 0.071) });
+	b.add('flag', mat('sign_red', 0xd23a3a), new THREE.BoxGeometry(0.02, 0.07, 0.05), { pos: V(0.08, 0.135, 0) });
+	return b.build();
+}
+
+// The trips notebook: a small yellow notebook with a rubber band.
+export function buildTripsNotebook() {
+	const b = new Builder('garage_trips_notebook');
+	b.add('cover', mat('taxi_yellow', 0xf2c230), new THREE.BoxGeometry(0.12, 0.015, 0.18), { pos: V(0, 0.0075, 0) });
+	b.add('pages', mat('sheet_paper', 0xfaf6ea), new THREE.BoxGeometry(0.115, 0.004, 0.17), { pos: V(0.002, 0.017, 0) });
+	b.add('band', mat('flash_black', 0x26262a), new THREE.BoxGeometry(0.124, 0.022, 0.008), { pos: V(0, 0.01, 0.05) });
+	return b.build();
+}
+
 export const models = {
 	garage_parts_crate: buildPartsCrate, garage_fake_invoices: buildFakeInvoices, garage_old_parts: buildOldParts,
 	garage_rusty_disc: buildRustyDisc,
+	garage_taxi_sign: buildTaxiSign, garage_taximeter: buildTaximeter, garage_trips_notebook: buildTripsNotebook,
 	garage_dent_hammer: buildDentHammer, garage_plates_list: buildPlatesList, garage_cross_map: buildCrossMap,
 	garage_race_trophy: buildRaceTrophy, garage_nitro_tank: buildNitroTank, garage_race_map: buildRaceMap,
 	garage_odometer_drill: buildOdometerDrill, garage_km_notebook: buildKmNotebook, garage_zero_km_sign: buildZeroKmSign,
@@ -416,6 +448,11 @@ export const views = {
 		items: [{ name: 'garage_dent_hammer', pos: [-0.25, 0, 0], rotY: 0.4 }, { name: 'garage_plates_list', pos: [0.3, 0, -0.15], rotY: -0.2 },
 			{ name: 'garage_cross_map', pos: [0.05, 0, 0.3], rotY: 0.15 }],
 		cam: { pos: [0.0, 0.9, 1.3], target: [0.0, 0.05, 0], fov: 42 },
+	},
+	garage_comisario_taxi: {
+		items: [{ name: 'garage_taxi_sign', pos: [-0.25, 0, 0], rotY: 0.3 }, { name: 'garage_taximeter', pos: [0.3, 0, -0.1], rotY: -0.3 },
+			{ name: 'garage_trips_notebook', pos: [0.1, 0, 0.3], rotY: 0.2 }],
+		cam: { pos: [0.0, 0.8, 1.3], target: [0.0, 0.08, 0], fov: 42 },
 	},
 	garage_tools: {
 		items: [

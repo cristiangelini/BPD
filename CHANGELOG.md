@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Garage raid, step 5: the comisario's car story: one of the cars on the floor is the comisario's (with its "best comisario of the year" sticker) and its dashboard says 1500 km too many (the clue), and the taxi sign (2 kg, 1000), the taximeter (1.5 kg, 300) and the trips notebook (0.1 kg, 200) are hidden with the seed.
 - Garage raid, step 5: the dents on purpose story: one of the cars on the floor has five perfectly round dents on its side (E looks at them, the clue), and the dent hammer (3 kg, 1000), the clients' plates list (0.1 kg, 300) and the neighborhood map with crosses (0.2 kg, 200) are hidden with the seed.
 - Garage raid, step 5: the street race story: a circle of rubber marks on the garage floor is the clue the first time a cop walks into it, and the race trophy (4 kg, 1000), the nitro tank (6 kg, 300) and the race map (0.1 kg, 200) are hidden with the seed.
 - Garage raid, step 5: the swapped parts story: a "new" brake disc on the counter leaves rust on the hand of whoever grabs it (the clue), and the crate of the clients' new parts (12 kg, 1000), the fake invoices and the pile of old parts painted silver are hidden.

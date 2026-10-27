@@ -139,6 +139,12 @@ entre 400 y 600.
      (sorteado) tiene cinco abolladuras redondas iguales en el costado derecho: con E se miran, y la primera vez es la
      pista. Abollar autos pegándoles con algo pesado queda para después. Capturas `paso5-abolladuras-*.png` y
      `garage_dented_on_purpose.png`.
+   - **Hecho así (propuesta), el auto del comisario:** el cartel de taxi (2 kg, 1000), el taxímetro (1,5 kg, 300) y la
+     libreta de viajes (0,1 kg, 200). Uno de los dos autos del piso (sorteado) es el del comisario, con la calcomanía
+     «Mejor comisario del año» en la puerta de atrás; los dos tienen tablero como en el cuentakilómetros, y el del
+     comisario marca 1500 km más que cuando lo dejó: la primera vez que se lee es la pista. El parabrisas que cuesta el
+     doble y la llamada del comisario por radio quedan para después. Captura `paso5-comisario-auto.png` y
+     `garage_comisario_taxi.png`.
 6. "Jugar" suma el taller al sorteo de allanamientos (`PlaceDraw.ORDER`).
 7. El online (Don Tuerca, Grasita, el timbre, el elevador y los parabrisas en todas las PC).
 

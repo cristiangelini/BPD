@@ -85,6 +85,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_PLATES_LIST", "OBJ_EXTRA_CROSS_MAP"],
 		"rig": preload("res://scripts/case/garage/dented_on_purpose_rig.gd"),
 	},
+	"comisario_taxi": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_COMISARIO_TAXI_B", "BRIEF_COMISARIO_TAXI_C", "BRIEF_COMISARIO_TAXI_D"],
+		"find": "OBJ_FIND_TAXI_SIGN",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/taxi_sign.tscn"), preload("res://scenes/props/taximeter.tscn"),
+			preload("res://scenes/props/trips_notebook.tscn")],
+		"half_heights": [0.09, 0.085, 0.01],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_TAXIMETER", "OBJ_EXTRA_TRIPS_NOTEBOOK"],
+		"rig": preload("res://scripts/case/garage/comisario_taxi_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the garage's floor, away from the cars.
 const NOTE_PLACES: Array[Vector3] = [
