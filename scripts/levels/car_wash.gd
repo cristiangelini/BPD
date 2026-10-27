@@ -72,6 +72,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_SHAMPOO_LABELS", "OBJ_EXTRA_FUNNEL"],
 		"rig": preload("res://scripts/case/carwash/fake_shampoo_rig.gd"),
 	},
+	"brush_painting": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_BRUSH_PAINTING_B", "BRIEF_BRUSH_PAINTING_C", "BRIEF_BRUSH_PAINTING_D"],
+		"find": "OBJ_FIND_ROLLED_PAINTING",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/carwash_rolled_painting.tscn"),
+			preload("res://scenes/props/carwash_museum_plan.tscn"), preload("res://scenes/props/carwash_cutter.tscn")],
+		"half_heights": [0.065, 0.005, 0.0125],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_MUSEUM_PLAN", "OBJ_EXTRA_CUTTER"],
+		"rig": preload("res://scripts/case/carwash/brush_painting_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the floor by the front, the storeroom and the drying area.
 const NOTE_PLACES: Array[Vector3] = [

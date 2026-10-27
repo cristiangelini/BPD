@@ -174,6 +174,11 @@ extras suman 500.
      a un policía a menos de 3 m del tanque (o de los chorros andando) le salta "¡Puaj! ¿Qué es ese olor?" y la primera
      vez va a la planilla. Mientras anda el túnel, sale una burbuja gigante por el final cada 1,5 s, que sube flotando 6
      s y explota. Capturas: `paso6b-*.png`.
+   - **El cuadro en el cepillo:** el cuadro robado enrollado (2 kg, 1000) en un escondite para cosas pesadas, el plano
+     del museo (0,1 kg, 300) y el cúter (0,3 kg, 200) en otros. Uno de los cepillos de los costados está chueco (gira
+     bamboleándose) y tiene manchas de pintura: a un policía a menos de 2,5 m le salta "¿Pintura?" y la primera vez va
+     a la planilla. El auto que cruza el túnel sale con 6 manchas de colores en los costados. Capturas:
+     `paso6c-*.png`.
 7. El lavadero en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 8. El online.
 
