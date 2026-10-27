@@ -42,6 +42,8 @@ const FRAME_AT := Vector3(-8.0, 1.7, ROOMS_Z + 0.1)
 const SCALE_AT := Vector3(-1.5, 0, 2.0)
 const RETURNS_AT := Vector3(-14.0, 0, 6.2)
 const QUEUE_AT := Vector3(3.0, 0, 4.5)
+## The mail van waits at the curb east of the door, and drives straight out into the street (step 7).
+const GETAWAY_AT := Vector3(9.0, 0, SIZE.y / 2 + 1.0)
 ## The stool with the roll of evidence bags, by the door.
 const BAGS_AT := Vector3(-2.5, 0, 6.0)
 ## Where the people are: two carriers behind the counter facing the hall, one at the post boxes facing them and three
@@ -250,6 +252,12 @@ func at_scene(world: Vector3) -> bool:
 func inside(world: Vector3) -> bool:
 	var local := to_local(world)
 	return absf(local.x) < HALF_X and local.z > BACK_Z and local.z < FRONT_Z
+
+
+## The mail van waits at the curb, east of the door, and drives straight out into the street.
+func getaway(_index: int, _city: Node3D) -> Dictionary:
+	var out := to_global(GETAWAY_AT)
+	return {"at": Transform3D(global_basis, out), "via": [to_global(Vector3(GETAWAY_AT.x, 0, SIZE.y / 2 + 5.0))]}
 
 
 ## A cop shouted (VoiceChat): Cartita may get scared.
