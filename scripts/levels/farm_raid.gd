@@ -53,6 +53,18 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_COWBELL_NAMES", "OBJ_EXTRA_SPOT_BRUSH"],
 		"rig": preload("res://scripts/case/farm/cow_owners_rig.gd"),
 	},
+	"racing_tractor": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_RACING_TRACTOR_B", "BRIEF_RACING_TRACTOR_C", "BRIEF_RACING_TRACTOR_D"],
+		"find": "OBJ_FIND_RACING_ENGINE",
+		"hidden": [preload("res://scenes/props/racing_engine.tscn"), preload("res://scenes/props/tractor_trophy.tscn"),
+			preload("res://scenes/props/flame_helmet.tscn")],
+		"half_heights": [0.295, 0.24, 0.095],
+		"heavy": [true, false, false],
+		## The engine only hides in the barn (it's too tall for the other heavy spots).
+		"main_spots": ["between_bales", "in_loft"],
+		"extra_keys": ["OBJ_EXTRA_RACE_TROPHY", "OBJ_EXTRA_FLAME_HELMET"],
+		"rig": preload("res://scripts/case/farm/racing_tractor_rig.gd"),
+	},
 }
 ## Where the suspicion notes lie: on the yard's dirt, out of the buildings and the pens (Tota may eat them).
 const NOTE_PLACES: Array[Vector3] = [
@@ -196,6 +208,9 @@ var goat: FarmGoat
 var pigs: Array[FarmPig] = []
 var cow: FarmCow
 var corral_gate: FarmGate
+## The tractor beside the barn: its body and its look (they move together when it starts in the racing story).
+var tractor: FarmTractor
+var tractor_model: Node3D
 var loose_bales: Array[Grabbable] = []
 ## Don Florencio already saw the cow out this time.
 var _cow_seen := false
@@ -305,6 +320,8 @@ static func pick_story(seed_value: int, args: PackedStringArray) -> String:
 func _place_hidden() -> void:
 	var story: Dictionary = STORIES[story_id]
 	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	if story.has("main_spots"):
+		spot_heavy = SPOTS.map(func(spot: Dictionary) -> bool: return story.main_spots.has(spot.id))
 	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
 	for i in story.hidden.size():
 		var item: Evidence = story.hidden[i].instantiate()
@@ -591,8 +608,11 @@ func _build_barn() -> void:
 		_model(BALE_MODEL, at + Vector3(0, GROUND - 0.25, 0), PI / 2)
 		var bale := _build.body(at + Vector3.UP * GROUND)
 		_build.shape(bale, Vector3(0.5, 0.5, 1.0))
-	_model(TRACTOR_MODEL, TRACTOR_AT + Vector3.UP * GROUND)
-	var tractor := _build.body(TRACTOR_AT + Vector3(0, GROUND + 1.0, 0))
+	tractor_model = _model(TRACTOR_MODEL, TRACTOR_AT + Vector3.UP * GROUND)
+	tractor = FarmTractor.new()
+	tractor.name = "Tractor"
+	tractor.position = TRACTOR_AT + Vector3(0, GROUND + 1.0, 0)
+	$Built.add_child(tractor)
 	_build.shape(tractor, Vector3(1.6, 1.2, 2.6))
 	for dx: float in [-0.35, 0.0, 0.35]:
 		var can := CylinderMesh.new()

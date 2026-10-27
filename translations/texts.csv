@@ -5686,3 +5686,15 @@ FARM_BLACK_HAND,¡Mano negra!,Black hand!,Mão preta!
 FARM_GATE_CREAK,¡Ñiiic! La tranquera se abrió sola,Creak! The gate swung open by itself,Nhéc! A porteira se abriu sozinha
 PROMPT_PET_COW,E: acariciar a Margarita,E: pat Margarita,E: fazer carinho na Margarita
 COW_MOO,¡Muuu!,Moooo!,Muuu!
+BRIEF_RACING_TRACTOR_B,"Don Florencio corre carreras clandestinas de noche con su tractor, y tiene un motor de carreras escondido en el granero.","Don Florencio runs illegal night races with his tractor, and he has a racing engine hidden in the barn.","Dom Florencio corre rachas clandestinas à noite com seu trator, e tem um motor de corrida escondido no celeiro."
+BRIEF_RACING_TRACTOR_C,"Traigan el motor de carreras en el baúl del patrullero. Pesa 25 kilos: entre dos.","Bring the racing engine in the patrol car's trunk. It weighs 25 kilos: two of you.","Tragam o motor de corrida no porta-malas da viatura. Pesa 25 quilos: carreguem em dois."
+BRIEF_RACING_TRACTOR_D,"Si encuentran el trofeo de la carrera o el casco con llamas, mejor: todo suma.","If you find the race trophy or the flame helmet, even better: it all counts.","Se acharem o troféu da corrida ou o capacete com chamas, melhor: tudo conta."
+OBJ_FIND_RACING_ENGINE,Llevarse el motor de carreras,Take the racing engine,Levar o motor de corrida
+OBJ_EXTRA_RACE_TROPHY,Extra: el trofeo de la carrera clandestina,Extra: the illegal race trophy,Extra: o troféu da racha clandestina
+OBJ_EXTRA_FLAME_HELMET,Extra: el casco con llamas,Extra: the flame helmet,Extra: o capacete com chamas
+PANCHO_CLUE_racing_tractor,"«¡Gracias! Te cuento: vi al tío esconder algo %s. Y de noche sale con el tractor y vuelve con trofeos.»","“Thanks! Here's the thing: I saw my uncle hide something %s. And at night he goes out on the tractor and comes back with trophies.”","“Valeu! Te conto: vi o tio esconder algo %s. E de noite ele sai com o trator e volta com troféus.”"
+CLUE_TRACTOR_TURBO,"El tractor tiene una calcomanía de «Turbo» y huele a combustible de avión. Lo arrancaste y salió disparado.","The tractor has a «Turbo» sticker and smells of jet fuel. You started it and it shot off.","O trator tem um adesivo de «Turbo» e cheira a combustível de avião. Você ligou e ele saiu disparado."
+PROMPT_START_TRACTOR,E: arrancar el tractor,E: start the tractor,E: ligar o trator
+FARM_TRACTOR_VROOM,¡BRRRUUUM!,VROOOOM!,VRUUUUM!
+FARM_TRACTOR_BANG,¡PUM!,BANG!,PUM!
+FARM_TRACTOR_EMPTY,Sin combustible,Out of fuel,Sem combustível

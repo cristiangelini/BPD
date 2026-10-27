@@ -275,6 +275,48 @@ export const models = {
 		b.add('bristles', black, new THREE.BoxGeometry(0.04, 0.05, 0.015), { pos: V(-0.003, 0.06, 0), rot: [0, 0, -0.15] });
 		return b.build();
 	},
+	// The racing engine hidden in the barn: a red V engine block with chrome pipes and a big air scoop. About 0.9 x 0.6 x
+	// 0.6 m, bottom at y = 0.
+	racing_engine() {
+		const b = new Builder('racing_engine');
+		const red = C('engine_red', 0xd02a20, { roughness: 0.4 }), chrome = C('engine_chrome', 0xd8dce0, { metalness: 0.8, roughness: 0.2 });
+		b.add('block', red, new THREE.BoxGeometry(0.8, 0.35, 0.5), { pos: V(0, 0.175, 0) });
+		for (const s of [-1, 1]) {
+			b.add('heads', red, new THREE.BoxGeometry(0.75, 0.12, 0.18), { pos: V(0, 0.4, s * 0.15), rot: [s * 0.4, 0, 0] });
+			for (let i = 0; i < 4; i++) {
+				b.add('pipes', chrome, new THREE.CylinderGeometry(0.03, 0.03, 0.2, 6), { pos: V(-0.27 + i * 0.18, 0.3, s * 0.3), rot: [s * 1.2, 0, 0] });
+			}
+		}
+		b.add('scoop', chrome, new THREE.BoxGeometry(0.3, 0.14, 0.22), { pos: V(0, 0.52, 0) });
+		b.add('scoop', C('engine_black', 0x202020), new THREE.BoxGeometry(0.02, 0.1, 0.18), { pos: V(0.15, 0.52, 0) });
+		return b.build();
+	},
+	// The trophy of an illegal race: a gold cup on a black base with a checkered flag. About 0.4 m tall, bottom at y = 0.
+	tractor_trophy() {
+		const b = new Builder('tractor_trophy');
+		const gold = C('trophy_gold', 0xf0c030, { metalness: 0.6, roughness: 0.3 });
+		b.add('base', C('trophy_base', 0x202020), new THREE.BoxGeometry(0.16, 0.08, 0.16), { pos: V(0, 0.04, 0) });
+		b.add('cup', gold, new THREE.CylinderGeometry(0.02, 0.02, 0.12, 8), { pos: V(0, 0.14, 0) });
+		b.add('cup', gold, new THREE.CylinderGeometry(0.1, 0.04, 0.16, 10), { pos: V(0, 0.28, 0) });
+		for (const s of [-1, 1]) {
+			b.add('handles', gold, new THREE.TorusGeometry(0.04, 0.01, 6, 10), { pos: V(s * 0.11, 0.29, 0), rot: [0, 0, 0] });
+		}
+		for (let i = 0; i < 4; i++) {
+			b.add('flag', C(i % 2 ? 'flag_white' : 'flag_black', i % 2 ? 0xffffff : 0x111111), new THREE.BoxGeometry(0.04, 0.03, 0.005), { pos: V(-0.06 + (i % 2) * 0.04, 0.06 + Math.floor(i / 2) * 0.03, 0.082) });
+		}
+		return b.build();
+	},
+	// The racing helmet with flames, the visor up. About 0.3 m across, bottom at y = 0.
+	flame_helmet() {
+		const b = new Builder('flame_helmet');
+		b.add('shell', C('helmet_black', 0x1a1a1a, { roughness: 0.3 }), new THREE.SphereGeometry(0.14, 12, 8, 0, Math.PI * 2, 0, Math.PI * 0.6), { pos: V(0, 0.06, 0) });
+		b.add('visor', C('visor_smoke', 0x405060, { roughness: 0.1 }), new THREE.BoxGeometry(0.2, 0.06, 0.02), { pos: V(0, 0.18, 0.12), rot: [-0.5, 0, 0] });
+		for (let i = 0; i < 3; i++) {
+			b.add('flames', C('flame_orange', 0xff7a1a), new THREE.ConeGeometry(0.025, 0.09, 4), { pos: V(-0.06 + i * 0.06, 0.1, 0.125), rot: [0.3, 0, 0] });
+			b.add('flames', C('flame_yellow', 0xffd02a), new THREE.ConeGeometry(0.015, 0.06, 4), { pos: V(-0.06 + i * 0.06, 0.09, 0.135), rot: [0.3, 0, 0] });
+		}
+		return b.build();
+	},
 	// One egg, white like the hens lay them, bottom at y = 0. 0.06 x 0.08 m.
 	farm_egg() {
 		const b = new Builder('farm_egg');
@@ -304,6 +346,11 @@ export const views = {
 		items: [{ name: 'cow_receipts', pos: [-0.35, 0, 0.1], rotY: 0.3 }, { name: 'cowbell_names', pos: [0.15, 0, -0.05] },
 			{ name: 'spot_brush', pos: [0.45, 0, 0.2] }],
 		cam: { pos: [0, 0.8, 1.4], target: [0.05, 0.08, 0.05], fov: 34 },
+	},
+	farm_racing_tractor: {
+		items: [{ name: 'racing_engine', pos: [-0.35, 0, 0], rotY: 0.4 }, { name: 'tractor_trophy', pos: [0.45, 0, -0.1] },
+			{ name: 'flame_helmet', pos: [0.35, 0, 0.45] }],
+		cam: { pos: [0, 1.2, 2.2], target: [0.05, 0.2, 0.05], fov: 34 },
 	},
 	farm_golden_eggs: {
 		items: [{ name: 'golden_egg_box', pos: [-0.4, 0, 0], rotY: 0.3 }, { name: 'gold_paint_can', pos: [0.3, 0, 0.1] },
