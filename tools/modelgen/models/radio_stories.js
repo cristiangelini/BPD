@@ -37,14 +37,48 @@ export function buildWinnersList() {
 	return b.build();
 }
 
-export const models = { raffle_urn: buildRaffleUrn, contest_blender: buildContestBlender, winners_list: buildWinnersList };
+// The ad contracts: a 0.45 x 0.35 x 0.35 m cardboard archive box full of folders, with a red "CONTRATOS" band.
+export function buildAdContracts() {
+	const b = new Builder('ad_contracts');
+	b.add('box', mat('archive_box', 0xc8a070), new THREE.BoxGeometry(0.45, 0.3, 0.35), { pos: V(0, -0.025, 0) });
+	b.add('band', mat('band_red', 0xc82a20), new THREE.BoxGeometry(0.452, 0.06, 0.352), { pos: V(0, 0.0, 0) });
+	const folders = [0xf2d24a, 0x4a8ad8, 0x6ac46a, 0xe87a3a];
+	for (let i = 0; i < 8; i++) b.add('folders', mat(`folder_${i % 4}`, folders[i % 4]), new THREE.BoxGeometry(0.4, 0.06, 0.012), { pos: V(0, 0.15, -0.14 + i * 0.04), rot: [0, 0, (i % 3 - 1) * 0.03] });
+	return b.build();
+}
+
+// The billing notebook: 0.2 x 0.03 x 0.28 m, green cover with a white label.
+export function buildBillingBook() {
+	const b = new Builder('billing_book');
+	b.add('cover', mat('book_green', 0x2f7a4a), new THREE.BoxGeometry(0.2, 0.03, 0.28));
+	b.add('label', mat('white', 0xf6f4ee), new THREE.BoxGeometry(0.1, 0.002, 0.05), { pos: V(0, 0.016, -0.05) });
+	b.add('pages', mat('page_cream', 0xf4ecd0), new THREE.BoxGeometry(0.004, 0.024, 0.27), { pos: V(0.099, 0, 0) });
+	return b.build();
+}
+
+// The "PAGADO" rubber stamp: a 0.08 x 0.12 x 0.08 m wooden handle on a red pad.
+export function buildPaidStamp() {
+	const b = new Builder('paid_stamp');
+	b.add('pad', mat('stamp_red', 0xc82a20), new THREE.BoxGeometry(0.08, 0.02, 0.06), { pos: V(0, -0.05, 0) });
+	b.add('base', mat('stamp_wood', 0x8a5a2e), new THREE.BoxGeometry(0.07, 0.03, 0.05), { pos: V(0, -0.025, 0) });
+	b.add('handle', mat('stamp_wood', 0x8a5a2e), new THREE.CylinderGeometry(0.015, 0.02, 0.06, 8), { pos: V(0, 0.02, 0) });
+	b.add('knob', mat('stamp_knob', 0x2a1e18), new THREE.SphereGeometry(0.025, 8, 5), { pos: V(0, 0.055, 0) });
+	return b.build();
+}
+
+export const models = {
+	raffle_urn: buildRaffleUrn, contest_blender: buildContestBlender, winners_list: buildWinnersList,
+	ad_contracts: buildAdContracts, billing_book: buildBillingBook, paid_stamp: buildPaidStamp,
+};
 
 export const views = {
 	radio_stories: {
 		items: [
 			{ name: 'raffle_urn', pos: [-0.5, 0.225, 0], rotY: 0.3 }, { name: 'contest_blender', pos: [0.1, 0.2, 0.1] },
 			{ name: 'winners_list', pos: [0.55, 0.005, 0.15], rotY: -0.3 },
+			{ name: 'ad_contracts', pos: [-0.6, 0.175, -0.7], rotY: 0.2 }, { name: 'billing_book', pos: [0.1, 0.015, -0.5] },
+			{ name: 'paid_stamp', pos: [0.5, 0.06, -0.5] },
 		],
-		cam: { pos: [0, 1.0, 1.9], target: [0, 0.2, 0], fov: 38 },
+		cam: { pos: [0, 1.4, 2.4], target: [0, 0.15, -0.3], fov: 40 },
 	},
 };
