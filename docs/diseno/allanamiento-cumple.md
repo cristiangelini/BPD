@@ -146,6 +146,12 @@ bocina (por ahora el auto de fuga de los otros dueños; el autito queda para des
      si cae sobre el inflable, "¡Psssss!", queda chato 10 s sin hacer saltar a nadie, la bolsa sale afuera y después
      los chicos lo vuelven a inflar. Es la única forma de sacar la bolsa. `--story=watch_castle`. Capturas
      `/mnt/project-files/cumple/paso5-relojes-*.png`.
+   - **Cómo quedó, los regalos que vuelven (propuesta):** el cuaderno de reventa (0,5 kg, 1000), el regalo con la
+     etiqueta de la juguetería (2 kg, 300) y el rollo de papel de regalo (1 kg, 200), con modelos nuevos, en escondites
+     sorteados. En la mesa de regalos hay uno más que se puede agarrar (1,5 kg, los chicos no lo levantan): a menos de
+     1,5 m de la puerta de entrada hace "¡Bip, bip, bip!" y eso va a la planilla. Cada 30 s (no mientras cantan)
+     Chispita dice "Este regalo lo guardo yo" y desaparece un regalo de la mesa, primero los de arriba; no suma queja.
+     `--story=returning_gifts`. Capturas `/mnt/project-files/cumple/paso5-regalos-*.png`.
 6. El sorteo de "Jugar" entre los allanamientos y el online.
 
 ## Preguntas para Cristian
