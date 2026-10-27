@@ -107,9 +107,37 @@ export function buildFoodCan() {
 	return b.build();
 }
 
+// A shopping cart 0.6 m wide, 0.95 m long (along Z, the handle at +Z) and 1.0 m tall: a wire basket of thin bars on a
+// frame with four small wheels, the red handle and the folding child seat by it.
+export function buildShoppingCart() {
+	const b = new Builder('shopping_cart');
+	const wire = mat('cart_wire', 0xc8ccd2), frame = mat('cart_frame', 0x8a8e94), red = mat('cart_red', 0xd23a3a), wheel = mat('cart_wheel', 0x26262a);
+	const y0 = 0.35, y1 = 0.95;
+	b.add('floor', wire, new THREE.BoxGeometry(0.56, 0.02, 0.9), { pos: V(0, y0, 0) });
+	for (let i = 0; i <= 6; i++) {
+		const z = -0.45 + i * 0.15;
+		for (const s of [-1, 1]) b.add('bar', wire, new THREE.BoxGeometry(0.015, y1 - y0, 0.015), { pos: V(s * 0.28, (y0 + y1) / 2, z) });
+	}
+	for (let i = 0; i <= 4; i++) for (const z of [-0.45, 0.45]) b.add('bar', wire, new THREE.BoxGeometry(0.015, y1 - y0, 0.015), { pos: V(-0.28 + i * 0.14, (y0 + y1) / 2, z) });
+	for (const y of [y0 + 0.3, y1]) {
+		for (const s of [-1, 1]) b.add('rail', frame, new THREE.BoxGeometry(0.025, 0.025, 0.92), { pos: V(s * 0.28, y, 0) });
+		for (const z of [-0.45, 0.45]) b.add('rail', frame, new THREE.BoxGeometry(0.58, 0.025, 0.025), { pos: V(0, y, z) });
+	}
+	for (const s of [-1, 1]) {
+		b.add('leg', frame, new THREE.BoxGeometry(0.03, y0 - 0.08, 0.03), { pos: V(s * 0.24, (y0 + 0.08) / 2, -0.4) });
+		b.add('leg', frame, new THREE.BoxGeometry(0.03, y0 - 0.08, 0.03), { pos: V(s * 0.24, (y0 + 0.08) / 2, 0.4) });
+		b.add('handle_post', frame, new THREE.BoxGeometry(0.025, 0.12, 0.025), { pos: V(s * 0.27, y1 + 0.06, 0.5) });
+		for (const z of [-0.4, 0.4]) b.add('wheel', wheel, new THREE.CylinderGeometry(0.06, 0.06, 0.03, 10), { pos: V(s * 0.24, 0.06, z), rot: [0, 0, Math.PI / 2] });
+	}
+	b.add('base_bar', frame, new THREE.BoxGeometry(0.5, 0.025, 0.8), { pos: V(0, 0.1, 0) });
+	b.add('handle', red, new THREE.CylinderGeometry(0.02, 0.02, 0.6, 8), { pos: V(0, y1 + 0.12, 0.52), rot: [0, 0, Math.PI / 2] });
+	b.add('seat', red, new THREE.BoxGeometry(0.4, 0.02, 0.18), { pos: V(0, y1 - 0.1, 0.36) });
+	return b.build();
+}
+
 export const models = {
 	gondola: buildGondola, dairy_fridge: buildDairyFridge, checkout: buildCheckout, produce_stand: buildProduceStand,
-	chest_freezer: buildChestFreezer, food_can: buildFoodCan,
+	chest_freezer: buildChestFreezer, food_can: buildFoodCan, shopping_cart: buildShoppingCart,
 };
 
 export const views = {
@@ -118,6 +146,7 @@ export const views = {
 			{ name: 'gondola', pos: [-2.2, 0, 0] }, { name: 'dairy_fridge', pos: [0.6, 0, -2.0] },
 			{ name: 'checkout', pos: [1.6, 0, 1.2] }, { name: 'produce_stand', pos: [3.2, 0, 0], rotY: -Math.PI / 2 },
 			{ name: 'chest_freezer', pos: [0.2, 0, 0.6] }, { name: 'food_can', pos: [1.6, 0.9, 0.5] },
+			{ name: 'shopping_cart', pos: [-0.6, 0, 2.2], rotY: 0.6 },
 		],
 		cam: { pos: [0, 3.0, 7.5], target: [0.4, 0.9, 0], fov: 50 },
 	},

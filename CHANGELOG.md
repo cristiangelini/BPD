@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Supermarket raid, step 2: 8 shopping carts that push, load and tip over like the wheelbarrow; a crouched cop climbs into an empty one and rides while another pushes, and flies out when it stops dead going fast. Six customers walk the aisles with their carts and wait in the checkout queues, and complain (+5 to the complaint, once every 10 s) when a cop's cart bumps theirs.
 - Supermarket raid, step 1: the supermarket "Súper El Changuito" as a place to raid, on its lot in block (7, 1): four gondolas with their aisle signs, the dairy fridge and the chest freezer, the produce stand, three checkouts, the manager's office locked with checkout 1's key, the storeroom, a pyramid of 21 cans that falls with nothing and a fridge glass that cracks, a fine each, and 12 hiding spots.
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
 - Gym raid, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office, the cake lab and the gym in eighths.
