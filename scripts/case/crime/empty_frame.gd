@@ -3,10 +3,12 @@ extends StaticBody3D
 
 ## The empty frame where the stolen piece hung (escena-museo.md, "Las pistas"). If the prints are one of the case's
 ## clues, the print kit (PrintKit, `dusted`) finds the culprit's on the gilt; a cop who touches it first (E) leaves his
-## own on top, like the circus's fish bucket.
+## own on top, like the circus's fish bucket. At the hotel (`look` "SAFE") it's the suite's open safe.
 
 var case: CrimeSceneCase
 var has_prints := false
+## What it is, in its texts' keys: "FRAME" (PROMPT_EMPTY_FRAME, HINT_FRAME_..., PRINTS_FRAME...) or "SAFE".
+var look := "FRAME"
 ## A cop touched it.
 var touched := false
 
@@ -21,7 +23,7 @@ func _init(size := Vector2(2.0, 1.4)) -> void:
 
 
 func prompt_key(_cop: Cop) -> String:
-	return "PROMPT_EMPTY_FRAME"
+	return "PROMPT_EMPTY_" + look
 
 
 ## E: the cop runs a finger along the gilt and leaves his prints on it.
@@ -30,7 +32,7 @@ func use(cop: Cop) -> void:
 	touched = true
 	if spoils:
 		case.ruin("prints")
-	cop.show_hint("HINT_FRAME_TOUCHED" if spoils else "HINT_FRAME_EMPTY")
+	cop.show_hint("HINT_%s_%s" % [look, "TOUCHED" if spoils else "EMPTY"])
 
 
 ## The print kit dusted it: what it shows (tr() key), and the clue if it's still clean.
@@ -38,6 +40,6 @@ func dusted(_cop: Cop) -> String:
 	if not has_prints:
 		return "PRINTS_COPS_ONLY" if touched else ""
 	if touched and not case.clues_found.has("prints"):
-		return "PRINTS_FRAME_SMUDGED"
+		return "PRINTS_%s_SMUDGED" % look
 	case.found("prints")
-	return "PRINTS_FRAME"
+	return "PRINTS_" + look

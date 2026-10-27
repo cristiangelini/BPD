@@ -125,7 +125,9 @@ func test_the_wanted_driver_gets_out_on_every_pc() -> void:
 	assert_true(car.wanted)
 	await _copy(pcs, car)
 	host.detain(car)
-	await wait_until(func() -> bool: return guest.suspect != null, 5.0)
+	# The suspect and his escort come in different packets: wait for both.
+	await wait_until(func() -> bool: return guest.suspect != null and guest.escort != null and guest.escort.follower,
+		5.0)
 	assert_eq(guest.suspect.kind, "driver")
 	assert_true(guest.escort.follower, "the guest's escort only rides along")
 

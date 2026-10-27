@@ -12,7 +12,8 @@ const REACH := 2.0
 ## Something this close ahead, this far to the side, makes it stop.
 const STOP_AHEAD := 8.0
 const STOP_SIDE := 1.6
-## Stopped this long, it goes anyway, so two cars at a crossing never wait for each other forever.
+## Stopped this long, it goes anyway, so two cars at a crossing never wait for each other forever. Never through a
+## wreck or a cops' vehicle, though: pushed by a car that only follows its path, the bus sank under the street.
 const PATIENCE := 3.0
 ## How often (s) it looks ahead, so a city full of cars and people stays cheap.
 const LOOK_EVERY := 0.1
@@ -27,7 +28,8 @@ var wreck := false
 ## The rain slows it down (CityRain).
 var speed_factor := 1.0
 var _blocked := false
-var _behind_wreck := false
+## What stops it is a wreck or a cops' vehicle, or a car waiting behind one: it waits for good.
+var _must_wait := false
 var _look_left := 0.0
 ## Online, how far a guest's copy still has to slide to where the host has it (CitySync).
 var _pull := Vector3.ZERO
@@ -84,7 +86,7 @@ func _physics_process(delta: float) -> void:
 		_blocked = blocked()
 	if _blocked:
 		stopped_for += delta
-		if stopped_for < PATIENCE or _behind_wreck:
+		if stopped_for < PATIENCE or _must_wait:
 			return
 	else:
 		stopped_for = 0.0
@@ -93,14 +95,15 @@ func _physics_process(delta: float) -> void:
 
 ## Something is right in front of it: a car of the city or a cop's car, or someone walking.
 func blocked() -> bool:
-	_behind_wreck = false
+	_must_wait = false
 	for group: String in ["city_cars", "city_walkers", "cops", "patrol_cars", "suspect_car", "city_runaways"]:
 		for other: Node in get_tree().get_nodes_in_group(group):
 			if other == self or not other is Node3D:
 				continue
 			var offset := global_transform.affine_inverse() * (other as Node3D).global_position
 			if offset.z > 0.5 and offset.z < STOP_AHEAD and absf(offset.x) < STOP_SIDE:
-				_behind_wreck = other is CityCar and ((other as CityCar).wreck or (other as CityCar)._behind_wreck)
+				_must_wait = group in ["patrol_cars", "suspect_car"] \
+					or other is CityCar and ((other as CityCar).wreck or (other as CityCar)._must_wait)
 				return true
 	return false
 

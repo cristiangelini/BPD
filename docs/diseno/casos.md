@@ -15,7 +15,7 @@ Esto es un borrador para que tachés, cambies o sumes. Marcá con ✗ lo que no 
 ## 1. Allanamiento
 Llegan con una orden judicial (sin tiempo límite, decisión 66), entran, encuentran la evidencia y la cargan hasta el patrullero sin romperla.
 
-Cada allanamiento es un lugar más una historia, y los policías adivinan la historia con las pistas (decisiones 79 y 80). Los 10 lugares, con sus historias, están en [historias.md](historias.md): la casa del abuelo, la panadería, la peluquería de mascotas, la ferretería, la fábrica de muñecos, la oficina de seguros, el laboratorio de pasteles, el edificio de departamentos, el hotel y el gimnasio. Las ideas que había antes acá (mansión, granja, taller de autos, bóveda, casa equivocada y fiesta de cumpleaños) quedan en "Para después".
+Cada allanamiento es un lugar más una historia, y los policías adivinan la historia con las pistas (decisiones 79 y 80). Los 10 lugares, con sus historias, están en [historias.md](historias.md): la casa del abuelo, la panadería, la peluquería de mascotas, la ferretería, la fábrica de muñecos, la oficina de seguros, el laboratorio de pasteles, el edificio de departamentos, el hotel y el gimnasio. Las ideas que había antes acá (mansión, granja, taller de autos, bóveda y fiesta de cumpleaños) quedan en "Para después". Propuesta: la casa equivocada ([casa-equivocada.md](casa-equivocada.md)).
 
 ## 2. Persecución
 Los 4 van en el mismo patrullero, cada uno con su tarea (decisión 24).
@@ -117,6 +117,8 @@ Montan un control en la calle y tienen que encontrar el auto buscado entre mucho
 
 ## 9. Protección de un político
 Hecho: 9.1 ([proteccion-politico.md](proteccion-politico.md)). Propuesta: 9.6 ([politico-mercado.md](politico-mercado.md)).
+Propuesta: 9.4 ([politico-debate.md](politico-debate.md)).
+Propuesta: 9.7 ([politico-aeropuerto.md](politico-aeropuerto.md)).
 Tienen que cuidar a un político molesto durante un evento (decisión 32).
 
 1. **Acto en una plaza:** le tiran huevos y tomates.
@@ -125,7 +127,7 @@ Tienen que cuidar a un político molesto durante un evento (decisión 32).
 4. **Debate en televisión:** el sabotaje viene desde el control de cámaras.
 5. **Partido de fútbol benéfico:** el político juega, mal. Propuesta en [politico-futbol.md](politico-futbol.md) (decisión 179).
 6. **Caminata por el mercado:** quiere probar todo y algo está envenenado (con laxante).
-7. **En el aeropuerto:** con valijas iguales, y una tiene algo raro.
+7. **En el aeropuerto:** con valijas iguales, y una tiene algo raro. Propuesta en [politico-aeropuerto.md](politico-aeropuerto.md) (decisión 231).
 8. **Fiesta de cumpleaños del político:** el pastel es sospechoso. Propuesta en [politico-cumple.md](politico-cumple.md) (decisión 221).
 9. **Desfile en auto descapotable:** los 4 van caminando al lado del auto. Propuesta en [politico-descapotable.md](politico-descapotable.md) (decisión 222).
 10. **El doble:** hay dos políticos iguales y uno es un impostor. Propuesta en [politico-doble.md](politico-doble.md) (decisión 220).
