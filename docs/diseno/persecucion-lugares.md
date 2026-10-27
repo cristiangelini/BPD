@@ -12,7 +12,7 @@ anillo, del lado este, con su entrada en la rampa de ese lado. Así los dos luga
 comisaría, como el resto, y el mapa del copiloto los muestra.
 
 ## 4. Ladrones en carrito de golf
-- **El lugar:** un club de 160 × 120 m con césped, 6 hoyos con su bandera, un camino de cemento que los une, 5 bunkers
+- **El lugar:** un club de 224 × 168 m (antes 160 × 120, decisión 182) con césped, 6 hoyos con su bandera, un camino de cemento que los une, 5 bunkers
   de arena y 2 lagos. Golfistas parados en los hoyos, que gritan "¡Fore!" y tiran pelotas (rebotan en el patrullero, no
   hacen nada).
 - **El sospechoso:** dos ladrones en un carrito de golf robado. Va a 25 km/h, más lento que el patrullero, pero dobla
