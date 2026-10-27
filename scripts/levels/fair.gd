@@ -45,6 +45,16 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_CLIENT_LIST", "OBJ_EXTRA_NEEDLE_THREAD"],
 		"rig": preload("res://scripts/case/fair/stuffed_prizes_rig.gd"),
 	},
+	"rigged_games": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_RIGGED_GAMES_B", "BRIEF_RIGGED_GAMES_C", "BRIEF_RIGGED_GAMES_D"],
+		"find": "OBJ_FIND_MAGNET",
+		"hidden": [preload("res://scenes/props/fair_glued_cans.tscn"),
+			preload("res://scenes/props/fair_rig_manual.tscn")],
+		"half_heights": [0.15, 0.025],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_GLUED_CANS", "OBJ_EXTRA_RIG_MANUAL"],
+		"rig": preload("res://scripts/case/fair/rigged_games_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the paved paths.
 const NOTE_PLACES: Array[Vector3] = [
