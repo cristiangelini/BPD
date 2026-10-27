@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Planetarium crime scene, step 4: El Pedrusco hidden with the seed in one of nine spots (Saturn's crank, the six planet seats, the moon-rock basket and the kids' rocket), searched with E in 5 s; the projector's console log tells the planet the show was paused on; back in its display case it adds 100 to the salary.
 - Planetarium crime scene, step 3: the guides' files (the planetarium variant of the crime scene case): E asks a guide for their planet and then the helmet (one won't take it off until they eat), and in the dark the glow paint shows on the gloves and E looks at them. The culprit always has glow paint.
 - Planetarium crime scene, step 2: the six guides in astronaut suits (GuideTraits: hair, boots, teeth, glow paint on the gloves and the planet they present), Doctor Órbita the director and Doña Nebulosa asleep in seat 7.
 - Planetarium crime scene, step 1: the Municipal Planetarium on its own lot (block 8, 1, south side) with the cardboard rocket and the white dome on the roof; the hall with El Pedrusco's empty display case and the giant Saturn, the gift shop (moon-rock basket, till and photo booth), the kids' corner (rocket and Mars scale), the dome room with 14 reclining seats around the star projector (six with a planet) under a starry ceiling, and the control room with the projector's console. --place=planetarium opens it.

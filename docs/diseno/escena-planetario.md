@@ -162,6 +162,14 @@ Mientras tanto se avanza con lo recomendado.
      E se los mira. El culpable siempre tiene pintura.
    - Capturas: `planetario/paso3-casco.png` y `planetario/paso3-brillo.png`.
 4. El caso: El Pedrusco escondido, la búsqueda y la consola del proyector.
+   **Hecho así:** la semilla esconde El Pedrusco en uno de 9 lugares (`PlanetariumSpot`).
+   - **Los lugares:** la manivela bajo el Saturno gigante (baja el anillo), las seis butacas con planeta, el canasto de
+     piedras lunares y el cohete de los chicos.
+   - **Buscar:** E, 5 s. Donde no está, el policía dice qué hay.
+   - **La consola del proyector** (`ProjectorConsole`): E, 10 s leyendo. Dice el planeta si la piedra está en una
+     butaca, y si no, "Función completa, sin pausas".
+   - **Encontrada:** queda en el piso delante del lugar. E la lleva a la vitrina y suma 100 al sueldo.
+   - Capturas: `planetario/paso4-butaca.png` y `planetario/paso4-vitrina.png`.
 5. La función de las estrellas: el apagón cada 2 minutos, lo que brilla, la linterna y la paciencia del doctor.
 6. Las pistas y la testigo.
 7. El final: tablero, cansancio, sueldo y la combi con los planetas inflables.

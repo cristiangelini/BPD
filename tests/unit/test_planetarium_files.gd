@@ -120,6 +120,6 @@ func test_a_full_file_and_what_its_card_says() -> void:
 	text = case.file_text(2)
 	assert_string_contains(text, tr("FILE_PLANET") % guide.planet_name())
 	assert_string_contains(text, tr("FILE_GLOW") if guide.traits.glow else tr("FILE_NO_GLOW"))
-	for key in ["PROMPT_GUIDE_GLOVES", "GUIDE_HELMET_NO", "FILE_GLOW", "FILE_PLANET", "BRIEF_PLANETARIUM_A",
+	for key in ["PROMPT_GUIDE_GLOVES", "GUIDE_HELMET_NO", "FILE_GLOW", "FILE_PLANET", "BRIEF_PLANETARIUM_A_meteorite",
 			"HINT_GUIDE_LEFT", "HINT_FILE_glow", "FILE_PART_planet"]:
 		assert_ne(tr(key), key, "%s is translated" % key)
