@@ -60,6 +60,9 @@ func ask(employee: OfficeEmployee) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	# Online the host's machine serves; a guest's shows its screen (FormsOffice.net_state).
+	if office and office.case and office.case.follower:
+		return
 	if line.is_empty() or line[0].walking():
 		return
 	var first := line[0]

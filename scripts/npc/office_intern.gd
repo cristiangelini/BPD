@@ -63,6 +63,16 @@ func use(cop: Cop) -> void:
 		say("OFFICE_INTERN_NOTHING")
 
 
+## Online (NpcSync): whether his pile got to the copier and whether he's offended, on the host.
+func net_state() -> Array:
+	return [delivered, offended]
+
+
+func apply_net_state(state: Array) -> void:
+	delivered = state[0]
+	offended = state[1]
+
+
 func cuffed(_seconds: float) -> void:
 	offend()
 

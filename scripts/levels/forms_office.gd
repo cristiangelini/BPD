@@ -335,8 +335,22 @@ func suspect(index: int) -> CollisionObject3D:
 	return employees[index]
 
 
+## Online, what the guests' office takes from the host's: who's at which desk, the coffee machine's screen and the
+## footprint Pelusa vacuumed. The people and Pelusa themselves come by NpcSync.
+func net_state() -> Dictionary:
+	return {"desks": desk_of.duplicate(), "screen": coffee_machine.screen.text}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	desk_of.assign(state.desks)
+	coffee_machine.screen.text = state.screen
+	if case and case.ruined.has("footprint") and clues and clues.footprint and not clues.footprint.wiped:
+		clues.footprint.wipe()
+
+
 func _physics_process(delta: float) -> void:
-	if employees.is_empty():
+	# Online the host's office rings the bell.
+	if employees.is_empty() or (case and case.follower):
 		return
 	bell_in -= delta
 	if bell_in <= 0.0:
