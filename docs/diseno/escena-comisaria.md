@@ -154,3 +154,12 @@ internos (sobornos.md), CaseBriefing y CaseChecklist, ChaseCase.begin, PlaceDraw
   dice doña Fritanga para todos la segunda vez que se le habla. La ficha muestra también dónde y con quién dice que
   estaba. Los compañeros no se cansan (el apuro es Asuntos Internos, paso 5), y hasta el paso 5 el culpable se
   entrega. Capturas en `escena-comisaria/paso4a-*.png`.
+- **Paso 4b (las pistas):** en el depósito, según las 4 pistas del caso: el hueco del estante (`EvidenceShelf`) da
+  las huellas con el kit, y si un policía lo toca antes quedan las suyas encima; la videocasetera (`VcrDeck`): E
+  rebobina y el monitor muestra la silueta del culpable, pero sigue grabando y **a los 5 minutos da la vuelta y graba
+  encima** (cambia lo de la otra videocasetera del doc, propuesta); el libro de retiros en el atril (el mismo
+  `GuestBook` del hotel): se fotografía, y firmarlo lo arruina; la taza de café y la media dona mordida en el piso de
+  la jaula (`CrimeClueItem`, aspecto "station"): van en bolsa, y tomarla o comerla las pierde; **don Mopa limpia el
+  depósito a los 4 minutos** y se lleva la taza a lavar si nadie la embolsó (propuesta, en vez de que dé vueltas); y
+  el Chancho: con una dona dice el talle de las botas, y si le abren la celda se ofende y no habla más (en vez de
+  escaparse, propuesta). Captura en `escena-comisaria/paso4b-pistas.png`.

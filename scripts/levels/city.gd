@@ -406,7 +406,7 @@ func _evidence_room(root: Node3D, color: Color) -> void:
 	var width := EvidenceRoom.TO_X - EvidenceRoom.FROM_X
 	for piece: Array in EvidenceRoom.shell():
 		_box(piece[0], piece[1], color, root)
-	_mesh_box(middle + Vector3(0, 0.04, 0), Vector3(width - 0.4, 0.02, depth - 0.2), WING_FLOOR, root)
+	_mesh_box(middle + Vector3(0, 0.012, 0), Vector3(width - 0.4, 0.01, depth - 0.2), WING_FLOOR, root)
 	_box(middle + Vector3(0, ceiling + 0.1, 0), Vector3(width, 0.2, depth), CONCRETE, root)
 	for x: float in [EvidenceRoom.FROM_X + wall + 0.01, EvidenceRoom.TO_X - wall - 0.01]:
 		_mesh_box(Vector3(x, ceiling / 2, middle.z), Vector3(0.01, ceiling, depth), CONCRETE, root)
