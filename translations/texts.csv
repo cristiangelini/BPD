@@ -5611,3 +5611,20 @@ LOC_under_checkout_belt,debajo de la cinta de la caja 2,under checkout 2's belt,
 LOC_behind_offer_table,detrás de la mesa de ofertas,behind the offer table,atrás da mesa de ofertas
 LOC_by_produce_scale,al lado de la balanza de la verdulería,by the produce scale,ao lado da balança do hortifrúti
 LOC_on_super_desk,en el escritorio de Don Ofertón,on Don Ofertón's desk,na escrivaninha do Don Ofertón
+PROMPT_CART_TAKE,"E: empujar el changuito","E: push the shopping cart","E: empurrar o carrinho"
+PROMPT_CART_RIDE,"E: subirte al changuito","E: climb into the cart","E: subir no carrinho"
+PROMPT_CART_OUT,"E: bajarte del changuito","E: climb out of the cart","E: descer do carrinho"
+SUPER_CART_CRASH,"¡Saliste volando del changuito!","You flew out of the cart!","Você saiu voando do carrinho!"
+SUPER_CUSTOMER_0,"¡Estoy en la cola, oficial! No me pienso ir.","I'm in the queue, officer! I'm not leaving.","Estou na fila, policial! Não vou sair."
+SUPER_CUSTOMER_1,"Los fideos están en oferta desde hace once años. Raro, ¿no?","The noodles have been on sale for eleven years. Odd, right?","O macarrão está em promoção há onze anos. Estranho, né?"
+SUPER_CUSTOMER_2,"El gerente anuncia todo por el altavoz. Hasta cuando estornuda.","The manager announces everything on the loudspeaker. Even when he sneezes.","O gerente anuncia tudo no alto-falante. Até quando espirra."
+SUPER_CUSTOMER_3,"Yo vengo todos los días. No compro nada, vengo por las pirámides.","I come every day. I don't buy anything, I come for the pyramids.","Eu venho todo dia. Não compro nada, venho pelas pirâmides."
+SUPER_CUSTOMER_4,"¿Usted sabe dónde está el pasillo 13? Nadie me quiere decir.","Do you know where aisle 13 is? Nobody will tell me.","Você sabe onde fica o corredor 13? Ninguém quer me dizer."
+SUPER_CUSTOMER_5,"El yogur dice que vence en 2099. Yo lo compro igual.","The yogurt says it expires in 2099. I buy it anyway.","O iogurte diz que vence em 2099. Eu compro mesmo assim."
+SUPER_CUSTOMER_6,"Mi changuito tira para la izquierda. Como mi cuñado.","My cart pulls to the left. Like my brother-in-law.","Meu carrinho puxa para a esquerda. Igual ao meu cunhado."
+SUPER_CUSTOMER_7,"Si se cae la pirámide, el chico de la gorrita llora. Cuidado.","If the pyramid falls, the kid in the cap cries. Careful.","Se a pirâmide cair, o menino de boné chora. Cuidado."
+SUPER_CUSTOMER_QUEUE,"Estoy en la cola…","I'm in the queue…","Estou na fila…"
+SUPER_CUSTOMER_BUMPED_0,"¡Oiga! ¡Me chocó el changuito! Esto va a la queja.","Hey! You hit my cart! That's going in the complaint.","Ei! Bateu no meu carrinho! Isso vai para a reclamação."
+SUPER_CUSTOMER_BUMPED_1,"¡Mis huevos! ¡Mire lo que hizo con mis huevos!","My eggs! Look what you did to my eggs!","Meus ovos! Olha o que você fez com meus ovos!"
+SUPER_CUSTOMER_BUMPED_2,"¡Respete la fila, oficial!","Respect the queue, officer!","Respeite a fila, policial!"
+SUPER_CUSTOMER_BUMPED_3,"¡Gerenteee! ¡La policía me choca!","Manageeer! The police are crashing into me!","Gereeente! A polícia está batendo em mim!"

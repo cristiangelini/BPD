@@ -71,6 +71,22 @@ const BOX_STACKS: Array[Vector3] = [Vector3(10.0, FLOOR_TOP, -9.5), Vector3(13.5
 const BOX_STACK_SIZE := Vector3(1.2, 1.6, 1.2)
 
 ## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
+## The 8 carts (step 2): three in a row in the front parking, three inside by the door and two loose in the aisles.
+const CART_SPOTS: Array[Vector3] = [Vector3(7.0, FLOOR_TOP, HALF_Z + 2.5), Vector3(7.7, FLOOR_TOP, HALF_Z + 2.5),
+	Vector3(8.4, FLOOR_TOP, HALF_Z + 2.5), Vector3(-0.2, FLOOR_TOP, 10.6), Vector3(0.5, FLOOR_TOP, 10.6),
+	Vector3(1.2, FLOOR_TOP, 10.6), Vector3(-7.5, FLOOR_TOP, -2.0), Vector3(-2.5, FLOOR_TOP, 1.0)]
+## The customers' aisles (not the one of the offer table), the walkways at both ends and how much each one keeps to a
+## side so they don't walk through each other.
+const CUSTOMER_AISLES: Array[float] = [-12.0, -7.5, -2.5]
+const FRONT_WALK := 5.0
+const BACK_WALK := -7.2
+const CUSTOMER_LANE := 0.4
+## Each customer: up one aisle, down another and the checkout whose queue they wait in.
+const CUSTOMER_LOOPS: Array[Vector3i] = [Vector3i(1, 2, 1), Vector3i(2, 1, 0), Vector3i(0, 1, 0),
+	Vector3i(1, 0, 2), Vector3i(2, 0, 1), Vector3i(0, 2, 2)]
+## What one customer's complaint adds to the manager's (Don Ofertón, step 3).
+const COMPLAINT_BUMP := 5
+
 const SPOTS := [
 	{"id": "in_super_freezer", "at": Vector3(-3.0, FLOOR_TOP + 0.1, -8.6), "heavy": true},
 	{"id": "behind_produce", "at": Vector3(-14.4, FLOOR_TOP, -0.6), "heavy": true},
@@ -108,6 +124,10 @@ var fridge_cracked := false
 var broken_goods := 0
 ## Money taken off the case pay: the pyramid and the fridge's glass.
 var fines := 0
+var carts: Array[ShoppingCart] = []
+var customers: Array[SuperCustomer] = []
+## What the customers complained about, for the manager's complaint (step 3).
+var complaint := 0
 ## Same seed, same supermarket (the stories and the hiding spots come from it, step 5).
 @export var case_seed := 0
 var _build: PlaceBuilder
@@ -126,6 +146,8 @@ func _ready() -> void:
 	_build_front()
 	_build_rooms()
 	_build_pyramid()
+	_build_carts()
+	_build_customers()
 	office_door = _door(OFFICE_DOOR_X)
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("supermarket")
@@ -236,6 +258,39 @@ func _build_pyramid() -> void:
 			can.sleeping = true
 			cans.append(can)
 			can_homes.append(at)
+
+
+func _build_carts() -> void:
+	for i in CART_SPOTS.size():
+		var cart := ShoppingCart.new()
+		cart.name = "Cart%d" % i
+		add_child(cart)
+		cart.position = CART_SPOTS[i]
+		cart.rotation.y = PI if i < 6 else PI / 2
+		carts.append(cart)
+
+
+## Six customers on their loops, each starting at a different point of it so they're spread through the store.
+func _build_customers() -> void:
+	for i in CUSTOMER_LOOPS.size():
+		var loop := CUSTOMER_LOOPS[i]
+		var lane := CUSTOMER_LANE * (1 if i % 2 == 0 else -1)
+		var up := CUSTOMER_AISLES[loop.x] + lane
+		var down := CUSTOMER_AISLES[loop.y] - lane
+		var customer := SuperCustomer.new()
+		customer.name = "Customer%d" % i
+		customer.look = SuperCustomer.LOOKS[i % SuperCustomer.LOOKS.size()]
+		customer.route = [Vector3(up, FLOOR_TOP, FRONT_WALK), Vector3(up, FLOOR_TOP, BACK_WALK),
+			Vector3(down, FLOOR_TOP, BACK_WALK), Vector3(down, FLOOR_TOP, FRONT_WALK),
+			Vector3(CHECKOUT_X[loop.z] + 0.9, FLOOR_TOP, FRONT_WALK + 0.4)]
+		customer.queue_at = 4
+		customer.next_line = i * 3
+		var start := i % customer.route.size()
+		customer.next_point = (start + 1) % customer.route.size()
+		add_child(customer)
+		customer.position = customer.route[start]
+		customer.complained.connect(func(_c: SuperCustomer) -> void: complaint += COMPLAINT_BUMP)
+		customers.append(customer)
 
 
 func _physics_process(_delta: float) -> void:

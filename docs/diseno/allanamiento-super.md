@@ -112,6 +112,20 @@ suman entre 400 y 600.
      - **Para probar:** `--place=supermarket` y "Súper (allanamiento) (prueba)" en el menú.
      - **Capturas:** `allanamiento-super/paso1-*.png`.
 2. Los changuitos (empujar, cargar, subirse) y los clientes que hacen cola.
+   - **Cómo quedó (propuesta):** 8 changuitos: 3 en fila en el estacionamiento, 3 adentro junto a la puerta y 2 sueltos
+     en los pasillos.
+     - **Empujar y cargar:** igual que la carretilla de la armería: E lo agarra, E sobre algo lo carga (hasta 40 kg),
+       E sobre nada lo deja y G lo vuelca.
+     - **Subirse:** agachado, E sobre un changuito vacío y quieto te sube adentro. Otro policía lo empuja y vas con él.
+       E de nuevo te baja. Si el que empuja va a más de 3 m/s y frena de golpe contra algo, el de adentro sale volando
+       hacia adelante y queda mareado («¡Saliste volando del changuito!»). Si lo vuelcan con G, también se cae.
+     - **Los clientes:** 6 vecinos con su changuito. Cada uno sube por un pasillo, baja por otro y espera 6 s en la cola
+       de una caja («Estoy en la cola…»), y vuelve a empezar. No usan el pasillo de la mesa de oferta, para no tirar la
+       pirámide. Si un policía está parado delante de su changuito, esperan. E sobre uno: una frase, distinta cada vez.
+     - **La queja:** si el changuito que empuja un policía choca el de un cliente a más de 1 m/s, el cliente se queja
+       («¡Respete la fila, oficial!») y suma 5 a la denuncia (`Supermarket.complaint`, que en el paso 3 pasa a la de Don
+       Ofertón). Una vez cada 10 s por cliente.
+     - **Capturas:** `allanamiento-super/paso2-*.png`.
 3. Don Ofertón: la ronda, el altavoz, la denuncia y el botón de la caja.
 4. Chispa y su pirámide.
 5. El caso (RaidCase) con la primera historia: las fechas cambiadas.
