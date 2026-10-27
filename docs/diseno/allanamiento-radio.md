@@ -109,6 +109,7 @@ entre 400 y 600.
    semana, y al aire vuelve a sonar el mismo tema cada 120 s (propuesta). Con esto están las 6 historias. Capturas
    `radio/paso6-ranking-*.png`.
 7. "Jugar" suma la radio al sorteo de allanamientos (`PlaceDraw.ORDER`).
+   **Hecho (paso 7):** "radio" al final de `PlaceDraw.ORDER`; la prueba del sorteo ve salir sus 6 historias.
 8. El online (don Volumen, doña Rosa, el teléfono, la luz "AL AIRE" y lo frágil en todas las PC).
 
 ## Preguntas para Cristian

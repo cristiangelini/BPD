@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Radio raid, step 7: Play draws the radio among the raids.
 - Radio raid, step 6: the fake chart story: the box of the musicians' envelopes, the cardboard gold record and the chart written in advance hidden with the seed, next week's chart already hanging in the reception (the clue) and the same song on air again every 120 s. The radio now has its 6 stories.
 - Radio raid, step 6: the coded dedications story: the box with the code book and the portable radio, the "listeners" list and the delivery clock hidden with the seed, «Para la Gaviota: el paquete llega el martes» on the reception's dedications board (the clue) and a very odd dedication on air every 60 s.
 - Radio raid, step 6: the collector's records story: the crate of stolen vinyls, the collector's catalog and the golden record player hidden with the seed, a record labeled «Colección privada · no prestar» leaning on the archive's shelf (the clue) and don Volumen presenting another "gem" on air every 45 s.
