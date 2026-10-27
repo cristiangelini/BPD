@@ -6,10 +6,19 @@ extends RefCounted
 ## Blocks are (column, row): column 0 is the west, row 0 the north (-Z). Every number here is (propuesta).
 ## The city grows a little at a time (Cristian, 19/10): new places (the jail, the politician's case...) add rows
 ## to the south, so ROWS goes up and nothing already placed moves.
+## Twice the blocks (Cristian, 26/10): from 7 x 5 to 10 x 7, one column more on the west, two on the east and one row
+## on each of north and south. The new blocks get the indices around the old ones (column -1, 7 and 8, row -1 and 5),
+## so every place keeps its block; FIRST is the north-west block. Streets are numbered the same way: street k runs on
+## the west (north) side of column (row) k, from FIRST to FIRST + COLUMNS (ROWS).
 
-## Three times the first 4 x 3 blocks (Cristian, 19/10); the first blocks sit in the middle, one block in.
-const COLUMNS := 7
-const ROWS := 5
+const COLUMNS := 10
+const ROWS := 7
+const FIRST := Vector2i(-1, -1)
+## The edge streets' numbers.
+const WEST := FIRST.x
+const EAST := FIRST.x + COLUMNS
+const NORTH := FIRST.y
+const SOUTH := FIRST.y + ROWS
 const BLOCK := 60.0
 const STREET := 12.0
 const PITCH := BLOCK + STREET
@@ -24,7 +33,7 @@ const PLACES := [
 	{"id": "hotel", "block": Vector2i(2, 3), "side": "n", "along": 0.0, "size": Vector3(26, 18, 18), "color": Color(0.85, 0.5, 0.45), "sign": "PLACE_HOTEL"},
 	{"id": "insurance", "block": Vector2i(3, 3), "side": "n", "along": 0.0, "size": Vector3(22, 12, 16), "color": Color(0.6, 0.65, 0.7), "sign": "PLACE_INSURANCE"},
 	{"id": "grandpa", "block": Vector2i(1, 2), "side": "e", "along": 0.0, "size": Vector3(24, 7, 20), "color": Color(1.0, 0.84, 0.55), "sign": "PLACE_GRANDPA"},
-	{"id": "apartments", "block": Vector2i(1, 3), "side": "e", "along": 0.0, "size": Vector3(22, 15, 16), "color": Color(0.75, 0.6, 0.85), "sign": "PLACE_APARTMENTS"},
+	{"id": "apartments", "block": Vector2i(1, 3), "side": "e", "along": 0.0, "size": Vector3(22, 99.2, 16), "color": Color(0.75, 0.6, 0.85), "sign": "PLACE_APARTMENTS"},
 	{"id": "bakery", "block": Vector2i(2, 1), "side": "s", "along": -12.0, "size": Vector3(16, 7, 14), "color": Color(0.95, 0.75, 0.4), "sign": "PLACE_BAKERY"},
 	{"id": "pet_salon", "block": Vector2i(2, 1), "side": "s", "along": 12.0, "size": Vector3(16, 6, 14), "color": Color(0.55, 0.85, 0.8), "sign": "PLACE_PET_SALON"},
 	{"id": "hardware", "block": Vector2i(3, 1), "side": "s", "along": -12.0, "size": Vector3(16, 7, 14), "color": Color(0.9, 0.45, 0.3), "sign": "PLACE_HARDWARE"},
@@ -50,8 +59,11 @@ const PLACES := [
 	# A park, not a building: it fills its block and its case scene builds the canal and the bridge on the grass.
 	{"id": "bridge_park", "block": Vector2i(3, 4), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.45, 0.72, 0.3), "sign": "PLACE_BRIDGE_PARK", "park": true},
 	{"id": "football_pitch", "block": Vector2i(4, 4), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.32, 0.62, 0.28), "sign": "PLACE_FOOTBALL_PITCH", "park": true},
+	{"id": "tv_studio", "block": Vector2i(1, 4), "side": "n", "along": 0.0, "size": Vector3(34, 7, 22), "color": Color(0.62, 0.7, 0.82), "sign": "PLACE_TV_STUDIO"},
 	# The wrong house's twin houses (casa-equivocada.md); provisional block until the city grows west, then (-1, 1) s.
 	{"id": "wrong_house", "block": Vector2i(0, 2), "side": "s", "along": 0.0, "size": Vector3(36, 7, 20), "color": Color(0.95, 0.86, 0.6), "sign": "PLACE_WRONG_HOUSE"},
+	# The airport fills its block too: the terminal and the apron are its case scene's (politico-aeropuerto.md).
+	{"id": "airport", "block": Vector2i(6, 4), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.86, 0.88, 0.9), "sign": "PLACE_AIRPORT", "park": true},
 ]
 
 ## The plaza fills its block.
@@ -70,26 +82,53 @@ const FILLER_COLORS: Array[Color] = [
 ]
 
 ## Street names: rows of the grid run west to east (between block rows), columns north to south.
-const STREETS_EW: Array[String] = ["STREET_KITE", "STREET_CLOCK", "STREET_LINDEN", "STREET_PUDDLE"]
+## STREETS_EW[0] is street NORTH + 1, STREETS_NS[0] street WEST + 1 (the edge streets have no sign).
+const STREETS_EW: Array[String] = ["STREET_FERN", "STREET_KITE", "STREET_CLOCK", "STREET_LINDEN", "STREET_PUDDLE",
+	"STREET_PILLOW"]
 const STREETS_NS: Array[String] = [
-	"STREET_SOCK", "STREET_TEAPOT", "STREET_CENTRAL", "STREET_BUTTON", "STREET_SPOON", "STREET_WHISTLE",
+	"STREET_MITTEN", "STREET_SOCK", "STREET_TEAPOT", "STREET_CENTRAL", "STREET_BUTTON", "STREET_SPOON", "STREET_WHISTLE",
+	"STREET_LADLE", "STREET_HAMMOCK",
 ]
 
 
 ## Center of a block on the ground.
 static func block_center(block: Vector2i) -> Vector3:
 	var first := -SIZE / 2 + Vector2.ONE * (STREET + BLOCK / 2)
-	return Vector3(first.x + block.x * PITCH, 0, first.y + block.y * PITCH)
+	return Vector3(first.x + (block.x - FIRST.x) * PITCH, 0, first.y + (block.y - FIRST.y) * PITCH)
 
 
-## Center x of north-south street `k` (0 to COLUMNS).
+## Center x of north-south street `k` (WEST to EAST).
 static func street_x(k: int) -> float:
-	return -SIZE.x / 2 + STREET / 2 + k * PITCH
+	return -SIZE.x / 2 + STREET / 2 + (k - WEST) * PITCH
 
 
-## Center z of west-east street `k` (0 to ROWS).
+## Center z of west-east street `k` (NORTH to SOUTH).
 static func street_z(k: int) -> float:
-	return -SIZE.y / 2 + STREET / 2 + k * PITCH
+	return -SIZE.y / 2 + STREET / 2 + (k - NORTH) * PITCH
+
+
+## Every block, row by row from the north-west.
+static func blocks() -> Array[Vector2i]:
+	var list: Array[Vector2i] = []
+	for row in range(FIRST.y, FIRST.y + ROWS):
+		for col in range(FIRST.x, FIRST.x + COLUMNS):
+			list.append(Vector2i(col, row))
+	return list
+
+
+## Every crossing (i, j) of north-south street i and west-east street j; `inner` leaves out the edge streets.
+static func crossings(inner := false) -> Array[Vector2i]:
+	var cut := 1 if inner else 0
+	var list: Array[Vector2i] = []
+	for i in range(WEST + cut, EAST + 1 - cut):
+		for j in range(NORTH + cut, SOUTH + 1 - cut):
+			list.append(Vector2i(i, j))
+	return list
+
+
+## Whether crossing (i, j) is on the street grid.
+static func on_grid(crossing: Vector2i) -> bool:
+	return crossing.x >= WEST and crossing.x <= EAST and crossing.y >= NORTH and crossing.y <= SOUTH
 
 
 ## The direction a side faces, on the ground.
@@ -127,18 +166,16 @@ static func barrio_kind(block: Vector2i) -> String:
 ## Every filler lot as {block, side, along, size, color}: north and south sides without a place.
 static func fillers() -> Array[Dictionary]:
 	var lots: Array[Dictionary] = []
-	for row in ROWS:
-		for col in COLUMNS:
-			var block := Vector2i(col, row)
-			if block == PLAZA or is_park(block):
+	for block in blocks():
+		if block == PLAZA or is_park(block):
+			continue
+		for side: String in ["n", "s"]:
+			if PLACES.any(func(p: Dictionary) -> bool: return p.block == block and p.side == side):
 				continue
-			for side: String in ["n", "s"]:
-				if PLACES.any(func(p: Dictionary) -> bool: return p.block == block and p.side == side):
-					continue
-				var size: Vector3 = FILLER_SIZE[barrio_kind(block)]
-				for i in FILLER_ALONG.size():
-					lots.append({"block": block, "side": side, "along": FILLER_ALONG[i], "size": size,
-						"color": FILLER_COLORS[(col * 7 + row * 3 + i + (1 if side == "n" else 0)) % FILLER_COLORS.size()]})
+			var size: Vector3 = FILLER_SIZE[barrio_kind(block)]
+			for i in FILLER_ALONG.size():
+				lots.append({"block": block, "side": side, "along": FILLER_ALONG[i], "size": size,
+					"color": FILLER_COLORS[posmod(block.x * 7 + block.y * 3 + i + (1 if side == "n" else 0), FILLER_COLORS.size())]})
 	return lots
 
 
