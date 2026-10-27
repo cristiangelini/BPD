@@ -19,7 +19,7 @@ algo absurdo con la física.
     está agarrado.
   - **Los autitos chocadores:** 6 autitos en una pista con techo de red. El botón de la cabina los prende 20 s; andan
     solos y empujan a lo que encuentran.
-  - **La vuelta al mundo:** 8 cabinas y una manivela que la hace girar de a una cabina. La cabina de arriba queda a 9 m.
+  - **La vuelta al mundo:** 8 cabinas y una manivela que la hace girar de a una cabina. La cabina de arriba queda a casi 10 m.
   - **El tren fantasma:** un túnel oscuro de 20 m con 3 carritos y esqueletos que saltan.
   - **Los puestos:** el de latas (3 pelotas, 3 latas), el martillo de fuerza con su campana, la máquina de algodón de
     azúcar y la cabina de boletos.
@@ -105,6 +105,17 @@ extras suman entre 400 y 600.
 ## El orden para hacerlo (un PR chico por paso)
 1. El parque como lugar: la manzana (7, 4) con el arco, los puestos, la casita de los espejos (frágil), el tráiler con
    llave y los escondites. Los juegos van quietos por ahora. Modelos nuevos con modelgen.
+   Hecho así:
+   - **Lugar:** la clase `Fair`, en `--place=fair` y en el botón del menú. Como el parque se allana de noche, el reloj
+     de la ciudad arranca a las 21.
+   - **Juegos:** el carrusel tiene 12 caballitos, cada uno aparte para las historias. La vuelta al mundo tiene la rueda
+     y las 8 cabinas como nodos aparte, para que gire en el paso 2.
+   - **Tren fantasma:** tiene una pared en el medio, así que se entra por una puerta, se da la vuelta por el fondo y se
+     sale por la otra.
+   - **Lo frágil:** los 6 espejos de la casita se rompen con una multa de 30 cada uno. Los focos todavía no se rompen.
+   - **Escondites:** son 12 y 6 de ellos son para cosas pesadas. Uno está atrás de la cabina de boletos, porque la
+     cabina es chica para entrar.
+   - **Capturas:** en `/mnt/project-files/parque/`.
 2. Los juegos se mueven:
    - el carrusel gira y tira cosas;
    - los autitos chocadores andan 20 s;
