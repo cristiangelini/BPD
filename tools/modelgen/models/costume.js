@@ -3,6 +3,7 @@
 // the wig trunk, the sale basket, the office's safe and the giant mustache of the sign, with origins at the floor in
 // the middle of each piece (the mirror and the mustache at their middle). Placeholder, not final art.
 import { Builder, mat, ellipsoid, V, THREE } from '../lib.js';
+import { pearBody } from './pear.js';
 
 // The counter, 3.5 m long, 1 m tall and 0.8 m deep, its front to +Z: a red wooden box with a yellow top.
 export function buildCostumeCounter() {
@@ -159,12 +160,47 @@ export function buildGiantMustache() {
 	return b.build();
 }
 
+// A shop mannequin in costume, 1.5 m tall on its round stand: a smooth beige pear with no face dressed as `kind`
+// (pirate, chicken, astronaut or vampire). Mimí dresses up like them to play hide and seek.
+function mannequin(kind) {
+	const b = new Builder('mannequin_' + kind);
+	const plastic = mat('mannequin_plastic', 0xe8d8c0, { roughness: 0.35 });
+	b.add('stand', mat('mannequin_stand', 0x6a6a70, { metalness: 0.5 }), new THREE.CylinderGeometry(0.28, 0.3, 0.04, 12), { pos: V(0, 0.02, 0.05) });
+	if (kind === 'pirate') {
+		pearBody(b, plastic, { shirt: mat('pirate_shirt', 0xd83a30), pants: mat('pirate_pants', 0x24242a), shoes: mat('pirate_boots', 0x3a2a20) });
+		b.add('hat', mat('pirate_hat', 0x24242a), new THREE.CylinderGeometry(0.3, 0.3, 0.06, 3), { pos: V(0, 1.5, 0.02), rot: [0, Math.PI / 6, 0] });
+		b.add('hat', mat('pirate_skull', 0xf6f2e2), new THREE.BoxGeometry(0.06, 0.06, 0.01), { pos: V(0, 1.52, 0.17) });
+		b.add('patch', mat('pirate_hat', 0x24242a), new THREE.BoxGeometry(0.08, 0.06, 0.02), { pos: V(0.07, 1.34, 0.2) });
+	} else if (kind === 'chicken') {
+		const feathers = mat('chicken_yellow', 0xf6dc4a);
+		pearBody(b, feathers, { shirt: feathers, pants: feathers, shoes: mat('chicken_feet', 0xf28a1e), belted: false, onePiece: true });
+		b.add('crest', mat('chicken_crest', 0xe0302a), new THREE.BoxGeometry(0.04, 0.12, 0.18), { pos: V(0, 1.55, 0.02) });
+		b.add('beak', mat('chicken_feet', 0xf28a1e), new THREE.ConeGeometry(0.05, 0.12, 6), { pos: V(0, 1.3, 0.25), rot: [Math.PI / 2, 0, 0] });
+	} else if (kind === 'astronaut') {
+		const suit = mat('astro_white', 0xf0f0ec);
+		pearBody(b, plastic, { shirt: suit, pants: suit, shoes: mat('astro_boots', 0x8a8e96), belted: false, onePiece: true });
+		b.add('helmet', mat('astro_glass', 0x9ad0f0, { transparent: true, opacity: 0.45 }), new THREE.SphereGeometry(0.27, 12, 8), { pos: V(0, 1.3, 0.02) });
+		b.add('flag', mat('astro_badge', 0x3a6ad8), new THREE.BoxGeometry(0.1, 0.07, 0.01), { pos: V(0.14, 0.9, 0.3) });
+	} else {
+		pearBody(b, plastic, { shirt: mat('vampire_suit', 0x24242a), pants: mat('vampire_suit', 0x24242a), shoes: mat('vampire_shoes', 0x101014) });
+		b.add('cape', mat('vampire_cape', 0x9a1a2a), new THREE.BoxGeometry(0.8, 1.0, 0.03), { pos: V(0, 0.7, -0.38), rot: [0.12, 0, 0] });
+		b.add('collar', mat('vampire_cape', 0x9a1a2a), new THREE.BoxGeometry(0.5, 0.22, 0.03), { pos: V(0, 1.18, -0.12), rot: [-0.3, 0, 0] });
+	}
+	return b.build();
+}
+
+export const buildMannequinPirate = () => mannequin('pirate');
+export const buildMannequinChicken = () => mannequin('chicken');
+export const buildMannequinAstronaut = () => mannequin('astronaut');
+export const buildMannequinVampire = () => mannequin('vampire');
+
 export const models = {
 	costume_counter: buildCostumeCounter, rack_pirates: buildRackPirates, rack_animals: buildRackAnimals,
 	rack_monsters: buildRackMonsters, rack_princesses: buildRackPrincesses, rack_trades: buildRackTrades,
 	fitting_curtain: buildFittingCurtain, giant_mirror: buildGiantMirror, mask_case: buildMaskCase,
 	stock_shelf: buildStockShelf, box_pile: buildBoxPile, wig_trunk: buildWigTrunk, sale_basket: buildSaleBasket,
-	costume_safe: buildCostumeSafe, giant_mustache: buildGiantMustache,
+	costume_safe: buildCostumeSafe, giant_mustache: buildGiantMustache, mannequin_pirate: buildMannequinPirate,
+	mannequin_chicken: buildMannequinChicken, mannequin_astronaut: buildMannequinAstronaut, mannequin_vampire: buildMannequinVampire,
 };
 
 export const views = {
@@ -179,5 +215,9 @@ export const views = {
 			{ name: 'giant_mustache', pos: [0.6, 3.4, -3.2] },
 		],
 		cam: { pos: [0.4, 5.0, 10.0], target: [0.4, 0.9, 0], fov: 50 },
+	},
+	costume_mannequins: {
+		items: ['pirate', 'chicken', 'astronaut', 'vampire'].map((k, i) => ({ name: 'mannequin_' + k, pos: [(i - 1.5) * 1.0, 0, 0], rotY: 0.3 })),
+		cam: { pos: [0, 1.3, 5.6], target: [0, 0.8, 0], fov: 38 },
 	},
 };

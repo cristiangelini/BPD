@@ -5604,6 +5604,17 @@ COSTUME_FITTING_3,Probador 3,Fitting room 3,Provador 3
 COSTUME_STOCK_SIGN,DEPÓSITO · Solo personal,STOCK ROOM · Staff only,DEPÓSITO · Só funcionários
 COSTUME_MIRROR_BROKEN,«¡Mi espejo! ¡Ahora todos se ven feos!»,“My mirror! Now everyone looks ugly!”,“Meu espelho! Agora todo mundo fica feio!”
 COSTUME_CASE_BROKEN,"«¡Las máscaras! ¡Eran de colección, campeón!»","“The masks! They were collector's items, champ!”","“As máscaras! Eram de coleção, campeão!”"
+PROMPT_TALK_CUSTOMER,"E: charlar","E: chat","E: conversar"
+COSTUME_TRY_1,"«¿Me queda bien el de gallina?»","“Does the chicken one look good on me?”","“A de galinha fica bem em mim?”"
+COSTUME_TRY_2,"«¡Este de astronauta me aprieta!»","“This astronaut one is too tight!”","“Esta de astronauta está apertada!”"
+COSTUME_TRY_3,"«¿Alguien tiene un talle más de vampiro?»","“Does anyone have a bigger vampire size?”","“Alguém tem um tamanho maior de vampiro?”"
+COSTUME_TRY_4,"«¡Arrr! ¡Soy un pirata temible!»","“Arrr! I'm a fearsome pirate!”","“Arrr! Sou um pirata temível!”"
+COSTUME_TRY_5,"«No encuentro la cabeza del oso...»","“I can't find the bear's head...”","“Não encontro a cabeça do urso...”"
+COSTUME_CUSTOMER_TALK_1,"«Busco un disfraz para la fiesta de la oficina.»","“I'm looking for a costume for the office party.”","“Procuro uma fantasia para a festa do escritório.”"
+COSTUME_CUSTOMER_TALK_2,"«Don Fantoche le dice ‘campeón’ a todo el mundo.»","“Don Fantoche calls everyone ‘champ’.”","“Don Fantoche chama todo mundo de ‘campeão’.”"
+COSTUME_CUSTOMER_TALK_3,"«Esos maniquíes me miran raro.»","“Those mannequins look at me funny.”","“Esses manequins me olham estranho.”"
+COSTUME_CUSTOMER_CRUSH,"«¡Casi me aplasta un maniquí!»","“A mannequin almost crushed me!”","“Um manequim quase me esmagou!”"
+COSTUME_CUSTOMER_BUSY,"«¡Hay un policía en el probador!»","“There's a cop in the fitting room!”","“Tem um policial no provador!”"
 LOC_in_stock_boxes,entre las cajas del depósito,among the stock room's boxes,entre as caixas do depósito
 LOC_by_stock_shelf,al pie del estante del depósito,at the foot of the stock room's shelf,ao pé da estante do depósito
 LOC_in_dinosaur_costume,adentro del disfraz de dinosaurio,inside the dinosaur costume,dentro da fantasia de dinossauro
