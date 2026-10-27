@@ -628,6 +628,8 @@ func clue_line(kind: String) -> String:
 		return _museum_clue_line(kind)
 	if texts() == VARIANTS.hotel:
 		return _hotel_clue_line(kind)
+	if texts() == VARIANTS.library:
+		return _library_clue_line(kind)
 	match kind:
 		"footprint":
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
@@ -679,6 +681,22 @@ func _museum_clue_line(kind: String) -> String:
 			return tr("CLUE_MUSEUM_alibi") % museum.bathroom_details.map(func(detail: String) -> String:
 				return tr("ALIBI_SHORT_" + detail))
 	return tr("CLUE_MUSEUM_" + kind)
+
+
+## At the library: the slipper on the waxed parquet, the hair on the armchair, the cookie in the hollow book, the gold
+## dust, the bookmark in the Golden Book and Tomasito.
+func _library_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_LIBRARY_footprint") % who.shoe
+		"hair":
+			return tr("CLUE_LIBRARY_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_LIBRARY_bite") % tr("TEETH_" + str(who.teeth))
+		"bookmark", "witness":
+			return tr("CLUE_LIBRARY_" + kind) % tr("GENRE_" + str(who.genre))
+	return tr("CLUE_LIBRARY_" + kind)
 
 
 ## At the hotel: the bare footprint on the bathroom's mat, the hair and the bonbon on the pillow, Tito and the guest book.
