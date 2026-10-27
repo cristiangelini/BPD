@@ -66,7 +66,7 @@ func test_off_air_nothing_goes_out() -> void:
 func test_a_hit_near_the_mic_goes_on_air() -> void:
 	var radio := _radio()
 	await wait_physics_frames(2)
-	var prop := ClubEvidence.make_item("Thrown", RadioStation.PLAYER_MODEL, Vector3(0.3, 0.3, 0.3), 2.0)
+	var prop := ClubEvidence.make_item("Thrown", RadioRecordPlayer.MODEL, Vector3(0.3, 0.3, 0.3), 2.0)
 	radio.add_child(prop)
 	prop.position = Vector3(-7.0, 1.5, 1.0)
 	prop.linear_velocity = Vector3(0, 0, -4.0)
