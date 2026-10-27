@@ -25,11 +25,15 @@ const FOOTPRINT_SPOTS: Array[Vector3] = [Vector3(-27, 0, 0.55), Vector3(-23.5, 0
 const SILL_AT := Train.BROKEN_WINDOW_AT + Vector3(0.2, -0.36, 0)
 const SANDWICH_AT := Train.TABLES[1] + Vector3(0.15, 0.79, -0.1)
 const SOOT := Color(0.14, 0.13, 0.13)
+## The rope round the showcase's glass, and its knot on the side to the aisle.
+const ROPE_Y := 0.98
+const KNOT_AT := Train.SHOWCASE_AT + Vector3(0, ROPE_Y, TrainShowcase.SIZE.z / 2 + 0.06)
 
 var train: Train
 var case: CrimeSceneCase
 var showcase: TrainShowcase
 var window: TrainWindow
+var knot: TrainKnot
 var footprint: FlourPrint
 ## Where the cart is on its round (index of the next corner; -1: parked), and how long until it moves again.
 var cart_next := -1
@@ -46,6 +50,14 @@ func _ready() -> void:
 	showcase.has_prints = plan.clues.has("prints")
 	showcase.position = Train.SHOWCASE_AT + Vector3(0, 1.2, 0)
 	train.cars().add_child(showcase)
+	_rope()
+	knot = TrainKnot.new()
+	knot.name = "Knot"
+	knot.case = case
+	knot.is_clue = plan.clues.has("knot")
+	knot.left = who.left
+	knot.position = KNOT_AT
+	train.cars().add_child(knot)
 	window = TrainWindow.new()
 	window.name = "BrokenWindow"
 	window.clues = self
@@ -66,6 +78,16 @@ func _ready() -> void:
 		_clue_item("hair", SILL_AT)
 	if plan.clues.has("bite"):
 		_clue_item("bite", SANDWICH_AT)
+
+
+func _rope() -> void:
+	var builder := PlaceBuilder.new(train.cars())
+	var size := TrainShowcase.SIZE + Vector3(0.03, 0, 0.03)
+	for side: float in [-1.0, 1.0]:
+		builder.mesh_box(Train.SHOWCASE_AT + Vector3(0, ROPE_Y, side * size.z / 2), Vector3(size.x, 0.03, 0.02),
+			TrainKnot.ROPE)
+		builder.mesh_box(Train.SHOWCASE_AT + Vector3(side * size.x / 2, ROPE_Y, 0), Vector3(0.02, 0.03, size.z),
+			TrainKnot.ROPE)
 
 
 func _clue_item(kind: String, at: Vector3) -> void:

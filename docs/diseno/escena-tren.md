@@ -149,3 +149,9 @@ interrogatorio.
   lo lleva, salvo que ya esté en una bolsa. El sándwich mordido está en una mesa del comedor y el rollo de bolsas de
   evidencia en el rincón del fondo del comedor, frente al baño. Lo que se gasta en el carrito se descuenta en el
   informe del turno como una multa.
+- **Paso 4c (la guarda, el nudo y el freno):** la máquina de boletos de primera da un boleto por policía (E, 5 del
+  sueldo). Picadora pide el boleto antes de hablar; con boleto, si es pista, dice si el culpable leyó el suyo con
+  anteojos. Esposada, o si alguien tira el freno (se cae picando boletos), se ofende y no habla más. La vitrina está
+  atada con una soga y el nudo da para el lado de la mano del culpable: se fotografía (cámara) y E lo desata y la pista
+  se pierde. El freno de emergencia de la locomotora para el tren 60 s en el medio del campo (el reloj de las
+  estaciones espera), don Silbato grita y descuenta 100 del sueldo; a la segunda le pone candado.
