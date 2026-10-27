@@ -5588,3 +5588,21 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+PLACE_BOWLING,Bolos Chuza Feliz,Chuza Feliz Bowling,Boliche Chuza Feliz
+MENU_BOWLING,Bolera (allanamiento) (prueba),Bowling alley (raid) (test),Boliche (batida) (teste)
+HINT_TILL_KEY_BOWLING,¡Una llave! Abre la oficina de Don Chuza.,A key! It opens Don Chuza's office.,Uma chave! Abre o escritório do Don Chuza.
+CASE_FAILED_LAWYER_BOWLING,Don Chuza llamó al abogado de la bolera. Caso perdido.,Don Chuza called the bowling alley's lawyer. Case lost.,Don Chuza ligou para o advogado do boliche. Caso perdido.
+BOWL_CASE_BROKEN,"«¡Mis trofeos! ¡Esos los gané yo! Bueno, casi todos.»","“My trophies! I won those! Well, almost all of them.”","“Meus troféus! Esses eu ganhei! Bom, quase todos.”"
+BOWL_SCREEN_BROKEN,"«¡Se apagó la pantalla! ¿Y ahora cómo sabemos quién va ganando?»","“The screen went out! Now how do we know who's winning?”","“A tela apagou! E agora como sabemos quem está ganhando?”"
+LOC_in_ball_return,en el retorno de bolas de la pista 3,in lane 3's ball return,no retorno de bolas da pista 3
+LOC_in_pin_machine_corridor,en el pasillo de las máquinas de pinos,in the pin machines' corridor,no corredor das máquinas de pinos
+LOC_in_old_pins_store,en el cajón de los pinos viejos,in the bin of old pins,na caixa dos pinos velhos
+LOC_behind_trophy_case,detrás de la vitrina de trofeos,behind the trophy case,atrás da vitrine de troféus
+LOC_in_bowl_office_corner,en un rincón de la oficina de Don Chuza,in a corner of Don Chuza's office,num canto do escritório do Don Chuza
+LOC_behind_shoe_counter,detrás del mostrador de zapatos,behind the shoe counter,atrás do balcão de sapatos
+LOC_on_shoe_shelf,en el estante de los zapatos,on the shoe shelf,na prateleira dos sapatos
+LOC_under_bench,debajo del banco de la pista 5,under lane 5's bench,embaixo do banco da pista 5
+LOC_by_popcorn_machine,al lado de la máquina de palomitas,by the popcorn machine,ao lado da máquina de pipoca
+LOC_behind_bar,detrás de la barra del bar,behind the bar,atrás do balcão do bar
+LOC_in_lane_6_gutter,en la canaleta de la pista 6,in lane 6's gutter,na canaleta da pista 6
+LOC_on_bowl_desk,en el escritorio de Don Chuza,on Don Chuza's desk,na escrivaninha do Don Chuza

@@ -103,6 +103,15 @@ suman entre 400 y 600.
 ## Pasos (un PR chico cada uno)
 1. El lugar: la bolera con sus 6 pistas, los pinos, el retorno, el mostrador, el bar, la oficina, lo frágil y los
    escondites. Modelos con `tools/modelgen`.
+   - **Cómo quedó (propuesta):** `Bowling` arma el local (30 × 24 m, 5 m de alto) en su lote de la manzana (8, 2),
+     con la puerta al sur. Las 6 pistas van de la línea de falta (cerca de la puerta) a los pinos del fondo: miden
+     13 m y no 18, porque el local tiene 24 m de fondo. Tienen canaletas, un cordón entre pistas para que la bola no
+     se pase, las máquinas de pinos con la pared arriba y el pasillo de atrás, con su puerta al este. Los 10 pinos de
+     cada pista (1,5 kg) están parados y dormidos hasta que algo los toca. Hay 3 retornos de bolas con sus bancos y
+     6 pantallas colgadas. Del lado este están el mostrador de zapatos con la caja (la llave de la oficina), el bar
+     con la máquina de palomitas y la heladera, y la oficina con llave, el escritorio y la vitrina de trofeos. Lo
+     frágil: la vitrina (algo a más de 3 m/s, multa de 30) y cada pantalla (15). 12 escondites, 6 grandes. El pino
+     gigante está arriba del techo. Capturas: `allanamiento-bolera/paso1-*.png`.
 2. Las bolas y los pinos con física, la pista encerada y los jugadores del torneo.
 3. Don Chuza y la chuza que lo distrae.
 4. Pipo y los zapatos.
