@@ -38,6 +38,11 @@ func soak() -> void:
 	got_wet.emit()
 
 
+## Online, the guests' copy has the host's name, so the host can say which chamois got wet (CarWash.net_state).
+func net_setup() -> Dictionary:
+	return {"name": name}
+
+
 func held_prompt_key(_cop: Cop) -> String:
 	return "PROMPT_CARWASH_CHAMOIS_HELD" if dry else ""
 

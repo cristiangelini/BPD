@@ -256,6 +256,8 @@ var tunnel_seen := {}
 var chamois_button: PushButton
 var pompita: RagBoy
 var chamois: Array[Chamois] = []
+## Chamois taken from the basket, so each one has a name of its own, the same on every PC.
+var taken := 0
 var _tunnel_check := 0.0
 var cars: Array[AnimatableBody3D] = []
 var windshields: Array[MeshInstance3D] = []
@@ -300,6 +302,8 @@ func _ready() -> void:
 	raid.failed_label = %CaseFailed
 	raid.shift_screen = $ShiftScreen
 	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
 	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
@@ -342,6 +346,35 @@ func _place_facts() -> Dictionary:
 		"broken": broken_goods,
 		"complaint": owner_npc.complaint,
 	}
+
+
+## Online, what the guests' car wash takes from the host's (RaidCase.snapshot): the broken windshields and wax, the
+## tunnel, the premium wash and its car, what Pompita said, the wet chamois and what the story's rig decides on the
+## host.
+func net_state() -> Dictionary:
+	var wet: Array[String] = []
+	for cloth in find_children("Chamois*", "Chamois", false, false):
+		if not (cloth as Chamois).dry:
+			wet.append(cloth.name)
+	return {"cracked": cracked.duplicate(), "wax": wax_broken_down, "tunnel": tunnel.net_state(),
+		"premium": premium.net_state(), "pompita": pompita.net_state(), "wet": wet,
+		"rig": rig.net_state() if rig else null}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	for index: int in state.cracked:
+		break_windshield(index)
+	if state.wax:
+		break_wax()
+	tunnel.apply_net_state(state.tunnel)
+	premium.apply_net_state(state.premium)
+	pompita.apply_net_state(state.pompita)
+	for cloth_name: String in state.wet:
+		var cloth := get_node_or_null(NodePath(cloth_name)) as Chamois
+		if cloth:
+			cloth.soak()
+	if rig and state.rig != null:
+		rig.apply_net_state(state.rig)
 
 
 ## The story with that id from --story=<id> among the user args, or one drawn from the seed.
@@ -491,7 +524,7 @@ func _build_tunnel() -> void:
 	add_child(tunnel_button)
 	tunnel_button.pressed.connect(func(_cop: Cop) -> void: tunnel.start())
 	tunnel.soaked.connect(func(body: Node3D) -> void:
-		if body is Chamois:
+		if body is Chamois and multiplayer.is_server():
 			(body as Chamois).soak())
 
 
@@ -532,7 +565,8 @@ func _build_queue() -> void:
 		# Over the hood too: what flies at the windshield hits the car's front first.
 		var area := _area(pane.position + Vector3(HOOD / 2, 0.15, 0), WINDSHIELD_SIZE + Vector3(HOOD, 0.2, 0), car)
 		area.body_entered.connect(func(hit: Node3D) -> void:
-			if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > WINDSHIELD_SPEED:
+			if multiplayer.is_server() and hit is RigidBody3D \
+					and (hit as RigidBody3D).linear_velocity.length() > WINDSHIELD_SPEED:
 				break_windshield(i))
 	var rear := CARS[TRUNK_CAR].x - CAR_SIZE.x / 2
 	_build.open_box(Vector3(rear + TRUNK_LENGTH / 2, FLOOR_TOP + 0.45, 0), Vector3(TRUNK_LENGTH, 0.5, 1.8), "top",
@@ -569,7 +603,8 @@ func _build_front() -> void:
 		_build.mesh(bottle, WAX_AT + Vector3(-1.25 + i * 0.5, 1.07, 0.05), WAX_COLORS[i])
 	var area := _area(WAX_AT + Vector3(0, WAX_SIZE.y / 2, -WAX_SIZE.z / 2), Vector3(WAX_SIZE.x, WAX_SIZE.y, 0.6))
 	area.body_entered.connect(func(hit: Node3D) -> void:
-		if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > WINDSHIELD_SPEED:
+		if multiplayer.is_server() and hit is RigidBody3D \
+				and (hit as RigidBody3D).linear_velocity.length() > WINDSHIELD_SPEED:
 			break_wax())
 	_model(INFLATABLE_MODEL, INFLATABLE_AT)
 	_build.shape(_build.body(INFLATABLE_AT + Vector3(0, 0.25, 0)), Vector3(0.9, 0.5, 0.9))
@@ -608,7 +643,7 @@ func _build_drying() -> void:
 		$Built.add_child(look)
 		var wet := _area(at + Vector3(0, 0.15, 0), Vector3(PUDDLE_RADIUS * 1.6, 0.3, PUDDLE_RADIUS * 1.6))
 		wet.body_entered.connect(func(hit: Node3D) -> void:
-			if hit is Chamois:
+			if hit is Chamois and multiplayer.is_server():
 				(hit as Chamois).soak())
 	_build.open_box(TOOLBOX_AT, TOOLBOX_SIZE, "top", Color(0.8, 0.2, 0.2))
 
@@ -662,7 +697,9 @@ func _place_owner() -> void:
 	office_door.broken.connect(owner_npc.door_broken)
 	owner_npc.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_CARWASH"))
 	till.opened.connect(func(at: Vector3) -> void: owner_npc.saw(at, FloorBoss.SAW_TILL))
-	premium.caught_on.connect(func() -> void: owner_npc.scold(CAUGHT_ON, "CHORRO_CAUGHT_ON"))
+	premium.caught_on.connect(func() -> void:
+		if multiplayer.is_server():
+			owner_npc.scold(CAUGHT_ON, "CHORRO_CAUGHT_ON"))
 	var x0 := TUNNEL_X1 + 0.3
 	var thuds := _area(Vector3((x0 + HALF_X) / 2, FLOOR_TOP + 0.3, (BACK_Z + LINE_Z) / 2),
 		Vector3(HALF_X - x0, 0.6, LINE_Z - BACK_Z))
@@ -687,12 +724,17 @@ func _place_owner() -> void:
 
 ## Something falling on the drying area's wet floor: "¡Eso no se lava así!".
 func _on_wet_floor_hit(body: Node3D) -> void:
+	if not multiplayer.is_server():
+		return
 	var item := body as RigidBody3D
 	if item and item.linear_velocity.y < -2.0:
 		owner_npc.saw(item.global_position, SAW_WET_FLOOR, "CHORRO_WET_FLOOR")
 
 
 func _physics_process(delta: float) -> void:
+	# Online Don Chorro is the host's: only the host sees the cops in the tunnel.
+	if not multiplayer.is_server():
+		return
 	_tunnel_check += delta
 	if _tunnel_check < TUNNEL_CHECK_EVERY:
 		return
@@ -723,6 +765,8 @@ func take_chamois(cop: Cop = null) -> Chamois:
 	if not multiplayer.is_server():
 		return null
 	var cloth: Chamois = CHAMOIS_SCENE.instantiate()
+	taken += 1
+	cloth.name = "Chamois%d" % taken
 	cloth.position = CHAMOIS_AT + Vector3(0.3 * chamois.size(), 0, 0)
 	add_child(cloth)
 	chamois.append(cloth)

@@ -193,6 +193,19 @@ extras suman 500.
    principal en manos de un policía, se escapa en su auto desde la vereda (un minuto para agarrarlo) y, cuando lo paran,
    se baja él con sus frases de persecución.
 8. El online.
+   Hecho así:
+   - **El anfitrión manda:** mueve a Don Chorro (con lo que dice y su barra de quejas) y decide los parabrisas y la
+     repisa de ceras rotos, qué gamuza se moja, lo que dice Pompita y cuándo Don Chorro se da cuenta del premium. Los
+     invitados lo reciben en el estado del caso.
+   - **Desde cualquier PC:** el botón azul del túnel, el botón dorado del lavado premium y el canasto de gamuzas. El
+     túnel anda en todas las PC y se apaga cuando se apaga en el anfitrión. El auto del premium viaja en todas; si uno
+     se atrasa más de 1 m salta a donde está el del anfitrión, y cuando Don Chorro termina de secar en el anfitrión,
+     el auto vuelve a la fila en todas.
+   - **Las gamuzas:** las saca el anfitrión con un nombre propio y a los invitados les llega una copia con el mismo
+     nombre; solo se mojan en el anfitrión, y la copia se moja cuando él lo dice.
+   - **Las historias:** los billetes que vuelan, la espuma verde, las manchas de pintura, las fichas que escupe la
+     máquina y los gritos del loro salen solos en cada PC, porque dependen del túnel, del auto o del tiempo; las pistas
+     llegan a todos en la lista del caso.
 
 ## Preguntas abiertas para Cristian
 1. ¿Te gusta que la cinta del túnel arrastre también a los policías, o solo a las cosas? **Recomendado:** a los
