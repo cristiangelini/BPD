@@ -8,8 +8,7 @@ import { M, pearBody, eyes, limb } from './pear.js';
 const BALLS = [0x3a6ad2, 0xe8473a, 0x46b45a, 0xb05ad2, 0xf2c230, 0x202428];
 
 // A pin 0.38 m tall: white, wide belly, thin neck, two red stripes.
-function pinParts(b, scale = 1) {
-	const white = mat('pin_white', 0xf6f4ee), red = mat('pin_red', 0xd83a30);
+function pinParts(b, scale = 1, white = mat('pin_white', 0xf6f4ee), red = mat('pin_red', 0xd83a30)) {
 	const points = [[0, 0], [0.026, 0], [0.05, 0.06], [0.06, 0.13], [0.045, 0.21], [0.022, 0.26], [0.024, 0.3], [0.032, 0.34], [0.026, 0.37], [0, 0.38]]
 		.map(([r, y]) => new THREE.Vector2(r * scale, y * scale));
 	b.add('pin', white, new THREE.LatheGeometry(points, 10));
@@ -257,7 +256,35 @@ export function buildMetalBin() {
 	return b.build();
 }
 
+// The lead pins' story: the mold that casts pins out of lead (two halves held by clamps, a funnel on top and a lead pin
+// half out of it), a lead pin (the same pin, dull grey with blue stripes) and the lead works' invoice.
+export function buildLeadMold() {
+	const b = new Builder('bowl_lead_mold');
+	const iron = mat('mold_iron', 0x6a6e78, { metalness: 0.2, roughness: 0.6 }), clamp = mat('mold_clamp', 0xd83a30);
+	for (const s of [-1, 1]) b.add('half', iron, new THREE.BoxGeometry(0.24, 0.5, 0.36), { pos: V(s * 0.125, 0.25, 0) });
+	for (const y of [0.12, 0.38]) b.add('clamp', clamp, new THREE.BoxGeometry(0.56, 0.05, 0.06), { pos: V(0, y, 0.19) });
+	b.add('funnel', iron, new THREE.CylinderGeometry(0.1, 0.03, 0.12, 10, 1, true), { pos: V(0, 0.56, 0) });
+	b.add('drip', mat('lead_grey', 0x8a8e96, { metalness: 0.5 }), new THREE.BoxGeometry(0.02, 0.2, 0.02), { pos: V(0.25, 0.4, 0.19) });
+	return b.build();
+}
+
+export function buildLeadPin() {
+	const b = new Builder('bowl_lead_pin');
+	pinParts(b, 1, mat('lead_grey', 0x8a8e96, { metalness: 0.5 }), mat('lead_stripe', 0x3a6ad2));
+	return b.build();
+}
+
+export function buildLeadInvoice() {
+	const b = new Builder('bowl_lead_invoice');
+	b.add('paper', mat('invoice_paper', 0xf2eedc), new THREE.BoxGeometry(0.21, 0.006, 0.28), { pos: V(0, 0.003, 0) });
+	b.add('logo', mat('lead_grey', 0x8a8e96, { metalness: 0.5 }), new THREE.BoxGeometry(0.06, 0.003, 0.04), { pos: V(-0.06, 0.007, -0.1) });
+	for (let i = 0; i < 4; i++) b.add('lines', mat('bet_ink', 0x2a2a40), new THREE.BoxGeometry(0.14, 0.002, 0.008), { pos: V(0, 0.007, -0.03 + i * 0.04) });
+	b.add('total', mat('invoice_total', 0xd83a30), new THREE.BoxGeometry(0.07, 0.002, 0.014), { pos: V(0.05, 0.007, 0.12) });
+	return b.build();
+}
+
 export const models = {
+	bowl_lead_mold: buildLeadMold, bowl_lead_pin: buildLeadPin, bowl_lead_invoice: buildLeadInvoice,
 	bowl_magnet_ball: buildMagnetBall, bowl_pin_remote: buildPinRemote, bowl_bet_list: buildBetList, metal_bin: buildMetalBin,
 	npc_pipo: buildPipo,
 	npc_don_chuza: buildDonChuza,
@@ -286,6 +313,10 @@ export const views = {
 	bowl_magnet: {
 		items: [{ name: 'bowl_magnet_ball', pos: [-0.5, 0, 0] }, { name: 'bowl_pin_remote', pos: [-0.1, 0, 0.1] }, { name: 'bowl_bet_list', pos: [0.3, 0, 0.1], rotY: 0.3 }, { name: 'metal_bin', pos: [0.9, 0, -0.1] }],
 		cam: { pos: [0.2, 0.9, 1.9], target: [0.2, 0.2, 0], fov: 40 },
+	},
+	bowl_lead_pins: {
+		items: [{ name: 'bowl_lead_mold', pos: [-0.5, 0, 0] }, { name: 'bowl_lead_pin', pos: [0.15, 0, 0.1] }, { name: 'bowling_pin', pos: [0.35, 0, 0.1] }, { name: 'bowl_lead_invoice', pos: [0.7, 0, 0.1], rotY: 0.3 }],
+		cam: { pos: [0.1, 0.9, 1.9], target: [0.1, 0.2, 0], fov: 40 },
 	},
 	bowlers: {
 		items: [{ name: 'npc_bowler', pos: [-1.0, 0, 0], rotY: 0.4 }, { name: 'npc_don_chuza', pos: [0, 0, 0.2], rotY: 0.2, scale: 0.85 }, { name: 'npc_bowler_b', pos: [1.0, 0, 0], rotY: Math.PI - 0.5 }, { name: 'npc_pipo', pos: [1.9, 0, 0.3], rotY: -0.3, scale: 0.75 }],
