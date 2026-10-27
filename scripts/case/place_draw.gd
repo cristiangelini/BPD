@@ -3,9 +3,9 @@ extends RefCounted
 
 ## Which place a match happens in (panaderia.md, "El orden para hacerlo", step 5): Play draws a case seed and, from
 ## it, the grandpa's house, the bakery, the pet salon, the hardware store (ferreteria.md), the doll factory
-## (fabrica.md), the insurance office (seguros.md) or the cake lab (laboratorio.md), with even odds (propuesta). Every third shift is an interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
+## (fabrica.md), the insurance office (seguros.md), the cake lab (laboratorio.md), the Hotel Gran Siesta (hotel-allanamiento.md), the gym or the apartment building (edificio.md), with even odds (propuesta). Every third shift is an interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
 ## (persecucion.md, "Sale como un caso más"). Of the shifts left, one in CRIME_EVERY is the crime scene
-## (escena-del-crimen.md, propuesta; half at the pastry contest and half at the circus, escena-circo.md), then one in
+## (escena-del-crimen.md, propuesta; a quarter each at the pastry contest, the circus, the museum and the hotel), then one in
 ## TRAFFIC_EVERY the traffic control (control-transito.md; the level draws rush hour or clown convoy), then one in
 ## INFILTRATION_EVERY an infiltration (infiltracion.md), a third each at the grandparents' club, the church choir
 ## (infiltracion-coro.md) and the mime troupe's theater (infiltracion-mimos.md), then one in BANK_EVERY the bank robbery (robo-banco.md), then one in RALLY_EVERY the
@@ -42,6 +42,8 @@ const PLACES := {
 	"circus": "res://scenes/levels/circus.tscn",
 	"museum": "res://scenes/levels/museum.tscn",
 	"wedding": "res://scenes/levels/wedding.tscn",
+	"hotel": "res://scenes/levels/hotel.tscn",
+	"hotel_raid": "res://scenes/levels/hotel_raid.tscn",
 	"transfer": "res://scenes/levels/prisoner_transfer.tscn",
 	"blackout": "res://scenes/levels/prison_blackout.tscn",
 	"visits": "res://scenes/levels/prison_visits.tscn",
@@ -54,6 +56,8 @@ const PLACES := {
 	"doll_factory": "res://scenes/levels/doll_factory.tscn",
 	"insurance": "res://scenes/levels/insurance_office.tscn",
 	"cake_lab": "res://scenes/levels/cake_lab.tscn",
+	"gym_raid": "res://scenes/levels/gym_raid.tscn",
+	"apartments": "res://scenes/levels/apartment_tower.tscn",
 	"prison_tunnel": "res://scenes/levels/prison_tunnel.tscn",
 	"prison_talent": "res://scenes/levels/prison_talent.tscn",
 	"prison_vip": "res://scenes/levels/prison_vip.tscn",
@@ -62,9 +66,12 @@ const PLACES := {
 	"bridge": "res://scenes/levels/bridge_park.tscn",
 	"school_visit": "res://scenes/levels/school_visit.tscn",
 	"football": "res://scenes/levels/football_pitch.tscn",
+	"debate": "res://scenes/levels/tv_studio.tscn",
+	"wrong_house": "res://scenes/levels/wrong_house.tscn",
+	"airport": "res://scenes/levels/airport.tscn",
 }
 ## The raids, drawn by the seed.
-const ORDER := ["grandpa", "bakery", "groomer", "hardware", "doll_factory", "insurance", "cake_lab"]
+const ORDER := ["grandpa", "bakery", "groomer", "hardware", "doll_factory", "insurance", "cake_lab", "hotel_raid", "gym_raid", "apartments"]
 ## One shift in this many is an interrogation (Cristian, 20/10): shifts 3, 6... of a campaign, or 1 in 3 by the seed
 ## without one.
 const INTERROGATION_EVERY := 3
@@ -74,9 +81,9 @@ const CHASE_EVERY := 2
 ## traffic control (propuesta: each as often as each raid).
 const CRIME_EVERY := 5
 const TRAFFIC_EVERY := 4
-## The crime scenes, drawn by the seed: the pastry contest, the circus (escena-circo.md) and the museum
-## (escena-museo.md), in thirds (propuesta).
-const CRIME_SCENES := ["crime_scene", "circus", "museum"]
+## The crime scenes, drawn by the seed: the pastry contest, the circus (escena-circo.md), the museum (escena-museo.md)
+## and the hotel (escena-hotel.md), in quarters (propuesta).
+const CRIME_SCENES := ["crime_scene", "circus", "museum", "hotel"]
 ## Of the rest, one in this many is an infiltration (propuesta: as often as each raid), at one of these by the seed.
 const INFILTRATION_EVERY := 4
 const INFILTRATIONS := ["club", "choir", "mime", "party", "gym", "school", "restaurant", "chess", "biker", "auction"]
@@ -85,10 +92,12 @@ const BANK_EVERY := 4
 ## Of the rest, one in this many is the politician's protection (proteccion-politico.md, propuesta), at one of these
 ## by the seed: the rally at the plaza, the walk through the market (politico-mercado.md), the bridge's opening
 ## (politico-puente.md), the rally with the double (politico-doble.md), the birthday party (politico-cumple.md), the
-## parade in a convertible (politico-descapotable.md), the charity football match (politico-futbol.md) or the school
-## visit (politico-escuela.md), an eighth each.
+## parade in a convertible (politico-descapotable.md), the charity football match (politico-futbol.md), the school
+## visit (politico-escuela.md), the TV debate (politico-debate.md) or the trip from the airport
+## (politico-aeropuerto.md), a tenth each.
 const RALLY_EVERY := 4
-const RALLIES := ["plaza", "market", "bridge", "double", "birthday", "convertible", "football", "school_visit"]
+const RALLIES := ["plaza", "market", "bridge", "double", "birthday", "convertible", "football", "school_visit", "debate",
+	"airport"]
 ## Of the rest, one in this many is a prison case (propuesta), one of these by the seed: the riot in the canteen
 ## (carcel-motin.md), the prisoner transfer (traslado-presos.md), the blackout (carcel-corte-de-luz.md), the
 ## visiting day (carcel-visitas.md), the laundry (carcel-lavanderia.md), the tunnel (carcel-tunel.md), the talent show
