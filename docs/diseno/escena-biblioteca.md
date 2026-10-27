@@ -153,6 +153,12 @@ polvo dorado con la linterna, el fichero, el ruido y el apagón de Doña Sigilo,
    0,2 s se fija si alguna llega, sin pared en el medio) muestra el polvo dorado o las manos limpias y lo anota en la
    ficha. El culpable siempre tiene polvo. Capturas: `biblioteca/paso3-*.png`.
 4. El caso: el Libro de Oro escondido, la búsqueda y el fichero.
+   **Hecho así:** la semilla esconde el Libro de Oro en uno de diez lugares: las ocho secciones (A a H), el carrito de
+   devoluciones o la funda del almohadón grande. E en cada lugar busca 5 s (uno por vez por policía) y, si no está,
+   el policía cuenta qué encontró ahí (una línea graciosa por lugar). El fichero, junto a la puerta, se revisa en
+   10 s: si el libro está en un estante dice la letra de la ficha cambiada; si no, que todo está en orden. El libro
+   aparece en el pasillo frente a su lugar y, con E, vuelve a la vitrina (+100, renglón opcional en la planilla).
+   Capturas: `biblioteca/paso4-*.png`.
 5. Las pistas, el testigo y el ruido (el "¡SHHH!" y el apagón).
 6. El final: tablero, cansancio, sueldo y el bibliobús con las pilas de libros.
 7. El sorteo de "Jugar" y el online.

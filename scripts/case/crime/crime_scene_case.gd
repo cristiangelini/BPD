@@ -81,10 +81,10 @@ const VARIANTS := {
 	# what the cops got from its reader, the gold dust on their hands and the kind of book they read included.
 	"library": {
 		"shift": "crime_library", "story": "library",
-		"brief": ["BRIEF_LIBRARY_A", "BRIEF_LIBRARY_B", "BRIEF_LIBRARY_C"], "go": "HINT_GO_LIBRARY",
+		"brief": ["BRIEF_LIBRARY_A_", "BRIEF_LIBRARY_B", "BRIEF_LIBRARY_C"], "go": "HINT_GO_LIBRARY",
 		"go_row": "OBJ_LIBRARY_GO", "look": "HINT_LIBRARY_LOOK", "files_row": "OBJ_LIBRARY_FILES",
 		"clue_line": "CLUE_LIBRARY_", "ruined_hint": "HINT_LIBRARY_RUINED_", "left": "HINT_READER_LEFT",
-		"who": "reader", "getaway": SuspectCar.BIKE,
+		"who": "reader", "getaway": SuspectCar.BIKE, "loot_row": "OBJ_LIBRARY_LOOT_",
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "dust": "dust",
 			"bookmark": "genre", "witness": "genre"},
 		"parts": ["photo", "prints", "teeth", "hair", "dust", "genre"],
