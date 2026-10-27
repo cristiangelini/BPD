@@ -6,15 +6,16 @@ extends Node3D
 ## the door. The salon has the counter with the 12 flavors, the till, two freezers and the tables; behind it, the
 ## kitchen with the soft-serve machine, two more freezers and the cold room (locked with the till's key), the owner's
 ## office and the bathroom. The kitchen's back door opens to the fenced yard with the ice cream truck. Something thrown
-## hard at the counter's glass case cracks it (a fine), and at the penguin knocks it over. Every number here is
-## (propuesta).
+## hard at the counter's glass case cracks it (a fine), and at the penguin knocks it over. Whatever is left open melts
+## (step 2): a freezer's lid open IceFreezer.MELT_AFTER seconds, or the cold room's door open COLD_MELT_AFTER seconds,
+## leaves a slippery puddle (IcePuddle) and a fine. Every number here is (propuesta).
 
 signal case_cracked
 signal penguin_knocked
+signal freezer_melted(index: int)
+signal cold_room_melted
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
-const FREEZER_MODEL := preload("res://assets/models/ice_freezer.glb")
-const LID_MODEL := preload("res://assets/models/freezer_lid.glb")
 const COUNTER_MODEL := preload("res://assets/models/ice_counter.glb")
 const MACHINE_MODEL := preload("res://assets/models/soft_serve_machine.glb")
 const SHELF_MODEL := preload("res://assets/models/cold_shelf.glb")
@@ -57,7 +58,6 @@ const FREEZERS := [
 	{"at": Vector3(-0.5, FLOOR_TOP, -0.6), "turn": -PI / 2},
 	{"at": Vector3(-0.5, FLOOR_TOP, -2.6), "turn": -PI / 2},
 ]
-const FREEZER_SIZE := Vector3(1.6, 0.85, 0.8)
 const SHELVES: Array[Vector3] = [Vector3(-8.9, FLOOR_TOP, -4.6), Vector3(-6.9, FLOOR_TOP, -4.6)]
 const SHELF_SIZE := Vector3(2.0, 2.2, 0.6)
 ## The penguin on the sidewalk strip, and the truck in the yard, its front to +X.
@@ -67,6 +67,16 @@ const TRUCK_AT := Vector3(3.5, 0.0, -7.6)
 const CASE_SPEED := 3.0
 const CASE_FINE := 30
 const PENGUIN_SPEED := 3.0
+## What melting costs: each freezer, and the whole cold room when its door stays open COLD_MELT_AFTER seconds; the
+## puddles they leave (the freezer's in front of it, the cold room's out its door).
+const FREEZER_FINE := 10
+const COLD_FINE := 30
+const COLD_MELT_AFTER := 20.0
+const FREEZER_PUDDLE := Vector2(3.0, 3.0)
+## What melts in each freezer: its puddle's color (chocolate, strawberry, vanilla and pistachio).
+const FREEZER_FLAVORS: Array[Color] = [Color(0.42, 0.24, 0.14, 0.9), Color(0.98, 0.55, 0.68, 0.9),
+	Color(1.0, 0.94, 0.72, 0.9), Color(0.6, 0.82, 0.45, 0.9)]
+const COLD_PUDDLE := Vector2(3.0, 2.4)
 
 ## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
 const SPOTS := [
@@ -104,8 +114,13 @@ var cold_door: FrontDoor
 var till: Till
 var case_broken := false
 var penguin_down := false
+var freezers: Array[IceFreezer] = []
+var cold_melted := false
+## Seconds the cold room's door has been open in a row.
+var cold_open_for := 0.0
+var puddles: Array[IcePuddle] = []
 var broken_goods := 0
-## Money taken off the case pay: the counter's glass case (and the melted freezers, step 2).
+## Money taken off the case pay: the counter's glass case, the melted freezers and the cold room.
 var fines := 0
 ## Same seed, same shop (the stories and the hiding spots come from it, step 5).
 @export var case_seed := 0
@@ -263,16 +278,55 @@ func _build_yard() -> void:
 			[MINT, PINK, COLD, FENCE][i])
 
 
-## Freezer `i` of FREEZERS: its body, and its lid shut on top (the lids open in step 2).
+## Freezer `i` of FREEZERS, whose lid melts what's inside if left open.
 func _freezer(i: int) -> void:
-	var at: Vector3 = FREEZERS[i].at
-	var turn: float = FREEZERS[i].turn
-	_model(FREEZER_MODEL, at, turn)
-	var solid := _build.body(at + Vector3(0, FREEZER_SIZE.y / 2, 0))
-	solid.rotation.y = turn
-	_build.shape(solid, FREEZER_SIZE)
-	var hinge := at + Vector3(0, FREEZER_SIZE.y, -FREEZER_SIZE.z / 2).rotated(Vector3.UP, turn)
-	_model(LID_MODEL, hinge, turn)
+	var freezer := IceFreezer.new()
+	freezer.position = FREEZERS[i].at
+	freezer.rotation.y = FREEZERS[i].turn
+	add_child(freezer)
+	freezers.append(freezer)
+	freezer.melted.connect(_on_freezer_melted.bind(i))
+
+
+func _physics_process(delta: float) -> void:
+	if cold_melted:
+		return
+	if cold_door.is_open or cold_door.is_broken:
+		cold_open_for += delta
+		if cold_open_for >= COLD_MELT_AFTER:
+			melt_cold_room()
+	else:
+		cold_open_for = 0.0
+
+
+func _on_freezer_melted(i: int) -> void:
+	var freezer := freezers[i]
+	broken_goods += 1
+	fines += FREEZER_FINE
+	_puddle(freezer.position + Vector3(0, 0, IceFreezer.SIZE.z / 2 + FREEZER_PUDDLE.y / 2).rotated(Vector3.UP,
+		freezer.rotation.y), FREEZER_PUDDLE, FREEZER_FLAVORS[i])
+	_say(freezer.position + Vector3(0, 1.8, 0), "ICE_FREEZER_MELTED_%d" % (i + 1))
+	freezer_melted.emit(i)
+
+
+## The cold room melts, once: a fine and a big puddle out its door.
+func melt_cold_room() -> void:
+	if cold_melted:
+		return
+	cold_melted = true
+	broken_goods += 1
+	fines += COLD_FINE
+	_puddle(Vector3(COLD_DOOR_X, FLOOR_TOP, COLD_Z1 + COLD_PUDDLE.y / 2), COLD_PUDDLE)
+	_say(Vector3(COLD_DOOR_X, 2.2, COLD_Z1 + 0.8), "ICE_COLD_ROOM_MELTED")
+	cold_room_melted.emit()
+
+
+func _puddle(at: Vector3, size: Vector2, color := Color(0.85, 0.62, 0.55, 0.9)) -> IcePuddle:
+	var puddle := IcePuddle.new(size, color)
+	puddle.position = Vector3(at.x, FLOOR_TOP, at.z)
+	add_child(puddle)
+	puddles.append(puddle)
+	return puddle
 
 
 ## Cracks the counter's glass case, once: a fine and a crack across it.

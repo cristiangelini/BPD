@@ -79,6 +79,10 @@ entre 400 y 600. El bloque de hielo es la cosa más pesada (8 kg): conviene llev
    (allanamiento, prueba)" en el menú. El pingüino quedó en la vereda junto a la puerta (no hay subida al techo): si
    algo le pega rápido se cae de cara a la calle. Capturas en la carpeta del proyecto `heladeria/paso1-*.png`.
 2. Lo que se derrite: las tapas de los freezers, la puerta de la cámara, los charcos y el patinar.
+   **Hecho (paso 2):** `IceFreezer` (scripts/props/ice_freezer.gd), con la tapa que abre y cierra con E, e
+   `IcePuddle` (scripts/props/ice_puddle.gd): caminando se patina un poco, corriendo se cae 1,5 s. Cada freezer derrite
+   un sabor distinto (chocolate, fresa, vainilla y pistacho) con su color de charco; cada PC solo hace patinar a su
+   propio policía. Capturas `heladeria/paso2-*.png`.
 3. Doña Nieve: la ronda, la denuncia y la máquina de helado soft.
 4. Lucho y el cono.
 5. El caso (RaidCase) con la primera historia: los sabores robados.
