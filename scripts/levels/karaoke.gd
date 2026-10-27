@@ -91,6 +91,8 @@ const BOOTH_TOP := 2.6
 ## The sound guy's console, east of the stage, its knobs to the back where he stands.
 const CONSOLE_AT := Vector3(6.0, FLOOR_TOP, -7.0)
 const CONSOLE_SIZE := Vector3(2.4, 1.0, 0.8)
+## Toto stands behind the console, facing the room.
+const TOTO_AT := Vector3(6.0, FLOOR_TOP, -8.1)
 ## The bar by the door (its till holds the office's key), the ice machine, the juice fridge and the stack of chairs.
 const BAR_AT := Vector3(7.5, FLOOR_TOP, 3.0)
 const BAR_SIZE := Vector3(3.7, 1.1, 0.8)
@@ -140,6 +142,8 @@ var city_map: CityMap
 var office_door: FrontDoor
 var till: Till
 var owner_boss: FloorBoss
+var console: SoundConsole
+var toto: SoundGuy
 var duet_call: DuetCall
 var complaint_bar: ProgressBar
 var mics: Array[KaraokeMic] = []
@@ -288,8 +292,15 @@ func _build_bar() -> void:
 
 ## The sound guy's console and the owner's office (walls, its locked door, the desk and the rack of dresses).
 func _build_office() -> void:
-	_solid(CONSOLE_AT + Vector3(0, CONSOLE_SIZE.y / 2, 0), CONSOLE_SIZE)
+	console = SoundConsole.new()
+	console.name = "SoundConsole"
+	console.position = CONSOLE_AT
+	add_child(console)
 	_model(CONSOLE_MODEL, CONSOLE_AT)
+	toto = SoundGuy.new()
+	toto.name = "Toto"
+	toto.position = TOTO_AT
+	add_child(toto)
 	_build.wall_at("x", OFFICE_Z, OFFICE_X, HALF_X, 0.0, WALL_TOP, [OFFICE_DOOR_X], OUTSIDE.lightened(0.2))
 	_build.wall_at("z", OFFICE_X, -HALF_Z, OFFICE_Z, 0.0, WALL_TOP, [], OUTSIDE.lightened(0.2))
 	_build.legs(DESK_AT, Vector2(DESK_SIZE.x, DESK_SIZE.z), DESK_SIZE.y - 0.04, DARK)
@@ -356,6 +367,11 @@ func _build_singers() -> void:
 			on_turn = null
 			_turn_left = TURN_GAP)
 		singers.append(singer)
+	# The music down: Toto hears the cop at last, and every customer misses it.
+	console.turned_down.connect(func(cop: Cop) -> void:
+		toto.volume_down(cop)
+		for singer in singers:
+			singer.complain("KARAOKE_SINGER_QUIET"))
 
 
 ## Rosaura on her round, the duets that call her, what she notices and the complaint bar.

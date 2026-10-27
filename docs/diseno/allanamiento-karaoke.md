@@ -133,6 +133,11 @@ suman entre 400 y 600.
      45 s, y al tercero sospecha y suma 10. Cada queja de un cliente le suma 5, y ve romperse la pantalla y la bola
      de espejos. Capturas: `paso3-rosaura.png`, `paso3-dueto.png`.
 4. Toto y la consola del volumen.
+   - **Cómo quedó (propuesta):** Toto (`SoundGuy`) está parado detrás de la consola con los auriculares puestos. E
+     en él solo da "¿Qué? ¡No te escucho!". E en la consola (`SoundConsole`) baja la música 10 s: Toto se saca los
+     auriculares y, la primera vez de cada policía, le cuenta lo que vio (la pista, una sola vez; la pone la historia
+     en el paso 5). Con la música baja cada cliente se queja una vez (5 cada uno, con su propia espera), así que
+     bajarla cuesta hasta 30 de denuncia. La música vuelve sola. Captura: `paso4-toto.png`.
 5. El caso (RaidCase) y la primera historia, la máquina de aplausos.
 6. Las otras 5 historias.
 7. "Jugar" suma el karaoke al sorteo de allanamientos, y la huida de Rosaura.
