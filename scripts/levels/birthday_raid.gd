@@ -329,7 +329,8 @@ func _sing() -> void:
 		_before_song[kid] = kid.transform
 		var row := SING_ROWS[i % SING_ROWS.size()]
 		kid.position = center + Vector3(cos(row.y * PI), 0, sin(row.y * PI)) * row.x
-		kid.look_at(Vector3(center.x, kid.position.y, center.z), Vector3.UP, true)
+		# Members face -z.
+		kid.look_at(Vector3(center.x, kid.position.y, center.z))
 
 
 ## The song's over: the candles blown out, the lights back on and the kids back where they were.

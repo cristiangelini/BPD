@@ -64,6 +64,8 @@ func test_cake_time_darkens_the_hall_and_gathers_the_kids() -> void:
 	for kid: ClubMember in party.kids:
 		assert_lt(Vector2(kid.position.x, kid.position.z).distance_to(Vector2(BirthdayRaid.CAKE_AT.x,
 			BirthdayRaid.CAKE_AT.z)), 3.0, "round the cake")
+		var to_cake := Vector3(BirthdayRaid.CAKE_AT.x - kid.position.x, 0, BirthdayRaid.CAKE_AT.z - kid.position.z)
+		assert_gt((-kid.global_basis.z).dot(to_cake.normalized()), 0.9, "facing the cake")
 	assert_false(party.chispita.can_see(party.to_global(Vector3(0, 1, 0))), "singing, he sees nothing")
 	party.pop(5)
 	assert_eq(party.chispita.complaint, 0.0, "not even a balloon")
