@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Cat crime scene, step 5 (clues): prints on the cat flap, the footprint in the litter tray, a hair on Duquesa's armchair, a bitten cat biscuit and the diamond necklace with blood on the clasp; the cats muddy the flap and use the litter tray, a cop in the armchair loses the hair, and the señora puts on an unlooked-at necklace.
 - Cat crime scene, step 5 (Duquesa): the comisario gives the cat case; Duquesa is locked in the culprit's suitcase, the dumbwaiter or the laundry basket, and searching lets her out; Señora Ofelia takes her in her arms (+100) and sends any other cat off by her name.
 - Cat crime scene, step 4: the nephews' files: photo, prints and teeth as at the museum; with empty hands the catchphrase, the beanie (one won't until fed) and the rolled-up sleeves with the scratch; the culprit is always scratched.
 - Cat crime scene, step 3: five ginger cats loose in the mansion, one of them Duquesa; held for 5 s a cat jumps out and hides by the furniture; the transport crate keeps her; the piano's music box makes only Duquesa purr; an open can of tuna calls every cat within 10 m.

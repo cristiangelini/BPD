@@ -628,6 +628,8 @@ func clue_line(kind: String) -> String:
 		return _museum_clue_line(kind)
 	if texts() == VARIANTS.hotel:
 		return _hotel_clue_line(kind)
+	if texts() == VARIANTS.cat:
+		return _cat_clue_line(kind)
 	match kind:
 		"footprint":
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
@@ -640,6 +642,24 @@ func clue_line(kind: String) -> String:
 		"recipe":
 			return tr("CLUE_CRIME_recipe_left" if culprit().left else "CLUE_CRIME_recipe_right")
 	return tr("CLUE_CRIME_" + kind)
+
+
+## At the Monedero mansion: the footprint in the litter tray, the hair on the armchair, the bitten biscuit, the blood
+## on the necklace's clasp and what the parrot repeats.
+func _cat_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_CAT_footprint") % who.shoe
+		"hair":
+			return tr("CLUE_CAT_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_CAT_bite") % tr("TEETH_" + str(who.teeth))
+		"necklace":
+			return tr("CLUE_CAT_necklace_" + str(who.scratch))
+		"witness":
+			return tr("CLUE_CAT_witness") % tr("NEPHEW_TIC_%d" % who.tic)
+	return tr("CLUE_CAT_" + kind)
 
 
 ## At the circus: the sawdust footprint, the hair in the pool, the bitten fish, the rehearsal's honk and Zulema.

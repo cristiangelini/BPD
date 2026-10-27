@@ -120,12 +120,7 @@ func _set_out(out: bool) -> void:
 
 ## Every cop holding her lets go.
 func free_from_arms() -> void:
-	for id: int in holders.keys():
-		var grabber := instance_from_id(id) as Grabber
-		if grabber:
-			grabber.release()
-		else:
-			let_go(id)
+	release_all()
 	_held_for = 0.0
 
 
