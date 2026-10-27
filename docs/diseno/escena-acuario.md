@@ -172,6 +172,12 @@ el tanque de cada buzo, Bigotes con sus robos y el piso mojado, Doña Tinta y el
    apretar la caja otra vez cierra el cajón y lo traba para siempre, y si el ticket sigue al lado, se pierde. Ver tinta
    en la mano de cualquier buzo cuenta como encontrada. Las bolsas de evidencia están en un banquito junto a la puerta.
    Capturas: `acuario/paso5-*.png`.
+   **Hecho así (la testigo):** hay tres cangrejos en la caja de la cocina; con uno en la mano, E sobre el vidrio de Doña
+   Tinta se lo da, y si vio al ladrón dibuja en el vidrio el animal del tanque del culpable (si no, se encoge de
+   hombros y el cangrejo igual se lo come). E con las manos vacías es golpear el vidrio: se mete en su cueva 60 s y
+   borra el dibujo; gritar a menos de 6 m hace lo mismo. Mientras está escondida no acepta cangrejos. La segunda vez
+   se ofende para siempre y, si era testigo, la pista se arruina. Capturas: `acuario/paso5-dibujo.png` y
+   `acuario/paso5-escondida.png`.
 6. Bigotes: los robos, el pescado y el piso mojado.
 7. El final: tablero, cansancio, sueldo y el camión con los bloques de hielo.
 8. El sorteo de "Jugar" y el online.

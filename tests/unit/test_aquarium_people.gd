@@ -65,7 +65,7 @@ func test_a_diver_tells_their_tank() -> void:
 	aquarium.sea_lion.use(null)
 	assert_eq(aquarium.sea_lion.said(), "SEA_LION_LINE_0")
 	aquarium.octopus.use(null)
-	assert_eq(aquarium.octopus.said(), "OCTOPUS_LINE_0")
+	assert_eq(aquarium.octopus.said(), "OCTOPUS_HIDES", "a tap on her glass sends her into her cave")
 
 
 func test_bigotes_waddles_round_the_big_tank() -> void:

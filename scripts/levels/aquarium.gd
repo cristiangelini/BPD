@@ -142,6 +142,9 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	for diver in divers:
 		diver.case = case
 		diver.stubborn = diver.index == stubborn
+	octopus.case = case
+	octopus.knows = case.plan.clues.has("witness")
+	octopus.animal = case.culprit().tank
 	clues = AquariumClues.new()
 	clues.name = "Clues"
 	clues.aquarium = self
@@ -221,6 +224,19 @@ func reveal_loot() -> void:
 	pearl.collision_layer = 0
 	if case:
 		case.found_loot()
+
+
+func witness_offended() -> bool:
+	return octopus.offended
+
+
+func offend_witness() -> void:
+	octopus.offend()
+
+
+## A cop shouted (VoiceChat): Doña Tinta hides if it was near her.
+func shouted_by(cop: Cop) -> void:
+	octopus.shouted_by(cop)
 
 
 ## The diver by index (the order of the case's traits).
@@ -303,7 +319,8 @@ func _people() -> void:
 	add_child(sea_lion)
 	octopus = AquariumOctopus.new()
 	octopus.name = "Octopus"
-	octopus.glass = TANK_SIZE
+	# Turned to face the hall, so her depth is the tank's width.
+	octopus.glass = Vector3(TANK_SIZE.z, TANK_SIZE.y, TANK_SIZE.x)
 	octopus.position = INK_TANK_AT + Vector3(0, 0.4, 0)
 	octopus.rotation.y = -PI / 2
 	add_child(octopus)
@@ -461,7 +478,7 @@ func _small_tanks() -> void:
 		_spot("tank_" + animal, at + Vector3(0, 0.4 + TANK_SIZE.y / 2, 0), TANK_SIZE,
 			Vector3(facing * (TANK_SIZE.x / 2 + 0.7), 0, 0))
 		for i in 3:
-			_builder.mesh(_animal_mesh(animal), at + Vector3(0.2 * (i - 1), 1.0 + 0.45 * i, -1.0 + i), ANIMAL_COLORS[animal])
+			_builder.mesh(animal_mesh(animal), at + Vector3(0.2 * (i - 1), 1.0 + 0.45 * i, -1.0 + i), ANIMAL_COLORS[animal])
 		_tank_label(animal, at + Vector3(facing * (TANK_SIZE.x / 2 + 0.12), 2.85, 0), facing * PI / 2)
 
 
@@ -489,7 +506,7 @@ func _penguins() -> void:
 		Vector3(0, 0, at.z + POOL_SIZE.z / 2 + 0.7 - IGLOO_AT.z))
 	_builder.mesh_box(IGLOO_AT + Vector3(0, 0.75, 0.62), Vector3(0.45, 0.45, 0.3), BLACK)
 	for x: float in [0.6, 2.8]:
-		_builder.mesh(_animal_mesh("penguins"), at + Vector3(x, 0.95, 0.9), ANIMAL_COLORS["penguins"])
+		_builder.mesh(animal_mesh("penguins"), at + Vector3(x, 0.95, 0.9), ANIMAL_COLORS["penguins"])
 	_tank_label("penguins", at + Vector3(0, 1.3, POOL_SIZE.z / 2 + 0.12), 0.0)
 
 
@@ -536,7 +553,10 @@ func _kitchen() -> void:
 		_builder.mesh_box(BUCKET_AT + Vector3(-0.15 + i * 0.1, 0.62, 0), Vector3(0.06, 0.04, 0.3), Color(0.6, 0.65, 0.7))
 	_builder.open_box(CRABS_AT, Vector3(0.9, 0.4, 0.7), "top", Color(0.7, 0.55, 0.35))
 	for i in 3:
-		_builder.mesh_box(CRABS_AT + Vector3(-0.25 + i * 0.25, 0.42, 0), Vector3(0.2, 0.08, 0.15), Color(0.9, 0.3, 0.2))
+		var crab := AquariumCrab.new()
+		crab.name = "Crab%d" % i
+		crab.position = CRABS_AT + Vector3(-0.25 + i * 0.25, 0.1, 0)
+		add_child(crab)
 	_builder.box(Vector3(HALF_X - 0.5, 1.0, 2.8), Vector3(0.8, 2.0, 1.2), WHITE)
 	_builder.box(Vector3(9.5, 0.45, FRONT_Z - 0.45), Vector3(3.0, 0.9, 0.7), METAL)
 	_builder.mesh_box(BOARD_AT, Vector3(0.05, 1.0, 1.6), Color(0.15, 0.25, 0.2))
@@ -559,8 +579,8 @@ func _kitchen() -> void:
 			WHITE if i != 3 else Color(0.5, 0.55, 0.52))
 
 
-## A small mesh for an animal of a tank: a fin, a bell, a seahorse, a shell, a ray or a penguin.
-func _animal_mesh(animal: String) -> Mesh:
+## A small mesh for an animal of a tank (Doña Tinta draws them big): a fin, a bell, a seahorse, a shell, a ray or a penguin.
+static func animal_mesh(animal: String) -> Mesh:
 	match animal:
 		"sharks":
 			var fin := PrismMesh.new()
