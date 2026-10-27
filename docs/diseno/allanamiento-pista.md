@@ -155,6 +155,14 @@ suman 500.
    - **Qué cambia:** hay un camino de charcos desde donde está el bloque hasta la puerta de la oficina.
    - **Capturas:** `pista/paso5-*.png`.
 6. Las otras 5 historias, una por PR.
+   Hecho así:
+   - **La pulidora contrabandista:** la caja de perfumes robados (6 kg, 1000) va en un escondite para cosas grandes; la
+     lista de clientes (0,1 kg, 300) y el embudo (0,5 kg, 200) en otros.
+   - **La pista propia:** mientras la pulidora anda deja manchas rosadas en el hielo detrás, una cada medio segundo
+     (como mucho 80, después se borran las viejas). La primera va a la planilla.
+   - **Qué cambia:** a los 12 m de cada vuelta se le cae un frasco de perfume al hielo, que se puede agarrar; como
+     mucho 6 en todo el allanamiento.
+   - **Capturas:** `pista/paso6a-*.png`.
 7. La pista en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 8. El online.
 

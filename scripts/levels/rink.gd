@@ -43,6 +43,18 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_JEWELER_LIST", "OBJ_EXTRA_ICE_CHISEL"],
 		"rig": preload("res://scripts/case/rink/ice_surprise_rig.gd"),
 	},
+	"resurfacer_smuggling": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_RESURFACER_SMUGGLING_B", "BRIEF_RESURFACER_SMUGGLING_C",
+			"BRIEF_RESURFACER_SMUGGLING_D"],
+		"find": "OBJ_FIND_PERFUME_BOX",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/rink_perfume_box.tscn"),
+			preload("res://scenes/props/rink_client_list.tscn"), preload("res://scenes/props/rink_funnel.tscn")],
+		"half_heights": [0.17, 0.003, 0.12],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_CLIENT_LIST", "OBJ_EXTRA_FUNNEL"],
+		"rig": preload("res://scripts/case/rink/resurfacer_smuggling_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the floor of the lobby, the corridor and by the stands.
 const NOTE_PLACES: Array[Vector3] = [
