@@ -1,7 +1,8 @@
 // Showroom furniture of "El Ropero Feliz" (docs/diseno/allanamiento-muebleria.md): the three-seat sofa, the bed, the
 // wardrobe with its doors open, the chest of drawers, the floor lamp, the standing mirror, the dining table and chair
 // and the flat-pack box. Origins on the floor in the middle of each piece, fronts to +Z. Placeholder, not final art.
-import { Builder, mat, V, THREE } from '../lib.js';
+import { Builder, mat, V, THREE, ellipsoid } from '../lib.js';
+import { M, pearBody, eyes } from './pear.js';
 
 function box(b, part, m, sx, sy, sz, x, y, z, rot) {
 	b.add(part, m, new THREE.BoxGeometry(sx, sy, sz), { pos: V(x, y, z), ...(rot ? { rot } : {}) });
@@ -147,7 +148,25 @@ export function buildFlatpackBox() {
 	return b.build();
 }
 
+// Don Cajón, the salesman: tall and thin (the game stretches him), a brown suit with a mustard waistcoat, a yellow
+// tape measure around his neck, slicked-back shiny hair and a huge white smile.
+export function buildDonCajon() {
+	const b = new Builder('npc_don_cajon');
+	const suit = mat('cajon_suit', 0x6a4426), vest = mat('cajon_vest', 0xd4a23a);
+	pearBody(b, mat('skin_trigo', 0xe0b07a), { shirt: suit, pants: suit, shoes: M.black, belted: false });
+	b.add('body', vest, ellipsoid(0.25, 0.22, 0.06, 10, 5), { pos: V(0, 0.84, 0.27) });
+	for (const y of [0.74, 0.84, 0.94]) b.add('body', M.gold, ellipsoid(0.02, 0.02, 0.01, 6, 4), { pos: V(0, y, 0.33) });
+	const tape = mat('cajon_tape', 0xf2d23a);
+	for (const s of [-1, 1]) b.add('tape', tape, new THREE.BoxGeometry(0.04, 0.36, 0.01), { pos: V(s * 0.12, 0.95, 0.31), rot: [0.3, 0, s * 0.12] });
+	b.add('tape', tape, new THREE.TorusGeometry(0.15, 0.015, 4, 12), { pos: V(0, 1.12, 0.02), rot: [Math.PI / 2, 0, 0] });
+	eyes(b, 1.35, 0.17, 0.08, 0.05);
+	b.add('hair', mat('cajon_hair', 0x1a1410, { roughness: 0.2, metalness: 0.2 }), ellipsoid(0.205, 0.12, 0.2, 10, 5), { pos: V(0, 1.43, -0.02), rot: [-0.2, 0, 0] });
+	b.add('smile', M.white, ellipsoid(0.09, 0.025, 0.02, 8, 4), { pos: V(0, 1.22, 0.19) });
+	return b.build();
+}
+
 export const models = {
+	npc_don_cajon: buildDonCajon,
 	showroom_sofa: buildShowroomSofa, showroom_bed: buildShowroomBed, showroom_wardrobe: buildShowroomWardrobe,
 	showroom_dresser: buildShowroomDresser, showroom_lamp: buildShowroomLamp, standing_mirror: buildStandingMirror,
 	dining_table: buildDiningTable, dining_chair: buildDiningChair, flatpack_box: buildFlatpackBox,
@@ -162,6 +181,10 @@ export const views = {
 			{ name: 'dining_chair', pos: [2.2, 0, 1.4] }, { name: 'flatpack_box', pos: [-0.6, 0, 1.6] },
 		],
 		cam: { pos: [0, 2.6, 7.5], target: [0, 0.8, 0], fov: 50 },
+	},
+	don_cajon: {
+		items: [{ name: 'npc_don_cajon', pos: [0, 0, 0] }, { name: 'showroom_sofa', pos: [1.6, 0, -0.4] }],
+		cam: { pos: [0.6, 1.5, 4.2], target: [0.6, 0.9, 0], fov: 40 },
 	},
 	furniture_table: {
 		items: [{ name: 'dining_table', pos: [0, 0, 0] }, { name: 'dining_chair', pos: [-0.6, 0, 0.75] }, { name: 'dining_chair', pos: [0.6, 0, -0.75] }],

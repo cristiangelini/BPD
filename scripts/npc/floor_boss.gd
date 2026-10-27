@@ -138,6 +138,13 @@ func is_fixing() -> bool:
 	return _fix_left > 0.0
 
 
+## Someone cut her errand short: she drops what she was at and goes back to her round.
+func interrupt() -> void:
+	_fix_left = 0.0
+	_errand = ""
+	_back_to_route()
+
+
 ## What she's busy with: "" (walking her round) or "printer" (on her way or at it).
 func errand() -> String:
 	return "printer" if is_fixing() else _errand
@@ -306,6 +313,12 @@ func struck() -> bool:
 ## Something pleased her: the complaint goes down `points` and she says `line`.
 func praise(points: float, line: String) -> void:
 	_set_complaint(complaint - points)
+	_say(line)
+
+
+## Something annoyed her that she doesn't need to see: the complaint goes up `points` and she says `line`.
+func scold(points: float, line: String) -> void:
+	_raise(points)
 	_say(line)
 
 

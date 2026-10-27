@@ -5608,3 +5608,27 @@ LOC_on_dresser,arriba de la cómoda,on top of the chest of drawers,em cima da c�
 LOC_in_furniture_counter,adentro del mostrador de la mueblería,inside the furniture store's counter,dentro do balcão da loja de móveis
 PROMPT_PULL_WARDROBE,E: tirar del ropero,E: pull the wardrobe,E: puxar o guarda-roupa
 HINT_WARDROBE_TOO_HEAVY,Pesa demasiado para uno solo. Entre dos y a la vez...,It's too heavy for one. Two of you at once...,É pesado demais para um só. Dois ao mesmo tempo...
+PROMPT_TRY_SOFA,E: probar el sillón,E: try out the sofa,E: experimentar o sofá
+PROMPT_TRY_BED,E: probar la cama,E: try out the bed,E: experimentar a cama
+HINT_PITCH_BUSY,Don Cajón ya le está vendiendo algo a alguien.,Don Cajón is already selling something to someone.,Don Cajón já está vendendo algo para alguém.
+HINT_PITCH_RESTING,"Don Cajón te mira raro. Espera un poco antes de probar otro mueble.","Don Cajón gives you a funny look. Wait a bit before trying another piece.","Don Cajón te olha estranho. Espere um pouco antes de experimentar outro móvel."
+CAJON_LINE_1,"¡Todo en 120 cuotas! Bueno, casi todo.","Everything in 120 installments! Well, almost everything.","Tudo em 120 parcelas! Bom, quase tudo."
+CAJON_LINE_2,"Oficial, ¿cómo duermes? Porque esa cara pide un colchón nuevo.","Officer, how do you sleep? Because that face is asking for a new mattress.","Policial, como você dorme? Porque essa cara está pedindo um colchão novo."
+CAJON_LINE_3,"Esta oferta termina hoy. Hace veinte años que termina hoy.","This offer ends today. It's been ending today for twenty years.","Esta oferta termina hoje. Faz vinte anos que termina hoje."
+CAJON_LINE_4,"¡No me desarmen la muestra, que me costó una semana!","Don't wreck my display, it took me a week!","Não desmontem o mostruário, levei uma semana!"
+CAJON_PRINTER,"¡Un cliente! ¡Ya voy, ya voy!","A customer! Coming, coming!","Um cliente! Já vou, já vou!"
+CAJON_FIX_1,"¡Ese es el modelo Siesta Eterna, oficial! Te lo dejo en cuotas.","That's the Eternal Nap model, officer! I'll let you have it in installments.","Esse é o modelo Sesta Eterna, policial! Faço em parcelas para você."
+CAJON_FIX_2,"Siente la espuma. ¿La sientes? Espuma de la buena, importada de muy lejos.","Feel the foam. Do you feel it? Good foam, imported from very far away.","Sente a espuma. Sentiu? Espuma da boa, importada de muito longe."
+CAJON_FIX_3,"Para ti, 120 cuotas de nada. Bueno, de casi nada.","For you, 120 installments of nothing. Well, almost nothing.","Para você, 120 parcelas de nada. Bom, de quase nada."
+CAJON_FIX_DONE,"Piénsalo. Pero no lo pienses mucho, que se termina la oferta.","Think about it. But not too long, the offer ends.","Pense nisso. Mas não pense muito, que a oferta acaba."
+CAJON_CUT,"¡Pero si no te terminé de contar las cuotas!","But I didn't finish telling you about the installments!","Mas eu não terminei de contar as parcelas!"
+CAJON_HURT,"¡Epa, oficial! Empuja los muebles, no al vendedor.","Hey, officer! Push the furniture, not the salesman.","Opa, policial! Empurre os móveis, não o vendedor."
+CAJON_DOOR,"¿Una puerta rota? ¡Esa no estaba en oferta!","A broken door? That one wasn't on sale!","Uma porta quebrada? Essa não estava em promoção!"
+CAJON_SAW,"¡Eso no se toca sin comprarlo!","You don't touch that without buying it!","Isso não se toca sem comprar!"
+CAJON_NOTHING,"Yo solo vendo muebles, oficial. En cuotas.","I just sell furniture, officer. In installments.","Eu só vendo móveis, policial. Em parcelas."
+CAJON_OFFENDED,"No hablo más. Tengo una oferta que atender.","I'm done talking. I have a sale to attend to.","Não falo mais. Tenho uma promoção para atender."
+CAJON_LAWYER,"¡Llamo a mi abogado! Todavía me debe 40 cuotas.","I'm calling my lawyer! He still owes me 40 installments.","Vou ligar para o meu advogado! Ele ainda me deve 40 parcelas."
+CAJON_GOOD,"¡Eso estaba en exhibición! ¡Lo pagas en cuotas!","That was on display! You'll pay for it in installments!","Isso estava em exposição! Você vai pagar em parcelas!"
+CAJON_TIPPED,"¡Mi ropero! ¿Quién lo acostó?","My wardrobe! Who laid it down?","Meu guarda-roupa! Quem deitou ele?"
+CAJON_TOWER,"¡Mis sillas! ¡Tardé una hora en apilarlas!","My chairs! It took me an hour to stack them!","Minhas cadeiras! Levei uma hora para empilhar!"
+CAJON_NOTICED,"¡Ya sé que no van a comprar nada! ¡Levántense de ahí!","I know you're not buying anything! Get up from there!","Eu sei que vocês não vão comprar nada! Levantem daí!"

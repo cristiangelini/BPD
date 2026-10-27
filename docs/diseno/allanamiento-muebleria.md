@@ -134,3 +134,11 @@ Los pesos y valores siguen la escala del taller y del gimnasio: la principal val
   - **Los roperos:** se **tiran** (E), no se empujan, porque están contra la pared. Uno solo no puede ("Pesa demasiado
     para uno solo..."). Si dos policías distintos tiran con menos de 1,5 s de diferencia, el ropero cae de frente en
     0,6 s y queda acostado, a 0,6 m de alto.
+- **Paso 2 (Don Cajón):** usa el cuerpo del dueño de piso (`FloorBoss`, voz `CAJON`) y está estirado alto y flaco. Hace
+  una ronda de 6 puntos por los ambientes.
+  - **La venta:** E sobre un sillón o una cama sienta (o acuesta) al policía. Don Cajón va a pararse delante del
+    mueble y vende 15 s, mirándolo, sin ver nada más. Si el policía se aleja más de 1,2 m, corta la venta ("¡Pero si
+    no te terminé de contar las cuotas!") y vuelve a la ronda. Después la venta descansa 45 s. Al tercer intento se da
+    cuenta y suma 10.
+  - **Lo que ve:** una lámpara o el espejo roto suma 10; un ropero tumbado o la torre de sillas en el piso, 5; la caja
+    abierta, 10; la puerta rota, 5.

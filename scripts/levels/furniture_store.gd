@@ -7,7 +7,9 @@ extends Node3D
 ## dining room at the front right), the counter with the till and the stockroom at the back right, locked with the
 ## till's key. Something that hits a floor lamp or the mirror fast breaks it, a fine each. Every number here is
 ## (propuesta). Step 1b: the mattresses bounce whoever lands on them, the tower of chairs by the door comes down when
-## pushed, and a wardrobe tips over when two cops pull it together.
+## pushed, and a wardrobe tips over when two cops pull it together. Step 2: Don Cajón walks among the setups filling the
+## complaint, and comes to sell the sofa or the bed a cop tries out (E), his back to the shop, until the pitch ends or
+## the cop gets up.
 
 signal good_broken(index: int)
 signal wardrobe_tipped(index: int)
@@ -22,6 +24,7 @@ const MIRROR_MODEL := preload("res://assets/models/standing_mirror.glb")
 const TABLE_MODEL := preload("res://assets/models/dining_table.glb")
 const CHAIR_MODEL := preload("res://assets/models/dining_chair.glb")
 const BOX_MODEL := preload("res://assets/models/flatpack_box.glb")
+const CAJON_SCENE := preload("res://scenes/npc/don_cajon.tscn")
 const HALF_X := 14.0
 const HALF_Z := 12.0
 ## The shop's ceiling, and the closed roof over it up to the lot's height.
@@ -71,6 +74,20 @@ const BOX_STACKS: Array[Vector3] = [Vector3(7.8, FLOOR_TOP, -10.8), Vector3(12.2
 const BOXES_PER_STACK := 5
 const BOX_SIZE := Vector3(1.2, 0.15, 0.6)
 
+## Don Cajón's round among the setups, back and forth: the living room, the bedroom, the middle and the dining room.
+const CAJON_ROUTE: Array[Vector3] = [
+	Vector3(-6.0, FLOOR_TOP, 9.5), Vector3(-5.5, FLOOR_TOP, 2.0), Vector3(-6.0, FLOOR_TOP, -6.5),
+	Vector3(1.0, FLOOR_TOP, -6.0), Vector3(1.5, FLOOR_TOP, 2.5), Vector3(5.0, FLOOR_TOP, 3.0),
+]
+## What he sees: a lamp or the mirror broken, a wardrobe tipped or the tower of chairs down; and trying a piece once
+## he knows the trick.
+const SAW_GOOD := 10.0
+const SAW_TIPPED := 5.0
+const SAW_TOWER := 5.0
+const NOTICED := 10.0
+## A cop on a piece being sold who gets this far from it cuts the pitch short.
+const LEAVE_DISTANCE := 1.2
+
 ## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
 const SPOTS := [
 	{"id": "in_wardrobe_0", "at": Vector3(-13.65, FLOOR_TOP + 0.1, -6.5), "heavy": true},
@@ -101,8 +118,11 @@ var city_map: CityMap
 var stock_door: FrontDoor
 var till: Till
 ## The pieces, in the order of SOFAS, BEDS and WARDROBES, and the fragile goods in the order of GOODS.
-var sofas: Array[StaticBody3D] = []
-var beds: Array[StaticBody3D] = []
+var sofas: Array[ShowroomSeat] = []
+var beds: Array[ShowroomSeat] = []
+var cajon: FloorBoss
+var pitch: SalesPitch
+var complaint_bar: ProgressBar
 var wardrobes: Array[TippingWardrobe] = []
 var chair_tower: ChairTower
 var goods: Array[StaticBody3D] = []
@@ -134,6 +154,7 @@ func _ready() -> void:
 	_build_counter()
 	_build_stockroom()
 	_place_goods()
+	_place_cajon()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("furniture")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -176,7 +197,7 @@ func _build_living() -> void:
 		sofas.append(_piece(SOFA_MODEL, spec.at, spec.turn, [
 			[Vector3(0, 0.26, 0.05), Vector3(2.1, 0.52, 0.8)],
 			[Vector3(0, 0.42, -0.35), Vector3(2.1, 0.84, 0.2)],
-		]))
+		], ShowroomSeat.new()))
 	_build.legs(COFFEE_TABLE_AT, Vector2(COFFEE_TABLE_SIZE.x, COFFEE_TABLE_SIZE.z), COFFEE_TABLE_SIZE.y - 0.04, DARK)
 	_build.box(COFFEE_TABLE_AT + Vector3(0, COFFEE_TABLE_SIZE.y - 0.02, 0),
 		Vector3(COFFEE_TABLE_SIZE.x, 0.04, COFFEE_TABLE_SIZE.z), PARQUET.darkened(0.3))
@@ -188,10 +209,12 @@ func _build_bedroom() -> void:
 	var springy := PhysicsMaterial.new()
 	springy.bounce = MATTRESS_BOUNCE
 	for spec: Dictionary in BEDS:
-		var bed := _piece(BED_MODEL, spec.at, spec.turn, [
+		var bed := ShowroomSeat.new()
+		bed.kind = "bed"
+		_piece(BED_MODEL, spec.at, spec.turn, [
 			[Vector3(0, 0.46, 0), Vector3(1.5, 0.32, 2.0)],
 			[Vector3(0, 0.75, -1.0), Vector3(1.56, 0.7, 0.08)],
-		])
+		], bed)
 		bed.physics_material_override = springy
 		beds.append(bed)
 	for i in WARDROBES.size():
@@ -270,7 +293,66 @@ func _place_goods() -> void:
 				break_good(i))
 
 
+## Don Cajón on his round, the pitch that brings him to a cop trying a piece, what he notices and the complaint bar.
+func _place_cajon() -> void:
+	pitch = SalesPitch.new()
+	add_child(pitch)
+	cajon = CAJON_SCENE.instantiate()
+	cajon.route = CAJON_ROUTE
+	cajon.printer = pitch
+	add_child(cajon)
+	cajon.start_at(0)
+	for seat: ShowroomSeat in sofas + beds:
+		seat.tried.connect(func(cop: Cop) -> void: try_out(seat, cop))
+	stock_door.broken.connect(cajon.door_broken)
+	till.opened.connect(func(at: Vector3) -> void: cajon.saw(at, FloorBoss.SAW_TILL))
+	good_broken.connect(func(index: int) -> void:
+		cajon.saw(to_global(goods[index].position + Vector3.UP), SAW_GOOD, "CAJON_GOOD"))
+	wardrobe_tipped.connect(func(index: int) -> void:
+		cajon.saw(wardrobes[index].global_position + Vector3.UP, SAW_TIPPED, "CAJON_TIPPED"))
+	chair_tower.fell.connect(func() -> void:
+		cajon.saw(chair_tower.global_position + Vector3.UP, SAW_TOWER, "CAJON_TOWER"))
+	pitch.noticed.connect(func() -> void: cajon.scold(NOTICED, "CAJON_NOTICED"))
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	cajon.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## A cop tries `seat` out: Don Cajón comes to stand in front of it and sell it, facing it (or notices the trick).
+func try_out(seat: ShowroomSeat, cop: Cop) -> void:
+	if not pitch.can_offer(cop):
+		return
+	cajon.printer_spot = to_local(seat.to_global(seat.pitch_point()))
+	cajon.fix_facing = seat.global_position
+	pitch.offer(seat, cop)
+
+
+## The cop on the piece being sold got up and walked off: he stops and goes back to his round.
+func _check_pitch() -> void:
+	if not pitch.is_jammed or not is_instance_valid(pitch.buyer):
+		return
+	var seat := pitch.seat
+	if pitch.buyer.global_position.distance_to(seat.to_global(seat.sit_point())) > LEAVE_DISTANCE:
+		cajon.interrupt()
+		cajon.scold(0.0, "CAJON_CUT")
+		pitch.fix()
+
+
 func _physics_process(_delta: float) -> void:
+	_check_pitch()
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
 		var id := cop.get_instance_id()
 		if not cop.is_on_floor():
