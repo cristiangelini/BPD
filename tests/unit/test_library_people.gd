@@ -49,9 +49,9 @@ func test_a_reader_whispers_what_they_read() -> void:
 	library.case_seed = 2
 	add_child_autofree(library)
 	var reader: LibraryReader = library.readers[0]
-	reader.use(null)
+	reader.talk()
 	assert_string_contains(reader.said(), reader.genre_name())
-	reader.use(null)
+	reader.talk()
 	assert_string_contains(reader.said(), reader.genre_name(), "every line says the kind of book")
 	library.librarian.use(null)
 	assert_eq(library.librarian.said(), "LIBRARIAN_LINE_0")

@@ -65,12 +65,14 @@ function lector(b) {
 	b.add('book', cover, new THREE.BoxGeometry(0.26, 0.02, 0.2), { pos: V(-0.12, 0.66, 0.46), rot: [0, 0, 0.25] });
 	b.add('book', cover, new THREE.BoxGeometry(0.26, 0.02, 0.2), { pos: V(0.12, 0.66, 0.46), rot: [0, 0, -0.25] });
 	b.add('book', M.white, new THREE.BoxGeometry(0.44, 0.03, 0.18), { pos: V(0, 0.69, 0.46) });
-	// The gold dust from the Golden Book's covers, glittering on each hand.
+	// The gold dust from the Golden Book's covers, glittering all over each hand: a gold coat a bit bigger than the
+	// hand and sparkles sticking out of it.
 	const dust = C('gold_dust', 0xffd84a, { emissive: 0x7a5a00 });
 	for (const [s, side] of [[-1, 'left'], [1, 'right']]) {
-		for (let i = 0; i < 5; i++) {
-			const a = i * 1.3;
-			b.add(`dust_${side}`, dust, new THREE.OctahedronGeometry(0.014), { pos: V(s * (0.49 + Math.cos(a) * 0.05), 0.66 + Math.sin(a) * 0.04, 0.15 + (i % 2) * 0.02) });
+		b.add(`dust_${side}`, dust, ellipsoid(0.084, 0.084, 0.084, 6, 4), { pos: V(s * 0.49, 0.64, 0.09) });
+		for (let i = 0; i < 6; i++) {
+			const a = i * 1.05;
+			b.add(`dust_${side}`, dust, new THREE.OctahedronGeometry(0.03), { pos: V(s * 0.49 + Math.cos(a) * 0.07, 0.64 + Math.sin(a) * 0.07, 0.15) });
 		}
 	}
 }

@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Library crime scene, step 3: the readers' files. Photo, prints, a bite and the nightcap as in the other crime scenes; E gets the kind of book they read; a flashlight on their hands shows the Golden Book's gold dust (the culprit always has it) or clean hands, and that goes to the file too.
 - Library crime scene, step 2: the six readers alike in the club's striped pajamas, nightcap and sleep mask, two by two at the long tables (their own hair, glasses, slippers, teeth, hidden gold dust and the kind of book they whisper about with E); Doña Sigilo behind her desk with her feather duster; and Tomasito asleep on the rug, mumbling.
 - Library crime scene, step 1: the Municipal Library on its own lot (block 5, 4, east side) with its steps, columns, sign and clock; the reading room with the long tables, the Golden Book's display case, the armchair, the desk and the card catalog; the stacks, eight shelves A to H with the rolling ladder; the children's corner and the storeroom. Open it with --place=library.
 - Library crime scene, step 0: design doc (docs/diseno/escena-biblioteca.md) and decision 360 (proposed).
