@@ -346,7 +346,44 @@ export function buildJudgeEnvelope() {
 	return b.build();
 }
 
+// The magic popcorn: a sack of "popcorn corn" that is really painted pebbles, the can of yellow paint, the receipt for
+// "premium popcorn" and one of the pebbles the machine spits out, yellow on top and grey where the paint chipped.
+export function buildPebbleSack() {
+	const b = new Builder('bowl_pebble_sack');
+	const sack = mat('sack', 0xc8a870);
+	b.add('sack', sack, new THREE.CylinderGeometry(0.17, 0.2, 0.42, 8), { pos: V(0, 0.21, 0) });
+	b.add('tie', sack, new THREE.CylinderGeometry(0.06, 0.15, 0.08, 8), { pos: V(0, 0.46, 0) });
+	b.add('label', mat('sack_label', 0xd83a30), new THREE.BoxGeometry(0.2, 0.12, 0.01), { pos: V(0, 0.24, 0.19) });
+	for (const [x, z] of [[0.08, 0.2], [-0.12, 0.17], [0.2, 0.05]]) b.add('pebbles', mat('popcorn_yellow', 0xf6e08a), new THREE.IcosahedronGeometry(0.025, 0), { pos: V(x, 0.02, z) });
+	return b.build();
+}
+
+export function buildPaintCan() {
+	const b = new Builder('bowl_paint_can');
+	b.add('can', mat('can_metal', 0xb8bcc4, { metalness: 0.5 }), new THREE.CylinderGeometry(0.1, 0.1, 0.2, 12), { pos: V(0, 0.1, 0) });
+	b.add('paint', mat('paint_yellow', 0xf2d23a), new THREE.CylinderGeometry(0.101, 0.101, 0.1, 12), { pos: V(0, 0.09, 0) });
+	b.add('drip', mat('paint_yellow', 0xf2d23a), new THREE.BoxGeometry(0.03, 0.06, 0.01), { pos: V(0.04, 0.17, 0.1) });
+	b.add('handle', mat('can_metal', 0xb8bcc4, { metalness: 0.5 }), new THREE.TorusGeometry(0.1, 0.006, 4, 12, Math.PI), { pos: V(0, 0.2, 0) });
+	return b.build();
+}
+
+export function buildPopcornReceipt() {
+	const b = new Builder('bowl_popcorn_receipt');
+	b.add('paper', mat('paper', 0xf6f4ee), new THREE.BoxGeometry(0.08, 0.004, 0.2), { pos: V(0, 0.002, 0) });
+	for (let r = 0; r < 6; r++) b.add('lines', mat('ink_blue', 0x3a4a8a), new THREE.BoxGeometry(0.06, 0.001, 0.004), { pos: V(0, 0.005, -0.08 + r * 0.025) });
+	b.add('logo', mat('popcorn_yellow', 0xf6e08a), new THREE.CylinderGeometry(0.015, 0.015, 0.001, 8), { pos: V(0, 0.005, 0.08) });
+	return b.build();
+}
+
+export function buildPopcornPebble() {
+	const b = new Builder('popcorn_pebble');
+	b.add('pebble', mat('popcorn_yellow', 0xf6e08a), new THREE.IcosahedronGeometry(0.03, 0), { pos: V(0, 0.03, 0) });
+	b.add('chip', mat('pebble_grey', 0x8a8e94), new THREE.IcosahedronGeometry(0.018, 0), { pos: V(0.015, 0.02, 0.012) });
+	return b.build();
+}
+
 export const models = {
+	bowl_pebble_sack: buildPebbleSack, bowl_paint_can: buildPaintCan, bowl_popcorn_receipt: buildPopcornReceipt, popcorn_pebble: buildPopcornPebble,
 	bowl_rigged_cup: buildRiggedCup, bowl_fake_scores: buildFakeScores, bowl_judge_envelope: buildJudgeEnvelope,
 	bowl_skate_box: buildSkateBox, bowl_skate_parts: buildSkateParts, bowl_skate_manual: buildSkateManual,
 	bowl_lead_mold: buildLeadMold, bowl_lead_pin: buildLeadPin, bowl_lead_invoice: buildLeadInvoice,
@@ -382,6 +419,10 @@ export const views = {
 	bowl_lead_pins: {
 		items: [{ name: 'bowl_lead_mold', pos: [-0.5, 0, 0] }, { name: 'bowl_lead_pin', pos: [0.15, 0, 0.1] }, { name: 'bowling_pin', pos: [0.35, 0, 0.1] }, { name: 'bowl_lead_invoice', pos: [0.7, 0, 0.1], rotY: 0.3 }],
 		cam: { pos: [0.1, 0.9, 1.9], target: [0.1, 0.2, 0], fov: 40 },
+	},
+	bowl_popcorn: {
+		items: [{ name: 'bowl_pebble_sack', pos: [-0.35, 0, 0] }, { name: 'bowl_paint_can', pos: [0.1, 0, 0.05] }, { name: 'bowl_popcorn_receipt', pos: [0.4, 0, 0.15], rotY: 0.4 }, { name: 'popcorn_pebble', pos: [0.15, 0, 0.3] }],
+		cam: { pos: [0.05, 0.7, 1.4], target: [0.05, 0.15, 0], fov: 40 },
 	},
 	bowl_tournament: {
 		items: [{ name: 'bowl_rigged_cup', pos: [-0.3, 0, 0] }, { name: 'bowl_fake_scores', pos: [0.1, 0, 0.1], rotY: 0.2 }, { name: 'bowl_judge_envelope', pos: [0.45, 0, 0.1], rotY: -0.3 }],

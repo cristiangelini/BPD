@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Bowling alley raid, step 6d: the magic popcorn story, with the sack of painted pebbles, the yellow paint and the receipt hidden, the popcorn machine rattling and spitting bouncing pebbles, and the cop who picks one up biting it (the clue).
 - Bowling alley raid, step 6c: the fixed tournament story, with the engraved cup, the fake score sheet and the judge's envelope hidden, the lanes' screens showing their points, lane 1's screen adding 10 to every roll (a cop nearby noticing it is the clue), and the trophy case's "champions every year" plate.
 - Bowling alley raid, step 6b: the shoes on wheels story, with the wheeled shoe box, a taken-apart skate and the manual hidden, the first pair Pipo lends rolling its cop forward as they walk (the clue), and Don Chuza's team on lane 1 gliding up to the foul line.
 - Bowling alley raid, step 6a: the lead pins story, with the mold, a spare lead pin and the invoice hidden, lane 4's pins that don't fall and send the ball rolling back, and the weight a cop feels picking one up as the clue.
