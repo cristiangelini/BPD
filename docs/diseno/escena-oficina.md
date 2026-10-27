@@ -172,3 +172,9 @@ ChaseDrops (los bidones, como las valijas del hotel), PlaceDraw y la custodia pa
   los pies y pide que se la lleven a la fotocopiadora. Cuando llega, con E dice si el ladrón tenía anteojos (si el
   testigo es una de las pistas). Esposado, o con la pila tirada o caída antes de llegar, se ofende y no habla más. Las
   fichas de los empleados salen en el tablero de la comisaría como en los otros casos. Capturas `paso4c-*.png`.
+- **Paso 5 (el final):** el culpable que huye sale en la camioneta del agua (`SuspectCar.WATER_TRUCK`, modelo en
+  `tools/modelgen/models/office.js`, cabina sin puertas para ver quién maneja), estacionada en el cordón al este de la
+  puerta, de culata al edificio, con 18 bidones atados atrás. Cada 5 s se le suelta uno (`ChaseJug`), que rueda por la
+  calle. Con E se para en la vereda; si el patrullero lo pisa rápido, revienta y las ruedas patinan 2 s como en un
+  charco. Agarrado o entregado, al turno siguiente es el interrogatorio del empleado, que sigue con el traje gris
+  (`owner_employee`). Capturas `paso5-*.png`.

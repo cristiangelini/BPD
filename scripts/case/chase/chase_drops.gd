@@ -21,8 +21,9 @@ extends Node
 ## (ConfettiCloud). The bridge's cement mixer (politico-puente.md) drops a blob of cement at
 ## every corner it turns: driving through it the patrol car sticks and slows down to BLOB_SPEED. The museum's art van opens its back doors every FRAME_EVERY seconds and an
 ## empty gilt frame falls out (ChaseFrame). The hotel's shuttle loses a suitcase off its roof every SUITCASE_EVERY
-## seconds (ChaseSuitcase): run over, its clothes cover the patrol car's windshield. Every number here is
-## (propuesta).
+## seconds (ChaseSuitcase): run over, its clothes cover the patrol car's windshield. The office's water truck loses a
+## jug off its back every JUG_EVERY seconds, rolling down the street (ChaseJug): run over, it bursts and the patrol car
+## skids on the water. Every number here is (propuesta).
 
 const DRIP_EVERY := 3.0
 ## A puddle's size (m), how long it lasts, and the grip left on it.
@@ -62,6 +63,10 @@ const FRAME_EVERY := 5.0
 const MAX_FRAMES := 8
 const SUITCASE_EVERY := 5.0
 const MAX_SUITCASES := 8
+const JUG_EVERY := 5.0
+const MAX_JUGS := 8
+## How fast a jug rolls off the truck's back, in m/s.
+const JUG_ROLL := 2.0
 const MELONS_PER_CORNER := 2
 const MAX_MELONS := 12
 ## How fast they roll off the back, in m/s.
@@ -102,6 +107,9 @@ var frames: Array[ChaseFrame] = []
 var suitcases: Array[ChaseSuitcase] = []
 ## Seconds the patrol car's windshield stays covered in a run-over suitcase's clothes.
 var laundry_left := 0.0
+var jugs: Array[ChaseJug] = []
+## Seconds the patrol car's tires stay wet from a burst jug, skidding as on a puddle.
+var soaked_left := 0.0
 var melons: Array[Watermelon] = []
 ## The cement blobs on the street: [node, seconds left].
 var blobs: Array[Array] = []
@@ -133,6 +141,7 @@ var _drip_left := DRIP_EVERY
 var _dummy_left := DUMMY_EVERY
 var _frame_left := FRAME_EVERY
 var _suitcase_left := SUITCASE_EVERY
+var _jug_left := JUG_EVERY
 var _kids_left := 0.0
 var _kids_line := 0
 var kids_bubble: Label3D
@@ -182,6 +191,12 @@ func _physics_process(delta: float) -> void:
 				drop_suitcase()
 		laundry_left = maxf(laundry_left - delta, 0.0)
 		ConfettiCloud.cover(case.car, laundry_left > 0.0)
+	if case.suspect_id == SuspectCar.WATER_TRUCK and case.chasing and not case.stopped and not case.follower:
+		_jug_left -= delta
+		if _jug_left <= 0.0:
+			_jug_left = JUG_EVERY
+			drop_jug()
+	soaked_left = maxf(soaked_left - delta, 0.0)
 	if kids_bubble and case.chasing and not case.stopped:
 		_kids_left -= delta
 		if _kids_left <= 0.0:
@@ -205,7 +220,8 @@ func _physics_process(delta: float) -> void:
 	var at := case.car.global_position
 	if confetti:
 		_blind(at, delta)
-	case.car.grip = weather_grip * (PEEL_GRIP if on_peel(at) else PUDDLE_GRIP if on_puddle(at) else 1.0)
+	case.car.grip = weather_grip * (PEEL_GRIP if on_peel(at) else PUDDLE_GRIP if on_puddle(at) or soaked_left > 0.0
+		else 1.0)
 	for blob in blobs.duplicate():
 		blob[1] -= delta
 		if blob[1] <= 0.0:
@@ -523,6 +539,24 @@ func drop_suitcase() -> ChaseSuitcase:
 	suitcase.rotation.y = case.truck.global_rotation.y + _rng.randf_range(-0.6, 0.6)
 	suitcases.append(suitcase)
 	return suitcase
+
+
+## A water jug comes untied off the truck's back and rolls down the street behind it.
+func drop_jug() -> ChaseJug:
+	jugs = jugs.filter(func(jug: ChaseJug) -> bool: return is_instance_valid(jug))
+	if jugs.size() >= MAX_JUGS:
+		jugs.pop_front().queue_free()
+	var jug := ChaseJug.new()
+	jug.car = case.car
+	jug.drops = self
+	_dropped += 1
+	jug.name = "Jug%d" % _dropped
+	case.get_parent().add_child(jug)
+	jug.global_position = _behind() + Vector3.UP * 0.4
+	jug.rotation.y = case.truck.global_rotation.y + _rng.randf_range(-0.3, 0.3)
+	jug.linear_velocity = -case.truck.global_basis.z * JUG_ROLL
+	jugs.append(jug)
+	return jug
 
 
 func _behind() -> Vector3:

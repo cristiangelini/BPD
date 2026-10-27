@@ -110,6 +110,50 @@ function buildBonusEnvelope() {
 	return b.build();
 }
 
+// The water delivery truck the culprit flees in (escena-oficina.md, "El final"): a small light-blue truck with a white
+// cab with no doors (you see who drives) and an open back of racks with blue water jugs lying tied in rows, one of which comes loose every few seconds.
+// Front +Z, wheels the shuttle's (SuspectCar.SHUTTLE_WHEELS), 2.1 x 2.4 x 5.0.
+function buildWaterTruck() {
+	const b = new Builder('water_truck');
+	const blue = C('water_blue', 0x5aa0d8), white = C('van_white', 0xf2f2ee), glass = C('car_glass', 0x9fd0ea);
+	const rack = C('cart_metal', 0x9aa0a8), jug = C('jug_blue', 0x4a8ad8, { transparent: true, opacity: 0.8 });
+	b.add('cab', white, new THREE.BoxGeometry(2.1, 0.12, 1.6), { pos: V(0, 2.0, 1.7) });
+	b.add('cab', white, new THREE.BoxGeometry(2.1, 0.5, 1.6), { pos: V(0, 0.6, 1.7) });
+	b.add('cab', white, new THREE.BoxGeometry(2.1, 1.2, 0.12), { pos: V(0, 1.4, 0.94) });
+	b.add('cab', white, new THREE.BoxGeometry(2.1, 0.75, 0.3), { pos: V(0, 1.2, 2.45) });
+	for (const x of [-1.0, 1.0]) b.add('cab', white, new THREE.BoxGeometry(0.1, 0.7, 0.1), { pos: V(x, 1.7, 2.45) });
+	b.add('seat', C('seat_grey', 0x555a62), new THREE.BoxGeometry(1.8, 0.15, 0.5), { pos: V(0, 0.9, 1.3) });
+	b.add('glass', glass, new THREE.BoxGeometry(1.8, 0.6, 0.04), { pos: V(0, 1.6, 2.5), rot: [-0.15, 0, 0] });
+	b.add('bed', blue, new THREE.BoxGeometry(2.1, 0.35, 3.4), { pos: V(0, 0.65, -0.8) });
+	b.add('logo', C('drop_white', 0xffffff), new THREE.BoxGeometry(2.12, 0.18, 1.2), { pos: V(0, 0.65, -0.8) });
+	for (const x of [-1.0, 1.0]) for (const z of [0.85, -2.45]) {
+		b.add('rack', rack, new THREE.BoxGeometry(0.06, 1.6, 0.06), { pos: V(x, 1.6, z) });
+	}
+	for (const y of [1.0, 1.6, 2.2]) for (const x of [-1.0, 1.0]) {
+		b.add('rack', rack, new THREE.BoxGeometry(0.05, 0.05, 3.3), { pos: V(x, y + 0.25, -0.8) });
+	}
+	for (let row = 0; row < 3; row++) for (let i = 0; i < 6; i++) {
+		b.add('jugs', jug, new THREE.CylinderGeometry(0.26, 0.26, 0.5, 10),
+			{ pos: V(i % 2 ? 0.45 : -0.45, 1.1 + row * 0.6, 0.4 - Math.floor(i / 2) * 1.1), rot: [0, 0, Math.PI / 2] });
+	}
+	b.add('rope', C('rope', 0xd8c890), new THREE.BoxGeometry(2.0, 0.03, 0.04), { pos: V(0, 2.5, -0.8) });
+	for (const x of [-1.05, 1.05]) for (const z of [-1.75, 1.75]) {
+		b.add('wheels', M.black, new THREE.CylinderGeometry(0.38, 0.38, 0.26, 12), { pos: V(x, 0.38, z), rot: [0, 0, Math.PI / 2] });
+	}
+	return b.build();
+}
+
+// A water jug fallen off the truck, standing (the game lays it on its side to roll): 20 l of blue plastic, its bottom
+// at y = 0, 0.56 wide and 0.5 tall, the white cap on top.
+function buildChaseJug() {
+	const b = new Builder('chase_jug');
+	b.add('jug', C('jug_blue', 0x4a8ad8, { transparent: true, opacity: 0.8 }), new THREE.CylinderGeometry(0.28, 0.28, 0.42, 12), { pos: V(0, 0.21, 0) });
+	b.add('neck', C('jug_blue', 0x4a8ad8, { transparent: true, opacity: 0.8 }), new THREE.CylinderGeometry(0.1, 0.24, 0.06, 12), { pos: V(0, 0.45, 0) });
+	b.add('cap', C('jug_cap', 0xf4f4f4), new THREE.CylinderGeometry(0.06, 0.06, 0.04, 10), { pos: V(0, 0.5, 0) });
+	b.add('label', C('drop_white', 0xffffff), new THREE.CylinderGeometry(0.285, 0.285, 0.1, 12), { pos: V(0, 0.22, 0) });
+	return b.build();
+}
+
 const PEOPLE = { oficinista, senor_tramite: senorTramite, pasante_benja: pasanteBenja };
 
 export const models = {
@@ -120,9 +164,15 @@ export const models = {
 	}])),
 	robot_vacuum: buildRobotVacuum,
 	golden_stamp: buildGoldenStamp, founder_stapler: buildStapler, bonus_envelope: buildBonusEnvelope,
+	water_truck: buildWaterTruck, chase_jug: buildChaseJug,
 };
 
 export const views = {
+	water_truck: {
+		items: [{ name: 'water_truck', pos: [-0.8, 0, 0], rotY: 0.7 }, { name: 'npc_oficinista', pos: [-0.09, 0.45, 1.62], rotY: 0.7, scale: 0.85 },
+			{ name: 'chase_jug', pos: [2.0, 0, 0.8], rotY: -0.4 }],
+		cam: { pos: [0.4, 3.0, 8.5], target: [0.4, 1.1, 0], fov: 40 },
+	},
 	office_loot: {
 		items: [{ name: 'golden_stamp', pos: [-0.3, 0, 0], rotY: 0.3 }, { name: 'founder_stapler', pos: [0, 0, 0.05], rotY: -0.5 },
 			{ name: 'bonus_envelope', pos: [0.32, 0, 0], rotY: 0.2 }],
