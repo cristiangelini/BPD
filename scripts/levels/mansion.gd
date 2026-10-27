@@ -475,8 +475,8 @@ func _people() -> void:
 	add_child(chocolates)
 
 
-## Draws what was stolen and where it's hidden, and tells the members about the case (each part of a file they give goes to it); then the
-## clues go where they go (MansionClues).
+## Draws what was stolen and where it's hidden, and tells the members about the case (each part of a file they give
+## goes to it); then the clues go where they go (MansionClues).
 func set_up_case(new_case: CrimeSceneCase) -> void:
 	case = new_case
 	loot = LOOTS[hash(["mansion loot", case.case_seed]) % LOOTS.size()]
