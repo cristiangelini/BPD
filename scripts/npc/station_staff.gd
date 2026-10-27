@@ -34,6 +34,11 @@ var who := "ronquido"
 var traits := {}
 ## In the case, what they give their file (StaffFile).
 var file: StaffFile
+## El Chancho in the case: the case, whether he saw the culprit's boots (the witness is one of its clues) and whether he
+## took offense (his cell was opened) and talks no more.
+var witness_case: CrimeSceneCase
+var knows := false
+var offended := false
 var _model: Node3D
 var _bubble: Label3D
 var _bubble_left := 0.0
@@ -107,6 +112,8 @@ func name_key() -> String:
 
 
 func prompt_key(cop: Cop) -> String:
+	if witness_case and not offended and _donuts(cop):
+		return "PROMPT_STAFF_FEED"
 	if file:
 		var key := file.prompt_key(cop)
 		if key != "":
@@ -117,6 +124,9 @@ func prompt_key(cop: Cop) -> String:
 ## E on them: in the case, what their file takes first (StaffFile); else their next line, and with traits every round
 ## of lines starts with their alibi.
 func use(cop: Cop) -> void:
+	if witness_case:
+		_witness(cop)
+		return
 	if file and file.use(cop):
 		return
 	var count: int = WHO[who].lines
@@ -133,6 +143,43 @@ func use(cop: Cop) -> void:
 func alibi() -> String:
 	return tr("STAFF_ALIBI") % [tr("STAFF_PLACE_" + (traits.where as String).to_upper()),
 		tr("STAFF_WITH_" + StaffTraits.IDS[traits.with].to_upper())]
+
+
+## El Chancho talks for a donut: the culprit's boots, if he saw them.
+func _witness(cop: Cop) -> void:
+	if offended:
+		say("CHANCHO_OFFENDED")
+		return
+	var box := _donuts(cop)
+	if not box:
+		say(line_key(_lines_said))
+		_lines_said += 1
+		return
+	if not box.eat_one():
+		say("MUSEUM_GUARD_NO_DONUTS")
+		return
+	show_teeth()
+	if knows:
+		say(tr("CHANCHO_SAW") % witness_case.culprit().shoe, 6.0)
+		witness_case.found("witness")
+	else:
+		say("CHANCHO_SAW_NOTHING", 6.0)
+
+
+## His cell was opened: he takes offense, and the clue is lost.
+func offend() -> void:
+	if offended:
+		return
+	offended = true
+	say("CHANCHO_OFFENDED")
+	if witness_case and knows:
+		witness_case.ruin("witness")
+
+
+func _donuts(cop: Cop) -> DonutBox:
+	if not cop:
+		return null
+	return cop.get_node("Grabber").held as DonutBox
 
 
 ## The print kit on them (PrintKit): their prints, in the case.

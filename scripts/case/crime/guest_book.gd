@@ -9,6 +9,10 @@ const PAGE := Color(0.96, 0.94, 0.86)
 const INK := Color(0.1, 0.12, 0.3)
 
 var case: CrimeSceneCase
+## The case's clue it holds: the hotel's "signature", or the station's sign-out "book" (escena-comisaria.md).
+var kind := "signature"
+var prompt := "PROMPT_GUEST_BOOK"
+var signed_hint := "HINT_GUEST_BOOK_SIGNED"
 var has_signature := false
 var signed_over := false
 
@@ -35,27 +39,27 @@ func _ready() -> void:
 
 
 func prompt_key(_cop: Cop) -> String:
-	return "PROMPT_GUEST_BOOK"
+	return prompt
 
 
 ## E: the cop signs too, on the same page.
 func use(cop: Cop) -> void:
-	var spoils := has_signature and not signed_over and case and not case.clues_found.has("signature")
+	var spoils := has_signature and not signed_over and case and not case.clues_found.has(kind)
 	signed_over = true
 	var builder := PlaceBuilder.new(self)
 	builder.mesh_box(Vector3(-0.05, 0.048, 0.08), Vector3(0.16, 0.003, 0.03), INK)
 	if spoils:
-		case.ruin("signature")
-	cop.show_hint("HINT_GUEST_BOOK_SIGNED")
+		case.ruin(kind)
+	cop.show_hint(signed_hint)
 
 
 ## What a photo can catch here: its checklist line and the page, while the signature can still be read.
 func photo_clues() -> Dictionary:
-	if not has_signature or signed_over or not case or case.clues_found.has("signature"):
+	if not has_signature or signed_over or not case or case.clues_found.has(kind):
 		return {}
-	return {case.clue_line("signature"): [self]}
+	return {case.clue_line(kind): [self]}
 
 
 func add_clue(_line: String) -> void:
 	if case:
-		case.found("signature")
+		case.found(kind)
