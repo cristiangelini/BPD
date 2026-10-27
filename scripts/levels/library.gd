@@ -81,6 +81,7 @@ const BOOK_COLORS: Array[Color] = [
 const CUSHION_COLORS: Array[Color] = [Color(0.95, 0.6, 0.2), Color(0.3, 0.7, 0.85), Color(0.9, 0.45, 0.6),
 	Color(0.55, 0.8, 0.35)]
 
+var case: CrimeSceneCase
 var readers: Array[LibraryReader] = []
 var librarian: Librarian
 var kid: LibraryKid
@@ -99,6 +100,16 @@ func _ready() -> void:
 	_children_corner()
 	_storeroom()
 	_people()
+
+
+## The case reaches the readers (their traits are its suspects, same seed), and one of them, drawn with the seed,
+## won't take off the nightcap until they get something to eat.
+func set_up_case(new_case: CrimeSceneCase) -> void:
+	case = new_case
+	var stubborn := absi(hash("stubborn reader %d" % case.case_seed)) % readers.size()
+	for reader in readers:
+		reader.case = case
+		reader.stubborn = reader.index == stubborn
 
 
 ## The reader by index (the order of the case's traits).

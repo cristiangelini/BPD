@@ -24,7 +24,8 @@ const DUSTED := Vector2i(2, 3)
 static func draw(seed_value: int) -> Array[Dictionary]:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash("library readers %d" % seed_value)
-	var dusted := {}
+	# The Golden Book's covers left their dust on whoever took it: the culprit always has it.
+	var dusted := {CrimePlan.culprit_of(COUNT, seed_value): true}
 	var dust_count := rng.randi_range(DUSTED.x, DUSTED.y)
 	while dusted.size() < dust_count:
 		dusted[rng.randi_range(0, COUNT - 1)] = true

@@ -147,6 +147,11 @@ polvo dorado con la linterna, el fichero, el ruido y el apagón de Doña Sigilo,
    Tomasito (`LibraryKid`, `npc_tomasito`: pijama de dinosaurios) duerme boca arriba en la alfombra y balbucea.
    Capturas: `biblioteca/paso2-*.png`.
 3. Las fichas: el polvo dorado con la linterna y el libro que lee.
+   **Hecho así:** variante `library` en `CrimeSceneCase` con las partes foto (anteojos y pantufla), huellas, dientes,
+   pelo, polvo y libro. Con las manos vacías, E primero da el susurro (el género va a la ficha) y después el gorro de
+   dormir (el pelo); uno, sorteado, no se lo saca hasta que come algo. La linterna encendida sobre las manos (cada
+   0,2 s se fija si alguna llega, sin pared en el medio) muestra el polvo dorado o las manos limpias y lo anota en la
+   ficha. El culpable siempre tiene polvo. Capturas: `biblioteca/paso3-*.png`.
 4. El caso: el Libro de Oro escondido, la búsqueda y el fichero.
 5. Las pistas, el testigo y el ruido (el "¡SHHH!" y el apagón).
 6. El final: tablero, cansancio, sueldo y el bibliobús con las pilas de libros.
