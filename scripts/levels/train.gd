@@ -58,7 +58,7 @@ const STICKERS_AT := TICKET_MACHINE_AT + Vector3(0, 1.45, 0)
 ## What was stolen, drawn with the seed (escena-tren.md, pregunta 1), and where it can be hidden: in a spare top hat
 ## on first class's luggage rack, in the food cart or in the bathroom's water tank.
 const LOOTS: Array[String] = ["rabbit", "wand", "watch"]
-const LOOT_SPOTS: Array[String] = ["hat", "cart", "tank"]
+const LOOT_SPOTS: Array[String] = ["hat", "food_cart", "tank"]
 const LOOT_MODELS := {
 	"rabbit": preload("res://assets/models/golden_rabbit.glb"),
 	"wand": preload("res://assets/models/magic_wand.glb"),
@@ -437,7 +437,7 @@ func _people() -> void:
 	cart.get_child(0).position.y = 0.45
 	cart.add_child(CART_MODEL.instantiate())
 	_loot_spot("hat", HAT_RACK_AT, Vector3(1.2, 0.3, 0.5), Vector3(0, 0, 1))
-	_loot_spot("cart", CART_AT + Vector3(0, 0.95, 0), Vector3(0.9, 0.15, 0.6), Vector3(0, 0, 1))
+	_loot_spot("food_cart", CART_AT + Vector3(0, 0.95, 0), Vector3(0.9, 0.15, 0.6), Vector3(0, 0, 1))
 	_loot_spot("tank", TANK_AT, Vector3(0.3, 0.4, 0.5), Vector3(1, 0, 0))
 	_build.mesh_box(TANK_AT, Vector3(0.22, 0.35, 0.45), TILE)
 	_build.box(BAGS_AT + Vector3(0, 0.45, 0), Vector3(0.5, 0.9, 0.4), LEATHER)
