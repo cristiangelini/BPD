@@ -5226,7 +5226,6 @@ PROMPT_SEARCH_piano,"E: levantar la tapa del piano","E: lift the piano's lid","E
 PROMPT_SEARCH_dusty_trunk,"E: abrir el baúl polvoriento","E: open the dusty trunk","E: abrir o baú empoeirado"
 HINT_SEARCH_NOTHING_coat_rack,"Tres capas a cuadros, una pipa de burbujas y una lupa sin vidrio. Nada más.","Three checked capes, a bubble pipe and a magnifying glass with no glass. Nothing else.","Três capas xadrez, um cachimbo de bolhas e uma lupa sem vidro. Mais nada."
 HINT_SEARCH_NOTHING_piano,"Cuerdas, polvo y una partitura de ""Para Elisa"" con manchas de flan. Nada más.","Strings, dust and a sheet of ""Für Elise"" with flan stains. Nothing else.","Cordas, poeira e uma partitura de ""Para Elisa"" com manchas de pudim. Mais nada."
-HINT_SEARCH_NOTHING_trunk,"Telarañas, un sombrero de copa y novelas del Detective Pipa. Nada más.","Cobwebs, a top hat and Detective Pipa novels. Nothing else.","Teias de aranha, uma cartola e romances do Detetive Pipa. Mais nada."
 OBJ_MANSION_CATCH,"Atrapar al culpable en el laberinto antes de que salga por la reja","Catch the culprit in the maze before they reach the gate","Pegar o culpado no labirinto antes que saia pelo portão"
 HINT_MAZE_CAUGHT,"¡Atrapado entre los ligustros! Con capa y todo.","Caught among the hedges! Cape and all.","Pego entre as cercas vivas! Com capa e tudo."
 HINT_MAZE_ESCAPED,"Salió por la reja del fondo del laberinto. Se escapó.","Out the gate at the end of the maze. Got away.","Saiu pelo portão do fundo do labirinto. Escapou."
