@@ -530,6 +530,34 @@ const NPCS = {
 		b.add('props', pan, new THREE.CylinderGeometry(0.015, 0.015, 0.3, 5), { pos: V(0.55, 0.85, 0.08), rot: [Math.PI / 2, 0, 0] });
 		b.add('props', C('flame', 0xff8a20, { emissive: 0xc04000 }), new THREE.ConeGeometry(0.07, 0.18, 6), { pos: V(0.55, 0.97, 0.3) });
 	},
+	// Don Muzza, the pizzeria's owner (allanamiento-pizzeria.md): a red shirt under a floury white apron, a huge black
+	// mustache, a little white cap and a disc of dough spinning on one raised finger.
+	muzza(b) {
+		pearBody(b, SKIN.arena, { shirt: C('muzza_shirt', 0xc83030), pants: C('muzza_pants', 0x3a3a44), belted: false });
+		const apron = C('muzza_apron', 0xf4f2ea);
+		b.add('body', apron, loft([{ y: 0.35, rx: 0.5, rz: 0.46 }, { y: 0.95, rx: 0.4, rz: 0.37 }], 10), { pos: V(0, 0, 0.015) });
+		for (let i = 0; i < 4; i++) b.add('body', C('flour_dust', 0xfaf8f0), ellipsoid(0.06, 0.04, 0.02, 5, 3), { pos: V(-0.2 + i * 0.13, 0.5 + (i % 2) * 0.2, 0.47 - (i % 2) * 0.03) });
+		eyes(b, 1.34, 0.17, 0.08, 0.045);
+		mustache(b, C('hair_black', 0x1a1a1a), 2.0);
+		mouth(b, { open: true });
+		b.add('cap', C('muzza_cap', 0xf8f8f4), new THREE.CylinderGeometry(0.22, 0.24, 0.12, 12), { pos: V(0, 1.47, 0.0) });
+		b.add('props', C('dough', 0xf0d8a8), new THREE.CylinderGeometry(0.2, 0.2, 0.02, 12), { pos: V(0.48, 0.86, 0.12) });
+		b.add('props', C('sauce_red', 0xc02818), new THREE.CylinderGeometry(0.16, 0.16, 0.022, 12), { pos: V(0.48, 0.86, 0.12) });
+		b.add('props', SKIN.arena, new THREE.CylinderGeometry(0.025, 0.025, 0.14, 6), { pos: V(0.48, 0.78, 0.12) });
+	},
+	// Tito, the pizzeria's delivery boy (allanamiento-pizzeria.md): a red jacket with a pizza on the back, a helmet with a
+	// visor up, jeans and roller skates.
+	tito(b) {
+		pearBody(b, SKIN.cacao, { shirt: C('tito_jacket', 0xd84a2a), pants: C('jeans', 0x3a5a9a), shoes: C('skates_white', 0xf0f0f0) });
+		b.add('body', C('pizza_logo', 0xf0c040), new THREE.CylinderGeometry(0.14, 0.14, 0.02, 3), { pos: V(0, 0.82, -0.36), rot: [Math.PI / 2 + 0.3, 0, 0] });
+		eyes(b, 1.34, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		b.add('cap', C('helmet_yellow', 0xf0c020), ellipsoid(0.26, 0.17, 0.27, 10, 5), { pos: V(0, 1.45, -0.01) });
+		b.add('cap', C('visor', 0x6a8ab8, { transparent: true, opacity: 0.6 }), new THREE.BoxGeometry(0.34, 0.08, 0.02), { pos: V(0, 1.55, 0.2), rot: [-0.6, 0, 0] });
+		for (const s of [-1, 1]) for (const side of [-1, 1]) for (const z of [0.02, 0.22]) {
+			b.add('feet', C('skate_wheel', 0xe83a8a), new THREE.CylinderGeometry(0.035, 0.035, 0.025, 8), { pos: V(s * 0.2 + side * 0.13, 0.035, z), rot: [0, 0, Math.PI / 2] });
+		}
+	},
 	// The maître at the kitchen's door: a tuxedo, a thin mustache, slicked hair and the leather-bound book of bookings.
 	maitre(b) {
 		const tux = C('tux_black', 0x16161a);
