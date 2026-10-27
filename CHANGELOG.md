@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Dentist raid design (allanamiento-dentista.md, decision 460): the dental office "Sonrisa Total", Dr. Molina as the owner, the next-patient bell as his distraction, the fish tank and the denture molds as what breaks, a laughing gas tank that leaves a cop unable to grab for 5 s, Lucho in the waiting room who talks to whoever brings him a candy, and six stories.
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
 - Gym raid, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office, the cake lab and the gym in eighths.
 - Gym raid, step 5: the fixed fights story: the punching bags swing when punched (E) and shove whoever stands behind them, one of them clangs like metal (the clue), and the betting book, the gloves with a horseshoe and the cardboard champion belt are hidden. The gym now tells its six stories.
