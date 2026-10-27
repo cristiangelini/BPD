@@ -112,6 +112,13 @@ Los pesos y valores siguen la escala de la bolera y el karaoke: la principal val
   30), la vitrina de máscaras (multa 15), el baúl de pelucas, el canasto de ofertas, el depósito "solo personal"
   con estantes y cajas, y la oficina con escritorio y caja fuerte. 12 escondites (6 pesados). Capturas en
   `/mnt/project-files/allanamiento-disfraces/paso1-*.png`.
+- Paso 2: 8 maniquíes disfrazados (pirata, gallina, astronauta y vampiro), cuerpos sueltos de 12 kg y pesados
+  arriba: 6 en fila entre los percheros, a 1,5 m, y 2 junto a los percheros de adelante. Uno que se inclina o llega
+  rápido (más de 1,5 m/s) voltea al que choca, y la fila cae como bolos. 4 clientes miran los percheros de adelante y
+  por turno (el primero a los 3 s, el siguiente 4 s después de que vuelve el anterior) van por el pasillo del frente
+  y el del oeste a un probador, se prueban un disfraz 15 s ("¡Arrr! ¡Soy un pirata temible!") y vuelven. Se quejan si
+  hay un policía en el probador ("¡Hay un policía en el probador!") o si un maniquí cae a menos de 2 m ("¡Casi me
+  aplasta un maniquí!"). Capturas `paso2-*.png`.
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, la tienda de disfraces abierta llena de maniquíes? **Recomendado:** sí, no se pisa

@@ -9,6 +9,9 @@ extends Node3D
 ## with the desk and the little safe. The giant mirror breaks if something hits it fast and the display case if
 ## something thrown hits it, a fine each. Every number here is (propuesta).
 
+## A mannequin ended up on the floor, and a customer complained (Don Fantoche adds it to the complaint, step 3).
+signal mannequin_fell(mannequin: CostumeMannequin)
+signal customer_complained(customer: CostumeCustomer)
 signal mirror_broken
 signal mask_case_broken
 
@@ -70,6 +73,22 @@ const PILE_AT := Vector3(-0.3, FLOOR_TOP, -8.6)
 const TRUNK_AT := Vector3(-7.5, FLOOR_TOP, 6.8)
 const BASKET_AT := Vector3(-2.5, FLOOR_TOP, 7.5)
 ## The office in the back east corner, its door in its front wall (OFFICE_Z), with the desk and the little safe.
+## The 8 mannequins in costume: a row between the racks, 1.5 m apart so one falling knocks the next, and two by the
+## front racks.
+const MANNEQUINS: Array[Vector3] = [Vector3(-6.5, FLOOR_TOP, 0.75), Vector3(-5.0, FLOOR_TOP, 0.75),
+	Vector3(-3.5, FLOOR_TOP, 0.75), Vector3(-2.0, FLOOR_TOP, 0.75), Vector3(-0.5, FLOOR_TOP, 0.75),
+	Vector3(1.0, FLOOR_TOP, 0.75), Vector3(2.5, FLOOR_TOP, 2.6), Vector3(4.0, FLOOR_TOP, 2.6)]
+const MANNEQUIN_LOOKS := ["pirate", "chicken", "astronaut", "vampire"]
+## The 4 customers look at the front racks and walk to the fitting rooms along the front aisle and the west aisle;
+## the next one goes this long after the last is back.
+const CUSTOMER_HOMES: Array[Vector3] = [Vector3(-5.8, FLOOR_TOP, 3.7), Vector3(-4.0, FLOOR_TOP, 3.7),
+	Vector3(-1.8, FLOOR_TOP, 3.7), Vector3(-0.2, FLOOR_TOP, 3.7)]
+const CUSTOMER_LOOKS := ["cliente", "clienta", "vecina", "invitado"]
+const AISLE_Z := 5.6
+const AISLE_X := -8.5
+const TURN_GAP := 4.0
+const FIRST_TURN := 3.0
+
 const OFFICE_X := 8.0
 const OFFICE_Z := -4.5
 const OFFICE_DOOR_X := 10.0
@@ -108,6 +127,12 @@ var station_parking: Transform3D
 var city_map: CityMap
 var office_door: FrontDoor
 var till: Till
+var mannequins: Array[CostumeMannequin] = []
+var customers: Array[CostumeCustomer] = []
+## The customer whose turn it is (null between turns), the next one in line and how long until they go.
+var on_turn: CostumeCustomer
+var _next_customer := 0
+var _turn_left := FIRST_TURN
 var mirror_cracked := false
 var case_broken := false
 ## Money taken off the case pay: the mirror and the display case.
@@ -141,6 +166,9 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "costume_shop", car)
+	# The loose mannequins once the cop is out at the station, not standing in them.
+	_build_mannequins()
+	_build_customers()
 
 
 ## The wooden floor, the walls with the doorway, the ceiling with its lights, the roof, the sign and its mustache.
@@ -268,6 +296,78 @@ func break_mask_case() -> void:
 	_build.mesh_box(CASE_AT + Vector3(-CASE_SIZE.x / 2 - 0.02, 1.1, 0), Vector3(0.02, 1.2, 2.3), DARK)
 	_say(CASE_AT + Vector3(-1.0, 2.2, 0), "COSTUME_CASE_BROKEN")
 	mask_case_broken.emit()
+
+
+## The 8 mannequins, each one a loose body, facing the door.
+func _build_mannequins() -> void:
+	for i in MANNEQUINS.size():
+		var mannequin := CostumeMannequin.new()
+		mannequin.name = "Mannequin%d" % (i + 1)
+		mannequin.look = MANNEQUIN_LOOKS[i % MANNEQUIN_LOOKS.size()]
+		mannequin.position = MANNEQUINS[i]
+		add_child(mannequin)
+		mannequin.fell.connect(_on_mannequin_fell)
+		mannequins.append(mannequin)
+
+
+## The 4 customers, each in front of a rack.
+func _build_customers() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["costume customers", case_seed])
+	for i in CUSTOMER_HOMES.size():
+		var customer := CostumeCustomer.new()
+		customer.name = "Customer%d" % (i + 1)
+		customer.look = CUSTOMER_LOOKS[i % CUSTOMER_LOOKS.size()]
+		customer.shop = self
+		customer.home = CUSTOMER_HOMES[i]
+		customer.position = customer.home
+		customer.rng.seed = rng.randi()
+		add_child(customer)
+		customer.complained.connect(customer_complained.emit)
+		customer.turn_over.connect(func(_done: CostumeCustomer) -> void:
+			on_turn = null
+			_turn_left = TURN_GAP)
+		customers.append(customer)
+
+
+func _on_mannequin_fell(mannequin: CostumeMannequin) -> void:
+	for customer in customers:
+		customer.near_fall(mannequin.middle())
+	mannequin_fell.emit(mannequin)
+
+
+## The way from `from` to the front of fitting room `index` (shop space): out to the front aisle, along it to the west
+## aisle, up it to the fitting room and in front of its curtain.
+func aisle_path(from: Vector3, index: int) -> Array:
+	var z := FITTING_Z[index]
+	return [Vector3(from.x, FLOOR_TOP, AISLE_Z), Vector3(AISLE_X, FLOOR_TOP, AISLE_Z), Vector3(AISLE_X, FLOOR_TOP, z),
+		Vector3(FITTING_X + 0.8, FLOOR_TOP, z)]
+
+
+## Where a customer stands inside fitting room `index` (shop space).
+func fitting_inside(index: int) -> Vector3:
+	return Vector3((FITTING_X - HALF_X) / 2, FLOOR_TOP, FITTING_Z[index])
+
+
+## Whether a cop is inside fitting room `index`.
+func cop_in_fitting(index: int) -> bool:
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		var at := to_local(cop.global_position)
+		if at.x < FITTING_X and absf(at.z - FITTING_Z[index]) < FITTING_DEPTH / 2:
+			return true
+	return false
+
+
+## Between turns the next customer in line goes to the next fitting room.
+func _physics_process(delta: float) -> void:
+	if on_turn:
+		return
+	_turn_left -= delta
+	if _turn_left > 0.0:
+		return
+	on_turn = customers[_next_customer % customers.size()]
+	on_turn.start_turn(_next_customer % FITTING_Z.size())
+	_next_customer += 1
 
 
 ## A locked door in the office's front wall, its middle at x.
