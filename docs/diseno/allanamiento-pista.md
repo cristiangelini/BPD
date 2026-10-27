@@ -190,6 +190,9 @@ suman 500.
      de que "la buena está en la tintorería" (como mucho una vez cada 30 s).
    - **Capturas:** `pista/paso6e-*.png`.
 7. La pista en el sorteo de lugares (PlaceDraw), la huida y la persecución.
+   Hecho así: la pista es uno más de los allanamientos que sortea "Jugar", con las mismas chances que los otros. Si
+   Doña Pirueta ve que un policía levanta la prueba principal cerca, se escapa en auto como los otros dueños (la
+   persecución de siempre, con sus 3 frases).
 8. El online.
 
 ## Preguntas abiertas para Cristian
