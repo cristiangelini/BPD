@@ -41,6 +41,7 @@ const PLACES := {
 	"prison": "res://scenes/levels/prison.tscn",
 	"circus": "res://scenes/levels/circus.tscn",
 	"museum": "res://scenes/levels/museum.tscn",
+	"train": "res://scenes/levels/train.tscn",
 	"hotel": "res://scenes/levels/hotel.tscn",
 	"hotel_raid": "res://scenes/levels/hotel_raid.tscn",
 	"transfer": "res://scenes/levels/prisoner_transfer.tscn",
