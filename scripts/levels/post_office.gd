@@ -228,13 +228,74 @@ func uncover_stamp() -> void:
 func reveal_loot() -> void:
 	if loot_found:
 		return
+	_stamp_back()
+	if case:
+		case.found_loot()
+
+
+## La Vaquita Azul in its frame, out of reach.
+func _stamp_back() -> void:
 	uncover_stamp()
 	loot_found = true
 	stamp.position = FRAME_AT + Vector3(0, 0, 0.03)
 	stamp.rotation = Vector3.ZERO
 	stamp.collision_layer = 0
-	if case:
-		case.found_loot()
+
+
+## Online, what the guests' post office takes from the host's: the carriers (what they said, the cap, the tongue, where
+## they stand after a run), the sorting machine and Doña Sellito's patience, Cartita and her cookies, La Vaquita Azul
+## (found, back), the safe's door, the cookie behind the scale, the returns sack and the clues ruined on the host.
+func net_state() -> Dictionary:
+	var state := {"carriers": carriers.map(func(carrier: PostCarrier) -> Array:
+		return [carrier.talked, carrier.cap_on, carrier.tongue_seen, carrier.washed, carrier.position,
+			carrier.rotation.y])}
+	if not case:
+		return state
+	state.sorting = [sorting.run_left, sorting.until_run, sorting.runs, sorting.patience]
+	state.parrot = [parrot.offended, cookies.map(func(cookie: ParrotCookie) -> bool: return cookie.eaten)]
+	state.stamp = [stamp_uncovered, loot_found]
+	state.clues = [clues.safe_door.touched, clues.safe_door.has_prints, clues.cookie_out, clues.letter_covered]
+	return state
+
+
+func apply_net_state(state: Dictionary) -> void:
+	for carrier in carriers:
+		var look: Array = state.carriers[carrier.index]
+		carrier.talked = look[0]
+		if not look[1] and carrier.cap_on:
+			carrier.cap_on = false
+			carrier.part("cap").visible = false
+		carrier.tongue_seen = look[2]
+		carrier.washed = look[3]
+		carrier.position = look[4]
+		carrier.rotation.y = look[5]
+	if not case or not state.has("sorting"):
+		return
+	sorting.follow(state.sorting)
+	if state.parrot[0] and not parrot.offended:
+		parrot.offend()
+	for i in cookies.size():
+		if state.parrot[1][i] and not cookies[i].eaten:
+			cookies[i].eat()
+	if state.stamp[1] and not loot_found:
+		_stamp_back()
+	elif state.stamp[0] and not stamp_uncovered:
+		uncover_stamp()
+	clues.safe_door.touched = state.clues[0]
+	clues.safe_door.has_prints = state.clues[1]
+	if state.clues[2] and not clues.cookie_out:
+		clues.searched("scale")
+	clues.letter_covered = state.clues[3]
+	for kind: String in ["hair", "bite"]:
+		var item := case.items.get(kind) as CrimeClueItem
+		if not item and kind == "bite":
+			item = clues.cookie
+		if case.ruined.has(kind) and item:
+			item.spoiled = true
+			item.visible = false
+			item.collision_layer = 0
+	if case.ruined.has("footprint") and case.flour_print and not case.flour_print.wiped:
+		case.flour_print.wipe()
 
 
 ## The carrier by index (the order of the case's traits).
