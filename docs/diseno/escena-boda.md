@@ -138,7 +138,13 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
    Chola junto a la mesa 3 con su trompetilla sobre la mesa y cuatro invitados en las mesas 4, 5, 7 y 8. Con E cada
    uno dice una frase suya, distinta cada vez (Rosa tiene 10 contra Tito) **(propuesta)**. Capturas:
    `boda-escena/paso2-trajes.png`, `paso2-planta.png` y `paso2-abuela.png`.
-3. Sacarles lo escondido (foto, huellas, dientes, galera y colonia) y las fichas del tablero.
+3. Sacarles lo escondido (foto, huellas, dientes, galera y colonia) y las fichas del tablero. Hecho así: con las manos
+   vacías, el primer E sobre uno de traje lo huele de cerca ("¡Eh, qué haces! (Huele a canela.)") y anota la colonia; el
+   segundo le pide la galera (el pelo); después dice sus frases. El terco se niega ("¡Me despeino para la foto!")
+   hasta que muerde una dona o un pan, y con eso se la saca. Con comida en la mano muerde (los dientes); el flash de la
+   cámara da la foto (anteojos y talle: "¿Salgo bien?") y el kit, las huellas. Cada cosa va a su ficha, que tiene cinco
+   partes y muestra lo sacado hasta ahora (con "?" en lo que falta). Las pistas del caso dicen huellas (nombre), pisada
+   (talle), pelo, mordida (dientes), video (anteojos) y abuela (colonia) **(propuesta)**.
 4. El caso: la historia, lo robado y dónde está escondido, las 6 pistas y cómo se arruinan, la abuela sorda y la
    planilla.
 5. Rosa: que siga a los policías, sus frases, su "prueba" y la boda suspendida si acusan mal a Tito; y el vals.

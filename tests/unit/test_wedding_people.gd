@@ -74,6 +74,9 @@ func test_everyone_stands_clear_and_talks() -> void:
 		assert_ne(person.prompt_key(cop), "")
 		person.use(cop)
 		assert_ne(person.said(), "", "%s says something" % person.name)
-		assert_ne(tr(person.said()), person.said(), "%s's line is translated" % person.name)
-	hall.tuxedos[0].use(cop)
-	assert_eq(hall.tuxedos[0].said(), "WEDDING_GROOM_LINE_1", "Tito's next line")
+		if not person is TuxedoGuest:
+			assert_ne(tr(person.said()), person.said(), "%s's line is translated" % person.name)
+	hall.tuxedos[0].talk()
+	assert_eq(hall.tuxedos[0].said(), "WEDDING_GROOM_LINE_0", "Tito's first line")
+	hall.tuxedos[1].talk()
+	assert_eq(hall.tuxedos[1].said(), "WEDDING_GROOMSMAN_LINE_1", "the groomsmen start on their own line")
