@@ -3,7 +3,7 @@ extends Node
 
 ## The raid's owner gets away (persecucion-final.md, decision 96): when he sees a cop pick up the main evidence close
 ## by, and he isn't cuffed or being walked, he runs off in what's his (the grandpa in his electric wheelchair, from his
-## door; Marta, Ramiro, Tobías, Fermín, Mirta and Bruno in the getaway car, parked in front of the patrol car) and the chase starts on the spot.
+## door; Marta, Ramiro, Tobías, Fermín, Mirta, Bruno, el profe and Don Ofertón in the getaway car, parked in front of the patrol car) and the chase starts on the spot.
 ## Caught and in the patrol car, it counts as taking the owner (decision 93); got away, the raid can still be solved with
 ## the evidence, but there's no interrogation. It happens once a raid. Every number here is (propuesta).
 
@@ -14,8 +14,8 @@ const CAR_AHEAD := 9.0
 ## The wheelchair waits this far (m) out of his door, on the sidewalk.
 const DOOR_OUT := 1.5
 ## Each owner's place in the city (CityLayout), what he gets away in (SuspectCar) and who gets off (ChaseSuspect).
-const PLACES := {"grandpa": "grandpa", "baker": "bakery", "groomer": "pet_salon", "hardware": "hardware", "factory": "doll_factory", "insurance": "insurance", "cake_lab": "cake_lab", "gym": "gym"}
-const VEHICLES := {"grandpa": "wheelchair", "baker": "night", "groomer": "night", "hardware": "night", "factory": "night", "insurance": "night", "cake_lab": "night", "gym": "night"}
+const PLACES := {"grandpa": "grandpa", "baker": "bakery", "groomer": "pet_salon", "hardware": "hardware", "factory": "doll_factory", "insurance": "insurance", "cake_lab": "cake_lab", "gym": "gym", "supermarket": "supermarket"}
+const VEHICLES := {"grandpa": "wheelchair", "baker": "night", "groomer": "night", "hardware": "night", "factory": "night", "insurance": "night", "cake_lab": "night", "gym": "night", "supermarket": "night"}
 
 var raid: RaidCase
 ## The chase, once he ran off.

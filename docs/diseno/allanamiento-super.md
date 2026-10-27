@@ -195,6 +195,10 @@ suman entre 400 y 600.
      Capturas: `paso6-pasillo13-modelos.png`, `paso6-pasillo13-cerrado.png`, `paso6-pasillo13-abierto.png` y
      `paso6-pasillo13.png`. Con esto el súper cuenta sus 6 historias.
 7. "Jugar" suma el súper al sorteo de allanamientos (`PlaceDraw.ORDER`).
+   - **Cómo quedó (propuesta):** "Jugar" sortea el súper entre los allanamientos, y la semilla elige una de sus 6
+     historias. Si Don Ofertón ve a un policía levantar la evidencia principal a menos de 15 m, se escapa en el auto
+     estacionado delante del patrullero y empieza la persecución; cuando lo paran, se baja él con sus frases de
+     oferta («¡Lleven dos patrulleros y el tercero es gratis!»). Captura: `paso7-huida.png`.
 8. El online (Don Ofertón, Lalo, los clientes, los changuitos y lo frágil en todas las PC).
 
 ## Preguntas para Cristian
