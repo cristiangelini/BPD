@@ -2,14 +2,17 @@ class_name GoldenBook
 extends StaticBody3D
 
 ## The Golden Book (escena-biblioteca.md, "El Libro de Oro, escondido entre mil"): the city's first book, with covers
-## of real gold. Found in its hiding spot, it lies there until a cop takes it back to its display case with E
-## (Library.reveal_loot). Every number here is (propuesta).
+## of real gold. Found in its hiding spot, it lies there: E opens it first (inside is the culprit's bookmark, if it's
+## one of the case's clues), and E again takes it back to its display case (Library.reveal_loot). Every number here is
+## (propuesta).
 
 const SIZE := Vector3(0.36, 0.08, 0.28)
 const GOLD := Color(0.95, 0.76, 0.2)
 const PAGES := Color(0.96, 0.93, 0.84)
 
 var library: Library
+## A cop opened it and looked for the bookmark.
+var opened := false
 
 
 func _ready() -> void:
@@ -26,9 +29,22 @@ func _ready() -> void:
 
 
 func prompt_key(_cop: Cop) -> String:
-	return "PROMPT_GOLDEN_BOOK_RETURN"
+	return "PROMPT_GOLDEN_BOOK_RETURN" if opened else "PROMPT_GOLDEN_BOOK_OPEN"
 
 
-func use(_cop: Cop) -> void:
-	if library:
+func use(cop: Cop) -> void:
+	if not opened:
+		open(cop)
+	elif library:
 		library.reveal_loot()
+
+
+## Opened: the bookmark the culprit left in it says what they read.
+func open(cop: Cop) -> void:
+	opened = true
+	var case := library.case if library else null
+	var has_bookmark := case != null and case.plan.clues.has("bookmark")
+	if has_bookmark:
+		case.found("bookmark")
+	if cop:
+		cop.show_hint("HINT_GOLDEN_BOOK_BOOKMARK" if has_bookmark else "HINT_GOLDEN_BOOK_NO_BOOKMARK")

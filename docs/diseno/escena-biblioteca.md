@@ -165,5 +165,11 @@ polvo dorado con la linterna, el fichero, el ruido y el apagón de Doña Sigilo,
    lugares (pisarla la borra), el pelo suelto en el sillón de lectura y el libro hueco en la mesa del medio: con E se
    abre y adentro está la galletita mordida (comerla la arruina). Las bolsas de evidencia están en un banquito junto
    al mostrador. Siguen 5b (polvo, señalador y Tomasito) y 5c (el ruido). Capturas: `biblioteca/paso5-*.png`.
+   **Hecho así (5b):** el polvo dorado cuenta como pista apenas la linterna lo muestra en las manos de cualquiera. El
+   Libro de Oro, encontrado, primero se abre con E (adentro está el señalador, si es pista) y con otro E vuelve a la
+   vitrina; si vuelve sin abrir, Doña Sigilo lo cierra con llave y el señalador se pierde. A Tomasito se le lee un
+   cuento con E (10 s, sin alejarse más de 2 m; si te vas, se corta y hay que empezar de nuevo) y al final dice el
+   género del que vio con el libro, o pide otro cuento si no vio nada. Lo del ruido (cortar el cuento a 30, asustarlo
+   a 100) llega en 5c. Capturas: `biblioteca/paso5b-*.png`.
 6. El final: tablero, cansancio, sueldo y el bibliobús con las pilas de libros.
 7. El sorteo de "Jugar" y el online.

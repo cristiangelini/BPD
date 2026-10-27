@@ -149,6 +149,9 @@ func light_hands(on: bool) -> void:
 	if on:
 		say("READER_DUST_SHINES" if traits.dust else "READER_CLEAN_HANDS")
 		_file("dust")
+		# Whoever took the Golden Book has its dust: seeing it on anyone tells it's a clue.
+		if traits.dust and case:
+			case.found("dust")
 
 
 ## Whether a cop's flashlight reaches their hands (Flashlight.reaches, no wall in between).
