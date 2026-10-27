@@ -257,6 +257,35 @@ export function buildNephewFrame() {
 	return b.build();
 }
 
+// The golden microphone with a tuner inside, 0.24 m long, standing on its end; origin at its foot.
+export function buildGoldenMic() {
+	const b = new Builder('karaoke_golden_mic');
+	const gold = mat('golden_mic', 0xf2c230, { metalness: 0.7, roughness: 0.25 });
+	b.add('handle', gold, new THREE.CylinderGeometry(0.026, 0.018, 0.17, 10), { pos: V(0, 0.085, 0) });
+	b.add('ring', mat('golden_mic_ruby', 0xd8203a), new THREE.CylinderGeometry(0.029, 0.029, 0.015, 10), { pos: V(0, 0.17, 0) });
+	b.add('head', gold, new THREE.SphereGeometry(0.038, 12, 10), { pos: V(0, 0.205, 0) });
+	b.add('dial', mat('golden_mic_dial', 0x2ad06a, { emissive: 0x2ad06a }), new THREE.BoxGeometry(0.02, 0.03, 0.004), { pos: V(0, 0.1, 0.022) });
+	return b.build();
+}
+
+// The spare tuner chip, a green board 6 cm long with a gold note printed on it.
+export function buildTunerChip() {
+	const b = new Builder('karaoke_tuner_chip');
+	b.add('board', mat('chip_green', 0x2a8a4a), new THREE.BoxGeometry(0.06, 0.006, 0.04), { pos: V(0, 0.003, 0) });
+	b.add('chip', mat('chip_black', 0x1c1d22), new THREE.BoxGeometry(0.025, 0.006, 0.02), { pos: V(-0.01, 0.009, 0) });
+	b.add('note', mat('chip_gold', 0xf2c230, { metalness: 0.6, roughness: 0.3 }), new THREE.BoxGeometry(0.012, 0.004, 0.012), { pos: V(0.018, 0.008, 0), rot: [0, 0.78, 0] });
+	return b.build();
+}
+
+// The manual "Canta como una diva sin saber cantar": a pink paperback with a star on its cover.
+export function buildDivaManual() {
+	const b = new Builder('karaoke_diva_manual');
+	b.add('cover', mat('manual_pink', 0xff5ad2), new THREE.BoxGeometry(0.17, 0.02, 0.24), { pos: V(0, 0.01, 0) });
+	b.add('pages', mat('manual_pages', 0xf6f2e2), new THREE.BoxGeometry(0.16, 0.016, 0.004), { pos: V(0, 0.01, 0.12) });
+	b.add('star', mat('manual_gold', 0xf2c230, { metalness: 0.6, roughness: 0.3 }), new THREE.BoxGeometry(0.06, 0.003, 0.06), { pos: V(0, 0.021, -0.03), rot: [0, 0.78, 0] });
+	return b.build();
+}
+
 export const models = {
 	stage_speaker: buildStageSpeaker, lyrics_screen: buildLyricsScreen, sound_console: buildSoundConsole,
 	karaoke_bar: buildKaraokeBar, ice_machine: buildIceMachine, karaoke_table: buildKaraokeTable,
@@ -265,6 +294,7 @@ export const models = {
 	npc_rosaura: buildRosaura, npc_toto: buildToto,
 	karaoke_applause_machine: buildApplauseMachine, karaoke_applause_tapes: buildApplauseTapes,
 	karaoke_winners_list: buildWinnersList, ceiling_speaker: buildCeilingSpeaker, nephew_frame: buildNephewFrame,
+	karaoke_golden_mic: buildGoldenMic, karaoke_tuner_chip: buildTunerChip, karaoke_diva_manual: buildDivaManual,
 };
 
 export const views = {
@@ -287,5 +317,8 @@ export const views = {
 	karaoke_applause: {
 		items: [{ name: 'karaoke_applause_machine', pos: [-0.7, 0, 0] }, { name: 'karaoke_applause_tapes', pos: [-0.1, 0, 0.1] }, { name: 'karaoke_winners_list', pos: [0.3, 0, 0.1], rotY: 0.3 }, { name: 'ceiling_speaker', pos: [0.9, 0.3, 0] }, { name: 'nephew_frame', pos: [0.2, 0.9, -0.6] }],
 		cam: { pos: [0.1, 1.0, 2.6], target: [0.1, 0.4, 0], fov: 40 },
+	},	karaoke_tuner: {
+		items: [{ name: 'karaoke_golden_mic', pos: [-0.25, 0, 0] }, { name: 'karaoke_tuner_chip', pos: [0.0, 0, 0.1] }, { name: 'karaoke_diva_manual', pos: [0.25, 0, 0], rotY: 0.3 }],
+		cam: { pos: [0, 0.45, 0.9], target: [0, 0.08, 0], fov: 40 },
 	},
 };
