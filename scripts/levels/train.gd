@@ -46,6 +46,10 @@ const BATHROOM_Z := 0.65
 const SHOWCASE_AT := Vector3(-21, 0, -1.0)
 const BROKEN_WINDOW_AT := Vector3(-30, 1.45, 0)
 const BRAKE_AT := Vector3(22.8, 0, 0.9)
+## The emergency brake stops the ride this long, costs this much off the salary each time, and works this many times.
+const BRAKE_SECONDS := 60.0
+const BRAKE_FINE := 100
+const BRAKE_PULLS := 2
 ## Where the people stand: each magician in front of his seat, facing the aisle; don Silbato at the brake, Picadora
 ## by the ticket machine and señor Mostaza behind his cart.
 const IN_FRONT_OF_SEAT := Vector3(0.75, 0, 0)
@@ -109,6 +113,12 @@ var loot_found := false
 var loot_spots := {}
 ## The case's clues where they go (TrainClues, step 4b), once the case comes.
 var clues: TrainClues
+## Who has a ticket from the machine, by cop name (Picadora talks only to them), and the brake.
+var tickets := {}
+var ticket_machine: TrainTicketMachine
+var brake: TrainBrake
+var brake_pulls := 0
+var brake_left := 0.0
 var _cars: Node3D
 var _build: PlaceBuilder
 
@@ -138,7 +148,11 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	ride.advance(delta)
+	# Braked, the train stands in the field and the stations' clock waits.
+	if brake_left > 0.0:
+		brake_left = maxf(brake_left - delta, 0.0)
+	else:
+		ride.advance(delta)
 	var dark := ride.in_tunnel()
 	for lamp in lamps:
 		lamp.visible = not dark
@@ -159,11 +173,35 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	loot_spot = LOOT_SPOTS[hash(["train loot spot", case.case_seed]) % LOOT_SPOTS.size()]
 	for magician in magicians:
 		magician.case = case
+	inspector.knows = case.plan.clues.has("witness")
 	clues = TrainClues.new()
 	clues.name = "Clues"
 	clues.train = self
 	clues.case = case
 	add_child(clues)
+
+
+## The emergency brake: the train stops BRAKE_SECONDS, don Silbato shouts, it comes off the salary and Picadora,
+## who was punching tickets, falls over and won't talk anymore.
+func pull_brake() -> void:
+	brake_pulls += 1
+	brake_left = BRAKE_SECONDS
+	engineer.say("TRAIN_ENGINEER_BRAKE")
+	if case:
+		case.spend(BRAKE_FINE)
+	inspector.offend()
+
+
+func has_ticket(cop: Cop) -> bool:
+	return tickets.has(str(cop.name))
+
+
+func witness_offended() -> bool:
+	return inspector.offended
+
+
+func offend_witness() -> void:
+	inspector.offend()
 
 
 ## The node the cars are built in (FLOOR_Y up): the clues go in it too.
@@ -373,7 +411,12 @@ func _first_class() -> void:
 		_cars.add_child(number)
 	for side: float in [-1.0, 1.0]:
 		_build.mesh_box(Vector3(7, 2.15, side * 1.15), Vector3(13, 0.05, 0.6), BRASS)
-	_build.box(TICKET_MACHINE_AT + Vector3(0, 0.7, 0), Vector3(0.5, 1.4, 0.4), Color(0.8, 0.2, 0.2))
+	_build.mesh_box(TICKET_MACHINE_AT + Vector3(0, 0.7, 0), Vector3(0.5, 1.4, 0.4), Color(0.8, 0.2, 0.2))
+	ticket_machine = TrainTicketMachine.new()
+	ticket_machine.name = "TicketMachine"
+	ticket_machine.train = self
+	ticket_machine.position = TICKET_MACHINE_AT
+	_cars.add_child(ticket_machine)
 	_build.mesh_box(TICKET_MACHINE_AT + Vector3(-0.26, 1.1, 0), Vector3(0.02, 0.25, 0.3), DARK)
 
 
@@ -406,7 +449,11 @@ func _luggage() -> void:
 func _engine() -> void:
 	var span: Vector2 = CARS["engine"]
 	_build.box(BRAKE_AT + Vector3(0, 0.5, -0.9), Vector3(0.8, 1.0, 1.2), DARK)
-	_build.box(BRAKE_AT + Vector3(0, 0.55, 0), Vector3(0.06, 1.1, 0.06), Color(0.85, 0.15, 0.1))
+	brake = TrainBrake.new()
+	brake.name = "Brake"
+	brake.train = self
+	brake.position = BRAKE_AT
+	_cars.add_child(brake)
 	_build.box(Vector3(span.x + 4, 0.75, -0.9), Vector3(5, 1.5, 1.0), Color(0.1, 0.1, 0.1))
 	_build.mesh_box(Vector3(span.y + 0.7, -0.2, 0), Vector3(1.4, 1.4, WIDTH), Color(0.8, 0.15, 0.1))
 
