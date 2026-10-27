@@ -139,6 +139,13 @@ polvo dorado con la linterna, el fichero, el ruido y el apagón de Doña Sigilo,
    al este en cuatro filas de dos, cada 2 m, con su letra arriba y la escalera con rueditas, y al oeste el rincón
    infantil adelante y el depósito atrás. Capturas: `biblioteca/paso1-*.png`.
 2. Los seis lectores, Doña Sigilo y Tomasito (modelos y personajes).
+   **Hecho así:** `ReaderTraits` sortea con la semilla pelo, anteojos, talle de pantufla, dientes, polvo dorado (2 o
+   3) y un género distinto para cada uno. Los seis lectores (`LibraryReader`, modelo `npc_lector`: pijama celeste a
+   rayas con ratón, gorro de dormir con pompón, antifaz en la frente, pantuflas y el libro abierto) están de a dos en
+   las mesas largas, enfrentados; con E susurran qué leen y siempre dicen el género. Doña Sigilo (`Librarian`,
+   `npc_sigilo`: cárdigan ciruela, rodete, anteojos con cadenita, llavero y plumero) atiende detrás del mostrador.
+   Tomasito (`LibraryKid`, `npc_tomasito`: pijama de dinosaurios) duerme boca arriba en la alfombra y balbucea.
+   Capturas: `biblioteca/paso2-*.png`.
 3. Las fichas: el polvo dorado con la linterna y el libro que lee.
 4. El caso: el Libro de Oro escondido, la búsqueda y el fichero.
 5. Las pistas, el testigo y el ruido (el "¡SHHH!" y el apagón).

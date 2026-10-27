@@ -6,8 +6,8 @@ extends CrimeScenePlace
 ## tables with their green lamps, the Golden Book's display case, the reading armchair, the librarian's desk and the
 ## card catalog by the door); east of it the stacks, eight tall shelves with their letters A to H and the rolling
 ## ladder; west of it the children's corner (the rug, the cushions and the big cushion) in front and the storeroom
-## (the returns cart and the boxes of old books) behind. The people and the case come in later steps. Every number
-## here is (propuesta).
+## (the returns cart and the boxes of old books) behind. At the long tables, the six readers in pajamas (step 2); behind
+## the desk, Doña Sigilo; asleep on the rug, Tomasito. The case comes in later steps. Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(30, 26)
@@ -40,6 +40,13 @@ const ARMCHAIR_AT := Vector3(-4.6, 0, -1.0)
 const DESK_AT := Vector3(4.0, 0, 4.4)
 const CATALOG_AT := Vector3(-4.4, 0, 5.3)
 const CATALOG_SIZE := Vector3(1.6, 1.3, 0.6)
+## Where the people are: the six readers two by two at the long tables, facing each other across them, Doña Sigilo
+## behind her desk facing the room, and Tomasito asleep on the rug.
+const READERS_AT: Array[Vector3] = [
+	Vector3(-1.5, 0, 1.7), Vector3(1.5, 0, 4.3), Vector3(-1.5, 0, -6.8), Vector3(1.5, 0, -4.2), Vector3(-1.5, 0, -10.8),
+	Vector3(1.5, 0, -8.2),
+]
+const LIBRARIAN_AT := Vector3(4.0, 0, 5.2)
 ## The stacks: eight shelves along z, four rows of two, each with its letter; books on both faces.
 const SECTIONS := {
 	"A": Vector3(7.5, 0, -8.5), "B": Vector3(7.5, 0, -1.5), "C": Vector3(9.5, 0, -8.5), "D": Vector3(9.5, 0, -1.5),
@@ -74,6 +81,9 @@ const BOOK_COLORS: Array[Color] = [
 const CUSHION_COLORS: Array[Color] = [Color(0.95, 0.6, 0.2), Color(0.3, 0.7, 0.85), Color(0.9, 0.45, 0.6),
 	Color(0.55, 0.8, 0.35)]
 
+var readers: Array[LibraryReader] = []
+var librarian: Librarian
+var kid: LibraryKid
 var _builder: PlaceBuilder
 
 
@@ -88,6 +98,12 @@ func _ready() -> void:
 	_stacks()
 	_children_corner()
 	_storeroom()
+	_people()
+
+
+## The reader by index (the order of the case's traits).
+func suspect(index: int) -> CollisionObject3D:
+	return readers[index] if index >= 0 and index < readers.size() else null
 
 
 ## Whether a point in the world (ignoring height) is on the library's lot, steps included.
@@ -125,6 +141,30 @@ func section(world: Vector3) -> String:
 			best = absf(local.x - at.x)
 			nearest = letter
 	return nearest
+
+
+## The six readers alike (ReaderTraits.draw with the case seed) at the tables, Doña Sigilo at her desk and Tomasito
+## asleep on the rug.
+func _people() -> void:
+	var traits := ReaderTraits.draw(case_seed)
+	for i in traits.size():
+		var reader := LibraryReader.new()
+		reader.name = "Reader%d" % i
+		reader.traits = traits[i]
+		reader.index = i
+		reader.position = READERS_AT[i] + Vector3(0, FLOOR_TOP, 0)
+		reader.rotation.y = 0.0 if i % 2 == 0 else PI
+		add_child(reader)
+		readers.append(reader)
+	librarian = Librarian.new()
+	librarian.name = "Librarian"
+	librarian.position = LIBRARIAN_AT + Vector3(0, FLOOR_TOP, 0)
+	librarian.rotation.y = PI
+	add_child(librarian)
+	kid = LibraryKid.new()
+	kid.name = "Kid"
+	kid.position = KID_AT + Vector3(0, FLOOR_TOP, 0)
+	add_child(kid)
 
 
 ## The floors, the high roof with its lights, and the outer walls with the front door.
