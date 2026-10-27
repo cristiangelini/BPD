@@ -138,6 +138,18 @@ Mientras tanto se avanza con lo recomendado.
 0. Este documento y la decisión 470.
 1. El correo en su lote, con el mostrador, la sala de clasificación, los casilleros, la oficina de la jefa y el
    depósito, y `--place=post_office`.
+   **Hecho así:** lote de 32 x 28 en la cuadra (7, 0), lado sur, con el frente amarillo hacia la calle.
+   - **Afuera:** el cartel, un reloj sobre la puerta y el buzón gigante azul en la acera.
+   - **El mostrador, adelante:** el mostrador con tres ventanillas (la 2 con loro, la 3 cerrada desde siempre), el
+     marco vacío de La Vaquita Azul en la pared de atrás con su placa, la balanza de paquetes, el saco de
+     devoluciones y la fila con cintas. Los empleados pasan detrás del mostrador por sus dos puntas.
+   - **Los casilleros, al este:** 24 casilleros de bronce numerados; seis tienen la etiqueta de un recorrido (rojo
+     2, verde 5, amarillo 9, azul 14, naranja 18, violeta 21; el número de la etiqueta es el índice + 1).
+   - **La sala de clasificación, atrás:** la clasificadora azul de 8 m con sus rodillos y la tolva, cuatro sacos de
+     cartas y un estante.
+   - **El depósito y la oficina, en el rincón este:** estantes con paquetes y una caja "Frágil"; la oficina con la
+     caja fuerte abierta, el escritorio con el libro del matasellos y el botón rojo en la pared.
+   - Capturas: `correo/paso1-*.png`.
 2. La gente: los seis carteros (rasgos con la semilla), Doña Sellito y Cartita, con sus modelos.
 3. Las fichas: la variante `post_office` de la escena del crimen, con la lengua y el recorrido.
 4. La Vaquita Azul escondida, buscar con E y el libro del matasellos.

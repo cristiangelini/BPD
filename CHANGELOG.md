@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Post office crime scene, step 1: the Correo Central on its own lot (block 7, 0, south side) with the clock and the giant mailbox; the counter hall with three windows, La Vaquita Azul's empty frame, the parcel scale, the returns sack and the queue ribbons; the wall of 24 post boxes (six with a route's color); the sorting room with the big sorting machine and the mail sacks; the parcel depot; and the boss's office with the open safe, the postmark book and the red button. --place=post_office opens it.
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
 - Gym raid, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office, the cake lab and the gym in eighths.
 - Gym raid, step 5: the fixed fights story: the punching bags swing when punched (E) and shove whoever stands behind them, one of them clangs like metal (the clue), and the betting book, the gloves with a horseshoe and the cardboard champion belt are hidden. The gym now tells its six stories.
