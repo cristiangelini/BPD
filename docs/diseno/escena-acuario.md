@@ -134,6 +134,13 @@ el tanque de cada buzo, Bigotes con sus robos y el piso mojado, Doña Tinta y el
 ## El orden para hacerlo (un PR chico por paso)
 0. Este documento y la decisión 400.
 1. El acuario en su lote, con el tanque grande, los seis tanques chicos, la tienda y la cocina, y `--place=aquarium`.
+   **Hecho así:** lote de 32 x 28 en la cuadra (7, 3), lado sur, con el frente hacia la calle. La puerta es la boca de
+   un tiburón (mandíbula, dientes y ojos) y la ballena de cartón está acostada en el techo. En el medio de la sala, el
+   tanque grande con Doña Almeja abierta y vacía; contra la pared oeste, tiburones, medusas y caballitos de mar; contra
+   la este, tortugas y mantarrayas, y Doña Tinta en el rincón oscuro con una luz violeta; atrás, la pileta baja de los
+   pingüinos con el hielo y el iglú. Adelante, la tienda al oeste (canasto de peluches, caja y estante) y la cocina al
+   este (balde de comida, caja de cangrejos, heladera, pileta y la pizarra "Comida de hoy"). Capturas:
+   `acuario/paso1-*.png`.
 2. Los seis buzos, Don Anzuelo, Bigotes y Doña Tinta (modelos y personajes).
 3. Las fichas: la tinta debajo del guante y el tanque que cuida.
 4. El caso: La Gorda escondida, la búsqueda y la pizarra de la comida.
