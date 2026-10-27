@@ -126,3 +126,13 @@ internos (sobornos.md), CaseBriefing y CaseChecklist, ChaseCase.begin, PlaceDraw
   `CellDoor`, cerrada) separa la jaula, con tres estantes de cajas de casos viejos contra las paredes, el estante del
   medio con el hueco limpio en el polvo y la cinta roja, y la cámara en el rincón mirando el hueco. Modelos en
   `tools/modelgen/models/evidence_room.js`. Capturas en `escena-comisaria/paso1-*.png`.
+- **Paso 2 (la gente):** `StationStaff` pone a los cinco compañeros nuevos y al Chancho en su lugar
+  (`StationStaff.spawn_all`; el caso los llama en el paso 4): el cabo Ronquido junto al banco de la sala de guardia,
+  con los párpados caídos y un termo; la oficial Sellito junto al otro banco, con el sello en la mano; don Mopa en la
+  sala de descanso, con guantes amarillos y la mopa; doña Fritanga al lado de la máquina de café, con delantal blanco
+  y una dona; y el archivista Polilla en el depósito, con anteojos gruesos, polvo en los hombros y una caja. Los cinco
+  llevan el uniforme, la gorra y el bigote de reglamento de los policías, y una placa con el nombre que se lee solo de
+  cerca. El armero queda con su delantal detrás del mostrador. El Chancho, en la celda 1: mameluco naranja, nariz de
+  chancho y orejitas. Con E cada uno dice una de sus cuatro frases; los dientes están en el modelo pero no se ven
+  (para el mordisco del paso 4). Modelos en `tools/modelgen/models/station_staff.js`. Capturas en
+  `escena-comisaria/paso2-*.png`.
