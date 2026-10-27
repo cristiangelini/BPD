@@ -1,6 +1,7 @@
 // Props of the "Cine Butaca Floja" (docs/diseno/allanamiento-cine.md): the folding velvet seat, the popcorn machine and
 // the old film projector, with origins at the floor in the middle of each piece. Placeholder, not final art.
-import { Builder, mat, V, THREE } from '../lib.js';
+import { Builder, mat, V, THREE, ellipsoid } from '../lib.js';
+import { M, pearBody, eyes } from './pear.js';
 
 // A folding theater seat 0.7 m wide: red velvet back and seat between two dark iron sides, the seat folded down.
 // Front +Z.
@@ -52,8 +53,32 @@ export function buildFilmProjector() {
 	return b.build();
 }
 
+// Doña Bobina, the owner and projectionist: short and round, huge round glasses, a grey bun with a pencil through it,
+// a green wool vest over a lilac blouse and a reel of film under her right arm. The game scales her short and wide.
+export function buildDonaBobina() {
+	const b = new Builder('npc_dona_bobina');
+	const blouse = mat('bobina_blouse', 0xb89ad0), vest = mat('bobina_vest', 0x3f6a46), skirt = mat('bobina_skirt', 0x5a3a52);
+	pearBody(b, mat('skin_bobina', 0xe8b48c), { shirt: blouse, pants: skirt, shoes: M.black, belted: false });
+	b.add('vest', vest, new THREE.CylinderGeometry(0.33, 0.43, 0.42, 10, 1, true), { pos: V(0, 0.76, 0) });
+	eyes(b, 1.33, 0.18, 0.08, 0.05);
+	const frame = mat('bobina_glasses', 0x2a1e18);
+	for (const s of [-1, 1]) {
+		b.add('glasses', frame, new THREE.TorusGeometry(0.075, 0.012, 4, 12), { pos: V(s * 0.085, 1.33, 0.205) });
+	}
+	b.add('glasses', frame, new THREE.BoxGeometry(0.03, 0.012, 0.012), { pos: V(0, 1.34, 0.21) });
+	const hair = mat('bobina_hair', 0xc8c4c0);
+	b.add('hair', hair, ellipsoid(0.205, 0.12, 0.2, 10, 5), { pos: V(0, 1.42, 0.0) });
+	b.add('hair', hair, ellipsoid(0.11, 0.1, 0.11, 8, 5), { pos: V(0, 1.55, -0.1) });
+	b.add('pencil', mat('pencil_yellow', 0xf2c230), new THREE.CylinderGeometry(0.012, 0.012, 0.3, 6), { pos: V(0.02, 1.57, -0.1), rot: [0, 0, 1.2] });
+	const reel = mat('bobina_reel', 0x9aa0a8);
+	b.add('reel', reel, new THREE.CylinderGeometry(0.17, 0.17, 0.04, 14), { pos: V(0.5, 0.72, 0.05), rot: [0, 0, Math.PI / 2] });
+	b.add('reel', M.black, new THREE.CylinderGeometry(0.1, 0.1, 0.05, 14), { pos: V(0.5, 0.72, 0.05), rot: [0, 0, Math.PI / 2] });
+	return b.build();
+}
+
 export const models = {
 	cinema_seat: buildCinemaSeat, popcorn_machine: buildPopcornMachine, film_projector: buildFilmProjector,
+	npc_dona_bobina: buildDonaBobina,
 };
 
 export const views = {
@@ -61,6 +86,7 @@ export const views = {
 		items: [
 			{ name: 'cinema_seat', pos: [-1.2, 0, 0] }, { name: 'cinema_seat', pos: [-0.5, 0, 0] },
 			{ name: 'popcorn_machine', pos: [0.5, 0, 0.3] }, { name: 'film_projector', pos: [1.5, 0, 0], rotY: -0.6 },
+			{ name: 'npc_dona_bobina', pos: [0.6, 0, 1.0], rotY: -0.2 },
 		],
 		cam: { pos: [0, 1.6, 4.5], target: [0.1, 0.7, 0], fov: 40 },
 	},

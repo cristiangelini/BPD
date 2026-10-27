@@ -6,7 +6,9 @@ extends Node3D
 ## counter with the popcorn machine, the posters and the restroom. Through the red curtain by the screen, the theater:
 ## dark, 40 seats in 8 rows on a floor that rises toward the back, lit only by the projector's beam; up a narrow stair
 ## at the back the projection booth, locked with the till's key. Something thrown hard at the screen rips it, and at the
-## popcorn machine breaks its glass, a fine each. Every number here is (propuesta).
+## popcorn machine breaks its glass, a fine each. Doña Bobina spends her time in the booth and comes down the west aisle
+## to the front now and then, filling the complaint; E on the projector cuts the tape and sends her to splice it, her
+## back to everything (step 3). Every number here is (propuesta).
 
 signal screen_ripped
 signal glass_broken
@@ -16,7 +18,7 @@ signal shushed(spectator: CinemaSpectator)
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const SEAT_MODEL := preload("res://assets/models/cinema_seat.glb")
 const POPCORN_MODEL := preload("res://assets/models/popcorn_machine.glb")
-const PROJECTOR_MODEL := preload("res://assets/models/film_projector.glb")
+const BOBINA_SCENE := preload("res://scenes/npc/dona_bobina.tscn")
 const HALF_X := 11.0
 const HALF_Z := 15.0
 const WALL_TOP := 8.0
@@ -77,6 +79,25 @@ const FILM_TINTS: Array[Color] = [Color(0.75, 0.8, 0.95), Color(0.95, 0.75, 0.55
 ## The six spectators, each in a seat drawn with the seed.
 const SPECTATORS := 6
 
+## Doña Bobina's round, back and forth: from her booth out of its door, down the stair, along the back and down the west
+## aisle to the front of the theater. She splices the tape at the back of the booth, her back to the window.
+const BOBINA_ROUTE: Array[Vector3] = [
+	Vector3(-7.5, BOOTH_FLOOR, -13.0), Vector3(BOOTH_DOOR_X, BOOTH_FLOOR, -12.4), Vector3(BOOTH_DOOR_X, BOOTH_FLOOR, -10.4),
+	Vector3(BOOTH_DOOR_X, FLOOR_TOP + RISE, -7.0), Vector3(-6.5, FLOOR_TOP + RISE, -6.6), Vector3(-6.5, FLOOR_TOP, 4.4),
+	Vector3(-1.0, FLOOR_TOP, 4.6),
+]
+const SPLICE_SPOT := Vector3(-5.0, BOOTH_FLOOR, -13.6)
+## How long she stays in her booth between rounds, and splicing the tape.
+const BOOTH_PAUSE := 20.0
+const SPLICE_TIME := 20.0
+## A spectator's "¡Shhh!", her seeing the screen or the glass break, and cutting the tape once she knows the trick.
+const SHUSHED := 5.0
+const SAW_SCREEN := 10.0
+const SAW_GLASS := 10.0
+const NOTICED := 10.0
+## She opens the booth's door when this close to it and shuts it again once past.
+const DOOR_REACH := 2.0
+
 ## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
 const SPOTS := [
 	{"id": "behind_screen", "at": Vector3(6.4, FLOOR_TOP, 6.65), "heavy": true},
@@ -128,6 +149,12 @@ var film_running := true
 var film_line := 0
 var spectators: Array[CinemaSpectator] = []
 var shushes := 0
+var projector: CinemaProjector
+var bobina: FloorBoss
+var complaint_bar: ProgressBar
+## Whether she opened the booth's door on her way, and whether it was locked then.
+var _bobina_opened := false
+var _was_locked := false
 @onready var car: PatrolCar = $PatrolCar
 
 
@@ -143,6 +170,7 @@ func _ready() -> void:
 	_build_hall()
 	_build_booth()
 	_seat_spectators()
+	_place_bobina()
 	_show_film()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("cinema")
@@ -311,8 +339,9 @@ func _build_booth() -> void:
 	_build.wall_at("x", BOOTH_Z0, window - 0.5, window + 0.5, BOOTH_FLOOR, 0.8, [], WALL_IN.lightened(0.2))
 	_build.wall_at("x", BOOTH_Z0, window - 0.5, window + 0.5, BOOTH_FLOOR + 1.4, height - 1.4, [], WALL_IN.lightened(0.2))
 	_build.wall_at("z", BOOTH_X1, -HALF_Z, BOOTH_Z0, BOOTH_FLOOR, height, [], WALL_IN.lightened(0.2))
-	_model(PROJECTOR_MODEL, PROJECTOR_AT)
-	_build.shape(_build.body(PROJECTOR_AT + Vector3(0, 0.6, 0)), Vector3(0.5, 1.2, 0.8))
+	projector = CinemaProjector.new()
+	projector.position = PROJECTOR_AT
+	add_child(projector)
 	for i in 4:
 		_build.mesh(_can(), Vector3(-4.0, BOOTH_FLOOR + 0.05 + i * 0.12, -13.8), Color(0.6, 0.62, 0.66))
 	_build.light(Vector3(-7.0, BOOTH_FLOOR + 2.2, -13.0)).light_energy = 0.5
@@ -390,6 +419,8 @@ func mend_film() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if bobina:
+		_bobina_door()
 	if not film_running:
 		return
 	_film_left -= delta
@@ -397,6 +428,68 @@ func _physics_process(delta: float) -> void:
 		_film_left = FILM_EVERY
 		film_line += 1
 		_show_film()
+
+
+## Doña Bobina on her round, the projector's cuts, what she notices and the complaint bar.
+func _place_bobina() -> void:
+	bobina = BOBINA_SCENE.instantiate()
+	bobina.route = BOBINA_ROUTE
+	bobina.printer_spot = SPLICE_SPOT
+	bobina.printer = projector
+	bobina.fix_time = SPLICE_TIME
+	bobina.first_pause = BOOTH_PAUSE
+	add_child(bobina)
+	bobina.fix_facing = to_global(SPLICE_SPOT + Vector3(0, 0, -10))
+	bobina.start_at(0)
+	booth_door.broken.connect(bobina.door_broken)
+	till.opened.connect(func(at: Vector3) -> void: bobina.saw(at, FloorBoss.SAW_TILL))
+	screen_ripped.connect(func() -> void: bobina.saw(to_global(SCREEN_AT), SAW_SCREEN, "BOBINA_SCREEN"))
+	glass_broken.connect(func() -> void: bobina.saw(to_global(POPCORN_AT), SAW_GLASS, "BOBINA_GLASS"))
+	shushed.connect(func(_spectator: CinemaSpectator) -> void: bobina.scold(SHUSHED, "BOBINA_SHUSHED"))
+	projector.jammed.connect(cut_film)
+	projector.spliced.connect(mend_film)
+	projector.noticed.connect(func() -> void: bobina.scold(NOTICED, "BOBINA_NOTICED"))
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	bobina.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## She has the booth's key: its door opens before her and shuts behind her, locked again as she found it unless a cop
+## slipped in.
+func _bobina_door() -> void:
+	if booth_door.is_broken:
+		return
+	var at := to_local(bobina.global_position)
+	var near := Vector2(at.x - BOOTH_DOOR_X, at.z - BOOTH_Z0).length() < DOOR_REACH
+	if near and not booth_door.is_open:
+		_was_locked = booth_door.locked
+		_bobina_opened = true
+		booth_door.open_from_inside()
+	elif not near and _bobina_opened:
+		_bobina_opened = false
+		booth_door.close()
+		booth_door.locked = _was_locked and not _cop_in_booth()
+
+
+func _cop_in_booth() -> bool:
+	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
+		var at := to_local(cop.global_position)
+		if at.x > BOOTH_X0 and at.x < BOOTH_X1 and at.z < BOOTH_Z0 and at.y > BOOTH_FLOOR - 0.5:
+			return true
+	return false
 
 
 ## Rips the screen, once: a fine and a dark gash across it.
