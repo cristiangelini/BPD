@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Ice cream raid, step 6: the rigged scale story: the 5 kg scale, the magnet and the complaints notebook, the "1 KG" sign over a tiny tub on the till's table (the clue) and a customer who comes back every 45 s saying it isn't a kilo.
 - Ice cream raid, step 6: the smuggling in the ice story: the 8 kg ice block with watches, the delivery list and the fake customs stamp, the cold room's thermometer at -40 °C (the clue) and a customer who comes in every 50 s asking whether "the cold stuff" arrived.
 - Ice cream raid, step 5: the shop is a raid case: 3 suspicions among its 6 stories, the vague tip, hidden items drawn with the seed, doña Nieve's slips and what Lucho saw for a cone. The stolen flavors story: the recipe box, the secret ingredient jar and the rival's photo, the "Igualito al de Enfrente" sign over the glass case (the clue) and doña Nieve offering the new flavor every 40 s; she gets away by car.
 - Ice cream raid, step 4: Lucho the delivery boy rides up to the door every 45 s and waits 12 s; the cone dispenser on the till's desk puts a cone in empty hands, and a cop who gives Lucho one hears what he saw, once per cop.

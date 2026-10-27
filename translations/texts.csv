@@ -5693,3 +5693,13 @@ LUCHO_CLUE_frozen_smuggling,«Anoche doña Nieve me hizo cargar un bloque de hie
 ICE_THERMOMETER,-40 °C,-40 °C,-40 °C
 CLUE_COLD_THERMOMETER,El termómetro de la cámara marca -40 °C. El helado se guarda a -18. A -40 se guarda otra cosa.,The cold room's thermometer reads -40 °C. Ice cream keeps at -18. Something else keeps at -40.,O termômetro da câmara marca -40 °C. Sorvete se guarda a -18. A -40 se guarda outra coisa.
 ICE_COLD_ARRIVED,"¿Llegó lo frío? No, helado no quiero. Lo frío.","Did the cold stuff arrive? No, I don't want ice cream. The cold stuff.","Chegou o frio? Não, sorvete eu não quero. O frio."
+BRIEF_RIGGED_SCALE_B,Los vecinos compran un kilo de helado en la Pingüino Derretido y en casa pesa medio. Todos. Siempre.,The neighbors buy a kilo of ice cream at the Pingüino Derretido and at home it weighs half. All of them. Always.,Os vizinhos compram um quilo de sorvete na Pingüino Derretido e em casa pesa meio. Todos. Sempre.
+BRIEF_RIGGED_SCALE_C,Traigan la balanza arreglada en el baúl del patrullero. Pesa 5 kilos... o eso dice ella.,Bring the rigged scale back in the patrol car's trunk. It weighs 5 kilos... or so it says.,Tragam a balança viciada no porta-malas da viatura. Pesa 5 quilos... ou é o que ela diz.
+BRIEF_RIGGED_SCALE_D,"Si encuentran el imán o el cuaderno de quejas que escondió, mejor: todo suma.","If you find the magnet or the complaints notebook she hid, even better: it all counts.","Se acharem o ímã ou o caderno de reclamações que ela escondeu, melhor: tudo conta."
+OBJ_FIND_ICE_SCALE,Llevarse la balanza arreglada,Take the rigged scale,Levar a balança viciada
+OBJ_EXTRA_SCALE_MAGNET,Extra: el imán de la balanza,Extra: the scale's magnet,Extra: o ímã da balança
+OBJ_EXTRA_COMPLAINTS_NOTEBOOK,Extra: el cuaderno de quejas,Extra: the complaints notebook,Extra: o caderno de reclamações
+LUCHO_CLUE_rigged_scale,«Doña Nieve me pesó a mí en la balanza y salí de cuarenta kilos. Después la escondió %s.»,“Doña Nieve weighed me on the scale and I came out at forty kilos. Then she hid it %s.”,“A dona Nieve me pesou na balança e deu quarenta quilos. Depois ela escondeu %s.”
+ICE_ONE_KILO,1 KG,1 KG,1 KG
+CLUE_TINY_KILO,El cartel de «1 kg» está pegado arriba de un pote chiquito. Ahí no entra ni un cuarto.,The «1 kg» sign is stuck over a tiny tub. Not even a quarter fits in there.,A placa de «1 kg» está colada em cima de um pote pequenininho. Ali não cabe nem um quarto.
+ICE_NOT_A_KILO,¡Esto no es un kilo! ¡En casa lo pesé y es medio!,This isn't a kilo! I weighed it at home and it's half!,Isso não é um quilo! Pesei em casa e é meio!
