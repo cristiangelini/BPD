@@ -5703,3 +5703,13 @@ LUCHO_CLUE_rigged_scale,«Doña Nieve me pesó a mí en la balanza y salí de cu
 ICE_ONE_KILO,1 KG,1 KG,1 KG
 CLUE_TINY_KILO,El cartel de «1 kg» está pegado arriba de un pote chiquito. Ahí no entra ni un cuarto.,The «1 kg» sign is stuck over a tiny tub. Not even a quarter fits in there.,A placa de «1 kg» está colada em cima de um pote pequenininho. Ali não cabe nem um quarto.
 ICE_NOT_A_KILO,¡Esto no es un kilo! ¡En casa lo pesé y es medio!,This isn't a kilo! I weighed it at home and it's half!,Isso não é um quilo! Pesei em casa e é meio!
+BRIEF_RIGGED_STICKS_B,Los palitos de la Pingüino Derretido prometen premio. Nadie en el barrio ganó nunca. Ni uno.,The Pingüino Derretido's sticks promise a prize. Nobody in the neighborhood has ever won. Not one.,Os palitos da Pingüino Derretido prometem prêmio. Ninguém no bairro ganhou nunca. Nem um.
+BRIEF_RIGGED_STICKS_C,Traigan la caja de los palitos premiados en el baúl del patrullero. Esos nunca se venden.,Bring the box of prize sticks back in the patrol car's trunk. Those never get sold.,Tragam a caixa dos palitos premiados no porta-malas da viatura. Esses nunca são vendidos.
+BRIEF_RIGGED_STICKS_D,"Si encuentran la máquina de grabar palitos o la lista de «ganadores», mejor: todo suma.","If you find the stick engraving machine or the list of «winners», even better: it all counts.","Se acharem a máquina de gravar palitos ou a lista de «ganhadores», melhor: tudo conta."
+OBJ_FIND_PRIZE_STICKS,Llevarse la caja de los palitos premiados,Take the box of prize sticks,Levar a caixa dos palitos premiados
+OBJ_EXTRA_STICK_ENGRAVER,Extra: la máquina de grabar palitos,Extra: the stick engraving machine,Extra: a máquina de gravar palitos
+OBJ_EXTRA_ICE_WINNERS_LIST,Extra: la lista de «ganadores»,Extra: the list of «winners»,Extra: a lista de «ganhadores»
+LUCHO_CLUE_rigged_sticks,«Una vez abrí una caja de palitos y todos decían PREMIO. Doña Nieve me la sacó de las manos y la guardó %s.»,“Once I opened a box of sticks and they all said PRIZE. Doña Nieve snatched it from my hands and put it %s.”,“Uma vez abri uma caixa de palitos e todos diziam PRÊMIO. A dona Nieve tirou das minhas mãos e guardou %s.”
+PROMPT_STICK_BIN,E: mirar el cesto,E: look in the bin,E: olhar o cesto
+CLUE_LOSING_STICKS,El cesto está lleno de palitos que dicen «Sigue participando». Cientos. Ninguno dice otra cosa.,The bin is full of sticks that say «Try again». Hundreds. Not one says anything else.,O cesto está cheio de palitos que dizem «Continue participando». Centenas. Nenhum diz outra coisa.
+ICE_NOTHING_AGAIN,"¡Otra vez nada! ¡Sigue participando, sigue participando!","Nothing again! Try again, try again!","De novo nada! Continue participando, continue participando!"

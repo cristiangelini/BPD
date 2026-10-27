@@ -106,6 +106,10 @@ entre 400 y 600. El bloque de hielo es la cosa más pesada (8 kg): conviene llev
    **Hecho (paso 6b):** la balanza trucha (`RiggedScaleRig`): la balanza arreglada (5 kg, 1000), el imán y el
    cuaderno de quejas; en la mesa de la caja, el cartel "1 KG" sobre un pote chiquito (con E es la pista) y cada 45 s
    vuelve una clienta a decir que eso no es un kilo. Capturas `heladeria/paso6b-*.png`.
+   **Hecho (paso 6c):** los palitos premiados (`RiggedSticksRig`): la caja de palitos con premio (3 kg, 1000), la
+   máquina de grabar palitos y la lista de "ganadores"; el cesto junto a las mesas está lleno de palitos "Sigue
+   participando" (con E es la pista) y cada 40 s entra un chico gritando "¡Otra vez nada!". Capturas
+   `heladeria/paso6c-*.png`.
 7. "Jugar" suma la heladería al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online (doña Nieve, Lucho, las tapas, los charcos y lo frágil en todas las PC).
 
