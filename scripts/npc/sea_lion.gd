@@ -5,7 +5,11 @@ extends AnimatableBody3D
 ## `route`, turning to face where he goes. E on him, he barks and claps. He steals: something a cop left on the floor
 ## within STEAL_REACH, or what a cop holds standing still that close for STILL_SECONDS, goes on his nose, and nobody
 ## can take it off; he gives it back only for a fish (AquariumFish, feed), and then he rests a while before stealing
-## again. A fish he steals he just eats. Every number here is (propuesta).
+## again. A fish he steals he just eats. Something lying where `notices` says he can see it, within NOTICE_REACH, sends
+## him off his loop to fetch it (an `errand`; `reached` tells when he gets to one he can't carry, like La Gorda).
+## Every number here is (propuesta).
+
+signal reached(thing: Node3D)
 
 const MODEL := preload("res://assets/models/sea_lion_bigotes.glb")
 const SPEED := 1.2
@@ -20,6 +24,9 @@ const FLOOR_BAND := 0.3
 ## After a fish he rests this long before stealing again.
 const REST := 15.0
 const LOOK_EVERY := 0.25
+## He notices things lying on the floor this far, and gets to an errand this close.
+const NOTICE_REACH := 6.0
+const ARRIVE := 0.7
 
 ## The points he waddles through in a loop, in his parent's space. Empty, he stays put.
 var route: Array[Vector3] = []
@@ -38,6 +45,10 @@ var thefts := 0
 var _look_left := 0.0
 ## Cop -> seconds standing still near him with something in hand.
 var _still := {}
+## What he goes to fetch off his loop, if anything.
+var errand: Node3D
+## Whether he can see a point in the world from his loop (the aquarium says: the hall). Unset, he notices nothing.
+var notices: Callable
 
 
 func _ready() -> void:
@@ -105,6 +116,7 @@ func feed(_cop: Cop) -> void:
 
 func _ate() -> void:
 	rest_left = REST
+	errand = null
 	get_tree().call_group("aquarium_keeper", "saw_fish_given", self)
 
 
@@ -139,7 +151,11 @@ func _physics_process(delta: float) -> void:
 	_bubble_left -= delta
 	if _bubble.visible and _bubble_left <= 0.0:
 		_bubble.hide()
-	if waddling and not route.is_empty():
+	if errand and (not is_instance_valid(errand) or (errand is Grabbable and (errand.is_held() or errand.freeze))):
+		errand = null
+	if waddling and errand:
+		_go_to(errand.global_position, delta)
+	elif waddling and not route.is_empty():
 		_waddle(delta)
 	if carried:
 		if is_instance_valid(carried):
@@ -154,10 +170,27 @@ func _physics_process(delta: float) -> void:
 	_look_left -= delta
 	if _look_left <= 0.0 and not carried:
 		_look_left = LOOK_EVERY
-		var item := _floor_item()
+		var item := _floor_item(STEAL_REACH)
 		if item:
+			errand = null
 			steal(item)
+		elif not errand:
+			item = _floor_item(NOTICE_REACH)
+			if item and notices.is_valid() and notices.call(item.global_position):
+				errand = item
 
+
+## Off his loop toward `world`; there, `reached` tells (a Grabbable he steals on his own).
+func _go_to(world: Vector3, delta: float) -> void:
+	var to := world - global_position
+	to.y = 0.0
+	if to.length() <= ARRIVE:
+		var thing := errand
+		errand = null
+		reached.emit(thing)
+		return
+	global_position += to.normalized() * minf(SPEED * delta, to.length())
+	rotation.y = atan2(to.x, to.z)
 
 func _hold_carried() -> void:
 	carried.global_position = nose_tip() + Vector3.UP * 0.12
@@ -179,11 +212,11 @@ func _watch_hands(delta: float) -> void:
 			return
 
 
-## Something a cop left on the floor within his reach, if any.
-func _floor_item() -> Grabbable:
+## Something a cop left on the floor within `reach`, if any.
+func _floor_item(reach: float) -> Grabbable:
 	var query := PhysicsShapeQueryParameters3D.new()
 	var ball := SphereShape3D.new()
-	ball.radius = STEAL_REACH
+	ball.radius = reach
 	query.shape = ball
 	query.transform = Transform3D(Basis(), global_position)
 	for hit in get_world_3d().direct_space_state.intersect_shape(query, 32):

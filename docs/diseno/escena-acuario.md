@@ -184,7 +184,17 @@ el tanque de cada buzo, Bigotes con sus robos y el piso mojado, Doña Tinta y el
    En la mesada de la cocina hay una bandeja con 4 pescados: con uno en la mano, E sobre Bigotes, y él tira la cosa al
    aire y se come el pescado. Después descansa 15 s sin robar. Si lo que roba es un pescado, se lo come y listo. Si Don
    Anzuelo lo ve a menos de 10 m, dice "¡Por fin alguien que lo entiende!". Capturas: `acuario/paso6-bigotes.png` y
-   `acuario/paso6-pescados.png`. Quedan para el 6b el piso mojado, el resbalón, la capucha sin el pelo, la perla
-   escondida de nuevo y el clavado al tanque si se lo persigue.
+   `acuario/paso6-pescados.png`.
+   **Hecho así (6b, el piso mojado):**
+   - Bigotes deja un charco cada 1,2 m que camina. Un policía que buscó en un tanque chico chorrea 20 s y también
+     deja charcos. Cada charco se seca a los 45 s.
+   - Si un policía corre sobre un charco (caminando o agachado no pasa nada), se resbala: cae hacia adelante 2 s y
+     suelta lo que tenía en la mano.
+   - Bigotes ve lo que quedó en el piso del hall a menos de 6 m, sale de su vuelta a buscarlo y se lo lleva.
+   - Si La Gorda queda encontrada en el piso del hall, Bigotes la esconde en otro de los nueve lugares (sorteado con
+     la semilla) y la pizarra ya no lo dice. Hay que llevarla a Doña Almeja antes de que llegue.
+   - A los 180 s juega con la capucha olvidada y la deja junto a los pingüinos: si el pelo seguía ahí, se pierde.
+   - Capturas: `acuario/paso6-charcos.png` y `acuario/paso6-capucha-pinguinos.png`.
+   - El clavado al tanque cuando lo persiguen queda para "Para después".
 7. El final: tablero, cansancio, sueldo y el camión con los bloques de hielo.
 8. El sorteo de "Jugar" y el online.
