@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Dentist raid, step 6b: the tooth mouse story: the jar of 500 baby teeth (3 kg, 1000), the mouse costume (300) and the map with the pillows marked (200); a trail of talc mouse prints runs into the doctor's office (on the checklist the first time a cop comes close), and a wind-up mouse runs its round carrying small things from the floor to under the reception, the lab table or the desk.
 - Dentist raid, step 6a: the laughing gas story: a bundle of contraband tanks that takes two cops (30 kg, 1000), the gas balloons (300) and the "Fiestas La Carcajada" invoice (200); one of the consulting rooms' tanks leaks on its own every 45 s, and the fish tank's bubbles giggle (on the checklist the first time a cop comes close).
 - Dentist raid, step 5: the dental office is a case (RaidCase) with its first story, the gold teeth: the box of gold ingots (5 kg, 1000), the crucible (300) and the "Coronas de oro 2x1" price list (200) hidden with the seed; E on the lab's X-ray light box changes the film and one of them shows an ingot inside a molar; Dr. Molina lets slip where things are, Lucho tells what he saw for a candy, and the doctor's lawyer fails the case.
 - Dentist raid, step 4: Lucho waits by the seats and only talks to a cop who brings him a candy from the reception's jar (once per case; Dr. Molina adds 5 to the complaint if he sees it), and the consulting rooms' laughing gas tanks leak for 10 s when knocked over or hit hard: every cop within 3 m laughs and can't grab anything for 5 s.
