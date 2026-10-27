@@ -64,6 +64,8 @@ const PLACES := [
 	{"id": "wrong_house", "block": Vector2i(0, 2), "side": "s", "along": 0.0, "size": Vector3(36, 7, 20), "color": Color(0.95, 0.86, 0.6), "sign": "PLACE_WRONG_HOUSE"},
 	# The airport fills its block too: the terminal and the apron are its case scene's (politico-aeropuerto.md).
 	{"id": "airport", "block": Vector2i(6, 4), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.86, 0.88, 0.9), "sign": "PLACE_AIRPORT", "park": true},
+	# The ice cream shop "Pingüino Derretido", its fenced yard at the back (allanamiento-heladeria.md).
+	{"id": "ice_cream", "block": Vector2i(5, 5), "side": "n", "along": 0.0, "size": Vector3(20, 5, 20), "color": Color(0.98, 0.84, 0.9), "sign": "PLACE_ICE_CREAM"},
 ]
 
 ## The plaza fills its block.

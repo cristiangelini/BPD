@@ -9,8 +9,9 @@ se derrite: el helado se vuelve un charco, y en el charco los policías patinan 
 
 ## El lugar
 - **Dónde:** una heladería de barrio en la manzana (5, 5), del lado norte (libre en todas las ramas al 27/10, sin
-  callejón ni patio de CityLife). Mide 20 × 5 × 18 m, una sola planta, con un pingüino gigante de fibra en el techo
-  (con una gota de helado en la cabeza) y el cartel "HELADERÍA PINGÜINO DERRETIDO · DESDE SIEMPRE".
+  callejón ni patio de CityLife). Mide 20 × 13,5 m, una sola planta, con el patio de 5 m atrás, un pingüino
+  gigante de fibra (con una gota de helado en la cabeza) en la vereda junto a la puerta y el cartel "HELADERÍA
+  PINGÜINO DERRETIDO · DESDE SIEMPRE".
 - **El salón:** el mostrador con la vitrina de los 12 sabores, la caja registradora, la balanza, el dispensador de
   conos, tres mesitas con sillas de colores y el cuadro "Sabor del mes".
 - **La cocina:** la máquina de helado soft, la batidora gigante, la mesa de trabajo con los frascos de ingredientes y el fregadero.
@@ -23,7 +24,7 @@ se derrite: el helado se vuelve un charco, y en el charco los policías patinan 
   hasta 4. La puerta de la cámara abierta más de 20 s la derrite entera: un charco grande en la puerta (multa de 30).
   En un charco el policía patina como en hielo (poca fricción) y si corre se cae (el tropiezo de siempre).
 - **Lo frágil:** la vitrina de vidrio del mostrador (algo que le pega a más de 3 m/s la raja: multa de 30) y el
-  pingüino del techo (si alguien lo tira, se parte y la dueña sale a llorar: sin multa, suma 10 a la denuncia).
+  pingüino de la vereda (si algo le pega rápido, se cae y la dueña sale a llorar: sin multa, suma 10 a la denuncia).
 - **Escondites:** unos 12, 6 para cosas pesadas. Por ejemplo: dentro de los freezers (abrir la tapa cuenta el tiempo),
   en la cámara de frío detrás de los baldes, debajo del mostrador, en la batidora, en la oficina detrás del escritorio,
   en el baño, dentro del camión y entre los baldes del patio.
@@ -74,6 +75,9 @@ entre 400 y 600. El bloque de hielo es la cosa más pesada (8 kg): conviene llev
 ## El orden para hacerlo (un PR chico por paso)
 1. La heladería como lugar: el edificio en la manzana (5, 5) con el pingüino, el salón, la cocina, la cámara de frío con
    llave, la oficina, el baño, el patio con el camión, lo frágil y los escondites. Modelos nuevos con modelgen.
+   **Hecho (paso 1):** `scripts/levels/ice_cream_shop.gd` y `scenes/levels/ice_cream_shop.tscn`, con "Heladería
+   (allanamiento, prueba)" en el menú. El pingüino quedó en la vereda junto a la puerta (no hay subida al techo): si
+   algo le pega rápido se cae de cara a la calle. Capturas en la carpeta del proyecto `heladeria/paso1-*.png`.
 2. Lo que se derrite: las tapas de los freezers, la puerta de la cámara, los charcos y el patinar.
 3. Doña Nieve: la ronda, la denuncia y la máquina de helado soft.
 4. Lucho y el cono.

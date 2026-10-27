@@ -5588,3 +5588,23 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+PLACE_ICE_CREAM,HELADERÍA PINGÜINO DERRETIDO,PINGÜINO DERRETIDO ICE CREAM,SORVETERIA PINGÜINO DERRETIDO
+ICE_SINCE,Desde siempre,Since forever,Desde sempre
+MENU_ICE_CREAM,Heladería (allanamiento) (prueba),Ice cream shop (raid) (test),Sorveteria (batida) (teste)
+CASE_FAILED_LAWYER_ICE,"Doña Nieve llamó a su abogado con la cuchara en la mano. Caso perdido.","Doña Nieve called her lawyer, scoop in hand. Case lost.","Dona Nieve ligou para o advogado com a colher na mão. Caso perdido."
+HINT_TILL_KEY_ICE,"Una llave helada con una etiqueta: «CÁMARA».","An icy key with a tag: «COLD ROOM».","Uma chave gelada com uma etiqueta: «CÂMARA FRIA»."
+ICE_FLAVOR_OF_THE_MONTH,SABOR DEL MES: PISTACHO,FLAVOR OF THE MONTH: PISTACHIO,SABOR DO MÊS: PISTACHE
+ICE_CASE_BROKEN,¡La vitrina de los sabores!,The flavors' glass case!,A vitrine dos sabores!
+ICE_PENGUIN_DOWN,¡Se cayó el pingüino!,The penguin fell over!,O pinguim caiu!
+LOC_behind_ice_counter,detrás del mostrador de los helados,behind the ice cream counter,atrás do balcão dos sorvetes
+LOC_in_ice_cold_room,"en la cámara de frío, detrás de los baldes","in the cold room, behind the buckets","na câmara fria, atrás dos baldes"
+LOC_behind_ice_desk,detrás del escritorio de la oficina,behind the office desk,atrás da mesa do escritório
+LOC_in_ice_bathroom,en el baño de la heladería,in the ice cream shop's bathroom,no banheiro da sorveteria
+LOC_behind_ice_truck,detrás del camión de helados del patio,behind the ice cream truck in the yard,atrás do caminhão de sorvete do quintal
+LOC_among_yard_buckets,entre los baldes vacíos del patio,among the empty buckets in the yard,entre os baldes vazios do quintal
+LOC_on_ice_cold_shelf,arriba de un estante de la cámara de frío,on top of a cold room shelf,em cima de uma prateleira da câmara fria
+LOC_on_soft_machine,arriba de la máquina de helado,on top of the soft-serve machine,em cima da máquina de sorvete
+LOC_under_ice_table,debajo de una mesita del salón,under a table in the salon,embaixo de uma mesinha do salão
+LOC_on_kitchen_bench,en la mesa de trabajo de la cocina,on the kitchen's work bench,na bancada da cozinha
+LOC_under_flavor_board,debajo del cuadro del sabor del mes,under the flavor of the month board,embaixo do quadro do sabor do mês
+LOC_on_ice_cashier,"en la caja, al lado de la balanza","at the till, next to the scale","no caixa, ao lado da balança"
