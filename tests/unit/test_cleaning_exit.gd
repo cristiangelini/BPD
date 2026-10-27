@@ -71,9 +71,13 @@ func test_let_go_while_on_it_wanders_off() -> void:
 	var polisher := level.polisher
 	polisher.use(cop)
 	var from := polisher.global_position
-	await wait_seconds(1.0)
+	# The spin is read every frame of that second: a bump into the cop or a wall can stop it for a frame.
+	var spin := 0.0
+	for frame in Engine.physics_ticks_per_second:
+		await wait_physics_frames(1)
+		spin = maxf(spin, absf(polisher.angular_velocity.y))
 	assert_gt(Vector2(polisher.global_position.x - from.x, polisher.global_position.z - from.z).length(), 0.2)
-	assert_gt(absf(polisher.angular_velocity.y), 1.0, "spinning")
+	assert_gt(spin, 1.0, "spinning")
 
 
 func test_seen_in_the_patrol_car_they_get_caught_at_once() -> void:
