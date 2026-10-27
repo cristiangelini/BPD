@@ -47,7 +47,7 @@ func test_the_prints_on_the_safe_and_the_cop_who_touches_it_first() -> void:
 	var made := _with("prints")
 	var case: CrimeSceneCase = made[1]
 	var safe: SafeDoor = made[0].clues.safe
-	assert_eq(safe.dusted(null), "PRINTS_SAFE")
+	assert_eq(safe.dusted(null), "PRINTS_MANSION_SAFE")
 	assert_has(case.clues_found, "prints")
 	made = _with("prints")
 	case = made[1]
@@ -56,7 +56,7 @@ func test_the_prints_on_the_safe_and_the_cop_who_touches_it_first() -> void:
 	add_child_autofree(cop)
 	safe.use(cop)
 	assert_has(case.ruined, "prints")
-	assert_eq(safe.dusted(null), "PRINTS_SAFE_SMUDGED")
+	assert_eq(safe.dusted(null), "PRINTS_MANSION_SAFE_SMUDGED")
 
 
 func test_the_footprint_is_in_a_passage_where_the_cops_walk() -> void:
@@ -169,7 +169,7 @@ func test_lorenzo_tells_for_a_chocolate_and_a_shout_offends_him() -> void:
 
 
 func test_every_new_text_is_translated() -> void:
-	var keys := ["PROMPT_SAFE", "HINT_SAFE_TOUCHED", "HINT_SAFE_EMPTY", "PRINTS_SAFE", "PRINTS_SAFE_SMUDGED",
+	var keys := ["PROMPT_SAFE", "HINT_MANSION_SAFE_TOUCHED", "HINT_MANSION_SAFE_EMPTY", "PRINTS_MANSION_SAFE", "PRINTS_MANSION_SAFE_SMUDGED",
 		"PROMPT_ARMOUR", "PROMPT_ARMOUR_FALLEN", "HINT_ARMOUR_CRASH", "PROMPT_BELL_CORD", "HINT_BELL_RANG",
 		"PROMPT_BUTLER_BELLS", "BUTLER_BELLS", "BUTLER_BELLS_ALL", "BUTLER_BELLS_MIXED", "PROMPT_PARROT_FEED",
 		"PARROT_SAW_GLASSES", "PARROT_SAW_NO_GLASSES", "PARROT_SAW_NOTHING", "HINT_CLUE_EATEN_bite_mansion"]
