@@ -1,0 +1,86 @@
+# BPD · El allanamiento del taller "El Pistón Feliz" (27/10)
+
+Un lugar nuevo para allanar, sacado de las ideas de "Para después" del catálogo (casos.md, sección 1: granja, taller
+de autos, bóveda y fiesta de cumpleaños). Ya están hechas o reclamadas todas las variantes del catálogo, así que esto
+es **propuesta** hasta que Cristian lo apruebe. Sigue la idea de lugar + historia (decisión 79): una denuncia anónima,
+3 sospechas en la planilla y una sola historia verdadera, sorteada con la semilla. Decisiones 310 a 319. Todos los
+números son **(propuesta)** hasta probarlos jugando.
+
+## El lugar
+- **Dónde:** un galpón nuevo en la manzana (7, 2), una de las de galpones del este (decisión 181), con el frente al
+  oeste, sobre la calle del Cucharón. Mide 26 × 8 × 22 m y tiene un portón de chapa enorme que sube solo con un botón.
+- **Adentro:** 3 autos de clientes, uno de ellos arriba del elevador (a 1,8 m), una fosa al lado del elevador, la pared
+  de herramientas, una pila de 8 cubiertas, 4 tambores de aceite, el mostrador con su timbre y la caja, y la oficina del
+  fondo (cerrada; la llave está en la caja del mostrador, o el ariete).
+- **Cómo se entra:** el portón está **abierto** (es horario de atención); lo cerrado es la oficina.
+- **Lo frágil:** los parabrisas de los 3 autos (algo que les pega a más de 3 m/s los raja, multa de 30, "¡Eso es de un
+  cliente, oficial!") y el auto del elevador: si un policía aprieta el botón de bajar con alguien o algo debajo, el auto
+  baja igual, despacio, y lo aplasta suave (multa de 20 y el policía queda 3 s en el piso).
+- **Escondites:** unos 12, 6 para cosas pesadas. Por ejemplo: el baúl de cada auto, debajo de cada capó, adentro de
+  una cubierta de la pila, en un tambor de aceite, en el fondo de la fosa, en la pared de herramientas, en el cajón del
+  mostrador y en la oficina.
+
+## Don Tuerca y Grasita
+- **Don Tuerca**, el mecánico y dueño: mameluco azul lleno de grasa, gorra al revés, bigote con aceite y una llave
+  inglesa en la mano, cuerpo petiso y ancho (decisión 72). Pasa la mayor parte del tiempo acostado en su carrito con
+  ruedas, debajo de un auto, y sale rodando para mirar.
+- **"¡No me toquen los autos!":** cada parabrisas rajado que ve le suma 10 a la denuncia; cada capó o baúl que ve
+  abrir, 5 (una vez por auto).
+- **Su distracción:** el **timbre** del mostrador. Si un policía lo toca (E), Don Tuerca sale rodando de debajo del
+  auto, va al mostrador y atiende 15 s a un "cliente" que no existe, de espaldas al taller, hablando solo ("¿El ruidito
+  es así, *tac tac*, o así, *toc toc*?"). Se puede hacer una vez cada 45 s; la tercera vez se da cuenta y suma 10.
+- **La denuncia:** como Mirta, Fermín y el profe Fito: 15 si lo empujan, 5 por puerta rota, 5 por pregunta, y llama al
+  abogado en 100. Con R suelta 2 cosas por caso y después se ofende.
+- **Grasita**, el aprendiz, es el chismoso, pero solo habla con quien le alcanza la herramienta que pide: cada vez que
+  un policía le habla (E), pide una de las 8 de la pared (sorteada: "¡Pasame la llave 13!", "¡El destornillador
+  estrella!"). Si un policía se la lleva a la mano, Grasita le cuenta dónde vio a Don Tuerca esconder algo. Si le
+  llevan otra, dice "¡Esa no es!" y la tira para atrás. Una vez por policía.
+
+## Las historias
+Cada una tiene una evidencia principal (sin ella no hay caso), 1 o 2 extras, un tipo de pista propio y algo que cambia
+en el taller. La denuncia anónima es siempre vaga: "en El Pistón Feliz arreglan todo en una hora y nunca falta nada,
+pero los autos salen raros".
+
+| Historia | Evidencia principal | Extras | Pista propia | Qué cambia |
+|---|---|---|---|---|
+| **Las patentes cambiadas** | La caja con 40 patentes de autos robados (5 kg, 1000) | La lista de autos robados (0,1 kg, 300), el aerosol de pintura (0,5 kg, 200) | Uno de los 3 autos tiene la pintura fresca: quien lo toca queda con la mano de color 10 s | Ese auto tiene una patente pegada con cinta, que se cae si se cierra fuerte la puerta |
+| **El cuentakilómetros mágico** | El taladro que tira los kilómetros para atrás (2 kg, 1000) | La libreta con los kilómetros de verdad (0,1 kg, 300), el cartel de "0 km, único dueño" (1 kg, 200) | El auto del frente marca 12 km en el tablero y tiene las cubiertas lisas | Con E en el tablero de cualquier auto se ve su kilometraje, y la mitad es absurda (3 km, 7 km) |
+| **Las piezas cambiadas** | El cajón de repuestos nuevos de los clientes (12 kg, 1000, entre dos) | Las facturas truchas (0,1 kg, 300), la pila de repuestos viejos pintados de plateado (4 kg, 200) | Un repuesto "nuevo" del mostrador deja óxido en la mano del que lo agarra | Los capós abiertos hacen "¡tac tac tac!" y los motores tiemblan |
+| **La carrera clandestina** | El trofeo de la carrera clandestina (4 kg, 1000) | El tanque de nitro (6 kg, 300), el mapa de la carrera (0,1 kg, 200) | Marcas de goma en círculo en el piso del taller | Un auto tiene un alerón gigante, y si un policía toca su bocina el motor ruge y los otros autos tiemblan |
+| **Los choques de mentira** | El martillo de abollar (3 kg, 1000) | Las fotos de los choques (0,2 kg, 300), los formularios del seguro (0,1 kg, 200) | Un auto nuevo con abolladuras redondas perfectas, todas iguales | Pegarle a un auto con algo pesado lo abolla en redondo y no cuesta multa |
+| **El auto del comisario** | El cartel de taxi que le ponen al auto del comisario (2 kg, 1000) | El taxímetro (1,5 kg, 300), la libreta de viajes (0,1 kg, 200) | El auto del comisario (con su calcomanía "Mejor comisario del año") tiene 1500 km más que cuando lo dejó | El auto del comisario está en el taller: rajarle el parabrisas cuesta el doble y el comisario llama por radio a quejarse |
+
+Los pesos y valores siguen la escala del gimnasio y del laboratorio: la principal vale unos 1000 y los extras suman
+entre 400 y 600.
+
+## Qué se reutiliza
+- Lo compartido de las historias (historias.md): escondites sorteados, notas, 3 sospechas, la planilla, el patrullero,
+  la escolta del dueño, la huida (persecucion-final.md) y la pantalla del turno (RaidCase).
+- Del gimnasio y el laboratorio: el dueño con su distracción con E (la música → el timbre), lo frágil con multa, la caja
+  del mostrador con la llave, el `ClueSpot`, el chismoso que pide algo a cambio (Lula → Grasita) y el online (NpcSync,
+  PropSync y ActionSync).
+- De la ciudad: los modelos de autos del tráfico para los 3 autos de clientes, y el patrullero viejo para la fosa.
+- De la ferretería: las herramientas de la pared (si hay modelos que sirven).
+
+## Atajos del panel de pruebas
+- Abrir el allanamiento del taller con una historia elegida (`--place=garage --story=<id>`), y "Taller (allanamiento,
+  prueba)" en el menú.
+
+## El orden para hacerlo (un PR chico por paso)
+1. El taller como lugar: el galpón en la manzana (7, 2) con el portón, los 3 autos, el elevador, la fosa, la pared de
+   herramientas, las cubiertas, los tambores, el mostrador, la oficina con llave, los parabrisas frágiles y los
+   escondites. Modelos nuevos con modelgen.
+2. Don Tuerca: el carrito con ruedas, la ronda, la denuncia, "¡no me toquen los autos!" y el timbre.
+3. Grasita y la herramienta que pide.
+4. El caso (RaidCase) con la primera historia: las patentes cambiadas.
+5. Las otras 5 historias, una por PR.
+6. "Jugar" suma el taller al sorteo de allanamientos (`PlaceDraw.ORDER`).
+7. El online (Don Tuerca, Grasita, el timbre, el elevador y los parabrisas en todas las PC).
+
+## Preguntas para Cristian
+1. ¿Un lugar nuevo para allanar, el taller de autos, ahora que el catálogo está hecho o reclamado? **Recomendado:** sí,
+   es una de las ideas de "Para después" y no se pisa con nada.
+2. ¿Don Tuerca se distrae con el timbre del mostrador (15 s, cada 45 s, a la tercera se da cuenta) y Grasita solo habla
+   si le alcanzas la herramienta justa? **Recomendado:** sí, cada uno tiene un costo y usa lo que hay en el taller.
+3. ¿Va en la manzana (7, 2), en los galpones del este? **Recomendado:** sí, está libre y cerca de la cárcel y la
+   subasta.
