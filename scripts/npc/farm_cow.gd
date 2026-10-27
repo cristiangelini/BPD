@@ -8,6 +8,8 @@ extends CharacterBody3D
 
 signal escaped
 signal returned
+## A cop gave her a pat (E on her).
+signal petted(cop: Cop)
 
 const MODEL := preload("res://assets/models/farm_cow.glb")
 const PATIENCE := 5.0
@@ -43,6 +45,14 @@ func _ready() -> void:
 	add_child(shape)
 	add_child(MODEL.instantiate())
 	_target = position
+
+
+func prompt_key(_cop: Cop) -> String:
+	return "PROMPT_PET_COW"
+
+
+func use(cop: Cop) -> void:
+	petted.emit(cop)
 
 
 ## Whether `at` (the farm's space) is inside her corral.
