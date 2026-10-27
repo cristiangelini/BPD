@@ -163,8 +163,15 @@ valores siguen la escala del bingo: la principal unos 1000, los extras entre 300
   las 6 historias, con ids `wh_<historia>` porque otro lugar ya tiene gnomos. El primer renglón de la planilla se
   marca al entrar en la casa correcta. Las pistas de la puerta y las de cada historia van a la planilla. Las multas
   (al doble en lo de doña Chola) se descuentan del sueldo, y si doña Chola llama a su abogado se pierde el caso.
-  Captura en `/mnt/project-files/casa-equivocada/paso8-planilla.png`. Falta el paso 8b: la persecución si huye con
-  la principal, el premio "Tocaron la puerta correcta", Jugar, el online y el CHANGELOG.
+  Captura en `/mnt/project-files/casa-equivocada/paso8-planilla.png`.
+- **Paso 8b (la huida, Jugar y online):** el turno arranca en la comisaría, como los otros allanamientos. Si el
+  culpable se va con la principal en el techo, sale en el auto de huida desde su pasillo (por ahora el auto de la
+  persecución de noche, no su rural) y empieza la persecución. Si lo agarran, lo que se llevó queda en la vereda al
+  lado de su auto para llevarlo al baúl; si se escapa, se pierde el caso. A él no se lo interroga después. "Jugar"
+  lo sortea con los otros allanamientos (`PlaceDraw.ORDER`), el menú tiene su botón de prueba y online el anfitrión
+  maneja a doña Chola, al culpable y al cartero (`NpcSync`). Captura en
+  `/mnt/project-files/casa-equivocada/paso8-huida.png`. Queda para después: el premio "Tocaron la puerta correcta"
+  (+100), que necesita un renglón nuevo en la pantalla del turno.
 
 ## Preguntas para Cristian
 1. **¿Entrar en la casa equivocada se puede o termina el caso?** Recomendado: se puede, y es el chiste: doña Chola
