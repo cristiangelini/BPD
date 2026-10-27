@@ -81,6 +81,18 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_COLLECTOR_CATALOG", "OBJ_EXTRA_GOLDEN_PLAYER"],
 		"rig": preload("res://scripts/case/radio/collector_records_rig.gd"),
 	},
+	"coded_dedications": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_CODED_DEDICATIONS_B", "BRIEF_CODED_DEDICATIONS_C",
+			"BRIEF_CODED_DEDICATIONS_D"],
+		"find": "OBJ_FIND_CODE_BOX",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/code_box.tscn"), preload("res://scenes/props/listener_list.tscn"),
+			preload("res://scenes/props/delivery_clock.tscn")],
+		"half_heights": [0.11, 0.01, 0.1],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_LISTENER_LIST", "OBJ_EXTRA_DELIVERY_CLOCK"],
+		"rig": preload("res://scripts/case/radio/coded_dedications_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the reception's floor, in the studio, the control room, the kitchen and the
 ## storage room.
