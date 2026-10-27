@@ -148,6 +148,14 @@ señora y la limusina.
    `gato/`: `paso2-sobrinos.png`, `paso2-sobrinos_cerca.png`, `paso2-ofelia.png`, `paso2-loro.png` y
    `cat_mansion_people.png`.
 3. Las cinco gatas: andan sueltas, se agarran y se escapan, la transportadora, la lata de atún y la cajita de música.
+   Hecho así: cinco gatas naranjas y gordas, una por cuarto, que pasean despacio. La semilla elige cuál es la Duquesa.
+   Una gata en brazos aguanta 5 s, después bufa ("¡FFFSSS!"), salta y corre a esconderse 8 s en el escondite más
+   cercano: bajo la mesa de la cocina, detrás del sofá, junto al piano, entre las camas, en el lavadero o bajo la
+   escalera. Si se la acerca en brazos a la puerta de la transportadora del hall, entra y ya no se escapa: la
+   transportadora se lleva con ella adentro y E la abre. E en la cajita de música del piano la hace sonar 12 s, y solo
+   la Duquesa, a menos de 3 m, ronronea con corazones. E en una de las tres latas de atún la abre, y las gatas a menos
+   de 10 m van a comer delante de la encimera; una gata encerrada solo maúlla (se usa en el paso 5) **(propuesta)**.
+   Capturas en `gato/`: `paso3-cajita.png`, `paso3-transportadora.png` y `paso3-atun.png`.
 4. Las fichas (foto, huellas, dientes, pelo, arañazo y muletilla).
 5. El caso: la historia, dónde está la Duquesa, el collar, las pistas con cómo se arruinan, la planilla y la paciencia
    de la señora con las llamadas al comisario.
