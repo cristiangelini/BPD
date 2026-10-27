@@ -92,6 +92,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_ZERO_BILLS", "OBJ_EXTRA_PLIERS"],
 		"rig": preload("res://scripts/case/rink/stolen_power_rig.gd"),
 	},
+	"real_sequins": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_REAL_SEQUINS_B", "BRIEF_REAL_SEQUINS_C", "BRIEF_REAL_SEQUINS_D"],
+		"find": "OBJ_FIND_DIAMOND_LEOTARD",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/rink_diamond_leotard.tscn"),
+			preload("res://scenes/props/rink_loupe.tscn"), preload("res://scenes/props/rink_jewelry_box.tscn")],
+		"half_heights": [0.03, 0.02, 0.06],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_LOUPE", "OBJ_EXTRA_JEWELRY_BOX"],
+		"rig": preload("res://scripts/case/rink/real_sequins_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the floor of the lobby, the corridor and by the stands.
 const NOTE_PLACES: Array[Vector3] = [

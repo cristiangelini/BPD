@@ -314,6 +314,39 @@ export function buildRinkPliers() {
 	return b.build();
 }
 
+// The competition leotard with diamonds sewn on, folded, 0.32 x 0.06 x 0.36 m: shiny pink cloth with a few white
+// diamonds catching the light.
+export function buildRinkDiamondLeotard() {
+	const b = new Builder('rink_diamond_leotard');
+	const pink = mat('leotard_pink', 0xe0469a, { emissive: 0x401028, metalness: 0.4, roughness: 0.3 });
+	b.add('cloth', pink, new THREE.BoxGeometry(0.32, 0.05, 0.36), { pos: V(0, 0.025, 0) });
+	b.add('sleeve', pink, new THREE.BoxGeometry(0.1, 0.02, 0.2), { pos: V(0.13, 0.055, 0.04), rot: [0, 0.4, 0] });
+	const diamond = mat('leotard_diamond', 0xf4fbff, { emissive: 0x8090a0, metalness: 0.2, roughness: 0.05 });
+	for (const [i, [x, z]] of [[-0.1, -0.12], [0.0, -0.06], [0.1, 0.0], [-0.05, 0.06], [0.06, 0.12], [-0.12, 0.1]].entries()) {
+		b.add(`diamond_${i}`, diamond, new THREE.OctahedronGeometry(0.018), { pos: V(x, 0.06, z) });
+	}
+	return b.build();
+}
+
+// The jeweler's loupe, 0.05 m across: a black eyepiece with a glass lens.
+export function buildRinkLoupe() {
+	const b = new Builder('rink_loupe');
+	b.add('body', mat('loupe_black', 0x1a1a1c), new THREE.CylinderGeometry(0.025, 0.02, 0.04, 14), { pos: V(0, 0.02, 0) });
+	b.add('lens', mat('loupe_glass', 0xbfe6ff, { metalness: 0.3, roughness: 0.05 }), new THREE.CylinderGeometry(0.02, 0.02, 0.004, 14), { pos: V(0, 0.041, 0) });
+	return b.build();
+}
+
+// The empty jewelry box, 0.2 x 0.1 x 0.14 m: dark red box open, with its lid up and the velvet inside with nothing on it.
+export function buildRinkJewelryBox() {
+	const b = new Builder('rink_jewelry_box');
+	const red = mat('jewelry_box', 0x6a1424, { roughness: 0.5 }), velvet = mat('jewelry_velvet', 0xb02040, { roughness: 1.0 });
+	b.add('base', red, new THREE.BoxGeometry(0.2, 0.06, 0.14), { pos: V(0, 0.03, 0) });
+	b.add('velvet', velvet, new THREE.BoxGeometry(0.18, 0.005, 0.12), { pos: V(0, 0.061, 0) });
+	b.add('lid', red, new THREE.BoxGeometry(0.2, 0.1, 0.015), { pos: V(0, 0.11, -0.07), rot: [-0.25, 0, 0] });
+	b.add('clasp', mat('jewelry_gold', 0xe6c050, { metalness: 0.8, roughness: 0.3 }), new THREE.BoxGeometry(0.03, 0.02, 0.01), { pos: V(0, 0.045, 0.072) });
+	return b.build();
+}
+
 export const models = {
 	ice_resurfacer: buildIceResurfacer, skating_penguin: buildSkatingPenguin, cocoa_machine: buildCocoaMachine,
 	dj_booth: buildDjBooth, rink_scoreboard: buildRinkScoreboard, npc_dona_pirueta: buildDonaPirueta,
@@ -322,7 +355,8 @@ export const models = {
 	rink_funnel: buildRinkFunnel, rink_score_remote: buildRinkScoreRemote, rink_bet_notebook: buildRinkBetNotebook,
 	rink_money_envelope: buildRinkMoneyEnvelope, rink_golden_skate: buildRinkGoldenSkate, rink_white_paint: buildRinkWhitePaint,
 	rink_trophy_clipping: buildRinkTrophyClipping, rink_power_cable: buildRinkPowerCable, rink_zero_bills: buildRinkZeroBills,
-	rink_pliers: buildRinkPliers,
+	rink_pliers: buildRinkPliers, rink_diamond_leotard: buildRinkDiamondLeotard, rink_loupe: buildRinkLoupe,
+	rink_jewelry_box: buildRinkJewelryBox,
 };
 
 export const views = {
@@ -337,6 +371,7 @@ export const views = {
 			{ name: 'rink_score_remote', pos: [2.0, 0, 2.8] }, { name: 'rink_bet_notebook', pos: [2.3, 0, 2.8] }, { name: 'rink_money_envelope', pos: [2.6, 0, 2.8] },
 			{ name: 'rink_golden_skate', pos: [-2.0, 0, 2.8] }, { name: 'rink_white_paint', pos: [-2.4, 0, 2.8] }, { name: 'rink_trophy_clipping', pos: [-2.8, 0, 2.8] },
 			{ name: 'rink_power_cable', pos: [-2.2, 0, 3.6] }, { name: 'rink_zero_bills', pos: [-1.5, 0, 3.6] }, { name: 'rink_pliers', pos: [-1.1, 0, 3.6] },
+			{ name: 'rink_diamond_leotard', pos: [-0.6, 0, 3.6] }, { name: 'rink_loupe', pos: [-0.2, 0, 3.6] }, { name: 'rink_jewelry_box', pos: [0.2, 0, 3.6] },
 		],
 		cam: { pos: [0, 2.2, 6.5], target: [0, 1.0, 0], fov: 45 },
 	},

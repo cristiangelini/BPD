@@ -182,6 +182,13 @@ suman 500.
    - **Qué cambia:** la bola de espejos gira sola todo el tiempo, tirando 4 manchas de colores sobre el hielo, y no
      hay forma de apagarla.
    - **Capturas:** `pista/paso6d-*.png`.
+   - **Las lentejuelas de verdad:** la malla de competencia con diamantes (1 kg, 1000), la lupa de joyero (0,2 kg, 300)
+     y el alhajero vacío (0,5 kg, 200), cada uno en un escondite.
+   - **La pista propia:** la malla tira destellos de colores donde está, suaves, y fuertes si queda a menos de 8 m
+     debajo de la bola de espejos. La primera vez que un policía la ve brillar (a menos de 4 m) va a la planilla.
+   - **Qué cambia:** Doña Pirueta lleva otra malla, de lentejuelas opacas, y cuando un policía se le acerca se queja
+     de que "la buena está en la tintorería" (como mucho una vez cada 30 s).
+   - **Capturas:** `pista/paso6e-*.png`.
 7. La pista en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 8. El online.
 
