@@ -91,3 +91,11 @@ suman entre 400 y 600.
 2. ¿Doña Bobina se distrae cuando se corta la película (20 s, cada 45 s, a la tercera se da cuenta) y Chicho solo habla
    si te sientas 8 s a su lado sin moverte? **Recomendado:** sí, cada uno tiene un costo y usa lo que hay en el cine.
 3. ¿Va en la manzana (0, 4), del lado norte? **Recomendado:** sí, está libre y no tiene callejón.
+
+## Hecho así
+- **Paso 1 (el lugar):** `Cinema` (`scenes/levels/cinema.tscn`, `--place=cinema` y "Cine (allanamiento) (prueba)" en
+  el menú), en la manzana (0, 4) norte. Como el suelo de la ciudad no deja bajar del nivel de la calle, la sala sube
+  hacia atrás en vez de bajar hacia la pantalla: se entra por la cortina al lado de la pantalla (colgada delante de la
+  pared del hall), las 8 filas suben 1,6 m por una rampa y la cabina está arriba del fondo de la sala, por una escalera
+  angosta contra la pared oeste. Modelos nuevos en `tools/modelgen/models/cinema.js`: la butaca, la máquina de
+  palomitas y el proyector. Capturas en `/mnt/project-files/cine/paso1-*.png`.

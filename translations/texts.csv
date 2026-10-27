@@ -5588,3 +5588,23 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+PLACE_CINEMA,Cine Butaca Floja,Wobbly Seat Cinema,Cine Poltrona Bamba
+CINEMA_NOW_SHOWING,HOY: El regreso del formulario,TODAY: The Return of the Form,HOJE: A volta do formulário
+MENU_CINEMA,Cine (allanamiento) (prueba),Cinema (raid) (test),Cinema (batida) (teste)
+HINT_TILL_KEY_CINEMA,¡Una llave! Abre la cabina de proyección.,A key! It opens the projection booth.,Uma chave! Abre a cabine de projeção.
+CINEMA_SCREEN_RIPPED,"¡La pantalla! ¡Era la única!","The screen! It was the only one!","A tela! Era a única!"
+CINEMA_GLASS_BROKEN,"¡Mis palomitas! ¡Por todo el piso!","My popcorn! All over the floor!","Minha pipoca! Pelo chão todo!"
+CASE_FAILED_LAWYER_CINEMA,Doña Bobina llamó al abogado del cine. Caso perdido.,Doña Bobina called the cinema's lawyer. Case lost.,Dona Bobina ligou para o advogado do cinema. Caso perdido.
+LOC_behind_screen,detrás de la pantalla,behind the screen,atrás da tela
+LOC_in_projection_booth,en la cabina de proyección,in the projection booth,na cabine de projeção
+LOC_behind_candy_counter,detrás del mostrador de golosinas,behind the candy counter,atrás do balcão de doces
+LOC_in_cinema_restroom,en el baño del cine,in the cinema's restroom,no banheiro do cinema
+LOC_under_booth_stairs,abajo de la escalera de la cabina,under the booth's stairs,embaixo da escada da cabine
+LOC_by_the_front_row,al lado de la primera fila,by the front row,ao lado da primeira fila
+LOC_in_popcorn_machine,adentro de la máquina de palomitas,inside the popcorn machine,dentro da máquina de pipoca
+LOC_in_ticket_booth,en la boletería,in the ticket booth,na bilheteria
+LOC_behind_posters,detrás de los afiches,behind the posters,atrás dos cartazes
+LOC_under_seat_row_3,abajo de una butaca de la tercera fila,under a seat in the third row,embaixo de uma poltrona da terceira fila
+LOC_under_seat_row_6,abajo de una butaca de la sexta fila,under a seat in the sixth row,embaixo de uma poltrona da sexta fila
+LOC_in_film_cans,entre las latas de película,among the film cans,entre as latas de filme
+CINEMA_THEATER_SIGN,SALA 1,SCREEN 1,SALA 1
