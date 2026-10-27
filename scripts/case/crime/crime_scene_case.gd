@@ -81,10 +81,10 @@ const VARIANTS := {
 	# knows what the cops got from its nephew, his scratch and his catchphrase included.
 	"cat": {
 		"shift": "crime_cat", "story": "cat",
-		"brief": ["BRIEF_CAT_A", "BRIEF_CAT_B", "BRIEF_CAT_C"], "go": "HINT_GO_CAT_MANSION",
+		"brief": ["BRIEF_CAT_A_", "BRIEF_CAT_B", "BRIEF_CAT_C"], "go": "HINT_GO_CAT_MANSION",
 		"go_row": "OBJ_CAT_GO", "look": "HINT_CAT_LOOK", "files_row": "OBJ_CAT_FILES",
 		"clue_line": "CLUE_CAT_", "ruined_hint": "HINT_CAT_RUINED_", "left": "HINT_NEPHEW_LEFT",
-		"who": "nephew", "getaway": SuspectCar.BIKE,
+		"who": "nephew", "getaway": SuspectCar.BIKE, "loot_row": "OBJ_CAT_LOOT_",
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "necklace": "scratch",
 			"witness": "tic"},
 		"parts": ["photo", "prints", "teeth", "hair", "scratch", "tic"],
