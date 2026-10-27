@@ -317,6 +317,57 @@ export const models = {
 		}
 		return b.build();
 	},
+	// Two jugs of fertilizer stolen from the laboratory, strapped together, with the lab's yellow label. 0.5 x 0.4 x 0.25 m,
+	// bottom at y = 0.
+	fertilizer_jugs() {
+		const b = new Builder('fertilizer_jugs');
+		const plastic = C('jug_blue', 0x3070b0, { roughness: 0.5 });
+		for (const s of [-1, 1]) {
+			b.add('jugs', plastic, new THREE.BoxGeometry(0.22, 0.34, 0.24), { pos: V(s * 0.125, 0.17, 0) });
+			b.add('caps', C('cap_white', 0xf0f0f0), new THREE.CylinderGeometry(0.035, 0.035, 0.05, 8), { pos: V(s * 0.16, 0.365, 0.05) });
+			b.add('handles', plastic, new THREE.TorusGeometry(0.04, 0.012, 6, 10, Math.PI), { pos: V(s * 0.08, 0.34, -0.05) });
+			b.add('labels', C('lab_label', 0xf2d020), new THREE.BoxGeometry(0.14, 0.12, 0.005), { pos: V(s * 0.125, 0.18, 0.123) });
+			b.add('labels', C('label_black', 0x111111), new THREE.BoxGeometry(0.1, 0.02, 0.006), { pos: V(s * 0.125, 0.2, 0.124) });
+		}
+		b.add('strap', C('strap_black', 0x202020), new THREE.BoxGeometry(0.52, 0.04, 0.26), { pos: V(0, 0.12, 0) });
+		return b.build();
+	},
+	// The growth diary: a green notebook with a carrot drawn on the cover. 0.22 x 0.03 x 0.16 m, bottom at y = 0.
+	growth_diary() {
+		const b = new Builder('growth_diary');
+		b.add('cover', C('diary_green', 0x3a8040), new THREE.BoxGeometry(0.22, 0.03, 0.16), { pos: V(0, 0.015, 0) });
+		b.add('pages', C('diary_paper', 0xf4f0e2), new THREE.BoxGeometry(0.21, 0.022, 0.15), { pos: V(0.006, 0.015, 0) });
+		b.add('carrot', C('carrot_orange', 0xf07818), new THREE.BoxGeometry(0.03, 0.002, 0.09), { pos: V(0, 0.031, 0.0), rot: [0, 0.5, 0] });
+		b.add('carrot', C('carrot_leaf', 0x40a030), new THREE.BoxGeometry(0.03, 0.002, 0.03), { pos: V(0.03, 0.031, -0.05), rot: [0, 0.5, 0] });
+		return b.build();
+	},
+	// A 2 m wooden ruler, yellow with black marks every 10 cm. 2 x 0.03 x 0.08 m, bottom at y = 0.
+	ruler_2m() {
+		const b = new Builder('ruler_2m');
+		b.add('ruler', C('ruler_yellow', 0xf0c840), new THREE.BoxGeometry(2.0, 0.03, 0.08), { pos: V(0, 0.015, 0) });
+		for (let i = 1; i < 20; i++) {
+			b.add('marks', C('mark_black', 0x111111), new THREE.BoxGeometry(0.008, 0.002, i % 5 ? 0.025 : 0.05), { pos: V(-1 + i * 0.1, 0.031, 0.04 - (i % 5 ? 0.0125 : 0.025)) });
+		}
+		return b.build();
+	},
+	// The giant carrot: its top out of the soil, taller than a cop, its leaves higher still. The part underground is
+	// there too (it shows once it's pulled out). Its crown is at y = 0: 2.6 m above, 0.8 m below.
+	giant_carrot() {
+		const b = new Builder('giant_carrot');
+		const orange = C('carrot_orange', 0xf07818);
+		// One taper from the crown (0.32 m across at y = 1.9) down to the tip underground (y = -0.8).
+		const r = (y) => 0.04 + (y + 0.8) / 2.7 * 0.28;
+		b.add('root', orange, new THREE.CylinderGeometry(r(1.9), r(-0.8), 2.7, 10), { pos: V(0, 0.55, 0) });
+		for (let i = 0; i < 7; i++) {
+			const y = -0.6 + i * 0.35;
+			b.add('rings', C('carrot_dark', 0xc85a10), new THREE.TorusGeometry(r(y) + 0.004, 0.012, 4, 12), { pos: V(0, y, 0), rot: [Math.PI / 2, 0, 0] });
+		}
+		for (let i = 0; i < 5; i++) {
+			const a = i * Math.PI * 2 / 5;
+			b.add('leaves', C('carrot_leaf', 0x40a030), new THREE.ConeGeometry(0.1, 0.8, 5), { pos: V(Math.cos(a) * 0.12, 2.25, Math.sin(a) * 0.12), rot: [Math.sin(a) * 0.4, 0, -Math.cos(a) * 0.4] });
+		}
+		return b.build();
+	},
 	// One egg, white like the hens lay them, bottom at y = 0. 0.06 x 0.08 m.
 	farm_egg() {
 		const b = new Builder('farm_egg');
@@ -351,6 +402,11 @@ export const views = {
 		items: [{ name: 'racing_engine', pos: [-0.35, 0, 0], rotY: 0.4 }, { name: 'tractor_trophy', pos: [0.45, 0, -0.1] },
 			{ name: 'flame_helmet', pos: [0.35, 0, 0.45] }],
 		cam: { pos: [0, 1.2, 2.2], target: [0.05, 0.2, 0.05], fov: 34 },
+	},
+	farm_giant_carrots: {
+		items: [{ name: 'giant_carrot', pos: [-0.9, 0.8, 0] }, { name: 'fertilizer_jugs', pos: [0.2, 0, 0.2], rotY: 0.3 },
+			{ name: 'growth_diary', pos: [0.6, 0, 0.6] }, { name: 'ruler_2m', pos: [0.4, 0, 1.0], rotY: 0.2 }],
+		cam: { pos: [0, 2.0, 5.0], target: [-0.2, 1.3, 0], fov: 40 },
 	},
 	farm_golden_eggs: {
 		items: [{ name: 'golden_egg_box', pos: [-0.4, 0, 0], rotY: 0.3 }, { name: 'gold_paint_can', pos: [0.3, 0, 0.1] },
