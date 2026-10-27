@@ -17,8 +17,12 @@ func _init(new_root: Node3D) -> void:
 
 ## A wall along "x" (at z = fixed) or "z" (at x = fixed) on floor `level`, with door gaps centered at `doors`.
 func wall(axis: String, fixed: float, from: float, to: float, level: int, doors: Array, color: Color) -> void:
-	var y0 := level * GameScale.FLOOR_HEIGHT
-	var height := GameScale.FLOOR_HEIGHT - SLAB
+	wall_at(axis, fixed, from, to, level * GameScale.FLOOR_HEIGHT, GameScale.FLOOR_HEIGHT - SLAB, doors, color)
+
+
+## Like wall, but from y0 up to `height`, for buildings whose floors aren't GameScale.FLOOR_HEIGHT apart.
+func wall_at(axis: String, fixed: float, from: float, to: float, y0: float, height: float, doors: Array,
+		color: Color) -> void:
 	var start := from
 	var sorted_doors := doors.duplicate()
 	sorted_doors.sort()

@@ -16,16 +16,16 @@ func test_every_loop_drives_on_the_right() -> void:
 			# The middle of the street it's on: the nearest street line across `right`.
 			var street := Vector3.ZERO
 			if absf(ahead.x) > 0.5:
-				street = Vector3(middle.x, 0, _nearest(middle.z, CityLayout.ROWS, false))
+				street = Vector3(middle.x, 0, _nearest(middle.z, false))
 			else:
-				street = Vector3(_nearest(middle.x, CityLayout.COLUMNS, true), 0, middle.z)
+				street = Vector3(_nearest(middle.x, true), 0, middle.z)
 			assert_almost_eq((middle - street).dot(right), CityLayout.STREET / 4, 0.01,
 				"loop %s piece %d keeps right" % [loop, i])
 
 
-func _nearest(at: float, count: int, columns: bool) -> float:
+func _nearest(at: float, columns: bool) -> float:
 	var best := INF
-	for k in count + 1:
+	for k in (range(CityLayout.WEST, CityLayout.EAST + 1) if columns else range(CityLayout.NORTH, CityLayout.SOUTH + 1)):
 		var line := CityLayout.street_x(k) if columns else CityLayout.street_z(k)
 		if absf(line - at) < absf(best - at):
 			best = line
@@ -50,6 +50,23 @@ func test_a_car_drives_its_loop_and_stops_for_a_cop_in_front() -> void:
 	assert_almost_eq(car.global_position.distance_to(stopped), 0.0, 0.01, "it waits behind the cop")
 	await wait_physics_frames(150)
 	assert_gt(car.global_position.distance_to(stopped), 1.0, "and after a while it goes anyway")
+
+
+func test_it_never_drives_through_a_parked_cops_vehicle() -> void:
+	var car := CityCar.new()
+	car.path = CityTraffic.loop_points(1, 1, 4, 4, true)
+	add_child_autofree(car)
+	car.place_along(0.0)
+	await wait_physics_frames(2)
+	# A stand-in for the patrol car or the transfer bus, parked in its lane.
+	var parked := Node3D.new()
+	parked.add_to_group("patrol_cars")
+	add_child_autofree(parked)
+	parked.global_position = car.to_global(Vector3(0, 0, 6))
+	await wait_physics_frames(10)
+	var stopped := car.global_position
+	await wait_seconds(CityCar.PATIENCE + 1.5)
+	assert_almost_eq(car.global_position.distance_to(stopped), 0.0, 0.01, "it waits for good")
 
 
 func test_walkers_stay_on_their_sidewalk() -> void:

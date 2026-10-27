@@ -121,7 +121,7 @@ const LOOT_MODELS := {
 }
 ## Where it's hidden, drawn with the seed (step 5c): among the capes on the hall's coat rack, under the piano's lid or
 ## in the dusty trunk at the dead end of the bookcase's passage (TRUNK_AT).
-const LOOT_SPOTS: Array[String] = ["coat_rack", "piano", "trunk"]
+const LOOT_SPOTS: Array[String] = ["coat_rack", "piano", "dusty_trunk"]
 const TRUNK_AT := Vector3(LIBRARY_X, 0, MIDDLE_Z - 1.5)
 const TRUNK := preload("res://assets/models/dusty_trunk.glb")
 ## Out front, the gravel drive where the patrol car stops; out the back, the hedge maze (MAZE_CELLS cells of
@@ -542,7 +542,7 @@ func _loot_spots() -> void:
 	trunk.name = "Trunk"
 	trunk.position = TRUNK_AT + Vector3(0, FLOOR_TOP, 0)
 	add_child(trunk)
-	_loot_spot("trunk", TRUNK_AT + Vector3(0, 0.4, 0), Vector3(0.62, 0.7, 0.9), Vector3.FORWARD)
+	_loot_spot("dusty_trunk", TRUNK_AT + Vector3(0, 0.4, 0), Vector3(0.62, 0.7, 0.9), Vector3.FORWARD)
 
 
 func _loot_spot(spot: String, at: Vector3, size: Vector3, out: Vector3) -> void:

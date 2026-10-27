@@ -1,6 +1,6 @@
 extends GutTest
 
-## Play draws the mansion among the crime scenes (escena-mansion.md, step 7): a quarter of them, and --place=mansion
+## Play draws the mansion among the crime scenes (escena-mansion.md, step 7): a fifth of them, and --place=mansion
 ## forces it.
 
 
