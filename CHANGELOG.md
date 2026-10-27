@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Car wash raid, step 6a: the stolen car story: the real plates (3 kg) are the main evidence, the fake papers and the screwdriver the extras; the first car in line has its plate taped on (the clue, near a cop) and rides through the tunnel on its own every 20 s.
 - Car wash raid, step 5: the car wash is a raid case like the ice rink (the comisario's tip, 3 suspicions among its 6 stories, Don Chorro's slips and lawyer, Pompita's clue and the interrogation) with its first story, the laundered money: an 8 kg bag of stolen bills, bills hanging to dry among the towels (the clue, near a cop) and the blower throwing bills in the air while the tunnel runs; the notebook with the two sets of books and the iron are hidden too.
 - Car wash raid, step 4: Pompita, the rag boy, stands by the tunnel's exit and only talks to a cop who brings him a dry chamois (once per cop); the rag basket gives up to 3, and a chamois that goes through the running tunnel's jets or falls in a puddle gets wet and is no use to him.
 - Car wash raid, step 3: Don Chorro, the owner, walks his round by the tunnel and fills his complaint (5 for each cop he sees in the tunnel, once per cop, 10 for something falling on the drying area's floor, the till and the office door); the token machine's golden button pays a premium wash: the first car in line rides through the tunnel and he dries it 20 s with his back to everything, once every 45 s, and the third time he catches on.
