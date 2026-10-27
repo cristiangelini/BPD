@@ -5636,7 +5636,7 @@ FILE_SCRATCH_RIGHT,Arañazo: mano derecha,Scratch: right hand,Arranhão: mão di
 FILE_SCRATCH_NONE,Sin arañazos,No scratches,Sem arranhões
 FILE_SCRATCH_UNKNOWN,Arañazo: ? (falta arremangarlo),Scratch: ? (sleeves not rolled up yet),Arranhão: ? (falta arregaçar as mangas)
 FILE_TIC,"Muletilla: «%s»","Catchphrase: “%s”","Bordão: «%s»"
-BRIEF_CAT_A,"Novatos, esto es serio. A la señora Ofelia Monedero, la mujer más rica de la ciudad, le desapareció su gata, la Duquesa. La señora le paga la máquina de café a esta comisaría.","Rookies, this is serious. Señora Ofelia Monedero, the richest woman in the city, has lost her cat, Duquesa. The señora pays for this station's coffee machine.","Novatos, isto é sério. A senhora Ofelia Monedero, a mulher mais rica da cidade, perdeu a gata dela, a Duquesa. A senhora paga a máquina de café desta delegacia."
+BRIEF_CAT_A_duchess,"Novatos, esto es serio. A la señora Ofelia Monedero, la mujer más rica de la ciudad, le desapareció su gata, la Duquesa. La señora le paga la máquina de café a esta comisaría.","Rookies, this is serious. Señora Ofelia Monedero, the richest woman in the city, has lost her cat, Duquesa. The señora pays for this station's coffee machine.","Novatos, isto é sério. A senhora Ofelia Monedero, a mulher mais rica da cidade, perdeu a gata dela, a Duquesa. A senhora paga a máquina de café desta delegacia."
 BRIEF_CAT_B,"Y la Duquesa es la heredera de todo: está en el testamento. Este fin de semana están en la casona los seis sobrinos de la señora, y los seis quieren esa herencia. Uno de ellos se llevó a la gata.","And Duquesa is the heiress to everything: she's in the will. The señora's six nephews are at the mansion this weekend, and all six want that inheritance. One of them took the cat.","E a Duquesa é a herdeira de tudo: está no testamento. Neste fim de semana os seis sobrinhos da senhora estão no casarão, e os seis querem essa herança. Um deles levou a gata."
 BRIEF_CAT_C,"Quiero un nombre en el tablero y a la Duquesa en los brazos de la señora. Y por favor, no rompan nada, que todo vale más que mi sueldo.","I want a name on the board and Duquesa in the señora's arms. And please, don't break anything: it's all worth more than my salary.","Quero um nome no quadro e a Duquesa nos braços da senhora. E por favor, não quebrem nada, que tudo vale mais que o meu salário."
 HINT_GO_CAT_MANSION,"La Casona Monedero es la de las rejas doradas y la fuente con una gata. No se puede perder.","The Monedero Mansion is the one with the golden railings and the fountain with a cat. You can't miss it.","O Casarão Monedero é o das grades douradas e da fonte com uma gata. Não tem como errar."
@@ -5646,3 +5646,19 @@ OBJ_CAT_FILES,"Armar la ficha de cada sobrino (%d de %d)","Make each nephew's fi
 HINT_NEPHEW_LEFT,"%s se aburrió del fin de semana y se fue a su casa. Su ficha queda como está.","%s got bored of the weekend and went home. Their file stays as it is.","%s se cansou do fim de semana e foi para casa. A ficha fica como está."
 HINT_FILE_scratch,"Las manos de %s para la ficha. ¿Rosal o gata?","%s's hands for the file. Rose bush or cat?","As mãos de %s para a ficha. Roseira ou gata?"
 HINT_FILE_tic,"La muletilla de %s para la ficha. Que no se te pegue.","%s's catchphrase for the file. Don't let it rub off on you.","O bordão de %s para a ficha. Não vá pegar a mania."
+OBJ_CAT_LOOT_duchess,Llevarle la Duquesa a la señora (+100),Bring Duquesa to the señora (+100),Levar a Duquesa para a senhora (+100)
+HINT_LOOT_FOUND_duchess,"«¡Mi bebé!» La señora Ofelia abraza a la Duquesa y no la suelta más.","“My baby!” Señora Ofelia hugs Duquesa and won't let go.","«Meu bebê!» A senhora Ofelia abraça a Duquesa e não solta mais."
+PROMPT_SEARCH_suitcase,E: revisar la maleta,E: search the suitcase,E: revistar a mala
+PROMPT_SEARCH_dumbwaiter,E: abrir el montaplatos,E: open the dumbwaiter,E: abrir o monta-pratos
+PROMPT_SEARCH_basket,E: revisar la canasta de la ropa,E: search the laundry basket,E: revistar o cesto de roupa
+HINT_SEARCH_NOTHING_suitcase,"Calcetines, un cepillo de dientes y una foto de la tía con un bigote dibujado. Nada más.","Socks, a toothbrush and a photo of auntie with a mustache drawn on. Nothing else.","Meias, uma escova de dentes e uma foto da titia com um bigode desenhado. Nada mais."
+HINT_SEARCH_NOTHING_dumbwaiter,"Una bandeja con migas y un calcetín perdido. Nada más.","A tray with crumbs and a lost sock. Nothing else.","Uma bandeja com migalhas e uma meia perdida. Nada mais."
+HINT_SEARCH_NOTHING_basket,"Ropa sucia que huele a gata. Nada más.","Dirty laundry that smells of cat. Nothing else.","Roupa suja com cheiro de gata. Nada mais."
+HINT_DUCHESS_OUT,"¡Una gata naranja sale de un salto! ¿Será la Duquesa? Llévasela a la señora.","An orange cat jumps out! Could it be Duquesa? Take her to the señora.","Uma gata laranja sai de um pulo! Será a Duquesa? Leve-a para a senhora."
+MANSION_LADY_MY_BABY,¡Mi bebé! ¡Mi Duquesa!,My baby! My Duquesa!,Meu bebê! Minha Duquesa!
+MANSION_LADY_WRONG_CAT,"¡Esa es %s! ¿Están ciegos?","That's %s! Are you blind?","Essa é a %s! Vocês estão cegos?"
+DUCHESS,la Duquesa,Duquesa,a Duquesa
+CAT_NAME_0,Pochola,Pochola,Pochola
+CAT_NAME_1,Mantequilla,Butter,Manteiga
+CAT_NAME_2,Bigotes,Whiskers,Bigodes
+CAT_NAME_3,Calabaza,Pumpkin,Abóbora

@@ -166,5 +166,13 @@ señora y la limusina.
    `paso4-rasguno.png`.
 5. El caso: la historia, dónde está la Duquesa, el collar, las pistas con cómo se arruinan, la planilla y la paciencia
    de la señora con las llamadas al comisario.
+   Hecho así (primera parte, la Duquesa): el comisario da el caso en la comisaría con los textos de este documento.
+   La semilla esconde a la Duquesa en la maleta del culpable, en el montaplatos o en la canasta de la ropa; ahí no se
+   ve ni camina, y con el atún solo maúlla. Las seis maletas, el montaplatos (desde la cocina o desde el lavadero) y la
+   canasta se revisan con E: donde no está, dice qué hay; donde está, sale de un salto ("¡Una gata naranja! ¿Será la
+   Duquesa?"). Una gata llevada a la señora en brazos o en la transportadora: si es la Duquesa, "¡Mi bebé!", se la
+   queda en brazos y suma la fila de +100 de la planilla; si es otra, "¡Esa es Pochola! ¿Están ciegos?" (Pochola,
+   Mantequilla, Bigotes o Calabaza) y la gata sale corriendo a esconderse **(propuesta)**. Capturas en `gato/`:
+   `paso5a-escondite.png` y `paso5a-en_brazos.png`.
 6. El final: tablero, cansancio, sueldo y la limusina con los ovillos.
 7. El sorteo de "Jugar" y el online.

@@ -26,6 +26,10 @@ const ARRIVED := 0.5
 
 ## The real one: Duquesa, the heiress.
 var duchess := false
+## Her name's text key (DUCHESS for her, CAT_NAME_0... for the others).
+var cat_name := "DUCHESS"
+## In Señora Ofelia's arms, home at last: she stays there.
+var home := false
 ## Locked away somewhere by the culprit (step 5): she doesn't walk and only meows when called.
 var shut_in := false
 ## Where she runs to hide (world positions), the nearest one each time.
@@ -57,6 +61,7 @@ func _ready() -> void:
 	shape.position.y = 0.15 * SIZE
 	add_child(shape)
 	var model: Node3D = MODEL.instantiate()
+	model.name = "Model"
 	model.scale = Vector3.ONE * SIZE
 	add_child(model)
 	_bubble = MarketShopper.make_bubble()
@@ -92,6 +97,27 @@ func escape() -> void:
 	escaped.emit(self)
 
 
+## Locked away at `at` by the culprit: out of sight, still, and only her meow gets out.
+func lock_in(at: Vector3) -> void:
+	shut_in = true
+	_set_out(false)
+	global_position = at
+
+
+## Out of her hiding place at `at`, on the floor: she can walk again.
+func let_out(at: Vector3) -> void:
+	shut_in = false
+	global_position = at
+	_set_out(true)
+
+
+func _set_out(out: bool) -> void:
+	(get_node("Model") as Node3D).visible = out
+	freeze = not out
+	collision_layer = 4 if out else 0
+	collision_mask = 15 if out else 0
+
+
 ## Every cop holding her lets go.
 func free_from_arms() -> void:
 	for id: int in holders.keys():
@@ -108,7 +134,7 @@ func lure(at: Vector3) -> void:
 	if shut_in:
 		say("CAT_MEOW")
 		return
-	if crate or is_held() or global_position.distance_to(at) > LURE_RANGE:
+	if crate or home or is_held() or global_position.distance_to(at) > LURE_RANGE:
 		return
 	_hiding_left = 0.0
 	_target = at
@@ -122,7 +148,7 @@ func _physics_process(delta: float) -> void:
 		say("CAT_PURR")
 	elif _bubble.text == "CAT_PURR":
 		_bubble.hide()
-	if crate or shut_in:
+	if crate or shut_in or home:
 		return
 	if is_held():
 		_held_for += delta

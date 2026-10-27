@@ -95,6 +95,9 @@ const CATS_AT: Array[Vector3] = [
 	Vector3(1.0, 0, 2.0), Vector3(-8.0, 0, 1.6), Vector3(11.5, 0, -4.0), Vector3(0.0, 0, -8.0), Vector3(-10.0, 0, -8.0),
 ]
 const CAT_COUNT := 5
+## Where the culprit hid Duquesa (escena-gato.md, "Dónde está"): in his suitcase, in the dumbwaiter or in the laundry
+## basket. "suitcase" means the culprit's; every suitcase can be searched.
+const HIDING_SPOTS: Array[String] = ["suitcase", "dumbwaiter", "basket"]
 const HIDE_AT: Array[Vector3] = [
 	Vector3(-10.0, 0, 0.5), Vector3(10.0, 0, -7.4), Vector3(12.4, 0, -10.4), Vector3(0.0, 0, -11.0),
 	Vector3(-13.4, 0, -12.4), Vector3(3.8, 0, 0.8),
@@ -130,6 +133,14 @@ var duchess := 0
 var crate: TransportCrate
 var music_box: MusicBox
 var tuna_cans: Array[TunaCan] = []
+## What the case is about (CrimeSceneCase's loot rows and hints): Duquesa, back in the señora's arms.
+var loot := "duchess"
+var loot_found := false
+## Where Duquesa is locked away: a spot of HIDING_SPOTS, the suitcase as "suitcase_N" (the culprit's number).
+var duchess_spot := ""
+var duchess_out := false
+## The searchable places, by spot (suitcase_0 to suitcase_5, dumbwaiter, basket).
+var search_spots := {}
 var _builder: PlaceBuilder
 
 
@@ -148,6 +159,7 @@ func _ready() -> void:
 	_vases()
 	_people()
 	_cats()
+	_search_spots()
 
 
 ## The case reaches the nephews (their traits are its suspects, same seed), and one of them, drawn with the seed,
@@ -158,6 +170,32 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	for nephew in nephews:
 		nephew.case = case
 		nephew.stubborn = nephew.index == stubborn
+	var hiding: String = HIDING_SPOTS[absi(hash("duchess spot %d" % case.case_seed)) % HIDING_SPOTS.size()]
+	duchess_spot = "suitcase_%d" % case.plan.culprit if hiding == "suitcase" else hiding
+	var spot := search_spots[duchess_spot] as Node3D
+	cats[duchess].lock_in(spot.global_position)
+
+
+## Searching a spot: Duquesa jumps out of the right one; the others have nothing but junk.
+func search(spot: String, cop: Cop) -> void:
+	if spot != duchess_spot or duchess_out or not case:
+		if cop:
+			cop.show_hint("HINT_SEARCH_NOTHING_" + spot.get_slice("_", 0))
+		return
+	duchess_out = true
+	var at := search_spots[spot] as Node3D
+	var out: Vector3 = at.get_meta("out")
+	cats[duchess].let_out(to_global(Vector3(at.position.x, FLOOR_TOP + 0.02, at.position.z) + out * 0.7))
+	cats[duchess].say("CAT_MEOW")
+	if cop:
+		cop.show_hint("HINT_DUCHESS_OUT")
+
+
+## Duquesa is back in the señora's arms: the case gets what it came for.
+func _on_duchess_home() -> void:
+	loot_found = true
+	if case:
+		case.found_loot()
 
 
 ## The nephew by index (the order of the case's traits).
@@ -199,6 +237,7 @@ func _cats() -> void:
 		var cat := MansionCat.new()
 		cat.name = "Cat%d" % i
 		cat.duchess = i == duchess
+		cat.cat_name = "DUCHESS" if cat.duchess else "CAT_NAME_%d" % (i if i < duchess else i - 1)
 		cat.hide_spots = spots
 		cat.position = CATS_AT[i] + Vector3(0, FLOOR_TOP + 0.02, 0)
 		add_child(cat)
@@ -207,6 +246,29 @@ func _cats() -> void:
 	crate.name = "Crate"
 	crate.position = CRATE_AT + Vector3(0, FLOOR_TOP + 0.01, 0)
 	add_child(crate)
+
+
+## Every suitcase, the dumbwaiter's hatch (from the kitchen or the laundry) and the laundry basket can be searched.
+## `out` is where a cat jumps out to.
+func _search_spots() -> void:
+	for i in SUITCASES.size():
+		_search_spot("suitcase_%d" % i, SUITCASES[i] + Vector3(0, SUITCASE_SIZE.y / 2, 0),
+			SUITCASE_SIZE + Vector3.ONE * 0.04, Vector3.BACK)
+	_search_spot("dumbwaiter", DUMBWAITER_AT, Vector3(0.7, 0.6, 0.25), Vector3.BACK)
+	_search_spot("basket", BASKET_AT + Vector3(0, 0.3, 0), Vector3(0.74, 0.6, 0.54), Vector3.BACK)
+
+
+func _search_spot(spot: String, at: Vector3, size: Vector3, out: Vector3) -> void:
+	var body := LootSpot.new(size)
+	body.name = "Search_" + spot
+	body.spot = spot
+	body.place = self
+	body.position = at
+	if spot.begins_with("suitcase"):
+		body.prompt = "PROMPT_SEARCH_suitcase"
+	body.set_meta("out", out)
+	add_child(body)
+	search_spots[spot] = body
 
 
 ## The six nephews alike (NephewTraits.draw with the case seed), Señora Ofelia in the hall and Don Plumas on his stand.
@@ -223,6 +285,7 @@ func _people() -> void:
 		nephews.append(nephew)
 	lady = MansionLady.new()
 	lady.name = "Lady"
+	lady.got_duchess.connect(_on_duchess_home)
 	lady.position = LADY_AT + Vector3(0, FLOOR_TOP, 0)
 	add_child(lady)
 	parrot = MansionParrot.new()
