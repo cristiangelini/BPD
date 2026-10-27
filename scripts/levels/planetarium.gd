@@ -61,6 +61,8 @@ const COFFEE_SIZE := Vector3(0.7, 1.6, 0.6)
 const COFFEE_MODEL := preload("res://assets/models/coffee_machine.glb")
 const COFFEE_SCENE := preload("res://scenes/props/coffee_cup.tscn")
 const CUPS_TABLE_AT := Vector3(-4.6, 0, 6.6)
+## The planetarium's van waits at the curb west of the door, and drives straight out into the street (step 7).
+const GETAWAY_AT := Vector3(-9.0, 0, SIZE.y / 2 + 1.0)
 ## The stool with the roll of evidence bags, by the door.
 const BAGS_AT := Vector3(-3.0, 0, 6.0)
 const PAINT := Color(0.18, 0.2, 0.42)
@@ -244,6 +246,12 @@ func witness_offended() -> bool:
 
 func offend_witness() -> void:
 	sleeper.offend()
+
+
+## The planetarium's van waits at the curb, west of the door, and drives straight out into the street.
+func getaway(_index: int, _city: Node3D) -> Dictionary:
+	var out := to_global(GETAWAY_AT)
+	return {"at": Transform3D(global_basis, out), "via": [to_global(Vector3(GETAWAY_AT.x, 0, SIZE.y / 2 + 5.0))]}
 
 
 ## A cop shouted (VoiceChat): Doña Nebulosa may wake up in a bad mood.

@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Planetarium crime scene, step 7: the ending. The comisario gives the case with its board and stamp; the culprit who runs off goes in the planetarium's van (22 km/h, a telescope on the roof), dropping two inflatable planets at every corner: hit, a planet flies off and holds the patrol car back for 1 s, and E pops it. The guide is interrogated as one.
 - Planetarium crime scene, step 6b: Doña Nebulosa, the witness. A coffee from the hall's machine wakes her and she tells the culprit's planet pin; shaken, shouted at or with a flashlight in her face she goes back to sleep for good.
 - Planetarium crime scene, step 6a: the clues. Prints on the display case (polished at 240 s), the glowing moon-boot print in the dome room (only in the dark), the hair by the helmet in the control room (the robot vacuum at 180 s), the bitten astronaut ice cream in the kids' rocket (a school visit at 240 s), the photo booth's 3 a.m. photo with the culprit's planet pin, and the glow paint on the gloves.
 - Planetarium crime scene, step 5b: sitting in a plain seat during the star show gives Doctor Órbita back 10 of his patience, but the cop can't get up for 10 s.

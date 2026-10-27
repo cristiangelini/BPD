@@ -78,7 +78,42 @@ function nebulosa(b) {
 	b.add('zzz', C('zzz', 0xbfd8ff, { emissive: 0x405070 }), new THREE.BoxGeometry(0.08, 0.08, 0.01), { pos: V(0.22, 1.7, 0.05), rot: [0, 0, 0.3] });
 }
 
-const PEOPLE = { npc_guia: guia, npc_orbita: orbita, npc_nebulosa: nebulosa };
+// The planetarium's van the culprit flees in (step 7): a white van with a midnight-blue band of stars along each side,
+// a telescope tied on the roof and back doors that let the inflatable planets out. Front +Z, 2.1 x 2.6 x 5.0, wheels at
+// x = ±1.05, z = ±1.75 (SuspectCar.SHUTTLE_WHEELS).
+function planetariumVan(b) {
+	const white = C('van_white', 0xf2f3f6), night = C('van_night', 0x1c2450), star = C('van_star', 0xfff4c0);
+	b.add('body', white, new THREE.BoxGeometry(2.1, 1.9, 5.0), { pos: V(0, 1.25, 0) });
+	b.add('body', C('car_glass', 0x9fd0ea), new THREE.BoxGeometry(1.8, 0.6, 0.04), { pos: V(0, 1.75, 2.51) });
+	b.add('body', C('bumper', 0x30343a), new THREE.BoxGeometry(2.1, 0.25, 0.2), { pos: V(0, 0.45, 2.55) });
+	for (const sx of [-1, 1]) {
+		b.add('band', night, new THREE.BoxGeometry(0.04, 0.7, 3.6), { pos: V(sx * 1.06, 1.35, -0.5) });
+		for (let i = 0; i < 6; i++) {
+			b.add('band', star, new THREE.BoxGeometry(0.03, 0.08, 0.08), { pos: V(sx * 1.09, 1.2 + (i % 2) * 0.3, -2.0 + i * 0.6) });
+		}
+		b.add('band', C('saturn_paint', 0xedc773), ellipsoid(0.03, 0.22, 0.22, 8, 5), { pos: V(sx * 1.09, 1.35, 1.0) });
+	}
+	b.add('doors', C('door_line', 0x8a90a4), new THREE.BoxGeometry(0.03, 1.7, 0.02), { pos: V(0, 1.2, -2.51) });
+	// The telescope, tied on the roof rack and pointing up at the front.
+	const metal = C('scope_metal', 0x9aa0aa);
+	b.add('telescope', metal, new THREE.BoxGeometry(1.6, 0.05, 2.4), { pos: V(0, 2.23, -0.3) });
+	b.add('telescope', C('scope_white', 0xe8e8ec), new THREE.CylinderGeometry(0.16, 0.2, 2.0, 10), { pos: V(0, 2.5, -0.2), rot: [Math.PI / 2 - 0.3, 0, 0] });
+	b.add('telescope', C('rope', 0xc8a060), new THREE.BoxGeometry(1.62, 0.04, 0.06), { pos: V(0, 2.42, 0.3) });
+	for (const x of [-1.05, 1.05]) for (const z of [-1.75, 1.75]) {
+		b.add('wheels', C('tire', 0x1a1a1e), new THREE.CylinderGeometry(0.38, 0.38, 0.28, 12), { pos: V(x, 0.38, z), rot: [0, 0, Math.PI / 2] });
+	}
+}
+
+// An inflatable planet as it bounces out of the van onto the street: a white ball (tinted to its planet in the game),
+// a ring around it (shown only for Saturn) and the valve on top. Bottom at y = 0, radius 0.45.
+function chasePlanet(b) {
+	b.add('ball', C('planet_ball', 0xffffff, { roughness: 0.35 }), ellipsoid(0.45, 0.45, 0.45, 12, 8), { pos: V(0, 0.45, 0) });
+	b.add('ring', C('planet_ring', 0xc8a860), new THREE.TorusGeometry(0.65, 0.05, 6, 20), { pos: V(0, 0.45, 0), rot: [Math.PI / 2 - 0.35, 0, 0] });
+	b.add('valve', C('valve', 0xe8e8e8), new THREE.CylinderGeometry(0.03, 0.04, 0.08, 6), { pos: V(0, 0.92, 0) });
+}
+
+const PEOPLE = { npc_guia: guia, npc_orbita: orbita, npc_nebulosa: nebulosa, planetarium_van: planetariumVan,
+	chase_planet: chasePlanet };
 
 export const models = Object.fromEntries(Object.entries(PEOPLE).map(([n, f]) => [n, () => {
 	const b = new Builder(n);
@@ -91,5 +126,10 @@ export const views = {
 		items: [{ name: 'npc_orbita', pos: [-1.3, 0, 0], rotY: 0.3 }, { name: 'npc_guia', pos: [0, 0, 0], rotY: 0.2 },
 			{ name: 'npc_nebulosa', pos: [1.3, 0, 0], rotY: -0.3 }],
 		cam: { pos: [0, 1.4, 6.0], target: [0, 0.85, 0], fov: 38 },
+	},
+	planetarium_van: {
+		items: [{ name: 'planetarium_van', pos: [-0.8, 0, 0], rotY: 0.7 }, { name: 'chase_planet', pos: [2.2, 0, 0.8], rotY: -0.4 },
+			{ name: 'chase_planet', pos: [3.0, 0, -0.4], rotY: 0.6 }],
+		cam: { pos: [0.6, 3.0, 10.0], target: [0.6, 1.2, 0], fov: 38 },
 	},
 };

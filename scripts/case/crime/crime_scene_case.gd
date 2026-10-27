@@ -84,7 +84,7 @@ const VARIANTS := {
 		"brief": ["BRIEF_PLANETARIUM_A_", "BRIEF_PLANETARIUM_B", "BRIEF_PLANETARIUM_C"], "go": "HINT_GO_PLANETARIUM",
 		"go_row": "OBJ_PLANETARIUM_GO", "look": "HINT_PLANETARIUM_LOOK", "files_row": "OBJ_PLANETARIUM_FILES",
 		"clue_line": "CLUE_PLANETARIUM_", "ruined_hint": "HINT_PLANETARIUM_RUINED_", "left": "HINT_GUIDE_LEFT",
-		"who": "guide", "getaway": SuspectCar.BIKE, "loot_row": "OBJ_PLANETARIUM_LOOT_",
+		"who": "guide", "getaway": SuspectCar.PLANETARIUM_VAN, "loot_row": "OBJ_PLANETARIUM_LOOT_",
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "glow": "glow",
 			"booth": "planet", "witness": "planet"},
 		"parts": ["photo", "prints", "teeth", "hair", "glow", "planet"],
