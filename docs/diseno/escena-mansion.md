@@ -75,7 +75,7 @@ Cada partida reparte **4 pistas** de estas 6, elegidas para que juntas descarten
 | **Un pelo** enganchado en la armadura del hall | Mirando de cerca; se guarda en una bolsa | El color de pelo | Si alguien empuja la armadura, se cae (con estruendo) y el pelo se pierde |
 | **Un mordisco** en un bombón de la caja del comedor | Se guarda en una bolsa | Los dientes | Si un policía se lo come, se pierde |
 | **Las campanillas** de la despensa | Preguntarle a Ceferino (después de su "Fui yo, señor") qué campanilla sonó a medianoche | El cuarto desde donde llamó el culpable, que es el de su coartada: los socios que dijeron otro cuarto quedan descartados (dos pueden haber estado en el mismo) | Si un policía tira de un cordón de campanilla en cualquier cuarto, las banderitas se mezclan |
-| **El testigo**: Lorenzo, el loro | Darle una galletita y hablarle con E | Repite lo que oyó: "¡Mis anteojos! ¡Mis anteojos!" (o "¡Qué bien veo!") | Si le gritan o le tiran algo, repite solo insultos para siempre |
+| **El testigo**: Lorenzo, el loro | Darle un bombón de la caja del comedor y hablarle con E | Repite lo que oyó: "¡Mis anteojos! ¡Mis anteojos!" (o "¡Qué bien veo!") | Si le gritan o le tiran algo, repite solo insultos para siempre |
 
 Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas de evidencia, como siempre.
 
@@ -147,6 +147,13 @@ para el interrogatorio. Los modelos nuevos salen de `tools/modelgen` (low poly).
    el sello están en la pared oeste de la biblioteca, donde antes había estantes. Si se acusa bien, el culpable se
    entrega y pasa al interrogatorio del turno siguiente (la huida es el paso 6). Pistas y búsqueda en 5b. Capturas
    en `escena-mansion/paso5a-*.png` **(propuesta)**.
+   Hecho así (5b): las pistas van donde dice la tabla. La puerta abierta de la caja fuerte tiene las huellas. La
+   pisada está en el polvo del medio de uno de los tres pasadizos, sorteado con la semilla. El pelo está arriba del
+   casco de la armadura, y la armadura se cae con E. El bombón mordido está en la mesa del comedor, al lado de la caja.
+   Hay un cordón de campanilla en cada uno de los seis cuartos; tirar de cualquiera mezcla las banderitas. A Ceferino
+   se le pregunta dos veces: primero dice que fue él y después qué campanilla sonó. A Lorenzo se le da un bombón de la
+   caja (no una galletita, para no sumar otra cosa) y un grito cerca lo ofende para siempre. Dónde está lo robado, en
+   5c. Capturas en `escena-mansion/paso5b-*.png` **(propuesta)**.
 6. El final: la huida por el laberinto, el cansancio y el sueldo.
 7. "Jugar" sortea la mansión entre los lugares.
 8. Online: los socios, doña Clotilde, el loro y los pasadizos iguales en todas las PCs.
