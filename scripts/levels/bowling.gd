@@ -82,6 +82,9 @@ const PIN_MOVED := 0.25
 const SKATE_TIME := 0.9
 const SKATE_PUSH := 3.0
 const SKATE_AGAIN := 1.5
+## With a pair of Pipo's bowling shoes on, a cop only slides a little.
+const SHOD_PUSH := 1.2
+const SHOD_TIME := 0.4
 ## The Thursday league: two players on each of these lanes, waiting between the rack and the bench.
 const LEAGUE_LANES: Array[int] = [0, 2, 4]
 const PLAYER_Z := 6.6
@@ -100,6 +103,8 @@ const CAUGHT_ON := 10.0
 const COUNTER_AT := Vector3(6.0, FLOOR_TOP, 9.0)
 const COUNTER_SIZE := Vector3(4.1, 1.1, 0.8)
 const TILL_ON := Vector3(4.6, FLOOR_TOP + 1.12, 9.0)
+## Pipo, behind the counter between it and the shelf, facing the alley, on a crate so he can see over it.
+const PIPO_AT := Vector3(6.5, FLOOR_TOP + 0.5, 9.8)
 const BAR_AT := Vector3(5.0, FLOOR_TOP, 0.0)
 const BAR_SIZE := Vector3(3.1, 1.1, 0.8)
 const POPCORN_AT := Vector3(7.3, FLOOR_TOP, 0.0)
@@ -154,6 +159,7 @@ var pin_homes: Array = []
 var balls: Array[BowlingBall] = []
 var players: Array[BowlPlayer] = []
 var owner_boss: FloorBoss
+var pipo: ShoeBoy
 var strike_call: StrikeCall
 var complaint_bar: ProgressBar
 ## Ball -> seconds until it's back on its rack; lane -> seconds until its pins are set up, and the ball that came.
@@ -187,6 +193,12 @@ func _ready() -> void:
 	_build_players()
 	office_door = _door(OFFICE_DOOR_X)
 	_place_owner()
+	_build.box(PIPO_AT - Vector3(0, 0.25, 0), Vector3(0.6, 0.5, 0.6), WOOD.darkened(0.2))
+	pipo = ShoeBoy.new()
+	pipo.name = "Pipo"
+	pipo.position = PIPO_AT
+	pipo.rotation.y = PI
+	add_child(pipo)
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("bowling")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -492,7 +504,8 @@ func _physics_process(delta: float) -> void:
 	_skate(delta)
 
 
-## This PC's own cop running on a waxed lane skates on, out of control (a copy of another player's cop only follows).
+## This PC's own cop running on a waxed lane skates on, out of control (a copy of another player's cop only follows);
+## with Pipo's shoes on, only a little.
 func _skate(delta: float) -> void:
 	for cop: Variant in _skated.keys():
 		_skated[cop] -= delta
@@ -507,7 +520,8 @@ func _skate(delta: float) -> void:
 		if flat.length() < 0.5:
 			continue
 		_skated[cop] = SKATE_AGAIN
-		cop.knock_back(flat.normalized() * SKATE_PUSH, SKATE_TIME)
+		var shod := pipo != null and pipo.wears(cop)
+		cop.knock_back(flat.normalized() * (SHOD_PUSH if shod else SKATE_PUSH), SHOD_TIME if shod else SKATE_TIME)
 		cop.show_hint("HINT_BOWL_SKATE")
 
 

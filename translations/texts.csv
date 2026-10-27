@@ -5641,3 +5641,13 @@ CHUZA_PLAYER,"¡Mis jugadores se quejan! ¡Los jueves son sagrados!","My players
 CHUZA_CASE,"¡Mis trofeos! ¡Diez años de victorias!","My trophies! Ten years of victories!","Meus troféus! Dez anos de vitórias!"
 CHUZA_SCREEN,"¡La pantalla! ¿Saben lo que cuesta una pantalla?","The screen! Do you know what a screen costs?","A tela! Vocês sabem quanto custa uma tela?"
 BOWL_STRIKE_SCREEN,★ ¡CHUZA! ★,★ STRIKE! ★,★ STRIKE! ★
+PROMPT_PIPO_SHOES,E: pedirle zapatos a Pipo,E: ask Pipo for shoes,E: pedir sapatos ao Pipo
+PROMPT_PIPO_RETURN,E: devolverle los zapatos a Pipo,E: give Pipo the shoes back,E: devolver os sapatos ao Pipo
+PIPO_SHOES,"Tu número, recién perfumados. ¡Pero me los devuelves, eh! Nadie me los devuelve.","Your size, freshly perfumed. But give them back, okay? Nobody ever gives them back.","Seu número, recém-perfumados. Mas me devolve, hein! Ninguém me devolve."
+PIPO_THANKS,"¡Gracias otra vez! Eres mi cliente favorito.","Thanks again! You're my favorite customer.","Obrigado de novo! Você é meu cliente favorito."
+PIPO_NOTHING,"¡Me los devolviste! Gracias… Yo no vi nada raro, solo pies.","You gave them back! Thanks… I didn't see anything odd, only feet.","Você devolveu! Obrigado… Eu não vi nada estranho, só pés."
+PIPO_IDLE_1,"Psss, psss. Un zapato, un chorrito de desodorante.","Psss, psss. One shoe, one squirt of deodorant.","Psss, psss. Um sapato, um jato de desodorante."
+PIPO_IDLE_2,"Tengo 200 pares y vuelven 50. ¿Dónde se van los zapatos?","I've got 200 pairs and 50 come back. Where do the shoes go?","Tenho 200 pares e voltam 50. Para onde vão os sapatos?"
+PIPO_IDLE_3,"Si me devuelves un par, te cuento un secreto.","Give me back a pair and I'll tell you a secret.","Se me devolver um par, te conto um segredo."
+HINT_BOWL_SHOES_ON,Te pusiste zapatos de bolos: ahora resbalas menos en la pista.,You put on bowling shoes: you slide less on the lanes now.,Você calçou sapatos de boliche: agora escorrega menos na pista.
+HINT_BOWL_SHOES_OFF,Le devolviste los zapatos a Pipo.,You gave the shoes back to Pipo.,Você devolveu os sapatos ao Pipo.
