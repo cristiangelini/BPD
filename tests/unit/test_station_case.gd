@@ -79,11 +79,14 @@ func test_each_coworker_gives_their_file_and_fritanga_knows_the_sugars() -> void
 	assert_string_contains(text, tr("STAFF_PLACE_" + (case.culprit().where as String).to_upper()), "the alibi on the file")
 
 
-func test_accused_the_culprit_gives_up_for_now() -> void:
-	var level := _level(13)
+func test_accused_a_culprit_who_doesnt_run_gives_up() -> void:
+	var seed_value := 13
+	while hash(["crime runs", seed_value]) % CrimeSceneCase.RUNS_EVERY == 0:
+		seed_value += 1
+	var level := _level(seed_value)
 	var case := level.case
 	case.give_tip()
-	assert_false(case.runs_off(), "no getaway until step 5")
+	assert_false(case.runs_off())
 	case.accuse(case.plan.culprit)
 	assert_true(case.accused)
 	assert_true(case.solved())

@@ -21,6 +21,11 @@ const SHIFT_DELAY := 3.0
 const LOOT_BONUS := 100.0
 ## Each of the museum's frames broken in the chase is taken off the salary (escena-museo.md, pregunta 3).
 const FRAME_FINE := 20
+## At the station (escena-comisaria.md), internal affairs comes and takes the case this many seconds after the tip, or
+## sooner when the campaign is already under investigation (decision 191); the comisario warns IA_WARN seconds before.
+const IA_AT := 600.0
+const IA_INVESTIGATING := 360.0
+const IA_WARN := 120.0
 ## Its own quota, like the interrogation and the chase (decision 91).
 const QUOTA := ShiftReport.SALARY
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
@@ -78,14 +83,15 @@ const VARIANTS := {
 		"parts": ["prints", "teeth", "sign", "shoe", "hair", "glasses"],
 	},
 	# The station itself (escena-comisaria.md, decision 300): six coworkers in the cops' own uniform; their files take
-	# their prints, a bite, a signature, a photo and doña Fritanga's list of sugars. Their getaway comes in step 5:
-	# until then the culprit gives up.
+	# their prints, a bite, a signature, a photo and doña Fritanga's list of sugars. Nobody gets tired: internal affairs
+	# comes and takes the case (IA_AT), and half the culprits run off in the station's old patrol car, which loses pieces.
 	"station": {
 		"shift": "crime_station", "story": "station",
 		"brief": ["BRIEF_STATION_A_", "BRIEF_STATION_B", "BRIEF_STATION_C"], "go": "HINT_GO_EVIDENCE",
 		"go_row": "OBJ_STATION_GO", "look": "HINT_STATION_LOOK", "files_row": "OBJ_STATION_FILES",
 		"clue_line": "CLUE_STATION_", "ruined_hint": "HINT_STATION_RUINED_", "left": "HINT_STAFF_LEFT",
-		"who": "staff", "getaway": "", "loot_row": "OBJ_STATION_LOOT_", "tire": false,
+		"who": "staff", "getaway": SuspectCar.OLD_PATROL, "loot_row": "OBJ_STATION_LOOT_", "tire": false,
+		"internal_affairs": true,
 		"clues": {"prints": "name", "tape": "silhouette", "book": "left", "cup": "sugar", "bite": "teeth",
 			"witness": "shoe"},
 		"parts": ["prints", "teeth", "sign", "photo", "sugar"],
@@ -150,6 +156,9 @@ var elapsed := 0.0
 var gone: Array[int] = []
 ## The culprit, caught, for the next shift's interrogation (decision 93), like the raid's owner.
 var custody := {}
+## At the station: the comisario warned that internal affairs is coming, and it came (the case is lost).
+var ia_warned := false
+var ia_arrived := false
 ## The culprit runs off on his bike (runs_off), and the chase once he did; whether he got away.
 var chase: ChaseCase
 var escaped := false
@@ -404,8 +413,6 @@ func accuse(id: int) -> void:
 
 ## Whether this case's culprit runs off when accused, from the seed. One who already went home can't.
 func runs_off() -> bool:
-	if texts().getaway == "":
-		return false
 	return hash(["crime runs", case_seed]) % RUNS_EVERY == 0 and not gone.has(plan.culprit)
 
 
@@ -887,6 +894,10 @@ func rows() -> Array[Dictionary]:
 		if not files.has(index):
 			list.append({"text": "- " + _missing(index), "done": false, "optional": false, "status": true})
 	list.append(_row("OBJ_CRIME_ACCUSE", accused))
+	if texts().get("internal_affairs", false) and not accused:
+		var left := maxi(int(ia_arrival() - elapsed), 0)
+		list.append({"text": tr("OBJ_IA_CLOCK") % [left / 60, left % 60] if not ia_arrived else "OBJ_IA_ARRIVED",
+			"done": false, "optional": false, "status": true})
 	if texts().has("loot_row") and place:
 		list.append({"text": texts().loot_row + (place.loot as String), "done": loot_found, "optional": true,
 			"status": false})
@@ -909,6 +920,8 @@ func _physics_process(delta: float) -> void:
 		elapsed += delta
 		if texts().get("tire", true) and gone.size() < cooks.size() and elapsed >= LEAVE_FROM + gone.size() * LEAVE_EVERY:
 			_tire()
+		if texts().get("internal_affairs", false) and not follower:
+			_internal_affairs()
 	if not at_tent and not follower:
 		for cop in get_tree().get_nodes_in_group("cops"):
 			if place.at_scene((cop as Node3D).global_position):
@@ -920,6 +933,29 @@ func _physics_process(delta: float) -> void:
 	if checklist.is_open() and _refresh_left <= 0.0:
 		_refresh_left = REFRESH
 		checklist.show_rows(rows())
+
+
+## When internal affairs gets to the station, in seconds after the tip.
+func ia_arrival() -> float:
+	return IA_INVESTIGATING if InternalAffairsAgent.investigating() else IA_AT
+
+
+## The comisario's warning on the radio, and then internal affairs at the door: it takes the case, which is lost.
+func _internal_affairs() -> void:
+	var at := ia_arrival()
+	if not ia_warned and elapsed >= at - IA_WARN:
+		ia_warned = true
+		_hint_all("HINT_IA_SOON")
+	if ia_arrived or elapsed < at:
+		return
+	ia_arrived = true
+	lost = true
+	_hint_all("HINT_IA_ARRIVED")
+	if place and place.has_method("ia_arrives"):
+		place.ia_arrives()
+	checklist.show_rows(rows())
+	verdict.emit(false, true)
+	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
 
 ## "Clara: falta foto, dientes", for a file begun but not done.
