@@ -78,6 +78,7 @@ func stain(car: Node3D) -> void:
 	for i in STAINS_EACH:
 		stains += 1
 		var side := 1.0 if i % 2 == 0 else -1.0
-		var at := Vector3(_rng.randf_range(-1.8, 1.8), _rng.randf_range(0.4, 1.1), side * (CarWash.CAR_SIZE.z / 2 + 0.05))
+		var at := Vector3(_rng.randf_range(-1.8, 1.8), _rng.randf_range(0.4, 1.1),
+			side * (CarWash.CAR_SIZE.z / 2 + 0.05))
 		var size := Vector3(_rng.randf_range(0.3, 0.6), _rng.randf_range(0.15, 0.35), 0.03)
 		car.add_child(_box(at, size, PAINTS[_rng.randi_range(0, PAINTS.size() - 1)]))
