@@ -700,8 +700,8 @@ func _hotel_clue_line(kind: String) -> String:
 	return tr("CLUE_HOTEL_" + kind)
 
 
-## At the post office: the dusty footprint in the sorting room, the hair by the cap, the cookie behind the scale and
-## the letter stamped at 3 in the morning.
+## At the post office: the dusty footprint in the sorting room, the hair by the cap, the cookie behind the scale, the
+## letter stamped at 3 in the morning and what Cartita heard.
 func _post_office_clue_line(kind: String) -> String:
 	var who := culprit()
 	match kind:
@@ -711,8 +711,8 @@ func _post_office_clue_line(kind: String) -> String:
 			return tr("CLUE_POST_OFFICE_hair") % tr("HAIR_" + str(who.hair))
 		"bite":
 			return tr("CLUE_POST_OFFICE_bite") % tr("TEETH_" + str(who.teeth))
-		"letter":
-			return tr("CLUE_POST_OFFICE_letter") % tr("ROUTE_" + str(who.route))
+		"letter", "witness":
+			return tr("CLUE_POST_OFFICE_" + kind) % tr("ROUTE_" + str(who.route))
 	return tr("CLUE_POST_OFFICE_" + kind)
 
 

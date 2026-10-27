@@ -206,5 +206,10 @@ Mientras tanto se avanza con lo recomendado.
      la mano lo echa al saco y la tapa.
    - Capturas: `correo/paso6-pisada.png`, `paso6-gorra.png`, `paso6-galleta.png`, `paso6-devoluciones.png` y
      `paso6-caja-fuerte.png`.
+   **Hecho así (6b, Cartita):** un plato con 3 galletas para loro (`ParrotCookie`) en el mostrador, al lado de su
+   palo. E con una galleta en la mano sobre Cartita: se la come y, si es la testigo, grita lo del culpable ("¡Recorrido
+   azul, recorrido azul! ¡Cállate, loro!"). Si no lo es, "¡No vi nada!". Un grito a menos de 5 m o el flash de la
+   cámara la asustan: esconde la cabeza debajo del ala y no habla más en todo el caso. Capturas:
+   `correo/paso6b-cartita-galleta.png` y `paso6b-cartita-asustada.png`.
 7. El final: el tablero, el sueldo y la camioneta con los paquetes.
 8. El sorteo de "Jugar" y el online.
