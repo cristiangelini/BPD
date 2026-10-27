@@ -74,9 +74,9 @@ const CHASE_EVERY := 2
 ## traffic control (propuesta: each as often as each raid).
 const CRIME_EVERY := 5
 const TRAFFIC_EVERY := 4
-## The crime scenes, drawn by the seed: the pastry contest, the circus (escena-circo.md) and the museum
-## (escena-museo.md), in thirds (propuesta).
-const CRIME_SCENES := ["crime_scene", "circus", "museum"]
+## The crime scenes, drawn by the seed: the pastry contest, the circus (escena-circo.md), the museum (escena-museo.md)
+## and the wedding (escena-boda.md), a quarter each (propuesta).
+const CRIME_SCENES := ["crime_scene", "circus", "museum", "wedding"]
 ## Of the rest, one in this many is an infiltration (propuesta: as often as each raid), at one of these by the seed.
 const INFILTRATION_EVERY := 4
 const INFILTRATIONS := ["club", "choir", "mime", "party", "gym", "school", "restaurant", "chess", "biker", "auction"]

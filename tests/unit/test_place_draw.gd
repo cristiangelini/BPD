@@ -11,16 +11,18 @@ func after_each() -> void:
 
 func test_half_are_chases_and_the_crime_scene_the_traffic_control_the_infiltration_and_each_raid_a_seventh_of_the_rest() -> void:
 	var count := {"grandpa": 0, "bakery": 0, "groomer": 0, "hardware": 0, "doll_factory": 0, "insurance": 0, "cake_lab": 0,
-		"chase": 0, "crime_scene": 0, "circus": 0, "museum": 0, "traffic": 0, "club": 0, "choir": 0, "mime": 0, "party": 0, "gym": 0, "school": 0, "restaurant": 0, "chess": 0, "biker": 0, "auction": 0, "bank": 0, "plaza": 0, "market": 0,
+		"chase": 0, "crime_scene": 0, "circus": 0, "museum": 0, "wedding": 0, "traffic": 0, "club": 0, "choir": 0, "mime": 0, "party": 0, "gym": 0, "school": 0, "restaurant": 0, "chess": 0, "biker": 0, "auction": 0, "bank": 0, "plaza": 0, "market": 0,
 		"bridge": 0, "double": 0, "birthday": 0, "convertible": 0, "football": 0, "school_visit": 0, "prison": 0, "transfer": 0, "blackout": 0, "visits": 0, "laundry": 0, "prison_tunnel": 0, "prison_talent": 0, "prison_vip": 0, "prison_garden": 0,
 		"prison_count": 0}
 	for i in 600:
 		count[PlaceDraw.pick(i + 1, [], 1)] += 1
 	assert_between(count.chase, 250, 350, "half chases (Cristian, 20/10)")
-	assert_between(count.crime_scene + count.circus + count.museum, 25, 80, "even odds for the crime scenes (propuesta)")
-	assert_gt(count.crime_scene, 5, "a third at the pastry contest")
-	assert_gt(count.circus, 5, "a third at the circus")
-	assert_gt(count.museum, 5, "and a third at the museum")
+	assert_between(count.crime_scene + count.circus + count.museum + count.wedding, 25, 80,
+		"even odds for the crime scenes (propuesta)")
+	assert_gt(count.crime_scene, 3, "a quarter at the pastry contest")
+	assert_gt(count.circus, 3, "a quarter at the circus")
+	assert_gt(count.museum, 3, "a quarter at the museum")
+	assert_gt(count.wedding, 3, "and a quarter at the wedding")
 	assert_between(count.traffic, 25, 80, "even odds for the traffic control (propuesta)")
 	# With the bank and the rally drawn before them, the raids are a few shifts in a hundred, so their share is counted
 	# over more seeds: each of the seven raids comes up about a seventh of them (propuesta).

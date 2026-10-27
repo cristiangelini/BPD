@@ -36,6 +36,11 @@ static func on_at(seconds: float) -> bool:
 
 
 func _physics_process(delta: float) -> void:
+	# Online the host's waltz decides when it starts and ends; a guest's follows (WeddingHall.apply_net_state).
+	if case.follower:
+		if dancing:
+			_spin(delta)
+		return
 	if not case.tip_given or case.accused or case.lost:
 		if dancing:
 			stop()

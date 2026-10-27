@@ -67,7 +67,8 @@ func nearest_cop() -> Node3D:
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
-	if thrown or dancing:
+	# Online the host's Rosa decides where she goes; a guest's stands where the host's does (WeddingHall).
+	if thrown or dancing or (hall and hall.case and hall.case.follower):
 		return
 	var cop := nearest_cop()
 	if not cop:

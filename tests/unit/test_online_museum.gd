@@ -37,13 +37,12 @@ func _on() -> Array[Node]:
 	return pcs
 
 
-func test_the_museum_is_drawn_in_thirds() -> void:
+func test_the_museum_is_drawn() -> void:
 	assert_has(PlaceDraw.CRIME_SCENES, "museum")
-	assert_eq(PlaceDraw.CRIME_SCENES.size(), 3)
 	var drawn := {}
 	for seed_value in range(1, 400):
 		if hash(["crime scene", seed_value]) % PlaceDraw.CRIME_EVERY == 0:
-			drawn[PlaceDraw.CRIME_SCENES[hash(["crime scene place", seed_value]) % 3]] = true
+			drawn[PlaceDraw.CRIME_SCENES[hash(["crime scene place", seed_value]) % PlaceDraw.CRIME_SCENES.size()]] = true
 	assert_true(drawn.has("museum"), "some seeds land on it")
 
 
