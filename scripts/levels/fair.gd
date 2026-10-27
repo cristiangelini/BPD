@@ -388,6 +388,8 @@ func _on_ride_started(ride: String) -> void:
 ## The grass, the paved paths from the arch, the fence round the block with the arch in its gap, the sign and the
 ## lamps on poles along the paths.
 func _build_grounds() -> void:
+	# The ground is solid up to FLOOR_TOP, so a note or a ticket on it shows over the grass and the paths.
+	_solid(Vector3(0, FLOOR_TOP / 2, 0), Vector3(HALF * 2, FLOOR_TOP, HALF * 2))
 	_build.mesh_box(Vector3(0, 0.03, 0), Vector3(HALF * 2, 0.02, HALF * 2), GRASS)
 	_build.mesh_box(Vector3(0, 0.045, 12.0), Vector3(5.0, 0.03, 28.0), PAVING)
 	_build.mesh_box(Vector3(0, 0.045, -8.0), Vector3(36.0, 0.03, 4.0), PAVING)
