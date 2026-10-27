@@ -5705,3 +5705,12 @@ CLUE_CHAIR_MARKS,El sillón 2 tiene marcas de zapatos en el respaldo,Chair 2 has
 PROMPT_CHAIR_PEDAL,E: pisar el pedal del sillón,E: press the chair's pedal,E: pisar no pedal da cadeira
 PROMPT_CEILING_HATCH,E: abrir la tapa del falso techo,E: open the false ceiling's hatch,E: abrir a tampa do forro
 HINT_HATCH_TOO_HIGH,"No llegas. Súbete al sillón y que suba hasta arriba.","You can't reach it. Stand on the chair and raise it all the way.","Você não alcança. Suba na cadeira e faça ela subir até o alto."
+BRIEF_DENTAL_FLOSS_B,"El doctor le vende hilo dental reforzado a una banda que planea una fuga de la cárcel. Cuidado por dónde corren.","The doctor sells reinforced dental floss to a gang planning a jailbreak. Watch where you run.","O doutor vende fio dental reforçado para uma quadrilha que planeja uma fuga da cadeia. Cuidado por onde correm."
+BRIEF_DENTAL_FLOSS_C,"Traigan el cajón de bobinas en el baúl del patrullero. Pesa 6 kilos.","Bring the crate of reels in the patrol car's trunk. It weighs 6 kilos.","Tragam o caixote de bobinas no porta-malas da viatura. Pesa 6 quilos."
+BRIEF_DENTAL_FLOSS_D,"Si encuentran el gancho de escalar o el plano de la cárcel, mejor: todo suma.","If you find the climbing hook or the jail's plan, even better: it all counts.","Se acharem o gancho de escalada ou a planta da cadeia, melhor: tudo conta."
+OBJ_FIND_FLOSS_REELS,Llevarse el cajón de bobinas de hilo dental,Take the crate of floss reels,Levar o caixote de bobinas de fio dental
+OBJ_EXTRA_CLIMBING_HOOK,Extra: el gancho de escalar,Extra: the climbing hook,Extra: o gancho de escalada
+OBJ_EXTRA_PRISON_PLAN,Extra: el plano de la cárcel,Extra: the jail's plan,Extra: a planta da cadeia
+LUCHO_CLUE_dental_floss,"«Mmm… Vi al doctor esconder algo %s. Y me regaló hilo dental de menta, pero era tan duro que no se cortaba con nada.»","“Mmm… I saw the doctor hide something %s. And he gave me mint floss, but it was so tough nothing could cut it.”","“Hum… Vi o doutor esconder algo %s. E ele me deu fio dental de menta, mas era tão duro que nada cortava.”"
+CLUE_FLOSS_ROPE,Una soga de hilo dental cuelga de la ventanita del pasillo,A rope of dental floss hangs from the corridor's little window,Uma corda de fio dental pendurada na janelinha do corredor
+HINT_FLOSS_TRIP,¡Un hilo dental tenso! Te tropiezas y se te cae todo.,A taut dental floss! You trip and drop everything.,Um fio dental esticado! Você tropeça e derruba tudo.

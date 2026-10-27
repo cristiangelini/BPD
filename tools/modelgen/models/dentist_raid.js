@@ -341,9 +341,59 @@ export const models = {
 		b.add('mark', C('plan_red', 0xe03030), new THREE.BoxGeometry(0.05, 0.003, 0.008), { pos: V(0.04, 0.007, 0.02), rot: [0, -0.785, 0] });
 		return b.build();
 	},
+	// The dental floss story's main evidence: a crate of reinforced floss reels for a jailbreak, six big white reels
+	// with mint labels in an open wooden crate. 0.5 x 0.3 x 0.35 m.
+	floss_reels() {
+		const b = new Builder('floss_reels');
+		const wood = C('crate_wood', 0xa07848, { roughness: 0.9 });
+		b.add('bottom', wood, new THREE.BoxGeometry(0.5, 0.03, 0.35), { pos: V(0, 0.015, 0) });
+		for (const z of [-0.165, 0.165]) {
+			b.add('side', wood, new THREE.BoxGeometry(0.5, 0.18, 0.02), { pos: V(0, 0.09, z) });
+		}
+		for (const x of [-0.24, 0.24]) {
+			b.add('side', wood, new THREE.BoxGeometry(0.02, 0.18, 0.35), { pos: V(x, 0.09, 0) });
+		}
+		for (let i = 0; i < 6; i++) {
+			const at = V(-0.15 + (i % 3) * 0.15, 0.13, i < 3 ? -0.08 : 0.08);
+			b.add('reel', C('floss_white', 0xf4f4ee), new THREE.CylinderGeometry(0.065, 0.065, 0.2, 10), { pos: at });
+			b.add('label', C('floss_mint', 0x50c8a0), new THREE.CylinderGeometry(0.067, 0.067, 0.06, 10), { pos: at });
+		}
+		return b.build();
+	},
+	// A climbing hook: a three-pronged grapnel with a loop of floss tied to it. 0.25 x 0.3 x 0.25 m.
+	climbing_hook() {
+		const b = new Builder('climbing_hook');
+		const steel = C('hook_steel', 0x8a9098, { metalness: 0.7, roughness: 0.35 });
+		b.add('shaft', steel, new THREE.CylinderGeometry(0.015, 0.015, 0.25, 6), { pos: V(0, 0.15, 0) });
+		for (let i = 0; i < 3; i++) {
+			const a = (i / 3) * Math.PI * 2;
+			b.add('prong', steel, new THREE.BoxGeometry(0.11, 0.02, 0.02), { pos: V(Math.cos(a) * 0.05, 0.04, Math.sin(a) * 0.05), rot: [0, -a, 0.6] });
+		}
+		b.add('eye', steel, new THREE.TorusGeometry(0.025, 0.007, 4, 10), { pos: V(0, 0.29, 0) });
+		b.add('floss', C('floss_white', 0xf4f4ee), new THREE.TorusGeometry(0.06, 0.004, 4, 12), { pos: V(0, 0.28, 0.04), rot: [Math.PI / 2, 0, 0] });
+		return b.build();
+	},
+	// The plan of the jail with a dotted escape route over its wall. 0.3 x 0.006 x 0.21 m, flat.
+	prison_plan() {
+		const b = new Builder('prison_plan');
+		b.add('sheet', C('jail_paper', 0xe8e0c8), new THREE.BoxGeometry(0.3, 0.004, 0.21), { pos: V(0, 0.002, 0) });
+		b.add('wall', C('jail_ink', 0x303030), new THREE.BoxGeometry(0.22, 0.002, 0.006), { pos: V(0, 0.005, -0.07) });
+		b.add('wall', C('jail_ink', 0x303030), new THREE.BoxGeometry(0.22, 0.002, 0.006), { pos: V(0, 0.005, 0.07) });
+		b.add('wall', C('jail_ink', 0x303030), new THREE.BoxGeometry(0.006, 0.002, 0.14), { pos: V(-0.11, 0.005, 0) });
+		b.add('wall', C('jail_ink', 0x303030), new THREE.BoxGeometry(0.006, 0.002, 0.14), { pos: V(0.11, 0.005, 0) });
+		for (let i = 0; i < 5; i++) {
+			b.add('route', C('plan_red', 0xe03030), new THREE.BoxGeometry(0.02, 0.003, 0.006), { pos: V(-0.04 + i * 0.035, 0.007, 0.03 + i * 0.012) });
+		}
+		return b.build();
+	},
 };
 
 export const views = {
+	dentist_floss: {
+		items: [{ name: 'floss_reels', pos: [-0.35, 0, 0] }, { name: 'climbing_hook', pos: [0.2, 0, 0.0] },
+			{ name: 'prison_plan', pos: [0.45, 0, 0.2], rotY: -0.3 }],
+		cam: { pos: [0.0, 0.7, 1.4], target: [0.0, 0.12, 0], fov: 40 },
+	},
 	dentist_chair_story: {
 		items: [{ name: 'loot_bag', pos: [-0.35, 0, 0] }, { name: 'hatch_key', pos: [0.15, 0, 0.15], rotY: 0.4 },
 			{ name: 'ceiling_plan', pos: [0.4, 0, -0.05], rotY: -0.3 }],
