@@ -22,7 +22,8 @@ const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_SUPER_TIP_B", "BR
 	"BRIEF_SUPER_TIP_E"]
 ## The stories the supermarket can tell, like GymRaid.STORIES: what the comisario says once it's guessed, its "find
 ## it" row, what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the
-## checklist rows of its extras and its rig. With "main_hidden" the first hidden item is the main evidence.
+## checklist rows of its extras and its rig. With "main_hidden" the first hidden item is the main evidence; without it
+## the rig places the main evidence itself.
 const STORIES := {
 	"super_dates": {
 		"briefing": ["BRIEF_RIGHT", "BRIEF_SUPER_DATES_B", "BRIEF_SUPER_DATES_C", "BRIEF_SUPER_DATES_D"],
@@ -78,6 +79,15 @@ const STORIES := {
 		"heavy": [false, true, false],
 		"extra_keys": ["OBJ_EXTRA_PRIZE_CAR", "OBJ_EXTRA_WINNERS_PHOTO"],
 		"rig": preload("res://scripts/case/super/rigged_raffle_rig.gd"),
+	},
+	"super_aisle13": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_SUPER_AISLE13_B", "BRIEF_SUPER_AISLE13_C", "BRIEF_SUPER_AISLE13_D"],
+		"find": "OBJ_FIND_TONIC_BOX",
+		"hidden": [preload("res://scenes/props/super_tonic_samples.tscn"), preload("res://scenes/props/super_fake_mustache.tscn")],
+		"half_heights": [0.115, 0.025],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_TONIC_SAMPLES", "OBJ_EXTRA_FAKE_MUSTACHE"],
+		"rig": preload("res://scripts/case/super/aisle_13_rig.gd"),
 	},
 }
 ## Where the clue notes for the suspicions can lie, on the floor.
@@ -138,6 +148,8 @@ const DESK_SIZE := Vector3(1.8, 0.8, 0.9)
 const STORE_X := 8.0
 const STORE_Z := -5.0
 const STORE_DOOR_X := 11.5
+## The doorway to aisle 13 in the storeroom's west wall, only in that story (behind its gondola).
+const AISLE_13_DOOR_Z := -7.0
 const BOX_STACKS: Array[Vector3] = [Vector3(10.0, FLOOR_TOP, -9.5), Vector3(13.5, FLOOR_TOP, -8.0),
 	Vector3(13.5, FLOOR_TOP, -10.8)]
 const BOX_STACK_SIZE := Vector3(1.2, 1.6, 1.2)
@@ -457,7 +469,8 @@ func _build_rooms() -> void:
 	_build.legs(DESK_AT, Vector2(DESK_SIZE.x, DESK_SIZE.z), DESK_SIZE.y - 0.04, DARK)
 	_build.box(DESK_AT + Vector3(0, DESK_SIZE.y - 0.02, 0), Vector3(DESK_SIZE.x, 0.04, DESK_SIZE.z), WOOD)
 	_build.wall_at("x", STORE_Z, STORE_X, HALF_X, 0.0, WALL_TOP, [STORE_DOOR_X], OUTSIDE.lightened(0.1))
-	_build.wall_at("z", STORE_X, -HALF_Z, STORE_Z, 0.0, WALL_TOP, [], OUTSIDE.lightened(0.1))
+	_build.wall_at("z", STORE_X, -HALF_Z, STORE_Z, 0.0, WALL_TOP, [AISLE_13_DOOR_Z] if story_id == "super_aisle13" else [],
+		OUTSIDE.lightened(0.1))
 	for at: Vector3 in BOX_STACKS:
 		_build.box(at + Vector3(0, BOX_STACK_SIZE.y / 2, 0), BOX_STACK_SIZE, CARDBOARD)
 	# The loading door in the back wall, closed.

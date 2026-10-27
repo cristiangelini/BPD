@@ -343,7 +343,36 @@ export function buildCouponPad() {
 	return b.build();
 }
 
+// The aisle 13 story: the box of "Crece Pelo al Instante" tonic, a sample bottle (also on aisle 13's shelves) and Don
+// Ofertón's fake mustache.
+export function buildTonicBox() {
+	const b = new Builder('super_tonic_box');
+	b.add('box', mat('tonic_box', 0x7a3ab0), new THREE.BoxGeometry(0.5, 0.3, 0.35), { pos: V(0, 0.15, 0) });
+	b.add('label', mat('tonic_label', 0xf2c230), new THREE.BoxGeometry(0.36, 0.14, 0.004), { pos: V(0, 0.16, 0.177) });
+	for (let i = 0; i < 5; i++) b.add('hair', mat('tonic_hair', 0x3a2414), new THREE.ConeGeometry(0.02, 0.08, 4), { pos: V(-0.1 + i * 0.05, 0.27, 0.18), rot: [0.3, 0, (i - 2) * 0.3] });
+	return b.build();
+}
+
+export function buildTonicBottle() {
+	const b = new Builder('super_tonic_bottle');
+	b.add('bottle', mat('tonic_glass', 0x46b45a, { opacity: 0.8, transparent: true }), new THREE.CylinderGeometry(0.04, 0.045, 0.16, 8), { pos: V(0, 0.08, 0) });
+	b.add('neck', mat('tonic_glass', 0x46b45a, { opacity: 0.8, transparent: true }), new THREE.CylinderGeometry(0.015, 0.03, 0.05, 8), { pos: V(0, 0.185, 0) });
+	b.add('cap', mat('tonic_cap', 0x7a3ab0), new THREE.CylinderGeometry(0.017, 0.017, 0.02, 8), { pos: V(0, 0.22, 0) });
+	b.add('label', mat('tonic_label', 0xf2c230), new THREE.CylinderGeometry(0.046, 0.046, 0.06, 8, 1, true), { pos: V(0, 0.08, 0) });
+	return b.build();
+}
+
+export function buildFakeMustache() {
+	const b = new Builder('super_fake_mustache');
+	const hair = mat('mustache_black', 0x1a1210);
+	for (const side of [-1, 1]) b.add('half', hair, ellipsoid(0.06, 0.018, 0.025, 8, 6), { pos: V(side * 0.05, 0.018, 0), rot: [0, 0, side * 0.25] });
+	b.add('tips', hair, new THREE.ConeGeometry(0.012, 0.04, 5), { pos: V(-0.11, 0.03, 0), rot: [0, 0, 1.2] });
+	b.add('tips', hair, new THREE.ConeGeometry(0.012, 0.04, 5), { pos: V(0.11, 0.03, 0), rot: [0, 0, -1.2] });
+	return b.build();
+}
+
 export const models = {
+	super_tonic_box: buildTonicBox, super_tonic_bottle: buildTonicBottle, super_fake_mustache: buildFakeMustache,
 	super_raffle_urn: buildRaffleUrn, super_prize_car: buildPrizeCar, super_winners_photo: buildWinnersPhoto,
 	super_coupon_pad: buildCouponPad,
 	super_magic_screw: buildMagicScrew, super_weigh_manual: buildWeighManual, super_golden_screwdriver: buildGoldenScrewdriver,
@@ -366,6 +395,10 @@ export const views = {
 			{ name: 'shopping_cart', pos: [-0.6, 0, 2.2], rotY: 0.6 },
 		],
 		cam: { pos: [0, 3.0, 7.5], target: [0.4, 0.9, 0], fov: 50 },
+	},
+	aisle13: {
+		items: [{ name: 'super_tonic_box', pos: [-0.25, 0, 0], rotY: 0.3 }, { name: 'super_tonic_bottle', pos: [0.2, 0, 0.1] }, { name: 'super_tonic_bottle', pos: [0.3, 0, -0.05] }, { name: 'super_fake_mustache', pos: [0.1, 0, 0.3] }],
+		cam: { pos: [0, 0.7, 1.3], target: [0, 0.12, 0], fov: 40 },
 	},
 	raffle: {
 		items: [{ name: 'super_raffle_urn', pos: [-0.5, 0, 0.2] }, { name: 'super_prize_car', pos: [0.4, 0, -0.3], rotY: -0.3 }, { name: 'super_winners_photo', pos: [0.1, 0, 0.5] }, { name: 'super_coupon_pad', pos: [-0.1, 0, 0.7] }],

@@ -187,6 +187,13 @@ suman entre 400 y 600.
      la pared de adelante, al este de la puerta, hay una mesa roja con el cartel «¡Sorteamos un auto!» y un taco de
      cupones: E lo mira, y el de arriba ya viene lleno con el nombre del primo (la pista). Capturas:
      `paso6-sorteo-modelos.png` y `paso6-sorteo.png`.
+   - **El pasillo 13 (propuesta):** al fondo del pasillo 4 hay una góndola angosta contra la pared del depósito, y
+     detrás una puerta que solo existe en esta historia. Si un policía corre contra ella 1,5 s (dos juntos, la mitad)
+     la góndola se corre 2,2 m con un «¡Crrrrc!», y eso es la pista. Atrás está el pasillo 13, de 1,3 m de ancho, con
+     su cartel «Pasillo 13 · Milagros», un estante de frascos y la caja de tónico Crece Pelo (3 kg, 1000), que no se
+     sortea: siempre está ahí. Los frascos de muestra (1 kg, 300) y el bigote postizo (0,1 kg, 200) se esconden.
+     Capturas: `paso6-pasillo13-modelos.png`, `paso6-pasillo13-cerrado.png`, `paso6-pasillo13-abierto.png` y
+     `paso6-pasillo13.png`. Con esto el súper cuenta sus 6 historias.
 7. "Jugar" suma el súper al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online (Don Ofertón, Lalo, los clientes, los changuitos y lo frágil en todas las PC).
 
