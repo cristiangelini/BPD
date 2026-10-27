@@ -181,6 +181,7 @@ func _ready() -> void:
 	_place_tuerca()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("garage")
+	_cut_pit(city as City)
 	station_parking = city.transform * CityLayout.parking("station")
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
 	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
@@ -225,6 +226,19 @@ func _build_shell() -> void:
 	for at: Vector3 in [Vector3(-7.0, 4.6, 4.0), Vector3(0.0, 4.6, 4.0), Vector3(7.0, 4.6, 4.0), Vector3(-7.0, 4.6, -5.0),
 			Vector3(0.0, 4.6, -5.0), Vector3(9.0, 3.4, -8.0)]:
 		_build.light(at)
+
+
+## The city's ground is a box with its top at the street: the pit's hole is cut out of it (with its walls), or the
+## grass would fill it up to the street.
+func _cut_pit(city: City) -> void:
+	var to_city := city.transform.affine_inverse()
+	var hole := Rect2()
+	for i in 4:
+		var x := PIT_X + (PIT_WIDTH / 2 + 0.2) * (1 if i % 2 else -1)
+		var z := (PIT_TO_Z + 0.2) if i >= 2 else (PIT_FROM_Z - 0.2)
+		var at := to_city * Vector3(x, 0, z)
+		hole = Rect2(Vector2(at.x, at.z), Vector2.ZERO) if i == 0 else hole.expand(Vector2(at.x, at.z))
+	city.cut_ground(hole)
 
 
 ## The pit: its walls, its floor and the steps down at the back end.
