@@ -82,6 +82,8 @@ entre 400 y 600.
    **Hecho (paso 1):** `scripts/levels/radio_station.gd` y `scenes/levels/radio_station.tscn`, con "Radio
    (allanamiento, prueba)" en el menú. Capturas en la carpeta del proyecto `radio/paso1-*.png`.
 2. La luz "AL AIRE", el micrófono y el teléfono de los oyentes que suena con cada ruido.
+   **Hecho (paso 2):** `RadioMic` en la consola, el teléfono de la recepción (`DeskPhone`) y la señal
+   `listener_complained` que el paso 3 suma a la denuncia. Capturas `radio/paso2-*.png`.
 3. Don Volumen: la ronda, la denuncia y el tema largo del tocadiscos.
 4. Doña Rosa por teléfono.
 5. El caso (RaidCase) con la primera historia: el concurso arreglado.

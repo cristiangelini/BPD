@@ -5609,3 +5609,9 @@ LOC_on_kitchen_fridge,arriba de la heladera de la cocina,on top of the kitchen f
 LOC_under_ranking,debajo del ranking de la semana,under this week's chart,embaixo do ranking da semana
 LOC_in_control_room,en la sala de control,in the control room,na sala de controle
 LOC_behind_console,detrás de la consola del estudio,behind the studio's console,atrás da mesa do estúdio
+PROMPT_RADIO_MIC,E: hablar al aire,E: speak on air,E: falar no ar
+RADIO_MIC_LINE,"¡Hola, hola! ¿Se escucha?","Hello, hello! Can you hear me?","Alô, alô! Dá pra ouvir?"
+RADIO_CALL_NOISE,"Un oyente: ""¿Qué fue ese ruido? Casi se me cae la sopa.""","A listener: ""What was that noise? I almost dropped my soup.""","Um ouvinte: ""Que barulho foi esse? Quase derrubei a sopa."""
+RADIO_CALL_SONG,"Una oyente: ""¿Pueden pasar el tema de siempre? El largo.""","A listener: ""Can you play the usual song? The long one.""","Uma ouvinte: ""Podem tocar a música de sempre? A longa."""
+RADIO_CALL_VOLUMEN,"Un oyente: ""¿Y Volumen? Esa voz no es la de Volumen.""","A listener: ""Where's Volumen? That voice isn't Volumen's.""","Um ouvinte: ""Cadê o Volumen? Essa voz não é a do Volumen."""
+RADIO_LISTENER_COMPLAINT,"¡Qué es ese ruido, Volumen!","What is that noise, Volumen!","Que barulho é esse, Volumen!"

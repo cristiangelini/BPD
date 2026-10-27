@@ -11,8 +11,13 @@ extends Node3D
 
 signal glass_broken
 signal record_broken
+## Something went out on air and the listeners' phone rang (step 2).
+signal went_on_air
+## Nobody answered a listener's call in CALL_WAIT seconds: don Volumen's complaint counts it (step 3).
+signal listener_complained
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const PHONE_SCENE := preload("res://scenes/props/desk_phone.tscn")
 const CONSOLE_MODEL := preload("res://assets/models/radio_console.glb")
 const PLAYER_MODEL := preload("res://assets/models/record_player.glb")
 const SHELF_MODEL := preload("res://assets/models/record_shelf.glb")
@@ -68,6 +73,12 @@ const GLASS_FINE := 30
 const RECORD_SPEED := 3.0
 const RECORD_FINE := 10
 const MAX_RECORDS := 5
+## While the "AL AIRE" light is on, a hit near the microphone this fast goes out on air; the listeners' call waits
+## CALL_WAIT seconds for someone to answer before it becomes a complaint.
+const NOISE_SPEED := 2.0
+const CALL_WAIT := 10.0
+## What the listeners say when someone answers, in turn.
+const CALLS: Array[String] = ["RADIO_CALL_NOISE", "RADIO_CALL_SONG", "RADIO_CALL_VOLUMEN"]
 
 ## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
 const SPOTS := [
@@ -106,6 +117,15 @@ var records_broken := 0
 var broken_goods := 0
 ## Money taken off the case pay: the studio's window and the archive's records.
 var fines := 0
+## Whether the "AL AIRE" light is on (don Volumen's long song turns it off, step 3).
+var on_air := true
+var phone: DeskPhone
+var mic: RadioMic
+## How many listeners called, and how many of them nobody answered.
+var calls := 0
+var complaints := 0
+## Seconds left for the ringing call, 0 when the phone is quiet.
+var call_left := 0.0
 ## Same seed, same radio (the stories and the hiding spots come from it, step 5).
 @export var case_seed := 0
 var _build: PlaceBuilder
@@ -163,8 +183,11 @@ func _build_reception() -> void:
 	till.position = DESK_AT + Vector3(0.7, DESK_SIZE.y + Till.SIZE.y / 2, 0)
 	till.key_hint = "HINT_TILL_KEY_RADIO"
 	add_child(till)
-	# The listeners' phone on the desk (it rings in step 2).
-	_build.mesh_box(DESK_AT + Vector3(-0.6, DESK_SIZE.y + 0.05, 0), Vector3(0.22, 0.1, 0.18), RED)
+	phone = PHONE_SCENE.instantiate()
+	phone.position = DESK_AT + Vector3(-0.6, DESK_SIZE.y, 0)
+	phone.calls = CALLS
+	phone.answered.connect(func(_cop: Cop) -> void: call_left = 0.0)
+	add_child(phone)
 	_build.box(Vector3(5.5, FLOOR_TOP + 0.25, 9.5), Vector3(2.2, 0.5, 0.9), Color(0.25, 0.45, 0.7))
 	_build.box(Vector3(5.5, FLOOR_TOP + 0.6, 9.95), Vector3(2.2, 0.7, 0.2), Color(0.25, 0.45, 0.7))
 	_build.box(Vector3(8.0, FLOOR_TOP + 0.55, 6.0), Vector3(0.5, 1.1, 0.4), RED)
@@ -210,6 +233,15 @@ func _build_studio() -> void:
 	_build.wall_at("z", KITCHEN_X0, BACK_Z, FRONT_Z, 0.0, WALL_TOP, [], WALL_IN)
 	_model(CONSOLE_MODEL, CONSOLE_AT)
 	_build.shape(_build.body(CONSOLE_AT + Vector3(0, CONSOLE_SIZE.y / 2, 0)), CONSOLE_SIZE)
+	mic = RadioMic.new()
+	mic.position = CONSOLE_AT + Vector3(0.4, CONSOLE_SIZE.y + RadioMic.SIZE.y / 2, 0)
+	mic.spoken.connect(func(_cop: Cop) -> void: make_noise())
+	add_child(mic)
+	var near_mic := _area(Vector3((-HALF_X + STUDIO_X1) / 2, 1.2, (BACK_Z + FRONT_Z) / 2),
+		Vector3(STUDIO_X1 + HALF_X, 2.4, FRONT_Z - BACK_Z))
+	near_mic.body_entered.connect(func(body: Node3D) -> void:
+		if body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > NOISE_SPEED:
+			make_noise())
 	for x: float in [-5.6, -4.4]:
 		_build.box(Vector3(x, FLOOR_TOP + 0.25, -1.6), Vector3(0.5, 0.5, 0.5), DARK)
 	_model(PLAYER_MODEL, PLAYER_AT)
@@ -269,6 +301,35 @@ func _build_roof() -> void:
 func _process(delta: float) -> void:
 	_blink += delta
 	_bulb.visible = fmod(_blink, 1.2) < 0.6
+	if call_left > 0.0:
+		call_left -= delta
+		if call_left <= 0.0:
+			_unanswered()
+
+
+## Turns the "AL AIRE" light on or off: only on air does the neighborhood hear what happens.
+func set_on_air(on: bool) -> void:
+	on_air = on
+	$Built/OnAirSign.visible = on
+
+
+## Something loud happened near the microphone: on air, the listeners' phone rings (one call at a time).
+func make_noise() -> void:
+	if not on_air or call_left > 0.0:
+		return
+	calls += 1
+	call_left = CALL_WAIT
+	phone.ring()
+	went_on_air.emit()
+
+
+## The call rang out with nobody answering: the phone stops and the listener's complaint reaches don Volumen.
+func _unanswered() -> void:
+	call_left = 0.0
+	phone.get_node("Ring").hide()
+	complaints += 1
+	_say(phone.position + Vector3(0, 1.0, 0.6), "RADIO_LISTENER_COMPLAINT")
+	listener_complained.emit()
 
 
 ## Cracks the studio's window, once: a fine and a crack across it.
@@ -283,6 +344,7 @@ func break_glass() -> void:
 	_build.mesh_box(center + Vector3(-0.3, -0.1, 0.03), Vector3(0.04, 0.9, 0.01), DARK)
 	_say(center + Vector3(0, 1.0, 0.6), "RADIO_GLASS_BROKEN")
 	glass_broken.emit()
+	make_noise()
 
 
 ## A record falls off the shelves near `at` and breaks on the floor: a fine each, up to MAX_RECORDS.
@@ -298,6 +360,7 @@ func drop_record(at: Vector3) -> void:
 			Vector3(0.12, 0.01, 0.1), Color.BLACK)
 	_say(Vector3(local.x, FLOOR_TOP + 2.0, local.z + 0.5), "RADIO_RECORD_BROKEN")
 	record_broken.emit()
+	make_noise()
 
 
 ## A solid pane of glass you can see through.
