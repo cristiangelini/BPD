@@ -151,6 +151,17 @@ Mientras tanto se avanza con lo recomendado.
      caja fuerte abierta, el escritorio con el libro del matasellos y el botón rojo en la pared.
    - Capturas: `correo/paso1-*.png`.
 2. La gente: los seis carteros (rasgos con la semilla), Doña Sellito y Cartita, con sus modelos.
+   **Hecho así:** modelos `npc_postal`, `npc_sellito` y `npc_loro` (tools/modelgen/models/post_office.js; `npc_cartero`
+   ya era el cartero de otro caso).
+   - **Los carteros:** iguales con la camisa azul, el chaleco amarillo con una franja que refleja, la gorra con visera,
+     el bolso de cuero cruzado y los guantes. Cada uno tiene sus rasgos en CarrierTraits (pelo, zapatos, dientes,
+     lengua azul y recorrido), la etiqueta del bolso del color de su recorrido, y con E dice una frase con su
+     recorrido. Dos atienden detrás del mostrador, uno ordena los casilleros y tres están en la clasificadora.
+   - **Doña Sellito:** rodete gris, anteojos con cadena, saco verde y un sello de goma en la mano; espera en el
+     mostrador y se queja.
+   - **Cartita:** el loro verde con la cabeza amarilla, en su palo sobre el mostrador de la ventanilla 2; con E repite
+     lo que oye en la ventanilla.
+   - Capturas: `correo/paso2-*.png` y `correo/post_office_people.png`.
 3. Las fichas: la variante `post_office` de la escena del crimen, con la lengua y el recorrido.
 4. La Vaquita Azul escondida, buscar con E y el libro del matasellos.
 5. La clasificadora: el reloj, los sobres, el viento, los sacos y el botón rojo con la paciencia de la jefa.
