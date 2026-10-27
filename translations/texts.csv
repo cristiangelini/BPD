@@ -5588,3 +5588,21 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+PLACE_FURNITURE,Mueblería El Ropero Feliz,Happy Wardrobe Furniture,Móveis Guarda-Roupa Feliz
+MENU_FURNITURE,Mueblería (allanamiento) (prueba),Furniture store (raid) (test),Loja de móveis (batida) (teste)
+FURNITURE_WINDOW_SIGN,¡Todo en 120 cuotas!,Everything in 120 installments!,Tudo em 120 parcelas!
+HINT_TILL_KEY_FURNITURE,¡Una llave! Abre el depósito de la mueblería.,A key! It opens the furniture store's stockroom.,Uma chave! Abre o depósito da loja de móveis.
+FURNITURE_GOOD_BROKEN,"¡Eso está en exhibición, oficial!","That's on display, officer!","Isso está em exposição, policial!"
+CASE_FAILED_LAWYER_FURNITURE,Don Cajón llamó al abogado de la mueblería. Caso perdido.,Don Cajón called the furniture store's lawyer. Case lost.,Don Cajón ligou para o advogado da loja de móveis. Caso perdido.
+LOC_in_wardrobe_0,adentro del primer ropero,inside the first wardrobe,dentro do primeiro guarda-roupa
+LOC_in_wardrobe_1,adentro del segundo ropero,inside the second wardrobe,dentro do segundo guarda-roupa
+LOC_behind_showroom_sofa,detrás del sillón del living,behind the living room's sofa,atrás do sofá da sala
+LOC_behind_furniture_counter,detrás del mostrador de la mueblería,behind the furniture store's counter,atrás do balcão da loja de móveis
+LOC_in_stockroom_corner,en un rincón del depósito,in a corner of the stockroom,num canto do depósito
+LOC_between_flatpack_boxes,entre las cajas de muebles para armar,between the flat-pack boxes,entre as caixas de móveis para montar
+LOC_under_bed_0,debajo de la primera cama,under the first bed,embaixo da primeira cama
+LOC_under_bed_1,debajo de la segunda cama,under the second bed,embaixo da segunda cama
+LOC_in_sofa_cushions_0,entre los almohadones del sillón del living,between the living room sofa's cushions,entre as almofadas do sofá da sala
+LOC_in_sofa_cushions_1,entre los almohadones del sillón de la pared,between the wall sofa's cushions,entre as almofadas do sofá da parede
+LOC_on_dresser,arriba de la cómoda,on top of the chest of drawers,em cima da cômoda
+LOC_in_furniture_counter,adentro del mostrador de la mueblería,inside the furniture store's counter,dentro do balcão da loja de móveis
