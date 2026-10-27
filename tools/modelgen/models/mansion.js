@@ -141,6 +141,46 @@ function buildChocolateBox() {
 	return b.build();
 }
 
+// What was stolen (step 5c), each with its bottom at y = 0: doña Clotilde's will (a sealed envelope tied with red
+// ribbon), the Snoring Diamond (egg-sized, in its open velvet case) and the Flan Recipe (a yellowed card, a flan drawn
+// on it).
+function buildWill() {
+	const b = new Builder('mansion_will');
+	b.add('envelope', C('envelope', 0xefe4c8), new THREE.BoxGeometry(0.28, 0.02, 0.18), { pos: V(0, 0.01, 0) });
+	b.add('ribbon', C('ribbon_red', 0xb0202a), new THREE.BoxGeometry(0.03, 0.022, 0.182), { pos: V(0.06, 0.011, 0) });
+	b.add('ribbon', C('ribbon_red', 0xb0202a), new THREE.BoxGeometry(0.282, 0.022, 0.03), { pos: V(0, 0.011, 0) });
+	b.add('seal', C('wax_red', 0x8a1018), new THREE.CylinderGeometry(0.025, 0.025, 0.012, 10), { pos: V(0.06, 0.026, 0) });
+	return b.build();
+}
+
+function buildSnoringDiamond() {
+	const b = new Builder('snoring_diamond');
+	const velvet = C('velvet_blue', 0x1c2a6a);
+	b.add('case', velvet, new THREE.BoxGeometry(0.2, 0.06, 0.16), { pos: V(0, 0.03, 0) });
+	b.add('case', velvet, new THREE.BoxGeometry(0.2, 0.06, 0.01), { pos: V(0, 0.1, -0.09), rot: [-0.4, 0, 0] });
+	b.add('diamond', C('diamond', 0xcff4ff, { emissive: 0x1a3a44 }), new THREE.OctahedronGeometry(0.06, 0), { pos: V(0, 0.12, 0), scale: [1, 1.3, 1] });
+	return b.build();
+}
+
+function buildFlanRecipe() {
+	const b = new Builder('flan_recipe');
+	b.add('card', C('old_paper', 0xe0c98a), new THREE.BoxGeometry(0.15, 0.006, 0.1), { pos: V(0, 0.003, 0) });
+	b.add('drawing', C('flan_caramel', 0x9a5a1a), new THREE.CylinderGeometry(0.02, 0.026, 0.004, 10), { pos: V(-0.035, 0.008, 0) });
+	for (const z of [-0.025, 0, 0.025]) b.add('drawing', C('ink', 0x3a2a20), new THREE.BoxGeometry(0.05, 0.004, 0.006), { pos: V(0.035, 0.008, z) });
+	return b.build();
+}
+
+// The dusty trunk at the dead end of the bookcase's passage, where something can be hidden: 0.9 x 0.5 x 0.6 m.
+function buildDustyTrunk() {
+	const b = new Builder('dusty_trunk');
+	const wood = C('trunk_wood', 0x5a3a22), band = C('trunk_band', 0x6a6a6a);
+	b.add('body', wood, new THREE.BoxGeometry(0.6, 0.4, 0.9), { pos: V(0, 0.2, 0) });
+	b.add('body', wood, new THREE.CylinderGeometry(0.3, 0.3, 0.9, 10, 1, false, 0, Math.PI), { pos: V(0, 0.4, 0), rot: [Math.PI / 2, Math.PI / 2, 0] });
+	for (const z of [-0.3, 0.3]) b.add('body', band, new THREE.BoxGeometry(0.62, 0.42, 0.04), { pos: V(0, 0.21, z) });
+	b.add('body', C('cobweb', 0xd8d8d0), new THREE.BoxGeometry(0.4, 0.005, 0.3), { pos: V(0.05, 0.69, 0.2), rot: [0, 0.4, 0] });
+	return b.build();
+}
+
 const PEOPLE = { socio_club: socio, dona_clotilde: clotilde, mayordomo: mayordomo };
 
 export const models = {
@@ -150,6 +190,7 @@ export const models = {
 		return b.build();
 	}])),
 	loro: buildLoro, parrot_cage: buildParrotCage, chocolate_box: buildChocolateBox,
+	mansion_will: buildWill, snoring_diamond: buildSnoringDiamond, flan_recipe: buildFlanRecipe, dusty_trunk: buildDustyTrunk,
 };
 
 export const views = {
@@ -161,6 +202,11 @@ export const views = {
 	parrot: {
 		items: [{ name: 'parrot_cage', pos: [0, 0, 0] }, { name: 'loro', pos: [0, 1.25, 0], rotY: 0.4 }],
 		cam: { pos: [0.6, 1.6, 2.0], target: [0, 1.3, 0], fov: 38 },
+	},
+	mansion_loot: {
+		items: [{ name: 'dusty_trunk', pos: [-0.6, 0, 0] }, { name: 'mansion_will', pos: [0.25, 0, 0.1], rotY: 0.3 },
+			{ name: 'snoring_diamond', pos: [0.55, 0, -0.1] }, { name: 'flan_recipe', pos: [0.85, 0, 0.15], rotY: -0.3 }],
+		cam: { pos: [0.1, 0.9, 1.6], target: [0.1, 0.15, 0], fov: 38 },
 	},
 	chocolates: {
 		items: [{ name: 'chocolate_box', pos: [0, 0.03, 0] }],
