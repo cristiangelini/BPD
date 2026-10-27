@@ -118,6 +118,12 @@ suman entre 400 y 600.
      máquina cuenta los pinos caídos y los vuelve a parar. Un policía que corre por una pista encerada resbala
      hacia adelante ("¡La pista está encerada!"); caminando no. Los jugadores van en un PR aparte. Capturas:
      `allanamiento-bolera/paso2-*.png`.
+   - **Cómo quedó, los jugadores (propuesta):** 6 jugadores del torneo, 2 en cada una de las pistas 1, 3 y 5, esperan
+     entre la mesa de bolas y el banco. Cada uno, cada 20 s y por turnos con su compañero, agarra una bola de la mesa,
+     camina a la línea y la tira a 9 m/s, aunque haya un policía en la pista. Una bola tirada por ellos que le pega a un
+     policía lo hace tropezar. Se quejan (5 a la denuncia, una vez cada 10 s cada uno) si un policía está en la pista
+     cuando tiran, si les agarra la bola que tiraron, si no quedan bolas en la mesa, si les tira los pinos o si les
+     rompe la pantalla. Hasta que llegue Don Chuza (paso 3) la queja solo se avisa. Con E cuentan algo del torneo.
 3. Don Chuza y la chuza que lo distrae.
 4. Pipo y los zapatos.
 5. El caso (RaidCase) y la primera historia, la bola con imán.
