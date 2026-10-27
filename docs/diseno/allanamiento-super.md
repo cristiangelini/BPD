@@ -169,6 +169,10 @@ suman entre 400 y 600.
        con el sorteo.
      - **Capturas:** `allanamiento-super/paso5-*.png`.
 6. Las otras 5 historias, una por PR.
+   - **El queso de mentira (cómo quedó, propuesta):** la horma gigante de plástico llena de billetes (25 kg, entre dos)
+     va a un escondite pesado, con el molde de las hormas (4 kg, 300) y la cera amarilla (1 kg, 200). Delante de la
+     heladera hay una mesa con 4 hormas de 10 kg, y una de ellas es de plástico. Si se cae, rebota como una pelota
+     («¡Boing!»), y el primer rebote es la pista. Captura: `paso6-queso.png`.
 7. "Jugar" suma el súper al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online (Don Ofertón, Lalo, los clientes, los changuitos y lo frágil en todas las PC).
 

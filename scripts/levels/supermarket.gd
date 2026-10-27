@@ -35,6 +35,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_LABEL_BOX", "OBJ_EXTRA_OLD_YOGURT"],
 		"rig": preload("res://scripts/case/super/changed_dates_rig.gd"),
 	},
+	"super_cheese": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_SUPER_CHEESE_B", "BRIEF_SUPER_CHEESE_C", "BRIEF_SUPER_CHEESE_D"],
+		"find": "OBJ_FIND_FAKE_CHEESE",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/super_fake_cheese.tscn"), preload("res://scenes/props/super_cheese_mold.tscn"),
+			preload("res://scenes/props/super_wax_block.tscn")],
+		"half_heights": [0.14, 0.15, 0.05],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_CHEESE_MOLD", "OBJ_EXTRA_WAX_BLOCK"],
+		"rig": preload("res://scripts/case/super/fake_cheese_rig.gd"),
+	},
 }
 ## Where the clue notes for the suspicions can lie, on the floor.
 const NOTE_PLACES: Array[Vector3] = [Vector3(-7.5, FLOOR_TOP, 2.0), Vector3(-2.5, FLOOR_TOP, -4.0),
