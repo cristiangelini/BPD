@@ -11,7 +11,8 @@ extends Node3D
 ## bell's cord is feeding time: he goes to the corral and feeds the animals with his back to the farm, and a cop behind
 ## him can take the shed's key from his apron. Eight hens peck around the yard (step 4): a cop who runs close scares
 ## them, and Don Florencio counts every scared animal he sees; Pancho, by the hen house, talks once three of them are
-## back in its run. The goat, the pigs, the cow and the case come in the next steps.
+## back in its run. Tota the goat eats the paper she finds on the ground and gives it back chewed in the corral 30 s
+## later, and three pigs wallow in the mud shoving whoever comes in. The cow and the case come in the next steps.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -84,6 +85,9 @@ const HENS := 8
 const YARD := Rect2(-6, -3, 7.5, 11)
 const COOP_RUN := Rect2(-3, -8.5, 3, 1.6)
 const PANCHO_AT := Vector3(1.2, GROUND, -7.6)
+## Where Tota gives back what she ate: in the corral, by the feeder.
+const GOAT_GIVES_BACK := Vector3(-15.0, GROUND + 0.1, 9.0)
+const PIGS := 3
 ## Don Florencio sees an animal running scared.
 const SAW_SCARED := 5.0
 ## Running faster than this in the mud slips: down for MUD_SLIP seconds, and not again for MUD_AGAIN.
@@ -123,6 +127,8 @@ const MILK_CAN := Color(0.78, 0.8, 0.82)
 var owner_npc: FarmOwner
 var hens: Array[FarmHen] = []
 var pancho: FarmNephew
+var goat: FarmGoat
+var pigs: Array[FarmPig] = []
 var bell: FeedBell
 var complaint_bar: ProgressBar
 var house_door: FrontDoor
@@ -151,6 +157,7 @@ func _ready() -> void:
 	_build_garden()
 	_place_owner()
 	_place_hens()
+	_place_goat_and_pigs()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("farm")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -216,6 +223,31 @@ func _place_hens() -> void:
 	pancho.position = PANCHO_AT
 	pancho.rotation.y = -PI / 2
 	add_child(pancho)
+
+
+## Tota in the yard and the pigs in the mud, on spots drawn with the seed.
+func _place_goat_and_pigs() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["farm goat and pigs", case_seed])
+	goat = FarmGoat.new()
+	goat.name = "Tota"
+	goat.farm = self
+	goat.yard = YARD
+	goat.give_back_at = GOAT_GIVES_BACK
+	goat.rng.seed = rng.randi()
+	goat.position = Vector3(rng.randf_range(YARD.position.x, YARD.end.x), GROUND + 0.05,
+		rng.randf_range(YARD.position.y, YARD.end.y))
+	add_child(goat)
+	for i in PIGS:
+		var pig := FarmPig.new()
+		pig.name = "Pig%d" % i
+		pig.farm = self
+		pig.mud = MUD.grow(-0.5)
+		pig.rng.seed = rng.randi()
+		pig.position = Vector3(rng.randf_range(MUD.position.x + 0.5, MUD.end.x - 0.5), GROUND,
+			rng.randf_range(MUD.position.y + 0.5, MUD.end.y - 0.5))
+		add_child(pig)
+		pigs.append(pig)
 
 
 ## How many hens are back in the hen house's run.

@@ -5622,3 +5622,6 @@ PANCHO_NOTHING,"¡Gracias! Pero no vi nada raro. Bueno, el tío habla con la vac
 PANCHO_IDLE_1,"Treinta y uno, treinta y dos… ¿Dónde se metió la colorada?","Thirty-one, thirty-two… Where did the red one go?","Trinta e um, trinta e dois… Cadê a vermelha?"
 PANCHO_IDLE_2,"Si el tío pregunta, yo no los dejé entrar.","If my uncle asks, I didn't let you in.","Se o tio perguntar, eu não deixei vocês entrarem."
 PANCHO_IDLE_3,"Las gallinas no se agarran así, oficial. Bueno, sí, así.","That's not how you hold a hen, officer. Well, yes, like that.","Não é assim que se pega galinha, policial. Bom, é sim, assim."
+GOAT_CHEW,Ñam… ñam… ñam…,Munch… munch… munch…,Nham… nham… nham…
+GOAT_BURP,¡Beeeee!,Baaaaa!,Béééé!
+HINT_PIG_SHOVE,"¡Un chancho te empujó! En el barro mandan ellos.","A pig shoved you! In the mud, they're the boss.","Um porco te empurrou! Na lama quem manda são eles."
