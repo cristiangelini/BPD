@@ -5721,3 +5721,12 @@ CLUE_PIG_RING,"Un chancho tiene un anillo de oro brillante en el hocico. ¿De d�
 PROMPT_LOOK_PIG,E: mirar el chancho de cerca,E: take a close look at the pig,E: olhar o porco de perto
 PIG_OINK,¡Oink!,Oink!,Oinc!
 FARM_PIG_DUG,¡El chancho desenterró algo!,The pig dug something up!,O porco desenterrou algo!
+BRIEF_LIVING_SCARECROW_B,"El Primo Bigote se fugó con el botín de un robo, y Don Florencio es su primo. Desde entonces su espantapájaros está raro.","Primo Bigote escaped with the loot of a robbery, and Don Florencio is his cousin. Ever since, his scarecrow has been acting strange.","O Primo Bigote fugiu com o produto de um roubo, e Don Florencio é primo dele. Desde então o espantalho dele anda estranho."
+BRIEF_LIVING_SCARECROW_C,"Traigan el disfraz de espantapájaros relleno de billetes en el baúl del patrullero.","Bring the scarecrow costume stuffed with banknotes in the patrol car's trunk.","Tragam a fantasia de espantalho recheada de notas no porta-malas da viatura."
+BRIEF_LIVING_SCARECROW_D,"Si encuentran el sombrero del primo o el recorte del diario, mejor: todo suma.","If you find the cousin's hat or the newspaper clipping, even better: it all counts.","Se acharem o chapéu do primo ou o recorte do jornal, melhor: tudo conta."
+OBJ_FIND_SCARECROW_COSTUME,Llevarse el disfraz de espantapájaros con los billetes,Take the scarecrow costume with the banknotes,Levar a fantasia de espantalho com as notas
+OBJ_EXTRA_COUSIN_HAT,Extra: el sombrero del primo prófugo,Extra: the fugitive cousin's hat,Extra: o chapéu do primo foragido
+OBJ_EXTRA_MUSTACHE_CLIPPING,"Extra: el recorte «Buscan al Primo Bigote»","Extra: the clipping «Primo Bigote wanted»","Extra: o recorte «Procura-se o Primo Bigote»"
+PANCHO_CLUE_living_scarecrow,"«¡Gracias! Te cuento: vi al tío esconder algo %s. Y el espantapájaros come de noche, te lo juro.»","“Thanks! Here's the thing: I saw my uncle hide something %s. And the scarecrow eats at night, I swear.”","“Valeu! Te conto: vi o tio esconder algo %s. E o espantalho come de noite, eu juro.”"
+CLUE_SCARECROW_SNEEZE,"Miraste al espantapájaros de cerca y estornudó. Hay alguien adentro, y se mueve cuando nadie mira.","You stared at the scarecrow up close and it sneezed. Someone's inside, and it moves when nobody's looking.","Você olhou o espantalho de perto e ele espirrou. Tem alguém dentro, e ele se mexe quando ninguém olha."
+FARM_SCARECROW_SNEEZE,¡ACHÍS!,ACHOO!,ATCHIM!

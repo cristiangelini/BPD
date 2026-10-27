@@ -424,6 +424,42 @@ export const models = {
 		b.add('mud', C('fresh_mud', 0x4a3018), ellipsoid(0.04, 0.02, 0.04, 8, 4), { pos: V(0.02, 0.09, 0) });
 		return b.build();
 	},
+	// A spare scarecrow costume, folded, stuffed with banknotes instead of straw. About 0.5 x 0.24 x 0.35 m, bottom at y = 0.
+	scarecrow_costume() {
+		const b = new Builder('scarecrow_costume');
+		const shirt = C('scarecrow_shirt', 0x3a6ab8), note = C('bill_green', 0x6aa860);
+		b.add('shirt', shirt, new THREE.BoxGeometry(0.5, 0.14, 0.35), { pos: V(0, 0.07, 0) });
+		b.add('trousers', C('costume_trousers', 0x6a5a40), new THREE.BoxGeometry(0.46, 0.08, 0.32), { pos: V(0, 0.18, 0) });
+		for (let i = 0; i < 5; i++) {
+			b.add('bills', note, new THREE.BoxGeometry(0.14, 0.006, 0.07), { pos: V(-0.2 + i * 0.1, 0.12 + (i % 2) * 0.03, 0.17 + (i % 3) * 0.01), rot: [0.3, 0.3 * (i - 2), 0] });
+		}
+		b.add('straw', C('scarecrow_straw', 0xe8c868), new THREE.ConeGeometry(0.05, 0.12, 5), { pos: V(0.27, 0.1, 0), rot: [0, 0, -Math.PI / 2] });
+		return b.build();
+	},
+	// The fugitive cousin's hat: a black bowler with a fake mustache stuck to the brim. 0.3 x 0.14 x 0.3 m, bottom at y = 0.
+	cousin_hat() {
+		const b = new Builder('cousin_hat');
+		const felt = C('bowler_black', 0x1a1a1a, { roughness: 0.6 });
+		b.add('brim', felt, new THREE.CylinderGeometry(0.15, 0.15, 0.015, 14), { pos: V(0, 0.008, 0) });
+		b.add('crown', felt, new THREE.SphereGeometry(0.1, 12, 6, 0, Math.PI * 2, 0, Math.PI / 2), { pos: V(0, 0.015, 0), scale: [1, 1.2, 1] });
+		b.add('band', C('band_red', 0xa02020), new THREE.CylinderGeometry(0.101, 0.101, 0.02, 14), { pos: V(0, 0.03, 0) });
+		for (const s of [-1, 1]) {
+			b.add('mustache', C('mustache_brown', 0x3a2414), ellipsoid(0.04, 0.012, 0.015, 6, 3), { pos: V(s * 0.035, 0.02, 0.14), rot: [0, 0, s * 0.3] });
+		}
+		return b.build();
+	},
+	// The newspaper clipping "Buscan al Primo Bigote", with a photo of a mustache. 0.2 x 0.004 x 0.26 m, bottom at y = 0.
+	mustache_clipping() {
+		const b = new Builder('mustache_clipping');
+		b.add('paper', C('newsprint', 0xe8e4d8), new THREE.BoxGeometry(0.2, 0.004, 0.26), { pos: V(0, 0.002, 0) });
+		b.add('title', C('ink_black', 0x111111), new THREE.BoxGeometry(0.16, 0.001, 0.03), { pos: V(0, 0.0045, -0.1) });
+		b.add('photo', C('photo_grey', 0x9a9a9a), new THREE.BoxGeometry(0.1, 0.001, 0.08), { pos: V(-0.03, 0.0045, -0.02) });
+		b.add('photo', C('mustache_brown', 0x3a2414), new THREE.BoxGeometry(0.05, 0.0012, 0.012), { pos: V(-0.03, 0.005, -0.02) });
+		for (let i = 0; i < 4; i++) {
+			b.add('lines', C('ink_grey', 0x555555), new THREE.BoxGeometry(0.16, 0.001, 0.006), { pos: V(0, 0.0045, 0.05 + i * 0.018) });
+		}
+		return b.build();
+	},
 	// One egg, white like the hens lay them, bottom at y = 0. 0.06 x 0.08 m.
 	farm_egg() {
 		const b = new Builder('farm_egg');
@@ -469,6 +505,11 @@ export const views = {
 			{ name: 'sty_map', pos: [0.45, 0, 0.0], rotY: -0.3 }, { name: 'mud_boot', pos: [-0.6, 0, 0.5], rotY: 0.8 },
 			{ name: 'mud_can', pos: [0.75, 0, 0.35] }],
 		cam: { pos: [0, 1.0, 1.9], target: [0.05, 0.1, 0.2], fov: 38 },
+	},
+	farm_living_scarecrow: {
+		items: [{ name: 'scarecrow_costume', pos: [-0.25, 0, 0], rotY: 0.3 }, { name: 'cousin_hat', pos: [0.35, 0, -0.1] },
+			{ name: 'mustache_clipping', pos: [0.25, 0, 0.4], rotY: -0.3 }],
+		cam: { pos: [0, 0.9, 1.5], target: [0.05, 0.08, 0.1], fov: 36 },
 	},
 	farm_golden_eggs: {
 		items: [{ name: 'golden_egg_box', pos: [-0.4, 0, 0], rotY: 0.3 }, { name: 'gold_paint_can', pos: [0.3, 0, 0.1] },
