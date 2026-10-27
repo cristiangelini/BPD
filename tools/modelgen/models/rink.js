@@ -245,13 +245,48 @@ export function buildRinkMoneyEnvelope() {
 	return b.build();
 }
 
+// The golden skate, stolen from the championship and painted white, 0.12 x 0.24 x 0.3 m: a white boot on a blade, with
+// the paint chipped at the toe and the heel so the gold shows through.
+export function buildRinkGoldenSkate() {
+	const b = new Builder('rink_golden_skate');
+	const white = mat('golden_skate_paint', 0xf2f2ee), gold = mat('golden_skate_gold', 0xf2c84b, { metalness: 0.8, roughness: 0.25 });
+	b.add('boot', white, new THREE.BoxGeometry(0.11, 0.14, 0.24), { pos: V(0, 0.15, -0.02) });
+	b.add('shaft', white, new THREE.BoxGeometry(0.1, 0.08, 0.12), { pos: V(0, 0.26, -0.07) });
+	b.add('blade', white, new THREE.BoxGeometry(0.012, 0.06, 0.3), { pos: V(0, 0.04, 0) });
+	b.add('chip_toe', gold, new THREE.BoxGeometry(0.112, 0.05, 0.04), { pos: V(0, 0.12, 0.09) });
+	b.add('chip_heel', gold, new THREE.BoxGeometry(0.014, 0.04, 0.06), { pos: V(0, 0.03, -0.11) });
+	return b.build();
+}
+
+// The can of white paint, 0.16 m across: a tin can with a white drip down its side and the lid on loose.
+export function buildRinkWhitePaint() {
+	const b = new Builder('rink_white_paint');
+	const tin = mat('paint_tin', 0xa8aeb6, { metalness: 0.6, roughness: 0.4 }), white = mat('paint_white', 0xf6f6f2);
+	b.add('can', tin, new THREE.CylinderGeometry(0.08, 0.08, 0.18, 14), { pos: V(0, 0.09, 0) });
+	b.add('lid', white, new THREE.CylinderGeometry(0.082, 0.082, 0.015, 14), { pos: V(0.01, 0.19, 0), rot: [0, 0, 0.12] });
+	b.add('drip', white, new THREE.BoxGeometry(0.03, 0.1, 0.01), { pos: V(0, 0.13, 0.08) });
+	return b.build();
+}
+
+// The newspaper clipping with the photo of the trophy, 0.2 x 0.004 x 0.26 m: grey paper with a black headline bar and a
+// gold skate in the photo.
+export function buildRinkTrophyClipping() {
+	const b = new Builder('rink_trophy_clipping');
+	b.add('paper', mat('clipping_paper', 0xd8d4c8), new THREE.BoxGeometry(0.2, 0.004, 0.26), { pos: V(0, 0.002, 0) });
+	b.add('headline', mat('clipping_ink', 0x222222), new THREE.BoxGeometry(0.17, 0.002, 0.03), { pos: V(0, 0.005, -0.1) });
+	b.add('photo', mat('clipping_photo', 0x6a6a6a), new THREE.BoxGeometry(0.12, 0.002, 0.1), { pos: V(-0.02, 0.005, 0.01) });
+	b.add('skate', mat('golden_skate_gold', 0xf2c84b, { metalness: 0.8, roughness: 0.25 }), new THREE.BoxGeometry(0.03, 0.002, 0.06), { pos: V(-0.02, 0.0065, 0.01) });
+	return b.build();
+}
+
 export const models = {
 	ice_resurfacer: buildIceResurfacer, skating_penguin: buildSkatingPenguin, cocoa_machine: buildCocoaMachine,
 	dj_booth: buildDjBooth, rink_scoreboard: buildRinkScoreboard, npc_dona_pirueta: buildDonaPirueta,
 	npc_copito: buildCopito, rink_ice_block: buildRinkIceBlock, rink_jeweler_list: buildRinkJewelerList,
 	ice_chisel: buildIceChisel, rink_perfume_box: buildRinkPerfumeBox, perfume_bottle: buildPerfumeBottle,
 	rink_funnel: buildRinkFunnel, rink_score_remote: buildRinkScoreRemote, rink_bet_notebook: buildRinkBetNotebook,
-	rink_money_envelope: buildRinkMoneyEnvelope,
+	rink_money_envelope: buildRinkMoneyEnvelope, rink_golden_skate: buildRinkGoldenSkate, rink_white_paint: buildRinkWhitePaint,
+	rink_trophy_clipping: buildRinkTrophyClipping,
 };
 
 export const views = {
@@ -264,6 +299,7 @@ export const views = {
 			{ name: 'rink_jeweler_list', pos: [-0.3, 0, 2.6] }, { name: 'ice_chisel', pos: [0.2, 0, 2.6] },
 			{ name: 'rink_perfume_box', pos: [0.8, 0, 2.6] }, { name: 'perfume_bottle', pos: [1.3, 0, 2.8] }, { name: 'rink_funnel', pos: [1.6, 0, 2.8] },
 			{ name: 'rink_score_remote', pos: [2.0, 0, 2.8] }, { name: 'rink_bet_notebook', pos: [2.3, 0, 2.8] }, { name: 'rink_money_envelope', pos: [2.6, 0, 2.8] },
+			{ name: 'rink_golden_skate', pos: [-2.0, 0, 2.8] }, { name: 'rink_white_paint', pos: [-2.4, 0, 2.8] }, { name: 'rink_trophy_clipping', pos: [-2.8, 0, 2.8] },
 		],
 		cam: { pos: [0, 2.2, 6.5], target: [0, 1.0, 0], fov: 45 },
 	},
