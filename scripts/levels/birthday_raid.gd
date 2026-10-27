@@ -15,7 +15,10 @@ extends Node3D
 ## The kids (step 3, PartyKid) run about, hang on cops' legs and carry small things off to the castle; E on Chispita
 ## gets a cop one of his balloon dogs (one every BALLOON_EVERY seconds) to trade a kid for what they carry. A kid a cop
 ## runs into cries, and Chispita counts it. Whoever breaks the piñata (BirthdayPinata) gets Tomasito's secret, once,
-## while the guests sit under it picking up candies. Every number here is (propuesta).
+## while the guests sit under it picking up candies.
+## The case (step 4) is the RaidCase every raid shares: the tip, three suspicions, the story drawn with the seed (or
+## --story=<id>) and its things hidden in SPOTS, Chispita's slips and lawyer, Tomasito's secret, the escape and the
+## interrogation. Every number here is (propuesta).
 
 signal cake_fell
 signal balloon_popped(index: int)
@@ -24,6 +27,34 @@ signal tomasito_told(cop: Cop)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const CHISPITA_SCENE := preload("res://scenes/npc/birthday_clown.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the party can be suspected of (allanamiento-cumple.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["diamond_balloons", "pinata_bills", "endless_birthday", "watch_castle", "returning_gifts",
+	"double_clown"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_BIRTHDAY_TIP_B", "BRIEF_TIP_C", "BRIEF_BIRTHDAY_TIP_D",
+	"BRIEF_BIRTHDAY_TIP_E"]
+## The stories the party can tell, like GymRaid.STORIES: what the comisario says once it's guessed, its "find it" row,
+## what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the checklist rows of
+## its extras and its rig. With "main_hidden" the first hidden item is the main evidence and the rest extras.
+const STORIES := {
+	"diamond_balloons": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_DIAMOND_BALLOONS_B", "BRIEF_DIAMOND_BALLOONS_C", "BRIEF_DIAMOND_BALLOONS_D"],
+		"find": "OBJ_FIND_DIAMOND_BALLOONS",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/diamond_balloons.tscn"), preload("res://scenes/props/trick_pump.tscn"),
+			preload("res://scenes/props/client_list.tscn")],
+		"half_heights": [0.13, 0.305, 0.005],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_TRICK_PUMP", "OBJ_EXTRA_CLIENT_LIST"],
+		"rig": preload("res://scripts/case/birthday/diamond_balloons_rig.gd"),
+	},
+}
+## Where the suspicions' clue notes may lie, on the floor of the hall.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(-4.5, FLOOR_TOP, 4.6), Vector3(2.6, FLOOR_TOP, 3.0), Vector3(-6.5, FLOOR_TOP, -3.8),
+	Vector3(3.8, FLOOR_TOP, -5.0), Vector3(-1.2, FLOOR_TOP, -6.6), Vector3(5.2, FLOOR_TOP, 5.6),
+]
 const CASTLE_MODEL := preload("res://assets/models/bouncy_castle.glb")
 const CAKE_MODEL := preload("res://assets/models/birthday_cake.glb")
 const GIFT_MODEL := preload("res://assets/models/gift_box.glb")
@@ -132,11 +163,25 @@ var told := false
 ## Everything grabbable lying about the hall, for the kids.
 var loose_items: Array[Grabbable] = []
 var balloon_left := 0.0
+## Where Tomasito saw the clown hide something (a LOC_ text), his secret.
+var tomasito_secret := ""
 var balloons: Array[Area3D] = []
 var popped: Array[int] = []
 var broken_goods := 0
+## The case flow every raid shares.
+var raid: RaidCase
 ## Money taken off the case pay: the cake.
-var fines := 0
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: BirthdayRaidRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
 var chispita: FloorBoss
 var candles: BirthdayCandles
 var complaint_bar: ProgressBar
@@ -159,6 +204,21 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	PartyHall.build_hall(_build, $Built, "BIRTHDAY_RAID_BANNER")
 	_build_castle()
@@ -177,6 +237,100 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "party_hall", car)
+	raid.station_parking = station_parking
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = chispita
+	raid.owner_id = "birthday"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The party's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_BIRTHDAY",
+		"guess_key": "OBJ_GUESS_BIRTHDAY",
+		"broken_key": "OBJ_BROKEN_BIRTHDAY",
+		"complaint_key": "OBJ_COMPLAINT_BIRTHDAY",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_goods,
+		"complaint": chispita.complaint,
+	}
+
+
+## Online, what the guests' party takes from the host's (RaidCase.snapshot): the cake, the popped balloons and what the
+## story's rig decides on the host.
+func net_state() -> Dictionary:
+	return {"cake": cake_broken, "popped": popped.duplicate(), "rig": rig.net_state() if rig else null}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	if state.cake:
+		break_cake()
+	for index: int in state.popped:
+		pop(index)
+	if rig and state.rig != null:
+		rig.apply_net_state(state.rig)
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Chispita lets slip when asked (where the story's things are, in an order drawn from the seed), and Tomasito's
+## secret for whoever breaks the piñata: where the clown hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		chispita.slips.append(tr("CHISPITA_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	chispita.slipped.connect(raid.add_clue)
+	tomasito_secret = tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	tomasito_told.connect(func(_cop: Cop) -> void: raid.add_clue(tr("CLUE_TOMASITO") % tomasito_secret))
 
 
 func _physics_process(delta: float) -> void:
@@ -313,6 +467,7 @@ func _place_chispita() -> void:
 	add_child(chispita)
 	chispita.fix_facing = to_global(CAKE_AT)
 	chispita.start_at(0)
+	chispita.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_BIRTHDAY"))
 	office_door.broken.connect(chispita.door_broken)
 	chispita_case.opened.connect(func(at: Vector3) -> void: chispita.saw(at, FloorBoss.SAW_TILL))
 	balloon_popped.connect(func(index: int) -> void:
@@ -452,7 +607,7 @@ func tomasito_talks(cop: Cop) -> bool:
 		tomasito.say("TOMASITO_NOT_YOU")
 	else:
 		told = true
-		tomasito.say("TOMASITO_SECRET")
+		tomasito.say(tr("TOMASITO_SECRET") % tomasito_secret)
 		tomasito_told.emit(cop)
 	return true
 

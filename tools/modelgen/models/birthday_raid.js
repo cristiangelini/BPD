@@ -81,6 +81,33 @@ export const models = {
 		b.add('star', white, new THREE.CylinderGeometry(0.06, 0.06, 0.01, 5), { pos: V(0.17, 0.2, 0.085), rot: [Math.PI / 2, 0, 0] });
 		return b.build();
 	},
+	// The diamond balloons (los globos de diamantes): a bunch of five balloons that hang down from their knot instead of
+	// floating, heavy with the stones inside, and a few diamonds showing through the thin rubber.
+	diamond_balloons() {
+		const b = new Builder('diamond_balloons');
+		const knot = C('diamond_knot', 0xd8d8d8), stone = C('diamond_stone', 0xd8f4ff, { emissive: 0x284858, metalness: 0.3 });
+		b.add('weight', C('diamond_weight', 0x9a9aa4, { metalness: 0.5 }), new THREE.CylinderGeometry(0.05, 0.06, 0.06, 8), { pos: V(0, 0.03, 0) });
+		const ends = [V(0, 0.11, 0.17), V(0.16, 0.12, 0.05), V(0.1, 0.1, -0.15), V(-0.11, 0.11, -0.13), V(-0.16, 0.12, 0.07)];
+		ends.forEach((at, i) => {
+			const mid = V(at.x / 2, 0.08, at.z / 2);
+			b.add('strings', knot, new THREE.CylinderGeometry(0.004, 0.004, mid.length() * 2, 4), { pos: mid, lookAt: V(at.x, at.y - 0.06, at.z) });
+			b.add('balloons', C(`diamond_balloon_${i % 4}`, PASTEL[i % 4]), ellipsoid(0.1, 0.12, 0.1, 10, 7), { pos: V(at.x * 1.2, at.y, at.z * 1.2) });
+			b.add('stones', stone, new THREE.OctahedronGeometry(0.025), { pos: V(at.x * 1.2 + 0.03, at.y + 0.03, at.z * 1.2 + 0.07) });
+		});
+		return b.build();
+	},
+	// The trick pump: a balloon pump on its stand with a double bottom that slides out (the bottom drawer shows).
+	trick_pump() {
+		const b = new Builder('trick_pump');
+		const red = C('pump_red', 0xe0262e), metal = C('pump_metal', 0xb0b0b8, { metalness: 0.5 });
+		b.add('base', C('pump_base', 0x2a2a30), new THREE.BoxGeometry(0.32, 0.06, 0.2), { pos: V(0, 0.03, 0) });
+		b.add('drawer', C('pump_drawer', 0xf6d23a), new THREE.BoxGeometry(0.26, 0.04, 0.02), { pos: V(0, 0.03, 0.105) });
+		b.add('barrel', red, new THREE.CylinderGeometry(0.05, 0.05, 0.4, 12), { pos: V(0, 0.26, 0) });
+		b.add('rod', metal, new THREE.CylinderGeometry(0.01, 0.01, 0.16, 6), { pos: V(0, 0.52, 0) });
+		b.add('handle', metal, new THREE.CylinderGeometry(0.015, 0.015, 0.2, 6), { pos: V(0, 0.6, 0), rot: [0, 0, Math.PI / 2] });
+		b.add('nozzle', C('pump_nozzle', 0x2a2a30), new THREE.CylinderGeometry(0.008, 0.012, 0.1, 6), { pos: V(0.08, 0.1, 0), rot: [0, 0, -1.2] });
+		return b.build();
+	},
 };
 
 export const views = {
@@ -93,6 +120,11 @@ export const views = {
 		items: [{ name: 'birthday_cake', pos: [-0.9, 0, 0.3] }, { name: 'birthday_pinata', pos: [0, 1.0, 0.3] },
 			{ name: 'gift_box', pos: [0.7, 0, 0.5], rotY: 0.4 }, { name: 'chispita_case', pos: [1.2, 0, 0.3], rotY: -0.3 }],
 		cam: { pos: [0.1, 1.2, 3.2], target: [0.1, 0.5, 0], fov: 40 },
+	},
+	birthday_evidence: {
+		items: [{ name: 'diamond_balloons', pos: [-0.5, 0, 0] }, { name: 'trick_pump', pos: [0.15, 0, 0], rotY: 0.3 },
+			{ name: 'client_list', pos: [0.65, 0, 0.1], rotY: -0.2 }],
+		cam: { pos: [0.05, 0.9, 1.6], target: [0.05, 0.15, 0], fov: 40 },
 	},
 	bouncy_castle: {
 		items: [{ name: 'bouncy_castle', pos: [0, 0, 0], rotY: 0.5 }],

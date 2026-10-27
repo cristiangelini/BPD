@@ -56,7 +56,7 @@ una casa con pileta y ningún chico se acuerda de su fiesta".
 
 | Historia | Evidencia principal | Extras | Pista propia | Qué cambia |
 |---|---|---|---|---|
-| **Los globos de diamantes** | El ramo de globos que no flota, con diamantes adentro (2 kg, 1000, entre los globos del arco) | La bomba de inflar con doble fondo (3 kg, 300), la lista de "clientes" (0,1 kg, 200) | Un globo del arco cuelga para abajo en vez de flotar | Cada globo que revienta un policía puede largar piedritas de vidrio (pista falsa) |
+| **Los globos de diamantes** | El ramo de globos que no flota, con diamantes adentro (2 kg, 1000, entre los globos del arco) | La bomba de inflar con doble fondo (3 kg, 300), la lista de "clientes" (0,1 kg, 300) | Un globo del arco cuelga para abajo en vez de flotar | Cada globo que revienta un policía puede largar piedritas de vidrio (pista falsa) |
 | **La piñata de billetes** | La plancha de imprimir billetes falsos (6 kg, 1000) | La bolsa de billetes de la piñata (1 kg, 300), el sello del "Banco Feliz" (0,3 kg, 200) | Los caramelos de la piñata vienen envueltos en billetes falsos | Al romper la piñata, los chicos juntan billetes además de caramelos |
 | **El cumpleaños eterno** | El álbum con 52 fiestas de Tomasito cumpliendo 7 (1 kg, 1000) | La caja de velas "7" por mayor (2 kg, 300), los contratos de los chicos actores (0,1 kg, 200) | Tomasito dice "¡Cumplo siete otra vez!" y los chicos se saben la canción con coreografía | Los chicos cobran: si les preguntas con E, piden su sueldo |
 | **El inflable de los relojes** | La bolsa de relojes robados escondida en el inflable (8 kg, 1000) | El inflador trucho (5 kg, 300), la factura de la relojería (0,1 kg, 200) | Saltar en el inflable hace "clinc, clinc" | El inflable se desinfla 10 s si alguien le tira algo filoso, y los chicos lo vuelven a inflar |
@@ -119,6 +119,15 @@ bocina (por ahora el auto de fuga de los otros dueños; el autito queda para des
      llueven caramelos, los invitados se sientan abajo a juntarlos 10 s y Tomasito le cuenta su secreto solo al policía
      que la rompió, una vez por caso (qué secreto, en el paso 4). Capturas `/mnt/project-files/cumple/paso3-*.png`.
 4. El caso (`RaidCase`) con la primera historia: los globos de diamantes.
+   - **Cómo quedó (propuesta):** el cumpleaños corre el mismo `RaidCase` que el gimnasio: la denuncia anónima, 3
+     sospechas de las 6 (cada una con su nota en el piso del salón), la planilla, la multa del pastel, la queja de
+     Chispita (con 100 llama al abogado y se pierde el caso), lo que Chispita suelta con R (dónde están las cosas), la
+     huida en auto si ve levantar la prueba y el interrogatorio. El secreto de Tomasito es dónde vio al payaso esconder
+     una de las cosas, y va a la planilla. Los globos de diamantes: el ramo de globos que no flota (2 kg, 1000), el
+     inflador con doble fondo (3 kg, 300) y la lista de clientes (la misma de la fábrica de muñecas, 0,1 kg, 300; los
+     chicos se la pueden llevar al inflable) en escondites sorteados. Un globo de arriba del arco cuelga 50 cm de su
+     hilo: si lo revientas cae un diamante de verdad y es pista; la mitad de los demás globos largan piedritas de vidrio
+     (pista falsa). `--story=diamond_balloons`. Capturas `/mnt/project-files/cumple/paso4-*.png`.
 5. Las otras 5 historias, una por PR.
 6. El sorteo de "Jugar" entre los allanamientos y el online.
 
