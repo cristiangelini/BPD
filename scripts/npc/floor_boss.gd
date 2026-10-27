@@ -309,6 +309,12 @@ func praise(points: float, line: String) -> void:
 	_say(line)
 
 
+## Something got to her whether she saw it or not: the complaint goes up `points` and she says `line`.
+func scold(points: float, line: String) -> void:
+	_raise(points)
+	_say(line)
+
+
 func door_broken() -> void:
 	_raise(DOOR_BROKEN)
 	_say(_key("DOOR"))

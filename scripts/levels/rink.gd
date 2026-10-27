@@ -7,8 +7,9 @@ extends Node3D
 ## panels on the front ones, two gates, the resurfacer parked in a corner and the skating penguin; the stands along the
 ## west side and the DJ booth on the east one, the scoreboard and the mirror ball overhead. At the back, along a
 ## corridor, the locker room, the cold room with its ice blocks and compressor, and the owner's office, locked with the
-## till's key. Something thrown hard at a glass panel or at the trophy case breaks it, a fine each. Every number here
-## is (propuesta).
+## till's key. Something thrown hard at a glass panel or at the trophy case breaks it, a fine each. The ice, the skates
+## and the resurfacer (RinkIce, step 2). Doña Pirueta skates her round and fills her complaint; her song at the DJ
+## booth takes her off to dance (step 3). Every number here is (propuesta).
 
 signal glass_broken(index: int)
 signal trophies_broken
@@ -16,7 +17,7 @@ signal trophies_broken
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const PENGUIN_MODEL := preload("res://assets/models/skating_penguin.glb")
 const COCOA_MODEL := preload("res://assets/models/cocoa_machine.glb")
-const DJ_MODEL := preload("res://assets/models/dj_booth.glb")
+const OWNER_SCENE := preload("res://scenes/npc/rink_owner.tscn")
 const SCOREBOARD_MODEL := preload("res://assets/models/rink_scoreboard.glb")
 const HALF_X := 22.0
 const HALF_Z := 15.0
@@ -71,6 +72,22 @@ const STAND_RISE := 0.45
 const STAND_HALF_Z := 6.0
 ## The DJ booth on the east side, its crowd side to the ice.
 const DJ_AT := Vector3(19.0, FLOOR_TOP, -2.0)
+## Doña Pirueta's round on the ice, back and forth, and where she dances her routine when her song plays.
+const OWNER_ROUTE: Array[Vector3] = [
+	Vector3(-9.0, ICE_TOP, 2.0), Vector3(-9.0, ICE_TOP, -3.0), Vector3(9.0, ICE_TOP, -3.0), Vector3(9.0, ICE_TOP, 2.0),
+]
+const DANCE_SPOT := Vector3(0.0, ICE_TOP, -0.5)
+const DANCE_TIME := 20.0
+## How fast she spins while dancing, in turns a second.
+const SPIN := 0.8
+## "¡Con zapatos no!": a cop on the ice without skates (once per cop), and something heavy (HEAVY_KG or more) falling
+## on the ice.
+const SAW_SHOES := 5.0
+const SAW_HEAVY := 10.0
+const HEAVY_KG := 5.0
+const SHOES_CHECK_EVERY := 0.5
+## The third song: she knows what's going on.
+const CAUGHT_ON := 10.0
 ## The back rooms behind the corridor: the wall along it with its doors, and the walls between the rooms.
 const BACK_Z := -10.0
 const LOCKER_DOOR_X := -15.0
@@ -121,6 +138,15 @@ var resurfacer_button: PushButton
 var ice: RinkIce
 var skate_rental: SkateRental
 var penguin: StaticBody3D
+## The DJ booth with her song: Doña Pirueta's distraction (step 3).
+var song: DjSong
+## Doña Pirueta, the owner, and her complaint bar.
+var owner_npc: FloorBoss
+var complaint_bar: ProgressBar
+## The cops she already scolded for their shoes (id -> true).
+var shoes_seen := {}
+var _shoes_check := 0.0
+var _spin := 0.0
 var glass_panels: Array[StaticBody3D] = []
 var trophies_cracked := false
 var broken_goods := 0
@@ -146,6 +172,7 @@ func _ready() -> void:
 	_build_stands()
 	_build_lobby()
 	_build_back()
+	_place_owner()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("rink")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -302,8 +329,11 @@ func _build_stands() -> void:
 		_build.box(Vector3(mid, top - 0.05, 0), Vector3(STAND_DEPTH, 0.1, STAND_HALF_Z * 2), WOOD)
 		_build.box(Vector3(east - 0.05, (FLOOR_TOP + top - 0.1) / 2, 0), Vector3(0.1, top - 0.1 - FLOOR_TOP,
 			STAND_HALF_Z * 2), BOARD_STRIPE.darkened(0.3))
-	_model(DJ_MODEL, DJ_AT, -PI / 2)
-	_build.shape(_build.body(DJ_AT + Vector3(0, 0.6, 0)), Vector3(0.8, 1.2, 2.2))
+	song = DjSong.new()
+	song.name = "DjSong"
+	song.position = DJ_AT
+	song.rotation.y = -PI / 2
+	add_child(song)
 
 
 ## By the door: the skate rental with the till, the rack and the lost and found box, the trophy case, and the bar with
@@ -386,6 +416,63 @@ func _build_back() -> void:
 	office_door = DOOR_SCENE.instantiate()
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, BACK_Z)
 	add_child(office_door)
+
+
+## Doña Pirueta skating her round, what she can't stand to see, her song and the complaint bar.
+func _place_owner() -> void:
+	owner_npc = OWNER_SCENE.instantiate()
+	owner_npc.name = "DonaPirueta"
+	owner_npc.route = OWNER_ROUTE
+	owner_npc.printer_spot = DANCE_SPOT
+	owner_npc.printer = song
+	owner_npc.fix_time = DANCE_TIME
+	add_child(owner_npc)
+	owner_npc.start_at(0)
+	office_door.broken.connect(owner_npc.door_broken)
+	till.opened.connect(func(at: Vector3) -> void: owner_npc.saw(at, FloorBoss.SAW_TILL))
+	song.caught_on.connect(func() -> void: owner_npc.scold(CAUGHT_ON, "PIRUETA_CAUGHT_ON"))
+	var thuds := _area(Vector3(0, ICE_TOP + 0.3, (ICE_Z0 + ICE_Z1) / 2), Vector3(ICE_HALF_X * 2, 0.6, ICE_Z1 - ICE_Z0))
+	thuds.body_entered.connect(_on_ice_hit)
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	owner_npc.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Something heavy falling on the ice: "¡Me lo van a partir!".
+func _on_ice_hit(body: Node3D) -> void:
+	var item := body as RigidBody3D
+	if item and item.mass >= HEAVY_KG and item.linear_velocity.y < -2.0:
+		owner_npc.saw(item.global_position, SAW_HEAVY, "PIRUETA_ICE_HIT")
+
+
+func _physics_process(delta: float) -> void:
+	if owner_npc.is_fixing():
+		# Her routine: round and round in the middle of the ice, eyes closed.
+		_spin += SPIN * TAU * delta
+		owner_npc.fix_facing = owner_npc.global_position + Vector3(sin(_spin), 0, cos(_spin))
+	_shoes_check += delta
+	if _shoes_check < SHOES_CHECK_EVERY:
+		return
+	_shoes_check = 0.0
+	for node in get_tree().get_nodes_in_group("cops"):
+		var cop := node as Cop
+		if cop == null or shoes_seen.has(cop.get_instance_id()) or ice.has_skates(cop) or not ice.is_on_ice(cop):
+			continue
+		if owner_npc.saw(cop.global_position + Vector3.UP, SAW_SHOES, "PIRUETA_SHOES"):
+			shoes_seen[cop.get_instance_id()] = true
 
 
 ## Breaks glass panel `index`, once: a fine, and the panel is gone.

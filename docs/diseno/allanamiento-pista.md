@@ -122,6 +122,16 @@ suman 500.
    - **Para Doña Pirueta:** avisan cuando alguien se cae (`fell`) y cuando arranca la pulidora (`started`).
    - **Capturas:** `pista/paso2-*.png`.
 3. Doña Pirueta: la ronda patinando, la denuncia, "¡con zapatos no!" y su canción.
+   Hecho así:
+   - **Doña Pirueta:** el mismo cuerpo que Mirta y Don Tómbola (voz `PIRUETA`), baja y redonda, con malla rosa de
+     lentejuelas, tutú, moño gris alto y patines blancos. Patina de ida y vuelta por la pista, en una U de 18 × 5 m.
+   - **La denuncia:** barra arriba en pantalla. Suma 5 por cada policía que ve en el hielo sin patines (una vez por
+     policía), 10 por algo de 5 kg o más que ve caer sobre el hielo, 10 si ve abrir la caja del alquiler, 5 por la
+     puerta de la oficina y 15 si la empujan.
+   - **Su canción:** el botón rojo de la cabina del DJ pone "El vals del pingüino" (las notas flotan 20 s). Ella va al
+     centro de la pista y baila 20 s girando con los ojos cerrados: no ve nada. Vuelve a caer a los 45 s; la tercera
+     vez no va, dice "¿Otra vez mi canción?" y suma 10.
+   - **Capturas:** `pista/paso3-*.png`.
 4. Copito y el chocolate caliente.
 5. El caso (RaidCase) con la primera historia: el hielo con sorpresa.
 6. Las otras 5 historias, una por PR.

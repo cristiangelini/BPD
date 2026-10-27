@@ -5614,3 +5614,23 @@ HINT_RINK_SKATES_OFF,"Devolviste los patines. Tus tobillos te lo agradecen.","Yo
 HINT_RINK_FELL,"¡Pum! Doblaste muy rápido sobre el hielo.","Thud! You turned too fast on the ice.","Pou! Você virou rápido demais no gelo."
 PROMPT_RINK_RESURFACER,E: prender la pulidora,E: start the resurfacer,E: ligar a máquina de gelo
 HINT_RINK_RESURFACER_HIT,"¡La pulidora no frena por nadie!","The resurfacer stops for nobody!","A máquina de gelo não para por ninguém!"
+PIRUETA_LINE_1,"¡Esto es arte, oficial! ¡Arte sobre cuchillas!","This is art, officer! Art on blades!","Isto é arte, policial! Arte sobre lâminas!"
+PIRUETA_LINE_2,"En el ochenta y tantos gané el campeonato con un tobillo torcido. Y el otro también.","Back in the eighties I won the championship with a sprained ankle. And the other one too.","Nos anos oitenta ganhei o campeonato com um tornozelo torcido. E o outro também."
+PIRUETA_LINE_3,"Una vuelta, dos vueltas... ¡triple! Bueno, doble y media.","One turn, two turns... triple! Well, two and a half.","Uma volta, duas voltas... tripla! Bom, duas e meia."
+PIRUETA_LINE_4,"La pista está cerrada por mantenimiento del hielo. El hielo se mantiene solo, pero igual.","The rink is closed for ice maintenance. The ice maintains itself, but still.","A pista está fechada para manutenção do gelo. O gelo se mantém sozinho, mas mesmo assim."
+PIRUETA_PRINTER,"¿Esa es...? ¡Es mi canción! ¡Abran paso!","Is that...? It's my song! Make way!","Essa é...? É a minha música! Abram caminho!"
+PIRUETA_FIX_1,"Y un, dos, tres... y giro...","And one, two, three... and spin...","E um, dois, três... e giro..."
+PIRUETA_FIX_2,"(con los ojos cerrados) ...el público me ama...","(eyes closed) ...the crowd loves me...","(de olhos fechados) ...o público me ama..."
+PIRUETA_FIX_3,"¡Y el gran final! ¡Pirueta doble!","And the grand finale! Double pirouette!","E o grande final! Pirueta dupla!"
+PIRUETA_FIX_DONE,"Gracias, gracias. No hace falta que aplaudan.","Thank you, thank you. No need to clap.","Obrigada, obrigada. Não precisam aplaudir."
+PIRUETA_HURT,"¡Cuidado! ¡Esta cadera ganó tres medallas!","Careful! This hip won three medals!","Cuidado! Este quadril ganhou três medalhas!"
+PIRUETA_DOOR,"¡Mi oficina! ¡Ahí están mis recortes de diario!","My office! My newspaper clippings are in there!","Meu escritório! Meus recortes de jornal estão lá!"
+PIRUETA_SAW,"¡Te estoy viendo, oficial!","I can see you, officer!","Estou vendo você, policial!"
+PIRUETA_NOTHING,"Yo de eso no sé nada. Yo solo patino.","I know nothing about that. I just skate.","Eu não sei nada disso. Eu só patino."
+PIRUETA_OFFENDED,"¡Basta de preguntas! Una campeona no da entrevistas gratis.","Enough questions! A champion doesn't give free interviews.","Chega de perguntas! Uma campeã não dá entrevistas de graça."
+PIRUETA_LAWYER,"¡Llamo a mi abogado! ¡Que venga con patines!","I'm calling my lawyer! Tell them to bring skates!","Vou chamar meu advogado! Que venha de patins!"
+PIRUETA_CAUGHT_ON,"¿Otra vez mi canción? Ya entendí lo que hacen, oficiales.","My song again? I get what you're doing, officers.","A minha música de novo? Já entendi o que vocês estão fazendo, policiais."
+PIRUETA_SHOES,"¡Con zapatos no, que me rayan el hielo!","Not in shoes, you'll scratch my ice!","De sapato não, vão riscar o meu gelo!"
+PIRUETA_ICE_HIT,"¡Mi hielo! ¡Me lo van a partir!","My ice! You'll crack it!","Meu gelo! Vão rachar!"
+PROMPT_RINK_SONG,E: poner «El vals del pingüino»,E: play "The Penguin Waltz",E: tocar «A valsa do pinguim»
+RINK_SONG_PLAYING,♪ El vals del pingüino ♪,♪ The Penguin Waltz ♪,♪ A valsa do pinguim ♪
