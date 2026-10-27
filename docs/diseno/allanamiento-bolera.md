@@ -139,6 +139,13 @@ suman entre 400 y 600.
      se los devuelve Pipo cuenta dónde vio a Don Chuza esconder algo (la historia lo arma en el paso 5) y lo anota en
      la planilla una sola vez. Capturas: `allanamiento-bolera/paso4-*.png`.
 5. El caso (RaidCase) y la primera historia, la bola con imán.
+   - **Cómo quedó (propuesta):** la bolera es un allanamiento como el súper: la denuncia, 3 sospechas con sus notas
+     en el piso, la planilla, Don Chuza que suelta dónde están las cosas (R) y llama al abogado en 100, y Pipo que
+     cuenta un escondite. En la bola con imán se esconden la bola dorada (7 kg, 1000), el control remoto (300) y la
+     lista de apuestas (200). Una de las bolas de las mesas tiene algo del imán: cerca del tacho de metal (al este de
+     la pista 6) se va sola hacia él y se pega con un «¡Clonc!», y la primera vez es la pista. Y cuando un jugador tira
+     en la pista 1, los pinos se caen solos antes de que llegue la bola. Los jugadores de cada pista ahora esperan los
+     dos del lado oeste, para no pisar el escondite del retorno. Capturas: `allanamiento-bolera/paso5-*.png`.
 6. Las otras 5 historias.
 7. "Jugar" suma la bolera al sorteo de allanamientos, y la huida de Don Chuza.
 8. El online (Don Chuza, Pipo, los jugadores, las bolas y lo frágil en todas las PC).

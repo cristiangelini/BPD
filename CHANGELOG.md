@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Bowling alley raid, step 5: the bowling alley as a raid case (tip, suspicions, checklist, Don Chuza's slips and lawyer, Pipo's tip) with its first story, the magnet ball: the golden ball, the remote and the bets hidden with the seed, a rack ball that sticks to the metal bin, and lane 1's pins falling by themselves when the league bowls there.
 - Bowling alley raid, step 4: Pipo, the shoe boy behind the counter, who lends a cop bowling shoes (sliding much less on the waxed lanes) and, the first time each cop gives a pair back, tells where he saw Don Chuza hide something.
 - Bowling alley raid, step 3: Don Chuza, the owner, on his round with the complaint bar; a strike calls him to celebrate 15 s at that lane with his back to the alley, a cop's strike makes them rest 45 s and the third one gives the cops away, and the league's complaints add to his.
 - Bowling alley raid, step 2b: the Thursday league's six players, who bowl a ball from their rack every 20 s even with a cop on the lane, trip the cop their ball hits and complain about a cop in the way, a taken ball, their pins or their screen.

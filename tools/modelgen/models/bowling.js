@@ -218,7 +218,47 @@ export function buildPipo() {
 	return b.build();
 }
 
+// The magnet ball's story: the golden ball with a horseshoe magnet showing through a crack, the remote that knocks the
+// pins down by itself (a red button and an antenna), the list of bets on Don Chuza's team and the alley's metal bin.
+export function buildMagnetBall() {
+	const b = new Builder('bowl_magnet_ball');
+	b.add('ball', mat('ball_gold', 0xe8b830, { metalness: 0.7, roughness: 0.25 }), new THREE.IcosahedronGeometry(0.12, 2), { pos: V(0, 0.12, 0) });
+	const red = mat('magnet_red', 0xd83a30), steel = mat('magnet_steel', 0xc8ccd4, { metalness: 0.6 });
+	b.add('magnet', red, new THREE.TorusGeometry(0.04, 0.014, 6, 10, Math.PI), { pos: V(0, 0.2, 0.09), rot: [0, 0, Math.PI] });
+	for (const s of [-1, 1]) b.add('magnet', steel, new THREE.BoxGeometry(0.028, 0.02, 0.028), { pos: V(s * 0.04, 0.2, 0.09) });
+	const hole = mat('ball_hole', 0x101010);
+	for (const [x, z] of [[-0.025, -0.02], [0.025, -0.02], [0, 0.035]]) b.add('hole', hole, new THREE.CylinderGeometry(0.012, 0.012, 0.01, 8), { pos: V(x, 0.238, z) });
+	return b.build();
+}
+
+export function buildPinRemote() {
+	const b = new Builder('bowl_pin_remote');
+	b.add('body', mat('remote_black', 0x24242a), new THREE.BoxGeometry(0.07, 0.03, 0.16), { pos: V(0, 0.015, 0) });
+	b.add('button', mat('remote_red', 0xd83a30), new THREE.CylinderGeometry(0.02, 0.02, 0.012, 10), { pos: V(0, 0.036, 0.03) });
+	b.add('antenna', mat('remote_steel', 0xc8ccd4, { metalness: 0.6 }), new THREE.CylinderGeometry(0.004, 0.004, 0.14, 5), { pos: V(0.025, 0.08, -0.07) });
+	b.add('pin', mat('pin_white', 0xf6f4ee), new THREE.BoxGeometry(0.02, 0.006, 0.04), { pos: V(0, 0.033, -0.04) });
+	return b.build();
+}
+
+export function buildBetList() {
+	const b = new Builder('bowl_bet_list');
+	b.add('paper', mat('bet_paper', 0xf6f2e2), new THREE.BoxGeometry(0.21, 0.006, 0.28), { pos: V(0, 0.003, 0) });
+	for (let i = 0; i < 6; i++) b.add('lines', mat('bet_ink', 0x2a2a40), new THREE.BoxGeometry(0.15 - (i % 2) * 0.04, 0.002, 0.008), { pos: V(-0.01, 0.007, -0.1 + i * 0.04) });
+	b.add('stamp', mat('bet_stamp', 0xd83a30), new THREE.BoxGeometry(0.05, 0.002, 0.05), { pos: V(0.06, 0.007, 0.1), rot: [0, 0.3, 0] });
+	return b.build();
+}
+
+export function buildMetalBin() {
+	const b = new Builder('metal_bin');
+	const steel = mat('bin_steel', 0xa8acb4, { metalness: 0.7, roughness: 0.35 });
+	b.add('bin', steel, new THREE.CylinderGeometry(0.2, 0.17, 0.6, 12, 1, true), { pos: V(0, 0.3, 0) });
+	b.add('bin', mat('bin_dark', 0x2a2a30), new THREE.CylinderGeometry(0.17, 0.17, 0.02, 12), { pos: V(0, 0.01, 0) });
+	b.add('rim', steel, new THREE.TorusGeometry(0.2, 0.015, 4, 14), { pos: V(0, 0.6, 0), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
 export const models = {
+	bowl_magnet_ball: buildMagnetBall, bowl_pin_remote: buildPinRemote, bowl_bet_list: buildBetList, metal_bin: buildMetalBin,
 	npc_pipo: buildPipo,
 	npc_don_chuza: buildDonChuza,
 	npc_bowler: bowler('npc_bowler', 0xe0b48a, 0x7a3ab0, false), npc_bowler_b: bowler('npc_bowler_b', 0x9a6440, 0x3a3ab0, true),
@@ -242,6 +282,10 @@ export const views = {
 			{ name: 'giant_pin', pos: [5.6, 0, -1.6] },
 		],
 		cam: { pos: [0.6, 4.0, 9.0], target: [0.6, 0.9, 0], fov: 50 },
+	},
+	bowl_magnet: {
+		items: [{ name: 'bowl_magnet_ball', pos: [-0.5, 0, 0] }, { name: 'bowl_pin_remote', pos: [-0.1, 0, 0.1] }, { name: 'bowl_bet_list', pos: [0.3, 0, 0.1], rotY: 0.3 }, { name: 'metal_bin', pos: [0.9, 0, -0.1] }],
+		cam: { pos: [0.2, 0.9, 1.9], target: [0.2, 0.2, 0], fov: 40 },
 	},
 	bowlers: {
 		items: [{ name: 'npc_bowler', pos: [-1.0, 0, 0], rotY: 0.4 }, { name: 'npc_don_chuza', pos: [0, 0, 0.2], rotY: 0.2, scale: 0.85 }, { name: 'npc_bowler_b', pos: [1.0, 0, 0], rotY: Math.PI - 0.5 }, { name: 'npc_pipo', pos: [1.9, 0, 0.3], rotY: -0.3, scale: 0.75 }],

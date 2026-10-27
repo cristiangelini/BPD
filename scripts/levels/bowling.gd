@@ -7,7 +7,9 @@ extends Node3D
 ## behind them. Between each two lanes stands a ball return, over the foul line hang the score screens and behind the
 ## approach the benches. On the east side are the shoe counter by the door (the office's key in its till), the bar with
 ## the popcorn machine, and the owner's office in the back east corner, locked, with the trophy case. The trophy case
-## breaks if something hits it fast and a screen if a ball flies into it, a fine each. Every number here is (propuesta).
+## breaks if something hits it fast and a screen if a ball flies into it, a fine each. It's a raid case like the
+## supermarket (step 5): one of its stories (STORIES), drawn with the seed, run by the same RaidCase as the other places.
+## Every number here is (propuesta).
 
 signal trophy_case_broken
 signal screen_broken(lane: int)
@@ -18,6 +20,32 @@ signal player_complained(player: BowlPlayer)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const OWNER_SCENE := preload("res://scenes/npc/bowl_owner.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the alley can be suspected of (allanamiento-bolera.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["bowl_magnet", "bowl_lead_pins", "bowl_skates", "bowl_tournament", "bowl_popcorn", "bowl_lane7"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_BOWL_TIP_B", "BRIEF_TIP_C", "BRIEF_BOWL_TIP_D",
+	"BRIEF_BOWL_TIP_E"]
+## The stories the alley can tell, like Supermarket.STORIES: what the comisario says once it's guessed, its "find it"
+## row, what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the checklist
+## rows of its extras and its rig. With "main_hidden" the first hidden item is the main evidence.
+const STORIES := {
+	"bowl_magnet": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_BOWL_MAGNET_B", "BRIEF_BOWL_MAGNET_C", "BRIEF_BOWL_MAGNET_D"],
+		"find": "OBJ_FIND_MAGNET_BALL",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/bowl_magnet_ball.tscn"), preload("res://scenes/props/bowl_pin_remote.tscn"),
+			preload("res://scenes/props/bowl_bet_list.tscn")],
+		"half_heights": [0.12, 0.02, 0.01],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_PIN_REMOTE", "OBJ_EXTRA_BET_LIST"],
+		"rig": preload("res://scripts/case/bowling/magnet_ball_rig.gd"),
+	},
+}
+## Where the clue notes for the suspicions can lie, on the floor.
+const NOTE_PLACES: Array[Vector3] = [Vector3(-1.5, FLOOR_TOP, 8.0), Vector3(3.0, FLOOR_TOP, 5.0),
+	Vector3(-8.0, FLOOR_TOP, 9.5), Vector3(-2.0, FLOOR_TOP, -6.0), Vector3(6.0, FLOOR_TOP, -2.5),
+	Vector3(11.0, FLOOR_TOP, -6.0)]
 const PIN_MODEL := preload("res://assets/models/bowling_pin.glb")
 const SETTER_MODEL := preload("res://assets/models/pin_setter.glb")
 const RETURN_MODEL := preload("res://assets/models/ball_return.glb")
@@ -88,6 +116,7 @@ const SHOD_TIME := 0.4
 ## The Thursday league: two players on each of these lanes, waiting between the rack and the bench.
 const LEAGUE_LANES: Array[int] = [0, 2, 4]
 const PLAYER_Z := 6.6
+## Both players of a lane wait on its west side, off the spot in front of the return.
 const PLAYER_GAP := 0.3
 ## Don Chuza's round: along the approach, in front of the returns, and up the east side to the counter. At a strike he
 ## celebrates by the lane's foul line facing its pins.
@@ -170,8 +199,20 @@ var _last_ball := {}
 var _skated := {}
 var case_broken := false
 var broken_screens: Array[int] = []
+## The case flow every raid shares.
+var raid: RaidCase
 ## Money taken off the case pay: the trophy case and the screens.
-var fines := 0
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: BowlingRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
 ## Same seed, same alley (the stories and the hiding spots come from it, step 5).
 @export var case_seed := 0
 var _build: PlaceBuilder
@@ -183,6 +224,21 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_lanes()
@@ -207,6 +263,103 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "bowling", car)
+	raid.station_parking = station_parking
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = owner_boss
+	raid.owner_id = "bowling"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	owner_boss.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_BOWLING"))
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The alley's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_BOWL",
+		"guess_key": "OBJ_GUESS_BOWL",
+		"broken_key": "OBJ_BROKEN_BOWL",
+		"complaint_key": "OBJ_COMPLAINT_BOWL",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_screens.size() + (1 if case_broken else 0),
+		"complaint": owner_boss.complaint,
+	}
+
+
+## Online, what the guests' alley takes from the host's (RaidCase.snapshot): what's broken and what the story's rig
+## decides on the host (the rest is step 8).
+func net_state() -> Dictionary:
+	return {"case": case_broken, "screens": broken_screens.duplicate(), "rig": rig.net_state() if rig else null}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	if state.case:
+		break_trophy_case()
+	for lane: int in state.screens:
+		break_screen(lane)
+	if rig and state.rig != null:
+		rig.apply_net_state(state.rig)
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Don Chuza lets slip when asked (where the story's things are, in an order drawn from the seed), and what Pipo
+## saw: where he hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		owner_boss.slips.append(tr("CHUZA_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	owner_boss.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	pipo.clue = tr("CLUE_PIPO") % where
+	pipo.clue_speech = tr("PIPO_CLUE_" + story_id) % where
+	pipo.told.connect(raid.add_clue)
 
 
 ## The carpet, the walls with the doorway, the dark ceiling with its lights, the roof, the sign and its giant pin.
@@ -347,7 +500,7 @@ func _build_players() -> void:
 		player.look = "bowler" if i % 2 == 0 else "bowler_b"
 		player.alley = self
 		player.lane = LEAGUE_LANES[i / 2]
-		player.home = Vector3(LANE_X[player.lane] + (i % 2 * 2 - 1) * PLAYER_GAP, FLOOR_TOP, PLAYER_Z)
+		player.home = Vector3(LANE_X[player.lane] - PLAYER_GAP - (i % 2) * 2 * PLAYER_GAP, FLOOR_TOP, PLAYER_Z)
 		player.next_throw = 3.0 + (i / 2) * 2.0 + (i % 2) * BowlPlayer.THROW_EVERY / 2
 		player.rng.seed = rng.randi()
 		player.position = player.home

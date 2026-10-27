@@ -58,6 +58,8 @@ func test_shoes_on_and_back_tell_what_he_saw_once() -> void:
 func test_without_a_clue_he_saw_nothing() -> void:
 	var alley := _alley()
 	var cop: Cop = alley.get_node("Cop")
+	alley.pipo.clue = ""
+	alley.pipo.clue_speech = ""
 	alley.pipo.use(cop)
 	alley.pipo.use(cop)
 	assert_eq(alley.pipo.said(), "PIPO_NOTHING")
