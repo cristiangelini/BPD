@@ -58,7 +58,7 @@ func test_a_diver_tells_their_tank() -> void:
 	var diver: AquariumDiver = aquarium.divers[0]
 	diver.use(null)
 	assert_string_contains(diver.said(), diver.tank_name())
-	diver.use(null)
+	diver.talk()
 	assert_string_contains(diver.said(), diver.tank_name(), "every line says the tank")
 	aquarium.keeper.use(null)
 	assert_eq(aquarium.keeper.said(), "KEEPER_LINE_0")

@@ -151,6 +151,11 @@ el tanque de cada buzo, Bigotes con sus robos y el piso mojado, Doña Tinta y el
    (`AquariumOctopus`, `octopus_tinta`) está sentada en su tanque, y su cuerpo es el vidrio: E en el vidrio es E en ella.
    Capturas: `acuario/paso2-*.png` y `acuario/aquarium_people.png`.
 3. Las fichas: la tinta debajo del guante y el tanque que cuida.
+   **Hecho así:** la variante `aquarium` de `CrimeSceneCase` (pistas: huellas, pisada, pelo, mordisco, tinta, ticket y
+   testigo; partes de la ficha: foto, huellas, dientes, pelo, tinta y tanque). Con las manos vacías, E le pregunta al buzo
+   por su tanque, después le pide la capucha (uno se niega hasta que come) y después el guante derecho: la mano tiene
+   tinta o está limpia. La foto dice si la máscara tiene aumento y el talle de pata de rana. El culpable siempre tiene
+   tinta. Capturas: `acuario/paso3-tinta.png` y `acuario/paso3-limpio.png`.
 4. El caso: La Gorda escondida, la búsqueda y la pizarra de la comida.
 5. Las pistas y la testigo.
 6. Bigotes: los robos, el pescado y el piso mojado.
