@@ -159,6 +159,11 @@ bocina (por ahora el auto de fuga de los otros dueños; el autito queda para des
      los zapatos mucho más chicos, hasta que vuelven a cambiar. `--story=double_clown`. Capturas
      `/mnt/project-files/cumple/paso5-doble-*.png`. Con esta, las 6 historias están hechas.
 6. El sorteo de "Jugar" entre los allanamientos y el online.
+   - **Cómo quedó (propuesta):** el cumpleaños entra en el sorteo de "Jugar" como un allanamiento más, con la misma
+     chance que los otros 10, y sus 6 historias salen todas. Online el anfitrión mueve a Chispita y a los chicos y los
+     invitados ven copias (NpcSync); un chico colgado de la pierna de un invitado lo frena en la PC del invitado. Las
+     velas se prenden desde cualquier PC. El pastel, los globos y lo de cada historia (el inflable desinflado, los
+     regalos que se lleva Chispita, la bocina del baño y el cambio de payaso) salen en todas las PC.
 
 ## Preguntas para Cristian
 1. ¿Te gusta el payaso Chispita en el Salón Gala, o prefieres la fiesta en una casa del barrio?

@@ -21,6 +21,8 @@ const BRASS := Color(0.95, 0.75, 0.3)
 var twin := 0
 var honk_left := HONK_EVERY
 var swap_left := SWAP_EVERY
+## How many times the horn honked (online the guests show each one).
+var honks := 0
 var _shoes: Node3D
 
 
@@ -46,11 +48,16 @@ func honk() -> void:
 	var at := party.to_global(HONK_AT)
 	if party.chispita.global_position.distance_to(at) < HONK_FAR:
 		return
-	party.raid.float_label(tr("BIRTHDAY_HONK"), at, BRASS)
+	honks += 1
+	_show_honk()
 	for node in party.get_tree().get_nodes_in_group("cops"):
 		if (node as Node3D).global_position.distance_to(at) < HEAR:
 			party.raid.add_clue(tr("CLUE_DOUBLE_CLOWN"))
 			return
+
+
+func _show_honk() -> void:
+	party.raid.float_label(tr("BIRTHDAY_HONK"), party.to_global(HONK_AT), BRASS)
 
 
 ## They swap: the one coming back from the restroom has other shoes.
@@ -67,9 +74,12 @@ func _set_twin(which: int) -> void:
 
 
 func net_state() -> Variant:
-	return twin
+	return [twin, honks]
 
 
 func apply_net_state(state: Variant) -> void:
-	if state != twin:
-		_set_twin(state)
+	if state[0] != twin:
+		_set_twin(state[0])
+	if state[1] > honks:
+		honks = state[1]
+		_show_honk()
