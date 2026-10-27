@@ -155,3 +155,11 @@ suman entre 400 y 600.
   `paso6-modelos-todos.png`. Con esto el cine tiene sus 6 historias, y la semilla elige entre todas.
 - **Paso 7 (Jugar):** el cine entra al sorteo de allanamientos (`PlaceDraw.ORDER`), uno más entre los 11, y en 900
   semillas salen sus 6 historias. Online todavía no comparte a doña Bobina, Chicho ni los espectadores (paso 8).
+- **Paso 8 (online):** doña Bobina, Chicho y los espectadores (también los que suma la historia) los maneja el
+  anfitrión y los invitados los siguen, con lo que dicen. El proyector, la butaca de al lado de Chicho y lo que se usa
+  con E andan desde cualquier PC (las acciones compartidas): un invitado corta la película y doña Bobina del anfitrión
+  sube a pegarla. La película (corriendo o en blanco), el atasco y el descanso del proyector, la pantalla rajada y el
+  vidrio roto los decide el anfitrión y se copian en todas las PC; las multas son del anfitrión. Lo de cada historia
+  (el fantasma, los que lloran, los relojes) corre en cada PC con el mismo reloj, y la pista llega a todas las planillas
+  desde el anfitrión. De paso, las pistas nuevas llegan a la planilla de los invitados en cuanto aparecen (el mismo
+  arreglo que el taller, en `RaidCase.objective_facts`).
