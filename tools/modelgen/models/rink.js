@@ -1,7 +1,8 @@
 // Props of the ice rink "Patinódromo Resbalón" (docs/diseno/allanamiento-pista.md): the ice resurfacer, the big
 // skating penguin the kids hold on to, the hot chocolate machine, the DJ booth and the scoreboard, with origins at the
-// floor in the middle of each piece. Placeholder, not final art.
-import { Builder, mat, V, THREE } from '../lib.js';
+// floor in the middle of each piece, and Doña Pirueta, the owner. Placeholder, not final art.
+import { Builder, mat, ellipsoid, V, THREE } from '../lib.js';
+import { M, pearBody, eyes } from './pear.js';
 
 // The ice resurfacer, 1.6 x 1.7 x 3.0 m: a blue box on four small wheels with the driver's seat up front (+Z), the
 // big water tank behind it with its lid, and the wide scraper at the back.
@@ -101,9 +102,35 @@ export function buildRinkScoreboard() {
 	return b.build();
 }
 
+// Doña Pirueta, the owner, a former champion skater: a sparkly pink leotard with a tutu, a high grey bun with a bow,
+// white skates with silver blades and her arms out as if mid-turn. The game scales her short and round.
+export function buildDonaPirueta() {
+	const b = new Builder('npc_dona_pirueta');
+	const pink = mat('pirueta_leotard', 0xe0469a, { emissive: 0x401028, metalness: 0.4, roughness: 0.3 });
+	const tights = mat('pirueta_tights', 0x3a2a34), tutu = mat('pirueta_tutu', 0xf6c4dc);
+	const skate = mat('pirueta_skate', 0xf6f4ee), blade = mat('pirueta_blade', 0xc8ccd4, { metalness: 0.8, roughness: 0.2 });
+	pearBody(b, mat('skin_clara', 0xf2c8a8), { shirt: pink, pants: tights, shoes: skate, belted: false });
+	b.add('body', tutu, new THREE.CylinderGeometry(0.62, 0.5, 0.1, 14), { pos: V(0, 0.55, 0) });
+	for (let i = 0; i < 6; i++) {
+		const a = i / 6 * Math.PI * 2;
+		b.add('body', mat('pirueta_sequin', 0xfff0a0, { emissive: 0xc0a040 }), new THREE.OctahedronGeometry(0.03),
+			{ pos: V(Math.sin(a) * 0.3, 0.85, Math.cos(a) * 0.27) });
+	}
+	for (const s of [-1, 1]) {
+		b.add('legs', blade, new THREE.BoxGeometry(0.02, 0.03, 0.34), { pos: V(s * 0.2, 0.0, 0.12) });
+	}
+	eyes(b, 1.33, 0.18, 0.08, 0.045);
+	b.add('face', mat('pirueta_lips', 0xc02040), ellipsoid(0.04, 0.015, 0.015, 6, 4), { pos: V(0, 1.22, 0.19) });
+	const grey = mat('pirueta_hair', 0xc8c8cc);
+	b.add('hair', grey, ellipsoid(0.21, 0.12, 0.2, 10, 6), { pos: V(0, 1.43, 0.0) });
+	b.add('hair', grey, ellipsoid(0.11, 0.13, 0.11, 8, 6), { pos: V(0, 1.6, -0.03) });
+	b.add('hair', pink, new THREE.TorusGeometry(0.05, 0.02, 4, 8), { pos: V(0, 1.6, 0.08) });
+	return b.build();
+}
+
 export const models = {
 	ice_resurfacer: buildIceResurfacer, skating_penguin: buildSkatingPenguin, cocoa_machine: buildCocoaMachine,
-	dj_booth: buildDjBooth, rink_scoreboard: buildRinkScoreboard,
+	dj_booth: buildDjBooth, rink_scoreboard: buildRinkScoreboard, npc_dona_pirueta: buildDonaPirueta,
 };
 
 export const views = {
@@ -111,7 +138,7 @@ export const views = {
 		items: [
 			{ name: 'ice_resurfacer', pos: [-2.2, 0, 0], rotY: 0.6 }, { name: 'skating_penguin', pos: [-0.4, 0, 0.6] },
 			{ name: 'cocoa_machine', pos: [0.6, 0, 0.8] }, { name: 'dj_booth', pos: [1.8, 0, 0], rotY: Math.PI },
-			{ name: 'rink_scoreboard', pos: [0, 2.0, -1.5] },
+			{ name: 'rink_scoreboard', pos: [0, 2.0, -1.5] }, { name: 'npc_dona_pirueta', pos: [0.9, 0, 1.6], rotY: -0.3 },
 		],
 		cam: { pos: [0, 2.2, 6.5], target: [0, 1.0, 0], fov: 45 },
 	},
