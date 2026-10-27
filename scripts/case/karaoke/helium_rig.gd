@@ -25,6 +25,24 @@ func shared() -> Array[String]:
 	return ["noticed"]
 
 
+## Online, the guests also take which players' cops talk squeaky (their uniforms) from the host.
+func net_state() -> Variant:
+	var state: Dictionary = super.net_state()
+	state.squeaky = squeaky.keys().filter(func(cop: Variant) -> bool: return is_instance_valid(cop)).map(
+		func(cop: Cop) -> int: return cop.uniform)
+	return state
+
+
+func apply_net_state(state: Variant) -> void:
+	super.apply_net_state({"noticed": state.noticed})
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		var voice := cop.get_node_or_null("Squeak")
+		if state.squeaky.has(cop.uniform) and not voice:
+			_voice_on(cop)
+		elif not state.squeaky.has(cop.uniform) and voice:
+			voice.free()
+
+
 func setup(place: Karaoke) -> void:
 	super.setup(place)
 	karaoke.main = karaoke.hidden[0]
@@ -37,23 +55,30 @@ func setup(place: Karaoke) -> void:
 ## A cop who picks up the glass talks squeaky for a while; the first time, the clue.
 func _squeak(cop: Cop) -> void:
 	if not squeaky.has(cop):
-		var voice := Label3D.new()
-		voice.name = "Squeak"
-		voice.text = "KARAOKE_SQUEAK"
-		voice.font_size = 36
-		voice.pixel_size = 0.005
-		voice.outline_size = 10
-		voice.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-		voice.no_depth_test = true
-		voice.position = Vector3.UP * 2.1
-		cop.add_child(voice)
+		_voice_on(cop)
 	squeaky[cop] = SQUEAK_TIME
-	if not noticed and multiplayer.is_server():
+	if not noticed:
 		noticed = true
 		karaoke.raid.add_clue(tr("KARAOKE_SQUEAK_CLUE"))
 
 
+func _voice_on(cop: Cop) -> void:
+	var voice := Label3D.new()
+	voice.name = "Squeak"
+	voice.text = "KARAOKE_SQUEAK"
+	voice.font_size = 36
+	voice.pixel_size = 0.005
+	voice.outline_size = 10
+	voice.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	voice.no_depth_test = true
+	voice.position = Vector3.UP * 2.1
+	cop.add_child(voice)
+
+
+## Online the host sees who picks up the glass and makes the customers giggle; the guests' rig shows it from its state.
 func _physics_process(delta: float) -> void:
+	if not multiplayer.is_server():
+		return
 	for cop: Cop in glass.handling_cops(0.0):
 		_squeak(cop)
 	for cop: Variant in squeaky.keys():

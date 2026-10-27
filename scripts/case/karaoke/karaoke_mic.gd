@@ -99,8 +99,6 @@ func _physics_process(delta: float) -> void:
 		if _tripped[cop] <= 0.0 or not is_instance_valid(cop):
 			_tripped.erase(cop)
 	if in_stand:
-		_cable.hide()
-		_drop.hide()
 		return
 	var flat := Vector3(global_position.x - foot.x, 0, global_position.z - foot.z)
 	if flat.length() > CABLE:
@@ -108,8 +106,16 @@ func _physics_process(delta: float) -> void:
 		var out := linear_velocity.project(flat.normalized())
 		if out.dot(flat) > 0.0:
 			linear_velocity -= out
-	_lay_cable()
 	_trip_cops()
+
+
+## The cable, on every PC (a guest's copy only follows the host's, so it shows it out of its clip by where it is).
+func _process(_delta: float) -> void:
+	if global_position.distance_to(clip_point()) < 0.05:
+		_cable.hide()
+		_drop.hide()
+	else:
+		_lay_cable()
 
 
 ## The cable along the floor from the stand's foot to under the mic, and up to it.
@@ -129,13 +135,12 @@ static func _place(piece: MeshInstance3D, from: Vector3, to: Vector3) -> void:
 		Vector3(1, 1, length))
 
 
-## This PC's own cop running over the cable on the floor trips (a copy of another player's cop only follows).
+## A cop running over the cable on the floor trips. Online the host's microphone moves (the guests' copies only
+## follow), so a guest's cop trips on the host, which tells that guest's PC to knock it down too.
 func _trip_cops() -> void:
 	var under := Vector3(global_position.x, foot.y, global_position.z)
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
 		if not cop.is_running or _tripped.has(cop) or handling_cops(0.0).has(cop):
-			continue
-		if cop.sync and cop.sync.is_inside_tree() and not cop.sync.is_multiplayer_authority():
 			continue
 		var at := cop.global_position
 		if absf(at.y - foot.y) > 0.5 or Geometry3D.get_closest_point_to_segment(at, foot, under).distance_to(
@@ -143,6 +148,9 @@ func _trip_cops() -> void:
 			continue
 		_tripped[cop] = TRIP_AGAIN
 		var flat := Vector3(cop.velocity.x, 0, cop.velocity.z)
-		cop.knock_back(flat.normalized() * TRIP_PUSH if flat.length() > 0.1 else Vector3.ZERO, TRIP_TIME)
-		cop.show_hint("HINT_KARAOKE_CABLE")
+		var push := flat.normalized() * TRIP_PUSH if flat.length() > 0.1 else Vector3.ZERO
+		cop.knock_back(push, TRIP_TIME)
+		if cop.sync and cop.sync.is_inside_tree() and not cop.sync.is_multiplayer_authority() and cop.sync.net.actions:
+			cop.sync.net.actions.tell_guests(cop, "knock_back", cop, [push, TRIP_TIME])
+		cop.show_hint("HINT_KARAOKE_CABLE", true)
 		tripped.emit(cop)

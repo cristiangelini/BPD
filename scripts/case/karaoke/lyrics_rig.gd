@@ -28,7 +28,12 @@ var _line_left := 0.0
 
 
 func shared() -> Array[String]:
-	return ["noticed"]
+	return ["noticed", "showing"]
+
+
+func apply_net_state(state: Variant) -> void:
+	super.apply_net_state(state)
+	_text.text = showing
 
 
 func setup(place: Karaoke) -> void:
@@ -70,7 +75,7 @@ func next_line() -> void:
 
 ## A cop in front of the screen looking at it reads the message; the first time, the clue.
 func _read() -> void:
-	if noticed or not multiplayer.is_server():
+	if noticed:
 		return
 	var screen := karaoke.to_global(Karaoke.SCREEN_AT)
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
@@ -82,9 +87,12 @@ func _read() -> void:
 			return
 
 
+## Online the host's screen changes the lines; the guests' shows the host's (its state).
 func _physics_process(delta: float) -> void:
 	_text.visible = not karaoke.screen_cracked
 	_screen.visible = not karaoke.screen_cracked
+	if not multiplayer.is_server():
+		return
 	if not karaoke.on_turn or not karaoke.on_turn.singing or karaoke.screen_cracked:
 		showing = ""
 		_text.text = ""

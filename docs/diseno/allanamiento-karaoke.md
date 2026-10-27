@@ -179,6 +179,12 @@ suman entre 400 y 600.
      escapa en el auto de la huida desde adelante del patrullero, como los otros dueños; al pararla, es ella la que
      baja, con sus 3 frases.
 8. El online (Rosaura, Toto, los clientes, los micrófonos y lo frágil en todas las PC).
+   - **Cómo quedó (propuesta):** el host mueve a Rosaura, a Toto y a los clientes (les da los turnos y llama a los
+     duetos) y las otras PC los siguen, con sus globos de texto. Los micrófonos se mueven en el host y el cable se ve
+     en todas las PC; si un policía de otro jugador corre sobre el cable, el host le avisa a su PC y se cae ahí. Lo
+     roto, el "¡DUETO!" de la pantalla y lo de cada historia lo decide el host y se ve en todas: los aplausos, las
+     notas doradas y la desafinada de Rosaura, las frases de la pantalla y la voz de pito del jugo sobre el policía
+     de cada jugador. El tic-tac del parlante y el canto de la cabina 4 se oyen en la PC de cada uno.
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, el karaoke abierto con clientes que cantan por turno? **Recomendado:** sí, no se

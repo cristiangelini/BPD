@@ -48,6 +48,7 @@ func test_a_cop_with_the_glass_talks_squeaky_for_a_while() -> void:
 	assert_has(place.raid.clues_found, tr("KARAOKE_SQUEAK_CLUE"))
 	var clues: int = place.raid.clues_found.size()
 	rig.glass.let_go(grabber.get_instance_id())
+	await wait_physics_frames(2)
 	rig.squeaky[cop] = 0.01
 	await wait_physics_frames(2)
 	assert_false(cop.has_node("Squeak"), "the voice comes back")

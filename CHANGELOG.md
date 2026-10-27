@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Karaoke raid, step 8: the karaoke online: the host runs Rosaura, Toto and the customers and calls the duets, a host's microphone cable trips a guest's cop on that guest's PC, and what breaks, the duets and each story's applause, notes, lyrics and squeaky voices show on every PC.
 - Karaoke raid, step 7: Play draws the karaoke, and Rosaura drives off in the getaway car when she sees the main evidence picked up, like the other raid owners.
 - Karaoke raid, step 6e: the booth 4 story: a door "4" painted on the wall beside booth 3, behind which a cop next to it hears someone singing (the clue once); the box of pirated records, the fake record label's stamp and the list of buyers are hidden. All six stories are drawn with the seed.
 - Karaoke raid, step 6d: the juice of inspiration story: a glass of juice on the bar makes the cop who picks it up talk squeaky for 8 s (the clue once), the customers giggle squeaky while they sing, and the helium tank, the box of empty balloons and the juice's recipe are hidden.
