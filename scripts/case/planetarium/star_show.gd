@@ -6,12 +6,15 @@ extends Node
 ## the dome's ceiling and the glow paint on the guides' gloves shine (Planetarium.set_dark), and when the lights come
 ## back every guide is somewhere else. A flashlight on inside during the show stops it: Doctor Órbita starts it over
 ## (the next one is EVERY seconds away) and loses FLASHLIGHT_PATIENCE of his patience; at 0 he throws the cops out of
-## the dome room until the end of the shift. The host decides. Every number here is (propuesta).
+## the dome room until the end of the shift. A cop sitting in a seat to watch it gives him some back (PlanetariumSeat).
+## The host decides. Every number here is (propuesta).
 
 const EVERY := 120.0
 const DARK_SECONDS := 30.0
 const PATIENCE := 100.0
 const FLASHLIGHT_PATIENCE := 10.0
+## A cop sitting in a seat to watch the show gives him back this much.
+const SIT_PATIENCE := 10.0
 ## The ambient light inside in the dark: just enough to make out shapes.
 const DARK_AMBIENT := Color(0.06, 0.06, 0.12)
 ## Where a cop thrown out of the dome room lands: in the hall, in front of its door.
@@ -95,6 +98,14 @@ func flashlight_seen(cop: Cop) -> void:
 	planetarium.director.say("DIRECTOR_FLASHLIGHT")
 	if cop:
 		cop.show_hint("HINT_SHOW_STOPPED")
+
+
+## A cop sat down in a seat to watch the show (PlanetariumSeat): Doctor Órbita is delighted.
+func seated(cop: Cop) -> void:
+	if not case.follower:
+		patience = minf(patience + SIT_PATIENCE, PATIENCE)
+	planetarium.director.say("DIRECTOR_SIT")
+	cop.show_hint("HINT_SEAT_SAT")
 
 
 ## The host's clock: the countdown while the cops are at the scene, the dark, the flashlights and the ban.

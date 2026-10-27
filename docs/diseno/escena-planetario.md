@@ -180,7 +180,11 @@ Mientras tanto se avanza con lo recomendado.
      del doctor (barra arriba, con la cuenta de la próxima función). En 0, echa a los policías de la sala del domo al
      hall hasta el final del turno.
    - Capturas: `planetario/paso5-domo.png` y `planetario/paso5-hall.png`.
-   - **Falta (5b):** sentarse en una butaca durante la función.
+   **Hecho así (5b):** las butacas sin planeta (menos la de Doña Nebulosa) son `PlanetariumSeat`.
+   - Durante la función, E sienta al policía: el doctor suma 10 a su paciencia y dice "¡Por fin alguien que mira el
+     cielo!", pero el policía queda 10 s sin poder levantarse.
+   - Con las luces prendidas no pasa nada, porque no hay nada que mirar.
+   - Captura: `planetario/paso5b-butaca.png`.
 6. Las pistas y la testigo.
 7. El final: tablero, cansancio, sueldo y la combi con los planetas inflables.
 8. El sorteo de "Jugar" y el online.
