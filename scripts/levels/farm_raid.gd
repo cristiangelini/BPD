@@ -1,0 +1,320 @@
+class_name FarmRaid
+extends Node3D
+
+## The farm "Las Margaritas" as a place to raid (docs/diseno/allanamiento-granja.md, step 2): an open-air farm that
+## fills the city's farm block (a park, so the city leaves it grass). A wooden fence of FENCE_HALF with its gate to the
+## street (+Z), and inside Don Florencio's house with its porch and the feeding bell, the barn with its hay bales and
+## loft, the tractor beside it, the hen house, the pigsty with its mud, the cow's corral with her feeder, the locked
+## tool shed, the vegetable garden with the scarecrow and a little glass greenhouse, the well and the market stall
+## with its baskets of eggs by the gate. A cop running in the mud slips, like on the jail's wet floor. SPOTS are the 12
+## hiding spots the stories draw from (step 5). Don Florencio, the animals and the case come in the next steps.
+## Every number here is (propuesta).
+
+const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const COOP_MODEL := preload("res://assets/models/chicken_coop.glb")
+const WELL_MODEL := preload("res://assets/models/farm_well.glb")
+const BELL_MODEL := preload("res://assets/models/feed_bell.glb")
+const BALE_MODEL := preload("res://assets/models/hay_bale.glb")
+const TRACTOR_MODEL := preload("res://assets/models/farm_tractor.glb")
+const SCARECROW_MODEL := preload("res://assets/models/scarecrow.glb")
+const BASKET_MODEL := preload("res://assets/models/egg_basket.glb")
+## The ground of the block, as the city leaves it (CityLayout: the grass on its sidewalk ring).
+const GROUND := 0.035
+## The fence: 40 x 30 m, its gate in the middle of the front (+Z) side.
+const FENCE_HALF := Vector2(20, 15)
+const FENCE_Z := 3.0
+const FENCE_HEIGHT := 1.1
+const GATE_WIDTH := 3.0
+## Don Florencio's house: the kitchen (east) and his room (west), with a porch in front where the bell hangs.
+const HOUSE := Rect2(-19, -11, 8, 7)
+const HOUSE_HEIGHT := 3.0
+const HOUSE_DOOR_X := -13.0
+const ROOM_WALL_X := -15.5
+const PORCH_DEPTH := 2.0
+const BELL_AT := Vector3(-11.6, 2.0, -2.2)
+## The barn, open to the yard, with its loft (LOFT_TOP up, over the back half) and the ladder to it.
+const BARN := Rect2(6, -11, 12, 10)
+const BARN_HEIGHT := 6.0
+const BARN_DOOR := 4.0
+const LOFT_TOP := 3.0
+const LOFT_FRONT := -6.0
+const TRACTOR_AT := Vector3(2.8, 0, -4.0)
+## The locked tool shed behind the house's east side (the key is in Don Florencio's apron, step 3).
+const SHED := Rect2(-9, -11.5, 4, 3)
+const COOP_AT := Vector3(-1.5, 0, -9.0)
+## The pigsty: a low fence round the mud.
+const STY := Rect2(8, 3, 9, 7)
+const STY_FENCE := 0.8
+## The cow's corral, its gate on the east side (the cow and the gate come in step 4), and her feeder.
+const CORRAL := Rect2(-19, 3, 10, 9)
+const CORRAL_GATE_Z := 7.5
+const FEEDER_AT := Vector3(-17.4, 0, 5.0)
+const FEEDER_SIZE := Vector3(2.0, 0.6, 0.7)
+## The vegetable garden in front of the pigsty, the scarecrow in its middle and the little greenhouse in its corner.
+const GARDEN := Rect2(7, 11.5, 12, 6)
+const SCARECROW_AT := Vector3(12.5, 0, 14.5)
+const GREENHOUSE := Rect2(16.6, 14.6, 2.0, 2.4)
+const GREENHOUSE_HEIGHT := 2.0
+const WELL_AT := Vector3(0, 0, 3.5)
+## The market stall by the gate, with the baskets of eggs on it, and the milk cans by the barn.
+const STALL_AT := Vector3(-5.5, 0, 15.5)
+const STALL_SIZE := Vector3(3.0, 0.85, 1.0)
+const BASKETS: Array[Vector3] = [Vector3(-6.6, 0, 15.5), Vector3(-5.5, 0, 15.5), Vector3(-4.4, 0, 15.5)]
+const MILK_CANS_AT := Vector3(4.6, 0, 0.2)
+## Bales stacked along the barn's west wall, and two in the loft.
+const BALES: Array[Vector3] = [
+	Vector3(7.0, 0.25, -3.0), Vector3(7.0, 0.25, -4.1), Vector3(7.0, 0.75, -3.5), Vector3(8.2, 0.25, -3.0),
+	Vector3(7.0, LOFT_TOP + 0.25, -9.5), Vector3(8.2, LOFT_TOP + 0.25, -9.5),
+]
+## Running faster than this in the mud slips: down for MUD_SLIP seconds, and not again for MUD_AGAIN.
+const MUD := Rect2(9, 4, 7, 5)
+const MUD_SLIP := 2.0
+const MUD_PUSH := 3.0
+const MUD_AGAIN := 3.0
+
+## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
+const SPOTS := [
+	{"id": "between_bales", "at": Vector3(8.2, GROUND, -4.2), "heavy": true},
+	{"id": "in_loft", "at": Vector3(12.0, LOFT_TOP, -9.0), "heavy": true},
+	{"id": "under_tractor", "at": TRACTOR_AT + Vector3(0, GROUND, -0.2), "heavy": true},
+	{"id": "in_mud", "at": Vector3(14.5, GROUND, 7.5), "heavy": true},
+	{"id": "in_shed", "at": Vector3(-7.0, GROUND, -10.6), "heavy": true},
+	{"id": "in_feeder", "at": FEEDER_AT + Vector3(0, 0.12, 0), "heavy": true},
+	{"id": "in_coop", "at": COOP_AT + Vector3(0, 0.62, 0), "heavy": false},
+	{"id": "in_scarecrow", "at": SCARECROW_AT + Vector3(0.35, GROUND, 0.3), "heavy": false},
+	{"id": "on_well", "at": WELL_AT + Vector3(0.75, 0.8, 0), "heavy": false},
+	{"id": "by_milk_cans", "at": MILK_CANS_AT + Vector3(0, GROUND, 0.6), "heavy": false},
+	{"id": "in_kitchen", "at": Vector3(-12.2, 0.8, -9.8), "heavy": false},
+	{"id": "under_stall", "at": STALL_AT + Vector3(0, GROUND, 0), "heavy": false},
+]
+const WOOD := Color(0.55, 0.38, 0.22)
+const WHITE_WALL := Color(0.95, 0.92, 0.84)
+const BARN_RED := Color(0.72, 0.18, 0.14)
+const ROOF := Color(0.4, 0.22, 0.16)
+const DIRT := Color(0.6, 0.48, 0.32)
+const MUD_COLOR := Color(0.32, 0.22, 0.12)
+const SOIL := Color(0.4, 0.28, 0.16)
+const STRAW := Color(0.85, 0.74, 0.42)
+const GLASS := Color(0.75, 0.9, 1.0, 0.35)
+const MILK_CAN := Color(0.78, 0.8, 0.82)
+
+var house_door: FrontDoor
+var shed_door: FrontDoor
+var city_map: CityMap
+var station_parking: Transform3D
+## The baskets of eggs on the stall and the greenhouse's glass, what breaks (steps 3 and 5 count it).
+var baskets: Array[Node3D] = []
+var greenhouse: Node3D
+var _build: PlaceBuilder
+## Cop -> seconds until it can slip in the mud again.
+var _slipped := {}
+@onready var car: PatrolCar = $PatrolCar
+
+
+func _ready() -> void:
+	_build = PlaceBuilder.new($Built)
+	_build_yard()
+	_build_house()
+	_build_barn()
+	_build_pens()
+	_build_garden()
+	var city: Node3D = $City
+	city.transform = CityLayout.anchor("farm")
+	station_parking = city.transform * CityLayout.parking("station")
+	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
+	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
+	city_map = CityMap.new()
+	add_child(city_map)
+	city_map.setup(city, "farm", car)
+
+
+## Whether `at` (this scene's space) is in the pigsty's mud.
+static func in_mud(at: Vector3) -> bool:
+	return MUD.has_point(Vector2(at.x, at.z)) and at.y < GROUND + 0.5
+
+
+func _physics_process(delta: float) -> void:
+	for cop: Variant in _slipped.keys():
+		_slipped[cop] -= delta
+		if _slipped[cop] <= 0.0 or not is_instance_valid(cop):
+			_slipped.erase(cop)
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if cop.sync and not cop.sync.is_multiplayer_authority():
+			continue
+		var flat := Vector3(cop.velocity.x, 0, cop.velocity.z)
+		if _slipped.has(cop) or not cop.is_running or flat.length() <= GameScale.WALK_SPEED \
+				or not in_mud(to_local(cop.global_position)):
+			continue
+		_slipped[cop] = MUD_AGAIN
+		cop.get_node("Grabber").release()
+		cop.knock_back(flat.normalized() * MUD_PUSH, MUD_SLIP)
+		cop.show_hint("HINT_MUD_SLIP")
+
+
+## The fence with its gate to the street, the dirt yard, the well and the market stall with its eggs.
+func _build_yard() -> void:
+	_build.mesh_box(Vector3(0, GROUND + 0.004, FENCE_Z), Vector3(FENCE_HALF.x * 2, 0.01, FENCE_HALF.y * 2), DIRT)
+	var front := FENCE_Z + FENCE_HALF.y
+	var back := FENCE_Z - FENCE_HALF.y
+	_fence("x", front, -FENCE_HALF.x, -GATE_WIDTH / 2, FENCE_HEIGHT)
+	_fence("x", front, GATE_WIDTH / 2, FENCE_HALF.x, FENCE_HEIGHT)
+	_fence("x", back, -FENCE_HALF.x, FENCE_HALF.x, FENCE_HEIGHT)
+	_fence("z", -FENCE_HALF.x, back, front, FENCE_HEIGHT)
+	_fence("z", FENCE_HALF.x, back, front, FENCE_HEIGHT)
+	_model(WELL_MODEL, WELL_AT)
+	var well := _build.body(WELL_AT + Vector3(0, 0.4, 0))
+	_build.shape(well, Vector3(1.2, 0.8, 1.2))
+	_build.box(STALL_AT + Vector3(0, STALL_SIZE.y - 0.03, 0), Vector3(STALL_SIZE.x, 0.06, STALL_SIZE.z), WOOD)
+	_build.legs(STALL_AT, Vector2(STALL_SIZE.x, STALL_SIZE.z), STALL_SIZE.y - 0.06, WOOD)
+	for at: Vector3 in BASKETS:
+		baskets.append(_model(BASKET_MODEL, at + Vector3.UP * STALL_SIZE.y))
+
+
+## The house: white walls, a door to the porch, the wall between the kitchen and the room, a flat roof, the porch
+## with its roof on two posts and the feeding bell, the kitchen's table and the locked tool shed.
+func _build_house() -> void:
+	var h := HOUSE
+	_build.wall_at("x", h.end.y, h.position.x, h.end.x, GROUND, HOUSE_HEIGHT, [HOUSE_DOOR_X], WHITE_WALL)
+	_build.wall_at("x", h.position.y, h.position.x, h.end.x, GROUND, HOUSE_HEIGHT, [], WHITE_WALL)
+	_build.wall_at("z", h.position.x, h.position.y, h.end.y, GROUND, HOUSE_HEIGHT, [], WHITE_WALL)
+	_build.wall_at("z", h.end.x, h.position.y, h.end.y, GROUND, HOUSE_HEIGHT, [], WHITE_WALL)
+	_build.wall_at("z", ROOM_WALL_X, h.position.y, h.end.y, GROUND, HOUSE_HEIGHT, [h.get_center().y], WHITE_WALL)
+	_build.slab(h.position.x - 0.3, h.end.x + 0.3, h.position.y - 0.3, h.end.y + PORCH_DEPTH, GROUND + HOUSE_HEIGHT + PlaceBuilder.SLAB, ROOF)
+	_build.slab(h.position.x, h.end.x, h.position.y, h.end.y, GROUND + 0.06, WOOD)
+	for x: float in [h.position.x + 0.2, h.end.x - 0.2]:
+		_build.box(Vector3(x, GROUND + HOUSE_HEIGHT / 2, h.end.y + PORCH_DEPTH - 0.2), Vector3(0.15, HOUSE_HEIGHT, 0.15), WOOD)
+	_model(BELL_MODEL, BELL_AT, PI)
+	# The kitchen's table, against the back wall.
+	_build.box(Vector3(-12.2, GROUND + 0.76, -9.8), Vector3(1.6, 0.06, 0.9), WOOD)
+	_build.legs(Vector3(-12.2, GROUND, -9.8), Vector2(1.6, 0.9), 0.73, WOOD)
+	_build.light(Vector3(-13.2, GROUND + HOUSE_HEIGHT - 0.4, -7.5))
+	house_door = _door(Vector3(HOUSE_DOOR_X - GameScale.DOOR_WIDTH / 2, GROUND, h.end.y), 0.0)
+	house_door.locked = false
+	var s := SHED
+	var door_x := s.get_center().x
+	_build.wall_at("x", s.end.y, s.position.x, s.end.x, GROUND, 2.4, [door_x], WOOD)
+	_build.wall_at("x", s.position.y, s.position.x, s.end.x, GROUND, 2.4, [], WOOD)
+	_build.wall_at("z", s.position.x, s.position.y, s.end.y, GROUND, 2.4, [], WOOD)
+	_build.wall_at("z", s.end.x, s.position.y, s.end.y, GROUND, 2.4, [], WOOD)
+	_build.slab(s.position.x - 0.2, s.end.x + 0.2, s.position.y - 0.2, s.end.y + 0.2, GROUND + 2.4 + PlaceBuilder.SLAB, ROOF)
+	shed_door = _door(Vector3(door_x - GameScale.DOOR_WIDTH / 2, GROUND, s.end.y), 0.0)
+
+
+## The red barn, open to the yard through its big doorway, the loft over its back half with the ladder, the bales,
+## the tractor beside it and the milk cans.
+func _build_barn() -> void:
+	var b := BARN
+	var door := b.get_center().x
+	_build.wall_at("x", b.position.y, b.position.x, b.end.x, GROUND, BARN_HEIGHT, [], BARN_RED)
+	_build.wall_at("z", b.position.x, b.position.y, b.end.y, GROUND, BARN_HEIGHT, [], BARN_RED)
+	_build.wall_at("z", b.end.x, b.position.y, b.end.y, GROUND, BARN_HEIGHT, [], BARN_RED)
+	_build.wall_at("x", b.end.y, b.position.x, door - BARN_DOOR / 2, GROUND, BARN_HEIGHT, [], BARN_RED)
+	_build.wall_at("x", b.end.y, door + BARN_DOOR / 2, b.end.x, GROUND, BARN_HEIGHT, [], BARN_RED)
+	_build.wall_at("x", b.end.y, door - BARN_DOOR / 2, door + BARN_DOOR / 2, GROUND + 3.6, BARN_HEIGHT - 3.6, [], BARN_RED)
+	_build.slab(b.position.x - 0.3, b.end.x + 0.3, b.position.y - 0.3, b.end.y + 0.3, GROUND + BARN_HEIGHT + PlaceBuilder.SLAB, ROOF)
+	_build.slab(b.position.x, b.end.x, b.position.y, LOFT_FRONT, GROUND + LOFT_TOP, WOOD)
+	_build.mesh_box(Vector3(b.get_center().x, GROUND + 0.006, b.get_center().y), Vector3(b.size.x, 0.01, b.size.y), STRAW)
+	_build.light(Vector3(b.get_center().x, GROUND + LOFT_TOP - 0.3, -3.5)).omni_range = 10.0
+	_build.light(Vector3(b.get_center().x, GROUND + BARN_HEIGHT - 0.5, -8.5))
+	# The ladder: a steep ramp up to the loft's front edge, by the east wall.
+	var ramp := _build.body(Vector3(16.5, GROUND + LOFT_TOP / 2, LOFT_FRONT + 1.2))
+	ramp.rotation.x = atan2(LOFT_TOP, 2.4)
+	_build.shape(ramp, Vector3(GameScale.STAIR_WIDTH, 0.05, Vector2(2.4, LOFT_TOP).length()))
+	for i in 6:
+		_build.mesh_box(Vector3(16.5, GROUND + (i + 0.5) * LOFT_TOP / 6, LOFT_FRONT + 2.4 - (i + 0.5) * 0.4),
+			Vector3(GameScale.STAIR_WIDTH, 0.05, 0.08), WOOD)
+	for at: Vector3 in BALES:
+		_model(BALE_MODEL, at + Vector3(0, GROUND - 0.25, 0), PI / 2)
+		var bale := _build.body(at + Vector3.UP * GROUND)
+		_build.shape(bale, Vector3(0.5, 0.5, 1.0))
+	_model(TRACTOR_MODEL, TRACTOR_AT + Vector3.UP * GROUND)
+	var tractor := _build.body(TRACTOR_AT + Vector3(0, GROUND + 1.0, 0))
+	_build.shape(tractor, Vector3(1.6, 1.2, 2.6))
+	for dx: float in [-0.35, 0.0, 0.35]:
+		var can := CylinderMesh.new()
+		can.top_radius = 0.16
+		can.bottom_radius = 0.18
+		can.height = 0.7
+		_build.mesh(can, MILK_CANS_AT + Vector3(dx, GROUND + 0.35, 0), MILK_CAN)
+	var cans := _build.body(MILK_CANS_AT + Vector3(0, GROUND + 0.35, 0))
+	_build.shape(cans, Vector3(1.1, 0.7, 0.4))
+
+
+## The hen house, the pigsty with its mud and the cow's corral with her feeder (its gate comes with her, step 4).
+func _build_pens() -> void:
+	_model(COOP_MODEL, COOP_AT + Vector3.UP * GROUND)
+	var coop := _build.body(COOP_AT + Vector3(0, GROUND + 0.9, -0.2))
+	_build.shape(coop, Vector3(2.0, 1.8, 1.2))
+	_pen(STY, STY_FENCE, -1.0)
+	_build.mesh_box(Vector3(MUD.get_center().x, GROUND + 0.012, MUD.get_center().y), Vector3(MUD.size.x, 0.01, MUD.size.y), MUD_COLOR)
+	_pen(CORRAL, FENCE_HEIGHT, CORRAL_GATE_Z)
+	_build.open_box(FEEDER_AT + Vector3.UP * GROUND, FEEDER_SIZE, "top", WOOD)
+
+
+## The vegetable garden's rows, the scarecrow and the glass greenhouse.
+func _build_garden() -> void:
+	var g := GARDEN
+	for i in 4:
+		var z := g.position.y + 0.8 + i * 1.5
+		_build.mesh_box(Vector3(g.get_center().x - 1.2, GROUND + 0.06, z), Vector3(g.size.x - 3.4, 0.12, 0.6), SOIL)
+	_model(SCARECROW_MODEL, SCARECROW_AT + Vector3.UP * GROUND)
+	var r := GREENHOUSE
+	greenhouse = Node3D.new()
+	greenhouse.name = "Greenhouse"
+	$Built.add_child(greenhouse)
+	var glass := PlaceBuilder.new(greenhouse)
+	var center := Vector3(r.get_center().x, GROUND + GREENHOUSE_HEIGHT / 2, r.get_center().y)
+	glass.box(center + Vector3(0, GREENHOUSE_HEIGHT / 2, 0), Vector3(r.size.x, 0.04, r.size.y), GLASS)
+	glass.box(center - Vector3(r.size.x / 2, 0, 0), Vector3(0.04, GREENHOUSE_HEIGHT, r.size.y), GLASS)
+	glass.box(center + Vector3(r.size.x / 2, 0, 0), Vector3(0.04, GREENHOUSE_HEIGHT, r.size.y), GLASS)
+	glass.box(center - Vector3(0, 0, r.size.y / 2), Vector3(r.size.x, GREENHOUSE_HEIGHT, 0.04), GLASS)
+	glass.box(center + Vector3(0, 0, r.size.y / 2), Vector3(r.size.x, GREENHOUSE_HEIGHT, 0.04), GLASS)
+
+
+## A wooden pen round `area`, `height` tall, with an opening of GATE_WIDTH on its east side at z = gate (none if
+## gate is outside it).
+func _pen(area: Rect2, height: float, gate: float) -> void:
+	_fence("x", area.position.y, area.position.x, area.end.x, height)
+	_fence("x", area.end.y, area.position.x, area.end.x, height)
+	_fence("z", area.position.x, area.position.y, area.end.y, height)
+	if gate > area.position.y and gate < area.end.y:
+		_fence("z", area.end.x, area.position.y, gate - GATE_WIDTH / 2, height)
+		_fence("z", area.end.x, gate + GATE_WIDTH / 2, area.end.y, height)
+	else:
+		_fence("z", area.end.x, area.position.y, area.end.y, height)
+
+
+## A wooden fence along "x" (at z = fixed) or "z" (at x = fixed): two rails on posts, solid to bump into.
+func _fence(axis: String, fixed: float, from: float, to: float, height: float) -> void:
+	if to - from < 0.01:
+		return
+	var mid := (from + to) / 2
+	var length := to - from
+	var along := Vector3(1, 0, 0) if axis == "x" else Vector3(0, 0, 1)
+	var center := Vector3(mid, 0, fixed) if axis == "x" else Vector3(fixed, 0, mid)
+	var long := Vector3(length, 0, 0.08) if axis == "x" else Vector3(0.08, 0, length)
+	for rail: float in [height * 0.45, height * 0.9]:
+		_build.mesh_box(center + Vector3(0, GROUND + rail, 0), long + Vector3(0, 0.12, 0), WOOD)
+	var gaps := maxi(1, int(length / 2.0))
+	for i in gaps + 1:
+		_build.mesh_box(center + along * (-length / 2 + i * length / gaps) + Vector3(0, GROUND + height / 2, 0),
+			Vector3(0.12, height, 0.12), WOOD)
+	var solid := _build.body(center + Vector3(0, GROUND + height / 2, 0))
+	_build.shape(solid, long + Vector3(0, height, 0))
+
+
+## A door with its hinge at `hinge`, turned `turn` around Y (closed, it runs along +X from the hinge).
+func _door(hinge: Vector3, turn: float) -> FrontDoor:
+	var door: FrontDoor = DOOR_SCENE.instantiate()
+	door.position = hinge
+	door.rotation.y = turn
+	add_child(door)
+	return door
+
+
+func _model(scene: PackedScene, at: Vector3, turn := 0.0) -> Node3D:
+	var look: Node3D = scene.instantiate()
+	look.position = at
+	look.rotation.y = turn
+	$Built.add_child(look)
+	return look
