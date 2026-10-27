@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Planetarium crime scene, step 2: the six guides in astronaut suits (GuideTraits: hair, boots, teeth, glow paint on the gloves and the planet they present), Doctor Órbita the director and Doña Nebulosa asleep in seat 7.
 - Planetarium crime scene, step 1: the Municipal Planetarium on its own lot (block 8, 1, south side) with the cardboard rocket and the white dome on the roof; the hall with El Pedrusco's empty display case and the giant Saturn, the gift shop (moon-rock basket, till and photo booth), the kids' corner (rocket and Mars scale), the dome room with 14 reclining seats around the star projector (six with a planet) under a starry ceiling, and the control room with the projector's console. --place=planetarium opens it.
 - Planetarium crime scene, step 0: design doc (docs/diseno/escena-planetario.md) and decision 420 (proposed).
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
