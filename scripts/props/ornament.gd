@@ -38,7 +38,9 @@ func hit(speed: float) -> bool:
 
 func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 	var speed := _impacts.hardest(state)
-	if speed > 0.0:
+	# Frozen, it doesn't break on its own: hung on a wall, or a guest's copy that only follows the host's (PropSync
+	# breaks it when the host's breaks). A guest's copy moved into place hit its own wall at 100 m/s.
+	if speed > 0.0 and not freeze:
 		hit.call_deferred(speed)
 
 
