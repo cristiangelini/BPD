@@ -66,9 +66,62 @@ export function buildPaidStamp() {
 	return b.build();
 }
 
+// The neighbors' recordings: a 0.4 x 0.3 x 0.3 m cardboard box packed with cassettes, a hand-written label on the side.
+export function buildNeighborTapes() {
+	const b = new Builder('neighbor_tapes');
+	b.add('box', mat('tape_box', 0xb88a5a), new THREE.BoxGeometry(0.4, 0.26, 0.3), { pos: V(0, -0.02, 0) });
+	b.add('label', mat('white', 0xf6f4ee), new THREE.BoxGeometry(0.2, 0.08, 0.002), { pos: V(0, 0.0, 0.151) });
+	const shells = [0x1e1e24, 0xe8e4da, 0xd84a3a];
+	for (let i = 0; i < 9; i++) {
+		const x = -0.13 + (i % 3) * 0.13, z = -0.09 + Math.floor(i / 3) * 0.09;
+		b.add('tapes', mat(`tape_${i % 3}`, shells[i % 3]), new THREE.BoxGeometry(0.1, 0.06, 0.064), { pos: V(x, 0.135, z), rot: [0.2, (i % 2) * 0.2, 0] });
+	}
+	return b.build();
+}
+
+// The mic in a flowerpot: a 0.2 m terracotta pot with a little fern, a black mic poking out and its cable.
+export function buildPotMic() {
+	const b = new Builder('pot_mic');
+	b.add('pot', mat('terracotta', 0xc0603a), new THREE.CylinderGeometry(0.1, 0.075, 0.16, 10), { pos: V(0, -0.06, 0) });
+	b.add('soil', mat('soil', 0x3a2618), new THREE.CylinderGeometry(0.092, 0.092, 0.01, 10), { pos: V(0, 0.015, 0) });
+	for (let i = 0; i < 5; i++) b.add('leaves', mat('leaf', 0x3a8a3a), new THREE.ConeGeometry(0.03, 0.14, 5), { pos: V(Math.cos(i * 1.3) * 0.04, 0.08, Math.sin(i * 1.3) * 0.04), rot: [Math.sin(i) * 0.5, 0, Math.cos(i) * 0.5] });
+	b.add('mic', mat('black', 0x15151a), new THREE.SphereGeometry(0.022, 8, 6), { pos: V(0.05, 0.05, 0.03) });
+	b.add('cable', mat('black', 0x15151a), new THREE.CylinderGeometry(0.005, 0.005, 0.14, 4), { pos: V(0.09, -0.02, 0.04), rot: [0, 0, 0.6] });
+	return b.build();
+}
+
+// The neighborhood map with crosses: a 0.4 x 0.006 x 0.3 m folded sheet, streets in grey and red crosses on the houses.
+export function buildCrossedMap() {
+	const b = new Builder('crossed_map');
+	b.add('sheet', mat('map_paper', 0xf0ead2), new THREE.BoxGeometry(0.4, 0.004, 0.3));
+	for (let i = 0; i < 3; i++) b.add('streets', mat('street_grey', 0x9a9a9a), new THREE.BoxGeometry(0.4, 0.001, 0.02), { pos: V(0, 0.0025, -0.1 + i * 0.1) });
+	for (let i = 0; i < 3; i++) b.add('streets', mat('street_grey', 0x9a9a9a), new THREE.BoxGeometry(0.02, 0.001, 0.3), { pos: V(-0.12 + i * 0.12, 0.0025, 0) });
+	const crosses = [[-0.06, -0.05], [0.06, 0.05], [0.17, -0.05], [-0.17, 0.12], [0.0, 0.13]];
+	for (const [x, z] of crosses) {
+		b.add('crosses', mat('cross_red', 0xd02a20), new THREE.BoxGeometry(0.04, 0.002, 0.008), { pos: V(x, 0.004, z), rot: [0, 0.785, 0] });
+		b.add('crosses', mat('cross_red', 0xd02a20), new THREE.BoxGeometry(0.04, 0.002, 0.008), { pos: V(x, 0.004, z), rot: [0, -0.785, 0] });
+	}
+	return b.build();
+}
+
+// The reception's big flowerpot (fixed, the clue): a 0.5 m pot with a leafy plant and a mic among the leaves, its cable
+// running down the side to the floor.
+export function buildReceptionPlant() {
+	const b = new Builder('reception_plant');
+	b.add('pot', mat('terracotta', 0xc0603a), new THREE.CylinderGeometry(0.22, 0.17, 0.45, 12), { pos: V(0, 0.225, 0) });
+	b.add('soil', mat('soil', 0x3a2618), new THREE.CylinderGeometry(0.2, 0.2, 0.02, 12), { pos: V(0, 0.44, 0) });
+	b.add('trunk', mat('trunk', 0x6a4a2a), new THREE.CylinderGeometry(0.025, 0.03, 0.5, 6), { pos: V(0, 0.7, 0) });
+	for (let i = 0; i < 7; i++) b.add('leaves', mat('leaf', 0x3a8a3a), new THREE.SphereGeometry(0.16, 7, 5), { pos: V(Math.cos(i * 0.9) * 0.15, 0.95 + (i % 3) * 0.08, Math.sin(i * 0.9) * 0.15) });
+	b.add('mic', mat('black', 0x15151a), new THREE.SphereGeometry(0.035, 8, 6), { pos: V(0.0, 0.88, 0.24) });
+	b.add('cable', mat('black', 0x15151a), new THREE.CylinderGeometry(0.008, 0.008, 0.9, 4), { pos: V(0.0, 0.45, 0.235) });
+	return b.build();
+}
+
 export const models = {
 	raffle_urn: buildRaffleUrn, contest_blender: buildContestBlender, winners_list: buildWinnersList,
 	ad_contracts: buildAdContracts, billing_book: buildBillingBook, paid_stamp: buildPaidStamp,
+	neighbor_tapes: buildNeighborTapes, pot_mic: buildPotMic, crossed_map: buildCrossedMap,
+	reception_plant: buildReceptionPlant,
 };
 
 export const views = {
@@ -78,7 +131,9 @@ export const views = {
 			{ name: 'winners_list', pos: [0.55, 0.005, 0.15], rotY: -0.3 },
 			{ name: 'ad_contracts', pos: [-0.6, 0.175, -0.7], rotY: 0.2 }, { name: 'billing_book', pos: [0.1, 0.015, -0.5] },
 			{ name: 'paid_stamp', pos: [0.5, 0.06, -0.5] },
+			{ name: 'neighbor_tapes', pos: [-0.6, 0.15, 0.7] }, { name: 'pot_mic', pos: [0.05, 0.14, 0.75] },
+			{ name: 'crossed_map', pos: [0.6, 0.003, 0.7], rotY: 0.3 }, { name: 'reception_plant', pos: [1.3, 0, -0.2] },
 		],
-		cam: { pos: [0, 1.4, 2.4], target: [0, 0.15, -0.3], fov: 40 },
+		cam: { pos: [0.3, 1.8, 3.4], target: [0.2, 0.3, 0], fov: 42 },
 	},
 };

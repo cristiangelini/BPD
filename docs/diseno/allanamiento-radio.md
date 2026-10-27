@@ -95,6 +95,9 @@ entre 400 y 600.
    el papelito quedó junto al buzón (por ahí entran los cupones) y no junto a la urna, para que sea una pista antes de
    encontrarla. Capturas `radio/paso5-*.png`.
 6. Las otras 5 historias, una por PR.
+   **Hecho (paso 6, micrófonos ocultos):** `HiddenMicsRig`; la maceta grande con el micrófono está en el rincón de la
+   recepción junto a la pared del frente, y al aire sale un chisme cada 35 s (propuesta), tres chismes por turno.
+   Capturas `radio/paso6-microfonos-*.png`.
 7. "Jugar" suma la radio al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online (don Volumen, doña Rosa, el teléfono, la luz "AL AIRE" y lo frágil en todas las PC).
 

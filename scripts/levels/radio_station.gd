@@ -58,6 +58,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_BILLING_BOOK", "OBJ_EXTRA_PAID_STAMP"],
 		"rig": preload("res://scripts/case/radio/phantom_ads_rig.gd"),
 	},
+	"hidden_mics": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_HIDDEN_MICS_B", "BRIEF_HIDDEN_MICS_C", "BRIEF_HIDDEN_MICS_D"],
+		"find": "OBJ_FIND_NEIGHBOR_TAPES",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/neighbor_tapes.tscn"), preload("res://scenes/props/pot_mic.tscn"),
+			preload("res://scenes/props/crossed_map.tscn")],
+		"half_heights": [0.16, 0.14, 0.015],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_POT_MIC", "OBJ_EXTRA_CROSSED_MAP"],
+		"rig": preload("res://scripts/case/radio/hidden_mics_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the reception's floor, in the studio, the control room, the kitchen and the
 ## storage room.

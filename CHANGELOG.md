@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Radio raid, step 6: the hidden mics story: the box of the neighbors' recordings, a mic in a flowerpot and the neighborhood map with crosses hidden with the seed, the reception's big flowerpot with a mic and its cable (the clue) and a neighbor's gossip on air every 35 s.
 - Radio raid, step 6: the phantom ads story: the box of contracts, the billing notebook and the "PAGADO" stamp hidden with the seed, the empty ads schedule on the control room's wall (the clue) and a silence on air every 40 s where the ad should go. Lines on air now wrap.
 - Radio raid, step 5: the radio is a raid (RaidCase) with its first story, the rigged contest: the raffle urn, the prize blender and the winners list hidden with the seed, Tito winning again on air every 30 s, a contest slip by the mailbox (the clue), what don Volumen lets slip and what doña Rosa heard; he calls his lawyer at 100 and gets away in a car.
 - Radio raid, step 4: doña Rosa calls the reception every 40 s; a cop who answers and stays by the phone 6 s hears what don Volumen let slip on air (once per cop), one who walks off hears "¡Qué maleducado, como el locutor!". Her calls are never listeners' complaints.
