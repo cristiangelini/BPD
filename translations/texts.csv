@@ -5588,3 +5588,26 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+PLACE_SUPERMARKET,Súper El Changuito,El Changuito Supermarket,Supermercado El Changuito
+MENU_SUPERMARKET,Súper (allanamiento) (prueba),Supermarket (raid) (test),Supermercado (batida) (teste)
+HINT_TILL_KEY_SUPERMARKET,¡Una llave! Abre la oficina del gerente.,A key! It opens the manager's office.,Uma chave! Abre o escritório do gerente.
+CASE_FAILED_LAWYER_SUPERMARKET,Don Ofertón llamó al abogado del súper. Caso perdido.,Don Ofertón called the supermarket's lawyer. Case lost.,Don Ofertón ligou para o advogado do supermercado. Caso perdido.
+SUPER_AISLE_1,Pasillo 1 · Almacén,Aisle 1 · Groceries,Corredor 1 · Mercearia
+SUPER_AISLE_2,Pasillo 2 · Limpieza,Aisle 2 · Cleaning,Corredor 2 · Limpeza
+SUPER_AISLE_3,Pasillo 3 · Galletitas,Aisle 3 · Cookies,Corredor 3 · Biscoitos
+SUPER_AISLE_4,Pasillo 4 · Latas,Aisle 4 · Cans,Corredor 4 · Enlatados
+SUPER_OFFER,"¡Oferta del día! Lleve 21, pague 20","Deal of the day! Take 21, pay for 20","Oferta do dia! Leve 21, pague 20"
+SUPER_PYRAMID_FELL,"«¡Limpieza en la entrada! ¡Y alguien que pague esas latas!»","""Cleanup at the entrance! And somebody pay for those cans!""","«Limpeza na entrada! E alguém pague essas latas!»"
+SUPER_FRIDGE_BROKEN,"«¡Atención, clientes: la policía rompió la heladera! Lácteos con descuento»","""Attention, shoppers: the police broke the fridge! Dairy on sale""","«Atenção, clientes: a polícia quebrou a geladeira! Laticínios com desconto»"
+LOC_in_super_freezer,"en el freezer, debajo de los helados","in the freezer, under the ice cream","no freezer, embaixo dos sorvetes"
+LOC_behind_produce,detrás de la verdulería,behind the produce stand,atrás da banca de hortifrúti
+LOC_between_storeroom_boxes,entre las cajas del depósito,between the storeroom's boxes,entre as caixas do depósito
+LOC_by_loading_door,al lado del portón de carga,by the loading door,ao lado do portão de carga
+LOC_in_cardboard_bin,en el tacho de cartones,in the cardboard bin,na caçamba de papelão
+LOC_in_super_office_corner,en un rincón de la oficina del gerente,in a corner of the manager's office,num canto do escritório do gerente
+LOC_on_top_shelf,en el estante de arriba del pasillo 2,on aisle 2's top shelf,na prateleira de cima do corredor 2
+LOC_in_aisle_4,en el piso del pasillo 4,on aisle 4's floor,no chão do corredor 4
+LOC_under_checkout_belt,debajo de la cinta de la caja 2,under checkout 2's belt,embaixo da esteira do caixa 2
+LOC_behind_offer_table,detrás de la mesa de ofertas,behind the offer table,atrás da mesa de ofertas
+LOC_by_produce_scale,al lado de la balanza de la verdulería,by the produce scale,ao lado da balança do hortifrúti
+LOC_on_super_desk,en el escritorio de Don Ofertón,on Don Ofertón's desk,na escrivaninha do Don Ofertón
