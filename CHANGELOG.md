@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Office crime scene, step 5: the ending: the culprit who runs off goes in the water truck parked at the curb, a jug coming loose off its back every 5 s and rolling down the street; run over, it bursts and the patrol car skids on the water for 2 s (E stands it on the sidewalk). Caught or accused, the employee is interrogated next shift.
 - Office crime scene, step 4c: Benja the intern, the witness: he asks for his pile of papers to be carried to the copier and then tells whether the thief wore glasses; cuffed, or with his pile dropped on the way, he's offended and says nothing more. The employees' files show on the station's board.
 - Office crime scene, step 4b: the clues upstairs: the thief's cup on the manager's desk gives prints (print kit), the hand (a photo of the handle and the coffee ring) and the coffee (a sip), and sipping first spoils the other two; the bitten cookie on its saucer; the coffee footprint on the carpet, which Pelusa vacuums once a cop is in unless flipped over with E.
 - Office crime scene, step 4a: the office's level gives the case with the station's board; the seed draws the Golden Stamp, the Founder's Stapler or the bonus envelope and hides it in the copier's tray, the recycling bin or the culprit's briefcase (all six briefcases can be opened).

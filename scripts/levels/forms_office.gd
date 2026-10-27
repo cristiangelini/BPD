@@ -113,6 +113,9 @@ const LOOT_MODELS := {
 const BIN_AT := Vector3(-1.5, 0, -8.5)
 const BIN_SIZE := Vector3(0.6, 0.8, 0.5)
 const BAGS_AT := Vector3(-2.0, 0, 4.4)
+## The water truck waits at the curb east of the door, delivering, its back to the building, and drives straight out
+## (step 5).
+const GETAWAY_AT := Vector3(8.0, 0, SIZE.y / 2 + 1.0)
 const BRIEFCASE_AT := Vector3(0.6, 0.32, 0.08)
 const BRIEFCASE_SIZE := Vector3(0.25, 0.45, 0.5)
 const TIN_SCENE := preload("res://scenes/props/office_cookie_tin.tscn")
@@ -309,6 +312,12 @@ func reveal_loot() -> void:
 	item.position = Vector3(at.x, FLOOR_TOP, at.z + 0.7)
 	if case:
 		case.found_loot()
+
+
+## The water truck waits at the curb, east of the door, and drives straight out into the street.
+func getaway(_index: int, _city: Node3D) -> Dictionary:
+	var out := to_global(GETAWAY_AT)
+	return {"at": Transform3D(global_basis, out), "via": [to_global(Vector3(GETAWAY_AT.x, 0, SIZE.y / 2 + 5.0))]}
 
 
 ## Benja, cuffed or with his papers dropped, won't talk.
