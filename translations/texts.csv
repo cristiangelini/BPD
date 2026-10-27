@@ -5723,3 +5723,16 @@ BOWL_POPCORN_RATTLE,¡Clonc! ¡Clonc!,Clonk! Clonk!,Clonc! Clonc!
 BOWL_POPCORN_CRACK,¡CRAC!,CRACK!,CRAC!
 HINT_BOWL_POPCORN_BITE,"¡Ay, mi diente! Esta palomita es una piedra.","Ow, my tooth! This popcorn is a stone.","Ai, meu dente! Essa pipoca é uma pedra."
 BOWL_POPCORN_CLUE,"Las palomitas de la máquina son piedritas pintadas de amarillo.","The machine's popcorn is little pebbles painted yellow.","A pipoca da máquina são pedrinhas pintadas de amarelo."
+BRIEF_BOWL_LANE7_B,"Don Chuza les roba bolas a las otras boleras y las hace rodar en una pista 7 que no figura en ningún plano.","Don Chuza steals balls from the other bowling alleys and rolls them on a lane 7 that isn't on any plan.","Don Chuza rouba bolas dos outros boliches e as faz rolar numa pista 7 que não aparece em nenhuma planta."
+BRIEF_BOWL_LANE7_C,"Traigan la caja de bolas robadas en el baúl del patrullero. Sin eso no hay caso.","Bring the crate of stolen balls in the patrol car's trunk. Without it there's no case.","Tragam a caixa de bolas roubadas no porta-malas da viatura. Sem ela não tem caso."
+BRIEF_BOWL_LANE7_D,"Si encuentran el cartel arrancado de otra bolera o el plano de la pista secreta, mejor: todo suma.","If you find the sign torn off another alley or the plan of the secret lane, even better: it all adds up.","Se acharem a placa arrancada de outro boliche ou a planta da pista secreta, melhor: tudo soma."
+OBJ_FIND_STOLEN_BALLS,Llevarse la caja de bolas robadas,Take the crate of stolen balls,Levar a caixa de bolas roubadas
+OBJ_EXTRA_TORN_SIGN,Extra: el cartel arrancado de otra bolera,Extra: the sign torn off another alley,Extra: a placa arrancada de outro boliche
+OBJ_EXTRA_SECRET_PLAN,Extra: el plano de la pista secreta,Extra: the plan of the secret lane,Extra: a planta da pista secreta
+PIPO_CLUE_bowl_lane7,"«¡Me devolviste los zapatos! Te cuento: vi al jefe esconder algo %s. Y de noche se oyen bolas detrás de la cortina roja…»","“You gave the shoes back! Here's one: I saw the boss hide something %s. And at night you hear balls rolling behind the red curtain…”","“Você devolveu os sapatos! Te conto: vi o chefe esconder algo %s. E de noite se ouvem bolas atrás da cortina vermelha…”"
+BOWL_LANE7_SIGN,Pista 7: no entrar,Lane 7: keep out,Pista 7: não entre
+BOWL_RETURN_EXTRA,¡Plonc! Volvió una bola de más,Plonk! One ball too many came back,Plonc! Voltou uma bola a mais
+BOWL_FOREIGN_1,Propiedad de Bolera Strike Sur,Property of Strike Sur Bowling,Propriedade do Boliche Strike Sur
+BOWL_FOREIGN_2,Propiedad de Bolos El Chanfle,Property of Bolos El Chanfle,Propriedade do Bolos El Chanfle
+BOWL_FOREIGN_3,Propiedad de Pista Rodante,Property of Pista Rodante,Propriedade da Pista Rodante
+BOWL_FOREIGN_CLUE,"El retorno de bolas devuelve más bolas de las que se tiran, con nombres de otras boleras.","The ball return gives back more balls than were bowled, with other alleys' names on them.","O retorno de bolas devolve mais bolas do que foram jogadas, com nomes de outros boliches."

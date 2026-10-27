@@ -168,6 +168,12 @@ suman entre 400 y 600.
      cada 6 s escupe una piedrita pintada que rebota por el piso (como mucho 10 a la vez). El policía que levanta una la
      muerde: «¡CRAC!» y «¡Ay, mi diente! Esta palomita es una piedra.»; la primera vez es la pista.
      Capturas: `allanamiento-bolera/paso6-palomitas*.png`.
+   - **Cómo quedó, la pista 7 (propuesta):** se esconden la caja de bolas robadas (15 kg, 1000), el cartel arrancado de
+     otra bolera (3 kg, 300) y el plano de la pista secreta (200). En la pared del fondo, al este del pasillo de las
+     máquinas, cuelga una cortina roja con un «7» y el cartel «Pista 7: no entrar», y por debajo asoma el piso de una
+     pista. Cada 3 tiros (de quien sea), el retorno de la pista que tiró devuelve una bola de más («¡Plonc! Volvió una
+     bola de más») con el nombre de otra bolera; como mucho 4. El primer policía que levanta una de esas bolas encuentra
+     la pista. Capturas: `allanamiento-bolera/paso6-pista7*.png`.
 7. "Jugar" suma la bolera al sorteo de allanamientos, y la huida de Don Chuza.
 8. El online (Don Chuza, Pipo, los jugadores, las bolas y lo frágil en todas las PC).
 
