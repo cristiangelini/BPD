@@ -175,6 +175,10 @@ suman entre 400 y 600.
      bola de más») con el nombre de otra bolera; como mucho 4. El primer policía que levanta una de esas bolas encuentra
      la pista. Capturas: `allanamiento-bolera/paso6-pista7*.png`.
 7. "Jugar" suma la bolera al sorteo de allanamientos, y la huida de Don Chuza.
+   - **Cómo quedó (propuesta):** "Jugar" sortea la bolera entre los allanamientos (`PlaceDraw.ORDER`), y la semilla elige
+     una de sus 6 historias. Si Don Chuza ve a un policía levantar la evidencia principal a menos de 15 m, se escapa en
+     el auto estacionado delante del patrullero y empieza la persecución; cuando lo paran, se baja él con sus frases de
+     bolos («¡Chuza! ¡Me tiraron a mí como a un pino!»). Captura: `allanamiento-bolera/paso7-huida.png`.
 8. El online (Don Chuza, Pipo, los jugadores, las bolas y lo frágil en todas las PC).
 
 ## Preguntas para Cristian

@@ -5736,3 +5736,7 @@ BOWL_FOREIGN_1,Propiedad de Bolera Strike Sur,Property of Strike Sur Bowling,Pro
 BOWL_FOREIGN_2,Propiedad de Bolos El Chanfle,Property of Bolos El Chanfle,Propriedade do Bolos El Chanfle
 BOWL_FOREIGN_3,Propiedad de Pista Rodante,Property of Pista Rodante,Propriedade da Pista Rodante
 BOWL_FOREIGN_CLUE,"El retorno de bolas devuelve más bolas de las que se tiran, con nombres de otras boleras.","The ball return gives back more balls than were bowled, with other alleys' names on them.","O retorno de bolas devolve mais bolas do que foram jogadas, com nomes de outros boliches."
+HINT_ESCAPE_bowling,"¡Don Chuza vio la prueba y se escapa en el auto! Tienen un minuto para agarrarlo.","Don Chuza saw the evidence and is getting away in the car! You have one minute to catch him.","O Don Chuza viu a prova e está fugindo no carro! Vocês têm um minuto para pegá-lo."
+CHASE_BOWLING_LINE_1,"¡Chuza! ¡Me tiraron a mí como a un pino!","Strike! You knocked me down like a pin!","Strike! Me derrubaram como um pino!"
+CHASE_BOWLING_LINE_2,"¡No me escapaba! ¡Iba a buscar más zapatos para Pipo!","I wasn't running away! I was getting more shoes for Pipo!","Eu não estava fugindo! Ia buscar mais sapatos para o Pipo!"
+CHASE_BOWLING_LINE_3,"¡Eso fue falta! ¡Pisaron la línea!","That's a foul! You stepped over the line!","Isso foi falta! Pisaram na linha!"
