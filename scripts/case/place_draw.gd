@@ -51,6 +51,7 @@ const PLACES := {
 	"birthday": "res://scenes/levels/plaza_birthday.tscn",
 	"convertible": "res://scenes/levels/plaza_convertible.tscn",
 	"laundry": "res://scenes/levels/prison_laundry.tscn",
+	"pizza_raid": "res://scenes/levels/pizza_raid.tscn",
 	"hardware": "res://scenes/levels/hardware_store.tscn",
 	"doll_factory": "res://scenes/levels/doll_factory.tscn",
 	"insurance": "res://scenes/levels/insurance_office.tscn",

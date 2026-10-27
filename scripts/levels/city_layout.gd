@@ -54,6 +54,8 @@ const PLACES := [
 	{"id": "restaurant", "block": Vector2i(1, 0), "side": "s", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.62, 0.22, 0.2), "sign": "PLACE_RESTAURANT"},
 	{"id": "school", "block": Vector2i(4, 0), "side": "s", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.45, 0.4, 0.55), "sign": "PLACE_SCHOOL"},
 	{"id": "school_visit", "block": Vector2i(3, 3), "side": "s", "along": 0.0, "size": Vector3(28, 4, 24), "color": Color(0.95, 0.85, 0.55), "sign": "PLACE_SCHOOL_VISIT"},
+	# The pizzeria to raid, with its back yard (allanamiento-pizzeria.md).
+	{"id": "pizzeria", "block": Vector2i(1, 5), "side": "n", "along": 0.0, "size": Vector3(16, 4, 16), "color": Color(0.82, 0.32, 0.22), "sign": "PLACE_PIZZERIA"},
 	{"id": "museum", "block": Vector2i(0, 0), "side": "s", "along": 0.0, "size": Vector3(30, 7, 26), "color": Color(0.88, 0.86, 0.8), "sign": "PLACE_MUSEUM"},
 	{"id": "cake_lab", "block": Vector2i(4, 3), "side": "w", "along": 0.0, "size": Vector3(24, 8, 22), "color": Color(0.95, 0.95, 0.85), "sign": "PLACE_CAKE_LAB"},
 	# A park, not a building: it fills its block and its case scene builds the canal and the bridge on the grass.

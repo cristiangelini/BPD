@@ -5,6 +5,7 @@ extends Control
 
 const CITY_SCENE := "res://scenes/levels/city.tscn"
 const BAKERY_SCENE := "res://scenes/levels/bakery.tscn"
+const PIZZA_RAID_SCENE := "res://scenes/levels/pizza_raid.tscn"
 const GROOMER_SCENE := "res://scenes/levels/groomer.tscn"
 const APARTMENTS_SCENE := "res://scenes/levels/apartment_tower.tscn"
 const HARDWARE_SCENE := "res://scenes/levels/hardware_store.tscn"
@@ -44,6 +45,7 @@ func _ready() -> void:
 	%HardwareButton.pressed.connect(func() -> void: get_tree().change_scene_to_file(HARDWARE_SCENE))
 	%FactoryButton.pressed.connect(func() -> void: get_tree().change_scene_to_file(FACTORY_SCENE))
 	%InsuranceButton.pressed.connect(func() -> void: get_tree().change_scene_to_file(INSURANCE_SCENE))
+	%PizzaRaidButton.pressed.connect(func() -> void: get_tree().change_scene_to_file(PIZZA_RAID_SCENE))
 	%CakeLabButton.pressed.connect(func() -> void: get_tree().change_scene_to_file(CAKE_LAB_SCENE))
 	_hotel_raid_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(HOTEL_RAID_SCENE))
 	%GymRaidButton.pressed.connect(func() -> void: get_tree().change_scene_to_file(GYM_RAID_SCENE))
