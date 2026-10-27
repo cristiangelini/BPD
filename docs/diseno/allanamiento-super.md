@@ -200,6 +200,12 @@ suman entre 400 y 600.
      estacionado delante del patrullero y empieza la persecución; cuando lo paran, se baja él con sus frases de
      oferta («¡Lleven dos patrulleros y el tercero es gratis!»). Captura: `paso7-huida.png`.
 8. El online (Don Ofertón, Lalo, los clientes, los changuitos y lo frágil en todas las PC).
+   - **Cómo quedó (propuesta):** el host maneja a Don Ofertón, a Lalo y a los clientes, y en las PC de los invitados
+     son copias que lo siguen. Los botones de precio y los changuitos (empujar, subirse, cargar, volcar) pasan por las
+     acciones, así que pasan igual en todas las PC; el choque del changuito lo decide la PC del que empuja. La
+     velocidad del changuito sale de cuánto se movió, así el host ve igual de rápido el changuito de un invitado y
+     los clientes se quejan. La pirámide, el vidrio de la heladera, el altavoz y la góndola del pasillo 13 los decide
+     el host, y los invitados los toman de su estado. El changuito chueco solo tira y suena en la PC del que lo empuja.
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, el súper abierto con clientes y changuitos? **Recomendado:** sí, no se pisa con el

@@ -27,7 +27,8 @@ func _physics_process(delta: float) -> void:
 		_clink_left = 0.0
 		return
 	var cop := crooked.pusher
-	if Vector2(cop.velocity.x, cop.velocity.z).length() < MOVING:
+	# Only the pusher's own PC feels the pull and hears the clink (a copy of another player's cop only follows it).
+	if not is_mine(cop) or Vector2(cop.velocity.x, cop.velocity.z).length() < MOVING:
 		return
 	cop.rotate_y(PULL * delta)
 	_clink_left -= delta
