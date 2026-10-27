@@ -8,7 +8,8 @@ extends Node3D
 ## at the back the projection booth, locked with the till's key. Something thrown hard at the screen rips it, and at the
 ## popcorn machine breaks its glass, a fine each. Doña Bobina spends her time in the booth and comes down the west aisle
 ## to the front now and then, filling the complaint; E on the projector cuts the tape and sends her to splice it, her
-## back to everything (step 3). Every number here is (propuesta).
+## back to everything (step 3). Chicho the usher sits in a free seat and whispers what he saw to a cop who sits it out
+## next to him (step 4). Every number here is (propuesta).
 
 signal screen_ripped
 signal glass_broken
@@ -141,6 +142,8 @@ var fines := 0
 ## Same seed, same cinema (the stories and the hiding spots come from it, step 5).
 @export var case_seed := 0
 var _build: PlaceBuilder
+## Each seat's solid body, in the order of `seats`.
+var _seat_bodies: Array[StaticBody3D] = []
 var _screen: MeshInstance3D
 var _subtitle: Label3D
 var _film_left := FILM_EVERY
@@ -150,6 +153,8 @@ var film_line := 0
 var spectators: Array[CinemaSpectator] = []
 var shushes := 0
 var projector: CinemaProjector
+var chicho: CinemaUsher
+var side_seat: CinemaSideSeat
 var bobina: FloorBoss
 var complaint_bar: ProgressBar
 ## Whether she opened the booth's door on her way, and whether it was locked then.
@@ -171,6 +176,7 @@ func _ready() -> void:
 	_build_booth()
 	_seat_spectators()
 	_place_bobina()
+	_place_chicho()
 	_show_film()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("cinema")
@@ -287,8 +293,9 @@ func _build_seats() -> void:
 			var at := Vector3((i - (SEATS_PER_ROW - 1) / 2.0) * SEAT_STEP, floor_at(z), z)
 			seats.append(at)
 			_model(SEAT_MODEL, at)
-			_build.shape(_build.body(at + Vector3(0, SEAT_UNDER + (SEAT_SIZE.y - SEAT_UNDER) / 2, 0)),
-				Vector3(SEAT_SIZE.x, SEAT_SIZE.y - SEAT_UNDER, SEAT_SIZE.z))
+			var body := _build.body(at + Vector3(0, SEAT_UNDER + (SEAT_SIZE.y - SEAT_UNDER) / 2, 0))
+			_build.shape(body, Vector3(SEAT_SIZE.x, SEAT_SIZE.y - SEAT_UNDER, SEAT_SIZE.z))
+			_seat_bodies.append(body)
 
 
 ## The hall: the ticket booth with the till, the candy counter with the popcorn machine, the posters, the restroom and
@@ -428,6 +435,31 @@ func _physics_process(delta: float) -> void:
 		_film_left = FILM_EVERY
 		film_line += 1
 		_show_film()
+
+
+## Chicho in a free seat drawn with the seed, with a free seat to his right that a cop can sit in.
+func _place_chicho() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["cinema usher", case_seed])
+	var taken := {}
+	for spectator in spectators:
+		taken[spectator.seat] = true
+	var free: Array[int] = []
+	for i in seats.size():
+		if i % SEATS_PER_ROW < SEATS_PER_ROW - 1 and not taken.has(i) and not taken.has(i + 1):
+			free.append(i)
+	var at := free[rng.randi_range(0, free.size() - 1)]
+	_seat_bodies[at + 1].queue_free()
+	side_seat = CinemaSideSeat.new()
+	side_seat.name = "SideSeat"
+	side_seat.position = seats[at + 1]
+	side_seat.rotation.y = PI
+	add_child(side_seat)
+	chicho = CinemaUsher.new()
+	chicho.name = "Chicho"
+	chicho.side_seat = side_seat
+	chicho.position = seats[at] + Vector3(0, 0.05, 0)
+	add_child(chicho)
 
 
 ## Doña Bobina on her round, the projector's cuts, what she notices and the complaint bar.

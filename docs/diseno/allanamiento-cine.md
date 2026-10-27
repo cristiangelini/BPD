@@ -114,3 +114,11 @@ suman entre 400 y 600.
   de la cabina, de espaldas a la ventana; después el proyector descansa 45 s y a la tercera ya no viene. Modelo nuevo
   `npc_dona_bobina` (anteojos enormes, rodete con lápiz, chaleco de lana y un rollo bajo el brazo). Capturas
   `paso3-*.png`.
+- **Paso 4 (Chicho):** Chicho (`CinemaUsher`, modelo nuevo `npc_chicho`: saco bordó de acomodador con botones dorados,
+  gorrito, moñito y linterna) se sienta en una butaca libre sorteada con la semilla, con otra libre a su derecha
+  (`CinemaSideSeat`, que reemplaza el cuerpo de esa butaca). E en esa butaca sienta al policía mirando la pantalla, como
+  la silla del jurado de la cárcel (puede mirar alrededor pero no caminar), y E otra vez lo para en el pasillo de atrás.
+  A los 8 s sentado Chicho le susurra lo que vio (la pista la pone la historia, paso 5; sin historia dice que no vio
+  nada); si se para antes, "¡Shhh, que viene lo mejor!" y empieza de nuevo. Una vez por policía. Un policía sentado no
+  le tapa la pantalla a nadie. Por ahora "sin hablar" no se mide (falta saber si el policía habla por el chat de voz);
+  el policía sentado se ve parado, como en el jurado, hasta que haya una pose sentada. Capturas `paso4-*.png`.

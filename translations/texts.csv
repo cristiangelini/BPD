@@ -5646,3 +5646,12 @@ BOBINA_SCREEN,"¡La pantalla! ¡Era la única!","The screen! It was the only one
 BOBINA_GLASS,"¡Mi máquina de palomitas!","My popcorn machine!","Minha máquina de pipoca!"
 BOBINA_SHUSHED,"¡Silencio en la sala! Lo anoto.","Silence in the theater! I'm writing that down.","Silêncio na sala! Vou anotar."
 BOBINA_NOTICED,"¡Ya sé que la cortan ustedes! ¡Dejen mi proyector!","I know you're the ones cutting it! Leave my projector alone!","Eu sei que são vocês que cortam! Larguem o meu projetor!"
+PROMPT_CINEMA_SIT,E: sentarte a mirar la película,E: sit and watch the film,E: sentar para ver o filme
+PROMPT_CHICHO,E: hablar con Chicho,E: talk to Chicho,E: falar com o Chicho
+CHICHO_SIT,"Shh... Siéntate, que no se ve.","Shh... Sit down, I can't see.","Shh... Senta, que não dá para ver."
+CHICHO_AGAIN,"Shh... Ya te conté todo.","Shh... I already told you everything.","Shh... Já te contei tudo."
+CHICHO_EARLY,"¡Shhh, que viene lo mejor!","Shhh, the best part is coming!","Shhh, que vem a melhor parte!"
+CHICHO_NOTHING,"(susurrando) Yo no vi nada. Estaba mirando la película.","(whispering) I didn't see a thing. I was watching the film.","(sussurrando) Eu não vi nada. Estava vendo o filme."
+CHICHO_IDLE_1,"Shh... Esta parte me la sé de memoria.","Shh... I know this part by heart.","Shh... Essa parte eu sei de cor."
+CHICHO_IDLE_2,"Las entradas, por favor. Ah, no, ustedes son la policía.","Tickets, please. Oh, no, you're the police.","Ingressos, por favor. Ah, não, vocês são a polícia."
+CHICHO_IDLE_3,"La vi cuarenta veces. Hoy termina distinto, seguro.","I've seen it forty times. It ends differently today, for sure.","Já vi quarenta vezes. Hoje termina diferente, com certeza."
