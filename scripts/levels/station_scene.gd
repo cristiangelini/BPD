@@ -121,16 +121,59 @@ func _physics_process(delta: float) -> void:
 	if not case or not case.tip_given:
 		return
 	_since_tip += delta
+	# Online the host's evidence room says when don Mopa cleaned (net_state).
+	if case.follower:
+		return
 	if chancho and not chancho.offended and city and not city.cell_doors.is_empty() and city.cell_doors[0].is_open:
 		chancho.offend()
 	if not mopa_cleaned and _since_tip >= MOPA_WASH:
-		mopa_cleaned = true
-		var cup := clue_items.get("cup") as CrimeClueItem
-		if cup and not cup.bagged and not cup.spoiled:
-			cup.wash()
-			cup.hide()
-			for cop in get_tree().get_nodes_in_group("cops"):
-				(cop as Cop).show_hint("HINT_MOPA_WASHED")
+		_mopa_cleans()
+
+
+## Don Mopa cleans the evidence room: the mug, if nobody bagged it, goes to be washed.
+func _mopa_cleans() -> void:
+	mopa_cleaned = true
+	var cup := clue_items.get("cup") as CrimeClueItem
+	if cup and not cup.bagged and not cup.spoiled:
+		cup.wash()
+		cup.hide()
+		for cop in get_tree().get_nodes_in_group("cops"):
+			(cop as Cop).show_hint("HINT_MOPA_WASHED")
+
+
+## Online, what the guests' station takes from the host's: who already said where they were, the shelf touched, the
+## tape watched or recorded over, the book signed over, don Mopa's cleaning, and internal affairs' warning and arrival.
+func net_state() -> Dictionary:
+	if not case:
+		return {}
+	var signed := []
+	for i in StaffTraits.IDS.size():
+		var body := suspect(i)
+		signed.append(body != null and body.get("file") != null and (body.file as StaffFile).signed)
+	return {"signed": signed, "shelf": shelf.touched, "tape": [vcr.watched, vcr.overwritten],
+		"book": book.signed_over, "mopa": mopa_cleaned, "ia": [case.ia_warned, case.ia_arrived]}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	if not case or not state.has("signed"):
+		return
+	for i in state.signed.size():
+		var body := suspect(i)
+		if body and body.get("file") != null:
+			(body.file as StaffFile).signed = state.signed[i]
+	shelf.touched = state.shelf
+	vcr.watched = state.tape[0]
+	vcr.overwritten = state.tape[1]
+	book.signed_over = state.book
+	if state.mopa and not mopa_cleaned:
+		_mopa_cleans()
+	if state.ia[0] and not case.ia_warned:
+		case.ia_warned = true
+		case._hint_all("HINT_IA_SOON")
+	if state.ia[1] and not case.ia_arrived:
+		case.ia_arrived = true
+		case._hint_all("HINT_IA_ARRIVED")
+		ia_arrives()
 
 
 ## The old patrol car by the station, where the culprit runs off from.

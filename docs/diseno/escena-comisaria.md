@@ -171,3 +171,8 @@ internos (sobornos.md), CaseBriefing y CaseChecklist, ChaseCase.begin, PlaceDraw
   persecución final), que en cada esquina pierde un tapacubos, el paragolpes o la sirena (`ChaseDrops.CAR_PARTS`:
   quedan sueltos en la calle y frenan, como los muebles de la mudanza). La sirena que toca una cumbia queda para
   después. Capturas en `escena-comisaria/paso5-*.png`.
+- **Paso 6 (el sorteo y el online):** en "Jugar", la comisaría es una escena del crimen más: cada una de las cinco
+  sale una vez de cada cinco (propuesta), y `--place=station` la abre directo. En el online, el anfitrión decide y los
+  invitados ven lo mismo: quién ya dijo dónde estaba, el estante tocado, la cinta vista o grabada encima, el libro
+  firmado, la limpieza de don Mopa (solo la hace el don Mopa del anfitrión), y el aviso y la llegada de Asuntos
+  Internos, con el agente entrando en cada PC.
