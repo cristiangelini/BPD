@@ -120,20 +120,26 @@ func ask_beanie() -> void:
 
 
 func _take_off_beanie() -> void:
-	beanie_on = false
-	part("beanie").visible = false
+	show_look(false, sleeves_up)
 	say("NEPHEW_BEANIE_OFF")
 	_file("hair")
 
 
 ## Rolls up the sweater's sleeves: the scratch shows on that hand, or the arms are clean.
 func roll_up_sleeves() -> void:
-	sleeves_up = true
-	for hand in NephewTraits.HANDS:
-		part("cuff_%s" % hand).visible = false
-		part("scratch_%s" % hand).visible = traits.scratch == hand
+	show_look(beanie_on, true)
 	say("NEPHEW_SCRATCH_ROSES" if traits.scratch != "" else "NEPHEW_NO_SCRATCH")
 	_file("scratch")
+
+
+## Shows him with or without his beanie, and with his sleeves rolled up or not (online, as the host's).
+func show_look(beanie: bool, sleeves: bool) -> void:
+	beanie_on = beanie
+	sleeves_up = sleeves
+	part("beanie").visible = beanie
+	for hand in NephewTraits.HANDS:
+		part("cuff_%s" % hand).visible = not sleeves
+		part("scratch_%s" % hand).visible = sleeves and traits.scratch == hand
 
 
 ## Cuffed: the señora doesn't like her nephews in handcuffs, unless it's the culprit or the board said so.

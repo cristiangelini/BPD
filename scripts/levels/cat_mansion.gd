@@ -274,6 +274,46 @@ func getaway(_index: int, _city: Node3D) -> Dictionary:
 	return {"at": Transform3D(along, to_global(LIMO_AT)), "via": [ahead]}
 
 
+## Online, what the guests' mansion takes from the host's: each nephew's beanie and sleeves, Don Plumas, the señora's
+## patience, the broken vases and where the cats are (the host's cats walk; the guests' follow them).
+func net_state() -> Dictionary:
+	var state := {"nephews": nephews.map(func(nephew: MansionNephew) -> Array:
+		return [nephew.beanie_on, nephew.sleeves_up, nephew.stubborn])}
+	state.parrot = [parrot.fed, parrot.scared]
+	state.vases = vases.map(func(vase: MansionVase) -> bool: return vase.broken)
+	state.cats = cats.map(func(cat: MansionCat) -> Array:
+		return [cat.global_position, cat.global_rotation.y, cat.shut_in, cat.home])
+	if patience:
+		state.patience = [patience.value, patience.calls, patience.out, patience.had_tea]
+	return state
+
+
+func apply_net_state(state: Dictionary) -> void:
+	for nephew in nephews:
+		var look: Array = state.nephews[nephew.index]
+		nephew.stubborn = look[2]
+		nephew.show_look(look[0], look[1])
+	parrot.fed = state.parrot[0]
+	parrot.scared = state.parrot[1]
+	for i in vases.size():
+		if state.vases[i] and not vases[i].broken:
+			vases[i].shatter()
+	for i in cats.size():
+		var cat := cats[i]
+		var at: Array = state.cats[i]
+		cat.follower = true
+		if not cat.is_held():
+			cat.global_position = at[0]
+			cat.global_rotation.y = at[1]
+		cat.shut_in = at[2]
+		cat.home = at[3]
+	if patience and state.has("patience"):
+		patience.value = state.patience[0]
+		patience.calls = state.patience[1]
+		patience.out = state.patience[2]
+		patience.had_tea = state.patience[3]
+
+
 ## Whether a point in the world (ignoring height) is on the mansion's lot, garden included.
 func at_scene(world: Vector3) -> bool:
 	var local := to_local(world)
