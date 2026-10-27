@@ -104,5 +104,5 @@ func test_the_level_starts_the_cat_case() -> void:
 	assert_eq(level.mansion.case, level.case)
 	TranslationServer.set_locale("es")
 	for key in ["BRIEF_CAT_A_duchess", "OBJ_CAT_LOOT_duchess", "HINT_LOOT_FOUND_duchess", "PROMPT_SEARCH_dumbwaiter",
-			"HINT_SEARCH_NOTHING_basket", "HINT_DUCHESS_OUT", "CAT_NAME_3"]:
+			"HINT_SEARCH_NOTHING_CAT_basket", "HINT_DUCHESS_OUT", "CAT_NAME_3"]:
 		assert_ne(tr(key), key, "%s is translated" % key)
