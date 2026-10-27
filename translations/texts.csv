@@ -5643,3 +5643,15 @@ DIVA_SINGER,"¡Mis clientes se quejan! ¡Respeten el turno!","My customers are c
 DIVA_SCREEN,"¡La pantalla! ¿Cómo leo la letra ahora?","The screen! How do I read the lyrics now?","A tela! Como eu leio a letra agora?"
 DIVA_DISCO,"¡Mi bola de espejos! ¡Brillaba casi tanto como yo!","My disco ball! It shone almost as much as I do!","Minha bola de espelhos! Brilhava quase tanto quanto eu!"
 KARAOKE_DUET_SCREEN,♪ ¡DUETO! ♪,♪ DUET! ♪,♪ DUETO! ♪
+PROMPT_TALK_TOTO,E: hablar con Toto,E: talk to Toto,E: falar com o Toto
+PROMPT_VOLUME_DOWN,E: bajar el volumen,E: turn the volume down,E: abaixar o volume
+HINT_KARAOKE_VOLUME,"Bajaste la música. Toto se sacó los auriculares, pero los clientes se van a quejar.","You turned the music down. Toto took his headphones off, but the customers are going to complain.","Você abaixou a música. O Toto tirou os fones, mas os clientes vão reclamar."
+TOTO_DEAF_1,"¿Qué? ¡No te escucho! ¡Está sonando un temazo!","What? I can't hear you! This song is a banger!","O quê? Não te escuto! Está tocando um hit!"
+TOTO_DEAF_2,"¿Eh? ¡Más fuerte! ¡No, más fuerte no, que se acopla!","Huh? Louder! No, not louder, it'll feed back!","Hã? Mais alto! Não, mais alto não, que dá microfonia!"
+TOTO_DEAF_3,"(Toto te saluda con el pulgar arriba y sigue con la música.)","(Toto gives you a thumbs up and goes on with the music.)","(Toto faz joinha e continua com a música.)"
+TOTO_IDLE_1,"¡Qué agudo! ¡Me tiembla la consola!","What a high note! My console is shaking!","Que agudo! Minha mesa está tremendo!"
+TOTO_IDLE_2,"Treinta años con los auriculares puestos. Ni me acuerdo de cómo suena el silencio.","Thirty years with my headphones on. I don't remember what silence sounds like.","Trinta anos de fone. Nem lembro como soa o silêncio."
+TOTO_IDLE_3,"(Toto sube una perilla. Después otra. Después todas.)","(Toto turns a knob up. Then another one. Then all of them.)","(Toto aumenta um botão. Depois outro. Depois todos.)"
+TOTO_THANKS,"¡Ah, qué lindo el silencio! Gracias otra vez.","Ah, silence is lovely! Thanks again.","Ah, que lindo o silêncio! Obrigado de novo."
+TOTO_NOTHING,"¡Ah, el silencio! Qué alivio… No vi nada raro, pero gracias.","Ah, silence! What a relief… I didn't see anything strange, but thanks.","Ah, o silêncio! Que alívio… Não vi nada estranho, mas obrigado."
+KARAOKE_SINGER_QUIET,"«¿Y la música? ¡Así no se puede cantar!»","“Where's the music? Nobody can sing like this!”","“Cadê a música? Assim não dá para cantar!”"

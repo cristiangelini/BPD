@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Karaoke raid, step 4: Toto, the sound guy, hears nothing with his headphones on; E on the console turns the music down for 10 s, he tells each cop once what he saw (the clue only the first time), and every customer complains once about the missing music.
 - Karaoke raid, step 3: Rosaura la Diva, the owner, walks her round up onto the stage; a cop on the stage with microphone 2 calls her to a 15 s duet facing the lyrics screen (every 45 s, the third one gives the cops away), and the customers' complaints, the screen and the disco ball reach her complaint.
 - Karaoke raid, step 2: five microphones in their stands, whose cable stops them 4 m away and trips a cop running over it, and six customers who go up in turn to sing at microphone 1 and complain when it's missing, taken from them, or a cop is on the stage.
 - Karaoke raid, step 1: the karaoke "Karaoke El Desafine" as a place to raid on block (6, 3): the stage with its steps, speakers and lyrics screen, the room with its tables under the disco ball, the three private booths, the bar with the office's key in its till, the sound guy's console and the locked office; the lyrics screen and the disco ball break with a fine each, and 12 hiding spots.

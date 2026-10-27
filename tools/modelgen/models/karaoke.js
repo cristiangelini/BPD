@@ -187,12 +187,30 @@ export function buildRosaura() {
 	return b.build();
 }
 
+// Toto, the sound guy: black T-shirt with a pink note, a cap backwards and huge headphones he never takes off.
+export function buildToto() {
+	const b = new Builder('npc_toto');
+	pearBody(b, mat('skin_toto', 0xc89070), { shirt: mat('toto_shirt', 0x1c1d22), pants: mat('toto_jeans', 0x3a5a8a), shoes: mat('toto_shoes', 0xf6f4ee), belted: false });
+	b.add('note', mat('toto_note', 0xff5ad2), new THREE.BoxGeometry(0.14, 0.16, 0.02), { pos: V(0, 0.78, 0.37), rot: [-0.3, 0, 0] });
+	eyes(b, 1.32, 0.17, 0.08, 0.045);
+	const cap = mat('toto_cap', 0xf2c230);
+	b.add('cap', cap, ellipsoid(0.2, 0.08, 0.2, 10, 5), { pos: V(0, 1.47, -0.01) });
+	b.add('cap', cap, new THREE.BoxGeometry(0.2, 0.025, 0.14), { pos: V(0, 1.43, -0.24) });
+	const phones = mat('toto_phones', 0x2a2c34), pad = mat('toto_pad', 0xff5ad2);
+	b.add('phones', phones, new THREE.TorusGeometry(0.22, 0.025, 6, 14, Math.PI), { pos: V(0, 1.3, 0.02) });
+	for (const s of [-1, 1]) {
+		b.add('phones', phones, new THREE.CylinderGeometry(0.09, 0.09, 0.07, 12), { pos: V(s * 0.22, 1.3, 0.02), rot: [0, 0, Math.PI / 2] });
+		b.add('phones', pad, new THREE.CylinderGeometry(0.06, 0.06, 0.02, 10), { pos: V(s * 0.265, 1.3, 0.02), rot: [0, 0, Math.PI / 2] });
+	}
+	return b.build();
+}
+
 export const models = {
 	stage_speaker: buildStageSpeaker, lyrics_screen: buildLyricsScreen, sound_console: buildSoundConsole,
 	karaoke_bar: buildKaraokeBar, ice_machine: buildIceMachine, karaoke_table: buildKaraokeTable,
 	disco_ball: buildDiscoBall, booth_sofa: buildBoothSofa, dress_rack: buildDressRack, chair_stack: buildChairStack,
 	neon_note: buildNeonNote, mic_stand: buildMicStand, karaoke_mic: buildKaraokeMic,
-	npc_rosaura: buildRosaura,
+	npc_rosaura: buildRosaura, npc_toto: buildToto,
 };
 
 export const views = {
@@ -209,7 +227,7 @@ export const views = {
 		cam: { pos: [0.6, 4.0, 9.5], target: [0.6, 1.0, 0], fov: 50 },
 	},
 	rosaura: {
-		items: [{ name: 'npc_rosaura', pos: [0, 0, 0], rotY: 0.3, scale: [0.8, 1.15, 0.8] }],
+		items: [{ name: 'npc_rosaura', pos: [-0.5, 0, 0], rotY: 0.3, scale: [0.8, 1.15, 0.8] }, { name: 'npc_toto', pos: [0.6, 0, 0.2], rotY: -0.3, scale: 0.85 }],
 		cam: { pos: [0, 1.4, 4.0], target: [0, 1.0, 0], fov: 34 },
 	},
 };
