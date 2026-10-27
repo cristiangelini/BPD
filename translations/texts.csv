@@ -5605,3 +5605,9 @@ LOC_in_giant_teddy,adentro del peluche gigante,inside the giant teddy bear,dentr
 LOC_in_cotton_candy_cart,en el carrito de algodón de azúcar,in the cotton candy cart,no carrinho de algodão-doce
 LOC_in_fair_toolbox,en la caja de herramientas de la vuelta al mundo,in the Ferris wheel's toolbox,na caixa de ferramentas da roda-gigante
 LOC_in_top_ferris_cabin,en la cabina de arriba de la vuelta al mundo,in the top cabin of the Ferris wheel,na cabine do alto da roda-gigante
+PROMPT_FAIR_CAROUSEL_ON,E: prender el carrusel,E: start the carousel,E: ligar o carrossel
+PROMPT_FAIR_CAROUSEL_OFF,E: parar el carrusel,E: stop the carousel,E: parar o carrossel
+PROMPT_FAIR_BUMPERS,E: apretar el botón de los autitos chocadores,E: press the bumper cars' button,E: apertar o botão dos carrinhos bate-bate
+PROMPT_FAIR_BUMPERS_RUNNING,"Los autitos ya andan. ¡Cuidado!","The bumper cars are already going. Watch out!","Os carrinhos já estão andando. Cuidado!"
+PROMPT_FAIR_CRANK,E: girar la manivela de la vuelta al mundo,E: turn the Ferris wheel's crank,E: girar a manivela da roda-gigante
+FAIR_SKELETON_BOO,¡Buuuuu!,Boooo!,Buuuuu!

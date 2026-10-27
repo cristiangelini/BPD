@@ -121,6 +121,15 @@ extras suman entre 400 y 600.
    - los autitos chocadores andan 20 s;
    - la manivela de la vuelta al mundo;
    - los esqueletos del tren fantasma.
+   Hecho así:
+   - **Controles:** cada juego tiene su poste al lado: la palanca del carrusel (prende y apaga), el botón rojo de los
+     autitos y la manivela de la vuelta al mundo.
+   - **Carrusel:** mientras gira, empuja hacia afuera lo que está suelto en el piso.
+   - **Autitos chocadores:** andan 20 s, rebotan contra la baranda y entre ellos, empujan lo que encuentran y al
+     policía que se cruzan lo tiran 0,4 s.
+   - **Vuelta al mundo:** la manivela la gira de a una cabina, y las cabinas siempre cuelgan derechas.
+   - **Esqueletos:** saltan con un "¡Buuuuu!" cuando pasa un policía y descansan 5 s.
+   - **Para Don Tómbola:** cada juego que se prende avisa (`ride_started`), así el paso 3 puede sumarlo a la denuncia.
 3. Don Tómbola: la ronda, el megáfono, la denuncia, "¡no me toquen los juegos!" y el martillo de fuerza.
 4. Nube y el puesto de latas.
 5. El caso (RaidCase) con la primera historia: los premios rellenos.
