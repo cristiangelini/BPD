@@ -165,5 +165,7 @@ para el interrogatorio. Los modelos nuevos salen de `tools/modelgen` (low poly).
    90 s, se escapó y el caso se pierde. El cansancio y el sueldo (500, +100 por lo robado) son los de siempre. Lo
    robado que nadie encontró no se lo lleva: queda donde estaba. Capturas en `escena-mansion/paso6-*.png`
    **(propuesta)**.
-7. "Jugar" sortea la mansión entre los lugares.
+7. "Jugar" sortea la mansión entre los lugares. Hecho así: la mansión es la cuarta escena del crimen del sorteo, junto
+   al concurso de pastelería, el circo y el museo, y le toca un cuarto de esas partidas **(propuesta)**. Cuando se
+   mergee develop, donde ya está el hotel, va a quedar un quinto.
 8. Online: los socios, doña Clotilde, el loro y los pasadizos iguales en todas las PCs.
