@@ -7,7 +7,8 @@ extends CrimeScenePlace
 ## biscuits, the teapot) with the laundry room behind it (the litter tray, the laundry basket, the washing machine and
 ## the dumbwaiter's hatch in the wall between them); behind the hall the guest room with the six nephews' suitcases;
 ## east of it the drawing room (Duquesa's velvet armchair, the piano with the music box, the parrot's cage). Eight
-## porcelain vases stand on pedestals around the house. The people, the cats and the case come in later steps.
+## porcelain vases stand on pedestals around the house. In the drawing room, the six nephews alike in a row (step 2)
+## and Don Plumas on his cage's stand; in the hall, Señora Ofelia. The cats and the case come in later steps.
 ## Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
@@ -81,6 +82,14 @@ const VASES: Array[Vector3] = [
 	Vector3(14.3, 0, -5.0), Vector3(6.0, 0, 4.3), Vector3(-4.3, 0, -12.2), Vector3(4.3, 0, -4.0),
 ]
 const PEDESTAL_SIZE := Vector3(0.45, 0.9, 0.45)
+## Where the people stand: the six nephews in a row down the drawing room by its west wall, facing into it, Señora
+## Ofelia in the hall facing the front door, and the parrot on top of his cage's stand.
+const NEPHEWS_AT: Array[Vector3] = [
+	Vector3(7.2, 0, -10.0), Vector3(7.2, 0, -8.6), Vector3(7.2, 0, -7.2), Vector3(7.2, 0, -5.8), Vector3(7.2, 0, -4.4),
+	Vector3(7.2, 0, -3.0),
+]
+const LADY_AT := Vector3(-1.2, 0, 1.6)
+const PARROT_AT := CAGE_AT + Vector3(0, 1.24, 0)
 const FACADE := Color(0.96, 0.9, 0.78)
 const ROOF_COLOR := Color(0.45, 0.22, 0.2)
 const INSIDE := Color(0.95, 0.9, 0.82)
@@ -102,6 +111,9 @@ const SUITCASE_COLORS: Array[Color] = [
 	Color(0.5, 0.35, 0.6), Color(0.3, 0.3, 0.32),
 ]
 
+var nephews: Array[MansionNephew] = []
+var lady: MansionLady
+var parrot: MansionParrot
 var _builder: PlaceBuilder
 
 
@@ -118,6 +130,12 @@ func _ready() -> void:
 	_guest_room()
 	_drawing_room()
 	_vases()
+	_people()
+
+
+## The nephew by index (the order of the case's traits).
+func suspect(index: int) -> CollisionObject3D:
+	return nephews[index] if index >= 0 and index < nephews.size() else null
 
 
 ## Whether a point in the world (ignoring height) is on the mansion's lot, garden included.
@@ -142,6 +160,28 @@ func room(world: Vector3) -> String:
 	if local.x > EAST_X:
 		return "drawing"
 	return "hall" if local.z > HALL_Z else "guest"
+
+
+## The six nephews alike (NephewTraits.draw with the case seed), Señora Ofelia in the hall and Don Plumas on his stand.
+func _people() -> void:
+	var traits := NephewTraits.draw(case_seed)
+	for i in traits.size():
+		var nephew := MansionNephew.new()
+		nephew.name = "Nephew%d" % i
+		nephew.traits = traits[i]
+		nephew.index = i
+		nephew.position = NEPHEWS_AT[i] + Vector3(0, FLOOR_TOP, 0)
+		nephew.rotation.y = PI / 2
+		add_child(nephew)
+		nephews.append(nephew)
+	lady = MansionLady.new()
+	lady.name = "Lady"
+	lady.position = LADY_AT + Vector3(0, FLOOR_TOP, 0)
+	add_child(lady)
+	parrot = MansionParrot.new()
+	parrot.name = "Parrot"
+	parrot.position = PARROT_AT
+	add_child(parrot)
 
 
 ## The floors, the roof with its lights and a pitched top, and the outer walls with the front door.
