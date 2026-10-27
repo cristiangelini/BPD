@@ -8,7 +8,7 @@ Pedido de Cristian (19/10): "que todos los casos pasen en casas diferentes y con
 - Los lugares que no son del caso de hoy están cerrados, con la persiana baja o la puerta trabada. Se ven desde la calle pero no se entra. Así la ciudad no pesa y se puede ir sumando un lugar por vez.
 
 ## El plano
-Se arma de a poco (Cristian, 19/10): primero unas cuadras con lo que ya tenemos y después se van sumando la comisaría por dentro, la cárcel, el caso del político y lo que venga. El mapa es el triple de grande que el primer borrador (Cristian, 19/10): 7 × 5 manzanas de 60 m, con calles de 12 m (dos carriles y veredas), unos 520 × 370 m. Los lugares de hoy están en el medio y alrededor hay casas, edificios y galpones de relleno, que se van cambiando por los lugares nuevos. De punta a punta se maneja en unos 30 s a 60 km/h.
+Se arma de a poco (Cristian, 19/10): primero unas cuadras con lo que ya tenemos y después se van sumando la comisaría por dentro, la cárcel, el caso del político y lo que venga. El mapa es el triple de grande que el primer borrador (Cristian, 19/10): 7 × 5 manzanas de 60 m, con calles de 12 m (dos carriles y veredas), unos 520 × 370 m. El 26/10 Cristian la duplicó: 10 × 7 manzanas, unos 730 × 520 m (decisión 181), con las manzanas nuevas alrededor de las de antes. Los lugares de hoy están en el medio y alrededor hay casas, edificios y galpones de relleno, que se van cambiando por los lugares nuevos. De punta a punta se maneja en unos 30 s a 60 km/h.
 
 | Barrio | Dónde | Lugares |
 |---|---|---|

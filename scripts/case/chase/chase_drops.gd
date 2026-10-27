@@ -20,7 +20,8 @@ extends Node
 ## (control-desfile.md) shoots confetti at every corner he turns: driving into it covers the windshield
 ## (ConfettiCloud). The bridge's cement mixer (politico-puente.md) drops a blob of cement at
 ## every corner it turns: driving through it the patrol car sticks and slows down to BLOB_SPEED. The museum's art van opens its back doors every FRAME_EVERY seconds and an
-## empty gilt frame falls out (ChaseFrame). Every number here is
+## empty gilt frame falls out (ChaseFrame). The hotel's shuttle loses a suitcase off its roof every SUITCASE_EVERY
+## seconds (ChaseSuitcase): run over, its clothes cover the patrol car's windshield. Every number here is
 ## (propuesta).
 
 const DRIP_EVERY := 3.0
@@ -59,6 +60,8 @@ const DUMMY_EVERY := 5.0
 const MAX_DUMMIES := 8
 const FRAME_EVERY := 5.0
 const MAX_FRAMES := 8
+const SUITCASE_EVERY := 5.0
+const MAX_SUITCASES := 8
 const MELONS_PER_CORNER := 2
 const MAX_MELONS := 12
 ## How fast they roll off the back, in m/s.
@@ -96,6 +99,9 @@ var puddles: Array[Array] = []
 var furniture: Array[RigidBody3D] = []
 var dummies: Array[ChaseDummy] = []
 var frames: Array[ChaseFrame] = []
+var suitcases: Array[ChaseSuitcase] = []
+## Seconds the patrol car's windshield stays covered in a run-over suitcase's clothes.
+var laundry_left := 0.0
 var melons: Array[Watermelon] = []
 ## The cement blobs on the street: [node, seconds left].
 var blobs: Array[Array] = []
@@ -126,6 +132,7 @@ var honks := 0
 var _drip_left := DRIP_EVERY
 var _dummy_left := DUMMY_EVERY
 var _frame_left := FRAME_EVERY
+var _suitcase_left := SUITCASE_EVERY
 var _kids_left := 0.0
 var _kids_line := 0
 var kids_bubble: Label3D
@@ -167,6 +174,14 @@ func _physics_process(delta: float) -> void:
 		if _frame_left <= 0.0:
 			_frame_left = FRAME_EVERY
 			drop_frame()
+	if case.suspect_id == SuspectCar.HOTEL_SHUTTLE:
+		if case.chasing and not case.stopped and not case.follower:
+			_suitcase_left -= delta
+			if _suitcase_left <= 0.0:
+				_suitcase_left = SUITCASE_EVERY
+				drop_suitcase()
+		laundry_left = maxf(laundry_left - delta, 0.0)
+		ConfettiCloud.cover(case.car, laundry_left > 0.0)
 	if kids_bubble and case.chasing and not case.stopped:
 		_kids_left -= delta
 		if _kids_left <= 0.0:
@@ -491,6 +506,23 @@ func drop_frame() -> ChaseFrame:
 	frame.rotation.y = case.truck.global_rotation.y + _rng.randf_range(-0.4, 0.4)
 	frames.append(frame)
 	return frame
+
+
+## A suitcase comes loose off the shuttle's roof and lands burst open on the street.
+func drop_suitcase() -> ChaseSuitcase:
+	suitcases = suitcases.filter(func(suitcase: ChaseSuitcase) -> bool: return is_instance_valid(suitcase))
+	if suitcases.size() >= MAX_SUITCASES:
+		suitcases.pop_front().queue_free()
+	var suitcase := ChaseSuitcase.new()
+	suitcase.car = case.car
+	suitcase.drops = self
+	_dropped += 1
+	suitcase.name = "Suitcase%d" % _dropped
+	case.get_parent().add_child(suitcase)
+	suitcase.global_position = _behind() + Vector3.UP * 0.3
+	suitcase.rotation.y = case.truck.global_rotation.y + _rng.randf_range(-0.6, 0.6)
+	suitcases.append(suitcase)
+	return suitcase
 
 
 func _behind() -> Vector3:
