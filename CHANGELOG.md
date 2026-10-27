@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Supermarket raid, step 7: Play's raid draw now includes the supermarket, and Don Ofertón gets away in the car when he sees a cop pick up the main evidence; pulled over, he gets off with his own lines.
 - Supermarket raid, step 6: the aisle 13 story: at the back of aisle 4 a gondola slides aside when cops run into it (the clue), and behind it is aisle 13 with its sign, a shelf of bottles and the box of "Crece Pelo al Instante" tonic; the sample bottles and Don Ofertón's fake mustache are hidden. The supermarket now tells its six stories.
 - Supermarket raid, step 6: the rigged raffle story: the urn full of coupons for "Primo Ofertón" hidden with the cardboard prize car and the photo of the winners; by the entrance a table with a "We're raffling a car!" sign and a pad of coupons whose top one already comes filled in for the cousin (the clue).
 - Supermarket raid, step 6: the scale that adds up story: the magic screw hidden with the "How to weigh more" manual and a golden screwdriver; the produce stand's scale shows what lies on it plus 300 g (0.3 kg empty), with three tomatoes by it to try, and the first thing weighed is the clue.
