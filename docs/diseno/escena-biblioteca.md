@@ -171,5 +171,14 @@ polvo dorado con la linterna, el fichero, el ruido y el apagón de Doña Sigilo,
    cuento con E (10 s, sin alejarse más de 2 m; si te vas, se corta y hay que empezar de nuevo) y al final dice el
    género del que vio con el libro, o pide otro cuento si no vio nada. Lo del ruido (cortar el cuento a 30, asustarlo
    a 100) llega en 5c. Capturas: `biblioteca/paso5b-*.png`.
+   **Hecho así (5c, el ruido):** la barra "Ruido" arriba sube con el chat de voz dentro de la biblioteca (2 por
+   segundo), gritar (15), correr adentro (1 por segundo), buscar en un estante (10; el carrito y el almohadón no hacen
+   ruido) y la sirena a menos de 20 m de la puerta (20 al prenderla), y baja 1 por segundo. A 50 Doña Sigilo aparece
+   al lado del último que hizo ruido, le dice "¡SHHH!" y su chat de voz no se oye por 10 s; después vuelve al
+   mostrador. A 100 apaga las luces por 60 s: adentro queda oscuro aunque sea de día (solo se ve con la linterna), los
+   seis lectores cambian de lugar (nadie queda en el suyo) y Tomasito, si no le leyeron el cuento, se despierta
+   asustado (se pierde el testigo). Desde 30 el cuento se corta. Sentarse a leer en el sillón (E) baja el ruido el
+   doble mientras te quedes cerca, pero pierde el pelo del sillón. Lo que se cae al piso todavía no suma (queda para
+   después). Capturas: `biblioteca/paso5c-*.png`.
 6. El final: tablero, cansancio, sueldo y el bibliobús con las pilas de libros.
 7. El sorteo de "Jugar" y el online.

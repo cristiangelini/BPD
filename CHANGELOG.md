@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Library crime scene, step 5c: the noise bar. Voice chat, shouts, running, searching shelves and the siren by the door make noise, and it goes down by itself (twice as fast while a cop reads in the armchair, which loses the hair). At 50 Doña Sigilo hushes the last one (their voice chat goes quiet for 10 s); at 100 she turns off the lights for 60 s: it's dark inside even by day, the readers swap places and Tomasito wakes up scared.
 - Library crime scene, step 5b: the gold dust counts as a clue once the flashlight shows it on anyone's hands; the Golden Book is opened first (the culprit's bookmark is inside) and then goes back to its case (unopened, the bookmark is locked in); reading Tomasito a story (10 s, staying by him) gets what he saw: the kind of book the thief was reading.
 - Library crime scene, step 5a: the clues on the spot. Prints on the display case's glass (touching it covers them, and Doña Sigilo dusts it 4 minutes in), the slipper print on the waxed parquet, a hair on the reading armchair and a bitten cookie inside a hollow book on the middle table; evidence bags by the desk.
 - Library crime scene, step 4: the Golden Book hides in one of ten spots (the eight sections, the returns cart or the big cushion), drawn with the seed. E searches a spot for 5 s and the cop says what was there instead; the card catalog by the door takes 10 s and gives the swapped card's section letter, or says all is in order. The book turns up in the aisle and goes back to its display case with E (+100).

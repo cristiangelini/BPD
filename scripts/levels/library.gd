@@ -101,6 +101,9 @@ var loot_spots := {}
 var book: GoldenBook
 var catalog: CardCatalog
 var clues: LibraryClues
+var noise: LibraryNoise
+## The ceiling lights (Doña Sigilo turns them off at the noise's top, LibraryNoise.blackout).
+var lamps: Array[OmniLight3D] = []
 ## What each cop is busy searching ("" for nothing), by cop: a search or the catalog takes a while.
 var _busy := {}
 var readers: Array[LibraryReader] = []
@@ -135,6 +138,11 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	kid.case = case
 	kid.knows = case.plan.clues.has("witness")
 	kid.saw = case.culprit().genre
+	noise = LibraryNoise.new()
+	noise.name = "Noise"
+	noise.library = self
+	noise.case = case
+	add_child(noise)
 	clues = LibraryClues.new()
 	clues.name = "Clues"
 	clues.library = self
@@ -150,6 +158,9 @@ func search(spot: String, cop: Cop) -> void:
 	_busy[cop] = spot
 	if cop:
 		cop.show_hint("HINT_LIBRARY_SEARCHING")
+	# Taking books off a shelf makes noise.
+	if noise and spot.begins_with("section_"):
+		noise.add(LibraryNoise.SEARCH, cop)
 	get_tree().create_timer(SEARCH_SECONDS).timeout.connect(searched.bind(spot, cop))
 
 
@@ -215,6 +226,30 @@ func reveal_loot() -> void:
 	book.collision_layer = 0
 	if case:
 		case.found_loot()
+
+
+## A cop sat down to read in the armchair: the noise goes down faster, and the hair left on it is lost.
+func read_in_armchair(cop: Cop) -> void:
+	if cop:
+		cop.show_hint("HINT_ARMCHAIR_READING")
+	if not case:
+		return
+	noise.start_reading(cop)
+	var hair := case.items.get("hair") as CrimeClueItem
+	if hair and not hair.bagged and hair.global_position.distance_to(to_global(ARMCHAIR_AT)) <= 1.0:
+		hair.wash()
+
+
+## A cop shouted (VoiceChat) inside: noise.
+func shouted_by(cop: Cop) -> void:
+	if noise and inside(cop.global_position):
+		noise.add(LibraryNoise.SHOUT, cop)
+
+
+## Doña Sigilo back behind her desk after hushing someone.
+func librarian_back() -> void:
+	librarian.position = LIBRARIAN_AT + Vector3(0, FLOOR_TOP, 0)
+	librarian.rotation = Vector3(0, PI, 0)
 
 
 ## The reader by index (the order of the case's traits).
@@ -310,7 +345,7 @@ func _shell() -> void:
 	_builder.wall_at("z", HALF_X, BACK_Z, FRONT_Z, 0, ROOF, [], STONE)
 	for x: float in [-10.5, 0.0, 10.5]:
 		for z: float in [-9.0, -1.0, 4.0]:
-			_builder.light(Vector3(x, ROOF - 0.5, z))
+			lamps.append(_builder.light(Vector3(x, ROOF - 0.5, z)))
 
 
 ## The low stone steps up to the door, the four columns with the pediment over them, the clock and the sign.
@@ -375,7 +410,12 @@ func _reading_room() -> void:
 	_builder.box(CASE_AT + Vector3(0, 0.9 + 0.25, 0), Vector3(CASE_SIZE.x, 0.5, CASE_SIZE.z), GLASS)
 	_builder.mesh_box(CASE_AT + Vector3(0, 0.95, 0), Vector3(0.4, 0.06, 0.3), GOLD)
 	# The reading armchair, red velvet with a footstool.
-	_builder.box(ARMCHAIR_AT + Vector3(0, 0.25, 0), Vector3(0.9, 0.5, 0.9), CARPET)
+	_builder.mesh_box(ARMCHAIR_AT + Vector3(0, 0.25, 0), Vector3(0.9, 0.5, 0.9), CARPET)
+	var armchair := ReadingArmchair.new(Vector3(0.9, 0.5, 0.9))
+	armchair.name = "Armchair"
+	armchair.library = self
+	armchair.position = ARMCHAIR_AT + Vector3(0, 0.25, 0)
+	add_child(armchair)
 	_builder.box(ARMCHAIR_AT + Vector3(-0.38, 0.7, 0), Vector3(0.15, 0.6, 0.9), CARPET)
 	_builder.box(ARMCHAIR_AT + Vector3(0.6, 0.15, 0), Vector3(0.4, 0.3, 0.4), CARPET.darkened(0.2))
 	# The librarian's desk with the bell and the stamp.
