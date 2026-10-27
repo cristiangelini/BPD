@@ -1,5 +1,5 @@
 class_name CodedDedicationsRig
-extends RadioRig
+extends RadioStationRig
 
 ## The coded dedications (allanamiento-radio.md, "Las dedicatorias en clave"): don Volumen sends messages to a gang in
 ## the song dedications. The box with the code book and the portable radio is hidden with the "listeners" list and the
