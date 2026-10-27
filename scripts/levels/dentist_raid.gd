@@ -298,15 +298,21 @@ func _place_facts() -> Dictionary:
 	}
 
 
-## Online, what the guests' office takes from the host's (RaidCase.snapshot): the fish tank and what the story's rig
-## decides on the host.
+## Online, what the guests' office takes from the host's (RaidCase.snapshot): the fish tank, how many times each gas
+## tank opened and what the story's rig decides on the host.
 func net_state() -> Dictionary:
-	return {"tank": tank_broken, "rig": rig.net_state() if rig else null}
+	return {"tank": tank_broken, "leaks": gas_tanks.map(func(tank: LaughingGasTank) -> int: return tank.leaks),
+		"rig": rig.net_state() if rig else null}
 
 
 func apply_net_state(state: Dictionary) -> void:
 	if state.tank:
 		break_fish_tank()
+	# A tank that opened on the host opens here too (the guests' copies are frozen and never leak by themselves).
+	for i in mini(state.leaks.size(), gas_tanks.size()):
+		if state.leaks[i] > gas_tanks[i].leaks:
+			gas_tanks[i].leak()
+			gas_tanks[i].leaks = state.leaks[i]
 	if rig and state.rig != null:
 		rig.apply_net_state(state.rig)
 
