@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Karaoke raid, step 6c: the speaker of watches story: one stage speaker is the 20 kg main evidence, it ticks for a cop next to it (the clue once), the customers sing turned toward the other one, and the fake gold watch and the ship's invoice are hidden.
 - Karaoke raid, step 6b: the lyrics with messages story: while a customer sings, the screen shows the song's lines and now and then a message from no song, which a cop looking at the screen notices (the clue once); the lyrics computer, the notebook of codes and the receipt for goods are hidden.
 - Karaoke raid, step 6a: the tuning microphone story: a booth microphone makes the cop holding it sing perfectly (golden notes, the clue once), Rosaura is off key in a duet, and the golden microphone, the spare tuner chip and the diva's manual are hidden.
 - Karaoke raid, step 5: the karaoke is a raid case (three suspicions, clue notes, hidden items drawn with the seed, Rosaura's slips and Toto's clue) with its first story, the applause machine: recorded applause plays from a ceiling speaker while a customer sings, and a cop under it notices where it comes from.

@@ -159,6 +159,11 @@ suman entre 400 y 600.
      policía a menos de 10 m de la pantalla y mirándola cuando sale se da cuenta (la pista, una vez). Rota, la
      pantalla no muestra nada. Se esconden la computadora de las letras (6 kg, 1000, en un escondite grande), la
      libreta de claves (300) y el recibo de "mercadería" (200). Captura: `paso6b-letras.png`.
+   - **Cómo quedó el parlante de los relojes (propuesta):** uno de los dos parlantes del escenario (sacado con la
+     semilla) es la evidencia principal: 20 kg, así que hace falta llevarlo entre dos. No está escondido, está en su
+     lugar. No suena, así que los clientes cantan girados hacia el otro, y un policía a menos de 1,8 m lo oye hacer
+     tic-tac (la pista, una vez). Se esconden el reloj de oro falso (300) y la factura del barco (200). Captura:
+     `paso6c-relojes.png`.
 7. "Jugar" suma el karaoke al sorteo de allanamientos, y la huida de Rosaura.
 8. El online (Rosaura, Toto, los clientes, los micrófonos y lo frágil en todas las PC).
 

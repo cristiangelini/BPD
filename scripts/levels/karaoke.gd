@@ -62,6 +62,16 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_KARAOKE_CODES", "OBJ_EXTRA_GOODS_RECEIPT"],
 		"rig": preload("res://scripts/case/karaoke/lyrics_rig.gd"),
 	},
+	"karaoke_watches": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_KARAOKE_WATCHES_B", "BRIEF_KARAOKE_WATCHES_C", "BRIEF_KARAOKE_WATCHES_D"],
+		"find": "OBJ_FIND_WATCH_SPEAKER",
+		"hidden": [preload("res://scenes/props/karaoke_fake_watch.tscn"),
+			preload("res://scenes/props/karaoke_ship_invoice.tscn")],
+		"half_heights": [0.01, 0.003],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_FAKE_WATCH", "OBJ_EXTRA_SHIP_INVOICE"],
+		"rig": preload("res://scripts/case/karaoke/watches_rig.gd"),
+	},
 }
 ## Where the clue notes for the suspicions can lie, on the floor.
 const NOTE_PLACES: Array[Vector3] = [Vector3(-1.0, FLOOR_TOP, 8.0), Vector3(4.0, FLOOR_TOP, 6.5),
@@ -197,6 +207,8 @@ var toto: SoundGuy
 var duet_call: DuetCall
 var complaint_bar: ProgressBar
 var mics: Array[KaraokeMic] = []
+## Each stage speaker's body and model, west to east (a story can swap one, step 6).
+var speakers: Array = []
 var singers: Array[KaraokeSinger] = []
 ## The customer whose turn it is (null between turns), the next one in line and how long until they go up.
 var on_turn: KaraokeSinger
@@ -393,8 +405,7 @@ func _build_stage() -> void:
 	_steps(Vector3(STEPS_X, FLOOR_TOP, STAGE_AT.z + STAGE_SIZE.z / 2 + STEPS_RUN))
 	for x: float in SPEAKER_X:
 		var at := Vector3(x, FLOOR_TOP + STAGE_SIZE.y, SPEAKER_Z)
-		_solid(at + Vector3(0, SPEAKER_SIZE.y / 2, 0), SPEAKER_SIZE)
-		_model(SPEAKER_MODEL, at)
+		speakers.append([_solid(at + Vector3(0, SPEAKER_SIZE.y / 2, 0), SPEAKER_SIZE), _model(SPEAKER_MODEL, at)])
 	_model(SCREEN_MODEL, SCREEN_AT + Vector3(0, 0, 0.1))
 	var hit := _area(SCREEN_AT + Vector3(0, 0, SCREEN_SIZE.z / 2), SCREEN_SIZE)
 	hit.body_entered.connect(func(body: Node3D) -> void:
@@ -639,8 +650,10 @@ func _door(x: float) -> FrontDoor:
 
 
 ## A box only to bump into, under a model that gives the look.
-func _solid(center: Vector3, size: Vector3) -> void:
-	_build.shape(_build.body(center), size)
+func _solid(center: Vector3, size: Vector3) -> StaticBody3D:
+	var body := _build.body(center)
+	_build.shape(body, size)
+	return body
 
 
 func _area(center: Vector3, size: Vector3) -> Area3D:
