@@ -26,6 +26,7 @@ const MODELS := {
 	"insurance": preload("res://assets/models/npc_jefa.glb"),
 	"cake_lab": preload("res://assets/models/npc_chef_bruno.glb"),
 	"gym": preload("res://assets/models/npc_profe_fito.glb"),
+	"nieve": preload("res://assets/models/npc_dona_nieve.glb"),
 	"dangerous": preload("res://assets/models/npc_sospechoso.glb"),
 	# The pastry contest's culprit, off his bike (escena-del-crimen.md).
 	"cook": preload("res://assets/models/npc_pastelero.glb"),

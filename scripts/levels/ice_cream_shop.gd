@@ -11,7 +11,8 @@ extends Node3D
 ## leaves a slippery puddle (IcePuddle) and a fine. Doña Nieve minds the counter and goes to the cold room now and
 ## then, filling the complaint; E on the soft-serve machine jams it and she fights it, her back to everything (step 3).
 ## Lucho the delivery boy rides up to the door now and then: a cone from the dispenser on the till's desk buys what he
-## saw (step 4). Every number here is (propuesta).
+## saw (step 4). The case is one of its stories (STORIES), drawn with the seed, run by the same RaidCase as the other
+## places (step 5). Every number here is (propuesta).
 
 signal case_cracked
 signal penguin_knocked
@@ -21,6 +22,34 @@ signal cold_room_melted
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const COUNTER_MODEL := preload("res://assets/models/ice_counter.glb")
 const NIEVE_SCENE := preload("res://scenes/npc/dona_nieve.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the shop can be suspected of (allanamiento-heladeria.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["stolen_flavors", "frozen_smuggling", "rigged_scale", "rigged_sticks", "frozen_cash",
+	"stolen_truck"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_ICE_TIP_B", "BRIEF_TIP_C", "BRIEF_ICE_TIP_D",
+	"BRIEF_ICE_TIP_E"]
+## The stories the shop can tell, like RadioStation.STORIES: what the comisario says once it's guessed, its "find it"
+## row, what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the checklist
+## rows of its extras and its rig. The first hidden item is the main evidence and the rest extras.
+const STORIES := {
+	"stolen_flavors": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_STOLEN_FLAVORS_B", "BRIEF_STOLEN_FLAVORS_C", "BRIEF_STOLEN_FLAVORS_D"],
+		"find": "OBJ_FIND_RECIPE_BOX",
+		"hidden": [preload("res://scenes/props/recipe_box.tscn"), preload("res://scenes/props/secret_jar.tscn"),
+			preload("res://scenes/props/rival_photo.tscn")],
+		"half_heights": [0.125, 0.1, 0.04],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_SECRET_JAR", "OBJ_EXTRA_RIVAL_PHOTO"],
+		"rig": preload("res://scripts/case/ice_cream/stolen_flavors_rig.gd"),
+	},
+}
+## Where the suspicion notes can lie: on the salon's floor, behind the counter, in the kitchen, the office and the
+## yard.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(1.0, FLOOR_TOP, 7.6), Vector3(7.0, FLOOR_TOP, 4.0), Vector3(-6.0, FLOOR_TOP, 3.2),
+	Vector3(-3.0, FLOOR_TOP, -2.0), Vector3(1.5, FLOOR_TOP, -1.0), Vector3(-2.0, FLOOR_TOP, -7.0),
+]
 const SHELF_MODEL := preload("res://assets/models/cold_shelf.glb")
 const PENGUIN_MODEL := preload("res://assets/models/penguin_statue.glb")
 const TRUCK_MODEL := preload("res://assets/models/ice_cream_truck.glb")
@@ -153,9 +182,21 @@ var lucho: Lucho
 var _nieve_opened := false
 var _was_locked := false
 var broken_goods := 0
+## The case flow every raid shares.
+var raid: RaidCase
 ## Money taken off the case pay: the counter's glass case, the melted freezers and the cold room.
-var fines := 0
-## Same seed, same shop (the stories and the hiding spots come from it, step 5).
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: IceCreamRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
+## Same seed, same shop, same draw: the story and where its things go. 0 draws one.
 @export var case_seed := 0
 var _build: PlaceBuilder
 var _penguin: Node3D
@@ -168,6 +209,19 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_salon()
@@ -187,6 +241,84 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "ice_cream", car)
+	raid.station_parking = station_parking
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = nieve
+	raid.owner_id = "nieve"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The shop's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_ICE",
+		"guess_key": "OBJ_GUESS_ICE",
+		"broken_key": "OBJ_BROKEN_ICE",
+		"complaint_key": "OBJ_COMPLAINT_ICE",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_goods,
+		"complaint": nieve.complaint,
+	}
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	main = hidden[0]
+	extras.assign(hidden.slice(1))
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What doña Nieve lets slip when asked (where the story's things are, in an order drawn from the seed), and what Lucho
+## saw: where she put one of them away.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		nieve.slips.append(tr("NIEVE_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	nieve.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	lucho.clue = tr("CLUE_LUCHO") % where
+	lucho.clue_speech = tr("LUCHO_CLUE_" + story_id) % where
+	lucho.told.connect(raid.add_clue)
 
 
 ## The floors, the outer walls with the entrance, the roof, the sign over the door and the penguin on the sidewalk.
@@ -347,6 +479,7 @@ func _on_freezer_melted(i: int) -> void:
 	var freezer := freezers[i]
 	broken_goods += 1
 	fines += FREEZER_FINE
+	raid.float_label("-%d" % FREEZER_FINE, freezer.global_position + Vector3.UP * 2.2, Color(1, 0.3, 0.25))
 	_puddle(freezer.position + Vector3(0, 0, IceFreezer.SIZE.z / 2 + FREEZER_PUDDLE.y / 2).rotated(Vector3.UP,
 		freezer.rotation.y), FREEZER_PUDDLE, FREEZER_FLAVORS[i])
 	_say(freezer.position + Vector3(0, 1.8, 0), "ICE_FREEZER_MELTED_%d" % (i + 1))
@@ -362,6 +495,7 @@ func melt_cold_room() -> void:
 	cold_melted = true
 	broken_goods += 1
 	fines += COLD_FINE
+	raid.float_label("-%d" % COLD_FINE, to_global(Vector3(COLD_DOOR_X, 2.6, COLD_Z1 + 0.8)), Color(1, 0.3, 0.25))
 	_puddle(Vector3(COLD_DOOR_X, FLOOR_TOP, COLD_Z1 + COLD_PUDDLE.y / 2), COLD_PUDDLE)
 	_say(Vector3(COLD_DOOR_X, 2.2, COLD_Z1 + 0.8), "ICE_COLD_ROOM_MELTED")
 	if nieve:
@@ -380,6 +514,7 @@ func _place_nieve() -> void:
 	add_child(nieve)
 	nieve.start_at(0)
 	cold_door.broken.connect(nieve.door_broken)
+	nieve.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_ICE"))
 	till.opened.connect(func(at: Vector3) -> void: nieve.saw(at, FloorBoss.SAW_TILL))
 	case_cracked.connect(func() -> void:
 		nieve.saw(to_global(COUNTER_AT + Vector3(0, 1.1, 0.4)), SAW_CASE, "NIEVE_CASE"))
@@ -452,6 +587,7 @@ func crack_case() -> void:
 	case_broken = true
 	broken_goods += 1
 	fines += CASE_FINE
+	raid.float_label("-%d" % CASE_FINE, to_global(COUNTER_AT + Vector3.UP * 2.0), Color(1, 0.3, 0.25))
 	_build.mesh_box(COUNTER_AT + Vector3(0.4, 1.2, 0.36), Vector3(2.0, 0.03, 0.01), DARK)
 	_build.mesh_box(COUNTER_AT + Vector3(-0.5, 1.15, 0.36), Vector3(0.03, 0.3, 0.01), DARK)
 	_say(COUNTER_AT + Vector3(0, 2.2, 0.6), "ICE_CASE_BROKEN")
