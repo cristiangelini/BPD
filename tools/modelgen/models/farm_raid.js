@@ -368,6 +368,62 @@ export const models = {
 		}
 		return b.build();
 	},
+	// The piggy bank shaped like a pig, full of stolen jewels, caked with mud. About 0.42 x 0.3 x 0.26 m, bottom at y = 0.
+	piggy_bank() {
+		const b = new Builder('piggy_bank');
+		const pinkGlaze = C('piggy_pink', 0xf090a8, { roughness: 0.3 }), mud = C('piggy_mud', 0x5a3e22);
+		b.add('body', pinkGlaze, ellipsoid(0.2, 0.12, 0.13, 12, 8), { pos: V(0, 0.16, 0) });
+		b.add('snout', pinkGlaze, new THREE.CylinderGeometry(0.05, 0.05, 0.05, 10), { pos: V(0.21, 0.16, 0), rot: [0, 0, Math.PI / 2] });
+		for (const s of [-1, 1]) {
+			b.add('ears', pinkGlaze, new THREE.ConeGeometry(0.035, 0.06, 4), { pos: V(0.13, 0.28, s * 0.06) });
+			for (const x of [-0.11, 0.11]) {
+				b.add('legs', pinkGlaze, new THREE.CylinderGeometry(0.03, 0.03, 0.06, 6), { pos: V(x, 0.03, s * 0.07) });
+			}
+		}
+		b.add('slot', C('slot_black', 0x111111), new THREE.BoxGeometry(0.08, 0.01, 0.015), { pos: V(0, 0.28, 0) });
+		b.add('jewels', C('jewel_gold', 0xf0c030, { metalness: 0.7, roughness: 0.25 }), new THREE.TorusGeometry(0.025, 0.008, 6, 10), { pos: V(-0.02, 0.29, 0), rot: [0, 0, 0.3] });
+		b.add('jewels', C('jewel_red', 0xe02040, { roughness: 0.1 }), new THREE.OctahedronGeometry(0.02), { pos: V(0.03, 0.29, 0) });
+		b.add('mud', mud, ellipsoid(0.08, 0.03, 0.08, 8, 4), { pos: V(-0.1, 0.07, 0.07) });
+		b.add('mud', mud, ellipsoid(0.07, 0.03, 0.06, 8, 4), { pos: V(0.05, 0.05, -0.08) });
+		return b.build();
+	},
+	// A spade with fresh mud on its blade, lying flat. 1.1 x 0.06 x 0.2 m, bottom at y = 0.
+	muddy_shovel() {
+		const b = new Builder('muddy_shovel');
+		b.add('handle', C('handle_wood', 0x9a6a3a), new THREE.CylinderGeometry(0.018, 0.018, 0.8, 6), { pos: V(-0.15, 0.025, 0), rot: [0, 0, Math.PI / 2] });
+		b.add('grip', C('grip_black', 0x202020), new THREE.BoxGeometry(0.03, 0.04, 0.14), { pos: V(-0.55, 0.025, 0) });
+		b.add('blade', C('blade_steel', 0x9098a0, { metalness: 0.6, roughness: 0.4 }), new THREE.BoxGeometry(0.28, 0.01, 0.2), { pos: V(0.4, 0.01, 0) });
+		b.add('mud', C('fresh_mud', 0x4a3018), ellipsoid(0.11, 0.025, 0.08, 8, 4), { pos: V(0.43, 0.025, 0) });
+		return b.build();
+	},
+	// The map of the pigsty drawn in pencil, a big red X where the piggy bank is. 0.3 x 0.004 x 0.22 m, bottom at y = 0.
+	sty_map() {
+		const b = new Builder('sty_map');
+		b.add('paper', C('map_paper', 0xf0e6c8), new THREE.BoxGeometry(0.3, 0.004, 0.22), { pos: V(0, 0.002, 0) });
+		const pencil = C('pencil_grey', 0x505050);
+		for (const s of [-1, 1]) {
+			b.add('fence', pencil, new THREE.BoxGeometry(0.24, 0.001, 0.006), { pos: V(0, 0.0045, s * 0.08) });
+			b.add('fence', pencil, new THREE.BoxGeometry(0.006, 0.001, 0.16), { pos: V(s * 0.12, 0.0045, 0) });
+			b.add('cross', C('cross_red', 0xd02020), new THREE.BoxGeometry(0.07, 0.0012, 0.012), { pos: V(0.05, 0.0048, 0.02), rot: [0, s * 0.785, 0] });
+		}
+		return b.build();
+	},
+	// An old rubber boot full of mud, lying on its side: what the pigs dig up. 0.32 x 0.12 x 0.3 m, bottom at y = 0.
+	mud_boot() {
+		const b = new Builder('mud_boot');
+		const rubber = C('boot_green', 0x2f5a2a);
+		b.add('leg', rubber, new THREE.CylinderGeometry(0.06, 0.06, 0.24, 8), { pos: V(-0.04, 0.06, 0), rot: [0, 0, Math.PI / 2] });
+		b.add('foot', rubber, new THREE.BoxGeometry(0.1, 0.11, 0.24), { pos: V(0.11, 0.055, 0.04) });
+		b.add('mud', C('fresh_mud', 0x4a3018), ellipsoid(0.05, 0.02, 0.05, 8, 4), { pos: V(-0.16, 0.06, 0) });
+		return b.build();
+	},
+	// A dented tin can caked with mud: more of what the pigs dig up. 0.16 x 0.1 x 0.1 m, bottom at y = 0.
+	mud_can() {
+		const b = new Builder('mud_can');
+		b.add('can', C('can_tin', 0xa0a4a8, { metalness: 0.6, roughness: 0.5 }), new THREE.CylinderGeometry(0.045, 0.05, 0.15, 8), { pos: V(0, 0.05, 0), rot: [0, 0, Math.PI / 2] });
+		b.add('mud', C('fresh_mud', 0x4a3018), ellipsoid(0.04, 0.02, 0.04, 8, 4), { pos: V(0.02, 0.09, 0) });
+		return b.build();
+	},
 	// One egg, white like the hens lay them, bottom at y = 0. 0.06 x 0.08 m.
 	farm_egg() {
 		const b = new Builder('farm_egg');
@@ -407,6 +463,12 @@ export const views = {
 		items: [{ name: 'giant_carrot', pos: [-0.9, 0.8, 0] }, { name: 'fertilizer_jugs', pos: [0.2, 0, 0.2], rotY: 0.3 },
 			{ name: 'growth_diary', pos: [0.6, 0, 0.6] }, { name: 'ruler_2m', pos: [0.4, 0, 1.0], rotY: 0.2 }],
 		cam: { pos: [0, 2.0, 5.0], target: [-0.2, 1.3, 0], fov: 40 },
+	},
+	farm_piggy_bank: {
+		items: [{ name: 'piggy_bank', pos: [-0.3, 0, 0], rotY: 0.5 }, { name: 'muddy_shovel', pos: [0.2, 0, 0.45], rotY: 0.2 },
+			{ name: 'sty_map', pos: [0.45, 0, 0.0], rotY: -0.3 }, { name: 'mud_boot', pos: [-0.6, 0, 0.5], rotY: 0.8 },
+			{ name: 'mud_can', pos: [0.75, 0, 0.35] }],
+		cam: { pos: [0, 1.0, 1.9], target: [0.05, 0.1, 0.2], fov: 38 },
 	},
 	farm_golden_eggs: {
 		items: [{ name: 'golden_egg_box', pos: [-0.4, 0, 0], rotY: 0.3 }, { name: 'gold_paint_can', pos: [0.3, 0, 0.1] },

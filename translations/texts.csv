@@ -5710,3 +5710,14 @@ PROMPT_PULL_CARROT,E: tirar de la zanahoria (entre dos),E: pull the carrot (two 
 FARM_CARROT_STUCK,"¡No sale! Hace falta otro policía tirando a la vez","It won't budge! Another cop has to pull at the same time","Não sai! Falta outro policial puxando junto"
 FARM_CARROT_OUT,¡PLOP!,POP!,PLOFT!
 FARM_CARROT_LABEL,PROPIEDAD DEL LABORATORIO,PROPERTY OF THE LAB,PROPRIEDADE DO LABORATÓRIO
+BRIEF_PIGGY_BANK_B,"Desapareció un cargamento de joyas, y un vecino vio a Don Florencio enterrando algo rosado en el chiquero.","A load of jewels went missing, and a neighbor saw Don Florencio burying something pink in the pigsty.","Sumiu uma carga de joias, e um vizinho viu Don Florencio enterrando algo cor-de-rosa no chiqueiro."
+BRIEF_PIGGY_BANK_C,"Traigan la alcancía con las joyas en el baúl del patrullero. Está bajo el barro: los chanchos cavan, quizás les ganen de mano.","Bring the piggy bank with the jewels in the patrol car's trunk. It's under the mud: the pigs dig, maybe they'll beat you to it.","Tragam o cofrinho com as joias no porta-malas da viatura. Está debaixo da lama: os porcos cavam, talvez cheguem antes."
+BRIEF_PIGGY_BANK_D,"Si encuentran la pala con barro fresco o el mapa del chiquero, mejor: todo suma.","If you find the shovel with fresh mud or the pigsty map, even better: it all counts.","Se acharem a pá com lama fresca ou o mapa do chiqueiro, melhor: tudo conta."
+OBJ_FIND_PIGGY_BANK,Llevarse la alcancía con las joyas,Take the piggy bank with the jewels,Levar o cofrinho com as joias
+OBJ_EXTRA_MUDDY_SHOVEL,Extra: la pala con barro fresco,Extra: the shovel with fresh mud,Extra: a pá com lama fresca
+OBJ_EXTRA_STY_MAP,Extra: el mapa del chiquero con una cruz,Extra: the pigsty map with an X,Extra: o mapa do chiqueiro com um X
+PANCHO_CLUE_piggy_bank,"«¡Gracias! Te cuento: vi al tío esconder algo %s. Y los chanchos no paran de cavar en el barro.»","“Thanks! Here's the thing: I saw my uncle hide something %s. And the pigs won't stop digging in the mud.”","“Valeu! Te conto: vi o tio esconder algo %s. E os porcos não param de cavar na lama.”"
+CLUE_PIG_RING,"Un chancho tiene un anillo de oro brillante en el hocico. ¿De dónde lo sacó?","A pig has a shiny gold ring on its snout. Where did it get that?","Um porco tem um anel de ouro brilhante no focinho. De onde ele tirou isso?"
+PROMPT_LOOK_PIG,E: mirar el chancho de cerca,E: take a close look at the pig,E: olhar o porco de perto
+PIG_OINK,¡Oink!,Oink!,Oinc!
+FARM_PIG_DUG,¡El chancho desenterró algo!,The pig dug something up!,O porco desenterrou algo!

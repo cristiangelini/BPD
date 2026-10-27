@@ -75,6 +75,18 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_GROWTH_DIARY", "OBJ_EXTRA_RULER_2M"],
 		"rig": preload("res://scripts/case/farm/giant_carrots_rig.gd"),
 	},
+	"piggy_bank": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_PIGGY_BANK_B", "BRIEF_PIGGY_BANK_C", "BRIEF_PIGGY_BANK_D"],
+		"find": "OBJ_FIND_PIGGY_BANK",
+		"hidden": [preload("res://scenes/props/piggy_bank.tscn"), preload("res://scenes/props/muddy_shovel.tscn"),
+			preload("res://scenes/props/sty_map.tscn")],
+		"half_heights": [0.16, 0.025, 0.003],
+		"heavy": [true, false, false],
+		## Buried in the mud: the pigs dig it up (PiggyBankRig).
+		"main_spots": ["in_mud"],
+		"extra_keys": ["OBJ_EXTRA_MUDDY_SHOVEL", "OBJ_EXTRA_STY_MAP"],
+		"rig": preload("res://scripts/case/farm/piggy_bank_rig.gd"),
+	},
 }
 ## Where the suspicion notes lie: on the yard's dirt, out of the buildings and the pens (Tota may eat them).
 const NOTE_PLACES: Array[Vector3] = [
@@ -453,6 +465,9 @@ func _place_goat_and_pigs() -> void:
 			rng.randf_range(MUD.position.y + 0.5, MUD.end.y - 0.5))
 		add_child(pig)
 		pigs.append(pig)
+		pig.looked.connect(func(_cop: Cop) -> void:
+			if raid:
+				raid.float_label(tr("PIG_OINK"), pig.global_position + Vector3.UP * 1.0, Color.WHITE))
 
 
 ## Margarita in her corral, its gate, and the loose bales in the barn.
