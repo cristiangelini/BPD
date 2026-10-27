@@ -278,6 +278,8 @@ func _ready() -> void:
 	raid.failed_label = %CaseFailed
 	raid.shift_screen = $ShiftScreen
 	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
 	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
@@ -323,6 +325,27 @@ func _place_facts() -> Dictionary:
 		"broken": broken_goods,
 		"complaint": bobina.complaint,
 	}
+
+
+## Online, what the guests' cinema takes from the host's (RaidCase.snapshot): the film running or cut, the projector's
+## jam, cuts and rest (doña Bobina splices it on the host), and the ripped screen and broken glass.
+func net_state() -> Dictionary:
+	return {"film": film_running, "jammed": projector.is_jammed, "cuts": projector.cuts, "rest": projector.rest_left,
+		"torn": screen_torn, "glass": glass_cracked}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	projector.is_jammed = state.jammed
+	projector.cuts = state.cuts
+	projector.rest_left = state.rest
+	if state.film:
+		mend_film()
+	else:
+		cut_film()
+	if state.torn:
+		rip_screen()
+	if state.glass:
+		break_glass()
 
 
 ## The story with that id from --story=<id> among the user args, or one drawn from the seed.
@@ -448,8 +471,10 @@ func _build_theater() -> void:
 		_build.box(SCREEN_AT + Vector3(side * (SCREEN_SIZE.x / 2 + 0.2), -SCREEN_AT.y / 2, 0.05),
 			Vector3(0.15, SCREEN_AT.y, 0.15), DARK)
 	var area := _area(SCREEN_AT + Vector3(0, 0, -0.3), Vector3(SCREEN_SIZE.x, SCREEN_SIZE.y, 0.6))
+	# Online only the host sees the screen rip; the guests take it from its state (net_state).
 	area.body_entered.connect(func(hit: Node3D) -> void:
-		if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > SCREEN_SPEED:
+		if multiplayer.is_server() and hit is RigidBody3D \
+				and (hit as RigidBody3D).linear_velocity.length() > SCREEN_SPEED:
 			rip_screen())
 	_build.wall_at("x", LOBBY_Z, -HALF_X, HALF_X, 0.0, WALL_TOP, [CURTAIN_X], WALL_IN)
 	# The dark velvet lining of the theater's walls, inside the outer ones.
@@ -505,7 +530,8 @@ func _build_hall() -> void:
 	_build.shape(_build.body(POPCORN_AT + Vector3(0, POPCORN_SIZE.y / 2, 0)), POPCORN_SIZE)
 	var glass := _area(POPCORN_AT + Vector3(0, POPCORN_SIZE.y / 2, 0), POPCORN_SIZE + Vector3(0.3, 0, 0.3))
 	glass.body_entered.connect(func(hit: Node3D) -> void:
-		if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > GLASS_SPEED:
+		if multiplayer.is_server() and hit is RigidBody3D \
+				and (hit as RigidBody3D).linear_velocity.length() > GLASS_SPEED:
 			break_glass())
 	# The posters of the coming films on the theater's wall, each in a gold frame.
 	for i in POSTERS.size():
