@@ -148,10 +148,11 @@ static func front_wall(height: float) -> Array:
 	return pieces
 
 
-## The back wall, split around the door to the interrogation wing (InterrogationWing), as [center, size] pieces.
+## The back wall, split around the doors to the interrogation wing (InterrogationWing) and the evidence room
+## (EvidenceRoom), as [center, size] pieces.
 static func back_wall(height: float) -> Array:
 	var pieces := []
-	run(pieces, "x", -HALF_Z, -HALF_X, HALF_X, [InterrogationWing.OFFICE_DOOR], height)
+	run(pieces, "x", -HALF_Z, -HALF_X, HALF_X, [InterrogationWing.OFFICE_DOOR, EvidenceRoom.DOOR], height)
 	return pieces
 
 
