@@ -8,7 +8,8 @@ extends CrimeScenePlace
 ## east corner the depot of "Frágil" parcels and the boss's office with the open safe, the postmark book and the red
 ## button. The six carriers stand about the counter, the boxes and the sorting machine (step 2), Doña Sellito in the
 ## hall and Cartita on its perch at window 2. The case reaches the carriers (step 3, set_up_case). La Vaquita Azul is
-## hidden in one of nine spots (step 4) and the postmark book tells which post box. Every number here is (propuesta).
+## hidden in one of nine spots (step 4) and the postmark book tells which post box. Every two minutes the sorting
+## machine runs on its own (step 5, SortingMachine), and the red button in the office stops it. Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(32, 28)
@@ -100,6 +101,9 @@ var loot_found := false
 var loot_spots := {}
 var stamp: BlueStamp
 var book: PostmarkBook
+## The sorting machine (step 5), and its red button in the office.
+var sorting: SortingMachine
+var button: RedButton
 ## What each cop is busy with ("" for nothing), by cop: a search or the book takes a while.
 var _busy := {}
 var carriers: Array[PostCarrier] = []
@@ -132,6 +136,11 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	for carrier in carriers:
 		carrier.case = case
 		carrier.stubborn = carrier.index == stubborn
+	sorting = SortingMachine.new()
+	sorting.name = "SortingMachine"
+	sorting.post_office = self
+	sorting.case = case
+	add_child(sorting)
 
 
 ## E on a spot: the cop searches it for SEARCH_SECONDS, and then La Vaquita Azul turns up if it's there, or the cop
@@ -452,11 +461,16 @@ func _office() -> void:
 	_builder.mesh_box(DESK_AT + Vector3(0.5, 1.0, 0.1), Vector3(0.12, 0.2, 0.12), BLACK)
 	_builder.box(DESK_AT + Vector3(0, 0.25, -1.0), Vector3(0.5, 0.5, 0.5), BLACK)
 	_builder.mesh_box(BUTTON_AT + Vector3(0, 0, -0.02), Vector3(0.4, 0.4, 0.04), METAL)
-	var button := CylinderMesh.new()
-	button.top_radius = 0.12
-	button.bottom_radius = 0.12
-	button.height = 0.08
-	_builder.mesh(button, BUTTON_AT + Vector3(0, 0, 0.03), RIBBON, Vector3(PI / 2, 0, 0))
+	var knob := CylinderMesh.new()
+	knob.top_radius = 0.12
+	knob.bottom_radius = 0.12
+	knob.height = 0.08
+	_builder.mesh(knob, BUTTON_AT + Vector3(0, 0, 0.03), RIBBON, Vector3(PI / 2, 0, 0))
+	button = RedButton.new()
+	button.name = "RedButton"
+	button.post_office = self
+	button.position = BUTTON_AT
+	add_child(button)
 
 
 ## The depot: two shelves of "Frágil" parcels against the office's wall and a stack on the floor.
