@@ -76,10 +76,11 @@ func test_the_ice_cream_turns_up_in_the_rocket_and_a_kid_eats_it_later() -> void
 	var made := _planetarium_case(_seed_with("bite"))
 	var planetarium: Planetarium = made[0]
 	var case: CrimeSceneCase = made[1]
-	assert_null(planetarium.clues.ice_cream, "hidden until someone looks in the rocket")
-	planetarium.searched("rocket", null)
 	var ice_cream := planetarium.clues.ice_cream
-	assert_not_null(ice_cream)
+	assert_false(ice_cream.visible or planetarium.clues.ice_cream_out, "hidden until someone looks in the rocket")
+	assert_eq(ice_cream.collision_layer, 0, "and out of reach")
+	planetarium.searched("rocket", null)
+	assert_true(ice_cream.visible)
 	assert_eq(planetarium.room(ice_cream.global_position), "kids")
 	assert_true(ice_cream.is_food())
 	case.at_tent = true

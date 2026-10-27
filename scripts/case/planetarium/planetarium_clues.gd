@@ -23,6 +23,8 @@ var glass: EmptyFrame
 var footprint: GlowPrint
 var ice_cream: CrimeClueItem
 var has_bite := false
+## Whether a search of the rocket brought the ice cream out.
+var ice_cream_out := false
 var has_photo := false
 ## Someone took a new photo in the booth: the 3 a.m. one is covered.
 var photo_covered := false
@@ -72,6 +74,16 @@ func _ready() -> void:
 		planetarium.add_child(hair)
 		case.items["hair"] = hair
 	has_bite = plan.clues.has("bite")
+	# The ice cream is in the rocket from the start, hidden, so every PC online has the same one.
+	if has_bite:
+		ice_cream = CrimeClueItem.new()
+		ice_cream.name = "Clue_bite"
+		ice_cream.kind = "bite"
+		ice_cream.look = "planetarium"
+		ice_cream.case = case
+		planetarium.add_child(ice_cream)
+		_hide_ice_cream()
+		case.items["bite"] = ice_cream
 	has_photo = plan.clues.has("booth")
 	planetarium.booth.clues = self
 	planetarium.booth_tray.clues = self
@@ -85,18 +97,29 @@ func set_dark(on: bool) -> void:
 
 ## A search of a spot is over (Planetarium.searched): in the kids' rocket, the bitten ice cream turns up too.
 func searched(spot: String) -> void:
-	if spot != "rocket" or not has_bite or ice_cream or case.ruined.has("bite"):
+	if spot != "rocket" or not has_bite or ice_cream_out or case.ruined.has("bite"):
 		return
-	ice_cream = CrimeClueItem.new()
-	ice_cream.name = "Clue_bite"
-	ice_cream.kind = "bite"
-	ice_cream.look = "planetarium"
-	ice_cream.case = case
+	show_ice_cream()
+
+
+## Out of the rocket, on the floor in front of it, for a cop to bag (also a guest's online, Planetarium.apply_net_state).
+func show_ice_cream() -> void:
+	ice_cream_out = true
 	var body := planetarium.loot_spots["rocket"] as Node3D
 	ice_cream.position = Vector3(body.position.x, Planetarium.FLOOR_TOP, body.position.z) + body.get_meta("out") \
 		+ Vector3(0, 0, 0.5)
-	planetarium.add_child(ice_cream)
-	case.items["bite"] = ice_cream
+	ice_cream.visible = true
+	ice_cream.freeze = false
+	ice_cream.collision_layer = 4
+
+
+## Inside the rocket: not seen, not grabbed, not falling.
+func _hide_ice_cream() -> void:
+	var body := planetarium.loot_spots["rocket"] as Node3D
+	ice_cream.position = Vector3(body.position.x, Planetarium.FLOOR_TOP + 0.1, body.position.z)
+	ice_cream.visible = false
+	ice_cream.freeze = true
+	ice_cream.collision_layer = 0
 
 
 ## E on the booth's tray: the 3 a.m. photo with the culprit's planet pin, if it's a clue and nobody covered it.

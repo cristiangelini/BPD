@@ -124,13 +124,23 @@ func tick(delta: float) -> void:
 		until_show -= delta
 		if until_show <= 0.0:
 			start_show()
-	if banned:
-		for node in get_tree().get_nodes_in_group("cops"):
-			var cop := node as Cop
-			if cop and planetarium.room(cop.global_position) == "dome":
-				cop.global_position = planetarium.to_global(THROWN_OUT_AT)
-				cop.velocity = Vector3.ZERO
-				cop.show_hint("HINT_DOME_BANNED")
+	_throw_out()
+
+
+## Banned: every PC pushes its own cops out of the dome room (online each one moves its own cop).
+func _throw_out() -> void:
+	if not banned:
+		return
+	for node in get_tree().get_nodes_in_group("cops"):
+		var cop := node as Cop
+		if cop and _own(cop) and planetarium.room(cop.global_position) == "dome":
+			cop.global_position = planetarium.to_global(THROWN_OUT_AT)
+			cop.velocity = Vector3.ZERO
+			cop.show_hint("HINT_DOME_BANNED")
+
+
+func _own(cop: Cop) -> bool:
+	return not cop.sync or not cop.sync.is_inside_tree() or cop.sync.is_multiplayer_authority()
 
 
 func _physics_process(delta: float) -> void:
@@ -139,6 +149,21 @@ func _physics_process(delta: float) -> void:
 	_next.text = tr("HUD_SHOW_ON") if is_on() else tr("HUD_NEXT_SHOW") % ceili(until_show)
 	if not case.follower:
 		tick(delta)
+	else:
+		_throw_out()
+
+
+## Online, a guest's show follows the host's: [seconds of dark left, seconds to the next, shows, patience, banned].
+## The lights go out and come back with it; the guides' places come with the planetarium's state.
+func follow(state: Array) -> void:
+	var was_on := is_on()
+	show_left = state[0]
+	until_show = state[1]
+	shows = state[2]
+	patience = state[3]
+	banned = state[4]
+	if is_on() != was_on:
+		_lights(not is_on())
 
 
 ## The ceiling lights and the glow paint.
