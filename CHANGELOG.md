@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Farm raid, models: placeholder models for Don Florencio the farmer, his nephew Pancho, a hen, the goat Tota, a pig, the cow Margarita, the tractor, the scarecrow, a hay bale, the hen house, the well, the feeding bell and a basket of eggs (allanamiento-granja.md, decision 380).
 - Farm raid design (allanamiento-granja.md, decision 380): the farm "Las Margaritas" on a new block at the edge of the city, Don Florencio the farmer as the owner, the feeding-time bell as his distraction, chickens that trip cops, a goat that eats papers, pigs in slippery mud, a cow that wanders out, his nephew Pancho who talks to whoever puts 3 chickens back in the coop, and six stories.
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
 - Gym raid, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office, the cake lab and the gym in eighths.
