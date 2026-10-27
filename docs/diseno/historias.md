@@ -22,7 +22,7 @@ Pedido de Cristian (19/10): que no sean solo casas. Cristian aprobó los 10 (dec
 | **Oficina de seguros** | Empresa | La recepcionista y la jefa de piso | Choques falsos con autitos de juguete como prueba; la máquina de café es una caja fuerte |
 | **Laboratorio de pasteles** | Empresa | El pastelero en jefe | Pasteles con "algo raro" que hay que llevar enteros; la receta secreta robada a la competencia |
 | **Edificio de departamentos (piso 30)** | Edificio | El encargado del edificio | Un acuario gigante robado; el ascensor anda mal y sube a pisos que no existen |
-| **Hotel venido a menos** | Edificio | El conserje | Huéspedes falsos que son siempre el mismo señor disfrazado; la habitación 13 que no figura |
+| **Hotel venido a menos** | Edificio | El conserje | Huéspedes falsos que son siempre el mismo señor disfrazado; la habitación 13 que no figura. Propuesta en [hotel-allanamiento.md](hotel-allanamiento.md) |
 | **Gimnasio de barrio** | Edificio | El profesor de aeróbic | Pesas rellenas de plata; el récord de pesas es falso |
 
 Las ideas del catálogo que no entran en esta lista (granja, taller de autos, bóveda, casa equivocada, fiesta de cumpleaños, mansión) quedan en "Para después" o como historias de estos lugares.
