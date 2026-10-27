@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Ice rink raid, step 2: the ice: without skates a cop's walk changes slowly on it (hard to start, stop or turn) and turning around while going fast is a 1.2 s fall; the rental's skates (E on the counter) make the ice quick and 1.4 times faster but the floor half as fast; the resurfacer's blue button sends it round the ice for 30 s, pushing props and shoving cops in its way.
 - Ice rink raid, step 1: the "Patinódromo Resbalón" ice rink stands on block (8, 3) (--place=rink and a menu test button): the lobby with the skate rental (the office key in the till), the skate rack, the lost and found box, the trophy case and the bar with the hot chocolate machine; the slippery ice behind boards with two gates and 6 glass panels (30 each), the parked resurfacer, the skating penguin, the scoreboard and the mirror ball; the stands, the DJ booth, the locker room, the cold room and Doña Pirueta's locked office; 12 hiding spots. Nothing moves yet.
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
 - Gym raid, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office, the cake lab and the gym in eighths.

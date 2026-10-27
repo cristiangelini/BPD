@@ -110,6 +110,17 @@ suman 500.
    - **Capturas:** `/mnt/project-files/pista/paso1-*.png` y `modelos.png`.
 2. El hielo: el policía resbala sin patines (y se cae si dobla rápido), los patines del alquiler, las cosas que siguen
    de largo, y la pulidora que da vueltas 30 s.
+   Hecho así:
+   - **Resbalar:** en el hielo sin patines la caminata cambia solo 2 m/s² por segundo: cuesta arrancar y frenar, y si
+     sueltas sigues de largo. Si vas a más de 2,5 m/s y quieres ir para atrás (más de 100°), te caes 1,2 s y sigues
+     resbalando con la mitad de la velocidad. Doblar 90° no te tira.
+   - **Los patines:** E sobre los patines del mostrador del alquiler te los pone, y otra vez los devuelve. Con patines
+     el hielo responde rápido (10 m/s²), vas 1,4 veces más rápido y no te caes; fuera del hielo caminas a la mitad.
+   - **La pulidora:** el botón azul del lado este de la baranda la prende 30 s. Da vueltas a 2,5 m/s por un rectángulo
+     a 3 m de la baranda, empuja lo suelto y al policía que tiene adelante lo tira 0,6 s. Cuando para, queda donde
+     llegó.
+   - **Para Doña Pirueta:** avisan cuando alguien se cae (`fell`) y cuando arranca la pulidora (`started`).
+   - **Capturas:** `pista/paso2-*.png`.
 3. Doña Pirueta: la ronda patinando, la denuncia, "¡con zapatos no!" y su canción.
 4. Copito y el chocolate caliente.
 5. El caso (RaidCase) con la primera historia: el hielo con sorpresa.
