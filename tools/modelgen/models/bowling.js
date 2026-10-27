@@ -382,7 +382,53 @@ export function buildPopcornPebble() {
 	return b.build();
 }
 
+// Lane 7: a crate of balls stolen from other alleys (each with a white name band), the sign torn off another alley,
+// the plan of the secret lane and the red curtain that hides it, with a "7" over it, its front to +Z.
+export function buildStolenBalls() {
+	const b = new Builder('bowl_stolen_balls');
+	const wood = mat('crate_wood', 0x9a7048);
+	b.add('bottom', wood, new THREE.BoxGeometry(0.62, 0.04, 0.42), { pos: V(0, 0.02, 0) });
+	for (const z of [-0.2, 0.2]) b.add('sides', wood, new THREE.BoxGeometry(0.62, 0.2, 0.03), { pos: V(0, 0.12, z) });
+	for (const x of [-0.3, 0.3]) b.add('sides', wood, new THREE.BoxGeometry(0.03, 0.2, 0.42), { pos: V(x, 0.12, 0) });
+	const band = mat('name_band', 0xf6f4ee);
+	[[-0.15, -0.09], [0.15, -0.09], [-0.15, 0.09], [0.15, 0.09], [0, 0]].forEach(([x, z], i) => {
+		const y = i === 4 ? 0.3 : 0.15;
+		b.add('balls', mat(`stolen_ball_${i}`, BALLS[i % BALLS.length]), new THREE.SphereGeometry(0.11, 10, 8), { pos: V(x, y, z) });
+		b.add('bands', band, new THREE.CylinderGeometry(0.112, 0.112, 0.03, 10), { pos: V(x, y, z) });
+	});
+	return b.build();
+}
+
+export function buildTornSign() {
+	const b = new Builder('bowl_torn_sign');
+	b.add('board', mat('sign_board', 0x2a5ad2), new THREE.BoxGeometry(0.9, 0.35, 0.04), { pos: V(0, 0.175, 0) });
+	for (let i = 0; i < 4; i++) b.add('letters', mat('sign_letters', 0xf2c230), new THREE.BoxGeometry(0.13, 0.18, 0.01), { pos: V(-0.3 + i * 0.2, 0.18, 0.025) });
+	b.add('torn', mat('sign_torn', 0x8a8e94), new THREE.BoxGeometry(0.06, 0.12, 0.05), { pos: V(0.44, 0.3, 0), rot: [0, 0, 0.5] });
+	b.add('bolt', mat('sign_torn', 0x8a8e94), new THREE.CylinderGeometry(0.01, 0.01, 0.12, 6), { pos: V(-0.4, 0.37, 0) });
+	return b.build();
+}
+
+export function buildSecretPlan() {
+	const b = new Builder('bowl_secret_plan');
+	b.add('paper', mat('plan_blue', 0x3a6ad2), new THREE.BoxGeometry(0.3, 0.004, 0.21), { pos: V(0, 0.002, 0) });
+	for (let i = 0; i < 6; i++) b.add('lanes', mat('plan_white', 0xf6f4ee), new THREE.BoxGeometry(0.02, 0.001, 0.15), { pos: V(-0.12 + i * 0.035, 0.005, 0) });
+	b.add('lane7', mat('ink_red', 0xd83a30), new THREE.BoxGeometry(0.02, 0.001, 0.15), { pos: V(0.1, 0.005, 0) });
+	return b.build();
+}
+
+export function buildLane7Curtain() {
+	const b = new Builder('lane7_curtain');
+	const red = mat('curtain_red', 0xa8202a);
+	for (let i = 0; i < 8; i++) b.add('folds', red, new THREE.BoxGeometry(0.3, 3.0, 0.08), { pos: V(-1.05 + i * 0.3, 1.5, (i % 2) * 0.06) });
+	b.add('rail', mat('curtain_rail', 0xc8a040, { metalness: 0.6 }), new THREE.CylinderGeometry(0.03, 0.03, 2.6, 8), { pos: V(0, 3.05, 0.03), rot: [0, 0, Math.PI / 2] });
+	b.add('sign', mat('sign_board', 0x202228), new THREE.BoxGeometry(0.5, 0.5, 0.05), { pos: V(0, 3.45, 0.02) });
+	b.add('seven', mat('sign_letters', 0xf2c230), new THREE.BoxGeometry(0.25, 0.06, 0.02), { pos: V(0, 3.6, 0.05) });
+	b.add('seven', mat('sign_letters', 0xf2c230), new THREE.BoxGeometry(0.06, 0.32, 0.02), { pos: V(0.05, 3.42, 0.05), rot: [0, 0, -0.35] });
+	return b.build();
+}
+
 export const models = {
+	bowl_stolen_balls: buildStolenBalls, bowl_torn_sign: buildTornSign, bowl_secret_plan: buildSecretPlan, lane7_curtain: buildLane7Curtain,
 	bowl_pebble_sack: buildPebbleSack, bowl_paint_can: buildPaintCan, bowl_popcorn_receipt: buildPopcornReceipt, popcorn_pebble: buildPopcornPebble,
 	bowl_rigged_cup: buildRiggedCup, bowl_fake_scores: buildFakeScores, bowl_judge_envelope: buildJudgeEnvelope,
 	bowl_skate_box: buildSkateBox, bowl_skate_parts: buildSkateParts, bowl_skate_manual: buildSkateManual,
@@ -419,6 +465,10 @@ export const views = {
 	bowl_lead_pins: {
 		items: [{ name: 'bowl_lead_mold', pos: [-0.5, 0, 0] }, { name: 'bowl_lead_pin', pos: [0.15, 0, 0.1] }, { name: 'bowling_pin', pos: [0.35, 0, 0.1] }, { name: 'bowl_lead_invoice', pos: [0.7, 0, 0.1], rotY: 0.3 }],
 		cam: { pos: [0.1, 0.9, 1.9], target: [0.1, 0.2, 0], fov: 40 },
+	},
+	bowl_lane7: {
+		items: [{ name: 'lane7_curtain', pos: [0, 0, -1.0] }, { name: 'bowl_stolen_balls', pos: [-0.7, 0, 0.6] }, { name: 'bowl_torn_sign', pos: [0.4, 0, 0.5], rotY: -0.2 }, { name: 'bowl_secret_plan', pos: [1.1, 0, 0.8], rotY: 0.3 }],
+		cam: { pos: [0.2, 1.8, 4.6], target: [0.2, 1.2, 0], fov: 45 },
 	},
 	bowl_popcorn: {
 		items: [{ name: 'bowl_pebble_sack', pos: [-0.35, 0, 0] }, { name: 'bowl_paint_can', pos: [0.1, 0, 0.05] }, { name: 'bowl_popcorn_receipt', pos: [0.4, 0, 0.15], rotY: 0.4 }, { name: 'popcorn_pebble', pos: [0.15, 0, 0.3] }],
