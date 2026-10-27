@@ -14,6 +14,10 @@ const APPROACH := 2.0
 var noticed := false
 
 
+func shared() -> Array[String]:
+	return ["noticed"]
+
+
 func setup(place: Bowling) -> void:
 	super.setup(place)
 	alley.main = alley.hidden[0]

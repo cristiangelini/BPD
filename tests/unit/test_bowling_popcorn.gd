@@ -35,7 +35,7 @@ func test_the_machine_spits_bouncing_pebbles() -> void:
 	await wait_seconds(RIG.SPIT_EVERY + 0.5)
 	assert_eq(alley.rig.pebbles.size(), 1, "one every few seconds")
 	var pebble: Grabbable = alley.rig.pebbles[0]
-	assert_almost_eq(pebble.physics_material_override.bounce, RIG.BOUNCE, 0.01)
+	assert_almost_eq(pebble.physics_material_override.bounce, PopcornPebble.BOUNCE, 0.01)
 	var from := Vector2(Bowling.POPCORN_AT.x, Bowling.POPCORN_AT.z)
 	var at := alley.to_local(pebble.global_position)
 	assert_gt(Vector2(at.x, at.z).distance_to(from), 0.5, "it flew out of the machine")

@@ -18,6 +18,10 @@ var read := false
 var _rolls := 0
 
 
+func shared() -> Array[String]:
+	return ["read"]
+
+
 func setup(place: Bowling) -> void:
 	super.setup(place)
 	alley.main = alley.hidden[0]
@@ -41,14 +45,7 @@ func extra_ball(rack: int) -> BowlingBall:
 	ball.name = "ForeignBall%d" % foreign.size()
 	ball.rack = rack
 	ball.slot = 1
-	var tag := Label3D.new()
-	tag.text = NAMES[foreign.size() % NAMES.size()]
-	tag.font_size = 28
-	tag.pixel_size = 0.004
-	tag.outline_size = 8
-	tag.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	tag.position.y = BowlingBall.RADIUS + 0.12
-	ball.add_child(tag)
+	ball.tag = NAMES[foreign.size() % NAMES.size()]
 	alley.add_child(ball)
 	ball.position = Bowling.rack_spot(rack, 1) + Vector3.UP * (BowlingBall.RADIUS * 2 + 0.05)
 	foreign.append(ball)

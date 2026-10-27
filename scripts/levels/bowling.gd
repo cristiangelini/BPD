@@ -258,6 +258,8 @@ var broken_screens: Array[int] = []
 var scores: Array[int] = [0, 0, 0, 0, 0, 0]
 var score_bonus: Array[int] = [0, 0, 0, 0, 0, 0]
 var _score_labels: Array[Label3D] = []
+## How many of Don Chuza's strike parties this PC showed (a guest's come from the host's state).
+var _shown_strikes := 0
 ## The case flow every raid shares.
 var raid: RaidCase
 ## Money taken off the case pay: the trophy case and the screens.
@@ -351,10 +353,12 @@ func _place_facts() -> Dictionary:
 	}
 
 
-## Online, what the guests' alley takes from the host's (RaidCase.snapshot): what's broken and what the story's rig
-## decides on the host (the rest is step 8).
+## Online, what the guests' alley takes from the host's (RaidCase.snapshot): what's broken, the screens' points, the
+## strikes Don Chuza celebrated (and on which lane) and what the story's rig decides on the host. The host's machines
+## count the pins and send the balls back; the guests' only show it.
 func net_state() -> Dictionary:
-	return {"case": case_broken, "screens": broken_screens.duplicate(), "rig": rig.net_state() if rig else null}
+	return {"case": case_broken, "screens": broken_screens.duplicate(), "scores": scores.duplicate(),
+		"strikes": [strike_call.jobs, strike_call.lane], "rig": rig.net_state() if rig else null}
 
 
 func apply_net_state(state: Dictionary) -> void:
@@ -362,6 +366,12 @@ func apply_net_state(state: Dictionary) -> void:
 		break_trophy_case()
 	for lane: int in state.screens:
 		break_screen(lane)
+	for lane in scores.size():
+		scores[lane] = state.scores[lane]
+		_score_labels[lane].text = str(scores[lane])
+	if state.strikes[0] > _shown_strikes:
+		_shown_strikes = state.strikes[0]
+		_strike_screen(state.strikes[1])
 	if rig and state.rig != null:
 		rig.apply_net_state(state.rig)
 
@@ -468,11 +478,12 @@ func _build_lanes() -> void:
 		_score_labels.append(points)
 		var pit := _area(Vector3(x, FLOOR_TOP + PIT_SIZE.y / 2, PIT_Z), PIT_SIZE)
 		pit.body_entered.connect(func(body: Node3D) -> void:
-			if body is BowlingBall and not (body as BowlingBall).is_held():
+			if multiplayer.is_server() and body is BowlingBall and not (body as BowlingBall).is_held():
 				in_pit(i, body))
 		var hit := _area(Vector3(x, SCREEN_Y, SCREEN_Z), SCREEN_SIZE)
 		hit.body_entered.connect(func(body: Node3D) -> void:
-			if body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > SCREEN_SPEED:
+			if multiplayer.is_server() and body is RigidBody3D \
+					and (body as RigidBody3D).linear_velocity.length() > SCREEN_SPEED:
 				break_screen(i))
 	# A curb on each lane's outer edge, so a ball stays in its lane.
 	for i in LANE_X.size() + 1:
@@ -520,7 +531,7 @@ func _build_office() -> void:
 	_model(CASE_MODEL, CASE_AT, -PI / 2)
 	var glass := _area(CASE_AT + Vector3(-CASE_SIZE.x / 2 - 0.2, CASE_SIZE.y / 2, 0), Vector3(0.4, CASE_SIZE.y, CASE_SIZE.z))
 	glass.body_entered.connect(func(hit: Node3D) -> void:
-		if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > CASE_SPEED:
+		if multiplayer.is_server() and hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > CASE_SPEED:
 			break_trophy_case())
 
 
@@ -594,7 +605,8 @@ func _place_owner() -> void:
 	strike_call.called.connect(func(lane: int) -> void:
 		owner_boss.printer_spot = to_global(Vector3(LANE_X[lane], FLOOR_TOP, STRIKE_SPOT_Z))
 		owner_boss.fix_facing = to_global(Vector3(LANE_X[lane], 1.0, HEAD_PIN_Z))
-		_say(Vector3(LANE_X[lane], SCREEN_Y - 0.7, SCREEN_Z + 0.3), "BOWL_STRIKE_SCREEN", owner_boss.fix_time))
+		_shown_strikes = strike_call.jobs
+		_strike_screen(lane))
 	strike_call.caught_on.connect(owner_boss.blame.bind(CAUGHT_ON, "CHUZA_CAUGHT_ON"))
 	player_complained.connect(func(_player: BowlPlayer) -> void: owner_boss.blame(PLAYER_COMPLAINT, "CHUZA_PLAYER"))
 	office_door.broken.connect(owner_boss.door_broken)
@@ -619,6 +631,11 @@ func _place_owner() -> void:
 	box.add_child(complaint_bar)
 	add_child(hud)
 	owner_boss.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## The strike's party on lane `lane`'s screen while Don Chuza celebrates it.
+func _strike_screen(lane: int) -> void:
+	_say(Vector3(LANE_X[lane], SCREEN_Y - 0.7, SCREEN_Z + 0.3), "BOWL_STRIKE_SCREEN", owner_boss.fix_time)
 
 
 ## Where slot `slot` of rack `rack` holds a ball.
@@ -713,6 +730,10 @@ func send_back(ball: BowlingBall) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	_skate(delta)
+	# Online the host's machines count the pins and send the balls back (its copies of the guests' balls roll too).
+	if not multiplayer.is_server():
+		return
 	for ball: BowlingBall in _returning.keys():
 		_returning[ball] -= delta
 		if _returning[ball] <= 0.0:
@@ -724,7 +745,6 @@ func _physics_process(delta: float) -> void:
 		if _resetting[lane] <= 0.0:
 			_resetting.erase(lane)
 			reset_pins(lane)
-	_skate(delta)
 
 
 ## This PC's own cop running on a waxed lane skates on, out of control (a copy of another player's cop only follows);

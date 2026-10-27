@@ -23,6 +23,10 @@ var stuck := false
 var _knocked_for: BowlingBall
 
 
+func shared() -> Array[String]:
+	return ["stuck"]
+
+
 func setup(place: Bowling) -> void:
 	super.setup(place)
 	alley.main = alley.hidden[0]

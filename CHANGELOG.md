@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Bowling alley raid, step 8: online: the host runs Don Chuza, Pipo and the league players and the guests follow them; the host's machines count the pins and send the balls back, and its points, strike parties, trophy case, screens and story state show on every PC; Pipo's shoes go through the actions, a host's ball trips a guest's cop on its own PC, and lane 7's foreign balls and the popcorn's pebbles show up on the guests too.
 - Bowling alley raid, step 7: Play draws the bowling alley among the raids, and Don Chuza drives off when he sees the main evidence picked up close by, like the other raid owners.
 - Bowling alley raid, step 6e: the lane 7 story, with the crate of stolen balls, the torn sign and the secret lane's plan hidden, the red curtain with a lane 7 behind it in the back wall, and the ball returns giving back one ball too many with another alley's name (picking one up is the clue).
 - Bowling alley raid, step 6d: the magic popcorn story, with the sack of painted pebbles, the yellow paint and the receipt hidden, the popcorn machine rattling and spitting bouncing pebbles, and the cop who picks one up biting it (the clue).
