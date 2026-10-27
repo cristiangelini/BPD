@@ -47,6 +47,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_BLENDER", "OBJ_EXTRA_WINNERS_LIST"],
 		"rig": preload("res://scripts/case/radio/rigged_contest_rig.gd"),
 	},
+	"phantom_ads": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_PHANTOM_ADS_B", "BRIEF_PHANTOM_ADS_C", "BRIEF_PHANTOM_ADS_D"],
+		"find": "OBJ_FIND_AD_CONTRACTS",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/ad_contracts.tscn"), preload("res://scenes/props/billing_book.tscn"),
+			preload("res://scenes/props/paid_stamp.tscn")],
+		"half_heights": [0.19, 0.015, 0.065],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_BILLING_BOOK", "OBJ_EXTRA_PAID_STAMP"],
+		"rig": preload("res://scripts/case/radio/phantom_ads_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the reception's floor, in the studio, the control room, the kitchen and the
 ## storage room.
@@ -557,7 +568,12 @@ func _cop_in_archive() -> bool:
 
 ## What goes out on air, over the reception by the "AL AIRE" sign (a story's line).
 func say_on_air(key: String) -> void:
-	_say(Vector3(STUDIO_DOOR_X + 2.5, GameScale.DOOR_HEIGHT - 0.1, FRONT_Z + 2.0), key)
+	var label := _say(Vector3(STUDIO_DOOR_X + 2.5, GameScale.DOOR_HEIGHT - 0.1, FRONT_Z + 2.0), key)
+	label.font_size = 36
+	label.pixel_size = 0.006
+	label.width = 900.0
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.no_depth_test = true
 
 
 ## Turns the "AL AIRE" light on or off: only on air does the neighborhood hear what happens.
@@ -659,7 +675,7 @@ func _area(center: Vector3, size: Vector3) -> Area3D:
 
 
 ## A floating line over `at` for a few seconds.
-func _say(at: Vector3, key: String) -> void:
+func _say(at: Vector3, key: String) -> Label3D:
 	var label := Label3D.new()
 	label.text = key
 	label.font_size = 48
@@ -669,6 +685,7 @@ func _say(at: Vector3, key: String) -> void:
 	label.position = at
 	add_child(label)
 	get_tree().create_timer(3.0).timeout.connect(label.queue_free)
+	return label
 
 
 ## A model only for the look, standing at `at` and turned `turn` around Y.

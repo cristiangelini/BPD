@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Radio raid, step 6: the phantom ads story: the box of contracts, the billing notebook and the "PAGADO" stamp hidden with the seed, the empty ads schedule on the control room's wall (the clue) and a silence on air every 40 s where the ad should go. Lines on air now wrap.
 - Radio raid, step 5: the radio is a raid (RaidCase) with its first story, the rigged contest: the raffle urn, the prize blender and the winners list hidden with the seed, Tito winning again on air every 30 s, a contest slip by the mailbox (the clue), what don Volumen lets slip and what doña Rosa heard; he calls his lawyer at 100 and gets away in a car.
 - Radio raid, step 4: doña Rosa calls the reception every 40 s; a cop who answers and stays by the phone 6 s hears what don Volumen let slip on air (once per cop), one who walks off hears "¡Qué maleducado, como el locutor!". Her calls are never listeners' complaints.
 - Radio raid, step 3: don Volumen talks on air at the console and goes to the archive for a record every 90 s (opening and locking its door), filling the complaint; E on the record player puts on the long song: the "AL AIRE" light goes off and he goes to the kitchen for a 25 s coffee, his back to everything (twice; the third time he notices). Listeners' complaints add 5.
