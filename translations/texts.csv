@@ -5588,3 +5588,31 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+PLACE_COSTUME_SHOP,Disfraces El Bigote Postizo,The Fake Mustache Costumes,Fantasias O Bigode Postiço
+COSTUME_MOTTO,¡Sé quien quieras!,Be whoever you want!,Seja quem você quiser!
+MENU_COSTUME_SHOP,Tienda de disfraces (allanamiento) (prueba),Costume shop (raid) (test),Loja de fantasias (batida) (teste)
+HINT_TILL_KEY_COSTUME,¡Una llave! Abre la oficina de Don Fantoche.,A key! It opens Don Fantoche's office.,Uma chave! Abre o escritório do Don Fantoche.
+CASE_FAILED_LAWYER_COSTUME,Don Fantoche llamó al abogado de la tienda. Caso perdido.,Don Fantoche called the shop's lawyer. Case lost.,Don Fantoche ligou para o advogado da loja. Caso perdido.
+COSTUME_RACK_1,Piratas,Pirates,Piratas
+COSTUME_RACK_2,Animales,Animals,Animais
+COSTUME_RACK_3,Monstruos,Monsters,Monstros
+COSTUME_RACK_4,Princesas,Princesses,Princesas
+COSTUME_RACK_5,Oficios,Jobs,Profissões
+COSTUME_FITTING_1,Probador 1,Fitting room 1,Provador 1
+COSTUME_FITTING_2,Probador 2,Fitting room 2,Provador 2
+COSTUME_FITTING_3,Probador 3,Fitting room 3,Provador 3
+COSTUME_STOCK_SIGN,DEPÓSITO · Solo personal,STOCK ROOM · Staff only,DEPÓSITO · Só funcionários
+COSTUME_MIRROR_BROKEN,«¡Mi espejo! ¡Ahora todos se ven feos!»,“My mirror! Now everyone looks ugly!”,“Meu espelho! Agora todo mundo fica feio!”
+COSTUME_CASE_BROKEN,"«¡Las máscaras! ¡Eran de colección, campeón!»","“The masks! They were collector's items, champ!”","“As máscaras! Eram de coleção, campeão!”"
+LOC_in_stock_boxes,entre las cajas del depósito,among the stock room's boxes,entre as caixas do depósito
+LOC_by_stock_shelf,al pie del estante del depósito,at the foot of the stock room's shelf,ao pé da estante do depósito
+LOC_in_dinosaur_costume,adentro del disfraz de dinosaurio,inside the dinosaur costume,dentro da fantasia de dinossauro
+LOC_behind_costume_counter,detrás del mostrador,behind the counter,atrás do balcão
+LOC_in_costume_office_corner,en un rincón de la oficina de Don Fantoche,in a corner of Don Fantoche's office,num canto do escritório do Don Fantoche
+LOC_by_wig_trunk,al lado del baúl de pelucas,by the wig trunk,ao lado do baú de perucas
+LOC_in_fitting_room_1,en el probador 1,in fitting room 1,no provador 1
+LOC_behind_pirate_rack,detrás del perchero de piratas,behind the pirates' rack,atrás da arara de piratas
+LOC_in_sale_basket,en la canasta de ofertas,in the sale basket,no cesto de ofertas
+LOC_under_costume_desk,debajo del escritorio de Don Fantoche,under Don Fantoche's desk,embaixo da escrivaninha do Don Fantoche
+LOC_behind_costume_safe,detrás de la caja fuerte,behind the safe,atrás do cofre
+LOC_on_mask_case,arriba de la vitrina de máscaras,on top of the mask display case,em cima da vitrine de máscaras

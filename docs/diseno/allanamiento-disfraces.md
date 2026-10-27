@@ -105,6 +105,14 @@ Los pesos y valores siguen la escala de la bolera y el karaoke: la principal val
 7. "Jugar" suma la tienda al sorteo de allanamientos, y la huida de Don Fantoche.
 8. El online (Don Fantoche, Mimí, los clientes, los maniquíes y lo frágil en todas las PC).
 
+## Cómo quedó
+- Paso 1: la tienda en la cuadra (2, 4) norte, naranja, con el cartel "Disfraces El Bigote Postizo", el bigote
+  gigante en el techo y el lema "¡Sé quien quieras!". Adentro: el mostrador con la caja (la llave de la oficina), 5
+  percheros (piratas, animales, monstruos, princesas, oficios), 3 probadores con cortina, el espejo gigante (multa
+  30), la vitrina de máscaras (multa 15), el baúl de pelucas, el canasto de ofertas, el depósito "solo personal"
+  con estantes y cajas, y la oficina con escritorio y caja fuerte. 12 escondites (6 pesados). Capturas en
+  `/mnt/project-files/allanamiento-disfraces/paso1-*.png`.
+
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, la tienda de disfraces abierta llena de maniquíes? **Recomendado:** sí, no se pisa
    con ningún otro lugar, y los maniquíes que se caen como bolos dan mucho caos.

@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Costume shop raid, step 1: the costume shop "Disfraces El Bigote Postizo" on its lot in the city, with the counter and its till (the office key), five costume racks, three fitting rooms, the giant mirror and the mask display case that break (fines 30 and 15), the stock room, the locked office with its safe and 12 hiding spots; "Costume shop (raid, test)" in the menu.
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
 - Gym raid, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office, the cake lab and the gym in eighths.
 - Gym raid, step 5: the fixed fights story: the punching bags swing when punched (E) and shove whoever stands behind them, one of them clangs like metal (the clue), and the betting book, the gloves with a horseshoe and the cardboard champion belt are hidden. The gym now tells its six stories.
