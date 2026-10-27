@@ -5634,3 +5634,18 @@ PIRUETA_SHOES,"¡Con zapatos no, que me rayan el hielo!","Not in shoes, you'll s
 PIRUETA_ICE_HIT,"¡Mi hielo! ¡Me lo van a partir!","My ice! You'll crack it!","Meu gelo! Vão rachar!"
 PROMPT_RINK_SONG,E: poner «El vals del pingüino»,E: play "The Penguin Waltz",E: tocar «A valsa do pinguim»
 RINK_SONG_PLAYING,♪ El vals del pingüino ♪,♪ The Penguin Waltz ♪,♪ A valsa do pinguim ♪
+PROMPT_RINK_COCOA,E: servir un chocolate caliente,E: pour a hot chocolate,E: servir um chocolate quente
+HINT_RINK_COCOA_MAX,"Ya hay tres chocolates servidos. Llévate uno.","There are already three hot chocolates out. Take one.","Já tem três chocolates servidos. Leve um."
+PROMPT_RINK_COCOA_CUP,"Un chocolate caliente. No lo vuelques.","A hot chocolate. Don't spill it.","Um chocolate quente. Não derrame."
+RINK_COCOA_SPILLED,¡Splash!,Splash!,Splash!
+PROMPT_COPITO,E: hablar con Copito,E: talk to Copito,E: falar com o Copito
+PROMPT_COPITO_COCOA,E: darle el chocolate a Copito,E: give Copito the hot chocolate,E: dar o chocolate ao Copito
+COPITO_RULES,"Brrr... qué frío... Si alguien me trajera un chocolate caliente, le contaría cosas...","Brrr... so cold... If someone brought me a hot chocolate, I'd tell them things...","Brrr... que frio... Se alguém me trouxesse um chocolate quente, eu contaria umas coisas..."
+COPITO_AGAIN,"Ya te conté todo. Pero otro chocolate no te lo rechazo.","I already told you everything. But I won't say no to another hot chocolate.","Já te contei tudo. Mas outro chocolate eu não recuso."
+COPITO_WON,"¡Calentito! Gracias. Te cuento algo:","Nice and warm! Thanks. Here's something:","Quentinho! Obrigado. Vou te contar uma coisa:"
+COPITO_NOTHING,"¡Calentito! Gracias... pero no vi nada raro. Bueno, todo acá es raro.","Nice and warm! Thanks... but I didn't see anything weird. Well, everything here is weird.","Quentinho! Obrigado... mas não vi nada estranho. Bom, tudo aqui é estranho."
+COPITO_EMPTY,"¿Una taza vacía? Eso es cruel, oficial.","An empty cup? That's cruel, officer.","Uma xícara vazia? Isso é cruel, policial."
+COPITO_THANKS,"¡Otro! Ahora sí siento los dedos.","Another one! Now I can feel my fingers.","Outro! Agora sim sinto os dedos."
+COPITO_IDLE_1,"Brrr...","Brrr...","Brrr..."
+COPITO_IDLE_2,"Manejo la pulidora desde las seis de la mañana. Ya no siento la nariz.","I've been driving the resurfacer since six in the morning. I can't feel my nose.","Dirijo a máquina de gelo desde as seis da manhã. Já não sinto o nariz."
+COPITO_IDLE_3,"Ese chocolate del bar huele tan rico...","That hot chocolate at the bar smells so good...","Esse chocolate do bar tem um cheiro tão bom..."

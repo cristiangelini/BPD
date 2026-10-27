@@ -128,9 +128,30 @@ export function buildDonaPirueta() {
 	return b.build();
 }
 
+// Copito, the boy who drives the resurfacer and is always cold: a puffy light blue jacket, a striped scarf, a beanie
+// with a pompom, a red nose and mittens.
+export function buildCopito() {
+	const b = new Builder('npc_copito');
+	const jacket = mat('copito_jacket', 0x8ac8f0), scarf = mat('copito_scarf', 0xd83a3a), white = M.white;
+	pearBody(b, mat('skin_morena', 0xc89070), { shirt: jacket, pants: mat('copito_pants', 0x2a3a5a), shoes: M.black, belted: false });
+	for (let i = 0; i < 3; i++) {
+		b.add('body', mat('copito_puff', 0x9ad4f8), new THREE.TorusGeometry(0.4 - i * 0.07, 0.04, 6, 14), { pos: V(0, 0.45 + i * 0.22, 0), rot: [Math.PI / 2, 0, 0] });
+	}
+	b.add('scarf', scarf, new THREE.TorusGeometry(0.16, 0.05, 6, 12), { pos: V(0, 1.12, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('scarf', white, new THREE.BoxGeometry(0.1, 0.3, 0.04), { pos: V(0.08, 0.95, 0.2), rot: [0.2, 0, 0] });
+	eyes(b, 1.33, 0.18, 0.075, 0.045);
+	b.add('face', mat('copito_nose', 0xe0403a), ellipsoid(0.04, 0.035, 0.035, 6, 4), { pos: V(0, 1.27, 0.21) });
+	b.add('hat', mat('copito_beanie', 0x3a6ad2), ellipsoid(0.21, 0.15, 0.2, 10, 6), { pos: V(0, 1.42, 0.01) });
+	b.add('hat', white, new THREE.CylinderGeometry(0.21, 0.21, 0.06, 10), { pos: V(0, 1.38, 0.01) });
+	b.add('hat', white, new THREE.SphereGeometry(0.07, 8, 6), { pos: V(0, 1.6, 0.01) });
+	for (const x of [-1, 1]) b.add('arms', scarf, ellipsoid(0.085, 0.085, 0.085, 6, 4), { pos: V(x * 0.49, 0.64, 0.09) });
+	return b.build();
+}
+
 export const models = {
 	ice_resurfacer: buildIceResurfacer, skating_penguin: buildSkatingPenguin, cocoa_machine: buildCocoaMachine,
 	dj_booth: buildDjBooth, rink_scoreboard: buildRinkScoreboard, npc_dona_pirueta: buildDonaPirueta,
+	npc_copito: buildCopito,
 };
 
 export const views = {
@@ -139,6 +160,7 @@ export const views = {
 			{ name: 'ice_resurfacer', pos: [-2.2, 0, 0], rotY: 0.6 }, { name: 'skating_penguin', pos: [-0.4, 0, 0.6] },
 			{ name: 'cocoa_machine', pos: [0.6, 0, 0.8] }, { name: 'dj_booth', pos: [1.8, 0, 0], rotY: Math.PI },
 			{ name: 'rink_scoreboard', pos: [0, 2.0, -1.5] }, { name: 'npc_dona_pirueta', pos: [0.9, 0, 1.6], rotY: -0.3 },
+			{ name: 'npc_copito', pos: [2.4, 0, 1.4], rotY: -0.5 },
 		],
 		cam: { pos: [0, 2.2, 6.5], target: [0, 1.0, 0], fov: 45 },
 	},

@@ -18,6 +18,7 @@ const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const PENGUIN_MODEL := preload("res://assets/models/skating_penguin.glb")
 const COCOA_MODEL := preload("res://assets/models/cocoa_machine.glb")
 const OWNER_SCENE := preload("res://scenes/npc/rink_owner.tscn")
+const CUP_SCENE := preload("res://scenes/props/cocoa_cup.tscn")
 const SCOREBOARD_MODEL := preload("res://assets/models/rink_scoreboard.glb")
 const HALF_X := 22.0
 const HALF_Z := 15.0
@@ -57,6 +58,11 @@ const BAR_AT := Vector3(14.0, FLOOR_TOP, 12.6)
 const BAR_SIZE := Vector3(4.0, 1.1, 0.8)
 const COCOA_AT := Vector3(15.3, FLOOR_TOP + 1.1, 12.6)
 const COCOA_SIZE := Vector3(0.5, 0.8, 0.45)
+## Where a poured cup lands, in front of the machine, and how many cups can be around at once.
+const CUP_AT := COCOA_AT + Vector3(0, 0.08, 0.34)
+const MAX_CUPS := 3
+## Copito, by the east gate, shivering.
+const COPITO_AT := Vector3(6.0, FLOOR_TOP, 8.6)
 ## The resurfacer parked on the ice and the penguin the kids push around.
 const RESURFACER_AT := Vector3(12.0, ICE_TOP, -5.0)
 ## The resurfacer's button, on the outside of the east boards.
@@ -140,6 +146,10 @@ var skate_rental: SkateRental
 var penguin: StaticBody3D
 ## The DJ booth with her song: Doña Pirueta's distraction (step 3).
 var song: DjSong
+## The bar's hot chocolate button and Copito, the gossip (step 4).
+var cocoa_button: PushButton
+var copito: ResurfacerDriver
+var cups: Array[CocoaCup] = []
 ## Doña Pirueta, the owner, and her complaint bar.
 var owner_npc: FloorBoss
 var complaint_bar: ProgressBar
@@ -389,6 +399,16 @@ func _build_lobby() -> void:
 	_build.open_box(BAR_AT, BAR_SIZE, "-z", BOARD_STRIPE.darkened(0.2))
 	_model(COCOA_MODEL, COCOA_AT)
 	_build.shape(_build.body(COCOA_AT + Vector3(0, COCOA_SIZE.y / 2, 0)), COCOA_SIZE)
+	cocoa_button = PushButton.new()
+	cocoa_button.prompt = "PROMPT_RINK_COCOA"
+	cocoa_button.color = Color(0.85, 0.25, 0.15)
+	cocoa_button.position = COCOA_AT + Vector3(0.17, 0.38, COCOA_SIZE.z / 2 + 0.04)
+	add_child(cocoa_button)
+	cocoa_button.pressed.connect(pour_cocoa)
+	copito = ResurfacerDriver.new()
+	copito.name = "Copito"
+	copito.position = COPITO_AT
+	add_child(copito)
 	for x: float in [11.5, 16.0]:
 		_build.box(Vector3(x, FLOOR_TOP + 0.72, 9.6), Vector3(0.8, 0.06, 0.8), BOARD)
 		_build.box(Vector3(x, FLOOR_TOP + 0.35, 9.6), Vector3(0.08, 0.7, 0.08), DARK)
@@ -473,6 +493,27 @@ func _physics_process(delta: float) -> void:
 			continue
 		if owner_npc.saw(cop.global_position + Vector3.UP, SAW_SHOES, "PIRUETA_SHOES"):
 			shoes_seen[cop.get_instance_id()] = true
+
+
+## The bar's machine pours a hot chocolate in front of it, if there aren't MAX_CUPS around already (online, the host's
+## cup is the one everyone sees: PropSync).
+func pour_cocoa(cop: Cop = null) -> CocoaCup:
+	var left: Array[CocoaCup] = []
+	for cup: Variant in cups:
+		if is_instance_valid(cup) and not (cup as CocoaCup).is_queued_for_deletion():
+			left.append(cup)
+	cups = left
+	if cups.size() >= MAX_CUPS:
+		if cop:
+			cop.show_hint("HINT_RINK_COCOA_MAX")
+		return null
+	if not multiplayer.is_server():
+		return null
+	var cup: CocoaCup = CUP_SCENE.instantiate()
+	cup.position = CUP_AT + Vector3(-0.16 * cups.size(), 0, 0)
+	add_child(cup)
+	cups.append(cup)
+	return cup
 
 
 ## Breaks glass panel `index`, once: a fine, and the panel is gone.
