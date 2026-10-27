@@ -215,12 +215,27 @@ export function buildCarwashCarPapers() {
 	return b.build();
 }
 
+// The box of fake shampoo (0.5 x 0.35 x 0.35 m): an open cardboard box with six green bottles sticking out, their
+// labels a little crooked.
+export function buildCarwashShampooBox() {
+	const b = new Builder('carwash_shampoo_box');
+	const card = mat('shampoo_card', 0xc89a5a), green = mat('shampoo_green', 0x3ad06a), label = mat('shampoo_label', 0xf4f4ee);
+	b.add('box', card, new THREE.BoxGeometry(0.5, 0.25, 0.35), { pos: V(0, 0.125, 0) });
+	for (let i = 0; i < 6; i++) {
+		const x = -0.16 + (i % 3) * 0.16, z = i < 3 ? -0.08 : 0.08;
+		b.add('bottle', green, new THREE.CylinderGeometry(0.05, 0.05, 0.2, 8), { pos: V(x, 0.2, z) });
+		b.add('cap', mat('shampoo_cap', 0xf2f2f2), new THREE.CylinderGeometry(0.02, 0.02, 0.05, 6), { pos: V(x, 0.325, z) });
+		b.add('label', label, new THREE.BoxGeometry(0.06, 0.06, 0.01), { pos: V(x, 0.2, z + 0.05), rot: [0, 0, (i % 2 ? 0.3 : -0.2)] });
+	}
+	return b.build();
+}
+
 export const models = {
 	wash_brush: buildWashBrush, wash_jets: buildWashJets, wash_blower: buildWashBlower, token_machine: buildTokenMachine,
 	vacuum_column: buildVacuumColumn, inflatable_man: buildInflatableMan, carwash_boiler: buildCarwashBoiler,
 	npc_don_chorro: buildDonChorro, npc_pompita: buildPompita, carwash_cash_bag: buildCarwashCashBag,
 	carwash_ledger: buildCarwashLedger, carwash_iron: buildCarwashIron, carwash_plates: buildCarwashPlates,
-	carwash_car_papers: buildCarwashCarPapers,
+	carwash_car_papers: buildCarwashCarPapers, carwash_shampoo_box: buildCarwashShampooBox,
 };
 
 export const views = {
@@ -233,7 +248,7 @@ export const views = {
 			{ name: 'npc_pompita', pos: [-0.6, 0, 2.6], rotY: 0.3 },
 			{ name: 'carwash_cash_bag', pos: [-1.8, 0, 3.4] }, { name: 'carwash_ledger', pos: [2.0, 0, 3.4] },
 			{ name: 'carwash_iron', pos: [2.6, 0, 3.0] }, { name: 'carwash_plates', pos: [-0.6, 0, 3.6] },
-			{ name: 'carwash_car_papers', pos: [0.4, 0, 3.6] },
+			{ name: 'carwash_car_papers', pos: [0.4, 0, 3.6] }, { name: 'carwash_shampoo_box', pos: [3.2, 0, 2.2] },
 		],
 		cam: { pos: [0, 2.6, 9.0], target: [0, 1.5, 0], fov: 45 },
 	},
