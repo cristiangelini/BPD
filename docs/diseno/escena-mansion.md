@@ -108,7 +108,16 @@ para el interrogatorio. Los modelos nuevos salen de `tools/modelgen` (low poly).
 
 ## El orden para hacerlo (un PR chico por paso)
 1. La mansión como nivel propio (`--place=mansion`): el hall, el comedor, la biblioteca, el estudio, el salón, el
-   invernadero, la despensa, el jardín con el laberinto, la lluvia y los truenos, y el patrullero en la puerta.
+   invernadero, la despensa, el jardín con el laberinto, la lluvia y los truenos, y el patrullero en la puerta. Hecho
+   así: una casa de 32 x 22 m de una planta con techo a dos aguas y ventanas encendidas, en el medio de un parque
+   oscuro con camino de ripio. Adelante: el comedor con la mesa larga servida y dos candelabros, el hall con la
+   escalera clausurada con tablas, la armadura, el perchero y el reloj de pie, y el salón con el piano, la chimenea y
+   la jaula del loro. Atrás: la biblioteca con estanterías en toda la pared, el sillón y una chimenea chica; el
+   estudio con el escritorio, la caja fuerte abierta y el retrato de doña Clotilde; el invernadero con techo de
+   vidrio y plantas gigantes, y la despensa con el tablero de seis campanillas. Las tres paredes de los pasadizos ya
+   son dobles (cerradas hasta el paso 2). Atrás de todo, el laberinto de ligustros de 7 x 5 casillas de 3 m, siempre
+   el mismo, con la entrada frente a la puerta del jardín y la reja en la esquina del fondo. Llueve (sin atravesar el
+   techo) y cada 15 a 35 s cae un rayo que ilumina todo. Capturas en `escena-mansion/paso1-*.png` **(propuesta)**.
 2. Los tres pasadizos: la estantería, la chimenea y el reloj, que se abren con E y se cruzan.
 3. La gente: los seis socios con sus rasgos y su coartada, doña Clotilde en su silla, Ceferino y Lorenzo.
 4. Las fichas (foto, huellas, dientes, pelo y coartada) y los socios que cambian de cuarto por los pasadizos.

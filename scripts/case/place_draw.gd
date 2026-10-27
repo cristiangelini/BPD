@@ -65,6 +65,7 @@ const PLACES := {
 	"bridge": "res://scenes/levels/bridge_park.tscn",
 	"school_visit": "res://scenes/levels/school_visit.tscn",
 	"football": "res://scenes/levels/football_pitch.tscn",
+	"mansion": "res://scenes/levels/mansion.tscn",
 	"debate": "res://scenes/levels/tv_studio.tscn",
 	"wrong_house": "res://scenes/levels/wrong_house.tscn",
 	"airport": "res://scenes/levels/airport.tscn",
