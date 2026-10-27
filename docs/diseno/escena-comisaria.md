@@ -136,3 +136,12 @@ internos (sobornos.md), CaseBriefing y CaseChecklist, ChaseCase.begin, PlaceDraw
   chancho y orejitas. Con E cada uno dice una de sus cuatro frases; los dientes están en el modelo pero no se ven
   (para el mordisco del paso 4). Modelos en `tools/modelgen/models/station_staff.js`. Capturas en
   `escena-comisaria/paso2-*.png`.
+- **Paso 3 (las fichas):** `StaffTraits` sortea con la semilla, para el armero y los cinco, el talle de zapato (38 a
+  45), las cucharadas de azúcar (0, 1, 2 o 5), los dientes, si es zurdo, si es alto o bajo y si renguea (1 de cada 3,
+  propuesta); la silueta de la cinta es alto o bajo y si renguea. La coartada (cambia lo del doc, propuesta): anoche
+  estaban **de a dos**, cada pareja en un lugar distinto de la comisaría, y cada uno dice dónde y con quién ("Estuve
+  en la sala de guardia con don Mopa. Toda la noche, ¿eh?"). El culpable y el que lo cubre dicen que estaban juntos:
+  esa pareja es la mentira, y las otras dos son verdad. Los altos se ven más altos (x1,12) y los bajos más bajos
+  (x0,9), los que renguean se bambolean, y la primera frase de cada uno es su coartada. Con las 6 pistas de la tabla
+  (huella: el nombre; cinta: la silueta; libro: zurdo; taza: azúcar; dona: dientes; el Chancho: el talle) siempre
+  hay 4 que dejan solo al culpable (probado con 80 semillas). Captura en `escena-comisaria/paso3-rasgos.png`.
