@@ -98,6 +98,10 @@ entre 400 y 600.
    **Hecho (paso 6, micrófonos ocultos):** `HiddenMicsRig`; la maceta grande con el micrófono está en el rincón de la
    recepción junto a la pared del frente, y al aire sale un chisme cada 35 s (propuesta), tres chismes por turno.
    Capturas `radio/paso6-microfonos-*.png`.
+   **Hecho (paso 6, discos de colección):** `CollectorRecordsRig`; el disco con la etiqueta está apoyado en el
+   estante del frente del archivo (detrás de la puerta con llave), y al aire presenta una "joya" cada 45 s
+   (propuesta). `RadioRig.fixed_clue` arma las pistas fijas con modelo (la maceta y el disco). Capturas
+   `radio/paso6-discos-*.png`.
 7. "Jugar" suma la radio al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online (don Volumen, doña Rosa, el teléfono, la luz "AL AIRE" y lo frágil en todas las PC).
 

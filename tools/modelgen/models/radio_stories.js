@@ -117,11 +117,54 @@ export function buildReceptionPlant() {
 	return b.build();
 }
 
+// The stolen collection: a 0.4 x 0.34 x 0.36 m wooden crate full of vinyl sleeves standing on edge.
+export function buildVinylCrate() {
+	const b = new Builder('vinyl_crate');
+	const wood = mat('crate_wood', 0x9a6a3a);
+	b.add('bottom', wood, new THREE.BoxGeometry(0.4, 0.02, 0.36), { pos: V(0, -0.16, 0) });
+	for (const x of [-0.19, 0.19]) b.add('sides', wood, new THREE.BoxGeometry(0.02, 0.22, 0.36), { pos: V(x, -0.06, 0) });
+	for (const z of [-0.17, 0.17]) b.add('sides', wood, new THREE.BoxGeometry(0.4, 0.22, 0.02), { pos: V(0, -0.06, z) });
+	const sleeves = [0xd84a3a, 0x2a2a30, 0xf2c84a, 0x4a7ad8, 0x8a4ac8, 0x3aa86a];
+	for (let i = 0; i < 12; i++) b.add('sleeves', mat(`sleeve_${i % 6}`, sleeves[i % 6]), new THREE.BoxGeometry(0.31, 0.31, 0.008), { pos: V(0, 0.0, -0.15 + i * 0.027), rot: [(i % 2 - 0.5) * 0.08, 0, 0] });
+	return b.build();
+}
+
+// The collector's catalog: a 0.22 x 0.04 x 0.3 m leather-bound book with a golden record on the cover.
+export function buildCollectorCatalog() {
+	const b = new Builder('collector_catalog');
+	b.add('cover', mat('leather', 0x5a2a1a), new THREE.BoxGeometry(0.22, 0.04, 0.3));
+	b.add('pages', mat('page_cream', 0xf4ecd0), new THREE.BoxGeometry(0.004, 0.032, 0.29), { pos: V(0.109, 0, 0) });
+	b.add('disc', mat('gold', 0xe0b040, { metalness: 0.6, roughness: 0.35 }), new THREE.CylinderGeometry(0.06, 0.06, 0.003, 16), { pos: V(0, 0.021, 0) });
+	return b.build();
+}
+
+// The golden record player: a 0.36 x 0.14 x 0.3 m gold box with its platter, a black record and the arm.
+export function buildGoldenPlayer() {
+	const b = new Builder('golden_player');
+	const gold = mat('gold', 0xe0b040, { metalness: 0.6, roughness: 0.35 });
+	b.add('body', gold, new THREE.BoxGeometry(0.36, 0.1, 0.3), { pos: V(0, -0.02, 0) });
+	b.add('record', mat('vinyl', 0x15151a), new THREE.CylinderGeometry(0.12, 0.12, 0.006, 20), { pos: V(-0.04, 0.035, 0) });
+	b.add('label', mat('label_red', 0xd84a3a), new THREE.CylinderGeometry(0.035, 0.035, 0.007, 12), { pos: V(-0.04, 0.036, 0) });
+	b.add('arm', gold, new THREE.BoxGeometry(0.015, 0.015, 0.2), { pos: V(0.13, 0.06, 0.0), rot: [0, 0.3, 0] });
+	b.add('knob', gold, new THREE.CylinderGeometry(0.02, 0.02, 0.04, 8), { pos: V(0.14, 0.05, -0.1) });
+	return b.build();
+}
+
+// The private record (fixed, the clue): a 0.32 m square sleeve on its edge with a white label, leaning on the shelf.
+export function buildPrivateRecord() {
+	const b = new Builder('private_record');
+	b.add('sleeve', mat('sleeve_private', 0x2a3a5a), new THREE.BoxGeometry(0.32, 0.32, 0.01), { pos: V(0, 0.16, 0), rot: [-0.15, 0, 0] });
+	b.add('label', mat('white', 0xf6f4ee), new THREE.BoxGeometry(0.2, 0.08, 0.002), { pos: V(0, 0.2, 0.011), rot: [-0.15, 0, 0] });
+	b.add('text', mat('cross_red', 0xd02a20), new THREE.BoxGeometry(0.16, 0.012, 0.002), { pos: V(0, 0.2, 0.013), rot: [-0.15, 0, 0] });
+	return b.build();
+}
+
 export const models = {
 	raffle_urn: buildRaffleUrn, contest_blender: buildContestBlender, winners_list: buildWinnersList,
 	ad_contracts: buildAdContracts, billing_book: buildBillingBook, paid_stamp: buildPaidStamp,
 	neighbor_tapes: buildNeighborTapes, pot_mic: buildPotMic, crossed_map: buildCrossedMap,
-	reception_plant: buildReceptionPlant,
+	reception_plant: buildReceptionPlant, vinyl_crate: buildVinylCrate, collector_catalog: buildCollectorCatalog,
+	golden_player: buildGoldenPlayer, private_record: buildPrivateRecord,
 };
 
 export const views = {
@@ -133,7 +176,9 @@ export const views = {
 			{ name: 'paid_stamp', pos: [0.5, 0.06, -0.5] },
 			{ name: 'neighbor_tapes', pos: [-0.6, 0.15, 0.7] }, { name: 'pot_mic', pos: [0.05, 0.14, 0.75] },
 			{ name: 'crossed_map', pos: [0.6, 0.003, 0.7], rotY: 0.3 }, { name: 'reception_plant', pos: [1.3, 0, -0.2] },
+			{ name: 'vinyl_crate', pos: [-0.6, 0.17, 1.5] }, { name: 'collector_catalog', pos: [0.0, 0.02, 1.5] },
+			{ name: 'golden_player', pos: [0.5, 0.07, 1.5] }, { name: 'private_record', pos: [1.1, 0, 1.4] },
 		],
-		cam: { pos: [0.3, 1.8, 3.4], target: [0.2, 0.3, 0], fov: 42 },
+		cam: { pos: [0.3, 2.2, 4.4], target: [0.2, 0.2, 0.5], fov: 42 },
 	},
 };
