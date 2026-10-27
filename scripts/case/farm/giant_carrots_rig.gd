@@ -17,8 +17,10 @@ const HOLE := Color(0.25, 0.17, 0.1)
 
 var carrot: GiantCarrot
 var model: Node3D
-## The carrot once out, a heavy thing to carry.
+## The carrot once out, a heavy thing to carry: made with the farm on every PC (so it's the same prop online),
+## hidden and out of reach until it's pulled.
 var loose: Grabbable
+var pulled := false
 
 
 func setup(place: FarmRaid) -> void:
@@ -34,6 +36,27 @@ func setup(place: FarmRaid) -> void:
 	carrot.tugged.connect(func(cop: Cop) -> void:
 		farm.raid.float_label(tr("FARM_CARROT_STUCK"), cop.global_position + Vector3.UP * 2.0, Color.WHITE))
 	carrot.pulled_out.connect(func(_cops: Array[Cop]) -> void: pull_out())
+	_make_loose()
+
+
+## The pulled-out carrot, lying on its side beside the hole, its leaves toward the garden's east; hidden for now.
+func _make_loose() -> void:
+	loose = Grabbable.new()
+	loose.name = "LooseCarrot"
+	loose.mass = MASS
+	loose.collision_layer = 0
+	loose.collision_mask = 15
+	loose.freeze = true
+	loose.visible = false
+	var length := HEIGHT + UNDERGROUND
+	var shape := _shape(length)
+	shape.position = Vector3.UP * (length / 2 - UNDERGROUND)
+	loose.add_child(shape)
+	loose.add_child(MODEL.instantiate())
+	loose.add_child(_label())
+	loose.rotation.z = -PI / 2
+	loose.position = CARROT_AT + Vector3(UNDERGROUND, FarmRaid.GROUND + RADIUS + 0.05, 0.6)
+	farm.add_child(loose)
 
 
 ## The laboratory's label on the root, shown once it's pulled out (just over it, as the carrot lies on its side).
@@ -61,8 +84,9 @@ func _shape(height: float) -> CollisionShape3D:
 
 ## Out it comes, once: the clue, a hole where it was and the carrot lying beside it, root and all.
 func pull_out() -> void:
-	if loose:
+	if pulled:
 		return
+	pulled = true
 	carrot.out = true
 	if multiplayer.is_server():
 		farm.raid.add_clue(tr("CLUE_GIANT_CARROT"))
@@ -78,30 +102,18 @@ func pull_out() -> void:
 	hole.mesh = disc
 	hole.position = CARROT_AT + Vector3.UP * (FarmRaid.GROUND + 0.01)
 	farm.add_child(hole)
-	loose = Grabbable.new()
-	loose.name = "LooseCarrot"
-	loose.mass = MASS
+	loose.visible = true
 	loose.collision_layer = 4
-	loose.collision_mask = 15
-	var length := HEIGHT + UNDERGROUND
-	var shape := _shape(length)
-	shape.position = Vector3.UP * (length / 2 - UNDERGROUND)
-	loose.add_child(shape)
-	carrot.remove_child(model)
-	model.position = Vector3.ZERO
-	loose.add_child(model)
-	loose.add_child(_label())
-	# Lying on its side beside the hole, its leaves toward the garden's east.
-	loose.rotation.z = -PI / 2
-	loose.position = CARROT_AT + Vector3(UNDERGROUND, FarmRaid.GROUND + RADIUS + 0.05, 0.6)
-	farm.add_child(loose)
+	# On a guest PropSync moves its frozen copy.
+	if multiplayer.is_server():
+		loose.freeze = false
 	carrot.queue_free()
 
 
 func net_state() -> Variant:
-	return loose != null
+	return pulled
 
 
 func apply_net_state(state: Variant) -> void:
-	if state and not loose:
+	if state:
 		pull_out()

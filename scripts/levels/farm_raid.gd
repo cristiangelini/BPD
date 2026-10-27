@@ -331,12 +331,19 @@ func _place_facts() -> Dictionary:
 	}
 
 
-## Online, what the guests' farm takes from the host's (RaidCase.snapshot): what the story's rig decides on the host.
+## Online, what the guests' farm takes from the host's (RaidCase.snapshot): the corral's gate (Margarita and the
+## cow-owners story open it on the host), the greenhouse's glass and what the story's rig decides on the host. The
+## animals and Pancho come over like people (NpcSync), and the hens, eggs and loose bales like props (PropSync).
 func net_state() -> Dictionary:
-	return {"rig": rig.net_state() if rig else null}
+	return {"gate": corral_gate.is_open if corral_gate else false, "greenhouse": greenhouse_broken,
+		"rig": rig.net_state() if rig else null}
 
 
 func apply_net_state(state: Dictionary) -> void:
+	if corral_gate and state.get("gate", false) != corral_gate.is_open:
+		corral_gate.set_open(state.gate)
+	if state.get("greenhouse", false) and not greenhouse_broken:
+		break_greenhouse()
 	if rig and state.rig != null:
 		rig.apply_net_state(state.rig)
 

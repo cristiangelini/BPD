@@ -18,6 +18,11 @@ var is_broken := false
 var _speed := 0.0
 
 
+## Online, what a guest's copy needs before it's added (PropSync): whether it's painted gold.
+func net_setup() -> Dictionary:
+	return {"golden": golden}
+
+
 func _ready() -> void:
 	mass = KG
 	collision_layer = 4
