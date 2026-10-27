@@ -7,7 +7,8 @@ extends Node3D
 ## with its bell and the till, a shelf of parts and the office at the back, locked with the till's key. A windshield
 ## that something hits fast cracks, a fine each. Don Tuerca walks among the cars filling the complaint; the bell calls
 ## him to the counter, his back to the garage, and the lift's button brings its car down (or up), squashing softly
-## whoever is under it (step 2). Every number here is (propuesta).
+## whoever is under it (step 2). Grasita, the apprentice, works on the first car's engine and talks to whoever brings
+## him the tool he asks for from the workbench (step 3). Every number here is (propuesta).
 
 signal windshield_broken(index: int)
 ## The lift's car came down on a cop.
@@ -80,6 +81,18 @@ const TILL_ON := Vector3(-9.8, FLOOR_TOP + 1.0, 8.0)
 ## The workbench on the west wall, under the tool board.
 const BENCH_AT := Vector3(-12.3, FLOOR_TOP, 0.0)
 const BENCH_SIZE := Vector3(1.0, 0.9, 3.2)
+## The bench's tools, in a row along its front edge, with their collision boxes and weights.
+const TOOLS_X := -11.98
+const TOOLS_FROM_Z := -1.45
+const TOOLS_STEP := 0.38
+const TOOL_SIZES := {
+	"spanner_13": Vector3(0.3, 0.03, 0.06), "adjustable_wrench": Vector3(0.28, 0.03, 0.08),
+	"hammer": Vector3(0.32, 0.05, 0.13), "screwdriver": Vector3(0.26, 0.04, 0.04), "pliers": Vector3(0.23, 0.03, 0.1),
+	"oil_can": Vector3(0.24, 0.18, 0.14), "tire_iron": Vector3(0.44, 0.04, 0.44), "flashlight": Vector3(0.23, 0.07, 0.07),
+}
+const TOOL_KG := 0.8
+## Grasita, bent over the first car's engine, facing it.
+const GRASITA_AT := Vector3(-6.5, FLOOR_TOP, 3.6)
 ## Two stacks of four tires in the back west corner.
 const TIRE_STACKS: Array[Vector3] = [Vector3(-11.6, FLOOR_TOP, -8.0), Vector3(-10.6, FLOOR_TOP, -8.0)]
 const TIRES_PER_STACK := 4
@@ -144,6 +157,9 @@ var office_door: FrontDoor
 var till: Till
 var bell: GarageBell
 var tuerca: FloorBoss
+var grasita: GarageApprentice
+## The bench's tools by id.
+var tools := {}
 var complaint_bar: ProgressBar
 ## The lift's button, and how high its car is now and is going to.
 var lift_button: PushButton
@@ -179,6 +195,7 @@ func _ready() -> void:
 	_place_cars()
 	office_door = _door(OFFICE_DOOR_X)
 	_place_tuerca()
+	_place_grasita()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("garage")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -405,6 +422,27 @@ func _squash_under() -> bool:
 func _physics_process(delta: float) -> void:
 	if cars.size() > 1:
 		_move_lift(delta)
+
+
+## Grasita at the first car's engine, and the tools on the bench he asks for.
+func _place_grasita() -> void:
+	grasita = GarageApprentice.new()
+	grasita.name = "Grasita"
+	grasita.rng.seed = hash(["grasita", case_seed])
+	grasita.position = GRASITA_AT
+	grasita.rotation.y = PI
+	add_child(grasita)
+	var ids := GarageApprentice.TOOLS
+	for i in ids.size():
+		var id: String = ids[i]
+		var model: PackedScene = load("res://assets/models/garage_%s.glb" % id)
+		var tool := ClubEvidence.make_item("Tool_" + id, model, TOOL_SIZES[id], TOOL_KG)
+		tool.set_meta("tool", id)
+		var size: Vector3 = TOOL_SIZES[id]
+		tool.position = Vector3(TOOLS_X, FLOOR_TOP + BENCH_SIZE.y + size.y / 2 + 0.005, TOOLS_FROM_Z + i * TOOLS_STEP)
+		tool.rotation.y = PI / 2
+		add_child(tool)
+		tools[id] = tool
 
 
 ## Don Tuerca on his round, the bell's visits to the counter, what he notices and the complaint bar.

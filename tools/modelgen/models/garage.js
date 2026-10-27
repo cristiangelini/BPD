@@ -103,7 +103,88 @@ export function buildGarageTire() {
 	return b.build();
 }
 
+// Grasita, the apprentice: thin and young, an orange overall too big for him with the sleeves rolled up, a grease
+// smudge on his nose and cheek, messy hair and a rag hanging from his pocket.
+export function buildGrasita() {
+	const b = new Builder('npc_grasita');
+	const overall = mat('grasita_overall', 0xe8742a), grease = mat('tuerca_grease', 0x26262a);
+	pearBody(b, mat('skin_crema', 0xf3d2b0), { shirt: overall, pants: overall, shoes: M.black, belted: false, onePiece: true });
+	eyes(b, 1.34, 0.17, 0.08, 0.05);
+	b.add('face', grease, ellipsoid(0.04, 0.02, 0.02, 6, 4), { pos: V(0, 1.27, 0.21) });
+	b.add('face', grease, ellipsoid(0.04, 0.03, 0.02, 6, 4), { pos: V(0.12, 1.24, 0.16) });
+	const hair = mat('grasita_hair', 0x2a1a10);
+	for (let i = 0; i < 9; i++) {
+		const a = (i / 9) * Math.PI * 2;
+		b.add('hair', hair, ellipsoid(0.07, 0.1, 0.07, 6, 4), { pos: V(Math.cos(a) * 0.12, 1.5, Math.sin(a) * 0.1), rot: [Math.sin(a) * 0.5, 0, Math.cos(a) * 0.5] });
+	}
+	b.add('hair', hair, ellipsoid(0.19, 0.1, 0.18, 8, 5), { pos: V(0, 1.45, 0) });
+	b.add('rag', mat('grasita_rag', 0xd23a3a), new THREE.BoxGeometry(0.12, 0.18, 0.02), { pos: V(0.25, 0.42, 0.33), rot: [0, 0.4, 0.1] });
+	return b.build();
+}
+
+// The 8 tools of the tool wall, lying flat along x with origin at their middle: Grasita asks for them by name.
+const steel = () => mat('tool_chrome', 0xb8bcc4, { metalness: 0.5, roughness: 0.35 });
+const toolModels = {
+	garage_spanner_13() {
+		const b = new Builder('garage_spanner_13');
+		b.add('handle', steel(), new THREE.BoxGeometry(0.2, 0.012, 0.025), { pos: V(0, 0, 0) });
+		for (const s of [-1, 1]) b.add('jaw', steel(), new THREE.TorusGeometry(0.025, 0.008, 4, 8, Math.PI * 1.6), { pos: V(s * 0.115, 0, 0), rot: [Math.PI / 2, 0, s > 0 ? 0 : Math.PI] });
+		b.add('mark', mat('tool_mark', 0x26262a), new THREE.BoxGeometry(0.03, 0.002, 0.012), { pos: V(0.02, 0.007, 0) });
+		return b.build();
+	},
+	garage_adjustable_wrench() {
+		const b = new Builder('garage_adjustable_wrench');
+		b.add('handle', mat('wrench_red', 0xd23a3a), new THREE.BoxGeometry(0.22, 0.02, 0.035), { pos: V(-0.03, 0, 0) });
+		for (const s of [-1, 1]) b.add('jaw', steel(), new THREE.BoxGeometry(0.06, 0.022, 0.02), { pos: V(0.11, 0, s * 0.03) });
+		return b.build();
+	},
+	garage_hammer() {
+		const b = new Builder('garage_hammer');
+		b.add('handle', mat('tool_wood', 0xc8945a), new THREE.BoxGeometry(0.3, 0.028, 0.032), { pos: V(-0.02, 0, 0) });
+		b.add('head', steel(), new THREE.BoxGeometry(0.045, 0.04, 0.13), { pos: V(0.13, 0.004, 0) });
+		return b.build();
+	},
+	garage_screwdriver() {
+		const b = new Builder('garage_screwdriver');
+		b.add('handle', mat('handle_blue_tool', 0x3a6ad2), new THREE.CylinderGeometry(0.018, 0.018, 0.1, 6), { pos: V(-0.07, 0, 0), rot: [0, 0, Math.PI / 2] });
+		b.add('shaft', steel(), new THREE.CylinderGeometry(0.005, 0.005, 0.15, 4), { pos: V(0.055, 0, 0), rot: [0, 0, Math.PI / 2] });
+		b.add('tip', steel(), new THREE.BoxGeometry(0.02, 0.012, 0.012), { pos: V(0.135, 0, 0), rot: [Math.PI / 4, 0, 0] });
+		return b.build();
+	},
+	garage_pliers() {
+		const b = new Builder('garage_pliers');
+		const grip = mat('pliers_grip', 0xf2c230);
+		for (const s of [-1, 1]) {
+			b.add('grip', grip, new THREE.BoxGeometry(0.14, 0.018, 0.022), { pos: V(-0.05, 0, s * 0.025), rot: [0, s * 0.18, 0] });
+			b.add('jaw', steel(), new THREE.BoxGeometry(0.08, 0.016, 0.014), { pos: V(0.07, 0, s * 0.008), rot: [0, -s * 0.1, 0] });
+		}
+		b.add('pivot', steel(), new THREE.CylinderGeometry(0.014, 0.014, 0.024, 8), { pos: V(0.025, 0, 0) });
+		return b.build();
+	},
+	garage_oil_can() {
+		const b = new Builder('garage_oil_can');
+		b.add('body', mat('oilcan_green', 0x3a8a4a), new THREE.CylinderGeometry(0.06, 0.07, 0.1, 10), { pos: V(-0.04, 0.05, 0) });
+		b.add('spout', steel(), new THREE.CylinderGeometry(0.006, 0.012, 0.16, 6), { pos: V(0.06, 0.13, 0), rot: [0, 0, -1.0] });
+		return b.build();
+	},
+	garage_tire_iron() {
+		const b = new Builder('garage_tire_iron');
+		b.add('bar', mat('iron_black', 0x2a2a2e), new THREE.CylinderGeometry(0.01, 0.01, 0.4, 6), { pos: V(0, 0, 0), rot: [0, 0, Math.PI / 2] });
+		b.add('bar', mat('iron_black', 0x2a2a2e), new THREE.CylinderGeometry(0.01, 0.01, 0.4, 6), { pos: V(0, 0, 0), rot: [Math.PI / 2, 0, 0] });
+		for (const [x, z] of [[0.2, 0], [-0.2, 0], [0, 0.2], [0, -0.2]]) b.add('socket', steel(), new THREE.CylinderGeometry(0.018, 0.018, 0.04, 6), { pos: V(x, 0, z), rot: x ? [0, 0, Math.PI / 2] : [Math.PI / 2, 0, 0] });
+		return b.build();
+	},
+	garage_flashlight() {
+		const b = new Builder('garage_flashlight');
+		b.add('body', mat('flash_yellow', 0xf2c230), new THREE.CylinderGeometry(0.02, 0.02, 0.18, 8), { pos: V(-0.02, 0, 0), rot: [0, 0, Math.PI / 2] });
+		b.add('head', mat('flash_black', 0x26262a), new THREE.CylinderGeometry(0.035, 0.022, 0.05, 10), { pos: V(0.09, 0, 0), rot: [0, 0, Math.PI / 2] });
+		b.add('lens', mat('flash_lens', 0xf8f4d0, { emissive: 0x3a3a20 }), new THREE.CylinderGeometry(0.032, 0.032, 0.005, 10), { pos: V(0.117, 0, 0), rot: [0, 0, Math.PI / 2] });
+		return b.build();
+	},
+};
+
 export const models = {
+	npc_grasita: buildGrasita, ...toolModels,
 	garage_lift: buildLift, garage_lift_arms: buildLiftArms, npc_don_tuerca: buildDonTuerca,
 	oil_drum: buildOilDrum, garage_tire: buildGarageTire, service_bell: buildServiceBell, tool_board: buildToolBoard,
 };
@@ -116,5 +197,12 @@ export const views = {
 			{ name: 'service_bell', pos: [1.6, 0.92, 0.4] }, { name: 'tool_board', pos: [1.7, 0.6, -0.8] },
 		],
 		cam: { pos: [0, 2.0, 6.5], target: [0, 1.4, 0], fov: 45 },
+	},
+	garage_tools: {
+		items: [
+			{ name: 'npc_grasita', pos: [-0.9, 0, -0.3], rotY: 0.3 },
+			...Object.keys(toolModels).map((name, i) => ({ name, pos: [0.25 + (i % 2) * 0.55, 0.05, -0.6 + Math.floor(i / 2) * 0.35] })),
+		],
+		cam: { pos: [0.2, 1.6, 2.2], target: [0.1, 0.5, -0.1], fov: 45 },
 	},
 };

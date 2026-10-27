@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Garage raid, step 3: Grasita, the apprentice, works on the first car's engine and asks for one of the 8 tools on the workbench (drawn with the seed); the cop who brings it into his hands hears what he saw (once per cop), and a wrong tool gets "That's not it!" and is tossed back.
 - Garage raid, step 2: Don Tuerca walks among the cars filling the complaint (+10 for each cracked windshield he sees); the counter's bell sends him to a client who isn't there for 15 s with his back to the garage (twice; from the third ring he notices, +10); the lift's button brings its car down or up, and a cop under it gets softly squashed (a fine of 20 per trip, 3 s on the floor).
 - Garage raid, step 1: the garage "El Pistón Feliz" on its lot in the east (block 7, 2): three clients' cars (one up on the lift, one over the pit), the tool wall, tires, oil drums, the parts shelf, the counter with its bell and the till, and the office locked with the till's key; a windshield hit fast cracks (a fine of 30), 12 hiding spots, --place=garage and a menu test button.
 - Garage raid design: docs/diseno/allanamiento-taller.md proposes a new raid place, the "El Pistón Feliz" garage, with Don Tuerca, Grasita and 6 stories (decision 310).

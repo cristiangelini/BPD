@@ -94,6 +94,14 @@ entre 400 y 600.
      Una cosa que haya debajo sale empujada igual, sin multa. Por ahora el carrito con ruedas es solo de nombre: Don
      Tuerca camina; acostarse debajo de los autos queda para después. Capturas `paso2-*.png`.
 3. Grasita y la herramienta que pide.
+   - **Hecho así (propuesta):** Grasita (`GarageApprentice`, mameluco naranja que le queda grande, pelo revuelto y
+     grasa en la cara) está agachado frente al motor del primer auto. Las 8 herramientas están en fila sobre el banco
+     de trabajo (la llave 13, la llave inglesa, el martillo, el destornillador, la pinza, la aceitera, la llave cruz y
+     la linterna), y se agarran y se tiran como cualquier cosa. E en él: "¡Pásame el destornillador! ¡Rápido, que se
+     me cae el motor!" (la herramienta sale de la semilla y es la misma hasta que llega). Si un policía la lleva
+     hasta sus manos (o la suelta ahí hace menos de 2 s), Grasita le cuenta lo que vio (la pista la pone la historia
+     en el paso 4; mientras tanto dice que no vio nada raro). Con otra herramienta dice "¡Esa no es!" y, si está
+     suelta, se la tira de vuelta. Una vez por policía. Capturas `paso3-*.png` y `garage_tools.png` (modelos).
 4. El caso (RaidCase) con la primera historia: las patentes cambiadas.
 5. Las otras 5 historias, una por PR.
 6. "Jugar" suma el taller al sorteo de allanamientos (`PlaceDraw.ORDER`).

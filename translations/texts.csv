@@ -5627,3 +5627,19 @@ TUERCA_OFFENDED,"No hablo más. Tengo un auto abierto.","I'm done talking. I've 
 TUERCA_LAWYER,"¡Llamo a mi abogado! Me debe un cambio de aceite.","I'm calling my lawyer! He owes me an oil change.","Vou ligar para o meu advogado! Ele me deve uma troca de óleo."
 TUERCA_WINDSHIELD,"¡El parabrisas! ¡Eso es de un cliente!","The windshield! That belongs to a client!","O para-brisa! Isso é de um cliente!"
 TUERCA_NOTICED,"¡Ya sé que no hay nadie! ¡Dejen el timbre!","I know there's nobody there! Leave the bell alone!","Eu sei que não tem ninguém! Larguem a campainha!"
+PROMPT_GRASITA,E: hablar con Grasita,E: talk to Grasita,E: falar com o Grasita
+GRASITA_ASK,"¡Pásame %s! ¡Rápido, que se me cae el motor!","Hand me %s! Quick, the engine's slipping!","Me passa %s! Rápido, que o motor está caindo!"
+GRASITA_WRONG,"¡Esa no es! ¿Nunca viste un taller?","That's not it! Never been in a garage?","Não é essa! Nunca viu uma oficina?"
+GRASITA_NOTHING,"Gracias. No vi nada raro, la verdad. Bueno, todo acá es raro.","Thanks. I didn't see anything odd, honestly. Well, everything here is odd.","Valeu. Não vi nada estranho, sério. Bom, tudo aqui é estranho."
+GRASITA_AGAIN,"Ya te conté todo lo que sé. Que no es mucho.","I already told you all I know. Which isn't much.","Já te contei tudo o que sei. Que não é muito."
+GRASITA_IDLE_1,"Don Tuerca dice que si aprendo, en diez años me deja cambiar una rueda.","Don Tuerca says if I learn, in ten years he'll let me change a tire.","O Don Tuerca diz que, se eu aprender, em dez anos ele me deixa trocar um pneu."
+GRASITA_IDLE_2,"Este motor tiene una pieza de más. O de menos. No sé.","This engine has one part too many. Or too few. Not sure.","Este motor tem uma peça a mais. Ou a menos. Não sei."
+GRASITA_IDLE_3,"Yo veo todo desde acá abajo, ¿eh? Todo.","I see everything from down here, you know? Everything.","Eu vejo tudo daqui de baixo, sabia? Tudo."
+GARAGE_TOOL_SPANNER_13,la llave 13,the 13 spanner,a chave 13
+GARAGE_TOOL_ADJUSTABLE_WRENCH,la llave inglesa,the adjustable wrench,a chave inglesa
+GARAGE_TOOL_HAMMER,el martillo,the hammer,o martelo
+GARAGE_TOOL_SCREWDRIVER,el destornillador,the screwdriver,a chave de fenda
+GARAGE_TOOL_PLIERS,la pinza,the pliers,o alicate
+GARAGE_TOOL_OIL_CAN,la aceitera,the oil can,a almotolia
+GARAGE_TOOL_TIRE_IRON,la llave cruz,the tire iron,a chave de roda
+GARAGE_TOOL_FLASHLIGHT,la linterna,the flashlight,a lanterna
