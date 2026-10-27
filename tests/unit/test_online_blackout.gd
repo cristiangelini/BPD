@@ -44,9 +44,14 @@ func test_the_host_inmates_walk_on_the_guest() -> void:
 	host.blackout.start()
 	var inmate := host.blackout.inmates[0]
 	inmate.delay = 0.0
+	var from := inmate.global_position
 	await wait_seconds(1.5)
+	assert_gt(inmate.global_position.distance_to(from), 1.0, "the host's walks")
+	# Stopped where it got to: a slow frame can leave the guest's copy a few steps behind a walking one.
+	inmate.set_physics_process(false)
 	var there := guest.blackout.inmates[0]
-	assert_almost_eq(there.global_position.distance_to(inmate.global_position), 0.0, 0.8)
+	await wait_until(func() -> bool: return there.global_position.distance_to(inmate.global_position) < 0.1, 5.0)
+	assert_almost_eq(there.global_position.distance_to(inmate.global_position), 0.0, 0.1, "the guest's walks there too")
 
 
 func test_an_escape_and_a_frozen_one_show_on_the_guest() -> void:

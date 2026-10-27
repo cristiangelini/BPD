@@ -69,6 +69,17 @@ func test_the_same_seed_seats_the_same_members() -> void:
 		assert_eq(other.members[i].look, club.members[i].look)
 
 
+func test_a_member_always_sits_alone_at_a_table_to_challenge_from() -> void:
+	# Seeds that drew every member across from another before (about 1 in 150).
+	for case_seed in [243, 346, 520]:
+		var other: ChessClub = LEVEL.instantiate()
+		other.case_seed = case_seed
+		other.get_node("Cop").input_enabled = false
+		add_child_autofree(other)
+		assert_false(other.games._open_tables().is_empty(), "seed %d leaves a table to challenge from" % case_seed)
+		assert_eq(other.free_seats.size(), ChessClub.TABLES.size() * 2 - ChessClub.PLAYERS, "and the seats left free")
+
+
 func test_the_gran_maestro_is_the_boss_on_the_stage_facing_the_door() -> void:
 	assert_eq(club.boss, club.alfil)
 	assert_true(club.alfil.is_boss())
