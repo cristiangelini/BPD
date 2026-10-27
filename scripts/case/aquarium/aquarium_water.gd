@@ -100,7 +100,9 @@ func _physics_process(delta: float) -> void:
 		_drip(cop)
 	for node in get_tree().get_nodes_in_group("cops"):
 		var cop := node as Cop
-		if not cop or cop.vehicle or _again.has(cop) or cop.is_crouching:
+		# Online each PC slips only its own cop; the host hears of what it drops (Grabber.release).
+		if not cop or cop.vehicle or _again.has(cop) or cop.is_crouching \
+				or (cop.sync and cop.sync.is_inside_tree() and not cop.sync.is_multiplayer_authority()):
 			continue
 		var flat := Vector3(cop.velocity.x, 0, cop.velocity.z)
 		if flat.length() > RUN_OVER and on_puddle(cop):

@@ -25,6 +25,8 @@ var glass: EmptyFrame
 var till: AquariumTill
 var sandwich: CrimeClueItem
 var has_bite := false
+## Whether a search of the igloo brought the sandwich out.
+var sandwich_out := false
 var hood: MeshInstance3D
 var hood_taken := false
 var _elapsed := 0.0
@@ -73,6 +75,16 @@ func _ready() -> void:
 		aquarium.add_child(hair)
 		case.items["hair"] = hair
 	has_bite = plan.clues.has("bite")
+	# The sandwich is in the igloo from the start, hidden, so every PC online has the same one.
+	if has_bite:
+		sandwich = CrimeClueItem.new()
+		sandwich.name = "Clue_bite"
+		sandwich.kind = "bite"
+		sandwich.look = "aquarium"
+		sandwich.case = case
+		aquarium.add_child(sandwich)
+		_hide_sandwich()
+		case.items["bite"] = sandwich
 	till = AquariumTill.new()
 	till.name = "Till"
 	till.case = case
@@ -83,18 +95,29 @@ func _ready() -> void:
 
 ## A search of a spot is over (Aquarium.searched): in the igloo, the bitten sandwich turns up too.
 func searched(spot: String) -> void:
-	if spot != "igloo" or not has_bite or sandwich or case.ruined.has("bite"):
+	if spot != "igloo" or not has_bite or sandwich_out or case.ruined.has("bite"):
 		return
-	sandwich = CrimeClueItem.new()
-	sandwich.name = "Clue_bite"
-	sandwich.kind = "bite"
-	sandwich.look = "aquarium"
-	sandwich.case = case
+	show_sandwich()
+
+
+## Out of the igloo, on the floor in front of it, for a cop to bag (also a guest's online, Aquarium.apply_net_state).
+func show_sandwich() -> void:
+	sandwich_out = true
 	var body := aquarium.loot_spots["igloo"] as Node3D
 	sandwich.position = Vector3(body.position.x, Aquarium.FLOOR_TOP, body.position.z) + body.get_meta("out") \
 		+ Vector3(0.5, 0, 0)
-	aquarium.add_child(sandwich)
-	case.items["bite"] = sandwich
+	sandwich.visible = true
+	sandwich.freeze = false
+	sandwich.collision_layer = 4
+
+
+## Inside the igloo: not seen, not grabbed, not falling.
+func _hide_sandwich() -> void:
+	var body := aquarium.loot_spots["igloo"] as Node3D
+	sandwich.position = Vector3(body.position.x, Aquarium.FLOOR_TOP + 0.1, body.position.z)
+	sandwich.visible = false
+	sandwich.freeze = true
+	sandwich.collision_layer = 0
 
 
 func _physics_process(delta: float) -> void:
