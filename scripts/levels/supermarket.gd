@@ -6,12 +6,40 @@ extends Node3D
 ## back wall with the chest freezer in front of it, the produce stand with its scale is in the west corner, three
 ## checkouts face the door, the manager's office is in the front east corner (locked, its key in checkout 1's till) and
 ## the storeroom in the back east corner. By the door the offer table holds a pyramid of 21 cans: it falls with nothing,
-## and the fridge's glass cracks if something hits it fast, a fine each. Every number here is (propuesta).
+## and the fridge's glass cracks if something hits it fast, a fine each. It's a raid case like the gym (step 5): one of
+## its stories (STORIES), drawn with the seed, run by the same RaidCase as the other places. Every number here is
+## (propuesta).
 
 signal pyramid_fell
 signal fridge_broken
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the supermarket can be suspected of (allanamiento-super.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["super_dates", "super_cheese", "super_carts", "super_scale", "super_raffle", "super_aisle13"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_SUPER_TIP_B", "BRIEF_TIP_C", "BRIEF_SUPER_TIP_D",
+	"BRIEF_SUPER_TIP_E"]
+## The stories the supermarket can tell, like GymRaid.STORIES: what the comisario says once it's guessed, its "find
+## it" row, what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the
+## checklist rows of its extras and its rig. With "main_hidden" the first hidden item is the main evidence.
+const STORIES := {
+	"super_dates": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_SUPER_DATES_B", "BRIEF_SUPER_DATES_C", "BRIEF_SUPER_DATES_D"],
+		"find": "OBJ_FIND_PRICE_GUN",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/super_price_gun.tscn"), preload("res://scenes/props/super_label_box.tscn"),
+			preload("res://scenes/props/super_old_yogurt.tscn")],
+		"half_heights": [0.14, 0.115, 0.075],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_LABEL_BOX", "OBJ_EXTRA_OLD_YOGURT"],
+		"rig": preload("res://scripts/case/super/changed_dates_rig.gd"),
+	},
+}
+## Where the clue notes for the suspicions can lie, on the floor.
+const NOTE_PLACES: Array[Vector3] = [Vector3(-7.5, FLOOR_TOP, 2.0), Vector3(-2.5, FLOOR_TOP, -4.0),
+	Vector3(2.5, FLOOR_TOP, -2.0), Vector3(-12.0, FLOOR_TOP, -3.0), Vector3(12.0, FLOOR_TOP, 2.0),
+	Vector3(-4.0, FLOOR_TOP, 10.5)]
 const GONDOLA_MODEL := preload("res://assets/models/gondola.glb")
 const FRIDGE_MODEL := preload("res://assets/models/dairy_fridge.glb")
 const CHECKOUT_MODEL := preload("res://assets/models/checkout.glb")
@@ -141,8 +169,20 @@ var can_homes: Array[Vector3] = []
 var pyramid_fallen := false
 var fridge_cracked := false
 var broken_goods := 0
+## The case flow every raid shares.
+var raid: RaidCase
 ## Money taken off the case pay: the pyramid and the fridge's glass.
-var fines := 0
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: SupermarketRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
 var carts: Array[ShoppingCart] = []
 var customers: Array[SuperCustomer] = []
 ## Don Ofertón, the manager (step 3), his price call on the checkouts and the complaint bar.
@@ -162,6 +202,21 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_aisles()
@@ -182,6 +237,103 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "supermarket", car)
+	raid.station_parking = station_parking
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = manager
+	raid.owner_id = "supermarket"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	manager.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_SUPERMARKET"))
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The supermarket's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_SUPER",
+		"guess_key": "OBJ_GUESS_SUPER",
+		"broken_key": "OBJ_BROKEN_SUPER",
+		"complaint_key": "OBJ_COMPLAINT_SUPER",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_goods,
+		"complaint": manager.complaint,
+	}
+
+
+## Online, what the guests' supermarket takes from the host's (RaidCase.snapshot): the pyramid, the fridge and what the
+## story's rig decides on the host (the rest is step 8).
+func net_state() -> Dictionary:
+	return {"pyramid": pyramid_fallen, "fridge": fridge_cracked, "rig": rig.net_state() if rig else null}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	if state.pyramid:
+		topple_pyramid()
+	if state.fridge:
+		break_fridge()
+	if rig and state.rig != null:
+		rig.apply_net_state(state.rig)
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Don Ofertón lets slip when asked (where the story's things are, in an order drawn from the seed), and what Lalo
+## saw: where he hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		manager.slips.append(tr("OFERTON_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	manager.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	stocker.clue = tr("CLUE_LALO") % where
+	stocker.clue_speech = tr("LALO_CLUE_" + story_id) % where
+	stocker.told.connect(raid.add_clue)
 
 
 ## The tiled floor, the walls with the doorway and the shop windows, the roof and the sign.

@@ -174,7 +174,36 @@ export function buildLalo() {
 	return b.build();
 }
 
+// The changed dates' story: the labeling gun that prints "vence en 2099", a box of peeled-off old labels and a yogurt
+// thirty years old, swollen and green.
+export function buildPriceGun() {
+	const b = new Builder('super_price_gun');
+	const body = mat('gun_orange', 0xf08a2a), dark = mat('gun_dark', 0x2a2a30);
+	b.add('body', body, new THREE.BoxGeometry(0.08, 0.12, 0.26), { pos: V(0, 0.16, 0) });
+	b.add('body', dark, new THREE.BoxGeometry(0.06, 0.16, 0.06), { pos: V(0, 0.06, 0.07), rot: [0.3, 0, 0] });
+	b.add('body', dark, new THREE.BoxGeometry(0.03, 0.05, 0.04), { pos: V(0, 0.09, 0.0) });
+	b.add('roll', mat('gun_roll', 0xf6f4ee), new THREE.CylinderGeometry(0.06, 0.06, 0.05, 12), { pos: V(0, 0.2, -0.06), rot: [0, 0, Math.PI / 2] });
+	b.add('label', mat('gun_label', 0xf2c230), new THREE.BoxGeometry(0.07, 0.03, 0.002), { pos: V(0, 0.15, -0.131) });
+	return b.build();
+}
+
+export function buildLabelBox() {
+	const b = new Builder('super_label_box');
+	const card = mat('label_box_card', 0xb88a5a);
+	b.add('box', card, new THREE.BoxGeometry(0.4, 0.22, 0.3), { pos: V(0, 0.11, 0) });
+	for (let i = 0; i < 9; i++) b.add('labels', mat(`old_label_${i % 3}`, [0xf2f2ea, 0xf2c230, 0xe8473a][i % 3]), new THREE.BoxGeometry(0.06, 0.004, 0.04), { pos: V(-0.12 + (i % 3) * 0.12, 0.225, -0.08 + Math.floor(i / 3) * 0.08), rot: [0, i * 0.7, 0] });
+	return b.build();
+}
+
+export function buildOldYogurt() {
+	const b = new Builder('super_old_yogurt');
+	b.add('cup', mat('yogurt_cup', 0xe8e4d0), new THREE.CylinderGeometry(0.05, 0.04, 0.1, 10), { pos: V(0, 0.05, 0) });
+	b.add('lid', mat('yogurt_green', 0x7ab03a), ellipsoid(0.055, 0.04, 0.055, 8, 5), { pos: V(0, 0.11, 0) });
+	return b.build();
+}
+
 export const models = {
+	super_price_gun: buildPriceGun, super_label_box: buildLabelBox, super_old_yogurt: buildOldYogurt,
 	npc_don_oferton: buildDonOferton,
 	npc_lalo: buildLalo,
 	gondola: buildGondola, dairy_fridge: buildDairyFridge, checkout: buildCheckout, produce_stand: buildProduceStand,
@@ -190,6 +219,10 @@ export const views = {
 			{ name: 'shopping_cart', pos: [-0.6, 0, 2.2], rotY: 0.6 },
 		],
 		cam: { pos: [0, 3.0, 7.5], target: [0.4, 0.9, 0], fov: 50 },
+	},
+	dates: {
+		items: [{ name: 'super_price_gun', pos: [-0.35, 0, 0], rotY: 0.6 }, { name: 'super_label_box', pos: [0.15, 0, 0] }, { name: 'super_old_yogurt', pos: [0.5, 0, 0.1] }],
+		cam: { pos: [0, 0.6, 1.2], target: [0, 0.1, 0], fov: 40 },
 	},
 	don_oferton: {
 		items: [{ name: 'npc_don_oferton', pos: [-0.6, 0, 0], rotY: 0.3 }, { name: 'npc_lalo', pos: [0.6, 0, 0], rotY: -0.3, scale: 0.8 }],
