@@ -28,14 +28,12 @@ func _ready() -> void:
 ## The blocks that get yards: houses, no plaza, no place.
 static func blocks() -> Array[Vector2i]:
 	var list: Array[Vector2i] = []
-	for row in CityLayout.ROWS:
-		for col in CityLayout.COLUMNS:
-			var block := Vector2i(col, row)
-			if block == CityLayout.PLAZA or CityLayout.barrio_kind(block) != "house":
-				continue
-			if CityLayout.PLACES.any(func(p: Dictionary) -> bool: return p.block == block):
-				continue
-			list.append(block)
+	for block in CityLayout.blocks():
+		if block == CityLayout.PLAZA or CityLayout.barrio_kind(block) != "house":
+			continue
+		if CityLayout.PLACES.any(func(p: Dictionary) -> bool: return p.block == block):
+			continue
+		list.append(block)
 	return list
 
 

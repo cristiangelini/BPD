@@ -53,7 +53,7 @@ func test_a_miss_leaves_a_splat() -> void:
 	var heckler := rally.crowd.hecklers[0]
 	var thrown := heckler.throw_at(heckler.global_position + Vector3(0, 0, -4), "egg")
 	# A weak reference: a lambda holding the egg itself errors once the egg is freed.
-	var egg := weakref(thrown)
+	var egg: WeakRef = weakref(thrown)
 	thrown = null
 	await wait_until(func() -> bool: return egg.get_ref() == null, RallyFan.FLIGHT + 1.5)
 	assert_eq(rally.politician.stains, 0)

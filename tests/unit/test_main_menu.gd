@@ -18,3 +18,11 @@ func test_play_points_to_an_existing_scene() -> void:
 
 func test_test_room_points_to_an_existing_scene() -> void:
 	assert_true(ResourceLoader.exists(MainMenu.TEST_ROOM_SCENE), "the test room scene should exist")
+
+
+func test_the_hotel_raid_has_its_shortcut() -> void:
+	var menu: Control = add_child_autofree(MENU_SCENE.instantiate())
+	var button: Button = menu.get_node("%HotelRaidButton")
+	assert_eq(button.text, "MENU_HOTEL_RAID")
+	assert_ne(tr(button.text), button.text)
+	assert_eq(MainMenu.HOTEL_RAID_SCENE, PlaceDraw.PLACES["hotel_raid"])
