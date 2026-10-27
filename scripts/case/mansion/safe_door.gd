@@ -15,13 +15,13 @@ func use(cop: Cop) -> void:
 	touched = true
 	if spoils:
 		case.ruin("prints")
-	cop.show_hint("HINT_SAFE_TOUCHED" if spoils else "HINT_SAFE_EMPTY")
+	cop.show_hint("HINT_MANSION_SAFE_TOUCHED" if spoils else "HINT_MANSION_SAFE_EMPTY")
 
 
 func dusted(_cop: Cop) -> String:
 	if not has_prints:
 		return "PRINTS_COPS_ONLY" if touched else ""
 	if touched and not case.clues_found.has("prints"):
-		return "PRINTS_SAFE_SMUDGED"
+		return "PRINTS_MANSION_SAFE_SMUDGED"
 	case.found("prints")
-	return "PRINTS_SAFE"
+	return "PRINTS_MANSION_SAFE"

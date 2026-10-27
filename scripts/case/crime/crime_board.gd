@@ -64,10 +64,12 @@ func use(cop: Cop) -> void:
 	cop.show_hint("HINT_BOARD_PINNED" if not clue_cards.is_empty() else "HINT_BOARD_EMPTY")
 
 
-## Adds the files that got a photo and redraws what each card says.
+## Adds the files that got a photo (at the hotel, with no photo, those with anything in them) and redraws what each card
+## says.
 func refresh() -> void:
 	for index: int in case.file_parts:
-		if case.file_parts[index].photo and not file_cards.has(index):
+		var parts: Dictionary = case.file_parts[index]
+		if parts.get("photo", parts.values().has(true)) and not file_cards.has(index):
 			file_cards[index] = _card("file", index, _file_at(index))
 	for index: int in file_cards:
 		(file_cards[index] as BoardCard).label.text = file_text(index)
