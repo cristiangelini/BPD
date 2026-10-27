@@ -5608,3 +5608,19 @@ LOC_under_seat_row_3,abajo de una butaca de la tercera fila,under a seat in the 
 LOC_under_seat_row_6,abajo de una butaca de la sexta fila,under a seat in the sixth row,embaixo de uma poltrona da sexta fila
 LOC_in_film_cans,entre las latas de película,among the film cans,entre as latas de filme
 CINEMA_THEATER_SIGN,SALA 1,SCREEN 1,SALA 1
+PROMPT_CINEMA_SPECTATOR,E: hablarle al espectador,E: talk to the spectator,E: falar com o espectador
+CINEMA_SHUSH,¡Shhh!,Shhh!,Shhh!
+CINEMA_BOO,"¡Uuuh! ¡Que la arreglen!","Booo! Fix it!","Uuuh! Consertem!"
+CINEMA_SPECTATOR_LINE_0,"Ya pagué la entrada. No me voy hasta el final.","I already paid for my ticket. I'm not leaving till the end.","Já paguei o ingresso. Não saio até o final."
+CINEMA_SPECTATOR_LINE_1,"No me cuentes nada, que la estoy viendo por primera vez.","Don't tell me anything, I'm watching it for the first time.","Não me conte nada, estou vendo pela primeira vez."
+CINEMA_SPECTATOR_LINE_2,"¿Policía? Muy bien. Ahora, silencio.","Police? Very good. Now, quiet.","Polícia? Muito bem. Agora, silêncio."
+CINEMA_SPECTATOR_LINE_3,"Es la décima vez que la veo. El formulario siempre gana.","It's the tenth time I've seen it. The form always wins.","É a décima vez que vejo. O formulário sempre ganha."
+CINEMA_FILM_0,"—Señorita, necesito el formulario 27-B.","—Miss, I need form 27-B.","—Senhorita, preciso do formulário 27-B."
+CINEMA_FILM_1,"—Para el 27-B primero tiene que llenar el 27-A.","—For 27-B you first have to fill in 27-A.","—Para o 27-B primeiro precisa preencher o 27-A."
+CINEMA_FILM_2,"—¿Y dónde está el 27-A?","—And where is 27-A?","—E onde está o 27-A?"
+CINEMA_FILM_3,"—Se pide con el 27-B.","—You ask for it with 27-B.","—Se pede com o 27-B."
+CINEMA_FILM_4,"(Música dramática.)","(Dramatic music.)","(Música dramática.)"
+CINEMA_FILM_5,"—¡Nunca me rendiré, ventanilla 4!","—I'll never give up, window 4!","—Nunca vou desistir, guichê 4!"
+CINEMA_FILM_6,"—Vuelva el lunes. Con fotocopia.","—Come back on Monday. With a copy.","—Volte na segunda. Com fotocópia."
+CINEMA_FILM_7,"(Lloran todos.)","(Everyone cries.)","(Todos choram.)"
+CINEMA_FILM_CUT,"(Se cortó la cinta.)","(The tape broke.)","(A fita arrebentou.)"

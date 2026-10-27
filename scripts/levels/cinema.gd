@@ -10,6 +10,8 @@ extends Node3D
 
 signal screen_ripped
 signal glass_broken
+## A spectator said "¡Shhh!" (doña Bobina's complaint counts it, step 3).
+signal shushed(spectator: CinemaSpectator)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const SEAT_MODEL := preload("res://assets/models/cinema_seat.glb")
@@ -66,6 +68,15 @@ const GLASS_FINE := 20
 const RESTROOM_X := 8.0
 const RESTROOM_Z := 11.0
 
+## The film: a new scene, with its line under it, every FILM_EVERY seconds, its colors tinting the screen; FILM_LINES
+## lines and round again.
+const FILM_EVERY := 6.0
+const FILM_LINES := 8
+const FILM_TINTS: Array[Color] = [Color(0.75, 0.8, 0.95), Color(0.95, 0.75, 0.55), Color(0.6, 0.85, 0.7),
+	Color(0.85, 0.6, 0.8)]
+## The six spectators, each in a seat drawn with the seed.
+const SPECTATORS := 6
+
 ## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
 const SPOTS := [
 	{"id": "behind_screen", "at": Vector3(6.4, FLOOR_TOP, 6.65), "heavy": true},
@@ -110,6 +121,13 @@ var fines := 0
 @export var case_seed := 0
 var _build: PlaceBuilder
 var _screen: MeshInstance3D
+var _subtitle: Label3D
+var _film_left := FILM_EVERY
+## The film playing (false while the tape is cut, step 3), and the line on screen.
+var film_running := true
+var film_line := 0
+var spectators: Array[CinemaSpectator] = []
+var shushes := 0
 @onready var car: PatrolCar = $PatrolCar
 
 
@@ -124,6 +142,8 @@ func _ready() -> void:
 	_build_seats()
 	_build_hall()
 	_build_booth()
+	_seat_spectators()
+	_show_film()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("cinema")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -307,6 +327,76 @@ func _can() -> CylinderMesh:
 	mesh.bottom_radius = 0.3
 	mesh.height = 0.1
 	return mesh
+
+
+## The six neighbors in seats drawn with the seed, never the same seat twice.
+func _seat_spectators() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["cinema spectators", case_seed])
+	var free: Array[int] = []
+	for i in seats.size():
+		free.append(i)
+	for n in SPECTATORS:
+		var spectator := CinemaSpectator.new()
+		spectator.name = "Spectator%d" % n
+		spectator.look = n
+		spectator.seat = free.pop_at(rng.randi_range(0, free.size() - 1))
+		spectator.position = seats[spectator.seat] + Vector3(0, 0.05, 0)
+		add_child(spectator)
+		spectator.shushed.connect(func() -> void:
+			shushes += 1
+			shushed.emit(spectator))
+		spectators.append(spectator)
+
+
+## What the screen shows: the film's scene and its line, or white with the tape cut.
+func _show_film() -> void:
+	if not _subtitle:
+		_subtitle = Label3D.new()
+		_subtitle.font_size = 64
+		_subtitle.pixel_size = 0.01
+		_subtitle.outline_size = 14
+		_subtitle.width = 1200.0
+		_subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_subtitle.position = SCREEN_AT + Vector3(0, -SCREEN_SIZE.y / 2 + 0.6, -0.05)
+		_subtitle.rotation.y = PI
+		$Built.add_child(_subtitle)
+	var glow := _screen.material_override as StandardMaterial3D
+	if film_running:
+		glow.emission = FILM_TINTS[film_line % FILM_TINTS.size()]
+		_subtitle.text = "CINEMA_FILM_%d" % (film_line % FILM_LINES)
+	else:
+		glow.emission = Color(1, 1, 1)
+		_subtitle.text = "CINEMA_FILM_CUT"
+
+
+## The tape breaks (a cop cut it, step 3): the screen goes white and every spectator boos.
+func cut_film() -> void:
+	if not film_running:
+		return
+	film_running = false
+	_show_film()
+	for spectator in spectators:
+		spectator.say("CINEMA_BOO", 4.0)
+
+
+## Doña Bobina mended it: the film goes on where it was.
+func mend_film() -> void:
+	if film_running:
+		return
+	film_running = true
+	_film_left = FILM_EVERY
+	_show_film()
+
+
+func _physics_process(delta: float) -> void:
+	if not film_running:
+		return
+	_film_left -= delta
+	if _film_left <= 0.0:
+		_film_left = FILM_EVERY
+		film_line += 1
+		_show_film()
 
 
 ## Rips the screen, once: a fine and a dark gash across it.
