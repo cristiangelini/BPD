@@ -163,6 +163,13 @@ Mientras tanto se avanza con lo recomendado.
      lo que oye en la ventanilla.
    - Capturas: `correo/paso2-*.png` y `correo/post_office_people.png`.
 3. Las fichas: la variante `post_office` de la escena del crimen, con la lengua y el recorrido.
+   **Hecho así:** la variante `post_office` de `CrimeSceneCase`.
+   - **Pistas:** huellas, pisada, pelo, mordisco, lengua azul, carta sellada y testigo.
+   - **Partes de la ficha:** foto (talle de zapato), huellas, dientes, pelo, lengua y recorrido.
+   - Con las manos vacías, E le pregunta al cartero por su recorrido, después le pide la gorra (uno se niega hasta
+     que come) y después que saque la lengua. Si come antes de que le miren la lengua, se le borra el azul: la parte
+     de la ficha queda hecha pero dice "se le borró comiendo". El culpable siempre tiene la lengua azul.
+   - Captura: `correo/paso3-lengua.png`.
 4. La Vaquita Azul escondida, buscar con E y el libro del matasellos.
 5. La clasificadora: el reloj, los sobres, el viento, los sacos y el botón rojo con la paciencia de la jefa.
 6. Las pistas y el testigo: la caja fuerte, la pisada, la gorra, la galleta, la carta sellada y Cartita.
