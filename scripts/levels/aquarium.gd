@@ -43,6 +43,13 @@ const IGLOO_AT := Vector3(2.0, 0.1, -11.3)
 const INK_TANK_AT := Vector3(13.2, 0, -1.0)
 ## The divers' bench, facing the big tank.
 const BENCH_AT := Vector3(0, 0, 1.5)
+## Where La Gorda can be hidden (AquariumSpot): the bottom of each small tank, the igloo, the plush basket and the
+## fish-food bucket.
+const PEARL_SPOTS: Array[String] = ["tank_sharks", "tank_jellyfish", "tank_seahorses", "tank_turtles", "tank_rays",
+	"tank_penguins", "igloo", "basket", "bucket"]
+## Seconds a search of a spot takes, and reading the whole feeding board (propuesta).
+const SEARCH_SECONDS := 5.0
+const BOARD_SECONDS := 10.0
 ## Where the people are: the six divers two at the bench and four about the big tank, facing it; Don Anzuelo by the
 ## penguins; the loop Bigotes waddles round the big tank.
 const DIVERS_AT: Array[Vector3] = [
@@ -82,6 +89,17 @@ const PLUSH_COLORS: Array[Color] = [Color(0.95, 0.6, 0.2), Color(0.3, 0.7, 0.85)
 	Color(0.98, 0.85, 0.3), Color(0.6, 0.45, 0.85)]
 
 var case: CrimeSceneCase
+## What was stolen (CrimeSceneCase's loot texts), where the culprit hid it, whether a search turned it up and whether
+## it's back in Doña Almeja.
+var loot := "pearl"
+var loot_spot := "tank_sharks"
+var pearl_uncovered := false
+var loot_found := false
+var loot_spots := {}
+var pearl: GiantPearl
+var board: FeedingBoard
+## What each cop is busy with ("" for nothing), by cop: a search or the board takes a while.
+var _busy := {}
 var divers: Array[AquariumDiver] = []
 var keeper: AquariumKeeper
 var sea_lion: SeaLion
@@ -111,10 +129,83 @@ func _ready() -> void:
 ## won't take off the hood until they get something to eat.
 func set_up_case(new_case: CrimeSceneCase) -> void:
 	case = new_case
+	loot_spot = PEARL_SPOTS[absi(hash(["aquarium pearl spot", case.case_seed])) % PEARL_SPOTS.size()]
 	var stubborn := absi(hash("stubborn diver %d" % case.case_seed)) % divers.size()
 	for diver in divers:
 		diver.case = case
 		diver.stubborn = diver.index == stubborn
+
+
+## E on a spot: the cop searches it for SEARCH_SECONDS, and then La Gorda turns up if it's there, or the cop says
+## what's there instead.
+func search(spot: String, cop: Cop) -> void:
+	if _busy.get(cop, "") != "":
+		return
+	_busy[cop] = spot
+	if cop:
+		cop.show_hint("HINT_AQUARIUM_SEARCHING")
+	get_tree().create_timer(SEARCH_SECONDS).timeout.connect(searched.bind(spot, cop))
+
+
+## The search of a spot is over.
+func searched(spot: String, cop: Cop) -> void:
+	_busy.erase(cop)
+	if spot != loot_spot or pearl_uncovered or not case:
+		if cop:
+			cop.show_hint("HINT_AQUARIUM_NOTHING_" + spot)
+		return
+	uncover_pearl()
+	if cop:
+		cop.show_hint("HINT_PEARL_UNCOVERED")
+
+
+## E on the feeding board: BOARD_SECONDS reading the rows, and then what the rubbed-out row says.
+func read_board(cop: Cop) -> void:
+	if _busy.get(cop, "") != "":
+		return
+	_busy[cop] = "board"
+	if cop:
+		cop.show_hint("HINT_BOARD_READING")
+	get_tree().create_timer(BOARD_SECONDS).timeout.connect(board_read.bind(cop))
+
+
+func board_read(cop: Cop) -> void:
+	_busy.erase(cop)
+	if cop:
+		cop.show_hint(board_says())
+
+
+## What the feeding board tells: the tank of the rubbed-out row, or that everyone ate well.
+func board_says() -> String:
+	if case and loot_spot.begins_with("tank_"):
+		return tr("HINT_BOARD_RUBBED_OUT") % tr("CARE_" + loot_spot.trim_prefix("tank_"))
+	return tr("HINT_BOARD_IN_ORDER")
+
+
+## La Gorda comes out of its hiding spot, on the floor in front of it, for a cop to take back to Doña Almeja.
+func uncover_pearl() -> void:
+	if pearl_uncovered:
+		return
+	pearl_uncovered = true
+	pearl = GiantPearl.new()
+	pearl.name = "Pearl"
+	pearl.aquarium = self
+	add_child(pearl)
+	var spot := loot_spots[loot_spot] as Node3D
+	var out: Vector3 = spot.get_meta("out")
+	pearl.position = Vector3(spot.position.x, FLOOR_TOP, spot.position.z) + out
+
+
+## La Gorda back in Doña Almeja: the case notes it (+LOOT_BONUS on the salary).
+func reveal_loot() -> void:
+	if loot_found:
+		return
+	uncover_pearl()
+	loot_found = true
+	pearl.position = CLAM_AT + Vector3(0, 0.3, 0)
+	pearl.collision_layer = 0
+	if case:
+		case.found_loot()
 
 
 ## The diver by index (the order of the case's traits).
@@ -155,6 +246,18 @@ func tank(world: Vector3) -> String:
 		if absf(local.x - at.x) < size.x / 2 + 1.2 and absf(local.z - at.z) < size.z / 2 + 1.2:
 			return animal
 	return ""
+
+
+## A spot La Gorda can hide in, as a box the cops search with E; `out` is where the pearl lands when it turns up.
+func _spot(spot: String, at: Vector3, size: Vector3, out: Vector3) -> void:
+	var body := AquariumSpot.new(size)
+	body.name = "Search_" + spot
+	body.spot = spot
+	body.place = self
+	body.position = at
+	body.set_meta("out", out)
+	add_child(body)
+	loot_spots[spot] = body
 
 
 ## The six divers alike (DiverTraits.draw with the case seed) about the big tank, Don Anzuelo by the penguins, Bigotes on
@@ -337,8 +440,11 @@ func _small_tanks() -> void:
 		if animal == "penguins":
 			continue
 		var at: Vector3 = TANKS[animal]
-		_tank(at, TANK_SIZE)
+		# The glass is the spot: E on it searches the bottom of the tank.
+		_tank(at, TANK_SIZE, WATER, false)
 		var facing := -signf(at.x)
+		_spot("tank_" + animal, at + Vector3(0, 0.4 + TANK_SIZE.y / 2, 0), TANK_SIZE,
+			Vector3(facing * (TANK_SIZE.x / 2 + 0.7), 0, 0))
 		for i in 3:
 			_builder.mesh(_animal_mesh(animal), at + Vector3(0.2 * (i - 1), 1.0 + 0.45 * i, -1.0 + i), ANIMAL_COLORS[animal])
 		_tank_label(animal, at + Vector3(facing * (TANK_SIZE.x / 2 + 0.12), 2.85, 0), facing * PI / 2)
@@ -362,6 +468,10 @@ func _penguins() -> void:
 	igloo.material_override = _builder.material(SNOW.darkened(0.05))
 	igloo.position = IGLOO_AT + Vector3(0, 0.5, 0)
 	add_child(igloo)
+	_spot("tank_penguins", at + Vector3(-1.5, 0.45, 0), Vector3(3.6, 0.9, POOL_SIZE.z - 0.2),
+		Vector3(0, 0, POOL_SIZE.z / 2 + 0.7))
+	_spot("igloo", IGLOO_AT + Vector3(0, 0.75, 0), Vector3(1.8, 1.3, 1.8),
+		Vector3(0, 0, at.z + POOL_SIZE.z / 2 + 0.7 - IGLOO_AT.z))
 	_builder.mesh_box(IGLOO_AT + Vector3(0, 0.75, 0.62), Vector3(0.45, 0.45, 0.3), BLACK)
 	for x: float in [0.6, 2.8]:
 		_builder.mesh(_animal_mesh("penguins"), at + Vector3(x, 0.95, 0.9), ANIMAL_COLORS["penguins"])
@@ -386,6 +496,7 @@ func _ink_tank() -> void:
 ## The plush basket, the counter with the till and the shelf of plushes along the west wall.
 func _shop() -> void:
 	_builder.open_box(BASKET_AT, Vector3(1.2, 0.6, 1.0), "top", Color(0.75, 0.6, 0.35))
+	_spot("basket", BASKET_AT + Vector3(0, 0.35, 0), Vector3(1.3, 0.7, 1.1), Vector3(1.0, 0, 0))
 	var plush := SphereMesh.new()
 	plush.radius = 0.2
 	plush.height = 0.4
@@ -405,8 +516,7 @@ func _kitchen() -> void:
 	bucket.top_radius = 0.35
 	bucket.bottom_radius = 0.28
 	bucket.height = 0.6
-	var body := _builder.body(BUCKET_AT + Vector3(0, 0.3, 0))
-	_builder.shape(body, Vector3(0.6, 0.6, 0.6))
+	_spot("bucket", BUCKET_AT + Vector3(0, 0.3, 0), Vector3(0.7, 0.7, 0.7), Vector3(-0.9, 0, 0))
 	_builder.mesh(bucket, BUCKET_AT + Vector3(0, 0.3, 0), METAL)
 	for i in 4:
 		_builder.mesh_box(BUCKET_AT + Vector3(-0.15 + i * 0.1, 0.62, 0), Vector3(0.06, 0.04, 0.3), Color(0.6, 0.65, 0.7))
@@ -416,14 +526,23 @@ func _kitchen() -> void:
 	_builder.box(Vector3(HALF_X - 0.5, 1.0, 2.8), Vector3(0.8, 2.0, 1.2), WHITE)
 	_builder.box(Vector3(9.5, 0.45, FRONT_Z - 0.45), Vector3(3.0, 0.9, 0.7), METAL)
 	_builder.mesh_box(BOARD_AT, Vector3(0.05, 1.0, 1.6), Color(0.15, 0.25, 0.2))
-	var board := Label3D.new()
+	board = FeedingBoard.new(Vector3(0.1, 1.0, 1.6))
 	board.name = "FeedingBoard"
-	board.text = "SIGN_FEEDING_BOARD"
-	board.pixel_size = 0.004
-	board.outline_size = 6
-	board.position = BOARD_AT + Vector3(-0.04, 0.35, 0)
-	board.rotation.y = -PI / 2
+	board.aquarium = self
+	board.position = BOARD_AT
 	add_child(board)
+	var title := Label3D.new()
+	title.name = "FeedingBoardTitle"
+	title.text = "SIGN_FEEDING_BOARD"
+	title.pixel_size = 0.004
+	title.outline_size = 6
+	title.position = BOARD_AT + Vector3(-0.06, 0.35, 0)
+	title.rotation.y = -PI / 2
+	add_child(title)
+	# The rows of the board, one per tank, and the one rubbed out.
+	for i in 6:
+		_builder.mesh_box(BOARD_AT + Vector3(-0.03, 0.15 - i * 0.12, 0), Vector3(0.01, 0.03, 1.1 if i != 3 else 0.5),
+			WHITE if i != 3 else Color(0.5, 0.55, 0.52))
 
 
 ## A small mesh for an animal of a tank: a fin, a bell, a seahorse, a shell, a ray or a penguin.

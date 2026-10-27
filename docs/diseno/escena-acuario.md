@@ -157,6 +157,13 @@ el tanque de cada buzo, Bigotes con sus robos y el piso mojado, Doña Tinta y el
    tinta o está limpia. La foto dice si la máscara tiene aumento y el talle de pata de rana. El culpable siempre tiene
    tinta. Capturas: `acuario/paso3-tinta.png` y `acuario/paso3-limpio.png`.
 4. El caso: La Gorda escondida, la búsqueda y la pizarra de la comida.
+   **Hecho así:** la semilla esconde La Gorda en uno de nueve lugares: el fondo de los seis tanques chicos (E en el
+   vidrio), el iglú, el canasto de peluches o el balde de comida. E en cada lugar busca 5 s (uno por vez por policía) y,
+   si no está, el policía cuenta qué encontró (una línea graciosa por lugar). La pizarra de la comida, en la cocina, se
+   lee en 10 s: si la perla está en un tanque dice de qué animales es la fila borrada; si no, que todos comieron bien
+   (sin linterna por ahora: el borrón se ve a simple vista). La perla aparece en el piso frente a su lugar y, con E,
+   vuelve a Doña Almeja (+100, renglón opcional en la planilla). Mojar al policía al buscar en un tanque queda para el
+   paso 6, con el piso mojado. Capturas: `acuario/paso4-*.png`.
 5. Las pistas y la testigo.
 6. Bigotes: los robos, el pescado y el piso mojado.
 7. El final: tablero, cansancio, sueldo y el camión con los bloques de hielo.

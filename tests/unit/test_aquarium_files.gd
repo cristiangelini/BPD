@@ -108,5 +108,5 @@ func test_a_full_file_and_what_its_card_says() -> void:
 	text = case.file_text(2)
 	assert_string_contains(text, tr("FILE_TANK") % diver.tank_name())
 	assert_string_contains(text, tr("FILE_INK") if diver.traits.ink else tr("FILE_NO_INK"))
-	for key in ["PROMPT_DIVER_GLOVE", "DIVER_HOOD_NO", "FILE_INK", "FILE_TANK", "BRIEF_AQUARIUM_A", "HINT_DIVER_LEFT"]:
+	for key in ["PROMPT_DIVER_GLOVE", "DIVER_HOOD_NO", "FILE_INK", "FILE_TANK", "BRIEF_AQUARIUM_A_pearl", "HINT_DIVER_LEFT"]:
 		assert_ne(tr(key), key, "%s is translated" % key)
