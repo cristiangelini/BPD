@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Ice cream raid, step 8: online: the host runs doña Nieve, Lucho and the stories' visitors and the guests follow them; the freezers open from any PC, and what melts (with its puddles), the glass case, the penguin, the machine's spill, the cold room's door and the truck's jingle follow the host's.
 - Ice cream raid, step 7: Play's raid draw now also picks the ice cream shop, with its 6 stories.
 - Ice cream raid, step 6: the stolen truck story: the truck's original plate, the can of fresh paint and the truck's papers in someone else's name, the wet paint sign on the truck (the clue) and the other shop's jingle playing by itself every 35 s.
 - Ice cream raid, step 6: the frozen cash story: the ice cream bucket full of bills, the sales notebook and the "sold" stamp, the till's display saying 900 kg sold today (the clue), and doña Nieve shutting every open freezer whenever a cop comes in through the door.

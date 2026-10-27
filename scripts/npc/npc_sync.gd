@@ -71,7 +71,8 @@ static func is_npc(node: Node) -> bool:
 		or node is TalentInmate or node is TalentProp or node is VipInmate or node is VipLawyer \
 		or node is GardenPlant \
 		or node is CityInspector or node is AirportStaff \
-		or node is TowerElevator or node is HangingScaffold or node is NosyNeighbor or node is MessengerPigeon
+		or node is TowerElevator or node is HangingScaffold or node is NosyNeighbor or node is MessengerPigeon \
+		or node is Lucho or node is IceVisitor
 
 
 func _ready() -> void:

@@ -12,6 +12,15 @@ func setup(place: IceCreamShop) -> void:
 	shop = place
 
 
+## Online, what the guests' rig takes from the host's (IceCreamShop.net_state); most stories need nothing.
+func net_state() -> Variant:
+	return null
+
+
+func apply_net_state(_value: Variant) -> void:
+	pass
+
+
 ## A small sign standing at `at`, facing `turn` around Y, with `title` on it and a clue a cop reads with E (`text`, on
 ## the checklist the first time).
 func sign_spot(at: Vector3, turn: float, title: String, text: String, size := Vector3(0.5, 0.3, 0.06),

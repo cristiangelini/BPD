@@ -123,6 +123,11 @@ entre 400 y 600. El bloque de hielo es la cosa más pesada (8 kg): conviene llev
    otras también agregan la suya: al mergear, quedan todas). La prueba del sorteo cuenta la heladería y comprueba que
    salen sus 6 historias.
 8. El online (doña Nieve, Lucho, las tapas, los charcos y lo frágil en todas las PC).
+   **Hecho (paso 8):** doña Nieve, Lucho y la gente que entra en las historias los mueve el anfitrión (`NpcSync`);
+   las tapas de los freezers andan desde cualquier PC y lo que se derrite (freezers y cámara, con sus charcos), la
+   vitrina, el pingüino, el charco de la máquina, la puerta de la cámara y la musiquita del camión siguen al anfitrión
+   (`IceCreamShop.net_state`). Los tiempos de derretir, las multas y lo que hacen las historias los decide el
+   anfitrión; cada PC solo hace patinar a su propio policía.
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, la heladería, donde lo que queda abierto se derrite y los charcos hacen patinar?

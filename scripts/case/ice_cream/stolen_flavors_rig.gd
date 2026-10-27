@@ -34,6 +34,9 @@ func offer() -> void:
 
 
 func _process(delta: float) -> void:
+	# Online only the host's story runs it; its people and lines reach the guests by NpcSync.
+	if not multiplayer.is_server():
+		return
 	_since += delta
 	if _since >= OFFER_EVERY:
 		offer()

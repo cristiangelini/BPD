@@ -109,6 +109,18 @@ func visit_now() -> void:
 	_show(true)
 
 
+## Online: where he is in his visit, so a guest's copy shows or hides him with the host's.
+func net_state() -> Variant:
+	return state
+
+
+func apply_net_state(value: Variant) -> void:
+	if value == state:
+		return
+	state = value
+	_show(state != "away")
+
+
 func said() -> String:
 	return _bubble.text if _bubble.visible else ""
 

@@ -271,6 +271,8 @@ func _ready() -> void:
 	raid.failed_label = %CaseFailed
 	raid.shift_screen = $ShiftScreen
 	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
 	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
@@ -317,6 +319,39 @@ func _place_facts() -> Dictionary:
 		"broken": broken_goods,
 		"complaint": nieve.complaint,
 	}
+
+
+## Online, what the guests' shop takes from the host's (RaidCase.snapshot): the glass case and the penguin, the
+## freezers' lids and what melted, the cold room's door (doña Nieve opens it on the host) and its melting, the
+## machine's spill and what the story needs.
+func net_state() -> Dictionary:
+	return {"case": case_broken, "penguin": penguin_down, "spill": spilled, "cold": cold_melted,
+		"lids": freezers.map(func(freezer: IceFreezer) -> bool: return freezer.is_open),
+		"melted": freezers.map(func(freezer: IceFreezer) -> bool: return freezer.is_melted),
+		"door": [cold_door.is_open, cold_door.locked], "rig": rig.net_state() if rig else null}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	if state.case:
+		crack_case()
+	if state.penguin:
+		knock_penguin()
+	if state.spill:
+		spill()
+	for i in freezers.size():
+		if state.melted[i] and not freezers[i].is_melted:
+			freezers[i].melt()
+		if state.lids[i] != freezers[i].is_open:
+			freezers[i].set_open(state.lids[i])
+	if state.cold:
+		melt_cold_room()
+	if state.door[0] and not cold_door.is_open:
+		cold_door.open_from_inside()
+	elif not state.door[0] and cold_door.is_open:
+		cold_door.close()
+	cold_door.locked = state.door[1]
+	if rig:
+		rig.apply_net_state(state.rig)
 
 
 ## The story with that id from --story=<id> among the user args, or one drawn from the seed.
@@ -402,7 +437,8 @@ func _build_shell() -> void:
 	_build.shape(_penguin_body, Vector3(0.9, 2.0, 0.8))
 	var hit := _area(PENGUIN_AT + Vector3(0, 1.0, 0), Vector3(1.6, 2.0, 1.6))
 	hit.body_entered.connect(func(body: Node3D) -> void:
-		if body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > PENGUIN_SPEED:
+		if multiplayer.is_server() and body is RigidBody3D \
+				and (body as RigidBody3D).linear_velocity.length() > PENGUIN_SPEED:
 			knock_penguin())
 
 
@@ -413,7 +449,8 @@ func _build_salon() -> void:
 	_build.shape(_build.body(COUNTER_AT + Vector3(0, COUNTER_SIZE.y / 2, 0)), COUNTER_SIZE)
 	var glass := _area(COUNTER_AT + Vector3(0, 1.1, 0.6), Vector3(COUNTER_SIZE.x, 0.6, 0.6))
 	glass.body_entered.connect(func(body: Node3D) -> void:
-		if body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > CASE_SPEED:
+		if multiplayer.is_server() and body is RigidBody3D \
+				and (body as RigidBody3D).linear_velocity.length() > CASE_SPEED:
 			crack_case())
 	_build.open_box(CASHIER_AT, CASHIER_SIZE, "-z", PINK)
 	till = Till.new()
@@ -513,6 +550,10 @@ func _freezer(i: int) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	# Online the host's doña Nieve opens the cold room and the host's cold room melts; the guests take both from its
+	# state (net_state).
+	if not multiplayer.is_server():
+		return
 	if nieve:
 		_nieve_door()
 	if cold_melted:

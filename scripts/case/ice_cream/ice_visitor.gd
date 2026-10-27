@@ -37,6 +37,15 @@ func come(key: String) -> void:
 	visible = true
 
 
+## Online: whether they're in, so a guest's copy comes and goes with the host's.
+func net_state() -> Variant:
+	return visible
+
+
+func apply_net_state(value: Variant) -> void:
+	visible = value
+
+
 func said() -> String:
 	return _bubble.text if visible else ""
 
