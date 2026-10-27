@@ -136,6 +136,6 @@ func test_a_full_file_and_what_its_card_says() -> void:
 	text = case.file_text(2)
 	assert_string_contains(text, tr("FILE_ROUTE") % carrier.route_name())
 	assert_string_contains(text, tr("FILE_TONGUE_BLUE") if carrier.traits.blue else tr("FILE_TONGUE_PINK"))
-	for key in ["PROMPT_CARRIER_TONGUE", "CARRIER_CAP_NO", "FILE_TONGUE_BLUE", "FILE_ROUTE", "BRIEF_POST_OFFICE_A",
+	for key in ["PROMPT_CARRIER_TONGUE", "CARRIER_CAP_NO", "FILE_TONGUE_BLUE", "FILE_ROUTE", "BRIEF_POST_OFFICE_A_stamp",
 			"HINT_CARRIER_LEFT", "HINT_FILE_tongue", "FILE_PART_route"]:
 		assert_ne(tr(key), key, "%s is translated" % key)

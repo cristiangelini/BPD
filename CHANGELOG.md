@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Post office crime scene, step 4: La Vaquita Azul hidden with the seed in one of nine spots (the six post boxes with a route, the big mail sack, the parcel scale and the giant mailbox), searched with E in 5 s; the postmark book on the boss's desk tells the color of the box the envelope went to; back in its frame it adds 100 to the salary.
 - Post office crime scene, step 3: the carriers' files (the post_office variant of the crime scene case): E asks a carrier for their route, then the cap (one won't take it off until they eat), then to stick out their tongue. The culprit always has a blue tongue, and a bite before anyone looks washes the blue off.
 - Post office crime scene, step 2: the six mail carriers in the same cap, yellow vest, leather bag and gloves (CarrierTraits: hair, shoes, teeth, blue tongue and the route on their bag's tag), Doña Sellito the postmaster with her rubber stamp and Cartita the parrot on the counter of window 2.
 - Post office crime scene, step 1: the Correo Central on its own lot (block 7, 0, south side) with the clock and the giant mailbox; the counter hall with three windows, La Vaquita Azul's empty frame, the parcel scale, the returns sack and the queue ribbons; the wall of 24 post boxes (six with a route's color); the sorting room with the big sorting machine and the mail sacks; the parcel depot; and the boss's office with the open safe, the postmark book and the red button. --place=post_office opens it.
