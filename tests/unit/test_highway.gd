@@ -35,7 +35,8 @@ func test_the_ring_goes_around_the_city_with_room_to_spare() -> void:
 	var length := 0.0
 	for piece in HighwayLayout.pieces():
 		length += (piece[0] as Vector3).distance_to(piece[1])
-	assert_between(length, 1800.0, 2300.0, "about 2 km around")
+	# 10 x 7 blocks since 26/10 (decision 181): the ring went from about 2 km to about 2.8 km.
+	assert_between(length, 2600.0, 3000.0, "about 2.8 km around")
 
 
 func test_each_ramp_runs_from_an_edge_street_to_the_ring() -> void:

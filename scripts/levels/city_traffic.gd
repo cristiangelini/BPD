@@ -5,12 +5,14 @@ extends Node3D
 ## and neighbors walking round their blocks' sidewalks. Every number here is (propuesta).
 
 ## Car loops: rectangles of streets (west, north, east, south street indexes) and whether they run clockwise.
-const LOOPS := [[0, 0, 7, 5, true], [0, 0, 7, 5, false], [1, 1, 4, 4, true], [3, 1, 6, 4, false],
-	[2, 0, 5, 3, true], [1, 2, 6, 5, false]]
+## The first two go all the way around the city (twice the blocks, 26/10), the last three cover the new blocks.
+const LOOPS := [[-1, -1, 9, 6, true], [-1, -1, 9, 6, false], [1, 1, 4, 4, true], [3, 1, 6, 4, false],
+	[2, 0, 5, 3, true], [1, 2, 6, 5, false], [5, -1, 9, 3, true], [6, 2, 9, 6, false], [-1, 0, 2, 6, true]]
 const CARS_PER_LOOP := 6
 const WALKER_LOOKS: Array[String] = ["cliente", "clienta", "senora", "vecina", "abuela", "periodista", "repartidor",
 	"portero", "portera", "mudancero", "heladero", "abogado", "sospechoso", "abuelo", "chela", "ernesto"]
-const WALKERS_PER_BLOCK := 7
+## 5 a block since the city has twice the blocks (26/10): 350 people, up from 245.
+const WALKERS_PER_BLOCK := 5
 
 var _rng := RandomNumberGenerator.new()
 
@@ -26,16 +28,15 @@ func _ready() -> void:
 			car.look = _rng.randi_range(0, 3)
 			add_child(car)
 			car.place_along(float(k) / CARS_PER_LOOP + _rng.randf_range(0.0, 0.08))
-	for row in CityLayout.ROWS:
-		for col in CityLayout.COLUMNS:
-			for k in WALKERS_PER_BLOCK:
-				var walker := CityWalker.new()
-				walker.name = "Walker%d" % get_child_count()
-				walker.look = WALKER_LOOKS[_rng.randi() % WALKER_LOOKS.size()]
-				walker.path = ring(Vector2i(col, row), _rng.randf_range(-0.7, 0.7), _rng.randf() < 0.5)
-				add_child(walker)
-				walker.rng.seed = _rng.randi()
-				walker.place_along(_rng.randf())
+	for block in CityLayout.blocks():
+		for k in WALKERS_PER_BLOCK:
+			var walker := CityWalker.new()
+			walker.name = "Walker%d" % get_child_count()
+			walker.look = WALKER_LOOKS[_rng.randi() % WALKER_LOOKS.size()]
+			walker.path = ring(block, _rng.randf_range(-0.7, 0.7), _rng.randf() < 0.5)
+			add_child(walker)
+			walker.rng.seed = _rng.randi()
+			walker.place_along(_rng.randf())
 
 
 ## At night half the walkers go home (ciudad-viva.md, step 5): every other one hides and stops.
