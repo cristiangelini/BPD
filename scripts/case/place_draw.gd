@@ -43,6 +43,7 @@ const PLACES := {
 	"museum": "res://scenes/levels/museum.tscn",
 	"hotel": "res://scenes/levels/hotel.tscn",
 	"hotel_raid": "res://scenes/levels/hotel_raid.tscn",
+	"office": "res://scenes/levels/forms_office.tscn",
 	"transfer": "res://scenes/levels/prisoner_transfer.tscn",
 	"blackout": "res://scenes/levels/prison_blackout.tscn",
 	"visits": "res://scenes/levels/prison_visits.tscn",

@@ -174,6 +174,7 @@ MENU_HARDWARE,Ferretería (prueba),Hardware store (test),Loja de ferragens (test
 PLACE_STATION,Comisaría,Police station,Delegacia
 PLACE_HOTEL,Hotel Gran Siesta,Grand Nap Hotel,Hotel Grande Soneca
 PLACE_INSURANCE,Seguros Todo Tranquilo,All Calm Insurance,Seguros Tudo Tranquilo
+PLACE_OFFICE,"Formularios Infinitos S.A.","Endless Forms Inc.","Formulários Infinitos S.A."
 PLACE_GRANDPA,N.º 12,No. 12,N.º 12
 PLACE_APARTMENTS,Edificio Las Palomas,The Pigeons Building,Edifício As Pombas
 PLACE_BAKERY,Panadería El Pan Feliz,The Happy Bread Bakery,Padaria O Pão Feliz
@@ -4530,6 +4531,8 @@ CRIME_owner_guard,"¡Novatos! Ayer acusaron a un guardia del Museo de la Ciudad 
 CONFESS_owner_guard,"¡Está bien! ¡Fui yo! Treinta años cuidando cuadros y nunca me dejaron colgar uno en mi casa.","Fine! It was me! Thirty years guarding paintings and they never let me hang one at home.","Tá bom! Fui eu! Trinta anos cuidando de quadros e nunca me deixaram pendurar um em casa."
 SIGN_HOTEL_LIFT,"Fuera de servicio","Out of order","Fora de serviço"
 SIGN_HOTEL_SUITE,"Suite","Suite","Suíte"
+SIGN_OFFICE_CLOCK,"Marca tu tarjeta","Punch your card","Bata o seu cartão"
+SIGN_OFFICE_MANAGER,"Gerencia","Manager","Gerência"
 PROMPT_HOTEL_GUEST,"E: hablar con el huésped","E: talk to the guest","E: falar com o hóspede"
 HOTEL_GUEST_LINE_0,"¿El collar? Yo estaba durmiendo. Con pepinos.","The necklace? I was asleep. With cucumbers.","O colar? Eu estava dormindo. Com pepinos."
 HOTEL_GUEST_LINE_1,"¿Sacarme la toalla? ¡Recién me lavé el pelo!","Take off my towel? I just washed my hair!","Tirar a toalha? Acabei de lavar o cabelo!"
