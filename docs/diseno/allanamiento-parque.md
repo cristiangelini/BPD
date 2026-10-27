@@ -177,6 +177,10 @@ extras suman entre 400 y 600.
      caminos: leer 2 (E) muestra que tienen el mismo número, y esa es la pista propia. Cada 20 s la cabina de boletos
      hace "Rrrrr... ¡chac!" y escupe otro, hasta 6. El piso del parque ahora es sólido hasta los caminos, así las notas
      y los boletos se ven. Capturas `parque/paso6b-*.png`.
+   - **La vuelta al mundo sin control:** el certificado de seguridad falso (0,1 kg, 1000), la bolsa de tuercas (3 kg,
+     300) y el sello de inspector (0,3 kg, 200) van en escondites sorteados. Delante de la vuelta al mundo hay 3 tuercas
+     sueltas en el piso: agarrar una es la pista propia. Cada vez que se gira la manivela, la rueda tiembla ("¡Cling!
+     ¡Clang!") y se cae otra tuerca, hasta 8. Capturas `parque/paso6c-*.png`.
 7. "Jugar" suma el parque al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online: Don Tómbola, Nube, las latas, la campana y los juegos en todas las PC.
 

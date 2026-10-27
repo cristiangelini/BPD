@@ -66,6 +66,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_TICKET_ROLLS", "OBJ_EXTRA_VALID_STAMP"],
 		"rig": preload("res://scripts/case/fair/fake_tickets_rig.gd"),
 	},
+	"loose_wheel": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_LOOSE_WHEEL_B", "BRIEF_LOOSE_WHEEL_C", "BRIEF_LOOSE_WHEEL_D"],
+		"find": "OBJ_FIND_SAFETY_CERTIFICATE",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/fair_safety_certificate.tscn"),
+			preload("res://scenes/props/fair_nut_bag.tscn"), preload("res://scenes/props/fair_inspector_stamp.tscn")],
+		"half_heights": [0.01, 0.12, 0.09],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_NUT_BAG", "OBJ_EXTRA_INSPECTOR_STAMP"],
+		"rig": preload("res://scripts/case/fair/loose_wheel_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the paved paths.
 const NOTE_PLACES: Array[Vector3] = [
