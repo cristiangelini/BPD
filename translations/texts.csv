@@ -4939,3 +4939,17 @@ HINT_CRIME_WEDDING_RUINED_hair,Cortaste el pastel y el pelo del glaseado se perd
 HINT_CRIME_WEDDING_RUINED_bite,"Cortaste el pastel. Y con él, el mordisco.",You cut the cake. And the bite with it.,Você cortou o bolo. E a mordida junto.
 HINT_CRIME_WEDDING_RUINED_recording,Borraste el video de la boda. Rosa no te lo va a perdonar.,You deleted the wedding video. Rosa will never forgive you.,Você apagou o vídeo do casamento. A Rosa não vai te perdoar.
 HINT_CRIME_WEDDING_RUINED_witness,La abuela se ofendió. No va a decir nada más.,Grandma is offended. She won't say anything else.,A vovó se ofendeu. Não vai dizer mais nada.
+TUXEDO_WALTZ_NOW,"¡Ahora no, es el vals!","Not now, it's the waltz!","Agora não, é a valsa!"
+BRIDE_DONE,No me hables. Estoy ocupada odiando a Tito.,Don't talk to me. I'm busy hating Tito.,Não fala comigo. Estou ocupada odiando o Tito.
+BRIDE_KNEW_IT,"¡LO SABÍA! ¡Toma tu ramo, Tito!","I KNEW IT! Here's your bouquet, Tito!","EU SABIA! Toma o teu buquê, Tito!"
+BRIDE_WEDDING_OFF,"¿Y ahora? ¡Se suspende la boda! ¡Toma el ramo igual, Tito!","And now what? The wedding's off! Take the bouquet anyway, Tito!","E agora? O casamento foi cancelado! Toma o buquê mesmo assim, Tito!"
+BRIDE_LOVES_DANCE,"¡Jajaja! ¡Ese policía sí sabe bailar! Bueno, se perdona algo.","Hahaha! That cop can really dance! Fine, I'll forgive a bit.","Hahaha! Esse policial sabe dançar! Tá bom, eu perdoo um pouco."
+WEDDING_BRIDE_PROOF_0,¿Pruebas? ¡Tito odia los anillos! Una vez perdió uno a propósito.,Proof? Tito hates rings! He lost one on purpose once.,Provas? O Tito odeia anéis! Uma vez perdeu um de propósito.
+WEDDING_BRIDE_PROOF_1,Tito compró dos pasajes. ¡Dos! ¿Para quién es el otro?,Tito bought two tickets. Two! Who's the other one for?,O Tito comprou duas passagens. Duas! Para quem é a outra?
+WEDDING_BRIDE_PROOF_2,En la iglesia dijo «sí» muy bajito. Sospechoso.,"At the church he said ""I do"" very quietly. Suspicious.",Na igreja ele disse «sim» bem baixinho. Suspeito.
+WEDDING_BRIDE_PROOF_3,Tiene las manos en los bolsillos desde las ocho. ¿Qué esconde?,He's had his hands in his pockets since eight. What's he hiding?,Ele está com as mãos nos bolsos desde as oito. O que ele esconde?
+WEDDING_BRIDE_PROOF_4,Su horóscopo de hoy decía «cuidado con los objetos brillantes».,"His horoscope today said ""beware of shiny things"".",O horóscopo dele hoje dizia «cuidado com objetos brilhantes».
+WEDDING_BRIDE_PROOF_5,Mi gato no lo quiere. Mi gato nunca se equivoca.,My cat doesn't like him. My cat is never wrong.,Meu gato não gosta dele. Meu gato nunca erra.
+WEDDING_DJ_WALTZ,"¡Atención, atención! ¡Llegó la hora del vals!","Attention, attention! It's time for the waltz!","Atenção, atenção! Chegou a hora da valsa!"
+WEDDING_DJ_SUSPENDED,Eh... se suspende la fiesta. Gracias por venir.,Uh... the party's off. Thanks for coming.,Hã... a festa foi cancelada. Obrigado por virem.
+OBJ_CRIME_COMPLAINT,Denuncia de la familia: -$%d del sueldo,The family's complaint: -$%d off the salary,Denúncia da família: -$%d do salário

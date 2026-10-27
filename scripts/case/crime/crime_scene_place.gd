@@ -53,6 +53,11 @@ func apply_net_state(_state: Dictionary) -> void:
 	pass
 
 
+## The cops accused a suspect at the board (by index), rightly or not. At the wedding, Rosa reacts.
+func accused(_index: int, _right: bool) -> void:
+	pass
+
+
 ## A cop shouted (VoiceChat): the witness may take offense.
 func shouted_by(_cop: Cop) -> void:
 	pass

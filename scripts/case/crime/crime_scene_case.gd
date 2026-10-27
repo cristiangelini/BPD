@@ -102,6 +102,8 @@ var at_tent := false
 var clues_found: Array[String] = []
 ## The museum's empty frames the patrol car broke in the chase (ChaseFrame), each one off the salary.
 var frames_broken := 0
+## The family's complaint, off the salary too: at the wedding, when the cops call it off (WeddingHall.accused).
+var complaint := 0
 ## Clues the cops spoiled before finding them.
 var ruined: Array[String] = []
 var flour_print: FlourPrint
@@ -276,6 +278,8 @@ func accuse(id: int) -> void:
 		wrong_guesses += 1
 		lost = wrong_guesses >= MAX_WRONG
 		_comisario_says("BOARD_WRONG_LOST" if lost else "BOARD_WRONG")
+	if place:
+		place.accused(accused_index(id), accused)
 	checklist.show_rows(rows())
 	verdict.emit(accused, lost)
 	if accused and runs_off() and _run_off():
@@ -348,7 +352,7 @@ func finish_shift() -> void:
 	var stats := []
 	for cop in get_tree().get_nodes_in_group("cops"):
 		stats.append((cop as Cop).stats)
-	var report := ShiftReport.pay(solved(), [LOOT_BONUS] if loot_found else [], frames_broken * FRAME_FINE,
+	var report := ShiftReport.pay(solved(), [LOOT_BONUS] if loot_found else [], frames_broken * FRAME_FINE + complaint,
 		wrong_guesses)
 	var result := {"solved": solved(), "report": report, "awards": ShiftReport.awards(stats)}
 	var campaign := Campaign.current
@@ -717,6 +721,8 @@ func rows() -> Array[Dictionary]:
 	if wrong_guesses > 0:
 		list.append({"text": tr("OBJ_CRIME_WRONG") % [wrong_guesses, MAX_WRONG], "done": false, "optional": false,
 			"status": true})
+	if complaint > 0:
+		list.append({"text": tr("OBJ_CRIME_COMPLAINT") % complaint, "done": false, "optional": false, "status": true})
 	list.append({"text": "OBJ_CRIME_CAREFUL", "done": false, "optional": false, "status": true})
 	return list
 

@@ -11,14 +11,14 @@ extends CrimeScenePlace
 ## her ear trumpet and four guests at the other tables. Step 3: what the cops get from the tuxedos goes to their files
 ## (set_up_case). Step 4: what was stolen (the ring, the gift envelopes' box or the sugar couple) hidden in the cake,
 ## among the coats in the coat check or in the head table's centerpiece, all drawn with the case seed; and the clues
-## (WeddingClues) with grandma Chola as the witness.
+## (WeddingClues) with grandma Chola as the witness. Step 5: Rosa follows the cops blaming Tito (WeddingBride), the
+## waltz every two minutes (WeddingWaltz) and the wedding called off if Tito is wrongly accused.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const CAKE_MODEL := preload("res://assets/models/wedding_cake.glb")
 const CENTERPIECE_MODEL := preload("res://assets/models/flower_centerpiece.glb")
 const DJ_MODEL := preload("res://assets/models/dj_booth.glb")
-const BRIDE_MODEL := preload("res://assets/models/npc_novia.glb")
 const DJ_PERSON_MODEL := preload("res://assets/models/npc_dj_bombo.glb")
 const GUEST_MODELS: Array[PackedScene] = [preload("res://assets/models/npc_invitado.glb"),
 	preload("res://assets/models/npc_senora.glb"), preload("res://assets/models/npc_invitado_b.glb"),
@@ -79,7 +79,8 @@ const COATS_SIZE := Vector3(0.5, 1.0, 3.0)
 ## The cake's shape once it's cut open: caved in and spread out.
 const CUT_CAKE := Vector3(1.15, 0.55, 1.15)
 const GUEST_LINES := 6
-const BRIDE_LINES := 10
+## What a wrong accusation of Tito adds to the family's complaint, off the salary (escena-boda.md, pregunta 2).
+const SUSPENDED_COMPLAINT := 30
 const DJ_LINES := 4
 
 const WHITE_BALLOONS: Array[Color] = [Color(0.98, 0.98, 0.96), Color(0.95, 0.85, 0.9), Color(0.98, 0.98, 0.96),
@@ -95,7 +96,7 @@ var dj_booth: Node3D
 var table_tops: Array[Vector3] = []
 ## Tito and his five groomsmen, by index (WeddingTraits.draw with the case seed).
 var tuxedos: Array[TuxedoGuest] = []
-var bride: WeddingPerson
+var bride: WeddingBride
 var dj: WeddingPerson
 var grandma: WeddingGrandma
 var ear_trumpet: EarTrumpet
@@ -111,6 +112,10 @@ var loot_spots := {}
 var cake_cut := false
 ## The case's clues (WeddingClues), once the case comes.
 var clues: WeddingClues
+## The waltz every two minutes (WeddingWaltz), once the case comes.
+var waltz: WeddingWaltz
+## Tito was wrongly accused: the wedding's off.
+var suspended := false
 var _build: PlaceBuilder
 
 
@@ -147,6 +152,25 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	clues.hall = self
 	clues.case = case
 	add_child(clues)
+	waltz = WeddingWaltz.new()
+	waltz.name = "Waltz"
+	waltz.hall = self
+	waltz.case = case
+	add_child(waltz)
+
+
+## Tito accused: Rosa throws the bouquet at him either way. Wrongly, the wedding's off: the DJ stops the music and the
+## family's complaint goes up by SUSPENDED_COMPLAINT, besides the halved salary of any wrong accusation.
+func accused(index: int, right: bool) -> void:
+	if index != WeddingTraits.GROOM:
+		return
+	bride.throw_bouquet(right)
+	if right or suspended:
+		return
+	suspended = true
+	dj.say("WEDDING_DJ_SUSPENDED", 5.0)
+	if case and not case.follower:
+		case.complaint += SUSPENDED_COMPLAINT
 
 
 ## Searching a spot: the stolen thing turns up in the right one; a sign of nothing in the others. Searching the cake
@@ -367,7 +391,11 @@ func _people() -> void:
 		tuxedo.position = TUXEDOS_AT[i] + Vector3(0, FLOOR_TOP, 0)
 		add_child(tuxedo)
 		tuxedos.append(tuxedo)
-	bride = _person("Bride", BRIDE_MODEL, "PROMPT_WEDDING_BRIDE", "WEDDING_BRIDE_LINE_", BRIDE_LINES, BRIDE_AT)
+	bride = WeddingBride.new()
+	bride.name = "Bride"
+	bride.hall = self
+	bride.position = BRIDE_AT + Vector3(0, FLOOR_TOP, 0)
+	add_child(bride)
 	dj = _person("Dj", DJ_PERSON_MODEL, "PROMPT_WEDDING_DJ", "WEDDING_DJ_LINE_", DJ_LINES, DJ_PERSON_AT)
 	grandma = WeddingGrandma.new()
 	grandma.name = "Grandma"

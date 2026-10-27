@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Wedding crime scene, step 5: Rosa follows the nearest cop blaming Tito and gives her useless proof; accusing Tito makes her throw the bouquet, and wrongly calls the wedding off with a $30 family complaint off the salary. Every two minutes the waltz takes Rosa, Tito and the groomsmen to the dance floor (no questions while they dance), and a cop who dances takes $5 off the complaint.
 - Wedding crime scene, step 4b: the six clues. The empty ring box's prints, the footprint in the rice (a waiter sweeps it after 6 minutes), a hair on the cake's top and a bite out of its side (cutting the cake loses both), the videographer's green and red buttons, and grandma Chola, who smelled the culprit's cologne and talks once a cop shouts near her or hands her the ear trumpet.
 - Wedding crime scene, step 4a: the story and the loot. The seed draws the ring, the gift envelopes' box or the sugar couple and hides it in the cake, among the coats or in the head table's centerpiece; the comisario tells which, the planilla asks for it (+100), and cutting the cake open to search it leaves it caved in.
 - Wedding crime scene, step 3: the tuxedos' files. Sniffed up close they give their cologne, the top hat comes off for their hair (the stubborn one only after a bite), a bite gives their teeth, the camera their glasses and shoe size, and the print kit their prints; the board card shows what the cops got so far.

@@ -27,6 +27,8 @@ var sniffed := false
 var hat_on := true
 ## He won't take off the top hat until he gets something to eat.
 var stubborn := false
+## Dancing the waltz (WeddingWaltz): E gets nothing from him.
+var dancing := false
 var _teeth_left := 0.0
 
 
@@ -63,8 +65,11 @@ func prompt_key(cop: Cop) -> String:
 
 
 ## E on him: food in hand, he bites it; with empty hands, a sniff, the top hat and then his lines. (The print kit and
-## the camera work on their own: dusted, photographed.)
+## the camera work on their own: dusted, photographed.) During the waltz, nothing.
 func use(cop: Cop) -> void:
+	if dancing:
+		say("TUXEDO_WALTZ_NOW")
+		return
 	var food := _food(cop) if cop else null
 	if food:
 		feed(food)
