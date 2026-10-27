@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Farm raid, step 4: Margarita the cow grazes in her corral; if its gate (E to open or shut) stays open more than 5 s she walks out for a stroll round the farm shoving what she bumps into, and Don Florencio adds 10 to the complaint when he sees her out. She follows a cop carrying one of the two loose hay bales from the barn, back in through the gate.
 - Farm raid, step 4: Tota the goat wanders the yard and eats any light paper she finds on the ground (notes, receipts, lists), giving it back a little chewed in the corral 30 s later; three pigs wallow in the mud and shove any cop who comes close.
 - Farm raid, step 4: eight hens peck around the yard on spots drawn with the seed; a cop who runs into one trips, one who runs close scares it off flapping (Don Florencio adds 5 to the complaint if he sees it), and they can be carried like anything of 2 kg. Pancho, the farmer's nephew, waits by the hen house and only tells what he saw once three hens are back in its run.
 - Farm raid, step 3: Don Florencio walks his round (porch, hen house, barn, pigsty, garden, egg stall) and fills the complaint like the other owners; E on the porch's feeding bell sends him to feed the animals by the corral for 15 s with his back to the farm (once every 45 s), and meanwhile a cop can take the tool shed's key from his apron.

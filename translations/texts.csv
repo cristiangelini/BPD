@@ -5625,3 +5625,6 @@ PANCHO_IDLE_3,"Las gallinas no se agarran así, oficial. Bueno, sí, así.","Tha
 GOAT_CHEW,Ñam… ñam… ñam…,Munch… munch… munch…,Nham… nham… nham…
 GOAT_BURP,¡Beeeee!,Baaaaa!,Béééé!
 HINT_PIG_SHOVE,"¡Un chancho te empujó! En el barro mandan ellos.","A pig shoved you! In the mud, they're the boss.","Um porco te empurrou! Na lama quem manda são eles."
+PROMPT_GATE_OPEN,E: abrir la tranquera,E: open the gate,E: abrir a porteira
+PROMPT_GATE_CLOSE,E: cerrar la tranquera,E: close the gate,E: fechar a porteira
+FARMER_COW,"¡Margarita está afuera! ¿Quién dejó la tranquera abierta?","Margarita is out! Who left the gate open?","A Margarita está solta! Quem deixou a porteira aberta?"

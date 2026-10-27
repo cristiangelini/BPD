@@ -12,7 +12,9 @@ extends Node3D
 ## him can take the shed's key from his apron. Eight hens peck around the yard (step 4): a cop who runs close scares
 ## them, and Don Florencio counts every scared animal he sees; Pancho, by the hen house, talks once three of them are
 ## back in its run. Tota the goat eats the paper she finds on the ground and gives it back chewed in the corral 30 s
-## later, and three pigs wallow in the mud shoving whoever comes in. The cow and the case come in the next steps.
+## later, and three pigs wallow in the mud shoving whoever comes in. Margarita the cow walks out of her corral if its
+## gate stays open, and follows a cop carrying a hay bale back in; Don Florencio is not happy to see her out. The case
+## comes in the next steps.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -88,6 +90,11 @@ const PANCHO_AT := Vector3(1.2, GROUND, -7.6)
 ## Where Tota gives back what she ate: in the corral, by the feeder.
 const GOAT_GIVES_BACK := Vector3(-15.0, GROUND + 0.1, 9.0)
 const PIGS := 3
+## The two loose hay bales in the barn, to lead the cow with.
+const LOOSE_BALES: Array[Vector3] = [Vector3(10.5, 0.26, -2.2), Vector3(13.5, 0.26, -2.2)]
+const BALE_KG := 8.0
+const COW_AT := Vector3(-14.0, GROUND, 7.5)
+const SAW_COW := 10.0
 ## Don Florencio sees an animal running scared.
 const SAW_SCARED := 5.0
 ## Running faster than this in the mud slips: down for MUD_SLIP seconds, and not again for MUD_AGAIN.
@@ -129,6 +136,11 @@ var hens: Array[FarmHen] = []
 var pancho: FarmNephew
 var goat: FarmGoat
 var pigs: Array[FarmPig] = []
+var cow: FarmCow
+var corral_gate: FarmGate
+var loose_bales: Array[Grabbable] = []
+## Don Florencio already saw the cow out this time.
+var _cow_seen := false
 var bell: FeedBell
 var complaint_bar: ProgressBar
 var house_door: FrontDoor
@@ -158,6 +170,7 @@ func _ready() -> void:
 	_place_owner()
 	_place_hens()
 	_place_goat_and_pigs()
+	_place_cow()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("farm")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -250,6 +263,48 @@ func _place_goat_and_pigs() -> void:
 		pigs.append(pig)
 
 
+## Margarita in her corral, its gate, and the loose bales in the barn.
+func _place_cow() -> void:
+	corral_gate = FarmGate.new()
+	corral_gate.name = "CorralGate"
+	corral_gate.position = Vector3(CORRAL.end.x, GROUND, CORRAL_GATE_Z - FarmGate.WIDTH / 2)
+	add_child(corral_gate)
+	cow = FarmCow.new()
+	cow.name = "Margarita"
+	cow.farm = self
+	cow.corral = CORRAL
+	cow.yard = YARD
+	cow.gate = corral_gate
+	cow.rng.seed = hash(["farm cow", case_seed])
+	cow.position = COW_AT + Vector3.UP * 0.05
+	add_child(cow)
+	cow.returned.connect(func() -> void: _cow_seen = false)
+	for at: Vector3 in LOOSE_BALES:
+		var bale := Grabbable.new()
+		bale.mass = BALE_KG
+		bale.collision_layer = 4
+		bale.collision_mask = 15
+		bale.set_meta("hay", true)
+		bale.position = at + Vector3.UP * GROUND
+		var shape := CollisionShape3D.new()
+		var box := BoxShape3D.new()
+		box.size = Vector3(1.0, 0.5, 0.5)
+		shape.shape = box
+		bale.add_child(shape)
+		var look: Node3D = BALE_MODEL.instantiate()
+		look.position.y = -0.25
+		bale.add_child(look)
+		add_child(bale)
+		loose_bales.append(bale)
+
+
+## Don Florencio sees the cow out of her corral: once each time she's out.
+func _watch_cow() -> void:
+	if cow and cow.is_out and not _cow_seen \
+			and owner_npc.saw(cow.global_position + Vector3.UP * 1.0, SAW_COW, "FARMER_COW"):
+		_cow_seen = true
+
+
 ## How many hens are back in the hen house's run.
 func cooped_hens() -> int:
 	return hens.filter(func(hen: FarmHen) -> bool: return hen.is_cooped()).size()
@@ -268,6 +323,7 @@ static func in_mud(at: Vector3) -> bool:
 func _physics_process(delta: float) -> void:
 	if pancho:
 		pancho.cooped = cooped_hens()
+	_watch_cow()
 	for cop: Variant in _slipped.keys():
 		_slipped[cop] -= delta
 		if _slipped[cop] <= 0.0 or not is_instance_valid(cop):
