@@ -5,14 +5,19 @@ extends Node3D
 ## the city, with the front to +Z and the big shutter rolled up because it's opening hours. Three clients' cars (one
 ## up on the lift, one over the pit), the tool wall over the workbench, a stack of tires, the oil drums, the counter
 ## with its bell and the till, a shelf of parts and the office at the back, locked with the till's key. A windshield
-## that something hits fast cracks, a fine each. Every number here is (propuesta).
+## that something hits fast cracks, a fine each. Don Tuerca walks among the cars filling the complaint; the bell calls
+## him to the counter, his back to the garage, and the lift's button brings its car down (or up), squashing softly
+## whoever is under it (step 2). Every number here is (propuesta).
 
 signal windshield_broken(index: int)
+## The lift's car came down on a cop.
+signal squashed(cop: Cop)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const LIFT_MODEL := preload("res://assets/models/garage_lift.glb")
+const ARMS_MODEL := preload("res://assets/models/garage_lift_arms.glb")
+const TUERCA_SCENE := preload("res://scenes/npc/don_tuerca.tscn")
 const DRUM_MODEL := preload("res://assets/models/oil_drum.glb")
-const BELL_MODEL := preload("res://assets/models/service_bell.glb")
 const BOARD_MODEL := preload("res://assets/models/tool_board.glb")
 const TIRE_MODEL := preload("res://assets/models/garage_tire.glb")
 const WHEEL_MODEL := preload("res://assets/models/car_wheel.glb")
@@ -43,6 +48,17 @@ const CABIN_TO_Z := 0.9
 const LIFT_HEIGHT := 1.65
 const LIFT_POST_X := 1.6
 const LIFT_POST_SIZE := Vector3(0.22, 3.4, 0.28)
+## The arms under the car's sills, in the car's space, and the button on the left post's control box.
+const LIFT_ARMS_Y := 0.15
+const LIFT_BUTTON_AT := Vector3(-1.6, 1.2, 0.3)
+## How fast the lift's car goes down or up, and how long it waits on whatever it lands on.
+const LIFT_SPEED := 0.3
+const SQUASH_PAUSE := 1.0
+const SQUASH_FINE := 20
+const SQUASH_SECONDS := 3.0
+const SQUASH_PUSH := 4.0
+## How tall a cop under the car counts as.
+const COP_HEIGHT := 1.7
 ## The windshield: the box just in front of the cabin, in the car's space, that a fast prop cracks.
 const WINDSHIELD_AT := Vector3(0, 1.25, 1.1)
 const WINDSHIELD_SIZE := Vector3(1.9, 0.5, 0.4)
@@ -84,6 +100,17 @@ const OFFICE_DOOR_X := 7.0
 const DESK_AT := Vector3(10.0, FLOOR_TOP, -8.5)
 const DESK_SIZE := Vector3(1.8, 0.8, 0.9)
 
+## Don Tuerca's round among the cars, back and forth: in front of them, down the east side of the lift, behind them and
+## to the tires. At the counter he stands on the mechanic's side, his back to the garage.
+const TUERCA_ROUTE: Array[Vector3] = [
+	Vector3(-3.5, FLOOR_TOP, 4.0), Vector3(3.5, FLOOR_TOP, 4.0), Vector3(3.8, FLOOR_TOP, -3.8),
+	Vector3(-3.0, FLOOR_TOP, -3.8), Vector3(-9.5, FLOOR_TOP, -4.5),
+]
+const COUNTER_SPOT := Vector3(-7.9, FLOOR_TOP, 6.8)
+## Seeing a windshield crack, and ringing the bell once he knows the trick.
+const SAW_WINDSHIELD := 10.0
+const NOTICED := 10.0
+
 ## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
 const SPOTS := [
 	{"id": "in_pit", "at": Vector3(PIT_X, FLOOR_TOP - PIT_DEPTH, -1.6), "heavy": true},
@@ -115,6 +142,13 @@ var station_parking: Transform3D
 var city_map: CityMap
 var office_door: FrontDoor
 var till: Till
+var bell: GarageBell
+var tuerca: FloorBoss
+var complaint_bar: ProgressBar
+## The lift's button, and how high its car is now and is going to.
+var lift_button: PushButton
+var lift_height := LIFT_HEIGHT
+var lift_target := LIFT_HEIGHT
 ## The clients' cars, in the order of CARS.
 var cars: Array[StaticBody3D] = []
 var broken_windshields: Array[int] = []
@@ -124,6 +158,10 @@ var fines := 0
 ## Same seed, same garage (the stories and the hiding spots come from it, step 4).
 @export var case_seed := 0
 var _build: PlaceBuilder
+var _under_lift: Area3D
+var _squash_wait := 0.0
+## Whether this trip down already cost its fine.
+var _trip_fined := false
 @onready var car: PatrolCar = $PatrolCar
 
 
@@ -140,6 +178,7 @@ func _ready() -> void:
 	_build_office()
 	_place_cars()
 	office_door = _door(OFFICE_DOOR_X)
+	_place_tuerca()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("garage")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -212,7 +251,9 @@ func _build_pit() -> void:
 ## The counter with its bell and the till, by the shutter.
 func _build_front() -> void:
 	_build.open_box(COUNTER_AT, COUNTER_SIZE, "-z", BLUE)
-	_model(BELL_MODEL, BELL_AT)
+	bell = GarageBell.new()
+	bell.position = BELL_AT
+	add_child(bell)
 	till = Till.new()
 	till.position = TILL_ON + Vector3.UP * Till.SIZE.y / 2
 	till.key_hint = "HINT_TILL_KEY_GARAGE"
@@ -268,9 +309,10 @@ func _door(x: float) -> FrontDoor:
 func _place_cars() -> void:
 	for i in CARS.size():
 		var spec: Dictionary = CARS[i]
-		var body := StaticBody3D.new()
+		var lifted: bool = spec.get("lifted", false)
+		var body: StaticBody3D = AnimatableBody3D.new() if lifted else StaticBody3D.new()
 		body.name = "ClientCar%d" % i
-		body.position = spec.at + Vector3(0, LIFT_HEIGHT if spec.get("lifted", false) else 0.0, 0)
+		body.position = spec.at + Vector3(0, LIFT_HEIGHT if lifted else 0.0, 0)
 		var top := CAR_CLEARANCE + CAR_SIZE.y
 		_car_shape(body, CAR_SIZE, Vector3(0, CAR_CLEARANCE + CAR_SIZE.y / 2, 0))
 		_car_shape(body, CABIN_SIZE, Vector3(0, top + CABIN_SIZE.y / 2, (CABIN_FROM_Z + CABIN_TO_Z) / 2))
@@ -285,8 +327,8 @@ func _place_cars() -> void:
 		area.body_entered.connect(func(hit: Node3D) -> void:
 			if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > WINDSHIELD_SPEED:
 				break_windshield(i))
-		if spec.get("lifted", false):
-			_build_lift(spec.at)
+		if lifted:
+			_build_lift(body)
 
 
 func _car_shape(body: StaticBody3D, size: Vector3, at: Vector3) -> void:
@@ -298,11 +340,103 @@ func _car_shape(body: StaticBody3D, size: Vector3, at: Vector3) -> void:
 	body.add_child(shape)
 
 
-## The lift's two posts on either side of its car, solid, under the model.
-func _build_lift(at: Vector3) -> void:
+## The lift under `lift_car`: its two posts, solid, the arms riding with the car, the button and the space under it.
+func _build_lift(lift_car: StaticBody3D) -> void:
+	var at: Vector3 = CARS[1].at
 	_model(LIFT_MODEL, at)
 	for side: float in [-1.0, 1.0]:
 		_solid(at + Vector3(side * LIFT_POST_X, LIFT_POST_SIZE.y / 2, 0), LIFT_POST_SIZE)
+	var arms: Node3D = ARMS_MODEL.instantiate()
+	arms.position.y = LIFT_ARMS_Y
+	lift_car.add_child(arms)
+	lift_button = PushButton.new()
+	lift_button.prompt = "PROMPT_LIFT"
+	lift_button.position = at + LIFT_BUTTON_AT
+	add_child(lift_button)
+	lift_button.pressed.connect(func(_cop: Cop) -> void: toggle_lift())
+	_under_lift = _area(at + Vector3(0, LIFT_HEIGHT / 2, 0), Vector3(CAR_SIZE.x, LIFT_HEIGHT, CAR_SIZE.z))
+	_under_lift.collision_mask = 6
+
+
+## The lift's button: its car heads down if it's up (or on its way up), and up otherwise.
+func toggle_lift() -> void:
+	lift_target = 0.0 if lift_target > 0.0 else LIFT_HEIGHT
+	_trip_fined = false
+
+
+## The lift's car moves toward its target; on the way down it lands softly on whatever is under it.
+func _move_lift(delta: float) -> void:
+	if is_equal_approx(lift_height, lift_target):
+		return
+	if _squash_wait > 0.0:
+		_squash_wait -= delta
+		return
+	if lift_target < lift_height and _squash_under():
+		_squash_wait = SQUASH_PAUSE
+		return
+	lift_height = move_toward(lift_height, lift_target, LIFT_SPEED * delta)
+	cars[1].position.y = CARS[1].at.y + lift_height
+
+
+## Whatever is under the lift's car and as tall as its bottom: a cop is squashed (a fine once a trip and a while on
+## the floor) and shoved out, a prop just shoved out. Whether there was anything.
+func _squash_under() -> bool:
+	var bottom := CARS[1].at.y + lift_height + CAR_CLEARANCE
+	var any := false
+	for body in _under_lift.get_overlapping_bodies():
+		var local := to_local((body as Node3D).global_position)
+		var out := Vector3(signf(local.x - CARS[1].at.x) if absf(local.x - CARS[1].at.x) > 0.05 else 1.0, 0, 0)
+		if body is Cop and local.y + COP_HEIGHT > bottom:
+			var cop := body as Cop
+			cop.knock_back(global_basis * out * SQUASH_PUSH, SQUASH_SECONDS)
+			if not _trip_fined:
+				_trip_fined = true
+				broken_goods += 1
+				fines += SQUASH_FINE
+				_say(to_local(cop.global_position) + Vector3.UP * 1.2, "GARAGE_SQUASHED")
+				squashed.emit(cop)
+			any = true
+		elif body is RigidBody3D and local.y + 0.4 > bottom:
+			(body as RigidBody3D).linear_velocity = global_basis * out * SQUASH_PUSH
+			any = true
+	return any
+
+
+func _physics_process(delta: float) -> void:
+	if cars.size() > 1:
+		_move_lift(delta)
+
+
+## Don Tuerca on his round, the bell's visits to the counter, what he notices and the complaint bar.
+func _place_tuerca() -> void:
+	tuerca = TUERCA_SCENE.instantiate()
+	tuerca.route = TUERCA_ROUTE
+	tuerca.printer_spot = COUNTER_SPOT
+	tuerca.printer = bell
+	add_child(tuerca)
+	tuerca.fix_facing = to_global(COUNTER_SPOT + Vector3(0, 0, 10))
+	tuerca.start_at(0)
+	office_door.broken.connect(tuerca.door_broken)
+	till.opened.connect(func(at: Vector3) -> void: tuerca.saw(at, FloorBoss.SAW_TILL))
+	windshield_broken.connect(func(index: int) -> void:
+		tuerca.saw(to_global(cars[index].position + WINDSHIELD_AT), SAW_WINDSHIELD, "TUERCA_WINDSHIELD"))
+	bell.noticed.connect(func() -> void: tuerca.scold(NOTICED, "TUERCA_NOTICED"))
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	tuerca.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
 
 
 ## Cracks the windshield of car `index`, once: a fine and the cracks over the glass.

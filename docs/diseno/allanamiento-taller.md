@@ -82,6 +82,17 @@ entre 400 y 600.
      en el menú. Capturas `paso1-*.png` y `garage.png` (modelos).
 2. Don Tuerca: el carrito con ruedas, la ronda, la denuncia, "¡no me toquen los autos!", el timbre y el botón del
    elevador (bajarlo con algo debajo lo aplasta suave, multa de 20).
+   - **Hecho así (propuesta):** Don Tuerca es un `FloorBoss` con voz `TUERCA` (mameluco azul con grasa, gorra roja
+     al revés, bigote y llave inglesa). Va y viene entre los autos: adelante, por el lado este del elevador, por
+     detrás y hasta las cubiertas. La denuncia sube como con el profe (puerta rota, caja abierta, empujones) y +10
+     por cada parabrisas rajado que ve. El timbre (`GarageBell`, la misma lógica que la impresora): E lo toca, suena
+     "¡DING!", él va al mostrador y atiende 15 s de espaldas al taller ("¿El ruidito es así, tac tac, o así, toc
+     toc?"), y después el timbre descansa 45 s. Las 2 primeras veces lo engaña; desde la tercera no viene y suma 10
+     ("¡Ya sé que no hay nadie!"). El elevador tiene un botón en la columna izquierda: baja o sube su auto a 0,3 m/s
+     con los brazos. Si al bajar hay un policía debajo, el auto se apoya encima: "¡CRUNCH!", multa de 20 (una vez
+     por bajada), el policía queda 3 s en el piso y sale empujado hacia un costado, y después el auto sigue bajando.
+     Una cosa que haya debajo sale empujada igual, sin multa. Por ahora el carrito con ruedas es solo de nombre: Don
+     Tuerca camina; acostarse debajo de los autos queda para después. Capturas `paso2-*.png`.
 3. Grasita y la herramienta que pide.
 4. El caso (RaidCase) con la primera historia: las patentes cambiadas.
 5. Las otras 5 historias, una por PR.
