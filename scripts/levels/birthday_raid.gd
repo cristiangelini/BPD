@@ -49,6 +49,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_TRICK_PUMP", "OBJ_EXTRA_CLIENT_LIST"],
 		"rig": preload("res://scripts/case/birthday/diamond_balloons_rig.gd"),
 	},
+	"pinata_bills": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_PINATA_BILLS_B", "BRIEF_PINATA_BILLS_C", "BRIEF_PINATA_BILLS_D"],
+		"find": "OBJ_FIND_PINATA_PLATE",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/pinata_plate.tscn"), preload("res://scenes/props/fake_bills.tscn"),
+			preload("res://scenes/props/fake_stamp.tscn")],
+		"half_heights": [0.04, 0.03, 0.06],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_PINATA_BILLS", "OBJ_EXTRA_HAPPY_BANK_STAMP"],
+		"rig": preload("res://scripts/case/birthday/pinata_bills_rig.gd"),
+	},
 }
 ## Where the suspicions' clue notes may lie, on the floor of the hall.
 const NOTE_PLACES: Array[Vector3] = [
