@@ -69,6 +69,15 @@ func answer(cop: Cop) -> void:
 	_say(CHAT_LINES[0], LISTEN_SECONDS)
 
 
+## Online: whether the phone rings with her call, so a guest's cop who answers it gets her and not a listener.
+func net_state() -> Variant:
+	return calling
+
+
+func apply_net_state(state: Variant) -> void:
+	calling = state
+
+
 func said() -> String:
 	return _bubble.text if _bubble.visible else ""
 

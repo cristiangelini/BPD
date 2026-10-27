@@ -255,6 +255,9 @@ var record_player: RadioRecordPlayer
 var rosa: DonaRosa
 ## Listeners' calls someone answered, for their lines in turn.
 var answered_calls := 0
+## Lines aired so far and the last one (online, the guests show the host's).
+var aired := 0
+var last_aired := ""
 var volumen: FloorBoss
 var complaint_bar: ProgressBar
 ## Whether he opened the archive's door on his way, and whether it was locked then.
@@ -286,6 +289,8 @@ func _ready() -> void:
 	raid.failed_label = %CaseFailed
 	raid.shift_screen = $ShiftScreen
 	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
 	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
@@ -328,6 +333,32 @@ func _place_facts() -> Dictionary:
 		"broken": broken_goods,
 		"complaint": volumen.complaint,
 	}
+
+
+## Online, what the guests' radio takes from the host's (RaidCase.snapshot): the "AL AIRE" light and the last line
+## on air, the ringing phone, the archive's door (don Volumen opens it on the host), the cracked window and the
+## broken records.
+func net_state() -> Dictionary:
+	return {"air": on_air, "aired": aired, "line": last_aired, "ring": phone.is_ringing(), "glass": glass_cracked,
+		"records": records_broken, "door": [archive_door.is_open, archive_door.locked]}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	set_on_air(state.air)
+	if state.aired != aired:
+		aired = state.aired
+		last_aired = state.line
+		_show_on_air(state.line)
+	phone.get_node("Ring").visible = state.ring
+	if state.glass:
+		break_glass()
+	while records_broken < state.records:
+		drop_record(to_global(Vector3(-4.0, FLOOR_TOP + 1.0, -7.7)))
+	if state.door[0] and not archive_door.is_open:
+		archive_door.open_from_inside()
+	elif not state.door[0] and archive_door.is_open:
+		archive_door.close()
+	archive_door.locked = state.door[1]
 
 
 ## The story with that id from --story=<id> among the user args, or one drawn from the seed.
@@ -440,7 +471,8 @@ func _build_reception() -> void:
 	_glass = _pane(center, pane)
 	var hit := _area(center, pane + Vector3(0, 0, 0.6))
 	hit.body_entered.connect(func(body: Node3D) -> void:
-		if body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > GLASS_SPEED:
+		if multiplayer.is_server() and body is RigidBody3D \
+				and (body as RigidBody3D).linear_velocity.length() > GLASS_SPEED:
 			break_glass())
 	var on_air := Label3D.new()
 	on_air.name = "OnAirSign"
@@ -502,7 +534,8 @@ func _build_back() -> void:
 		var shelves := _area(Vector3(SHELF_X0 + SHELF_SIZE.x * SHELF_COUNT / 2, FLOOR_TOP + SHELF_SIZE.y / 2, z),
 			Vector3(SHELF_SIZE.x * SHELF_COUNT, SHELF_SIZE.y, SHELF_SIZE.z + 0.6))
 		shelves.body_entered.connect(func(body: Node3D) -> void:
-			if body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > RECORD_SPEED:
+			if multiplayer.is_server() and body is RigidBody3D \
+					and (body as RigidBody3D).linear_velocity.length() > RECORD_SPEED:
 				drop_record(body.global_position))
 	archive_door = DOOR_SCENE.instantiate()
 	archive_door.position = Vector3(ARCHIVE_DOOR_X - GameScale.DOOR_WIDTH / 2, 0.0, BACK_Z)
@@ -543,7 +576,8 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	if volumen:
+	# Online the host's don Volumen opens the door; the guests take it from its state (net_state).
+	if volumen and multiplayer.is_server():
 		_volumen_door()
 
 
@@ -612,8 +646,17 @@ func _cop_in_archive() -> bool:
 	return false
 
 
-## What goes out on air, over the reception by the "AL AIRE" sign (a story's line).
+## What goes out on air, over the reception by the "AL AIRE" sign (a story's line). Online only the host's stories
+## decide it; the guests show the host's line (net_state).
 func say_on_air(key: String) -> void:
+	if not multiplayer.is_server():
+		return
+	aired += 1
+	last_aired = key
+	_show_on_air(key)
+
+
+func _show_on_air(key: String) -> void:
 	var label := _say(Vector3(STUDIO_DOOR_X + 2.5, GameScale.DOOR_HEIGHT - 0.1, FRONT_Z + 2.0), key)
 	label.font_size = 36
 	label.pixel_size = 0.006
@@ -630,7 +673,7 @@ func set_on_air(on: bool) -> void:
 
 ## Something loud happened near the microphone: on air, the listeners' phone rings (one call at a time).
 func make_noise() -> void:
-	if not on_air or call_left > 0.0 or phone.is_ringing() or rosa.listener:
+	if not multiplayer.is_server() or not on_air or call_left > 0.0 or phone.is_ringing() or rosa.listener:
 		return
 	calls += 1
 	call_left = CALL_WAIT

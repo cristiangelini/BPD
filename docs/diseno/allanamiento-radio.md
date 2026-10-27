@@ -111,6 +111,10 @@ entre 400 y 600.
 7. "Jugar" suma la radio al sorteo de allanamientos (`PlaceDraw.ORDER`).
    **Hecho (paso 7):** "radio" al final de `PlaceDraw.ORDER`; la prueba del sorteo ve salir sus 6 historias.
 8. El online (don Volumen, doña Rosa, el teléfono, la luz "AL AIRE" y lo frágil en todas las PC).
+   **Hecho (paso 8):** don Volumen y doña Rosa los mueve el anfitrión (`NpcSync`; ella manda si su llamada está
+   sonando); el tocadiscos, el micrófono y el teléfono andan desde cualquier PC; la luz "AL AIRE", lo que sale al aire
+   (solo las historias del anfitrión lo deciden), el teléfono sonando, la puerta del archivo, el vidrio y los discos
+   rotos siguen al anfitrión (`RadioStation.net_state`). Las llamadas de oyentes y las multas las decide el anfitrión.
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, la radio, donde todo lo que hacen sale al aire? **Recomendado:** sí, no se pisa con
