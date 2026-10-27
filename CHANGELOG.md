@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Car wash raid, step 4: Pompita, the rag boy, stands by the tunnel's exit and only talks to a cop who brings him a dry chamois (once per cop); the rag basket gives up to 3, and a chamois that goes through the running tunnel's jets or falls in a puddle gets wet and is no use to him.
 - Car wash raid, step 3: Don Chorro, the owner, walks his round by the tunnel and fills his complaint (5 for each cop he sees in the tunnel, once per cop, 10 for something falling on the drying area's floor, the till and the office door); the token machine's golden button pays a premium wash: the first car in line rides through the tunnel and he dries it 20 s with his back to everything, once every 45 s, and the third time he catches on.
 - Car wash raid, step 2: the tunnel works: its blue button starts it for 30 s; the conveyor drags things and cops to the end at 1.2 m/s, the jets soak what passes, the brushes spin and shove cops to the middle (the top one pushes them back), the foam curtain covers a cop's screen while he's in it and the blower throws out things up to 3 kg.
 - Car wash raid, step 1: the "La Espuma Loca" car wash stands on block (8, 4) (--place=carwash and a menu test button): the wash tunnel with its conveyor, jets, three brushes, foam curtain and blower; two customers' cars in line, the first with its trunk open; the token machine with the till (the office key), the vacuums, the wax shelf and the inflatable man; the drying area; the storeroom and Don Chorro's locked office; 12 hiding spots. Nothing moves yet.

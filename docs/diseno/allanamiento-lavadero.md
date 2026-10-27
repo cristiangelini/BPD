@@ -140,6 +140,16 @@ extras suman 500.
      45 s; la tercera vez no va, dice "¿Otro premium? ¿Quién paga todo esto?" y suma 10.
    - **Capturas:** `/mnt/project-files/lavadero/paso3-*.png` (`paso3-modelo.png` es Don Chorro).
 4. Pompita y la gamuza seca.
+   Hecho así:
+   - **Pompita:** parado junto a la salida del túnel, en la zona de secado, con mameluco azul, gorra roja al revés,
+     espuma en el hombro y un trapo gris empapado en cada mano. E sobre él con las manos vacías solo explica qué quiere.
+   - **La gamuza:** el botón del canasto de trapos saca una gamuza seca adelante; puede haber hasta 3 afuera. Se moja
+     si pasa por los chorros con el túnel andando (en la mano o suelta) o si cae en uno de los 3 charcos (dos en la zona
+     de secado, uno frente al túnel): se pone oscura y dice "¡Plaf! Empapada".
+   - **El premio:** E sobre Pompita con una gamuza seca en la mano: se la queda y, la primera vez de cada policía,
+     cuenta lo que vio (la historia lo pone en el paso 5). Con una mojada dice "¡Para trapos mojados ya tengo los
+     míos!".
+   - **Capturas:** `/mnt/project-files/lavadero/paso4-*.png` (`paso4-modelo.png` tiene a Pompita).
 5. El caso con la primera historia, la plata lavada.
 6. Las otras 5 historias, una por PR.
 7. El lavadero en el sorteo de lugares (PlaceDraw), la huida y la persecución.

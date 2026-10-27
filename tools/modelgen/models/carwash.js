@@ -1,8 +1,8 @@
 // Props of the car wash "La Espuma Loca" (docs/diseno/allanamiento-lavadero.md): the tunnel's spinning brush, the jets
 // arch, the blower, the token machine, the vacuum column, the inflatable dancing man and the boiler, with origins at the
-// floor in the middle of each piece, and Don Chorro, the owner. Placeholder, not final art.
+// floor in the middle of each piece, Don Chorro, the owner, and Pompita, the rag boy. Placeholder, not final art.
 import { Builder, mat, ellipsoid, V, THREE } from '../lib.js';
-import { pearBody, eyes } from './pear.js';
+import { M, pearBody, eyes } from './pear.js';
 
 // One of the tunnel's brushes, 1.2 m across and 2.6 m tall, standing: a steel shaft with rings of blue, pink and
 // yellow bristles, the top cap and the bottom bearing.
@@ -127,10 +127,32 @@ export function buildDonChorro() {
 	return b.build();
 }
 
+// Pompita, the rag boy: blue overalls over a striped shirt, a cap on backwards, foam on his shoulder and a soaked grey
+// rag dripping from each hand.
+export function buildPompita() {
+	const b = new Builder('npc_pompita');
+	const overalls = mat('pompita_overalls', 0x2f5fb8), shirt = mat('pompita_shirt', 0xf2f2ee), cap = mat('pompita_cap', 0xe04040);
+	pearBody(b, mat('skin_trigueña', 0xd8a070), { shirt, pants: overalls, shoes: M.black, belted: false });
+	b.add('body', overalls, new THREE.BoxGeometry(0.42, 0.3, 0.06), { pos: V(0, 0.7, 0.36), rot: [-0.25, 0, 0] });
+	for (let i = 0; i < 3; i++) {
+		b.add('body', mat('pompita_stripe', 0x3aa0e0), new THREE.TorusGeometry(0.3 - i * 0.05, 0.015, 4, 14), { pos: V(0, 0.82 + i * 0.1, 0), rot: [Math.PI / 2, 0, 0] });
+	}
+	eyes(b, 1.33, 0.18, 0.075, 0.045);
+	b.add('face', mat('pompita_freckle', 0xb06040), ellipsoid(0.07, 0.015, 0.01, 6, 3), { pos: V(0, 1.28, 0.2) });
+	b.add('hat', cap, ellipsoid(0.2, 0.1, 0.2, 10, 5), { pos: V(0, 1.44, 0.01) });
+	b.add('hat', cap, new THREE.BoxGeometry(0.2, 0.02, 0.16), { pos: V(0, 1.42, -0.24) });
+	b.add('foam', mat('pompita_foam', 0xf6f8ff), ellipsoid(0.1, 0.06, 0.1, 8, 4), { pos: V(-0.26, 1.08, 0.02) });
+	const rag = mat('pompita_rag', 0x707478);
+	for (const x of [-1, 1]) {
+		b.add('rag', rag, new THREE.BoxGeometry(0.12, 0.26, 0.03), { pos: V(x * 0.47, 0.5, 0.1) });
+	}
+	return b.build();
+}
+
 export const models = {
 	wash_brush: buildWashBrush, wash_jets: buildWashJets, wash_blower: buildWashBlower, token_machine: buildTokenMachine,
 	vacuum_column: buildVacuumColumn, inflatable_man: buildInflatableMan, carwash_boiler: buildCarwashBoiler,
-	npc_don_chorro: buildDonChorro,
+	npc_don_chorro: buildDonChorro, npc_pompita: buildPompita,
 };
 
 export const views = {
@@ -140,6 +162,7 @@ export const views = {
 			{ name: 'wash_blower', pos: [0.6, 0, -0.6], rotY: 0.5 }, { name: 'token_machine', pos: [2.0, 0, 1.2] },
 			{ name: 'vacuum_column', pos: [2.9, 0, 0.8] }, { name: 'inflatable_man', pos: [3.9, 0, -0.4] },
 			{ name: 'carwash_boiler', pos: [-2.6, 0, 2.2] }, { name: 'npc_don_chorro', pos: [0.9, 0, 2.0], rotY: -0.3 },
+			{ name: 'npc_pompita', pos: [-0.6, 0, 2.6], rotY: 0.3 },
 		],
 		cam: { pos: [0, 2.6, 9.0], target: [0, 1.5, 0], fov: 45 },
 	},
