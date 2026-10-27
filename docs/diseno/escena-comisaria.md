@@ -145,3 +145,12 @@ internos (sobornos.md), CaseBriefing y CaseChecklist, ChaseCase.begin, PlaceDraw
   (x0,9), los que renguean se bambolean, y la primera frase de cada uno es su coartada. Con las 6 pistas de la tabla
   (huella: el nombre; cinta: la silueta; libro: zurdo; taza: azúcar; dona: dientes; el Chancho: el talle) siempre
   hay 4 que dejan solo al culpable (probado con 80 semillas). Captura en `escena-comisaria/paso3-rasgos.png`.
+- **Paso 4a (el caso y las fichas):** `StationSceneLevel` (escena `station_scene.tscn`) arma la ciudad con la sala del
+  tablero abierta y pone `StationScene` en el lote de la comisaría: lo robado sale con la semilla, los cinco
+  compañeros aparecen con sus rasgos y el armero es el sospechoso 1 (su lista de la armería sigue andando). La escena
+  del crimen es el depósito: al entrar, sale la pista "Los seis compañeros tienen tu mismo uniforme". La ficha de cada
+  uno (`StaffFile`) junta: las huellas (el kit), los dientes (una dona de la caja), la firma con la coartada (E la
+  primera vez: "Estuve en ... con ... Firmo acá, ¿no?"), la foto (altura, si renguea y el talle) y el azúcar, que
+  dice doña Fritanga para todos la segunda vez que se le habla. La ficha muestra también dónde y con quién dice que
+  estaba. Los compañeros no se cansan (el apuro es Asuntos Internos, paso 5), y hasta el paso 5 el culpable se
+  entrega. Capturas en `escena-comisaria/paso4a-*.png`.

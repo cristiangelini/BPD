@@ -26,15 +26,20 @@ const PLATE_AT := Vector3(-0.12, 0.9, 0.315)
 ## The limp's wobble: how far they tip, side to side, and how fast.
 const LIMP_TILT := 0.09
 const LIMP_SPEED := 3.5
+## Seconds their teeth show after a bite.
+const TEETH_SECONDS := 2.0
 
 var who := "ronquido"
 ## Their StaffTraits (empty outside the case, and for el Chancho).
 var traits := {}
+## In the case, what they give their file (StaffFile).
+var file: StaffFile
 var _model: Node3D
 var _bubble: Label3D
 var _bubble_left := 0.0
 var _lines_said := 0
 var _time := 0.0
+var _teeth_left := 0.0
 
 
 ## Puts the five coworkers and el Chancho in their places in the station's `root` (the station's building node), each
@@ -101,12 +106,19 @@ func name_key() -> String:
 	return "STAFF_NAME_" + who.to_upper()
 
 
-func prompt_key(_cop: Cop) -> String:
+func prompt_key(cop: Cop) -> String:
+	if file:
+		var key := file.prompt_key(cop)
+		if key != "":
+			return key
 	return "PROMPT_STAFF_" + who.to_upper()
 
 
-## E on them: their next line; with traits, every round of lines starts with their alibi.
-func use(_cop: Cop) -> void:
+## E on them: in the case, what their file takes first (StaffFile); else their next line, and with traits every round
+## of lines starts with their alibi.
+func use(cop: Cop) -> void:
+	if file and file.use(cop):
+		return
 	var count: int = WHO[who].lines
 	if traits.is_empty():
 		say(line_key(_lines_said))
@@ -121,6 +133,23 @@ func use(_cop: Cop) -> void:
 func alibi() -> String:
 	return tr("STAFF_ALIBI") % [tr("STAFF_PLACE_" + (traits.where as String).to_upper()),
 		tr("STAFF_WITH_" + StaffTraits.IDS[traits.with].to_upper())]
+
+
+## The print kit on them (PrintKit): their prints, in the case.
+func dusted(_cop: Cop) -> String:
+	return file.dusted() if file else ""
+
+
+## The camera's flash (PhotoCamera): their photo, in the case.
+func photographed(cop: Cop) -> void:
+	if file:
+		file.photographed(cop)
+
+
+## A bite: their teeth show for a moment.
+func show_teeth() -> void:
+	_teeth_left = TEETH_SECONDS
+	part("teeth").visible = true
 
 
 ## The key of their line number n (it goes round).
@@ -140,6 +169,9 @@ func say(text: String, seconds := 4.0) -> void:
 
 func _physics_process(delta: float) -> void:
 	_time += delta
+	if _teeth_left > 0.0:
+		_teeth_left -= delta
+		part("teeth").visible = _teeth_left > 0.0
 	if traits.get("limp", false):
 		_model.rotation.z = sin(_time * LIMP_SPEED) * LIMP_TILT
 	_bubble_left -= delta
