@@ -152,6 +152,12 @@ bocina (por ahora el auto de fuga de los otros dueños; el autito queda para des
      1,5 m de la puerta de entrada hace "¡Bip, bip, bip!" y eso va a la planilla. Cada 30 s (no mientras cantan)
      Chispita dice "Este regalo lo guardo yo" y desaparece un regalo de la mesa, primero los de arriba; no suma queja.
      `--story=returning_gifts`. Capturas `/mnt/project-files/cumple/paso5-regalos-*.png`.
+   - **Cómo quedó, el payaso doble (propuesta):** el segundo disfraz con el plano (3 kg, 1000), la segunda nariz roja
+     (0,1 kg, 300) y la foto de los dos payasos (0,2 kg, 200), con modelos nuevos, en escondites sorteados. Cada 25 s
+     suena "¡Mec, mec!" en el baño, salvo que Chispita esté ahí cerca; un policía a menos de 6 m que lo oye se lleva la
+     pista a la planilla. Cada 60 s (no mientras cantan) "vuelve del baño" el otro: dice "¡Volví del baño!" y tiene
+     los zapatos mucho más chicos, hasta que vuelven a cambiar. `--story=double_clown`. Capturas
+     `/mnt/project-files/cumple/paso5-doble-*.png`. Con esta, las 6 historias están hechas.
 6. El sorteo de "Jugar" entre los allanamientos y el online.
 
 ## Preguntas para Cristian
