@@ -24,7 +24,8 @@ const INKED := Vector2i(2, 3)
 static func draw(seed_value: int) -> Array[Dictionary]:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash("aquarium divers %d" % seed_value)
-	var inked := {}
+	# Doña Tinta inked whoever reached into the big tank: the culprit always has it.
+	var inked := {CrimePlan.culprit_of(COUNT, seed_value): true}
 	var ink_count := rng.randi_range(INKED.x, INKED.y)
 	while inked.size() < ink_count:
 		inked[rng.randi_range(0, COUNT - 1)] = true

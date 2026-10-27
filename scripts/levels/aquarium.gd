@@ -81,6 +81,7 @@ const ANIMAL_COLORS := {
 const PLUSH_COLORS: Array[Color] = [Color(0.95, 0.6, 0.2), Color(0.3, 0.7, 0.85), Color(0.95, 0.5, 0.6),
 	Color(0.98, 0.85, 0.3), Color(0.6, 0.45, 0.85)]
 
+var case: CrimeSceneCase
 var divers: Array[AquariumDiver] = []
 var keeper: AquariumKeeper
 var sea_lion: SeaLion
@@ -104,6 +105,16 @@ func _ready() -> void:
 	_shop()
 	_kitchen()
 	_people()
+
+
+## The case reaches the divers (their traits are its suspects, same seed), and one of them, drawn with the seed,
+## won't take off the hood until they get something to eat.
+func set_up_case(new_case: CrimeSceneCase) -> void:
+	case = new_case
+	var stubborn := absi(hash("stubborn diver %d" % case.case_seed)) % divers.size()
+	for diver in divers:
+		diver.case = case
+		diver.stubborn = diver.index == stubborn
 
 
 ## The diver by index (the order of the case's traits).
