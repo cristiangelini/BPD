@@ -76,3 +76,20 @@ func test_a_customer_who_leaves_on_the_host_leaves_for_the_guest() -> void:
 	customer.queue_free()
 	await wait_until(func() -> bool: return guest_level.find_children("*", "BakeryCustomer", true, false).size() < before, 5.0)
 	assert_lt(guest_level.find_children("*", "BakeryCustomer", true, false).size(), before)
+
+
+func test_busy_states_go_in_packets_under_the_mtu() -> void:
+	var ids := PackedInt32Array()
+	var states := []
+	for i in 20:
+		ids.append(i)
+		states.append([Transform3D(), "¡Esto es un bocadillo bastante largo para llenar el paquete!", true, 0.0, false,
+			{"plan": "a long plan", "trick": "a trick", "step": i}, [false, 0]])
+	var packets: Array = NpcSync.packets(ids, states)
+	var sent := 0
+	for packet: Array in packets:
+		assert_lte(var_to_bytes(packet[1]).size(), NpcSync.PACKET_BYTES + 16, "a packet fits")
+		assert_lte((packet[0] as PackedInt32Array).size(), NpcSync.PER_PACKET)
+		sent += (packet[0] as PackedInt32Array).size()
+	assert_eq(sent, 20, "and all of them go")
+	assert_gt(packets.size(), 20 / NpcSync.PER_PACKET, "more packets than by count alone")

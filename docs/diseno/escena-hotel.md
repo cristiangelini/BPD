@@ -163,7 +163,7 @@ PlaceDraw y la custodia para el interrogatorio.
   si al culpable se le vieron anteojos cuando se le cayeron los pepinos. Esposado, o si la valija cae sola por la
   escalera, se ofende y no habla más. El libro de huéspedes (`GuestBook`) está abierto en el mostrador con cuatro
   firmas; la última, la de las 3, se inclina para un lado o para el otro. Se fotografía, y si un policía firma (E)
-  queda tapada. El timbre (`HotelBell`) despierta a don Bostezo, que repite quién duerme dónde; si se toca más de tres
+  queda tapada. El timbre (`HotelSceneBell`) despierta a don Bostezo, que repite quién duerme dónde; si se toca más de tres
   veces seguidas (con menos de 3 s entre una y otra), se enoja y no contesta nada por 30 s. Las frases del hotel
   quedaron con "tú".
 - **Paso 5 (el final):** el culpable que huye sale en la combi del hotel (`SuspectCar.HOTEL_SHUTTLE`, modelo en

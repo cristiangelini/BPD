@@ -82,7 +82,7 @@ func test_the_guest_book_signature_and_signing_over_it() -> void:
 func test_the_bell_wakes_the_concierge_and_too_much_makes_him_angry() -> void:
 	var made := _hotel_case([])
 	var hotel: Hotel = made[0]
-	for i in HotelBell.TOO_MANY:
+	for i in HotelSceneBell.TOO_MANY:
 		hotel.bell.use(made[2])
 		assert_eq(hotel.concierge.angry_left, 0.0)
 	assert_ne(hotel.concierge.said(), "", "awake, he says who sleeps where")
@@ -90,6 +90,6 @@ func test_the_bell_wakes_the_concierge_and_too_much_makes_him_angry() -> void:
 	assert_gt(hotel.concierge.angry_left, 0.0)
 	hotel.concierge.use(made[2])
 	assert_eq(hotel.concierge.said(), "HOTEL_CONCIERGE_ANGRY")
-	hotel.concierge._physics_process(HotelBell.ANGRY_SECONDS + 1.0)
+	hotel.concierge._physics_process(HotelSceneBell.ANGRY_SECONDS + 1.0)
 	hotel.concierge.use(made[2])
 	assert_ne(hotel.concierge.said(), "HOTEL_CONCIERGE_ANGRY")

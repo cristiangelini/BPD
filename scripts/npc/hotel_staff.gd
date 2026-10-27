@@ -5,7 +5,7 @@ extends StaticBody3D
 ## behind the desk; señora Perlita, who was robbed; Tito the bellboy, with a suitcase always in hand; and doña Escoba
 ## the maid, upstairs with her laundry cart. E on any of them gets one of their lines, a different one each time. What
 ## they do in the case (the concierge's lie, the witness, the maid who wipes clues) comes in steps 3 and 4; the
-## reception's bell (HotelBell) wakes the concierge, and rung too much makes him angry. Every
+## reception's bell (HotelSceneBell) wakes the concierge, and rung too much makes him angry. Every
 ## number here is (propuesta).
 
 ## Who they can be: their model, the prompt and how many lines they have (HOTEL_<WHO>_LINE_<n>).
