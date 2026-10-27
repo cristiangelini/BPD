@@ -131,7 +131,14 @@ para el interrogatorio. Los modelos nuevos salen de `tools/modelgen` (low poly).
    coartada, cada vez con otra frase. Doña Clotilde da vueltas en su silla por el comedor, el vestíbulo y el salón y
    cada 10 s dice a quién saca del testamento. Ceferino está junto al tablero de campanillas y siempre dice "Fui yo,
    señor". Lorenzo grita algo cada 12 s en su jaula del salón. Capturas en `escena-mansion/paso3-*.png` **(propuesta)**.
-4. Las fichas (foto, huellas, dientes, pelo y coartada) y los socios que cambian de cuarto por los pasadizos.
+4. Las fichas (foto, huellas, dientes, pelo y coartada) y los socios que cambian de cuarto por los pasadizos. Hecho
+   así: la caja de doña Clotilde tiene 8 bombones y está en la mesa del comedor (también se los puede comer un policía).
+   Con las manos vacías, el socio primero dice su coartada y después se saca la gorra; uno, sorteado con la semilla, no
+   se la saca hasta que le dan un bombón. El flash da la foto ("¡Mi lado bueno es el otro!") y el kit, las huellas.
+   Cada parte sale con la señal `part_given`, que el caso anota en la ficha en el paso 5. Cada 60 s un socio, sorteado
+   entre los que están en un cuarto con pasadizo, lo abre, lo cruza caminando y sale al cuarto del otro lado (la
+   despensa también tiene lugar para ellos); el pasadizo se cierra detrás si estaba cerrado. Capturas en
+   `escena-mansion/paso4-*.png` **(propuesta)**.
 5. El caso: la historia, lo robado y dónde está, las seis pistas con cómo se arruinan, el tablero en la biblioteca y
    la planilla.
 6. El final: la huida por el laberinto, el cansancio y el sueldo.

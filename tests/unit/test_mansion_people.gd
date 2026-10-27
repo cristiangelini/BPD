@@ -48,7 +48,7 @@ func test_a_member_tells_their_alibi_a_different_way_each_time() -> void:
 	var first := member.said()
 	assert_true(member.told_alibi)
 	assert_string_contains(first, tr("MEMBER_ALIBI_" + str(member.traits.room)))
-	member.use(null)
+	member.alibi()
 	assert_ne(member.said(), first, "another opening")
 	assert_string_contains(member.said(), tr("MEMBER_ALIBI_" + str(member.traits.room)))
 
