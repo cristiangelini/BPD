@@ -117,3 +117,12 @@ internos (sobornos.md), CaseBriefing y CaseChecklist, ChaseCase.begin, PlaceDraw
 4. El caso: lo robado y dónde está, las 6 pistas, don Mopa que limpia, el testigo con la dona, la cinta y el tablero.
 5. El final: Asuntos Internos a los 10 minutos, el patrullero viejo que pierde piezas y el interrogatorio.
 6. El sorteo en "Jugar" (una escena del crimen más) y el online.
+
+## Hecho así
+- **Paso 1 (el depósito):** `EvidenceRoom` (datos puros, como `InterrogationWing`) arma el anexo atrás de la sala de
+  descanso: 7,4 × 7 m, con la puerta en la pared del fondo de la sala de descanso y el cartel rojo "Depósito de
+  evidencia: solo personal autorizado" arriba. Adelante, el atril con el libro de retiros y la lapicera, y la mesa con
+  la videocasetera (cinta a medio entrar, la luz roja de REC) y un monitor. Una pared de barrotes con su reja (una
+  `CellDoor`, cerrada) separa la jaula, con tres estantes de cajas de casos viejos contra las paredes, el estante del
+  medio con el hueco limpio en el polvo y la cinta roja, y la cámara en el rincón mirando el hueco. Modelos en
+  `tools/modelgen/models/evidence_room.js`. Capturas en `escena-comisaria/paso1-*.png`.

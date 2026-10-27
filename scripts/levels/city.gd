@@ -56,6 +56,8 @@ var comisario: Comisario
 var armero: Armero
 ## The two cells' barred doors, west cell first (StationRooms.CELL_DOORS).
 var cell_doors: Array[CellDoor] = []
+## The evidence room's barred gate (EvidenceRoom), apart from the cells' doors.
+var evidence_gate: CellDoor
 ## Its own map, walking the city with no place in it (a chase).
 var map: CityMap
 var _materials := {}
@@ -96,6 +98,7 @@ func _build() -> void:
 		if p.id == "station":
 			_station_inside(root, p.size)
 			_interrogation_wing(root, p.color)
+			_evidence_room(root, p.color)
 		if p.id == "gas_station":
 			_pumps(root, p.size)
 	for lot: Dictionary in CityLayout.fillers():
@@ -390,6 +393,48 @@ func _interrogation_wing(root: Node3D, color: Color) -> void:
 	lamp.spot_angle = 38.0
 	lamp.shadow_enabled = true
 	root.add_child(lamp)
+
+
+## The evidence room behind the break room (escena-comisaria.md, step 1): outside walls in the station's color,
+## concrete inside, the cage's bars with its gate, the shelves, the lectern, the VCR and the camera, and the sign over
+## the door.
+func _evidence_room(root: Node3D, color: Color) -> void:
+	var wall := StationRooms.WALL
+	var ceiling := StationRooms.CEILING
+	var depth := EvidenceRoom.FROM_Z - EvidenceRoom.TO_Z
+	var middle := Vector3((EvidenceRoom.FROM_X + EvidenceRoom.TO_X) / 2, 0, (EvidenceRoom.FROM_Z + EvidenceRoom.TO_Z) / 2)
+	var width := EvidenceRoom.TO_X - EvidenceRoom.FROM_X
+	for piece: Array in EvidenceRoom.shell():
+		_box(piece[0], piece[1], color, root)
+	_mesh_box(middle + Vector3(0, 0.04, 0), Vector3(width - 0.4, 0.02, depth - 0.2), WING_FLOOR, root)
+	_box(middle + Vector3(0, ceiling + 0.1, 0), Vector3(width, 0.2, depth), CONCRETE, root)
+	for x: float in [EvidenceRoom.FROM_X + wall + 0.01, EvidenceRoom.TO_X - wall - 0.01]:
+		_mesh_box(Vector3(x, ceiling / 2, middle.z), Vector3(0.01, ceiling, depth), CONCRETE, root)
+	_mesh_box(Vector3(middle.x, ceiling / 2, EvidenceRoom.TO_Z + wall + 0.01), Vector3(width, ceiling, 0.01), CONCRETE, root)
+	for piece: Array in EvidenceRoom.bars():
+		_box(piece[0], piece[1], BARS, root)
+	evidence_gate = CellDoor.new()
+	evidence_gate.name = "EvidenceGate"
+	evidence_gate.position = Vector3(EvidenceRoom.GATE.x, 0, EvidenceRoom.CAGE_Z)
+	root.add_child(evidence_gate)
+	_furniture(EvidenceRoom.FURNITURE, EvidenceRoom.SOLID, root)
+	var sign := Label3D.new()
+	sign.name = "EvidenceSign"
+	sign.text = "SIGN_EVIDENCE_ROOM"
+	sign.font_size = 28
+	sign.pixel_size = 0.005
+	sign.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	sign.width = 400.0
+	sign.modulate = Color(0.85, 0.2, 0.15)
+	sign.position = EvidenceRoom.SIGN_AT
+	root.add_child(sign)
+	for at: Vector3 in EvidenceRoom.lights():
+		var light := OmniLight3D.new()
+		light.position = at
+		light.light_color = Color(0.85, 0.95, 1.0)
+		light.light_energy = 0.25 if night else 0.6
+		light.omni_range = 6.0
+		root.add_child(light)
 
 
 ## The one-way mirror: it stops you like glass, reflects the interrogation room and lets the observers see through.
