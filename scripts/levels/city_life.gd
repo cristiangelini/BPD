@@ -34,12 +34,10 @@ var _rng := RandomNumberGenerator.new()
 
 func _ready() -> void:
 	_rng.seed = 7
-	for row in CityLayout.ROWS:
-		for col in CityLayout.COLUMNS:
-			_sidewalk(Vector2i(col, row))
-	for i in range(1, CityLayout.COLUMNS):
-		for j in range(1, CityLayout.ROWS):
-			_crosswalks(Vector3(CityLayout.street_x(i), 0, CityLayout.street_z(j)))
+	for block in CityLayout.blocks():
+		_sidewalk(block)
+	for c in CityLayout.crossings(true):
+		_crosswalks(Vector3(CityLayout.street_x(c.x), 0, CityLayout.street_z(c.y)))
 	for alley: Array in ALLEYS:
 		_alley(alley[0], alley[1])
 	for lot: Dictionary in CityLayout.fillers():
