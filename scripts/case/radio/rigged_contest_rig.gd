@@ -1,5 +1,5 @@
 class_name RiggedContestRig
-extends RadioRig
+extends RadioStationRig
 
 ## The rigged contest (allanamiento-radio.md, "El concurso arreglado"): every contest of the station is won by don
 ## Volumen's cousin Tito. The urn with every slip saying the same name is hidden with the prize nobody got and the
