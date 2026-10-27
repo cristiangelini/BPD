@@ -105,6 +105,9 @@ entre 400 y 600.
    **Hecho (paso 6, dedicatorias en clave):** `CodedDedicationsRig`; la pizarra de dedicatorias está en la pared oeste
    de la recepción, y al aire sale una dedicatoria rarísima cada 60 s (propuesta), tres por turno. Capturas
    `radio/paso6-dedicatorias-*.png`.
+   **Hecho (paso 6, ranking trucho):** `FakeChartRig`; el ranking de la semana que viene cuelga a la derecha del de esta
+   semana, y al aire vuelve a sonar el mismo tema cada 120 s (propuesta). Con esto están las 6 historias. Capturas
+   `radio/paso6-ranking-*.png`.
 7. "Jugar" suma la radio al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online (don Volumen, doña Rosa, el teléfono, la luz "AL AIRE" y lo frágil en todas las PC).
 

@@ -93,6 +93,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_LISTENER_LIST", "OBJ_EXTRA_DELIVERY_CLOCK"],
 		"rig": preload("res://scripts/case/radio/coded_dedications_rig.gd"),
 	},
+	"fake_chart": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_FAKE_CHART_B", "BRIEF_FAKE_CHART_C", "BRIEF_FAKE_CHART_D"],
+		"find": "OBJ_FIND_BRIBE_ENVELOPES",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/bribe_envelopes.tscn"),
+			preload("res://scenes/props/cardboard_gold.tscn"), preload("res://scenes/props/next_ranking.tscn")],
+		"half_heights": [0.14, 0.205, 0.01],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_CARDBOARD_GOLD", "OBJ_EXTRA_NEXT_RANKING"],
+		"rig": preload("res://scripts/case/radio/fake_chart_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the reception's floor, in the studio, the control room, the kitchen and the
 ## storage room.
