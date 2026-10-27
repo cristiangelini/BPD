@@ -206,3 +206,8 @@ señora y la limusina.
    Agarrado, el sobrino va al interrogatorio como "un sobrino de la señora Monedero". Capturas en `gato/`:
    `paso6-limusina.png` y `paso6-ovillos.png`.
 7. El sorteo de "Jugar" y el online.
+
+   Hecho así: "Jugar" sortea la casona entre las escenas del crimen, una de cada cinco **(propuesta)**. En línea, la
+   casona de los invitados copia la del anfitrión: el gorro y las mangas de cada sobrino, Don Plumas (con galleta o
+   asustado), la paciencia de la señora, los jarrones rotos y dónde está cada gata (en los invitados las gatas no
+   caminan solas: van adonde están las del anfitrión).

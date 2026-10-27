@@ -37,6 +37,8 @@ var hide_spots: Array[Vector3] = []
 ## The crate she is in, if any.
 var crate: TransportCrate
 var purring := false
+## Online, on a guest: she goes where the host's cat is (CatMansion.apply_net_state) instead of walking on her own.
+var follower := false
 var _held_for := 0.0
 var _hiding_left := 0.0
 var _target := Vector3.INF
@@ -143,7 +145,7 @@ func _physics_process(delta: float) -> void:
 		say("CAT_PURR")
 	elif _bubble.text == "CAT_PURR":
 		_bubble.hide()
-	if crate or shut_in or home:
+	if crate or shut_in or home or follower:
 		return
 	if is_held():
 		_held_for += delta

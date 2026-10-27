@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Cat crime scene, step 7: Play draws the Monedero mansion among the crime scenes (a fifth each), and online the guests' mansion follows the host's nephews, Don Plumas, the señora's patience, the broken vases and the cats.
 - Cat crime scene, step 6 (ending): the culprit who runs off goes in his aunt's golden limousine, long and slow to turn, throwing a ball of yarn out of the window every 5 s; the patrol car that runs one over is held at half its speed for 2 s, and the nephew is interrogated as one.
 - Cat crime scene, step 5 (vases and tea): the eight porcelain vases break when they fall or are hit hard (-15 patience, 50 off the salary, a hint to every cop); the kitchen teapot pours a cup at a time, and a cup carried to the señora gives back 10 patience once.
 - Cat crime scene, step 5 (witness and patience): Don Plumas repeats the culprit's catchphrase after a cracker and gets scared by shouts or things thrown near him; Señora Ofelia's patience bar drops with the armchair, the wrong cat, a wrongly cuffed nephew and shouting, the comisario calls (and fines 50) below 75, 50 and 25, and at 0 she throws the cops out.
