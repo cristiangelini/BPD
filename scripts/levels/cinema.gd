@@ -54,6 +54,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_RECYCLE_BROOM", "OBJ_EXTRA_FRESH_SIGN"],
 		"rig": preload("res://scripts/case/cinema/floor_popcorn_rig.gd"),
 	},
+	"haunted_cinema": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_HAUNTED_CINEMA_B", "BRIEF_HAUNTED_CINEMA_C", "BRIEF_HAUNTED_CINEMA_D"],
+		"find": "OBJ_FIND_GHOST_PROJECTOR",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/ghost_projector.tscn"), preload("res://scenes/props/holey_sheet.tscn"),
+			preload("res://scenes/props/scream_disc.tscn")],
+		"half_heights": [0.12, 0.04, 0.015],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_HOLEY_SHEET", "OBJ_EXTRA_SCREAM_DISC"],
+		"rig": preload("res://scripts/case/cinema/haunted_cinema_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the hall's carpet, in front of the screen and along the theater's back.
 const NOTE_PLACES: Array[Vector3] = [

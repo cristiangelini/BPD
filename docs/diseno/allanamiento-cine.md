@@ -133,3 +133,8 @@ suman entre 400 y 600.
   un pote de palomitas (`CounterPopcorn`): E prueba una, el policía la escupe con un globito ("¡Puaj! ¡Esta ya la comió
   alguien!") cada vez, y la primera vez es la pista propia (pelusa y un chicle). Capturas `paso6-palomitas.png` y
   `paso6-bolsa.png`.
+- **Paso 6b (el cine embrujado):** el proyector de fantasmas (3 kg, $1000) con la sábana con agujeros ($300) y el disco
+  de gritos ($200). Cada 30 s de película (no con la pantalla en blanco) un fantasma cruza la pantalla en 4 s y todos los
+  espectadores gritan "¡Aaaah!". Detrás de la pantalla, en la punta este, un parlante hace "uuuuh..." (se lee a través de
+  las paredes, es un sonido): acercarse a menos de 2 m da la pista propia, una vez. Capturas `paso6-fantasma.png`,
+  `paso6-parlante.png` y los modelos de las historias en `paso6-modelos.png`.

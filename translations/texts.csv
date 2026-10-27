@@ -5700,3 +5700,14 @@ PROMPT_EAT_POPCORN,E: probar una palomita,E: try a piece of popcorn,E: provar um
 HINT_FLOOR_POPCORN,"Esta palomita tiene pelusa... y un chicle pegado.","This popcorn has fluff on it... and a gum stuck to it.","Esta pipoca tem fiapo... e um chiclete grudado."
 CLUE_FLOOR_POPCORN,"Las palomitas del mostrador tienen pelusa y un chicle: no salieron de la máquina, salieron del piso.","The counter's popcorn has fluff and a gum: it didn't come out of the machine, it came off the floor.","A pipoca do balcão tem fiapo e um chiclete: não saiu da máquina, saiu do chão."
 CINEMA_SPIT,"¡Puaj! ¡Esta ya la comió alguien!","Yuck! Somebody already ate this one!","Eca! Alguém já comeu esta!"
+BRIEF_HAUNTED_CINEMA_B,"Doña Bobina inventó un fantasma para vender «funciones de terror» al doble de precio.","Doña Bobina made up a ghost to sell «horror screenings» at twice the price.","A dona Bobina inventou um fantasma para vender «sessões de terror» pelo dobro do preço."
+BRIEF_HAUNTED_CINEMA_C,"Traigan el proyector de fantasmas en el baúl del patrullero. Pesa 3 kilos y no lo prendan adentro.","Bring the ghost projector in the patrol car's trunk. It weighs 3 kilos and don't switch it on in there.","Tragam o projetor de fantasmas no porta-malas da viatura. Pesa 3 quilos e não liguem lá dentro."
+BRIEF_HAUNTED_CINEMA_D,"Si encuentran la sábana con agujeros o el disco de gritos, mejor: todo suma.","If you find the sheet with holes or the record of screams, even better: it all counts.","Se acharem o lençol com furos ou o disco de gritos, melhor: tudo conta."
+OBJ_FIND_GHOST_PROJECTOR,Llevarse el proyector de fantasmas,Take the ghost projector,Levar o projetor de fantasmas
+OBJ_EXTRA_HOLEY_SHEET,Extra: la sábana con agujeros,Extra: the sheet with holes,Extra: o lençol com furos
+OBJ_EXTRA_SCREAM_DISC,Extra: el disco de gritos,Extra: the record of screams,Extra: o disco de gritos
+CHICHO_CLUE_haunted_cinema,"(susurrando) «Vi a doña Bobina esconder algo %s. Y el fantasma pasa siempre a la misma hora, como el colectivo.»","(whispering) “I saw doña Bobina hide something %s. And the ghost always shows up at the same time, like the bus.”","(sussurrando) “Vi a dona Bobina esconder algo %s. E o fantasma passa sempre na mesma hora, como o ônibus.”"
+HINT_GHOST_SPEAKER,"Detrás de la pantalla, un parlante hace «uuuuh». El fantasma viene con cable.","Behind the screen, a speaker goes «oooooh». The ghost comes with a cable.","Atrás da tela, um alto-falante faz «uuuuh». O fantasma vem com fio."
+CLUE_GHOST_SPEAKER,"Detrás de la pantalla hay un parlante que hace «uuuuh»: el fantasma es de mentira.","Behind the screen there's a speaker going «oooooh»: the ghost is fake.","Atrás da tela tem um alto-falante que faz «uuuuh»: o fantasma é de mentira."
+CINEMA_GHOST_OOH,uuuuuh...,oooooh...,uuuuuh...
+CINEMA_SCREAM,¡Aaaah!,Aaaah!,Aaaah!
