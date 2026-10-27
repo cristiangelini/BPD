@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Planetarium crime scene, step 6a: the clues. Prints on the display case (polished at 240 s), the glowing moon-boot print in the dome room (only in the dark), the hair by the helmet in the control room (the robot vacuum at 180 s), the bitten astronaut ice cream in the kids' rocket (a school visit at 240 s), the photo booth's 3 a.m. photo with the culprit's planet pin, and the glow paint on the gloves.
 - Planetarium crime scene, step 5b: sitting in a plain seat during the star show gives Doctor Órbita back 10 of his patience, but the cop can't get up for 10 s.
 - Planetarium crime scene, step 5a: the star show. Every 2 minutes at the scene the lights go out for 30 s; the ceiling's stars and the glow paint shine, and the guides swap places in the dark. A flashlight on inside stops the show and costs Doctor Órbita 10 of his patience; at 0 he throws the cops out of the dome room.
 - Planetarium crime scene, step 4: El Pedrusco hidden with the seed in one of nine spots (Saturn's crank, the six planet seats, the moon-rock basket and the kids' rocket), searched with E in 5 s; the projector's console log tells the planet the show was paused on; back in its display case it adds 100 to the salary.

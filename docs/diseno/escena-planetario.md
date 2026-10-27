@@ -186,5 +186,17 @@ Mientras tanto se avanza con lo recomendado.
    - Con las luces prendidas no pasa nada, porque no hay nada que mirar.
    - Captura: `planetario/paso5b-butaca.png`.
 6. Las pistas y la testigo.
+   **Hecho así (6a):** `PlanetariumClues` pone las pistas cuando llega el caso.
+   - **Huellas:** en el vidrio de la vitrina (`EmptyFrame`). El doctor Órbita la lustra a los 240 s.
+   - **Pisada que brilla** (`GlowPrint`): en la sala del domo, apuntando hacia el escondite. Solo se ve, se fotografía
+     y se borra a oscuras.
+   - **Pelo:** junto al casco olvidado en la silla de la sala de control. La aspiradora robot se lo traga a los 180 s.
+   - **Helado de astronauta mordido:** aparece al buscar en el cohete. La visita escolar se lo come a los 240 s.
+   - **La cabina de fotos** (`PhotoBooth`): E en la bandeja muestra la foto de las 3 con el prendedor del culpable. E
+     en la cabina saca otra foto y la tapa.
+   - **La pintura que brilla:** cuenta como pista al ver la de cualquier guía que la tenga.
+   - El taburete con las bolsas de evidencia está junto a la puerta.
+   - Capturas: `planetario/paso6-pisada.png`, `paso6-cabina.png` y `paso6-casco.png`.
+   - **Falta (6b):** Doña Nebulosa y el café.
 7. El final: tablero, cansancio, sueldo y la combi con los planetas inflables.
 8. El sorteo de "Jugar" y el online.

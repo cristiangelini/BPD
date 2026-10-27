@@ -134,6 +134,9 @@ func _take_off_helmet() -> void:
 func look_at_gloves() -> void:
 	say("GUIDE_GLOW" if traits.glow else "GUIDE_NO_GLOW")
 	_file("glow")
+	# The culprit ran off through the freshly painted stars: seeing the paint on anyone tells it's a clue.
+	if traits.glow and case:
+		case.found("glow")
 
 
 ## Lights out or back on: the glow paint on both gloves shows only in the dark.

@@ -628,6 +628,8 @@ func clue_line(kind: String) -> String:
 		return _museum_clue_line(kind)
 	if texts() == VARIANTS.hotel:
 		return _hotel_clue_line(kind)
+	if texts() == VARIANTS.planetarium:
+		return _planetarium_clue_line(kind)
 	match kind:
 		"footprint":
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
@@ -679,6 +681,22 @@ func _museum_clue_line(kind: String) -> String:
 			return tr("CLUE_MUSEUM_alibi") % museum.bathroom_details.map(func(detail: String) -> String:
 				return tr("ALIBI_SHORT_" + detail))
 	return tr("CLUE_MUSEUM_" + kind)
+
+
+## At the planetarium: the glowing moon boot in the dome room, the hair by the helmet, the ice cream in the rocket, the
+## glow paint, the booth's photo and Doña Nebulosa.
+func _planetarium_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_PLANETARIUM_footprint") % who.shoe
+		"hair":
+			return tr("CLUE_PLANETARIUM_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_PLANETARIUM_bite") % tr("TEETH_" + str(who.teeth))
+		"booth", "witness":
+			return tr("CLUE_PLANETARIUM_" + kind) % tr("PLANET_" + str(who.planet))
+	return tr("CLUE_PLANETARIUM_" + kind)
 
 
 ## At the hotel: the bare footprint on the bathroom's mat, the hair and the bonbon on the pillow, Tito and the guest book.
