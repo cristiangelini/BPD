@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Farm raid, step 4: eight hens peck around the yard on spots drawn with the seed; a cop who runs into one trips, one who runs close scares it off flapping (Don Florencio adds 5 to the complaint if he sees it), and they can be carried like anything of 2 kg. Pancho, the farmer's nephew, waits by the hen house and only tells what he saw once three hens are back in its run.
 - Farm raid, step 3: Don Florencio walks his round (porch, hen house, barn, pigsty, garden, egg stall) and fills the complaint like the other owners; E on the porch's feeding bell sends him to feed the animals by the corral for 15 s with his back to the farm (once every 45 s), and meanwhile a cop can take the tool shed's key from his apron.
 - Farm raid, step 2: the farm "Las Margaritas" fills the city's south-east corner block (8, 5): a wooden fence with its gate to the street, Don Florencio's house with its porch and the feeding bell, the red barn with its bales and loft, the tractor, the hen house, the pigsty with mud a running cop slips in, the cow's corral and feeder, the locked tool shed, the garden with the scarecrow and a glass greenhouse, the well and the egg stall, and 12 hiding spots. "Granja (allanamiento, prueba)" in the menu and --place=farm_raid.
 - Farm raid, models: placeholder models for Don Florencio the farmer, his nephew Pancho, a hen, the goat Tota, a pig, the cow Margarita, the tractor, the scarecrow, a hay bale, the hen house, the well, the feeding bell and a basket of eggs (allanamiento-granja.md, decision 380).

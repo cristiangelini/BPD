@@ -5612,3 +5612,13 @@ FARMER_SAW,"¡Eso no se toca, que lo ensucian!","Don't touch that, you'll get it
 FARMER_NOTHING,"Yo solo vendo huevos, oficial. Y leche. Y zanahorias.","I just sell eggs, officer. And milk. And carrots.","Eu só vendo ovos, policial. E leite. E cenouras."
 FARMER_OFFENDED,"No hablo más. Me voy a ordeñar.","I'm done talking. I'm off to milk the cow.","Não falo mais. Vou ordenhar."
 FARMER_LAWYER,"¡Llamo a mi abogado! ¡Y a la cooperativa!","I'm calling my lawyer! And the co-op!","Vou ligar para o meu advogado! E para a cooperativa!"
+HEN_CLUCK,¡Cocorocó!,Bawk bawk!,Cocoricó!
+PROMPT_HEN,Clic: agarrar la gallina,Click: grab the hen,Clique: pegar a galinha
+HINT_TRIPPED_HEN,"¡Una gallina entre las piernas! Tropezaste.","A hen between your legs! You tripped.","Uma galinha entre as pernas! Você tropeçou."
+FARMER_SCARED,"¡Despacio, que me asustan a los animales! ¡Después no ponen!","Slow down, you're scaring my animals! Then they won't lay!","Devagar, vocês assustam os bichos! Depois eles não botam!"
+PROMPT_PANCHO,E: hablar con Pancho,E: talk to Pancho,E: falar com o Pancho
+PANCHO_HENS,"Se me escaparon gallinas. Si me traes %d al corralito del gallinero, te cuento algo.","Some hens got out. Bring %d to the hen house's run and I'll tell you something.","Umas galinhas fugiram. Se trouxer %d para o cercadinho do galinheiro, eu te conto uma coisa."
+PANCHO_NOTHING,"¡Gracias! Pero no vi nada raro. Bueno, el tío habla con la vaca, pero eso es normal.","Thanks! But I didn't see anything odd. Well, my uncle talks to the cow, but that's normal.","Valeu! Mas não vi nada estranho. Bom, o tio conversa com a vaca, mas isso é normal."
+PANCHO_IDLE_1,"Treinta y uno, treinta y dos… ¿Dónde se metió la colorada?","Thirty-one, thirty-two… Where did the red one go?","Trinta e um, trinta e dois… Cadê a vermelha?"
+PANCHO_IDLE_2,"Si el tío pregunta, yo no los dejé entrar.","If my uncle asks, I didn't let you in.","Se o tio perguntar, eu não deixei vocês entrarem."
+PANCHO_IDLE_3,"Las gallinas no se agarran así, oficial. Bueno, sí, así.","That's not how you hold a hen, officer. Well, yes, like that.","Não é assim que se pega galinha, policial. Bom, é sim, assim."
