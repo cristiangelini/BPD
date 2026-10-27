@@ -78,6 +78,8 @@ const SUSPECT_MODELS := {
 	"owner_clown": "res://assets/models/npc_payaso.glb",
 	# The museum's culprit (escena-museo.md), accused at the board.
 	"owner_guard": "res://assets/models/npc_guardia_museo.glb",
+	# The train's culprit (escena-tren.md), caught on the roofs or giving up.
+	"owner_magician": "res://assets/models/npc_mago.glb",
 	# The infiltrations' bosses, cuffed or caught (infiltracion.md, infiltracion-coro.md).
 	"owner_chela": "res://assets/models/npc_chela.glb",
 	"owner_ernesto": "res://assets/models/npc_ernesto.glb",

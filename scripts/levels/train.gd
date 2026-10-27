@@ -50,6 +50,8 @@ const BRAKE_AT := Vector3(22.8, 0, 0.9)
 const BRAKE_SECONDS := 60.0
 const BRAKE_FINE := 100
 const BRAKE_PULLS := 2
+## The ladder up to the roof in each car, by its front door.
+const LADDER_Z := 1.3
 ## Where the people stand: each magician in front of his seat, facing the aisle; don Silbato at the brake, Picadora
 ## by the ticket machine and señor Mostaza behind his cart.
 const IN_FRONT_OF_SEAT := Vector3(0.75, 0, 0)
@@ -119,6 +121,8 @@ var ticket_machine: TrainTicketMachine
 var brake: TrainBrake
 var brake_pulls := 0
 var brake_left := 0.0
+## The culprit's getaway along the roofs, once he runs off (step 5).
+var roof_chase: TrainRoofChase
 var _cars: Node3D
 var _build: PlaceBuilder
 
@@ -192,6 +196,16 @@ func pull_brake() -> void:
 	inspector.offend()
 
 
+## Rightly accused and running off: the magician goes out his window and along the roofs (TrainRoofChase); the case
+## hears how it ends.
+func run_off(index: int) -> bool:
+	if roof_chase:
+		return true
+	roof_chase = TrainRoofChase.begin(self, magicians[index])
+	roof_chase.ended.connect(case.end_chase)
+	return true
+
+
 func has_ticket(cop: Cop) -> bool:
 	return tickets.has(str(cop.name))
 
@@ -236,7 +250,8 @@ func reveal_loot() -> void:
 ## In the dark the six swap seats (the order drawn with the seed and the leg), and the culprit peels his sticker
 ## off the first time he can. A guest's train follows the host's (step 6).
 func _into_tunnel() -> void:
-	if case and case.follower:
+	# Online the host shuffles; and once the culprit is up on the roofs, nobody sits anymore.
+	if (case and case.follower) or roof_chase:
 		return
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(["train tunnel", case_seed, ride.leg()])
@@ -366,6 +381,11 @@ func _car(span: Vector2, car: String) -> void:
 		label.rotation.y = PI / 2 if end < (span.x + span.y) / 2 else -PI / 2
 		_cars.add_child(label)
 		signs.append(label)
+	var ladder := TrainLadder.new()
+	ladder.name = "Ladder_" + car
+	ladder.train = self
+	ladder.position = Vector3(span.y - 0.4, 0, LADDER_Z)
+	_cars.add_child(ladder)
 	if car != "engine":
 		_build.slab(span.y, span.y + 1.0, -GameScale.DOOR_WIDTH / 2, GameScale.DOOR_WIDTH / 2, 0.0, DARK)
 		for z: float in [-GameScale.DOOR_WIDTH / 2, GameScale.DOOR_WIDTH / 2]:
