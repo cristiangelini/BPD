@@ -7,8 +7,8 @@ import { Builder, mat, ellipsoid, V, THREE } from '../lib.js';
 import { pearBody, eyes } from './pear.js';
 
 // A speaker 1.0 m wide, 1.8 m tall and 0.8 m deep, its front to +Z: black box, two woofers and a tweeter.
-export function buildStageSpeaker() {
-	const b = new Builder('stage_speaker');
+function speaker(name) {
+	const b = new Builder(name);
 	b.add('box', mat('speaker_black', 0x1c1d22), new THREE.BoxGeometry(1.0, 1.8, 0.8), { pos: V(0, 0.9, 0) });
 	const cone = mat('speaker_cone', 0x3a3c44), rim = mat('speaker_rim', 0xc8ccd2, { metalness: 0.6, roughness: 0.3 });
 	for (const y of [0.5, 1.1]) {
@@ -16,7 +16,11 @@ export function buildStageSpeaker() {
 		b.add('cone', cone, new THREE.CylinderGeometry(0.32, 0.1, 0.06, 16), { pos: V(0, y, 0.42), rot: [Math.PI / 2, 0, 0] });
 	}
 	b.add('tweeter', rim, new THREE.CylinderGeometry(0.1, 0.1, 0.04, 12), { pos: V(0, 1.55, 0.41), rot: [Math.PI / 2, 0, 0] });
-	return b.build();
+	return b;
+}
+
+export function buildStageSpeaker() {
+	return speaker('stage_speaker').build();
 }
 
 // The lyrics screen, 5 m wide and 2.4 m tall: dark frame, blue screen and three lines of white "words".
@@ -315,6 +319,36 @@ export function buildGoodsReceipt() {
 	return b.build();
 }
 
+// The giant speaker full of smuggled watches: the stage speaker, with a gold watch strap caught in its bottom seam.
+export function buildWatchSpeaker() {
+	const b = speaker('karaoke_watch_speaker');
+	const gold = mat('watch_gold', 0xf2c230, { metalness: 0.7, roughness: 0.25 });
+	b.add('strap', gold, new THREE.BoxGeometry(0.03, 0.12, 0.01), { pos: V(0.3, 0.06, 0.405) });
+	b.add('face', mat('watch_face', 0xf6f2e2), new THREE.CylinderGeometry(0.025, 0.025, 0.01, 12), { pos: V(0.3, 0.13, 0.41), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
+// A fake gold watch, its strap open, lying on its back.
+export function buildFakeWatch() {
+	const b = new Builder('karaoke_fake_watch');
+	const gold = mat('fake_gold', 0xf2c230, { metalness: 0.7, roughness: 0.25 });
+	b.add('strap', gold, new THREE.BoxGeometry(0.03, 0.008, 0.2), { pos: V(0, 0.004, 0) });
+	b.add('case', gold, new THREE.CylinderGeometry(0.025, 0.025, 0.014, 14), { pos: V(0, 0.011, 0) });
+	b.add('face', mat('fake_face', 0xf6f2e2), new THREE.CylinderGeometry(0.02, 0.02, 0.002, 14), { pos: V(0, 0.019, 0) });
+	b.add('hand', mat('fake_hand', 0x24242a), new THREE.BoxGeometry(0.002, 0.002, 0.016), { pos: V(0, 0.021, -0.006) });
+	return b.build();
+}
+
+// The ship's invoice: a blue sheet with a little ship stamped on it.
+export function buildShipInvoice() {
+	const b = new Builder('karaoke_ship_invoice');
+	b.add('paper', mat('invoice_blue', 0xc8dcf2), new THREE.BoxGeometry(0.21, 0.006, 0.28), { pos: V(0, 0.003, 0) });
+	for (let i = 0; i < 7; i++) b.add('lines', mat('invoice_ink', 0x2a2a40), new THREE.BoxGeometry(0.15, 0.002, 0.008), { pos: V(-0.01, 0.007, -0.06 + i * 0.024) });
+	b.add('hull', mat('invoice_ship', 0x3a6ad2), new THREE.BoxGeometry(0.07, 0.002, 0.02), { pos: V(0, 0.007, -0.1) });
+	b.add('funnel', mat('invoice_red', 0xd83a30), new THREE.BoxGeometry(0.015, 0.002, 0.02), { pos: V(0.01, 0.007, -0.12) });
+	return b.build();
+}
+
 export const models = {
 	stage_speaker: buildStageSpeaker, lyrics_screen: buildLyricsScreen, sound_console: buildSoundConsole,
 	karaoke_bar: buildKaraokeBar, ice_machine: buildIceMachine, karaoke_table: buildKaraokeTable,
@@ -325,6 +359,7 @@ export const models = {
 	karaoke_winners_list: buildWinnersList, ceiling_speaker: buildCeilingSpeaker, nephew_frame: buildNephewFrame,
 	karaoke_golden_mic: buildGoldenMic, karaoke_tuner_chip: buildTunerChip, karaoke_diva_manual: buildDivaManual,
 	karaoke_lyrics_pc: buildLyricsPc, karaoke_code_notebook: buildCodeNotebook, karaoke_goods_receipt: buildGoodsReceipt,
+	karaoke_watch_speaker: buildWatchSpeaker, karaoke_fake_watch: buildFakeWatch, karaoke_ship_invoice: buildShipInvoice,
 };
 
 export const views = {
@@ -353,5 +388,8 @@ export const views = {
 	},	karaoke_lyrics: {
 		items: [{ name: 'karaoke_lyrics_pc', pos: [-0.3, 0, 0], rotY: 0.4 }, { name: 'karaoke_code_notebook', pos: [0.15, 0, 0.1] }, { name: 'karaoke_goods_receipt', pos: [0.4, 0, 0], rotY: 0.3 }],
 		cam: { pos: [0, 0.7, 1.4], target: [0, 0.15, 0], fov: 40 },
+	},	karaoke_watches: {
+		items: [{ name: 'karaoke_watch_speaker', pos: [-0.6, 0, 0] }, { name: 'karaoke_fake_watch', pos: [0.3, 0, 0.3] }, { name: 'karaoke_ship_invoice', pos: [0.7, 0, 0.2], rotY: 0.3 }],
+		cam: { pos: [0.2, 1.4, 3.2], target: [0.1, 0.6, 0], fov: 40 },
 	},
 };
