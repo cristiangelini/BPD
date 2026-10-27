@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Karaoke raid, step 6a: the tuning microphone story: a booth microphone makes the cop holding it sing perfectly (golden notes, the clue once), Rosaura is off key in a duet, and the golden microphone, the spare tuner chip and the diva's manual are hidden.
 - Karaoke raid, step 5: the karaoke is a raid case (three suspicions, clue notes, hidden items drawn with the seed, Rosaura's slips and Toto's clue) with its first story, the applause machine: recorded applause plays from a ceiling speaker while a customer sings, and a cop under it notices where it comes from.
 - Karaoke raid, step 4: Toto, the sound guy, hears nothing with his headphones on; E on the console turns the music down for 10 s, he tells each cop once what he saw (the clue only the first time), and every customer complains once about the missing music.
 - Karaoke raid, step 3: Rosaura la Diva, the owner, walks her round up onto the stage; a cop on the stage with microphone 2 calls her to a 15 s duet facing the lyrics screen (every 45 s, the third one gives the cops away), and the customers' complaints, the screen and the disco ball reach her complaint.

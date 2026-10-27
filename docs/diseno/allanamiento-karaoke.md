@@ -149,6 +149,11 @@ suman entre 400 y 600.
      aplausos (300) y la lista de ganadores (200). Las multas van al caso y, si Rosaura llama al abogado, se pierde.
      Capturas: `paso5-aplausos.png`, `paso5-cuadro.png`.
 6. Las otras 5 historias.
+   - **Cómo quedó el micrófono afinador (propuesta):** uno de los micrófonos de las cabinas (sacado con la semilla)
+     tiene el afinador de repuesto: el policía que lo agarra "canta" perfecto, con notas doradas arriba del micrófono,
+     y la primera vez es la pista. En un dueto, Rosaura desafina cada 3 s porque el micrófono 2 no es el suyo. Se
+     esconden el micrófono dorado (1 kg, 1000), el chip afinador (300) y el manual de la diva (200). Captura:
+     `paso6a-afinador.png`.
 7. "Jugar" suma el karaoke al sorteo de allanamientos, y la huida de Rosaura.
 8. El online (Rosaura, Toto, los clientes, los micrófonos y lo frágil en todas las PC).
 
