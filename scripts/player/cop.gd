@@ -189,6 +189,7 @@ func current_prompt() -> String:
 				or (aimed is CellDoor and $Grabber.held is CellKey) \
 				or (aimed is QueueCar and $Grabber.held is Breathalyzer and aimed.breath_check_ready()) \
 				or aimed is BankVine \
+				or (aimed is RagBoy and $Grabber.held is Chamois) \
 				or aimed is CellHeater \
 				or aimed is BedSheet or aimed is SheetRope or aimed is RoofAntenna \
 				or (aimed is CellDoor and ($Grabber.held is CellKey or $Grabber.held is BillWad)):
@@ -569,6 +570,10 @@ func use() -> bool:
 		return true
 	# A donut or a croissant for a hostage at the bank's party (robo-banco-rehenes.md, step 4).
 	if BankHostage.food_of(self) and _usable_target() is BankHostage and (_usable_target() as BankHostage).wants_food():
+		act("use", _usable_target())
+		return true
+	# A dry chamois for Pompita at the car wash (allanamiento-lavadero.md, step 4).
+	if $Grabber.held is Chamois and _usable_target() is RagBoy:
 		act("use", _usable_target())
 		return true
 	# A pupil's card back to them, or a candy for one who cries (politico-escuela.md, step 5).

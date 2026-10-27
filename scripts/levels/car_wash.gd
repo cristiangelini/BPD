@@ -10,7 +10,8 @@ extends Node3D
 ## the boiler, the shampoo drums and the pile of tires) and the owner's office, locked with the till's key. Something
 ## thrown hard at a car's windshield or at the wax shelf breaks it, a fine each. The tunnel at work (WashTunnel, step
 ## 2). Don Chorro walks his round by the tunnel and fills his complaint; the premium wash at the token machine sends the
-## first car through the tunnel and him off to dry it (step 3). Every number here is (propuesta).
+## first car through the tunnel and him off to dry it (step 3). Pompita by the exit talks to whoever brings him a dry
+## chamois from the rag basket (step 4). Every number here is (propuesta).
 
 signal windshield_broken(index: int)
 signal wax_broken
@@ -24,6 +25,7 @@ const VACUUM_MODEL := preload("res://assets/models/vacuum_column.glb")
 const INFLATABLE_MODEL := preload("res://assets/models/inflatable_man.glb")
 const BOILER_MODEL := preload("res://assets/models/carwash_boiler.glb")
 const OWNER_SCENE := preload("res://scenes/npc/carwash_owner.tscn")
+const CHAMOIS_SCENE := preload("res://scenes/props/chamois.tscn")
 const HALF_X := 20.0
 const HALF_Z := 11.0
 const WALL_TOP := 5.5
@@ -78,6 +80,16 @@ const BASKET_AT := Vector3(12.5, FLOOR_TOP, -4.0)
 const BASKET_SIZE := Vector3(0.9, 0.6, 0.6)
 const TOOLBOX_AT := Vector3(17.5, FLOOR_TOP, -0.5)
 const TOOLBOX_SIZE := Vector3(0.6, 0.35, 0.35)
+## The rag basket's button, where a chamois lands in front of it, and how many can be around at once. Pompita by the
+## tunnel's exit, and the puddles that wet a chamois dropped in them (step 4).
+const CHAMOIS_BUTTON_AT := BASKET_AT + Vector3(0.3, BASKET_SIZE.y + 0.04, BASKET_SIZE.z / 2)
+const CHAMOIS_AT := BASKET_AT + Vector3(-0.2, 0.12, BASKET_SIZE.z / 2 + 0.35)
+const MAX_CHAMOIS := 3
+const POMPITA_AT := Vector3(17.0, FLOOR_TOP, 2.2)
+const PUDDLES: Array[Vector3] = [Vector3(10.5, FLOOR_TOP, -2.2), Vector3(15.5, FLOOR_TOP, 2.6),
+	Vector3(-6.0, FLOOR_TOP, 4.2)]
+const PUDDLE_RADIUS := 0.9
+const PUDDLE := Color(0.45, 0.65, 0.85, 0.6)
 ## The back wall with its doors, the wall between the storeroom and the office, and what's in the storeroom.
 const BACK_Z := -5.0
 const STORE_DOOR_X := -10.0
@@ -153,6 +165,10 @@ var owner_npc: FloorBoss
 var complaint_bar: ProgressBar
 ## The cops he already scolded for going through the tunnel (id -> true).
 var tunnel_seen := {}
+## The rag basket's chamois button and Pompita, the gossip (step 4).
+var chamois_button: PushButton
+var pompita: RagBoy
+var chamois: Array[Chamois] = []
 var _tunnel_check := 0.0
 var cars: Array[AnimatableBody3D] = []
 var windshields: Array[MeshInstance3D] = []
@@ -280,6 +296,9 @@ func _build_tunnel() -> void:
 	tunnel_button.position = TUNNEL_BUTTON_AT
 	add_child(tunnel_button)
 	tunnel_button.pressed.connect(func(_cop: Cop) -> void: tunnel.start())
+	tunnel.soaked.connect(func(body: Node3D) -> void:
+		if body is Chamois:
+			(body as Chamois).soak())
 
 
 ## The two customers' cars waiting in line, facing the tunnel; the second one with its trunk open (a box you can put
@@ -372,6 +391,31 @@ func _build_drying() -> void:
 		_build.mesh_box(Vector3(LINE_XS[0] + 0.7 + i * 0.8, FLOOR_TOP + 1.65, LINE_Z), Vector3(0.5, 0.6, 0.02),
 			TOWELS[i % TOWELS.size()])
 	_build.open_box(BASKET_AT, BASKET_SIZE, "top", WOOD.lightened(0.3))
+	chamois_button = PushButton.new()
+	chamois_button.prompt = "PROMPT_CARWASH_CHAMOIS"
+	chamois_button.color = Chamois.DRY
+	chamois_button.position = CHAMOIS_BUTTON_AT
+	add_child(chamois_button)
+	chamois_button.pressed.connect(take_chamois)
+	pompita = RagBoy.new()
+	pompita.name = "Pompita"
+	pompita.position = POMPITA_AT
+	pompita.rotation.y = -PI / 2
+	add_child(pompita)
+	for at in PUDDLES:
+		var puddle := CylinderMesh.new()
+		puddle.top_radius = PUDDLE_RADIUS
+		puddle.bottom_radius = PUDDLE_RADIUS
+		puddle.height = 0.01
+		var look := MeshInstance3D.new()
+		look.mesh = puddle
+		look.material_override = _glass(PUDDLE)
+		look.position = at + Vector3(0, 0.006, 0)
+		$Built.add_child(look)
+		var wet := _area(at + Vector3(0, 0.15, 0), Vector3(PUDDLE_RADIUS * 1.6, 0.3, PUDDLE_RADIUS * 1.6))
+		wet.body_entered.connect(func(hit: Node3D) -> void:
+			if hit is Chamois:
+				(hit as Chamois).soak())
 	_build.open_box(TOOLBOX_AT, TOOLBOX_SIZE, "top", Color(0.8, 0.2, 0.2))
 
 
@@ -467,6 +511,27 @@ func _physics_process(delta: float) -> void:
 			continue
 		if owner_npc.saw(cop.global_position + Vector3.UP, SAW_TUNNEL, "CHORRO_TUNNEL"):
 			tunnel_seen[cop.get_instance_id()] = true
+
+
+## The rag basket gives a dry chamois in front of it, if there aren't MAX_CHAMOIS around already (online, the host's
+## is the one everyone sees: PropSync).
+func take_chamois(cop: Cop = null) -> Chamois:
+	var left: Array[Chamois] = []
+	for cloth: Variant in chamois:
+		if is_instance_valid(cloth) and not (cloth as Chamois).is_queued_for_deletion():
+			left.append(cloth)
+	chamois = left
+	if chamois.size() >= MAX_CHAMOIS:
+		if cop:
+			cop.show_hint("HINT_CARWASH_CHAMOIS_MAX")
+		return null
+	if not multiplayer.is_server():
+		return null
+	var cloth: Chamois = CHAMOIS_SCENE.instantiate()
+	cloth.position = CHAMOIS_AT + Vector3(0.3 * chamois.size(), 0, 0)
+	add_child(cloth)
+	chamois.append(cloth)
+	return cloth
 
 
 ## Breaks the windshield of car `index`, once: a fine, and the glass goes grey and cracked.

@@ -5629,3 +5629,18 @@ CHORRO_CAUGHT_ON,"¿Otro premium? ¿Quién paga todo esto?","Another premium? Wh
 CHORRO_TUNNEL,"¡Eso no se lava así! ¡El túnel es para autos!","That's not how you wash that! The tunnel is for cars!","Não é assim que se lava isso! O túnel é para carros!"
 CHORRO_WET_FLOOR,"¡Eso no se lava así! ¡Mi piso recién mojado!","That's not how you wash that! My freshly wet floor!","Não é assim que se lava isso! Meu chão recém-molhado!"
 PROMPT_CARWASH_PREMIUM,E: pagar el lavado premium,E: pay for the premium wash,E: pagar a lavagem premium
+PROMPT_CARWASH_CHAMOIS,E: sacar una gamuza seca del canasto,E: take a dry chamois from the basket,E: pegar uma camurça seca do cesto
+HINT_CARWASH_CHAMOIS_MAX,"Ya hay tres gamuzas afuera. Usa una de esas.","There are already three chamois out. Use one of those.","Já tem três camurças fora. Use uma dessas."
+PROMPT_CARWASH_CHAMOIS_HELD,"Una gamuza seca. Que no se moje.","A dry chamois. Don't get it wet.","Uma camurça seca. Não deixe molhar."
+CARWASH_CHAMOIS_WET,¡Plaf! Empapada.,Splat! Soaked.,Plaft! Encharcada.
+PROMPT_POMPITA,E: hablar con Pompita,E: talk to Pompita,E: falar com o Pompita
+PROMPT_POMPITA_CHAMOIS,E: darle la gamuza seca a Pompita,E: give Pompita the dry chamois,E: dar a camurça seca ao Pompita
+POMPITA_RULES,"Todos mis trapos están empapados... Si alguien me trajera una gamuza seca, le contaría cosas...","All my rags are soaked... If someone brought me a dry chamois, I'd tell them things...","Todos os meus panos estão encharcados... Se alguém me trouxesse uma camurça seca, eu contaria umas coisas..."
+POMPITA_AGAIN,"Ya te conté todo. Pero otra gamuza seca no te la rechazo.","I already told you everything. But I won't say no to another dry chamois.","Já te contei tudo. Mas outra camurça seca eu não recuso."
+POMPITA_WON,"¡Seca, sequita! Gracias. Te cuento algo:","Dry, nice and dry! Thanks. Here's something:","Seca, sequinha! Obrigado. Vou te contar uma coisa:"
+POMPITA_NOTHING,"¡Seca, sequita! Gracias... pero no vi nada raro. Solo espuma.","Dry, nice and dry! Thanks... but I didn't see anything weird. Just foam.","Seca, sequinha! Obrigado... mas não vi nada estranho. Só espuma."
+POMPITA_WET,"¿Mojada? ¡Para trapos mojados ya tengo los míos!","Wet? I've got plenty of wet rags of my own!","Molhada? Panos molhados eu já tenho os meus!"
+POMPITA_THANKS,"¡Otra! Con esta seco tres autos.","Another one! I can dry three cars with this.","Outra! Com esta eu seco três carros."
+POMPITA_IDLE_1,"Escurro, escurro, y sigue mojado...","I wring it and wring it, and it's still wet...","Torço, torço, e continua molhado..."
+POMPITA_IDLE_2,"Don Chorro dice que con trapo mojado se seca mejor. No le creo.","Don Chorro says you dry better with a wet rag. I don't believe him.","O Don Chorro diz que com pano molhado se seca melhor. Não acredito."
+POMPITA_IDLE_3,"En ese canasto hay gamuzas secas... pero si cruzo el túnel se mojan.","There are dry chamois in that basket... but if I cross the tunnel they get wet.","Naquele cesto tem camurças secas... mas se eu atravesso o túnel elas molham."
