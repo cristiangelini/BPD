@@ -166,6 +166,12 @@ extras suman entre 400 y 600.
    - **Por ahora:** Don Tómbola no se escapa en auto. La huida queda para cuando se sume al sorteo (paso 7).
    - **Capturas:** `parque/paso5-*.png`.
 6. Las otras 5 historias, una por PR.
+   Hecho así:
+   - **Los juegos amañados:** el imán gigante (8 kg, 1000, entre dos) está en el piso al pie del mostrador del puesto
+     de latas, sin sortear. Mientras está ahí, las latas no se caen (así Nube no habla), las pelotas que pasan cerca se
+     van al piso y el mazo del martillo de fuerza se arrastra solo hacia el puesto. Que se arrastre es la pista propia.
+     Si alguien lleva el imán a más de 2,5 m, las latas se aflojan. Las latas pegadas (1 kg, 300) y el manual (0,3 kg,
+     200) van en escondites sorteados. Capturas `parque/paso6a-*.png`.
 7. "Jugar" suma el parque al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online: Don Tómbola, Nube, las latas, la campana y los juegos en todas las PC.
 

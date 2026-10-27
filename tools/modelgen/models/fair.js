@@ -1,7 +1,7 @@
 // Props of the fun fair "La Vuelta Loca" (docs/diseno/allanamiento-parque.md): the carousel and its horses, the
 // Ferris wheel (stand, wheel and cabins apart, so the wheel can turn), the bumper car, the entrance arch, the strength
 // tester and its mallet, the cotton candy cart, the cans booth, the ticket booth, the ghost train's face, its cart, a
-// skeleton, the giant teddy bear, Don Tómbola, Nube and the stuffed prizes' evidence. Origins at the floor in the
+// skeleton, the giant teddy bear, Don Tómbola, Nube and the stories' evidence. Origins at the floor in the
 // middle of each piece, facing +Z. Placeholder, not final art.
 import { Builder, mat, ellipsoid, V, THREE } from '../lib.js';
 import { M, pearBody, eyes, limb } from './pear.js';
@@ -358,6 +358,40 @@ export function buildNeedleThread() {
 	return b.build();
 }
 
+// The rigged games' evidence: a giant red horseshoe magnet with silver tips, lying on its side (8 kg).
+export function buildFairMagnet() {
+	const b = new Builder('fair_magnet');
+	const red = mat('fair_red', RED), tip = mat('magnet_tip', 0xd8dce2, { metalness: 0.7, roughness: 0.3 });
+	b.add('horseshoe', red, new THREE.TorusGeometry(0.2, 0.08, 8, 14, Math.PI), { pos: V(0, 0.08, -0.05), rot: [-Math.PI / 2, 0, 0] });
+	for (const x of [-0.2, 0.2]) {
+		b.add('horseshoe', red, new THREE.CylinderGeometry(0.08, 0.08, 0.2, 10), { pos: V(x, 0.08, 0.05), rot: [Math.PI / 2, 0, 0] });
+		b.add('tips', tip, new THREE.CylinderGeometry(0.081, 0.081, 0.08, 10), { pos: V(x, 0.08, 0.19), rot: [Math.PI / 2, 0, 0] });
+	}
+	return b.build();
+}
+
+// Three cans glued in their pyramid on a board, with drips of white glue.
+export function buildGluedCans() {
+	const b = new Builder('fair_glued_cans');
+	box(b, 'board', mat('fair_wood', 0xc8a070), 0.26, 0.02, 0.14, 0, 0.01, 0);
+	const colors = [0xd83333, 0xf2c032, 0x4088e0];
+	const cans = [[-0.055, 0.09], [0.055, 0.09], [0, 0.23]];
+	cans.forEach(([x, y], i) => b.add('cans', mat(`can_${i}`, colors[i]), new THREE.CylinderGeometry(0.05, 0.05, 0.14, 10), { pos: V(x, y - 0.0, 0) }));
+	const glue = mat('glue_white', 0xf6f6f0);
+	for (const [x, y] of [[0, 0.16], [-0.05, 0.02], [0.06, 0.02], [0.03, 0.16]]) b.add('glue', glue, ellipsoid(0.025, 0.018, 0.025, 6, 4), { pos: V(x, y, 0.04) });
+	return b.build();
+}
+
+// The manual "Cómo no dar premios": a thick book with a red cover and a gold teddy crossed out.
+export function buildRigManual() {
+	const b = new Builder('fair_rig_manual');
+	box(b, 'cover', mat('manual_cover', 0x9a2a2a), 0.17, 0.04, 0.24, 0, 0.02, 0);
+	box(b, 'pages', mat('fair_white', WHITE), 0.16, 0.034, 0.235, 0.006, 0.02, 0);
+	b.add('teddy', mat('fair_gold', GOLD), new THREE.CylinderGeometry(0.03, 0.03, 0.004, 8), { pos: V(0, 0.042, 0) });
+	box(b, 'cross', mat('list_ink', 0x2a2a30), 0.08, 0.003, 0.01, 0, 0.045, 0, [0, 0.7, 0]);
+	return b.build();
+}
+
 export const models = {
 	fair_carousel: buildCarousel, fair_horse: buildFairHorse, ferris_stand: buildFerrisStand, ferris_wheel: buildFerrisWheel,
 	ferris_cabin: buildFerrisCabin, bumper_car: buildBumperCar, fair_arch: buildFairArch, strength_tester: buildStrengthTester,
@@ -365,6 +399,7 @@ export const models = {
 	ticket_booth: buildTicketBooth, ghost_train_face: buildGhostTrainFace, ghost_cart: buildGhostCart,
 	fair_skeleton: buildFairSkeleton, giant_teddy: buildGiantTeddy, npc_don_tombola: buildDonTombola, npc_nube: buildNube,
 	fair_watch_bag: buildWatchBag, fair_client_list: buildClientList, fair_needle_thread: buildNeedleThread,
+	fair_magnet: buildFairMagnet, fair_glued_cans: buildGluedCans, fair_rig_manual: buildRigManual,
 };
 
 export const views = {
@@ -396,5 +431,10 @@ export const views = {
 		items: [{ name: 'fair_watch_bag', pos: [-0.3, 0, 0] }, { name: 'fair_client_list', pos: [0.3, 0, 0.25], rotY: -0.2 },
 			{ name: 'fair_needle_thread', pos: [0.3, 0, -0.2], rotY: 0.5 }],
 		cam: { pos: [0.1, 1.0, 1.6], target: [0, 0.15, 0], fov: 40 },
+	},
+	fair_rigged_games: {
+		items: [{ name: 'fair_magnet', pos: [-0.35, 0, 0] }, { name: 'fair_glued_cans', pos: [0.3, 0, 0.2], rotY: -0.3 },
+			{ name: 'fair_rig_manual', pos: [0.35, 0, -0.25], rotY: 0.4 }],
+		cam: { pos: [0.1, 1.0, 1.7], target: [0, 0.15, 0], fov: 40 },
 	},
 };
