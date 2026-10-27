@@ -10,7 +10,8 @@ extends Node3D
 ## (step 2): a freezer's lid open IceFreezer.MELT_AFTER seconds, or the cold room's door open COLD_MELT_AFTER seconds,
 ## leaves a slippery puddle (IcePuddle) and a fine. Doña Nieve minds the counter and goes to the cold room now and
 ## then, filling the complaint; E on the soft-serve machine jams it and she fights it, her back to everything (step 3).
-## Every number here is (propuesta).
+## Lucho the delivery boy rides up to the door now and then: a cone from the dispenser on the till's desk buys what he
+## saw (step 4). Every number here is (propuesta).
 
 signal case_cracked
 signal penguin_knocked
@@ -85,6 +86,9 @@ const NOTICED := 10.0
 const DOOR_REACH := 2.0
 const SPILL_AT := Vector3(-2.0, FLOOR_TOP, 0.6)
 const SPILL := Vector2(1.6, 1.4)
+## Where Lucho stops by the door, on the sidewalk strip, and where he rides in from and back to.
+const LUCHO_DOOR := Vector3(ENTRANCE_X - 1.6, FLOOR_TOP, 9.3)
+const LUCHO_AWAY := Vector3(-12.0, FLOOR_TOP, 9.3)
 const CASE_FINE := 30
 const PENGUIN_SPEED := 3.0
 ## What melting costs: each freezer, and the whole cold room when its door stays open COLD_MELT_AFTER seconds; the
@@ -143,6 +147,8 @@ var machine: SoftServeMachine
 var nieve: FloorBoss
 var complaint_bar: ProgressBar
 var spilled := false
+var dispenser: ConeDispenser
+var lucho: Lucho
 ## Whether she opened the cold room's door on her way, and whether it was locked then.
 var _nieve_opened := false
 var _was_locked := false
@@ -169,6 +175,10 @@ func _ready() -> void:
 	_build_back()
 	_build_yard()
 	_place_nieve()
+	lucho = Lucho.new()
+	lucho.door = LUCHO_DOOR
+	lucho.away = LUCHO_AWAY
+	add_child(lucho)
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("ice_cream")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -228,9 +238,11 @@ func _build_salon() -> void:
 	till.position = CASHIER_AT + Vector3(-0.3, CASHIER_SIZE.y + Till.SIZE.y / 2, 0)
 	till.key_hint = "HINT_TILL_KEY_ICE"
 	add_child(till)
-	# The scale and the cones' dispenser, only for the look.
+	# The scale, only for the look.
 	_build.mesh_box(CASHIER_AT + Vector3(0.3, CASHIER_SIZE.y + 0.05, 0.1), Vector3(0.3, 0.1, 0.3), STEEL)
-	_build.mesh_box(CASHIER_AT + Vector3(0.45, CASHIER_SIZE.y + 0.25, -0.25), Vector3(0.12, 0.5, 0.12), WOOD)
+	dispenser = ConeDispenser.new()
+	dispenser.position = CASHIER_AT + Vector3(0.45, CASHIER_SIZE.y + ConeDispenser.SIZE.y / 2, -0.3)
+	add_child(dispenser)
 	for i in 2:
 		_freezer(i)
 	for at: Vector3 in [Vector3(5.5, FLOOR_TOP, 7.0), Vector3(8.0, FLOOR_TOP, 7.0), Vector3(8.0, FLOOR_TOP, 5.0)]:
