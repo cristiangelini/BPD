@@ -158,6 +158,13 @@ valores siguen la escala del bingo: la principal unos 1000, los extras entre 300
     que solo se ven con la linterna (la primera vez van a la planilla). El que agarra el bidón o el frasco cuando se
     golpea queda 30 s oliendo, y los 3 perros de la vereda lo siguen y se le ponen alrededor.
   Capturas en `/mnt/project-files/casa-equivocada/paso7-*.png`.
+- **Paso 8a (el caso):** la casa corre con el mismo `RaidCase` que los otros allanamientos. El comisario da la orden
+  para la calle de los Sauces 14 y avisa de las dos casas, las pistas de la puerta y la rural. Las sospechas salen de
+  las 6 historias, con ids `wh_<historia>` porque otro lugar ya tiene gnomos. El primer renglón de la planilla se
+  marca al entrar en la casa correcta. Las pistas de la puerta y las de cada historia van a la planilla. Las multas
+  (al doble en lo de doña Chola) se descuentan del sueldo, y si doña Chola llama a su abogado se pierde el caso.
+  Captura en `/mnt/project-files/casa-equivocada/paso8-planilla.png`. Falta el paso 8b: la persecución si huye con
+  la principal, el premio "Tocaron la puerta correcta", Jugar, el online y el CHANGELOG.
 
 ## Preguntas para Cristian
 1. **¿Entrar en la casa equivocada se puede o termina el caso?** Recomendado: se puede, y es el chiste: doña Chola

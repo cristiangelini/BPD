@@ -5627,3 +5627,16 @@ OBJ_FIND_WH_PERFUME,"Encontrar el bidón de perfume trucho (frágil)","Find the 
 OBJ_EXTRA_SAMPLE_FLASK,Extra: el frasco de muestra,Extra: the sample bottle,Extra: o frasco de amostra
 CLUE_WH_SMELL,"Con la linterna se ven líneas de olor por el pasillo de esta casa: perfume barato.","The flashlight shows smell lines down this house's hallway: cheap perfume.","Com a lanterna se veem linhas de cheiro pelo corredor desta casa: perfume barato."
 HINT_WH_SMELLY,"¡Quedaste oliendo a perfume! Los perros de la calle te siguen.","You smell of perfume now! The street dogs follow you.","Você ficou com cheiro de perfume! Os cachorros da rua te seguem."
+BRIEF_WH_TIP_A,"La orden es para la calle de los Sauces 14. Lo malo: en esa cuadra hay dos casas iguales y a las dos se les cayó un número.","The warrant is for 14 Willow Street. The bad news: that block has two identical houses, and both lost a digit of their number.","O mandado é para a rua dos Salgueiros 14. O problema: nessa quadra há duas casas iguais e as duas perderam um número."
+BRIEF_WH_TIP_B,"Antes de tirar la puerta abajo, miren el buzón, el diario y pregúntenle al cartero. Si entran en la casa equivocada, la vecina les hace la denuncia y cada cosa rota sale el doble.","Before you break the door down, check the mailbox and the newspaper, and ask the mailman. If you go into the wrong house, the neighbor files a complaint and everything you break costs double.","Antes de derrubar a porta, olhem a caixa de correio e o jornal e perguntem ao carteiro. Se entrarem na casa errada, a vizinha faz a denúncia e cada coisa quebrada sai o dobro."
+BRIEF_WH_TIP_C,"Y apúrense: si el de la 14 los ve en la casa de al lado, va a cargar todo en su rural.","And hurry: if the one at 14 sees you next door, he'll load everything into his station wagon.","E rápido: se o da 14 vir vocês na casa do lado, vai carregar tudo na perua dele."
+SUSPECT_wh_bills,Billetes con la cara del comisario,Bills with the comisario's face,Notas com a cara do comissário
+SUSPECT_wh_gnomes,Los gnomos del barrio,The neighborhood's gnomes,Os gnomos do bairro
+SUSPECT_wh_parrot,El loro que sabe la clave,The parrot who knows the code,O papagaio que sabe o código
+SUSPECT_wh_fireworks,Los fuegos artificiales robados,The stolen fireworks,Os fogos de artifício roubados
+SUSPECT_wh_letters,Las cartas del cartero,The mailman's letters,As cartas do carteiro
+SUSPECT_wh_perfume,El perfume trucho,The fake perfume,O perfume falso
+OBJ_ENTER_WH,Entrar en la casa correcta (la 14),Get into the right house (number 14),Entrar na casa certa (a 14)
+OBJ_GUESS_WH,"Averiguar qué esconde el de la 14 (con Q abierta, mantén 1, 2 o 3)","Find out what number 14 is hiding (with Q open, hold 1, 2 or 3)","Descobrir o que o da 14 esconde (com Q aberta, segure 1, 2 ou 3)"
+OBJ_COMPLAINT_WH,Denuncia de doña Chola: %d%%,Doña Chola's complaint: %d%%,Denúncia da dona Chola: %d%%
+CASE_FAILED_LAWYER_CHOLA,Doña Chola llamó a su abogado. Caso perdido.,Doña Chola called her lawyer. Case lost.,A dona Chola ligou para o advogado. Caso perdido.
