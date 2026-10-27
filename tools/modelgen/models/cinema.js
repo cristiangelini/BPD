@@ -236,13 +236,47 @@ export function buildTicketBook() {
 	return b.build();
 }
 
+// The festival's prize film, 0.4 x 0.16 x 0.4 m: two silver film cans stacked, with a gold "festival" sticker and a
+// red ribbon around them.
+export function buildFestivalFilm() {
+	const b = new Builder('festival_film');
+	const silver = mat('can_silver', 0xb8bcc4);
+	for (const y of [0.04, 0.12]) b.add('cans', silver, new THREE.CylinderGeometry(0.2, 0.2, 0.075, 16), { pos: V(0, y, 0) });
+	b.add('rims', mat('can_rim', 0x80848c), new THREE.CylinderGeometry(0.205, 0.205, 0.01, 16), { pos: V(0, 0.08, 0) });
+	b.add('sticker', mat('festival_gold', 0xe0b030), new THREE.CylinderGeometry(0.07, 0.07, 0.004, 10), { pos: V(0, 0.16, 0) });
+	b.add('ribbon', mat('ribbon_red', 0xc02030), new THREE.BoxGeometry(0.42, 0.162, 0.04), { pos: V(0, 0.08, 0) });
+	return b.build();
+}
+
+// The festival badge on its lanyard, 0.1 x 0.01 x 0.3 m lying flat: a white card with a gold star and a blue strap.
+export function buildFestivalBadge() {
+	const b = new Builder('festival_badge');
+	b.add('card', M.white, new THREE.BoxGeometry(0.09, 0.006, 0.12), { pos: V(0, 0.003, 0.08) });
+	b.add('star', mat('festival_gold', 0xe0b030), new THREE.CylinderGeometry(0.02, 0.02, 0.003, 5), { pos: V(0, 0.007, 0.06) });
+	b.add('strap', mat('lanyard_blue', 0x2050b0), new THREE.BoxGeometry(0.02, 0.004, 0.18), { pos: V(0, 0.002, -0.07) });
+	return b.build();
+}
+
+// The festival's statuette, 0.14 x 0.32 x 0.14 m: a gold figure holding up a film reel on a black base.
+export function buildAwardStatuette() {
+	const b = new Builder('award_statuette');
+	const gold = mat('statuette_gold', 0xe8b830);
+	b.add('base', mat('statuette_base', 0x181818), new THREE.BoxGeometry(0.14, 0.06, 0.14), { pos: V(0, 0.03, 0) });
+	b.add('body', gold, new THREE.CylinderGeometry(0.025, 0.035, 0.16, 8), { pos: V(0, 0.14, 0) });
+	b.add('head', gold, new THREE.SphereGeometry(0.03, 8, 6), { pos: V(0, 0.24, 0) });
+	b.add('arms', gold, new THREE.BoxGeometry(0.012, 0.08, 0.012), { pos: V(0, 0.26, 0) });
+	b.add('reel', gold, new THREE.TorusGeometry(0.035, 0.008, 4, 10), { pos: V(0, 0.3, 0) });
+	return b.build();
+}
+
 export const models = {
 	cinema_seat: buildCinemaSeat, popcorn_machine: buildPopcornMachine, film_projector: buildFilmProjector,
 	npc_dona_bobina: buildDonaBobina, npc_chicho: buildChicho, pirate_copies_box: buildPirateBox,
 	cinema_camcorder: buildCamcorder, cinema_covers: buildCovers, floor_popcorn_bag: buildFloorPopcornBag,
 	recycle_broom: buildRecycleBroom, fresh_sign: buildFreshSign, ghost_projector: buildGhostProjector,
 	holey_sheet: buildHoleySheet, scream_disc: buildScreamDisc, ticket_press: buildTicketPress, sold_out_stamp: buildSoldOutStamp,
-	ticket_book: buildTicketBook,
+	ticket_book: buildTicketBook, festival_film: buildFestivalFilm, festival_badge: buildFestivalBadge,
+	award_statuette: buildAwardStatuette,
 };
 
 export const views = {
@@ -261,6 +295,7 @@ export const views = {
 			{ name: 'fresh_sign', pos: [0.4, 0, 0] }, { name: 'ghost_projector', pos: [-0.9, 0, 0.8], rotY: 0.5 },
 			{ name: 'holey_sheet', pos: [0, 0, 0.8] }, { name: 'scream_disc', pos: [0.8, 0, 0.8] },
 			{ name: 'ticket_press', pos: [1.2, 0, -0.1], rotY: -0.4 }, { name: 'sold_out_stamp', pos: [-0.5, 0, 1.3] }, { name: 'ticket_book', pos: [-0.2, 0, 1.35] },
+			{ name: 'festival_film', pos: [0.3, 0, 1.3] }, { name: 'festival_badge', pos: [0.75, 0, 1.4] }, { name: 'award_statuette', pos: [1.05, 0, 1.25] },
 		],
 		cam: { pos: [0, 1.4, 2.6], target: [0, 0.1, 0.4], fov: 40 },
 	},

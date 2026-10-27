@@ -143,3 +143,8 @@ suman entre 400 y 600.
   Dos vecinos más se sientan uno al lado del otro (par libre sorteado con la semilla) y discuten cada 3 s ("¡Esta butaca
   es mía!", "¡No, es mía, acá dice!"...); con E muestran la entrada repetida, y acercarse a menos de 2 m da la pista
   propia, una vez. Capturas `paso6-butaca.png` y `paso6-agotado.png`.
+- **Paso 6d (la película robada):** la lata con la película premiada (5 kg, $1000) con la credencial del festival ($300)
+  y la estatuilla del premio (2 kg, $200). En la esquina de arriba a la derecha de la pantalla se lee "PROPIEDAD DEL
+  FESTIVAL" mientras pasa la película; acercarse adelante, debajo de esa esquina (2,5 m), da la pista propia una vez.
+  Cada 8 s de película un espectador llora ("¡Buaaa! ¡Qué hermosa!"); con la pantalla en blanco nadie llora. Captura
+  `paso6-festival.png`.

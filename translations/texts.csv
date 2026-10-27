@@ -5726,3 +5726,16 @@ CINEMA_SAME_SEAT_3,¡Yo llegué primero!,I got here first!,Eu cheguei primeiro!
 CINEMA_SAME_SEAT_4,¡Y yo pagué más!,And I paid more!,E eu paguei mais!
 HINT_SAME_SEAT,"Dos vecinos discuten: los dos tienen entrada para la misma butaca.","Two neighbors argue: both have a ticket for the same seat.","Dois vizinhos discutem: os dois têm ingresso para a mesma poltrona."
 CLUE_SAME_SEAT,"Dos espectadores tienen entrada para la misma butaca: alguien vende cada lugar dos veces.","Two spectators have a ticket for the same seat: someone sells every seat twice.","Dois espectadores têm ingresso para a mesma poltrona: alguém vende cada lugar duas vezes."
+BRIEF_STOLEN_FILM_B,"Doña Bobina se quedó con la película premiada del festival después de la función y la pasa todas las noches.","Doña Bobina kept the festival's prize film after the screening and shows it every night.","A dona Bobina ficou com o filme premiado do festival depois da sessão e passa todas as noites."
+BRIEF_STOLEN_FILM_C,"Traigan la lata con la película en el baúl del patrullero. Pesa 5 kilos y el festival la quiere entera.","Bring the can with the film in the patrol car's trunk. It weighs 5 kilos and the festival wants it whole.","Tragam a lata com o filme no porta-malas da viatura. Pesa 5 quilos e o festival quer inteira."
+BRIEF_STOLEN_FILM_D,"Si encuentran la credencial del festival o la estatuilla del premio, mejor: todo suma.","If you find the festival badge or the prize statuette, even better: it all counts.","Se acharem a credencial do festival ou a estatueta do prêmio, melhor: tudo conta."
+OBJ_FIND_FESTIVAL_FILM,Llevarse la lata con la película del festival,Take the can with the festival's film,Levar a lata com o filme do festival
+OBJ_EXTRA_FESTIVAL_BADGE,Extra: la credencial del festival,Extra: the festival badge,Extra: a credencial do festival
+OBJ_EXTRA_STATUETTE,Extra: la estatuilla del premio,Extra: the prize statuette,Extra: a estatueta do prêmio
+CHICHO_CLUE_stolen_film,"(susurrando) «Vi a doña Bobina esconder algo %s. Y esta película no estaba en la cartelera: llegó en una lata con moño.»","(whispering) “I saw doña Bobina hide something %s. And this film wasn't on the bill: it came in a can with a bow.”","(sussurrando) “Vi a dona Bobina esconder algo %s. E este filme não estava na programação: chegou numa lata com laço.”"
+CINEMA_FESTIVAL_MARK,PROPIEDAD DEL FESTIVAL,PROPERTY OF THE FESTIVAL,PROPRIEDADE DO FESTIVAL
+HINT_FESTIVAL_MARK,"En la esquina de la pantalla dice, chiquito: «PROPIEDAD DEL FESTIVAL».","In the screen's corner, in small letters: «PROPERTY OF THE FESTIVAL».","No canto da tela está escrito, pequenininho: «PROPRIEDADE DO FESTIVAL»."
+CLUE_FESTIVAL_MARK,"La película dice «PROPIEDAD DEL FESTIVAL» en una esquina: este cine no la alquiló.","The film says «PROPERTY OF THE FESTIVAL» in a corner: this cinema didn't rent it.","O filme diz «PROPRIEDADE DO FESTIVAL» num canto: este cinema não alugou."
+CINEMA_CRY_1,¡Buaaa! ¡Qué hermosa!,Waaah! It's so beautiful!,Buáá! Que lindo!
+CINEMA_CRY_2,"(sollozo) Nunca vi algo así...","(sob) I've never seen anything like it...","(soluço) Nunca vi nada assim..."
+CINEMA_CRY_3,¿Alguien tiene un pañuelo?,Does anyone have a tissue?,Alguém tem um lenço?
