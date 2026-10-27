@@ -6,8 +6,8 @@ extends Node3D
 ## ticket booth (the trailer's key is in its till), the carousel with its 12 horses, the bumper cars' rink under its
 ## net, the Ferris wheel, the ghost train's dark tunnel with its carts and skeletons, the mirror house, the cans booth
 ## with the giant teddy, Nube's cotton candy cart, the strength tester and Don Tómbola's trailer at the back, locked.
-## A mirror that something hits fast breaks, a fine each. The rides stand still until step 2. Every number here is
-## (propuesta).
+## A mirror that something hits fast breaks, a fine each. The rides go with their lever, button and crank (FairRides,
+## step 2). Every number here is (propuesta).
 
 signal mirror_broken(index: int)
 
@@ -125,9 +125,12 @@ var trailer_door: FrontDoor
 var till: Till
 var carousel: Node3D
 var horses: Array[Node3D] = []
-var bumpers: Array[StaticBody3D] = []
+var bumpers: Array[AnimatableBody3D] = []
 var wheel: Node3D
 var cabins: Array[Node3D] = []
+var skeletons: Array[Node3D] = []
+## What makes the rides go: the carousel's lever, the bumper cars' button, the wheel's crank and the skeletons.
+var rides: FairRides
 var mirrors: Array[Area3D] = []
 var broken_mirrors: Array[int] = []
 var broken_goods := 0
@@ -153,6 +156,10 @@ func _ready() -> void:
 	_build_mirror_house()
 	_build_booths()
 	_build_trailer()
+	rides = FairRides.new()
+	rides.name = "Rides"
+	rides.fair = self
+	add_child(rides)
 	city = $City
 	city.transform = CityLayout.anchor("fair")
 	var clock := (city as City).clock
@@ -204,7 +211,9 @@ func _build_carousel() -> void:
 	carousel.name = "Carousel"
 	carousel.position = CAROUSEL_AT
 	add_child(carousel)
-	var body := StaticBody3D.new()
+	var body := AnimatableBody3D.new()
+	body.sync_to_physics = false
+	body.name = "Deck"
 	carousel.add_child(body)
 	_cylinder(body, DECK_RADIUS, DECK_TOP, Vector3(0, DECK_TOP / 2, 0))
 	_cylinder(body, DRUM_RADIUS, 3.8, Vector3(0, DECK_TOP + 1.9, 0))
@@ -212,7 +221,8 @@ func _build_carousel() -> void:
 	for ring in HORSE_RINGS:
 		for i in int(ring.y):
 			var turn := TAU * i / ring.y + (0.0 if ring.x > 4.0 else TAU / 8)
-			var horse := StaticBody3D.new()
+			var horse := AnimatableBody3D.new()
+			horse.sync_to_physics = false
 			horse.name = "Horse%d" % horses.size()
 			horse.position = Vector3(sin(turn) * ring.x, DECK_TOP, cos(turn) * ring.x)
 			horse.rotation.y = turn + PI / 2
@@ -245,7 +255,8 @@ func _build_rink() -> void:
 		_build.mesh_box(RINK_AT + Vector3(0, NET_HEIGHT, -half.y + (i + 0.5) * RINK_SIZE.y / 6),
 			Vector3(RINK_SIZE.x, 0.03, 0.03), SILVER)
 	for i in BUMPERS.size():
-		var bumper := StaticBody3D.new()
+		var bumper := AnimatableBody3D.new()
+		bumper.sync_to_physics = false
 		bumper.name = "Bumper%d" % i
 		bumper.position = RINK_AT + BUMPERS[i] + Vector3(0, FLOOR_TOP, 0)
 		bumper.rotation.y = i * 1.3
@@ -269,7 +280,8 @@ func _build_wheel() -> void:
 	wheel.add_child(WHEEL_MODEL.instantiate())
 	for i in CABINS:
 		var turn := TAU * i / CABINS
-		var cabin := StaticBody3D.new()
+		var cabin := AnimatableBody3D.new()
+		cabin.sync_to_physics = false
 		cabin.name = "Cabin%d" % i
 		cabin.position = Vector3(sin(turn), cos(turn), 0) * WHEEL_RADIUS
 		_box_shape(cabin, Vector3(1.2, 0.1, 1.0), Vector3(0, -CABIN_FLOOR, 0))
@@ -302,7 +314,7 @@ func _build_ghost_train() -> void:
 		cart.add_child(CART_MODEL.instantiate())
 		add_child(cart)
 	for at in SKELETONS:
-		_model(SKELETON_MODEL, at, PI if at.z > -14.0 else 0.0)
+		skeletons.append(_model(SKELETON_MODEL, at, PI if at.z > -14.0 else 0.0))
 	var glow := OmniLight3D.new()
 	glow.light_color = Color(0.6, 0.3, 0.9)
 	glow.light_energy = 0.6
@@ -403,11 +415,11 @@ func break_mirror(index: int) -> void:
 	var cracked := StandardMaterial3D.new()
 	cracked.albedo_color = DARK.lightened(0.3)
 	glass.material_override = cracked
-	_say(glass.position + Vector3(0, 1.5, 0), "FAIR_MIRROR_BROKEN")
+	say(glass.position + Vector3(0, 1.5, 0), "FAIR_MIRROR_BROKEN")
 	mirror_broken.emit(index)
 
 
-func _cylinder(body: StaticBody3D, radius: float, height: float, at: Vector3) -> void:
+func _cylinder(body: PhysicsBody3D, radius: float, height: float, at: Vector3) -> void:
 	var shape := CollisionShape3D.new()
 	var cylinder := CylinderShape3D.new()
 	cylinder.radius = radius
@@ -417,7 +429,7 @@ func _cylinder(body: StaticBody3D, radius: float, height: float, at: Vector3) ->
 	body.add_child(shape)
 
 
-func _box_shape(body: StaticBody3D, size: Vector3, at: Vector3) -> void:
+func _box_shape(body: PhysicsBody3D, size: Vector3, at: Vector3) -> void:
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
 	box.size = size
@@ -452,7 +464,7 @@ func _area(center: Vector3, size: Vector3, turn: float) -> Area3D:
 
 
 ## A floating line over `at` for a few seconds.
-func _say(at: Vector3, key: String) -> void:
+func say(at: Vector3, key: String) -> void:
 	var label := Label3D.new()
 	label.text = key
 	label.font_size = 48
