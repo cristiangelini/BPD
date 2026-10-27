@@ -118,7 +118,13 @@ para el interrogatorio. Los modelos nuevos salen de `tools/modelgen` (low poly).
    son dobles (cerradas hasta el paso 2). Atrás de todo, el laberinto de ligustros de 7 x 5 casillas de 3 m, siempre
    el mismo, con la entrada frente a la puerta del jardín y la reja en la esquina del fondo. Llueve (sin atravesar el
    techo) y cada 15 a 35 s cae un rayo que ilumina todo. Capturas en `escena-mansion/paso1-*.png` **(propuesta)**.
-2. Los tres pasadizos: la estantería, la chimenea y el reloj, que se abren con E y se cruzan.
+2. Los tres pasadizos: la estantería, la chimenea y el reloj, que se abren con E y se cruzan. Hecho así: cada pasadizo es un pasillo de
+   1,4 m de ancho dentro de una pared doble, con una puerta en cada punta tapada por un panel igual a la pared. E sobre
+   la estantería (tira del libro rojo), el reloj (la puerta del péndulo) o el candelabro de la chimenea abre las dos
+   puntas a la vez: la estantería se corre por la pared, el reloj se corre a un costado y el fondo de la chimenea se
+   abre (hay que agacharse para entrar). Del otro lado, en el estudio el panel es el retrato de doña Clotilde y en el
+   invernadero y la despensa es un panel liso; desde ahí o desde adentro, E sobre el panel también abre y cierra. La
+   primera vez sale "¡Un pasadizo secreto!". Capturas en `escena-mansion/paso2-*.png` **(propuesta)**.
 3. La gente: los seis socios con sus rasgos y su coartada, doña Clotilde en su silla, Ceferino y Lorenzo.
 4. Las fichas (foto, huellas, dientes, pelo y coartada) y los socios que cambian de cuarto por los pasadizos.
 5. El caso: la historia, lo robado y dónde está, las seis pistas con cómo se arruinan, el tablero en la biblioteca y

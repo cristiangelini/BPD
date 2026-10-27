@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Mystery mansion, step 2: the three secret passages open: E on the bookcase (the red book), the grandfather clock or the candelabra on the lounge's mantel opens both ends of its passage (the bookcase and the clock slide aside, the fireplace's back opens and you crouch to go in); from the study (doña Clotilde's portrait), the greenhouse, the pantry or from inside, E on the panel opens and closes it too, and the first time says "A secret passage!".
 - Mystery mansion, step 1: the Candelabro mansion on its own level (--place=mansion): one big floor with the dining room, the hall (boarded-up stairs, armour, grandfather clock), the lounge (piano, fireplace, parrot cage), the library, the study with the open safe, the greenhouse and the butler's pantry with the bell board; the three secret passages' double walls (closed for now), the hedge maze out the back, rain that stops on the roof and lightning every 15 to 35 s.
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
 - Gym raid, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office, the cake lab and the gym in eighths.
