@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Fun fair raid, step 6 (bronze horse): the stolen statue stands on the carousel painted as one of its horses; the horses now go up and down while it spins but that one doesn't, the carousel turns at half speed and squeaks, and the first hand on it gets a "¡CLANG!". The paint and the newspaper clipping are hidden.
 - Fun fair raid, step 6 (ghost train storeroom): the box of stolen phones hides with the price list and the ghost sheet with pockets; every 15 s one of the skeletons rings like a phone and its screen lights up.
 - Fun fair raid, step 6 (unchecked Ferris wheel): the fake safety certificate is hidden with the bag of nuts and the inspector's stamp; loose nuts lie in front of the wheel and every turn of the crank shakes it and drops another one.
 - Fun fair raid, step 6 (fake tickets): the ticket printing machine is hidden with the uncut rolls and the "Válido" stamp; pink tickets on the paths all have the same number, and the ticket booth whirs and spits out another one every 20 s.

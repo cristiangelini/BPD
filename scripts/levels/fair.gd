@@ -88,6 +88,16 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_PRICE_LIST", "OBJ_EXTRA_GHOST_SHEET"],
 		"rig": preload("res://scripts/case/fair/ghost_storage_rig.gd"),
 	},
+	"bronze_horse": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_BRONZE_HORSE_B", "BRIEF_BRONZE_HORSE_C", "BRIEF_BRONZE_HORSE_D"],
+		"find": "OBJ_FIND_BRONZE_HORSE",
+		"hidden": [preload("res://scenes/props/fair_paint_cans.tscn"),
+			preload("res://scenes/props/fair_horse_photo.tscn")],
+		"half_heights": [0.085, 0.003],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_PAINT_CANS", "OBJ_EXTRA_HORSE_PHOTO"],
+		"rig": preload("res://scripts/case/fair/bronze_horse_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the paved paths.
 const NOTE_PLACES: Array[Vector3] = [

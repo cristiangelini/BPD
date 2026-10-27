@@ -2,8 +2,8 @@ class_name FairRides
 extends Node
 
 ## What makes the fun fair's rides go (allanamiento-parque.md, step 2), each with its control (FairSwitch):
-## - the carousel's lever starts it and stops it: it turns at SPIN_RPM, carries whoever stands on it and throws off
-##   what's lying loose on its deck;
+## - the carousel's lever starts it and stops it: it turns at SPIN_RPM, its horses go up and down, it carries whoever
+##   stands on it and throws off what's lying loose on its deck;
 ## - the bumper cars' red button sets the six cars going for BUMPER_SECONDS: they drive on their own round the rink,
 ##   bounce off the rail and each other, push what they meet and shove a cop they run into;
 ## - the Ferris wheel's crank turns it by one cabin; the cabins hang straight down all the way round;
@@ -16,6 +16,9 @@ signal ride_started(ride: String)
 signal flung(body: RigidBody3D)
 
 const SPIN_RPM := 6.0
+## How far the horses go up and down while it spins, and how many times a turn.
+const BOB := 0.25
+const BOBS_PER_TURN := 3.0
 ## How hard the carousel throws a loose thing outward, in m/s² (on top of the spin).
 const FLING := 9.0
 const BUMPER_SECONDS := 20.0
@@ -36,6 +39,9 @@ const WHEEL_CRANK_AT := Fair.WHEEL_AT + Vector3(2.4, 0, 2.0)
 
 var fair: Fair
 var spinning := false
+## The carousel's speed (a story can slow it down) and the horses that don't go up and down.
+var spin_rpm := SPIN_RPM
+var still_horses: Array[Node3D] = []
 var bumpers_left := 0.0
 var turning := false
 ## Each bumper car's way across the rink, in meters a second (x, z).
@@ -132,7 +138,11 @@ func _physics_process(delta: float) -> void:
 	for cabin in fair.cabins:
 		cabin.rotation.z = -fair.wheel.rotation.z
 	if spinning:
-		fair.carousel.rotation.y += TAU * SPIN_RPM / 60.0 * delta
+		fair.carousel.rotation.y += TAU * spin_rpm / 60.0 * delta
+		for i in fair.horses.size():
+			var horse := fair.horses[i]
+			if is_instance_valid(horse) and not still_horses.has(horse):
+				horse.position.y = Fair.DECK_TOP + BOB * (1.0 + sin(fair.carousel.rotation.y * BOBS_PER_TURN + i)) / 2
 		for body in _deck_area.get_overlapping_bodies():
 			if body is RigidBody3D and not (body as RigidBody3D).freeze:
 				var out := (body as Node3D).global_position - _deck_area.global_position
