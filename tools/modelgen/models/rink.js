@@ -148,10 +148,47 @@ export function buildCopito() {
 	return b.build();
 }
 
+// The ice surprise's block of ice (0.6 x 0.5 x 0.5 m) with the stolen jewels frozen inside: a necklace, rings and
+// gems seen through the ice.
+export function buildRinkIceBlock() {
+	const b = new Builder('rink_ice_block');
+	const ice = mat('block_ice', 0xc8e8ff, { transparent: true, opacity: 0.55, roughness: 0.1 });
+	const gold = mat('jewel_gold', 0xf2c84b, { emissive: 0x3a2a05, metalness: 0.7, roughness: 0.25 });
+	const gem = mat('jewel_gem', 0xe0306a, { emissive: 0x501020 }), green = mat('jewel_green', 0x30c070, { emissive: 0x104020 });
+	b.add('necklace', gold, new THREE.TorusGeometry(0.12, 0.012, 6, 18), { pos: V(-0.08, 0.25, 0), rot: [1.2, 0.3, 0] });
+	for (const [x, y, z] of [[0.12, 0.18, 0.08], [0.15, 0.3, -0.06], [0.02, 0.12, -0.1]]) {
+		b.add('ring', gold, new THREE.TorusGeometry(0.03, 0.008, 6, 10), { pos: V(x, y, z), rot: [x * 6, y * 4, 0] });
+	}
+	b.add('gem', gem, new THREE.OctahedronGeometry(0.04), { pos: V(0.05, 0.32, 0.1) });
+	b.add('gem', green, new THREE.OctahedronGeometry(0.035), { pos: V(-0.15, 0.14, 0.08) });
+	b.add('block', ice, new THREE.BoxGeometry(0.6, 0.5, 0.5), { pos: V(0, 0.25, 0) });
+	return b.build();
+}
+
+// The list of jewelers: a sheet of paper (0.21 x 0.3 m) with a crossed-out list and a ring drawn on it.
+export function buildRinkJewelerList() {
+	const b = new Builder('rink_jeweler_list');
+	b.add('paper', mat('list_paper', 0xf6f2e6), new THREE.BoxGeometry(0.21, 0.004, 0.3), { pos: V(0, 0.002, 0) });
+	for (let i = 0; i < 6; i++) {
+		b.add('line', mat('list_ink', 0x2a2a6a), new THREE.BoxGeometry(0.15, 0.002, 0.008), { pos: V(-0.01, 0.005, -0.11 + i * 0.035) });
+	}
+	b.add('ring', mat('list_red', 0xd03030), new THREE.TorusGeometry(0.025, 0.004, 4, 10), { pos: V(0.06, 0.005, 0.11), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
+// The ice chisel, 0.35 m long lying down: a wooden handle and a wide steel blade toward +Z.
+export function buildIceChisel() {
+	const b = new Builder('ice_chisel');
+	b.add('handle', mat('chisel_wood', 0x8a5a30), new THREE.CylinderGeometry(0.022, 0.025, 0.2, 8), { pos: V(0, 0.025, -0.07), rot: [Math.PI / 2, 0, 0] });
+	b.add('blade', mat('chisel_steel', 0xb8bec6, { metalness: 0.8, roughness: 0.25 }), new THREE.BoxGeometry(0.05, 0.012, 0.15), { pos: V(0, 0.02, 0.1) });
+	return b.build();
+}
+
 export const models = {
 	ice_resurfacer: buildIceResurfacer, skating_penguin: buildSkatingPenguin, cocoa_machine: buildCocoaMachine,
 	dj_booth: buildDjBooth, rink_scoreboard: buildRinkScoreboard, npc_dona_pirueta: buildDonaPirueta,
-	npc_copito: buildCopito,
+	npc_copito: buildCopito, rink_ice_block: buildRinkIceBlock, rink_jeweler_list: buildRinkJewelerList,
+	ice_chisel: buildIceChisel,
 };
 
 export const views = {
@@ -160,7 +197,8 @@ export const views = {
 			{ name: 'ice_resurfacer', pos: [-2.2, 0, 0], rotY: 0.6 }, { name: 'skating_penguin', pos: [-0.4, 0, 0.6] },
 			{ name: 'cocoa_machine', pos: [0.6, 0, 0.8] }, { name: 'dj_booth', pos: [1.8, 0, 0], rotY: Math.PI },
 			{ name: 'rink_scoreboard', pos: [0, 2.0, -1.5] }, { name: 'npc_dona_pirueta', pos: [0.9, 0, 1.6], rotY: -0.3 },
-			{ name: 'npc_copito', pos: [2.4, 0, 1.4], rotY: -0.5 },
+			{ name: 'npc_copito', pos: [2.4, 0, 1.4], rotY: -0.5 }, { name: 'rink_ice_block', pos: [-1.2, 0, 2.2] },
+			{ name: 'rink_jeweler_list', pos: [-0.3, 0, 2.6] }, { name: 'ice_chisel', pos: [0.2, 0, 2.6] },
 		],
 		cam: { pos: [0, 2.2, 6.5], target: [0, 1.0, 0], fov: 45 },
 	},

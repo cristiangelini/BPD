@@ -9,7 +9,9 @@ extends Node3D
 ## corridor, the locker room, the cold room with its ice blocks and compressor, and the owner's office, locked with the
 ## till's key. Something thrown hard at a glass panel or at the trophy case breaks it, a fine each. The ice, the skates
 ## and the resurfacer (RinkIce, step 2). Doña Pirueta skates her round and fills her complaint; her song at the DJ
-## booth takes her off to dance (step 3). Every number here is (propuesta).
+## booth takes her off to dance (step 3). Copito tells whoever brings him a full hot chocolate what he saw (step 4).
+## The case is one of its stories (STORIES), drawn with the seed, run by the same RaidCase as the other places (step
+## 5). Every number here is (propuesta).
 
 signal glass_broken(index: int)
 signal trophies_broken
@@ -19,6 +21,34 @@ const PENGUIN_MODEL := preload("res://assets/models/skating_penguin.glb")
 const COCOA_MODEL := preload("res://assets/models/cocoa_machine.glb")
 const OWNER_SCENE := preload("res://scenes/npc/rink_owner.tscn")
 const CUP_SCENE := preload("res://scenes/props/cocoa_cup.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the rink can be suspected of (allanamiento-pista.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["ice_surprise", "resurfacer_smuggling", "fixed_match", "golden_skate", "stolen_power",
+	"real_sequins"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_RINK_TIP_B", "BRIEF_TIP_C", "BRIEF_RINK_TIP_D",
+	"BRIEF_RINK_TIP_E"]
+## The stories the rink can tell, like Fair.STORIES: what the comisario says once it's guessed, its "find it" row, what
+## it hides in spots drawn with the seed (with their half heights and whether they're heavy), the checklist rows of its
+## extras and its rig. With "main_hidden" the first hidden item is the main evidence and the rest extras.
+const STORIES := {
+	"ice_surprise": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_ICE_SURPRISE_B", "BRIEF_ICE_SURPRISE_C", "BRIEF_ICE_SURPRISE_D"],
+		"find": "OBJ_FIND_ICE_BLOCK",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/rink_ice_block.tscn"),
+			preload("res://scenes/props/rink_jeweler_list.tscn"), preload("res://scenes/props/ice_chisel.tscn")],
+		"half_heights": [0.25, 0.003, 0.025],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_JEWELER_LIST", "OBJ_EXTRA_ICE_CHISEL"],
+		"rig": preload("res://scripts/case/rink/ice_surprise_rig.gd"),
+	},
+}
+## Where the suspicion notes can lie: on the floor of the lobby, the corridor and by the stands.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(1.5, FLOOR_TOP, 11.0), Vector3(-9.0, FLOOR_TOP, 9.5), Vector3(11.0, FLOOR_TOP, 8.2),
+	Vector3(0.0, FLOOR_TOP, -9.0), Vector3(-12.0, FLOOR_TOP, -9.0), Vector3(18.5, FLOOR_TOP, 5.0),
+]
 const SCOREBOARD_MODEL := preload("res://assets/models/rink_scoreboard.glb")
 const HALF_X := 22.0
 const HALF_Z := 15.0
@@ -160,10 +190,23 @@ var _spin := 0.0
 var glass_panels: Array[StaticBody3D] = []
 var trophies_cracked := false
 var broken_goods := 0
+## The case flow every raid shares.
+var raid: RaidCase
+var car: PatrolCar
 ## Money taken off the case pay: the glass panels and the trophies.
-var fines := 0
-## Same seed, same rink (the stories and the hiding spots come from it, step 5).
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## Same seed, same rink: the story and where its things go. 0 draws one.
 @export var case_seed := 0
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: RinkRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
 var _build: PlaceBuilder
 
 
@@ -172,6 +215,20 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	car = $PatrolCar
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	ice = RinkIce.new()
 	ice.name = "RinkIce"
@@ -189,11 +246,91 @@ func _ready() -> void:
 	_park_car()
 	city_map = CityMap.new()
 	add_child(city_map)
-	city_map.setup(city, "rink", $PatrolCar)
+	city_map.setup(city, "rink", car)
+	raid.station_parking = station_parking
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = owner_npc
+	raid.owner_id = "rink"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The rink's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_RINK",
+		"guess_key": "OBJ_GUESS_RINK",
+		"broken_key": "OBJ_BROKEN_RINK",
+		"complaint_key": "OBJ_COMPLAINT_RINK",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_goods,
+		"complaint": owner_npc.complaint,
+	}
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Doña Pirueta lets slip when asked (where the story's things are, in an order drawn from the seed), and what
+## Copito saw: where she hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		owner_npc.slips.append(tr("PIRUETA_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	owner_npc.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	copito.clue = tr("CLUE_COPITO") % where
+	copito.clue_speech = tr("COPITO_CLUE_" + story_id) % where
+	copito.told.connect(raid.add_clue)
 
 
 func _park_car() -> void:
-	var car: PatrolCar = $PatrolCar
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
 	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
 
@@ -449,6 +586,7 @@ func _place_owner() -> void:
 	add_child(owner_npc)
 	owner_npc.start_at(0)
 	office_door.broken.connect(owner_npc.door_broken)
+	owner_npc.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_RINK"))
 	till.opened.connect(func(at: Vector3) -> void: owner_npc.saw(at, FloorBoss.SAW_TILL))
 	song.caught_on.connect(func() -> void: owner_npc.scold(CAUGHT_ON, "PIRUETA_CAUGHT_ON"))
 	var thuds := _area(Vector3(0, ICE_TOP + 0.3, (ICE_Z0 + ICE_Z1) / 2), Vector3(ICE_HALF_X * 2, 0.6, ICE_Z1 - ICE_Z0))
@@ -524,6 +662,7 @@ func break_glass(index: int) -> void:
 	glass_panels[index] = null
 	broken_goods += 1
 	fines += GLASS_FINE
+	raid.float_label("-%d" % GLASS_FINE, to_global(panel.position + Vector3.UP), Color(1, 0.3, 0.25))
 	_say(panel.position + Vector3(0, 1.2, 0), "RINK_GLASS_BROKEN")
 	panel.queue_free()
 	glass_broken.emit(index)
@@ -540,6 +679,8 @@ func break_trophies() -> void:
 	trophies_cracked = true
 	broken_goods += 1
 	fines += TROPHY_FINE * TROPHIES
+	raid.float_label("-%d" % (TROPHY_FINE * TROPHIES), to_global(TROPHY_CASE_AT + Vector3.UP * 2.0),
+		Color(1, 0.3, 0.25))
 	_say(TROPHY_CASE_AT + Vector3(0, 2.4, -0.5), "RINK_TROPHIES_BROKEN")
 	trophies_broken.emit()
 

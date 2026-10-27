@@ -67,7 +67,7 @@ pista. La denuncia anónima es siempre vaga: "en el Patinódromo Resbalón pasan
 
 | Historia | Evidencia principal | Extras | Pista propia | Qué cambia |
 |---|---|---|---|---|
-| **El hielo con sorpresa** | El bloque de hielo con las joyas robadas adentro (12 kg, 1000, entre dos) | La lista de joyerías (0,1 kg, 300), el cincel de hielo (0,5 kg, 200) | Uno de los bloques de la cámara de frío brilla | La puerta de la cámara de frío está abierta y hay un charco hasta la oficina |
+| **El hielo con sorpresa** | El bloque de hielo con las joyas robadas adentro (30 kg, 1000, entre dos) | La lista de joyerías (0,1 kg, 300), el cincel de hielo (0,5 kg, 200) | El bloque brilla | Hay un camino de charcos desde el bloque hasta la oficina |
 | **La pulidora contrabandista** | La caja de perfumes robados (6 kg, 1000) | La lista de clientes (0,1 kg, 300), el embudo (0,5 kg, 200) | La pulidora deja un rastro rosado en el hielo | Cada vuelta de la pulidora se le cae un frasco de perfume |
 | **El partido arreglado** | El control remoto del marcador (0,3 kg, 1000) | La libreta de apuestas (0,2 kg, 300), el sobre con plata (0,5 kg, 200) | El marcador cambia el resultado solo | Cada 20 s el marcador suma un gol a un equipo que no juega |
 | **El patín de oro** | El patín de oro robado del campeonato, pintado de blanco (4 kg, 1000) | La pintura blanca (1 kg, 300), la foto del trofeo en el diario (0,1 kg, 200) | Un patín del estante pesa mucho y suena "clang" al tocarlo | El estante del alquiler está torcido de un lado por el peso |
@@ -143,6 +143,17 @@ suman 500.
      cuenta lo que vio (la historia lo pone en el paso 5). Con el vaso vacío dice "¿Una taza vacía? Eso es cruel".
    - **Capturas:** `pista/paso4-*.png`.
 5. El caso (RaidCase) con la primera historia: el hielo con sorpresa.
+   Hecho así:
+   - **El caso:** el mismo de todos los allanamientos. El comisario da la denuncia anónima, hay 3 sospechas entre las
+     6 historias (notas en el piso del hall, el pasillo y al lado de las gradas) y Doña Pirueta suelta dónde están las
+     cosas cuando le preguntas con R. Llama al abogado en 100 y el caso se pierde.
+   - **Copito:** a quien le trae un chocolate lleno le cuenta dónde vio a Doña Pirueta esconder algo.
+   - **El hielo con sorpresa:** el bloque de hielo con las joyas (30 kg, 1000: uno solo no puede, hay que llevarlo entre
+     dos) va en un escondite para cosas pesadas; la lista de joyerías (0,1 kg, 300) y el cincel (0,5 kg, 200) en otros.
+   - **La pista propia:** el bloque brilla (una luz celeste) y a un policía a menos de 3 m le tira destellos; la
+     primera vez va a la planilla.
+   - **Qué cambia:** hay un camino de charcos desde donde está el bloque hasta la puerta de la oficina.
+   - **Capturas:** `pista/paso5-*.png`.
 6. Las otras 5 historias, una por PR.
 7. La pista en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 8. El online.
