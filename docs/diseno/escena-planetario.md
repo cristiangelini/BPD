@@ -30,7 +30,7 @@ El comisario lo cuenta en su oficina, con un llavero de Saturno en la mano:
   - la **sala de control**, con la **consola del proyector** y el registro de las funciones;
   - la **tienda de regalos**, con el canasto de piedras lunares de plástico, la caja y la máquina de fotos "Tu cara en
     la Luna";
-  - el **rincón de los chicos**, con un cohete para trepar y la balanza de "¿Cuánto pesás en Marte?".
+  - el **rincón de los chicos**, con un cohete para trepar y la balanza de "¿Cuánto pesas en Marte?".
 
   Se llega en el patrullero, como al acuario.
 - **La gente:**
