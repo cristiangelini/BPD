@@ -63,6 +63,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_FAKE_INVOICES", "OBJ_EXTRA_OLD_PARTS"],
 		"rig": preload("res://scripts/case/garage/swapped_parts_rig.gd"),
 	},
+	"street_race": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_STREET_RACE_B", "BRIEF_STREET_RACE_C", "BRIEF_STREET_RACE_D"],
+		"find": "OBJ_FIND_RACE_TROPHY",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/race_trophy.tscn"), preload("res://scenes/props/nitro_tank.tscn"),
+			preload("res://scenes/props/race_map.tscn")],
+		"half_heights": [0.195, 0.1, 0.005],
+		"heavy": [false, true, false],
+		"extra_keys": ["OBJ_EXTRA_NITRO_TANK", "OBJ_EXTRA_RACE_MAP"],
+		"rig": preload("res://scripts/case/garage/street_race_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the garage's floor, away from the cars.
 const NOTE_PLACES: Array[Vector3] = [

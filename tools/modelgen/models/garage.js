@@ -300,9 +300,47 @@ export function buildRustyDisc() {
 	return b.build();
 }
 
+// The street race's trophy: a golden cup with two handles on a black base with a checkered plate, 0.42 m tall.
+export function buildRaceTrophy() {
+	const b = new Builder('garage_race_trophy');
+	const gold = mat('trophy_gold', 0xe8b830, { metalness: 0.5, roughness: 0.35 });
+	b.add('base', mat('flash_black', 0x26262a), new THREE.BoxGeometry(0.18, 0.08, 0.18), { pos: V(0, 0.04, 0) });
+	for (let i = 0; i < 4; i++) {
+		b.add('checks', mat(i % 2 ? 'check_white' : 'check_black', i % 2 ? 0xf2f2ea : 0x1a1a1c), new THREE.BoxGeometry(0.03, 0.03, 0.004), { pos: V(-0.045 + i * 0.03, 0.04, 0.091) });
+	}
+	b.add('stem', gold, new THREE.CylinderGeometry(0.02, 0.035, 0.12, 10), { pos: V(0, 0.14, 0) });
+	b.add('cup', gold, new THREE.CylinderGeometry(0.09, 0.04, 0.18, 14), { pos: V(0, 0.29, 0) });
+	for (const s of [-1, 1]) b.add('handles', gold, new THREE.TorusGeometry(0.04, 0.01, 6, 12), { pos: V(s * 0.1, 0.3, 0), rot: [0, 0, 0] });
+	b.add('rim', gold, new THREE.CylinderGeometry(0.095, 0.095, 0.015, 14), { pos: V(0, 0.385, 0) });
+	return b.build();
+}
+
+// The nitro tank: a blue bottle 0.7 m long lying on its side, with a red valve and a white "N2O" band.
+export function buildNitroTank() {
+	const b = new Builder('garage_nitro_tank');
+	b.add('tank', mat('nitro_blue', 0x2f58d8, { metalness: 0.3, roughness: 0.4 }), new THREE.CylinderGeometry(0.1, 0.1, 0.6, 14), { pos: V(-0.03, 0.1, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('cap', mat('nitro_blue', 0x2f58d8, { metalness: 0.3, roughness: 0.4 }), new THREE.SphereGeometry(0.1, 12, 8), { pos: V(0.27, 0.1, 0), scale: [0.4, 1, 1] });
+	b.add('valve', mat('tool_chrome', 0xb8bcc4), new THREE.CylinderGeometry(0.025, 0.025, 0.06, 8), { pos: V(0.32, 0.1, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('knob', mat('sign_red', 0xd23a3a), new THREE.CylinderGeometry(0.035, 0.035, 0.02, 10), { pos: V(0.34, 0.15, 0) });
+	b.add('band', mat('counter_white', 0xf2f2ea), new THREE.CylinderGeometry(0.102, 0.102, 0.12, 14), { pos: V(0, 0.1, 0), rot: [0, 0, Math.PI / 2] });
+	return b.build();
+}
+
+// The race map: an unfolded city map with a red route that goes around and around.
+export function buildRaceMap() {
+	const b = new Builder('garage_race_map');
+	b.add('paper', mat('map_paper', 0xf2e6c0), new THREE.BoxGeometry(0.3, 0.004, 0.21), { pos: V(0, 0.002, 0) });
+	for (let i = 0; i < 4; i++) b.add('streets', mat('map_street', 0xbcb4a0), new THREE.BoxGeometry(0.28, 0.002, 0.008), { pos: V(0, 0.005, -0.075 + i * 0.05) });
+	for (let i = 0; i < 5; i++) b.add('streets', mat('map_street', 0xbcb4a0), new THREE.BoxGeometry(0.008, 0.002, 0.19), { pos: V(-0.12 + i * 0.06, 0.005, 0) });
+	b.add('route', mat('sign_red', 0xd23a3a), new THREE.TorusGeometry(0.06, 0.006, 4, 20), { pos: V(0.02, 0.007, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('finish', mat('flash_black', 0x26262a), new THREE.BoxGeometry(0.03, 0.003, 0.02), { pos: V(0.08, 0.008, 0) });
+	return b.build();
+}
+
 export const models = {
 	garage_parts_crate: buildPartsCrate, garage_fake_invoices: buildFakeInvoices, garage_old_parts: buildOldParts,
 	garage_rusty_disc: buildRustyDisc,
+	garage_race_trophy: buildRaceTrophy, garage_nitro_tank: buildNitroTank, garage_race_map: buildRaceMap,
 	garage_odometer_drill: buildOdometerDrill, garage_km_notebook: buildKmNotebook, garage_zero_km_sign: buildZeroKmSign,
 	garage_plates_box: buildPlatesBox, garage_stolen_list: buildStolenList, garage_spray_can: buildSprayCan,
 	npc_grasita: buildGrasita, ...toolModels,
@@ -333,6 +371,11 @@ export const views = {
 		items: [{ name: 'garage_parts_crate', pos: [-0.35, 0, 0], rotY: 0.3 }, { name: 'garage_fake_invoices', pos: [0.35, 0, 0.35], rotY: -0.2 },
 			{ name: 'garage_old_parts', pos: [0.4, 0, -0.15] }, { name: 'garage_rusty_disc', pos: [0.05, 0, 0.45] }],
 		cam: { pos: [0.1, 1.2, 1.9], target: [0.0, 0.2, 0], fov: 42 },
+	},
+	garage_street_race: {
+		items: [{ name: 'garage_race_trophy', pos: [-0.3, 0, 0], rotY: 0.3 }, { name: 'garage_nitro_tank', pos: [0.25, 0, -0.25], rotY: -0.3 },
+			{ name: 'garage_race_map', pos: [0.3, 0, 0.3], rotY: -0.2 }],
+		cam: { pos: [0.0, 1.0, 1.7], target: [0.0, 0.18, 0], fov: 42 },
 	},
 	garage_tools: {
 		items: [

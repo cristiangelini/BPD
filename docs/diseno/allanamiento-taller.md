@@ -129,6 +129,11 @@ entre 400 y 600.
      entre la caja y el timbre: el policía que lo agarra queda con la mano naranja («¡Óxido!»), y la primera vez es la
      pista. Los capós que hacen «tac tac tac» quedan para después (los autos no tienen capó que se abra). Capturas
      `paso5-piezas-*.png` y `garage_swapped_parts.png`.
+   - **Hecho así (propuesta), la carrera clandestina:** el trofeo de la carrera (4 kg, 1000), el tanque de nitro
+     (6 kg, 300, en un escondite para cosas pesadas) y el mapa de la carrera (0,1 kg, 200). En el piso, entre la
+     persiana y los autos, hay un círculo de marcas de goma (dos ruedas, 1,8 m de radio): el primer policía que entra
+     al círculo ve el aviso y suma la pista. El alerón gigante y la bocina que hace rugir el motor quedan para después.
+     Capturas `paso5-carrera-*.png` y `garage_street_race.png`.
 6. "Jugar" suma el taller al sorteo de allanamientos (`PlaceDraw.ORDER`).
 7. El online (Don Tuerca, Grasita, el timbre, el elevador y los parabrisas en todas las PC).
 
