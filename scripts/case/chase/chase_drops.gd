@@ -21,7 +21,9 @@ extends Node
 ## (ConfettiCloud). The bridge's cement mixer (politico-puente.md) drops a blob of cement at
 ## every corner it turns: driving through it the patrol car sticks and slows down to BLOB_SPEED. The museum's art van opens its back doors every FRAME_EVERY seconds and an
 ## empty gilt frame falls out (ChaseFrame). The hotel's shuttle loses a suitcase off its roof every SUITCASE_EVERY
-## seconds (ChaseSuitcase): run over, its clothes cover the patrol car's windshield. Every number here is
+## seconds (ChaseSuitcase): run over, its clothes cover the patrol car's windshield. The planetarium's van lets
+## PLANETS_PER_CORNER inflatable planets bounce out of its back doors at every corner it turns (ChasePlanet): the patrol
+## car that hits one sends it flying and is held back for PLANET_HOLD_SECONDS. Every number here is
 ## (propuesta).
 
 const DRIP_EVERY := 3.0
@@ -61,6 +63,11 @@ const MAX_DUMMIES := 8
 const FRAME_EVERY := 5.0
 const MAX_FRAMES := 8
 const SUITCASE_EVERY := 5.0
+const PLANETS_PER_CORNER := 2
+const MAX_PLANETS := 12
+## Seconds a hit planet holds the patrol car back, and how hard (the share of its speed lost per second).
+const PLANET_HOLD_SECONDS := 1.0
+const PLANET_DRAG := 1.5
 const MAX_SUITCASES := 8
 const MELONS_PER_CORNER := 2
 const MAX_MELONS := 12
@@ -100,6 +107,9 @@ var furniture: Array[RigidBody3D] = []
 var dummies: Array[ChaseDummy] = []
 var frames: Array[ChaseFrame] = []
 var suitcases: Array[ChaseSuitcase] = []
+var planets: Array[ChasePlanet] = []
+## Seconds the patrol car is still held back by a planet it hit.
+var planet_hold_left := 0.0
 ## Seconds the patrol car's windshield stays covered in a run-over suitcase's clothes.
 var laundry_left := 0.0
 var melons: Array[Watermelon] = []
@@ -213,6 +223,9 @@ func _physics_process(delta: float) -> void:
 			blobs.erase(blob)
 	if on_blob(case.car.global_position) and case.car.linear_velocity.length() > BLOB_SPEED:
 		case.car.linear_velocity *= maxf(1.0 - BLOB_DRAG * delta, 0.0)
+	if planet_hold_left > 0.0:
+		planet_hold_left -= delta
+		case.car.linear_velocity *= maxf(1.0 - PLANET_DRAG * delta, 0.0)
 
 
 ## Whether `at` is on a cement blob.
@@ -323,6 +336,9 @@ func _on_corner(turned: bool) -> void:
 		drop_furniture(false, true)
 	elif case.suspect_id == SuspectCar.CEMENT_MIXER:
 		drop_blob()
+	elif case.suspect_id == SuspectCar.PLANETARIUM_VAN:
+		for i in PLANETS_PER_CORNER:
+			drop_planet()
 	if riders_left > 0:
 		drop_jumper()
 	if ghost_look >= 0:
@@ -523,6 +539,29 @@ func drop_suitcase() -> ChaseSuitcase:
 	suitcase.rotation.y = case.truck.global_rotation.y + _rng.randf_range(-0.6, 0.6)
 	suitcases.append(suitcase)
 	return suitcase
+
+
+## An inflatable planet bounces out of the van's back doors onto the street, a little to one side.
+func drop_planet() -> ChasePlanet:
+	planets = planets.filter(func(planet: ChasePlanet) -> bool: return is_instance_valid(planet))
+	if planets.size() >= MAX_PLANETS:
+		planets.pop_front().queue_free()
+	var planet := ChasePlanet.new()
+	planet.car = case.car
+	planet.drops = self
+	planet.planet = GuideTraits.PLANETS[_rng.randi_range(0, GuideTraits.PLANETS.size() - 1)]
+	_dropped += 1
+	planet.name = "Planet%d" % _dropped
+	case.get_parent().add_child(planet)
+	var side := case.truck.global_basis.x * _rng.randf_range(-1.0, 1.0)
+	planet.global_position = _behind() + side + Vector3.UP * 0.3
+	planets.append(planet)
+	return planet
+
+
+## The patrol car hit an inflatable planet: it's held back for PLANET_HOLD_SECONDS.
+func planet_hit() -> void:
+	planet_hold_left = PLANET_HOLD_SECONDS
 
 
 func _behind() -> Vector3:

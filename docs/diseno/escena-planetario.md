@@ -205,4 +205,13 @@ Mientras tanto se avanza con lo recomendado.
    - Sacudida, con un grito a menos de 15 m o con una linterna en la cara, se ofende y se vuelve a dormir para siempre.
    - Capturas: `planetario/paso6b-cafe.png` y `planetario/paso6b-nebulosa.png`.
 7. El final: tablero, cansancio, sueldo y la combi con los planetas inflables.
+   **Hecho así:** `PlanetariumLevel` arma el caso con el tablero y el sello, y el comisario lo da en la comisaría.
+   - **La combi del planetario** (`SuspectCar.PLANETARIUM_VAN`, modelo `planetarium_van` con el telescopio en el
+     techo) espera al oeste de la puerta y va a 22 km/h.
+   - **Los planetas inflables** (`ChasePlanet`, modelo `chase_planet`, del color de su planeta; Saturno con anillo):
+     caen dos en cada esquina que dobla.
+     - El patrullero que choca uno lo manda volando y queda frenado 1 s.
+     - E lo pincha.
+   - El guía baja como `guide` y se lo interroga como `owner_guide`.
+   - Capturas: `planetario/paso7-combi.png` y `planetario/planetarium_van.png`.
 8. El sorteo de "Jugar" y el online.
