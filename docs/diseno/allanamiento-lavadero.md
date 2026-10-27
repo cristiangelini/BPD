@@ -189,6 +189,9 @@ extras suman 500.
      esté: primero "¡Lavado premium!" y después las frases de Don Chorro con su voz. Si un policía está a menos de 8 m,
      la primera vez va a la planilla. Capturas: `paso6e-*.png` y `paso6-modelos.png` (todas las pruebas).
 7. El lavadero en el sorteo de lugares (PlaceDraw), la huida y la persecución.
+   Hecho así: "Jugar" ya puede caer en el lavadero, como en los otros allanamientos. Si Don Chorro ve la prueba
+   principal en manos de un policía, se escapa en su auto desde la vereda (un minuto para agarrarlo) y, cuando lo paran,
+   se baja él con sus frases de persecución.
 8. El online.
 
 ## Preguntas abiertas para Cristian

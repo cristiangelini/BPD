@@ -5722,3 +5722,7 @@ POMPITA_CLUE_smuggled_parrot,"Vi a Don Chorro esconder algo %s. Y a veces lo oig
 PARROT_PREMIUM,¡Lavado premium!,Premium wash!,Lavagem premium!
 PARROT_SAYS,"¡Crrraaa! %s","Squaaawk! %s","Crrraaa! %s"
 CLUE_PARROT_PREMIUM,"Desde un escondite alguien grita «¡Lavado premium!» con voz de pájaro. Los escondites no hablan.","Someone in a hiding place squawks «Premium wash!» in a bird's voice. Hiding places don't talk.","De um esconderijo alguém grita «Lavagem premium!» com voz de pássaro. Esconderijos não falam."
+HINT_ESCAPE_carwash,¡Don Chorro vio la prueba y se escapa en el auto! Tienen un minuto para agarrarlo.,Don Chorro saw the evidence and is getting away in his car! You have one minute to catch him.,O Don Chorro viu a prova e está fugindo de carro! Vocês têm um minuto para pegá-lo.
+CHASE_CARWASH_LINE_1,"¡Me voy recién lavado y encerado! ¡No me alcanzan!","I'm off freshly washed and waxed! You'll never catch me!","Vou embora recém-lavado e encerado! Não me alcançam!"
+CHASE_CARWASH_LINE_2,"¡Cuidado con los charcos, que me salpican el auto!","Watch the puddles, they'll splash my car!","Cuidado com as poças, que respingam no meu carro!"
+CHASE_CARWASH_LINE_3,"¡Está bien, me rindo! Pero el lavado premium no se los devuelvo.","Fine, I give up! But I'm not refunding the premium wash.","Tá bom, eu me rendo! Mas a lavagem premium eu não devolvo."
