@@ -101,10 +101,24 @@ export function buildStickEngraver() {
 	return b.build();
 }
 
+// A 0.3 x 0.3 x 0.3 m pink ice cream bucket with frosty green bills bulging out of it under the lid.
+export function buildCashBucket() {
+	const b = new Builder('cash_bucket');
+	b.add('bucket', mat('cash_bucket_pink', 0xf0a0c0), new THREE.CylinderGeometry(0.15, 0.13, 0.26, 14), { pos: V(0, -0.02, 0) });
+	b.add('band', mat('cash_bucket_band', 0xfaf6e8), new THREE.CylinderGeometry(0.152, 0.145, 0.06, 14), { pos: V(0, 0.0, 0) });
+	const bill = mat('cash_bill', 0x7ac08a), frost = mat('cash_frost', 0xe8f6ff);
+	for (let i = 0; i < 8; i++) {
+		const a = (i / 8) * Math.PI * 2;
+		b.add('bill', bill, new THREE.BoxGeometry(0.12, 0.004, 0.06), { pos: V(Math.cos(a) * 0.06, 0.12 + (i % 2) * 0.01, Math.sin(a) * 0.06), rot: [0.3 * Math.sin(a), a, 0.3 * Math.cos(a)] });
+	}
+	b.add('frost', frost, new THREE.CylinderGeometry(0.1, 0.12, 0.02, 12), { pos: V(0, 0.115, 0) });
+	return b.build();
+}
+
 export const models = {
 	recipe_box: buildRecipeBox, secret_jar: buildSecretJar, rival_photo: buildRivalPhoto,
 	ice_block_watches: buildIceBlockWatches, ice_scale: buildIceScale, scale_magnet: buildScaleMagnet,
-	prize_sticks: buildPrizeSticks, stick_engraver: buildStickEngraver,
+	prize_sticks: buildPrizeSticks, stick_engraver: buildStickEngraver, cash_bucket: buildCashBucket,
 };
 
 export const views = {
@@ -115,6 +129,7 @@ export const views = {
 			{ name: 'ice_block_watches', pos: [-0.2, 0.2, -0.6] },
 			{ name: 'ice_scale', pos: [0.45, 0.15, -0.6] }, { name: 'scale_magnet', pos: [0.75, 0.025, 0.1] },
 			{ name: 'prize_sticks', pos: [-0.8, 0.1, 0.1] }, { name: 'stick_engraver', pos: [-0.8, 0.125, -0.5] },
+			{ name: 'cash_bucket', pos: [0.9, 0.15, -0.3] },
 		],
 		cam: { pos: [0, 0.7, 1.3], target: [0, 0.08, 0], fov: 45 },
 	},
