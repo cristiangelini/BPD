@@ -82,10 +82,10 @@ const MANAGER_DESK_SIZE := Vector3(2.2, 0.78, 1.0)
 const SAFE_AT := Vector3(HALF_X - 0.45, UP, -4.0)
 const SAFE_SIZE := Vector3(0.6, 0.9, 0.7)
 const SOFA_AT := Vector3(9.0, UP, -8.3)
-## El señor Trámite beside his desk, Benja by the copier, and Pelusa's round on the first floor: round the manager's
+## El señor Trámite beside his desk, Benja by the reception with his pile of papers, and Pelusa's round on the first floor: round the manager's
 ## office and out to the hall.
 const MANAGER_AT := Vector3(5.6, UP, -5.0)
-const INTERN_AT := Vector3(7.0, FLOOR_TOP, -7.3)
+const INTERN_AT := Vector3(-7.0, FLOOR_TOP, 1.5)
 const VACUUM_ROUTE: Array[Vector3] = [Vector3(1.0, UP, -3.0), Vector3(1.0, UP, -7.5), Vector3(7.5, UP, -7.5),
 	Vector3(7.5, UP, -3.0), Vector3(4.0, UP, -3.0), Vector3(4.0, UP, 1.0), Vector3(4.0, UP, -3.0)]
 ## The archive's shelves, against its walls, and the meeting room's long table.
@@ -140,7 +140,7 @@ var employees: Array[OfficeEmployee] = []
 var desk_of: Array[int] = []
 var bell_in := DESK_CHANGE_EVERY
 var manager: OfficePerson
-var intern: OfficePerson
+var intern: OfficeIntern
 var vacuum: RobotVacuum
 var case: CrimeSceneCase
 ## What was stolen and where it is (drawn with the case seed in set_up_case), and whether the cops found it.
@@ -278,6 +278,8 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	stapler.visible = loot != "stapler"
 	for employee in employees:
 		employee.case = case
+	intern.case = case
+	intern.knows = case.plan.clues.has("witness")
 	clues = OfficeClues.new()
 	clues.name = "Clues"
 	clues.office = self
@@ -307,6 +309,16 @@ func reveal_loot() -> void:
 	item.position = Vector3(at.x, FLOOR_TOP, at.z + 0.7)
 	if case:
 		case.found_loot()
+
+
+## Benja, cuffed or with his papers dropped, won't talk.
+func witness_offended() -> bool:
+	return intern != null and intern.offended
+
+
+func offend_witness() -> void:
+	if intern:
+		intern.offend()
 
 
 ## The employee by index (the order of the case's traits).
@@ -555,7 +567,12 @@ func _people() -> void:
 		add_child(employee)
 		employees.append(employee)
 	manager = _person("manager", MANAGER_AT, -PI / 2)
-	intern = _person("intern", INTERN_AT, PI / 2)
+	intern = OfficeIntern.new()
+	intern.name = "Intern"
+	intern.office = self
+	intern.position = INTERN_AT
+	intern.rotation.y = PI / 2
+	add_child(intern)
 	vacuum = RobotVacuum.new()
 	vacuum.name = "Pelusa"
 	vacuum.route = VACUUM_ROUTE

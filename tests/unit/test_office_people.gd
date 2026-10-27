@@ -78,7 +78,7 @@ func test_the_manager_the_intern_and_pelusa() -> void:
 	assert_not_null(office.manager.part("stamp"), "with his stamp")
 	assert_eq(office.intern.who, "intern")
 	assert_eq(office.room_of(office.to_global(office.intern.position + Vector3.UP)), "open_space",
-		"Benja is by the copier")
+		"Benja is by the reception")
 	assert_not_null(office.intern.part("papers"), "behind his papers")
 	var start := office.vacuum.position
 	assert_eq(office.floor_of(office.to_global(start + Vector3.UP * 0.2)), 1, "Pelusa goes round the first floor")
