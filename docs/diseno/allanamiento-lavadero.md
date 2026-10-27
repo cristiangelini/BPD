@@ -117,6 +117,15 @@ extras suman 500.
    - **Capturas:** `/mnt/project-files/lavadero/paso1-*.png` y `modelos.png`.
 2. El túnel: la cinta que arrastra, los chorros, los cepillos que giran y empujan, la cortina de espuma y el soplador;
    el botón que lo prende 30 s.
+   Hecho así:
+   - **El botón:** azul, en un poste junto a la boca del túnel. Lo prende 30 s; apretarlo andando no hace nada.
+   - **La cinta:** arrastra a 1,2 m/s hacia la salida lo que está encima, cosas y policías (16 m en unos 13 s).
+   - **Los chorros:** se ve el agua mientras anda; lo que pasa por abajo queda mojado (para la gamuza, paso 4).
+   - **Los cepillos:** giran 1,5 vueltas por segundo. Los de los costados empujan al medio a quien se les acerca; el de
+     arriba lo empuja un poco para atrás ("te peinó"). Cada uno, como mucho una vez por segundo a cada uno.
+   - **La cortina de espuma:** a quien la atraviesa le tapa la pantalla de blanco mientras está adentro.
+   - **El soplador:** tira fuera del túnel lo que pesa 3 kg o menos y le da un empujón al policía.
+   - **Capturas:** `/mnt/project-files/lavadero/paso2-*.png`.
 3. Don Chorro: la ronda lustrando, la denuncia, "¡eso no se lava así!" y el lavado premium.
 4. Pompita y la gamuza seca.
 5. El caso con la primera historia, la plata lavada.
