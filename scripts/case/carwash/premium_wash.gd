@@ -17,6 +17,8 @@ const REST := 45.0
 const FOOLS := 2
 ## How fast the car rides through the tunnel and back, in m/s.
 const RIDE_SPEED := 2.5
+## Online, a guest's car further than this from the host's (m) jumps to it.
+const SYNC_SLACK := 1.0
 
 ## The car that rides, where it waits in line and where it gets dried (in the car wash's space), and the tunnel it
 ## starts.
@@ -83,6 +85,24 @@ func ride_alone() -> bool:
 ## The car backs up to its place in line.
 func ride_home() -> void:
 	_ride_to = home
+
+
+## Online, what the guests' premium wash takes from the host's (CarWash.net_state): Don Chorro is the host's, so
+## when he's done drying there the car backs up here too; a car further than SYNC_SLACK from the host's jumps to it.
+func net_state() -> Array:
+	return [presses, distractions, rest_left, is_jammed, car.position if car else Vector3.ZERO, _ride_to]
+
+
+func apply_net_state(state: Array) -> void:
+	presses = state[0]
+	distractions = state[1]
+	rest_left = state[2]
+	if is_jammed and not state[3]:
+		fix()
+	is_jammed = state[3]
+	if car and car.position.distance_to(state[4]) > SYNC_SLACK:
+		car.position = state[4]
+		_ride_to = state[5]
 
 
 func is_drying() -> bool:

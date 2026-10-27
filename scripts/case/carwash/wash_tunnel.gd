@@ -70,6 +70,22 @@ func start() -> void:
 	started.emit()
 
 
+## Online, what the guests' tunnel takes from the host's (CarWash.net_state): started there, it starts here too, and
+## it stops when the host's does.
+func net_state() -> Array:
+	return [runs, run_left]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] > runs:
+		start()
+		runs = state[0]
+	if is_running() and state[1] <= 0.0:
+		stop()
+	elif is_running():
+		run_left = state[1]
+
+
 func stop() -> void:
 	run_left = 0.0
 	car_wash.conveyor.constant_linear_velocity = Vector3.ZERO

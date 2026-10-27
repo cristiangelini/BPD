@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Car wash raid, step 8: the car wash online. The host runs Don Chorro and decides the broken windshields and wax, which chamois gets wet and what Pompita says; the tunnel, the premium wash and the rag basket work from any PC, and the premium car rides and comes back on every PC.
 - Car wash raid, step 7: Play can draw the car wash among the raids, and Don Chorro gets away in his car when he sees the main evidence in a cop's hands, like the other owners.
 - Car wash raid, step 6e: the smuggled parrot story: the cage with the parrot (3 kg) is the main evidence, the fake export permit and the bag of birdseed the extras; every 15 s the parrot squawks "¡Lavado premium!" and Don Chorro's lines from wherever it is (the clue, to a cop within 8 m). The car wash now tells all 6 of its stories.
 - Car wash raid, step 6d: the parking meter coins story: the 30 kg sack of coins (for two cops) is the main evidence, the parking meters' key and the bag of fake tokens the extras; the token machine spits a token every 20 s (the clue, near a cop) and the vacuums go "clinc, clinc".

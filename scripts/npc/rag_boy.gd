@@ -94,6 +94,20 @@ func _tell(line: String, seconds: float) -> void:
 	_say(line, seconds)
 
 
+## Online, what the guests' Pompita takes from the host's (CarWash.net_state): what he said, he says it there too.
+func net_state() -> Array:
+	return [news_count, news, has_told, chamois]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] > news_count:
+		_say(state[1], 6.0)
+	news_count = state[0]
+	news = state[1]
+	has_told = state[2]
+	chamois = state[3]
+
+
 func _physics_process(delta: float) -> void:
 	_since_idle += delta
 	if _since_idle < IDLE_EVERY:
