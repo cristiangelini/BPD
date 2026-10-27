@@ -5588,3 +5588,21 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+PLACE_CARWASH,La Espuma Loca,Crazy Foam Car Wash,Lava-Rápido Espuma Louca
+MENU_CARWASH,Lavadero (allanamiento) (prueba),Car wash (raid) (test),Lava-rápido (batida) (teste)
+HINT_TILL_KEY_CARWASH,¡Una llave! Abre la oficina de Don Chorro.,A key! It opens Don Chorro's office.,Uma chave! Abre o escritório do Don Chorro.
+CARWASH_WINDSHIELD_BROKEN,"¡El parabrisas de un cliente! ¡Lo vino a lavar, no a romper!","A customer's windshield! They came to wash it, not to break it!","O para-brisa de um cliente! Ele veio lavar, não quebrar!"
+CARWASH_WAX_BROKEN,"¡Mis ceras de colores! ¡Eran de edición limitada!","My colored waxes! They were a limited edition!","Minhas ceras coloridas! Eram edição limitada!"
+CASE_FAILED_LAWYER_CARWASH,Don Chorro llamó al abogado del lavadero. Caso perdido.,Don Chorro called the car wash's lawyer. Case lost.,Don Chorro ligou para o advogado do lava-rápido. Caso perdido.
+LOC_in_queue_car_trunk,en el baúl del auto de la fila,in the trunk of the car in line,no porta-malas do carro da fila
+LOC_in_foam_tank,adentro del tanque de espuma,inside the foam tank,dentro do tanque de espuma
+LOC_behind_boiler,detrás de la caldera,behind the boiler,atrás da caldeira
+LOC_among_tires,entre las cubiertas,among the tires,entre os pneus
+LOC_in_carwash_office,en la oficina de Don Chorro,in Don Chorro's office,no escritório do Don Chorro
+LOC_behind_shampoo_drums,detrás de los bidones de champú,behind the shampoo drums,atrás dos galões de xampu
+LOC_on_token_machine,arriba de la máquina de fichas,on top of the token machine,em cima da máquina de fichas
+LOC_behind_vacuums,detrás de las aspiradoras,behind the vacuums,atrás dos aspiradores
+LOC_in_rag_basket,en el canasto de trapos,in the rag basket,no cesto de panos
+LOC_on_wax_shelf,en el estante de ceras,on the wax shelf,na prateleira de ceras
+LOC_in_inflatable_man,en el muñeco inflable,in the inflatable man,no boneco inflável
+LOC_in_drying_toolbox,en la caja de herramientas de la zona de secado,in the toolbox in the drying area,na caixa de ferramentas da área de secagem
