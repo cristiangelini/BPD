@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Train crime scene, step 6 (escena-tren.md): the crime scenes are drawn in fifths with the train, and online the guests' train follows the host's clock and brake, seats, stickers, tickets, food cart, showcase, window and knot, and the roof getaway (each PC sweeps its own cops off the roofs in the tunnels).
 - Train crime scene, step 5 (escena-tren.md): the roof getaway. The rightly accused culprit who runs off walks the roofs to the locomotive; a ladder in each car takes cops up, don Silbato whistles before each tunnel and a cop standing up there falls back in (crouched stays up), the magician throws doves at the nearest cop, caught he's interrogated as a magician and at the front he jumps into the river.
 - Train crime scene, step 4c (escena-tren.md): the ticket machine (one ticket each, 5 off the salary), Picadora who talks only to a cop with a ticket and tells whether the culprit wore glasses, offended if cuffed or braked on; the showcase's rope knot that a photo reads as left- or right-handed unless untied; and the emergency brake that stops the train 60 s for 100 off the salary, twice at most.
 - Train crime scene, step 4b (escena-tren.md): the empty showcase with the culprit's prints, the footprint in the luggage car's soot that señor Mostaza's cart wipes on its rounds unless a cop buys a sandwich (10 off the salary), the hair on the broken window's sill that the wind takes if you open it, the bitten sandwich and the evidence bags in the dining car.

@@ -162,3 +162,8 @@ interrogatorio.
   más cercano en los techos (lo tambalea 2 s). Si lo alcanzas, lo agarras y va al interrogatorio como un mago más; si
   llega al frente de la locomotora, salta al río desde el puente y el caso se pierde. Capturas en
   `/mnt/project-files/tren/paso5-*.png`.
+- **Paso 6 (en quintos y online):** las escenas del crimen se sortean en quintos (pastelería, circo, museo, hotel y
+  tren). Online el tren del anfitrión manda: el reloj de las estaciones, el freno, los asientos después de cada túnel,
+  las calcomanías (y la que se despega), los boletos, el carrito de señor Mostaza, la vitrina, la ventana y el nudo. En
+  la huida por los techos el anfitrión mueve al mago, decide si lo agarran y a quién le tira la paloma; cada PC barre de
+  los techos a sus propios policías en los túneles.

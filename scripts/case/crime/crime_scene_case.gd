@@ -581,6 +581,9 @@ func apply_snapshot(state: Dictionary) -> void:
 		accused = true
 		if state.has("chase"):
 			_run_off()
+		elif place and runs_off() and place.run_off(plan.culprit):
+			# The place runs his getaway itself (the train's roofs) and follows the host's.
+			pass
 		elif place and not gone.has(plan.culprit):
 			_send_off(place.suspect(plan.culprit))
 	if chase and state.has("chase"):

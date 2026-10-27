@@ -38,9 +38,14 @@ func prompt_key(_cop: Cop) -> String:
 
 
 func use(cop: Cop) -> void:
-	open = not open
-	_hinge.rotation.z = 1.2 if open else 0.0
+	set_open(not open)
 	if open:
 		cop.show_hint("HINT_TRAIN_WINDOW_WIND")
 		if clues:
 			clues.blow()
+
+
+## Open or shut, the pane on its hinge (a guest's window follows the host's).
+func set_open(is_open: bool) -> void:
+	open = is_open
+	_hinge.rotation.z = 1.2 if open else 0.0

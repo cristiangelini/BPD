@@ -8,6 +8,8 @@ extends Node
 ## falls back into the car. Now and then the magician throws a dove at the nearest cop up there (stagger). A cop who
 ## reaches him catches him; if he reaches the front of the locomotive, he jumps into the river from the bridge and the
 ## case is lost. Every number here is (propuesta).
+## Online (step 6) the host's getaway moves him, catches him and throws the doves; a guest's follows it, and each PC
+## sweeps its own cops off the roofs in the tunnels.
 
 signal ended(caught: bool)
 
@@ -25,6 +27,10 @@ const DOVE_SECONDS := 2.0
 var train: Train
 var runner: TrainMagician
 var done := false
+var follower := false
+## Doves thrown so far, and the name of the cop the last one went at.
+var doves := 0
+var dove_at := ""
 var _dove_left := DOVE_EVERY
 var _whistled := -1
 
@@ -46,15 +52,17 @@ static func begin(on: Train, magician: TrainMagician) -> TrainRoofChase:
 func _physics_process(delta: float) -> void:
 	if done:
 		return
-	runner.position.x = minf(runner.position.x + SPEED * delta, END_X)
 	_whistle()
 	var dark := train.ride.in_tunnel()
 	for cop in _cops_on_roof():
-		if cop.global_position.distance_to(runner.global_position) <= CATCH_REACH:
+		if not follower and cop.global_position.distance_to(runner.global_position) <= CATCH_REACH:
 			_end(true)
 			return
-		if dark and not cop.is_crouching:
+		if dark and not cop.is_crouching and _mine(cop):
 			fall_in(cop)
+	if follower:
+		return
+	runner.position.x = minf(runner.position.x + SPEED * delta, END_X)
 	_dove_left -= delta
 	if _dove_left <= 0.0:
 		_dove_left = DOVE_EVERY
@@ -98,9 +106,38 @@ func _throw_dove() -> void:
 		if gap <= DOVE_REACH and (not nearest or gap < nearest.global_position.distance_to(runner.global_position)):
 			nearest = cop
 	if nearest:
-		runner.trick()
-		nearest.stagger(DOVE_SECONDS)
-		nearest.show_hint("HINT_TRAIN_DOVE")
+		doves += 1
+		dove_at = str(nearest.name)
+		_dove(nearest)
+
+
+## A dove at `cop`: it staggers on the PC it plays on.
+func _dove(cop: Cop) -> void:
+	runner.trick()
+	if _mine(cop):
+		cop.stagger(DOVE_SECONDS)
+		cop.show_hint("HINT_TRAIN_DOVE")
+
+
+## A guest's getaway takes the host's: where he is, his doves and how it ended.
+func follow(x: float, over: bool, thrown: int, at: String) -> void:
+	runner.position.x = x
+	if thrown > doves:
+		doves = thrown
+		dove_at = at
+		for cop: Cop in get_tree().get_nodes_in_group("cops"):
+			if str(cop.name) == at:
+				_dove(cop)
+	if over and not done:
+		done = true
+		runner.say("TRAIN_MAGICIAN_SPLASH" if x >= END_X else "TRAIN_MAGICIAN_CAUGHT", 3.0)
+		if x >= END_X:
+			runner.hide()
+
+
+## Whether `cop` plays on this PC (offline, every cop does).
+func _mine(cop: Cop) -> bool:
+	return not cop.sync or cop.sync.is_multiplayer_authority()
 
 
 func _end(caught: bool) -> void:
