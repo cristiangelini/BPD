@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Cat crime scene, step 4: the nephews' files: photo, prints and teeth as at the museum; with empty hands the catchphrase, the beanie (one won't until fed) and the rolled-up sleeves with the scratch; the culprit is always scratched.
 - Cat crime scene, step 3: five ginger cats loose in the mansion, one of them Duquesa; held for 5 s a cat jumps out and hides by the furniture; the transport crate keeps her; the piano's music box makes only Duquesa purr; an open can of tuna calls every cat within 10 m.
 - Cat crime scene, step 2: the six nephews alike in the drawing room (same sweater, beanie and scarf; their own hair, glasses, shoe size, teeth, hidden scratch and catchphrase drawn with the case seed), Señora Ofelia in the hall and Don Plumas the parrot; E on them, they talk.
 - Cat crime scene, step 1: the Monedero mansion on its lot in block (0, 3): the garden with the fountain, the golden railings and the gate, the front door and the cat flap, the hall with Duquesa's portrait, the kitchen, the laundry with the litter tray and the dumbwaiter, the guest room with the six suitcases, the drawing room with the velvet armchair, the piano and its music box and the parrot's cage, and eight vases on pedestals; --place=cat_mansion.

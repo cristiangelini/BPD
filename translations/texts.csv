@@ -5620,3 +5620,29 @@ PROMPT_TUNA_CAN,E: abrir la lata de atún,E: open the can of tuna,E: abrir a lat
 PROMPT_TUNA_CAN_OPEN,La lata ya está abierta,The can is already open,A lata já está aberta
 PROMPT_CAT_CRATE,"Transportadora: acércale una gata en brazos","Transport crate: bring a cat in your arms to it","Caixa de transporte: aproxime uma gata nos braços"
 PROMPT_CAT_CRATE_OPEN,E: abrir la transportadora y soltar a la gata,E: open the crate and let the cat out,E: abrir a caixa e soltar a gata
+PROMPT_NEPHEW_FEED,E: darle de comer al sobrino (sus dientes),E: feed the nephew (his teeth),E: dar de comer ao sobrinho (os dentes)
+PROMPT_NEPHEW_PRINTS,E: tomarle las huellas al sobrino,E: take the nephew's prints,E: tirar as digitais do sobrinho
+PROMPT_NEPHEW_BEANIE,E: pedirle que se saque el gorro,E: ask them to take off the beanie,E: pedir que tire o gorro
+PROMPT_NEPHEW_SLEEVES,E: pedirle que se arremangue,E: ask them to roll up their sleeves,E: pedir que arregace as mangas
+NEPHEW_BITES,"¡Ñam! Mmm, la tía nunca me da de esto.","Nom! Mmm, auntie never gives me these.","Nham! Hum, a titia nunca me dá disso."
+NEPHEW_NO_DONUTS,"¿Una caja vacía? Igual que la herencia.","An empty box? Just like the inheritance.","Uma caixa vazia? Igual à herança."
+NEPHEW_BEANIE_NO,"¿El gorro? Ni loco: tengo el pelo como un nido. Tráeme algo de comer y lo pensamos.","The beanie? No way: my hair is a bird's nest. Bring me something to eat and we'll see.","O gorro? Nem pensar: meu cabelo está um ninho. Traga algo para comer e a gente vê."
+NEPHEW_BEANIE_OFF,"Ya está, aquí tienes mi pelo. No le digas a la tía.","There, here's my hair. Don't tell auntie.","Pronto, aqui está meu cabelo. Não conte para a titia."
+NEPHEW_SCRATCH_ROSES,"¿Esto? Fue el rosal del jardín. Esas rosas son unas fieras.","This? The rose bush in the garden. Those roses are wild beasts.","Isto? Foi a roseira do jardim. Essas rosas são umas feras."
+NEPHEW_NO_SCRATCH,"Mira, ni un rasguño. Yo a la Duquesa ni la toco.","Look, not a scratch. I don't even touch Duquesa.","Olha, nem um arranhão. Eu nem toco na Duquesa."
+NEPHEW_NO_FLASH,"¡Sin fotos, que la tía me ve despeinado!","No photos, auntie will see my messy hair!","Sem fotos, a titia vai me ver despenteado!"
+FILE_SCRATCH_LEFT,Arañazo: mano izquierda,Scratch: left hand,Arranhão: mão esquerda
+FILE_SCRATCH_RIGHT,Arañazo: mano derecha,Scratch: right hand,Arranhão: mão direita
+FILE_SCRATCH_NONE,Sin arañazos,No scratches,Sem arranhões
+FILE_SCRATCH_UNKNOWN,Arañazo: ? (falta arremangarlo),Scratch: ? (sleeves not rolled up yet),Arranhão: ? (falta arregaçar as mangas)
+FILE_TIC,"Muletilla: «%s»","Catchphrase: “%s”","Bordão: «%s»"
+BRIEF_CAT_A,"Novatos, esto es serio. A la señora Ofelia Monedero, la mujer más rica de la ciudad, le desapareció su gata, la Duquesa. La señora le paga la máquina de café a esta comisaría.","Rookies, this is serious. Señora Ofelia Monedero, the richest woman in the city, has lost her cat, Duquesa. The señora pays for this station's coffee machine.","Novatos, isto é sério. A senhora Ofelia Monedero, a mulher mais rica da cidade, perdeu a gata dela, a Duquesa. A senhora paga a máquina de café desta delegacia."
+BRIEF_CAT_B,"Y la Duquesa es la heredera de todo: está en el testamento. Este fin de semana están en la casona los seis sobrinos de la señora, y los seis quieren esa herencia. Uno de ellos se llevó a la gata.","And Duquesa is the heiress to everything: she's in the will. The señora's six nephews are at the mansion this weekend, and all six want that inheritance. One of them took the cat.","E a Duquesa é a herdeira de tudo: está no testamento. Neste fim de semana os seis sobrinhos da senhora estão no casarão, e os seis querem essa herança. Um deles levou a gata."
+BRIEF_CAT_C,"Quiero un nombre en el tablero y a la Duquesa en los brazos de la señora. Y por favor, no rompan nada, que todo vale más que mi sueldo.","I want a name on the board and Duquesa in the señora's arms. And please, don't break anything: it's all worth more than my salary.","Quero um nome no quadro e a Duquesa nos braços da senhora. E por favor, não quebrem nada, que tudo vale mais que o meu salário."
+HINT_GO_CAT_MANSION,"La Casona Monedero es la de las rejas doradas y la fuente con una gata. No se puede perder.","The Monedero Mansion is the one with the golden railings and the fountain with a cat. You can't miss it.","O Casarão Monedero é o das grades douradas e da fonte com uma gata. Não tem como errar."
+OBJ_CAT_GO,Ir a la Casona Monedero,Go to the Monedero Mansion,Ir ao Casarão Monedero
+HINT_CAT_LOOK,"Los seis sobrinos llevan el mismo suéter. Mírales el pelo, las manos y escucha cómo hablan.","The six nephews wear the same sweater. Look at their hair and their hands, and listen to how they talk.","Os seis sobrinhos usam o mesmo suéter. Olhe o cabelo e as mãos deles, e escute como falam."
+OBJ_CAT_FILES,"Armar la ficha de cada sobrino (%d de %d)","Make each nephew's file (%d of %d)","Montar a ficha de cada sobrinho (%d de %d)"
+HINT_NEPHEW_LEFT,"%s se aburrió del fin de semana y se fue a su casa. Su ficha queda como está.","%s got bored of the weekend and went home. Their file stays as it is.","%s se cansou do fim de semana e foi para casa. A ficha fica como está."
+HINT_FILE_scratch,"Las manos de %s para la ficha. ¿Rosal o gata?","%s's hands for the file. Rose bush or cat?","As mãos de %s para a ficha. Roseira ou gata?"
+HINT_FILE_tic,"La muletilla de %s para la ficha. Que no se te pegue.","%s's catchphrase for the file. Don't let it rub off on you.","O bordão de %s para a ficha. Não vá pegar a mania."
