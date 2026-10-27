@@ -5,8 +5,9 @@ extends StaticBody3D
 ## uniform, cap and regulation mustache as the cops, told apart by the name plate on their chest (it reads only up
 ## close) and where they work, and el Chancho, the prisoner in cell 1 who saw everything. The sixth coworker is the
 ## armero, who stays behind his counter (Armero). E on any of them gets one of their lines, a different one each time.
-## What they do in the case (their traits, the false alibi, the cleaner who wipes clues, the witness) comes in steps 3
-## and 4. Every number here is (propuesta).
+## With their traits (StaffTraits, step 3) they stand taller or shorter, the ones who limp wobble, and the first of
+## their lines is where and with whom they were last night. What they do in the case (the cleaner who wipes clues, the
+## witness, the bite and the signature) comes in step 4. Every number here is (propuesta).
 
 ## Who they can be: their model, how many lines they have (STAFF_<WHO>_LINE_<n>) and where they stand in the station
 ## (station-local, StationRooms and EvidenceRoom) with their turn.
@@ -22,20 +23,30 @@ const WHO := {
 const COWORKERS: Array[String] = ["ronquido", "sellito", "mopa", "fritanga", "polilla"]
 ## Where the name plate sits on the model's chest.
 const PLATE_AT := Vector3(-0.12, 0.9, 0.315)
+## The limp's wobble: how far they tip, side to side, and how fast.
+const LIMP_TILT := 0.09
+const LIMP_SPEED := 3.5
 
 var who := "ronquido"
+## Their StaffTraits (empty outside the case, and for el Chancho).
+var traits := {}
 var _model: Node3D
 var _bubble: Label3D
 var _bubble_left := 0.0
 var _lines_said := 0
+var _time := 0.0
 
 
-## Puts the five coworkers and el Chancho in their places in the station's `root` (the station's building node).
-static func spawn_all(root: Node3D) -> Array[StationStaff]:
+## Puts the five coworkers and el Chancho in their places in the station's `root` (the station's building node), each
+## coworker with their traits from `staff` (StaffTraits.draw) when given.
+static func spawn_all(root: Node3D, staff: Array[Dictionary] = []) -> Array[StationStaff]:
 	var people: Array[StationStaff] = []
 	for id: String in WHO:
 		var person := StationStaff.new()
 		person.who = id
+		for traits: Dictionary in staff:
+			if traits.id == id:
+				person.traits = traits
 		person.name = "Staff_" + id
 		person.position = WHO[id].at
 		person.rotation.y = WHO[id].turn
@@ -56,6 +67,8 @@ func _ready() -> void:
 	add_child(shape)
 	_model = (load(WHO[who].model) as PackedScene).instantiate()
 	add_child(_model)
+	if traits.has("tall"):
+		_model.scale = Vector3.ONE * (StaffTraits.TALL_SCALE if traits.tall else StaffTraits.SHORT_SCALE)
 	var teeth := part("teeth")
 	if teeth:
 		teeth.visible = false
@@ -92,10 +105,22 @@ func prompt_key(_cop: Cop) -> String:
 	return "PROMPT_STAFF_" + who.to_upper()
 
 
-## E on them: their next line.
+## E on them: their next line; with traits, every round of lines starts with their alibi.
 func use(_cop: Cop) -> void:
-	say(line_key(_lines_said))
+	var count: int = WHO[who].lines
+	if traits.is_empty():
+		say(line_key(_lines_said))
+	elif _lines_said % (count + 1) == 0:
+		say(alibi())
+	else:
+		say(line_key(_lines_said % (count + 1) - 1))
 	_lines_said += 1
+
+
+## Where and with whom they were last night (StaffTraits: the culprit and his cover say they were together).
+func alibi() -> String:
+	return tr("STAFF_ALIBI") % [tr("STAFF_PLACE_" + (traits.where as String).to_upper()),
+		tr("STAFF_WITH_" + StaffTraits.IDS[traits.with].to_upper())]
 
 
 ## The key of their line number n (it goes round).
@@ -114,6 +139,9 @@ func say(text: String, seconds := 4.0) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	_time += delta
+	if traits.get("limp", false):
+		_model.rotation.z = sin(_time * LIMP_SPEED) * LIMP_TILT
 	_bubble_left -= delta
 	if _bubble.visible and _bubble_left <= 0.0:
 		_bubble.hide()

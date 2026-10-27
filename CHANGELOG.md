@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Station crime scene, step 3: the coworkers' traits (StaffTraits): shoe size, spoons of sugar, teeth, left-handed, tall or short and limping, drawn with the seed; the tall ones stand taller, the ones who limp wobble, and the first thing each one says is where and with whom they were last night, in pairs, the culprit's pair being the lie.
 - Station crime scene, step 2: the station's people (StationStaff): cabo Ronquido, oficial Sellito, don Mopa, doña Fritanga and the clerk Polilla in the cops' own uniform, cap and regulation mustache, each with a name plate that reads only up close and their own thing (a thermos, a stamp, a mop, a donut, a file box), and el Chancho in cell 1; E on any of them gets one of their four lines.
 - Station crime scene, step 1: the evidence room behind the station's break room (escena-comisaria.md): a door with its "authorized personnel only" sign, a front room with the sign-out book's lectern and the VCR table, and past a barred wall with its gate the cage with the shelves of old cases' boxes, the shelf with the empty spot and the camera in the corner.
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
