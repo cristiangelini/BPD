@@ -129,6 +129,10 @@ bocina (por ahora el auto de fuga de los otros dueños; el autito queda para des
      hilo: si lo revientas cae un diamante de verdad y es pista; la mitad de los demás globos largan piedritas de vidrio
      (pista falsa). `--story=diamond_balloons`. Capturas `/mnt/project-files/cumple/paso4-*.png`.
 5. Las otras 5 historias, una por PR.
+   - **Cómo quedó, la piñata de billetes (propuesta):** la plancha (6 kg, 1000, el modelo de la plancha de la imprenta)
+     va escondida con la bolsa de billetes y el sello del "Banco Feliz" (los mismos de la casa equivocada). Al
+     romper la piñata caen 10 billetes verdes entre los caramelos, sale "¡Billetes del Banco Feliz!" y la pista va a
+     la planilla. `--story=pinata_bills`. Captura `/mnt/project-files/cumple/paso5-pinata-billetes.png`.
 6. El sorteo de "Jugar" entre los allanamientos y el online.
 
 ## Preguntas para Cristian
