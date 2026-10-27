@@ -58,6 +58,16 @@ func _ready() -> void:
 	hollow_book.has_bite = plan.clues.has("bite")
 	hollow_book.position = HOLLOW_BOOK_AT + Vector3(0, Library.TABLE_SIZE.y, 0)
 	library.add_child(hollow_book)
+	if hollow_book.has_bite:
+		var cookie := CrimeClueItem.new()
+		cookie.name = "Clue_bite"
+		cookie.kind = "bite"
+		cookie.look = "library"
+		cookie.case = case
+		library.add_child(cookie)
+		hollow_book.cookie = cookie
+		hollow_book.hide_cookie()
+		case.items["bite"] = cookie
 
 
 func _physics_process(delta: float) -> void:

@@ -5,7 +5,8 @@ extends RefCounted
 ## it, the grandpa's house, the bakery, the pet salon, the hardware store (ferreteria.md), the doll factory
 ## (fabrica.md), the insurance office (seguros.md), the cake lab (laboratorio.md), the Hotel Gran Siesta (hotel-allanamiento.md), the gym or the apartment building (edificio.md), with even odds (propuesta). Every third shift is an interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
 ## (persecucion.md, "Sale como un caso más"). Of the shifts left, one in CRIME_EVERY is the crime scene
-## (escena-del-crimen.md, propuesta; a quarter each at the pastry contest, the circus, the museum and the hotel), then one in
+## (escena-del-crimen.md, propuesta; a fifth each at the pastry contest, the circus, the museum, the hotel and the
+## library), then one in
 ## TRAFFIC_EVERY the traffic control (control-transito.md; the level draws rush hour or clown convoy), then one in
 ## INFILTRATION_EVERY an infiltration (infiltracion.md), a third each at the grandparents' club, the church choir
 ## (infiltracion-coro.md) and the mime troupe's theater (infiltracion-mimos.md), then one in BANK_EVERY the bank robbery (robo-banco.md), then one in RALLY_EVERY the
@@ -81,9 +82,9 @@ const CHASE_EVERY := 2
 ## traffic control (propuesta: each as often as each raid).
 const CRIME_EVERY := 5
 const TRAFFIC_EVERY := 4
-## The crime scenes, drawn by the seed: the pastry contest, the circus (escena-circo.md), the museum (escena-museo.md)
-## and the hotel (escena-hotel.md), in quarters (propuesta).
-const CRIME_SCENES := ["crime_scene", "circus", "museum", "hotel"]
+## The crime scenes, drawn by the seed: the pastry contest, the circus (escena-circo.md), the museum (escena-museo.md),
+## the hotel (escena-hotel.md) and the library (escena-biblioteca.md), in fifths (propuesta).
+const CRIME_SCENES := ["crime_scene", "circus", "museum", "hotel", "library"]
 ## Of the rest, one in this many is an infiltration (propuesta: as often as each raid), at one of these by the seed.
 const INFILTRATION_EVERY := 4
 const INFILTRATIONS := ["club", "choir", "mime", "party", "gym", "school", "restaurant", "chess", "biker", "auction"]

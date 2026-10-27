@@ -220,14 +220,19 @@ func reveal_loot() -> void:
 	if loot_found:
 		return
 	uncover_book()
-	loot_found = true
 	# Back in the case unopened, Doña Sigilo locks it: the bookmark stays inside.
 	if case and not book.opened:
 		case.ruin("bookmark")
-	book.position = CASE_AT + Vector3(0, 0.98, 0)
-	book.collision_layer = 0
+	_book_back()
 	if case:
 		case.found_loot()
+
+
+## The Golden Book in its display case, out of reach.
+func _book_back() -> void:
+	loot_found = true
+	book.position = CASE_AT + Vector3(0, 0.98, 0)
+	book.collision_layer = 0
 
 
 ## A cop sat down to read in the armchair: the noise goes down faster, and the hair left on it is lost.
@@ -240,6 +245,71 @@ func read_in_armchair(cop: Cop) -> void:
 	var hair := case.items.get("hair") as CrimeClueItem
 	if hair and not hair.bagged and hair.global_position.distance_to(to_global(ARMCHAIR_AT)) <= 1.0:
 		hair.wash()
+
+
+## Online, what the guests' library takes from the host's: the readers (their nightcap, and where they sit after a
+## blackout), the noise and who is hushed, Doña Sigilo, Tomasito, the Golden Book, the display case's glass and the
+## hollow book, and the clues ruined on the host.
+func net_state() -> Dictionary:
+	var state := {"readers": readers.map(func(reader: LibraryReader) -> Array:
+		return [reader.talked, reader.cap_on, reader.position, reader.rotation.y])}
+	if not case:
+		return state
+	state.noise = [noise.level, noise.blackout_left, noise.hushed.keys().map(func(cop: Cop) -> int:
+		return cop.sync.get_multiplayer_authority() if cop.sync else 1)]
+	state.librarian = [librarian.position, librarian.rotation.y, librarian.said()]
+	state.kid = [kid.heard, kid.scared, kid.reading]
+	state.book = [book_uncovered, book.opened if book else false, loot_found]
+	state.glass = [clues.glass.touched, clues.glass.has_prints]
+	state.hollow = clues.hollow_book.opened
+	return state
+
+
+func apply_net_state(state: Dictionary) -> void:
+	for reader in readers:
+		var look: Array = state.readers[reader.index]
+		reader.talked = look[0]
+		if not look[1] and reader.cap_on:
+			reader.cap_on = false
+			reader.part("nightcap").visible = false
+		reader.position = look[2]
+		reader.rotation.y = look[3]
+	if not case or not state.has("noise"):
+		return
+	noise.level = state.noise[0]
+	var dark: bool = state.noise[1] > 0.0
+	noise.blackout_left = state.noise[1]
+	for lamp in lamps:
+		lamp.visible = not dark
+	noise.hushed.clear()
+	for node in get_tree().get_nodes_in_group("cops"):
+		var cop := node as Cop
+		if cop.sync and (state.noise[2] as Array).has(cop.sync.get_multiplayer_authority()):
+			noise.hushed[cop] = 1.0
+	librarian.position = state.librarian[0]
+	librarian.rotation.y = state.librarian[1]
+	if state.librarian[2] != "" and librarian.said() != state.librarian[2]:
+		librarian.say(state.librarian[2])
+	kid.heard = state.kid[0]
+	kid.scared = state.kid[1]
+	kid.reading = state.kid[2]
+	if state.book[0] and not book_uncovered:
+		uncover_book()
+	if book:
+		book.opened = state.book[1]
+		if state.book[2] and not loot_found:
+			_book_back()
+	clues.glass.touched = state.glass[0]
+	clues.glass.has_prints = state.glass[1]
+	if state.hollow and not clues.hollow_book.opened:
+		clues.hollow_book.show_open()
+	for kind: String in ["hair", "bite"]:
+		if case.ruined.has(kind) and case.items.has(kind):
+			var item: CrimeClueItem = case.items[kind]
+			item.spoiled = true
+			item._eaten_part.visible = false
+	if case.ruined.has("footprint") and case.flour_print and not case.flour_print.wiped:
+		case.flour_print.wipe()
 
 
 ## The bookmobile waits at the curb, east of the steps, and drives straight out into the street.
