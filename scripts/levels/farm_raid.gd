@@ -87,6 +87,16 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_MUDDY_SHOVEL", "OBJ_EXTRA_STY_MAP"],
 		"rig": preload("res://scripts/case/farm/piggy_bank_rig.gd"),
 	},
+	"living_scarecrow": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_LIVING_SCARECROW_B", "BRIEF_LIVING_SCARECROW_C", "BRIEF_LIVING_SCARECROW_D"],
+		"find": "OBJ_FIND_SCARECROW_COSTUME",
+		"hidden": [preload("res://scenes/props/scarecrow_costume.tscn"), preload("res://scenes/props/cousin_hat.tscn"),
+			preload("res://scenes/props/mustache_clipping.tscn")],
+		"half_heights": [0.11, 0.065, 0.003],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_COUSIN_HAT", "OBJ_EXTRA_MUSTACHE_CLIPPING"],
+		"rig": preload("res://scripts/case/farm/living_scarecrow_rig.gd"),
+	},
 }
 ## Where the suspicion notes lie: on the yard's dirt, out of the buildings and the pens (Tota may eat them).
 const NOTE_PLACES: Array[Vector3] = [
@@ -245,6 +255,8 @@ var station_parking: Transform3D
 ## The baskets of eggs on the stall and the greenhouse's glass, what breaks (steps 3 and 5 count it).
 var baskets: Array[Node3D] = []
 var greenhouse: Node3D
+## The scarecrow in the garden (it walks in the living scarecrow story).
+var scarecrow: Node3D
 var greenhouse_broken := false
 var eggs: Array[FarmEgg] = []
 var _build: PlaceBuilder
@@ -666,7 +678,7 @@ func _build_garden() -> void:
 	for i in 4:
 		var z := g.position.y + 0.8 + i * 1.5
 		_build.mesh_box(Vector3(g.get_center().x - 1.2, GROUND + 0.06, z), Vector3(g.size.x - 3.4, 0.12, 0.6), SOIL)
-	_model(SCARECROW_MODEL, SCARECROW_AT + Vector3.UP * GROUND)
+	scarecrow = _model(SCARECROW_MODEL, SCARECROW_AT + Vector3.UP * GROUND)
 	var r := GREENHOUSE
 	greenhouse = Node3D.new()
 	greenhouse.name = "Greenhouse"
