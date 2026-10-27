@@ -5694,3 +5694,14 @@ LUCHO_CLUE_famous_dentures,"«Mmm… Vi al doctor esconder algo %s. Y el otro d�
 CLUE_DESK_CHATTER,Una dentadura castañetea sola en el escritorio del doctor,A denture chatters by itself on the doctor's desk,Uma dentadura bate os dentes sozinha na mesa do doutor
 DESK_CLACK,¡clac clac clac!,clack clack clack!,clac clac clac!
 HINT_DENTURE_BITE,¡Una dentadura te muerde el zapato! Caminas lento un rato.,A denture bites your shoe! You walk slowly for a while.,Uma dentadura morde o seu sapato! Você anda devagar por um tempo.
+BRIEF_RISING_CHAIR_B,"El doctor le guarda el botín a una banda de ladrones. Dicen que lo esconde donde nadie mira: arriba.","The doctor keeps a gang of robbers' loot for them. They say he hides it where nobody looks: up.","O doutor guarda o dinheiro roubado de uma quadrilha. Dizem que esconde onde ninguém olha: em cima."
+BRIEF_RISING_CHAIR_C,"Traigan la bolsa del botín en el baúl del patrullero. Pesa 6 kilos.","Bring the loot bag in the patrol car's trunk. It weighs 6 kilos.","Tragam o saco do dinheiro roubado no porta-malas da viatura. Pesa 6 quilos."
+BRIEF_RISING_CHAIR_D,"Si encuentran la llave del falso techo o el plano del techo, mejor: todo suma.","If you find the false ceiling's key or the ceiling plan, even better: it all counts.","Se acharem a chave do forro ou a planta do teto, melhor: tudo conta."
+OBJ_FIND_LOOT_BAG,Llevarse la bolsa del botín,Take the loot bag,Levar o saco do roubo
+OBJ_EXTRA_HATCH_KEY,Extra: la llave del falso techo,Extra: the false ceiling's key,Extra: a chave do forro
+OBJ_EXTRA_CEILING_PLAN,Extra: el plano del techo,Extra: the ceiling plan,Extra: a planta do teto
+LUCHO_CLUE_rising_chair,"«Mmm… Vi al doctor esconder algo %s. Y una vez lo vi subir en el sillón hasta el techo, parado, como en un ascensor.»","“Mmm… I saw the doctor hide something %s. And once I saw him ride the chair up to the ceiling, standing, like in an elevator.”","“Hum… Vi o doutor esconder algo %s. E uma vez vi ele subir na cadeira até o teto, em pé, como num elevador.”"
+CLUE_CHAIR_MARKS,El sillón 2 tiene marcas de zapatos en el respaldo,Chair 2 has shoe prints on its backrest,A cadeira 2 tem marcas de sapato no encosto
+PROMPT_CHAIR_PEDAL,E: pisar el pedal del sillón,E: press the chair's pedal,E: pisar no pedal da cadeira
+PROMPT_CEILING_HATCH,E: abrir la tapa del falso techo,E: open the false ceiling's hatch,E: abrir a tampa do forro
+HINT_HATCH_TOO_HIGH,"No llegas. Súbete al sillón y que suba hasta arriba.","You can't reach it. Stand on the chair and raise it all the way.","Você não alcança. Suba na cadeira e faça ela subir até o alto."

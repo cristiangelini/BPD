@@ -32,7 +32,7 @@ const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_DENTIST_TIP_B", "
 	"BRIEF_DENTIST_TIP_E"]
 ## The stories the office can tell, like GymRaid.STORIES: what the comisario says once it's guessed, its "find it" row,
 ## what it hides in spots drawn with the seed (with their half heights and whether they're heavy; the first one is the
-## main evidence), the checklist rows of its extras and its rig.
+## main evidence, unless "main_hidden" is false and the rig places it), the checklist rows of its extras and its rig.
 const STORIES := {
 	"gold_teeth": {
 		"briefing": ["BRIEF_RIGHT", "BRIEF_GOLD_TEETH_B", "BRIEF_GOLD_TEETH_C", "BRIEF_GOLD_TEETH_D"],
@@ -73,6 +73,16 @@ const STORIES := {
 		"heavy": [false, false, false],
 		"extra_keys": ["OBJ_EXTRA_SMILE_PHOTO", "OBJ_EXTRA_HALF_MOLD"],
 		"rig": preload("res://scripts/case/dentist/famous_dentures_rig.gd"),
+	},
+	"rising_chair": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_RISING_CHAIR_B", "BRIEF_RISING_CHAIR_C", "BRIEF_RISING_CHAIR_D"],
+		"find": "OBJ_FIND_LOOT_BAG",
+		"main_hidden": false,
+		"hidden": [preload("res://scenes/props/hatch_key.tscn"), preload("res://scenes/props/ceiling_plan.tscn")],
+		"half_heights": [0.006, 0.003],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_HATCH_KEY", "OBJ_EXTRA_CEILING_PLAN"],
+		"rig": preload("res://scripts/case/dentist/rising_chair_rig.gd"),
 	},
 }
 ## Where the suspicion notes can lie: on the floor of the waiting room, the corridor and the rooms, away from the furniture.
@@ -177,6 +187,9 @@ var molds: Array[Ornament] = []
 var fish_tank: Node3D
 var tank_broken := false
 var broken_goods := 0
+## The chairs' looks and bodies (the rising chair story lifts chair 2).
+var chair_looks: Array[Node3D] = []
+var chair_bodies: Array[StaticBody3D] = []
 ## The case flow every raid shares.
 var raid: RaidCase
 ## Money taken off the case pay: the fish tank.
@@ -307,8 +320,11 @@ func _place_hidden() -> void:
 		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
 		add_child(item)
 		hidden.append(item)
-	main = hidden[0]
-	extras.assign(hidden.slice(1))
+	if story.get("main_hidden", true):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
 
 
 ## One clue note for each suspicion, the true one too, on note places drawn with the seed.
@@ -449,9 +465,10 @@ func _build_rooms() -> void:
 	for x: float in ROOM_WALLS:
 		_wall("z", x, -HALF_Z, ROOMS_Z, [], TILE)
 	for i in CHAIRS.size():
-		_model(CHAIR_MODEL, CHAIRS[i])
+		chair_looks.append(_model(CHAIR_MODEL, CHAIRS[i]))
 		var chair := _build.body(CHAIRS[i] + Vector3(0, 0.45, -0.3))
 		_build.shape(chair, Vector3(0.7, 0.9, 1.3))
+		chair_bodies.append(chair)
 		var tank := LaughingGasTank.new()
 		tank.name = "GasTank%d" % (i + 1)
 		tank.position = GAS_TANKS[i]
