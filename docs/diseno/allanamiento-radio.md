@@ -85,6 +85,8 @@ entre 400 y 600.
    **Hecho (paso 2):** `RadioMic` en la consola, el teléfono de la recepción (`DeskPhone`) y la señal
    `listener_complained` que el paso 3 suma a la denuncia. Capturas `radio/paso2-*.png`.
 3. Don Volumen: la ronda, la denuncia y el tema largo del tocadiscos.
+   **Hecho (paso 3):** don Volumen es un `FloorBoss` (voz `VOLUMEN`) con el tocadiscos `RadioRecordPlayer`; va al
+   archivo cada 90 s y al café por la recepción (`printer_path`). Capturas `radio/paso3-*.png`.
 4. Doña Rosa por teléfono.
 5. El caso (RaidCase) con la primera historia: el concurso arreglado.
 6. Las otras 5 historias, una por PR.

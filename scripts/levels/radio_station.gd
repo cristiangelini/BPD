@@ -7,6 +7,9 @@ extends Node3D
 ## the control room with the record player, and the kitchen. At the back, the record archive (locked with the till's
 ## key), the storage room and the bathroom. A metal stair up the east wall reaches the roof and the antenna. Something
 ## thrown hard at the studio's window cracks it, and at the archive's shelves drops a record that breaks, a fine each.
+## Don Volumen talks on air at the console and goes to the archive for a record now and then, filling the complaint;
+## E on the record player puts on the long song, the light goes off and he goes to the kitchen for a coffee, his back
+## to everything (step 3).
 ## Every number here is (propuesta).
 
 signal glass_broken
@@ -19,7 +22,7 @@ signal listener_complained
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const PHONE_SCENE := preload("res://scenes/props/desk_phone.tscn")
 const CONSOLE_MODEL := preload("res://assets/models/radio_console.glb")
-const PLAYER_MODEL := preload("res://assets/models/record_player.glb")
+const VOLUMEN_SCENE := preload("res://scenes/npc/don_volumen.tscn")
 const SHELF_MODEL := preload("res://assets/models/record_shelf.glb")
 const ANTENNA_MODEL := preload("res://assets/models/radio_antenna.glb")
 const HALF_X := 9.0
@@ -57,7 +60,6 @@ const DESK_SIZE := Vector3(2.6, 1.0, 0.8)
 const CONSOLE_AT := Vector3(-5.0, FLOOR_TOP, -0.6)
 const CONSOLE_SIZE := Vector3(2.0, 0.8, 0.8)
 const PLAYER_AT := Vector3(1.5, FLOOR_TOP, -2.6)
-const PLAYER_SIZE := Vector3(0.6, 0.9, 0.5)
 const SHELF_ROWS: Array[float] = [-6.4, -9.0]
 const SHELF_X0 := -8.6
 const SHELF_COUNT := 2
@@ -80,6 +82,29 @@ const CALL_WAIT := 10.0
 ## What the listeners say when someone answers, in turn.
 const CALLS: Array[String] = ["RADIO_CALL_NOISE", "RADIO_CALL_SONG", "RADIO_CALL_VOLUMEN"]
 
+## Don Volumen's round, back and forth: from behind the console, through the archive's door and around the shelves'
+## end to the middle of the archive. His coffee spot in the kitchen, facing the wall, and the way there through the
+## studio's door, the reception and the kitchen's door.
+const VOLUMEN_ROUTE: Array[Vector3] = [
+	Vector3(-5.0, FLOOR_TOP, -1.8), Vector3(ARCHIVE_DOOR_X, FLOOR_TOP, -5.2), Vector3(-1.5, FLOOR_TOP, -5.2),
+	Vector3(-1.5, FLOOR_TOP, -7.7), Vector3(-4.0, FLOOR_TOP, -7.7),
+]
+const COFFEE_PATH: Array[Vector3] = [
+	Vector3(-7.8, FLOOR_TOP, -1.8), Vector3(-7.8, FLOOR_TOP, 2.6), Vector3(STUDIO_DOOR_X, FLOOR_TOP, 2.6),
+	Vector3(STUDIO_DOOR_X, FLOOR_TOP, 5.4), Vector3(KITCHEN_DOOR_X, FLOOR_TOP, 5.4), Vector3(KITCHEN_DOOR_X, FLOOR_TOP, 2.6),
+]
+const COFFEE_SPOT := Vector3(5.8, FLOOR_TOP, -2.5)
+## How long he talks on air at the console between trips to the archive, and the coffee.
+const STUDIO_PAUSE := 90.0
+const COFFEE_TIME := 25.0
+## A listener's complaint, him seeing the window crack or a record break, and the long song once he knows the trick.
+const LISTENER := 5.0
+const SAW_GLASS := 10.0
+const SAW_RECORD := 5.0
+const NOTICED := 10.0
+## He opens the archive's door when this close to it and shuts it again once past.
+const DOOR_REACH := 2.0
+
 ## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
 const SPOTS := [
 	{"id": "behind_reception_desk", "at": Vector3(-4.0, FLOOR_TOP, 6.6), "heavy": true},
@@ -93,7 +118,7 @@ const SPOTS := [
 	{"id": "on_kitchen_fridge", "at": Vector3(8.2, FLOOR_TOP + 1.8, -3.2), "heavy": false},
 	{"id": "under_ranking", "at": Vector3(3.5, FLOOR_TOP, 4.4), "heavy": false},
 	{"id": "in_control_room", "at": Vector3(3.0, FLOOR_TOP, 2.8), "heavy": false},
-	{"id": "behind_console", "at": Vector3(-5.0, FLOOR_TOP, -1.4), "heavy": false},
+	{"id": "behind_console", "at": Vector3(-3.0, FLOOR_TOP, -1.4), "heavy": false},
 ]
 
 const OUTSIDE := Color(0.9, 0.86, 0.78)
@@ -126,6 +151,12 @@ var calls := 0
 var complaints := 0
 ## Seconds left for the ringing call, 0 when the phone is quiet.
 var call_left := 0.0
+var record_player: RadioRecordPlayer
+var volumen: FloorBoss
+var complaint_bar: ProgressBar
+## Whether he opened the archive's door on his way, and whether it was locked then.
+var _volumen_opened := false
+var _was_locked := false
 ## Same seed, same radio (the stories and the hiding spots come from it, step 5).
 @export var case_seed := 0
 var _build: PlaceBuilder
@@ -146,6 +177,7 @@ func _ready() -> void:
 	_build_studio()
 	_build_back()
 	_build_roof()
+	_place_volumen()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("radio")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -242,10 +274,12 @@ func _build_studio() -> void:
 	near_mic.body_entered.connect(func(body: Node3D) -> void:
 		if body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > NOISE_SPEED:
 			make_noise())
-	for x: float in [-5.6, -4.4]:
-		_build.box(Vector3(x, FLOOR_TOP + 0.25, -1.6), Vector3(0.5, 0.5, 0.5), DARK)
-	_model(PLAYER_MODEL, PLAYER_AT)
-	_build.shape(_build.body(PLAYER_AT + Vector3(0, PLAYER_SIZE.y / 2, 0)), PLAYER_SIZE)
+	# The swivel chairs are only for the look: don Volumen walks past them.
+	for x: float in [-6.2, -3.8]:
+		_build.mesh_box(Vector3(x, FLOOR_TOP + 0.25, -1.6), Vector3(0.5, 0.5, 0.5), DARK)
+	record_player = RadioRecordPlayer.new()
+	record_player.position = PLAYER_AT
+	add_child(record_player)
 	_build.box(Vector3(6.5, FLOOR_TOP + 0.45, -3.4), Vector3(3.0, 0.9, 0.6), WOOD)
 	_build.mesh_box(Vector3(5.8, FLOOR_TOP + 1.05, -3.4), Vector3(0.25, 0.3, 0.2), DARK)
 	_build.box(Vector3(8.2, FLOOR_TOP + 0.9, -3.2), Vector3(0.8, 1.8, 0.7), TILE)
@@ -305,6 +339,75 @@ func _process(delta: float) -> void:
 		call_left -= delta
 		if call_left <= 0.0:
 			_unanswered()
+
+
+func _physics_process(_delta: float) -> void:
+	if volumen:
+		_volumen_door()
+
+
+## Don Volumen on his round, the long song, what he notices and the complaint bar.
+func _place_volumen() -> void:
+	volumen = VOLUMEN_SCENE.instantiate()
+	volumen.route = VOLUMEN_ROUTE
+	volumen.printer_spot = COFFEE_SPOT
+	volumen.printer_path = COFFEE_PATH
+	volumen.printer = record_player
+	volumen.fix_time = COFFEE_TIME
+	volumen.first_pause = STUDIO_PAUSE
+	add_child(volumen)
+	volumen.fix_facing = to_global(COFFEE_SPOT + Vector3(0, 0, -10))
+	volumen.start_at(0)
+	archive_door.broken.connect(volumen.door_broken)
+	till.opened.connect(func(at: Vector3) -> void: volumen.saw(at, FloorBoss.SAW_TILL))
+	glass_broken.connect(func() -> void: volumen.saw(to_global(_glass.position), SAW_GLASS, "VOLUMEN_GLASS"))
+	record_broken.connect(func() -> void:
+		volumen.saw(to_global(Vector3(-4.0, FLOOR_TOP + 1.0, -7.7)), SAW_RECORD, "VOLUMEN_RECORD"))
+	listener_complained.connect(func() -> void: volumen.scold(LISTENER, "VOLUMEN_LISTENER"))
+	record_player.jammed.connect(func() -> void: set_on_air(false))
+	record_player.song_ended.connect(func() -> void: set_on_air(true))
+	record_player.noticed.connect(func() -> void: volumen.scold(NOTICED, "VOLUMEN_NOTICED"))
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	volumen.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## He has the archive's key: its door opens before him and shuts behind him, locked again as he found it unless a cop
+## slipped in.
+func _volumen_door() -> void:
+	if archive_door.is_broken:
+		return
+	var at := to_local(volumen.global_position)
+	var near := Vector2(at.x - ARCHIVE_DOOR_X, at.z - BACK_Z).length() < DOOR_REACH
+	if near and not archive_door.is_open:
+		_was_locked = archive_door.locked
+		_volumen_opened = true
+		archive_door.open_from_inside()
+	elif not near and _volumen_opened:
+		_volumen_opened = false
+		archive_door.close()
+		archive_door.locked = _was_locked and not _cop_in_archive()
+
+
+func _cop_in_archive() -> bool:
+	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
+		var at := to_local(cop.global_position)
+		if at.x < ARCHIVE_X1 and at.z < BACK_Z:
+			return true
+	return false
 
 
 ## Turns the "AL AIRE" light on or off: only on air does the neighborhood hear what happens.
