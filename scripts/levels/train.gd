@@ -33,7 +33,11 @@ const SEATS: Array[Vector3] = [
 	Vector3(3, 0, 1.05), Vector3(6.5, 0, 1.05), Vector3(10, 0, 1.05),
 ]
 const TICKET_MACHINE_AT := Vector3(13.3, 0, -1.15)
-const TABLES: Array[Vector3] = [Vector3(-11, 0, -0.95), Vector3(-6, 0, -0.95), Vector3(-11, 0, 0.95), Vector3(-6, 0, 0.95)]
+const TABLES: Array[Vector3] = [Vector3(-11, 0, 0.95), Vector3(-7.5, 0, 0.95), Vector3(-4, 0, 0.95)]
+## The portable board hangs on the dining car's other side, over its windows, with the rubber stamp's desk by it
+## (CrimeBoard, BoardStamp; TrainLevel puts them).
+const BOARD_AT := Transform3D(Basis.IDENTITY, Vector3(-8, FLOOR_Y - 0.25, -1.42))
+const STAMP_AT := Vector3(-4.2, FLOOR_Y, -1.0)
 const CART_AT := Vector3(-1.8, 0, -0.95)
 ## The bathroom, in the dining car's back corner beside its door: x from the end wall to BATHROOM_X, z from
 ## BATHROOM_Z to the side. Its door opens to the aisle.
@@ -51,6 +55,17 @@ const VENDOR_AT := Vector3(-2.7, 0, -0.95)
 const CART_MODEL := preload("res://assets/models/train_cart.glb")
 ## The roll of numbered stickers, on top of the ticket machine.
 const STICKERS_AT := TICKET_MACHINE_AT + Vector3(0, 1.45, 0)
+## What was stolen, drawn with the seed (escena-tren.md, pregunta 1), and where it can be hidden: in a spare top hat
+## on first class's luggage rack, in the food cart or in the bathroom's water tank.
+const LOOTS: Array[String] = ["rabbit", "wand", "watch"]
+const LOOT_SPOTS: Array[String] = ["hat", "food_cart", "tank"]
+const LOOT_MODELS := {
+	"rabbit": preload("res://assets/models/golden_rabbit.glb"),
+	"wand": preload("res://assets/models/magic_wand.glb"),
+	"watch": preload("res://assets/models/pocket_watch.glb"),
+}
+const HAT_RACK_AT := Vector3(8.5, 2.3, -1.15)
+const TANK_AT := Vector3(-14.65, 0.75, 1.1)
 ## Where a cop gets on: first class's aisle, by the back door.
 const SPAWN_AT := Vector3(1.5, FLOOR_Y + 0.1, 0)
 const BODY := Color(0.18, 0.32, 0.25)
@@ -84,6 +99,12 @@ var last_wearer := {}
 ## The culprit peels his sticker off in the first tunnel he goes through with one, only once.
 var culprit_peeled := false
 var _was_tunnel := false
+## What was stolen and where it is (drawn with the case seed in set_up_case), and whether the cops found it.
+var loot := "rabbit"
+var loot_spot := "hat"
+var loot_found := false
+## The searchable places, by spot.
+var loot_spots := {}
 var _cars: Node3D
 var _build: PlaceBuilder
 
@@ -124,12 +145,40 @@ func _physics_process(delta: float) -> void:
 			magician.say("MAGICIAN_TA_DA", 2.0)
 	_was_tunnel = dark
 	_update_signs()
+	if case and ride.arrived():
+		case.end_of_line()
 
 
 func set_up_case(new_case: CrimeSceneCase) -> void:
 	case = new_case
+	loot = LOOTS[hash(["train loot", case.case_seed]) % LOOTS.size()]
+	loot_spot = LOOT_SPOTS[hash(["train loot spot", case.case_seed]) % LOOT_SPOTS.size()]
 	for magician in magicians:
 		magician.case = case
+
+
+## Searching a spot: the stolen thing turns up in the right one; a sign of nothing in the others.
+func search(spot: String, cop: Cop) -> void:
+	if spot != loot_spot or loot_found or not case:
+		if cop:
+			cop.show_hint("HINT_SEARCH_NOTHING_" + spot)
+		return
+	reveal_loot()
+
+
+## What was stolen comes out of its hiding spot, on the floor in front of it, and the case notes it.
+func reveal_loot() -> void:
+	if loot_found:
+		return
+	loot_found = true
+	var item: Node3D = LOOT_MODELS[loot].instantiate()
+	item.name = "Loot"
+	_cars.add_child(item)
+	var spot := loot_spots[loot_spot] as Node3D
+	var out: Vector3 = spot.get_meta("out")
+	item.position = Vector3(spot.position.x, 0.0, spot.position.z) + out * 0.6
+	if case:
+		case.found_loot()
 
 
 ## In the dark the six swap seats (the order drawn with the seed and the leg), and the culprit peels his sticker
@@ -373,6 +422,23 @@ func _people() -> void:
 	_build.shape(cart, Vector3(0.9, 0.9, 0.6))
 	cart.get_child(0).position.y = 0.45
 	cart.add_child(CART_MODEL.instantiate())
+	_loot_spot("hat", HAT_RACK_AT, Vector3(1.2, 0.3, 0.5), Vector3(0, 0, 1))
+	_loot_spot("food_cart", CART_AT + Vector3(0, 0.95, 0), Vector3(0.9, 0.15, 0.6), Vector3(0, 0, 1))
+	_loot_spot("tank", TANK_AT, Vector3(0.3, 0.4, 0.5), Vector3(1, 0, 0))
+	_build.mesh_box(TANK_AT, Vector3(0.22, 0.35, 0.45), TILE)
+	for i in 3:
+		_build.mesh_box(HAT_RACK_AT + Vector3(-0.4 + i * 0.4, -0.02, 0), Vector3(0.28, 0.3, 0.28), DARK)
+
+
+func _loot_spot(spot: String, at: Vector3, size: Vector3, out: Vector3) -> void:
+	var body := LootSpot.new(size)
+	body.name = "Search_" + spot
+	body.spot = spot
+	body.place = self
+	body.position = at
+	body.set_meta("out", out)
+	_cars.add_child(body)
+	loot_spots[spot] = body
 
 
 func _staff(role: String, at: Vector3, turn: float) -> TrainStaff:

@@ -72,8 +72,10 @@ const VARIANTS := {
 		"brief": ["BRIEF_TRAIN_A_", "BRIEF_TRAIN_B", "BRIEF_TRAIN_C"], "go": "HINT_GO_TRAIN",
 		"go_row": "OBJ_TRAIN_GO", "look": "HINT_TRAIN_LOOK", "files_row": "OBJ_TRAIN_FILES",
 		"clue_line": "CLUE_TRAIN_", "ruined_hint": "HINT_TRAIN_RUINED_", "left": "HINT_MAGICIAN_LEFT",
-		"who": "magician", "getaway": SuspectCar.BIKE, "clues": MagicianTraits.CLUES,
+		"who": "magician", "getaway": SuspectCar.BIKE, "clues": MagicianTraits.CLUES, "loot_row": "OBJ_TRAIN_LOOT_",
 		"parts": ["photo", "prints", "teeth", "hair", "knot"],
+		# Nobody goes home on a moving train: the hurry is the last station (Train, end_of_line).
+		"tire": false,
 	},
 	# The hotel (escena-hotel.md, decision 201): six guests alike in bathrobes; their rooms tell what doesn't show on
 	# them, and the concierge swapped two rooms.
@@ -401,6 +403,18 @@ func accuse(id: int) -> void:
 		_take_culprit()
 	if accused or lost:
 		get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
+
+
+## The train got to the last station with nobody rightly accused (escena-tren.md): the culprit gets off among the
+## crowd and the case is lost.
+func end_of_line() -> void:
+	if accused or lost or follower:
+		return
+	lost = true
+	_comisario_says("TRAIN_CULPRIT_GOT_OFF")
+	checklist.show_rows(rows())
+	verdict.emit(false, true)
+	get_tree().create_timer(SHIFT_DELAY).timeout.connect(finish_shift)
 
 
 ## Whether this case's culprit runs off when accused, from the seed. One who already went home can't.
@@ -882,7 +896,7 @@ func _physics_process(delta: float) -> void:
 		return
 	if not accused and not lost:
 		elapsed += delta
-		if gone.size() < cooks.size() and elapsed >= LEAVE_FROM + gone.size() * LEAVE_EVERY:
+		if texts().get("tire", true) and gone.size() < cooks.size() and elapsed >= LEAVE_FROM + gone.size() * LEAVE_EVERY:
 			_tire()
 	if not at_tent and not follower:
 		for cop in get_tree().get_nodes_in_group("cops"):

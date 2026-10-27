@@ -135,3 +135,9 @@ interrogatorio.
   poner) y el nudo del pañuelo (con qué mano). En cada túnel los seis se cambian de asiento (el orden sale de la
   semilla y del tramo) y al volver la luz dicen "¡Ta-chán!"; el culpable se despega su calcomanía en el primer túnel
   que pasa con una, una sola vez, y queda tirada a sus pies.
+- **Paso 4a (el caso):** el comisario da el caso por radio apenas arranca el tren (sin comisaría: CrimeSceneCase arranca
+  sin comisario). Lo robado (el Conejo de Oro, la Varita o el reloj) y dónde (una galera de repuesto en la red de
+  equipaje de primera, el carrito de la comida o el tanque del baño) salen de la semilla; E revisa cada lugar. El
+  tablero portátil cuelga en el vagón comedor sobre las ventanillas del otro lado (las mesas quedaron de un solo lado)
+  y el sello está al lado. Nadie se cansa ni se va: si el tren llega a la última estación sin acusar bien, el culpable
+  se baja y el caso se pierde.
