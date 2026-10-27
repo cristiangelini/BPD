@@ -24,6 +24,7 @@ const MODELS := {
 	"hardware": preload("res://assets/models/npc_ferretero.glb"),
 	"factory": preload("res://assets/models/npc_capataz.glb"),
 	"insurance": preload("res://assets/models/npc_jefa.glb"),
+	"radio": preload("res://assets/models/npc_don_volumen.glb"),
 	"cake_lab": preload("res://assets/models/npc_chef_bruno.glb"),
 	"gym": preload("res://assets/models/npc_profe_fito.glb"),
 	"dangerous": preload("res://assets/models/npc_sospechoso.glb"),

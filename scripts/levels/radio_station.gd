@@ -10,7 +10,8 @@ extends Node3D
 ## Don Volumen talks on air at the console and goes to the archive for a record now and then, filling the complaint;
 ## E on the record player puts on the long song, the light goes off and he goes to the kitchen for a coffee, his back
 ## to everything (step 3). Doña Rosa calls the reception now and then and tells a cop who hears her out what don
-## Volumen let slip on air (step 4).
+## Volumen let slip on air (step 4). The case is one of its stories (STORIES), drawn with the seed, run by the same
+## RaidCase as the other places (step 5).
 ## Every number here is (propuesta).
 
 signal glass_broken
@@ -24,6 +25,35 @@ const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const PHONE_SCENE := preload("res://scenes/props/desk_phone.tscn")
 const CONSOLE_MODEL := preload("res://assets/models/radio_console.glb")
 const VOLUMEN_SCENE := preload("res://scenes/npc/don_volumen.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the radio can be suspected of (allanamiento-radio.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["rigged_contest", "phantom_ads", "hidden_mics", "collector_records", "coded_dedications",
+	"fake_chart"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_RADIO_TIP_B", "BRIEF_TIP_C", "BRIEF_RADIO_TIP_D",
+	"BRIEF_RADIO_TIP_E"]
+## The stories the radio can tell, like Cinema.STORIES: what the comisario says once it's guessed, its "find it" row,
+## what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the checklist rows of
+## its extras and its rig. With "main_hidden" the first hidden item is the main evidence and the rest extras.
+const STORIES := {
+	"rigged_contest": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_RIGGED_CONTEST_B", "BRIEF_RIGGED_CONTEST_C", "BRIEF_RIGGED_CONTEST_D"],
+		"find": "OBJ_FIND_RAFFLE_URN",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/raffle_urn.tscn"), preload("res://scenes/props/contest_blender.tscn"),
+			preload("res://scenes/props/winners_list.tscn")],
+		"half_heights": [0.23, 0.205, 0.01],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_BLENDER", "OBJ_EXTRA_WINNERS_LIST"],
+		"rig": preload("res://scripts/case/radio/rigged_contest_rig.gd"),
+	},
+}
+## Where the suspicion notes can lie: on the reception's floor, in the studio, the control room, the kitchen and the
+## storage room.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(0.0, FLOOR_TOP, 9.0), Vector3(6.0, FLOOR_TOP, 7.0), Vector3(-3.0, FLOOR_TOP, 2.0),
+	Vector3(2.5, FLOOR_TOP, 0.5), Vector3(6.5, FLOOR_TOP, 0.0), Vector3(3.0, FLOOR_TOP, -7.0),
+]
 const SHELF_MODEL := preload("res://assets/models/record_shelf.glb")
 const ANTENNA_MODEL := preload("res://assets/models/radio_antenna.glb")
 const HALF_X := 9.0
@@ -141,8 +171,20 @@ var till: Till
 var glass_cracked := false
 var records_broken := 0
 var broken_goods := 0
+## The case flow every raid shares.
+var raid: RaidCase
 ## Money taken off the case pay: the studio's window and the archive's records.
-var fines := 0
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: RadioRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
 ## Whether the "AL AIRE" light is on (don Volumen's long song turns it off, step 3).
 var on_air := true
 var phone: DeskPhone
@@ -161,7 +203,7 @@ var complaint_bar: ProgressBar
 ## Whether he opened the archive's door on his way, and whether it was locked then.
 var _volumen_opened := false
 var _was_locked := false
-## Same seed, same radio (the stories and the hiding spots come from it, step 5).
+## Same seed, same radio, same draw: the story and where its things go. 0 draws one.
 @export var case_seed := 0
 var _build: PlaceBuilder
 var _glass: MeshInstance3D
@@ -175,6 +217,19 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_reception()
@@ -190,6 +245,87 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "radio", car)
+	raid.station_parking = station_parking
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = volumen
+	raid.owner_id = "radio"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The radio's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_RADIO",
+		"guess_key": "OBJ_GUESS_RADIO",
+		"broken_key": "OBJ_BROKEN_RADIO",
+		"complaint_key": "OBJ_COMPLAINT_RADIO",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_goods,
+		"complaint": volumen.complaint,
+	}
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What don Volumen lets slip when asked (where the story's things are, in an order drawn from the seed), and what
+## doña Rosa heard him say on air: where he keeps one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		volumen.slips.append(tr("VOLUMEN_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	volumen.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	rosa.clue = tr("CLUE_ROSA") % where
+	rosa.clue_speech = tr("ROSA_CLUE_" + story_id) % where
+	rosa.told.connect(raid.add_clue)
 
 
 ## The floor, the outer walls with the entrance, the roof and the sign over the door.
@@ -367,6 +503,7 @@ func _place_volumen() -> void:
 	volumen.fix_facing = to_global(COFFEE_SPOT + Vector3(0, 0, -10))
 	volumen.start_at(0)
 	archive_door.broken.connect(volumen.door_broken)
+	volumen.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_RADIO"))
 	till.opened.connect(func(at: Vector3) -> void: volumen.saw(at, FloorBoss.SAW_TILL))
 	glass_broken.connect(func() -> void: volumen.saw(to_global(_glass.position), SAW_GLASS, "VOLUMEN_GLASS"))
 	record_broken.connect(func() -> void:
@@ -418,6 +555,11 @@ func _cop_in_archive() -> bool:
 	return false
 
 
+## What goes out on air, over the reception by the "AL AIRE" sign (a story's line).
+func say_on_air(key: String) -> void:
+	_say(Vector3(STUDIO_DOOR_X + 2.5, GameScale.DOOR_HEIGHT - 0.1, FRONT_Z + 2.0), key)
+
+
 ## Turns the "AL AIRE" light on or off: only on air does the neighborhood hear what happens.
 func set_on_air(on: bool) -> void:
 	on_air = on
@@ -460,6 +602,7 @@ func break_glass() -> void:
 	glass_cracked = true
 	broken_goods += 1
 	fines += GLASS_FINE
+	raid.float_label("-%d" % GLASS_FINE, to_global(_glass.position) + Vector3.UP * 1.5, Color(1, 0.3, 0.25))
 	var center := _glass.position
 	_build.mesh_box(center + Vector3(0.2, 0.1, 0.03), Vector3(2.4, 0.04, 0.01), DARK)
 	_build.mesh_box(center + Vector3(-0.3, -0.1, 0.03), Vector3(0.04, 0.9, 0.01), DARK)
@@ -475,6 +618,7 @@ func drop_record(at: Vector3) -> void:
 	records_broken += 1
 	broken_goods += 1
 	fines += RECORD_FINE
+	raid.float_label("-%d" % RECORD_FINE, at + Vector3.UP * 2.0, Color(1, 0.3, 0.25))
 	var local := to_local(at)
 	for i in 3:
 		_build.mesh_box(Vector3(local.x + (i - 1) * 0.12, FLOOR_TOP + 0.01, local.z + 0.45 + i * 0.05),
