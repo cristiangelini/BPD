@@ -9,7 +9,8 @@ extends Node3D
 ## thrown hard at the studio's window cracks it, and at the archive's shelves drops a record that breaks, a fine each.
 ## Don Volumen talks on air at the console and goes to the archive for a record now and then, filling the complaint;
 ## E on the record player puts on the long song, the light goes off and he goes to the kitchen for a coffee, his back
-## to everything (step 3).
+## to everything (step 3). Doña Rosa calls the reception now and then and tells a cop who hears her out what don
+## Volumen let slip on air (step 4).
 ## Every number here is (propuesta).
 
 signal glass_broken
@@ -152,6 +153,9 @@ var complaints := 0
 ## Seconds left for the ringing call, 0 when the phone is quiet.
 var call_left := 0.0
 var record_player: RadioRecordPlayer
+var rosa: DonaRosa
+## Listeners' calls someone answered, for their lines in turn.
+var answered_calls := 0
 var volumen: FloorBoss
 var complaint_bar: ProgressBar
 ## Whether he opened the archive's door on his way, and whether it was locked then.
@@ -217,9 +221,13 @@ func _build_reception() -> void:
 	add_child(till)
 	phone = PHONE_SCENE.instantiate()
 	phone.position = DESK_AT + Vector3(-0.6, DESK_SIZE.y, 0)
-	phone.calls = CALLS
-	phone.answered.connect(func(_cop: Cop) -> void: call_left = 0.0)
+	phone.answered.connect(_on_phone_answered)
 	add_child(phone)
+	rosa = DonaRosa.new()
+	rosa.name = "DonaRosa"
+	rosa.phone = phone
+	rosa.position = phone.position
+	add_child(rosa)
 	_build.box(Vector3(5.5, FLOOR_TOP + 0.25, 9.5), Vector3(2.2, 0.5, 0.9), Color(0.25, 0.45, 0.7))
 	_build.box(Vector3(5.5, FLOOR_TOP + 0.6, 9.95), Vector3(2.2, 0.7, 0.2), Color(0.25, 0.45, 0.7))
 	_build.box(Vector3(8.0, FLOOR_TOP + 0.55, 6.0), Vector3(0.5, 1.1, 0.4), RED)
@@ -418,12 +426,22 @@ func set_on_air(on: bool) -> void:
 
 ## Something loud happened near the microphone: on air, the listeners' phone rings (one call at a time).
 func make_noise() -> void:
-	if not on_air or call_left > 0.0:
+	if not on_air or call_left > 0.0 or phone.is_ringing() or rosa.listener:
 		return
 	calls += 1
 	call_left = CALL_WAIT
 	phone.ring()
 	went_on_air.emit()
+
+
+## E on the ringing phone: doña Rosa if it's her call, a listener otherwise.
+func _on_phone_answered(cop: Cop) -> void:
+	if rosa.calling:
+		rosa.answer(cop)
+		return
+	call_left = 0.0
+	cop.show_hint(CALLS[answered_calls % CALLS.size()])
+	answered_calls += 1
 
 
 ## The call rang out with nobody answering: the phone stops and the listener's complaint reaches don Volumen.
