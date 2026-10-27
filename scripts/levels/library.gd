@@ -40,6 +40,8 @@ const ARMCHAIR_AT := Vector3(-4.6, 0, -1.0)
 const DESK_AT := Vector3(4.0, 0, 4.4)
 const CATALOG_AT := Vector3(-4.4, 0, 5.3)
 const CATALOG_SIZE := Vector3(1.6, 1.3, 0.6)
+## The bookmobile waits at the curb east of the steps, and drives straight out into the street (step 6).
+const GETAWAY_AT := Vector3(9.5, 0, SIZE.y / 2 + 1.0)
 ## The stool with the roll of evidence bags, by the desk.
 const BAGS_AT := Vector3(2.2, 0, 5.0)
 ## Where the Golden Book can be hidden (LibrarySpot): the eight sections, the returns cart and the big cushion.
@@ -238,6 +240,12 @@ func read_in_armchair(cop: Cop) -> void:
 	var hair := case.items.get("hair") as CrimeClueItem
 	if hair and not hair.bagged and hair.global_position.distance_to(to_global(ARMCHAIR_AT)) <= 1.0:
 		hair.wash()
+
+
+## The bookmobile waits at the curb, east of the steps, and drives straight out into the street.
+func getaway(_index: int, _city: Node3D) -> Dictionary:
+	var out := to_global(GETAWAY_AT)
+	return {"at": Transform3D(global_basis, out), "via": [to_global(Vector3(GETAWAY_AT.x, 0, SIZE.y / 2 + 5.0))]}
 
 
 ## A cop shouted (VoiceChat) inside: noise.

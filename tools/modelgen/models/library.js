@@ -112,18 +112,77 @@ function tomasito(b) {
 	b.add('props', C('kid_book', 0xd83a3a), new THREE.BoxGeometry(0.34, 0.26, 0.04), { pos: V(0, 0.72, 0.4), rot: [-0.3, 0, 0] });
 }
 
+// The bookmobile the culprit flees in (step 6): a green and cream bus, shelves of colored books seen through its side
+// windows, a big open book painted on each side and a back door that swings open to let the piles of books out. Front
+// +Z, 2.2 x 2.7 x 6.0, wheels at x = ±1.05, z = ±2.0 (SuspectCar.BOOKMOBILE_WHEELS).
+function bookmobile() {
+	const b = new Builder('bookmobile');
+	const green = C('bus_green', 0x2f7a4a), cream = C('bus_cream', 0xf2e6c8);
+	b.add('body', green, new THREE.BoxGeometry(2.2, 1.2, 6.0), { pos: V(0, 0.95, 0) });
+	b.add('body', cream, new THREE.BoxGeometry(2.2, 1.1, 6.0), { pos: V(0, 2.1, 0) });
+	b.add('body', green, new THREE.BoxGeometry(2.24, 0.08, 6.04), { pos: V(0, 2.69, 0) });
+	b.add('glass', C('car_glass', 0x9fd0ea), new THREE.BoxGeometry(1.9, 0.7, 0.04), { pos: V(0, 2.05, 3.01) });
+	// The side windows, with three shelves of books behind each.
+	const colors = [0xc0392b, 0x2e86c1, 0xf1c40f, 0x8e44ad, 0x27ae60, 0xe67e22];
+	for (const sx of [-1, 1]) {
+		for (const z of [-1.6, 0.0, 1.6]) {
+			b.add('windows', C('shelf_dark', 0x3a2a1a), new THREE.BoxGeometry(0.03, 0.75, 1.3), { pos: V(sx * 1.105, 2.1, z) });
+			for (let row = 0; row < 3; row++) {
+				for (let i = 0; i < 6; i++) {
+					const c = colors[(i + row * 2 + Math.round(z) + colors.length) % colors.length];
+					b.add('windows', C(`book_${c.toString(16)}`, c), new THREE.BoxGeometry(0.04, 0.17, 0.18),
+						{ pos: V(sx * 1.115, 1.84 + row * 0.24, z - 0.5 + i * 0.2) });
+				}
+			}
+		}
+		// The big open book painted on the green below the windows.
+		for (const t of [-1, 1]) {
+			b.add('body', cream, new THREE.BoxGeometry(0.02, 0.5, 0.7), { pos: V(sx * 1.11, 0.95, t * 0.36), rot: [0, 0, 0] });
+		}
+		b.add('body', C('book_spine', 0x7a3a22), new THREE.BoxGeometry(0.03, 0.5, 0.05), { pos: V(sx * 1.115, 0.95, 0) });
+	}
+	b.add('doors', C('door_line', 0x1e4a2e), new THREE.BoxGeometry(0.03, 1.9, 0.02), { pos: V(0, 1.4, -3.01) });
+	for (const x of [-1.05, 1.05]) for (const z of [-2.0, 2.0]) {
+		b.add('wheels', C('tire', 0x1a1a1e), new THREE.CylinderGeometry(0.4, 0.4, 0.28, 12), { pos: V(x, 0.4, z), rot: [0, 0, Math.PI / 2] });
+	}
+	return b.build();
+}
+
+// A pile of books as it falls out of the bookmobile and lies on the street: four books stacked crooked, about
+// 0.5 x 0.32 x 0.4 m, its bottom at y = 0.
+function chaseBooks() {
+	const b = new Builder('chase_books');
+	const colors = [0xc0392b, 0x2e86c1, 0xf1c40f, 0x27ae60];
+	let y = 0;
+	colors.forEach((c, i) => {
+		const h = 0.07 + (i % 2) * 0.02;
+		b.add('books', C(`book_${c.toString(16)}`, c), new THREE.BoxGeometry(0.42 - i * 0.03, h, 0.3), { pos: V(0, y + h / 2, 0), rot: [0, (i - 1.5) * 0.25, 0] });
+		b.add('books', M.white, new THREE.BoxGeometry(0.4 - i * 0.03, h - 0.02, 0.28), { pos: V(0.012, y + h / 2, 0), rot: [0, (i - 1.5) * 0.25, 0] });
+		y += h;
+	});
+	return b.build();
+}
+
 const PEOPLE = { lector: lector, sigilo: sigilo, tomasito: tomasito };
 
-export const models = Object.fromEntries(Object.entries(PEOPLE).map(([n, f]) => [`npc_${n}`, () => {
-	const b = new Builder(`npc_${n}`);
-	f(b);
-	return b.build();
-}]));
+export const models = {
+	...Object.fromEntries(Object.entries(PEOPLE).map(([n, f]) => [`npc_${n}`, () => {
+		const b = new Builder(`npc_${n}`);
+		f(b);
+		return b.build();
+	}])),
+	bookmobile: bookmobile, chase_books: chaseBooks,
+};
 
 export const views = {
 	library_people: {
 		items: [{ name: 'npc_sigilo', pos: [-1.3, 0, 0], rotY: 0.3 }, { name: 'npc_lector', pos: [0, 0, 0], rotY: 0.2 },
 			{ name: 'npc_lector', pos: [1.2, 0, 0], rotY: -0.4 }, { name: 'npc_tomasito', pos: [2.3, 0, 0], rotY: -0.3 }],
 		cam: { pos: [0.5, 1.4, 6.0], target: [0.5, 0.85, 0], fov: 38 },
+	},
+	bookmobile: {
+		items: [{ name: 'bookmobile', pos: [-0.8, 0, 0], rotY: 0.7 }, { name: 'npc_lector', pos: [-1.3, 0.4, 2.0], rotY: 0.7, scale: 0.85 },
+			{ name: 'chase_books', pos: [2.2, 0, 0.8], rotY: -0.4 }, { name: 'chase_books', pos: [2.8, 0, -0.2], rotY: 0.6 }],
+		cam: { pos: [0.6, 3.0, 10.0], target: [0.6, 1.2, 0], fov: 38 },
 	},
 };

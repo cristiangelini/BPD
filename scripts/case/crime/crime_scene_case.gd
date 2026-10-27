@@ -84,7 +84,7 @@ const VARIANTS := {
 		"brief": ["BRIEF_LIBRARY_A_", "BRIEF_LIBRARY_B", "BRIEF_LIBRARY_C"], "go": "HINT_GO_LIBRARY",
 		"go_row": "OBJ_LIBRARY_GO", "look": "HINT_LIBRARY_LOOK", "files_row": "OBJ_LIBRARY_FILES",
 		"clue_line": "CLUE_LIBRARY_", "ruined_hint": "HINT_LIBRARY_RUINED_", "left": "HINT_READER_LEFT",
-		"who": "reader", "getaway": SuspectCar.BIKE, "loot_row": "OBJ_LIBRARY_LOOT_",
+		"who": "reader", "getaway": SuspectCar.BOOKMOBILE, "loot_row": "OBJ_LIBRARY_LOOT_",
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "dust": "dust",
 			"bookmark": "genre", "witness": "genre"},
 		"parts": ["photo", "prints", "teeth", "hair", "dust", "genre"],
@@ -116,7 +116,8 @@ var tip_given := false
 ## A cop got to the tent.
 var at_tent := false
 var clues_found: Array[String] = []
-## The museum's empty frames the patrol car broke in the chase (ChaseFrame), each one off the salary.
+## The museum's empty frames the patrol car broke in the chase (ChaseFrame), and the library's piles of books it ran
+## over (ChaseBooks), each one off the salary.
 var frames_broken := 0
 ## Clues the cops spoiled before finding them.
 var ruined: Array[String] = []
@@ -595,6 +596,15 @@ func frame_broken() -> void:
 		return
 	frames_broken += 1
 	_hint_all("HINT_FRAME_BROKEN")
+
+
+## The patrol car ran over a pile of books the library's bookmobile dropped: the library's fine, the same as a
+## museum frame (counted with them).
+func book_pile_ruined() -> void:
+	if follower:
+		return
+	frames_broken += 1
+	_hint_all("HINT_BOOKS_RUINED")
 
 
 ## The cops found one of the case's clues. Returns whether it's new.
