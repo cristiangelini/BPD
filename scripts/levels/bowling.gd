@@ -11,6 +11,8 @@ extends Node3D
 
 signal trophy_case_broken
 signal screen_broken(lane: int)
+## A ball reached lane `lane`'s pit and the machine counted the pins down before setting them up again (step 2).
+signal rolled(lane: int, knocked: int, ball: BowlingBall)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const PIN_MODEL := preload("res://assets/models/bowling_pin.glb")
@@ -60,6 +62,23 @@ const SCREEN_Y := 3.3
 const SCREEN_SIZE := Vector3(1.2, 0.7, 0.3)
 const SCREEN_SPEED := 3.0
 const SCREEN_FINE := 15
+## The balls (step 2): three on each return's rack, their weights, and the rack they rest on (behind the hood). A ball
+## in a lane's pit comes back to its rack RETURN_TIME later, and the machine sets the pins up RESET_TIME after it
+## came, counting the ones down: tipped over or moved off their place.
+const BALL_KG: Array[float] = [4.0, 5.0, 6.0, 7.0, 5.0, 6.0, 7.0, 4.0, 6.0]
+const RACK_SIZE := Vector3(0.6, 0.5, 0.6)
+const RACK_Z := 0.2
+const SLOT_STEP := 0.22
+const PIT_SIZE := Vector3(1.5, 0.8, 1.6)
+const PIT_Z := -8.2
+const RETURN_TIME := 4.0
+const RESET_TIME := 6.0
+const PIN_DOWN := 0.7
+const PIN_MOVED := 0.25
+## The waxed lanes: a cop running on one skates on, pushed along, and can't skate again for a moment.
+const SKATE_TIME := 0.9
+const SKATE_PUSH := 3.0
+const SKATE_AGAIN := 1.5
 ## The shoe counter east of the door (its till holds the office's key), the bar and the popcorn machine.
 const COUNTER_AT := Vector3(6.0, FLOOR_TOP, 9.0)
 const COUNTER_SIZE := Vector3(4.1, 1.1, 0.8)
@@ -112,8 +131,16 @@ var station_parking: Transform3D
 var city_map: CityMap
 var office_door: FrontDoor
 var till: Till
-## Each lane's pins, in rows from the head pin.
+## Each lane's pins, in rows from the head pin, and where each one stands.
 var pins: Array = []
+var pin_homes: Array = []
+var balls: Array[BowlingBall] = []
+## Ball -> seconds until it's back on its rack; lane -> seconds until its pins are set up, and the ball that came.
+var _returning := {}
+var _resetting := {}
+var _last_ball := {}
+## Cop -> seconds until it can skate again.
+var _skated := {}
 var case_broken := false
 var broken_screens: Array[int] = []
 ## Money taken off the case pay: the trophy case and the screens.
@@ -135,6 +162,7 @@ func _ready() -> void:
 	_build_front()
 	_build_office()
 	_build_pins()
+	_build_balls()
 	office_door = _door(OFFICE_DOOR_X)
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("bowling")
@@ -182,6 +210,10 @@ func _build_lanes() -> void:
 		_model(SETTER_MODEL, Vector3(x, FLOOR_TOP, SETTER_Z))
 		var screen := _model(SCREEN_MODEL, Vector3(x, SCREEN_Y, SCREEN_Z))
 		screen.name = "Screen%d" % i
+		var pit := _area(Vector3(x, FLOOR_TOP + PIT_SIZE.y / 2, PIT_Z), PIT_SIZE)
+		pit.body_entered.connect(func(body: Node3D) -> void:
+			if body is BowlingBall and not (body as BowlingBall).is_held():
+				in_pit(i, body))
 		var hit := _area(Vector3(x, SCREEN_Y, SCREEN_Z), SCREEN_SIZE)
 		hit.body_entered.connect(func(body: Node3D) -> void:
 			if body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > SCREEN_SPEED:
@@ -195,7 +227,9 @@ func _build_lanes() -> void:
 	_build.wall_at("x", PIN_WALL_Z, west, CORRIDOR_EAST_X, 1.0, WALL_TOP - 1.0, [], DARK.lightened(0.15))
 	_build.wall_at("z", CORRIDOR_EAST_X, -HALF_Z, PIN_WALL_Z, 0.0, WALL_TOP, [CORRIDOR_DOOR_Z], DARK.lightened(0.15))
 	for x: float in RETURN_X:
-		_solid(Vector3(x, FLOOR_TOP + RETURN_SIZE.y / 2, RETURN_Z), RETURN_SIZE)
+		# The hood where the balls come up, and the lower rack they rest on.
+		_solid(Vector3(x, FLOOR_TOP + RETURN_SIZE.y / 2, RETURN_Z - 0.3), Vector3(RETURN_SIZE.x, RETURN_SIZE.y, 0.4))
+		_solid(Vector3(x, FLOOR_TOP + RACK_SIZE.y / 2, RETURN_Z + RACK_Z), RACK_SIZE)
 		_model(RETURN_MODEL, Vector3(x, FLOOR_TOP, RETURN_Z))
 		_solid(Vector3(x, FLOOR_TOP + 0.45, BENCH_Z), Vector3(2.4, 0.9, 0.5))
 		_model(BENCH_MODEL, Vector3(x, FLOOR_TOP, BENCH_Z), PI)
@@ -238,6 +272,7 @@ func _build_office() -> void:
 func _build_pins() -> void:
 	for x: float in LANE_X:
 		var lane: Array[RigidBody3D] = []
+		var homes: Array[Vector3] = []
 		for row in 4:
 			for i in row + 1:
 				var at := Vector3(x + (i - row / 2.0) * PIN_SPACING, FLOOR_TOP + PIN_SIZE.y / 2 + 0.005,
@@ -248,7 +283,116 @@ func _build_pins() -> void:
 				pin.position = at
 				pin.sleeping = true
 				lane.append(pin)
+				homes.append(at)
 		pins.append(lane)
+		pin_homes.append(homes)
+
+
+## Three balls on each return's rack, of different weights and colors.
+func _build_balls() -> void:
+	for rack in RETURN_X.size():
+		for slot in 3:
+			var ball := BowlingBall.make(BALL_KG[(rack * 3 + slot) % BALL_KG.size()], rack * 3 + slot)
+			ball.name = "Ball%d" % (rack * 3 + slot)
+			ball.rack = rack
+			ball.slot = slot
+			add_child(ball)
+			ball.position = rack_spot(rack, slot)
+			ball.sleeping = true
+			balls.append(ball)
+
+
+## Where slot `slot` of rack `rack` holds a ball.
+static func rack_spot(rack: int, slot: int) -> Vector3:
+	return Vector3(RETURN_X[rack], FLOOR_TOP + RACK_SIZE.y + BowlingBall.RADIUS + 0.01,
+		RETURN_Z + RACK_Z - SLOT_STEP + slot * SLOT_STEP)
+
+
+## A ball reached lane `lane`'s pit: it goes back to its rack, and the machine will count and set up the pins.
+func in_pit(lane: int, ball: BowlingBall) -> void:
+	if _returning.has(ball):
+		return
+	_returning[ball] = RETURN_TIME
+	_last_ball[lane] = ball
+	if not _resetting.has(lane):
+		_resetting[lane] = RESET_TIME
+
+
+## How many of lane `lane`'s pins are down: tipped over or moved off their place.
+func knocked(lane: int) -> int:
+	var down := 0
+	for i in (pins[lane] as Array).size():
+		var pin: RigidBody3D = pins[lane][i]
+		var home: Vector3 = pin_homes[lane][i]
+		var moved := Vector2(pin.position.x - home.x, pin.position.z - home.z).length()
+		if pin.basis.y.dot(Vector3.UP) < PIN_DOWN or moved > PIN_MOVED:
+			down += 1
+	return down
+
+
+## The machine counts lane `lane`'s pins down and stands all ten up again.
+func reset_pins(lane: int) -> void:
+	var down := knocked(lane)
+	for i in (pins[lane] as Array).size():
+		var pin: RigidBody3D = pins[lane][i]
+		pin.linear_velocity = Vector3.ZERO
+		pin.angular_velocity = Vector3.ZERO
+		pin.transform = Transform3D(Basis.IDENTITY, pin_homes[lane][i])
+		pin.sleeping = true
+	rolled.emit(lane, down, _last_ball.get(lane) as BowlingBall)
+	_last_ball.erase(lane)
+
+
+## The ball comes up its return: onto its own slot of the rack, or on top of whatever is there.
+func send_back(ball: BowlingBall) -> void:
+	ball.linear_velocity = Vector3.ZERO
+	ball.angular_velocity = Vector3.ZERO
+	ball.position = rack_spot(ball.rack, ball.slot)
+	ball.sleeping = false
+
+
+func _physics_process(delta: float) -> void:
+	for ball: BowlingBall in _returning.keys():
+		_returning[ball] -= delta
+		if _returning[ball] <= 0.0:
+			_returning.erase(ball)
+			if is_instance_valid(ball) and not ball.is_held():
+				send_back(ball)
+	for lane: int in _resetting.keys():
+		_resetting[lane] -= delta
+		if _resetting[lane] <= 0.0:
+			_resetting.erase(lane)
+			reset_pins(lane)
+	_skate(delta)
+
+
+## This PC's own cop running on a waxed lane skates on, out of control (a copy of another player's cop only follows).
+func _skate(delta: float) -> void:
+	for cop: Variant in _skated.keys():
+		_skated[cop] -= delta
+		if _skated[cop] <= 0.0 or not is_instance_valid(cop):
+			_skated.erase(cop)
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if cop.sync and not cop.sync.is_multiplayer_authority():
+			continue
+		if _skated.has(cop) or not cop.is_running or not on_lane(to_local(cop.global_position)):
+			continue
+		var flat := Vector3(cop.velocity.x, 0, cop.velocity.z)
+		if flat.length() < 0.5:
+			continue
+		_skated[cop] = SKATE_AGAIN
+		cop.knock_back(flat.normalized() * SKATE_PUSH, SKATE_TIME)
+		cop.show_hint("HINT_BOWL_SKATE")
+
+
+## Whether `at` (alley space) is on the wood of a lane, between the foul line and the pins.
+static func on_lane(at: Vector3) -> bool:
+	if at.z > FOUL_Z or at.z < HEAD_PIN_Z:
+		return false
+	for x: float in LANE_X:
+		if absf(at.x - x) < LANE_WIDTH / 2:
+			return true
+	return false
 
 
 ## The trophy case's glass broke, once: a fine and the cracks over it.
