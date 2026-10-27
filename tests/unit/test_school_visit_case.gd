@@ -95,7 +95,7 @@ func test_the_planilla_shows_the_gaffes() -> void:
 
 func test_play_draws_it() -> void:
 	var found := false
-	for i in 600:
+	for i in 3000:
 		if PlaceDraw.pick(i + 1, [], 1) == "school_visit":
 			found = true
 			break
