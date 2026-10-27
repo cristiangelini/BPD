@@ -37,7 +37,7 @@ Buscan pistas físicas, las llevan al tablero y acusan a un sospechoso (decisió
 1. **El pastel robado:** concurso de pastelería con 6 sospechosos cubiertos de harina.
 2. **Museo:** falta un cuadro y todos los guardias dicen que estaban en el baño ([escena-museo.md](escena-museo.md)).
 3. **Hotel:** cada habitación es una pista y el conserje miente ([escena-hotel.md](escena-hotel.md)).
-4. **Tren en marcha:** hay que resolverlo antes de la última estación.
+4. **Tren en marcha:** hay que resolverlo antes de la última estación ([escena-tren.md](escena-tren.md)).
 5. **El gato desaparecido:** la dueña es millonaria y el comisario está asustado.
 6. **Circo:** los sospechosos son payasos iguales.
 7. **Oficina:** todos usan el mismo traje y la pista es una taza de café.
