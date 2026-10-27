@@ -23,7 +23,7 @@ El comisario lo cuenta en su oficina, con un sobre arrugado en la mano:
 
 ## El lugar
 - **El Correo Central:** un edificio nuevo en la cuadra (7, 0), lado sur **(propuesta)**, con un buzón gigante en la
-  vereda y un reloj en la fachada. Adentro:
+  acera y un reloj en la fachada. Adentro:
   - el **mostrador**, con tres ventanillas, la balanza de paquetes, la fila marcada con cintas y el **marco vacío** de
     La Vaquita Azul en la pared;
   - la **sala de clasificación**, con la **clasificadora** (una máquina enorme con cintas y rodillos) en el medio y
