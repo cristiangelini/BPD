@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Birthday party raid, step 1: the Salón Gala as a place to raid (--place=birthday_raid and a menu test button), decked out for Tomasito's birthday: a bouncy castle that bounces cops up, the piñata, the gift table, a cake that is a fine if it falls, a balloon arch whose balloons pop, the office locked with its key in Chispita's case, Tomasito and seven kids on spots drawn with the seed, and 12 hiding spots.
 - Birthday party raid, models: placeholder models for the clown Chispita, Tomasito the birthday boy, two party kids, the three-tier cake with 7 candles, the piñata, the bouncy castle, a gift box and Chispita's case of tricks (allanamiento-cumple.md, decision 340).
 - Birthday party raid design (allanamiento-cumple.md, decision 340): the Salón Gala in the middle of Tomasito's 7th birthday, the clown Chispita as the owner, the cake-candles distraction, kids who hang on cops' legs and carry off small things, Tomasito who talks to whoever breaks the piñata, and six stories.
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.

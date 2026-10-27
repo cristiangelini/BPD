@@ -88,6 +88,16 @@ bocina (por ahora el auto de fuga de los otros dueños; el autito queda para des
 1. El salón como lugar de allanamiento: el `PartyHall` sin la infiltración, decorado de cumpleaños (inflable, piñata,
    mesa de regalos, pastel, arco de globos), lo frágil, los escondites y los modelos nuevos (Chispita, Tomasito, los
    chicos).
+   - **Cómo quedó (propuesta):** `BirthdayRaid` arma el mismo salón que la infiltración (`PartyHall.build_hall`, ahora
+     compartido) en su lote, con el cartel "¡Feliz cumple, Tomasito!" sobre la escalerita. El inflable (4 x 4 m) está
+     del lado este, abierto hacia el salón: el policía que se para en su piso sale para arriba a 6 m/s, una y otra vez.
+     La piñata cuelga de la bola de espejos, la mesa de regalos está al lado del guardarropa con 6 regalos y el pastel
+     de tres pisos en la mesa larga: si se cae de la mesa, multa de 20 y "¡Se cayó el pastel!". El arco de globos de la
+     entrada tiene 13 globos a los costados y arriba de la puerta (se entra sin tocarlos); un policía o algo que los
+     toca los revienta ("¡PUM!"). La oficina está cerrada y la llave está en la valijita de trucos de Chispita, en el
+     mostrador del guardarropa. Tomasito y 7 chicos con gorrito están parados en lugares sorteados con la semilla (por
+     ahora contestan con E). 12 escondites, 6 para cosas pesadas. `--place=birthday_raid` y "Cumpleaños
+     (allanamiento) (prueba)" en el menú. Capturas `/mnt/project-files/cumple/paso1-*.png`.
 2. Chispita: la ronda, la denuncia y la hora del pastel.
 3. Los chicos que se cuelgan y agarran lo chico, y Tomasito con la piñata.
 4. El caso (`RaidCase`) con la primera historia: los globos de diamantes.
