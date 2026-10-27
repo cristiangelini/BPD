@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Office crime scene, step 2: the people: six employees alike (grey suit, blue tie, badge, black briefcase) at six of the eight desks, drawn with the case seed, who walk to another free desk when the desk-change bell rings every 90 s; el señor Trámite with his stamp in his office, Benja the intern behind his pile of papers by the copier, and Pelusa the robot vacuum going round the first floor. E on any of them gets one of their lines.
 - Office crime scene, step 1: Formularios Infinitos S.A. on its own lot (block (0, 1), north side; --place=office): the reception with the time clock and the Founder's Stapler, the open space with eight desks alike and their rolling chairs, the giant copier, the kitchen with the coffee machine and the cookie tin, and upstairs the manager's office with his desk and safe, the archive and the meeting room.
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
 - Gym raid, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office, the cake lab and the gym in eighths.

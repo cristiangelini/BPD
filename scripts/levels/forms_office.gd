@@ -54,6 +54,13 @@ const DESK_COLUMNS: Array[float] = [-3.5, -0.5, 2.5, 5.5]
 const DESK_ROWS: Array[float] = [-5.5, -1.5]
 const DESK_SIZE := Vector3(1.4, 0.75, 0.75)
 const CHAIR_OFF := 0.75
+## Where an employee stands at a desk: at its east end, and the aisle between the rows they walk along to change desks.
+const STAND_OFF := Vector3(0.95, 0, 0.1)
+const AISLE_Z := -3.3
+## The six employees, and how often the desk-change bell rings: then each one walks to another desk (nobody has a
+## desk of their own).
+const EMPLOYEES := 6
+const DESK_CHANGE_EVERY := 90.0
 ## The giant copier against the back wall.
 const COPIER_AT := Vector3(8.5, 0, -8.2)
 const COPIER_SIZE := Vector3(1.6, 1.3, 0.9)
@@ -73,6 +80,12 @@ const MANAGER_DESK_SIZE := Vector3(2.2, 0.78, 1.0)
 const SAFE_AT := Vector3(HALF_X - 0.45, UP, -4.0)
 const SAFE_SIZE := Vector3(0.6, 0.9, 0.7)
 const SOFA_AT := Vector3(9.0, UP, -8.3)
+## El señor Trámite beside his desk, Benja by the copier, and Pelusa's round on the first floor: round the manager's
+## office and out to the hall.
+const MANAGER_AT := Vector3(5.6, UP, -5.0)
+const INTERN_AT := Vector3(7.0, FLOOR_TOP, -7.3)
+const VACUUM_ROUTE: Array[Vector3] = [Vector3(1.0, UP, -3.0), Vector3(1.0, UP, -7.5), Vector3(7.5, UP, -7.5),
+	Vector3(7.5, UP, -3.0), Vector3(4.0, UP, -3.0), Vector3(4.0, UP, 1.0), Vector3(4.0, UP, -3.0)]
 ## The archive's shelves, against its walls, and the meeting room's long table.
 ## Two along the back wall (their boxes face +Z) and one along the west wall (facing +X).
 const BACK_SHELVES: Array[Vector3] = [Vector3(-10.0, UP, -8.65), Vector3(-6.6, UP, -8.65)]
@@ -105,6 +118,14 @@ const FILES := Color(0.85, 0.75, 0.5)
 ## The eight rolling chairs of the open space, in the order of the desks.
 var chairs: Array[Grabbable] = []
 var coffee_machine: StaticBody3D
+## The six employees, in order, the desk each one is at (an index of desks()) and the seconds to the next bell.
+var employees: Array[OfficePerson] = []
+var desk_of: Array[int] = []
+var bell_in := DESK_CHANGE_EVERY
+var manager: OfficePerson
+var intern: OfficePerson
+var vacuum: RobotVacuum
+var _rng := RandomNumberGenerator.new()
 var _builder: PlaceBuilder
 
 
@@ -122,6 +143,7 @@ func _ready() -> void:
 	_manager()
 	_archive()
 	_meeting()
+	_people()
 
 
 ## Whether a point in the world (ignoring height) is on the office's lot, the entrance included.
@@ -152,6 +174,48 @@ func room_of(world: Vector3) -> String:
 	if local.z < BACK_ROOMS_Z:
 		return "archive" if local.x < ARCHIVE_X else "manager"
 	return "meeting" if local.x < MEETING_X else "hall"
+
+
+## The eight desks of the open space, in order (row by row), by the middle of their top's floor.
+static func desks() -> Array[Vector3]:
+	var all: Array[Vector3] = []
+	for z: float in DESK_ROWS:
+		for x: float in DESK_COLUMNS:
+			all.append(Vector3(x, FLOOR_TOP, z))
+	return all
+
+
+## Where an employee stands at a desk.
+static func stand_at(desk: int) -> Vector3:
+	return desks()[desk] + STAND_OFF
+
+
+## The desk-change bell: every employee walks to another desk, free and not his own, drawn with the seed. They go out
+## to the aisle, along it and in to the new desk.
+func ring_desk_bell() -> void:
+	bell_in = DESK_CHANGE_EVERY
+	var free: Array[int] = []
+	for desk in desks().size():
+		free.append(desk)
+	var next: Array[int] = []
+	for i in employees.size():
+		var options := free.filter(func(desk: int) -> bool: return desk != desk_of[i] and not next.has(desk))
+		if options.is_empty():
+			options = free.filter(func(desk: int) -> bool: return not next.has(desk))
+		next.append(options[_rng.randi_range(0, options.size() - 1)])
+	for i in employees.size():
+		var from := stand_at(desk_of[i])
+		var to := stand_at(next[i])
+		employees[i].walk([Vector3(from.x, from.y, AISLE_Z), Vector3(to.x, to.y, AISLE_Z), to])
+		desk_of[i] = next[i]
+
+
+func _physics_process(delta: float) -> void:
+	if employees.is_empty():
+		return
+	bell_in -= delta
+	if bell_in <= 0.0:
+		ring_desk_bell()
 
 
 ## The floor, the outer walls on both floors with the front door, the roof with its parapet and the mirrored windows.
@@ -369,6 +433,41 @@ func _meeting() -> void:
 			_builder.mesh_box(MEETING_TABLE_AT + Vector3(-1.5 + i, 0.25, side * 1.0), Vector3(0.45, 0.5, 0.45), DARK)
 	_builder.mesh_box(Vector3(-HALF_X + 0.1, UP + 1.5, 3.0), Vector3(0.03, 1.0, 2.0), WHITE)
 	_builder.light(Vector3(-9.0, ROOF - 0.5, 3.0))
+
+
+## The six employees at six of the eight desks (drawn with the seed), el señor Trámite in his office, Benja by the
+## copier and Pelusa on its round.
+func _people() -> void:
+	_rng.seed = hash("office desks %d" % case_seed)
+	var free: Array[int] = []
+	for desk in desks().size():
+		free.append(desk)
+	for i in EMPLOYEES:
+		var employee := OfficePerson.new()
+		employee.name = "Employee%d" % i
+		employee.index = i
+		desk_of.append(free.pop_at(_rng.randi_range(0, free.size() - 1)))
+		employee.position = stand_at(desk_of[i])
+		employee.rotation.y = -PI / 2
+		add_child(employee)
+		employees.append(employee)
+	manager = _person("manager", MANAGER_AT, -PI / 2)
+	intern = _person("intern", INTERN_AT, PI / 2)
+	vacuum = RobotVacuum.new()
+	vacuum.name = "Pelusa"
+	vacuum.route = VACUUM_ROUTE
+	vacuum.position = VACUUM_ROUTE[0]
+	add_child(vacuum)
+
+
+func _person(who: String, at: Vector3, turn: float) -> OfficePerson:
+	var person := OfficePerson.new()
+	person.who = who
+	person.name = who.capitalize()
+	person.position = at
+	person.rotation.y = turn
+	add_child(person)
+	return person
 
 
 ## White ceiling tiles under the slab whose top is at `top`, only for the look.
