@@ -44,6 +44,7 @@ Buscan pistas físicas, las llevan al tablero y acusan a un sospechoso (decisió
 8. **Boda:** desapareció el anillo y la novia sospecha del novio.
 9. **Mansión de misterio:** el clásico, con pasadizos secretos y un mayordomo.
 10. **La propia comisaría:** alguien se robó la evidencia de otro caso. El culpable podría ser uno de los compañeros (gancho para Asuntos Internos).
+11. **Biblioteca (nuevo, 27/10):** robaron el Libro de Oro y no se puede hacer ruido. Propuesta en [escena-biblioteca.md](escena-biblioteca.md) (decisión 360).
 
 ## 4. Interrogatorio
 El sospechoso es un NPC con un medidor de nervios y otro de abogado, y se juega a policía bueno y policía malo (decisión 27).
