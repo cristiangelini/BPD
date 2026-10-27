@@ -1,7 +1,7 @@
 // Props of the bowling alley "Bolos Chuza Feliz" (docs/diseno/allanamiento-bolera.md): a pin, a ball, the pin machine
 // over each lane's end, the ball return with its rack, a score screen, the shoe counter with its shelf, the bar, the
 // popcorn machine, the trophy case, a bench and the giant pin of the sign, with origins at the floor in the middle of
-// each piece, the two looks of the Thursday league's players and Don Chuza, the owner. Placeholder, not final art.
+// each piece, the two looks of the Thursday league's players and Don Chuza, the owner, and Pipo, the shoe boy. Placeholder, not final art.
 import { Builder, mat, ellipsoid, V, THREE } from '../lib.js';
 import { M, pearBody, eyes, limb } from './pear.js';
 
@@ -201,7 +201,25 @@ export function buildDonChuza() {
 	return b.build();
 }
 
+// Pipo, the shoe boy: a skinny kid in the alley's red polo with a pin on the chest, a cap on backwards, big ears and a
+// can of shoe deodorant always in his right hand. The game scales him short.
+export function buildPipo() {
+	const b = new Builder('npc_pipo');
+	const polo = mat('pipo_polo', 0xd23a3a), cap = mat('pipo_cap', 0x3a6ad2), skin = mat('skin_crema', 0xf3d2b0);
+	pearBody(b, skin, { shirt: polo, pants: mat('pipo_jeans', 0x3a5a9a), shoes: mat('pipo_shoes', 0x46b45a), belted: false });
+	b.add('logo', mat('pin_white', 0xf6f4ee), new THREE.CylinderGeometry(0.03, 0.045, 0.14, 8), { pos: V(0.16, 0.86, 0.36), rot: [-0.35, 0, 0] });
+	eyes(b, 1.34, 0.17, 0.08, 0.055);
+	b.add('face', mat('mouth', 0x7a2a2a), ellipsoid(0.07, 0.03, 0.02, 6, 4), { pos: V(0, 1.22, 0.2) });
+	for (const s of [-1, 1]) b.add('ears', skin, ellipsoid(0.03, 0.07, 0.05, 6, 4), { pos: V(s * 0.24, 1.32, 0) });
+	b.add('cap', cap, ellipsoid(0.21, 0.11, 0.2, 10, 5), { pos: V(0, 1.45, 0.0) });
+	b.add('cap', cap, new THREE.BoxGeometry(0.2, 0.02, 0.16), { pos: V(0, 1.42, -0.24), rot: [0.25, 0, 0] });
+	b.add('spray', mat('spray_can', 0x46b45a, { metalness: 0.4 }), new THREE.CylinderGeometry(0.035, 0.035, 0.18, 8), { pos: V(0.5, 0.72, 0.14) });
+	b.add('spray', M.white, new THREE.CylinderGeometry(0.02, 0.025, 0.04, 6), { pos: V(0.5, 0.83, 0.14) });
+	return b.build();
+}
+
 export const models = {
+	npc_pipo: buildPipo,
 	npc_don_chuza: buildDonChuza,
 	npc_bowler: bowler('npc_bowler', 0xe0b48a, 0x7a3ab0, false), npc_bowler_b: bowler('npc_bowler_b', 0x9a6440, 0x3a3ab0, true),
 	bowling_ball_1: coloredBall(1), bowling_ball_2: coloredBall(2), bowling_ball_3: coloredBall(3),
@@ -226,7 +244,7 @@ export const views = {
 		cam: { pos: [0.6, 4.0, 9.0], target: [0.6, 0.9, 0], fov: 50 },
 	},
 	bowlers: {
-		items: [{ name: 'npc_bowler', pos: [-1.0, 0, 0], rotY: 0.4 }, { name: 'npc_don_chuza', pos: [0, 0, 0.2], rotY: 0.2, scale: 0.85 }, { name: 'npc_bowler_b', pos: [1.0, 0, 0], rotY: Math.PI - 0.5 }],
-		cam: { pos: [0, 1.3, 4.2], target: [0, 0.8, 0], fov: 34 },
+		items: [{ name: 'npc_bowler', pos: [-1.0, 0, 0], rotY: 0.4 }, { name: 'npc_don_chuza', pos: [0, 0, 0.2], rotY: 0.2, scale: 0.85 }, { name: 'npc_bowler_b', pos: [1.0, 0, 0], rotY: Math.PI - 0.5 }, { name: 'npc_pipo', pos: [1.9, 0, 0.3], rotY: -0.3, scale: 0.75 }],
+		cam: { pos: [0.4, 1.3, 5.0], target: [0.4, 0.8, 0], fov: 38 },
 	},
 };

@@ -133,6 +133,11 @@ suman entre 400 y 600.
      de los jugadores (5), la caja abierta, la vitrina y las pantallas rotas si las ve, la puerta rota y una bola o un
      policía que lo choca. El abogado y el caso llegan en el paso 5. Capturas: `allanamiento-bolera/paso3-*.png`.
 4. Pipo y los zapatos.
+   - **Cómo quedó (propuesta):** Pipo está detrás del mostrador de zapatos, subido a un cajón para ver por encima, y
+     cada tanto dice algo con su desodorante. E en él le da al policía un par de zapatos de bolos: con ellos, correr
+     por la pista encerada lo hace resbalar mucho menos. E otra vez se los devuelve, y la primera vez que cada policía
+     se los devuelve Pipo cuenta dónde vio a Don Chuza esconder algo (la historia lo arma en el paso 5) y lo anota en
+     la planilla una sola vez. Capturas: `allanamiento-bolera/paso4-*.png`.
 5. El caso (RaidCase) y la primera historia, la bola con imán.
 6. Las otras 5 historias.
 7. "Jugar" suma la bolera al sorteo de allanamientos, y la huida de Don Chuza.
