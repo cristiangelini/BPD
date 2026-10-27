@@ -136,6 +136,13 @@ func roll_up_sleeves() -> void:
 	_file("scratch")
 
 
+## Cuffed: the señora doesn't like her nephews in handcuffs, unless it's the culprit or the board said so.
+func cuffed(_seconds: float) -> void:
+	var mansion := get_parent() as CatMansion
+	if case and mansion and mansion.patience and not case.accused and index != case.plan.culprit:
+		mansion.patience.lose("wrong_cuff")
+
+
 ## The camera's flash in their face (PhotoCamera): their photo, with their glasses and their shoes.
 func photographed(_cop: Cop) -> void:
 	say("NEPHEW_NO_FLASH")

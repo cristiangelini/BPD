@@ -24,6 +24,8 @@ var necklace: CatNecklace
 ## The spot the necklace is hidden in (a spot of CatMansion.search_spots), and whether it came out.
 var necklace_spot := ""
 var necklace_out := false
+## The cops in Duquesa's armchair now, so each sit costs the señora's patience once.
+var _sitting := {}
 
 
 func _ready() -> void:
@@ -91,8 +93,13 @@ func _physics_process(_delta: float) -> void:
 		if footprint and not footprint.wiped and _near(cat, CatMansion.LITTER_AT, LITTER_REACH):
 			footprint.wipe()
 	for cop in get_tree().get_nodes_in_group("cops"):
-		if _near(cop, CatMansion.ARMCHAIR_AT, ARMCHAIR_REACH):
+		var sitting := _near(cop, CatMansion.ARMCHAIR_AT, ARMCHAIR_REACH)
+		if sitting and not _sitting.has(cop):
 			sat_in_armchair()
+		if sitting:
+			_sitting[cop] = true
+		else:
+			_sitting.erase(cop)
 	if necklace and not necklace.worn and necklace.is_held() and mansion.lady and \
 			_near(necklace, mansion.lady.position, MansionLady.TAKE_REACH):
 		give_necklace()
@@ -105,8 +112,10 @@ func muddy_flap() -> void:
 		case.ruin("prints")
 
 
-## A cop got into Duquesa's armchair: the hair on it is gone (and the señora sees it, step 5c).
+## A cop got into Duquesa's armchair: the hair on it is gone, and the señora's patience goes down.
 func sat_in_armchair() -> void:
+	if mansion.patience:
+		mansion.patience.lose("armchair")
 	var hair: CrimeClueItem = case.items.get("hair")
 	if hair and mansion.to_local(hair.global_position).distance_to(HAIR_AT) <= 0.3:
 		hair.wash()

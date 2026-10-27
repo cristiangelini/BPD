@@ -98,6 +98,9 @@ const CAT_COUNT := 5
 ## Where the culprit hid Duquesa (escena-gato.md, "Dónde está"): in his suitcase, in the dumbwaiter or in the laundry
 ## basket. "suitcase" means the culprit's; every suitcase can be searched.
 const HIDING_SPOTS: Array[String] = ["suitcase", "dumbwaiter", "basket"]
+## Where the señora puts the cops when she throws them out: the garden path, in front of the door.
+const THROWN_OUT_AT := Vector3(0, 0.1, 8.0)
+const CRACKERS_AT := CAGE_AT + Vector3(-0.35, 0, 0.3)
 const HIDE_AT: Array[Vector3] = [
 	Vector3(-10.0, 0, 0.5), Vector3(10.0, 0, -7.4), Vector3(12.4, 0, -10.4), Vector3(0.0, 0, -11.0),
 	Vector3(-13.4, 0, -12.4), Vector3(3.8, 0, 0.8),
@@ -142,6 +145,8 @@ var duchess_out := false
 ## The searchable places, by spot (suitcase_0 to suitcase_5, dumbwaiter, basket).
 var search_spots := {}
 var clues: CatClues
+var patience: CatPatience
+var crackers: ParrotCrackers
 var _builder: PlaceBuilder
 
 
@@ -180,6 +185,13 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	clues.mansion = self
 	clues.case = case
 	add_child(clues)
+	patience = CatPatience.new()
+	patience.name = "Patience"
+	patience.mansion = self
+	patience.case = case
+	add_child(patience)
+	parrot.case = case
+	parrot.knows = case.plan.clues.has("witness")
 
 
 ## Searching a spot: Duquesa jumps out of hers, the diamond necklace turns up in its own; the others have nothing
@@ -205,11 +217,33 @@ func search(spot: String, cop: Cop) -> void:
 		cop.show_hint("HINT_DUCHESS_OUT")
 
 
-## Duquesa is back in the señora's arms: the case gets what it came for.
+## Duquesa is back in the señora's arms: the case gets what it came for, and the señora some patience back.
 func _on_duchess_home() -> void:
 	loot_found = true
 	if case:
 		case.found_loot()
+	if patience:
+		patience.gain(CatPatience.DUCHESS_BACK)
+
+
+func _on_wrong_cat(_cat: MansionCat) -> void:
+	if patience:
+		patience.lose("wrong_cat", true)
+
+
+## A cop shouted (VoiceChat): the señora hears it in her house, and Don Plumas gets scared if it was close.
+func shouted_by(cop: Cop) -> void:
+	if patience and inside(cop.global_position):
+		patience.lose("shout")
+	parrot.shouted_by(cop)
+
+
+func witness_offended() -> bool:
+	return parrot.scared
+
+
+func offend_witness() -> void:
+	parrot.scare()
 
 
 ## The nephew by index (the order of the case's traits).
@@ -300,12 +334,18 @@ func _people() -> void:
 	lady = MansionLady.new()
 	lady.name = "Lady"
 	lady.got_duchess.connect(_on_duchess_home)
+	lady.got_wrong_cat.connect(_on_wrong_cat)
 	lady.position = LADY_AT + Vector3(0, FLOOR_TOP, 0)
 	add_child(lady)
 	parrot = MansionParrot.new()
 	parrot.name = "Parrot"
 	parrot.position = PARROT_AT
 	add_child(parrot)
+	crackers = ParrotCrackers.new()
+	crackers.name = "ParrotCrackers"
+	crackers.parrot = parrot
+	crackers.position = CRACKERS_AT + Vector3(0, FLOOR_TOP, 0)
+	add_child(crackers)
 
 
 ## The floors, the roof with its lights and a pitched top, and the outer walls with the front door.
