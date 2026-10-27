@@ -23,7 +23,7 @@ static func route(start: Vector2i, rng: RandomNumberGenerator) -> Array[Vector3]
 		var options: Array[Vector2i] = []
 		for dir: Vector2i in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
 			var to := at + dir
-			if dir == -came or to.x < 0 or to.y < 0 or to.x > CityLayout.COLUMNS or to.y > CityLayout.ROWS:
+			if dir == -came or not CityLayout.on_grid(to):
 				continue
 			options.append(dir)
 		came = options[rng.randi() % options.size()]

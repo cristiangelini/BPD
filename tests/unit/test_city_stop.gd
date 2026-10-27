@@ -9,6 +9,8 @@ func _walker(contraband: int) -> CityWalker:
 	walker.contraband = contraband
 	walker.path = CityTraffic.ring(Vector2i(3, 3))
 	add_child_autofree(walker)
+	# Ready rolls the dice for a bag with something in it: -1 has to stay an innocent one.
+	walker.contraband = contraband
 	walker.place_along(0.2)
 	return walker
 

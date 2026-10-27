@@ -182,6 +182,7 @@ PLACE_HARDWARE,Ferretería El Tornillo Flojo,The Loose Screw Hardware,Ferragens 
 PLACE_GYM,Gimnasio Hierro Puro,Pure Iron Gym,Academia Ferro Puro
 PLACE_DOLL_FACTORY,Fábrica de Muñecos Sonrisas,Smiles Doll Factory,Fábrica de Bonecos Sorrisos
 PLACE_CAKE_LAB,Laboratorio de Pasteles Dulce Ciencia,Sweet Science Cake Lab,Laboratório de Bolos Doce Ciência
+PLACE_WRONG_HOUSE,Calle de los Sauces 14,14 Willow Street,Rua dos Salgueiros 14
 STREET_CLOCK,Avenida del Reloj,Clock Avenue,Avenida do Relógio
 STREET_LINDEN,Calle de los Tilos,Linden Street,Rua das Tílias
 STREET_TEAPOT,Calle de la Tetera,Teapot Street,Rua da Chaleira
@@ -192,6 +193,11 @@ STREET_PUDDLE,Calle del Charco,Puddle Street,Rua da Poça
 STREET_SOCK,Calle del Calcetín,Sock Street,Rua da Meia
 STREET_SPOON,Calle de la Cuchara,Spoon Street,Rua da Colher
 STREET_WHISTLE,Calle del Silbato,Whistle Street,Rua do Apito
+STREET_FERN,Calle del Helecho,Fern Street,Rua da Samambaia
+STREET_PILLOW,Calle de la Almohada,Pillow Street,Rua do Travesseiro
+STREET_MITTEN,Calle del Mitón,Mitten Street,Rua da Luva
+STREET_LADLE,Calle del Cucharón,Ladle Street,Rua da Concha
+STREET_HAMMOCK,Calle de la Hamaca,Hammock Street,Rua da Rede
 HUD_MAP_HINT,M: mapa,M: map,M: mapa
 MAP_TITLE,Mapa de la ciudad,City map,Mapa da cidade
 MAP_CASE,Caso de hoy,Today's case,Caso de hoje
@@ -3301,7 +3307,7 @@ PROMPT_EMPLOYEE_PHOTOS,E: mirar los empleados del mes,E: look at the employees o
 CLUE_EMPLOYEE_PHOTOS,"Cuatro «Empleado del mes», y los cuatro con cuello ortopédico. Sonriendo.","Four «Employee of the month», and all four in neck braces. Smiling.","Quatro «Funcionário do mês», e os quatro de colar cervical. Sorrindo."
 HINT_WET_FLOOR,¡Piso mojado! Patinas sin poder frenar.,Wet floor! You skate on and can't stop.,Chão molhado! Você patina sem conseguir parar.
 BRIEF_INSURED_PAINTING_B,"La empresa denunció que le robaron su cuadro famoso y cobró el seguro. Pero el cuadro sigue ahí, colgado entre copias.","The company reported its famous painting stolen and cashed the insurance. But the painting is still there, hung among copies.","A empresa denunciou que roubaram seu quadro famoso e recebeu o seguro. Mas o quadro continua lá, pendurado entre cópias."
-BRIEF_INSURED_PAINTING_C,Traigan el cuadro verdadero en el baúl del patrullero. Hay ocho iguales: cuidado que se rompen.,Bring the real painting in the patrol car's trunk. There are eight just alike: careful, they break.,Tragam o quadro verdadeiro no porta-malas da viatura. Há oito iguais: cuidado que quebram.
+BRIEF_INSURED_PAINTING_C,"Traigan el cuadro verdadero en el baúl del patrullero. Hay ocho iguales: cuidado que se rompen.","Bring the real painting in the patrol car's trunk. There are eight just alike: careful, they break.","Tragam o quadro verdadeiro no porta-malas da viatura. Há oito iguais: cuidado que quebram."
 BRIEF_INSURED_PAINTING_D,"Si encuentran la póliza del cuadro o los pomos de pintura de las copias, mejor: todo suma.","If you find the painting's policy or the paint tubes of the copies, even better: it all counts.","Se acharem a apólice do quadro ou as bisnagas de tinta das cópias, melhor: tudo conta."
 OBJ_FIND_INSURED_PAINTING,Llevarse el cuadro verdadero,Take the real painting,Levar o quadro verdadeiro
 OBJ_EXTRA_PAINTING_POLICY,Extra: la póliza del cuadro,Extra: the painting's policy,Extra: a apólice do quadro
@@ -3703,8 +3709,8 @@ PROMPT_COUNT_CHALK,E: marcar con tiza,E: chalk a cross,E: marcar com giz
 COUNT_CHALKED_0,¡Eh! ¡Me pintaste la espalda!,Hey! You drew on my back!,Ei! Você pintou minhas costas!
 COUNT_CHALKED_1,Presente.,Present.,Presente.
 COUNT_CHALKED_2,¿Y esta cruz para qué es?,And what's this cross for?,E essa cruz é pra quê?
-COUNT_COOK_OFFENDED,¡Yo trabajo acá! ¡Soy el cocinero!,I work here! I'm the cook!,Eu trabalho aqui! Sou o cozinheiro!
-COUNT_PLUMBER_OFFENDED,¡Yo trabajo acá! ¡Vine a arreglar un caño!,I work here! I came to fix a pipe!,Eu trabalho aqui! Vim consertar um cano!
+COUNT_COOK_OFFENDED,¡Yo trabajo aquí! ¡Soy el cocinero!,I work here! I'm the cook!,Eu trabalho aqui! Sou o cozinheiro!
+COUNT_PLUMBER_OFFENDED,¡Yo trabajo aquí! ¡Vine a arreglar un caño!,I work here! I came to fix a pipe!,Eu trabalho aqui! Vim consertar um cano!
 HINT_COUNT_WORKER,"Ese no es un preso, no tiene número.","That's no inmate, he has no number.","Esse não é um preso, não tem número."
 COUNT_ITCHY,"¡Ay, cómo pica esta tiza!","Ow, this chalk itches!","Ai, como coça esse giz!"
 COUNT_BOARD_ESCAPED,FUGA,GONE,FUGIU
@@ -4290,6 +4296,101 @@ CRASH_CALM_0,"Está bien, está bien. Lo corro.","Fine, fine. I'll move it.","T�
 CRASH_CALM_1,Tiene razón. Respiro.,You're right. Breathing.,Tem razão. Respirando.
 CRASH_CALM_2,"Bueno, fue un raspón.","Okay, it was a scratch.","Tá, foi só um arranhão."
 SHIFT_STREET,Eventos en la calle,Street events,Eventos na rua
+MENU_APARTMENTS,Edificio Las Palomas (prueba),Las Palomas building (test),Edifício As Pombas (teste)
+APT_FOR_RENT,En alquiler,For rent,Aluga-se
+PROMPT_ELEVATOR_UP,E: subir al piso 30,E: go up to floor 30,E: subir ao andar 30
+PROMPT_ELEVATOR_DOWN,E: bajar a la planta baja,E: go down to the lobby,E: descer ao térreo
+PROMPT_CALL_ELEVATOR,E: llamar al ascensor,E: call the elevator,E: chamar o elevador
+HINT_ELEVATOR_OVERLOAD,"¡Bzzz! Más de 400 kg: el ascensor no se mueve.","Bzzz! Over 400 kg: the elevator won't move.","Bzzz! Mais de 400 kg: o elevador não se move."
+ELEVATOR_MAX,Máximo 400 kg,Max 400 kg,Máximo 400 kg
+PROMPT_SCAFFOLD_DOWN,E: bajar el andamio,E: lower the scaffold,E: descer o andaime
+PROMPT_SCAFFOLD_UP,E: subir el andamio,E: raise the scaffold,E: subir o andaime
+PROMPT_SCAFFOLD_STOP,E: frenar el andamio,E: stop the scaffold,E: parar o andaime
+PROMPT_CALL_SCAFFOLD,E: llamar al andamio,E: call the scaffold,E: chamar o andaime
+PROMPT_INTERCOM,E: tocar el timbre de un departamento,E: ring a flat's buzzer,E: tocar o interfone de um apartamento
+HINT_INTERCOM_WAIT,Nadie contesta. Los vecinos ya están cansados del timbre.,Nobody answers. The neighbors are tired of the buzzer.,Ninguém atende. Os vizinhos já cansaram do interfone.
+EVARISTO_LINE_1,"Limpiecito, limpiecito. Así me gusta el hall.","Nice and clean. That's how I like my lobby.","Limpinho, limpinho. Assim que eu gosto do saguão."
+EVARISTO_LINE_2,"¡Esto es un edificio de familia, oficiales!","This is a family building, officers!","Este é um prédio de família, policiais!"
+EVARISTO_LINE_3,"El ascensor anda bien. Casi siempre. Bueno, a veces.","The elevator works fine. Almost always. Well, sometimes.","O elevador funciona bem. Quase sempre. Bom, às vezes."
+EVARISTO_LINE_4,"Treinta años de encargado y nunca vi tanto policía junto.","Thirty years as manager and I've never seen so many cops.","Trinta anos de zelador e nunca vi tanto policial junto."
+EVARISTO_PRINTER,"¿Una pérdida de agua en el 12? ¡Otra vez! Ya subo, ya subo.","A leak on the 12th? Again! Coming, coming.","Um vazamento no 12? De novo! Já vou, já vou."
+EVARISTO_FIX_1,(Se fue al piso 12),(He went up to the 12th),(Ele subiu para o 12)
+EVARISTO_FIX_2,(Se oye una llave inglesa a lo lejos),(A wrench clanks far away),(Ouve-se uma chave inglesa ao longe)
+EVARISTO_FIX_3,(Ya casi baja),(He's almost back down),(Ele já está quase descendo)
+EVARISTO_FIX_DONE,"Era la ducha del 12C. Siempre es la ducha del 12C.","It was 12C's shower. It's always 12C's shower.","Era o chuveiro do 12C. É sempre o chuveiro do 12C."
+EVARISTO_HURT,"¡Epa! ¡Con el encargado no, oficial! Esto va a la denuncia.","Hey! Not the manager, officer! This goes in the complaint.","Epa! Com o zelador não, policial! Isso vai para a denúncia."
+EVARISTO_DOOR,¿Quién me paga esa puerta? ¡El edificio no!,Who pays for that door? Not the residents' fund!,Quem paga essa porta? O condomínio não!
+EVARISTO_SAW,¡Esto es un edificio de familia!,This is a family building!,Este é um prédio de família!
+EVARISTO_OVERLOAD,"¡Cuatrocientos kilos dice el cartel! ¡CUATROCIENTOS!","The sign says four hundred kilos! FOUR HUNDRED!","A placa diz quatrocentos quilos! QUATROCENTOS!"
+EVARISTO_FALL,¿Qué fue ese ruido en la calle? ¡Esto es un edificio de familia!,What was that crash on the sidewalk? This is a family building!,Que barulho foi esse na calçada? Este é um prédio de família!
+EVARISTO_ORNAMENT,¡Los adornos del señor Bellini!,Mr. Bellini's ornaments!,Os enfeites do senhor Bellini!
+EVARISTO_NOTHING,"Yo solo barro el hall, oficial.","I just sweep the lobby, officer.","Eu só varro o saguão, policial."
+EVARISTO_OFFENDED,"Un encargado no anda contando lo que ve. Bueno, a veces sí. Hoy no.","A manager doesn't go around telling what he sees. Well, sometimes. Not today.","Um zelador não sai contando o que vê. Bom, às vezes sim. Hoje não."
+EVARISTO_LAWYER,"¡Llamo al abogado del edificio! ¡Y a la reunión de vecinos!","I'm calling the building's lawyer! And the residents' meeting!","Vou ligar para o advogado do condomínio! E para a reunião de condôminos!"
+PROMPT_WALK_DOG,E: pasear a Cuqui,E: walk Cuqui,E: passear com o Cuqui
+PEPA_TAKE_HIM,"Una vuelta entera al pasillo, ¿eh? Hasta el fondo y de vuelta. Después te cuento todo.","A whole lap of the hallway, all right? To the end and back. Then I'll tell you everything.","Uma volta inteira no corredor, hein? Até o fundo e de volta. Depois eu te conto tudo."
+PEPA_CUQUI_BACK,"¡Cuqui, mi amor, volviste solito! Así no hay chisme.","Cuqui, my love, you came back alone! No gossip like that.","Cuqui, meu amor, voltou sozinho! Assim não tem fofoca."
+PEPA_TIP_VAGUE,"El del 30B entra y sale cargado a cualquier hora. Y el edificio hace ruidos raros.","The man in 30B comes and goes loaded at all hours. And the building makes strange noises.","O do 30B entra e sai carregado a qualquer hora. E o prédio faz barulhos estranhos."
+PEPA_LINE_1,"Yo no espío, oficial. Miro por la mirilla, que es otra cosa.","I don't spy, officer. I look through the peephole, which is different.","Eu não espio, policial. Olho pelo olho mágico, que é outra coisa."
+PEPA_LINE_2,"Cuqui necesita su paseo. Y yo necesito a alguien que lo saque.","Cuqui needs his walk. And I need someone to take him.","O Cuqui precisa do passeio dele. E eu preciso de alguém que o leve."
+PEPA_LINE_3,"Sé muchas cosas del 30B. Muchísimas. Si alguien pasea a Cuqui...","I know a lot about 30B. Loads. If someone walks Cuqui...","Eu sei muitas coisas do 30B. Muitíssimas. Se alguém passear com o Cuqui..."
+LOC_APT_in_mailboxes,en los buzones del hall,in the lobby's mailboxes,nas caixas de correio do saguão
+LOC_APT_behind_lobby_plant,detrás de la planta de plástico del hall,behind the plastic plant in the lobby,atrás da planta de plástico do saguão
+LOC_APT_behind_sofa,detrás del sillón de la sala,behind the living room sofa,atrás do sofá da sala
+LOC_APT_in_closet,en el ropero del dormitorio,in the bedroom closet,no guarda-roupa do quarto
+LOC_APT_under_bed,debajo de la cama,under the bed,debaixo da cama
+LOC_APT_in_bathtub,en la bañera,in the bathtub,na banheira
+LOC_APT_in_fridge,en el refrigerador,in the fridge,na geladeira
+LOC_APT_in_toilet_tank,en el tanque del inodoro,in the toilet tank,na caixa da descarga
+LOC_APT_behind_painting,detrás del cuadro,behind the painting,atrás do quadro
+LOC_APT_on_balcony,en el balcón,on the balcony,na varanda
+LOC_APT_in_study,en el cuarto cerrado,in the locked study,no escritório trancado
+LOC_APT_under_kitchen_counter,debajo de la mesada de la cocina,under the kitchen counter,debaixo da bancada da cozinha
+EVARISTO_SLIP,"«¡Yo no vi a nadie guardar nada %s!... Digo, ¡esto es un edificio de familia!»","“I didn't see anyone put anything %s!... I mean, this is a family building!”","“Eu não vi ninguém guardar nada %s!... Quer dizer, este é um prédio de família!”"
+PEPA_TIP_stolen_aquarium,Anoche cuatro hombres subieron por el andamio una caja enorme que goteaba. ¡Y olía a pescado!,Last night four men brought up a huge dripping box on the scaffold. And it smelled of fish!,Ontem à noite quatro homens subiram pelo andaime uma caixa enorme que pingava. E cheirava a peixe!
+PEPA_TIP_WHERE,Y vi al señor Bellini guardar algo %s. Por la mirilla se ve todo.,And I saw Mr. Bellini put something %s. You see everything through the peephole.,E eu vi o senhor Bellini guardar algo %s. Pelo olho mágico se vê tudo.
+PROMPT_INTERCOM_MANAGER,E: llamar al encargado y mostrarle la orden,E: call the manager and show him the warrant,E: chamar o zelador e mostrar o mandado
+HINT_MANAGER_AWAY,Nadie contesta. El encargado está arreglando algo en otro piso.,Nobody answers. The manager is fixing something on another floor.,Ninguém atende. O zelador está consertando algo em outro andar.
+HINT_MANAGER_OPENS,"Don Evaristo mira la orden, suspira y abre la puerta: «Pasen. Y límpiense los pies.»","Don Evaristo looks at the warrant, sighs and opens the door: “Come in. And wipe your feet.”","Seu Evaristo olha o mandado, suspira e abre a porta: “Entrem. E limpem os pés.”"
+HINT_KEY_BOARD_APARTMENTS,¡En el tablero de llaves hay una que dice «30B»! También abre el cuarto cerrado.,On the key board there's one that says «30B»! It opens the locked study too.,No quadro de chaves tem uma que diz «30B»! Também abre o escritório trancado.
+CASE_FAILED_LAWYER_APARTMENTS,Don Evaristo llamó al abogado del edificio. Caso perdido.,Don Evaristo called the building's lawyer. Case lost.,Seu Evaristo ligou para o advogado do prédio. Caso perdido.
+BRIEF_APARTMENTS_TIP_B,"Llegó una denuncia anónima: el del 30B del edificio Las Palomas no trabaja, pero entra y sale cargado a cualquier hora, y el edificio hace ruidos raros.","We got an anonymous tip: the man in 30B at the Las Palomas building doesn't work, but comes and goes loaded at all hours, and the building makes strange noises.","Chegou uma denúncia anônima: o do 30B do prédio As Pombas não trabalha, mas entra e sai carregado a qualquer hora, e o prédio faz barulhos estranhos."
+BRIEF_APARTMENTS_TIP_D,"Es en el piso 30. El encargado, Don Evaristo, les abre si le muestran la orden en el portero eléctrico. El ascensor lleva 400 kilos, ni uno más.","It's on floor 30. The manager, Don Evaristo, lets you in if you show him the warrant at the intercom. The elevator carries 400 kilos, not one more.","É no 30º andar. O zelador, Seu Evaristo, abre se vocês mostrarem o mandado no interfone. O elevador leva 400 quilos, nem um a mais."
+BRIEF_APARTMENTS_TIP_E,Y no rompan nada: los adornos del 30B y lo que se cae desde arriba se los descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.,And don't break anything: 30B's ornaments and whatever falls from up there come out of your pay. Press Q to see the checklist of what to do.,E não quebrem nada: os enfeites do 30B e o que cair lá de cima eu desconto do salário. Com Q vocês veem a lista do que fazer.
+BRIEF_STOLEN_AQUARIUM_B,"El señor Bellini se robó el acuario gigante del acuario municipal, con el pez dorado campeón adentro.","Mr. Bellini stole the city aquarium's giant tank, with the champion goldfish inside.","O senhor Bellini roubou o aquário gigante do aquário municipal, com o peixe dourado campeão dentro."
+BRIEF_STOLEN_AQUARIUM_C,"Traigan el acuario al patrullero. Pesa 110 kilos y no entra en el ascensor: entre cuatro, por el andamio, y despacio, que es de vidrio.","Bring the tank to the patrol car. It weighs 110 kilos and doesn't fit in the elevator: four of you, down the scaffold, slowly, it's glass.","Tragam o aquário para a viatura. Pesa 110 quilos e não cabe no elevador: entre quatro, pelo andaime, e devagar, que é de vidro."
+BRIEF_STOLEN_AQUARIUM_D,"Si encuentran la red o la entrada del acuario con la fecha del robo, mejor: todo suma.","If you find the net or the aquarium ticket with the day of the theft, even better: it all counts.","Se encontrarem a rede ou o ingresso do aquário com a data do roubo, melhor: tudo conta."
+OBJ_FIND_STOLEN_AQUARIUM,Llevarse el acuario robado,Take the stolen aquarium,Levar o aquário roubado
+OBJ_EXTRA_FISHING_NET,Extra: la red de pesca,Extra: the fishing net,Extra: a rede de pesca
+OBJ_EXTRA_AQUARIUM_TICKET,Extra: la entrada del acuario,Extra: the aquarium ticket,Extra: o ingresso do aquário
+SUSPECT_stolen_aquarium,El acuario robado,The stolen aquarium,O aquário roubado
+SUSPECT_floor_31,El piso 31,Floor 31,O 31º andar
+SUSPECT_carrier_pigeons,Las palomas mensajeras,The carrier pigeons,Os pombos-correio
+SUSPECT_spy_telescope,El telescopio espía,The spy telescope,O telescópio espião
+SUSPECT_smuggling_piano,El piano del contrabando,The smuggling piano,O piano do contrabando
+SUSPECT_tenant_of_twenty,El inquilino de los veinte,The tenant of twenty,O inquilino dos vinte
+CLUE_SUSPECT_stolen_aquarium,"Un recorte de diario: «¡Desapareció el pez dorado campeón del acuario municipal, con pecera y todo!».","A newspaper clipping: «The city aquarium's champion goldfish vanished, tank and all!».","Um recorte de jornal: «Sumiu o peixe dourado campeão do aquário municipal, com aquário e tudo!»."
+CLUE_SUSPECT_floor_31,"Un plano del edificio con 31 pisos. Alguien contó mal, o no.","A plan of the building with 31 floors. Someone counted wrong, or not.","Uma planta do prédio com 31 andares. Alguém contou errado, ou não."
+CLUE_SUSPECT_carrier_pigeons,Una bolsa de alpiste de 20 kilos con una nota: «Para las chicas del balcón».,A 20 kilo bag of birdseed with a note: «For the girls on the balcony».,Um saco de alpiste de 20 quilos com um bilhete: «Para as meninas da varanda».
+CLUE_SUSPECT_spy_telescope,Una revista de astronomía con una página doblada: «Cómo ver a través de las ventanas del banco».,An astronomy magazine with a page folded: «How to see through the bank's windows».,Uma revista de astronomia com uma página dobrada: «Como ver através das janelas do banco».
+CLUE_SUSPECT_smuggling_piano,"Una factura de afinador de pianos: «Tecla 40: hace clonc. No toqué adentro, como pidió».","A piano tuner's bill: «Key 40: goes clonk. Didn't touch inside, as requested».","Uma nota de afinador de piano: «Tecla 40: faz clonc. Não mexi dentro, como pediu»."
+CLUE_SUSPECT_tenant_of_twenty,"Veinte recibos de alquiler del 30C, todos firmados por el señor Bellini, y ninguno igual.","Twenty rent receipts for 30C, all signed by Mr. Bellini, and none alike.","Vinte recibos de aluguel do 30C, todos assinados pelo senhor Bellini, e nenhum igual."
+OBJ_ENTER_APARTMENTS,Entrar al edificio (el portero eléctrico o el ariete),Get into the building (the intercom or the ram),Entrar no prédio (o interfone ou o aríete)
+OBJ_GUESS_APARTMENTS,"Averiguar qué pasa en el 30B (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in 30B (with Q open, hold 1, 2 or 3)","Descobrir o que acontece no 30B (com Q aberta, segure 1, 2 ou 3)"
+OBJ_BROKEN_APARTMENTS,Cosas rotas o caídas: %d (multa: %d),Broken or dropped things: %d (fines: %d),Coisas quebradas ou caídas: %d (multa: %d)
+OBJ_COMPLAINT_APARTMENTS,Queja de Don Evaristo: %d%%,Don Evaristo's complaint: %d%%,Queixa do Seu Evaristo: %d%%
+PROMPT_PUDDLE,E: mirar el charco,E: look at the puddle,E: olhar a poça
+CLUE_PUDDLES,Charcos de agua desde el ascensor hasta el 30B. Huelen a pescado.,Puddles of water from the elevator to 30B. They smell of fish.,Poças de água do elevador até o 30B. Cheiram a peixe.
+BRIEF_SMUGGLING_PIANO_B,"El señor Bellini da clases de piano, pero no tiene alumnos. Su piano de cola cruza la frontera de la ciudad cada mes y vuelve lleno de oro.","Mr. Bellini gives piano lessons, but has no pupils. His grand piano leaves the city every month and comes back full of gold.","O senhor Bellini dá aulas de piano, mas não tem alunos. O piano de cauda dele sai da cidade todo mês e volta cheio de ouro."
+BRIEF_SMUGGLING_PIANO_C,"Traigan el piano al patrullero. Pesa 110 kilos y no entra en el ascensor: entre cuatro, por el andamio. Cada golpe le suelta un lingote.","Bring the piano to the patrol car. It weighs 110 kilos and doesn't fit in the elevator: four of you, down the scaffold. Every knock shakes an ingot loose.","Tragam o piano para a viatura. Pesa 110 quilos e não cabe no elevador: entre quatro, pelo andaime. Cada batida solta um lingote."
+BRIEF_SMUGGLING_PIANO_D,"Si encuentran la partitura con las cuentas o un lingote suelto, mejor: todo suma.","If you find the sheet music with the sums or a loose ingot, even better: it all counts.","Se encontrarem a partitura com as contas ou um lingote solto, melhor: tudo conta."
+OBJ_FIND_SMUGGLING_PIANO,Llevarse el piano del contrabando,Take the smuggling piano,Levar o piano do contrabando
+OBJ_EXTRA_PIANO_SHEET,Extra: la partitura con las cuentas,Extra: the sheet music with the sums,Extra: a partitura com as contas
+OBJ_EXTRA_GOLD_INGOT,Extra: el lingote suelto,Extra: the loose ingot,Extra: o lingote solto
+PEPA_TIP_smuggling_piano,El del 30B toca el piano todas las noches y nunca suena. Ni una nota. Solo «clonc».,The man in 30B plays the piano every night and it never sounds. Not a note. Just «clonk».,O do 30B toca piano toda noite e nunca sai som. Nem uma nota. Só «clonc».
+PROMPT_PIANO,E: tocar una tecla,E: play a key,E: tocar uma tecla
+HINT_PIANO_CLONK,«Clonc.» Esa tecla no suena. Adentro hay algo duro.,«Clonk.» That key doesn't sound. There's something hard inside.,«Clonc.» Essa tecla não soa. Tem algo duro dentro.
+CLUE_PIANO_CLONK,El piano de cola hace «clonc» en vez de sonar: está lleno de algo pesado.,The grand piano goes «clonk» instead of playing: it's full of something heavy.,O piano de cauda faz «clonc» em vez de tocar: está cheio de algo pesado.
 PLACE_MUSEUM,"Museo","Museum","Museu"
 SIGN_MUSEUM,"Museo de la Ciudad","City Museum","Museu da Cidade"
 SIGN_MUSEUM_GALLERY,"Sala grande →","Main gallery →","Sala principal →"
@@ -4427,6 +4528,64 @@ HINT_FRAME_MOVED,"Lo apoyaste contra un farol. Queda muy artístico.","You leane
 HINT_FRAME_BROKEN,"¡CRAC! Un marco del museo menos. Se descuenta del sueldo.","CRACK! One less museum frame. It comes off your salary.","CRAC! Uma moldura do museu a menos. Desconta do salário."
 CRIME_owner_guard,"¡Novatos! Ayer acusaron a un guardia del Museo de la Ciudad y está en la sala de interrogatorio. Jura que estaba en el baño. Que confiese.","Rookies! Yesterday you accused a guard from the City Museum and he's in the interrogation room. He swears he was in the bathroom. Make him confess.","Novatos! Ontem vocês acusaram um guarda do Museu da Cidade e ele está na sala de interrogatório. Jura que estava no banheiro. Façam ele confessar."
 CONFESS_owner_guard,"¡Está bien! ¡Fui yo! Treinta años cuidando cuadros y nunca me dejaron colgar uno en mi casa.","Fine! It was me! Thirty years guarding paintings and they never let me hang one at home.","Tá bom! Fui eu! Trinta anos cuidando de quadros e nunca me deixaram pendurar um em casa."
+SIGN_HOTEL_LIFT,"Fuera de servicio","Out of order","Fora de serviço"
+SIGN_HOTEL_SUITE,"Suite","Suite","Suíte"
+PROMPT_HOTEL_GUEST,"E: hablar con el huésped","E: talk to the guest","E: falar com o hóspede"
+HOTEL_GUEST_LINE_0,"¿El collar? Yo estaba durmiendo. Con pepinos.","The necklace? I was asleep. With cucumbers.","O colar? Eu estava dormindo. Com pepinos."
+HOTEL_GUEST_LINE_1,"¿Sacarme la toalla? ¡Recién me lavé el pelo!","Take off my towel? I just washed my hair!","Tirar a toalha? Acabei de lavar o cabelo!"
+HOTEL_GUEST_LINE_2,"No veo nada, oficial. Son los pepinos.","I can't see a thing, officer. It's the cucumbers.","Não vejo nada, policial. São os pepinos."
+HOTEL_GUEST_LINE_3,"Pagué el spa completo y me sacan de la bañera por un robo.","I paid for the full spa and they pull me out of the bath for a theft.","Paguei o spa completo e me tiram da banheira por um roubo."
+HOTEL_GUEST_LINE_4,"Todos estamos en bata. Es un hotel, oficial.","We're all in bathrobes. It's a hotel, officer.","Estamos todos de roupão. É um hotel, policial."
+HOTEL_GUEST_LINE_5,"Pregúntale al conserje. Él sabe todo. Cuando está despierto.","Ask the concierge. He knows everything. When he's awake.","Pergunte ao concierge. Ele sabe tudo. Quando está acordado."
+PROMPT_HOTEL_CONCIERGE,"E: despertar al conserje","E: wake the concierge","E: acordar o concierge"
+HOTEL_CONCIERGE_LINE_0,"(Bostezo.) Bienvenidos al Hotel Gran Siesta. (Bostezo.)","(Yawn.) Welcome to the Hotel Gran Siesta. (Yawn.)","(Bocejo.) Bem-vindos ao Hotel Gran Siesta. (Bocejo.)"
+HOTEL_CONCIERGE_LINE_1,"¿Quién duerme en cada habitación? Lo sé todo. Déjame cerrar los ojos un segundo...","Who sleeps in each room? I know it all. Let me close my eyes for a second...","Quem dorme em cada quarto? Eu sei tudo. Deixe-me fechar os olhos um segundo..."
+HOTEL_CONCIERGE_LINE_2,"El ascensor anda perfecto. Desde 1987 que no anda, pero perfecto.","The lift works perfectly. It hasn't worked since 1987, but perfectly.","O elevador funciona perfeitamente. Não funciona desde 1987, mas perfeitamente."
+HOTEL_CONCIERGE_LINE_3,"Si tocas el timbre, despierto. Si lo tocas mucho, me enojo. (Bostezo.)","Ring the bell and I wake up. Ring it a lot and I get angry. (Yawn.)","Toque a campainha e eu acordo. Toque muito e eu fico bravo. (Bocejo.)"
+PROMPT_HOTEL_PERLITA,"E: hablar con la señora Perlita","E: talk to señora Perlita","E: falar com a senhora Perlita"
+HOTEL_PERLITA_LINE_0,"¡Mi collar! ¡Era de mi abuela, y de la abuela de mi abuela!","My necklace! It was my grandmother's, and her grandmother's!","Meu colar! Era da minha avó, e da avó da minha avó!"
+HOTEL_PERLITA_LINE_1,"No toques nada, que si se rompe algo me desmayo.","Don't touch anything, if something breaks I faint.","Não toque em nada, se algo quebrar eu desmaio."
+HOTEL_PERLITA_LINE_2,"Seis personas en bata. ¡Cualquiera puede ser un ladrón en bata!","Six people in bathrobes. Anyone could be a thief in a bathrobe!","Seis pessoas de roupão. Qualquer um pode ser um ladrão de roupão!"
+HOTEL_PERLITA_LINE_3,"Pagué la suite. La suite tenía que tener cerradura.","I paid for the suite. The suite was supposed to have a lock.","Eu paguei a suíte. A suíte devia ter fechadura."
+PROMPT_HOTEL_BELLBOY,"E: hablar con Tito, el botones","E: talk to Tito, the bellboy","E: falar com Tito, o mensageiro"
+HOTEL_BELLBOY_LINE_0,"¿Te llevo la valija? Ah, no tienes valija. Igual te la llevo.","Shall I carry your suitcase? Oh, you don't have one. I'll carry it anyway.","Levo sua mala? Ah, você não tem mala. Levo mesmo assim."
+HOTEL_BELLBOY_LINE_1,"Yo vi algo anoche. Pero tengo las manos ocupadas.","I saw something last night. But my hands are full.","Eu vi algo ontem à noite. Mas estou com as mãos ocupadas."
+HOTEL_BELLBOY_LINE_2,"Subo y bajo esa escalera cien veces por día. El ascensor, ya sabe.","I go up and down those stairs a hundred times a day. The lift, you know.","Subo e desço essa escada cem vezes por dia. O elevador, sabe como é."
+HOTEL_BELLBOY_LINE_3,"Ayúdame con una valija y te cuento lo que vi.","Help me with a suitcase and I'll tell you what I saw.","Me ajude com uma mala e eu conto o que vi."
+PROMPT_HOTEL_MAID,"E: hablar con doña Escoba","E: talk to doña Escoba","E: falar com dona Escoba"
+HOTEL_MAID_LINE_0,"Permiso, que tengo que limpiar la suite.","Excuse me, I have to clean the suite.","Com licença, tenho que limpar a suíte."
+HOTEL_MAID_LINE_1,"Si la puerta dice ""No molestar"", no molesto. Si no, aspiro.","If the door says ""Do not disturb"", I don't disturb. If not, I vacuum.","Se a porta diz ""Não perturbe"", eu não perturbo. Se não, eu aspiro."
+HOTEL_MAID_LINE_2,"Cambio las fundas todos los días. Algunas, dos veces.","I change the pillowcases every day. Some, twice.","Troco as fronhas todos os dias. Algumas, duas vezes."
+HOTEL_MAID_LINE_3,"¿La 13? No hay ninguna 13. No preguntes por la 13.","Room 13? There is no 13. Don't ask about 13.","O 13? Não existe 13. Não pergunte pelo 13."
+PROMPT_HOTEL_KEY_BOARD,E: agarrar la llave maestra del tablero,E: take the master key from the board,E: pegar a chave mestra do quadro
+HINT_HOTEL_KEY,"La llave maestra: abre todas las habitaciones y la suite. Dice ""No sacar del hotel"".","The master key: it opens every room and the suite. It says ""Do not take out of the hotel"".","A chave mestra: abre todos os quartos e a suíte. Diz ""Não tirar do hotel""."
+PROMPT_HOTEL_PILLOW,E: acomodarle la almohadita al conserje,E: tuck the little pillow under the concierge's head,E: ajeitar o travesseirinho do concierge
+PROMPT_GUEST_SIGN,"E: pedirle que firme tu libreta","E: ask them to sign your notebook","E: pedir que assine sua caderneta"
+GUEST_SIGNS_LEFT,"(Firma con la mano izquierda.) Ahí tienes, oficial.","(Signs with the left hand.) There you go, officer.","(Assina com a mão esquerda.) Aqui está, policial."
+GUEST_SIGNS_RIGHT,"(Firma con la mano derecha.) Ahí tienes, oficial.","(Signs with the right hand.) There you go, officer.","(Assina com a mão direita.) Aqui está, policial."
+GUEST_NO_PHOTO,"¿Una foto? Si no veo nada con los pepinos. Tú tampoco.","A photo? I can't see a thing with the cucumbers. Neither can you.","Uma foto? Não vejo nada com os pepinos. Você também não."
+HOTEL_CONCIERGE_ROOMS,"(Bostezo.) Quién duerme dónde: %s. (Bostezo.)","(Yawn.) Who sleeps where: %s. (Yawn.)","(Bocejo.) Quem dorme onde: %s. (Bocejo.)"
+PROMPT_ROOM_shoe,"E: mirar los zapatos","E: look at the shoes","E: olhar os sapatos"
+PROMPT_ROOM_hair,"E: mirar el cepillo","E: look at the hairbrush","E: olhar a escova"
+PROMPT_ROOM_glasses,"E: mirar la mesa de luz","E: look at the nightstand","E: olhar o criado-mudo"
+PROMPT_ROOM_suitcase,"E: abrir la valija","E: open the suitcase","E: abrir a mala"
+ROOM_NO_GLASSES,"Un libro. Ni un par de anteojos.","A book. Not a pair of glasses.","Um livro. Nenhum par de óculos."
+ROOM_TAG,"La etiqueta dice: %s","The tag says: %s","A etiqueta diz: %s"
+HINT_FILE_sign,"Firma de %s para la ficha.","%s's signature for the file.","Assinatura de %s para a ficha."
+HINT_FILE_glasses,"Mesa de luz de %s para la ficha.","%s's nightstand for the file.","Criado-mudo de %s para a ficha."
+FILE_PART_sign,"firma","signature","assinatura"
+FILE_PART_glasses,"mesa de luz","nightstand","criado-mudo"
+HINT_SUITCASE,"La valija de la %d es de %s. El conserje dijo bien.","The suitcase in %d is %s's. The concierge got it right.","A mala do %d é de %s. O concierge acertou."
+HINT_SUITCASE_LIE,"¡La valija de la %d es de %s! El conserje mintió: las fichas se corrigen.","The suitcase in %d is %s's! The concierge lied: the files are corrected.","A mala do %d é de %s! O concierge mentiu: as fichas são corrigidas."
+FILE_ROOM,"Habitación %s","Room %s","Quarto %s"
+FILE_ROOM_SAID,"Habitación %s (lo dijo el conserje)","Room %s (the concierge said so)","Quarto %s (o concierge que disse)"
+FILE_GLASSES_UNSEEN,"Anteojos: ? (falta la mesa de luz)","Glasses: ? (check the nightstand)","Óculos: ? (falta o criado-mudo)"
+FILE_HAND_UNKNOWN,"Mano: ? (falta la firma)","Hand: ? (no signature yet)","Mão: ? (falta a assinatura)"
+HINT_GO_HOTEL,"El Hotel Gran Siesta está en la ciudad: busquen el cartel con la letra que parpadea.","The Hotel Gran Siesta is in the city: look for the sign with the blinking letter.","O Hotel Gran Siesta fica na cidade: procurem a placa com a letra que pisca."
+HINT_HOTEL_LOOK,"Los seis huéspedes están en bata, toalla y pepinos. Lo que no se ve en ellos se ve en sus habitaciones.","The six guests are in bathrobes, towels and cucumbers. What doesn't show on them shows in their rooms.","Os seis hóspedes estão de roupão, toalha e pepinos. O que não se vê neles se vê nos quartos."
+OBJ_HOTEL_GO,"Ir al hotel","Go to the hotel","Ir ao hotel"
+OBJ_HOTEL_FILES,"Armar la ficha de cada huésped (%d de %d)","Make each guest's file (%d of %d)","Montar a ficha de cada hóspede (%d de %d)"
+HINT_GUEST_LEFT,"%s hizo el check-out y se fue con su valija. Su ficha queda como está.","%s checked out and left with the suitcase. The file stays as it is.","%s fez o check-out e foi embora com a mala. A ficha fica como está."
 BRIEF_DOUBLE_A,"Novatos, el diputado Lustre habla otra vez en la plaza. Y dicen que anda suelto un imitador igualito a él.","Rookies, deputy Lustre is speaking at the plaza again. And word is there's an impersonator around who looks just like him.","Novatos, o deputado Lustre fala de novo na praça. E dizem que tem um imitador solto igualzinho a ele."
 BRIEF_DOUBLE_B,"Les dejo la ficha del diputado en la planilla: mírenlo de cerca y compárenlo.","I left the deputy's file on your sheet: look at him up close and compare.","Deixei a ficha do deputado na planilha: olhem de perto e comparem."
 BRIEF_DOUBLE_C,"Esposen al falso, no al verdadero. El verdadero me firma el presupuesto.","Cuff the fake one, not the real one. The real one signs my budget.","Algemem o falso, não o verdadeiro. O verdadeiro assina o meu orçamento."
@@ -4597,6 +4756,31 @@ PLACE_SCHOOL_VISIT,"Escuela Los Girasoles","Sunflowers School","Escola Os Girass
 "CHASE_ENGINEER_LINE_2","¡Las vigas eran para la parrilla de mi casa!","The beams were for my backyard grill!","As vigas eram para a minha churrasqueira!"
 "CHASE_ENGINEER_LINE_3","Está bien, me entrego. Pero el puente aguantó, ¿no?","Fine, I give up. But the bridge held up, didn't it?","Tá bom, me entrego. Mas a ponte aguentou, né?"
 "PLACE_FOOTBALL_PITCH","Cancha del Barrio","Neighborhood Pitch","Campinho do Bairro"
+"PLACE_AIRPORT","Aeropuerto de la Ciudad","City Airport","Aeroporto da Cidade"
+"AIRPORT_CHECKIN","DESPACHO DE EQUIPAJE","BAG DROP","DESPACHO DE BAGAGEM"
+"AIRPORT_XRAY","RAYOS X","X-RAY","RAIO X"
+"AIRPORT_DUTY_FREE","TIENDA LIBRE DE IMPUESTOS","DUTY FREE","FREE SHOP"
+"AIRPORT_GATE","EMBARQUE","BOARDING","EMBARQUE"
+"PROMPT_OPEN_SUITCASE","E: abrir la maleta","E: open the suitcase","E: abrir a mala"
+"PROMPT_CLOSE_SUITCASE","E: cerrar la maleta","E: close the suitcase","E: fechar a mala"
+"ODD_ROOSTER_CROW","¡KIKIRIKÍ!","COCK-A-DOODLE-DOO!","CÓCÓRICÓ!"
+"ODD_ALARM_RING","¡RIIIIING!","RIIIIING!","TRIMMMM!"
+"HINT_ODD_ROOSTER","Esa maleta se sacude... y canta como un gallo.","That suitcase jolts... and crows like a rooster.","Essa mala se mexe... e canta como um galo."
+"HINT_ODD_ALARM","Algo suena adentro de esa maleta: un despertador.","Something rings inside that suitcase: an alarm clock.","Algo toca dentro dessa mala: um despertador."
+"HINT_ODD_PAINT","Esa maleta deja manchas de pintura amarilla.","That suitcase leaves yellow paint spots.","Essa mala deixa manchas de tinta amarela."
+"HINT_ODD_NEWSPAPERS","Esa maleta pesa el doble que las otras.","That suitcase weighs twice as much as the others.","Essa mala pesa o dobro das outras."
+"XRAY_NORMAL","Rayos X: un traje, una corbata... y un osito.","X-ray: a suit, a tie... and a teddy bear.","Raio X: um terno, uma gravata... e um ursinho."
+"XRAY_ROOSTER","Rayos X: ¡UN GALLO!","X-ray: A ROOSTER!","Raio X: UM GALO!"
+"XRAY_ALARM","Rayos X: ¡un despertador con cables!","X-ray: an alarm clock with wires!","Raio X: um despertador com fios!"
+"XRAY_PAINT","Rayos X: ¡un tarro de pintura abierto!","X-ray: an open can of paint!","Raio X: uma lata de tinta aberta!"
+"XRAY_NEWSPAPERS","Rayos X: ¡una pila de periódicos viejos!","X-ray: a pile of old newspapers!","Raio X: uma pilha de jornais velhos!"
+"PRESS_LAUGH_1","Ja, ja, ¡el diputado viaja con un osito!","Ha ha, the deputy travels with a teddy bear!","Ha ha, o deputado viaja com um ursinho!"
+"PRESS_LAUGH_2","¡Foto, foto!","Photo, photo!","Foto, foto!"
+"PRESS_LAUGH_3","Qué tierno.","How sweet.","Que fofo."
+"PRESS_SCANDAL_1","¡Primera plana!","Front page!","Primeira página!"
+"PRESS_SCANDAL_2","¡Diputado, explíquenos eso!","Deputy, explain that to us!","Deputado, explique isso!"
+"PRESS_SCANDAL_3","¡Esto es un escándalo!","This is a scandal!","Isso é um escândalo!"
+"HINT_AIRPORT_SCANDAL","¡La maleta rara pasó por los rayos X delante de la prensa! Papelón en todos los periódicos.","The odd suitcase went through the X-ray in front of the press! A scandal in every newspaper.","A mala estranha passou pelo raio X na frente da imprensa! Vexame em todos os jornais."
 "FOOTBALL_BANNER","Partido benéfico: ¡Lustre juega por los chicos!","Charity match: Lustre plays for the kids!","Jogo beneficente: Lustre joga pelas crianças!"
 "FOOTBALL_STALL","SALCHICHAS","SAUSAGES","SALSICHAS"
 "PROMPT_KICK_BALL","Clic: patear (mantén para más fuerte) · E: pase","Click: kick (hold for harder) · E: pass","Clique: chutar (segure para mais forte) · E: passe"
@@ -4659,6 +4843,101 @@ PLACE_SCHOOL_VISIT,"Escuela Los Girasoles","Sunflowers School","Escola Os Girass
 "CHASE_REFEREE_LINE_1","¡Siga, siga! ¡Ley de la ventaja!","Play on, play on! Advantage!","Segue, segue! Lei da vantagem!"
 "CHASE_REFEREE_LINE_2","¡El sobre era para la cooperadora de la escuela!","The envelope was for the school's parents' fund!","O envelope era para a associação de pais da escola!"
 "CHASE_REFEREE_LINE_3","Está bien, me entrego. Tarjeta amarilla para mí.","Fine, I give up. Yellow card for me.","Tudo bem, me entrego. Cartão amarelo para mim."
+"PLACE_TV_STUDIO","Canal de la Ciudad","City Channel","Canal da Cidade"
+"TV_STUDIO_DOOR","ESTUDIO","STUDIO","ESTÚDIO"
+"TV_LOBBY_DOOR","RECEPCIÓN","RECEPTION","RECEPÇÃO"
+"TV_ON_AIR","AL AIRE","ON AIR","NO AR"
+"TV_NAME_0","RITA MALVÓN","RITA MALVÓN","RITA MALVÓN"
+"TV_NAME_1","POMPEYO LUSTRE","POMPEYO LUSTRE","POMPEYO LUSTRE"
+"PROMPT_AIM_TV_CAMERA","E: girar la cámara hacia donde miras · clic: empujarla","E: turn the camera to where you look · click: push it","E: virar a câmera para onde você olha · clique: empurrá-la"
+"HUD_DEBATE_WAITING","Entra al estudio: el debate empieza","Walk into the studio: the debate starts","Entre no estúdio: o debate começa"
+"HUD_DEBATE_CLOCK","Bloque %d de %d · %d:%02d · Imagen de Lustre: %d","Block %d of %d · %d:%02d · Lustre's image: %d","Bloco %d de %d · %d:%02d · Imagem de Lustre: %d"
+"HUD_DEBATE_BREAK","Tanda: %d s · Imagen de Lustre: %d","Ad break: %d s · Lustre's image: %d","Intervalo: %d s · Imagem de Lustre: %d"
+"HUD_DEBATE_OVER","Terminó el debate · Imagen de Lustre: %d","The debate is over · Lustre's image: %d","O debate acabou · Imagem de Lustre: %d"
+"HINT_DEBATE_BREAK","Tanda de 10 segundos: el diputado se retoca","10-second ad break: the deputy touches up","Intervalo de 10 segundos: o deputado se retoca"
+"TV_QUESTION_1","Primera pregunta: ¿qué harían con los baches de la avenida?","First question: what would you do about the potholes on the avenue?","Primeira pergunta: o que fariam com os buracos da avenida?"
+"TV_QUESTION_2","¿Cómo piensan bajar el precio del pan?","How do you plan to bring down the price of bread?","Como pretendem baixar o preço do pão?"
+"TV_QUESTION_3","Los vecinos preguntan por las palomas de la plaza.","The neighbors are asking about the pigeons in the plaza.","Os vizinhos perguntam pelos pombos da praça."
+"TV_QUESTION_4","¿Qué opinan del puente nuevo?","What do you think of the new bridge?","O que acham da ponte nova?"
+"TV_QUESTION_5","¿Y el partido benéfico? Hay fotos.","And the charity match? There are photos.","E o jogo beneficente? Tem fotos."
+"TV_QUESTION_6","Cierre: un minuto para convencer a los indecisos.","Closing: one minute to win over the undecided.","Encerramento: um minuto para convencer os indecisos."
+"TV_LUSTRE_ANSWER_1","Cada bache es una oportunidad. De taparlo. Pronto.","Every pothole is an opportunity. To fill it. Soon.","Cada buraco é uma oportunidade. De tapar. Logo."
+"TV_LUSTRE_ANSWER_2","El pan va a bajar. Del estante a la bolsa, como siempre.","Bread will come down. From the shelf to the bag, as always.","O pão vai baixar. Da prateleira para a sacola, como sempre."
+"TV_LUSTRE_ANSWER_3","Las palomas tendrán su propia ventanilla de reclamos.","The pigeons will get their own complaints window.","Os pombos terão seu próprio guichê de reclamações."
+"TV_LUSTRE_ANSWER_4","El puente se mueve porque está vivo. Como esta ciudad.","The bridge moves because it's alive. Like this city.","A ponte se mexe porque está viva. Como esta cidade."
+"TV_LUSTRE_ANSWER_5","No me caí: me agaché a escuchar al pasto.","I didn't fall: I crouched to listen to the grass.","Eu não caí: me agachei para ouvir a grama."
+"TV_LUSTRE_ANSWER_6","Indecisos: decidan por mí. Yo ya lo hice.","Undecided: decide for me. I already did.","Indecisos: decidam por mim. Eu já decidi."
+"TV_MALVON_ANSWER_1","Yo traje un plano de la avenida con cada bache marcado.","I brought a map of the avenue with every pothole marked.","Eu trouxe um mapa da avenida com cada buraco marcado."
+"TV_MALVON_ANSWER_2","Hablé con los panaderos. Tengo números, no chistes.","I talked to the bakers. I have numbers, not jokes.","Falei com os padeiros. Tenho números, não piadas."
+"TV_MALVON_ANSWER_3","Las palomas no votan. Los vecinos sí.","Pigeons don't vote. Neighbors do.","Pombos não votam. Os vizinhos sim."
+"TV_MALVON_ANSWER_4","Yo no lo crucé. Él sí, y llegó mojado.","I didn't cross it. He did, and got there wet.","Eu não atravessei. Ele sim, e chegou molhado."
+"TV_MALVON_ANSWER_5","Las fotos hablan solas. Y gritan.","The photos speak for themselves. And they scream.","As fotos falam sozinhas. E gritam."
+"TV_MALVON_ANSWER_6","Si tienen dudas, miren la repetición.","If you have doubts, watch the replay.","Se tiverem dúvidas, vejam o replay."
+"TV_PROMPTER_OK","Sonríe. Habla despacio. No digas 'eh'.","Smile. Speak slowly. Don't say 'um'.","Sorria. Fale devagar. Não diga 'é...'."
+"TV_PROMPTER_BAD_1","Prometo un río en cada casa.","I promise a river in every house.","Prometo um rio em cada casa."
+"TV_PROMPTER_BAD_2","Mi plan es dormir la siesta en el despacho.","My plan is to nap in my office.","Meu plano é tirar uma soneca no gabinete."
+"TV_PROMPTER_BAD_3","Voten a Malvón. Yo lo haría.","Vote for Malvón. I would.","Votem na Malvón. Eu votaria."
+"TV_PROMPTER_BAD_4","Los impuestos serán pagados por las palomas.","Taxes will be paid by the pigeons.","Os impostos serão pagos pelos pombos."
+"TV_MIC_NOISE_1","¡CUAC! ¡CUAC!","QUACK! QUACK!","QUÉN! QUÉN!"
+"TV_MIC_NOISE_2","¡PIII PIII!","HONK HONK!","FOM FOM!"
+"TV_MIC_NOISE_3","¡PRRRT!","PFFFT!","PRRRT!"
+"TV_CARD_1","Baches: un plan por cuadra, empezando mañana.","Potholes: a plan for every block, starting tomorrow.","Buracos: um plano por quarteirão, começando amanhã."
+"TV_CARD_2","Pan: más panaderías de barrio, menos vueltas.","Bread: more neighborhood bakeries, less fuss.","Pão: mais padarias de bairro, menos rodeios."
+"TV_CARD_3","Palomas: bebederos en la plaza y paz para todos.","Pigeons: water fountains in the plaza and peace for all.","Pombos: bebedouros na praça e paz para todos."
+"TV_CARD_4","Puente: lo revisa gente que sabe. Esta vez sí.","Bridge: checked by people who know. This time, for real.","Ponte: revisada por quem entende. Desta vez sim."
+"TV_CARD_5","Fútbol: jugué por los chicos y lo volvería a hacer.","Football: I played for the kids and I'd do it again.","Futebol: joguei pelas crianças e jogaria de novo."
+"TV_CARD_6","Gracias por escuchar. Ahora, a trabajar.","Thanks for listening. Now, back to work.","Obrigado por ouvir. Agora, ao trabalho."
+"PROMPT_UNPLUG_PROMPTER","E: desenchufar el teleprompter","E: unplug the teleprompter","E: desligar o teleprompter"
+"PROMPT_PLUG_PROMPTER","E: enchufar el teleprompter","E: plug in the teleprompter","E: ligar o teleprompter"
+"PROMPT_SPOTS_ON","E: prender los focos del set","E: turn on the set's spots","E: acender os refletores do set"
+"HINT_SABOTAGE_TELEPROMPTER","¡Le cambiaron el teleprompter! Ponle un cartel delante o desenchúfalo","Someone changed his teleprompter! Hold a card up for him or unplug it","Mudaram o teleprompter dele! Mostre um cartaz ou desligue-o"
+"HINT_SABOTAGE_CAMERA","¡Su cámara se giró! Vuelve a apuntarla al diputado","His camera turned away! Aim it back at the deputy","A câmera dele virou! Aponte de novo para o deputado"
+"HINT_SABOTAGE_LIGHT","¡Le apagaron el foco! Alúmbralo con la linterna o préndelo en la consola","His spot went out! Light him with your flashlight or turn it on at the console","Apagaram o refletor dele! Ilumine com a lanterna ou acenda no console"
+"HINT_SABOTAGE_MIC","¡Su micrófono hace ruidos! Tráele el de repuesto del camarín","His mic is making noises! Bring him the spare one from the makeup room","O microfone dele faz barulhos! Traga o reserva do camarim"
+"HINT_SABOTAGE_FIXED","¡Arreglado a tiempo!","Fixed in time!","Consertado a tempo!"
+"PROMPT_TALK_TECHNICIAN","E: hablar con el técnico","E: talk to the technician","E: falar com o técnico"
+"TV_TECH_1_TALK_1","Soy Beto, el de sonido. Si suena raro, no fui yo. Bueno, a veces sí.","I'm Beto, from sound. If it sounds weird, it wasn't me. Well, sometimes it was.","Sou o Beto, do som. Se soar estranho, não fui eu. Bom, às vezes fui."
+"TV_TECH_1_TALK_2","Este café me lo trajo alguien muy amable. No me acuerdo quién.","Someone very nice brought me this coffee. I don't remember who.","Alguém muito gentil me trouxe este café. Não lembro quem."
+"TV_TECH_1_TALK_3","¿Ves todos estos botones? Yo tampoco sé qué hace la mitad.","See all these buttons? I don't know what half of them do either.","Está vendo todos estes botões? Eu também não sei o que metade faz."
+"TV_TECH_2_TALK_1","Soy Lola, cámaras y luces. Estoy ocupada, habla rápido.","I'm Lola, cameras and lights. I'm busy, talk fast.","Sou a Lola, câmeras e luzes. Estou ocupada, fale rápido."
+"TV_TECH_2_TALK_2","Mi café es del canal. El de la máquina. El feo.","My coffee is the channel's. From the machine. The bad one.","Meu café é do canal. Da máquina. O ruim."
+"TV_TECH_2_TALK_3","Yo voto en secreto, como todo el mundo. Y no te voy a decir a quién.","I vote in secret, like everybody. And I won't tell you who for.","Eu voto em segredo, como todo mundo. E não vou dizer em quem."
+"TV_TECH_3_TALK_1","Soy Nico, el del teleprompter. Escribo rápido y sin faltas. Casi.","I'm Nico, on the teleprompter. I type fast and without typos. Almost.","Sou o Nico, do teleprompter. Digito rápido e sem erros. Quase."
+"TV_TECH_3_TALK_2","¿Este vaso? Lo encontré en la cocina. Está limpio, creo.","This cup? I found it in the kitchen. It's clean, I think.","Este copo? Achei na cozinha. Está limpo, acho."
+"TV_TECH_3_TALK_3","Si el diputado se equivoca, es culpa del diputado. Yo solo escribo.","If the deputy gets it wrong, that's on the deputy. I just type.","Se o deputado erra, a culpa é do deputado. Eu só digito."
+"TV_TECH_PHONE","Jeje... qué buena noticia.","Heh heh... what good news.","Hehe... que boa notícia."
+"TV_TECH_WRONG_CUFF","¡Yo solo aprieto botones! ¡Voy a llamar al sindicato!","I just push buttons! I'm calling the union!","Eu só aperto botões! Vou chamar o sindicato!"
+"TV_TECH_CUFFED","¡Esperen! ¡La candidata me dijo que era una broma!","Wait! The candidate told me it was a joke!","Esperem! A candidata me disse que era uma brincadeira!"
+"HINT_TECH_CUP","Su vaso de café tiene el logo violeta de la campaña de Malvón.","This coffee cup has the purple logo of Malvón's campaign.","Este copo de café tem o logo roxo da campanha da Malvón."
+"HINT_TECH_PHONE","Un mensaje al celular, y una sonrisa de oreja a oreja.","A message on the phone, and a smile from ear to ear.","Uma mensagem no celular, e um sorriso de orelha a orelha."
+"HINT_TECH_LIGHT","La luz amarilla del sabotaje se prende justo en este lugar de la consola.","The sabotage's yellow light goes on right at this place on the console.","A luz amarela da sabotagem acende bem neste lugar do console."
+"HINT_TECH_CUFFED","Técnico comprado esposado: se acabaron los sabotajes. Ahora, al patrullero.","Bought technician cuffed: no more sabotage. Now, to the patrol car.","Técnico comprado algemado: acabaram as sabotagens. Agora, para a viatura."
+"HINT_TECH_IN_CAR","El técnico comprado está en el patrullero.","The bought technician is in the patrol car.","O técnico comprado está na viatura."
+"HINT_TECH_WRONG_CUFF","Ese técnico no era. El canal se queja: 100 menos de sueldo.","That technician wasn't the one. The channel complains: 100 less pay.","Esse técnico não era. O canal reclama: 100 a menos de salário."
+"HINT_GO_DEBATE","Al Canal de la Ciudad: que el diputado salga bien en el debate.","To the City Channel: make the deputy look good in the debate.","Para o Canal da Cidade: que o deputado se saia bem no debate."
+"HINT_DEBATE_WON","¡Fin del debate! La imagen del diputado quedó bien. Más o menos.","End of the debate! The deputy's image held up. More or less.","Fim do debate! A imagem do deputado ficou boa. Mais ou menos."
+"HINT_DEBATE_LOST","Fin del debate. La imagen del diputado quedó por el piso.","End of the debate. The deputy's image hit rock bottom.","Fim do debate. A imagem do deputado foi para o chão."
+"BRIEF_DEBATE_A","Novatos, el diputado Lustre tiene un debate en televisión. En vivo.","Rookies, Deputy Lustre has a TV debate. Live.","Novatos, o deputado Lustre tem um debate na televisão. Ao vivo."
+"BRIEF_DEBATE_B","Que no pase vergüenza... Bueno, que no pase más vergüenza de la que pasa solo.","Don't let him embarrass himself... Well, no more than he does on his own.","Não deixem ele passar vergonha... Bom, não mais do que ele passa sozinho."
+"BRIEF_DEBATE_C","Dicen que la candidata Malvón compró a un técnico del canal. Si descubren quién es, me lo traen.","They say candidate Malvón bought one of the channel's technicians. If you find out who, bring them to me.","Dizem que a candidata Malvón comprou um técnico do canal. Se descobrirem quem é, tragam para mim."
+"OBJ_DEBATE_ON","Llegar al estudio y que empiece el debate","Get to the studio and start the debate","Chegar ao estúdio e começar o debate"
+"OBJ_DEBATE_IMAGE","Imagen del diputado: %d (hace falta %d)","Deputy's image: %d (needs %d)","Imagem do deputado: %d (precisa de %d)"
+"OBJ_DEBATE_CLUES","Pistas del técnico comprado: %d de %d","Clues on the bought technician: %d of %d","Pistas do técnico comprado: %d de %d"
+"OBJ_DEBATE_TECHNICIAN","Llevar al técnico comprado al patrullero","Take the bought technician to the patrol car","Levar o técnico comprado para a viatura"
+"OBJ_DEBATE_BLUNDERS","Papelones al aire: %d","Blunders on air: %d","Gafes no ar: %d"
+"OBJ_DEBATE_OVER","Debate terminado.","Debate over.","Debate encerrado."
+"TV_LUSTRE_MAKEUP_1","¡Tanda! Voy a que me retoquen. Este brillo no se mantiene solo.","Ad break! I'm getting a touch-up. This shine doesn't keep itself.","Intervalo! Vou retocar. Este brilho não se mantém sozinho."
+"TV_LUSTRE_MAKEUP_2","¡Un minuto! Las cámaras me agregan diez kilos. Y yo ya tengo los míos.","One minute! The cameras add ten kilos. And I already have mine.","Um minuto! As câmeras acrescentam dez quilos. E eu já tenho os meus."
+"TV_LUSTRE_MAKEUP_3","Que nadie empiece sin mí. Bueno, que empiecen, pero que no les guste.","Nobody start without me. Well, start, but don't enjoy it.","Ninguém comece sem mim. Bom, comecem, mas não gostem."
+"TV_LUSTRE_MIRROR","Un poco más de polvo... perfecto. Qué guapo soy.","A bit more powder... perfect. I'm so handsome.","Um pouco mais de pó... perfeito. Como sou bonito."
+"TV_LUSTRE_MADE_UP","Listo. Ahora sí, que me vean.","Done. Now they can look at me.","Pronto. Agora sim, podem me ver."
+"TV_LUSTRE_EMPTY","El diputado no está en su atril... Candidata Malvón, adelante.","The deputy isn't at his lectern... Candidate Malvón, go ahead.","O deputado não está no púlpito... Candidata Malvón, pode falar."
+"HINT_LUSTRE_MAKEUP","El diputado se fue al camarín. Tráelo de la mano antes de que termine la tanda.","The deputy went to the makeup room. Lead him back by the hand before the break ends.","O deputado foi para o camarim. Traga-o pela mão antes que o intervalo acabe."
+"HINT_ESCAPE_TECHNICIAN","¡El técnico comprado se escapa en la unidad móvil del canal! ¡Atrápenlo!","The bought technician is getting away in the channel's TV van! Catch them!","O técnico comprado está fugindo na unidade móvel do canal! Peguem!"
+"OBJ_DEBATE_CATCH_VAN","Atrapar la unidad móvil (suma como detenido)","Catch the TV van (counts as detained)","Pegar a unidade móvel (conta como detido)"
+"CHASE_TECHNICIAN_LINE_1","¡Corten! ¡Corten! ¡Vamos a una tanda!","Cut! Cut! Going to a break!","Corta! Corta! Vamos para o intervalo!"
+"CHASE_TECHNICIAN_LINE_2","¡Esto no estaba en el guion!","This wasn't in the script!","Isso não estava no roteiro!"
+"CHASE_TECHNICIAN_LINE_3","Está bien, me entrego. Pero que no me enfoquen de la nariz.","Fine, I give up. Just don't film me from the nose up.","Tudo bem, me entrego. Mas não me filmem pelo nariz."
 HINT_INSPECTOR_ARRIVES,Llegó la inspectora de la ciudad: va contigo todo el turno y anota todo.,The city inspector is here: she goes with you all shift and writes everything down.,A inspetora da cidade chegou: ela vai com você o turno todo e anota tudo.
 INSPECTOR_ARRIVES,"Severina Regla, inspección de la ciudad. Hagan como si no estuviera.","Severina Regla, city inspection. Act as if I'm not here.","Severina Regla, inspeção da cidade. Façam de conta que não estou aqui."
 INSPECTOR_NOTE_1,Mmm.,Hmm.,Hum.
@@ -4920,3 +5199,483 @@ HINT_MANSION_RUINED_hair,"¡CRASH! La armadura se cayó y el pelo se perdió.","
 HINT_MANSION_RUINED_bite,"Te comiste el bombón mordido. Y con él, el mordisco.","You ate the bitten chocolate. And the bite with it.","Você comeu o bombom mordido. E a mordida junto."
 HINT_MANSION_RUINED_bells,"Tiraste de un cordón y las banderitas de las campanillas se mezclaron.","You pulled a cord and the bell flags got mixed up.","Você puxou um cordão e as bandeirinhas das campainhas se misturaram."
 HINT_MANSION_RUINED_witness,"Lorenzo se ofendió. Ahora solo dice insultos.","Lorenzo is offended. Now he only says insults.","Lorenzo se ofendeu. Agora só fala insultos."
+BRIEF_SPY_TELESCOPE_B,"El señor Bellini mira las estrellas todas las noches, pero su telescopio apunta abajo: a la bóveda del banco de enfrente.","Mr. Bellini watches the stars every night, but his telescope points down: at the vault of the bank across the street.","O senhor Bellini olha as estrelas toda noite, mas o telescópio dele aponta para baixo: para o cofre do banco da frente."
+BRIEF_SPY_TELESCOPE_C,"Traigan el telescopio al patrullero. Pesa 35 kilos y es frágil: entre dos, con cuidado. Entra en el ascensor.","Bring the telescope to the patrol car. It weighs 35 kilos and it's fragile: two of you, carefully. It fits in the elevator.","Tragam o telescópio para a viatura. Pesa 35 quilos e é frágil: entre dois, com cuidado. Cabe no elevador."
+BRIEF_SPY_TELESCOPE_D,"Si encuentran la libreta con la clave o los binoculares, mejor: todo suma.","If you find the notebook with the code or the binoculars, even better: it all counts.","Se encontrarem a caderneta com a senha ou o binóculo, melhor: tudo conta."
+OBJ_FIND_SPY_TELESCOPE,Llevarse el telescopio espía,Take the spy telescope,Levar o telescópio espião
+OBJ_EXTRA_CODE_NOTEBOOK,Extra: la libreta con la clave,Extra: the notebook with the code,Extra: a caderneta com a senha
+OBJ_EXTRA_BINOCULARS,Extra: los binoculares,Extra: the binoculars,Extra: o binóculo
+PEPA_TIP_spy_telescope,El del 30B mira por el telescopio toda la noche. Las nubes no. El banco de enfrente sí.,The man in 30B looks through his telescope all night. Not at the clouds. At the bank across the street.,O do 30B olha pelo telescópio a noite toda. Não as nuvens. O banco da frente.
+PROMPT_TELESCOPE,E: mirar por el telescopio,E: look through the telescope,E: olhar pelo telescópio
+HINT_TELESCOPE_VAULT,"Se ve la bóveda del banco de enfrente, abierta. El guardia marca la clave: 4, 8, 15, 16...","You see the vault of the bank across the street, open. The guard types the code: 4, 8, 15, 16...","Dá para ver o cofre do banco da frente, aberto. O guarda digita a senha: 4, 8, 15, 16..."
+CLUE_TELESCOPE_VAULT,El telescopio apunta a la bóveda del banco de enfrente: se ve la clave.,The telescope points at the vault of the bank across the street: you can see the code.,O telescópio aponta para o cofre do banco da frente: dá para ver a senha.
+PROMPT_TAPE_MARK,E: mirar la marca de cinta,E: look at the tape mark,E: olhar a marca de fita
+CLUE_TAPE_MARK,Tres tiras de cinta en el piso del balcón: ahí iba un trípode apuntando al banco.,Three strips of tape on the balcony floor: a tripod stood there pointing at the bank.,Três tiras de fita no chão da varanda: ali ficava um tripé apontando para o banco.
+BRIEF_FLOOR_31_B,"El edificio tiene 30 pisos, pero el señor Bellini sube al 31. Ahí guarda los cuadros que faltan en el museo.","The building has 30 floors, but Mr. Bellini goes up to the 31st. That's where he keeps the paintings missing from the museum.","O prédio tem 30 andares, mas o senhor Bellini sobe ao 31. É lá que ele guarda os quadros que sumiram do museu."
+BRIEF_FLOOR_31_C,Traigan al patrullero la llave del piso 31: sin ella no hay caso. No pesa nada y vale todo.,Bring the key of floor 31 to the patrol car: without it there's no case. It weighs nothing and it's worth everything.,Tragam a chave do andar 31 para a viatura: sem ela não tem caso. Não pesa nada e vale tudo.
+BRIEF_FLOOR_31_D,"Si encuentran el plano con un piso de más o la caja de cuadros, mejor: todo suma.","If you find the plan with one floor too many or the box of paintings, even better: it all counts.","Se encontrarem a planta com um andar a mais ou a caixa de quadros, melhor: tudo conta."
+OBJ_FIND_FLOOR_31,Llevarse la llave del piso 31,Take the key of floor 31,Levar a chave do andar 31
+OBJ_EXTRA_FLOOR_PLAN,Extra: el plano con un piso de más,Extra: the plan with one floor too many,Extra: a planta com um andar a mais
+OBJ_EXTRA_PAINTINGS_BOX,Extra: la caja de cuadros robados,Extra: the box of stolen paintings,Extra: a caixa de quadros roubados
+PEPA_TIP_floor_31,"El del 30B sube en el ascensor y el ascensor sigue subiendo. Arriba no hay nada, ¿no?","The man in 30B takes the elevator up and the elevator keeps going up. There's nothing up there, is there?","O do 30B pega o elevador e o elevador continua subindo. Lá em cima não tem nada, né?"
+PROMPT_TAPED_BUTTON,E: mirar el botón tapado,E: look at the taped button,E: olhar o botão tapado
+CLUE_TAPED_BUTTON,"En el ascensor hay un botón 31 tapado con cinta. El edificio tiene 30 pisos.","In the elevator there's a 31 button taped over. The building has 30 floors.","No elevador tem um botão 31 tapado com fita. O prédio tem 30 andares."
+PROMPT_KEYHOLE,E: mirar la cerradura,E: look at the keyhole,E: olhar a fechadura
+HINT_KEYHOLE_EMPTY,Una cerradura dorada debajo de los botones. Hace falta una llave.,A golden keyhole under the buttons. It needs a key.,Uma fechadura dourada embaixo dos botões. Precisa de uma chave.
+PROMPT_TURN_FLOOR_KEY,E: girar la llave,E: turn the key,E: girar a chave
+HINT_FLOOR_31_OPEN,"«Clic.» La cinta se despega sola y el botón 31 se enciende.","«Click.» The tape peels off and the 31 button lights up.","«Clique.» A fita se solta e o botão 31 acende."
+CLUE_FLOOR_31_OPEN,La llave del 30B enciende el botón 31 del ascensor: el piso que no existe.,The key from 30B lights the elevator's 31 button: the floor that doesn't exist.,A chave do 30B acende o botão 31 do elevador: o andar que não existe.
+PROMPT_ELEVATOR_31,E: subir al 31,E: go up to 31,E: subir ao 31
+BRIEF_CARRIER_PIGEONS_B,"El señor Bellini cría palomas en el balcón. Salen vacías y vuelven con joyas en la pata: las entrena para robar.","Mr. Bellini keeps pigeons on his balcony. They fly out empty and come back with jewels on their legs: he trains them to steal.","O senhor Bellini cria pombos na varanda. Eles saem vazios e voltam com joias na pata: ele os treina para roubar."
+BRIEF_CARRIER_PIGEONS_C,"Traigan el palomar al patrullero, con las palomas adentro. Pesa 25 kilos: entre dos. Y nada de correr cerca: se asustan.","Bring the loft to the patrol car, pigeons and all. It weighs 25 kilos: two of you. And no running near it: they scare.","Tragam o pombal para a viatura, com os pombos dentro. Pesa 25 quilos: entre dois. E nada de correr perto: eles se assustam."
+BRIEF_CARRIER_PIGEONS_D,"Si encuentran el silbato del entrenador o el collar que trae una paloma, mejor: todo suma.","If you find the trainer's whistle or the necklace a pigeon brings, even better: it all counts.","Se encontrarem o apito do treinador ou o colar que um pombo traz, melhor: tudo conta."
+OBJ_FIND_CARRIER_PIGEONS,Llevarse el palomar de las palomas mensajeras,Take the carrier pigeons' loft,Levar o pombal dos pombos-correio
+OBJ_EXTRA_TRAINER_WHISTLE,Extra: el silbato del entrenador,Extra: the trainer's whistle,Extra: o apito do treinador
+OBJ_EXTRA_PEARL_NECKLACE,Extra: el collar de perlas que trae una paloma,Extra: the pearl necklace a pigeon brings,Extra: o colar de pérolas que um pombo traz
+PEPA_TIP_carrier_pigeons,"Las palomas del 30B vuelven con cosas brillantes. Ayer una traía mi anillo, ¡y yo no lo había perdido!","The pigeons from 30B come back with shiny things. Yesterday one had my ring, and I hadn't even lost it!","Os pombos do 30B voltam com coisas brilhantes. Ontem um trazia o meu anel, e eu nem tinha perdido!"
+PROMPT_PIGEON_TAKE,E: quitarle lo que trae en la pata,E: take what it has on its leg,E: tirar o que ele traz na pata
+PROMPT_FEATHERS,E: mirar las plumas,E: look at the feathers,E: olhar as penas
+CLUE_FEATHERS,Plumas de paloma y alpiste desde el ascensor hasta el 30B.,Pigeon feathers and birdseed from the elevator to 30B.,Penas de pombo e alpiste do elevador até o 30B.
+BRIEF_TENANT_OF_TWENTY_B,"El 30C está en alquiler hace un año, pero el señor Bellini ya se lo alquiló a veinte personas. A la vez. Y no es suyo.","30C has been for rent for a year, but Mr. Bellini has already rented it to twenty people. At the same time. And it isn't his.","O 30C está para alugar há um ano, mas o senhor Bellini já o alugou para vinte pessoas. Ao mesmo tempo. E nem é dele."
+BRIEF_TENANT_OF_TWENTY_C,Traigan al patrullero la caja con los veinte contratos: está en el 30C. Pesa 5 kilos.,Bring the box with the twenty contracts to the patrol car: it's in 30C. It weighs 5 kilos.,Tragam para a viatura a caixa com os vinte contratos: está no 30C. Pesa 5 quilos.
+BRIEF_TENANT_OF_TWENTY_D,"Si encuentran el sello falso del dueño o el manojo de veinte llaves, mejor: todo suma.","If you find the owner's fake stamp or the bunch of twenty keys, even better: it all counts.","Se encontrarem o carimbo falso do dono ou o molho de vinte chaves, melhor: tudo conta."
+OBJ_FIND_TENANT_OF_TWENTY,Llevarse la caja con los veinte contratos,Take the box with the twenty contracts,Levar a caixa com os vinte contratos
+AIRPORT_DEPUTY_OFF,"¡Voy a mirar un ratito la tienda, enseguida vuelvo!","I'm just popping into the shop, back in a sec!","Vou dar uma olhadinha na loja, já volto!"
+AIRPORT_DEPUTY_SHOP_1,"¿Este perfume me hace más votable?","Does this perfume make me more electable?","Este perfume me deixa mais votável?"
+AIRPORT_DEPUTY_SHOP_2,"Con estos lentes nadie me reconoce. ¡Qué pena!","Nobody recognizes me in these sunglasses. What a shame!","Com estes óculos ninguém me reconhece. Que pena!"
+AIRPORT_DEPUTY_SHOP_3,"¡Libre de impuestos! Mis palabras favoritas.","Tax free! My favorite words.","Livre de impostos! Minhas palavras favoritas."
+AIRPORT_DEPUTY_SHOP_4,"Me llevo doce, uno por maleta.","I'll take twelve, one per suitcase.","Vou levar doze, um por mala."
+AIRPORT_DEPUTY_SHOP_5,"¿Hacen descuento a los diputados?","Any discount for deputies?","Tem desconto para deputados?"
+AIRPORT_DEPUTY_GATE,"Bueno, me siento. Pero solo un ratito.","Fine, I'll sit. But just for a bit.","Tá bom, eu sento. Mas só um pouquinho."
+HINT_AIRPORT_DEPUTY_OFF,"¡El diputado se fue a la tienda libre de impuestos! Llévalo de la mano a la puerta de embarque.","The deputy went off to the duty-free shop! Lead him by the hand to the gate.","O deputado foi para a loja duty free! Leve-o pela mão até o portão de embarque."
+HINT_AIRPORT_LAST_CALL,"¡Último llamado! El embarque cierra en un minuto: el diputado tiene que estar en la puerta.","Last call! Boarding closes in a minute: the deputy has to be at the gate.","Última chamada! O embarque fecha em um minuto: o deputado tem que estar no portão."
+HINT_AIRPORT_BOARDED,"¡El diputado subió al avión!","The deputy got on the plane!","O deputado embarcou no avião!"
+HINT_AIRPORT_MISSED,"¡Cerró el embarque y el diputado no estaba en la puerta!","Boarding closed and the deputy wasn't at the gate!","O embarque fechou e o deputado não estava no portão!"
+AIRPORT_BOARDING_CLOCK,"Embarque: %s","Boarding: %s","Embarque: %s"
+AIRPORT_BOARDING_CLOSED,"Embarque cerrado","Boarding closed","Embarque encerrado"
+BRIEF_AIRPORT_A,"Novatos, el diputado Lustre se va de viaje a la Cumbre de Alcaldes. Llévenlo hasta el avión con todas sus maletas. Son doce. Sí, doce. No pregunten.","Rookies, Deputy Lustre is flying off to the Mayors' Summit. Get him onto the plane with all his suitcases. There are twelve. Yes, twelve. Don't ask.","Novatos, o deputado Lustre vai viajar para a Cúpula de Prefeitos. Levem ele até o avião com todas as malas. São doze. Sim, doze. Não perguntem."
+BRIEF_AIRPORT_B,"La concejala Embrollo anda diciendo que le preparó una sorpresa. Si algo raro pasa por los rayos X delante de la prensa, el papelón es nuestro.","Councillor Embrollo goes around saying she's got a surprise for him. If anything odd goes through the X-ray in front of the press, the disgrace is ours.","A vereadora Embrollo anda dizendo que preparou uma surpresa para ele. Se algo estranho passar no raio X na frente da imprensa, o vexame é nosso."
+BRIEF_AIRPORT_C,"Y que esté en la puerta de embarque cuando cierre. Si para en la tienda libre de impuestos, sáquenlo de la mano.","And have him at the gate when it closes. If he stops at the duty-free shop, drag him out by the hand.","E que ele esteja no portão quando fechar. Se ele parar na loja duty free, tirem ele de lá pela mão."
+HINT_GO_AIRPORT,"Al aeropuerto: el diputado, sus maletas y nada raro por los rayos X.","To the airport: the deputy, his suitcases and nothing odd through the X-ray.","Para o aeroporto: o deputado, as malas dele e nada estranho no raio X."
+PROMPT_TALK_STAFF,"E: hablar","E: talk","E: conversar"
+AIRPORT_PORTER_TALK_1,"Yo solo cargo maletas. No miro qué tienen. Nunca. Jamás.","I just carry suitcases. I don't look inside. Never. Ever.","Eu só carrego malas. Não olho o que tem dentro. Nunca. Jamais."
+AIRPORT_PORTER_TALK_2,"¿Este llavero? Me lo regaló una amiga. Una amiga cualquiera.","This keychain? A friend gave it to me. Just some friend.","Este chaveiro? Uma amiga me deu. Uma amiga qualquer."
+AIRPORT_PORTER_TALK_3,"Trece maletas, doce maletas... yo no sé contar tanto.","Thirteen suitcases, twelve suitcases... I can't count that high.","Treze malas, doze malas... eu não sei contar tanto."
+AIRPORT_CLERK_TALK_1,"Equipaje de mano: una pieza. El diputado trajo doce.","Hand luggage: one piece. The deputy brought twelve.","Bagagem de mão: um volume. O deputado trouxe doze."
+AIRPORT_CLERK_TALK_2,"La balanza no miente. La gente, sí.","The scale doesn't lie. People do.","A balança não mente. As pessoas, sim."
+AIRPORT_CLERK_TALK_3,"Si ves una maleta sin dueño, no es mía. Ninguna es mía.","If you see a suitcase with no owner, it's not mine. None of them are mine.","Se vir uma mala sem dono, não é minha. Nenhuma é minha."
+AIRPORT_GATE_TALK_1,"El embarque cierra a horario. Diputado o no diputado.","Boarding closes on time. Deputy or no deputy.","O embarque fecha no horário. Deputado ou não."
+AIRPORT_GATE_TALK_2,"¿Tarjeta de embarque? Ah, eres policía. Pasa igual.","Boarding pass? Oh, you're a cop. Go ahead anyway.","Cartão de embarque? Ah, é polícia. Pode passar mesmo assim."
+AIRPORT_GATE_TALK_3,"El avión es chico, pero el ego del diputado no entra.","The plane is small, but the deputy's ego won't fit.","O avião é pequeno, mas o ego do deputado não cabe."
+AIRPORT_PORTER_PHONE,"(en voz baja) Sí, concejala... ya casi...","(whispering) Yes, councillor... almost there...","(baixinho) Sim, vereadora... quase lá..."
+AIRPORT_PORTER_WHISTLE,"♪ Fiu, fiu... ♪","♪ Whistle, whistle... ♪","♪ Fiu, fiu... ♪"
+AIRPORT_PORTER_CUFFED,"¡Fue idea de la concejala! ¡Yo solo cargaba!","It was the councillor's idea! I just carried it!","Foi ideia da vereadora! Eu só carregava!"
+AIRPORT_STAFF_WRONG_CUFF,"¡Oye! ¡Yo trabajo aquí! Esto va a la queja formal.","Hey! I work here! This is going in a formal complaint.","Ei! Eu trabalho aqui! Isso vai para a reclamação formal."
+AIRPORT_DEPUTY_OPENED,"¡Esa es mía! ¡No me revuelvan los calcetines!","That one's mine! Don't mess up my socks!","Essa é minha! Não bagunce minhas meias!"
+HINT_PORTER_KEYCHAIN,"El maletero tiene un llavero con el logo de la concejala Embrollo.","The porter has a keychain with councillor Embrollo's logo.","O carregador tem um chaveiro com o logo da vereadora Embrollo."
+HINT_PORTER_PHONE,"El maletero le habla en voz baja a la concejala por teléfono.","The porter is whispering to the councillor on the phone.","O carregador está falando baixinho com a vereadora no telefone."
+HINT_PORTER_RIBBON,"El carrito del maletero tiene rollos de cinta amarilla de sobra, como la de las maletas.","The porter's cart has spare rolls of yellow ribbon, like the suitcases'.","O carrinho do carregador tem rolos de fita amarela sobrando, como a das malas."
+HINT_PORTER_IN_CAR,"El maletero comprado está en el patrullero: no más trampas con las maletas.","The bought porter is in the patrol car: no more suitcase tricks.","O carregador comprado está na viatura: chega de truques com as malas."
+HINT_AIRPORT_WRONG_CUFF,"¡Esposaste a un empleado que no hizo nada! Eso se descuenta del sueldo.","You cuffed an employee who did nothing! That comes out of the pay.","Você algemou um funcionário que não fez nada! Isso sai do salário."
+HINT_AIRPORT_LOST_SCANDAL,"¡La prensa vio la maleta rara en los rayos X! Caso perdido.","The press saw the odd suitcase on the X-ray! Case lost.","A imprensa viu a mala estranha no raio X! Caso perdido."
+OBJ_AIRPORT_ARRIVE,"Llegar al aeropuerto","Get to the airport","Chegar ao aeroporto"
+OBJ_AIRPORT_ODD,"Encontrar la maleta rara","Find the odd suitcase","Encontrar a mala estranha"
+OBJ_AIRPORT_CLUES,"Pistas del maletero: %d de %d","Clues on the porter: %d of %d","Pistas do carregador: %d de %d"
+OBJ_AIRPORT_PORTER,"El maletero comprado, en el patrullero","The bought porter, in the patrol car","O carregador comprado, na viatura"
+OBJ_AIRPORT_BOARD,"Que el diputado suba al avión a tiempo","Get the deputy on the plane on time","Que o deputado embarque a tempo"
+OBJ_AIRPORT_OPENED,"Maletas del diputado abiertas de más: %d","Deputy's suitcases opened for nothing: %d","Malas do deputado abertas à toa: %d"
+OBJ_AIRPORT_SCANDAL,"La maleta rara salió en la pantalla: caso perdido.","The odd suitcase made the screen: case lost.","A mala estranha apareceu na tela: caso perdido."
+OBJ_AIRPORT_MISSED,"El diputado perdió el avión: caso perdido.","The deputy missed the plane: case lost.","O deputado perdeu o avião: caso perdido."
+HINT_ESCAPE_PORTER,"¡El maletero se escapa en el carrito de equipaje! ¡Atrápenlo antes de que doble la esquina!","The porter is getting away on the baggage tug! Catch him before he turns the corner!","O carregador está fugindo no carrinho de bagagem! Peguem ele antes que vire a esquina!"
+OBJ_AIRPORT_CATCH_TUG,"Atrapar el carrito de equipaje (suma como detenido)","Catch the baggage tug (counts as detained)","Pegar o carrinho de bagagem (conta como detido)"
+CHASE_PORTER_LINE_1,"¡Equipaje en tránsito! ¡Abran paso!","Luggage in transit! Make way!","Bagagem em trânsito! Abram caminho!"
+CHASE_PORTER_LINE_2,"¡La concejala me prometió un ascenso a jefe de cinta!","The councillor promised me a promotion to head of the belt!","A vereadora me prometeu uma promoção a chefe da esteira!"
+CHASE_PORTER_LINE_3,"Está bien, me entrego. Pero esta maleta la cargan ustedes.","Fine, I give up. But you carry this suitcase.","Tá bom, eu me entrego. Mas essa mala vocês carregam."
+PROMPT_APOLOGIZE,E (mantener): pedirle perdón,E (hold): say sorry to her,E (segurar): pedir desculpas a ela
+PROMPT_TAKE_MATE,E: aceptarle un mate,E: take a mate from her,E: aceitar um chimarrão dela
+CHOLA_LISTENING,"Ajá... ajá... sigue, que te escucho.","Uh-huh... uh-huh... go on, I'm listening.","Aham... aham... continue, que eu estou ouvindo."
+CHOLA_FORGIVEN,"¡Ay, qué educado! Está bien, te perdono. ¿Un matecito?","Oh, how polite! All right, I forgive you. A little mate?","Ai, que educado! Tudo bem, eu te perdoo. Um chimarrãozinho?"
+CHOLA_NO_GOSSIP,"Del vecino no sé nada, querido. Nunca saluda.","I know nothing about the neighbor, dear. He never says hello.","Do vizinho não sei nada, querido. Ele nunca cumprimenta."
+CHOLA_HURT,"¡Ay! ¡Que tengo la cadera de cristal!","Ouch! My hip is made of glass!","Ai! Meu quadril é de vidro!"
+CHOLA_DOOR,"¡Mi puerta! ¡Si estaba abierta, había que tocar el timbre!","My door! You just had to ring the bell!","Minha porta! Era só tocar a campainha!"
+CHOLA_SAW,"¡Eso era de mi mamá! ¡Te lo voy a cobrar el doble!","That was my mother's! I'll charge you double!","Isso era da minha mãe! Vou cobrar o dobro!"
+CHOLA_LAWYER,"¡Basta! Llamo a mi sobrino, que es abogado.","That's it! I'm calling my nephew, he's a lawyer.","Chega! Vou ligar pro meu sobrinho, que é advogado."
+CHOLA_LINE_1,"¡Pasen, pasen! ¿Vinieron por la novela?","Come in, come in! Did you come for the soap opera?","Entrem, entrem! Vieram pela novela?"
+CHOLA_LINE_2,"Shhh, que ahora Rodrigo le dice que es su padre.","Shhh, Rodrigo is about to tell her he's her father.","Shhh, agora o Rodrigo vai dizer que é o pai dela."
+CHOLA_LINE_3,"¿Y la orden de quién es? Acá vivo yo sola con el gato.","And whose warrant is that? I live here alone with the cat.","E de quem é o mandado? Aqui moro só eu e o gato."
+CHOLA_LINE_4,"¡Límpiense los pies, que encerré ayer!","Wipe your feet, I waxed the floor yesterday!","Limpem os pés, que encerei ontem!"
+GUILTY_LINE_1,"¿Se les ofrece algo, oficiales?","Anything I can do for you, officers?","Posso ajudar em algo, policiais?"
+GUILTY_LINE_2,"Lindo día para no allanar a nadie, ¿no?","Lovely day for not raiding anyone, isn't it?","Lindo dia para não revistar ninguém, né?"
+GUILTY_LINE_3,"Yo acá, regando. Las plantas. Nada más.","Just me here, watering. The plants. That's all.","Eu aqui, regando. As plantas. Só isso."
+GUILTY_NOTICED,"(¡Están en lo de Chola! Mejor saco las cosas...)","(They're at Chola's! I'd better get my stuff out...)","(Estão na casa da Chola! Melhor tirar as coisas...)"
+GUILTY_GOING,"Voy a... sacar la basura. Sí, eso.","I'm just... taking out the trash. Yes, that.","Vou só... levar o lixo pra fora. Sim, isso."
+GUILTY_BLOCKED,"¡Ups! Esto no es mío. Ni sé qué es.","Oops! This isn't mine. I don't even know what it is.","Ops! Isso não é meu. Nem sei o que é."
+GUILTY_FLEES,"¡Me voy de vacaciones! ¡Chau, chau!","I'm off on vacation! Bye, bye!","Vou sair de férias! Tchau, tchau!"
+PROMPT_TALK_MAILMAN,"E: hablar con el cartero","E: talk to the mailman","E: falar com o carteiro"
+PROMPT_OPEN_MAILBOX,"E: mirar el buzón","E: check the mailbox","E: olhar a caixa de correio"
+PROMPT_READ_PAPER,"E: leer el diario","E: read the newspaper","E: ler o jornal"
+WH_SIDE_LEFT,"izquierda","left","esquerda"
+WH_SIDE_RIGHT,"derecha","right","direita"
+CLUE_WH_LETTER,"Buzón de la casa de la %s: una carta para «calle de los Sauces 14».","Mailbox of the house on the %s: a letter for ""14 Willow Street"".","Caixa de correio da casa da %s: uma carta para ""rua dos Salgueiros 14""."
+WH_MAILBOX_ADS,"Solo propaganda de la pizzería.","Just flyers from the pizza place.","Só propaganda da pizzaria."
+CLUE_WH_PAPER,"Diario tirado en el jardín de la casa de la %s: «Sauces 14».","Newspaper in the front garden of the house on the %s: ""14 Willow St."".","Jornal jogado no jardim da casa da %s: ""Salgueiros 14""."
+CLUE_WH_MAILMAN,"Don Sobre, el cartero: «¿La 14? La de la %s. En la otra vive doña Chola, un amor».","Don Sobre, the mailman: ""Number 14? The one on the %s. Doña Chola lives in the other one, a sweetheart.""","Don Sobre, o carteiro: ""A 14? A da %s. Na outra mora a dona Chola, um amor."""
+BRIEF_WH_BILLS_B,"Don Tinta, el imprentero jubilado de al lado, imprime billetes truchos. ¡Con la cara del comisario!","Don Tinta, the retired printer next door, prints fake bills. With the comisario's face on them!","Don Tinta, o tipógrafo aposentado do lado, imprime notas falsas. Com a cara do comissário!"
+BRIEF_WH_BILLS_C,"Traigan la plancha de imprimir en el baúl del patrullero. Pesa 30 kilos: entre dos.","Bring the printing plate back in the patrol car's trunk. It weighs 30 kilos: two of you.","Tragam a chapa de impressão no porta-malas da viatura. Pesa 30 quilos: dois de vocês."
+BRIEF_WH_BILLS_D,"Si encuentran el fajo de billetes y el tarro de tinta, mejor. Cuidado con la tinta: mancha.","If you find the bundle of bills and the ink tin, even better. Careful with the ink: it stains.","Se acharem o maço de notas e a lata de tinta, melhor. Cuidado com a tinta: mancha."
+OBJ_FIND_WH_BILLS,Encontrar la plancha de imprimir billetes (pesa 30 kg),Find the bill printing plate (it weighs 30 kg),Achar a chapa de imprimir notas (pesa 30 kg)
+OBJ_EXTRA_FAKE_BILLS,Extra: el fajo de billetes truchos,Extra: the bundle of fake bills,Extra: o maço de notas falsas
+OBJ_EXTRA_INK_POT,Extra: el tarro de tinta,Extra: the ink tin,Extra: a lata de tinta
+PROMPT_LOOK_BILL,"E: mirar el billete","E: look at the bill","E: olhar a nota"
+CLUE_WH_FAKE_BILL,"Un billete pegado en el buzón del vecino del 14... ¡con la cara del comisario!","A bill stuck on number 14's mailbox... with the comisario's face!","Uma nota grudada na caixa de correio do 14... com a cara do comissário!"
+HINT_WH_INKY,"¡Tienes las manos azules! Vas a dejar huellas en todo lo que agarres.","Your hands are blue! You'll leave prints on everything you grab.","Suas mãos estão azuis! Você vai deixar marcas em tudo o que pegar."
+BRIEF_WH_GNOMES_B,"Don Ramón, el jardinero de al lado, se llevó todos los gnomos de jardín de la cuadra. Uno es de oro.","Don Ramón, the gardener next door, took every garden gnome on the block. One is made of gold.","Dom Ramón, o jardineiro do lado, levou todos os gnomos de jardim da quadra. Um é de ouro."
+BRIEF_WH_GNOMES_C,"Traigan el gnomo de oro en el baúl del patrullero. Es igual a los otros, pero pesa el triple. Y cuidado: los otros son de cerámica.","Bring the gold gnome back in the patrol car's trunk. It looks like the others, but it's three times as heavy. And careful: the others are ceramic.","Tragam o gnomo de ouro no porta-malas da viatura. É igual aos outros, mas pesa o triplo. E cuidado: os outros são de cerâmica."
+BRIEF_WH_GNOMES_D,"Si encuentran la lista de jardines y la carretilla, mejor: todo suma.","If you find the list of gardens and the wheelbarrow, even better: it all adds up.","Se acharem a lista de jardins e o carrinho de mão, melhor: tudo soma."
+OBJ_FIND_WH_GNOMES,"Encontrar el gnomo de oro (es igual a los otros, pero pesa el triple)","Find the gold gnome (it looks like the others, but it's three times as heavy)","Achar o gnomo de ouro (é igual aos outros, mas pesa o triplo)"
+OBJ_EXTRA_GARDEN_LIST,Extra: la lista de jardines robados,Extra: the list of robbed gardens,Extra: a lista de jardins roubados
+OBJ_EXTRA_WHEELBARROW,Extra: la carretilla,Extra: the wheelbarrow,Extra: o carrinho de mão
+HINT_WH_GOLD_GNOME,"¡Este gnomo pesa el triple que los otros! Es de oro.","This gnome is three times as heavy as the others! It's gold.","Este gnomo pesa o triplo dos outros! É de ouro."
+PROMPT_LOOK_HOLE,"E: mirar el pozo","E: look at the hole","E: olhar o buraco"
+CLUE_WH_GNOME_HOLES,"Pozos en el jardín de doña Chola, con la forma justa de un gnomo de jardín.","Holes in doña Chola's garden, the exact shape of a garden gnome.","Buracos no jardim da dona Chola, no formato exato de um gnomo de jardim."
+MENU_GYM_RAID,Gimnasio (allanamiento) (prueba),Gym (raid) (test),Academia (batida) (teste)
+HINT_TILL_KEY_GYM,¡Una llave! Abre la oficina y el vestuario.,A key! It opens the office and the locker room.,Uma chave! Abre o escritório e o vestiário.
+GYM_MIRROR_BROKEN,"¡Siete años de mala suerte, oficial!","Seven years of bad luck, officer!","Sete anos de azar, policial!"
+GYM_TREADMILL_BROKEN,¡Se quemó la cinta!,The treadmill burnt out!,A esteira queimou!
+GYM_RAID_TALK_0,"Vengo todos los días y no bajo ni un gramo. Pero la cuota es baratísima.","I come every day and don't lose a gram. But the fee is dirt cheap.","Venho todo dia e não perco nem um grama. Mas a mensalidade é baratíssima."
+GYM_RAID_TALK_1,"¿Viste la foto del récord? 300 kilos. Yo no le vi levantar ni la toalla.","Seen the record photo? 300 kilos. I've never seen him lift even a towel.","Viu a foto do recorde? 300 quilos. Nunca o vi levantar nem a toalha."
+GYM_RAID_TALK_2,"El profe se compró una moto de oro. Dice que es por las clases de aeróbic.","The coach bought a gold motorbike. He says it's from the aerobics classes.","O professor comprou uma moto de ouro. Diz que é das aulas de aeróbica."
+GYM_RAID_TALK_3,"Uno, dos, uno, dos… Perdón, oficial, si paro pierdo la cuenta.","One, two, one, two… Sorry, officer, if I stop I lose count.","Um, dois, um, dois… Desculpe, policial, se eu parar perco a conta."
+GYM_RAID_TALK_4,"Lula sabe todo lo que pasa acá, pero solo charla corriendo.","Lula knows everything that goes on here, but she only chats while running.","A Lula sabe tudo o que acontece aqui, mas só conversa correndo."
+GYM_RAID_TALK_5,"No toques el espejo, que el profe se mira ahí todo el día.","Don't touch the mirror, the coach looks at himself in it all day.","Não toque no espelho, o professor se olha nele o dia todo."
+LOC_behind_ring,detrás del ring,behind the ring,atrás do ringue
+LOC_between_benches,entre los bancos de pesas,between the weight benches,entre os bancos de musculação
+LOC_in_office_corner,en un rincón de la oficina del profe,in a corner of the coach's office,num canto do escritório do professor
+LOC_in_locker_room,en el vestuario,in the locker room,no vestiário
+LOC_behind_reception,detrás de la recepción,behind the reception,atrás da recepção
+LOC_by_treadmills,al lado de las cintas,next to the treadmills,ao lado das esteiras
+LOC_on_dumbbell_rack,en el estante de las mancuernas,on the dumbbell rack,na prateleira dos halteres
+LOC_in_towel_bin,en el tacho de las toallas,in the towel bin,no cesto de toalhas
+LOC_on_locker_bench,en el banco del vestuario,on the locker room bench,no banco do vestiário
+LOC_on_ring_corner,en una esquina del ring,on a corner of the ring,num canto do ringue
+LOC_on_profe_desk,en el escritorio del profe,on the coach's desk,na mesa do professor
+LOC_on_reception,arriba de la recepción,on top of the reception,em cima da recepção
+CASE_FAILED_LAWYER_GYM,El profe Fito llamó al abogado del gimnasio. Caso perdido.,Coach Fito called the gym's lawyer. Case lost.,O professor Fito ligou para o advogado da academia. Caso perdido.
+PROMPT_STEREO,E: poner música,E: play music,E: tocar música
+HINT_STEREO_PLAYING,La música ya está sonando.,The music is already playing.,A música já está tocando.
+HINT_STEREO_RESTING,"El equipo está recalentado. Espera un poco.","The stereo is overheated. Wait a bit.","O aparelho está superaquecido. Espere um pouco."
+COACH_LINE_1,"¡Esa espalda, campeón!","Back straight, champ!","Essa coluna, campeão!"
+COACH_LINE_2,"Uno más, uno más… ¡y otro más!","One more, one more… and another!","Mais um, mais um… e outro!"
+COACH_LINE_3,"Sin dolor no hay gloria, y sin cuota tampoco.","No pain, no glory, and no fee, no glory either.","Sem dor não há glória, e sem mensalidade também não."
+COACH_LINE_4,"Oficiales, ¿vienen a anotarse? Hay promo por dos.","Officers, here to sign up? Two-for-one deal.","Policiais, vieram se inscrever? Tem promoção para dois."
+COACH_PRINTER,"¡Mi canción! ¡Todos frente al espejo!","My song! Everyone to the mirror!","Minha música! Todos na frente do espelho!"
+COACH_FIX_1,"¡Y arriba, y abajo, y arriba!","And up, and down, and up!","E pra cima, e pra baixo, e pra cima!"
+COACH_FIX_2,"¡Cinco, seis, siete, ocho!","Five, six, seven, eight!","Cinco, seis, sete, oito!"
+COACH_FIX_3,"¡Esa sonrisa, campeones! ¡Sonrisa!","Smile, champs! Smile!","Esse sorriso, campeões! Sorriso!"
+COACH_FIX_DONE,"¡Excelente clase! Agua y a seguir.","Great class! Water and back to it.","Ótima aula! Água e bora continuar."
+COACH_HURT,"¡Epa, oficial! ¡Eso es un golpe bajo, y lo anoto!","Hey, officer! That's a low blow, and I'm writing it down!","Opa, policial! Isso é golpe baixo, e eu vou anotar!"
+COACH_DOOR,"¿Una puerta rota? ¡Esto es un gimnasio familiar!","A broken door? This is a family gym!","Uma porta quebrada? Isto é uma academia familiar!"
+COACH_SAW,"¡Eso no se toca sin toalla!","Don't touch that without a towel!","Isso não se toca sem toalha!"
+COACH_NOTHING,"Yo solo doy clases de aeróbic, oficial.","I just teach aerobics, officer.","Eu só dou aulas de aeróbica, policial."
+COACH_OFFENDED,"No hablo más. Me voy a elongar.","I'm done talking. I'm off to stretch.","Não falo mais. Vou alongar."
+COACH_LAWYER,"¡Llamo a mi abogado! ¡Y a mi nutricionista!","I'm calling my lawyer! And my nutritionist!","Vou ligar para o meu advogado! E para a minha nutricionista!"
+COACH_DUMBBELL,"¡No me desordenen el gimnasio! Las mancuernas van en el estante.","Don't mess up my gym! Dumbbells go on the rack.","Não baguncem a minha academia! Os halteres vão na prateleira."
+COACH_TREADMILL,"¡Mi cinta! ¡Era la que andaba!","My treadmill! That was the one that worked!","Minha esteira! Era a que funcionava!"
+COACH_MIRROR,"¡Mi espejo! ¿Y ahora dónde me miro?","My mirror! Where do I look at myself now?","Meu espelho! E agora onde eu me olho?"
+COACH_DANCE,"¡Eso, campeón! ¡Qué cintura!","That's it, champ! What moves!","Isso, campeão! Que gingado!"
+PROMPT_LULA,Hablar con Lula,Talk to Lula,Falar com a Lula
+LULA_IDLE_1,"¡Uf! ¡Uf! Hola... ¡uf! ...oficial.","Huff! Huff! Hi... huff! ...officer.","Ufa! Ufa! Oi... ufa! ...policial."
+LULA_IDLE_2,"Es mi descanso... ¡uf! ...y lo uso para correr.","It's my break... huff! ...and I spend it running.","É meu intervalo... ufa! ...e eu uso para correr."
+LULA_IDLE_3,"Si corres conmigo... ¡uf! ...te cuento algo.","If you run with me... huff! ...I'll tell you something.","Se correr comigo... ufa! ...eu te conto uma coisa."
+LULA_RUN_WITH_ME,"¿Charlar? ¡No paro ni loca! Súbete a la cinta de al lado y corre conmigo.","Chat? No way I'm stopping! Hop on the treadmill next to me and run with me.","Conversar? Não paro nem louca! Sobe na esteira do lado e corre comigo."
+LULA_START,"¡Eso! ¡A mi ritmo! ¡Uf!","That's it! Keep up with me! Huff!","Isso! No meu ritmo! Ufa!"
+LULA_NOTHING,"¡Uf! Por ahora... ¡uf! ...no vi nada raro. ¡Pero qué buen ritmo!","Huff! So far... huff! ...I haven't seen anything strange. But what a pace!","Ufa! Por enquanto... ufa! ...não vi nada estranho. Mas que ritmo!"
+LULA_AGAIN,"¡Uf! Ya te conté todo... ¡uf! ...ahora déjame correr.","Huff! I already told you everything... huff! ...now let me run.","Ufa! Já te contei tudo... ufa! ...agora me deixa correr."
+BRIEF_GYM_TIP_B,"Llegó una denuncia anónima: en «Hierro Puro» la cuota es baratísima y nadie adelgaza, pero el profe se compró una moto de oro.","We got an anonymous tip: at «Pure Iron» the fee is dirt cheap and nobody loses weight, but the coach just bought a golden motorbike.","Chegou uma denúncia anônima: na «Ferro Puro» a mensalidade é baratíssima e ninguém emagrece, mas o professor comprou uma moto de ouro."
+BRIEF_GYM_TIP_D,"La sala está abierta y el profe Fito no quiere a nadie desordenando su gimnasio. La oficina y el vestuario están cerrados con llave.","The hall is open and coach Fito wants nobody messing up his gym. The office and the locker room are locked.","O salão está aberto e o professor Fito não quer ninguém bagunçando a academia dele. O escritório e o vestiário estão trancados."
+BRIEF_GYM_TIP_E,"Y no rompan nada: el espejo y las cintas se los descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.","And don't break anything: the mirror and the treadmills come out of your pay. Press Q to see your checklist.","E não quebrem nada: o espelho e as esteiras saem do salário de vocês. Com Q vocês veem a lista do que precisam fazer."
+BRIEF_SILVER_DUMBBELLS_B,"El profe esconde la plata sucia adentro de pesas huecas, y los «socios» se la llevan en el bolso como si fuera para entrenar.","The coach hides dirty money inside hollow weights, and the «members» carry it out in their gym bags.","O professor esconde dinheiro sujo dentro de pesos ocos, e os «sócios» levam na bolsa como se fosse para treinar."
+BRIEF_SILVER_DUMBBELLS_C,"Traigan la mancuerna gigante llena de billetes en el baúl del patrullero. Pesa 20 kilos: entre dos.","Bring the giant dumbbell full of bills in the patrol car's trunk. It weighs 20 kilos: two of you.","Tragam o haltere gigante cheio de notas no porta-malas da viatura. Pesa 20 quilos: em dois."
+BRIEF_SILVER_DUMBBELLS_D,"Si encuentran la balanza trucha o la planilla de «cuotas especiales», mejor: todo suma.","If you find the rigged scale or the «special fees» sheet, even better: it all counts.","Se acharem a balança adulterada ou a planilha de «mensalidades especiais», melhor: tudo conta."
+OBJ_FIND_SILVER_DUMBBELL,Llevarse la mancuerna llena de billetes,Take the dumbbell full of bills,Levar o haltere cheio de notas
+OBJ_EXTRA_FAKE_SCALE,Extra: la balanza trucha,Extra: the rigged scale,Extra: a balança adulterada
+OBJ_EXTRA_QUOTA_SHEET,Extra: la planilla de cuotas especiales,Extra: the special fees sheet,Extra: a planilha de mensalidades especiais
+SUSPECT_silver_dumbbells,Las pesas rellenas de plata,The weights stuffed with money,Os pesos recheados de dinheiro
+SUSPECT_fake_record,El récord falso,The fake record,O recorde falso
+SUSPECT_ghost_members,Los socios fantasma,The ghost members,Os sócios fantasmas
+SUSPECT_power_treadmills,Las cintas que roban luz,The treadmills that steal power,As esteiras que roubam luz
+SUSPECT_lucky_shakes,Los batidos de la suerte,The lucky shakes,Os shakes da sorte
+SUSPECT_fixed_fights,El ring de las peleas arregladas,The ring of fixed fights,O ringue das lutas armadas
+CLUE_SUSPECT_silver_dumbbells,"Un recibo de una fundición: «Mancuernas huecas, con tapa a rosca. Que no se note».","A foundry receipt: «Hollow dumbbells, with screw caps. Make it look normal».","Um recibo de uma fundição: «Halteres ocos, com tampa de rosca. Que não dê para perceber»."
+CLUE_SUSPECT_fake_record,"Una factura de una fábrica de telgopor: «Barra de 300 kg (de mentira). Pintada de negro».","An invoice from a polystyrene factory: «300 kg bar (fake). Painted black».","Uma nota de uma fábrica de isopor: «Barra de 300 kg (de mentira). Pintada de preto»."
+CLUE_SUSPECT_ghost_members,"Un recibo de una tienda de maniquíes: «3 muñecos con musculosa, envío urgente».","A mannequin shop receipt: «3 dummies in tank tops, rush delivery».","Um recibo de uma loja de manequins: «3 bonecos de regata, entrega urgente»."
+CLUE_SUSPECT_power_treadmills,"Una boleta de luz del gimnasio: «Este mes: 0». La de la usina de al lado: «Este mes: el doble».","The gym's power bill: «This month: 0». The power plant next door's: «This month: double».","A conta de luz da academia: «Este mês: 0». A da usina ao lado: «Este mês: o dobro»."
+CLUE_SUSPECT_lucky_shakes,"Un ticket de lotería pegado en la heladera: «Ganador. Socio número 12». Y otro igual: «Socio número 13».","A lottery ticket stuck on the fridge: «Winner. Member number 12». And another one: «Member number 13».","Um bilhete de loteria grudado na geladeira: «Ganhador. Sócio número 12». E outro igual: «Sócio número 13»."
+CLUE_SUSPECT_fixed_fights,"Una servilleta: «Sábado: el de rojo se cae en el tercer round. No falles».","A napkin: «Saturday: the one in red goes down in the third round. Don't mess up».","Um guardanapo: «Sábado: o de vermelho cai no terceiro round. Não erre»."
+OBJ_ENTER_GYM,Entrar al gimnasio (la sala está abierta),Get into the gym (the hall is open),Entrar na academia (o salão está aberto)
+OBJ_GUESS_GYM,"Averiguar qué pasa en el gimnasio (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the gym (with Q open, hold 1, 2 or 3)","Descobrir o que acontece na academia (com Q aberto, segure 1, 2 ou 3)"
+OBJ_BROKEN_GYM,Cosas rotas: %d (multa: %d),Broken things: %d (fines: %d),Coisas quebradas: %d (multa: %d)
+OBJ_COMPLAINT_GYM,Queja del profe Fito: %d%%,Coach Fito's complaint: %d%%,Queixa do professor Fito: %d%%
+COACH_SLIP,"«¡Yo no guardé nada %s!... Digo, ¡a entrenar, que no es una plaza!»","“I didn't put anything %s!... I mean, get training, this isn't a park!”","“Eu não guardei nada %s!... Quer dizer, vão treinar, aqui não é praça!”"
+CLUE_LULA,Lula vio al profe esconder algo %s,Lula saw the coach hide something %s,A Lula viu o professor esconder algo %s
+LULA_CLUE_silver_dumbbells,"«¡Uf! Te cuento... ¡uf! ...vi al profe esconder algo %s. Y hay pesas... ¡uf! ...que ningún socio levanta: se las llevan en el bolso.»","“Huff! Here's the thing... huff! ...I saw the coach hide something %s. And there are weights... huff! ...no member ever lifts: they take them home in their bags.”","“Ufa! Vou contar... ufa! ...vi o professor esconder algo %s. E tem pesos... ufa! ...que nenhum sócio levanta: levam na bolsa.”"
+CLUE_DUMBBELL_COINS,"Se te cayó una mancuerna del estante y sonó a monedas. Las mancuernas no suenan así.","A dumbbell fell off the rack and it jingled like coins. Dumbbells don't sound like that.","Um haltere caiu do suporte e fez barulho de moedas. Halteres não soam assim."
+GYM_TOY_BILLS,"¡Billetes de juguete! «Banco de Mentira»","Toy bills! «Bank of Make-Believe»","Notas de brinquedo! «Banco de Mentira»"
+HINT_ESCAPE_gym,¡El profe vio la prueba y se escapa en el auto! Tienen un minuto para agarrarlo.,The coach saw the evidence and is getting away in his car! You have one minute to catch him.,O professor viu a prova e está fugindo de carro! Vocês têm um minuto para pegá-lo.
+CRIME_owner_gym,"¡Novatos! Ayer se trajeron al profe Fito, el dueño de Hierro Puro, y lo tenemos en la sala de interrogatorio. Algo escondió en el gimnasio que no encontraron.","Rookies! Yesterday you brought in coach Fito, Pure Iron's owner, and he's in the interrogation room. He hid something in the gym you never found.","Novatos! Ontem vocês trouxeram o professor Fito, o dono da Ferro Puro, e ele está na sala de interrogatório. Ele escondeu algo na academia que vocês não acharam."
+CONFESS_owner_gym,"¡Está bien! ¡Fui yo! Pero nadie me puede negar que estoy en forma.","Fine! It was me! But nobody can deny I'm in great shape.","Tá bom! Fui eu! Mas ninguém pode negar que estou em forma."
+BRIEF_FAKE_RECORD_B,"El récord de 300 kilos del profe es de mentira, y con ese récord cobra el doble a los socios que quieren entrenar con el campeón.","The coach's 300 kilo record is fake, and with it he charges double to members who want to train with the champion.","O recorde de 300 quilos do professor é de mentira, e com ele cobra o dobro dos sócios que querem treinar com o campeão."
+BRIEF_FAKE_RECORD_C,"Traigan la barra del récord en el baúl del patrullero. Cuelga en la pared del récord.","Bring the record bar in the patrol car's trunk. It hangs on the record wall.","Tragam a barra do recorde no porta-malas da viatura. Está pendurada na parede do recorde."
+BRIEF_FAKE_RECORD_D,"Si encuentran la foto trucada o el certificado del concurso, mejor: todo suma.","If you find the doctored photo or the contest certificate, even better: it all counts.","Se acharem a foto montada ou o certificado do concurso, melhor: tudo conta."
+OBJ_FIND_RECORD_BAR,Llevarse la barra del récord,Take the record bar,Levar a barra do recorde
+OBJ_EXTRA_RECORD_PHOTO,Extra: la foto trucada del récord,Extra: the doctored record photo,Extra: a foto montada do recorde
+OBJ_EXTRA_RECORD_CERTIFICATE,Extra: el certificado del concurso,Extra: the contest certificate,Extra: o certificado do concurso
+LULA_CLUE_fake_record,"«¡Uf! Te cuento... ¡uf! ...vi al profe esconder algo %s. Y nunca levanta nada... ¡uf! ...salvo cuando no hay nadie mirando.»","“Huff! Here's the thing... huff! ...I saw the coach hide something %s. And he never lifts anything... huff! ...except when nobody's looking.”","“Ufa! Vou contar... ufa! ...vi o professor esconder algo %s. E ele nunca levanta nada... ufa! ...a não ser quando ninguém está olhando.”"
+CLUE_RECORD_ONE_HAND,"La barra del récord de 300 kilos se levanta con una mano. Es de telgopor.","The 300 kilo record bar lifts with one hand. It's polystyrene.","A barra do recorde de 300 quilos se levanta com uma mão. É de isopor."
+GYM_RECORD_LIGHT,¿300 kilos? ¡Si no pesa nada!,300 kilos? It weighs nothing!,300 quilos? Não pesa nada!
+BRIEF_GHOST_MEMBERS_B,"El gimnasio le cobra a la ciudad por 300 socios que no existen. Para que la sala parezca llena, el profe puso muñecos a «entrenar».","The gym bills the city for 300 members who don't exist. To make the hall look full, the coach set dummies to «train».","A academia cobra da cidade por 300 sócios que não existem. Para o salão parecer cheio, o professor pôs bonecos para «treinar»."
+BRIEF_GHOST_MEMBERS_C,Traigan la carpeta con los socios inventados en el baúl del patrullero.,Bring the binder with the made-up members in the patrol car's trunk.,Tragam a pasta com os sócios inventados no porta-malas da viatura.
+BRIEF_GHOST_MEMBERS_D,"Si encuentran la caja de muñecos o el sello falso del gimnasio, mejor: todo suma.","If you find the box of dummies or the gym's fake stamp, even better: it all counts.","Se acharem a caixa de bonecos ou o carimbo falso da academia, melhor: tudo conta."
+OBJ_FIND_MEMBERS_BINDER,Llevarse la carpeta de los socios fantasma,Take the ghost members' binder,Levar a pasta dos sócios fantasmas
+OBJ_EXTRA_DUMMY_BOX,Extra: la caja de muñecos de vidriera,Extra: the box of shop dummies,Extra: a caixa de bonecos de vitrine
+OBJ_EXTRA_FAKE_STAMP,Extra: el sello falso del dueño,Extra: the owner's fake stamp,Extra: o carimbo falso do dono
+OBJ_EXTRA_KEY_BUNCH,Extra: el manojo de veinte llaves,Extra: the bunch of twenty keys,Extra: o molho de vinte chaves
+PEPA_TIP_tenant_of_twenty,"Al 30C entra gente todo el día con colchones. Nunca sale nadie. Ahí adentro deben estar muy apretados.","People go into 30C all day with mattresses. Nobody ever comes out. It must be very crowded in there.","Entra gente no 30C o dia todo com colchões. Nunca sai ninguém. Lá dentro deve estar bem apertado."
+PROMPT_MAILBOX_30C,E: mirar el buzón del 30C,E: look at 30C's mailbox,E: olhar a caixa de correio do 30C
+CLUE_TWENTY_NAMES,"El buzón del 30C tiene veinte nombres distintos, uno encima del otro. El 30C está en alquiler.","30C's mailbox has twenty different names, one on top of the other. 30C is for rent.","A caixa de correio do 30C tem vinte nomes diferentes, um em cima do outro. O 30C está para alugar."
+LULA_CLUE_ghost_members,"«¡Uf! Te cuento... ¡uf! ...vi al profe esconder algo %s. Y hay socios... ¡uf! ...que nunca se cansan. Ni sudan.»","“Huff! Here's the thing... huff! ...I saw the coach hide something %s. And some members... huff! ...never get tired. They don't even sweat.”","“Ufa! Vou contar... ufa! ...vi o professor esconder algo %s. E tem sócios... ufa! ...que nunca se cansam. Nem suam.”"
+GYM_MANNEQUIN_0,(No contesta. Ni pestañea.),(No answer. Not even a blink.),(Não responde. Nem pisca.)
+GYM_MANNEQUIN_1,(Sigue «entrenando». Sin moverse.),(Keeps «training». Without moving.),(Continua «treinando». Sem se mexer.)
+GYM_MANNEQUIN_CUFFED,(Se deja esposar sin decir nada.),(Lets itself be cuffed without a word.),(Deixa ser algemado sem dizer nada.)
+GYM_MANNEQUIN_FELL,¡PLONC! Se cayó duro como una tabla.,CLONK! It fell stiff as a board.,PLONC! Caiu duro feito uma tábua.
+CLUE_MANNEQUIN_STIFF,"Empujaste a un socio y se cayó duro como una tabla. Es un muñeco de vidriera con musculosa.","You bumped into a member and they fell stiff as a board. It's a shop dummy in a tank top.","Você esbarrou num sócio e ele caiu duro feito uma tábua. É um boneco de vitrine de regata."
+BRIEF_POWER_TREADMILLS_B,"El profe enganchó el gimnasio a la usina de al lado: cada vez que alguien corre en una cinta, le roba luz al barrio y la vende.","The coach hooked the gym up to the power plant next door: every time someone runs on a treadmill, he steals the neighborhood's power and sells it.","O professor ligou a academia na usina ao lado: cada vez que alguém corre numa esteira, ele rouba a luz do bairro e vende."
+BRIEF_POWER_TREADMILLS_C,"Traigan la caja con el cable a la usina en el baúl del patrullero. Pesa 8 kilos.","Bring the box with the cable to the plant in the patrol car's trunk. It weighs 8 kilos.","Tragam a caixa com o cabo para a usina no porta-malas da viatura. Pesa 8 quilos."
+BRIEF_POWER_TREADMILLS_D,"Si encuentran el medidor de luz dado vuelta o el plano de los cables, mejor: todo suma.","If you find the upside-down power meter or the wiring plan, even better: it all counts.","Se acharem o medidor de luz virado ou a planta dos cabos, melhor: tudo conta."
+OBJ_FIND_CABLE_BOX,Llevarse la caja con el cable a la usina,Take the box with the cable to the plant,Levar a caixa com o cabo para a usina
+OBJ_EXTRA_POWER_METER,Extra: el medidor de luz dado vuelta,Extra: the upside-down power meter,Extra: o medidor de luz virado
+OBJ_EXTRA_WIRING_PLAN,Extra: el plano de los cables,Extra: the wiring plan,Extra: a planta dos cabos
+LULA_CLUE_power_treadmills,"«¡Uf! Te cuento... ¡uf! ...vi al profe esconder algo %s. Y cuando corro... ¡uf! ...se apaga la tele de mi vecina.»","“Huff! Here's the thing... huff! ...I saw the coach hide something %s. And when I run... huff! ...my neighbor's TV goes off.”","“Ufa! Vou contar... ufa! ...vi o professor esconder algo %s. E quando eu corro... ufa! ...a TV da minha vizinha desliga.”"
+CLUE_LIGHTS_FLICKER,"Corriste en una cinta y parpadearon las luces del gimnasio y de todo el barrio.","You ran on a treadmill and the lights of the gym and the whole neighborhood flickered.","Você correu numa esteira e piscaram as luzes da academia e do bairro inteiro."
+GYM_TREADMILL_ROAR,¡BRRRRRUUUM! La cinta arrancó sola,VRRRRROOOM! The treadmill started on its own,VRRRRRUUUM! A esteira ligou sozinha
+BRIEF_LUCKY_SHAKES_B,"El batido «campeón» del profe hace que quien lo toma diga lo que piensa. Así les saca a los socios los números de la lotería.","The coach's «champion» shake makes whoever drinks it say what they think. That's how he gets the members' lottery numbers out of them.","O shake «campeão» do professor faz quem toma dizer o que pensa. Assim ele arranca dos sócios os números da loteria."
+BRIEF_LUCKY_SHAKES_C,Traigan el frasco del batido campeón en el baúl del patrullero.,Bring the jar of champion shake in the patrol car's trunk.,Tragam o pote do shake campeão no porta-malas da viatura.
+BRIEF_LUCKY_SHAKES_D,"Si encuentran la lista de socios que ganaron la lotería o la licuadora dorada, mejor: todo suma.","If you find the list of members who won the lottery or the golden blender, even better: it all counts.","Se acharem a lista de sócios que ganharam na loteria ou o liquidificador dourado, melhor: tudo conta."
+OBJ_FIND_SHAKE_JAR,Llevarse el frasco del batido campeón,Take the jar of champion shake,Levar o pote do shake campeão
+OBJ_EXTRA_LOTTERY_LIST,Extra: la lista de ganadores de la lotería,Extra: the list of lottery winners,Extra: a lista de ganhadores da loteria
+OBJ_EXTRA_GOLD_BLENDER,Extra: la licuadora dorada,Extra: the golden blender,Extra: o liquidificador dourado
+LULA_CLUE_lucky_shakes,"«¡Uf! Te cuento... ¡uf! ...vi al profe esconder algo %s. Y no tomes el batido verde... ¡uf! ...que después cuentas todo.»","“Huff! Here's the thing... huff! ...I saw the coach hide something %s. And don't drink the green shake... huff! ...you'll end up telling everything.”","“Ufa! Vou contar... ufa! ...vi o professor esconder algo %s. E não toma o shake verde... ufa! ...que depois você conta tudo.”"
+CLUE_SHAKE_CLOVER,"Tomaste el batido del vaso con el trébol y dijiste en voz alta lo que pensabas.","You drank the shake from the cup with the clover and said what you were thinking out loud.","Você tomou o shake do copo com o trevo e disse em voz alta o que estava pensando."
+PROMPT_SHAKE,Tomar el batido verde,Drink the green shake,Tomar o shake verde
+GYM_THOUGHT_0,«Creo que dejé el patrullero en marcha.»,“I think I left the patrol car running.”,“Acho que deixei a viatura ligada.”
+GYM_THOUGHT_1,«¿Y si el comisario es un robot?»,“What if the comisario is a robot?”,“E se o comissário for um robô?”
+GYM_THOUGHT_2,«Me comería una dona ahora mismo.»,“I'd eat a donut right now.”,“Eu comeria uma rosquinha agora mesmo.”
+GYM_THOUGHT_3,«Nunca entendí cómo funciona la planilla.»,“I never understood how the checklist works.”,“Nunca entendi como funciona a planilha.”
+GYM_THOUGHT_4,«Ese socio me mira raro.»,“That member is looking at me funny.”,“Aquele sócio está me olhando estranho.”
+GYM_THOUGHT_5,«Yo también quiero una moto de oro.»,“I want a golden motorbike too.”,“Eu também quero uma moto de ouro.”
+GYM_THOUGHT_6,«Hoy no hice nada y ya necesito una siesta.»,“I've done nothing today and I already need a nap.”,“Hoje não fiz nada e já preciso de uma soneca.”
+GYM_THOUGHT_7,"«Si gano la lotería, renuncio... mañana.»","“If I win the lottery, I quit... tomorrow.”","“Se eu ganhar na loteria, peço demissão... amanhã.”"
+BRIEF_FIXED_FIGHTS_B,"Los sábados hay peleas en el ring del gimnasio, y el profe ya sabe quién gana: arregla las peleas y se queda con las apuestas.","There are fights in the gym's ring on Saturdays, and the coach already knows who wins: he fixes the fights and keeps the bets.","Aos sábados tem lutas no ringue da academia, e o professor já sabe quem ganha: ele arma as lutas e fica com as apostas."
+BRIEF_FIXED_FIGHTS_C,Traigan el libro de apuestas en el baúl del patrullero.,Bring the betting book in the patrol car's trunk.,Tragam o livro de apostas no porta-malas da viatura.
+BRIEF_FIXED_FIGHTS_D,"Si encuentran los guantes con la herradura o el cinturón de campeón de cartón, mejor: todo suma.","If you find the gloves with the horseshoe or the cardboard champion belt, even better: it all counts.","Se acharem as luvas com a ferradura ou o cinturão de campeão de papelão, melhor: tudo conta."
+OBJ_FIND_BETTING_BOOK,Llevarse el libro de apuestas,Take the betting book,Levar o livro de apostas
+OBJ_EXTRA_HORSESHOE_GLOVES,Extra: los guantes con herradura,Extra: the gloves with a horseshoe,Extra: as luvas com ferradura
+OBJ_EXTRA_CARDBOARD_BELT,Extra: el cinturón de campeón de cartón,Extra: the cardboard champion belt,Extra: o cinturão de campeão de papelão
+LULA_CLUE_fixed_fights,"«¡Uf! Te cuento... ¡uf! ...vi al profe esconder algo %s. Y los sábados... ¡uf! ...siempre gana el de azul. Siempre.»","“Huff! Here's the thing... huff! ...I saw the coach hide something %s. And on Saturdays... huff! ...the one in blue always wins. Always.”","“Ufa! Vou contar... ufa! ...vi o professor esconder algo %s. E aos sábados... ufa! ...sempre ganha o de azul. Sempre.”"
+CLUE_BAG_CLANG,"Le pegaste a una bolsa de boxeo y sonó a metal. Alguien entrena con trampa.","You punched a boxing bag and it clanged like metal. Someone trains with a trick.","Você bateu num saco de boxe e soou como metal. Alguém treina com trapaça."
+PROMPT_PUNCH_BAG,Pegarle a la bolsa,Punch the bag,Bater no saco
+GYM_BAG_THUD,¡PUM!,THUD!,PUM!
+GYM_BAG_CLANG,¡CLANG!,CLANG!,CLANG!
+BRIEF_HOTEL_A_necklace,"Anoche, en el Hotel Gran Siesta, a la señora Perlita le robaron el collar de perlas de la caja fuerte de la suite.","Last night, at the Hotel Gran Siesta, señora Perlita's pearl necklace was stolen from the suite's safe.","Ontem à noite, no Hotel Gran Siesta, roubaram o colar de pérolas da senhora Perlita do cofre da suíte."
+BRIEF_HOTEL_A_toupee,"Anoche, en el Hotel Gran Siesta, robaron el bisoñé de oro del tenor, el que usa para cantar los sábados. Estaba en la caja fuerte de la suite.","Last night, at the Hotel Gran Siesta, the tenor's gold toupee was stolen, the one he sings in on Saturdays. It was in the suite's safe.","Ontem à noite, no Hotel Gran Siesta, roubaram a peruca de ouro do tenor, a que ele usa para cantar aos sábados. Estava no cofre da suíte."
+BRIEF_HOTEL_A_pillow,"Anoche, en el Hotel Gran Siesta, robaron la Almohada de Oro, el premio a la mejor siesta de la ciudad. La habían guardado en la caja fuerte de la suite.","Last night, at the Hotel Gran Siesta, the Golden Pillow was stolen: the prize for the city's best nap. It was kept in the suite's safe.","Ontem à noite, no Hotel Gran Siesta, roubaram o Travesseiro de Ouro, o prêmio da melhor soneca da cidade. Estava guardado no cofre da suíte."
+BRIEF_HOTEL_B,"Hay seis huéspedes y los seis andan en bata, pantuflas y con una toalla en la cabeza: no se distinguen ni entre ellos. Miren sus habitaciones.","There are six guests and all six walk around in bathrobes, slippers and a towel on their heads: they can't even tell each other apart. Check their rooms.","São seis hóspedes e os seis andam de roupão, pantufas e toalha na cabeça: nem eles se distinguem. Olhem os quartos deles."
+BRIEF_HOTEL_C,"El conserje dice que sabe quién duerme en cada habitación. Yo no le creería ni la hora.","The concierge says he knows who sleeps in each room. I wouldn't trust him with the time of day.","O concierge diz que sabe quem dorme em cada quarto. Eu não acreditaria nem na hora que ele diz."
+OBJ_HOTEL_LOOT_necklace,"Encontrar el collar de perlas (+100)","Find the pearl necklace (+100)","Encontrar o colar de pérolas (+100)"
+OBJ_HOTEL_LOOT_toupee,"Encontrar el bisoñé de oro (+100)","Find the gold toupee (+100)","Encontrar a peruca de ouro (+100)"
+OBJ_HOTEL_LOOT_pillow,"Encontrar la Almohada de Oro (+100)","Find the Golden Pillow (+100)","Encontrar o Travesseiro de Ouro (+100)"
+HINT_LOOT_FOUND_necklace,"¡El collar de la señora Perlita! No falta ni una perla.","Señora Perlita's necklace! Not a pearl missing.","O colar da senhora Perlita! Não falta nenhuma pérola."
+HINT_LOOT_FOUND_toupee,"¡El bisoñé de oro! Brilla tanto que encandila.","The gold toupee! It shines so much it's blinding.","A peruca de ouro! Brilha tanto que ofusca."
+HINT_LOOT_FOUND_pillow,"¡La Almohada de Oro! Dura como una piedra, pero es ella.","The Golden Pillow! Hard as a rock, but that's the one.","O Travesseiro de Ouro! Duro como pedra, mas é ele."
+PROMPT_SEARCH_room13,"E: mirar debajo de la cama","E: look under the bed","E: olhar debaixo da cama"
+PROMPT_SEARCH_cart,"E: revolver la ropa sucia","E: dig through the dirty laundry","E: revirar a roupa suja"
+HINT_SEARCH_NOTHING_room13,"Polvo, una media sola y una revista de 1987. Nada más.","Dust, one lonely sock and a magazine from 1987. Nothing else.","Poeira, uma meia sozinha e uma revista de 1987. Nada mais."
+HINT_SEARCH_NOTHING_cart,"Sábanas, toallas y una bata con olor a pepino. Nada más.","Sheets, towels and a bathrobe that smells of cucumber. Nothing else.","Lençóis, toalhas e um roupão com cheiro de pepino. Nada mais."
+HINT_SEARCH_NOTHING_suitcase,"Batas, pantuflas y un pepino seco. Nada más.","Bathrobes, slippers and a dried cucumber. Nothing else.","Roupões, pantufas e um pepino seco. Nada mais."
+PROMPT_EMPTY_SAFE,"E: tocar la caja fuerte","E: touch the safe","E: tocar o cofre"
+HINT_SAFE_TOUCHED,"¡La tocaste! Tus huellas quedaron en la manija.","You touched it! Your prints are on the handle.","Você tocou! Suas digitais ficaram na maçaneta."
+HINT_SAFE_EMPTY,"La caja fuerte, abierta y vacía. Ni una perla.","The safe, open and empty. Not a single pearl.","O cofre, aberto e vazio. Nem uma pérola."
+PRINTS_SAFE,"¡Una huella en la manija de la caja fuerte! Es del culpable.","A fingerprint on the safe's handle! It's the culprit's.","Uma digital na maçaneta do cofre! É do culpado."
+PRINTS_SAFE_SMUDGED,"Hay una huella en la manija, pero tus huellas la taparon.","There's a print on the handle, but yours covered it.","Tem uma digital na maçaneta, mas as suas cobriram."
+PROMPT_DND_HANG,"E: dar vuelta el cartel (No molestar)","E: turn the card round (Do not disturb)","E: virar a plaquinha (Não perturbe)"
+PROMPT_DND_TAKE,"E: dar vuelta el cartel (Limpiar, por favor)","E: turn the card round (Please clean)","E: virar a plaquinha (Limpar, por favor)"
+HINT_DND_HUNG,"Ahora dice ""No molestar"". Doña Escoba no va a entrar.","Now it says ""Do not disturb"". Doña Escoba won't go in.","Agora diz ""Não perturbe"". Dona Escoba não vai entrar."
+HINT_DND_TAKEN,"Ahora dice ""Limpiar, por favor"".","Now it says ""Please clean"".","Agora diz ""Limpar, por favor""."
+SIGN_DND,"NO MOLESTAR","DO NOT DISTURB","NÃO PERTURBE"
+SIGN_CLEAN,"LIMPIAR, POR FAVOR","PLEASE CLEAN","LIMPAR, POR FAVOR"
+HOTEL_MAID_DND,"Uy, ""No molestar"". Vuelvo más tarde.","Oops, ""Do not disturb"". I'll come back later.","Opa, ""Não perturbe"". Volto mais tarde."
+HOTEL_MAID_PILLOW,"¡Funda nueva! La vieja, al carrito.","A fresh pillowcase! The old one, into the cart.","Fronha nova! A velha, pro carrinho."
+HOTEL_MAID_BATH,"Una pasadita de aspiradora a la alfombra del baño y listo.","A quick vacuum of the bathroom mat and done.","Uma passadinha de aspirador no tapete do banheiro e pronto."
+HINT_CLUE_EATEN_bite_hotel,"Mmm, un bombón de chocolate. Ya venía mordido.","Mmm, a chocolate bonbon. It came already bitten.","Hmm, um bombom de chocolate. Já vinha mordido."
+CLUE_HOTEL_prints,"Huellas en la caja fuerte de la suite","Fingerprints on the suite's safe","Digitais no cofre da suíte"
+CLUE_HOTEL_footprint,"Pisada descalza en la alfombra del baño: talle %d","Bare footprint on the bathroom mat: shoe size %d","Pegada descalça no tapete do banheiro: número %d"
+CLUE_HOTEL_hair,"Un pelo en la almohada de la suite: pelo %s","A hair on the suite's pillow: %s hair","Um fio de cabelo no travesseiro da suíte: cabelo %s"
+CLUE_HOTEL_bite,"El bombón de la almohada, mordido: %s","The pillow's bonbon, bitten: %s","O bombom do travesseiro, mordido: %s"
+CLUE_HOTEL_witness_glasses,"Tito: al culpable se le cayeron los pepinos y tenía anteojos","Tito: the culprit's cucumbers fell off, with glasses underneath","Tito: os pepinos do culpado caíram e tinha óculos"
+CLUE_HOTEL_witness_no_glasses,"Tito: al culpable se le cayeron los pepinos y no tenía anteojos","Tito: the culprit's cucumbers fell off, with no glasses underneath","Tito: os pepinos do culpado caíram e não tinha óculos"
+CLUE_HOTEL_signature_left,"La firma de las 3 de la mañana: la letra se inclina para el otro lado (zurdo)","The 3 a.m. signature: the writing leans the other way (left-handed)","A assinatura das 3 da manhã: a letra inclina para o outro lado (canhoto)"
+CLUE_HOTEL_signature_right,"La firma de las 3 de la mañana: la letra se inclina como siempre (diestro)","The 3 a.m. signature: the writing leans the usual way (right-handed)","A assinatura das 3 da manhã: a letra inclina como sempre (destro)"
+CLUE_HOTEL_RUINED_prints,"Huellas en la caja fuerte: tapadas por las tuyas","Prints on the safe: covered by yours","Digitais no cofre: cobertas pelas suas"
+CLUE_HOTEL_RUINED_footprint,"Pisada en la alfombra del baño: borrada","Footprint on the bathroom mat: wiped out","Pegada no tapete do banheiro: apagada"
+CLUE_HOTEL_RUINED_hair,"Un pelo en la almohada: se fue con la funda","A hair on the pillow: gone with the pillowcase","Um fio de cabelo no travesseiro: foi junto com a fronha"
+CLUE_HOTEL_RUINED_bite,"El bombón mordido: alguien se lo comió","The bitten bonbon: someone ate it","O bombom mordido: alguém comeu"
+CLUE_HOTEL_RUINED_witness,"Tito: ofendido","Tito: offended","Tito: ofendido"
+CLUE_HOTEL_RUINED_signature,"La firma de las 3: firmaron encima","The 3 a.m. signature: someone signed over it","A assinatura das 3: assinaram por cima"
+HINT_HOTEL_RUINED_prints,"Tocaste la caja fuerte. Tus huellas quedaron encima de las del culpable.","You touched the safe. Your prints are on top of the culprit's now.","Você tocou no cofre. Suas digitais ficaram em cima das do culpado."
+HINT_HOTEL_RUINED_footprint,"La pisada de la alfombra del baño ya no está.","The footprint on the bathroom mat is gone.","A pegada do tapete do banheiro sumiu."
+HINT_HOTEL_RUINED_hair,"Doña Escoba cambió la funda de la almohada. El pelo se fue con la ropa sucia.","Doña Escoba changed the pillowcase. The hair went with the laundry.","Dona Escoba trocou a fronha. O fio de cabelo foi junto com a roupa suja."
+HINT_HOTEL_RUINED_bite,"Te comiste el bombón. Y con él, el mordisco.","You ate the bonbon. And the bite with it.","Você comeu o bombom. E a mordida junto."
+HINT_HOTEL_RUINED_witness,"Tito se ofendió. No va a decir nada más.","Tito is offended. He won't say anything else.","Tito se ofendeu. Não vai dizer mais nada."
+HINT_HOTEL_RUINED_signature,"Firmaste encima de la firma de las 3. Ya no se lee.","You signed over the 3 a.m. signature. It can't be read now.","Você assinou por cima da assinatura das 3. Não dá mais para ler."
+PROMPT_HOTEL_BELL,E: tocar el timbre,E: ring the bell,E: tocar a campainha
+HOTEL_CONCIERGE_ZZZ,Zzz... Zzz... (Ronca sobre el mostrador.),Zzz... Zzz... (He snores on the desk.),Zzz... Zzz... (Ele ronca no balcão.)
+HOTEL_CONCIERGE_NOT_SLEEPY,"(Bostezo.) Recién me desperté, oficial. Vuelva en un rato.","(Yawn.) I just woke up, officer. Come back in a while.","(Bocejo.) Acabei de acordar, policial. Volte daqui a pouco."
+HOTEL_CONCIERGE_BELL_ANGRY,"¡¿Quién tocó el timbre?! ¡Estaba descansando los ojos!","Who rang the bell?! I was resting my eyes!","Quem tocou a campainha?! Eu estava descansando os olhos!"
+HOTEL_CONCIERGE_BELL,(Bostezo.) Sí... ya lo atiendo... (Bostezo.),(Yawn.) Yes... I'll be right with you... (Yawn.),(Bocejo.) Sim... já te atendo... (Bocejo.)
+HOTEL_CONCIERGE_WOKE,"(Se despierta.) ¿Eh? ¿Quién anda ahí? Yo no estaba durmiendo.","(He wakes up.) Huh? Who's there? I wasn't sleeping.","(Ele acorda.) Hã? Quem está aí? Eu não estava dormindo."
+HOTEL_CONCIERGE_NOTHING,(Bostezo.) Acá no pasa nada. Nunca pasa nada.,(Yawn.) Nothing happens here. Nothing ever happens.,(Bocejo.) Aqui não acontece nada. Nunca acontece nada.
+HOTEL_CONCIERGE_OFFENDED,"Zzz... digo, no tengo nada que decir.","Zzz... I mean, I have nothing to say.","Zzz... quer dizer, não tenho nada a dizer."
+HOTEL_CONCIERGE_KEY,"¡Esa llave no es suya, oficial!","That key isn't yours, officer!","Essa chave não é sua, policial!"
+HOTEL_CONCIERGE_HURT,"¡Ay! ¡Con cuidado, que estoy de turno!","Ouch! Careful, I'm on duty!","Ai! Cuidado, estou de plantão!"
+HOTEL_CONCIERGE_DOOR,"¡¿Qué fue ese golpe?! ¡Esa puerta es de 1952!","What was that bang?! That door is from 1952!","Que pancada foi essa?! Essa porta é de 1952!"
+HOTEL_CONCIERGE_SAW,"¡Eso lo va a pagar! ¡Era una antigüedad!","You'll pay for that! It was an antique!","Você vai pagar por isso! Era uma antiguidade!"
+HOTEL_CONCIERGE_LAWYER,"Se acabó. Llamo a mi abogado. Él también duerme, pero lo despierto.","That's it. I'm calling my lawyer. He sleeps too, but I'll wake him.","Chega. Vou ligar para o meu advogado. Ele também dorme, mas eu acordo ele."
+PROMPT_HOTEL_MAKE_BED,E: tender la cama (doña Escoba te lo agradece),E: make the bed (doña Escoba will thank you),E: arrumar a cama (dona Escoba agradece)
+PROMPT_HOTEL_BED_MAKING,"Tendiendo la cama... (E: dejarla así)","Making the bed... (E: leave it like that)","Arrumando a cama... (E: deixar assim)"
+HOTEL_MAID_BUSY,"Ay, oficial, no tengo tiempo de charlar. Si me diera una mano con las camas...","Oh, officer, I have no time to chat. If you gave me a hand with the beds...","Ai, policial, não tenho tempo para conversar. Se me desse uma mão com as camas..."
+HOTEL_MAID_HELP_1,"¡Un policía que tiende camas! Eso sí que no se ve todos los días. Le cuento algo...","A cop who makes beds! You don't see that every day. Let me tell you something...","Um policial que arruma camas! Isso não se vê todo dia. Vou te contar uma coisa..."
+HOTEL_MAID_HELP_2,"Las esquinas bien metidas, eh. Y mientras tanto, escuche...","Tuck the corners in well, eh. And meanwhile, listen...","Os cantos bem dobrados, hein. E enquanto isso, escute..."
+HOTEL_MAID_THANKS,"Gracias otra vez, oficial. Ya le conté todo lo que vi.","Thanks again, officer. I already told you everything I saw.","Obrigada de novo, policial. Já te contei tudo o que vi."
+HOTEL_MAID_SAW_NOTHING,"Yo no vi a don Bostezo esconder nada. Lo vi dormir, eso sí. Mucho.","I didn't see don Bostezo hide anything. I saw him sleep, though. A lot.","Eu não vi o don Bostezo esconder nada. Vi ele dormir, isso sim. Muito."
+BRIEF_HOTEL_TIP_B,"Llegó una denuncia anónima: el Hotel Gran Siesta dice que está lleno todas las noches, pero nadie vio nunca a un huésped.","We got an anonymous tip: the Hotel Gran Siesta says it's full every night, but nobody has ever seen a guest.","Chegou uma denúncia anônima: o Hotel Gran Siesta diz que está lotado todas as noites, mas ninguém nunca viu um hóspede."
+BRIEF_HOTEL_TIP_D,"El lobby está abierto y don Bostezo atiende desde la recepción, cuando no duerme. Las habitaciones tienen llave: la maestra cuelga del tablero, detrás del mostrador.","The lobby is open and don Bostezo runs the front desk, when he isn't asleep. The rooms are locked: the master key hangs on the board behind the desk.","O saguão está aberto e o don Bostezo atende na recepção, quando não está dormindo. Os quartos estão trancados: a chave mestra fica no quadro, atrás do balcão."
+BRIEF_HOTEL_TIP_E,Y no rompan nada: cada jarrón o lámpara rota se los descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.,And don't break anything: every broken vase or lamp comes out of your pay. Press Q to see your checklist.,E não quebrem nada: cada vaso ou abajur quebrado sai do salário de vocês. Com Q vocês veem a lista do que têm que fazer.
+SUSPECT_regular_guest,El huésped de siempre,The regular guest,O hóspede de sempre
+SUSPECT_casino_13,Un casino en la habitación 13,A casino in room 13,Um cassino no quarto 13
+SUSPECT_robes,Batas robadas de otros hoteles,Robes stolen from other hotels,Roupões roubados de outros hotéis
+SUSPECT_lift_1987,Algo escondido en el ascensor de 1987,Something hidden in the 1987 lift,Algo escondido no elevador de 1987
+SUSPECT_sleepwalker,Un huésped sonámbulo que se lleva cosas,A sleepwalking guest who takes things,Um hóspede sonâmbulo que leva coisas
+SUSPECT_fake_reviews,Reseñas falsas de cinco estrellas,Fake five-star reviews,Avaliações falsas de cinco estrelas
+CLUE_SUSPECT_regular_guest,"Un bigote postizo pegado en el sillón, con pegamento todavía fresco.","A fake mustache stuck to the armchair, the glue still fresh.","Um bigode postiço grudado na poltrona, com a cola ainda fresca."
+CLUE_SUSPECT_casino_13,"Un papelito: «Esta noche, en la 13. Traer cambio. Golpear tres veces el ropero».","A little note: “Tonight, in 13. Bring change. Knock three times on the wardrobe.”","Um bilhetinho: “Hoje à noite, no 13. Trazer trocado. Bater três vezes no armário.”"
+CLUE_SUSPECT_robes,Una etiqueta arrancada de una bata: «Propiedad del Hotel Imperial».,A tag torn off a robe: “Property of the Hotel Imperial.”,Uma etiqueta arrancada de um roupão: “Propriedade do Hotel Imperial.”
+CLUE_SUSPECT_lift_1987,Una factura del técnico del ascensor de 1987: «No vuelvo más».,A 1987 bill from the lift repairman: “I'm never coming back.”,Uma nota do técnico do elevador de 1987: “Nunca mais volto.”
+CLUE_SUSPECT_sleepwalker,"Una pantufla con barro y un cartel: «Si me encuentra dormido, no me despierte».","A muddy slipper and a sign: “If you find me asleep, don't wake me.”","Uma pantufa com barro e um aviso: “Se me encontrar dormindo, não me acorde.”"
+CLUE_SUSPECT_fake_reviews,Un borrador: «¡Hotel maravilloso! Firmado: un huésped que existe».,A draft: “Wonderful hotel! Signed: a guest who exists.”,Um rascunho: “Hotel maravilhoso! Assinado: um hóspede que existe.”
+BRIEF_CASINO_B,"Don Bostezo duerme de día porque de noche tiene un casino en la habitación 13, la que no figura en ninguna lista.","Don Bostezo sleeps by day because at night he runs a casino in room 13, the one that isn't on any list.","O don Bostezo dorme de dia porque à noite tem um cassino no quarto 13, aquele que não aparece em nenhuma lista."
+BRIEF_CASINO_C,"Traigan la ruleta en el baúl del patrullero. Pesa como un ropero, así que no la tiren por la escalera.","Bring the roulette back in the patrol car's trunk. It weighs as much as a wardrobe, so don't throw it down the stairs.","Tragam a roleta no porta-malas da viatura. Pesa como um armário, então não joguem pela escada."
+BRIEF_CASINO_D,"Si encuentran la caja de fichas o la libreta de deudas, mejor: todo suma.","If you find the box of chips or the debt book, even better: it all adds up.","Se acharem a caixa de fichas ou a caderneta de dívidas, melhor: tudo soma."
+OBJ_FIND_CASINO,Encontrar la ruleta (en la habitación que no existe),Find the roulette (in the room that doesn't exist),Achar a roleta (no quarto que não existe)
+OBJ_EXTRA_CHIP_BOX,Extra: la caja de fichas,Extra: the box of chips,Extra: a caixa de fichas
+OBJ_EXTRA_DEBT_BOOK,Extra: la libreta de deudas,Extra: the debt book,Extra: a caderneta de dívidas
+OBJ_ENTER_HOTEL,Entrar al hotel (el lobby está abierto),Get into the hotel (the lobby is open),Entrar no hotel (o saguão está aberto)
+OBJ_GUESS_HOTEL,"Averiguar qué pasa en el hotel (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the hotel (with Q open, hold 1, 2 or 3)","Descobrir o que acontece no hotel (com Q aberta, segure 1, 2 ou 3)"
+OBJ_BROKEN_HOTEL,Jarrones y lámparas rotos: %d (multa: %d),Broken vases and lamps: %d (fine: %d),Vasos e abajures quebrados: %d (multa: %d)
+OBJ_COMPLAINT_HOTEL,Denuncia de don Bostezo: %d%%,Don Bostezo's complaint: %d%%,Denúncia do don Bostezo: %d%%
+CASE_FAILED_LAWYER_HOTEL,Don Bostezo llamó a su abogado. Caso perdido.,Don Bostezo called his lawyer. Case lost.,O don Bostezo ligou para o advogado. Caso perdido.
+HOTEL_SLIP,"«(Bostezo.) Yo no guardé nada %s... Digo, ¿tiene reserva?»","“(Yawn.) I didn't put anything %s... I mean, do you have a reservation?”","“(Bocejo.) Eu não guardei nada %s... Quer dizer, tem reserva?”"
+HOTEL_MAID_CLUE,"Le cuento, pero no le diga a nadie: anoche vi a don Bostezo esconder algo %s.","I'll tell you, but don't tell anyone: last night I saw don Bostezo hide something %s.","Vou te contar, mas não conte para ninguém: ontem à noite vi o don Bostezo esconder algo %s."
+PROMPT_CASINO_CHIPS,E: mirar las fichas,E: look at the chips,E: olhar as fichas
+CLUE_CASINO_CHIPS,Fichas de casino. En un hotel sin casino.,Casino chips. In a hotel with no casino.,Fichas de cassino. Num hotel sem cassino.
+CLUE_CASINO_STEPS,"Pisadas en la alfombra, de la escalera al ropero viejo. Y no vuelven.","Footprints on the carpet, from the stairs to the old wardrobe. And they don't come back.","Pegadas no tapete, da escada até o armário velho. E não voltam."
+CLUE_CASINO_TICK,"Detrás del ropero se oye una ruleta girar, y sale humo de cigarro por abajo.","Behind the wardrobe you hear a roulette spinning, and cigar smoke comes out from under it.","Atrás do armário se ouve uma roleta girando, e sai fumaça de charuto por baixo."
+CASINO_TICK,*tic tic tic*,*tick tick tick*,*tic tic tic*
+LOC_hotel_in_tub,en la bañera de la suite,in the suite's bathtub,na banheira da suíte
+LOC_hotel_by_lift,en el ascensor roto,in the broken lift,no elevador quebrado
+LOC_hotel_behind_desk,detrás del mostrador,behind the front desk,atrás do balcão
+LOC_hotel_room_13,en la habitación 13,in room 13,no quarto 13
+LOC_hotel_by_suite_bed,al lado de la cama de la suite,by the suite's bed,ao lado da cama da suíte
+LOC_hotel_behind_piano,detrás del piano,behind the piano,atrás do piano
+LOC_hotel_on_piano,arriba del piano,on top of the piano,em cima do piano
+LOC_hotel_on_bed_14,en la cama de la 14,on the bed in 14,na cama do 14
+LOC_hotel_in_case,en la vitrina de la Almohada de Oro,in the Golden Pillow's glass case,na vitrine do Travesseiro de Ouro
+LOC_hotel_in_plant,en la maceta de la planta de plástico,in the plastic plant's pot,no vaso da planta de plástico
+LOC_hotel_on_armchair,en un sillón del lobby,on an armchair in the lobby,numa poltrona do saguão
+LOC_hotel_on_table,en una mesa del comedor,on a dining table,numa mesa do refeitório
+CRIME_owner_concierge,"¡Novatos! Ayer se trajeron a don Bostezo, el conserje del Hotel Gran Siesta, y lo tenemos en la sala de interrogatorio. Algo escondió en el hotel que no encontraron. Si se duerme, despiértenlo.","Rookies! Yesterday you brought in don Bostezo, the Hotel Gran Siesta's concierge, and he's in the interrogation room. He hid something in the hotel you never found. If he falls asleep, wake him up.","Novatos! Ontem vocês trouxeram o don Bostezo, o concierge do Hotel Gran Siesta, e ele está na sala de interrogatório. Ele escondeu algo no hotel que vocês não acharam. Se ele dormir, acordem ele."
+CONFESS_owner_concierge,¡Está bien! ¡Lo escondí yo! (Bostezo.) ¿Ahora me puedo ir a dormir?,Fine! I hid it! (Yawn.) Can I go to sleep now?,Tá bom! Fui eu que escondi! (Bocejo.) Agora posso ir dormir?
+BRIEF_REGULAR_GUEST_B,"El hotel dice que está lleno, pero todos los huéspedes son el mismo señor: Ramón, el primo de don Bostezo, que entra y sale disfrazado para que el hotel parezca un éxito.","The hotel says it's full, but every guest is the same man: Ramón, don Bostezo's cousin, who comes and goes in disguise so the hotel looks like a success.","O hotel diz que está lotado, mas todos os hóspedes são o mesmo senhor: Ramón, o primo do don Bostezo, que entra e sai disfarçado para o hotel parecer um sucesso."
+BRIEF_REGULAR_GUEST_C,"Traigan el baúl de disfraces del señor Ramón en el baúl del patrullero. Sí, un baúl en el baúl.","Bring señor Ramón's costume trunk back in the patrol car's trunk. Yes, a trunk in the trunk.","Tragam o baú de fantasias do senhor Ramón no porta-malas da viatura. Sim, um baú no porta-malas."
+BRIEF_REGULAR_GUEST_D,"Si encuentran el libro de huéspedes falso o la peluca de repuesto, mejor: todo suma.","If you find the fake guest book or the spare wig, even better: it all adds up.","Se acharem o livro de hóspedes falso ou a peruca reserva, melhor: tudo soma."
+OBJ_FIND_REGULAR_GUEST,Encontrar el baúl de disfraces del señor Ramón,Find señor Ramón's costume trunk,Achar o baú de fantasias do senhor Ramón
+OBJ_EXTRA_GUEST_BOOK,Extra: el libro de huéspedes falso,Extra: the fake guest book,Extra: o livro de hóspedes falso
+OBJ_EXTRA_WIG_SPARE,Extra: la peluca de repuesto,Extra: the spare wig,Extra: a peruca reserva
+HOTEL_CONCIERGE_ANGRY,"¡Basta de timbre! No contesto nada. (Se tapa los oídos.)","Enough with the bell! I'm not answering anything. (Covers his ears.)","Chega de campainha! Não respondo nada. (Tapa os ouvidos.)"
+HOTEL_BELLBOY_ASK,"Tengo las manos ocupadas. ¿Me subes esa valija a la %d? Después te cuento lo que vi.","My hands are full. Can you take that suitcase up to %d? Then I'll tell you what I saw.","Estou com as mãos ocupadas. Você leva aquela mala para o %d? Depois eu conto o que vi."
+HOTEL_BELLBOY_THANKS,"¡Llegó la valija! Ven, que te cuento.","The suitcase made it! Come here, I'll tell you.","A mala chegou! Vem, que eu te conto."
+HOTEL_BELLBOY_SAW_GLASSES,"Anoche, en la escalera, a uno se le cayeron los pepinos. ¡Tenía anteojos!","Last night, on the stairs, someone's cucumbers fell off. Glasses underneath!","Ontem à noite, na escada, os pepinos de alguém caíram. Tinha óculos!"
+HOTEL_BELLBOY_SAW_NO_GLASSES,"Anoche, en la escalera, a uno se le cayeron los pepinos. Ni un par de anteojos.","Last night, on the stairs, someone's cucumbers fell off. No glasses at all.","Ontem à noite, na escada, os pepinos de alguém caíram. Nem um par de óculos."
+HOTEL_BELLBOY_NOTHING,"Gracias por la valija. Anoche dormí como un tronco, no vi nada.","Thanks for the suitcase. I slept like a log last night, I saw nothing.","Obrigado pela mala. Ontem dormi como uma pedra, não vi nada."
+HOTEL_BELLBOY_OFFENDED,"No hablo más. Con un botones no se hace eso.","I'm not talking anymore. You don't do that to a bellboy.","Não falo mais. Não se faz isso com um mensageiro."
+PROMPT_GUEST_BOOK,E: mirar el libro de huéspedes,E: look at the guest book,E: olhar o livro de hóspedes
+CLUE_REGULAR_GUEST_BOOK,"El libro de huéspedes: cuarenta firmas distintas, todas con la misma letra.","The guest book: forty different signatures, all in the same handwriting.","O livro de hóspedes: quarenta assinaturas diferentes, todas com a mesma letra."
+CLUE_REGULAR_GUEST_MUSTACHE,Al nuevo huésped se le cayó el bigote. Era postizo. Y el señor también.,The new guest's mustache fell off. It was fake. And so was he.,O bigode do novo hóspede caiu. Era postiço. E o senhor também.
+RAMON_HELLO_MUSTACHE,"Buenas, recién llegado. Me llamo... Bigotes. Señor Bigotes.","Hello, just arrived. My name is... Mustache. Mr. Mustache.","Olá, acabei de chegar. Meu nome é... Bigode. Senhor Bigode."
+RAMON_HELLO_HAT,¡Buenas noches! Turista. Vengo de muy lejos. De la otra cuadra.,Good evening! Tourist. I come from very far away. From the next block.,Boa noite! Turista. Venho de muito longe. Do outro quarteirão.
+RAMON_HELLO_WIG,"Hola, soy un huésped completamente nuevo. Nunca me vio. Nunca.","Hi, I'm a completely new guest. You've never seen me. Never.","Oi, sou um hóspede completamente novo. Você nunca me viu. Nunca."
+RAMON_UNMASKED,"¡Mi bigote! ¡Nadie vio nada! ¡Me voy, digo, hago el check-out!","My mustache! Nobody saw anything! I'm leaving, I mean, checking out!","Meu bigode! Ninguém viu nada! Vou embora, quer dizer, faço o check-out!"
+BRIEF_ROBES_B,Don Bostezo junta las batas bordadas de los hoteles caros de la ciudad y las vende como si fueran del Gran Siesta.,Don Bostezo collects the embroidered robes of the city's fancy hotels and sells them as if they were the Gran Siesta's.,O don Bostezo junta os roupões bordados dos hotéis caros da cidade e vende como se fossem do Gran Siesta.
+BRIEF_ROBES_C,Traigan la bolsa de batas robadas en el baúl del patrullero. Las batas colgadas no sirven: son de muestra.,Bring the bag of stolen robes back in the patrol car's trunk. The hanging robes don't count: they're just samples.,Tragam a bolsa de roupões roubados no porta-malas da viatura. Os roupões pendurados não servem: são de amostra.
+BRIEF_ROBES_D,"Si encuentran la lista de compradores o el bordador, mejor: todo suma.","If you find the buyers' list or the embroidery machine, even better: it all adds up.","Se acharem a lista de compradores ou a bordadeira, melhor: tudo soma."
+OBJ_FIND_ROBES,Encontrar la bolsa de batas robadas (no las colgadas),Find the bag of stolen robes (not the hanging ones),Achar a bolsa de roupões roubados (não os pendurados)
+OBJ_EXTRA_BUYERS_LIST,Extra: la lista de compradores,Extra: the buyers' list,Extra: a lista de compradores
+OBJ_EXTRA_EMBROIDERY,Extra: el bordador,Extra: the embroidery machine,Extra: a bordadeira
+PROMPT_ROBE,E: mirar el escudo de la bata,E: look at the robe's crest,E: olhar o brasão do roupão
+CLUE_ROBES_CREST,Una bata del Gran Siesta... con el escudo del %s. Mal descosido.,A Gran Siesta robe... with the crest of the %s. Badly unstitched.,Um roupão do Gran Siesta... com o brasão do %s. Mal descosturado.
+ROBE_HOTEL_0,Hotel Imperial,Hotel Imperial,Hotel Imperial
+ROBE_HOTEL_1,Gran Hotel Palacio,Gran Hotel Palacio,Gran Hotel Palacio
+ROBE_HOTEL_2,Hotel Mirador,Hotel Mirador,Hotel Mirador
+ROBE_HOTEL_3,Hotel Corona,Hotel Corona,Hotel Corona
+BRIEF_LIFT_B,Don Bostezo imprime billetes falsos y guarda la valija en el ascensor que está «fuera de servicio» desde 1987.,Don Bostezo prints fake money and keeps the case in the lift that has been “out of order” since 1987.,O don Bostezo imprime notas falsas e guarda a maleta no elevador que está “fora de serviço” desde 1987.
+BRIEF_LIFT_C,Traigan la valija de billetes en el baúl del patrullero. El ascensor no abre solo: busquen la manivela.,Bring the case of bills back in the patrol car's trunk. The lift won't open by itself: find the crank.,Tragam a maleta de notas no porta-malas da viatura. O elevador não abre sozinho: achem a manivela.
+BRIEF_LIFT_D,"Si encuentran las planchas de imprimir, mejor: todo suma.","If you find the printing plates, even better: it all adds up.","Se acharem as chapas de impressão, melhor: tudo soma."
+OBJ_FIND_LIFT,Encontrar la valija de billetes falsos,Find the case of fake bills,Achar a maleta de notas falsas
+OBJ_EXTRA_LIFT_CRANK,La manivela del ascensor,The lift's crank,A manivela do elevador
+OBJ_EXTRA_PLATES,Las planchas de imprimir,The printing plates,As chapas de impressão
+PROMPT_LIFT_CRANK,E: girar la manivela en la puerta,E: turn the crank in the door,E: girar a manivela na porta
+PROMPT_LIFT_STUCK,E: abrir el ascensor,E: open the lift,E: abrir o elevador
+PROMPT_LIFT_TURNING,Girando la manivela… E: parar,Turning the crank… E: stop,Girando a manivela… E: parar
+HINT_LIFT_STUCK,La puerta no se mueve. Tiene un agujero para una manivela.,The door won't budge. It has a hole for a crank.,A porta não se mexe. Tem um buraco para uma manivela.
+PROMPT_LIFT_BUTTON,E: mirar el botón,E: look at the button,E: olhar o botão
+CLUE_LIFT_BUTTON,El botón del ascensor está gastado de tanto apretarlo y tiene tinta verde.,The lift's button is worn from so much pressing and has green ink on it.,O botão do elevador está gasto de tanto apertar e tem tinta verde.
+BRIEF_SLEEPWALKER_B,Un huésped camina dormido por el barrio y vuelve con cosas ajenas. Don Bostezo las guarda en una caja de «objetos perdidos» y las vende.,A guest walks the neighborhood in his sleep and comes back with other people's things. Don Bostezo keeps them in a “lost and found” box and sells them.,Um hóspede anda dormindo pelo bairro e volta com coisas dos outros. O don Bostezo guarda tudo numa caixa de “achados e perdidos” e vende.
+BRIEF_SLEEPWALKER_C,Traigan la caja en el baúl del patrullero. Y no despierten al sonámbulo: grita.,Bring the box back in the patrol car's trunk. And don't wake the sleepwalker: he shouts.,Tragam a caixa no porta-malas da viatura. E não acordem o sonâmbulo: ele grita.
+BRIEF_SLEEPWALKER_D,"Si encuentran la lista del barrio o el antifaz, mejor: todo suma.","If you find the neighborhood's list or the sleep mask, even better: it all adds up.","Se acharem a lista do bairro ou a máscara de dormir, melhor: tudo soma."
+OBJ_FIND_SLEEPWALKER,Encontrar la caja de objetos perdidos,Find the lost and found box,Achar a caixa de achados e perdidos
+OBJ_EXTRA_NEIGHBORHOOD_LIST,La lista del barrio,The neighborhood's list,A lista do bairro
+OBJ_EXTRA_SLEEP_MASK,El antifaz de dormir,The sleep mask,A máscara de dormir
+PROMPT_SLEEPWALKER,Camina dormido. E: despertarlo (va a gritar),He's sleepwalking. E: wake him up (he'll shout),Ele anda dormindo. E: acordar (vai gritar)
+SLEEPWALKER_SHOUT,¡AAAAH! ¿Dónde estoy? ¿Quién eres? ¿Por qué estoy en bata?,AAAAH! Where am I? Who are you? Why am I in a bathrobe?,AAAAH! Onde estou? Quem é você? Por que estou de roupão?
+SLEEPWALKER_ASLEEP,…zzz…,…zzz…,…zzz…
+SLEEPWALKER_MUMBLE_0,…zzz… qué lindo gnomo… me lo llevo…,…zzz… what a nice gnome… I'll take it…,…zzz… que gnomo bonito… vou levar…
+SLEEPWALKER_MUMBLE_1,…zzz… un paraguas… otro paraguas…,…zzz… an umbrella… another umbrella…,…zzz… um guarda-chuva… outro guarda-chuva…
+SLEEPWALKER_MUMBLE_2,…zzz… don Bostezo… a la caja… zzz…,…zzz… don Bostezo… into the box… zzz…,…zzz… don Bostezo… pra caixa… zzz…
+HOTEL_CONCIERGE_SHOUT,¡¿Quién despertó al de la 16?! ¡Ahora no duerme nadie!,Who woke up the guy in 16?! Now nobody's sleeping!,Quem acordou o do 16?! Agora ninguém dorme!
+CLUE_SLEEPWALKER_STEPS,Huellas de pantuflas con barro desde la puerta de calle. Alguien salió de noche… y volvió.,Muddy slipper prints from the front door. Someone went out at night… and came back.,Pegadas de pantufa com barro desde a porta da rua. Alguém saiu de noite… e voltou.
+BRIEF_REVIEWS_B,Don Bostezo escribe cientos de reseñas del Gran Siesta a máquina y las manda en postales firmadas por «huéspedes felices».,Don Bostezo types hundreds of reviews of the Gran Siesta and mails them as postcards signed by “happy guests”.,O don Bostezo datilografa centenas de resenhas do Gran Siesta e manda em cartões-postais assinados por “hóspedes felizes”.
+BRIEF_REVIEWS_C,Traigan la máquina de escribir en el baúl del patrullero. Dicen que escribe dormido…,Bring the typewriter back in the patrol car's trunk. They say he types in his sleep…,Tragam a máquina de escrever no porta-malas da viatura. Dizem que ele escreve dormindo…
+BRIEF_REVIEWS_D,"Si encuentran las postales o el sello de correo, mejor: todo suma.","If you find the postcards or the postmark stamp, even better: it all adds up.","Se acharem os cartões-postais ou o carimbo do correio, melhor: tudo soma."
+OBJ_FIND_REVIEWS,Encontrar la máquina de escribir de las reseñas,Find the typewriter of the reviews,Achar a máquina de escrever das resenhas
+OBJ_EXTRA_POSTCARDS,Las 300 postales «¡Hotel maravilloso!»,The 300 “Wonderful hotel!” postcards,Os 300 cartões “Hotel maravilhoso!”
+OBJ_EXTRA_POSTMARK,El sello de correo,The postmark stamp,O carimbo do correio
+PROMPT_CARBON_PAPER,E: mirar el papel del tacho,E: look at the paper in the bin,E: olhar o papel do lixo
+CLUE_REVIEWS_CARBON,Papel carbónico en el tacho. Al revés se lee: «5 estrellas. 5 estrellas. 5 estrellas…»,Carbon paper in the bin. Backwards it reads: “5 stars. 5 stars. 5 stars…”,Papel-carbono no lixo. Ao contrário se lê: “5 estrelas. 5 estrelas. 5 estrelas…”
+REVIEWS_TAC,tac tac tac… ¡ding!,tap tap tap… ding!,tac tac tac… plim!
+CLUE_REVIEWS_TAC,Don Bostezo duerme… y algo escondido escribe a máquina: «tac tac tac».,Don Bostezo is asleep… and something hidden is typing: “tap tap tap”.,O don Bostezo dorme… e algo escondido datilografa: “tac tac tac”.
+MENU_HOTEL_RAID,"Hotel (allanamiento, prueba)","Hotel (raid, test)","Hotel (batida, teste)"
+HINT_GUEST_BOOK_SIGNED,"Firmaste en la página de anoche. Qué linda letra.","You signed on last night's page. Lovely handwriting.","Você assinou na página de ontem. Que letra bonita."
+HINT_ESCAPE_guest,"¡%s se subió a la combi del hotel, en bata y pantuflas, y se escapa! ¡Al patrullero, y cuidado con las valijas!","%s jumped into the hotel shuttle, in bathrobe and slippers, and is getting away! To the patrol car, and mind the suitcases!","%s subiu na van do hotel, de roupão e chinelos, e está fugindo! Para a viatura, e cuidado com as malas!"
+PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off the street","E: tirar a mala da rua"
+HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
+CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
+CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
