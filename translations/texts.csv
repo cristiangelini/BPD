@@ -5708,3 +5708,9 @@ PROMPT_PARROT_CRACKERS,E: darle una galleta a Don Plumas,E: give Don Plumas a cr
 PARROT_CRACKER,"¡Galletita! ¡Crac, crac!","Cracker! Crunch, crunch!","Biscoitinho! Crec, crec!"
 PARROT_NOTHING,"¡Lorito come galletita! ¡Lorito no vio nada!","Polly eats crackers! Polly saw nothing!","Louro come biscoito! Louro não viu nada!"
 PARROT_SCARED,"¡Lorito bonito! ¡Lorito bonito! (Tiembla y esconde la cabeza.)","Pretty parrot! Pretty parrot! (He shakes and hides his head.)","Louro bonito! Louro bonito! (Treme e esconde a cabeça.)"
+HINT_VASE_BROKEN,"¡CRASH! Un jarrón de la señora menos. Se descuenta del sueldo.","CRASH! One less vase of the señora's. It comes off your salary.","CRASH! Um vaso da senhora a menos. Vai sair do salário."
+PROMPT_TEAPOT,E: servir una taza de té,E: pour a cup of tea,E: servir uma xícara de chá
+HINT_TEA_POURED,"Ya hay una taza servida. Llévasela a la señora.","There's a cup poured already. Take it to the señora.","Já tem uma xícara servida. Leve para a senhora."
+PROMPT_HOLDING_TEA,Llévale el té a la señora Ofelia,Take the tea to Señora Ofelia,Leve o chá para a senhora Ofelia
+MANSION_LADY_TEA,"Ay, un tecito. Bueno, tan brutos no son.","Oh, a little tea. Well, you're not such brutes.","Ai, um chazinho. Bom, vocês não são tão brutos."
+MANSION_LADY_TEA_AGAIN,"Otro té no, querido. Tráeme a mi gata.","No more tea, dear. Bring me my cat.","Outro chá não, querido. Traga a minha gata."

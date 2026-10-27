@@ -589,6 +589,11 @@ func comisario_says(key: String) -> void:
 	_comisario_says(key)
 
 
+## A hint for every cop (the Monedero mansion's broken vases).
+func hint_all(key: String) -> void:
+	_hint_all(key)
+
+
 func _comisario_says(key: String) -> void:
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).input_enabled:

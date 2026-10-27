@@ -76,12 +76,14 @@ const CAGE_AT := Vector3(13.8, 0, 3.0)
 const SOFA_AT := Vector3(10.0, 0, -6.6)
 const FIREPLACE_AT := Vector3(14.6, 0, -2.0)
 const RUG_AT := Vector3(10.0, 0, -4.0)
-## The eight vases on their pedestals (they break in step 5).
+## The eight vases on their pedestals (MansionVase: they break).
 const VASES: Array[Vector3] = [
 	Vector3(-4.3, 0, 0.0), Vector3(1.8, 0, -0.5), Vector3(-14.3, 0, 0.5), Vector3(6.0, 0, -12.2),
 	Vector3(14.3, 0, -5.0), Vector3(6.0, 0, 4.3), Vector3(-4.3, 0, -12.2), Vector3(4.3, 0, -4.0),
 ]
 const PEDESTAL_SIZE := Vector3(0.45, 0.9, 0.45)
+## What a broken vase comes off the salary.
+const VASE_FINE := 50
 ## Where the people stand: the six nephews in a row down the drawing room by its west wall, facing into it, Señora
 ## Ofelia in the hall facing the front door, and the parrot on top of his cage's stand.
 const NEPHEWS_AT: Array[Vector3] = [
@@ -146,6 +148,8 @@ var duchess_out := false
 var search_spots := {}
 var clues: CatClues
 var patience: CatPatience
+var teapot: MansionTeapot
+var vases: Array[MansionVase] = []
 var crackers: ParrotCrackers
 var _builder: PlaceBuilder
 
@@ -224,6 +228,16 @@ func _on_duchess_home() -> void:
 		case.found_loot()
 	if patience:
 		patience.gain(CatPatience.DUCHESS_BACK)
+
+
+## A vase broke: the señora's patience and the salary pay for it.
+func _on_vase_broke() -> void:
+	if not case or case.follower:
+		return
+	case.fines += VASE_FINE
+	case.hint_all("HINT_VASE_BROKEN")
+	if patience:
+		patience.lose("vase")
 
 
 func _on_wrong_cat(_cat: MansionCat) -> void:
@@ -477,10 +491,10 @@ func _kitchen() -> void:
 	jar.bottom_radius = 0.12
 	jar.height = 0.25
 	_builder.mesh(jar, BISCUITS_AT + Vector3(0, 0.125, 0), Color(0.8, 0.9, 0.95, 0.6))
-	var pot := SphereMesh.new()
-	pot.radius = 0.12
-	pot.height = 0.2
-	_builder.mesh(pot, TEAPOT_AT + Vector3(0, 0.1, 0), WHITE)
+	teapot = MansionTeapot.new()
+	teapot.name = "Teapot"
+	teapot.position = TEAPOT_AT
+	add_child(teapot)
 	_builder.box(KITCHEN_TABLE_AT + Vector3(0, 0.74, 0), Vector3(1.8, 0.06, 1.0), WOOD)
 	_builder.legs(KITCHEN_TABLE_AT, Vector2(1.8, 1.0), 0.72, WOOD)
 
@@ -560,11 +574,12 @@ func _drawing_room() -> void:
 
 ## The eight pedestals with a white and blue porcelain vase on each.
 func _vases() -> void:
-	for at in VASES:
+	for i in VASES.size():
+		var at := VASES[i]
 		_builder.box(at + Vector3(0, PEDESTAL_SIZE.y / 2, 0), PEDESTAL_SIZE, WHITE)
-		var vase := CylinderMesh.new()
-		vase.top_radius = 0.1
-		vase.bottom_radius = 0.13
-		vase.height = 0.45
-		_builder.mesh(vase, at + Vector3(0, PEDESTAL_SIZE.y + 0.23, 0), Color(0.3, 0.45, 0.85))
-		_builder.mesh_box(at + Vector3(0, PEDESTAL_SIZE.y + 0.28, 0), Vector3(0.24, 0.08, 0.24), WHITE)
+		var vase := MansionVase.new()
+		vase.name = "Vase%d" % i
+		vase.position = at + Vector3(0, PEDESTAL_SIZE.y, 0)
+		vase.broke.connect(_on_vase_broke.unbind(1))
+		add_child(vase)
+		vases.append(vase)
