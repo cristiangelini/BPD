@@ -5603,3 +5603,25 @@ LOC_dentist_in_kiln,en el horno del laboratorio,in the lab's kiln,no forno do la
 LOC_dentist_in_magazine_rack,en el revistero,in the magazine rack,no porta-revistas
 LOC_dentist_on_office_desk,en el escritorio del doctor,on the doctor's desk,na mesa do doutor
 LOC_dentist_on_office_shelf,en el estante de la oficina,on the office shelf,na estante do escritório
+PROMPT_NEXT_BELL,E: tocar el timbre de turnos,E: ring the next-patient bell,E: tocar a campainha de senhas
+DING_BELL,¡Ding!,Ding!,Plim!
+HINT_BELL_BUSY,El doctor ya está atendiendo.,The doctor is already with a patient.,O doutor já está atendendo.
+HINT_BELL_RESTING,"El doctor dice que ahora no atiende a nadie. Espera un poco.","The doctor says he's not seeing anyone right now. Wait a bit.","O doutor diz que agora não atende ninguém. Espere um pouco."
+MOLINA_LINE_1,"♪ Lalalá… cepillo, hilo y enjuague ♪","♪ La-la-la… brush, floss and rinse ♪","♪ Lalalá… escova, fio e enxágue ♪"
+MOLINA_LINE_2,"¡Sonrían, oficiales! Una sonrisa no cuesta nada… bueno, casi nada.","Smile, officers! A smile costs nothing… well, almost nothing.","Sorriam, policiais! Um sorriso não custa nada… bom, quase nada."
+MOLINA_LINE_3,"¿Cuándo fue la última vez que usaron hilo dental? Se nota.","When did you last floss? It shows.","Quando foi a última vez que usaram fio dental? Dá pra notar."
+MOLINA_LINE_4,"No toquen nada sin guantes. Ni con guantes.","Don't touch anything without gloves. Not even with gloves.","Não toquem em nada sem luvas. Nem com luvas."
+MOLINA_PRINTER,"¡Siguiente! Pase, pase, abra grande.","Next! Come in, come in, open wide.","Próximo! Entre, entre, abra bem a boca."
+MOLINA_FIX_1,"Bzzzzz… Esto no le va a doler nada.","Bzzzzz… This won't hurt a bit.","Bzzzzz… Isso não vai doer nada."
+MOLINA_FIX_2,"Bzzzzz… Bueno, un poquito.","Bzzzzz… Well, a little.","Bzzzzz… Bom, um pouquinho."
+MOLINA_FIX_3,"Bzzzzz… Escupa, por favor. Ahí no.","Bzzzzz… Spit, please. Not there.","Bzzzzz… Cuspa, por favor. Aí não."
+MOLINA_FIX_DONE,"¡Listo! Nada de caramelos por una semana.","Done! No candy for a week.","Pronto! Nada de balas por uma semana."
+MOLINA_HURT,"¡Cuidado! ¡Estas manos valen oro!","Careful! These hands are worth gold!","Cuidado! Estas mãos valem ouro!"
+MOLINA_DOOR,"¿Una puerta rota? ¡Esto es un consultorio, no un aserradero!","A broken door? This is a dental office, not a sawmill!","Uma porta quebrada? Isto é um consultório, não uma serraria!"
+MOLINA_SAW,"¡Eso no es estéril!","That's not sterile!","Isso não é estéril!"
+MOLINA_NOTHING,"Yo solo arreglo dientes, oficial.","I just fix teeth, officer.","Eu só conserto dentes, policial."
+MOLINA_OFFENDED,"No hablo más. Tengo pacientes. Bueno, voy a tener.","I'm done talking. I have patients. Well, I will.","Não falo mais. Tenho pacientes. Bom, vou ter."
+MOLINA_LAWYER,"¡Llamo a mi abogado! Es paciente mío, me debe una muela.","I'm calling my lawyer! He's my patient, he owes me a molar.","Vou ligar para o meu advogado! Ele é meu paciente, me deve um dente."
+MOLINA_MOLD,"¡Mis moldes! ¡Eran sonrisas únicas!","My molds! Those were one-of-a-kind smiles!","Meus moldes! Eram sorrisos únicos!"
+MOLINA_CHAIR,"¡Bájese de mi sillón! ¡Eso no es estéril!","Get off my chair! That's not sterile!","Desça da minha cadeira! Isso não é estéril!"
+MOLINA_TANK,"¡Mi pecera! ¡Los peces eran lo único que sonreía aquí!","My fish tank! The fish were the only ones smiling here!","Meu aquário! Os peixes eram os únicos que sorriam aqui!"

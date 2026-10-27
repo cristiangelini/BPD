@@ -7,7 +7,10 @@ extends Node3D
 ## rooms with their chairs and gas tanks, the lab with the cabinet of denture molds and the X-ray light box, and Dr.
 ## Molina's office with the storeroom behind it, locked. The fish tank breaks when something hits it hard: a fine,
 ## and the floor around it stays wet (a cop running there slips, like on the jail's wet floor). Each mold that breaks
-## counts. SPOTS are the 12 hiding spots the stories draw from (step 5). Every number here is (propuesta).
+## counts. SPOTS are the 12 hiding spots the stories draw from (step 5). Dr. Molina walks the corridor (step 3): he
+## fills the complaint ("¡Eso no es estéril!") with every mold he sees break and every cop he sees up on one of his
+## chairs, and the next-patient bell on the reception sends him to consulting room 1 with his back to the door.
+## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const CHAIR_MODEL := preload("res://assets/models/dentist_chair.glb")
@@ -17,7 +20,7 @@ const CABINET_MODEL := preload("res://assets/models/mold_cabinet.glb")
 const MOLD_MODEL := preload("res://assets/models/denture_mold.glb")
 const XRAY_MODEL := preload("res://assets/models/xray_lightbox.glb")
 const JAR_MODEL := preload("res://assets/models/candy_jar.glb")
-const BELL_MODEL := preload("res://assets/models/next_bell.glb")
+const MOLINA_SCENE := preload("res://scenes/npc/dentist_molina.tscn")
 const HALF_X := 11.0
 const HALF_Z := 8.0
 const WALL_TOP := 3.2
@@ -64,6 +67,18 @@ const WET_SLIP := 2.0
 const WET_PUSH := 3.0
 const WET_AGAIN := 3.0
 
+## Dr. Molina's round, back and forth along the corridor, looking into every room through its door.
+const MOLINA_ROUTE: Array[Vector3] = [Vector3(-8.25, FLOOR_TOP, 2.0), Vector3(-2.75, FLOOR_TOP, 2.0),
+	Vector3(2.75, FLOOR_TOP, 2.0), Vector3(8.25, FLOOR_TOP, 2.0)]
+## Where he "sees" the next patient: beside chair 1, facing it, his back to the room's door.
+const PATIENT_SPOT := Vector3(-7.7, FLOOR_TOP, -2.3)
+## Seeing a mold break, and a cop up on one of his chairs.
+const SAW_MOLD := 2.0
+const SAW_IN_CHAIR := 10.0
+## Up on a chair: over its seat (from its middle, across and back to front) and higher than this.
+const SEAT := Vector2(0.5, 1.0)
+const SEAT_HEIGHT := 0.5
+
 const OUTSIDE := Color(0.92, 0.95, 0.97)
 const MINT := Color(0.55, 0.82, 0.74)
 const TILE := Color(0.9, 0.92, 0.93)
@@ -98,6 +113,11 @@ var fish_tank: Node3D
 var tank_broken := false
 var broken_goods := 0
 var fines := 0
+var molina: FloorBoss
+var bell: NextPatientBell
+var complaint_bar: ProgressBar
+## Cops Dr. Molina already saw up on a chair (until they get down).
+var _seen_in_chair := {}
 var _build: PlaceBuilder
 ## Cop -> seconds until it can slip on the wet floor again.
 var _slipped := {}
@@ -113,6 +133,7 @@ func _ready() -> void:
 	_build_office()
 	_place_molds()
 	storeroom_door = _door(Vector3(STOREROOM_DOOR_X, FLOOR_TOP, STOREROOM_Z))
+	_place_molina()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("dentist")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -133,6 +154,9 @@ func _physics_process(delta: float) -> void:
 		_slipped[cop] -= delta
 		if _slipped[cop] <= 0.0 or not is_instance_valid(cop):
 			_slipped.erase(cop)
+	# Online the host's doctor minds his chairs; the guests' one only follows.
+	if molina and multiplayer.is_server():
+		_watch_chairs()
 	if not tank_broken:
 		return
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
@@ -155,6 +179,8 @@ func break_fish_tank() -> void:
 	tank_broken = true
 	broken_goods += 1
 	fines += TANK_FINE
+	if molina:
+		molina.saw(fish_tank.global_position + Vector3.UP * 0.6, FloorBoss.SAW_BREAK, "MOLINA_TANK")
 	fish_tank.queue_free()
 	_build.mesh_box(Vector3(WET.get_center().x, FLOOR_TOP + 0.006, WET.get_center().y), Vector3(WET.size.x, 0.004,
 		WET.size.y), WATER)
@@ -190,7 +216,9 @@ func _build_waiting_room() -> void:
 	_wall("x", WAITING_Z, -HALF_X, HALF_X, doors, TILE)
 	_build.open_box(RECEPTION_AT, RECEPTION_SIZE, "-z", WOOD)
 	_model(JAR_MODEL, RECEPTION_AT + Vector3(-0.8, RECEPTION_SIZE.y, 0.1))
-	_model(BELL_MODEL, RECEPTION_AT + Vector3(0.9, RECEPTION_SIZE.y, 0.15))
+	bell = NextPatientBell.new()
+	bell.position = RECEPTION_AT + Vector3(0.9, RECEPTION_SIZE.y, 0.15)
+	add_child(bell)
 	fish_tank = _model(TANK_MODEL, TANK_AT, -PI / 2)
 	var tank_body := StaticBody3D.new()
 	tank_body.position = Vector3(0, 0.65, 0)
@@ -272,9 +300,59 @@ func _place_molds() -> void:
 		mold.position = LAB_TABLE_AT + Vector3(-0.9 + i * 0.36, LAB_TABLE_SIZE.y + 0.045, 0.2)
 		add_child(mold)
 		molds.append(mold)
-		mold.broken.connect(func(_at: Vector3) -> void:
+		mold.broken.connect(func(at: Vector3) -> void:
 			molds.erase(mold)
-			broken_goods += 1)
+			broken_goods += 1
+			if molina:
+				molina.saw(at, SAW_MOLD, "MOLINA_MOLD"))
+
+
+## Dr. Molina on his round, his patient at the bell, what he notices and the complaint bar.
+func _place_molina() -> void:
+	molina = MOLINA_SCENE.instantiate()
+	molina.route = MOLINA_ROUTE
+	molina.printer_spot = PATIENT_SPOT
+	molina.printer = bell
+	add_child(molina)
+	molina.fix_facing = to_global(CHAIRS[0])
+	molina.start_at(0)
+	storeroom_door.broken.connect(molina.door_broken)
+	molina.lawyer_called.connect(%CaseFailed.show)
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	molina.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Which chair `at` (this scene's space) is up on, or -1.
+func chair_under(at: Vector3) -> int:
+	for i in CHAIRS.size():
+		var from := at - CHAIRS[i]
+		if absf(from.x) < SEAT.x and from.z > -SEAT.y and from.z < SEAT.y * 0.4 and from.y > SEAT_HEIGHT:
+			return i
+	return -1
+
+
+## Every cop up on a chair that the doctor sees, once until they get down.
+func _watch_chairs() -> void:
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		if chair_under(to_local(cop.global_position)) < 0:
+			_seen_in_chair.erase(cop)
+		elif not _seen_in_chair.has(cop) and molina.saw(cop.global_position + Vector3.UP * 0.8, SAW_IN_CHAIR,
+				"MOLINA_CHAIR"):
+			_seen_in_chair[cop] = true
 
 
 ## A locked door in a wall along x, its middle at `at`.
