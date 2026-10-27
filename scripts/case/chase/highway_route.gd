@@ -30,12 +30,12 @@ static func nearest_ramp(start: Vector2i) -> String:
 static func ramp_corner(side: String) -> Vector2i:
 	match side:
 		"n":
-			return Vector2i(HighwayLayout.RAMP_STREET_X, 0)
+			return Vector2i(HighwayLayout.RAMP_STREET_X, CityLayout.NORTH)
 		"s":
-			return Vector2i(HighwayLayout.RAMP_STREET_X, CityLayout.ROWS)
+			return Vector2i(HighwayLayout.RAMP_STREET_X, CityLayout.SOUTH)
 		"e":
-			return Vector2i(CityLayout.COLUMNS, HighwayLayout.RAMP_STREET_Z)
-	return Vector2i(0, HighwayLayout.RAMP_STREET_Z)
+			return Vector2i(CityLayout.EAST, HighwayLayout.RAMP_STREET_Z)
+	return Vector2i(CityLayout.WEST, HighwayLayout.RAMP_STREET_Z)
 
 
 ## The way clockwise runs on each side of the ring.
