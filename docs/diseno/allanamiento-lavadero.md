@@ -99,6 +99,22 @@ extras suman 500.
 1. El lavadero como lugar: la cuadra (8, 4) con el galpón, el túnel, la fila de autos, la máquina de fichas, la zona de
    secado, las aspiradoras, el depósito, el muñeco inflable, la oficina con llave, lo frágil y los escondites. Modelos
    nuevos con modelgen.
+   Hecho así:
+   - **Lugar:** la clase `CarWash`, en `--place=carwash` y en el botón del menú, en la cuadra (8, 4). Galpón de
+     40 × 22 m con el frente abierto en el medio (12 m).
+   - **El túnel:** 16 m a lo largo, con paredes, techo y la cinta (todavía quieta). Adentro, el arco de chorros, dos
+     cepillos a los costados y uno arriba, la cortina de espuma y el soplador.
+   - **La fila:** 2 autos de clientes mirando al túnel; el primero tiene el baúl abierto (una caja donde entra algo).
+   - **Adelante:** la máquina de fichas con la caja (adentro, la llave de la oficina), 2 aspiradoras, el estante de
+     ceras y el muñeco inflable, que quedó adentro, junto a la entrada.
+   - **La zona de secado:** la soga con toallas, el canasto de trapos y la caja de herramientas.
+   - **Atrás:** el depósito (tanque de espuma, caldera, 4 bidones de champú y una pila de cubiertas) y la oficina
+     cerrada con llave.
+   - **Lo frágil:** cada parabrisas, 30 (cuenta también lo que pega en el capot); el estante de ceras, 10 por cada uno
+     de sus 6 frascos (60 de una vez).
+   - **Escondites:** 12, 6 para cosas pesadas (baúl, tanque de espuma, detrás de la caldera, entre las cubiertas,
+     oficina y detrás de los bidones de champú, en lugar de debajo de la cinta). La máquina de fichas guarda arriba.
+   - **Capturas:** `/mnt/project-files/lavadero/paso1-*.png` y `modelos.png`.
 2. El túnel: la cinta que arrastra, los chorros, los cepillos que giran y empujan, la cortina de espuma y el soplador;
    el botón que lo prende 30 s.
 3. Don Chorro: la ronda lustrando, la denuncia, "¡eso no se lava así!" y el lavado premium.
