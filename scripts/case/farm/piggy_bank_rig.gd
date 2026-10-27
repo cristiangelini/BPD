@@ -96,8 +96,10 @@ func dig() -> RigidBody3D:
 	thing.global_position = pig.global_position + pig.global_basis.z * 0.7 + Vector3.UP * 0.3
 	thing.collision_layer = thing.get_meta("buried_layer")
 	thing.visible = true
-	thing.freeze = false
-	thing.linear_velocity = Vector3.UP * 2.0
+	# On a guest PropSync moves its frozen copy.
+	if multiplayer.is_server():
+		thing.freeze = false
+		thing.linear_velocity = Vector3.UP * 2.0
 	farm.raid.float_label(tr("FARM_PIG_DUG"), pig.global_position + Vector3.UP * 1.2, Color(0.75, 0.55, 0.35))
 	dug_up.emit(thing)
 	return thing

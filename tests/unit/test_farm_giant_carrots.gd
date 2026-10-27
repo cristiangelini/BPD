@@ -56,7 +56,8 @@ func test_two_cops_pull_it_out_with_the_lab_label() -> void:
 	rig.carrot.use(farm.get_node("Cop"))
 	rig.carrot.use(other)
 	assert_true(farm.raid.clues_found.has(tr("CLUE_GIANT_CARROT")))
-	assert_not_null(rig.loose, "it lies beside its hole")
+	assert_true(rig.loose.visible, "it lies beside its hole")
+	assert_eq(rig.loose.collision_layer, 4, "a cop can grab it")
 	assert_eq(rig.loose.mass, GiantCarrotsRig.MASS, "heavy: a carry for two")
 	assert_true(rig.net_state())
 	await wait_physics_frames(30)
@@ -70,6 +71,7 @@ func test_a_guest_pulls_it_out_when_the_host_did() -> void:
 	await wait_physics_frames(2)
 	var rig := farm.rig as GiantCarrotsRig
 	assert_false(rig.net_state())
+	assert_false(rig.loose.visible, "made with the farm, hidden until it's pulled")
 	rig.apply_net_state(true)
-	assert_not_null(rig.loose)
+	assert_true(rig.loose.visible)
 	assert_eq(rig.carrot.prompt_key(farm.get_node("Cop")), "")
