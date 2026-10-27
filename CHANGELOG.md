@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Birthday party raid, step 5: the double clown story: the second costume with a house plan, the second red nose and the photo of the two clowns (new placeholder models) hidden with the seed; Chispita's horn honks in the restroom where he isn't (a clue for a cop who hears it), and every 60 s the other Chispita comes back from the restroom with much smaller shoes.
 - Birthday party raid, step 5: the gifts that come back story: the resale notebook, the gift with the toy shop's tag and the roll of wrapping paper (new placeholder models) hidden with the seed; a gift from the table beeps at the front door (a clue), and Chispita slips a gift from the table into his case every 30 s.
 - Birthday party raid, step 5: the bouncy castle of watches story: the 8 kg bag of watches always inside the castle's floor, the dodgy blower and the watch shop's invoice (new placeholder models) hidden with the seed; bouncing goes "clinc, clinc" (a clue), and the cake knife landing on the castle lets the air out for 10 s, spilling the bag, until the kids blow it up again.
 - Birthday party raid, step 5: the endless birthday story: the album of the 52 parties, the wholesale box of "7" candles and the kid actors' contracts (new placeholder models) hidden with the seed; Tomasito says he turns seven again (a clue), the guests ask for their pay when talked to, and they hop in time while they sing.

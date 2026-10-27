@@ -98,6 +98,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_TAGGED_GIFT", "OBJ_EXTRA_WRAPPING_ROLL"],
 		"rig": preload("res://scripts/case/birthday/returning_gifts_rig.gd"),
 	},
+	"double_clown": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_DOUBLE_CLOWN_B", "BRIEF_DOUBLE_CLOWN_C", "BRIEF_DOUBLE_CLOWN_D"],
+		"find": "OBJ_FIND_CLOWN_COSTUME",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/clown_costume.tscn"), preload("res://scenes/props/clown_nose.tscn"),
+			preload("res://scenes/props/twin_clowns_photo.tscn")],
+		"half_heights": [0.12, 0.04, 0.01],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_CLOWN_NOSE", "OBJ_EXTRA_TWIN_PHOTO"],
+		"rig": preload("res://scripts/case/birthday/double_clown_rig.gd"),
+	},
 }
 ## Where the suspicions' clue notes may lie, on the floor of the hall.
 const NOTE_PLACES: Array[Vector3] = [

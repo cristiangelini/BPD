@@ -5724,3 +5724,12 @@ OBJ_EXTRA_WRAPPING_ROLL,Extra: el rollo de papel de regalo de la juguetería,Ext
 BIRTHDAY_GIFT_BEEP,"¡Bip, bip, bip!","Beep, beep, beep!","Bip, bip, bip!"
 CLUE_RETURNING_GIFTS,"Un regalo de la mesa pita en la puerta, como en una tienda: todavía tiene la alarma de la juguetería.","A gift from the table beeps at the door, like in a shop: it still has the toy shop's alarm tag.","Um presente da mesa apita na porta, como numa loja: ainda tem o alarme da loja de brinquedos."
 CHISPITA_GIFT_TAKE,"Este regalo lo guardo yo, para que no se rompa.","I'll keep this gift safe, so it doesn't break.","Este presente eu guardo, para não quebrar."
+BRIEF_DOUBLE_CLOWN_B,"Chispita son dos: mientras uno anima la fiesta, el otro anota qué casas quedan vacías. Se turnan en el baño.","Chispita is two people: while one entertains the party, the other notes which houses are left empty. They swap in the restroom.","O Chispita são dois: enquanto um anima a festa, o outro anota quais casas ficam vazias. Eles trocam no banheiro."
+BRIEF_DOUBLE_CLOWN_C,"Traigan en el baúl del patrullero el segundo disfraz, con el plano de la casa en el bolsillo. Pesa 3 kilos.","Bring the second costume, with the house plan in its pocket, in the patrol car's trunk. It weighs 3 kilos.","Tragam no porta-malas da viatura a segunda fantasia, com a planta da casa no bolso. Pesa 3 quilos."
+BRIEF_DOUBLE_CLOWN_D,"Si encuentran la segunda nariz roja o la foto de los dos payasos juntos, mejor: todo suma.","If you find the second red nose or the photo of the two clowns together, even better: it all counts.","Se acharem o segundo nariz vermelho ou a foto dos dois palhaços juntos, melhor: tudo conta."
+OBJ_FIND_CLOWN_COSTUME,Llevarse el segundo disfraz de Chispita,Take Chispita's second costume,Levar a segunda fantasia do Chispita
+OBJ_EXTRA_CLOWN_NOSE,Extra: la segunda nariz roja,Extra: the second red nose,Extra: o segundo nariz vermelho
+OBJ_EXTRA_TWIN_PHOTO,Extra: la foto de los dos payasos,Extra: the photo of the two clowns,Extra: a foto dos dois palhaços
+BIRTHDAY_HONK,"¡Mec, mec!","Honk, honk!","Fom, fom!"
+CLUE_DOUBLE_CLOWN,"La bocina de Chispita sonó en el baño, y Chispita estaba en otro lado.","Chispita's horn honked in the restroom, and Chispita was somewhere else.","A buzina do Chispita tocou no banheiro, e o Chispita estava em outro lugar."
+CHISPITA_BACK,"¡Volví del baño! ¿Me extrañaron?","I'm back from the restroom! Did you miss me?","Voltei do banheiro! Sentiram minha falta?"

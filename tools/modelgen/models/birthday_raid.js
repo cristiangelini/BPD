@@ -216,6 +216,36 @@ export const models = {
 		b.add('ends', C('wrapping_tube', 0xc89a5a), new THREE.CylinderGeometry(0.02, 0.02, 0.72, 8), { pos: V(0, 0.05, 0), rot: [0, 0, Math.PI / 2] });
 		return b.build();
 	},
+	// Chispita's second costume (el payaso doble): the yellow suit with red hoops folded in a pile, a green shoe on top,
+	// and a folded house plan sticking out of its pocket.
+	clown_costume() {
+		const b = new Builder('clown_costume');
+		const yellow = C('costume_yellow', 0xf6d23a), red = C('costume_red', 0xe0262e);
+		b.add('suit', yellow, new THREE.BoxGeometry(0.5, 0.16, 0.36), { pos: V(0, 0.08, 0) });
+		for (const x of [-0.15, 0, 0.15]) b.add('hoops', red, new THREE.BoxGeometry(0.04, 0.162, 0.362), { pos: V(x, 0.08, 0) });
+		b.add('shoe', C('costume_shoe', 0x3ac84a), ellipsoid(0.08, 0.05, 0.17, 8, 5), { pos: V(0.05, 0.2, -0.02), rot: [0, 0.4, 0] });
+		b.add('plan', C('costume_plan', 0x7ab8f0), new THREE.BoxGeometry(0.12, 0.004, 0.16), { pos: V(-0.2, 0.17, 0.12), rot: [0, -0.3, 0.2] });
+		b.add('plan_lines', white, new THREE.BoxGeometry(0.08, 0.002, 0.004), { pos: V(-0.2, 0.183, 0.1), rot: [0, -0.3, 0.2] });
+		return b.build();
+	},
+	// The second red nose: a shiny red foam ball.
+	clown_nose() {
+		const b = new Builder('clown_nose');
+		b.add('nose', C('second_nose', 0xe0262e, { roughness: 0.3 }), ellipsoid(0.04, 0.04, 0.04, 10, 7), { pos: V(0, 0.04, 0) });
+		return b.build();
+	},
+	// The photo of the two clowns: a small frame with two identical clown faces side by side.
+	twin_clowns_photo() {
+		const b = new Builder('twin_clowns_photo');
+		b.add('frame', C('twin_frame', 0x8a6a48), new THREE.BoxGeometry(0.2, 0.01, 0.15), { pos: V(0, 0.005, 0) });
+		b.add('picture', C('twin_picture', 0x7ad0ff), new THREE.BoxGeometry(0.17, 0.002, 0.12), { pos: V(0, 0.011, 0) });
+		for (const x of [-0.045, 0.045]) {
+			b.add('faces', white, new THREE.CylinderGeometry(0.03, 0.03, 0.002, 10), { pos: V(x, 0.013, 0.01) });
+			b.add('noses', C('twin_nose', 0xe0262e), new THREE.CylinderGeometry(0.008, 0.008, 0.003, 8), { pos: V(x, 0.015, 0.012) });
+			b.add('wigs', C('twin_wig', 0xf07a1a), new THREE.CylinderGeometry(0.035, 0.035, 0.0015, 10, 1, false, 0, Math.PI), { pos: V(x, 0.0125, -0.005), rot: [0, Math.PI / 2, 0] });
+		}
+		return b.build();
+	},
 };
 
 export const views = {
@@ -248,6 +278,11 @@ export const views = {
 		items: [{ name: 'resale_notebook', pos: [-0.5, 0, 0.1], rotY: 0.2 }, { name: 'tagged_gift', pos: [0.05, 0, -0.05], rotY: -0.3 },
 			{ name: 'wrapping_roll', pos: [0.2, 0, 0.4], rotY: 0.3 }],
 		cam: { pos: [0.0, 0.8, 1.5], target: [0.0, 0.12, 0], fov: 40 },
+	},
+	birthday_double: {
+		items: [{ name: 'clown_costume', pos: [-0.3, 0, 0], rotY: 0.2 }, { name: 'clown_nose', pos: [0.2, 0, 0.15] },
+			{ name: 'twin_clowns_photo', pos: [0.35, 0, -0.1], rotY: -0.3 }],
+		cam: { pos: [0.0, 0.7, 1.2], target: [0.0, 0.08, 0], fov: 40 },
 	},
 	bouncy_castle: {
 		items: [{ name: 'bouncy_castle', pos: [0, 0, 0], rotY: 0.5 }],
