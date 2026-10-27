@@ -163,6 +163,11 @@ suman 500.
    - **Qué cambia:** a los 12 m de cada vuelta se le cae un frasco de perfume al hielo, que se puede agarrar; como
      mucho 6 en todo el allanamiento.
    - **Capturas:** `pista/paso6a-*.png`.
+   - **El partido arreglado:** el control remoto del marcador (0,3 kg, 1000), la libreta de apuestas (0,2 kg, 300) y el
+     sobre con plata (0,5 kg, 200), cada uno en un escondite.
+   - **La pista propia y qué cambia:** el marcador sobre el hielo suma un gol solo cada 20 s a uno de los dos equipos (y
+     no juega nadie). El primer gol que ve un policía (a menos de 18 m del marcador) va a la planilla.
+   - **Capturas:** `pista/paso6b-*.png`.
 7. La pista en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 8. El online.
 

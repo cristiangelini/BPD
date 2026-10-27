@@ -216,12 +216,42 @@ export function buildRinkFunnel() {
 	return b.build();
 }
 
+// The fixed match's scoreboard remote, 0.07 x 0.03 x 0.2 m: a black remote with an antenna and two big buttons, red for
+// the home team and blue for the visitors.
+export function buildRinkScoreRemote() {
+	const b = new Builder('rink_score_remote');
+	b.add('body', mat('remote_black', 0x202024), new THREE.BoxGeometry(0.07, 0.03, 0.2), { pos: V(0, 0.015, 0) });
+	b.add('antenna', mat('remote_steel', 0xa8aeb6, { metalness: 0.7 }), new THREE.CylinderGeometry(0.004, 0.004, 0.12, 6), { pos: V(0.025, 0.03, -0.14), rot: [-1.2, 0, 0] });
+	b.add('home', mat('remote_red', 0xe03a2a), new THREE.CylinderGeometry(0.018, 0.018, 0.012, 10), { pos: V(-0.017, 0.035, 0.03) });
+	b.add('away', mat('remote_blue', 0x2a6ae0), new THREE.CylinderGeometry(0.018, 0.018, 0.012, 10), { pos: V(0.017, 0.035, 0.03) });
+	b.add('screen', mat('remote_screen', 0x9fe0a0, { emissive: 0x206020 }), new THREE.BoxGeometry(0.05, 0.002, 0.04), { pos: V(0, 0.031, -0.04) });
+	return b.build();
+}
+
+// The betting notebook, 0.15 x 0.03 x 0.21 m: a green notebook with an elastic band and a pencil.
+export function buildRinkBetNotebook() {
+	const b = new Builder('rink_bet_notebook');
+	b.add('cover', mat('bet_cover', 0x2f7a3c), new THREE.BoxGeometry(0.15, 0.03, 0.21), { pos: V(0, 0.015, 0) });
+	b.add('band', mat('bet_band', 0x18181c), new THREE.BoxGeometry(0.152, 0.032, 0.012), { pos: V(0, 0.015, 0.07) });
+	b.add('pencil', mat('bet_pencil', 0xf0c030), new THREE.CylinderGeometry(0.004, 0.004, 0.17, 6), { pos: V(0.05, 0.034, 0), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
+// The envelope with money, 0.22 x 0.03 x 0.12 m: a fat brown envelope with green bills peeking out.
+export function buildRinkMoneyEnvelope() {
+	const b = new Builder('rink_money_envelope');
+	b.add('envelope', mat('envelope_brown', 0xc8a060), new THREE.BoxGeometry(0.22, 0.03, 0.12), { pos: V(0, 0.015, 0) });
+	b.add('bills', mat('bills_green', 0x6ab04c), new THREE.BoxGeometry(0.16, 0.02, 0.06), { pos: V(0.05, 0.016, 0), rot: [0, 0.15, 0] });
+	return b.build();
+}
+
 export const models = {
 	ice_resurfacer: buildIceResurfacer, skating_penguin: buildSkatingPenguin, cocoa_machine: buildCocoaMachine,
 	dj_booth: buildDjBooth, rink_scoreboard: buildRinkScoreboard, npc_dona_pirueta: buildDonaPirueta,
 	npc_copito: buildCopito, rink_ice_block: buildRinkIceBlock, rink_jeweler_list: buildRinkJewelerList,
 	ice_chisel: buildIceChisel, rink_perfume_box: buildRinkPerfumeBox, perfume_bottle: buildPerfumeBottle,
-	rink_funnel: buildRinkFunnel,
+	rink_funnel: buildRinkFunnel, rink_score_remote: buildRinkScoreRemote, rink_bet_notebook: buildRinkBetNotebook,
+	rink_money_envelope: buildRinkMoneyEnvelope,
 };
 
 export const views = {
@@ -233,6 +263,7 @@ export const views = {
 			{ name: 'npc_copito', pos: [2.4, 0, 1.4], rotY: -0.5 }, { name: 'rink_ice_block', pos: [-1.2, 0, 2.2] },
 			{ name: 'rink_jeweler_list', pos: [-0.3, 0, 2.6] }, { name: 'ice_chisel', pos: [0.2, 0, 2.6] },
 			{ name: 'rink_perfume_box', pos: [0.8, 0, 2.6] }, { name: 'perfume_bottle', pos: [1.3, 0, 2.8] }, { name: 'rink_funnel', pos: [1.6, 0, 2.8] },
+			{ name: 'rink_score_remote', pos: [2.0, 0, 2.8] }, { name: 'rink_bet_notebook', pos: [2.3, 0, 2.8] }, { name: 'rink_money_envelope', pos: [2.6, 0, 2.8] },
 		],
 		cam: { pos: [0, 2.2, 6.5], target: [0, 1.0, 0], fov: 45 },
 	},

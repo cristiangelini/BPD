@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Ice rink raid, step 6b: the fixed match story: the scoreboard remote, the betting notebook and the envelope with money hidden in the rink; the scoreboard over the ice adds a goal on its own every 20 s, and the first one a cop sees is the clue.
 - Ice rink raid, step 6a: the smuggling resurfacer story: the box of stolen perfumes (6 kg) hidden in a big spot, the client list and the funnel; while the resurfacer runs it leaves a pink trail on the ice (the clue) and drops a bottle of perfume once every lap, up to 6.
 - Ice rink raid, step 5: the rink is a raid case like the fun fair (the comisario's tip, 3 suspicions among its 6 stories, Doña Pirueta's slips and lawyer, Copito's clue and the interrogation) with its first story, the ice with a surprise: a 30 kg block of ice with stolen jewels frozen inside, which takes two cops, glitters at a cop nearby (the clue) and leaves a trail of puddles to the office; the list of jewelers and the ice chisel are hidden too.
 - Ice rink raid, step 4: Copito, the resurfacer boy, shivers by the east gate and only talks to a cop who brings him a full hot chocolate (once per cop); the bar's machine pours up to 3 cups, and a cup tilted too much or knocked hard spills and is just an empty cup.
