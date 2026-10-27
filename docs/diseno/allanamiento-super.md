@@ -154,6 +154,20 @@ suman entre 400 y 600.
      - **E sobre él:** solo te pide latas.
      - **Capturas:** `allanamiento-super/paso4-*.png`.
 5. El caso (RaidCase) con la primera historia: las fechas cambiadas.
+   - **Cómo quedó (propuesta):** el súper es un allanamiento como el gimnasio: la pista del comisario, 3 sospechas en
+     la planilla entre las 6 historias, las notas de pista en el piso, la multa de lo roto y la queja de Don Ofertón
+     en la planilla, y el abogado a los 100 (se cae el caso).
+     - **Don Ofertón con R** suelta dos de los escondites («¡Atención, señores clientes: no hay nada escondido en el
+       depósito!… Digo, ¡oferta de fideos!») y después se ofende.
+     - **Lalo** cuenta, a la tercera lata, dónde vio al jefe esconder una de las cosas.
+     - **Las fechas cambiadas:** la pistola etiquetadora (1 kg, 1000) es la evidencia principal, escondida con la caja
+       de etiquetas viejas (2 kg, 300) y el yogur de hace 30 años (0,5 kg, 200).
+       - **La pista:** en un estante del pasillo 3 hay una lata con la etiqueta despegada; E la mira: abajo dice «vence
+         en 1994».
+       - **Lo que cambia:** en el pasillo 2 hay un bocado para probar (E), y tiene «gusto a otro siglo».
+     - Si lo detienen, Don Ofertón va al interrogatorio con su propio modelo. La huida en auto queda para el paso 7,
+       con el sorteo.
+     - **Capturas:** `allanamiento-super/paso5-*.png`.
 6. Las otras 5 historias, una por PR.
 7. "Jugar" suma el súper al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online (Don Ofertón, Lalo, los clientes, los changuitos y lo frágil en todas las PC).
