@@ -99,6 +99,10 @@ entre 400 y 600. El bloque de hielo es la cosa más pesada (8 kg): conviene llev
    frasco del ingrediente secreto y la foto de la otra heladería; el cartel "Igualito al de Enfrente" sobre la vitrina
    (con E es la pista) y cada 40 s ofrece el sabor nuevo. Si se escapa, huye en auto. Capturas `heladeria/paso5-*.png`.
 6. Las otras 5 historias, una por PR.
+   **Hecho (paso 6a):** el contrabando en el hielo (`FrozenSmugglingRig`): el bloque de hielo con relojes (8 kg,
+   1000), la lista de entregas y el sello falso; en la cámara de frío el termómetro marca -40 °C (con E es la pista) y
+   cada 50 s entra un cliente que no quiere helado y pregunta "¿llegó lo frío?" (`IceVisitor`, que sirve para las
+   otras historias). Capturas `heladeria/paso6a-*.png`.
 7. "Jugar" suma la heladería al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online (doña Nieve, Lucho, las tapas, los charcos y lo frágil en todas las PC).
 

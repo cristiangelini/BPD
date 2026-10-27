@@ -14,7 +14,8 @@ func setup(place: IceCreamShop) -> void:
 
 ## A small sign standing at `at`, facing `turn` around Y, with `title` on it and a clue a cop reads with E (`text`, on
 ## the checklist the first time).
-func sign_spot(at: Vector3, turn: float, title: String, text: String, size := Vector3(0.5, 0.3, 0.06)) -> ClueSpot:
+func sign_spot(at: Vector3, turn: float, title: String, text: String, size := Vector3(0.5, 0.3, 0.06),
+		font := 24) -> ClueSpot:
 	var spot := ClueSpot.new()
 	spot.size = size
 	spot.text = text
@@ -32,7 +33,7 @@ func sign_spot(at: Vector3, turn: float, title: String, text: String, size := Ve
 	spot.add_child(face)
 	var label := Label3D.new()
 	label.text = title
-	label.font_size = 24
+	label.font_size = font
 	label.pixel_size = 0.0025
 	label.modulate = Color(0.75, 0.15, 0.3)
 	label.outline_size = 0
@@ -41,3 +42,12 @@ func sign_spot(at: Vector3, turn: float, title: String, text: String, size := Ve
 	label.position = Vector3(0, 0, 0.015)
 	spot.add_child(label)
 	return spot
+
+
+## Someone (`model`) who comes in through the front door now and then, standing just inside it facing the counter.
+func visitor(model: PackedScene) -> IceVisitor:
+	var who := IceVisitor.new(model)
+	who.position = Vector3(IceCreamShop.ENTRANCE_X, IceCreamShop.FLOOR_TOP, IceCreamShop.FRONT_WALL_Z - 0.8)
+	who.rotation.y = PI
+	shop.add_child(who)
+	return who
