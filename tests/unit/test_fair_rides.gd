@@ -9,6 +9,8 @@ const SCENE := preload("res://scenes/levels/fair.tscn")
 func _fair() -> Fair:
 	var fair: Fair = SCENE.instantiate()
 	fair.case_seed = 5
+	# A story that leaves the carousel at its speed (the bronze horse slows it down).
+	fair.story_id = "stuffed_prizes"
 	fair.get_node("Cop").input_enabled = false
 	fair.get_node("Cop/Grabber").input_enabled = false
 	add_child_autofree(fair)

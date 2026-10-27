@@ -40,8 +40,14 @@ export function buildCarousel() {
 // One of the carousel's horses, 1.1 m long, on its gold pole up to the roof (2.0 m up from its feet); faces +Z.
 export function buildFairHorse() {
 	const b = new Builder('fair_horse');
+	b.add('pole', mat('fair_gold', GOLD), new THREE.CylinderGeometry(0.035, 0.035, 3.4, 8), { pos: V(0, 1.7, 0.1) });
+	horseBody(b);
+	return b.build();
+}
+
+// A carousel horse's body, legs, saddle, neck, head, mane and tail, standing on the floor (its hooves at 0.55 m).
+function horseBody(b) {
 	const white = mat('fair_white', WHITE), gold = mat('fair_gold', GOLD), red = mat('fair_red', RED), mane = mat('horse_mane', 0x7a4a2a);
-	b.add('pole', gold, new THREE.CylinderGeometry(0.035, 0.035, 3.4, 8), { pos: V(0, 1.7, 0.1) });
 	box(b, 'body', white, 0.36, 0.36, 0.9, 0, 0.95, 0);
 	for (const [x, z, r] of [[-0.11, 0.36, -0.9], [0.11, 0.36, -0.6], [-0.11, -0.36, 0.9], [0.11, -0.36, 0.6]]) {
 		box(b, 'legs', white, 0.08, 0.4, 0.08, x, 0.75, z + Math.sign(z) * 0.08, [r, 0, 0]);
@@ -53,7 +59,6 @@ export function buildFairHorse() {
 	box(b, 'head', white, 0.24, 0.24, 0.42, 0, 1.52, 0.6, [0.3, 0, 0]);
 	box(b, 'mane', mane, 0.08, 0.55, 0.12, 0, 1.4, 0.32, [0.35, 0, 0]);
 	box(b, 'tail', mane, 0.06, 0.4, 0.06, 0, 0.88, -0.52, [-0.4, 0, 0]);
-	return b.build();
 }
 
 // The Ferris wheel's stand: two A-frames 1.8 m apart (along Z) holding the axle at 6.6 m, on a platform with steps.
@@ -503,6 +508,38 @@ export function buildGhostSheet() {
 	return b.build();
 }
 
+// The bronze horse's evidence: the stolen statue painted like a carousel horse, without a pole, with a few chips where
+// the bronze shows through.
+export function buildBronzeHorse() {
+	const b = new Builder('fair_bronze_horse');
+	horseBody(b);
+	const bronze = mat('bronze', 0x9a6a2a, { metalness: 0.7, roughness: 0.35 });
+	for (const [x, y, z] of [[0.185, 0.98, 0.15], [-0.185, 0.9, -0.2], [0.185, 1.0, -0.3]]) box(b, 'chips', bronze, 0.01, 0.07, 0.1, x, y, z);
+	return b.build();
+}
+
+// Two cans of carousel paint, white and gold, with drips down their sides.
+export function buildPaintCans() {
+	const b = new Builder('fair_paint_cans');
+	for (const [x, c, n] of [[-0.08, WHITE, 'fair_white'], [0.08, GOLD, 'fair_gold']]) {
+		b.add('cans', mat('needle_steel', 0xc8ccd2, { metalness: 0.7, roughness: 0.3 }), new THREE.CylinderGeometry(0.07, 0.07, 0.16, 12), { pos: V(x, 0.08, 0) });
+		b.add('paint', mat(n, c), new THREE.CylinderGeometry(0.071, 0.071, 0.03, 12), { pos: V(x, 0.15, 0) });
+		box(b, 'drips', mat(n, c), 0.02, 0.06, 0.005, x, 0.12, 0.07);
+	}
+	return b.build();
+}
+
+// The newspaper clipping: "Roban el caballo de bronce de la plaza", a grey photo of the horse on its plinth.
+export function buildHorsePhoto() {
+	const b = new Builder('fair_horse_photo');
+	b.add('paper', mat('news_paper', 0xe8e2d0), new THREE.BoxGeometry(0.2, 0.004, 0.26), { pos: V(0, 0.002, 0) });
+	box(b, 'headline', mat('list_ink', 0x2a2a30), 0.16, 0.002, 0.02, 0, 0.005, -0.1);
+	box(b, 'photo', mat('news_photo', 0x6a6a6a), 0.12, 0.002, 0.1, 0, 0.005, 0.0);
+	box(b, 'horse', mat('bronze', 0x9a6a2a, { metalness: 0.7, roughness: 0.35 }), 0.06, 0.003, 0.03, 0, 0.007, 0.0);
+	for (let i = 0; i < 3; i++) box(b, 'lines', mat('list_ink', 0x2a2a30), 0.16, 0.002, 0.006, 0, 0.005, 0.07 + i * 0.015);
+	return b.build();
+}
+
 export const models = {
 	fair_carousel: buildCarousel, fair_horse: buildFairHorse, ferris_stand: buildFerrisStand, ferris_wheel: buildFerrisWheel,
 	ferris_cabin: buildFerrisCabin, bumper_car: buildBumperCar, fair_arch: buildFairArch, strength_tester: buildStrengthTester,
@@ -514,7 +551,8 @@ export const models = {
 	fair_ticket_printer: buildTicketPrinter, fair_ticket_rolls: buildTicketRolls, fair_valid_stamp: buildValidStamp,
 	fair_safety_certificate: buildSafetyCertificate, fair_nut: buildFairNut, fair_nut_bag: buildNutBag,
 	fair_inspector_stamp: buildInspectorStamp, fair_phone_box: buildPhoneBox, fair_price_list: buildPriceList,
-	fair_ghost_sheet: buildGhostSheet,
+	fair_ghost_sheet: buildGhostSheet, fair_bronze_horse: buildBronzeHorse, fair_paint_cans: buildPaintCans,
+	fair_horse_photo: buildHorsePhoto,
 };
 
 export const views = {
@@ -561,6 +599,11 @@ export const views = {
 		items: [{ name: 'fair_phone_box', pos: [-0.3, 0, 0], rotY: 0.3 }, { name: 'fair_price_list', pos: [0.35, 0, 0.3], rotY: -0.2 },
 			{ name: 'fair_ghost_sheet', pos: [0.35, 0, -0.2] }],
 		cam: { pos: [0.1, 1.0, 1.7], target: [0, 0.15, 0], fov: 40 },
+	},
+	fair_bronze_horse: {
+		items: [{ name: 'fair_bronze_horse', pos: [-0.4, -0.55, 0], rotY: 1.2 }, { name: 'fair_paint_cans', pos: [0.45, 0, 0.3] },
+			{ name: 'fair_horse_photo', pos: [0.45, 0, -0.2], rotY: 0.3 }],
+		cam: { pos: [0.3, 1.2, 2.6], target: [0, 0.4, 0], fov: 45 },
 	},
 	fair_fake_tickets: {
 		items: [{ name: 'fair_ticket_printer', pos: [-0.3, 0, 0], rotY: 0.3 }, { name: 'fair_ticket_rolls', pos: [0.35, 0, 0.25], rotY: -0.3 },
