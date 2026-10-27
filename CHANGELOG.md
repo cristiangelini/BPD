@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Ice cream raid, step 4: Lucho the delivery boy rides up to the door every 45 s and waits 12 s; the cone dispenser on the till's desk puts a cone in empty hands, and a cop who gives Lucho one hears what he saw, once per cop.
 - Ice cream raid, step 3: doña Nieve minds the counter and goes to the cold room, opening and locking its door on her way, filling the complaint with what she sees melt or break and with the fallen penguin; E on the soft-serve machine jams it, spills a puddle and keeps her 25 s with her back to everything (twice; the third time she notices). FloorBoss gains the first pause, the printer path and scold() from the cinema and radio stacks.
 - Ice cream raid, step 2: what melts: E opens and shuts each freezer's lid, a lid left open 15 s melts that freezer (fine of 10) and the cold room's door open 20 s melts it all (fine of 30); each leaves a puddle where a walking cop slides on and a running one falls.
 - Ice cream raid, step 1: the "Heladería Pingüino Derretido" on block (5, 5): the salon with the counter of 12 flavors, the till and two freezers, the kitchen with the soft-serve machine and two more freezers, the locked cold room, the office, the bathroom and the fenced yard with the ice cream truck; 12 hiding spots; the counter's glass case cracks (fine of 30) and the penguin by the door falls over. "Heladería (allanamiento, prueba)" in the menu.

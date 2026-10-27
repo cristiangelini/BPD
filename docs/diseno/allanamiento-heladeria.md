@@ -89,6 +89,9 @@ entre 400 y 600. El bloque de hielo es la cosa más pesada (8 kg): conviene llev
    la cocina, la primera vez. Ve derretirse los freezers (+5) y la cámara (+10), la vitrina rota (+10) y oye caerse el
    pingüino (+10). Capturas `heladeria/paso3-*.png`.
 4. Lucho y el cono.
+   **Hecho (paso 4):** `Lucho` (scripts/npc/lucho.gd) llega en la bici de reparto por la vereda, espera 12 s junto a
+   la puerta y se va; el dispensador de conos (`ConeDispenser`) está en la mesa de la caja y pone un `IceCone` en las
+   manos vacías. El caso le da `clue` y `clue_speech` en el paso 5. Capturas `heladeria/paso4-*.png`.
 5. El caso (RaidCase) con la primera historia: los sabores robados.
 6. Las otras 5 historias, una por PR.
 7. "Jugar" suma la heladería al sorteo de allanamientos (`PlaceDraw.ORDER`).

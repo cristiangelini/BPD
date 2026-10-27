@@ -5642,3 +5642,11 @@ NIEVE_COLD_ROOM,"¡La cámara! ¡Se me derritió todo!","The cold room! It's all
 NIEVE_CASE,"¡Mi vitrina! ¡Era de vidrio importado!","My glass case! That was fancy glass!","Minha vitrine! Era vidro fino!"
 NIEVE_PENGUIN,"¡Mi pingüino! ¡Lo tengo desde que abrí!","My penguin! I've had it since I opened!","Meu pinguim! Tenho desde que abri!"
 NIEVE_NOTICED,"¡Ya sé que me traban la máquina ustedes! ¡Déjenla en paz!","I know you're the ones jamming my machine! Leave it alone!","Eu sei que são vocês que travam a máquina! Deixem ela em paz!"
+PROMPT_TAKE_CONE,E: agarrar un cono de helado,E: take an ice cream cone,E: pegar uma casquinha
+HINT_HANDS_FULL_CONE,Tienes las manos ocupadas para el cono.,Your hands are too full for the cone.,Suas mãos estão ocupadas demais para a casquinha.
+PROMPT_GIVE_CONE,E: darle el cono a Lucho,E: give Lucho the cone,E: dar a casquinha ao Lucho
+PROMPT_TALK_LUCHO,E: hablar con Lucho,E: talk to Lucho,E: falar com o Lucho
+LUCHO_HELLO,"¡Doña Nieve! ¿Hay pedidos?","Doña Nieve! Any orders?","Dona Nieve! Tem pedidos?"
+LUCHO_BUSY,"Estoy apurado, oficial. Si me convidas un helado, capaz que me acuerdo de algo...","I'm in a hurry, officer. Treat me to an ice cream and maybe I'll remember something...","Estou com pressa, policial. Se me pagar um sorvete, talvez eu me lembre de algo..."
+LUCHO_AGAIN,"¡Gracias! Pero ya te conté todo lo que vi.","Thanks! But I already told you all I saw.","Valeu! Mas já te contei tudo o que vi."
+LUCHO_NOTHING,"¡Gracias! Pero no vi nada raro, la verdad.","Thanks! But I didn't see anything weird, honestly.","Valeu! Mas não vi nada estranho, sério."

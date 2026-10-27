@@ -128,10 +128,24 @@ export function buildDonaNieve() {
 	return b.build();
 }
 
+// Lucho, the delivery boy: skinny, a red cap on backwards, a yellow windbreaker, shorts and a big blue cooler box on
+// his back. He rides the bakery's delivery bike.
+export function buildLucho() {
+	const b = new Builder('npc_lucho');
+	pearBody(b, mat('skin_lucho', 0xc68a5e), { shirt: mat('lucho_jacket', 0xf2d040), pants: mat('lucho_shorts', 0x3a4a6a), shoes: mat('lucho_shoes', 0xe8e8e8), belted: false });
+	eyes(b, 1.34, 0.18, 0.08, 0.05);
+	const red = mat('lucho_cap', 0xd83030);
+	b.add('cap', red, ellipsoid(0.21, 0.1, 0.21, 10, 5), { pos: V(0, 1.45, 0) });
+	b.add('cap', red, new THREE.BoxGeometry(0.2, 0.02, 0.16), { pos: V(0, 1.43, -0.24) });
+	b.add('box', mat('cooler_blue', 0x2a7ad8), new THREE.BoxGeometry(0.5, 0.5, 0.36), { pos: V(0, 1.0, -0.42) });
+	b.add('box', mat('cooler_lid', 0xf6f6f6), new THREE.BoxGeometry(0.52, 0.06, 0.38), { pos: V(0, 1.27, -0.42) });
+	return b.build();
+}
+
 export const models = {
 	ice_freezer: buildIceFreezer, freezer_lid: buildFreezerLid, ice_counter: buildIceCounter,
 	soft_serve_machine: buildSoftServeMachine, cold_shelf: buildColdShelf, penguin_statue: buildPenguinStatue,
-	npc_dona_nieve: buildDonaNieve,
+	npc_dona_nieve: buildDonaNieve, npc_lucho: buildLucho,
 };
 
 export const views = {
@@ -140,7 +154,7 @@ export const views = {
 			{ name: 'ice_counter', pos: [-0.6, 0, 1.0] }, { name: 'ice_freezer', pos: [2.6, 0, 1.4] },
 			{ name: 'freezer_lid', pos: [2.6, 0.85, 1.0] }, { name: 'soft_serve_machine', pos: [3.0, 0, -0.4] },
 			{ name: 'cold_shelf', pos: [-1.4, 0, -1.0] }, { name: 'penguin_statue', pos: [1.2, 0, -0.8] },
-			{ name: 'npc_dona_nieve', pos: [1.6, 0, 1.8], rotY: -0.3 },
+			{ name: 'npc_dona_nieve', pos: [1.6, 0, 1.8], rotY: -0.3 }, { name: 'npc_lucho', pos: [-2.4, 0, 1.8], rotY: 0.3 },
 		],
 		cam: { pos: [0.5, 3.0, 7.5], target: [0.5, 1.0, 0], fov: 50 },
 	},
