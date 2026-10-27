@@ -168,3 +168,7 @@ ChaseDrops (los bidones, como las valijas del hotel), PlaceDraw y la custodia pa
   pisada de café queda en la alfombra de la oficina del gerente, en la vuelta de Pelusa. Pelusa arranca cuando entra
   un policía y aspira la pisada si llega (a 1 min de vuelta, más o menos); E la da vuelta panza arriba y la frena, y
   otra E la vuelve a poner sobre sus ruedas. Capturas `paso4b-*.png`.
+- **Paso 4c (el testigo y el tablero):** Benja (`OfficeIntern`) espera junto a la recepción con su pila de papeles a
+  los pies y pide que se la lleven a la fotocopiadora. Cuando llega, con E dice si el ladrón tenía anteojos (si el
+  testigo es una de las pistas). Esposado, o con la pila tirada o caída antes de llegar, se ofende y no habla más. Las
+  fichas de los empleados salen en el tablero de la comisaría como en los otros casos. Capturas `paso4c-*.png`.
