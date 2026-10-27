@@ -163,7 +163,6 @@ extras suman entre 400 y 600.
      va a la planilla.
    - **Qué cambia:** en el estante de premios hay 4 peluches chicos. En esta historia pesan el triple (0,9 kg) y al caer
      al piso hacen "¡Clonc!".
-   - **Por ahora:** Don Tómbola no se escapa en auto. La huida queda para cuando se sume al sorteo (paso 7).
    - **Capturas:** `parque/paso5-*.png`.
 6. Las otras 5 historias, una por PR.
    Hecho así:
@@ -191,6 +190,9 @@ extras suman entre 400 y 600.
      de velocidad y chirría ("¡Iiiiic!") cada 3 s. La pintura (1 kg, 300) y el recorte del diario (0,1 kg, 200) van
      en escondites sorteados. Capturas `parque/paso6e-*.png`.
 7. "Jugar" suma el parque al sorteo de allanamientos (`PlaceDraw.ORDER`).
+   Hecho así: el parque es uno más de los allanamientos que sortea "Jugar", con las mismas chances que los otros. Si
+   Don Tómbola ve que un policía levanta la prueba principal cerca, se escapa en auto como los otros dueños (la
+   persecución de siempre, con sus 3 frases).
 8. El online: Don Tómbola, Nube, las latas, la campana y los juegos en todas las PC.
 
 ## Preguntas para Cristian
