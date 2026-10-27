@@ -5588,3 +5588,22 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+PLACE_RINK,Patinódromo Resbalón,Slip-n-Slide Ice Rink,Patinódromo Escorregão
+MENU_RINK,Pista de hielo (allanamiento) (prueba),Ice rink (raid) (test),Pista de gelo (batida) (teste)
+HINT_TILL_KEY_RINK,¡Una llave! Abre la oficina de Doña Pirueta.,A key! It opens Doña Pirueta's office.,Uma chave! Abre o escritório da Dona Pirueta.
+RINK_GLASS_BROKEN,"¡El vidrio de la baranda! ¡Era importado!","The rink glass! It was imported!","O vidro da pista! Era importado!"
+RINK_TROPHIES_BROKEN,"¡Mis trofeos! ¡Treinta años de piruetas!","My trophies! Thirty years of pirouettes!","Meus troféus! Trinta anos de piruetas!"
+RINK_LOST_AND_FOUND,OBJETOS PERDIDOS,LOST AND FOUND,ACHADOS E PERDIDOS
+CASE_FAILED_LAWYER_RINK,Doña Pirueta llamó al abogado de la pista. Caso perdido.,Doña Pirueta called the rink's lawyer. Case lost.,Dona Pirueta ligou para o advogado da pista. Caso perdido.
+LOC_under_rink_stands,abajo de las gradas,under the stands,embaixo da arquibancada
+LOC_in_rink_cold_room,en la cámara de frío,in the cold room,na câmara fria
+LOC_behind_compressor,detrás del compresor,behind the compressor,atrás do compressor
+LOC_in_rink_office,en la oficina de Doña Pirueta,in Doña Pirueta's office,no escritório da Dona Pirueta
+LOC_behind_dj_booth,detrás de la cabina del DJ,behind the DJ booth,atrás da cabine do DJ
+LOC_in_rink_locker_room,en el vestuario,in the locker room,no vestiário
+LOC_in_skating_penguin,adentro del pingüino de apoyo,inside the skating penguin,dentro do pinguim de apoio
+LOC_in_resurfacer_tank,en el tanque de la pulidora,in the resurfacer's tank,no tanque da máquina de gelo
+LOC_on_cocoa_machine,arriba de la máquina de chocolate,on top of the hot chocolate machine,em cima da máquina de chocolate
+LOC_on_skate_rack,en el estante de patines,on the skate rack,na prateleira de patins
+LOC_in_lost_and_found,en la caja de objetos perdidos,in the lost and found box,na caixa de achados e perdidos
+LOC_in_trophy_case,en la vitrina de trofeos,in the trophy case,na vitrine de troféus

@@ -94,6 +94,20 @@ suman 500.
 ## El orden para hacerlo (un PR chico por paso)
 1. La pista como lugar: la cuadra (8, 3) con el galpón, la pista, las gradas, el bar, el vestuario, la cámara de frío,
    la oficina con llave, lo frágil y los escondites. Modelos nuevos con modelgen.
+   Hecho así:
+   - **Lugar:** la clase `Rink`, en `--place=rink` y en el botón del menú, en la cuadra (8, 3). Galpón de 44 × 30 m
+     con la puerta al frente; adentro, el hall con el alquiler (caja con la llave), el estante de patines, la caja de
+     objetos perdidos, la vitrina de trofeos y el bar con la máquina de chocolate.
+   - **La pista:** 30 × 15 m de hielo con fricción 0,05 (las cosas siguen de largo), baranda de 1,1 m con dos portones
+     al frente y 6 vidrios arriba. La pulidora estacionada en una esquina y el pingüino de apoyo, quietos por ahora.
+     El marcador y la bola de espejos cuelgan arriba.
+   - **Gradas y DJ:** 4 escalones al oeste, huecos abajo; la cabina del DJ al este, mirando a la pista.
+   - **Atrás:** un pasillo con el vestuario (12 casilleros), la cámara de frío (bloques de hielo y compresor) y la
+     oficina cerrada con llave.
+   - **Lo frágil:** cada vidrio de la baranda, 30; la vitrina, 10 por cada uno de sus 4 trofeos (40 de una vez).
+   - **Escondites:** 12, 6 para cosas pesadas (gradas, cámara de frío, detrás del compresor, oficina, detrás de la
+     cabina del DJ y vestuario).
+   - **Capturas:** `/mnt/project-files/pista/paso1-*.png` y `modelos.png`.
 2. El hielo: el policía resbala sin patines (y se cae si dobla rápido), los patines del alquiler, las cosas que siguen
    de largo, y la pulidora que da vueltas 30 s.
 3. Doña Pirueta: la ronda patinando, la denuncia, "¡con zapatos no!" y su canción.
