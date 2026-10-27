@@ -55,6 +55,8 @@ const BOOTH_AT := Vector3(-13.5, 0, 1.6)
 ## The kids' corner: the cardboard rocket and the Mars scale.
 const ROCKET_AT := Vector3(11.5, 0, 3.5)
 const SCALE_AT := Vector3(8.5, 0, 6.0)
+## The stool with the roll of evidence bags, by the door.
+const BAGS_AT := Vector3(-3.0, 0, 6.0)
 const PAINT := Color(0.18, 0.2, 0.42)
 const DOME_WHITE := Color(0.93, 0.94, 0.96)
 const INSIDE := Color(0.78, 0.8, 0.9)
@@ -96,6 +98,10 @@ var console: ProjectorConsole
 ## The star show (step 5), and the ceiling lights it turns off.
 var star_show: StarShow
 var lamps: Array[OmniLight3D] = []
+## The case's clues (step 6), the photo booth and its tray, and the stool with the evidence bags.
+var clues: PlanetariumClues
+var booth: PhotoBooth
+var booth_tray: PhotoBooth
 ## The plain seats a cop can sit in during the show.
 var seats: Array[PlanetariumSeat] = []
 ## What each cop is busy with ("" for nothing), by cop: a search or the console takes a while.
@@ -116,6 +122,11 @@ func _ready() -> void:
 	_front()
 	_rooms()
 	_hall()
+	_builder.box(BAGS_AT + Vector3(0, FLOOR_TOP + 0.25, 0), Vector3(0.5, 0.5, 0.4), WOOD)
+	bags = EvidenceBags.new()
+	bags.name = "EvidenceBags"
+	bags.position = BAGS_AT + Vector3(0, FLOOR_TOP + 0.5, 0)
+	add_child(bags)
 	_dome()
 	_control()
 	_shop()
@@ -132,6 +143,11 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	for guide in guides:
 		guide.case = case
 		guide.stubborn = guide.index == stubborn
+	clues = PlanetariumClues.new()
+	clues.name = "Clues"
+	clues.planetarium = self
+	clues.case = case
+	add_child(clues)
 	star_show = StarShow.new()
 	star_show.name = "StarShow"
 	star_show.planetarium = self
@@ -153,6 +169,8 @@ func search(spot: String, cop: Cop) -> void:
 ## The search of a spot is over.
 func searched(spot: String, cop: Cop) -> void:
 	_busy.erase(cop)
+	if clues:
+		clues.searched(spot)
 	if spot != loot_spot or pedrusco_uncovered or not case:
 		if cop:
 			cop.show_hint("HINT_PLANETARIUM_NOTHING_" + spot)
@@ -216,6 +234,8 @@ func set_dark(on: bool) -> void:
 	dark = on
 	for guide in guides:
 		guide.set_dark(on)
+	if clues:
+		clues.set_dark(on)
 
 
 ## The guide by index (the order of the case's traits).
@@ -508,7 +528,10 @@ func _shop() -> void:
 			ROCK_COLORS[i % ROCK_COLORS.size()])
 	_builder.box(TILL_AT + Vector3(0, 0.5, 0), Vector3(2.0, 1.0, 0.7), WOOD)
 	_builder.mesh_box(TILL_AT + Vector3(0.4, 1.15, 0), Vector3(0.5, 0.3, 0.4), METAL)
-	_builder.box(BOOTH_AT + Vector3(0, 1.1, 0), Vector3(1.4, 2.2, 1.4), PAINT.lightened(0.2))
+	_builder.mesh_box(BOOTH_AT + Vector3(0, 1.1, 0), Vector3(1.4, 2.2, 1.4), PAINT.lightened(0.2))
+	booth = _booth_part(false, BOOTH_AT + Vector3(0, 1.1, 0), Vector3(1.4, 2.2, 1.4))
+	booth_tray = _booth_part(true, BOOTH_AT + Vector3(0.78, 0.7, 0.45), Vector3(0.18, 0.12, 0.35))
+	_builder.mesh_box(BOOTH_AT + Vector3(0.78, 0.7, 0.45), Vector3(0.18, 0.12, 0.35), METAL)
 	_builder.mesh_box(BOOTH_AT + Vector3(0.71, 1.3, 0), Vector3(0.02, 0.9, 0.9), NIGHT)
 	var moon := SphereMesh.new()
 	moon.radius = 0.25
@@ -567,6 +590,16 @@ func _rocket(at: Vector3, radius: float, spot := "") -> void:
 	window.radius = radius * 0.12
 	window.height = radius * 0.24
 	_builder.mesh(window, at + Vector3(0, tube.height * 0.7, radius * 0.34), Color(0.5, 0.8, 0.95))
+
+
+## The photo booth or its tray (PhotoBooth); the case's clues reach them when it comes.
+func _booth_part(is_tray: bool, at: Vector3, size: Vector3) -> PhotoBooth:
+	var part := PhotoBooth.new(size)
+	part.name = "BoothTray" if is_tray else "PhotoBooth"
+	part.tray = is_tray
+	part.position = at
+	add_child(part)
+	return part
 
 
 ## A spot El Pedrusco can hide in, as a box the cops search with E; `out` is where the stone lands when it turns up.
