@@ -7,7 +7,7 @@ extends FairRig
 ## PRINT_EVERY seconds and spits out another one. The rolls of uncut tickets and the "Válido" stamp are hidden too.
 ## Every number here is (propuesta).
 
-const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+const TICKET_SCENE := preload("res://scenes/props/fair_ticket.tscn")
 const PINK := Color(0.96, 0.63, 0.75)
 ## The tickets lying on the paths.
 const TICKETS: Array[Vector3] = [
@@ -35,7 +35,10 @@ func setup(place: Fair) -> void:
 		place.add_child(ticket)
 
 
+## Online the host's booth prints, and the guests get a copy of each ticket (PropSync).
 func _physics_process(delta: float) -> void:
+	if not multiplayer.is_server():
+		return
 	_since_print += delta
 	if _since_print >= PRINT_EVERY:
 		print_ticket()
@@ -44,7 +47,7 @@ func _physics_process(delta: float) -> void:
 ## The booth whirs and spits out a ticket.
 func print_ticket() -> void:
 	_since_print = 0.0
-	fair.raid.float_label(tr("FAIR_PRINTER_WHIR"), fair.to_global(SPIT_AT + Vector3.UP * 0.6), Color(0.96, 0.63, 0.75))
+	fair.raid.float_label(tr("FAIR_PRINTER_WHIR"), fair.to_global(SPIT_AT + Vector3.UP * 0.6), PINK)
 	if printed >= PRINTED_MAX:
 		return
 	printed += 1
@@ -55,12 +58,7 @@ func print_ticket() -> void:
 
 
 func _ticket() -> ClueNote:
-	var ticket: ClueNote = NOTE_SCENE.instantiate()
-	ticket.name = "Ticket"
-	ticket.text = tr("FAIR_TICKET")
-	var paper := StandardMaterial3D.new()
-	paper.albedo_color = PINK
-	(ticket.get_node("Mesh") as MeshInstance3D).material_override = paper
+	var ticket: ClueNote = TICKET_SCENE.instantiate()
 	ticket.read.connect(_on_read)
 	tickets.append(ticket)
 	return ticket

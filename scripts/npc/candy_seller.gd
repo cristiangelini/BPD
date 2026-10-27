@@ -21,6 +21,9 @@ var clue_speech := ""
 ## The cops she already talked to.
 var listeners := {}
 var has_told := false
+## What she said to the last one who played the cans, and how many times (online, the guests' Nube says it too).
+var news := ""
+var news_count := 0
 var _since_idle := 0.0
 var _idle_line := 0
 var _bubble: Label3D
@@ -61,13 +64,13 @@ func use(cop: Cop) -> void:
 ## `cop` knocked down the 3 cans: the first time, she tells what she saw.
 func won(cop: Cop) -> void:
 	if listeners.has(cop):
-		_say("NUBE_AGAIN", 4.0)
+		_tell("NUBE_AGAIN", 4.0)
 		return
 	listeners[cop] = true
 	if clue_speech == "":
-		_say("NUBE_NOTHING", 6.0)
+		_tell("NUBE_NOTHING", 6.0)
 		return
-	_say(tr("NUBE_WON") + " " + clue_speech, 9.0)
+	_tell(tr("NUBE_WON") + " " + clue_speech, 9.0)
 	if not has_told:
 		has_told = true
 		told.emit(clue)
@@ -75,7 +78,14 @@ func won(cop: Cop) -> void:
 
 ## Some cans stayed up.
 func missed() -> void:
-	_say("NUBE_MISSED", 3.0)
+	_tell("NUBE_MISSED", 3.0)
+
+
+## What she says to whoever played the cans: online the guests' Nube says it too.
+func _tell(line: String, seconds: float) -> void:
+	news = line
+	news_count += 1
+	_say(line, seconds)
 
 
 func _physics_process(delta: float) -> void:
@@ -87,6 +97,19 @@ func _physics_process(delta: float) -> void:
 			_say(IDLE_LINES[_idle_line % IDLE_LINES.size()])
 			_idle_line += 1
 			return
+
+
+## Online, what the guests' Nube takes from the host's (Fair.net_state).
+func net_state() -> Array:
+	return [news_count, news, has_told]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] > news_count:
+		_say(state[1], 6.0)
+	news_count = state[0]
+	news = state[1]
+	has_told = state[2]
 
 
 func _say(key: String, seconds := 3.0) -> void:

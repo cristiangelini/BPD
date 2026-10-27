@@ -284,6 +284,8 @@ func _ready() -> void:
 	raid.failed_label = %CaseFailed
 	raid.shift_screen = $ShiftScreen
 	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
 	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_grounds()
@@ -337,6 +339,22 @@ func _place_facts() -> Dictionary:
 		"broken": broken_goods,
 		"complaint": owner_npc.complaint,
 	}
+
+
+## Online, what the guests' fair takes from the host's (RaidCase.snapshot): the broken mirrors, the strength tester's
+## bell, what Nube said and what the story's rig decides on the host.
+func net_state() -> Dictionary:
+	return {"mirrors": broken_mirrors.duplicate(), "tester": tester.net_state(), "nube": nube.net_state(),
+		"rig": rig.net_state() if rig else null}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	for index: int in state.mirrors:
+		break_mirror(index)
+	tester.apply_net_state(state.tester)
+	nube.apply_net_state(state.nube)
+	if rig and state.rig != null:
+		rig.apply_net_state(state.rig)
 
 
 ## The story with that id from --story=<id> among the user args, or one drawn from the seed.
@@ -618,7 +636,8 @@ func _build_mirror_house() -> void:
 		$Built.add_child(glass)
 		var area := _area(glass.position, MIRROR_SIZE, spot.w)
 		area.body_entered.connect(func(hit: Node3D) -> void:
-			if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > MIRROR_SPEED:
+			if multiplayer.is_server() and hit is RigidBody3D \
+					and (hit as RigidBody3D).linear_velocity.length() > MIRROR_SPEED:
 				break_mirror(i))
 		mirrors.append(area)
 	_build.light(Vector3((x0 + x1) / 2, MIRRORS_HEIGHT - 0.4, (z0 + z1) / 2))

@@ -194,6 +194,14 @@ extras suman entre 400 y 600.
    Don Tómbola ve que un policía levanta la prueba principal cerca, se escapa en auto como los otros dueños (la
    persecución de siempre, con sus 3 frases).
 8. El online: Don Tómbola, Nube, las latas, la campana y los juegos en todas las PC.
+   Hecho así:
+   - **El anfitrión manda:** mueve a Don Tómbola y decide los espejos rotos, la campana del martillo, las latas que
+     caen y lo que dice Nube. Los invitados lo reciben (los espejos, la campana y Nube van en el estado del caso).
+   - **Los juegos:** la palanca, el botón y la manivela andan desde cualquier PC.
+   - **Las latas:** ahora se pueden agarrar, como todo lo que se sincroniza. Tiradas con la mano no hay quien tire la
+     pelota, así que Nube no habla.
+   - **Las historias:** los boletos que imprime la cabina y las tuercas que tira la vuelta al mundo los hace el
+     anfitrión, y a los invitados les llega una copia. El imán solo tira cosas en el anfitrión.
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, el parque de diversiones? **Recomendado:** sí. No se pisa con el taller, la granja ni

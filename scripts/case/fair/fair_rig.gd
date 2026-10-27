@@ -10,3 +10,12 @@ var fair: Fair
 
 func setup(place: Fair) -> void:
 	fair = place
+
+
+## Online, what the guests' rig takes from the host's (null: nothing).
+func net_state() -> Variant:
+	return null
+
+
+func apply_net_state(_state: Variant) -> void:
+	pass

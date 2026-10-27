@@ -109,12 +109,7 @@ func swing(cop: Cop = null) -> void:
 ## it's the third time and he catches on.
 func ring() -> void:
 	rings += 1
-	_ding.visible = true
-	var tween := create_tween()
-	tween.tween_property(_puck, "position:y", PUCK_HIGH, 0.35).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
-	tween.tween_interval(0.6)
-	tween.tween_callback(func() -> void: _ding.visible = false)
-	tween.tween_property(_puck, "position:y", PUCK_LOW, 0.8).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+	_show_ring()
 	if is_jammed or rest_left > 0.0:
 		return
 	if distractions >= FOOLS:
@@ -126,6 +121,30 @@ func ring() -> void:
 	jobs += 1
 	rest_left = REST
 	jammed.emit()
+
+
+## The puck flies up to the bell and "¡DING!" shows a moment.
+func _show_ring() -> void:
+	_ding.visible = true
+	var tween := create_tween()
+	tween.tween_property(_puck, "position:y", PUCK_HIGH, 0.35).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+	tween.tween_interval(0.6)
+	tween.tween_callback(func() -> void: _ding.visible = false)
+	tween.tween_property(_puck, "position:y", PUCK_LOW, 0.8).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+
+
+## Online, what the guests' tester takes from the host's (Fair.net_state): its bell rings there too.
+func net_state() -> Array:
+	return [rings, is_jammed, distractions, rest_left]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] > rings:
+		_show_ring()
+	rings = state[0]
+	is_jammed = state[1]
+	distractions = state[2]
+	rest_left = state[3]
 
 
 ## The prize is handed over: he goes back to his round.
@@ -141,8 +160,8 @@ func _process(delta: float) -> void:
 	rest_left = maxf(rest_left - delta, 0.0)
 
 
-## Something heavy thrown hard on the pad rings it too.
+## Something heavy thrown hard on the pad rings it too (online, on the host).
 func _on_pad_hit(body: Node3D) -> void:
 	var item := body as RigidBody3D
-	if item and item.mass * item.linear_velocity.length() >= RING_IMPULSE:
+	if multiplayer.is_server() and item and item.mass * item.linear_velocity.length() >= RING_IMPULSE:
 		ring()
