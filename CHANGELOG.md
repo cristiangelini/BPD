@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Cinema raid, step 6 (fake tickets): the ticket press hidden with the "función agotada" stamp and the fake ticket book; "AGOTADO" over the ticket booth, and two neighbors side by side arguing over the same seat, the story's clue for a cop who gets close.
 - Cinema raid, step 6 (haunted cinema): the ghost projector hidden with the sheet with holes and the record of screams; every 30 s of film a ghost crosses the screen and every spectator screams, and the speaker going "uuuuh" behind the screen is the story's clue.
 - Cinema raid, step 6 (floor popcorn): the sack of popcorn swept off the floor hidden with the "reciclaje" broom and the "recién hechas" sign; a bowl of it on the candy counter that a cop spits out every time, its fluff and gum the story's clue the first time.
 - Cinema raid, step 5: the cinema is a raid with the pirate copies' story: three suspicions, the box of 200 copies hidden with the camcorder and the covers, doña Bobina's slips, Chicho's clue, a neighbor in the back row taping the film with a blinking red light (getting close is the story's clue), the lawyer at 100 complaint and her getaway by car.

@@ -5711,3 +5711,18 @@ HINT_GHOST_SPEAKER,"Detrás de la pantalla, un parlante hace «uuuuh». El fanta
 CLUE_GHOST_SPEAKER,"Detrás de la pantalla hay un parlante que hace «uuuuh»: el fantasma es de mentira.","Behind the screen there's a speaker going «oooooh»: the ghost is fake.","Atrás da tela tem um alto-falante que faz «uuuuh»: o fantasma é de mentira."
 CINEMA_GHOST_OOH,uuuuuh...,oooooh...,uuuuuh...
 CINEMA_SCREAM,¡Aaaah!,Aaaah!,Aaaah!
+BRIEF_FAKE_TICKETS_B,"Doña Bobina imprime sus propias entradas y vende cada butaca dos veces. Por eso siempre dice «agotado».","Doña Bobina prints her own tickets and sells every seat twice. That's why it always says «sold out».","A dona Bobina imprime os próprios ingressos e vende cada poltrona duas vezes. Por isso sempre diz «esgotado»."
+BRIEF_FAKE_TICKETS_C,"Traigan la imprenta de entradas en el baúl del patrullero. Pesa 10 kilos: mejor entre dos.","Bring the ticket press in the patrol car's trunk. It weighs 10 kilos: better with two of you.","Tragam a impressora de ingressos no porta-malas da viatura. Pesa 10 quilos: melhor em dois."
+BRIEF_FAKE_TICKETS_D,"Si encuentran el sello de «función agotada» o el talonario trucho, mejor: todo suma.","If you find the «sold out» stamp or the fake ticket book, even better: it all counts.","Se acharem o carimbo de «sessão esgotada» ou o talão falso, melhor: tudo conta."
+OBJ_FIND_TICKET_PRESS,Llevarse la imprenta de entradas,Take the ticket press,Levar a impressora de ingressos
+OBJ_EXTRA_SOLD_OUT_STAMP,Extra: el sello de «función agotada»,Extra: the «sold out» stamp,Extra: o carimbo de «sessão esgotada»
+OBJ_EXTRA_TICKET_BOOK,Extra: el talonario trucho,Extra: the fake ticket book,Extra: o talão falso
+CHICHO_CLUE_fake_tickets,"(susurrando) «Vi a doña Bobina esconder algo %s. Y hoy ya acomodé a tres señores en la misma butaca.»","(whispering) “I saw doña Bobina hide something %s. And today I've already shown three men to the same seat.”","(sussurrando) “Vi a dona Bobina esconder algo %s. E hoje já acomodei três senhores na mesma poltrona.”"
+CINEMA_SOLD_OUT,AGOTADO,SOLD OUT,ESGOTADO
+CINEMA_SAME_SEAT_TICKET,"¡Mire mi entrada: fila 3, butaca 4! ¡Y la de él dice lo mismo!","Look at my ticket: row 3, seat 4! And his says the same!","Olha meu ingresso: fileira 3, poltrona 4! E o dele diz o mesmo!"
+CINEMA_SAME_SEAT_1,¡Esta butaca es mía!,This seat is mine!,Esta poltrona é minha!
+CINEMA_SAME_SEAT_2,"¡No, es mía, acá dice!","No, it's mine, it says so here!","Não, é minha, aqui diz!"
+CINEMA_SAME_SEAT_3,¡Yo llegué primero!,I got here first!,Eu cheguei primeiro!
+CINEMA_SAME_SEAT_4,¡Y yo pagué más!,And I paid more!,E eu paguei mais!
+HINT_SAME_SEAT,"Dos vecinos discuten: los dos tienen entrada para la misma butaca.","Two neighbors argue: both have a ticket for the same seat.","Dois vizinhos discutem: os dois têm ingresso para a mesma poltrona."
+CLUE_SAME_SEAT,"Dos espectadores tienen entrada para la misma butaca: alguien vende cada lugar dos veces.","Two spectators have a ticket for the same seat: someone sells every seat twice.","Dois espectadores têm ingresso para a mesma poltrona: alguém vende cada lugar duas vezes."

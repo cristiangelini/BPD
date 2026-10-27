@@ -204,12 +204,45 @@ export function buildScreamDisc() {
 	return b.build();
 }
 
+// The ticket press, 0.7 x 0.5 x 0.5 m: a heavy green iron press with its wheel on the side, a roll of tickets feeding in
+// and a strip of pink tickets coming out the front.
+export function buildTicketPress() {
+	const b = new Builder('ticket_press');
+	const iron = mat('press_iron', 0x2f5a40), dark = mat('press_dark', 0x202420), pink = mat('ticket_pink', 0xf0a0b8);
+	b.add('base', dark, new THREE.BoxGeometry(0.7, 0.08, 0.5), { pos: V(0, 0.04, 0) });
+	b.add('body', iron, new THREE.BoxGeometry(0.5, 0.3, 0.4), { pos: V(-0.03, 0.23, 0) });
+	b.add('top', iron, new THREE.BoxGeometry(0.4, 0.1, 0.3), { pos: V(-0.03, 0.43, 0) });
+	b.add('wheel', dark, new THREE.TorusGeometry(0.14, 0.02, 4, 12), { pos: V(0.27, 0.26, 0), rot: [0, Math.PI / 2, 0] });
+	b.add('roll', pink, new THREE.CylinderGeometry(0.07, 0.07, 0.2, 10), { pos: V(-0.03, 0.5, -0.12), rot: [0, 0, Math.PI / 2] });
+	b.add('strip', pink, new THREE.BoxGeometry(0.12, 0.01, 0.2), { pos: V(-0.03, 0.12, 0.3) });
+	return b.build();
+}
+
+// The "función agotada" stamp, 0.1 x 0.14 x 0.1 m: a wooden knob on a red rubber block.
+export function buildSoldOutStamp() {
+	const b = new Builder('sold_out_stamp');
+	b.add('rubber', mat('stamp_red', 0xc02020), new THREE.BoxGeometry(0.1, 0.03, 0.07), { pos: V(0, 0.015, 0) });
+	b.add('neck', mat('stamp_wood', 0x9a6a3a), new THREE.CylinderGeometry(0.015, 0.02, 0.06, 8), { pos: V(0, 0.06, 0) });
+	b.add('knob', mat('stamp_wood', 0x9a6a3a), new THREE.SphereGeometry(0.035, 8, 6), { pos: V(0, 0.11, 0) });
+	return b.build();
+}
+
+// The fake ticket book, 0.16 x 0.03 x 0.08 m: a pad of pink tickets with a grey cardboard back.
+export function buildTicketBook() {
+	const b = new Builder('ticket_book');
+	b.add('back', mat('book_grey', 0x707070), new THREE.BoxGeometry(0.16, 0.005, 0.08), { pos: V(0, 0.0025, 0) });
+	b.add('pad', mat('ticket_pink', 0xf0a0b8), new THREE.BoxGeometry(0.15, 0.025, 0.075), { pos: V(0, 0.017, 0) });
+	b.add('stub', mat('stub_line', 0x903050), new THREE.BoxGeometry(0.004, 0.026, 0.075), { pos: V(-0.04, 0.018, 0) });
+	return b.build();
+}
+
 export const models = {
 	cinema_seat: buildCinemaSeat, popcorn_machine: buildPopcornMachine, film_projector: buildFilmProjector,
 	npc_dona_bobina: buildDonaBobina, npc_chicho: buildChicho, pirate_copies_box: buildPirateBox,
 	cinema_camcorder: buildCamcorder, cinema_covers: buildCovers, floor_popcorn_bag: buildFloorPopcornBag,
 	recycle_broom: buildRecycleBroom, fresh_sign: buildFreshSign, ghost_projector: buildGhostProjector,
-	holey_sheet: buildHoleySheet, scream_disc: buildScreamDisc,
+	holey_sheet: buildHoleySheet, scream_disc: buildScreamDisc, ticket_press: buildTicketPress, sold_out_stamp: buildSoldOutStamp,
+	ticket_book: buildTicketBook,
 };
 
 export const views = {
@@ -227,6 +260,7 @@ export const views = {
 			{ name: 'floor_popcorn_bag', pos: [-1.0, 0, 0] }, { name: 'recycle_broom', pos: [-0.3, 0, 0], rotY: 0.4 },
 			{ name: 'fresh_sign', pos: [0.4, 0, 0] }, { name: 'ghost_projector', pos: [-0.9, 0, 0.8], rotY: 0.5 },
 			{ name: 'holey_sheet', pos: [0, 0, 0.8] }, { name: 'scream_disc', pos: [0.8, 0, 0.8] },
+			{ name: 'ticket_press', pos: [1.2, 0, -0.1], rotY: -0.4 }, { name: 'sold_out_stamp', pos: [-0.5, 0, 1.3] }, { name: 'ticket_book', pos: [-0.2, 0, 1.35] },
 		],
 		cam: { pos: [0, 1.4, 2.6], target: [0, 0.1, 0.4], fov: 40 },
 	},
