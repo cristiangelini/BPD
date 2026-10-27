@@ -271,7 +271,38 @@ export function buildCartPlan() {
 	return b.build();
 }
 
+// The scale story: the magic screw (a fat brass screw with a star on its head), the "How to weigh more" manual and
+// the golden screwdriver.
+export function buildMagicScrew() {
+	const b = new Builder('super_magic_screw');
+	const brass = mat('screw_brass', 0xd8b040, { metalness: 0.6, roughness: 0.35 });
+	b.add('shaft', brass, new THREE.CylinderGeometry(0.018, 0.012, 0.11, 8), { pos: V(0, 0.055, 0) });
+	for (let i = 0; i < 5; i++) b.add('thread', brass, new THREE.TorusGeometry(0.018, 0.004, 4, 10), { pos: V(0, 0.02 + i * 0.018, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('head', brass, new THREE.CylinderGeometry(0.04, 0.04, 0.025, 10), { pos: V(0, 0.122, 0) });
+	b.add('star', mat('screw_star', 0xfff2a0, { emissive: 0x806010 }), new THREE.OctahedronGeometry(0.022), { pos: V(0, 0.14, 0), scale: [1, 0.4, 1] });
+	return b.build();
+}
+
+export function buildWeighManual() {
+	const b = new Builder('super_weigh_manual');
+	b.add('cover', mat('manual_cover', 0x46b45a), new THREE.BoxGeometry(0.22, 0.03, 0.3), { pos: V(0, 0.015, 0) });
+	b.add('pages', mat('manual_pages', 0xf2f2ea), new THREE.BoxGeometry(0.21, 0.024, 0.29), { pos: V(0.006, 0.015, 0) });
+	b.add('weight', mat('manual_weight', 0x30343c), new THREE.CylinderGeometry(0.05, 0.06, 0.004, 8), { pos: V(0, 0.032, 0.02) });
+	b.add('plus', mat('manual_plus', 0xe04040), new THREE.BoxGeometry(0.08, 0.004, 0.02), { pos: V(0, 0.034, -0.09) });
+	b.add('plus', mat('manual_plus', 0xe04040), new THREE.BoxGeometry(0.02, 0.004, 0.08), { pos: V(0, 0.034, -0.09) });
+	return b.build();
+}
+
+export function buildGoldenScrewdriver() {
+	const b = new Builder('super_golden_screwdriver');
+	b.add('handle', mat('driver_handle', 0x8a2a2a), new THREE.CylinderGeometry(0.025, 0.03, 0.12, 8), { pos: V(0, 0.03, -0.1), rot: [Math.PI / 2, 0, 0] });
+	b.add('shaft', mat('driver_gold', 0xf0c040, { metalness: 0.8, roughness: 0.25 }), new THREE.CylinderGeometry(0.007, 0.007, 0.18, 6), { pos: V(0, 0.03, 0.05), rot: [Math.PI / 2, 0, 0] });
+	b.add('tip', mat('driver_gold', 0xf0c040, { metalness: 0.8, roughness: 0.25 }), new THREE.BoxGeometry(0.016, 0.004, 0.02), { pos: V(0, 0.03, 0.15) });
+	return b.build();
+}
+
 export const models = {
+	super_magic_screw: buildMagicScrew, super_weigh_manual: buildWeighManual, super_golden_screwdriver: buildGoldenScrewdriver,
 	super_double_cart: buildDoubleCart, super_welder: buildWelder, super_cart_plan: buildCartPlan,
 	super_cheese_wheel: buildCheeseWheel, super_fake_cheese: buildFakeCheese, super_cheese_mold: buildCheeseMold,
 	super_wax_block: buildWaxBlock,
@@ -291,6 +322,10 @@ export const views = {
 			{ name: 'shopping_cart', pos: [-0.6, 0, 2.2], rotY: 0.6 },
 		],
 		cam: { pos: [0, 3.0, 7.5], target: [0.4, 0.9, 0], fov: 50 },
+	},
+	scale: {
+		items: [{ name: 'super_magic_screw', pos: [-0.25, 0, 0] }, { name: 'super_weigh_manual', pos: [0.1, 0, 0.05], rotY: 0.4 }, { name: 'super_golden_screwdriver', pos: [0.15, 0, -0.25], rotY: 1.2 }],
+		cam: { pos: [0, 0.5, 0.8], target: [0, 0.04, 0], fov: 40 },
 	},
 	carts: {
 		items: [{ name: 'super_double_cart', pos: [-0.5, 0, 0], rotY: 0.5 }, { name: 'super_welder', pos: [0.5, 0, 0.2] }, { name: 'super_cart_plan', pos: [0.4, 0, -0.4] }],

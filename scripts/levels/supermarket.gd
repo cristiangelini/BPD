@@ -57,6 +57,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_WELDER", "OBJ_EXTRA_CART_PLAN"],
 		"rig": preload("res://scripts/case/super/double_carts_rig.gd"),
 	},
+	"super_scale": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_SUPER_SCALE_B", "BRIEF_SUPER_SCALE_C", "BRIEF_SUPER_SCALE_D"],
+		"find": "OBJ_FIND_MAGIC_SCREW",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/super_magic_screw.tscn"), preload("res://scenes/props/super_weigh_manual.tscn"),
+			preload("res://scenes/props/super_golden_screwdriver.tscn")],
+		"half_heights": [0.075, 0.02, 0.03],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_WEIGH_MANUAL", "OBJ_EXTRA_GOLDEN_SCREWDRIVER"],
+		"rig": preload("res://scripts/case/super/rigged_scale_rig.gd"),
+	},
 }
 ## Where the clue notes for the suspicions can lie, on the floor.
 const NOTE_PLACES: Array[Vector3] = [Vector3(-7.5, FLOOR_TOP, 2.0), Vector3(-2.5, FLOOR_TOP, -4.0),
