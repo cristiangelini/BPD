@@ -181,6 +181,41 @@ export const models = {
 		b.add('handle', C('knife_handle', 0xff7ab8), new THREE.BoxGeometry(0.11, 0.02, 0.025), { pos: V(-0.1, 0.01, 0) });
 		return b.build();
 	},
+	// The gift resale notebook (los regalos que vuelven): a spiral notebook with a balloon sticker and columns of prices
+	// on the open page.
+	resale_notebook() {
+		const b = new Builder('resale_notebook');
+		b.add('cover', C('resale_cover', 0xff7ab8), new THREE.BoxGeometry(0.17, 0.02, 0.23), { pos: V(-0.09, 0.01, 0) });
+		b.add('page', white, new THREE.BoxGeometry(0.17, 0.014, 0.22), { pos: V(0.09, 0.007, 0) });
+		for (let i = 0; i < 7; i++) {
+			b.add('spiral', C('resale_spiral', 0x9a9aa4, { metalness: 0.5 }), new THREE.TorusGeometry(0.008, 0.002, 4, 8), { pos: V(0, 0.02, -0.09 + i * 0.03), rot: [0, Math.PI / 2, 0] });
+			b.add('prices', C('resale_ink', 0x2a5ad8), new THREE.BoxGeometry(0.12, 0.002, 0.004), { pos: V(0.09, 0.015, -0.08 + i * 0.025) });
+		}
+		b.add('sticker', C('resale_sticker', 0xfff07a), new THREE.CylinderGeometry(0.03, 0.03, 0.002, 10), { pos: V(-0.09, 0.021, -0.04) });
+		return b.build();
+	},
+	// A gift box that still has the toy shop's price tag hanging from its ribbon.
+	tagged_gift() {
+		const b = new Builder('tagged_gift');
+		const paper = C('tagged_paper', 0x9ae07a), ribbon = C('tagged_ribbon', 0x8a3ac8);
+		b.add('box', paper, new THREE.BoxGeometry(0.4, 0.3, 0.3), { pos: V(0, 0.15, 0) });
+		b.add('ribbon', ribbon, new THREE.BoxGeometry(0.41, 0.305, 0.04), { pos: V(0, 0.15, 0) });
+		b.add('ribbon', ribbon, new THREE.BoxGeometry(0.04, 0.305, 0.31), { pos: V(0, 0.15, 0) });
+		b.add('tag', C('tagged_tag', 0xffffff), new THREE.BoxGeometry(0.09, 0.06, 0.004), { pos: V(0.12, 0.2, 0.16), rot: [0, 0, -0.3] });
+		b.add('tag_price', C('tagged_price', 0xe0262e), new THREE.BoxGeometry(0.06, 0.015, 0.002), { pos: V(0.12, 0.2, 0.163), rot: [0, 0, -0.3] });
+		b.add('alarm', C('tagged_alarm', 0x2a2a30), new THREE.BoxGeometry(0.05, 0.02, 0.03), { pos: V(-0.12, 0.31, 0.08) });
+		return b.build();
+	},
+	// A roll of the toy shop's wrapping paper: a long tube with stars printed on it.
+	wrapping_roll() {
+		const b = new Builder('wrapping_roll');
+		b.add('roll', C('wrapping_paper', 0x7ad0ff), new THREE.CylinderGeometry(0.05, 0.05, 0.7, 12), { pos: V(0, 0.05, 0), rot: [0, 0, Math.PI / 2] });
+		for (let i = 0; i < 6; i++) {
+			b.add('stars', C('wrapping_star', 0xfff07a), new THREE.CylinderGeometry(0.015, 0.015, 0.004, 5), { pos: V(-0.28 + i * 0.11, 0.1, (i % 2) * 0.02 - 0.01) });
+		}
+		b.add('ends', C('wrapping_tube', 0xc89a5a), new THREE.CylinderGeometry(0.02, 0.02, 0.72, 8), { pos: V(0, 0.05, 0), rot: [0, 0, Math.PI / 2] });
+		return b.build();
+	},
 };
 
 export const views = {
@@ -208,6 +243,11 @@ export const views = {
 		items: [{ name: 'watch_bag', pos: [-0.45, 0.12, 0], scale: 1.6 }, { name: 'party_blower', pos: [0.05, 0, 0], rotY: 0.5 },
 			{ name: 'watch_invoice', pos: [0.45, 0, 0.1], rotY: -0.3 }, { name: 'cake_knife', pos: [0.2, 0, 0.35], rotY: 0.4 }],
 		cam: { pos: [0.05, 0.8, 1.4], target: [0.05, 0.12, 0], fov: 40 },
+	},
+	birthday_gifts: {
+		items: [{ name: 'resale_notebook', pos: [-0.5, 0, 0.1], rotY: 0.2 }, { name: 'tagged_gift', pos: [0.05, 0, -0.05], rotY: -0.3 },
+			{ name: 'wrapping_roll', pos: [0.2, 0, 0.4], rotY: 0.3 }],
+		cam: { pos: [0.0, 0.8, 1.5], target: [0.0, 0.12, 0], fov: 40 },
 	},
 	bouncy_castle: {
 		items: [{ name: 'bouncy_castle', pos: [0, 0, 0], rotY: 0.5 }],

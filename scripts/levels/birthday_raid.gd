@@ -87,6 +87,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_PARTY_BLOWER", "OBJ_EXTRA_WATCH_INVOICE"],
 		"rig": preload("res://scripts/case/birthday/watch_castle_rig.gd"),
 	},
+	"returning_gifts": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_RETURNING_GIFTS_B", "BRIEF_RETURNING_GIFTS_C", "BRIEF_RETURNING_GIFTS_D"],
+		"find": "OBJ_FIND_RESALE_NOTEBOOK",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/resale_notebook.tscn"), preload("res://scenes/props/tagged_gift.tscn"),
+			preload("res://scenes/props/wrapping_roll.tscn")],
+		"half_heights": [0.015, 0.16, 0.05],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_TAGGED_GIFT", "OBJ_EXTRA_WRAPPING_ROLL"],
+		"rig": preload("res://scripts/case/birthday/returning_gifts_rig.gd"),
+	},
 }
 ## Where the suspicions' clue notes may lie, on the floor of the hall.
 const NOTE_PLACES: Array[Vector3] = [
@@ -207,6 +218,8 @@ var tomasito_secret := ""
 var tomasito_wait_line := "TOMASITO_PINATA_FIRST"
 ## The castle lies flat (a story can deflate it) and bounces nobody.
 var castle_flat := false
+## The gifts on the gift table (models).
+var gifts: Array[Node3D] = []
 var balloons: Array[Area3D] = []
 var popped: Array[int] = []
 var broken_goods := 0
@@ -438,6 +451,7 @@ func _build_extras() -> void:
 		var gift := _model(GIFT_MODEL, GIFT_TABLE_AT + Vector3(-0.6 + (i % 3) * 0.6, GIFT_TABLE_SIZE.y + row * 0.22,
 			-0.1 + (i % 3 % 2) * 0.2), i * 0.7)
 		gift.scale = Vector3.ONE * (1.0 - row * 0.25)
+		gifts.append(gift)
 	cake = ClubEvidence.make_item("Cake", CAKE_MODEL, CAKE_SIZE, CAKE_KG)
 	(cake.get_child(1) as Node3D).position.y = -CAKE_SIZE.y / 2
 	add_child(cake)
