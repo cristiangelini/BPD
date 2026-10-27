@@ -113,6 +113,11 @@ suman entre 400 y 600.
      frágil: la vitrina (algo a más de 3 m/s, multa de 30) y cada pantalla (15). 12 escondites, 6 grandes. El pino
      gigante está arriba del techo. Capturas: `allanamiento-bolera/paso1-*.png`.
 2. Las bolas y los pinos con física, la pista encerada y los jugadores del torneo.
+   - **Cómo quedó, las bolas (propuesta):** 9 bolas de colores (de 4 a 7 kg, 3 en cada mesa de retorno) con poca
+     fricción. Una bola que llega al foso del fondo de una pista vuelve sola a su mesa en 4 s, y 6 s después la
+     máquina cuenta los pinos caídos y los vuelve a parar. Un policía que corre por una pista encerada resbala
+     hacia adelante ("¡La pista está encerada!"); caminando no. Los jugadores van en un PR aparte. Capturas:
+     `allanamiento-bolera/paso2-*.png`.
 3. Don Chuza y la chuza que lo distrae.
 4. Pipo y los zapatos.
 5. El caso (RaidCase) y la primera historia, la bola con imán.

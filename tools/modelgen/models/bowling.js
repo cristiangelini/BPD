@@ -43,7 +43,7 @@ export function buildPinSetter() {
 }
 
 // The ball return between two lanes, 0.6 m wide and 1.0 m long (along Z): the hood where balls come up and the rack
-// with three balls.
+// the game's balls rest on.
 export function buildBallReturn() {
 	const b = new Builder('ball_return');
 	const body = mat('return_body', 0x3a3e48), chrome = mat('return_chrome', 0xc8ccd2, { metalness: 0.6, roughness: 0.3 });
@@ -51,7 +51,6 @@ export function buildBallReturn() {
 	b.add('top', mat('return_orange', 0xf08a2a), new THREE.BoxGeometry(0.62, 0.06, 0.42), { pos: V(0, 0.83, -0.3) });
 	for (const x of [-0.12, 0.12]) b.add('rail', chrome, new THREE.BoxGeometry(0.03, 0.03, 0.7), { pos: V(x, 0.5, 0.15) });
 	b.add('legs', body, new THREE.BoxGeometry(0.4, 0.48, 0.5), { pos: V(0, 0.24, 0.2) });
-	for (let i = 0; i < 3; i++) b.add('ball', mat('return_ball_' + i, BALLS[i + 1], { roughness: 0.25 }), new THREE.IcosahedronGeometry(0.11, 1), { pos: V(0, 0.61, -0.05 + i * 0.22) });
 	return b.build();
 }
 
@@ -141,7 +140,20 @@ export function buildGiantPin() {
 	return b.build();
 }
 
+// The same ball in the other colors, for the racks.
+function coloredBall(i) {
+	return () => {
+		const b = new Builder('bowling_ball_' + i);
+		b.add('ball', mat('ball_' + i, BALLS[i], { roughness: 0.25 }), new THREE.IcosahedronGeometry(0.11, 2), { pos: V(0, 0.11, 0) });
+		const hole = mat('ball_hole', 0x101010);
+		for (const [x, z] of [[-0.025, -0.02], [0.025, -0.02], [0, 0.035]]) b.add('hole', hole, new THREE.CylinderGeometry(0.012, 0.012, 0.01, 8), { pos: V(x, 0.218, z) });
+		return b.build();
+	};
+}
+
 export const models = {
+	bowling_ball_1: coloredBall(1), bowling_ball_2: coloredBall(2), bowling_ball_3: coloredBall(3),
+	bowling_ball_4: coloredBall(4), bowling_ball_5: coloredBall(5),
 	bowling_pin: buildBowlingPin, bowling_ball: buildBowlingBall, pin_setter: buildPinSetter, ball_return: buildBallReturn,
 	score_screen: buildScoreScreen, shoe_counter: buildShoeCounter, bowling_bar: buildBowlingBar,
 	popcorn_machine: buildPopcornMachine, trophy_case: buildTrophyCase, bowling_bench: buildBowlingBench,
