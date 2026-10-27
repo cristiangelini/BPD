@@ -5721,3 +5721,7 @@ NUBE_CLUE_bronze_horse,"Vi a Don Tómbola esconder algo %s. Y el carrusel anda m
 CLUE_BRONZE_CLANG,"Uno de los caballitos del carrusel no sube ni baja, y al tocarlo hace «¡CLANG!». Es de metal.","One of the carousel's horses doesn't go up and down, and it goes «CLANG!» when you touch it. It's metal.","Um dos cavalinhos do carrossel não sobe nem desce, e faz «CLANG!» quando você toca nele. É de metal."
 FAIR_CLANG,¡CLANG!,CLANG!,CLANG!
 FAIR_CAROUSEL_SQUEAK,¡Iiiiic!,Eeeeek!,Iiiiic!
+HINT_ESCAPE_fair,¡Don Tómbola vio la prueba y se escapa en el auto! Tienen un minuto para agarrarlo.,Don Tómbola saw the evidence and is getting away in his car! You have one minute to catch him.,O Don Tómbola viu a prova e está fugindo de carro! Vocês têm um minuto para pegá-lo.
+CHASE_FAIR_LINE_1,"¡Pasen, pasen, que me voy! ¡El parque cierra temprano hoy!","Step right up, I'm leaving! The fair closes early today!","Cheguem, cheguem, que eu vou embora! O parque fecha cedo hoje!"
+CHASE_FAIR_LINE_2,"¡No me toquen el auto, que también es un juego!","Don't touch my car, it's a ride too!","Não mexam no meu carro, que ele também é um brinquedo!"
+CHASE_FAIR_LINE_3,"¡Está bien, está bien! ¿Alguien quiere un boleto gratis?","Fine, fine! Anybody want a free ticket?","Tá bom, tá bom! Alguém quer um ingresso grátis?"
