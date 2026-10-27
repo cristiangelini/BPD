@@ -303,6 +303,45 @@ export function buildCarwashFakeTokens() {
 	return b.build();
 }
 
+// The smuggled parrot in its cage (0.4 x 0.6 x 0.4 m): a round brass cage with a perch and a green parrot with a red
+// head and a yellow beak.
+export function buildCarwashParrotCage() {
+	const b = new Builder('carwash_parrot_cage');
+	const brass = mat('cage_brass', 0xd0a040, { metalness: 0.7, roughness: 0.3 });
+	b.add('base', brass, new THREE.CylinderGeometry(0.2, 0.2, 0.04, 14), { pos: V(0, 0.02, 0) });
+	for (let i = 0; i < 10; i++) {
+		const a = i / 10 * Math.PI * 2;
+		b.add('bars', brass, new THREE.CylinderGeometry(0.006, 0.006, 0.45, 4), { pos: V(Math.sin(a) * 0.19, 0.26, Math.cos(a) * 0.19) });
+	}
+	b.add('top', brass, new THREE.SphereGeometry(0.2, 14, 6, 0, Math.PI * 2, 0, Math.PI / 2), { pos: V(0, 0.48, 0) });
+	b.add('hook', brass, new THREE.TorusGeometry(0.04, 0.008, 4, 10), { pos: V(0, 0.71, 0) });
+	b.add('perch', mat('cage_perch', 0x8a5a30), new THREE.CylinderGeometry(0.01, 0.01, 0.34, 6), { pos: V(0, 0.2, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('parrot', mat('parrot_green', 0x2fb84a), ellipsoid(0.06, 0.1, 0.06, 8, 6), { pos: V(0, 0.3, 0) });
+	b.add('parrot', mat('parrot_red', 0xe03030), ellipsoid(0.045, 0.045, 0.045, 8, 6), { pos: V(0, 0.42, 0.01) });
+	b.add('parrot', mat('parrot_beak', 0xf2c020), new THREE.ConeGeometry(0.015, 0.04, 6), { pos: V(0, 0.41, 0.055), rot: [Math.PI / 2, 0, 0] });
+	b.add('parrot', mat('parrot_tail', 0x2a6ad0), new THREE.BoxGeometry(0.03, 0.12, 0.01), { pos: V(0, 0.18, -0.05), rot: [-0.3, 0, 0] });
+	return b.build();
+}
+
+// The fake export permit (0.21 x 0.3 m): a cream sheet with a green border, a big red stamp and a drawn feather.
+export function buildCarwashExportPermit() {
+	const b = new Builder('carwash_export_permit');
+	b.add('paper', mat('permit_border', 0x3a9a5a), new THREE.BoxGeometry(0.21, 0.004, 0.3), { pos: V(0, 0.002, 0) });
+	b.add('paper', mat('permit_paper', 0xf4ecd0), new THREE.BoxGeometry(0.19, 0.004, 0.28), { pos: V(0, 0.003, 0) });
+	b.add('stamp', mat('permit_stamp', 0xd03030), new THREE.CylinderGeometry(0.035, 0.035, 0.002, 12), { pos: V(0.05, 0.006, 0.09) });
+	b.add('feather', mat('permit_feather', 0x2fb84a), new THREE.BoxGeometry(0.02, 0.002, 0.1), { pos: V(-0.04, 0.006, -0.05), rot: [0, 0.5, 0] });
+	return b.build();
+}
+
+// The bag of birdseed (0.18 x 0.22 x 0.12 m): a small paper sack, folded at the top, with a yellow bird on it.
+export function buildCarwashBirdseed() {
+	const b = new Builder('carwash_birdseed');
+	b.add('bag', mat('seed_paper', 0xc8a870), new THREE.BoxGeometry(0.18, 0.2, 0.12), { pos: V(0, 0.1, 0) });
+	b.add('fold', mat('seed_paper', 0xc8a870), new THREE.BoxGeometry(0.18, 0.03, 0.08), { pos: V(0, 0.21, 0) });
+	b.add('bird', mat('seed_bird', 0xf2d020), ellipsoid(0.03, 0.025, 0.005, 8, 4), { pos: V(0, 0.11, 0.061) });
+	return b.build();
+}
+
 export const models = {
 	wash_brush: buildWashBrush, wash_jets: buildWashJets, wash_blower: buildWashBlower, token_machine: buildTokenMachine,
 	vacuum_column: buildVacuumColumn, inflatable_man: buildInflatableMan, carwash_boiler: buildCarwashBoiler,
@@ -311,7 +350,8 @@ export const models = {
 	carwash_car_papers: buildCarwashCarPapers, carwash_shampoo_box: buildCarwashShampooBox,
 	carwash_rolled_painting: buildCarwashRolledPainting, carwash_museum_plan: buildCarwashMuseumPlan,
 	carwash_cutter: buildCarwashCutter, carwash_coin_sack: buildCarwashCoinSack, carwash_meter_key: buildCarwashMeterKey,
-	carwash_fake_tokens: buildCarwashFakeTokens,
+	carwash_fake_tokens: buildCarwashFakeTokens, carwash_parrot_cage: buildCarwashParrotCage,
+	carwash_export_permit: buildCarwashExportPermit, carwash_birdseed: buildCarwashBirdseed,
 };
 
 export const views = {
@@ -328,6 +368,8 @@ export const views = {
 			{ name: 'carwash_rolled_painting', pos: [-2.6, 0, 3.8] }, { name: 'carwash_museum_plan', pos: [1.2, 0, 3.9] },
 			{ name: 'carwash_cutter', pos: [1.6, 0, 3.6] }, { name: 'carwash_coin_sack', pos: [-3.4, 0, 3.0] },
 			{ name: 'carwash_meter_key', pos: [2.4, 0, 3.8] }, { name: 'carwash_fake_tokens', pos: [3.4, 0, 3.4] },
+			{ name: 'carwash_parrot_cage', pos: [-4.0, 0, 2.0] }, { name: 'carwash_export_permit', pos: [0.0, 0, 4.2] },
+			{ name: 'carwash_birdseed', pos: [4.0, 0, 2.6] },
 		],
 		cam: { pos: [0, 2.6, 9.0], target: [0, 1.5, 0], fov: 45 },
 	},

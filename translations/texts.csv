@@ -5712,3 +5712,13 @@ POMPITA_CLUE_meter_coins,"Vi a Don Chorro esconder algo %s. Y la máquina de fic
 CLUE_TOKEN_SPIT,"La máquina de fichas escupió una ficha sola. Está tan llena que no le entra nada más.","The token machine spat out a token on its own. It's so full nothing else fits.","A máquina de fichas cuspiu uma ficha sozinha. Está tão cheia que não cabe mais nada."
 CARWASH_CLINK,¡Clinc!,Clink!,Plim!
 CARWASH_VACUUM_CLINK,"Clinc, clinc...","Clink, clink...","Plim, plim..."
+BRIEF_SMUGGLED_PARROT_B,"Don Chorro tiene escondido un loro de contrabando y espera al comprador. Lo traen y lo llevan en los autos que lava.","Don Chorro has a smuggled parrot hidden away and is waiting for the buyer. They move it in the cars he washes.","O Don Chorro tem um papagaio contrabandeado escondido e espera o comprador. Levam e trazem nos carros que ele lava."
+BRIEF_SMUGGLED_PARROT_C,"Traigan la jaula con el loro en el baúl del patrullero. Con cuidado: es la prueba y además es un loro.","Bring the cage with the parrot in the patrol car's trunk. Carefully: it's the evidence, and it's also a parrot.","Tragam a gaiola com o papagaio no porta-malas da viatura. Com cuidado: é a prova e, além disso, é um papagaio."
+BRIEF_SMUGGLED_PARROT_D,"Si encuentran el permiso de exportación trucho o la bolsa de alpiste, mejor: todo suma.","If you find the fake export permit or the bag of birdseed, even better: it all counts.","Se acharem a licença de exportação falsa ou o saco de alpiste, melhor: tudo conta."
+OBJ_FIND_PARROT_CAGE,Llevarse la jaula con el loro de contrabando,Take the cage with the smuggled parrot,Levar a gaiola com o papagaio contrabandeado
+OBJ_EXTRA_EXPORT_PERMIT,Extra: el permiso de exportación trucho,Extra: the fake export permit,Extra: a licença de exportação falsa
+OBJ_EXTRA_BIRDSEED,Extra: la bolsa de alpiste,Extra: the bag of birdseed,Extra: o saco de alpiste
+POMPITA_CLUE_smuggled_parrot,"Vi a Don Chorro esconder algo %s. Y a veces lo oigo hablar solo... pero Don Chorro está en otro lado.","I saw Don Chorro hide something %s. And sometimes I hear him talking to himself... but Don Chorro is somewhere else.","Vi o Don Chorro esconder algo %s. E às vezes ouço ele falando sozinho... mas o Don Chorro está em outro lugar."
+PARROT_PREMIUM,¡Lavado premium!,Premium wash!,Lavagem premium!
+PARROT_SAYS,"¡Crrraaa! %s","Squaaawk! %s","Crrraaa! %s"
+CLUE_PARROT_PREMIUM,"Desde un escondite alguien grita «¡Lavado premium!» con voz de pájaro. Los escondites no hablan.","Someone in a hiding place squawks «Premium wash!» in a bird's voice. Hiding places don't talk.","De um esconderijo alguém grita «Lavagem premium!» com voz de pássaro. Esconderijos não falam."
