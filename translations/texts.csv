@@ -5588,3 +5588,18 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+PLACE_DENTIST,Consultorio Dental Sonrisa Total,Total Smile Dental Office,Consultório Dentário Sorriso Total
+MENU_DENTIST_RAID,Dentista (allanamiento) (prueba),Dentist (raid) (test),Dentista (batida) (teste)
+CASE_FAILED_LAWYER_DENTIST,El doctor Molina llamó al abogado del consultorio. Caso perdido.,Dr. Molina called the dental office's lawyer. Case lost.,O doutor Molina ligou para o advogado do consultório. Caso perdido.
+LOC_dentist_under_chair_1,debajo del sillón del consultorio 1,under the chair in consulting room 1,debaixo da cadeira do consultório 1
+LOC_dentist_under_chair_2,debajo del sillón del consultorio 2,under the chair in consulting room 2,debaixo da cadeira do consultório 2
+LOC_dentist_behind_fish_tank,detrás de la pecera,behind the fish tank,atrás do aquário
+LOC_dentist_under_reception,debajo de la recepción,under the reception desk,debaixo da recepção
+LOC_dentist_in_storeroom,en el depósito,in the storeroom,no depósito
+LOC_dentist_under_lab_table,debajo de la mesa del laboratorio,under the lab table,debaixo da mesa do laboratório
+LOC_dentist_in_cupboard_1,en el armario del consultorio 1,in the cupboard in consulting room 1,no armário do consultório 1
+LOC_dentist_in_cupboard_2,en el armario del consultorio 2,in the cupboard in consulting room 2,no armário do consultório 2
+LOC_dentist_in_kiln,en el horno del laboratorio,in the lab's kiln,no forno do laboratório
+LOC_dentist_in_magazine_rack,en el revistero,in the magazine rack,no porta-revistas
+LOC_dentist_on_office_desk,en el escritorio del doctor,on the doctor's desk,na mesa do doutor
+LOC_dentist_on_office_shelf,en el estante de la oficina,on the office shelf,na estante do escritório
