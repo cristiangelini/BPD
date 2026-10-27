@@ -24,6 +24,8 @@ var saw := ""
 var reading := false
 ## The story was read to the end.
 var heard := false
+## Woke up scared in the blackout: he only wants his mom.
+var scared := false
 var _reader: Cop
 var _story_left := 0.0
 
@@ -55,11 +57,14 @@ func _ready() -> void:
 func prompt_key(_cop: Cop) -> String:
 	if reading:
 		return "PROMPT_KID_LISTENING"
-	return "PROMPT_KID_STORY" if case and not heard else "PROMPT_KID"
+	return "PROMPT_KID_STORY" if case and not heard and not scared else "PROMPT_KID"
 
 
 func use(cop: Cop) -> void:
 	if reading:
+		return
+	if scared:
+		say("KID_SCARED")
 		return
 	if case and not heard:
 		reading = true
@@ -79,6 +84,17 @@ func interrupt() -> void:
 	reading = false
 	if _reader:
 		_reader.show_hint("HINT_KID_STORY_STOPPED")
+
+
+## The blackout woke him up scared (LibraryNoise.blackout): if nobody read him his story yet, he won't tell anything.
+func scare() -> void:
+	if heard or scared:
+		return
+	interrupt()
+	scared = true
+	say("KID_SCARED")
+	if knows and case:
+		case.ruin("witness")
 
 
 ## The end of the story: he says what he saw, or just asks for another one.
