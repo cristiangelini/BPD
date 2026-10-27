@@ -197,6 +197,12 @@ Mientras tanto se avanza con lo recomendado.
    - **La pintura que brilla:** cuenta como pista al ver la de cualquier guía que la tenga.
    - El taburete con las bolsas de evidencia está junto a la puerta.
    - Capturas: `planetario/paso6-pisada.png`, `paso6-cabina.png` y `paso6-casco.png`.
-   - **Falta (6b):** Doña Nebulosa y el café.
+   **Hecho así (6b):** Doña Nebulosa (`PlanetariumSleeper`) es la testigo.
+   - En el hall hay una máquina de café y una mesita con dos cafés.
+   - Con un café en la mano, E la despierta: toma el café y cuenta el planeta del prendedor del culpable ("como mi
+     ensaladera"), si es la testigo del caso.
+   - Sin café, la primera E da una pista. La segunda la sacude.
+   - Sacudida, con un grito a menos de 15 m o con una linterna en la cara, se ofende y se vuelve a dormir para siempre.
+   - Capturas: `planetario/paso6b-cafe.png` y `planetario/paso6b-nebulosa.png`.
 7. El final: tablero, cansancio, sueldo y la combi con los planetas inflables.
 8. El sorteo de "Jugar" y el online.
