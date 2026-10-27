@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Mystery mansion, step 7: Play draws the mansion among the crime scenes, a quarter of them.
 - Mystery mansion, step 6: half the time the accused culprit runs off on foot, out the garden door and through the hedge maze trying every turn; reach them and they're caught, but out the gate or after 90 s they got away.
 - Mystery mansion, step 5c: what was stolen is hidden, by the seed, among the capes on the hall's coat rack, under the piano's lid or in the dusty trunk at the dead end of the bookcase's passage; E searches each and finding it adds 100.
 - Mystery mansion, step 5b: the six clues: the prints on the safe's open door (touch it first and they're yours), the footprint in one passage's dust (step on it and it's gone), a hair on the armour (push it over with E and it crashes down), a bitten chocolate on the dining table, the bell that rang at midnight (ask Ceferino twice; pulling any of the six bell cords mixes the board up) and Lorenzo, who tells for a chocolate and never again if you shout near him.
