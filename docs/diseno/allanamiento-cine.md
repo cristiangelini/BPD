@@ -138,3 +138,8 @@ suman entre 400 y 600.
   espectadores gritan "¡Aaaah!". Detrás de la pantalla, en la punta este, un parlante hace "uuuuh..." (se lee a través de
   las paredes, es un sonido): acercarse a menos de 2 m da la pista propia, una vez. Capturas `paso6-fantasma.png`,
   `paso6-parlante.png` y los modelos de las historias en `paso6-modelos.png`.
+- **Paso 6c (las entradas truchas):** la imprenta de entradas (10 kg, $1000, en un lugar donde entra) con el sello de
+  "función agotada" ($300) y el talonario trucho ($200). La boletería dice "AGOTADO" en rojo, con la sala casi vacía.
+  Dos vecinos más se sientan uno al lado del otro (par libre sorteado con la semilla) y discuten cada 3 s ("¡Esta butaca
+  es mía!", "¡No, es mía, acá dice!"...); con E muestran la entrada repetida, y acercarse a menos de 2 m da la pista
+  propia, una vez. Capturas `paso6-butaca.png` y `paso6-agotado.png`.
