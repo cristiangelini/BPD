@@ -5108,6 +5108,14 @@ TRIAL_JUDGE_SUSTAINED_0,"Ha lugar. Esa pregunta no cuenta. Siguiente.","Sustaine
 TRIAL_JUDGE_SUSTAINED_1,"Bueno, bueno, no grite. Paso a otra cosa.","Fine, fine, no need to shout. Moving on.","Tá bom, tá bom, não grite. Vamos para outra."
 TRIAL_JUDGE_INNOCENT,"Todo coincide... más o menos. ¡Inocentes! Pueden irse.","Everything matches... more or less. Innocent! You may go.","Tudo confere... mais ou menos. Inocentes! Podem ir."
 TRIAL_GUARD_FREE,"Ya escucharon a la jueza. Afuera, y no vuelvan.","You heard the judge. Out, and don't come back.","Vocês ouviram a juíza. Para fora, e não voltem."
+TRAIN_STATION_1,Villa Bostezo,Yawnville,Vila Bocejo
+TRAIN_STATION_2,Paso del Medio,Halfway Pass,Passo do Meio
+TRAIN_STATION_3,Las Vacas,The Cows,As Vacas
+TRAIN_STATION_4,Fin del Mundo Chico,Little World's End,Fim do Mundo Pequeno
+TRAIN_STATION_5,Gran Convención,Grand Convention,Grande Convenção
+TRAIN_NEXT_STATION,Próxima: %s (%d s),Next: %s (%d s),Próxima: %s (%d s)
+TRAIN_AT_STATION,Estación: %s,Station: %s,Estação: %s
+TRAIN_LAST_STOP,Última estación: todos abajo,End of the line: everybody off,Última estação: todos para fora
 BRIEF_SPY_TELESCOPE_B,"El señor Bellini mira las estrellas todas las noches, pero su telescopio apunta abajo: a la bóveda del banco de enfrente.","Mr. Bellini watches the stars every night, but his telescope points down: at the vault of the bank across the street.","O senhor Bellini olha as estrelas toda noite, mas o telescópio dele aponta para baixo: para o cofre do banco da frente."
 BRIEF_SPY_TELESCOPE_C,"Traigan el telescopio al patrullero. Pesa 35 kilos y es frágil: entre dos, con cuidado. Entra en el ascensor.","Bring the telescope to the patrol car. It weighs 35 kilos and it's fragile: two of you, carefully. It fits in the elevator.","Tragam o telescópio para a viatura. Pesa 35 quilos e é frágil: entre dois, com cuidado. Cabe no elevador."
 BRIEF_SPY_TELESCOPE_D,"Si encuentran la libreta con la clave o los binoculares, mejor: todo suma.","If you find the notebook with the code or the binoculars, even better: it all counts.","Se encontrarem a caderneta com a senha ou o binóculo, melhor: tudo conta."
