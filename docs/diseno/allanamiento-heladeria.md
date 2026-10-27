@@ -93,6 +93,11 @@ entre 400 y 600. El bloque de hielo es la cosa más pesada (8 kg): conviene llev
    la puerta y se va; el dispensador de conos (`ConeDispenser`) está en la mesa de la caja y pone un `IceCone` en las
    manos vacías. El caso le da `clue` y `clue_speech` en el paso 5. Capturas `heladeria/paso4-*.png`.
 5. El caso (RaidCase) con la primera historia: los sabores robados.
+   **Hecho (paso 5):** la heladería es un `RaidCase` como la radio: 3 sospechas entre las 6 historias, la denuncia
+   vaga, lo escondido sorteado con la semilla (lo pesado solo en escondites pesados), lo que se le escapa a doña Nieve
+   y lo que vio Lucho (por un cono). Los sabores robados (`StolenFlavorsRig`): la caja de recetas (4 kg, 1000), el
+   frasco del ingrediente secreto y la foto de la otra heladería; el cartel "Igualito al de Enfrente" sobre la vitrina
+   (con E es la pista) y cada 40 s ofrece el sabor nuevo. Si se escapa, huye en auto. Capturas `heladeria/paso5-*.png`.
 6. Las otras 5 historias, una por PR.
 7. "Jugar" suma la heladería al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online (doña Nieve, Lucho, las tapas, los charcos y lo frágil en todas las PC).

@@ -49,6 +49,9 @@ func test_the_shop_stands_on_its_lot() -> void:
 func test_the_spots_hold_something_dropped_on_them() -> void:
 	var shop := _shop()
 	await wait_physics_frames(2)
+	for item: Evidence in shop.hidden:
+		item.freeze = true
+		item.position = Vector3(0, -20, 0)
 	var props: Array[Grabbable] = []
 	for spot: Dictionary in IceCreamShop.SPOTS:
 		props.append(_prop(shop, spot.at + Vector3(0, 0.3, 0), Vector3.ZERO))
