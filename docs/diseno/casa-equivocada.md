@@ -147,6 +147,17 @@ valores siguen la escala del bingo: la principal unos 1000, los extras entre 300
     un adorno de esa casa enseguida y otro cada 0,5 s (20 en total, multas; en la de doña Chola, al doble; afuera, ninguno).
     Extras: las mechas (150) y el plano de la fiesta (300). Pista propia: la cortina quemada de la ventana del frente.
   Capturas en `/mnt/project-files/casa-equivocada/paso6-*.png`.
+- **Paso 7 (las cartas y el perfume):**
+  - **Las cartas:** la bolsa de cartas robadas (10 kg, 1000) y el álbum de estampillas raras (400), escondidos. Pista
+    propia: sobres abiertos en un tacho junto a su buzón. Si un policía le habla al cartero con la bolsa a menos de
+    2,5 m, Don Sobre la reconoce, pide que se la devuelvan **cuando cierren el caso** y dice dónde están las
+    estampillas ("en el lavarropas"). Esa línea va a la planilla. Cambio con el doc: el cartero no se queda con la
+    bolsa, porque es la evidencia principal y sin ella no hay caso.
+  - **El perfume:** el bidón (12 kg, 1000, frágil: cualquier golpe de más de 1,5 m/s le baja el valor), las
+    etiquetas falsas (300) y el frasco de muestra (100, frágil). Pista propia: líneas de olor por el pasillo de su casa,
+    que solo se ven con la linterna (la primera vez van a la planilla). El que agarra el bidón o el frasco cuando se
+    golpea queda 30 s oliendo, y los 3 perros de la vereda lo siguen y se le ponen alrededor.
+  Capturas en `/mnt/project-files/casa-equivocada/paso7-*.png`.
 
 ## Preguntas para Cristian
 1. **¿Entrar en la casa equivocada se puede o termina el caso?** Recomendado: se puede, y es el chiste: doña Chola
