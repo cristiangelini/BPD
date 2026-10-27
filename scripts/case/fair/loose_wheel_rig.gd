@@ -1,10 +1,10 @@
 class_name LooseWheelRig
 extends FairRig
 
-## The unchecked Ferris wheel (allanamiento-parque.md, "La vuelta al mundo sin control"): Don Tómbola never had the wheel
-## inspected, he took nuts off it to sell them and signed the safety certificate himself. The fake certificate is the
-## main evidence, hidden with the bag of nuts and the inspector's stamp. Loose nuts lie on the ground in front of the
-## wheel, and the first one a cop picks up is the story's own clue (on the checklist). Each turn of the crank shakes
+## The unchecked Ferris wheel (allanamiento-parque.md, "La vuelta al mundo sin control"): Don Tómbola never had the
+## wheel inspected, he took nuts off it to sell them and signed the safety certificate himself. The fake certificate is
+## the main evidence, hidden with the bag of nuts and the inspector's stamp. Loose nuts lie on the ground in front of
+## the wheel, and the first one a cop picks up is the story's own clue (on the checklist). Each turn of the crank shakes
 ## the wheel and drops another nut. Every number here is (propuesta).
 
 const NUT_MODEL := preload("res://assets/models/fair_nut.glb")
