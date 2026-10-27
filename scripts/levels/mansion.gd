@@ -101,6 +101,16 @@ const BOARD_AT := Transform3D(Basis(Vector3.UP, PI / 2), Vector3(-HALF_X + 0.2, 
 const STAMP_AT := Vector3(-14.5, 0, 0.0)
 ## What was stolen, drawn with the case seed: doña Clotilde's will, the Snoring Diamond or the Flan Recipe.
 const LOOTS: Array[String] = ["will", "diamond", "recipe"]
+const LOOT_MODELS := {
+	"will": preload("res://assets/models/mansion_will.glb"),
+	"diamond": preload("res://assets/models/snoring_diamond.glb"),
+	"recipe": preload("res://assets/models/flan_recipe.glb"),
+}
+## Where it's hidden, drawn with the seed (step 5c): among the capes on the hall's coat rack, under the piano's lid or
+## in the dusty trunk at the dead end of the bookcase's passage (TRUNK_AT).
+const LOOT_SPOTS: Array[String] = ["coat_rack", "piano", "trunk"]
+const TRUNK_AT := Vector3(LIBRARY_X, 0, MIDDLE_Z - 1.5)
+const TRUNK := preload("res://assets/models/dusty_trunk.glb")
 ## Out front, the gravel drive where the patrol car stops; out the back, the hedge maze (MAZE_CELLS cells of
 ## MAZE_CELL m, one of them its way in by the back door and one its gate at the far end).
 const DRIVE_Z := 17.0
@@ -147,6 +157,9 @@ var case: CrimeSceneCase
 var loot := ""
 var loot_found := false
 var clues: MansionClues
+var loot_spot := ""
+## Each hiding spot's LootSpot, by name.
+var loot_spots := {}
 var _move_left := MOVE_EVERY
 var _move_rng := RandomNumberGenerator.new()
 var _builder: PlaceBuilder
@@ -169,6 +182,7 @@ func _ready() -> void:
 	_passages()
 	_maze()
 	_people()
+	_loot_spots()
 
 
 ## Which room a point in the world is in ("" if none).
@@ -461,11 +475,12 @@ func _people() -> void:
 	add_child(chocolates)
 
 
-## Draws what was stolen and tells the members about the case (each part of a file they give goes to it); then the
+## Draws what was stolen and where it's hidden, and tells the members about the case (each part of a file they give goes to it); then the
 ## clues go where they go (MansionClues).
 func set_up_case(new_case: CrimeSceneCase) -> void:
 	case = new_case
 	loot = LOOTS[hash(["mansion loot", case.case_seed]) % LOOTS.size()]
+	loot_spot = LOOT_SPOTS[hash(["mansion loot spot", case.case_seed]) % LOOT_SPOTS.size()]
 	for member in members:
 		member.part_given.connect(case.guard_part)
 	clues = MansionClues.new()
@@ -473,6 +488,59 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	clues.mansion = self
 	clues.case = case
 	add_child(clues)
+
+
+## Searching a spot: the stolen thing turns up in the right one; a sign of nothing in the others.
+func search(spot: String, cop: Cop) -> void:
+	if spot != loot_spot or loot_found or not case:
+		if cop:
+			cop.show_hint("HINT_SEARCH_NOTHING_" + spot)
+		return
+	reveal_loot()
+
+
+## What was stolen comes out of its hiding spot, on the floor in front of it, and the case notes it.
+func reveal_loot() -> void:
+	if loot_found:
+		return
+	loot_found = true
+	var item: Node3D = LOOT_MODELS[loot].instantiate()
+	item.name = "Loot"
+	add_child(item)
+	var spot := loot_spots[loot_spot] as Node3D
+	var out: Vector3 = spot.get_meta("out")
+	item.position = Vector3(spot.position.x, FLOOR_TOP, spot.position.z) + out * 0.7
+	item.rotation.y = atan2(out.x, out.z)
+	if case:
+		case.found_loot()
+
+
+## The three hiding spots: the coat rack (with the club's spare capes on it), the piano and the dusty trunk.
+func _loot_spots() -> void:
+	var cape := BoxMesh.new()
+	cape.size = Vector3(0.3, 0.8, 0.05)
+	for i in 3:
+		var turn := i * TAU / 3
+		var at := COAT_RACK_AT + Vector3(sin(turn) * 0.12, 1.25, cos(turn) * 0.12)
+		_builder.mesh(cape, at, Color(0.6, 0.45, 0.25).darkened(i * 0.12), Vector3(0, turn, 0))
+	_loot_spot("coat_rack", COAT_RACK_AT + Vector3(0.15, 1.2, 0), Vector3(0.3, 1.2, 0.6), Vector3.RIGHT)
+	_loot_spot("piano", PIANO_AT + Vector3(0, 1.05, 0), Vector3(1.6, 0.1, 1.2), Vector3.FORWARD)
+	var trunk := TRUNK.instantiate()
+	trunk.name = "Trunk"
+	trunk.position = TRUNK_AT + Vector3(0, FLOOR_TOP, 0)
+	add_child(trunk)
+	_loot_spot("trunk", TRUNK_AT + Vector3(0, 0.4, 0), Vector3(0.62, 0.7, 0.9), Vector3.FORWARD)
+
+
+func _loot_spot(spot: String, at: Vector3, size: Vector3, out: Vector3) -> void:
+	var body := LootSpot.new(size)
+	body.name = "Search_" + spot
+	body.spot = spot
+	body.place = self
+	body.position = at
+	body.set_meta("out", out)
+	add_child(body)
+	loot_spots[spot] = body
 
 
 ## The member by index (the order of the case's traits).

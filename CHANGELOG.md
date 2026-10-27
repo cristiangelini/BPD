@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Mystery mansion, step 5c: what was stolen is hidden, by the seed, among the capes on the hall's coat rack, under the piano's lid or in the dusty trunk at the dead end of the bookcase's passage; E searches each and finding it adds 100.
 - Mystery mansion, step 5b: the six clues: the prints on the safe's open door (touch it first and they're yours), the footprint in one passage's dust (step on it and it's gone), a hair on the armour (push it over with E and it crashes down), a bitten chocolate on the dining table, the bell that rang at midnight (ask Ceferino twice; pulling any of the six bell cords mixes the board up) and Lorenzo, who tells for a chocolate and never again if you shout near him.
 - Mystery mansion, step 5a: the case: the comisario names what was stolen at midnight (the will, the Snoring Diamond or the Flan Recipe, by the seed), the members are the suspects and what they give goes to their files on the board, now on the library's west wall with its stamp; the six clues' lines are ready for the planilla and the accused culprit goes to the next interrogation.
 - Mystery mansion, step 4: the members' files: their alibi and then the cap with empty hands (one won't take it off until they get a chocolate), a chocolate from doña Clotilde's box on the dining table for their teeth, the flash for their photo and the print kit for their prints; every 60 s one member walks through a secret passage to the room at its other end, so they're never where you left them.

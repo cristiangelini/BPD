@@ -16,8 +16,8 @@ El comisario lo cuenta por la radio del patrullero, cuando llegan a la puerta (l
 
 Lo robado sale con la semilla entre tres **(propuesta, pregunta 1)**: **el Testamento** (un sobre lacrado con cinta
 roja), **el Diamante Ronquido** (un diamante del tamaño de un huevo en su estuche) o **la Receta del Flan** (una tarjeta
-amarillenta que el club se pelea hace cuarenta años). Está escondido en la mansión (la semilla elige: en un pasadizo,
-en la capa colgada del culpable, en el perchero del hall, o dentro del reloj de pie). Encontrarlo no resuelve el caso,
+amarillenta que el club se pelea hace cuarenta años). Está escondido en la mansión (la semilla elige: entre las capas
+del perchero del hall, bajo la tapa del piano o en el baúl polvoriento del fondo del pasadizo de la estantería). Encontrarlo no resuelve el caso,
 pero suma 100 al sueldo y, si el culpable huye, se lo lleva si nadie lo encontró antes.
 
 ## El lugar
@@ -154,6 +154,10 @@ para el interrogatorio. Los modelos nuevos salen de `tools/modelgen` (low poly).
    se le pregunta dos veces: primero dice que fue él y después qué campanilla sonó. A Lorenzo se le da un bombón de la
    caja (no una galletita, para no sumar otra cosa) y un grito cerca lo ofende para siempre. Dónde está lo robado, en
    5c. Capturas en `escena-mansion/paso5b-*.png` **(propuesta)**.
+   Hecho así (5c): lo robado se esconde, según la semilla, entre las capas del perchero, bajo la tapa del piano o en el
+   baúl del pasadizo de la estantería. E revisa cada escondite y en los otros dos no hay nada. Al encontrarlo, el
+   testamento, el diamante o la receta aparece delante del escondite y suma 100. Lo descarté dentro del reloj porque
+   la E del reloj ya abre el pasadizo. Capturas en `escena-mansion/paso5c-*.png` **(propuesta)**.
 6. El final: la huida por el laberinto, el cansancio y el sueldo.
 7. "Jugar" sortea la mansión entre los lugares.
 8. Online: los socios, doña Clotilde, el loro y los pasadizos iguales en todas las PCs.
