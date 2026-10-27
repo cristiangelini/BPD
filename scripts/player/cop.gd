@@ -236,11 +236,12 @@ func is_staggered() -> bool:
 	return _stagger_left > 0.0
 
 
-## Eats something for `seconds`: lets go of what it holds and can't grab until done.
-func eat(seconds: float) -> void:
+## Eats something for `seconds`: lets go of what it holds and can't grab until done. Laughing gas does the same, with
+## its own hint.
+func eat(seconds: float, hint := "HINT_EATING") -> void:
 	$Grabber.release()
 	_eating_left = maxf(_eating_left, seconds)
-	show_hint("HINT_EATING")
+	show_hint(hint)
 
 
 func is_eating() -> bool:

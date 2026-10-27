@@ -5625,3 +5625,14 @@ MOLINA_LAWYER,"¡Llamo a mi abogado! Es paciente mío, me debe una muela.","I'm 
 MOLINA_MOLD,"¡Mis moldes! ¡Eran sonrisas únicas!","My molds! Those were one-of-a-kind smiles!","Meus moldes! Eram sorrisos únicos!"
 MOLINA_CHAIR,"¡Bájese de mi sillón! ¡Eso no es estéril!","Get off my chair! That's not sterile!","Desça da minha cadeira! Isso não é estéril!"
 MOLINA_TANK,"¡Mi pecera! ¡Los peces eran lo único que sonreía aquí!","My fish tank! The fish were the only ones smiling here!","Meu aquário! Os peixes eram os únicos que sorriam aqui!"
+HINT_LAUGHING_GAS,"¡Jajaja! El gas de la risa no te deja agarrar nada.","Ha ha ha! The laughing gas won't let you grab anything.","Hahaha! O gás do riso não deixa você pegar nada."
+PROMPT_LUCHO,E: hablar con Lucho,E: talk to Lucho,E: falar com o Lucho
+PROMPT_LUCHO_CANDY,E: darle el caramelo a Lucho,E: give Lucho the candy,E: dar a bala para o Lucho
+LUCHO_IDLE_1,"Llevo tres horas esperando. Ya me sé todas las revistas.","I've been waiting three hours. I know every magazine by heart.","Estou esperando há três horas. Já sei todas as revistas de cor."
+LUCHO_IDLE_2,"Mis brackets brillan en la oscuridad. Mira. Bueno, ahora no se nota.","My braces glow in the dark. Look. Well, you can't tell now.","Meu aparelho brilha no escuro. Olha. Bom, agora não dá pra ver."
+LUCHO_IDLE_3,"Ese frasco de caramelos es solo de adorno. Qué crueldad.","That candy jar is just for show. How cruel.","Esse pote de balas é só enfeite. Que crueldade."
+LUCHO_WANTS_CANDY,"No hablo con policías… salvo que traigan un caramelo del frasco.","I don't talk to cops… unless they bring a candy from the jar.","Não falo com policiais… a não ser que tragam uma bala do pote."
+LUCHO_AGAIN,"Ya te conté todo. Bueno, por otro caramelo te cuento un chiste.","I already told you everything. Well, for another candy I'll tell you a joke.","Já te contei tudo. Bom, por outra bala te conto uma piada."
+LUCHO_THANKS,"¡Gracias! ¿Qué le dijo un diente al otro? Nada, los dientes no hablan.","Thanks! What did one tooth say to the other? Nothing, teeth don't talk.","Valeu! O que um dente disse pro outro? Nada, dente não fala."
+LUCHO_NOTHING,"Mmm, rico. No vi nada raro, pero gracias igual.","Mmm, yummy. I didn't see anything weird, but thanks anyway.","Hum, gostoso. Não vi nada estranho, mas obrigado mesmo assim."
+MOLINA_CANDY,"¡Nada de caramelos en mi consultorio! ¿Saben lo que cuestan unos brackets?","No candy in my office! Do you know what braces cost?","Nada de balas no meu consultório! Sabem quanto custa um aparelho?"

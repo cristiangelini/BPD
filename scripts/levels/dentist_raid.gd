@@ -10,16 +10,18 @@ extends Node3D
 ## counts. SPOTS are the 12 hiding spots the stories draw from (step 5). Dr. Molina walks the corridor (step 3): he
 ## fills the complaint ("¡Eso no es estéril!") with every mold he sees break and every cop he sees up on one of his
 ## chairs, and the next-patient bell on the reception sends him to consulting room 1 with his back to the door.
+## Lucho waits in the waiting room and talks for a candy from the jar (step 4), and the gas tanks in the consulting
+## rooms leak laughing gas when knocked over.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const CHAIR_MODEL := preload("res://assets/models/dentist_chair.glb")
 const TANK_MODEL := preload("res://assets/models/fish_tank.glb")
-const GAS_MODEL := preload("res://assets/models/gas_tank.glb")
 const CABINET_MODEL := preload("res://assets/models/mold_cabinet.glb")
 const MOLD_MODEL := preload("res://assets/models/denture_mold.glb")
 const XRAY_MODEL := preload("res://assets/models/xray_lightbox.glb")
 const JAR_MODEL := preload("res://assets/models/candy_jar.glb")
+const CANDY_MODEL := preload("res://assets/models/candy_pop.glb")
 const MOLINA_SCENE := preload("res://scenes/npc/dentist_molina.tscn")
 const HALF_X := 11.0
 const HALF_Z := 8.0
@@ -75,6 +77,12 @@ const PATIENT_SPOT := Vector3(-7.7, FLOOR_TOP, -2.3)
 ## Seeing a mold break, and a cop up on one of his chairs.
 const SAW_MOLD := 2.0
 const SAW_IN_CHAIR := 10.0
+## Seeing Lucho get a candy (he has them forbidden).
+const SAW_CANDY := 5.0
+## The candies in the reception's jar, and where Lucho waits (by the seats, facing the reception).
+const CANDIES := 4
+const JAR_AT := RECEPTION_AT + Vector3(-0.8, RECEPTION_SIZE.y, 0.1)
+const LUCHO_AT := Vector3(-3.0, FLOOR_TOP, 6.6)
 ## Up on a chair: over its seat (from its middle, across and back to front) and higher than this.
 const SEAT := Vector2(0.5, 1.0)
 const SEAT_HEIGHT := 0.5
@@ -116,6 +124,9 @@ var fines := 0
 var molina: FloorBoss
 var bell: NextPatientBell
 var complaint_bar: ProgressBar
+var lucho: DentistKid
+var candies: Array[Grabbable] = []
+var gas_tanks: Array[LaughingGasTank] = []
 ## Cops Dr. Molina already saw up on a chair (until they get down).
 var _seen_in_chair := {}
 var _build: PlaceBuilder
@@ -134,6 +145,7 @@ func _ready() -> void:
 	_place_molds()
 	storeroom_door = _door(Vector3(STOREROOM_DOOR_X, FLOOR_TOP, STOREROOM_Z))
 	_place_molina()
+	_place_lucho()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("dentist")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -215,7 +227,7 @@ func _build_waiting_room() -> void:
 	var doors: Array = [-6.0, 0.0, 6.0].map(func(x: float) -> Vector3: return Vector3(x, OPENING_WIDTH * 1.5, 2.4))
 	_wall("x", WAITING_Z, -HALF_X, HALF_X, doors, TILE)
 	_build.open_box(RECEPTION_AT, RECEPTION_SIZE, "-z", WOOD)
-	_model(JAR_MODEL, RECEPTION_AT + Vector3(-0.8, RECEPTION_SIZE.y, 0.1))
+	_model(JAR_MODEL, JAR_AT)
 	bell = NextPatientBell.new()
 	bell.position = RECEPTION_AT + Vector3(0.9, RECEPTION_SIZE.y, 0.15)
 	add_child(bell)
@@ -255,7 +267,11 @@ func _build_rooms() -> void:
 		_model(CHAIR_MODEL, CHAIRS[i])
 		var chair := _build.body(CHAIRS[i] + Vector3(0, 0.45, -0.3))
 		_build.shape(chair, Vector3(0.7, 0.9, 1.3))
-		_model(GAS_MODEL, GAS_TANKS[i])
+		var tank := LaughingGasTank.new()
+		tank.name = "GasTank%d" % (i + 1)
+		tank.position = GAS_TANKS[i]
+		add_child(tank)
+		gas_tanks.append(tank)
 		_build.open_box(ROOM_CUPBOARDS[i], CUPBOARD_SIZE, "z", TILE.darkened(0.05))
 		_build.light(CHAIRS[i] + Vector3(0, 2.8, 0))
 	_build.light(Vector3(0, 2.9, 2.0))
@@ -334,6 +350,23 @@ func _place_molina() -> void:
 	box.add_child(complaint_bar)
 	add_child(hud)
 	molina.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Lucho by the seats, and the candies in the jar he'd talk for (the doctor minds seeing him get one).
+func _place_lucho() -> void:
+	for i in CANDIES:
+		var candy := ClubEvidence.make_item("Candy%d" % (i + 1), CANDY_MODEL, Vector3(0.05, 0.14, 0.05), 0.02)
+		candy.add_to_group(DentistKid.CANDY_GROUP)
+		(candy.get_child(1) as Node3D).position.y = -0.07
+		candy.position = JAR_AT + Vector3(-0.04 + (i % 2) * 0.08, 0.075, -0.03 + (i / 2) * 0.06)
+		add_child(candy)
+		candies.append(candy)
+	lucho = DentistKid.new()
+	lucho.name = "Lucho"
+	lucho.position = LUCHO_AT
+	lucho.rotation.y = PI
+	add_child(lucho)
+	lucho.ate_candy.connect(func(at: Vector3) -> void: molina.saw(at, SAW_CANDY, "MOLINA_CANDY"))
 
 
 ## Which chair `at` (this scene's space) is up on, or -1.
