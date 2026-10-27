@@ -79,7 +79,9 @@ entre 400 y 600.
      la llave de la oficina; y la oficina al fondo a la derecha con el escritorio. Algo que pega a más de 3 m/s en el
      parabrisas de un auto lo raja (multa de 30, "¡Eso es de un cliente, oficial!"), una vez por auto. 12 escondites,
      6 para cosas pesadas. El botón del elevador pasa al paso 2. `--place=garage` y "Taller (allanamiento) (prueba)"
-     en el menú. Capturas `paso1-*.png` y `garage.png` (modelos).
+     en el menú. El piso de pasto de la ciudad tiene su arriba en la calle, así que el taller le corta el agujero de la
+     fosa (y a las capas planas de encima) para que lo que cae llegue al fondo. Capturas `paso1-*.png` y `garage.png`
+     (modelos).
 2. Don Tuerca: el carrito con ruedas, la ronda, la denuncia, "¡no me toquen los autos!", el timbre y el botón del
    elevador (bajarlo con algo debajo lo aplasta suave, multa de 20).
    - **Hecho así (propuesta):** Don Tuerca es un `FloorBoss` con voz `TUERCA` (mameluco azul con grasa, gorra roja

@@ -55,6 +55,15 @@ func test_the_pit_holds_whatever_falls_in() -> void:
 	assert_almost_eq(prop.global_position.y, Garage.FLOOR_TOP - Garage.PIT_DEPTH + 0.15, 0.1, "on the pit's floor")
 
 
+func test_the_street_s_ground_does_not_cover_the_pit() -> void:
+	var garage := _garage()
+	await wait_physics_frames(2)
+	# Under the car's back end, over the steps: the city's ground (top at the street) used to stop it at 0.15.
+	var prop := _prop(garage, Vector3(Garage.PIT_X, 0.1, -2.6), Vector3.ZERO)
+	await wait_physics_frames(60)
+	assert_lt(prop.global_position.y, -0.2, "down the steps, below the street")
+
+
 func test_something_thrown_hard_at_a_windshield_cracks_it_once() -> void:
 	var garage := _garage()
 	await wait_physics_frames(2)
