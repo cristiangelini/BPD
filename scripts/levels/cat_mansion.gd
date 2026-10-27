@@ -180,7 +180,7 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 func search(spot: String, cop: Cop) -> void:
 	if spot != duchess_spot or duchess_out or not case:
 		if cop:
-			cop.show_hint("HINT_SEARCH_NOTHING_" + spot.get_slice("_", 0))
+			cop.show_hint("HINT_SEARCH_NOTHING_CAT_" + spot.get_slice("_", 0))
 		return
 	duchess_out = true
 	var at := search_spots[spot] as Node3D
