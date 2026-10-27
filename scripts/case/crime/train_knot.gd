@@ -53,9 +53,14 @@ func prompt_key(_cop: Cop) -> String:
 func use(cop: Cop) -> void:
 	if untied:
 		return
-	untied = true
-	_loops.visible = false
+	untie()
 	if is_clue and case and not case.clues_found.has("knot"):
 		case.ruin("knot")
 	elif cop:
 		cop.show_hint("HINT_TRAIN_KNOT_UNTIED")
+
+
+## The rope falls loose (a guest's knot follows the host's).
+func untie() -> void:
+	untied = true
+	_loops.visible = false

@@ -202,8 +202,71 @@ func run_off(index: int) -> bool:
 	if roof_chase:
 		return true
 	roof_chase = TrainRoofChase.begin(self, magicians[index])
+	# Online the host's getaway decides how it ends; a guest's follows it.
+	roof_chase.follower = case.follower
 	roof_chase.ended.connect(case.end_chase)
 	return true
+
+
+## What a guest's train takes from the host's (escena-tren.md, step 6): the clock and the brake, the seats and the
+## stickers after each tunnel, the tickets, the cart's round, the clues' state and the getaway on the roofs.
+func net_state() -> Dictionary:
+	var state := {"time": ride.time, "brake": [brake_left, brake_pulls], "seats": seat_of.duplicate(),
+		"stickers": stickers.duplicate(), "last": last_wearer.duplicate(), "peeled": culprit_peeled,
+		"tickets": tickets.keys()}
+	if clues:
+		state.cart = [cart.position, vendor.position, vendor.rotation.y]
+		state.clues = [clues.showcase.touched, clues.window.open, clues.knot.untied]
+	if roof_chase:
+		state.roof = [roof_chase.runner.position.x, roof_chase.done, roof_chase.doves, roof_chase.dove_at]
+	return state
+
+
+func apply_net_state(state: Dictionary) -> void:
+	ride.time = state.time
+	brake_left = state.brake[0]
+	brake_pulls = state.brake[1]
+	for i in magicians.size():
+		if seat_of[i] != state.seats[i]:
+			seat(i, state.seats[i])
+	last_wearer = (state.last as Dictionary).duplicate()
+	culprit_peeled = state.peeled
+	for magician in magicians:
+		var number := -1
+		for worn: int in state.stickers:
+			if state.stickers[worn] == magician.index:
+				number = worn
+		if number == sticker_of(magician.index):
+			continue
+		if number < 0:
+			drop_sticker(magician)
+		else:
+			stickers.erase(sticker_of(magician.index))
+			stickers[number] = magician.index
+			magician.show_sticker(number)
+	for cop_name: String in state.tickets:
+		tickets[cop_name] = true
+	if state.has("cart"):
+		cart.position = state.cart[0]
+		vendor.position = state.cart[1]
+		vendor.rotation.y = state.cart[2]
+		clues.showcase.touched = state.clues[0]
+		if clues.window.open != state.clues[1]:
+			clues.window.set_open(state.clues[1])
+		if state.clues[2] and not clues.knot.untied:
+			clues.knot.untie()
+	if case:
+		for kind: String in ["hair", "bite"]:
+			if case.ruined.has(kind) and case.items.has(kind):
+				var item: CrimeClueItem = case.items[kind]
+				item.spoiled = true
+				item._eaten_part.visible = false
+		if case.ruined.has("footprint") and clues and clues.footprint and not clues.footprint.wiped:
+			clues.footprint.wipe()
+	if state.has("roof"):
+		if not roof_chase:
+			run_off(case.plan.culprit)
+		roof_chase.follow(state.roof[0], state.roof[1], state.roof[2], state.roof[3])
 
 
 func has_ticket(cop: Cop) -> bool:
