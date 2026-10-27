@@ -91,9 +91,53 @@ export function buildFuses() {
 	return b.build();
 }
 
+// The postman's cousin's bag of stolen letters: a canvas mail sack 0.5 × 0.6 × 0.35, tied at the top, envelopes
+// sticking out. Origin in the middle.
+export function buildLettersBag() {
+	const b = new Builder('letters_bag');
+	b.add('sack', mat('mail_canvas', 0x8a7a5a), ellipsoid(0.25, 0.27, 0.17, 10, 8), { pos: V(0, -0.03, 0) });
+	b.add('sack', mat('mail_canvas', 0x8a7a5a), new THREE.CylinderGeometry(0.05, 0.09, 0.08, 8), { pos: V(0, 0.26, 0) });
+	b.add('tie', mat('mail_rope', 0xd8c890), new THREE.TorusGeometry(0.055, 0.012, 4, 10), { pos: V(0, 0.24, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('stamp', mat('mail_blue', 0x2a4a9a), new THREE.BoxGeometry(0.2, 0.12, 0.005), { pos: V(0, 0.0, 0.17) });
+	b.add('stamp', mat('mail_white', 0xf2ece0), new THREE.BoxGeometry(0.1, 0.03, 0.006), { pos: V(0, 0.0, 0.172) });
+	for (const [x, y, r] of [[-0.1, 0.22, 0.3], [0.08, 0.24, -0.4]]) {
+		b.add('envelopes', mat('mail_white', 0xf2ece0), new THREE.BoxGeometry(0.12, 0.08, 0.005), { pos: V(x, y, 0.02), rot: [0, 0, r] });
+	}
+	return b.build();
+}
+
+// The album of rare stamps: 0.2 × 0.03 × 0.15, red cover with a stamp on it. Origin in the middle.
+export function buildStampAlbum() {
+	const b = new Builder('stamp_album');
+	b.add('album', mat('album_red', 0x9a2a2a), new THREE.BoxGeometry(0.2, 0.03, 0.15), { pos: V(0, 0, 0) });
+	b.add('pages', mat('album_pages', 0xf2ece0), new THREE.BoxGeometry(0.19, 0.022, 0.155), { pos: V(0.004, 0, 0) });
+	b.add('stamp', mat('stamp_face', 0xe8d070), new THREE.BoxGeometry(0.05, 0.004, 0.06), { pos: V(0.02, 0.016, 0) });
+	b.add('stamp', mat('stamp_ink', 0x2a6a4a), new THREE.BoxGeometry(0.03, 0.005, 0.04), { pos: V(0.02, 0.017, 0) });
+	return b.build();
+}
+
+// Madame Aroma's jug of fake perfume: a 0.3 × 0.4 × 0.3 glass jug of pink perfume with a gold cap. Origin in the middle.
+export function buildPerfumeJug() {
+	const b = new Builder('perfume_jug');
+	b.add('jug', mat('perfume_pink', 0xe87ab8, { emissive: 0x2a0a1a }), new THREE.CylinderGeometry(0.15, 0.15, 0.3, 12), { pos: V(0, -0.05, 0) });
+	b.add('jug', mat('perfume_pink', 0xe87ab8, { emissive: 0x2a0a1a }), new THREE.CylinderGeometry(0.05, 0.15, 0.06, 12), { pos: V(0, 0.13, 0) });
+	b.add('cap', mat('perfume_gold', 0xd8b040), new THREE.CylinderGeometry(0.04, 0.04, 0.05, 10), { pos: V(0, 0.18, 0) });
+	b.add('label', mat('perfume_label', 0xf2ece0), new THREE.BoxGeometry(0.14, 0.1, 0.005), { pos: V(0, -0.05, 0.151) });
+	return b.build();
+}
+
+// The sample bottle: a small 0.08 × 0.14 × 0.05 flat bottle with a pump. Origin in the middle.
+export function buildSampleFlask() {
+	const b = new Builder('sample_flask');
+	b.add('flask', mat('perfume_pink', 0xe87ab8, { emissive: 0x2a0a1a }), new THREE.BoxGeometry(0.08, 0.1, 0.05), { pos: V(0, -0.02, 0) });
+	b.add('pump', mat('perfume_gold', 0xd8b040), new THREE.CylinderGeometry(0.012, 0.012, 0.04, 8), { pos: V(0, 0.05, 0) });
+	return b.build();
+}
+
 export const models = {
 	printing_plate: buildPrintingPlate, ink_pot: buildInkPot, fake_bills: buildFakeBills,
 	parrot: buildParrot, bird_cage: buildBirdCage, rocket_box: buildRocketBox, fuses: buildFuses,
+	letters_bag: buildLettersBag, stamp_album: buildStampAlbum, perfume_jug: buildPerfumeJug, sample_flask: buildSampleFlask,
 };
 
 export const views = {
@@ -105,6 +149,11 @@ export const views = {
 	wrong_house_parrot_fireworks: {
 		items: [{ name: 'parrot', pos: [-0.5, 0.17, 0.1], rotY: 0.4 }, { name: 'bird_cage', pos: [-0.05, 0.25, -0.1] },
 			{ name: 'rocket_box', pos: [0.5, 0.15, 0], rotY: -0.3 }, { name: 'fuses', pos: [0.15, 0.02, 0.4] }],
+		cam: { pos: [0, 1.0, 2.0], target: [0, 0.15, 0.05], fov: 38 },
+	},
+	wrong_house_letters_perfume: {
+		items: [{ name: 'letters_bag', pos: [-0.5, 0.3, 0], rotY: 0.3 }, { name: 'stamp_album', pos: [-0.1, 0.015, 0.4], rotY: 0.2 },
+			{ name: 'perfume_jug', pos: [0.3, 0.2, -0.05] }, { name: 'sample_flask', pos: [0.6, 0.07, 0.3], rotY: -0.3 }],
 		cam: { pos: [0, 1.0, 2.0], target: [0, 0.15, 0.05], fov: 38 },
 	},
 };

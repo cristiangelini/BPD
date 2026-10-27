@@ -5605,3 +5605,25 @@ OBJ_EXTRA_PARTY_PLAN,Extra: el plano de la fiesta,Extra: the party plan,Extra: o
 PROMPT_LOOK_BURNS,"E: mirar la cortina","E: look at the curtain","E: olhar a cortina"
 CLUE_WH_BURNS,"La cortina de esta ventana está quemada y huele a pólvora.","This window's curtain is burnt and smells of gunpowder.","A cortina desta janela está queimada e cheira a pólvora."
 HINT_WH_ROCKETS,"¡Se prendieron los cohetes! Cuidado con los adornos.","The rockets went off! Watch the ornaments.","Os rojões dispararam! Cuidado com os enfeites."
+BRIEF_WH_LETTERS_B,"El primo del cartero, el de al lado, se queda con las cartas de toda la cuadra.","The mailman's cousin, next door, keeps the letters of the whole block.","O primo do carteiro, o do lado, fica com as cartas da quadra inteira."
+BRIEF_WH_LETTERS_C,"Traigan la bolsa de cartas robadas en el baúl del patrullero. Pesa: llévenla entre dos.","Bring the bag of stolen letters back in the patrol car's trunk. It's heavy: carry it together.","Tragam a sacola de cartas roubadas no porta-malas da viatura. É pesada: levem em dois."
+BRIEF_WH_LETTERS_D,"Si encuentran las estampillas raras, mejor: valen mucho.","If you find the rare stamps, even better: they're worth a lot.","Se acharem os selos raros, melhor: valem muito."
+OBJ_FIND_WH_LETTERS,"Encontrar la bolsa de cartas robadas","Find the bag of stolen letters","Achar a sacola de cartas roubadas"
+OBJ_EXTRA_STAMPS,Extra: las estampillas raras,Extra: the rare stamps,Extra: os selos raros
+PROMPT_LOOK_BIN,"E: mirar el tacho","E: look in the bin","E: olhar a lixeira"
+CLUE_WH_ENVELOPES,"En el tacho de afuera hay sobres abiertos, todos con direcciones de otras casas.","The bin out front is full of opened envelopes, all addressed to other houses.","Na lixeira da frente há envelopes abertos, todos com endereços de outras casas."
+MAILMAN_BAG,"¡Esas son mis cartas! Devuélvanmelas cuando cierren el caso. Y mi primo guarda unas estampillas raras %s.","Those are my letters! Give them back once the case is closed. And my cousin keeps some rare stamps %s.","Essas são minhas cartas! Devolvam quando fecharem o caso. E meu primo guarda uns selos raros %s."
+WH_SPOT_IN_FRIDGE,en la heladera,in the fridge,na geladeira
+WH_SPOT_IN_BATHTUB,en la bañera,in the bathtub,na banheira
+WH_SPOT_IN_WASHER,en el lavarropas,in the washing machine,na máquina de lavar
+WH_SPOT_UNDER_SOFA,abajo del sillón,under the sofa,embaixo do sofá
+WH_SPOT_ON_COUNTER,arriba de la mesada,on the kitchen counter,em cima da bancada
+WH_SPOT_KITCHEN_FLOOR,en el piso de la cocina,on the kitchen floor,no chão da cozinha
+WH_SPOT_ON_THE_TV,arriba de la tele,on top of the TV,em cima da TV
+BRIEF_WH_PERFUME_B,"Madame Aroma, la de al lado, embotella perfume trucho y lo vende como importado.","Madame Aroma, next door, bottles fake perfume and sells it as imported.","Madame Aroma, a do lado, engarrafa perfume falso e vende como importado."
+BRIEF_WH_PERFUME_C,"Traigan el bidón de perfume en el baúl del patrullero. Es frágil: si se rompe, el olor no se va más.","Bring the jug of perfume back in the patrol car's trunk. It's fragile: if it cracks, the smell never leaves.","Tragam o galão de perfume no porta-malas da viatura. É frágil: se quebrar, o cheiro não sai mais."
+BRIEF_WH_PERFUME_D,"Si encuentran las etiquetas falsas y el frasco de muestra, mejor: todo suma.","If you find the fake labels and the sample bottle, even better: it all adds up.","Se acharem os rótulos falsos e o frasco de amostra, melhor: tudo soma."
+OBJ_FIND_WH_PERFUME,"Encontrar el bidón de perfume trucho (frágil)","Find the jug of fake perfume (fragile)","Achar o galão de perfume falso (frágil)"
+OBJ_EXTRA_SAMPLE_FLASK,Extra: el frasco de muestra,Extra: the sample bottle,Extra: o frasco de amostra
+CLUE_WH_SMELL,"Con la linterna se ven líneas de olor por el pasillo de esta casa: perfume barato.","The flashlight shows smell lines down this house's hallway: cheap perfume.","Com a lanterna se veem linhas de cheiro pelo corredor desta casa: perfume barato."
+HINT_WH_SMELLY,"¡Quedaste oliendo a perfume! Los perros de la calle te siguen.","You smell of perfume now! The street dogs follow you.","Você ficou com cheiro de perfume! Os cachorros da rua te seguem."

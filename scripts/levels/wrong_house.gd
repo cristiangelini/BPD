@@ -103,6 +103,27 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_FUSES", "OBJ_EXTRA_PARTY_PLAN"],
 		"rig": preload("res://scripts/case/wrong_house/fireworks_rig.gd"),
 	},
+	"letters": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_WH_LETTERS_B", "BRIEF_WH_LETTERS_C", "BRIEF_WH_LETTERS_D"],
+		"find": "OBJ_FIND_WH_LETTERS",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/letters_bag.tscn"), preload("res://scenes/props/stamp_album.tscn")],
+		"half_heights": [0.28, 0.015],
+		"heavy": [true, false],
+		"extra_keys": ["OBJ_EXTRA_STAMPS"],
+		"rig": preload("res://scripts/case/wrong_house/letters_rig.gd"),
+	},
+	"perfume": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_WH_PERFUME_B", "BRIEF_WH_PERFUME_C", "BRIEF_WH_PERFUME_D"],
+		"find": "OBJ_FIND_WH_PERFUME",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/perfume_jug.tscn"), preload("res://scenes/props/perfume_labels.tscn"),
+			preload("res://scenes/props/sample_flask.tscn")],
+		"half_heights": [0.2, 0.05, 0.07],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_FAKE_LABELS", "OBJ_EXTRA_SAMPLE_FLASK"],
+		"rig": preload("res://scripts/case/wrong_house/perfume_rig.gd"),
+	},
 }
 ## Where the guilty neighbor hides his things, in house space: the floor of each spot (an item rests its half height
 ## over it), and whether a heavy one fits. All downstairs, handy for him, and none in his way out the back.
