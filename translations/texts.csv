@@ -5606,3 +5606,7 @@ LOC_in_rag_basket,en el canasto de trapos,in the rag basket,no cesto de panos
 LOC_on_wax_shelf,en el estante de ceras,on the wax shelf,na prateleira de ceras
 LOC_in_inflatable_man,en el muñeco inflable,in the inflatable man,no boneco inflável
 LOC_in_drying_toolbox,en la caja de herramientas de la zona de secado,in the toolbox in the drying area,na caixa de ferramentas da área de secagem
+PROMPT_CARWASH_TUNNEL,E: prender el túnel de lavado,E: start the wash tunnel,E: ligar o túnel de lavagem
+HINT_CARWASH_BRUSH,¡Te agarró el cepillo! Ahora estás impecable.,The brush got you! Now you're spotless.,A escova te pegou! Agora você está impecável.
+HINT_CARWASH_TOP_BRUSH,El cepillo de arriba te peinó. Más o menos.,The top brush combed your hair. Sort of.,A escova de cima te penteou. Mais ou menos.
+HINT_CARWASH_BLOWER,¡El soplador te sacó volando!,The blower sent you flying!,O soprador te mandou voando!

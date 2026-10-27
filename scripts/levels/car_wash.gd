@@ -52,6 +52,8 @@ const WINDSHIELD_SIZE := Vector3(0.5, 0.6, 1.8)
 const HOOD := 2.0
 const WINDSHIELD_SPEED := 3.0
 const WINDSHIELD_FINE := 30
+## The button that starts the tunnel, on a post by its mouth.
+const TUNNEL_BUTTON_AT := Vector3(-8.6, FLOOR_TOP + 1.2, 2.7)
 ## The token machine by the tunnel's mouth, and its till.
 const TOKEN_AT := Vector3(-9.0, FLOOR_TOP, 3.4)
 const TOKEN_SIZE := Vector3(0.7, 1.6, 0.5)
@@ -117,6 +119,13 @@ var station_parking: Transform3D
 var city_map: CityMap
 var office_door: FrontDoor
 var till: Till
+var conveyor: StaticBody3D
+var side_brushes: Array[Node3D] = []
+var top_brush: Node3D
+## The jets' water, shown while the tunnel runs.
+var sprays: Array[MeshInstance3D] = []
+var tunnel: WashTunnel
+var tunnel_button: PushButton
 var cars: Array[StaticBody3D] = []
 var windshields: Array[MeshInstance3D] = []
 var cracked: Array[int] = []
@@ -195,7 +204,7 @@ func _build_shell() -> void:
 
 
 ## The wash tunnel: its two walls and roof, open at both ends, the conveyor, the jets arch, the brushes, the foam
-## curtain and the blower. Nothing moves yet (step 2).
+## curtain and the blower, and the button that sets it going (WashTunnel, step 2).
 func _build_tunnel() -> void:
 	var length := TUNNEL_X1 - TUNNEL_X0
 	var mid_x := (TUNNEL_X0 + TUNNEL_X1) / 2
@@ -203,24 +212,45 @@ func _build_tunnel() -> void:
 		_build.box(Vector3(mid_x, FLOOR_TOP + TUNNEL_TOP / 2, z), Vector3(length, TUNNEL_TOP, 0.15), TUNNEL)
 		_build.mesh_box(Vector3(mid_x, FLOOR_TOP + 1.2, z * 0.96), Vector3(length, 0.3, 0.02), STRIPE)
 	_build.box(Vector3(mid_x, FLOOR_TOP + TUNNEL_TOP + 0.1, 0), Vector3(length, 0.2, TUNNEL_HALF_Z * 2 + 0.15), TUNNEL)
-	var belt := _build.body(Vector3(mid_x, (FLOOR_TOP + CONVEYOR_TOP) / 2, 0))
-	belt.name = "Conveyor"
-	_build.shape(belt, Vector3(length, CONVEYOR_TOP - FLOOR_TOP, CONVEYOR_HALF_Z * 2))
+	conveyor = _build.body(Vector3(mid_x, (FLOOR_TOP + CONVEYOR_TOP) / 2, 0))
+	conveyor.name = "Conveyor"
+	_build.shape(conveyor, Vector3(length, CONVEYOR_TOP - FLOOR_TOP, CONVEYOR_HALF_Z * 2))
 	_build.mesh_box(Vector3(mid_x, (FLOOR_TOP + CONVEYOR_TOP) / 2, 0),
 		Vector3(length, CONVEYOR_TOP - FLOOR_TOP, CONVEYOR_HALF_Z * 2), BELT)
 	for i in 16:
 		_build.mesh_box(Vector3(TUNNEL_X0 + 0.5 + i, CONVEYOR_TOP + 0.003, 0), Vector3(0.08, 0.005,
 			CONVEYOR_HALF_Z * 2), STRIPE.darkened(0.4))
 	_model(JETS_MODEL, Vector3(JETS_X, FLOOR_TOP, 0))
+	for z: float in [-1.6, 0.0, 1.6]:
+		var spray := MeshInstance3D.new()
+		var water := BoxMesh.new()
+		water.size = Vector3(0.3, TUNNEL_TOP - 0.3, 1.0)
+		spray.mesh = water
+		spray.material_override = _glass(Color(0.55, 0.8, 1.0, 0.35))
+		spray.position = Vector3(JETS_X, FLOOR_TOP + (TUNNEL_TOP - 0.3) / 2, z)
+		spray.hide()
+		$Built.add_child(spray)
+		sprays.append(spray)
 	for at in SIDE_BRUSHES:
-		_model(BRUSH_MODEL, at)
-	var top := _model(BRUSH_MODEL, TOP_BRUSH)
-	top.rotation.x = PI / 2
+		side_brushes.append(_model(BRUSH_MODEL, at))
+	top_brush = _model(BRUSH_MODEL, TOP_BRUSH)
+	top_brush.rotation.x = PI / 2
 	for i in 9:
 		var z := -1.8 + i * 0.45
 		_build.mesh_box(Vector3(CURTAIN_X, FLOOR_TOP + 2.2, z), Vector3(0.04, 2.3, 0.35),
 			FOAM if i % 2 else STRIPE.lightened(0.5))
 	_model(BLOWER_MODEL, Vector3(BLOWER_X, FLOOR_TOP, 0))
+	tunnel = WashTunnel.new()
+	tunnel.name = "Tunnel"
+	tunnel.car_wash = self
+	add_child(tunnel)
+	_build.box(TUNNEL_BUTTON_AT + Vector3(0, -0.6, -0.08), Vector3(0.12, 1.2, 0.12), TUNNEL)
+	tunnel_button = PushButton.new()
+	tunnel_button.prompt = "PROMPT_CARWASH_TUNNEL"
+	tunnel_button.color = Color(0.2, 0.55, 0.95)
+	tunnel_button.position = TUNNEL_BUTTON_AT
+	add_child(tunnel_button)
+	tunnel_button.pressed.connect(func(_cop: Cop) -> void: tunnel.start())
 
 
 ## The two customers' cars waiting in line, facing the tunnel; the first one with its trunk open (a box you can put

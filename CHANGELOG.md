@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Car wash raid, step 2: the tunnel works: its blue button starts it for 30 s; the conveyor drags things and cops to the end at 1.2 m/s, the jets soak what passes, the brushes spin and shove cops to the middle (the top one pushes them back), the foam curtain covers a cop's screen while he's in it and the blower throws out things up to 3 kg.
 - Car wash raid, step 1: the "La Espuma Loca" car wash stands on block (8, 4) (--place=carwash and a menu test button): the wash tunnel with its conveyor, jets, three brushes, foam curtain and blower; two customers' cars in line, the first with its trunk open; the token machine with the till (the office key), the vacuums, the wax shelf and the inflatable man; the drying area; the storeroom and Don Chorro's locked office; 12 hiding spots. Nothing moves yet.
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
 - Gym raid, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office, the cake lab and the gym in eighths.
