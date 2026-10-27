@@ -138,6 +138,15 @@ señora y la limusina.
    Capturas en `gato/`: `paso1-fachada.png`, `paso1-hall.png`, `paso1-sala.png`, `paso1-cocina.png`,
    `paso1-huespedes.png` y `paso1-lavadero.png`.
 2. Los seis sobrinos con sus rasgos (arañazo y muletilla incluidos), la señora Ofelia y Don Plumas.
+   Hecho así: los seis sobrinos en fila junto a la pared oeste de la sala, mirando hacia adentro, todos con el mismo
+   suéter verde con la gata naranja, gorro rojo con pompón y bufanda. Cada partida sortea con la semilla del caso, para
+   cada uno, el pelo (escondido bajo el gorro), los lentes, el número de zapato (los zapatos se estiran), los dientes,
+   el arañazo (dos o tres lo tienen, en una mano, tapado por la manga) y una muletilla distinta. Nunca hay dos iguales
+   en todo. E en un sobrino: una frase sobre la herencia que termina con su muletilla, distinta cada vez. La señora
+   Ofelia, con bata de seda rosa, collar de perlas y abanico, espera en el hall y habla de la Duquesa y de lo caro que es
+   todo. Don Plumas, en el palito de su jaula, por ahora solo dice "¡Lorito bonito!" **(propuesta)**. Capturas en
+   `gato/`: `paso2-sobrinos.png`, `paso2-sobrinos_cerca.png`, `paso2-ofelia.png`, `paso2-loro.png` y
+   `cat_mansion_people.png`.
 3. Las cinco gatas: andan sueltas, se agarran y se escapan, la transportadora, la lata de atún y la cajita de música.
 4. Las fichas (foto, huellas, dientes, pelo, arañazo y muletilla).
 5. El caso: la historia, dónde está la Duquesa, el collar, las pistas con cómo se arruinan, la planilla y la paciencia
