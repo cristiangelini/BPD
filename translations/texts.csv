@@ -5621,3 +5621,23 @@ BOWL_PLAYER_TALK_2,"¿Policías? Tranquilos, acá lo único que se rompe son los
 BOWL_PLAYER_TALK_3,No corras por la pista: la enceran cada mañana y es una pista de patinaje.,Don't run on the lane: they wax it every morning and it's an ice rink.,Não corra na pista: encerram toda manhã e vira pista de patinação.
 BOWL_PLAYER_TALK_4,"Pipo rocía los zapatos con tanto desodorante que ya no huelen a pie. Huelen a pie con perfume.","Pipo sprays the shoes so much they don't smell like feet anymore. They smell like perfumed feet.","O Pipo borrifa tanto desodorante nos sapatos que não cheiram mais a pé. Cheiram a pé perfumado."
 HINT_BOWL_HIT,¡Te pegó una bola! No te pares en la pista mientras juegan.,A ball hit you! Don't stand on the lane while they play.,Uma bola te acertou! Não fique na pista enquanto eles jogam.
+CHUZA_LINE_1,"¡Bienvenidos, jugadores nuevos! El primer juego lo paga la casa.","Welcome, new players! The first game's on the house.","Bem-vindos, jogadores novos! O primeiro jogo é por conta da casa."
+CHUZA_LINE_2,"¡Eso, campeón! ¡Con ese brazo llegas al torneo!","That's it, champ! With that arm you'll make the tournament!","Isso, campeão! Com esse braço você chega ao torneio!"
+CHUZA_LINE_3,"Los zapatos se piden en el mostrador. Pipo los perfuma.","Shoes are at the counter. Pipo perfumes them.","Os sapatos se pedem no balcão. O Pipo perfuma."
+CHUZA_LINE_4,"¿El auto con forma de pino? Me lo regaló mi tía.","The pin-shaped car? My aunt gave it to me.","O carro em forma de pino? Minha tia me deu."
+CHUZA_PRINTER,¡CHUZAAA!,STRIIIKE!,STRIIIKE!
+CHUZA_FIX_1,"¡Los diez! ¡Los diez pinos! ¡Qué hermosura!","All ten! All ten pins! What a beauty!","Os dez! Os dez pinos! Que lindeza!"
+CHUZA_FIX_2,"¡Fuegos artificiales en la pantalla! ¡Que suene la campana!","Fireworks on the screen! Ring the bell!","Fogos de artifício na tela! Toca o sino!"
+CHUZA_FIX_3,"Esto lo cuelgo en la pared. Con marco dorado.","I'm hanging this on the wall. In a gold frame.","Vou pendurar isso na parede. Com moldura dourada."
+CHUZA_FIX_DONE,"Bueno, bueno, a seguir jugando. ¡Qué noche!","Right, right, back to the game. What a night!","Bom, bom, vamos continuar jogando. Que noite!"
+CHUZA_HURT,"¡Ay! ¡Las bolas se tiran a los pinos, no a mí!","Ouch! You throw the balls at the pins, not at me!","Ai! As bolas são para os pinos, não para mim!"
+CHUZA_DOOR,"¡Mi puerta! ¡Eso no es una chuza, es un desastre!","My door! That's not a strike, it's a disaster!","Minha porta! Isso não é um strike, é um desastre!"
+CHUZA_SAW,"¡Eso no se toca, jugador!","Don't touch that, player!","Isso não se toca, jogador!"
+CHUZA_NOTHING,"Yo solo alquilo pistas, oficial. Y zapatos.","I just rent lanes, officer. And shoes.","Eu só alugo pistas, policial. E sapatos."
+CHUZA_OFFENDED,"No hablo más. Me voy a lustrar trofeos.","I'm done talking. I'm off to polish trophies.","Não falo mais. Vou lustrar troféus."
+CHUZA_LAWYER,"¡Llamo a mi abogado! ¡Juega en mi equipo los jueves!","I'm calling my lawyer! He's on my Thursday team!","Vou ligar para o meu advogado! Ele joga no meu time às quintas!"
+CHUZA_CAUGHT_ON,"Tres chuzas seguidas… Ustedes no son jugadores nuevos.","Three strikes in a row… You're no new players.","Três strikes seguidos… Vocês não são jogadores novos."
+CHUZA_PLAYER,"¡Mis jugadores se quejan! ¡Los jueves son sagrados!","My players are complaining! Thursdays are sacred!","Meus jogadores estão reclamando! As quintas são sagradas!"
+CHUZA_CASE,"¡Mis trofeos! ¡Diez años de victorias!","My trophies! Ten years of victories!","Meus troféus! Dez anos de vitórias!"
+CHUZA_SCREEN,"¡La pantalla! ¿Saben lo que cuesta una pantalla?","The screen! Do you know what a screen costs?","A tela! Vocês sabem quanto custa uma tela?"
+BOWL_STRIKE_SCREEN,★ ¡CHUZA! ★,★ STRIKE! ★,★ STRIKE! ★

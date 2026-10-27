@@ -125,6 +125,13 @@ suman entre 400 y 600.
      cuando tiran, si les agarra la bola que tiraron, si no quedan bolas en la mesa, si les tira los pinos o si les
      rompe la pantalla. Hasta que llegue Don Chuza (paso 3) la queja solo se avisa. Con E cuentan algo del torneo.
 3. Don Chuza y la chuza que lo distrae.
+   - **Cómo quedó (propuesta):** Don Chuza (el jefe de piso de siempre, con su voz) recorre la bolera por delante de
+     las mesas de bolas y por el lado del mostrador. Cuando una tirada voltea los 10 pinos, grita "¡CHUZAAA!", va a la
+     línea de esa pista y festeja 15 s mirando los pinos, de espaldas a todo, con "★ ¡CHUZA! ★" sobre la pantalla.
+     La chuza de un policía cuenta: después las chuzas descansan 45 s, y a la tercera no festeja y suma 10 ("Ustedes
+     no son jugadores nuevos…"). La chuza de un jugador también lo llama y no cuenta. Suma a la denuncia las quejas
+     de los jugadores (5), la caja abierta, la vitrina y las pantallas rotas si las ve, la puerta rota y una bola o un
+     policía que lo choca. El abogado y el caso llegan en el paso 5. Capturas: `allanamiento-bolera/paso3-*.png`.
 4. Pipo y los zapatos.
 5. El caso (RaidCase) y la primera historia, la bola con imán.
 6. Las otras 5 historias.

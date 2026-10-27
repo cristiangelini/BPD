@@ -17,6 +17,7 @@ signal rolled(lane: int, knocked: int, ball: BowlingBall)
 signal player_complained(player: BowlPlayer)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const OWNER_SCENE := preload("res://scenes/npc/bowl_owner.tscn")
 const PIN_MODEL := preload("res://assets/models/bowling_pin.glb")
 const SETTER_MODEL := preload("res://assets/models/pin_setter.glb")
 const RETURN_MODEL := preload("res://assets/models/ball_return.glb")
@@ -85,6 +86,16 @@ const SKATE_AGAIN := 1.5
 const LEAGUE_LANES: Array[int] = [0, 2, 4]
 const PLAYER_Z := 6.6
 const PLAYER_GAP := 0.3
+## Don Chuza's round: along the approach, in front of the returns, and up the east side to the counter. At a strike he
+## celebrates by the lane's foul line facing its pins.
+const OWNER_ROUTE: Array[Vector3] = [Vector3(1.5, FLOOR_TOP, 8.0), Vector3(1.5, FLOOR_TOP, 4.5),
+	Vector3(-3.8, FLOOR_TOP, 4.5), Vector3(-8.5, FLOOR_TOP, 4.5), Vector3(-12.8, FLOOR_TOP, 4.5)]
+const STRIKE_SPOT_Z := 4.5
+const PINS := 10
+## What he notices: a pin machine's corridor or the office's case, a complaint from the league (each one's own
+## cooldown, BowlPlayer) and the cops' third strike.
+const PLAYER_COMPLAINT := 5.0
+const CAUGHT_ON := 10.0
 ## The shoe counter east of the door (its till holds the office's key), the bar and the popcorn machine.
 const COUNTER_AT := Vector3(6.0, FLOOR_TOP, 9.0)
 const COUNTER_SIZE := Vector3(4.1, 1.1, 0.8)
@@ -142,6 +153,9 @@ var pins: Array = []
 var pin_homes: Array = []
 var balls: Array[BowlingBall] = []
 var players: Array[BowlPlayer] = []
+var owner_boss: FloorBoss
+var strike_call: StrikeCall
+var complaint_bar: ProgressBar
 ## Ball -> seconds until it's back on its rack; lane -> seconds until its pins are set up, and the ball that came.
 var _returning := {}
 var _resetting := {}
@@ -172,6 +186,7 @@ func _ready() -> void:
 	_build_balls()
 	_build_players()
 	office_door = _door(OFFICE_DOOR_X)
+	_place_owner()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("bowling")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -327,6 +342,50 @@ func _build_players() -> void:
 		add_child(player)
 		player.complained.connect(player_complained.emit)
 		players.append(player)
+
+
+## Don Chuza on his round, the strikes that call him, what he notices and the complaint bar.
+func _place_owner() -> void:
+	strike_call = StrikeCall.new()
+	strike_call.name = "StrikeCall"
+	add_child(strike_call)
+	owner_boss = OWNER_SCENE.instantiate()
+	for point: Vector3 in OWNER_ROUTE:
+		owner_boss.route.append(to_global(point))
+	owner_boss.printer = strike_call
+	add_child(owner_boss)
+	owner_boss.start_at(0)
+	rolled.connect(func(lane: int, down: int, ball: BowlingBall) -> void:
+		if down == PINS:
+			strike_call.strike(lane, ball != null and ball.thrower() != null))
+	strike_call.called.connect(func(lane: int) -> void:
+		owner_boss.printer_spot = to_global(Vector3(LANE_X[lane], FLOOR_TOP, STRIKE_SPOT_Z))
+		owner_boss.fix_facing = to_global(Vector3(LANE_X[lane], 1.0, HEAD_PIN_Z))
+		_say(Vector3(LANE_X[lane], SCREEN_Y - 0.7, SCREEN_Z + 0.3), "BOWL_STRIKE_SCREEN", owner_boss.fix_time))
+	strike_call.caught_on.connect(owner_boss.blame.bind(CAUGHT_ON, "CHUZA_CAUGHT_ON"))
+	player_complained.connect(func(_player: BowlPlayer) -> void: owner_boss.blame(PLAYER_COMPLAINT, "CHUZA_PLAYER"))
+	office_door.broken.connect(owner_boss.door_broken)
+	till.opened.connect(func(at: Vector3) -> void: owner_boss.saw(at, FloorBoss.SAW_TILL))
+	trophy_case_broken.connect(func() -> void:
+		owner_boss.saw(to_global(CASE_AT + Vector3.UP), FloorBoss.SAW_BREAK, "CHUZA_CASE"))
+	screen_broken.connect(func(lane: int) -> void:
+		owner_boss.saw(to_global(Vector3(LANE_X[lane], SCREEN_Y, SCREEN_Z)), FloorBoss.SAW_BREAK, "CHUZA_SCREEN"))
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	owner_boss.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
 
 
 ## Where slot `slot` of rack `rack` holds a ball.
@@ -526,7 +585,7 @@ func _label(key: String, at: Vector3, size: int, turn := 0.0, pixel := 0.01) -> 
 
 
 ## A floating line over `at` for a few seconds.
-func _say(at: Vector3, key: String) -> void:
+func _say(at: Vector3, key: String, seconds := 3.0) -> void:
 	var label := Label3D.new()
 	label.text = key
 	label.font_size = 48
@@ -535,7 +594,7 @@ func _say(at: Vector3, key: String) -> void:
 	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	label.position = at
 	add_child(label)
-	get_tree().create_timer(3.0).timeout.connect(label.queue_free)
+	get_tree().create_timer(seconds).timeout.connect(label.queue_free)
 
 
 ## A model only for the look, standing at `at` and turned `turn` around Y.
