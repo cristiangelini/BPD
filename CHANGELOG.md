@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Cinema raid, step 7: Play draws the cinema among the raids.
 - Cinema raid, step 6 (watches in the popcorn): the bucket full of watches hidden with the ticket booth's scale and the list of clients; a metal popcorn ticking on the counter is the story's clue, and the popcorn machine pops a watch every 15 s until its glass breaks. The cinema now has its six stories.
 - Cinema raid, step 6 (stolen film): the can with the festival's prize film hidden with the festival badge and the statuette; the spectators cry every 8 s of film, and "PROPIEDAD DEL FESTIVAL" in the screen's corner, read up front, is the story's clue.
 - Cinema raid, step 6 (fake tickets): the ticket press hidden with the "función agotada" stamp and the fake ticket book; "AGOTADO" over the ticket booth, and two neighbors side by side arguing over the same seat, the story's clue for a cop who gets close.

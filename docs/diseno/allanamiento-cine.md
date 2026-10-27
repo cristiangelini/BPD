@@ -153,3 +153,5 @@ suman entre 400 y 600.
   la pista propia, una vez. Cada 15 s la máquina de palomitas revienta un reloj que salta sobre el vidrio ("¡PUM! ¿Un
   reloj?"), hasta que se le rompe el vidrio. Captura `paso6-relojes.png`; los 18 modelos de las historias en
   `paso6-modelos-todos.png`. Con esto el cine tiene sus 6 historias, y la semilla elige entre todas.
+- **Paso 7 (Jugar):** el cine entra al sorteo de allanamientos (`PlaceDraw.ORDER`), uno más entre los 11, y en 900
+  semillas salen sus 6 historias. Online todavía no comparte a doña Bobina, Chicho ni los espectadores (paso 8).
