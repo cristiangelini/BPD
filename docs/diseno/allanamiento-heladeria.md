@@ -114,6 +114,10 @@ entre 400 y 600. El bloque de hielo es la cosa más pesada (8 kg): conviene llev
    1000), el cuaderno de ventas y el sello de "vendido"; arriba de la caja, el cartel "HOY: 900 KG VENDIDOS" (con E es
    la pista). Cuando un policía entra por la puerta, doña Nieve cierra todos los freezers abiertos (como mucho una vez
    cada 15 s): en vez de correr hasta uno, los cierra y lo dice. Capturas `heladeria/paso6d-*.png`.
+   **Hecho (paso 6e):** el camión robado (`StolenTruckRig`): la placa original del camión (2 kg, 1000), el tarro de
+   pintura fresca y los papeles del camión con otro nombre; en el costado del camión, el cartel "¡PINTURA FRESCA!" (con
+   E es la pista: abajo se ve "Helados del Río") y cada 35 s suena sola la musiquita de la otra heladería (por ahora
+   como texto sobre el camión, sin sonido). Capturas `heladeria/paso6e-*.png`.
 7. "Jugar" suma la heladería al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online (doña Nieve, Lucho, las tapas, los charcos y lo frágil en todas las PC).
 

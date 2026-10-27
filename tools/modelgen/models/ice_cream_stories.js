@@ -115,10 +115,32 @@ export function buildCashBucket() {
 	return b.build();
 }
 
+// The ice cream truck's original plate, 0.52 x 0.04 x 0.14 m: white with a black rim and black number blocks.
+export function buildTruckPlate() {
+	const b = new Builder('truck_plate');
+	b.add('rim', mat('plate_rim', 0x202020), new THREE.BoxGeometry(0.52, 0.03, 0.14));
+	b.add('plate', mat('plate_white', 0xf4f4f0), new THREE.BoxGeometry(0.49, 0.034, 0.12));
+	const ink = mat('plate_ink', 0x202020);
+	for (let i = 0; i < 6; i++) b.add('digit', ink, new THREE.BoxGeometry(0.045, 0.036, 0.07), { pos: V(-0.17 + i * 0.068, 0, 0) });
+	b.add('bolt', mat('plate_bolt', 0xc0c4c8), new THREE.CylinderGeometry(0.01, 0.01, 0.038, 8), { pos: V(-0.22, 0, 0.045) });
+	b.add('bolt', mat('plate_bolt', 0xc0c4c8), new THREE.CylinderGeometry(0.01, 0.01, 0.038, 8), { pos: V(0.22, 0, 0.045) });
+	return b.build();
+}
+
+// The truck's papers with somebody else's name: a 0.22 x 0.03 x 0.3 m brown folder with sheets and a red seal.
+export function buildTruckPapers() {
+	const b = new Builder('truck_papers');
+	b.add('folder', mat('papers_folder', 0xb08850), new THREE.BoxGeometry(0.22, 0.012, 0.3), { pos: V(0, -0.008, 0) });
+	b.add('sheets', mat('papers_sheet', 0xfaf6e8), new THREE.BoxGeometry(0.2, 0.012, 0.28), { pos: V(0.005, 0.004, 0) });
+	b.add('seal', mat('papers_seal', 0xd83030), new THREE.CylinderGeometry(0.025, 0.025, 0.014, 10), { pos: V(0.05, 0.008, 0.08) });
+	return b.build();
+}
+
 export const models = {
 	recipe_box: buildRecipeBox, secret_jar: buildSecretJar, rival_photo: buildRivalPhoto,
 	ice_block_watches: buildIceBlockWatches, ice_scale: buildIceScale, scale_magnet: buildScaleMagnet,
 	prize_sticks: buildPrizeSticks, stick_engraver: buildStickEngraver, cash_bucket: buildCashBucket,
+	truck_plate: buildTruckPlate, truck_papers: buildTruckPapers,
 };
 
 export const views = {
@@ -130,6 +152,7 @@ export const views = {
 			{ name: 'ice_scale', pos: [0.45, 0.15, -0.6] }, { name: 'scale_magnet', pos: [0.75, 0.025, 0.1] },
 			{ name: 'prize_sticks', pos: [-0.8, 0.1, 0.1] }, { name: 'stick_engraver', pos: [-0.8, 0.125, -0.5] },
 			{ name: 'cash_bucket', pos: [0.9, 0.15, -0.3] },
+			{ name: 'truck_plate', pos: [-0.3, 0.02, 0.45] }, { name: 'truck_papers', pos: [0.3, 0.015, 0.45] },
 		],
 		cam: { pos: [0, 0.7, 1.3], target: [0, 0.08, 0], fov: 45 },
 	},
