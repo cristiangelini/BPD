@@ -146,6 +146,8 @@ entre 400 y 600.
      doble y la llamada del comisario por radio quedan para después. Captura `paso5-comisario-auto.png` y
      `garage_comisario_taxi.png`.
 6. "Jugar" suma el taller al sorteo de allanamientos (`PlaceDraw.ORDER`).
+   - **Hecho así (propuesta):** el taller entra en `PlaceDraw.ORDER` como el allanamiento número 11, con las mismas
+     chances que los otros, y la prueba del sorteo revisa que salgan las 6 historias del taller.
 7. El online (Don Tuerca, Grasita, el timbre, el elevador y los parabrisas en todas las PC).
 
 ## Preguntas para Cristian
