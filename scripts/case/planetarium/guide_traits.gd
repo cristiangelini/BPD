@@ -25,7 +25,8 @@ const GLOWING := Vector2i(2, 3)
 static func draw(seed_value: int) -> Array[Dictionary]:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash("planetarium guides %d" % seed_value)
-	var glowing := {}
+	# The culprit touched the freshly painted stars running off in the dark: they always have it.
+	var glowing := {CrimePlan.culprit_of(COUNT, seed_value): true}
 	var glow_count := rng.randi_range(GLOWING.x, GLOWING.y)
 	while glowing.size() < glow_count:
 		glowing[rng.randi_range(0, COUNT - 1)] = true

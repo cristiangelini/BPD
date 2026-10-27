@@ -75,6 +75,9 @@ const PLANET_COLORS := {
 }
 const ROCK_COLORS: Array[Color] = [Color(0.55, 0.55, 0.58), Color(0.7, 0.7, 0.72), Color(0.45, 0.45, 0.5)]
 
+var case: CrimeSceneCase
+## The lights are out (the star show, step 5): the glow paint on the guides' gloves shows.
+var dark := false
 var guides: Array[PlanetariumGuide] = []
 var director: PlanetariumDirector
 var sleeper: PlanetariumSleeper
@@ -94,6 +97,23 @@ func _ready() -> void:
 	_shop()
 	_kids()
 	_people()
+
+
+## The case reaches the guides (their traits are its suspects, same seed), and one of them, drawn with the seed, won't
+## take off the helmet until they get something to eat.
+func set_up_case(new_case: CrimeSceneCase) -> void:
+	case = new_case
+	var stubborn := absi(hash("stubborn guide %d" % case.case_seed)) % guides.size()
+	for guide in guides:
+		guide.case = case
+		guide.stubborn = guide.index == stubborn
+
+
+## Lights out or back on: in the dark the glow paint on the guides' gloves shows.
+func set_dark(on: bool) -> void:
+	dark = on
+	for guide in guides:
+		guide.set_dark(on)
 
 
 ## The guide by index (the order of the case's traits).
