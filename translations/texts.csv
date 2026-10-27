@@ -4904,3 +4904,38 @@ PROMPT_SEARCH_centerpiece,E: revisar el centro de mesa,E: check the centerpiece,
 HINT_SEARCH_NOTHING_cake,Solo pastel. Mucho pastel. Ahora hundido.,Just cake. Lots of cake. Caved in now.,Só bolo. Muito bolo. Agora afundado.
 HINT_SEARCH_NOTHING_coats,"Pañuelos, caramelos y un ticket de estacionamiento. Nada más.","Tissues, candy and a parking ticket. Nothing else.","Lenços, balas e um tíquete de estacionamento. Mais nada."
 HINT_SEARCH_NOTHING_centerpiece,"Flores, agua y un caracol muy elegante.","Flowers, water and a very fancy snail.","Flores, água e um caracol muito elegante."
+PROMPT_RING_BOX,E: agarrar la cajita del anillo,E: pick up the ring box,E: pegar a caixinha do anel
+HINT_RING_BOX_TOUCHED,¡La tocaste! Ahora tus huellas están en el terciopelo.,You touched it! Now your prints are on the velvet.,Você tocou! Agora suas digitais estão no veludo.
+HINT_RING_BOX_EMPTY,"Una cajita de terciopelo. Vacía. Como el corazón de Rosa, dice Rosa.","A velvet box. Empty. Like Rosa's heart, says Rosa.","Uma caixinha de veludo. Vazia. Como o coração da Rosa, diz a Rosa."
+PRINTS_RING_BOX,¡Una huella en la cajita! Es del culpable.,A fingerprint on the box! It's the culprit's.,Uma digital na caixinha! É do culpado.
+PRINTS_RING_BOX_SMUDGED,"Hay una huella en la cajita, pero tus huellas la taparon.","There's a print on the box, but yours covered it.","Tem uma digital na caixinha, mas as suas cobriram."
+PROMPT_VIDEO_play,E: botón verde (ver el video de la boda),E: green button (play the wedding video),E: botão verde (ver o vídeo do casamento)
+PROMPT_VIDEO_delete,E: botón rojo,E: red button,E: botão vermelho
+HINT_VIDEO_GLASSES,"En el video, uno de traje se lleva algo de la mesa. Usa anteojos.","In the video, someone in a tuxedo takes something off the table. He wears glasses.","No vídeo, um de terno leva algo da mesa. Ele usa óculos."
+HINT_VIDEO_NO_GLASSES,"En el video, uno de traje se lleva algo de la mesa. No usa anteojos.","In the video, someone in a tuxedo takes something off the table. He wears no glasses.","No vídeo, um de terno leva algo da mesa. Ele não usa óculos."
+HINT_VIDEO_NOTHING,Tres horas de la tía bailando. Nada más.,Three hours of the aunt dancing. Nothing else.,Três horas da tia dançando. Mais nada.
+HINT_VIDEO_DELETED,El video está borrado. La tía no va a poder verse bailar.,The video is deleted. The aunt won't get to see herself dance.,O vídeo foi apagado. A tia não vai poder se ver dançando.
+PROMPT_TRUMPET_GIVE,E: darle la corneta a la abuela,E: give grandma her ear trumpet,E: dar a corneta para a vovó
+GRANDMA_HEARS,"¡Ahora sí te oigo, querido!","Now I can hear you, dear!","Agora sim eu te ouço, querido!"
+GRANDMA_SMELLED,"¿El que se lo llevó? Pasó al lado mío. Olía a %s, como el arroz con leche.","The one who took it? He walked right past me. He smelled of %s, like rice pudding.","O que levou? Passou do meu lado. Tinha cheiro de %s, como arroz-doce."
+GRANDMA_NOTHING,"Yo no vi nada, querido. Pero el pastel está riquísimo.","I didn't see a thing, dear. But the cake is delicious.","Eu não vi nada, querido. Mas o bolo está uma delícia."
+GRANDMA_OFFENDED,¡A mí no me esposa nadie! No digo nada más.,Nobody cuffs me! I'm not saying another word.,Ninguém me algema! Não falo mais nada.
+CLUE_CRIME_WEDDING_prints,Huellas en la cajita del anillo,Fingerprints on the ring box,Digitais na caixinha do anel
+CLUE_CRIME_WEDDING_footprint,Pisada en el arroz: talle %d,Footprint in the rice: shoe size %d,Pegada no arroz: número %d
+CLUE_CRIME_WEDDING_hair,Un pelo en el glaseado del pastel: pelo %s,A hair in the cake's frosting: %s hair,Um fio de cabelo na cobertura do bolo: cabelo %s
+CLUE_CRIME_WEDDING_bite,Un mordisco en el pastel de bodas: %s,A bite out of the wedding cake: %s,Uma mordida no bolo de casamento: %s
+CLUE_CRIME_WEDDING_recording_glasses,El video de la boda: el que se lo lleva usa anteojos,The wedding video: the thief wears glasses,O vídeo do casamento: quem leva usa óculos
+CLUE_CRIME_WEDDING_recording_no_glasses,El video de la boda: el que se lo lleva no usa anteojos,The wedding video: the thief wears no glasses,O vídeo do casamento: quem leva não usa óculos
+CLUE_CRIME_WEDDING_witness,La abuela Chola: el culpable olía a %s,Grandma Chola: the culprit smelled of %s,A vovó Chola: o culpado tinha cheiro de %s
+CLUE_CRIME_WEDDING_RUINED_prints,Huellas en la cajita: tapadas por las tuyas,Prints on the box: covered by yours,Digitais na caixinha: cobertas pelas suas
+CLUE_CRIME_WEDDING_RUINED_footprint,Pisada en el arroz: borrada o barrida,Footprint in the rice: wiped out or swept up,Pegada no arroz: apagada ou varrida
+CLUE_CRIME_WEDDING_RUINED_hair,Un pelo en el glaseado: se fue con el pastel cortado,A hair in the frosting: gone with the cut cake,Um fio de cabelo na cobertura: foi com o bolo cortado
+CLUE_CRIME_WEDDING_RUINED_bite,El mordisco del pastel: lo cortaron,The bite out of the cake: it got cut,A mordida no bolo: cortaram
+CLUE_CRIME_WEDDING_RUINED_recording,El video de la boda: borrado,The wedding video: deleted,O vídeo do casamento: apagado
+CLUE_CRIME_WEDDING_RUINED_witness,La abuela Chola: ofendida,Grandma Chola: offended,A vovó Chola: ofendida
+HINT_CRIME_WEDDING_RUINED_prints,Tocaste la cajita. Tus huellas quedaron encima de las del culpable.,You touched the box. Your prints are on top of the culprit's.,Você tocou a caixinha. Suas digitais ficaram por cima das do culpado.
+HINT_CRIME_WEDDING_RUINED_footprint,La pisada del arroz ya no está.,The footprint in the rice is gone.,A pegada no arroz sumiu.
+HINT_CRIME_WEDDING_RUINED_hair,Cortaste el pastel y el pelo del glaseado se perdió.,You cut the cake and the hair in the frosting got lost.,Você cortou o bolo e o fio de cabelo da cobertura se perdeu.
+HINT_CRIME_WEDDING_RUINED_bite,"Cortaste el pastel. Y con él, el mordisco.",You cut the cake. And the bite with it.,Você cortou o bolo. E a mordida junto.
+HINT_CRIME_WEDDING_RUINED_recording,Borraste el video de la boda. Rosa no te lo va a perdonar.,You deleted the wedding video. Rosa will never forgive you.,Você apagou o vídeo do casamento. A Rosa não vai te perdoar.
+HINT_CRIME_WEDDING_RUINED_witness,La abuela se ofendió. No va a decir nada más.,Grandma is offended. She won't say anything else.,A vovó se ofendeu. Não vai dizer mais nada.

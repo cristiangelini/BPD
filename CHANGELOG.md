@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Wedding crime scene, step 4b: the six clues. The empty ring box's prints, the footprint in the rice (a waiter sweeps it after 6 minutes), a hair on the cake's top and a bite out of its side (cutting the cake loses both), the videographer's green and red buttons, and grandma Chola, who smelled the culprit's cologne and talks once a cop shouts near her or hands her the ear trumpet.
 - Wedding crime scene, step 4a: the story and the loot. The seed draws the ring, the gift envelopes' box or the sugar couple and hides it in the cake, among the coats or in the head table's centerpiece; the comisario tells which, the planilla asks for it (+100), and cutting the cake open to search it leaves it caved in.
 - Wedding crime scene, step 3: the tuxedos' files. Sniffed up close they give their cologne, the top hat comes off for their hair (the stubborn one only after a bite), a bite gives their teeth, the camera their glasses and shoe size, and the print kit their prints; the board card shows what the cops got so far.
 - Wedding crime scene, step 2: Tito and his five groomsmen in identical tuxedos (hair, glasses, shoe size, teeth and cologne drawn from the case seed; Tito always with the white carnation), Rosa, DJ Bombo, grandma Chola with her ear trumpet and four guests, each with lines on E.

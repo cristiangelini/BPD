@@ -521,6 +521,8 @@ func clue_line(kind: String) -> String:
 		return _circus_clue_line(kind)
 	if texts() == VARIANTS.museum:
 		return _museum_clue_line(kind)
+	if texts() == VARIANTS.wedding:
+		return _wedding_clue_line(kind)
 	match kind:
 		"footprint":
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
@@ -550,6 +552,24 @@ func _circus_clue_line(kind: String) -> String:
 		"recording":
 			return tr("CLUE_CIRCUS_recording") % tr("HONK_" + str(who.honk))
 	return tr("CLUE_CIRCUS_" + kind)
+
+
+## At the wedding: the footprint in the rice, the hair in the frosting, the bite out of the cake, the video and grandma
+## Chola.
+func _wedding_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_CRIME_WEDDING_footprint") % who.shoe
+		"hair":
+			return tr("CLUE_CRIME_WEDDING_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_CRIME_WEDDING_bite") % tr("TEETH_" + str(who.teeth))
+		"recording":
+			return tr("CLUE_CRIME_WEDDING_recording_glasses" if who.glasses else "CLUE_CRIME_WEDDING_recording_no_glasses")
+		"witness":
+			return tr("CLUE_CRIME_WEDDING_witness") % tr("COLOGNE_" + str(who.cologne))
+	return tr("CLUE_CRIME_WEDDING_" + kind)
 
 
 ## At the museum: the footprint on the waxed floor, the hair on the rope, the bitten sandwich, the recording, the

@@ -152,7 +152,14 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
    centro de flores de la mesa principal. Revisar el lugar correcto lo hace aparecer en el piso, adelante; los otros dan
    un chiste ("Flores, agua y un caracol muy elegante"). Revisar el pastel es cortarlo: queda hundido, haya algo o no
    **(propuesta)**. Capturas: `boda-escena/wedding_loot.png` y `paso4-pastel-cortado.png`. Después (4b), las 6 pistas y
-   la abuela sorda.
+   la abuela sorda: la cajita del anillo vacía queda sobre la mesa principal. Tocarla con E deja tus huellas, y el kit
+   encuentra las del culpable si nadie la tocó. La pisada queda en el arroz de la entrada, y a los 6 minutos un mozo
+   barre el arroz: si nadie le sacó foto, se pierde. El pelo está suelto arriba del piso de arriba del pastel y se
+   guarda en una bolsa; el mordisco está en el costado del piso de abajo y se le saca foto. Cortar el pastel pierde los
+   dos si todavía no los tenían. La cámara del camarógrafo está en su trípode junto a la pista: el botón verde muestra
+   si el que se lo lleva usa anteojos, y el rojo, al lado, borra el video. La abuela Chola oye si le gritas a menos de
+   5 m o si le alcanzas su corneta (se agarra de su mesa); entonces dice a qué olía el culpable. Solo las esposas la
+   ofenden **(propuesta)**. Capturas: `paso4b-mesa-principal.png`, `paso4b-pastel.png` y `paso4b-abuela.png`.
 5. Rosa: que siga a los policías, sus frases, su "prueba" y la boda suspendida si acusan mal a Tito; y el vals.
 6. El final: el tablero, el cansancio, el sueldo y la huida en el auto de los novios con las latas.
 7. El sorteo de "Jugar" (la boda entra en el reparto de las escenas del crimen) y el online: Rosa, el vals, la abuela,
