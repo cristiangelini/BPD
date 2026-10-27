@@ -96,6 +96,21 @@ suman entre 400 y 600.
 ## El orden para hacerlo (un PR chico por paso)
 1. El súper como lugar: el edificio en la manzana (7, 1) con las góndolas, la heladera, la verdulería, las cajas, la
    oficina con llave, el depósito, lo frágil y los escondites. Modelos nuevos con modelgen.
+   - **Cómo quedó (propuesta):** `Supermarket` arma el local (30 × 24 m, 5 m de alto) en su lote de la manzana
+     (7, 1), con la entrada abierta al este de las cajas y tres vidrieras con ofertas.
+     - **Adentro:** 4 góndolas de 9 m (tres módulos de 3 m) con los carteles de los pasillos 1 a 4 colgados, que se
+       leen de los dos lados. La heladera de lácteos de 12 m va contra la pared del fondo, con el freezer abierto
+       adelante, y el tacho de cartones en el rincón. La verdulería con su balanza está en la esquina oeste y hay
+       3 cajas con su cinta.
+     - **La oficina y el depósito:** la oficina del gerente, en la esquina del frente, tiene la puerta con llave (la
+       llave está en la caja de la caja 1) y un escritorio. El depósito, en la esquina del fondo, tiene la puerta
+       vaivén abierta, pilas de cajas y el portón de carga.
+     - **Lo frágil:** la pirámide de 21 latas de la mesa de oferta queda quieta hasta que algo la toca. Si una lata se
+       mueve 15 cm, se cae toda: multa de 20 y «¡Limpieza en la entrada!». El vidrio de la heladera se raja si algo le
+       pega a más de 3 m/s: multa de 30.
+     - **Escondites:** 12, 6 para cosas pesadas.
+     - **Para probar:** `--place=supermarket` y "Súper (allanamiento) (prueba)" en el menú.
+     - **Capturas:** `allanamiento-super/paso1-*.png`.
 2. Los changuitos (empujar, cargar, subirse) y los clientes que hacen cola.
 3. Don Ofertón: la ronda, el altavoz, la denuncia y el botón de la caja.
 4. Chispa y su pirámide.
