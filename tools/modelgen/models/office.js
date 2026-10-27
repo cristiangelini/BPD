@@ -81,6 +81,35 @@ function buildRobotVacuum() {
 	return b.build();
 }
 
+// What was stolen from Formularios Infinitos (escena-oficina.md, "La historia"), one per match: the Golden Stamp the
+// manager approves everything with, the Founder's bronze Stapler and the fat envelope with everybody's year-end bonus.
+// Their bottoms sit at y = 0.
+function buildGoldenStamp() {
+	const b = new Builder('golden_stamp');
+	const gilt = C('gold', 0xf2c84b, { emissive: 0x3a2a05 });
+	b.add('handle', gilt, new THREE.SphereGeometry(0.035, 8, 6), { pos: V(0, 0.15, 0) });
+	b.add('handle', gilt, new THREE.CylinderGeometry(0.018, 0.022, 0.09, 8), { pos: V(0, 0.09, 0) });
+	b.add('base', gilt, new THREE.BoxGeometry(0.1, 0.03, 0.07), { pos: V(0, 0.03, 0) });
+	b.add('base', C('stamp_rubber', 0x2a2a2a), new THREE.BoxGeometry(0.09, 0.015, 0.06), { pos: V(0, 0.008, 0) });
+	return b.build();
+}
+function buildStapler() {
+	const b = new Builder('founder_stapler');
+	const bronze = C('bronze', 0xb07a3a, { emissive: 0x201000 });
+	b.add('base', bronze, new THREE.BoxGeometry(0.06, 0.02, 0.22), { pos: V(0, 0.01, 0) });
+	b.add('arm', bronze, new THREE.BoxGeometry(0.05, 0.035, 0.2), { pos: V(0, 0.045, 0.005), rot: [-0.12, 0, 0] });
+	b.add('base', C('wood_plaque', 0x6a4022), new THREE.BoxGeometry(0.1, 0.012, 0.26), { pos: V(0, -0.002, 0) });
+	return b.build();
+}
+function buildBonusEnvelope() {
+	const b = new Builder('bonus_envelope');
+	b.add('envelope', C('envelope', 0xd9c49a), new THREE.BoxGeometry(0.26, 0.05, 0.16), { pos: V(0, 0.025, 0) });
+	b.add('envelope', C('envelope_flap', 0xc8b088), new THREE.BoxGeometry(0.26, 0.004, 0.07), { pos: V(0, 0.052, -0.045) });
+	b.add('bills', C('bills', 0x6aa86a), new THREE.BoxGeometry(0.2, 0.02, 0.03), { pos: V(0, 0.045, 0.085) });
+	b.add('seal', C('seal_red', 0xc02a2a), new THREE.CylinderGeometry(0.015, 0.015, 0.006, 8), { pos: V(0, 0.054, -0.01) });
+	return b.build();
+}
+
 const PEOPLE = { oficinista, senor_tramite: senorTramite, pasante_benja: pasanteBenja };
 
 export const models = {
@@ -90,9 +119,15 @@ export const models = {
 		return b.build();
 	}])),
 	robot_vacuum: buildRobotVacuum,
+	golden_stamp: buildGoldenStamp, founder_stapler: buildStapler, bonus_envelope: buildBonusEnvelope,
 };
 
 export const views = {
+	office_loot: {
+		items: [{ name: 'golden_stamp', pos: [-0.3, 0, 0], rotY: 0.3 }, { name: 'founder_stapler', pos: [0, 0, 0.05], rotY: -0.5 },
+			{ name: 'bonus_envelope', pos: [0.32, 0, 0], rotY: 0.2 }],
+		cam: { pos: [0, 0.45, 0.9], target: [0, 0.05, 0], fov: 38 },
+	},
 	office_people: {
 		items: [{ name: 'npc_oficinista', pos: [-2.2, 0, 0], rotY: 0.3 }, { name: 'npc_oficinista', pos: [-1.1, 0, 0], rotY: 0.1 },
 			{ name: 'npc_senor_tramite', pos: [0.1, 0, 0], rotY: 0.0 }, { name: 'npc_pasante_benja', pos: [1.3, 0, 0], rotY: -0.2 },

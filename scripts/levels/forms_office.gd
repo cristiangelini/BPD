@@ -8,7 +8,8 @@ extends CrimeScenePlace
 ## machine and the cookie tin. Upstairs, by the stairs: the manager's office, where the theft was, with his big desk and
 ## the safe; the archive with its shelves of forms; and the meeting room. The people (step 2): six employees alike at
 ## the desks, el señor Trámite, Benja the intern and Pelusa; each employee's traits and his coffee (step 3). The case
-## comes in step 4. Every number here is (propuesta).
+## (step 4): what was stolen hides in the copier's tray, in the recycling bin or in the culprit's briefcase, and the
+## evidence bags wait by the reception. Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(24, 18)
@@ -97,6 +98,22 @@ const CHAIR_SCENE := preload("res://scenes/props/office_chair.tscn")
 const MONITOR_MODEL := preload("res://assets/models/office_monitor.glb")
 const PHONE_MODEL := preload("res://assets/models/desk_phone.glb")
 const COOLER_MODEL := preload("res://assets/models/water_cooler.glb")
+## What was stolen, drawn with the seed (escena-oficina.md, pregunta 1), and where it can be hidden: in the giant
+## copier's tray, in the recycling bin or in the culprit's briefcase (the six are alike: any can be opened).
+const LOOTS: Array[String] = ["golden_stamp", "stapler", "bonus"]
+const LOOT_SPOTS: Array[String] = ["copier", "bin", "briefcase"]
+const LOOT_MODELS := {
+	"golden_stamp": preload("res://assets/models/golden_stamp.glb"),
+	"stapler": preload("res://assets/models/founder_stapler.glb"),
+	"bonus": preload("res://assets/models/bonus_envelope.glb"),
+}
+## The recycling bin by the back wall, the roll of evidence bags by the reception, and where the employee's briefcase
+## hangs (OfficeEmployee's model).
+const BIN_AT := Vector3(-1.5, 0, -8.5)
+const BIN_SIZE := Vector3(0.6, 0.8, 0.5)
+const BAGS_AT := Vector3(-2.0, 0, 4.4)
+const BRIEFCASE_AT := Vector3(0.6, 0.32, 0.08)
+const BRIEFCASE_SIZE := Vector3(0.25, 0.45, 0.5)
 const TIN_SCENE := preload("res://scenes/props/office_cookie_tin.tscn")
 const CONCRETE := Color(0.62, 0.66, 0.7)
 const MIRROR := Color(0.45, 0.6, 0.72)
@@ -110,7 +127,6 @@ const LEATHER := Color(0.35, 0.2, 0.12)
 const WHITE := Color(0.95, 0.95, 0.93)
 const METAL := Color(0.55, 0.58, 0.62)
 const GLASS := Color(0.75, 0.9, 1.0, 0.35)
-const BRONZE := Color(0.75, 0.5, 0.25)
 const PLANT := Color(0.25, 0.6, 0.3)
 const FILES := Color(0.85, 0.75, 0.5)
 
@@ -125,6 +141,16 @@ var bell_in := DESK_CHANGE_EVERY
 var manager: OfficePerson
 var intern: OfficePerson
 var vacuum: RobotVacuum
+var case: CrimeSceneCase
+## What was stolen and where it is (drawn with the case seed in set_up_case), and whether the cops found it.
+var loot := "golden_stamp"
+var loot_spot := "copier"
+var loot_found := false
+## The searchable places: the copier and the bin by name, and the culprit's briefcase; every employee's briefcase.
+var loot_spots := {}
+var briefcases: Array[LootSpot] = []
+## The Founder's Stapler in its glass case (gone if it's what was stolen).
+var stapler: Node3D
 var _rng := RandomNumberGenerator.new()
 var _builder: PlaceBuilder
 
@@ -144,6 +170,8 @@ func _ready() -> void:
 	_archive()
 	_meeting()
 	_people()
+	_bags()
+	_loot_spots()
 
 
 ## Whether a point in the world (ignoring height) is on the office's lot, the entrance included.
@@ -238,10 +266,39 @@ func cop_in_kitchen() -> bool:
 		return room_of(cop.global_position + Vector3.UP * 0.5) == "kitchen")
 
 
-## Tells the employees about the case.
-func set_up_case(case: CrimeSceneCase) -> void:
+## Draws what was stolen and where it is, and tells the employees about the case.
+func set_up_case(new_case: CrimeSceneCase) -> void:
+	case = new_case
+	loot = LOOTS[hash(["office loot", case.case_seed]) % LOOTS.size()]
+	loot_spot = LOOT_SPOTS[hash(["office loot spot", case.case_seed]) % LOOT_SPOTS.size()]
+	loot_spots.briefcase = briefcases[case.plan.culprit]
+	stapler.visible = loot != "stapler"
 	for employee in employees:
 		employee.case = case
+
+
+## Searching a spot: the stolen thing turns up in the right one; a sign of nothing in the others. Any briefcase can be
+## opened, but only the culprit's can hide it.
+func search(spot: String, cop: Cop, who := -1) -> void:
+	if spot != loot_spot or loot_found or not case or (spot == "briefcase" and who != case.plan.culprit):
+		if cop:
+			cop.show_hint("HINT_SEARCH_NOTHING_" + spot)
+		return
+	reveal_loot()
+
+
+## What was stolen comes out of its hiding spot, on the floor in front of it, and the case notes it.
+func reveal_loot() -> void:
+	if loot_found:
+		return
+	loot_found = true
+	var item: Node3D = LOOT_MODELS[loot].instantiate()
+	item.name = "Loot"
+	add_child(item)
+	var at := to_local((loot_spots[loot_spot] as Node3D).global_position)
+	item.position = Vector3(at.x, FLOOR_TOP, at.z + 0.7)
+	if case:
+		case.found_loot()
 
 
 ## The employee by index (the order of the case's traits).
@@ -331,7 +388,7 @@ func _reception() -> void:
 	add_child(clock_sign)
 	_builder.box(STAPLER_CASE_AT + Vector3(0, 0.45, 0), Vector3(0.7, 0.9, 0.7), WOOD)
 	_builder.mesh_box(STAPLER_CASE_AT + Vector3(0, 1.2, 0), Vector3(0.7, 0.6, 0.7), GLASS)
-	_builder.mesh_box(STAPLER_CASE_AT + Vector3(0, 0.96, 0), Vector3(0.3, 0.1, 0.1), BRONZE)
+	stapler = _model(LOOT_MODELS.stapler, STAPLER_CASE_AT + Vector3(0, 0.91, 0), PI / 2)
 	_builder.shape(_builder.body(COOLER_AT + Vector3(0, 0.7, 0)), Vector3(0.4, 1.4, 0.4))
 	_model(COOLER_MODEL, COOLER_AT, PI)
 	_builder.box(PLANT_AT + Vector3(0, 0.25, 0), Vector3(0.4, 0.5, 0.4), WOOD)
@@ -496,6 +553,46 @@ func _people() -> void:
 	vacuum.route = VACUUM_ROUTE
 	vacuum.position = VACUUM_ROUTE[0]
 	add_child(vacuum)
+
+
+## A stool with the roll of evidence bags for the clues the cops carry.
+func _bags() -> void:
+	_builder.box(BAGS_AT + Vector3(0, 0.25, 0), Vector3(0.5, 0.5, 0.4), WOOD)
+	bags = EvidenceBags.new()
+	bags.name = "EvidenceBags"
+	bags.position = BAGS_AT + Vector3(0, 0.5, 0)
+	add_child(bags)
+
+
+## The places to search: the copier's tray, the recycling bin and every employee's briefcase.
+func _loot_spots() -> void:
+	_builder.open_box(BIN_AT, BIN_SIZE, "top", Color(0.3, 0.55, 0.35))
+	for spot: String in ["copier", "bin"]:
+		var size: Vector3 = COPIER_SIZE if spot == "copier" else BIN_SIZE
+		var search_here := LootSpot.new(size + Vector3(0.05, 0.05, 0.05))
+		search_here.name = "Search_" + spot
+		search_here.spot = spot
+		search_here.place = self
+		search_here.position = (COPIER_AT if spot == "copier" else BIN_AT) + Vector3(0, size.y / 2, 0)
+		add_child(search_here)
+		loot_spots[spot] = search_here
+	for employee in employees:
+		var briefcase := Briefcase.new(BRIEFCASE_SIZE)
+		briefcase.name = "Briefcase"
+		briefcase.spot = "briefcase"
+		briefcase.place = self
+		briefcase.who = employee.index
+		briefcase.position = BRIEFCASE_AT
+		employee.add_child(briefcase)
+		briefcases.append(briefcase)
+
+
+## An employee's briefcase: the six alike, and only the culprit's can hide what was stolen.
+class Briefcase extends LootSpot:
+	var who := 0
+
+	func use(cop: Cop) -> void:
+		(place as FormsOffice).search(spot, cop, who)
 
 
 func _person(who: String, at: Vector3, turn: float) -> OfficePerson:

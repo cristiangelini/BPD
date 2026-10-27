@@ -155,3 +155,8 @@ ChaseDrops (los bidones, como las valijas del hotel), PlaceDraw y la custodia pa
   izquierda o derecha; si en ese momento hay un policía en la cocina, el café y la mano van a su ficha. Después vuelve
   a su escritorio; mientras está en el café, la campanita no le cambia el escritorio. La variante `office` ya está en
   CrimeSceneCase (pistas: huellas, café, asa, pisada, mordisco y testigo). Capturas `paso3-*.png`.
+- **Paso 4a (el caso):** `FormsOfficeLevel` da el caso (CrimeSceneCase, variante `office`) con el tablero y el sello
+  de la comisaría. La semilla sortea lo robado (el Sello de Oro, la Abrochadora del Fundador, que entonces falta en su
+  vitrina, o el sobre del bono) y dónde está: la bandeja de la fotocopiadora, el tacho de reciclaje (nuevo, verde, al
+  fondo del open space) o el maletín del culpable. Los seis maletines se pueden abrir con E; solo el del culpable
+  puede tenerlo. Las bolsas de evidencia esperan en un banquito junto a la recepción. Capturas `paso4a-*.png`.
