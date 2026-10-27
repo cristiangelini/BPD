@@ -154,6 +154,11 @@ suman entre 400 y 600.
      y la primera vez es la pista. En un dueto, Rosaura desafina cada 3 s porque el micrófono 2 no es el suyo. Se
      esconden el micrófono dorado (1 kg, 1000), el chip afinador (300) y el manual de la diva (200). Captura:
      `paso6a-afinador.png`.
+   - **Cómo quedaron las letras con mensajes (propuesta):** mientras un cliente canta, la pantalla muestra una frase
+     cada 4 s, y cada 3 frases una que no es de ninguna canción ("Galpón 7, la puerta de atrás"), que queda 6 s. Un
+     policía a menos de 10 m de la pantalla y mirándola cuando sale se da cuenta (la pista, una vez). Rota, la
+     pantalla no muestra nada. Se esconden la computadora de las letras (6 kg, 1000, en un escondite grande), la
+     libreta de claves (300) y el recibo de "mercadería" (200). Captura: `paso6b-letras.png`.
 7. "Jugar" suma el karaoke al sorteo de allanamientos, y la huida de Rosaura.
 8. El online (Rosaura, Toto, los clientes, los micrófonos y lo frágil en todas las PC).
 

@@ -5698,3 +5698,18 @@ TOTO_CLUE_karaoke_tuner,"«¡Silencio! ¡Por fin! Te cuento: vi a la jefa escond
 KARAOKE_TUNER_SING,"♪ ¡Do re mi fa sol, perfecto! ♪","♪ Do re mi fa sol, perfect! ♪","♪ Dó ré mi fá sol, perfeito! ♪"
 KARAOKE_TUNER_CLUE,Un micrófono de las cabinas hace cantar perfecto a cualquiera: tiene un afinador adentro.,One of the booths' microphones makes anyone sing perfectly: it has a tuner inside.,Um microfone das cabines faz qualquer um cantar perfeito: tem um afinador dentro.
 DIVA_OFF_KEY,♪ ¡Aaaa-uuuuu-iiii! ♪ (Rosaura desafina),♪ Aaaa-ooooo-eeee! ♪ (Rosaura is off key),♪ Aaaa-uuuuu-iiii! ♪ (Rosaura desafina)
+BRIEF_KARAOKE_LYRICS_B,Rosaura les pasa mensajes a unos contrabandistas escondidos en las letras de las canciones. La computadora de las letras es la prueba.,"Rosaura passes messages to some smugglers, hidden in the songs' lyrics. The lyrics computer is the proof.",Rosaura passa mensagens para uns contrabandistas escondidas nas letras das músicas. O computador das letras é a prova.
+BRIEF_KARAOKE_LYRICS_C,Traigan la computadora de las letras en el baúl del patrullero. Sin eso no hay caso.,Bring the lyrics computer in the patrol car's trunk. Without it there's no case.,Tragam o computador das letras no porta-malas da viatura. Sem ele não há caso.
+BRIEF_KARAOKE_LYRICS_D,"Si encuentran la libreta de claves o el recibo de «mercadería», mejor: todo suma.","If you find the notebook of codes or the receipt for “goods”, even better: it all adds up.","Se acharem a caderneta de códigos ou o recibo de «mercadoria», melhor: tudo soma."
+OBJ_FIND_LYRICS_PC,Llevarse la computadora de las letras,Take the lyrics computer,Levar o computador das letras
+OBJ_EXTRA_KARAOKE_CODES,Extra: la libreta de claves,Extra: the notebook of codes,Extra: a caderneta de códigos
+OBJ_EXTRA_GOODS_RECEIPT,Extra: el recibo de «mercadería»,Extra: the receipt for “goods”,Extra: o recibo de «mercadoria»
+TOTO_CLUE_karaoke_lyrics,«¡Silencio! ¡Por fin! Te cuento: vi a la jefa esconder algo %s. Y la pantalla pone letras que no son de ninguna canción.»,“Silence! At last! Here's one: I saw the boss hide something %s. And the screen shows lyrics that aren't from any song.”,“Silêncio! Finalmente! Te conto: vi a chefe esconder algo %s. E a tela mostra letras que não são de nenhuma música.”
+KARAOKE_LYRIC_1,♪ Tus ojos son dos luceros… ♪,♪ Your eyes are two bright stars… ♪,♪ Teus olhos são duas estrelas… ♪
+KARAOKE_LYRIC_2,♪ …y mi corazón un sombrero ♪,♪ …and my heart is a hat ♪,♪ …e meu coração um chapéu ♪
+KARAOKE_LYRIC_3,♪ Bailemos bajo la luna llena… ♪,♪ Let's dance under the full moon… ♪,♪ Vamos dançar sob a lua cheia… ♪
+KARAOKE_LYRIC_4,♪ …aunque mañana haya que trabajar ♪,♪ …even if tomorrow we have to work ♪,♪ …mesmo que amanhã tenha que trabalhar ♪
+KARAOKE_CODE_1,♪ Y el camión llega a las tres ♪,♪ And the truck gets there at three ♪,♪ E o caminhão chega às três ♪
+KARAOKE_CODE_2,"♪ Galpón 7, la puerta de atrás ♪","♪ Shed 7, the back door ♪","♪ Galpão 7, a porta dos fundos ♪"
+KARAOKE_CODE_3,♪ Que nadie toque la mercadería del galpón 7 ♪,♪ Nobody touch the goods in shed 7 ♪,♪ Que ninguém toque na mercadoria do galpão 7 ♪
+KARAOKE_LYRICS_CLUE,"En la pantalla de las letras aparecen frases que no son de ninguna canción, con la hora de un camión y un galpón.","On the lyrics screen there are lines from no song at all, with a truck's time and a shed.","Na tela das letras aparecem frases que não são de nenhuma música, com a hora de um caminhão e um galpão."

@@ -286,6 +286,35 @@ export function buildDivaManual() {
 	return b.build();
 }
 
+// The lyrics computer: a beige tower 0.45 m tall with a pink karaoke sticker and a cable hanging out.
+export function buildLyricsPc() {
+	const b = new Builder('karaoke_lyrics_pc');
+	b.add('tower', mat('pc_beige', 0xd8ccb0), new THREE.BoxGeometry(0.22, 0.4, 0.45), { pos: V(0, 0.2, 0) });
+	b.add('front', mat('pc_front', 0x5a5650), new THREE.BoxGeometry(0.18, 0.12, 0.01), { pos: V(0, 0.3, 0.226) });
+	b.add('light', mat('pc_light', 0x2ad06a, { emissive: 0x2ad06a }), new THREE.BoxGeometry(0.02, 0.02, 0.01), { pos: V(0.06, 0.08, 0.226) });
+	b.add('sticker', mat('pc_sticker', 0xff5ad2), new THREE.BoxGeometry(0.01, 0.1, 0.16), { pos: V(0.111, 0.22, 0) });
+	b.add('cable', mat('pc_cable', 0x1c1d22), new THREE.BoxGeometry(0.02, 0.02, 0.18), { pos: V(0, 0.36, -0.31) });
+	return b.build();
+}
+
+// The notebook of codes: a small black notebook with a rubber band and a red bookmark.
+export function buildCodeNotebook() {
+	const b = new Builder('karaoke_code_notebook');
+	b.add('cover', mat('notebook_black', 0x24242a), new THREE.BoxGeometry(0.12, 0.015, 0.17), { pos: V(0, 0.0075, 0) });
+	b.add('band', mat('notebook_band', 0xd8203a), new THREE.BoxGeometry(0.008, 0.017, 0.172), { pos: V(0.04, 0.0085, 0) });
+	b.add('mark', mat('notebook_mark', 0xf2c230), new THREE.BoxGeometry(0.01, 0.002, 0.04), { pos: V(-0.03, 0.002, 0.1) });
+	return b.build();
+}
+
+// The receipt for "goods": a long white slip with a red stamp.
+export function buildGoodsReceipt() {
+	const b = new Builder('karaoke_goods_receipt');
+	b.add('slip', mat('receipt_white', 0xf6f2e2), new THREE.BoxGeometry(0.1, 0.004, 0.2), { pos: V(0, 0.002, 0) });
+	for (let i = 0; i < 6; i++) b.add('lines', mat('receipt_ink', 0x2a2a40), new THREE.BoxGeometry(0.07, 0.002, 0.006), { pos: V(0, 0.005, -0.07 + i * 0.022) });
+	b.add('stamp', mat('receipt_stamp', 0xd83a30), new THREE.CylinderGeometry(0.02, 0.02, 0.002, 12), { pos: V(0.025, 0.005, 0.07) });
+	return b.build();
+}
+
 export const models = {
 	stage_speaker: buildStageSpeaker, lyrics_screen: buildLyricsScreen, sound_console: buildSoundConsole,
 	karaoke_bar: buildKaraokeBar, ice_machine: buildIceMachine, karaoke_table: buildKaraokeTable,
@@ -295,6 +324,7 @@ export const models = {
 	karaoke_applause_machine: buildApplauseMachine, karaoke_applause_tapes: buildApplauseTapes,
 	karaoke_winners_list: buildWinnersList, ceiling_speaker: buildCeilingSpeaker, nephew_frame: buildNephewFrame,
 	karaoke_golden_mic: buildGoldenMic, karaoke_tuner_chip: buildTunerChip, karaoke_diva_manual: buildDivaManual,
+	karaoke_lyrics_pc: buildLyricsPc, karaoke_code_notebook: buildCodeNotebook, karaoke_goods_receipt: buildGoodsReceipt,
 };
 
 export const views = {
@@ -320,5 +350,8 @@ export const views = {
 	},	karaoke_tuner: {
 		items: [{ name: 'karaoke_golden_mic', pos: [-0.25, 0, 0] }, { name: 'karaoke_tuner_chip', pos: [0.0, 0, 0.1] }, { name: 'karaoke_diva_manual', pos: [0.25, 0, 0], rotY: 0.3 }],
 		cam: { pos: [0, 0.45, 0.9], target: [0, 0.08, 0], fov: 40 },
+	},	karaoke_lyrics: {
+		items: [{ name: 'karaoke_lyrics_pc', pos: [-0.3, 0, 0], rotY: 0.4 }, { name: 'karaoke_code_notebook', pos: [0.15, 0, 0.1] }, { name: 'karaoke_goods_receipt', pos: [0.4, 0, 0], rotY: 0.3 }],
+		cam: { pos: [0, 0.7, 1.4], target: [0, 0.15, 0], fov: 40 },
 	},
 };
