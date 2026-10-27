@@ -5588,3 +5588,25 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+PLACE_KARAOKE,Karaoke El Desafine,Off-Key Karaoke,Karaokê Desafinado
+KARAOKE_MOTTO,¡Canta como puedas!,Sing however you can!,Cante como puder!
+MENU_KARAOKE,Karaoke (allanamiento) (prueba),Karaoke (raid) (test),Karaokê (batida) (teste)
+HINT_TILL_KEY_KARAOKE,¡Una llave! Abre la oficina de Rosaura.,A key! It opens Rosaura's office.,Uma chave! Abre o escritório da Rosaura.
+CASE_FAILED_LAWYER_KARAOKE,Rosaura llamó al abogado del karaoke. Caso perdido.,Rosaura called the karaoke's lawyer. Case lost.,Rosaura ligou para o advogado do karaokê. Caso perdido.
+KARAOKE_BOOTH_1,Cabina 1,Booth 1,Cabine 1
+KARAOKE_BOOTH_2,Cabina 2,Booth 2,Cabine 2
+KARAOKE_BOOTH_3,Cabina 3,Booth 3,Cabine 3
+KARAOKE_SCREEN_BROKEN,"«¡La pantalla! ¿Y ahora cómo sigue la canción?»","“The screen! Now how does the song go?”","“A tela! E agora como continua a música?”"
+KARAOKE_DISCO_BROKEN,"«¡Mi bola de espejos! ¡Era lo único que brillaba más que yo!»","“My disco ball! It was the only thing that shone brighter than me!”","“Minha bola de espelhos! Era a única coisa que brilhava mais que eu!”"
+LOC_behind_stage_speaker,detrás del parlante del escenario,behind the stage speaker,atrás da caixa de som do palco
+LOC_at_stage_foot,al pie del escenario,at the foot of the stage,ao pé do palco
+LOC_behind_sound_console,detrás de la consola del sonidista,behind the sound guy's console,atrás da mesa de som
+LOC_by_ice_machine,al lado de la máquina de hielo,by the ice machine,ao lado da máquina de gelo
+LOC_in_karaoke_office_corner,en un rincón de la oficina de Rosaura,in a corner of Rosaura's office,num canto do escritório da Rosaura
+LOC_by_chair_stack,al lado de la pila de sillas,by the stack of chairs,ao lado da pilha de cadeiras
+LOC_on_booth_1_sofa,en el sillón de la cabina 1,on booth 1's sofa,no sofá da cabine 1
+LOC_in_booth_3,en la cabina 3,in booth 3,na cabine 3
+LOC_under_dress_rack,debajo del perchero de vestidos,under the dress rack,embaixo da arara de vestidos
+LOC_under_karaoke_table,debajo de una mesa de la sala,under a table in the room,embaixo de uma mesa do salão
+LOC_on_karaoke_bar,en la barra del bar,on the bar,no balcão do bar
+LOC_on_karaoke_desk,en el escritorio de Rosaura,on Rosaura's desk,na escrivaninha da Rosaura

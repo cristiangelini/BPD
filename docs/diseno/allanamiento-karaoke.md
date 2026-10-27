@@ -106,6 +106,16 @@ suman entre 400 y 600.
 ## Pasos (un PR chico cada uno)
 1. El lugar: el karaoke con el escenario, la sala, la cabina del sonidista, el bar, las cabinas, la oficina, lo
    frágil y los escondites. Modelos con `tools/modelgen`.
+   - **Cómo quedó (propuesta):** `Karaoke` arma el local (24 × 20 m, 4,5 m de alto) en su lote de la cuadra (6, 3),
+     con la puerta al norte de la cuadra (en el local, al frente). El escenario (10 × 4 m, 0,6 m de alto) está contra
+     la pared del fondo, con su escalera del lado este, un parlante en cada punta y la pantalla de las letras arriba.
+     Al este del escenario está la consola del sonidista, y en la esquina del fondo este la oficina con llave, el
+     escritorio y el perchero de vestidos. La sala tiene 8 mesas redondas con sillas y la bola de espejos en el medio.
+     Las 3 cabinas privadas van contra la pared oeste (no la del fondo, que es del escenario), con su número arriba de
+     la puerta. El bar, cerca de la puerta del lado este, tiene la caja (la llave de la oficina), la heladera de jugos
+     y la máquina de hielo, y al lado está la pila de sillas. Lo frágil: la pantalla (algo a más de 3 m/s, multa de
+     30) y la bola de espejos (algo tirado que le pega la descuelga: multa de 15 y sus espejitos en el piso). 12
+     escondites, 6 grandes. La nota de neón está en el techo. Capturas: `allanamiento-karaoke/paso1-*.png`.
 2. Los micrófonos con cable (y el tropezón) y los clientes que cantan por turno.
 3. Rosaura y el dueto que la distrae.
 4. Toto y la consola del volumen.

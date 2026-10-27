@@ -57,6 +57,7 @@ const PLACES := {
 	"cake_lab": "res://scenes/levels/cake_lab.tscn",
 	"gym_raid": "res://scenes/levels/gym_raid.tscn",
 	"apartments": "res://scenes/levels/apartment_tower.tscn",
+	"karaoke": "res://scenes/levels/karaoke.tscn",
 	"prison_tunnel": "res://scenes/levels/prison_tunnel.tscn",
 	"prison_talent": "res://scenes/levels/prison_talent.tscn",
 	"prison_vip": "res://scenes/levels/prison_vip.tscn",
