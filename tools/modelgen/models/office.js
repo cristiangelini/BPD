@@ -19,7 +19,8 @@ function suitFront(b, tieColor) {
 
 // An employee: the company's grey suit and blue tie, the badge with the blurry photo, the black briefcase in the right
 // hand (its own node, briefcase). The parts the game changes per employee have their own nodes: hair (recolored),
-// glasses and teeth (shown when he bites).
+// glasses, teeth (shown when he bites), legs (stretched to his shoe size) and a company cup in each hand, cup_left
+// and cup_right (shown while he drinks his coffee: the hand he holds it with).
 function oficinista(b) {
 	pearBody(b, mat('skin_crema', 0xf3d2b0), { shirt: C('suit_grey', SUIT), pants: C('suit_grey', SUIT), belted: false });
 	suitFront(b, 0x2a4fb0);
@@ -34,6 +35,12 @@ function oficinista(b) {
 	const leather = C('briefcase_black', 0x1c1c20);
 	b.add('briefcase', leather, new THREE.BoxGeometry(0.1, 0.32, 0.44), { pos: V(0.6, 0.32, 0.08) });
 	b.add('briefcase', M.gold, new THREE.BoxGeometry(0.04, 0.03, 0.12), { pos: V(0.6, 0.5, 0.08) });
+	const cup = C('office_cup', 0xffffff), coffee = C('coffee', 0x3a2414);
+	for (const [id, s] of [['cup_left', 1], ['cup_right', -1]]) {
+		b.add(id, cup, new THREE.CylinderGeometry(0.045, 0.04, 0.1, 8), { pos: V(s * 0.47, 0.74, 0.16) });
+		b.add(id, coffee, new THREE.CylinderGeometry(0.04, 0.04, 0.01, 8), { pos: V(s * 0.47, 0.79, 0.16) });
+		b.add(id, cup, new THREE.TorusGeometry(0.025, 0.008, 4, 8), { pos: V(s * 0.52, 0.74, 0.16), rot: [Math.PI / 2, 0, 0] });
+	}
 }
 
 // El señor Trámite, the manager: short and round, a darker suit with a red tie, a bald head with two tufts, a thin

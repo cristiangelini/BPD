@@ -89,8 +89,10 @@ func test_the_manager_the_intern_and_pelusa() -> void:
 		assert_ne(office.room_of(office.to_global(point + Vector3.UP * 0.2)), "", "its round stays inside")
 
 
+## (An employee says his lines while he's off for a coffee; otherwise E asks him for one, test_office_files.)
 func test_their_lines_go_round_and_translate() -> void:
 	var office := _office()
+	office.employees[0].on_break = true
 	for person: OfficePerson in [office.employees[0], office.manager, office.intern]:
 		var lines := int(OfficePerson.WHO[person.who].lines)
 		assert_eq(person.line_key(lines), person.line_key(0), "they go round")

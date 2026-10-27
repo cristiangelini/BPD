@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/props/cookie_tin.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/models/cookie_tin.glb" id="2"]
+
+[sub_resource type="CylinderShape3D" id="Shape"]
+height = 0.17
+radius = 0.18
+
+[node name="CookieTin" type="RigidBody3D"]
+collision_layer = 4
+collision_mask = 15
+mass = 0.6
+script = ExtResource("1")
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+shape = SubResource("Shape")
+
+[node name="Model" parent="." instance=ExtResource("2")]
