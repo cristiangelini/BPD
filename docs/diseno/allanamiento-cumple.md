@@ -99,6 +99,14 @@ bocina (por ahora el auto de fuga de los otros dueños; el autito queda para des
      ahora contestan con E). 12 escondites, 6 para cosas pesadas. `--place=birthday_raid` y "Cumpleaños
      (allanamiento) (prueba)" en el menú. Capturas `/mnt/project-files/cumple/paso1-*.png`.
 2. Chispita: la ronda, la denuncia y la hora del pastel.
+   - **Cómo quedó (propuesta):** Chispita camina su ronda de ida y vuelta alrededor de la pista (sin pasar por el
+     inflable ni las habitaciones) contando chistes malos cuando hay un policía cerca. La denuncia está arriba de la
+     pantalla: sube 2 por cada globo que ve reventar, 10 si ve caerse el pastel ("¡Hicieron llorar a los chicos!"), 5 por
+     la puerta de la oficina rota, 10 si ve abrir su valijita y 15 si lo empujan; con 100 llama a su abogado (que en el
+     paso 4 hace perder el caso). Al lado del pastel hay una caja de fósforos: E prende las velas, Chispita va a la
+     cabecera de la mesa, se apagan las luces (queda el brillo de las velas) y los 8 chicos se juntan alrededor a cantar
+     15 s. Mientras canta no ve nada. Durante la canción, E en los fósforos es cantar: le baja 5 la denuncia, una vez por
+     canción por policía. Después las velas descansan 45 s. Capturas `/mnt/project-files/cumple/paso2-*.png`.
 3. Los chicos que se cuelgan y agarran lo chico, y Tomasito con la piñata.
 4. El caso (`RaidCase`) con la primera historia: los globos de diamantes.
 5. Las otras 5 historias, una por PR.
