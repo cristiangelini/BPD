@@ -175,6 +175,13 @@ suman 500.
      vez va a la planilla.
    - **Qué cambia:** el estante se dobla hacia abajo del lado del patín.
    - **Capturas:** `pista/paso6c-*.png`.
+   - **La luz robada:** el rollo de cable enganchado al poste de la calle (5 kg, 1000) va en un escondite para cosas
+     grandes; las facturas de luz en cero (0,1 kg, 300) y la pinza (0,5 kg, 200) en otros.
+   - **La pista propia:** cada vez que arranca la pulidora las luces del salón parpadean 1,5 s ("¡BZZZT!"). La primera
+     vez va a la planilla.
+   - **Qué cambia:** la bola de espejos gira sola todo el tiempo, tirando 4 manchas de colores sobre el hielo, y no
+     hay forma de apagarla.
+   - **Capturas:** `pista/paso6d-*.png`.
 7. La pista en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 8. El online.
 

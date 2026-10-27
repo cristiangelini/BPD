@@ -279,6 +279,41 @@ export function buildRinkTrophyClipping() {
 	return b.build();
 }
 
+// The stolen power cable, 0.5 m across: a coil of thick black cable lying flat, with the yellow clamp it hooked onto the
+// street pole and a bare copper end.
+export function buildRinkPowerCable() {
+	const b = new Builder('rink_power_cable');
+	const black = mat('cable_black', 0x1c1c1e, { roughness: 0.6 });
+	for (const [i, r] of [0.21, 0.17, 0.13].entries()) {
+		b.add(`coil_${i}`, black, new THREE.TorusGeometry(r, 0.03, 8, 24), { pos: V(0, 0.03 + i * 0.03, 0), rot: [Math.PI / 2, 0, 0] });
+	}
+	b.add('tail', black, new THREE.BoxGeometry(0.05, 0.05, 0.16), { pos: V(0.21, 0.03, 0.12) });
+	b.add('clamp', mat('cable_clamp', 0xf2c21b), new THREE.BoxGeometry(0.08, 0.06, 0.06), { pos: V(0.21, 0.04, 0.22) });
+	b.add('copper', mat('cable_copper', 0xc8733a, { metalness: 0.7, roughness: 0.35 }), new THREE.BoxGeometry(0.03, 0.03, 0.06), { pos: V(-0.18, 0.09, 0.12) });
+	return b.build();
+}
+
+// The electricity bills at zero, 0.2 x 0.004 x 0.28 m: a white bill with a blue header and a big red total bar.
+export function buildRinkZeroBills() {
+	const b = new Builder('rink_zero_bills');
+	b.add('paper', mat('bill_paper', 0xf0eee6), new THREE.BoxGeometry(0.2, 0.004, 0.28), { pos: V(0, 0.002, 0) });
+	b.add('header', mat('bill_header', 0x2f5fb3), new THREE.BoxGeometry(0.2, 0.002, 0.04), { pos: V(0, 0.005, -0.12) });
+	b.add('lines', mat('bill_ink', 0x444444), new THREE.BoxGeometry(0.14, 0.002, 0.1), { pos: V(-0.02, 0.005, -0.01) });
+	b.add('total', mat('bill_total', 0xd23030), new THREE.BoxGeometry(0.08, 0.002, 0.04), { pos: V(0.05, 0.005, 0.1) });
+	return b.build();
+}
+
+// The pliers, 0.22 m long: red rubber handles and steel jaws, a little open.
+export function buildRinkPliers() {
+	const b = new Builder('rink_pliers');
+	const red = mat('pliers_grip', 0xc42a2a), steel = mat('pliers_steel', 0x9aa2aa, { metalness: 0.8, roughness: 0.3 });
+	b.add('grip_l', red, new THREE.BoxGeometry(0.022, 0.025, 0.12), { pos: V(-0.018, 0.015, -0.05), rot: [0, 0.12, 0] });
+	b.add('grip_r', red, new THREE.BoxGeometry(0.022, 0.025, 0.12), { pos: V(0.018, 0.015, -0.05), rot: [0, -0.12, 0] });
+	b.add('pivot', steel, new THREE.CylinderGeometry(0.02, 0.02, 0.03, 10), { pos: V(0, 0.015, 0.03) });
+	b.add('jaws', steel, new THREE.BoxGeometry(0.03, 0.02, 0.08), { pos: V(0, 0.015, 0.07) });
+	return b.build();
+}
+
 export const models = {
 	ice_resurfacer: buildIceResurfacer, skating_penguin: buildSkatingPenguin, cocoa_machine: buildCocoaMachine,
 	dj_booth: buildDjBooth, rink_scoreboard: buildRinkScoreboard, npc_dona_pirueta: buildDonaPirueta,
@@ -286,7 +321,8 @@ export const models = {
 	ice_chisel: buildIceChisel, rink_perfume_box: buildRinkPerfumeBox, perfume_bottle: buildPerfumeBottle,
 	rink_funnel: buildRinkFunnel, rink_score_remote: buildRinkScoreRemote, rink_bet_notebook: buildRinkBetNotebook,
 	rink_money_envelope: buildRinkMoneyEnvelope, rink_golden_skate: buildRinkGoldenSkate, rink_white_paint: buildRinkWhitePaint,
-	rink_trophy_clipping: buildRinkTrophyClipping,
+	rink_trophy_clipping: buildRinkTrophyClipping, rink_power_cable: buildRinkPowerCable, rink_zero_bills: buildRinkZeroBills,
+	rink_pliers: buildRinkPliers,
 };
 
 export const views = {
@@ -300,6 +336,7 @@ export const views = {
 			{ name: 'rink_perfume_box', pos: [0.8, 0, 2.6] }, { name: 'perfume_bottle', pos: [1.3, 0, 2.8] }, { name: 'rink_funnel', pos: [1.6, 0, 2.8] },
 			{ name: 'rink_score_remote', pos: [2.0, 0, 2.8] }, { name: 'rink_bet_notebook', pos: [2.3, 0, 2.8] }, { name: 'rink_money_envelope', pos: [2.6, 0, 2.8] },
 			{ name: 'rink_golden_skate', pos: [-2.0, 0, 2.8] }, { name: 'rink_white_paint', pos: [-2.4, 0, 2.8] }, { name: 'rink_trophy_clipping', pos: [-2.8, 0, 2.8] },
+			{ name: 'rink_power_cable', pos: [-2.2, 0, 3.6] }, { name: 'rink_zero_bills', pos: [-1.5, 0, 3.6] }, { name: 'rink_pliers', pos: [-1.1, 0, 3.6] },
 		],
 		cam: { pos: [0, 2.2, 6.5], target: [0, 1.0, 0], fov: 45 },
 	},
