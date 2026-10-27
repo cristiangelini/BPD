@@ -27,7 +27,7 @@ Va en una bolsa de evidencia.
 
 ## El lugar
 - **El edificio:** "Formularios Infinitos S.A.", un edificio de oficinas de dos pisos, gris y con ventanas espejadas,
-  en un lote nuevo: la cuadra (0, 3), del lado norte (no la usa ningún otro caso). Dos pisos unidos
+  en un lote nuevo: la cuadra (0, 1), del lado norte (no la usa ningún otro caso; la (0, 3) quedó para la casona del gato). Dos pisos unidos
   por la escalera:
   - **Planta baja:** la recepción con la vitrina de la Abrochadora, el mostrador, el reloj para marcar tarjeta y la
     planta de plástico; el **open space** con 8 escritorios iguales (cada uno con computadora, teléfono, una pila de
@@ -126,7 +126,7 @@ ChaseDrops (los bidones, como las valijas del hotel), PlaceDraw y la custodia pa
 
 ## Hecho así
 - **Paso 1 (el edificio por dentro):** `FormsOffice` (un CrimeScenePlace) en su lote nuevo, `office`, en la cuadra
-  (0, 3) del lado norte (24 × 18 y 6 de alto, con un parapeto sobre el techo), y `FormsOfficeLevel`
+  (0, 1) del lado norte (24 × 18 y 6 de alto, con un parapeto sobre el techo), y `FormsOfficeLevel`
   (`--place=office`). Por fuera, cemento gris con una franja de ventanas espejadas en cada piso, la puerta de vidrio
   en el medio y el cartel de la empresa. Planta baja: la recepción con su mostrador y teléfono, el reloj para marcar
   tarjeta en la pared del frente ("Marca tu tarjeta"), la vitrina de la Abrochadora del Fundador, el dispenser de agua
