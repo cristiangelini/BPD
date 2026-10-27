@@ -151,6 +151,17 @@ extras suman 500.
      míos!".
    - **Capturas:** `/mnt/project-files/lavadero/paso4-*.png` (`paso4-modelo.png` tiene a Pompita).
 5. El caso con la primera historia, la plata lavada.
+   Hecho así:
+   - **El caso:** el mismo de todos los allanamientos. El comisario da la denuncia anónima, hay 3 sospechas entre las
+     6 historias (notas en el piso del frente, el depósito y la zona de secado) y Don Chorro suelta dónde están las
+     cosas cuando le preguntas con R. Llama al abogado en 100 y el caso se pierde.
+   - **Pompita:** a quien le trae una gamuza seca le cuenta dónde vio a Don Chorro esconder algo.
+   - **La plata lavada:** el bolso verde con los billetes (8 kg, 1000) va en un escondite para cosas pesadas; el
+     cuaderno con las dos cuentas (0,2 kg, 300) y la plancha (1 kg, 200) en otros.
+   - **La pista propia:** entre las toallas de la soga hay 5 billetes colgados; a un policía a menos de 3 m de la soga
+     le salta "$ $ $" y la primera vez va a la planilla.
+   - **Qué cambia:** mientras anda el túnel, el soplador tira 3 billetes al aire por segundo, que vuelan y desaparecen.
+   - **Capturas:** `/mnt/project-files/lavadero/paso5-*.png`.
 6. Las otras 5 historias, una por PR.
 7. El lavadero en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 8. El online.
