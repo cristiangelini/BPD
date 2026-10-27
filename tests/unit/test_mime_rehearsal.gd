@@ -110,7 +110,10 @@ func test_off_the_stage_during_a_rehearsal_is_suspicious() -> void:
 func test_the_mimes_see_less_during_a_statue() -> void:
 	var mime := _watching_mime()
 	var angle := deg_to_rad(55.0)
-	cop.global_position = mime.global_transform * Vector3(sin(angle) * 3.0, 0.1, -cos(angle) * 3.0)
+	# To the side toward the middle of the room: a mime by the wall would have the cop behind it.
+	var left := mime.global_transform * Vector3(sin(angle) * 3.0, 0.1, -cos(angle) * 3.0)
+	var right := mime.global_transform * Vector3(-sin(angle) * 3.0, 0.1, -cos(angle) * 3.0)
+	cop.global_position = left if theater.to_local(left).length() < theater.to_local(right).length() else right
 	assert_true(mime.sees_cop(cop), "off to the side, in the usual cone")
 	rehearsal.start_rehearsal()
 	rehearsal._switch(true)
