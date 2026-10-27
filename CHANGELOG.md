@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Bowling alley raid, step 6b: the shoes on wheels story, with the wheeled shoe box, a taken-apart skate and the manual hidden, the first pair Pipo lends rolling its cop forward as they walk (the clue), and Don Chuza's team on lane 1 gliding up to the foul line.
 - Bowling alley raid, step 6a: the lead pins story, with the mold, a spare lead pin and the invoice hidden, lane 4's pins that don't fall and send the ball rolling back, and the weight a cop feels picking one up as the clue.
 - Bowling alley raid, step 5: the bowling alley as a raid case (tip, suspicions, checklist, Don Chuza's slips and lawyer, Pipo's tip) with its first story, the magnet ball: the golden ball, the remote and the bets hidden with the seed, a rack ball that sticks to the metal bin, and lane 1's pins falling by themselves when the league bowls there.
 - Bowling alley raid, step 4: Pipo, the shoe boy behind the counter, who lends a cop bowling shoes (sliding much less on the waxed lanes) and, the first time each cop gives a pair back, tells where he saw Don Chuza hide something.

@@ -52,6 +52,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_LEAD_PIN", "OBJ_EXTRA_LEAD_INVOICE"],
 		"rig": preload("res://scripts/case/bowling/lead_pins_rig.gd"),
 	},
+	"bowl_skates": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_BOWL_SKATES_B", "BRIEF_BOWL_SKATES_C", "BRIEF_BOWL_SKATES_D"],
+		"find": "OBJ_FIND_SKATE_BOX",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/bowl_skate_box.tscn"), preload("res://scenes/props/bowl_skate_parts.tscn"),
+			preload("res://scenes/props/bowl_skate_manual.tscn")],
+		"half_heights": [0.13, 0.03, 0.015],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_SKATE_PARTS", "OBJ_EXTRA_SKATE_MANUAL"],
+		"rig": preload("res://scripts/case/bowling/wheeled_shoes_rig.gd"),
+	},
 }
 ## Where the clue notes for the suspicions can lie, on the floor.
 const NOTE_PLACES: Array[Vector3] = [Vector3(-1.5, FLOOR_TOP, 8.0), Vector3(3.0, FLOOR_TOP, 5.0),

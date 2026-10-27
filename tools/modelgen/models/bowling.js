@@ -283,7 +283,41 @@ export function buildLeadInvoice() {
 	return b.build();
 }
 
+// The shoes on wheels: a shoe box with a red-and-blue bowling shoe sticking out, tiny wheels under its sole, a skate
+// taken apart (the plate, four wheels and a wrench) and the booklet "Cómo patinar sin que se note".
+function wheels(b, y, z, gap, r = 0.025) {
+	const wheel = mat('skate_wheel', 0xf2c230);
+	for (const x of [-gap, gap]) for (const dz of [-0.06, 0.06]) b.add('wheels', wheel, new THREE.CylinderGeometry(r, r, 0.02, 10), { pos: V(x, y, z + dz), rot: [0, 0, Math.PI / 2] });
+}
+export function buildSkateBox() {
+	const b = new Builder('bowl_skate_box');
+	const card = mat('shoe_box', 0xe8e0c8), lid = mat('shoe_box_lid', 0xd83a30);
+	b.add('box', card, new THREE.BoxGeometry(0.36, 0.14, 0.24), { pos: V(0, 0.07, 0) });
+	b.add('lid', lid, new THREE.BoxGeometry(0.37, 0.03, 0.25), { pos: V(0.02, 0.17, -0.02), rot: [0.25, 0, 0] });
+	b.add('shoe', mat('shoe_red', 0xd83a30), new THREE.BoxGeometry(0.12, 0.07, 0.26), { pos: V(-0.06, 0.19, 0.05), rot: [0.3, 0.3, 0] });
+	b.add('shoe', mat('shoe_blue', 0x3a6ad2), new THREE.BoxGeometry(0.12, 0.04, 0.12), { pos: V(-0.06, 0.24, 0.1), rot: [0.3, 0.3, 0] });
+	wheels(b, 0.17, 0.12, 0.05, 0.02);
+	return b.build();
+}
+
+export function buildSkateParts() {
+	const b = new Builder('bowl_skate_parts');
+	b.add('plate', mat('skate_plate', 0x9aa0aa, { metalness: 0.4 }), new THREE.BoxGeometry(0.1, 0.02, 0.26), { pos: V(0, 0.05, 0) });
+	wheels(b, 0.025, 0, 0.06);
+	b.add('wrench', mat('wrench', 0x6a6e78, { metalness: 0.5 }), new THREE.BoxGeometry(0.2, 0.012, 0.03), { pos: V(0.16, 0.006, 0.05), rot: [0, 0.6, 0] });
+	return b.build();
+}
+
+export function buildSkateManual() {
+	const b = new Builder('bowl_skate_manual');
+	b.add('cover', mat('manual_cover', 0x46b45a), new THREE.BoxGeometry(0.15, 0.015, 0.21), { pos: V(0, 0.008, 0) });
+	b.add('title', mat('manual_title', 0xf6f4ee), new THREE.BoxGeometry(0.11, 0.002, 0.03), { pos: V(0, 0.017, -0.06) });
+	wheels(b, 0.02, 0.04, 0.03, 0.012);
+	return b.build();
+}
+
 export const models = {
+	bowl_skate_box: buildSkateBox, bowl_skate_parts: buildSkateParts, bowl_skate_manual: buildSkateManual,
 	bowl_lead_mold: buildLeadMold, bowl_lead_pin: buildLeadPin, bowl_lead_invoice: buildLeadInvoice,
 	bowl_magnet_ball: buildMagnetBall, bowl_pin_remote: buildPinRemote, bowl_bet_list: buildBetList, metal_bin: buildMetalBin,
 	npc_pipo: buildPipo,
@@ -317,6 +351,10 @@ export const views = {
 	bowl_lead_pins: {
 		items: [{ name: 'bowl_lead_mold', pos: [-0.5, 0, 0] }, { name: 'bowl_lead_pin', pos: [0.15, 0, 0.1] }, { name: 'bowling_pin', pos: [0.35, 0, 0.1] }, { name: 'bowl_lead_invoice', pos: [0.7, 0, 0.1], rotY: 0.3 }],
 		cam: { pos: [0.1, 0.9, 1.9], target: [0.1, 0.2, 0], fov: 40 },
+	},
+	bowl_skates: {
+		items: [{ name: 'bowl_skate_box', pos: [-0.4, 0, 0] }, { name: 'bowl_skate_parts', pos: [0.1, 0, 0.1] }, { name: 'bowl_skate_manual', pos: [0.5, 0, 0.1], rotY: 0.3 }],
+		cam: { pos: [0.05, 0.8, 1.4], target: [0.05, 0.1, 0], fov: 40 },
 	},
 	bowlers: {
 		items: [{ name: 'npc_bowler', pos: [-1.0, 0, 0], rotY: 0.4 }, { name: 'npc_don_chuza', pos: [0, 0, 0.2], rotY: 0.2, scale: 0.85 }, { name: 'npc_bowler_b', pos: [1.0, 0, 0], rotY: Math.PI - 0.5 }, { name: 'npc_pipo', pos: [1.9, 0, 0.3], rotY: -0.3, scale: 0.75 }],
