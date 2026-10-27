@@ -164,6 +164,10 @@ suman entre 400 y 600.
      lugar. No suena, así que los clientes cantan girados hacia el otro, y un policía a menos de 1,8 m lo oye hacer
      tic-tac (la pista, una vez). Se esconden el reloj de oro falso (300) y la factura del barco (200). Captura:
      `paso6c-relojes.png`.
+   - **Cómo quedó el jugo de la inspiración (propuesta):** en el bar hay un vaso de jugo rosa. El policía que lo
+     agarra habla con voz de pito 8 s ("¡Hola, soy la ley!"), y la primera vez es la pista. Los clientes que cantan
+     sueltan cada 6 s una risita con voz finita. Se esconden el tanque de gas para globos (15 kg, 1000, en un escondite
+     grande), la caja de globos vacíos (300) y la receta del jugo (200). Captura: `paso6d-jugo.png`.
 7. "Jugar" suma el karaoke al sorteo de allanamientos, y la huida de Rosaura.
 8. El online (Rosaura, Toto, los clientes, los micrófonos y lo frágil en todas las PC).
 

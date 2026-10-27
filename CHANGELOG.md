@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Karaoke raid, step 6d: the juice of inspiration story: a glass of juice on the bar makes the cop who picks it up talk squeaky for 8 s (the clue once), the customers giggle squeaky while they sing, and the helium tank, the box of empty balloons and the juice's recipe are hidden.
 - Karaoke raid, step 6c: the speaker of watches story: one stage speaker is the 20 kg main evidence, it ticks for a cop next to it (the clue once), the customers sing turned toward the other one, and the fake gold watch and the ship's invoice are hidden.
 - Karaoke raid, step 6b: the lyrics with messages story: while a customer sings, the screen shows the song's lines and now and then a message from no song, which a cop looking at the screen notices (the clue once); the lyrics computer, the notebook of codes and the receipt for goods are hidden.
 - Karaoke raid, step 6a: the tuning microphone story: a booth microphone makes the cop holding it sing perfectly (golden notes, the clue once), Rosaura is off key in a duet, and the golden microphone, the spare tuner chip and the diva's manual are hidden.

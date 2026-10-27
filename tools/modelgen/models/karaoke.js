@@ -349,6 +349,45 @@ export function buildShipInvoice() {
 	return b.build();
 }
 
+// The bar's helium tank for balloons: a green cylinder 1 m tall with a valve and a balloon tied to it.
+export function buildHeliumTank() {
+	const b = new Builder('karaoke_helium_tank');
+	b.add('tank', mat('helium_green', 0x3aa86a, { metalness: 0.4, roughness: 0.4 }), new THREE.CylinderGeometry(0.14, 0.14, 0.86, 14), { pos: V(0, 0.43, 0) });
+	b.add('shoulder', mat('helium_green', 0x3aa86a, { metalness: 0.4, roughness: 0.4 }), new THREE.SphereGeometry(0.14, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2), { pos: V(0, 0.86, 0) });
+	b.add('valve', mat('helium_brass', 0xe8b830, { metalness: 0.6, roughness: 0.3 }), new THREE.CylinderGeometry(0.03, 0.03, 0.08, 8), { pos: V(0, 1.03, 0) });
+	b.add('label', mat('helium_label', 0xf6f2e2), new THREE.BoxGeometry(0.16, 0.2, 0.01), { pos: V(0, 0.5, 0.14) });
+	b.add('balloon', mat('helium_balloon', 0xff5ad2), ellipsoid(0.07, 0.09, 0.07), { pos: V(0.12, 0.98, 0) });
+	return b.build();
+}
+
+// A box of empty balloons, open, with a few colored ones spilling over the top.
+export function buildBalloonBox() {
+	const b = new Builder('karaoke_balloon_box');
+	b.add('box', mat('balloon_box', 0xd8b07a), new THREE.BoxGeometry(0.4, 0.25, 0.3), { pos: V(0, 0.125, 0) });
+	const colors = [0xff5ad2, 0x3a6ad2, 0xf2c230, 0x2ad06a];
+	for (let i = 0; i < 4; i++) b.add('balloon', mat('balloon_' + i, colors[i]), new THREE.BoxGeometry(0.06, 0.01, 0.1), { pos: V(-0.12 + i * 0.08, 0.255, 0), rot: [0, i * 0.5, 0] });
+	return b.build();
+}
+
+// The recipe of the juice: a sheet with a pink juice stain and a balloon drawn on it.
+export function buildJuiceRecipe() {
+	const b = new Builder('karaoke_juice_recipe');
+	b.add('paper', mat('recipe_paper', 0xf6f2e2), new THREE.BoxGeometry(0.15, 0.004, 0.2), { pos: V(0, 0.002, 0) });
+	for (let i = 0; i < 5; i++) b.add('lines', mat('recipe_ink', 0x2a2a40), new THREE.BoxGeometry(0.1, 0.002, 0.006), { pos: V(-0.01, 0.005, -0.02 + i * 0.02) });
+	b.add('stain', mat('recipe_stain', 0xff8ad8), new THREE.CylinderGeometry(0.025, 0.025, 0.002, 12), { pos: V(0.04, 0.005, -0.06) });
+	b.add('balloon', mat('recipe_balloon', 0x3a6ad2), new THREE.CylinderGeometry(0.015, 0.015, 0.002, 10), { pos: V(-0.04, 0.005, -0.065) });
+	return b.build();
+}
+
+// A glass of the bar's pink juice, 12 cm tall, with a straw.
+export function buildJuiceGlass() {
+	const b = new Builder('karaoke_juice_glass');
+	b.add('glass', mat('juice_glass', 0xd8ecf4, { transparent: true, opacity: 0.5 }), new THREE.CylinderGeometry(0.04, 0.032, 0.12, 12, 1, true), { pos: V(0, 0.06, 0) });
+	b.add('juice', mat('juice_pink', 0xff7ad0), new THREE.CylinderGeometry(0.037, 0.031, 0.09, 12), { pos: V(0, 0.047, 0) });
+	b.add('straw', mat('juice_straw', 0x2ad06a), new THREE.CylinderGeometry(0.005, 0.005, 0.16, 6), { pos: V(0.012, 0.1, 0), rot: [0, 0, -0.2] });
+	return b.build();
+}
+
 export const models = {
 	stage_speaker: buildStageSpeaker, lyrics_screen: buildLyricsScreen, sound_console: buildSoundConsole,
 	karaoke_bar: buildKaraokeBar, ice_machine: buildIceMachine, karaoke_table: buildKaraokeTable,
@@ -360,6 +399,8 @@ export const models = {
 	karaoke_golden_mic: buildGoldenMic, karaoke_tuner_chip: buildTunerChip, karaoke_diva_manual: buildDivaManual,
 	karaoke_lyrics_pc: buildLyricsPc, karaoke_code_notebook: buildCodeNotebook, karaoke_goods_receipt: buildGoodsReceipt,
 	karaoke_watch_speaker: buildWatchSpeaker, karaoke_fake_watch: buildFakeWatch, karaoke_ship_invoice: buildShipInvoice,
+	karaoke_helium_tank: buildHeliumTank, karaoke_balloon_box: buildBalloonBox, karaoke_juice_recipe: buildJuiceRecipe,
+	karaoke_juice_glass: buildJuiceGlass,
 };
 
 export const views = {
@@ -391,5 +432,8 @@ export const views = {
 	},	karaoke_watches: {
 		items: [{ name: 'karaoke_watch_speaker', pos: [-0.6, 0, 0] }, { name: 'karaoke_fake_watch', pos: [0.3, 0, 0.3] }, { name: 'karaoke_ship_invoice', pos: [0.7, 0, 0.2], rotY: 0.3 }],
 		cam: { pos: [0.2, 1.4, 3.2], target: [0.1, 0.6, 0], fov: 40 },
+	},	karaoke_helium: {
+		items: [{ name: 'karaoke_helium_tank', pos: [-0.5, 0, 0] }, { name: 'karaoke_balloon_box', pos: [0.1, 0, 0.1] }, { name: 'karaoke_juice_recipe', pos: [0.55, 0, 0.1], rotY: 0.3 }, { name: 'karaoke_juice_glass', pos: [0.55, 0, -0.2] }],
+		cam: { pos: [0.1, 1.0, 2.4], target: [0.05, 0.45, 0], fov: 40 },
 	},
 };
