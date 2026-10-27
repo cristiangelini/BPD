@@ -52,10 +52,12 @@ en la radio. La denuncia anónima es siempre vaga: "en Radio La Antena Loca pasa
 |---|---|---|---|---|
 | **El concurso arreglado** | La urna del sorteo, con todos los papelitos con el mismo nombre (4 kg, 1000) | El premio sin entregar, una licuadora (3 kg, 300), la lista de "ganadores" (0,1 kg, 200) | Un papelito caído al lado de la urna dice "Primo Tito" | Cada tanto don Volumen anuncia al aire "¡Y el ganador es... Tito, otra vez!" |
 | **Las publicidades fantasma** | El archivo de contratos de publicidades que nunca salieron (6 kg, 1000) | El cuaderno de cobros (0,5 kg, 300), el sello de "pagado" (0,3 kg, 200) | La grilla de publicidades de la pared está vacía, pero la caja está llena | Entre tema y tema, donde iría la publicidad, hay silencio |
-| **La radio pirata** | El transmisor pirata (10 kg, 1000, entre dos) | El mapa de frecuencias (0,2 kg, 300), la antena plegable (1,5 kg, 200) | La radio del policía silba cuando se acerca al transmisor | El patrullero estacionado afuera pasa canciones en vez de avisos |
+| **Los micrófonos ocultos** | La caja con las grabaciones de los vecinos (5 kg, 1000) | El micrófono escondido en una maceta (1 kg, 300), el mapa del barrio con cruces (0,2 kg, 200) | La maceta de la recepción tiene un micrófono con cable | Cada tanto sale al aire un chisme de algún vecino que nadie debería saber |
 | **Los discos de colección** | La caja con los vinilos robados a un coleccionista (5 kg, 1000) | El catálogo del coleccionista (0,5 kg, 300), el tocadiscos dorado (2 kg, 200) | Un disco del archivo tiene la etiqueta "Colección privada · no prestar" | Don Volumen pasa solo discos rarísimos y los presenta como "joyas" |
 | **Las dedicatorias en clave** | La caja con el libro de claves y la radio portátil (3 kg, 1000) | La lista de "oyentes" (0,1 kg, 300), el reloj de la entrega (0,5 kg, 200) | En la pizarra de dedicatorias: "Para la Gaviota: el paquete llega el martes" | Cada minuto sale al aire una dedicatoria rarísima |
 | **El ranking trucho** | La caja de sobres de los músicos que pagan por sonar (5 kg, 1000) | El disco de oro de cartón (1 kg, 300), el ranking escrito de antemano (0,1 kg, 200) | El ranking de la semana que viene ya está colgado | El mismo tema suena cada 2 minutos |
+
+(La radio pirata ya es una historia de la casa del abuelo, por eso no está acá.)
 
 Los pesos y valores siguen la escala del gimnasio, el taller y el cine: la principal vale unos 1000 y los extras suman
 entre 400 y 600.
