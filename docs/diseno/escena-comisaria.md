@@ -26,8 +26,9 @@ evidencia.
 ## El lugar
 - **La comisaría que ya existe** (comisaria.md, `StationRooms`): no hace falta una cuadra nueva. Los policías empiezan
   en la sala de guardia, como en cualquier turno, y el comisario les da el caso en su oficina.
-- **Lo nuevo es el depósito de evidencia, en el sótano:** una escalera baja desde la sala de guardia (la puerta con el
-  cartel "Depósito: solo personal autorizado", que nadie respeta). Abajo, un pasillo con estantes de metal llenos de
+- **Lo nuevo es el depósito de evidencia, un anexo atrás de la sala de descanso** (como el ala de interrogatorios
+  atrás de la oficina, en el terreno libre de la cuadra): se entra por una puerta en la pared del fondo de la sala de
+  descanso, con el cartel "Depósito: solo personal autorizado", que nadie respeta. Adentro, estantes de metal llenos de
   cajas con etiquetas de casos viejos (el gnomo, el pastel, el payaso), **el estante vacío** donde estaba lo robado, la
   reja del depósito con su candado, **el libro de retiros** en un atril y **la cámara de seguridad** en el techo, que
   graba en una videocasetera.
@@ -47,7 +48,7 @@ nombre, que se lee de cerca, y su puesto:
 | **La oficial Sellito** | En la mesa de entrada | Sella todo lo que le ponen delante, también la mano de un policía |
 | **Don Mopa** | Con el carrito de la limpieza, por toda la comisaría | Limpia y borra pistas, como la mucama del hotel |
 | **Doña Fritanga** | En la sala de descanso, al lado de la heladera | Hace donas y café; la que más habla |
-| **El archivista Polilla** | En el sótano, al lado de los estantes | Ordena cajas; estornuda con el polvo |
+| **El archivista Polilla** | En el depósito, al lado de los estantes | Ordena cajas; estornuda con el polvo |
 
 Los rasgos que se sortean (como los guardias del museo): **el talle de zapato**, **el azúcar del café** (0, 1, 2 o 5
 cucharadas), **los dientes**, **si es zurdo**, **la altura** y **si renguea**. Con el uniforme y la gorra no se ve el
@@ -63,7 +64,7 @@ Cada partida reparte **4 pistas** de estas 6, elegidas para que juntas descarten
 | Pista | Cómo se encuentra | Qué dice | Cómo se arruina |
 |---|---|---|---|
 | **Huella** en el estante vacío del depósito | Kit de huellas sobre el estante | Sus huellas digitales | Si un policía toca el estante antes, quedan sus huellas encima (y la ficha dice "¿fuiste tú?") |
-| **La cinta de la cámara** | Sacando el VHS de la videocasetera del sótano y poniéndolo en el televisor de la sala de guardia | La altura y si renguea (se ve una silueta con gorra, de espaldas) | Si un policía la pone en la videocasetera de la sala de descanso, que graba encima con la novela de la tarde |
+| **La cinta de la cámara** | Sacando el VHS de la videocasetera del depósito y poniéndolo en el televisor de la sala de guardia | La altura y si renguea (se ve una silueta con gorra, de espaldas) | Si un policía la pone en la videocasetera de la sala de descanso, que graba encima con la novela de la tarde |
 | **El libro de retiros** | Mirándolo en el atril; se fotografía | Si es zurdo (la firma falsa de las 3 de la mañana inclinada para el otro lado) | Si un policía firma encima (E con la lapicera) |
 | **La taza de café** abandonada en el estante | Se guarda en una bolsa; en la máquina de café, Doña Fritanga la prueba | Cuántas cucharadas de azúcar | Don Mopa la lava si llega antes; si un policía se la toma, se pierde |
 | **La dona mordida** en el piso del depósito | Se guarda en una bolsa | Los dientes | Si un policía se la come, se pierde (y es muy tentador) |
@@ -104,11 +105,11 @@ Mientras tanto se avanza con lo recomendado.
 CrimeScenePlace, CrimePlan (con los rasgos de los compañeros), GuardTraits (los rasgos sorteados y el que miente),
 CrimeBoard, BoardCard, BoardStamp, CrimeClueItem, EvidenceBags, LootSpot, la lustradora del museo como base de don Mopa
 (GalleryPolisher), los monitores del museo como base de la videocasetera (SecurityMonitors), el libro de huéspedes del
-hotel como base del libro de retiros, la escalera (PlaceBuilder.stairs), StationRooms, el armero, el agente de asuntos
+hotel como base del libro de retiros, StationRooms, InterrogationWing (cómo se arma un anexo), el armero, el agente de asuntos
 internos (sobornos.md), CaseBriefing y CaseChecklist, ChaseCase.begin, PlaceDraw y la custodia para el interrogatorio.
 
 ## El orden para hacerlo (un PR chico por paso)
-1. El sótano: la escalera desde la sala de guardia, el depósito con los estantes, el estante vacío, la reja, el atril
+1. El depósito: el anexo con su puerta desde la sala de descanso, los estantes, el estante vacío, la reja, el atril
    con el libro y la cámara con la videocasetera. Prueba GUT y captura.
 2. La gente: los cinco compañeros nuevos de uniforme con su placa (modelos procedurales en `tools/modelgen`) y el
    Chancho en la celda 1.
