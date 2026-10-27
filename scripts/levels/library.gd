@@ -40,6 +40,13 @@ const ARMCHAIR_AT := Vector3(-4.6, 0, -1.0)
 const DESK_AT := Vector3(4.0, 0, 4.4)
 const CATALOG_AT := Vector3(-4.4, 0, 5.3)
 const CATALOG_SIZE := Vector3(1.6, 1.3, 0.6)
+## Where the Golden Book can be hidden (LibrarySpot): the eight sections, the returns cart and the big cushion.
+const BOOK_SPOTS: Array[String] = ["section_A", "section_B", "section_C", "section_D", "section_E", "section_F",
+	"section_G", "section_H", "cart", "cushion"]
+## Seconds a search of a spot takes, and reading the whole card catalog (propuesta).
+const SEARCH_SECONDS := 5.0
+const CATALOG_SECONDS := 10.0
+
 ## Where the people are: the six readers two by two at the long tables, facing each other across them, Doña Sigilo
 ## behind her desk facing the room, and Tomasito asleep on the rug.
 const READERS_AT: Array[Vector3] = [
@@ -82,6 +89,17 @@ const CUSHION_COLORS: Array[Color] = [Color(0.95, 0.6, 0.2), Color(0.3, 0.7, 0.8
 	Color(0.55, 0.8, 0.35)]
 
 var case: CrimeSceneCase
+## What was stolen (CrimeSceneCase's loot texts), where the culprit hid it, whether a search turned it up and whether
+## it's back in its display case.
+var loot := "golden_book"
+var loot_spot := "section_A"
+var book_uncovered := false
+var loot_found := false
+var loot_spots := {}
+var book: GoldenBook
+var catalog: CardCatalog
+## What each cop is busy searching ("" for nothing), by cop: a search or the catalog takes a while.
+var _busy := {}
 var readers: Array[LibraryReader] = []
 var librarian: Librarian
 var kid: LibraryKid
@@ -106,10 +124,83 @@ func _ready() -> void:
 ## won't take off the nightcap until they get something to eat.
 func set_up_case(new_case: CrimeSceneCase) -> void:
 	case = new_case
+	loot_spot = BOOK_SPOTS[absi(hash(["library book spot", case.case_seed])) % BOOK_SPOTS.size()]
 	var stubborn := absi(hash("stubborn reader %d" % case.case_seed)) % readers.size()
 	for reader in readers:
 		reader.case = case
 		reader.stubborn = reader.index == stubborn
+
+
+## E on a spot: the cop searches it for SEARCH_SECONDS, and then the Golden Book turns up if it's there, or the cop
+## says what's there instead.
+func search(spot: String, cop: Cop) -> void:
+	if _busy.get(cop, "") != "":
+		return
+	_busy[cop] = spot
+	if cop:
+		cop.show_hint("HINT_LIBRARY_SEARCHING")
+	get_tree().create_timer(SEARCH_SECONDS).timeout.connect(searched.bind(spot, cop))
+
+
+## The search of a spot is over.
+func searched(spot: String, cop: Cop) -> void:
+	_busy.erase(cop)
+	if spot != loot_spot or book_uncovered or not case:
+		if cop:
+			cop.show_hint("HINT_LIBRARY_NOTHING_" + spot)
+		return
+	uncover_book()
+	if cop:
+		cop.show_hint("HINT_LIBRARY_BOOK_UNCOVERED")
+
+
+## E on the card catalog: CATALOG_SECONDS reading the cards, and then what the swapped card says.
+func read_catalog(cop: Cop) -> void:
+	if _busy.get(cop, "") != "":
+		return
+	_busy[cop] = "catalog"
+	if cop:
+		cop.show_hint("HINT_CATALOG_READING")
+	get_tree().create_timer(CATALOG_SECONDS).timeout.connect(catalog_read.bind(cop))
+
+
+func catalog_read(cop: Cop) -> void:
+	_busy.erase(cop)
+	if cop:
+		cop.show_hint(catalog_says())
+
+
+## What the card catalog tells: the letter of the section the swapped card hides, or that everything's in order.
+func catalog_says() -> String:
+	if case and loot_spot.begins_with("section_"):
+		return tr("HINT_CATALOG_SWAPPED") % loot_spot.trim_prefix("section_")
+	return tr("HINT_CATALOG_IN_ORDER")
+
+
+## The Golden Book comes out of its hiding spot, on the floor in front of it, for a cop to take back to its case.
+func uncover_book() -> void:
+	if book_uncovered:
+		return
+	book_uncovered = true
+	book = GoldenBook.new()
+	book.name = "GoldenBook"
+	book.library = self
+	add_child(book)
+	var spot := loot_spots[loot_spot] as Node3D
+	var out: Vector3 = spot.get_meta("out")
+	book.position = Vector3(spot.position.x, FLOOR_TOP, spot.position.z) + out
+
+
+## The Golden Book back in its display case: the case notes it (+LOOT_BONUS on the salary).
+func reveal_loot() -> void:
+	if loot_found:
+		return
+	uncover_book()
+	loot_found = true
+	book.position = CASE_AT + Vector3(0, 0.98, 0)
+	book.collision_layer = 0
+	if case:
+		case.found_loot()
 
 
 ## The reader by index (the order of the case's traits).
@@ -152,6 +243,18 @@ func section(world: Vector3) -> String:
 			best = absf(local.x - at.x)
 			nearest = letter
 	return nearest
+
+
+func _spot(spot: String, at: Vector3, size: Vector3) -> void:
+	var body := LibrarySpot.new(size)
+	body.name = "Search_" + spot
+	body.spot = spot
+	body.place = self
+	body.position = at
+	# Where the book lands when it turns up: in the aisle west of a shelf, in front of the cart or the cushion.
+	body.set_meta("out", Vector3(-0.8, 0, 0) if spot.begins_with("section_") else Vector3(0, 0, 0.9))
+	add_child(body)
+	loot_spots[spot] = body
 
 
 ## The six readers alike (ReaderTraits.draw with the case seed) at the tables, Doña Sigilo at her desk and Tomasito
@@ -266,7 +369,12 @@ func _reading_room() -> void:
 	_builder.mesh_box(DESK_AT + Vector3(-0.6, 1.05, 0), Vector3(0.12, 0.08, 0.12), GOLD)
 	_builder.mesh_box(DESK_AT + Vector3(0.5, 1.05, 0), Vector3(0.1, 0.1, 0.08), BLACK)
 	# The card catalog: a cabinet of little drawers, each with its brass handle.
-	_builder.box(CATALOG_AT + Vector3(0, CATALOG_SIZE.y / 2, 0), CATALOG_SIZE, WOOD.lightened(0.15))
+	_builder.mesh_box(CATALOG_AT + Vector3(0, CATALOG_SIZE.y / 2, 0), CATALOG_SIZE, WOOD.lightened(0.15))
+	catalog = CardCatalog.new(CATALOG_SIZE)
+	catalog.name = "CardCatalog"
+	catalog.library = self
+	catalog.position = CATALOG_AT + Vector3(0, CATALOG_SIZE.y / 2, 0)
+	add_child(catalog)
 	for row in 4:
 		for column in 6:
 			_builder.mesh_box(CATALOG_AT + Vector3(-0.65 + column * 0.26, 0.25 + row * 0.28, -CATALOG_SIZE.z / 2 - 0.01),
@@ -277,7 +385,8 @@ func _reading_room() -> void:
 func _stacks() -> void:
 	for letter: String in SECTIONS:
 		var at: Vector3 = SECTIONS[letter]
-		_builder.box(at + Vector3(0, SHELF_SIZE.y / 2, 0), SHELF_SIZE, WOOD)
+		_builder.mesh_box(at + Vector3(0, SHELF_SIZE.y / 2, 0), SHELF_SIZE, WOOD)
+		_spot("section_" + letter, at + Vector3(0, SHELF_SIZE.y / 2, 0), SHELF_SIZE)
 		var rng := RandomNumberGenerator.new()
 		rng.seed = hash(["library shelf", letter])
 		for row in SHELF_ROWS:
@@ -318,7 +427,8 @@ func _children_corner() -> void:
 	for i in CUSHION_COLORS.size():
 		var turn := TAU * i / CUSHION_COLORS.size()
 		_builder.box(RUG_AT + Vector3(cos(turn) * 1.6, 0.12, sin(turn) * 1.6), Vector3(0.6, 0.24, 0.6), CUSHION_COLORS[i])
-	_builder.box(CUSHION_AT + Vector3(0, 0.3, 0), Vector3(1.6, 0.6, 1.4), Color(0.6, 0.4, 0.8))
+	_builder.mesh_box(CUSHION_AT + Vector3(0, 0.3, 0), Vector3(1.6, 0.6, 1.4), Color(0.6, 0.4, 0.8))
+	_spot("cushion", CUSHION_AT + Vector3(0, 0.3, 0), Vector3(1.6, 0.6, 1.4))
 	_builder.box(Vector3(-14.5, 0.6, -0.5), Vector3(0.5, 1.2, 3.0), WOOD.lightened(0.25))
 	for i in 6:
 		_builder.mesh_box(Vector3(-14.2, 0.95, -1.7 + i * 0.45), Vector3(0.06, 0.35, 0.3), CUSHION_COLORS[i % 4])
@@ -326,8 +436,9 @@ func _children_corner() -> void:
 
 ## The returns cart, the boxes of old books and the shelves along the back wall.
 func _storeroom() -> void:
-	_builder.box(CART_AT + Vector3(0, 0.55, 0), Vector3(1.2, 0.06, 0.6), METAL)
-	_builder.box(CART_AT + Vector3(0, 0.2, 0), Vector3(1.2, 0.06, 0.6), METAL)
+	_builder.mesh_box(CART_AT + Vector3(0, 0.55, 0), Vector3(1.2, 0.06, 0.6), METAL)
+	_builder.mesh_box(CART_AT + Vector3(0, 0.2, 0), Vector3(1.2, 0.06, 0.6), METAL)
+	_spot("cart", CART_AT + Vector3(0, 0.45, 0), Vector3(1.2, 0.9, 0.6))
 	for x: float in [-0.55, 0.55]:
 		_builder.mesh_box(CART_AT + Vector3(x, 0.45, 0), Vector3(0.04, 0.9, 0.04), METAL)
 	for i in 5:
