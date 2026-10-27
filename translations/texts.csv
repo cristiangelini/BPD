@@ -5667,3 +5667,12 @@ LUCHO_CLUE_gold_teeth,"«Mmm… Vi al doctor esconder algo %s. Y a la señora de
 CLUE_XRAY_INGOT,Una placa de rayos X muestra un lingote adentro de una muela,An X-ray shows an ingot inside a molar,Uma radiografia mostra um lingote dentro de um dente
 XRAY_INGOT,¡Un lingote adentro de la muela!,An ingot inside the molar!,Um lingote dentro do dente!
 PROMPT_XRAY_NEXT,E: cambiar la placa,E: change the film,E: trocar a chapa
+BRIEF_LAUGHING_GAS_B,"El doctor compra gas de la risa como para dormir a una ciudad entera y lo revende para fiestas.","The doctor buys enough laughing gas to put a whole city to sleep and resells it for parties.","O doutor compra gás do riso para fazer dormir uma cidade inteira e revende para festas."
+BRIEF_LAUGHING_GAS_C,"Traigan los tubos de contrabando en el baúl del patrullero. Pesan 30 kilos: entre dos. Y no se rían.","Bring the contraband tanks in the patrol car's trunk. They weigh 30 kilos: two of you. And don't laugh.","Tragam os tubos de contrabando no porta-malas da viatura. Pesam 30 quilos: em dupla. E não riam."
+BRIEF_LAUGHING_GAS_D,"Si encuentran los globos inflados con gas o la factura de «Fiestas La Carcajada», mejor: todo suma.","If you find the gas-filled balloons or the «La Carcajada Parties» invoice, even better: it all counts.","Se acharem os balões cheios de gás ou a nota da «Festas La Carcajada», melhor: tudo conta."
+OBJ_FIND_GAS_BUNDLE,Llevarse los tubos de gas de contrabando (entre dos),Take the contraband gas tanks (two of you),Levar os tubos de gás de contrabando (em dupla)
+OBJ_EXTRA_GAS_BALLOONS,Extra: los globos inflados con gas,Extra: the gas-filled balloons,Extra: os balões cheios de gás
+OBJ_EXTRA_CARCAJADA_INVOICE,Extra: la factura de «Fiestas La Carcajada»,Extra: the «La Carcajada Parties» invoice,Extra: a nota da «Festas La Carcajada»
+LUCHO_CLUE_laughing_gas,"«Mmm… Vi al doctor esconder algo %s. Y cuando me atendió no me dolió nada: me reí tanto que me caí del sillón.»","“Mmm… I saw the doctor hide something %s. And when he saw me it didn't hurt at all: I laughed so hard I fell off the chair.”","“Hum… Vi o doutor esconder algo %s. E quando ele me atendeu não doeu nada: ri tanto que caí da cadeira.”"
+CLUE_TANK_GIGGLES,Las burbujas de la pecera se ríen solas,The fish tank's bubbles giggle on their own,As bolhas do aquário riem sozinhas
+TANK_GIGGLE,○ jijiji ○,○ hee hee ○,○ hihihi ○

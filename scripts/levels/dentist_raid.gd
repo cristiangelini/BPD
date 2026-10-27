@@ -44,6 +44,16 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_GOLD_CRUCIBLE", "OBJ_EXTRA_CROWN_PRICE_LIST"],
 		"rig": preload("res://scripts/case/dentist/gold_teeth_rig.gd"),
 	},
+	"laughing_gas": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_LAUGHING_GAS_B", "BRIEF_LAUGHING_GAS_C", "BRIEF_LAUGHING_GAS_D"],
+		"find": "OBJ_FIND_GAS_BUNDLE",
+		"hidden": [preload("res://scenes/props/gas_bundle.tscn"), preload("res://scenes/props/gas_balloons.tscn"),
+			preload("res://scenes/props/carcajada_invoice.tscn")],
+		"half_heights": [0.38, 0.3, 0.003],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_GAS_BALLOONS", "OBJ_EXTRA_CARCAJADA_INVOICE"],
+		"rig": preload("res://scripts/case/dentist/laughing_gas_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the floor of the waiting room, the corridor and the rooms, away from the furniture.
 const NOTE_PLACES: Array[Vector3] = [

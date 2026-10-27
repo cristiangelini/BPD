@@ -171,9 +171,54 @@ export const models = {
 		}
 		return b.build();
 	},
+	// The laughing gas story's main evidence: three contraband laughing gas tanks strapped together on a small pallet.
+	// 0.6 x 0.76 x 0.4 m.
+	gas_bundle() {
+		const b = new Builder('gas_bundle');
+		const tank = C('bundle_pink', 0xe86aa8, { metalness: 0.4, roughness: 0.4 });
+		b.add('pallet', C('pallet_wood', 0xa07a4a), new THREE.BoxGeometry(0.6, 0.08, 0.4), { pos: V(0, 0.04, 0) });
+		for (let i = 0; i < 3; i++) {
+			const x = -0.18 + i * 0.18;
+			b.add('tanks', tank, new THREE.CylinderGeometry(0.085, 0.085, 0.6, 10), { pos: V(x, 0.38, 0) });
+			b.add('tanks', chrome, new THREE.CylinderGeometry(0.02, 0.02, 0.08, 6), { pos: V(x, 0.72, 0) });
+			b.add('labels', C('smiley_yellow', 0xf8d830), new THREE.CylinderGeometry(0.03, 0.03, 0.004, 10), { pos: V(x, 0.45, 0.086), rot: [Math.PI / 2, 0, 0] });
+		}
+		for (const y of [0.25, 0.55]) {
+			b.add('straps', C('strap_black', 0x202020), new THREE.BoxGeometry(0.58, 0.04, 0.2), { pos: V(0, y, 0) });
+		}
+		return b.build();
+	},
+	// Three balloons filled with laughing gas, tied together, with a smiley on each. 0.5 x 1.0 x 0.3 m.
+	gas_balloons() {
+		const b = new Builder('gas_balloons');
+		const colors = [0xf06aa8, 0x6ac8f0, 0xf8d830];
+		for (let i = 0; i < 3; i++) {
+			const at = V(-0.15 + i * 0.15, 0.78 + (i % 2) * 0.08, (i - 1) * 0.04);
+			b.add('balloons', C('balloon_' + i, colors[i], { roughness: 0.3 }), ellipsoid(0.1, 0.13, 0.1, 10, 8), { pos: at });
+			b.add('strings', C('balloon_string', 0xf0f0f0), new THREE.CylinderGeometry(0.003, 0.003, at.y - 0.05, 4), { pos: V(at.x / 2, (at.y - 0.05) / 2 + 0.05, at.z / 2), rot: [0, 0, -at.x * 0.4] });
+		}
+		b.add('weight', C('weight_grey', 0x707070), new THREE.BoxGeometry(0.06, 0.05, 0.06), { pos: V(0, 0.025, 0) });
+		return b.build();
+	},
+	// The invoice from "Fiestas La Carcajada": a pink sheet with a laughing face. 0.21 x 0.006 x 0.29 m, flat.
+	carcajada_invoice() {
+		const b = new Builder('carcajada_invoice');
+		b.add('sheet', C('invoice_pink', 0xf8d8e8), new THREE.BoxGeometry(0.21, 0.004, 0.29), { pos: V(0, 0.002, 0) });
+		b.add('face', C('face_yellow', 0xf8d830), new THREE.CylinderGeometry(0.035, 0.035, 0.002, 12), { pos: V(0, 0.005, -0.09) });
+		b.add('mouth', C('face_ink', 0x303030), new THREE.BoxGeometry(0.03, 0.002, 0.008), { pos: V(0, 0.007, -0.08) });
+		for (let i = 0; i < 4; i++) {
+			b.add('lines', C('invoice_ink', 0x404040), new THREE.BoxGeometry(0.15, 0.002, 0.008), { pos: V(0, 0.005, -0.01 + i * 0.035) });
+		}
+		return b.build();
+	},
 };
 
 export const views = {
+	dentist_gas: {
+		items: [{ name: 'gas_bundle', pos: [-0.5, 0, 0] }, { name: 'gas_balloons', pos: [0.25, 0, 0] },
+			{ name: 'carcajada_invoice', pos: [0.75, 0, 0.2], rotY: -0.3 }],
+		cam: { pos: [0.1, 0.9, 2.6], target: [0.1, 0.45, 0], fov: 40 },
+	},
 	dentist_gold: {
 		items: [{ name: 'gold_crown_box', pos: [-0.25, 0, 0] }, { name: 'gold_crucible', pos: [0.15, 0, 0.05] },
 			{ name: 'crown_price_list', pos: [0.45, 0, 0.1], rotY: -0.3 }],
