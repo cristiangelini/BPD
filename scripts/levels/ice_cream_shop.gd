@@ -83,6 +83,16 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_SALES_NOTEBOOK", "OBJ_EXTRA_SOLD_STAMP"],
 		"rig": preload("res://scripts/case/ice_cream/frozen_cash_rig.gd"),
 	},
+	"stolen_truck": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_STOLEN_TRUCK_B", "BRIEF_STOLEN_TRUCK_C", "BRIEF_STOLEN_TRUCK_D"],
+		"find": "OBJ_FIND_TRUCK_PLATE",
+		"hidden": [preload("res://scenes/props/truck_plate.tscn"), preload("res://scenes/props/fresh_paint_can.tscn"),
+			preload("res://scenes/props/truck_papers.tscn")],
+		"half_heights": [0.04, 0.095, 0.04],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_FRESH_PAINT", "OBJ_EXTRA_TRUCK_PAPERS"],
+		"rig": preload("res://scripts/case/ice_cream/stolen_truck_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the salon's floor, behind the counter, in the kitchen, the office and the
 ## yard.
