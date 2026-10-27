@@ -116,6 +116,11 @@ entre 400 y 600.
      los autos de sus clientes para que vuelvan), y "el auto del comisario" queda igual. Capturas `paso4-*.png` y
      `garage_swapped_plates.png`.
 5. Las otras 5 historias, una por PR.
+   - **Hecho así (propuesta), el cuentakilómetros mágico:** el taladro que tira los kilómetros para atrás (2 kg, 1000,
+     en un escondite para cosas pesadas), la libreta con los kilómetros de verdad (0,1 kg, 300) y el cartel de "0 km,
+     único dueño" (1 kg, 200). Los dos autos del piso tienen el tablero junto a la ventanilla del conductor: con E se
+     lee el kilometraje, y uno de ellos (sorteado) marca 12 km con las cubiertas lisas; la primera vez que se lee es la
+     pista. El tablero normal dice algo creíble. Captura `paso5-cuentakilometros.png`.
 6. "Jugar" suma el taller al sorteo de allanamientos (`PlaceDraw.ORDER`).
 7. El online (Don Tuerca, Grasita, el timbre, el elevador y los parabrisas en todas las PC).
 

@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Garage raid, step 5: the magic odometer story: each car on the floor has a dashboard by the driver's window (E reads it) and one of them says 12 km with bald tires (the clue); the odometer drill (2 kg, 1000), the notebook with the real kilometers and the "0 km, one owner" sign are hidden.
 - Garage raid, step 4: the garage is a raid case like the gym (the comisario's tip, 3 suspicions among its 6 stories, Don Tuerca's slips and lawyer, Grasita's clue, the escape and the interrogation) with its first story, the swapped plates: the crate of 40 plates (5 kg, 1000) with the list of stolen cars and the spray can, and one of the cars on the floor has wet paint that stains whoever touches it (the clue).
 - Garage raid, step 3: Grasita, the apprentice, works on the first car's engine and asks for one of the 8 tools on the workbench (drawn with the seed); the cop who brings it into his hands hears what he saw (once per cop), and a wrong tool gets "That's not it!" and is tossed back.
 - Garage raid, step 2: Don Tuerca walks among the cars filling the complaint (+10 for each cracked windshield he sees); the counter's bell sends him to a client who isn't there for 15 s with his back to the garage (twice; from the third ring he notices, +10); the lift's button brings its car down or up, and a cop under it gets softly squashed (a fine of 20 per trip, 3 s on the floor).

@@ -219,7 +219,39 @@ export function buildSprayCan() {
 	return b.build();
 }
 
+// The magic odometer story: the drill that winds odometers back (a yellow power drill with a little counter on it),
+// the notebook with the real kilometers and the cardboard "0 km, one owner" sign.
+export function buildOdometerDrill() {
+	const b = new Builder('garage_odometer_drill');
+	const yellow = mat('drill_yellow', 0xf2c230), black = mat('flash_black', 0x26262a);
+	b.add('body', yellow, new THREE.BoxGeometry(0.24, 0.1, 0.08), { pos: V(0, 0.2, 0) });
+	b.add('grip', black, new THREE.BoxGeometry(0.06, 0.16, 0.06), { pos: V(-0.06, 0.08, 0), rot: [0, 0, -0.2] });
+	b.add('bit', mat('tool_chrome', 0xb8bcc4), new THREE.CylinderGeometry(0.008, 0.008, 0.12, 6), { pos: V(0.18, 0.2, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('counter', mat('counter_white', 0xf2f2ea), new THREE.BoxGeometry(0.1, 0.04, 0.005), { pos: V(0.02, 0.21, 0.042) });
+	for (let i = 0; i < 4; i++) b.add('digits', black, new THREE.BoxGeometry(0.014, 0.022, 0.002), { pos: V(-0.015 + i * 0.022, 0.21, 0.046) });
+	b.add('battery', black, new THREE.BoxGeometry(0.09, 0.04, 0.08), { pos: V(-0.08, 0.02, 0) });
+	return b.build();
+}
+
+export function buildKmNotebook() {
+	const b = new Builder('garage_km_notebook');
+	b.add('cover', mat('notebook_blue', 0x2f58a8), new THREE.BoxGeometry(0.15, 0.015, 0.21), { pos: V(0, 0.0075, 0) });
+	b.add('pages', mat('sheet_paper', 0xfaf6ea), new THREE.BoxGeometry(0.14, 0.004, 0.2), { pos: V(0.003, 0.017, 0) });
+	b.add('label', mat('counter_white', 0xf2f2ea), new THREE.BoxGeometry(0.08, 0.002, 0.04), { pos: V(0, 0.02, -0.05) });
+	return b.build();
+}
+
+export function buildZeroKmSign() {
+	const b = new Builder('garage_zero_km_sign');
+	b.add('board', mat('cardboard', 0xc8a070), new THREE.BoxGeometry(0.6, 0.4, 0.02), { pos: V(0, 0.2, 0) });
+	b.add('text', mat('sign_red', 0xd23a3a), new THREE.BoxGeometry(0.26, 0.12, 0.004), { pos: V(-0.1, 0.27, 0.012) });
+	b.add('text', mat('sheet_ink', 0x2a2a30), new THREE.BoxGeometry(0.44, 0.03, 0.004), { pos: V(0, 0.12, 0.012) });
+	b.add('star', mat('sheet_star', 0xf2c84b), new THREE.CylinderGeometry(0.06, 0.06, 0.004, 5), { pos: V(0.18, 0.28, 0.012), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
 export const models = {
+	garage_odometer_drill: buildOdometerDrill, garage_km_notebook: buildKmNotebook, garage_zero_km_sign: buildZeroKmSign,
 	garage_plates_box: buildPlatesBox, garage_stolen_list: buildStolenList, garage_spray_can: buildSprayCan,
 	npc_grasita: buildGrasita, ...toolModels,
 	garage_lift: buildLift, garage_lift_arms: buildLiftArms, npc_don_tuerca: buildDonTuerca,
@@ -239,6 +271,11 @@ export const views = {
 		items: [{ name: 'garage_plates_box', pos: [-0.2, 0, 0], rotY: 0.3 }, { name: 'garage_stolen_list', pos: [0.45, 0, 0.3], rotY: -0.2 },
 			{ name: 'garage_spray_can', pos: [0.5, 0, -0.2] }],
 		cam: { pos: [0.2, 1.0, 1.6], target: [0.1, 0.15, 0], fov: 42 },
+	},
+	garage_magic_odometer: {
+		items: [{ name: 'garage_odometer_drill', pos: [-0.35, 0, 0], rotY: 0.3 }, { name: 'garage_km_notebook', pos: [0.05, 0, 0.3], rotY: -0.2 },
+			{ name: 'garage_zero_km_sign', pos: [0.35, 0, -0.2], rotY: -0.3 }],
+		cam: { pos: [0.0, 0.9, 1.5], target: [0.0, 0.15, 0], fov: 42 },
 	},
 	garage_tools: {
 		items: [

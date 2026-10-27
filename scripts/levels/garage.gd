@@ -41,6 +41,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_STOLEN_LIST", "OBJ_EXTRA_SPRAY_CAN"],
 		"rig": preload("res://scripts/case/garage/swapped_plates_rig.gd"),
 	},
+	"magic_odometer": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_MAGIC_ODOMETER_B", "BRIEF_MAGIC_ODOMETER_C", "BRIEF_MAGIC_ODOMETER_D"],
+		"find": "OBJ_FIND_ODOMETER_DRILL",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/odometer_drill.tscn"), preload("res://scenes/props/km_notebook.tscn"),
+			preload("res://scenes/props/zero_km_sign.tscn")],
+		"half_heights": [0.125, 0.01, 0.015],
+		"heavy": [false, false, true],
+		"extra_keys": ["OBJ_EXTRA_KM_NOTEBOOK", "OBJ_EXTRA_ZERO_KM_SIGN"],
+		"rig": preload("res://scripts/case/garage/magic_odometer_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the garage's floor, away from the cars.
 const NOTE_PLACES: Array[Vector3] = [
