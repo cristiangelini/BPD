@@ -106,6 +106,8 @@ const MODELS := {
 	"hotel_shuttle": preload("res://assets/models/hotel_shuttle.glb"),
 	# The airport's bought porter gets away on the baggage tug (politico-aeropuerto.md), slow, its beacon spinning.
 	"baggage_tug": preload("res://assets/models/baggage_tug.glb"),
+	# The cat's culprit gets away in his aunt's golden limousine, throwing balls of yarn out the window (escena-gato.md).
+	"golden_limo": preload("res://assets/models/golden_limo.glb"),
 }
 ## Who rides on top of it, where you can see them, each as [model, position, scale] (they get off when he gives up).
 const RIDERS := {
@@ -139,6 +141,7 @@ const RIDERS := {
 	"tv_van": [[preload("res://assets/models/npc_tecnico.glb"), Vector3(-0.5, 0.4, 1.5), 0.85]],
 	"hotel_shuttle": [[preload("res://assets/models/npc_huesped.glb"), Vector3(-0.5, 0.4, 1.7), 0.85]],
 	"baggage_tug": [[preload("res://assets/models/npc_mudancero.glb"), Vector3(0, 0.35, 0.2), 0.85]],
+	"golden_limo": [[preload("res://assets/models/npc_sobrino_tia.glb"), Vector3(-0.5, 0.4, 1.2), 0.85]],
 }
 ## Who rides inside and stays there when he gives up, the same way: the choristers in the van, seen through its open
 ## windows, singing all the way.
@@ -169,9 +172,10 @@ const SPEEDS := {"bear_on_foot": 12.0 / 3.6, "wheelchair": 8.0 / 3.6, "tow_truck
 ## The tow truck turns slowly and nearly stops to do it (persecucion-lugares.md): a cop cutting a corner on foot
 ## catches up with him.
 ## The golf cart turns very tight and hardly slows down to do it.
-const TURN_RATES := {"tow_truck": 1.0, "golf_cart": 3.2, "bike": 3.2, "clown_car": 3.0, "cement_mixer": 1.1,
+## The golden limousine is long and slow to turn: it swings wide at every corner (propuesta).
+const TURN_RATES := {"golden_limo": 0.9, "tow_truck": 1.0, "golf_cart": 3.2, "bike": 3.2, "clown_car": 3.0, "cement_mixer": 1.1,
 	"barullo_moto": 3.0, "baggage_tug": 2.6}
-const TURN_SPEEDS := {"tow_truck": 0.3, "golf_cart": 0.75, "bike": 0.75, "clown_car": 0.75, "cement_mixer": 0.35,
+const TURN_SPEEDS := {"golden_limo": 0.35, "tow_truck": 0.3, "golf_cart": 0.75, "bike": 0.75, "clown_car": 0.75, "cement_mixer": 0.35,
 	"barullo_moto": 0.7, "baggage_tug": 0.6}
 const GOLF := "golf_cart"
 const TOW := "tow_truck"
@@ -227,6 +231,7 @@ const ART_VAN := "art_van"
 const TV_VAN := "tv_van"
 const HOTEL_SHUTTLE := "hotel_shuttle"
 const BAGGAGE_TUG := "baggage_tug"
+const LIMO := "golden_limo"
 ## Where the towed patrol car hangs behind the tow truck: its middle, and its nose lifted this much.
 const TOWED_AT := Vector3(0, 0.55, -5.6)
 const TOWED_TILT := -0.12
@@ -252,7 +257,7 @@ const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 
 	"cement_mixer": Vector3(2.3, 3.0, 7.0), "barullo_moto": Vector3(0.8, 1.6, 1.9), "art_van": Vector3(2.1, 2.3, 4.8),
 	"tv_van": Vector3(2.1, 2.3, 4.8),
 	"hotel_shuttle": Vector3(2.1, 2.6, 5.0),
-	"baggage_tug": Vector3(1.3, 1.4, 2.4)}
+	"baggage_tug": Vector3(1.3, 1.4, 2.4), "golden_limo": Vector3(2.1, 1.5, 7.0)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
 const SEDAN_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.55), Vector3(1.05, 0.38, 1.55),
@@ -263,6 +268,8 @@ const MIXER_WHEELS: Array[Vector3] = [Vector3(-1.2, 0.38, 2.4), Vector3(1.2, 0.3
 	Vector3(1.2, 0.38, -1.5), Vector3(-1.2, 0.38, -2.5), Vector3(1.2, 0.38, -2.5)]
 const SHUTTLE_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.75), Vector3(1.05, 0.38, 1.75),
 	Vector3(-1.05, 0.38, -1.75), Vector3(1.05, 0.38, -1.75)]
+const LIMO_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 2.3), Vector3(1.05, 0.38, 2.3),
+	Vector3(-1.05, 0.38, -2.3), Vector3(1.05, 0.38, -2.3)]
 ## The scooter's wheels are part of its model.
 const NO_WHEELS: Array[Vector3] = []
 const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS,
@@ -275,7 +282,8 @@ const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": 
 	"pizza_scooter": NO_WHEELS, "carousel_horse": NO_WHEELS, "chopper_moped": NO_WHEELS,
 	"gallery_cart": NO_WHEELS,
 	"cement_mixer": MIXER_WHEELS, "barullo_moto": NO_WHEELS,
-	"art_van": SEDAN_WHEELS, "tv_van": SEDAN_WHEELS, "hotel_shuttle": SHUTTLE_WHEELS, "baggage_tug": NO_WHEELS}
+	"art_van": SEDAN_WHEELS, "tv_van": SEDAN_WHEELS, "hotel_shuttle": SHUTTLE_WHEELS, "baggage_tug": NO_WHEELS,
+	"golden_limo": LIMO_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)

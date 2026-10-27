@@ -197,4 +197,12 @@ señora y la limusina.
    la taza en la mano hasta la señora le devuelve 10 la primera vez; las demás tazas solo las agradece
    **(propuesta)**. Capturas en `gato/`: `paso5d-jarron.png`, `paso5d-tetera.png` y `paso5d-te.png`.
 6. El final: tablero, cansancio, sueldo y la limusina con los ovillos.
+
+   Hecho así: el tablero, el cansancio de los sobrinos y el sueldo ya venían de la escena del crimen (sueldo 500, +100
+   por la Duquesa, menos las llamadas y los jarrones). El culpable que huye se sube a la limusina dorada de la tía,
+   que espera en el cordón al este de la reja, a lo largo de la calle. Es larga (7 m) y dobla despacio, abriendo las
+   curvas. Cada 5 s tira un ovillo de lana por la ventanilla, que rueda hacia atrás; un policía a pie lo junta (E), y
+   el patrullero que lo pisa rápido se enreda y no pasa de la mitad de su velocidad durante 2 s **(propuesta)**.
+   Agarrado, el sobrino va al interrogatorio como "un sobrino de la señora Monedero". Capturas en `gato/`:
+   `paso6-limusina.png` y `paso6-ovillos.png`.
 7. El sorteo de "Jugar" y el online.

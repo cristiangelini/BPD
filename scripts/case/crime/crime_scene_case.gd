@@ -84,7 +84,7 @@ const VARIANTS := {
 		"brief": ["BRIEF_CAT_A_", "BRIEF_CAT_B", "BRIEF_CAT_C"], "go": "HINT_GO_CAT_MANSION",
 		"go_row": "OBJ_CAT_GO", "look": "HINT_CAT_LOOK", "files_row": "OBJ_CAT_FILES",
 		"clue_line": "CLUE_CAT_", "ruined_hint": "HINT_CAT_RUINED_", "left": "HINT_NEPHEW_LEFT",
-		"who": "nephew", "getaway": SuspectCar.BIKE, "loot_row": "OBJ_CAT_LOOT_",
+		"who": "nephew", "getaway": SuspectCar.LIMO, "loot_row": "OBJ_CAT_LOOT_",
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "necklace": "scratch",
 			"witness": "tic"},
 		"parts": ["photo", "prints", "teeth", "hair", "scratch", "tic"],
@@ -583,7 +583,6 @@ func _send_off(suspect: CollisionObject3D) -> void:
 	suspect.collision_layer = 0
 	suspect.process_mode = Node.PROCESS_MODE_DISABLED
 
-## The comisario comes to the board and says it (with a player at the keys).
 ## The comisario says `key` to the cops: on the briefing screen, or as a hint (the Monedero mansion's scared calls).
 func comisario_says(key: String) -> void:
 	_comisario_says(key)
@@ -594,6 +593,7 @@ func hint_all(key: String) -> void:
 	_hint_all(key)
 
 
+## The comisario comes to the board and says it (with a player at the keys).
 func _comisario_says(key: String) -> void:
 	for cop in get_tree().get_nodes_in_group("cops"):
 		if (cop as Cop).input_enabled:
