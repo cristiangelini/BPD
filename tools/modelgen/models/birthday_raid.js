@@ -108,6 +108,46 @@ export const models = {
 		b.add('nozzle', C('pump_nozzle', 0x2a2a30), new THREE.CylinderGeometry(0.008, 0.012, 0.1, 6), { pos: V(0.08, 0.1, 0), rot: [0, 0, -1.2] });
 		return b.build();
 	},
+	// The endless birthday's album (el cumpleaños eterno): a fat photo album with a big gold "7" on the cover and photo
+	// corners peeking out of its pages.
+	birthday_album() {
+		const b = new Builder('birthday_album');
+		const gold = C('album_gold', 0xe8b83a, { metalness: 0.4 });
+		b.add('cover', C('album_cover', 0x2a5ad8), new THREE.BoxGeometry(0.3, 0.08, 0.24), { pos: V(0, 0.04, 0) });
+		b.add('pages', white, new THREE.BoxGeometry(0.29, 0.06, 0.225), { pos: V(0.008, 0.04, 0) });
+		b.add('seven', gold, new THREE.BoxGeometry(0.08, 0.004, 0.018), { pos: V(0, 0.082, -0.05) });
+		b.add('seven', gold, new THREE.BoxGeometry(0.018, 0.004, 0.12), { pos: V(0.025, 0.082, 0.01), rot: [0, -0.4, 0] });
+		for (const [x, z] of [[0.15, -0.06], [0.15, 0.05], [0.12, 0.112]]) {
+			b.add('photos', C('album_photo', 0xfff07a), new THREE.BoxGeometry(0.04, 0.004, 0.05), { pos: V(x, 0.03 + z * 0.1, z), rot: [0, 0.3, 0] });
+		}
+		return b.build();
+	},
+	// A wholesale box of "7" candles: an open cardboard box packed with rows of candles shaped like a seven.
+	seven_candles_box() {
+		const b = new Builder('seven_candles_box');
+		const card = C('candles_card', 0xc89a5a);
+		b.add('box', card, new THREE.BoxGeometry(0.34, 0.14, 0.24), { pos: V(0, 0.07, 0) });
+		b.add('label', C('candles_label', 0xff7ab8), new THREE.BoxGeometry(0.2, 0.06, 0.004), { pos: V(0, 0.07, 0.122) });
+		for (let i = 0; i < 12; i++) {
+			const x = -0.13 + (i % 6) * 0.052, z = i < 6 ? -0.05 : 0.05;
+			const wax = C(`candles_wax_${i % 4}`, PASTEL[i % 4]);
+			b.add('candles', wax, new THREE.BoxGeometry(0.03, 0.012, 0.012), { pos: V(x, 0.2, z) });
+			b.add('candles', wax, new THREE.BoxGeometry(0.012, 0.07, 0.012), { pos: V(x + 0.006, 0.16, z), rot: [0, 0, -0.35] });
+		}
+		return b.build();
+	},
+	// The kids' actor contracts: a stapled stack of papers with crayon signatures and a gold star sticker.
+	actor_contracts() {
+		const b = new Builder('actor_contracts');
+		b.add('papers', white, new THREE.BoxGeometry(0.21, 0.01, 0.29), { pos: V(0, 0.005, 0) });
+		b.add('staple', C('contracts_staple', 0x9a9aa4, { metalness: 0.5 }), new THREE.BoxGeometry(0.03, 0.003, 0.004), { pos: V(-0.08, 0.011, -0.13) });
+		for (let i = 0; i < 4; i++) {
+			b.add('lines', C('contracts_ink', 0x2a2a30), new THREE.BoxGeometry(0.15, 0.002, 0.006), { pos: V(0, 0.011, -0.09 + i * 0.035) });
+		}
+		b.add('crayon', C(`contracts_crayon`, 0xe0262e), new THREE.BoxGeometry(0.1, 0.003, 0.012), { pos: V(-0.02, 0.011, 0.08), rot: [0, 0.3, 0] });
+		b.add('star', C('contracts_star', 0xe8b83a, { metalness: 0.4 }), new THREE.CylinderGeometry(0.025, 0.025, 0.003, 5), { pos: V(0.06, 0.011, 0.1) });
+		return b.build();
+	},
 };
 
 export const views = {
@@ -125,6 +165,11 @@ export const views = {
 		items: [{ name: 'diamond_balloons', pos: [-0.5, 0, 0] }, { name: 'trick_pump', pos: [0.15, 0, 0], rotY: 0.3 },
 			{ name: 'client_list', pos: [0.65, 0, 0.1], rotY: -0.2 }],
 		cam: { pos: [0.05, 0.9, 1.6], target: [0.05, 0.15, 0], fov: 40 },
+	},
+	birthday_endless: {
+		items: [{ name: 'birthday_album', pos: [-0.4, 0, 0], rotY: 0.2 }, { name: 'seven_candles_box', pos: [0.1, 0, 0], rotY: -0.2 },
+			{ name: 'actor_contracts', pos: [0.55, 0, 0.1], rotY: -0.3 }],
+		cam: { pos: [0.05, 0.8, 1.3], target: [0.05, 0.08, 0], fov: 40 },
 	},
 	bouncy_castle: {
 		items: [{ name: 'bouncy_castle', pos: [0, 0, 0], rotY: 0.5 }],

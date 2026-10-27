@@ -133,6 +133,12 @@ bocina (por ahora el auto de fuga de los otros dueños; el autito queda para des
      va escondida con la bolsa de billetes y el sello del "Banco Feliz" (los mismos de la casa equivocada). Al
      romper la piñata caen 10 billetes verdes entre los caramelos, sale "¡Billetes del Banco Feliz!" y la pista va a
      la planilla. `--story=pinata_bills`. Captura `/mnt/project-files/cumple/paso5-pinata-billetes.png`.
+   - **Cómo quedó, el cumpleaños eterno (propuesta):** el álbum de las 52 fiestas (1 kg, 1000), la caja de velas "7"
+     por mayor (2 kg, 300) y los contratos de los chicos actores (0,1 kg, 200), con modelos nuevos, en escondites
+     sorteados. Antes de la piñata Tomasito dice "¡Cumplo siete otra vez!" y eso va a la planilla. Cada invitado al
+     que le hablas con E te pide su sueldo (3 frases). En la hora del pastel los chicos saltan todos juntos al cantar
+     (la coreografía, 15 cm, dos saltos por segundo). `--story=endless_birthday`. Capturas
+     `/mnt/project-files/cumple/paso5-eterno-*.png`.
 6. El sorteo de "Jugar" entre los allanamientos y el online.
 
 ## Preguntas para Cristian
