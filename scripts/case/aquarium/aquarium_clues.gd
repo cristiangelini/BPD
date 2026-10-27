@@ -10,6 +10,9 @@ extends Node
 ## A diver wipes the big tank's glass this long after the cops get there, in seconds; a penguin eats the sandwich then
 ## too.
 const WIPE_SECONDS := 240.0
+## Bigotes plays with the forgotten hood at this many seconds and leaves it by the penguins, without the hair.
+const HOOD_SECONDS := 180.0
+const HOOD_LEFT_AT := Vector3(5.6, Aquarium.FLOOR_TOP + 0.1, -9.2)
 ## Where the flipper print can be: on the kitchen's dry floor, off the way from the door to the bucket.
 const FOOTPRINT_SPOTS: Array[Vector3] = [Vector3(8.5, 0, 3.0), Vector3(11.5, 0, 3.2), Vector3(9.0, 0, 6.2)]
 const PUDDLE := Color(0.5, 0.56, 0.62)
@@ -22,6 +25,8 @@ var glass: EmptyFrame
 var till: AquariumTill
 var sandwich: CrimeClueItem
 var has_bite := false
+var hood: MeshInstance3D
+var hood_taken := false
 var _elapsed := 0.0
 
 
@@ -47,7 +52,7 @@ func _ready() -> void:
 		aquarium.add_child(footprint)
 		case.flour_print = footprint
 	# The hood is there in every case; the hair in it only when it's a clue.
-	var hood := MeshInstance3D.new()
+	hood = MeshInstance3D.new()
 	hood.name = "ForgottenHood"
 	var dome := SphereMesh.new()
 	dome.radius = 0.2
@@ -96,6 +101,8 @@ func _physics_process(delta: float) -> void:
 	if case.follower or not case.at_tent or _elapsed >= WIPE_SECONDS:
 		return
 	_elapsed += delta
+	if _elapsed >= HOOD_SECONDS and not hood_taken:
+		sea_lion_takes_the_hood()
 	if _elapsed >= WIPE_SECONDS:
 		wipe_the_glass()
 		penguin_lunch()
@@ -106,6 +113,22 @@ func wipe_the_glass() -> void:
 	if glass.has_prints and not case.clues_found.has("prints"):
 		glass.has_prints = false
 		case.ruin("prints")
+
+
+## Bigotes runs off with the forgotten hood and drops it by the penguins: a hair still in it (not picked up) is lost.
+func sea_lion_takes_the_hood() -> void:
+	if hood_taken:
+		return
+	hood_taken = true
+	hood.position = HOOD_LEFT_AT
+	aquarium.sea_lion.say("SEA_LION_HOOD")
+	var hair := case.items.get("hair") as CrimeClueItem
+	if not hair or case.clues_found.has("hair") or hair.bagged or hair.was_held:
+		return
+	hair.spoiled = true
+	hair.visible = false
+	hair.collision_layer = 0
+	case.ruin("hair")
 
 
 ## A penguin finds the sandwich, in the igloo or out of it, unless it's bagged.

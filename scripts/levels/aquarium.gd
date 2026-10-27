@@ -103,6 +103,9 @@ var loot_spots := {}
 var pearl: GiantPearl
 var board: FeedingBoard
 var clues: AquariumClues
+var water: AquariumWater
+## Times Bigotes took La Gorda off the floor and hid it again; then the feeding board no longer tells.
+var pearl_moves := 0
 ## What each cop is busy with ("" for nothing), by cop: a search or the board takes a while.
 var _busy := {}
 var divers: Array[AquariumDiver] = []
@@ -133,6 +136,13 @@ func _ready() -> void:
 	_shop()
 	_kitchen()
 	_people()
+	water = AquariumWater.new()
+	water.name = "Water"
+	water.sea_lion = sea_lion
+	water.position.y = FLOOR_TOP
+	add_child(water)
+	sea_lion.notices = func(world: Vector3) -> bool: return room(world) == "hall"
+	sea_lion.reached.connect(_sea_lion_reached)
 
 
 ## The case reaches the divers (their traits are its suspects, same seed), and one of them, drawn with the seed,
@@ -162,6 +172,9 @@ func search(spot: String, cop: Cop) -> void:
 	_busy[cop] = spot
 	if cop:
 		cop.show_hint("HINT_AQUARIUM_SEARCHING")
+	# Arms into a tank: the cop drips for a while.
+	if spot.begins_with("tank_"):
+		water.soak(cop)
 	get_tree().create_timer(SEARCH_SECONDS).timeout.connect(searched.bind(spot, cop))
 
 
@@ -197,7 +210,7 @@ func board_read(cop: Cop) -> void:
 
 ## What the feeding board tells: the tank of the rubbed-out row, or that everyone ate well.
 func board_says() -> String:
-	if case and loot_spot.begins_with("tank_"):
+	if case and loot_spot.begins_with("tank_") and pearl_moves == 0:
 		return tr("HINT_BOARD_RUBBED_OUT") % tr("CARE_" + loot_spot.trim_prefix("tank_"))
 	return tr("HINT_BOARD_IN_ORDER")
 
@@ -214,6 +227,34 @@ func uncover_pearl() -> void:
 	var spot := loot_spots[loot_spot] as Node3D
 	var out: Vector3 = spot.get_meta("out")
 	pearl.position = Vector3(spot.position.x, FLOOR_TOP, spot.position.z) + out
+
+
+## Bigotes got to something he went for that he can't carry: La Gorda lying found on the floor he hides again.
+func _sea_lion_reached(thing: Node3D) -> void:
+	if thing == pearl and not loot_found:
+		hide_pearl_again()
+
+
+## La Gorda goes off with Bigotes into another hiding spot, drawn with the seed; it has to be searched for again
+## (the feeding board no longer tells where).
+func hide_pearl_again() -> void:
+	if not pearl or loot_found or (case and case.follower):
+		return
+	pearl_moves += 1
+	var others := PEARL_SPOTS.filter(func(spot: String) -> bool: return spot != loot_spot)
+	loot_spot = others[absi(hash(["aquarium pearl again", case_seed, pearl_moves])) % others.size()]
+	pearl.queue_free()
+	pearl = null
+	pearl_uncovered = false
+	sea_lion.say("SEA_LION_PEARL")
+
+
+## Bigotes heads for La Gorda as soon as it lies found in the hall.
+func _physics_process(_delta: float) -> void:
+	if pearl and not loot_found and not sea_lion.errand and sea_lion.rest_left <= 0.0 and not sea_lion.carried \
+			and room(pearl.global_position) == "hall" \
+			and sea_lion.global_position.distance_to(pearl.global_position) <= SeaLion.NOTICE_REACH:
+		sea_lion.errand = pearl
 
 
 ## La Gorda back in Doña Almeja: the case notes it (+LOOT_BONUS on the salary).
