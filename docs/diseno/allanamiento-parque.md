@@ -172,6 +172,11 @@ extras suman entre 400 y 600.
      van al piso y el mazo del martillo de fuerza se arrastra solo hacia el puesto. Que se arrastre es la pista propia.
      Si alguien lleva el imán a más de 2,5 m, las latas se aflojan. Las latas pegadas (1 kg, 300) y el manual (0,3 kg,
      200) van en escondites sorteados. Capturas `parque/paso6a-*.png`.
+   - **Los boletos falsos:** la máquina de imprimir boletos (6 kg, 1000) va en un escondite para cosas pesadas; los
+     rollos sin cortar (2 kg, 300) y el sello «Válido» (0,3 kg, 200) en otros. Hay 4 boletos rosados tirados en los
+     caminos: leer 2 (E) muestra que tienen el mismo número, y esa es la pista propia. Cada 20 s la cabina de boletos
+     hace "Rrrrr... ¡chac!" y escupe otro, hasta 6. El piso del parque ahora es sólido hasta los caminos, así las notas
+     y los boletos se ven. Capturas `parque/paso6b-*.png`.
 7. "Jugar" suma el parque al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online: Don Tómbola, Nube, las latas, la campana y los juegos en todas las PC.
 
