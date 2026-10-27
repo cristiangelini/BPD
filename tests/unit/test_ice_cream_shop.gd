@@ -17,7 +17,7 @@ func _shop(case_seed := 5) -> IceCreamShop:
 
 
 func _prop(shop: IceCreamShop, at: Vector3, velocity: Vector3) -> Grabbable:
-	var prop := ClubEvidence.make_item("Thrown", IceCreamShop.MACHINE_MODEL, Vector3(0.3, 0.3, 0.3), 2.0)
+	var prop := ClubEvidence.make_item("Thrown", SoftServeMachine.MODEL, Vector3(0.3, 0.3, 0.3), 2.0)
 	shop.add_child(prop)
 	prop.position = at
 	prop.linear_velocity = velocity

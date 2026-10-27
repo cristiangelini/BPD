@@ -2,7 +2,8 @@
 // glass lid, the counter with the 12 flavors, the soft-serve machine, the cold room's shelf and the fiberglass penguin
 // by the door, with origins at the floor in the middle of each piece (the lid's at its hinge). Placeholder, not final
 // art.
-import { Builder, mat, V, THREE } from '../lib.js';
+import { Builder, mat, V, THREE, ellipsoid } from '../lib.js';
+import { M, pearBody, eyes } from './pear.js';
 
 const FLAVORS = [0xffe8b0, 0x6a3a20, 0xff9fc0, 0x9ad870, 0xfff8f0, 0xc04050, 0xf0c040, 0x8a60c0, 0xe08040, 0x60b0e0,
 	0xd8b080, 0x40a060];
@@ -108,9 +109,29 @@ export function buildPenguinStatue() {
 	return b.build();
 }
 
+// Doña Nieve, the owner: short and quick, a pink apron stained with every flavor over a white blouse, a paper hat on
+// grey curls and a giant ice cream scoop in her right hand. The game scales her small.
+export function buildDonaNieve() {
+	const b = new Builder('npc_dona_nieve');
+	const apron = mat('nieve_apron', 0xf28ab0);
+	pearBody(b, mat('skin_nieve', 0xe0b090), { shirt: mat('nieve_blouse', 0xf6f4ee), pants: mat('nieve_skirt', 0x6a8ac8), shoes: M.black, belted: false });
+	b.add('apron', apron, new THREE.BoxGeometry(0.4, 0.5, 0.02), { pos: V(0, 0.72, 0.34), rot: [-0.12, 0, 0] });
+	for (const [x, y, c] of [[-0.1, 0.8, 0x6a3a20], [0.08, 0.66, 0x9ad870], [0.12, 0.86, 0xfff0d0]]) {
+		b.add('stains', mat(`stain_${c.toString(16)}`, c), new THREE.CylinderGeometry(0.035, 0.035, 0.01, 8), { pos: V(x, y, 0.36), rot: [Math.PI / 2 - 0.12, 0, 0] });
+	}
+	eyes(b, 1.34, 0.18, 0.08, 0.05);
+	b.add('hair', mat('nieve_hair', 0xc8c8cc), ellipsoid(0.22, 0.12, 0.21, 10, 5), { pos: V(0, 1.42, -0.02) });
+	b.add('hat', mat('nieve_hat', 0xffffff), new THREE.BoxGeometry(0.3, 0.12, 0.16), { pos: V(0, 1.55, 0) });
+	const steel = mat('scoop_steel', 0xc8ccd2);
+	b.add('scoop', steel, new THREE.CylinderGeometry(0.025, 0.025, 0.4, 6), { pos: V(0.36, 0.95, 0.15), rot: [0.5, 0, 0] });
+	b.add('scoop', steel, new THREE.SphereGeometry(0.09, 8, 6, 0, Math.PI * 2, 0, Math.PI / 2), { pos: V(0.36, 1.13, 0.27), rot: [-1.0, 0, 0] });
+	return b.build();
+}
+
 export const models = {
 	ice_freezer: buildIceFreezer, freezer_lid: buildFreezerLid, ice_counter: buildIceCounter,
 	soft_serve_machine: buildSoftServeMachine, cold_shelf: buildColdShelf, penguin_statue: buildPenguinStatue,
+	npc_dona_nieve: buildDonaNieve,
 };
 
 export const views = {
@@ -119,6 +140,7 @@ export const views = {
 			{ name: 'ice_counter', pos: [-0.6, 0, 1.0] }, { name: 'ice_freezer', pos: [2.6, 0, 1.4] },
 			{ name: 'freezer_lid', pos: [2.6, 0.85, 1.0] }, { name: 'soft_serve_machine', pos: [3.0, 0, -0.4] },
 			{ name: 'cold_shelf', pos: [-1.4, 0, -1.0] }, { name: 'penguin_statue', pos: [1.2, 0, -0.8] },
+			{ name: 'npc_dona_nieve', pos: [1.6, 0, 1.8], rotY: -0.3 },
 		],
 		cam: { pos: [0.5, 3.0, 7.5], target: [0.5, 1.0, 0], fov: 50 },
 	},
