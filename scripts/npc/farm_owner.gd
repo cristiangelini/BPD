@@ -5,6 +5,9 @@ extends FloorBoss
 ## complaint and slips, with the tool shed's key in his apron. While he feeds the animals (the bell, FeedBell) his back is
 ## to the farm, and a cop who sneaks up behind him takes the key with E. Every number here is (propuesta).
 
+## A broken egg from his stall, seen or not: he counts them.
+const EGG_BROKEN := 2.0
+
 ## The shed's key is still in his apron.
 var has_key := true
 
@@ -22,3 +25,9 @@ func use(cop: Cop) -> void:
 		cop.show_hint("HINT_APRON_KEY")
 		return
 	super.use(cop)
+
+
+## One of his eggs broke: the complaint goes up, wherever he is.
+func egg_broken() -> void:
+	_raise(EGG_BROKEN)
+	_say(_key("EGG"))
