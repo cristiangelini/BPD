@@ -125,7 +125,12 @@ para el interrogatorio. Los modelos nuevos salen de `tools/modelgen` (low poly).
    abre (hay que agacharse para entrar). Del otro lado, en el estudio el panel es el retrato de doña Clotilde y en el
    invernadero y la despensa es un panel liso; desde ahí o desde adentro, E sobre el panel también abre y cierra. La
    primera vez sale "¡Un pasadizo secreto!". Capturas en `escena-mansion/paso2-*.png` **(propuesta)**.
-3. La gente: los seis socios con sus rasgos y su coartada, doña Clotilde en su silla, Ceferino y Lorenzo.
+3. La gente: los seis socios con sus rasgos y su coartada, doña Clotilde en su silla, Ceferino y Lorenzo. Hecho así:
+   los socios salen con la semilla del caso (pelo, anteojos, talle de zapato, dientes y el cuarto donde estaban a
+   medianoche, uno de los seis con campanilla; dos pueden compartir cuarto) y esperan en ese cuarto. Con E dicen su
+   coartada, cada vez con otra frase. Doña Clotilde da vueltas en su silla por el comedor, el vestíbulo y el salón y
+   cada 10 s dice a quién saca del testamento. Ceferino está junto al tablero de campanillas y siempre dice "Fui yo,
+   señor". Lorenzo grita algo cada 12 s en su jaula del salón. Capturas en `escena-mansion/paso3-*.png` **(propuesta)**.
 4. Las fichas (foto, huellas, dientes, pelo y coartada) y los socios que cambian de cuarto por los pasadizos.
 5. El caso: la historia, lo robado y dónde está, las seis pistas con cómo se arruinan, el tablero en la biblioteca y
    la planilla.

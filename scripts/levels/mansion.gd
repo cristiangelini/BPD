@@ -73,6 +73,17 @@ const PLANTS: Array[Vector3] = [
 const BELL_BOARD_AT := Vector3(HALF_X - 0.12, 1.7, -5.0)
 const BELL_ROOMS: Array[String] = ["dining", "hall", "lounge", "library", "study", "greenhouse"]
 const PANTRY_SHELF_AT := Vector3(12.0, 0, BACK_Z + 0.4)
+## Where the members wait, two spots per room (a third in the same room stands next to the first); the butler by his
+## bell board.
+const MEMBER_SPOTS := {
+	"dining": [Vector3(-13.0, 0, 3.0), Vector3(-7.0, 0, 9.0)],
+	"hall": [Vector3(-2.0, 0, 9.0), Vector3(3.0, 0, 4.0)],
+	"lounge": [Vector3(6.5, 0, 9.5), Vector3(14.5, 0, 7.0)],
+	"library": [Vector3(-12.0, 0, -3.0), Vector3(-9.5, 0, -8.5)],
+	"study": [Vector3(-5.5, 0, -2.5), Vector3(-2.5, 0, -8.5)],
+	"greenhouse": [Vector3(3.0, 0, -6.0), Vector3(3.5, 0, -1.0)],
+}
+const BUTLER_AT := Vector3(14.5, 0, -3.5)
 ## Out front, the gravel drive where the patrol car stops; out the back, the hedge maze (MAZE_CELLS cells of
 ## MAZE_CELL m, one of them its way in by the back door and one its gate at the far end).
 const DRIVE_Z := 17.0
@@ -107,6 +118,11 @@ const BOOK_COLORS: Array[Color] = [Color(0.55, 0.12, 0.12), Color(0.15, 0.3, 0.2
 var maze_open := {}
 ## The secret passages, by id (SecretPassage).
 var passages := {}
+## The people (step 3): the six members of the club in the case's order, doña Clotilde, the butler and the parrot.
+var members: Array[MysteryMember] = []
+var clotilde: MansionOwner
+var butler: MansionButler
+var parrot: MansionParrot
 var _builder: PlaceBuilder
 
 
@@ -126,6 +142,7 @@ func _ready() -> void:
 	_pantry()
 	_passages()
 	_maze()
+	_people()
 
 
 ## Which room a point in the world is in ("" if none).
@@ -281,15 +298,13 @@ func _dining() -> void:
 
 
 ## The piano, the fireplace against the middle wall (low: a cop crouches to go in; its back is the passage's door and
-## the candelabra on the mantel opens it, _passages) and Lorenzo's cage by the window.
+## the candelabra on the mantel opens it, _passages). Lorenzo's cage by the window is _people's.
 func _lounge() -> void:
 	_builder.box(PIANO_AT + Vector3(0, 0.5, 0), Vector3(1.6, 1.0, 1.2), BLACK)
 	_builder.mesh_box(PIANO_AT + Vector3(0, 0.75, 0.62), Vector3(1.4, 0.05, 0.05), IVORY)
 	_builder.box(FIREPLACE_AT + Vector3(-0.85, 0.6, 0), Vector3(0.3, 1.2, 0.5), STONE)
 	_builder.box(FIREPLACE_AT + Vector3(0.85, 0.6, 0), Vector3(0.3, 1.2, 0.5), STONE)
 	_builder.box(FIREPLACE_AT + Vector3(0, 1.3, 0), Vector3(2.0, 0.2, 0.6), STONE)
-	_builder.box(CAGE_AT + Vector3(0, 0.6, 0), Vector3(0.12, 1.2, 0.12), BRASS)
-	_builder.open_box(CAGE_AT + Vector3(0, 1.2, 0), Vector3(0.6, 0.7, 0.6), "", Color(0.85, 0.7, 0.3, 0.5))
 
 
 ## Shelves of books all along the west wall, the leather armchair and a small fireplace on the back wall. The
@@ -379,6 +394,41 @@ func _greenhouse() -> void:
 		leaves.radius = 0.8
 		leaves.height = 1.4
 		_builder.mesh(leaves, at + Vector3(0, 1.3, 0), HEDGE.lightened(0.15))
+
+
+## The six members (MemberTraits.draw with the case seed), each in the room of their alibi; doña Clotilde on her
+## round, Ceferino by the bell board and Lorenzo in his cage in the lounge.
+func _people() -> void:
+	var traits := MemberTraits.draw(case_seed)
+	var in_room := {}
+	for i in traits.size():
+		var member := MysteryMember.new()
+		member.name = "Member%d" % i
+		member.traits = traits[i]
+		member.index = i
+		var room: String = traits[i].room
+		var count: int = in_room.get(room, 0)
+		in_room[room] = count + 1
+		var spot: Vector3 = MEMBER_SPOTS[room][count % 2] + Vector3(0.9 * floori(count / 2.0), FLOOR_TOP, 0)
+		var r: Array = ROOMS[room]
+		var facing := Vector3((r[0] + r[1]) / 2.0, 0, (r[2] + r[3]) / 2.0) - spot
+		member.position = spot
+		member.rotation.y = atan2(facing.x, facing.z)
+		add_child(member)
+		members.append(member)
+	clotilde = MansionOwner.new()
+	clotilde.name = "Clotilde"
+	clotilde.position = MansionOwner.ROUTE[0] + Vector3(0, FLOOR_TOP, 0)
+	add_child(clotilde)
+	butler = MansionButler.new()
+	butler.name = "Butler"
+	butler.position = BUTLER_AT + Vector3(0, FLOOR_TOP, 0)
+	butler.rotation.y = -PI / 2
+	add_child(butler)
+	parrot = MansionParrot.new()
+	parrot.name = "Parrot"
+	parrot.position = CAGE_AT + Vector3(0, FLOOR_TOP, 0)
+	add_child(parrot)
 
 
 ## The butler's pantry: the bell board on the east wall (one bell per room) and shelves of jars.
