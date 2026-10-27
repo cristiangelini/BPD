@@ -37,8 +37,22 @@ export function buildRivalPhoto() {
 	return b.build();
 }
 
+// A 0.5 x 0.4 x 0.4 m block of ice with gold watches frozen inside, what doña Nieve smuggles.
+export function buildIceBlockWatches() {
+	const b = new Builder('ice_block_watches');
+	b.add('ice', mat('block_ice', 0xc8ecff, { transparent: true, opacity: 0.6 }), new THREE.BoxGeometry(0.5, 0.4, 0.4));
+	const gold = mat('block_gold', 0xf2c84b, { emissive: 0x3a2a05 }), face = mat('block_face', 0xf6f0e0);
+	const at = [[-0.13, -0.08, 0.05], [0.1, 0.05, -0.08], [0.04, -0.1, 0.1], [-0.08, 0.1, -0.05], [0.15, -0.02, 0.06]];
+	for (const [x, y, z] of at) {
+		b.add('watch', gold, new THREE.CylinderGeometry(0.04, 0.04, 0.015, 10), { pos: V(x, y, z), rot: [Math.PI / 2, 0, x * 3] });
+		b.add('face', face, new THREE.CylinderGeometry(0.03, 0.03, 0.017, 10), { pos: V(x, y, z + 0.001), rot: [Math.PI / 2, 0, x * 3] });
+	}
+	return b.build();
+}
+
 export const models = {
 	recipe_box: buildRecipeBox, secret_jar: buildSecretJar, rival_photo: buildRivalPhoto,
+	ice_block_watches: buildIceBlockWatches,
 };
 
 export const views = {
@@ -46,6 +60,7 @@ export const views = {
 		items: [
 			{ name: 'recipe_box', pos: [-0.35, 0.13, 0] }, { name: 'secret_jar', pos: [0.1, 0.1, 0.05] },
 			{ name: 'rival_photo', pos: [0.45, 0.01, 0.05] },
+			{ name: 'ice_block_watches', pos: [-0.2, 0.2, -0.6] },
 		],
 		cam: { pos: [0, 0.7, 1.3], target: [0, 0.08, 0], fov: 45 },
 	},
