@@ -46,3 +46,22 @@ func test_the_level_puts_the_cops_on_board() -> void:
 	train.ride.time = TrainRide.end_time()
 	await wait_physics_frames(2)
 	assert_eq(train.signs[0].text, tr("TRAIN_LAST_STOP"))
+
+
+func test_the_scenery_runs_past_and_the_tunnel_switches_the_lamps_off() -> void:
+	var level: TrainLevel = LEVEL.instantiate()
+	add_child_autofree(level)
+	await wait_physics_frames(2)
+	var train := level.train
+	var ride := train.ride
+	ride.time = ride.tunnel_start() + 1.0
+	await wait_physics_frames(2)
+	assert_true(ride.in_tunnel())
+	assert_false(train.lamps[0].visible, "dark in the tunnel")
+	assert_almost_eq(train.scenery.fixed_x(TrainRide.STATIONS), TrainScenery.MIDDLE + TrainScenery._tunnel_length() / 2
+		- TrainRide.SPEED, 2.0, "the hill is over the train")
+	ride.time = TrainRide.LEG + 5.0
+	await wait_physics_frames(2)
+	assert_true(train.lamps[0].visible)
+	assert_true(ride.stopped())
+	assert_almost_eq(train.scenery.fixed_x(0), TrainScenery.MIDDLE, 0.01, "the first platform is beside the train")

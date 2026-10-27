@@ -2,12 +2,12 @@ class_name Train
 extends CrimeScenePlace
 
 ## The train El Lento (escena-tren.md, step 1, decision 202): its own level, out of the city. The train stands still
-## along X with its front to +X and the scenery runs past (step 1c): from the back, the luggage car (the empty
+## along X with its front to +X and the scenery runs past (TrainScenery): from the back, the luggage car (the empty
 ## showcase and the broken window at the back), the dining car (four tables, the food cart's spot and the bathroom),
 ## first class (the six numbered seats, the luggage rack and the ticket machine) and the locomotive (don Silbato's
-## cabin with the brake lever). The cars join by open doors over a gangway. TrainRide is the clock, and the sign over
-## each door says the next station and how long to it. The people come in step 2 and the case in step 4. Every
-## number here is (propuesta).
+## cabin with the brake lever). The cars join by open doors over a gangway. TrainRide is the clock: five stations,
+## a tunnel in each leg that switches off the lamps, and the sign over each door with the next station and how long
+## to it. The people come in step 2 and the case in step 4. Every number here is (propuesta).
 
 ## The cars' floor is this high above the rails' ground.
 const FLOOR_Y := 1.0
@@ -54,10 +54,11 @@ const CLOTH := Color(0.95, 0.95, 0.9)
 const LEATHER := Color(0.45, 0.28, 0.15)
 
 var ride := TrainRide.new()
-## The ceiling lamps.
+## The ceiling lamps, which go off in the tunnels.
 var lamps: Array[OmniLight3D] = []
 ## The sign over each door: the next station and how long to it.
 var signs: Array[Label3D] = []
+var scenery: TrainScenery
 var _cars: Node3D
 var _build: PlaceBuilder
 
@@ -78,11 +79,18 @@ func _ready() -> void:
 	_dining()
 	_luggage()
 	_engine()
+	scenery = TrainScenery.new()
+	scenery.name = "Scenery"
+	scenery.ride = ride
+	add_child(scenery)
 	_update_signs()
 
 
 func _physics_process(delta: float) -> void:
 	ride.advance(delta)
+	var lit := not ride.in_tunnel()
+	for lamp in lamps:
+		lamp.visible = lit
 	_update_signs()
 
 
