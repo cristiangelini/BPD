@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Post office crime scene, step 6b: Cartita the witness. A plate of three parrot cookies by her perch; give her one with E and, if she's the witness, she shouts the culprit's route. A shout within 5 m or the camera's flash scares her: head under the wing, and not a word more.
 - Post office crime scene, step 6a: the clues. Prints on the safe's door (Doña Sellito wipes them at 240 s), a footprint in the sorting room's dust that the machine's first run uncovers and the next one covers, a hair by a cap forgotten in the depot (the second run blows it away unless bagged), a bitten cookie behind the parcel scale (Cartita eats it at 180 s), the blue tongue, and the letter stamped at 3 a.m. in the returns sack (anything dropped in covers it).
 - Post office crime scene, step 5: the sorting machine. Every 2 minutes at the scene it runs for 20 s: envelopes fly, the wind pushes the cops out of the sorting room, anything loose on its floor lands on a mail sack and the carriers swap places. The red button in the office stops it and costs Doña Sellito 10 of her patience; at 0 she stamps the cops' faces and they can't take prints for 30 s.
 - Post office crime scene, step 4: La Vaquita Azul hidden with the seed in one of nine spots (the six post boxes with a route, the big mail sack, the parcel scale and the giant mailbox), searched with E in 5 s; the postmark book on the boss's desk tells the color of the box the envelope went to; back in its frame it adds 100 to the salary.

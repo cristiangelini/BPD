@@ -51,6 +51,9 @@ const CARRIERS_AT: Array[Vector3] = [Vector3(-11.0, 0, 1.0), Vector3(-5.0, 0, 1.
 	Vector3(-7.0, 0, -4.2), Vector3(-1.0, 0, -4.2), Vector3(-4.0, 0, -9.0)]
 const BOSS_AT := Vector3(1.5, 0, 1.2)
 const PARROT_AT := Vector3(-8.0, 1.1, COUNTER_Z)
+## Cartita's cookies, on a plate on the counter by her perch.
+const COOKIES_AT := Vector3(-7.2, 1.11, COUNTER_Z + 0.2)
+const COOKIES := 3
 ## The post boxes on the east wall: ROWS x COLUMNS, numbered from the top row, front to back.
 const BOX_ROWS := 4
 const BOX_COLUMNS := 6
@@ -114,6 +117,7 @@ var _busy := {}
 var carriers: Array[PostCarrier] = []
 var boss: PostBoss
 var parrot: PostParrot
+var cookies: Array[ParrotCookie] = []
 var _builder: PlaceBuilder
 
 
@@ -141,6 +145,8 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	for carrier in carriers:
 		carrier.case = case
 		carrier.stubborn = carrier.index == stubborn
+	parrot.case = case
+	parrot.knows = case.plan.clues.has("witness")
 	sorting = SortingMachine.new()
 	sorting.name = "SortingMachine"
 	sorting.post_office = self
@@ -246,6 +252,12 @@ func inside(world: Vector3) -> bool:
 	return absf(local.x) < HALF_X and local.z > BACK_Z and local.z < FRONT_Z
 
 
+## A cop shouted (VoiceChat): Cartita may get scared.
+func shouted_by(cop: Cop) -> void:
+	if parrot:
+		parrot.shouted_by(cop)
+
+
 ## Which room a point in the world is in: "counter", "boxes", "sorting", "depot", "office", or "" outside.
 func room(world: Vector3) -> String:
 	if not inside(world):
@@ -288,6 +300,14 @@ func _people() -> void:
 	parrot.name = "Parrot"
 	parrot.position = PARROT_AT
 	add_child(parrot)
+	# The plate of parrot cookies on the counter, by window 2.
+	_builder.mesh_box(COOKIES_AT + Vector3(0, -0.01, 0), Vector3(0.4, 0.02, 0.3), WHITE)
+	for i in COOKIES:
+		var cookie := ParrotCookie.new()
+		cookie.name = "ParrotCookie%d" % i
+		cookie.position = COOKIES_AT + Vector3(-0.12 + i * 0.12, 0, 0)
+		add_child(cookie)
+		cookies.append(cookie)
 
 
 ## Which way a carrier standing at `at` faces (a Y rotation; the models face +Z): the hall behind the counter, the
