@@ -27,7 +27,7 @@ Va en una bolsa de evidencia.
 
 ## El lugar
 - **El edificio:** "Formularios Infinitos S.A.", un edificio de oficinas de dos pisos, gris y con ventanas espejadas,
-  en un lote nuevo: la cuadra (0, 3), del lado norte (no la usa ningún otro caso). Dos pisos unidos
+  en un lote nuevo: la cuadra (0, 1), del lado norte (no la usa ningún otro caso; la (0, 3) quedó para la casona del gato). Dos pisos unidos
   por la escalera y un ascensor que anda (es lo único que anda bien en la empresa):
   - **Planta baja:** la recepción con la vitrina de la Abrochadora, el mostrador, el reloj para marcar tarjeta y la
     planta de plástico; el **open space** con 8 escritorios iguales (cada uno con computadora, teléfono, una pila de
