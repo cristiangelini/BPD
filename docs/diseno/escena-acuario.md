@@ -197,4 +197,13 @@ el tanque de cada buzo, Bigotes con sus robos y el piso mojado, Doña Tinta y el
    - Capturas: `acuario/paso6-charcos.png` y `acuario/paso6-capucha-pinguinos.png`.
    - El clavado al tanque cuando lo persiguen queda para "Para después".
 7. El final: tablero, cansancio, sueldo y el camión con los bloques de hielo.
+   **Hecho así:** el comisario da el caso en la comisaría, y el tablero, el sello, el cansancio y el sueldo son los del
+   pastel (variante `aquarium` de `CrimeSceneCase`).
+   - El que huye sale en el camión de pescado congelado (`SuspectCar.FISH_TRUCK`). Lo espera en el cordón al este de
+     la puerta, y va a 24 km/h.
+   - En cada esquina que dobla se le caen dos bloques de hielo con un pescado adentro (`ChaseIce`).
+   - Si el patrullero pisa uno rápido, el bloque se rompe y el patrullero patina 2 s con 0,15 del agarre.
+   - Un policía a pie lo empuja fuera de la calle con E, y ya no hace patinar.
+   - Atrapado, el buzo va al interrogatorio (`owner_diver`).
+   - Capturas: `acuario/paso7-camion.png` y `acuario/paso7-hielo.png`.
 8. El sorteo de "Jugar" y el online.

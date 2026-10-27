@@ -2,12 +2,15 @@ class_name AquariumLevel
 extends Node3D
 
 ## The aquarium case's level (escena-acuario.md, step 1): the whole city with the station, the cops in the guard room
-## and the patrol car at the door, the board room open, and the Municipal Aquarium on its lot (Aquarium).
-## --place=aquarium opens it from Play. The people and the case come in later steps.
+## and the patrol car at the door, the board room open with its board and stamp, and the Municipal Aquarium on its lot
+## (Aquarium). --place=aquarium opens it from Play. The comisario gives the case (CrimeSceneCase, aquarium variant).
 
 ## Same seed, same aquarium. 0 draws one.
 @export var case_seed := 0
 var aquarium: Aquarium
+var case: CrimeSceneCase
+var board: CrimeBoard
+var stamp: BoardStamp
 
 
 func _ready() -> void:
@@ -23,3 +26,22 @@ func _ready() -> void:
 	aquarium.case_seed = case_seed
 	aquarium.transform = city.transform * CityLayout.lot("aquarium")
 	add_child(aquarium)
+	case = CrimeSceneCase.new()
+	case.name = "Case"
+	case.case_seed = case_seed
+	case.place = aquarium
+	var station := city.transform * CityLayout.lot("station")
+	board = CrimeBoard.new()
+	board.name = "Board"
+	board.case = case
+	add_child(board)
+	board.global_transform = station * CrimeSceneLevel.BOARD_AT
+	stamp = BoardStamp.new()
+	stamp.name = "Stamp"
+	stamp.board = board
+	add_child(stamp)
+	stamp.global_position = station * CrimeSceneLevel.STAMP_AT
+	case.board = board
+	case.shift_screen = $ShiftScreen
+	add_child(case)
+	case.start(city.comisario)
