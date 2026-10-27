@@ -316,7 +316,38 @@ export function buildSkateManual() {
 	return b.build();
 }
 
+// The fixed tournament: this year's cup with the winner already engraved on its plate, the fake score sheet (a grid
+// of cells, all of them crossed out and written over) and a fat envelope for the judge.
+export function buildRiggedCup() {
+	const b = new Builder('bowl_rigged_cup');
+	const gold = mat('trophy_gold', 0xf0c040, { metalness: 0.7, roughness: 0.3 });
+	b.add('base', mat('cup_base', 0x2a2a30), new THREE.BoxGeometry(0.2, 0.08, 0.2), { pos: V(0, 0.04, 0) });
+	b.add('plate', mat('cup_plate', 0xd8dce4, { metalness: 0.5 }), new THREE.BoxGeometry(0.14, 0.04, 0.005), { pos: V(0, 0.04, 0.102) });
+	b.add('stem', gold, new THREE.CylinderGeometry(0.025, 0.04, 0.14, 8), { pos: V(0, 0.15, 0) });
+	b.add('cup', gold, new THREE.CylinderGeometry(0.12, 0.05, 0.18, 10), { pos: V(0, 0.31, 0) });
+	for (const x of [-0.13, 0.13]) b.add('handles', gold, new THREE.TorusGeometry(0.045, 0.012, 6, 10), { pos: V(x, 0.32, 0), rot: [0, 0, Math.PI / 2] });
+	return b.build();
+}
+
+export function buildFakeScores() {
+	const b = new Builder('bowl_fake_scores');
+	b.add('sheet', mat('paper', 0xf6f4ee), new THREE.BoxGeometry(0.21, 0.006, 0.3), { pos: V(0, 0.003, 0) });
+	const ink = mat('ink_red', 0xd83a30);
+	for (let r = 0; r < 5; r++) b.add('rows', mat('ink_blue', 0x3a4a8a), new THREE.BoxGeometry(0.18, 0.002, 0.004), { pos: V(0, 0.007, -0.11 + r * 0.055) });
+	for (let r = 0; r < 4; r++) b.add('crossed', ink, new THREE.BoxGeometry(0.05, 0.002, 0.006), { pos: V(0.05, 0.008, -0.08 + r * 0.055), rot: [0, 0.6, 0] });
+	return b.build();
+}
+
+export function buildJudgeEnvelope() {
+	const b = new Builder('bowl_judge_envelope');
+	b.add('envelope', mat('envelope', 0xd8c08a), new THREE.BoxGeometry(0.22, 0.035, 0.12), { pos: V(0, 0.018, 0) });
+	b.add('bills', mat('bills', 0x6aa85a), new THREE.BoxGeometry(0.16, 0.02, 0.08), { pos: V(0.05, 0.03, 0.01), rot: [0, 0.15, 0] });
+	b.add('seal', mat('seal', 0xd83a30), new THREE.CylinderGeometry(0.015, 0.015, 0.004, 8), { pos: V(-0.06, 0.037, 0) });
+	return b.build();
+}
+
 export const models = {
+	bowl_rigged_cup: buildRiggedCup, bowl_fake_scores: buildFakeScores, bowl_judge_envelope: buildJudgeEnvelope,
 	bowl_skate_box: buildSkateBox, bowl_skate_parts: buildSkateParts, bowl_skate_manual: buildSkateManual,
 	bowl_lead_mold: buildLeadMold, bowl_lead_pin: buildLeadPin, bowl_lead_invoice: buildLeadInvoice,
 	bowl_magnet_ball: buildMagnetBall, bowl_pin_remote: buildPinRemote, bowl_bet_list: buildBetList, metal_bin: buildMetalBin,
@@ -351,6 +382,10 @@ export const views = {
 	bowl_lead_pins: {
 		items: [{ name: 'bowl_lead_mold', pos: [-0.5, 0, 0] }, { name: 'bowl_lead_pin', pos: [0.15, 0, 0.1] }, { name: 'bowling_pin', pos: [0.35, 0, 0.1] }, { name: 'bowl_lead_invoice', pos: [0.7, 0, 0.1], rotY: 0.3 }],
 		cam: { pos: [0.1, 0.9, 1.9], target: [0.1, 0.2, 0], fov: 40 },
+	},
+	bowl_tournament: {
+		items: [{ name: 'bowl_rigged_cup', pos: [-0.3, 0, 0] }, { name: 'bowl_fake_scores', pos: [0.1, 0, 0.1], rotY: 0.2 }, { name: 'bowl_judge_envelope', pos: [0.45, 0, 0.1], rotY: -0.3 }],
+		cam: { pos: [0.05, 0.7, 1.4], target: [0.05, 0.15, 0], fov: 40 },
 	},
 	bowl_skates: {
 		items: [{ name: 'bowl_skate_box', pos: [-0.4, 0, 0] }, { name: 'bowl_skate_parts', pos: [0.1, 0, 0.1] }, { name: 'bowl_skate_manual', pos: [0.5, 0, 0.1], rotY: 0.3 }],

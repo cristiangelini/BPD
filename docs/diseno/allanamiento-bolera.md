@@ -157,6 +157,12 @@ suman entre 400 y 600.
      lo lleva camina, cada 1,2 s los zapatos lo empujan 0,5 s hacia donde iba, aparece «¡Estos zapatos se van solos!» y la
      primera vez esa es la pista. Los jugadores de la pista 1 (el equipo de Don Chuza) se deslizan hasta la línea en
      0,3 s en vez de caminar 0,8 s. Capturas: `allanamiento-bolera/paso6-ruedas*.png`.
+   - **Cómo quedó, el torneo arreglado (propuesta):** las pantallas de las pistas muestran los puntos de cada pista
+     (los pinos de cada tiro). Se esconden la copa con el ganador ya grabado (4 kg, 1000), la planilla de puntos falsa
+     (300) y el sobre para el juez (200). La pantalla de la pista 1 (la del equipo de Don Chuza) suma 10 de más a cada
+     tiro, con un «+10 de regalo» debajo; el primer policía que está a menos de 4 m de esa pista cuando cuenta un tiro
+     dice «¿Tiraron 3 pinos y la pantalla sumó 13?» y esa es la pista. La vitrina tiene el cartel «Campeones: Los Chuza
+     (todos los años)». Capturas: `allanamiento-bolera/paso6-torneo*.png`.
 7. "Jugar" suma la bolera al sorteo de allanamientos, y la huida de Don Chuza.
 8. El online (Don Chuza, Pipo, los jugadores, las bolas y lo frágil en todas las PC).
 

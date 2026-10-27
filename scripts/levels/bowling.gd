@@ -63,6 +63,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_SKATE_PARTS", "OBJ_EXTRA_SKATE_MANUAL"],
 		"rig": preload("res://scripts/case/bowling/wheeled_shoes_rig.gd"),
 	},
+	"bowl_tournament": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_BOWL_CUP_B", "BRIEF_BOWL_CUP_C", "BRIEF_BOWL_CUP_D"],
+		"find": "OBJ_FIND_RIGGED_CUP",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/bowl_rigged_cup.tscn"), preload("res://scenes/props/bowl_fake_scores.tscn"),
+			preload("res://scenes/props/bowl_judge_envelope.tscn")],
+		"half_heights": [0.2, 0.005, 0.02],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_FAKE_SCORES", "OBJ_EXTRA_JUDGE_ENVELOPE"],
+		"rig": preload("res://scripts/case/bowling/rigged_tournament_rig.gd"),
+	},
 }
 ## Where the clue notes for the suspicions can lie, on the floor.
 const NOTE_PLACES: Array[Vector3] = [Vector3(-1.5, FLOOR_TOP, 8.0), Vector3(3.0, FLOOR_TOP, 5.0),
@@ -221,6 +232,10 @@ var _last_ball := {}
 var _skated := {}
 var case_broken := false
 var broken_screens: Array[int] = []
+## Each lane's points on its screen, and what its screen adds to every roll on top of the pins (a story's trick).
+var scores: Array[int] = [0, 0, 0, 0, 0, 0]
+var score_bonus: Array[int] = [0, 0, 0, 0, 0, 0]
+var _score_labels: Array[Label3D] = []
 ## The case flow every raid shares.
 var raid: RaidCase
 ## Money taken off the case pay: the trophy case and the screens.
@@ -420,6 +435,15 @@ func _build_lanes() -> void:
 		_model(SETTER_MODEL, Vector3(x, FLOOR_TOP, SETTER_Z))
 		var screen := _model(SCREEN_MODEL, Vector3(x, SCREEN_Y, SCREEN_Z))
 		screen.name = "Screen%d" % i
+		var points := Label3D.new()
+		points.text = "0"
+		points.font_size = 64
+		points.pixel_size = 0.005
+		points.outline_size = 10
+		points.double_sided = false
+		points.position = Vector3(x, SCREEN_Y - 0.15, SCREEN_Z + 0.06)
+		$Built.add_child(points)
+		_score_labels.append(points)
 		var pit := _area(Vector3(x, FLOOR_TOP + PIT_SIZE.y / 2, PIT_Z), PIT_SIZE)
 		pit.body_entered.connect(func(body: Node3D) -> void:
 			if body is BowlingBall and not (body as BowlingBall).is_held():
@@ -651,6 +675,8 @@ func reset_pins(lane: int) -> void:
 		pin.angular_velocity = Vector3.ZERO
 		pin.transform = Transform3D(Basis.IDENTITY, pin_homes[lane][i])
 		pin.sleeping = true
+	scores[lane] += down + score_bonus[lane]
+	_score_labels[lane].text = str(scores[lane])
 	rolled.emit(lane, down, _last_ball.get(lane) as BowlingBall)
 	_last_ball.erase(lane)
 
@@ -730,6 +756,7 @@ func break_screen(lane: int) -> void:
 	broken_screens.append(lane)
 	fines += SCREEN_FINE
 	_build.mesh_box(Vector3(LANE_X[lane], SCREEN_Y, SCREEN_Z + 0.06), Vector3(1.12, 0.62, 0.01), DARK)
+	_score_labels[lane].hide()
 	_say(Vector3(LANE_X[lane], SCREEN_Y + 0.8, SCREEN_Z), "BOWL_SCREEN_BROKEN")
 	screen_broken.emit(lane)
 
