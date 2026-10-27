@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Cinema raid, step 6 (haunted cinema): the ghost projector hidden with the sheet with holes and the record of screams; every 30 s of film a ghost crosses the screen and every spectator screams, and the speaker going "uuuuh" behind the screen is the story's clue.
 - Cinema raid, step 6 (floor popcorn): the sack of popcorn swept off the floor hidden with the "reciclaje" broom and the "recién hechas" sign; a bowl of it on the candy counter that a cop spits out every time, its fluff and gum the story's clue the first time.
 - Cinema raid, step 5: the cinema is a raid with the pirate copies' story: three suspicions, the box of 200 copies hidden with the camcorder and the covers, doña Bobina's slips, Chicho's clue, a neighbor in the back row taping the film with a blinking red light (getting close is the story's clue), the lawyer at 100 complaint and her getaway by car.
 - Cinema raid, step 4: Chicho the usher sits in a free seat drawn with the seed; E on the seat to his right sits a cop down, and after 8 s seated he whispers what he saw (once per cop), while getting up sooner gets "¡Shhh, que viene lo mejor!". A seated cop blocks no spectator's view.

@@ -170,11 +170,46 @@ export function buildFreshSign() {
 	return b.build();
 }
 
+// The ghost projector, 0.3 x 0.3 x 0.45 m: a small grey box with a big lens, a glass slide with a white ghost stuck in
+// front and a crank on its side.
+export function buildGhostProjector() {
+	const b = new Builder('ghost_projector');
+	const grey = mat('ghost_proj_grey', 0x50545c);
+	b.add('body', grey, new THREE.BoxGeometry(0.26, 0.22, 0.34), { pos: V(0, 0.11, -0.03) });
+	b.add('lens', mat('ghost_lens', 0x202028), new THREE.CylinderGeometry(0.07, 0.08, 0.1, 10), { pos: V(0, 0.13, 0.18), rot: [Math.PI / 2, 0, 0] });
+	b.add('slide', mat('ghost_slide', 0xc8e0f0), new THREE.BoxGeometry(0.16, 0.16, 0.01), { pos: V(0, 0.15, 0.235) });
+	b.add('ghost', M.white, new THREE.SphereGeometry(0.035, 6, 4), { pos: V(0, 0.17, 0.242), scale: [1, 1.3, 0.3] });
+	b.add('crank', grey, new THREE.BoxGeometry(0.02, 0.1, 0.02), { pos: V(0.14, 0.13, -0.05) });
+	b.add('knob', mat('ghost_knob', 0xc02020), new THREE.SphereGeometry(0.02, 6, 4), { pos: V(0.16, 0.18, -0.05) });
+	return b.build();
+}
+
+// The sheet with eye holes, folded, 0.4 x 0.08 x 0.3 m: a white pile with two black holes on top.
+export function buildHoleySheet() {
+	const b = new Builder('holey_sheet');
+	const sheet = mat('sheet_white', 0xf0f0ea), hole = mat('sheet_hole', 0x101010);
+	b.add('pile', sheet, new THREE.BoxGeometry(0.4, 0.06, 0.3), { pos: V(0, 0.03, 0) });
+	b.add('fold', sheet, new THREE.BoxGeometry(0.36, 0.02, 0.26), { pos: V(0.01, 0.07, -0.01), rot: [0, 0.06, 0] });
+	for (const x of [-0.06, 0.06]) b.add('holes', hole, new THREE.CylinderGeometry(0.025, 0.025, 0.004, 8), { pos: V(x, 0.082, -0.03) });
+	return b.build();
+}
+
+// The record of screams in its sleeve, 0.31 x 0.02 x 0.31 m: a purple sleeve with a yelling mouth and the black disc
+// sliding out.
+export function buildScreamDisc() {
+	const b = new Builder('scream_disc');
+	b.add('disc', mat('vinyl', 0x101014), new THREE.CylinderGeometry(0.15, 0.15, 0.006, 16), { pos: V(0.06, 0.006, 0) });
+	b.add('sleeve', mat('sleeve_purple', 0x6030a0), new THREE.BoxGeometry(0.31, 0.012, 0.31), { pos: V(-0.02, 0.012, 0) });
+	b.add('mouth', mat('mouth_black', 0x200808), new THREE.CylinderGeometry(0.05, 0.05, 0.004, 10), { pos: V(-0.02, 0.02, 0.02), scale: [0.8, 1, 1.4] });
+	return b.build();
+}
+
 export const models = {
 	cinema_seat: buildCinemaSeat, popcorn_machine: buildPopcornMachine, film_projector: buildFilmProjector,
 	npc_dona_bobina: buildDonaBobina, npc_chicho: buildChicho, pirate_copies_box: buildPirateBox,
 	cinema_camcorder: buildCamcorder, cinema_covers: buildCovers, floor_popcorn_bag: buildFloorPopcornBag,
-	recycle_broom: buildRecycleBroom, fresh_sign: buildFreshSign,
+	recycle_broom: buildRecycleBroom, fresh_sign: buildFreshSign, ghost_projector: buildGhostProjector,
+	holey_sheet: buildHoleySheet, scream_disc: buildScreamDisc,
 };
 
 export const views = {
@@ -184,8 +219,15 @@ export const views = {
 			{ name: 'popcorn_machine', pos: [0.5, 0, 0.3] }, { name: 'film_projector', pos: [1.5, 0, 0], rotY: -0.6 },
 			{ name: 'npc_dona_bobina', pos: [0.6, 0, 1.0], rotY: -0.2 }, { name: 'npc_chicho', pos: [-0.5, 0, 1.1], rotY: 0.3 },
 			{ name: 'pirate_copies_box', pos: [-1.4, 0, 1.4] }, { name: 'cinema_camcorder', pos: [1.6, 0, 1.4], rotY: -0.8 }, { name: 'cinema_covers', pos: [1.0, 0, 1.8] },
-			{ name: 'floor_popcorn_bag', pos: [-0.6, 0, 2.2] }, { name: 'recycle_broom', pos: [0.2, 0, 2.3], rotY: 1.2 }, { name: 'fresh_sign', pos: [0.9, 0, 2.6] },
 		],
 		cam: { pos: [0, 1.6, 4.5], target: [0.1, 0.7, 0], fov: 40 },
+	},
+	cinema_stories: {
+		items: [
+			{ name: 'floor_popcorn_bag', pos: [-1.0, 0, 0] }, { name: 'recycle_broom', pos: [-0.3, 0, 0], rotY: 0.4 },
+			{ name: 'fresh_sign', pos: [0.4, 0, 0] }, { name: 'ghost_projector', pos: [-0.9, 0, 0.8], rotY: 0.5 },
+			{ name: 'holey_sheet', pos: [0, 0, 0.8] }, { name: 'scream_disc', pos: [0.8, 0, 0.8] },
+		],
+		cam: { pos: [0, 1.4, 2.6], target: [0, 0.1, 0.4], fov: 40 },
 	},
 };
