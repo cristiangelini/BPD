@@ -94,9 +94,47 @@ export function buildChicho() {
 	return b.build();
 }
 
+// The box with 200 pirate copies, 0.6 x 0.42 x 0.45 m: a taped cardboard box, open on top, full of plastic cases with
+// hand-written titles, a few sticking out.
+export function buildPirateBox() {
+	const b = new Builder('pirate_copies_box');
+	const card = mat('box_card', 0xb08850), tape = mat('box_tape', 0xd8c890);
+	b.add('box', card, new THREE.BoxGeometry(0.6, 0.36, 0.45), { pos: V(0, 0.18, 0) });
+	b.add('tape', tape, new THREE.BoxGeometry(0.62, 0.04, 0.08), { pos: V(0, 0.2, 0) });
+	const cases = [0x1a1a22, 0x2a3a6a, 0x6a1a2a, 0x1a4a2a];
+	for (let i = 0; i < 9; i++) {
+		const c = mat(`case_${i % 4}`, cases[i % 4]);
+		b.add('cases', c, new THREE.BoxGeometry(0.014, 0.19, 0.135), { pos: V(-0.24 + i * 0.06, 0.38 + (i % 3) * 0.02, -0.06 + (i % 2) * 0.12), rot: [0, 0, (i % 3 - 1) * 0.15] });
+		b.add('labels', M.white, new THREE.BoxGeometry(0.016, 0.06, 0.1), { pos: V(-0.24 + i * 0.06, 0.4 + (i % 3) * 0.02, -0.06 + (i % 2) * 0.12), rot: [0, 0, (i % 3 - 1) * 0.15] });
+	}
+	return b.build();
+}
+
+// The camcorder on its folded tripod, 0.2 x 0.8 x 0.2 m lying down along Z: the black camera with its red light and
+// the three legs together.
+export function buildCamcorder() {
+	const b = new Builder('cinema_camcorder');
+	const black = mat('cam_black', 0x1c1c20), grey = mat('cam_grey', 0x70747a);
+	b.add('camera', black, new THREE.BoxGeometry(0.12, 0.12, 0.24), { pos: V(0, 0.08, 0.26) });
+	b.add('lens', grey, new THREE.CylinderGeometry(0.045, 0.05, 0.08, 10), { pos: V(0, 0.08, 0.41), rot: [Math.PI / 2, 0, 0] });
+	b.add('light', mat('cam_red', 0xff2020, { emissive: 0xff2020 }), new THREE.SphereGeometry(0.012, 6, 4), { pos: V(0.04, 0.145, 0.36) });
+	for (const x of [-0.03, 0, 0.03]) b.add('legs', grey, new THREE.CylinderGeometry(0.012, 0.012, 0.6, 6), { pos: V(x, 0.03, -0.12), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
+// A stack of printed covers for the copies, 0.19 x 0.06 x 0.27 m, the top one with a blurry title and a crooked star.
+export function buildCovers() {
+	const b = new Builder('cinema_covers');
+	b.add('stack', M.white, new THREE.BoxGeometry(0.19, 0.05, 0.27), { pos: V(0, 0.025, 0) });
+	b.add('print', mat('cover_print', 0x3050a0), new THREE.BoxGeometry(0.17, 0.004, 0.18), { pos: V(0, 0.052, 0.03) });
+	b.add('title', mat('cover_title', 0xf0c030), new THREE.BoxGeometry(0.15, 0.005, 0.04), { pos: V(0, 0.053, -0.09), rot: [0, 0.08, 0] });
+	return b.build();
+}
+
 export const models = {
 	cinema_seat: buildCinemaSeat, popcorn_machine: buildPopcornMachine, film_projector: buildFilmProjector,
-	npc_dona_bobina: buildDonaBobina, npc_chicho: buildChicho,
+	npc_dona_bobina: buildDonaBobina, npc_chicho: buildChicho, pirate_copies_box: buildPirateBox,
+	cinema_camcorder: buildCamcorder, cinema_covers: buildCovers,
 };
 
 export const views = {
@@ -105,6 +143,7 @@ export const views = {
 			{ name: 'cinema_seat', pos: [-1.2, 0, 0] }, { name: 'cinema_seat', pos: [-0.5, 0, 0] },
 			{ name: 'popcorn_machine', pos: [0.5, 0, 0.3] }, { name: 'film_projector', pos: [1.5, 0, 0], rotY: -0.6 },
 			{ name: 'npc_dona_bobina', pos: [0.6, 0, 1.0], rotY: -0.2 }, { name: 'npc_chicho', pos: [-0.5, 0, 1.1], rotY: 0.3 },
+			{ name: 'pirate_copies_box', pos: [-1.4, 0, 1.4] }, { name: 'cinema_camcorder', pos: [1.6, 0, 1.4], rotY: -0.8 }, { name: 'cinema_covers', pos: [1.0, 0, 1.8] },
 		],
 		cam: { pos: [0, 1.6, 4.5], target: [0.1, 0.7, 0], fov: 40 },
 	},
