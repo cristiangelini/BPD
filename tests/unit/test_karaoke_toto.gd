@@ -52,6 +52,8 @@ func test_the_volume_down_makes_him_talk_once_per_cop() -> void:
 func test_without_a_story_he_saw_nothing() -> void:
 	var place := _karaoke()
 	await wait_physics_frames(2)
+	place.toto.clue = ""
+	place.toto.clue_speech = ""
 	place.console.use(place.get_node("Cop"))
 	assert_eq(place.toto.said(), "TOTO_NOTHING")
 
