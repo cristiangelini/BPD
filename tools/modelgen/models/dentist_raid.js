@@ -211,9 +211,64 @@ export const models = {
 		}
 		return b.build();
 	},
+	// The tooth mouse story's main evidence: a big jar crammed with 500 baby teeth, a mouse on the label. 0.25 x 0.35 m.
+	teeth_jar() {
+		const b = new Builder('teeth_jar');
+		b.add('jar', glass, new THREE.CylinderGeometry(0.12, 0.12, 0.3, 14), { pos: V(0, 0.15, 0) });
+		b.add('teeth', enamel, new THREE.CylinderGeometry(0.11, 0.11, 0.26, 14), { pos: V(0, 0.135, 0) });
+		for (let i = 0; i < 10; i++) {
+			const a = i * 0.63;
+			b.add('teeth', C('tooth_cream', 0xece4cc), new THREE.BoxGeometry(0.025, 0.03, 0.02), { pos: V(Math.cos(a) * 0.105, 0.04 + (i % 5) * 0.05, Math.sin(a) * 0.105), rot: [0, -a, 0] });
+		}
+		b.add('lid', C('lid_red', 0xc83a3a), new THREE.CylinderGeometry(0.125, 0.125, 0.04, 14), { pos: V(0, 0.32, 0) });
+		b.add('label', C('label_cream', 0xf6ecd0), new THREE.CylinderGeometry(0.121, 0.121, 0.08, 14, 1, true, -0.5, 1.0), { pos: V(0, 0.16, 0) });
+		b.add('label', C('label_mouse', 0x8a8a90), ellipsoid(0.02, 0.018, 0.004, 6, 4), { pos: V(0, 0.16, 0.123) });
+		return b.build();
+	},
+	// The mouse costume: grey overalls with a long tail and a head with round ears, folded on itself. 0.5 x 0.3 x 0.4 m.
+	mouse_costume() {
+		const b = new Builder('mouse_costume');
+		const grey = C('costume_grey', 0x8a8a92, { roughness: 0.9 });
+		b.add('body', grey, new THREE.BoxGeometry(0.4, 0.12, 0.35), { pos: V(0, 0.06, 0) });
+		b.add('head', grey, ellipsoid(0.11, 0.1, 0.12, 10, 6), { pos: V(0.1, 0.2, 0) });
+		for (const z of [-0.08, 0.08]) {
+			b.add('ears', C('ear_pink', 0xf0a0b0), new THREE.CylinderGeometry(0.06, 0.06, 0.015, 10), { pos: V(0.1, 0.3, z), rot: [Math.PI / 2, 0, 0] });
+		}
+		b.add('tail', C('tail_pink', 0xe890a0), new THREE.CylinderGeometry(0.01, 0.006, 0.4, 5), { pos: V(-0.3, 0.05, 0), rot: [0, 0, Math.PI / 2] });
+		return b.build();
+	},
+	// The neighborhood map with every child's pillow marked in red. 0.3 x 0.006 x 0.21 m, flat.
+	pillow_map() {
+		const b = new Builder('pillow_map');
+		b.add('sheet', C('map_paper', 0xe8eed8), new THREE.BoxGeometry(0.3, 0.004, 0.21), { pos: V(0, 0.002, 0) });
+		for (let i = 0; i < 3; i++) {
+			b.add('streets', C('map_street', 0xb0b4b8), new THREE.BoxGeometry(0.28, 0.002, 0.01), { pos: V(0, 0.005, -0.06 + i * 0.06) });
+			b.add('streets', C('map_street', 0xb0b4b8), new THREE.BoxGeometry(0.01, 0.002, 0.19), { pos: V(-0.09 + i * 0.09, 0.005, 0) });
+		}
+		for (let i = 0; i < 6; i++) {
+			b.add('marks', C('map_red', 0xd83030), new THREE.BoxGeometry(0.018, 0.003, 0.018), { pos: V(-0.12 + i * 0.05, 0.006, -0.08 + (i % 3) * 0.06) });
+		}
+		return b.build();
+	},
+	// A wind-up toy mouse with its key on its back. 0.16 x 0.08 x 0.08 m, its nose toward +Z.
+	windup_mouse() {
+		const b = new Builder('windup_mouse');
+		b.add('body', C('mouse_grey', 0x9a9aa2, { metalness: 0.3, roughness: 0.5 }), ellipsoid(0.04, 0.035, 0.07, 8, 6), { pos: V(0, 0.035, 0) });
+		for (const x of [-0.025, 0.025]) {
+			b.add('ears', C('mouse_ear', 0xf0a0b0), new THREE.CylinderGeometry(0.014, 0.014, 0.004, 8), { pos: V(x, 0.065, 0.04), rot: [Math.PI / 2, 0, 0] });
+		}
+		b.add('key', C('key_brass', 0xd0a040, { metalness: 0.6, roughness: 0.3 }), new THREE.TorusGeometry(0.018, 0.004, 4, 10), { pos: V(0, 0.085, -0.02) });
+		b.add('tail', C('mouse_tail', 0xe890a0), new THREE.CylinderGeometry(0.003, 0.002, 0.08, 4), { pos: V(0, 0.02, -0.1), rot: [Math.PI / 2, 0, 0] });
+		return b.build();
+	},
 };
 
 export const views = {
+	dentist_mouse: {
+		items: [{ name: 'teeth_jar', pos: [-0.45, 0, 0] }, { name: 'mouse_costume', pos: [0.05, 0, 0], rotY: 0.4 },
+			{ name: 'pillow_map', pos: [0.5, 0, 0.15], rotY: -0.3 }, { name: 'windup_mouse', pos: [0.3, 0, 0.35], rotY: 0.8 }],
+		cam: { pos: [0.0, 0.8, 1.7], target: [0.0, 0.12, 0], fov: 40 },
+	},
 	dentist_gas: {
 		items: [{ name: 'gas_bundle', pos: [-0.5, 0, 0] }, { name: 'gas_balloons', pos: [0.25, 0, 0] },
 			{ name: 'carcajada_invoice', pos: [0.75, 0, 0.2], rotY: -0.3 }],
