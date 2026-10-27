@@ -49,6 +49,8 @@ const ENGINEER_AT := Vector3(22.0, 0, 0.2)
 const INSPECTOR_AT := Vector3(12.4, 0, 0.95)
 const VENDOR_AT := Vector3(-2.7, 0, -0.95)
 const CART_MODEL := preload("res://assets/models/train_cart.glb")
+## The roll of numbered stickers, on top of the ticket machine.
+const STICKERS_AT := TICKET_MACHINE_AT + Vector3(0, 1.45, 0)
 ## Where a cop gets on: first class's aisle, by the back door.
 const SPAWN_AT := Vector3(1.5, FLOOR_Y + 0.1, 0)
 const BODY := Color(0.18, 0.32, 0.25)
@@ -73,6 +75,15 @@ var engineer: TrainStaff
 var inspector: TrainStaff
 var vendor: TrainStaff
 var cart: StaticBody3D
+var case: CrimeSceneCase
+## Which seat (index in SEATS) each magician is in now; they swap in every tunnel.
+var seat_of: Array[int] = [0, 1, 2, 3, 4, 5]
+## Who wears which sticker: number -> magician index, and the last magician each number was on.
+var stickers := {}
+var last_wearer := {}
+## The culprit peels his sticker off in the first tunnel he goes through with one, only once.
+var culprit_peeled := false
+var _was_tunnel := false
 var _cars: Node3D
 var _build: PlaceBuilder
 
@@ -103,10 +114,99 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	ride.advance(delta)
-	var lit := not ride.in_tunnel()
+	var dark := ride.in_tunnel()
 	for lamp in lamps:
-		lamp.visible = lit
+		lamp.visible = not dark
+	if dark and not _was_tunnel:
+		_into_tunnel()
+	elif _was_tunnel and not dark:
+		for magician in magicians:
+			magician.say("MAGICIAN_TA_DA", 2.0)
+	_was_tunnel = dark
 	_update_signs()
+
+
+func set_up_case(new_case: CrimeSceneCase) -> void:
+	case = new_case
+	for magician in magicians:
+		magician.case = case
+
+
+## In the dark the six swap seats (the order drawn with the seed and the leg), and the culprit peels his sticker
+## off the first time he can. A guest's train follows the host's (step 6).
+func _into_tunnel() -> void:
+	if case and case.follower:
+		return
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["train tunnel", case_seed, ride.leg()])
+	var order: Array[int] = seat_of.duplicate()
+	for i in range(order.size() - 1, 0, -1):
+		var j := rng.randi_range(0, i)
+		var swap := order[i]
+		order[i] = order[j]
+		order[j] = swap
+	for i in magicians.size():
+		seat(i, order[i])
+	var culprit := CrimePlan.culprit_of(MagicianTraits.COUNT, case_seed)
+	if not culprit_peeled and sticker_of(culprit) >= 0:
+		culprit_peeled = true
+		drop_sticker(magicians[culprit])
+
+
+## Puts a magician in front of a seat, facing the aisle.
+func seat(index: int, seat_index: int) -> void:
+	seat_of[index] = seat_index
+	var magician := magicians[index]
+	magician.position = SEATS[seat_index] + IN_FRONT_OF_SEAT
+	magician.rotation.y = 0.0 if SEATS[seat_index].z < 0 else PI
+
+
+## Sticks sticker `number` on a magician's cape; the one he had falls at his feet. What he shows already (his hair,
+## with the hat off) goes to that file right away.
+func stick_sticker(number: int, magician: TrainMagician) -> void:
+	var had := sticker_of(magician.index)
+	if had == number:
+		return
+	if had >= 0:
+		drop_sticker(magician)
+	stickers[number] = magician.index
+	last_wearer[number] = magician.index
+	magician.show_sticker(number)
+	magician.say(tr("MAGICIAN_STUCK") % (number + 1))
+	if case and not magician.hat_on:
+		case.magician_part(magician.index, "hair")
+
+
+## A magician's sticker falls at his feet, a sticker to pick up again.
+func drop_sticker(magician: TrainMagician) -> void:
+	var number := sticker_of(magician.index)
+	if number < 0:
+		return
+	stickers.erase(number)
+	magician.show_sticker(-1)
+	_sticker(number, magician.global_position + magician.global_basis.z * 0.6 + Vector3.UP * 0.1)
+
+
+## The number of the sticker on a magician's cape, or -1.
+func sticker_of(magician_index: int) -> int:
+	for number: int in stickers:
+		if stickers[number] == magician_index:
+			return number
+	return -1
+
+
+## The magician wearing a sticker now, or the last one who did (-1 if nobody ever did).
+func wearer(number: int) -> int:
+	return stickers.get(number, last_wearer.get(number, -1))
+
+
+func _sticker(number: int, world: Vector3) -> TrainSticker:
+	var sticker := TrainSticker.new()
+	sticker.name = "Sticker%d" % number
+	sticker.number = number
+	add_child(sticker)
+	sticker.global_position = world
+	return sticker
 
 
 func suspect(index: int) -> CollisionObject3D:
@@ -256,10 +356,13 @@ func _people() -> void:
 		magician.name = "Magician%d" % (i + 1)
 		magician.traits = all_traits[i]
 		magician.index = i
-		magician.position = SEATS[i] + IN_FRONT_OF_SEAT
-		magician.rotation.y = 0.0 if SEATS[i].z < 0 else PI
+		magician.train = self
 		_cars.add_child(magician)
 		magicians.append(magician)
+		seat(i, i)
+	for i in MagicianTraits.COUNT:
+		var sticker := _sticker(i, to_global(STICKERS_AT + Vector3(0, FLOOR_Y + i * 0.012, 0)))
+		sticker.rotation.x = -PI / 2
 	engineer = _staff("engineer", ENGINEER_AT, PI / 2)
 	inspector = _staff("inspector", INSPECTOR_AT, -PI / 2)
 	vendor = _staff("vendor", VENDOR_AT, PI / 2)

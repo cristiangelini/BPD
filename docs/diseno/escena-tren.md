@@ -128,3 +128,10 @@ interrogatorio.
   carrito en la punta del comedor (TrainStaff), cada uno con sus frases. Para que un policía pase por el pasillo con
   los magos, los asientos quedaron más angostos, el carrito en un costado y la caldera de la locomotora contra la
   pared.
+- **Paso 3 (las fichas):** las seis calcomanías numeradas (TrainSticker) arriba de la máquina de boletos; con una en la
+  mano, E sobre un mago se la pega en la capa y su ficha sigue al número, como los carteles del circo
+  (CrimeSceneCase.magician_part, variante "train"). La ficha se arma con la foto (anteojos y talle), las huellas (se
+  saca un guante), un mordisco (los dientes), la galera que se saca un momento (el pelo; a los 3 s se la vuelve a
+  poner) y el nudo del pañuelo (con qué mano). En cada túnel los seis se cambian de asiento (el orden sale de la
+  semilla y del tramo) y al volver la luz dicen "¡Ta-chán!"; el culpable se despega su calcomanía en el primer túnel
+  que pasa con una, una sola vez, y queda tirada a sus pies.

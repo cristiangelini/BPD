@@ -4,22 +4,36 @@ extends StaticBody3D
 ## One of the six magicians on the train El Lento (escena-tren.md, "Los magos iguales"): the same black cape, top hat,
 ## long fake beard and white gloves as the other five. Under the hat, his own hair (tinted); his glasses, if he wears
 ## them; his shoes (stretched to his size) and his teeth (shown when he bites). E on him: a trick, a different one
-## each time (a dove, a long hanky, a coin from behind the cop's ear), and he says his stage name. His file for the
-## board comes in step 3. Every number here is (propuesta).
+## each time (a dove, a long hanky, a coin from behind the cop's ear), and he says his stage name.
+## His file for the board (step 3) goes by the sticker on his cape (Train.stick_sticker), since in every tunnel the six
+## swap seats: E with a sticker in hand sticks it; the camera's flash (his glasses and shoes), the print kit (his
+## prints: he takes a glove off), a donut or a loaf (he bites it: his teeth); with empty hands, after his first trick,
+## the hat comes off for a moment (his hair) and then he ties a knot in his hanky (which hand he uses). Each goes to the
+## file of his sticker (CrimeSceneCase.magician_part). Every number here is (propuesta).
 
 const MODEL := preload("res://assets/models/npc_mago.glb")
 ## Shoe sizes stretch the shoes from this much (the smallest) to this much (the biggest).
 const SHOE_SCALE := Vector2(0.85, 1.3)
 const TRICKS: Array[String] = ["dove", "hanky", "coin"]
-## Seconds a trick's prop shows.
+## Seconds a trick's prop shows, his teeth after a bite and his hair before the hat goes back on.
 const TRICK_SECONDS := 2.0
+const TEETH_SECONDS := 2.0
+const HAT_SECONDS := 3.0
 
 ## MagicianTraits.draw: name, hair, glasses, left, shoe, teeth.
 var traits := {}
 ## His place in the case's traits, from 0.
 var index := 0
 var tricks_done := 0
+var train: Train
+var case: CrimeSceneCase
+var hat_on := true
+var knot_tied := false
 var _trick_left := 0.0
+var _teeth_left := 0.0
+var _hat_left := 0.0
+var _sticker: Label3D
+var _hat_done := false
 var _model: Node3D
 var _bubble: Label3D
 var _bubble_left := 0.0
@@ -58,12 +72,114 @@ func _ready() -> void:
 	add_child(_bubble)
 
 
-func prompt_key(_cop: Cop) -> String:
+func prompt_key(cop: Cop) -> String:
+	var held: Node = cop.get_node("Grabber").held
+	if held is TrainSticker:
+		return "PROMPT_MAGICIAN_STICKER"
+	if held is DonutBox or held is Bread:
+		return "PROMPT_MAGICIAN_FEED"
+	if cop.belt and cop.belt.held_tool() is PrintKit:
+		return "PROMPT_MAGICIAN_PRINTS"
+	if tricks_done > 0 and hat_on and not _asked_hat():
+		return "PROMPT_MAGICIAN_HAT"
+	if tricks_done > 0 and not knot_tied and _asked_hat():
+		return "PROMPT_MAGICIAN_KNOT"
 	return "PROMPT_MAGICIAN_TALK"
 
 
-func use(_cop: Cop) -> void:
-	trick()
+## E on him: a sticker in hand goes on his cape, food he bites; with empty hands, a trick, then the hat, then the
+## knot, then tricks again.
+func use(cop: Cop) -> void:
+	var held: Node = cop.get_node("Grabber").held
+	if held is TrainSticker:
+		var sticker := held as TrainSticker
+		cop.get_node("Grabber").release()
+		if train:
+			train.stick_sticker(sticker.number, self)
+		sticker.queue_free()
+	elif held is DonutBox or held is Bread:
+		feed(held)
+	elif tricks_done > 0 and not _asked_hat():
+		take_off_hat()
+	elif tricks_done > 0 and not knot_tied:
+		tie_knot()
+	else:
+		trick()
+
+
+## Bites a donut from the box or the loaf: his teeth for the file.
+func feed(food: Node) -> void:
+	if food is DonutBox and not (food as DonutBox).eat_one():
+		say("MAGICIAN_NO_DONUTS")
+		return
+	if food is Bread:
+		(food as Bread).eaten()
+	_teeth_left = TEETH_SECONDS
+	part("teeth").visible = true
+	say("MAGICIAN_BITES")
+	_file("teeth")
+
+
+## The hat comes off for a moment, with a bow: his hair for the file.
+func take_off_hat() -> void:
+	hat_on = false
+	part("hat").visible = false
+	_hat_left = HAT_SECONDS
+	say("MAGICIAN_HAT_OFF")
+	_file("hair")
+
+
+## He ties his hanky in a knot, with his own hand: which one, for the file.
+func tie_knot() -> void:
+	knot_tied = true
+	say("MAGICIAN_KNOT_LEFT" if traits.left else "MAGICIAN_KNOT_RIGHT")
+	_file("knot")
+
+
+## The camera's flash (PhotoCamera): his photo, with his glasses and his shoes.
+func photographed(_cop: Cop) -> void:
+	say("MAGICIAN_PHOTO")
+	_file("photo")
+
+
+## The print kit on him (PrintKit): he takes a glove off for it.
+func dusted(_cop: Cop) -> String:
+	_file("prints")
+	return tr("PRINTS_COOK") % traits.name
+
+
+## The sticker on his cape, by number (-1: none).
+func show_sticker(number: int) -> void:
+	if _sticker:
+		_sticker.queue_free()
+		_sticker = null
+	if number < 0:
+		return
+	_sticker = Label3D.new()
+	_sticker.name = "Sticker"
+	_sticker.text = str(number + 1)
+	_sticker.font_size = 64
+	_sticker.pixel_size = 0.003
+	_sticker.modulate = Color(0.1, 0.1, 0.12)
+	_sticker.outline_modulate = TrainSticker.PAPER
+	_sticker.outline_size = 40
+	_sticker.position = Vector3(0, 0.95, 0.42)
+	add_child(_sticker)
+
+
+## The number of the sticker he wears, or -1.
+func sticker() -> int:
+	return int(_sticker.text) - 1 if _sticker else -1
+
+
+## Whether the hat came off once (it went back on after a while).
+func _asked_hat() -> bool:
+	return not hat_on or _hat_done
+
+
+func _file(what: String) -> void:
+	if case:
+		case.magician_part(index, what)
 
 
 ## The next trick: its prop shows for a moment and he says his stage name.
@@ -95,6 +211,15 @@ func say(text: String, seconds := 3.5) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if _teeth_left > 0.0:
+		_teeth_left -= delta
+		part("teeth").visible = _teeth_left > 0.0
+	if _hat_left > 0.0:
+		_hat_left -= delta
+		if _hat_left <= 0.0:
+			hat_on = true
+			_hat_done = true
+			part("hat").visible = true
 	if _trick_left > 0.0:
 		_trick_left -= delta
 		if _trick_left <= 0.0:
