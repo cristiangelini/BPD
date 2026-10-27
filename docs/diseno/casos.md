@@ -44,6 +44,7 @@ Buscan pistas físicas, las llevan al tablero y acusan a un sospechoso (decisió
 8. **Boda:** desapareció el anillo y la novia sospecha del novio.
 9. **Mansión de misterio:** el clásico, con pasadizos secretos y un mayordomo.
 10. **La propia comisaría:** alguien se robó la evidencia de otro caso. El culpable podría ser uno de los compañeros (gancho para Asuntos Internos).
+12. **Planetario (nuevo, 27/10):** robaron el meteorito de la vitrina durante la función, y cada 2 minutos se apagan las luces y solo se ve lo que brilla. Propuesta en [escena-planetario.md](escena-planetario.md) (decisión 420).
 
 ## 4. Interrogatorio
 El sospechoso es un NPC con un medidor de nervios y otro de abogado, y se juega a policía bueno y policía malo (decisión 27).
