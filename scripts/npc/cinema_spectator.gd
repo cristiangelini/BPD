@@ -26,6 +26,8 @@ const SHUSH_COOLDOWN := 10.0
 var look := 0
 var seat := 0
 var shushes := 0
+## A line of their own, said instead of the usual ones (a story's neighbor sets it).
+var line_override := ""
 var _since_shush := SHUSH_COOLDOWN
 var _blocked := 0.0
 var _bubble: Label3D
@@ -74,6 +76,9 @@ func prompt_key(_cop: Cop) -> String:
 
 ## E: they answer without taking their eyes off the screen.
 func use(_cop: Cop) -> void:
+	if line_override != "":
+		say(line_override)
+		return
 	say("CINEMA_SPECTATOR_LINE_%d" % ((look + _lines_said) % LINES))
 	_lines_said += 1
 

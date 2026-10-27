@@ -23,11 +23,11 @@ func _seats(cinema: Cinema) -> Array:
 func test_six_spectators_sit_in_seats_drawn_with_the_seed() -> void:
 	var cinema := _cinema(5)
 	var seats := _seats(cinema)
-	assert_eq(seats.size(), Cinema.SPECTATORS)
+	assert_gte(seats.size(), Cinema.SPECTATORS, "six, plus whoever the story sits")
 	var unique := {}
 	for seat: int in seats:
 		unique[seat] = true
-	assert_eq(unique.size(), Cinema.SPECTATORS, "one each")
+	assert_eq(unique.size(), seats.size(), "one each")
 	for spectator in cinema.spectators:
 		assert_almost_eq(spectator.position.y, cinema.seats[spectator.seat].y + 0.05, 0.01, "on their seat")
 	assert_eq(_seats(_cinema(5)), seats, "same seed, same seats")

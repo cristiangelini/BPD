@@ -9,7 +9,8 @@ extends Node3D
 ## popcorn machine breaks its glass, a fine each. Doña Bobina spends her time in the booth and comes down the west aisle
 ## to the front now and then, filling the complaint; E on the projector cuts the tape and sends her to splice it, her
 ## back to everything (step 3). Chicho the usher sits in a free seat and whispers what he saw to a cop who sits it out
-## next to him (step 4). Every number here is (propuesta).
+## next to him (step 4). The case is one of its stories (STORIES), drawn with the seed, run by the same RaidCase as the
+## other places (step 5). Every number here is (propuesta).
 
 signal screen_ripped
 signal glass_broken
@@ -20,6 +21,34 @@ const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const SEAT_MODEL := preload("res://assets/models/cinema_seat.glb")
 const POPCORN_MODEL := preload("res://assets/models/popcorn_machine.glb")
 const BOBINA_SCENE := preload("res://scenes/npc/dona_bobina.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the cinema can be suspected of (allanamiento-cine.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["pirate_copies", "floor_popcorn", "haunted_cinema", "fake_tickets", "stolen_film",
+	"popcorn_watches"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_CINEMA_TIP_B", "BRIEF_TIP_C", "BRIEF_CINEMA_TIP_D",
+	"BRIEF_CINEMA_TIP_E"]
+## The stories the cinema can tell, like Garage.STORIES: what the comisario says once it's guessed, its "find it" row,
+## what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the checklist rows of
+## its extras and its rig. With "main_hidden" the first hidden item is the main evidence and the rest extras.
+const STORIES := {
+	"pirate_copies": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_PIRATE_COPIES_B", "BRIEF_PIRATE_COPIES_C", "BRIEF_PIRATE_COPIES_D"],
+		"find": "OBJ_FIND_PIRATE_BOX",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/pirate_copies_box.tscn"), preload("res://scenes/props/cinema_camcorder.tscn"),
+			preload("res://scenes/props/cinema_covers.tscn")],
+		"half_heights": [0.21, 0.07, 0.03],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_CAMCORDER", "OBJ_EXTRA_COVERS"],
+		"rig": preload("res://scripts/case/cinema/pirate_copies_rig.gd"),
+	},
+}
+## Where the suspicion notes can lie: on the hall's carpet, in front of the screen and along the theater's back.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(-3.0, FLOOR_TOP, 9.0), Vector3(2.0, FLOOR_TOP, 11.5), Vector3(-8.5, FLOOR_TOP, 10.0),
+	Vector3(3.5, FLOOR_TOP, 5.2), Vector3(6.0, FLOOR_TOP + RISE, -10.0), Vector3(-4.0, FLOOR_TOP + RISE, -8.5),
+]
 const HALF_X := 11.0
 const HALF_Z := 15.0
 const WALL_TOP := 8.0
@@ -137,10 +166,24 @@ var seats: Array[Vector3] = []
 var screen_torn := false
 var glass_cracked := false
 var broken_goods := 0
+## The case flow every raid shares.
+var raid: RaidCase
 ## Money taken off the case pay: the screen and the popcorn machine's glass.
-var fines := 0
-## Same seed, same cinema (the stories and the hiding spots come from it, step 5).
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## Same seed, same cinema, same draw: the story and where its things go. 0 draws one.
 @export var case_seed := 0
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: CinemaRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
+## The seat Chicho sits in (an index of `seats`; the one to his right is the side seat).
+var chicho_seat := -1
 var _build: PlaceBuilder
 ## Each seat's solid body, in the order of `seats`.
 var _seat_bodies: Array[StaticBody3D] = []
@@ -168,6 +211,19 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_theater()
@@ -186,6 +242,87 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "cinema", car)
+	raid.station_parking = station_parking
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = bobina
+	raid.owner_id = "cinema"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The cinema's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_CINEMA",
+		"guess_key": "OBJ_GUESS_CINEMA",
+		"broken_key": "OBJ_BROKEN_CINEMA",
+		"complaint_key": "OBJ_COMPLAINT_CINEMA",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_goods,
+		"complaint": bobina.complaint,
+	}
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What doña Bobina lets slip when asked (where the story's things are, in an order drawn from the seed), and what
+## Chicho saw: where she hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		bobina.slips.append(tr("BOBINA_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	bobina.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	chicho.clue = tr("CLUE_CHICHO") % where
+	chicho.clue_speech = tr("CHICHO_CLUE_" + story_id) % where
+	chicho.told.connect(raid.add_clue)
 
 
 ## The theater floor's height at z: up the slope from the screen to the back.
@@ -373,16 +510,29 @@ func _seat_spectators() -> void:
 	for i in seats.size():
 		free.append(i)
 	for n in SPECTATORS:
-		var spectator := CinemaSpectator.new()
-		spectator.name = "Spectator%d" % n
-		spectator.look = n
-		spectator.seat = free.pop_at(rng.randi_range(0, free.size() - 1))
-		spectator.position = seats[spectator.seat] + Vector3(0, 0.05, 0)
-		add_child(spectator)
-		spectator.shushed.connect(func() -> void:
-			shushes += 1
-			shushed.emit(spectator))
-		spectators.append(spectator)
+		seat_spectator(free.pop_at(rng.randi_range(0, free.size() - 1)), n)
+
+
+## One more neighbor in the seat `seat` (an index of `seats`) with the look `look`, counted with the others.
+func seat_spectator(seat: int, look: int) -> CinemaSpectator:
+	var spectator := CinemaSpectator.new()
+	spectator.name = "Spectator%d" % spectators.size()
+	spectator.look = look
+	spectator.seat = seat
+	spectator.position = seats[seat] + Vector3(0, 0.05, 0)
+	add_child(spectator)
+	spectator.shushed.connect(func() -> void:
+		shushes += 1
+		shushed.emit(spectator))
+	spectators.append(spectator)
+	return spectator
+
+
+## Whether nobody sits in the seat `seat`: no spectator, nor Chicho, nor the seat beside him.
+func seat_free(seat: int) -> bool:
+	if seat == chicho_seat or seat == chicho_seat + 1:
+		return false
+	return spectators.all(func(spectator: CinemaSpectator) -> bool: return spectator.seat != seat)
 
 
 ## What the screen shows: the film's scene and its line, or white with the tape cut.
@@ -449,6 +599,7 @@ func _place_chicho() -> void:
 		if i % SEATS_PER_ROW < SEATS_PER_ROW - 1 and not taken.has(i) and not taken.has(i + 1):
 			free.append(i)
 	var at := free[rng.randi_range(0, free.size() - 1)]
+	chicho_seat = at
 	_seat_bodies[at + 1].queue_free()
 	side_seat = CinemaSideSeat.new()
 	side_seat.name = "SideSeat"
@@ -474,6 +625,7 @@ func _place_bobina() -> void:
 	bobina.fix_facing = to_global(SPLICE_SPOT + Vector3(0, 0, -10))
 	bobina.start_at(0)
 	booth_door.broken.connect(bobina.door_broken)
+	bobina.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_CINEMA"))
 	till.opened.connect(func(at: Vector3) -> void: bobina.saw(at, FloorBoss.SAW_TILL))
 	screen_ripped.connect(func() -> void: bobina.saw(to_global(SCREEN_AT), SAW_SCREEN, "BOBINA_SCREEN"))
 	glass_broken.connect(func() -> void: bobina.saw(to_global(POPCORN_AT), SAW_GLASS, "BOBINA_GLASS"))
@@ -531,6 +683,7 @@ func rip_screen() -> void:
 	screen_torn = true
 	broken_goods += 1
 	fines += SCREEN_FINE
+	raid.float_label("-%d" % SCREEN_FINE, to_global(SCREEN_AT) + Vector3.UP * 2.0, Color(1, 0.3, 0.25))
 	_build.mesh_box(SCREEN_AT + Vector3(0.8, -0.3, 0.03), Vector3(3.0, 0.2, 0.02), DARK)
 	_say(SCREEN_AT + Vector3(0, 3.2, 1.0), "CINEMA_SCREEN_RIPPED")
 	screen_ripped.emit()
@@ -543,6 +696,7 @@ func break_glass() -> void:
 	glass_cracked = true
 	broken_goods += 1
 	fines += GLASS_FINE
+	raid.float_label("-%d" % GLASS_FINE, to_global(POPCORN_AT) + Vector3.UP * 1.5, Color(1, 0.3, 0.25))
 	for i in 14:
 		var turn := i * 2.4
 		_build.mesh_box(POPCORN_AT + Vector3(cos(turn) * (0.4 + i * 0.08), -0.96, 0.6 + sin(turn) * (0.3 + i * 0.06)),

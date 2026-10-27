@@ -122,3 +122,9 @@ suman entre 400 y 600.
   nada); si se para antes, "¡Shhh, que viene lo mejor!" y empieza de nuevo. Una vez por policía. Un policía sentado no
   le tapa la pantalla a nadie. Por ahora "sin hablar" no se mide (falta saber si el policía habla por el chat de voz);
   el policía sentado se ve parado, como en el jurado, hasta que haya una pose sentada. Capturas `paso4-*.png`.
+- **Paso 5 (el caso de las copias piratas):** el cine ya es un allanamiento (`RaidCase`, como los otros): la historia sale
+  de la semilla (o `--story=pirate_copies`), tres sospechas al azar con la verdadera, el soplo del comisario, la caja con
+  200 copias (8 kg, $1000) escondida en un lugar donde entra y dos extras (la filmadora y las tapas impresas). Doña
+  Bobina se le escapan tres lugares, Chicho cuenta dónde vio uno, y un vecino más se sienta atrás de todo con una lucecita
+  roja que titila en el balde de pochoclo: acercarse a menos de 2 m da la pista de la historia (una vez). Con 100 de
+  denuncia llama al abogado y el caso se pierde; si huye, escapa en auto. Capturas `paso5-*.png`.
