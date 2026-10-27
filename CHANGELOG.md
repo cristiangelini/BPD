@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Ice rink raid, step 6d: the stolen power story: the coil of cable hooked to the street pole (5 kg) hidden in a big spot, the electricity bills at zero and the pliers; every time the resurfacer starts the hall's lights flicker for 1.5 s, and the first time is the clue; the mirror ball spins on its own, throwing colored spots on the ice.
 - Ice rink raid, step 6c: the golden skate story: the championship's Golden Skate (4 kg), painted white, always stands between the rental skates on the rack, which bends down on its side; the can of white paint and the newspaper clipping of the trophy are hidden too; every time a cop picks it up it goes "clang", and the first time is the clue.
 - Ice rink raid, step 6b: the fixed match story: the scoreboard remote, the betting notebook and the envelope with money hidden in the rink; the scoreboard over the ice adds a goal on its own every 20 s, and the first one a cop sees is the clue.
 - Ice rink raid, step 6a: the smuggling resurfacer story: the box of stolen perfumes (6 kg) hidden in a big spot, the client list and the funnel; while the resurfacer runs it leaves a pink trail on the ice (the clue) and drops a bottle of perfume once every lap, up to 6.

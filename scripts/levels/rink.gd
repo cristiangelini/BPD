@@ -81,6 +81,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_WHITE_PAINT", "OBJ_EXTRA_TROPHY_CLIPPING"],
 		"rig": preload("res://scripts/case/rink/golden_skate_rig.gd"),
 	},
+	"stolen_power": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_STOLEN_POWER_B", "BRIEF_STOLEN_POWER_C", "BRIEF_STOLEN_POWER_D"],
+		"find": "OBJ_FIND_POWER_CABLE",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/rink_power_cable.tscn"),
+			preload("res://scenes/props/rink_zero_bills.tscn"), preload("res://scenes/props/rink_pliers.tscn")],
+		"half_heights": [0.06, 0.003, 0.015],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_ZERO_BILLS", "OBJ_EXTRA_PLIERS"],
+		"rig": preload("res://scripts/case/rink/stolen_power_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the floor of the lobby, the corridor and by the stands.
 const NOTE_PLACES: Array[Vector3] = [
@@ -212,6 +223,8 @@ var resurfacer_button: PushButton
 var ice: RinkIce
 var skate_rental: SkateRental
 var penguin: StaticBody3D
+var hall_lights: Array[OmniLight3D] = []
+var mirror_ball: MeshInstance3D
 ## The DJ booth with her song: Doña Pirueta's distraction (step 3).
 var song: DjSong
 ## The bar's hot chocolate button and Copito, the gossip (step 4).
@@ -410,6 +423,7 @@ func _build_shell() -> void:
 			lamp.light_color = Color(0.9, 0.95, 1.0)
 			lamp.omni_range = 12.0
 			lamp.light_energy = 0.9
+			hall_lights.append(lamp)
 
 
 ## The ice that hardly grips, the boards around it with the gates and the glass panels, the resurfacer, the penguin, the
@@ -477,6 +491,7 @@ func _build_ice() -> void:
 	ball.material_override = mirror
 	ball.position = Vector3(0, WALL_TOP - 1.4, 0)
 	$Built.add_child(ball)
+	mirror_ball = ball
 	_build.mesh_box(Vector3(0, WALL_TOP - 0.5, 0), Vector3(0.03, 1.0, 0.03), DARK)
 
 
