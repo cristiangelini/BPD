@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Ice rink raid, step 6e: the real sequins story: the competition leotard with diamonds, the jeweler's loupe and the empty jewelry box hidden in the rink; the leotard glints in colors, brightly under the mirror ball, and the first time a cop sees it is the clue; Doña Pirueta wears a dull leotard and complains that the good one is at the dry cleaner's.
 - Ice rink raid, step 6d: the stolen power story: the coil of cable hooked to the street pole (5 kg) hidden in a big spot, the electricity bills at zero and the pliers; every time the resurfacer starts the hall's lights flicker for 1.5 s, and the first time is the clue; the mirror ball spins on its own, throwing colored spots on the ice.
 - Ice rink raid, step 6c: the golden skate story: the championship's Golden Skate (4 kg), painted white, always stands between the rental skates on the rack, which bends down on its side; the can of white paint and the newspaper clipping of the trophy are hidden too; every time a cop picks it up it goes "clang", and the first time is the clue.
 - Ice rink raid, step 6b: the fixed match story: the scoreboard remote, the betting notebook and the envelope with money hidden in the rink; the scoreboard over the ice adds a goal on its own every 20 s, and the first one a cop sees is the clue.
