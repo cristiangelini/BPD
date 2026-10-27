@@ -50,7 +50,8 @@ func set_open(open: bool) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if not is_open or is_melted:
+	# Online the host's freezers melt; the guests' take it from the shop's state (IceCreamShop.net_state).
+	if not is_open or is_melted or not multiplayer.is_server():
 		return
 	open_for += delta
 	if open_for >= MELT_AFTER:

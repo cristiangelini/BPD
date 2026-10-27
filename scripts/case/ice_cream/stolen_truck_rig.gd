@@ -50,9 +50,20 @@ func jingle_text() -> String:
 	return _jingle.text if _jingle.visible else ""
 
 
+## Online: the jingles the host's truck played, so the guests' plays with it.
+func net_state() -> Variant:
+	return jingles
+
+
+func apply_net_state(value: Variant) -> void:
+	if value > jingles:
+		play_jingle()
+		jingles = value
+
+
 func _process(delta: float) -> void:
 	_since += delta
-	if _since >= JINGLE_EVERY:
+	if _since >= JINGLE_EVERY and multiplayer.is_server():
 		play_jingle()
 	if _jingle.visible:
 		_left -= delta

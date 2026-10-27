@@ -36,7 +36,8 @@ func setup(place: IceCreamShop) -> void:
 	door.add_child(shape)
 	shop.add_child(door)
 	door.body_entered.connect(func(body: Node3D) -> void:
-		if body is Cop:
+		# Online the host's doña Nieve shuts them; the lids reach the guests with the shop's state.
+		if body is Cop and multiplayer.is_server():
 			cover())
 
 
