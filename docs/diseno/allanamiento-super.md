@@ -142,6 +142,17 @@ suman entre 400 y 600.
      - **El repositor se llama Lalo**, porque Chispa ya es el preso chismoso de la cárcel con corte de luz.
      - **Capturas:** `allanamiento-super/paso3-*.png`.
 4. Lalo y su pirámide.
+   - **Cómo quedó (propuesta):** Lalo, un chico de gorrita roja al revés y delantal verde, arma su pirámide en el piso
+     del lado este, entre el pasillo 4 y el depósito, con un cajón de 6 latas para reponer al lado.
+     - **Las latas:** sirve cualquier lata del súper (las del cajón o las de la pirámide de oferta, si se cayó) que un
+       policía suelte a menos de 1,2 m de él. Las toma de a una, una por segundo, y las suma a su pirámide («¡Una!
+       Sigue así y te cuento algo…»).
+     - **A la tercera** le cuenta a ese policía, sin dejar de apilar, lo que vio (la pista la pone la historia, en el
+       paso 5). Una vez por policía.
+     - **Si se le cae la pirámide** (un policía se mete encima o algo le pega a más de 1,5 m/s): «¡Nooo, mi pirámide!»,
+       y la cuenta vuelve a cero para todos.
+     - **E sobre él:** solo te pide latas.
+     - **Capturas:** `allanamiento-super/paso4-*.png`.
 5. El caso (RaidCase) con la primera historia: las fechas cambiadas.
 6. Las otras 5 historias, una por PR.
 7. "Jugar" suma el súper al sorteo de allanamientos (`PlaceDraw.ORDER`).

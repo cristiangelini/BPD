@@ -157,8 +157,26 @@ export function buildDonOferton() {
 	return b.build();
 }
 
+// Lalo, the stocker: a kid with a red cap on backwards, a green apron with the store's logo over a striped shirt and a
+// price gun clipped to the apron's pocket. The game scales him short.
+export function buildLalo() {
+	const b = new Builder('npc_lalo');
+	const shirt = mat('lalo_shirt', 0xf2c230), apron = mat('lalo_apron', 0x2a8a4a), cap = mat('lalo_cap', 0xd23a3a);
+	pearBody(b, mat('skin_canela', 0xc68a5a), { shirt, pants: mat('lalo_jeans', 0x3a5a9a), shoes: M.white, belted: false });
+	b.add('apron', apron, loft([{ y: 0.3, rx: 0.49, rz: 0.44 }, { y: 0.52, rx: 0.475, rz: 0.425 }, { y: 0.8, rx: 0.375, rz: 0.335 }], 10));
+	b.add('apron', apron, new THREE.BoxGeometry(0.3, 0.2, 0.04), { pos: V(0, 0.92, 0.27), rot: [-0.45, 0, 0] });
+	b.add('apron', mat('lalo_logo', 0xf2f2ea), new THREE.BoxGeometry(0.1, 0.07, 0.01), { pos: V(0, 0.62, 0.46), rot: [-0.2, 0, 0] });
+	b.add('apron', M.black, new THREE.BoxGeometry(0.05, 0.08, 0.04), { pos: V(0.22, 0.55, 0.43) });
+	eyes(b, 1.34, 0.17, 0.08, 0.055);
+	b.add('face', mat('mouth', 0x7a2a2a), ellipsoid(0.06, 0.025, 0.02, 6, 4), { pos: V(0, 1.22, 0.2) });
+	b.add('cap', cap, ellipsoid(0.21, 0.11, 0.2, 10, 5), { pos: V(0, 1.45, 0.0) });
+	b.add('cap', cap, new THREE.BoxGeometry(0.2, 0.02, 0.16), { pos: V(0, 1.42, -0.24), rot: [0.25, 0, 0] });
+	return b.build();
+}
+
 export const models = {
 	npc_don_oferton: buildDonOferton,
+	npc_lalo: buildLalo,
 	gondola: buildGondola, dairy_fridge: buildDairyFridge, checkout: buildCheckout, produce_stand: buildProduceStand,
 	chest_freezer: buildChestFreezer, food_can: buildFoodCan, shopping_cart: buildShoppingCart,
 };
@@ -174,7 +192,7 @@ export const views = {
 		cam: { pos: [0, 3.0, 7.5], target: [0.4, 0.9, 0], fov: 50 },
 	},
 	don_oferton: {
-		items: [{ name: 'npc_don_oferton', pos: [0, 0, 0], rotY: 0.3 }],
+		items: [{ name: 'npc_don_oferton', pos: [-0.6, 0, 0], rotY: 0.3 }, { name: 'npc_lalo', pos: [0.6, 0, 0], rotY: -0.3, scale: 0.8 }],
 		cam: { pos: [0, 1.2, 3.2], target: [0, 0.85, 0], fov: 40 },
 	},
 };

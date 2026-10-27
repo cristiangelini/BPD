@@ -97,6 +97,11 @@ const CASHIER_SIDE := -0.75
 ## The price button on each checkout's counter, by the cashier.
 const PRICE_BUTTON := Vector3(-0.25, FLOOR_TOP + 0.95, 7.0)
 const SAW_PYRAMID := 10.0
+## Lalo, the stocker (step 4), with his pyramid in front of him, and the crate of cans to restock beside him.
+const STOCKER_AT := Vector3(9.5, FLOOR_TOP, -1.2)
+const RESTOCK_AT := Vector3(10.8, FLOOR_TOP, -1.6)
+const RESTOCK_SIZE := Vector3(0.6, 0.4, 0.4)
+const RESTOCK_CANS := 6
 const CAUGHT_ON := 10.0
 ## How often the loudspeaker tells everyone where the cops are, while one is inside.
 const ANNOUNCE_EVERY := 20.0
@@ -145,6 +150,7 @@ var manager: FloorBoss
 var price_call: PriceCall
 var complaint_bar: ProgressBar
 var _announce_left := ANNOUNCE_EVERY
+var stocker: SuperStocker
 ## Same seed, same supermarket (the stories and the hiding spots come from it, step 5).
 @export var case_seed := 0
 var _build: PlaceBuilder
@@ -167,6 +173,7 @@ func _ready() -> void:
 	_build_customers()
 	office_door = _door(OFFICE_DOOR_X)
 	_place_manager()
+	_place_stocker()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("supermarket")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -274,6 +281,7 @@ func _build_pyramid() -> void:
 			add_child(can)
 			can.position = at
 			can.sleeping = true
+			can.add_to_group("super_cans")
 			cans.append(can)
 			can_homes.append(at)
 
@@ -351,6 +359,23 @@ func _place_manager() -> void:
 	box.add_child(complaint_bar)
 	add_child(hud)
 	manager.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Lalo building his pyramid, and the crate of cans beside him that a cop can hand him.
+func _place_stocker() -> void:
+	stocker = SuperStocker.new()
+	stocker.name = "Lalo"
+	stocker.position = STOCKER_AT
+	add_child(stocker)
+	_solid(RESTOCK_AT + Vector3(0, RESTOCK_SIZE.y / 2, 0), RESTOCK_SIZE)
+	_build.mesh_box(RESTOCK_AT + Vector3(0, RESTOCK_SIZE.y / 2, 0), RESTOCK_SIZE, CARDBOARD)
+	for i in RESTOCK_CANS:
+		var can := ClubEvidence.make_item("RestockCan%d" % i, CAN_MODEL, CAN_SIZE, 0.4)
+		(can.get_child(1) as Node3D).position.y = -CAN_SIZE.y / 2
+		can.add_to_group("super_cans")
+		add_child(can)
+		can.position = RESTOCK_AT + Vector3((i % 3 - 1) * 0.15, RESTOCK_SIZE.y + CAN_SIZE.y / 2, (i / 3 - 0.5) * 0.15)
+		can.sleeping = true
 
 
 ## Where Don Ofertón stands to look up a price at checkout `index`: the cashier's side, in this scene's space.
