@@ -72,7 +72,7 @@ const VARIANTS := {
 		"brief": ["BRIEF_MANSION_A_", "BRIEF_MANSION_B", "BRIEF_MANSION_C"], "go": "HINT_GO_MANSION",
 		"go_row": "OBJ_MANSION_GO", "look": "HINT_MANSION_LOOK", "files_row": "OBJ_MANSION_FILES",
 		"clue_line": "CLUE_MANSION_", "ruined_hint": "HINT_MANSION_RUINED_", "left": "HINT_MEMBER_LEFT",
-		"who": "member", "getaway": SuspectCar.BIKE, "loot_row": "OBJ_MANSION_LOOT_",
+		"who": "member", "getaway": SuspectCar.BIKE, "loot_row": "OBJ_MANSION_LOOT_", "catch_row": "OBJ_MANSION_CATCH",
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "bells": "room",
 			"witness": "glasses"},
 		"parts": ["photo", "prints", "teeth", "hair", "midnight"],
@@ -132,6 +132,8 @@ var gone: Array[int] = []
 var custody := {}
 ## The culprit runs off on his bike (runs_off), and the chase once he did; whether he got away.
 var chase: ChaseCase
+## Or, at the mansion, the culprit running off on foot through the maze (MazeGetaway).
+var runner: MazeGetaway
 var escaped := false
 ## Online (docs/diseno/online.md): the host's case decides and a guest's follows it (CaseSync); `online` is that sync.
 var follower := false
@@ -292,8 +294,14 @@ func runs_off() -> bool:
 
 
 ## The culprit gets in his getaway by the scene (the pastry cook's delivery bike) and the chase starts (decision 96).
-## Returns false when the level has no place, city or patrol car to chase him with (he gives up instead).
+## Returns false when the level has no place, city or patrol car to chase him with (he gives up instead). A place with
+## a foot_getaway (the mansion's maze) runs him off on foot there instead.
 func _run_off() -> bool:
+	if place and place.has_method("foot_getaway"):
+		runner = place.foot_getaway(plan.culprit)
+		runner.ended.connect(_on_chase_ended)
+		_hint_all(tr("HINT_ESCAPE_" + texts().who) % culprit().name)
+		return true
 	var level := get_parent()
 	var city := level.get_node_or_null("City") as Node3D
 	var car := level.get_node_or_null("PatrolCar") as PatrolCar
@@ -711,6 +719,8 @@ func rows() -> Array[Dictionary]:
 			"status": false})
 	if chase:
 		list.append(_row("OBJ_CRIME_CATCH", chase.case_solved))
+	elif runner:
+		list.append(_row(texts().catch_row, runner.caught))
 	if not gone.is_empty():
 		var names := gone.map(func(index: int) -> String: return cooks[index].name)
 		list.append({"text": tr("OBJ_CRIME_GONE") % ", ".join(names), "done": false, "optional": false, "status": true})

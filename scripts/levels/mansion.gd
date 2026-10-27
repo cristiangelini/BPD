@@ -96,6 +96,19 @@ const BELL_CORDS := {
 	"lounge": Vector3(HALF_X - 0.15, 0, 3.5), "library": Vector3(-14.5, 0, BACK_Z + 0.15),
 	"study": Vector3(-5.6, 0, BACK_Z + 0.15), "greenhouse": Vector3(PANTRY_X - 0.15, 0, -9.0),
 }
+## The culprit's way out of each room to the garden door (step 6), through the house's doors, in the house's space.
+const WAY_OUT := {
+	"greenhouse": [],
+	"study": [Vector3(-2.0, 0, DOOR_BACK_Z), Vector3(0.0, 0, DOOR_BACK_Z)],
+	"pantry": [Vector3(9.0, 0, DOOR_BACK_Z), Vector3(7.0, 0, DOOR_BACK_Z)],
+	"lounge": [Vector3(6.0, 0, 2.0), Vector3(6.0, 0, 0.0)],
+	"hall": [Vector3(-2.0, 0, 2.0), Vector3(-2.5, 0, 0.0), Vector3(-2.0, 0, DOOR_BACK_Z), Vector3(0.0, 0, DOOR_BACK_Z)],
+	"dining": [Vector3(-4.5, 0, DOOR_SIDE_Z), Vector3(-3.5, 0, DOOR_SIDE_Z), Vector3(-2.0, 0, 2.0),
+		Vector3(-2.5, 0, 0.0), Vector3(-2.0, 0, DOOR_BACK_Z), Vector3(0.0, 0, DOOR_BACK_Z)],
+	"library": [Vector3(-12.0, 0, 0.0), Vector3(-12.0, 0, 2.0), Vector3(-4.5, 0, DOOR_SIDE_Z),
+		Vector3(-3.5, 0, DOOR_SIDE_Z), Vector3(-2.0, 0, 2.0), Vector3(-2.5, 0, 0.0), Vector3(-2.0, 0, DOOR_BACK_Z),
+		Vector3(0.0, 0, DOOR_BACK_Z)],
+}
 ## The cork board (CrimeBoard) on the library's west wall, its stamp beside it (step 5).
 const BOARD_AT := Transform3D(Basis(Vector3.UP, PI / 2), Vector3(-HALF_X + 0.2, 0, -3.5))
 const STAMP_AT := Vector3(-14.5, 0, 0.0)
@@ -546,6 +559,48 @@ func _loot_spot(spot: String, at: Vector3, size: Vector3, out: Vector3) -> void:
 ## The member by index (the order of the case's traits).
 func suspect(index: int) -> CollisionObject3D:
 	return members[index] if index >= 0 and index < members.size() else null
+
+
+## The accused culprit runs off through the maze (MazeGetaway, step 6) instead of giving up.
+func foot_getaway(index: int) -> MazeGetaway:
+	var getaway := MazeGetaway.new()
+	getaway.name = "MazeGetaway"
+	getaway.mansion = self
+	add_child(getaway)
+	getaway.start(members[index])
+	return getaway
+
+
+## The culprit's way from a room to the maze's gate, in the house's space: out by the garden door, into the maze and
+## through it like someone lost (every turn tried, drawn with the case seed, until the gate), and out the gate.
+func getaway_route(room: String) -> Array[Vector3]:
+	var way: Array[Vector3] = []
+	for at: Vector3 in WAY_OUT.get(room, []):
+		way.append(at + Vector3(0, FLOOR_TOP, 0))
+	way.append(Vector3(DOOR_GARDEN_X, FLOOR_TOP, BACK_Z + 1.0))
+	way.append(Vector3(DOOR_GARDEN_X, 0, BACK_Z - 1.0))
+	var entry := maze_center(maze_entry())
+	way.append(entry + Vector3(0, 0, MAZE_CELL / 2 + 0.5))
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash("mansion maze run %d" % case_seed)
+	var seen := {maze_entry(): true}
+	var stack: Array[Vector2i] = [maze_entry()]
+	way.append(entry)
+	while stack.back() != maze_gate():
+		var cell: Vector2i = stack.back()
+		var next: Array[Vector2i] = []
+		for step: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]:
+			if not seen.has(cell + step) and maze_joined(cell, cell + step):
+				next.append(cell + step)
+		if next.is_empty():
+			stack.pop_back()
+		else:
+			var other := next[rng.randi_range(0, next.size() - 1)]
+			seen[other] = true
+			stack.append(other)
+		way.append(maze_center(stack.back()))
+	way.append(maze_center(maze_gate()) + Vector3(0, 0, -MAZE_CELL / 2 - 2.0))
+	return way
 
 
 ## Lorenzo is the witness: shouted at, he's offended for good.
