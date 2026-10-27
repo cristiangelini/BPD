@@ -105,3 +105,12 @@ suman entre 400 y 600.
   delante de ellos, entre ellos y la pantalla. Con E contestan sin mirar. La película cambia de escena cada 6 s, con su
   frase abajo y otro color en la pantalla; `cut_film()` la corta (pantalla blanca, todos abuchean) y `mend_film()`
   la sigue donde estaba, para el paso 3. Capturas `paso2-*.png`.
+- **Paso 3 (doña Bobina y el proyector):** doña Bobina (`scenes/npc/dona_bobina.tscn`, la dueña de siempre con la voz
+  `BOBINA`) pasa 20 s en su cabina y hace la ronda: sale por la puerta (la abre y, al pasar, la vuelve a cerrar con
+  llave, salvo que un policía se haya metido detrás de ella), baja la escalera, cruza el fondo y baja por el pasillo
+  oeste hasta el frente de la sala. La denuncia es la de siempre, más 5 por cada "¡Shhh!" de un espectador, 10 si ve
+  rajarse la pantalla o el vidrio de las palomitas, y 10 si la cortan cuando ya sabe el truco. E en el proyector
+  (`CinemaProjector`, con el botón atrás) corta la cinta: la pantalla queda blanca y ella sube a pegarla 20 s al fondo
+  de la cabina, de espaldas a la ventana; después el proyector descansa 45 s y a la tercera ya no viene. Modelo nuevo
+  `npc_dona_bobina` (anteojos enormes, rodete con lápiz, chaleco de lana y un rollo bajo el brazo). Capturas
+  `paso3-*.png`.

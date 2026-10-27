@@ -60,6 +60,8 @@ var printer: OfficePrinter
 var fix_time := FIX_TIME
 ## Where she looks while at it, in the world, if not at the printer (the gym's profe gives his class to the mirror).
 var fix_facing := Vector3.INF
+## How long she waits at the first point of her round (END_PAUSE; the cinema's projectionist stays in her booth).
+var first_pause := END_PAUSE
 ## The points she's walking to, in order; empty while she patrols.
 var _path: Array[Vector3] = []
 var _errand := ""
@@ -204,7 +206,7 @@ func _walk(delta: float) -> Vector3:
 		return Vector3.ZERO
 	if _index + _step < 0 or _index + _step >= route.size():
 		_step = -_step
-		_pause = END_PAUSE
+		_pause = first_pause if _index == 0 else END_PAUSE
 	_index += _step
 	return Vector3.ZERO
 
@@ -306,6 +308,12 @@ func struck() -> bool:
 ## Something pleased her: the complaint goes down `points` and she says `line`.
 func praise(points: float, line: String) -> void:
 	_set_complaint(complaint - points)
+	_say(line)
+
+
+## Something annoyed her that she doesn't need to see: the complaint goes up `points` and she says `line`.
+func scold(points: float, line: String) -> void:
+	_raise(points)
 	_say(line)
 
 
