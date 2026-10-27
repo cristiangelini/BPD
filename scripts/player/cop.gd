@@ -101,6 +101,12 @@ var _shaken := 0.0
 var slow_factor := 1.0
 ## Wading in the flooded bank (BankWater): walking and running speed times this too.
 var wade := 1.0
+## On the rink's ice (RinkIce): how fast the walk can change, in m/s² (0 is solid ground, at once), the walk it is
+## sliding with, the walk it wants, and the skates' speed (fast on the ice, a duck's off it).
+var slide_accel := 0.0
+var slide := Vector3.ZERO
+var walk_wish := Vector3.ZERO
+var skate_factor := 1.0
 var _fall_gap_left := 0.0
 ## Climbing over a fence (Climbable): seconds left, where it started and the climb.
 var climb_left := 0.0
@@ -390,6 +396,7 @@ func sit_in(car: PatrolCar, seat: Node3D) -> void:
 		wheelbarrow.park()
 	vehicle = car
 	velocity = Vector3.ZERO
+	slide = Vector3.ZERO
 	_shape.disabled = true
 	reparent(seat, false)
 	transform = Transform3D.IDENTITY
@@ -429,6 +436,7 @@ func net_id() -> String:
 func warp(to: Transform3D) -> void:
 	$Grabber.release()
 	velocity = Vector3.ZERO
+	slide = Vector3.ZERO
 	global_transform = to
 	if sync and not sync.is_multiplayer_authority() and sync.multiplayer.is_server():
 		sync.tell_warp(to)
@@ -739,8 +747,10 @@ func step(delta: float, wish: Vector2, want_run: bool, want_crouch: bool, want_j
 	direction.y = 0.0
 	direction = direction.normalized()
 	var speed := 0.0 if is_busy() else current_speed()
-	velocity.x = direction.x * speed + _knock.x
-	velocity.z = direction.z * speed + _knock.z
+	walk_wish = direction * speed
+	slide = slide.move_toward(walk_wish, slide_accel * delta) if slide_accel > 0.0 else walk_wish
+	velocity.x = slide.x + _knock.x
+	velocity.z = slide.z + _knock.z
 	_knock = _knock.move_toward(Vector3.ZERO, _knock.length() / KNOCK_FADE * delta) if _knock.length() > 0.05 else Vector3.ZERO
 	if is_on_floor():
 		if want_jump and not is_crouching and not _start_climb():
@@ -839,9 +849,9 @@ func is_disguised(look := "grandparent") -> bool:
 
 
 func current_speed() -> float:
-	var factor := (BatteringRam.SPEED_FACTOR if ram else 1.0) * slow_factor * wade
+	var factor := (BatteringRam.SPEED_FACTOR if ram else 1.0) * slow_factor * wade * skate_factor
 	if wheelbarrow:
-		factor = Wheelbarrow.SPEED_FACTOR * slow_factor * wade
+		factor = Wheelbarrow.SPEED_FACTOR * slow_factor * wade * skate_factor
 	if crawling:
 		return (CRAWL_RUN_SPEED if is_running else CRAWL_SPEED) * factor
 	if is_crouching:

@@ -14,7 +14,6 @@ signal glass_broken(index: int)
 signal trophies_broken
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
-const RESURFACER_MODEL := preload("res://assets/models/ice_resurfacer.glb")
 const PENGUIN_MODEL := preload("res://assets/models/skating_penguin.glb")
 const COCOA_MODEL := preload("res://assets/models/cocoa_machine.glb")
 const DJ_MODEL := preload("res://assets/models/dj_booth.glb")
@@ -59,7 +58,10 @@ const COCOA_AT := Vector3(15.3, FLOOR_TOP + 1.1, 12.6)
 const COCOA_SIZE := Vector3(0.5, 0.8, 0.45)
 ## The resurfacer parked on the ice and the penguin the kids push around.
 const RESURFACER_AT := Vector3(12.0, ICE_TOP, -5.0)
-const RESURFACER_SIZE := Vector3(1.5, 1.55, 2.8)
+## The resurfacer's button, on the outside of the east boards.
+const RESURFACER_BUTTON_AT := Vector3(ICE_HALF_X + 0.2, FLOOR_TOP + 0.9, -6.5)
+## The skates for rent, on the rental's counter.
+const SKATES_AT := Vector3(-15.4, FLOOR_TOP + 1.1, 12.6)
 const PENGUIN_AT := Vector3(-10.0, ICE_TOP, 3.0)
 ## The stands along the west side: STAND_TIERS tiers STAND_DEPTH deep, each STAND_RISE higher, hollow underneath.
 const STAND_X := -16.2
@@ -114,7 +116,10 @@ var station_parking: Transform3D
 var city_map: CityMap
 var office_door: FrontDoor
 var till: Till
-var resurfacer: StaticBody3D
+var resurfacer: IceResurfacer
+var resurfacer_button: PushButton
+var ice: RinkIce
+var skate_rental: SkateRental
 var penguin: StaticBody3D
 var glass_panels: Array[StaticBody3D] = []
 var trophies_cracked := false
@@ -132,6 +137,10 @@ func _ready() -> void:
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
 	_build = PlaceBuilder.new($Built)
+	ice = RinkIce.new()
+	ice.name = "RinkIce"
+	ice.rink = self
+	add_child(ice)
 	_build_shell()
 	_build_ice()
 	_build_stands()
@@ -220,11 +229,18 @@ func _build_ice() -> void:
 			Vector3(BOARD_THICK + 0.02, 0.1, ICE_Z1 - ICE_Z0), BOARD_STRIPE)
 	for i in GLASS_XS.size():
 		glass_panels.append(_glass_panel(i))
-	resurfacer = _build.body(RESURFACER_AT)
+	resurfacer = IceResurfacer.new()
 	resurfacer.name = "Resurfacer"
-	_build.shape(resurfacer, RESURFACER_SIZE)
-	(resurfacer.get_child(0) as Node3D).position.y = RESURFACER_SIZE.y / 2
-	resurfacer.add_child(RESURFACER_MODEL.instantiate())
+	resurfacer.position = RESURFACER_AT
+	resurfacer.rotation.y = -PI / 2
+	add_child(resurfacer)
+	resurfacer_button = PushButton.new()
+	resurfacer_button.prompt = "PROMPT_RINK_RESURFACER"
+	resurfacer_button.color = Color(0.2, 0.45, 0.9)
+	resurfacer_button.position = RESURFACER_BUTTON_AT
+	resurfacer_button.rotation.y = PI / 2
+	add_child(resurfacer_button)
+	resurfacer_button.pressed.connect(func(_cop: Cop) -> void: resurfacer.start())
 	penguin = _build.body(PENGUIN_AT)
 	penguin.name = "Penguin"
 	_build.shape(penguin, Vector3(0.5, 0.4, 0.5))
@@ -298,6 +314,10 @@ func _build_lobby() -> void:
 	till.position = RENTAL_AT + Vector3(1.4, RENTAL_SIZE.y + Till.SIZE.y / 2, 0)
 	till.key_hint = "HINT_TILL_KEY_RINK"
 	add_child(till)
+	skate_rental = SkateRental.new()
+	skate_rental.ice = ice
+	skate_rental.position = SKATES_AT
+	add_child(skate_rental)
 	_build.open_box(RACK_AT, RACK_SIZE, "+z", WOOD.darkened(0.2))
 	_build.box(RACK_AT + Vector3(0, 0.9, 0), Vector3(RACK_SIZE.x - 0.1, 0.05, RACK_SIZE.z - 0.1), WOOD.darkened(0.2))
 	for i in 10:

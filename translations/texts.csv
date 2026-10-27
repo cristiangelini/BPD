@@ -5607,3 +5607,10 @@ LOC_on_cocoa_machine,arriba de la máquina de chocolate,on top of the hot chocol
 LOC_on_skate_rack,en el estante de patines,on the skate rack,na prateleira de patins
 LOC_in_lost_and_found,en la caja de objetos perdidos,in the lost and found box,na caixa de achados e perdidos
 LOC_in_trophy_case,en la vitrina de trofeos,in the trophy case,na vitrine de troféus
+PROMPT_RINK_SKATES_ON,E: ponerte unos patines,E: put on some skates,E: calçar uns patins
+PROMPT_RINK_SKATES_OFF,E: devolver los patines,E: give back the skates,E: devolver os patins
+HINT_RINK_SKATES_ON,"Patines puestos. En el hielo vuelas; fuera de él, caminas como pato.","Skates on. On the ice you fly; off it, you waddle like a duck.","Patins calçados. No gelo você voa; fora dele, anda como pato."
+HINT_RINK_SKATES_OFF,"Devolviste los patines. Tus tobillos te lo agradecen.","You gave back the skates. Your ankles thank you.","Você devolveu os patins. Seus tornozelos agradecem."
+HINT_RINK_FELL,"¡Pum! Doblaste muy rápido sobre el hielo.","Thud! You turned too fast on the ice.","Pou! Você virou rápido demais no gelo."
+PROMPT_RINK_RESURFACER,E: prender la pulidora,E: start the resurfacer,E: ligar a máquina de gelo
+HINT_RINK_RESURFACER_HIT,"¡La pulidora no frena por nadie!","The resurfacer stops for nobody!","A máquina de gelo não para por ninguém!"
