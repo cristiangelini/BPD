@@ -5606,3 +5606,5 @@ LOC_in_sofa_cushions_0,entre los almohadones del sillón del living,between the 
 LOC_in_sofa_cushions_1,entre los almohadones del sillón de la pared,between the wall sofa's cushions,entre as almofadas do sofá da parede
 LOC_on_dresser,arriba de la cómoda,on top of the chest of drawers,em cima da cômoda
 LOC_in_furniture_counter,adentro del mostrador de la mueblería,inside the furniture store's counter,dentro do balcão da loja de móveis
+PROMPT_PULL_WARDROBE,E: tirar del ropero,E: pull the wardrobe,E: puxar o guarda-roupa
+HINT_WARDROBE_TOO_HEAVY,Pesa demasiado para uno solo. Entre dos y a la vez...,It's too heavy for one. Two of you at once...,É pesado demais para um só. Dois ao mesmo tempo...

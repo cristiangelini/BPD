@@ -124,3 +124,13 @@ Los pesos y valores siguen la escala del taller y del gimnasio: la principal val
     almohadones de cada sillón, arriba de la cómoda y adentro del mostrador (livianos). La cómoda va arriba y no en un
     cajón, porque los cajones todavía no se abren.
   - Capturas en la carpeta `muebleria/` del proyecto.
+- **Paso 1b:**
+  - **Los colchones:** un policía que cae sobre un colchón a más de 2 m/s vuelve a subir 1,2 veces más rápido, hasta
+    1,5 m sobre el colchón. Saltar seguido sobre la cama sirve de cama elástica. Las cosas también rebotan (rebote
+    0,6).
+  - **La torre de 12 sillas:** está junto a la puerta, donde hay lugar para caer. Se viene abajo si un policía la toca o
+    si algo le pega a más de 1,5 m/s, y las 12 sillas salen sueltas para el lado contrario, en dos filas de hasta 3 m.
+    Después se pueden agarrar y llevar.
+  - **Los roperos:** se **tiran** (E), no se empujan, porque están contra la pared. Uno solo no puede ("Pesa demasiado
+    para uno solo..."). Si dos policías distintos tiran con menos de 1,5 s de diferencia, el ropero cae de frente en
+    0,6 s y queda acostado, a 0,6 m de alto.
