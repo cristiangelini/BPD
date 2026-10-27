@@ -118,6 +118,18 @@ function gymBody(b, skin, tank, shout = false) {
 
 // A pupil of the Los Girasoles school (politico-escuela.md, decision 210): the white school smock over the whole pear,
 // a big bow at the neck, a backpack of their color and a hairstyle of their own. The game scales them down to a child.
+function technician(b, skin, hair, color) {
+	pearBody(b, skin, { shirt: C('tech_polo', 0x22242a), pants: C('tech_jeans', 0x3a4a6a), shoes: C('tech_shoes', 0x1e1f24) });
+	b.add('props', C('tv_red', 0xc8323a), new THREE.BoxGeometry(0.12, 0.08, 0.02), { pos: V(-0.18, 0.95, 0.3) });
+	eyes(b, 1.33, 0.17, 0.08, 0.05);
+	mouth(b);
+	hair(color);
+	const set = C('headset', 0x18191d);
+	b.add('head', set, new THREE.TorusGeometry(0.23, 0.018, 4, 12, Math.PI), { pos: V(0, 1.4, 0) });
+	for (const x of [-1, 1]) b.add('head', set, new THREE.CylinderGeometry(0.06, 0.06, 0.04, 8), { pos: V(x * 0.23, 1.38, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('head', set, new THREE.CylinderGeometry(0.01, 0.01, 0.22, 4), { pos: V(-0.2, 1.24, 0.12), rot: [Math.PI / 2 - 0.3, 0, 0.5] });
+}
+
 function pupil(b, skin, hair, bag, { girl = false, freckles = false } = {}) {
 	pearBody(b, skin, { shirt: C('school_smock', 0xf6f6f2), onePiece: true, belted: false, shoes: C('school_shoes', 0x2a2a3a) });
 	b.add('body', C('smock_bow', 0x2a4ac8), ellipsoid(0.11, 0.05, 0.04, 6, 4), { pos: V(0, 1.1, 0.17) });
@@ -1157,6 +1169,39 @@ const NPCS = {
 		hairCap(b, C('councillor_hair', 0x1a1410), { y: 1.4, sy: 0.5 });
 		limb(b, 'props', C('cigar', 0x6a3a1a), V(0.06, 1.22, 0.2), V(0.12, 1.2, 0.36), 0.02);
 	},
+	// Candidata Rita Malvón (politico-debate.md, step 3): a purple suit with big shoulder pads, a tall purple-black
+	// hairdo, gold earrings, a campaign rosette in her color and a confident smile.
+	candidata(b) {
+		const suit = C('malvon_suit', 0x7a3a9a);
+		pearBody(b, SKIN.crema, { shirt: suit, onePiece: true, belted: false, shoes: C('malvon_heels', 0x2a1a30) });
+		lapels(b, C('malvon_blouse', 0xf4eef6));
+		for (const s of [-1, 1]) b.add('body', suit, ellipsoid(0.12, 0.06, 0.12, 8, 4), { pos: V(s * 0.3, 1.04, 0.0) });
+		b.add('props', C('rosette_purple', 0x9a4ad8), new THREE.CylinderGeometry(0.08, 0.08, 0.02, 10), { pos: V(-0.2, 0.92, 0.29), rot: [Math.PI / 2 - 0.4, 0, 0] });
+		b.add('props', C('rosette_white', 0xf4f4f0), new THREE.CylinderGeometry(0.04, 0.04, 0.025, 8), { pos: V(-0.2, 0.92, 0.3), rot: [Math.PI / 2 - 0.4, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		const hair = C('malvon_hair', 0x2a1430);
+		hairCap(b, hair, { y: 1.4, sx: 1.06, back: 0.02 });
+		b.add('head', hair, ellipsoid(0.15, 0.2, 0.14, 8, 6), { pos: V(0, 1.66, -0.02) });
+		for (const s of [-1, 1]) b.add('head', C('earring_gold', 0xe8c040, { metalness: 0.5, roughness: 0.3 }), ellipsoid(0.025, 0.035, 0.025, 6, 4), { pos: V(s * 0.21, 1.22, 0.02) });
+	},
+	// The moderator (politico-debate.md, step 3): a navy blazer, a neat gray bob, big round glasses and her question
+	// cards in one hand.
+	moderadora(b) {
+		pearBody(b, SKIN.cacao, { shirt: C('moderator_blazer', 0x2a3a6a), pants: C('moderator_skirt', 0x3a3a44), shoes: C('moderator_shoes', 0x1e1f24) });
+		lapels(b, C('moderator_shirt', 0xf2f2ee));
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		glasses(b);
+		mouth(b);
+		const hair = C('moderator_hair', 0xb8bcc4);
+		hairCap(b, hair, { y: 1.38, sx: 1.08, sy: 0.7, back: 0.03 });
+		b.add('props', C('question_cards', 0xf6e8b0), new THREE.BoxGeometry(0.16, 0.22, 0.02), { pos: V(0.5, 0.62, 0.2), rot: [-0.3, 0, 0] });
+	},
+	// The 3 control room technicians (politico-debate.md, step 5): the channel's black polo with its red logo and a
+	// headset with a boom mic; told apart by the hair (one bald with a beard, one with a ponytail, one with a cap).
+	tecnico(b) { technician(b, SKIN.arena, (h) => { b.add('head', h, ellipsoid(0.17, 0.08, 0.12, 8, 4), { pos: V(0, 1.12, 0.1) }); }, C('tech_beard', 0x4a3424)); },
+	tecnica(b) { technician(b, SKIN.crema, (h) => { hairCap(b, h, { y: 1.4, sx: 1.06, back: 0.03 }); b.add('head', h, ellipsoid(0.06, 0.16, 0.06, 6, 4), { pos: V(0, 1.38, -0.22) }); }, C('tech_hair_red', 0xb0482a)); },
+	tecnico_b(b) { technician(b, SKIN.cacao, (h) => { b.add('head', h, ellipsoid(0.21, 0.07, 0.21, 10, 4), { pos: V(0, 1.6, 0) }); b.add('head', h, new THREE.BoxGeometry(0.22, 0.03, 0.14), { pos: V(0, 1.57, 0.22) }); }, C('tech_cap', 0x2a6a4a)); },
 	// Bank robbers (robo-banco.md, step 2): black clothes and gloves, and a rubber animal mask over the whole head.
 	ladron_conejo(b) {
 		robber(b, C('mask_rabbit', 0xf2eeea), (m) => {
@@ -1364,6 +1409,80 @@ const NPCS = {
 		limb(b, 'props', C('broom_stick', 0xa87a4a), V(0.5, 0.0, 0.2), V(0.5, 1.3, 0.1), 0.02);
 		b.add('props', C('broom_head', 0xd8b048), new THREE.BoxGeometry(0.34, 0.1, 0.08), { pos: V(0.5, 0.05, 0.2) });
 	},
+	// Don Sobre, the mailman (casa-equivocada.md, step 4): a grey-blue uniform, a peaked cap, a thick mustache and the
+	// leather mail bag across his chest with letters peeking out.
+	cartero(b) {
+		const uniform = C('mail_uniform', 0x5a7898), cap = C('mail_cap', 0x2e4462);
+		pearBody(b, SKIN.arena, { shirt: uniform, pants: C('mail_pants', 0x34445a), shoes: black });
+		limb(b, 'props', C('mail_strap', 0x6a4022), V(-0.28, 1.22, 0.2), V(0.36, 0.72, 0.3), 0.025);
+		b.add('props', C('mail_bag', 0x8a5a2e), new THREE.BoxGeometry(0.16, 0.34, 0.42), { pos: V(0.42, 0.68, 0.06) });
+		for (let i = 0; i < 3; i++) b.add('props', i === 1 ? C('envelope_blue', 0xc8daf2) : white, new THREE.BoxGeometry(0.02, 0.1, 0.16), { pos: V(0.42, 0.88, -0.1 + i * 0.1), rot: [(i - 1) * 0.15, 0, 0] });
+		eyes(b, 1.32, 0.17, 0.08, 0.045);
+		mouth(b, { smile: true });
+		mustache(b, C('hair_black', 0x2a2420), 1.3);
+		b.add('cap', cap, new THREE.CylinderGeometry(0.2, 0.19, 0.12, 10), { pos: V(0, 1.5, 0) });
+		b.add('cap', C('mail_badge', 0xe8c84a), new THREE.BoxGeometry(0.06, 0.05, 0.01), { pos: V(0, 1.51, 0.2) });
+		b.add('cap', black, new THREE.BoxGeometry(0.3, 0.02, 0.14), { pos: V(0, 1.44, 0.2) });
+	},
+	// Doña Chola (casa-equivocada.md): floral robe, curlers all over, slippers and her mate in hand.
+	chola(b) {
+		const robe = C('robe_floral', 0x7ac0d8);
+		pearBody(b, SKIN.crema, { shirt: robe, onePiece: true, belted: false, shoes: C('slippers', 0xf2a6c0) });
+		const flowers = [C('flower_pink', 0xf06a9a), C('flower_yellow', 0xf2d23a), C('flower_white', 0xf4f4f0)];
+		for (let i = 0; i < 16; i++) {
+			const a = (i / 16) * Math.PI * 2 + (i % 2) * 0.2;
+			const y = 0.32 + (i % 4) * 0.17;
+			const r = y < 0.8 ? 0.36 + (0.8 - y) * 0.33 : 0.36 - (y - 0.8) * 0.48;
+			b.add('body', flowers[i % 3], ellipsoid(0.065, 0.065, 0.03, 6, 3), { pos: V(Math.sin(a) * (r + 0.01), y, Math.cos(a) * (r * 0.89 + 0.01)), rot: [0, a, 0] });
+		}
+		eyes(b, 1.33, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		const hair = C('hair_gray', 0x9aa0a8);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		const curler = C('curler_pink', 0xf27ab0);
+		for (const [x, y, z] of [[-0.12, 1.5, 0.1], [0, 1.53, 0.12], [0.12, 1.5, 0.1], [-0.15, 1.5, -0.05], [0.15, 1.5, -0.05], [-0.06, 1.55, -0.12], [0.06, 1.55, -0.12]]) {
+			b.add('head', curler, new THREE.CylinderGeometry(0.032, 0.032, 0.09, 6), { pos: V(x, y, z), rot: [0, 0, Math.PI / 2] });
+		}
+		b.add('props', C('mate_gourd', 0x6a4a2a), ellipsoid(0.07, 0.08, 0.07, 8, 6), { pos: V(0.48, 0.78, 0.2) });
+		limb(b, 'props', C('bombilla', 0xc8c8cc), V(0.49, 0.82, 0.2), V(0.53, 0.98, 0.18), 0.008);
+	},
+	// Don Evaristo, the Las Palomas building's manager (edificio.md): a grey overall, a huge ring of keys on his belt,
+	// a bushy grey mustache, a flat cap and a gourd of mate in his hand.
+	evaristo(b) {
+		const overall = C('manager_overall', 0x7a7e86);
+		pearBody(b, SKIN.arena, { shirt: overall, onePiece: true, shoes: C('boots_brown', 0x4a3020) });
+		const steel = C('keys_steel', 0xc8ccd4);
+		b.add('props', steel, new THREE.TorusGeometry(0.1, 0.012, 4, 14), { pos: V(-0.36, 0.56, 0.24), rot: [0, 0.9, 0] });
+		for (let i = 0; i < 7; i++) {
+			const a = i / 6 * Math.PI - Math.PI / 2;
+			b.add('props', i % 2 ? gold : steel, new THREE.BoxGeometry(0.025, 0.11, 0.008), { pos: V(-0.36 + Math.sin(a) * 0.07, 0.43 - Math.cos(a) * 0.03, 0.24 + Math.sin(a) * 0.05), rot: [0, 0.9, a * 0.4] });
+		}
+		eyes(b, 1.32, 0.17, 0.08, 0.045);
+		mouth(b);
+		mustache(b, C('hair_grey', 0x8a8a8a), 1.5);
+		b.add('cap', C('flat_cap', 0x4a4a52), ellipsoid(0.22, 0.07, 0.24, 10, 4), { pos: V(0, 1.47, 0.03) });
+		b.add('cap', C('flat_cap', 0x4a4a52), new THREE.BoxGeometry(0.26, 0.02, 0.1), { pos: V(0, 1.44, 0.22), rot: [0.2, 0, 0] });
+		b.add('props', C('mate_gourd', 0x8a5a2a), ellipsoid(0.07, 0.08, 0.07, 8, 5), { pos: V(0.5, 0.66, 0.24) });
+		limb(b, 'props', C('bombilla', 0xd0d4dc), V(0.5, 0.71, 0.24), V(0.47, 0.86, 0.22), 0.008);
+	},
+	// Doña Pepa, the nosy neighbor of 30A (edificio.md): a pink housecoat, fluffy slippers, curlers under a hairnet and
+	// big round glasses for the peephole.
+	pepa(b) {
+		const coat = C('housecoat_pink', 0xe89ab8);
+		pearBody(b, SKIN.crema, { shirt: coat, onePiece: true, belted: false, shoes: C('slippers_fluffy', 0xf4f0f4) });
+		b.add('body', C('housecoat_belt', 0xd27ea0), new THREE.TorusGeometry(0.42, 0.02, 4, 16), { pos: V(0, 0.62, 0), rot: [Math.PI / 2, 0, 0] });
+		eyes(b, 1.32, 0.17, 0.08, 0.05);
+		glasses(b, C('glasses_tortoise', 0x6a4a2a));
+		mouth(b);
+		const hair = C('hair_lilac', 0xb8a6d0);
+		hairCap(b, hair, { y: 1.39, back: 0.02 });
+		const curler = C('curler_blue', 0x6ab0e0);
+		for (let i = 0; i < 5; i++) {
+			const a = (i / 4 - 0.5) * 2.2;
+			b.add('cap', curler, new THREE.CylinderGeometry(0.035, 0.035, 0.12, 8), { pos: V(Math.sin(a) * 0.17, 1.6 - Math.abs(a) * 0.06, Math.cos(a) * 0.06 - 0.02), rot: [0, 0, Math.PI / 2] });
+		}
+		b.add('cap', C('hairnet', 0xf6f6f2, { transparent: true, opacity: 0.6 }), ellipsoid(0.22, 0.15, 0.22, 10, 5), { pos: V(0, 1.47, -0.02) });
+	},
 };
 
 export const NPC_NAMES = Object.keys(NPCS);
@@ -1373,7 +1492,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, comprador: 1.0, compradora: 0.9, martillo: 1.1, portero_subasta: 1.15, ladron_oso: 1.15, abuelo_oso: 1.15, alumno_primaria: 0.62, alumna_primaria: 0.62, alumno_b: 0.62, alumna_b: 0.62 };
+const SCALE = { cartero: 0.95, chola: 0.82, comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, comprador: 1.0, compradora: 0.9, martillo: 1.1, portero_subasta: 1.15, ladron_oso: 1.15, abuelo_oso: 1.15, alumno_primaria: 0.62, alumna_primaria: 0.62, alumno_b: 0.62, alumna_b: 0.62, evaristo: 1.05, pepa: 0.85 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
