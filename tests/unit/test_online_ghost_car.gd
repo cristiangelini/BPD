@@ -162,5 +162,7 @@ func test_the_ghost_car_cutting_in_shows_on_the_guest() -> void:
 		return _level(pcs[1]).find_children("*", "ChaseGhost", true, false).size() > 0, 5.0)
 	var copies := _level(pcs[1]).find_children("*", "ChaseGhost", true, false)
 	assert_eq(copies.size(), 1)
-	await wait_physics_frames(30)
+	# It crosses and stops in the way: a slow frame can leave the copy behind while it crosses, not once it's there.
+	await wait_until(func() -> bool:
+		return (copies[0] as Node3D).global_position.distance_to(ghost.global_position) < 1.5, 5.0)
 	assert_lt((copies[0] as Node3D).global_position.distance_to(ghost.global_position), 1.5)

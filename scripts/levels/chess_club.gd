@@ -179,9 +179,11 @@ func _add_people() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(["chess members", case_seed])
 	free_seats = seats()
+	var seat: Array = []
 	for i in PLAYERS:
-		var seat: Array = free_seats.pop_at(rng.randi_range(0, free_seats.size() - 1))
+		seat = free_seats.pop_at(rng.randi_range(0, free_seats.size() - 1))
 		_add_member("ajedrecista" if rng.randf() < 0.5 else "ajedrecista_b", seat[0], seat[1], rng)
+	_leave_one_alone(seat)
 	var spots := AUDIENCE_SPOTS.duplicate()
 	for i in AUDIENCE:
 		var spot: Vector3 = spots.pop_at(rng.randi_range(0, spots.size() - 1))
@@ -292,6 +294,24 @@ func _talking_pair() -> Array[ClubMember]:
 					and first.position.distance_to(second.position) < TALK_PAIR:
 				return [first, second]
 	return []
+
+
+## Every member drawn across from another leaves no table to challenge from (ChessGames): the last one (at `seat`)
+## moves to a table nobody plays at.
+func _leave_one_alone(seat: Array) -> void:
+	var all := seats()
+	var taken := func(at: Vector3) -> bool: return not free_seats.any(func(one: Array) -> bool: return one[0] == at)
+	for i in TABLES.size():
+		if taken.call(all[i * 2][0]) != taken.call(all[i * 2 + 1][0]):
+			return
+	for i in TABLES.size():
+		if not taken.call(all[i * 2][0]) and not taken.call(all[i * 2 + 1][0]):
+			var last: ClubMember = members.back()
+			last.position = all[i * 2][0] + Vector3(0, FLOOR_TOP, 0)
+			last.rotation.y = all[i * 2][1]
+			free_seats.erase(all[i * 2])
+			free_seats.append(seat)
+			return
 
 
 func _add_member(look: String, spot: Vector3, turn: float, rng: RandomNumberGenerator) -> void:
