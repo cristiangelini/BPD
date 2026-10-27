@@ -5651,9 +5651,9 @@ HINT_LOOT_FOUND_duchess,"«¡Mi bebé!» La señora Ofelia abraza a la Duquesa y
 PROMPT_SEARCH_suitcase,E: revisar la maleta,E: search the suitcase,E: revistar a mala
 PROMPT_SEARCH_dumbwaiter,E: abrir el montaplatos,E: open the dumbwaiter,E: abrir o monta-pratos
 PROMPT_SEARCH_basket,E: revisar la canasta de la ropa,E: search the laundry basket,E: revistar o cesto de roupa
-HINT_SEARCH_NOTHING_suitcase,"Calcetines, un cepillo de dientes y una foto de la tía con un bigote dibujado. Nada más.","Socks, a toothbrush and a photo of auntie with a mustache drawn on. Nothing else.","Meias, uma escova de dentes e uma foto da titia com um bigode desenhado. Nada mais."
-HINT_SEARCH_NOTHING_dumbwaiter,"Una bandeja con migas y un calcetín perdido. Nada más.","A tray with crumbs and a lost sock. Nothing else.","Uma bandeja com migalhas e uma meia perdida. Nada mais."
-HINT_SEARCH_NOTHING_basket,"Ropa sucia que huele a gata. Nada más.","Dirty laundry that smells of cat. Nothing else.","Roupa suja com cheiro de gata. Nada mais."
+HINT_SEARCH_NOTHING_CAT_suitcase,"Calcetines, un cepillo de dientes y una foto de la tía con un bigote dibujado. Nada más.","Socks, a toothbrush and a photo of auntie with a mustache drawn on. Nothing else.","Meias, uma escova de dentes e uma foto da titia com um bigode desenhado. Nada mais."
+HINT_SEARCH_NOTHING_CAT_dumbwaiter,"Una bandeja con migas y un calcetín perdido. Nada más.","A tray with crumbs and a lost sock. Nothing else.","Uma bandeja com migalhas e uma meia perdida. Nada mais."
+HINT_SEARCH_NOTHING_CAT_basket,"Ropa sucia que huele a gata. Nada más.","Dirty laundry that smells of cat. Nothing else.","Roupa suja com cheiro de gata. Nada mais."
 HINT_DUCHESS_OUT,"¡Una gata naranja sale de un salto! ¿Será la Duquesa? Llévasela a la señora.","An orange cat jumps out! Could it be Duquesa? Take her to the señora.","Uma gata laranja sai de um pulo! Será a Duquesa? Leve-a para a senhora."
 MANSION_LADY_MY_BABY,¡Mi bebé! ¡Mi Duquesa!,My baby! My Duquesa!,Meu bebê! Minha Duquesa!
 MANSION_LADY_WRONG_CAT,"¡Esa es %s! ¿Están ciegos?","That's %s! Are you blind?","Essa é a %s! Vocês estão cegos?"
