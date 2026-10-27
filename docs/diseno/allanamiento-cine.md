@@ -99,3 +99,9 @@ suman entre 400 y 600.
   pared del hall), las 8 filas suben 1,6 m por una rampa y la cabina está arriba del fondo de la sala, por una escalera
   angosta contra la pared oeste. Modelos nuevos en `tools/modelgen/models/cinema.js`: la butaca, la máquina de
   palomitas y el proyector. Capturas en `/mnt/project-files/cine/paso1-*.png`.
+- **Paso 2 (los espectadores y la película):** seis vecinos (`CinemaSpectator`) sentados en butacas sorteadas con la
+  semilla. Chistan ("¡Shhh!", una vez cada 10 s cada uno, `Cinema.shushed`) si algo o alguien los toca a más de 2 m/s
+  (caminando a 4 m/s sí; agachado, a 2 m/s, no: el allanamiento se hace agachado) o si un policía se queda 3 s parado
+  delante de ellos, entre ellos y la pantalla. Con E contestan sin mirar. La película cambia de escena cada 6 s, con su
+  frase abajo y otro color en la pantalla; `cut_film()` la corta (pantalla blanca, todos abuchean) y `mend_film()`
+  la sigue donde estaba, para el paso 3. Capturas `paso2-*.png`.

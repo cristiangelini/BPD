@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Cinema raid, step 2: six spectators sit in seats drawn with the seed and shush a cop who bumps into them faster than a crouch or stands 3 s in front of them (once every 10 s each); the film on the screen changes scene every 6 s with its line, and stops white with everyone booing when the tape is cut.
 - Cinema raid, step 1: the "Cine Butaca Floja" as a place to raid on block (0, 4) (--place=cinema and a menu test button): the hall with the ticket booth (the key in its till), the candy counter with the popcorn machine and the restroom; the dark theater with 40 seats rising to the back and the screen by the hall; the projection booth up a stair at the back. Something thrown hard rips the screen (fine 50) or breaks the popcorn glass (fine 20).
 - Cinema raid design: docs/diseno/allanamiento-cine.md proposes a new raid place, the "Cine Butaca Floja" with the film always running, doña Bobina, Chicho and 6 stories (decision 330).
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
