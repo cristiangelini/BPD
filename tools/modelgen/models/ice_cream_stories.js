@@ -74,9 +74,37 @@ export function buildScaleMagnet() {
 	return b.build();
 }
 
+// A 0.36 x 0.2 x 0.26 m cardboard box full of ice cream sticks, the prize ones with a gold tip.
+export function buildPrizeSticks() {
+	const b = new Builder('prize_sticks');
+	b.add('box', mat('sticks_box', 0xc89a60), new THREE.BoxGeometry(0.36, 0.16, 0.26), { pos: V(0, -0.02, 0) });
+	const wood = mat('stick_wood', 0xead2a0), gold = mat('stick_gold', 0xf2c84b, { emissive: 0x3a2a05 });
+	for (let i = 0; i < 14; i++) {
+		const x = -0.15 + (i % 7) * 0.05, z = i < 7 ? -0.05 : 0.05;
+		b.add('stick', wood, new THREE.BoxGeometry(0.02, 0.1, 0.004), { pos: V(x, 0.08, z), rot: [0.15 * ((i % 3) - 1), 0, 0] });
+		b.add('tip', gold, new THREE.BoxGeometry(0.022, 0.02, 0.006), { pos: V(x, 0.12, z), rot: [0.15 * ((i % 3) - 1), 0, 0] });
+	}
+	b.add('label', mat('sticks_label', 0xd83030), new THREE.BoxGeometry(0.2, 0.06, 0.004), { pos: V(0, -0.02, 0.131) });
+	return b.build();
+}
+
+// A 0.3 x 0.25 x 0.25 m bench machine that burns "PREMIO" into sticks: a grey body, a lever and a hot red head.
+export function buildStickEngraver() {
+	const b = new Builder('stick_engraver');
+	const grey = mat('engraver_body', 0x7a8088);
+	b.add('base', grey, new THREE.BoxGeometry(0.3, 0.08, 0.25), { pos: V(0, -0.085, 0) });
+	b.add('column', grey, new THREE.BoxGeometry(0.06, 0.17, 0.06), { pos: V(-0.1, 0.04, -0.07) });
+	b.add('arm', grey, new THREE.BoxGeometry(0.2, 0.04, 0.06), { pos: V(0, 0.105, -0.07) });
+	b.add('head', mat('engraver_hot', 0xe04020, { emissive: 0x601000 }), new THREE.BoxGeometry(0.05, 0.06, 0.05), { pos: V(0.07, 0.06, -0.07) });
+	b.add('lever', mat('engraver_lever', 0x202020), new THREE.BoxGeometry(0.02, 0.02, 0.14), { pos: V(0.11, 0.105, 0.03) });
+	b.add('tray', mat('stick_wood', 0xead2a0), new THREE.BoxGeometry(0.12, 0.01, 0.03), { pos: V(0.07, -0.04, -0.07) });
+	return b.build();
+}
+
 export const models = {
 	recipe_box: buildRecipeBox, secret_jar: buildSecretJar, rival_photo: buildRivalPhoto,
 	ice_block_watches: buildIceBlockWatches, ice_scale: buildIceScale, scale_magnet: buildScaleMagnet,
+	prize_sticks: buildPrizeSticks, stick_engraver: buildStickEngraver,
 };
 
 export const views = {
@@ -86,6 +114,7 @@ export const views = {
 			{ name: 'rival_photo', pos: [0.45, 0.01, 0.05] },
 			{ name: 'ice_block_watches', pos: [-0.2, 0.2, -0.6] },
 			{ name: 'ice_scale', pos: [0.45, 0.15, -0.6] }, { name: 'scale_magnet', pos: [0.75, 0.025, 0.1] },
+			{ name: 'prize_sticks', pos: [-0.8, 0.1, 0.1] }, { name: 'stick_engraver', pos: [-0.8, 0.125, -0.5] },
 		],
 		cam: { pos: [0, 0.7, 1.3], target: [0, 0.08, 0], fov: 45 },
 	},

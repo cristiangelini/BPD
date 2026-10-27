@@ -63,6 +63,16 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_SCALE_MAGNET", "OBJ_EXTRA_COMPLAINTS_NOTEBOOK"],
 		"rig": preload("res://scripts/case/ice_cream/rigged_scale_rig.gd"),
 	},
+	"rigged_sticks": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_RIGGED_STICKS_B", "BRIEF_RIGGED_STICKS_C", "BRIEF_RIGGED_STICKS_D"],
+		"find": "OBJ_FIND_PRIZE_STICKS",
+		"hidden": [preload("res://scenes/props/prize_sticks.tscn"), preload("res://scenes/props/stick_engraver.tscn"),
+			preload("res://scenes/props/ice_winners_list.tscn")],
+		"half_heights": [0.1, 0.125, 0.04],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_STICK_ENGRAVER", "OBJ_EXTRA_ICE_WINNERS_LIST"],
+		"rig": preload("res://scripts/case/ice_cream/rigged_sticks_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the salon's floor, behind the counter, in the kitchen, the office and the
 ## yard.
