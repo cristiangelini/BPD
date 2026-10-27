@@ -250,7 +250,59 @@ export function buildZeroKmSign() {
 	return b.build();
 }
 
+// The swapped parts story: the crate of the clients' new parts (two cops), the fake invoices, the pile of old parts
+// painted silver and the "new" brake disc on the counter that leaves rust on whoever grabs it.
+export function buildPartsCrate() {
+	const b = new Builder('garage_parts_crate');
+	const wood = mat('crate_wood', 0xb07a44), steel = mat('tool_chrome', 0xb8bcc4);
+	b.add('box', wood, new THREE.BoxGeometry(0.8, 0.05, 0.55), { pos: V(0, 0.025, 0) });
+	for (const s of [-1, 1]) {
+		b.add('box', wood, new THREE.BoxGeometry(0.8, 0.4, 0.04), { pos: V(0, 0.2, s * 0.255) });
+		b.add('box', wood, new THREE.BoxGeometry(0.04, 0.4, 0.55), { pos: V(s * 0.38, 0.2, 0) });
+		b.add('handles', mat('flash_black', 0x26262a), new THREE.BoxGeometry(0.02, 0.04, 0.16), { pos: V(s * 0.405, 0.3, 0) });
+	}
+	b.add('discs', steel, new THREE.CylinderGeometry(0.12, 0.12, 0.03, 14), { pos: V(-0.2, 0.42, 0), rot: [0.3, 0, 0] });
+	b.add('discs', steel, new THREE.CylinderGeometry(0.12, 0.12, 0.03, 14), { pos: V(0.05, 0.43, 0.04), rot: [-0.2, 0, 0.2] });
+	b.add('filters', mat('filter_blue', 0x2f58a8), new THREE.CylinderGeometry(0.05, 0.05, 0.12, 10), { pos: V(0.25, 0.42, -0.08) });
+	b.add('boxes', mat('parts_box', 0xf2c230), new THREE.BoxGeometry(0.16, 0.1, 0.12), { pos: V(0.24, 0.43, 0.12) });
+	b.add('tag', mat('counter_white', 0xf2f2ea), new THREE.BoxGeometry(0.2, 0.08, 0.004), { pos: V(0, 0.28, 0.275) });
+	return b.build();
+}
+
+export function buildFakeInvoices() {
+	const b = new Builder('garage_fake_invoices');
+	for (let i = 0; i < 3; i++) {
+		b.add('paper', mat('invoice_pink', 0xf2c8d0), new THREE.BoxGeometry(0.15, 0.003, 0.21), { pos: V(i * 0.02, 0.002 + i * 0.003, i * 0.015), rot: [0, i * 0.15, 0] });
+	}
+	for (let i = 0; i < 5; i++) b.add('lines', mat('sheet_ink', 0x2a2a30), new THREE.BoxGeometry(0.1, 0.002, 0.006), { pos: V(0.04, 0.012, -0.05 + i * 0.03) });
+	b.add('stamp', mat('sign_red', 0xd23a3a), new THREE.CylinderGeometry(0.025, 0.025, 0.002, 10), { pos: V(0.08, 0.013, 0.09) });
+	return b.build();
+}
+
+export function buildOldParts() {
+	const b = new Builder('garage_old_parts');
+	const silver = mat('paint_silver', 0xd8dce4, { metalness: 0.3, roughness: 0.5 }), rust = mat('rust', 0x8a4a22);
+	b.add('discs', silver, new THREE.CylinderGeometry(0.13, 0.13, 0.03, 12), { pos: V(0, 0.015, 0) });
+	b.add('discs', silver, new THREE.CylinderGeometry(0.12, 0.12, 0.03, 12), { pos: V(0.03, 0.045, 0.02), rot: [0.1, 0, 0.1] });
+	b.add('pipe', silver, new THREE.CylinderGeometry(0.03, 0.03, 0.34, 8), { pos: V(-0.05, 0.08, -0.05), rot: [0, 0.6, Math.PI / 2] });
+	b.add('rust', rust, new THREE.BoxGeometry(0.06, 0.004, 0.04), { pos: V(0.05, 0.062, 0.05) });
+	b.add('rust', rust, new THREE.BoxGeometry(0.04, 0.004, 0.05), { pos: V(-0.06, 0.032, -0.07) });
+	b.add('drip', silver, new THREE.BoxGeometry(0.01, 0.03, 0.004), { pos: V(0.12, 0.03, 0.02) });
+	return b.build();
+}
+
+export function buildRustyDisc() {
+	const b = new Builder('garage_rusty_disc');
+	b.add('disc', mat('paint_silver', 0xd8dce4, { metalness: 0.3, roughness: 0.5 }), new THREE.CylinderGeometry(0.14, 0.14, 0.03, 16), { pos: V(0, 0.015, 0) });
+	b.add('hub', mat('tool_chrome', 0xb8bcc4), new THREE.CylinderGeometry(0.06, 0.06, 0.05, 12), { pos: V(0, 0.03, 0) });
+	b.add('rust', mat('rust', 0x8a4a22), new THREE.BoxGeometry(0.05, 0.004, 0.03), { pos: V(0.08, 0.032, -0.03), rot: [0, 0.4, 0] });
+	b.add('label', mat('parts_box', 0xf2c230), new THREE.BoxGeometry(0.05, 0.002, 0.03), { pos: V(-0.08, 0.032, 0.04) });
+	return b.build();
+}
+
 export const models = {
+	garage_parts_crate: buildPartsCrate, garage_fake_invoices: buildFakeInvoices, garage_old_parts: buildOldParts,
+	garage_rusty_disc: buildRustyDisc,
 	garage_odometer_drill: buildOdometerDrill, garage_km_notebook: buildKmNotebook, garage_zero_km_sign: buildZeroKmSign,
 	garage_plates_box: buildPlatesBox, garage_stolen_list: buildStolenList, garage_spray_can: buildSprayCan,
 	npc_grasita: buildGrasita, ...toolModels,
@@ -276,6 +328,11 @@ export const views = {
 		items: [{ name: 'garage_odometer_drill', pos: [-0.35, 0, 0], rotY: 0.3 }, { name: 'garage_km_notebook', pos: [0.05, 0, 0.3], rotY: -0.2 },
 			{ name: 'garage_zero_km_sign', pos: [0.35, 0, -0.2], rotY: -0.3 }],
 		cam: { pos: [0.0, 0.9, 1.5], target: [0.0, 0.15, 0], fov: 42 },
+	},
+	garage_swapped_parts: {
+		items: [{ name: 'garage_parts_crate', pos: [-0.35, 0, 0], rotY: 0.3 }, { name: 'garage_fake_invoices', pos: [0.35, 0, 0.35], rotY: -0.2 },
+			{ name: 'garage_old_parts', pos: [0.4, 0, -0.15] }, { name: 'garage_rusty_disc', pos: [0.05, 0, 0.45] }],
+		cam: { pos: [0.1, 1.2, 1.9], target: [0.0, 0.2, 0], fov: 42 },
 	},
 	garage_tools: {
 		items: [

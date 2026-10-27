@@ -123,6 +123,12 @@ entre 400 y 600.
      único dueño" (1 kg, 200). Los dos autos del piso tienen el tablero junto a la ventanilla del conductor: con E se
      lee el kilometraje, y uno de ellos (sorteado) marca 12 km con las cubiertas lisas; la primera vez que se lee es la
      pista. El tablero normal dice algo creíble. Captura `paso5-cuentakilometros.png`.
+   - **Hecho así (propuesta), las piezas cambiadas:** el cajón de repuestos nuevos (12 kg, 1000, en un escondite para
+     cosas pesadas; lo lleva un solo policía, porque el límite de carga es 25 kg), las facturas truchas (0,1 kg, 300) y
+     la pila de repuestos viejos pintados de plateado (4 kg, 200). Un disco de freno «nuevo» espera en el mostrador,
+     entre la caja y el timbre: el policía que lo agarra queda con la mano naranja («¡Óxido!»), y la primera vez es la
+     pista. Los capós que hacen «tac tac tac» quedan para después (los autos no tienen capó que se abra). Capturas
+     `paso5-piezas-*.png` y `garage_swapped_parts.png`.
 6. "Jugar" suma el taller al sorteo de allanamientos (`PlaceDraw.ORDER`).
 7. El online (Don Tuerca, Grasita, el timbre, el elevador y los parabrisas en todas las PC).
 
