@@ -84,8 +84,22 @@ const CUSTOMER_LANE := 0.4
 ## Each customer: up one aisle, down another and the checkout whose queue they wait in.
 const CUSTOMER_LOOPS: Array[Vector3i] = [Vector3i(1, 2, 1), Vector3i(2, 1, 0), Vector3i(0, 1, 0),
 	Vector3i(1, 0, 2), Vector3i(2, 0, 1), Vector3i(0, 2, 2)]
-## What one customer's complaint adds to the manager's (Don Ofertón, step 3).
-const COMPLAINT_BUMP := 5
+## What one customer's complaint adds to the manager's.
+const COMPLAINT_BUMP := 5.0
+const MANAGER_SCENE := preload("res://scenes/npc/super_manager.tscn")
+## Don Ofertón's round (step 3), back and forth: the front walkway, up the east aisle and along the back walkway.
+const MANAGER_ROUTE: Array[Vector3] = [Vector3(-12.0, FLOOR_TOP, 5.6), Vector3(-7.5, FLOOR_TOP, 5.6),
+	Vector3(-2.5, FLOOR_TOP, 5.6), Vector3(2.0, FLOOR_TOP, 5.6), Vector3(6.8, FLOOR_TOP, 5.6),
+	Vector3(6.8, FLOOR_TOP, -1.0), Vector3(6.8, FLOOR_TOP, -7.2), Vector3(-2.5, FLOOR_TOP, -7.2),
+	Vector3(-12.0, FLOOR_TOP, -7.2)]
+## Where he stands at a checkout to look up a price (the cashier's side), facing the shop windows.
+const CASHIER_SIDE := -0.75
+## The price button on each checkout's counter, by the cashier.
+const PRICE_BUTTON := Vector3(-0.25, FLOOR_TOP + 0.95, 7.0)
+const SAW_PYRAMID := 10.0
+const CAUGHT_ON := 10.0
+## How often the loudspeaker tells everyone where the cops are, while one is inside.
+const ANNOUNCE_EVERY := 20.0
 
 const SPOTS := [
 	{"id": "in_super_freezer", "at": Vector3(-3.0, FLOOR_TOP + 0.1, -8.6), "heavy": true},
@@ -126,8 +140,11 @@ var broken_goods := 0
 var fines := 0
 var carts: Array[ShoppingCart] = []
 var customers: Array[SuperCustomer] = []
-## What the customers complained about, for the manager's complaint (step 3).
-var complaint := 0
+## Don Ofertón, the manager (step 3), his price call on the checkouts and the complaint bar.
+var manager: FloorBoss
+var price_call: PriceCall
+var complaint_bar: ProgressBar
+var _announce_left := ANNOUNCE_EVERY
 ## Same seed, same supermarket (the stories and the hiding spots come from it, step 5).
 @export var case_seed := 0
 var _build: PlaceBuilder
@@ -149,6 +166,7 @@ func _ready() -> void:
 	_build_carts()
 	_build_customers()
 	office_door = _door(OFFICE_DOOR_X)
+	_place_manager()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("supermarket")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -289,11 +307,99 @@ func _build_customers() -> void:
 		customer.next_point = (start + 1) % customer.route.size()
 		add_child(customer)
 		customer.position = customer.route[start]
-		customer.complained.connect(func(_c: SuperCustomer) -> void: complaint += COMPLAINT_BUMP)
+		customer.complained.connect(func(_c: SuperCustomer) -> void:
+			if manager:
+				manager.blame(COMPLAINT_BUMP, "OFERTON_CUSTOMER"))
 		customers.append(customer)
 
 
-func _physics_process(_delta: float) -> void:
+## Don Ofertón on his round, the price buttons on the checkouts, what he notices and the complaint bar.
+func _place_manager() -> void:
+	price_call = PriceCall.new()
+	price_call.name = "PriceCall"
+	for x: float in CHECKOUT_X:
+		price_call.spots.append(Vector3(x + PRICE_BUTTON.x, PRICE_BUTTON.y, PRICE_BUTTON.z))
+	add_child(price_call)
+	manager = MANAGER_SCENE.instantiate()
+	manager.route = MANAGER_ROUTE
+	manager.printer = price_call
+	add_child(manager)
+	manager.start_at(0)
+	price_call.called.connect(func(index: int) -> void:
+		manager.printer_spot = cashier_spot(index)
+		manager.fix_facing = to_global(cashier_spot(index) + Vector3(0, 0, 5))
+		_say(cashier_spot(index) + Vector3(0, 2.6, 0), "OFERTON_PRICE_CALL"))
+	price_call.caught_on.connect(manager.blame.bind(CAUGHT_ON, "OFERTON_CAUGHT_ON"))
+	office_door.broken.connect(manager.door_broken)
+	till.opened.connect(func(at: Vector3) -> void: manager.saw(at, FloorBoss.SAW_TILL))
+	pyramid_fell.connect(func() -> void: manager.saw(to_global(OFFER_AT + Vector3.UP), SAW_PYRAMID, "OFERTON_PYRAMID"))
+	fridge_broken.connect(func() -> void:
+		manager.saw(to_global(Vector3(-7.0, 1.0, FRIDGE_Z + 0.5)), FloorBoss.SAW_BREAK, "OFERTON_FRIDGE"))
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	manager.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Where Don Ofertón stands to look up a price at checkout `index`: the cashier's side, in this scene's space.
+func cashier_spot(index: int) -> Vector3:
+	return Vector3(CHECKOUT_X[index] + CASHIER_SIDE, FLOOR_TOP, CHECKOUT_Z)
+
+
+## Which aisle (1 to 4) `at` is in, in this scene's space, or 0 when it's not among the gondolas.
+static func aisle_of(at: Vector3) -> int:
+	if at.z < GONDOLA_FROM_Z or at.z > GONDOLA_FROM_Z + GONDOLA_MODULE * 3:
+		return 0
+	var aisle := 1
+	for x: float in GONDOLA_X:
+		if at.x > x:
+			aisle += 1
+	return clampi(aisle - 1, 1, 4)
+
+
+## Every ANNOUNCE_EVERY seconds with a cop inside, the loudspeaker tells everyone where: "¡hay policías en el pasillo
+## 2!", or only that they're in the store.
+func announce(cop: Node3D) -> String:
+	var at := to_local(cop.global_position)
+	var aisle := aisle_of(at)
+	var line := tr("OFERTON_SPEAKER_AISLE") % aisle if aisle > 0 else tr("OFERTON_SPEAKER_STORE")
+	var label := MarketShopper.make_bubble()
+	label.text = line
+	label.position = Vector3(at.x, WALL_TOP - 0.8, at.z)
+	label.modulate = Color(1, 0.9, 0.5)
+	label.show()
+	add_child(label)
+	get_tree().create_timer(5.0).timeout.connect(label.queue_free)
+	return line
+
+
+func _cop_inside() -> Node3D:
+	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
+		var at := to_local(cop.global_position)
+		if absf(at.x) < HALF_X and absf(at.z) < HALF_Z:
+			return cop
+	return null
+
+
+func _physics_process(delta: float) -> void:
+	_announce_left -= delta
+	if _announce_left <= 0.0:
+		_announce_left = ANNOUNCE_EVERY
+		var cop := _cop_inside()
+		if cop:
+			announce(cop)
 	if pyramid_fallen:
 		return
 	for i in cans.size():

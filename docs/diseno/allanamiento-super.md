@@ -44,7 +44,7 @@ pirámides de latas que se caen con mirarlas, y el gerente anuncia todo por el a
   - dentro del disfraz de la mascota (ver abajo)
   - detrás del cartel de oferta
 
-## Don Ofertón y Chispa
+## Don Ofertón y Lalo
 - **Don Ofertón**, el gerente: bigote finito, chaleco rojo del súper con el logo de un changuito, corbata con signos
   de pesos y un micrófono inalámbrico en la mano. Tiene el cuerpo pera alto y flaco (decisión 72). Recorre los
   pasillos acomodando precios y lo anuncia todo por el altavoz: "¡Atención, señores clientes: hay policías en el
@@ -55,10 +55,10 @@ pirámides de latas que se caen con mirarlas, y el gerente anuncia todo por el a
   aprieta (E), Don Ofertón dice por el altavoz "¡Consulta de precio en caja!" y va corriendo a esa caja. Pasa 15 s
   ahí, de espaldas al súper, buscando un precio en su carpeta gigante. Se puede hacer una vez cada 45 s; a la
   tercera se da cuenta ("¡Esa no es una consulta, es la policía!") y suma 10.
-- **Chispa**, el repositor, es el chismoso. Es un chico de gorrita al revés y delantal, que arma pirámides de latas
+- **Lalo**, el repositor, es el chismoso. Es un chico de gorrita al revés y delantal, que arma pirámides de latas
   todo el tiempo. Solo habla mientras trabaja: si un policía le alcanza 3 latas a la mano (sueltas cerca de él, una
-  por vez) para la pirámide que está armando en el pasillo 4, Chispa le cuenta, sin dejar de apilar, dónde vio a Don
-  Ofertón esconder algo. Si la pirámide de Chispa se cae antes de la tercera lata, hay que empezar de nuevo. Una vez
+  por vez) para la pirámide que está armando en el pasillo 4, Lalo le cuenta, sin dejar de apilar, dónde vio a Don
+  Ofertón esconder algo. Si la pirámide de Lalo se cae antes de la tercera lata, hay que empezar de nuevo. Una vez
   por policía.
 
 ## Las historias
@@ -84,7 +84,7 @@ suman entre 400 y 600.
 - Del gimnasio, el laboratorio y el taller:
   - el dueño con su distracción con E (la música, el timbre → el botón de la caja)
   - lo frágil con multa, la caja con la llave y el `ClueSpot`
-  - el chismoso que pide algo a cambio (Lula, Grasita → Chispa)
+  - el chismoso que pide algo a cambio (Lula, Grasita → Lalo)
   - el online (NpcSync, PropSync y ActionSync)
 - La voz por altavoz: la radio del comisario (el mismo globo de texto, pero desde los parlantes del techo).
 - Los changuitos: el `RigidBody3D` de los muebles sueltos de la mudanza, con ruedas y la agarrada de siempre.
@@ -127,17 +127,31 @@ suman entre 400 y 600.
        Ofertón). Una vez cada 10 s por cliente.
      - **Capturas:** `allanamiento-super/paso2-*.png`.
 3. Don Ofertón: la ronda, el altavoz, la denuncia y el botón de la caja.
-4. Chispa y su pirámide.
+   - **Cómo quedó (propuesta):** Don Ofertón es el jefe de piso de siempre (el de Mirta y el profe Fito), alto y flaco,
+     con chaleco rojo, corbata con etiquetas de precio y el micrófono en la mano.
+     - **La ronda:** de ida y vuelta por el pasillo de adelante, sube por el pasillo del este y vuelve por el del fondo.
+     - **La denuncia:** la barra arriba de la pantalla. Suma lo de siempre (15 si lo empujan, 5 por puerta rota, 5 por
+       pregunta, 10 si ve abrir la caja) y además 10 si ve caer la pirámide, 10 si ve rajarse la heladera y 5 por cada
+       queja de un cliente, aunque no la vea. El abogado y las preguntas (R) se conectan con el caso, en el paso 5.
+     - **El botón de precio:** cada caja tiene su botón rojo. E en uno: «¡Consulta de precio en caja!», Don Ofertón va
+       a esa caja, se para del lado de la cajera mirando a las vidrieras y pasa 15 s buscando el precio en su carpeta,
+       sin ver nada. Después los botones descansan 45 s. A la tercera vez se da cuenta: «¡Esa no es una consulta, es la
+       policía!» y suma 10.
+     - **El altavoz:** cada 20 s, si hay un policía adentro, se oye en el techo «¡Atención, señores clientes: hay
+       policías en el pasillo 2! ¡Aprovechen la oferta!» (o «en el súper» si no está en un pasillo).
+     - **El repositor se llama Lalo**, porque Chispa ya es el preso chismoso de la cárcel con corte de luz.
+     - **Capturas:** `allanamiento-super/paso3-*.png`.
+4. Lalo y su pirámide.
 5. El caso (RaidCase) con la primera historia: las fechas cambiadas.
 6. Las otras 5 historias, una por PR.
 7. "Jugar" suma el súper al sorteo de allanamientos (`PlaceDraw.ORDER`).
-8. El online (Don Ofertón, Chispa, los clientes, los changuitos y lo frágil en todas las PC).
+8. El online (Don Ofertón, Lalo, los clientes, los changuitos y lo frágil en todas las PC).
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, el súper abierto con clientes y changuitos? **Recomendado:** sí, no se pisa con el
    taller, el parque, el cine ni el cumpleaños, y los changuitos dan mucho caos de física entre cuatro.
 2. ¿Un policía puede subirse a un changuito mientras otro empuja? **Recomendado:** sí, es el chiste más fácil de
    compartir y sirve para llevar la evidencia pesada.
-3. ¿Don Ofertón se distrae con el botón de la caja (15 s, cada 45 s, a la tercera se da cuenta) y Chispa solo habla si
+3. ¿Don Ofertón se distrae con el botón de la caja (15 s, cada 45 s, a la tercera se da cuenta) y Lalo solo habla si
    le alcanzas 3 latas para su pirámide? **Recomendado:** sí, cada uno usa lo que hay en el súper.
 4. ¿Va en la manzana (7, 1), del lado sur? **Recomendado:** sí, está libre y del borde este, cerca del taller.
