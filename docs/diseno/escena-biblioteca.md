@@ -181,4 +181,11 @@ polvo dorado con la linterna, el fichero, el ruido y el apagón de Doña Sigilo,
    doble mientras te quedes cerca, pero pierde el pelo del sillón. Lo que se cae al piso todavía no suma (queda para
    después). Capturas: `biblioteca/paso5c-*.png`.
 6. El final: tablero, cansancio, sueldo y el bibliobús con las pilas de libros.
+   **Hecho así:** el nivel de la biblioteca ya trae el caso: el comisario lo da en la comisaría, con el tablero y el
+   sello de siempre (acusar, cansancio y sueldo como en las otras escenas del crimen). Si el culpable huye, sale en el
+   bibliobús (verde y crema, estantes de libros en las ventanas), que espera junto al cordón al este de la escalinata
+   y va a 24 km/h. En cada esquina en la que dobla se le caen dos pilas de libros por la puerta de atrás. Pisar una con
+   el patrullero es "¡Libro dañado!": 20 del sueldo, igual que un marco del museo. Un policía a pie la junta con E,
+   sin multa. Detenido, se lo interroga como lector en el próximo turno. Capturas: `biblioteca/paso6-*.png` y
+   `biblioteca/bookmobile.png`.
 7. El sorteo de "Jugar" y el online.

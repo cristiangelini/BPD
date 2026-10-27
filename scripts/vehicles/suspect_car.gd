@@ -104,6 +104,9 @@ const MODELS := {
 	"tv_van": preload("res://assets/models/tv_van.glb"),
 	# The hotel's culprit runs off in its shuttle, dropping suitcases off the roof (escena-hotel.md).
 	"hotel_shuttle": preload("res://assets/models/hotel_shuttle.glb"),
+	# The library's culprit runs off in the bookmobile, slow, dropping piles of books at every corner
+	# (escena-biblioteca.md).
+	"bookmobile": preload("res://assets/models/bookmobile.glb"),
 	# The airport's bought porter gets away on the baggage tug (politico-aeropuerto.md), slow, its beacon spinning.
 	"baggage_tug": preload("res://assets/models/baggage_tug.glb"),
 }
@@ -138,6 +141,7 @@ const RIDERS := {
 	"art_van": [[preload("res://assets/models/npc_guardia_museo.glb"), Vector3(-0.5, 0.4, 1.5), 0.85]],
 	"tv_van": [[preload("res://assets/models/npc_tecnico.glb"), Vector3(-0.5, 0.4, 1.5), 0.85]],
 	"hotel_shuttle": [[preload("res://assets/models/npc_huesped.glb"), Vector3(-0.5, 0.4, 1.7), 0.85]],
+	"bookmobile": [[preload("res://assets/models/npc_lector.glb"), Vector3(-0.5, 0.45, 2.2), 0.85]],
 	"baggage_tug": [[preload("res://assets/models/npc_mudancero.glb"), Vector3(0, 0.35, 0.2), 0.85]],
 }
 ## Who rides inside and stays there when he gives up, the same way: the choristers in the van, seen through its open
@@ -158,6 +162,7 @@ const LANES := {"moto": ChaseRoute.SIDEWALK_LANE, "wheelchair": ChaseRoute.SIDEW
 ## full, does 35. El Oso running with his sack does 12, the heckler's kick scooter 15 and the food cart, downhill, 14
 ## (propuesta). The loaded vegetable trike, 16, and an inmate off the transfer bus, dragging the ball and chain, 11.
 ## The clown car does 30, honking all the way, and a parade float 28, wide and slow. The loaded cement mixer does 28 and nearly stops in the curves.
+## The library's bookmobile, full of books, does 24.
 const SPEEDS := {"bear_on_foot": 12.0 / 3.6, "wheelchair": 8.0 / 3.6, "tow_truck": 30.0 / 3.6, "golf_cart": 25.0 / 3.6, "bike": 25.0 / 3.6,
 	"walker": 10.0 / 3.6, "choir_van": 35.0 / 3.6, "kick_scooter": 15.0 / 3.6,
 	"food_cart": 14.0 / 3.6, "veggie_trike": 16.0 / 3.6, "floor_polisher": 14.0 / 3.6, "inmate_on_foot": 11.0 / 3.6, "clown_car": 30.0 / 3.6,
@@ -165,7 +170,7 @@ const SPEEDS := {"bear_on_foot": 12.0 / 3.6, "wheelchair": 8.0 / 3.6, "tow_truck
 	"toy_helicopter": 20.0 / 3.6, "invisible_car": 14.0 / 3.6,
 	"toro_jog": 13.0 / 3.6, "learner_car": 35.0 / 3.6, "pizza_scooter": 40.0 / 3.6,
 	"carousel_horse": 25.0 / 3.6, "chopper_moped": 30.0 / 3.6, "gallery_cart": 20.0 / 3.6,
-	"cement_mixer": 28.0 / 3.6, "barullo_moto": 45.0 / 3.6, "baggage_tug": 22.0 / 3.6}
+	"cement_mixer": 28.0 / 3.6, "barullo_moto": 45.0 / 3.6, "baggage_tug": 22.0 / 3.6, "bookmobile": 24.0 / 3.6}
 ## The tow truck turns slowly and nearly stops to do it (persecucion-lugares.md): a cop cutting a corner on foot
 ## catches up with him.
 ## The golf cart turns very tight and hardly slows down to do it.
@@ -226,6 +231,7 @@ const ART_VAN := "art_van"
 ## The channel's TV van, the bought technician's getaway (politico-debate.md).
 const TV_VAN := "tv_van"
 const HOTEL_SHUTTLE := "hotel_shuttle"
+const BOOKMOBILE := "bookmobile"
 const BAGGAGE_TUG := "baggage_tug"
 ## Where the towed patrol car hangs behind the tow truck: its middle, and its nose lifted this much.
 const TOWED_AT := Vector3(0, 0.55, -5.6)
@@ -251,7 +257,7 @@ const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 
 	"chopper_moped": Vector3(0.8, 1.9, 1.7), "gallery_cart": Vector3(1.3, 1.9, 2.4),
 	"cement_mixer": Vector3(2.3, 3.0, 7.0), "barullo_moto": Vector3(0.8, 1.6, 1.9), "art_van": Vector3(2.1, 2.3, 4.8),
 	"tv_van": Vector3(2.1, 2.3, 4.8),
-	"hotel_shuttle": Vector3(2.1, 2.6, 5.0),
+	"hotel_shuttle": Vector3(2.1, 2.6, 5.0), "bookmobile": Vector3(2.2, 2.7, 6.0),
 	"baggage_tug": Vector3(1.3, 1.4, 2.4)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
@@ -263,6 +269,8 @@ const MIXER_WHEELS: Array[Vector3] = [Vector3(-1.2, 0.38, 2.4), Vector3(1.2, 0.3
 	Vector3(1.2, 0.38, -1.5), Vector3(-1.2, 0.38, -2.5), Vector3(1.2, 0.38, -2.5)]
 const SHUTTLE_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.38, 1.75), Vector3(1.05, 0.38, 1.75),
 	Vector3(-1.05, 0.38, -1.75), Vector3(1.05, 0.38, -1.75)]
+const BOOKMOBILE_WHEELS: Array[Vector3] = [Vector3(-1.05, 0.4, 2.0), Vector3(1.05, 0.4, 2.0),
+	Vector3(-1.05, 0.4, -2.0), Vector3(1.05, 0.4, -2.0)]
 ## The scooter's wheels are part of its model.
 const NO_WHEELS: Array[Vector3] = []
 const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": SEDAN_WHEELS, "moto": NO_WHEELS,
@@ -275,7 +283,8 @@ const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": 
 	"pizza_scooter": NO_WHEELS, "carousel_horse": NO_WHEELS, "chopper_moped": NO_WHEELS,
 	"gallery_cart": NO_WHEELS,
 	"cement_mixer": MIXER_WHEELS, "barullo_moto": NO_WHEELS,
-	"art_van": SEDAN_WHEELS, "tv_van": SEDAN_WHEELS, "hotel_shuttle": SHUTTLE_WHEELS, "baggage_tug": NO_WHEELS}
+	"art_van": SEDAN_WHEELS, "tv_van": SEDAN_WHEELS, "hotel_shuttle": SHUTTLE_WHEELS, "baggage_tug": NO_WHEELS,
+	"bookmobile": BOOKMOBILE_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)
