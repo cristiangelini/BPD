@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Wedding crime scene, step 1: the Salón Gala dressed for Rosa and Tito's wedding (`--place=wedding`): the head table under the banner, eight numbered round tables with centerpieces, the three-tier cake, the DJ booth, white garlands and rice by the door. The party hall now shares its shell, dance floor and rooms. Also exports `buildSedan` again so modelgen runs.
 - Wedding crime scene: design (docs/diseno/escena-boda.md, decision 290): the ring goes missing at Rosa and Tito's wedding in the Salón Gala, six identical tuxedos, the bride who blames the groom, the waltz, the deaf grandma and the getaway in the newlyweds' car.
 - Cake lab, step 7: online: the host runs chef Bruno and the guests follow him, the oven knob, Pocha's tray and the stories' props work from any PC, a flour sack burst on the host bursts everywhere, the stolen book comes out of its cake on every PC, and the robot arm creams only each PC's own cop. Also fixes a race in the insurance office's online phone test.
 - Cake lab, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office and the cake lab in sevenths.
