@@ -128,3 +128,8 @@ suman entre 400 y 600.
   Bobina se le escapan tres lugares, Chicho cuenta dónde vio uno, y un vecino más se sienta atrás de todo con una lucecita
   roja que titila en el balde de pochoclo: acercarse a menos de 2 m da la pista de la historia (una vez). Con 100 de
   denuncia llama al abogado y el caso se pierde; si huye, escapa en auto. Capturas `paso5-*.png`.
+- **Paso 6a (las palomitas del piso):** la bolsa de palomitas juntadas del piso (6 kg, $1000) con la escoba del
+  "reciclaje" ($300) y el cartel de "recién hechas" ($200), escondidos con la semilla. En la punta oeste del mostrador hay
+  un pote de palomitas (`CounterPopcorn`): E prueba una, el policía la escupe con un globito ("¡Puaj! ¡Esta ya la comió
+  alguien!") cada vez, y la primera vez es la pista propia (pelusa y un chicle). Capturas `paso6-palomitas.png` y
+  `paso6-bolsa.png`.

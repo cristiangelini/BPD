@@ -131,10 +131,50 @@ export function buildCovers() {
 	return b.build();
 }
 
+// The sack of popcorn swept off the theater's floor, 0.5 x 0.56 x 0.4 m: a white sack tied at the top, popcorn spilling
+// over with grey fluff and a pink gum stuck on it.
+export function buildFloorPopcornBag() {
+	const b = new Builder('floor_popcorn_bag');
+	const sack = mat('sack_white', 0xe8e4d8), corn = mat('popcorn', 0xf6e7a8), fluff = mat('fluff', 0x8a8a90);
+	b.add('sack', sack, new THREE.CylinderGeometry(0.2, 0.24, 0.46, 8), { pos: V(0, 0.23, 0) });
+	b.add('tie', mat('sack_tie', 0xc04030), new THREE.CylinderGeometry(0.1, 0.12, 0.05, 8), { pos: V(0, 0.47, 0) });
+	for (let i = 0; i < 9; i++) {
+		const turn = i * 2.1;
+		b.add('corn', i % 4 === 0 ? fluff : corn, new THREE.IcosahedronGeometry(0.035, 0), { pos: V(Math.cos(turn) * 0.07, 0.51 + (i % 3) * 0.015, Math.sin(turn) * 0.07) });
+	}
+	b.add('gum', mat('gum_pink', 0xf080b0), new THREE.SphereGeometry(0.03, 6, 4), { pos: V(0.04, 0.54, -0.03) });
+	return b.build();
+}
+
+// The broom with its "reciclaje" sign taped on, 1.2 m lying down along Z: the stick, the bristles and a green card.
+export function buildRecycleBroom() {
+	const b = new Builder('recycle_broom');
+	b.add('stick', mat('broom_stick', 0xa07040), new THREE.CylinderGeometry(0.015, 0.015, 0.95, 6), { pos: V(0, 0.04, -0.12), rot: [Math.PI / 2, 0, 0] });
+	b.add('head', mat('broom_head', 0x3050a0), new THREE.BoxGeometry(0.28, 0.06, 0.06), { pos: V(0, 0.04, 0.38) });
+	b.add('bristles', mat('broom_bristles', 0xd8c070), new THREE.BoxGeometry(0.28, 0.05, 0.14), { pos: V(0, 0.03, 0.48) });
+	b.add('sign', mat('recycle_green', 0x30a050), new THREE.BoxGeometry(0.16, 0.01, 0.12), { pos: V(0, 0.06, -0.1) });
+	b.add('arrows', M.white, new THREE.TorusGeometry(0.035, 0.008, 4, 8), { pos: V(0, 0.068, -0.1), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
+// The "recién hechas" sign, 0.5 x 0.04 x 0.35 m lying flat: a yellow board with a red frame and a steaming bucket.
+export function buildFreshSign() {
+	const b = new Builder('fresh_sign');
+	const red = mat('sign_red', 0xc02020);
+	b.add('board', mat('sign_yellow', 0xf0d030), new THREE.BoxGeometry(0.5, 0.03, 0.35), { pos: V(0, 0.015, 0) });
+	for (const z of [-0.165, 0.165]) b.add('frame', red, new THREE.BoxGeometry(0.5, 0.035, 0.02), { pos: V(0, 0.018, z) });
+	for (const x of [-0.24, 0.24]) b.add('frame', red, new THREE.BoxGeometry(0.02, 0.035, 0.35), { pos: V(x, 0.018, 0) });
+	b.add('bucket', red, new THREE.CylinderGeometry(0.05, 0.035, 0.008, 8), { pos: V(-0.12, 0.034, 0.03) });
+	b.add('letters', mat('sign_letters', 0x202020), new THREE.BoxGeometry(0.22, 0.006, 0.04), { pos: V(0.08, 0.034, -0.06) });
+	b.add('letters', mat('sign_letters', 0x202020), new THREE.BoxGeometry(0.16, 0.006, 0.04), { pos: V(0.08, 0.034, 0.04) });
+	return b.build();
+}
+
 export const models = {
 	cinema_seat: buildCinemaSeat, popcorn_machine: buildPopcornMachine, film_projector: buildFilmProjector,
 	npc_dona_bobina: buildDonaBobina, npc_chicho: buildChicho, pirate_copies_box: buildPirateBox,
-	cinema_camcorder: buildCamcorder, cinema_covers: buildCovers,
+	cinema_camcorder: buildCamcorder, cinema_covers: buildCovers, floor_popcorn_bag: buildFloorPopcornBag,
+	recycle_broom: buildRecycleBroom, fresh_sign: buildFreshSign,
 };
 
 export const views = {
@@ -144,6 +184,7 @@ export const views = {
 			{ name: 'popcorn_machine', pos: [0.5, 0, 0.3] }, { name: 'film_projector', pos: [1.5, 0, 0], rotY: -0.6 },
 			{ name: 'npc_dona_bobina', pos: [0.6, 0, 1.0], rotY: -0.2 }, { name: 'npc_chicho', pos: [-0.5, 0, 1.1], rotY: 0.3 },
 			{ name: 'pirate_copies_box', pos: [-1.4, 0, 1.4] }, { name: 'cinema_camcorder', pos: [1.6, 0, 1.4], rotY: -0.8 }, { name: 'cinema_covers', pos: [1.0, 0, 1.8] },
+			{ name: 'floor_popcorn_bag', pos: [-0.6, 0, 2.2] }, { name: 'recycle_broom', pos: [0.2, 0, 2.3], rotY: 1.2 }, { name: 'fresh_sign', pos: [0.9, 0, 2.6] },
 		],
 		cam: { pos: [0, 1.6, 4.5], target: [0.1, 0.7, 0], fov: 40 },
 	},
