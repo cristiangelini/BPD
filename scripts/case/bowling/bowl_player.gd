@@ -40,6 +40,8 @@ var rng := RandomNumberGenerator.new()
 ## The ball they bowled last, until it's back on the rack.
 var ball: BowlingBall
 var complaints := 0
+## Online, a guest's copy: the host's player bowls and complains, this one only follows (NpcSync).
+var follower := false
 var _since_complaint := COMPLAIN_EVERY
 var _next_talk := 0
 var _bubble: Label3D
@@ -101,7 +103,7 @@ func said() -> String:
 ## Says it, and it counts for the complaint unless they complained a moment ago.
 func complain(key: String) -> void:
 	say(key)
-	if _since_complaint < COMPLAIN_EVERY:
+	if follower or _since_complaint < COMPLAIN_EVERY:
 		return
 	_since_complaint = 0.0
 	complaints += 1

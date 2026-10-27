@@ -180,6 +180,14 @@ suman entre 400 y 600.
      el auto estacionado delante del patrullero y empieza la persecución; cuando lo paran, se baja él con sus frases de
      bolos («¡Chuza! ¡Me tiraron a mí como a un pino!»). Captura: `allanamiento-bolera/paso7-huida.png`.
 8. El online (Don Chuza, Pipo, los jugadores, las bolas y lo frágil en todas las PC).
+   - **Cómo quedó (propuesta):** el host maneja a Don Chuza, a Pipo y a los jugadores de la liga, y en las PC de los
+     invitados son copias que lo siguen. Las máquinas del host cuentan los palos, devuelven las bolas y deciden la
+     vitrina y las pantallas; los invitados toman de su estado los puntos de cada pantalla, el festejo de cada chuza,
+     lo roto y lo que decide la historia (la pista, el reloj, los zapatos, el torneo, el «¡CRAC!» de las palomitas).
+     Los zapatos de Pipo pasan por las acciones, así que el policía que los tiene los tiene en todas las PC. Una bola
+     del host que voltea al policía de un invitado lo voltea en su PC. Las bolas de otras boleras de la pista 7 y las
+     piedras de las palomitas que saca el host aparecen también en los invitados. Los zapatos con ruedas solo hacen
+     rodar al policía en la PC de su jugador, y la pista la da el host cuando ve caminar a su copia.
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, la bolera abierta con el torneo de los jueves? **Recomendado:** sí, no se pisa con

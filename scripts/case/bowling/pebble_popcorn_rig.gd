@@ -5,35 +5,46 @@ extends BowlingRig
 ## the floor (at most MAX lying around). A cop who picks one up bites it: «¡CRAC!» and a hurt tooth, and the first time,
 ## the clue. The sack of pebbles, the yellow paint and the receipt are hidden. Every number here is (propuesta).
 
-const PEBBLE_MODEL := preload("res://assets/models/popcorn_pebble.glb")
-const PEBBLE_SIZE := Vector3(0.06, 0.05, 0.05)
-const PEBBLE_KG := 0.05
 const SPIT_EVERY := 6.0
 const MAX := 10
 const SPIT_SPEED := 2.5
-const BOUNCE := 0.8
 
 var pebbles: Array[Grabbable] = []
 var bitten := {}
 var cracked := false
+## How many pebbles were bitten and where the last one was (alley space): the guests show the «¡CRAC!» from it.
+var bites := 0
+var _bite_at := Vector3.ZERO
+var _shown_bites := 0
 var _since_spit := 0.0
 var _rng := RandomNumberGenerator.new()
-var _bouncy: PhysicsMaterial
 
 
 func setup(place: Bowling) -> void:
 	super.setup(place)
 	alley.main = alley.hidden[0]
 	_rng.seed = alley.case_seed
-	_bouncy = PhysicsMaterial.new()
-	_bouncy.bounce = BOUNCE
+
+
+func net_state() -> Variant:
+	return {"cracked": cracked, "bites": bites, "at": _bite_at}
+
+
+func apply_net_state(state: Variant) -> void:
+	cracked = state.cracked
+	if state.bites > _shown_bites:
+		_shown_bites = state.bites
+		_crack(state.at)
+
+
+func _crack(at: Vector3) -> void:
+	alley._say(at + Vector3.UP * 0.5, "BOWL_POPCORN_CRACK", 1.5)
 
 
 ## The machine coughs out one more pebble, up and away from its front.
 func spit() -> Grabbable:
-	var pebble := ClubEvidence.make_item("Pebble%d" % pebbles.size(), PEBBLE_MODEL, PEBBLE_SIZE, PEBBLE_KG)
-	(pebble.get_child(1) as Node3D).position.y = -PEBBLE_SIZE.y / 2
-	pebble.physics_material_override = _bouncy
+	var pebble := PopcornPebble.new()
+	pebble.name = "Pebble%d" % pebbles.size()
 	alley.add_child(pebble)
 	pebble.position = Bowling.POPCORN_AT + Vector3(0, Bowling.POPCORN_SIZE.y + 0.1, 0)
 	var out := Vector3(_rng.randf_range(-1.0, 1.0), 0, 1.0).normalized() * SPIT_SPEED
@@ -58,7 +69,10 @@ func _physics_process(delta: float) -> void:
 		if not pebble.is_held() or bitten.has(pebble):
 			continue
 		bitten[pebble] = true
-		alley._say(alley.to_local(pebble.global_position) + Vector3.UP * 0.5, "BOWL_POPCORN_CRACK", 1.5)
+		bites += 1
+		_shown_bites = bites
+		_bite_at = alley.to_local(pebble.global_position)
+		_crack(_bite_at)
 		for cop in pebble.handling_cops(0.0):
 			cop.show_hint("HINT_BOWL_POPCORN_BITE")
 		if not cracked:

@@ -14,6 +14,10 @@ const REBOUND := 0.7
 var felt := false
 
 
+func shared() -> Array[String]:
+	return ["felt"]
+
+
 func setup(place: Bowling) -> void:
 	super.setup(place)
 	alley.main = alley.hidden[0]
