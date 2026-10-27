@@ -194,13 +194,41 @@ export function buildDeliveryClock() {
 	return b.build();
 }
 
+// The envelopes box: a 0.4 x 0.3 x 0.3 m shoebox-like box overflowing with brown envelopes, a few with musical notes.
+export function buildBribeEnvelopes() {
+	const b = new Builder('bribe_envelopes');
+	b.add('box', mat('box_white', 0xe8e4da), new THREE.BoxGeometry(0.4, 0.24, 0.3), { pos: V(0, -0.03, 0) });
+	for (let i = 0; i < 10; i++) b.add('envelopes', mat('envelope', 0xc8a060), new THREE.BoxGeometry(0.22, 0.004, 0.12), { pos: V(-0.08 + (i % 3) * 0.08, 0.095 + Math.floor(i / 3) * 0.012, -0.08 + (i % 4) * 0.05), rot: [0, i * 0.5, (i % 2) * 0.1] });
+	for (let i = 0; i < 3; i++) b.add('notes', mat('black', 0x15151a), new THREE.BoxGeometry(0.02, 0.002, 0.03), { pos: V(-0.08 + i * 0.08, 0.14, -0.08 + i * 0.05) });
+	return b.build();
+}
+
+// The cardboard gold record: a 0.4 m frame of brown cardboard with a gold-painted disc, slightly bent.
+export function buildCardboardGold() {
+	const b = new Builder('cardboard_gold');
+	b.add('frame', mat('cardboard', 0xb08a5a), new THREE.BoxGeometry(0.4, 0.4, 0.02), { rot: [0.05, 0, 0.03] });
+	b.add('disc', mat('gold', 0xe0b040, { metalness: 0.6, roughness: 0.35 }), new THREE.CylinderGeometry(0.15, 0.15, 0.01, 18), { pos: V(0, 0.02, 0.012), rot: [Math.PI / 2, 0, 0] });
+	b.add('plate', mat('white', 0xf6f4ee), new THREE.BoxGeometry(0.16, 0.04, 0.004), { pos: V(0, -0.16, 0.012) });
+	return b.build();
+}
+
+// The next week's ranking, written in advance: a 0.21 x 0.004 x 0.3 m sheet with a numbered list and the same title.
+export function buildNextRanking() {
+	const b = new Builder('next_ranking');
+	b.add('sheet', mat('page_cream', 0xf4ecd0), new THREE.BoxGeometry(0.21, 0.004, 0.3));
+	b.add('title', mat('cross_red', 0xd02a20), new THREE.BoxGeometry(0.14, 0.001, 0.02), { pos: V(0, 0.0025, -0.12) });
+	for (let i = 0; i < 6; i++) b.add('lines', mat('ink_blue', 0x2a4ab8), new THREE.BoxGeometry(0.15, 0.001, 0.008), { pos: V(0, 0.0025, -0.07 + i * 0.035) });
+	return b.build();
+}
+
 export const models = {
 	raffle_urn: buildRaffleUrn, contest_blender: buildContestBlender, winners_list: buildWinnersList,
 	ad_contracts: buildAdContracts, billing_book: buildBillingBook, paid_stamp: buildPaidStamp,
 	neighbor_tapes: buildNeighborTapes, pot_mic: buildPotMic, crossed_map: buildCrossedMap,
 	reception_plant: buildReceptionPlant, vinyl_crate: buildVinylCrate, collector_catalog: buildCollectorCatalog,
 	golden_player: buildGoldenPlayer, private_record: buildPrivateRecord, code_box: buildCodeBox,
-	listener_list: buildListenerList, delivery_clock: buildDeliveryClock,
+	listener_list: buildListenerList, delivery_clock: buildDeliveryClock, bribe_envelopes: buildBribeEnvelopes,
+	cardboard_gold: buildCardboardGold, next_ranking: buildNextRanking,
 };
 
 export const views = {
@@ -216,7 +244,9 @@ export const views = {
 			{ name: 'golden_player', pos: [0.5, 0.07, 1.5] }, { name: 'private_record', pos: [1.1, 0, 1.4] },
 			{ name: 'code_box', pos: [-0.6, 0.11, 2.2] }, { name: 'listener_list', pos: [0.0, 0.002, 2.2], rotY: 0.2 },
 			{ name: 'delivery_clock', pos: [0.5, 0.095, 2.2] },
+			{ name: 'bribe_envelopes', pos: [-0.6, 0.15, 2.9] }, { name: 'cardboard_gold', pos: [0.0, 0.2, 2.9] },
+			{ name: 'next_ranking', pos: [0.5, 0.002, 2.9], rotY: -0.2 },
 		],
-		cam: { pos: [0.3, 2.6, 5.2], target: [0.2, 0.2, 0.9], fov: 42 },
+		cam: { pos: [0.3, 3.0, 6.0], target: [0.2, 0.2, 1.3], fov: 42 },
 	},
 };
