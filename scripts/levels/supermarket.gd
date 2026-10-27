@@ -46,6 +46,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_CHEESE_MOLD", "OBJ_EXTRA_WAX_BLOCK"],
 		"rig": preload("res://scripts/case/super/fake_cheese_rig.gd"),
 	},
+	"super_carts": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_SUPER_CARTS_B", "BRIEF_SUPER_CARTS_C", "BRIEF_SUPER_CARTS_D"],
+		"find": "OBJ_FIND_DOUBLE_CART",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/super_double_cart.tscn"), preload("res://scenes/props/super_welder.tscn"),
+			preload("res://scenes/props/super_cart_plan.tscn")],
+		"half_heights": [0.5, 0.15, 0.01],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_WELDER", "OBJ_EXTRA_CART_PLAN"],
+		"rig": preload("res://scripts/case/super/double_carts_rig.gd"),
+	},
 }
 ## Where the clue notes for the suspicions can lie, on the floor.
 const NOTE_PLACES: Array[Vector3] = [Vector3(-7.5, FLOOR_TOP, 2.0), Vector3(-2.5, FLOOR_TOP, -4.0),
