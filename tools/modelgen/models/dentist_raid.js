@@ -138,9 +138,47 @@ export const models = {
 		b.add('plate', C('plate_gold', 0xe0c050, { metalness: 0.6, roughness: 0.3 }), new THREE.BoxGeometry(0.08, 0.02, 0.004), { pos: V(0, 0.015, 0.071) });
 		return b.build();
 	},
+	// The gold teeth story's main evidence: a small locked box with tiny gold ingots melted from crowns, its lid open a
+	// bit. 0.3 x 0.16 x 0.2 m.
+	gold_crown_box() {
+		const b = new Builder('gold_crown_box');
+		const steel = C('box_steel', 0x5a6068, { metalness: 0.5, roughness: 0.4 });
+		const gold = C('ingot_gold', 0xf8c828, { metalness: 0.3, roughness: 0.35 });
+		b.add('box', steel, new THREE.BoxGeometry(0.3, 0.12, 0.2), { pos: V(0, 0.06, 0) });
+		b.add('lid', steel, new THREE.BoxGeometry(0.3, 0.02, 0.2), { pos: V(0, 0.15, -0.06), rot: [-0.7, 0, 0] });
+		for (let i = 0; i < 4; i++) {
+			b.add('ingots', gold, new THREE.BoxGeometry(0.05, 0.025, 0.09), { pos: V(-0.09 + i * 0.06, 0.13, 0.02) });
+		}
+		b.add('lock', gold, new THREE.BoxGeometry(0.04, 0.04, 0.01), { pos: V(0, 0.08, 0.103) });
+		return b.build();
+	},
+	// The crucible with gold left in it, on its tongs. 0.2 x 0.16 x 0.2 m.
+	gold_crucible() {
+		const b = new Builder('gold_crucible');
+		const clay = C('crucible_clay', 0x8a7a6a, { roughness: 0.9 });
+		b.add('pot', clay, new THREE.CylinderGeometry(0.08, 0.055, 0.14, 12), { pos: V(0, 0.07, 0) });
+		b.add('gold', C('melt_gold', 0xf0b020, { metalness: 0.3, roughness: 0.3 }), new THREE.CylinderGeometry(0.075, 0.075, 0.01, 12), { pos: V(0, 0.137, 0) });
+		b.add('tongs', chrome, new THREE.BoxGeometry(0.012, 0.012, 0.22), { pos: V(0.09, 0.06, -0.02), rot: [0, 0.2, 0] });
+		return b.build();
+	},
+	// The price list "Coronas de oro 2x1": a laminated sheet with a gold stripe. 0.21 x 0.006 x 0.29 m, flat.
+	crown_price_list() {
+		const b = new Builder('crown_price_list');
+		b.add('sheet', C('price_sheet', 0xfaf6ea), new THREE.BoxGeometry(0.21, 0.004, 0.29), { pos: V(0, 0.002, 0) });
+		b.add('stripe', C('price_gold', 0xe0b030), new THREE.BoxGeometry(0.19, 0.002, 0.05), { pos: V(0, 0.005, -0.1) });
+		for (let i = 0; i < 5; i++) {
+			b.add('lines', C('price_ink', 0x303030), new THREE.BoxGeometry(0.15, 0.002, 0.008), { pos: V(0, 0.005, -0.04 + i * 0.035) });
+		}
+		return b.build();
+	},
 };
 
 export const views = {
+	dentist_gold: {
+		items: [{ name: 'gold_crown_box', pos: [-0.25, 0, 0] }, { name: 'gold_crucible', pos: [0.15, 0, 0.05] },
+			{ name: 'crown_price_list', pos: [0.45, 0, 0.1], rotY: -0.3 }],
+		cam: { pos: [0.1, 0.6, 1.1], target: [0.1, 0.05, 0], fov: 40 },
+	},
 	dentist_people: {
 		items: [{ name: 'npc_molina', pos: [-0.6, 0, 0], rotY: 0.3 }, { name: 'npc_lucho', pos: [0.6, 0, 0.2], rotY: -0.2, scale: 0.65 }],
 		cam: { pos: [0, 1.3, 5.0], target: [0, 0.85, 0], fov: 34 },
