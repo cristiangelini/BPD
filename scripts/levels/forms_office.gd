@@ -9,7 +9,8 @@ extends CrimeScenePlace
 ## the safe; the archive with its shelves of forms; and the meeting room. The people (step 2): six employees alike at
 ## the desks, el señor Trámite, Benja the intern and Pelusa; each employee's traits and his coffee (step 3). The case
 ## (step 4): what was stolen hides in the copier's tray, in the recycling bin or in the culprit's briefcase, and the
-## evidence bags wait by the reception. Every number here is (propuesta).
+## evidence bags wait by the reception; the thief's cup, the cookie and the coffee footprint upstairs are
+## OfficeClues'. Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(24, 18)
@@ -151,6 +152,8 @@ var loot_spots := {}
 var briefcases: Array[LootSpot] = []
 ## The Founder's Stapler in its glass case (gone if it's what was stolen).
 var stapler: Node3D
+## The case's clues upstairs and Pelusa's round (OfficeClues), once the case comes.
+var clues: OfficeClues
 var _rng := RandomNumberGenerator.new()
 var _builder: PlaceBuilder
 
@@ -275,6 +278,11 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	stapler.visible = loot != "stapler"
 	for employee in employees:
 		employee.case = case
+	clues = OfficeClues.new()
+	clues.name = "Clues"
+	clues.office = self
+	clues.case = case
+	add_child(clues)
 
 
 ## Searching a spot: the stolen thing turns up in the right one; a sign of nothing in the others. Any briefcase can be
