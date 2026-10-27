@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Cat crime scene, step 1: the Monedero mansion on its lot in block (0, 3): the garden with the fountain, the golden railings and the gate, the front door and the cat flap, the hall with Duquesa's portrait, the kitchen, the laundry with the litter tray and the dumbwaiter, the guest room with the six suitcases, the drawing room with the velvet armchair, the piano and its music box and the parrot's cage, and eight vases on pedestals; --place=cat_mansion.
 - Cat crime scene, step 0: design doc (docs/diseno/escena-gato.md) and decision 260 (proposed).
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
 - Gym raid, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office, the cake lab and the gym in eighths.
