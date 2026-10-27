@@ -5640,3 +5640,6 @@ OBJ_ENTER_WH,Entrar en la casa correcta (la 14),Get into the right house (number
 OBJ_GUESS_WH,"Averiguar qué esconde el de la 14 (con Q abierta, mantén 1, 2 o 3)","Find out what number 14 is hiding (with Q open, hold 1, 2 or 3)","Descobrir o que o da 14 esconde (com Q aberta, segure 1, 2 ou 3)"
 OBJ_COMPLAINT_WH,Denuncia de doña Chola: %d%%,Doña Chola's complaint: %d%%,Denúncia da dona Chola: %d%%
 CASE_FAILED_LAWYER_CHOLA,Doña Chola llamó a su abogado. Caso perdido.,Doña Chola called her lawyer. Case lost.,A dona Chola ligou para o advogado. Caso perdido.
+MENU_WRONG_HOUSE,La casa equivocada (prueba),The wrong house (test),A casa errada (teste)
+HINT_ESCAPE_wrong_house,"¡El de la 14 se escapa en su rural con la prueba en el techo! Tienen un minuto para agarrarlo.","Number 14 is getting away in his station wagon with the evidence on the roof! You have one minute to catch him.","O da 14 está fugindo na perua com a prova no teto! Vocês têm um minuto para pegá-lo."
+CASE_FAILED_WH_GOT_AWAY,El de la 14 se escapó con la prueba. Caso perdido.,Number 14 got away with the evidence. Case lost.,O da 14 fugiu com a prova. Caso perdido.

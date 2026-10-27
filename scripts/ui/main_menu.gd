@@ -7,6 +7,7 @@ const CITY_SCENE := "res://scenes/levels/city.tscn"
 const BAKERY_SCENE := "res://scenes/levels/bakery.tscn"
 const GROOMER_SCENE := "res://scenes/levels/groomer.tscn"
 const APARTMENTS_SCENE := "res://scenes/levels/apartment_tower.tscn"
+const WRONG_HOUSE_SCENE := "res://scenes/levels/wrong_house.tscn"
 const HARDWARE_SCENE := "res://scenes/levels/hardware_store.tscn"
 const FACTORY_SCENE := "res://scenes/levels/doll_factory.tscn"
 const INSURANCE_SCENE := "res://scenes/levels/insurance_office.tscn"
@@ -41,6 +42,7 @@ func _ready() -> void:
 	_bakery_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(BAKERY_SCENE))
 	_groomer_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(GROOMER_SCENE))
 	%ApartmentsButton.pressed.connect(func() -> void: get_tree().change_scene_to_file(APARTMENTS_SCENE))
+	%WrongHouseButton.pressed.connect(func() -> void: get_tree().change_scene_to_file(WRONG_HOUSE_SCENE))
 	%HardwareButton.pressed.connect(func() -> void: get_tree().change_scene_to_file(HARDWARE_SCENE))
 	%FactoryButton.pressed.connect(func() -> void: get_tree().change_scene_to_file(FACTORY_SCENE))
 	%InsuranceButton.pressed.connect(func() -> void: get_tree().change_scene_to_file(INSURANCE_SCENE))

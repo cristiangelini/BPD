@@ -205,6 +205,9 @@ var fines: int:
 var raid: RaidCase
 ## A cop went into the guilty house (the checklist's first row).
 var entered_guilty := false
+## The copilot's map, and the chase after him if he drives off with the main evidence.
+var city_map: CityMap
+var chase: ChaseCase
 var station_parking: Transform3D
 var _build: PlaceBuilder
 @onready var car: PatrolCar = $PatrolCar
@@ -241,9 +244,12 @@ func _ready() -> void:
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("wrong_house")
 	station_parking = city.transform * CityLayout.parking("station")
-	car.global_transform = city.transform * CityLayout.parking("wrong_house")
-	car.global_position += Vector3.UP * 0.05
+	# The shift starts at the station, where the comisario gives the warrant.
+	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
 	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
+	city_map = CityMap.new()
+	add_child(city_map)
+	city_map.setup(city, "wrong_house", car)
 	raid.station_parking = station_parking
 	raid.main_evidence = main
 	raid.start(TIP_BRIEFING, STORIES.keys().map(suspect_id), (city as City).comisario)
@@ -415,15 +421,48 @@ func _physics_process(_delta: float) -> void:
 			neighbor.caught_off_guard()
 
 
-## He drove off: his wagon and what's on its rack leave with him (the chase comes with the case, step 8).
+## He drove off: his wagon and what's on its rack leave with him, and with the main one the chase is on.
 func _on_fled() -> void:
 	var wagon := wagons[guilty]
 	wagon.visible = false
 	wagon.collision_layer = 0
 	for item in neighbor.on_rack:
-		item.freeze = true
-		item.visible = false
-		item.collision_layer = 0
+		_stow(item, true)
+	if neighbor.on_rack.has(main):
+		start_chase()
+
+
+## The chase (persecucion-final.md): he drives his wagon out to the street with his loot on the rack.
+func start_chase() -> void:
+	var wagon := wagons[guilty]
+	# Nose to the street (+Z), which is the getaway car's forward (-Z).
+	var at := Transform3D(Basis(Vector3.UP, PI), wagon.global_position)
+	chase = ChaseCase.begin(self, "night", at, car, $City, case_seed, city_map)
+	chase.who = "wrong_house"
+	chase.online = raid.online
+	chase.follower = raid.follower
+	chase.ended.connect(_on_chase_ended)
+	for cop in get_tree().get_nodes_in_group("cops"):
+		(cop as Cop).show_hint("HINT_ESCAPE_wrong_house")
+
+
+## Caught: what he took is on the sidewalk by his car, to take back to the trunk. Got away with the main evidence:
+## the case is lost.
+func _on_chase_ended(caught: bool) -> void:
+	if not caught:
+		raid.fail("CASE_FAILED_WH_GOT_AWAY")
+		return
+	var i := 0
+	for item in neighbor.on_rack:
+		_stow(item, false)
+		item.global_position = chase.truck.global_position + chase.truck.global_basis.x * 2.0 + Vector3(0, 0.4, i * 0.7)
+		i += 1
+
+
+func _stow(item: Grabbable, away: bool) -> void:
+	item.freeze = away
+	item.visible = not away
+	item.collision_layer = 0 if away else 4
 
 
 ## The neighbor walks on a navigation mesh baked from the built houses and the lot, with the front doors closed.
