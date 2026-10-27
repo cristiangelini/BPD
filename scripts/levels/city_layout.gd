@@ -64,6 +64,8 @@ const PLACES := [
 	{"id": "wrong_house", "block": Vector2i(0, 2), "side": "s", "along": 0.0, "size": Vector3(36, 7, 20), "color": Color(0.95, 0.86, 0.6), "sign": "PLACE_WRONG_HOUSE"},
 	# The airport fills its block too: the terminal and the apron are its case scene's (politico-aeropuerto.md).
 	{"id": "airport", "block": Vector2i(6, 4), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.86, 0.88, 0.9), "sign": "PLACE_AIRPORT", "park": true},
+	# The costume shop "Disfraces El Bigote Postizo" (allanamiento-disfraces.md), beside the TV studio.
+	{"id": "costume_shop", "block": Vector2i(2, 4), "side": "n", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.95, 0.55, 0.2), "sign": "PLACE_COSTUME_SHOP"},
 ]
 
 ## The plaza fills its block.
