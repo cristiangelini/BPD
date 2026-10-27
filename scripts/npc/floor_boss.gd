@@ -14,6 +14,8 @@ signal lawyer_called
 signal hurt
 ## She let slip where something is (asked with R): the line, already translated.
 signal slipped(text: String)
+## E on them, when the place gives them a use_prompt (Chispita's balloons).
+signal used(cop: Cop)
 
 const MAX_COMPLAINT := 100.0
 const STRUCK := 15.0
@@ -60,6 +62,8 @@ var printer: OfficePrinter
 var fix_time := FIX_TIME
 ## Where she looks while at it, in the world, if not at the printer (the gym's profe gives his class to the mirror).
 var fix_facing := Vector3.INF
+## What E on them says, if the place has something for it ("" = nothing, unless they're being escorted).
+var use_prompt := ""
 ## The points she's walking to, in order; empty while she patrols.
 var _path: Array[Vector3] = []
 var _errand := ""
@@ -96,13 +100,15 @@ func start_at(index: int) -> void:
 
 func prompt_key(cop: Cop) -> String:
 	var escort := OwnerEscort.of(self)
-	return escort.prompt_key(cop) if escort and escort.handles_use() else ""
+	return escort.prompt_key(cop) if escort and escort.handles_use() else use_prompt
 
 
 func use(cop: Cop) -> void:
 	var escort := OwnerEscort.of(self)
 	if escort and escort.handles_use():
 		escort.use(cop)
+	elif use_prompt != "":
+		used.emit(cop)
 
 
 func cuffed(seconds: float) -> void:
