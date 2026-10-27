@@ -91,7 +91,8 @@ func test_the_suspicion_and_being_found_out_reach_the_guest() -> void:
 	await wait_until(func() -> bool: return guest.members[0].suspicion > 30.0, 5.0)
 	assert_almost_eq(guest.suspicion.highest(), host.suspicion.highest(), 2.0, "the guest's meter shows it")
 	host.suspicion.raise(host.members[0], 100.0)
-	await wait_until(func() -> bool: return guest.case.chase != null, 5.0)
+	# The chase and the meter come in different packets: wait for both.
+	await wait_until(func() -> bool: return guest.case.chase != null and guest.suspicion.found_out, 5.0)
 	assert_true(guest.suspicion.found_out)
 	assert_true(guest.case.chase.follower, "the guest's chase only follows")
 	assert_false(guest.boss.visible, "Doña Chela is gone from the guest's club")
@@ -132,6 +133,8 @@ func test_a_guest_takes_a_bingo_card_on_every_pc() -> void:
 	OnlinePcs.own_cop(pcs[1]).act("use", guest_card)
 	await wait_until(func() -> bool: return host_card.claimed, 5.0)
 	assert_true(host_card.claimed, "the host's card is taken")
+	# The host does it first and then tells the guest: one more trip.
+	await wait_until(func() -> bool: return guest_card.claimed, 5.0)
 	assert_true(guest_card.claimed)
 
 
