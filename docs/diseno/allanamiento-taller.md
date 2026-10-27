@@ -47,7 +47,7 @@ pero los autos salen raros".
 | **El cuentakilómetros mágico** | El taladro que tira los kilómetros para atrás (2 kg, 1000) | La libreta con los kilómetros de verdad (0,1 kg, 300), el cartel de "0 km, único dueño" (1 kg, 200) | El auto del frente marca 12 km en el tablero y tiene las cubiertas lisas | Con E en el tablero de cualquier auto se ve su kilometraje, y la mitad es absurda (3 km, 7 km) |
 | **Las piezas cambiadas** | El cajón de repuestos nuevos de los clientes (12 kg, 1000, entre dos) | Las facturas truchas (0,1 kg, 300), la pila de repuestos viejos pintados de plateado (4 kg, 200) | Un repuesto "nuevo" del mostrador deja óxido en la mano del que lo agarra | Los capós abiertos hacen "¡tac tac tac!" y los motores tiemblan |
 | **La carrera clandestina** | El trofeo de la carrera clandestina (4 kg, 1000) | El tanque de nitro (6 kg, 300), el mapa de la carrera (0,1 kg, 200) | Marcas de goma en círculo en el piso del taller | Un auto tiene un alerón gigante, y si un policía toca su bocina el motor ruge y los otros autos tiemblan |
-| **Los choques de mentira** | El martillo de abollar (3 kg, 1000) | Las fotos de los choques (0,2 kg, 300), los formularios del seguro (0,1 kg, 200) | Un auto nuevo con abolladuras redondas perfectas, todas iguales | Pegarle a un auto con algo pesado lo abolla en redondo y no cuesta multa |
+| **Las abolladuras a propósito** | El martillo de abollar (3 kg, 1000) | La lista de patentes de los clientes (0,1 kg, 300), el plano del barrio con cruces (0,2 kg, 200) | Un auto nuevo con abolladuras redondas perfectas, todas iguales | Pegarle a un auto con algo pesado lo abolla en redondo y no cuesta multa |
 | **El auto del comisario** | El cartel de taxi que le ponen al auto del comisario (2 kg, 1000) | El taxímetro (1,5 kg, 300), la libreta de viajes (0,1 kg, 200) | El auto del comisario (con su calcomanía "Mejor comisario del año") tiene 1500 km más que cuando lo dejó | El auto del comisario está en el taller: rajarle el parabrisas cuesta el doble y el comisario llama por radio a quejarse |
 
 Los pesos y valores siguen la escala del gimnasio y del laboratorio: la principal vale unos 1000 y los extras suman
@@ -103,6 +103,18 @@ entre 400 y 600.
      en el paso 4; mientras tanto dice que no vio nada raro). Con otra herramienta dice "¡Esa no es!" y, si está
      suelta, se la tira de vuelta. Una vez por policía. Capturas `paso3-*.png` y `garage_tools.png` (modelos).
 4. El caso (RaidCase) con la primera historia: las patentes cambiadas.
+   - **Hecho así (propuesta):** el taller ya es un caso de allanamiento como el gimnasio: el comisario da la denuncia
+     de los autos que salen raros, hay 3 sospechas entre las 6 historias (notas en el piso del taller), Don Tuerca
+     suelta dónde están las cosas cuando le preguntas con R y llama al abogado en 100, y Grasita cuenta dónde lo vio
+     esconder algo. Las patentes cambiadas: la caja con 40 patentes (5 kg, 1000, en un escondite para cosas pesadas),
+     la lista de autos robados (0,1 kg, 300) y el aerosol de pintura (0,5 kg, 200). Uno de los dos autos del piso
+     (sorteado) tiene la pintura fresca: el policía que lo toca queda con la mano verde ("¡Pintura fresca!"), y la
+     primera vez es la pista. La patente pegada con cinta queda para después (los autos no tienen puertas). Si Don
+     Tuerca escapa, se va en auto como los otros dueños, y si lo atrapan, el turno siguiente es su interrogatorio.
+     Dos historias cambiaron de nombre para no repetir otras: "los choques de mentira" se parecía a "los choques
+     falsos" de la oficina de seguros, así que ahora es "las abolladuras a propósito" (Don Tuerca abolla de noche
+     los autos de sus clientes para que vuelvan), y "el auto del comisario" queda igual. Capturas `paso4-*.png` y
+     `garage_swapped_plates.png`.
 5. Las otras 5 historias, una por PR.
 6. "Jugar" suma el taller al sorteo de allanamientos (`PlaceDraw.ORDER`).
 7. El online (Don Tuerca, Grasita, el timbre, el elevador y los parabrisas en todas las PC).

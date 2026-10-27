@@ -183,7 +183,44 @@ const toolModels = {
 	},
 };
 
+// The swapped plates story: a wooden crate stuffed with 40 license plates, the list of stolen cars and the spray can.
+const plateColors = [0xf2f2ea, 0xf2d24a, 0xf2f2ea, 0x9ad0f2];
+export function buildPlatesBox() {
+	const b = new Builder('garage_plates_box');
+	const wood = mat('crate_wood', 0xb07a44);
+	b.add('box', wood, new THREE.BoxGeometry(0.6, 0.04, 0.4), { pos: V(0, 0.02, 0) });
+	for (const s of [-1, 1]) {
+		b.add('box', wood, new THREE.BoxGeometry(0.6, 0.26, 0.03), { pos: V(0, 0.13, s * 0.185) });
+		b.add('box', wood, new THREE.BoxGeometry(0.03, 0.26, 0.4), { pos: V(s * 0.285, 0.13, 0) });
+	}
+	for (let i = 0; i < 9; i++) {
+		b.add('plates', mat('plate_' + (i % 4), plateColors[i % 4]), new THREE.BoxGeometry(0.02, 0.15, 0.34), { pos: V(-0.24 + i * 0.06, 0.25 + (i % 3) * 0.02, 0), rot: [0, 0, (i % 2 ? 1 : -1) * 0.12] });
+		b.add('digits', mat('plate_ink', 0x26262a), new THREE.BoxGeometry(0.022, 0.04, 0.22), { pos: V(-0.24 + i * 0.06, 0.27 + (i % 3) * 0.02, 0), rot: [0, 0, (i % 2 ? 1 : -1) * 0.12] });
+	}
+	return b.build();
+}
+
+export function buildStolenList() {
+	const b = new Builder('garage_stolen_list');
+	b.add('paper', mat('sheet_paper', 0xfaf6ea), new THREE.BoxGeometry(0.21, 0.004, 0.29), { pos: V(0, 0.002, 0) });
+	for (let i = 0; i < 9; i++) {
+		b.add('lines', mat('sheet_ink', 0x2a2a30), new THREE.BoxGeometry(0.12, 0.002, 0.008), { pos: V(-0.02, 0.005, -0.11 + i * 0.026) });
+		b.add('ticks', mat('list_tick', 0xd23a3a), new THREE.BoxGeometry(0.015, 0.002, 0.015), { pos: V(0.075, 0.005, -0.11 + i * 0.026), rot: [0, 0.8, 0] });
+	}
+	return b.build();
+}
+
+export function buildSprayCan() {
+	const b = new Builder('garage_spray_can');
+	b.add('can', mat('spray_green', 0x2fa84a), new THREE.CylinderGeometry(0.035, 0.035, 0.2, 10), { pos: V(0, 0.1, 0) });
+	b.add('cap', mat('spray_cap', 0xf2f2ea), new THREE.CylinderGeometry(0.03, 0.035, 0.04, 10), { pos: V(0, 0.22, 0) });
+	b.add('nozzle', mat('flash_black', 0x26262a), new THREE.BoxGeometry(0.015, 0.012, 0.015), { pos: V(0, 0.245, 0.01) });
+	b.add('drip', mat('spray_green', 0x2fa84a), new THREE.BoxGeometry(0.01, 0.06, 0.004), { pos: V(0.01, 0.15, 0.035) });
+	return b.build();
+}
+
 export const models = {
+	garage_plates_box: buildPlatesBox, garage_stolen_list: buildStolenList, garage_spray_can: buildSprayCan,
 	npc_grasita: buildGrasita, ...toolModels,
 	garage_lift: buildLift, garage_lift_arms: buildLiftArms, npc_don_tuerca: buildDonTuerca,
 	oil_drum: buildOilDrum, garage_tire: buildGarageTire, service_bell: buildServiceBell, tool_board: buildToolBoard,
@@ -197,6 +234,11 @@ export const views = {
 			{ name: 'service_bell', pos: [1.6, 0.92, 0.4] }, { name: 'tool_board', pos: [1.7, 0.6, -0.8] },
 		],
 		cam: { pos: [0, 2.0, 6.5], target: [0, 1.4, 0], fov: 45 },
+	},
+	garage_swapped_plates: {
+		items: [{ name: 'garage_plates_box', pos: [-0.2, 0, 0], rotY: 0.3 }, { name: 'garage_stolen_list', pos: [0.45, 0, 0.3], rotY: -0.2 },
+			{ name: 'garage_spray_can', pos: [0.5, 0, -0.2] }],
+		cam: { pos: [0.2, 1.0, 1.6], target: [0.1, 0.15, 0], fov: 42 },
 	},
 	garage_tools: {
 		items: [

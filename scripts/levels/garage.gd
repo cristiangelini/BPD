@@ -8,7 +8,8 @@ extends Node3D
 ## that something hits fast cracks, a fine each. Don Tuerca walks among the cars filling the complaint; the bell calls
 ## him to the counter, his back to the garage, and the lift's button brings its car down (or up), squashing softly
 ## whoever is under it (step 2). Grasita, the apprentice, works on the first car's engine and talks to whoever brings
-## him the tool he asks for from the workbench (step 3). Every number here is (propuesta).
+## him the tool he asks for from the workbench (step 3). The case is one of its stories (STORIES), drawn with the seed,
+## run by the same RaidCase as the other places (step 4). Every number here is (propuesta).
 
 signal windshield_broken(index: int)
 ## The lift's car came down on a cop.
@@ -18,6 +19,34 @@ const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const LIFT_MODEL := preload("res://assets/models/garage_lift.glb")
 const ARMS_MODEL := preload("res://assets/models/garage_lift_arms.glb")
 const TUERCA_SCENE := preload("res://scenes/npc/don_tuerca.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the garage can be suspected of (allanamiento-taller.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["swapped_plates", "magic_odometer", "swapped_parts", "street_race", "dented_on_purpose",
+	"comisario_taxi"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_GARAGE_TIP_B", "BRIEF_TIP_C", "BRIEF_GARAGE_TIP_D",
+	"BRIEF_GARAGE_TIP_E"]
+## The stories the garage can tell, like GymRaid.STORIES: what the comisario says once it's guessed, its "find it" row,
+## what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the checklist rows of
+## its extras and its rig. With "main_hidden" the first hidden item is the main evidence and the rest extras.
+const STORIES := {
+	"swapped_plates": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_SWAPPED_PLATES_B", "BRIEF_SWAPPED_PLATES_C", "BRIEF_SWAPPED_PLATES_D"],
+		"find": "OBJ_FIND_PLATES_BOX",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/plates_box.tscn"), preload("res://scenes/props/stolen_list.tscn"),
+			preload("res://scenes/props/spray_can.tscn")],
+		"half_heights": [0.185, 0.003, 0.125],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_STOLEN_LIST", "OBJ_EXTRA_SPRAY_CAN"],
+		"rig": preload("res://scripts/case/garage/swapped_plates_rig.gd"),
+	},
+}
+## Where the suspicion notes can lie: on the garage's floor, away from the cars.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(-3.0, FLOOR_TOP, 6.5), Vector3(2.5, FLOOR_TOP, 7.5), Vector3(-1.5, FLOOR_TOP, -7.5),
+	Vector3(4.0, FLOOR_TOP, -8.0), Vector3(10.0, FLOOR_TOP, 3.5), Vector3(-10.0, FLOOR_TOP, 4.5),
+]
 const DRUM_MODEL := preload("res://assets/models/oil_drum.glb")
 const BOARD_MODEL := preload("res://assets/models/tool_board.glb")
 const TIRE_MODEL := preload("res://assets/models/garage_tire.glb")
@@ -169,10 +198,22 @@ var lift_target := LIFT_HEIGHT
 var cars: Array[StaticBody3D] = []
 var broken_windshields: Array[int] = []
 var broken_goods := 0
-## Money taken off the case pay: the windshields.
-var fines := 0
-## Same seed, same garage (the stories and the hiding spots come from it, step 4).
+## The case flow every raid shares.
+var raid: RaidCase
+## Money taken off the case pay: the windshields and the cops squashed under the lift.
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## Same seed, same garage, same draw: the story and where its things go. 0 draws one.
 @export var case_seed := 0
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: GarageRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
 var _build: PlaceBuilder
 var _under_lift: Area3D
 var _squash_wait := 0.0
@@ -186,6 +227,19 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_pit()
@@ -204,6 +258,87 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "garage", car)
+	raid.station_parking = station_parking
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = tuerca
+	raid.owner_id = "garage"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The garage's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_GARAGE",
+		"guess_key": "OBJ_GUESS_GARAGE",
+		"broken_key": "OBJ_BROKEN_GARAGE",
+		"complaint_key": "OBJ_COMPLAINT_GARAGE",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_goods,
+		"complaint": tuerca.complaint,
+	}
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Don Tuerca lets slip when asked (where the story's things are, in an order drawn from the seed), and what
+## Grasita saw: where he hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		tuerca.slips.append(tr("TUERCA_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	tuerca.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	grasita.clue = tr("CLUE_GRASITA") % where
+	grasita.clue_speech = tr("GRASITA_CLUE_" + story_id) % where
+	grasita.told.connect(raid.add_clue)
 
 
 ## The concrete floor around the pit, the walls with the shutter's opening, the roof and the sign.
@@ -410,6 +545,7 @@ func _squash_under() -> bool:
 				_trip_fined = true
 				broken_goods += 1
 				fines += SQUASH_FINE
+				raid.float_label("-%d" % SQUASH_FINE, cop.global_position + Vector3.UP * 2.0, Color(1, 0.3, 0.25))
 				_say(to_local(cop.global_position) + Vector3.UP * 1.2, "GARAGE_SQUASHED")
 				squashed.emit(cop)
 			any = true
@@ -455,6 +591,7 @@ func _place_tuerca() -> void:
 	tuerca.fix_facing = to_global(COUNTER_SPOT + Vector3(0, 0, 10))
 	tuerca.start_at(0)
 	office_door.broken.connect(tuerca.door_broken)
+	tuerca.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_GARAGE"))
 	till.opened.connect(func(at: Vector3) -> void: tuerca.saw(at, FloorBoss.SAW_TILL))
 	windshield_broken.connect(func(index: int) -> void:
 		tuerca.saw(to_global(cars[index].position + WINDSHIELD_AT), SAW_WINDSHIELD, "TUERCA_WINDSHIELD"))
@@ -484,6 +621,7 @@ func break_windshield(index: int) -> void:
 	broken_windshields.append(index)
 	broken_goods += 1
 	fines += WINDSHIELD_FINE
+	raid.float_label("-%d" % WINDSHIELD_FINE, cars[index].global_position + Vector3.UP * 2.0, Color(1, 0.3, 0.25))
 	var cracks := Node3D.new()
 	cracks.name = "Cracks%d" % index
 	cars[index].add_child(cracks)
