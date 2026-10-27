@@ -3,7 +3,8 @@ extends StaticBody3D
 
 ## The empty frame where the stolen piece hung (escena-museo.md, "Las pistas"). If the prints are one of the case's
 ## clues, the print kit (PrintKit, `dusted`) finds the culprit's on the gilt; a cop who touches it first (E) leaves his
-## own on top, like the circus's fish bucket. The wedding's empty ring box works the same with its own texts (`keys`).
+## own on top, like the circus's fish bucket. The wedding's empty ring box and the hotel suite's open safe work the same
+## with their own texts (`keys`).
 
 var case: CrimeSceneCase
 var has_prints := false

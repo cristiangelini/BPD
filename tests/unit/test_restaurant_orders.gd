@@ -79,7 +79,10 @@ func test_the_same_seed_orders_the_same_dishes() -> void:
 	for i in 3:
 		hall.orders.order()
 		other.orders.order()
-	for i in 3:
+	# The third call brings the special soup instead of an order (the restaurant case).
+	assert_eq(other.orders.orders.size(), hall.orders.orders.size())
+	assert_gt(hall.orders.orders.size(), 1)
+	for i in hall.orders.orders.size():
 		assert_eq(other.orders.orders[i].dish, hall.orders.orders[i].dish)
 
 

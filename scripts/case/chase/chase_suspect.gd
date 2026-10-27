@@ -25,6 +25,7 @@ const MODELS := {
 	"factory": preload("res://assets/models/npc_capataz.glb"),
 	"insurance": preload("res://assets/models/npc_jefa.glb"),
 	"cake_lab": preload("res://assets/models/npc_chef_bruno.glb"),
+	"gym": preload("res://assets/models/npc_profe_fito.glb"),
 	"dangerous": preload("res://assets/models/npc_sospechoso.glb"),
 	# The pastry contest's culprit, off his bike (escena-del-crimen.md).
 	"cook": preload("res://assets/models/npc_pastelero.glb"),
@@ -33,6 +34,8 @@ const MODELS := {
 	# The museum's culprit, out of the art van (escena-museo.md).
 	"guard": preload("res://assets/models/npc_guardia_museo.glb"),
 	"tuxedo": preload("res://assets/models/npc_tuxedo.glb"),
+	# The hotel's culprit, out of the shuttle in bathrobe and towel (escena-hotel.md).
+	"guest": preload("res://assets/models/npc_huesped.glb"),
 	# The traffic control's wanted driver (control-transito.md).
 	"driver": preload("res://assets/models/npc_cliente.glb"),
 	# Doña Chela, off her motorized walker (infiltracion.md).
@@ -76,8 +79,12 @@ const MODELS := {
 	"referee": preload("res://assets/models/npc_arbitro.glb"),
 	# The school's janitor, off his floor polisher (politico-escuela.md).
 	"janitor": preload("res://assets/models/npc_conserje_escuela.glb"),
+	# The airport's bought porter, off the baggage tug (politico-aeropuerto.md).
+	"porter": preload("res://assets/models/npc_mudancero.glb"),
 }
 const HECKLER := "heckler_"
+## The TV channel's bought technician is "technician_<look>" (politico-debate.md), off the TV van: his own model.
+const TECHNICIAN := "technician_"
 ## The deputy's double (politico-doble.md), off on the kick scooter.
 const DOUBLE := "double"
 ## The cake shop's courier at the deputy's birthday (politico-cumple.md), off on the kick scooter.
@@ -140,13 +147,15 @@ func net_setup() -> Dictionary:
 static func model_for(who: String) -> PackedScene:
 	if who.begins_with(HECKLER):
 		return load("res://assets/models/npc_%s.glb" % who.trim_prefix(HECKLER))
+	if who.begins_with(TECHNICIAN):
+		return load("res://assets/models/npc_%s.glb" % who.trim_prefix(TECHNICIAN))
 	return MODELS[who]
 
 
 ## His complaints, as tr() keys.
 func lines() -> Array[String]:
 	var keys: Array[String] = []
-	var who := "heckler" if kind.begins_with(HECKLER) else kind
+	var who := "heckler" if kind.begins_with(HECKLER) else "technician" if kind.begins_with(TECHNICIAN) else kind
 	for i in 3:
 		keys.append("CHASE_%s_LINE_%d" % [who.to_upper(), i + 1])
 	return keys

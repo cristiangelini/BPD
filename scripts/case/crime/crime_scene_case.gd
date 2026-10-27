@@ -77,6 +77,18 @@ const VARIANTS := {
 			"witness": "cologne"},
 		"parts": ["photo", "prints", "teeth", "hair", "cologne"],
 	},
+	# The hotel (escena-hotel.md, decision 201): six guests alike in bathrobes; their rooms tell what doesn't show on
+	# them, and the concierge swapped two rooms.
+	"hotel": {
+		"shift": "crime_hotel", "story": "hotel",
+		"brief": ["BRIEF_HOTEL_A_", "BRIEF_HOTEL_B", "BRIEF_HOTEL_C"], "go": "HINT_GO_HOTEL",
+		"go_row": "OBJ_HOTEL_GO", "look": "HINT_HOTEL_LOOK", "files_row": "OBJ_HOTEL_FILES",
+		"clue_line": "CLUE_HOTEL_", "ruined_hint": "HINT_HOTEL_RUINED_", "left": "HINT_GUEST_LEFT",
+		"who": "guest", "getaway": SuspectCar.HOTEL_SHUTTLE, "loot_row": "OBJ_HOTEL_LOOT_",
+		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "witness": "glasses",
+			"signature": "left"},
+		"parts": ["prints", "teeth", "sign", "shoe", "hair", "glasses"],
+	},
 }
 ## At the museum, the traits each part of a guard's file tells.
 const GUARD_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
@@ -84,6 +96,10 @@ const GUARD_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "t
 ## At the wedding, the traits each part of a tuxedo's file tells.
 const TUXEDO_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
 	"cologne": ["cologne"]}
+## At the hotel, the trait each part of a guest's file tells, and the parts that come from their room.
+const GUEST_PART_TRAITS := {"prints": "name", "teeth": "teeth", "sign": "left", "shoe": "shoe", "hair": "hair",
+	"glasses": "glasses"}
+const ROOM_PARTS: Array[String] = ["shoe", "hair", "glasses"]
 
 ## The comisario's verdict at the board: right, or wrong (and whether that lost the case).
 signal verdict(right: bool, lost: bool)
@@ -117,6 +133,9 @@ var file_parts := {}
 ## At the circus, what each file says about whoever gave each part: id -> {trait: value}. A file follows its sign,
 ## so a sign that changed backs mixes two clowns in one file.
 var captured := {}
+## At the hotel: what the cops looked at in each room (room: [parts]) and the rooms whose suitcase they opened.
+var room_seen := {}
+var opened := {}
 var accused := false
 ## At the circus or the museum, the cops found what was stolen.
 var loot_found := false
@@ -195,6 +214,8 @@ func _draw_suspects() -> Array[Dictionary]:
 		return GuardTraits.draw(case_seed)
 	if texts() == VARIANTS.wedding:
 		return WeddingTraits.draw(case_seed)
+	if texts() == VARIANTS.hotel:
+		return GuestTraits.draw(case_seed)
 	return ClownTraits.draw(case_seed) if texts() == VARIANTS.circus else CookTraits.draw(case_seed)
 
 
@@ -245,9 +266,92 @@ func guard_part(index: int, part: String) -> void:
 	file_part(index, part)
 
 
+## A guest gave a part of their file themselves (escena-hotel.md): their prints, their teeth or their signature.
+func guest_part(index: int, part: String) -> void:
+	if follower:
+		return
+	(captured.get_or_add(index, {}) as Dictionary)[GUEST_PART_TRAITS[part]] = cooks[index][GUEST_PART_TRAITS[part]]
+	file_part(index, part)
+
+
+## The room a guest's file says they sleep in: the one whose suitcase says so, or else the one the concierge said
+## (0 if a suitcase showed that room is someone else's).
+func guest_room(index: int) -> int:
+	for room: int in opened:
+		if GuestTraits.sleeper(cooks, room) == index:
+			return room
+	var said: int = cooks[index].said
+	return 0 if opened.has(said) else said
+
+
+## Whose file a room's things go to: the sleeper's if its suitcase was opened, or else whom the concierge said.
+func room_file(room: int) -> int:
+	for i in cooks.size():
+		if guest_room(i) == room:
+			return i
+	return -1
+
+
+## A cop looked at a thing in a room (RoomThing): it goes to the file of whoever the file says sleeps there, with
+## what it says about whoever really does.
+func room_part(room: int, part: String) -> void:
+	if follower:
+		return
+	var seen: Array = room_seen.get_or_add(room, [])
+	if not seen.has(part):
+		seen.append(part)
+	var index := room_file(room)
+	if index >= 0:
+		_hint_all(tr("HINT_FILE_" + part) % file_name(index))
+	_refresh_rooms()
+
+
+## A cop opened a room's suitcase: its tag says whose room it is, and the files take it.
+func open_suitcase(room: int) -> void:
+	if follower or opened.has(room):
+		return
+	var said := room_file(room)
+	opened[room] = true
+	var sleeper := GuestTraits.sleeper(cooks, room)
+	_hint_all(tr("HINT_SUITCASE_LIE" if said != sleeper else "HINT_SUITCASE") % [room, file_name(sleeper)])
+	_refresh_rooms()
+
+
+## The room parts of every guest's file, again from what was seen and whose room each one is now.
+func _refresh_rooms() -> void:
+	for i in cooks.size():
+		var room := guest_room(i)
+		var seen: Array = room_seen.get(room, [])
+		if not file_parts.has(i) and seen.is_empty():
+			continue
+		var blank := {}
+		for name: String in texts().parts:
+			blank[name] = false
+		var parts: Dictionary = file_parts.get_or_add(i, blank)
+		for part in ROOM_PARTS:
+			parts[part] = seen.has(part)
+		var done := parts.values().all(func(part_done: bool) -> bool: return part_done)
+		if done and not files.has(i):
+			files.append(i)
+			_hint_all(tr("HINT_FILE_DONE") % file_name(i))
+		elif not done:
+			files.erase(i)
+	if board:
+		board.refresh()
+	checklist.show_rows(rows())
+
+
 ## What a file says about each trait: the cook's own traits, or at the circus what the cops got from whoever wore its
-## sign, or at the museum and the wedding what they got from the suspect.
+## sign, or at the museum and the wedding what they got from the suspect, or at the hotel that and what their room's
+## things say.
 func file_traits(id: int) -> Dictionary:
+	if texts() == VARIANTS.hotel:
+		var known: Dictionary = captured.get(id, {}).duplicate()
+		var room := guest_room(id)
+		var sleeper := GuestTraits.sleeper(cooks, room)
+		for part: String in room_seen.get(room, []):
+			known[GUEST_PART_TRAITS[part]] = cooks[sleeper][GUEST_PART_TRAITS[part]]
+		return known
 	if texts() == VARIANTS.circus or texts() == VARIANTS.museum or texts() == VARIANTS.wedding:
 		return captured.get(id, {})
 	return cooks[id]
@@ -397,7 +501,8 @@ func snapshot() -> Dictionary:
 		"parts": file_parts.duplicate(true), "files": files.duplicate(), "accused": accused, "wrong": wrong_guesses,
 		"lost": lost, "gone": gone.duplicate(), "escaped": escaped, "loot": loot_found,
 		"offended": place != null and place.witness_offended(), "result": _result, "captured": captured.duplicate(true),
-		"frames": frames_broken, "complaint": complaint}
+		"frames": frames_broken, "rooms": room_seen.duplicate(true), "opened": opened.duplicate(),
+		"complaint": complaint}
 	# What only the place knows (the circus: the trick, the signs, the camera).
 	if place:
 		state.place = place.net_state()
@@ -419,6 +524,8 @@ func apply_snapshot(state: Dictionary) -> void:
 	file_parts = state.parts.duplicate(true)
 	files.assign(state.files)
 	captured = state.get("captured", {}).duplicate(true)
+	room_seen = state.get("rooms", {}).duplicate(true)
+	opened = state.get("opened", {}).duplicate()
 	if place and state.has("place"):
 		place.apply_net_state(state.place)
 	# The comisario's verdict at the board, said here too.
@@ -529,6 +636,8 @@ func clue_line(kind: String) -> String:
 		return _museum_clue_line(kind)
 	if texts() == VARIANTS.wedding:
 		return _wedding_clue_line(kind)
+	if texts() == VARIANTS.hotel:
+		return _hotel_clue_line(kind)
 	match kind:
 		"footprint":
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
@@ -600,6 +709,23 @@ func _museum_clue_line(kind: String) -> String:
 	return tr("CLUE_MUSEUM_" + kind)
 
 
+## At the hotel: the bare footprint on the bathroom's mat, the hair and the bonbon on the pillow, Tito and the guest book.
+func _hotel_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_HOTEL_footprint") % who.shoe
+		"hair":
+			return tr("CLUE_HOTEL_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_HOTEL_bite") % tr("TEETH_" + str(who.teeth))
+		"witness":
+			return tr("CLUE_HOTEL_witness_glasses" if who.glasses else "CLUE_HOTEL_witness_no_glasses")
+		"signature":
+			return tr("CLUE_HOTEL_signature_left" if who.left else "CLUE_HOTEL_signature_right")
+	return tr("CLUE_HOTEL_" + kind)
+
+
 ## What a file card on the board says: what the photo shows, and the rest as the cops got it.
 func file_text(index: int) -> String:
 	var who := file_traits(index)
@@ -620,6 +746,8 @@ func file_text(index: int) -> String:
 		return _guard_file_text(index, who)
 	if texts() == VARIANTS.wedding:
 		return _tuxedo_file_text(index, who)
+	if texts() == VARIANTS.hotel:
+		return _guest_file_text(index, who)
 	var lines := PackedStringArray(["%d. %s" % [index + 1, who.name]])
 	lines.append(tr("FILE_APRON") % tr("APRON_" + str(who.apron)))
 	lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
@@ -663,6 +791,39 @@ func _tuxedo_file_text(index: int, who: Dictionary) -> String:
 	lines.append(tr("FILE_COLOGNE") % (tr("COLOGNE_" + str(who.cologne)) if who.has("cologne") else "?"))
 	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
 	return "\n".join(lines)
+
+
+## A guest's file: name, the room the file says (and whether only the concierge said it), and what the cops got.
+func _guest_file_text(index: int, who: Dictionary) -> String:
+	var lines := PackedStringArray(["%d. %s" % [index + 1, cooks[index].name]])
+	var room := guest_room(index)
+	if room == 0:
+		lines.append(tr("FILE_ROOM") % "?")
+	else:
+		lines.append(tr("FILE_ROOM" if opened.has(room) else "FILE_ROOM_SAID") % room)
+	lines.append(tr("FILE_SHOE") % who.shoe if who.has("shoe") else tr("FILE_SHOE_UNKNOWN"))
+	if who.has("glasses"):
+		lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
+	else:
+		lines.append(tr("FILE_GLASSES_UNSEEN"))
+	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if who.has("hair") else "?"))
+	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
+	if who.has("left"):
+		lines.append(tr("FILE_LEFT") if who.left else tr("FILE_RIGHT"))
+	else:
+		lines.append(tr("FILE_HAND_UNKNOWN"))
+	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
+	return "\n".join(lines)
+
+
+## The concierge's list of who sleeps where, as he says it (two swapped).
+func concierge_list() -> String:
+	var said := PackedStringArray()
+	for room: int in Hotel.GUEST_ROOMS:
+		for guest in cooks:
+			if guest.said == room:
+				said.append("%d: %s" % [room, guest.name])
+	return tr("HOTEL_CONCIERGE_ROOMS") % ", ".join(said)
 
 
 ## The comisario's briefing: at the circus and the museum, the first line says what was stolen (the place drew it).
