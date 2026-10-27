@@ -111,7 +111,7 @@ func walk_off() -> void:
 func _physics_process(delta: float) -> void:
 	match state:
 		State.SPEAKING:
-			if speech.speaking and auto_walks:
+			if auto_walks and speech and speech.speaking:
 				_walk_left -= delta
 				if _walk_left <= 0.0:
 					_walk_left = WALK_EVERY + _rng.randf_range(-WALK_JITTER, WALK_JITTER)
