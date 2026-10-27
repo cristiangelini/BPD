@@ -6,6 +6,9 @@ extends GutTest
 ## suspicious; playing to the end pleases the member.
 
 const LEVEL := preload("res://scenes/levels/chess_club.tscn")
+## A fixed seed: without one the club draws its own, and about 1 in 150 (243, 346, ...) seats every member across
+## from another, with no table left to challenge from.
+const SEED := 11
 
 var club: ChessClub
 var cop: Cop
@@ -14,6 +17,7 @@ var games: ChessGames
 
 func before_each() -> void:
 	club = LEVEL.instantiate()
+	club.case_seed = SEED
 	cop = club.get_node("Cop")
 	cop.input_enabled = false
 	add_child_autofree(club)
