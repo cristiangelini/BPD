@@ -121,6 +121,22 @@ func is_hanging() -> bool:
 	return state == State.HANG
 
 
+## Online (NpcSync): the host runs the kids and the guests' copies follow; a copy hanging on a leg slows down the cop
+## it hangs on there (its own PC's cop is the one that walks).
+func net_state() -> Variant:
+	return state == State.HANG
+
+
+func apply_net_state(hanging: Variant) -> void:
+	if hanging and not is_instance_valid(hanging_on):
+		hanging_on = _cop_near(HANG_REACH)
+	elif not hanging and is_instance_valid(hanging_on):
+		hanging_on.slow_factor = 1.0
+		hanging_on = null
+	if is_instance_valid(hanging_on):
+		hanging_on.slow_factor = HANG_SLOW
+
+
 func _wander(delta: float) -> void:
 	if not wanders:
 		return
@@ -219,7 +235,8 @@ func _cop_near(reach: float) -> Cop:
 	for node in get_tree().get_nodes_in_group("cops"):
 		var cop := node as Cop
 		var at := party.to_local(cop.global_position)
-		if Vector2(at.x - position.x, at.z - position.z).length() < reach and absf(at.y - position.y) < 1.5:
+		if party.is_ancestor_of(cop) and Vector2(at.x - position.x, at.z - position.z).length() < reach \
+				and absf(at.y - position.y) < 1.5:
 			return cop
 	return null
 
@@ -228,7 +245,7 @@ func _watch_pushes() -> void:
 	for node in get_tree().get_nodes_in_group("cops"):
 		var cop := node as Cop
 		var at := party.to_local(cop.global_position)
-		if Vector2(at.x - position.x, at.z - position.z).length() < PUSH_REACH \
+		if party.is_ancestor_of(cop) and Vector2(at.x - position.x, at.z - position.z).length() < PUSH_REACH \
 				and Vector2(cop.velocity.x, cop.velocity.z).length() > PUSH_SPEED:
 			cry()
 			return
