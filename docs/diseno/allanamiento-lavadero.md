@@ -169,6 +169,11 @@ extras suman 500.
      la patente pegada con dos tiras de cinta: a un policía a menos de 2,5 m le salta "¿Cinta?" y la primera vez va a
      la planilla. Cada 20 s de estar en la fila, el auto cruza el túnel solo (lo prende), espera 4 s en la zona de
      secado y vuelve marcha atrás. Capturas: `paso6a-*.png`.
+   - **El champú trucho:** la caja de champú trucho (6 kg, 1000) en un escondite para cosas pesadas, las etiquetas
+     falsas (0,1 kg, 300) y el embudo (0,5 kg, 200) en otros. La espuma del tanque es verde y los chorros salen verdes:
+     a un policía a menos de 3 m del tanque (o de los chorros andando) le salta "¡Puaj! ¿Qué es ese olor?" y la primera
+     vez va a la planilla. Mientras anda el túnel, sale una burbuja gigante por el final cada 1,5 s, que sube flotando 6
+     s y explota. Capturas: `paso6b-*.png`.
 7. El lavadero en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 8. El online.
 
