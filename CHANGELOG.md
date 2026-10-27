@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Birthday party raid, step 2: the clown Chispita walks his round and keeps the complaint (2 per balloon he sees pop, 10 for the cake falling, the office door, his case and pushes; the lawyer at 100); E on the matchbox by the cake is cake time: lights off, Chispita and the 8 kids sing round the cake for 15 s seeing nothing, a cop singing along takes 5 off once a song, and the candles rest 45 s.
 - Birthday party raid, step 1: the Salón Gala as a place to raid (--place=birthday_raid and a menu test button), decked out for Tomasito's birthday: a bouncy castle that bounces cops up, the piñata, the gift table, a cake that is a fine if it falls, a balloon arch whose balloons pop, the office locked with its key in Chispita's case, Tomasito and seven kids on spots drawn with the seed, and 12 hiding spots.
 - Birthday party raid, models: placeholder models for the clown Chispita, Tomasito the birthday boy, two party kids, the three-tier cake with 7 candles, the piñata, the bouncy castle, a gift box and Chispita's case of tricks (allanamiento-cumple.md, decision 340).
 - Birthday party raid design (allanamiento-cumple.md, decision 340): the Salón Gala in the middle of Tomasito's 7th birthday, the clown Chispita as the owner, the cake-candles distraction, kids who hang on cops' legs and carry off small things, Tomasito who talks to whoever breaks the piñata, and six stories.

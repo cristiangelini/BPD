@@ -6,14 +6,18 @@ extends Node3D
 ## The bouncy castle stands on the east side, open to the hall, and bounces whoever stands on it; the piñata hangs
 ## under the mirror ball; the gift table waits by the coat check and the three-tier cake on the food table. The cake
 ## and the balloon arch inside the entrance are fragile: the cake falling off the table is a fine, and a cop or a prop
-## touching a balloon pops it (Chispita minds, step 2). The office is locked; its key is in Chispita's case of tricks
-## on the coat check's counter. Tomasito and his seven guests stand around the hall (they run about in step 3).
-## Every number here is (propuesta).
+## touching a balloon pops it. The office is locked; its key is in Chispita's case of tricks on the coat check's
+## counter. Tomasito and his seven guests stand around the hall (they run about in step 3).
+## Chispita (step 2) walks his round as the floor boss: the complaint goes up with every balloon he sees pop, the cake
+## falling (the kids cry), the office door broken and his case opened. The matchbox by the cake is his distraction:
+## lit, the lights go off and he and the kids sing round the table for 15 s, seeing nothing; a cop singing along calms
+## him down once a song. Every number here is (propuesta).
 
 signal cake_fell
 signal balloon_popped(index: int)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const CHISPITA_SCENE := preload("res://scenes/npc/birthday_clown.tscn")
 const CASTLE_MODEL := preload("res://assets/models/bouncy_castle.glb")
 const PINATA_MODEL := preload("res://assets/models/birthday_pinata.glb")
 const CAKE_MODEL := preload("res://assets/models/birthday_cake.glb")
@@ -59,6 +63,27 @@ const KID_SPOTS: Array[Vector3] = [
 	Vector3(3.6, 0, 4.4), Vector3(-5.0, 0, -5.4),
 ]
 const TOMASITO_AT := Vector3(0.8, 0, 0.6)
+## Chispita's round (back and forth around the dance floor, clear of the castle and the rooms), where he stands to sing
+## at the head of the cake and what the complaint goes up by.
+const CHISPITA_ROUTE: Array[Vector3] = [
+	Vector3(-8.0, FLOOR_TOP, -4.0), Vector3(-5.5, FLOOR_TOP, -5.6), Vector3(0.0, FLOOR_TOP, -5.6),
+	Vector3(4.8, FLOOR_TOP, -4.0), Vector3(4.8, FLOOR_TOP, 4.0), Vector3(0.0, FLOOR_TOP, 5.0),
+	Vector3(-5.0, FLOOR_TOP, 4.8), Vector3(-8.0, FLOOR_TOP, 3.0),
+]
+const SING_SPOT := Vector3(CAKE_AT.x + 1.0, FLOOR_TOP, CAKE_AT.z)
+const SAW_POP := 2.0
+const SAW_CRYING := 10.0
+## A cop singing along calms him down this much, once a song.
+const SANG := 5.0
+## The candles on the table, and how dark the hall gets while they sing.
+const CANDLES_AT := CAKE_AT + Vector3(0, 0, 1.2)
+const DARK := 0.12
+## Where the kids stand round the cake while they sing, two rows on the east side (distance and angle from the cake,
+## leaving Chispita the middle).
+const SING_ROWS: Array[Vector2] = [
+	Vector2(1.8, 0.15), Vector2(1.8, -0.15), Vector2(1.8, 0.3), Vector2(1.8, -0.3), Vector2(2.6, 0.06),
+	Vector2(2.6, -0.06), Vector2(2.6, 0.22), Vector2(2.6, -0.22),
+]
 
 ## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
 const SPOTS := [
@@ -92,10 +117,18 @@ var popped: Array[int] = []
 var broken_goods := 0
 ## Money taken off the case pay: the cake.
 var fines := 0
+var chispita: FloorBoss
+var candles: BirthdayCandles
+var complaint_bar: ProgressBar
 ## Same seed, same kids.
 @export var case_seed := 0
 var _build: PlaceBuilder
 var _castle_top: Area3D
+var _flames: Node3D
+var _cake_glow: OmniLight3D
+var _lamps: Array[OmniLight3D] = []
+var _before_song := {}
+var _singers := {}
 @onready var car: PatrolCar = $PatrolCar
 
 
@@ -113,6 +146,7 @@ func _ready() -> void:
 	office_door.position = Vector3(PartyHall.OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, PartyHall.OFFICE_Z)
 	add_child(office_door)
 	_place_kids()
+	_place_chispita()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("party_hall")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -127,6 +161,10 @@ func _physics_process(_delta: float) -> void:
 	_bounce()
 	if not cake_broken and cake.position.y < CAKE_AT.y - CAKE_DROP:
 		break_cake()
+	if singing():
+		_sing()
+	elif not _before_song.is_empty():
+		_end_song()
 
 
 ## The bouncy castle: its floor and three walls to stand and bump on, open to the west, and the area over its floor.
@@ -167,6 +205,18 @@ func _build_extras() -> void:
 	(cake.get_child(1) as Node3D).position.y = -CAKE_SIZE.y / 2
 	add_child(cake)
 	cake.position = CAKE_AT + Vector3.UP * (CAKE_SIZE.y / 2 + 0.01)
+	_flames = cake.get_child(1).find_child("flames", true, false)
+	_flames.visible = false
+	_cake_glow = OmniLight3D.new()
+	_cake_glow.light_color = Color(1.0, 0.7, 0.35)
+	_cake_glow.omni_range = 3.5
+	_cake_glow.position = Vector3.UP * 0.4
+	_cake_glow.visible = false
+	cake.add_child(_cake_glow)
+	candles = BirthdayCandles.new()
+	candles.position = CANDLES_AT
+	candles.rotation.y = PI / 2
+	add_child(candles)
 	chispita_case = Till.new()
 	chispita_case.look = CASE_MODEL
 	chispita_case.position = CASE_ON + Vector3.UP * Till.SIZE.y / 2
@@ -221,6 +271,86 @@ func break_cake() -> void:
 	(cake.get_child(1) as Node3D).scale = Vector3(1.3, 0.35, 1.3)
 	_say(cake.position + Vector3.UP * 0.8, "BIRTHDAY_CAKE_FELL")
 	cake_fell.emit()
+
+
+## Chispita on his round, cake time at the matchbox, what he notices and the complaint bar.
+func _place_chispita() -> void:
+	chispita = CHISPITA_SCENE.instantiate()
+	chispita.route = CHISPITA_ROUTE
+	chispita.printer_spot = SING_SPOT
+	chispita.printer = candles
+	add_child(chispita)
+	chispita.fix_facing = to_global(CAKE_AT)
+	chispita.start_at(0)
+	office_door.broken.connect(chispita.door_broken)
+	chispita_case.opened.connect(func(at: Vector3) -> void: chispita.saw(at, FloorBoss.SAW_TILL))
+	balloon_popped.connect(func(index: int) -> void:
+		chispita.saw(balloons[index].global_position, SAW_POP, "CHISPITA_BALLOON"))
+	cake_fell.connect(func() -> void: chispita.saw(cake.global_position + Vector3.UP * 0.3, SAW_CRYING, "CHISPITA_CRYING"))
+	candles.sang.connect(_on_sang)
+	for node in $Built.get_children():
+		if node is OmniLight3D:
+			_lamps.append(node)
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	chispita.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Whether it's cake time: the candles are lit and Chispita sings at the head of the table.
+func singing() -> bool:
+	return chispita != null and chispita.is_fixing()
+
+
+## Cake time: the lights go off but the candles' glow, and the kids gather round the cake to sing.
+func _sing() -> void:
+	if not _before_song.is_empty():
+		return
+	_singers.clear()
+	for lamp in _lamps:
+		lamp.light_energy *= DARK
+	_flames.visible = not cake_broken
+	_cake_glow.visible = not cake_broken
+	var center := CAKE_AT + Vector3(0, -CAKE_AT.y + FLOOR_TOP, 0)
+	for i in kids.size():
+		var kid := kids[i]
+		_before_song[kid] = kid.transform
+		var row := SING_ROWS[i % SING_ROWS.size()]
+		kid.position = center + Vector3(cos(row.y * PI), 0, sin(row.y * PI)) * row.x
+		# Members face -z.
+		kid.look_at(Vector3(center.x, kid.position.y, center.z))
+
+
+## The song's over: the candles blown out, the lights back on and the kids back where they were.
+func _end_song() -> void:
+	for lamp in _lamps:
+		lamp.light_energy /= DARK
+	_flames.visible = false
+	_cake_glow.visible = false
+	for kid: ClubMember in _before_song:
+		if is_instance_valid(kid):
+			kid.transform = _before_song[kid]
+	_before_song.clear()
+
+
+## A cop sang along: Chispita's pleased, once a song for each cop (online the host's Chispita decides).
+func _on_sang(cop: Cop) -> void:
+	if not singing() or _singers.has(cop) or not multiplayer.is_server():
+		return
+	_singers[cop] = true
+	chispita.praise(SANG, "CHISPITA_SANG")
 
 
 ## Tomasito by the piñata and his seven guests on spots drawn with the seed.
