@@ -17,11 +17,20 @@ const HEAR_RANGE := 3.0
 
 var heard := false
 var applauses := 0
+## How many applauses this PC played (a guest's come from the host's state).
+var _played := 0
 var _applause_left := APPLAUSE_EVERY
 
 
 func shared() -> Array[String]:
-	return ["heard"]
+	return ["heard", "applauses"]
+
+
+func apply_net_state(state: Variant) -> void:
+	super.apply_net_state(state)
+	if applauses > _played:
+		_played = applauses
+		_clap()
 
 
 func setup(place: Karaoke) -> void:
@@ -35,7 +44,8 @@ func setup(place: Karaoke) -> void:
 ## Applause out of the ceiling speaker; a cop under it notices where it comes from.
 func applaud() -> void:
 	applauses += 1
-	karaoke._say(SPEAKER_AT + Vector3.DOWN * 0.6, "KARAOKE_APPLAUSE", 2.0)
+	_played = applauses
+	_clap()
 	if heard:
 		return
 	for cop: Cop in get_tree().get_nodes_in_group("cops"):
@@ -44,6 +54,10 @@ func applaud() -> void:
 			heard = true
 			karaoke.raid.add_clue(tr("KARAOKE_APPLAUSE_CLUE"))
 			return
+
+
+func _clap() -> void:
+	karaoke._say(SPEAKER_AT + Vector3.DOWN * 0.6, "KARAOKE_APPLAUSE", 2.0)
 
 
 func _physics_process(delta: float) -> void:

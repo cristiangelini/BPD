@@ -14,12 +14,24 @@ const OFF_KEY_EVERY := 3.0
 ## The booth microphone with the tuner inside (an index into karaoke.mics), and whether a cop noticed.
 var tuned := 2
 var noticed := false
+## Whether a cop holds the tuned microphone now, and how many times Rosaura squealed (online, from the host).
+var singing := false
+var squeals := 0
+var _squealed := 0
 var _notes: Label3D
 var _off_key_left := 0.0
 
 
 func shared() -> Array[String]:
-	return ["noticed"]
+	return ["noticed", "singing", "squeals"]
+
+
+func apply_net_state(state: Variant) -> void:
+	super.apply_net_state(state)
+	_notes.visible = singing
+	if squeals > _squealed:
+		_squealed = squeals
+		_squeal()
 
 
 func setup(place: Karaoke) -> void:
@@ -41,14 +53,18 @@ func setup(place: Karaoke) -> void:
 
 ## A cop holding the tuned microphone sings perfectly; the first time, the clue.
 func _sing(cops: Array[Cop]) -> void:
-	_notes.visible = not cops.is_empty()
-	if cops.is_empty() or noticed or not multiplayer.is_server():
+	singing = not cops.is_empty()
+	_notes.visible = singing
+	if cops.is_empty() or noticed:
 		return
 	noticed = true
 	karaoke.raid.add_clue(tr("KARAOKE_TUNER_CLUE"))
 
 
+## Online the host sees who holds the microphone and Rosaura sing; the guests' rig shows it from its state.
 func _physics_process(delta: float) -> void:
+	if not multiplayer.is_server():
+		return
 	_sing(karaoke.mics[tuned].handling_cops(0.0))
 	var boss := karaoke.owner_boss
 	if not boss.is_fixing() or boss.errand() != "printer":
@@ -57,4 +73,10 @@ func _physics_process(delta: float) -> void:
 	_off_key_left -= delta
 	if _off_key_left <= 0.0:
 		_off_key_left = OFF_KEY_EVERY
-		karaoke._say(karaoke.to_local(boss.global_position) + Vector3.UP * 2.8, "DIVA_OFF_KEY", 2.0)
+		squeals += 1
+		_squealed = squeals
+		_squeal()
+
+
+func _squeal() -> void:
+	karaoke._say(karaoke.to_local(karaoke.owner_boss.global_position) + Vector3.UP * 2.8, "DIVA_OFF_KEY", 2.0)

@@ -237,6 +237,8 @@ var on_turn: KaraokeSinger
 var _next_singer := 0
 var _turn_left := FIRST_TURN
 var screen_cracked := false
+## How many of Rosaura's duets this PC showed on the screen (a guest's come from the host's state).
+var _shown_duets := 0
 var disco_fallen := false
 ## The case flow every raid shares.
 var raid: RaidCase
@@ -327,10 +329,12 @@ func _place_facts() -> Dictionary:
 	}
 
 
-## Online, what the guests' karaoke takes from the host's (RaidCase.snapshot): what's broken and what the story's rig
-## decides on the host (the rest is step 8).
+## Online, what the guests' karaoke takes from the host's (RaidCase.snapshot): what's broken, the duets Rosaura sang
+## and what the story's rig decides on the host. The host gives the customers their turns and calls the duets; the
+## guests' only show it.
 func net_state() -> Dictionary:
-	return {"screen": screen_cracked, "disco": disco_fallen, "rig": rig.net_state() if rig else null}
+	return {"screen": screen_cracked, "disco": disco_fallen, "duets": duet_call.calls,
+		"rig": rig.net_state() if rig else null}
 
 
 func apply_net_state(state: Dictionary) -> void:
@@ -338,6 +342,9 @@ func apply_net_state(state: Dictionary) -> void:
 		break_screen()
 	if state.disco:
 		drop_disco_ball()
+	if state.duets > _shown_duets:
+		_shown_duets = state.duets
+		_duet_screen()
 	if rig and state.rig != null:
 		rig.apply_net_state(state.rig)
 
@@ -431,7 +438,8 @@ func _build_stage() -> void:
 	_model(SCREEN_MODEL, SCREEN_AT + Vector3(0, 0, 0.1))
 	var hit := _area(SCREEN_AT + Vector3(0, 0, SCREEN_SIZE.z / 2), SCREEN_SIZE)
 	hit.body_entered.connect(func(body: Node3D) -> void:
-		if body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > SCREEN_SPEED:
+		if multiplayer.is_server() and body is RigidBody3D \
+				and (body as RigidBody3D).linear_velocity.length() > SCREEN_SPEED:
 			break_screen())
 	for i in SPOT_COLORS.size():
 		var light := _build.light(Vector3(-5.0 + i * 3.0, 3.8, -6.5))
@@ -462,7 +470,8 @@ func _build_room() -> void:
 	_disco = _model(DISCO_MODEL, DISCO_AT)
 	var hit := _area(DISCO_AT, DISCO_SIZE)
 	hit.body_entered.connect(func(body: Node3D) -> void:
-		if body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > DISCO_SPEED:
+		if multiplayer.is_server() and body is RigidBody3D \
+				and (body as RigidBody3D).linear_velocity.length() > DISCO_SPEED:
 			drop_disco_ball())
 
 
@@ -595,7 +604,8 @@ func _place_owner() -> void:
 	add_child(owner_boss)
 	owner_boss.start_at(0)
 	duet_call.called.connect(func() -> void:
-		_say(SCREEN_AT + Vector3(0, -1.6, 0.4), "KARAOKE_DUET_SCREEN", owner_boss.fix_time))
+		_shown_duets = duet_call.calls
+		_duet_screen())
 	duet_call.caught_on.connect(owner_boss.blame.bind(CAUGHT_ON, "DIVA_CAUGHT_ON"))
 	singer_complained.connect(func(_singer: KaraokeSinger) -> void: owner_boss.blame(SINGER_COMPLAINT, "DIVA_SINGER"))
 	office_door.broken.connect(owner_boss.door_broken)
@@ -650,6 +660,9 @@ func on_stage(body: Node3D) -> bool:
 
 ## A cop on the stage with microphone 2 calls Rosaura for a duet; between turns the next customer goes up to sing.
 func _physics_process(delta: float) -> void:
+	# Online the host calls the duets and gives the customers their turns; the guests' copies only follow.
+	if not multiplayer.is_server():
+		return
 	for cop in mics[1].handling_cops(0.0):
 		if on_stage(cop):
 			duet_call.duet()
@@ -661,6 +674,11 @@ func _physics_process(delta: float) -> void:
 	on_turn = singers[_next_singer % singers.size()]
 	_next_singer += 1
 	on_turn.start_turn()
+
+
+## "¡DUETO!" on the lyrics screen while Rosaura sings with a cop.
+func _duet_screen() -> void:
+	_say(SCREEN_AT + Vector3(0, -1.6, 0.4), "KARAOKE_DUET_SCREEN", owner_boss.fix_time)
 
 
 ## A locked door in the office's front wall, its middle at x.
