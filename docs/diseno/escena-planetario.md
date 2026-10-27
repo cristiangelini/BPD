@@ -136,6 +136,15 @@ Mientras tanto se avanza con lo recomendado.
 0. Este documento y la decisión 420.
 1. El planetario en su lote, con el hall, la sala del domo, la sala de control, la tienda y el rincón de los chicos, y
    `--place=planetarium`.
+   **Hecho así:** lote de 32 x 28 en la cuadra (8, 1), lado sur, con el frente hacia la calle.
+   - **Afuera:** un cohete de cartón junto a la puerta y el domo blanco en el techo, sobre la sala del domo.
+   - **El hall, adelante:** la vitrina vacía de El Pedrusco con su placa, y el Saturno gigante colgado del techo.
+   - **La tienda, al oeste:** el canasto de piedras lunares, la caja y la cabina de fotos "Tu cara en la Luna".
+   - **El rincón de los chicos, al este:** el cohete para trepar y la balanza "¿Cuánto pesas en Marte?".
+   - **La sala del domo, atrás:** alfombra, 14 butacas reclinables en círculo mirando al proyector de estrellas (seis
+     con un planeta pintado en el respaldo) y el cielo de noche con estrellas en el techo, con una luz tenue.
+   - **La sala de control, en el rincón este:** la consola del proyector con sus pantallas y un botón por planeta.
+   - Capturas: `planetario/paso1-*.png`.
 2. Los seis guías, el doctor Órbita y Doña Nebulosa (modelos y personajes).
 3. Las fichas: la pintura que brilla y el planeta de cada guía.
 4. El caso: El Pedrusco escondido, la búsqueda y la consola del proyector.
