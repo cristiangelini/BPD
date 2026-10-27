@@ -171,7 +171,8 @@ func objective_facts() -> Dictionary:
 		"suspicions": suspicions.map(func(id: String) -> Dictionary: return {"name": "SUSPECT_" + id,
 			"state": "right" if story_known and id == story_id else ("wrong" if wrong_marks.has(id) else "open")}),
 		"story_known": story_known,
-		"clues": clues_found,
+		# A copy: online CaseSync compares it with the last one sent, and the same array would always look unchanged.
+		"clues": clues_found.duplicate(),
 		"broken": 0,
 		"fines": fines,
 		"complaint": 0.0,

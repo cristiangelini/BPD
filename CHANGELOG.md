@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Garage raid, step 7: online: the host runs Don Tuerca and the guests follow him; the bell, the lift, the dashboards, the dents and Grasita work from any PC; cracked windshields and the lift copy to every PC, and the fines are the host's. Any raid's new clues now reach the guests' checklist right away.
 - Garage raid, step 6: Play's raid draw now picks the garage too, with the same odds as the other raids.
 - Garage raid, step 5: the comisario's car story: one of the cars on the floor is the comisario's (with its "best comisario of the year" sticker) and its dashboard says 1500 km too many (the clue), and the taxi sign (2 kg, 1000), the taximeter (1.5 kg, 300) and the trips notebook (0.1 kg, 200) are hidden with the seed.
 - Garage raid, step 5: the dents on purpose story: one of the cars on the floor has five perfectly round dents on its side (E looks at them, the clue), and the dent hammer (3 kg, 1000), the clients' plates list (0.1 kg, 300) and the neighborhood map with crosses (0.2 kg, 200) are hidden with the seed.
