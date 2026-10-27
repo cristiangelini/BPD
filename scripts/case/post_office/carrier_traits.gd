@@ -23,7 +23,8 @@ const BLUE := Vector2i(2, 3)
 static func draw(seed_value: int) -> Array[Dictionary]:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash("post office carriers %d" % seed_value)
-	var blue := {}
+	# The culprit licked La Vaquita Azul to see if it was real: they always have it.
+	var blue := {CrimePlan.culprit_of(COUNT, seed_value): true}
 	var blue_count := rng.randi_range(BLUE.x, BLUE.y)
 	while blue.size() < blue_count:
 		blue[rng.randi_range(0, COUNT - 1)] = true

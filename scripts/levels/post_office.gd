@@ -7,7 +7,7 @@ extends CrimeScenePlace
 ## color); at the back, the sorting room with the big sorting machine and the sacks of undelivered mail, and in the
 ## east corner the depot of "Frágil" parcels and the boss's office with the open safe, the postmark book and the red
 ## button. The six carriers stand about the counter, the boxes and the sorting machine (step 2), Doña Sellito in the
-## hall and Cartita on its perch at window 2. The case comes in later steps. Every number here is (propuesta).
+## hall and Cartita on its perch at window 2. The case reaches the carriers (step 3, set_up_case). Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(32, 28)
@@ -82,6 +82,7 @@ const ROUTE_COLORS := {
 	"blue": Color(0.2, 0.45, 0.9), "orange": Color(0.95, 0.55, 0.15), "purple": Color(0.55, 0.3, 0.75),
 }
 
+var case: CrimeSceneCase
 var carriers: Array[PostCarrier] = []
 var boss: PostBoss
 var parrot: PostParrot
@@ -101,6 +102,16 @@ func _ready() -> void:
 	_office()
 	_depot()
 	_people()
+
+
+## The case reaches the carriers (their traits are its suspects, same seed), and one of them, drawn with the seed,
+## won't take off the cap until they get something to eat.
+func set_up_case(new_case: CrimeSceneCase) -> void:
+	case = new_case
+	var stubborn := absi(hash("stubborn carrier %d" % case.case_seed)) % carriers.size()
+	for carrier in carriers:
+		carrier.case = case
+		carrier.stubborn = carrier.index == stubborn
 
 
 ## The carrier by index (the order of the case's traits).

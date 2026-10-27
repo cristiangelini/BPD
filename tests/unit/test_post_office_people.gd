@@ -66,7 +66,7 @@ func test_a_carrier_tells_their_route() -> void:
 	var carrier: PostCarrier = post_office.carriers[0]
 	carrier.use(null)
 	assert_string_contains(carrier.said(), carrier.route_name())
-	carrier.use(null)
+	carrier.talk()
 	assert_string_contains(carrier.said(), carrier.route_name(), "every line says the route")
 	post_office.boss.use(null)
 	assert_eq(post_office.boss.said(), "POST_BOSS_LINE_0")
