@@ -58,6 +58,9 @@ var agent_catches := 0
 var shift_bribes := 0
 var shift_bribe_count := 0
 var shift_caught := 0
+## Every cop's stats added up over the whole campaign (Cop.stats, by the cop's index in the shift), for the awards of
+## the whole match on the last end of shift screen (comisaria.md, "Cómo se gana").
+var cop_totals: Array[Dictionary] = []
 
 
 ## A new campaign at shift 1 with a fresh seed.
@@ -72,7 +75,7 @@ func is_over() -> bool:
 	return suspended or (shift > SHIFTS and not jailed)
 
 
-## All 5 shifts made their quota: "¡Ascendidos!".
+## All the shifts made their quota (or the inspection passed): "¡Ascendidos!".
 func is_promoted() -> bool:
 	return shift > SHIFTS and not suspended and not jailed
 
@@ -99,6 +102,18 @@ func take_bribe(amount: int, seen := false) -> bool:
 	shift_bribe_count += 1
 	bribes_taken += 1
 	return false
+
+
+## Adds a shift's cop stats (one Cop.stats per cop, as ShiftReport.awards() takes them) to the campaign's totals. Call
+## it before finish_shift(), so the shift that ends the campaign counts too.
+func add_stats(cop_stats: Array) -> void:
+	for i in cop_stats.size():
+		while cop_totals.size() <= i:
+			cop_totals.append({})
+		for stat: String in (cop_stats[i] as Dictionary):
+			var value: Variant = cop_stats[i][stat]
+			if value is int or value is float:
+				cop_totals[i][stat] = cop_totals[i].get(stat, 0) + value
 
 
 ## Closes the shift with its end of shift numbers (ShiftReport.pay) and moves on to the next one. The report's quota
@@ -135,6 +150,9 @@ func finish_shift(story: String, solved: bool, report: Dictionary, shift_quota :
 	if report.get("investigation", "") == "suspended":
 		jailed = false
 		suspended = true
+	# The match is over, won or lost: the awards of the whole match ride in the report, so every PC shows them.
+	if is_over():
+		report.game_awards = ShiftReport.awards(cop_totals)
 
 
 ## The shift's bribes into its report, and where the investigation goes after this shift.
@@ -185,7 +203,8 @@ func to_dict() -> Dictionary:
 	return {"version": VERSION, "seed": campaign_seed, "shift": shift, "money": money, "items": items,
 		"history": history, "suspended": suspended, "custody": custody, "jailed": jailed,
 		"jailbreak_used": jailbreak_used, "jail_catches": jail_catches, "bribes_taken": bribes_taken,
-		"investigation": investigation, "clean_shifts": clean_shifts, "agent_catches": agent_catches, "bribe_money": bribe_money}
+		"investigation": investigation, "clean_shifts": clean_shifts, "agent_catches": agent_catches, "bribe_money": bribe_money,
+		"cop_totals": cop_totals}
 
 
 static func from_dict(data: Dictionary) -> Campaign:
@@ -204,6 +223,7 @@ static func from_dict(data: Dictionary) -> Campaign:
 	campaign.agent_catches = int(data.get("agent_catches", 0))
 	campaign.bribe_money = int(data.get("bribe_money", 0))
 	campaign.items.assign(data.get("items", []))
+	campaign.cop_totals.assign(data.get("cop_totals", []))
 	# JSON brings every number back as a float.
 	for entry: Dictionary in data.get("history", []):
 		campaign.history.append({"shift": int(entry.get("shift", 0)), "story": str(entry.get("story", "")),
