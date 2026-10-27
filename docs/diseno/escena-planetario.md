@@ -215,3 +215,14 @@ Mientras tanto se avanza con lo recomendado.
    - El guía baja como `guide` y se lo interroga como `owner_guide`.
    - Capturas: `planetario/paso7-combi.png` y `planetario/planetarium_van.png`.
 8. El sorteo de "Jugar" y el online.
+   **Hecho así:** el planetario entra en `PlaceDraw.CRIME_SCENES`, así que cada escena del crimen sale un quinto de
+   las veces.
+   - El estado del planetario va dentro del caso (`Planetarium.net_state`):
+     - los guías (si hablaron, el casco, dónde quedaron después de la función);
+     - la función y la paciencia del doctor Órbita (`StarShow.follow` apaga y prende las luces en el invitado);
+     - Doña Nebulosa (despierta, ofendida);
+     - El Pedrusco (destapado, de vuelta en la vitrina);
+     - el vidrio de la vitrina, la foto de la cabina, el helado y las pistas arruinadas.
+   - El helado ya está escondido en el cohete desde el principio en todas las PC; buscar en el cohete lo saca.
+   - Con la sala prohibida, cada PC saca a su propio policía de la sala.
+   - Prueba: `test_online_planetarium`.

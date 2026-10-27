@@ -231,12 +231,67 @@ func uncover_pedrusco() -> void:
 func reveal_loot() -> void:
 	if loot_found:
 		return
+	_pedrusco_back()
+	if case:
+		case.found_loot()
+
+
+## El Pedrusco on its cushion in the display case, out of reach.
+func _pedrusco_back() -> void:
 	uncover_pedrusco()
 	loot_found = true
 	pedrusco.position = CASE_AT + Vector3(0, 1.06, 0)
 	pedrusco.collision_layer = 0
-	if case:
-		case.found_loot()
+
+
+## Online, what the guests' planetarium takes from the host's: the guides (what they said, the helmet, where they stand
+## after a show), the star show and Doctor Órbita's patience, Doña Nebulosa (awake, offended), El Pedrusco (found,
+## back), the display case's glass, the booth's photo, the ice cream, and the clues ruined on the host.
+func net_state() -> Dictionary:
+	var state := {"guides": guides.map(func(guide: PlanetariumGuide) -> Array:
+		return [guide.talked, guide.helmet_on, guide.position, guide.rotation.y])}
+	if not case:
+		return state
+	var show := star_show
+	state.show = [show.show_left, show.until_show, show.shows, show.patience, show.banned]
+	state.sleeper = [sleeper.awake, sleeper.offended]
+	state.pedrusco = [pedrusco_uncovered, loot_found]
+	state.clues = [clues.glass.touched, clues.glass.has_prints, clues.photo_covered, clues.ice_cream_out]
+	return state
+
+
+func apply_net_state(state: Dictionary) -> void:
+	for guide in guides:
+		var look: Array = state.guides[guide.index]
+		guide.talked = look[0]
+		if not look[1] and guide.helmet_on:
+			guide.helmet_on = false
+			guide.part("helmet").visible = false
+		guide.position = look[2]
+		guide.rotation.y = look[3]
+	if not case or not state.has("show"):
+		return
+	star_show.follow(state.show)
+	if state.sleeper[1] and not sleeper.offended:
+		sleeper.offend()
+	elif state.sleeper[0] and not sleeper.awake and not sleeper.offended:
+		sleeper.wake_up()
+	if state.pedrusco[1] and not loot_found:
+		_pedrusco_back()
+	elif state.pedrusco[0] and not pedrusco_uncovered:
+		uncover_pedrusco()
+	clues.glass.touched = state.clues[0]
+	clues.glass.has_prints = state.clues[1]
+	clues.photo_covered = state.clues[2]
+	if state.clues[3] and not clues.ice_cream_out:
+		clues.show_ice_cream()
+	for kind: String in ["hair", "bite"]:
+		if case.ruined.has(kind) and case.items.has(kind):
+			var item: CrimeClueItem = case.items[kind]
+			item.spoiled = true
+			item.visible = false
+	if case.ruined.has("footprint") and case.flour_print and not case.flour_print.wiped:
+		case.flour_print.wipe()
 
 
 ## Doña Nebulosa, the witness, took offense (CrimeScenePlace).
