@@ -9,7 +9,7 @@ El chiste del lugar: **todo sale al aire**. Mientras está prendida la luz roja 
 se golpea cerca del micrófono lo escucha todo el barrio, y los oyentes llaman para quejarse.
 
 ## El lugar
-- **Dónde:** una radio FM de barrio en la manzana (6, 3), del lado norte (libre en todas las ramas al 27/10). Mide
+- **Dónde:** una radio FM de barrio en la manzana (7, 3), del lado norte (libre en todas las ramas al 27/10, sin callejón: la (6, 3) tiene uno). Mide
   18 × 8 × 22 m, una sola planta, con una antena roja y blanca en el techo que titila de noche y el cartel "RADIO LA
   ANTENA LOCA · FM 104.7".
 - **La recepción:** el mostrador con el teléfono de los oyentes, el buzón de cartas, el sillón de espera, el cuadro con
@@ -76,7 +76,7 @@ entre 400 y 600.
   prueba)" en el menú.
 
 ## El orden para hacerlo (un PR chico por paso)
-1. La radio como lugar: el edificio en la manzana (6, 3) con la antena, la recepción, el estudio con la pecera, la sala
+1. La radio como lugar: el edificio en la manzana (7, 3) con la antena, la recepción, el estudio con la pecera, la sala
    de control, el archivo con llave, la cocina, el baño, el depósito, lo frágil y los escondites. Modelos nuevos con
    modelgen.
 2. La luz "AL AIRE", el micrófono y el teléfono de los oyentes que suena con cada ruido.
@@ -93,4 +93,4 @@ entre 400 y 600.
 2. ¿Don Volumen se distrae 25 s con el tema largo (cada 60 s, a la tercera se da cuenta) y doña Rosa solo cuenta lo que
    sabe por teléfono si la escuchas 6 s sin cortar? **Recomendado:** sí, cada uno tiene un costo y usa lo que hay en
    una radio.
-3. ¿Va en la manzana (6, 3), del lado norte? **Recomendado:** sí, está libre en todas las ramas.
+3. ¿Va en la manzana (7, 3), del lado norte? **Recomendado:** sí, está libre en todas las ramas.
