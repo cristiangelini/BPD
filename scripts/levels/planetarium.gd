@@ -9,7 +9,7 @@ extends CrimeScenePlace
 ## and the control room in the east corner with the projector's console. The six guides stand about the hall and the
 ## dome room (step 2), Doctor Órbita by the dome's door and Doña Nebulosa asleep in her seat. El Pedrusco is hidden in
 ## one of nine spots (step 4) and the projector's console tells where the show was paused. Every number here is
-## (propuesta).
+## (propuesta). Every two minutes the star show turns the lights out (step 5, StarShow).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(32, 28)
@@ -93,6 +93,9 @@ var loot_found := false
 var loot_spots := {}
 var pedrusco: Pedrusco
 var console: ProjectorConsole
+## The star show (step 5), and the ceiling lights it turns off.
+var star_show: StarShow
+var lamps: Array[OmniLight3D] = []
 ## What each cop is busy with ("" for nothing), by cop: a search or the console takes a while.
 var _busy := {}
 ## The lights are out (the star show, step 5): the glow paint on the guides' gloves shows.
@@ -127,6 +130,11 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	for guide in guides:
 		guide.case = case
 		guide.stubborn = guide.index == stubborn
+	star_show = StarShow.new()
+	star_show.name = "StarShow"
+	star_show.planetarium = self
+	star_show.case = case
+	add_child(star_show)
 
 
 ## E on a spot: the cop searches it for SEARCH_SECONDS, and then El Pedrusco turns up if it's there, or the cop says
@@ -281,11 +289,12 @@ func _shell() -> void:
 	_builder.wall_at("z", -HALF_X, BACK_Z, FRONT_Z, 0, ROOF, [], PAINT)
 	_builder.wall_at("z", HALF_X, BACK_Z, FRONT_Z, 0, ROOF, [], PAINT)
 	for at: Vector3 in [Vector3(0, 0, 3.5), Vector3(-11, 0, 3.5), Vector3(11, 0, 3.5), Vector3(12, 0, -6.5)]:
-		_builder.light(at + Vector3(0, ROOF - 0.5, 0))
+		lamps.append(_builder.light(at + Vector3(0, ROOF - 0.5, 0)))
 	# The dome room only has a dim light over the projector, for the stars on its ceiling.
 	var dim := _builder.light(PROJECTOR_AT + Vector3(0, ROOF - 0.6, 0))
 	dim.light_energy = 0.4
 	dim.omni_range = 9.0
+	lamps.append(dim)
 
 
 ## The sign, the cardboard rocket by the door and the big white dome on the roof, over the dome room.
@@ -409,10 +418,19 @@ func _dome() -> void:
 	rng.seed = hash("planetarium stars")
 	var star := BoxMesh.new()
 	star.size = Vector3(0.08, 0.02, 0.08)
+	# The stars shine on their own: in the show's dark they are what's left to see.
+	var shine := StandardMaterial3D.new()
+	shine.albedo_color = STAR
+	shine.emission_enabled = true
+	shine.emission = STAR
+	shine.emission_energy_multiplier = 2.0
 	for i in 60:
-		var at := Vector3(rng.randf_range(-HALF_X + 0.5, CONTROL_X - 0.5), sky - 0.04, rng.randf_range(BACK_Z + 0.5,
+		var dot := MeshInstance3D.new()
+		dot.mesh = star
+		dot.material_override = shine
+		dot.position = Vector3(rng.randf_range(-HALF_X + 0.5, CONTROL_X - 0.5), sky - 0.04, rng.randf_range(BACK_Z + 0.5,
 			ROOMS_Z - 0.5))
-		_builder.mesh(star, at, STAR)
+		add_child(dot)
 
 
 ## A reclining seat of the ring, facing the projector; a planet's seat has its planet painted on the back.

@@ -171,6 +171,16 @@ Mientras tanto se avanza con lo recomendado.
    - **Encontrada:** queda en el piso delante del lugar. E la lleva a la vitrina y suma 100 al sueldo.
    - Capturas: `planetario/paso4-butaca.png` y `planetario/paso4-vitrina.png`.
 5. La función de las estrellas: el apagón cada 2 minutos, lo que brilla, la linterna y la paciencia del doctor.
+   **Hecho así (5a):** `StarShow`, que crea el planetario con el caso.
+   - **El apagón:** con los policías en la escena, cada 120 s se apagan las luces por 30 s. Mientras la cámara está
+     adentro, el ambiente pasa a azul muy oscuro, como en la biblioteca.
+   - **Lo que brilla:** las estrellas del techo, y la pintura de los guantes con una lucecita verde que se ve de lejos.
+   - **Al volver las luces:** los guías se cambian de lugar (nadie queda en el suyo).
+   - **La linterna:** prendida adentro durante la función, la para y la vuelve a empezar, y le resta 10 a la paciencia
+     del doctor (barra arriba, con la cuenta de la próxima función). En 0, echa a los policías de la sala del domo al
+     hall hasta el final del turno.
+   - Capturas: `planetario/paso5-domo.png` y `planetario/paso5-hall.png`.
+   - **Falta (5b):** sentarse en una butaca durante la función.
 6. Las pistas y la testigo.
 7. El final: tablero, cansancio, sueldo y la combi con los planetas inflables.
 8. El sorteo de "Jugar" y el online.

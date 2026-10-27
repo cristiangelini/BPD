@@ -16,6 +16,10 @@ const SHOE_SCALE := Vector2(0.85, 1.3)
 const LINES := 4
 ## Seconds their teeth show after a bite.
 const TEETH_SECONDS := 2.0
+## The glow paint lights up a little around the hands in the dark, so it's seen from far away.
+const GLOW_COLOR := Color(0.45, 1.0, 0.35)
+const GLOW_ENERGY := 1.2
+const GLOW_RANGE := 1.4
 
 ## GuideTraits.draw: name, hair, shoe, teeth, glow, planet.
 var traits := {}
@@ -29,6 +33,7 @@ var stubborn := false
 ## The lights are out: the glow paint shows, if they have it.
 var in_dark := false
 var _teeth_left := 0.0
+var _glow_light: OmniLight3D
 var _model: Node3D
 var _bubble: Label3D
 var _bubble_left := 0.0
@@ -136,6 +141,15 @@ func set_dark(on: bool) -> void:
 	in_dark = on
 	for side in ["left", "right"]:
 		part("glow_%s" % side).visible = on and traits.glow
+	if on and traits.glow and not _glow_light:
+		_glow_light = OmniLight3D.new()
+		_glow_light.light_color = GLOW_COLOR
+		_glow_light.light_energy = GLOW_ENERGY
+		_glow_light.omni_range = GLOW_RANGE
+		_glow_light.position = Vector3(0, 0.7, 0.35)
+		add_child(_glow_light)
+	if _glow_light:
+		_glow_light.visible = on and traits.glow
 
 
 ## The camera's flash in their face (PhotoCamera): their photo, with their moon boots.
