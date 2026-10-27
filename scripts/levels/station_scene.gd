@@ -7,8 +7,9 @@ extends CrimeScenePlace
 ## el Chancho waits in cell 1. The cops are at the scene once inside the evidence room. What was stolen is drawn with
 ## the seed. The clues (step 4b): the prints on the empty shelf (EvidenceShelf), the camera's tape (VcrDeck), the
 ## sign-out book on the lectern (GuestBook), a mug of coffee and a bitten donut on the cage's floor (CrimeClueItem),
-## and el Chancho for a donut; at MOPA_WASH seconds don Mopa cleans the evidence room and takes the mug to wash it. The
-## getaway comes in step 5. Every number here is (propuesta).
+## and el Chancho for a donut; at MOPA_WASH seconds don Mopa cleans the evidence room and takes the mug to wash it.
+## Accused, half the culprits take the old patrol car parked by the station (ChaseLevel.OLD_CAR_SPOT), and if internal
+## affairs gets there first its agent comes in by the front door (`ia_arrives`). Every number here is (propuesta).
 
 ## What can go missing from the evidence room (BRIEF_STATION_A_<loot>, OBJ_STATION_LOOT_<loot>).
 const LOOTS: Array[String] = ["necklace", "painting", "pillow"]
@@ -130,3 +131,17 @@ func _physics_process(delta: float) -> void:
 			cup.hide()
 			for cop in get_tree().get_nodes_in_group("cops"):
 				(cop as Cop).show_hint("HINT_MOPA_WASHED")
+
+
+## The old patrol car by the station, where the culprit runs off from.
+func getaway(_index: int, _city: Node3D) -> Dictionary:
+	return {"at": global_transform * ChaseLevel.OLD_CAR_SPOT, "via": []}
+
+
+## Internal affairs took the case: its agent comes in by the front door, and follows the cops with his folder.
+func ia_arrives() -> InternalAffairsAgent:
+	var agent := InternalAffairsAgent.new()
+	agent.name = "InternalAffairsAgent"
+	get_parent().add_child(agent)
+	agent.global_position = global_transform * Vector3(0, 0.05, StationRooms.HALF_Z - 1.0)
+	return agent

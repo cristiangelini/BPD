@@ -163,3 +163,11 @@ internos (sobornos.md), CaseBriefing y CaseChecklist, ChaseCase.begin, PlaceDraw
   depósito a los 4 minutos** y se lleva la taza a lavar si nadie la embolsó (propuesta, en vez de que dé vueltas); y
   el Chancho: con una dona dice el talle de las botas, y si le abren la celda se ofende y no habla más (en vez de
   escaparse, propuesta). Captura en `escena-comisaria/paso4b-pistas.png`.
+- **Paso 5 (el final):** Asuntos Internos llega a los 10 minutos de la denuncia (a los 6 si la partida ya tiene una
+  investigación, decisión 191): a los 8 el comisario avisa por radio ("Tienen dos minutos"), la planilla muestra la
+  cuenta regresiva, y al llegar el agente entra por la puerta de la calle, se hace cargo y el caso se pierde. Acusado a
+  tiempo, ya no viene. Lo de que la primera ficha mal acusada sea la de un jugador queda para después. Al acusar bien,
+  mitad y mitad con la semilla: se entrega o huye en el patrullero viejo del fondo del estacionamiento (el mismo de la
+  persecución final), que en cada esquina pierde un tapacubos, el paragolpes o la sirena (`ChaseDrops.CAR_PARTS`:
+  quedan sueltos en la calle y frenan, como los muebles de la mudanza). La sirena que toca una cumbia queda para
+  después. Capturas en `escena-comisaria/paso5-*.png`.

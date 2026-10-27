@@ -9,10 +9,12 @@ extends RigidBody3D
 var piece := 0
 var veggie := false
 var pizza := false
+## One of ChaseDrops.CAR_PARTS instead (the station's old patrol car's).
+var car_part := false
 
 
 func _ready() -> void:
-	var data: Dictionary = (ChaseDrops.PIZZAS if pizza else ChaseDrops.VEGGIES if veggie else ChaseDrops.FURNITURE)[piece]
+	var data: Dictionary = pieces(veggie, pizza, car_part)[piece]
 	mass = data.mass
 	add_to_group("chase_furniture")
 	var shape := CollisionShape3D.new()
@@ -26,4 +28,11 @@ func _ready() -> void:
 
 ## Online (NpcSync): what a guest's copy needs before it's added.
 func net_setup() -> Dictionary:
-	return {"piece": piece, "veggie": veggie, "pizza": pizza}
+	return {"piece": piece, "veggie": veggie, "pizza": pizza, "car_part": car_part}
+
+
+## The list a piece comes from.
+static func pieces(is_veggie: bool, is_pizza: bool, is_car_part: bool) -> Array:
+	if is_car_part:
+		return ChaseDrops.CAR_PARTS
+	return ChaseDrops.PIZZAS if is_pizza else ChaseDrops.VEGGIES if is_veggie else ChaseDrops.FURNITURE

@@ -49,6 +49,13 @@ const VEGGIES := [
 ]
 ## The Chef's pizza boxes, light and flat.
 const PIZZAS := [{"model": preload("res://assets/models/pizza_box.glb"), "size": Vector3(0.4, 0.05, 0.4), "mass": 0.5}]
+## The station's old patrol car with the station crime scene's culprit at the wheel (escena-comisaria.md) loses a piece
+## at every corner it turns.
+const CAR_PARTS := [
+	{"model": preload("res://assets/models/car_hubcap.glb"), "size": Vector3(0.44, 0.06, 0.44), "mass": 3.0},
+	{"model": preload("res://assets/models/car_bumper.glb"), "size": Vector3(1.7, 0.16, 0.3), "mass": 12.0},
+	{"model": preload("res://assets/models/car_roof_siren.glb"), "size": Vector3(0.9, 0.24, 0.25), "mass": 6.0},
+]
 ## Where it falls off: this far behind his back.
 const BEHIND := 3.5
 ## The kids shout a line every this many seconds.
@@ -323,6 +330,8 @@ func _on_corner(turned: bool) -> void:
 		drop_furniture(false, true)
 	elif case.suspect_id == SuspectCar.CEMENT_MIXER:
 		drop_blob()
+	elif case.suspect_id == SuspectCar.OLD_PATROL and case.who == "staff":
+		drop_furniture(false, false, true)
 	if riders_left > 0:
 		drop_jumper()
 	if ghost_look >= 0:
@@ -401,14 +410,16 @@ func drop_can() -> ChaseCan:
 	return can
 
 
-## A piece of furniture falls off the back of the moving truck, a veggie off the trike or a pizza off the scooter.
-func drop_furniture(veggie := false, pizza := false) -> RigidBody3D:
+## A piece of furniture falls off the back of the moving truck, a veggie off the trike, a pizza off the scooter or a
+## piece off the station's old patrol car.
+func drop_furniture(veggie := false, pizza := false, car_part := false) -> RigidBody3D:
 	if furniture.size() >= MAX_FURNITURE:
 		furniture.pop_front().queue_free()
 	var body := ChaseFurniture.new()
 	body.veggie = veggie
 	body.pizza = pizza
-	body.piece = _rng.randi() % (PIZZAS if pizza else VEGGIES if veggie else FURNITURE).size()
+	body.car_part = car_part
+	body.piece = _rng.randi() % ChaseFurniture.pieces(veggie, pizza, car_part).size()
 	_dropped += 1
 	body.name = "Furniture%d" % _dropped
 	case.get_parent().add_child(body)
