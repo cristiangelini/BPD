@@ -5591,3 +5591,24 @@ CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la ca
 PLACE_FARM,Granja Las Margaritas,Las Margaritas Farm,Granja Las Margaritas
 MENU_FARM_RAID,Granja (allanamiento) (prueba),Farm (raid) (test),Granja (batida) (teste)
 HINT_MUD_SLIP,"¡Barro! Corriste en el chiquero y los chanchos se ríen.","Mud! You ran in the pigsty and the pigs are laughing.","Lama! Você correu no chiqueiro e os porcos estão rindo."
+PROMPT_FEED_BELL,E: tocar la campana de la comida,E: ring the feeding bell,E: tocar o sino da comida
+HINT_BELL_FEEDING,Don Florencio ya está dando de comer.,Don Florencio is already feeding the animals.,Dom Florencio já está dando comida aos bichos.
+HINT_BELL_RESTING,"Los animales todavía no tienen hambre. Espera un poco.","The animals aren't hungry yet. Wait a bit.","Os bichos ainda não estão com fome. Espere um pouco."
+FARM_BELL_DONG,¡Dong! ¡Dong!,Dong! Dong!,Dong! Dong!
+PROMPT_APRON_KEY,E: sacar la llave del delantal,E: take the key from the apron,E: pegar a chave do avental
+HINT_APRON_KEY,"Tienes la llave del galpón. Don Florencio ni se enteró.","You have the shed's key. Don Florencio didn't even notice.","Você pegou a chave do galpão. Dom Florencio nem percebeu."
+FARMER_LINE_1,"Margarita, no te comas el sombrero.","Margarita, don't eat the hat.","Margarita, não coma o chapéu."
+FARMER_LINE_2,"Oficiales, ¿unos huevitos frescos? Para ustedes, precio de feria.","Officers, some fresh eggs? For you, market price.","Policiais, uns ovinhos frescos? Pra vocês, preço de feira."
+FARMER_LINE_3,"Tota, eso no es pasto, es un formulario.","Tota, that's not grass, it's a form.","Tota, isso não é capim, é um formulário."
+FARMER_LINE_4,"La camioneta nueva es prestada. Todas las camionetas nuevas son prestadas.","The new van is borrowed. All the new vans are borrowed.","A caminhonete nova é emprestada. Todas as caminhonetes novas são emprestadas."
+FARMER_PRINTER,"¡La hora de comer! ¡Vengan, chiquitos, vengan!","Feeding time! Come, little ones, come!","Hora de comer! Venham, pequenos, venham!"
+FARMER_FIX_1,"Pi, pi, pi… Maíz para todos.","Chick, chick, chick… Corn for everyone.","Piu, piu, piu… Milho pra todo mundo."
+FARMER_FIX_2,"Sin empujar, que hay para todos.","No pushing, there's enough for all.","Sem empurrar, tem pra todos."
+FARMER_FIX_3,"Tota, eso es mi bota, no la comida.","Tota, that's my boot, not the food.","Tota, isso é minha bota, não a comida."
+FARMER_FIX_DONE,"Listo, panzas llenas. A trabajar.","Done, full bellies. Back to work.","Pronto, barrigas cheias. Ao trabalho."
+FARMER_HURT,"¡Epa, oficial! ¡Que no soy un fardo de pasto!","Hey, officer! I'm not a hay bale!","Opa, policial! Eu não sou um fardo de feno!"
+FARMER_DOOR,"¿Me rompieron la puerta? ¡Esa la hizo mi abuelo!","You broke my door? My grandpa made that one!","Quebraram minha porta? Foi meu avô que fez!"
+FARMER_SAW,"¡Eso no se toca, que lo ensucian!","Don't touch that, you'll get it dirty!","Não toque nisso, vão sujar!"
+FARMER_NOTHING,"Yo solo vendo huevos, oficial. Y leche. Y zanahorias.","I just sell eggs, officer. And milk. And carrots.","Eu só vendo ovos, policial. E leite. E cenouras."
+FARMER_OFFENDED,"No hablo más. Me voy a ordeñar.","I'm done talking. I'm off to milk the cow.","Não falo mais. Vou ordenhar."
+FARMER_LAWYER,"¡Llamo a mi abogado! ¡Y a la cooperativa!","I'm calling my lawyer! And the co-op!","Vou ligar para o meu advogado! E para a cooperativa!"

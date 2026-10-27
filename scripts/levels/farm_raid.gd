@@ -7,13 +7,15 @@ extends Node3D
 ## loft, the tractor beside it, the hen house, the pigsty with its mud, the cow's corral with her feeder, the locked
 ## tool shed, the vegetable garden with the scarecrow and a little glass greenhouse, the well and the market stall
 ## with its baskets of eggs by the gate. A cop running in the mud slips, like on the jail's wet floor. SPOTS are the 12
-## hiding spots the stories draw from (step 5). Don Florencio, the animals and the case come in the next steps.
+## hiding spots the stories draw from (step 5). Don Florencio walks his round and fills the complaint (step 3); E on the
+## bell's cord is feeding time: he goes to the corral and feeds the animals with his back to the farm, and a cop behind
+## him can take the shed's key from his apron. The animals and the case come in the next steps.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const COOP_MODEL := preload("res://assets/models/chicken_coop.glb")
 const WELL_MODEL := preload("res://assets/models/farm_well.glb")
-const BELL_MODEL := preload("res://assets/models/feed_bell.glb")
+const OWNER_SCENE := preload("res://scenes/npc/farm_owner.tscn")
 const BALE_MODEL := preload("res://assets/models/hay_bale.glb")
 const TRACTOR_MODEL := preload("res://assets/models/farm_tractor.glb")
 const SCARECROW_MODEL := preload("res://assets/models/scarecrow.glb")
@@ -31,7 +33,7 @@ const HOUSE_HEIGHT := 3.0
 const HOUSE_DOOR_X := -13.0
 const ROOM_WALL_X := -15.5
 const PORCH_DEPTH := 2.0
-const BELL_AT := Vector3(-11.6, 2.0, -2.2)
+const BELL_AT := Vector3(-11.2, 1.4, -2.05)
 ## The barn, open to the yard, with its loft (LOFT_TOP up, over the back half) and the ladder to it.
 const BARN := Rect2(6, -11, 12, 10)
 const BARN_HEIGHT := 6.0
@@ -60,12 +62,21 @@ const WELL_AT := Vector3(0, 0, 3.5)
 const STALL_AT := Vector3(-5.5, 0, 15.5)
 const STALL_SIZE := Vector3(3.0, 0.85, 1.0)
 const BASKETS: Array[Vector3] = [Vector3(-6.6, 0, 15.5), Vector3(-5.5, 0, 15.5), Vector3(-4.4, 0, 15.5)]
-const MILK_CANS_AT := Vector3(4.6, 0, 0.2)
+const MILK_CANS_AT := Vector3(5.0, 0, -4.5)
 ## Bales stacked along the barn's west wall, and two in the loft.
 const BALES: Array[Vector3] = [
 	Vector3(7.0, 0.25, -3.0), Vector3(7.0, 0.25, -4.1), Vector3(7.0, 0.75, -3.5), Vector3(8.2, 0.25, -3.0),
 	Vector3(7.0, LOFT_TOP + 0.25, -9.5), Vector3(8.2, LOFT_TOP + 0.25, -9.5),
 ]
+## Don Florencio's round, back and forth: by the corral, the porch, the hen house, the barn's door, between the pigsty
+## and the barn, along the garden and to the egg stall. At feeding time he stands by the corral's gate, facing the
+## feeder.
+const OWNER_ROUTE: Array[Vector3] = [
+	Vector3(-7.0, GROUND, 3.0), Vector3(-13.0, GROUND, -0.5), Vector3(-9.5, GROUND, -0.8), Vector3(-1.5, GROUND, -6.3),
+	Vector3(0.5, GROUND, -1.5), Vector3(12.0, GROUND, 1.2), Vector3(6.2, GROUND, 1.5), Vector3(6.2, GROUND, 10.8),
+	Vector3(-5.5, GROUND, 13.6),
+]
+const FEED_SPOT := Vector3(-7.6, GROUND, 7.5)
 ## Running faster than this in the mud slips: down for MUD_SLIP seconds, and not again for MUD_AGAIN.
 const MUD := Rect2(9, 4, 7, 5)
 const MUD_SLIP := 2.0
@@ -98,6 +109,9 @@ const STRAW := Color(0.85, 0.74, 0.42)
 const GLASS := Color(0.75, 0.9, 1.0, 0.35)
 const MILK_CAN := Color(0.78, 0.8, 0.82)
 
+var owner_npc: FarmOwner
+var bell: FeedBell
+var complaint_bar: ProgressBar
 var house_door: FrontDoor
 var shed_door: FrontDoor
 var city_map: CityMap
@@ -118,6 +132,7 @@ func _ready() -> void:
 	_build_barn()
 	_build_pens()
 	_build_garden()
+	_place_owner()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("farm")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -126,6 +141,40 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "farm", car)
+
+
+## Don Florencio on his round, the bell that calls him to feed the animals, what breaks his doors and the complaint bar.
+func _place_owner() -> void:
+	owner_npc = OWNER_SCENE.instantiate()
+	owner_npc.route = OWNER_ROUTE
+	owner_npc.printer_spot = FEED_SPOT
+	owner_npc.printer = bell
+	add_child(owner_npc)
+	owner_npc.fix_facing = to_global(FEEDER_AT)
+	owner_npc.start_at(1)
+	for door: FrontDoor in [house_door, shed_door]:
+		door.broken.connect(owner_npc.door_broken)
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	owner_npc.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Whether it's feeding time: the bell rang and Don Florencio is at the corral.
+func in_feeding() -> bool:
+	return owner_npc != null and owner_npc.is_fixing()
 
 
 ## Whether `at` (this scene's space) is in the pigsty's mud.
@@ -183,7 +232,9 @@ func _build_house() -> void:
 	_build.slab(h.position.x, h.end.x, h.position.y, h.end.y, GROUND + 0.06, WOOD)
 	for x: float in [h.position.x + 0.2, h.end.x - 0.2]:
 		_build.box(Vector3(x, GROUND + HOUSE_HEIGHT / 2, h.end.y + PORCH_DEPTH - 0.2), Vector3(0.15, HOUSE_HEIGHT, 0.15), WOOD)
-	_model(BELL_MODEL, BELL_AT, PI)
+	bell = FeedBell.new()
+	bell.position = BELL_AT
+	add_child(bell)
 	# The kitchen's table, against the back wall.
 	_build.box(Vector3(-12.2, GROUND + 0.76, -9.8), Vector3(1.6, 0.06, 0.9), WOOD)
 	_build.legs(Vector3(-12.2, GROUND, -9.8), Vector2(1.6, 0.9), 0.73, WOOD)
