@@ -1,0 +1,401 @@
+class_name Mansion
+extends CrimeScenePlace
+
+## The Candelabro mansion on its hill (escena-mansion.md, step 1, decision 270), with the front to +Z. One big floor:
+## in front, the dining room (west), the hall with the boarded-up stairs, the grandfather clock and the armour, and the
+## lounge with the piano and the fireplace (east); behind, the library, doña Clotilde's study with the open safe, the
+## greenhouse and the butler's pantry with the bell board. Three walls are double: the secret passages run inside them
+## (step 2). Out the back, the garden with the hedge maze (the getaway, step 6). The people come in step 3 and the case
+## in step 5. Every number here is (propuesta).
+
+## The house: x from -HALF_X to HALF_X, z from BACK_Z to FRONT_Z.
+const HALF_X := 16.0
+const BACK_Z := -11.0
+const FRONT_Z := 11.0
+const FLOOR_TOP := 0.06
+const ROOF := GameScale.FLOOR_HEIGHT
+## The wall between the front rooms and the back ones, and the front rooms' side walls.
+const MIDDLE_Z := 1.0
+const HALL_X := 4.0
+## The back rooms' walls: library | study | greenhouse | pantry.
+const LIBRARY_X := -7.0
+const STUDY_X := -1.0
+const PANTRY_X := 8.0
+## The passages are 1.2 m wide, inside double walls (PASSAGES: where each runs, from its way in to its way out).
+const PASSAGE_WIDTH := 1.2
+const PASSAGES := {
+	"bookcase": {"axis": "z", "fixed": LIBRARY_X, "from": BACK_Z, "to": MIDDLE_Z,
+		"in": Vector3(LIBRARY_X - 0.6, 0, -4.0), "out": Vector3(LIBRARY_X + 0.6, 0, -8.0)},
+	"clock": {"axis": "x", "fixed": MIDDLE_Z, "from": 0.0, "to": HALL_X,
+		"in": Vector3(2.0, 0, MIDDLE_Z + 0.6), "out": Vector3(0.8, 0, MIDDLE_Z - 0.6)},
+	"fireplace": {"axis": "x", "fixed": MIDDLE_Z, "from": 9.0, "to": 15.0,
+		"in": Vector3(12.0, 0, MIDDLE_Z + 0.6), "out": Vector3(14.0, 0, MIDDLE_Z - 0.6)},
+}
+const DOOR_FRONT_X := 0.0
+## The doors in the middle wall: dining room -> library, hall -> study, lounge -> greenhouse.
+const DOORS_MIDDLE: Array[float] = [-12.0, -2.5, 6.0]
+## The doors in the front rooms' side walls, and in the back rooms' walls.
+const DOOR_SIDE_Z := 7.0
+const DOOR_BACK_Z := -5.0
+const DOOR_GARDEN_X := 3.5
+## The rooms, in the house's space: [x0, x1, z0, z1].
+const ROOMS := {
+	"dining": [-HALF_X, -HALL_X, MIDDLE_Z, FRONT_Z],
+	"hall": [-HALL_X, HALL_X, MIDDLE_Z, FRONT_Z],
+	"lounge": [HALL_X, HALF_X, MIDDLE_Z, FRONT_Z],
+	"library": [-HALF_X, LIBRARY_X, BACK_Z, MIDDLE_Z],
+	"study": [LIBRARY_X, STUDY_X, BACK_Z, MIDDLE_Z],
+	"greenhouse": [STUDY_X, PANTRY_X, BACK_Z, MIDDLE_Z],
+	"pantry": [PANTRY_X, HALF_X, BACK_Z, MIDDLE_Z],
+}
+## What's in the rooms.
+const TABLE_AT := Vector3(-10.0, 0, 6.0)
+const TABLE_SIZE := Vector3(7.0, 0.78, 1.6)
+const CLOCK_AT := Vector3(2.0, 0, MIDDLE_Z + 0.95)
+const ARMOUR_AT := Vector3(-3.2, 0, 4.0)
+const COAT_RACK_AT := Vector3(-3.3, 0, 9.8)
+const STAIRS_AT := Vector3(-0.8, 0, 4.0)
+const PIANO_AT := Vector3(9.0, 0, 9.4)
+const FIREPLACE_AT := Vector3(12.0, 0, MIDDLE_Z + 0.95)
+const CAGE_AT := Vector3(15.0, 0, 9.5)
+const SHELVES_X := -HALF_X + 0.35
+const BOOKCASE_AT := Vector3(LIBRARY_X - 0.95, 0, -4.0)
+const ARMCHAIR_AT := Vector3(-12.0, 0, -6.0)
+const LIBRARY_FIRE_AT := Vector3(-11.5, 0, BACK_Z + 0.45)
+const SAFE_AT := Vector3(-4.0, 0, BACK_Z + 0.45)
+const DESK_AT := Vector3(-4.0, 0, -6.0)
+const PORTRAIT_AT := Vector3(LIBRARY_X + 0.68, 1.6, -8.0)
+const PLANTS: Array[Vector3] = [
+	Vector3(1.0, 0, -9.0), Vector3(5.5, 0, -9.0), Vector3(1.0, 0, -3.0), Vector3(6.0, 0, -2.5),
+]
+const BELL_BOARD_AT := Vector3(HALF_X - 0.12, 1.7, -5.0)
+const BELL_ROOMS: Array[String] = ["dining", "hall", "lounge", "library", "study", "greenhouse"]
+const PANTRY_SHELF_AT := Vector3(12.0, 0, BACK_Z + 0.4)
+## Out front, the gravel drive where the patrol car stops; out the back, the hedge maze (MAZE_CELLS cells of
+## MAZE_CELL m, one of them its way in by the back door and one its gate at the far end).
+const DRIVE_Z := 17.0
+const PATROL_CAR_AT := Vector3(-4.0, 0, DRIVE_Z)
+const COP_AT := Vector3(0, 0.1, FRONT_Z + 2.5)
+const MAZE_CELLS := Vector2i(7, 5)
+const MAZE_CELL := 3.0
+const MAZE_Z := BACK_Z - 3.0
+const HEDGE_HEIGHT := 1.9
+## Same maze every match: it's the mansion's.
+const MAZE_SEED := 270
+const GROUND_SIZE := 140.0
+## The lamps hang one every this many meters across a room; the lit windows, front and back.
+const LAMP_EVERY := 6.0
+const WINDOWS_X: Array[float] = [-13.0, -8.0, 8.0, 13.0]
+const STONE := Color(0.55, 0.52, 0.5)
+const WALLPAPER := Color(0.42, 0.18, 0.22)
+const PANEL := Color(0.36, 0.24, 0.16)
+const PARQUET := Color(0.45, 0.3, 0.18)
+const GLASS := Color(0.75, 0.9, 0.85, 0.35)
+const HEDGE := Color(0.16, 0.34, 0.16)
+const GRASS := Color(0.2, 0.3, 0.17)
+const GRAVEL := Color(0.6, 0.58, 0.54)
+const BRASS := Color(0.8, 0.65, 0.3)
+const BLACK := Color(0.1, 0.09, 0.09)
+const IVORY := Color(0.94, 0.92, 0.86)
+const WINDOW_LIGHT := Color(1.0, 0.8, 0.4)
+const BOOK_COLORS: Array[Color] = [Color(0.55, 0.12, 0.12), Color(0.15, 0.3, 0.2), Color(0.2, 0.22, 0.45),
+	Color(0.6, 0.45, 0.2)]
+
+## The maze's open walls, by cell: [x, z] -> the sides ("e", "s") with no hedge.
+var maze_open := {}
+var _builder: PlaceBuilder
+
+
+func _ready() -> void:
+	add_to_group("mansion")
+	variant = "mansion"
+	_builder = PlaceBuilder.new(self)
+	_ground()
+	_shell()
+	_walls()
+	_hall()
+	_dining()
+	_lounge()
+	_library()
+	_study()
+	_greenhouse()
+	_pantry()
+	_maze()
+
+
+## Which room a point in the world is in ("" if none).
+func room_at(world: Vector3) -> String:
+	if passage_at(world) != "":
+		return ""
+	var local := to_local(world)
+	for room: String in ROOMS:
+		var r: Array = ROOMS[room]
+		if local.x > r[0] and local.x < r[1] and local.z > r[2] and local.z < r[3]:
+			return room
+	return ""
+
+
+## Whether a point in the world is inside the house (not in a passage or outdoors).
+func inside(world: Vector3) -> bool:
+	return room_at(world) != ""
+
+
+## Whether a point in the world is inside a secret passage, and which.
+func passage_at(world: Vector3) -> String:
+	var local := to_local(world)
+	for id: String in PASSAGES:
+		var p: Dictionary = PASSAGES[id]
+		var across: float = local.x if p.axis == "z" else local.z
+		var along: float = local.z if p.axis == "z" else local.x
+		if absf(across - p.fixed) < PASSAGE_WIDTH / 2 and along > p.from and along < p.to:
+			return id
+	return ""
+
+
+## The house, the garden and the drive are the scene.
+func at_scene(world: Vector3) -> bool:
+	var local := to_local(world)
+	var maze_end := MAZE_Z - MAZE_CELLS.y * MAZE_CELL - 2.0
+	return absf(local.x) < HALF_X + 4.0 and local.z > maze_end and local.z < DRIVE_Z + 4.0
+
+
+## The maze cell a point in the house's space is in, or (-1, -1) out of it.
+static func maze_cell(local: Vector3) -> Vector2i:
+	var x := floori((local.x + MAZE_CELLS.x * MAZE_CELL / 2) / MAZE_CELL)
+	var z := floori((MAZE_Z - local.z) / MAZE_CELL)
+	if x < 0 or z < 0 or x >= MAZE_CELLS.x or z >= MAZE_CELLS.y:
+		return Vector2i(-1, -1)
+	return Vector2i(x, z)
+
+
+## The middle of a maze cell, in the house's space.
+static func maze_center(cell: Vector2i) -> Vector3:
+	return Vector3((cell.x + 0.5) * MAZE_CELL - MAZE_CELLS.x * MAZE_CELL / 2, 0, MAZE_Z - (cell.y + 0.5) * MAZE_CELL)
+
+
+## The maze's way in (by the back door) and its gate (at the far end).
+static func maze_entry() -> Vector2i:
+	return Vector2i(MAZE_CELLS.x / 2, 0)
+
+
+static func maze_gate() -> Vector2i:
+	return Vector2i(MAZE_CELLS.x - 1, MAZE_CELLS.y - 1)
+
+
+## Whether the maze lets you walk from one cell to its neighbour.
+func maze_joined(a: Vector2i, b: Vector2i) -> bool:
+	var first := a if a.x + a.y < b.x + b.y else b
+	var second := b if first == a else a
+	var side := "e" if second.x > first.x else "s"
+	return (maze_open.get(first, []) as Array).has(side) and (second - first).length_squared() == 1
+
+
+## The grass all around, the gravel drive and the path to the door.
+func _ground() -> void:
+	_builder.slab(-GROUND_SIZE / 2, GROUND_SIZE / 2, -GROUND_SIZE / 2, GROUND_SIZE / 2, 0.0, GRASS)
+	_builder.mesh_box(Vector3(0, 0.01, DRIVE_Z), Vector3(16.0, 0.02, 6.0), GRAVEL)
+	_builder.mesh_box(Vector3(0, 0.01, (FRONT_Z + DRIVE_Z) / 2), Vector3(2.4, 0.02, DRIVE_Z - FRONT_Z), GRAVEL)
+
+
+## The floor, the roof with its lamps and the outer walls, with the front door and the garden door.
+func _shell() -> void:
+	_builder.slab(-HALF_X, HALF_X, BACK_Z, FRONT_Z, FLOOR_TOP, PARQUET)
+	_builder.slab(-HALF_X - 0.3, HALF_X + 0.3, BACK_Z - 0.3, FRONT_Z + 0.3, ROOF, BLACK)
+	_builder.wall("x", FRONT_Z, -HALF_X, HALF_X, 0, [DOOR_FRONT_X], STONE)
+	_builder.wall("x", BACK_Z, -HALF_X, HALF_X, 0, [DOOR_GARDEN_X], STONE)
+	_builder.wall("z", -HALF_X, BACK_Z, FRONT_Z, 0, [], STONE)
+	_builder.wall("z", HALF_X, BACK_Z, FRONT_Z, 0, [], STONE)
+	var roof := PrismMesh.new()
+	roof.size = Vector3(FRONT_Z - BACK_Z + 1.0, 3.0, HALF_X * 2 + 1.0)
+	_builder.mesh(roof, Vector3(0, ROOF + 1.5, (FRONT_Z + BACK_Z) / 2), BLACK.lightened(0.15), Vector3(0, PI / 2, 0))
+	for x: float in WINDOWS_X:
+		_builder.mesh_box(Vector3(x, 1.5, FRONT_Z + 0.09), Vector3(1.0, 1.4, 0.02), WINDOW_LIGHT)
+		_builder.mesh_box(Vector3(x, 1.5, BACK_Z - 0.09), Vector3(1.0, 1.4, 0.02), WINDOW_LIGHT)
+	var glow := _builder.material(WINDOW_LIGHT)
+	glow.emission_enabled = true
+	glow.emission = WINDOW_LIGHT
+	for room: String in ROOMS:
+		var r: Array = ROOMS[room]
+		var across := ceili((r[1] - r[0]) / LAMP_EVERY)
+		for i in across:
+			var x: float = lerpf(r[0], r[1], (i + 0.5) / across)
+			var lamp := _builder.light(Vector3(x, ROOF - 0.5, (r[2] + r[3]) / 2))
+			lamp.light_energy = 1.4
+			lamp.omni_range = 9.0
+
+
+## The inner walls. The middle one is double where the clock's and the fireplace's passages run, and so is the one
+## between the library and the study (the bookcase's); each double wall is closed at its ends.
+func _walls() -> void:
+	var half := PASSAGE_WIDTH / 2
+	var clock: Dictionary = PASSAGES.clock
+	var fire: Dictionary = PASSAGES.fireplace
+	_builder.wall("x", MIDDLE_Z, -HALF_X, clock.from, 0, DOORS_MIDDLE.slice(0, 2), WALLPAPER)
+	_builder.wall("x", MIDDLE_Z, clock.to, fire.from, 0, [DOORS_MIDDLE[2]], WALLPAPER)
+	_builder.wall("x", MIDDLE_Z, fire.to, HALF_X, 0, [], WALLPAPER)
+	for p: Dictionary in [clock, fire]:
+		_builder.wall("x", MIDDLE_Z - half, p.from, p.to, 0, [], PANEL)
+		_builder.wall("x", MIDDLE_Z + half, p.from, p.to, 0, [], PANEL)
+		_builder.wall("z", p.from, MIDDLE_Z - half, MIDDLE_Z + half, 0, [], PANEL)
+		_builder.wall("z", p.to, MIDDLE_Z - half, MIDDLE_Z + half, 0, [], PANEL)
+	_builder.wall("z", LIBRARY_X - half, BACK_Z, MIDDLE_Z - 0.1, 0, [], PANEL)
+	_builder.wall("z", LIBRARY_X + half, BACK_Z, MIDDLE_Z - 0.1, 0, [], PANEL)
+	_builder.wall("z", -HALL_X, MIDDLE_Z, FRONT_Z, 0, [DOOR_SIDE_Z], WALLPAPER)
+	_builder.wall("z", HALL_X, MIDDLE_Z, FRONT_Z, 0, [DOOR_SIDE_Z], WALLPAPER)
+	_builder.wall("z", STUDY_X, BACK_Z, MIDDLE_Z, 0, [DOOR_BACK_Z], WALLPAPER)
+	_builder.wall("z", PANTRY_X, BACK_Z, MIDDLE_Z, 0, [DOOR_BACK_Z], WALLPAPER)
+
+
+## The hall: the stairs nobody goes up (boarded up), the grandfather clock against the back wall (the way into its
+## passage), the suit of armour and the coat rack by the door.
+func _hall() -> void:
+	for i in 6:
+		var top := (i + 1) * GameScale.STEP_HEIGHT
+		_builder.box(STAIRS_AT + Vector3(0, top / 2, -i * 0.3), Vector3(2.0, top, 0.3), PANEL)
+	for y: float in [0.9, 1.3]:
+		_builder.box(STAIRS_AT + Vector3(0, y, 0.3), Vector3(2.2, 0.15, 0.05), PARQUET)
+	_builder.box(CLOCK_AT + Vector3(0, 1.1, 0), Vector3(0.7, 2.2, 0.5), PANEL)
+	var dial := CylinderMesh.new()
+	dial.top_radius = 0.24
+	dial.bottom_radius = 0.24
+	dial.height = 0.02
+	_builder.mesh(dial, CLOCK_AT + Vector3(0, 1.8, 0.26), IVORY, Vector3(PI / 2, 0, 0))
+	_builder.mesh_box(CLOCK_AT + Vector3(0, 0.9, 0.26), Vector3(0.05, 0.6, 0.02), BRASS)
+	_builder.box(ARMOUR_AT + Vector3(0, 0.05, 0), Vector3(0.6, 0.1, 0.6), STONE)
+	_builder.mesh_box(ARMOUR_AT + Vector3(0, 1.0, 0), Vector3(0.45, 0.9, 0.3), Color(0.7, 0.72, 0.75))
+	_builder.mesh_box(ARMOUR_AT + Vector3(0, 1.65, 0), Vector3(0.3, 0.35, 0.3), Color(0.7, 0.72, 0.75))
+	_builder.mesh_box(ARMOUR_AT + Vector3(0, 0.3, 0), Vector3(0.4, 0.5, 0.25), Color(0.6, 0.62, 0.65))
+	_builder.box(COAT_RACK_AT + Vector3(0, 0.9, 0), Vector3(0.1, 1.8, 0.1), PANEL)
+
+
+## The long table still laid for the club's dinner, with its chairs and two candelabras.
+func _dining() -> void:
+	_builder.box(TABLE_AT + Vector3(0, TABLE_SIZE.y - 0.03, 0), Vector3(TABLE_SIZE.x, 0.06, TABLE_SIZE.z), PARQUET)
+	_builder.legs(TABLE_AT, Vector2(TABLE_SIZE.x, TABLE_SIZE.z), TABLE_SIZE.y - 0.06, PARQUET)
+	_builder.mesh_box(TABLE_AT + Vector3(0, TABLE_SIZE.y + 0.005, 0), Vector3(TABLE_SIZE.x - 0.3, 0.01, 1.0), IVORY)
+	for i in 6:
+		var x := TABLE_AT.x + (i % 3 - 1) * 2.2
+		var side := 1.0 if i < 3 else -1.0
+		_builder.box(TABLE_AT + Vector3(x - TABLE_AT.x, 0.25, side * 1.2), Vector3(0.5, 0.5, 0.5), PANEL)
+	for dx: float in [-1.8, 1.8]:
+		_builder.mesh_box(TABLE_AT + Vector3(dx, TABLE_SIZE.y + 0.25, 0), Vector3(0.08, 0.5, 0.08), BRASS)
+
+
+## The piano, the fireplace against the middle wall (the way into its passage) and Lorenzo's cage by the window.
+func _lounge() -> void:
+	_builder.box(PIANO_AT + Vector3(0, 0.5, 0), Vector3(1.6, 1.0, 1.2), BLACK)
+	_builder.mesh_box(PIANO_AT + Vector3(0, 0.75, 0.62), Vector3(1.4, 0.05, 0.05), IVORY)
+	_builder.box(FIREPLACE_AT + Vector3(-0.85, 0.6, 0), Vector3(0.3, 1.2, 0.5), STONE)
+	_builder.box(FIREPLACE_AT + Vector3(0.85, 0.6, 0), Vector3(0.3, 1.2, 0.5), STONE)
+	_builder.box(FIREPLACE_AT + Vector3(0, 1.3, 0), Vector3(2.0, 0.2, 0.6), STONE)
+	_builder.box(FIREPLACE_AT + Vector3(0, 0.6, -0.2), Vector3(1.4, 1.2, 0.1), BLACK)
+	_builder.mesh_box(FIREPLACE_AT + Vector3(0.6, 1.55, 0), Vector3(0.08, 0.3, 0.08), BRASS)
+	_builder.box(CAGE_AT + Vector3(0, 0.6, 0), Vector3(0.12, 1.2, 0.12), BRASS)
+	_builder.open_box(CAGE_AT + Vector3(0, 1.2, 0), Vector3(0.6, 0.7, 0.6), "", Color(0.85, 0.7, 0.3, 0.5))
+
+
+## Shelves of books all along the west wall, the bookcase against the passage's wall (its way in), the leather
+## armchair and a small fireplace on the back wall.
+func _library() -> void:
+	for z in range(int(BACK_Z) + 1, int(MIDDLE_Z) - 1):
+		_shelf(Vector3(SHELVES_X, 0, z + 0.5), PI / 2)
+	_shelf(BOOKCASE_AT, -PI / 2)
+	_builder.box(ARMCHAIR_AT + Vector3(0, 0.4, 0), Vector3(1.0, 0.8, 0.9), Color(0.4, 0.2, 0.12))
+	_builder.box(LIBRARY_FIRE_AT + Vector3(0, 0.6, 0), Vector3(1.6, 1.2, 0.5), STONE)
+
+
+## One bookcase, 1 m wide, its books facing `turn`.
+func _shelf(at: Vector3, turn: float) -> void:
+	var facing := Basis(Vector3.UP, turn)
+	var sideways := absf(sin(turn)) > 0.5
+	_builder.box(at + Vector3(0, 1.1, 0), Vector3(0.35, 2.2, 1.0) if sideways else Vector3(1.0, 2.2, 0.35), PANEL)
+	for row in 4:
+		var color := BOOK_COLORS[posmod(row + int(at.z), BOOK_COLORS.size())]
+		var size := Vector3(0.05, 0.3, 0.85) if sideways else Vector3(0.85, 0.3, 0.05)
+		_builder.mesh_box(at + facing * Vector3(0, 0, 0.19) + Vector3(0, 0.35 + row * 0.5, 0), size, color)
+
+
+## Doña Clotilde's study: the desk, the safe (open and empty) and her portrait over the passage's way out.
+func _study() -> void:
+	_builder.box(DESK_AT + Vector3(0, 0.4, 0), Vector3(1.8, 0.8, 0.9), PANEL)
+	_builder.box(SAFE_AT + Vector3(0, 0.5, 0), Vector3(0.8, 1.0, 0.7), Color(0.3, 0.32, 0.35))
+	_builder.mesh_box(SAFE_AT + Vector3(0.55, 0.5, 0.45), Vector3(0.05, 0.9, 0.7), Color(0.3, 0.32, 0.35))
+	_builder.mesh_box(PORTRAIT_AT, Vector3(0.04, 1.3, 1.0), BRASS)
+	_builder.mesh_box(PORTRAIT_AT + Vector3(0.02, 0, 0), Vector3(0.02, 1.15, 0.85), Color(0.55, 0.3, 0.45))
+
+
+## The greenhouse: glass roof panes and huge plants in pots.
+func _greenhouse() -> void:
+	var r: Array = ROOMS.greenhouse
+	var center := Vector3((r[0] + r[1]) / 2, ROOF - 0.12, (r[2] + r[3]) / 2)
+	_builder.mesh_box(center, Vector3(r[1] - r[0], 0.02, r[3] - r[2]), GLASS)
+	for at in PLANTS:
+		_builder.box(at + Vector3(0, 0.3, 0), Vector3(0.7, 0.6, 0.7), Color(0.6, 0.35, 0.22))
+		var leaves := SphereMesh.new()
+		leaves.radius = 0.8
+		leaves.height = 1.4
+		_builder.mesh(leaves, at + Vector3(0, 1.3, 0), HEDGE.lightened(0.15))
+
+
+## The butler's pantry: the bell board on the east wall (one bell per room) and shelves of jars.
+func _pantry() -> void:
+	_builder.mesh_box(BELL_BOARD_AT, Vector3(0.04, 0.7, 1.8), PANEL)
+	for i in BELL_ROOMS.size():
+		var at := BELL_BOARD_AT + Vector3(-0.04, 0.12, -0.75 + i * 0.3)
+		_builder.mesh_box(at, Vector3(0.05, 0.1, 0.1), BRASS)
+	_builder.box(PANTRY_SHELF_AT + Vector3(0, 1.0, 0), Vector3(3.0, 2.0, 0.5), PANEL)
+
+
+## The hedge maze behind the house: a grid of cells with hedges between them, carved with a fixed seed so every match
+## has the same one; its way in faces the garden door and its gate is the far corner.
+func _maze() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = MAZE_SEED
+	var seen := {maze_entry(): true}
+	var stack: Array[Vector2i] = [maze_entry()]
+	while not stack.is_empty():
+		var cell: Vector2i = stack.back()
+		var next: Array[Vector2i] = []
+		for step: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]:
+			var other := cell + step
+			var on_grid := other.x >= 0 and other.y >= 0 and other.x < MAZE_CELLS.x and other.y < MAZE_CELLS.y
+			if on_grid and not seen.has(other):
+				next.append(other)
+		if next.is_empty():
+			stack.pop_back()
+			continue
+		var other := next[rng.randi_range(0, next.size() - 1)]
+		var first := cell if cell.x + cell.y < other.x + other.y else other
+		var side := "e" if other.x != cell.x else "s"
+		var sides: Array = maze_open.get(first, [])
+		sides.append(side)
+		maze_open[first] = sides
+		seen[other] = true
+		stack.append(other)
+	var width := MAZE_CELLS.x * MAZE_CELL
+	var left := -width / 2
+	for z in MAZE_CELLS.y:
+		for x in MAZE_CELLS.x:
+			var cell := Vector2i(x, z)
+			var center := maze_center(cell)
+			var sides: Array = maze_open.get(cell, [])
+			if x < MAZE_CELLS.x - 1 and not sides.has("e"):
+				_hedge(center + Vector3(MAZE_CELL / 2, 0, 0), Vector3(0.6, HEDGE_HEIGHT, MAZE_CELL + 0.6))
+			if z < MAZE_CELLS.y - 1 and not sides.has("s"):
+				_hedge(center + Vector3(0, 0, -MAZE_CELL / 2), Vector3(MAZE_CELL + 0.6, HEDGE_HEIGHT, 0.6))
+	var across := Vector3(MAZE_CELL + 0.6, HEDGE_HEIGHT, 0.6)
+	for x in MAZE_CELLS.x:
+		if x != maze_entry().x:
+			_hedge(maze_center(Vector2i(x, 0)) + Vector3(0, 0, MAZE_CELL / 2), across)
+		var far := maze_center(Vector2i(x, MAZE_CELLS.y - 1)) + Vector3(0, 0, -MAZE_CELL / 2)
+		if x != maze_gate().x:
+			_hedge(far, across)
+		else:
+			_builder.mesh_box(far + Vector3(0, 1.0, 0), Vector3(MAZE_CELL - 0.4, 2.0, 0.08), BLACK)
+	var depth := MAZE_CELLS.y * MAZE_CELL
+	_hedge(Vector3(left, 0, MAZE_Z - depth / 2), Vector3(0.6, HEDGE_HEIGHT, depth + 0.6))
+	_hedge(Vector3(-left, 0, MAZE_Z - depth / 2), Vector3(0.6, HEDGE_HEIGHT, depth + 0.6))
+
+
+func _hedge(at: Vector3, size: Vector3) -> void:
+	_builder.box(at + Vector3(0, size.y / 2, 0), size, HEDGE)
