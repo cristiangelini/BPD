@@ -5690,7 +5690,6 @@ BRIEF_FAKE_SHAMPOO_C,"Traigan la caja de champú trucho en el baúl del patrulle
 BRIEF_FAKE_SHAMPOO_D,"Si encuentran las etiquetas falsas o el embudo, mejor: todo suma.","If you find the fake labels or the funnel, even better: it all counts.","Se acharem os rótulos falsos ou o funil, melhor: tudo conta."
 OBJ_FIND_SHAMPOO_BOX,Llevarse la caja de champú trucho,Take the box of fake shampoo,Levar a caixa de xampu falsificado
 OBJ_EXTRA_SHAMPOO_LABELS,Extra: las etiquetas falsas,Extra: the fake labels,Extra: os rótulos falsos
-OBJ_EXTRA_FUNNEL,Extra: el embudo,Extra: the funnel,Extra: o funil
 POMPITA_CLUE_fake_shampoo,"Vi a Don Chorro esconder algo %s. Y desde que cambió el champú, la espuma sale verde y me pica la nariz.","I saw Don Chorro hide something %s. And ever since he changed the shampoo, the foam comes out green and makes my nose itch.","Vi o Don Chorro esconder algo %s. E desde que ele trocou o xampu, a espuma sai verde e meu nariz coça."
 CLUE_GREEN_FOAM,"La espuma es verde y huele a remedio para la tos. El champú no huele así.","The foam is green and smells like cough syrup. Shampoo doesn't smell like that.","A espuma é verde e cheira a xarope para tosse. Xampu não cheira assim."
 CARWASH_SMELL,¡Puaj! ¿Qué es ese olor?,Yuck! What's that smell?,Eca! Que cheiro é esse?
