@@ -30,7 +30,8 @@ const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_RINK_TIP_B", "BRI
 	"BRIEF_RINK_TIP_E"]
 ## The stories the rink can tell, like Fair.STORIES: what the comisario says once it's guessed, its "find it" row, what
 ## it hides in spots drawn with the seed (with their half heights and whether they're heavy), the checklist rows of its
-## extras and its rig. With "main_hidden" the first hidden item is the main evidence and the rest extras.
+## extras and its rig. With "main_hidden" the first hidden item is the main evidence and the rest extras; with
+## "main_spot" the main evidence always goes in that spot.
 const STORIES := {
 	"ice_surprise": {
 		"briefing": ["BRIEF_RIGHT", "BRIEF_ICE_SURPRISE_B", "BRIEF_ICE_SURPRISE_C", "BRIEF_ICE_SURPRISE_D"],
@@ -66,6 +67,19 @@ const STORIES := {
 		"heavy": [false, false, false],
 		"extra_keys": ["OBJ_EXTRA_BET_NOTEBOOK", "OBJ_EXTRA_MONEY_ENVELOPE"],
 		"rig": preload("res://scripts/case/rink/fixed_match_rig.gd"),
+	},
+	"golden_skate": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_GOLDEN_SKATE_B", "BRIEF_GOLDEN_SKATE_C", "BRIEF_GOLDEN_SKATE_D"],
+		"find": "OBJ_FIND_GOLDEN_SKATE",
+		"main_hidden": true,
+		"main_spot": "on_skate_rack",
+		"hidden": [preload("res://scenes/props/rink_golden_skate.tscn"),
+			preload("res://scenes/props/rink_white_paint.tscn"),
+			preload("res://scenes/props/rink_trophy_clipping.tscn")],
+		"half_heights": [0.15, 0.1, 0.003],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_WHITE_PAINT", "OBJ_EXTRA_TROPHY_CLIPPING"],
+		"rig": preload("res://scripts/case/rink/golden_skate_rig.gd"),
 	},
 }
 ## Where the suspicion notes can lie: on the floor of the lobby, the corridor and by the stands.
@@ -312,6 +326,12 @@ func _place_hidden() -> void:
 	var story: Dictionary = STORIES[story_id]
 	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
 	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	if story.has("main_spot"):
+		var fixed := SPOTS.find_custom(func(spot: Dictionary) -> bool: return spot.id == story.main_spot)
+		var clash := hidden_spots.find(fixed)
+		if clash > 0:
+			hidden_spots[clash] = hidden_spots[0]
+		hidden_spots[0] = fixed
 	for i in story.hidden.size():
 		var item: Evidence = story.hidden[i].instantiate()
 		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)

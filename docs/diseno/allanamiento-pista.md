@@ -168,6 +168,13 @@ suman 500.
    - **La pista propia y qué cambia:** el marcador sobre el hielo suma un gol solo cada 20 s a uno de los dos equipos (y
      no juega nadie). El primer gol que ve un policía (a menos de 18 m del marcador) va a la planilla.
    - **Capturas:** `pista/paso6b-*.png`.
+   - **El patín de oro:** el Patín de Oro del campeonato (4 kg, 1000), pintado de blanco, va siempre en el estante de
+     patines de alquiler, entre dos patines; la lata de pintura blanca (1 kg, 300) y el recorte del trofeo en el diario
+     (0,1 kg, 200) en otros escondites.
+   - **La pista propia:** cada vez que un policía lo agarra suena "¡CLANG!" (pesa mucho para ser un patín). La primera
+     vez va a la planilla.
+   - **Qué cambia:** el estante se dobla hacia abajo del lado del patín.
+   - **Capturas:** `pista/paso6c-*.png`.
 7. La pista en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 8. El online.
 
