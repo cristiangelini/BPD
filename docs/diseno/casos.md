@@ -15,7 +15,7 @@ Esto es un borrador para que tachés, cambies o sumes. Marcá con ✗ lo que no 
 ## 1. Allanamiento
 Llegan con una orden judicial (sin tiempo límite, decisión 66), entran, encuentran la evidencia y la cargan hasta el patrullero sin romperla.
 
-Cada allanamiento es un lugar más una historia, y los policías adivinan la historia con las pistas (decisiones 79 y 80). Los 10 lugares, con sus historias, están en [historias.md](historias.md): la casa del abuelo, la panadería, la peluquería de mascotas, la ferretería, la fábrica de muñecos, la oficina de seguros, el laboratorio de pasteles, el edificio de departamentos, el hotel y el gimnasio. Las ideas que había antes acá (mansión, granja, taller de autos, bóveda y fiesta de cumpleaños) quedan en "Para después". Propuesta: la casa equivocada ([casa-equivocada.md](casa-equivocada.md)).
+Cada allanamiento es un lugar más una historia, y los policías adivinan la historia con las pistas (decisiones 79 y 80). Los 10 lugares, con sus historias, están en [historias.md](historias.md): la casa del abuelo, la panadería, la peluquería de mascotas, la ferretería, la fábrica de muñecos, la oficina de seguros, el laboratorio de pasteles, el edificio de departamentos, el hotel y el gimnasio. Las ideas que había antes acá (mansión, granja, taller de autos, bóveda y fiesta de cumpleaños) quedan en "Para después". Propuestas: la casa equivocada ([casa-equivocada.md](casa-equivocada.md)) y el cine ([allanamiento-cine.md](allanamiento-cine.md)).
 
 ## 2. Persecución
 Los 4 van en el mismo patrullero, cada uno con su tarea (decisión 24).
