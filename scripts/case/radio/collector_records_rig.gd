@@ -1,5 +1,5 @@
 class_name CollectorRecordsRig
-extends RadioRig
+extends RadioStationRig
 
 ## The collector's records (allanamiento-radio.md, "Los discos de colección"): don Volumen stole a collector's vinyls
 ## and plays them on air as "gems". The crate of stolen vinyls is hidden with the collector's catalog and the golden
