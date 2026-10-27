@@ -120,6 +120,27 @@ function buildParrotCage() {
 	return b.build();
 }
 
+// Doña Clotilde's box of chocolates on the dining table (step 4): 0.4 x 0.06 x 0.3 m, centered, dark red with a gold
+// ribbon on the open lid, and eight chocolates the game hides one by one (parts donut_0 to donut_7, like a DonutBox).
+function buildChocolateBox() {
+	const b = new Builder('chocolate_box');
+	const box = C('chocolate_box', 0x7a1426), gold = C('ribbon_gold', 0xd8b04a);
+	b.add('box', box, new THREE.BoxGeometry(0.4, 0.01, 0.3), { pos: V(0, -0.025, 0) });
+	for (const s of [-1, 1]) {
+		b.add('box', box, new THREE.BoxGeometry(0.4, 0.05, 0.01), { pos: V(0, 0, s * 0.145) });
+		b.add('box', box, new THREE.BoxGeometry(0.01, 0.05, 0.3), { pos: V(s * 0.195, 0, 0) });
+	}
+	b.add('lid', box, new THREE.BoxGeometry(0.4, 0.01, 0.3), { pos: V(0, 0.09, -0.2), rot: [-1.15, 0, 0] });
+	b.add('lid', gold, new THREE.BoxGeometry(0.04, 0.012, 0.3), { pos: V(0, 0.095, -0.195), rot: [-1.15, 0, 0] });
+	const choco = [C('chocolate_dark', 0x3a2014), C('chocolate_milk', 0x7a4a2a)];
+	let i = 0;
+	for (const z of [-0.06, 0.06]) for (const x of [-0.135, -0.045, 0.045, 0.135]) {
+		b.add(`donut_${i}`, choco[i % 2], ellipsoid(0.035, 0.025, 0.035, 8, 5), { pos: V(x, -0.005, z) });
+		i++;
+	}
+	return b.build();
+}
+
 const PEOPLE = { socio_club: socio, dona_clotilde: clotilde, mayordomo: mayordomo };
 
 export const models = {
@@ -128,7 +149,7 @@ export const models = {
 		f(b);
 		return b.build();
 	}])),
-	loro: buildLoro, parrot_cage: buildParrotCage,
+	loro: buildLoro, parrot_cage: buildParrotCage, chocolate_box: buildChocolateBox,
 };
 
 export const views = {
@@ -140,5 +161,9 @@ export const views = {
 	parrot: {
 		items: [{ name: 'parrot_cage', pos: [0, 0, 0] }, { name: 'loro', pos: [0, 1.25, 0], rotY: 0.4 }],
 		cam: { pos: [0.6, 1.6, 2.0], target: [0, 1.3, 0], fov: 38 },
+	},
+	chocolates: {
+		items: [{ name: 'chocolate_box', pos: [0, 0.03, 0] }],
+		cam: { pos: [0, 0.5, 0.6], target: [0, 0, 0], fov: 38 },
 	},
 };

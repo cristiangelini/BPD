@@ -82,7 +82,13 @@ const MEMBER_SPOTS := {
 	"library": [Vector3(-12.0, 0, -3.0), Vector3(-9.5, 0, -8.5)],
 	"study": [Vector3(-5.5, 0, -2.5), Vector3(-2.5, 0, -8.5)],
 	"greenhouse": [Vector3(3.0, 0, -6.0), Vector3(3.5, 0, -1.0)],
+	"pantry": [Vector3(10.5, 0, -6.0), Vector3(12.5, 0, -1.8)],
 }
+## Every this many seconds one member goes through a secret passage to the room at its other end (step 4).
+const MOVE_EVERY := 60.0
+## Doña Clotilde's box of chocolates, on the dining table.
+const CHOCOLATES_AT := TABLE_AT + Vector3(0.6, TABLE_SIZE.y + 0.05, 0.2)
+const CHOCOLATES_SCENE := preload("res://scenes/props/chocolate_box.tscn")
 const BUTLER_AT := Vector3(14.5, 0, -3.5)
 ## Out front, the gravel drive where the patrol car stops; out the back, the hedge maze (MAZE_CELLS cells of
 ## MAZE_CELL m, one of them its way in by the back door and one its gate at the far end).
@@ -123,6 +129,9 @@ var members: Array[MysteryMember] = []
 var clotilde: MansionOwner
 var butler: MansionButler
 var parrot: MansionParrot
+var chocolates: ChocolateBox
+var _move_left := MOVE_EVERY
+var _move_rng := RandomNumberGenerator.new()
 var _builder: PlaceBuilder
 
 
@@ -396,26 +405,24 @@ func _greenhouse() -> void:
 		_builder.mesh(leaves, at + Vector3(0, 1.3, 0), HEDGE.lightened(0.15))
 
 
-## The six members (MemberTraits.draw with the case seed), each in the room of their alibi; doña Clotilde on her
-## round, Ceferino by the bell board and Lorenzo in his cage in the lounge.
+## The six members (MemberTraits.draw with the case seed), each in the room of their alibi (one of them stubborn about
+## the cap); doña Clotilde on her round, Ceferino by the bell board, Lorenzo in his cage in the lounge and the box of
+## chocolates on the dining table.
 func _people() -> void:
 	var traits := MemberTraits.draw(case_seed)
-	var in_room := {}
+	var stubborn := hash("stubborn member %d" % case_seed) % traits.size()
 	for i in traits.size():
 		var member := MysteryMember.new()
 		member.name = "Member%d" % i
 		member.traits = traits[i]
 		member.index = i
-		var room: String = traits[i].room
-		var count: int = in_room.get(room, 0)
-		in_room[room] = count + 1
-		var spot: Vector3 = MEMBER_SPOTS[room][count % 2] + Vector3(0.9 * floori(count / 2.0), FLOOR_TOP, 0)
-		var r: Array = ROOMS[room]
-		var facing := Vector3((r[0] + r[1]) / 2.0, 0, (r[2] + r[3]) / 2.0) - spot
-		member.position = spot
-		member.rotation.y = atan2(facing.x, facing.z)
+		member.stubborn = i == stubborn
+		member.room = traits[i].room
+		member.position = free_spot(member.room)
+		member.rotation.y = _facing(member.position, member.room)
 		add_child(member)
 		members.append(member)
+	_move_rng.seed = hash("mansion moves %d" % case_seed)
 	clotilde = MansionOwner.new()
 	clotilde.name = "Clotilde"
 	clotilde.position = MansionOwner.ROUTE[0] + Vector3(0, FLOOR_TOP, 0)
@@ -429,6 +436,88 @@ func _people() -> void:
 	parrot.name = "Parrot"
 	parrot.position = CAGE_AT + Vector3(0, FLOOR_TOP, 0)
 	add_child(parrot)
+	chocolates = CHOCOLATES_SCENE.instantiate()
+	chocolates.name = "Chocolates"
+	chocolates.position = CHOCOLATES_AT
+	add_child(chocolates)
+
+
+## A spot in a room no member is standing on (MEMBER_SPOTS; past two, next to the first ones), in the house's space.
+func free_spot(room: String) -> Vector3:
+	for i in MemberTraits.COUNT:
+		var spot: Vector3 = MEMBER_SPOTS[room][i % 2] + Vector3(0.9 * floori(i / 2.0), FLOOR_TOP, 0)
+		var taken := false
+		for member in members:
+			taken = taken or (member.room == room and member.position.distance_to(spot) < 0.5)
+		if not taken:
+			return spot
+	return MEMBER_SPOTS[room][0] + Vector3(0, FLOOR_TOP, 0)
+
+
+## The rotation that turns someone at a spot to the middle of the room.
+func _facing(spot: Vector3, room: String) -> float:
+	var r: Array = ROOMS[room]
+	var to := Vector3((r[0] + r[1]) / 2.0, 0, (r[2] + r[3]) / 2.0) - spot
+	return atan2(to.x, to.z)
+
+
+## The secret passage with a way in or out in a room, and whether that's its way in ("" if the room has none).
+func passage_from(room: String) -> Array:
+	for id: String in PASSAGES:
+		for end: String in ["in", "out"]:
+			if room_at(to_global(passage_door(id, end, 1.0))) == room:
+				return [id, end == "in"]
+	return ["", false]
+
+
+## The point in front of a passage's doorway ("in" or "out"), this many meters out into its room; 0 is the doorway
+## and a negative number is inside the passage, on its middle line.
+func passage_door(id: String, end: String, out := 1.0) -> Vector3:
+	var p: Dictionary = PASSAGES[id]
+	var door: Vector3 = p[end]
+	var middle := Vector3(p.fixed, 0, door.z) if p.axis == "z" else Vector3(door.x, 0, p.fixed)
+	if out < 0.0:
+		return middle
+	return door + (door - middle).normalized() * out
+
+
+## Sends a member through the secret passage of the room they're in, to the room at its other end: the passage opens,
+## they walk through it (MysteryMember.walk_along) to a free spot there and it closes behind them unless the cops had
+## it open. Returns the room they're going to ("" if theirs has no passage or they're already walking).
+func send_through(member: MysteryMember) -> String:
+	var way := passage_from(member.room)
+	if way[0] == "" or member.walk:
+		return ""
+	var id: String = way[0]
+	var start := "in" if way[1] else "out"
+	var end := "out" if way[1] else "in"
+	var to_room := room_at(to_global(passage_door(id, end)))
+	var passage: SecretPassage = passages[id]
+	var was_open := passage.is_open
+	passage.set_open(true)
+	var spot := free_spot(to_room)
+	var points: Array[Vector3] = [passage_door(id, start) + Vector3.UP * FLOOR_TOP,
+		passage_door(id, start, -1.0) + Vector3.UP * FLOOR_TOP, passage_door(id, end, -1.0) + Vector3.UP * FLOOR_TOP,
+		passage_door(id, end) + Vector3.UP * FLOOR_TOP, spot]
+	member.walk_along(points, to_room, func() -> void:
+		member.rotation.y = _facing(spot, to_room)
+		if not was_open:
+			passage.set_open(false))
+	return to_room
+
+
+## Every MOVE_EVERY seconds one member (drawn with the case seed) in a room with a passage goes through it.
+func _physics_process(delta: float) -> void:
+	_move_left -= delta
+	if _move_left > 0.0:
+		return
+	_move_left = MOVE_EVERY
+	var can_go: Array[MysteryMember] = []
+	for member in members:
+		if passage_from(member.room)[0] != "" and not member.walk:
+			can_go.append(member)
+	if not can_go.is_empty():
+		send_through(can_go[_move_rng.randi_range(0, can_go.size() - 1)])
 
 
 ## The butler's pantry: the bell board on the east wall (one bell per room) and shelves of jars.
