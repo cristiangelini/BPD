@@ -55,6 +55,12 @@ const BOOTH_AT := Vector3(-13.5, 0, 1.6)
 ## The kids' corner: the cardboard rocket and the Mars scale.
 const ROCKET_AT := Vector3(11.5, 0, 3.5)
 const SCALE_AT := Vector3(8.5, 0, 6.0)
+## The hall's coffee machine against the front wall, and the little table beside it with two coffees for Doña Nebulosa.
+const COFFEE_AT := Vector3(-5.5, 0, 6.6)
+const COFFEE_SIZE := Vector3(0.7, 1.6, 0.6)
+const COFFEE_MODEL := preload("res://assets/models/coffee_machine.glb")
+const COFFEE_SCENE := preload("res://scenes/props/coffee_cup.tscn")
+const CUPS_TABLE_AT := Vector3(-4.6, 0, 6.6)
 ## The stool with the roll of evidence bags, by the door.
 const BAGS_AT := Vector3(-3.0, 0, 6.0)
 const PAINT := Color(0.18, 0.2, 0.42)
@@ -123,6 +129,7 @@ func _ready() -> void:
 	_rooms()
 	_hall()
 	_builder.box(BAGS_AT + Vector3(0, FLOOR_TOP + 0.25, 0), Vector3(0.5, 0.5, 0.4), WOOD)
+	_coffee()
 	bags = EvidenceBags.new()
 	bags.name = "EvidenceBags"
 	bags.position = BAGS_AT + Vector3(0, FLOOR_TOP + 0.5, 0)
@@ -148,6 +155,7 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	clues.planetarium = self
 	clues.case = case
 	add_child(clues)
+	sleeper.case = case
 	star_show = StarShow.new()
 	star_show.name = "StarShow"
 	star_show.planetarium = self
@@ -227,6 +235,20 @@ func reveal_loot() -> void:
 	pedrusco.collision_layer = 0
 	if case:
 		case.found_loot()
+
+
+## Doña Nebulosa, the witness, took offense (CrimeScenePlace).
+func witness_offended() -> bool:
+	return sleeper.offended
+
+
+func offend_witness() -> void:
+	sleeper.offend()
+
+
+## A cop shouted (VoiceChat): Doña Nebulosa may wake up in a bad mood.
+func shouted_by(cop: Cop) -> void:
+	sleeper.shouted_by(cop)
 
 
 ## Lights out or back on: in the dark the glow paint on the guides' gloves shows.
@@ -590,6 +612,28 @@ func _rocket(at: Vector3, radius: float, spot := "") -> void:
 	window.radius = radius * 0.12
 	window.height = radius * 0.24
 	_builder.mesh(window, at + Vector3(0, tube.height * 0.7, radius * 0.34), Color(0.5, 0.8, 0.95))
+
+
+## The coffee machine facing the hall, and two coffees on the little table beside it.
+func _coffee() -> void:
+	var machine := StaticBody3D.new()
+	machine.name = "CoffeeMachine"
+	machine.position = COFFEE_AT + Vector3(0, FLOOR_TOP, 0)
+	machine.rotation.y = PI
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = COFFEE_SIZE
+	shape.shape = box
+	shape.position.y = COFFEE_SIZE.y / 2
+	machine.add_child(shape)
+	machine.add_child(COFFEE_MODEL.instantiate())
+	add_child(machine)
+	_builder.box(CUPS_TABLE_AT + Vector3(0, FLOOR_TOP + 0.45, 0), Vector3(0.6, 0.9, 0.45), WOOD)
+	for i in 2:
+		var cup: Node3D = COFFEE_SCENE.instantiate()
+		cup.name = "Coffee%d" % i
+		cup.position = CUPS_TABLE_AT + Vector3(-0.15 + i * 0.3, FLOOR_TOP + 0.95, 0)
+		add_child(cup)
 
 
 ## The photo booth or its tray (PhotoBooth); the case's clues reach them when it comes.
