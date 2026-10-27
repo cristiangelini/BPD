@@ -146,7 +146,13 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
    partes y muestra lo sacado hasta ahora (con "?" en lo que falta). Las pistas del caso dicen huellas (nombre), pisada
    (talle), pelo, mordida (dientes), video (anteojos) y abuela (colonia) **(propuesta)**.
 4. El caso: la historia, lo robado y dónde está escondido, las 6 pistas y cómo se arruinan, la abuela sorda y la
-   planilla.
+   planilla. Hecho así, en dos PR. Primero (4a), la historia y lo robado: el comisario cuenta qué desapareció (el anillo
+   en su cajita, la caja de los sobres o los novios de azúcar de la abuela, según la semilla) y la planilla lo pide
+   (+100). La semilla también elige dónde está: dentro del pastel, en los bolsillos de los sacos del guardarropa o en el
+   centro de flores de la mesa principal. Revisar el lugar correcto lo hace aparecer en el piso, adelante; los otros dan
+   un chiste ("Flores, agua y un caracol muy elegante"). Revisar el pastel es cortarlo: queda hundido, haya algo o no
+   **(propuesta)**. Capturas: `boda-escena/wedding_loot.png` y `paso4-pastel-cortado.png`. Después (4b), las 6 pistas y
+   la abuela sorda.
 5. Rosa: que siga a los policías, sus frases, su "prueba" y la boda suspendida si acusan mal a Tito; y el vals.
 6. El final: el tablero, el cansancio, el sueldo y la huida en el auto de los novios con las latas.
 7. El sorteo de "Jugar" (la boda entra en el reparto de las escenas del crimen) y el online: Rosa, el vals, la abuela,

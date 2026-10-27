@@ -1,6 +1,7 @@
 // The wedding crime scene (docs/diseno/escena-boda.md): the three-tier wedding cake, the flower centerpieces of the
 // round tables and the DJ's booth (step 1); the six tuxedos alike, Rosa the bride, the DJ, grandma Chola and her ear
-// trumpet (step 2). Placeholder, not final art.
+// trumpet (step 2); what was stolen: the ring in its box, the gift envelopes' box and the sugar couple (step 4).
+// Placeholder, not final art.
 import { Builder, ellipsoid, mat, V, THREE } from '../lib.js';
 import { M, pearBody, eyes, limb } from './pear.js';
 
@@ -156,6 +157,48 @@ export function buildEarTrumpet() {
 	return b.build();
 }
 
+// The ring's velvet box with its lid open and the gold ring in the slot ('ring': hidden when the box is the empty one
+// on the head table). Origin at its bottom; 6 cm wide.
+export function buildRingBox() {
+	const b = new Builder('wedding_ring_box');
+	const velvet = mat('ring_velvet', 0xa01830), gold = mat('wedding_gold', 0xe8c040, { metalness: 0.5, roughness: 0.3 });
+	box(b, 'box', velvet, 0.06, 0.035, 0.06, 0, 0.0175, 0);
+	box(b, 'box', velvet, 0.06, 0.035, 0.012, 0, 0.06, -0.035, [-0.4, 0, 0]);
+	box(b, 'box', mat('ring_satin', 0xf6f0e6), 0.05, 0.004, 0.05, 0, 0.036, 0);
+	b.add('ring', gold, new THREE.TorusGeometry(0.014, 0.004, 6, 14), { pos: V(0, 0.05, 0.005) });
+	b.add('ring', mat('ring_stone', 0xd8f0ff, { metalness: 0.2, roughness: 0.05 }), ellipsoid(0.005, 0.005, 0.005, 6, 4), { pos: V(0, 0.066, 0.005) });
+	return b.build();
+}
+
+// The gift envelopes' box (the urn): a white box with a slot on top, a pink bow and a few envelopes peeking out.
+// Origin at its bottom; 30 cm.
+export function buildGiftUrn() {
+	const b = new Builder('gift_urn');
+	const white = mat('gift_box', 0xfbfaf6), pink = mat('wedding_cake_ribbon', 0xeea8c0);
+	box(b, 'box', white, 0.3, 0.3, 0.3, 0, 0.15, 0);
+	box(b, 'box', M.black, 0.16, 0.005, 0.02, 0, 0.301, 0);
+	box(b, 'box', pink, 0.31, 0.04, 0.31, 0, 0.2, 0);
+	b.add('box', pink, ellipsoid(0.06, 0.04, 0.03, 8, 5), { pos: V(-0.05, 0.24, 0.16) });
+	b.add('box', pink, ellipsoid(0.06, 0.04, 0.03, 8, 5), { pos: V(0.05, 0.24, 0.16) });
+	const paper = mat('envelope', 0xf2e8d0);
+	[[-0.03, -0.1], [0.02, 0.15], [0.05, -0.05]].forEach(([x, tilt]) => box(b, 'envelopes', paper, 0.12, 0.08, 0.004, x, 0.33, 0, [0, 0, tilt]));
+	return b.build();
+}
+
+// The sugar couple from the top of the cake (grandma's): a tiny bride and groom on a round base. Origin at its bottom;
+// 14 cm tall.
+export function buildSugarCouple() {
+	const b = new Builder('sugar_couple');
+	const sugar = mat('sugar', 0xfdfaf2), black = mat('tux_black', 0x18181e), skin = mat('sugar_skin', 0xf3d6c0);
+	cylinder(b, 'base', mat('wedding_cake_stand', 0xc8ccd4, { metalness: 0.3, roughness: 0.4 }), 0.06, 0.012, 0, 0.006, 0);
+	b.add('bride', sugar, new THREE.ConeGeometry(0.03, 0.08, 10), { pos: V(-0.025, 0.052, 0) });
+	b.add('bride', skin, ellipsoid(0.015, 0.016, 0.015, 8, 5), { pos: V(-0.025, 0.105, 0) });
+	b.add('groom', black, new THREE.CylinderGeometry(0.018, 0.024, 0.08, 10), { pos: V(0.025, 0.052, 0) });
+	b.add('groom', skin, ellipsoid(0.015, 0.016, 0.015, 8, 5), { pos: V(0.025, 0.105, 0) });
+	b.add('groom', black, new THREE.CylinderGeometry(0.01, 0.011, 0.02, 8), { pos: V(0.025, 0.128, 0) });
+	return b.build();
+}
+
 const PEOPLE = { tuxedo, novia, dj_bombo: dj, abuela_chola: abuela };
 
 export const models = {
@@ -165,7 +208,8 @@ export const models = {
 		return b.build();
 	}])),
 	wedding_cake: buildWeddingCake, flower_centerpiece: buildFlowerCenterpiece, dj_booth: buildDjBooth,
-	ear_trumpet: buildEarTrumpet,
+	ear_trumpet: buildEarTrumpet, wedding_ring_box: buildRingBox, gift_urn: buildGiftUrn,
+	sugar_couple: buildSugarCouple,
 };
 
 export const views = {
@@ -178,6 +222,11 @@ export const views = {
 			{ name: 'npc_tuxedo', pos: [1.2, 0, 0], rotY: -0.3 }, { name: 'npc_abuela_chola', pos: [2.4, 0, 0], rotY: -0.3 },
 			{ name: 'npc_dj_bombo', pos: [3.6, 0, 0], rotY: -0.4 }, { name: 'ear_trumpet', pos: [2.6, 0, 0.8], rotY: 0.5 }],
 		cam: { pos: [1.15, 1.4, 6.2], target: [1.15, 0.85, 0], fov: 40 },
+	},
+	wedding_loot: {
+		items: [{ name: 'wedding_ring_box', pos: [-0.32, 0, 0], rotY: 0.3 }, { name: 'gift_urn', pos: [0, 0, 0], rotY: 0.2 },
+			{ name: 'sugar_couple', pos: [0.32, 0, 0], rotY: -0.3 }],
+		cam: { pos: [0, 0.5, 1.1], target: [0, 0.12, 0], fov: 40 },
 	},
 	dj_booth: {
 		items: [{ name: 'dj_booth', pos: [0, 0, 0] }],
