@@ -49,7 +49,8 @@ func test_cake_time_darkens_the_hall_and_gathers_the_kids() -> void:
 	party.chispita.start_at(0)
 	var cop: Cop = party.get_node("Cop")
 	var before: Array[Vector3] = []
-	for kid: ClubMember in party.kids:
+	for kid: PartyKid in party.kids:
+		kid.wanders = false
 		before.append(kid.position)
 	var lamp: OmniLight3D = party._lamps[0]
 	var bright := lamp.light_energy

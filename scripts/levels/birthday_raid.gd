@@ -11,15 +11,20 @@ extends Node3D
 ## Chispita (step 2) walks his round as the floor boss: the complaint goes up with every balloon he sees pop, the cake
 ## falling (the kids cry), the office door broken and his case opened. The matchbox by the cake is his distraction:
 ## lit, the lights go off and he and the kids sing round the table for 15 s, seeing nothing; a cop singing along calms
-## him down once a song. Every number here is (propuesta).
+## him down once a song.
+## The kids (step 3, PartyKid) run about, hang on cops' legs and carry small things off to the castle; E on Chispita
+## gets a cop one of his balloon dogs (one every BALLOON_EVERY seconds) to trade a kid for what they carry. A kid a cop
+## runs into cries, and Chispita counts it. Whoever breaks the piñata (BirthdayPinata) gets Tomasito's secret, once,
+## while the guests sit under it picking up candies. Every number here is (propuesta).
 
 signal cake_fell
 signal balloon_popped(index: int)
+## Tomasito told the cop who broke the piñata his secret (the case fills it in, step 4).
+signal tomasito_told(cop: Cop)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const CHISPITA_SCENE := preload("res://scenes/npc/birthday_clown.tscn")
 const CASTLE_MODEL := preload("res://assets/models/bouncy_castle.glb")
-const PINATA_MODEL := preload("res://assets/models/birthday_pinata.glb")
 const CAKE_MODEL := preload("res://assets/models/birthday_cake.glb")
 const GIFT_MODEL := preload("res://assets/models/gift_box.glb")
 const CASE_MODEL := preload("res://assets/models/chispita_case.glb")
@@ -30,6 +35,9 @@ const CASTLE_HALF := 2.0
 const CASTLE_FLOOR := 0.4
 const CASTLE_WALL := Vector3(0.3, 1.6, 4.0)
 const BOUNCE := 6.0
+## Where the kids play by the castle's opening with what they carry, and where it ends up when they're bored.
+const CASTLE_PLAY := Vector3(CASTLE_AT.x - CASTLE_HALF - 0.6, FLOOR_TOP, CASTLE_AT.z)
+const CASTLE_DROP := CASTLE_AT + Vector3(-0.8, CASTLE_FLOOR + 0.3, 0)
 ## The piñata under the mirror ball.
 const PINATA_AT := Vector3(0, 1.75, -0.5)
 ## The gift table by the coat check, with its gifts.
@@ -55,7 +63,7 @@ const BALLOON_RADIUS := 0.2
 ## The bin of paper cups at the end of the food table, a hiding spot.
 const CUP_BIN_AT := Vector3(-10.8, FLOOR_TOP, 3.0)
 const CUP_BIN_SIZE := Vector3(0.5, 0.6, 0.5)
-## Where Tomasito and his guests stand (step 3 makes them run).
+## Where Tomasito and his guests start, and the spots the guests run between.
 const KIDS := 8
 const KID_SPOTS: Array[Vector3] = [
 	Vector3(-2.5, 0, -2.5), Vector3(2.4, 0, -2.0), Vector3(-1.5, 0, 1.6), Vector3(1.8, 0, 1.2), Vector3(5.5, 0, -1.0),
@@ -80,6 +88,12 @@ const CANDLES_AT := CAKE_AT + Vector3(0, 0, 1.2)
 const DARK := 0.12
 ## Where the kids stand round the cake while they sing, two rows on the east side (distance and angle from the cake,
 ## leaving Chispita the middle).
+## Chispita hands out a balloon dog this often, and it floats over the cop's shoulder.
+const BALLOON_EVERY := 20.0
+const BALLOON_ON := Vector3(0.35, 0.5, 0)
+const BALLOON_DOG := Color(0.3, 0.75, 1.0)
+## How often the loose things the kids may pick up are counted again.
+const ITEMS_EVERY := 1.0
 const SING_ROWS: Array[Vector2] = [
 	Vector2(1.8, 0.15), Vector2(1.8, -0.15), Vector2(1.8, 0.3), Vector2(1.8, -0.3), Vector2(2.6, 0.06),
 	Vector2(2.6, -0.06), Vector2(2.6, 0.22), Vector2(2.6, -0.22),
@@ -110,8 +124,14 @@ var office_door: FrontDoor
 var chispita_case: Till
 var cake: Grabbable
 var cake_broken := false
-var kids: Array[ClubMember] = []
-var tomasito: ClubMember
+var kids: Array[PartyKid] = []
+var tomasito: PartyKid
+var pinata: BirthdayPinata
+var pinata_breaker: Cop
+var told := false
+## Everything grabbable lying about the hall, for the kids.
+var loose_items: Array[Grabbable] = []
+var balloon_left := 0.0
 var balloons: Array[Area3D] = []
 var popped: Array[int] = []
 var broken_goods := 0
@@ -129,6 +149,8 @@ var _cake_glow: OmniLight3D
 var _lamps: Array[OmniLight3D] = []
 var _before_song := {}
 var _singers := {}
+var _balloon_of := {}
+var _items_left := 0.0
 @onready var car: PatrolCar = $PatrolCar
 
 
@@ -157,8 +179,13 @@ func _ready() -> void:
 	city_map.setup(city, "party_hall", car)
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	_bounce()
+	balloon_left = maxf(balloon_left - delta, 0.0)
+	_items_left -= delta
+	if _items_left <= 0.0:
+		_items_left = ITEMS_EVERY
+		loose_items.assign(find_children("*", "Grabbable", true, false))
 	if not cake_broken and cake.position.y < CAKE_AT.y - CAKE_DROP:
 		break_cake()
 	if singing():
@@ -193,7 +220,11 @@ func _bounce() -> void:
 
 ## The piñata, the gift table with its gifts, the cake, Chispita's case and the bin of cups.
 func _build_extras() -> void:
-	_model(PINATA_MODEL, PINATA_AT)
+	pinata = BirthdayPinata.new()
+	pinata.position = PINATA_AT
+	pinata.drop = PINATA_AT.y - FLOOR_TOP
+	add_child(pinata)
+	pinata.broken.connect(_on_pinata_broken)
 	_build.box(GIFT_TABLE_AT + Vector3(0, GIFT_TABLE_SIZE.y / 2, 0), GIFT_TABLE_SIZE, TABLECLOTH)
 	for i in GIFTS:
 		# Three on the cloth and three smaller ones on top of them.
@@ -286,7 +317,15 @@ func _place_chispita() -> void:
 	chispita_case.opened.connect(func(at: Vector3) -> void: chispita.saw(at, FloorBoss.SAW_TILL))
 	balloon_popped.connect(func(index: int) -> void:
 		chispita.saw(balloons[index].global_position, SAW_POP, "CHISPITA_BALLOON"))
-	cake_fell.connect(func() -> void: chispita.saw(cake.global_position + Vector3.UP * 0.3, SAW_CRYING, "CHISPITA_CRYING"))
+	cake_fell.connect(func() -> void:
+		chispita.saw(cake.global_position + Vector3.UP * 0.3, SAW_CRYING, "CHISPITA_CRYING")
+		for kid in kids:
+			kid.cry(false))
+	for kid in kids:
+		kid.cried.connect(func(crying: PartyKid) -> void:
+			chispita.saw(crying.global_position + Vector3.UP, SAW_CRYING, "CHISPITA_CRYING"))
+	chispita.use_prompt = "PROMPT_ASK_BALLOON"
+	chispita.used.connect(_give_balloon)
 	candles.sang.connect(_on_sang)
 	for node in $Built.get_children():
 		if node is OmniLight3D:
@@ -319,6 +358,8 @@ func _sing() -> void:
 	if not _before_song.is_empty():
 		return
 	_singers.clear()
+	for kid in kids:
+		kid.stop()
 	for lamp in _lamps:
 		lamp.light_energy *= DARK
 	_flames.visible = not cake_broken
@@ -353,13 +394,78 @@ func _on_sang(cop: Cop) -> void:
 	chispita.praise(SANG, "CHISPITA_SANG")
 
 
+## E on Chispita: a balloon dog for the cop, one every BALLOON_EVERY seconds, one a cop.
+func _give_balloon(cop: Cop) -> void:
+	if has_balloon(cop):
+		return
+	if balloon_left > 0.0:
+		cop.show_hint("HINT_BALLOON_WAIT")
+		return
+	balloon_left = BALLOON_EVERY
+	var balloon := MeshInstance3D.new()
+	var look := SphereMesh.new()
+	look.radius = 0.14
+	look.height = 0.5
+	balloon.mesh = look
+	var material := StandardMaterial3D.new()
+	material.albedo_color = BALLOON_DOG
+	balloon.material_override = material
+	balloon.position = BALLOON_ON
+	balloon.rotation.z = PI / 2
+	cop.add_child(balloon)
+	_balloon_of[cop] = balloon
+	chispita.praise(0.0, "CHISPITA_BALLOON_DOG")
+
+
+func has_balloon(cop: Cop) -> bool:
+	return _balloon_of.has(cop)
+
+
+func take_balloon(cop: Cop) -> void:
+	if has_balloon(cop):
+		(_balloon_of[cop] as Node).queue_free()
+		_balloon_of.erase(cop)
+
+
+func is_hung_on(cop: Cop) -> bool:
+	return kids.any(func(kid: PartyKid) -> bool: return kid.hanging_on == cop)
+
+
+## The piñata broke: the guests sit under it picking up candies, and Tomasito is happy with whoever did it.
+func _on_pinata_broken(cop: Cop) -> void:
+	pinata_breaker = cop
+	var under := Vector3(PINATA_AT.x, FLOOR_TOP, PINATA_AT.z)
+	for i in range(1, kids.size()):
+		var angle := TAU * i / (kids.size() - 1)
+		kids[i].pick_candies(under + Vector3(cos(angle), 0, sin(angle)) * 1.3, i % 3 == 1)
+		kids[i].look_at(to_global(under))
+	tomasito.say("TOMASITO_THANKS")
+
+
+## E on Tomasito: only whoever broke the piñata gets his secret, once. True if he said something about it.
+func tomasito_talks(cop: Cop) -> bool:
+	if told:
+		return false
+	if pinata_breaker == null:
+		tomasito.say("TOMASITO_PINATA_FIRST")
+	elif pinata_breaker != cop:
+		tomasito.say("TOMASITO_NOT_YOU")
+	else:
+		told = true
+		tomasito.say("TOMASITO_SECRET")
+		tomasito_told.emit(cop)
+	return true
+
+
 ## Tomasito by the piñata and his seven guests on spots drawn with the seed.
 func _place_kids() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(["birthday raid kids", case_seed])
 	var free := KID_SPOTS.duplicate()
 	for i in KIDS:
-		var kid := ClubMember.new()
+		var kid := PartyKid.new()
+		kid.setup(self, hash(["birthday kid", case_seed, i]))
+		kid.wanders = i > 0
 		kid.name = "Tomasito" if i == 0 else "Kid%d" % i
 		kid.look = "tomasito" if i == 0 else ("party_kid" if rng.randf() < 0.5 else "party_kid_b")
 		kid.next_line = rng.randi_range(0, ClubMember.TALK[kid.look][1] - 1)

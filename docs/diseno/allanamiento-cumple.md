@@ -108,6 +108,16 @@ bocina (por ahora el auto de fuga de los otros dueños; el autito queda para des
      15 s. Mientras canta no ve nada. Durante la canción, E en los fósforos es cantar: le baja 5 la denuncia, una vez por
      canción por policía. Después las velas descansan 45 s. Capturas `/mnt/project-files/cumple/paso2-*.png`.
 3. Los chicos que se cuelgan y agarran lo chico, y Tomasito con la piñata.
+   - **Cómo quedó (propuesta):** los 7 invitados corren de un lugar a otro del salón. El que pasa a menos de 0,9 m de
+     un policía se le cuelga de la pierna ("¡Policía! ¡Llévame en el patrullero!") y ese policía camina a la mitad 5 s;
+     después ese chico no se cuelga de nadie por 12 s, y nunca hay dos colgados del mismo policía. El que encuentra algo
+     de menos de 1 kg tirado en el piso se lo lleva a la entrada del inflable; a los 30 s se aburre y lo deja adentro
+     del inflable. E en Chispita te da un perrito de globo (uno cada 20 s, uno por policía) y con E en el chico se lo
+     cambias por lo que lleva. Un policía que choca corriendo a un chico lo hace llorar 10 s y Chispita suma 10 si lo
+     ve; si se cae el pastel lloran todos, pero Chispita suma 10 una sola vez. Durante la hora del pastel los chicos
+     sueltan todo. No hay cachiporra en el juego, así que la piñata se rompe con 3 E ("E: pegarle a la piñata"):
+     llueven caramelos, los invitados se sientan abajo a juntarlos 10 s y Tomasito le cuenta su secreto solo al policía
+     que la rompió, una vez por caso (qué secreto, en el paso 4). Capturas `/mnt/project-files/cumple/paso3-*.png`.
 4. El caso (`RaidCase`) con la primera historia: los globos de diamantes.
 5. Las otras 5 historias, una por PR.
 6. El sorteo de "Jugar" entre los allanamientos y el online.
