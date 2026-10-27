@@ -127,6 +127,18 @@ extras suman 500.
    - **El soplador:** tira fuera del túnel lo que pesa 3 kg o menos y le da un empujón al policía.
    - **Capturas:** `/mnt/project-files/lavadero/paso2-*.png`.
 3. Don Chorro: la ronda lustrando, la denuncia, "¡eso no se lava así!" y el lavado premium.
+   Hecho así:
+   - **Don Chorro:** el mismo cuerpo que Don Tómbola y Doña Pirueta (voz `CHORRO`), pelado y brillante, con piloto
+     amarillo, botas de goma verdes, bigote gris y la franela roja en la mano. Va y viene por el frente del túnel y
+     cruza la salida, en una L de 16 + 4,7 m.
+   - **La denuncia:** barra arriba en pantalla. Suma 5 por cada policía que ve en el túnel (una vez por policía; lo ve
+     desde la salida, mirando a lo largo), 10 por algo que ve caer al piso de la zona de secado, 10 si ve abrir la caja
+     de la máquina de fichas, 5 por la puerta de la oficina y 15 si lo empujan.
+   - **El lavado premium:** el botón dorado de la máquina de fichas prende el túnel y el primer auto de la fila (ahora
+     el del baúl abierto es el segundo) lo cruza solo a 2,5 m/s hasta la zona de secado. Don Chorro va a la salida y lo
+     seca 20 s de espaldas a todo: no ve nada. Después el auto vuelve marcha atrás a la fila. Vuelve a caer a los
+     45 s; la tercera vez no va, dice "¿Otro premium? ¿Quién paga todo esto?" y suma 10.
+   - **Capturas:** `/mnt/project-files/lavadero/paso3-*.png` (`paso3-modelo.png` es Don Chorro).
 4. Pompita y la gamuza seca.
 5. El caso con la primera historia, la plata lavada.
 6. Las otras 5 historias, una por PR.
