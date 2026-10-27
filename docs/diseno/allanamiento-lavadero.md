@@ -74,7 +74,7 @@ el lavadero. La denuncia anónima es siempre vaga: "en La Espuma Loca lavan más
 | **El auto robado** | Las patentes verdaderas de un auto robado (3 kg, 1000) | Los papeles truchos (0,1 kg, 300), el destornillador (0,3 kg, 200) | Un auto de la fila tiene la patente pegada con cinta | Ese auto entra al túnel una y otra vez solo, para borrarle la pintura vieja |
 | **El champú trucho** | La caja de champú falsificado (6 kg, 1000) | Las etiquetas falsas (0,1 kg, 300), el embudo (0,5 kg, 200) | La espuma sale verde y huele raro | Del túnel salen burbujas gigantes que flotan por el galpón |
 | **El cuadro en el cepillo** | El cuadro robado, enrollado (2 kg, 1000) | El plano del museo (0,1 kg, 300), el cúter (0,3 kg, 200) | Uno de los cepillos gira chueco y mancha de pintura lo que pasa | Los autos salen del túnel con manchas de colores |
-| **Las monedas de los parquímetros** | La bolsa de monedas (10 kg, 1000, entre dos) | La llave de los parquímetros (0,2 kg, 300), la bolsa de fichas falsas (0,5 kg, 200) | La máquina de fichas escupe una ficha sola cada 20 s | Las aspiradoras hacen "clinc, clinc" como si chuparan monedas |
+| **Las monedas de los parquímetros** | La bolsa de monedas (30 kg, 1000, entre dos) | La llave de los parquímetros (0,2 kg, 300), la bolsa de fichas falsas (0,5 kg, 200) | La máquina de fichas escupe una ficha sola cada 20 s | Las aspiradoras hacen "clinc, clinc" como si chuparan monedas |
 | **El loro de contrabando** | La jaula con el loro de contrabando (3 kg, 1000) | El permiso de exportación trucho (0,1 kg, 300), la bolsa de alpiste (0,5 kg, 200) | Desde el escondite se oye "¡Lavado premium!" cada 15 s | El loro repite las frases de Don Chorro con su voz |
 
 Los pesos y valores siguen la escala del gimnasio, el taller, el parque y la pista: la principal vale unos 1000 y los
@@ -179,6 +179,11 @@ extras suman 500.
      bamboleándose) y tiene manchas de pintura: a un policía a menos de 2,5 m le salta "¿Pintura?" y la primera vez va
      a la planilla. El auto que cruza el túnel sale con 6 manchas de colores en los costados. Capturas:
      `paso6c-*.png`.
+   - **Las monedas de los parquímetros:** la bolsa de monedas (30 kg, 1000: uno solo no puede, como el bloque de hielo
+     de la pista) en un escondite para cosas pesadas, la llave de los parquímetros (0,2 kg, 300) y la bolsa de fichas
+     falsas (0,5 kg, 200) en otros. Cada 20 s la máquina de fichas escupe una ficha sola ("¡Clinc!") que queda en el
+     piso (como mucho 8); si hay un policía a menos de 4 m, la primera vez va a la planilla. A un policía a menos de
+     5 m de una aspiradora le salta "Clinc, clinc..." cada 6 s. Capturas: `paso6d-*.png`.
 7. El lavadero en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 8. El online.
 

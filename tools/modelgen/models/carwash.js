@@ -267,6 +267,42 @@ export function buildCarwashCutter() {
 	return b.build();
 }
 
+// The parking meter coins' sack (0.6 x 0.55 x 0.45 m): a fat grey canvas sack tied at the top, with coins spilling at
+// its foot.
+export function buildCarwashCoinSack() {
+	const b = new Builder('carwash_coin_sack');
+	const canvas = mat('sack_canvas', 0x8a8a80), coin = mat('coin_silver', 0xd0d4dc, { metalness: 0.8, roughness: 0.3 });
+	b.add('sack', canvas, ellipsoid(0.28, 0.24, 0.22, 12, 8), { pos: V(0, 0.24, 0) });
+	b.add('neck', canvas, new THREE.CylinderGeometry(0.06, 0.12, 0.15, 10), { pos: V(0, 0.5, 0) });
+	b.add('tie', mat('sack_tie', 0x6a4a2a), new THREE.TorusGeometry(0.065, 0.015, 4, 10), { pos: V(0, 0.47, 0), rot: [Math.PI / 2, 0, 0] });
+	for (let i = 0; i < 6; i++) {
+		b.add('coins', coin, new THREE.CylinderGeometry(0.025, 0.025, 0.006, 10), { pos: V(-0.2 + i * 0.08, 0.004, 0.24 + (i % 2) * 0.04) });
+	}
+	return b.build();
+}
+
+// The parking meters' key: a big brass ring with three long keys.
+export function buildCarwashMeterKey() {
+	const b = new Builder('carwash_meter_key');
+	const brass = mat('meter_key_brass', 0xd0a040, { metalness: 0.8, roughness: 0.3 });
+	b.add('ring', brass, new THREE.TorusGeometry(0.05, 0.008, 6, 14), { pos: V(0, 0.008, 0), rot: [Math.PI / 2, 0, 0] });
+	for (let i = 0; i < 3; i++) {
+		b.add('key', brass, new THREE.BoxGeometry(0.12, 0.008, 0.02), { pos: V(0.1, 0.008, -0.04 + i * 0.04), rot: [0, (i - 1) * 0.3, 0] });
+	}
+	return b.build();
+}
+
+// The bag of fake tokens (0.2 x 0.12 x 0.15 m): a small clear bag full of golden tokens.
+export function buildCarwashFakeTokens() {
+	const b = new Builder('carwash_fake_tokens');
+	const gold = mat('token_fake_gold', 0xf2c84b, { metalness: 0.7, roughness: 0.3 });
+	for (let i = 0; i < 9; i++) {
+		b.add('tokens', gold, new THREE.CylinderGeometry(0.022, 0.022, 0.006, 10), { pos: V(-0.05 + (i % 3) * 0.05, 0.02 + Math.floor(i / 3) * 0.03, -0.03 + (i % 2) * 0.05), rot: [i * 0.4, 0, i * 0.3] });
+	}
+	b.add('bag', mat('token_bag', 0xe8f0ff, { transparent: true, opacity: 0.4 }), new THREE.BoxGeometry(0.2, 0.12, 0.15), { pos: V(0, 0.06, 0) });
+	return b.build();
+}
+
 export const models = {
 	wash_brush: buildWashBrush, wash_jets: buildWashJets, wash_blower: buildWashBlower, token_machine: buildTokenMachine,
 	vacuum_column: buildVacuumColumn, inflatable_man: buildInflatableMan, carwash_boiler: buildCarwashBoiler,
@@ -274,7 +310,8 @@ export const models = {
 	carwash_ledger: buildCarwashLedger, carwash_iron: buildCarwashIron, carwash_plates: buildCarwashPlates,
 	carwash_car_papers: buildCarwashCarPapers, carwash_shampoo_box: buildCarwashShampooBox,
 	carwash_rolled_painting: buildCarwashRolledPainting, carwash_museum_plan: buildCarwashMuseumPlan,
-	carwash_cutter: buildCarwashCutter,
+	carwash_cutter: buildCarwashCutter, carwash_coin_sack: buildCarwashCoinSack, carwash_meter_key: buildCarwashMeterKey,
+	carwash_fake_tokens: buildCarwashFakeTokens,
 };
 
 export const views = {
@@ -289,7 +326,8 @@ export const views = {
 			{ name: 'carwash_iron', pos: [2.6, 0, 3.0] }, { name: 'carwash_plates', pos: [-0.6, 0, 3.6] },
 			{ name: 'carwash_car_papers', pos: [0.4, 0, 3.6] }, { name: 'carwash_shampoo_box', pos: [3.2, 0, 2.2] },
 			{ name: 'carwash_rolled_painting', pos: [-2.6, 0, 3.8] }, { name: 'carwash_museum_plan', pos: [1.2, 0, 3.9] },
-			{ name: 'carwash_cutter', pos: [1.6, 0, 3.6] },
+			{ name: 'carwash_cutter', pos: [1.6, 0, 3.6] }, { name: 'carwash_coin_sack', pos: [-3.4, 0, 3.0] },
+			{ name: 'carwash_meter_key', pos: [2.4, 0, 3.8] }, { name: 'carwash_fake_tokens', pos: [3.4, 0, 3.4] },
 		],
 		cam: { pos: [0, 2.6, 9.0], target: [0, 1.5, 0], fov: 45 },
 	},

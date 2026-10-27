@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Car wash raid, step 6d: the parking meter coins story: the 30 kg sack of coins (for two cops) is the main evidence, the parking meters' key and the bag of fake tokens the extras; the token machine spits a token every 20 s (the clue, near a cop) and the vacuums go "clinc, clinc".
 - Car wash raid, step 6c: the painting in the brush story: the rolled-up stolen painting (2 kg) is the main evidence, the museum's plan and the box cutter the extras; one side brush is crooked and smeared with paint (the clue, near a cop) and the car riding through the tunnel comes out stained.
 - Car wash raid, step 6b: the fake shampoo story: the box of fake shampoo (6 kg) is the main evidence, the fake labels and the funnel the extras; the foam is green and smells (the clue, near the foam tank or the running jets) and giant bubbles float out of the running tunnel.
 - Car wash raid, step 6a: the stolen car story: the real plates (3 kg) are the main evidence, the fake papers and the screwdriver the extras; the first car in line has its plate taped on (the clue, near a cop) and rides through the tunnel on its own every 20 s.
