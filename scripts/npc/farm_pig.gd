@@ -5,6 +5,8 @@ extends StaticBody3D
 ## and shoves whoever comes into its way, like the gym's dummies. Every number here is (propuesta).
 
 signal shoved(cop: Cop)
+## E on it: a cop takes a close look at its snout.
+signal looked(cop: Cop)
 
 const MODEL := preload("res://assets/models/farm_pig.glb")
 const SPEED := 0.6
@@ -56,6 +58,14 @@ func _physics_process(delta: float) -> void:
 			_model.rotation.z = sin(_beat * 8.0) * 0.08
 	if _shove_wait <= 0.0:
 		_shove()
+
+
+func prompt_key(_cop: Cop) -> String:
+	return "PROMPT_LOOK_PIG"
+
+
+func use(cop: Cop) -> void:
+	looked.emit(cop)
 
 
 func _shove() -> void:
