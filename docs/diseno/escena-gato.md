@@ -157,6 +157,13 @@ señora y la limusina.
    de 10 m van a comer delante de la encimera; una gata encerrada solo maúlla (se usa en el paso 5) **(propuesta)**.
    Capturas en `gato/`: `paso3-cajita.png`, `paso3-transportadora.png` y `paso3-atun.png`.
 4. Las fichas (foto, huellas, dientes, pelo, arañazo y muletilla).
+   Hecho así: la ficha de un sobrino tiene seis partes y sabe solo lo que los policías le sacaron. La foto (el flash:
+   "¡Sin fotos, que la tía me ve despeinado!") da los anteojos y el talle; el kit da las huellas; una dona o un pan, los
+   dientes. Con las manos vacías: primero habla de la herencia con su muletilla (va a la ficha), después se saca el
+   gorro (uno, sorteado, se niega hasta que le dan de comer) y después se arremanga: el arañazo aparece en su mano
+   ("Fue el rosal del jardín") o no tiene ninguno. El culpable siempre tiene arañazo; el caso usa los textos del
+   comisario de este documento **(propuesta)**. Capturas en `gato/`: `paso4-sobrinos_sin_gorro.png` y
+   `paso4-rasguno.png`.
 5. El caso: la historia, dónde está la Duquesa, el collar, las pistas con cómo se arruinan, la planilla y la paciencia
    de la señora con las llamadas al comisario.
 6. El final: tablero, cansancio, sueldo y la limusina con los ovillos.

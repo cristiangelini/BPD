@@ -29,9 +29,9 @@ function sobrino(b) {
 	b.add('beanie', ginger, new THREE.TorusGeometry(0.2, 0.03, 4, 12), { pos: V(0, 1.4, 0.0), rot: [Math.PI / 2, 0, 0] });
 	for (const s of [-1, 1]) b.add('glasses', M.black, new THREE.TorusGeometry(0.05, 0.01, 4, 8), { pos: V(s * 0.08, 1.34, 0.215) });
 	b.add('glasses', M.black, new THREE.BoxGeometry(0.06, 0.012, 0.012), { pos: V(0, 1.345, 0.215) });
-	// The sleeves' cuffs over each wrist, and the three red scratch lines under them.
+	// The sleeves' cuffs over each wrist, and the three red scratch lines under them (his left hand is +X: he faces +Z).
 	const red = C('scratch_red', 0xd02020);
-	for (const [s, side] of [[-1, 'left'], [1, 'right']]) {
+	for (const [s, side] of [[1, 'left'], [-1, 'right']]) {
 		b.add(`cuff_${side}`, sweater, new THREE.CylinderGeometry(0.07, 0.07, 0.06, 8), { pos: V(s * 0.46, 0.69, 0.08), rot: [0.3, 0, s * 0.6] });
 		for (let i = 0; i < 3; i++) b.add(`scratch_${side}`, red, new THREE.BoxGeometry(0.012, 0.012, 0.09), { pos: V(s * (0.47 + i * 0.02), 0.66 + i * 0.012, 0.15), rot: [0, s * 0.4, 0] });
 	}

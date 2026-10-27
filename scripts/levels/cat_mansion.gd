@@ -120,6 +120,7 @@ const SUITCASE_COLORS: Array[Color] = [
 	Color(0.5, 0.35, 0.6), Color(0.3, 0.3, 0.32),
 ]
 
+var case: CrimeSceneCase
 var nephews: Array[MansionNephew] = []
 var lady: MansionLady
 var parrot: MansionParrot
@@ -147,6 +148,16 @@ func _ready() -> void:
 	_vases()
 	_people()
 	_cats()
+
+
+## The case reaches the nephews (their traits are its suspects, same seed), and one of them, drawn with the seed,
+## won't take off his beanie until he gets something to eat.
+func set_up_case(new_case: CrimeSceneCase) -> void:
+	case = new_case
+	var stubborn := absi(hash("stubborn nephew %d" % case.case_seed)) % nephews.size()
+	for nephew in nephews:
+		nephew.case = case
+		nephew.stubborn = nephew.index == stubborn
 
 
 ## The nephew by index (the order of the case's traits).

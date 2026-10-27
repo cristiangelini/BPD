@@ -77,10 +77,25 @@ const VARIANTS := {
 			"signature": "left"},
 		"parts": ["prints", "teeth", "sign", "shoe", "hair", "glasses"],
 	},
+	# The Monedero mansion (escena-gato.md, decision 260): six nephews alike in the sweater their aunt knitted; a file
+	# knows what the cops got from its nephew, his scratch and his catchphrase included.
+	"cat": {
+		"shift": "crime_cat", "story": "cat",
+		"brief": ["BRIEF_CAT_A", "BRIEF_CAT_B", "BRIEF_CAT_C"], "go": "HINT_GO_CAT_MANSION",
+		"go_row": "OBJ_CAT_GO", "look": "HINT_CAT_LOOK", "files_row": "OBJ_CAT_FILES",
+		"clue_line": "CLUE_CAT_", "ruined_hint": "HINT_CAT_RUINED_", "left": "HINT_NEPHEW_LEFT",
+		"who": "nephew", "getaway": SuspectCar.BIKE,
+		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "necklace": "scratch",
+			"witness": "tic"},
+		"parts": ["photo", "prints", "teeth", "hair", "scratch", "tic"],
+	},
 }
 ## At the museum, the traits each part of a guard's file tells.
 const GUARD_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
 	"mustache": ["mustache"], "alibi": ["liar", "detail"]}
+## At the Monedero mansion, the traits each part of a nephew's file tells.
+const NEPHEW_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
+	"scratch": ["scratch"], "tic": ["tic"]}
 ## At the hotel, the trait each part of a guest's file tells, and the parts that come from their room.
 const GUEST_PART_TRAITS := {"prints": "name", "teeth": "teeth", "sign": "left", "shoe": "shoe", "hair": "hair",
 	"glasses": "glasses"}
@@ -197,6 +212,8 @@ func _draw_suspects() -> Array[Dictionary]:
 		return GuardTraits.draw(case_seed)
 	if texts() == VARIANTS.hotel:
 		return GuestTraits.draw(case_seed)
+	if texts() == VARIANTS.cat:
+		return NephewTraits.draw(case_seed)
 	return ClownTraits.draw(case_seed) if texts() == VARIANTS.circus else CookTraits.draw(case_seed)
 
 
@@ -235,12 +252,14 @@ func clown_part(clown_index: int, part: String) -> bool:
 	return true
 
 
-## A guard gave a part of his file (escena-museo.md): it goes to his file with what it says about him.
+## A guard gave a part of his file (escena-museo.md), or a nephew (escena-gato.md): it goes to his file with what it
+## says about him.
 func guard_part(index: int, part: String) -> void:
 	if follower:
 		return
 	var known: Dictionary = captured.get_or_add(index, {})
-	for trait_name: String in GUARD_PART_TRAITS[part]:
+	var table := NEPHEW_PART_TRAITS if texts() == VARIANTS.cat else GUARD_PART_TRAITS
+	for trait_name: String in table[part]:
 		known[trait_name] = cooks[index][trait_name]
 	file_part(index, part)
 
@@ -330,7 +349,7 @@ func file_traits(id: int) -> Dictionary:
 		for part: String in room_seen.get(room, []):
 			known[GUEST_PART_TRAITS[part]] = cooks[sleeper][GUEST_PART_TRAITS[part]]
 		return known
-	if texts() == VARIANTS.circus or texts() == VARIANTS.museum:
+	if texts() == VARIANTS.circus or texts() == VARIANTS.museum or texts() == VARIANTS.cat:
 		return captured.get(id, {})
 	return cooks[id]
 
@@ -699,6 +718,8 @@ func file_text(index: int) -> String:
 		return _guard_file_text(index, who)
 	if texts() == VARIANTS.hotel:
 		return _guest_file_text(index, who)
+	if texts() == VARIANTS.cat:
+		return _nephew_file_text(index, who)
 	var lines := PackedStringArray(["%d. %s" % [index + 1, who.name]])
 	lines.append(tr("FILE_APRON") % tr("APRON_" + str(who.apron)))
 	lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
@@ -707,6 +728,23 @@ func file_text(index: int) -> String:
 	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if parts.hair else "?"))
 	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if parts.teeth else "?"))
 	lines.append(tr("FILE_PRINTS") if parts.prints else tr("FILE_NO_PRINTS"))
+	return "\n".join(lines)
+
+
+## A nephew's file: his name and number, and what the cops got from him so far.
+func _nephew_file_text(index: int, who: Dictionary) -> String:
+	var lines := PackedStringArray(["%d. %s" % [index + 1, cooks[index].name]])
+	if who.has("glasses"):
+		lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
+		lines.append(tr("FILE_SHOE") % who.shoe)
+	else:
+		lines.append(tr("FILE_GLASSES_UNKNOWN"))
+	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if who.has("hair") else "?"))
+	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
+	lines.append(tr("FILE_SCRATCH_" + (str(who.scratch).to_upper() if who.scratch != "" else "NONE")) if who.has("scratch")
+		else tr("FILE_SCRATCH_UNKNOWN"))
+	lines.append(tr("FILE_TIC") % (tr("NEPHEW_TIC_%d" % who.tic) if who.has("tic") else "?"))
+	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
 	return "\n".join(lines)
 
 

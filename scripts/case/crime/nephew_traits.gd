@@ -26,7 +26,8 @@ const TICS := 6
 static func draw(seed_value: int) -> Array[Dictionary]:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash("mansion nephews %d" % seed_value)
-	var scratched := {}
+	# Duquesa scratched whoever took her: the culprit always has one.
+	var scratched := {CrimePlan.culprit_of(COUNT, seed_value): HANDS[rng.randi_range(0, HANDS.size() - 1)]}
 	var scratch_count := rng.randi_range(SCRATCHED.x, SCRATCHED.y)
 	while scratched.size() < scratch_count:
 		scratched[rng.randi_range(0, COUNT - 1)] = HANDS[rng.randi_range(0, HANDS.size() - 1)]

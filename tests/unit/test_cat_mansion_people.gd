@@ -60,11 +60,10 @@ func test_the_nephews_ofelia_and_the_parrot_talk() -> void:
 	mansion.case_seed = 11
 	add_child_autofree(mansion)
 	var nephew := mansion.nephews[0]
-	assert_eq(nephew.prompt_key(null), "PROMPT_NEPHEW_TALK")
-	nephew.use(null)
+	nephew.talk()
 	var first := nephew.said()
 	assert_string_contains(first, nephew.catchphrase(), "every line ends with the catchphrase")
-	nephew.use(null)
+	nephew.talk()
 	assert_ne(nephew.said(), first, "a different line the second time")
 	var phrases := {}
 	for other in mansion.nephews:
