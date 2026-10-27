@@ -158,6 +158,12 @@ para el interrogatorio. Los modelos nuevos salen de `tools/modelgen` (low poly).
    baúl del pasadizo de la estantería. E revisa cada escondite y en los otros dos no hay nada. Al encontrarlo, el
    testamento, el diamante o la receta aparece delante del escondite y suma 100. Lo descarté dentro del reloj porque
    la E del reloj ya abre el pasadizo. Capturas en `escena-mansion/paso5c-*.png` **(propuesta)**.
-6. El final: la huida por el laberinto, el cansancio y el sueldo.
+6. El final: la huida por el laberinto, el cansancio y el sueldo. Hecho así: cuando lo acusan, la mitad de las
+   veces (según la semilla) el culpable sale corriendo a 2,6 m/s por las puertas de la casa hasta la del jardín y se
+   mete en el laberinto. Adentro prueba los caminos como alguien perdido (el orden sale de la semilla) hasta llegar a
+   la reja del fondo. El policía que llega a 1,1 m de él lo atrapa y el caso se resuelve. Si sale por la reja o pasan
+   90 s, se escapó y el caso se pierde. El cansancio y el sueldo (500, +100 por lo robado) son los de siempre. Lo
+   robado que nadie encontró no se lo lleva: queda donde estaba. Capturas en `escena-mansion/paso6-*.png`
+   **(propuesta)**.
 7. "Jugar" sortea la mansión entre los lugares.
 8. Online: los socios, doña Clotilde, el loro y los pasadizos iguales en todas las PCs.

@@ -101,8 +101,11 @@ func test_the_level_gives_the_case_with_the_board_in_the_library() -> void:
 	assert_true(level.get_world_3d().direct_space_state.intersect_ray(query).is_empty(), "no shelf in front of it")
 
 
-func test_the_accused_culprit_goes_to_the_next_interrogation() -> void:
-	var made := _mansion_case(8)
+func test_the_accused_culprit_who_gives_up_goes_to_the_next_interrogation() -> void:
+	var seed_value := 1
+	while hash(["crime runs", seed_value]) % CrimeSceneCase.RUNS_EVERY == 0:
+		seed_value += 1
+	var made := _mansion_case(seed_value)
 	var case: CrimeSceneCase = made[1]
 	case.accuse(case.plan.culprit)
 	assert_true(case.accused)
