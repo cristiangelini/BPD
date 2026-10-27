@@ -70,7 +70,18 @@ entre 400 y 600.
 1. El taller como lugar: el galpón en la manzana (7, 2) con el portón, los 3 autos, el elevador, la fosa, la pared de
    herramientas, las cubiertas, los tambores, el mostrador, la oficina con llave, los parabrisas frágiles y los
    escondites. Modelos nuevos con modelgen.
-2. Don Tuerca: el carrito con ruedas, la ronda, la denuncia, "¡no me toquen los autos!" y el timbre.
+   - **Hecho así (propuesta):** `Garage` arma el galpón (26 × 22 m, 5 m de alto) en su lote de la manzana (7, 2), con
+     el portón de 6 m enrollado arriba y franjas amarillas y negras. Adentro: un auto a la izquierda, otro arriba del
+     elevador a 1,65 m (el elevador de dos columnas amarillas) y el tercero encima de la fosa (1 m de ancho, 1,2 m de
+     hondo, con 7 escalones al fondo). Contra la pared oeste, el banco de trabajo con el tablero de herramientas (por
+     ahora solo las siluetas; las herramientas llegan con Grasita en el paso 3); dos pilas de 4 cubiertas y 4 tambores
+     de aceite atrás (uno sin tapa); el estante de repuestos en la pared este; el mostrador con el timbre y la caja con
+     la llave de la oficina; y la oficina al fondo a la derecha con el escritorio. Algo que pega a más de 3 m/s en el
+     parabrisas de un auto lo raja (multa de 30, "¡Eso es de un cliente, oficial!"), una vez por auto. 12 escondites,
+     6 para cosas pesadas. El botón del elevador pasa al paso 2. `--place=garage` y "Taller (allanamiento) (prueba)"
+     en el menú. Capturas `paso1-*.png` y `garage.png` (modelos).
+2. Don Tuerca: el carrito con ruedas, la ronda, la denuncia, "¡no me toquen los autos!", el timbre y el botón del
+   elevador (bajarlo con algo debajo lo aplasta suave, multa de 20).
 3. Grasita y la herramienta que pide.
 4. El caso (RaidCase) con la primera historia: las patentes cambiadas.
 5. Las otras 5 historias, una por PR.

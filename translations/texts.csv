@@ -5588,3 +5588,19 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+PLACE_GARAGE,Taller El Pistón Feliz,Happy Piston Garage,Oficina Pistão Feliz
+MENU_GARAGE,Taller (allanamiento) (prueba),Garage (raid) (test),Oficina (batida) (teste)
+HINT_TILL_KEY_GARAGE,¡Una llave! Abre la oficina del taller.,A key! It opens the garage's office.,Uma chave! Abre o escritório da oficina.
+GARAGE_WINDSHIELD_BROKEN,"¡Eso es de un cliente, oficial!","That belongs to a client, officer!","Isso é de um cliente, policial!"
+CASE_FAILED_LAWYER_GARAGE,Don Tuerca llamó al abogado del taller. Caso perdido.,Don Tuerca called the garage's lawyer. Case lost.,Don Tuerca ligou para o advogado da oficina. Caso perdido.
+LOC_in_pit,en el fondo de la fosa,at the bottom of the pit,no fundo do fosso
+LOC_under_lift,abajo del auto del elevador,under the car on the lift,embaixo do carro no elevador
+LOC_behind_garage_counter,detrás del mostrador del taller,behind the garage's counter,atrás do balcão da oficina
+LOC_between_oil_drums,entre los tambores de aceite,between the oil drums,entre os tambores de óleo
+LOC_behind_tires,detrás de las cubiertas,behind the tires,atrás dos pneus
+LOC_in_garage_office_corner,en un rincón de la oficina del taller,in a corner of the garage's office,num canto do escritório da oficina
+LOC_in_oil_drum,adentro del tambor de aceite abierto,inside the open oil drum,dentro do tambor de óleo aberto
+LOC_on_tire_stack,arriba de la pila de cubiertas,on top of the tire stack,em cima da pilha de pneus
+LOC_in_garage_counter,adentro del mostrador del taller,inside the garage's counter,dentro do balcão da oficina
+LOC_on_parts_shelf,en el estante de repuestos,on the parts shelf,na prateleira de peças
+LOC_on_garage_desk,en el escritorio de Don Tuerca,on Don Tuerca's desk,na escrivaninha do Don Tuerca
