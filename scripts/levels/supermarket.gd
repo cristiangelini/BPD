@@ -68,6 +68,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_WEIGH_MANUAL", "OBJ_EXTRA_GOLDEN_SCREWDRIVER"],
 		"rig": preload("res://scripts/case/super/rigged_scale_rig.gd"),
 	},
+	"super_raffle": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_SUPER_RAFFLE_B", "BRIEF_SUPER_RAFFLE_C", "BRIEF_SUPER_RAFFLE_D"],
+		"find": "OBJ_FIND_RAFFLE_URN",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/super_raffle_urn.tscn"), preload("res://scenes/props/super_prize_car.tscn"),
+			preload("res://scenes/props/super_winners_photo.tscn")],
+		"half_heights": [0.215, 0.385, 0.015],
+		"heavy": [false, true, false],
+		"extra_keys": ["OBJ_EXTRA_PRIZE_CAR", "OBJ_EXTRA_WINNERS_PHOTO"],
+		"rig": preload("res://scripts/case/super/rigged_raffle_rig.gd"),
+	},
 }
 ## Where the clue notes for the suspicions can lie, on the floor.
 const NOTE_PLACES: Array[Vector3] = [Vector3(-7.5, FLOOR_TOP, 2.0), Vector3(-2.5, FLOOR_TOP, -4.0),

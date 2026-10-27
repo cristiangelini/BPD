@@ -301,7 +301,51 @@ export function buildGoldenScrewdriver() {
 	return b.build();
 }
 
+// The raffle story: the clear urn full of coupons (all for "Primo Ofertón"), the cardboard prize car, the photo of the
+// winners (the same mustache three times) and the pad of blank coupons on the entrance table.
+export function buildRaffleUrn() {
+	const b = new Builder('super_raffle_urn');
+	b.add('glass', mat('urn_glass', 0xa8d8f0, { opacity: 0.4, transparent: true }), new THREE.BoxGeometry(0.4, 0.36, 0.4), { pos: V(0, 0.2, 0) });
+	b.add('lid', mat('urn_lid', 0xe8473a), new THREE.BoxGeometry(0.42, 0.04, 0.42), { pos: V(0, 0.4, 0) });
+	b.add('slot', mat('urn_slot', 0x202020), new THREE.BoxGeometry(0.16, 0.01, 0.02), { pos: V(0, 0.421, 0) });
+	b.add('base', mat('urn_lid', 0xe8473a), new THREE.BoxGeometry(0.42, 0.02, 0.42), { pos: V(0, 0.01, 0) });
+	for (let i = 0; i < 14; i++) b.add('coupons', mat('coupon_paper', 0xf6f0c8), new THREE.BoxGeometry(0.1, 0.005, 0.06), { pos: V(-0.13 + (i % 4) * 0.085, 0.03 + Math.floor(i / 4) * 0.05 + (i % 3) * 0.01, -0.12 + ((i * 7) % 5) * 0.06), rot: [0.3 * (i % 3), i * 0.7, 0.2] });
+	return b.build();
+}
+
+export function buildPrizeCar() {
+	const b = new Builder('super_prize_car');
+	const card = mat('car_cardboard', 0xc89a5a), red = mat('car_red_paint', 0xe04040);
+	b.add('body', red, new THREE.BoxGeometry(1.4, 0.35, 0.04), { pos: V(0, 0.35, 0) });
+	b.add('cabin', red, new THREE.BoxGeometry(0.7, 0.25, 0.04), { pos: V(-0.05, 0.65, 0) });
+	b.add('window', mat('car_window', 0xa8d8f0), new THREE.BoxGeometry(0.55, 0.16, 0.045), { pos: V(-0.05, 0.66, 0) });
+	for (const x of [-0.45, 0.45]) b.add('wheels', mat('car_wheel', 0x202020), new THREE.CylinderGeometry(0.15, 0.15, 0.05, 10), { pos: V(x, 0.17, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('stand', card, new THREE.BoxGeometry(0.06, 0.5, 0.4), { pos: V(0, 0.25, -0.2) });
+	return b.build();
+}
+
+export function buildWinnersPhoto() {
+	const b = new Builder('super_winners_photo');
+	b.add('frame', mat('photo_frame', 0x8a5a30), new THREE.BoxGeometry(0.3, 0.02, 0.22), { pos: V(0, 0.01, 0) });
+	b.add('photo', mat('photo_sky', 0xa8d8f0), new THREE.BoxGeometry(0.26, 0.004, 0.18), { pos: V(0, 0.022, 0) });
+	for (let i = 0; i < 3; i++) {
+		b.add('faces', mat('photo_face', 0xf0c8a0), new THREE.CylinderGeometry(0.03, 0.03, 0.004, 8), { pos: V(-0.08 + i * 0.08, 0.026, -0.01) });
+		b.add('mustaches', mat('photo_mustache', 0x2a1a10), new THREE.BoxGeometry(0.04, 0.004, 0.01), { pos: V(-0.08 + i * 0.08, 0.029, 0.005) });
+	}
+	return b.build();
+}
+
+export function buildCouponPad() {
+	const b = new Builder('super_coupon_pad');
+	b.add('pad', mat('coupon_paper', 0xf6f0c8), new THREE.BoxGeometry(0.14, 0.04, 0.09), { pos: V(0, 0.02, 0) });
+	b.add('stripe', mat('coupon_stripe', 0xe8473a), new THREE.BoxGeometry(0.14, 0.002, 0.02), { pos: V(0, 0.041, -0.03) });
+	b.add('pen', mat('coupon_pen', 0x3a6ad2), new THREE.CylinderGeometry(0.005, 0.005, 0.13, 6), { pos: V(0.1, 0.005, 0), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
 export const models = {
+	super_raffle_urn: buildRaffleUrn, super_prize_car: buildPrizeCar, super_winners_photo: buildWinnersPhoto,
+	super_coupon_pad: buildCouponPad,
 	super_magic_screw: buildMagicScrew, super_weigh_manual: buildWeighManual, super_golden_screwdriver: buildGoldenScrewdriver,
 	super_double_cart: buildDoubleCart, super_welder: buildWelder, super_cart_plan: buildCartPlan,
 	super_cheese_wheel: buildCheeseWheel, super_fake_cheese: buildFakeCheese, super_cheese_mold: buildCheeseMold,
@@ -322,6 +366,10 @@ export const views = {
 			{ name: 'shopping_cart', pos: [-0.6, 0, 2.2], rotY: 0.6 },
 		],
 		cam: { pos: [0, 3.0, 7.5], target: [0.4, 0.9, 0], fov: 50 },
+	},
+	raffle: {
+		items: [{ name: 'super_raffle_urn', pos: [-0.5, 0, 0.2] }, { name: 'super_prize_car', pos: [0.4, 0, -0.3], rotY: -0.3 }, { name: 'super_winners_photo', pos: [0.1, 0, 0.5] }, { name: 'super_coupon_pad', pos: [-0.1, 0, 0.7] }],
+		cam: { pos: [0, 1.3, 2.4], target: [0, 0.3, 0], fov: 40 },
 	},
 	scale: {
 		items: [{ name: 'super_magic_screw', pos: [-0.25, 0, 0] }, { name: 'super_weigh_manual', pos: [0.1, 0, 0.05], rotY: 0.4 }, { name: 'super_golden_screwdriver', pos: [0.15, 0, -0.25], rotY: 1.2 }],

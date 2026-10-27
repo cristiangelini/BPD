@@ -182,6 +182,11 @@ suman entre 400 y 600.
      más» (0,3 kg, 300) y el destornillador dorado (0,5 kg, 200). La balanza de la verdulería muestra lo que tiene
      encima más 300 g, y vacía marca 0,3 kg; al lado hay 3 tomates de 0,2 kg para probar. Lo primero que se pesa es la
      pista. Capturas: `paso6-balanza-modelos.png`, `paso6-balanza-vacia.png` y `paso6-balanza.png`.
+   - **El sorteo arreglado (propuesta):** la urna con los cupones del primo (3 kg, 1000) se esconde con el auto de
+     cartón del premio (8 kg, 300, solo entra en un escondite grande) y la foto de los ganadores (0,2 kg, 200). Contra
+     la pared de adelante, al este de la puerta, hay una mesa roja con el cartel «¡Sorteamos un auto!» y un taco de
+     cupones: E lo mira, y el de arriba ya viene lleno con el nombre del primo (la pista). Capturas:
+     `paso6-sorteo-modelos.png` y `paso6-sorteo.png`.
 7. "Jugar" suma el súper al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online (Don Ofertón, Lalo, los clientes, los changuitos y lo frágil en todas las PC).
 
