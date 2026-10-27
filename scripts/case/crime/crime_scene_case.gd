@@ -65,10 +65,25 @@ const VARIANTS := {
 			"witness": "glasses", "alibi": "liar"},
 		"parts": ["photo", "prints", "teeth", "hair", "mustache", "alibi"],
 	},
+	# The Candelabro mansion (escena-mansion.md, decision 270): six Mystery Club members alike as Detective Pipa; a file
+	# knows what the cops got from its member, the room of their alibi included.
+	"mansion": {
+		"shift": "crime_mansion", "story": "mansion",
+		"brief": ["BRIEF_MANSION_A_", "BRIEF_MANSION_B", "BRIEF_MANSION_C"], "go": "HINT_GO_MANSION",
+		"go_row": "OBJ_MANSION_GO", "look": "HINT_MANSION_LOOK", "files_row": "OBJ_MANSION_FILES",
+		"clue_line": "CLUE_MANSION_", "ruined_hint": "HINT_MANSION_RUINED_", "left": "HINT_MEMBER_LEFT",
+		"who": "member", "getaway": SuspectCar.BIKE, "loot_row": "OBJ_MANSION_LOOT_",
+		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "bells": "room",
+			"witness": "glasses"},
+		"parts": ["photo", "prints", "teeth", "hair", "midnight"],
+	},
 }
 ## At the museum, the traits each part of a guard's file tells.
 const GUARD_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
 	"mustache": ["mustache"], "alibi": ["liar", "detail"]}
+## At the mansion, the traits each part of a member's file tells.
+const MEMBER_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
+	"midnight": ["room"]}
 
 ## The comisario's verdict at the board: right, or wrong (and whether that lost the case).
 signal verdict(right: bool, lost: bool)
@@ -176,6 +191,8 @@ func texts() -> Dictionary:
 func _draw_suspects() -> Array[Dictionary]:
 	if texts() == VARIANTS.museum:
 		return GuardTraits.draw(case_seed)
+	if texts() == VARIANTS.mansion:
+		return MemberTraits.draw(case_seed)
 	return ClownTraits.draw(case_seed) if texts() == VARIANTS.circus else CookTraits.draw(case_seed)
 
 
@@ -214,12 +231,14 @@ func clown_part(clown_index: int, part: String) -> bool:
 	return true
 
 
-## A guard gave a part of his file (escena-museo.md): it goes to his file with what it says about him.
+## A guard gave a part of his file (escena-museo.md), or a club member (escena-mansion.md): it goes to their file with
+## what it says about them.
 func guard_part(index: int, part: String) -> void:
 	if follower:
 		return
 	var known: Dictionary = captured.get_or_add(index, {})
-	for trait_name: String in GUARD_PART_TRAITS[part]:
+	var table := MEMBER_PART_TRAITS if texts() == VARIANTS.mansion else GUARD_PART_TRAITS
+	for trait_name: String in table[part]:
 		known[trait_name] = cooks[index][trait_name]
 	file_part(index, part)
 
@@ -227,7 +246,7 @@ func guard_part(index: int, part: String) -> void:
 ## What a file says about each trait: the cook's own traits, or at the circus what the cops got from whoever wore its
 ## sign, or at the museum what they got from the guard.
 func file_traits(id: int) -> Dictionary:
-	if texts() == VARIANTS.circus or texts() == VARIANTS.museum:
+	if texts() == VARIANTS.circus or texts() == VARIANTS.museum or texts() == VARIANTS.mansion:
 		return captured.get(id, {})
 	return cooks[id]
 
@@ -502,6 +521,8 @@ func clue_line(kind: String) -> String:
 		return _circus_clue_line(kind)
 	if texts() == VARIANTS.museum:
 		return _museum_clue_line(kind)
+	if texts() == VARIANTS.mansion:
+		return _mansion_clue_line(kind)
 	match kind:
 		"footprint":
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
@@ -555,6 +576,24 @@ func _museum_clue_line(kind: String) -> String:
 	return tr("CLUE_MUSEUM_" + kind)
 
 
+## At the mansion: the prints on the safe, the footprint in a passage's dust, the hair on the armour, the bitten
+## chocolate, the bell that rang at midnight and Lorenzo.
+func _mansion_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_MANSION_footprint") % who.shoe
+		"hair":
+			return tr("CLUE_MANSION_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_MANSION_bite") % tr("TEETH_" + str(who.teeth))
+		"bells":
+			return tr("CLUE_MANSION_bells") % tr("MANSION_ROOM_" + str(who.room))
+		"witness":
+			return tr("CLUE_MANSION_witness_glasses" if who.glasses else "CLUE_MANSION_witness_no_glasses")
+	return tr("CLUE_MANSION_" + kind)
+
+
 ## What a file card on the board says: what the photo shows, and the rest as the cops got it.
 func file_text(index: int) -> String:
 	var who := file_traits(index)
@@ -573,6 +612,8 @@ func file_text(index: int) -> String:
 		return "\n".join(lines)
 	if texts() == VARIANTS.museum:
 		return _guard_file_text(index, who)
+	if texts() == VARIANTS.mansion:
+		return _member_file_text(index, who)
 	var lines := PackedStringArray(["%d. %s" % [index + 1, who.name]])
 	lines.append(tr("FILE_APRON") % tr("APRON_" + str(who.apron)))
 	lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
@@ -581,6 +622,21 @@ func file_text(index: int) -> String:
 	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if parts.hair else "?"))
 	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if parts.teeth else "?"))
 	lines.append(tr("FILE_PRINTS") if parts.prints else tr("FILE_NO_PRINTS"))
+	return "\n".join(lines)
+
+
+## A club member's file: their name and number, and what the cops got from them so far.
+func _member_file_text(index: int, who: Dictionary) -> String:
+	var lines := PackedStringArray(["%d. %s" % [index + 1, cooks[index].name]])
+	if who.has("glasses"):
+		lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
+		lines.append(tr("FILE_SHOE") % who.shoe)
+	else:
+		lines.append(tr("FILE_GLASSES_UNKNOWN"))
+	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if who.has("hair") else "?"))
+	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
+	lines.append(tr("FILE_MIDNIGHT") % (tr("MANSION_ROOM_" + str(who.room)) if who.has("room") else "?"))
+	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
 	return "\n".join(lines)
 
 

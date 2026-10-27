@@ -3,12 +3,16 @@ extends Node3D
 
 ## The mansion case's level (escena-mansion.md, step 1): no city, only the Candelabro mansion on its hill (Mansion)
 ## under the storm (MansionStorm), with the patrol car on the drive and the cops at the front door. --place=mansion
-## opens it from Play. The case comes in step 5.
+## opens it from Play. The comisario gives the case by radio at the door (CrimeSceneCase, mansion variant, step 5),
+## and the board and its stamp are in the library.
 
 ## Same seed, same mansion. 0 draws one.
 @export var case_seed := 0
 var mansion: Mansion
 var storm: MansionStorm
+var case: CrimeSceneCase
+var board: CrimeBoard
+var stamp: BoardStamp
 
 
 func _ready() -> void:
@@ -30,3 +34,21 @@ func _ready() -> void:
 	$Cop.rotation.y = 0.0
 	$PatrolCar.global_transform = Transform3D(Basis(Vector3.UP, PI / 2), mansion.to_global(Mansion.PATROL_CAR_AT)) \
 		.translated(Vector3.UP * 0.05)
+	case = CrimeSceneCase.new()
+	case.name = "Case"
+	case.case_seed = case_seed
+	case.place = mansion
+	board = CrimeBoard.new()
+	board.name = "Board"
+	board.case = case
+	add_child(board)
+	board.global_transform = mansion.global_transform * Mansion.BOARD_AT
+	stamp = BoardStamp.new()
+	stamp.name = "Stamp"
+	stamp.board = board
+	add_child(stamp)
+	stamp.global_position = mansion.to_global(Mansion.STAMP_AT)
+	case.board = board
+	case.shift_screen = $ShiftScreen
+	add_child(case)
+	case.start()
