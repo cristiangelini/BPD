@@ -184,11 +184,44 @@ export function buildIceChisel() {
 	return b.build();
 }
 
+// The smuggling resurfacer's box of stolen perfumes, 0.5 x 0.35 x 0.4 m: a cardboard box with its flaps open and pink
+// and purple bottles peeking out.
+export function buildRinkPerfumeBox() {
+	const b = new Builder('rink_perfume_box');
+	const card = mat('box_card', 0xb8925a);
+	b.add('box', card, new THREE.BoxGeometry(0.5, 0.3, 0.4), { pos: V(0, 0.15, 0) });
+	for (const s of [-1, 1]) b.add('flap', card, new THREE.BoxGeometry(0.5, 0.01, 0.16), { pos: V(0, 0.33, s * 0.26), rot: [s * 0.6, 0, 0] });
+	const colors = [0xf07ab0, 0xa060e0, 0xf0a0d0];
+	for (let i = 0; i < 6; i++) {
+		const glass = mat('perfume_' + (i % 3), colors[i % 3], { transparent: true, opacity: 0.85, roughness: 0.15 });
+		b.add('bottle', glass, new THREE.BoxGeometry(0.07, 0.12, 0.05), { pos: V(-0.17 + (i % 3) * 0.17, 0.32, -0.08 + Math.floor(i / 3) * 0.16) });
+	}
+	return b.build();
+}
+
+// One bottle of perfume, 0.07 x 0.14 x 0.05 m: pink glass with a gold cap.
+export function buildPerfumeBottle() {
+	const b = new Builder('perfume_bottle');
+	b.add('glass', mat('perfume_0', 0xf07ab0, { transparent: true, opacity: 0.85, roughness: 0.15 }), new THREE.BoxGeometry(0.07, 0.1, 0.05), { pos: V(0, 0.05, 0) });
+	b.add('cap', mat('perfume_cap', 0xf2c84b, { metalness: 0.7, roughness: 0.3 }), new THREE.CylinderGeometry(0.015, 0.015, 0.04, 8), { pos: V(0, 0.12, 0) });
+	return b.build();
+}
+
+// The funnel to fill the resurfacer's tank, 0.25 m wide: a tin cone on a spout.
+export function buildRinkFunnel() {
+	const b = new Builder('rink_funnel');
+	const tin = mat('funnel_tin', 0xc0c6cc, { metalness: 0.6, roughness: 0.35 });
+	b.add('cone', tin, new THREE.CylinderGeometry(0.12, 0.025, 0.16, 12, 1, true), { pos: V(0, 0.16, 0) });
+	b.add('spout', tin, new THREE.CylinderGeometry(0.02, 0.015, 0.08, 8), { pos: V(0, 0.04, 0) });
+	return b.build();
+}
+
 export const models = {
 	ice_resurfacer: buildIceResurfacer, skating_penguin: buildSkatingPenguin, cocoa_machine: buildCocoaMachine,
 	dj_booth: buildDjBooth, rink_scoreboard: buildRinkScoreboard, npc_dona_pirueta: buildDonaPirueta,
 	npc_copito: buildCopito, rink_ice_block: buildRinkIceBlock, rink_jeweler_list: buildRinkJewelerList,
-	ice_chisel: buildIceChisel,
+	ice_chisel: buildIceChisel, rink_perfume_box: buildRinkPerfumeBox, perfume_bottle: buildPerfumeBottle,
+	rink_funnel: buildRinkFunnel,
 };
 
 export const views = {
@@ -199,6 +232,7 @@ export const views = {
 			{ name: 'rink_scoreboard', pos: [0, 2.0, -1.5] }, { name: 'npc_dona_pirueta', pos: [0.9, 0, 1.6], rotY: -0.3 },
 			{ name: 'npc_copito', pos: [2.4, 0, 1.4], rotY: -0.5 }, { name: 'rink_ice_block', pos: [-1.2, 0, 2.2] },
 			{ name: 'rink_jeweler_list', pos: [-0.3, 0, 2.6] }, { name: 'ice_chisel', pos: [0.2, 0, 2.6] },
+			{ name: 'rink_perfume_box', pos: [0.8, 0, 2.6] }, { name: 'perfume_bottle', pos: [1.3, 0, 2.8] }, { name: 'rink_funnel', pos: [1.6, 0, 2.8] },
 		],
 		cam: { pos: [0, 2.2, 6.5], target: [0, 1.0, 0], fov: 45 },
 	},
