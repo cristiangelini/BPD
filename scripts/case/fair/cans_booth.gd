@@ -51,7 +51,9 @@ func _ready() -> void:
 		Vector3(0, SHELF_TOP + CAN_HEIGHT * 1.5 + 0.005, SHELF_Z),
 	]
 	for i in 3:
-		var can := RigidBody3D.new()
+		# A Grabbable, so online the host's cans are the ones that fall (PropSync); knocked down by hand there's no
+		# thrower, and no prize.
+		var can := Grabbable.new()
 		can.name = "Can%d" % i
 		can.collision_layer = 4
 		can.collision_mask = 15
@@ -139,8 +141,9 @@ func restack() -> void:
 			balls[i].let_go_at = -1
 
 
+## Online only the host decides a win or a miss; the guests' cans and balls only follow it (PropSync).
 func _physics_process(delta: float) -> void:
-	if not _settled:
+	if not _settled or not multiplayer.is_server():
 		return
 	var down := down_count()
 	if down == cans.size() and not _won:

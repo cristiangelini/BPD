@@ -7,9 +7,8 @@ extends FairRig
 ## the wheel, and the first one a cop picks up is the story's own clue (on the checklist). Each turn of the crank shakes
 ## the wheel and drops another nut. Every number here is (propuesta).
 
-const NUT_MODEL := preload("res://assets/models/fair_nut.glb")
+const NUT_SCENE := preload("res://scenes/props/fair_nut.tscn")
 const NUT_SIZE := Vector3(0.09, 0.035, 0.08)
-const NUT_KG := 0.2
 ## The nuts already on the ground, in front of the wheel's platform.
 const NUTS: Array[Vector3] = [Vector3(-1.5, 0, 1.9), Vector3(0.8, 0, 2.3), Vector3(-0.4, 0, 2.9)]
 ## Where a shaken-off nut falls from, and at most how many fall.
@@ -52,7 +51,8 @@ func shake() -> void:
 	tween.tween_property(fair.wheel, "position:x", Fair.WHEEL_AT.x, 0.06)
 	fair.raid.float_label(tr("FAIR_WHEEL_RATTLE"), fair.to_global(Fair.WHEEL_AT + Vector3.UP * 3.0),
 		Color(0.85, 0.85, 0.9))
-	if drops >= DROPS_MAX:
+	# Online the host's wheel drops the nut, and the guests get a copy (PropSync).
+	if drops >= DROPS_MAX or not multiplayer.is_server():
 		return
 	drops += 1
 	var nut := _nut()
@@ -60,8 +60,7 @@ func shake() -> void:
 
 
 func _nut() -> Grabbable:
-	var nut := ClubEvidence.make_item("Nut", NUT_MODEL, NUT_SIZE, NUT_KG)
-	(nut.get_child(1) as Node3D).position.y = -NUT_SIZE.y / 2
+	var nut: Grabbable = NUT_SCENE.instantiate()
 	fair.add_child(nut)
 	nuts.append(nut)
 	return nut

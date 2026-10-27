@@ -45,6 +45,9 @@ func _physics_process(_delta: float) -> void:
 		fair.raid.float_label(tr("FAIR_MAGNET_OFF"), fair.to_global(Fair.CANS_AT + Vector3(0, 2.4, 0)),
 			Color(0.6, 0.85, 1.0))
 		return
+	# Online the host pulls and the guests' balls and mallet only follow it (PropSync).
+	if not multiplayer.is_server():
+		return
 	var booth := fair.to_global(MAGNET_AT)
 	for ball in fair.cans_booth.balls:
 		if not ball.is_held() and ball.linear_velocity.length() > 1.0 and ball.global_position.distance_to(booth) < 4.0:
@@ -62,7 +65,7 @@ func _physics_process(_delta: float) -> void:
 		fair.raid.add_clue(tr("CLUE_MALLET_CREEPS"))
 
 
-## The cans stuck to the shelf while the magnet holds them, or loose again.
+## The cans stuck to the shelf while the magnet holds them, or loose again (online, a guest's cans stay frozen).
 func _grip(hold: bool) -> void:
 	for can in fair.cans_booth.cans:
-		can.freeze = hold
+		can.freeze = hold or not multiplayer.is_server()

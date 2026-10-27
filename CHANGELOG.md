@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Fun fair raid, step 8: the fun fair online. The host runs Don Tómbola and decides the mirrors, the strength tester's bell, the cans and what Nube says; the rides go from any PC; the printed tickets and the shaken-off nuts are made on the host and copied to the guests.
 - Fun fair raid, step 7: Play can draw the fun fair among the raids, and Don Tómbola gets away in his car like the other owners.
 - Fun fair raid, step 6 (bronze horse): the stolen statue stands on the carousel painted as one of its horses; the horses now go up and down while it spins but that one doesn't, the carousel turns at half speed and squeaks, and the first hand on it gets a "¡CLANG!". The paint and the newspaper clipping are hidden.
 - Fun fair raid, step 6 (ghost train storeroom): the box of stolen phones hides with the price list and the ghost sheet with pockets; every 15 s one of the skeletons rings like a phone and its screen lights up.
