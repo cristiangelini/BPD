@@ -74,7 +74,7 @@ Cada partida reparte **4 pistas** de estas 6, elegidas para que juntas descarten
 | **Pisada en el polvo** de un pasadizo | Con la linterna se ve; se fotografía | El talle de zapato | Si un policía cruza ese pasadizo antes de fotografiarla, la pisa |
 | **Un pelo** enganchado en la armadura del hall | Mirando de cerca; se guarda en una bolsa | El color de pelo | Si alguien empuja la armadura, se cae (con estruendo) y el pelo se pierde |
 | **Un mordisco** en un bombón de la caja del comedor | Se guarda en una bolsa | Los dientes | Si un policía se lo come, se pierde |
-| **Las campanillas** de la despensa | Preguntarle a Ceferino (después de su "Fui yo, señor") qué campanilla sonó a medianoche | El cuarto desde donde llamó el culpable, que no es el de su coartada: el que dijo otro cuarto miente | Si un policía tira de un cordón de campanilla en cualquier cuarto, las banderitas se mezclan |
+| **Las campanillas** de la despensa | Preguntarle a Ceferino (después de su "Fui yo, señor") qué campanilla sonó a medianoche | El cuarto desde donde llamó el culpable, que es el de su coartada: los socios que dijeron otro cuarto quedan descartados (dos pueden haber estado en el mismo) | Si un policía tira de un cordón de campanilla en cualquier cuarto, las banderitas se mezclan |
 | **El testigo**: Lorenzo, el loro | Darle una galletita y hablarle con E | Repite lo que oyó: "¡Mis anteojos! ¡Mis anteojos!" (o "¡Qué bien veo!") | Si le gritan o le tiran algo, repite solo insultos para siempre |
 
 Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas de evidencia, como siempre.
@@ -141,6 +141,12 @@ para el interrogatorio. Los modelos nuevos salen de `tools/modelgen` (low poly).
    `escena-mansion/paso4-*.png` **(propuesta)**.
 5. El caso: la historia, lo robado y dónde está, las seis pistas con cómo se arruinan, el tablero en la biblioteca y
    la planilla.
+   Hecho así (5a): el caso es la variante `mansion` de CrimeSceneCase. Lo robado sale con la semilla (el testamento,
+   el Diamante Ronquido o la Receta del Flan) y el comisario lo nombra por radio al llegar. Los socios son los
+   sospechosos y cada parte que dan va a su ficha. La coartada se anota como "A medianoche: el comedor". El tablero y
+   el sello están en la pared oeste de la biblioteca, donde antes había estantes. Si se acusa bien, el culpable se
+   entrega y pasa al interrogatorio del turno siguiente (la huida es el paso 6). Pistas y búsqueda en 5b. Capturas
+   en `escena-mansion/paso5a-*.png` **(propuesta)**.
 6. El final: la huida por el laberinto, el cansancio y el sueldo.
 7. "Jugar" sortea la mansión entre los lugares.
 8. Online: los socios, doña Clotilde, el loro y los pasadizos iguales en todas las PCs.

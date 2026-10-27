@@ -11,7 +11,7 @@ extends MansionPerson
 ## Every so often one goes through a secret passage to another room (Mansion.send_through): `room` is where they are
 ## now, not their alibi. Every number here is (propuesta).
 
-## A part of their file was given: photo, prints, teeth, hair or alibi.
+## A part of their file was given: photo, prints, teeth, hair or midnight (their alibi).
 signal part_given(index: int, part: String)
 
 const MODEL := preload("res://assets/models/npc_socio_club.glb")
@@ -85,7 +85,7 @@ func alibi() -> void:
 	say(tr("MEMBER_LINE_%d" % ((index + _lines_said) % LINES)) + " " + tr("MEMBER_ALIBI_" + str(traits.room)), 5.0)
 	_lines_said += 1
 	told_alibi = true
-	_give("alibi")
+	_give("midnight")
 
 
 ## Bites a chocolate from the box: their teeth for the file. A stubborn one takes off the cap for it.

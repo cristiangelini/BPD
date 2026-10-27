@@ -34,7 +34,7 @@ func test_a_member_gives_every_part_of_their_file() -> void:
 	watch_signals(member)
 	assert_eq(member.prompt_key(null), "PROMPT_MANSION_MEMBER")
 	member.use(null)
-	assert_signal_emitted_with_parameters(member, "part_given", [member.index, "alibi"])
+	assert_signal_emitted_with_parameters(member, "part_given", [member.index, "midnight"])
 	assert_eq(member.prompt_key(null), "PROMPT_MEMBER_CAP", "after the alibi, the cap")
 	member.use(null)
 	assert_false(member.cap_on)
@@ -46,7 +46,7 @@ func test_a_member_gives_every_part_of_their_file() -> void:
 	assert_true(member.part("teeth").visible, "their teeth show in the bite")
 	assert_eq(mansion.chocolates.donuts, 7, "one chocolate less")
 	assert_eq(member.given.size(), 5)
-	for part in ["alibi", "hair", "photo", "prints", "teeth"]:
+	for part in ["midnight", "hair", "photo", "prints", "teeth"]:
 		assert_has(member.given, part)
 	member._physics_process(MysteryMember.TEETH_SECONDS + 0.1)
 	assert_false(member.part("teeth").visible)

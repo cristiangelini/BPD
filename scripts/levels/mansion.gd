@@ -90,6 +90,11 @@ const MOVE_EVERY := 60.0
 const CHOCOLATES_AT := TABLE_AT + Vector3(0.6, TABLE_SIZE.y + 0.05, 0.2)
 const CHOCOLATES_SCENE := preload("res://scenes/props/chocolate_box.tscn")
 const BUTLER_AT := Vector3(14.5, 0, -3.5)
+## The cork board (CrimeBoard) on the library's west wall, its stamp beside it (step 5).
+const BOARD_AT := Transform3D(Basis(Vector3.UP, PI / 2), Vector3(-HALF_X + 0.2, 0, -3.5))
+const STAMP_AT := Vector3(-14.5, 0, 0.0)
+## What was stolen, drawn with the case seed: doña Clotilde's will, the Snoring Diamond or the Flan Recipe.
+const LOOTS: Array[String] = ["will", "diamond", "recipe"]
 ## Out front, the gravel drive where the patrol car stops; out the back, the hedge maze (MAZE_CELLS cells of
 ## MAZE_CELL m, one of them its way in by the back door and one its gate at the far end).
 const DRIVE_Z := 17.0
@@ -130,6 +135,10 @@ var clotilde: MansionOwner
 var butler: MansionButler
 var parrot: MansionParrot
 var chocolates: ChocolateBox
+## The case (step 5), and what was stolen (LOOTS).
+var case: CrimeSceneCase
+var loot := ""
+var loot_found := false
 var _move_left := MOVE_EVERY
 var _move_rng := RandomNumberGenerator.new()
 var _builder: PlaceBuilder
@@ -316,10 +325,11 @@ func _lounge() -> void:
 	_builder.box(FIREPLACE_AT + Vector3(0, 1.3, 0), Vector3(2.0, 0.2, 0.6), STONE)
 
 
-## Shelves of books all along the west wall, the leather armchair and a small fireplace on the back wall. The
+## Shelves of books along the west wall up to the board (BOARD_AT), the leather armchair and a small fireplace on the
+## back wall. The
 ## bookcase against the passage's wall is its door (_passages).
 func _library() -> void:
-	for z in range(int(BACK_Z) + 1, int(MIDDLE_Z) - 1):
+	for z in range(int(BACK_Z) + 1, int(BOARD_AT.origin.z - CrimeBoard.SIZE.x / 2) - 1):
 		_shelf(Vector3(SHELVES_X, 0, z + 0.5), PI / 2)
 	_builder.box(ARMCHAIR_AT + Vector3(0, 0.4, 0), Vector3(1.0, 0.8, 0.9), Color(0.4, 0.2, 0.12))
 	_builder.box(LIBRARY_FIRE_AT + Vector3(0, 0.6, 0), Vector3(1.6, 1.2, 0.5), STONE)
@@ -440,6 +450,19 @@ func _people() -> void:
 	chocolates.name = "Chocolates"
 	chocolates.position = CHOCOLATES_AT
 	add_child(chocolates)
+
+
+## Draws what was stolen and tells the members about the case: each part of a file they give goes to it.
+func set_up_case(new_case: CrimeSceneCase) -> void:
+	case = new_case
+	loot = LOOTS[hash(["mansion loot", case.case_seed]) % LOOTS.size()]
+	for member in members:
+		member.part_given.connect(case.guard_part)
+
+
+## The member by index (the order of the case's traits).
+func suspect(index: int) -> CollisionObject3D:
+	return members[index] if index >= 0 and index < members.size() else null
 
 
 ## A spot in a room no member is standing on (MEMBER_SPOTS; past two, next to the first ones), in the house's space.
