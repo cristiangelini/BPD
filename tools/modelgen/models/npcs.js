@@ -1483,6 +1483,37 @@ const NPCS = {
 		}
 		b.add('cap', C('hairnet', 0xf6f6f2, { transparent: true, opacity: 0.6 }), ellipsoid(0.22, 0.15, 0.22, 10, 5), { pos: V(0, 1.47, -0.02) });
 	},
+	// Don Florencio, the farmer (allanamiento-granja.md): blue overalls over a checked shirt, rubber boots, a straw hat
+	// with a red band, a white mustache and an apron full of pockets.
+	florencio(b) {
+		const overall = C('overall_blue', 0x3a6ab8), checked = C('checked_red', 0xc83a3a);
+		pearBody(b, SKIN.arena, { shirt: checked, pants: overall, shoes: C('rubber_boots', 0x2a6a3a), belted: false });
+		b.add('body', overall, new THREE.BoxGeometry(0.34, 0.3, 0.04), { pos: V(0, 0.68, 0.39), rot: [-0.25, 0, 0] });
+		for (const s of [-1, 1]) b.add('body', overall, new THREE.BoxGeometry(0.06, 0.4, 0.03), { pos: V(s * 0.15, 0.86, 0.31), rot: [-0.45, 0, 0] });
+		b.add('body', C('apron', 0xe8dcc0), new THREE.BoxGeometry(0.4, 0.34, 0.03), { pos: V(0, 0.32, 0.47), rot: [-0.2, 0, 0] });
+		for (const x of [-0.1, 0.1]) b.add('body', C('apron_pocket', 0xc8b890), new THREE.BoxGeometry(0.14, 0.1, 0.02), { pos: V(x, 0.3, 0.495), rot: [-0.2, 0, 0] });
+		eyes(b, 1.33, 0.17, 0.08, 0.045);
+		mouth(b, { smile: true });
+		mustache(b, C('mustache_white', 0xeeeeea), 1.2);
+		const straw = C('straw_hat', 0xe8c868);
+		b.add('hat', straw, new THREE.CylinderGeometry(0.4, 0.4, 0.02, 14), { pos: V(0, 1.48, 0.0) });
+		b.add('hat', straw, new THREE.CylinderGeometry(0.17, 0.2, 0.16, 12), { pos: V(0, 1.57, 0.0) });
+		b.add('hat', C('hat_band', 0xc83a3a), new THREE.CylinderGeometry(0.205, 0.205, 0.04, 12), { pos: V(0, 1.51, 0.0) });
+	},
+	// Pancho, the farmer's nephew (allanamiento-granja.md): a 12-year-old in a green t-shirt and shorts, a cap on
+	// backwards, rubber boots and a basket of eggs on his arm.
+	pancho(b) {
+		pearBody(b, SKIN.cacao, { shirt: C('pancho_shirt', 0x5ab84a), pants: C('pancho_shorts', 0x8a6a3a), shoes: C('rubber_boots_small', 0xe8c838) });
+		eyes(b, 1.34, 0.17, 0.08, 0.05);
+		mouth(b, { smile: true });
+		const cap = C('pancho_cap', 0xd83a3a);
+		b.add('cap', cap, ellipsoid(0.21, 0.09, 0.2, 10, 4), { pos: V(0, 1.46, 0.0) });
+		b.add('cap', cap, new THREE.BoxGeometry(0.2, 0.02, 0.14), { pos: V(0, 1.44, -0.24), rot: [-0.2, 0, 0] });
+		const wicker = C('basket_wicker', 0xb88a48);
+		b.add('props', wicker, new THREE.CylinderGeometry(0.13, 0.1, 0.12, 10, 1, true), { pos: V(0.5, 0.56, 0.12) });
+		b.add('props', wicker, new THREE.TorusGeometry(0.11, 0.012, 4, 10, Math.PI), { pos: V(0.5, 0.62, 0.12) });
+		for (const [x, z] of [[-0.04, 0], [0.04, 0.02], [0, -0.04]]) b.add('props', C('egg_white', 0xf6f0e0), ellipsoid(0.03, 0.04, 0.03, 6, 4), { pos: V(0.5 + x, 0.62, 0.12 + z) });
+	},
 };
 
 export const NPC_NAMES = Object.keys(NPCS);
@@ -1492,7 +1523,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { cartero: 0.95, chola: 0.82, comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, comprador: 1.0, compradora: 0.9, martillo: 1.1, portero_subasta: 1.15, ladron_oso: 1.15, abuelo_oso: 1.15, alumno_primaria: 0.62, alumna_primaria: 0.62, alumno_b: 0.62, alumna_b: 0.62, evaristo: 1.05, pepa: 0.85 };
+const SCALE = { cartero: 0.95, chola: 0.82, comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, comprador: 1.0, compradora: 0.9, martillo: 1.1, portero_subasta: 1.15, ladron_oso: 1.15, abuelo_oso: 1.15, alumno_primaria: 0.62, alumna_primaria: 0.62, alumno_b: 0.62, alumna_b: 0.62, evaristo: 1.05, pepa: 0.85, florencio: 1.05, pancho: 0.75 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },
