@@ -238,7 +238,7 @@ var fines: int:
 @export var story_id := ""
 ## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
 var main: Evidence
-var rig: RadioRig
+var rig: RadioStationRig
 var hidden: Array[Evidence] = []
 var hidden_spots: Array = []
 var extras: Array[Evidence] = []
