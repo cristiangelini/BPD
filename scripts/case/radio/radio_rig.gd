@@ -13,8 +13,8 @@ func setup(place: RadioStation) -> void:
 
 
 ## A board on a wall, facing `turn` around Y, with `title` on it and a clue a cop reads with E (`text`, on the
-## checklist the first time).
-func board(at: Vector3, turn: float, title: String, text: String, prompt := "PROMPT_NOTE") -> ClueSpot:
+## checklist the first time). A long title takes a smaller `font_size`.
+func board(at: Vector3, turn: float, title: String, text: String, prompt := "PROMPT_NOTE", font_size := 32) -> ClueSpot:
 	var spot := ClueSpot.new()
 	spot.size = Vector3(1.2, 0.8, 0.1)
 	spot.prompt = prompt
@@ -33,7 +33,7 @@ func board(at: Vector3, turn: float, title: String, text: String, prompt := "PRO
 	spot.add_child(face)
 	var label := Label3D.new()
 	label.text = title
-	label.font_size = 32
+	label.font_size = font_size
 	label.pixel_size = 0.004
 	label.modulate = Color(0.15, 0.15, 0.2)
 	label.outline_size = 0

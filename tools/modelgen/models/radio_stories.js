@@ -159,12 +159,48 @@ export function buildPrivateRecord() {
 	return b.build();
 }
 
+// The code box: a 0.36 x 0.22 x 0.26 m grey metal box, lid open, with the code book and a portable radio inside.
+export function buildCodeBox() {
+	const b = new Builder('code_box');
+	const metal = mat('box_grey', 0x6a7078, { metalness: 0.4, roughness: 0.5 });
+	b.add('bottom', metal, new THREE.BoxGeometry(0.36, 0.02, 0.26), { pos: V(0, -0.1, 0) });
+	for (const x of [-0.17, 0.17]) b.add('sides', metal, new THREE.BoxGeometry(0.02, 0.14, 0.26), { pos: V(x, -0.03, 0) });
+	for (const z of [-0.12, 0.12]) b.add('sides', metal, new THREE.BoxGeometry(0.36, 0.14, 0.02), { pos: V(0, -0.03, z) });
+	b.add('lid', metal, new THREE.BoxGeometry(0.36, 0.02, 0.26), { pos: V(0, 0.1, -0.2), rot: [-1.2, 0, 0] });
+	b.add('book', mat('book_black', 0x22222a), new THREE.BoxGeometry(0.14, 0.04, 0.2), { pos: V(-0.08, -0.07, 0) });
+	b.add('book_mark', mat('cross_red', 0xd02a20), new THREE.BoxGeometry(0.02, 0.041, 0.2), { pos: V(-0.08, -0.07, 0) });
+	b.add('radio', mat('radio_red', 0xc84a3a), new THREE.BoxGeometry(0.14, 0.09, 0.06), { pos: V(0.08, -0.045, 0) });
+	b.add('antenna', mat('steel', 0xc0c4c8, { metalness: 0.6, roughness: 0.3 }), new THREE.CylinderGeometry(0.003, 0.003, 0.18, 4), { pos: V(0.13, 0.08, 0) });
+	return b.build();
+}
+
+// The "listeners" list: a 0.21 x 0.004 x 0.3 m sheet with a column of code names.
+export function buildListenerList() {
+	const b = new Builder('listener_list');
+	b.add('sheet', mat('white', 0xf6f4ee), new THREE.BoxGeometry(0.21, 0.004, 0.3));
+	for (let i = 0; i < 8; i++) b.add('lines', mat('ink_green', 0x2a7a3a), new THREE.BoxGeometry(0.12 - (i % 3) * 0.02, 0.001, 0.008), { pos: V(-0.02, 0.0025, -0.12 + i * 0.033) });
+	return b.build();
+}
+
+// The delivery clock: a 0.16 m round alarm clock with two bells, hands stopped on Tuesday's hour.
+export function buildDeliveryClock() {
+	const b = new Builder('delivery_clock');
+	b.add('body', mat('clock_blue', 0x3a6ab8), new THREE.CylinderGeometry(0.08, 0.08, 0.05, 16), { pos: V(0, 0, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('face', mat('white', 0xf6f4ee), new THREE.CylinderGeometry(0.068, 0.068, 0.002, 16), { pos: V(0, 0, 0.026), rot: [Math.PI / 2, 0, 0] });
+	b.add('hands', mat('black', 0x15151a), new THREE.BoxGeometry(0.006, 0.05, 0.002), { pos: V(0, 0.02, 0.028) });
+	b.add('hands', mat('black', 0x15151a), new THREE.BoxGeometry(0.04, 0.006, 0.002), { pos: V(0.02, 0, 0.028) });
+	for (const x of [-0.05, 0.05]) b.add('bells', mat('steel', 0xc0c4c8, { metalness: 0.6, roughness: 0.3 }), new THREE.SphereGeometry(0.025, 8, 5, 0, Math.PI * 2, 0, Math.PI / 2), { pos: V(x, 0.075, 0) });
+	for (const x of [-0.05, 0.05]) b.add('legs', mat('black', 0x15151a), new THREE.CylinderGeometry(0.006, 0.006, 0.03, 4), { pos: V(x, -0.08, 0) });
+	return b.build();
+}
+
 export const models = {
 	raffle_urn: buildRaffleUrn, contest_blender: buildContestBlender, winners_list: buildWinnersList,
 	ad_contracts: buildAdContracts, billing_book: buildBillingBook, paid_stamp: buildPaidStamp,
 	neighbor_tapes: buildNeighborTapes, pot_mic: buildPotMic, crossed_map: buildCrossedMap,
 	reception_plant: buildReceptionPlant, vinyl_crate: buildVinylCrate, collector_catalog: buildCollectorCatalog,
-	golden_player: buildGoldenPlayer, private_record: buildPrivateRecord,
+	golden_player: buildGoldenPlayer, private_record: buildPrivateRecord, code_box: buildCodeBox,
+	listener_list: buildListenerList, delivery_clock: buildDeliveryClock,
 };
 
 export const views = {
@@ -178,7 +214,9 @@ export const views = {
 			{ name: 'crossed_map', pos: [0.6, 0.003, 0.7], rotY: 0.3 }, { name: 'reception_plant', pos: [1.3, 0, -0.2] },
 			{ name: 'vinyl_crate', pos: [-0.6, 0.17, 1.5] }, { name: 'collector_catalog', pos: [0.0, 0.02, 1.5] },
 			{ name: 'golden_player', pos: [0.5, 0.07, 1.5] }, { name: 'private_record', pos: [1.1, 0, 1.4] },
+			{ name: 'code_box', pos: [-0.6, 0.11, 2.2] }, { name: 'listener_list', pos: [0.0, 0.002, 2.2], rotY: 0.2 },
+			{ name: 'delivery_clock', pos: [0.5, 0.095, 2.2] },
 		],
-		cam: { pos: [0.3, 2.2, 4.4], target: [0.2, 0.2, 0.5], fov: 42 },
+		cam: { pos: [0.3, 2.6, 5.2], target: [0.2, 0.2, 0.9], fov: 42 },
 	},
 };

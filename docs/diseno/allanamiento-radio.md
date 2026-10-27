@@ -102,6 +102,9 @@ entre 400 y 600.
    estante del frente del archivo (detrás de la puerta con llave), y al aire presenta una "joya" cada 45 s
    (propuesta). `RadioRig.fixed_clue` arma las pistas fijas con modelo (la maceta y el disco). Capturas
    `radio/paso6-discos-*.png`.
+   **Hecho (paso 6, dedicatorias en clave):** `CodedDedicationsRig`; la pizarra de dedicatorias está en la pared oeste
+   de la recepción, y al aire sale una dedicatoria rarísima cada 60 s (propuesta), tres por turno. Capturas
+   `radio/paso6-dedicatorias-*.png`.
 7. "Jugar" suma la radio al sorteo de allanamientos (`PlaceDraw.ORDER`).
 8. El online (don Volumen, doña Rosa, el teléfono, la luz "AL AIRE" y lo frágil en todas las PC).
 
