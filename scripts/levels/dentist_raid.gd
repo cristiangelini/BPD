@@ -84,6 +84,16 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_HATCH_KEY", "OBJ_EXTRA_CEILING_PLAN"],
 		"rig": preload("res://scripts/case/dentist/rising_chair_rig.gd"),
 	},
+	"dental_floss": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_DENTAL_FLOSS_B", "BRIEF_DENTAL_FLOSS_C", "BRIEF_DENTAL_FLOSS_D"],
+		"find": "OBJ_FIND_FLOSS_REELS",
+		"hidden": [preload("res://scenes/props/floss_reels.tscn"), preload("res://scenes/props/climbing_hook.tscn"),
+			preload("res://scenes/props/prison_plan.tscn")],
+		"half_heights": [0.115, 0.16, 0.003],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_CLIMBING_HOOK", "OBJ_EXTRA_PRISON_PLAN"],
+		"rig": preload("res://scripts/case/dentist/dental_floss_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the floor of the waiting room, the corridor and the rooms, away from the furniture.
 const NOTE_PLACES: Array[Vector3] = [
