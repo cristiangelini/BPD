@@ -130,7 +130,14 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
    salón, con el policía en la comisaría **(propuesta)**. Capturas: `boda-escena/paso1-entrada.png`, `paso1-planta.png`
    y `paso1-pastel.png`.
 2. Los seis trajes iguales (Tito con su clavel blanco), Rosa, el DJ, la abuela Chola y los invitados; los rasgos
-   sorteados con la semilla.
+   sorteados con la semilla. Hecho así: Tito y los cinco padrinos (Ramiro, Saúl, Teodoro, Ulises y Valentín) en fila
+   delante de la mesa principal, fuera de la pista, con el mismo traje, galera y moño. La semilla les sortea el pelo
+   (bajo la galera), los anteojos, el talle de zapato, los dientes (escondidos hasta que muerdan) y la colonia (lavanda,
+   limón o canela), sin dos iguales, y cuál de los seis no se saca la galera. Tito es siempre el primero y el único con
+   clavel blanco; los padrinos lo tienen rojo. Rosa está al lado de Tito, el DJ Bombo detrás de su cabina, la abuela
+   Chola junto a la mesa 3 con su trompetilla sobre la mesa y cuatro invitados en las mesas 4, 5, 7 y 8. Con E cada
+   uno dice una frase suya, distinta cada vez (Rosa tiene 10 contra Tito) **(propuesta)**. Capturas:
+   `boda-escena/paso2-trajes.png`, `paso2-planta.png` y `paso2-abuela.png`.
 3. Sacarles lo escondido (foto, huellas, dientes, galera y colonia) y las fichas del tablero.
 4. El caso: la historia, lo robado y dónde está escondido, las 6 pistas y cómo se arruinan, la abuela sorda y la
    planilla.
