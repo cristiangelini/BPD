@@ -212,4 +212,10 @@ Mientras tanto se avanza con lo recomendado.
    cámara la asustan: esconde la cabeza debajo del ala y no habla más en todo el caso. Capturas:
    `correo/paso6b-cartita-galleta.png` y `paso6b-cartita-asustada.png`.
 7. El final: el tablero, el sueldo y la camioneta con los paquetes.
+   **Hecho así:** el comisario da el caso en la comisaría, con el tablero y el sello (`PostOfficeLevel`). El culpable
+   que huye se sube a la camioneta del correo (`SuspectCar.MAIL_VAN`, modelo `mail_van`, 22 km/h), que espera en el
+   cordón al este de la puerta. En cada esquina que dobla se le caen 2 paquetes "Frágil" (`ChaseParcel`): el
+   patrullero que choca uno lo rompe y los sobres le tapan el parabrisas 1 s; un policía a pie lo patea con E. Bajado
+   de la camioneta es un cartero (`ChaseSuspect`) y al turno siguiente es su interrogatorio (`owner_carrier`).
+   Capturas: `correo/paso7-camioneta.png` y `paso7-paquetes.png`.
 8. El sorteo de "Jugar" y el online.

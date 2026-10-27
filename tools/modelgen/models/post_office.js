@@ -81,7 +81,31 @@ function loro(b) {
 	b.add('tail', red, new THREE.BoxGeometry(0.06, 0.05, 0.021), { pos: V(0, 0.12, -0.125), rot: [-0.35, 0, 0] });
 }
 
-const PEOPLE = { npc_postal: cartero, npc_sellito: sellito, npc_loro: loro };
+// The post office's van the culprit flees in (step 7): a yellow van with a blue band along each side, the post horn on
+// it, a roof rack with a few parcels tied on and back doors that let the "Frágil" parcels out. Front +Z, 2.1 x 2.6 x
+// 5.0, wheels at x = ±1.05, z = ±1.75 (SuspectCar.SHUTTLE_WHEELS).
+function mailVan(b) {
+	const yellow = C('van_yellow', 0xf2c230), blue = C('van_blue', 0x2a4a9a), card = C('parcel_card', 0xb88a55);
+	b.add('body', yellow, new THREE.BoxGeometry(2.1, 1.9, 5.0), { pos: V(0, 1.25, 0) });
+	b.add('body', C('car_glass', 0x9fd0ea), new THREE.BoxGeometry(1.8, 0.6, 0.04), { pos: V(0, 1.75, 2.51) });
+	b.add('body', C('bumper', 0x30343a), new THREE.BoxGeometry(2.1, 0.25, 0.2), { pos: V(0, 0.45, 2.55) });
+	for (const sx of [-1, 1]) {
+		b.add('band', blue, new THREE.BoxGeometry(0.04, 0.35, 4.6), { pos: V(sx * 1.06, 0.95, 0) });
+		// The post horn: a ring and its mouthpiece.
+		b.add('band', blue, new THREE.TorusGeometry(0.3, 0.06, 6, 14), { pos: V(sx * 1.08, 1.6, 0.4), rot: [0, Math.PI / 2, 0] });
+		b.add('band', blue, new THREE.CylinderGeometry(0.05, 0.14, 0.5, 8), { pos: V(sx * 1.08, 1.6, -0.1), rot: [Math.PI / 2, 0, 0] });
+	}
+	b.add('doors', C('door_line', 0x8a7020), new THREE.BoxGeometry(0.03, 1.7, 0.02), { pos: V(0, 1.2, -2.51) });
+	b.add('rack', C('rack_metal', 0x9aa0aa), new THREE.BoxGeometry(1.6, 0.05, 2.6), { pos: V(0, 2.23, -0.6) });
+	for (const [x, z, w] of [[-0.4, -1.2, 0.6], [0.35, -0.9, 0.5], [0, 0.2, 0.7]]) {
+		b.add('rack', card, new THREE.BoxGeometry(w, 0.4, w * 0.8), { pos: V(x, 2.46, z) });
+	}
+	for (const x of [-1.05, 1.05]) for (const z of [-1.75, 1.75]) {
+		b.add('wheels', C('tire', 0x1a1a1e), new THREE.CylinderGeometry(0.38, 0.38, 0.28, 12), { pos: V(x, 0.38, z), rot: [0, 0, Math.PI / 2] });
+	}
+}
+
+const PEOPLE = { npc_postal: cartero, npc_sellito: sellito, npc_loro: loro, mail_van: mailVan };
 
 export const models = Object.fromEntries(Object.entries(PEOPLE).map(([n, f]) => [n, () => {
 	const b = new Builder(n);
@@ -90,6 +114,10 @@ export const models = Object.fromEntries(Object.entries(PEOPLE).map(([n, f]) => 
 }]));
 
 export const views = {
+	mail_van: {
+		items: [{ name: 'mail_van', pos: [0, 0, 0], rotY: 0.7 }],
+		cam: { pos: [0.6, 3.0, 10.0], target: [0, 1.2, 0], fov: 38 },
+	},
 	post_office_people: {
 		items: [{ name: 'npc_sellito', pos: [-1.3, 0, 0], rotY: 0.3 }, { name: 'npc_postal', pos: [0, 0, 0], rotY: 0.2 },
 			{ name: 'npc_loro', pos: [1.1, 0.6, 0], rotY: -0.4 }],

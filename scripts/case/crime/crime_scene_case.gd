@@ -84,7 +84,7 @@ const VARIANTS := {
 		"brief": ["BRIEF_POST_OFFICE_A_", "BRIEF_POST_OFFICE_B", "BRIEF_POST_OFFICE_C"], "go": "HINT_GO_POST_OFFICE",
 		"go_row": "OBJ_POST_OFFICE_GO", "look": "HINT_POST_OFFICE_LOOK", "files_row": "OBJ_POST_OFFICE_FILES",
 		"clue_line": "CLUE_POST_OFFICE_", "ruined_hint": "HINT_POST_OFFICE_RUINED_", "left": "HINT_CARRIER_LEFT",
-		"who": "carrier", "getaway": SuspectCar.BIKE, "loot_row": "OBJ_POST_OFFICE_LOOT_",
+		"who": "carrier", "getaway": SuspectCar.MAIL_VAN, "loot_row": "OBJ_POST_OFFICE_LOOT_",
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "tongue": "blue",
 			"letter": "route", "witness": "route"},
 		"parts": ["photo", "prints", "teeth", "hair", "tongue", "route"],

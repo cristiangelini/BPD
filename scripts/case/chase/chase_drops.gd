@@ -21,7 +21,9 @@ extends Node
 ## (ConfettiCloud). The bridge's cement mixer (politico-puente.md) drops a blob of cement at
 ## every corner it turns: driving through it the patrol car sticks and slows down to BLOB_SPEED. The museum's art van opens its back doors every FRAME_EVERY seconds and an
 ## empty gilt frame falls out (ChaseFrame). The hotel's shuttle loses a suitcase off its roof every SUITCASE_EVERY
-## seconds (ChaseSuitcase): run over, its clothes cover the patrol car's windshield. Every number here is
+## seconds (ChaseSuitcase): run over, its clothes cover the patrol car's windshield. The post office's mail van lets
+## PARCELS_PER_CORNER "Frágil" parcels fall out of its back doors at every corner it turns (ChaseParcel): the patrol car
+## that hits one breaks it, and the envelopes cover its windshield for ChaseParcel.ENVELOPE_SECONDS. Every number here is
 ## (propuesta).
 
 const DRIP_EVERY := 3.0
@@ -62,6 +64,8 @@ const FRAME_EVERY := 5.0
 const MAX_FRAMES := 8
 const SUITCASE_EVERY := 5.0
 const MAX_SUITCASES := 8
+const PARCELS_PER_CORNER := 2
+const MAX_PARCELS := 12
 const MELONS_PER_CORNER := 2
 const MAX_MELONS := 12
 ## How fast they roll off the back, in m/s.
@@ -102,6 +106,9 @@ var frames: Array[ChaseFrame] = []
 var suitcases: Array[ChaseSuitcase] = []
 ## Seconds the patrol car's windshield stays covered in a run-over suitcase's clothes.
 var laundry_left := 0.0
+var parcels: Array[ChaseParcel] = []
+## Seconds the patrol car's windshield stays covered in a broken parcel's envelopes.
+var envelopes_left := 0.0
 var melons: Array[Watermelon] = []
 ## The cement blobs on the street: [node, seconds left].
 var blobs: Array[Array] = []
@@ -182,6 +189,9 @@ func _physics_process(delta: float) -> void:
 				drop_suitcase()
 		laundry_left = maxf(laundry_left - delta, 0.0)
 		ConfettiCloud.cover(case.car, laundry_left > 0.0)
+	if case.suspect_id == SuspectCar.MAIL_VAN:
+		envelopes_left = maxf(envelopes_left - delta, 0.0)
+		ConfettiCloud.cover(case.car, envelopes_left > 0.0)
 	if kids_bubble and case.chasing and not case.stopped:
 		_kids_left -= delta
 		if _kids_left <= 0.0:
@@ -323,6 +333,9 @@ func _on_corner(turned: bool) -> void:
 		drop_furniture(false, true)
 	elif case.suspect_id == SuspectCar.CEMENT_MIXER:
 		drop_blob()
+	elif case.suspect_id == SuspectCar.MAIL_VAN:
+		for i in PARCELS_PER_CORNER:
+			drop_parcel()
 	if riders_left > 0:
 		drop_jumper()
 	if ghost_look >= 0:
@@ -523,6 +536,25 @@ func drop_suitcase() -> ChaseSuitcase:
 	suitcase.rotation.y = case.truck.global_rotation.y + _rng.randf_range(-0.6, 0.6)
 	suitcases.append(suitcase)
 	return suitcase
+
+
+## A "Frágil" parcel falls out of the mail van's back doors onto the street, a little to one side.
+func drop_parcel() -> ChaseParcel:
+	# Untyped: a parcel the patrol car broke is already freed.
+	parcels.assign(parcels.filter(func(parcel: Variant) -> bool: return is_instance_valid(parcel)))
+	if parcels.size() >= MAX_PARCELS:
+		parcels.pop_front().queue_free()
+	var parcel := ChaseParcel.new()
+	parcel.car = case.car
+	parcel.drops = self
+	_dropped += 1
+	parcel.name = "Parcel%d" % _dropped
+	case.get_parent().add_child(parcel)
+	var side := case.truck.global_basis.x * _rng.randf_range(-1.0, 1.0)
+	parcel.global_position = _behind() + side + Vector3.UP * 0.3
+	parcel.rotation.y = case.truck.global_rotation.y + _rng.randf_range(-0.6, 0.6)
+	parcels.append(parcel)
+	return parcel
 
 
 func _behind() -> Vector3:
