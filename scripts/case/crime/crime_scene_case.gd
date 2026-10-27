@@ -77,6 +77,19 @@ const VARIANTS := {
 			"signature": "left"},
 		"parts": ["prints", "teeth", "sign", "shoe", "hair", "glasses"],
 	},
+	# The station itself (escena-comisaria.md, decision 300): six coworkers in the cops' own uniform; their files take
+	# their prints, a bite, a signature, a photo and doña Fritanga's list of sugars. Their getaway comes in step 5:
+	# until then the culprit gives up.
+	"station": {
+		"shift": "crime_station", "story": "station",
+		"brief": ["BRIEF_STATION_A_", "BRIEF_STATION_B", "BRIEF_STATION_C"], "go": "HINT_GO_EVIDENCE",
+		"go_row": "OBJ_STATION_GO", "look": "HINT_STATION_LOOK", "files_row": "OBJ_STATION_FILES",
+		"clue_line": "CLUE_STATION_", "ruined_hint": "HINT_STATION_RUINED_", "left": "HINT_STAFF_LEFT",
+		"who": "staff", "getaway": "", "loot_row": "OBJ_STATION_LOOT_", "tire": false,
+		"clues": {"prints": "name", "tape": "silhouette", "book": "left", "cup": "sugar", "bite": "teeth",
+			"witness": "shoe"},
+		"parts": ["prints", "teeth", "sign", "photo", "sugar"],
+	},
 }
 ## At the museum, the traits each part of a guard's file tells.
 const GUARD_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
@@ -85,6 +98,9 @@ const GUARD_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "t
 const GUEST_PART_TRAITS := {"prints": "name", "teeth": "teeth", "sign": "left", "shoe": "shoe", "hair": "hair",
 	"glasses": "glasses"}
 const ROOM_PARTS: Array[String] = ["shoe", "hair", "glasses"]
+## At the station, the traits each part of a coworker's file tells.
+const STAFF_PART_TRAITS := {"prints": ["name"], "teeth": ["teeth"], "sign": ["left"], "photo": ["silhouette", "shoe"],
+	"sugar": ["sugar"]}
 
 ## The comisario's verdict at the board: right, or wrong (and whether that lost the case).
 signal verdict(right: bool, lost: bool)
@@ -197,6 +213,12 @@ func _draw_suspects() -> Array[Dictionary]:
 		return GuardTraits.draw(case_seed)
 	if texts() == VARIANTS.hotel:
 		return GuestTraits.draw(case_seed)
+	if texts() == VARIANTS.station:
+		# Their names as the cops read them on the plates.
+		var staff := StaffTraits.draw(case_seed)
+		for person in staff:
+			person.name = tr(person.name)
+		return staff
 	return ClownTraits.draw(case_seed) if texts() == VARIANTS.circus else CookTraits.draw(case_seed)
 
 
@@ -241,6 +263,16 @@ func guard_part(index: int, part: String) -> void:
 		return
 	var known: Dictionary = captured.get_or_add(index, {})
 	for trait_name: String in GUARD_PART_TRAITS[part]:
+		known[trait_name] = cooks[index][trait_name]
+	file_part(index, part)
+
+
+## A coworker gave a part of their file (escena-comisaria.md): it goes to their file with what it says about them.
+func staff_part(index: int, part: String) -> void:
+	if follower:
+		return
+	var known: Dictionary = captured.get_or_add(index, {})
+	for trait_name: String in STAFF_PART_TRAITS[part]:
 		known[trait_name] = cooks[index][trait_name]
 	file_part(index, part)
 
@@ -330,7 +362,7 @@ func file_traits(id: int) -> Dictionary:
 		for part: String in room_seen.get(room, []):
 			known[GUEST_PART_TRAITS[part]] = cooks[sleeper][GUEST_PART_TRAITS[part]]
 		return known
-	if texts() == VARIANTS.circus or texts() == VARIANTS.museum:
+	if texts() == VARIANTS.circus or texts() == VARIANTS.museum or texts() == VARIANTS.station:
 		return captured.get(id, {})
 	return cooks[id]
 
@@ -372,6 +404,8 @@ func accuse(id: int) -> void:
 
 ## Whether this case's culprit runs off when accused, from the seed. One who already went home can't.
 func runs_off() -> bool:
+	if texts().getaway == "":
+		return false
 	return hash(["crime runs", case_seed]) % RUNS_EVERY == 0 and not gone.has(plan.culprit)
 
 
@@ -609,6 +643,8 @@ func clue_line(kind: String) -> String:
 		return _museum_clue_line(kind)
 	if texts() == VARIANTS.hotel:
 		return _hotel_clue_line(kind)
+	if texts() == VARIANTS.station:
+		return _station_clue_line(kind)
 	match kind:
 		"footprint":
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
@@ -679,6 +715,24 @@ func _hotel_clue_line(kind: String) -> String:
 	return tr("CLUE_HOTEL_" + kind)
 
 
+## At the station: the shelf's prints, the camera's tape, the sign-out book, the coffee cup, the bitten donut and el
+## Chancho.
+func _station_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"tape":
+			return tr("CLUE_STATION_tape") % tr("SILHOUETTE_" + (who.silhouette as String).replace(" ", "_"))
+		"book":
+			return tr("CLUE_STATION_book_left" if who.left else "CLUE_STATION_book_right")
+		"cup":
+			return tr("CLUE_STATION_cup") % who.sugar
+		"bite":
+			return tr("CLUE_STATION_bite") % tr("TEETH_" + str(who.teeth))
+		"witness":
+			return tr("CLUE_STATION_witness") % who.shoe
+	return tr("CLUE_STATION_" + kind)
+
+
 ## What a file card on the board says: what the photo shows, and the rest as the cops got it.
 func file_text(index: int) -> String:
 	var who := file_traits(index)
@@ -699,6 +753,8 @@ func file_text(index: int) -> String:
 		return _guard_file_text(index, who)
 	if texts() == VARIANTS.hotel:
 		return _guest_file_text(index, who)
+	if texts() == VARIANTS.station:
+		return _staff_file_text(index, who)
 	var lines := PackedStringArray(["%d. %s" % [index + 1, who.name]])
 	lines.append(tr("FILE_APRON") % tr("APRON_" + str(who.apron)))
 	lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
@@ -749,6 +805,28 @@ func _guest_file_text(index: int, who: Dictionary) -> String:
 	else:
 		lines.append(tr("FILE_HAND_UNKNOWN"))
 	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
+	return "\n".join(lines)
+
+
+## A coworker's file: name and what the cops got: the photo (height, limp and shoes), the sugar, the teeth, the hand
+## and the prints, and where and with whom they say they were.
+func _staff_file_text(index: int, who: Dictionary) -> String:
+	var person := cooks[index]
+	var lines := PackedStringArray(["%d. %s" % [index + 1, person.name]])
+	if who.has("silhouette"):
+		lines.append(tr("SILHOUETTE_" + (who.silhouette as String).replace(" ", "_")))
+		lines.append(tr("FILE_SHOE") % who.shoe)
+	else:
+		lines.append(tr("FILE_PHOTO_UNKNOWN"))
+	lines.append(tr("FILE_SUGAR") % (str(who.sugar) if who.has("sugar") else "?"))
+	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
+	if who.has("left"):
+		lines.append(tr("FILE_LEFT") if who.left else tr("FILE_RIGHT"))
+	else:
+		lines.append(tr("FILE_HAND_UNKNOWN"))
+	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
+	lines.append(tr("FILE_STAFF_ALIBI") % [tr("STAFF_PLACE_" + (person.where as String).to_upper()),
+		tr("STAFF_WITH_" + StaffTraits.IDS[person.with].to_upper())])
 	return "\n".join(lines)
 
 
@@ -829,7 +907,7 @@ func _physics_process(delta: float) -> void:
 		return
 	if not accused and not lost:
 		elapsed += delta
-		if gone.size() < cooks.size() and elapsed >= LEAVE_FROM + gone.size() * LEAVE_EVERY:
+		if texts().get("tire", true) and gone.size() < cooks.size() and elapsed >= LEAVE_FROM + gone.size() * LEAVE_EVERY:
 			_tire()
 	if not at_tent and not follower:
 		for cop in get_tree().get_nodes_in_group("cops"):
