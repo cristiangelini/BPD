@@ -189,3 +189,8 @@ polvo dorado con la linterna, el fichero, el ruido y el apagón de Doña Sigilo,
    sin multa. Detenido, se lo interroga como lector en el próximo turno. Capturas: `biblioteca/paso6-*.png` y
    `biblioteca/bookmobile.png`.
 7. El sorteo de "Jugar" y el online.
+   **Hecho así:** la biblioteca sale en el sorteo de "Jugar" entre las escenas del crimen, un quinto cada una. Online,
+   la biblioteca de los invitados sigue a la del anfitrión: los lectores (el gorro y dónde se sientan después del
+   apagón), el ruido, el apagón con sus luces, a quién hizo callar Doña Sigilo (el chat de voz de ese invitado queda
+   mudo), Doña Sigilo, Tomasito, el Libro de Oro (encontrado, abierto, de vuelta en la vitrina), el vidrio de la
+   vitrina, el libro hueco con su galletita y las pistas arruinadas.

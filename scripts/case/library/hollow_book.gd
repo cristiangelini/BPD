@@ -3,7 +3,8 @@ extends StaticBody3D
 
 ## The hollow book on a reading table (escena-biblioteca.md, "Las pistas"): a thick old book with its pages cut out. E
 ## opens it; if the bite is one of the case's clues, inside is the cookie the culprit hid and bit (in the library you
-## don't eat). Every number here is (propuesta).
+## don't eat). The cookie is there from the start, hidden, so every PC online has the same one. Every number here is
+## (propuesta).
 
 const SIZE := Vector3(0.26, 0.09, 0.2)
 const COVER := Color(0.35, 0.18, 0.12)
@@ -46,16 +47,25 @@ func use(cop: Cop) -> void:
 		if cop:
 			cop.show_hint("HINT_HOLLOW_BOOK_OPENED")
 		return
-	opened = true
-	_lid.rotation.z = 2.6
-	if has_bite and case:
-		cookie = CrimeClueItem.new()
-		cookie.name = "Clue_bite"
-		cookie.kind = "bite"
-		cookie.look = "library"
-		cookie.case = case
-		cookie.position = position + Vector3(0.05, SIZE.y + 0.02, 0)
-		get_parent().add_child(cookie)
-		case.items["bite"] = cookie
+	show_open()
 	if cop:
 		cop.show_hint("HINT_HOLLOW_BOOK_COOKIE" if has_bite else "HINT_HOLLOW_BOOK_EMPTY")
+
+
+## Open, cover up, and the cookie out on top of it for a cop to bag (also a guest's book online, Library.apply_net_state).
+func show_open() -> void:
+	opened = true
+	_lid.rotation.z = 2.6
+	if cookie and not cookie.visible:
+		cookie.global_position = global_position + Vector3(0.05, SIZE.y + 0.02, 0)
+		cookie.visible = true
+		cookie.freeze = false
+		cookie.collision_layer = 4
+
+
+## Inside the closed book (LibraryClues puts it there): not seen, not grabbed, not falling.
+func hide_cookie() -> void:
+	cookie.global_position = global_position + Vector3(0.05, SIZE.y / 2, 0)
+	cookie.visible = false
+	cookie.freeze = true
+	cookie.collision_layer = 0
