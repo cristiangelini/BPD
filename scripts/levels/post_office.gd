@@ -42,6 +42,8 @@ const FRAME_AT := Vector3(-8.0, 1.7, ROOMS_Z + 0.1)
 const SCALE_AT := Vector3(-1.5, 0, 2.0)
 const RETURNS_AT := Vector3(-14.0, 0, 6.2)
 const QUEUE_AT := Vector3(3.0, 0, 4.5)
+## The stool with the roll of evidence bags, by the door.
+const BAGS_AT := Vector3(-2.5, 0, 6.0)
 ## Where the people are: two carriers behind the counter facing the hall, one at the post boxes facing them and three
 ## at the sorting machine facing it; Doña Sellito in the hall by the sorting room's door; Cartita on its perch on the
 ## counter at window 2.
@@ -104,6 +106,9 @@ var book: PostmarkBook
 ## The sorting machine (step 5), and its red button in the office.
 var sorting: SortingMachine
 var button: RedButton
+## The case's clues (step 6) and the returns sack on the counter.
+var clues: PostOfficeClues
+var returns: ReturnsSack
 ## What each cop is busy with ("" for nothing), by cop: a search or the book takes a while.
 var _busy := {}
 var carriers: Array[PostCarrier] = []
@@ -141,6 +146,11 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	sorting.post_office = self
 	sorting.case = case
 	add_child(sorting)
+	clues = PostOfficeClues.new()
+	clues.name = "Clues"
+	clues.post_office = self
+	clues.case = case
+	add_child(clues)
 
 
 ## E on a spot: the cop searches it for SEARCH_SECONDS, and then La Vaquita Azul turns up if it's there, or the cop
@@ -157,6 +167,8 @@ func search(spot: String, cop: Cop) -> void:
 ## The search of a spot is over.
 func searched(spot: String, cop: Cop) -> void:
 	_busy.erase(cop)
+	if clues:
+		clues.searched(spot)
 	if spot != loot_spot or stamp_uncovered or not case:
 		if cop:
 			cop.show_hint("HINT_POST_NOTHING_" + spot)
@@ -369,7 +381,16 @@ func _counter() -> void:
 	_spot("scale", SCALE_AT + Vector3(0, 0.4, 0), Vector3(1.0, 0.8, 1.0), Vector3(0, 0, 1.0))
 	_builder.mesh_box(SCALE_AT + Vector3(0, 0.82, 0), Vector3(0.9, 0.04, 0.9), METAL.lightened(0.2))
 	_builder.box(SCALE_AT + Vector3(0, 1.2, -0.45), Vector3(0.6, 0.7, 0.1), WHITE)
-	_sack(RETURNS_AT, "ReturnsSack")
+	returns = ReturnsSack.new(Vector3(0.9, 0.9, 0.9))
+	returns.name = "ReturnsSack"
+	returns.position = RETURNS_AT + Vector3(0, 0.45, 0)
+	add_child(returns)
+	_sack(RETURNS_AT, "")
+	_builder.box(BAGS_AT + Vector3(0, 0.25, 0), Vector3(0.5, 0.5, 0.4), WOOD)
+	bags = EvidenceBags.new()
+	bags.name = "EvidenceBags"
+	bags.position = BAGS_AT + Vector3(0, 0.5, 0)
+	add_child(bags)
 	_label("ReturnsSign", "SIGN_RETURNS", RETURNS_AT + Vector3(0, 1.3, 0), PI / 2)
 	for i in 6:
 		var at := QUEUE_AT + Vector3((i % 3) * 1.5 - 1.5, 0, (i / 3) * 1.8 - 0.9)
@@ -484,13 +505,14 @@ func _depot() -> void:
 	_label("FragileSign", "SIGN_FRAGILE", Vector3(13.5, 0.4, -0.53), 0.0, 0.004, 32)
 
 
-## A sack of mail, standing, tied at the top. With a `spot`, it's that spot (E searches it).
+## A sack of mail, standing, tied at the top. With a `spot`, it's that spot (E searches it); with no name, just the
+## look (its body is made apart).
 func _sack(at: Vector3, sack_name: String, spot := "") -> void:
-	if spot == "":
+	if spot == "" and sack_name != "":
 		var body := _builder.body(at + Vector3(0, 0.45, 0))
 		body.name = sack_name
 		_builder.shape(body, Vector3(0.9, 0.9, 0.9))
-	else:
+	elif spot != "":
 		_spot(spot, at + Vector3(0, 0.45, 0), Vector3(0.9, 0.9, 0.9), Vector3(1.0, 0, 0)).name = sack_name
 	var bag := SphereMesh.new()
 	bag.radius = 0.5
