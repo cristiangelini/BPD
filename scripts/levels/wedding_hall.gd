@@ -13,7 +13,8 @@ extends CrimeScenePlace
 ## among the coats in the coat check or in the head table's centerpiece, all drawn with the case seed; and the clues
 ## (WeddingClues) with grandma Chola as the witness. Step 5: Rosa follows the cops blaming Tito (WeddingBride), the
 ## waltz every two minutes (WeddingWaltz) and the wedding called off if Tito is wrongly accused. Step 6: Tito never
-## goes home, and the culprit runs off in the newlyweds' car dropping its cans.
+## goes home, and the culprit runs off in the newlyweds' car dropping its cans. Step 7: Play draws it, and online the
+## guests' wedding follows the host's (net_state).
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -211,6 +212,58 @@ func reveal_loot() -> void:
 ## The tuxedo by index (the order of the case's traits).
 func suspect(index: int) -> CollisionObject3D:
 	return tuxedos[index] if index >= 0 and index < tuxedos.size() else null
+
+
+## Online, what the guests' wedding takes from the host's: each tuxedo's top hat and sniff, where Rosa is and her
+## bouquet, the called-off wedding, the waltz, the cut cake, the swept rice, the ring box, the video and grandma.
+func net_state() -> Dictionary:
+	var looks := tuxedos.map(func(tuxedo: TuxedoGuest) -> Array: return [tuxedo.hat_on, tuxedo.sniffed])
+	var state := {"tuxedos": looks, "rosa": bride.position, "bouquet": bride.thrown, "suspended": suspended,
+		"cake": cake_cut, "hearing": grandma.hearing}
+	if clues:
+		state.waltz = waltz.dancing
+		state.swept = clues.swept
+		state.touched = clues.ring_box.touched
+		state.deleted = clues.video.deleted
+	return state
+
+
+func apply_net_state(state: Dictionary) -> void:
+	for tuxedo in tuxedos:
+		var look: Array = state.tuxedos[tuxedo.index]
+		if not look[0] and tuxedo.hat_on:
+			tuxedo.hat_on = false
+			tuxedo.part("hat").visible = false
+		tuxedo.sniffed = look[1]
+	if not waltz or not waltz.dancing:
+		bride.position = state.rosa
+	if state.bouquet and not bride.thrown:
+		bride.throw_bouquet(not state.suspended)
+	if state.suspended and not suspended:
+		suspended = true
+		dj.say("WEDDING_DJ_SUSPENDED", 5.0)
+	if state.cake and not cake_cut:
+		cake_cut = true
+		cake.scale = CUT_CAKE
+	grandma.hearing = state.hearing
+	if not clues or not state.has("waltz"):
+		return
+	if state.waltz and not waltz.dancing:
+		waltz.start()
+	elif not state.waltz and waltz.dancing:
+		waltz.stop()
+	if state.swept and not clues.swept:
+		clues.sweep()
+	clues.ring_box.touched = state.touched
+	clues.video.deleted = state.deleted
+	if case.ruined.has("hair") and case.items.has("hair"):
+		var hair: CrimeClueItem = case.items.hair
+		hair.spoiled = true
+		hair._eaten_part.visible = false
+	if case.ruined.has("bite") and clues.bite:
+		clues.bite.visible = false
+	if case.ruined.has("footprint") and clues.footprint and not clues.footprint.wiped:
+		clues.footprint.wipe()
 
 
 ## Tito never gets tired and goes home: it's his wedding.

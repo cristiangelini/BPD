@@ -501,7 +501,8 @@ func snapshot() -> Dictionary:
 		"parts": file_parts.duplicate(true), "files": files.duplicate(), "accused": accused, "wrong": wrong_guesses,
 		"lost": lost, "gone": gone.duplicate(), "escaped": escaped, "loot": loot_found,
 		"offended": place != null and place.witness_offended(), "result": _result, "captured": captured.duplicate(true),
-		"frames": frames_broken, "rooms": room_seen.duplicate(true), "opened": opened.duplicate()}
+		"frames": frames_broken, "rooms": room_seen.duplicate(true), "opened": opened.duplicate(),
+		"complaint": complaint}
 	# What only the place knows (the circus: the trick, the signs, the camera).
 	if place:
 		state.place = place.net_state()
@@ -518,6 +519,7 @@ func apply_snapshot(state: Dictionary) -> void:
 	at_tent = state.at_tent
 	clues_found.assign(state.found)
 	frames_broken = state.get("frames", 0)
+	complaint = state.get("complaint", 0)
 	ruined.assign(state.ruined)
 	file_parts = state.parts.duplicate(true)
 	files.assign(state.files)

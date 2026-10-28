@@ -176,7 +176,11 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
    sueltan en cada esquina (las mismas del control de la boda). La denuncia de la familia se descuenta del sueldo, como
    los marcos rotos del museo **(propuesta)**. Captura: `boda-escena/paso6-huida.png`.
 7. El sorteo de "Jugar" (la boda entra en el reparto de las escenas del crimen) y el online: Rosa, el vals, la abuela,
-   el video borrado, el pastel cortado y las pistas arruinadas se ven igual en todas las PC.
+   el video borrado, el pastel cortado y las pistas arruinadas se ven igual en todas las PC. Hecho así: "Jugar" sortea
+   la boda entre las escenas del crimen, un cuarto cada una con el pastel, el circo y el museo **(propuesta)**. En el
+   online decide la PC que hospeda, y las demás copian dónde está Rosa y su ramo, la galera y el olfateo de cada uno de
+   traje, la boda suspendida y la denuncia, el vals, el pastel cortado, el arroz barrido, la cajita tocada, el video
+   borrado, si la abuela oye y las pistas arruinadas.
 
 ## Preguntas para Cristian
 1. ¿Lo robado varía con la semilla (el anillo, la caja de los sobres o los novios de azúcar), o siempre es el anillo?
