@@ -119,7 +119,16 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
 
 ## El orden para hacerlo (un PR chico por paso)
 1. El salón decorado para la boda (`--place=wedding`): la mesa principal, las mesas redondas, el pastel de tres pisos,
-   la cabina del DJ, el guardarropa con sacos y el arroz de la entrada. Modelos con modelgen.
+   la cabina del DJ, el guardarropa con sacos y el arroz de la entrada. Modelos con modelgen. Hecho así: el salón de la
+   fiesta (`PartyHall`, que ahora comparte su casco, la pista y los cuartos) con globos blancos en la puerta. La mesa
+   principal de 6 m va contra la pared del fondo, bajo el cartel "¡Vivan los novios!" con su guirnalda. Las ocho mesas
+   redondas (0,8 m de radio, mantel blanco, centro de flores y su número del 1 al 8 flotando arriba) quedan tres al
+   oeste, tres al este y dos junto a la entrada, sin tocar la pista, el guardarropa, el baño ni la oficina (cerrada). El
+   pastel de tres pisos está en su propia mesa redonda en la esquina del fondo oeste, y la cabina del DJ, con sus dos
+   parlantes, queda al lado de la mesa principal mirando a la pista. Hay guirnaldas blancas en las paredes, globos
+   blancos en las esquinas de la pista y 90 granos de arroz en el piso de la entrada. Por ahora el nivel es solo el
+   salón, con el policía en la comisaría **(propuesta)**. Capturas: `boda-escena/paso1-entrada.png`, `paso1-planta.png`
+   y `paso1-pastel.png`.
 2. Los seis trajes iguales (Tito con su clavel blanco), Rosa, el DJ, la abuela Chola y los invitados; los rasgos
    sorteados con la semilla.
 3. Sacarles lo escondido (foto, huellas, dientes, galera y colonia) y las fichas del tablero.
