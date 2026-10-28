@@ -6,9 +6,11 @@ extends Node3D
 ## either side. Inside, three showroom setups (the living room at the front left, the bedroom at the back left and the
 ## dining room at the front right), the counter with the till and the stockroom at the back right, locked with the
 ## till's key. Something that hits a floor lamp or the mirror fast breaks it, a fine each. Every number here is
-## (propuesta).
+## (propuesta). Step 1b: the mattresses bounce whoever lands on them, the tower of chairs by the door comes down when
+## pushed, and a wardrobe tips over when two cops pull it together.
 
 signal good_broken(index: int)
+signal wardrobe_tipped(index: int)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const SOFA_MODEL := preload("res://assets/models/showroom_sofa.glb")
@@ -41,6 +43,14 @@ const COFFEE_TABLE_SIZE := Vector3(1.0, 0.4, 0.6)
 const TABLE_AT := Vector3(7.5, FLOOR_TOP, 6.0)
 const CHAIR_XS: Array[float] = [6.75, 7.5, 8.25]
 const CHAIR_ZS: Array[float] = [5.3, 6.7]
+## The tower of stacked chairs, in the open by the door so they have room to fall.
+const TOWER_AT := Vector3(2.5, FLOOR_TOP, 8.5)
+## A cop landing on a mattress faster than BOUNCE_FROM goes back up BOUNCE_GAIN times as fast, up to BOUNCE_HEIGHT
+## over it. Props bounce off it too.
+const BOUNCE_FROM := 2.0
+const BOUNCE_GAIN := 1.2
+const BOUNCE_HEIGHT := 1.5
+const MATTRESS_BOUNCE := 0.6
 ## The fragile goods: the living room's lamp, the bedroom's lamp and the big mirror.
 const GOODS := [
 	{"kind": "lamp", "at": Vector3(-12.8, FLOOR_TOP, 4.2)},
@@ -93,7 +103,8 @@ var till: Till
 ## The pieces, in the order of SOFAS, BEDS and WARDROBES, and the fragile goods in the order of GOODS.
 var sofas: Array[StaticBody3D] = []
 var beds: Array[StaticBody3D] = []
-var wardrobes: Array[StaticBody3D] = []
+var wardrobes: Array[TippingWardrobe] = []
+var chair_tower: ChairTower
 var goods: Array[StaticBody3D] = []
 var broken: Array[int] = []
 var broken_goods := 0
@@ -102,6 +113,8 @@ var fines := 0
 ## Same seed, same store (the stories and the hiding spots come from it, step 4).
 @export var case_seed := 0
 var _build: PlaceBuilder
+## Each cop's falling speed in the frame before it touched down (by instance id).
+var _falling := {}
 @onready var car: PatrolCar = $PatrolCar
 
 
@@ -115,6 +128,9 @@ func _ready() -> void:
 	_build_living()
 	_build_bedroom()
 	_build_dining()
+	chair_tower = ChairTower.new()
+	chair_tower.position = TOWER_AT
+	add_child(chair_tower)
 	_build_counter()
 	_build_stockroom()
 	_place_goods()
@@ -169,19 +185,27 @@ func _build_living() -> void:
 ## The bedroom: two beds with room underneath, the two wardrobes open on the west wall and the chest of drawers.
 func _build_bedroom() -> void:
 	_build.mesh_box(Vector3(-7.75, FLOOR_TOP + 0.005, -8.5), Vector3(8.0, 0.01, 4.0), RUG.lightened(0.4))
+	var springy := PhysicsMaterial.new()
+	springy.bounce = MATTRESS_BOUNCE
 	for spec: Dictionary in BEDS:
-		beds.append(_piece(BED_MODEL, spec.at, spec.turn, [
+		var bed := _piece(BED_MODEL, spec.at, spec.turn, [
 			[Vector3(0, 0.46, 0), Vector3(1.5, 0.32, 2.0)],
 			[Vector3(0, 0.75, -1.0), Vector3(1.56, 0.7, 0.08)],
-		]))
-	for spec: Dictionary in WARDROBES:
+		])
+		bed.physics_material_override = springy
+		beds.append(bed)
+	for i in WARDROBES.size():
+		var spec: Dictionary = WARDROBES[i]
+		var wardrobe := TippingWardrobe.new()
+		wardrobe.name = "Wardrobe%d" % i
+		wardrobe.tipped.connect(func() -> void: wardrobe_tipped.emit(i))
 		wardrobes.append(_piece(WARDROBE_MODEL, spec.at, spec.turn, [
 			[Vector3(0, 1.0, -0.28), Vector3(1.2, 2.0, 0.04)],
 			[Vector3(-0.58, 1.0, 0), Vector3(0.04, 2.0, 0.6)],
 			[Vector3(0.58, 1.0, 0), Vector3(0.04, 2.0, 0.6)],
 			[Vector3(0, 0.05, 0), Vector3(1.2, 0.1, 0.6)],
 			[Vector3(0, 1.97, 0), Vector3(1.3, 0.12, 0.66)],
-		]))
+		], wardrobe))
 	_piece(DRESSER_MODEL, DRESSER_AT, 0.0, [[Vector3(0, 0.465, 0), Vector3(1.04, 0.93, 0.54)]])
 
 
@@ -246,6 +270,27 @@ func _place_goods() -> void:
 				break_good(i))
 
 
+func _physics_process(_delta: float) -> void:
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		var id := cop.get_instance_id()
+		if not cop.is_on_floor():
+			_falling[id] = cop.velocity.y
+			continue
+		var fall: float = _falling.get(id, 0.0)
+		_falling[id] = 0.0
+		if -fall > BOUNCE_FROM and _on_a_mattress(cop):
+			cop.velocity.y = minf(-fall * BOUNCE_GAIN, sqrt(2.0 * GameScale.GRAVITY * BOUNCE_HEIGHT))
+
+
+## Whether the cop stands on top of a bed's mattress.
+func _on_a_mattress(cop: Cop) -> bool:
+	for i in cop.get_slide_collision_count():
+		var hit := cop.get_slide_collision(i)
+		if hit.get_normal().y > 0.7 and beds.has(hit.get_collider()):
+			return true
+	return false
+
+
 ## Breaks good `index`, once: a fine, and the lamp lies on the floor dark or the mirror shows its cracks.
 func break_good(index: int) -> void:
 	if broken.has(index):
@@ -272,9 +317,11 @@ func break_good(index: int) -> void:
 	good_broken.emit(index)
 
 
-## A piece of furniture: a body at `at` turned `turn`, with its model and one box shape per [center, size].
-func _piece(scene: PackedScene, at: Vector3, turn: float, shapes: Array) -> StaticBody3D:
-	var body := StaticBody3D.new()
+## A piece of furniture: a body (a new one, or `body`) at `at` turned `turn`, with its model and one box shape per
+## [center, size].
+func _piece(scene: PackedScene, at: Vector3, turn: float, shapes: Array, body: StaticBody3D = null) -> StaticBody3D:
+	if body == null:
+		body = StaticBody3D.new()
 	body.position = at
 	body.rotation.y = turn
 	for spec: Array in shapes:
