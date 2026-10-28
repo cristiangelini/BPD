@@ -10,7 +10,8 @@ extends CrimeScenePlace
 ## with WeddingTraits drawn with the case seed), Rosa by Tito, DJ Bombo behind his booth, grandma Chola at table 3 with
 ## her ear trumpet and four guests at the other tables. Step 3: what the cops get from the tuxedos goes to their files
 ## (set_up_case). Step 4: what was stolen (the ring, the gift envelopes' box or the sugar couple) hidden in the cake,
-## among the coats in the coat check or in the head table's centerpiece, all drawn with the case seed.
+## among the coats in the coat check or in the head table's centerpiece, all drawn with the case seed; and the clues
+## (WeddingClues) with grandma Chola as the witness.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -19,8 +20,6 @@ const CENTERPIECE_MODEL := preload("res://assets/models/flower_centerpiece.glb")
 const DJ_MODEL := preload("res://assets/models/dj_booth.glb")
 const BRIDE_MODEL := preload("res://assets/models/npc_novia.glb")
 const DJ_PERSON_MODEL := preload("res://assets/models/npc_dj_bombo.glb")
-const GRANDMA_MODEL := preload("res://assets/models/npc_abuela_chola.glb")
-const TRUMPET_MODEL := preload("res://assets/models/ear_trumpet.glb")
 const GUEST_MODELS: Array[PackedScene] = [preload("res://assets/models/npc_invitado.glb"),
 	preload("res://assets/models/npc_senora.glb"), preload("res://assets/models/npc_invitado_b.glb"),
 	preload("res://assets/models/npc_vecina.glb")]
@@ -40,8 +39,9 @@ const TABLES: Array[Vector3] = [
 ]
 const TABLE_RADIUS := 0.8
 const TABLE_HEIGHT := 0.75
-## The cake's round table in the back west corner.
+## The cake's round table in the back west corner, and how tall the cake on it is.
 const CAKE_TABLE_AT := Vector3(-9.6, 0, -7.6)
+const CAKE_HEIGHT := 0.91
 const CAKE_TABLE_RADIUS := 0.6
 ## The DJ's booth east of the head table, facing the dance floor (+Z).
 const DJ_AT := Vector3(3.5, 0, -8.6)
@@ -81,7 +81,6 @@ const CUT_CAKE := Vector3(1.15, 0.55, 1.15)
 const GUEST_LINES := 6
 const BRIDE_LINES := 10
 const DJ_LINES := 4
-const GRANDMA_LINES := 4
 
 const WHITE_BALLOONS: Array[Color] = [Color(0.98, 0.98, 0.96), Color(0.95, 0.85, 0.9), Color(0.98, 0.98, 0.96),
 	Color(0.9, 0.85, 0.65)]
@@ -98,8 +97,8 @@ var table_tops: Array[Vector3] = []
 var tuxedos: Array[TuxedoGuest] = []
 var bride: WeddingPerson
 var dj: WeddingPerson
-var grandma: WeddingPerson
-var ear_trumpet: Node3D
+var grandma: WeddingGrandma
+var ear_trumpet: EarTrumpet
 var guests: Array[WeddingPerson] = []
 var case: CrimeSceneCase
 ## What was stolen and where it is (drawn with the case seed in set_up_case), and whether the cops found it.
@@ -110,6 +109,8 @@ var loot_found := false
 var loot_spots := {}
 ## A cop cut the cake open.
 var cake_cut := false
+## The case's clues (WeddingClues), once the case comes.
+var clues: WeddingClues
 var _build: PlaceBuilder
 
 
@@ -141,6 +142,11 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	loot_spot = LOOT_SPOTS[hash(["wedding loot spot", case.case_seed]) % LOOT_SPOTS.size()]
 	for tuxedo in tuxedos:
 		tuxedo.case = case
+	clues = WeddingClues.new()
+	clues.name = "Clues"
+	clues.hall = self
+	clues.case = case
+	add_child(clues)
 
 
 ## Searching a spot: the stolen thing turns up in the right one; a sign of nothing in the others. Searching the cake
@@ -149,6 +155,8 @@ func search(spot: String, cop: Cop) -> void:
 	if spot == "cake" and not cake_cut:
 		cake_cut = true
 		cake.scale = CUT_CAKE
+		if clues:
+			clues.cake_cut()
 	if spot != loot_spot or loot_found or not case:
 		if cop:
 			cop.show_hint("HINT_SEARCH_NOTHING_" + spot)
@@ -175,6 +183,19 @@ func reveal_loot() -> void:
 ## The tuxedo by index (the order of the case's traits).
 func suspect(index: int) -> CollisionObject3D:
 	return tuxedos[index] if index >= 0 and index < tuxedos.size() else null
+
+
+## Grandma Chola is the witness: only the cuffs offend her; a shout makes her hear.
+func witness_offended() -> bool:
+	return grandma.offended
+
+
+func offend_witness() -> void:
+	grandma.offend()
+
+
+func shouted_by(cop: Cop) -> void:
+	grandma.shouted_by(cop)
 
 
 ## Whether a point in the world (ignoring height) is in the hall.
@@ -245,7 +266,8 @@ func _round_table(at: Vector3, radius: float) -> void:
 ## the hall from each, as far as the stolen thing falls.
 func _loot_spots() -> void:
 	var cake_top := CAKE_TABLE_AT + Vector3(0, FLOOR_TOP + TABLE_HEIGHT, 0)
-	_loot_spot("cake", cake_top + Vector3(0, 0.45, 0), Vector3(0.7, 0.9, 0.7), Vector3(1, 0, 1).normalized() * 0.9)
+	_loot_spot("cake", cake_top + Vector3(0, CAKE_HEIGHT / 2, 0), Vector3(0.84, CAKE_HEIGHT, 0.84),
+		Vector3(1, 0, 1).normalized() * 0.9)
 	_loot_spot("coats", COATS_AT + Vector3(0, FLOOR_TOP, 0), COATS_SIZE, Vector3.RIGHT * 0.6)
 	var head_top := HEAD_TABLE_AT + Vector3(0, FLOOR_TOP + HEAD_TABLE_SIZE.y, 0)
 	var flowers: Node3D = CENTERPIECE_MODEL.instantiate()
@@ -347,9 +369,12 @@ func _people() -> void:
 		tuxedos.append(tuxedo)
 	bride = _person("Bride", BRIDE_MODEL, "PROMPT_WEDDING_BRIDE", "WEDDING_BRIDE_LINE_", BRIDE_LINES, BRIDE_AT)
 	dj = _person("Dj", DJ_PERSON_MODEL, "PROMPT_WEDDING_DJ", "WEDDING_DJ_LINE_", DJ_LINES, DJ_PERSON_AT)
-	grandma = _person("Grandma", GRANDMA_MODEL, "PROMPT_WEDDING_GRANDMA", "WEDDING_GRANDMA_LINE_", GRANDMA_LINES,
-		GRANDMA_AT, -PI / 2)
-	ear_trumpet = TRUMPET_MODEL.instantiate()
+	grandma = WeddingGrandma.new()
+	grandma.name = "Grandma"
+	grandma.position = GRANDMA_AT + Vector3(0, FLOOR_TOP, 0)
+	grandma.rotation.y = -PI / 2
+	add_child(grandma)
+	ear_trumpet = EarTrumpet.new()
 	ear_trumpet.name = "EarTrumpet"
 	ear_trumpet.position = table_tops[GRANDMA_TABLE] + Vector3(0.35, 0, 0.3)
 	add_child(ear_trumpet)

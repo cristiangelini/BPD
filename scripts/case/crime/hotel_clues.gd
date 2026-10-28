@@ -48,7 +48,8 @@ func _ready() -> void:
 	var plan := case.plan
 	safe = EmptyFrame.new(Vector2(0.34, 0.42))
 	safe.name = "Safe"
-	safe.look = "SAFE"
+	safe.keys = {"prompt": "PROMPT_EMPTY_SAFE", "touched": "HINT_SAFE_TOUCHED", "empty": "HINT_SAFE_EMPTY",
+		"smudged": "PRINTS_SAFE_SMUDGED", "prints": "PRINTS_SAFE"}
 	safe.case = case
 	safe.has_prints = plan.clues.has("prints")
 	safe.position = Hotel.SAFE_AT + Vector3(0.06, 0, 0)
