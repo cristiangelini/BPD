@@ -49,7 +49,7 @@ func test_a_dog_follows_the_cop_with_something_in_hand() -> void:
 	var bottle: Grabbable = groomer.shampoos[0]
 	cop.get_node("Grabber").grab(bottle)
 	var start := _near(dog.global_position, cop.global_position)
-	await wait_seconds(2.0)
+	await wait_physics_frames(120)
 	assert_eq(dog.state, Dog.State.FOLLOW)
 	var now := _near(dog.global_position, cop.global_position)
 	assert_lt(now, Dog.KEEP + 0.8, "it comes up to the cop (from %.1f to %.1f m)" % [start, now])
@@ -63,15 +63,25 @@ func test_a_dog_takes_something_left_on_the_floor_to_the_doghouse() -> void:
 	collar.global_position = dog.global_position + Vector3(1.0, 0.1, 0.5)
 	collar.rotation = Vector3.ZERO
 	collar.was_held = true
-	for other in groomer.dogs:
+	# The others wait in the front rooms, off its way to the yard: one of them in a doorway holds it up for seconds.
+	var out_of_the_way: Array[Vector3] = [Vector3(-5.0, 0, 5.0), Vector3(-1.0, 0, 6.0), Vector3(4.0, 0, 6.2),
+		Vector3.ZERO, Vector3(-3.0, 0, 6.0), Vector3(1.5, 0, 6.0)]  # 3 is the one that fetches
+	for i in groomer.dogs.size():
+		var other := groomer.dogs[i]
 		other._fetch_wait = 999.0
+		if other != dog:
+			other.caged = true
+			other.linear_velocity = Vector3.ZERO
+			other.global_position = out_of_the_way[i] + Vector3.UP * (Groomer.FLOOR_TOP + 0.02)
 	dog._fetch_wait = 0.0
 	await wait_physics_frames(30)
 	assert_true(dog.state in [Dog.State.FETCH, Dog.State.CARRY], "it goes for the collar")
-	for i in 30:
+	# Counted in physics frames, not seconds: on a loaded machine the physics fall behind the clock (30 s at 60 Hz).
+	# Its way is about 10 s, but it can dither for several seconds at the door to the yard.
+	for i in 60:
 		if dog.thefts > 0:
 			break
-		await wait_seconds(0.5)
+		await wait_physics_frames(30)
 	assert_eq(dog.thefts, 1, "it got to the doghouse")
 	assert_true(is_instance_valid(collar) and not collar.is_broken, "set down, not dropped")
 	if is_instance_valid(collar):
