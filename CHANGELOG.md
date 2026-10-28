@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Radio raid, step 2: the "AL AIRE" light, the studio's microphone (E: speak on air) and the listeners' phone: on air, a hard hit in the studio, something that breaks or a cop at the microphone rings the phone, and a call nobody answers in 10 s becomes a complaint ("¡Qué es ese ruido, Volumen!") for don Volumen's report in step 3.
 - Radio raid, step 1: "Radio La Antena Loca" on block (7, 3): the reception with the listeners' desk and the till, the studio with its big window and the console, the control room with the record player, the kitchen, the locked record archive, the storage room, the bathroom and the roof with the blinking antenna; 12 hiding spots; the studio's window cracks (fine of 30) and the archive's records break (10 each, up to 5). "Radio (allanamiento, prueba)" in the menu.
 - Radio raid design: docs/diseno/allanamiento-radio.md proposes a new raid place, "Radio La Antena Loca", where everything goes on air, with don Volumen, doña Rosa on the phone and 6 stories (decision 370).
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
