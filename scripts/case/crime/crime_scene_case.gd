@@ -72,7 +72,7 @@ const VARIANTS := {
 		"brief": ["BRIEF_CRIME_WEDDING_A_", "BRIEF_CRIME_WEDDING_B", "BRIEF_CRIME_WEDDING_C"], "go": "HINT_GO_WEDDING",
 		"go_row": "OBJ_WEDDING_GO", "look": "HINT_WEDDING_LOOK", "files_row": "OBJ_WEDDING_FILES",
 		"clue_line": "CLUE_CRIME_WEDDING_", "ruined_hint": "HINT_CRIME_WEDDING_RUINED_", "left": "HINT_TUXEDO_LEFT",
-		"who": "tuxedo", "getaway": SuspectCar.BIKE, "loot_row": "OBJ_WEDDING_LOOT_",
+		"who": "tuxedo", "getaway": WeddingHall.GETAWAY, "loot_row": "OBJ_WEDDING_LOOT_",
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "recording": "glasses",
 			"witness": "cologne"},
 		"parts": ["photo", "prints", "teeth", "hair", "cologne"],
@@ -417,6 +417,7 @@ func _run_off() -> bool:
 	for i in via.size():
 		chase.truck.points.insert(1 + i, via[i])
 	chase.ended.connect(_on_chase_ended)
+	place.dress_getaway(chase)
 	_hint_all(tr("HINT_ESCAPE_" + texts().who) % culprit().name)
 	return true
 
@@ -570,7 +571,7 @@ func _tire() -> void:
 		order[i] = order[j]
 		order[j] = swap
 	for index: int in order:
-		if not gone.has(index):
+		if not gone.has(index) and not (place and place.stays(index)):
 			gone.append(index)
 			_hint_all(tr(texts().left) % cooks[index].name)
 			if place:
