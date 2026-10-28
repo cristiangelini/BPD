@@ -150,6 +150,9 @@ func test_he_gets_out_on_every_pc_and_a_guest_cuffs_and_walks_him() -> void:
 	assert_eq(guest.suspect.kind, "ice_cream", "the same suspect gets out on the guest")
 	assert_eq(guest.suspect.get_parent(), _level(pcs[1]), "in the same place of the level")
 	assert_true(guest.escort.follower, "the guest's escort only rides along")
+	# NpcSync makes the copy first and places it with the next state, so it can be at the origin for a moment.
+	await wait_until(func() -> bool:
+		return guest.suspect.global_position.distance_to(host.suspect.global_position) < 0.5, 5.0)
 	assert_almost_eq(guest.suspect.global_position.distance_to(host.suspect.global_position), 0.0, 0.5)
 	var cop := OnlinePcs.own_cop(pcs[1])
 	cop.global_position = host.suspect.global_position + Vector3(0, 0, 1.2)
