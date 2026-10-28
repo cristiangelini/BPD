@@ -1,6 +1,8 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Garage raid, step 1: the garage "El Pistón Feliz" on its lot in the east (block 7, 2): three clients' cars (one up on the lift, one over the pit), the tool wall, tires, oil drums, the parts shelf, the counter with its bell and the till, and the office locked with the till's key; a windshield hit fast cracks (a fine of 30), 12 hiding spots, --place=garage and a menu test button.
+- Garage raid design: docs/diseno/allanamiento-taller.md proposes a new raid place, the "El Pistón Feliz" garage, with Don Tuerca, Grasita and 6 stories (decision 310).
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
 - Gym raid, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office, the cake lab and the gym in eighths.
 - Gym raid, step 5: the fixed fights story: the punching bags swing when punched (E) and shove whoever stands behind them, one of them clangs like metal (the clue), and the betting book, the gloves with a horseshoe and the cardboard champion belt are hidden. The gym now tells its six stories.

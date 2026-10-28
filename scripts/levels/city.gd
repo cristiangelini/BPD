@@ -562,6 +562,55 @@ func _box(center: Vector3, size: Vector3, color: Color, parent: Node3D = null) -
 	_mesh_box(center, size, color, parent)
 
 
+## A place that digs below the street (the garage's pit) cuts its hole out of the ground: `hole` is in the city's
+## space (x and z). The grass box under everything and the flat layers on top of it (the roads, the lines, the
+## sidewalks and the lots) become up to four pieces around it, so whatever falls in reaches the bottom and the hole
+## doesn't look painted over.
+func cut_ground(hole: Rect2) -> void:
+	for node: Node in _built.get_children():
+		var flat := node as Node3D
+		if flat == null or flat.position.y > 0.05 or not flat.basis.is_equal_approx(Basis.IDENTITY):
+			continue
+		var box := _flat_box(flat)
+		if box == null:
+			continue
+		var at := Vector2(flat.position.x, flat.position.z)
+		var area := Rect2(at - Vector2(box.size.x, box.size.z) / 2, Vector2(box.size.x, box.size.z))
+		if not area.intersects(hole):
+			continue
+		var x0 := maxf(area.position.x, hole.position.x)
+		var x1 := minf(area.end.x, hole.end.x)
+		for piece: Rect2 in [Rect2(area.position.x, area.position.y, hole.position.x - area.position.x, area.size.y),
+				Rect2(hole.end.x, area.position.y, area.end.x - hole.end.x, area.size.y),
+				Rect2(x0, area.position.y, x1 - x0, hole.position.y - area.position.y),
+				Rect2(x0, hole.end.y, x1 - x0, area.end.y - hole.end.y)]:
+			if piece.size.x <= 0.0 or piece.size.y <= 0.0:
+				continue
+			var cut := flat.duplicate() as Node3D
+			cut.position = Vector3(piece.get_center().x, flat.position.y, piece.get_center().y)
+			var part := box.duplicate() as Resource
+			part.size = Vector3(piece.size.x, box.size.y, piece.size.y)
+			_set_flat_box(cut, part)
+			_built.add_child(cut)
+		flat.free()
+
+
+## The box of a flat ground layer: its mesh's, or its collision's.
+func _flat_box(node: Node3D) -> Resource:
+	if node is MeshInstance3D:
+		return (node as MeshInstance3D).mesh as BoxMesh
+	if node is StaticBody3D and node.get_child_count() == 1 and node.get_child(0) is CollisionShape3D:
+		return (node.get_child(0) as CollisionShape3D).shape as BoxShape3D
+	return null
+
+
+func _set_flat_box(node: Node3D, box: Resource) -> void:
+	if node is MeshInstance3D:
+		(node as MeshInstance3D).mesh = box as BoxMesh
+	else:
+		(node.get_child(0) as CollisionShape3D).shape = box as BoxShape3D
+
+
 func _body(at: Vector3, parent: Node3D = null) -> StaticBody3D:
 	var body := StaticBody3D.new()
 	body.position = at
