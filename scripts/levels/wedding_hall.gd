@@ -8,7 +8,8 @@ extends CrimeScenePlace
 ## the back west corner, the DJ's booth facing the dance floor, white garlands along the walls and rice on the floor
 ## by the entrance. The office stays locked. Step 2: Tito and his five groomsmen in front of the head table (TuxedoGuest,
 ## with WeddingTraits drawn with the case seed), Rosa by Tito, DJ Bombo behind his booth, grandma Chola at table 3 with
-## her ear trumpet and four guests at the other tables. The case comes in step 4.
+## her ear trumpet and four guests at the other tables. Step 3: what the cops get from the tuxedos goes to their files
+## (set_up_case). The case comes in step 4.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -105,6 +106,17 @@ func _ready() -> void:
 	_garlands()
 	_rice()
 	_people()
+
+
+## Tells the six tuxedos about the case, so what the cops get from them goes to their files.
+func set_up_case(case: CrimeSceneCase) -> void:
+	for tuxedo in tuxedos:
+		tuxedo.case = case
+
+
+## The tuxedo by index (the order of the case's traits).
+func suspect(index: int) -> CollisionObject3D:
+	return tuxedos[index] if index >= 0 and index < tuxedos.size() else null
 
 
 ## Whether a point in the world (ignoring height) is in the hall.

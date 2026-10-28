@@ -65,6 +65,18 @@ const VARIANTS := {
 			"witness": "glasses", "alibi": "liar"},
 		"parts": ["photo", "prints", "teeth", "hair", "mustache", "alibi"],
 	},
+	# The wedding (escena-boda.md, decision 290): Tito and five groomsmen in the same tuxedo; a file knows what the
+	# cops got from each, his cologne included. The texts come with the case (step 4).
+	"wedding": {
+		"shift": "crime_wedding", "story": "wedding",
+		"brief": ["BRIEF_CRIME_WEDDING_A_", "BRIEF_CRIME_WEDDING_B", "BRIEF_CRIME_WEDDING_C"], "go": "HINT_GO_WEDDING",
+		"go_row": "OBJ_WEDDING_GO", "look": "HINT_WEDDING_LOOK", "files_row": "OBJ_WEDDING_FILES",
+		"clue_line": "CLUE_CRIME_WEDDING_", "ruined_hint": "HINT_CRIME_WEDDING_RUINED_", "left": "HINT_TUXEDO_LEFT",
+		"who": "tuxedo", "getaway": SuspectCar.BIKE,
+		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "recording": "glasses",
+			"witness": "cologne"},
+		"parts": ["photo", "prints", "teeth", "hair", "cologne"],
+	},
 	# The hotel (escena-hotel.md, decision 201): six guests alike in bathrobes; their rooms tell what doesn't show on
 	# them, and the concierge swapped two rooms.
 	"hotel": {
@@ -81,6 +93,9 @@ const VARIANTS := {
 ## At the museum, the traits each part of a guard's file tells.
 const GUARD_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
 	"mustache": ["mustache"], "alibi": ["liar", "detail"]}
+## At the wedding, the traits each part of a tuxedo's file tells.
+const TUXEDO_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
+	"cologne": ["cologne"]}
 ## At the hotel, the trait each part of a guest's file tells, and the parts that come from their room.
 const GUEST_PART_TRAITS := {"prints": "name", "teeth": "teeth", "sign": "left", "shoe": "shoe", "hair": "hair",
 	"glasses": "glasses"}
@@ -195,6 +210,8 @@ func texts() -> Dictionary:
 func _draw_suspects() -> Array[Dictionary]:
 	if texts() == VARIANTS.museum:
 		return GuardTraits.draw(case_seed)
+	if texts() == VARIANTS.wedding:
+		return WeddingTraits.draw(case_seed)
 	if texts() == VARIANTS.hotel:
 		return GuestTraits.draw(case_seed)
 	return ClownTraits.draw(case_seed) if texts() == VARIANTS.circus else CookTraits.draw(case_seed)
@@ -235,12 +252,14 @@ func clown_part(clown_index: int, part: String) -> bool:
 	return true
 
 
-## A guard gave a part of his file (escena-museo.md): it goes to his file with what it says about him.
+## A guard (escena-museo.md) or a tuxedo (escena-boda.md) gave a part of his file: it goes to his file with what it
+## says about him.
 func guard_part(index: int, part: String) -> void:
 	if follower:
 		return
 	var known: Dictionary = captured.get_or_add(index, {})
-	for trait_name: String in GUARD_PART_TRAITS[part]:
+	var part_traits := TUXEDO_PART_TRAITS if texts() == VARIANTS.wedding else GUARD_PART_TRAITS
+	for trait_name: String in part_traits[part]:
 		known[trait_name] = cooks[index][trait_name]
 	file_part(index, part)
 
@@ -321,7 +340,8 @@ func _refresh_rooms() -> void:
 
 
 ## What a file says about each trait: the cook's own traits, or at the circus what the cops got from whoever wore its
-## sign, or at the museum what they got from the guard, or at the hotel that and what their room's things say.
+## sign, or at the museum and the wedding what they got from the suspect, or at the hotel that and what their room's
+## things say.
 func file_traits(id: int) -> Dictionary:
 	if texts() == VARIANTS.hotel:
 		var known: Dictionary = captured.get(id, {}).duplicate()
@@ -330,7 +350,7 @@ func file_traits(id: int) -> Dictionary:
 		for part: String in room_seen.get(room, []):
 			known[GUEST_PART_TRAITS[part]] = cooks[sleeper][GUEST_PART_TRAITS[part]]
 		return known
-	if texts() == VARIANTS.circus or texts() == VARIANTS.museum:
+	if texts() == VARIANTS.circus or texts() == VARIANTS.museum or texts() == VARIANTS.wedding:
 		return captured.get(id, {})
 	return cooks[id]
 
@@ -697,6 +717,8 @@ func file_text(index: int) -> String:
 		return "\n".join(lines)
 	if texts() == VARIANTS.museum:
 		return _guard_file_text(index, who)
+	if texts() == VARIANTS.wedding:
+		return _tuxedo_file_text(index, who)
 	if texts() == VARIANTS.hotel:
 		return _guest_file_text(index, who)
 	var lines := PackedStringArray(["%d. %s" % [index + 1, who.name]])
@@ -725,6 +747,21 @@ func _guard_file_text(index: int, who: Dictionary) -> String:
 	else:
 		lines.append(tr("FILE_MUSTACHE_UNKNOWN"))
 	lines.append(tr("FILE_ALIBI") % (tr("ALIBI_SHORT_" + str(who.detail)) if who.has("detail") else "?"))
+	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
+	return "\n".join(lines)
+
+
+## A tuxedo's file: his name and number, and what the cops got from him so far.
+func _tuxedo_file_text(index: int, who: Dictionary) -> String:
+	var lines := PackedStringArray(["%d. %s" % [index + 1, cooks[index].name]])
+	if who.has("glasses"):
+		lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
+		lines.append(tr("FILE_SHOE") % who.shoe)
+	else:
+		lines.append(tr("FILE_GLASSES_UNKNOWN"))
+	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if who.has("hair") else "?"))
+	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
+	lines.append(tr("FILE_COLOGNE") % (tr("COLOGNE_" + str(who.cologne)) if who.has("cologne") else "?"))
 	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
 	return "\n".join(lines)
 

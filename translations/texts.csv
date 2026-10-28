@@ -5147,6 +5147,27 @@ WEDDING_GUEST_LINE_2,Los padrinos son todos iguales. ¿Son quintillizos?,The gro
 WEDDING_GUEST_LINE_3,"Les doy seis meses. Al matrimonio, digo.","I give them six months. The marriage, I mean.","Dou seis meses pra eles. Pro casamento, digo."
 WEDDING_GUEST_LINE_4,¿Cuándo sirven la comida? Llevo tres horas con el moño.,When do they serve the food? I've had this bow tie on for three hours.,Quando servem a comida? Estou há três horas com essa gravata.
 WEDDING_GUEST_LINE_5,Rosa grita mucho. Siempre gritó mucho.,Rosa yells a lot. She always did.,A Rosa grita muito. Sempre gritou muito.
+PROMPT_TUXEDO_FEED,E: darle de comer (sus dientes para la ficha),E: feed him (his teeth for the file),E: dar comida (os dentes para a ficha)
+PROMPT_TUXEDO_SNIFF,E: olerlo de cerca (su colonia para la ficha),E: sniff him up close (his cologne for the file),E: cheirar de perto (a colônia para a ficha)
+PROMPT_TUXEDO_HAT,E: pedirle que se saque la galera,E: ask him to take off the top hat,E: pedir para tirar a cartola
+TUXEDO_SNIFFED,"¡Eh, qué haces!","Hey, what are you doing!","Ei, o que você está fazendo!"
+TUXEDO_SMELLS,(Huele a %s.),(He smells of %s.),(Tem cheiro de %s.)
+COLOGNE_lavender,lavanda,lavender,lavanda
+COLOGNE_lemon,limón,lemon,limão
+COLOGNE_cinnamon,canela,cinnamon,canela
+TUXEDO_HAT_NO,"¡No! ¡Me despeino para la foto! Bueno... por algo de comer, capaz.","No! It'll mess up my hair for the photo! Well... for a snack, maybe.","Não! Vou despentear para a foto! Bom... por um lanche, talvez."
+TUXEDO_HAT_OFF,"Ahí está. Tres horas de gel, para nada.","There. Three hours of gel, for nothing.","Pronto. Três horas de gel, pra nada."
+TUXEDO_PHOTO,"¿Salgo bien? ¡Saca otra, que cerré los ojos!","Do I look good? Take another, I blinked!","Saí bem? Tira outra, que eu pisquei!"
+WEDDING_NO_DONUTS,La caja está vacía. Pídele pastel a la abuela.,The box is empty. Ask grandma for cake.,A caixa está vazia. Peça bolo para a vovó.
+HINT_FILE_cologne,Colonia de %s para la ficha.,%s's cologne for the file.,Colônia de %s para a ficha.
+FILE_COLOGNE,Colonia: %s,Cologne: %s,Colônia: %s
+HINT_GO_WEDDING,"La boda es en el Salón Gala, el salón de fiestas de la ciudad. Vayan de traje. Bueno, de uniforme.","The wedding is at the Salón Gala, the city's party hall. Dress up. Well, wear your uniform.","O casamento é no Salón Gala, o salão de festas da cidade. Vão de terno. Bom, de uniforme."
+HINT_WEDDING_LOOK,"Los seis de traje son iguales. A Tito lo reconoces por el clavel blanco; a los otros cinco, de cerca.","The six in tuxedos look the same. You can tell Tito by his white carnation; the other five, only up close.","Os seis de terno são iguais. O Tito você reconhece pelo cravo branco; os outros cinco, só de perto."
+OBJ_WEDDING_GO,Ir a la boda,Go to the wedding,Ir ao casamento
+OBJ_WEDDING_FILES,Armar la ficha de cada uno de traje (%d de %d),Make each tuxedo's file (%d of %d),Montar a ficha de cada um de terno (%d de %d)
+HINT_TUXEDO_LEFT,%s se cansó de la fiesta y se fue a su casa. Su ficha queda como está.,%s got tired of the party and went home. His file stays as it is.,%s cansou da festa e foi para casa. A ficha fica como está.
+BRIEF_CRIME_WEDDING_B,Hay seis de traje negro y galera: Tito y sus cinco padrinos. La novia dice que fue Tito. La novia dice muchas cosas.,There are six in black tuxedos and top hats: Tito and his five groomsmen. The bride says it was Tito. The bride says a lot of things.,Tem seis de terno preto e cartola: o Tito e os cinco padrinhos. A noiva diz que foi o Tito. A noiva diz muitas coisas.
+BRIEF_CRIME_WEDDING_C,Quiero un nombre en el tablero antes de que se termine la fiesta. Y no se coman el pastel.,I want a name on the board before the party ends. And don't eat the cake.,Quero um nome no quadro antes de a festa acabar. E não comam o bolo.
 BRIEF_SPY_TELESCOPE_B,"El señor Bellini mira las estrellas todas las noches, pero su telescopio apunta abajo: a la bóveda del banco de enfrente.","Mr. Bellini watches the stars every night, but his telescope points down: at the vault of the bank across the street.","O senhor Bellini olha as estrelas toda noite, mas o telescópio dele aponta para baixo: para o cofre do banco da frente."
 BRIEF_SPY_TELESCOPE_C,"Traigan el telescopio al patrullero. Pesa 35 kilos y es frágil: entre dos, con cuidado. Entra en el ascensor.","Bring the telescope to the patrol car. It weighs 35 kilos and it's fragile: two of you, carefully. It fits in the elevator.","Tragam o telescópio para a viatura. Pesa 35 quilos e é frágil: entre dois, com cuidado. Cabe no elevador."
 BRIEF_SPY_TELESCOPE_D,"Si encuentran la libreta con la clave o los binoculares, mejor: todo suma.","If you find the notebook with the code or the binoculars, even better: it all counts.","Se encontrarem a caderneta com a senha ou o binóculo, melhor: tudo conta."
