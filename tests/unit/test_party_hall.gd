@@ -7,11 +7,15 @@ extends GutTest
 
 const LEVEL := preload("res://scenes/levels/party_hall.tscn")
 
+const SEED := 11
+
 var hall: PartyHall
 
 
 func before_each() -> void:
 	hall = LEVEL.instantiate()
+	# A fixed seed: some (79, 167, ...) draw her clue with no guest near her, and she tells it instead of chatting.
+	hall.case_seed = SEED
 	hall.get_node("Cop").input_enabled = false
 	add_child_autofree(hall)
 	await wait_physics_frames(2)
