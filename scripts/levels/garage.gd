@@ -294,6 +294,8 @@ func _ready() -> void:
 	raid.failed_label = %CaseFailed
 	raid.shift_screen = $ShiftScreen
 	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
 	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
@@ -340,6 +342,20 @@ func _place_facts() -> Dictionary:
 		"broken": broken_goods,
 		"complaint": tuerca.complaint,
 	}
+
+
+## Online, what the guests' garage takes from the host's (RaidCase.snapshot): the cracked windshields and where the
+## lift is going.
+func net_state() -> Dictionary:
+	return {"windshields": broken_windshields.duplicate(), "lift": lift_target}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	for index: int in state.windshields:
+		break_windshield(index)
+	if lift_target != state.lift:
+		lift_target = state.lift
+		_trip_fined = false
 
 
 ## The story with that id from --story=<id> among the user args, or one drawn from the seed.
@@ -545,8 +561,10 @@ func _place_cars() -> void:
 		add_child(body)
 		cars.append(body)
 		var area := _area(body.position + WINDSHIELD_AT, WINDSHIELD_SIZE)
+		# Online only the host sees windshields crack; the guests take it from its state (net_state).
 		area.body_entered.connect(func(hit: Node3D) -> void:
-			if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > WINDSHIELD_SPEED:
+			if multiplayer.is_server() and hit is RigidBody3D \
+					and (hit as RigidBody3D).linear_velocity.length() > WINDSHIELD_SPEED:
 				break_windshield(i))
 		if lifted:
 			_build_lift(body)
@@ -609,8 +627,10 @@ func _squash_under() -> bool:
 		var out := Vector3(signf(local.x - CARS[1].at.x) if absf(local.x - CARS[1].at.x) > 0.05 else 1.0, 0, 0)
 		if body is Cop and local.y + COP_HEIGHT > bottom:
 			var cop := body as Cop
-			cop.knock_back(global_basis * out * SQUASH_PUSH, SQUASH_SECONDS)
-			if not _trip_fined:
+			# Each PC shoves its own player's cop out (a copy only follows its owner); the fine is the host's.
+			if GarageRig.is_mine(cop):
+				cop.knock_back(global_basis * out * SQUASH_PUSH, SQUASH_SECONDS)
+			if multiplayer.is_server() and not _trip_fined:
 				_trip_fined = true
 				broken_goods += 1
 				fines += SQUASH_FINE
@@ -619,7 +639,8 @@ func _squash_under() -> bool:
 				squashed.emit(cop)
 			any = true
 		elif body is RigidBody3D and local.y + 0.4 > bottom:
-			(body as RigidBody3D).linear_velocity = global_basis * out * SQUASH_PUSH
+			if multiplayer.is_server():
+				(body as RigidBody3D).linear_velocity = global_basis * out * SQUASH_PUSH
 			any = true
 	return any
 

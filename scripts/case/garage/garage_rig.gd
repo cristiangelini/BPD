@@ -10,3 +10,8 @@ var garage: Garage
 
 func setup(place: Garage) -> void:
 	garage = place
+
+
+## This PC's player's cop (offline, every cop): what only touches a player's own body or screen happens on their PC.
+static func is_mine(cop: Cop) -> bool:
+	return not cop.sync or not cop.sync.is_inside_tree() or cop.sync.is_multiplayer_authority()

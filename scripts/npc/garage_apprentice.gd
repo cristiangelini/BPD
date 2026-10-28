@@ -89,9 +89,12 @@ func use(cop: Cop) -> void:
 
 
 ## A tool brought into his hands: the right one and he talks to whoever brought it; another and he sends it back.
+## Online the host sees it come and tells every guest's Grasita the same.
 func hand(tool: Grabbable, cop: Cop) -> void:
 	if wanted == "" or listeners.has(cop):
 		return
+	if multiplayer.is_server() and cop.sync and cop.sync.is_inside_tree():
+		cop.sync.net.actions.tell_guests(cop, "hand", self, [tool, cop])
 	if tool.get_meta("tool", "") != wanted:
 		_say("GRASITA_WRONG", 3.0)
 		if not tool.is_held():
@@ -109,7 +112,7 @@ func hand(tool: Grabbable, cop: Cop) -> void:
 
 
 func _on_handed(body: Node3D) -> void:
-	if not body is Grabbable or not body.has_meta("tool"):
+	if not multiplayer.is_server() or not body is Grabbable or not body.has_meta("tool"):
 		return
 	var cops := (body as Grabbable).handling_cops(HANDED_SINCE)
 	if not cops.is_empty():

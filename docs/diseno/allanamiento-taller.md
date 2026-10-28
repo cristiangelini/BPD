@@ -149,6 +149,13 @@ entre 400 y 600.
    - **Hecho así (propuesta):** el taller entra en `PlaceDraw.ORDER` como el allanamiento número 11, con las mismas
      chances que los otros, y la prueba del sorteo revisa que salgan las 6 historias del taller.
 7. El online (Don Tuerca, Grasita, el timbre, el elevador y los parabrisas en todas las PC).
+   - **Hecho así (propuesta):** Don Tuerca lo maneja el anfitrión y los invitados lo siguen; el timbre, el botón del
+     elevador, los tableros, las abolladuras y pedirle algo a Grasita andan desde cualquier PC (las acciones
+     compartidas). Los parabrisas rajados y hacia dónde va el elevador los decide el anfitrión y se copian en todas las
+     PC; las multas también son del anfitrión, y el elevador empuja afuera a cada policía en su propia PC. La
+     herramienta que le llega a Grasita la ve el anfitrión y le avisa a cada Grasita, así cada jugador oye lo que
+     cuenta. De paso, las pistas nuevas llegan a la planilla de los invitados en cuanto aparecen (antes esperaban a
+     que cambiara otra cosa del caso, en cualquier allanamiento).
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, el taller de autos, ahora que el catálogo está hecho o reclamado? **Recomendado:** sí,
