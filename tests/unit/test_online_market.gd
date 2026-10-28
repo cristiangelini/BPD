@@ -77,6 +77,8 @@ func test_the_deputy_in_the_toilet_locks_it_on_the_guest() -> void:
 	var pcs: Array[Node] = await _pcs.two_pcs()
 	var host := _market(pcs[0])
 	var guest := _market(pcs[1])
+	# His own run off: on a slow PC the walk reaches a sample with laxative and he waits by the door to take it back.
+	host.toilet_run.set_physics_process(false)
 	host.toilet.occupy(host.politician, 30.0)
 	await wait_until(func() -> bool: return guest.toilet.occupant == guest.politician, 5.0)
 	assert_false(guest.toilet.is_free())
