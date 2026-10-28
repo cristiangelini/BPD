@@ -5588,3 +5588,103 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+PLACE_GARAGE,Taller El Pistón Feliz,Happy Piston Garage,Oficina Pistão Feliz
+MENU_GARAGE,Taller (allanamiento) (prueba),Garage (raid) (test),Oficina (batida) (teste)
+HINT_TILL_KEY_GARAGE,¡Una llave! Abre la oficina del taller.,A key! It opens the garage's office.,Uma chave! Abre o escritório da oficina.
+GARAGE_WINDSHIELD_BROKEN,"¡Eso es de un cliente, oficial!","That belongs to a client, officer!","Isso é de um cliente, policial!"
+CASE_FAILED_LAWYER_GARAGE,Don Tuerca llamó al abogado del taller. Caso perdido.,Don Tuerca called the garage's lawyer. Case lost.,Don Tuerca ligou para o advogado da oficina. Caso perdido.
+LOC_in_pit,en el fondo de la fosa,at the bottom of the pit,no fundo do fosso
+LOC_under_lift,abajo del auto del elevador,under the car on the lift,embaixo do carro no elevador
+LOC_behind_garage_counter,detrás del mostrador del taller,behind the garage's counter,atrás do balcão da oficina
+LOC_between_oil_drums,entre los tambores de aceite,between the oil drums,entre os tambores de óleo
+LOC_behind_tires,detrás de las cubiertas,behind the tires,atrás dos pneus
+LOC_in_garage_office_corner,en un rincón de la oficina del taller,in a corner of the garage's office,num canto do escritório da oficina
+LOC_in_oil_drum,adentro del tambor de aceite abierto,inside the open oil drum,dentro do tambor de óleo aberto
+LOC_on_tire_stack,arriba de la pila de cubiertas,on top of the tire stack,em cima da pilha de pneus
+LOC_in_garage_counter,adentro del mostrador del taller,inside the garage's counter,dentro do balcão da oficina
+LOC_on_parts_shelf,en el estante de repuestos,on the parts shelf,na prateleira de peças
+LOC_on_garage_desk,en el escritorio de Don Tuerca,on Don Tuerca's desk,na escrivaninha do Don Tuerca
+PROMPT_BELL,E: tocar el timbre,E: ring the bell,E: tocar a campainha
+PROMPT_LIFT,E: subir o bajar el elevador,E: raise or lower the lift,E: subir ou descer o elevador
+HINT_BELL_BUSY,Don Tuerca ya está atendiendo.,Don Tuerca is already at the counter.,Don Tuerca já está atendendo.
+HINT_BELL_RESTING,"Si lo tocas tan seguido, se va a dar cuenta. Espera un poco.","Ring it that often and he'll catch on. Wait a bit.","Se tocar tão seguido, ele vai perceber. Espere um pouco."
+GARAGE_DING,¡DING!,DING!,DIM!
+GARAGE_SQUASHED,"¡CRUNCH! Multa por quedarte abajo del auto.","CRUNCH! A fine for standing under the car.","CRUNCH! Multa por ficar embaixo do carro."
+TUERCA_LINE_1,"Esto se arregla con una ajustadita. Todo se arregla con una ajustadita.","A little tightening fixes this. A little tightening fixes everything.","Isso se resolve com um apertinho. Tudo se resolve com um apertinho."
+TUERCA_LINE_2,"Oficiales, ¿les reviso el patrullero? Para ustedes, precio de amigo.","Officers, want me to check the patrol car? Friend price for you.","Policiais, querem que eu revise a viatura? Pra vocês, preço de amigo."
+TUERCA_LINE_3,"Acá todo sale en una hora. No pregunten cómo.","Everything's done here in an hour. Don't ask how.","Aqui tudo fica pronto em uma hora. Não perguntem como."
+TUERCA_LINE_4,"¡No me toquen los autos! Son de los clientes.","Don't touch the cars! They belong to the clients.","Não mexam nos carros! São dos clientes."
+TUERCA_PRINTER,"¡Un cliente! ¡Ya voy, ya voy!","A client! Coming, coming!","Um cliente! Já vou, já vou!"
+TUERCA_FIX_1,"¿El ruidito es así, tac tac, o así, toc toc?","Is the noise like this, tick tick, or like this, tock tock?","O barulhinho é assim, tac tac, ou assim, toc toc?"
+TUERCA_FIX_2,"Mmm… eso es la junta. O el carburador. O las dos cosas.","Hmm… that's the gasket. Or the carburetor. Or both.","Hmm… isso é a junta. Ou o carburador. Ou as duas coisas."
+TUERCA_FIX_3,"Déjemelo y vuelva en una hora. Le hago precio.","Leave it with me and come back in an hour. I'll give you a deal.","Deixe comigo e volte em uma hora. Faço um preço."
+TUERCA_FIX_DONE,"Qué raro, se fue sin dejar el auto.","Weird, they left without leaving the car.","Que estranho, foi embora sem deixar o carro."
+TUERCA_HURT,"¡Epa, oficial! Con cuidado, que no soy un auto.","Hey, officer! Careful, I'm not a car.","Opa, policial! Cuidado, eu não sou um carro."
+TUERCA_DOOR,"¿Una puerta rota? ¡Eso no lo cubre la garantía!","A broken door? That's not covered by the warranty!","Uma porta quebrada? Isso a garantia não cobre!"
+TUERCA_SAW,"¡Eso no se toca sin guantes!","Don't touch that without gloves!","Isso não se toca sem luvas!"
+TUERCA_NOTHING,"Yo solo cambio aceite, oficial.","I just change the oil, officer.","Eu só troco óleo, policial."
+TUERCA_OFFENDED,"No hablo más. Tengo un auto abierto.","I'm done talking. I've got a car open.","Não falo mais. Tenho um carro aberto."
+TUERCA_LAWYER,"¡Llamo a mi abogado! Me debe un cambio de aceite.","I'm calling my lawyer! He owes me an oil change.","Vou ligar para o meu advogado! Ele me deve uma troca de óleo."
+TUERCA_WINDSHIELD,"¡El parabrisas! ¡Eso es de un cliente!","The windshield! That belongs to a client!","O para-brisa! Isso é de um cliente!"
+TUERCA_NOTICED,"¡Ya sé que no hay nadie! ¡Dejen el timbre!","I know there's nobody there! Leave the bell alone!","Eu sei que não tem ninguém! Larguem a campainha!"
+PROMPT_GRASITA,E: hablar con Grasita,E: talk to Grasita,E: falar com o Grasita
+GRASITA_ASK,"¡Pásame %s! ¡Rápido, que se me cae el motor!","Hand me %s! Quick, the engine's slipping!","Me passa %s! Rápido, que o motor está caindo!"
+GRASITA_WRONG,"¡Esa no es! ¿Nunca viste un taller?","That's not it! Never been in a garage?","Não é essa! Nunca viu uma oficina?"
+GRASITA_NOTHING,"Gracias. No vi nada raro, la verdad. Bueno, todo acá es raro.","Thanks. I didn't see anything odd, honestly. Well, everything here is odd.","Valeu. Não vi nada estranho, sério. Bom, tudo aqui é estranho."
+GRASITA_AGAIN,"Ya te conté todo lo que sé. Que no es mucho.","I already told you all I know. Which isn't much.","Já te contei tudo o que sei. Que não é muito."
+GRASITA_IDLE_1,"Don Tuerca dice que si aprendo, en diez años me deja cambiar una rueda.","Don Tuerca says if I learn, in ten years he'll let me change a tire.","O Don Tuerca diz que, se eu aprender, em dez anos ele me deixa trocar um pneu."
+GRASITA_IDLE_2,"Este motor tiene una pieza de más. O de menos. No sé.","This engine has one part too many. Or too few. Not sure.","Este motor tem uma peça a mais. Ou a menos. Não sei."
+GRASITA_IDLE_3,"Yo veo todo desde acá abajo, ¿eh? Todo.","I see everything from down here, you know? Everything.","Eu vejo tudo daqui de baixo, sabia? Tudo."
+GARAGE_TOOL_SPANNER_13,la llave 13,the 13 spanner,a chave 13
+GARAGE_TOOL_ADJUSTABLE_WRENCH,la llave inglesa,the adjustable wrench,a chave inglesa
+GARAGE_TOOL_HAMMER,el martillo,the hammer,o martelo
+GARAGE_TOOL_SCREWDRIVER,el destornillador,the screwdriver,a chave de fenda
+GARAGE_TOOL_PLIERS,la pinza,the pliers,o alicate
+GARAGE_TOOL_OIL_CAN,la aceitera,the oil can,a almotolia
+GARAGE_TOOL_TIRE_IRON,la llave cruz,the tire iron,a chave de roda
+GARAGE_TOOL_FLASHLIGHT,la linterna,the flashlight,a lanterna
+BRIEF_GARAGE_TIP_B,"Llegó una denuncia anónima: en el taller «El Pistón Feliz» arreglan todo en una hora y nunca falta nada, pero los autos salen raros.","We got an anonymous tip: at the «Happy Piston» garage they fix everything in an hour and nothing's ever missing, but the cars come out weird.","Chegou uma denúncia anônima: na oficina «Pistão Feliz» consertam tudo em uma hora e nunca falta nada, mas os carros saem estranhos."
+BRIEF_GARAGE_TIP_D,"El portón está abierto y Don Tuerca no quiere que nadie le toque los autos de los clientes. La oficina está cerrada con llave.","The shutter is open and Don Tuerca wants nobody touching his clients' cars. The office is locked.","O portão está aberto e o Don Tuerca não quer ninguém mexendo nos carros dos clientes. O escritório está trancado."
+BRIEF_GARAGE_TIP_E,"Y no rompan nada: los parabrisas se los descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.","And don't break anything: the windshields come out of your pay. Press Q to see your checklist.","E não quebrem nada: os para-brisas eu desconto do salário. Com Q vocês veem a lista do que têm que fazer."
+BRIEF_SWAPPED_PLATES_B,"Don Tuerca pinta autos robados de otro color y les pone patentes nuevas. Después los vende como si fueran de él.","Don Tuerca repaints stolen cars and puts new plates on them. Then he sells them as if they were his.","O Don Tuerca pinta carros roubados de outra cor e põe placas novas. Depois vende como se fossem dele."
+BRIEF_SWAPPED_PLATES_C,"Traigan la caja con las patentes en el baúl del patrullero. Son cuarenta, pesa 5 kilos.","Bring the crate of plates in the patrol car's trunk. There are forty of them, it weighs 5 kilos.","Tragam a caixa com as placas no porta-malas da viatura. São quarenta, pesa 5 quilos."
+BRIEF_SWAPPED_PLATES_D,"Si encuentran la lista de autos robados o el aerosol de pintura, mejor: todo suma.","If you find the list of stolen cars or the spray can, even better: it all counts.","Se acharem a lista de carros roubados ou a lata de spray, melhor: tudo conta."
+OBJ_FIND_PLATES_BOX,Llevarse la caja con las patentes,Take the crate of plates,Levar a caixa com as placas
+OBJ_EXTRA_STOLEN_LIST,Extra: la lista de autos robados,Extra: the list of stolen cars,Extra: a lista de carros roubados
+OBJ_EXTRA_SPRAY_CAN,Extra: el aerosol de pintura,Extra: the spray can,Extra: a lata de spray
+SUSPECT_swapped_plates,Las patentes cambiadas,The swapped plates,As placas trocadas
+SUSPECT_magic_odometer,El cuentakilómetros mágico,The magic odometer,O hodômetro mágico
+SUSPECT_swapped_parts,Las piezas cambiadas,The swapped parts,As peças trocadas
+SUSPECT_street_race,La carrera clandestina,The street race,O racha clandestino
+SUSPECT_dented_on_purpose,Las abolladuras a propósito,The dents on purpose,Os amassados de propósito
+SUSPECT_comisario_taxi,El auto del comisario,The comisario's car,O carro do comissário
+CLUE_SUSPECT_swapped_plates,"Un recibo de una fábrica de patentes: «40 patentes, todas distintas. Pagado en efectivo».","A receipt from a plate maker: «40 plates, all different. Paid in cash».","Um recibo de uma fábrica de placas: «40 placas, todas diferentes. Pago em dinheiro»."
+CLUE_SUSPECT_magic_odometer,"Un aviso recortado del diario: «Vendo auto de 30 años. Solo 12 kilómetros. Único dueño».","A newspaper ad: «Selling 30-year-old car. Only 12 kilometers. One owner».","Um anúncio recortado do jornal: «Vendo carro de 30 anos. Só 12 quilômetros. Único dono»."
+CLUE_SUSPECT_swapped_parts,"Una factura de un desarmadero: «Compro repuestos nuevos. Pago bien. No pregunto».","A scrapyard invoice: «Buying new parts. Good money. No questions».","Uma nota de um ferro-velho: «Compro peças novas. Pago bem. Não pergunto»."
+CLUE_SUSPECT_street_race,"Un volante: «Sábado a medianoche. Detrás de la usina. Premio: un trofeo de oro».","A flyer: «Saturday at midnight. Behind the power plant. Prize: a gold trophy».","Um panfleto: «Sábado à meia-noite. Atrás da usina. Prêmio: um troféu de ouro»."
+CLUE_SUSPECT_dented_on_purpose,"Una lista de patentes con una nota: «Pasar de noche. Un golpecito a cada uno. Vuelven solos».","A list of plates with a note: «Drive by at night. One little tap each. They come back on their own».","Uma lista de placas com um bilhete: «Passar de noite. Uma batidinha em cada um. Eles voltam sozinhos»."
+CLUE_SUSPECT_comisario_taxi,"Un ticket de taxi: «Viaje al aeropuerto. Auto: el del comisario. Chofer: D. Tuerca».","A taxi receipt: «Ride to the airport. Car: the comisario's. Driver: D. Tuerca».","Um recibo de táxi: «Corrida ao aeroporto. Carro: o do comissário. Motorista: D. Tuerca»."
+OBJ_ENTER_GARAGE,Entrar al taller (el portón está abierto),Get into the garage (the shutter is open),Entrar na oficina (o portão está aberto)
+OBJ_GUESS_GARAGE,"Averiguar qué pasa en el taller (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the garage (with Q open, hold 1, 2 or 3)","Descobrir o que acontece na oficina (com Q aberto, segure 1, 2 ou 3)"
+OBJ_BROKEN_GARAGE,Cosas rotas: %d (multa: %d),Broken things: %d (fines: %d),Coisas quebradas: %d (multa: %d)
+OBJ_COMPLAINT_GARAGE,Queja de Don Tuerca: %d%%,Don Tuerca's complaint: %d%%,Queixa do Don Tuerca: %d%%
+TUERCA_SLIP,"«¡Yo no guardé nada %s!... Digo, ¡esto es un taller serio!»","“I didn't put anything %s!... I mean, this is a serious garage!”","“Eu não guardei nada %s!... Quer dizer, esta é uma oficina séria!”"
+CLUE_GRASITA,Grasita vio a Don Tuerca esconder algo %s,Grasita saw Don Tuerca hide something %s,O Grasita viu o Don Tuerca esconder algo %s
+GRASITA_CLUE_swapped_plates,"«¡Gracias! Te cuento: vi a Don Tuerca esconder algo %s. Y anoche pintó un auto de verde… y ayer era rojo.»","“Thanks! Here's the thing: I saw Don Tuerca hide something %s. And last night he painted a car green… and yesterday it was red.”","“Valeu! Te conto: vi o Don Tuerca esconder algo %s. E ontem à noite ele pintou um carro de verde… e ontem era vermelho.”"
+HINT_WET_PAINT,"¡Pintura fresca! Te quedó la mano verde. ¿Pintar un auto que vino por un cambio de aceite?","Wet paint! Your hand is green now. Painting a car that came in for an oil change?","Tinta fresca! Sua mão ficou verde. Pintar um carro que veio trocar o óleo?"
+GARAGE_WET_PAINT,¡Pintura fresca!,Wet paint!,Tinta fresca!
+CLUE_WET_PAINT,"Un auto del taller tiene la pintura fresca, y abajo se ve otro color. Alguien lo pintó hace un rato.","One of the garage's cars has fresh paint, with another color showing underneath. Someone painted it a little while ago.","Um carro da oficina está com a tinta fresca, e por baixo aparece outra cor. Alguém pintou há pouco."
+HINT_ESCAPE_garage,¡Don Tuerca vio la prueba y se escapa en el auto! Tienen un minuto para agarrarlo.,Don Tuerca saw the evidence and is getting away in his car! You have one minute to catch him.,O Don Tuerca viu a prova e está fugindo de carro! Vocês têm um minuto para pegá-lo.
+CRIME_owner_garage,"¡Novatos! Ayer se trajeron a Don Tuerca, el dueño del taller El Pistón Feliz, y lo tenemos en la sala de interrogatorio. Algo escondió en el taller que no encontraron.","Rookies! Yesterday you brought in Don Tuerca, the Happy Piston garage's owner, and he's in the interrogation room. He hid something at the garage that you didn't find.","Novatos! Ontem vocês trouxeram o Don Tuerca, o dono da oficina Pistão Feliz, e ele está na sala de interrogatório. Ele escondeu algo na oficina que vocês não acharam."
+CONFESS_owner_garage,"¡Está bien! ¡Fui yo! Pero el cambio de aceite se lo hice bien.","Fine! It was me! But I did the oil change right.","Tá bom! Fui eu! Mas a troca de óleo eu fiz direito."
+PROMPT_DASHBOARD,E: mirar el tablero,E: look at the dashboard,E: olhar o painel
+HINT_ODOMETER,"El tablero marca 184.300 km. Normal para un auto así.","The dashboard says 184,300 km. Normal for a car like this.","O painel marca 184.300 km. Normal para um carro assim."
+HINT_ODOMETER_LOW,"El tablero marca 12 km. Pero las cubiertas están lisas como un espejo y el asiento tiene un agujero.","The dashboard says 12 km. But the tires are bald as a mirror and the seat has a hole in it.","O painel marca 12 km. Mas os pneus estão carecas como um espelho e o banco tem um furo."
+CLUE_ODOMETER,"Un auto del taller marca 12 km, pero tiene las cubiertas lisas y el asiento gastado. Alguien le tocó el cuentakilómetros.","One of the garage's cars says 12 km, but its tires are bald and the seat is worn out. Someone tampered with the odometer.","Um carro da oficina marca 12 km, mas está com os pneus carecas e o banco gasto. Alguém mexeu no hodômetro."
+BRIEF_MAGIC_ODOMETER_B,"Don Tuerca les tira los kilómetros para atrás a los autos viejos y los vende como nuevos. Hay abuelas manejando autos de treinta años «sin estrenar».","Don Tuerca winds old cars' odometers back and sells them as new. There are grannies driving thirty-year-old cars «never used».","O Don Tuerca volta os quilômetros dos carros velhos e vende como novos. Tem avós dirigindo carros de trinta anos «zero quilômetro»."
+BRIEF_MAGIC_ODOMETER_C,"Traigan el taladro que tira los kilómetros para atrás en el baúl del patrullero.","Bring the drill that winds the kilometers back in the patrol car's trunk.","Tragam a furadeira que volta os quilômetros no porta-malas da viatura."
+BRIEF_MAGIC_ODOMETER_D,"Si encuentran la libreta con los kilómetros de verdad o el cartel de «0 km», mejor: todo suma.","If you find the notebook with the real kilometers or the «0 km» sign, even better: it all counts.","Se acharem o caderno com os quilômetros de verdade ou a placa de «0 km», melhor: tudo conta."
+OBJ_FIND_ODOMETER_DRILL,Llevarse el taladro de los kilómetros,Take the kilometer drill,Levar a furadeira dos quilômetros
+OBJ_EXTRA_KM_NOTEBOOK,Extra: la libreta de los kilómetros de verdad,Extra: the notebook of the real kilometers,Extra: o caderno dos quilômetros de verdade
+OBJ_EXTRA_ZERO_KM_SIGN,"Extra: el cartel de «0 km, único dueño»","Extra: the «0 km, one owner» sign","Extra: a placa de «0 km, único dono»"
+GRASITA_CLUE_magic_odometer,"«¡Gracias! Te cuento: vi a Don Tuerca esconder algo %s. Y ayer el auto del panadero tenía doscientos mil kilómetros… y hoy tiene doce.»","“Thanks! Here's the thing: I saw Don Tuerca hide something %s. And yesterday the baker's car had two hundred thousand kilometers… and today it has twelve.”","“Valeu! Te conto: vi o Don Tuerca esconder algo %s. E ontem o carro do padeiro tinha duzentos mil quilômetros… e hoje tem doze.”"
