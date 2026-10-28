@@ -160,7 +160,14 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
    si el que se lo lleva usa anteojos, y el rojo, al lado, borra el video. La abuela Chola oye si le gritas a menos de
    5 m o si le alcanzas su corneta (se agarra de su mesa); entonces dice a qué olía el culpable. Solo las esposas la
    ofenden **(propuesta)**. Capturas: `paso4b-mesa-principal.png`, `paso4b-pastel.png` y `paso4b-abuela.png`.
-5. Rosa: que siga a los policías, sus frases, su "prueba" y la boda suspendida si acusan mal a Tito; y el vals.
+5. Rosa: que siga a los policías, sus frases, su "prueba" y la boda suspendida si acusan mal a Tito; y el vals. Hecho
+   así: Rosa sigue al policía más cercano dentro del salón a 2 m y, cada 9 s con alguien cerca, dice una de sus 10
+   frases contra Tito; con E da una de sus 6 "pruebas" ("Mi gato no lo quiere"), que no se anotan. Si acusan a Tito en
+   el tablero, le tira el ramo igual; si fue mal, además el DJ dice "se suspende la fiesta" y la denuncia de la familia
+   suma $30, que se descuentan del sueldo y aparecen en la planilla. El vals es cada 2 minutos del caso (el DJ lo anuncia
+   3 s antes) y dura 20 s: Rosa y Tito bailan en el medio de la pista y los cinco padrinos alrededor; E sobre ellos
+   dice "¡Ahora no, es el vals!". Un policía que salta dos veces en la pista hace reír a Rosa y la denuncia baja $5,
+   una vez por vals. Al terminar, todos vuelven a su lugar **(propuesta)**. Captura: `boda-escena/paso5-vals.png`.
 6. El final: el tablero, el cansancio, el sueldo y la huida en el auto de los novios con las latas.
 7. El sorteo de "Jugar" (la boda entra en el reparto de las escenas del crimen) y el online: Rosa, el vals, la abuela,
    el video borrado, el pastel cortado y las pistas arruinadas se ven igual en todas las PC.
