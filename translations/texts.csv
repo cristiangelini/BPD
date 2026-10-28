@@ -5588,3 +5588,42 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+PLACE_GARAGE,Taller El Pistón Feliz,Happy Piston Garage,Oficina Pistão Feliz
+MENU_GARAGE,Taller (allanamiento) (prueba),Garage (raid) (test),Oficina (batida) (teste)
+HINT_TILL_KEY_GARAGE,¡Una llave! Abre la oficina del taller.,A key! It opens the garage's office.,Uma chave! Abre o escritório da oficina.
+GARAGE_WINDSHIELD_BROKEN,"¡Eso es de un cliente, oficial!","That belongs to a client, officer!","Isso é de um cliente, policial!"
+CASE_FAILED_LAWYER_GARAGE,Don Tuerca llamó al abogado del taller. Caso perdido.,Don Tuerca called the garage's lawyer. Case lost.,Don Tuerca ligou para o advogado da oficina. Caso perdido.
+LOC_in_pit,en el fondo de la fosa,at the bottom of the pit,no fundo do fosso
+LOC_under_lift,abajo del auto del elevador,under the car on the lift,embaixo do carro no elevador
+LOC_behind_garage_counter,detrás del mostrador del taller,behind the garage's counter,atrás do balcão da oficina
+LOC_between_oil_drums,entre los tambores de aceite,between the oil drums,entre os tambores de óleo
+LOC_behind_tires,detrás de las cubiertas,behind the tires,atrás dos pneus
+LOC_in_garage_office_corner,en un rincón de la oficina del taller,in a corner of the garage's office,num canto do escritório da oficina
+LOC_in_oil_drum,adentro del tambor de aceite abierto,inside the open oil drum,dentro do tambor de óleo aberto
+LOC_on_tire_stack,arriba de la pila de cubiertas,on top of the tire stack,em cima da pilha de pneus
+LOC_in_garage_counter,adentro del mostrador del taller,inside the garage's counter,dentro do balcão da oficina
+LOC_on_parts_shelf,en el estante de repuestos,on the parts shelf,na prateleira de peças
+LOC_on_garage_desk,en el escritorio de Don Tuerca,on Don Tuerca's desk,na escrivaninha do Don Tuerca
+PROMPT_BELL,E: tocar el timbre,E: ring the bell,E: tocar a campainha
+PROMPT_LIFT,E: subir o bajar el elevador,E: raise or lower the lift,E: subir ou descer o elevador
+HINT_BELL_BUSY,Don Tuerca ya está atendiendo.,Don Tuerca is already at the counter.,Don Tuerca já está atendendo.
+HINT_BELL_RESTING,"Si lo tocas tan seguido, se va a dar cuenta. Espera un poco.","Ring it that often and he'll catch on. Wait a bit.","Se tocar tão seguido, ele vai perceber. Espere um pouco."
+GARAGE_DING,¡DING!,DING!,DIM!
+GARAGE_SQUASHED,"¡CRUNCH! Multa por quedarte abajo del auto.","CRUNCH! A fine for standing under the car.","CRUNCH! Multa por ficar embaixo do carro."
+TUERCA_LINE_1,"Esto se arregla con una ajustadita. Todo se arregla con una ajustadita.","A little tightening fixes this. A little tightening fixes everything.","Isso se resolve com um apertinho. Tudo se resolve com um apertinho."
+TUERCA_LINE_2,"Oficiales, ¿les reviso el patrullero? Para ustedes, precio de amigo.","Officers, want me to check the patrol car? Friend price for you.","Policiais, querem que eu revise a viatura? Pra vocês, preço de amigo."
+TUERCA_LINE_3,"Acá todo sale en una hora. No pregunten cómo.","Everything's done here in an hour. Don't ask how.","Aqui tudo fica pronto em uma hora. Não perguntem como."
+TUERCA_LINE_4,"¡No me toquen los autos! Son de los clientes.","Don't touch the cars! They belong to the clients.","Não mexam nos carros! São dos clientes."
+TUERCA_PRINTER,"¡Un cliente! ¡Ya voy, ya voy!","A client! Coming, coming!","Um cliente! Já vou, já vou!"
+TUERCA_FIX_1,"¿El ruidito es así, tac tac, o así, toc toc?","Is the noise like this, tick tick, or like this, tock tock?","O barulhinho é assim, tac tac, ou assim, toc toc?"
+TUERCA_FIX_2,"Mmm… eso es la junta. O el carburador. O las dos cosas.","Hmm… that's the gasket. Or the carburetor. Or both.","Hmm… isso é a junta. Ou o carburador. Ou as duas coisas."
+TUERCA_FIX_3,"Déjemelo y vuelva en una hora. Le hago precio.","Leave it with me and come back in an hour. I'll give you a deal.","Deixe comigo e volte em uma hora. Faço um preço."
+TUERCA_FIX_DONE,"Qué raro, se fue sin dejar el auto.","Weird, they left without leaving the car.","Que estranho, foi embora sem deixar o carro."
+TUERCA_HURT,"¡Epa, oficial! Con cuidado, que no soy un auto.","Hey, officer! Careful, I'm not a car.","Opa, policial! Cuidado, eu não sou um carro."
+TUERCA_DOOR,"¿Una puerta rota? ¡Eso no lo cubre la garantía!","A broken door? That's not covered by the warranty!","Uma porta quebrada? Isso a garantia não cobre!"
+TUERCA_SAW,"¡Eso no se toca sin guantes!","Don't touch that without gloves!","Isso não se toca sem luvas!"
+TUERCA_NOTHING,"Yo solo cambio aceite, oficial.","I just change the oil, officer.","Eu só troco óleo, policial."
+TUERCA_OFFENDED,"No hablo más. Tengo un auto abierto.","I'm done talking. I've got a car open.","Não falo mais. Tenho um carro aberto."
+TUERCA_LAWYER,"¡Llamo a mi abogado! Me debe un cambio de aceite.","I'm calling my lawyer! He owes me an oil change.","Vou ligar para o meu advogado! Ele me deve uma troca de óleo."
+TUERCA_WINDSHIELD,"¡El parabrisas! ¡Eso es de un cliente!","The windshield! That belongs to a client!","O para-brisa! Isso é de um cliente!"
+TUERCA_NOTICED,"¡Ya sé que no hay nadie! ¡Dejen el timbre!","I know there's nobody there! Leave the bell alone!","Eu sei que não tem ninguém! Larguem a campainha!"
