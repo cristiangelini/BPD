@@ -87,9 +87,10 @@ Los pesos y valores siguen la escala del taller y del gimnasio: la principal val
 - "Mueblería (allanamiento, prueba)" en el menú.
 
 ## El orden para hacerlo (un PR chico por paso)
-1. La mueblería como lugar: el local en la cuadra (8, 0) con la vidriera, los 3 ambientes, la torre de sillas, los
-   colchones que rebotan, los roperos que se tumban, el mostrador, el depósito con llave, lo frágil y los escondites.
-   Modelos nuevos con modelgen.
+1. La mueblería como lugar, en dos PR:
+   - **1a:** el local en la cuadra (8, 0) con la vidriera, los 3 ambientes, el mostrador, el depósito con llave, lo
+     frágil y los escondites. Modelos nuevos con modelgen.
+   - **1b:** los colchones que rebotan, la torre de sillas y los roperos que se tumban.
 2. Don Cajón: la ronda, la denuncia, "¡no me desarmen la muestra!" y la venta.
 3. Tablita y el estante que hay que sostener.
 4. El caso (RaidCase) con la primera historia: los sillones rellenos.
@@ -105,3 +106,21 @@ Los pesos y valores siguen la escala del taller y del gimnasio: la principal val
    que un policía se quede quieto mientras los otros buscan, y eso es juego en equipo.
 3. ¿Va en la cuadra (8, 0), lado sur? **Recomendado:** sí. Es la única cuadra del noreste que está libre en todas las
    ramas.
+
+## Hecho así
+- **Paso 1a** (`FurnitureStore`, `--place=furniture`, "Mueblería (allanamiento) (prueba)" en el menú): el local mide
+  28 × 24 m, con la puerta abierta de 3 m en el medio del frente y una vidriera de vidrio a cada lado, con el cartel
+  "¡Todo en 120 cuotas!".
+  - El living está adelante a la izquierda: 2 sillones, la mesa ratona y la alfombra.
+  - El dormitorio está atrás a la izquierda: 2 camas con 0,3 m libres abajo, 2 roperos abiertos contra la pared oeste
+    y la cómoda.
+  - El comedor está adelante a la derecha: la mesa de 2,4 m y 6 sillas.
+  - El mostrador con la caja está en el medio del lado derecho, y el depósito, de 10 × 8 m, atrás a la derecha, con 3
+    pilas de cajas.
+  - Lo frágil son las 2 lámparas y el espejo (25 de multa, una vez cada uno): la lámpara rota queda acostada en el
+    piso y el espejo, rajado.
+  - Los 12 escondites, 6 para cosas pesadas: adentro de cada ropero, detrás del sillón del living, detrás del
+    mostrador, en un rincón del depósito y entre las cajas del depósito (pesados); debajo de cada cama, entre los
+    almohadones de cada sillón, arriba de la cómoda y adentro del mostrador (livianos). La cómoda va arriba y no en un
+    cajón, porque los cajones todavía no se abren.
+  - Capturas en la carpeta `muebleria/` del proyecto.

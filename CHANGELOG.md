@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Furniture store raid, step 1a: the furniture store "El Ropero Feliz" on block (8, 0) as a place to raid: the shop window, the living room, the bedroom and the dining room on show, the counter with the till, the stockroom locked with the till's key, two floor lamps and a mirror that break when something hits them fast (a fine each) and 12 hiding spots. "Mueblería (allanamiento) (prueba)" in the menu and --place=furniture.
 - Furniture store raid, design: the furniture store "El Ropero Feliz" (decision 520, docs/diseno/allanamiento-muebleria.md), with Don Cajón the salesman, Tablita the assembler and six stories. No code yet.
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
 - Gym raid, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office, the cake lab and the gym in eighths.
