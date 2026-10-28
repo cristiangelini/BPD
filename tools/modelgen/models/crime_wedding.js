@@ -1,6 +1,8 @@
 // The wedding crime scene (docs/diseno/escena-boda.md): the three-tier wedding cake, the flower centerpieces of the
-// round tables and the DJ's booth. Placeholder, not final art.
+// round tables and the DJ's booth (step 1); the six tuxedos alike, Rosa the bride, the DJ, grandma Chola and her ear
+// trumpet (step 2). Placeholder, not final art.
 import { Builder, ellipsoid, mat, V, THREE } from '../lib.js';
+import { M, pearBody, eyes, limb } from './pear.js';
 
 function box(b, part, m, sx, sy, sz, x, y, z, rot) {
 	b.add(part, m, new THREE.BoxGeometry(sx, sy, sz), { pos: V(x, y, z), rot });
@@ -76,12 +78,106 @@ export function buildDjBooth() {
 	return b.build();
 }
 
-export const models = { wedding_cake: buildWeddingCake, flower_centerpiece: buildFlowerCenterpiece, dj_booth: buildDjBooth };
+// Tito and his five groomsmen: the same rented black tuxedo with a white shirt front, a bow tie, a top hat and slicked
+// hair. The parts the game changes per suspect have their own nodes: hat (taken off), hair (recolored, under the hat),
+// carnation (white for Tito, tinted red for the groomsmen), glasses (shown or not), teeth (shown when he bites) and
+// legs (the rented shoes, stretched to his size).
+function tuxedo(b) {
+	const black = mat('tux_black', 0x18181e), shirt = mat('tux_shirt', 0xf6f4ee);
+	pearBody(b, mat('skin_crema', 0xf3d2b0), { shirt: black, pants: black, belted: false, shoes: mat('tux_shoes', 0x0c0c0e, { roughness: 0.25 }) });
+	b.add('body', shirt, new THREE.BoxGeometry(0.16, 0.3, 0.02), { pos: V(0, 0.95, 0.3), rot: [-0.35, 0, 0] });
+	for (const s of [-1, 1]) b.add('body', M.black, new THREE.ConeGeometry(0.035, 0.07, 4), { pos: V(s * 0.035, 1.1, 0.24), rot: [0, 0, s * Math.PI / 2] });
+	b.add('carnation', mat('carnation', 0xffffff), ellipsoid(0.045, 0.045, 0.035, 8, 5), { pos: V(-0.17, 0.98, 0.27) });
+	eyes(b, 1.34, 0.17, 0.08, 0.05);
+	b.add('face', M.black, new THREE.BoxGeometry(0.07, 0.015, 0.02), { pos: V(0, 1.22, 0.195) });
+	b.add('teeth', M.white, new THREE.BoxGeometry(0.08, 0.025, 0.02), { pos: V(0, 1.225, 0.2) });
+	b.add('hair', mat('hair', 0xffffff, { roughness: 0.2 }), ellipsoid(0.21, 0.13, 0.2, 10, 5), { pos: V(0, 1.42, -0.02) });
+	b.add('hat', M.black, new THREE.CylinderGeometry(0.15, 0.16, 0.24, 10), { pos: V(0, 1.6, 0) });
+	b.add('hat', M.black, new THREE.CylinderGeometry(0.25, 0.25, 0.02, 12), { pos: V(0, 1.48, 0) });
+	b.add('hat', mat('hat_band', 0x50505a), new THREE.CylinderGeometry(0.162, 0.162, 0.04, 10), { pos: V(0, 1.51, 0) });
+	for (const s of [-1, 1]) b.add('glasses', M.black, new THREE.TorusGeometry(0.05, 0.01, 4, 8), { pos: V(s * 0.08, 1.34, 0.215) });
+	b.add('glasses', M.black, new THREE.BoxGeometry(0.06, 0.012, 0.012), { pos: V(0, 1.345, 0.215) });
+}
+
+// Rosa, the bride: a long white dress to the floor, a veil from a tiara down her back, a brown bun and her bouquet in
+// front of her (its own node, bouquet: she throws it).
+function novia(b) {
+	const dress = mat('bride_dress', 0xfbfaf6);
+	pearBody(b, mat('skin_miel', 0xe8b48a), { shirt: dress, pants: dress, belted: false, shoes: dress });
+	b.add('body', dress, ellipsoid(0.56, 0.14, 0.5, 12, 4), { pos: V(0, 0.08, 0) });
+	eyes(b, 1.34, 0.17, 0.08, 0.05);
+	b.add('face', mat('lipstick', 0xd03850), new THREE.TorusGeometry(0.035, 0.01, 4, 8, Math.PI), { pos: V(0, 1.24, 0.195), rot: [0, 0, Math.PI] });
+	const hair = mat('hair_brown', 0x6a3e20);
+	b.add('head', hair, ellipsoid(0.21, 0.12, 0.2, 10, 5), { pos: V(0, 1.42, -0.03) });
+	b.add('head', hair, ellipsoid(0.1, 0.1, 0.1, 8, 5), { pos: V(0, 1.53, -0.13) });
+	b.add('veil', mat('wedding_gold', 0xe8c040), new THREE.TorusGeometry(0.13, 0.012, 5, 12), { pos: V(0, 1.5, 0.01), rot: [Math.PI / 2, 0, 0] });
+	b.add('veil', mat('bride_veil', 0xfdfdfb, { transparent: true, opacity: 0.8 }), ellipsoid(0.22, 0.45, 0.1, 10, 6), { pos: V(0, 1.15, -0.2) });
+	const roses = [mat('bouquet_white', 0xfaf6ee), mat('bouquet_pink', 0xf0a0b8)];
+	b.add('bouquet', mat('bouquet_stem', 0x3f8a3a), new THREE.CylinderGeometry(0.03, 0.02, 0.18, 6), { pos: V(0, 0.62, 0.42) });
+	[[0, 0.75, 0.44], [0.06, 0.73, 0.44], [-0.06, 0.73, 0.44], [0.03, 0.78, 0.4], [-0.03, 0.78, 0.48]].forEach(([x, y, z], i) => {
+		b.add('bouquet', roses[i % 2], ellipsoid(0.045, 0.04, 0.045, 6, 4), { pos: V(x, y, z) });
+	});
+}
+
+// DJ Bombo: a purple shirt with yellow lightning, big headphones and sunglasses.
+function dj(b) {
+	pearBody(b, mat('skin_cacao', 0x8a5a3a), { shirt: mat('dj_shirt', 0x7a30b0), pants: mat('dj_pants', 0x202028), belted: false });
+	b.add('body', mat('dj_bolt', 0xf0d020), new THREE.BoxGeometry(0.06, 0.2, 0.02), { pos: V(0, 0.85, 0.36), rot: [0, 0, 0.5] });
+	eyes(b, 1.34, 0.17, 0.08, 0.05);
+	b.add('face', M.black, new THREE.BoxGeometry(0.24, 0.07, 0.03), { pos: V(0, 1.34, 0.2) });
+	b.add('face', M.black, new THREE.TorusGeometry(0.035, 0.01, 4, 8, Math.PI), { pos: V(0, 1.23, 0.195), rot: [0, 0, Math.PI] });
+	const phones = mat('dj_phones', 0x30303a);
+	b.add('head', phones, new THREE.TorusGeometry(0.22, 0.02, 4, 12, Math.PI), { pos: V(0, 1.32, 0.0) });
+	for (const s of [-1, 1]) b.add('head', phones, new THREE.CylinderGeometry(0.07, 0.07, 0.05, 10), { pos: V(s * 0.21, 1.3, 0), rot: [0, 0, Math.PI / 2] });
+}
+
+// Grandma Chola: a lilac cardigan over a grey skirt, white curls, round glasses and a brooch. Half deaf.
+function abuela(b) {
+	pearBody(b, mat('skin_rosa_viejo', 0xf0c8b4), { shirt: mat('grandma_cardigan', 0xb8a0d8), pants: mat('grandma_skirt', 0x707078), belted: false });
+	b.add('body', mat('wedding_gold', 0xe8c040), ellipsoid(0.03, 0.03, 0.015, 6, 4), { pos: V(0.12, 1.0, 0.25) });
+	eyes(b, 1.34, 0.17, 0.08, 0.05);
+	b.add('face', M.black, new THREE.TorusGeometry(0.03, 0.008, 4, 8, Math.PI), { pos: V(0, 1.24, 0.195), rot: [0, 0, Math.PI] });
+	const curls = mat('hair_white', 0xf0f0f4);
+	for (let i = 0; i < 9; i++) {
+		const a = Math.PI * 2 * (i / 9);
+		b.add('head', curls, ellipsoid(0.07, 0.07, 0.07, 6, 4), { pos: V(Math.cos(a) * 0.15, 1.46 + (i % 2) * 0.03, Math.sin(a) * 0.14 - 0.02) });
+	}
+	b.add('head', curls, ellipsoid(0.12, 0.08, 0.12, 8, 5), { pos: V(0, 1.52, -0.02) });
+	for (const s of [-1, 1]) b.add('face', mat('grandma_frames', 0xb08040), new THREE.TorusGeometry(0.05, 0.008, 4, 10), { pos: V(s * 0.08, 1.34, 0.21) });
+}
+
+// Grandma's brass ear trumpet, lying on its side on the table, the bell toward +Z; origin under its middle.
+export function buildEarTrumpet() {
+	const b = new Builder('ear_trumpet');
+	const brass = mat('trumpet_brass', 0xd0a040, { metalness: 0.4, roughness: 0.35 });
+	b.add('trumpet', brass, new THREE.CylinderGeometry(0.13, 0.02, 0.32, 14, 1, true), { pos: V(0, 0.13, 0.06), rot: [Math.PI / 2, 0, 0] });
+	b.add('trumpet', brass, new THREE.CylinderGeometry(0.02, 0.015, 0.14, 8), { pos: V(0, 0.13, -0.16), rot: [Math.PI / 2, 0, 0] });
+	b.add('trumpet', brass, new THREE.TorusGeometry(0.13, 0.01, 4, 16), { pos: V(0, 0.13, 0.22) });
+	return b.build();
+}
+
+const PEOPLE = { tuxedo, novia, dj_bombo: dj, abuela_chola: abuela };
+
+export const models = {
+	...Object.fromEntries(Object.entries(PEOPLE).map(([n, f]) => [`npc_${n}`, () => {
+		const b = new Builder(`npc_${n}`);
+		f(b);
+		return b.build();
+	}])),
+	wedding_cake: buildWeddingCake, flower_centerpiece: buildFlowerCenterpiece, dj_booth: buildDjBooth,
+	ear_trumpet: buildEarTrumpet,
+};
 
 export const views = {
 	wedding_cake: {
 		items: [{ name: 'wedding_cake', pos: [0, 0, 0] }, { name: 'flower_centerpiece', pos: [0.75, 0, 0.2] }],
 		cam: { pos: [1.4, 1.1, 1.8], target: [0.3, 0.45, 0], fov: 40 },
+	},
+	wedding_people: {
+		items: [{ name: 'npc_novia', pos: [-1.3, 0, 0], rotY: 0.3 }, { name: 'npc_tuxedo', pos: [0, 0, 0], rotY: 0.2 },
+			{ name: 'npc_tuxedo', pos: [1.2, 0, 0], rotY: -0.3 }, { name: 'npc_abuela_chola', pos: [2.4, 0, 0], rotY: -0.3 },
+			{ name: 'npc_dj_bombo', pos: [3.6, 0, 0], rotY: -0.4 }, { name: 'ear_trumpet', pos: [2.6, 0, 0.8], rotY: 0.5 }],
+		cam: { pos: [1.15, 1.4, 6.2], target: [1.15, 0.85, 0], fov: 40 },
 	},
 	dj_booth: {
 		items: [{ name: 'dj_booth', pos: [0, 0, 0] }],

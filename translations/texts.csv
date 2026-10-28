@@ -5109,6 +5109,44 @@ TRIAL_JUDGE_SUSTAINED_1,"Bueno, bueno, no grite. Paso a otra cosa.","Fine, fine,
 TRIAL_JUDGE_INNOCENT,"Todo coincide... más o menos. ¡Inocentes! Pueden irse.","Everything matches... more or less. Innocent! You may go.","Tudo confere... mais ou menos. Inocentes! Podem ir."
 TRIAL_GUARD_FREE,"Ya escucharon a la jueza. Afuera, y no vuelvan.","You heard the judge. Out, and don't come back.","Vocês ouviram a juíza. Para fora, e não voltem."
 WEDDING_BANNER,"¡Vivan los novios!","Long live the newlyweds!","Vivam os noivos!"
+PROMPT_WEDDING_TALK,E: hablar,E: talk,E: conversar
+PROMPT_WEDDING_BRIDE,E: hablar con Rosa,E: talk to Rosa,E: falar com a Rosa
+PROMPT_WEDDING_DJ,E: hablar con el DJ,E: talk to the DJ,E: falar com o DJ
+PROMPT_WEDDING_GRANDMA,E: hablar con la abuela Chola,E: talk to grandma Chola,E: falar com a vovó Chola
+WEDDING_GROOM_LINE_0,Yo soy el novio. El del clavel blanco. No me confundas.,I'm the groom. The one with the white carnation. Don't mix me up.,Eu sou o noivo. O do cravo branco. Não me confunda.
+WEDDING_GROOM_LINE_1,Rosa dice que fui yo. Rosa dice muchas cosas.,Rosa says it was me. Rosa says a lot of things.,A Rosa diz que fui eu. A Rosa diz muitas coisas.
+WEDDING_GROOM_LINE_2,"El traje es alquilado. Si se mancha, lo pagas tú.","The tux is rented. If it gets stained, you pay for it.","O terno é alugado. Se manchar, você paga."
+WEDDING_GROOM_LINE_3,¿Ya empezó el vals? Escóndeme.,Has the waltz started? Hide me.,A valsa já começou? Me esconde.
+WEDDING_GROOMSMAN_LINE_0,Soy padrino. Los cinco somos padrinos. Tito tiene muchos amigos.,I'm a groomsman. All five of us are. Tito has a lot of friends.,Sou padrinho. Nós cinco somos padrinhos. O Tito tem muitos amigos.
+WEDDING_GROOMSMAN_LINE_1,Nos alquilaron el mismo traje. Hasta mi madre me confunde.,They rented us all the same tux. Even my mother mixes me up.,Alugaram o mesmo terno pra todos. Até minha mãe me confunde.
+WEDDING_GROOMSMAN_LINE_2,Yo estaba en la mesa del pastel. Mirándolo. Nada más.,I was by the cake table. Looking at it. That's all.,Eu estava na mesa do bolo. Olhando. Só isso.
+WEDDING_GROOMSMAN_LINE_3,"¿La galera? Me queda chica, pero combina.","The top hat? It's too small, but it matches.","A cartola? Fica pequena, mas combina."
+WEDDING_GROOMSMAN_LINE_4,Preparé un discurso de veinte páginas. ¿Quieres oírlo?,I wrote a twenty page speech. Want to hear it?,Preparei um discurso de vinte páginas. Quer ouvir?
+WEDDING_GROOMSMAN_LINE_5,"Yo no fui. Bueno, el que fue tampoco te lo diría.","It wasn't me. Well, whoever did it wouldn't tell you either.","Não fui eu. Bom, quem foi também não ia te contar."
+WEDDING_BRIDE_LINE_0,¡Fue Tito! ¡Siempre fue un cobarde!,It was Tito! He was always a coward!,Foi o Tito! Ele sempre foi um covarde!
+WEDDING_BRIDE_LINE_1,¡Revisen sus bolsillos!,Check his pockets!,Revistem os bolsos dele!
+WEDDING_BRIDE_LINE_2,¡Anoche hablaba dormido de huir!,Last night he was talking in his sleep about running away!,Ontem à noite ele falava dormindo em fugir!
+WEDDING_BRIDE_LINE_3,"¡Mírale la cara de culpable! ¡Bueno, es su cara de siempre!","Look at his guilty face! Well, it's his usual face!","Olha a cara de culpado dele! Bom, é a cara de sempre!"
+WEDDING_BRIDE_LINE_4,Mi madre me lo dijo. Me lo dijo cuarenta veces.,My mother told me. She told me forty times.,Minha mãe me avisou. Me avisou quarenta vezes.
+WEDDING_BRIDE_LINE_5,"¡Tito, devuelve lo que te llevaste!","Tito, give back what you took!","Tito, devolve o que você levou!"
+WEDDING_BRIDE_LINE_6,Lleva una hora sin mirarme a los ojos. ¡Sospechoso!,He hasn't looked me in the eye for an hour. Suspicious!,Faz uma hora que ele não me olha nos olhos. Suspeito!
+WEDDING_BRIDE_LINE_7,"¡Arréstalo! Después nos casamos igual, no te preocupes.","Arrest him! We'll still get married after, don't worry.","Prende ele! Depois a gente casa igual, não se preocupe."
+WEDDING_BRIDE_LINE_8,¡Tito sudaba en el vals! ¡Los inocentes no sudan!,Tito was sweating in the waltz! Innocent people don't sweat!,O Tito suava na valsa! Inocente não sua!
+WEDDING_BRIDE_LINE_9,Yo sé que fue él. Lo sé desde el primer día.,I know it was him. I've known since day one.,Eu sei que foi ele. Sei desde o primeiro dia.
+WEDDING_DJ_LINE_0,¡DJ Bombo en la casa! ¿Pido un aplauso para la policía?,DJ Bombo in the house! Round of applause for the police?,DJ Bombo na área! Uma salva de palmas pra polícia?
+WEDDING_DJ_LINE_1,Tengo el vals listo. Y la cumbia. Y el vals otra vez.,I've got the waltz ready. And the cumbia. And the waltz again.,Tenho a valsa pronta. E a cumbia. E a valsa de novo.
+WEDDING_DJ_LINE_2,Yo no vi nada. Llevo los auriculares puestos desde 2009.,I didn't see a thing. I've had these headphones on since 2009.,Eu não vi nada. Estou com esses fones desde 2009.
+WEDDING_DJ_LINE_3,¿Pedidos? Solo canciones de amor. O de patrulleros.,Requests? Love songs only. Or patrol car songs.,Pedidos? Só música de amor. Ou de viatura.
+WEDDING_GRANDMA_LINE_0,"¿Eh? ¿Qué? No te oigo, querido.","Eh? What? I can't hear you, dear.","Hã? O quê? Não te ouço, querido."
+WEDDING_GRANDMA_LINE_1,¿Que si quiero pastel? ¡Siempre!,Do I want cake? Always!,Se eu quero bolo? Sempre!
+WEDDING_GRANDMA_LINE_2,¿Policía? ¡Qué lindo uniforme! ¿Eres el novio?,Police? What a nice uniform! Are you the groom?,Polícia? Que uniforme bonito! Você é o noivo?
+WEDDING_GRANDMA_LINE_3,"¡Habla más fuerte, que la música no me deja!","Speak up, I can't hear over the music!","Fala mais alto, que a música não deixa!"
+WEDDING_GUEST_LINE_0,"¡Qué linda boda! Bueno, hasta lo del robo.","What a lovely wedding! Well, until the robbery.","Que casamento lindo! Bom, até o roubo."
+WEDDING_GUEST_LINE_1,Yo vine por el pastel. Y por el chisme.,I came for the cake. And the gossip.,Eu vim pelo bolo. E pela fofoca.
+WEDDING_GUEST_LINE_2,Los padrinos son todos iguales. ¿Son quintillizos?,The groomsmen all look the same. Are they quintuplets?,Os padrinhos são todos iguais. São quíntuplos?
+WEDDING_GUEST_LINE_3,"Les doy seis meses. Al matrimonio, digo.","I give them six months. The marriage, I mean.","Dou seis meses pra eles. Pro casamento, digo."
+WEDDING_GUEST_LINE_4,¿Cuándo sirven la comida? Llevo tres horas con el moño.,When do they serve the food? I've had this bow tie on for three hours.,Quando servem a comida? Estou há três horas com essa gravata.
+WEDDING_GUEST_LINE_5,Rosa grita mucho. Siempre gritó mucho.,Rosa yells a lot. She always did.,A Rosa grita muito. Sempre gritou muito.
 BRIEF_SPY_TELESCOPE_B,"El señor Bellini mira las estrellas todas las noches, pero su telescopio apunta abajo: a la bóveda del banco de enfrente.","Mr. Bellini watches the stars every night, but his telescope points down: at the vault of the bank across the street.","O senhor Bellini olha as estrelas toda noite, mas o telescópio dele aponta para baixo: para o cofre do banco da frente."
 BRIEF_SPY_TELESCOPE_C,"Traigan el telescopio al patrullero. Pesa 35 kilos y es frágil: entre dos, con cuidado. Entra en el ascensor.","Bring the telescope to the patrol car. It weighs 35 kilos and it's fragile: two of you, carefully. It fits in the elevator.","Tragam o telescópio para a viatura. Pesa 35 quilos e é frágil: entre dois, com cuidado. Cabe no elevador."
 BRIEF_SPY_TELESCOPE_D,"Si encuentran la libreta con la clave o los binoculares, mejor: todo suma.","If you find the notebook with the code or the binoculars, even better: it all counts.","Se encontrarem a caderneta com a senha ou o binóculo, melhor: tudo conta."

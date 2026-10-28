@@ -6,13 +6,22 @@ extends CrimeScenePlace
 ## dressed for a wedding, on the same lot with the front to +Z. The head table against the back wall under the banner,
 ## eight round tables with their tablecloths, centerpieces and numbers, the three-tier cake on its own round table in
 ## the back west corner, the DJ's booth facing the dance floor, white garlands along the walls and rice on the floor
-## by the entrance. The office stays locked. The people come in step 2 and the case in step 4.
+## by the entrance. The office stays locked. Step 2: Tito and his five groomsmen in front of the head table (TuxedoGuest,
+## with WeddingTraits drawn with the case seed), Rosa by Tito, DJ Bombo behind his booth, grandma Chola at table 3 with
+## her ear trumpet and four guests at the other tables. The case comes in step 4.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const CAKE_MODEL := preload("res://assets/models/wedding_cake.glb")
 const CENTERPIECE_MODEL := preload("res://assets/models/flower_centerpiece.glb")
 const DJ_MODEL := preload("res://assets/models/dj_booth.glb")
+const BRIDE_MODEL := preload("res://assets/models/npc_novia.glb")
+const DJ_PERSON_MODEL := preload("res://assets/models/npc_dj_bombo.glb")
+const GRANDMA_MODEL := preload("res://assets/models/npc_abuela_chola.glb")
+const TRUMPET_MODEL := preload("res://assets/models/ear_trumpet.glb")
+const GUEST_MODELS: Array[PackedScene] = [preload("res://assets/models/npc_invitado.glb"),
+	preload("res://assets/models/npc_senora.glb"), preload("res://assets/models/npc_invitado_b.glb"),
+	preload("res://assets/models/npc_vecina.glb")]
 const HALF_X := PartyHall.HALF_X
 const HALF_Z := PartyHall.HALF_Z
 const FLOOR_TOP := PartyHall.FLOOR_TOP
@@ -37,6 +46,26 @@ const DJ_AT := Vector3(3.5, 0, -8.6)
 ## The rice thrown at the newlyweds, on the floor inside the entrance: RICE grains in a RICE_AREA (x, z, width, depth).
 const RICE := 90
 const RICE_AREA := Rect2(-1.6, 6.8, 3.2, 3.0)
+## Where the six tuxedos stand, by index (Tito, 0, in the middle by Rosa): in a row in front of the head table, off the
+## dance floor.
+const TUXEDOS_AT: Array[Vector3] = [
+	Vector3(-2.6, 0, -6.6), Vector3(-6.4, 0, -6.4), Vector3(-5.1, 0, -6.4),
+	Vector3(0.3, 0, -6.4), Vector3(1.6, 0, -6.4), Vector3(-3.9, 0, -6.4),
+]
+const BRIDE_AT := Vector3(-1.3, 0, -6.6)
+## DJ Bombo behind his booth.
+const DJ_PERSON_AT := Vector3(3.5, 0, -9.4)
+## Grandma Chola by table 3, facing it, with her ear trumpet on it.
+const GRANDMA_TABLE := 2
+const GRANDMA_AT := Vector3(-7.2, 0, 3.5)
+## The four guests, each by a table and facing it: where they stand and their turn (radians around Y).
+const GUESTS_AT: Array[Vector3] = [Vector3(7.2, 0, -3.5), Vector3(7.2, 0, -0.5), Vector3(-3.8, 0, 5.3),
+	Vector3(3.8, 0, 5.3)]
+const GUESTS_TURN: Array[float] = [PI / 2, PI / 2, 0.0, 0.0]
+const GUEST_LINES := 6
+const BRIDE_LINES := 10
+const DJ_LINES := 4
+const GRANDMA_LINES := 4
 
 const WHITE_BALLOONS: Array[Color] = [Color(0.98, 0.98, 0.96), Color(0.95, 0.85, 0.9), Color(0.98, 0.98, 0.96),
 	Color(0.9, 0.85, 0.65)]
@@ -49,6 +78,13 @@ var cake: Node3D
 var dj_booth: Node3D
 ## Each round table's top, in the hall's space, by table number - 1.
 var table_tops: Array[Vector3] = []
+## Tito and his five groomsmen, by index (WeddingTraits.draw with the case seed).
+var tuxedos: Array[TuxedoGuest] = []
+var bride: WeddingPerson
+var dj: WeddingPerson
+var grandma: WeddingPerson
+var ear_trumpet: Node3D
+var guests: Array[WeddingPerson] = []
 var _build: PlaceBuilder
 
 
@@ -68,6 +104,7 @@ func _ready() -> void:
 	_dj()
 	_garlands()
 	_rice()
+	_people()
 
 
 ## Whether a point in the world (ignoring height) is in the hall.
@@ -200,3 +237,41 @@ func _rice() -> void:
 	rice.name = "Rice"
 	rice.multimesh = many
 	add_child(rice)
+
+
+## Tito and the five groomsmen, Rosa, DJ Bombo, grandma Chola with her ear trumpet and the guests at their tables.
+func _people() -> void:
+	var traits := WeddingTraits.draw(case_seed)
+	for i in traits.size():
+		var tuxedo := TuxedoGuest.new()
+		tuxedo.name = "Tuxedo%d" % i
+		tuxedo.traits = traits[i]
+		tuxedo.index = i
+		tuxedo.position = TUXEDOS_AT[i] + Vector3(0, FLOOR_TOP, 0)
+		add_child(tuxedo)
+		tuxedos.append(tuxedo)
+	bride = _person("Bride", BRIDE_MODEL, "PROMPT_WEDDING_BRIDE", "WEDDING_BRIDE_LINE_", BRIDE_LINES, BRIDE_AT)
+	dj = _person("Dj", DJ_PERSON_MODEL, "PROMPT_WEDDING_DJ", "WEDDING_DJ_LINE_", DJ_LINES, DJ_PERSON_AT)
+	grandma = _person("Grandma", GRANDMA_MODEL, "PROMPT_WEDDING_GRANDMA", "WEDDING_GRANDMA_LINE_", GRANDMA_LINES,
+		GRANDMA_AT, -PI / 2)
+	ear_trumpet = TRUMPET_MODEL.instantiate()
+	ear_trumpet.name = "EarTrumpet"
+	ear_trumpet.position = table_tops[GRANDMA_TABLE] + Vector3(0.35, 0, 0.3)
+	add_child(ear_trumpet)
+	for i in GUESTS_AT.size():
+		guests.append(_person("Guest%d" % i, GUEST_MODELS[i], "PROMPT_WEDDING_TALK", "WEDDING_GUEST_LINE_",
+			GUEST_LINES, GUESTS_AT[i], GUESTS_TURN[i]))
+
+
+func _person(id: String, look: PackedScene, prompt: String, line_key: String, lines: int, at: Vector3,
+		turn := 0.0) -> WeddingPerson:
+	var person := WeddingPerson.new()
+	person.name = id
+	person.model = look
+	person.prompt = prompt
+	person.line_key = line_key
+	person.lines = lines
+	person.position = at + Vector3(0, FLOOR_TOP, 0)
+	person.rotation.y = turn
+	add_child(person)
+	return person
