@@ -9,7 +9,8 @@ extends CrimeScenePlace
 ## by the entrance. The office stays locked. Step 2: Tito and his five groomsmen in front of the head table (TuxedoGuest,
 ## with WeddingTraits drawn with the case seed), Rosa by Tito, DJ Bombo behind his booth, grandma Chola at table 3 with
 ## her ear trumpet and four guests at the other tables. Step 3: what the cops get from the tuxedos goes to their files
-## (set_up_case). The case comes in step 4.
+## (set_up_case). Step 4: what was stolen (the ring, the gift envelopes' box or the sugar couple) hidden in the cake,
+## among the coats in the coat check or in the head table's centerpiece, all drawn with the case seed.
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -63,6 +64,20 @@ const GRANDMA_AT := Vector3(-7.2, 0, 3.5)
 const GUESTS_AT: Array[Vector3] = [Vector3(7.2, 0, -3.5), Vector3(7.2, 0, -0.5), Vector3(-3.8, 0, 5.3),
 	Vector3(3.8, 0, 5.3)]
 const GUESTS_TURN: Array[float] = [PI / 2, PI / 2, 0.0, 0.0]
+## What was stolen, drawn with the seed (escena-boda.md, pregunta 1), and where it can be hidden: in the cake (cutting
+## it open is the search), among the coats in the coat check or in the head table's centerpiece.
+const LOOTS: Array[String] = ["ring", "envelopes", "sugar_couple"]
+const LOOT_SPOTS: Array[String] = ["cake", "coats", "centerpiece"]
+const LOOT_MODELS := {
+	"ring": preload("res://assets/models/wedding_ring_box.glb"),
+	"envelopes": preload("res://assets/models/gift_urn.glb"),
+	"sugar_couple": preload("res://assets/models/sugar_couple.glb"),
+}
+## The coats hanging on the coat check's rail (PartyHall.build_rooms): their middle and size.
+const COATS_AT := Vector3(-11.6, 1.15, 8.3)
+const COATS_SIZE := Vector3(0.5, 1.0, 3.0)
+## The cake's shape once it's cut open: caved in and spread out.
+const CUT_CAKE := Vector3(1.15, 0.55, 1.15)
 const GUEST_LINES := 6
 const BRIDE_LINES := 10
 const DJ_LINES := 4
@@ -86,6 +101,15 @@ var dj: WeddingPerson
 var grandma: WeddingPerson
 var ear_trumpet: Node3D
 var guests: Array[WeddingPerson] = []
+var case: CrimeSceneCase
+## What was stolen and where it is (drawn with the case seed in set_up_case), and whether the cops found it.
+var loot := "ring"
+var loot_spot := "cake"
+var loot_found := false
+## The searchable places, by spot.
+var loot_spots := {}
+## A cop cut the cake open.
+var cake_cut := false
 var _build: PlaceBuilder
 
 
@@ -106,12 +130,46 @@ func _ready() -> void:
 	_garlands()
 	_rice()
 	_people()
+	_loot_spots()
 
 
-## Tells the six tuxedos about the case, so what the cops get from them goes to their files.
-func set_up_case(case: CrimeSceneCase) -> void:
+## Draws what was stolen and where it is, and tells the six tuxedos about the case, so what the cops get from them goes
+## to their files.
+func set_up_case(new_case: CrimeSceneCase) -> void:
+	case = new_case
+	loot = LOOTS[hash(["wedding loot", case.case_seed]) % LOOTS.size()]
+	loot_spot = LOOT_SPOTS[hash(["wedding loot spot", case.case_seed]) % LOOT_SPOTS.size()]
 	for tuxedo in tuxedos:
 		tuxedo.case = case
+
+
+## Searching a spot: the stolen thing turns up in the right one; a sign of nothing in the others. Searching the cake
+## cuts it open, whatever is in it.
+func search(spot: String, cop: Cop) -> void:
+	if spot == "cake" and not cake_cut:
+		cake_cut = true
+		cake.scale = CUT_CAKE
+	if spot != loot_spot or loot_found or not case:
+		if cop:
+			cop.show_hint("HINT_SEARCH_NOTHING_" + spot)
+		return
+	reveal_loot()
+
+
+## What was stolen comes out of its hiding spot, on the floor in front of it, and the case notes it.
+func reveal_loot() -> void:
+	if loot_found:
+		return
+	loot_found = true
+	var item: Node3D = LOOT_MODELS[loot].instantiate()
+	item.name = "Loot"
+	add_child(item)
+	var spot := loot_spots[loot_spot] as Node3D
+	var out: Vector3 = spot.get_meta("out")
+	item.position = Vector3(spot.position.x, FLOOR_TOP, spot.position.z) + out
+	item.rotation.y = atan2(out.x, out.z)
+	if case:
+		case.found_loot()
 
 
 ## The tuxedo by index (the order of the case's traits).
@@ -181,6 +239,31 @@ func _round_table(at: Vector3, radius: float) -> void:
 	shape.shape = cylinder
 	body.add_child(shape)
 	add_child(body)
+
+
+## The three places to search: the cake, the coats on the rail and the head table's centerpiece. `out` is the way into
+## the hall from each, as far as the stolen thing falls.
+func _loot_spots() -> void:
+	var cake_top := CAKE_TABLE_AT + Vector3(0, FLOOR_TOP + TABLE_HEIGHT, 0)
+	_loot_spot("cake", cake_top + Vector3(0, 0.45, 0), Vector3(0.7, 0.9, 0.7), Vector3(1, 0, 1).normalized() * 0.9)
+	_loot_spot("coats", COATS_AT + Vector3(0, FLOOR_TOP, 0), COATS_SIZE, Vector3.RIGHT * 0.6)
+	var head_top := HEAD_TABLE_AT + Vector3(0, FLOOR_TOP + HEAD_TABLE_SIZE.y, 0)
+	var flowers: Node3D = CENTERPIECE_MODEL.instantiate()
+	flowers.name = "HeadCenterpiece"
+	flowers.position = head_top
+	add_child(flowers)
+	_loot_spot("centerpiece", head_top + Vector3(0, 0.25, 0), Vector3(0.5, 0.5, 0.5), Vector3.BACK * 1.0)
+
+
+func _loot_spot(spot: String, at: Vector3, size: Vector3, out: Vector3) -> void:
+	var body := LootSpot.new(size)
+	body.name = "Search_" + spot
+	body.spot = spot
+	body.place = self
+	body.position = at
+	body.set_meta("out", out)
+	add_child(body)
+	loot_spots[spot] = body
 
 
 ## The cake on its own round table in the back west corner.
