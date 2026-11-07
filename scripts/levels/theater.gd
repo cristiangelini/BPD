@@ -7,7 +7,8 @@ extends CrimeScenePlace
 ## turntable, four trapdoors over the basement, the prompter's shell and the backdrop; behind it, the six dressing
 ## rooms (one per sheet embroidery) and the props workshop. The six ghosts rehearse two on the stage, two in the hall
 ## and two by the dressing rooms (step 2); Maestro Bambalina directs from the aisle and Don Susurro stands in the pit
-## under his shell. The case reaches the ghosts (step 3, set_up_case). Every number here is (propuesta).
+## under his shell. The case reaches the ghosts (step 3, set_up_case). The Golden Mask is hidden in one of nine spots
+## (step 4) and the props book tells which dressing room. Every number here is (propuesta).
 
 ## The lot's floor: width (x) and depth (z), like its size in CityLayout.PLACES.
 const SIZE := Vector2(36, 32)
@@ -72,6 +73,13 @@ const EMBROIDERIES: Array[String] = ["star", "moon", "sun", "bolt", "heart", "cl
 const WORKSHOP_X := 5.0
 const DOOR_WORKSHOP_Z := -13.0
 const PROPS_DESK_AT := Vector3(11.0, STAGE_TOP, -13.8)
+## Where the Golden Mask can be hidden (TheaterSpot): the trunk in each dressing room, the tuba, a seat of the front row
+## (FRONT_ROW_AT) and the old scenery in the basement.
+const MASK_SPOTS: Array[String] = ["trunk_star", "trunk_moon", "trunk_sun", "trunk_bolt", "trunk_heart",
+	"trunk_clover", "tuba", "seat", "scenery"]
+## Seconds a search of a spot takes, and reading the props book (propuesta).
+const SEARCH_SECONDS := 5.0
+const BOOK_SECONDS := 10.0
 ## Where the people are: two ghosts on the stage facing the hall, one in the aisle and one in the pit looking for
 ## their place on the stage, and two in the corridor behind the backdrop facing their dressing rooms; the director in
 ## the aisle facing the stage; the prompter in the pit right under his shell, facing the stage.
@@ -95,6 +103,17 @@ const BACKDROP := Color(0.35, 0.45, 0.7)
 ## The trapdoors' bodies, by index (TRAPDOORS), closed over their holes.
 var trapdoors: Array[StaticBody3D] = []
 var case: CrimeSceneCase
+## What was stolen (CrimeSceneCase's loot texts), where the culprit hid it, whether a search turned it up and whether
+## it's back in its case.
+var loot := "mask"
+var loot_spot := "tuba"
+var mask_uncovered := false
+var loot_found := false
+var loot_spots := {}
+var mask: GoldenMask
+var book: PropsBook
+## What each cop is busy with ("" for nothing), by cop: a search or the book takes a while.
+var _busy := {}
 var ghosts: Array[TheaterGhost] = []
 var director: TheaterDirector
 var prompter: TheaterPrompter
@@ -119,10 +138,85 @@ func _ready() -> void:
 ## take off the sheet until they get something to eat.
 func set_up_case(new_case: CrimeSceneCase) -> void:
 	case = new_case
+	loot_spot = MASK_SPOTS[absi(hash(["theater mask spot", case.case_seed])) % MASK_SPOTS.size()]
 	var shy := absi(hash("shy ghost %d" % case.case_seed)) % ghosts.size()
 	for ghost in ghosts:
 		ghost.case = case
 		ghost.shy = ghost.index == shy
+
+
+## E on a spot: the cop searches it for SEARCH_SECONDS, and then the Golden Mask turns up if it's there, or the cop
+## says what's there instead.
+func search(spot: String, cop: Cop) -> void:
+	if _busy.get(cop, "") != "":
+		return
+	_busy[cop] = spot
+	if cop:
+		cop.show_hint("HINT_THEATER_SEARCHING")
+	get_tree().create_timer(SEARCH_SECONDS).timeout.connect(searched.bind(spot, cop))
+
+
+## The search of a spot is over.
+func searched(spot: String, cop: Cop) -> void:
+	_busy.erase(cop)
+	if spot != loot_spot or mask_uncovered or not case:
+		if cop:
+			cop.show_hint("HINT_THEATER_NOTHING_" + spot)
+		return
+	uncover_mask()
+	if cop:
+		cop.show_hint("HINT_MASK_UNCOVERED")
+
+
+## E on the props book: BOOK_SECONDS reading it, and then what it says.
+func read_book(cop: Cop) -> void:
+	if _busy.get(cop, "") != "":
+		return
+	_busy[cop] = "book"
+	if cop:
+		cop.show_hint("HINT_PROPS_BOOK_READING")
+	get_tree().create_timer(BOOK_SECONDS).timeout.connect(book_read.bind(cop))
+
+
+func book_read(cop: Cop) -> void:
+	_busy.erase(cop)
+	if cop:
+		cop.show_hint(book_says())
+
+
+## What the props book tells: the dressing room the "props for scene 3" went to, if the mask is in a trunk, or nothing
+## new.
+func book_says() -> String:
+	if case and loot_spot.begins_with("trunk_"):
+		return tr("HINT_PROPS_BOOK_TRUNK") % tr("EMBROIDERY_" + loot_spot.trim_prefix("trunk_"))
+	return tr("HINT_PROPS_BOOK_EMPTY")
+
+
+## The Golden Mask comes out of its hiding spot, on the floor in front of it, for a cop to take back to its case.
+func uncover_mask() -> void:
+	if mask_uncovered:
+		return
+	mask_uncovered = true
+	mask = GoldenMask.new()
+	mask.name = "GoldenMask"
+	mask.theater = self
+	add_child(mask)
+	var spot := loot_spots[loot_spot] as Node3D
+	var out: Vector3 = spot.get_meta("out")
+	mask.lie(Vector3(spot.position.x, spot.get_meta("floor"), spot.position.z) + out)
+
+
+## The Golden Mask back on the velvet in its case: the case notes it (+LOOT_BONUS on the salary).
+func reveal_loot() -> void:
+	if loot_found:
+		return
+	uncover_mask()
+	loot_found = true
+	mask.position = MASK_CASE_AT + Vector3(0, 1.22, 0)
+	mask.rotation = Vector3.ZERO
+	mask.collision_layer = 0
+	if case:
+		case.found_loot()
 
 
 ## The ghost by index (the order of the case's traits).
@@ -275,7 +369,9 @@ func _hall() -> void:
 	bell.top_radius = 0.4
 	bell.bottom_radius = 0.15
 	bell.height = 0.5
-	_builder.box(TUBA_AT + Vector3(0, 0.45, 0), Vector3(0.5, 0.9, 0.5), GOLD)
+	_builder.mesh_box(TUBA_AT + Vector3(0, 0.45, 0), Vector3(0.5, 0.9, 0.5), GOLD)
+	_spot("tuba", TUBA_AT + Vector3(0, 0.45, 0), Vector3(0.5, 0.9, 0.5), Vector3(0, 0, 0.7), FLOOR_TOP)
+	_spot("seat", FRONT_ROW_AT + Vector3(0, 0.28, 0), Vector3(0.6, 0.56, 0.6), Vector3(0, 0, -0.6), FLOOR_TOP)
 	_builder.mesh(bell, TUBA_AT + Vector3(0, 1.1, 0), GOLD)
 	for x: float in STAGE_RAMPS_X:
 		_ramp(Vector3(x, 0, RAMP_FROM_Z), STAGE_Z - RAMP_FROM_Z, STAGE_TOP)
@@ -357,7 +453,8 @@ func _basement() -> void:
 	_builder.light(Vector3(-9, STAGE_TOP - 0.6, -8.25))
 	_builder.light(Vector3(9, STAGE_TOP - 0.6, -8.25))
 	for at: Vector3 in [Vector3(8.0, BASEMENT_TOP, -10.6), Vector3(10.5, BASEMENT_TOP, -10.6)]:
-		_builder.box(at + Vector3(0, 1.0, 0), Vector3(2.0, 2.0, 0.1), BACKDROP.darkened(0.2))
+		_builder.mesh_box(at + Vector3(0, 1.0, 0), Vector3(2.0, 2.0, 0.1), BACKDROP.darkened(0.2))
+	_spot("scenery", Vector3(9.25, BASEMENT_TOP + 1.0, -10.6), Vector3(4.5, 2.0, 0.3), Vector3(0, 0, 1.0), BASEMENT_TOP)
 
 
 ## Behind the backdrop: the floor up at the stage's height, the six dressing rooms along the back wall with their
@@ -378,12 +475,19 @@ func _backstage() -> void:
 		var at := dressing_at(i)
 		_label("Dressing%d" % i, "SIGN_DRESSING_%s" % EMBROIDERIES[i].to_upper(),
 			Vector3(at.x, STAGE_TOP + 2.4, DRESSING_FRONT_Z + 0.1), 0.0, 0.004, 32)
-		_builder.box(Vector3(at.x, STAGE_TOP + 0.3, BACK_Z + 0.5), Vector3(1.2, 0.6, 0.6), WOOD.darkened(0.2))
+		_builder.mesh_box(Vector3(at.x, STAGE_TOP + 0.3, BACK_Z + 0.5), Vector3(1.2, 0.6, 0.6), WOOD.darkened(0.2))
+		_spot("trunk_" + EMBROIDERIES[i], Vector3(at.x, STAGE_TOP + 0.3, BACK_Z + 0.5), Vector3(1.2, 0.6, 0.6),
+			Vector3(0, 0, 0.8), STAGE_TOP)
 		_builder.mesh_box(Vector3(at.x + 0.9, STAGE_TOP + 1.3, BACK_Z + 0.1), Vector3(0.6, 0.8, 0.04), WHITE)
 	_builder.wall_at("z", WORKSHOP_X, BACK_Z, BACKDROP_Z, STAGE_TOP, height, [DOOR_WORKSHOP_Z], INSIDE)
 	_label("", "SIGN_WORKSHOP", Vector3(WORKSHOP_X - 0.12, STAGE_TOP + 2.6, DOOR_WORKSHOP_Z), -PI / 2)
 	_builder.box(PROPS_DESK_AT + Vector3(0, 0.45, 0), Vector3(2.4, 0.9, 1.0), WOOD)
 	_builder.mesh_box(PROPS_DESK_AT + Vector3(-0.4, 0.96, 0), Vector3(0.5, 0.12, 0.4), Color(0.25, 0.2, 0.45))
+	book = PropsBook.new(Vector3(0.5, 0.12, 0.4))
+	book.name = "PropsBook"
+	book.theater = self
+	book.position = PROPS_DESK_AT + Vector3(-0.4, 0.96, 0)
+	add_child(book)
 	_builder.box(Vector3(16.4, STAGE_TOP + 1.0, -13.0), Vector3(0.6, 2.0, 3.0), WOOD)
 
 
@@ -411,3 +515,18 @@ func _label(label_name: String, key: String, at: Vector3, turn: float, pixel := 
 	label.position = at
 	label.rotation.y = turn
 	add_child(label)
+
+
+## A spot the Golden Mask can hide in, as a box the cops search with E; `out` is where the mask lands when it turns up,
+## on the floor at `floor_y`.
+func _spot(spot: String, at: Vector3, size: Vector3, out: Vector3, floor_y: float) -> TheaterSpot:
+	var body := TheaterSpot.new(size)
+	body.name = "Search_" + spot
+	body.spot = spot
+	body.place = self
+	body.position = at
+	body.set_meta("out", out)
+	body.set_meta("floor", floor_y)
+	add_child(body)
+	loot_spots[spot] = body
+	return body

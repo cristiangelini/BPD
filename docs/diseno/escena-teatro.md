@@ -181,6 +181,14 @@ Mientras tanto se avanza con lo recomendado.
    - El caramelo de miel de Don Susurro que aclara la voz va en el paso 6 (el texto de la ficha ya está).
    - Captura: `teatro/paso3-canta.png`.
 4. La Máscara de Oro escondida, buscar con E y el libro de utilería.
+   **Hecho así:** nueve escondites (TheaterSpot) con la semilla: el baúl de cada uno de los seis camerinos, la tuba
+   del foso, debajo de la butaca de la primera fila del lado izquierdo del pasillo y los decorados viejos del sótano.
+   - **Buscar:** E sobre el lugar, 5 s, y una cosa graciosa donde no está.
+   - **El libro de utilería:** está sobre el escritorio del taller; E, 10 s leyendo, y dice el camerino ("al camerino
+     sol") o "Nada nuevo en la utilería".
+   - **La máscara:** sale al piso delante de su escondite; con E vuelve al terciopelo de la vitrina (+100, fila
+     opcional "Devolver la Máscara de Oro a su vitrina").
+   - Capturas: `teatro/paso4-camerino.png` y `teatro/paso4-vitrina.png`.
 5. La función que sigue: el reloj, el giro, las trampillas, el decorado y la palanca con la paciencia del director.
 6. Las pistas y el testigo: la vitrina, la pisada, la peluca, el caramelo, el trozo de sábana y Don Susurro.
 7. El final: el tablero, el sueldo y el camión con los decorados.

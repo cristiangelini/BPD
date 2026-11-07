@@ -122,6 +122,6 @@ func test_a_full_file_and_what_its_card_says() -> void:
 	text = case.file_text(2)
 	assert_string_contains(text, tr("FILE_EMBROIDERY") % tr("EMBROIDERY_" + ghost.traits.embroidery))
 	assert_string_contains(text, tr("FILE_VOICE_DEEP") if ghost.traits.deep else tr("FILE_VOICE_HIGH"))
-	for key in ["PROMPT_GHOST_SING", "GHOST_SHEET_NO", "FILE_VOICE_CLEARED", "BRIEF_THEATER_A", "HINT_GHOST_LEFT",
+	for key in ["PROMPT_GHOST_SING", "GHOST_SHEET_NO", "FILE_VOICE_CLEARED", "BRIEF_THEATER_A_mask", "HINT_GHOST_LEFT",
 			"HINT_FILE_voice", "FILE_PART_embroidery", "OBJ_THEATER_FILES", "HINT_GO_THEATER"]:
 		assert_ne(tr(key), key, "%s is translated" % key)

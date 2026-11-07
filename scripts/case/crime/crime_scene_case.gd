@@ -81,10 +81,10 @@ const VARIANTS := {
 	# cops got from its ghost, the deep voice and their embroidery included.
 	"theater": {
 		"shift": "crime_theater", "story": "theater",
-		"brief": ["BRIEF_THEATER_A", "BRIEF_THEATER_B", "BRIEF_THEATER_C"], "go": "HINT_GO_THEATER",
+		"brief": ["BRIEF_THEATER_A_", "BRIEF_THEATER_B", "BRIEF_THEATER_C"], "go": "HINT_GO_THEATER",
 		"go_row": "OBJ_THEATER_GO", "look": "HINT_THEATER_LOOK", "files_row": "OBJ_THEATER_FILES",
 		"clue_line": "CLUE_THEATER_", "ruined_hint": "HINT_THEATER_RUINED_", "left": "HINT_GHOST_LEFT",
-		"who": "ghost", "getaway": SuspectCar.BIKE,
+		"who": "ghost", "getaway": SuspectCar.BIKE, "loot_row": "OBJ_THEATER_LOOT_",
 		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "voice": "deep",
 			"sheet": "embroidery", "witness": "embroidery"},
 		"parts": ["photo", "prints", "teeth", "hair", "voice", "embroidery"],
