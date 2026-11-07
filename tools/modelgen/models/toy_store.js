@@ -177,10 +177,30 @@ export function buildDonCucho() {
 	return b.build();
 }
 
+// Doña Ramona, the grandmother of 14: a purple cardigan, a grey bun, round glasses and a big shopping bag full of
+// gifts on her arm. The game scales her small.
+export function buildDonaRamona() {
+	const b = new Builder('npc_dona_ramona');
+	pearBody(b, mat('skin_ramona', 0xe8b898), { shirt: mat('ramona_cardigan', 0x8a5ab0), pants: mat('ramona_skirt', 0x4a4a6a), shoes: M.black, belted: false });
+	for (const x of [-0.06, 0.06]) b.add('buttons', mat('ramona_button', 0xf2e8d8), new THREE.SphereGeometry(0.018, 6, 4), { pos: V(0, 0.62 + x, 0.4) });
+	eyes(b, 1.34, 0.18, 0.08, 0.05);
+	const rim = mat('ramona_glasses', 0x2a2a30);
+	for (const x of [-0.08, 0.08]) b.add('glasses', rim, new THREE.TorusGeometry(0.055, 0.01, 4, 10), { pos: V(x, 1.34, 0.2) });
+	const hair = mat('ramona_hair', 0xd0d0d4);
+	b.add('hair', hair, ellipsoid(0.21, 0.11, 0.2, 10, 5), { pos: V(0, 1.43, -0.02) });
+	b.add('hair', hair, new THREE.SphereGeometry(0.09, 8, 6), { pos: V(0, 1.5, -0.14) });
+	b.add('bag', mat('ramona_bag', 0xe8d8b0), new THREE.BoxGeometry(0.34, 0.32, 0.16), { pos: V(-0.55, 0.42, 0.08) });
+	b.add('bag', mat('ramona_handle', 0x8a6040), new THREE.TorusGeometry(0.1, 0.012, 4, 10, Math.PI), { pos: V(-0.55, 0.58, 0.08) });
+	for (const [x, y, c] of [[-0.62, 0.62, 0xe84a3a], [-0.5, 0.64, 0x3a8ae8], [-0.56, 0.68, 0xf2c230]]) {
+		b.add(`gifts_${c.toString(16)}`, mat(`gift_${c.toString(16)}`, c), new THREE.BoxGeometry(0.1, 0.1, 0.1), { pos: V(x, y, 0.08) });
+	}
+	return b.build();
+}
+
 export const models = {
 	toy_shelf: buildToyShelf, toy_counter: buildToyCounter, train_table: buildTrainTable, block_castle: buildBlockCastle,
 	giant_teddy: buildGiantTeddy, collector_case: buildCollectorCase, ball_pit: buildBallPit, giant_top: buildGiantTop,
-	toy_van: buildToyVan, npc_don_cucho: buildDonCucho,
+	toy_van: buildToyVan, npc_don_cucho: buildDonCucho, npc_dona_ramona: buildDonaRamona,
 };
 
 export const views = {
@@ -191,6 +211,7 @@ export const views = {
 			{ name: 'giant_teddy', pos: [-0.4, 0, 1.0] }, { name: 'collector_case', pos: [5.0, 0, -1.0] },
 			{ name: 'ball_pit', pos: [-6.0, 0, 0.0] }, { name: 'giant_top', pos: [4.8, 0, 1.8] },
 			{ name: 'npc_don_cucho', pos: [3.4, 0, 2.4], rotY: -0.3 },
+			{ name: 'npc_dona_ramona', pos: [-4.4, 0, 2.4], rotY: 0.3 },
 		],
 		cam: { pos: [-0.5, 4.5, 9.5], target: [-0.5, 0.8, 0], fov: 55 },
 	},

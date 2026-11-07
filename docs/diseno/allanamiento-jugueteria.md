@@ -96,6 +96,10 @@ extras suman entre 400 y 600. El caballito es la cosa más pesada (8 kg): convie
    él lo levanta 25 s mirando a la pared, de espaldas al salón; descansa 60 s y a la tercera se da cuenta (+10). Por
    ahora no camina a ver qué pasó cuando oye los juguetes, y lo de juntar el castillo llorando queda para después.
 4. Doña Ramona y el regalo.
+   **Hecho (paso 4):** E en un estante con las manos libres da un juguete (`ToyShelfBody`, `ShelfToy`). Doña Ramona
+   (`DonaRamona`) camina por el pasillo de adelante, entre los estantes y el oso, y se para 6 s a mirar en cada punta.
+   Sin juguete dice "Estoy ocupada, oficial, son 14"; con uno se lo queda y cuenta lo que vio (lo pone la historia, en
+   el paso 5), una vez por policía.
 5. El caso (RaidCase) con la primera historia: los juguetes truchos.
 6. Las otras 5 historias, una por PR.
 7. "Jugar" suma la juguetería al sorteo de allanamientos (`PlaceDraw.ORDER`).

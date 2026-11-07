@@ -5636,3 +5636,9 @@ CUCHO_LAWYER,"¡Llamo a mi abogado! Le arreglé el robot cuando era chico.","I'm
 CUCHO_HEARD,"¿Quién despertó a los juguetes? ¡Se escuchan desde el taller!","Who woke up the toys? I can hear them from the workshop!","Quem acordou os brinquedos? Dá para ouvir da oficina!"
 CUCHO_CASE,"¡Mi vitrina de colección! ¡Cuarenta años juntando muñequitos!","My collectors' case! Forty years collecting those!","Minha vitrine de coleção! Quarenta anos juntando bonequinhos!"
 CUCHO_NOTICED,"¡Ya sé que me descarrilan el tren ustedes! ¡Déjenlo en paz!","I know you're the ones derailing my train! Leave it alone!","Eu sei que são vocês que descarrilam o trem! Deixem ele em paz!"
+PROMPT_TAKE_TOY,E: agarrar un juguete,E: take a toy,E: pegar um brinquedo
+PROMPT_GIVE_TOY,E: darle el juguete a doña Ramona,E: give doña Ramona the toy,E: dar o brinquedo para dona Ramona
+PROMPT_TALK_RAMONA,E: hablar con doña Ramona,E: talk to doña Ramona,E: falar com dona Ramona
+RAMONA_BUSY,"Estoy ocupada, oficial, son 14. ¿No me alcanza un regalo?","I'm busy, officer, there are 14 of them. Won't you hand me a gift?","Estou ocupada, policial, são 14. Não me alcança um presente?"
+RAMONA_AGAIN,"¡Otro más! Este para Tatiana. Pero ya le conté todo, oficial.","Another one! This one's for Tatiana. But I already told you everything, officer.","Mais um! Este para a Tatiana. Mas já contei tudo, policial."
+RAMONA_NOTHING,"¡Este para Pochito! Gracias, oficial. Yo no vi nada raro, solo juguetes.","This one's for Pochito! Thanks, officer. I didn't see anything odd, just toys.","Este para o Pochito! Obrigada, policial. Não vi nada estranho, só brinquedos."
