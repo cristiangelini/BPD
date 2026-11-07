@@ -27,6 +27,9 @@ func _init(owner_net: Node, level_case: Node) -> void:
 ## Host: sends the case to `peer` now (it just loaded the level).
 func resend(peer: int) -> void:
 	_state.rpc_id(peer, raid.snapshot())
+	# That state may be one the loop never sent (it came and went between two sends): the next send goes out anyway,
+	# or a case back to its last sent state would never reach this peer.
+	_last_sent = {}
 
 
 func _physics_process(delta: float) -> void:
