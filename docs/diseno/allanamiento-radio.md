@@ -50,7 +50,7 @@ en la radio. La denuncia anónima es siempre vaga: "en Radio La Antena Loca pasa
 
 | Historia | Evidencia principal | Extras | Pista propia | Qué cambia |
 |---|---|---|---|---|
-| **El concurso arreglado** | La urna del sorteo, con todos los papelitos con el mismo nombre (4 kg, 1000) | El premio sin entregar, una licuadora (3 kg, 300), la lista de "ganadores" (0,1 kg, 200) | Un papelito caído al lado de la urna dice "Primo Tito" | Cada tanto don Volumen anuncia al aire "¡Y el ganador es... Tito, otra vez!" |
+| **El concurso arreglado** | La urna del sorteo, con todos los papelitos con el mismo nombre (4 kg, 1000) | El premio sin entregar, una licuadora (3 kg, 300), la lista de "ganadores" (0,1 kg, 200) | Un papelito del concurso caído al lado del buzón dice "Primo Tito" | Cada tanto don Volumen anuncia al aire "¡Y el ganador es... Tito, otra vez!" |
 | **Las publicidades fantasma** | El archivo de contratos de publicidades que nunca salieron (6 kg, 1000) | El cuaderno de cobros (0,5 kg, 300), el sello de "pagado" (0,3 kg, 200) | La grilla de publicidades de la pared está vacía, pero la caja está llena | Entre tema y tema, donde iría la publicidad, hay silencio |
 | **Los micrófonos ocultos** | La caja con las grabaciones de los vecinos (5 kg, 1000) | El micrófono escondido en una maceta (1 kg, 300), el mapa del barrio con cruces (0,2 kg, 200) | La maceta de la recepción tiene un micrófono con cable | Cada tanto sale al aire un chisme de algún vecino que nadie debería saber |
 | **Los discos de colección** | La caja con los vinilos robados a un coleccionista (5 kg, 1000) | El catálogo del coleccionista (0,5 kg, 300), el tocadiscos dorado (2 kg, 200) | Un disco del archivo tiene la etiqueta "Colección privada · no prestar" | Don Volumen pasa solo discos rarísimos y los presenta como "joyas" |
@@ -85,11 +85,36 @@ entre 400 y 600.
    **Hecho (paso 2):** `RadioMic` en la consola, el teléfono de la recepción (`DeskPhone`) y la señal
    `listener_complained` que el paso 3 suma a la denuncia. Capturas `radio/paso2-*.png`.
 3. Don Volumen: la ronda, la denuncia y el tema largo del tocadiscos.
+   **Hecho (paso 3):** don Volumen es un `FloorBoss` (voz `VOLUMEN`) con el tocadiscos `RadioRecordPlayer`; va al
+   archivo cada 90 s y al café por la recepción (`printer_path`). Capturas `radio/paso3-*.png`.
 4. Doña Rosa por teléfono.
+   **Hecho (paso 4):** `DonaRosa` (scripts/npc/dona_rosa.gd) en el teléfono de la recepción; el caso le da `clue` y
+   `clue_speech` en el paso 5. Capturas `radio/paso4-*.png`.
 5. El caso (RaidCase) con la primera historia: el concurso arreglado.
+   **Hecho (paso 5):** `RadioStation.STORIES` con `rigged_contest` y su `RiggedContestRig` (scripts/case/radio/);
+   el papelito quedó junto al buzón (por ahí entran los cupones) y no junto a la urna, para que sea una pista antes de
+   encontrarla. Capturas `radio/paso5-*.png`.
 6. Las otras 5 historias, una por PR.
+   **Hecho (paso 6, micrófonos ocultos):** `HiddenMicsRig`; la maceta grande con el micrófono está en el rincón de la
+   recepción junto a la pared del frente, y al aire sale un chisme cada 35 s (propuesta), tres chismes por turno.
+   Capturas `radio/paso6-microfonos-*.png`.
+   **Hecho (paso 6, discos de colección):** `CollectorRecordsRig`; el disco con la etiqueta está apoyado en el
+   estante del frente del archivo (detrás de la puerta con llave), y al aire presenta una "joya" cada 45 s
+   (propuesta). `RadioStationRig.fixed_clue` arma las pistas fijas con modelo (la maceta y el disco). Capturas
+   `radio/paso6-discos-*.png`.
+   **Hecho (paso 6, dedicatorias en clave):** `CodedDedicationsRig`; la pizarra de dedicatorias está en la pared oeste
+   de la recepción, y al aire sale una dedicatoria rarísima cada 60 s (propuesta), tres por turno. Capturas
+   `radio/paso6-dedicatorias-*.png`.
+   **Hecho (paso 6, ranking trucho):** `FakeChartRig`; el ranking de la semana que viene cuelga a la derecha del de esta
+   semana, y al aire vuelve a sonar el mismo tema cada 120 s (propuesta). Con esto están las 6 historias. Capturas
+   `radio/paso6-ranking-*.png`.
 7. "Jugar" suma la radio al sorteo de allanamientos (`PlaceDraw.ORDER`).
+   **Hecho (paso 7):** "radio" al final de `PlaceDraw.ORDER`; la prueba del sorteo ve salir sus 6 historias.
 8. El online (don Volumen, doña Rosa, el teléfono, la luz "AL AIRE" y lo frágil en todas las PC).
+   **Hecho (paso 8):** don Volumen y doña Rosa los mueve el anfitrión (`NpcSync`; ella manda si su llamada está
+   sonando); el tocadiscos, el micrófono y el teléfono andan desde cualquier PC; la luz "AL AIRE", lo que sale al aire
+   (solo las historias del anfitrión lo deciden), el teléfono sonando, la puerta del archivo, el vidrio y los discos
+   rotos siguen al anfitrión (`RadioStation.net_state`). Las llamadas de oyentes y las multas las decide el anfitrión.
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, la radio, donde todo lo que hacen sale al aire? **Recomendado:** sí, no se pisa con

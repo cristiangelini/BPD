@@ -66,6 +66,9 @@ var fix_facing := Vector3.INF
 var use_prompt := ""
 ## How long she waits at the first point of her round (END_PAUSE; the cinema's projectionist stays in her booth).
 var first_pause := END_PAUSE
+## Points between her round and the printer, when it isn't in sight of it (the radio's coffee maker is in the kitchen,
+## through the reception); she walks them back in reverse.
+var printer_path: Array[Vector3] = []
 ## The points she's walking to, in order; empty while she patrols.
 var _path: Array[Vector3] = []
 var _errand := ""
@@ -219,7 +222,7 @@ func _walk(delta: float) -> Vector3:
 
 ## Walks along her route to the point nearest `spot`, then to the spot.
 func _go(spot: Vector3, errand_name: String) -> void:
-	var goal := _nearest_index(spot)
+	var goal := _nearest_index(printer_path[0] if not printer_path.is_empty() else spot)
 	_path.clear()
 	var behind := clampi(_index - _step, 0, route.size() - 1)
 	var i := behind if absi(goal - behind) < absi(goal - _index) else _index
@@ -227,6 +230,7 @@ func _go(spot: Vector3, errand_name: String) -> void:
 	while i != goal:
 		i += 1 if goal > i else -1
 		_path.append(route[i])
+	_path.append_array(printer_path)
 	_path.append(spot)
 	_errand = errand_name
 	_index = goal
@@ -244,7 +248,9 @@ func _arrive() -> void:
 
 
 func _back_to_route() -> void:
-	_path = [route[_index]]
+	_path = printer_path.duplicate()
+	_path.reverse()
+	_path.append(route[_index])
 
 
 ## Bent over the printer's tray, one line per part, until it prints again.
