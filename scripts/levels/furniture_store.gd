@@ -50,6 +50,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_OTHER_LEDGER", "OBJ_EXTRA_NEEDLE"],
 		"rig": preload("res://scripts/case/furniture/stuffed_sofas_rig.gd"),
 	},
+	"cardboard_wood": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_CARDBOARD_WOOD_B", "BRIEF_CARDBOARD_WOOD_C", "BRIEF_CARDBOARD_WOOD_D"],
+		"find": "OBJ_FIND_WOOD_STAMP",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/wood_stamp.tscn"), preload("res://scenes/props/wood_decal_roll.tscn"),
+			preload("res://scenes/props/cardboard_invoices.tscn")],
+		"half_heights": [0.075, 0.08, 0.006],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_DECAL_ROLL", "OBJ_EXTRA_CARDBOARD_INVOICES"],
+		"rig": preload("res://scripts/case/furniture/cardboard_wood_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the shop's floor, in the open between the setups.
 const NOTE_PLACES: Array[Vector3] = [
@@ -77,6 +88,8 @@ const COFFEE_TABLE_SIZE := Vector3(1.0, 0.4, 0.6)
 const TABLE_AT := Vector3(7.5, FLOOR_TOP, 6.0)
 const CHAIR_XS: Array[float] = [6.75, 7.5, 8.25]
 const CHAIR_ZS: Array[float] = [5.3, 6.7]
+## A dining chair's seat and back, [center, size] in its own space.
+const CHAIR_SHAPES := [[Vector3(0, 0.245, 0), Vector3(0.45, 0.49, 0.45)], [Vector3(0, 0.7, -0.2), Vector3(0.45, 0.42, 0.05)]]
 ## The tower of stacked chairs, in the open by the door so they have room to fall.
 const TOWER_AT := Vector3(2.5, FLOOR_TOP, 8.5)
 ## A cop landing on a mattress faster than BOUNCE_FROM goes back up BOUNCE_GAIN times as fast, up to BOUNCE_HEIGHT
@@ -161,6 +174,8 @@ var tablita: FurnitureAssembler
 var shelf: BookcaseShelf
 var complaint_bar: ProgressBar
 var wardrobes: Array[TippingWardrobe] = []
+## The dining room's six chairs (a story can swap them for light ones).
+var chairs: Array[StaticBody3D] = []
 var chair_tower: ChairTower
 var goods: Array[StaticBody3D] = []
 var broken: Array[int] = []
@@ -382,10 +397,7 @@ func _build_dining() -> void:
 	_piece(TABLE_MODEL, TABLE_AT, 0.0, [[Vector3(0, 0.38, 0), Vector3(2.4, 0.76, 1.0)]])
 	for z: float in CHAIR_ZS:
 		for x: float in CHAIR_XS:
-			_piece(CHAIR_MODEL, Vector3(x, FLOOR_TOP, z), 0.0 if z < TABLE_AT.z else PI, [
-				[Vector3(0, 0.245, 0), Vector3(0.45, 0.49, 0.45)],
-				[Vector3(0, 0.7, -0.2), Vector3(0.45, 0.42, 0.05)],
-			])
+			chairs.append(_piece(CHAIR_MODEL, Vector3(x, FLOOR_TOP, z), 0.0 if z < TABLE_AT.z else PI, CHAIR_SHAPES))
 
 
 ## The counter with the till, open on the salesman's side.

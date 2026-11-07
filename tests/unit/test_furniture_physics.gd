@@ -10,6 +10,8 @@ const COP_SCENE := preload("res://scenes/player/cop.tscn")
 func _store() -> FurnitureStore:
 	var store: FurnitureStore = SCENE.instantiate()
 	store.case_seed = 5
+	# A story with real oak wardrobes: in the cardboard wood one, one of them goes over with one cop.
+	store.story_id = "stuffed_sofas"
 	store.get_node("Cop").input_enabled = false
 	store.get_node("Cop/Grabber").input_enabled = false
 	add_child_autofree(store)

@@ -164,3 +164,10 @@ Los pesos y valores siguen la escala del taller y del gimnasio: la principal val
   - Si Don Cajón escapa, se va en auto como los otros dueños, y si lo atrapan, el turno siguiente es su
     interrogatorio.
   - Capturas `paso4-*.png` y `stuffed_sofas.png` (modelos).
+- **Paso 5, la madera de cartón:** el sello "Madera maciza" (1 kg, 1000), el rollo de calcomanía imitación madera
+  (2 kg, 300) y las facturas de cartón (0,1 kg, 200).
+  - Uno de los dos roperos (sorteado) es de cartón: un policía solo lo tira con E ("¡Pesa como una caja de zapatos!"),
+    y la primera vez es la pista. El otro sigue necesitando a dos.
+  - Las 6 sillas del comedor pesan 1,5 kg: se agarran con una mano, y si un policía las lleva por delante salen
+    volando para el otro lado.
+  - Capturas `paso5-carton-*.png` y `cardboard_wood.png` (modelos).

@@ -244,10 +244,42 @@ export function buildToyBill() {
 	return b.build();
 }
 
+// The cardboard wood's evidence: the "Madera maciza" rubber stamp, a varnished handle on a red rubber base 0.12 m
+// across, 0.14 m tall.
+export function buildWoodStamp() {
+	const b = new Builder('wood_stamp');
+	box(b, 'base', mat('stamp_wood', 0x8a5a2e), 0.12, 0.03, 0.07, 0, 0.025, 0);
+	box(b, 'rubber', mat('stamp_red', 0xc8352f), 0.11, 0.01, 0.06, 0, 0.005, 0);
+	b.add('handle', mat('stamp_handle', 0x6a3e1c), new THREE.CylinderGeometry(0.018, 0.022, 0.08, 8), { pos: V(0, 0.08, 0) });
+	b.add('knob', mat('stamp_handle', 0x6a3e1c), ellipsoid(0.03, 0.025, 0.03, 8, 4), { pos: V(0, 0.125, 0) });
+	return b.build();
+}
+
+// A roll of wood-look sticker, 0.5 m wide and 0.16 m across, lying on its side with a loose end showing the grain.
+export function buildWoodDecalRoll() {
+	const b = new Builder('wood_decal_roll');
+	const oak = mat('decal_oak', 0xb07a44), grain = mat('decal_grain', 0x7a4a24);
+	b.add('roll', oak, new THREE.CylinderGeometry(0.08, 0.08, 0.5, 12), { pos: V(0, 0.08, 0), rot: [0, 0, Math.PI / 2] });
+	b.add('core', mat('decal_core', 0xd9c9a8), new THREE.CylinderGeometry(0.03, 0.03, 0.502, 8), { pos: V(0, 0.08, 0), rot: [0, 0, Math.PI / 2] });
+	box(b, 'loose_end', oak, 0.5, 0.003, 0.3, 0, 0.002, 0.2);
+	for (let i = 0; i < 4; i++) box(b, 'grain', grain, 0.42 - i * 0.06, 0.004, 0.01, 0.02 * i, 0.003, 0.1 + i * 0.06);
+	return b.build();
+}
+
+// The cardboard invoices: a stack of three brown sheets 0.21 × 0.3 m, the top one with a big blue stamp.
+export function buildCardboardInvoices() {
+	const b = new Builder('cardboard_invoices');
+	const card = mat('card_brown', 0xb89466);
+	for (let i = 0; i < 3; i++) box(b, 'sheet', card, 0.21, 0.004, 0.3, (i - 1) * 0.01, 0.002 + i * 0.004, (1 - i) * 0.01, [0, (i - 1) * 0.08, 0]);
+	box(b, 'stamp', mat('invoice_ink', 0x3a5ad0), 0.1, 0.002, 0.05, 0.02, 0.0135, -0.06);
+	return b.build();
+}
+
 export const models = {
 	npc_don_cajon: buildDonCajon, npc_tablita: buildTablita, half_bookcase: buildHalfBookcase,
 	bookcase_shelf: buildBookcaseShelf, money_cushion: buildMoneyCushion, other_ledger: buildOtherLedger,
-	upholstery_needle: buildUpholsteryNeedle, toy_bill: buildToyBill,
+	upholstery_needle: buildUpholsteryNeedle, toy_bill: buildToyBill, wood_stamp: buildWoodStamp,
+	wood_decal_roll: buildWoodDecalRoll, cardboard_invoices: buildCardboardInvoices,
 	showroom_sofa: buildShowroomSofa, showroom_bed: buildShowroomBed, showroom_wardrobe: buildShowroomWardrobe,
 	showroom_dresser: buildShowroomDresser, showroom_lamp: buildShowroomLamp, standing_mirror: buildStandingMirror,
 	dining_table: buildDiningTable, dining_chair: buildDiningChair, flatpack_box: buildFlatpackBox,
@@ -274,6 +306,11 @@ export const views = {
 	stuffed_sofas: {
 		items: [{ name: 'money_cushion', pos: [-0.6, 0, 0] }, { name: 'other_ledger', pos: [0.2, 0, 0.1] },
 			{ name: 'upholstery_needle', pos: [0.6, 0, 0.2] }, { name: 'toy_bill', pos: [0.35, 0, 0.5] }],
+		cam: { pos: [0, 0.9, 1.6], target: [0, 0.1, 0.1], fov: 40 },
+	},
+	cardboard_wood: {
+		items: [{ name: 'wood_stamp', pos: [-0.5, 0, 0.1] }, { name: 'wood_decal_roll', pos: [0.15, 0, -0.1] },
+			{ name: 'cardboard_invoices', pos: [0.65, 0, 0.3] }],
 		cam: { pos: [0, 0.9, 1.6], target: [0, 0.1, 0.1], fov: 40 },
 	},
 	furniture_table: {
