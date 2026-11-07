@@ -6,8 +6,9 @@ extends Node3D
 ## giant teddy bear by the door. The salon has five toy shelves in aisles, the counter with the till, the train table
 ## with its control box, the collectors' glass case, the block castle and the ball pit; behind it, the storeroom
 ## (locked with the till's key), don Cucho's workshop and the bathroom. The workshop's back door opens to the fenced
-## yard with the delivery van. Something thrown hard at the glass case cracks it (a fine), and at the castle knocks it
-## down in pieces (another fine). Every number here is (propuesta).
+## yard with the delivery van. The shelves' wind-up toys walk off when a cop bumps them (WindUpRig, step 2), and
+## whatever is in the ball pit only turns up stirring it (BallPitSpot). Something thrown hard at the glass case cracks
+## it (a fine), and at the castle knocks it down in pieces (another fine). Every number here is (propuesta).
 
 signal case_cracked
 signal castle_fallen
@@ -106,6 +107,8 @@ const BLOCKS: Array[Color] = [Color(0.91, 0.29, 0.23), Color(0.95, 0.76, 0.19), 
 var station_parking: Transform3D
 var city_map: CityMap
 var store_door: FrontDoor
+var wind_up: WindUpRig
+var pit: BallPitSpot
 var till: Till
 var case_broken := false
 var castle_down := false
@@ -130,6 +133,9 @@ func _ready() -> void:
 	_build_salon()
 	_build_back()
 	_build_yard()
+	wind_up = WindUpRig.new()
+	add_child(wind_up)
+	wind_up.setup(self)
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("toy_store")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -204,8 +210,9 @@ func _build_salon() -> void:
 	_model(TEDDY_MODEL, TEDDY_AT)
 	_build.shape(_build.body(TEDDY_AT + Vector3(0, 1.0, 0)), Vector3(1.3, 2.0, 1.1))
 	_model(PIT_MODEL, PIT_AT)
-	var pit_floor := Vector3(PIT_SIZE.x - 0.4, PIT_FLOOR, PIT_SIZE.z - 0.4)
-	_build.shape(_build.body(PIT_AT + Vector3(0, PIT_FLOOR / 2, 0)), pit_floor)
+	pit = BallPitSpot.new()
+	pit.position = PIT_AT + Vector3(0, PIT_FLOOR, 0)
+	add_child(pit)
 	for side: float in [-1.0, 1.0]:
 		_build.shape(_build.body(PIT_AT + Vector3(0, PIT_SIZE.y / 2, side * 1.9)), Vector3(PIT_SIZE.x, PIT_SIZE.y, 0.2))
 		_build.shape(_build.body(PIT_AT + Vector3(side * 1.9, PIT_SIZE.y / 2, 0)), Vector3(0.2, PIT_SIZE.y, 3.6))
@@ -263,7 +270,7 @@ func crack_case() -> void:
 	fines += CASE_FINE
 	_build.mesh_box(CASE_AT + Vector3(-0.32, 1.2, 0.2), Vector3(0.01, 0.03, 1.6), DARK)
 	_build.mesh_box(CASE_AT + Vector3(-0.32, 1.0, -0.4), Vector3(0.01, 0.4, 0.03), DARK)
-	_say(CASE_AT + Vector3(-0.6, 2.2, 0), "TOY_CASE_BROKEN")
+	say(CASE_AT + Vector3(-0.6, 2.2, 0), "TOY_CASE_BROKEN")
 	case_cracked.emit()
 
 
@@ -281,7 +288,7 @@ func knock_castle() -> void:
 	for i in 12:
 		var spot := Vector3(rng.randf_range(-1.4, 1.2), 0.12, rng.randf_range(-1.4, 0.7))
 		_build.mesh_box(CASTLE_AT + spot, Vector3(0.28, 0.24, 0.28), BLOCKS[i % BLOCKS.size()])
-	_say(CASTLE_AT + Vector3(0, 2.0, 0), "TOY_CASTLE_DOWN")
+	say(CASTLE_AT + Vector3(0, 2.0, 0), "TOY_CASTLE_DOWN")
 	castle_fallen.emit()
 
 
@@ -300,7 +307,7 @@ func _area(center: Vector3, size: Vector3) -> Area3D:
 
 
 ## A floating line over `at` for a few seconds.
-func _say(at: Vector3, key: String) -> void:
+func say(at: Vector3, key: String) -> void:
 	var label := Label3D.new()
 	label.text = key
 	label.font_size = 48

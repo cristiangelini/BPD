@@ -5607,3 +5607,10 @@ LOC_behind_giant_teddy,detrás del oso de peluche gigante,behind the giant teddy
 LOC_on_toy_shelf,arriba de un estante de juguetes,on top of a toy shelf,em cima de uma prateleira de brinquedos
 LOC_on_collector_case,arriba de la vitrina de colección,on top of the collectors' case,em cima da vitrine de colecionador
 LOC_on_toy_bench,en la mesa de trabajo del taller,on the workshop bench,na bancada da oficina
+PROMPT_TOY_OFF,E: apagar el juguete,E: switch the toy off,E: desligar o brinquedo
+HINT_TRIPPED_TOY,¡Pisaste un juguete a cuerda!,You stepped on a wind-up toy!,Você pisou num brinquedo de corda!
+TOY_RELEASED,¡Bip bip! ¡Bip bip!,Beep beep! Beep beep!,Bip bip! Bip bip!
+PROMPT_STIR_PIT,E: revolver el pelotero,E: dig through the ball pit,E: remexer a piscina de bolinhas
+HINT_PIT_STIRRING,Revuelves las pelotas... todavía nada.,You dig through the balls... nothing yet.,Você remexe as bolinhas... nada ainda.
+HINT_PIT_FOUND,¡Había algo debajo de las pelotas!,There was something under the balls!,Tinha algo embaixo das bolinhas!
+HINT_PIT_NOTHING,"Solo pelotas, un chupete y una media.","Only balls, a pacifier and a sock.","Só bolinhas, uma chupeta e uma meia."
