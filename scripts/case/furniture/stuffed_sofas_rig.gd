@@ -62,6 +62,5 @@ func _fly_bill(at: Vector3) -> void:
 	bill.global_position = at
 	bill.linear_velocity = Vector3(_rng.randf_range(-1.5, 1.5), BILL_SPEED, _rng.randf_range(-1.5, 1.5))
 	bill.angular_velocity = Vector3(_rng.randf_range(-6, 6), _rng.randf_range(-6, 6), _rng.randf_range(-6, 6))
-	get_tree().create_timer(BILL_LIFE).timeout.connect(func() -> void:
-		if is_instance_valid(bill):
-			bill.queue_free())
+	# Bound to the bill itself, not a lambda holding it: a bill already gone (the level freed) drops the connection.
+	get_tree().create_timer(BILL_LIFE).timeout.connect(bill.queue_free)
