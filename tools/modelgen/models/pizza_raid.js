@@ -195,9 +195,58 @@ export const models = {
 		b.add('spiral', C('fake_wire', 0x909090, { metalness: 0.6 }), new THREE.CylinderGeometry(0.006, 0.006, 0.15, 6), { pos: V(-0.1, 0.012, 0), rot: [Math.PI / 2, 0, 0] });
 		return b.build();
 	},
+	// The plastic cheese story's main evidence: a steel mold in the shape of a block of muzzarella, its lid open,
+	// with a yellow plastic block inside. 0.5 x 0.3 x 0.36 m.
+	plastic_cheese_mold() {
+		const b = new Builder('plastic_cheese_mold');
+		const steel = C('mold_steel', 0x9aa0a8, { metalness: 0.6, roughness: 0.4 });
+		b.add('base', steel, new THREE.BoxGeometry(0.5, 0.04, 0.36), { pos: V(0, 0.02, 0) });
+		for (const x of [-0.235, 0.235]) b.add('side', steel, new THREE.BoxGeometry(0.03, 0.2, 0.36), { pos: V(x, 0.12, 0) });
+		for (const z of [-0.165, 0.165]) b.add('side', steel, new THREE.BoxGeometry(0.5, 0.2, 0.03), { pos: V(0, 0.12, z) });
+		b.add('block', C('plastic_cheese', 0xf8d830, { roughness: 0.2 }), new THREE.BoxGeometry(0.42, 0.16, 0.28), { pos: V(0, 0.12, 0) });
+		b.add('lid', steel, new THREE.BoxGeometry(0.5, 0.03, 0.36), { pos: V(0, 0.27, -0.2), rot: [-1.2, 0, 0] });
+		b.add('crank', C('mold_handle', 0x202020), new THREE.CylinderGeometry(0.015, 0.015, 0.14, 6), { pos: V(0.3, 0.12, 0), rot: [0, 0, Math.PI / 2] });
+		return b.build();
+	},
+	// A clear bag of yellow plastic pellets, tied at the top. 0.3 x 0.32 x 0.2 m.
+	plastic_pellets() {
+		const b = new Builder('plastic_pellets');
+		b.add('bag', C('pellet_bag', 0xe8f0f4, { roughness: 0.3, transparent: true, opacity: 0.6 }), ellipsoid(0.15, 0.14, 0.1, 10, 7), { pos: V(0, 0.14, 0) });
+		const yellow = C('pellet', 0xf8d830);
+		for (let i = 0; i < 14; i++) {
+			b.add('pellets', yellow, new THREE.SphereGeometry(0.03, 5, 4), { pos: V(-0.08 + (i % 5) * 0.04, 0.05 + Math.floor(i / 5) * 0.05, ((i * 7) % 5) * 0.025 - 0.05) });
+		}
+		b.add('tie', C('pellet_tie', 0xd02020), new THREE.CylinderGeometry(0.03, 0.03, 0.04, 6), { pos: V(0, 0.29, 0) });
+		return b.build();
+	},
+	// A roll of sticker labels that say "100 % muzzarella". 0.14 x 0.06 x 0.14 m.
+	muzzarella_labels() {
+		const b = new Builder('muzzarella_labels');
+		b.add('roll', C('label_white', 0xf8f8f0), new THREE.CylinderGeometry(0.07, 0.07, 0.06, 12), { pos: V(0, 0.03, 0) });
+		b.add('core', C('label_core', 0xa08060), new THREE.CylinderGeometry(0.025, 0.025, 0.062, 8), { pos: V(0, 0.03, 0) });
+		b.add('print', C('label_print', 0x30a040), new THREE.BoxGeometry(0.05, 0.002, 0.03), { pos: V(0.035, 0.062, 0) });
+		b.add('tail', C('label_white', 0xf8f8f0), new THREE.BoxGeometry(0.05, 0.002, 0.12), { pos: V(0.07, 0.001, 0.07), rot: [0, 0.4, 0] });
+		return b.build();
+	},
+	// The sample pizza on the counter: a whole muzzarella on its wooden board. 0.36 x 0.04 x 0.36 m.
+	sample_pizza() {
+		const b = new Builder('sample_pizza');
+		b.add('board', wood, new THREE.CylinderGeometry(0.18, 0.18, 0.015, 16), { pos: V(0, 0.0075, 0) });
+		b.add('crust', dough, new THREE.CylinderGeometry(0.16, 0.16, 0.02, 16), { pos: V(0, 0.025, 0) });
+		b.add('cheese', C('pizza_cheese', 0xf0c040), new THREE.CylinderGeometry(0.14, 0.14, 0.01, 16), { pos: V(0, 0.037, 0) });
+		for (const [x, z] of [[0.06, 0.02], [-0.05, 0.06], [-0.02, -0.07], [0.07, -0.06]]) {
+			b.add('olives', C('olive', 0x203020), new THREE.SphereGeometry(0.012, 6, 4), { pos: V(x, 0.045, z) });
+		}
+		return b.build();
+	},
 };
 
 export const views = {
+	pizza_story_cheese: {
+		items: [{ name: 'plastic_cheese_mold', pos: [-0.35, 0, 0] }, { name: 'plastic_pellets', pos: [0.15, 0, 0.1] },
+			{ name: 'muzzarella_labels', pos: [0.45, 0, 0.15] }, { name: 'sample_pizza', pos: [0.2, 0, -0.35] }],
+		cam: { pos: [0.1, 0.8, 1.5], target: [0.1, 0.15, 0], fov: 40 },
+	},
 	pizza_story_phones: {
 		items: [{ name: 'thermal_backpack', pos: [-0.35, 0, 0] }, { name: 'chargers_box', pos: [0.15, 0, 0.1] },
 			{ name: 'fake_orders_notebook', pos: [0.5, 0, 0.15], rotY: -0.3 }, { name: 'orders_notebook', pos: [0.2, 0, -0.3] }],

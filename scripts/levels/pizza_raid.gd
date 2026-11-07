@@ -77,6 +77,16 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_CHARGERS_BOX", "OBJ_EXTRA_FAKE_ORDERS"],
 		"rig": preload("res://scripts/case/pizza/phone_backpack_rig.gd"),
 	},
+	"plastic_cheese": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_PLASTIC_CHEESE_B", "BRIEF_PLASTIC_CHEESE_C", "BRIEF_PLASTIC_CHEESE_D"],
+		"find": "OBJ_FIND_CHEESE_MOLD",
+		"hidden": [preload("res://scenes/props/plastic_cheese_mold.tscn"),
+			preload("res://scenes/props/plastic_pellets.tscn"), preload("res://scenes/props/muzzarella_labels.tscn")],
+		"half_heights": [0.15, 0.15, 0.03],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_PLASTIC_PELLETS", "OBJ_EXTRA_MUZZARELLA_LABELS"],
+		"rig": preload("res://scripts/case/pizza/plastic_cheese_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the floor of the dining room, the kitchen, the office and the yard, away from
 ## the furniture.

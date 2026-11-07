@@ -5703,3 +5703,14 @@ TITO_CLUE_phone_backpack,"«Mmm… Vi a Don Muzza esconder algo %s. Y suena todo
 PROMPT_ORDERS_NOTEBOOK,E: leer el cuaderno de pedidos,E: read the orders notebook,E: ler o caderno de pedidos
 CLUE_ORDERS_NOTEBOOK,"El cuaderno de pedidos tiene direcciones que no existen: «Calle Falsa 0», «Pasaje Ninguno 999»","The orders notebook has addresses that don't exist: «0 Fake Street», «999 Nowhere Lane»","O caderno de pedidos tem endereços que não existem: «Rua Falsa 0», «Travessa Nenhuma 999»"
 PHONES_RIIING,¡RIIING!,RIIING!,TRIIIM!
+BRIEF_PLASTIC_CHEESE_B,"Don Muzza hace la muzzarella de plástico y la vende como queso de verdad. Hay clientes que todavía la están masticando.","Don Muzza makes his muzzarella out of plastic and sells it as real cheese. Some customers are still chewing it.","Don Muzza faz a muçarela de plástico e vende como queijo de verdade. Tem cliente que ainda está mastigando."
+BRIEF_PLASTIC_CHEESE_C,"Traigan el molde de hacer queso de plástico en el baúl del patrullero. Pesa 8 kilos.","Bring the plastic cheese mold in the patrol car's trunk. It weighs 8 kilos.","Tragam o molde de fazer queijo de plástico no porta-malas da viatura. Pesa 8 quilos."
+BRIEF_PLASTIC_CHEESE_D,"Si encuentran la bolsa de bolitas de plástico o las etiquetas «100 % muzzarella», mejor. Y cuidado con las porciones: rebotan.","If you find the bag of plastic pellets or the «100 % muzzarella» labels, even better. And careful with the slices: they bounce.","Se acharem o saco de bolinhas de plástico ou as etiquetas «100 % muçarela», melhor. E cuidado com as fatias: elas quicam."
+OBJ_FIND_CHEESE_MOLD,Llevarse el molde de queso de plástico,Take the plastic cheese mold,Levar o molde de queijo de plástico
+OBJ_EXTRA_PLASTIC_PELLETS,Extra: la bolsa de bolitas de plástico,Extra: the bag of plastic pellets,Extra: o saco de bolinhas de plástico
+OBJ_EXTRA_MUZZARELLA_LABELS,Extra: las etiquetas «100 % muzzarella»,Extra: the «100 % muzzarella» labels,Extra: as etiquetas «100 % muçarela»
+TITO_CLUE_plastic_cheese,"«Mmm… Vi a Don Muzza esconder algo %s. Y la muzza de acá no se rompe nunca. Yo la mordí.»","“Mmm… I saw Don Muzza hide something %s. And the cheese here never breaks. I bit it.”","“Hmm… Vi Don Muzza esconder algo %s. E a muçarela daqui nunca arrebenta. Eu mordi.”"
+PROMPT_SAMPLE_PIZZA,E: mirar la pizza de muestra,E: look at the sample pizza,E: olhar a pizza de amostra
+CLUE_SAMPLE_PIZZA,El queso de la pizza de muestra se estira 3 metros sin cortarse,The sample pizza's cheese stretches 3 meters without breaking,O queijo da pizza de amostra estica 3 metros sem arrebentar
+HINT_CHEESE_SNAP,"¡El queso se estiró de más y la pizza volvió sola al mostrador!","The cheese stretched too far and the pizza flew back to the counter!","O queijo esticou demais e a pizza voltou sozinha para o balcão!"
+CHEESE_BOING,¡BOING!,BOING!,BOING!
