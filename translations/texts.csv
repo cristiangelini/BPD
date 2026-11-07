@@ -3432,7 +3432,7 @@ POCHA_CLUE_foam_cakes,"«¿Rico, no? Le cuento: vi al chef esconder algo %s. Y d
 CLUE_FOAM_BOUNCE,"Un pastel de la vitrina se cayó y rebotó como una pelota: es de espuma","A showcase cake fell and bounced like a ball: it's made of foam","Um bolo da vitrine caiu e quicou como uma bola: é de espuma"
 FOAM_BOING,¡Boing!,Boing!,Boing!
 BRIEF_ROBOT_ARM_B,"El chef se robó el brazo robot de la fábrica de al lado, el que decora solo, y vende sus pasteles como hechos a mano.","The chef stole the robot arm from the factory next door, the one that decorates by itself, and sells its cakes as handmade.","O chef roubou o braço robô da fábrica ao lado, o que decora sozinho, e vende os bolos dele como feitos à mão."
-BRIEF_ROBOT_ARM_C,"Traigan el brazo robot en el baúl del patrullero. Pesa 15 kilos: entre dos. Y no se le acerquen mucho mientras decora, que tira crema.","Bring the robot arm in the patrol car's trunk. It weighs 15 kilos: two of you. And don't get too close while it decorates, it throws cream.","Tragam o braço robô no porta-malas da viatura. Pesa 15 quilos: em dois. E não cheguem muito perto enquanto decora, que joga creme."
+BRIEF_ROBOT_ARM_C,"Traigan el brazo robot en el baúl del patrullero. Pesa 15 kilos y no entra en ningún lado. Y no se le acerquen mucho mientras decora, que tira crema.","Bring the robot arm in the patrol car's trunk. It weighs 15 kilos and fits nowhere. And don't get too close while it decorates, it throws cream.","Tragam o braço robô no porta-malas da viatura. Pesa 15 quilos e não cabe em lugar nenhum. E não cheguem muito perto enquanto decora, que joga creme."
 BRIEF_ROBOT_ARM_D,"Si encuentran el control remoto o el manual en otro idioma, mejor: todo suma.","If you find the remote control or the manual in another language, even better: it all counts.","Se acharem o controle remoto ou o manual em outra língua, melhor: tudo conta."
 OBJ_FIND_ROBOT_ARM,Llevarse el brazo robot,Take the robot arm,Levar o braço robô
 OBJ_EXTRA_REMOTE_CONTROL,Extra: el control remoto,Extra: the remote control,Extra: o controle remoto
@@ -6950,3 +6950,164 @@ HINT_TICKING_POPCORN,"Esta palomita es de metal... y hace «tic tac».","This po
 CLUE_TICKING_POPCORN,"Una palomita del mostrador es de metal y hace «tic tac»: en las palomitas hay relojes.","A popcorn on the counter is made of metal and goes «tick tock»: there are watches in the popcorn.","Uma pipoca do balcão é de metal e faz «tique-taque»: tem relógios na pipoca."
 CINEMA_TICK_TACK,tic tac,tick tock,tique-taque
 CINEMA_WATCH_POP,¡PUM! ¿Un reloj?,POP! A watch?,PUM! Um relógio?
+PLACE_SUPERMARKET,Súper El Changuito,El Changuito Supermarket,Supermercado El Changuito
+MENU_SUPERMARKET,Súper (allanamiento) (prueba),Supermarket (raid) (test),Supermercado (batida) (teste)
+HINT_TILL_KEY_SUPERMARKET,¡Una llave! Abre la oficina del gerente.,A key! It opens the manager's office.,Uma chave! Abre o escritório do gerente.
+CASE_FAILED_LAWYER_SUPERMARKET,Don Ofertón llamó al abogado del súper. Caso perdido.,Don Ofertón called the supermarket's lawyer. Case lost.,Don Ofertón ligou para o advogado do supermercado. Caso perdido.
+SUPER_AISLE_1,Pasillo 1 · Almacén,Aisle 1 · Groceries,Corredor 1 · Mercearia
+SUPER_AISLE_2,Pasillo 2 · Limpieza,Aisle 2 · Cleaning,Corredor 2 · Limpeza
+SUPER_AISLE_3,Pasillo 3 · Galletitas,Aisle 3 · Cookies,Corredor 3 · Biscoitos
+SUPER_AISLE_4,Pasillo 4 · Latas,Aisle 4 · Cans,Corredor 4 · Enlatados
+SUPER_OFFER,"¡Oferta del día! Lleve 21, pague 20","Deal of the day! Take 21, pay for 20","Oferta do dia! Leve 21, pague 20"
+SUPER_PYRAMID_FELL,"«¡Limpieza en la entrada! ¡Y alguien que pague esas latas!»","""Cleanup at the entrance! And somebody pay for those cans!""","«Limpeza na entrada! E alguém pague essas latas!»"
+SUPER_FRIDGE_BROKEN,"«¡Atención, clientes: la policía rompió la heladera! Lácteos con descuento»","""Attention, shoppers: the police broke the fridge! Dairy on sale""","«Atenção, clientes: a polícia quebrou a geladeira! Laticínios com desconto»"
+LOC_in_super_freezer,"en el freezer, debajo de los helados","in the freezer, under the ice cream","no freezer, embaixo dos sorvetes"
+LOC_behind_produce,detrás de la verdulería,behind the produce stand,atrás da banca de hortifrúti
+LOC_between_storeroom_boxes,entre las cajas del depósito,between the storeroom's boxes,entre as caixas do depósito
+LOC_by_loading_door,al lado del portón de carga,by the loading door,ao lado do portão de carga
+LOC_in_cardboard_bin,en el tacho de cartones,in the cardboard bin,na caçamba de papelão
+LOC_in_super_office_corner,en un rincón de la oficina del gerente,in a corner of the manager's office,num canto do escritório do gerente
+LOC_on_top_shelf,en el estante de arriba del pasillo 2,on aisle 2's top shelf,na prateleira de cima do corredor 2
+LOC_in_aisle_4,en el piso del pasillo 4,on aisle 4's floor,no chão do corredor 4
+LOC_under_checkout_belt,debajo de la cinta de la caja 2,under checkout 2's belt,embaixo da esteira do caixa 2
+LOC_behind_offer_table,detrás de la mesa de ofertas,behind the offer table,atrás da mesa de ofertas
+LOC_by_produce_scale,al lado de la balanza de la verdulería,by the produce scale,ao lado da balança do hortifrúti
+LOC_on_super_desk,en el escritorio de Don Ofertón,on Don Ofertón's desk,na escrivaninha do Don Ofertón
+PROMPT_CART_TAKE,"E: empujar el changuito","E: push the shopping cart","E: empurrar o carrinho"
+PROMPT_CART_RIDE,"E: subirte al changuito","E: climb into the cart","E: subir no carrinho"
+PROMPT_CART_OUT,"E: bajarte del changuito","E: climb out of the cart","E: descer do carrinho"
+SUPER_CART_CRASH,"¡Saliste volando del changuito!","You flew out of the cart!","Você saiu voando do carrinho!"
+SUPER_CUSTOMER_0,"¡Estoy en la cola, oficial! No me pienso ir.","I'm in the queue, officer! I'm not leaving.","Estou na fila, policial! Não vou sair."
+SUPER_CUSTOMER_1,"Los fideos están en oferta desde hace once años. Raro, ¿no?","The noodles have been on sale for eleven years. Odd, right?","O macarrão está em promoção há onze anos. Estranho, né?"
+SUPER_CUSTOMER_2,"El gerente anuncia todo por el altavoz. Hasta cuando estornuda.","The manager announces everything on the loudspeaker. Even when he sneezes.","O gerente anuncia tudo no alto-falante. Até quando espirra."
+SUPER_CUSTOMER_3,"Yo vengo todos los días. No compro nada, vengo por las pirámides.","I come every day. I don't buy anything, I come for the pyramids.","Eu venho todo dia. Não compro nada, venho pelas pirâmides."
+SUPER_CUSTOMER_4,"¿Usted sabe dónde está el pasillo 13? Nadie me quiere decir.","Do you know where aisle 13 is? Nobody will tell me.","Você sabe onde fica o corredor 13? Ninguém quer me dizer."
+SUPER_CUSTOMER_5,"El yogur dice que vence en 2099. Yo lo compro igual.","The yogurt says it expires in 2099. I buy it anyway.","O iogurte diz que vence em 2099. Eu compro mesmo assim."
+SUPER_CUSTOMER_6,"Mi changuito tira para la izquierda. Como mi cuñado.","My cart pulls to the left. Like my brother-in-law.","Meu carrinho puxa para a esquerda. Igual ao meu cunhado."
+SUPER_CUSTOMER_7,"Si se cae la pirámide, el chico de la gorrita llora. Cuidado.","If the pyramid falls, the kid in the cap cries. Careful.","Se a pirâmide cair, o menino de boné chora. Cuidado."
+SUPER_CUSTOMER_QUEUE,"Estoy en la cola…","I'm in the queue…","Estou na fila…"
+SUPER_CUSTOMER_BUMPED_0,"¡Oiga! ¡Me chocó el changuito! Esto va a la queja.","Hey! You hit my cart! That's going in the complaint.","Ei! Bateu no meu carrinho! Isso vai para a reclamação."
+SUPER_CUSTOMER_BUMPED_1,"¡Mis huevos! ¡Mire lo que hizo con mis huevos!","My eggs! Look what you did to my eggs!","Meus ovos! Olha o que você fez com meus ovos!"
+SUPER_CUSTOMER_BUMPED_2,"¡Respete la fila, oficial!","Respect the queue, officer!","Respeite a fila, policial!"
+SUPER_CUSTOMER_BUMPED_3,"¡Gerenteee! ¡La policía me choca!","Manageeer! The police are crashing into me!","Gereeente! A polícia está batendo em mim!"
+PROMPT_PRICE_BUTTON,"E: pedir un precio","E: ask for a price","E: pedir um preço"
+HINT_PRICE_BUSY,"Don Ofertón ya está buscando un precio.","Don Ofertón is already looking up a price.","Don Ofertón já está procurando um preço."
+HINT_PRICE_RESTING,"El botón no anda. Prueba en un rato.","The button isn't working. Try again in a while.","O botão não funciona. Tente daqui a pouco."
+OFERTON_LINE_1,"¡Atención, señores clientes: hoy todo a mitad de precio! Bueno, casi todo.","Attention, shoppers: everything half price today! Well, almost everything.","Atenção, senhores clientes: hoje tudo pela metade do preço! Bom, quase tudo."
+OFERTON_LINE_2,"¡Oficiales! ¿Vienen a comprar? Hay oferta de lavandina.","Officers! Here to shop? Bleach is on sale.","Policiais! Vieram comprar? Água sanitária em promoção."
+OFERTON_LINE_3,"En el Súper El Changuito los precios dan risa. Ja. Ja.","At Súper El Changuito the prices are a laugh. Ha. Ha.","No Súper El Changuito os preços dão risada. Ha. Ha."
+OFERTON_LINE_4,"¡No me toquen las pirámides, que las arma Lalo!","Don't touch my pyramids, Lalo builds them!","Não mexam nas minhas pirâmides, quem monta é o Lalo!"
+OFERTON_PRINTER,"¡Consulta de precio en caja! ¡Voy corriendo!","Price check at the checkout! On my way!","Consulta de preço no caixa! Estou indo!"
+OFERTON_PRICE_CALL,"¡Consulta de precio en caja!","Price check at the checkout!","Consulta de preço no caixa!"
+OFERTON_FIX_1,"A ver… arvejas, arroz, arandelas…","Let's see… peas, rice, washers…","Vamos ver… ervilhas, arroz, arruelas…"
+OFERTON_FIX_2,"¿Esto es una lata o un yogur? ¿Por qué no tiene código?","Is this a can or a yogurt? Why doesn't it have a code?","Isso é uma lata ou um iogurte? Por que não tem código?"
+OFERTON_FIX_3,"Página 400… página 401… ¡acá está!","Page 400… page 401… here it is!","Página 400… página 401… aqui está!"
+OFERTON_FIX_DONE,"¡Precio encontrado! Sigan comprando, señores.","Price found! Keep shopping, folks.","Preço encontrado! Continuem comprando, senhores."
+OFERTON_HURT,"¡Epa! ¡Al gerente no se lo empuja! Esto va a la queja.","Hey! You don't push the manager! That's going in the complaint.","Ei! Não se empurra o gerente! Isso vai para a reclamação."
+OFERTON_DOOR,"¡Mi puerta! ¿Saben cuánto sale una puerta? ¡Está en oferta, pero igual!","My door! Do you know what a door costs? It's on sale, but still!","Minha porta! Sabem quanto custa uma porta? Está em promoção, mas mesmo assim!"
+OFERTON_SAW,"¡Eso no está en oferta, oficial!","That's not on sale, officer!","Isso não está em promoção, policial!"
+OFERTON_NOTHING,"Yo solo vendo, oficial. Barato.","I just sell, officer. Cheap.","Eu só vendo, policial. Barato."
+OFERTON_OFFENDED,"No hablo más. Me voy a acomodar precios.","I'm done talking. I'm off to fix some prices.","Não falo mais. Vou arrumar os preços."
+OFERTON_LAWYER,"¡Atención, señores clientes: llamo a mi abogado! ¡Está en el pasillo 3!","Attention, shoppers: I'm calling my lawyer! He's in aisle 3!","Atenção, senhores clientes: vou chamar meu advogado! Ele está no corredor 3!"
+OFERTON_CUSTOMER,"¡Me tratan mal a los clientes! ¡Lo anoto!","They're mistreating my customers! I'm writing it down!","Estão maltratando meus clientes! Vou anotar!"
+OFERTON_CAUGHT_ON,"¡Esa no es una consulta, es la policía!","That's not a price check, it's the police!","Isso não é uma consulta, é a polícia!"
+OFERTON_PYRAMID,"¡Mi pirámide! ¡Limpieza en la entrada!","My pyramid! Cleanup at the entrance!","Minha pirâmide! Limpeza na entrada!"
+OFERTON_FRIDGE,"¡La heladera! ¡Se me escapa el frío!","The fridge! The cold is getting out!","A geladeira! O frio está escapando!"
+OFERTON_SPEAKER_AISLE,"¡Atención, señores clientes: hay policías en el pasillo %d! ¡Aprovechen la oferta!","Attention, shoppers: there are police in aisle %d! Don't miss the deal!","Atenção, senhores clientes: há policiais no corredor %d! Aproveitem a promoção!"
+OFERTON_SPEAKER_STORE,"¡Atención, señores clientes: hay policías en el súper! ¡No se asusten y sigan comprando!","Attention, shoppers: there are police in the store! Don't panic and keep shopping!","Atenção, senhores clientes: há policiais no mercado! Não se assustem e continuem comprando!"
+PROMPT_TALK_LALO,"E: hablar con Lalo","E: talk to Lalo","E: falar com o Lalo"
+LALO_IDLE_1,"Una más arriba… una más… ¡perfecta!","One more on top… one more… perfect!","Mais uma em cima… mais uma… perfeita!"
+LALO_IDLE_2,"Esta pirámide va a ser la más alta del barrio.","This pyramid is going to be the tallest in the neighborhood.","Esta pirâmide vai ser a mais alta do bairro."
+LALO_IDLE_3,"Si el jefe me ve parado, me descuenta el sándwich.","If the boss sees me standing around, he docks my sandwich.","Se o chefe me vir parado, desconta o meu sanduíche."
+LALO_HAND_ME,"No puedo charlar, oficial, estoy trabajando. Si me alcanzas latas, capaz que se me escapa algo.","Can't chat, officer, I'm working. Hand me some cans and maybe something slips out.","Não posso conversar, policial, estou trabalhando. Se você me passar latas, talvez eu solte alguma coisa."
+LALO_AGAIN,"Ya te conté todo, oficial. Ahora déjame apilar.","I already told you everything, officer. Now let me stack.","Já te contei tudo, policial. Agora me deixa empilhar."
+LALO_THANKS_0,"¡Gracias! Justo la que me faltaba.","Thanks! Just the one I needed.","Valeu! Justo a que faltava."
+LALO_THANKS_1,"¡Una! Sigue así y te cuento algo…","One! Keep it up and I'll tell you something…","Uma! Continue assim e eu te conto uma coisa…"
+LALO_THANKS_2,"¡Dos! Una más y hablo.","Two! One more and I'll talk.","Duas! Mais uma e eu falo."
+LALO_NOTHING,"La verdad, no vi nada raro. Bueno, el jefe se compró un yate con forma de changuito, pero eso es normal, ¿no?","Honestly, I didn't see anything odd. Well, the boss bought a yacht shaped like a shopping cart, but that's normal, right?","Na verdade, não vi nada estranho. Bom, o chefe comprou um iate em forma de carrinho, mas isso é normal, né?"
+LALO_FELL,"¡Nooo, mi pirámide! A empezar de nuevo…","Nooo, my pyramid! Back to square one…","Nããão, minha pirâmide! Começar de novo…"
+BRIEF_SUPER_TIP_B,"Llegó una denuncia anónima: en el «Súper El Changuito» todo está en oferta y nadie sabe por qué, y el gerente se compró un yate con forma de changuito.","We got an anonymous tip: at «Súper El Changuito» everything is on sale and nobody knows why, and the manager just bought a yacht shaped like a shopping cart.","Chegou uma denúncia anônima: no «Súper El Changuito» tudo está em promoção e ninguém sabe por quê, e o gerente comprou um iate em forma de carrinho de compras."
+BRIEF_SUPER_TIP_D,"El súper sigue abierto, con clientes. Don Ofertón, el gerente, lo anuncia todo por el altavoz. La oficina está cerrada con llave.","The store is still open, with customers. Don Ofertón, the manager, announces everything on the loudspeaker. The office is locked.","O mercado continua aberto, com clientes. Don Ofertón, o gerente, anuncia tudo no alto-falante. O escritório está trancado."
+BRIEF_SUPER_TIP_E,"Y no rompan nada: la pirámide de latas y el vidrio de la heladera se los descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.","And don't break anything: the pyramid of cans and the fridge's glass come out of your pay. Press Q to see your checklist.","E não quebrem nada: a pirâmide de latas e o vidro da geladeira saem do salário de vocês. Com Q vocês veem a lista do que têm que fazer."
+SUSPECT_super_dates,Las fechas cambiadas,The changed dates,As datas trocadas
+SUSPECT_super_cheese,El queso de mentira,The fake cheese,O queijo de mentira
+SUSPECT_super_carts,Los changuitos de doble fondo,The double-bottomed carts,Os carrinhos de fundo falso
+SUSPECT_super_scale,La balanza que suma,The scale that adds up,A balança que soma
+SUSPECT_super_raffle,El sorteo arreglado,The rigged raffle,O sorteio arranjado
+SUSPECT_super_aisle13,El pasillo 13,Aisle 13,O corredor 13
+CLUE_SUSPECT_super_dates,"Un pedido a la imprenta: «5000 etiquetas que digan ‘vence en 2099’. Urgente».","An order to the print shop: «5000 labels that say ‘expires in 2099’. Urgent».","Um pedido à gráfica: «5000 etiquetas que digam ‘vence em 2099’. Urgente»."
+CLUE_SUSPECT_super_cheese,"Una nota: «La horma grande no se vende. Si alguien la pide, se agotó».","A note: «The big wheel of cheese is not for sale. If anyone asks, it's sold out».","Um bilhete: «A forma grande não se vende. Se alguém pedir, acabou»."
+CLUE_SUSPECT_super_carts,"Un recibo de un herrero: «Changuitos con piso extra. Que no se note».","A blacksmith's receipt: «Carts with an extra floor. Make it look normal».","Um recibo de um ferreiro: «Carrinhos com piso extra. Que não se note»."
+CLUE_SUSPECT_super_scale,"Una queja de una clienta: «Una manzana me pesó medio kilo. ¡Una!».","A customer's complaint: «One apple weighed half a kilo. One!».","Uma reclamação de uma cliente: «Uma maçã pesou meio quilo. Uma!»."
+CLUE_SUSPECT_super_raffle,"Una lista de ganadores del sorteo: todos se llaman Ofertón.","A list of the raffle's winners: they're all called Ofertón.","Uma lista de ganhadores do sorteio: todos se chamam Ofertón."
+CLUE_SUSPECT_super_aisle13,"Un plano del súper con 4 pasillos. Alguien le dibujó un quinto a lápiz: «13».","A map of the store with 4 aisles. Someone drew a fifth in pencil: «13».","Uma planta do mercado com 4 corredores. Alguém desenhou um quinto a lápis: «13»."
+BRIEF_SUPER_DATES_B,"Don Ofertón compra mercadería vencida por dos pesos y le pega una etiqueta nueva que dice que vence en 2099.","Don Ofertón buys expired goods for pennies and sticks a new label on them that says they expire in 2099.","Don Ofertón compra mercadoria vencida por centavos e cola uma etiqueta nova que diz que vence em 2099."
+BRIEF_SUPER_DATES_C,"Traigan la pistola etiquetadora en el baúl del patrullero. Sin eso no hay caso.","Bring the labeling gun in the patrol car's trunk. Without it there's no case.","Tragam a pistola de etiquetas no porta-malas da viatura. Sem ela não tem caso."
+BRIEF_SUPER_DATES_D,"Si encuentran la caja de etiquetas viejas o el yogur de hace treinta años, mejor: todo suma.","If you find the box of old labels or the thirty-year-old yogurt, even better: it all counts.","Se acharem a caixa de etiquetas velhas ou o iogurte de trinta anos atrás, melhor: tudo conta."
+OBJ_FIND_PRICE_GUN,Llevarse la pistola etiquetadora,Take the labeling gun,Levar a pistola de etiquetas
+OBJ_EXTRA_LABEL_BOX,Extra: la caja de etiquetas viejas,Extra: the box of old labels,Extra: a caixa de etiquetas velhas
+OBJ_EXTRA_OLD_YOGURT,Extra: el yogur de hace treinta años,Extra: the thirty-year-old yogurt,Extra: o iogurte de trinta anos
+OBJ_ENTER_SUPER,Entrar al súper (está abierto),Get into the store (it's open),Entrar no mercado (está aberto)
+OBJ_GUESS_SUPER,"Averiguar qué pasa en el súper (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the store (with Q open, hold 1, 2 or 3)","Descobrir o que acontece no mercado (com Q aberto, segure 1, 2 ou 3)"
+OBJ_BROKEN_SUPER,Cosas rotas: %d (multa: %d),Broken things: %d (fines: %d),Coisas quebradas: %d (multa: %d)
+OBJ_COMPLAINT_SUPER,Queja de Don Ofertón: %d%%,Don Ofertón's complaint: %d%%,Queixa de Don Ofertón: %d%%
+OFERTON_SLIP,"«¡Atención, señores clientes: no hay nada escondido %s!... Digo, ¡oferta de fideos!»","“Attention, shoppers: there's nothing hidden %s!... I mean, noodles on sale!”","“Atenção, senhores clientes: não tem nada escondido %s!... Quer dizer, macarrão em promoção!”"
+CLUE_LALO,Lalo vio a Don Ofertón esconder algo %s,Lalo saw Don Ofertón hide something %s,O Lalo viu Don Ofertón esconder algo %s
+LALO_CLUE_super_dates,"«Te cuento, pero no le digas a nadie: vi al jefe esconder algo %s. Y las latas viejas… las despega y les pone otra fecha.»","“I'll tell you, but don't tell anyone: I saw the boss hide something %s. And the old cans… he peels them and puts another date on.”","“Vou te contar, mas não conta pra ninguém: vi o chefe esconder algo %s. E as latas velhas… ele descola e põe outra data.”"
+PROMPT_SUPER_PEELED_CAN,"E: mirar la lata","E: look at the can","E: olhar a lata"
+PROMPT_SUPER_SNACK,"E: probar un bocado","E: take a bite","E: provar um pedaço"
+SUPER_DATES_CLUE,"Una lata con la etiqueta despegada: abajo dice «vence en 1994». Arriba, «vence en 2099».","A can with its label peeling off: underneath it says «expires in 1994». On top, «expires in 2099».","Uma lata com a etiqueta descolando: embaixo diz «vence em 1994». Em cima, «vence em 2099»."
+SUPER_DATES_GRIMACE,"¡Puaj! Esto tiene gusto a otro siglo.","Yuck! This tastes like another century.","Eca! Isso tem gosto de outro século."
+CRIME_owner_supermarket,"¡Novatos! Ayer se trajeron a Don Ofertón, el gerente del Súper El Changuito, y lo tenemos en la sala de interrogatorio. Algo escondió en el súper que no encontraron.","Rookies! Yesterday you brought in Don Ofertón, the manager of Súper El Changuito, and we have him in the interrogation room. He hid something in the store that you didn't find.","Novatos! Ontem vocês trouxeram Don Ofertón, o gerente do Súper El Changuito, e ele está na sala de interrogatório. Ele escondeu algo no mercado que vocês não acharam."
+CONFESS_owner_supermarket,"¡Está bien! ¡Fui yo! Pero admitan que era una oferta increíble.","Fine! It was me! But admit it was an incredible deal.","Tá bom! Fui eu! Mas admitam que era uma promoção incrível."
+BRIEF_SUPER_CHEESE_B,"Don Ofertón vende queso que no es queso, y la plata la guarda adentro de una horma gigante de plástico.","Don Ofertón sells cheese that isn't cheese, and he keeps the money inside a giant plastic cheese wheel.","Don Ofertón vende queijo que não é queijo, e guarda o dinheiro dentro de uma forma gigante de plástico."
+BRIEF_SUPER_CHEESE_C,"Traigan la horma llena de billetes en el baúl del patrullero. Pesa 25 kilos: entre dos.","Bring the wheel full of bills in the patrol car's trunk. It weighs 25 kilos: two of you.","Tragam a forma cheia de notas no porta-malas da viatura. Pesa 25 quilos: em dois."
+BRIEF_SUPER_CHEESE_D,"Si encuentran el molde de las hormas o la cera amarilla, mejor: todo suma.","If you find the wheel mold or the yellow wax, even better: it all counts.","Se acharem o molde das formas ou a cera amarela, melhor: tudo conta."
+OBJ_FIND_FAKE_CHEESE,Llevarse la horma de queso llena de billetes,Take the cheese wheel full of bills,Levar a forma de queijo cheia de notas
+OBJ_EXTRA_CHEESE_MOLD,Extra: el molde de las hormas,Extra: the wheel mold,Extra: o molde das formas
+OBJ_EXTRA_WAX_BLOCK,Extra: la cera amarilla,Extra: the yellow wax,Extra: a cera amarela
+LALO_CLUE_super_cheese,"«Te cuento, pero no le digas a nadie: vi al jefe esconder algo %s. Y el queso de la heladera… yo lo probé y tenía gusto a vela.»","“I'll tell you, but don't tell anyone: I saw the boss hide something %s. And the cheese in the fridge… I tried it and it tasted like a candle.”","“Vou te contar, mas não conta pra ninguém: vi o chefe esconder algo %s. E o queijo da geladeira… eu provei e tinha gosto de vela.”"
+SUPER_CHEESE_CLUE,Una horma de queso de la mesa rebotó como una pelota: es de plástico,A cheese wheel from the table bounced like a ball: it's plastic,Uma forma de queijo da mesa quicou como uma bola: é de plástico
+SUPER_CHEESE_BOING,¡Boing!,Boing!,Boing!
+BRIEF_SUPER_CARTS_B,"Los changuitos del súper tienen doble fondo: los clientes amigos de Don Ofertón salen con mercadería escondida abajo, sin pagar.","The store's shopping carts have a false bottom: Don Ofertón's friends walk out with goods hidden underneath, without paying.","Os carrinhos do mercado têm fundo falso: os clientes amigos de Don Ofertón saem com mercadoria escondida embaixo, sem pagar."
+BRIEF_SUPER_CARTS_C,"Traigan el changuito de doble fondo lleno de mercadería en el baúl del patrullero. Pesa 15 kilos y no entra en ningún lado.","Bring the false-bottomed cart full of goods in the patrol car's trunk. It weighs 15 kilos and fits nowhere.","Tragam o carrinho de fundo falso cheio de mercadoria no porta-malas da viatura. Pesa 15 quilos e não cabe em lugar nenhum."
+BRIEF_SUPER_CARTS_D,"Si encuentran la soldadora o el plano para agrandar changuitos, mejor: todo suma.","If you find the welder or the plan to enlarge carts, even better: it all counts.","Se acharem a máquina de solda ou a planta para aumentar carrinhos, melhor: tudo conta."
+OBJ_FIND_DOUBLE_CART,Llevarse el changuito de doble fondo,Take the false-bottomed cart,Levar o carrinho de fundo falso
+OBJ_EXTRA_WELDER,Extra: la soldadora,Extra: the welder,Extra: a máquina de solda
+OBJ_EXTRA_CART_PLAN,Extra: el plano para agrandar changuitos,Extra: the plan to enlarge carts,Extra: a planta para aumentar carrinhos
+LALO_CLUE_super_carts,"«Te cuento, pero no le digas a nadie: vi al jefe esconder algo %s. Y hay un changuito que pesa el doble… yo no lo empujo más.»","“I'll tell you, but don't tell anyone: I saw the boss hide something %s. And there's a cart that weighs twice as much… I don't push it anymore.”","“Vou te contar, mas não conta pra ninguém: vi o chefe esconder algo %s. E tem um carrinho que pesa o dobro… eu não empurro mais.”"
+SUPER_CARTS_CLUE,Un changuito no rueda derecho y suena a botellas: tiene algo abajo,A cart won't roll straight and sounds like bottles: there's something underneath,Um carrinho não anda reto e soa como garrafas: tem algo embaixo
+SUPER_CARTS_CLINK,¡Clinc clinc!,Clink clink!,Plim plim!
+BRIEF_SUPER_SCALE_B,"La balanza de la verdulería tiene un tornillo mágico: cada manzana pesa más de lo que pesa, y Don Ofertón cobra la diferencia.","The produce scale has a magic screw: every apple weighs more than it does, and Don Ofertón charges the difference.","A balança do hortifrúti tem um parafuso mágico: cada maçã pesa mais do que pesa, e Don Ofertón cobra a diferença."
+BRIEF_SUPER_SCALE_C,"Traigan el tornillo mágico en el baúl del patrullero. Es chiquito: no lo pierdan.","Bring the magic screw in the patrol car's trunk. It's tiny: don't lose it.","Tragam o parafuso mágico no porta-malas da viatura. É pequenininho: não o percam."
+BRIEF_SUPER_SCALE_D,"Si encuentran el manual «Cómo pesar más» o el destornillador dorado, mejor: todo suma.","If you find the «How to weigh more» manual or the golden screwdriver, even better: it all counts.","Se acharem o manual «Como pesar mais» ou a chave de fenda dourada, melhor: tudo conta."
+OBJ_FIND_MAGIC_SCREW,Llevarse el tornillo mágico de la balanza,Take the scale's magic screw,Levar o parafuso mágico da balança
+OBJ_EXTRA_WEIGH_MANUAL,Extra: el manual «Cómo pesar más»,Extra: the «How to weigh more» manual,Extra: o manual «Como pesar mais»
+OBJ_EXTRA_GOLDEN_SCREWDRIVER,Extra: el destornillador dorado,Extra: the golden screwdriver,Extra: a chave de fenda dourada
+LALO_CLUE_super_scale,"«Te cuento, pero no le digas a nadie: vi al jefe esconder algo %s. Y yo en la balanza de la verdulería peso 90 kilos… y no peso 90 kilos.»","“I'll tell you, but don't tell anyone: I saw the boss hide something %s. And on the produce scale I weigh 90 kilos… and I don't weigh 90 kilos.”","“Vou te contar, mas não conta pra ninguém: vi o chefe esconder algo %s. E na balança do hortifrúti eu peso 90 quilos… e eu não peso 90 quilos.”"
+SUPER_SCALE_CLUE,La balanza de la verdulería marca 300 g de más: vacía también marca 300 g,The produce scale shows 300 g too much: empty it also shows 300 g,A balança do hortifrúti marca 300 g a mais: vazia também marca 300 g
+SUPER_SCALE_READOUT,%.1f kg,%.1f kg,%.1f kg
+BRIEF_SUPER_RAFFLE_B,"Don Ofertón sortea un auto entre los clientes, pero todos los cupones de la urna son de su primo.","Don Ofertón is raffling a car among the customers, but every coupon in the urn belongs to his cousin.","Don Ofertón sorteia um carro entre os clientes, mas todos os cupons da urna são do primo dele."
+BRIEF_SUPER_RAFFLE_C,"Traigan la urna del sorteo en el baúl del patrullero, con los cupones adentro.","Bring the raffle urn in the patrol car's trunk, with the coupons inside.","Tragam a urna do sorteio no porta-malas da viatura, com os cupons dentro."
+BRIEF_SUPER_RAFFLE_D,"Si encuentran el auto de cartón del premio o la foto de los ganadores, mejor: todo suma.","If you find the cardboard prize car or the photo of the winners, even better: it all counts.","Se acharem o carro de papelão do prêmio ou a foto dos ganhadores, melhor: tudo conta."
+OBJ_FIND_RAFFLE_URN,Llevarse la urna del sorteo,Take the raffle urn,Levar a urna do sorteio
+OBJ_EXTRA_PRIZE_CAR,Extra: el auto de cartón del premio,Extra: the cardboard prize car,Extra: o carro de papelão do prêmio
+OBJ_EXTRA_WINNERS_PHOTO,Extra: la foto de los ganadores,Extra: the photo of the winners,Extra: a foto dos ganhadores
+LALO_CLUE_super_raffle,"«Te cuento, pero no le digas a nadie: vi al jefe esconder algo %s. Y el sorteo… ganó el primo. Otra vez. Y la vez anterior también.»","“I'll tell you, but don't tell anyone: I saw the boss hide something %s. And the raffle… the cousin won. Again. And the time before, too.”","“Vou te contar, mas não conta pra ninguém: vi o chefe esconder algo %s. E o sorteio… o primo ganhou. De novo. E da outra vez também.”"
+PROMPT_SUPER_COUPONS,"E: mirar los cupones","E: look at the coupons","E: olhar os cupons"
+SUPER_RAFFLE_SIGN,¡Sorteamos un auto!,We're raffling a car!,Sorteamos um carro!
+SUPER_RAFFLE_CLUE,"El cupón de arriba ya viene lleno: «Nombre: Primo Ofertón. Teléfono: el mismo de Don Ofertón»","The top coupon comes already filled in: «Name: Cousin Ofertón. Phone: the same as Don Ofertón's»","O cupom de cima já vem preenchido: «Nome: Primo Ofertón. Telefone: o mesmo de Don Ofertón»"
+BRIEF_SUPER_AISLE13_B,"Don Ofertón vende un tónico «Crece Pelo al Instante» que no hace crecer nada, en un pasillo que no está en el plano.","Don Ofertón sells a «Crece Pelo al Instante» hair tonic that grows nothing, in an aisle that isn't on the plan.","Don Ofertón vende um tônico «Crece Pelo al Instante» que não faz crescer nada, num corredor que não está na planta."
+BRIEF_SUPER_AISLE13_C,"Traigan la caja de tónico en el baúl del patrullero. Primero hay que encontrar el pasillo.","Bring the box of tonic in the patrol car's trunk. First you have to find the aisle.","Tragam a caixa de tônico no porta-malas da viatura. Primeiro é preciso achar o corredor."
+BRIEF_SUPER_AISLE13_D,"Si encuentran los frascos de muestra o el bigote postizo de Don Ofertón, mejor: todo suma.","If you find the sample bottles or Don Ofertón's fake mustache, even better: it all counts.","Se acharem os frascos de amostra ou o bigode postiço de Don Ofertón, melhor: tudo conta."
+OBJ_FIND_TONIC_BOX,Llevarse la caja de tónico Crece Pelo,Take the box of hair tonic,Levar a caixa de tônico Crece Pelo
+OBJ_EXTRA_TONIC_SAMPLES,Extra: los frascos de muestra,Extra: the sample bottles,Extra: os frascos de amostra
+OBJ_EXTRA_FAKE_MUSTACHE,Extra: el bigote postizo,Extra: the fake mustache,Extra: o bigode postiço
+LALO_CLUE_super_aisle13,"«Te cuento, pero no le digas a nadie: vi al jefe esconder algo %s. Y al fondo del pasillo 4 hay una góndola que a veces está corrida… yo no vi nada.»","“I'll tell you, but don't tell anyone: I saw the boss hide something %s. And at the back of aisle 4 there's a gondola that's sometimes been moved… I didn't see anything.”","“Vou te contar, mas não conta pra ninguém: vi o chefe esconder algo %s. E no fundo do corredor 4 tem uma gôndola que às vezes está fora do lugar… eu não vi nada.”"
+SUPER_AISLE_13,Pasillo 13 · Milagros,Aisle 13 · Miracles,Corredor 13 · Milagres
+SUPER_AISLE13_CREAK,¡Crrrrc!,Creeeak!,Crrrrc!
+SUPER_AISLE13_CLUE,"La góndola del fondo del pasillo 4 se corrió: atrás hay un pasillo 13 que no está en el plano","The gondola at the back of aisle 4 slid aside: behind it there's an aisle 13 that isn't on the plan","A gôndola do fundo do corredor 4 deslizou: atrás tem um corredor 13 que não está na planta"
+HINT_ESCAPE_supermarket,"¡Don Ofertón vio la prueba y se escapa en el auto! Tienen un minuto para agarrarlo.","Don Ofertón saw the evidence and is getting away in the car! You have one minute to catch him.","O Don Ofertón viu a prova e está fugindo no carro! Vocês têm um minuto para pegá-lo."
+CHASE_SUPERMARKET_LINE_1,"¡Atención, señores policías: hoy la detención viene con descuento!","Attention, officers: today's arrest comes at a discount!","Atenção, senhores policiais: hoje a prisão vem com desconto!"
+CHASE_SUPERMARKET_LINE_2,"¡No me escapaba! ¡Iba a buscar cambio!","I wasn't running away! I was going to get change!","Eu não estava fugindo! Ia buscar troco!"
+CHASE_SUPERMARKET_LINE_3,"¡Lleven dos patrulleros y el tercero es gratis!","Take two patrol cars and the third one's free!","Levem duas viaturas e a terceira é grátis!"

@@ -76,6 +76,7 @@ const SUSPECT_MODELS := {
 	"owner_garage": "res://assets/models/npc_don_tuerca.glb",
 	"owner_birthday": "res://assets/models/npc_chispita.glb",
 	"owner_cinema": "res://assets/models/npc_dona_bobina.glb",
+	"owner_supermarket": "res://assets/models/npc_don_oferton.glb",
 	# The pastry contest's culprit (escena-del-crimen.md), accused at the board.
 	"owner_cook": "res://assets/models/npc_pastelero.glb",
 	# The circus's culprit (escena-circo.md), accused at the board.

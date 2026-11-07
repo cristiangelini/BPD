@@ -72,6 +72,8 @@ const PLACES := [
 	{"id": "fair", "block": Vector2i(7, 4), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.82, 0.23, 0.23), "sign": "PLACE_FAIR", "park": true},
 	# The neighborhood cinema "Butaca Floja" (allanamiento-cine.md).
 	{"id": "cinema", "block": Vector2i(0, 4), "side": "n", "along": 0.0, "size": Vector3(22, 9, 30), "color": Color(0.82, 0.7, 0.55), "sign": "PLACE_CINEMA"},
+	# The supermarket "Súper El Changuito" (allanamiento-super.md), on the east edge.
+	{"id": "supermarket", "block": Vector2i(7, 1), "side": "s", "along": 0.0, "size": Vector3(30, 7, 24), "color": Color(0.95, 0.86, 0.4), "sign": "PLACE_SUPERMARKET"},
 ]
 
 ## The plaza fills its block.
