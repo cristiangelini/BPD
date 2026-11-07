@@ -276,6 +276,8 @@ func _ready() -> void:
 	raid.failed_label = %CaseFailed
 	raid.shift_screen = $ShiftScreen
 	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
 	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
@@ -322,6 +324,29 @@ func _place_facts() -> Dictionary:
 		"broken": cases_broken.count(true) + int(armor_down),
 		"complaint": owner_boss.complaint,
 	}
+
+
+## What a guest's shop needs from the host's (CaseSync): the glass cases and the armor, what's for sale at what price
+## (the counter only trades on the host), the money that changed hands and the story's rig.
+func net_state() -> Dictionary:
+	var tags := {}
+	for item: Grabbable in counter.for_sale:
+		if is_instance_valid(item):
+			tags[String(get_path_to(item))] = counter.for_sale[item]
+	return {"cases": cases_broken.duplicate(), "armor": armor_down, "tags": tags, "spent": counter.spent,
+		"cash_out": counter.cash_out, "rig": rig.net_state()}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	for i in CASES.size():
+		if state.cases[i]:
+			break_case(i)
+	if state.armor:
+		knock_armor()
+	counter.follow(self, state.tags)
+	counter.spent = state.spent
+	counter.cash_out = state.cash_out
+	rig.apply_net_state(state.rig)
 
 
 ## The story with that id from --story=<id> among the user args, or one drawn from the seed.
@@ -576,9 +601,9 @@ func _physics_process(delta: float) -> void:
 	_next_turn(delta)
 
 
-## Between turns the next customer in line goes to the counter.
+## Between turns the next customer in line goes to the counter (the host's customers; a guest's follow).
 func _next_turn(delta: float) -> void:
-	if on_turn:
+	if on_turn or raid.follower:
 		return
 	_turn_left -= delta
 	if _turn_left > 0.0:

@@ -55,6 +55,23 @@ func stock(item: Grabbable, price: int) -> void:
 	_tag(item, price)
 
 
+## A guest's counter takes the host's prices (shop path -> price): what's for sale gets its tag, the rest loses it.
+func follow(place: PawnShop, tags: Dictionary) -> void:
+	var now := {}
+	for path: String in tags:
+		var item := place.get_node_or_null(path) as Grabbable
+		if item:
+			now[item] = tags[path]
+	for item: Grabbable in for_sale.keys():
+		if not now.has(item) and is_instance_valid(item):
+			_untag(item)
+	for item: Grabbable in now:
+		if for_sale.get(item, -1) != now[item]:
+			_untag(item)
+			_tag(item, now[item])
+	for_sale = now
+
+
 ## What the shop pays for `item`.
 static func appraise(item: Grabbable) -> int:
 	if item is Evidence:
@@ -156,4 +173,5 @@ func _tag(item: Grabbable, price: int) -> void:
 func _untag(item: Grabbable) -> void:
 	var tag := item.get_node_or_null("PriceTag")
 	if tag:
+		item.remove_child(tag)
 		tag.queue_free()

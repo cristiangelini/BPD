@@ -4,7 +4,8 @@ extends PawnRig
 ## The smuggler crocodile (allanamiento-empenos.md, "El cocodrilo contrabandista"): the shop's stuffed crocodile is
 ## full of smuggled jewels (14 kg, the main evidence, in plain sight with its "Not for sale" tag); the customs label
 ## and the ship's receipt are hidden. It tinkles when it moves (the first time, that's the story's clue), and moved
-## hard it drops a pearl from its mouth, once. Every number here is (propuesta).
+## hard it drops a pearl from its mouth, once (only to look at: it rolls nowhere, so every PC shows it the same).
+## Online the host's crocodile decides, and the guests' follow (net_state). Every number here is (propuesta).
 
 const CROC_SCENE := preload("res://scenes/props/jewel_croc.tscn")
 const PEARL_MODEL := preload("res://assets/models/pawn_pearl.glb")
@@ -14,7 +15,7 @@ const DROP_SPEED := 3.0
 
 var croc: Evidence
 var tinkled := false
-var pearl: Grabbable
+var pearl: Node3D
 var _tinkle_wait := 0.0
 
 
@@ -52,10 +53,11 @@ func tinkle() -> void:
 func drop_pearl() -> void:
 	if pearl:
 		return
-	pearl = ClubEvidence.make_item("Pearl", PEARL_MODEL, Vector3(0.03, 0.03, 0.03), 0.02)
-	(pearl.get_child(0) as CollisionShape3D).position.y = 0.015
+	pearl = PEARL_MODEL.instantiate()
+	pearl.name = "Pearl"
 	shop.add_child(pearl)
-	pearl.global_position = croc.global_position + Vector3.UP * 0.5
+	var mouth := shop.to_local(croc.to_global(Vector3(1.1, 0, 0)))
+	pearl.position = Vector3(mouth.x, PawnShop.FLOOR_TOP, mouth.z)
 	shop.raid.add_clue(tr("CLUE_CROC_PEARL"))
 
 
@@ -64,7 +66,20 @@ func _physics_process(delta: float) -> void:
 		return
 	_tinkle_wait -= delta
 	var speed := croc.linear_velocity.length()
+	if not multiplayer.is_server():
+		return
 	if _tinkle_wait <= 0.0 and (speed > TINKLE_SPEED or croc.is_held()):
 		tinkle()
-	if speed > DROP_SPEED and multiplayer.is_server():
+	if speed > DROP_SPEED:
+		drop_pearl()
+
+
+func net_state() -> Variant:
+	return [tinkled, pearl != null]
+
+
+func apply_net_state(state: Variant) -> void:
+	if state[0] and not tinkled:
+		tinkle()
+	if state[1]:
 		drop_pearl()
