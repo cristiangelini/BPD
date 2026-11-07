@@ -10,7 +10,8 @@ extends Node3D
 ## the owner's office, locked with the till's key. Something thrown hard at a display pane or at an ink jar breaks it,
 ## a fine each. Don Renglón walks between the counter and the press and fills his complaint; the fax's "enviar prueba"
 ## sends him to the chibalete with an urgent order (step 4). Tipito, the apprentice, sorts type by the chibalete and
-## wants one of the six wooden letters lying around (step 5). Every number here is (propuesta).
+## wants one of the six wooden letters lying around (step 5). The case is one of its stories (STORIES), drawn with the
+## seed, run by the same RaidCase as the other places (step 6). Every number here is (propuesta).
 
 signal pane_broken(index: int)
 signal jar_broken(index: int)
@@ -18,6 +19,34 @@ signal barrel_tipped(index: int)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const OWNER_SCENE := preload("res://scenes/npc/print_shop_owner.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the print shop can be suspected of (allanamiento-imprenta.md, "Las historias"): SUSPECT_<id> names it
+## and CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["fake_bills", "fake_tickets", "fake_diplomas", "stolen_book", "fake_stickers", "fake_fines"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_PRINT_SHOP_TIP_B", "BRIEF_TIP_C",
+	"BRIEF_PRINT_SHOP_TIP_D", "BRIEF_PRINT_SHOP_TIP_E"]
+## The stories the print shop can tell, like Nursery.STORIES: what the comisario says once it's guessed, its "find it"
+## row, what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the checklist
+## rows of its extras and its rig. With "main_hidden" the first hidden item is the main evidence and the rest extras.
+const STORIES := {
+	"fake_bills": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_FAKE_BILLS_B", "BRIEF_FAKE_BILLS_C", "BRIEF_FAKE_BILLS_D"],
+		"find": "OBJ_FIND_BILLS_PLATE",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/bills_plate.tscn"), preload("res://scenes/props/bill_loupe.tscn"),
+			preload("res://scenes/props/green_ink_tin.tscn")],
+		"half_heights": [0.03, 0.015, 0.07],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_BILL_LOUPE", "OBJ_EXTRA_GREEN_INK"],
+		"rig": preload("res://scripts/case/print_shop/fake_bills_rig.gd"),
+	},
+}
+## Where the suspicion notes can lie: on the floor by the door, by the display, the paper store, the back, the east
+## side and by the binding table.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(-4.5, FLOOR_TOP, 7.0), Vector3(5.5, FLOOR_TOP, 6.5), Vector3(-8.5, FLOOR_TOP, -6.0),
+	Vector3(-2.0, FLOOR_TOP, -6.5), Vector3(9.0, FLOOR_TOP, 3.0), Vector3(-6.0, FLOOR_TOP, 3.5),
+]
 const PRESS_MODEL := preload("res://assets/models/printing_press.glb")
 const BARREL_MODELS: Array[PackedScene] = [preload("res://assets/models/ink_barrel_blue.glb"),
 	preload("res://assets/models/ink_barrel_red.glb"), preload("res://assets/models/ink_barrel_yellow.glb"),
@@ -168,10 +197,23 @@ var cracked: Array[int] = []
 var jars: Array[Node3D] = []
 var broken_jars: Array[int] = []
 var broken_goods := 0
+## The case flow every raid shares.
+var raid: RaidCase
+var car: PatrolCar
 ## Money taken off the case pay: the panes and the jars.
-var fines := 0
-## Same seed, same print shop (the stories and the hiding spots come from it, step 6).
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## Same seed, same print shop: the story and where its things go. 0 draws one.
 @export var case_seed := 0
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: PrintShopRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
 var _build: PlaceBuilder
 
 
@@ -180,6 +222,20 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	car = $PatrolCar
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	ink = InkSpills.new()
 	ink.name = "Ink"
@@ -198,11 +254,91 @@ func _ready() -> void:
 	_park_car()
 	city_map = CityMap.new()
 	add_child(city_map)
-	city_map.setup(city, "print_shop", $PatrolCar)
+	city_map.setup(city, "print_shop", car)
+	raid.station_parking = station_parking
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = owner_npc
+	raid.owner_id = "print_shop"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The print shop's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_PRINT_SHOP",
+		"guess_key": "OBJ_GUESS_PRINT_SHOP",
+		"broken_key": "OBJ_BROKEN_PRINT_SHOP",
+		"complaint_key": "OBJ_COMPLAINT_PRINT_SHOP",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_goods,
+		"complaint": owner_npc.complaint,
+	}
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Don Renglón lets slip when asked (where the story's things are, in an order drawn from the seed), and what
+## Tipito saw: where he hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		owner_npc.slips.append(tr("RENGLON_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	owner_npc.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	kid.clue = tr("CLUE_TIPITO") % where
+	kid.clue_speech = tr("TIPITO_CLUE_" + story_id) % where
+	kid.told.connect(raid.add_clue)
 
 
 func _park_car() -> void:
-	var car: PatrolCar = $PatrolCar
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
 	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
 
@@ -387,6 +523,7 @@ func break_pane(index: int) -> void:
 	cracked.append(index)
 	broken_goods += 1
 	fines += PANE_FINE
+	raid.float_label("-%d" % PANE_FINE, panes[index].global_position + Vector3.UP, Color(1, 0.3, 0.25))
 	var pane := panes[index]
 	(pane.get_child(0) as CollisionShape3D).set_deferred("disabled", true)
 	(pane.get_child(1) as MeshInstance3D).material_override = _glass(CRACKED)
@@ -403,6 +540,7 @@ func break_jar(index: int) -> void:
 	broken_jars.append(index)
 	broken_goods += 1
 	fines += JAR_FINE
+	raid.float_label("-%d" % JAR_FINE, jars[index].global_position + Vector3.UP, Color(1, 0.3, 0.25))
 	jars[index].visible = false
 	ink.spill(Vector3(SHELF_AT.x - 1.0, FLOOR_TOP, jars[index].position.z), 0)
 	_say(jars[index].position + Vector3(-0.6, 1.0, 0), "PRINT_SHOP_JAR_BROKEN")
@@ -421,6 +559,7 @@ func _place_owner() -> void:
 	add_child(owner_npc)
 	owner_npc.start_at(0)
 	office_door.broken.connect(owner_npc.door_broken)
+	owner_npc.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_PRINT_SHOP"))
 	till.opened.connect(func(at: Vector3) -> void: owner_npc.saw(at, FloorBoss.SAW_TILL))
 	fax.caught_on.connect(func() -> void: owner_npc.scold(CAUGHT_ON, "RENGLON_CAUGHT_ON"))
 	ink.footprint_left.connect(_on_footprint)

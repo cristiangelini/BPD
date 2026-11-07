@@ -158,6 +158,12 @@ suman 500.
   arranca, sale "impresa". La que pide es la letra número `semilla % 6`. Cuenta como "traída" la letra que un policía
   tuvo en la mano en los últimos 3 s, a 1,5 m de él. No repite lo mismo de una misma letra antes de 4 s. Captura en
   `imprenta/paso5-tipito.png`.
+- **Paso 6 (el caso y los billetes de mentira):** `PrintShop.STORIES` con la primera historia, el mismo `RaidCase` que
+  el vivero. Lo nuevo es `PrintShopRig` (la base) y `FakeBillsRig`. La plancha (8 kg) va siempre a un escondite de
+  cosas pesadas. El billete mal cortado asoma del canasto de reciclar y dice "1000 RENGLONES". El policía que pasa a
+  2 m del canasto lo ve, y es pista la primera vez. La rotativa tira billetes verdes en vez de hojas
+  (`PrintingPress.sheet_color` y `sheet_size`). Don Renglón aparece en el interrogatorio como `owner_print_shop`.
+  Capturas en `imprenta/paso6-billete-malo.png` e `imprenta/paso6-billetes.png`.
 
 ## Preguntas abiertas para Cristian
 1. ¿La cinta de la rotativa lleva también a los policías (frenados por la baranda), o solo a las cosas?

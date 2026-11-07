@@ -38,6 +38,9 @@ var runs := 0
 ## Everything it has printed, and the sheets in the air: {"node": MeshInstance3D, "velocity": Vector3, "age": float}.
 var printed_things: Array[RigidBody3D] = []
 var sheets: Array[Dictionary] = []
+## What the sheets look like (a story can make them bills).
+var sheet_color := Color(0.97, 0.96, 0.92)
+var sheet_size := Vector3(0.21, 0.004, 0.3)
 var belt: StaticBody3D
 var lever: PushButton
 var _belt_x := Vector2.ZERO
@@ -204,11 +207,11 @@ func _throw_sheet() -> void:
 		var oldest: Dictionary = sheets.pop_front()
 		(oldest.node as Node).queue_free()
 	var mesh := BoxMesh.new()
-	mesh.size = Vector3(0.21, 0.004, 0.3)
+	mesh.size = sheet_size
 	var node := MeshInstance3D.new()
 	node.mesh = mesh
 	var paper := StandardMaterial3D.new()
-	paper.albedo_color = Color(0.97, 0.96, 0.92).lerp(INKS[ink()], 0.15)
+	paper.albedo_color = sheet_color.lerp(INKS[ink()], 0.15)
 	node.material_override = paper
 	node.position = Vector3(_tray_x.y - 0.2, _tray_top + 0.3, 0)
 	add_child(node)
