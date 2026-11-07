@@ -122,6 +122,29 @@ func _hint(key: String) -> void:
 		cop.show_hint(key)
 
 
+## Host: shoves the owner's cop (Cop.knock_back), for something only the host decides, like the nursery's Dentuda.
+func tell_knock(push: Vector3, seconds: float) -> void:
+	_knock.rpc_id(get_multiplayer_authority(), push, seconds)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _knock(push: Vector3, seconds: float) -> void:
+	if multiplayer.get_remote_sender_id() == net.HOST_ID:
+		cop.knock_back(push, seconds)
+
+
+## Owner: tells the host its cop fell for `seconds` (a slip, a push), so the host's copy is staggered too (the
+## nursery's watering can spills, Doña Hortensia sees a slip).
+func tell_staggered(seconds: float) -> void:
+	_staggered.rpc_id(net.HOST_ID, seconds)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _staggered(seconds: float) -> void:
+	if multiplayer.is_server() and multiplayer.get_remote_sender_id() == get_multiplayer_authority():
+		cop.stagger(seconds)
+
+
 ## Host: moves the owner's cop to `to` (the owner sends where it is, so only it can move it for good).
 func tell_warp(to: Transform3D) -> void:
 	_warp.rpc_id(get_multiplayer_authority(), to)

@@ -9412,3 +9412,141 @@ GIANT_PIZZA_CREAK,¡ÑIIIC!,CREEEAK!,NHEEEC!
 HINT_ESCAPE_pizzeria,¡Don Muzza vio la prueba y se escapa en la moto de reparto! Tienen un minuto para agarrarlo.,Don Muzza saw the evidence and is getting away on the delivery scooter! You have one minute to catch him.,Don Muzza viu a prova e está fugindo na moto de entrega! Vocês têm um minuto para pegá-lo.
 CRIME_owner_pizzeria,"¡Novatos! Ayer se trajeron a Don Muzza, el dueño de la pizzería, y lo tenemos en la sala de interrogatorio. Algo escondió en la pizzería que no encontraron.","Rookies! Yesterday you brought in Don Muzza, the pizzeria's owner, and he's in the interrogation room. He hid something in the pizzeria you never found.","Novatos! Ontem vocês trouxeram Don Muzza, o dono da pizzaria, e ele está na sala de interrogatório. Ele escondeu algo na pizzaria que vocês não acharam."
 CONFESS_owner_pizzeria,"¡Está bien! ¡Fui yo! Pero antes de ir preso… ¿quién quiere una porción?","Fine! It was me! But before I go to jail… who wants a slice?","Tá bom! Fui eu! Mas antes de ir preso… quem quer uma fatia?"
+PLACE_NURSERY,La Maceta Feliz,The Happy Pot Nursery,Viveiro Vaso Feliz
+MENU_NURSERY,Vivero (allanamiento) (prueba),Plant nursery (raid) (test),Viveiro (batida) (teste)
+HINT_TILL_KEY_NURSERY,¡Una llave! Abre la oficina de Doña Hortensia.,A key! It opens Doña Hortensia's office.,Uma chave! Abre o escritório da Dona Hortênsia.
+NURSERY_GLASS_BROKEN,"¡Mi invernadero! ¡Las orquídeas se me van a resfriar!","My greenhouse! My orchids will catch a cold!","Minha estufa! As orquídeas vão se resfriar!"
+NURSERY_POT_BROKEN,"¡Esa maceta estaba pintada a mano!","That pot was hand-painted!","Esse vaso era pintado à mão!"
+CASE_FAILED_LAWYER_NURSERY,Doña Hortensia llamó al abogado del vivero. Caso perdido.,Doña Hortensia called the nursery's lawyer. Case lost.,Dona Hortênsia ligou para o advogado do viveiro. Caso perdido.
+LOC_in_dentuda_pot,en la maceta de la Dentuda,in the Dentuda's pot,no vaso da Dentuda
+LOC_under_greenhouse_table,debajo de una mesa del invernadero,under a table in the greenhouse,debaixo de uma mesa da estufa
+LOC_among_soil_bags,entre las bolsas de tierra del galpón,among the soil bags in the shed,entre os sacos de terra do galpão
+LOC_in_compost,en el compost,in the compost,na composteira
+LOC_in_shed_wheelbarrow,en la carretilla del galpón,in the wheelbarrow in the shed,no carrinho de mão do galpão
+LOC_in_nursery_office,en la oficina de Doña Hortensia,in Doña Hortensia's office,no escritório da Dona Hortênsia
+LOC_in_nursery_counter,adentro del mostrador de la caja,inside the checkout counter,dentro do balcão do caixa
+LOC_behind_pot_shelf,detrás de la estantería de macetas,behind the pot shelf,atrás da estante de vasos
+LOC_in_seed_basket,en el canasto de semillas,in the seed basket,no cesto de sementes
+LOC_among_gnomes,entre los enanos de jardín,among the garden gnomes,entre os anões de jardim
+LOC_in_tool_hut,en la casita de herramientas,in the tool hut,na casinha de ferramentas
+LOC_under_water_tank,debajo del tanque de agua,under the water tank,debaixo da caixa-d'água
+PROMPT_NURSERY_VALVE,E: abrir la llave de paso del riego,E: open the sprinklers' valve,E: abrir o registro da irrigação
+HINT_NURSERY_SPRINKLER,¡Splash! El aspersor te mojó entero.,Splash! The sprinkler soaked you.,Splash! O aspersor te molhou inteiro.
+HINT_NURSERY_MUD_SLIP,¡Barro! Te resbalaste corriendo.,Mud! You slipped while running.,Lama! Você escorregou correndo.
+HINT_NURSERY_DENTUDA_TOOK,¡La Dentuda te sacó lo que tenías en la mano! Lo va a escupir en un rato.,The Dentuda took what you were holding! She'll spit it out in a moment.,A Dentuda tirou o que você tinha na mão! Ela vai cuspir daqui a pouco.
+HINT_NURSERY_DENTUDA_PUSH,¡Ñam! La Dentuda te empujó. Dale de comer abono para calmarla.,Chomp! The Dentuda pushed you. Feed her fertilizer to calm her down.,Nhac! A Dentuda te empurrou. Dê adubo para ela se acalmar.
+HORTENSIA_LINE_1,"¡Qué linda estás hoy, mi helechito!","You look so pretty today, my little fern!","Como você está linda hoje, minha samambaiazinha!"
+HORTENSIA_LINE_2,"A las plantas hay que hablarles. A los policías, no tanto.","You have to talk to plants. To cops, not so much.","Tem que conversar com as plantas. Com os policiais, nem tanto."
+HORTENSIA_LINE_3,"¿Quién es la margarita más linda? ¡Tú, sí, tú!","Who's the prettiest daisy? You are, yes, you!","Quem é a margarida mais linda? Você, sim, você!"
+HORTENSIA_LINE_4,"Dentudita, no se muerde a las visitas. Bueno, un poquito sí.","Dentudita, we don't bite visitors. Well, maybe a little.","Dentudinha, não se morde as visitas. Bom, só um pouquinho."
+HORTENSIA_PRINTER,"¿El camión de tierra? ¡Ya voy, ya voy! ¡Que nadie toque mis canteros!","The soil truck? Coming, coming! Nobody touch my flowerbeds!","O caminhão de terra? Já vou, já vou! Ninguém mexe nos meus canteiros!"
+HORTENSIA_FIX_1,"Una bolsa, dos bolsas, tres bolsas...","One bag, two bags, three bags...","Um saco, dois sacos, três sacos..."
+HORTENSIA_FIX_2,"(de espaldas a todo) ...catorce, quince... ¿o eran dieciséis?","(back to everything) ...fourteen, fifteen... or was it sixteen?","(de costas para tudo) ...catorze, quinze... ou eram dezesseis?"
+HORTENSIA_FIX_3,"¡Me perdí! Una bolsa, dos bolsas...","I lost count! One bag, two bags...","Me perdi! Um saco, dois sacos..."
+HORTENSIA_FIX_DONE,"¡Todas contadas! Vuelvo con mis plantitas.","All counted! Back to my little plants.","Todos contados! Volto para as minhas plantinhas."
+HORTENSIA_HURT,"¡Cuidado, que no soy un cantero!","Careful, I'm not a flowerbed!","Cuidado, que eu não sou um canteiro!"
+HORTENSIA_DOOR,"¡Mi oficina! ¡Ahí guardo las semillas buenas!","My office! That's where I keep the good seeds!","Meu escritório! É lá que guardo as sementes boas!"
+HORTENSIA_SAW,"¡Lo estoy viendo, oficial!","I can see you, officer!","Estou vendo você, policial!"
+HORTENSIA_NOTHING,"Yo de eso no sé nada. Yo solo riego.","I know nothing about that. I just water.","Eu não sei nada disso. Eu só rego."
+HORTENSIA_OFFENDED,"¡Basta de preguntas! Me marchitan.","Enough questions! You're wilting me.","Chega de perguntas! Vocês me murcham."
+HORTENSIA_LAWYER,"¡Llamo a mi abogado! ¡Que venga con guantes de jardín!","I'm calling my lawyer! Tell them to bring garden gloves!","Vou chamar meu advogado! Que venha de luvas de jardim!"
+HORTENSIA_CAUGHT_ON,"¿Otro camión? ¡Si no pedí nada!","Another truck? I didn't order anything!","Outro caminhão? Mas eu não pedi nada!"
+HORTENSIA_FLOWERBEDS,"¡No me pisen los canteros!","Don't step on my flowerbeds!","Não pisem nos meus canteiros!"
+HORTENSIA_DENTUDA,"¡Dentudita, escupe eso! ¿Qué le hicieron a mi nena?","Dentudita, spit that out! What did they do to my baby?","Dentudinha, cospe isso! O que fizeram com a minha menina?"
+PROMPT_NURSERY_HORN,E: tocar la bocina del camión de tierra,E: honk the soil truck's horn,E: buzinar o caminhão de terra
+PROMPT_BROTECITO,E: hablar con Brotecito,E: talk to Brotecito,E: falar com o Brotecito
+PROMPT_NURSERY_TAP,E: abrir la canilla,E: turn on the tap,E: abrir a torneira
+BROTECITO_ASK,"¿Me traes la regadera llena? La canilla está al fondo del invernadero. ¡Sin volcarla, eh!","Can you bring me the watering can full? The tap is at the back of the greenhouse. Don't spill it!","Você me traz o regador cheio? A torneira fica no fundo da estufa. Sem derramar, hein!"
+BROTECITO_AGAIN,"¡Ya te conté todo! Pero si me traes más agua, no me quejo.","I already told you everything! But if you bring more water, I won't complain.","Já te contei tudo! Mas se você trouxer mais água, eu não reclamo."
+BROTECITO_THANKS,"¡Gracias! Las plantas te lo agradecen.","Thanks! The plants thank you too.","Obrigado! As plantas agradecem."
+BROTECITO_NOTHING,"¡Gracias! Pero no vi nada raro. Bueno, la Dentuda, pero ella siempre es rara.","Thanks! But I didn't see anything weird. Well, the Dentuda, but she's always weird.","Obrigado! Mas não vi nada estranho. Bom, a Dentuda, mas ela é sempre estranha."
+BROTECITO_IDLE_1,"Se me acabó el agua otra vez...","I ran out of water again...","Acabou a água de novo..."
+BROTECITO_IDLE_2,"Para ir a la canilla hay que pasar al lado de la Dentuda. Yo no paso.","To get to the tap you have to walk past the Dentuda. I'm not going.","Para chegar na torneira tem que passar do lado da Dentuda. Eu não passo."
+BROTECITO_IDLE_3,"Psst, oficial... ¿no tiene sed? Yo sí. Mis plantas también.","Psst, officer... aren't you thirsty? I am. So are my plants.","Psiu, policial... não está com sede? Eu estou. Minhas plantas também."
+HINT_NURSERY_CAN_FULL,"¡Regadera llena! Llévasela a Brotecito sin volcarla.","Watering can full! Take it to Brotecito without spilling it.","Regador cheio! Leve para o Brotecito sem derramar."
+HINT_NURSERY_TAP_NO_CAN,Acerca la regadera a la canilla para llenarla.,Bring the watering can to the tap to fill it.,Aproxime o regador da torneira para enchê-lo.
+HINT_NURSERY_CAN_SPILLED,¡Se volcó la regadera! Vuelve a llenarla en la canilla.,The watering can spilled! Fill it again at the tap.,O regador derramou! Encha de novo na torneira.
+BRIEF_NURSERY_TIP_B,"Llegó una denuncia anónima: en La Maceta Feliz no todo lo que crece es planta.","We got an anonymous tip: at La Maceta Feliz not everything that grows is a plant.","Chegou uma denúncia anônima: na La Maceta Feliz nem tudo que cresce é planta."
+BRIEF_NURSERY_TIP_D,"El portón está abierto, pero la oficina de Doña Hortensia está cerrada con llave. Y ojo con la Dentuda: muerde.","The gate is open, but Doña Hortensia's office is locked. And watch out for the Dentuda: she bites.","O portão está aberto, mas o escritório da Doña Hortensia está trancado. E cuidado com a Dentuda: ela morde."
+BRIEF_NURSERY_TIP_E,"Y no rompan nada: los vidrios del invernadero y las macetas se los descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.","And don't break anything: the greenhouse panes and the pots come out of your pay. Press Q to see the checklist of what you have to do.","E não quebrem nada: os vidros da estufa e os vasos saem do salário de vocês. Com Q vocês veem a lista do que têm que fazer."
+BRIEF_STOLEN_ORCHID_B,"Doña Hortensia se robó la orquídea azul del jardín botánico. La única que hay.","Doña Hortensia stole the botanic garden's blue orchid. The only one there is.","A Doña Hortensia roubou a orquídea azul do jardim botânico. A única que existe."
+BRIEF_STOLEN_ORCHID_C,"Traigan la orquídea en el baúl del patrullero. Con cuidado: es una flor, no una pelota.","Bring the orchid in the patrol car's trunk. Carefully: it's a flower, not a ball.","Tragam a orquídea no porta-malas da viatura. Com cuidado: é uma flor, não uma bola."
+BRIEF_STOLEN_ORCHID_D,"Si encuentran el catálogo del botánico o la tijera de podar, mejor: todo suma.","If you find the botanic garden's catalog or the pruning shears, even better: it all counts.","Se acharem o catálogo do botânico ou a tesoura de poda, melhor: tudo conta."
+OBJ_FIND_ORCHID,Llevarse la orquídea azul robada,Take the stolen blue orchid,Levar a orquídea azul roubada
+OBJ_EXTRA_CATALOG,Extra: el catálogo del botánico,Extra: the botanic garden's catalog,Extra: o catálogo do botânico
+OBJ_EXTRA_SHEARS,Extra: la tijera de podar,Extra: the pruning shears,Extra: a tesoura de poda
+SUSPECT_stolen_orchid,La orquídea robada,The stolen orchid,A orquídea roubada
+SUSPECT_gold_gnome,El enano de oro,The golden gnome,O anão de ouro
+SUSPECT_stadium_grass,El pasto del estadio,The stadium grass,A grama do estádio
+SUSPECT_diamond_pots,Las macetas con diamantes,The pots with diamonds,Os vasos com diamantes
+SUSPECT_contest_seeds,Las semillas del concurso,The contest seeds,As sementes do concurso
+SUSPECT_stolen_bees,Las abejas robadas,The stolen bees,As abelhas roubadas
+CLUE_SUSPECT_stolen_orchid,"Una etiqueta de jardín botánico: «Orquídea azul. Ejemplar único. NO TOCAR».","A botanic garden label: «Blue orchid. One of a kind. DO NOT TOUCH».","Uma etiqueta do jardim botânico: «Orquídea azul. Exemplar único. NÃO TOCAR»."
+CLUE_SUSPECT_gold_gnome,"Una boleta: «Pintura verde para enanos: 1 tarro. Para tapar lo dorado».","A receipt: «Green gnome paint: 1 can. To cover the gold».","Um recibo: «Tinta verde para anões: 1 lata. Para cobrir o dourado»."
+CLUE_SUSPECT_stadium_grass,"Un recorte de diario: «Se llevaron el pasto del estadio. Entero. De noche».","A newspaper clipping: «The stadium's grass was taken. All of it. At night».","Um recorte de jornal: «Levaram a grama do estádio. Inteira. De noite»."
+CLUE_SUSPECT_diamond_pots,"Una lista: «Maceta 1: helecho. Maceta 2: cactus. Maceta 3: no regar, se oxida».","A list: «Pot 1: fern. Pot 2: cactus. Pot 3: don't water, it rusts».","Uma lista: «Vaso 1: samambaia. Vaso 2: cacto. Vaso 3: não regar, enferruja»."
+CLUE_SUSPECT_contest_seeds,"Un papel: «Concurso del tomate más grande. Ganador: el de siempre. Este año: yo».","A note: «Biggest tomato contest. Winner: the usual one. This year: me».","Um papel: «Concurso do maior tomate. Vencedor: o de sempre. Este ano: eu»."
+CLUE_SUSPECT_stolen_bees,"Un guante con un aguijón clavado y una nota: «Las abejas no se llevan solas».","A glove with a stinger stuck in it and a note: «Bees don't carry themselves».","Uma luva com um ferrão espetado e um bilhete: «Abelhas não se levam sozinhas»."
+OBJ_ENTER_NURSERY,Entrar al vivero (el portón está abierto),Get into the nursery (the gate is open),Entrar no viveiro (o portão está aberto)
+OBJ_GUESS_NURSERY,"Averiguar qué pasa en el vivero (con Q abierta, mantén 1, 2 o 3)","Find out what is going on at the nursery (with Q open, hold 1, 2 or 3)","Descobrir o que acontece no viveiro (com Q aberto, segure 1, 2 ou 3)"
+OBJ_BROKEN_NURSERY,Cosas rotas: %d (multa: %d),Broken things: %d (fines: %d),Coisas quebradas: %d (multa: %d)
+OBJ_COMPLAINT_NURSERY,Denuncia de Doña Hortensia: %d%%,Doña Hortensia's complaint: %d%%,Denúncia da Doña Hortensia: %d%%
+HORTENSIA_SLIP,"«¡Yo no escondí nada %s!... Digo, ¡qué linda está hoy esa margarita!»","“I didn't hide anything %s!... I mean, isn't that daisy pretty today!”","“Eu não escondi nada %s!... Quer dizer, como está linda hoje essa margarida!”"
+CLUE_BROTECITO,Brotecito vio a Doña Hortensia esconder algo %s,Brotecito saw Doña Hortensia hide something %s,O Brotecito viu a Doña Hortensia esconder algo %s
+BROTECITO_CLUE_stolen_orchid,"¡Gracias! Vi a Doña Hortensia esconder algo %s. Y desde ayer hay mariposas por todos lados.","Thanks! I saw Doña Hortensia hide something %s. And since yesterday there are butterflies everywhere.","Obrigado! Vi a Doña Hortensia esconder algo %s. E desde ontem tem borboletas por todo lado."
+CLUE_BUTTERFLIES,"Una nube de mariposas da vueltas siempre sobre el mismo lugar. Algo las atrae.","A cloud of butterflies keeps circling over the same spot. Something draws them.","Uma nuvem de borboletas fica girando sempre sobre o mesmo lugar. Algo as atrai."
+NURSERY_BUTTERFLIES,¡Mariposas!,Butterflies!,Borboletas!
+CRIME_owner_nursery,"¡Novatos! Ayer se trajeron a Doña Hortensia, la dueña de La Maceta Feliz, y la tenemos en la sala de interrogatorio. Algo escondió en el vivero que no encontraron.","Rookies! Yesterday you brought in Doña Hortensia, the owner of La Maceta Feliz, and we have her in the interrogation room. She hid something at the nursery that you didn't find.","Novatos! Ontem vocês trouxeram a Doña Hortensia, a dona da La Maceta Feliz, e ela está na sala de interrogatório. Ela escondeu algo no viveiro que vocês não acharam."
+CONFESS_owner_nursery,"¡Está bien! ¡Fui yo! Pero admitan que en mi vivero estaba más linda.","Fine! It was me! But admit it looked prettier at my nursery.","Tá bom! Fui eu! Mas admitam que no meu viveiro ela estava mais bonita."
+BRIEF_GOLD_GNOME_B,"Doña Hortensia se robó el enano de jardín de oro del intendente. De oro macizo.","Doña Hortensia stole the mayor's golden garden gnome. Solid gold.","A Doña Hortensia roubou o anão de jardim de ouro do prefeito. De ouro maciço."
+BRIEF_GOLD_GNOME_C,"Traigan el enano en el baúl del patrullero. Pesa 20 kilos: llévenlo entre dos.","Bring the gnome in the patrol car's trunk. It weighs 20 kilos: carry it together.","Tragam o anão no porta-malas da viatura. Pesa 20 quilos: levem em dois."
+BRIEF_GOLD_GNOME_D,"Si encuentran la foto del jardín del intendente o el tarro de pintura, mejor: todo suma.","If you find the photo of the mayor's garden or the tin of paint, even better: it all counts.","Se acharem a foto do jardim do prefeito ou a lata de tinta, melhor: tudo conta."
+OBJ_FIND_GOLD_GNOME,Llevarse el enano de oro del intendente,Take the mayor's golden gnome,Levar o anão de ouro do prefeito
+OBJ_EXTRA_MAYOR_PHOTO,Extra: la foto del jardín del intendente,Extra: the photo of the mayor's garden,Extra: a foto do jardim do prefeito
+OBJ_EXTRA_GNOME_PAINT,Extra: el tarro de pintura de enano,Extra: the tin of gnome paint,Extra: a lata de tinta de anão
+CLUE_FRESH_PAINT,"Uno de los enanos de la fila tiene la pintura fresca. Se descascara y abajo brilla algo dorado.","One of the gnomes in the row has fresh paint. It peels, and something golden shines underneath.","Um dos anões da fila está com a tinta fresca. Ela descasca e embaixo brilha algo dourado."
+NURSERY_GOLD_SHOWS,¡Oro!,Gold!,Ouro!
+BROTECITO_CLUE_gold_gnome,"¡Gracias! Vi a Doña Hortensia esconder algo %s. Pesaba tanto que lo arrastraba. Y los enanos no paran de mirar para allá.","Thanks! I saw Doña Hortensia hide something %s. It was so heavy she dragged it. And the gnomes keep looking that way.","Obrigado! Vi a Doña Hortensia esconder algo %s. Era tão pesado que ela arrastava. E os anões não param de olhar para lá."
+BRIEF_STADIUM_GRASS_B,"Doña Hortensia se llevó el pasto del estadio. Enrollado, como una alfombra.","Doña Hortensia took the stadium's grass. Rolled up, like a carpet.","A Doña Hortensia levou a grama do estádio. Enrolada, como um tapete."
+BRIEF_STADIUM_GRASS_C,"Traigan el rollo de pasto en el baúl del patrullero. Pesa 12 kilos.","Bring the roll of grass in the patrol car's trunk. It weighs 12 kilos.","Tragam o rolo de grama no porta-malas da viatura. Pesa 12 quilos."
+BRIEF_STADIUM_GRASS_D,"Si encuentran la entrada de la cancha o la cortadora de pasto, mejor: todo suma.","If you find the stadium ticket or the lawn mower, even better: it all counts.","Se acharem o ingresso do estádio ou o cortador de grama, melhor: tudo conta."
+OBJ_FIND_GRASS_ROLL,Llevarse el rollo de pasto del estadio,Take the stadium's roll of grass,Levar o rolo de grama do estádio
+OBJ_EXTRA_STADIUM_TICKET,Extra: la entrada de la cancha,Extra: the stadium ticket,Extra: o ingresso do estádio
+OBJ_EXTRA_HAND_MOWER,Extra: la cortadora de pasto a mano,Extra: the push mower,Extra: o cortador de grama manual
+CLUE_STADIUM_LINES,"Un cantero del patio tiene pasto con líneas blancas pintadas. Como una cancha.","A patch of the yard has grass with white lines painted on it. Like a pitch.","Um canteiro do pátio tem grama com linhas brancas pintadas. Como um campo."
+NURSERY_LINES,¿Líneas de cancha?,Pitch lines?,Linhas de campo?
+NURSERY_CHANT,"¡Oooh, oh, oh! ¡Dale campeón!","Ooooh, oh, oh! Come on, champion!","Ôôô, ô, ô! Vai, campeão!"
+BROTECITO_CLUE_stadium_grass,"¡Gracias! Vi a Doña Hortensia esconder algo %s. Y cuando se prende el riego, algo canta como la hinchada.","Thanks! I saw Doña Hortensia hide something %s. And when the sprinklers come on, something sings like a crowd.","Obrigado! Vi a Doña Hortensia esconder algo %s. E quando ligam os irrigadores, algo canta como a torcida."
+BRIEF_DIAMOND_POTS_B,"Doña Hortensia esconde los diamantes de un ladrón de joyas. Enterrados en una maceta.","Doña Hortensia is hiding a jewel thief's diamonds. Buried in a flowerpot.","A Doña Hortensia esconde os diamantes de um ladrão de joias. Enterrados num vaso."
+BRIEF_DIAMOND_POTS_C,"Traigan la maceta con los diamantes en el baúl del patrullero. Con planta y todo.","Bring the pot with the diamonds in the patrol car's trunk. Plant and all.","Tragam o vaso com os diamantes no porta-malas da viatura. Com planta e tudo."
+BRIEF_DIAMOND_POTS_D,"Si encuentran la lupa de joyero o la bolsa de tierra vacía, mejor: todo suma.","If you find the jeweler's loupe or the empty soil bag, even better: it all counts.","Se acharem a lupa de joalheiro ou o saco de terra vazio, melhor: tudo conta."
+OBJ_FIND_DIAMOND_POT,Llevarse la maceta con los diamantes,Take the pot with the diamonds,Levar o vaso com os diamantes
+OBJ_EXTRA_LOUPE,Extra: la lupa de joyero,Extra: the jeweler's loupe,Extra: a lupa de joalheiro
+OBJ_EXTRA_EMPTY_BAG,Extra: la bolsa de tierra vacía,Extra: the empty soil bag,Extra: o saco de terra vazio
+CLUE_DIAMOND_SHINE,"Con el riego prendido, una maceta brilla como si tuviera estrellas adentro.","With the sprinklers on, one pot sparkles as if it had stars inside.","Com os irrigadores ligados, um vaso brilha como se tivesse estrelas dentro."
+NURSERY_SPARKLE,¡Brilla!,It sparkles!,Brilha!
+NURSERY_CLINC,¡Clinc!,Clink!,Plim!
+BROTECITO_CLUE_diamond_pots,"¡Gracias! Vi a Doña Hortensia esconder algo %s. Y me dijo que a esa maceta no la riegue nunca, que se oxida.","Thanks! I saw Doña Hortensia hide something %s. And she told me never to water that pot, it rusts.","Obrigado! Vi a Doña Hortensia esconder algo %s. E ela me disse para nunca regar aquele vaso, que enferruja."
+BRIEF_CONTEST_SEEDS_B,"Doña Hortensia se robó las semillas del tomate campeón del concurso de verduras gigantes.","Doña Hortensia stole the champion tomato's seeds from the giant vegetable contest.","A Doña Hortensia roubou as sementes do tomate campeão do concurso de verduras gigantes."
+BRIEF_CONTEST_SEEDS_C,"Traigan la caja de semillas en el baúl del patrullero.","Bring the box of seeds in the patrol car's trunk.","Tragam a caixa de sementes no porta-malas da viatura."
+BRIEF_CONTEST_SEEDS_D,"Si encuentran la cinta del primer premio o el frasco de abono SuperBrote, mejor: todo suma.","If you find the first prize ribbon or the jar of SuperBrote fertilizer, even better: it all counts.","Se acharem a fita do primeiro prêmio ou o pote de adubo SuperBrote, melhor: tudo conta."
+OBJ_FIND_SEED_BOX,Llevarse la caja de semillas del tomate campeón,Take the box of the champion tomato's seeds,Levar a caixa de sementes do tomate campeão
+OBJ_EXTRA_PRIZE_RIBBON,Extra: la cinta del primer premio,Extra: the first prize ribbon,Extra: a fita do primeiro prêmio
+OBJ_EXTRA_SUPERBROTE,Extra: el frasco de abono SuperBrote,Extra: the jar of SuperBrote fertilizer,Extra: o pote de adubo SuperBrote
+CLUE_GIANT_TOMATOES,"En el invernadero hay una planta con tomates del tamaño de una pelota. Eso no crece solo.","In the greenhouse there's a plant with tomatoes the size of a ball. That doesn't grow on its own.","Na estufa tem uma planta com tomates do tamanho de uma bola. Isso não cresce sozinho."
+NURSERY_TOMATOES,¡Qué tomates!,What tomatoes!,Que tomates!
+BROTECITO_CLUE_contest_seeds,"¡Gracias! Vi a Doña Hortensia esconder algo %s. Y desde que riego con eso, crecen zapallos gigantes.","Thanks! I saw Doña Hortensia hide something %s. And since I water with that stuff, giant pumpkins grow.","Obrigado! Vi a Doña Hortensia esconder algo %s. E desde que rego com aquilo, crescem abóboras gigantes."
+BRIEF_STOLEN_BEES_B,"Doña Hortensia se robó la colmena de un apicultor. Con abejas y todo.","Doña Hortensia stole a beekeeper's hive. Bees and all.","A Doña Hortensia roubou a colmeia de um apicultor. Com abelhas e tudo."
+BRIEF_STOLEN_BEES_C,"Traigan la colmena en el baúl del patrullero. Y no corran cerca: a las abejas no les gusta.","Bring the hive in the patrol car's trunk. And don't run near it: the bees don't like it.","Tragam a colmeia no porta-malas da viatura. E não corram perto: as abelhas não gostam."
+BRIEF_STOLEN_BEES_D,"Si encuentran el traje de apicultor o el frasco de miel con la etiqueta de otro, mejor: todo suma.","If you find the beekeeper's suit or the jar of honey with someone else's label, even better: it all counts.","Se acharem a roupa de apicultor ou o pote de mel com a etiqueta de outro, melhor: tudo conta."
+OBJ_FIND_BEEHIVE,Llevarse la colmena robada,Take the stolen hive,Levar a colmeia roubada
+OBJ_EXTRA_BEEKEEPER_SUIT,Extra: el traje de apicultor,Extra: the beekeeper's suit,Extra: a roupa de apicultor
+OBJ_EXTRA_HONEY_JAR,Extra: el frasco de miel con la etiqueta de otro,Extra: the jar of honey with someone else's label,Extra: o pote de mel com a etiqueta de outro
+CLUE_BUZZING,"De un escondite sale un zumbido. Muchas abejas, todas juntas.","A buzz comes from a hiding spot. Lots of bees, all together.","De um esconderijo sai um zumbido. Muitas abelhas, todas juntas."
+NURSERY_BUZZ,¡Bzzzz!,Bzzzz!,Bzzzz!
+HINT_NURSERY_BEES,¡Abejas! No corras cerca de la colmena.,Bees! Don't run near the hive.,Abelhas! Não corra perto da colmeia.
+BROTECITO_CLUE_stolen_bees,"¡Gracias! Vi a Doña Hortensia esconder algo %s. Y desde ese día, la miel le sale gratis.","Thanks! I saw Doña Hortensia hide something %s. And since that day, she gets her honey for free.","Obrigado! Vi a Doña Hortensia esconder algo %s. E desde aquele dia, o mel sai de graça para ela."
+HINT_ESCAPE_nursery,"¡Doña Hortensia vio la prueba y se escapa en el auto! Tienen un minuto para agarrarla.","Doña Hortensia saw the evidence and is getting away in her car! You have one minute to catch her.","Dona Hortensia viu a prova e está fugindo de carro! Vocês têm um minuto para pegá-la."
+CHASE_NURSERY_LINE_1,"¡Tengo que regar! ¡Si no riego a las seis, se me ofenden!","I have to water! If I don't water at six, they get offended!","Eu tenho que regar! Se eu não regar às seis, elas se ofendem!"
+CHASE_NURSERY_LINE_2,"¡Las plantas no se roban, se adoptan!","Plants aren't stolen, they're adopted!","Planta não se rouba, se adota!"
+CHASE_NURSERY_LINE_3,"¡Cuidado con el auto, que adentro van los plantines!","Careful with the car, the seedlings are in there!","Cuidado com o carro, que as mudas estão lá dentro!"

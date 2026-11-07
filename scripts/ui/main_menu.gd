@@ -30,6 +30,7 @@ const CAR_WASH_SCENE := "res://scenes/levels/car_wash.tscn"
 const DENTIST_RAID_SCENE := "res://scenes/levels/dentist_raid.tscn"
 const COSTUME_SHOP_SCENE := "res://scenes/levels/costume_shop.tscn"
 const FURNITURE_SCENE := "res://scenes/levels/furniture_store.tscn"
+const NURSERY_SCENE := "res://scenes/levels/nursery.tscn"
 const TEST_ROOM_SCENE := "res://scenes/levels/grey_room.tscn"
 const LOBBY_SCENE := "res://scenes/ui/lobby.tscn"
 
@@ -81,6 +82,7 @@ func _ready() -> void:
 	%DentistRaidButton.pressed.connect(func() -> void: get_tree().change_scene_to_file(DENTIST_RAID_SCENE))
 	%CostumeShopButton.pressed.connect(func() -> void: get_tree().change_scene_to_file(COSTUME_SHOP_SCENE))
 	%FurnitureButton.pressed.connect(func() -> void: get_tree().change_scene_to_file(FURNITURE_SCENE))
+	%NurseryButton.pressed.connect(func() -> void: get_tree().change_scene_to_file(NURSERY_SCENE))
 	_test_room_button.pressed.connect(_on_test_room_pressed)
 	_quit_button.pressed.connect(_on_quit_pressed)
 	# --host / --join=<ip> (two windows on one PC) go straight to the room, once per run.

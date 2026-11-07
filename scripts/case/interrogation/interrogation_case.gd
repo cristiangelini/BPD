@@ -140,6 +140,8 @@ const SUSPECT_MODELS := {
 	"owner_rink": "res://assets/models/npc_dona_pirueta.glb",
 	# The car wash's owner, brought in from the raid (allanamiento-lavadero.md).
 	"owner_carwash": "res://assets/models/npc_don_chorro.glb",
+	# The nursery's owner, brought in from the raid (allanamiento-vivero.md).
+	"owner_nursery": "res://assets/models/npc_dona_hortensia.glb",
 }
 ## The owner brought in from the last raid (decision 93): what slips out of him is what he let slip there with R (his
 ## custody's slips, OWNER_SLIP_<n> when there aren't enough), and the confession pays the salary and OWNER_SHARE of

@@ -101,6 +101,8 @@ const PLACES := [
 	{"id": "costume_shop", "block": Vector2i(2, 4), "side": "n", "along": 0.0, "size": Vector3(24, 6, 18), "color": Color(0.95, 0.55, 0.2), "sign": "PLACE_COSTUME_SHOP"},
 	# The furniture store "El Ropero Feliz" (allanamiento-muebleria.md), on the north-east block.
 	{"id": "furniture", "block": Vector2i(8, 0), "side": "s", "along": 0.0, "size": Vector3(28, 8, 24), "color": Color(0.93, 0.86, 0.72), "sign": "PLACE_FURNITURE"},
+	# The plant nursery "La Maceta Feliz", an open lot behind a low wall (allanamiento-vivero.md).
+	{"id": "nursery", "block": Vector2i(7, 5), "side": "n", "along": 0.0, "size": Vector3(40, 3, 22), "color": Color(0.45, 0.7, 0.4), "sign": "PLACE_NURSERY"},
 ]
 
 ## The plaza fills its block.
