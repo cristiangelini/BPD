@@ -98,6 +98,8 @@ const PATIENCE_DOWN := 20
 ## With no patience left, Doña Jaula puts the nearest cop to work feeding the penguins for this long; then she has half
 ## her patience back. A cop the elephant soaks slips for WET_SECONDS (propuesta).
 const PUNISH_SECONDS := 10.0
+## The zoo's van waits on the sidewalk by the entrance, facing the street (the culprit's getaway, step 7).
+const GETAWAY_AT := Vector3(9, 0, 28.5)
 const WET_SECONDS := 3.0
 const WET_PUSH := 3.0
 
@@ -347,6 +349,21 @@ func _process(delta: float) -> void:
 		return
 	_sneeze_clock += delta
 	_sneeze.visible = fmod(_sneeze_clock, SNEEZE_EVERY) > SNEEZE_EVERY - 1.0
+
+
+## The zoo's van waits on the sidewalk beside the entrance and drives straight out into the street.
+func getaway(_index: int, _city: Node3D) -> Dictionary:
+	return {"at": Transform3D(global_basis, to_global(GETAWAY_AT)),
+		"via": [to_global(Vector3(GETAWAY_AT.x, 0, SIZE.y / 2 + 5.0))]}
+
+
+## Don Pico, the witness: a flash in his face and he only says "¡Flash!".
+func witness_offended() -> bool:
+	return parrot.offended
+
+
+func offend_witness() -> void:
+	parrot.offended = true
 
 
 ## The keeper by index (the order of the case's traits).

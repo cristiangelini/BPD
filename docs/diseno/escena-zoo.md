@@ -184,3 +184,9 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
   elefante huele a perro mojado), el picotazo (se encuentra al ver un curita) y Don Pico, que con el balde de maní
   del avestruz en la mano repite el olor del culpable. Un flash en la cara y solo dice "¡Flash!". Todo lo que moja
   el elefante (`Zoo.washed`) se pierde.
+- **Paso 7:** `ZooLevel` da el caso con el tablero y el sello en la comisaría. Al acusar bien, mitad y mitad con la
+  semilla, el culpable se entrega o huye en la camioneta del zoológico (`SuspectCar.ZOO_VAN`, 30 km/h), estacionada
+  en la vereda junto a la entrada. En cada esquina se le caen dos cáscaras de banana: el patrullero patina y el
+  policía a pie que la pisa se resbala 1,5 s y suelta lo que lleva. Los cuidadores cansados "se van a darle de comer a
+  las jirafas". El culpable se interroga como cuidador (`owner_keeper`). El sueldo y la cuota son los de las otras
+  escenas del crimen (+100 si Copito vuelve).

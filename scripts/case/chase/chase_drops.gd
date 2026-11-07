@@ -21,8 +21,9 @@ extends Node
 ## (ConfettiCloud). The bridge's cement mixer (politico-puente.md) drops a blob of cement at
 ## every corner it turns: driving through it the patrol car sticks and slows down to BLOB_SPEED. The museum's art van opens its back doors every FRAME_EVERY seconds and an
 ## empty gilt frame falls out (ChaseFrame). The hotel's shuttle loses a suitcase off its roof every SUITCASE_EVERY
-## seconds (ChaseSuitcase): run over, its clothes cover the patrol car's windshield. Every number here is
-## (propuesta).
+## seconds (ChaseSuitcase): run over, its clothes cover the patrol car's windshield. The zoo's van (escena-zoo.md)
+## drops ZOO_PEELS_PER_CORNER banana peels at every corner it turns, like El Peludo's; a cop on foot who steps on one
+## slips and falls for PEEL_FALL seconds. Every number here is (propuesta).
 
 const DRIP_EVERY := 3.0
 ## A puddle's size (m), how long it lasts, and the grip left on it.
@@ -81,6 +82,8 @@ const PEEL_SPREAD := 1.6
 const PEEL_RADIUS := 0.9
 const PEEL_SECONDS := 30.0
 const PEEL_GRIP := 0.12
+const ZOO_PEELS_PER_CORNER := 2
+const PEEL_FALL := 1.5
 const BANANA_PEEL := preload("res://assets/models/banana_peel.glb")
 const MAX_CANS := 18
 ## Cut loose, a can rolls back this fast, give or take.
@@ -202,6 +205,8 @@ func _physics_process(delta: float) -> void:
 		if peel[1] <= 0.0:
 			(peel[0] as Node).queue_free()
 			peels.erase(peel)
+	if case.suspect_id == SuspectCar.ZOO_VAN and not case.follower:
+		_slip_on_peels()
 	var at := case.car.global_position
 	if confetti:
 		_blind(at, delta)
@@ -254,6 +259,17 @@ func on_puddle(at: Vector3) -> bool:
 		if Vector2(at.x - center.x, at.z - center.z).length() < PUDDLE_RADIUS:
 			return true
 	return false
+
+
+## The zoo van's peels: a cop on foot who steps on one slips and falls (they drop what they hold).
+func _slip_on_peels() -> void:
+	for node in get_tree().get_nodes_in_group("cops"):
+		var cop := node as Cop
+		if cop.vehicle or cop.is_staggered() or not on_peel(cop.global_position):
+			continue
+		cop.get_node("Grabber").release()
+		cop.knock_back(-cop.global_basis.z * 3.0, PEEL_FALL)
+		cop.show_hint("HINT_ZOO_PEEL")
 
 
 ## Whether `at` is on a banana peel.
@@ -336,6 +352,9 @@ func _on_corner(turned: bool) -> void:
 		honk()
 	if bananas:
 		for i in PEELS_PER_CORNER:
+			drop_peel(i)
+	elif case.suspect_id == SuspectCar.ZOO_VAN:
+		for i in ZOO_PEELS_PER_CORNER:
 			drop_peel(i)
 	if confetti:
 		shoot_confetti()
