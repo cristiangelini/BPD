@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Crime scene "Teatro Municipal", step 1: the theater on its own lot (block 6, 5, north side) with the columns and the "Seis Fantasmas" marquee; the foyer with the ticket booth and the Golden Mask's empty case; the hall with the seats, the orchestra pit with its tuba and a box on each side; the raised stage with the turntable, four trapdoors, the prompter's shell, the backdrop and the stage lever; the basement one floor down (the city now leaves a hole in its ground for it); and the six dressing rooms and the props workshop. --place=theater opens it.
 - Crime scene "Teatro Municipal", step 0: design (escena-teatro.md) and decision 510.
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
 - Gym raid, step 6: Play's raid draw now picks among the grandpa's house, the bakery, the pet salon, the hardware store, the doll factory, the insurance office, the cake lab and the gym in eighths.

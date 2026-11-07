@@ -10,6 +10,11 @@ extends Node3D
 var theater: Theater
 
 
+func _enter_tree() -> void:
+	# Before the city builds itself: no ground under the stage, so the basement goes one floor down.
+	($City as City).live_hole = Theater.BASEMENT_HOLE
+
+
 func _ready() -> void:
 	if case_seed == 0:
 		case_seed = PlaceDraw.take_seed()

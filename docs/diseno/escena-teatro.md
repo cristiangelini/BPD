@@ -143,6 +143,18 @@ Mientras tanto se avanza con lo recomendado.
 0. Este documento y la decisión 510.
 1. El teatro en su lote, con el vestíbulo, la sala, el escenario, el sótano, los camerinos y el taller, y
    `--place=theater`.
+   **Hecho así:** lote de 36 x 32 en la cuadra (6, 5), lado norte (el vivero va a la (7, 5)), con el frente rojo.
+   - **Afuera:** cuatro columnas con su dintel, el cartel y la marquesina "Hoy: Seis Fantasmas" con bombillas.
+   - **El vestíbulo, adelante:** la taquilla, la alfombra roja y la vitrina vacía de la Máscara de Oro con su placa.
+   - **La sala:** seis filas de butacas a cada lado del pasillo, el foso con su baranda, seis sillas y la tuba, dos
+     rampas al escenario y un palco a cada lado con su escalera.
+   - **El escenario (a 1,08 m):** el giratorio en el medio, cuatro trampillas cerradas, la concha del apuntador en
+     el borde, el telón, el decorado de fondo y la palanca de tramoya.
+   - **El sótano, un piso abajo:** bajo todo el escenario, con decorados viejos y la escalera al ala oeste. La
+     ciudad deja un hueco en su suelo bajo el escenario para que quepa (`City.live_hole`).
+   - **Atrás:** los seis camerinos con su bordado en la puerta (estrella, luna, sol, rayo, corazón, trébol) y un
+     baúl adentro, y la utilería con su escritorio y el estante.
+   - Capturas: `teatro/paso1-*.png`.
 2. La gente: los seis fantasmas (rasgos con la semilla), el Maestro Bambalina y Don Susurro, con sus modelos.
 3. Las fichas: la variante `theater` de la escena del crimen, con la voz y el bordado.
 4. La Máscara de Oro escondida, buscar con E y el libro de utilería.

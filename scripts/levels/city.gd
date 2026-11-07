@@ -32,6 +32,9 @@ const HEDGE_HEIGHT := 2.5
 @export var live_place := ""
 ## Whether the live place's scene brings the ground of its whole block (the grandpa's yard) or only its own lot.
 @export var live_block_ground := true
+## A part of the live place's lot, in the lot's own x and z, with no land, road or block ground under it: for a
+## place that digs down (the theater's basement under its stage).
+@export var live_hole := Rect2()
 ## The crime scene's case opens a door from the comisario's office to the station's board room
 ## (escena-del-crimen.md); otherwise the board room stays shut.
 @export var board_room_open := false
@@ -80,8 +83,11 @@ func _ready() -> void:
 func _build() -> void:
 	var size := CityLayout.SIZE
 	var land := Vector2(GolfLayout.CENTER.x + GolfLayout.HALF.x, HighwayLayout.OUTER.y) * 2 + Vector2.ONE * 40
-	_box(Vector3(0, -0.1, 0), Vector3(land.x, 0.2, land.y), GRASS)
-	_mesh_box(Vector3(0, 0.005, 0), Vector3(size.x, 0.01, size.y), ROAD)
+	var hole := _hole()
+	for piece: Array in _around(Vector3(0, -0.1, 0), Vector3(land.x, 0.2, land.y), hole):
+		_box(piece[0], piece[1], GRASS)
+	for piece: Array in _around(Vector3(0, 0.005, 0), Vector3(size.x, 0.01, size.y), hole):
+		_mesh_box(piece[0], piece[1], ROAD)
 	for k in range(CityLayout.WEST, CityLayout.EAST + 1):
 		_mesh_box(Vector3(CityLayout.street_x(k), 0.012, 0), Vector3(0.2, 0.01, size.y - CityLayout.STREET), LINE)
 	for k in range(CityLayout.NORTH, CityLayout.SOUTH + 1):
@@ -204,13 +210,46 @@ func _block(block: Vector2i) -> void:
 	if live_block_ground and not live.is_empty() and live.block == block:
 		return
 	var inner := CityLayout.BLOCK - CityLayout.SIDEWALK * 2
-	_mesh_box(center + Vector3(0, 0.015, 0), Vector3(CityLayout.BLOCK, 0.01, CityLayout.BLOCK), SIDEWALK)
+	var hole := _hole()
+	for piece: Array in _around(center + Vector3(0, 0.015, 0), Vector3(CityLayout.BLOCK, 0.01, CityLayout.BLOCK), hole):
+		_mesh_box(piece[0], piece[1], SIDEWALK)
 	var ground := PAVED
 	if block == CityLayout.PLAZA or CityLayout.is_park(block) or CityLayout.barrio_kind(block) == "house":
 		ground = GRASS
-	_mesh_box(center + Vector3(0, 0.03, 0), Vector3(inner, 0.01, inner), ground)
+	for piece: Array in _around(center + Vector3(0, 0.03, 0), Vector3(inner, 0.01, inner), hole):
+		_mesh_box(piece[0], piece[1], ground)
 	if block == CityLayout.PLAZA:
 		_plaza(center)
+
+
+## live_hole on the city's ground (x, z), or an empty rect.
+func _hole() -> Rect2:
+	if live_place == "" or not live_hole.has_area():
+		return Rect2()
+	var lot := CityLayout.lot(live_place)
+	var hole := Rect2()
+	for i in 4:
+		var corner := live_hole.position + live_hole.size * Vector2(i % 2, i / 2)
+		var at := lot * Vector3(corner.x, 0, corner.y)
+		hole = Rect2(at.x, at.z, 0, 0) if i == 0 else hole.expand(Vector2(at.x, at.z))
+	return hole
+
+
+## The pieces, as [center, size], of a flat box that lie out of `hole` in x and z: the whole box when they don't meet.
+func _around(center: Vector3, size: Vector3, hole: Rect2) -> Array[Array]:
+	var rect := Rect2(center.x - size.x / 2, center.z - size.z / 2, size.x, size.z)
+	var cut := rect.intersection(hole)
+	if not cut.has_area():
+		return [[center, size]]
+	var pieces: Array[Array] = []
+	for piece: Rect2 in [Rect2(rect.position.x, rect.position.y, cut.position.x - rect.position.x, rect.size.y),
+			Rect2(cut.end.x, rect.position.y, rect.end.x - cut.end.x, rect.size.y),
+			Rect2(cut.position.x, rect.position.y, cut.size.x, cut.position.y - rect.position.y),
+			Rect2(cut.position.x, cut.end.y, cut.size.x, rect.end.y - cut.end.y)]:
+		if piece.has_area():
+			var middle := piece.get_center()
+			pieces.append([Vector3(middle.x, center.y, middle.y), Vector3(piece.size.x, size.y, piece.size.y)])
+	return pieces
 
 
 func _plaza(center: Vector3) -> void:

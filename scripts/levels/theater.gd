@@ -29,6 +29,9 @@ const BACKDROP_Z := -11.0
 const STAGE_TOP := 1.08
 const BASEMENT_TOP := STAGE_TOP - GameScale.FLOOR_HEIGHT
 const BASEMENT_X := 15.0
+## The basement's floor plan (x, z), its edges hidden in the walls round it: the city leaves no ground there
+## (City.live_hole).
+const BASEMENT_HOLE := Rect2(-BASEMENT_X - 0.1, BACKDROP_Z - 0.1, BASEMENT_X * 2 + 0.2, STAGE_Z - BACKDROP_Z + 0.2)
 ## The turntable in the middle of the stage and the four trapdoors around it.
 const TURNTABLE_AT := Vector3(0, STAGE_TOP, -8.25)
 const TURNTABLE_RADIUS := 2.6
@@ -163,11 +166,12 @@ func _front() -> void:
 	var column := CylinderMesh.new()
 	column.top_radius = 0.35
 	column.bottom_radius = 0.4
-	column.height = ROOF - 0.5
+	column.height = 5.8
 	for x: float in [-8.0, -3.5, 3.5, 8.0]:
 		var at := Vector3(x, 0, FRONT_Z + 1.2)
 		_builder.shape(_builder.body(at + Vector3(0, column.height / 2, 0)), Vector3(0.7, column.height, 0.7))
 		_builder.mesh(column, at + Vector3(0, column.height / 2, 0), MARBLE)
+	_builder.mesh_box(Vector3(0, column.height + 0.2, FRONT_Z + 0.85), Vector3(17.4, 0.4, 1.7), MARBLE)
 
 
 ## The foyer: the ticket booth, the red carpet from the door to the hall and the empty glass case of the Golden Mask.
