@@ -122,6 +122,8 @@ const SUSPECT_MODELS := {
 	"owner_concierge": "res://assets/models/npc_conserje.glb",
 	# The fun fair's owner, brought in from the raid (allanamiento-parque.md).
 	"owner_fair": "res://assets/models/npc_don_tombola.glb",
+	# The ice rink's owner, brought in from the raid (allanamiento-pista.md).
+	"owner_rink": "res://assets/models/npc_dona_pirueta.glb",
 }
 ## The owner brought in from the last raid (decision 93): what slips out of him is what he let slip there with R (his
 ## custody's slips, OWNER_SLIP_<n> when there aren't enough), and the confession pays the salary and OWNER_SHARE of

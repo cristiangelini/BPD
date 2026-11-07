@@ -81,6 +81,8 @@ const PLACES := [
 	{"id": "radio", "block": Vector2i(7, 3), "side": "n", "along": 0.0, "size": Vector3(21, 3, 22), "color": Color(0.9, 0.86, 0.78), "sign": "PLACE_RADIO"},
 	# The bowling alley "Bolos Chuza Feliz" (allanamiento-bolera.md), on the east edge.
 	{"id": "bowling", "block": Vector2i(8, 2), "side": "s", "along": 0.0, "size": Vector3(30, 7, 24), "color": Color(0.95, 0.55, 0.25), "sign": "PLACE_BOWLING"},
+	# The ice rink "Patinódromo Resbalón" on the east edge (allanamiento-pista.md).
+	{"id": "rink", "block": Vector2i(8, 3), "side": "n", "along": 0.0, "size": Vector3(44, 9, 30), "color": Color(0.78, 0.86, 0.92), "sign": "PLACE_RINK"},
 ]
 
 ## The plaza fills its block.

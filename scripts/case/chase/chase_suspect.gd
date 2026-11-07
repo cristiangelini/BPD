@@ -35,6 +35,7 @@ const MODELS := {
 	"supermarket": preload("res://assets/models/npc_don_oferton.glb"),
 	"farm": preload("res://assets/models/npc_florencio.glb"),
 	"bowling": preload("res://assets/models/npc_don_chuza.glb"),
+	"rink": preload("res://assets/models/npc_dona_pirueta.glb"),
 	"dangerous": preload("res://assets/models/npc_sospechoso.glb"),
 	# The pastry contest's culprit, off his bike (escena-del-crimen.md).
 	"cook": preload("res://assets/models/npc_pastelero.glb"),
