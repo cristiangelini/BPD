@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Pawn shop raid, step 8: online. Don Regateo, Chicharra and the customers follow the host; broken glass cases, the armor, the counter's prices and the money that changed hands, the walking armor, the falling trophy and the crocodile's pearl reach every PC.
 - Pawn shop raid, step 7: Play draws the pawn shop among the raids; Don Regateo gets away in his car when he sees the main evidence picked up, and caught he goes to the interrogation.
 - Pawn shop raid, step 6b: the last two stories. The singer's guitar (a guitar with a recorder inside plays by itself when a cop walks by, and the shop's radio gives the news of the robbery) and the smuggler crocodile (the shop's stuffed crocodile is the evidence: it tinkles when it moves and drops a pearl when moved hard).
 - Pawn shop raid, step 6a: three more stories. The fake trophy (the plastic copy on top of a shelf falls with a breath when a cop walks by), the walking armor (the shop's armor takes a step every 20 s, with oil streaks to the stock room) and the gold dentures (Chicharra has a gold tooth, and feeding him is the clue); customers who know something tell it every other time.

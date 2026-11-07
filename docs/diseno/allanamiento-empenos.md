@@ -181,3 +181,7 @@ Los pesos y valores siguen la escala de la tienda de disfraces: la principal val
 - Paso 7: "Jugar" sortea la casa de empeños entre los allanamientos. Si Don Regateo ve que un policía agarra la
   evidencia principal cerca, se escapa en su auto (estacionado delante del patrullero) y empieza la persecución;
   atrapado, es el dueño que va al interrogatorio ("¿Cuánto me dan por la confesión? ¿Ni cinco?").
+- Paso 8: online. Don Regateo, Chicharra y los clientes los maneja el anfitrión y las otras PC los siguen (los turnos
+  del mostrador también). La galletita y Chicharra funcionan desde cualquier PC. Lo que se rompe en el anfitrión se
+  rompe en todas, y los precios del mostrador, lo comprado y lo empeñado son los del anfitrión. Los pasos de la
+  armadura, el trofeo que se cae y el tintineo y la perla del cocodrilo también llegan a todas.
