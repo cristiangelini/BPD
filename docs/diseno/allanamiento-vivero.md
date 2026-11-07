@@ -11,9 +11,9 @@ giran, mojan, empujan lo liviano y dejan el piso de barro, donde se resbala. Y e
 planta carnívora gigante que muerde lo que se le acerca: se queda con las cosas un rato y empuja a los policías.
 
 ## El lugar
-- **Dónde:** la cuadra (6, 5), en la fila sur, frente al norte (libre en todas las ramas al 27/10). Un terreno de unos
-  40 × 22 m con una tapia baja, el portón abierto y el cartel "La Maceta Feliz" con una maceta que sonríe. Es de tarde
-  y el vivero está "cerrado por inventario".
+- **Dónde:** la cuadra (7, 5), en la fila sur, frente al norte (la (6, 5) quedó para el teatro, 7/11). Un terreno de
+  unos 40 × 22 m con una tapia baja, el portón abierto y el cartel "La Maceta Feliz" con una maceta que sonríe. Es de
+  tarde y el vivero está "cerrado por inventario".
 - **Adentro:**
   - **El patio de plantas:** filas de macetas en el piso y 4 aspersores giratorios.
   - **El invernadero:** una casa de vidrio de 12 × 8 m con mesas de plantas, la canilla, la regadera y la Dentuda en
@@ -106,8 +106,24 @@ los extras suman 500.
   "Vivero (allanamiento, prueba)".
 
 ## El orden para hacerlo (un PR chico por paso)
-1. El vivero como lugar: la cuadra (6, 5) con la tapia, el patio, el invernadero, la estantería, la caja, el galpón,
+1. El vivero como lugar: la cuadra (7, 5) con la tapia, el patio, el invernadero, la estantería, la caja, el galpón,
    el portón del fondo, los enanos, la oficina con llave, lo frágil y los escondites. Modelos nuevos con modelgen.
+   Hecho así:
+   - **Lugar:** la clase `Nursery`, en `--place=nursery` y en el botón del menú, en la cuadra (7, 5). Un terreno de
+     40 × 22 m sin techo, con una tapia baja (1,2 m) y el portón abierto de 5 m bajo el cartel con la maceta que
+     sonríe.
+   - **El patio:** al oeste, con pasto, 2 filas de 12 macetas con plantas y los 4 aspersores (todavía quietos).
+   - **El invernadero:** de 12 × 8 m al este, con 18 paneles de vidrio y la puerta en la pared oeste. Adentro, 4 mesas
+     con plantas, la canilla al fondo y la Dentuda en su maceta enorme en el medio (todavía no muerde).
+   - **Adelante:** el mostrador con la caja (adentro, la llave de la oficina; abierto atrás, entra algo), el canasto de
+     semillas, la estantería con 8 macetas de cerámica, los 8 enanos de jardín y la casita de herramientas.
+   - **Atrás:** el galpón con el frente abierto (las bolsas de tierra, el compost y la carretilla), el tanque de agua
+     sobre patas, el portón de los camiones (cerrado) y la oficina cerrada con llave.
+   - **Lo frágil:** cada panel del invernadero, 30; al romperse queda un agujero por donde se pasa. Cada maceta de
+     cerámica, 10, una por una.
+   - **Escondites:** los 12 de la lista. La carretilla del galpón se llama `in_shed_wheelbarrow` porque
+     `in_wheelbarrow` ya es de la ferretería; "adentro de la caja" es adentro del mostrador.
+   - **Capturas:** `/mnt/project-files/vivero/paso1-*.png` y `modelos.png`.
 2. El riego: los aspersores que giran, empujan y mojan, y el barro que hace resbalar.
 3. La Dentuda: muerde, se queda con las cosas, las escupe y se calma si come.
 4. Doña Hortensia: la ronda, la denuncia, "¡no me pisen los canteros!" y el camión de tierra.
@@ -122,4 +138,5 @@ los extras suman 500.
    lo saque; obliga a pasar lejos de ella o a darle de comer primero.
 2. ¿Las abejas pueden empujar a los policías, o solo zumbar? **Recomendado:** empujones chiquitos, sin daño, solo al
    que corre.
-3. ¿Está bien la cuadra (6, 5)? **Recomendado:** sí, es de la fila sur nueva y está libre en todas las ramas.
+3. ¿Está bien la cuadra (7, 5)? **Recomendado:** sí, es de la fila sur nueva y está libre en todas las ramas (la
+   (6, 5) es del teatro).
