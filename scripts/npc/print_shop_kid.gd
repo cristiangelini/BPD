@@ -31,6 +31,9 @@ var clue_speech := ""
 var listeners := {}
 var has_told := false
 var letters_brought := 0
+## What he said to the cops (not his idle lines), so the guests' Tipito says it too.
+var news_count := 0
+var news := ""
 var _since_idle := 0.0
 var _idle_line := 0
 ## Letter node id -> seconds until he talks about it again.
@@ -69,27 +72,41 @@ func prompt_key(_cop: Cop) -> String:
 
 ## E on him: he asks for his letter.
 func use(cop: Cop) -> void:
-	_say("TIPITO_AGAIN" if listeners.has(cop) else tr("TIPITO_ASK") % wanted, 5.0)
+	_tell("TIPITO_AGAIN" if listeners.has(cop) else tr("TIPITO_ASK") % wanted, 5.0)
 
 
 ## A letter reached him from `cop`: the right one gets the gossip the first time for that cop, another gets told off.
 func take(letter: WoodenLetter, cop: Cop) -> void:
 	_quiet[letter.get_instance_id()] = REPEAT
 	if letter.letter != wanted:
-		_say(tr("TIPITO_WRONG") % letter.letter, 3.0)
+		_tell(tr("TIPITO_WRONG") % letter.letter, 3.0)
 		return
 	letters_brought += 1
 	if cop == null or listeners.has(cop):
-		_say("TIPITO_THANKS", 3.0)
+		_tell("TIPITO_THANKS", 3.0)
 		return
 	listeners[cop] = true
 	if clue_speech == "":
-		_say("TIPITO_NOTHING", 5.0)
+		_tell("TIPITO_NOTHING", 5.0)
 		return
-	_say(clue_speech, 8.0)
+	_tell(clue_speech, 8.0)
 	if not has_told:
 		has_told = true
 		told.emit(clue)
+
+
+## Online, what the guests' Tipito takes from the host's (PrintShop.net_state): what he said, he says it there too.
+func net_state() -> Array:
+	return [news_count, news, has_told, letters_brought]
+
+
+func apply_net_state(state: Array) -> void:
+	if state[0] > news_count:
+		_say(state[1], 6.0)
+	news_count = state[0]
+	news = state[1]
+	has_told = state[2]
+	letters_brought = state[3]
 
 
 func _physics_process(delta: float) -> void:
@@ -97,7 +114,8 @@ func _physics_process(delta: float) -> void:
 		_quiet[id] -= delta
 		if _quiet[id] <= 0.0:
 			_quiet.erase(id)
-	for node in get_tree().get_nodes_in_group("wooden_letters"):
+	# Online the letters are the host's: he takes them there.
+	for node in get_tree().get_nodes_in_group("wooden_letters") if multiplayer.is_server() else []:
 		var letter := node as WoodenLetter
 		if letter == null or _quiet.has(letter.get_instance_id()):
 			continue
@@ -114,6 +132,13 @@ func _physics_process(delta: float) -> void:
 			_say(IDLE_LINES[_idle_line % IDLE_LINES.size()])
 			_idle_line += 1
 			return
+
+
+## Something he says to the cops, which the guests hear too.
+func _tell(key: String, seconds: float) -> void:
+	news_count += 1
+	news = key
+	_say(key, seconds)
 
 
 func _say(key: String, seconds := 3.0) -> void:

@@ -236,6 +236,8 @@ var press: PrintingPress
 var barrel_looks: Array[Node3D] = []
 var barrel_bodies: Array[StaticBody3D] = []
 var tipped: Array[int] = []
+## Which way each tipped barrel fell (index -> flat direction), so the guests' fall the same way.
+var tipped_ways := {}
 var ink: InkSpills
 ## The fax (his distraction), Don Renglón and his complaint bar.
 var fax: OrderFax
@@ -290,6 +292,8 @@ func _ready() -> void:
 	raid.failed_label = %CaseFailed
 	raid.shift_screen = $ShiftScreen
 	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
 	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	ink = InkSpills.new()
@@ -336,6 +340,29 @@ func _place_facts() -> Dictionary:
 		"broken": broken_goods,
 		"complaint": owner_npc.complaint,
 	}
+
+
+## Online, what the guests' print shop takes from the host's (RaidCase.snapshot): the press, the tipped barrels, the
+## broken panes and jars, the fax, what Tipito said and what the story's rig decides on the host.
+func net_state() -> Dictionary:
+	var barrels: Array = tipped.map(func(index: int) -> Array: return [index, tipped_ways[index]])
+	return {"press": press.net_state(), "barrels": barrels, "panes": cracked.duplicate(),
+		"jars": broken_jars.duplicate(), "fax": fax.net_state(), "kid": kid.net_state(),
+		"rig": rig.net_state() if rig else null}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	press.apply_net_state(state.press)
+	for barrel: Array in state.barrels:
+		tip_barrel(barrel[0], barrel[1])
+	for index: int in state.panes:
+		break_pane(index)
+	for index: int in state.jars:
+		break_jar(index)
+	fax.apply_net_state(state.fax)
+	kid.apply_net_state(state.kid)
+	if rig and state.rig != null:
+		rig.apply_net_state(state.rig)
 
 
 ## The story with that id from --story=<id> among the user args, or one drawn from the seed.
@@ -458,6 +485,9 @@ func _build_press() -> void:
 		area.collision_mask = 2 | 4
 		area.body_entered.connect(func(hit: Node3D) -> void:
 			var away := BARRELS[i] - hit.global_position
+			# Online the host decides: its copies of the guests' cops know when they run.
+			if not multiplayer.is_server():
+				return
 			if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > BARREL_SPEED:
 				tip_barrel(i, (hit as RigidBody3D).linear_velocity)
 			elif hit is Cop and (hit as Cop).is_running:
@@ -498,7 +528,8 @@ func _build_front() -> void:
 		jars.append(_model(JAR_MODEL, at))
 		var area := _area(at + Vector3(-0.1, 0.12, 0), Vector3(0.6, 0.35, 0.4))
 		area.body_entered.connect(func(hit: Node3D) -> void:
-			if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > PANE_SPEED:
+			if multiplayer.is_server() and hit is RigidBody3D \
+					and (hit as RigidBody3D).linear_velocity.length() > PANE_SPEED:
 				break_jar(i))
 
 
@@ -518,7 +549,8 @@ func _pane(center: Vector3, size: Vector3) -> void:
 	panes.append(body)
 	var area := _area(center, size + Vector3(0, 0, 0.8))
 	area.body_entered.connect(func(hit: Node3D) -> void:
-		if hit is RigidBody3D and (hit as RigidBody3D).linear_velocity.length() > PANE_SPEED:
+		if multiplayer.is_server() and hit is RigidBody3D \
+				and (hit as RigidBody3D).linear_velocity.length() > PANE_SPEED:
 			break_pane(index))
 
 
@@ -616,10 +648,14 @@ func _place_owner() -> void:
 	office_door.broken.connect(owner_npc.door_broken)
 	owner_npc.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_PRINT_SHOP"))
 	till.opened.connect(func(at: Vector3) -> void: owner_npc.saw(at, FloorBoss.SAW_TILL))
-	fax.caught_on.connect(func() -> void: owner_npc.scold(CAUGHT_ON, "RENGLON_CAUGHT_ON"))
+	# Online he's the host's: only the host's Don Renglón sees and scolds.
+	fax.caught_on.connect(func() -> void:
+		if multiplayer.is_server():
+			owner_npc.scold(CAUGHT_ON, "RENGLON_CAUGHT_ON"))
 	ink.footprint_left.connect(_on_footprint)
 	barrel_tipped.connect(func(index: int) -> void:
-		owner_npc.saw(BARRELS[index] + Vector3.UP * 0.5, SAW_BARREL, "RENGLON_BARREL"))
+		if multiplayer.is_server():
+			owner_npc.saw(BARRELS[index] + Vector3.UP * 0.5, SAW_BARREL, "RENGLON_BARREL"))
 	var hud := CanvasLayer.new()
 	var box := VBoxContainer.new()
 	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
@@ -663,7 +699,7 @@ func wanted_letter() -> WoodenLetter:
 
 ## A cop left a footprint: "¡Me están llenando todo de huellas!", once per cop, if he sees it.
 func _on_footprint(cop: Cop, at: Vector3) -> void:
-	if footprints_seen.has(cop.get_instance_id()):
+	if not multiplayer.is_server() or footprints_seen.has(cop.get_instance_id()):
 		return
 	if owner_npc.saw(at + Vector3.UP * 0.3, SAW_FOOTPRINTS, "RENGLON_FOOTPRINTS"):
 		footprints_seen[cop.get_instance_id()] = true
@@ -677,6 +713,7 @@ func tip_barrel(index: int, away: Vector3) -> void:
 	var flat := Vector3(away.x, 0, away.z).normalized()
 	if flat == Vector3.ZERO:
 		flat = Vector3.BACK
+	tipped_ways[index] = flat
 	(barrel_bodies[index].get_child(0) as CollisionShape3D).set_deferred("disabled", true)
 	var look := barrel_looks[index]
 	look.basis = Basis(Vector3.UP.cross(flat).normalized(), PI / 2)

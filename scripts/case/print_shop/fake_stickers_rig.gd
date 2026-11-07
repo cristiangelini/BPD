@@ -65,7 +65,8 @@ func _physics_process(delta: float) -> void:
 			_spit_left = SPIT_EVERY
 			spit()
 	_since += delta
-	if noticed or _since < CHECK_EVERY:
+	# Online the host sees the cops come close: the guests' rig shows the clue when it says (net_state).
+	if noticed or _since < CHECK_EVERY or not multiplayer.is_server():
 		return
 	_since = 0.0
 	var spot := shop.to_global(hiding_spot())
@@ -86,11 +87,11 @@ func notice() -> void:
 		GOALIE_GREEN)
 
 
-## The press spits: every cop near its tray without one gets a sticker on the face.
+## The press spits: every cop near its tray without one gets a sticker on the face (online, each PC its own cop's).
 func spit() -> void:
 	var tray := shop.to_global(PrintShop.PRESS_AT + Vector3(PrintShop.TRAY_X.y, 0, 0))
 	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
-		if cop is Cop and not on_face.has(cop) and cop.global_position.distance_to(tray) <= FACE_RANGE:
+		if cop is Cop and is_mine(cop as Cop) and not on_face.has(cop) and cop.global_position.distance_to(tray) <= FACE_RANGE:
 			stick_on_face(cop as Cop)
 
 

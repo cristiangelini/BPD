@@ -47,7 +47,8 @@ func basket_top() -> Vector3:
 
 func _physics_process(delta: float) -> void:
 	_since += delta
-	if noticed or _since < CHECK_EVERY:
+	# Online the host sees the cops come close: the guests' rig shows the clue when it says (net_state).
+	if noticed or _since < CHECK_EVERY or not multiplayer.is_server():
 		return
 	_since = 0.0
 	var at := shop.to_global(basket_top())
