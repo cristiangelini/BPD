@@ -65,7 +65,7 @@ func test_molina_slips_and_lucho_saw_where() -> void:
 	assert_true(office.molina.ask(office.get_node("Cop")))
 	assert_eq(office.raid.clues_found.size(), 1)
 	var where := tr("LOC_" + DentistRaid.SPOTS[office.hidden_spots[5 % 3]].id)
-	assert_eq(office.lucho.clue, tr("CLUE_LUCHO") % where)
+	assert_eq(office.lucho.clue, tr("CLUE_DENTIST_LUCHO") % where)
 	var cop: Cop = office.get_node("Cop")
 	cop.get_node("Grabber").grab(office.candies[0])
 	office.lucho.use(cop)
@@ -96,7 +96,7 @@ func test_the_stories_texts_exist() -> void:
 	var keys: Array[String] = ["BRIEF_DENTIST_TIP_B", "BRIEF_DENTIST_TIP_D", "BRIEF_DENTIST_TIP_E",
 		"BRIEF_GOLD_TEETH_B", "BRIEF_GOLD_TEETH_C", "BRIEF_GOLD_TEETH_D", "OBJ_FIND_GOLD_CROWN_BOX",
 		"OBJ_EXTRA_GOLD_CRUCIBLE", "OBJ_EXTRA_CROWN_PRICE_LIST", "OBJ_ENTER_DENTIST", "OBJ_GUESS_DENTIST",
-		"OBJ_BROKEN_DENTIST", "OBJ_COMPLAINT_DENTIST", "MOLINA_SLIP", "CLUE_LUCHO", "LUCHO_CLUE_gold_teeth",
+		"OBJ_BROKEN_DENTIST", "OBJ_COMPLAINT_DENTIST", "MOLINA_SLIP", "CLUE_DENTIST_LUCHO", "LUCHO_CLUE_gold_teeth",
 		"CLUE_XRAY_INGOT", "XRAY_INGOT", "PROMPT_XRAY_NEXT"]
 	for id: String in DentistRaid.SUSPICION_POOL:
 		keys.append("SUSPECT_" + id)

@@ -30,11 +30,11 @@ func _ready() -> void:
 
 
 func prompt_key(_cop: Cop) -> String:
-	return "PROMPT_DIRECTOR"
+	return "PROMPT_THEATER_DIRECTOR"
 
 
 func use(_cop: Cop) -> void:
-	say("DIRECTOR_LINE_%d" % (_lines_said % LINES))
+	say("THEATER_DIRECTOR_LINE_%d" % (_lines_said % LINES))
 	_lines_said += 1
 
 

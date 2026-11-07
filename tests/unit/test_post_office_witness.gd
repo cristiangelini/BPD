@@ -49,7 +49,7 @@ func test_a_cookie_and_she_shouts_the_culprits_route() -> void:
 	var case: CrimeSceneCase = made[1]
 	var parrot := post_office.parrot
 	parrot.use(null)
-	assert_string_starts_with(parrot.said(), "PARROT_LINE_", "with empty hands, a line from the counter")
+	assert_string_starts_with(parrot.said(), "POST_PARROT_LINE_", "with empty hands, a line from the counter")
 	var cookie: ParrotCookie = post_office.cookies[0]
 	parrot.feed(cookie)
 	assert_true(cookie.eaten)
@@ -60,7 +60,7 @@ func test_a_cookie_and_she_shouts_the_culprits_route() -> void:
 	made = _post_office_case(_seed_with("witness", false))
 	post_office = made[0]
 	post_office.parrot.feed(post_office.cookies[1])
-	assert_eq(post_office.parrot.said(), "PARROT_NOTHING", "nothing to tell when she's not the witness")
+	assert_eq(post_office.parrot.said(), "POST_PARROT_NOTHING", "nothing to tell when she's not the witness")
 
 
 func test_a_shout_or_the_flash_scares_her() -> void:

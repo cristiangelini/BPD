@@ -31,7 +31,7 @@ func test_he_walks_his_round_and_speaks_as_the_doctor() -> void:
 	assert_eq(office.molina.voice, "MOLINA")
 	for key: String in ["MOLINA_LINE_1", "MOLINA_PRINTER", "MOLINA_FIX_1", "MOLINA_FIX_DONE", "MOLINA_HURT",
 			"MOLINA_DOOR", "MOLINA_SAW", "MOLINA_NOTHING", "MOLINA_OFFENDED", "MOLINA_LAWYER", "MOLINA_MOLD",
-			"MOLINA_CHAIR", "MOLINA_TANK", "PROMPT_NEXT_BELL", "HINT_BELL_BUSY", "HINT_BELL_RESTING", "DING_BELL"]:
+			"MOLINA_CHAIR", "MOLINA_TANK", "PROMPT_NEXT_BELL", "HINT_PATIENT_BELL_BUSY", "HINT_PATIENT_BELL_RESTING", "DING_BELL"]:
 		assert_ne(tr(key), key, "%s is translated" % key)
 
 

@@ -368,7 +368,7 @@ func _give_clues() -> void:
 		molina.slips.append(tr("MOLINA_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
 	molina.slipped.connect(raid.add_clue)
 	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
-	lucho.clue = tr("CLUE_LUCHO") % where
+	lucho.clue = tr("CLUE_DENTIST_LUCHO") % where
 	lucho.clue_speech = tr("LUCHO_CLUE_" + story_id) % where
 	lucho.told.connect(raid.add_clue)
 

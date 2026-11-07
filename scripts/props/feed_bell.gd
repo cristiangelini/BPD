@@ -44,7 +44,7 @@ func _ready() -> void:
 func print_copies(cop: Cop = null) -> void:
 	if is_jammed or rest_left > 0.0:
 		if cop:
-			cop.show_hint("HINT_BELL_FEEDING" if is_jammed else "HINT_BELL_RESTING")
+			cop.show_hint("HINT_BELL_FEEDING" if is_jammed else "HINT_FEED_BELL_RESTING")
 		return
 	is_jammed = true
 	jobs += 1

@@ -1,4 +1,4 @@
-class_name FakeTicketsRig
+class_name CinemaTicketsRig
 extends CinemaRig
 
 ## The fake tickets (allanamiento-cine.md, "Las entradas truchas"): doña Bobina prints her own tickets and sells each

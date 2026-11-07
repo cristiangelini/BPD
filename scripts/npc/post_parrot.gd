@@ -40,7 +40,7 @@ func _ready() -> void:
 
 
 func prompt_key(_cop: Cop) -> String:
-	return "PROMPT_PARROT"
+	return "PROMPT_POST_PARROT"
 
 
 ## E on it: with a cookie in hand, it eats it and talks; with empty hands, a line from the counter.
@@ -52,7 +52,7 @@ func use(cop: Cop) -> void:
 	elif offended:
 		say("PARROT_OFFENDED")
 	else:
-		say("PARROT_LINE_%d" % (_lines_said % LINES))
+		say("POST_PARROT_LINE_%d" % (_lines_said % LINES))
 		_lines_said += 1
 
 
@@ -66,7 +66,7 @@ func feed(cookie: ParrotCookie) -> void:
 		case.found("witness")
 		say("PARROT_SAW_" + str(case.culprit().route), 6.0)
 	else:
-		say("PARROT_NOTHING")
+		say("POST_PARROT_NOTHING")
 
 
 func shouted_by(cop: Cop) -> void:

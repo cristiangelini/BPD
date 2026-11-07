@@ -37,7 +37,7 @@ const STORIES := {
 			preload("res://scenes/props/karaoke_applause_tapes.tscn"), preload("res://scenes/props/karaoke_winners_list.tscn")],
 		"half_heights": [0.175, 0.03, 0.01],
 		"heavy": [true, false, false],
-		"extra_keys": ["OBJ_EXTRA_APPLAUSE_TAPES", "OBJ_EXTRA_WINNERS_LIST"],
+		"extra_keys": ["OBJ_EXTRA_APPLAUSE_TAPES", "OBJ_EXTRA_KARAOKE_WINNERS"],
 		"rig": preload("res://scripts/case/karaoke/applause_rig.gd"),
 	},
 	"karaoke_tuner": {

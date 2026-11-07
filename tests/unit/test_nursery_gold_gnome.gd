@@ -44,7 +44,7 @@ func test_the_painted_gnome_peels_near_a_cop() -> void:
 	await wait_seconds(GoldGnomeRig.CHECK_EVERY * 2.5)
 	assert_true(rig.peeled)
 	assert_eq(nursery.gnomes[rig.painted].find_children("Flake*", "", false, false).size(), GoldGnomeRig.FLAKES.size())
-	assert_eq(nursery.raid.clues_found.count(tr("CLUE_FRESH_PAINT")), 1, "one clue")
+	assert_eq(nursery.raid.clues_found.count(tr("CLUE_GNOME_FRESH_PAINT")), 1, "one clue")
 
 
 func test_the_gnomes_look_at_the_golden_one() -> void:
@@ -57,6 +57,6 @@ func test_the_gnomes_look_at_the_golden_one() -> void:
 
 func test_the_texts_are_translated() -> void:
 	for key: String in ["BRIEF_GOLD_GNOME_B", "BRIEF_GOLD_GNOME_C", "BRIEF_GOLD_GNOME_D", "OBJ_FIND_GOLD_GNOME",
-			"OBJ_EXTRA_MAYOR_PHOTO", "OBJ_EXTRA_GNOME_PAINT", "CLUE_FRESH_PAINT", "NURSERY_GOLD_SHOWS",
+			"OBJ_EXTRA_MAYOR_PHOTO", "OBJ_EXTRA_GNOME_PAINT", "CLUE_GNOME_FRESH_PAINT", "NURSERY_GOLD_SHOWS",
 			"BROTECITO_CLUE_gold_gnome"]:
 		assert_ne(tr(key), key, key)

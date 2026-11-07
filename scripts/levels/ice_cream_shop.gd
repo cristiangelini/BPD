@@ -45,7 +45,7 @@ const STORIES := {
 	},
 	"frozen_smuggling": {
 		"briefing": ["BRIEF_RIGHT", "BRIEF_FROZEN_SMUGGLING_B", "BRIEF_FROZEN_SMUGGLING_C", "BRIEF_FROZEN_SMUGGLING_D"],
-		"find": "OBJ_FIND_ICE_BLOCK",
+		"find": "OBJ_FIND_ICE_CREAM_BLOCK",
 		"hidden": [preload("res://scenes/props/ice_block_watches.tscn"),
 			preload("res://scenes/props/ice_delivery_list.tscn"), preload("res://scenes/props/fake_stamp.tscn")],
 		"half_heights": [0.2, 0.04, 0.06],

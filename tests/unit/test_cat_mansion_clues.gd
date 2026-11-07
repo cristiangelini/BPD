@@ -128,6 +128,6 @@ func test_sitting_in_the_armchair_and_eating_the_biscuit_spoil_theirs() -> void:
 	TranslationServer.set_locale("es")
 	assert_string_contains(case.clue_line("footprint"), str(case.culprit().shoe))
 	assert_string_contains(case.clue_line("witness"), tr("NEPHEW_TIC_%d" % case.culprit().tic))
-	for key in ["CLUE_CAT_prints", "CLUE_CAT_RUINED_bite", "HINT_CAT_RUINED_hair", "HINT_CLUE_EATEN_bite_mansion",
+	for key in ["CLUE_CAT_prints", "CLUE_CAT_RUINED_bite", "HINT_CAT_RUINED_hair", "HINT_CLUE_EATEN_bite_cat_mansion",
 			"PRINTS_CAT_FLAP", "HINT_NECKLACE_BLOOD_left", "MANSION_LADY_NECKLACE"]:
 		assert_ne(tr(key), key, "%s is translated" % key)

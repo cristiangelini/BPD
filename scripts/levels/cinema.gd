@@ -24,7 +24,7 @@ const BOBINA_SCENE := preload("res://scenes/npc/dona_bobina.tscn")
 const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
 ## Every story the cinema can be suspected of (allanamiento-cine.md, "Las historias"): SUSPECT_<id> names it and
 ## CLUE_SUSPECT_<id> is the clue that hints at it.
-const SUSPICION_POOL := ["pirate_copies", "floor_popcorn", "haunted_cinema", "fake_tickets", "stolen_film",
+const SUSPICION_POOL := ["pirate_copies", "floor_popcorn", "haunted_cinema", "fake_seats", "stolen_film",
 	"popcorn_watches"]
 const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_CINEMA_TIP_B", "BRIEF_TIP_C", "BRIEF_CINEMA_TIP_D",
 	"BRIEF_CINEMA_TIP_E"]
@@ -65,8 +65,8 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_HOLEY_SHEET", "OBJ_EXTRA_SCREAM_DISC"],
 		"rig": preload("res://scripts/case/cinema/haunted_cinema_rig.gd"),
 	},
-	"fake_tickets": {
-		"briefing": ["BRIEF_RIGHT", "BRIEF_FAKE_TICKETS_B", "BRIEF_FAKE_TICKETS_C", "BRIEF_FAKE_TICKETS_D"],
+	"fake_seats": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_FAKE_SEATS_B", "BRIEF_FAKE_SEATS_C", "BRIEF_FAKE_SEATS_D"],
 		"find": "OBJ_FIND_TICKET_PRESS",
 		"main_hidden": true,
 		"hidden": [preload("res://scenes/props/ticket_press.tscn"), preload("res://scenes/props/sold_out_stamp.tscn"),

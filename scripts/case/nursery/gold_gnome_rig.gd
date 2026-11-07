@@ -62,7 +62,7 @@ func peel() -> void:
 		flake.position = FLAKES[i]
 		flake.name = "Flake%d" % i
 		gnome.add_child(flake)
-	nursery.raid.add_clue(tr("CLUE_FRESH_PAINT"))
+	nursery.raid.add_clue(tr("CLUE_GNOME_FRESH_PAINT"))
 	nursery.raid.float_label(tr("NURSERY_GOLD_SHOWS"), gnome.global_position + Vector3.UP * 0.9, GOLD)
 
 

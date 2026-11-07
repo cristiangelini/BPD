@@ -23,8 +23,8 @@ func test_lucho_waits_with_the_candies_in_the_jar() -> void:
 		assert_true(candy.is_in_group(DentistKid.CANDY_GROUP))
 		assert_lt(candy.position.distance_to(DentistRaid.JAR_AT), 0.3, "in the jar, on the reception")
 	assert_eq(office.gas_tanks.size(), 2)
-	for key: String in ["PROMPT_LUCHO", "PROMPT_LUCHO_CANDY", "LUCHO_IDLE_1", "LUCHO_WANTS_CANDY", "LUCHO_AGAIN",
-			"LUCHO_THANKS", "LUCHO_NOTHING", "MOLINA_CANDY", "HINT_LAUGHING_GAS"]:
+	for key: String in ["PROMPT_LUCHO", "PROMPT_LUCHO_CANDY", "LUCHO_IDLE_1", "LUCHO_WANTS_CANDY", "DENTIST_LUCHO_AGAIN",
+			"LUCHO_THANKS", "DENTIST_LUCHO_NOTHING", "MOLINA_CANDY", "HINT_LAUGHING_GAS"]:
 		assert_ne(tr(key), key, "%s is translated" % key)
 
 

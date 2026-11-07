@@ -64,7 +64,7 @@ func prompt_key(cop: Cop) -> String:
 func use(cop: Cop) -> void:
 	var candy := candy_of(cop)
 	if not candy:
-		_say("LUCHO_AGAIN" if has_told else "LUCHO_WANTS_CANDY", 4.0)
+		_say("DENTIST_LUCHO_AGAIN" if has_told else "LUCHO_WANTS_CANDY", 4.0)
 		return
 	cop.get_node("Grabber").release()
 	candy.hide()
@@ -78,7 +78,7 @@ func use(cop: Cop) -> void:
 		return
 	has_told = true
 	if clue_speech == "":
-		_say("LUCHO_NOTHING", 5.0)
+		_say("DENTIST_LUCHO_NOTHING", 5.0)
 		return
 	_say(clue_speech, 8.0)
 	told.emit(clue)

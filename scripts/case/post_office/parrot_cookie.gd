@@ -27,7 +27,7 @@ func _ready() -> void:
 
 
 func held_prompt_key(cop: Cop) -> String:
-	return "PROMPT_PARROT_FEED" if cop._usable_target() is PostParrot else "PROMPT_HOLDING"
+	return "PROMPT_POST_PARROT_FEED" if cop._usable_target() is PostParrot else "PROMPT_HOLDING"
 
 
 ## Gone into Cartita's beak.

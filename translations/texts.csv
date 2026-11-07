@@ -6303,7 +6303,7 @@ HINT_CAT_FLAP_TOUCHED,"¡La tocaste! Tus huellas quedaron encima.","You touched 
 HINT_CAT_FLAP_EMPTY,"Una puerta para gatos con marco dorado. Claro.","A cat flap with a gilt frame. Of course.","Uma portinha de gatos com moldura dourada. Claro."
 PRINTS_CAT_FLAP,"¡Huellas humanas en la puerta para gatos! Alguien metió la mano.","Human prints on the cat flap! Someone put a hand through.","Digitais humanas na portinha dos gatos! Alguém enfiou a mão."
 PRINTS_CAT_FLAP_SMUDGED,"Hay huellas en la puerta para gatos, pero están tapadas.","There are prints on the cat flap, but they're covered.","Tem digitais na portinha, mas estão cobertas."
-HINT_CLUE_EATEN_bite_mansion,"¡Sabe a pescado! Era una galleta para gatos. Y estaba mordida.","Tastes like fish! It was a cat biscuit. And it was bitten.","Tem gosto de peixe! Era um biscoito de gato. E estava mordido."
+HINT_CLUE_EATEN_bite_cat_mansion,"¡Sabe a pescado! Era una galleta para gatos. Y estaba mordida.","Tastes like fish! It was a cat biscuit. And it was bitten.","Tem gosto de peixe! Era um biscoito de gato. E estava mordido."
 PROMPT_NECKLACE_LOOK,E: mirar el broche del collar,E: look at the necklace's clasp,E: olhar o fecho do colar
 HINT_NECKLACE_BLOOD_left,"Hay sangre en el broche, del lado izquierdo. La Duquesa arañó una mano izquierda.","There's blood on the clasp, on the left side. Duquesa scratched a left hand.","Tem sangue no fecho, do lado esquerdo. A Duquesa arranhou uma mão esquerda."
 HINT_NECKLACE_BLOOD_right,"Hay sangre en el broche, del lado derecho. La Duquesa arañó una mano derecha.","There's blood on the clasp, on the right side. Duquesa scratched a right hand.","Tem sangue no fecho, do lado direito. A Duquesa arranhou uma mão direita."
@@ -6958,13 +6958,13 @@ OBJ_EXTRA_COVERS,Extra: las carátulas impresas,Extra: the printed covers,Extra:
 SUSPECT_pirate_copies,Las copias piratas,The pirate copies,As cópias piratas
 SUSPECT_floor_popcorn,Las palomitas del piso,The floor popcorn,A pipoca do chão
 SUSPECT_haunted_cinema,El cine embrujado,The haunted cinema,O cinema assombrado
-SUSPECT_fake_tickets,Las entradas truchas,The fake tickets,Os ingressos falsos
+SUSPECT_fake_seats,Las entradas truchas,The fake tickets,Os ingressos falsos
 SUSPECT_stolen_film,La película robada,The stolen film,O filme roubado
 SUSPECT_popcorn_watches,Los relojes en las palomitas,The watches in the popcorn,Os relógios na pipoca
 CLUE_SUSPECT_pirate_copies,"Un volante de la feria: «Estrenos en casa, antes que en el cine. Dos por uno».","A street market flyer: «Premieres at home, before the cinema. Two for one».","Um panfleto da feira: «Estreias em casa, antes do cinema. Leve dois, pague um»."
 CLUE_SUSPECT_floor_popcorn,"Una lista pegada en la escoba: «Fila 1 a 8. Juntar todo. No tirar nada».","A list taped to the broom: «Rows 1 to 8. Pick it all up. Throw nothing away».","Uma lista colada na vassoura: «Fileiras 1 a 8. Juntar tudo. Não jogar nada fora»."
 CLUE_SUSPECT_haunted_cinema,"Un recibo de una casa de disfraces: «Una sábana blanca con dos agujeros. Pagado».","A costume shop receipt: «One white sheet with two holes. Paid».","Um recibo de uma loja de fantasias: «Um lençol branco com dois buracos. Pago»."
-CLUE_SUSPECT_fake_tickets,"Una entrada con la tinta corrida: «Fila 4, butaca 4». Hay otra igual en el piso.","A ticket with smudged ink: «Row 4, seat 4». There's another one just like it on the floor.","Um ingresso com a tinta borrada: «Fileira 4, poltrona 4». Tem outro igual no chão."
+CLUE_SUSPECT_fake_seats,"Una entrada con la tinta corrida: «Fila 4, butaca 4». Hay otra igual en el piso.","A ticket with smudged ink: «Row 4, seat 4». There's another one just like it on the floor.","Um ingresso com a tinta borrada: «Fileira 4, poltrona 4». Tem outro igual no chão."
 CLUE_SUSPECT_stolen_film,"Un sobre del festival de cine: «Devolver la copia premiada antes del lunes».","A film festival envelope: «Return the prize-winning print before Monday».","Um envelope do festival de cinema: «Devolver a cópia premiada antes de segunda»."
 CLUE_SUSPECT_popcorn_watches,"Un papel con un dibujo de un reloj y una flecha: «Adentro del balde grande».","A note with a drawing of a watch and an arrow: «Inside the big bucket».","Um papel com o desenho de um relógio e uma seta: «Dentro do balde grande»."
 OBJ_ENTER_CINEMA,Entrar al cine (la puerta está abierta),Get into the cinema (the door is open),Entrar no cinema (a porta está aberta)
@@ -7002,13 +7002,13 @@ HINT_GHOST_SPEAKER,"Detrás de la pantalla, un parlante hace «uuuuh». El fanta
 CLUE_GHOST_SPEAKER,"Detrás de la pantalla hay un parlante que hace «uuuuh»: el fantasma es de mentira.","Behind the screen there's a speaker going «oooooh»: the ghost is fake.","Atrás da tela tem um alto-falante que faz «uuuuh»: o fantasma é de mentira."
 CINEMA_GHOST_OOH,uuuuuh...,oooooh...,uuuuuh...
 CINEMA_SCREAM,¡Aaaah!,Aaaah!,Aaaah!
-BRIEF_FAKE_TICKETS_B,"Doña Bobina imprime sus propias entradas y vende cada butaca dos veces. Por eso siempre dice «agotado».","Doña Bobina prints her own tickets and sells every seat twice. That's why it always says «sold out».","A dona Bobina imprime os próprios ingressos e vende cada poltrona duas vezes. Por isso sempre diz «esgotado»."
-BRIEF_FAKE_TICKETS_C,"Traigan la imprenta de entradas en el baúl del patrullero. Pesa 10 kilos: mejor entre dos.","Bring the ticket press in the patrol car's trunk. It weighs 10 kilos: better with two of you.","Tragam a impressora de ingressos no porta-malas da viatura. Pesa 10 quilos: melhor em dois."
-BRIEF_FAKE_TICKETS_D,"Si encuentran el sello de «función agotada» o el talonario trucho, mejor: todo suma.","If you find the «sold out» stamp or the fake ticket book, even better: it all counts.","Se acharem o carimbo de «sessão esgotada» ou o talão falso, melhor: tudo conta."
+BRIEF_FAKE_SEATS_B,"Doña Bobina imprime sus propias entradas y vende cada butaca dos veces. Por eso siempre dice «agotado».","Doña Bobina prints her own tickets and sells every seat twice. That's why it always says «sold out».","A dona Bobina imprime os próprios ingressos e vende cada poltrona duas vezes. Por isso sempre diz «esgotado»."
+BRIEF_FAKE_SEATS_C,"Traigan la imprenta de entradas en el baúl del patrullero. Pesa 10 kilos: mejor entre dos.","Bring the ticket press in the patrol car's trunk. It weighs 10 kilos: better with two of you.","Tragam a impressora de ingressos no porta-malas da viatura. Pesa 10 quilos: melhor em dois."
+BRIEF_FAKE_SEATS_D,"Si encuentran el sello de «función agotada» o el talonario trucho, mejor: todo suma.","If you find the «sold out» stamp or the fake ticket book, even better: it all counts.","Se acharem o carimbo de «sessão esgotada» ou o talão falso, melhor: tudo conta."
 OBJ_FIND_TICKET_PRESS,Llevarse la imprenta de entradas,Take the ticket press,Levar a impressora de ingressos
 OBJ_EXTRA_SOLD_OUT_STAMP,Extra: el sello de «función agotada»,Extra: the «sold out» stamp,Extra: o carimbo de «sessão esgotada»
 OBJ_EXTRA_TICKET_BOOK,Extra: el talonario trucho,Extra: the fake ticket book,Extra: o talão falso
-CHICHO_CLUE_fake_tickets,"(susurrando) «Vi a doña Bobina esconder algo %s. Y hoy ya acomodé a tres señores en la misma butaca.»","(whispering) “I saw doña Bobina hide something %s. And today I've already shown three men to the same seat.”","(sussurrando) “Vi a dona Bobina esconder algo %s. E hoje já acomodei três senhores na mesma poltrona.”"
+CHICHO_CLUE_fake_seats,"(susurrando) «Vi a doña Bobina esconder algo %s. Y hoy ya acomodé a tres señores en la misma butaca.»","(whispering) “I saw doña Bobina hide something %s. And today I've already shown three men to the same seat.”","(sussurrando) “Vi a dona Bobina esconder algo %s. E hoje já acomodei três senhores na mesma poltrona.”"
 CINEMA_SOLD_OUT,AGOTADO,SOLD OUT,ESGOTADO
 CINEMA_SAME_SEAT_TICKET,"¡Mire mi entrada: fila 3, butaca 4! ¡Y la de él dice lo mismo!","Look at my ticket: row 3, seat 4! And his says the same!","Olha meu ingresso: fileira 3, poltrona 4! E o dele diz o mesmo!"
 CINEMA_SAME_SEAT_1,¡Esta butaca es mía!,This seat is mine!,Esta poltrona é minha!
@@ -7333,7 +7333,7 @@ MENU_FARM_RAID,Granja (allanamiento) (prueba),Farm (raid) (test),Granja (batida)
 HINT_MUD_SLIP,"¡Barro! Corriste en el chiquero y los chanchos se ríen.","Mud! You ran in the pigsty and the pigs are laughing.","Lama! Você correu no chiqueiro e os porcos estão rindo."
 PROMPT_FEED_BELL,E: tocar la campana de la comida,E: ring the feeding bell,E: tocar o sino da comida
 HINT_BELL_FEEDING,Don Florencio ya está dando de comer.,Don Florencio is already feeding the animals.,Dom Florencio já está dando comida aos bichos.
-HINT_BELL_RESTING,"Los animales todavía no tienen hambre. Espera un poco.","The animals aren't hungry yet. Wait a bit.","Os bichos ainda não estão com fome. Espere um pouco."
+HINT_FEED_BELL_RESTING,"Los animales todavía no tienen hambre. Espera un poco.","The animals aren't hungry yet. Wait a bit.","Os bichos ainda não estão com fome. Espere um pouco."
 FARM_BELL_DONG,¡Dong! ¡Dong!,Dong! Dong!,Dong! Dong!
 PROMPT_APRON_KEY,E: sacar la llave del delantal,E: take the key from the apron,E: pegar a chave do avental
 HINT_APRON_KEY,"Tienes la llave del galpón. Don Florencio ni se enteró.","You have the shed's key. Don Florencio didn't even notice.","Você pegou a chave do galpão. Dom Florencio nem percebeu."
@@ -7534,7 +7534,6 @@ BRIEF_RADIO_TIP_E,"Y bajito: con la luz «AL AIRE» prendida, todo ruido lo escu
 BRIEF_RIGGED_CONTEST_B,"Todos los concursos de la radio los gana Tito, el primo de don Volumen. Todos.","Every contest on the station is won by Tito, don Volumen's cousin. Every single one.","Todos os concursos da rádio quem ganha é o Tito, primo do seu Volumen. Todos."
 BRIEF_RIGGED_CONTEST_C,"Traigan la urna del sorteo en el baúl del patrullero. Pesa 4 kilos y es de vidrio: con cuidado.","Bring the raffle urn in the patrol car's trunk. It weighs 4 kilos and it's glass: careful.","Tragam a urna do sorteio no porta-malas da viatura. Pesa 4 quilos e é de vidro: com cuidado."
 BRIEF_RIGGED_CONTEST_D,"Si encuentran el premio sin entregar o la lista de ganadores, mejor: todo suma.","If you find the undelivered prize or the winners list, even better: it all counts.","Se acharem o prêmio não entregue ou a lista de ganhadores, melhor: tudo conta."
-OBJ_FIND_RAFFLE_URN,Llevarse la urna del sorteo,Take the raffle urn,Levar a urna do sorteio
 OBJ_EXTRA_BLENDER,Extra: la licuadora del premio,Extra: the prize blender,Extra: o liquidificador do prêmio
 OBJ_EXTRA_WINNERS_LIST,Extra: la lista de ganadores,Extra: the winners list,Extra: a lista de ganhadores
 SUSPECT_rigged_contest,El concurso arreglado,The rigged contest,O concurso armado
@@ -8301,7 +8300,7 @@ CONFESS_owner_nieve,"¡Está bien! ¡Fui yo! Pero el helado era bueno, eso nadie
 BRIEF_FROZEN_SMUGGLING_B,En el puerto encontraron relojes de contrabando congelados en bloques de hielo. Los bloques salen de una heladería.,At the harbor they found smuggled watches frozen in blocks of ice. The blocks come from an ice cream shop.,No porto acharam relógios contrabandeados congelados em blocos de gelo. Os blocos saem de uma sorveteria.
 BRIEF_FROZEN_SMUGGLING_C,"Traigan el bloque de hielo con los relojes en el baúl del patrullero. Pesa 8 kilos: levántenlo entre dos, y rápido, que se derrite.","Bring the ice block with the watches back in the patrol car's trunk. It weighs 8 kilos: lift it together, and fast, before it melts.","Tragam o bloco de gelo com os relógios no porta-malas da viatura. Pesa 8 quilos: levantem em dois, e rápido, antes que derreta."
 BRIEF_FROZEN_SMUGGLING_D,"Si encuentran la lista de entregas o el sello falso, mejor: todo suma.","If you find the delivery list or the fake stamp, even better: it all counts.","Se acharem a lista de entregas ou o carimbo falso, melhor: tudo conta."
-OBJ_FIND_ICE_BLOCK,Llevarse el bloque de hielo con los relojes,Take the ice block with the watches,Levar o bloco de gelo com os relógios
+OBJ_FIND_ICE_CREAM_BLOCK,Llevarse el bloque de hielo con los relojes,Take the ice block with the watches,Levar o bloco de gelo com os relógios
 OBJ_EXTRA_FAKE_STAMP_ICE,Extra: el sello falso de la aduana,Extra: the fake customs stamp,Extra: o carimbo falso da alfândega
 LUCHO_CLUE_frozen_smuggling,«Anoche doña Nieve me hizo cargar un bloque de hielo que hacía tic tac. Lo dejamos %s.»,“Last night doña Nieve had me carry a block of ice that went tick tock. We left it %s.”,“Ontem à noite a dona Nieve me fez carregar um bloco de gelo que fazia tique-taque. Deixamos %s.”
 ICE_THERMOMETER,-40 °C,-40 °C,-40 °C
@@ -8434,7 +8433,7 @@ BRIEF_KARAOKE_APPLAUSE_C,"Traigan la máquina de aplausos en el baúl del patrul
 BRIEF_KARAOKE_APPLAUSE_D,"Si encuentran los casetes de aplausos o la lista de ganadores, mejor: todo suma.","If you find the applause tapes or the list of winners, even better: it all adds up.","Se acharem as fitas de aplausos ou a lista de vencedores, melhor: tudo soma."
 OBJ_FIND_APPLAUSE_MACHINE,Llevarse la máquina de aplausos,Take the applause machine,Levar a máquina de aplausos
 OBJ_EXTRA_APPLAUSE_TAPES,Extra: los casetes de aplausos,Extra: the applause tapes,Extra: as fitas de aplausos
-OBJ_EXTRA_WINNERS_LIST,Extra: la lista de ganadores,Extra: the list of winners,Extra: a lista de vencedores
+OBJ_EXTRA_KARAOKE_WINNERS,Extra: la lista de ganadores,Extra: the list of winners,Extra: a lista de vencedores
 OBJ_ENTER_KARAOKE,Entrar al karaoke (está abierto),Get into the karaoke (it's open),Entrar no karaokê (está aberto)
 OBJ_GUESS_KARAOKE,"Averiguar qué pasa en el karaoke (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the karaoke (with Q open, hold 1, 2 or 3)","Descobrir o que acontece no karaokê (com Q aberto, segure 1, 2 ou 3)"
 OBJ_BROKEN_KARAOKE,Cosas rotas: %d (multa: %d),Broken things: %d (fines: %d),Coisas quebradas: %d (multa: %d)
@@ -8660,8 +8659,8 @@ LOC_dentist_on_office_desk,en el escritorio del doctor,on the doctor's desk,na m
 LOC_dentist_on_office_shelf,en el estante de la oficina,on the office shelf,na estante do escritório
 PROMPT_NEXT_BELL,E: tocar el timbre de turnos,E: ring the next-patient bell,E: tocar a campainha de senhas
 DING_BELL,¡Ding!,Ding!,Plim!
-HINT_BELL_BUSY,El doctor ya está atendiendo.,The doctor is already with a patient.,O doutor já está atendendo.
-HINT_BELL_RESTING,"El doctor dice que ahora no atiende a nadie. Espera un poco.","The doctor says he's not seeing anyone right now. Wait a bit.","O doutor diz que agora não atende ninguém. Espere um pouco."
+HINT_PATIENT_BELL_BUSY,El doctor ya está atendiendo.,The doctor is already with a patient.,O doutor já está atendendo.
+HINT_PATIENT_BELL_RESTING,"El doctor dice que ahora no atiende a nadie. Espera un poco.","The doctor says he's not seeing anyone right now. Wait a bit.","O doutor diz que agora não atende ninguém. Espere um pouco."
 MOLINA_LINE_1,"♪ Lalalá… cepillo, hilo y enjuague ♪","♪ La-la-la… brush, floss and rinse ♪","♪ Lalalá… escova, fio e enxágue ♪"
 MOLINA_LINE_2,"¡Sonrían, oficiales! Una sonrisa no cuesta nada… bueno, casi nada.","Smile, officers! A smile costs nothing… well, almost nothing.","Sorriam, policiais! Um sorriso não custa nada… bom, quase nada."
 MOLINA_LINE_3,"¿Cuándo fue la última vez que usaron hilo dental? Se nota.","When did you last floss? It shows.","Quando foi a última vez que usaram fio dental? Dá pra notar."
@@ -8687,9 +8686,9 @@ LUCHO_IDLE_1,"Llevo tres horas esperando. Ya me sé todas las revistas.","I've b
 LUCHO_IDLE_2,"Mis brackets brillan en la oscuridad. Mira. Bueno, ahora no se nota.","My braces glow in the dark. Look. Well, you can't tell now.","Meu aparelho brilha no escuro. Olha. Bom, agora não dá pra ver."
 LUCHO_IDLE_3,"Ese frasco de caramelos es solo de adorno. Qué crueldad.","That candy jar is just for show. How cruel.","Esse pote de balas é só enfeite. Que crueldade."
 LUCHO_WANTS_CANDY,"No hablo con policías… salvo que traigan un caramelo del frasco.","I don't talk to cops… unless they bring a candy from the jar.","Não falo com policiais… a não ser que tragam uma bala do pote."
-LUCHO_AGAIN,"Ya te conté todo. Bueno, por otro caramelo te cuento un chiste.","I already told you everything. Well, for another candy I'll tell you a joke.","Já te contei tudo. Bom, por outra bala te conto uma piada."
+DENTIST_LUCHO_AGAIN,"Ya te conté todo. Bueno, por otro caramelo te cuento un chiste.","I already told you everything. Well, for another candy I'll tell you a joke.","Já te contei tudo. Bom, por outra bala te conto uma piada."
 LUCHO_THANKS,"¡Gracias! ¿Qué le dijo un diente al otro? Nada, los dientes no hablan.","Thanks! What did one tooth say to the other? Nothing, teeth don't talk.","Valeu! O que um dente disse pro outro? Nada, dente não fala."
-LUCHO_NOTHING,"Mmm, rico. No vi nada raro, pero gracias igual.","Mmm, yummy. I didn't see anything weird, but thanks anyway.","Hum, gostoso. Não vi nada estranho, mas obrigado mesmo assim."
+DENTIST_LUCHO_NOTHING,"Mmm, rico. No vi nada raro, pero gracias igual.","Mmm, yummy. I didn't see anything weird, but thanks anyway.","Hum, gostoso. Não vi nada estranho, mas obrigado mesmo assim."
 MOLINA_CANDY,"¡Nada de caramelos en mi consultorio! ¿Saben lo que cuestan unos brackets?","No candy in my office! Do you know what braces cost?","Nada de balas no meu consultório! Sabem quanto custa um aparelho?"
 BRIEF_DENTIST_TIP_B,"Llegó una denuncia anónima: el doctor Molina cobra poco, no tiene pacientes y estrena consultorio cada año.","We got an anonymous tip: Dr. Molina charges little, has no patients and gets a brand-new office every year.","Chegou uma denúncia anônima: o doutor Molina cobra pouco, não tem pacientes e estreia consultório todo ano."
 BRIEF_DENTIST_TIP_D,"La sala de espera está abierta y el doctor no soporta nada fuera de lugar. El depósito está cerrado con llave: usen el ariete.","The waiting room is open and the doctor can't stand anything out of place. The storeroom is locked: use the ram.","A sala de espera está aberta e o doutor não suporta nada fora do lugar. O depósito está trancado: usem o aríete."
@@ -8717,7 +8716,7 @@ OBJ_GUESS_DENTIST,"Averiguar qué pasa en el consultorio (con Q abierta, mantén
 OBJ_BROKEN_DENTIST,Cosas rotas: %d (multa: %d),Broken things: %d (fines: %d),Coisas quebradas: %d (multa: %d)
 OBJ_COMPLAINT_DENTIST,Queja del doctor Molina: %d%%,Dr. Molina's complaint: %d%%,Queixa do doutor Molina: %d%%
 MOLINA_SLIP,"«¡Yo no guardé nada %s!... Digo, ¡abra grande y no pregunte!»","“I didn't put anything %s!... I mean, open wide and don't ask!”","“Eu não guardei nada %s!... Quer dizer, abra bem e não pergunte!”"
-CLUE_LUCHO,Lucho vio al doctor esconder algo %s,Lucho saw the doctor hide something %s,O Lucho viu o doutor esconder algo %s
+CLUE_DENTIST_LUCHO,Lucho vio al doctor esconder algo %s,Lucho saw the doctor hide something %s,O Lucho viu o doutor esconder algo %s
 LUCHO_CLUE_gold_teeth,"«Mmm… Vi al doctor esconder algo %s. Y a la señora de antes le sacó un diente de oro y le puso uno gris.»","“Mmm… I saw the doctor hide something %s. And he took a gold tooth out of the lady before me and put in a grey one.”","“Hum… Vi o doutor esconder algo %s. E da senhora de antes ele tirou um dente de ouro e pôs um cinza.”"
 CLUE_XRAY_INGOT,Una placa de rayos X muestra un lingote adentro de una muela,An X-ray shows an ingot inside a molar,Uma radiografia mostra um lingote dentro de um dente
 XRAY_INGOT,¡Un lingote adentro de la muela!,An ingot inside the molar!,Um lingote dentro do dente!
@@ -8802,10 +8801,10 @@ POST_BOSS_LINE_1,"La Vaquita Azul vale más que todo este edificio. Y es más fe
 POST_BOSS_LINE_2,"No toques la clasificadora. Tiene carácter.","Don't touch the sorting machine. It has a temper.","Não mexa na classificadora. Ela tem gênio."
 POST_BOSS_LINE_3,"¿Tienes el formulario 27-B? Sin formulario no hay investigación.","Do you have form 27-B? No form, no investigation.","Você tem o formulário 27-B? Sem formulário não tem investigação."
 POST_BOSS_LINE_4,"Si te quedas quieto un minuto más, te sello. Lo hago con todo.","Stand still one more minute and I'll stamp you. I do it to everything.","Se você ficar parado mais um minuto, eu te carimbo. Faço isso com tudo."
-PROMPT_PARROT,"E: hablar con Cartita","E: talk to Cartita","E: falar com Cartita"
-PARROT_LINE_0,"¡Siguiente! ¡Siguiente! ¡Ventanilla dos!","Next! Next! Window two!","Próximo! Próximo! Guichê dois!"
-PARROT_LINE_1,"¡Falta una estampilla! ¡Falta una estampilla! ¡Cráac!","Missing a stamp! Missing a stamp! Squawk!","Falta um selo! Falta um selo! Cráac!"
-PARROT_LINE_2,"¡Frágil! ¡Frágil! ¡Ups!","Fragile! Fragile! Oops!","Frágil! Frágil! Ops!"
+PROMPT_POST_PARROT,"E: hablar con Cartita","E: talk to Cartita","E: falar com Cartita"
+POST_PARROT_LINE_0,"¡Siguiente! ¡Siguiente! ¡Ventanilla dos!","Next! Next! Window two!","Próximo! Próximo! Guichê dois!"
+POST_PARROT_LINE_1,"¡Falta una estampilla! ¡Falta una estampilla! ¡Cráac!","Missing a stamp! Missing a stamp! Squawk!","Falta um selo! Falta um selo! Cráac!"
+POST_PARROT_LINE_2,"¡Frágil! ¡Frágil! ¡Ups!","Fragile! Fragile! Oops!","Frágil! Frágil! Ops!"
 BRIEF_POST_OFFICE_A_stamp,"Novatos, anoche alguien abrió la caja fuerte del Correo Central y se llevó La Vaquita Azul, la primera estampilla de la ciudad, con una vaca dibujada al revés por error.","Rookies, last night someone opened the Central Post Office's safe and took La Vaquita Azul, the city's first stamp, with a cow drawn upside down by mistake.","Novatos, ontem à noite alguém abriu o cofre do Correio Central e levou La Vaquita Azul, o primeiro selo da cidade, com uma vaca desenhada de cabeça para baixo por engano."
 BRIEF_POST_OFFICE_B,"Esa noche solo estaban los seis carteros del turno noche, todos con el mismo uniforme, y las puertas estuvieron cerradas hasta la mañana: uno de ellos la tiene.","That night only the six night-shift carriers were there, all in the same uniform, and the doors were locked until morning: one of them has it.","Naquela noite só estavam os seis carteiros do turno da noite, todos com o mesmo uniforme, e as portas ficaram fechadas até de manhã: um deles está com ele."
 BRIEF_POST_OFFICE_C,"Y cuidado con la clasificadora, que arranca cuando quiere.","And watch out for the sorting machine, it starts whenever it feels like it.","E cuidado com a classificadora, que liga quando quer."
@@ -8911,9 +8910,9 @@ PARROT_SAW_yellow,"¡Recorrido amarillo, recorrido amarillo! ¡Cállate, loro! �
 PARROT_SAW_blue,"¡Recorrido azul, recorrido azul! ¡Cállate, loro! ¡Cráac!","Blue route, blue route! Shut up, parrot! Squawk!","Percurso azul, percurso azul! Cala a boca, louro! Cráac!"
 PARROT_SAW_orange,"¡Recorrido naranja, recorrido naranja! ¡Cállate, loro! ¡Cráac!","Orange route, orange route! Shut up, parrot! Squawk!","Percurso laranja, percurso laranja! Cala a boca, louro! Cráac!"
 PARROT_SAW_purple,"¡Recorrido violeta, recorrido violeta! ¡Cállate, loro! ¡Cráac!","Purple route, purple route! Shut up, parrot! Squawk!","Percurso violeta, percurso violeta! Cala a boca, louro! Cráac!"
-PARROT_NOTHING,"¡Galleta rica! ¡No vi nada, no vi nada!","Yummy cookie! Saw nothing, saw nothing!","Biscoito gostoso! Não vi nada, não vi nada!"
+POST_PARROT_NOTHING,"¡Galleta rica! ¡No vi nada, no vi nada!","Yummy cookie! Saw nothing, saw nothing!","Biscoito gostoso! Não vi nada, não vi nada!"
 PARROT_OFFENDED,"(Cartita esconde la cabeza debajo del ala.)","(Cartita hides her head under her wing.)","(Cartita esconde a cabeça debaixo da asa.)"
-PROMPT_PARROT_FEED,"E: darle la galleta a Cartita","E: give Cartita the cookie","E: dar o biscoito para Cartita"
+PROMPT_POST_PARROT_FEED,"E: darle la galleta a Cartita","E: give Cartita the cookie","E: dar o biscoito para Cartita"
 CLUE_POST_OFFICE_witness,"Cartita repite lo que gritó el culpable esa noche: hace %s","Cartita repeats what the culprit shouted that night: they cover %s","Cartita repete o que o culpado gritou naquela noite: faz %s"
 CLUE_POST_OFFICE_RUINED_witness,"Cartita: asustada, no habla más","Cartita: scared, won't talk any more","Cartita: assustada, não fala mais"
 HINT_POST_OFFICE_RUINED_witness,"Asustaste a Cartita. Escondió la cabeza y no va a decir nada más.","You scared Cartita. She hid her head and won't say anything else.","Você assustou a Cartita. Ela escondeu a cabeça e não vai dizer mais nada."
@@ -8942,12 +8941,12 @@ GHOST_EMBROIDERY_sun,"El sol es mío. Un fantasma con sol, sí. Soy un fantasma 
 GHOST_EMBROIDERY_bolt,"El rayo es mío, porque soy el más rápido para cambiarme. Tres segundos con sábana y todo.","The bolt is mine, because I'm the fastest to change. Three seconds, sheet and all.","O raio é meu, porque sou o mais rápido para me trocar. Três segundos, com lençol e tudo."
 GHOST_EMBROIDERY_heart,"El corazón es mío. Soy el fantasma romántico. Asusto, pero con cariño.","The heart is mine. I'm the romantic ghost. I scare, but kindly.","O coração é meu. Sou o fantasma romântico. Assusto, mas com carinho."
 GHOST_EMBROIDERY_clover,"El trébol, porque soy el más suertudo de la obra. Nunca me pisaron la sábana.","The clover, because I'm the luckiest in the show. Nobody ever stepped on my sheet.","O trevo, porque sou o mais sortudo da peça. Nunca pisaram no meu lençol."
-PROMPT_DIRECTOR,"E: hablar con el Maestro Bambalina","E: talk to Maestro Bambalina","E: falar com o Maestro Bambalina"
-DIRECTOR_LINE_0,"¡La función debe seguir! Con máscara o sin máscara.","The show must go on! Mask or no mask.","O espetáculo deve continuar! Com máscara ou sem máscara."
-DIRECTOR_LINE_1,"¿Policías? Perfecto. Quédense quietos y hagan de árboles en el segundo acto.","Police? Perfect. Stand still and play the trees in the second act.","Policiais? Perfeito. Fiquem parados e façam de árvores no segundo ato."
-DIRECTOR_LINE_2,"Seis fantasmas, una sábana cada uno. Treinta años de carrera y nunca tuve un elenco tan blanco.","Six ghosts, one sheet each. Thirty years in theater and never such a white cast.","Seis fantasmas, um lençol cada um. Trinta anos de carreira e nunca tive um elenco tão branco."
-DIRECTOR_LINE_3,"¡No pisen las trampillas! Bueno, sí, písenlas. Es dramático.","Don't step on the trapdoors! Well, yes, step on them. It's dramatic.","Não pisem nos alçapões! Bom, sim, pisem. É dramático."
-DIRECTOR_LINE_4,"El escenario gira cada dos minutos. Yo no lo paro. Nadie lo para. ¡Es arte!","The stage turns every two minutes. I don't stop it. Nobody stops it. It's art!","O palco gira a cada dois minutos. Eu não paro. Ninguém para. É arte!"
+PROMPT_THEATER_DIRECTOR,"E: hablar con el Maestro Bambalina","E: talk to Maestro Bambalina","E: falar com o Maestro Bambalina"
+THEATER_DIRECTOR_LINE_0,"¡La función debe seguir! Con máscara o sin máscara.","The show must go on! Mask or no mask.","O espetáculo deve continuar! Com máscara ou sem máscara."
+THEATER_DIRECTOR_LINE_1,"¿Policías? Perfecto. Quédense quietos y hagan de árboles en el segundo acto.","Police? Perfect. Stand still and play the trees in the second act.","Policiais? Perfeito. Fiquem parados e façam de árvores no segundo ato."
+THEATER_DIRECTOR_LINE_2,"Seis fantasmas, una sábana cada uno. Treinta años de carrera y nunca tuve un elenco tan blanco.","Six ghosts, one sheet each. Thirty years in theater and never such a white cast.","Seis fantasmas, um lençol cada um. Trinta anos de carreira e nunca tive um elenco tão branco."
+THEATER_DIRECTOR_LINE_3,"¡No pisen las trampillas! Bueno, sí, písenlas. Es dramático.","Don't step on the trapdoors! Well, yes, step on them. It's dramatic.","Não pisem nos alçapões! Bom, sim, pisem. É dramático."
+THEATER_DIRECTOR_LINE_4,"El escenario gira cada dos minutos. Yo no lo paro. Nadie lo para. ¡Es arte!","The stage turns every two minutes. I don't stop it. Nobody stops it. It's art!","O palco gira a cada dois minutos. Eu não paro. Ninguém para. É arte!"
 PROMPT_PROMPTER,"E: hablar con Don Susurro","E: talk to Don Susurro","E: falar com Dom Sussurro"
 PROMPTER_LINE_0,"Psst... más bajo, que estamos ensayando.","Psst... quieter, we're rehearsing.","Psiu... mais baixo, estamos ensaiando."
 PROMPTER_LINE_1,"Psst... desde aquí abajo veo todos los zapatos de la obra.","Psst... from down here I see every shoe in the show.","Psiu... daqui de baixo eu vejo todos os sapatos da peça."
@@ -9179,9 +9178,9 @@ HINT_ITCHY,¡Me pica todo!,I itch all over!,Está coçando tudo!
 CLUE_ITCHY_COSTUME,El disfraz de conejo de la canasta de ofertas pica muchísimo,The bunny costume in the sale basket itches like crazy,A fantasia de coelho do cesto de ofertas coça demais
 CUSTOMER_ITCHY,¡Ay! ¡Este disfraz pica!,Ow! This costume itches!,Ai! Esta fantasia coça!
 MIMI_CLUE_itchy_costumes,"¡Me encontraste! Te cuento un secreto: mi tío escondió algo %s. Y dice que la crema de su primo se vende sola.","You found me! Here's a secret: my uncle hid something %s. And he says his cousin's cream sells itself.","Você me achou! Vou te contar um segredo: meu tio escondeu uma coisa %s. E ele diz que o creme do primo vende sozinho."
-BRIEF_THEATER_B,"Al Teatro de Mimos le robaron todos los trajes, y Don Fantoche los alquila como si fueran suyos.","All the Mime Theater's costumes were stolen, and Don Fantoche rents them out as if they were his.","Roubaram todos os figurinos do Teatro de Mímicos, e o Don Fantoche aluga como se fossem dele."
-BRIEF_THEATER_C,"Los trajes vinieron en el baúl del teatro. Está escondido en algún lado de la tienda, y pesa.","The costumes came in the theater's trunk. It's hidden somewhere in the shop, and it's heavy.","Os figurinos vieram no baú do teatro. Está escondido em algum lugar da loja, e é pesado."
-BRIEF_THEATER_D,"Tráiganme el baúl, el sello del teatro y el programa de la obra.","Bring me the trunk, the theater's stamp and the play's program.","Tragam o baú, o carimbo do teatro e o programa da peça."
+BRIEF_COSTUME_THEATER_B,"Al Teatro de Mimos le robaron todos los trajes, y Don Fantoche los alquila como si fueran suyos.","All the Mime Theater's costumes were stolen, and Don Fantoche rents them out as if they were his.","Roubaram todos os figurinos do Teatro de Mímicos, e o Don Fantoche aluga como se fossem dele."
+BRIEF_COSTUME_THEATER_C,"Los trajes vinieron en el baúl del teatro. Está escondido en algún lado de la tienda, y pesa.","The costumes came in the theater's trunk. It's hidden somewhere in the shop, and it's heavy.","Os figurinos vieram no baú do teatro. Está escondido em algum lugar da loja, e é pesado."
+BRIEF_COSTUME_THEATER_D,"Tráiganme el baúl, el sello del teatro y el programa de la obra.","Bring me the trunk, the theater's stamp and the play's program.","Tragam o baú, o carimbo do teatro e o programa da peça."
 OBJ_FIND_THEATER,Encontrar el baúl con los trajes del teatro,Find the trunk with the theater's costumes,Achar o baú com os figurinos do teatro
 OBJ_EXTRA_THEATER_STAMP,El sello del teatro,The theater's stamp,O carimbo do teatro
 OBJ_EXTRA_PLAY_PROGRAM,El programa de la obra,The play's program,O programa da peça
@@ -9504,7 +9503,7 @@ BRIEF_GOLD_GNOME_D,"Si encuentran la foto del jardín del intendente o el tarro 
 OBJ_FIND_GOLD_GNOME,Llevarse el enano de oro del intendente,Take the mayor's golden gnome,Levar o anão de ouro do prefeito
 OBJ_EXTRA_MAYOR_PHOTO,Extra: la foto del jardín del intendente,Extra: the photo of the mayor's garden,Extra: a foto do jardim do prefeito
 OBJ_EXTRA_GNOME_PAINT,Extra: el tarro de pintura de enano,Extra: the tin of gnome paint,Extra: a lata de tinta de anão
-CLUE_FRESH_PAINT,"Uno de los enanos de la fila tiene la pintura fresca. Se descascara y abajo brilla algo dorado.","One of the gnomes in the row has fresh paint. It peels, and something golden shines underneath.","Um dos anões da fila está com a tinta fresca. Ela descasca e embaixo brilha algo dourado."
+CLUE_GNOME_FRESH_PAINT,"Uno de los enanos de la fila tiene la pintura fresca. Se descascara y abajo brilla algo dorado.","One of the gnomes in the row has fresh paint. It peels, and something golden shines underneath.","Um dos anões da fila está com a tinta fresca. Ela descasca e embaixo brilha algo dourado."
 NURSERY_GOLD_SHOWS,¡Oro!,Gold!,Ouro!
 BROTECITO_CLUE_gold_gnome,"¡Gracias! Vi a Doña Hortensia esconder algo %s. Pesaba tanto que lo arrastraba. Y los enanos no paran de mirar para allá.","Thanks! I saw Doña Hortensia hide something %s. It was so heavy she dragged it. And the gnomes keep looking that way.","Obrigado! Vi a Doña Hortensia esconder algo %s. Era tão pesado que ela arrastava. E os anões não param de olhar para lá."
 BRIEF_STADIUM_GRASS_B,"Doña Hortensia se llevó el pasto del estadio. Enrollado, como una alfombra.","Doña Hortensia took the stadium's grass. Rolled up, like a carpet.","A Doña Hortensia levou a grama do estádio. Enrolada, como um tapete."
@@ -9521,7 +9520,6 @@ BRIEF_DIAMOND_POTS_B,"Doña Hortensia esconde los diamantes de un ladrón de joy
 BRIEF_DIAMOND_POTS_C,"Traigan la maceta con los diamantes en el baúl del patrullero. Con planta y todo.","Bring the pot with the diamonds in the patrol car's trunk. Plant and all.","Tragam o vaso com os diamantes no porta-malas da viatura. Com planta e tudo."
 BRIEF_DIAMOND_POTS_D,"Si encuentran la lupa de joyero o la bolsa de tierra vacía, mejor: todo suma.","If you find the jeweler's loupe or the empty soil bag, even better: it all counts.","Se acharem a lupa de joalheiro ou o saco de terra vazio, melhor: tudo conta."
 OBJ_FIND_DIAMOND_POT,Llevarse la maceta con los diamantes,Take the pot with the diamonds,Levar o vaso com os diamantes
-OBJ_EXTRA_LOUPE,Extra: la lupa de joyero,Extra: the jeweler's loupe,Extra: a lupa de joalheiro
 OBJ_EXTRA_EMPTY_BAG,Extra: la bolsa de tierra vacía,Extra: the empty soil bag,Extra: o saco de terra vazio
 CLUE_DIAMOND_SHINE,"Con el riego prendido, una maceta brilla como si tuviera estrellas adentro.","With the sprinklers on, one pot sparkles as if it had stars inside.","Com os irrigadores ligados, um vaso brilha como se tivesse estrelas dentro."
 NURSERY_SPARKLE,¡Brilla!,It sparkles!,Brilha!

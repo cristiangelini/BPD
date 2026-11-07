@@ -58,7 +58,7 @@ const STORIES := {
 		"main_hidden": true,
 	},
 	"theater_costumes": {
-		"briefing": ["BRIEF_RIGHT", "BRIEF_THEATER_B", "BRIEF_THEATER_C", "BRIEF_THEATER_D"],
+		"briefing": ["BRIEF_RIGHT", "BRIEF_COSTUME_THEATER_B", "BRIEF_COSTUME_THEATER_C", "BRIEF_COSTUME_THEATER_D"],
 		"find": "OBJ_FIND_THEATER",
 		"hidden": [preload("res://scenes/props/theater_trunk.tscn"), preload("res://scenes/props/theater_stamp.tscn"),
 			preload("res://scenes/props/play_program.tscn")],

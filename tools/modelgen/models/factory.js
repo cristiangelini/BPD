@@ -45,14 +45,6 @@ export function buildFactoryDoll() {
 	return b.build();
 }
 
-// The jeweler's loupe: a black eyepiece 0.05 m across with its lens. Extra of the diamond doll.
-export function buildJewelerLoupe() {
-	const b = new Builder('jeweler_loupe');
-	b.add('body', mat('loupe_black', 0x1e1e22), new THREE.CylinderGeometry(0.025, 0.02, 0.035, 10), { pos: V(0, 0, 0) });
-	b.add('lens', mat('loupe_lens', 0xbfe4f2, { transparent: true, opacity: 0.6 }), new THREE.CylinderGeometry(0.019, 0.019, 0.004, 10), { pos: V(0, 0.018, 0) });
-	return b.build();
-}
-
 // The delivery list: a typed sheet 0.21 x 0.3 m with a circled line. Extra of the diamond doll.
 export function buildDeliveryList() {
 	const b = new Builder('delivery_list');
@@ -299,7 +291,7 @@ export const models = {
 	captain_helmet: buildCaptainHelmet, reject_captain: buildRejectCaptain, stolen_mold: buildStolenMold,
 	fake_labels: buildFakeLabels, prototype_photos: buildPrototypePhotos,
 	tape_recorder: buildTapeRecorder, mic_box: buildMicBox, client_list: buildClientList,
-	jeweler_loupe: buildJewelerLoupe, delivery_list: buildDeliveryList, quality_sheet: buildQualitySheet,
+	delivery_list: buildDeliveryList, quality_sheet: buildQualitySheet,
 	factory_doll: buildFactoryDoll,
 	...Object.fromEntries(DRESSES.map((_, i) => [`porcelain_doll_${i}`, () => buildPorcelainDoll(i)])),
 	plaster_mold: buildPlasterMold,

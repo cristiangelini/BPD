@@ -38,7 +38,7 @@ func test_the_tag_on_the_jobs_rack_is_the_clue() -> void:
 	assert_eq(rig.tag.prompt_key(cop), "PROMPT_COSTUME_TAG")
 	rig.tag.use(cop)
 	assert_true(place.raid.clues_found.has(tr("CLUE_THEATER_TAG")))
-	for key: String in ["BRIEF_THEATER_B", "BRIEF_THEATER_C", "BRIEF_THEATER_D", "OBJ_FIND_THEATER",
+	for key: String in ["BRIEF_COSTUME_THEATER_B", "BRIEF_COSTUME_THEATER_C", "BRIEF_COSTUME_THEATER_D", "OBJ_FIND_THEATER",
 			"OBJ_EXTRA_THEATER_STAMP", "OBJ_EXTRA_PLAY_PROGRAM", "PROMPT_COSTUME_TAG", "CLUE_THEATER_TAG", "THEATER_POSTER",
 			"MIMI_CLUE_theater_costumes"]:
 		assert_ne(tr(key), key, key)

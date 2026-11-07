@@ -71,4 +71,4 @@ func test_a_carrier_tells_their_route() -> void:
 	post_office.boss.use(null)
 	assert_eq(post_office.boss.said(), "POST_BOSS_LINE_0")
 	post_office.parrot.use(null)
-	assert_eq(post_office.parrot.said(), "PARROT_LINE_0")
+	assert_eq(post_office.parrot.said(), "POST_PARROT_LINE_0")

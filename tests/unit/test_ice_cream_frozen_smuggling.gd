@@ -68,6 +68,6 @@ func test_the_block_in_the_trunk_solves_the_case() -> void:
 
 func test_the_storys_texts_exist() -> void:
 	for key: String in ["BRIEF_FROZEN_SMUGGLING_B", "BRIEF_FROZEN_SMUGGLING_C", "BRIEF_FROZEN_SMUGGLING_D",
-			"OBJ_FIND_ICE_BLOCK", "OBJ_EXTRA_DELIVERY_LIST", "OBJ_EXTRA_FAKE_STAMP_ICE", "LUCHO_CLUE_frozen_smuggling",
+			"OBJ_FIND_ICE_CREAM_BLOCK", "OBJ_EXTRA_DELIVERY_LIST", "OBJ_EXTRA_FAKE_STAMP_ICE", "LUCHO_CLUE_frozen_smuggling",
 			"ICE_THERMOMETER", "CLUE_COLD_THERMOMETER", "ICE_COLD_ARRIVED"]:
 		assert_ne(tr(key), key)
