@@ -98,5 +98,6 @@ func test_the_bin_trunk_and_firewood_box_are_open_on_top() -> void:
 	for at: Vector3 in [PizzaRaid.BIN_AT, PizzaRaid.TRUNK_AT, PizzaRaid.WOODBOX_AT]:
 		var from := pizzeria.to_global(at + Vector3.UP * 2.0)
 		var to := pizzeria.to_global(at + Vector3.UP * 0.1)
-		var hit := space.intersect_ray(PhysicsRayQueryParameters3D.create(from, to))
+		# Only the building: what a story hides inside doesn't count.
+		var hit := space.intersect_ray(PhysicsRayQueryParameters3D.create(from, to, 1))
 		assert_true(hit.is_empty(), "nothing closes %s from above" % at)

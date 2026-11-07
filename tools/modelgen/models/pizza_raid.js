@@ -54,9 +54,48 @@ export const models = {
 		for (const z of [-0.03, 0.04]) b.add('pepperoni', C('pepperoni', 0xb02820), new THREE.CylinderGeometry(0.03, 0.03, 0.026, 8), { pos: V(z * 0.4, 0.003, z) });
 		return b.build();
 	},
+	// The jewels in the muzza story's main evidence: a frosty box of frozen pizzas, its lid lifted, with a gold necklace
+	// and a ring spilling out of the cheese. 0.42 x 0.14 x 0.42 m.
+	frozen_pizza_jewels() {
+		const b = new Builder('frozen_pizza_jewels');
+		const card = C('frozen_card', 0xe8eef4, { roughness: 0.7 });
+		const gold = C('jewel_gold', 0xf8c828, { metalness: 0.6, roughness: 0.25 });
+		b.add('box', card, new THREE.BoxGeometry(0.42, 0.1, 0.42), { pos: V(0, 0.05, 0) });
+		b.add('frost', C('frost', 0xcfe8ff, { roughness: 0.4 }), new THREE.BoxGeometry(0.43, 0.012, 0.43), { pos: V(0, 0.1, 0) });
+		b.add('lid', card, new THREE.BoxGeometry(0.42, 0.012, 0.42), { pos: V(0, 0.2, -0.2), rot: [-1.0, 0, 0] });
+		b.add('label', C('frozen_label', 0x2a6ad0), new THREE.BoxGeometry(0.2, 0.004, 0.1), { pos: V(0, 0.108, 0.12) });
+		b.add('cheese', C('pizza_cheese', 0xf0c040), new THREE.CylinderGeometry(0.17, 0.17, 0.02, 14), { pos: V(0, 0.115, -0.03) });
+		b.add('necklace', gold, new THREE.TorusGeometry(0.08, 0.008, 4, 16), { pos: V(-0.05, 0.13, -0.05), rot: [Math.PI / 2, 0, 0] });
+		b.add('ring', gold, new THREE.TorusGeometry(0.025, 0.007, 4, 10), { pos: V(0.09, 0.135, 0.02), rot: [Math.PI / 2, 0, 0] });
+		b.add('gem', C('jewel_gem', 0xd02050, { roughness: 0.2 }), new THREE.OctahedronGeometry(0.018), { pos: V(0.09, 0.15, 0.045) });
+		return b.build();
+	},
+	// The "clientes especiales" list: a sheet with a red heading and handwritten lines. 0.21 x 0.006 x 0.29 m, flat.
+	special_clients_list() {
+		const b = new Builder('special_clients_list');
+		b.add('sheet', C('list_sheet', 0xfaf6ea), new THREE.BoxGeometry(0.21, 0.004, 0.29), { pos: V(0, 0.002, 0) });
+		b.add('heading', C('list_red', 0xc02818), new THREE.BoxGeometry(0.17, 0.002, 0.03), { pos: V(0, 0.005, -0.11) });
+		for (let i = 0; i < 6; i++) {
+			b.add('lines', C('list_ink', 0x303060), new THREE.BoxGeometry(0.13 + (i % 2) * 0.03, 0.002, 0.008), { pos: V(0, 0.005, -0.06 + i * 0.03) });
+		}
+		return b.build();
+	},
+	// A half-eaten slice of pizza with a gold ring stuck in the cheese: the jewels story's clue in the yard's bin. 0.25 m.
+	bitten_slice_ring() {
+		const b = new Builder('bitten_slice_ring');
+		b.add('crust', dough, new THREE.CylinderGeometry(0.25, 0.25, 0.02, 3, 1, false, -Math.PI / 6, Math.PI / 3), { pos: V(0, 0, -0.12) });
+		b.add('cheese', C('pizza_cheese', 0xf0c040), new THREE.CylinderGeometry(0.22, 0.22, 0.022, 3, 1, false, -Math.PI / 6, Math.PI / 3), { pos: V(0, 0.002, -0.11) });
+		b.add('ring', C('jewel_gold', 0xf8c828, { metalness: 0.6, roughness: 0.25 }), new THREE.TorusGeometry(0.022, 0.006, 4, 10), { pos: V(0.01, 0.02, -0.05) });
+		return b.build();
+	},
 };
 
 export const views = {
+	pizza_story_jewels: {
+		items: [{ name: 'frozen_pizza_jewels', pos: [-0.3, 0, 0] }, { name: 'jeweler_loupe', pos: [0.1, 0, 0.1] },
+			{ name: 'special_clients_list', pos: [0.4, 0, 0.1], rotY: -0.3 }, { name: 'bitten_slice_ring', pos: [0.15, 0, -0.2], rotY: 0.6 }],
+		cam: { pos: [0.05, 0.6, 1.1], target: [0.05, 0.05, 0], fov: 40 },
+	},
 	pizza_raid: {
 		items: [{ name: 'clay_oven', pos: [-1.2, 0, -0.5] }, { name: 'dough_table', pos: [1.2, 0, -0.3] },
 			{ name: 'dough_ball', pos: [0.8, 0.9, -0.2] }, { name: 'dough_ball', pos: [1.1, 0.9, -0.35] },

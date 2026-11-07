@@ -12,7 +12,8 @@ extends Node3D
 ## with every plate he sees break and every floured cop he sees, and the phone on the counter sends him to the dough
 ## table to make an order, his back to the kitchen. Tito waits on his bench in the yard and talks for a slice from the
 ## counter's tray (step 4), and what stays in the clay oven's mouth burns (PizzaOven): Don Muzza minds seeing anyone
-## put something in. Every number here is (propuesta).
+## put something in. The case is one of its stories (STORIES), drawn with the seed, run by the same RaidCase as the
+## other places (step 5). Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const SACK_SCENE := preload("res://scenes/props/lab_flour_sack.tscn")
@@ -24,6 +25,33 @@ const PLATE_MODEL := preload("res://assets/models/kitchen_plate.glb")
 const BOX_MODEL := preload("res://assets/models/pizza_box.glb")
 const SCOOTER_MODEL := preload("res://assets/models/pizza_scooter.glb")
 const MUZZA_SCENE := preload("res://scenes/npc/pizza_muzza.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the pizzeria can be suspected of (allanamiento-pizzeria.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["jewels", "crazy_yeast", "oven_tunnel", "phone_backpack", "plastic_cheese", "giant_pizza"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_PIZZA_TIP_B", "BRIEF_TIP_C", "BRIEF_PIZZA_TIP_D",
+	"BRIEF_PIZZA_TIP_E"]
+## The stories the pizzeria can tell, like GymRaid.STORIES: what the comisario says once it's guessed, its "find it"
+## row, what it hides in spots drawn with the seed (with their half heights and whether they're heavy; the first one
+## is the main evidence), the checklist rows of its extras and its rig.
+const STORIES := {
+	"jewels": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_JEWELS_B", "BRIEF_JEWELS_C", "BRIEF_JEWELS_D"],
+		"find": "OBJ_FIND_FROZEN_JEWELS",
+		"hidden": [preload("res://scenes/props/frozen_pizza_jewels.tscn"),
+			preload("res://scenes/props/pizza_jeweler_loupe.tscn"), preload("res://scenes/props/special_clients_list.tscn")],
+		"half_heights": [0.06, 0.02, 0.003],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_JEWELER_LOUPE", "OBJ_EXTRA_SPECIAL_CLIENTS"],
+		"rig": preload("res://scripts/case/pizza/jewels_rig.gd"),
+	},
+}
+## Where the suspicion notes can lie: on the floor of the dining room, the kitchen, the office and the yard, away from
+## the furniture.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(0.0, FLOOR_TOP, 3.0), Vector3(3.3, FLOOR_TOP, 5.8), Vector3(-6.0, FLOOR_TOP, 6.0),
+	Vector3(-1.0, FLOOR_TOP, -3.2), Vector3(4.0, FLOOR_TOP, 1.2), Vector3(1.0, FLOOR_TOP, -6.5),
+]
 const HALF_X := 8.0
 const HALF_Z := 8.0
 const WALL_TOP := 3.2
@@ -137,6 +165,20 @@ var sacks: Array[FlourSack] = []
 var flour: FlourPrints
 var broken_plates := 0
 var burst_sacks := 0
+## The case flow every raid shares.
+var raid: RaidCase
+## Same seed, same draw: the story and where its things go. 0 draws one.
+@export var case_seed := 0
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: PizzaRaidRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
+## The boxes of the counter's tower, bottom to top (the jewels story lifts them).
+var tower_boxes: Array[Node3D] = []
 var muzza: FloorBoss
 var phone: PizzaPhone
 var complaint_bar: ProgressBar
@@ -150,6 +192,25 @@ var _build: PlaceBuilder
 
 
 func _ready() -> void:
+	if case_seed == 0:
+		case_seed = PlaceDraw.take_seed()
+	if case_seed == 0:
+		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	raid.place_state = net_state
+	raid.apply_place_state = apply_net_state
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	flour = FlourPrints.new()
 	add_child(flour)
@@ -171,6 +232,96 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "pizzeria", car)
+	raid.station_parking = station_parking
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = muzza
+	raid.owner_id = "pizzeria"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The pizzeria's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_PIZZA",
+		"guess_key": "OBJ_GUESS_PIZZA",
+		"broken_key": "OBJ_BROKEN_PIZZA",
+		"complaint_key": "OBJ_COMPLAINT_PIZZA",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken_plates,
+		"complaint": muzza.complaint,
+	}
+
+
+## Online, what the guests' pizzeria takes from the host's (RaidCase.snapshot): what the story's rig decides on the
+## host.
+func net_state() -> Dictionary:
+	return {"rig": rig.net_state() if rig else null}
+
+
+func apply_net_state(state: Dictionary) -> void:
+	if rig and state.rig != null:
+		rig.apply_net_state(state.rig)
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit). The first is the
+## main evidence.
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	main = hidden[0]
+	extras.assign(hidden.slice(1))
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Don Muzza lets slip when asked (where the story's things are, in an order drawn from the seed), and what Tito
+## saw: where he hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		muzza.slips.append(tr("MUZZA_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	muzza.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	tito.clue = tr("CLUE_TITO") % where
+	tito.clue_speech = tr("TITO_CLUE_" + story_id) % where
+	tito.told.connect(raid.add_clue)
 
 
 ## Red brick walls, the shop window with the entrance, the ceiling, the roof and the sign; behind, the yard's floor.
@@ -211,7 +362,7 @@ func _build_dining_room() -> void:
 	add_child(phone)
 	_build.mesh_box(TRAY_AT + Vector3(0, 0.01, 0), Vector3(0.5, 0.02, 0.36), STEEL)
 	for i in TOWER_BOXES:
-		_model(BOX_MODEL, TOWER_AT + Vector3(0, i * 0.05, 0), i * 0.25)
+		tower_boxes.append(_model(BOX_MODEL, TOWER_AT + Vector3(0, i * 0.05, 0), i * 0.25))
 	var tower := _build.body(TOWER_AT + Vector3(0, TOWER_BOXES * 0.025, 0))
 	_build.shape(tower, Vector3(0.4, TOWER_BOXES * 0.05, 0.4))
 	for at: Vector3 in TABLES:
@@ -352,7 +503,7 @@ func _place_muzza() -> void:
 	muzza.fix_facing = to_global(ORDER_SPOT + Vector3(0, 0, 3.0))
 	muzza.start_at(0)
 	cold_door.broken.connect(muzza.door_broken)
-	muzza.lawyer_called.connect(%CaseFailed.show)
+	muzza.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_PIZZA"))
 	var hud := CanvasLayer.new()
 	var box := VBoxContainer.new()
 	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)

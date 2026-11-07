@@ -5275,6 +5275,39 @@ TITO_NOTHING,"Mmm, rica. Pero no vi nada raro, eh. Bueno, las motos nuevas.","Mm
 TITO_IDLE_1,"Tres motos nuevas y ni un pedido. Yo reparto aire.","Three new scooters and not a single order. I deliver air.","Três motos novas e nenhum pedido. Eu entrego ar."
 TITO_IDLE_2,"¿Saben patinar? Yo reparto en patines. La moto es para la foto.","Can you skate? I deliver on skates. The scooter is for the photo.","Vocês sabem patinar? Eu entrego de patins. A moto é para a foto."
 TITO_IDLE_3,"Huele a muzza… y yo acá, con la panza vacía.","It smells like cheese pizza… and here I am, with an empty belly.","Cheiro de muçarela… e eu aqui, de barriga vazia."
+BRIEF_PIZZA_TIP_B,"Llegó una denuncia anónima: Don Muzza no tiene clientes, pero se compró tres motos de reparto nuevas.","We got an anonymous tip: Don Muzza has no customers, but he just bought three new delivery scooters.","Chegou uma denúncia anônima: Don Muzza não tem clientes, mas comprou três motos de entrega novas."
+BRIEF_PIZZA_TIP_D,"El salón está abierto y Don Muzza se ofende por cada plato roto. La cámara de frío está cerrada con llave: usen el ariete.","The dining room is open and Don Muzza takes offense at every broken plate. The cold room is locked: use the ram.","O salão está aberto e Don Muzza se ofende com cada prato quebrado. A câmara fria está trancada: usem o aríete."
+BRIEF_PIZZA_TIP_E,"Y cuidado con el horno: lo que queda adentro se quema. Con Q ven la planilla.","And careful with the oven: whatever stays inside burns. Press Q to see the checklist.","E cuidado com o forno: o que fica dentro queima. Com Q vocês veem a planilha."
+BRIEF_JEWELS_B,"Don Muzza esconde joyas robadas adentro de pizzas congeladas y las reparte a «clientes especiales».","Don Muzza hides stolen jewels inside frozen pizzas and delivers them to «special customers».","Don Muzza esconde joias roubadas dentro de pizzas congeladas e entrega para «clientes especiais»."
+BRIEF_JEWELS_C,"Traigan la caja de pizzas congeladas con las joyas en el baúl del patrullero. Pesa 5 kilos y vale una fortuna.","Bring the box of frozen pizzas with the jewels in the patrol car's trunk. It weighs 5 kilos and is worth a fortune.","Tragam a caixa de pizzas congeladas com as joias no porta-malas da viatura. Pesa 5 quilos e vale uma fortuna."
+BRIEF_JEWELS_D,"Si encuentran la lupa de joyero o la lista de «clientes especiales», mejor: todo suma. Y no la metan al horno.","If you find the jeweler's loupe or the «special customers» list, even better: it all counts. And don't put it in the oven.","Se acharem a lupa de joalheiro ou a lista de «clientes especiais», melhor: tudo soma. E não coloquem no forno."
+OBJ_FIND_FROZEN_JEWELS,Llevarse la caja de pizzas congeladas con las joyas,Take the box of frozen pizzas with the jewels,Levar a caixa de pizzas congeladas com as joias
+OBJ_EXTRA_JEWELER_LOUPE,Extra: la lupa de joyero,Extra: the jeweler's loupe,Extra: a lupa de joalheiro
+OBJ_EXTRA_SPECIAL_CLIENTS,Extra: la lista de «clientes especiales»,Extra: the «special customers» list,Extra: a lista de «clientes especiais»
+SUSPECT_jewels,Las joyas en la muzza,The jewels in the cheese,As joias na muçarela
+SUSPECT_crazy_yeast,La levadura loca,The crazy yeast,O fermento maluco
+SUSPECT_oven_tunnel,El horno con túnel,The oven with a tunnel,O forno com túnel
+SUSPECT_phone_backpack,Los celulares en la mochila,The phones in the backpack,Os celulares na mochila
+SUSPECT_plastic_cheese,El queso de plástico,The plastic cheese,O queijo de plástico
+SUSPECT_giant_pizza,La pizza gigante,The giant pizza,A pizza gigante
+CLUE_SUSPECT_jewels,"Un recibo de una joyería: «Tasar 3 collares y 12 anillos. Traerlos congelados, como siempre».","A jeweler's receipt: «Appraise 3 necklaces and 12 rings. Bring them frozen, as usual».","Um recibo de uma joalheria: «Avaliar 3 colares e 12 anéis. Trazer congelados, como sempre»."
+CLUE_SUSPECT_crazy_yeast,"Un pedido: «20 litros de súper levadura. Que no la vea la aduana».","An order: «20 liters of super yeast. Keep it away from customs».","Um pedido: «20 litros de superfermento. Que a alfândega não veja»."
+CLUE_SUSPECT_oven_tunnel,"Una factura: «Alquiler de pala y casco de minero. Por 30 días».","An invoice: «Shovel and miner's helmet rental. For 30 days».","Uma nota: «Aluguel de pá e capacete de mineiro. Por 30 dias»."
+CLUE_SUSPECT_phone_backpack,"Una nota: «El martes entran 80 celulares. Repartirlos en la mochila térmica».","A note: «80 phones come in on Tuesday. Deliver them in the thermal backpack».","Um bilhete: «Na terça chegam 80 celulares. Entregar na mochila térmica»."
+CLUE_SUSPECT_plastic_cheese,"Un recibo: «500 kg de bolitas de plástico color queso».","A receipt: «500 kg of cheese-colored plastic pellets».","Um recibo: «500 kg de bolinhas de plástico cor de queijo»."
+CLUE_SUSPECT_giant_pizza,"Un pedido: «Imprimir 10 000 billetes. Que parezcan de verdad. Bueno, más o menos».","An order: «Print 10,000 bills. Make them look real. Well, more or less».","Um pedido: «Imprimir 10 000 notas. Que pareçam de verdade. Bom, mais ou menos»."
+OBJ_ENTER_PIZZA,Entrar a la pizzería (el salón está abierto),Get into the pizzeria (the dining room is open),Entrar na pizzaria (o salão está aberto)
+OBJ_GUESS_PIZZA,"Averiguar qué pasa en la pizzería (con Q abierta, mantén 1, 2 o 3)","Find out what is going on at the pizzeria (with Q open, hold 1, 2 or 3)","Descobrir o que acontece na pizzaria (com Q aberta, segure 1, 2 ou 3)"
+OBJ_BROKEN_PIZZA,Platos rotos: %d (multa: %d),Broken plates: %d (fines: %d),Pratos quebrados: %d (multa: %d)
+OBJ_COMPLAINT_PIZZA,Queja de Don Muzza: %d%%,Don Muzza's complaint: %d%%,Queixa de Don Muzza: %d%%
+MUZZA_SLIP,"«¡Yo no guardé nada %s!... Digo, ¿le pongo aceitunas?»","“I didn't put anything %s!... I mean, want olives on that?”","“Eu não guardei nada %s!... Quer dizer, coloco azeitonas?”"
+CLUE_TITO,Tito vio a Don Muzza esconder algo %s,Tito saw Don Muzza hide something %s,O Tito viu Don Muzza esconder algo %s
+TITO_CLUE_jewels,"«Mmm… Vi a Don Muzza esconder algo %s. Y ayer me tocó repartir una pizza congelada que hacía clinc.»","“Mmm… I saw Don Muzza hide something %s. And yesterday I delivered a frozen pizza that went clink.”","“Hmm… Vi Don Muzza esconder algo %s. E ontem entreguei uma pizza congelada que fazia plim.”"
+PROMPT_BITTEN_SLICE,E: mirar la porción mordida,E: look at the bitten slice,E: olhar a fatia mordida
+CLUE_BITTEN_SLICE,Una porción mordida en el tacho tiene un anillo de oro en el queso,A bitten slice in the bin has a gold ring in the cheese,Uma fatia mordida na lixeira tem um anel de ouro no queijo
+PROMPT_TOWER_LIFT,E: levantar una caja de la torre,E: lift a box from the tower,E: levantar uma caixa da torre
+TOWER_COINS,¡Clinc! ¡Clinc!,Clink! Clink!,Plim! Plim!
+CLUE_TOWER_COINS,Una caja de la torre del mostrador suena a monedas,A box in the counter's tower clinks like coins,Uma caixa da torre do balcão faz barulho de moedas
 CLUE_WH_PAPER,"Diario tirado en el jardín de la casa de la %s: «Sauces 14».","Newspaper in the front garden of the house on the %s: ""14 Willow St."".","Jornal jogado no jardim da casa da %s: ""Salgueiros 14""."
 CLUE_WH_MAILMAN,"Don Sobre, el cartero: «¿La 14? La de la %s. En la otra vive doña Chola, un amor».","Don Sobre, the mailman: ""Number 14? The one on the %s. Doña Chola lives in the other one, a sweetheart.""","Don Sobre, o carteiro: ""A 14? A da %s. Na outra mora a dona Chola, um amor."""
 BRIEF_WH_BILLS_B,"Don Tinta, el imprentero jubilado de al lado, imprime billetes truchos. ¡Con la cara del comisario!","Don Tinta, the retired printer next door, prints fake bills. With the comisario's face on them!","Don Tinta, o tipógrafo aposentado do lado, imprime notas falsas. Com a cara do comissário!"
