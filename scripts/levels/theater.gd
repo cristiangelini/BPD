@@ -67,6 +67,9 @@ const BOX_SEAT_AT := Vector3(15.6, BOX_TOP, -3.2)
 ## The foyer: the ticket booth, the red carpet and the glass case the Golden Mask was taken from.
 const MASK_CASE_AT := Vector3(0, 0, 6.2)
 const BOOTH_AT := Vector3(-13.5, 0, 6.5)
+## The little table with the honey lozenges, by the ticket booth.
+const LOZENGES_AT := Vector3(-11.6, 0, 6.5)
+const LOZENGES := 4
 ## The stool with the roll of evidence bags, in the foyer.
 const BAGS_AT := Vector3(-3.0, 0, 7.6)
 ## Behind the backdrop: the dressing rooms along the back wall, one per embroidery, and the props workshop.
@@ -126,6 +129,7 @@ var _busy := {}
 var ghosts: Array[TheaterGhost] = []
 var director: TheaterDirector
 var prompter: TheaterPrompter
+var lozenges: Array[HoneyLozenge] = []
 var _builder: PlaceBuilder
 
 
@@ -152,6 +156,8 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 	for ghost in ghosts:
 		ghost.case = case
 		ghost.shy = ghost.index == shy
+	prompter.case = case
+	prompter.knows = case.plan.clues.has("witness")
 	performance = TheaterShow.new()
 	performance.name = "Show"
 	performance.theater = self
@@ -245,6 +251,21 @@ func suspect(index: int) -> CollisionObject3D:
 	return ghosts[index] if index >= 0 and index < ghosts.size() else null
 
 
+## A cop shouted (VoiceChat): Don Susurro may close his shell.
+func shouted_by(cop: Cop) -> void:
+	if prompter:
+		prompter.shouted_by(cop)
+
+
+func witness_offended() -> bool:
+	return prompter != null and prompter.offended
+
+
+func offend_witness() -> void:
+	if prompter:
+		prompter.offend()
+
+
 ## Whether a point in the world (ignoring height) is on the theater's lot, sidewalk included.
 func at_scene(world: Vector3) -> bool:
 	var local := to_local(world)
@@ -304,6 +325,7 @@ func _people() -> void:
 	prompter.position = PROMPTER_STANDS_AT
 	prompter.rotation.y = PI
 	add_child(prompter)
+	prompter.lid = get_node("ShellLid") as Node3D
 
 
 ## Which way a ghost standing at `at` faces (a Y rotation; the models face +Z): the hall from the stage, the stage
@@ -353,6 +375,14 @@ func _front() -> void:
 func _foyer() -> void:
 	_builder.box(BOOTH_AT + Vector3(0, 1.1, 0), Vector3(2.4, 2.2, 1.8), WOOD)
 	_label("Booth", "SIGN_BOOTH", BOOTH_AT + Vector3(1.22, 1.8, 0), PI / 2)
+	_builder.box(LOZENGES_AT + Vector3(0, 0.45, 0), Vector3(0.6, 0.9, 0.6), WOOD)
+	_builder.mesh_box(LOZENGES_AT + Vector3(0, 0.91, 0), Vector3(0.36, 0.02, 0.26), WHITE)
+	for i in LOZENGES:
+		var lozenge := HoneyLozenge.new()
+		lozenge.name = "HoneyLozenge%d" % i
+		lozenge.position = LOZENGES_AT + Vector3(-0.12 + (i % 2) * 0.24, 0.92, -0.06 + (i / 2) * 0.12)
+		add_child(lozenge)
+		lozenges.append(lozenge)
 	_builder.mesh_box(Vector3(0, FLOOR_TOP + 0.01, (FOYER_Z + FRONT_Z) / 2), Vector3(2.4, 0.02, FRONT_Z - FOYER_Z),
 		VELVET)
 	_builder.box(MASK_CASE_AT + Vector3(0, 0.5, 0), Vector3(0.8, 1.0, 0.8), MARBLE)
@@ -459,6 +489,16 @@ func _stage() -> void:
 	shell.is_hemisphere = true
 	_builder.shape(_builder.body(PROMPTER_AT + Vector3(0, 0.3, 0)), Vector3(1.2, 0.6, 0.8))
 	_builder.mesh(shell, PROMPTER_AT, GOLD)
+	# The shell's lid, shut over its mouth when Don Susurro is offended.
+	var lid := MeshInstance3D.new()
+	lid.name = "ShellLid"
+	var cover := BoxMesh.new()
+	cover.size = Vector3(1.1, 0.5, 0.06)
+	lid.mesh = cover
+	lid.material_override = _builder.material(GOLD.darkened(0.25))
+	lid.position = PROMPTER_AT + Vector3(0, 0.25, -0.32)
+	lid.visible = false
+	add_child(lid)
 	for side: float in [-1.0, 1.0]:
 		_builder.box(Vector3(side * (BASEMENT_X + HALF_X) / 2, (BASEMENT_TOP + STAGE_TOP) / 2, (STAGE_Z + BACKDROP_Z) / 2),
 			Vector3(HALF_X - BASEMENT_X, STAGE_TOP - BASEMENT_TOP, STAGE_Z - BACKDROP_Z), BOARDS.darkened(0.2))

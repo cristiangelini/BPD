@@ -7,8 +7,9 @@ extends StaticBody3D
 ## make their file for the board (step 3) with E and what's in hand: the camera's flash (their photo: the shoes), the
 ## print kit (their prints; a glove comes off), a donut or a loaf (they bite it: their teeth). With empty hands: first
 ## they tell which embroidery is theirs and why, then the sheet comes off (their hair; one is too shy until they get
-## something to eat), then they sing a note (deep or not). Each goes to their file (CrimeSceneCase.guard_part). Every
-## number here is (propuesta).
+## something to eat), then they sing a note (deep or not). Each goes to their file (CrimeSceneCase.guard_part). A honey
+## lozenge before they sing clears their voice: the note goes to the file, but says nothing (step 6). Every number here
+## is (propuesta).
 
 const MODEL := preload("res://assets/models/npc_fantasma.glb")
 ## Shoe sizes stretch the shoes from this much (the smallest) to this much (the biggest).
@@ -26,6 +27,8 @@ var sheet_on := true
 ## Too shy to take off the sheet until they get something to eat ("sin sábana me da vergüenza").
 var shy := false
 var sang := false
+## A honey lozenge cleared their voice before they sang.
+var cleared := false
 var _teeth_left := 0.0
 var _model: Node3D
 var _bubble: Label3D
@@ -70,8 +73,12 @@ func prompt_key(cop: Cop) -> String:
 ## embroidery again. (The print kit and the camera work on their own: dusted, photographed.)
 func use(cop: Cop) -> void:
 	var food := _food(cop) if cop else null
+	var held: Node = cop.get_node("Grabber").held if cop else null
 	if food:
 		feed(food)
+	elif held is HoneyLozenge:
+		cop.get_node("Grabber").release()
+		take_lozenge(held as HoneyLozenge)
 	elif talked and sheet_on:
 		ask_sheet()
 	elif talked and not sang:
@@ -118,9 +125,26 @@ func _take_off_sheet() -> void:
 	_file("hair")
 
 
-## They sing a note of the founder's aria: deep or not, for the file.
+## A honey lozenge: if they haven't sung yet, their voice is clear now and nobody will tell whether it's deep.
+func take_lozenge(lozenge: HoneyLozenge) -> void:
+	if lozenge:
+		lozenge.eat()
+	if sang:
+		say("GHOST_LOZENGE_LATE")
+		return
+	cleared = true
+	say("GHOST_LOZENGE")
+
+
+## They sing a note of the founder's aria: deep or not, for the file. Cleared by a lozenge, a clean note that tells
+## nothing.
 func sing() -> void:
 	sang = true
+	if cleared:
+		say("GHOST_SING_CLEARED")
+		if case:
+			case.file_part(index, "voice")
+		return
 	say("GHOST_SING_DEEP" if traits.deep else "GHOST_SING_HIGH")
 	_file("voice")
 	# The founder's aria was sung deep that night: hearing a deep voice tells it's a clue.

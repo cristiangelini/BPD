@@ -214,5 +214,13 @@ Mientras tanto se avanza con lo recomendado.
      ahora no se arruina, porque la vitrina no se rompe.
    - Las bolsas de evidencia esperan en un banquito del vestíbulo.
    - Capturas: `teatro/paso6-peluca.png`, `teatro/paso6-pisada.png` y `teatro/paso6-sabana.png`.
+   **Hecho así (6b, el testigo):** cuatro pastillas de miel (HoneyLozenge) en una mesita junto a la taquilla.
+   - **Don Susurro:** con una pastilla en la mano y E, la chupa y, si el testigo es una de las pistas, susurra el
+     bordado que vio pasar esa noche ("una sábana con el bordado estrella"). Si no, dice que se durmió en el
+     segundo acto.
+   - **Si se ofende:** un grito a menos de 5 m o el flash de la cámara bajan la tapa de su concha, y no habla más.
+   - **La pastilla en un fantasma:** antes de cantar le aclara la voz, y la nota va a su ficha sin decir si es grave.
+     Después de cantar ya no cambia nada.
+   - Capturas: `teatro/paso6-susurro.png` y `teatro/paso6-pastillas.png`.
 7. El final: el tablero, el sueldo y el camión con los decorados.
 8. El sorteo de "Jugar" y el online.
