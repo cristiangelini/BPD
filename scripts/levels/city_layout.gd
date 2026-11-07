@@ -75,6 +75,8 @@ const PLACES := [
 	{"id": "cinema", "block": Vector2i(0, 4), "side": "n", "along": 0.0, "size": Vector3(22, 9, 30), "color": Color(0.82, 0.7, 0.55), "sign": "PLACE_CINEMA"},
 	# The supermarket "Súper El Changuito" (allanamiento-super.md), on the east edge.
 	{"id": "supermarket", "block": Vector2i(7, 1), "side": "s", "along": 0.0, "size": Vector3(30, 7, 24), "color": Color(0.95, 0.86, 0.4), "sign": "PLACE_SUPERMARKET"},
+	# The farm (allanamiento-granja.md) fills the south-east corner block: its fence and its buildings are its scene's.
+	{"id": "farm", "block": Vector2i(8, 5), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.5, 0.7, 0.3), "sign": "PLACE_FARM", "park": true},
 ]
 
 ## The plaza fills its block.
