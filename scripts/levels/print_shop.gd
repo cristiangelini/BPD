@@ -73,6 +73,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_WRITER_TYPEWRITER", "OBJ_EXTRA_BOOK_COVER"],
 		"rig": preload("res://scripts/case/print_shop/stolen_book_rig.gd"),
 	},
+	"fake_stickers": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_FAKE_STICKERS_B", "BRIEF_FAKE_STICKERS_C", "BRIEF_FAKE_STICKERS_D"],
+		"find": "OBJ_FIND_STICKER_PLATE",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/sticker_plate.tscn"), preload("res://scenes/props/sticker_album.tscn"),
+			preload("res://scenes/props/sticker_pack.tscn")],
+		"half_heights": [0.025, 0.015, 0.01],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_STICKER_ALBUM", "OBJ_EXTRA_STICKER_PACK"],
+		"rig": preload("res://scripts/case/print_shop/fake_stickers_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the floor by the door, by the display, the paper store, the back, the east
 ## side and by the binding table.

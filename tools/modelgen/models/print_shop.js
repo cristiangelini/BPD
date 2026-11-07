@@ -351,7 +351,40 @@ export function buildBookCover() {
 	return b.build();
 }
 
+// The plate of the album's hard sticker, 0.32 x 0.04 x 0.26 m: a steel plate with the goalkeeper's face in relief
+// (a round face, big mustache and a cap) and the number 1. Origin at its middle.
+export function buildStickerPlate() {
+	const b = new Builder('sticker_plate');
+	b.add('plate', steel(), new THREE.BoxGeometry(0.32, 0.03, 0.26), { pos: V(0, -0.005, 0) });
+	const relief = mat('sticker_relief', 0x6c7078, { metalness: 0.7, roughness: 0.35 });
+	b.add('face', relief, new THREE.CylinderGeometry(0.06, 0.06, 0.012, 12), { pos: V(-0.04, 0.016, 0) });
+	b.add('mustache', relief, new THREE.BoxGeometry(0.07, 0.01, 0.015), { pos: V(-0.04, 0.024, 0.02) });
+	b.add('cap', relief, new THREE.BoxGeometry(0.1, 0.01, 0.03), { pos: V(-0.04, 0.02, -0.06) });
+	b.add('one', relief, new THREE.BoxGeometry(0.02, 0.01, 0.12), { pos: V(0.09, 0.016, 0) });
+	return b.build();
+}
+
+// The full album, 0.3 x 0.03 x 0.22 m: a green cover with a ball and a gold "100%" band. Origin at its middle.
+export function buildStickerAlbum() {
+	const b = new Builder('sticker_album');
+	b.add('cover', mat('album_green', 0x2e9a4a), new THREE.BoxGeometry(0.3, 0.03, 0.22), {});
+	b.add('pages', mat('album_pages', 0xf4f0e2), new THREE.BoxGeometry(0.29, 0.026, 0.005), { pos: V(0, 0, 0.11) });
+	b.add('ball', mat('album_ball', 0xffffff), new THREE.CylinderGeometry(0.045, 0.045, 0.004, 12), { pos: V(-0.06, 0.016, 0) });
+	b.add('band', mat('album_gold', 0xf2c84b, { metalness: 0.5, roughness: 0.35 }), new THREE.BoxGeometry(0.1, 0.004, 0.04),
+		{ pos: V(0.07, 0.016, 0.05) });
+	return b.build();
+}
+
+// A pack of stickers, 0.07 x 0.01 x 0.1 m: a shiny red envelope with a yellow star. Origin at its middle.
+export function buildStickerPack() {
+	const b = new Builder('sticker_pack');
+	b.add('pack', mat('pack_red', 0xd83a3a, { metalness: 0.4, roughness: 0.3 }), new THREE.BoxGeometry(0.07, 0.01, 0.1), {});
+	b.add('star', mat('pack_star', 0xf2d040), new THREE.CylinderGeometry(0.02, 0.02, 0.003, 5), { pos: V(0, 0.006, 0) });
+	return b.build();
+}
+
 export const models = {
+	sticker_plate: buildStickerPlate, sticker_album: buildStickerAlbum, sticker_pack: buildStickerPack,
 	manuscript: buildManuscript, book_cover: buildBookCover,
 	diploma_roll: buildDiplomaRoll, university_seal: buildUniversitySeal, mortarboard: buildMortarboard,
 	ticket_box: buildTicketBox, concert_poster: buildConcertPoster, vip_stamp: buildVipStamp,
@@ -379,6 +412,8 @@ export const views = {
 			{ name: 'green_ink_tin', pos: [1.4, 0.07, 3.2] }, { name: 'ticket_box', pos: [2.1, 0.125, 3.2] },
 			{ name: 'concert_poster', pos: [2.9, 0.04, 3.3] }, { name: 'vip_stamp', pos: [3.5, 0.06, 3.3] },
 			{ name: 'manuscript', pos: [4.1, 0.06, 3.3] }, { name: 'book_cover', pos: [4.7, 0.01, 3.3] },
+			{ name: 'sticker_plate', pos: [5.3, 0.02, 3.3] }, { name: 'sticker_album', pos: [5.9, 0.015, 3.3] },
+			{ name: 'sticker_pack', pos: [6.4, 0.005, 3.3] },
 		],
 		cam: { pos: [0, 3.2, 9.5], target: [0.4, 0.9, 0], fov: 50 },
 	},
