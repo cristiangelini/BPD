@@ -141,3 +141,11 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
 6. Las pistas y el testigo.
 7. El final: el tablero, la camioneta y las cáscaras de banana.
 8. Online: el anfitrión mueve los animales y el trencito; el zoo entra en el sorteo de escenas del crimen.
+
+## Hecho así
+- **Paso 1:** `Zoo` (un `CrimeScenePlace`) ocupa la cuadra (7, -1) entera como parque, con el frente al sur. Tiene la
+  reja con el arco de la entrada, la boletería, los helados, la tienda de recuerdos y la casilla con seis casilleros y
+  la libreta de comidas. En el medio están los pingüinos (vidrio, pileta y el témpano vacío), rodeados por la vía del
+  trencito. Al oeste el mono y el avestruz, al este la casa de los reptiles y el elefante, y al fondo el estanque con
+  el bote. Cada recinto tiene su reja cerrada (`Zoo.gates`) mirando al camino. `ZooLevel` lo pone en la ciudad, y se
+  abre con `--place=zoo`.

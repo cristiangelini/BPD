@@ -64,6 +64,8 @@ const PLACES := [
 	{"id": "wrong_house", "block": Vector2i(0, 2), "side": "s", "along": 0.0, "size": Vector3(36, 7, 20), "color": Color(0.95, 0.86, 0.6), "sign": "PLACE_WRONG_HOUSE"},
 	# The airport fills its block too: the terminal and the apron are its case scene's (politico-aeropuerto.md).
 	{"id": "airport", "block": Vector2i(6, 4), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.86, 0.88, 0.9), "sign": "PLACE_AIRPORT", "park": true},
+	# The zoo fills its block on the north edge row, like the airport: its case scene builds the fence and the enclosures.
+	{"id": "zoo", "block": Vector2i(7, -1), "side": "s", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.42, 0.68, 0.32), "sign": "PLACE_ZOO", "park": true},
 ]
 
 ## The plaza fills its block.
