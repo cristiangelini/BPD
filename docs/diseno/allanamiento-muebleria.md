@@ -142,3 +142,13 @@ Los pesos y valores siguen la escala del taller y del gimnasio: la principal val
     cuenta y suma 10.
   - **Lo que ve:** una lámpara o el espejo roto suma 10; un ropero tumbado o la torre de sillas en el piso, 5; la caja
     abierta, 10; la puerta rota, 5.
+- **Paso 3 (Tablita):** Tablita (`FurnitureAssembler`, mameluco verde que le queda grande, gorra roja al revés, lápiz
+  de carpintero en la oreja y el manual al revés en la mano) está en el medio del salón, al lado de la biblioteca a
+  medio armar. Le falta el estante del medio, que está apoyado contra el costado (`BookcaseShelf`).
+  - **Sostener el estante:** E sobre el estante lo sube a su lugar, y el policía tiene que mantener E apretada 5 s
+    sin moverse más de 0,4 m. Si suelta antes o se mueve, el estante se cae al piso ("¡Uy! De nuevo..."), y a los 2 s
+    vuelve a estar apoyado.
+  - **Lo que cuenta:** al llegar a los 5 s, Tablita atornilla el estante y le cuenta a ese policía lo que vio (la pista
+    la pone la historia en el paso 4; mientras tanto dice que no vio nada raro). El estante queda atornillado 8 s
+    mientras habla, y después se vuelve a soltar para el próximo policía. Una vez por policía.
+  - Capturas `paso3-*.png` y `tablita.png` (modelos) en la carpeta `muebleria/` del proyecto.

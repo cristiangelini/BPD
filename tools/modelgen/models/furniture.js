@@ -165,8 +165,50 @@ export function buildDonCajon() {
 	return b.build();
 }
 
+// Tablita, the assembler (docs/diseno/allanamiento-muebleria.md): green overalls a size too big, a red cap backwards,
+// a carpenter's pencil behind the ear, a screwdriver in the chest pocket and the manual upside down in his left hand.
+export function buildTablita() {
+	const b = new Builder('npc_tablita');
+	const overalls = mat('tablita_overalls', 0x3f8a52);
+	pearBody(b, mat('skin_rosado', 0xf0c2a0), { shirt: overalls, pants: overalls, shoes: M.black, belted: false, onePiece: true });
+	for (const s of [-1, 1]) box(b, 'strap', mat('tablita_strap', 0x2f6a3e), 0.06, 0.4, 0.02, s * 0.14, 0.92, 0.3, [0.25, 0, 0]);
+	box(b, 'pocket', mat('tablita_pocket', 0x2f6a3e), 0.2, 0.14, 0.02, 0, 0.78, 0.37, [0.3, 0, 0]);
+	box(b, 'screwdriver', mat('tablita_handle', 0xd23a3a), 0.03, 0.12, 0.03, 0.05, 0.88, 0.37);
+	eyes(b, 1.33, 0.17, 0.08, 0.05);
+	const cap = mat('tablita_cap', 0xc8352f);
+	b.add('cap', cap, ellipsoid(0.2, 0.1, 0.19, 10, 5), { pos: V(0, 1.45, 0.0) });
+	box(b, 'cap', cap, 0.2, 0.02, 0.14, 0, 1.44, -0.24);
+	b.add('pencil', mat('tablita_pencil', 0xe8b63a), new THREE.CylinderGeometry(0.012, 0.012, 0.16, 6), { pos: V(0.2, 1.36, 0.0), rot: [0, 0, Math.PI / 2.4] });
+	// The manual, upside down: the picture of the bookcase at the bottom of the cover.
+	box(b, 'manual', mat('tablita_manual', 0xf6f2e6), 0.2, 0.28, 0.01, -0.5, 0.72, 0.16, [0, 0.3, Math.PI]);
+	box(b, 'manual', mat('tablita_manual_ink', 0x3a5ad0), 0.12, 0.08, 0.012, -0.5, 0.64, 0.16, [0, 0.3, Math.PI]);
+	return b.build();
+}
+
+// The bookcase Tablita is putting together, 0.9 × 1.8 × 0.35 m: pine sides, top, bottom and back, two shelves screwed
+// in and the gap of the third one at 1.1 m (BookcaseShelf). Its loose shelf is its own model.
+export function buildHalfBookcase() {
+	const b = new Builder('half_bookcase');
+	const pine = mat('bookcase_pine', 0xd9b47a), back = mat('bookcase_back', 0xbf9862);
+	for (const s of [-1, 1]) box(b, 'side', pine, 0.03, 1.8, 0.35, s * 0.435, 0.9, 0);
+	box(b, 'top', pine, 0.9, 0.03, 0.35, 0, 1.785, 0);
+	box(b, 'bottom', pine, 0.84, 0.08, 0.33, 0, 0.04, 0);
+	box(b, 'back', back, 0.88, 1.76, 0.01, 0, 0.9, -0.17);
+	for (const y of [0.45, 0.75]) box(b, 'shelf', pine, 0.84, 0.03, 0.32, 0, y, 0.01);
+	// The four screws waiting for the missing shelf.
+	for (const s of [-1, 1]) for (const z of [-0.1, 0.1]) box(b, 'screw', M.gold, 0.012, 0.02, 0.02, s * 0.415, 1.1, z);
+	return b.build();
+}
+
+export function buildBookcaseShelf() {
+	const b = new Builder('bookcase_shelf');
+	box(b, 'board', mat('bookcase_pine', 0xd9b47a), 0.84, 0.03, 0.32, 0, 0.015, 0);
+	return b.build();
+}
+
 export const models = {
-	npc_don_cajon: buildDonCajon,
+	npc_don_cajon: buildDonCajon, npc_tablita: buildTablita, half_bookcase: buildHalfBookcase,
+	bookcase_shelf: buildBookcaseShelf,
 	showroom_sofa: buildShowroomSofa, showroom_bed: buildShowroomBed, showroom_wardrobe: buildShowroomWardrobe,
 	showroom_dresser: buildShowroomDresser, showroom_lamp: buildShowroomLamp, standing_mirror: buildStandingMirror,
 	dining_table: buildDiningTable, dining_chair: buildDiningChair, flatpack_box: buildFlatpackBox,
@@ -185,6 +227,10 @@ export const views = {
 	don_cajon: {
 		items: [{ name: 'npc_don_cajon', pos: [0, 0, 0] }, { name: 'showroom_sofa', pos: [1.6, 0, -0.4] }],
 		cam: { pos: [0.6, 1.5, 4.2], target: [0.6, 0.9, 0], fov: 40 },
+	},
+	tablita: {
+		items: [{ name: 'npc_tablita', pos: [-0.7, 0, 0.3] }, { name: 'half_bookcase', pos: [0.5, 0, 0] }, { name: 'bookcase_shelf', pos: [0.5, 1.1, 0.4] }],
+		cam: { pos: [0, 1.4, 3.6], target: [0, 0.9, 0], fov: 45 },
 	},
 	furniture_table: {
 		items: [{ name: 'dining_table', pos: [0, 0, 0] }, { name: 'dining_chair', pos: [-0.6, 0, 0.75] }, { name: 'dining_chair', pos: [0.6, 0, -0.75] }],

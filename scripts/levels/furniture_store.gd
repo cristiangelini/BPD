@@ -9,7 +9,8 @@ extends Node3D
 ## (propuesta). Step 1b: the mattresses bounce whoever lands on them, the tower of chairs by the door comes down when
 ## pushed, and a wardrobe tips over when two cops pull it together. Step 2: Don Cajón walks among the setups filling the
 ## complaint, and comes to sell the sofa or the bed a cop tries out (E), his back to the shop, until the pitch ends or
-## the cop gets up.
+## the cop gets up. Step 3: Tablita puts a bookcase together in the middle of the shop and tells whoever holds its
+## shelf up for 5 s what he saw.
 
 signal good_broken(index: int)
 signal wardrobe_tipped(index: int)
@@ -25,6 +26,7 @@ const TABLE_MODEL := preload("res://assets/models/dining_table.glb")
 const CHAIR_MODEL := preload("res://assets/models/dining_chair.glb")
 const BOX_MODEL := preload("res://assets/models/flatpack_box.glb")
 const CAJON_SCENE := preload("res://scenes/npc/don_cajon.tscn")
+const BOOKCASE_MODEL := preload("res://assets/models/half_bookcase.glb")
 const HALF_X := 14.0
 const HALF_Z := 12.0
 ## The shop's ceiling, and the closed roof over it up to the lot's height.
@@ -88,6 +90,10 @@ const NOTICED := 10.0
 ## A cop on a piece being sold who gets this far from it cuts the pitch short.
 const LEAVE_DISTANCE := 1.2
 
+## Tablita in the middle of the shop with the bookcase he's putting together, its front to the door.
+const BOOKCASE_AT := Vector3(-1.5, FLOOR_TOP, -1.0)
+const TABLITA_AT := Vector3(-2.6, FLOOR_TOP, -0.6)
+
 ## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
 const SPOTS := [
 	{"id": "in_wardrobe_0", "at": Vector3(-13.65, FLOOR_TOP + 0.1, -6.5), "heavy": true},
@@ -122,6 +128,8 @@ var sofas: Array[ShowroomSeat] = []
 var beds: Array[ShowroomSeat] = []
 var cajon: FloorBoss
 var pitch: SalesPitch
+var tablita: FurnitureAssembler
+var shelf: BookcaseShelf
 var complaint_bar: ProgressBar
 var wardrobes: Array[TippingWardrobe] = []
 var chair_tower: ChairTower
@@ -155,6 +163,7 @@ func _ready() -> void:
 	_build_stockroom()
 	_place_goods()
 	_place_cajon()
+	_place_tablita()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("furniture")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -329,6 +338,26 @@ func _place_cajon() -> void:
 	box.add_child(complaint_bar)
 	add_child(hud)
 	cajon.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## Tablita and his bookcase: whoever holds its shelf up long enough hears what he saw.
+func _place_tablita() -> void:
+	var bookcase := _piece(BOOKCASE_MODEL, BOOKCASE_AT, 0.0, [
+		[Vector3(-0.435, 0.9, 0), Vector3(0.03, 1.8, 0.35)], [Vector3(0.435, 0.9, 0), Vector3(0.03, 1.8, 0.35)],
+		[Vector3(0, 0.9, -0.17), Vector3(0.9, 1.8, 0.02)], [Vector3(0, 1.785, 0), Vector3(0.9, 0.03, 0.35)],
+	])
+	bookcase.name = "Bookcase"
+	shelf = BookcaseShelf.new()
+	shelf.name = "Shelf"
+	bookcase.add_child(shelf)
+	tablita = FurnitureAssembler.new()
+	tablita.name = "Tablita"
+	tablita.position = TABLITA_AT
+	tablita.rotation.y = 0.5
+	add_child(tablita)
+	shelf.taken.connect(tablita.holding)
+	shelf.held.connect(tablita.held_by)
+	shelf.dropped.connect(func(_cop: Cop) -> void: tablita.dropped())
 
 
 ## A cop tries `seat` out: Don Cajón comes to stand in front of it and sell it, facing it (or notices the trick).

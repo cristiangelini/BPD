@@ -5632,3 +5632,13 @@ CAJON_GOOD,"¡Eso estaba en exhibición! ¡Lo pagas en cuotas!","That was on dis
 CAJON_TIPPED,"¡Mi ropero! ¿Quién lo acostó?","My wardrobe! Who laid it down?","Meu guarda-roupa! Quem deitou ele?"
 CAJON_TOWER,"¡Mis sillas! ¡Tardé una hora en apilarlas!","My chairs! It took me an hour to stack them!","Minhas cadeiras! Levei uma hora para empilhar!"
 CAJON_NOTICED,"¡Ya sé que no van a comprar nada! ¡Levántense de ahí!","I know you're not buying anything! Get up from there!","Eu sei que vocês não vão comprar nada! Levantem daí!"
+PROMPT_HOLD_SHELF,Mantén E: sostener el estante,Hold E: hold the shelf up,Segure E: segurar a prateleira
+HINT_SHELF_HOLD,"Mantén E apretada y no te muevas hasta que Tablita lo atornille.","Keep E down and don't move until Tablita screws it in.","Segure E e não se mexa até o Tablita parafusar."
+HINT_SHELF_DONE,"¡Estante atornillado! Tablita tiene algo que contarte.","Shelf screwed in! Tablita has something to tell you.","Prateleira parafusada! O Tablita tem algo para te contar."
+TABLITA_HOLD,"¡Sostenlo derechito, que ya casi! Bueno, según el manual faltan 40 pasos.","Hold it nice and straight, almost there! Well, the manual says 40 steps to go.","Segura retinho, que já está quase! Bom, pelo manual faltam 40 passos."
+TABLITA_DROPPED,"¡Uy! De nuevo...","Oops! Again...","Ops! De novo..."
+TABLITA_NOTHING,"Gracias. No vi nada raro. Este manual sí que es raro: los dibujos están patas arriba.","Thanks. I didn't see anything odd. This manual is odd, though: the drawings are upside down.","Valeu. Não vi nada estranho. Esse manual sim é estranho: os desenhos estão de cabeça para baixo."
+TABLITA_AGAIN,"Ya te conté todo. Pero sostenlo igual, que solo no puedo.","I already told you everything. But hold it anyway, I can't do it alone.","Já te contei tudo. Mas segura assim mesmo, que sozinho não consigo."
+TABLITA_IDLE_1,"Me sobraron seis tornillos. Eso es normal, ¿no?","I've got six screws left over. That's normal, right?","Sobraram seis parafusos. Isso é normal, né?"
+TABLITA_IDLE_2,"Llevo tres años armando esta biblioteca. Don Cajón dice que es la de muestra.","I've been putting this bookcase together for three years. Don Cajón says it's the display one.","Faz três anos que estou montando esta estante. O Don Cajón diz que é a de mostruário."
+TABLITA_IDLE_3,"Desde acá veo todo el local, ¿eh? Todo.","I can see the whole shop from here, you know? Everything.","Daqui eu vejo a loja inteira, sabia? Tudo."
