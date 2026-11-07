@@ -3,7 +3,7 @@ extends Node3D
 
 ## The plant nursery "La Maceta Feliz" as a place to raid (docs/diseno/allanamiento-vivero.md, step 1): an open lot in
 ## the city behind a low wall, the front to +Z with the gate open in the middle under the sign and its smiling pot. The
-## yard in the west half has rows of potted plants and four sprinklers (still off); in the east half stands the
+## yard in the west half has rows of potted plants and four sprinklers (step 2); in the east half stands the
 ## greenhouse, a glass house with its tables, the tap and the Dentuda in her huge pot in the middle. By the front, the
 ## counter with the till, the seed basket and the shelf of glazed ceramic pots on the west side, and the row of garden
 ## gnomes and the tool hut on the east. At the back, the shed (the soil bags, the compost and the wheelbarrow), the
@@ -40,6 +40,10 @@ const ROOM_TOP := 3.0
 const SPRINKLERS: Array[Vector3] = [Vector3(-15, FLOOR_TOP, -1), Vector3(-6, FLOOR_TOP, -1), Vector3(-15, FLOOR_TOP, 5),
 	Vector3(-6, FLOOR_TOP, 5)]
 const PLANT_ROWS: Array[float] = [1.3, 2.7]
+## The yard's grass, from (x, z) over its size: where the sprinklers water and the mud is.
+const YARD := Rect2(-19.0, -3.0, 17.0, 10.0)
+## The valve that starts the watering, on the shed's east wall, inside.
+const VALVE_AT := Vector3(-9.15, FLOOR_TOP + 1.2, -7.0)
 ## The greenhouse: a glass house from GREEN_X0 to GREEN_X1 and ±GREEN_HALF_Z, GREEN_TOP tall, its door in the west
 ## wall from -GREEN_DOOR to GREEN_DOOR. Its panes, 2 m or so each, break when something hits them fast.
 const GREEN_X0 := 2.0
@@ -133,6 +137,12 @@ var cracked: Array[int] = []
 var pots: Array[Node3D] = []
 var broken_pots: Array[int] = []
 var broken_goods := 0
+## The watering (step 2): the sprinkler heads that turn, their jets, the yard's grass and the valve in the shed.
+var irrigation: NurseryIrrigation
+var sprinkler_heads: Array[Node3D] = []
+var jets: Array[MeshInstance3D] = []
+var yard_ground: MeshInstance3D
+var valve: PushButton
 ## Money taken off the case pay: the panes and the pots.
 var fines := 0
 ## Same seed, same nursery (the stories and the hiding spots come from it, step 6).
@@ -151,6 +161,11 @@ func _ready() -> void:
 	_build_greenhouse()
 	_build_front()
 	_build_back()
+	irrigation = NurseryIrrigation.new()
+	irrigation.name = "Irrigation"
+	irrigation.nursery = self
+	add_child(irrigation)
+	valve.pressed.connect(func(_cop: Cop) -> void: irrigation.start())
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("nursery")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -166,6 +181,11 @@ func _park_car() -> void:
 	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
 
 
+## Whether `at` lies on the yard's grass, where the sprinklers water.
+static func in_yard(at: Vector3) -> bool:
+	return YARD.has_point(Vector2(at.x, at.z))
+
+
 ## Whether `at` lies inside the greenhouse.
 static func in_greenhouse(at: Vector3) -> bool:
 	return at.x > GREEN_X0 and at.x < GREEN_X1 and absf(at.z) < GREEN_HALF_Z
@@ -175,7 +195,6 @@ static func in_greenhouse(at: Vector3) -> bool:
 ## office at the back, and the sign over the gate with its smiling pot.
 func _build_lot() -> void:
 	_build.slab(-HALF_X, HALF_X, -HALF_Z, HALF_Z, FLOOR_TOP, EARTH)
-	_build.mesh_box(Vector3(-10.5, FLOOR_TOP + 0.005, 2.0), Vector3(17.0, 0.01, 10.0), GRASS)
 	_build.wall_at("x", HALF_Z, -HALF_X, -GATE_HALF, 0.0, WALL_LOW, [], BRICK)
 	_build.wall_at("x", HALF_Z, GATE_HALF, HALF_X, 0.0, WALL_LOW, [], BRICK)
 	_build.wall_at("x", -HALF_Z, -HALF_X, SHED_EAST, 0.0, ROOM_TOP, [], BRICK)
@@ -199,10 +218,33 @@ func _build_lot() -> void:
 	_model(SMILING_POT_MODEL, Vector3(0, SIGN_TOP, HALF_Z))
 
 
-## The yard: the four sprinklers (still off, step 2) and two rows of potted plants across it.
+## The yard: its grass (mud after the watering), the four sprinklers, each on a head that turns with its jet, and two
+## rows of potted plants across it. The valve that sets the watering going is in the shed (NurseryIrrigation, step 2).
 func _build_yard() -> void:
+	yard_ground = MeshInstance3D.new()
+	var grass := BoxMesh.new()
+	grass.size = Vector3(YARD.size.x, 0.01, YARD.size.y)
+	yard_ground.mesh = grass
+	yard_ground.material_override = _build.material(GRASS)
+	yard_ground.position = Vector3(YARD.get_center().x, FLOOR_TOP + 0.005, YARD.get_center().y)
+	$Built.add_child(yard_ground)
 	for at in SPRINKLERS:
-		_model(SPRINKLER_MODEL, at)
+		var head := Node3D.new()
+		head.position = at
+		$Built.add_child(head)
+		var look: Node3D = SPRINKLER_MODEL.instantiate()
+		head.add_child(look)
+		var jet := MeshInstance3D.new()
+		var water := BoxMesh.new()
+		water.size = Vector3(NurseryIrrigation.JET_REACH, 0.12, 0.3)
+		jet.mesh = water
+		jet.material_override = _glass(Color(0.55, 0.8, 1.0, 0.45))
+		jet.position = Vector3(NurseryIrrigation.JET_REACH / 2 + 0.25, 0.55, 0)
+		jet.rotation.z = 0.12
+		jet.hide()
+		head.add_child(jet)
+		sprinkler_heads.append(head)
+		jets.append(jet)
 	for z in PLANT_ROWS:
 		for i in 12:
 			var at := Vector3(-18.0 + i * 1.4, FLOOR_TOP, z)
@@ -338,6 +380,12 @@ func _build_back() -> void:
 	_build.open_box(WHEELBARROW_AT + Vector3(0, 0.42, 0), Vector3(0.66, 0.32, 0.86), "top", Color(0.25, 0.56, 0.29))
 	_build.box(WHEELBARROW_AT + Vector3(0, 0.2, 0), Vector3(0.3, 0.4, 0.3), STEEL)
 	_build.light(Vector3(-14.5, ROOM_TOP - 0.4, -7.5))
+	valve = PushButton.new()
+	valve.prompt = "PROMPT_NURSERY_VALVE"
+	valve.color = Color(0.2, 0.45, 0.9)
+	valve.position = VALVE_AT
+	valve.rotation.y = -PI / 2
+	add_child(valve)
 	_model(WATER_TANK_MODEL, TANK_AT)
 	for sx: float in [-0.55, 0.55]:
 		for sz: float in [-0.55, 0.55]:

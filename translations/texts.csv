@@ -5606,3 +5606,6 @@ LOC_in_seed_basket,en el canasto de semillas,in the seed basket,no cesto de seme
 LOC_among_gnomes,entre los enanos de jardín,among the garden gnomes,entre os anões de jardim
 LOC_in_tool_hut,en la casita de herramientas,in the tool hut,na casinha de ferramentas
 LOC_under_water_tank,debajo del tanque de agua,under the water tank,debaixo da caixa-d'água
+PROMPT_NURSERY_VALVE,E: abrir la llave de paso del riego,E: open the sprinklers' valve,E: abrir o registro da irrigação
+HINT_NURSERY_SPRINKLER,¡Splash! El aspersor te mojó entero.,Splash! The sprinkler soaked you.,Splash! O aspersor te molhou inteiro.
+HINT_NURSERY_MUD_SLIP,¡Barro! Te resbalaste corriendo.,Mud! You slipped while running.,Lama! Você escorregou correndo.

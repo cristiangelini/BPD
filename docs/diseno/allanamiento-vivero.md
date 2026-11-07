@@ -125,6 +125,13 @@ los extras suman 500.
      `in_wheelbarrow` ya es de la ferretería; "adentro de la caja" es adentro del mostrador.
    - **Capturas:** `/mnt/project-files/vivero/paso1-*.png` y `modelos.png`.
 2. El riego: los aspersores que giran, empujan y mojan, y el barro que hace resbalar.
+   Hecho así: la clase `NurseryIrrigation` (nodo "Irrigation" del vivero). Cada 40 s, o con la llave de paso (el botón
+   azul en la pared este del galpón, adentro), se prenden los 4 aspersores 15 s. Cada chorro llega a 3,5 m y gira 0,4
+   vueltas por segundo. Lo que barre se moja (señal `soaked`): una cosa de hasta 3 kg sale volando y un policía recibe
+   un empujoncito. Al apagarse, el pasto del patio queda de barro 20 s, y el policía que corre por encima a más de
+   4 m/s se resbala: sigue de largo con el 80 % de su velocidad y no puede caminar 1 s (señal `slipped`, para Doña
+   Hortensia en el paso 4). Una misma cosa o policía no se vuelve a empujar ni a resbalar hasta 1,5 s después.
+   Capturas: `/mnt/project-files/vivero/paso2-*.png`.
 3. La Dentuda: muerde, se queda con las cosas, las escupe y se calma si come.
 4. Doña Hortensia: la ronda, la denuncia, "¡no me pisen los canteros!" y el camión de tierra.
 5. Brotecito y la regadera llena.
