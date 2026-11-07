@@ -166,6 +166,10 @@ Los pesos y valores siguen la escala de la bolera y el karaoke: la principal val
   último disfraz del perchero de monstruos brilla, y mirarlo es la pista. Los clientes, vecinos de la cuadra, salen
   del probador hablando del fantasma ("Si el fantasma vuelve, vendo la casa. Don Fantoche dice que me la compra.").
   Capturas `paso6-fantasma-*.png`.
+- Paso 7: "Jugar" suma la tienda al sorteo de allanamientos (ahora 11, en partes iguales). Si Don Fantoche ve que un
+  policía agarra la prueba principal a menos de 15 m, se escapa en su auto, estacionado delante del patrullero, y
+  arranca la persecución; atrapado y en el patrullero, va al interrogatorio del turno siguiente ("¡Está bien,
+  campeón! ¡Fui yo! Pero me llevo el parche puesto.").
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, la tienda de disfraces abierta llena de maniquíes? **Recomendado:** sí, no se pisa
