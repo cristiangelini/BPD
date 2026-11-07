@@ -1,11 +1,13 @@
 // What the pawn shop's stories hide (docs/diseno/allanamiento-empenos.md, "Las historias"): the golf club's gold trophy
 // and its painted plastic copy, the painter's receipt, the armor costume full of loot, the oily rag, the map of the
-// robbed houses, the dentist's box of gold dentures, his pliers and the patient list. Origins at the floor in the
+// robbed houses, the dentist's box of gold dentures, his pliers and the patient list, the famous singer's guitar, his
+// signed photo and the tour contract, the customs label, the ship's receipt and a pearl. Origins at the floor in the
 // middle of each piece. Placeholder, not final art.
 import { Builder, mat, ellipsoid, V, THREE } from '../lib.js';
 
 const paper = () => mat('pawn_story_paper', 0xf6f2e2);
 const ink = () => mat('pawn_story_ink', 0x3a3a48);
+const wood = () => mat('pawn_story_wood', 0x6a4028);
 
 // A golf trophy 0.6 m tall: a black base, a gold cup and a little golfer on a ball on top.
 function trophy(name, gold) {
@@ -106,10 +108,71 @@ export function buildPatientList() {
 	return b.build();
 }
 
+// The famous singer's guitar, 1 m long lying on its back (neck to +X), red with a white star.
+export function buildStarGuitar() {
+	const b = new Builder('star_guitar');
+	const red = mat('star_guitar_red', 0xc82a2a);
+	b.add('lower', red, new THREE.CylinderGeometry(0.2, 0.2, 0.1, 14), { pos: V(-0.28, 0.05, 0) });
+	b.add('upper', red, new THREE.CylinderGeometry(0.15, 0.15, 0.1, 14), { pos: V(-0.02, 0.05, 0) });
+	b.add('hole', mat('star_guitar_hole', 0x24242a), new THREE.CylinderGeometry(0.05, 0.05, 0.005, 12), { pos: V(-0.1, 0.102, 0) });
+	b.add('star', mat('star_guitar_star', 0xf6f2e2), new THREE.OctahedronGeometry(0.05), { pos: V(-0.3, 0.1, 0.08), scale: [1, 0.15, 1] });
+	b.add('neck', wood(), new THREE.BoxGeometry(0.45, 0.04, 0.06), { pos: V(0.33, 0.06, 0) });
+	b.add('head', wood(), new THREE.BoxGeometry(0.12, 0.04, 0.09), { pos: V(0.61, 0.06, 0) });
+	for (let i = 0; i < 4; i++) b.add('string', mat('star_guitar_string', 0xe0e0e0), new THREE.BoxGeometry(0.85, 0.004, 0.003), { pos: V(0.13, 0.106, -0.018 + i * 0.012) });
+	return b.build();
+}
+
+// The signed photo: a frame 0.2 x 0.25 m flat on the floor, the singer's face and a scribble.
+export function buildSignedPhoto() {
+	const b = new Builder('signed_photo');
+	b.add('frame', mat('photo_frame', 0x2a2a30), new THREE.BoxGeometry(0.2, 0.012, 0.25), { pos: V(0, 0.006, 0) });
+	b.add('photo', mat('photo_sky', 0x6aa0d8), new THREE.BoxGeometry(0.17, 0.004, 0.22), { pos: V(0, 0.013, 0) });
+	b.add('face', mat('photo_face', 0xe0b090), new THREE.CylinderGeometry(0.04, 0.04, 0.004, 12), { pos: V(0, 0.016, -0.03) });
+	b.add('hair', mat('photo_hair', 0x24242a), new THREE.BoxGeometry(0.09, 0.004, 0.03), { pos: V(0, 0.017, -0.07) });
+	b.add('scribble', ink(), new THREE.BoxGeometry(0.11, 0.002, 0.008), { pos: V(0.01, 0.018, 0.07), rot: [0, 0.3, 0] });
+	return b.build();
+}
+
+// The tour contract: two sheets 0.21 x 0.3 m, stapled, with a red seal.
+export function buildTourContract() {
+	const b = new Builder('tour_contract');
+	b.add('sheet', paper(), new THREE.BoxGeometry(0.21, 0.008, 0.3), { pos: V(0, 0.004, 0) });
+	for (let i = 0; i < 9; i++) b.add('line', ink(), new THREE.BoxGeometry(0.16, 0.002, 0.006), { pos: V(0, 0.009, -0.12 + i * 0.025) });
+	b.add('seal', mat('contract_seal', 0xc82a2a), new THREE.CylinderGeometry(0.025, 0.025, 0.004, 12), { pos: V(0.06, 0.01, 0.12) });
+	return b.build();
+}
+
+// The customs label: a brown tag 0.15 x 0.08 m with a string.
+export function buildCustomsLabel() {
+	const b = new Builder('customs_label');
+	b.add('tag', mat('customs_brown', 0xc8a060), new THREE.BoxGeometry(0.15, 0.004, 0.08), { pos: V(0, 0.002, 0) });
+	b.add('stamp', mat('customs_stamp', 0x3a6ad2), new THREE.BoxGeometry(0.06, 0.002, 0.04), { pos: V(0.02, 0.005, 0) });
+	b.add('string', mat('customs_string', 0xf6f2e2), new THREE.BoxGeometry(0.1, 0.004, 0.004), { pos: V(-0.12, 0.002, 0) });
+	return b.build();
+}
+
+// The ship's receipt: a sheet 0.15 x 0.2 m with a little blue ship.
+export function buildShipReceipt() {
+	const b = new Builder('ship_receipt');
+	b.add('sheet', paper(), new THREE.BoxGeometry(0.15, 0.004, 0.2), { pos: V(0, 0.002, 0) });
+	b.add('ship', mat('receipt_ship', 0x3a6ad2), new THREE.BoxGeometry(0.06, 0.002, 0.02), { pos: V(0, 0.005, -0.06) });
+	for (let i = 0; i < 4; i++) b.add('line', ink(), new THREE.BoxGeometry(0.1, 0.002, 0.006), { pos: V(0, 0.005, -0.01 + i * 0.03) });
+	return b.build();
+}
+
+// A pearl, 3 cm.
+export function buildPawnPearl() {
+	const b = new Builder('pawn_pearl');
+	b.add('pearl', mat('pearl_white', 0xf6f2ee, { roughness: 0.15 }), new THREE.SphereGeometry(0.015, 10, 8), { pos: V(0, 0.015, 0) });
+	return b.build();
+}
+
 export const models = {
 	gold_trophy: buildGoldTrophy, plastic_trophy: buildPlasticTrophy, painter_receipt: buildPainterReceipt,
 	armor_costume: buildArmorCostume, oil_rag: buildOilRag, robbed_houses_map: buildRobbedHousesMap,
 	dentures_box: buildDenturesBox, dentist_pliers: buildDentistPliers, patient_list: buildPatientList,
+	star_guitar: buildStarGuitar, signed_photo: buildSignedPhoto, tour_contract: buildTourContract,
+	customs_label: buildCustomsLabel, ship_receipt: buildShipReceipt, pawn_pearl: buildPawnPearl,
 };
 
 export const views = {
@@ -119,7 +182,10 @@ export const views = {
 			{ name: 'painter_receipt', pos: [-0.8, 0, 0] }, { name: 'armor_costume', pos: [0, 0, 0] },
 			{ name: 'oil_rag', pos: [0.8, 0, 0] }, { name: 'robbed_houses_map', pos: [1.4, 0, 0] },
 			{ name: 'dentures_box', pos: [-1.0, 0, 1.0] }, { name: 'dentist_pliers', pos: [0, 0, 1.0] },
-			{ name: 'patient_list', pos: [0.8, 0, 1.0] },
+			{ name: 'patient_list', pos: [0.8, 0, 1.0] }, { name: 'star_guitar', pos: [-1.6, 0, -1.0] },
+			{ name: 'signed_photo', pos: [-0.6, 0, -1.0] }, { name: 'tour_contract', pos: [-0.2, 0, -1.0] },
+			{ name: 'customs_label', pos: [0.3, 0, -1.0] }, { name: 'ship_receipt', pos: [0.7, 0, -1.0] },
+			{ name: 'pawn_pearl', pos: [1.1, 0, -1.0] },
 		],
 		cam: { pos: [0, 2.2, 3.6], target: [0, 0.2, 0.4], fov: 45 },
 	},

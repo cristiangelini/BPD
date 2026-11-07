@@ -171,3 +171,10 @@ Los pesos y valores siguen la escala de la tienda de disfraces: la principal val
   pacientes; Chicharra tiene un diente de oro y darle la galletita es la pista ("¡Abra la boca!"). En el trofeo y las
   dentaduras un cliente cuenta lo que sabe, una vez sí y otra no, y también suma a las pistas. Capturas en
   `/mnt/project-files/allanamiento-empenos/paso6-*.png`.
+- Paso 6b: las dos últimas. La guitarra del cantante: la roja con la estrella (6 kg) escondida con la foto firmada y
+  el contrato de la gira; otra guitarra apoyada en un estante del medio tiene un grabador y toca sola cuando pasa un
+  policía ("¡Tlan, tlan! «¡Gracias, gracias!»", otra vez a los 15 s), y mirarla es la pista; la radio que vende la
+  tienda da la noticia del robo cada 25 s mientras siga en la tienda, y el policía que está cerca (5 m) se lleva esa
+  pista. El cocodrilo contrabandista: el cocodrilo de la tienda (14 kg, con el cartel "No se vende") es la evidencia;
+  la etiqueta de la aduana y el recibo del barco están escondidos. Tintinea cuando se mueve (la primera vez es la
+  pista) y si se mueve fuerte se le cae una perla de la boca, una sola vez.
