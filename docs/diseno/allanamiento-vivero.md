@@ -166,6 +166,11 @@ los extras suman 500.
    (la siguen si alguien la lleva) y el policía que pasa a menos de 3 m las ve (pista); las 32 plantas del patio y de
    las mesas se inclinan hacia ella. Capturas: `/mnt/project-files/vivero/paso6-*.png`.
 7. Las otras 5 historias, una por PR.
+   **Hecho así, el enano de oro** (`GoldGnomeRig`, `--story=gold_gnome`): el enano de oro (20 kg, 1000) va a un
+   escondite de cosas pesadas; la foto del jardín (0,1 kg, 300) y el tarro de pintura (1 kg, 200) a cualquiera. El
+   enano de la fila con pintura fresca se sortea con la semilla; un policía a menos de 1,5 m lo hace descascarar y
+   aparecen 3 manchas doradas (pista). Los 8 enanos de la fila giran para mirar al de oro, esté donde esté. Captura:
+   `/mnt/project-files/vivero/paso7a-enanos.png`.
 8. El vivero en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 9. El online.
 

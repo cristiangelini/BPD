@@ -41,6 +41,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_CATALOG", "OBJ_EXTRA_SHEARS"],
 		"rig": preload("res://scripts/case/nursery/stolen_orchid_rig.gd"),
 	},
+	"gold_gnome": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_GOLD_GNOME_B", "BRIEF_GOLD_GNOME_C", "BRIEF_GOLD_GNOME_D"],
+		"find": "OBJ_FIND_GOLD_GNOME",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/gold_gnome.tscn"), preload("res://scenes/props/mayor_photo.tscn"),
+			preload("res://scenes/props/gnome_paint.tscn")],
+		"half_heights": [0.46, 0.005, 0.085],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_MAYOR_PHOTO", "OBJ_EXTRA_GNOME_PAINT"],
+		"rig": preload("res://scripts/case/nursery/gold_gnome_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the floor by the front, the yard, the back and the greenhouse's far end.
 const NOTE_PLACES: Array[Vector3] = [
@@ -213,6 +224,8 @@ var owner_npc: FloorBoss
 var complaint_bar: ProgressBar
 ## The cops she already saw slip (id -> true).
 var slip_seen := {}
+## The garden gnomes for sale by the front (a story can make them turn).
+var gnomes: Array[Node3D] = []
 ## The potted plants of the yard rows and the greenhouse tables (a story can make them move).
 var flowers: Array[Node3D] = []
 ## The case flow every raid shares.
@@ -544,7 +557,7 @@ func _build_front() -> void:
 				break_pot(i))
 	for i in GNOMES:
 		var at := Vector3(GNOME_X0 + i * GNOME_STEP, FLOOR_TOP, GNOME_Z)
-		_model(GNOME_MODELS[i % GNOME_MODELS.size()], at)
+		gnomes.append(_model(GNOME_MODELS[i % GNOME_MODELS.size()], at))
 		_build.shape(_build.body(at + Vector3(0, 0.3, 0)), Vector3(0.4, 0.6, 0.4))
 	_build.open_box(HUT_AT, HUT_SIZE, "-x", WOOD.darkened(0.15))
 	_build.mesh_box(HUT_AT + Vector3(0, HUT_SIZE.y + 0.15, 0), Vector3(HUT_SIZE.x + 0.3, 0.3, HUT_SIZE.z + 0.3),

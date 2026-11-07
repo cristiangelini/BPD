@@ -275,13 +275,48 @@ export function buildNurseryShears() {
 	return b.build();
 }
 
+// The mayor's golden garden gnome (0.8 m tall, solid gold): a fat gnome, all gold but the white beard, with a red hat.
+export function buildGoldGnome() {
+	const b = new Builder('gold_gnome');
+	const gold = mat('gnome_gold', 0xf2c84b, { metalness: 0.8, roughness: 0.25, emissive: 0x3a2a05 });
+	b.add('body', gold, ellipsoid(0.22, 0.25, 0.2, 10, 6), { pos: V(0, 0.25, 0) });
+	b.add('belt', mat('gold_gnome_belt', 0x8a5a14, { metalness: 0.6 }), new THREE.CylinderGeometry(0.21, 0.21, 0.04, 10), { pos: V(0, 0.28, 0) });
+	b.add('head', gold, ellipsoid(0.13, 0.13, 0.13, 10, 6), { pos: V(0, 0.53, 0.02) });
+	b.add('nose', gold, ellipsoid(0.04, 0.04, 0.04, 6, 4), { pos: V(0, 0.53, 0.15) });
+	b.add('beard', mat('gold_gnome_beard', 0xf6f2ea), new THREE.ConeGeometry(0.12, 0.24, 8), { pos: V(0, 0.4, 0.12), rot: [Math.PI, 0, 0] });
+	b.add('hat', mat('gold_gnome_hat', 0xd23a3a), new THREE.ConeGeometry(0.14, 0.32, 10), { pos: V(0, 0.76, 0), rot: [-0.15, 0, 0] });
+	b.add('boots', gold, new THREE.BoxGeometry(0.34, 0.06, 0.16), { pos: V(0, 0.03, 0.05) });
+	return b.build();
+}
+
+// The photo of the mayor's garden (0.15 x 0.1 m): a white-framed print of a lawn with a golden dot in the middle.
+export function buildMayorPhoto() {
+	const b = new Builder('mayor_photo');
+	b.add('frame', mat('photo_white', 0xf6f4ee), new THREE.BoxGeometry(0.15, 0.006, 0.1), { pos: V(0, 0.003, 0) });
+	b.add('lawn', mat('photo_lawn', 0x5ab04a), new THREE.BoxGeometry(0.13, 0.002, 0.08), { pos: V(0, 0.007, 0) });
+	b.add('gnome', mat('photo_gold', 0xf2c84b), new THREE.BoxGeometry(0.02, 0.002, 0.03), { pos: V(0, 0.009, 0) });
+	return b.build();
+}
+
+// The tin of gnome paint (0.16 m across, 0.16 m tall): a tin with a green label and green paint dripping down.
+export function buildGnomePaint() {
+	const b = new Builder('gnome_paint');
+	const tin = mat('paint_tin', 0xb8bec6, { metalness: 0.6, roughness: 0.4 }), green = mat('paint_green', 0x3a5ab0);
+	b.add('tin', tin, new THREE.CylinderGeometry(0.08, 0.08, 0.16, 14), { pos: V(0, 0.08, 0) });
+	b.add('label', green, new THREE.CylinderGeometry(0.082, 0.082, 0.08, 14), { pos: V(0, 0.08, 0) });
+	b.add('lid', green, new THREE.CylinderGeometry(0.075, 0.075, 0.005, 14), { pos: V(0, 0.162, 0) });
+	b.add('drip', green, new THREE.BoxGeometry(0.02, 0.06, 0.005), { pos: V(0.03, 0.13, 0.081) });
+	return b.build();
+}
+
 export const models = {
 	nursery_sprinkler: buildSprinkler, dentuda_pot: buildDentudaPot, dentuda: buildDentuda,
 	potted_plant_0: buildPottedFern, potted_plant_1: buildPottedFlowers, potted_plant_2: buildPottedCactus,
 	ceramic_pot: buildCeramicPot, soil_bag: buildSoilBag, water_tank: buildWaterTank, nursery_tap: buildNurseryTap,
 	smiling_pot: buildSmilingPot, npc_dona_hortensia: buildDonaHortensia,
 	npc_brotecito: buildBrotecito, watering_can: buildWateringCan, nursery_orchid: buildNurseryOrchid,
-	botanic_catalog: buildBotanicCatalog, nursery_shears: buildNurseryShears,
+	botanic_catalog: buildBotanicCatalog, nursery_shears: buildNurseryShears, gold_gnome: buildGoldGnome,
+	mayor_photo: buildMayorPhoto, gnome_paint: buildGnomePaint,
 };
 
 export const views = {
@@ -296,6 +331,8 @@ export const views = {
 			{ name: 'npc_brotecito', pos: [-1.6, 0, 2.6], rotY: 0.2 }, { name: 'watering_can', pos: [-0.9, 0, 3.1], rotY: 0.5 },
 			{ name: 'nursery_orchid', pos: [-0.2, 0, 3.4] }, { name: 'botanic_catalog', pos: [0.4, 0, 3.6], rotY: 0.3 },
 			{ name: 'nursery_shears', pos: [0.9, 0, 3.6], rotY: -0.4 },
+			{ name: 'gold_gnome', pos: [-2.6, 0, 3.2] }, { name: 'mayor_photo', pos: [-2.0, 0, 3.7] },
+			{ name: 'gnome_paint', pos: [-1.6, 0, 3.6] },
 		],
 		cam: { pos: [0, 2.4, 8.0], target: [0.3, 1.0, 0], fov: 45 },
 	},
