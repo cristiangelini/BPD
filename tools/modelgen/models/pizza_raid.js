@@ -159,9 +159,50 @@ export const models = {
 		b.add('heel', soot, new THREE.BoxGeometry(0.09, 0.004, 0.08), { pos: V(0, 0.002, 0.1) });
 		return b.build();
 	},
+	// The phones in the backpack story's main evidence: a red thermal delivery backpack, its lid half open, full of
+	// stolen phones. 0.42 x 0.45 x 0.3 m.
+	thermal_backpack() {
+		const b = new Builder('thermal_backpack');
+		const red = C('thermal_red', 0xc82820, { roughness: 0.7 });
+		b.add('box', red, new THREE.BoxGeometry(0.42, 0.4, 0.3), { pos: V(0, 0.2, 0) });
+		b.add('lid', red, new THREE.BoxGeometry(0.42, 0.03, 0.3), { pos: V(0, 0.44, -0.08), rot: [-0.6, 0, 0] });
+		b.add('logo', C('thermal_logo', 0xf8e040), new THREE.BoxGeometry(0.2, 0.12, 0.01), { pos: V(0, 0.22, 0.155) });
+		b.add('strap', C('thermal_strap', 0x202020), new THREE.BoxGeometry(0.05, 0.34, 0.02), { pos: V(-0.12, 0.2, -0.16) });
+		b.add('strap', C('thermal_strap', 0x202020), new THREE.BoxGeometry(0.05, 0.34, 0.02), { pos: V(0.12, 0.2, -0.16) });
+		const colors = [0x202428, 0x3050a0, 0xe0e0e0, 0x208040, 0xd06090];
+		for (let i = 0; i < 5; i++) {
+			b.add('phones', C('phone_' + i, colors[i], { roughness: 0.3 }), new THREE.BoxGeometry(0.07, 0.14, 0.012),
+				{ pos: V(-0.14 + i * 0.07, 0.43, 0.02 - (i % 2) * 0.05), rot: [-0.3, 0, (i - 2) * 0.12] });
+		}
+		return b.build();
+	},
+	// A cardboard box of tangled phone chargers. 0.3 x 0.18 x 0.22 m.
+	chargers_box() {
+		const b = new Builder('chargers_box');
+		b.add('box', C('cardboard', 0xb08a58, { roughness: 0.95 }), new THREE.BoxGeometry(0.3, 0.16, 0.22), { pos: V(0, 0.08, 0) });
+		const white = C('charger_white', 0xf0f0f0);
+		for (let i = 0; i < 4; i++) {
+			b.add('chargers', white, new THREE.BoxGeometry(0.04, 0.04, 0.03), { pos: V(-0.09 + i * 0.06, 0.17, (i % 2) * 0.05 - 0.02) });
+			b.add('cables', white, new THREE.TorusGeometry(0.04, 0.005, 4, 10), { pos: V(-0.08 + i * 0.05, 0.165, 0.03), rot: [Math.PI / 2, 0, i] });
+		}
+		return b.build();
+	},
+	// A pink spiral notebook of fake orders. 0.2 x 0.02 x 0.15 m.
+	fake_orders_notebook() {
+		const b = new Builder('fake_orders_notebook');
+		b.add('cover', C('fake_pink', 0xe070a0, { roughness: 0.8 }), new THREE.BoxGeometry(0.2, 0.016, 0.15), { pos: V(0, 0.008, 0) });
+		b.add('page', C('fake_page', 0xf8f4e8), new THREE.BoxGeometry(0.18, 0.004, 0.13), { pos: V(0.005, 0.018, 0) });
+		b.add('spiral', C('fake_wire', 0x909090, { metalness: 0.6 }), new THREE.CylinderGeometry(0.006, 0.006, 0.15, 6), { pos: V(-0.1, 0.012, 0), rot: [Math.PI / 2, 0, 0] });
+		return b.build();
+	},
 };
 
 export const views = {
+	pizza_story_phones: {
+		items: [{ name: 'thermal_backpack', pos: [-0.35, 0, 0] }, { name: 'chargers_box', pos: [0.15, 0, 0.1] },
+			{ name: 'fake_orders_notebook', pos: [0.5, 0, 0.15], rotY: -0.3 }, { name: 'orders_notebook', pos: [0.2, 0, -0.3] }],
+		cam: { pos: [0.1, 0.8, 1.5], target: [0.1, 0.15, 0], fov: 40 },
+	},
 	pizza_story_tunnel: {
 		items: [{ name: 'silver_bag', pos: [-0.35, 0, 0] }, { name: 'miner_helmet', pos: [0.1, 0, 0.1] },
 			{ name: 'floor_plan', pos: [0.45, 0.03, 0.1], rotY: -0.3 }, { name: 'fire_extinguisher', pos: [0.75, 0, -0.2] },

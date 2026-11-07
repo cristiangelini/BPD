@@ -5693,3 +5693,13 @@ PROMPT_OVEN_CRAWL,E: meterse gateando en el horno,E: crawl into the oven,E: entr
 PROMPT_TUNNEL_OUT,E: volver a la cocina,E: go back to the kitchen,E: voltar para a cozinha
 OVEN_FSSH,¡FSSSH!,FSSSH!,FSSSH!
 HINT_TUNNEL_CRAWL,"Estás en el túnel. Gateas: no te puedes parar.","You're in the tunnel. You crawl: you can't stand up.","Você está no túnel. Engatinha: não dá para ficar de pé."
+BRIEF_PHONES_B,"Los repartidores de Don Muzza se quedan con el celular de cada cliente que les abre la puerta. Ya juntaron una mochila llena.","Don Muzza's delivery boys keep the phone of every customer who opens the door to them. They've already filled a backpack.","Os entregadores de Don Muzza ficam com o celular de cada cliente que abre a porta. Já encheram uma mochila."
+BRIEF_PHONES_C,"Traigan la mochila térmica con los celulares en el baúl del patrullero. Escuchen: cada tanto suenan todos juntos.","Bring the thermal backpack with the phones in the patrol car's trunk. Listen: every now and then they all ring at once.","Tragam a mochila térmica com os celulares no porta-malas da viatura. Escutem: de vez em quando tocam todos juntos."
+BRIEF_PHONES_D,"Si encuentran la caja de cargadores o el cuaderno de pedidos falsos, mejor.","If you find the box of chargers or the fake orders notebook, even better.","Se acharem a caixa de carregadores ou o caderno de pedidos falsos, melhor."
+OBJ_FIND_THERMAL_BACKPACK,Llevarse la mochila térmica con los celulares,Take the thermal backpack with the phones,Levar a mochila térmica com os celulares
+OBJ_EXTRA_CHARGERS_BOX,Extra: la caja de cargadores,Extra: the box of chargers,Extra: a caixa de carregadores
+OBJ_EXTRA_FAKE_ORDERS,Extra: el cuaderno de pedidos falsos,Extra: the fake orders notebook,Extra: o caderno de pedidos falsos
+TITO_CLUE_phone_backpack,"«Mmm… Vi a Don Muzza esconder algo %s. Y suena todo el tiempo, pero nunca atiende. Yo lo oí.»","“Mmm… I saw Don Muzza hide something %s. And it rings all the time, but he never answers. I heard it.”","“Hmm… Vi Don Muzza esconder algo %s. E toca o tempo todo, mas ele nunca atende. Eu ouvi.”"
+PROMPT_ORDERS_NOTEBOOK,E: leer el cuaderno de pedidos,E: read the orders notebook,E: ler o caderno de pedidos
+CLUE_ORDERS_NOTEBOOK,"El cuaderno de pedidos tiene direcciones que no existen: «Calle Falsa 0», «Pasaje Ninguno 999»","The orders notebook has addresses that don't exist: «0 Fake Street», «999 Nowhere Lane»","O caderno de pedidos tem endereços que não existem: «Rua Falsa 0», «Travessa Nenhuma 999»"
+PHONES_RIIING,¡RIIING!,RIIING!,TRIIIM!

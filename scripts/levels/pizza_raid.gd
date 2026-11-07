@@ -67,6 +67,16 @@ const STORIES := {
 		# Not in a hiding spot: at the far end of the tunnel under the oven (OvenTunnelRig).
 		"main_at": OvenTunnelRig.BAG_AT,
 	},
+	"phone_backpack": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_PHONES_B", "BRIEF_PHONES_C", "BRIEF_PHONES_D"],
+		"find": "OBJ_FIND_THERMAL_BACKPACK",
+		"hidden": [preload("res://scenes/props/thermal_backpack.tscn"), preload("res://scenes/props/chargers_box.tscn"),
+			preload("res://scenes/props/fake_orders_notebook.tscn")],
+		"half_heights": [0.225, 0.09, 0.01],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_CHARGERS_BOX", "OBJ_EXTRA_FAKE_ORDERS"],
+		"rig": preload("res://scripts/case/pizza/phone_backpack_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the floor of the dining room, the kitchen, the office and the yard, away from
 ## the furniture.
