@@ -64,10 +64,12 @@ func test_for_a_cookie_he_tells_what_he_heard_once_per_cop() -> void:
 	assert_signal_emit_count(parrot, "told", 1)
 
 
-func test_with_no_story_he_says_nothing_useful() -> void:
+func test_with_nothing_heard_he_says_nothing_useful() -> void:
 	var place := _shop()
 	await wait_physics_frames(1)
 	var cop: Cop = place.get_node("Cop")
+	place.parrot.clue = ""
+	place.parrot.clue_speech = ""
 	place.cookie_jar.use(cop)
 	place.parrot.use(cop)
 	assert_eq(place.parrot.said(), "PARROT_NOTHING")
