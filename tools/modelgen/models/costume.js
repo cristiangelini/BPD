@@ -292,6 +292,53 @@ export function buildClownMask() {
 	return b.build();
 }
 
+// The sewing machine of the fake costumes (false fitting room main evidence): a cream machine on a dark wooden base,
+// 0.7 m long along Z, with a spool and a half-sewn "Superfantasía" costume under the needle.
+export function buildSewingMachine() {
+	const b = new Builder('sewing_machine');
+	b.add('base', mat('sewing_wood', 0x4a3426), new THREE.BoxGeometry(0.45, 0.08, 0.7), { pos: V(0, 0.04, 0) });
+	const cream = mat('sewing_cream', 0xece2c8);
+	b.add('body', cream, new THREE.BoxGeometry(0.2, 0.08, 0.6), { pos: V(0, 0.12, 0) });
+	b.add('body', cream, new THREE.BoxGeometry(0.18, 0.28, 0.14), { pos: V(0, 0.28, -0.22) });
+	b.add('body', cream, new THREE.BoxGeometry(0.16, 0.1, 0.5), { pos: V(0, 0.4, -0.02) });
+	b.add('body', cream, new THREE.BoxGeometry(0.14, 0.16, 0.08), { pos: V(0, 0.29, 0.2) });
+	b.add('needle', mat('sewing_steel', 0xc8ccd2, { metalness: 0.6 }), new THREE.CylinderGeometry(0.006, 0.006, 0.08, 6), { pos: V(0, 0.18, 0.2) });
+	b.add('wheel', mat('sewing_steel', 0xc8ccd2, { metalness: 0.6 }), new THREE.CylinderGeometry(0.07, 0.07, 0.03, 12), { pos: V(0.1, 0.32, -0.22), rot: [0, 0, Math.PI / 2] });
+	b.add('spool', mat('sewing_thread', 0xd83a30), new THREE.CylinderGeometry(0.02, 0.02, 0.05, 8), { pos: V(0, 0.48, -0.1) });
+	b.add('cloth', mat('sewing_cloth', 0x3a6ad8), new THREE.BoxGeometry(0.4, 0.01, 0.28), { pos: V(-0.05, 0.165, 0.22), rot: [0, 0.2, 0] });
+	b.add('cloth', mat('sewing_tag', 0xf2c230), new THREE.BoxGeometry(0.06, 0.012, 0.04), { pos: V(-0.12, 0.172, 0.28) });
+	return b.build();
+}
+
+// The fake brand labels (false fitting room extra): a stack of yellow "Superfantasía" tags tied with a red ribbon.
+export function buildFakeLabels() {
+	const b = new Builder('fake_labels');
+	for (let i = 0; i < 6; i++) b.add('tags', mat('label_yellow', 0xf2c230), new THREE.BoxGeometry(0.1, 0.008, 0.06), { pos: V(0, 0.004 + i * 0.009, 0), rot: [0, (i % 3 - 1) * 0.15, 0] });
+	b.add('ribbon', mat('label_ribbon', 0xd83a30), new THREE.BoxGeometry(0.02, 0.06, 0.07), { pos: V(0, 0.03, 0) });
+	return b.build();
+}
+
+// The costume pattern (false fitting room extra): a brown paper sheet folded in two with a dashed outline of a suit.
+export function buildCostumePattern() {
+	const b = new Builder('costume_pattern');
+	b.add('paper', mat('pattern_paper', 0xc8a878), new THREE.BoxGeometry(0.3, 0.012, 0.4), { pos: V(0, 0.006, 0) });
+	const ink = mat('pattern_ink', 0x30303a);
+	b.add('outline', ink, new THREE.BoxGeometry(0.16, 0.002, 0.008), { pos: V(0, 0.013, -0.12) });
+	b.add('outline', ink, new THREE.BoxGeometry(0.008, 0.002, 0.26), { pos: V(-0.08, 0.013, 0.01) });
+	b.add('outline', ink, new THREE.BoxGeometry(0.008, 0.002, 0.26), { pos: V(0.08, 0.013, 0.01) });
+	b.add('outline', ink, new THREE.BoxGeometry(0.16, 0.002, 0.008), { pos: V(0, 0.013, 0.14) });
+	return b.build();
+}
+
+// The false back of fitting room 3: a mirror 2.8 m wide (along Z) and 2.4 m tall in a gold frame, 0.08 m thick, its
+// glass to +X, origin at the floor in the middle.
+export function buildFalseBack() {
+	const b = new Builder('false_back');
+	b.add('frame', mat('false_frame', 0xc89a30, { metalness: 0.4 }), new THREE.BoxGeometry(0.08, 2.4, 2.8), { pos: V(0, 1.2, 0) });
+	b.add('glass', mat('false_glass', 0xb8d8e8, { metalness: 0.8, roughness: 0.1 }), new THREE.BoxGeometry(0.02, 2.2, 2.6), { pos: V(0.04, 1.2, 0) });
+	return b.build();
+}
+
 export const models = {
 	costume_counter: buildCostumeCounter, rack_pirates: buildRackPirates, rack_animals: buildRackAnimals,
 	rack_monsters: buildRackMonsters, rack_princesses: buildRackPrincesses, rack_trades: buildRackTrades,
@@ -301,6 +348,8 @@ export const models = {
 	mannequin_chicken: buildMannequinChicken, mannequin_astronaut: buildMannequinAstronaut, mannequin_vampire: buildMannequinVampire,
 	npc_fantoche: buildFantoche, npc_mimi: buildMimi,
 	bear_loot: buildBearLoot, rental_list: buildRentalList, clown_mask: buildClownMask,
+	sewing_machine: buildSewingMachine, fake_labels: buildFakeLabels, costume_pattern: buildCostumePattern,
+	false_back: buildFalseBack,
 };
 
 export const views = {
@@ -324,6 +373,11 @@ export const views = {
 		items: [{ name: 'bear_loot', pos: [-0.5, 0, 0], rotY: 0.3 }, { name: 'rental_list', pos: [0.55, 0, 0.3], rotY: 0.2 },
 			{ name: 'clown_mask', pos: [0.75, 0, -0.15] }],
 		cam: { pos: [0, 1.4, 3.6], target: [0, 0.6, 0], fov: 40 },
+	},
+	false_fitting_room: {
+		items: [{ name: 'false_back', pos: [-0.9, 0, -0.4], rotY: -1.2 }, { name: 'sewing_machine', pos: [0.4, 0, 0.2], rotY: 0.5 },
+			{ name: 'fake_labels', pos: [0.9, 0, 0.7] }, { name: 'costume_pattern', pos: [1.2, 0, 0.2], rotY: 0.3 }],
+		cam: { pos: [0.2, 1.6, 3.8], target: [0.2, 0.7, 0], fov: 44 },
 	},
 	mimi: {
 		items: [{ name: 'mannequin_chicken', pos: [-0.6, 0, 0], rotY: 0.2 }, { name: 'npc_mimi', pos: [0.6, 0, 0], rotY: -0.2, scale: [0.85, 0.85, 0.85] }],

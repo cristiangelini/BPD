@@ -37,6 +37,15 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_RENTAL_LIST", "OBJ_EXTRA_CLOWN_MASK"],
 		"rig": preload("res://scripts/case/costume/bear_loot_rig.gd"),
 	},
+	"false_fitting_room": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_FALSE_FITTING_B", "BRIEF_FALSE_FITTING_C", "BRIEF_FALSE_FITTING_D"],
+		"find": "OBJ_FIND_FALSE_FITTING",
+		"hidden": [preload("res://scenes/props/fake_labels.tscn"), preload("res://scenes/props/costume_pattern.tscn")],
+		"half_heights": [0.0, 0.0],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_FAKE_BRAND_LABELS", "OBJ_EXTRA_COSTUME_PATTERN"],
+		"rig": preload("res://scripts/case/costume/false_fitting_room_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the shop; three are drawn with the seed.
 const NOTE_PLACES: Array[Vector3] = [
@@ -179,6 +188,8 @@ var mannequins: Array[CostumeMannequin] = []
 var customers: Array[CostumeCustomer] = []
 ## The customer whose turn it is (null between turns), the next one in line and how long until they go.
 var on_turn: CostumeCustomer
+## The fitting room the customers skip (out of order in one story), or -1.
+var closed_fitting := -1
 var _next_customer := 0
 var _turn_left := FIRST_TURN
 var mirror_cracked := false
@@ -573,7 +584,8 @@ func _physics_process(delta: float) -> void:
 	if _turn_left > 0.0:
 		return
 	on_turn = customers[_next_customer % customers.size()]
-	on_turn.start_turn(_next_customer % FITTING_Z.size())
+	var rooms: Array = range(FITTING_Z.size()).filter(func(room: int) -> bool: return room != closed_fitting)
+	on_turn.start_turn(rooms[_next_customer % rooms.size()])
 	_next_customer += 1
 
 

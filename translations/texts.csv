@@ -5681,3 +5681,14 @@ OBJ_COMPLAINT_COSTUME,Denuncia de Don Fantoche: %d%%,Don Fantoche's complaint: %
 FANTOCHE_SLIP,"«¡Yo no guardé nada %s, campeón!... Digo, ¿qué disfraz buscas?»","“I didn't put anything %s, champ!... I mean, what costume are you after?”","“Eu não guardei nada %s, campeão!... Quer dizer, que fantasia você procura?”"
 CLUE_MIMI,Mimí vio a su tío esconder algo %s,Mimí saw her uncle hide something %s,A Mimí viu o tio dela esconder algo %s
 MIMI_CLUE_bear_loot,"¡Me encontraste! Te cuento un secreto: mi tío escondió algo de payaso %s. Y el oso hace ruido de papelitos.","You found me! Here's a secret: my uncle hid something clownish %s. And the bear makes a paper rustling sound.","Você me achou! Vou te contar um segredo: meu tio escondeu uma coisa de palhaço %s. E o urso faz barulho de papelzinho."
+BRIEF_FALSE_FITTING_B,"Don Fantoche cose disfraces falsos de la marca Superfantasía y los alquila como originales.","Don Fantoche sews fake Superfantasy brand costumes and rents them out as the real thing.","O Don Fantoche costura fantasias falsas da marca Superfantasia e aluga como originais."
+BRIEF_FALSE_FITTING_C,"Tiene la máquina de coser escondida en algún lado de la tienda. Búsquenla, pesa bastante.","He keeps the sewing machine hidden somewhere in the shop. Find it, it's quite heavy.","Ele tem a máquina de costura escondida em algum lugar da loja. Procurem, ela é bem pesada."
+BRIEF_FALSE_FITTING_D,"Tráiganme la máquina, las etiquetas falsas y el molde del disfraz.","Bring me the machine, the fake labels and the costume pattern.","Tragam a máquina, as etiquetas falsas e o molde da fantasia."
+OBJ_FIND_FALSE_FITTING,Encontrar la máquina de coser de los disfraces falsos,Find the sewing machine of the fake costumes,Achar a máquina de costura das fantasias falsas
+OBJ_EXTRA_FAKE_BRAND_LABELS,Las etiquetas de marca falsas,The fake brand labels,As etiquetas de marca falsas
+OBJ_EXTRA_COSTUME_PATTERN,El molde del disfraz,The costume pattern,O molde da fantasia
+COSTUME_OUT_OF_ORDER,Fuera de servicio,Out of order,Fora de serviço
+PROMPT_FALSE_BACK,"E: empujar el espejo","E: push the mirror","E: empurrar o espelho"
+SEWING_SOUND,¡Tracatracatraca!,Rattattattat!,Tracatracatraca!
+CLUE_SEWING_SOUND,En el probador 3 se oye una máquina de coser detrás del espejo,In fitting room 3 you hear a sewing machine behind the mirror,No provador 3 se ouve uma máquina de costura atrás do espelho
+MIMI_CLUE_false_fitting_room,"¡Me encontraste! Te cuento un secreto: mi tío escondió unas etiquetas %s. Y en el probador 3 hay ruido de noche.","You found me! Here's a secret: my uncle hid some labels %s. And there's noise in fitting room 3 at night.","Você me achou! Vou te contar um segredo: meu tio escondeu umas etiquetas %s. E no provador 3 tem barulho de noite."

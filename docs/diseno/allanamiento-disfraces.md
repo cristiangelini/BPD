@@ -143,6 +143,11 @@ Los pesos y valores siguen la escala de la bolera y el karaoke: la principal val
   Fantoche deja escapar dónde están ("¡Yo no guardé nada detrás del mostrador, campeón!...") y Mimí cuenta dónde vio
   a su tío esconder algo de payaso. Si la denuncia llega a 100, llama a su abogado disfrazado de juez y se pierde el
   caso. Capturas `paso5-*.png`.
+- Paso 6, el probador con fondo falso: el probador 3 tiene el cartel "Fuera de servicio" y los clientes van solo al 1
+  y al 2. Adentro del 3, cada 4 s se oye "¡Tracatracatraca!" detrás del espejo (la pista). Con E en el espejo
+  ("empujar el espejo") sube como una persiana y atrás está la máquina de coser (15 kg, 1000); si Don Fantoche lo ve
+  abierto, suma 10. Las etiquetas de marca falsas (300) y el molde del disfraz (200) van escondidos. Capturas
+  `paso6-probador-*.png`.
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, la tienda de disfraces abierta llena de maniquíes? **Recomendado:** sí, no se pisa
