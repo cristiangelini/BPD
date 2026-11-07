@@ -1,8 +1,8 @@
 # BPD · El allanamiento de la zapatería (7/11)
 
 Un lugar nuevo para allanar: la zapatería "El Cordón Suelto", un local de una planta con depósito atrás, en la cuadra
-(-1, 3), lado norte (libre en todas las ramas al 7/11). Sigue la idea de lugar + historia (decisión 79): una denuncia
-anónima, 3 sospechas en la planilla y una sola historia verdadera, sorteada con la semilla. Decisiones 540 a 549.
+(1, -1), lado sur, en la fila del norte (libre en todas las ramas al 7/11). Sigue la idea de lugar + historia (decisión 79): una denuncia
+anónima, 3 sospechas en la planilla y una sola historia verdadera, sorteada con la semilla. Decisiones 580 a 589.
 Todos los números son **(propuesta)** hasta probarlos jugando.
 
 ## La idea
