@@ -97,6 +97,14 @@ func stick(cop: Cop) -> void:
 	ticket.rotation.y = 0.6
 	cop.model.add_child(ticket)
 	cop.show_hint("HINT_TICKET_SOLE")
-	if not noticed:
-		noticed = true
-		shop.raid.add_clue(tr("CLUE_TICKET_SOLE"))
+	# Online the host decides the clue; the guests' rig notices when it says (net_state).
+	if multiplayer.is_server():
+		notice()
+
+
+## The first ticket stuck to a sole is a clue.
+func notice() -> void:
+	if noticed:
+		return
+	noticed = true
+	shop.raid.add_clue(tr("CLUE_TICKET_SOLE"))

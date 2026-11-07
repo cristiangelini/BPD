@@ -70,6 +70,23 @@ func fix() -> void:
 	order.hide()
 
 
+## Online, what the guests' fax takes from the host's (PrintShop.net_state): Don Renglón is the host's, so when he's
+## done setting the order there the order goes away here too.
+func net_state() -> Array:
+	return [sends, distractions, rest_left, is_jammed]
+
+
+func apply_net_state(state: Array) -> void:
+	sends = state[0]
+	distractions = state[1]
+	rest_left = state[2]
+	if is_jammed and not state[3]:
+		fix()
+	elif state[3] and not is_jammed:
+		is_jammed = true
+		order.show()
+
+
 func is_busy() -> bool:
 	return is_jammed
 

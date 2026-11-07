@@ -192,6 +192,18 @@ suman 500.
 - **Paso 8 (sorteo y fuga):** la imprenta entra en `PlaceDraw.ORDER`, así que Jugar la sortea entre los allanamientos
   en partes iguales. Si Don Renglón ve la prueba, se escapa en su auto (`RaidEscape`, "night") desde delante del
   patrullero, igual que los otros dueños. Al bajarse dice una de sus 3 frases (`CHASE_PRINT_SHOP_LINE_1..3`).
+- **Paso 9 (el online):**
+  - **El anfitrión manda:** mueve a Don Renglón (con su barra de quejas), y solo él ve las huellas y los tachos
+    volcados. El reloj de la rotativa corre en el anfitrión: él la arranca, la para y decide qué pasa por los rodillos
+    (se imprime o la traba). Los invitados mueven su cinta y tiran sus hojas cuando el anfitrión dice que anda, y lo
+    impreso les llega con su tinta y su sello. También decide los tachos volcados (caen para el mismo lado), los
+    vidrios y frascos rotos, y lo que dice Tipito (las letras son del anfitrión).
+  - **Desde cualquier PC:** la palanca roja y el botón del fax. La orden del fax se va cuando Don Renglón termina en el
+    anfitrión.
+  - **Las historias:** las pistas que se notan de cerca (el billete mal cortado, la entrada en la suela, el diploma, los
+    afiches, las repetidas y la multa del parabrisas) las decide el anfitrión y se ven en todas las PC. Los nombres de
+    los diplomas y de las multas salen por turno en el mismo orden en todas las PC. La figurita en la cara le cae solo
+    al policía propio de cada PC, y las pilas de libros se caen en cada PC con su rotativa.
 
 ## Preguntas abiertas para Cristian
 1. ¿La cinta de la rotativa lleva también a los policías (frenados por la baranda), o solo a las cosas?

@@ -49,7 +49,8 @@ func setup(place: PrintShop) -> void:
 
 func _physics_process(delta: float) -> void:
 	_since += delta
-	if noticed or _since < CHECK_EVERY:
+	# Online the host sees the cops come close: the guests' rig shows the clue when it says (net_state).
+	if noticed or _since < CHECK_EVERY or not multiplayer.is_server():
 		return
 	_since = 0.0
 	var at := shop.to_global(FRAME_AT)
@@ -70,7 +71,7 @@ func notice() -> void:
 
 ## The press started: this run's diploma goes to the next cop, by name.
 func _print_diploma(_cop: Cop) -> void:
-	var cops := get_tree().get_nodes_in_group("cops")
+	var cops := cops_in_turn()
 	if cops.is_empty():
 		return
 	var cop: Node = cops[_next_cop % cops.size()]

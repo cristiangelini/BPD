@@ -58,7 +58,8 @@ func _process(_delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	_since += delta
-	if noticed or _since < CHECK_EVERY:
+	# Online the host sees the cops come close: the guests' rig shows the clue when it says (net_state).
+	if noticed or _since < CHECK_EVERY or not multiplayer.is_server():
 		return
 	_since = 0.0
 	var at := windshield_fine.global_position
@@ -80,7 +81,7 @@ func notice() -> void:
 
 ## A fine the press just threw: it gets the next cop's name.
 func _name_fine(node: MeshInstance3D) -> void:
-	var cops := get_tree().get_nodes_in_group("cops")
+	var cops := cops_in_turn()
 	var who := "?"
 	if not cops.is_empty():
 		who = Net.player_name(cops[_next_cop % cops.size()].get_multiplayer_authority())

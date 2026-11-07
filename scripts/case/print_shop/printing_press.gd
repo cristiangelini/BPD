@@ -116,7 +116,10 @@ func ink() -> int:
 	return (runs - 1) % INKS.size() if runs > 0 else 0
 
 
+## Online the host's clock starts and ends the runs and its rollers print or jam; the guests take that from it
+## (net_state) and only move their belt and throw their sheets.
 func _physics_process(delta: float) -> void:
+	var host := multiplayer.is_server()
 	if jam_left > 0.0:
 		jam_left -= delta
 		if jam_left <= 0.0:
@@ -124,11 +127,11 @@ func _physics_process(delta: float) -> void:
 		return
 	if not running:
 		wait_left -= delta
-		if wait_left <= 0.0:
+		if wait_left <= 0.0 and host:
 			start()
 		return
 	run_left -= delta
-	for body: Node3D in _rollers.get_overlapping_bodies():
+	for body: Node3D in _rollers.get_overlapping_bodies() if host else []:
 		if body is RigidBody3D and not (body as RigidBody3D).freeze:
 			_through(body)
 			if not running:
@@ -137,8 +140,38 @@ func _physics_process(delta: float) -> void:
 	if _sheet_left <= 0.0:
 		_sheet_left += 1.0 / SHEETS_PER_SECOND
 		_throw_sheet()
-	if run_left <= 0.0:
+	if run_left <= 0.0 and host:
 		stop()
+
+
+## Online, what the guests' press takes from the host's: whether it runs or is jammed, its clocks, its runs (the ink)
+## and what it printed, by path from here, with the ink of each.
+func net_state() -> Array:
+	var stamped: Array = []
+	for body: RigidBody3D in printed_things:
+		if is_instance_valid(body):
+			stamped.append([get_path_to(body), body.get_meta("press_ink", 0)])
+	return [running, run_left, jam_left, wait_left, runs, stamped]
+
+
+func apply_net_state(state: Array) -> void:
+	jam_left = state[2]
+	if state[0] and not running:
+		jam_left = 0.0
+		runs = state[4] - 1
+		start()
+	elif not state[0] and running:
+		running = false
+		_apply()
+		finished.emit()
+	jam_left = state[2]
+	runs = state[4]
+	run_left = state[1]
+	wait_left = state[3]
+	for entry: Array in state[5]:
+		var body := get_node_or_null(entry[0] as NodePath) as RigidBody3D
+		if body and body.get_meta("press_ink", -1) != entry[1]:
+			stamp(body, entry[1])
 
 
 func _process(delta: float) -> void:
