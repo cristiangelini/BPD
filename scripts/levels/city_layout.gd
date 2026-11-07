@@ -70,6 +70,8 @@ const PLACES := [
 	{"id": "garage", "block": Vector2i(7, 2), "side": "w", "along": 0.0, "size": Vector3(26, 8, 22), "color": Color(0.72, 0.74, 0.7), "sign": "PLACE_GARAGE"},
 	# The fun fair "La Vuelta Loca" fills its block beside the airport (allanamiento-parque.md).
 	{"id": "fair", "block": Vector2i(7, 4), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.82, 0.23, 0.23), "sign": "PLACE_FAIR", "park": true},
+	# The neighborhood cinema "Butaca Floja" (allanamiento-cine.md).
+	{"id": "cinema", "block": Vector2i(0, 4), "side": "n", "along": 0.0, "size": Vector3(22, 9, 30), "color": Color(0.82, 0.7, 0.55), "sign": "PLACE_CINEMA"},
 ]
 
 ## The plaza fills its block.

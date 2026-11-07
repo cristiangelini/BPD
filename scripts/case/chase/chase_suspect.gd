@@ -30,6 +30,7 @@ const MODELS := {
 	"garage": preload("res://assets/models/npc_don_tuerca.glb"),
 	"fair": preload("res://assets/models/npc_don_tombola.glb"),
 	"birthday": preload("res://assets/models/npc_chispita.glb"),
+	"cinema": preload("res://assets/models/npc_dona_bobina.glb"),
 	"dangerous": preload("res://assets/models/npc_sospechoso.glb"),
 	# The pastry contest's culprit, off his bike (escena-del-crimen.md).
 	"cook": preload("res://assets/models/npc_pastelero.glb"),

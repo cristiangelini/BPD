@@ -6788,3 +6788,165 @@ OBJ_EXTRA_TWIN_PHOTO,Extra: la foto de los dos payasos,Extra: the photo of the t
 BIRTHDAY_HONK,"¡Mec, mec!","Honk, honk!","Fom, fom!"
 CLUE_DOUBLE_CLOWN,"La bocina de Chispita sonó en el baño, y Chispita estaba en otro lado.","Chispita's horn honked in the restroom, and Chispita was somewhere else.","A buzina do Chispita tocou no banheiro, e o Chispita estava em outro lugar."
 CHISPITA_BACK,"¡Volví del baño! ¿Me extrañaron?","I'm back from the restroom! Did you miss me?","Voltei do banheiro! Sentiram minha falta?"
+PLACE_CINEMA,Cine Butaca Floja,Wobbly Seat Cinema,Cine Poltrona Bamba
+CINEMA_NOW_SHOWING,HOY: El regreso del formulario,TODAY: The Return of the Form,HOJE: A volta do formulário
+MENU_CINEMA,Cine (allanamiento) (prueba),Cinema (raid) (test),Cinema (batida) (teste)
+HINT_TILL_KEY_CINEMA,¡Una llave! Abre la cabina de proyección.,A key! It opens the projection booth.,Uma chave! Abre a cabine de projeção.
+CINEMA_SCREEN_RIPPED,"¡La pantalla! ¡Era la única!","The screen! It was the only one!","A tela! Era a única!"
+CINEMA_GLASS_BROKEN,"¡Mis palomitas! ¡Por todo el piso!","My popcorn! All over the floor!","Minha pipoca! Pelo chão todo!"
+CASE_FAILED_LAWYER_CINEMA,Doña Bobina llamó al abogado del cine. Caso perdido.,Doña Bobina called the cinema's lawyer. Case lost.,Dona Bobina ligou para o advogado do cinema. Caso perdido.
+LOC_behind_screen,detrás de la pantalla,behind the screen,atrás da tela
+LOC_in_projection_booth,en la cabina de proyección,in the projection booth,na cabine de projeção
+LOC_behind_candy_counter,detrás del mostrador de golosinas,behind the candy counter,atrás do balcão de doces
+LOC_in_cinema_restroom,en el baño del cine,in the cinema's restroom,no banheiro do cinema
+LOC_under_booth_stairs,abajo de la escalera de la cabina,under the booth's stairs,embaixo da escada da cabine
+LOC_by_the_front_row,al lado de la primera fila,by the front row,ao lado da primeira fila
+LOC_in_popcorn_machine,adentro de la máquina de palomitas,inside the popcorn machine,dentro da máquina de pipoca
+LOC_in_ticket_booth,en la boletería,in the ticket booth,na bilheteria
+LOC_behind_posters,detrás de los afiches,behind the posters,atrás dos cartazes
+LOC_under_seat_row_3,abajo de una butaca de la tercera fila,under a seat in the third row,embaixo de uma poltrona da terceira fila
+LOC_under_seat_row_6,abajo de una butaca de la sexta fila,under a seat in the sixth row,embaixo de uma poltrona da sexta fila
+LOC_in_film_cans,entre las latas de película,among the film cans,entre as latas de filme
+CINEMA_THEATER_SIGN,SALA 1,SCREEN 1,SALA 1
+PROMPT_CINEMA_SPECTATOR,E: hablarle al espectador,E: talk to the spectator,E: falar com o espectador
+CINEMA_SHUSH,¡Shhh!,Shhh!,Shhh!
+CINEMA_BOO,"¡Uuuh! ¡Que la arreglen!","Booo! Fix it!","Uuuh! Consertem!"
+CINEMA_SPECTATOR_LINE_0,"Ya pagué la entrada. No me voy hasta el final.","I already paid for my ticket. I'm not leaving till the end.","Já paguei o ingresso. Não saio até o final."
+CINEMA_SPECTATOR_LINE_1,"No me cuentes nada, que la estoy viendo por primera vez.","Don't tell me anything, I'm watching it for the first time.","Não me conte nada, estou vendo pela primeira vez."
+CINEMA_SPECTATOR_LINE_2,"¿Policía? Muy bien. Ahora, silencio.","Police? Very good. Now, quiet.","Polícia? Muito bem. Agora, silêncio."
+CINEMA_SPECTATOR_LINE_3,"Es la décima vez que la veo. El formulario siempre gana.","It's the tenth time I've seen it. The form always wins.","É a décima vez que vejo. O formulário sempre ganha."
+CINEMA_FILM_0,"—Señorita, necesito el formulario 27-B.","—Miss, I need form 27-B.","—Senhorita, preciso do formulário 27-B."
+CINEMA_FILM_1,"—Para el 27-B primero tiene que llenar el 27-A.","—For 27-B you first have to fill in 27-A.","—Para o 27-B primeiro precisa preencher o 27-A."
+CINEMA_FILM_2,"—¿Y dónde está el 27-A?","—And where is 27-A?","—E onde está o 27-A?"
+CINEMA_FILM_3,"—Se pide con el 27-B.","—You ask for it with 27-B.","—Se pede com o 27-B."
+CINEMA_FILM_4,"(Música dramática.)","(Dramatic music.)","(Música dramática.)"
+CINEMA_FILM_5,"—¡Nunca me rendiré, ventanilla 4!","—I'll never give up, window 4!","—Nunca vou desistir, guichê 4!"
+CINEMA_FILM_6,"—Vuelva el lunes. Con fotocopia.","—Come back on Monday. With a copy.","—Volte na segunda. Com fotocópia."
+CINEMA_FILM_7,"(Lloran todos.)","(Everyone cries.)","(Todos choram.)"
+CINEMA_FILM_CUT,"(Se cortó la cinta.)","(The tape broke.)","(A fita arrebentou.)"
+PROMPT_PROJECTOR,E: cortar la película,E: cut the film,E: cortar o filme
+HINT_PROJECTOR_CUT,Doña Bobina ya está pegando la cinta.,Doña Bobina is already splicing the tape.,Dona Bobina já está colando a fita.
+HINT_PROJECTOR_RESTING,"Si la cortas tan seguido, se va a dar cuenta. Espera un poco.","Cut it that often and she'll catch on. Wait a bit.","Se cortar tão seguido, ela vai perceber. Espere um pouco."
+BOBINA_LINE_1,"Shh. Acá se viene a mirar, no a conversar.","Shh. You come here to watch, not to chat.","Shh. Aqui se vem para assistir, não para conversar."
+BOBINA_LINE_2,"Esta copia la tengo desde que era joven. Igual que el proyector.","I've had this print since I was young. Same as the projector.","Tenho esta cópia desde jovem. Igual ao projetor."
+BOBINA_LINE_3,"Nada de pisar las palomitas, oficial. Bueno, ya están pisadas.","No stepping on the popcorn, officer. Well, it's already stepped on.","Nada de pisar na pipoca, policial. Bom, já está pisada."
+BOBINA_LINE_4,"Hoy está agotado. Como siempre.","Sold out today. As always.","Hoje está esgotado. Como sempre."
+BOBINA_PRINTER,"¡Se cortó la cinta! ¡Ya voy, ya voy!","The tape broke! Coming, coming!","A fita cortou! Já vou, já vou!"
+BOBINA_FIX_1,"¿Dónde dejé la cinta adhesiva?","Where did I leave the tape?","Onde deixei a fita adesiva?"
+BOBINA_FIX_2,"Un cuadrito acá, otro cuadrito allá...","A frame here, another frame there...","Um quadrinho aqui, outro quadrinho ali..."
+BOBINA_FIX_3,"Paciencia, que es en fílmico.","Patience, it's on film.","Paciência, é em película."
+BOBINA_FIX_DONE,"Listo. Y nadie toca mi proyector.","There. And nobody touches my projector.","Pronto. E ninguém mexe no meu projetor."
+BOBINA_HURT,"¡Epa! ¡Más respeto con los mayores, oficial!","Hey! More respect for your elders, officer!","Opa! Mais respeito com os mais velhos, policial!"
+BOBINA_DOOR,"¡Mi cabina! ¡Esa puerta era de la inauguración!","My booth! That door was from the opening night!","Minha cabine! Essa porta era da inauguração!"
+BOBINA_SAW,"¡Eso es del cine, oficial!","That belongs to the cinema, officer!","Isso é do cinema, policial!"
+BOBINA_NOTHING,"Yo solo paso películas, oficial.","I just show films, officer.","Eu só passo filmes, policial."
+BOBINA_OFFENDED,"No hablo más. Silencio en la sala.","I'm done talking. Silence in the theater.","Não falo mais. Silêncio na sala."
+BOBINA_LAWYER,"¡Llamo a mi abogado! Tiene entrada gratis de por vida.","I'm calling my lawyer! He gets in free for life.","Vou ligar para o meu advogado! Ele tem entrada grátis para sempre."
+BOBINA_SCREEN,"¡La pantalla! ¡Era la única!","The screen! It was the only one!","A tela! Era a única!"
+BOBINA_GLASS,"¡Mi máquina de palomitas!","My popcorn machine!","Minha máquina de pipoca!"
+BOBINA_SHUSHED,"¡Silencio en la sala! Lo anoto.","Silence in the theater! I'm writing that down.","Silêncio na sala! Vou anotar."
+BOBINA_NOTICED,"¡Ya sé que la cortan ustedes! ¡Dejen mi proyector!","I know you're the ones cutting it! Leave my projector alone!","Eu sei que são vocês que cortam! Larguem o meu projetor!"
+PROMPT_CINEMA_SIT,E: sentarte a mirar la película,E: sit and watch the film,E: sentar para ver o filme
+PROMPT_CHICHO,E: hablar con Chicho,E: talk to Chicho,E: falar com o Chicho
+CHICHO_SIT,"Shh... Siéntate, que no se ve.","Shh... Sit down, I can't see.","Shh... Senta, que não dá para ver."
+CHICHO_AGAIN,"Shh... Ya te conté todo.","Shh... I already told you everything.","Shh... Já te contei tudo."
+CHICHO_EARLY,"¡Shhh, que viene lo mejor!","Shhh, the best part is coming!","Shhh, que vem a melhor parte!"
+CHICHO_NOTHING,"(susurrando) Yo no vi nada. Estaba mirando la película.","(whispering) I didn't see a thing. I was watching the film.","(sussurrando) Eu não vi nada. Estava vendo o filme."
+CHICHO_IDLE_1,"Shh... Esta parte me la sé de memoria.","Shh... I know this part by heart.","Shh... Essa parte eu sei de cor."
+CHICHO_IDLE_2,"Las entradas, por favor. Ah, no, ustedes son la policía.","Tickets, please. Oh, no, you're the police.","Ingressos, por favor. Ah, não, vocês são a polícia."
+CHICHO_IDLE_3,"La vi cuarenta veces. Hoy termina distinto, seguro.","I've seen it forty times. It ends differently today, for sure.","Já vi quarenta vezes. Hoje termina diferente, com certeza."
+BRIEF_CINEMA_TIP_B,"Llegó una denuncia anónima: en el Cine Butaca Floja nunca hay nadie, pero siempre dice «agotado».","We got an anonymous tip: the Butaca Floja Cinema is always empty, but the sign always says «sold out».","Chegou uma denúncia anônima: no Cine Butaca Floja nunca tem ninguém, mas sempre diz «esgotado»."
+BRIEF_CINEMA_TIP_D,"La película está pasando y los vecinos no se van. Doña Bobina vive en la cabina de proyección, que tiene llave.","The film is running and the neighbors won't leave. Doña Bobina lives in the projection booth, which is locked.","O filme está passando e os vizinhos não vão embora. A dona Bobina vive na cabine de projeção, que tem chave."
+BRIEF_CINEMA_TIP_E,"Y en puntas de pie: si chistan, ella lo anota. La pantalla rota se la pagan ustedes. Con Q ven la planilla.","And on tiptoe: if they shush you, she writes it down. A torn screen comes out of your pay. Press Q to see your checklist.","E na ponta dos pés: se fizerem psiu, ela anota. A tela rasgada sai do salário de vocês. Com Q vocês veem a lista."
+BRIEF_PIRATE_COPIES_B,"Doña Bobina filma los estrenos desde la última fila y vende las copias en la feria.","Doña Bobina tapes the premieres from the back row and sells the copies at the street market.","A dona Bobina filma as estreias da última fileira e vende as cópias na feira."
+BRIEF_PIRATE_COPIES_C,"Traigan la caja con las copias piratas en el baúl del patrullero. Son doscientas, pesa 8 kilos.","Bring the box of pirate copies in the patrol car's trunk. There are two hundred, it weighs 8 kilos.","Tragam a caixa com as cópias piratas no porta-malas da viatura. São duzentas, pesa 8 quilos."
+BRIEF_PIRATE_COPIES_D,"Si encuentran la filmadora o las carátulas impresas, mejor: todo suma.","If you find the camcorder or the printed covers, even better: it all counts.","Se acharem a filmadora ou as capas impressas, melhor: tudo conta."
+OBJ_FIND_PIRATE_BOX,Llevarse la caja con las copias piratas,Take the box of pirate copies,Levar a caixa com as cópias piratas
+OBJ_EXTRA_CAMCORDER,Extra: la filmadora con trípode,Extra: the camcorder with its tripod,Extra: a filmadora com tripé
+OBJ_EXTRA_COVERS,Extra: las carátulas impresas,Extra: the printed covers,Extra: as capas impressas
+SUSPECT_pirate_copies,Las copias piratas,The pirate copies,As cópias piratas
+SUSPECT_floor_popcorn,Las palomitas del piso,The floor popcorn,A pipoca do chão
+SUSPECT_haunted_cinema,El cine embrujado,The haunted cinema,O cinema assombrado
+SUSPECT_fake_tickets,Las entradas truchas,The fake tickets,Os ingressos falsos
+SUSPECT_stolen_film,La película robada,The stolen film,O filme roubado
+SUSPECT_popcorn_watches,Los relojes en las palomitas,The watches in the popcorn,Os relógios na pipoca
+CLUE_SUSPECT_pirate_copies,"Un volante de la feria: «Estrenos en casa, antes que en el cine. Dos por uno».","A street market flyer: «Premieres at home, before the cinema. Two for one».","Um panfleto da feira: «Estreias em casa, antes do cinema. Leve dois, pague um»."
+CLUE_SUSPECT_floor_popcorn,"Una lista pegada en la escoba: «Fila 1 a 8. Juntar todo. No tirar nada».","A list taped to the broom: «Rows 1 to 8. Pick it all up. Throw nothing away».","Uma lista colada na vassoura: «Fileiras 1 a 8. Juntar tudo. Não jogar nada fora»."
+CLUE_SUSPECT_haunted_cinema,"Un recibo de una casa de disfraces: «Una sábana blanca con dos agujeros. Pagado».","A costume shop receipt: «One white sheet with two holes. Paid».","Um recibo de uma loja de fantasias: «Um lençol branco com dois buracos. Pago»."
+CLUE_SUSPECT_fake_tickets,"Una entrada con la tinta corrida: «Fila 4, butaca 4». Hay otra igual en el piso.","A ticket with smudged ink: «Row 4, seat 4». There's another one just like it on the floor.","Um ingresso com a tinta borrada: «Fileira 4, poltrona 4». Tem outro igual no chão."
+CLUE_SUSPECT_stolen_film,"Un sobre del festival de cine: «Devolver la copia premiada antes del lunes».","A film festival envelope: «Return the prize-winning print before Monday».","Um envelope do festival de cinema: «Devolver a cópia premiada antes de segunda»."
+CLUE_SUSPECT_popcorn_watches,"Un papel con un dibujo de un reloj y una flecha: «Adentro del balde grande».","A note with a drawing of a watch and an arrow: «Inside the big bucket».","Um papel com o desenho de um relógio e uma seta: «Dentro do balde grande»."
+OBJ_ENTER_CINEMA,Entrar al cine (la puerta está abierta),Get into the cinema (the door is open),Entrar no cinema (a porta está aberta)
+OBJ_GUESS_CINEMA,"Averiguar qué pasa en el cine (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the cinema (with Q open, hold 1, 2 or 3)","Descobrir o que acontece no cinema (com Q aberto, segure 1, 2 ou 3)"
+OBJ_BROKEN_CINEMA,Cosas rotas: %d (multa: %d),Broken things: %d (fines: %d),Coisas quebradas: %d (multa: %d)
+OBJ_COMPLAINT_CINEMA,Queja de doña Bobina: %d%%,Doña Bobina's complaint: %d%%,Queixa da dona Bobina: %d%%
+BOBINA_SLIP,"«¡Yo no guardé nada %s!... Digo, ¡silencio en la sala!»","“I didn't put anything %s!... I mean, silence in the theater!”","“Eu não guardei nada %s!... Quer dizer, silêncio na sala!”"
+CLUE_CHICHO,Chicho vio a doña Bobina esconder algo %s,Chicho saw doña Bobina hide something %s,O Chicho viu a dona Bobina esconder algo %s
+CHICHO_CLUE_pirate_copies,"(susurrando) «Vi a doña Bobina esconder algo %s. Y el de la última fila no se ríe nunca: mira la película por una pantallita.»","(whispering) “I saw doña Bobina hide something %s. And the one in the back row never laughs: he watches the film on a little screen.”","(sussurrando) “Vi a dona Bobina esconder algo %s. E o da última fileira nunca ri: ele vê o filme numa telinha.”"
+CINEMA_TAPER_LINE,"¡Shh! No me mueva el balde, que se me corre la imagen.","Shh! Don't move my bucket, the picture shakes.","Shh! Não mexa no meu balde, que a imagem treme."
+HINT_RED_LIGHT,"Una lucecita roja parpadea en el balde de palomitas de la última fila. ¿Una filmadora?","A little red light blinks in a popcorn bucket in the back row. A camcorder?","Uma luzinha vermelha pisca no balde de pipoca da última fileira. Uma filmadora?"
+CLUE_RED_LIGHT,"En la última fila, un balde de palomitas tiene una lucecita roja: alguien está filmando la película.","In the back row, a popcorn bucket has a little red light: someone is taping the film.","Na última fileira, um balde de pipoca tem uma luzinha vermelha: alguém está filmando o filme."
+HINT_ESCAPE_cinema,¡Doña Bobina vio la prueba y se escapa en el auto! Tienen un minuto para agarrarla.,Doña Bobina saw the evidence and is getting away in her car! You have one minute to catch her.,A dona Bobina viu a prova e está fugindo de carro! Vocês têm um minuto para pegá-la.
+CRIME_owner_cinema,"¡Novatos! Ayer se trajeron a doña Bobina, la dueña del Cine Butaca Floja, y la tenemos en la sala de interrogatorio. Algo escondió en el cine que no encontraron.","Rookies! Yesterday you brought in doña Bobina, the Butaca Floja Cinema's owner, and she's in the interrogation room. She hid something at the cinema that you didn't find.","Novatos! Ontem vocês trouxeram a dona Bobina, a dona do Cine Butaca Floja, e ela está na sala de interrogatório. Ela escondeu algo no cinema que vocês não acharam."
+CONFESS_owner_cinema,"¡Está bien! ¡Fui yo! Pero no me cuenten el final.","Fine! It was me! But don't tell me the ending.","Tá bom! Fui eu! Mas não me contem o final."
+BRIEF_FLOOR_POPCORN_B,"Doña Bobina barre las palomitas del piso de la sala y las vuelve a vender como recién hechas.","Doña Bobina sweeps the popcorn off the theater's floor and sells it again as freshly made.","A dona Bobina varre a pipoca do chão da sala e vende de novo como fresquinha."
+BRIEF_FLOOR_POPCORN_C,"Traigan la bolsa con las palomitas juntadas del piso en el baúl del patrullero. Pesa 6 kilos y no la abran.","Bring the sack of popcorn swept off the floor in the patrol car's trunk. It weighs 6 kilos and don't open it.","Tragam o saco com a pipoca juntada do chão no porta-malas da viatura. Pesa 6 quilos e não abram."
+BRIEF_FLOOR_POPCORN_D,"Si encuentran la escoba del «reciclaje» o el cartel de «recién hechas», mejor: todo suma.","If you find the «recycling» broom or the «freshly made» sign, even better: it all counts.","Se acharem a vassoura da «reciclagem» ou a placa de «fresquinha», melhor: tudo conta."
+OBJ_FIND_POPCORN_BAG,Llevarse la bolsa de palomitas del piso,Take the sack of floor popcorn,Levar o saco de pipoca do chão
+OBJ_EXTRA_RECYCLE_BROOM,Extra: la escoba del «reciclaje»,Extra: the «recycling» broom,Extra: a vassoura da «reciclagem»
+OBJ_EXTRA_FRESH_SIGN,Extra: el cartel de «recién hechas»,Extra: the «freshly made» sign,Extra: a placa de «fresquinha»
+CHICHO_CLUE_floor_popcorn,"(susurrando) «Vi a doña Bobina esconder algo %s. Y yo no como palomitas acá desde que la vi con la escoba.»","(whispering) “I saw doña Bobina hide something %s. And I haven't eaten popcorn here since I saw her with the broom.”","(sussurrando) “Vi a dona Bobina esconder algo %s. E eu não como pipoca aqui desde que a vi com a vassoura.”"
+PROMPT_EAT_POPCORN,E: probar una palomita,E: try a piece of popcorn,E: provar uma pipoca
+HINT_FLOOR_POPCORN,"Esta palomita tiene pelusa... y un chicle pegado.","This popcorn has fluff on it... and a gum stuck to it.","Esta pipoca tem fiapo... e um chiclete grudado."
+CLUE_FLOOR_POPCORN,"Las palomitas del mostrador tienen pelusa y un chicle: no salieron de la máquina, salieron del piso.","The counter's popcorn has fluff and a gum: it didn't come out of the machine, it came off the floor.","A pipoca do balcão tem fiapo e um chiclete: não saiu da máquina, saiu do chão."
+CINEMA_SPIT,"¡Puaj! ¡Esta ya la comió alguien!","Yuck! Somebody already ate this one!","Eca! Alguém já comeu esta!"
+BRIEF_HAUNTED_CINEMA_B,"Doña Bobina inventó un fantasma para vender «funciones de terror» al doble de precio.","Doña Bobina made up a ghost to sell «horror screenings» at twice the price.","A dona Bobina inventou um fantasma para vender «sessões de terror» pelo dobro do preço."
+BRIEF_HAUNTED_CINEMA_C,"Traigan el proyector de fantasmas en el baúl del patrullero. Pesa 3 kilos y no lo prendan adentro.","Bring the ghost projector in the patrol car's trunk. It weighs 3 kilos and don't switch it on in there.","Tragam o projetor de fantasmas no porta-malas da viatura. Pesa 3 quilos e não liguem lá dentro."
+BRIEF_HAUNTED_CINEMA_D,"Si encuentran la sábana con agujeros o el disco de gritos, mejor: todo suma.","If you find the sheet with holes or the record of screams, even better: it all counts.","Se acharem o lençol com furos ou o disco de gritos, melhor: tudo conta."
+OBJ_FIND_GHOST_PROJECTOR,Llevarse el proyector de fantasmas,Take the ghost projector,Levar o projetor de fantasmas
+OBJ_EXTRA_HOLEY_SHEET,Extra: la sábana con agujeros,Extra: the sheet with holes,Extra: o lençol com furos
+OBJ_EXTRA_SCREAM_DISC,Extra: el disco de gritos,Extra: the record of screams,Extra: o disco de gritos
+CHICHO_CLUE_haunted_cinema,"(susurrando) «Vi a doña Bobina esconder algo %s. Y el fantasma pasa siempre a la misma hora, como el colectivo.»","(whispering) “I saw doña Bobina hide something %s. And the ghost always shows up at the same time, like the bus.”","(sussurrando) “Vi a dona Bobina esconder algo %s. E o fantasma passa sempre na mesma hora, como o ônibus.”"
+HINT_GHOST_SPEAKER,"Detrás de la pantalla, un parlante hace «uuuuh». El fantasma viene con cable.","Behind the screen, a speaker goes «oooooh». The ghost comes with a cable.","Atrás da tela, um alto-falante faz «uuuuh». O fantasma vem com fio."
+CLUE_GHOST_SPEAKER,"Detrás de la pantalla hay un parlante que hace «uuuuh»: el fantasma es de mentira.","Behind the screen there's a speaker going «oooooh»: the ghost is fake.","Atrás da tela tem um alto-falante que faz «uuuuh»: o fantasma é de mentira."
+CINEMA_GHOST_OOH,uuuuuh...,oooooh...,uuuuuh...
+CINEMA_SCREAM,¡Aaaah!,Aaaah!,Aaaah!
+BRIEF_FAKE_TICKETS_B,"Doña Bobina imprime sus propias entradas y vende cada butaca dos veces. Por eso siempre dice «agotado».","Doña Bobina prints her own tickets and sells every seat twice. That's why it always says «sold out».","A dona Bobina imprime os próprios ingressos e vende cada poltrona duas vezes. Por isso sempre diz «esgotado»."
+BRIEF_FAKE_TICKETS_C,"Traigan la imprenta de entradas en el baúl del patrullero. Pesa 10 kilos: mejor entre dos.","Bring the ticket press in the patrol car's trunk. It weighs 10 kilos: better with two of you.","Tragam a impressora de ingressos no porta-malas da viatura. Pesa 10 quilos: melhor em dois."
+BRIEF_FAKE_TICKETS_D,"Si encuentran el sello de «función agotada» o el talonario trucho, mejor: todo suma.","If you find the «sold out» stamp or the fake ticket book, even better: it all counts.","Se acharem o carimbo de «sessão esgotada» ou o talão falso, melhor: tudo conta."
+OBJ_FIND_TICKET_PRESS,Llevarse la imprenta de entradas,Take the ticket press,Levar a impressora de ingressos
+OBJ_EXTRA_SOLD_OUT_STAMP,Extra: el sello de «función agotada»,Extra: the «sold out» stamp,Extra: o carimbo de «sessão esgotada»
+OBJ_EXTRA_TICKET_BOOK,Extra: el talonario trucho,Extra: the fake ticket book,Extra: o talão falso
+CHICHO_CLUE_fake_tickets,"(susurrando) «Vi a doña Bobina esconder algo %s. Y hoy ya acomodé a tres señores en la misma butaca.»","(whispering) “I saw doña Bobina hide something %s. And today I've already shown three men to the same seat.”","(sussurrando) “Vi a dona Bobina esconder algo %s. E hoje já acomodei três senhores na mesma poltrona.”"
+CINEMA_SOLD_OUT,AGOTADO,SOLD OUT,ESGOTADO
+CINEMA_SAME_SEAT_TICKET,"¡Mire mi entrada: fila 3, butaca 4! ¡Y la de él dice lo mismo!","Look at my ticket: row 3, seat 4! And his says the same!","Olha meu ingresso: fileira 3, poltrona 4! E o dele diz o mesmo!"
+CINEMA_SAME_SEAT_1,¡Esta butaca es mía!,This seat is mine!,Esta poltrona é minha!
+CINEMA_SAME_SEAT_2,"¡No, es mía, acá dice!","No, it's mine, it says so here!","Não, é minha, aqui diz!"
+CINEMA_SAME_SEAT_3,¡Yo llegué primero!,I got here first!,Eu cheguei primeiro!
+CINEMA_SAME_SEAT_4,¡Y yo pagué más!,And I paid more!,E eu paguei mais!
+HINT_SAME_SEAT,"Dos vecinos discuten: los dos tienen entrada para la misma butaca.","Two neighbors argue: both have a ticket for the same seat.","Dois vizinhos discutem: os dois têm ingresso para a mesma poltrona."
+CLUE_SAME_SEAT,"Dos espectadores tienen entrada para la misma butaca: alguien vende cada lugar dos veces.","Two spectators have a ticket for the same seat: someone sells every seat twice.","Dois espectadores têm ingresso para a mesma poltrona: alguém vende cada lugar duas vezes."
+BRIEF_STOLEN_FILM_B,"Doña Bobina se quedó con la película premiada del festival después de la función y la pasa todas las noches.","Doña Bobina kept the festival's prize film after the screening and shows it every night.","A dona Bobina ficou com o filme premiado do festival depois da sessão e passa todas as noites."
+BRIEF_STOLEN_FILM_C,"Traigan la lata con la película en el baúl del patrullero. Pesa 5 kilos y el festival la quiere entera.","Bring the can with the film in the patrol car's trunk. It weighs 5 kilos and the festival wants it whole.","Tragam a lata com o filme no porta-malas da viatura. Pesa 5 quilos e o festival quer inteira."
+BRIEF_STOLEN_FILM_D,"Si encuentran la credencial del festival o la estatuilla del premio, mejor: todo suma.","If you find the festival badge or the prize statuette, even better: it all counts.","Se acharem a credencial do festival ou a estatueta do prêmio, melhor: tudo conta."
+OBJ_FIND_FESTIVAL_FILM,Llevarse la lata con la película del festival,Take the can with the festival's film,Levar a lata com o filme do festival
+OBJ_EXTRA_FESTIVAL_BADGE,Extra: la credencial del festival,Extra: the festival badge,Extra: a credencial do festival
+OBJ_EXTRA_STATUETTE,Extra: la estatuilla del premio,Extra: the prize statuette,Extra: a estatueta do prêmio
+CHICHO_CLUE_stolen_film,"(susurrando) «Vi a doña Bobina esconder algo %s. Y esta película no estaba en la cartelera: llegó en una lata con moño.»","(whispering) “I saw doña Bobina hide something %s. And this film wasn't on the bill: it came in a can with a bow.”","(sussurrando) “Vi a dona Bobina esconder algo %s. E este filme não estava na programação: chegou numa lata com laço.”"
+CINEMA_FESTIVAL_MARK,PROPIEDAD DEL FESTIVAL,PROPERTY OF THE FESTIVAL,PROPRIEDADE DO FESTIVAL
+HINT_FESTIVAL_MARK,"En la esquina de la pantalla dice, chiquito: «PROPIEDAD DEL FESTIVAL».","In the screen's corner, in small letters: «PROPERTY OF THE FESTIVAL».","No canto da tela está escrito, pequenininho: «PROPRIEDADE DO FESTIVAL»."
+CLUE_FESTIVAL_MARK,"La película dice «PROPIEDAD DEL FESTIVAL» en una esquina: este cine no la alquiló.","The film says «PROPERTY OF THE FESTIVAL» in a corner: this cinema didn't rent it.","O filme diz «PROPRIEDADE DO FESTIVAL» num canto: este cinema não alugou."
+CINEMA_CRY_1,¡Buaaa! ¡Qué hermosa!,Waaah! It's so beautiful!,Buáá! Que lindo!
+CINEMA_CRY_2,"(sollozo) Nunca vi algo así...","(sob) I've never seen anything like it...","(soluço) Nunca vi nada assim..."
+CINEMA_CRY_3,¿Alguien tiene un pañuelo?,Does anyone have a tissue?,Alguém tem um lenço?
+BRIEF_POPCORN_WATCHES_B,"Doña Bobina pasa relojes de contrabando dentro de los baldes de palomitas. El combo grande viene con hora.","Doña Bobina smuggles watches inside the popcorn buckets. The large combo comes with the time.","A dona Bobina passa relógios de contrabando dentro dos baldes de pipoca. O combo grande vem com hora."
+BRIEF_POPCORN_WATCHES_C,"Traigan el balde lleno de relojes en el baúl del patrullero. Pesa 4 kilos y no se coman nada.","Bring the bucket full of watches in the patrol car's trunk. It weighs 4 kilos and don't eat anything.","Tragam o balde cheio de relógios no porta-malas da viatura. Pesa 4 quilos e não comam nada."
+BRIEF_POPCORN_WATCHES_D,"Si encuentran la balanza de la boletería o la lista de clientes, mejor: todo suma.","If you find the ticket booth's scale or the list of clients, even better: it all counts.","Se acharem a balança da bilheteria ou a lista de clientes, melhor: tudo conta."
+OBJ_FIND_WATCHES_BUCKET,Llevarse el balde lleno de relojes,Take the bucket full of watches,Levar o balde cheio de relógios
+OBJ_EXTRA_BOOTH_SCALE,Extra: la balanza de la boletería,Extra: the ticket booth's scale,Extra: a balança da bilheteria
+CHICHO_CLUE_popcorn_watches,"(susurrando) «Vi a doña Bobina esconder algo %s. Y ayer me tocó un balde que daba la hora.»","(whispering) “I saw doña Bobina hide something %s. And yesterday I got a bucket that told the time.”","(sussurrando) “Vi a dona Bobina esconder algo %s. E ontem me deram um balde que dava a hora.”"
+PROMPT_TICKING_POPCORN,E: mirar la palomita,E: look at the popcorn,E: olhar a pipoca
+HINT_TICKING_POPCORN,"Esta palomita es de metal... y hace «tic tac».","This popcorn is made of metal... and goes «tick tock».","Esta pipoca é de metal... e faz «tique-taque»."
+CLUE_TICKING_POPCORN,"Una palomita del mostrador es de metal y hace «tic tac»: en las palomitas hay relojes.","A popcorn on the counter is made of metal and goes «tick tock»: there are watches in the popcorn.","Uma pipoca do balcão é de metal e faz «tique-taque»: tem relógios na pipoca."
+CINEMA_TICK_TACK,tic tac,tick tock,tique-taque
+CINEMA_WATCH_POP,¡PUM! ¿Un reloj?,POP! A watch?,PUM! Um relógio?

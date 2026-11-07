@@ -64,6 +64,8 @@ var fix_time := FIX_TIME
 var fix_facing := Vector3.INF
 ## What E on them says, if the place has something for it ("" = nothing, unless they're being escorted).
 var use_prompt := ""
+## How long she waits at the first point of her round (END_PAUSE; the cinema's projectionist stays in her booth).
+var first_pause := END_PAUSE
 ## The points she's walking to, in order; empty while she patrols.
 var _path: Array[Vector3] = []
 var _errand := ""
@@ -210,7 +212,7 @@ func _walk(delta: float) -> Vector3:
 		return Vector3.ZERO
 	if _index + _step < 0 or _index + _step >= route.size():
 		_step = -_step
-		_pause = END_PAUSE
+		_pause = first_pause if _index == 0 else END_PAUSE
 	_index += _step
 	return Vector3.ZERO
 
