@@ -5703,3 +5703,12 @@ CLUE_DIAMOND_SHINE,"Con el riego prendido, una maceta brilla como si tuviera est
 NURSERY_SPARKLE,¡Brilla!,It sparkles!,Brilha!
 NURSERY_CLINC,¡Clinc!,Clink!,Plim!
 BROTECITO_CLUE_diamond_pots,"¡Gracias! Vi a Doña Hortensia esconder algo %s. Y me dijo que a esa maceta no la riegue nunca, que se oxida.","Thanks! I saw Doña Hortensia hide something %s. And she told me never to water that pot, it rusts.","Obrigado! Vi a Doña Hortensia esconder algo %s. E ela me disse para nunca regar aquele vaso, que enferruja."
+BRIEF_CONTEST_SEEDS_B,"Doña Hortensia se robó las semillas del tomate campeón del concurso de verduras gigantes.","Doña Hortensia stole the champion tomato's seeds from the giant vegetable contest.","A Doña Hortensia roubou as sementes do tomate campeão do concurso de verduras gigantes."
+BRIEF_CONTEST_SEEDS_C,"Traigan la caja de semillas en el baúl del patrullero.","Bring the box of seeds in the patrol car's trunk.","Tragam a caixa de sementes no porta-malas da viatura."
+BRIEF_CONTEST_SEEDS_D,"Si encuentran la cinta del primer premio o el frasco de abono SuperBrote, mejor: todo suma.","If you find the first prize ribbon or the jar of SuperBrote fertilizer, even better: it all counts.","Se acharem a fita do primeiro prêmio ou o pote de adubo SuperBrote, melhor: tudo conta."
+OBJ_FIND_SEED_BOX,Llevarse la caja de semillas del tomate campeón,Take the box of the champion tomato's seeds,Levar a caixa de sementes do tomate campeão
+OBJ_EXTRA_PRIZE_RIBBON,Extra: la cinta del primer premio,Extra: the first prize ribbon,Extra: a fita do primeiro prêmio
+OBJ_EXTRA_SUPERBROTE,Extra: el frasco de abono SuperBrote,Extra: the jar of SuperBrote fertilizer,Extra: o pote de adubo SuperBrote
+CLUE_GIANT_TOMATOES,"En el invernadero hay una planta con tomates del tamaño de una pelota. Eso no crece solo.","In the greenhouse there's a plant with tomatoes the size of a ball. That doesn't grow on its own.","Na estufa tem uma planta com tomates do tamanho de uma bola. Isso não cresce sozinho."
+NURSERY_TOMATOES,¡Qué tomates!,What tomatoes!,Que tomates!
+BROTECITO_CLUE_contest_seeds,"¡Gracias! Vi a Doña Hortensia esconder algo %s. Y desde que riego con eso, crecen zapallos gigantes.","Thanks! I saw Doña Hortensia hide something %s. And since I water with that stuff, giant pumpkins grow.","Obrigado! Vi a Doña Hortensia esconder algo %s. E desde que rego com aquilo, crescem abóboras gigantes."

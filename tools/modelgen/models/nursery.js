@@ -380,6 +380,61 @@ export function buildEmptySoilBag() {
 	return b.build();
 }
 
+// The box of the champion tomato's seeds (0.25 x 0.08 x 0.18 m): a red box with a big tomato drawn on the lid.
+export function buildSeedBox() {
+	const b = new Builder('seed_box');
+	b.add('box', mat('seedbox_red', 0xd23a3a), new THREE.BoxGeometry(0.25, 0.08, 0.18), { pos: V(0, 0.04, 0) });
+	b.add('lid', mat('seedbox_white', 0xf6f4ee), new THREE.BoxGeometry(0.2, 0.004, 0.13), { pos: V(0, 0.082, 0) });
+	b.add('tomato', mat('seedbox_tomato', 0xe8402a), new THREE.CylinderGeometry(0.04, 0.04, 0.004, 12), { pos: V(0, 0.086, 0) });
+	b.add('leaf', leaf(), ellipsoid(0.02, 0.003, 0.01), { pos: V(0, 0.089, -0.035) });
+	return b.build();
+}
+
+// The first prize ribbon (0.12 x 0.25 m): a blue rosette with two tails and a gold center.
+export function buildPrizeRibbon() {
+	const b = new Builder('prize_ribbon');
+	const blue = mat('ribbon_blue', 0x2f5ae8);
+	b.add('rosette', blue, new THREE.CylinderGeometry(0.06, 0.06, 0.01, 12), { pos: V(0, 0.005, 0) });
+	b.add('center', mat('ribbon_gold', 0xf2c84b), new THREE.CylinderGeometry(0.03, 0.03, 0.012, 12), { pos: V(0, 0.008, 0) });
+	for (const s of [-1, 1]) {
+		b.add('tail', blue, new THREE.BoxGeometry(0.035, 0.004, 0.13), { pos: V(s * 0.025, 0.002, 0.1), rot: [0, s * 0.25, 0] });
+	}
+	return b.build();
+}
+
+// The jar of "SuperBrote" fertilizer (0.1 m across, 0.16 m tall): a glass jar of bright green powder with a lid.
+export function buildSuperbroteJar() {
+	const b = new Builder('superbrote_jar');
+	b.add('powder', mat('superbrote_green', 0x7cff4a, { emissive: 0x1a4a0a }), new THREE.CylinderGeometry(0.045, 0.045, 0.12, 12), { pos: V(0, 0.065, 0) });
+	b.add('lid', mat('superbrote_lid', 0xd23a3a), new THREE.CylinderGeometry(0.05, 0.05, 0.03, 12), { pos: V(0, 0.145, 0) });
+	b.add('label', mat('superbrote_label', 0xf2d040), new THREE.CylinderGeometry(0.048, 0.048, 0.05, 12), { pos: V(0, 0.07, 0) });
+	return b.build();
+}
+
+// A tomato plant with ball-sized tomatoes (0.7 m tall): a pot, a stake and three huge red tomatoes.
+export function buildGiantTomatoPlant() {
+	const b = new Builder('giant_tomato_plant');
+	const red = mat('giant_tomato', 0xe8402a, { roughness: 0.3 });
+	b.add('pot', terracotta(), new THREE.CylinderGeometry(0.2, 0.15, 0.3, 12), { pos: V(0, 0.15, 0) });
+	b.add('stake', mat('tomato_stake', 0x8a5a34), new THREE.CylinderGeometry(0.012, 0.012, 0.7, 6), { pos: V(0, 0.55, 0) });
+	b.add('bush', leaf(), new THREE.SphereGeometry(0.16, 10, 6), { pos: V(0, 0.55, 0) });
+	for (const [x, y, z] of [[0.16, 0.55, 0.1], [-0.14, 0.62, 0.08], [0.02, 0.45, -0.18]]) {
+		b.add('tomato', red, new THREE.SphereGeometry(0.11, 12, 8), { pos: V(x, y, z) });
+	}
+	return b.build();
+}
+
+// A giant pumpkin (1.0 m across): a ribbed orange ball with a green stalk.
+export function buildGiantPumpkin() {
+	const b = new Builder('giant_pumpkin');
+	const orange = mat('pumpkin_orange', 0xf08a2a);
+	for (let i = 0; i < 6; i++) {
+		b.add('rib', orange, ellipsoid(0.3, 0.45, 0.5, 10, 8), { pos: V(0, 0.45, 0), rot: [0, (i / 6) * Math.PI, 0] });
+	}
+	b.add('stalk', mat('pumpkin_stalk', 0x3f7a2a), new THREE.CylinderGeometry(0.04, 0.06, 0.15, 6), { pos: V(0, 0.95, 0) });
+	return b.build();
+}
+
 export const models = {
 	nursery_sprinkler: buildSprinkler, dentuda_pot: buildDentudaPot, dentuda: buildDentuda,
 	potted_plant_0: buildPottedFern, potted_plant_1: buildPottedFlowers, potted_plant_2: buildPottedCactus,
@@ -389,7 +444,9 @@ export const models = {
 	botanic_catalog: buildBotanicCatalog, nursery_shears: buildNurseryShears, gold_gnome: buildGoldGnome,
 	mayor_photo: buildMayorPhoto, gnome_paint: buildGnomePaint, grass_roll: buildGrassRoll,
 	stadium_ticket: buildStadiumTicket, hand_mower: buildHandMower, diamond_pot: buildDiamondPot,
-	jeweler_loupe: buildJewelerLoupe, empty_soil_bag: buildEmptySoilBag,
+	jeweler_loupe: buildJewelerLoupe, empty_soil_bag: buildEmptySoilBag, seed_box: buildSeedBox,
+	prize_ribbon: buildPrizeRibbon, superbrote_jar: buildSuperbroteJar, giant_tomato_plant: buildGiantTomatoPlant,
+	giant_pumpkin: buildGiantPumpkin,
 };
 
 export const views = {
@@ -408,7 +465,9 @@ export const views = {
 			{ name: 'gnome_paint', pos: [-1.6, 0, 3.6] }, { name: 'grass_roll', pos: [2.6, 0, 2.8], rotY: 0.4 },
 			{ name: 'stadium_ticket', pos: [2.2, 0, 3.8] }, { name: 'hand_mower', pos: [3.6, 0, 2.2], rotY: -0.6 },
 			{ name: 'diamond_pot', pos: [-3.2, 0, 1.8] }, { name: 'jeweler_loupe', pos: [-2.9, 0, 2.4] },
-			{ name: 'empty_soil_bag', pos: [-3.6, 0, 2.6], rotY: 0.3 },
+			{ name: 'empty_soil_bag', pos: [-3.6, 0, 2.6], rotY: 0.3 }, { name: 'seed_box', pos: [4.2, 0, 3.6] },
+			{ name: 'prize_ribbon', pos: [4.6, 0, 3.9] }, { name: 'superbrote_jar', pos: [4.9, 0, 3.4] },
+			{ name: 'giant_tomato_plant', pos: [4.4, 0, 1.6] }, { name: 'giant_pumpkin', pos: [-4.4, 0, 0.4] },
 		],
 		cam: { pos: [0, 2.4, 8.0], target: [0.3, 1.0, 0], fov: 45 },
 	},
