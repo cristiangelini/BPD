@@ -5711,3 +5711,14 @@ TIPITO_CLUE_fake_stickers,"¡Gracias! Vi a Don Renglón esconder algo %s. Y me r
 CLUE_REPEATED_STICKERS,"El piso está lleno de figuritas tiradas, y son todas iguales: el arquero, la difícil.","The floor is covered in stickers, and they're all the same: the goalkeeper, the hard one.","O chão está cheio de figurinhas, e são todas iguais: o goleiro, a difícil."
 PRINT_SHOP_REPEATED,"¡Repetida, repetida, repetida!","Got it, got it, got it!","Repetida, repetida, repetida!"
 HINT_STICKER_FACE,¡Tienes una figurita pegada en la cara!,You've got a sticker stuck on your face!,Você tem uma figurinha grudada na cara!
+BRIEF_FAKE_FINES_B,"Don Renglón imprime multas con un sello falso de la comisaría y las cobra él mismo, puerta por puerta.","Don Renglón prints fines with a fake station stamp and collects them himself, door to door.","O Seu Renglón imprime multas com um carimbo falso da delegacia e cobra ele mesmo, de porta em porta."
+BRIEF_FAKE_FINES_C,"Traigan el sello falso en el baúl del patrullero. Ese sello es nuestro, aunque sea trucho.","Bring the fake stamp in the patrol car's trunk. That stamp is ours, even if it's a fake.","Tragam o carimbo falso no porta-malas da viatura. Esse carimbo é nosso, mesmo sendo falso."
+BRIEF_FAKE_FINES_D,"Si encuentran el talonario de multas o la gorra de policía de juguete, mejor: todo suma.","If you find the pad of fines or the toy police cap, even better: it all counts.","Se acharem o talão de multas ou o quepe de polícia de brinquedo, melhor: tudo conta."
+OBJ_FIND_FAKE_STATION_STAMP,Llevarse el sello falso de la comisaría,Take the fake station stamp,Levar o carimbo falso da delegacia
+OBJ_EXTRA_FINES_PAD,Extra: el talonario de multas,Extra: the pad of fines,Extra: o talão de multas
+OBJ_EXTRA_TOY_POLICE_CAP,Extra: la gorra de policía de juguete,Extra: the toy police cap,Extra: o quepe de polícia de brinquedo
+TIPITO_CLUE_fake_fines,"¡Gracias! Vi a Don Renglón esconder algo %s. Y a mí me puso una multa por llegar tarde.","Thanks! I saw Don Renglón hide something %s. And he gave me a fine for being late.","Obrigado! Vi o Seu Renglón esconder algo %s. E ele me deu uma multa por chegar atrasado."
+CLUE_WINDSHIELD_FINE,"El patrullero tiene una multa pegada en el vidrio, «por estacionar con cara de policía». El sello de la comisaría está torcido.","The patrol car has a fine stuck on the glass, «for parking with a cop's face». The station's stamp is crooked.","A viatura tem uma multa grudada no vidro, «por estacionar com cara de polícia». O carimbo da delegacia está torto."
+PRINT_SHOP_FINE_FAKE,¿Una multa... al patrullero?,A fine... on the patrol car?,Uma multa... na viatura?
+PRINT_SHOP_WINDSHIELD_FINE,"MULTA - Por estacionar con cara de policía","FINE - For parking with a cop's face","MULTA - Por estacionar com cara de polícia"
+PRINT_SHOP_FINE_FOR,"MULTA para %s","FINE for %s","MULTA para %s"

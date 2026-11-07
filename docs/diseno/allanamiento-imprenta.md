@@ -184,6 +184,11 @@ suman 500.
   que se acerca a 1,5 m de ellas las nota, y es pista una vez. Mientras la rotativa anda, cada 3 s le pega una
   figurita en la cara (delante de la cámara, 4 s) a cada policía a menos de 4 m de la bandeja. Capturas en
   `imprenta/paso7d-repetidas.png` e `imprenta/paso7d-cara.png`.
+- **Paso 7e (las multas falsas):** `FakeFinesRig`. Al llegar, el patrullero ya tiene pegada en el parabrisas una multa
+  amarilla "por estacionar con cara de policía". El policía que se para a 1,8 m de ella (medido sobre el piso, o sea,
+  delante del auto y no donde se baja) la lee, y es pista una vez. La rotativa tira multas amarillas en vez de hojas,
+  y cada una lleva "MULTA para" con el nombre de un policía, por turno. Capturas en `imprenta/paso7e-parabrisas.png` e
+  `imprenta/paso7e-multas.png`.
 
 ## Preguntas abiertas para Cristian
 1. ¿La cinta de la rotativa lleva también a los policías (frenados por la baranda), o solo a las cosas?

@@ -383,7 +383,41 @@ export function buildStickerPack() {
 	return b.build();
 }
 
+// The fake station stamp, 0.14 x 0.16 x 0.1 m: a rubber stamp with a black handle and a blue base with a star.
+// Origin at its middle.
+export function buildFakeStationStamp() {
+	const b = new Builder('fake_station_stamp');
+	b.add('base', mat('fstamp_wood', 0x8a5a34), new THREE.BoxGeometry(0.14, 0.04, 0.1), { pos: V(0, -0.06, 0) });
+	b.add('rubber', mat('fstamp_blue', 0x2e5fd8), new THREE.BoxGeometry(0.13, 0.01, 0.09), { pos: V(0, -0.085, 0) });
+	b.add('handle', mat('fstamp_black', 0x1e1e22), new THREE.CylinderGeometry(0.018, 0.022, 0.08, 10), { pos: V(0, 0.0, 0) });
+	b.add('knob', mat('fstamp_black', 0x1e1e22), new THREE.SphereGeometry(0.035, 10, 6), { pos: V(0, 0.05, 0) });
+	b.add('star', mat('fstamp_gold', 0xf2c84b, { metalness: 0.6, roughness: 0.3 }), new THREE.CylinderGeometry(0.03, 0.03, 0.005, 5),
+		{ pos: V(0, -0.06, 0.051), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
+// The pad of fines, 0.12 x 0.04 x 0.18 m: yellow sheets on a cardboard back with a red stripe. Origin at its middle.
+export function buildFinesPad() {
+	const b = new Builder('fines_pad');
+	b.add('back', mat('pad_card', 0xb08a5a), new THREE.BoxGeometry(0.12, 0.006, 0.18), { pos: V(0, -0.017, 0) });
+	b.add('sheets', mat('pad_yellow', 0xf2e070), new THREE.BoxGeometry(0.115, 0.03, 0.175), { pos: V(0, 0.002, 0) });
+	b.add('stripe', mat('pad_red', 0xd83a3a), new THREE.BoxGeometry(0.115, 0.002, 0.025), { pos: V(0, 0.018, -0.07) });
+	return b.build();
+}
+
+// The toy police cap, 0.24 x 0.12 x 0.26 m: a blue crown, a black visor and a plastic gold star. Origin at its middle.
+export function buildToyPoliceCap() {
+	const b = new Builder('toy_police_cap');
+	const blue = mat('toycap_blue', 0x2a4aa0);
+	b.add('crown', blue, new THREE.CylinderGeometry(0.12, 0.1, 0.09, 14), { pos: V(0, 0.01, 0) });
+	b.add('visor', mat('toycap_visor', 0x1e1e22), new THREE.BoxGeometry(0.18, 0.01, 0.08), { pos: V(0, -0.03, 0.11) });
+	b.add('star', mat('toycap_star', 0xf2c84b), new THREE.CylinderGeometry(0.025, 0.025, 0.006, 5),
+		{ pos: V(0, 0.02, 0.112), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
 export const models = {
+	fake_station_stamp: buildFakeStationStamp, fines_pad: buildFinesPad, toy_police_cap: buildToyPoliceCap,
 	sticker_plate: buildStickerPlate, sticker_album: buildStickerAlbum, sticker_pack: buildStickerPack,
 	manuscript: buildManuscript, book_cover: buildBookCover,
 	diploma_roll: buildDiplomaRoll, university_seal: buildUniversitySeal, mortarboard: buildMortarboard,
@@ -413,7 +447,8 @@ export const views = {
 			{ name: 'concert_poster', pos: [2.9, 0.04, 3.3] }, { name: 'vip_stamp', pos: [3.5, 0.06, 3.3] },
 			{ name: 'manuscript', pos: [4.1, 0.06, 3.3] }, { name: 'book_cover', pos: [4.7, 0.01, 3.3] },
 			{ name: 'sticker_plate', pos: [5.3, 0.02, 3.3] }, { name: 'sticker_album', pos: [5.9, 0.015, 3.3] },
-			{ name: 'sticker_pack', pos: [6.4, 0.005, 3.3] },
+			{ name: 'sticker_pack', pos: [6.4, 0.005, 3.3] }, { name: 'fake_station_stamp', pos: [6.9, 0.1, 3.3] },
+			{ name: 'fines_pad', pos: [7.4, 0.02, 3.3] }, { name: 'toy_police_cap', pos: [7.9, 0.06, 3.3] },
 		],
 		cam: { pos: [0, 3.2, 9.5], target: [0.4, 0.9, 0], fov: 50 },
 	},
