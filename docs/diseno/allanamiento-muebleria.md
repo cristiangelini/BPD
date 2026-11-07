@@ -171,3 +171,11 @@ Los pesos y valores siguen la escala del taller y del gimnasio: la principal val
   - Las 6 sillas del comedor pesan 1,5 kg: se agarran con una mano, y si un policía las lleva por delante salen
     volando para el otro lado.
   - Capturas `paso5-carton-*.png` y `cardboard_wood.png` (modelos).
+- **Paso 5, el ropero hotel:** el cuaderno de huéspedes (0,5 kg, 1000), la almohada con babas (1 kg, 300) y el cepillo
+  de dientes (0,1 kg, 200).
+  - Uno de los dos roperos (sorteado) tiene las puertas cerradas y el cartelito de "No molestar". Cada 5 s, si hay un
+    policía a menos de 8 m, ronca ("Rrrrr... fiuuu..."). Si hay un policía a menos de 3,5 m cuando ronca, lo escucha,
+    y la primera vez es la pista.
+  - E lo abre (no lo tira): sale un huésped en piyama y gorro de dormir que dice "¡Buen día! Ya hice el check-out..." y
+    se va caminando hasta la calle. Después, el ropero queda abierto y se tira como los otros.
+  - Capturas `paso5-hotel-*.png` y `wardrobe_hotel.png` (modelos).

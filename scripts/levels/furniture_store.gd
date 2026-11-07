@@ -61,6 +61,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_DECAL_ROLL", "OBJ_EXTRA_CARDBOARD_INVOICES"],
 		"rig": preload("res://scripts/case/furniture/cardboard_wood_rig.gd"),
 	},
+	"wardrobe_hotel": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_WARDROBE_HOTEL_B", "BRIEF_WARDROBE_HOTEL_C", "BRIEF_WARDROBE_HOTEL_D"],
+		"find": "OBJ_FIND_GUEST_BOOK",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/guest_book.tscn"), preload("res://scenes/props/drooly_pillow.tscn"),
+			preload("res://scenes/props/toothbrush.tscn")],
+		"half_heights": [0.015, 0.07, 0.015],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_DROOLY_PILLOW", "OBJ_EXTRA_TOOTHBRUSH"],
+		"rig": preload("res://scripts/case/furniture/wardrobe_hotel_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the shop's floor, in the open between the setups.
 const NOTE_PLACES: Array[Vector3] = [

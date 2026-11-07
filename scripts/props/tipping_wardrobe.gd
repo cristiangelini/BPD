@@ -8,6 +8,8 @@ extends StaticBody3D
 signal tipped
 ## A light one (a story's, step 5) went over with one cop pulling it alone.
 signal pulled_alone(cop: Cop)
+## A shut one (a story's, step 5) was opened.
+signal opened(cop: Cop)
 
 ## The two pulls must come this close together.
 const PAIR_WINDOW := 1.5
@@ -18,6 +20,8 @@ const SIZE := Vector3(1.2, 2.0, 0.6)
 var is_tipped := false
 ## Made of cardboard (the cardboard wood's story): one cop alone tips it over.
 var light := false
+## Its doors shut (the wardrobe hotel's story): the first E opens it instead of pulling.
+var shut := false
 ## Who pulled last, and when (in seconds of the game's clock).
 var _last_cop: Cop
 var _last_at := -INF
@@ -25,10 +29,16 @@ var _standing: Transform3D
 
 
 func prompt_key(_cop: Cop) -> String:
+	if shut:
+		return "PROMPT_OPEN_WARDROBE"
 	return "" if is_tipped else "PROMPT_PULL_WARDROBE"
 
 
 func use(cop: Cop) -> void:
+	if shut:
+		shut = false
+		opened.emit(cop)
+		return
 	if is_tipped:
 		return
 	if light:

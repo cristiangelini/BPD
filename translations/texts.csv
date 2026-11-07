@@ -5686,3 +5686,15 @@ TABLITA_CLUE_cardboard_wood,"«¡Gracias! Te cuento: vi a Don Cajón esconder al
 FURNITURE_LIGHT,¡Pesa como una caja de zapatos!,It weighs like a shoebox!,Pesa como uma caixa de sapatos!
 HINT_WARDROBE_LIGHT,"¿Un ropero de roble que se tira con una mano? Esto no es madera...","An oak wardrobe you can pull over with one hand? This isn't wood...","Um guarda-roupa de carvalho que se derruba com uma mão? Isso não é madeira..."
 CLUE_LIGHT_WARDROBE,"Uno de los roperos «de roble» pesa 3 kilos: un policía solo lo tira con una mano.","One of the «oak» wardrobes weighs 3 kilos: one cop alone pulls it over with one hand.","Um dos guarda-roupas «de carvalho» pesa 3 quilos: um policial sozinho derruba com uma mão."
+BRIEF_WARDROBE_HOTEL_B,"Don Cajón alquila los roperos de muestra por noche, como si fueran piezas de hotel. Con almohada y todo.","Don Cajón rents his showroom wardrobes out by the night, as if they were hotel rooms. Pillow and all.","O Don Cajón aluga os guarda-roupas do mostruário por noite, como se fossem quartos de hotel. Com travesseiro e tudo."
+BRIEF_WARDROBE_HOTEL_C,"Traigan el cuaderno de huéspedes en el baúl del patrullero. Ahí anota quién durmió en cada ropero.","Bring the guest book in the patrol car's trunk. He writes down who slept in each wardrobe.","Tragam o caderno de hóspedes no porta-malas da viatura. Ali ele anota quem dormiu em cada guarda-roupa."
+BRIEF_WARDROBE_HOTEL_D,"Si encuentran la almohada con babas o el cepillo de dientes, mejor: todo suma.","If you find the pillow with drool or the toothbrush, even better: it all counts.","Se acharem o travesseiro babado ou a escova de dentes, melhor: tudo conta."
+OBJ_FIND_GUEST_BOOK,Llevarse el cuaderno de huéspedes,Take the guest book,Levar o caderno de hóspedes
+OBJ_EXTRA_DROOLY_PILLOW,Extra: la almohada con babas,Extra: the pillow with drool,Extra: o travesseiro babado
+OBJ_EXTRA_TOOTHBRUSH,Extra: el cepillo de dientes,Extra: the toothbrush,Extra: a escova de dentes
+TABLITA_CLUE_wardrobe_hotel,"«¡Gracias! Te cuento: vi a Don Cajón esconder algo %s. Y a la mañana salen señores en piyama de los roperos. Yo no pregunto.»","“Thanks! Here's the thing: I saw Don Cajón hide something %s. And in the morning men in pyjamas come out of the wardrobes. I don't ask.”","“Valeu! Te conto: vi o Don Cajón esconder algo %s. E de manhã saem senhores de pijama dos guarda-roupas. Eu não pergunto.”"
+PROMPT_OPEN_WARDROBE,E: abrir el ropero,E: open the wardrobe,E: abrir o guarda-roupa
+FURNITURE_SNORE,Rrrrr... fiuuu...,Zzzzz... whew...,Rrrrr... fiuuu...
+FURNITURE_GUEST,"¡Buen día! Ya hice el check-out...","Morning! I've checked out...","Bom dia! Já fiz o check-out..."
+HINT_WARDROBE_SNORES,"Ese ropero ronca. Los roperos no roncan... ¿o sí?","That wardrobe is snoring. Wardrobes don't snore... do they?","Esse guarda-roupa está roncando. Guarda-roupas não roncam... ou roncam?"
+CLUE_SNORING_WARDROBE,"Uno de los roperos de la mueblería está cerrado y ronca.","One of the furniture store's wardrobes is shut, and it snores.","Um dos guarda-roupas da loja de móveis está fechado e ronca."

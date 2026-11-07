@@ -275,11 +275,71 @@ export function buildCardboardInvoices() {
 	return b.build();
 }
 
+// The wardrobe hotel's wardrobe, its doors shut: the same 1.2 × 2.0 × 0.6 m carcass as the showroom one, the two doors
+// closed with their knobs in the middle and a "No molestar" card hanging from one.
+export function buildClosedWardrobe() {
+	const b = new Builder('closed_wardrobe');
+	const wood = mat('wardrobe_wood', 0xa8703e), knob = mat('wardrobe_knob', 0xd8b04a);
+	box(b, 'back', mat('wardrobe_inside', 0x7a4e2a), 1.2, 1.9, 0.04, 0, 1.0, -0.28);
+	for (const s of [-1, 1]) box(b, 'side', wood, 0.04, 1.9, 0.6, s * 0.58, 1.0, 0);
+	box(b, 'bottom', wood, 1.2, 0.05, 0.6, 0, 0.075, 0);
+	box(b, 'top', wood, 1.2, 0.04, 0.6, 0, 1.93, 0);
+	box(b, 'crown', wood, 1.3, 0.08, 0.66, 0, 1.99, 0);
+	for (const s of [-1, 1]) {
+		box(b, 'door', wood, 0.59, 1.86, 0.03, s * 0.3, 1.0, 0.3);
+		b.add('knob', knob, new THREE.SphereGeometry(0.025, 8, 6), { pos: V(s * 0.06, 1.0, 0.33) });
+	}
+	box(b, 'card', mat('hotel_card', 0xf6f2e6), 0.1, 0.16, 0.005, 0.12, 0.88, 0.335);
+	box(b, 'card', mat('hotel_card_red', 0xd23a3a), 0.1, 0.03, 0.006, 0.12, 0.93, 0.336);
+	return b.build();
+}
+
+// The guest who sleeps in the wardrobe: blue striped pyjamas, a floppy nightcap with a pompom and slippers.
+export function buildPajamaGuest() {
+	const b = new Builder('npc_pajama_guest');
+	const pj = mat('pajama_blue', 0x8ab4e8), stripe = mat('pajama_stripe', 0xf6f2e6);
+	pearBody(b, mat('skin_trigo', 0xe0b07a), { shirt: pj, pants: pj, shoes: mat('slipper_pink', 0xe88aa8), belted: false, onePiece: true });
+	for (let i = 0; i < 4; i++) b.add('stripe', stripe, new THREE.TorusGeometry(0.4 - Math.abs(i - 1.5) * 0.05, 0.012, 4, 16), { pos: V(0, 0.25 + i * 0.17, 0), rot: [Math.PI / 2, 0, 0] });
+	eyes(b, 1.33, 0.17, 0.08, 0.03);
+	const cap = mat('nightcap', 0x3a5ad0);
+	b.add('cap', cap, new THREE.ConeGeometry(0.2, 0.42, 10), { pos: V(0.06, 1.55, -0.04), rot: [0, 0, -0.6] });
+	b.add('pompom', M.white, ellipsoid(0.05, 0.05, 0.05, 6, 4), { pos: V(0.24, 1.66, -0.04) });
+	b.add('yawn', mat('mouth_dark', 0x3a1a1a), ellipsoid(0.05, 0.06, 0.02, 8, 4), { pos: V(0, 1.2, 0.2) });
+	return b.build();
+}
+
+// The guest book: a red hardback notebook 0.2 × 0.03 × 0.28 m with "HUÉSPEDES" in gold and a pencil tied to it.
+export function buildGuestBook() {
+	const b = new Builder('guest_book');
+	box(b, 'cover', mat('guest_book_red', 0xa82a2a), 0.2, 0.03, 0.28, 0, 0.015, 0);
+	box(b, 'pages', M.white, 0.19, 0.022, 0.27, 0.006, 0.015, 0);
+	box(b, 'title', M.gold, 0.12, 0.003, 0.03, 0, 0.031, -0.06);
+	b.add('pencil', mat('tablita_pencil', 0xe8b63a), new THREE.CylinderGeometry(0.006, 0.006, 0.16, 6), { pos: V(0.12, 0.008, 0.05), rot: [Math.PI / 2, 0, 0] });
+	return b.build();
+}
+
+// The pillow with drool: a white pillow 0.5 × 0.14 × 0.35 m with a damp blue patch in the middle.
+export function buildDroolyPillow() {
+	const b = new Builder('drooly_pillow');
+	b.add('pillow', mat('pillow_white', 0xf2f0ea), ellipsoid(0.25, 0.07, 0.175, 10, 5), { pos: V(0, 0.07, 0) });
+	b.add('drool', mat('drool_blue', 0xa8c8e8, { roughness: 0.2 }), ellipsoid(0.07, 0.01, 0.05, 8, 3), { pos: V(0.04, 0.135, 0.03) });
+	return b.build();
+}
+
+// A green toothbrush 0.19 m long with its white bristles.
+export function buildToothbrush() {
+	const b = new Builder('toothbrush');
+	box(b, 'handle', mat('brush_green', 0x3fa860), 0.19, 0.015, 0.02, 0, 0.0075, 0);
+	box(b, 'bristles', M.white, 0.035, 0.02, 0.018, 0.075, 0.025, 0);
+	return b.build();
+}
+
 export const models = {
 	npc_don_cajon: buildDonCajon, npc_tablita: buildTablita, half_bookcase: buildHalfBookcase,
 	bookcase_shelf: buildBookcaseShelf, money_cushion: buildMoneyCushion, other_ledger: buildOtherLedger,
 	upholstery_needle: buildUpholsteryNeedle, toy_bill: buildToyBill, wood_stamp: buildWoodStamp,
-	wood_decal_roll: buildWoodDecalRoll, cardboard_invoices: buildCardboardInvoices,
+	wood_decal_roll: buildWoodDecalRoll, cardboard_invoices: buildCardboardInvoices, closed_wardrobe: buildClosedWardrobe,
+	npc_pajama_guest: buildPajamaGuest, guest_book: buildGuestBook, drooly_pillow: buildDroolyPillow, toothbrush: buildToothbrush,
 	showroom_sofa: buildShowroomSofa, showroom_bed: buildShowroomBed, showroom_wardrobe: buildShowroomWardrobe,
 	showroom_dresser: buildShowroomDresser, showroom_lamp: buildShowroomLamp, standing_mirror: buildStandingMirror,
 	dining_table: buildDiningTable, dining_chair: buildDiningChair, flatpack_box: buildFlatpackBox,
@@ -312,6 +372,11 @@ export const views = {
 		items: [{ name: 'wood_stamp', pos: [-0.5, 0, 0.1] }, { name: 'wood_decal_roll', pos: [0.15, 0, -0.1] },
 			{ name: 'cardboard_invoices', pos: [0.65, 0, 0.3] }],
 		cam: { pos: [0, 0.9, 1.6], target: [0, 0.1, 0.1], fov: 40 },
+	},
+	wardrobe_hotel: {
+		items: [{ name: 'closed_wardrobe', pos: [-1.4, 0, -0.4] }, { name: 'npc_pajama_guest', pos: [0.1, 0, 0] },
+			{ name: 'guest_book', pos: [1.0, 0, 0.5] }, { name: 'drooly_pillow', pos: [1.5, 0, 0.1] }, { name: 'toothbrush', pos: [1.3, 0, 0.8] }],
+		cam: { pos: [0, 1.5, 4.2], target: [0, 0.8, 0], fov: 45 },
 	},
 	furniture_table: {
 		items: [{ name: 'dining_table', pos: [0, 0, 0] }, { name: 'dining_chair', pos: [-0.6, 0, 0.75] }, { name: 'dining_chair', pos: [0.6, 0, -0.75] }],
