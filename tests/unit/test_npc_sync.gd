@@ -78,6 +78,40 @@ func test_a_customer_who_leaves_on_the_host_leaves_for_the_guest() -> void:
 	assert_lt(guest_level.find_children("*", "BakeryCustomer", true, false).size(), before)
 
 
+func test_a_new_one_s_state_waits_for_its_copy() -> void:
+	var pcs: Array[Node] = await _pcs.two_pcs()
+	var guest_level: Node3D = OnlinePcs.level(pcs[1])
+	var customer: BakeryCustomer = OnlinePcs.level(pcs[0]).add_customer()
+	customer.set_physics_process(false)
+	customer.set_process(false)
+	customer.global_position += Vector3(2.0, 0, 1.0)
+	var npcs: NpcSync = pcs[0].npcs
+	var index := npcs.npcs.find(customer)
+	# Sent in the same frame it came in, before the guests make its copy: it would be lost, and a car that stands
+	# still never sends it again (the traffic control's queue).
+	npcs._send()
+	assert_false(npcs._sent.has(index), "it waits until its copy is announced")
+	await wait_until(func() -> bool: return guest_level.find_children("*", "BakeryCustomer", true, false).size() >= 1, 5.0)
+	var copy: BakeryCustomer = guest_level.find_children("*", "BakeryCustomer", true, false)[0]
+	await wait_until(func() -> bool: return copy.global_position.distance_to(customer.global_position) < 0.05, 5.0)
+	assert_almost_eq(copy.global_position, customer.global_position, Vector3.ONE * 0.05)
+
+
+func test_one_that_stops_sends_where_it_stopped_once_more_for_sure() -> void:
+	var pcs: Array[Node] = await _pcs.two_pcs()
+	var npcs: NpcSync = pcs[0].npcs
+	var marta := _baker(pcs[0])
+	marta.set_physics_process(false)
+	marta.set_process(false)
+	var index := npcs.npcs.find(marta)
+	npcs._send()
+	marta.global_position += Vector3(0.5, 0, 0)
+	npcs._send()
+	assert_true(npcs._unsure.has(index), "a step goes unreliably")
+	npcs._send()
+	assert_false(npcs._unsure.has(index), "standing still, the last one went again reliably")
+
+
 func test_busy_states_go_in_packets_under_the_mtu() -> void:
 	var ids := PackedInt32Array()
 	var states := []
