@@ -47,6 +47,13 @@ func test_twelve_spots_six_for_heavy_things_all_inside() -> void:
 	assert_eq(ids.size(), 12, "no two spots share an id")
 
 
+func test_the_stacks_of_plates_stay_whole_when_nobody_touches_them() -> void:
+	var pizzeria := _pizzeria()
+	await wait_seconds(4.0)
+	assert_eq(pizzeria.broken_plates, 0)
+	assert_eq(pizzeria.plates.size(), PizzaRaid.PLATE_STACKS.size() * PizzaRaid.PLATES_PER_STACK)
+
+
 func test_a_plate_that_breaks_counts() -> void:
 	var pizzeria := _pizzeria()
 	await wait_physics_frames(2)
