@@ -143,6 +143,22 @@ function pupil(b, skin, hair, bag, { girl = false, freckles = false } = {}) {
 	else b.add('head', hair, new THREE.ConeGeometry(0.05, 0.12, 4), { pos: V(0.03, 1.6, 0.05), rot: [0.3, 0, -0.3] });
 }
 
+// A child at the birthday party (allanamiento-cumple.md): party clothes, a cone party hat with a pompom and, on the
+// birthday boy, a gold "7" on his chest.
+function partyKid(b, skin, hair, shirt, { girl = false, hat = gold, seven = false } = {}) {
+	pearBody(b, skin, { shirt, pants: girl ? shirt : C('kid_shorts', 0x2a3a6a), onePiece: girl, belted: false, shoes: C('kid_shoes', 0xf6f6f2) });
+	eyes(b, 1.32, 0.17, 0.085, 0.065);
+	mouth(b, { smile: true });
+	hairCap(b, hair, { y: 1.4, back: 0.02 });
+	if (girl) for (const s of [-1, 1]) b.add('head', hair, ellipsoid(0.07, 0.12, 0.07, 6, 4), { pos: V(s * 0.22, 1.36, -0.05), rot: [0, 0, s * 0.4] });
+	b.add('hat', hat, new THREE.ConeGeometry(0.12, 0.32, 10), { pos: V(0.02, 1.68, 0.0), rot: [0, 0, -0.12] });
+	b.add('hat', white, ellipsoid(0.05, 0.05, 0.05, 6, 4), { pos: V(0.04, 1.85, 0.0) });
+	if (seven) {
+		b.add('body', gold, new THREE.BoxGeometry(0.2, 0.05, 0.03), { pos: V(0, 0.98, 0.3) });
+		b.add('body', gold, new THREE.BoxGeometry(0.05, 0.26, 0.03), { pos: V(0.04, 0.85, 0.32), rot: [0, 0, -0.35] });
+	}
+}
+
 const NPCS = {
 	// Comisario: big, shouting, with a gold-banded cap, huge mustache and medals.
 	comisario(b) {
@@ -1380,6 +1396,39 @@ const NPCS = {
 	alumna_primaria(b) { pupil(b, SKIN.arena, C('hair_black', 0x1e1a1a), C('bag_yellow', 0xf2c23a), { girl: true }); },
 	alumno_b(b) { pupil(b, SKIN.cacao, C('hair_black', 0x1e1a1a), C('bag_green', 0x3aa04a)); },
 	alumna_b(b) { pupil(b, SKIN.crema, C('hair_carrot', 0xd8702a), C('bag_purple', 0x8a4ac8), { girl: true, freckles: true }); },
+	// The birthday raid (allanamiento-cumple.md, decision 340). Chispita, the party clown: a yellow and red striped
+	// one-piece with big buttons and a floppy bow tie, a white face with a red nose, a rainbow wig, giant green shoes and
+	// the horn on his belt.
+	chispita(b) {
+		const yellow = C('chispita_yellow', 0xf6d23a), red = C('chispita_red', 0xe0262e);
+		pearBody(b, SKIN.crema, { shirt: yellow, onePiece: true, belted: false, shoes: C('chispita_feet', 0x3a2a22) });
+		for (const y of [0.25, 0.45, 0.65, 0.85]) {
+			const r = y < 0.5 ? 0.36 + Math.min(y - 0.1, 0.2) * 0.6 - Math.max(y - 0.3, 0) * 0.1 : y < 0.8 ? 0.46 - (y - 0.5) * 0.33 : 0.36 - (y - 0.8) * 0.48;
+			b.add('body', red, loft([{ y: y - 0.04, rx: r + 0.012, rz: r * 0.89 + 0.012 }, { y: y + 0.04, rx: r + 0.012, rz: r * 0.89 + 0.012 }], 10));
+		}
+		for (let k = 0; k < 3; k++) b.add('body', C('chispita_button', 0x2a6ad8), new THREE.CylinderGeometry(0.05, 0.05, 0.02, 8), { pos: V(0, 0.95 - k * 0.2, 0.3 + k * 0.04), rot: [Math.PI / 2 - 0.3, 0, 0] });
+		for (const s of [-1, 1]) b.add('body', C('chispita_bow', 0x8a3ac8), ellipsoid(0.12, 0.07, 0.04, 6, 4), { pos: V(s * 0.1, 1.1, 0.19), rot: [0, 0, s * 0.3] });
+		eyes(b, 1.34, 0.17, 0.08, 0.05);
+		b.add('face', white, ellipsoid(0.17, 0.17, 0.06, 10, 6), { pos: V(0, 1.28, 0.16) });
+		b.add('face', red, new THREE.TorusGeometry(0.08, 0.02, 4, 10, Math.PI), { pos: V(0, 1.23, 0.215), rot: [0, 0, Math.PI] });
+		b.add('nose', red, ellipsoid(0.06, 0.06, 0.06, 8, 6), { pos: V(0, 1.3, 0.225) });
+		const rainbow = [0xe0262e, 0xf07a1a, 0xf6d23a, 0x3aa04a, 0x2a6ad8, 0x8a3ac8].map((c, i) => C(`wig_${i}`, c));
+		let i = 0;
+		for (const [x, y, z, r] of [[-0.2, 1.4, 0.0, 0.12], [0.2, 1.4, 0.0, 0.12], [-0.13, 1.5, -0.1, 0.11], [0.13, 1.5, -0.1, 0.11],
+			[0, 1.48, -0.15, 0.12], [-0.27, 1.3, -0.03, 0.1], [0.27, 1.3, -0.03, 0.1], [0, 1.55, 0.0, 0.1], [-0.08, 1.53, 0.08, 0.08], [0.08, 1.53, 0.08, 0.08]]) {
+			b.add('wig', rainbow[i++ % rainbow.length], ellipsoid(r, r, r, 7, 5), { pos: V(x, y, z) });
+		}
+		for (const s of [-1, 1]) {
+			b.add('gloves', white, ellipsoid(0.09, 0.09, 0.09, 7, 5), { pos: V(s * 0.49, 0.64, 0.09) });
+			b.add('shoes', C('chispita_shoes', 0x3ac84a), ellipsoid(0.17, 0.1, 0.36, 8, 5), { pos: V(s * 0.21, 0.09, 0.24) });
+		}
+		b.add('horn', C('horn_brass', 0xd8a83a, { metalness: 0.5, roughness: 0.4 }), new THREE.ConeGeometry(0.06, 0.18, 8, 1, true), { pos: V(0.4, 0.55, 0.12), rot: [0, 0, -Math.PI / 2] });
+		b.add('horn', red, ellipsoid(0.06, 0.06, 0.06, 6, 4), { pos: V(0.3, 0.55, 0.12) });
+	},
+	// Tomasito, the birthday boy: a green party shirt with a big gold "7" on it and a gold party hat.
+	tomasito(b) { partyKid(b, SKIN.crema, C('hair_brown', 0x6a4022), C('tomasito_shirt', 0x3aa04a), { seven: true, hat: gold }); },
+	nene_fiesta(b) { partyKid(b, SKIN.cacao, C('hair_black', 0x1e1a1a), C('kid_shirt_blue', 0x2a8ad8), { hat: C('hat_red', 0xe0262e) }); },
+	nena_fiesta(b) { partyKid(b, SKIN.arena, C('hair_carrot', 0xd8702a), C('kid_dress_pink', 0xff7ab8), { girl: true, hat: C('hat_blue', 0x2a6ad8) }); },
 	// Señorita Rosa, the teacher: a long green skirt, a lilac cardigan, glasses on a cord, a bun with a pencil and a
 	// piece of chalk in her hand.
 	maestra(b) {
@@ -1492,7 +1541,7 @@ export const models = Object.fromEntries(NPC_NAMES.map((n) => [`npc_${n}`, () =>
 	return b.build();
 }]));
 
-const SCALE = { cartero: 0.95, chola: 0.82, comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, comprador: 1.0, compradora: 0.9, martillo: 1.1, portero_subasta: 1.15, ladron_oso: 1.15, abuelo_oso: 1.15, alumno_primaria: 0.62, alumna_primaria: 0.62, alumno_b: 0.62, alumna_b: 0.62, evaristo: 1.05, pepa: 0.85 };
+const SCALE = { cartero: 0.95, chola: 0.82, comisario: 1.15, comisario_pijama: 1.15, abuelo: 0.82, abuela: 0.8, chela: 0.85, portero: 1.2, corista: 0.85, corista_b: 0.85, ernesto: 1.0, portera: 0.9, mimo: 0.85, mimo_b: 0.85, pausa: 0.95, mimo_portero: 1.2, invitado: 0.9, invitado_b: 0.9, serpentina: 0.9, patovica: 1.25, socio: 1.1, socio_b: 1.1, toro: 1.2, recepcionista: 0.9, alumno: 0.9, alumna: 0.85, ganzua: 0.9, director: 1.0, vigia: 1.2, cocinero: 1.0, cocinera: 0.9, mozo: 0.9, flambe: 1.1, maitre: 1.0, ajedrecista: 0.9, ajedrecista_b: 0.85, alfil: 1.05, conserje: 1.1, motoquero: 1.15, motoquera: 0.95, cromado: 1.3, patovica_moto: 1.25, comprador: 1.0, compradora: 0.9, martillo: 1.1, portero_subasta: 1.15, ladron_oso: 1.15, abuelo_oso: 1.15, alumno_primaria: 0.62, alumna_primaria: 0.62, alumno_b: 0.62, alumna_b: 0.62, evaristo: 1.05, pepa: 0.85, chispita: 1.0, tomasito: 0.62, nene_fiesta: 0.62, nena_fiesta: 0.62 };
 const row = (names, z = 0) => names.map((n, i) => ({ name: `npc_${n}`, pos: [(i - (names.length - 1) / 2) * 1.2, 0, z], rotY: 0.3, scale: SCALE[n] }));
 export const views = {
 	npcs_a: { items: row(NPC_NAMES.slice(0, 5)), cam: { pos: [0, 1.3, 8.0], target: [0, 0.85, 0], fov: 34 } },

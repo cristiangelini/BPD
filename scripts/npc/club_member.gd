@@ -58,6 +58,10 @@ const MODELS := {
 	"comprador": preload("res://assets/models/npc_comprador.glb"),
 	"compradora": preload("res://assets/models/npc_compradora.glb"),
 	"martillo": preload("res://assets/models/npc_martillo.glb"),
+	# The birthday party raid's children (allanamiento-cumple.md): Tomasito, the birthday boy, and his guests.
+	"tomasito": preload("res://assets/models/npc_tomasito.glb"),
+	"party_kid": preload("res://assets/models/npc_nene_fiesta.glb"),
+	"party_kid_b": preload("res://assets/models/npc_nena_fiesta.glb"),
 }
 const SCALES := {"abuelo": 0.82, "abuela": 0.8, "chela": 0.85, "corista": 0.85, "corista_b": 0.85, "ernesto": 1.0,
 	"mimo": 0.85, "mimo_b": 0.85, "pausa": 0.95, "invitado": 0.9, "invitado_b": 0.9, "serpentina": 0.9,
@@ -66,7 +70,8 @@ const SCALES := {"abuelo": 0.82, "abuela": 0.8, "chela": 0.85, "corista": 0.85, 
 	"cocinero": 1.0, "cocinera": 0.9, "mozo": 0.9, "flambe": 1.1,
 	"ajedrecista": 0.9, "ajedrecista_b": 0.85, "alfil": 1.05,
 	"motoquero": 1.15, "motoquera": 0.95, "cromado": 1.3,
-	"comprador": 1.0, "compradora": 0.9, "martillo": 1.1}
+	"comprador": 1.0, "compradora": 0.9, "martillo": 1.1,
+	"tomasito": SchoolPupil.KID_SCALE, "party_kid": SchoolPupil.KID_SCALE, "party_kid_b": SchoolPupil.KID_SCALE}
 ## What each look says when talked to (the key with the line's number, and how many lines), the prompt, and what it
 ## shouts when cuffed. The bosses (BOSSES) have their own lines.
 const TALK := {
@@ -107,6 +112,9 @@ const TALK := {
 	"comprador": ["AUCTION_GOSSIP_%d", 10, "PROMPT_TALK_AUCTION", "AUCTION_CUFFED"],
 	"compradora": ["AUCTION_GOSSIP_%d", 10, "PROMPT_TALK_AUCTION", "AUCTION_CUFFED"],
 	"martillo": ["MARTILLO_%d", 4, "PROMPT_TALK_MARTILLO", "MARTILLO_CUFFED"],
+	"tomasito": ["TOMASITO_%d", 3, "PROMPT_TALK_KID", "BIRTHDAY_KID_CUFFED"],
+	"party_kid": ["BIRTHDAY_KID_%d", 8, "PROMPT_TALK_KID", "BIRTHDAY_KID_CUFFED"],
+	"party_kid_b": ["BIRTHDAY_KID_%d", 8, "PROMPT_TALK_KID", "BIRTHDAY_KID_CUFFED"],
 }
 const BOSSES: Array[String] = ["chela", "ernesto", "pausa", "toro", "director", "flambe", "alfil", "cromado", "martillo"]
 const GOSSIP_LINES := 12

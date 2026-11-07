@@ -93,6 +93,7 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 	var cake_lab := {}
 	var hotel := {}
 	var gym := {}
+	var birthday := {}
 	var apartments := {}
 	var garage := {}
 	for i in 900:
@@ -114,6 +115,8 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 				hotel[HotelRaid.pick_story(case_seed, PackedStringArray())] = true
 			"gym_raid":
 				gym[GymRaid.pick_story(case_seed, [])] = true
+			"birthday_raid":
+				birthday[BirthdayRaid.pick_story(case_seed, [])] = true
 			"apartments":
 				apartments[ApartmentTower.pick_story(case_seed, [])] = true
 			"garage":
@@ -129,6 +132,7 @@ func test_every_story_of_each_place_still_comes_up() -> void:
 	assert_eq(cake_lab.size(), CakeLab.STORIES.size())
 	assert_eq(hotel.size(), HotelRaid.STORIES.size())
 	assert_eq(gym.size(), GymRaid.STORIES.size())
+	assert_eq(birthday.size(), BirthdayRaid.STORIES.size())
 	assert_eq(apartments.size(), ApartmentTower.STORIES.size())
 	assert_eq(garage.size(), Garage.STORIES.size())
 

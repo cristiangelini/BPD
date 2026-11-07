@@ -6643,3 +6643,148 @@ HINT_ESCAPE_fair,¡Don Tómbola vio la prueba y se escapa en el auto! Tienen un 
 CHASE_FAIR_LINE_1,"¡Pasen, pasen, que me voy! ¡El parque cierra temprano hoy!","Step right up, I'm leaving! The fair closes early today!","Cheguem, cheguem, que eu vou embora! O parque fecha cedo hoje!"
 CHASE_FAIR_LINE_2,"¡No me toquen el auto, que también es un juego!","Don't touch my car, it's a ride too!","Não mexam no meu carro, que ele também é um brinquedo!"
 CHASE_FAIR_LINE_3,"¡Está bien, está bien! ¿Alguien quiere un boleto gratis?","Fine, fine! Anybody want a free ticket?","Tá bom, tá bom! Alguém quer um ingresso grátis?"
+MENU_BIRTHDAY_RAID,"Cumpleaños (allanamiento) (prueba)","Birthday party (raid) (test)","Aniversário (batida) (teste)"
+BIRTHDAY_RAID_BANNER,"¡Feliz cumple, Tomasito!","Happy birthday, Tomasito!","Feliz aniversário, Tomasito!"
+HINT_TILL_KEY_BIRTHDAY,"¡Una llave entre los pañuelos de colores! Abre la oficina del salón.","A key among the colored scarves! It opens the hall's office.","Uma chave entre os lenços coloridos! Abre o escritório do salão."
+CASE_FAILED_LAWYER_BIRTHDAY,"El payaso Chispita llamó a su abogado. Caso perdido.","Chispita the clown called his lawyer. Case lost.","O palhaço Chispita chamou o advogado. Caso perdido."
+BIRTHDAY_POP,"¡PUM!","POP!","PUM!"
+BIRTHDAY_CAKE_FELL,"¡El pastel! ¡Se cayó el pastel!","The cake! The cake fell!","O bolo! O bolo caiu!"
+PROMPT_TALK_KID,"E: hablar con el chico","E: talk to the kid","E: falar com a criança"
+BIRTHDAY_KID_CUFFED,"¡Mamáaaa! ¡Me esposó un policía!","Mommyyy! A cop cuffed me!","Mamãããe! Um policial me algemou!"
+TOMASITO_0,"¡Hoy cumplo siete! ¿Me trajiste un regalo?","I'm turning seven today! Did you bring me a present?","Hoje faço sete anos! Você me trouxe um presente?"
+TOMASITO_1,"¿Ustedes son del show? ¿Dónde está la sirena?","Are you part of the show? Where's the siren?","Vocês são do show? Cadê a sirene?"
+TOMASITO_2,"Cuando rompamos la piñata te doy un caramelo. Uno.","When we break the piñata I'll give you a candy. One.","Quando a gente quebrar a piñata eu te dou uma bala. Uma."
+BIRTHDAY_KID_0,"¿Me llevas en el patrullero? ¿Con la sirena?","Will you take me in the patrol car? With the siren?","Você me leva na viatura? Com a sirene?"
+BIRTHDAY_KID_1,"¡Yo también tengo esposas! Son de plástico.","I have handcuffs too! They're plastic.","Eu também tenho algemas! São de plástico."
+BIRTHDAY_KID_2,"El payaso hace perritos de globo. Uno se le escapó volando.","The clown makes balloon dogs. One flew away.","O palhaço faz cachorrinhos de bexiga. Um saiu voando."
+BIRTHDAY_KID_3,"¿Cuándo cortan el pastel? Ya tengo hambre.","When do they cut the cake? I'm hungry.","Quando vão cortar o bolo? Já estou com fome."
+BIRTHDAY_KID_4,"Mi mamá fue a comprar hielo. Hace como una hora.","My mom went to buy ice. Like an hour ago.","Minha mãe foi comprar gelo. Faz tipo uma hora."
+BIRTHDAY_KID_5,"¡En el inflable se salta altísimo! Pruébalo.","You jump super high on the bouncy castle! Try it.","No pula-pula se pula altíssimo! Experimenta."
+BIRTHDAY_KID_6,"Tomasito ya festejó el cumple la semana pasada. Y la otra.","Tomasito already had his party last week. And the week before.","O Tomasito já festejou o aniversário semana passada. E na outra."
+BIRTHDAY_KID_7,"¿Eres policía de verdad o eres el payaso disfrazado?","Are you a real cop or the clown in a costume?","Você é policial de verdade ou é o palhaço fantasiado?"
+LOC_in_bouncy_castle,adentro del inflable,inside the bouncy castle,dentro do pula-pula
+LOC_under_gift_table,debajo de la mesa de regalos,under the gift table,embaixo da mesa de presentes
+LOC_in_office,en la oficina del salón,in the hall's office,no escritório do salão
+LOC_in_coat_check,en el guardarropa,in the coat check,na chapelaria
+LOC_in_restroom,en el baño,in the restroom,no banheiro
+LOC_by_photo_steps,al lado de la escalerita de la foto,by the photo steps,ao lado da escadinha da foto
+LOC_on_food_table,en la mesa de la comida,on the food table,na mesa da comida
+LOC_in_cup_bin,en el tacho de los vasitos,in the bin of paper cups,no cesto dos copinhos
+LOC_on_gift_table,arriba de la mesa de regalos,on the gift table,em cima da mesa de presentes
+LOC_behind_balloon_arch,detrás del arco de globos,behind the balloon arch,atrás do arco de bexigas
+LOC_on_hall_office_desk,en el escritorio de la oficina del salón,on the desk in the hall's office,na mesa do escritório do salão
+LOC_on_top_step,en el escalón de arriba de la foto,on the top photo step,no degrau de cima da foto
+CHISPITA_LINE_1,"¿Qué le dice un globo a otro? ¡Nada, los globos no hablan!","What does one balloon say to another? Nothing, balloons can't talk!","O que um balão diz para o outro? Nada, balões não falam!"
+CHISPITA_LINE_2,"¡Cuic, cuic! Son mis zapatos, oficial. Talle 58.","Squeak, squeak! It's my shoes, officer. Size 58.","Cuic, cuic! São meus sapatos, policial. Número 58."
+CHISPITA_LINE_3,"¿Quién quiere un perrito de globo? ¡Sale perrito!","Who wants a balloon doggy? One doggy coming up!","Quem quer um cachorrinho de balão? Saindo um cachorrinho!"
+CHISPITA_LINE_4,"Oficiales, ¿también festejan? Para los grandes hay jugo de naranja.","Officers, here to party too? There's orange juice for the grown-ups.","Policiais, vieram festejar também? Para os adultos tem suco de laranja."
+CHISPITA_PRINTER,"¡Las velas! ¡Llegó la hora del pastel! ¡Apaguen las luces!","The candles! It's cake time! Lights off!","As velas! Chegou a hora do bolo! Apaguem as luzes!"
+CHISPITA_FIX_1,"¡Que los cumplas feliz, que los cumplas feliz!","Happy birthday to you, happy birthday to you!","Parabéns pra você, nesta data querida!"
+CHISPITA_FIX_2,"¡Que los cumplas, Tomasito, que los cumplas feliz!","Happy birthday, dear Tomasito, happy birthday to you!","Muitas felicidades, Tomasito, muitos anos de vida!"
+CHISPITA_FIX_3,"¡Pide tres deseos y sopla fuerte!","Make three wishes and blow hard!","Faça três pedidos e sopre forte!"
+CHISPITA_FIX_DONE,"¡Bravo! ¡Un aplauso para Tomasito! ¡Luces!","Hooray! A round of applause for Tomasito! Lights!","Bravo! Uma salva de palmas para o Tomasito! Luzes!"
+CHISPITA_HURT,"¡Ay, mi nariz! ¡Delante de los chicos no, oficial!","Ow, my nose! Not in front of the kids, officer!","Ai, meu nariz! Na frente das crianças não, policial!"
+CHISPITA_DOOR,"¿Una puerta rota? ¡Esto es un cumpleaños infantil!","A broken door? This is a kids' birthday party!","Uma porta quebrada? Isto é um aniversário infantil!"
+CHISPITA_SAW,"¡Eso no se toca! Es parte del show.","Don't touch that! It's part of the show.","Isso não se toca! Faz parte do show."
+CHISPITA_NOTHING,"Yo solo hago globos y cuento chistes, oficial.","I just make balloons and tell jokes, officer.","Eu só faço balões e conto piadas, policial."
+CHISPITA_OFFENDED,"No hablo más. Un payaso también tiene sentimientos.","I'm done talking. Clowns have feelings too.","Não falo mais. Palhaço também tem sentimentos."
+CHISPITA_LAWYER,"¡Me están arruinando el cumple! ¡Llamo a mi abogado, que también es payaso!","You're ruining the party! I'm calling my lawyer, he's a clown too!","Vocês estão estragando o aniversário! Vou ligar para o meu advogado, que também é palhaço!"
+CHISPITA_BALLOON,"¡Mi arco de globos! ¡Me llevó toda la mañana!","My balloon arch! It took me all morning!","Meu arco de balões! Levei a manhã inteira!"
+CHISPITA_CRYING,"¡Hicieron llorar a los chicos! ¡Esto va a la denuncia!","You made the kids cry! That goes in the complaint!","Vocês fizeram as crianças chorarem! Isso vai para a denúncia!"
+CHISPITA_SANG,"¡Eso, oficial! ¡Qué voz! ¿Canta en cumpleaños?","That's it, officer! What a voice! Do you sing at parties?","Isso, policial! Que voz! Canta em aniversários?"
+PROMPT_CANDLES,"E: prender las velas","E: light the candles","E: acender as velas"
+PROMPT_SING,"E: cantar el feliz cumpleaños","E: sing happy birthday","E: cantar parabéns"
+HINT_CANDLES_RESTING,"Las velas se están volviendo a prender solas. Espera un poco.","The candles are relighting themselves. Wait a bit.","As velas estão se reacendendo sozinhas. Espere um pouco."
+PROMPT_ASK_BALLOON,"E: pedirle un perrito de globo","E: ask for a balloon dog","E: pedir um cachorrinho de balão"
+HINT_BALLOON_WAIT,"Chispita todavía está inflando el próximo globo. Espera un poco.","Chispita is still blowing up the next balloon. Wait a bit.","O Chispita ainda está enchendo o próximo balão. Espere um pouco."
+CHISPITA_BALLOON_DOG,"¡Un perrito de globo para el oficial! ¡Guau!","A balloon doggy for the officer! Woof!","Um cachorrinho de balão para o policial! Au-au!"
+PROMPT_GIVE_BALLOON,"E: cambiárselo por el globo","E: trade it for the balloon","E: trocar pelo balão"
+BIRTHDAY_KID_THANKS,"¡Un perrito! Toma, ya no lo quiero.","A doggy! Here, I don't want that anymore.","Um cachorrinho! Toma, não quero mais isso."
+BIRTHDAY_KID_HANG,"¡Policía! ¡Llévame en el patrullero!","Officer! Take me for a ride in the patrol car!","Polícia! Me leva na viatura!"
+BIRTHDAY_KID_GRAB,"¡Mío! ¡Me lo llevo al castillo!","Mine! I'm taking it to the castle!","Meu! Vou levar pro castelo!"
+BIRTHDAY_KID_BORED,"Ya me aburrí de esto.","I'm bored of this now.","Já cansei disso."
+BIRTHDAY_KID_CRY,"¡Buaaaa! ¡Me empujaron!","Waaah! Somebody pushed me!","Buááá! Me empurraram!"
+BIRTHDAY_CANDIES,"¡Caramelos! ¡Son todos míos!","Candies! They're all mine!","Balas! São todas minhas!"
+PROMPT_PINATA,"E: pegarle a la piñata","E: whack the piñata","E: bater na piñata"
+TOMASITO_PINATA_FIRST,"Si rompes la piñata, te cuento un secreto del payaso.","If you break the piñata, I'll tell you a secret about the clown.","Se você quebrar a piñata, eu te conto um segredo do palhaço."
+TOMASITO_NOT_YOU,"Tú no la rompiste. El secreto es para el que la rompió.","You didn't break it. The secret is for whoever did.","Não foi você que quebrou. O segredo é pra quem quebrou."
+TOMASITO_THANKS,"¡Gracias! ¡Ven, que te cuento un secreto!","Thanks! Come here, I'll tell you a secret!","Obrigado! Vem cá que eu te conto um segredo!"
+TOMASITO_SECRET,"Vi al payaso esconder algo %s. Shh, no le digas que te conté.","I saw the clown hide something %s. Shh, don't tell him I told you.","Eu vi o palhaço esconder uma coisa %s. Shh, não conta que eu te falei."
+BRIEF_BIRTHDAY_TIP_B,"Llegó una denuncia anónima: el payaso Chispita anima cumpleaños todos los sábados en el Salón Gala, pero se compró una casa con pileta y ningún chico se acuerda de su fiesta.","We got an anonymous tip: Chispita the clown works a birthday party at the Salón Gala every Saturday, but he just bought a house with a pool and no kid remembers his party.","Chegou uma denúncia anônima: o palhaço Chispita anima aniversários todo sábado no Salão Gala, mas comprou uma casa com piscina e nenhuma criança se lembra da festa dele."
+BRIEF_BIRTHDAY_TIP_D,"Hoy es el cumpleaños de Tomasito, que cumple 7. El salón está abierto; la oficina del fondo, cerrada con llave. Los padres fueron a comprar hielo.","Today is Tomasito's 7th birthday. The hall is open; the office at the back is locked. The parents went out to buy ice.","Hoje é o aniversário de 7 anos do Tomasito. O salão está aberto; o escritório do fundo, trancado. Os pais foram comprar gelo."
+BRIEF_BIRTHDAY_TIP_E,"Y no me arruinen el cumpleaños: el pastel se los descuento del sueldo, y si hacen llorar a un chico el payaso lo anota. Con Q ven la planilla.","And don't ruin the party: the cake comes out of your pay, and if you make a kid cry the clown writes it down. Press Q to see your checklist.","E não estraguem o aniversário: o bolo sai do salário de vocês, e se fizerem uma criança chorar o palhaço anota. Com Q vocês veem a planilha."
+BRIEF_DIAMOND_BALLOONS_B,"Chispita mete diamantes robados adentro de los globos, y cada chico se va de la fiesta con uno atado a la muñeca hasta la casa del comprador.","Chispita hides stolen diamonds inside the balloons, and every kid leaves the party with one tied to their wrist, all the way to the buyer's house.","O Chispita esconde diamantes roubados dentro dos balões, e cada criança sai da festa com um amarrado no pulso até a casa do comprador."
+BRIEF_DIAMOND_BALLOONS_C,"Traigan en el baúl del patrullero el ramo de globos que no flota: está lleno de diamantes.","Bring the bunch of balloons that doesn't float in the patrol car's trunk: it's full of diamonds.","Tragam no porta-malas da viatura o buquê de balões que não flutua: está cheio de diamantes."
+BRIEF_DIAMOND_BALLOONS_D,"Si encuentran el inflador con doble fondo o la lista de «clientes», mejor: todo suma.","If you find the pump with a double bottom or the «clients» list, even better: it all counts.","Se acharem a bomba de encher com fundo falso ou a lista de «clientes», melhor: tudo conta."
+OBJ_FIND_DIAMOND_BALLOONS,Llevarse el ramo de globos con diamantes,Take the bunch of balloons full of diamonds,Levar o buquê de balões com diamantes
+OBJ_EXTRA_TRICK_PUMP,Extra: el inflador con doble fondo,Extra: the pump with a double bottom,Extra: a bomba com fundo falso
+SUSPECT_diamond_balloons,Los globos de diamantes,The diamond balloons,Os balões de diamantes
+SUSPECT_pinata_bills,La piñata de billetes,The piñata full of bills,A piñata de notas
+SUSPECT_endless_birthday,El cumpleaños eterno,The endless birthday,O aniversário eterno
+SUSPECT_watch_castle,El inflable de los relojes,The bouncy castle of watches,O pula-pula dos relógios
+SUSPECT_returning_gifts,Los regalos que vuelven,The gifts that come back,Os presentes que voltam
+SUSPECT_double_clown,El payaso doble,The double clown,O palhaço duplo
+CLUE_SUSPECT_diamond_balloons,"Un recibo de una joyería: «Piedras sueltas, 40. Envolver en látex de colores».","A jeweler's receipt: «Loose stones, 40. Wrap in colored latex».","Um recibo de uma joalheria: «Pedras soltas, 40. Embrulhar em látex colorido»."
+CLUE_SUSPECT_pinata_bills,"Una factura de una imprenta: «Papel para billetes, 500 hojas. Que no lo vea nadie».","A print shop invoice: «Banknote paper, 500 sheets. Nobody must see it».","Uma nota de uma gráfica: «Papel para notas, 500 folhas. Que ninguém veja»."
+CLUE_SUSPECT_endless_birthday,"Un pedido de una panadería: «52 pasteles con un 7. Todos para Tomasito».","A bakery order: «52 cakes with a 7 on top. All for Tomasito».","Um pedido de uma padaria: «52 bolos com um 7. Todos para o Tomasito»."
+CLUE_SUSPECT_watch_castle,"Una nota pegada en el inflador: «Inflar despacio, que adentro hay relojes».","A note stuck on the blower: «Inflate slowly, there are watches inside».","Um bilhete colado no inflador: «Encher devagar, que dentro tem relógios»."
+CLUE_SUSPECT_returning_gifts,"Un ticket de una juguetería: «Devolución de 30 regalos. Todos de cumpleaños distintos».","A toy shop receipt: «Return of 30 gifts. All from different birthdays».","Um recibo de uma loja de brinquedos: «Devolução de 30 presentes. Todos de aniversários diferentes»."
+CLUE_SUSPECT_double_clown,"Una foto rota: dos payasos iguales, uno con zapatos talle 58 y otro con talle 40.","A torn photo: two identical clowns, one in size 58 shoes and one in size 40.","Uma foto rasgada: dois palhaços iguais, um com sapatos número 58 e outro número 40."
+OBJ_ENTER_BIRTHDAY,Entrar al salón (está abierto),Get into the hall (it's open),Entrar no salão (está aberto)
+OBJ_GUESS_BIRTHDAY,"Averiguar qué pasa en los cumpleaños de Chispita (con Q abierta, mantén 1, 2 o 3)","Find out what is going on at Chispita's parties (with Q open, hold 1, 2 or 3)","Descobrir o que acontece nas festas do Chispita (com Q aberto, segure 1, 2 ou 3)"
+OBJ_BROKEN_BIRTHDAY,Cosas rotas: %d (multa: %d),Broken things: %d (fines: %d),Coisas quebradas: %d (multa: %d)
+OBJ_COMPLAINT_BIRTHDAY,Queja de Chispita: %d%%,Chispita's complaint: %d%%,Queixa do Chispita: %d%%
+CHISPITA_SLIP,"«¡Yo no guardé nada %s!... Digo, ¿quién quiere un perrito de globo?»","“I didn't put anything %s!... I mean, who wants a balloon doggy?”","“Eu não guardei nada %s!... Quer dizer, quem quer um cachorrinho de balão?”"
+CLUE_TOMASITO,Tomasito vio al payaso esconder algo %s,Tomasito saw the clown hide something %s,O Tomasito viu o palhaço esconder algo %s
+CLUE_DIAMOND_BALLOON,"Un globo del arco colgaba para abajo en vez de flotar. Reventó y se cayó un diamante de verdad.","A balloon in the arch hung down instead of floating. It popped and a real diamond fell out.","Um balão do arco estava pendurado para baixo em vez de flutuar. Estourou e caiu um diamante de verdade."
+BIRTHDAY_GLASS_PEBBLES,"¡Piedritas! Son de vidrio, de las de la pecera.","Pebbles! They're glass, the fish tank kind.","Pedrinhas! São de vidro, das de aquário."
+HINT_ESCAPE_birthday,¡Chispita vio la prueba y se escapa en el auto! Tienen un minuto para agarrarlo.,Chispita saw the evidence and is getting away in his car! You have one minute to catch him.,O Chispita viu a prova e está fugindo de carro! Vocês têm um minuto para pegá-lo.
+CRIME_owner_birthday,"¡Novatos! Ayer se trajeron al payaso Chispita del Salón Gala, y lo tenemos en la sala de interrogatorio. Algo escondió en la fiesta que no encontraron.","Rookies! Yesterday you brought in Chispita the clown from the Salón Gala, and he's in the interrogation room. He hid something at the party that you didn't find.","Novatos! Ontem vocês trouxeram o palhaço Chispita do Salão Gala, e ele está na sala de interrogatório. Ele escondeu algo na festa que vocês não encontraram."
+CONFESS_owner_birthday,"¡Está bien! ¡Fui yo! Pero el perrito de globo me salió perfecto.","Fine! It was me! But that balloon doggy came out perfect.","Tá bom! Fui eu! Mas o cachorrinho de balão ficou perfeito."
+BRIEF_PINATA_BILLS_B,"Chispita imprime billetes falsos y los gasta de a poco: los mete envolviendo los caramelos de cada piñata que cuelga.","Chispita prints fake money and spends it a little at a time: he wraps the candies of every piñata he hangs in it.","O Chispita imprime notas falsas e gasta aos poucos: embrulha as balas de cada piñata que pendura com elas."
+BRIEF_PINATA_BILLS_C,"Traigan en el baúl del patrullero la plancha de imprimir billetes. Pesa 6 kilos.","Bring the banknote printing plate in the patrol car's trunk. It weighs 6 kilos.","Tragam no porta-malas da viatura a chapa de imprimir notas. Pesa 6 quilos."
+BRIEF_PINATA_BILLS_D,"Si encuentran la bolsa de billetes o el sello del «Banco Feliz», mejor: todo suma.","If you find the bag of bills or the «Happy Bank» stamp, even better: it all counts.","Se acharem o saco de notas ou o carimbo do «Banco Feliz», melhor: tudo conta."
+OBJ_FIND_PINATA_PLATE,Llevarse la plancha de imprimir billetes,Take the banknote printing plate,Levar a chapa de imprimir notas
+OBJ_EXTRA_PINATA_BILLS,Extra: la bolsa de billetes de la piñata,Extra: the piñata's bag of bills,Extra: o saco de notas da piñata
+OBJ_EXTRA_HAPPY_BANK_STAMP,Extra: el sello del Banco Feliz,Extra: the Happy Bank stamp,Extra: o carimbo do Banco Feliz
+BIRTHDAY_PINATA_BILLS,"¡Billetes! Del «Banco Feliz»","Bills! From the «Happy Bank»","Notas! Do «Banco Feliz»"
+CLUE_PINATA_BILLS,"Los caramelos de la piñata venían envueltos en billetes del «Banco Feliz». Ese banco no existe.","The piñata's candies came wrapped in «Happy Bank» bills. That bank doesn't exist.","As balas da piñata vinham embrulhadas em notas do «Banco Feliz». Esse banco não existe."
+BRIEF_ENDLESS_BIRTHDAY_B,"Chispita alquila el salón todas las semanas para «el cumpleaños 7 de Tomasito» y les cobra la entrada a los padres. Los invitados son chicos actores.","Chispita rents the hall every week for «Tomasito's 7th birthday» and charges the parents to come in. The guests are kid actors.","O Chispita aluga o salão toda semana para «o aniversário de 7 anos do Tomasito» e cobra a entrada dos pais. Os convidados são crianças atrizes."
+BRIEF_ENDLESS_BIRTHDAY_C,"Traigan en el baúl del patrullero el álbum con las fotos de todas las fiestas. Pesa 1 kilo.","Bring the album with the photos of every party in the patrol car's trunk. It weighs 1 kilo.","Tragam no porta-malas da viatura o álbum com as fotos de todas as festas. Pesa 1 quilo."
+BRIEF_ENDLESS_BIRTHDAY_D,"Si encuentran la caja de velas «7» por mayor o los contratos de los chicos, mejor: todo suma.","If you find the wholesale box of «7» candles or the kids' contracts, even better: it all counts.","Se acharem a caixa de velas «7» no atacado ou os contratos das crianças, melhor: tudo conta."
+OBJ_FIND_BIRTHDAY_ALBUM,Llevarse el álbum de las 52 fiestas,Take the album of the 52 parties,Levar o álbum das 52 festas
+OBJ_EXTRA_SEVEN_CANDLES,Extra: la caja de velas «7» por mayor,Extra: the wholesale box of «7» candles,Extra: a caixa de velas «7» no atacado
+OBJ_EXTRA_ACTOR_CONTRACTS,Extra: los contratos de los chicos actores,Extra: the kid actors' contracts,Extra: os contratos das crianças atrizes
+TOMASITO_SEVEN_AGAIN,"¡Cumplo siete otra vez! Si rompes la piñata, te cuento un secreto.","I'm turning seven again! If you break the piñata, I'll tell you a secret.","Faço sete anos de novo! Se você quebrar a piñata, eu te conto um segredo."
+CLUE_ENDLESS_BIRTHDAY,"Tomasito dice que cumple siete «otra vez», y los invitados se saben la canción con coreografía.","Tomasito says he's turning seven «again», and the guests know the song with a choreography.","O Tomasito diz que faz sete anos «de novo», e os convidados sabem a música com coreografia."
+BIRTHDAY_KID_WAGES_1,"¿Y mi sueldo? Hoy es mi tercer cumple de Tomasito esta semana.","Where's my pay? This is my third Tomasito birthday this week.","Cadê meu salário? É o meu terceiro aniversário do Tomasito esta semana."
+BIRTHDAY_KID_WAGES_2,"Sin pago no hay coreografía.","No pay, no choreography.","Sem pagamento, sem coreografia."
+BIRTHDAY_KID_WAGES_3,"Mi agente dice que no hablo con policías gratis.","My agent says I don't talk to cops for free.","Meu agente diz que eu não falo com policiais de graça."
+BRIEF_WATCH_CASTLE_B,"Chispita esconde relojes robados donde nadie busca: adentro del piso del inflable, mientras los chicos saltan arriba.","Chispita hides stolen watches where nobody looks: inside the bouncy castle's floor, while the kids jump on top.","O Chispita esconde relógios roubados onde ninguém procura: dentro do chão do pula-pula, enquanto as crianças pulam em cima."
+BRIEF_WATCH_CASTLE_C,"Traigan en el baúl del patrullero la bolsa de relojes. Pesa 8 kilos.","Bring the bag of watches in the patrol car's trunk. It weighs 8 kilos.","Tragam no porta-malas da viatura o saco de relógios. Pesa 8 quilos."
+BRIEF_WATCH_CASTLE_D,"Si encuentran el inflador trucho o la factura de la relojería, mejor: todo suma.","If you find the dodgy blower or the watch shop's invoice, even better: it all counts.","Se acharem o inflador falsificado ou a nota fiscal da relojoaria, melhor: tudo conta."
+OBJ_FIND_CASTLE_WATCHES,Llevarse la bolsa de relojes robados,Take the bag of stolen watches,Levar o saco de relógios roubados
+OBJ_EXTRA_PARTY_BLOWER,Extra: el inflador trucho,Extra: the dodgy blower,Extra: o inflador falsificado
+OBJ_EXTRA_WATCH_INVOICE,Extra: la factura de la relojería,Extra: the watch shop's invoice,Extra: a nota fiscal da relojoaria
+BIRTHDAY_CLINC,"¡Clinc, clinc!","Clink, clink!","Clinc, clinc!"
+CLUE_WATCH_CASTLE,"Saltar en el inflable hace «clinc, clinc». Algo de metal hay adentro del piso.","Jumping on the bouncy castle goes «clink, clink». There's something metal inside the floor.","Pular no pula-pula faz «clinc, clinc». Tem algo de metal dentro do chão."
+BIRTHDAY_CASTLE_PSSS,"¡Psssssss!","Psssssss!","Psssssss!"
+BIRTHDAY_KID_INFLATE,"¡Ya lo inflamos de nuevo! ¡A saltar!","We blew it up again! Let's jump!","Já enchemos de novo! Vamos pular!"
+BRIEF_RETURNING_GIFTS_B,"Chispita se lleva los regalos de cada cumpleaños que anima y los vuelve a vender en la juguetería. Los chicos nunca abren nada.","Chispita takes the gifts from every birthday he entertains and sells them back to the toy shop. The kids never open anything.","O Chispita leva os presentes de cada aniversário que anima e revende na loja de brinquedos. As crianças nunca abrem nada."
+BRIEF_RETURNING_GIFTS_C,"Traigan en el baúl del patrullero el cuaderno donde anota cada reventa. Pesa medio kilo.","Bring the notebook where he writes down every resale in the patrol car's trunk. It weighs half a kilo.","Tragam no porta-malas da viatura o caderno onde ele anota cada revenda. Pesa meio quilo."
+BRIEF_RETURNING_GIFTS_D,"Si encuentran el regalo con la etiqueta de la juguetería o el rollo de papel de regalo, mejor: todo suma.","If you find the gift with the toy shop's tag or the roll of wrapping paper, even better: it all counts.","Se acharem o presente com a etiqueta da loja de brinquedos ou o rolo de papel de presente, melhor: tudo conta."
+OBJ_FIND_RESALE_NOTEBOOK,Llevarse el cuaderno de reventa de regalos,Take the gift resale notebook,Levar o caderno de revenda de presentes
+OBJ_EXTRA_TAGGED_GIFT,Extra: el regalo con la etiqueta de la juguetería,Extra: the gift with the toy shop's tag,Extra: o presente com a etiqueta da loja de brinquedos
+OBJ_EXTRA_WRAPPING_ROLL,Extra: el rollo de papel de regalo de la juguetería,Extra: the toy shop's roll of wrapping paper,Extra: o rolo de papel de presente da loja de brinquedos
+BIRTHDAY_GIFT_BEEP,"¡Bip, bip, bip!","Beep, beep, beep!","Bip, bip, bip!"
+CLUE_RETURNING_GIFTS,"Un regalo de la mesa pita en la puerta, como en una tienda: todavía tiene la alarma de la juguetería.","A gift from the table beeps at the door, like in a shop: it still has the toy shop's alarm tag.","Um presente da mesa apita na porta, como numa loja: ainda tem o alarme da loja de brinquedos."
+CHISPITA_GIFT_TAKE,"Este regalo lo guardo yo, para que no se rompa.","I'll keep this gift safe, so it doesn't break.","Este presente eu guardo, para não quebrar."
+BRIEF_DOUBLE_CLOWN_B,"Chispita son dos: mientras uno anima la fiesta, el otro anota qué casas quedan vacías. Se turnan en el baño.","Chispita is two people: while one entertains the party, the other notes which houses are left empty. They swap in the restroom.","O Chispita são dois: enquanto um anima a festa, o outro anota quais casas ficam vazias. Eles trocam no banheiro."
+BRIEF_DOUBLE_CLOWN_C,"Traigan en el baúl del patrullero el segundo disfraz, con el plano de la casa en el bolsillo. Pesa 3 kilos.","Bring the second costume, with the house plan in its pocket, in the patrol car's trunk. It weighs 3 kilos.","Tragam no porta-malas da viatura a segunda fantasia, com a planta da casa no bolso. Pesa 3 quilos."
+BRIEF_DOUBLE_CLOWN_D,"Si encuentran la segunda nariz roja o la foto de los dos payasos juntos, mejor: todo suma.","If you find the second red nose or the photo of the two clowns together, even better: it all counts.","Se acharem o segundo nariz vermelho ou a foto dos dois palhaços juntos, melhor: tudo conta."
+OBJ_FIND_CLOWN_COSTUME,Llevarse el segundo disfraz de Chispita,Take Chispita's second costume,Levar a segunda fantasia do Chispita
+OBJ_EXTRA_CLOWN_NOSE,Extra: la segunda nariz roja,Extra: the second red nose,Extra: o segundo nariz vermelho
+OBJ_EXTRA_TWIN_PHOTO,Extra: la foto de los dos payasos,Extra: the photo of the two clowns,Extra: a foto dos dois palhaços
+BIRTHDAY_HONK,"¡Mec, mec!","Honk, honk!","Fom, fom!"
+CLUE_DOUBLE_CLOWN,"La bocina de Chispita sonó en el baño, y Chispita estaba en otro lado.","Chispita's horn honked in the restroom, and Chispita was somewhere else.","A buzina do Chispita tocou no banheiro, e o Chispita estava em outro lugar."
+CHISPITA_BACK,"¡Volví del baño! ¿Me extrañaron?","I'm back from the restroom! Did you miss me?","Voltei do banheiro! Sentiram minha falta?"
