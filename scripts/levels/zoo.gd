@@ -6,8 +6,10 @@ extends CrimeScenePlace
 ## ice-cream stand, the souvenir shop and the keepers' hut with its six lockers and the feeding log; in the middle the
 ## penguins' pool with Copito's empty ice floe behind the glass, ringed by the little train's track; west the monkey and
 ## the ostrich, east the reptile house and the elephant, and the duck pond with its pedal boat at the back. Each
-## enclosure has a gate on the path (`gates`), shut until feeding time (step 5). The people and the case come in
-## later steps. Every number here is (propuesta).
+## enclosure has a gate on the path (`gates`), shut until feeding time (step 5). The six keepers go about their work,
+## two by the entrance, three by the enclosures and one at the lockers (step 2); Doña Jaula watches from in front of
+## the penguins' glass and Don Pico sits on his perch by the hut. The case comes in later steps. Every number here is
+## (propuesta).
 
 ## The lot's floor, like its size in CityLayout.PLACES, and the fence just inside its edge.
 const SIZE := Vector2(54, 54)
@@ -55,6 +57,14 @@ const BOAT_AT := Vector3(2, 0, -19.5)
 ## The little train's track: a loop round the penguins.
 const TRACK := Rect2(-10, -10, 20, 22)
 const TRACK_WIDTH := 1.6
+## Where the people are, and which way each keeper faces (a Y turn; the models face +Z): two by the entrance looking
+## at the penguins, one at the monkey's and one at the ostrich's gate, one at the elephant's and one at the lockers;
+## Doña Jaula in front of the penguins' glass facing the entrance; Don Pico on top of his perch.
+const KEEPERS_AT: Array[Vector3] = [Vector3(-3, 0, 15.5), Vector3(4, 0, 16), Vector3(-11.5, 0, 2),
+	Vector3(-11.5, 0, -16), Vector3(10.5, 0, -15), Vector3(-20.5, 0, 19)]
+const KEEPERS_TURN: Array[float] = [PI, PI, -PI / 2, -PI / 2, PI / 2, -PI / 2]
+const DIRECTOR_AT := Vector3(-2.5, 0, 10.5)
+const PARROT_AT := PERCH_AT + Vector3(0, 1.84, 0)
 
 const GRASS := Color(0.42, 0.68, 0.32)
 const PATH := Color(0.82, 0.74, 0.58)
@@ -73,6 +83,9 @@ const RAIL := Color(0.35, 0.3, 0.28)
 
 ## The enclosures' gates, by animal: shut bodies across the gap in each fence.
 var gates := {}
+var keepers: Array[ZooKeeper] = []
+var director: ZooDirector
+var parrot: ZooParrot
 var _builder: PlaceBuilder
 
 
@@ -88,6 +101,12 @@ func _ready() -> void:
 	_penguins()
 	_animals()
 	_pond()
+	_people()
+
+
+## The keeper by index (the order of the case's traits).
+func suspect(index: int) -> CollisionObject3D:
+	return keepers[index] if index >= 0 and index < keepers.size() else null
 
 
 ## Whether a point in the world (ignoring height) is at the zoo, the sidewalk out front included.
@@ -140,6 +159,30 @@ static func gate_at(kind: String) -> Vector3:
 		"-x":
 			return Vector3(rect.position.x, 0, along)
 	return Vector3(rect.end.x, 0, along)
+
+
+## The six keepers alike (KeeperTraits.draw with the case seed) at work, Doña Jaula by the penguins and Don Pico on his
+## perch.
+func _people() -> void:
+	var traits := KeeperTraits.draw(case_seed)
+	for i in traits.size():
+		var keeper := ZooKeeper.new()
+		keeper.name = "Keeper%d" % i
+		keeper.traits = traits[i]
+		keeper.index = i
+		keeper.position = KEEPERS_AT[i]
+		keeper.rotation.y = KEEPERS_TURN[i]
+		add_child(keeper)
+		keepers.append(keeper)
+	director = ZooDirector.new()
+	director.name = "Director"
+	director.position = DIRECTOR_AT
+	add_child(director)
+	parrot = ZooParrot.new()
+	parrot.name = "Parrot"
+	parrot.position = PARROT_AT
+	parrot.rotation.y = PI / 2
+	add_child(parrot)
 
 
 ## The grass, the paths, the little train's track and the fence with the entrance gap.

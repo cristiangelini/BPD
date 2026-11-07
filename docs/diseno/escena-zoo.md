@@ -149,3 +149,8 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
   trencito. Al oeste el mono y el avestruz, al este la casa de los reptiles y el elefante, y al fondo el estanque con
   el bote. Cada recinto tiene su reja cerrada (`Zoo.gates`) mirando al camino. `ZooLevel` lo pone en la ciudad, y se
   abre con `--place=zoo`.
+- **Paso 2:** `KeeperTraits` sortea con la semilla a los seis cuidadores. Cada uno tiene pelo, talle de bota y
+  dientes; dos o tres tienen curita, y cada uno tiene un olor distinto. `ZooKeeper` muestra el curita mientras no
+  tiene los guantes puestos (`wear_gloves`), y con E dice qué animal cuida y a qué huele. Doña Jaula (`ZooDirector`)
+  y Don Pico (`ZooParrot`) dicen una frase distinta cada vez. Los modelos de los animales (mono, avestruz, elefante y
+  Copito) quedan para los pasos 4 y 5, donde se usan.
