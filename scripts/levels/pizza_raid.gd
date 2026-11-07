@@ -210,7 +210,7 @@ func _build_dining_room() -> void:
 	_build.open_box(FRIDGE_AT, FRIDGE_SIZE, "-x", STEEL)
 	_build.mesh_box(FRIDGE_AT + Vector3(-FRIDGE_SIZE.x / 2, FRIDGE_SIZE.y / 2, 0), Vector3(0.02, FRIDGE_SIZE.y - 0.1,
 		FRIDGE_SIZE.z - 0.1), GLASS)
-	_build.open_box(TRUNK_AT, TRUNK_SIZE, "y", WOOD.darkened(0.3))
+	_build.open_box(TRUNK_AT, TRUNK_SIZE, "top", WOOD.darkened(0.3))
 	_build.light(Vector3(-4.0, 2.9, 5.0))
 	_build.light(Vector3(3.5, 2.9, 5.5))
 
@@ -221,7 +221,7 @@ func _build_kitchen() -> void:
 	_model(OVEN_MODEL, OVEN_AT)
 	var oven := _build.body(OVEN_AT + Vector3(0, OVEN_SIZE.y / 2, 0))
 	_build.shape(oven, OVEN_SIZE)
-	_build.open_box(WOODBOX_AT, WOODBOX_SIZE, "y", WOOD.darkened(0.2))
+	_build.open_box(WOODBOX_AT, WOODBOX_SIZE, "top", WOOD.darkened(0.2))
 	_model(DOUGH_TABLE_MODEL, DOUGH_TABLE_AT)
 	var table := _build.body(DOUGH_TABLE_AT + Vector3(0, DOUGH_TABLE_SIZE.y - 0.03, 0))
 	_build.shape(table, Vector3(DOUGH_TABLE_SIZE.x, 0.06, DOUGH_TABLE_SIZE.z))
@@ -252,7 +252,7 @@ func _build_yard() -> void:
 		_build.shape(scooter, Vector3(0.45, 0.8, 1.6))
 		var box := _build.body(at + Vector3(0, 1.16, -0.95))
 		_build.shape(box, Vector3(1.1, 0.8, 0.8))
-	_build.open_box(BIN_AT, BIN_SIZE, "y", GREEN.darkened(0.3))
+	_build.open_box(BIN_AT, BIN_SIZE, "top", GREEN.darkened(0.3))
 	_build.box(BENCH_AT + Vector3(0, BENCH_SIZE.y / 2, 0), BENCH_SIZE, WOOD)
 	_build.light(Vector3(0.0, 2.6, -6.0))
 

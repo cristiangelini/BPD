@@ -89,3 +89,14 @@ func test_a_stack_wakes_up_when_something_reaches_it() -> void:
 	var other := pizzeria.plates.filter(func(plate: StackedPlate) -> bool:
 		return absf(plate.position.x - PizzaRaid.PLATE_STACKS[1].x) < 0.3)
 	assert_true(other.all(func(plate: StackedPlate) -> bool: return plate.freeze), "the other stack still waits")
+
+
+func test_the_bin_trunk_and_firewood_box_are_open_on_top() -> void:
+	var pizzeria := _pizzeria()
+	await wait_physics_frames(2)
+	var space := pizzeria.get_world_3d().direct_space_state
+	for at: Vector3 in [PizzaRaid.BIN_AT, PizzaRaid.TRUNK_AT, PizzaRaid.WOODBOX_AT]:
+		var from := pizzeria.to_global(at + Vector3.UP * 2.0)
+		var to := pizzeria.to_global(at + Vector3.UP * 0.1)
+		var hit := space.intersect_ray(PhysicsRayQueryParameters3D.create(from, to))
+		assert_true(hit.is_empty(), "nothing closes %s from above" % at)
