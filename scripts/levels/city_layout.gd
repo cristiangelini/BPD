@@ -97,6 +97,8 @@ const PLACES := [
 	{"id": "dentist", "block": Vector2i(3, 5), "side": "n", "along": 0.0, "size": Vector3(22, 4, 16), "color": Color(0.92, 0.95, 0.97), "sign": "PLACE_DENTIST"},
 	# The costume shop "Disfraces El Bigote Postizo" (allanamiento-disfraces.md), beside the TV studio.
 	{"id": "costume_shop", "block": Vector2i(2, 4), "side": "n", "along": 0.0, "size": Vector3(24, 6, 18), "color": Color(0.95, 0.55, 0.2), "sign": "PLACE_COSTUME_SHOP"},
+	# The furniture store "El Ropero Feliz" (allanamiento-muebleria.md), on the north-east block.
+	{"id": "furniture", "block": Vector2i(8, 0), "side": "s", "along": 0.0, "size": Vector3(28, 8, 24), "color": Color(0.93, 0.86, 0.72), "sign": "PLACE_FURNITURE"},
 ]
 
 ## The plaza fills its block.

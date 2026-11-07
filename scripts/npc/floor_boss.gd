@@ -149,6 +149,13 @@ func is_fixing() -> bool:
 	return _fix_left > 0.0
 
 
+## Someone cut her errand short: she drops what she was at and goes back to her round.
+func interrupt() -> void:
+	_fix_left = 0.0
+	_errand = ""
+	_back_to_route()
+
+
 ## What she's busy with: "" (walking her round) or "printer" (on her way or at it).
 func errand() -> String:
 	return "printer" if is_fixing() else _errand
@@ -393,6 +400,11 @@ func _on_bump(body: Node3D) -> void:
 ## One of her lines, in her voice: "HURT" -> "BOSS_HURT".
 func _key(line: String) -> String:
 	return voice + "_" + line
+
+
+## One line of hers in her bubble, from outside (a story's own lines).
+func say(key: String, seconds := 3.0) -> void:
+	_say(key, seconds)
 
 
 func _say(key: String, seconds := 3.0) -> void:
