@@ -62,7 +62,7 @@ por todos lados, y el dueño las ve.
 ## Don Renglón y Tipito
 - **Don Renglón, el dueño:**
   - Aspecto: visera verde de imprentero, anteojos en la punta de la nariz, delantal manchado de todos los colores y
-    un lápiz detrás de la oreja. Cuerpo flaco y largo (decisión 72).
+    un lápiz detrás de la oreja. El mismo cuerpo pera de todos (decisión 72).
   - Recorrido: va y viene entre el mostrador y la rotativa revisando hojas a contraluz: "Mmm, un poquito más de
     amarillo".
 - **"¡Me están llenando todo de huellas!":** le suma 5 a la denuncia cada policía que ve dejando huellas (una vez por
@@ -146,6 +146,12 @@ suman 500.
   sin colisión, y el charco aparece del lado hacia donde cayó. Mientras el policía está parado en el charco, sus 20 s
   vuelven a empezar. Las huellas son una cada 60 cm, izquierda y derecha, y duran 40 s en el piso (160 como mucho).
   El frasco roto deja un charco azul en el piso, delante de la estantería. Captura en `imprenta/paso3-tinta.png`.
+- **Paso 4 (Don Renglón y el fax):** Don Renglón es el mismo `FloorBoss` que Doña Hortensia
+  (`scenes/npc/print_shop_owner.tscn`). Su ronda va del mostrador a la rotativa y sigue por el lado sur hasta la
+  bandeja. El fax es `OrderFax` (`scripts/case/print_shop/order_fax.gd`), con un botón verde chico en el fax. Mientras
+  Don Renglón arma el pedido, asoma la hoja del pedido; él se para frente al chibalete, de espaldas al taller, 20 s.
+  Las huellas suman cuando ve el lugar donde cayó la huella, una vez por policía. Capturas en
+  `imprenta/paso4-huellas.png` y `imprenta/paso4-chibalete.png`.
 
 ## Preguntas abiertas para Cristian
 1. ¿La cinta de la rotativa lleva también a los policías (frenados por la baranda), o solo a las cosas?

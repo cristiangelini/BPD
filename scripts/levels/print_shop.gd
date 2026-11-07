@@ -8,13 +8,15 @@ extends Node3D
 ## wall the chibalete and the plates cabinet, with the binding table and the paper guillotine in front of them; on the
 ## east wall the shelf of ink jars. At the back, the paper store (reams and rolls), the fax, the recycling basket and
 ## the owner's office, locked with the till's key. Something thrown hard at a display pane or at an ink jar breaks it,
-## a fine each. Every number here is (propuesta).
+## a fine each. Don Renglón walks between the counter and the press and fills his complaint; the fax's "enviar prueba"
+## sends him to the chibalete with an urgent order (step 4). Every number here is (propuesta).
 
 signal pane_broken(index: int)
 signal jar_broken(index: int)
 signal barrel_tipped(index: int)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const OWNER_SCENE := preload("res://scenes/npc/print_shop_owner.tscn")
 const PRESS_MODEL := preload("res://assets/models/printing_press.glb")
 const BARREL_MODELS: Array[PackedScene] = [preload("res://assets/models/ink_barrel_blue.glb"),
 	preload("res://assets/models/ink_barrel_red.glb"), preload("res://assets/models/ink_barrel_yellow.glb"),
@@ -23,7 +25,6 @@ const EMPTY_BARREL_MODEL := preload("res://assets/models/empty_ink_barrel.glb")
 const TYPE_CASE_MODEL := preload("res://assets/models/type_case.glb")
 const GUILLOTINE_MODEL := preload("res://assets/models/paper_guillotine.glb")
 const ROLL_MODEL := preload("res://assets/models/paper_roll.glb")
-const FAX_MODEL := preload("res://assets/models/fax_machine.glb")
 const JAR_MODEL := preload("res://assets/models/ink_jar.glb")
 const BELL_MODEL := preload("res://assets/models/counter_bell.glb")
 const INKWELL_MODEL := preload("res://assets/models/smiling_inkwell.glb")
@@ -92,6 +93,19 @@ const BASKET_SIZE := Vector3(0.8, 0.6, 0.7)
 const OFFICE_WEST := 7.0
 const OFFICE_FRONT := -3.0
 const OFFICE_DOOR_X := 10.5
+## Don Renglón's round: from the counter to the press, along its south side to the tray and back, checking sheets
+## against the light. Where he sets the urgent orders, at the chibalete with his back to everything, and how long.
+const OWNER_ROUTE: Array[Vector3] = [
+	Vector3(-9.0, FLOOR_TOP, 3.8), Vector3(-5.0, FLOOR_TOP, 1.6), Vector3(-1.0, FLOOR_TOP, 1.6),
+	Vector3(3.0, FLOOR_TOP, 1.6), Vector3(5.5, FLOOR_TOP, 1.6),
+]
+const ORDER_SPOT := Vector3(-12.0, FLOOR_TOP, 1.0)
+const ORDER_TIME := 20.0
+## "¡Me están llenando todo de huellas!": a cop he sees leaving footprints (once per cop), and a barrel tipping over.
+const SAW_FOOTPRINTS := 5.0
+const SAW_BARREL := 10.0
+## The third urgent order: it's his own number.
+const CAUGHT_ON := 10.0
 
 ## Hiding spots: where something can wait, with its surface height, and whether a heavy item fits.
 const SPOTS := [
@@ -131,6 +145,12 @@ var barrel_looks: Array[Node3D] = []
 var barrel_bodies: Array[StaticBody3D] = []
 var tipped: Array[int] = []
 var ink: InkSpills
+## The fax (his distraction), Don Renglón and his complaint bar.
+var fax: OrderFax
+var owner_npc: FloorBoss
+var complaint_bar: ProgressBar
+## The cops he already saw leaving footprints (id -> true).
+var footprints_seen := {}
 ## The display's panes (each a body with its glass), the broken ones by index, and the ink jars.
 var panes: Array[StaticBody3D] = []
 var cracked: Array[int] = []
@@ -159,6 +179,7 @@ func _ready() -> void:
 	_build_front()
 	_build_west()
 	_build_back()
+	_place_owner()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("print_shop")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -330,7 +351,10 @@ func _build_back() -> void:
 			Vector3(REAMS_SIZE.x - 0.1, 0.02, 0.01), Color(0.4, 0.55, 0.85))
 	_build.legs(FAX_AT, Vector2(0.9, 0.6), 0.85, WOOD)
 	_build.box(FAX_AT + Vector3(0, 0.88, 0), Vector3(0.9, 0.06, 0.6), WOOD)
-	_model(FAX_MODEL, FAX_AT + Vector3(0, 0.91, 0))
+	fax = OrderFax.new()
+	fax.name = "Fax"
+	fax.position = FAX_AT + Vector3(0, 0.91, 0)
+	add_child(fax)
 	_build.open_box(BASKET_AT, BASKET_SIZE, "top", Color(0.3, 0.55, 0.85))
 	for i in 3:
 		_build.mesh_box(BASKET_AT + Vector3(-0.2 + i * 0.2, BASKET_SIZE.y - 0.05, 0), Vector3(0.2, 0.08, 0.2), PAPER)
@@ -371,6 +395,49 @@ func break_jar(index: int) -> void:
 	ink.spill(Vector3(SHELF_AT.x - 1.0, FLOOR_TOP, jars[index].position.z), 0)
 	_say(jars[index].position + Vector3(-0.6, 1.0, 0), "PRINT_SHOP_JAR_BROKEN")
 	jar_broken.emit(index)
+
+
+## The fax's order, Don Renglón walking his round, what he can't stand to see and the complaint bar.
+func _place_owner() -> void:
+	owner_npc = OWNER_SCENE.instantiate()
+	owner_npc.name = "DonRenglon"
+	owner_npc.route = OWNER_ROUTE
+	owner_npc.printer_spot = ORDER_SPOT
+	owner_npc.printer = fax
+	owner_npc.fix_time = ORDER_TIME
+	owner_npc.fix_facing = TYPE_CASE_AT + Vector3(0, 1, 0)
+	add_child(owner_npc)
+	owner_npc.start_at(0)
+	office_door.broken.connect(owner_npc.door_broken)
+	till.opened.connect(func(at: Vector3) -> void: owner_npc.saw(at, FloorBoss.SAW_TILL))
+	fax.caught_on.connect(func() -> void: owner_npc.scold(CAUGHT_ON, "RENGLON_CAUGHT_ON"))
+	ink.footprint_left.connect(_on_footprint)
+	barrel_tipped.connect(func(index: int) -> void:
+		owner_npc.saw(BARRELS[index] + Vector3.UP * 0.5, SAW_BARREL, "RENGLON_BARREL"))
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	owner_npc.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## A cop left a footprint: "¡Me están llenando todo de huellas!", once per cop, if he sees it.
+func _on_footprint(cop: Cop, at: Vector3) -> void:
+	if footprints_seen.has(cop.get_instance_id()):
+		return
+	if owner_npc.saw(at + Vector3.UP * 0.3, SAW_FOOTPRINTS, "RENGLON_FOOTPRINTS"):
+		footprints_seen[cop.get_instance_id()] = true
 
 
 ## Tips ink barrel `index` over toward `away`, once: it lies on the floor and leaves a puddle of its ink in front.

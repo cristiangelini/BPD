@@ -1,7 +1,8 @@
 // Props of the print shop "La Tinta Loca" (docs/diseno/allanamiento-imprenta.md): the rotativa, the four ink barrels
 // and the empty one, the chibalete, the paper guillotine, a paper roll, the fax, an ink jar, the counter bell and the
 // sign's smiling inkwell, with origins at the floor in the middle of each piece. Placeholder, not final art.
-import { Builder, mat, V, THREE } from '../lib.js';
+import { Builder, mat, V, THREE, ellipsoid } from '../lib.js';
+import { pearBody, eyes } from './pear.js';
 
 const steel = () => mat('press_steel', 0x9aa0a8, { metalness: 0.6, roughness: 0.4 });
 const dark = () => mat('press_dark', 0x2a2c30);
@@ -166,7 +167,35 @@ export function buildSmilingInkwell() {
 	return b.build();
 }
 
+// Don Renglón, the owner (decision 72, the pear body like everyone): a white shirt under a long apron stained with
+// every ink, a green printer's visor, little glasses on the tip of his nose and a pencil behind his ear. Faces +Z,
+// about 1.6 m to the top of the visor.
+export function buildDonRenglon() {
+	const b = new Builder('npc_don_renglon');
+	const shirt = mat('renglon_shirt', 0xf2f0e8), pants = mat('renglon_pants', 0x4a4a52);
+	const skin = mat('renglon_skin', 0xe8c0a0), apron = mat('renglon_apron', 0xd8cdb0);
+	const visor = mat('renglon_visor', 0x2fa860, { transparent: true, opacity: 0.8 }), wire = mat('renglon_wire', 0x30302a);
+	pearBody(b, skin, { shirt, pants, shoes: mat('renglon_shoes', 0x3a2618), belted: false });
+	b.add('body', apron, new THREE.BoxGeometry(0.62, 0.75, 0.04), { pos: V(0, 0.55, 0.43), rot: [-0.12, 0, 0] });
+	Object.values(INKS).forEach((c, i) => {
+		b.add('body', mat(`renglon_ink_${i}`, c), ellipsoid(0.06 + (i % 2) * 0.03, 0.05, 0.01, 6, 4),
+			{ pos: V(-0.18 + i * 0.12, 0.35 + (i % 3) * 0.17, 0.47), rot: [-0.12, 0, 0] });
+	});
+	eyes(b, 1.33, 0.19, 0.08, 0.04);
+	for (const s of [-1, 1]) {
+		b.add('face', wire, new THREE.TorusGeometry(0.045, 0.008, 4, 10), { pos: V(s * 0.06, 1.25, 0.22) });
+	}
+	b.add('face', wire, new THREE.BoxGeometry(0.03, 0.008, 0.008), { pos: V(0, 1.26, 0.22) });
+	b.add('hat', visor, new THREE.CylinderGeometry(0.22, 0.24, 0.05, 14, 1, true), { pos: V(0, 1.45, 0.02) });
+	b.add('hat', visor, new THREE.CylinderGeometry(0.2, 0.2, 0.01, 14, 1, false, -Math.PI / 2, Math.PI),
+		{ pos: V(0, 1.42, 0.16), rot: [0.25, 0, 0], scale: [1, 1, 1.4] });
+	b.add('tool', mat('renglon_pencil', 0xf2c63a), new THREE.CylinderGeometry(0.012, 0.012, 0.18, 6),
+		{ pos: V(0.2, 1.36, 0.0), rot: [0.3, 0, 1.2] });
+	return b.build();
+}
+
 export const models = {
+	npc_don_renglon: buildDonRenglon,
 	printing_press: buildPrintingPress, empty_ink_barrel: buildEmptyBarrel, type_case: buildTypeCase,
 	paper_guillotine: buildPaperGuillotine, paper_roll: buildPaperRoll, fax_machine: buildFax, ink_jar: buildInkJar,
 	counter_bell: buildCounterBell, smiling_inkwell: buildSmilingInkwell,
@@ -183,6 +212,7 @@ export const views = {
 			{ name: 'paper_roll', pos: [3.4, 0, 1.4] }, { name: 'fax_machine', pos: [2.6, 0, 2.6] },
 			{ name: 'ink_jar', pos: [3.2, 0, 2.7] }, { name: 'counter_bell', pos: [3.6, 0, 2.7] },
 			{ name: 'smiling_inkwell', pos: [5.0, 0, 1.6], rotY: -0.3 },
+			{ name: 'npc_don_renglon', pos: [6.2, 0, 1.8], rotY: -0.3 },
 		],
 		cam: { pos: [0, 3.2, 9.5], target: [0.4, 0.9, 0], fov: 50 },
 	},
