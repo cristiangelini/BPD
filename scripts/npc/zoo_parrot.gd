@@ -2,11 +2,17 @@ class_name ZooParrot
 extends StaticBody3D
 
 ## Don Pico, the zoo's parrot (escena-zoo.md, "El lugar"), on his perch by the keepers' hut. He repeats what he hears,
-## a different line each time he is asked. He is the witness (step 6). Every number here is (propuesta).
+## a different line each time he is asked. He is the witness: given peanuts (E with the ostrich's bucket in hand), if
+## he saw it he repeats that morning, with the culprit's smell. A camera's flash in his face and he only says
+## "¡Flash!" from then on: the witness is lost. Every number here is (propuesta).
 
 const MODEL := preload("res://assets/models/npc_pico.glb")
 const LINES := 4
 
+var case: CrimeSceneCase
+## He saw who took Copito (the witness is one of the case's clues).
+var knows := false
+var offended := false
 var _bubble: Label3D
 var _bubble_left := 0.0
 var _lines_said := 0
@@ -27,13 +33,43 @@ func _ready() -> void:
 	add_child(_bubble)
 
 
-func prompt_key(_cop: Cop) -> String:
-	return "PROMPT_ZOO_PARROT"
+func prompt_key(cop: Cop) -> String:
+	return "PROMPT_ZOO_PARROT_FEED" if cop and _seeds(cop) else "PROMPT_ZOO_PARROT"
 
 
-func use(_cop: Cop) -> void:
-	say("PARROT_LINE_%d" % (_lines_said % LINES))
-	_lines_said += 1
+func use(cop: Cop) -> void:
+	if offended:
+		say("PARROT_FLASH")
+	elif cop and _seeds(cop):
+		feed()
+	else:
+		say("PARROT_LINE_%d" % (_lines_said % LINES))
+		_lines_said += 1
+
+
+## Peanuts: what he heard that morning, if he saw it.
+func feed() -> void:
+	if offended:
+		say("PARROT_FLASH")
+	elif knows and case:
+		case.found("witness")
+		var smell := tr("SMELL_" + str(case.culprit().smell)).to_upper()
+		say(tr("PARROT_SAW") % [smell, smell], 6.0)
+	else:
+		say("PARROT_SAW_NOTHING")
+
+
+## The camera's flash: he learns the word and says nothing else.
+func photographed(_cop: Cop) -> void:
+	offended = true
+	say("PARROT_FLASH")
+	if knows and case:
+		case.ruin("witness")
+
+
+func _seeds(cop: Cop) -> bool:
+	var held: Node = cop.get_node("Grabber").held
+	return held is FoodBucket and (held as FoodBucket).food == "peanuts"
 
 
 func said() -> String:

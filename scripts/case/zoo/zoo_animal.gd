@@ -150,6 +150,9 @@ func _steal(delta: float) -> bool:
 	if best_away <= TAKE_REACH:
 		carried = best
 		best.freeze = true
+		# A clue not bagged yet is lost: the hair's cap goes up the tree, the cookie gets eaten.
+		if best is CrimeClueItem and not (best as CrimeClueItem).bagged:
+			(best as CrimeClueItem).wash()
 		return false
 	_walk(get_parent_node_3d().to_local(best.global_position), FOLLOW_SPEED, delta)
 	return true

@@ -125,6 +125,8 @@ var feeding := false
 var feed_clock := 0.0
 var patience := PATIENCE
 var train: ZooTrain
+## The case's clues (ZooClues), once the case comes.
+var clues: ZooClues
 var _sneeze: Label3D
 var _sneeze_clock := 0.0
 var case: CrimeSceneCase
@@ -172,6 +174,11 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 		var swap := order[i]
 		order[i] = order[j]
 		order[j] = swap
+	clues = ZooClues.new()
+	clues.name = "Clues"
+	clues.zoo = self
+	clues.case = case
+	add_child(clues)
 
 
 ## Feeding time: an animal still out goes back by itself (Doña Jaula's patience goes down), the next one in the order

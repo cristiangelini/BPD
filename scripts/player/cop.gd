@@ -187,6 +187,8 @@ func current_prompt() -> String:
 		# The zoo's keepers bite a donut or a loaf from the hand (escena-zoo.md, step 3).
 		if aimed is ZooKeeper and ($Grabber.held is DonutBox or $Grabber.held is Bread):
 			return aimed.prompt_key(self)
+		if aimed is ZooParrot and $Grabber.held is FoodBucket:
+			return aimed.prompt_key(self)
 		if aimed is WaitingArmchair or aimed is DigSpot or aimed is InterrogationSuspect or aimed is PastryCook \
 				or aimed is TunnelHole or aimed is CircusClown or aimed is CellHideout or aimed is SchoolPupil \
 				or (aimed is CellDoor and $Grabber.held is CellKey) \
@@ -566,7 +568,8 @@ func use() -> bool:
 			and _usable_target() is CircusClown:
 		act("use", _usable_target())
 		return true
-	if ($Grabber.held is DonutBox or $Grabber.held is Bread) and _usable_target() is ZooKeeper:
+	if (($Grabber.held is DonutBox or $Grabber.held is Bread) and _usable_target() is ZooKeeper) \
+			or ($Grabber.held is FoodBucket and _usable_target() is ZooParrot):
 		act("use", _usable_target())
 		return true
 	# The wedding check's breathalyzer, to a stopped driver (control-boda.md).

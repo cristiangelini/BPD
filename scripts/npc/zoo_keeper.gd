@@ -128,6 +128,9 @@ func show_hands() -> void:
 	showed_hands = true
 	say("KEEPER_HANDS_PECKED" if traits.pecked else "KEEPER_HANDS_CLEAN")
 	_file("peck")
+	# A band-aid seen: the peck is one of the case's clues (Copito pecked whoever carried him off).
+	if traits.pecked and case:
+		case.found("peck")
 
 
 ## The camera's flash in their face (PhotoCamera): their photo, with their boots.
