@@ -125,6 +125,16 @@ suman 500.
 8. La imprenta en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 9. El online.
 
+## Hecho así
+- **Paso 1 (el lugar):** `scenes/levels/print_shop.tscn` y `scripts/levels/print_shop.gd` (`PrintShop`). El galpón mide
+  28 × 18 m y 4,5 m de alto, con techo; la puerta del frente es un hueco ancho de 2,6 m del lado oeste, siempre
+  abierto. La rotativa está en el medio a lo largo de X, quieta: la mesa con la cinta (de -4 a -0,5), los rodillos con
+  60 cm libres abajo (de -0,5 a 1,5) y la bandeja de salida (de 1,5 a 4). Los 4 tachos están en fila detrás de la
+  cinta y el tacho vacío, abierto arriba, al lado de la bandeja. La vidriera de invitaciones está contra la pared del
+  frente con sus 4 vidrios mirando adentro (multa 30 cada uno), y los 8 frascos de tinta en una estantería de la pared
+  este (multa 10 cada uno; el charco llega con la tinta, en el paso 3). El cajón del chibalete está sacado, arriba del
+  mueble. Modelos de modelgen en `tools/modelgen/models/print_shop.js`. Capturas en `imprenta/paso1-*.png`.
+
 ## Preguntas abiertas para Cristian
 1. ¿La cinta de la rotativa lleva también a los policías (frenados por la baranda), o solo a las cosas?
    **Recomendado:** a los policías también, como el túnel del lavadero; es gracioso y no lastima.
