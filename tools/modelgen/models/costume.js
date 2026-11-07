@@ -428,6 +428,54 @@ export function buildTheaterPoster() {
 	return b.build();
 }
 
+// The box of colored smoke bombs (smoke bombs main evidence): an open cardboard box full of pink, green, blue and
+// yellow balls with fuses, 0.6 x 0.35 x 0.4 m.
+export function buildSmokeBox() {
+	const b = new Builder('smoke_box');
+	const card = mat('smoke_card', 0xb88a58);
+	b.add('box', card, new THREE.BoxGeometry(0.6, 0.3, 0.4), { pos: V(0, 0.15, 0) });
+	for (const s of [-1, 1]) b.add('flaps', card, new THREE.BoxGeometry(0.6, 0.01, 0.16), { pos: V(0, 0.33, s * 0.26), rot: [s * 0.6, 0, 0] });
+	const colors = [0xff7ac8, 0x5ad86a, 0x5a8ae8, 0xf2d230];
+	for (let i = 0; i < 12; i++) {
+		const x = -0.22 + (i % 4) * 0.147;
+		const z = -0.12 + Math.floor(i / 4) * 0.12;
+		b.add('bombs', mat('bomb_' + (i % 4), colors[i % 4]), new THREE.SphereGeometry(0.06, 8, 6), { pos: V(x, 0.32, z) });
+		b.add('fuses', mat('bomb_fuse', 0x30303a), new THREE.CylinderGeometry(0.006, 0.006, 0.05, 4), { pos: V(x, 0.39, z) });
+	}
+	return b.build();
+}
+
+// A magician's top hat standing on its brim with a band, its origin at the floor.
+function topHat(name, color, band) {
+	const b = new Builder(name);
+	b.add('brim', mat(name + '_felt', color), new THREE.CylinderGeometry(0.18, 0.18, 0.015, 14), { pos: V(0, 0.008, 0) });
+	b.add('crown', mat(name + '_felt', color), new THREE.CylinderGeometry(0.11, 0.115, 0.2, 14), { pos: V(0, 0.115, 0) });
+	b.add('band', mat(name + '_band', band), new THREE.CylinderGeometry(0.117, 0.117, 0.04, 14), { pos: V(0, 0.04, 0) });
+	return b;
+}
+
+// The magician's hat with a double bottom (smoke bombs extra): black, its red false bottom hanging open under the brim.
+export function buildDoubleHat() {
+	const b = topHat('double_hat', 0x1a1a20, 0xd83a30);
+	b.add('bottom', mat('double_hat_band', 0xd83a30), new THREE.CylinderGeometry(0.1, 0.1, 0.01, 12), { pos: V(0.09, 0.03, 0), rot: [0, 0, 0.9] });
+	return b.build();
+}
+
+// The show hat on the wig trunk (smoke bombs clue): purple with yellow stars; thrown on the floor it puffs smoke.
+export function buildShowHat() {
+	const b = topHat('show_hat', 0x5a2a8a, 0xf2c230);
+	for (let i = 0; i < 5; i++) b.add('stars', mat('show_hat_band', 0xf2c230), new THREE.BoxGeometry(0.03, 0.03, 0.005), { pos: V(Math.sin(i * 1.26) * 0.116, 0.12 + (i % 2) * 0.05, Math.cos(i * 1.26) * 0.116), rot: [0, i * 1.26, 0.78] });
+	return b.build();
+}
+
+// The list of smoke bomb buyers (smoke bombs extra): a pink sheet with rows, flat.
+export function buildSmokeClients() {
+	const b = new Builder('smoke_clients');
+	b.add('sheet', mat('smoke_paper', 0xf8d8e8), new THREE.BoxGeometry(0.21, 0.004, 0.3), { pos: V(0, 0.002, 0) });
+	for (let i = 0; i < 9; i++) b.add('rows', mat('ink', 0x30303a), new THREE.BoxGeometry(0.16, 0.002, 0.008), { pos: V(0, 0.005, -0.11 + i * 0.026) });
+	return b.build();
+}
+
 export const models = {
 	costume_counter: buildCostumeCounter, rack_pirates: buildRackPirates, rack_animals: buildRackAnimals,
 	rack_monsters: buildRackMonsters, rack_princesses: buildRackPrincesses, rack_trades: buildRackTrades,
@@ -440,7 +488,8 @@ export const models = {
 	sewing_machine: buildSewingMachine, fake_labels: buildFakeLabels, costume_pattern: buildCostumePattern,
 	false_back: buildFalseBack, itch_drum: buildItchDrum, cream_jars: buildCreamJars, pharmacy_flyer: buildPharmacyFlyer,
 	itchy_costume: buildItchyCostume, theater_trunk: buildTheaterTrunk, theater_stamp: buildTheaterStamp,
-	play_program: buildPlayProgram, theater_poster: buildTheaterPoster,
+	play_program: buildPlayProgram, theater_poster: buildTheaterPoster, smoke_box: buildSmokeBox, double_hat: buildDoubleHat,
+	show_hat: buildShowHat, smoke_clients: buildSmokeClients,
 };
 
 export const views = {
@@ -479,6 +528,11 @@ export const views = {
 		items: [{ name: 'theater_trunk', pos: [-0.5, 0, 0], rotY: 0.2 }, { name: 'theater_stamp', pos: [0.4, 0, 0.4] },
 			{ name: 'play_program', pos: [0.7, 0, 0.1], rotY: 0.3 }, { name: 'theater_poster', pos: [0.8, 0.8, -0.6], rotY: -1.2 }],
 		cam: { pos: [0, 1.4, 2.8], target: [0, 0.4, 0], fov: 44 },
+	},
+	smoke_bombs: {
+		items: [{ name: 'smoke_box', pos: [-0.4, 0, 0] }, { name: 'double_hat', pos: [0.35, 0, 0.3] },
+			{ name: 'show_hat', pos: [0.6, 0, -0.2] }, { name: 'smoke_clients', pos: [0.1, 0, 0.6], rotY: 0.3 }],
+		cam: { pos: [0, 1.2, 2.0], target: [0, 0.2, 0], fov: 40 },
 	},
 	mimi: {
 		items: [{ name: 'mannequin_chicken', pos: [-0.6, 0, 0], rotY: 0.2 }, { name: 'npc_mimi', pos: [0.6, 0, 0], rotY: -0.2, scale: [0.85, 0.85, 0.85] }],

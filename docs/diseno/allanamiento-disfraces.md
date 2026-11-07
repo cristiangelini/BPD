@@ -156,6 +156,10 @@ Los pesos y valores siguen la escala de la bolera y el karaoke: la principal val
   sello del teatro (300) y el programa de la obra (200). Un disfraz del perchero de oficios tiene una etiqueta blanca
   ("mirar la etiqueta": "Propiedad del Teatro de Mimos", la pista) y en la pared este cuelga el afiche del teatro
   ("Se suspende la obra. ¡Nos robaron los trajes!"). Capturas `paso6-teatro-*.png`.
+- Paso 6, las bombas de humo: la caja de bombas de humo de colores (8 kg, 1000) va en un escondite pesado, con el
+  sombrero de mago con doble fondo (300) y la lista de clientes (200). El sombrero violeta de estrellas que está
+  sobre el baúl de pelucas suelta una nube de humo de color si lo tiras o se cae fuerte (la pista; descansa 5 s), y
+  cada 25 s sale una nube rosa del depósito. Capturas `paso6-humo-*.png`.
 
 ## Preguntas para Cristian
 1. ¿Un lugar nuevo para allanar, la tienda de disfraces abierta llena de maniquíes? **Recomendado:** sí, no se pisa
