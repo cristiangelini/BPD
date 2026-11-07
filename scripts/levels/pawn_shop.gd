@@ -71,6 +71,26 @@ const STORIES := {
 		"main_hidden": true,
 		"rig": preload("res://scripts/case/pawn/gold_dentures_rig.gd"),
 	},
+	"singer_guitar": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_SINGER_GUITAR_B", "BRIEF_SINGER_GUITAR_C", "BRIEF_SINGER_GUITAR_D"],
+		"find": "OBJ_FIND_SINGER_GUITAR",
+		"hidden": [preload("res://scenes/props/star_guitar.tscn"), preload("res://scenes/props/signed_photo.tscn"),
+			preload("res://scenes/props/tour_contract.tscn")],
+		"half_heights": [0.0, 0.0, 0.0],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_SIGNED_PHOTO", "OBJ_EXTRA_TOUR_CONTRACT"],
+		"main_hidden": true,
+		"rig": preload("res://scripts/case/pawn/singer_guitar_rig.gd"),
+	},
+	"croc_smuggler": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_CROC_SMUGGLER_B", "BRIEF_CROC_SMUGGLER_C", "BRIEF_CROC_SMUGGLER_D"],
+		"find": "OBJ_FIND_CROC_SMUGGLER",
+		"hidden": [preload("res://scenes/props/customs_label.tscn"), preload("res://scenes/props/ship_receipt.tscn")],
+		"half_heights": [0.0, 0.0],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_CUSTOMS_LABEL", "OBJ_EXTRA_SHIP_RECEIPT"],
+		"rig": preload("res://scripts/case/pawn/croc_smuggler_rig.gd"),
+	},
 }
 ## Surfaces where the suspicions' clue notes can lie, one in each part of the shop (never on the counter, which would
 ## buy them); three are drawn with the seed.
@@ -202,6 +222,8 @@ var armor_down := false
 ## Where the armor stands now (a story can walk it, move_armor), and its collider, look and hit area.
 var armor_at := ARMOR_AT
 var armor_parts: Array[Node3D] = []
+## The stuffed crocodile's collider and look (a story can swap it for evidence).
+var croc_parts: Array[Node3D] = []
 ## What broke: the glass cases and the armor (the case pay also loses what the cops paid the shop and gains what it
 ## paid them, RaidCase.fines).
 var fines := 0
@@ -430,8 +452,7 @@ func _build_odd_things() -> void:
 	armor_hit.body_entered.connect(func(body: Node3D) -> void:
 		if body is RigidBody3D and (body as RigidBody3D).linear_velocity.length() > ARMOR_SPEED:
 			knock_armor())
-	_solid(CROC_AT + Vector3(0, 0.2, 0), Vector3(2.2, 0.4, 0.5))
-	_model(CROC_MODEL, CROC_AT)
+	croc_parts.assign([_solid(CROC_AT + Vector3(0, 0.2, 0), Vector3(2.2, 0.4, 0.5)), _model(CROC_MODEL, CROC_AT)])
 	_solid(TV_AT + Vector3(0, 0.28, 0), Vector3(0.7, 0.55, 0.5))
 	_model(TV_MODEL, TV_AT)
 	_model(GUITAR_MODEL, GUITAR_AT)

@@ -99,3 +99,51 @@ func test_chicharra_has_a_gold_tooth_and_feeding_him_is_the_clue() -> void:
 	assert_has(place.raid.clues_found, tr("CLUE_GOLD_DENTURES"))
 	assert_string_contains(place.parrot.said(), "Abra la boca")
 	assert_eq(place.customers[1].rumor, "PAWN_RUMOR_GOLD_DENTURES")
+
+
+func test_the_guitar_plays_when_a_cop_walks_by_and_the_radio_gives_the_news() -> void:
+	TranslationServer.set_locale("es")
+	var place := _shop("singer_guitar")
+	await wait_physics_frames(2)
+	var rig := place.rig as SingerGuitarRig
+	assert_eq(rig.plays, 0)
+	var cop: Cop = place.get_node("Cop")
+	cop.global_position = place.to_global(SingerGuitarRig.LEANS_AT + Vector3(0, -0.4, 0.8))
+	await wait_physics_frames(3)
+	assert_eq(rig.plays, 1)
+	await wait_physics_frames(3)
+	assert_eq(rig.plays, 1, "not again right away")
+	rig.look.use(cop)
+	assert_has(place.raid.clues_found, tr("CLUE_SINGER_GUITAR"))
+	cop.global_position = place.goods[1].global_position + place.global_basis.z * 1.0
+	rig.radio_news()
+	assert_eq(rig.news, 1)
+	assert_has(place.raid.clues_found, tr("CLUE_RADIO_NEWS"))
+	place.goods[1].global_position = place.to_global(Vector3(0, 1, PawnShop.HALF_Z + 5))
+	rig.radio_news()
+	assert_eq(rig.news, 1, "not once it left the shop")
+
+
+func test_the_crocodile_is_the_evidence_and_tinkles_when_it_moves() -> void:
+	TranslationServer.set_locale("es")
+	var place := _shop("croc_smuggler")
+	await wait_physics_frames(2)
+	var rig := place.rig as CrocSmugglerRig
+	assert_eq(place.main, rig.croc)
+	assert_eq(place.raid.main_evidence, rig.croc)
+	assert_eq(place.extras.size(), 2, "the label and the receipt")
+	assert_true(place.croc_parts.is_empty(), "the shop's prop is gone")
+	assert_eq(rig.croc.get_node("NotForSale").text, "PAWN_CROC_TAG")
+	assert_false(rig.tinkled)
+	rig.croc.linear_velocity = Vector3(0, 0, 1.0)
+	await wait_physics_frames(1)
+	assert_true(rig.tinkled)
+	assert_has(place.raid.clues_found, tr("CLUE_CROC_SMUGGLER"))
+	assert_null(rig.pearl)
+	rig.croc.linear_velocity = Vector3(0, 0, 4.0)
+	await wait_physics_frames(1)
+	assert_not_null(rig.pearl)
+	assert_has(place.raid.clues_found, tr("CLUE_CROC_PEARL"))
+	var first := rig.pearl
+	rig.drop_pearl()
+	assert_eq(rig.pearl, first, "only one pearl")
