@@ -5722,3 +5722,7 @@ CLUE_WINDSHIELD_FINE,"El patrullero tiene una multa pegada en el vidrio, «por e
 PRINT_SHOP_FINE_FAKE,¿Una multa... al patrullero?,A fine... on the patrol car?,Uma multa... na viatura?
 PRINT_SHOP_WINDSHIELD_FINE,"MULTA - Por estacionar con cara de policía","FINE - For parking with a cop's face","MULTA - Por estacionar com cara de polícia"
 PRINT_SHOP_FINE_FOR,"MULTA para %s","FINE for %s","MULTA para %s"
+HINT_ESCAPE_print_shop,"¡Don Renglón vio la prueba y se escapa en el auto! Tienen un minuto para agarrarlo.","Don Renglón saw the evidence and is getting away in his car! You have one minute to catch him.","O Seu Renglón viu a prova e está fugindo de carro! Vocês têm um minuto para pegá-lo."
+CHASE_PRINT_SHOP_LINE_1,"¡No puedo parar, tengo un pedido urgente! ¡Urgentísimo!","I can't stop, I've got an urgent order! Super urgent!","Não posso parar, tenho um pedido urgente! Urgentíssimo!"
+CHASE_PRINT_SHOP_LINE_2,"¡Todo lo que imprimí es original! ¡Original de acá!","Everything I printed is original! Original from here!","Tudo o que eu imprimi é original! Original daqui!"
+CHASE_PRINT_SHOP_LINE_3,"¡Si me agarran, les imprimo la cara en una multa!","If you catch me, I'll print your faces on a fine!","Se me pegarem, eu imprimo a cara de vocês numa multa!"
