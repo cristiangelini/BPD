@@ -11,6 +11,8 @@ extends Node3D
 
 signal case_broken(index: int)
 signal armor_fallen
+## A customer complained (Don Regateo adds it to the complaint, step 3).
+signal customer_complained(customer: PawnCustomer)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const COUNTER_MODEL := preload("res://assets/models/pawn_counter.glb")
@@ -26,6 +28,15 @@ const STOCK_SHELF_MODEL := preload("res://assets/models/pawn_stock_shelf.glb")
 const BOXES_MODEL := preload("res://assets/models/pawn_boxes.glb")
 const SAFE_MODEL := preload("res://assets/models/pawn_safe.glb")
 const TAG_MODEL := preload("res://assets/models/giant_price_tag.glb")
+## The shop's own goods for sale on the glass cases (step 2): model, size, kg and price.
+const GOODS := [
+	{"name": "Trophy", "model": preload("res://assets/models/pawn_trophy.glb"), "size": Vector3(0.2, 0.36, 0.2),
+		"kg": 1.5, "price": 8},
+	{"name": "Radio", "model": preload("res://assets/models/pawn_radio.glb"), "size": Vector3(0.4, 0.26, 0.16),
+		"kg": 3.0, "price": 12},
+	{"name": "CuckooClock", "model": preload("res://assets/models/pawn_clock.glb"), "size": Vector3(0.26, 0.36, 0.14),
+		"kg": 2.0, "price": 6},
+]
 const HALF_X := 11.0
 const HALF_Z := 9.0
 const WALL_TOP := 4.5
@@ -41,6 +52,17 @@ const COUNTER_AT := Vector3(6.0, FLOOR_TOP, 5.0)
 const COUNTER_SIZE := Vector3(5.0, 1.0, 0.8)
 const TILL_ON := Vector3(7.8, FLOOR_TOP + 1.02, 5.0)
 const JAR_ON := Vector3(4.4, FLOOR_TOP + 1.0, 5.0)
+## Where a customer stands at the counter to pawn something, and the counter's top where things change hands.
+const COUNTER_SPOT := Vector3(5.0, FLOOR_TOP, 4.05)
+## The 3 customers browse the shelves and walk to the counter along the aisle in front of the glass cases and the one
+## east of them; the next one goes this long after the last is back.
+const CUSTOMER_HOMES: Array[Vector3] = [Vector3(-6.0, FLOOR_TOP, 0.6), Vector3(-3.0, FLOOR_TOP, 0.6),
+	Vector3(0.0, FLOOR_TOP, 0.6)]
+const CUSTOMER_LOOKS := ["cliente", "clienta", "abuelo"]
+const AISLE_Z := 1.45
+const AISLE_X := 2.8
+const TURN_GAP := 4.0
+const FIRST_TURN := 3.0
 ## The parrot's cage hangs from the ceiling by the counter's east end.
 const CAGE_AT := Vector3(9.6, 2.6, 4.2)
 ## The three glass cases in a row in the middle of the shop, and what breaks them.
@@ -109,6 +131,15 @@ var armor_down := false
 var fines := 0
 ## Same seed, same shop (the stories and the hiding spots come from it, step 5).
 @export var case_seed := 0
+## The counter's top: what the shop buys and sells (step 2).
+var counter: PawnCounter
+var goods: Array[Grabbable] = []
+var customers: Array[PawnCustomer] = []
+## The customer whose turn it is (null between turns), the next one in line and how long until they go.
+var on_turn: PawnCustomer
+var _next_customer := 0
+var _turn_left := FIRST_TURN
+var _displayed := 0
 var _build: PlaceBuilder
 var _armor: Node3D
 @onready var car: PatrolCar = $PatrolCar
@@ -135,6 +166,8 @@ func _ready() -> void:
 	city_map = CityMap.new()
 	add_child(city_map)
 	city_map.setup(city, "pawn_shop", car)
+	_build_trade()
+	_build_customers()
 
 
 ## The floor, the walls with the doorway, the ceiling with its lights, the roof, the sign and its giant price tag.
@@ -208,6 +241,86 @@ func _build_odd_things() -> void:
 	_model(GUITAR_MODEL, GUITAR_AT)
 
 
+## The counter's top that buys and sells, and the shop's own goods on the glass cases.
+func _build_trade() -> void:
+	counter = PawnCounter.new()
+	counter.name = "TradeCounter"
+	add_child(counter)
+	counter.setup(self, COUNTER_AT + Vector3(0, COUNTER_SIZE.y + 0.25, 0), Vector3(COUNTER_SIZE.x, 0.5, COUNTER_SIZE.z))
+	for i in GOODS.size():
+		var good: Dictionary = GOODS[i]
+		var item := ClubEvidence.make_item(good.name, good.model, good.size, good.kg)
+		(item.get_child(0) as CollisionShape3D).position.y = (good.size as Vector3).y / 2
+		add_child(item)
+		item.position = CASES[i] + Vector3(0, CASE_SIZE.y + 0.02, 0)
+		counter.stock(item, good.price)
+		goods.append(item)
+
+
+## The 3 customers, each browsing in front of the shelves.
+func _build_customers() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(["pawn customers", case_seed])
+	for i in CUSTOMER_HOMES.size():
+		var customer := PawnCustomer.new()
+		customer.name = "Customer%d" % (i + 1)
+		customer.look = CUSTOMER_LOOKS[i]
+		customer.shop = self
+		customer.home = CUSTOMER_HOMES[i]
+		customer.position = customer.home
+		customer.rng.seed = rng.randi()
+		add_child(customer)
+		customer.complained.connect(customer_complained.emit)
+		customer.turn_over.connect(func(_done: PawnCustomer) -> void:
+			on_turn = null
+			_turn_left = TURN_GAP)
+		customers.append(customer)
+
+
+## The way from `from` to the customers' spot at the counter (shop space): out to the aisle in front of the glass
+## cases, along it east of them, up to the counter and in front of it.
+func counter_path(from: Vector3) -> Array:
+	return [Vector3(from.x, FLOOR_TOP, AISLE_Z), Vector3(AISLE_X, FLOOR_TOP, AISLE_Z),
+		Vector3(AISLE_X, FLOOR_TOP, COUNTER_SPOT.z), COUNTER_SPOT]
+
+
+## Whether a cop stands less than `reach` from `at` (shop space).
+func cop_near(at: Vector3, reach: float) -> bool:
+	for cop: Cop in get_tree().get_nodes_in_group("cops"):
+		var here := to_local(cop.global_position)
+		if Vector2(here.x - at.x, here.z - at.z).length() < reach:
+			return true
+	return false
+
+
+## Whether `at` (shop space) is inside the shop's walls.
+func is_inside(at: Vector3) -> bool:
+	return absf(at.x) < HALF_X and absf(at.z) < HALF_Z
+
+
+## Where the next pawned thing goes on show (shop space): on a glass case beside the shop's goods, then behind the
+## counter once the cases are full.
+func free_display_slot() -> Vector3:
+	var index := _displayed
+	_displayed += 1
+	if index < CASES.size() * 2:
+		var side := -0.6 if index % 2 == 0 else 0.6
+		return CASES[index / 2] + Vector3(side, CASE_SIZE.y + 0.02, 0)
+	return COUNTER_AT + Vector3(-2.0 + (index - CASES.size() * 2) * 0.5, 0, 1.2)
+
+
+## Between turns the next customer in line goes to the counter.
+func _physics_process(delta: float) -> void:
+	if on_turn:
+		return
+	_turn_left -= delta
+	if _turn_left > 0.0:
+		return
+	on_turn = customers[_next_customer % customers.size()]
+	on_turn.start_turn()
+	_next_customer += 1
+
+
 ## The stock room at the back: its wall with the locked door, the shelves, the pile of boxes, the safe and the desk.
 func _build_stock() -> void:
 	_build.wall_at("x", STOCK_Z, -HALF_X, HALF_X, 0.0, WALL_TOP, [STOCK_DOOR_X], STOCK)
@@ -240,6 +353,8 @@ func break_case(index: int) -> void:
 			Color(0.85, 0.22, 0.2)][i % 3])
 	_build.mesh_box(at + Vector3(0, CASE_SIZE.y - 0.15, 0), Vector3(1.9, 0.02, 0.7), DARK)
 	_say(at + Vector3(0, 2.0, 0), "PAWN_CASE_BROKEN")
+	for customer in customers:
+		customer.near_crash(to_global(at))
 	case_broken.emit(index)
 
 
@@ -256,6 +371,8 @@ func knock_armor() -> void:
 		var spot := Vector3(ARMOR_AT.x + rng.randf_range(0.0, 1.4), FLOOR_TOP + 0.08, ARMOR_AT.z + rng.randf_range(-0.8, 0.8))
 		_build.mesh_box(spot, Vector3(0.3, 0.16, 0.25) if i > 0 else Vector3(0.3, 0.3, 0.3), STEEL)
 	_say(ARMOR_AT + Vector3(1.0, 2.2, 0), "PAWN_ARMOR_FALLEN")
+	for customer in customers:
+		customer.near_crash(to_global(ARMOR_AT))
 	armor_fallen.emit()
 
 
@@ -311,6 +428,11 @@ func _say(at: Vector3, key: String, seconds := 3.0) -> void:
 	label.position = at
 	add_child(label)
 	get_tree().create_timer(seconds).timeout.connect(label.queue_free)
+
+
+## A floating line over `at` (global) for a few seconds.
+func say_at(at: Vector3, text: String) -> void:
+	_say(to_local(at), text)
 
 
 ## A model only for the look, standing at `at` and turned `turn` around Y.

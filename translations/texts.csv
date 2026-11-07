@@ -5608,3 +5608,16 @@ LOC_in_guitar_case,en el estuche de la guitarra,in the guitar case,no estojo do 
 LOC_under_pawn_desk,debajo del escritorio de Don Regateo,under Don Regateo's desk,embaixo da escrivaninha do Don Regateo
 LOC_under_parrot_cage,debajo de la jaula del loro,under the parrot's cage,embaixo da gaiola do papagaio
 LOC_on_pawn_case,arriba de una vitrina,on top of a glass case,em cima de uma vitrine
+PROMPT_TALK_PAWN_CUSTOMER,"E: charlar","E: chat","E: conversar"
+PAWN_SOLD,"«¡Vendido! Un placer hacer negocios.»","“Sold! A pleasure doing business.”","“Vendido! Um prazer fazer negócios.”"
+PAWN_APPRAISED,"«Esto vale $%d, y te hago un favor.»","“This is worth $%d, and I'm doing you a favor.”","“Isto vale $%d, e estou te fazendo um favor.”"
+PAWN_HAGGLE_1,"«¿Solo 5 por la tostadora de mi tía?»","“Only 5 for my aunt's toaster?”","“Só 5 pela torradeira da minha tia?”"
+PAWN_HAGGLE_2,"«Este reloj era de mi abuelo... bueno, de un señor.»","“This watch was my grandpa's... well, some guy's.”","“Este relógio era do meu avô... bom, de um senhor.”"
+PAWN_HAGGLE_3,"«¡La dentadura casi no está usada!»","“The dentures are barely used!”","“A dentadura está quase sem uso!”"
+PAWN_HAGGLE_4,"«Le dejo la guitarra, pero no la toque.»","“I'll leave you the guitar, but don't play it.”","“Deixo o violão, mas não toque nele.”"
+PAWN_HAGGLE_5,"«¿Y si le agrego una galletita para el loro?»","“And if I throw in a cookie for the parrot?”","“E se eu der um biscoito pro papagaio?”"
+PAWN_CUSTOMER_TALK_1,"«Vine a recuperar mi bicicleta. La tiene él, con etiqueta.»","“I came to get my bike back. He has it, with a tag.”","“Vim recuperar minha bicicleta. Está com ele, com etiqueta.”"
+PAWN_CUSTOMER_TALK_2,"«Don Regateo le pone precio a todo, hasta al saludo.»","“Don Regateo puts a price on everything, even a hello.”","“Don Regateo põe preço em tudo, até no bom-dia.”"
+PAWN_CUSTOMER_TALK_3,"«No deje nada en el mostrador, que se lo compra.»","“Don't leave anything on the counter, he'll buy it.”","“Não deixe nada no balcão, que ele compra.”"
+PAWN_CUSTOMER_CRASH,"«¡Cuidado, que eso lo empeñé yo!»","“Careful, I pawned that!”","“Cuidado, isso eu que penhorei!”"
+PAWN_CUSTOMER_BLOCKED,"«¡Permiso, que estoy en la fila!»","“Excuse me, I'm in line!”","“Com licença, estou na fila!”"

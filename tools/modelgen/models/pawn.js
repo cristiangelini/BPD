@@ -186,11 +186,42 @@ export function buildGiantPriceTag() {
 	return b.build();
 }
 
+// A gold trophy for sale, 0.4 m tall, on a black base.
+export function buildPawnTrophy() {
+	const b = new Builder('pawn_trophy');
+	const gold = mat('pawn_trophy_gold', 0xe0b040, { metalness: 0.7, roughness: 0.3 });
+	b.add('base', mat('pawn_trophy_base', 0x24242a), new THREE.BoxGeometry(0.16, 0.08, 0.16), { pos: V(0, 0.04, 0) });
+	b.add('stem', gold, new THREE.CylinderGeometry(0.02, 0.03, 0.12, 8), { pos: V(0, 0.14, 0) });
+	b.add('cup', gold, new THREE.CylinderGeometry(0.1, 0.04, 0.16, 10), { pos: V(0, 0.28, 0) });
+	for (const s of [-1, 1]) b.add('handle', gold, new THREE.TorusGeometry(0.04, 0.01, 6, 10), { pos: V(s * 0.11, 0.29, 0) });
+	return b.build();
+}
+
+// An old radio for sale, 0.4 m wide, its dial to +Z.
+export function buildPawnRadio() {
+	const b = new Builder('pawn_radio');
+	b.add('box', mat('pawn_radio_red', 0xb83a2a), new THREE.BoxGeometry(0.4, 0.25, 0.16), { pos: V(0, 0.125, 0) });
+	b.add('grill', mat('pawn_radio_grill', 0xe8dcc0), new THREE.BoxGeometry(0.18, 0.16, 0.01), { pos: V(-0.08, 0.13, 0.08) });
+	b.add('dial', mat('pawn_radio_dial', 0xf2c230), new THREE.CylinderGeometry(0.04, 0.04, 0.02, 10), { pos: V(0.11, 0.13, 0.085), rot: [Math.PI / 2, 0, 0] });
+	b.add('handle', mat('pawn_radio_handle', 0x24242a), new THREE.TorusGeometry(0.08, 0.012, 6, 10, Math.PI), { pos: V(0, 0.25, 0) });
+	return b.build();
+}
+
+// A cuckoo clock for sale, 0.35 m tall, its face to +Z.
+export function buildPawnClock() {
+	const b = new Builder('pawn_clock');
+	b.add('house', mat('pawn_clock_wood', 0x8a5a30), new THREE.BoxGeometry(0.24, 0.26, 0.12), { pos: V(0, 0.13, 0) });
+	b.add('roof', mat('pawn_clock_roof', 0x5a3a20), new THREE.ConeGeometry(0.19, 0.1, 4), { pos: V(0, 0.31, 0), rot: [0, Math.PI / 4, 0] });
+	b.add('face', mat('pawn_clock_face', 0xf6f2e2), new THREE.CylinderGeometry(0.07, 0.07, 0.01, 12), { pos: V(0, 0.15, 0.065), rot: [Math.PI / 2, 0, 0] });
+	b.add('bird', mat('pawn_clock_bird', 0xf2c230), ellipsoid(0.025, 0.02, 0.03), { pos: V(0, 0.25, 0.07) });
+	return b.build();
+}
+
 export const models = {
 	pawn_counter: buildPawnCounter, pawn_case: buildPawnCase, pawn_shelf: buildPawnShelf, knight_armor: buildKnightArmor,
 	stuffed_croc: buildStuffedCroc, old_tv: buildOldTv, guitar_case: buildGuitarCase, pawn_parrot_cage: buildPawnParrotCage,
 	cookie_jar: buildCookieJar, pawn_stock_shelf: buildPawnStockShelf, pawn_boxes: buildPawnBoxes, pawn_safe: buildPawnSafe,
-	giant_price_tag: buildGiantPriceTag,
+	giant_price_tag: buildGiantPriceTag, pawn_trophy: buildPawnTrophy, pawn_radio: buildPawnRadio, pawn_clock: buildPawnClock,
 };
 
 export const views = {
@@ -203,6 +234,8 @@ export const views = {
 			{ name: 'cookie_jar', pos: [3.6, 1.0, 2.0] }, { name: 'pawn_stock_shelf', pos: [3.0, 0, -2.4] },
 			{ name: 'pawn_boxes', pos: [5.2, 0, -1.8] }, { name: 'pawn_safe', pos: [-0.6, 0, -2.2] },
 			{ name: 'giant_price_tag', pos: [0.4, 3.6, -3.2] },
+			{ name: 'pawn_trophy', pos: [-2.6, 1.11, 1.6] }, { name: 'pawn_radio', pos: [-2.0, 1.11, 1.6] },
+			{ name: 'pawn_clock', pos: [-1.4, 1.11, 1.6] },
 		],
 		cam: { pos: [0.4, 5.0, 10.0], target: [0.4, 0.9, 0], fov: 50 },
 	},
