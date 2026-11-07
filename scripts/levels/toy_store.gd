@@ -10,7 +10,8 @@ extends Node3D
 ## whatever is in the ball pit only turns up stirring it (BallPitSpot). Something thrown hard at the glass case cracks
 ## it (a fine), and at the castle knocks it down in pieces (another fine). Don Cucho works in his workshop and goes
 ## around the shelves now and then, filling the complaint and listening for the toys; E on the train's lever derails it
-## and he puts it back on the track, his back to everything (step 3). Every number here is (propuesta).
+## and he puts it back on the track, his back to everything (step 3). Doña Ramona walks the front aisle buying gifts: a
+## toy off a shelf (E on it) handed to her buys what she saw (step 4). Every number here is (propuesta).
 
 signal case_cracked
 signal castle_fallen
@@ -90,6 +91,8 @@ const TRAIN_TIME := 25.0
 ## What raises the complaint here besides the usual: each release of toys he hears, the glass case he sees cracked, and
 ## the lever once he knows the trick.
 const HEARD := 5.0
+## Doña Ramona's walk along the front aisle, between the shelves and the teddy.
+const RAMONA_ROUTE: Array[Vector3] = [Vector3(-5.5, FLOOR_TOP, 5.8), Vector3(3.5, FLOOR_TOP, 5.8)]
 const SAW_CASE := 10.0
 const NOTICED := 10.0
 ## How fast the giant top on the roof spins, in turns a second.
@@ -135,6 +138,8 @@ var train: TrainControl
 var cucho: FloorBoss
 var complaint_bar: ProgressBar
 var derailed := false
+var ramona: DonaRamona
+var shelves: Array[ToyShelfBody] = []
 var pit: BallPitSpot
 var till: Till
 var case_broken := false
@@ -166,6 +171,9 @@ func _ready() -> void:
 	add_child(wind_up)
 	wind_up.setup(self)
 	_place_cucho()
+	ramona = DonaRamona.new()
+	ramona.route = RAMONA_ROUTE
+	add_child(ramona)
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("toy_store")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -296,7 +304,11 @@ func _build_shell() -> void:
 func _build_salon() -> void:
 	for at: Vector3 in SHELVES:
 		_model(SHELF_MODEL, at)
-		_build.shape(_build.body(at + Vector3(0, SHELF_SIZE.y / 2, 0)), SHELF_SIZE)
+		var shelf := ToyShelfBody.new()
+		shelf.size = SHELF_SIZE
+		shelf.position = at + Vector3(0, SHELF_SIZE.y / 2, 0)
+		add_child(shelf)
+		shelves.append(shelf)
 	_model(COUNTER_MODEL, COUNTER_AT)
 	_build.shape(_build.body(COUNTER_AT + Vector3(0, COUNTER_SIZE.y / 2, 0)), COUNTER_SIZE)
 	till = Till.new()
