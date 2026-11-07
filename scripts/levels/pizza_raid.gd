@@ -33,7 +33,7 @@ const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_PIZZA_TIP_B", "BR
 	"BRIEF_PIZZA_TIP_E"]
 ## The stories the pizzeria can tell, like GymRaid.STORIES: what the comisario says once it's guessed, its "find it"
 ## row, what it hides in spots drawn with the seed (with their half heights and whether they're heavy; the first one
-## is the main evidence), the checklist rows of its extras and its rig.
+## is the main evidence, unless "main_at" puts it somewhere else), the checklist rows of its extras and its rig.
 const STORIES := {
 	"jewels": {
 		"briefing": ["BRIEF_RIGHT", "BRIEF_JEWELS_B", "BRIEF_JEWELS_C", "BRIEF_JEWELS_D"],
@@ -54,6 +54,18 @@ const STORIES := {
 		"heavy": [true, false, false],
 		"extra_keys": ["OBJ_EXTRA_YEAST_PILLS", "OBJ_EXTRA_INFLATED_INVOICE"],
 		"rig": preload("res://scripts/case/pizza/crazy_yeast_rig.gd"),
+	},
+	"oven_tunnel": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_OVEN_TUNNEL_B", "BRIEF_OVEN_TUNNEL_C", "BRIEF_OVEN_TUNNEL_D"],
+		"find": "OBJ_FIND_SILVER_BAG",
+		"hidden": [preload("res://scenes/props/silver_bag.tscn"), preload("res://scenes/props/pizza_miner_helmet.tscn"),
+			preload("res://scenes/props/pizza_bank_plan.tscn")],
+		"half_heights": [0.19, 0.06, 0.03],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_MINER_HELMET", "OBJ_EXTRA_BANK_PLAN"],
+		"rig": preload("res://scripts/case/pizza/oven_tunnel_rig.gd"),
+		# Not in a hiding spot: at the far end of the tunnel under the oven (OvenTunnelRig).
+		"main_at": OvenTunnelRig.BAG_AT,
 	},
 }
 ## Where the suspicion notes can lie: on the floor of the dining room, the kitchen, the office and the yard, away from
@@ -197,6 +209,8 @@ var complaint_bar: ProgressBar
 ## Floured cops Don Muzza already saw (until the flour wears off).
 var _seen_floured := {}
 var oven: PizzaOven
+## The clay oven's look: the tunnel story puts its fire out.
+var oven_model: Node3D
 var tito: PizzaTito
 var slices: Array[Grabbable] = []
 var _build: PlaceBuilder
@@ -300,6 +314,9 @@ func _place_hidden() -> void:
 	for i in story.hidden.size():
 		var item: Evidence = story.hidden[i].instantiate()
 		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		if i == 0 and story.has("main_at"):
+			hidden_spots[0] = -1
+			item.position = story.main_at
 		add_child(item)
 		hidden.append(item)
 	main = hidden[0]
@@ -328,12 +345,17 @@ func _give_clues() -> void:
 	if case_seed % 2 == 1:
 		order.reverse()
 	for item: int in order:
-		muzza.slips.append(tr("MUZZA_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+		muzza.slips.append(tr("MUZZA_SLIP") % where_is(item))
 	muzza.slipped.connect(raid.add_clue)
-	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	var where := where_is(case_seed % hidden.size())
 	tito.clue = tr("CLUE_TITO") % where
 	tito.clue_speech = tr("TITO_CLUE_" + story_id) % where
 	tito.told.connect(raid.add_clue)
+
+
+## Where the story's hidden item `index` is, in words: its spot, or the tunnel under the oven.
+func where_is(index: int) -> String:
+	return tr("LOC_pizza_oven_tunnel") if hidden_spots[index] < 0 else tr("LOC_" + SPOTS[hidden_spots[index]].id)
 
 
 ## Red brick walls, the shop window with the entrance, the ceiling, the roof and the sign; behind, the yard's floor.
@@ -392,7 +414,7 @@ func _build_dining_room() -> void:
 ## The kitchen: the clay oven against the back wall with its box of firewood, the dough table and the flour sacks.
 func _build_kitchen() -> void:
 	_wall("z", KITCHEN_X, YARD_Z, DINING_Z, [], TILE)
-	_model(OVEN_MODEL, OVEN_AT)
+	oven_model = _model(OVEN_MODEL, OVEN_AT)
 	var base := _build.body(OVEN_AT + Vector3(0, OVEN_BASE / 2, 0))
 	_build.shape(base, Vector3(OVEN_SIZE.x, OVEN_BASE, OVEN_SIZE.z))
 	var dome_height := OVEN_SIZE.y - OVEN_BASE

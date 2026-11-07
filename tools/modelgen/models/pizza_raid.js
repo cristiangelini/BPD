@@ -124,9 +124,50 @@ export const models = {
 		b.add('dough', dough, ellipsoid(0.12, 0.03, 0.1, 8, 4), { pos: V(0.12, 0.01, 0.05) });
 		return b.build();
 	},
+	// The oven with a tunnel story's main evidence: a canvas bank sack full of silver coins, tied at the neck, with a
+	// silver coin on the floor beside it. 0.36 x 0.4 x 0.3 m.
+	silver_bag() {
+		const b = new Builder('silver_bag');
+		const canvas = C('bank_canvas', 0xb8a888, { roughness: 0.95 });
+		const silver = C('silver', 0xd8dce4, { metalness: 0.7, roughness: 0.25 });
+		b.add('sack', canvas, ellipsoid(0.17, 0.16, 0.14, 10, 7), { pos: V(0, 0.16, 0) });
+		b.add('neck', canvas, new THREE.CylinderGeometry(0.04, 0.07, 0.1, 8), { pos: V(0, 0.33, 0) });
+		b.add('tie', C('bank_rope', 0x6a4a2a), new THREE.TorusGeometry(0.045, 0.01, 4, 10), { pos: V(0, 0.32, 0), rot: [Math.PI / 2, 0, 0] });
+		b.add('mark', C('bank_mark', 0x30508a), new THREE.BoxGeometry(0.1, 0.1, 0.01), { pos: V(0, 0.17, 0.14) });
+		for (let i = 0; i < 3; i++) {
+			b.add('coins', silver, new THREE.CylinderGeometry(0.025, 0.025, 0.006, 10), { pos: V(0.2 + i * 0.01, 0.003 + i * 0.006, 0.05) });
+		}
+		return b.build();
+	},
+	// A red fire extinguisher hanging on the wall, its hose curled. Its back toward -Z, 0.5 m tall.
+	fire_extinguisher() {
+		const b = new Builder('fire_extinguisher');
+		const red = C('ext_red', 0xd02018, { roughness: 0.4 });
+		b.add('body', red, new THREE.CylinderGeometry(0.08, 0.08, 0.42, 12), { pos: V(0, 0.21, 0.09) });
+		b.add('head', C('ext_black', 0x202020), new THREE.CylinderGeometry(0.03, 0.04, 0.06, 8), { pos: V(0, 0.45, 0.09) });
+		b.add('handle', C('ext_steel', 0xb0b4b8, { metalness: 0.6 }), new THREE.BoxGeometry(0.12, 0.015, 0.03), { pos: V(0.03, 0.49, 0.09) });
+		b.add('hose', C('ext_black', 0x202020), new THREE.TorusGeometry(0.07, 0.012, 4, 10, Math.PI), { pos: V(0.09, 0.3, 0.09), rot: [0, Math.PI / 2, 0] });
+		b.add('label', C('ext_label', 0xf8f0e0), new THREE.BoxGeometry(0.08, 0.1, 0.01), { pos: V(0, 0.22, 0.17) });
+		b.add('bracket', C('ext_steel', 0xb0b4b8, { metalness: 0.6 }), new THREE.BoxGeometry(0.1, 0.04, 0.02), { pos: V(0, 0.3, 0.01) });
+		return b.build();
+	},
+	// A sooty boot print, flat on the floor. 0.12 x 0.004 x 0.28 m, its toe toward -Z.
+	soot_print() {
+		const b = new Builder('soot_print');
+		const soot = C('soot', 0x1a1818, { roughness: 1.0 });
+		b.add('sole', soot, new THREE.BoxGeometry(0.11, 0.004, 0.17), { pos: V(0, 0.002, -0.04) });
+		b.add('heel', soot, new THREE.BoxGeometry(0.09, 0.004, 0.08), { pos: V(0, 0.002, 0.1) });
+		return b.build();
+	},
 };
 
 export const views = {
+	pizza_story_tunnel: {
+		items: [{ name: 'silver_bag', pos: [-0.35, 0, 0] }, { name: 'miner_helmet', pos: [0.1, 0, 0.1] },
+			{ name: 'floor_plan', pos: [0.45, 0.03, 0.1], rotY: -0.3 }, { name: 'fire_extinguisher', pos: [0.75, 0, -0.2] },
+			{ name: 'soot_print', pos: [0.15, 0, -0.3] }],
+		cam: { pos: [0.2, 0.8, 1.5], target: [0.2, 0.15, 0], fov: 40 },
+	},
 	pizza_story_yeast: {
 		items: [{ name: 'yeast_drum', pos: [-0.35, 0, 0] }, { name: 'yeast_pills', pos: [0.05, 0, 0.1] },
 			{ name: 'inflated_invoice', pos: [0.35, 0, 0.1], rotY: -0.3 }, { name: 'dough_puddle', pos: [0.1, 0, -0.35] }],

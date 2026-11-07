@@ -5282,7 +5282,6 @@ BRIEF_JEWELS_B,"Don Muzza esconde joyas robadas adentro de pizzas congeladas y l
 BRIEF_JEWELS_C,"Traigan la caja de pizzas congeladas con las joyas en el baúl del patrullero. Pesa 5 kilos y vale una fortuna.","Bring the box of frozen pizzas with the jewels in the patrol car's trunk. It weighs 5 kilos and is worth a fortune.","Tragam a caixa de pizzas congeladas com as joias no porta-malas da viatura. Pesa 5 quilos e vale uma fortuna."
 BRIEF_JEWELS_D,"Si encuentran la lupa de joyero o la lista de «clientes especiales», mejor: todo suma. Y no la metan al horno.","If you find the jeweler's loupe or the «special customers» list, even better: it all counts. And don't put it in the oven.","Se acharem a lupa de joalheiro ou a lista de «clientes especiais», melhor: tudo soma. E não coloquem no forno."
 OBJ_FIND_FROZEN_JEWELS,Llevarse la caja de pizzas congeladas con las joyas,Take the box of frozen pizzas with the jewels,Levar a caixa de pizzas congeladas com as joias
-OBJ_EXTRA_JEWELER_LOUPE,Extra: la lupa de joyero,Extra: the jeweler's loupe,Extra: a lupa de joalheiro
 OBJ_EXTRA_SPECIAL_CLIENTS,Extra: la lista de «clientes especiales»,Extra: the «special customers» list,Extra: a lista de «clientes especiais»
 SUSPECT_jewels,Las joyas en la muzza,The jewels in the cheese,As joias na muçarela
 SUSPECT_crazy_yeast,La levadura loca,The crazy yeast,O fermento maluco
@@ -5680,3 +5679,17 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+BRIEF_OVEN_TUNNEL_B,"Don Muzza cava un túnel desde su horno de barro hasta el banco de al lado. Ya sacó una bolsa de plata.","Don Muzza is digging a tunnel from his clay oven to the bank next door. He already took out a bag of silver.","Don Muzza cava um túnel do forno de barro até o banco ao lado. Já tirou um saco de prata."
+BRIEF_OVEN_TUNNEL_C,"Traigan la bolsa de plata del banco en el baúl del patrullero. Está al fondo del túnel.","Bring the bank's bag of silver in the patrol car's trunk. It's at the far end of the tunnel.","Tragam o saco de prata do banco no porta-malas da viatura. Está no fundo do túnel."
+BRIEF_OVEN_TUNNEL_D,"Si encuentran el casco de minero o el plano del banco, mejor. El horno quema: apáguenlo antes de meterse.","If you find the miner's helmet or the bank's floor plan, even better. The oven burns: put it out before you go in.","Se acharem o capacete de mineiro ou a planta do banco, melhor. O forno queima: apaguem antes de entrar."
+OBJ_FIND_SILVER_BAG,Llevarse la bolsa de plata del banco,Take the bank's bag of silver,Levar o saco de prata do banco
+OBJ_EXTRA_BANK_PLAN,Extra: el plano del banco,Extra: the bank's floor plan,Extra: a planta do banco
+TITO_CLUE_oven_tunnel,"«Mmm… Vi a Don Muzza esconder algo %s. Y de noche el horno hace ruido de pala. Yo lo oí.»","“Mmm… I saw Don Muzza hide something %s. And at night the oven sounds like a shovel. I heard it.”","“Hmm… Vi Don Muzza esconder algo %s. E à noite o forno faz barulho de pá. Eu ouvi.”"
+LOC_pizza_oven_tunnel,en el túnel debajo del horno,in the tunnel under the oven,no túnel debaixo do forno
+PROMPT_SOOT_PRINTS,E: mirar las huellas negras,E: look at the black footprints,E: olhar as pegadas pretas
+CLUE_SOOT_PRINTS,Huellas de hollín salen del horno y van hasta la oficina,Soot footprints come out of the oven and go to the office,Pegadas de fuligem saem do forno e vão até o escritório
+PROMPT_EXTINGUISHER,E: apagar el horno con el matafuegos,E: put the oven out with the extinguisher,E: apagar o forno com o extintor
+PROMPT_OVEN_CRAWL,E: meterse gateando en el horno,E: crawl into the oven,E: entrar engatinhando no forno
+PROMPT_TUNNEL_OUT,E: volver a la cocina,E: go back to the kitchen,E: voltar para a cozinha
+OVEN_FSSH,¡FSSSH!,FSSSH!,FSSSH!
+HINT_TUNNEL_CRAWL,"Estás en el túnel. Gateas: no te puedes parar.","You're in the tunnel. You crawl: you can't stand up.","Você está no túnel. Engatinha: não dá para ficar de pé."
