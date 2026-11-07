@@ -87,7 +87,8 @@ func notice() -> void:
 		GOALIE_GREEN)
 
 
-## The press spits: every cop near its tray without one gets a sticker on the face (online, each PC its own cop's).
+## The press spits: every cop near its tray without one gets a sticker on the face (online, each PC its own
+## cop's).
 func spit() -> void:
 	var tray := shop.to_global(PrintShop.PRESS_AT + Vector3(PrintShop.TRAY_X.y, 0, 0))
 	for cop: Node3D in get_tree().get_nodes_in_group("cops"):
