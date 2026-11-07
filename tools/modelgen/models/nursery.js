@@ -435,6 +435,39 @@ export function buildGiantPumpkin() {
 	return b.build();
 }
 
+// The beekeeper's hive (0.5 x 0.6 x 0.4 m): two stacked yellow wooden boxes with a slanted roof and an entrance slot.
+export function buildBeehive() {
+	const b = new Builder('beehive');
+	const wood = mat('hive_yellow', 0xf2c84b), roof = mat('hive_roof', 0xb8bec6, { metalness: 0.5 }), dark = mat('hive_dark', 0x2a2420);
+	b.add('box', wood, new THREE.BoxGeometry(0.5, 0.24, 0.4), { pos: V(0, 0.12, 0) });
+	b.add('box', wood, new THREE.BoxGeometry(0.5, 0.24, 0.4), { pos: V(0, 0.37, 0) });
+	b.add('band', dark, new THREE.BoxGeometry(0.51, 0.012, 0.41), { pos: V(0, 0.245, 0) });
+	b.add('roof', roof, new THREE.BoxGeometry(0.56, 0.05, 0.46), { pos: V(0, 0.52, 0) });
+	b.add('slot', dark, new THREE.BoxGeometry(0.2, 0.025, 0.01), { pos: V(0, 0.04, 0.2) });
+	return b.build();
+}
+
+// The beekeeper's suit (0.4 x 0.12 x 0.5 m): a folded white suit with the round hat and its black veil on top.
+export function buildBeekeeperSuit() {
+	const b = new Builder('beekeeper_suit');
+	const white = mat('suit_white', 0xf6f4ee), black = mat('suit_veil', 0x2a2a2e);
+	b.add('suit', white, new THREE.BoxGeometry(0.4, 0.08, 0.5), { pos: V(0, 0.04, 0) });
+	b.add('hat', white, new THREE.CylinderGeometry(0.16, 0.16, 0.02, 14), { pos: V(0, 0.09, 0) });
+	b.add('veil', black, new THREE.CylinderGeometry(0.11, 0.13, 0.04, 14), { pos: V(0, 0.12, 0) });
+	return b.build();
+}
+
+// A jar of honey with someone else's label (0.1 m across, 0.13 m tall): golden honey, a checkered lid and a label
+// with a crossed-out name.
+export function buildHoneyJar() {
+	const b = new Builder('honey_jar');
+	b.add('honey', mat('honey_gold', 0xf0a020, { roughness: 0.2, emissive: 0x3a2000 }), new THREE.CylinderGeometry(0.05, 0.05, 0.1, 12), { pos: V(0, 0.05, 0) });
+	b.add('lid', mat('honey_lid', 0xd23a3a), new THREE.CylinderGeometry(0.055, 0.055, 0.03, 12), { pos: V(0, 0.115, 0) });
+	b.add('label', mat('honey_label', 0xf6f4ee), new THREE.CylinderGeometry(0.052, 0.052, 0.04, 12), { pos: V(0, 0.05, 0) });
+	b.add('cross', mat('honey_ink', 0x1a1a1a), new THREE.BoxGeometry(0.05, 0.005, 0.003), { pos: V(0, 0.05, 0.053), rot: [0, 0, 0.4] });
+	return b.build();
+}
+
 export const models = {
 	nursery_sprinkler: buildSprinkler, dentuda_pot: buildDentudaPot, dentuda: buildDentuda,
 	potted_plant_0: buildPottedFern, potted_plant_1: buildPottedFlowers, potted_plant_2: buildPottedCactus,
@@ -446,7 +479,7 @@ export const models = {
 	stadium_ticket: buildStadiumTicket, hand_mower: buildHandMower, diamond_pot: buildDiamondPot,
 	jeweler_loupe: buildJewelerLoupe, empty_soil_bag: buildEmptySoilBag, seed_box: buildSeedBox,
 	prize_ribbon: buildPrizeRibbon, superbrote_jar: buildSuperbroteJar, giant_tomato_plant: buildGiantTomatoPlant,
-	giant_pumpkin: buildGiantPumpkin,
+	giant_pumpkin: buildGiantPumpkin, beehive: buildBeehive, beekeeper_suit: buildBeekeeperSuit, honey_jar: buildHoneyJar,
 };
 
 export const views = {
@@ -468,6 +501,8 @@ export const views = {
 			{ name: 'empty_soil_bag', pos: [-3.6, 0, 2.6], rotY: 0.3 }, { name: 'seed_box', pos: [4.2, 0, 3.6] },
 			{ name: 'prize_ribbon', pos: [4.6, 0, 3.9] }, { name: 'superbrote_jar', pos: [4.9, 0, 3.4] },
 			{ name: 'giant_tomato_plant', pos: [4.4, 0, 1.6] }, { name: 'giant_pumpkin', pos: [-4.4, 0, 0.4] },
+			{ name: 'beehive', pos: [-1.0, 0, 4.2] }, { name: 'beekeeper_suit', pos: [-0.3, 0, 4.4] },
+			{ name: 'honey_jar', pos: [0.2, 0, 4.4] },
 		],
 		cam: { pos: [0, 2.4, 8.0], target: [0.3, 1.0, 0], fov: 45 },
 	},

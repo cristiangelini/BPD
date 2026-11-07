@@ -85,6 +85,17 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_PRIZE_RIBBON", "OBJ_EXTRA_SUPERBROTE"],
 		"rig": preload("res://scripts/case/nursery/contest_seeds_rig.gd"),
 	},
+	"stolen_bees": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_STOLEN_BEES_B", "BRIEF_STOLEN_BEES_C", "BRIEF_STOLEN_BEES_D"],
+		"find": "OBJ_FIND_BEEHIVE",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/beehive.tscn"), preload("res://scenes/props/beekeeper_suit.tscn"),
+			preload("res://scenes/props/honey_jar.tscn")],
+		"half_heights": [0.275, 0.07, 0.065],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_BEEKEEPER_SUIT", "OBJ_EXTRA_HONEY_JAR"],
+		"rig": preload("res://scripts/case/nursery/stolen_bees_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the floor by the front, the yard, the back and the greenhouse's far end.
 const NOTE_PLACES: Array[Vector3] = [

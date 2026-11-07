@@ -187,6 +187,11 @@ los extras suman 500.
    pasa a menos de 2 m la ve (pista). Cada vez que se apaga el riego, en la punta oeste del patio crece un zapallo
    gigante (30 kg, hay que moverlo entre dos) que sale rodando hacia el este a 3 m/s; hay 3 como mucho y el más viejo
    desaparece. Capturas: `/mnt/project-files/vivero/paso7d-*.png`.
+   **Hecho así, las abejas robadas** (`StolenBeesRig`, `--story=stolen_bees`): la colmena (8 kg, 1000), el traje de
+   apicultor (1 kg, 300) y el frasco de miel (0,5 kg, 200) van a cualquier escondite. El policía que pasa a menos de
+   3 m de la colmena oye el zumbido ("¡Bzzz!", pista). Un enjambre de 8 abejas da vueltas sobre la colmena; si un
+   policía corre a menos de 6 m de ella, lo persigue a 5 m/s y cada 2 s le da un empujoncito sin daño, hasta que
+   camina o se aleja a más de 10 m. Captura: `/mnt/project-files/vivero/paso7e-abejas.png`.
 8. El vivero en el sorteo de lugares (PlaceDraw), la huida y la persecución.
 9. El online.
 

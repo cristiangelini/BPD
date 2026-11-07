@@ -5712,3 +5712,13 @@ OBJ_EXTRA_SUPERBROTE,Extra: el frasco de abono SuperBrote,Extra: the jar of Supe
 CLUE_GIANT_TOMATOES,"En el invernadero hay una planta con tomates del tamaño de una pelota. Eso no crece solo.","In the greenhouse there's a plant with tomatoes the size of a ball. That doesn't grow on its own.","Na estufa tem uma planta com tomates do tamanho de uma bola. Isso não cresce sozinho."
 NURSERY_TOMATOES,¡Qué tomates!,What tomatoes!,Que tomates!
 BROTECITO_CLUE_contest_seeds,"¡Gracias! Vi a Doña Hortensia esconder algo %s. Y desde que riego con eso, crecen zapallos gigantes.","Thanks! I saw Doña Hortensia hide something %s. And since I water with that stuff, giant pumpkins grow.","Obrigado! Vi a Doña Hortensia esconder algo %s. E desde que rego com aquilo, crescem abóboras gigantes."
+BRIEF_STOLEN_BEES_B,"Doña Hortensia se robó la colmena de un apicultor. Con abejas y todo.","Doña Hortensia stole a beekeeper's hive. Bees and all.","A Doña Hortensia roubou a colmeia de um apicultor. Com abelhas e tudo."
+BRIEF_STOLEN_BEES_C,"Traigan la colmena en el baúl del patrullero. Y no corran cerca: a las abejas no les gusta.","Bring the hive in the patrol car's trunk. And don't run near it: the bees don't like it.","Tragam a colmeia no porta-malas da viatura. E não corram perto: as abelhas não gostam."
+BRIEF_STOLEN_BEES_D,"Si encuentran el traje de apicultor o el frasco de miel con la etiqueta de otro, mejor: todo suma.","If you find the beekeeper's suit or the jar of honey with someone else's label, even better: it all counts.","Se acharem a roupa de apicultor ou o pote de mel com a etiqueta de outro, melhor: tudo conta."
+OBJ_FIND_BEEHIVE,Llevarse la colmena robada,Take the stolen hive,Levar a colmeia roubada
+OBJ_EXTRA_BEEKEEPER_SUIT,Extra: el traje de apicultor,Extra: the beekeeper's suit,Extra: a roupa de apicultor
+OBJ_EXTRA_HONEY_JAR,Extra: el frasco de miel con la etiqueta de otro,Extra: the jar of honey with someone else's label,Extra: o pote de mel com a etiqueta de outro
+CLUE_BUZZING,"De un escondite sale un zumbido. Muchas abejas, todas juntas.","A buzz comes from a hiding spot. Lots of bees, all together.","De um esconderijo sai um zumbido. Muitas abelhas, todas juntas."
+NURSERY_BUZZ,¡Bzzzz!,Bzzzz!,Bzzzz!
+HINT_NURSERY_BEES,¡Abejas! No corras cerca de la colmena.,Bees! Don't run near the hive.,Abelhas! Não corra perto da colmeia.
+BROTECITO_CLUE_stolen_bees,"¡Gracias! Vi a Doña Hortensia esconder algo %s. Y desde ese día, la miel le sale gratis.","Thanks! I saw Doña Hortensia hide something %s. And since that day, she gets her honey for free.","Obrigado! Vi a Doña Hortensia esconder algo %s. E desde aquele dia, o mel sai de graça para ela."
