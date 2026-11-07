@@ -2,7 +2,8 @@
 // train table with its loop and cardboard tunnel, the block castle, the giant teddy bear, the collectors' glass case,
 // the ball pit, the giant spinning top of the sign and the delivery van, with origins at the floor in the middle of
 // each piece. Placeholder, not final art.
-import { Builder, mat, V, THREE } from '../lib.js';
+import { Builder, mat, V, THREE, ellipsoid } from '../lib.js';
+import { M, pearBody, eyes } from './pear.js';
 
 const TOYS = [0xe84a3a, 0xf2c230, 0x3a8ae8, 0x4ac060, 0xb060d8, 0xf08a30, 0x40c8c8, 0xf070b0];
 
@@ -152,10 +153,34 @@ export function buildToyVan() {
 	return b.build();
 }
 
+// Don Cucho, the owner: an old man, thin and tall, a cap with a propeller, a vest full of pockets with batteries in
+// them and a magnifier hanging from his neck. The game scales him tall.
+export function buildDonCucho() {
+	const b = new Builder('npc_don_cucho');
+	pearBody(b, mat('skin_cucho', 0xe8c0a0), { shirt: mat('cucho_shirt', 0xe8e0c8), pants: mat('cucho_pants', 0x6a5a48), shoes: M.black, belted: false });
+	const vest = mat('cucho_vest', 0x5a7a40), pocket = mat('cucho_pocket', 0x4a6630);
+	b.add('vest', vest, new THREE.BoxGeometry(0.62, 0.42, 0.06), { pos: V(0, 0.74, 0.33), rot: [-0.18, 0, 0] });
+	for (const [x, y] of [[-0.17, 0.66], [0.17, 0.66], [-0.17, 0.84], [0.17, 0.84]]) {
+		b.add('pockets', pocket, new THREE.BoxGeometry(0.14, 0.11, 0.03), { pos: V(x, y, 0.37), rot: [-0.18, 0, 0] });
+	}
+	b.add('batteries', mat('battery', 0xe8c030), new THREE.CylinderGeometry(0.02, 0.02, 0.08, 6), { pos: V(-0.2, 0.87, 0.38) });
+	b.add('batteries', mat('battery', 0xe8c030), new THREE.CylinderGeometry(0.02, 0.02, 0.08, 6), { pos: V(0.14, 0.69, 0.4) });
+	eyes(b, 1.34, 0.18, 0.08, 0.05);
+	b.add('beard', mat('cucho_beard', 0xd8d8dc), ellipsoid(0.15, 0.07, 0.08, 8, 4), { pos: V(0, 1.18, 0.15) });
+	const capRed = mat('cucho_cap', 0xe84a3a), capBlue = mat('cucho_cap_b', 0x3a8ae8);
+	b.add('cap', capRed, new THREE.SphereGeometry(0.2, 10, 5, 0, Math.PI * 2, 0, Math.PI / 2), { pos: V(0, 1.42, 0.01) });
+	b.add('cap', capBlue, new THREE.CylinderGeometry(0.15, 0.15, 0.02, 10, 1, false, -Math.PI / 2, Math.PI), { pos: V(0, 1.43, 0.14) });
+	b.add('propeller', mat('cucho_stick', 0x2a2a30), new THREE.CylinderGeometry(0.012, 0.012, 0.12, 5), { pos: V(0, 1.68, 0.01) });
+	b.add('propeller', mat('cucho_blade', 0xf2c230), new THREE.BoxGeometry(0.4, 0.015, 0.06), { pos: V(0, 1.74, 0.01), rot: [0, 0.4, 0.1] });
+	b.add('magnifier', mat('lens_rim', 0x2a2a30), new THREE.TorusGeometry(0.06, 0.012, 5, 12), { pos: V(0.05, 0.98, 0.38) });
+	b.add('magnifier', mat('lens_glass', 0xc8e8f8, { transparent: true, opacity: 0.5 }), new THREE.CircleGeometry(0.06, 12), { pos: V(0.05, 0.98, 0.385) });
+	return b.build();
+}
+
 export const models = {
 	toy_shelf: buildToyShelf, toy_counter: buildToyCounter, train_table: buildTrainTable, block_castle: buildBlockCastle,
 	giant_teddy: buildGiantTeddy, collector_case: buildCollectorCase, ball_pit: buildBallPit, giant_top: buildGiantTop,
-	toy_van: buildToyVan,
+	toy_van: buildToyVan, npc_don_cucho: buildDonCucho,
 };
 
 export const views = {
@@ -165,6 +190,7 @@ export const views = {
 			{ name: 'train_table', pos: [1.6, 0, -1.6] }, { name: 'block_castle', pos: [-2.6, 0, 1.6] },
 			{ name: 'giant_teddy', pos: [-0.4, 0, 1.0] }, { name: 'collector_case', pos: [5.0, 0, -1.0] },
 			{ name: 'ball_pit', pos: [-6.0, 0, 0.0] }, { name: 'giant_top', pos: [4.8, 0, 1.8] },
+			{ name: 'npc_don_cucho', pos: [3.4, 0, 2.4], rotY: -0.3 },
 		],
 		cam: { pos: [-0.5, 4.5, 9.5], target: [-0.5, 0.8, 0], fov: 55 },
 	},

@@ -8,7 +8,9 @@ extends Node3D
 ## (locked with the till's key), don Cucho's workshop and the bathroom. The workshop's back door opens to the fenced
 ## yard with the delivery van. The shelves' wind-up toys walk off when a cop bumps them (WindUpRig, step 2), and
 ## whatever is in the ball pit only turns up stirring it (BallPitSpot). Something thrown hard at the glass case cracks
-## it (a fine), and at the castle knocks it down in pieces (another fine). Every number here is (propuesta).
+## it (a fine), and at the castle knocks it down in pieces (another fine). Don Cucho works in his workshop and goes
+## around the shelves now and then, filling the complaint and listening for the toys; E on the train's lever derails it
+## and he puts it back on the track, his back to everything (step 3). Every number here is (propuesta).
 
 signal case_cracked
 signal castle_fallen
@@ -21,6 +23,7 @@ const CASTLE_MODEL := preload("res://assets/models/block_castle.glb")
 const TEDDY_MODEL := preload("res://assets/models/giant_teddy.glb")
 const CASE_MODEL := preload("res://assets/models/collector_case.glb")
 const PIT_MODEL := preload("res://assets/models/ball_pit.glb")
+const CUCHO_SCENE := preload("res://scenes/npc/don_cucho.tscn")
 const TOP_MODEL := preload("res://assets/models/giant_top.glb")
 const VAN_MODEL := preload("res://assets/models/toy_van.glb")
 ## The lot; the building goes from BACK_WALL_Z to FRONT_WALL_Z, the yard behind it and the sidewalk strip in front.
@@ -69,6 +72,26 @@ const CASE_SPEED := 3.0
 const CASE_FINE := 30
 const CASTLE_SPEED := 2.0
 const CASTLE_FINE := 20
+## Don Cucho's round, back and forth: from his workshop's bench out through its door and along the salon's middle aisle
+## to the ball pit. How long he works at the bench between rounds. The way to the derailed train, past the train table,
+## where it falls off the table by the tunnel, where he crouches to pick it up (facing it and the east wall, his back
+## to the salon) and how long it takes him.
+const CUCHO_ROUTE: Array[Vector3] = [
+	Vector3(1.5, FLOOR_TOP, -2.5), Vector3(WORKSHOP_DOOR_X, FLOOR_TOP, -1.0), Vector3(WORKSHOP_DOOR_X, FLOOR_TOP, 1.0),
+	Vector3(2.0, FLOOR_TOP, 3.5), Vector3(-1.0, FLOOR_TOP, 3.5), Vector3(-4.5, FLOOR_TOP, 3.5),
+	Vector3(-7.5, FLOOR_TOP, 3.5),
+]
+const BENCH_PAUSE := 90.0
+const TRAIN_PATH: Array[Vector3] = [Vector3(3.0, FLOOR_TOP, 0.8), Vector3(8.7, FLOOR_TOP, 0.8)]
+const TRAIN_SPOT := Vector3(8.75, FLOOR_TOP, 2.6)
+const TUNNEL_AT := Vector3(7.7, FLOOR_TOP + 0.9, 2.6)
+const WRECK_AT := Vector3(9.5, FLOOR_TOP + 0.08, 2.6)
+const TRAIN_TIME := 25.0
+## What raises the complaint here besides the usual: each release of toys he hears, the glass case he sees cracked, and
+## the lever once he knows the trick.
+const HEARD := 5.0
+const SAW_CASE := 10.0
+const NOTICED := 10.0
 ## How fast the giant top on the roof spins, in turns a second.
 const TOP_SPIN := 0.25
 
@@ -108,6 +131,10 @@ var station_parking: Transform3D
 var city_map: CityMap
 var store_door: FrontDoor
 var wind_up: WindUpRig
+var train: TrainControl
+var cucho: FloorBoss
+var complaint_bar: ProgressBar
+var derailed := false
 var pit: BallPitSpot
 var till: Till
 var case_broken := false
@@ -120,6 +147,8 @@ var fines := 0
 var _build: PlaceBuilder
 var _top: Node3D
 var _castle: Node3D
+var _train_look: Node3D
+var _wreck: Node3D
 @onready var car: PatrolCar = $PatrolCar
 
 
@@ -136,6 +165,7 @@ func _ready() -> void:
 	wind_up = WindUpRig.new()
 	add_child(wind_up)
 	wind_up.setup(self)
+	_place_cucho()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("toy_store")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -148,6 +178,91 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_top.rotation.y = wrapf(_top.rotation.y + TAU * TOP_SPIN * delta, 0.0, TAU)
+	if derailed and not train.is_jammed:
+		_rerail()
+
+
+## Don Cucho on his round, the train, what he notices and hears, and the complaint bar.
+func _place_cucho() -> void:
+	cucho = CUCHO_SCENE.instantiate()
+	cucho.route = CUCHO_ROUTE
+	cucho.printer_spot = TRAIN_SPOT
+	cucho.printer_path = TRAIN_PATH
+	cucho.printer = train
+	cucho.fix_time = TRAIN_TIME
+	cucho.fix_facing = WRECK_AT
+	cucho.first_pause = BENCH_PAUSE
+	add_child(cucho)
+	cucho.start_at(0)
+	store_door.broken.connect(cucho.door_broken)
+	till.opened.connect(func(at: Vector3) -> void: cucho.saw(at, FloorBoss.SAW_TILL))
+	case_cracked.connect(func() -> void: cucho.saw(CASE_AT + Vector3(-0.4, 1.0, 0), SAW_CASE, "CUCHO_CASE"))
+	wind_up.released.connect(func(_shelf: int, _at: Vector3) -> void: cucho.scold(HEARD, "CUCHO_HEARD"))
+	train.jammed.connect(derail)
+	train.noticed.connect(func() -> void: cucho.scold(NOTICED, "CUCHO_NOTICED"))
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	cucho.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## The train runs off the track on the tunnel's curve and off the table: it lies tipped over on the floor, and the
+## crash sets off the toys of the shelf nearest to it.
+func derail() -> void:
+	if derailed:
+		return
+	derailed = true
+	for part in _train_parts():
+		part.visible = false
+	_wreck = Node3D.new()
+	_wreck.position = WRECK_AT
+	_wreck.rotation = Vector3(0, 0.6, PI / 2)
+	add_child(_wreck)
+	var wreck := PlaceBuilder.new(_wreck)
+	wreck.mesh_box(Vector3.ZERO, Vector3(0.34, 0.16, 0.16), RED)
+	wreck.mesh_box(Vector3(-0.36, 0, 0.05), Vector3(0.28, 0.12, 0.15), BLOCKS[1])
+	say(TUNNEL_AT + Vector3(0, 1.0, 0), "TOY_TRAIN_DERAILED")
+	wind_up.release(nearest_shelf(TUNNEL_AT))
+
+
+## The shelf whose middle is nearest to `at`.
+static func nearest_shelf(at: Vector3) -> int:
+	var best := 0
+	for i in SHELVES.size():
+		if Vector2(SHELVES[i].x - at.x, SHELVES[i].z - at.z).length() < \
+				Vector2(SHELVES[best].x - at.x, SHELVES[best].z - at.z).length():
+			best = i
+	return best
+
+
+## Back on the track.
+func _rerail() -> void:
+	derailed = false
+	for part in _train_parts():
+		part.visible = true
+	_wreck.queue_free()
+	_wreck = null
+
+
+## The little train's pieces in the train table's model (the engine, its chimney and the cars).
+func _train_parts() -> Array[Node]:
+	var parts: Array[Node] = []
+	for node in _train_look.find_children("*", "MeshInstance3D", true, false):
+		if node.name.begins_with("engine") or node.name.begins_with("chimney") or node.name.begins_with("cars"):
+			parts.append(node)
+	return parts
 
 
 ## The floors, the outer walls with the entrance, the roof with the giant top, and the sign over the door.
@@ -188,10 +303,11 @@ func _build_salon() -> void:
 	till.position = COUNTER_AT + Vector3(-0.9, COUNTER_SIZE.y + Till.SIZE.y / 2, 0)
 	till.key_hint = "HINT_TILL_KEY_TOY"
 	add_child(till)
-	# The train's control box with its lever (it works in step 3).
-	_build.box(CONTROL_AT + Vector3(0, 0.5, 0), Vector3(0.4, 1.0, 0.4), DARK)
-	_build.mesh_box(CONTROL_AT + Vector3(0, 1.15, 0.1), Vector3(0.05, 0.3, 0.05), RED)
-	_model(TRAIN_MODEL, TRAIN_AT)
+	# The train's control box with its lever, facing the customers' side.
+	train = TrainControl.new()
+	train.position = CONTROL_AT
+	add_child(train)
+	_train_look = _model(TRAIN_MODEL, TRAIN_AT)
 	_build.shape(_build.body(TRAIN_AT + Vector3(0, TRAIN_SIZE.y / 2, 0)), TRAIN_SIZE)
 	_model(CASE_MODEL, CASE_AT, -PI / 2)
 	var solid := _build.body(CASE_AT + Vector3(0, CASE_SIZE.y / 2, 0))

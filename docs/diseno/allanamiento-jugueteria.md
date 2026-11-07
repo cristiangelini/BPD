@@ -90,6 +90,11 @@ extras suman entre 400 y 600. El caballito es la cosa más pesada (8 kg): convie
    revuelve con E 3 veces (no mantener E 3 s, igual que cavar en la peluquería). Los juguetes rebotan en paredes y
    muebles. Que un juguete se caiga al piso y lo dispare queda para cuando haya juguetes para agarrar.
 3. Don Cucho: la ronda, la denuncia, el oído y el tren que descarrila.
+   **Hecho (paso 3):** don Cucho (`scenes/npc/don_cucho.tscn`, el `FloorBoss` de siempre) trabaja 90 s en el taller y
+   sale a recorrer el pasillo del medio hasta el pelotero. Oye cada vez que se sueltan juguetes (+5, desde donde esté).
+   La palanca (`TrainControl`) descarrila el tren: se cae de la mesa al lado del túnel, dispara el estante más cercano y
+   él lo levanta 25 s mirando a la pared, de espaldas al salón; descansa 60 s y a la tercera se da cuenta (+10). Por
+   ahora no camina a ver qué pasó cuando oye los juguetes, y lo de juntar el castillo llorando queda para después.
 4. Doña Ramona y el regalo.
 5. El caso (RaidCase) con la primera historia: los juguetes truchos.
 6. Las otras 5 historias, una por PR.
