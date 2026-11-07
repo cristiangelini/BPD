@@ -8,12 +8,15 @@ extends Node3D
 ## counter with the till, the seed basket and the shelf of glazed ceramic pots on the west side, and the row of garden
 ## gnomes and the tool hut on the east. At the back, the shed (the soil bags, the compost and the wheelbarrow), the
 ## water tank, the trucks' gate and the owner's office, locked with the till's key. Something thrown hard at a
-## greenhouse pane or at a ceramic pot breaks it, a fine each. Every number here is (propuesta).
+## greenhouse pane or at a ceramic pot breaks it, a fine each. Doña Hortensia walks between the yard and the
+## greenhouse and fills her complaint; the soil truck's horn at the back gate sends her off to count bags (step 4).
+## Every number here is (propuesta).
 
 signal pane_broken(index: int)
 signal pot_broken(index: int)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
+const OWNER_SCENE := preload("res://scenes/npc/nursery_owner.tscn")
 const SPRINKLER_MODEL := preload("res://assets/models/nursery_sprinkler.glb")
 const DENTUDA_POT_MODEL := preload("res://assets/models/dentuda_pot.glb")
 const DENTUDA_MODEL := preload("res://assets/models/dentuda.glb")
@@ -68,6 +71,19 @@ const DENTUDA_MOUTH := DENTUDA_AT + Vector3(-0.5, 0.8 + 1.8, 0.0)
 ## The fertilizer bags she eats (NurseryDentuda.FOOD_GROUP): by the shed and one by the greenhouse door.
 const FOOD_AT: Array[Vector3] = [Vector3(-16.0, 0.3, -5.2), Vector3(-15.2, 0.3, -5.2), Vector3(3.0, 0.3, -3.4)]
 const FOOD_KG := 2.5
+## Doña Hortensia's round: across the yard behind the sprinklers, in through the greenhouse door and along its north
+## aisle, back and forth. Where she counts the soil bags, facing the back gate, and for how long.
+const OWNER_ROUTE: Array[Vector3] = [
+	Vector3(-12.0, FLOOR_TOP, -2.5), Vector3(-1.0, FLOOR_TOP, -2.5), Vector3(0.5, FLOOR_TOP, 0.0),
+	Vector3(4.0, FLOOR_TOP, 0.0), Vector3(5.5, FLOOR_TOP, 1.6), Vector3(11.0, FLOOR_TOP, 1.6),
+]
+const COUNT_SPOT := Vector3(5.0, FLOOR_TOP, -9.5)
+const COUNT_TIME := 20.0
+## "¡No me pisen los canteros!": a cop she sees slip in the mud (once per cop), and the Dentuda biting something.
+const SAW_SLIP := 5.0
+const SAW_BITE := 10.0
+## The third honk: she knows what's going on.
+const CAUGHT_ON := 10.0
 const FOOD_SIZE := Vector3(0.4, 0.15, 0.6)
 ## By the front: the counter with the till, the seed basket, the shelf of ceramic pots (each one a fine), the row of
 ## gnomes and the tool hut.
@@ -152,6 +168,12 @@ var valve: PushButton
 var dentuda: NurseryDentuda
 var dentuda_plant: Node3D
 var food: Array[Grabbable] = []
+## The soil truck's horn (her distraction), Doña Hortensia and her complaint bar.
+var horn: SoilTruckHorn
+var owner_npc: FloorBoss
+var complaint_bar: ProgressBar
+## The cops she already saw slip (id -> true).
+var slip_seen := {}
 ## Money taken off the case pay: the panes and the pots.
 var fines := 0
 ## Same seed, same nursery (the stories and the hiding spots come from it, step 6).
@@ -188,6 +210,7 @@ func _ready() -> void:
 		add_child(bag)
 		bag.position = at
 		food.append(bag)
+	_place_owner()
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("nursery")
 	station_parking = city.transform * CityLayout.parking("station")
@@ -430,6 +453,54 @@ func _build_back() -> void:
 	office_door = DOOR_SCENE.instantiate()
 	office_door.position = Vector3(OFFICE_DOOR_X - GameScale.DOOR_WIDTH / 2, FLOOR_TOP, OFFICE_FRONT)
 	add_child(office_door)
+
+
+## The soil truck's horn at the back gate, Doña Hortensia walking her round, what she can't stand to see and the
+## complaint bar.
+func _place_owner() -> void:
+	horn = SoilTruckHorn.new()
+	horn.name = "SoilTruck"
+	horn.position = Vector3((TRUCK_GATE.x + TRUCK_GATE.y) / 2, FLOOR_TOP, -HALF_Z)
+	add_child(horn)
+	owner_npc = OWNER_SCENE.instantiate()
+	owner_npc.name = "DonaHortensia"
+	owner_npc.route = OWNER_ROUTE
+	owner_npc.printer_spot = COUNT_SPOT
+	owner_npc.printer = horn
+	owner_npc.fix_time = COUNT_TIME
+	owner_npc.fix_facing = horn.position + Vector3(0, 1, -1)
+	add_child(owner_npc)
+	owner_npc.start_at(0)
+	office_door.broken.connect(owner_npc.door_broken)
+	till.opened.connect(func(at: Vector3) -> void: owner_npc.saw(at, FloorBoss.SAW_TILL))
+	horn.caught_on.connect(func() -> void: owner_npc.scold(CAUGHT_ON, "HORTENSIA_CAUGHT_ON"))
+	irrigation.slipped.connect(_on_slipped)
+	dentuda.bitten.connect(func(target: Node3D) -> void:
+		owner_npc.saw(target.global_position + Vector3.UP * 0.5, SAW_BITE, "HORTENSIA_DENTUDA"))
+	var hud := CanvasLayer.new()
+	var box := VBoxContainer.new()
+	box.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	box.offset_top = 12
+	hud.add_child(box)
+	var title := Label.new()
+	title.text = "HUD_COMPLAINT"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	complaint_bar = ProgressBar.new()
+	complaint_bar.custom_minimum_size = Vector2(320, 18)
+	complaint_bar.show_percentage = false
+	complaint_bar.modulate = Color(1, 0.45, 0.35)
+	box.add_child(complaint_bar)
+	add_child(hud)
+	owner_npc.complaint_changed.connect(func(value: float) -> void: complaint_bar.value = value)
+
+
+## A cop slipped in the mud: "¡No me pisen los canteros!", once per cop, if she sees it.
+func _on_slipped(cop: Cop) -> void:
+	if slip_seen.has(cop.get_instance_id()):
+		return
+	if owner_npc.saw(cop.global_position + Vector3.UP, SAW_SLIP, "HORTENSIA_FLOWERBEDS"):
+		slip_seen[cop.get_instance_id()] = true
 
 
 ## Breaks greenhouse pane `index`, once: a fine, the glass goes grey and cracked and you can walk through the hole.

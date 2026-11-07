@@ -2,6 +2,7 @@
 // and its huge pot, three potted plants, the glazed ceramic pot, a bag of soil, the water tank, the tap and the smiling
 // pot of the sign, with origins at the floor in the middle of each piece. Placeholder, not final art.
 import { Builder, mat, V, THREE, ellipsoid } from '../lib.js';
+import { pearBody, eyes } from './pear.js';
 
 const terracotta = () => mat('pot_terracotta', 0xc8683a);
 const soil = () => mat('pot_soil', 0x4a3424);
@@ -172,11 +173,39 @@ export function buildSmilingPot() {
 	return b.build();
 }
 
+// Doña Hortensia, the owner (decision 72, short and round): a green apron full of pockets over a flowery dress, garden
+// gloves, a huge straw hat and the pruning shears in her right hand. Faces +Z, about 1.6 m to the hat's crown.
+export function buildDonaHortensia() {
+	const b = new Builder('npc_dona_hortensia');
+	const dress = mat('hortensia_dress', 0xd88ac0), apron = mat('hortensia_apron', 0x3f8a46);
+	const skin = mat('hortensia_skin', 0xf0c4a0), straw = mat('hortensia_straw', 0xe8cf7a);
+	const gloves = mat('hortensia_gloves', 0xf2a03a), band = mat('hortensia_band', 0xd8302a);
+	pearBody(b, skin, { shirt: dress, pants: dress, shoes: mat('hortensia_boots', 0x2a5a30), belted: false });
+	b.add('body', apron, new THREE.BoxGeometry(0.6, 0.62, 0.04), { pos: V(0, 0.55, 0.43), rot: [-0.12, 0, 0] });
+	for (let i = 0; i < 3; i++) {
+		b.add('body', apron, new THREE.BoxGeometry(0.16, 0.12, 0.05), { pos: V(-0.19 + i * 0.19, 0.42, 0.47), rot: [-0.12, 0, 0] });
+	}
+	for (const s of [-1, 1]) {
+		b.add('arms', gloves, ellipsoid(0.085, 0.085, 0.085, 6, 4), { pos: V(s * 0.49, 0.64, 0.09) });
+	}
+	eyes(b, 1.33, 0.19, 0.08, 0.045);
+	b.add('face', mat('hortensia_cheeks', 0xf08a8a), ellipsoid(0.04, 0.03, 0.01, 6, 4), { pos: V(-0.12, 1.25, 0.19) });
+	b.add('face', mat('hortensia_cheeks', 0xf08a8a), ellipsoid(0.04, 0.03, 0.01, 6, 4), { pos: V(0.12, 1.25, 0.19) });
+	b.add('hat', straw, new THREE.CylinderGeometry(0.52, 0.55, 0.03, 18), { pos: V(0, 1.47, 0.02) });
+	b.add('hat', straw, new THREE.CylinderGeometry(0.17, 0.2, 0.16, 12), { pos: V(0, 1.56, 0.02) });
+	b.add('hat', band, new THREE.CylinderGeometry(0.205, 0.205, 0.04, 12), { pos: V(0, 1.5, 0.02) });
+	const steel = mat('hortensia_shears', 0xb8bec6, { metalness: 0.7, roughness: 0.3 });
+	b.add('tool', steel, new THREE.BoxGeometry(0.03, 0.02, 0.22), { pos: V(0.5, 0.62, 0.24), rot: [0, 0.15, 0] });
+	b.add('tool', steel, new THREE.BoxGeometry(0.03, 0.02, 0.22), { pos: V(0.52, 0.62, 0.24), rot: [0, -0.15, 0] });
+	b.add('tool', band, new THREE.BoxGeometry(0.05, 0.04, 0.1), { pos: V(0.5, 0.62, 0.08) });
+	return b.build();
+}
+
 export const models = {
 	nursery_sprinkler: buildSprinkler, dentuda_pot: buildDentudaPot, dentuda: buildDentuda,
 	potted_plant_0: buildPottedFern, potted_plant_1: buildPottedFlowers, potted_plant_2: buildPottedCactus,
 	ceramic_pot: buildCeramicPot, soil_bag: buildSoilBag, water_tank: buildWaterTank, nursery_tap: buildNurseryTap,
-	smiling_pot: buildSmilingPot,
+	smiling_pot: buildSmilingPot, npc_dona_hortensia: buildDonaHortensia,
 };
 
 export const views = {
@@ -187,7 +216,7 @@ export const views = {
 			{ name: 'potted_plant_0', pos: [-0.4, 0, 1.6] }, { name: 'potted_plant_1', pos: [0.3, 0, 1.8] },
 			{ name: 'potted_plant_2', pos: [1.0, 0, 1.9] }, { name: 'ceramic_pot', pos: [2.9, 0, 1.6] },
 			{ name: 'soil_bag', pos: [3.2, 0, 0.3], rotY: 0.4 }, { name: 'nursery_tap', pos: [3.4, 0, -0.9] },
-			{ name: 'nursery_sprinkler', pos: [-0.2, 0, 0.6] },
+			{ name: 'nursery_sprinkler', pos: [-0.2, 0, 0.6] }, { name: 'npc_dona_hortensia', pos: [1.6, 0, 2.6], rotY: -0.2 },
 		],
 		cam: { pos: [0, 2.4, 8.0], target: [0.3, 1.0, 0], fov: 45 },
 	},

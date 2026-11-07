@@ -142,6 +142,13 @@ los extras suman 500.
    No hay hamburguesas en el juego todavía, así que por ahora solo come abono. Señales `bitten` (para Doña Hortensia
    en el paso 4) y `fed`. Capturas: `/mnt/project-files/vivero/paso3-*.png`.
 4. Doña Hortensia: la ronda, la denuncia, "¡no me pisen los canteros!" y el camión de tierra.
+   **Hecho así:** es una `FloorBoss` con la voz `HORTENSIA` (modelo `npc_dona_hortensia`). Su ronda va por el patio,
+   detrás de los aspersores, entra por la puerta del invernadero y sigue por el pasillo norte, ida y vuelta. Suma 5 por
+   cada policía que ve resbalarse (una vez por policía) y 10 cada vez que ve morder a la Dentuda; lo demás (empujón 15,
+   puerta 5, pregunta 5, caja 10, abogado en 100) es lo de siempre, con la barra de denuncia arriba. La bocina está en
+   un poste junto al portón del fondo (`SoilTruckHorn`): aparece el camión del otro lado del portón y 6 bolsas, y ella
+   va a contarlas 20 s mirando al portón, sin ver nada. Funciona una vez cada 45 s; la tercera vez dice "¿Otro camión?
+   ¡Si no pedí nada!" y suma 10. Capturas: `/mnt/project-files/vivero/paso4-*.png`.
 5. Brotecito y la regadera llena.
 6. El caso con la primera historia, la orquídea robada.
 7. Las otras 5 historias, una por PR.

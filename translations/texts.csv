@@ -5611,3 +5611,22 @@ HINT_NURSERY_SPRINKLER,¡Splash! El aspersor te mojó entero.,Splash! The sprink
 HINT_NURSERY_MUD_SLIP,¡Barro! Te resbalaste corriendo.,Mud! You slipped while running.,Lama! Você escorregou correndo.
 HINT_NURSERY_DENTUDA_TOOK,¡La Dentuda te sacó lo que tenías en la mano! Lo va a escupir en un rato.,The Dentuda took what you were holding! She'll spit it out in a moment.,A Dentuda tirou o que você tinha na mão! Ela vai cuspir daqui a pouco.
 HINT_NURSERY_DENTUDA_PUSH,¡Ñam! La Dentuda te empujó. Dale de comer abono para calmarla.,Chomp! The Dentuda pushed you. Feed her fertilizer to calm her down.,Nhac! A Dentuda te empurrou. Dê adubo para ela se acalmar.
+HORTENSIA_LINE_1,"¡Qué linda estás hoy, mi helechito!","You look so pretty today, my little fern!","Como você está linda hoje, minha samambaiazinha!"
+HORTENSIA_LINE_2,"A las plantas hay que hablarles. A los policías, no tanto.","You have to talk to plants. To cops, not so much.","Tem que conversar com as plantas. Com os policiais, nem tanto."
+HORTENSIA_LINE_3,"¿Quién es la margarita más linda? ¡Tú, sí, tú!","Who's the prettiest daisy? You are, yes, you!","Quem é a margarida mais linda? Você, sim, você!"
+HORTENSIA_LINE_4,"Dentudita, no se muerde a las visitas. Bueno, un poquito sí.","Dentudita, we don't bite visitors. Well, maybe a little.","Dentudinha, não se morde as visitas. Bom, só um pouquinho."
+HORTENSIA_PRINTER,"¿El camión de tierra? ¡Ya voy, ya voy! ¡Que nadie toque mis canteros!","The soil truck? Coming, coming! Nobody touch my flowerbeds!","O caminhão de terra? Já vou, já vou! Ninguém mexe nos meus canteiros!"
+HORTENSIA_FIX_1,"Una bolsa, dos bolsas, tres bolsas...","One bag, two bags, three bags...","Um saco, dois sacos, três sacos..."
+HORTENSIA_FIX_2,"(de espaldas a todo) ...catorce, quince... ¿o eran dieciséis?","(back to everything) ...fourteen, fifteen... or was it sixteen?","(de costas para tudo) ...catorze, quinze... ou eram dezesseis?"
+HORTENSIA_FIX_3,"¡Me perdí! Una bolsa, dos bolsas...","I lost count! One bag, two bags...","Me perdi! Um saco, dois sacos..."
+HORTENSIA_FIX_DONE,"¡Todas contadas! Vuelvo con mis plantitas.","All counted! Back to my little plants.","Todos contados! Volto para as minhas plantinhas."
+HORTENSIA_HURT,"¡Cuidado, que no soy un cantero!","Careful, I'm not a flowerbed!","Cuidado, que eu não sou um canteiro!"
+HORTENSIA_DOOR,"¡Mi oficina! ¡Ahí guardo las semillas buenas!","My office! That's where I keep the good seeds!","Meu escritório! É lá que guardo as sementes boas!"
+HORTENSIA_SAW,"¡Lo estoy viendo, oficial!","I can see you, officer!","Estou vendo você, policial!"
+HORTENSIA_NOTHING,"Yo de eso no sé nada. Yo solo riego.","I know nothing about that. I just water.","Eu não sei nada disso. Eu só rego."
+HORTENSIA_OFFENDED,"¡Basta de preguntas! Me marchitan.","Enough questions! You're wilting me.","Chega de perguntas! Vocês me murcham."
+HORTENSIA_LAWYER,"¡Llamo a mi abogado! ¡Que venga con guantes de jardín!","I'm calling my lawyer! Tell them to bring garden gloves!","Vou chamar meu advogado! Que venha de luvas de jardim!"
+HORTENSIA_CAUGHT_ON,"¿Otro camión? ¡Si no pedí nada!","Another truck? I didn't order anything!","Outro caminhão? Mas eu não pedi nada!"
+HORTENSIA_FLOWERBEDS,"¡No me pisen los canteros!","Don't step on my flowerbeds!","Não pisem nos meus canteiros!"
+HORTENSIA_DENTUDA,"¡Dentudita, escupe eso! ¿Qué le hicieron a mi nena?","Dentudita, spit that out! What did they do to my baby?","Dentudinha, cospe isso! O que fizeram com a minha menina?"
+PROMPT_NURSERY_HORN,E: tocar la bocina del camión de tierra,E: honk the soil truck's horn,E: buzinar o caminhão de terra
