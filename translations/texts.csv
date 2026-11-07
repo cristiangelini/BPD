@@ -5691,3 +5691,13 @@ CLUE_ASTRONAUT_DIPLOMA,"En la oficina cuelga un diploma: «Renglón, Doctor en A
 PRINT_SHOP_ASTRONAUT,¿Doctor en Astronautas?,Doctor of Astronauts?,Doutor em Astronautas?
 PRINT_SHOP_OFFICE_DIPLOMA,DIPLOMA - Renglón - Doctor en Astronautas,DIPLOMA - Renglón - Doctor of Astronauts,DIPLOMA - Renglón - Doutor em Astronautas
 PRINT_SHOP_DIPLOMA_FOR,"Diploma de Doctor en Todo: %s","Doctor of Everything diploma: %s","Diploma de Doutor em Tudo: %s"
+BRIEF_STOLEN_BOOK_B,"Don Renglón le robó el manuscrito a la escritora Rosa Prosa y lo imprime con su nombre.","Don Renglón stole the writer Rosa Prosa's manuscript and prints it under his own name.","O Seu Renglón roubou o manuscrito da escritora Rosa Prosa e o imprime com o nome dele."
+BRIEF_STOLEN_BOOK_C,"Traigan el manuscrito en el baúl del patrullero. Es el único original: no le tiren tinta.","Bring the manuscript in the patrol car's trunk. It's the only original: don't spill ink on it.","Tragam o manuscrito no porta-malas da viatura. É o único original: não derramem tinta nele."
+BRIEF_STOLEN_BOOK_D,"Si encuentran la máquina de escribir de ella o la tapa con el nombre de él, mejor: todo suma.","If you find her typewriter or the cover with his name, even better: it all counts.","Se acharem a máquina de escrever dela ou a capa com o nome dele, melhor: tudo conta."
+OBJ_FIND_MANUSCRIPT,Llevarse el manuscrito robado,Take the stolen manuscript,Levar o manuscrito roubado
+OBJ_EXTRA_WRITER_TYPEWRITER,Extra: la máquina de escribir de Rosa Prosa,Extra: Rosa Prosa's typewriter,Extra: a máquina de escrever da Rosa Prosa
+OBJ_EXTRA_BOOK_COVER,Extra: la tapa con el nombre de él,Extra: the cover with his name,Extra: a capa com o nome dele
+TIPITO_CLUE_stolen_book,"¡Gracias! Vi a Don Renglón esconder algo %s. Me hizo leer el libro nuevo, y lo escribió una señora, se nota.","Thanks! I saw Don Renglón hide something %s. He made me read the new book, and a lady wrote it, you can tell.","Obrigado! Vi o Seu Renglón esconder algo %s. Ele me fez ler o livro novo, e foi uma senhora que escreveu, dá para ver."
+CLUE_BOOK_POSTER,"Los afiches del frente dicen «El nuevo libro de Don Renglón», pero la foto es de una señora de anteojos.","The posters out front say «Don Renglón's new book», but the photo is of a lady with glasses.","Os cartazes da frente dizem «O novo livro do Seu Renglón», mas a foto é de uma senhora de óculos."
+PRINT_SHOP_NOT_HIS_FACE,¿Ese es Don Renglón?,Is that Don Renglón?,Esse é o Seu Renglón?
+PRINT_SHOP_BOOK_POSTER,"¡El nuevo libro de Don Renglón! «Memorias de un renglón torcido»","Don Renglón's new book! «Memoirs of a Crooked Line»","O novo livro do Seu Renglón! «Memórias de uma linha torta»"

@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Print shop raid, step 7c: the stolen book story: the writer's manuscript, her typewriter and the cover with his name are hidden, the posters out front ("Don Renglón's new book" with a lady's photo) are the clue, and the piles of the book fall over each time the press starts.
 - Print shop raid, step 7b: the fake diplomas story: the roll of diplomas, the university seal and the mortarboard are hidden, the framed "Doctor of Astronauts" diploma on the office wall is the clue, and each press run floats a "Doctor of Everything" diploma for a random cop.
 - Print shop raid, step 7a: the fake tickets story: the box of tickets, the concert poster and the "VIP" stamp are hidden, a ticket sticks to the sole of a cop who steps near where the box was hidden (the clue), and a line of fans outside screams each time a cop goes through the door.
 - Print shop raid, step 6: the print shop is now a raid case like the nursery (the comisario's tip, 3 suspicions among its 6 stories, Don Renglón's slips and lawyer, Tipito's clue, the interrogation) with its first story, the fake bills: the 8 kg plate with his face, the bill magnifier and the tin of green ink are hidden, a badly cut bill in the recycling basket is the clue, and the press throws bills instead of sheets.
