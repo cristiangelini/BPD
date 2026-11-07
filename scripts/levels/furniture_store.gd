@@ -368,7 +368,9 @@ func _physics_process(_delta: float) -> void:
 func _on_a_mattress(cop: Cop) -> bool:
 	for i in cop.get_slide_collision_count():
 		var hit := cop.get_slide_collision(i)
-		if hit.get_normal().y > 0.7 and beds.has(hit.get_collider()):
+		# Checked by type first: a typed array refuses to look for the floor or a wall.
+		var bed := hit.get_collider() as ShowroomSeat
+		if hit.get_normal().y > 0.7 and bed and beds.has(bed):
 			return true
 	return false
 
