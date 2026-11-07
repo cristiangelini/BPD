@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Furniture store raid, step 5: the fake antiques story: the aging machine (a drill with a chain) is hidden with the "Año 1890" labels and the bag of fresh sawdust, and the dining chairs turn over (E) to show an absurd antique price and, underneath, the stamp "Made last week" (the clue).
 - Furniture store raid, step 5: the wardrobe hotel story: the guest book is hidden with the pillow with drool and the toothbrush, one wardrobe is shut and snores for a cop close by (the clue), and opening it (E) lets out a guest in pyjamas who walks out to the street.
 - Furniture store raid, step 5: the cardboard wood story: the "Madera maciza" stamp is hidden with the roll of wood-look sticker and the cardboard invoices, one "oak" wardrobe goes over with one cop pulling it alone (the clue), and the dining chairs are light enough to carry with one hand and fly off when a cop walks into them.
 - Furniture store raid, step 4: the store is now a raid case with three suspicions among its six stories, and the first story, the stuffed sofas: the cushion full of bills is hidden with the other till's book and the upholsterer's needle, one sofa crunches like paper (the clue) and throws toy bills when tried, Don Cajón lets slip where things are, Tablita tells where he saw him hide one, and Don Cajón gets away in a car if he sees the evidence.

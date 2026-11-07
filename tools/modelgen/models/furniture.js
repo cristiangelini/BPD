@@ -334,12 +334,47 @@ export function buildToothbrush() {
 	return b.build();
 }
 
+// The aging machine: a drill 0.35 m long with a length of chain bolted to its chuck instead of a bit, for beating new
+// furniture old. Lies on its side.
+export function buildAgingMachine() {
+	const b = new Builder('aging_machine');
+	const body = mat('drill_orange', 0xe07a2a), dark = mat('drill_dark', 0x2a2a2e), steel = mat('chain_steel', 0x9a9ea4, { metalness: 0.7, roughness: 0.35 });
+	box(b, 'body', body, 0.3, 0.1, 0.09, 0, 0.12, 0);
+	box(b, 'grip', dark, 0.08, 0.17, 0.07, -0.06, 0.085, 0, [0, 0, -0.2]);
+	box(b, 'battery', dark, 0.13, 0.05, 0.1, -0.08, 0.025, 0);
+	b.add('chuck', steel, new THREE.CylinderGeometry(0.03, 0.035, 0.06, 8), { pos: V(0.18, 0.12, 0), rot: [0, 0, Math.PI / 2] });
+	for (let i = 0; i < 6; i++) b.add('chain', steel, new THREE.TorusGeometry(0.025, 0.008, 4, 8), { pos: V(0.24 + i * 0.04, 0.12 - i * 0.015, (i % 2) * 0.01), rot: [i % 2 ? Math.PI / 2 : 0, 0, 0] });
+	return b.build();
+}
+
+// A roll of "Año 1890" labels: a white paper reel 0.08 m across with one label hanging off it.
+export function buildAntiqueLabels() {
+	const b = new Builder('antique_labels');
+	b.add('reel', mat('label_white', 0xf6f2e6), new THREE.CylinderGeometry(0.04, 0.04, 0.05, 10), { pos: V(0, 0.025, 0) });
+	b.add('core', mat('label_core', 0xb89466), new THREE.CylinderGeometry(0.015, 0.015, 0.052, 8), { pos: V(0, 0.025, 0) });
+	box(b, 'label', mat('label_white', 0xf6f2e6), 0.07, 0.003, 0.04, 0.07, 0.002, 0.02);
+	box(b, 'ink', mat('label_ink', 0x6a3e1c), 0.05, 0.004, 0.012, 0.07, 0.003, 0.02);
+	return b.build();
+}
+
+// A bag of fresh sawdust: a burlap sack 0.35 m tall, tied at the top, with a little pile of sawdust spilling out.
+export function buildSawdustBag() {
+	const b = new Builder('sawdust_bag');
+	const burlap = mat('burlap', 0xb8955a), dust = mat('sawdust', 0xe8c88a);
+	b.add('sack', burlap, ellipsoid(0.14, 0.16, 0.12, 10, 6), { pos: V(0, 0.16, 0) });
+	b.add('neck', burlap, new THREE.CylinderGeometry(0.04, 0.06, 0.06, 8), { pos: V(0, 0.33, 0) });
+	b.add('tie', mat('tie_string', 0x6a3e1c), new THREE.TorusGeometry(0.045, 0.008, 4, 10), { pos: V(0, 0.33, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('pile', dust, ellipsoid(0.1, 0.03, 0.08, 8, 3), { pos: V(0.15, 0.01, 0.08) });
+	return b.build();
+}
+
 export const models = {
 	npc_don_cajon: buildDonCajon, npc_tablita: buildTablita, half_bookcase: buildHalfBookcase,
 	bookcase_shelf: buildBookcaseShelf, money_cushion: buildMoneyCushion, other_ledger: buildOtherLedger,
 	upholstery_needle: buildUpholsteryNeedle, toy_bill: buildToyBill, wood_stamp: buildWoodStamp,
 	wood_decal_roll: buildWoodDecalRoll, cardboard_invoices: buildCardboardInvoices, closed_wardrobe: buildClosedWardrobe,
 	npc_pajama_guest: buildPajamaGuest, guest_book: buildGuestBook, drooly_pillow: buildDroolyPillow, toothbrush: buildToothbrush,
+	aging_machine: buildAgingMachine, antique_labels: buildAntiqueLabels, sawdust_bag: buildSawdustBag,
 	showroom_sofa: buildShowroomSofa, showroom_bed: buildShowroomBed, showroom_wardrobe: buildShowroomWardrobe,
 	showroom_dresser: buildShowroomDresser, showroom_lamp: buildShowroomLamp, standing_mirror: buildStandingMirror,
 	dining_table: buildDiningTable, dining_chair: buildDiningChair, flatpack_box: buildFlatpackBox,
@@ -377,6 +412,11 @@ export const views = {
 		items: [{ name: 'closed_wardrobe', pos: [-1.4, 0, -0.4] }, { name: 'npc_pajama_guest', pos: [0.1, 0, 0] },
 			{ name: 'guest_book', pos: [1.0, 0, 0.5] }, { name: 'drooly_pillow', pos: [1.5, 0, 0.1] }, { name: 'toothbrush', pos: [1.3, 0, 0.8] }],
 		cam: { pos: [0, 1.5, 4.2], target: [0, 0.8, 0], fov: 45 },
+	},
+	fake_antiques: {
+		items: [{ name: 'aging_machine', pos: [-0.5, 0, 0] }, { name: 'antique_labels', pos: [0.15, 0, 0.2] },
+			{ name: 'sawdust_bag', pos: [0.6, 0, -0.1] }],
+		cam: { pos: [0, 0.9, 1.6], target: [0, 0.12, 0], fov: 40 },
 	},
 	furniture_table: {
 		items: [{ name: 'dining_table', pos: [0, 0, 0] }, { name: 'dining_chair', pos: [-0.6, 0, 0.75] }, { name: 'dining_chair', pos: [0.6, 0, -0.75] }],

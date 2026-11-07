@@ -179,3 +179,9 @@ Los pesos y valores siguen la escala del taller y del gimnasio: la principal val
   - E lo abre (no lo tira): sale un huésped en piyama y gorro de dormir que dice "¡Buen día! Ya hice el check-out..." y
     se va caminando hasta la calle. Después, el ropero queda abierto y se tira como los otros.
   - Capturas `paso5-hotel-*.png` y `wardrobe_hotel.png` (modelos).
+- **Paso 5, las antigüedades de ayer:** la máquina de envejecer (un taladro con una cadena, 5 kg, 1000, en un escondite
+  para cosas pesadas), las etiquetas "Año 1890" (0,1 kg, 300) y la bolsa de aserrín fresco (2 kg, 200).
+  - Las 6 sillas del comedor son las "antiguas": E da vuelta una durante 4 s. Queda patas arriba con su etiqueta
+    ("Silla antigua, año 1890: $84999 (en 120 cuotas)", el precio sale de la semilla) y, abajo del asiento, el sello
+    rojo "HECHO LA SEMANA PASADA". La primera silla que se da vuelta es la pista.
+  - Captura `paso5-antiguedades.png` y `fake_antiques.png` (modelos).
