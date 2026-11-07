@@ -93,6 +93,18 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_COMISARIO_PHOTO", "OBJ_EXTRA_STATION_SCREWDRIVER"],
 		"rig": preload("res://scripts/case/furniture/comisario_chair_rig.gd"),
 	},
+	"endless_installments": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_ENDLESS_INSTALLMENTS_B", "BRIEF_ENDLESS_INSTALLMENTS_C",
+			"BRIEF_ENDLESS_INSTALLMENTS_D"],
+		"find": "OBJ_FIND_INSTALLMENT_BOOK",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/installment_book.tscn"),
+			preload("res://scenes/props/installment_stamp.tscn"), preload("res://scenes/props/endless_calculator.tscn")],
+		"half_heights": [0.04, 0.05, 0.015],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_INSTALLMENT_STAMP", "OBJ_EXTRA_ENDLESS_CALCULATOR"],
+		"rig": preload("res://scripts/case/furniture/endless_installments_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the shop's floor, in the open between the setups.
 const NOTE_PLACES: Array[Vector3] = [

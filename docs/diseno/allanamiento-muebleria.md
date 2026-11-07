@@ -193,3 +193,12 @@ Los pesos y valores siguen la escala del taller y del gimnasio: la principal val
   - E sienta al policía en el sillón, y el comisario les dice a todos por radio: "¿Quién está sentado en mi sillón? ¡Lo
     siento desde acá!" (como mucho una vez cada 8 s).
   - Capturas `paso5-sillon-*.png` y `comisario_chair.png` (modelos).
+- **Paso 5, las cuotas infinitas:** el libro de las cuotas (una carpeta azul gorda, 1 kg, 1000), el sello "Cuota 1 de
+  999" (0,5 kg, 300) y la calculadora que siempre da más (0,3 kg, 200) están escondidos.
+  - Cada sillón y cada cama tiene flotando arriba su etiqueta: "¡120 cuotas de $1!", y abajo, en letra chiquita, "por
+    mes, por siempre". De lejos no se lee. El primer policía que pasa a menos de 1,6 m de una etiqueta lee la letra
+    chiquita, y esa es la pista.
+  - Si un policía mira a Don Cajón (a menos de 6 m, con él en el medio de la pantalla, 12°), Don Cajón le ofrece
+    cuotas, aunque la denuncia esté alta (3 frases que se turnan). A un mismo policía, como mucho una vez cada 10 s.
+    La oferta no suma ni resta denuncia.
+  - Capturas `paso5-cuotas-*.png` y `endless_installments.png` (modelos).

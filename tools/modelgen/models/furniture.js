@@ -406,6 +406,39 @@ export function buildStationScrewdriver() {
 	return b.build();
 }
 
+// The book of installments that never end: a fat blue binder, 0.25 x 0.08 x 0.32 m, bursting with pages, with a white
+// label and a red ribbon hanging out.
+export function buildInstallmentBook() {
+	const b = new Builder('installment_book');
+	box(b, 'cover', mat('binder_blue', 0x2c4f9e), 0.25, 0.08, 0.32, 0, 0.04, 0);
+	box(b, 'pages', M.white, 0.23, 0.07, 0.31, 0.014, 0.04, 0);
+	for (let i = 0; i < 4; i++) box(b, `sheet${i}`, mat('sheet_cream', 0xf3ecd2), 0.2, 0.002, 0.08, 0.03 + i * 0.012, 0.03 + i * 0.012, 0.17 + i * 0.01);
+	box(b, 'label', mat('ledger_label', 0xf6f2e6), 0.14, 0.004, 0.07, 0, 0.082, -0.06);
+	box(b, 'ribbon', mat('ledger_ribbon', 0xd23a3a), 0.015, 0.004, 0.14, 0.06, 0.081, 0.18);
+	return b.build();
+}
+
+// The "Cuota 1 de 999" stamp: a wooden knob on a red rubber block, 0.1 m tall.
+export function buildInstallmentStamp() {
+	const b = new Builder('installment_stamp');
+	box(b, 'rubber', mat('stamp_red', 0xc0392b), 0.1, 0.02, 0.06, 0, 0.01, 0);
+	box(b, 'base', mat('frame_wood', 0x6a3e1c), 0.1, 0.03, 0.06, 0, 0.035, 0);
+	b.add('neck', mat('frame_wood', 0x6a3e1c), new THREE.CylinderGeometry(0.012, 0.012, 0.03, 8), { pos: V(0, 0.065, 0) });
+	b.add('knob', mat('knob_black', 0x1e1e24), ellipsoid(0.022, 0.018, 0.022, 8, 6), { pos: V(0, 0.09, 0) });
+	return b.build();
+}
+
+// The calculator that always gives more: a chunky beige calculator, 0.12 x 0.03 x 0.18 m, with a green screen and
+// grey keys.
+export function buildEndlessCalculator() {
+	const b = new Builder('endless_calculator');
+	box(b, 'body', mat('calc_beige', 0xd8cdb2), 0.12, 0.03, 0.18, 0, 0.015, 0);
+	box(b, 'screen', mat('calc_screen', 0x8fd18a), 0.09, 0.004, 0.035, 0, 0.031, -0.06);
+	for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++)
+		box(b, `key${r}${c}`, mat(c === 3 ? 'calc_orange' : 'calc_key', c === 3 ? 0xe8833a : 0x7a7a84), 0.018, 0.006, 0.018, -0.039 + c * 0.026, 0.033, -0.01 + r * 0.026);
+	return b.build();
+}
+
 export const models = {
 	npc_don_cajon: buildDonCajon, npc_tablita: buildTablita, half_bookcase: buildHalfBookcase,
 	bookcase_shelf: buildBookcaseShelf, money_cushion: buildMoneyCushion, other_ledger: buildOtherLedger,
@@ -414,6 +447,7 @@ export const models = {
 	npc_pajama_guest: buildPajamaGuest, guest_book: buildGuestBook, drooly_pillow: buildDroolyPillow, toothbrush: buildToothbrush,
 	aging_machine: buildAgingMachine, antique_labels: buildAntiqueLabels, sawdust_bag: buildSawdustBag,
 	comisario_armchair: buildComisarioArmchair, comisario_photo: buildComisarioPhoto, station_screwdriver: buildStationScrewdriver,
+	installment_book: buildInstallmentBook, installment_stamp: buildInstallmentStamp, endless_calculator: buildEndlessCalculator,
 	showroom_sofa: buildShowroomSofa, showroom_bed: buildShowroomBed, showroom_wardrobe: buildShowroomWardrobe,
 	showroom_dresser: buildShowroomDresser, showroom_lamp: buildShowroomLamp, standing_mirror: buildStandingMirror,
 	dining_table: buildDiningTable, dining_chair: buildDiningChair, flatpack_box: buildFlatpackBox,
@@ -461,6 +495,11 @@ export const views = {
 		items: [{ name: 'comisario_armchair', pos: [-0.5, 0, 0], rotY: 2.6 }, { name: 'comisario_photo', pos: [0.5, 0, 0.3] },
 			{ name: 'station_screwdriver', pos: [0.6, 0, -0.1] }],
 		cam: { pos: [0, 1.4, 2.6], target: [0, 0.5, 0], fov: 45 },
+	},
+	endless_installments: {
+		items: [{ name: 'installment_book', pos: [-0.25, 0, 0], rotY: 0.3 }, { name: 'installment_stamp', pos: [0.15, 0, 0.1] },
+			{ name: 'endless_calculator', pos: [0.35, 0, -0.1], rotY: -0.4 }],
+		cam: { pos: [0, 0.6, 0.9], target: [0, 0.03, 0], fov: 45 },
 	},
 	furniture_table: {
 		items: [{ name: 'dining_table', pos: [0, 0, 0] }, { name: 'dining_chair', pos: [-0.6, 0, 0.75] }, { name: 'dining_chair', pos: [0.6, 0, -0.75] }],

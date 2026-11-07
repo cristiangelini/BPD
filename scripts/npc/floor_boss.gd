@@ -382,6 +382,11 @@ func _key(line: String) -> String:
 	return voice + "_" + line
 
 
+## One line of hers in her bubble, from outside (a story's own lines).
+func say(key: String, seconds := 3.0) -> void:
+	_say(key, seconds)
+
+
 func _say(key: String, seconds := 3.0) -> void:
 	_since_line = 0.0
 	_bubble.text = key
