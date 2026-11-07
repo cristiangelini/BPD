@@ -108,7 +108,7 @@ func test_left_out_it_goes_back_alone_and_she_gets_angry() -> void:
 	assert_eq((zoo.animals[first] as ZooAnimal).state, "in", "back by itself")
 	assert_false((zoo.gates[first] as ZooGate).open)
 	assert_eq(zoo.patience, Zoo.PATIENCE - Zoo.PATIENCE_DOWN)
-	assert_eq(zoo.director.said(), "ZOO_DIRECTOR_FEEDING", "then she announces the next one")
+	assert_eq(zoo.director.said(), "ZOO_DIRECTOR_ANGRY", "and she says so")
 	assert_eq((zoo.animals[zoo.order[1]] as ZooAnimal).state, "loose", "and the next one comes out")
 
 

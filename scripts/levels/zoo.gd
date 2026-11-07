@@ -95,6 +95,14 @@ const FEEDING_SECONDS := 20.0
 const PATIENCE := 100
 const PATIENCE_UP := 10
 const PATIENCE_DOWN := 20
+## With no patience left, Doña Jaula puts the nearest cop to work feeding the penguins for this long; then she has half
+## her patience back. A cop the elephant soaks slips for WET_SECONDS (propuesta).
+const PUNISH_SECONDS := 10.0
+const WET_SECONDS := 3.0
+const WET_PUSH := 3.0
+
+## The elephant sprayed water: what's within `radius` of `at` (world) gets washed (the clues, step 6).
+signal washed(at: Vector3, radius: float)
 
 ## The enclosures' gates, by animal (ZooGate): shut across the gap in each fence.
 var gates := {}
@@ -116,6 +124,7 @@ var feedings := 0
 var feeding := false
 var feed_clock := 0.0
 var patience := PATIENCE
+var train: ZooTrain
 var _sneeze: Label3D
 var _sneeze_clock := 0.0
 var case: CrimeSceneCase
@@ -140,6 +149,10 @@ func _ready() -> void:
 	_people()
 	_hideouts()
 	_zoo_animals()
+	train = ZooTrain.new()
+	train.name = "Train"
+	train.track = TRACK
+	add_child(train)
 
 
 ## The case reaches the keepers (their traits are its suspects, same seed), and one of them, drawn with the seed, won't
@@ -164,12 +177,12 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 ## Feeding time: an animal still out goes back by itself (Doña Jaula's patience goes down), the next one in the order
 ## comes out of its open gate, and the keepers put their gloves on.
 func start_feeding() -> void:
+	var alone := 0
 	for kind: String in ANIMALS:
 		var animal := animals[kind] as ZooAnimal
 		if animal.state != "in":
 			animal.go_in()
-			_patience(-PATIENCE_DOWN)
-			director.say("ZOO_DIRECTOR_ANGRY")
+			alone += 1
 			_tell("HINT_ZOO_BACK_ALONE_" + kind)
 		(gates[kind] as ZooGate).set_open(false)
 	var out := order[feedings % order.size()]
@@ -181,6 +194,9 @@ func start_feeding() -> void:
 		keeper.wear_gloves(true)
 	director.say("ZOO_DIRECTOR_FEEDING")
 	_tell("HINT_ZOO_FEEDING_" + out)
+	if alone > 0:
+		director.say("ZOO_DIRECTOR_ANGRY")
+		_patience(-PATIENCE_DOWN * alone)
 
 
 ## Feeding time is over: gloves off. The animal stays out until it's put back.
@@ -203,6 +219,36 @@ func gate_shut(_kind: String) -> void:
 
 func _patience(change: int) -> void:
 	patience = clampi(patience + change, 0, PATIENCE)
+	if patience == 0:
+		_punish()
+
+
+## Out of patience: the cop nearest to her goes to feed the penguins, and can't do anything else for a while.
+func _punish() -> void:
+	var nearest: Cop
+	var nearest_away := INF
+	for cop in get_tree().get_nodes_in_group("cops"):
+		var away := (cop as Cop).global_position.distance_to(director.global_position)
+		if away < nearest_away:
+			nearest = cop
+			nearest_away = away
+	director.say("ZOO_DIRECTOR_PUNISH")
+	patience = PATIENCE / 2
+	if nearest:
+		nearest.get_node("Grabber").release()
+		nearest.knock_back(Vector3.ZERO, PUNISH_SECONDS)
+		nearest.show_hint("HINT_ZOO_PUNISHED")
+
+
+## The elephant's trunk: cops within `radius` of `at` (world) get soaked and slip away, and what's there is washed.
+func spray(at: Vector3, radius: float) -> void:
+	for cop in get_tree().get_nodes_in_group("cops"):
+		var off := (cop as Cop).global_position - at
+		off.y = 0.0
+		if off.length() <= radius:
+			(cop as Cop).knock_back(off.normalized() * WET_PUSH, WET_SECONDS)
+			(cop as Cop).show_hint("HINT_ZOO_SOAKED")
+	washed.emit(at, radius)
 
 
 ## Every cop gets the hint (like the case's).
