@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Furniture store raid, step 5: the comisario's armchair story: the armchair stolen from the comisario's office stands in the shop window as the main evidence (18 kg, one cop carries it), its "Propiedad de la Comisaría" sticker is the clue for a cop who comes close, sitting on it (E) brings the comisario on the radio, and the photo of him on it and the station's screwdriver are hidden.
 - Furniture store raid, step 5: the fake antiques story: the aging machine (a drill with a chain) is hidden with the "Año 1890" labels and the bag of fresh sawdust, and the dining chairs turn over (E) to show an absurd antique price and, underneath, the stamp "Made last week" (the clue).
 - Furniture store raid, step 5: the wardrobe hotel story: the guest book is hidden with the pillow with drool and the toothbrush, one wardrobe is shut and snores for a cop close by (the clue), and opening it (E) lets out a guest in pyjamas who walks out to the street.
 - Furniture store raid, step 5: the cardboard wood story: the "Madera maciza" stamp is hidden with the roll of wood-look sticker and the cardboard invoices, one "oak" wardrobe goes over with one cop pulling it alone (the clue), and the dining chairs are light enough to carry with one hand and fly off when a cop walks into them.

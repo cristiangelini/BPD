@@ -83,6 +83,16 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_ANTIQUE_LABELS", "OBJ_EXTRA_SAWDUST"],
 		"rig": preload("res://scripts/case/furniture/fake_antiques_rig.gd"),
 	},
+	"comisario_chair": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_COMISARIO_CHAIR_B", "BRIEF_COMISARIO_CHAIR_C", "BRIEF_COMISARIO_CHAIR_D"],
+		"find": "OBJ_FIND_COMISARIO_CHAIR",
+		"hidden": [preload("res://scenes/props/comisario_photo.tscn"),
+			preload("res://scenes/props/station_screwdriver.tscn")],
+		"half_heights": [0.01, 0.02],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_COMISARIO_PHOTO", "OBJ_EXTRA_STATION_SCREWDRIVER"],
+		"rig": preload("res://scripts/case/furniture/comisario_chair_rig.gd"),
+	},
 }
 ## Where the suspicion notes can lie: on the shop's floor, in the open between the setups.
 const NOTE_PLACES: Array[Vector3] = [

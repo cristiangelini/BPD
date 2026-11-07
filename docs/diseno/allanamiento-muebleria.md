@@ -185,3 +185,11 @@ Los pesos y valores siguen la escala del taller y del gimnasio: la principal val
     ("Silla antigua, año 1890: $84999 (en 120 cuotas)", el precio sale de la semilla) y, abajo del asiento, el sello
     rojo "HECHO LA SEMANA PASADA". La primera silla que se da vuelta es la pista.
   - Captura `paso5-antiguedades.png` y `fake_antiques.png` (modelos).
+- **Paso 5, el sillón del comisario:** el sillón (verde, de cuero, giratorio, 18 kg, 1000) no está escondido. Está en la
+  vidriera, a la izquierda de la puerta, con el respaldo hacia adentro. La foto del comisario en su sillón (0,2 kg,
+  300) y el destornillador de la comisaría (0,3 kg, 200) sí están escondidos.
+  - La calcomanía "Propiedad de la Comisaría" está en el respaldo. El primer policía que pasa a menos de 2 m la lee, y
+    esa es la pista.
+  - E sienta al policía en el sillón, y el comisario les dice a todos por radio: "¿Quién está sentado en mi sillón? ¡Lo
+    siento desde acá!" (como mucho una vez cada 8 s).
+  - Capturas `paso5-sillon-*.png` y `comisario_chair.png` (modelos).

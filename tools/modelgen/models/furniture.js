@@ -368,6 +368,44 @@ export function buildSawdustBag() {
 	return b.build();
 }
 
+// The comisario's armchair, stolen from his office: a big dark green leather swivel armchair 0.8 × 1.15 × 0.8 m with
+// buttons on its back, on a five-legged foot, and the round "Propiedad de la Comisaría" sticker on its back.
+export function buildComisarioArmchair() {
+	const b = new Builder('comisario_armchair');
+	const leather = mat('armchair_leather', 0x2f5a3e, { roughness: 0.35 }), dark = mat('armchair_foot', 0x2a2a2e);
+	b.add('post', dark, new THREE.CylinderGeometry(0.04, 0.04, 0.3, 8), { pos: V(0, 0.18, 0) });
+	for (let i = 0; i < 5; i++) {
+		const a = (i / 5) * Math.PI * 2;
+		box(b, 'leg', dark, 0.34, 0.04, 0.05, Math.cos(a) * 0.17, 0.04, Math.sin(a) * 0.17, [0, -a, 0]);
+	}
+	box(b, 'seat', leather, 0.7, 0.16, 0.66, 0, 0.42, 0.02);
+	box(b, 'back', leather, 0.7, 0.72, 0.16, 0, 0.84, -0.3, [-0.1, 0, 0]);
+	for (const s of [-1, 1]) box(b, 'arm', leather, 0.1, 0.18, 0.6, s * 0.36, 0.58, 0.02);
+	for (const x of [-0.18, 0, 0.18]) for (const y of [0.7, 0.95]) b.add('button', M.gold, ellipsoid(0.02, 0.02, 0.01, 6, 3), { pos: V(x, y, -0.2 + (y - 0.7) * -0.1) });
+	b.add('sticker', mat('sticker_white', 0xf6f2e6), new THREE.CylinderGeometry(0.11, 0.11, 0.005, 14), { pos: V(0, 0.9, -0.39), rot: [Math.PI / 2 + 0.1, 0, 0] });
+	b.add('sticker', mat('sticker_blue', 0x3a5ad0), new THREE.CylinderGeometry(0.07, 0.07, 0.006, 6), { pos: V(0, 0.9, -0.392), rot: [Math.PI / 2 + 0.1, 0, 0] });
+	return b.build();
+}
+
+// The photo of the comisario on his armchair: a framed 0.2 × 0.15 m print, a green blob on a blue background.
+export function buildComisarioPhoto() {
+	const b = new Builder('comisario_photo');
+	box(b, 'frame', mat('frame_wood', 0x6a3e1c), 0.2, 0.012, 0.15, 0, 0.006, 0);
+	box(b, 'print', mat('photo_blue', 0x8ab4e8), 0.17, 0.003, 0.12, 0, 0.013, 0);
+	box(b, 'chair', mat('armchair_leather', 0x2f5a3e), 0.06, 0.004, 0.06, 0, 0.015, 0.02);
+	b.add('head', mat('skin_trigo', 0xe0b07a), ellipsoid(0.02, 0.003, 0.02, 6, 3), { pos: V(0, 0.016, -0.025) });
+	return b.build();
+}
+
+// The station's screwdriver: yellow handle with "COMISARÍA" in black on a label, 0.25 m long.
+export function buildStationScrewdriver() {
+	const b = new Builder('station_screwdriver');
+	b.add('handle', mat('screwdriver_yellow', 0xf2d23a), new THREE.CylinderGeometry(0.018, 0.018, 0.1, 8), { pos: V(-0.075, 0.018, 0), rot: [0, 0, Math.PI / 2] });
+	box(b, 'label', mat('label_black', 0x1e1e24), 0.05, 0.004, 0.02, -0.075, 0.037, 0);
+	b.add('shaft', mat('needle_steel', 0xc8ccd2, { metalness: 0.8, roughness: 0.3 }), new THREE.CylinderGeometry(0.004, 0.004, 0.15, 6), { pos: V(0.05, 0.018, 0), rot: [0, 0, Math.PI / 2] });
+	return b.build();
+}
+
 export const models = {
 	npc_don_cajon: buildDonCajon, npc_tablita: buildTablita, half_bookcase: buildHalfBookcase,
 	bookcase_shelf: buildBookcaseShelf, money_cushion: buildMoneyCushion, other_ledger: buildOtherLedger,
@@ -375,6 +413,7 @@ export const models = {
 	wood_decal_roll: buildWoodDecalRoll, cardboard_invoices: buildCardboardInvoices, closed_wardrobe: buildClosedWardrobe,
 	npc_pajama_guest: buildPajamaGuest, guest_book: buildGuestBook, drooly_pillow: buildDroolyPillow, toothbrush: buildToothbrush,
 	aging_machine: buildAgingMachine, antique_labels: buildAntiqueLabels, sawdust_bag: buildSawdustBag,
+	comisario_armchair: buildComisarioArmchair, comisario_photo: buildComisarioPhoto, station_screwdriver: buildStationScrewdriver,
 	showroom_sofa: buildShowroomSofa, showroom_bed: buildShowroomBed, showroom_wardrobe: buildShowroomWardrobe,
 	showroom_dresser: buildShowroomDresser, showroom_lamp: buildShowroomLamp, standing_mirror: buildStandingMirror,
 	dining_table: buildDiningTable, dining_chair: buildDiningChair, flatpack_box: buildFlatpackBox,
@@ -417,6 +456,11 @@ export const views = {
 		items: [{ name: 'aging_machine', pos: [-0.5, 0, 0] }, { name: 'antique_labels', pos: [0.15, 0, 0.2] },
 			{ name: 'sawdust_bag', pos: [0.6, 0, -0.1] }],
 		cam: { pos: [0, 0.9, 1.6], target: [0, 0.12, 0], fov: 40 },
+	},
+	comisario_chair: {
+		items: [{ name: 'comisario_armchair', pos: [-0.5, 0, 0], rotY: 2.6 }, { name: 'comisario_photo', pos: [0.5, 0, 0.3] },
+			{ name: 'station_screwdriver', pos: [0.6, 0, -0.1] }],
+		cam: { pos: [0, 1.4, 2.6], target: [0, 0.5, 0], fov: 45 },
 	},
 	furniture_table: {
 		items: [{ name: 'dining_table', pos: [0, 0, 0] }, { name: 'dining_chair', pos: [-0.6, 0, 0.75] }, { name: 'dining_chair', pos: [0.6, 0, -0.75] }],
