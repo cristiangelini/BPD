@@ -133,3 +133,12 @@ Los pesos y valores siguen la escala de la tienda de disfraces: la principal val
   el cocodrilo embalsamado, el televisor viejo y el estuche de la guitarra; y el depósito "Prohibido regatear" con
   llave, sus estantes, cajas, la caja fuerte grande y el escritorio con el libro de empeños. 12 escondites (6
   pesados). Capturas en `/mnt/project-files/allanamiento-empenos/paso1-*.png`.
+- Paso 2: el mostrador compra y vende. Lo que un policía deja arriba (quieto 2 s) cambia de manos: si está a la venta
+  se compra (el precio sale de la plata del caso) y ya es de los policías; si no, la tienda paga la tasación (la
+  evidencia el 5 % de lo que vale, lo demás 5) y lo pone en una vitrina con etiqueta al doble. Lo que está a la venta y
+  sale de la tienda sin pagar queda como robado (Don Regateo lo suma en el paso 3). La tienda tiene 3 cosas suyas a la
+  venta arriba de las vitrinas: un trofeo ($8), una radio ($12) y un reloj cucú ($6). 3 clientes miran los estantes y
+  por turno (el primero a los 3 s, el siguiente 4 s después de que vuelve el anterior) van al mostrador a regatear 10 s
+  ("¿Solo 5 por la tostadora de mi tía?") y vuelven. Se quejan si hay un policía en su lugar del mostrador ("¡Permiso,
+  que estoy en la fila!") o si una vitrina o la armadura se rompe a menos de 2 m ("¡Cuidado, que eso lo empeñé yo!").
+  Capturas en `/mnt/project-files/allanamiento-empenos/paso2-*.png`.
