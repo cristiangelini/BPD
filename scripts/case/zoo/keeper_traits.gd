@@ -23,7 +23,8 @@ const PECKED := Vector2i(2, 3)
 static func draw(seed_value: int) -> Array[Dictionary]:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash("zoo keepers %d" % seed_value)
-	var pecked := {}
+	# Copito pecked the culprit while being carried off: always a band-aid.
+	var pecked := {CrimePlan.culprit_of(COUNT, seed_value): true}
 	var pecked_count := rng.randi_range(PECKED.x, PECKED.y)
 	while pecked.size() < pecked_count:
 		pecked[rng.randi_range(0, COUNT - 1)] = true
