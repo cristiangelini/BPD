@@ -68,6 +68,8 @@ const PLACES := [
 	{"id": "airport", "block": Vector2i(6, 4), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.86, 0.88, 0.9), "sign": "PLACE_AIRPORT", "park": true},
 	# The garage "El Pistón Feliz" (allanamiento-taller.md), in the east's sheds.
 	{"id": "garage", "block": Vector2i(7, 2), "side": "w", "along": 0.0, "size": Vector3(26, 8, 22), "color": Color(0.72, 0.74, 0.7), "sign": "PLACE_GARAGE"},
+	# The fun fair "La Vuelta Loca" fills its block beside the airport (allanamiento-parque.md).
+	{"id": "fair", "block": Vector2i(7, 4), "side": "n", "along": 0.0, "size": Vector3(54, 1, 54), "color": Color(0.82, 0.23, 0.23), "sign": "PLACE_FAIR", "park": true},
 ]
 
 ## The plaza fills its block.

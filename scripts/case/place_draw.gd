@@ -2,8 +2,8 @@ class_name PlaceDraw
 extends RefCounted
 
 ## Which place a match happens in (panaderia.md, "El orden para hacerlo", step 5): Play draws a case seed and, from
-## it, the grandpa's house, the bakery, the pet salon, the hardware store (ferreteria.md), the doll factory
-## (fabrica.md), the insurance office (seguros.md), the cake lab (laboratorio.md), the Hotel Gran Siesta (hotel-allanamiento.md), the gym, the apartment building (edificio.md) or the garage (allanamiento-taller.md), with even odds (propuesta). Every third shift is an interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
+## it, one of the raids of ORDER (each with its own allanamiento doc), with even odds (propuesta). Every third shift is
+## an interrogation instead (interrogatorio.md, "Sale como un caso más"), and of the rest half are chases
 ## (persecucion.md, "Sale como un caso más"). Of the shifts left, one in CRIME_EVERY is the crime scene
 ## (escena-del-crimen.md, propuesta; an equal share at each place of CRIME_SCENES), then one in
 ## TRAFFIC_EVERY the traffic control (control-transito.md; the level draws rush hour or clown convoy), then one in
@@ -75,9 +75,10 @@ const PLACES := {
 	"airport": "res://scenes/levels/airport.tscn",
 	"station": "res://scenes/levels/station_scene.tscn",
 	"garage": "res://scenes/levels/garage.tscn",
+	"fair": "res://scenes/levels/fair.tscn",
 }
 ## The raids, drawn by the seed.
-const ORDER := ["grandpa", "bakery", "groomer", "hardware", "doll_factory", "insurance", "cake_lab", "hotel_raid", "gym_raid", "apartments", "wrong_house", "garage"]
+const ORDER := ["grandpa", "bakery", "groomer", "hardware", "doll_factory", "insurance", "cake_lab", "hotel_raid", "gym_raid", "apartments", "wrong_house", "garage", "fair"]
 ## One shift in this many is an interrogation (Cristian, 20/10): shifts 3, 6... of a campaign, or 1 in 3 by the seed
 ## without one.
 const INTERROGATION_EVERY := 3
