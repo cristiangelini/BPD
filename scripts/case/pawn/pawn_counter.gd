@@ -5,8 +5,9 @@ extends Area3D
 ## it (let go, resting there TAKE_AFTER seconds) changes hands:
 ## - something for sale (the shop's own goods, or something pawned before) is bought: its price comes off the case
 ##   money and it's the cops' from then on;
-## - anything else is pawned: the shop pays its appraisal and puts it up for sale in a glass case at twice that, with
-##   its tag. Evidence too: to get it back you buy it, or take it out of the shop without paying.
+## - anything else is pawned: Don Regateo appraises it (Appraisal: he turns away for a while, or prices it at a
+##   glance, or catches on and won't buy), then the shop pays and puts it up for sale in a glass case at twice that,
+##   with its tag. Evidence too: to get it back you buy it, or take it out of the shop without paying.
 ## Something for sale that leaves the shop without being paid for was taken, and the shop knows (Don Regateo adds it to
 ## the complaint, step 3). Every number here is (propuesta).
 
@@ -30,6 +31,9 @@ var paid := {}
 var cash_out := 0
 var spent := 0
 var _resting := {}
+## What Don Regateo is appraising now, and what he refused (ignored until it leaves the counter).
+var _appraising: Grabbable
+var _refused := {}
 
 
 func setup(place: PawnShop, center: Vector3, size: Vector3) -> void:
@@ -62,15 +66,23 @@ func _physics_process(delta: float) -> void:
 	if not multiplayer.is_server():
 		return
 	var here := {}
+	var refused := {}
 	for body in get_overlapping_bodies():
 		var item := body as Grabbable
-		if not item or item.is_held() or item.linear_velocity.length() > RESTING or paid.has(item):
+		if not item or paid.has(item) or item == _appraising:
+			continue
+		if _refused.has(item):
+			refused[item] = true
+			continue
+		if item.is_held() or item.linear_velocity.length() > RESTING:
 			continue
 		here[item] = _resting.get(item, 0.0) + delta
-		if here[item] >= TAKE_AFTER:
+		if here[item] >= TAKE_AFTER and _change_hands(item):
 			here.erase(item)
-			_change_hands(item)
+			if _refused.has(item):
+				refused[item] = true
 	_resting = here
+	_refused = refused
 	for item: Grabbable in for_sale.keys():
 		if not is_instance_valid(item):
 			for_sale.erase(item)
@@ -80,7 +92,8 @@ func _physics_process(delta: float) -> void:
 			taken.emit(item)
 
 
-func _change_hands(item: Grabbable) -> void:
+## Whether `item` changed hands (or is being appraised, or was refused); false while he's busy with another one.
+func _change_hands(item: Grabbable) -> bool:
 	if for_sale.has(item):
 		var price: int = for_sale[item]
 		for_sale.erase(item)
@@ -89,7 +102,30 @@ func _change_hands(item: Grabbable) -> void:
 		_untag(item)
 		shop.say_at(item.global_position + Vector3.UP * 0.6, "PAWN_SOLD")
 		bought.emit(item, price)
-		return
+		return true
+	var verdict := shop.appraisal.bring() if shop.appraisal else "quick"
+	match verdict:
+		"busy":
+			return false
+		"refused":
+			_refused[item] = true
+		"slow":
+			_appraising = item
+		_:
+			_pawn(item)
+	return true
+
+
+## Don Regateo is done with his loupe: what he looked at is pawned, if it's still on the counter and nobody took it.
+func appraisal_done() -> void:
+	var item := _appraising
+	_appraising = null
+	if item and is_instance_valid(item) and not item.is_held() and overlaps_body(item):
+		_pawn(item)
+
+
+## The shop pays for `item` and puts it on show at twice that.
+func _pawn(item: Grabbable) -> void:
 	var paid_out := appraise(item)
 	cash_out += paid_out
 	var slot := shop.free_display_slot()

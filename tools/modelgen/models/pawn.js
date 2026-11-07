@@ -3,6 +3,7 @@
 // parrot's cage, the cookie jar, the stock room's shelf and boxes, the big safe and the giant price tag of the sign,
 // with origins at the floor in the middle of each piece (the price tag at its middle). Placeholder, not final art.
 import { Builder, mat, ellipsoid, V, THREE } from '../lib.js';
+import { pearBody, eyes } from './pear.js';
 
 const brass = () => mat('pawn_brass', 0xe0b040, { metalness: 0.6, roughness: 0.3 });
 const wood = () => mat('pawn_wood', 0x6a4028);
@@ -217,11 +218,34 @@ export function buildPawnClock() {
 	return b.build();
 }
 
+// Don Regateo, the owner: short, in a brown vest over a white shirt, a jeweler's loupe in one eye, a calculator
+// hanging from his neck, a thin mustache and a bald head with grey sides. The game scales him short.
+export function buildRegateo() {
+	const b = new Builder('npc_regateo');
+	pearBody(b, mat('skin_regateo', 0xe0b08a), { shirt: mat('regateo_shirt', 0xf6f2e2), pants: mat('regateo_pants', 0x3a3a40), shoes: mat('regateo_shoes', 0x2a1e18) });
+	const vest = mat('regateo_vest', 0x6a4028);
+	b.add('vest', vest, new THREE.CylinderGeometry(0.43, 0.45, 0.42, 12), { pos: V(0, 0.78, 0) });
+	for (let i = 0; i < 3; i++) b.add('button', brass(), new THREE.SphereGeometry(0.018, 6, 4), { pos: V(0, 0.68 + i * 0.1, 0.45) });
+	eyes(b, 1.34, 0.17, 0.08, 0.05);
+	b.add('loupe', mat('regateo_loupe', 0x24242a), new THREE.CylinderGeometry(0.05, 0.04, 0.08, 10), { pos: V(0.08, 1.34, 0.23), rot: [Math.PI / 2, 0, 0] });
+	b.add('loupe', mat('regateo_lens', 0xd8ecf4, { metalness: 0.6, roughness: 0.1 }), new THREE.CylinderGeometry(0.045, 0.045, 0.01, 10), { pos: V(0.08, 1.34, 0.275), rot: [Math.PI / 2, 0, 0] });
+	const grey = mat('regateo_hair', 0xb0b0b0);
+	for (const s of [-1, 1]) {
+		b.add('hair', grey, ellipsoid(0.06, 0.08, 0.12, 8, 5), { pos: V(s * 0.22, 1.4, -0.02) });
+		b.add('mustache', mat('regateo_mustache', 0x5a5a5a), ellipsoid(0.07, 0.015, 0.02, 8, 4), { pos: V(s * 0.06, 1.24, 0.21), rot: [0, 0, s * 0.15] });
+	}
+	b.add('cord', mat('regateo_cord', 0x24242a), new THREE.TorusGeometry(0.16, 0.008, 4, 16, Math.PI), { pos: V(0, 1.05, 0.2), rot: [0, 0, Math.PI] });
+	b.add('calculator', mat('regateo_calc', 0x2a2a30), new THREE.BoxGeometry(0.14, 0.18, 0.03), { pos: V(0, 0.86, 0.47) });
+	b.add('screen', mat('regateo_calc_screen', 0x9ac88a), new THREE.BoxGeometry(0.1, 0.04, 0.01), { pos: V(0, 0.92, 0.49) });
+	return b.build();
+}
+
 export const models = {
 	pawn_counter: buildPawnCounter, pawn_case: buildPawnCase, pawn_shelf: buildPawnShelf, knight_armor: buildKnightArmor,
 	stuffed_croc: buildStuffedCroc, old_tv: buildOldTv, guitar_case: buildGuitarCase, pawn_parrot_cage: buildPawnParrotCage,
 	cookie_jar: buildCookieJar, pawn_stock_shelf: buildPawnStockShelf, pawn_boxes: buildPawnBoxes, pawn_safe: buildPawnSafe,
 	giant_price_tag: buildGiantPriceTag, pawn_trophy: buildPawnTrophy, pawn_radio: buildPawnRadio, pawn_clock: buildPawnClock,
+	npc_regateo: buildRegateo,
 };
 
 export const views = {
@@ -236,6 +260,7 @@ export const views = {
 			{ name: 'giant_price_tag', pos: [0.4, 3.6, -3.2] },
 			{ name: 'pawn_trophy', pos: [-2.6, 1.11, 1.6] }, { name: 'pawn_radio', pos: [-2.0, 1.11, 1.6] },
 			{ name: 'pawn_clock', pos: [-1.4, 1.11, 1.6] },
+			{ name: 'npc_regateo', pos: [4.0, 0, 3.0], scale: 0.85 },
 		],
 		cam: { pos: [0.4, 5.0, 10.0], target: [0.4, 0.9, 0], fov: 50 },
 	},
