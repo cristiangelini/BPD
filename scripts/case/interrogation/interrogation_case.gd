@@ -102,6 +102,8 @@ const SUSPECT_MODELS := {
 	"owner_reader": "res://assets/models/npc_lector.glb",
 	# The aquarium's culprit (escena-acuario.md), accused at the board.
 	"owner_diver": "res://assets/models/npc_buzo.glb",
+	# The planetarium's culprit (escena-planetario.md), accused at the board.
+	"owner_guide": "res://assets/models/npc_guia.glb",
 	# The infiltrations' bosses, cuffed or caught (infiltracion.md, infiltracion-coro.md).
 	"owner_chela": "res://assets/models/npc_chela.glb",
 	"owner_ernesto": "res://assets/models/npc_ernesto.glb",

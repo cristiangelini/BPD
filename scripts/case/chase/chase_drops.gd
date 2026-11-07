@@ -70,6 +70,11 @@ const MAX_DUMMIES := 8
 const FRAME_EVERY := 5.0
 const MAX_FRAMES := 8
 const SUITCASE_EVERY := 5.0
+const PLANETS_PER_CORNER := 2
+const MAX_PLANETS := 12
+## Seconds a hit planet holds the patrol car back, and how hard (the share of its speed lost per second).
+const PLANET_HOLD_SECONDS := 1.0
+const PLANET_DRAG := 1.5
 const MAX_SUITCASES := 8
 const YARN_EVERY := 5.0
 const MAX_YARNS := 8
@@ -125,6 +130,9 @@ var books: Array[ChaseBooks] = []
 var ice: Array[ChaseIce] = []
 ## Seconds the patrol car still skids after running over a block of ice.
 var ice_skid_left := 0.0
+var planets: Array[ChasePlanet] = []
+## Seconds the patrol car is still held back by a planet it hit.
+var planet_hold_left := 0.0
 ## Seconds the patrol car's windshield stays covered in a run-over suitcase's clothes.
 var laundry_left := 0.0
 var yarns: Array[ChaseYarn] = []
@@ -262,6 +270,9 @@ func _physics_process(delta: float) -> void:
 			blobs.erase(blob)
 	if on_blob(case.car.global_position) and case.car.linear_velocity.length() > BLOB_SPEED:
 		case.car.linear_velocity *= maxf(1.0 - BLOB_DRAG * delta, 0.0)
+	if planet_hold_left > 0.0:
+		planet_hold_left -= delta
+		case.car.linear_velocity *= maxf(1.0 - PLANET_DRAG * delta, 0.0)
 
 
 ## Whether `at` is on a cement blob.
@@ -380,6 +391,9 @@ func _on_corner(turned: bool) -> void:
 	elif case.suspect_id == SuspectCar.FISH_TRUCK:
 		for i in ICE_PER_CORNER:
 			drop_ice()
+	elif case.suspect_id == SuspectCar.PLANETARIUM_VAN:
+		for i in PLANETS_PER_CORNER:
+			drop_planet()
 	if riders_left > 0:
 		drop_jumper()
 	if ghost_look >= 0:
@@ -676,6 +690,29 @@ func drop_ice() -> ChaseIce:
 ## The patrol car ran over a block of ice: it skids for ICE_SKID_SECONDS.
 func ice_hit() -> void:
 	ice_skid_left = ICE_SKID_SECONDS
+
+
+## An inflatable planet bounces out of the van's back doors onto the street, a little to one side.
+func drop_planet() -> ChasePlanet:
+	planets = planets.filter(func(planet: ChasePlanet) -> bool: return is_instance_valid(planet))
+	if planets.size() >= MAX_PLANETS:
+		planets.pop_front().queue_free()
+	var planet := ChasePlanet.new()
+	planet.car = case.car
+	planet.drops = self
+	planet.planet = GuideTraits.PLANETS[_rng.randi_range(0, GuideTraits.PLANETS.size() - 1)]
+	_dropped += 1
+	planet.name = "Planet%d" % _dropped
+	case.get_parent().add_child(planet)
+	var side := case.truck.global_basis.x * _rng.randf_range(-1.0, 1.0)
+	planet.global_position = _behind() + side + Vector3.UP * 0.3
+	planets.append(planet)
+	return planet
+
+
+## The patrol car hit an inflatable planet: it's held back for PLANET_HOLD_SECONDS.
+func planet_hit() -> void:
+	planet_hold_left = PLANET_HOLD_SECONDS
 
 
 func _behind() -> Vector3:

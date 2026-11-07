@@ -180,6 +180,18 @@ const VARIANTS := {
 			"ticket": "tank", "witness": "tank"},
 		"parts": ["photo", "prints", "teeth", "hair", "ink", "tank"],
 	},
+	# The Municipal Planetarium (escena-planetario.md, decision 420): six guides alike in astronaut suits; a file knows
+	# what the cops got from its guide, the glow paint on the gloves (seen in the dark) and their planet included.
+	"planetarium": {
+		"shift": "crime_planetarium", "story": "planetarium",
+		"brief": ["BRIEF_PLANETARIUM_A_", "BRIEF_PLANETARIUM_B", "BRIEF_PLANETARIUM_C"], "go": "HINT_GO_PLANETARIUM",
+		"go_row": "OBJ_PLANETARIUM_GO", "look": "HINT_PLANETARIUM_LOOK", "files_row": "OBJ_PLANETARIUM_FILES",
+		"clue_line": "CLUE_PLANETARIUM_", "ruined_hint": "HINT_PLANETARIUM_RUINED_", "left": "HINT_GUIDE_LEFT",
+		"who": "guide", "getaway": SuspectCar.PLANETARIUM_VAN, "loot_row": "OBJ_PLANETARIUM_LOOT_",
+		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "glow": "glow",
+			"booth": "planet", "witness": "planet"},
+		"parts": ["photo", "prints", "teeth", "hair", "glow", "planet"],
+	},
 }
 ## On the train, the traits each part of a magician's file tells.
 const MAGICIAN_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
@@ -202,6 +214,9 @@ const READER_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "
 ## At the aquarium, the traits each part of a diver's file tells.
 const DIVER_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
 	"ink": ["ink"], "tank": ["tank"]}
+## At the planetarium, the traits each part of a guide's file tells.
+const GUIDE_PART_TRAITS := {"photo": ["shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
+	"glow": ["glow"], "planet": ["planet"]}
 ## At the hotel, the trait each part of a guest's file tells, and the parts that come from their room.
 const GUEST_PART_TRAITS := {"prints": "name", "teeth": "teeth", "sign": "left", "shoe": "shoe", "hair": "hair",
 	"glasses": "glasses"}
@@ -356,6 +371,8 @@ func _draw_suspects() -> Array[Dictionary]:
 		return ReaderTraits.draw(case_seed)
 	if texts() == VARIANTS.aquarium:
 		return DiverTraits.draw(case_seed)
+	if texts() == VARIANTS.planetarium:
+		return GuideTraits.draw(case_seed)
 	return ClownTraits.draw(case_seed) if texts() == VARIANTS.circus else CookTraits.draw(case_seed)
 
 
@@ -411,7 +428,7 @@ func magician_part(magician_index: int, part: String) -> bool:
 
 
 ## A guard gave a part of his file (escena-museo.md), a nephew (escena-gato.md), a club member (escena-mansion.md), a
-## tuxedo (escena-boda.md), a reader (escena-biblioteca.md) or a diver (escena-acuario.md): it goes to their file with what it says about them.
+## tuxedo (escena-boda.md), a reader (escena-biblioteca.md), a diver (escena-acuario.md) or a guide (escena-planetario.md): it goes to their file with what it says about them.
 func guard_part(index: int, part: String) -> void:
 	if follower:
 		return
@@ -427,6 +444,8 @@ func guard_part(index: int, part: String) -> void:
 		table = READER_PART_TRAITS
 	elif texts() == VARIANTS.aquarium:
 		table = DIVER_PART_TRAITS
+	elif texts() == VARIANTS.planetarium:
+		table = GUIDE_PART_TRAITS
 	for trait_name: String in table[part]:
 		known[trait_name] = cooks[index][trait_name]
 	file_part(index, part)
@@ -539,7 +558,7 @@ func file_traits(id: int) -> Dictionary:
 			known[GUEST_PART_TRAITS[part]] = cooks[sleeper][GUEST_PART_TRAITS[part]]
 		return known
 	if texts() in [VARIANTS.circus, VARIANTS.museum, VARIANTS.train, VARIANTS.cat, VARIANTS.mansion, VARIANTS.office,
-			VARIANTS.wedding, VARIANTS.station, VARIANTS.library, VARIANTS.aquarium]:
+			VARIANTS.wedding, VARIANTS.station, VARIANTS.library, VARIANTS.aquarium, VARIANTS.planetarium]:
 		return captured.get(id, {})
 	return cooks[id]
 
@@ -899,6 +918,8 @@ func clue_line(kind: String) -> String:
 		return _library_clue_line(kind)
 	if texts() == VARIANTS.aquarium:
 		return _aquarium_clue_line(kind)
+	if texts() == VARIANTS.planetarium:
+		return _planetarium_clue_line(kind)
 	match kind:
 		"footprint":
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
@@ -1060,6 +1081,22 @@ func _aquarium_clue_line(kind: String) -> String:
 	return tr("CLUE_AQUARIUM_" + kind)
 
 
+## At the planetarium: the glowing moon boot in the dome room, the hair by the helmet, the ice cream in the rocket, the
+## glow paint, the booth's photo and Doña Nebulosa.
+func _planetarium_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_PLANETARIUM_footprint") % who.shoe
+		"hair":
+			return tr("CLUE_PLANETARIUM_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_PLANETARIUM_bite") % tr("TEETH_" + str(who.teeth))
+		"booth", "witness":
+			return tr("CLUE_PLANETARIUM_" + kind) % tr("PLANET_" + str(who.planet))
+	return tr("CLUE_PLANETARIUM_" + kind)
+
+
 ## At the hotel: the bare footprint on the bathroom's mat, the hair and the bonbon on the pillow, Tito and the guest book.
 func _hotel_clue_line(kind: String) -> String:
 	var who := culprit()
@@ -1148,6 +1185,8 @@ func file_text(index: int) -> String:
 		return _reader_file_text(index, who)
 	if texts() == VARIANTS.aquarium:
 		return _diver_file_text(index, who)
+	if texts() == VARIANTS.planetarium:
+		return _guide_file_text(index, who)
 	var lines := PackedStringArray(["%d. %s" % [index + 1, who.name]])
 	lines.append(tr("FILE_APRON") % tr("APRON_" + str(who.apron)))
 	lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
@@ -1246,6 +1285,21 @@ func _diver_file_text(index: int, who: Dictionary) -> String:
 	else:
 		lines.append(tr("FILE_INK_UNKNOWN"))
 	lines.append(tr("FILE_TANK") % (tr("CARE_" + str(who.tank)) if who.has("tank") else "?"))
+	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
+	return "\n".join(lines)
+
+
+## A guide's file: their name and number, and what the cops got from them so far.
+func _guide_file_text(index: int, who: Dictionary) -> String:
+	var lines := PackedStringArray(["%d. %s" % [index + 1, cooks[index].name]])
+	lines.append(tr("FILE_BOOT") % who.shoe if who.has("shoe") else tr("FILE_BOOT_UNKNOWN"))
+	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if who.has("hair") else "?"))
+	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
+	if who.has("glow"):
+		lines.append(tr("FILE_GLOW") if who.glow else tr("FILE_NO_GLOW"))
+	else:
+		lines.append(tr("FILE_GLOW_UNKNOWN"))
+	lines.append(tr("FILE_PLANET") % (tr("PLANET_" + str(who.planet)) if who.has("planet") else "?"))
 	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
 	return "\n".join(lines)
 

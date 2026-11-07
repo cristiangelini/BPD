@@ -56,6 +56,8 @@ const MODELS := {
 	"reader": preload("res://assets/models/npc_lector.glb"),
 	# The aquarium's culprit, out of the fish truck in wetsuit and flippers (escena-acuario.md).
 	"diver": preload("res://assets/models/npc_buzo.glb"),
+	# The planetarium's culprit, out of the van in the astronaut suit (escena-planetario.md).
+	"guide": preload("res://assets/models/npc_guia.glb"),
 	# The traffic control's wanted driver (control-transito.md).
 	"driver": preload("res://assets/models/npc_cliente.glb"),
 	# Doña Chela, off her motorized walker (infiltracion.md).

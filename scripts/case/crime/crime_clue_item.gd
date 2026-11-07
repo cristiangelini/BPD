@@ -34,7 +34,7 @@ const MUG := Color(0.95, 0.93, 0.86)
 const COFFEE := Color(0.3, 0.18, 0.1)
 
 ## The looks whose hair is a loose one, not in food.
-const LOOSE_HAIR := ["museum", "hotel", "mansion", "cat_mansion", "library", "aquarium"]
+const LOOSE_HAIR := ["museum", "hotel", "mansion", "cat_mansion", "library", "aquarium", "planetarium"]
 ## "hair", "bite", "recipe", "cup" (the station's) or "ticket" (the aquarium's).
 var kind := "hair"
 ## "pastry", "circus", "museum", "hotel", "mansion", "cat_mansion", "office", "station", "library" or "aquarium": what
@@ -109,6 +109,9 @@ func _ready() -> void:
 	if look == "aquarium":
 		_aquarium_look()
 		return
+	if look == "planetarium" and kind == "bite":
+		_ice_cream()
+		return
 	match kind:
 		"hair":
 			var plate := CylinderMesh.new()
@@ -174,6 +177,19 @@ func _aquarium_look() -> void:
 	part.mesh_box(Vector3(0, 0.06, 0.02), Vector3(0.12, 0.03, 0.18), SPONGE)
 	# The bite: a dark notch at one corner.
 	part.mesh_box(Vector3(0.04, 0.04, -0.06), Vector3(0.05, 0.08, 0.04), WET)
+
+
+## The planetarium's astronaut ice cream: a silver pouch, open, with the freeze-dried block bitten at one corner.
+func _ice_cream() -> void:
+	PlaceBuilder.new(self).mesh_box(Vector3(0, 0.01, 0.02), Vector3(0.13, 0.02, 0.2), Color(0.8, 0.82, 0.86))
+	_eaten_part = Node3D.new()
+	add_child(_eaten_part)
+	var part := PlaceBuilder.new(_eaten_part)
+	part.mesh_box(Vector3(0, 0.035, -0.01), Vector3(0.1, 0.03, 0.06), Color(0.95, 0.75, 0.8))
+	part.mesh_box(Vector3(0, 0.035, 0.05), Vector3(0.1, 0.03, 0.06), CREAM)
+	part.mesh_box(Vector3(0, 0.035, 0.11), Vector3(0.1, 0.03, 0.06), CHOCOLATE)
+	# The bite: a dark notch at one corner.
+	part.mesh_box(Vector3(0.035, 0.04, -0.03), Vector3(0.04, 0.04, 0.03), WET)
 
 
 ## The hotel's bonbon: a chocolate square in its gold foil, with a bite out of one corner.

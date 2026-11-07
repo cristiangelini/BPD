@@ -110,6 +110,9 @@ const MODELS := {
 	# The aquarium's culprit runs off in its frozen fish truck, slow, dropping blocks of ice at every corner
 	# (escena-acuario.md).
 	"fish_truck": preload("res://assets/models/fish_truck.glb"),
+	# The planetarium's culprit runs off in its van with a telescope on the roof, slow, dropping inflatable planets at
+	# every corner (escena-planetario.md).
+	"planetarium_van": preload("res://assets/models/planetarium_van.glb"),
 	# The airport's bought porter gets away on the baggage tug (politico-aeropuerto.md), slow, its beacon spinning.
 	"baggage_tug": preload("res://assets/models/baggage_tug.glb"),
 	# The cat's culprit gets away in his aunt's golden limousine, throwing balls of yarn out the window (escena-gato.md).
@@ -150,6 +153,7 @@ const RIDERS := {
 	"hotel_shuttle": [[preload("res://assets/models/npc_huesped.glb"), Vector3(-0.5, 0.4, 1.7), 0.85]],
 	"bookmobile": [[preload("res://assets/models/npc_lector.glb"), Vector3(-0.5, 0.45, 2.2), 0.85]],
 	"fish_truck": [[preload("res://assets/models/npc_buzo.glb"), Vector3(-0.5, 0.5, 2.3), 0.85]],
+	"planetarium_van": [[preload("res://assets/models/npc_guia.glb"), Vector3(-0.5, 0.4, 1.7), 0.85]],
 	"baggage_tug": [[preload("res://assets/models/npc_mudancero.glb"), Vector3(0, 0.35, 0.2), 0.85]],
 	"golden_limo": [[preload("res://assets/models/npc_sobrino_tia.glb"), Vector3(-0.5, 0.4, 1.2), 0.85]],
 	"water_truck": [[preload("res://assets/models/npc_oficinista.glb"), Vector3(-0.5, 0.45, 1.7), 0.85]],
@@ -183,6 +187,7 @@ const SPEEDS := {"bear_on_foot": 12.0 / 3.6, "wheelchair": 8.0 / 3.6, "tow_truck
 	"carousel_horse": 25.0 / 3.6, "chopper_moped": 30.0 / 3.6, "gallery_cart": 20.0 / 3.6,
 	"cement_mixer": 28.0 / 3.6, "barullo_moto": 45.0 / 3.6, "baggage_tug": 22.0 / 3.6, "bookmobile": 24.0 / 3.6}
 	"cement_mixer": 28.0 / 3.6, "barullo_moto": 45.0 / 3.6, "baggage_tug": 22.0 / 3.6, "fish_truck": 24.0 / 3.6}
+	"cement_mixer": 28.0 / 3.6, "barullo_moto": 45.0 / 3.6, "baggage_tug": 22.0 / 3.6, "planetarium_van": 22.0 / 3.6}
 ## The tow truck turns slowly and nearly stops to do it (persecucion-lugares.md): a cop cutting a corner on foot
 ## catches up with him.
 ## The golf cart turns very tight and hardly slows down to do it.
@@ -246,6 +251,7 @@ const TV_VAN := "tv_van"
 const HOTEL_SHUTTLE := "hotel_shuttle"
 const BOOKMOBILE := "bookmobile"
 const FISH_TRUCK := "fish_truck"
+const PLANETARIUM_VAN := "planetarium_van"
 const BAGGAGE_TUG := "baggage_tug"
 const LIMO := "golden_limo"
 const WATER_TRUCK := "water_truck"
@@ -278,6 +284,7 @@ const SIZES := {"school_bus": Vector3(2.5, 2.9, 8.4), "rain": Vector3(2.1, 1.4, 
 	"water_truck": Vector3(2.1, 2.4, 5.0)}
 	"hotel_shuttle": Vector3(2.1, 2.6, 5.0), "bookmobile": Vector3(2.2, 2.7, 6.0),
 	"hotel_shuttle": Vector3(2.1, 2.6, 5.0), "fish_truck": Vector3(2.3, 3.0, 6.4),
+	"hotel_shuttle": Vector3(2.1, 2.6, 5.0), "planetarium_van": Vector3(2.1, 2.6, 5.0),
 	"baggage_tug": Vector3(1.3, 1.4, 2.4)}
 const BUS_WHEELS: Array[Vector3] = [Vector3(-1.15, 0.38, 2.7), Vector3(1.15, 0.38, 2.7), Vector3(-1.15, 0.38, -2.6),
 	Vector3(1.15, 0.38, -2.6)]
@@ -312,6 +319,7 @@ const OTHER_WHEELS := {"school_bus": BUS_WHEELS, "rain": SEDAN_WHEELS, "night": 
 	"water_truck": SHUTTLE_WHEELS}
 	"bookmobile": BOOKMOBILE_WHEELS}
 	"fish_truck": FISH_TRUCK_WHEELS}
+	"planetarium_van": SHUTTLE_WHEELS}
 
 ## He drove through a corner: `turned` if he changed direction there (where the moving truck loses furniture).
 signal corner_passed(turned: bool)

@@ -56,6 +56,7 @@ const PLACES := [
 	{"id": "school_visit", "block": Vector2i(3, 3), "side": "s", "along": 0.0, "size": Vector3(28, 4, 24), "color": Color(0.95, 0.85, 0.55), "sign": "PLACE_SCHOOL_VISIT"},
 	{"id": "library", "block": Vector2i(5, 4), "side": "e", "along": 0.0, "size": Vector3(30, 9, 26), "color": Color(0.84, 0.82, 0.76), "sign": "PLACE_LIBRARY"},
 	{"id": "aquarium", "block": Vector2i(7, 3), "side": "s", "along": 0.0, "size": Vector3(32, 9, 28), "color": Color(0.25, 0.55, 0.75), "sign": "PLACE_AQUARIUM"},
+	{"id": "planetarium", "block": Vector2i(8, 1), "side": "s", "along": 0.0, "size": Vector3(32, 9, 28), "color": Color(0.18, 0.2, 0.42), "sign": "PLACE_PLANETARIUM"},
 	{"id": "museum", "block": Vector2i(0, 0), "side": "s", "along": 0.0, "size": Vector3(30, 7, 26), "color": Color(0.88, 0.86, 0.8), "sign": "PLACE_MUSEUM"},
 	{"id": "cat_mansion", "block": Vector2i(0, 3), "side": "n", "along": 0.0, "size": Vector3(30, 8, 26), "color": Color(0.96, 0.9, 0.78), "sign": "PLACE_CAT_MANSION"},
 	{"id": "office", "block": Vector2i(0, 1), "side": "n", "along": 0.0, "size": Vector3(24, 6, 18), "color": Color(0.62, 0.66, 0.7), "sign": "PLACE_OFFICE"},
