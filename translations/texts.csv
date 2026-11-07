@@ -5650,3 +5650,35 @@ PARROT_NOTHING,"«¡Rrrr! ¡Todo tiene precio! ¡Rrrr!»","“Rrrk! Everything h
 PARROT_SQUAWK_1,"«¡Vendido! ¡Rrrr!»","“Sold! Rrrk!”","“Vendido! Rrrr!”"
 PARROT_SQUAWK_2,"«¡Le hago un favor! ¡Rrrr!»","“I'm doing you a favor! Rrrk!”","“Estou te fazendo um favor! Rrrr!”"
 PARROT_SQUAWK_3,"«¡Con intereses! ¡Con intereses!»","“With interest! With interest!”","“Com juros! Com juros!”"
+SUSPECT_train_watches,Los relojes del tren,The train's watches,Os relógios do trem
+SUSPECT_fake_trophy,El trofeo falso,The fake trophy,O troféu falso
+SUSPECT_walking_armor,La armadura que camina,The walking armor,A armadura que anda
+SUSPECT_gold_dentures,Las dentaduras de oro,The gold dentures,As dentaduras de ouro
+SUSPECT_singer_guitar,La guitarra del cantante,The singer's guitar,O violão do cantor
+SUSPECT_croc_smuggler,El cocodrilo contrabandista,The smuggler crocodile,O crocodilo contrabandista
+CLUE_SUSPECT_train_watches,"Un recorte del diario: «Robo en el tren de las 3:15: se llevaron todos los relojes de los pasajeros».","A newspaper clipping: “Robbery on the 3:15 train: every passenger's watch was taken.”","Um recorte de jornal: “Roubo no trem das 3:15: levaram todos os relógios dos passageiros.”"
+CLUE_SUSPECT_fake_trophy,"Un tarro de pintura dorada casi vacío y un pincel: «Que brille como de oro».","An almost empty can of gold paint and a brush: “Make it shine like gold.”","Uma lata de tinta dourada quase vazia e um pincel: “Que brilhe como ouro.”"
+CLUE_SUSPECT_walking_armor,"Una aceitera y una nota: «Aceitar las rodillas de la armadura antes de salir».","An oil can and a note: “Oil the armor's knees before going out.”","Uma almotolia e um bilhete: “Lubrificar os joelhos da armadura antes de sair.”"
+CLUE_SUSPECT_gold_dentures,"Un turno del dentista: «Sonría: su dentadura de oro está en buenas manos».","A dentist's appointment card: “Smile: your gold dentures are in good hands.”","Um cartão do dentista: “Sorria: sua dentadura de ouro está em boas mãos.”"
+CLUE_SUSPECT_singer_guitar,"Un afiche del cantante con una nota: «Recompensa por mi guitarra. No pregunto nada».","A poster of the singer with a note: “Reward for my guitar. No questions asked.”","Um cartaz do cantor com um bilhete: “Recompensa pelo meu violão. Sem perguntas.”"
+CLUE_SUSPECT_croc_smuggler,"Un recibo de un barco: «Un cocodrilo embalsamado. Pesa demasiado. No abrir».","A ship's receipt: “One stuffed crocodile. Weighs too much. Do not open.”","Um recibo de navio: “Um crocodilo empalhado. Pesa demais. Não abrir.”"
+BRIEF_PAWN_TIP_B,"Llegó una denuncia anónima: en Empeños La Última Oferta se vende cosa robada. Don Regateo dice que todo lo compró «de buena fe».","We got an anonymous tip: Empeños La Última Oferta sells stolen goods. Don Regateo says he bought everything “in good faith.”","Chegou uma denúncia anônima: a Empeños La Última Oferta vende coisa roubada. Don Regateo diz que comprou tudo “de boa-fé”."
+BRIEF_PAWN_TIP_D,"La tienda está abierta y Don Regateo atiende desde el mostrador. Ojo: lo que dejen en el mostrador, él lo compra. Hasta la evidencia.","The shop is open and Don Regateo works the counter. Careful: whatever you leave on the counter, he buys. Even the evidence.","A loja está aberta e Don Regateo atende no balcão. Cuidado: o que vocês deixarem no balcão, ele compra. Até a evidência."
+BRIEF_PAWN_TIP_E,"Y no rompan nada: cada vitrina rota se la descuento del sueldo. Lo que compren también. Con Q ven la planilla de lo que tienen que hacer.","And don't break anything: every broken glass case comes out of your pay. So does whatever you buy. Press Q to see your checklist.","E não quebrem nada: cada vitrine quebrada sai do salário de vocês. O que comprarem também. Com Q vocês veem a lista do que têm que fazer."
+BRIEF_TRAIN_WATCHES_B,"Los relojes de la vitrina son los del robo del tren: todos se pararon a la hora del robo.","The watches in the glass case are the ones from the train robbery: all of them stopped at the time of the robbery.","Os relógios da vitrine são os do roubo do trem: todos pararam na hora do roubo."
+BRIEF_TRAIN_WATCHES_C,"Don Regateo los compró por nada y escondió la valija con el resto. Es pesada: busquen bien.","Don Regateo bought them for nothing and hid the suitcase with the rest. It's heavy: look carefully.","Don Regateo comprou por nada e escondeu a mala com o resto. É pesada: procurem bem."
+BRIEF_TRAIN_WATCHES_D,"Tráiganme la valija, y si pueden la lista de pasajeros y el boleto del tren. Y no la dejen en el mostrador.","Bring me the suitcase, and if you can the passenger list and the train ticket. And don't leave it on the counter.","Tragam a mala, e se puderem a lista de passageiros e a passagem do trem. E não a deixem no balcão."
+OBJ_FIND_TRAIN_WATCHES,Encontrar la valija de los relojes del tren,Find the suitcase of the train's watches,Achar a mala dos relógios do trem
+OBJ_EXTRA_PASSENGER_LIST,La lista de pasajeros,The passenger list,A lista de passageiros
+OBJ_EXTRA_TRAIN_TICKET,El boleto del tren,The train ticket,A passagem do trem
+OBJ_ENTER_PAWN,Entrar a la casa de empeños (está abierta),Get into the pawn shop (it's open),Entrar na casa de penhores (está aberta)
+OBJ_GUESS_PAWN,"Averiguar qué pasa en la casa de empeños (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the pawn shop (with Q open, hold 1, 2 or 3)","Descobrir o que acontece na casa de penhores (com Q aberta, segure 1, 2 ou 3)"
+OBJ_BROKEN_PAWN,Vitrinas rotas y compras: %d (multa: %d),Broken cases and purchases: %d (fine: %d),Vitrines quebradas e compras: %d (multa: %d)
+OBJ_COMPLAINT_PAWN,Denuncia de Don Regateo: %d%%,Don Regateo's complaint: %d%%,Denúncia do Don Regateo: %d%%
+REGATEO_SLIP,"«Eso no lo tengo… y si lo tuviera, estaría %s. Pero no lo tengo».","“I don't have that… and if I did, it'd be %s. But I don't.”","“Isso eu não tenho… e se tivesse, estaria %s. Mas não tenho.”"
+CLUE_CHICHARRA,Chicharra vio a Don Regateo esconder algo %s,Chicharra saw Don Regateo hide something %s,O Chicharra viu o Don Regateo esconder algo %s
+CHICHARRA_CLUE_train_watches,"«¡Tic, tac! ¡Rrrr! ¡La valija %s! ¡Rrrr!»","“Tick, tock! Rrrr! The suitcase %s! Rrrr!”","“Tique, taque! Rrrr! A mala %s! Rrrr!”"
+PROMPT_PAWN_WATCHES,Mirar los relojes,Look at the watches,Olhar os relógios
+CLUE_TRAIN_WATCHES,"Todos los relojes de la vitrina marcan la misma hora: las %s. Como el tren del robo.","Every watch in the glass case shows the same time: %s. Like the robbed train.","Todos os relógios da vitrine marcam a mesma hora: %s. Como o trem do roubo."
+PAWN_WATCHES_RING,¡RIIIING! (todos los relojes a la vez),RIIIING! (every watch at once),TRIIIIM! (todos os relógios ao mesmo tempo)
+PAWN_WATCHES_SIGN,Relojes de calidad. ¡Recién llegados!,Quality watches. Just in!,Relógios de qualidade. Recém-chegados!

@@ -240,12 +240,46 @@ export function buildRegateo() {
 	return b.build();
 }
 
+// The suitcase of watches stolen from the train, 0.7 m wide and 0.45 m tall, half open with gold watches showing.
+export function buildWatchSuitcase() {
+	const b = new Builder('watch_suitcase');
+	const leather = mat('watch_case_leather', 0x7a4a2a);
+	b.add('body', leather, new THREE.BoxGeometry(0.7, 0.4, 0.25), { pos: V(0, 0.2, 0) });
+	b.add('handle', mat('watch_case_handle', 0x3a2418), new THREE.TorusGeometry(0.08, 0.015, 6, 10, Math.PI), { pos: V(0, 0.4, 0) });
+	for (const x of [-0.25, 0.25]) b.add('clasp', brass(), new THREE.BoxGeometry(0.06, 0.05, 0.02), { pos: V(x, 0.33, 0.13) });
+	for (let i = 0; i < 5; i++) {
+		b.add('watch', brass(), new THREE.CylinderGeometry(0.04, 0.04, 0.015, 12), { pos: V(-0.24 + i * 0.12, 0.25, 0.135), rot: [Math.PI / 2, 0, 0] });
+		b.add('face', mat('watch_face', 0xf6f2e2), new THREE.CylinderGeometry(0.032, 0.032, 0.005, 12), { pos: V(-0.24 + i * 0.12, 0.25, 0.145), rot: [Math.PI / 2, 0, 0] });
+	}
+	b.add('tag', mat('watch_case_tag', 0xf2c230), new THREE.BoxGeometry(0.1, 0.06, 0.01), { pos: V(0.28, 0.12, 0.13) });
+	return b.build();
+}
+
+// The train's passenger list: a sheet 0.21 x 0.3 m flat on the floor, with a train stamp.
+export function buildPassengerList() {
+	const b = new Builder('passenger_list');
+	b.add('sheet', mat('passenger_paper', 0xf6f2e2), new THREE.BoxGeometry(0.21, 0.006, 0.3), { pos: V(0, 0.003, 0) });
+	for (let i = 0; i < 8; i++) b.add('line', mat('passenger_ink', 0x3a3a48), new THREE.BoxGeometry(0.15, 0.002, 0.008), { pos: V(-0.01, 0.007, -0.11 + i * 0.03) });
+	b.add('stamp', mat('passenger_stamp', 0x3a6ad2), new THREE.CylinderGeometry(0.03, 0.03, 0.002, 12), { pos: V(0.06, 0.007, 0.11) });
+	return b.build();
+}
+
+// A train ticket, an orange card 0.12 x 0.06 m flat on the floor, punched.
+export function buildTrainTicket() {
+	const b = new Builder('train_ticket');
+	b.add('card', mat('ticket_orange', 0xe87a20), new THREE.BoxGeometry(0.12, 0.004, 0.06), { pos: V(0, 0.002, 0) });
+	b.add('band', mat('ticket_band', 0xf6f2e2), new THREE.BoxGeometry(0.03, 0.005, 0.06), { pos: V(0.035, 0.0025, 0) });
+	b.add('hole', mat('ticket_hole', 0x24242a), new THREE.CylinderGeometry(0.006, 0.006, 0.006, 8), { pos: V(-0.04, 0.003, 0) });
+	return b.build();
+}
+
 export const models = {
 	pawn_counter: buildPawnCounter, pawn_case: buildPawnCase, pawn_shelf: buildPawnShelf, knight_armor: buildKnightArmor,
 	stuffed_croc: buildStuffedCroc, old_tv: buildOldTv, guitar_case: buildGuitarCase, pawn_parrot_cage: buildPawnParrotCage,
 	cookie_jar: buildCookieJar, pawn_stock_shelf: buildPawnStockShelf, pawn_boxes: buildPawnBoxes, pawn_safe: buildPawnSafe,
 	giant_price_tag: buildGiantPriceTag, pawn_trophy: buildPawnTrophy, pawn_radio: buildPawnRadio, pawn_clock: buildPawnClock,
-	npc_regateo: buildRegateo,
+	npc_regateo: buildRegateo, watch_suitcase: buildWatchSuitcase, passenger_list: buildPassengerList,
+	train_ticket: buildTrainTicket,
 };
 
 export const views = {
@@ -261,6 +295,8 @@ export const views = {
 			{ name: 'pawn_trophy', pos: [-2.6, 1.11, 1.6] }, { name: 'pawn_radio', pos: [-2.0, 1.11, 1.6] },
 			{ name: 'pawn_clock', pos: [-1.4, 1.11, 1.6] },
 			{ name: 'npc_regateo', pos: [4.0, 0, 3.0], scale: 0.85 },
+			{ name: 'watch_suitcase', pos: [-4.0, 0, 4.0] }, { name: 'passenger_list', pos: [-3.0, 0, 4.0] },
+			{ name: 'train_ticket', pos: [-2.6, 0, 4.0] },
 		],
 		cam: { pos: [0.4, 5.0, 10.0], target: [0.4, 0.9, 0], fov: 50 },
 	},

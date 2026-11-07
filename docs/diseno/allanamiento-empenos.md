@@ -154,3 +154,12 @@ Los pesos y valores siguen la escala de la tienda de disfraces: la principal val
   que oyó de noche (la pista de la historia, desde el paso 5), una vez por policía. Sin galletita solo pide una
   ("¡Galletita! ¡Galletita!"), y cada 20 s grita algo que oyó de día ("¡Con intereses! ¡Con intereses!"). Captura en
   `/mnt/project-files/allanamiento-empenos/paso4-chicharra.png`.
+- Paso 5: el caso (el mismo de todos los allanamientos: denuncia anónima, 3 sospechas con su nota en distintas partes
+  de la tienda, nunca en el mostrador, la planilla con "Vitrinas rotas y compras" y la denuncia de Don Regateo, y su
+  abogado a 100 hace caer el caso). Lo que los policías compran en el mostrador sale del sueldo como una multa, y lo
+  que la tienda les pagó se descuenta de eso (nunca da plata de más). Don Regateo deja escapar dónde está cada cosa
+  ("Eso no lo tengo… y si lo tuviera, estaría detrás del mostrador. Pero no lo tengo") y Chicharra dice dónde escondió
+  una. Primera historia, los relojes del tren: la valija (10 kg, 1000) en un escondite pesado, la lista de pasajeros y
+  el boleto en otros dos; en la vitrina del medio, bajo el cartel "Relojes de calidad. ¡Recién llegados!", 5 relojes
+  marcan las 3:15 y suenan juntos cada 30 s, y mirarlos (E) es la pista. Capturas en
+  `/mnt/project-files/allanamiento-empenos/paso5-*.png`.

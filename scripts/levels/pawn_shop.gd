@@ -16,6 +16,36 @@ signal customer_complained(customer: PawnCustomer)
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
 const OWNER_SCENE := preload("res://scenes/npc/pawn_owner.tscn")
+const NOTE_SCENE := preload("res://scenes/props/clue_note.tscn")
+## Every story the shop can be suspected of (allanamiento-empenos.md, "Las historias"): SUSPECT_<id> names it and
+## CLUE_SUSPECT_<id> is the clue that hints at it.
+const SUSPICION_POOL := ["train_watches", "fake_trophy", "walking_armor", "gold_dentures", "singer_guitar",
+	"croc_smuggler"]
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_PAWN_TIP_B", "BRIEF_TIP_C", "BRIEF_PAWN_TIP_D",
+	"BRIEF_PAWN_TIP_E"]
+## The stories the shop can tell, like CostumeShop.STORIES: what the comisario says once it's guessed, its "find it"
+## row, what it hides in spots drawn with the seed (with their half heights and whether they're heavy), the checklist
+## rows of its extras and its rig. With "main_hidden" the first hidden item is the main evidence and the rest extras;
+## without it the rig sets the main evidence.
+const STORIES := {
+	"train_watches": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_TRAIN_WATCHES_B", "BRIEF_TRAIN_WATCHES_C", "BRIEF_TRAIN_WATCHES_D"],
+		"find": "OBJ_FIND_TRAIN_WATCHES",
+		"hidden": [preload("res://scenes/props/watch_suitcase.tscn"), preload("res://scenes/props/passenger_list.tscn"),
+			preload("res://scenes/props/train_ticket.tscn")],
+		"half_heights": [0.0, 0.0, 0.0],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_PASSENGER_LIST", "OBJ_EXTRA_TRAIN_TICKET"],
+		"main_hidden": true,
+		"rig": preload("res://scripts/case/pawn/train_watches_rig.gd"),
+	},
+}
+## Surfaces where the suspicions' clue notes can lie, one in each part of the shop (never on the counter, which would
+## buy them); three are drawn with the seed.
+const NOTE_PLACES: Array[Vector3] = [
+	Vector3(3.5, FLOOR_TOP + 0.8, -7.8), Vector3(3.2, FLOOR_TOP + 0.55, -1.5), Vector3(-6.6, FLOOR_TOP, 7.6),
+	Vector3(-9.6, FLOOR_TOP, -0.3), Vector3(9.5, FLOOR_TOP, -6.0), Vector3(-8.5, FLOOR_TOP, 3.6),
+]
 const COUNTER_MODEL := preload("res://assets/models/pawn_counter.glb")
 const CASE_MODEL := preload("res://assets/models/pawn_case.glb")
 const SHELF_MODEL := preload("res://assets/models/pawn_shelf.glb")
@@ -137,8 +167,19 @@ var till: Till
 ## Which glass cases are broken, by index into CASES.
 var cases_broken: Array[bool] = [false, false, false]
 var armor_down := false
-## Money taken off the case pay: the glass cases and the armor.
+## What broke: the glass cases and the armor (the case pay also loses what the cops paid the shop and gains what it
+## paid them, RaidCase.fines).
 var fines := 0
+## The case flow every raid shares.
+var raid: RaidCase
+## The story this raid tells (a STORIES key); empty draws one with the seed, or takes --story=<id>.
+@export var story_id := ""
+## The evidence the case is about, the story's rig, what it hid and where, and its extras (checklist order).
+var main: Evidence
+var rig: PawnRig
+var hidden: Array[Evidence] = []
+var hidden_spots: Array = []
+var extras: Array[Evidence] = []
 ## Same seed, same shop (the stories and the hiding spots come from it, step 5).
 @export var case_seed := 0
 ## The counter's top: what the shop buys and sells (step 2).
@@ -166,6 +207,19 @@ func _ready() -> void:
 		case_seed = PlaceDraw.take_seed()
 	if case_seed == 0:
 		case_seed = PlaceDraw.new_seed()
+	if story_id == "":
+		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = story_id
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_shell()
 	_build_counter()
@@ -177,6 +231,7 @@ func _ready() -> void:
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("pawn_shop")
 	station_parking = city.transform * CityLayout.parking("station")
+	raid.station_parking = station_parking
 	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
 	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
 	city_map = CityMap.new()
@@ -185,6 +240,86 @@ func _ready() -> void:
 	_build_trade()
 	_build_customers()
 	_place_owner()
+	_place_hidden()
+	rig = (STORIES[story_id].rig as Script).new()
+	add_child(rig)
+	rig.setup(self)
+	raid.main_evidence = main
+	raid.owner_npc = owner_boss
+	raid.owner_id = "pawn_shop"
+	raid.start(TIP_BRIEFING, SUSPICION_POOL, (city as City).comisario)
+	_place_suspicion_clues()
+	_give_clues()
+
+
+## The shop's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_PAWN",
+		"guess_key": "OBJ_GUESS_PAWN",
+		"broken_key": "OBJ_BROKEN_PAWN",
+		"complaint_key": "OBJ_COMPLAINT_PAWN",
+		"door_open": true,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": cases_broken.count(true) + int(armor_down),
+		"complaint": owner_boss.complaint,
+	}
+
+
+## The story with that id from --story=<id> among the user args, or one drawn from the seed.
+static func pick_story(seed_value: int, args: PackedStringArray) -> String:
+	for arg: String in args:
+		if arg.begins_with("--story=") and STORIES.has(arg.trim_prefix("--story=")):
+			return arg.trim_prefix("--story=")
+	return STORIES.keys()[seed_value % STORIES.size()]
+
+
+## The story's hidden items, each in a spot drawn with the seed (heavy ones only where they fit).
+func _place_hidden() -> void:
+	var story: Dictionary = STORIES[story_id]
+	var spot_heavy: Array = SPOTS.map(func(spot: Dictionary) -> bool: return spot.heavy)
+	hidden_spots = HidingDraw.draw(case_seed, spot_heavy, story.heavy, 1).spots
+	for i in story.hidden.size():
+		var item: Evidence = story.hidden[i].instantiate()
+		item.position = SPOTS[hidden_spots[i]].at + Vector3.UP * (story.half_heights[i] + 0.01)
+		add_child(item)
+		hidden.append(item)
+	if story.get("main_hidden", false):
+		main = hidden[0]
+		extras.assign(hidden.slice(1))
+	else:
+		extras.assign(hidden)
+
+
+## One clue note for each suspicion, the true one too, on note places drawn with the seed.
+func _place_suspicion_clues() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = case_seed * 17 + 3
+	var free: Array = range(NOTE_PLACES.size())
+	for id: String in raid.suspicions:
+		var place: int = free.pop_at(rng.randi_range(0, free.size() - 1))
+		var note: ClueNote = NOTE_SCENE.instantiate()
+		note.text = tr("CLUE_SUSPECT_" + id)
+		note.position = NOTE_PLACES[place] + Vector3.UP * 0.01
+		note.rotation.y = place * 0.9
+		note.read.connect(raid.add_clue)
+		add_child(note)
+
+
+## What Don Regateo lets slip when asked (where the story's things are, in an order drawn from the seed), and what
+## Chicharra heard: where he hid one of them.
+func _give_clues() -> void:
+	var order: Array = range(hidden.size())
+	if case_seed % 2 == 1:
+		order.reverse()
+	for item: int in order:
+		owner_boss.slips.append(tr("REGATEO_SLIP") % tr("LOC_" + SPOTS[hidden_spots[item]].id))
+	owner_boss.slipped.connect(raid.add_clue)
+	var where := tr("LOC_" + SPOTS[hidden_spots[case_seed % hidden.size()]].id)
+	parrot.clue = tr("CLUE_CHICHARRA") % where
+	parrot.clue_speech = tr("CHICHARRA_CLUE_" + story_id) % where
+	parrot.told.connect(raid.add_clue)
 
 
 ## The floor, the walls with the doorway, the ceiling with its lights, the roof, the sign and its giant price tag.
@@ -302,6 +437,7 @@ func _place_owner() -> void:
 		owner_boss.blame(CUSTOMER_COMPLAINT, "REGATEO_CUSTOMER"))
 	counter.taken.connect(func(_item: Grabbable) -> void: owner_boss.blame(TAKEN_COMPLAINT, "REGATEO_TAKEN"))
 	stock_door.broken.connect(owner_boss.door_broken)
+	owner_boss.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_PAWN"))
 	till.opened.connect(func(at: Vector3) -> void: owner_boss.saw(at, FloorBoss.SAW_TILL))
 	case_broken.connect(func(index: int) -> void:
 		owner_boss.saw(to_global(CASES[index] + Vector3.UP), FloorBoss.SAW_BREAK, "REGATEO_CASE"))
@@ -377,8 +513,14 @@ func free_display_slot() -> Vector3:
 	return COUNTER_AT + Vector3(-2.0 + (index - CASES.size() * 2) * 0.5, 0, 1.2)
 
 
-## Between turns the next customer in line goes to the counter.
+## What the case pay loses: what broke and what the cops paid the shop, less what the shop paid them.
 func _physics_process(delta: float) -> void:
+	raid.fines = maxi(0, fines + counter.spent - counter.cash_out)
+	_next_turn(delta)
+
+
+## Between turns the next customer in line goes to the counter.
+func _next_turn(delta: float) -> void:
 	if on_turn:
 		return
 	_turn_left -= delta
