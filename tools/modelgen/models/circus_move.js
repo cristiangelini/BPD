@@ -201,7 +201,7 @@ export function buildKangaroo() {
 }
 
 // The patrol car's food bucket (step 2), 35 cm tall: a tin pail with a handle and, heaped on top, one of four foods
-// (food_bananas, food_fish, food_meat, food_carrots; the game shows one). Origin on the ground.
+// (food_bananas, food_fish, food_meat, food_carrots, and the zoo's food_peanuts and food_hay; the game shows one). Origin on the ground.
 export function buildFoodBucket() {
 	const b = new Builder('food_bucket');
 	const tin = mat('bucket_tin', 0xa8b0b8, { metalness: 0.5, roughness: 0.45 });
@@ -218,6 +218,17 @@ export function buildFoodBucket() {
 		b.add('food_carrots', carrot, new THREE.ConeGeometry(0.025, 0.16, 6), { pos: V(x, 0.36, z), rot: [Math.PI, 0, 0.4 * Math.cos(a)] });
 		b.add('food_carrots', leaf, new THREE.ConeGeometry(0.02, 0.06, 4), { pos: V(x, 0.46, z) });
 	}
+	// The zoo's foods (escena-zoo.md, step 5): peanuts for the ostrich and a tuft of hay for the elephant.
+	const peanut = mat('peanut_shell', 0xc89a5a), hay = mat('hay', 0xd8c060);
+	for (let i = 0; i < 9; i++) {
+		const a = i * 2.4, r = 0.03 + (i % 3) * 0.035;
+		b.add('food_peanuts', peanut, ellipsoid(0.03, 0.018, 0.018, 5, 3), { pos: V(Math.cos(a) * r, 0.31 + (i % 2) * 0.02, Math.sin(a) * r), rot: [0, a, 0] });
+	}
+	for (let i = 0; i < 7; i++) {
+		const a = (i / 7) * Math.PI * 2;
+		b.add('food_hay', hay, new THREE.CylinderGeometry(0.006, 0.006, 0.22, 3), { pos: V(Math.cos(a) * 0.05, 0.38, Math.sin(a) * 0.05), rot: [Math.sin(a) * 0.5, 0, Math.cos(a) * 0.5] });
+	}
+	b.add('food_hay', hay, ellipsoid(0.13, 0.05, 0.13, 8, 4), { pos: V(0, 0.31, 0) });
 	b.add('food_meat', meat, ellipsoid(0.12, 0.06, 0.09, 8, 5), { pos: V(0, 0.32, 0) });
 	b.add('food_meat', bone, new THREE.CylinderGeometry(0.015, 0.015, 0.3, 6), { pos: V(0, 0.34, 0), rot: [0, 0, Math.PI / 2] });
 	for (const x of [-1, 1]) b.add('food_meat', bone, new THREE.SphereGeometry(0.025, 6, 4), { pos: V(x * 0.15, 0.34, 0) });

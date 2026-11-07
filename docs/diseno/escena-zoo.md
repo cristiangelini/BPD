@@ -164,3 +164,10 @@ Las encontradas se anotan en la planilla (Q), y las que se llevan van en bolsas 
   sacude, y soltado sobre el témpano (o cerca) se queda y suma 100. La reja de los pingüinos (`ZooGate`) se abre y
   se cierra con E; las de los animales tienen candado hasta la hora de comer. Falta que el policía camine más lento
   con Copito en brazos: queda para jugarlo.
+- **Paso 5a:** cada 120 s, por 20 s, `Zoo.start_feeding` abre la reja de un animal (el orden sale de la semilla), el
+  animal (`ZooAnimal`) sale a pasear por el camino y los cuidadores se ponen los guantes. Junto a cada reja hay un
+  balde con su comida (banana para el mono, maní para el avestruz y pasto para el elefante, igual que el olor de sus
+  cuidadores). El animal sigue al policía que lleva su balde y entra solo al llegar a su reja. Cerrar la reja con E
+  suma 10 a la paciencia de Doña Jaula. Si el animal sigue afuera en la hora de comer siguiente, vuelve solo y la
+  paciencia baja 20. Quedan para el paso 5b: lo que hace cada animal suelto, el castigo con la paciencia en 0 y el
+  trencito.

@@ -87,6 +87,15 @@ const HIDEOUTS: Array[String] = ["locker", "freezer", "plush", "boat", "shell"]
 const PLUSH_AT := Vector3(15, 1.0, 17.5)
 const SNEEZE_EVERY := 3.0
 
+## Feeding time (escena-zoo.md, "La hora de comer"): every FEEDING_EVERY seconds, for FEEDING_SECONDS, one animal's
+## gate opens and the keepers put their gloves on. Doña Jaula's patience: up for an animal the cops put back, down for
+## one that went back by itself (propuesta).
+const FEEDING_EVERY := 120.0
+const FEEDING_SECONDS := 20.0
+const PATIENCE := 100
+const PATIENCE_UP := 10
+const PATIENCE_DOWN := 20
+
 ## The enclosures' gates, by animal (ZooGate): shut across the gap in each fence.
 var gates := {}
 ## What was stolen (Copito, always) and where he is (drawn in set_up_case); loot_found once he's back on his floe.
@@ -97,6 +106,16 @@ var loot_found := false
 var copito: Copito
 ## The places to search (ZooHideout), by spot: "locker0" to "locker5", "freezer", "plush", "boat", "shell" and "log".
 var hideouts := {}
+## The animals (ZooAnimal) by kind, and their food buckets (FoodBucket) by their gates.
+var animals := {}
+var buckets := {}
+## The order the animals come out in (drawn with the seed), how many feeding times so far, whether it's one now and
+## the clock to the next.
+var order: Array[String] = ANIMALS.duplicate()
+var feedings := 0
+var feeding := false
+var feed_clock := 0.0
+var patience := PATIENCE
 var _sneeze: Label3D
 var _sneeze_clock := 0.0
 var case: CrimeSceneCase
@@ -120,6 +139,7 @@ func _ready() -> void:
 	_pond()
 	_people()
 	_hideouts()
+	_zoo_animals()
 
 
 ## The case reaches the keepers (their traits are its suspects, same seed), and one of them, drawn with the seed, won't
@@ -131,6 +151,76 @@ func set_up_case(new_case: CrimeSceneCase) -> void:
 		keeper.case = case
 		keeper.shy = keeper.index == shy
 	loot_spot = HIDEOUTS[absi(hash("zoo copito %d" % case.case_seed)) % HIDEOUTS.size()]
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash("zoo feeding %d" % case.case_seed)
+	order = ANIMALS.duplicate()
+	for i in range(order.size() - 1, 0, -1):
+		var j := rng.randi_range(0, i)
+		var swap := order[i]
+		order[i] = order[j]
+		order[j] = swap
+
+
+## Feeding time: an animal still out goes back by itself (Doña Jaula's patience goes down), the next one in the order
+## comes out of its open gate, and the keepers put their gloves on.
+func start_feeding() -> void:
+	for kind: String in ANIMALS:
+		var animal := animals[kind] as ZooAnimal
+		if animal.state != "in":
+			animal.go_in()
+			_patience(-PATIENCE_DOWN)
+			director.say("ZOO_DIRECTOR_ANGRY")
+			_tell("HINT_ZOO_BACK_ALONE_" + kind)
+		(gates[kind] as ZooGate).set_open(false)
+	var out := order[feedings % order.size()]
+	feedings += 1
+	feeding = true
+	(gates[out] as ZooGate).set_open(true)
+	(animals[out] as ZooAnimal).release()
+	for keeper in keepers:
+		keeper.wear_gloves(true)
+	director.say("ZOO_DIRECTOR_FEEDING")
+	_tell("HINT_ZOO_FEEDING_" + out)
+
+
+## Feeding time is over: gloves off. The animal stays out until it's put back.
+func end_feeding() -> void:
+	feeding = false
+	for keeper in keepers:
+		keeper.wear_gloves(false)
+
+
+## A cop led an animal back in: now the gate has to be shut.
+func animal_back(animal: ZooAnimal) -> void:
+	_tell("HINT_ZOO_ANIMAL_BACK_" + animal.kind)
+
+
+## A cop shut the gate on an animal they put back: Doña Jaula is pleased.
+func gate_shut(_kind: String) -> void:
+	_patience(PATIENCE_UP)
+	director.say("ZOO_DIRECTOR_PLEASED")
+
+
+func _patience(change: int) -> void:
+	patience = clampi(patience + change, 0, PATIENCE)
+
+
+## Every cop gets the hint (like the case's).
+func _tell(key: String) -> void:
+	for cop in get_tree().get_nodes_in_group("cops"):
+		(cop as Cop).show_hint(key)
+
+
+## The middle of an animal's enclosure, on the ground.
+static func pen_middle(kind: String) -> Vector3:
+	var rect: Rect2 = ENCLOSURES[kind].rect
+	return Vector3(rect.get_center().x, 0, rect.get_center().y)
+
+
+## Just outside an enclosure's gate, on the path.
+static func gate_mouth(kind: String) -> Vector3:
+	var out := {"-z": Vector3.FORWARD, "+z": Vector3.BACK, "-x": Vector3.LEFT, "+x": Vector3.RIGHT}
+	return gate_at(kind) + (out[ENCLOSURES[kind].side] as Vector3) * 1.5
 
 
 ## The spot Copito is in: the hideout's name ("locker3" for the culprit's locker).
@@ -192,6 +282,13 @@ func reveal_loot() -> void:
 
 
 func _process(delta: float) -> void:
+	if case:
+		feed_clock += delta
+		if not feeding and feed_clock >= FEEDING_EVERY:
+			start_feeding()
+		elif feeding and feed_clock >= FEEDING_EVERY + FEEDING_SECONDS:
+			end_feeding()
+			feed_clock = 0.0
 	if not case or copito or loot_spot != "plush":
 		_sneeze.visible = false
 		return
@@ -388,6 +485,7 @@ func _enclosure(kind: String) -> void:
 	var at := gate_at(kind)
 	var gate := ZooGate.new()
 	gate.kind = kind
+	gate.zoo = self
 	gate.position = at + Vector3(0, ENCLOSURE_FENCE / 2, 0)
 	gate.name = "Gate_" + kind
 	add_child(gate)
@@ -500,6 +598,25 @@ func _hideouts() -> void:
 	_sneeze.position = PLUSH_AT + Vector3(0, 0.9, 0)
 	_sneeze.visible = false
 	add_child(_sneeze)
+
+
+## The three animals in their enclosures, and a bucket of each one's food on the path by its gate.
+func _zoo_animals() -> void:
+	for kind: String in ANIMALS:
+		var animal := ZooAnimal.new()
+		animal.name = "Animal_" + kind
+		animal.kind = kind
+		animal.zoo = self
+		add_child(animal)
+		animals[kind] = animal
+		var bucket := FoodBucket.new()
+		bucket.name = "Bucket_" + kind
+		bucket.food = ZooAnimal.FOODS[kind]
+		bucket.lure_only = true
+		var side := gate_mouth(kind) - gate_at(kind)
+		bucket.position = gate_mouth(kind) + Vector3(side.z, 0, side.x).normalized() * 2.2 + Vector3.UP * GROUND_TOP
+		add_child(bucket)
+		buckets[kind] = bucket
 
 
 func _hideout(spot: String, kind: String, at: Vector3, size: Vector3, drop: Vector3) -> void:

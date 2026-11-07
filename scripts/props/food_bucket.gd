@@ -10,8 +10,10 @@ const MODEL := preload("res://assets/models/food_bucket.glb")
 const KG := 2.0
 const COOLDOWN := 1.5
 
-## One of CircusTruck.FOODS.
+## One of CircusTruck.FOODS, or at the zoo bananas, peanuts or hay (ZooAnimal.FOODS).
 var food := "bananas"
+## At the zoo there are no cages: it only lures a loose animal back to its enclosure (ZooAnimal).
+var lure_only := false
 var cooldown_left := 0.0
 
 
@@ -32,10 +34,8 @@ func _ready() -> void:
 	var model: Node3D = MODEL.instantiate()
 	model.name = "Model"
 	add_child(model)
-	for kind in CircusTruck.FOODS:
-		var heap := model.find_child("food_" + kind, true, false) as Node3D
-		if heap:
-			heap.visible = kind == food
+	for heap: Node in model.find_children("food_*", "", true, false):
+		(heap as Node3D).visible = heap.name == "food_" + food
 
 
 ## Online (PropSync): a guest makes its copy from this script, with the same food.
@@ -44,6 +44,8 @@ func net_setup() -> Dictionary:
 
 
 func held_prompt_key(_cop: Cop) -> String:
+	if lure_only:
+		return "PROMPT_ZOO_LURE"
 	return "PROMPT_FEED_" + food.to_upper()
 
 
