@@ -35,8 +35,8 @@ const COFFEE := Color(0.3, 0.18, 0.1)
 
 ## "hair", "bite", "recipe" or, at the station, "cup".
 var kind := "hair"
-## "pastry", "circus", "museum", "hotel", "mansion", "cat_mansion", "office" or "station": what the clue looks
-## like.
+## "pastry", "circus", "museum", "hotel", "mansion", "cat_mansion", "office", "station" or "library": what the clue
+## looks like.
 var look := "pastry"
 var case: CrimeSceneCase
 ## The culprit's hair color, for the hair in the cream.
@@ -65,6 +65,8 @@ func _ready() -> void:
 		size = Vector3(0.09, 0.04, 0.15)
 	elif look == "station":
 		size = Vector3(0.1, 0.12, 0.1) if kind == "cup" else Vector3(0.14, 0.05, 0.14)
+	elif look == "library":
+		size = Vector3(0.1, 0.03, 0.1)
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
 	box.size = size
@@ -97,6 +99,9 @@ func _ready() -> void:
 		return
 	if look == "station":
 		_station_look()
+		return
+	if look == "library":
+		_library_cookie()
 		return
 	match kind:
 		"hair":
@@ -208,9 +213,27 @@ func _station_look() -> void:
 	# The bite: a dark notch out of one side.
 	part.mesh_box(Vector3(0.05, 0.025, 0), Vector3(0.04, 0.05, 0.05), WET)
 
-## The circus's look: its loose hair and its fish. The museum's, the hotel's and both mansions' hair are loose too.
+
+## The library's cookie, hidden in the hollow book: round, with chocolate chips and a bite out of one side.
+func _library_cookie() -> void:
+	_eaten_part = Node3D.new()
+	add_child(_eaten_part)
+	var part := PlaceBuilder.new(_eaten_part)
+	var round := CylinderMesh.new()
+	round.top_radius = 0.045
+	round.bottom_radius = 0.045
+	round.height = 0.02
+	part.mesh(round, Vector3(0, 0.01, 0), SPONGE)
+	for chip: Vector3 in [Vector3(-0.015, 0.021, 0.01), Vector3(0.012, 0.021, -0.015), Vector3(0.0, 0.021, 0.025)]:
+		part.mesh_box(chip, Vector3(0.01, 0.006, 0.01), CHOCOLATE)
+	# The bite: a dark notch in its edge.
+	part.mesh_box(Vector3(0.04, 0.012, 0), Vector3(0.02, 0.022, 0.03), WET)
+
+
+## The circus's look: its loose hair and its fish. The museum's, the hotel's, both mansions' and the library's hair are
+## loose too.
 func _loose() -> bool:
-	return look == "circus" or (look in ["museum", "hotel", "mansion", "cat_mansion"] and kind == "hair")
+	return look == "circus" or (look in ["museum", "hotel", "mansion", "cat_mansion", "library"] and kind == "hair")
 
 
 ## Food can be eaten (and the clue with it); the circus's loose hair can't.

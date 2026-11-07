@@ -102,6 +102,10 @@ func _process(delta: float) -> void:
 	var steam: SteamRoom = _net.steam
 	var online: bool = (_net.is_online() or loopback) and steam.available()
 	var channel := channel_for(_held("talk"), _held("radio"), always_open or loopback) if online else -1
+	# Hushed by Doña Sigilo at the library (LibraryNoise.hush): nobody hears this player for a while.
+	if channel >= 0 and is_inside_tree() and get_tree().has_group("library_noise") \
+			and (get_tree().get_first_node_in_group("library_noise") as LibraryNoise).is_hushed(local_cop(get_tree())):
+		channel = -1
 	_set_talking(channel)
 	if _recording:
 		_send(steam.steam)
@@ -152,10 +156,12 @@ func _send(steam: Object) -> void:
 		_voice.rpc(maxi(talking, 0), data)
 
 
-## At the mimes' theater (MimeSilence): while Steam hears this player speak, tells the host every TALK_EVERY seconds.
+## At the mimes' theater (MimeSilence) and the library (LibraryNoise): while Steam hears this player speak, tells the
+## host every TALK_EVERY seconds.
 func _check_talking() -> void:
 	var now := Time.get_ticks_msec() / 1000.0
-	if not is_inside_tree() or not get_tree().has_group("mime_silence") or now < _spoke_left:
+	if not is_inside_tree() or now < _spoke_left \
+			or not (get_tree().has_group("mime_silence") or get_tree().has_group("library_noise")):
 		return
 	_spoke_left = now + MimeSilence.TALK_EVERY
 	spoke(local_cop(get_tree()))
@@ -167,6 +173,7 @@ func spoke(cop: Cop) -> void:
 		return
 	if _net.is_host():
 		get_tree().call_group("mime_silence", "heard_talking", cop)
+		get_tree().call_group("library_noise", "heard_talking", cop)
 	else:
 		_mimes_heard_talking.rpc_id(_net.HOST_ID)
 
@@ -176,13 +183,15 @@ func _mimes_heard_talking() -> void:
 	var sync: CopSync = _net.cop_syncs.get(multiplayer.get_remote_sender_id())
 	if multiplayer.is_server() and sync and is_instance_valid(sync.cop):
 		get_tree().call_group("mime_silence", "heard_talking", sync.cop)
+		get_tree().call_group("library_noise", "heard_talking", sync.cop)
 
 
 ## Only in an interrogation (a shout near the suspect is the bad cop's shout), the jailbreak (the guard turns to it),
 ## the choir (ChoirSinging listens to the song meter) or the mimes' theater (a shout is heard like at the club).
 func _check_shout(steam: Object, data: PackedByteArray) -> void:
 	if not is_inside_tree() or not (get_tree().has_group("interrogation") or get_tree().has_group("night_guard")
-			or get_tree().has_group("choir_singing") or get_tree().has_group("mime_silence")):
+			or get_tree().has_group("choir_singing") or get_tree().has_group("mime_silence")
+			or get_tree().has_group("library_noise")):
 		return
 	var voice: Dictionary = steam.call("decompressVoice", data, mix_rate)
 	var pcm: PackedByteArray = voice.get("uncompressed", voice.get("buffer", PackedByteArray()))

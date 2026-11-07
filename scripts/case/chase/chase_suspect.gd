@@ -48,6 +48,8 @@ const MODELS := {
 	"employee": preload("res://assets/models/npc_oficinista.glb"),
 	# The station's culprit, out of the old patrol car in uniform (escena-comisaria.md).
 	"staff": preload("res://assets/models/npc_cabo_ronquido.glb"),
+	# The library's culprit, out of the bookmobile in pajamas (escena-biblioteca.md).
+	"reader": preload("res://assets/models/npc_lector.glb"),
 	# The traffic control's wanted driver (control-transito.md).
 	"driver": preload("res://assets/models/npc_cliente.glb"),
 	# Doña Chela, off her motorized walker (infiltracion.md).

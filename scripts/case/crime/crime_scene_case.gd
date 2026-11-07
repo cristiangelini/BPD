@@ -156,6 +156,18 @@ const VARIANTS := {
 			"witness": "shoe"},
 		"parts": ["prints", "teeth", "sign", "photo", "sugar"],
 	},
+	# The Municipal Library (escena-biblioteca.md, decision 360): six readers alike in the club's pajamas; a file knows
+	# what the cops got from its reader, the gold dust on their hands and the kind of book they read included.
+	"library": {
+		"shift": "crime_library", "story": "library",
+		"brief": ["BRIEF_LIBRARY_A_", "BRIEF_LIBRARY_B", "BRIEF_LIBRARY_C"], "go": "HINT_GO_LIBRARY",
+		"go_row": "OBJ_LIBRARY_GO", "look": "HINT_LIBRARY_LOOK", "files_row": "OBJ_LIBRARY_FILES",
+		"clue_line": "CLUE_LIBRARY_", "ruined_hint": "HINT_LIBRARY_RUINED_", "left": "HINT_READER_LEFT",
+		"who": "reader", "getaway": SuspectCar.BOOKMOBILE, "loot_row": "OBJ_LIBRARY_LOOT_",
+		"clues": {"prints": "name", "footprint": "shoe", "hair": "hair", "bite": "teeth", "dust": "dust",
+			"bookmark": "genre", "witness": "genre"},
+		"parts": ["photo", "prints", "teeth", "hair", "dust", "genre"],
+	},
 }
 ## On the train, the traits each part of a magician's file tells.
 const MAGICIAN_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
@@ -172,6 +184,9 @@ const MEMBER_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "
 ## At the wedding, the traits each part of a tuxedo's file tells.
 const TUXEDO_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
 	"cologne": ["cologne"]}
+## At the library, the traits each part of a reader's file tells.
+const READER_PART_TRAITS := {"photo": ["glasses", "shoe"], "prints": ["name"], "teeth": ["teeth"], "hair": ["hair"],
+	"dust": ["dust"], "genre": ["genre"]}
 ## At the hotel, the trait each part of a guest's file tells, and the parts that come from their room.
 const GUEST_PART_TRAITS := {"prints": "name", "teeth": "teeth", "sign": "left", "shoe": "shoe", "hair": "hair",
 	"glasses": "glasses"}
@@ -198,7 +213,8 @@ var tip_given := false
 ## A cop got to the tent.
 var at_tent := false
 var clues_found: Array[String] = []
-## The museum's empty frames the patrol car broke in the chase (ChaseFrame), each one off the salary.
+## The museum's empty frames the patrol car broke in the chase (ChaseFrame), and the library's piles of books it ran
+## over (ChaseBooks), each one off the salary.
 var frames_broken := 0
 ## What the cops paid out of their salary during the case (on the train: señor Mostaza's sandwiches).
 var spent := 0
@@ -321,6 +337,8 @@ func _draw_suspects() -> Array[Dictionary]:
 		for person in staff:
 			person.name = tr(person.name)
 		return staff
+	if texts() == VARIANTS.library:
+		return ReaderTraits.draw(case_seed)
 	return ClownTraits.draw(case_seed) if texts() == VARIANTS.circus else CookTraits.draw(case_seed)
 
 
@@ -375,8 +393,8 @@ func magician_part(magician_index: int, part: String) -> bool:
 	return true
 
 
-## A guard gave a part of his file (escena-museo.md), a nephew (escena-gato.md), a club member (escena-mansion.md) or a
-## tuxedo (escena-boda.md): it goes to their file with what it says about them.
+## A guard gave a part of his file (escena-museo.md), a nephew (escena-gato.md), a club member (escena-mansion.md), a
+## tuxedo (escena-boda.md) or a reader (escena-biblioteca.md): it goes to their file with what it says about them.
 func guard_part(index: int, part: String) -> void:
 	if follower:
 		return
@@ -388,6 +406,8 @@ func guard_part(index: int, part: String) -> void:
 		table = MEMBER_PART_TRAITS
 	elif texts() == VARIANTS.wedding:
 		table = TUXEDO_PART_TRAITS
+	elif texts() == VARIANTS.library:
+		table = READER_PART_TRAITS
 	for trait_name: String in table[part]:
 		known[trait_name] = cooks[index][trait_name]
 	file_part(index, part)
@@ -500,7 +520,7 @@ func file_traits(id: int) -> Dictionary:
 			known[GUEST_PART_TRAITS[part]] = cooks[sleeper][GUEST_PART_TRAITS[part]]
 		return known
 	if texts() in [VARIANTS.circus, VARIANTS.museum, VARIANTS.train, VARIANTS.cat, VARIANTS.mansion, VARIANTS.office,
-			VARIANTS.wedding, VARIANTS.station]:
+			VARIANTS.wedding, VARIANTS.station, VARIANTS.library]:
 		return captured.get(id, {})
 	return cooks[id]
 
@@ -776,6 +796,7 @@ func _send_off(suspect: CollisionObject3D) -> void:
 	suspect.collision_layer = 0
 	suspect.process_mode = Node.PROCESS_MODE_DISABLED
 
+
 ## The comisario says `key` to the cops: on the briefing screen, or as a hint (the Monedero mansion's scared calls).
 func comisario_says(key: String) -> void:
 	_comisario_says(key)
@@ -801,6 +822,15 @@ func frame_broken() -> void:
 		return
 	frames_broken += 1
 	_hint_all("HINT_FRAME_BROKEN")
+
+
+## The patrol car ran over a pile of books the library's bookmobile dropped: the library's fine, the same as a
+## museum frame (counted with them).
+func book_pile_ruined() -> void:
+	if follower:
+		return
+	frames_broken += 1
+	_hint_all("HINT_BOOKS_RUINED")
 
 
 ## The cops found one of the case's clues. Returns whether it's new.
@@ -846,6 +876,8 @@ func clue_line(kind: String) -> String:
 		return _office_clue_line(kind)
 	if texts() == VARIANTS.station:
 		return _station_clue_line(kind)
+	if texts() == VARIANTS.library:
+		return _library_clue_line(kind)
 	match kind:
 		"footprint":
 			return tr("CLUE_CRIME_footprint") % culprit().shoe
@@ -955,6 +987,8 @@ func _train_clue_line(kind: String) -> String:
 ## Money off the salary for something bought during the case.
 func spend(amount: int) -> void:
 	spent += amount
+
+
 ## At the mansion: the prints on the safe, the footprint in a passage's dust, the hair on the armour, the bitten
 ## chocolate, the bell that rang at midnight and Lorenzo.
 func _mansion_clue_line(kind: String) -> String:
@@ -971,6 +1005,22 @@ func _mansion_clue_line(kind: String) -> String:
 		"witness":
 			return tr("CLUE_MANSION_witness_glasses" if who.glasses else "CLUE_MANSION_witness_no_glasses")
 	return tr("CLUE_MANSION_" + kind)
+
+
+## At the library: the slipper on the waxed parquet, the hair on the armchair, the cookie in the hollow book, the gold
+## dust, the bookmark in the Golden Book and Tomasito.
+func _library_clue_line(kind: String) -> String:
+	var who := culprit()
+	match kind:
+		"footprint":
+			return tr("CLUE_LIBRARY_footprint") % who.shoe
+		"hair":
+			return tr("CLUE_LIBRARY_hair") % tr("HAIR_" + str(who.hair))
+		"bite":
+			return tr("CLUE_LIBRARY_bite") % tr("TEETH_" + str(who.teeth))
+		"bookmark", "witness":
+			return tr("CLUE_LIBRARY_" + kind) % tr("GENRE_" + str(who.genre))
+	return tr("CLUE_LIBRARY_" + kind)
 
 
 ## At the hotel: the bare footprint on the bathroom's mat, the hair and the bonbon on the pillow, Tito and the guest book.
@@ -1057,6 +1107,8 @@ func file_text(index: int) -> String:
 		return _employee_file_text(index, who)
 	if texts() == VARIANTS.station:
 		return _staff_file_text(index, who)
+	if texts() == VARIANTS.library:
+		return _reader_file_text(index, who)
 	var lines := PackedStringArray(["%d. %s" % [index + 1, who.name]])
 	lines.append(tr("FILE_APRON") % tr("APRON_" + str(who.apron)))
 	lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
@@ -1115,6 +1167,26 @@ func _member_file_text(index: int, who: Dictionary) -> String:
 	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if who.has("hair") else "?"))
 	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
 	lines.append(tr("FILE_MIDNIGHT") % (tr("MANSION_ROOM_" + str(who.room)) if who.has("room") else "?"))
+	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
+	return "\n".join(lines)
+
+
+
+## A reader's file: their name and number, and what the cops got from them so far.
+func _reader_file_text(index: int, who: Dictionary) -> String:
+	var lines := PackedStringArray(["%d. %s" % [index + 1, cooks[index].name]])
+	if who.has("glasses"):
+		lines.append(tr("FILE_GLASSES") if who.glasses else tr("FILE_NO_GLASSES"))
+		lines.append(tr("FILE_SLIPPER") % who.shoe)
+	else:
+		lines.append(tr("FILE_GLASSES_UNKNOWN"))
+	lines.append(tr("FILE_HAIR") % (tr("HAIR_" + str(who.hair)) if who.has("hair") else "?"))
+	lines.append(tr("FILE_TEETH") % (tr("TEETH_" + str(who.teeth)) if who.has("teeth") else "?"))
+	if who.has("dust"):
+		lines.append(tr("FILE_DUST") if who.dust else tr("FILE_NO_DUST"))
+	else:
+		lines.append(tr("FILE_DUST_UNKNOWN"))
+	lines.append(tr("FILE_GENRE") % (tr("GENRE_" + str(who.genre)) if who.has("genre") else "?"))
 	lines.append(tr("FILE_PRINTS") if who.has("name") else tr("FILE_NO_PRINTS"))
 	return "\n".join(lines)
 

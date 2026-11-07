@@ -77,6 +77,8 @@ const JUG_EVERY := 5.0
 const MAX_JUGS := 8
 ## How fast a jug rolls off the truck's back, in m/s.
 const JUG_ROLL := 2.0
+const BOOKS_PER_CORNER := 2
+const MAX_BOOKS := 12
 const MELONS_PER_CORNER := 2
 const MAX_MELONS := 12
 ## How fast they roll off the back, in m/s.
@@ -115,6 +117,7 @@ var furniture: Array[RigidBody3D] = []
 var dummies: Array[ChaseDummy] = []
 var frames: Array[ChaseFrame] = []
 var suitcases: Array[ChaseSuitcase] = []
+var books: Array[ChaseBooks] = []
 ## Seconds the patrol car's windshield stays covered in a run-over suitcase's clothes.
 var laundry_left := 0.0
 var yarns: Array[ChaseYarn] = []
@@ -363,6 +366,9 @@ func _on_corner(turned: bool) -> void:
 		drop_blob()
 	elif case.suspect_id == SuspectCar.OLD_PATROL and case.who == "staff":
 		drop_furniture(false, false, true)
+	elif case.suspect_id == SuspectCar.BOOKMOBILE:
+		for i in BOOKS_PER_CORNER:
+			drop_books()
 	if riders_left > 0:
 		drop_jumper()
 	if ghost_look >= 0:
@@ -601,6 +607,8 @@ func _hold_tangled(delta: float) -> void:
 	if flat.length() > tangle_speed:
 		var held := flat.normalized() * tangle_speed
 		car.linear_velocity = Vector3(held.x, car.linear_velocity.y, held.z)
+
+
 ## A water jug comes untied off the truck's back and rolls down the street behind it.
 func drop_jug() -> ChaseJug:
 	jugs = jugs.filter(func(jug: ChaseJug) -> bool: return is_instance_valid(jug))
@@ -617,6 +625,23 @@ func drop_jug() -> ChaseJug:
 	jug.linear_velocity = -case.truck.global_basis.z * JUG_ROLL
 	jugs.append(jug)
 	return jug
+
+
+## A pile of books slides out of the bookmobile's back door onto the street, a little to one side.
+func drop_books() -> ChaseBooks:
+	books = books.filter(func(pile: ChaseBooks) -> bool: return is_instance_valid(pile))
+	if books.size() >= MAX_BOOKS:
+		books.pop_front().queue_free()
+	var pile := ChaseBooks.new()
+	pile.car = case.car
+	_dropped += 1
+	pile.name = "Books%d" % _dropped
+	case.get_parent().add_child(pile)
+	var side := case.truck.global_basis.x * _rng.randf_range(-1.0, 1.0)
+	pile.global_position = _behind() + side + Vector3.UP * 0.2
+	pile.rotation.y = case.truck.global_rotation.y + _rng.randf_range(-0.8, 0.8)
+	books.append(pile)
+	return pile
 
 
 func _behind() -> Vector3:
