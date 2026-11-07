@@ -5589,3 +5589,58 @@ PROMPT_MOVE_SUITCASE,"E: sacar la valija de la calle","E: move the suitcase off 
 HINT_SUITCASE_MOVED,"La cerraste como pudiste y la dejaste en la vereda. Asoma una media.","You closed it as best you could and left it on the sidewalk. A sock sticks out.","Você fechou como deu e deixou na calçada. Uma meia aparece para fora."
 CRIME_owner_guest,"¡Novatos! Ayer acusaron a un huésped del Hotel Gran Siesta y sigue en bata en la sala de interrogatorio. Dice que estaba durmiendo con pepinos. Que confiese.","Rookies! Yesterday you accused a guest of the Hotel Gran Siesta, still in a bathrobe in the interrogation room. Says they were asleep with cucumbers on. Get a confession.","Novatos! Ontem vocês acusaram um hóspede do Hotel Gran Siesta, que continua de roupão na sala de interrogatório. Diz que estava dormindo com pepinos. Façam confessar."
 CONFESS_owner_guest,"¡Está bien! ¡Fui yo! Pagué la suite más barata y la caja fuerte de la suite cara estaba ahí, abierta... bueno, casi abierta.","Fine! It was me! I paid for the cheapest room and the expensive suite's safe was right there, open... well, almost open.","Tá bom! Fui eu! Paguei o quarto mais barato e o cofre da suíte cara estava ali, aberto... bem, quase aberto."
+BRIEF_WH_PARROT_B,"La señora Plumas, la de al lado, tiene un loro, Pepe, que repite la clave de la caja fuerte del banco.","Señora Plumas, next door, has a parrot, Pepe, who repeats the code of the bank's safe.","A senhora Plumas, a do lado, tem um papagaio, Pepe, que repete o código do cofre do banco."
+BRIEF_WH_PARROT_C,"Traigan a Pepe en el baúl del patrullero. Vuela lejos de ustedes: acorrálenlo o cánsenlo.","Bring Pepe back in the patrol car's trunk. He flies away from you: corner him or tire him out.","Tragam o Pepe no porta-malas da viatura. Ele voa para longe de vocês: encurralem ou cansem ele."
+BRIEF_WH_PARROT_D,"Si encuentran la jaula y la libreta de claves, mejor: todo suma.","If you find the cage and the notebook of codes, even better: it all adds up.","Se acharem a gaiola e a caderneta de códigos, melhor: tudo soma."
+OBJ_FIND_WH_PARROT,"Atrapar a Pepe, el loro (vuela lejos del policía más cercano)","Catch Pepe the parrot (he flies away from the nearest cop)","Pegar o Pepe, o papagaio (ele voa para longe do policial mais perto)"
+OBJ_EXTRA_BIRD_CAGE,Extra: la jaula,Extra: the cage,Extra: a gaiola
+PARROT_NUMBERS,"¡Cuatro, siete, dos, nueve! ¡Cuatro, siete…!","Four, seven, two, nine! Four, seven…!","Quatro, sete, dois, nove! Quatro, sete…!"
+PROMPT_LISTEN_WINDOW,"E: escuchar por la ventana","E: listen at the window","E: escutar pela janela"
+CLUE_WH_PARROT,"Por la ventana se oye un loro que dice números, como una clave.","Through the window you hear a parrot saying numbers, like a code.","Pela janela se ouve um papagaio dizendo números, como um código."
+BRIEF_WH_FIREWORKS_B,"El Chispa, el de al lado, guarda una caja de cohetes robada para la fiesta del barrio.","El Chispa, next door, keeps a stolen box of rockets for the neighborhood party.","O Chispa, o do lado, guarda uma caixa de rojões roubada para a festa do bairro."
+BRIEF_WH_FIREWORKS_C,"Traigan la caja de cohetes en el baúl del patrullero. Despacio: si se golpea, se prende.","Bring the box of rockets back in the patrol car's trunk. Slowly: if it gets hit, it goes off.","Tragam a caixa de rojões no porta-malas da viatura. Devagar: se bater, ela dispara."
+BRIEF_WH_FIREWORKS_D,"Si encuentran las mechas y el plano de la fiesta, mejor: todo suma.","If you find the fuses and the party plan, even better: it all adds up.","Se acharem os pavios e o mapa da festa, melhor: tudo soma."
+OBJ_FIND_WH_FIREWORKS,"Encontrar la caja de cohetes (frágil: si se golpea, se prende)","Find the box of rockets (fragile: if it gets hit, it goes off)","Achar a caixa de rojões (frágil: se bater, ela dispara)"
+OBJ_EXTRA_FUSES,Extra: las mechas,Extra: the fuses,Extra: os pavios
+OBJ_EXTRA_PARTY_PLAN,Extra: el plano de la fiesta,Extra: the party plan,Extra: o mapa da festa
+PROMPT_LOOK_BURNS,"E: mirar la cortina","E: look at the curtain","E: olhar a cortina"
+CLUE_WH_BURNS,"La cortina de esta ventana está quemada y huele a pólvora.","This window's curtain is burnt and smells of gunpowder.","A cortina desta janela está queimada e cheira a pólvora."
+HINT_WH_ROCKETS,"¡Se prendieron los cohetes! Cuidado con los adornos.","The rockets went off! Watch the ornaments.","Os rojões dispararam! Cuidado com os enfeites."
+BRIEF_WH_LETTERS_B,"El primo del cartero, el de al lado, se queda con las cartas de toda la cuadra.","The mailman's cousin, next door, keeps the letters of the whole block.","O primo do carteiro, o do lado, fica com as cartas da quadra inteira."
+BRIEF_WH_LETTERS_C,"Traigan la bolsa de cartas robadas en el baúl del patrullero. Pesa: llévenla entre dos.","Bring the bag of stolen letters back in the patrol car's trunk. It's heavy: carry it together.","Tragam a sacola de cartas roubadas no porta-malas da viatura. É pesada: levem em dois."
+BRIEF_WH_LETTERS_D,"Si encuentran las estampillas raras, mejor: valen mucho.","If you find the rare stamps, even better: they're worth a lot.","Se acharem os selos raros, melhor: valem muito."
+OBJ_FIND_WH_LETTERS,"Encontrar la bolsa de cartas robadas","Find the bag of stolen letters","Achar a sacola de cartas roubadas"
+OBJ_EXTRA_STAMPS,Extra: las estampillas raras,Extra: the rare stamps,Extra: os selos raros
+PROMPT_LOOK_BIN,"E: mirar el tacho","E: look in the bin","E: olhar a lixeira"
+CLUE_WH_ENVELOPES,"En el tacho de afuera hay sobres abiertos, todos con direcciones de otras casas.","The bin out front is full of opened envelopes, all addressed to other houses.","Na lixeira da frente há envelopes abertos, todos com endereços de outras casas."
+MAILMAN_BAG,"¡Esas son mis cartas! Devuélvanmelas cuando cierren el caso. Y mi primo guarda unas estampillas raras %s.","Those are my letters! Give them back once the case is closed. And my cousin keeps some rare stamps %s.","Essas são minhas cartas! Devolvam quando fecharem o caso. E meu primo guarda uns selos raros %s."
+WH_SPOT_IN_FRIDGE,en la heladera,in the fridge,na geladeira
+WH_SPOT_IN_BATHTUB,en la bañera,in the bathtub,na banheira
+WH_SPOT_IN_WASHER,en el lavarropas,in the washing machine,na máquina de lavar
+WH_SPOT_UNDER_SOFA,abajo del sillón,under the sofa,embaixo do sofá
+WH_SPOT_ON_COUNTER,arriba de la mesada,on the kitchen counter,em cima da bancada
+WH_SPOT_KITCHEN_FLOOR,en el piso de la cocina,on the kitchen floor,no chão da cozinha
+WH_SPOT_ON_THE_TV,arriba de la tele,on top of the TV,em cima da TV
+BRIEF_WH_PERFUME_B,"Madame Aroma, la de al lado, embotella perfume trucho y lo vende como importado.","Madame Aroma, next door, bottles fake perfume and sells it as imported.","Madame Aroma, a do lado, engarrafa perfume falso e vende como importado."
+BRIEF_WH_PERFUME_C,"Traigan el bidón de perfume en el baúl del patrullero. Es frágil: si se rompe, el olor no se va más.","Bring the jug of perfume back in the patrol car's trunk. It's fragile: if it cracks, the smell never leaves.","Tragam o galão de perfume no porta-malas da viatura. É frágil: se quebrar, o cheiro não sai mais."
+BRIEF_WH_PERFUME_D,"Si encuentran las etiquetas falsas y el frasco de muestra, mejor: todo suma.","If you find the fake labels and the sample bottle, even better: it all adds up.","Se acharem os rótulos falsos e o frasco de amostra, melhor: tudo soma."
+OBJ_FIND_WH_PERFUME,"Encontrar el bidón de perfume trucho (frágil)","Find the jug of fake perfume (fragile)","Achar o galão de perfume falso (frágil)"
+OBJ_EXTRA_SAMPLE_FLASK,Extra: el frasco de muestra,Extra: the sample bottle,Extra: o frasco de amostra
+CLUE_WH_SMELL,"Con la linterna se ven líneas de olor por el pasillo de esta casa: perfume barato.","The flashlight shows smell lines down this house's hallway: cheap perfume.","Com a lanterna se veem linhas de cheiro pelo corredor desta casa: perfume barato."
+HINT_WH_SMELLY,"¡Quedaste oliendo a perfume! Los perros de la calle te siguen.","You smell of perfume now! The street dogs follow you.","Você ficou com cheiro de perfume! Os cachorros da rua te seguem."
+BRIEF_WH_TIP_A,"La orden es para la calle de los Sauces 14. Lo malo: en esa cuadra hay dos casas iguales y a las dos se les cayó un número.","The warrant is for 14 Willow Street. The bad news: that block has two identical houses, and both lost a digit of their number.","O mandado é para a rua dos Salgueiros 14. O problema: nessa quadra há duas casas iguais e as duas perderam um número."
+BRIEF_WH_TIP_B,"Antes de tirar la puerta abajo, miren el buzón, el diario y pregúntenle al cartero. Si entran en la casa equivocada, la vecina les hace la denuncia y cada cosa rota sale el doble.","Before you break the door down, check the mailbox and the newspaper, and ask the mailman. If you go into the wrong house, the neighbor files a complaint and everything you break costs double.","Antes de derrubar a porta, olhem a caixa de correio e o jornal e perguntem ao carteiro. Se entrarem na casa errada, a vizinha faz a denúncia e cada coisa quebrada sai o dobro."
+BRIEF_WH_TIP_C,"Y apúrense: si el de la 14 los ve en la casa de al lado, va a cargar todo en su rural.","And hurry: if the one at 14 sees you next door, he'll load everything into his station wagon.","E rápido: se o da 14 vir vocês na casa do lado, vai carregar tudo na perua dele."
+SUSPECT_wh_bills,Billetes con la cara del comisario,Bills with the comisario's face,Notas com a cara do comissário
+SUSPECT_wh_gnomes,Los gnomos del barrio,The neighborhood's gnomes,Os gnomos do bairro
+SUSPECT_wh_parrot,El loro que sabe la clave,The parrot who knows the code,O papagaio que sabe o código
+SUSPECT_wh_fireworks,Los fuegos artificiales robados,The stolen fireworks,Os fogos de artifício roubados
+SUSPECT_wh_letters,Las cartas del cartero,The mailman's letters,As cartas do carteiro
+SUSPECT_wh_perfume,El perfume trucho,The fake perfume,O perfume falso
+OBJ_ENTER_WH,Entrar en la casa correcta (la 14),Get into the right house (number 14),Entrar na casa certa (a 14)
+OBJ_GUESS_WH,"Averiguar qué esconde el de la 14 (con Q abierta, mantén 1, 2 o 3)","Find out what number 14 is hiding (with Q open, hold 1, 2 or 3)","Descobrir o que o da 14 esconde (com Q aberta, segure 1, 2 ou 3)"
+OBJ_COMPLAINT_WH,Denuncia de doña Chola: %d%%,Doña Chola's complaint: %d%%,Denúncia da dona Chola: %d%%
+CASE_FAILED_LAWYER_CHOLA,Doña Chola llamó a su abogado. Caso perdido.,Doña Chola called her lawyer. Case lost.,A dona Chola ligou para o advogado. Caso perdido.
+MENU_WRONG_HOUSE,La casa equivocada (prueba),The wrong house (test),A casa errada (teste)
+HINT_ESCAPE_wrong_house,"¡El de la 14 se escapa en su rural con la prueba en el techo! Tienen un minuto para agarrarlo.","Number 14 is getting away in his station wagon with the evidence on the roof! You have one minute to catch him.","O da 14 está fugindo na perua com a prova no teto! Vocês têm um minuto para pegá-lo."
+CASE_FAILED_WH_GOT_AWAY,El de la 14 se escapó con la prueba. Caso perdido.,Number 14 got away with the evidence. Case lost.,O da 14 fugiu com a prova. Caso perdido.

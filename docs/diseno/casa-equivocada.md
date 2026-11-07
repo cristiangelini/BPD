@@ -135,6 +135,43 @@ valores siguen la escala del bingo: la principal unos 1000, los extras entre 300
     alzarlo). Los de cerámica se rompen como adornos (multa). Extras: la lista de jardines (300) y la carretilla
     (15 kg, 200). Pista propia: pozos con forma de gnomo en el jardín de doña Chola.
   Capturas en `/mnt/project-files/casa-equivocada/paso5-*.png`.
+- **Paso 6 (el loro y los fuegos artificiales):**
+  - **El loro:** Pepe (`Parrot`, 1 kg, 1000) arranca en una de 5 perchas de planta baja (tele, las dos puntas de la
+    mesada, lavarropas y brazo del sillón), sorteada con la semilla. Si un policía se le acerca a menos de 2,5 m, vuela
+    (0,8 s) a la percha más lejos de todos los policías; si todas tienen un policía cerca, queda acorralado. Para que
+    se pueda jugar solo, después de 5 vuelos seguidos descansa 6 s y se deja agarrar. Una vez agarrado (o si su dueña
+    lo levanta) es una evidencia común. Cada 6 s dice números. Extras escondidos: la jaula (150) y la libreta de
+    claves (300). Pista propia: por la ventana del frente se lo oye decir números.
+  - **Los fuegos:** la caja de cohetes (`RocketBox`, 8 kg, 1000) se prende con el primer golpe a más de 2 m/s (una
+    sola vez, y no pierde valor por eso). Durante 10 s vuelan 8 cohetes de colores por la casa donde está y se rompe
+    un adorno de esa casa enseguida y otro cada 0,5 s (20 en total, multas; en la de doña Chola, al doble; afuera, ninguno).
+    Extras: las mechas (150) y el plano de la fiesta (300). Pista propia: la cortina quemada de la ventana del frente.
+  Capturas en `/mnt/project-files/casa-equivocada/paso6-*.png`.
+- **Paso 7 (las cartas y el perfume):**
+  - **Las cartas:** la bolsa de cartas robadas (10 kg, 1000) y el álbum de estampillas raras (400), escondidos. Pista
+    propia: sobres abiertos en un tacho junto a su buzón. Si un policía le habla al cartero con la bolsa a menos de
+    2,5 m, Don Sobre la reconoce, pide que se la devuelvan **cuando cierren el caso** y dice dónde están las
+    estampillas ("en el lavarropas"). Esa línea va a la planilla. Cambio con el doc: el cartero no se queda con la
+    bolsa, porque es la evidencia principal y sin ella no hay caso.
+  - **El perfume:** el bidón (12 kg, 1000, frágil: cualquier golpe de más de 1,5 m/s le baja el valor), las
+    etiquetas falsas (300) y el frasco de muestra (100, frágil). Pista propia: líneas de olor por el pasillo de su casa,
+    que solo se ven con la linterna (la primera vez van a la planilla). El que agarra el bidón o el frasco cuando se
+    golpea queda 30 s oliendo, y los 3 perros de la vereda lo siguen y se le ponen alrededor.
+  Capturas en `/mnt/project-files/casa-equivocada/paso7-*.png`.
+- **Paso 8a (el caso):** la casa corre con el mismo `RaidCase` que los otros allanamientos. El comisario da la orden
+  para la calle de los Sauces 14 y avisa de las dos casas, las pistas de la puerta y la rural. Las sospechas salen de
+  las 6 historias, con ids `wh_<historia>` porque otro lugar ya tiene gnomos. El primer renglón de la planilla se
+  marca al entrar en la casa correcta. Las pistas de la puerta y las de cada historia van a la planilla. Las multas
+  (al doble en lo de doña Chola) se descuentan del sueldo, y si doña Chola llama a su abogado se pierde el caso.
+  Captura en `/mnt/project-files/casa-equivocada/paso8-planilla.png`.
+- **Paso 8b (la huida, Jugar y online):** el turno arranca en la comisaría, como los otros allanamientos. Si el
+  culpable se va con la principal en el techo, sale en el auto de huida desde su pasillo (por ahora el auto de la
+  persecución de noche, no su rural) y empieza la persecución. Si lo agarran, lo que se llevó queda en la vereda al
+  lado de su auto para llevarlo al baúl; si se escapa, se pierde el caso. A él no se lo interroga después. "Jugar"
+  lo sortea con los otros allanamientos (`PlaceDraw.ORDER`), el menú tiene su botón de prueba y online el anfitrión
+  maneja a doña Chola, al culpable y al cartero (`NpcSync`). Captura en
+  `/mnt/project-files/casa-equivocada/paso8-huida.png`. Queda para después: el premio "Tocaron la puerta correcta"
+  (+100), que necesita un renglón nuevo en la pantalla del turno.
 
 ## Preguntas para Cristian
 1. **¿Entrar en la casa equivocada se puede o termina el caso?** Recomendado: se puede, y es el chiste: doña Chola

@@ -10,7 +10,8 @@ extends Node3D
 ## wagon parked in the side passage, nose to the street, with a roof rack. Step 3: the guilty neighbor, if he sees the
 ## cops go into doña Chola's house, carries his things out to his rack one by one and drives off with the main one.
 ## Step 4: the door clues (a letter for the 14, the newspaper and Don Sobre the mailman), one of the first two wrong.
-## Steps 5 to 7: his stories (STORIES), drawn with the seed or --story=<id>, each with its rig.
+## Steps 5 to 7: his stories (STORIES), drawn with the seed or --story=<id>, each with its rig. Step 8: the case,
+## run by the same RaidCase as the other raids (tip, three suspicions, checklist, trunk, shift screen).
 ## Every number here is (propuesta).
 
 const DOOR_SCENE := preload("res://scenes/props/front_door.tscn")
@@ -83,6 +84,47 @@ const STORIES := {
 		"extra_keys": ["OBJ_EXTRA_GARDEN_LIST", "OBJ_EXTRA_WHEELBARROW"],
 		"rig": preload("res://scripts/case/wrong_house/gnomes_rig.gd"),
 	},
+	"parrot": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_WH_PARROT_B", "BRIEF_WH_PARROT_C", "BRIEF_WH_PARROT_D"],
+		"find": "OBJ_FIND_WH_PARROT",
+		"hidden": [preload("res://scenes/props/bird_cage.tscn"), preload("res://scenes/props/code_notebook.tscn")],
+		"half_heights": [0.25, 0.01],
+		"heavy": [false, false],
+		"extra_keys": ["OBJ_EXTRA_BIRD_CAGE", "OBJ_EXTRA_CODE_NOTEBOOK"],
+		"rig": preload("res://scripts/case/wrong_house/parrot_rig.gd"),
+	},
+	"fireworks": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_WH_FIREWORKS_B", "BRIEF_WH_FIREWORKS_C", "BRIEF_WH_FIREWORKS_D"],
+		"find": "OBJ_FIND_WH_FIREWORKS",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/rocket_box.tscn"), preload("res://scenes/props/fuses.tscn"),
+			preload("res://scenes/props/party_plan.tscn")],
+		"half_heights": [0.15, 0.02, 0.005],
+		"heavy": [false, false, false],
+		"extra_keys": ["OBJ_EXTRA_FUSES", "OBJ_EXTRA_PARTY_PLAN"],
+		"rig": preload("res://scripts/case/wrong_house/fireworks_rig.gd"),
+	},
+	"letters": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_WH_LETTERS_B", "BRIEF_WH_LETTERS_C", "BRIEF_WH_LETTERS_D"],
+		"find": "OBJ_FIND_WH_LETTERS",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/letters_bag.tscn"), preload("res://scenes/props/stamp_album.tscn")],
+		"half_heights": [0.28, 0.015],
+		"heavy": [true, false],
+		"extra_keys": ["OBJ_EXTRA_STAMPS"],
+		"rig": preload("res://scripts/case/wrong_house/letters_rig.gd"),
+	},
+	"perfume": {
+		"briefing": ["BRIEF_RIGHT", "BRIEF_WH_PERFUME_B", "BRIEF_WH_PERFUME_C", "BRIEF_WH_PERFUME_D"],
+		"find": "OBJ_FIND_WH_PERFUME",
+		"main_hidden": true,
+		"hidden": [preload("res://scenes/props/perfume_jug.tscn"), preload("res://scenes/props/perfume_labels.tscn"),
+			preload("res://scenes/props/sample_flask.tscn")],
+		"half_heights": [0.2, 0.05, 0.07],
+		"heavy": [true, false, false],
+		"extra_keys": ["OBJ_EXTRA_FAKE_LABELS", "OBJ_EXTRA_SAMPLE_FLASK"],
+		"rig": preload("res://scripts/case/wrong_house/perfume_rig.gd"),
+	},
 }
 ## Where the guilty neighbor hides his things, in house space: the floor of each spot (an item rests its half height
 ## over it), and whether a heavy one fits. All downstairs, handy for him, and none in his way out the back.
@@ -95,6 +137,9 @@ const SPOTS := [
 	{"id": "kitchen_floor", "at": Vector3(2.5, FLOOR_TOP, 5.8), "heavy": true},
 	{"id": "on_the_tv", "at": Vector3(-3.5, 0.95, 6.5), "heavy": false},
 ]
+## What the comisario says at the station: the warrant for the 14 and the lost digit.
+const TIP_BRIEFING: PackedStringArray = ["BRIEF_1_1_A", "BRIEF_TIP_C", "BRIEF_WH_TIP_A", "BRIEF_WH_TIP_B",
+	"BRIEF_WH_TIP_C"]
 ## Which of the two door clues is the wrong one (the mailman never lies).
 const MAILBOX := 0
 const PAPER := 1
@@ -152,8 +197,17 @@ var mailboxes: Array[ClueSpot] = []
 var paper: ClueSpot
 ## The door clues the cops found, in order.
 var clues: Array[String] = []
-## Fines for what the cops broke, in both houses.
-var fines := 0
+## Fines for what the cops broke, in both houses (the raid's, which the shift pay takes off).
+var fines: int:
+	get: return raid.fines
+	set(value): raid.fines = value
+## The case flow every raid shares.
+var raid: RaidCase
+## A cop went into the guilty house (the checklist's first row).
+var entered_guilty := false
+## The copilot's map, and the chase after him if he drives off with the main evidence.
+var city_map: CityMap
+var chase: ChaseCase
 var station_parking: Transform3D
 var _build: PlaceBuilder
 @onready var car: PatrolCar = $PatrolCar
@@ -167,6 +221,17 @@ func _ready() -> void:
 	guilty = pick_guilty(case_seed, OS.get_cmdline_user_args())
 	if story_id == "":
 		story_id = pick_story(case_seed, OS.get_cmdline_user_args())
+	raid = RaidCase.new()
+	raid.case_seed = case_seed
+	raid.story_id = suspect_id(story_id)
+	raid.story_briefing = PackedStringArray(STORIES[story_id].briefing)
+	raid.find_key = STORIES[story_id].find
+	raid.car = car
+	raid.solved_label = %CaseSolved
+	raid.failed_label = %CaseFailed
+	raid.shift_screen = $ShiftScreen
+	raid.place_facts = _place_facts
+	add_child(raid)
 	_build = PlaceBuilder.new($Built)
 	_build_lot()
 	for house in 2:
@@ -179,9 +244,17 @@ func _ready() -> void:
 	var city: Node3D = $City
 	city.transform = CityLayout.anchor("wrong_house")
 	station_parking = city.transform * CityLayout.parking("station")
-	car.global_transform = city.transform * CityLayout.parking("wrong_house")
-	car.global_position += Vector3.UP * 0.05
+	# The shift starts at the station, where the comisario gives the warrant.
+	car.global_transform = station_parking.translated_local(Vector3.UP * 0.05)
 	$Cop.global_position = car.to_global(Vector3(2.5, 0.1, 0.55))
+	city_map = CityMap.new()
+	add_child(city_map)
+	city_map.setup(city, "wrong_house", car)
+	raid.station_parking = station_parking
+	raid.main_evidence = main
+	raid.start(TIP_BRIEFING, STORIES.keys().map(suspect_id), (city as City).comisario)
+	clue_found.connect(raid.add_clue)
+	chola.lawyer_called.connect(raid.fail.bind("CASE_FAILED_LAWYER_CHOLA"))
 
 
 ## Who isn't the guilty one's house.
@@ -234,6 +307,25 @@ func _place_story() -> void:
 	loot.assign(extras)
 	loot.append(main)
 	neighbor.loot = loot
+
+
+## The wrong house's own checklist facts, over the ones every raid has.
+func _place_facts() -> Dictionary:
+	return {
+		"enter_key": "OBJ_ENTER_WH",
+		"guess_key": "OBJ_GUESS_WH",
+		"complaint_key": "OBJ_COMPLAINT_WH",
+		"door_open": entered_guilty,
+		"extras": range(extras.size()).map(func(i: int) -> Dictionary: return {"text": STORIES[story_id].extra_keys[i],
+			"done": car.is_delivered(extras[i])}) if raid.story_known else [],
+		"broken": broken[LEFT] + broken[RIGHT],
+		"complaint": chola.complaint,
+	}
+
+
+## A story's id among the raid suspicions (SUSPECT_wh_<id>): other places already have gnomes.
+static func suspect_id(story: String) -> String:
+	return "wh_" + story
 
 
 ## The story with that id from --story=<id> among the user args, or one drawn from the seed.
@@ -316,28 +408,61 @@ static func house_rect(house: int) -> Rect2:
 
 ## The first house a cop walks into decides it: doña Chola's and the neighbor sees it; his, and he's off guard.
 func _physics_process(_delta: float) -> void:
-	if not neighbor or neighbor.noticed or neighbor.off_guard:
-		return
 	for node in get_tree().get_nodes_in_group("cops"):
 		var cop := node as Cop
 		var spot := Vector2(cop.global_position.x, cop.global_position.z)
+		if house_rect(guilty).has_point(spot):
+			entered_guilty = true
+		if not neighbor or neighbor.noticed or neighbor.off_guard:
+			continue
 		if house_rect(chola_house()).has_point(spot):
 			neighbor.notice()
-			return
-		if house_rect(guilty).has_point(spot):
+		elif house_rect(guilty).has_point(spot):
 			neighbor.caught_off_guard()
-			return
 
 
-## He drove off: his wagon and what's on its rack leave with him (the chase comes with the case, step 8).
+## He drove off: his wagon and what's on its rack leave with him, and with the main one the chase is on.
 func _on_fled() -> void:
 	var wagon := wagons[guilty]
 	wagon.visible = false
 	wagon.collision_layer = 0
 	for item in neighbor.on_rack:
-		item.freeze = true
-		item.visible = false
-		item.collision_layer = 0
+		_stow(item, true)
+	if neighbor.on_rack.has(main):
+		start_chase()
+
+
+## The chase (persecucion-final.md): he drives his wagon out to the street with his loot on the rack.
+func start_chase() -> void:
+	var wagon := wagons[guilty]
+	# Nose to the street (+Z), which is the getaway car's forward (-Z).
+	var at := Transform3D(Basis(Vector3.UP, PI), wagon.global_position)
+	chase = ChaseCase.begin(self, "night", at, car, $City, case_seed, city_map)
+	chase.who = "wrong_house"
+	chase.online = raid.online
+	chase.follower = raid.follower
+	chase.ended.connect(_on_chase_ended)
+	for cop in get_tree().get_nodes_in_group("cops"):
+		(cop as Cop).show_hint("HINT_ESCAPE_wrong_house")
+
+
+## Caught: what he took is on the sidewalk by his car, to take back to the trunk. Got away with the main evidence:
+## the case is lost.
+func _on_chase_ended(caught: bool) -> void:
+	if not caught:
+		raid.fail("CASE_FAILED_WH_GOT_AWAY")
+		return
+	var i := 0
+	for item in neighbor.on_rack:
+		_stow(item, false)
+		item.global_position = chase.truck.global_position + chase.truck.global_basis.x * 2.0 + Vector3(0, 0.4, i * 0.7)
+		i += 1
+
+
+func _stow(item: Grabbable, away: bool) -> void:
+	item.freeze = away
+	item.visible = not away
+	item.collision_layer = 0 if away else 4
 
 
 ## The neighbor walks on a navigation mesh baked from the built houses and the lot, with the front doors closed.

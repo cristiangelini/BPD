@@ -4,7 +4,8 @@ extends Node3D
 ## Don Sobre, the mailman of the wrong house (docs/diseno/casa-equivocada.md, step 4): every RIDE_EVERY seconds he
 ## rides his bike down the sidewalk in front of the two houses, one way and then the other, stopping STOP seconds at
 ## each mailbox. E on him stops him: he says who lives where (`clue`, set by the place), the door clue that never lies,
-## and it goes to the checklist the first time. It runs on the host. Every number here is (propuesta).
+## and it goes to the checklist the first time. Shown his stolen letters (step 7), he tells where the rare stamps are
+## instead. It runs on the host. Every number here is (propuesta).
 
 ## He told the clue for the first time: the checklist line, already translated.
 signal told(text: String)
@@ -18,11 +19,17 @@ const FIRST_RIDE := 5.0
 const SPEED := 3.5
 const STOP := 4.0
 const TALK := 5.0
+## Closer than this, he recognizes `bag` (the stolen letters story).
+const BAG_NEAR := 2.5
 
 var state := State.WAITING
 ## The checklist line he says, already translated.
 var clue := ""
 var was_told := false
+## His stolen letters, if that's the story: shown to him (near him when a cop talks), he says `bag_line` instead.
+var bag: Grabbable
+var bag_line := ""
+var bag_told := false
 ## The sidewalk he rides along (z) between two ends (x), and the mailboxes he stops at (x).
 var route_z := 0.0
 var ends := Vector2(-20.0, 20.0)
@@ -79,10 +86,20 @@ func use(_cop: Cop) -> void:
 	if state != State.WAITING:
 		state = State.TALKING
 	_stop_left = TALK
+	if sees_bag():
+		_say(bag_line, TALK)
+		if not bag_told:
+			bag_told = true
+			told.emit(bag_line)
+		return
 	_say(clue, TALK)
 	if not was_told:
 		was_told = true
 		told.emit(clue)
+
+
+func sees_bag() -> bool:
+	return bag != null and is_instance_valid(bag) and bag.global_position.distance_to(global_position) < BAG_NEAR
 
 
 func _physics_process(delta: float) -> void:
