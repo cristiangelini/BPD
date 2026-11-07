@@ -86,6 +86,7 @@ static func is_npc(node: Node) -> bool:
 		or node is DonaRosa
 		or node is BowlPlayer or node is ShoeBoy
 		or node is Lucho or node is IceVisitor
+		or node is KaraokeSinger or node is SoundGuy
 
 
 func _ready() -> void:

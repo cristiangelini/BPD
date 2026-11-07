@@ -87,6 +87,8 @@ const PLACES := [
 	{"id": "rink", "block": Vector2i(8, 3), "side": "n", "along": 0.0, "size": Vector3(44, 9, 30), "color": Color(0.78, 0.86, 0.92), "sign": "PLACE_RINK"},
 	# The ice cream shop "Pingüino Derretido", its fenced yard at the back (allanamiento-heladeria.md).
 	{"id": "ice_cream", "block": Vector2i(5, 5), "side": "n", "along": 0.0, "size": Vector3(20, 5, 20), "color": Color(0.98, 0.84, 0.9), "sign": "PLACE_ICE_CREAM"},
+	# The karaoke "Karaoke El Desafine" (allanamiento-karaoke.md), between the circus and the radio.
+	{"id": "karaoke", "block": Vector2i(6, 3), "side": "n", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.45, 0.25, 0.6), "sign": "PLACE_KARAOKE"},
 ]
 
 ## The plaza fills its block.

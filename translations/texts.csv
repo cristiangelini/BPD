@@ -8256,3 +8256,161 @@ LUCHO_CLUE_stolen_truck,«Anoche ayudé a doña Nieve a pintar el camión. Me di
 ICE_WET_PAINT,¡PINTURA FRESCA!,WET PAINT!,TINTA FRESCA!
 CLUE_FRESH_PAINT,"La pintura del camión está fresca, y abajo se ve otro color y otro nombre: «Helados del Río».","The truck's paint is fresh, and underneath there's another color and another name: «Helados del Río».","A tinta do caminhão está fresca, e embaixo aparece outra cor e outro nome: «Helados del Río»."
 ICE_TRUCK_JINGLE,"♪ ¡Helados del Río, los más fríos! ♪","♪ Helados del Río, the coldest around! ♪","♪ Helados del Río, os mais gelados! ♪"
+PLACE_KARAOKE,Karaoke El Desafine,Off-Key Karaoke,Karaokê Desafinado
+KARAOKE_MOTTO,¡Canta como puedas!,Sing however you can!,Cante como puder!
+MENU_KARAOKE,Karaoke (allanamiento) (prueba),Karaoke (raid) (test),Karaokê (batida) (teste)
+HINT_TILL_KEY_KARAOKE,¡Una llave! Abre la oficina de Rosaura.,A key! It opens Rosaura's office.,Uma chave! Abre o escritório da Rosaura.
+CASE_FAILED_LAWYER_KARAOKE,Rosaura llamó al abogado del karaoke. Caso perdido.,Rosaura called the karaoke's lawyer. Case lost.,Rosaura ligou para o advogado do karaokê. Caso perdido.
+KARAOKE_BOOTH_1,Cabina 1,Booth 1,Cabine 1
+KARAOKE_BOOTH_2,Cabina 2,Booth 2,Cabine 2
+KARAOKE_BOOTH_3,Cabina 3,Booth 3,Cabine 3
+KARAOKE_SCREEN_BROKEN,"«¡La pantalla! ¿Y ahora cómo sigue la canción?»","“The screen! Now how does the song go?”","“A tela! E agora como continua a música?”"
+KARAOKE_DISCO_BROKEN,"«¡Mi bola de espejos! ¡Era lo único que brillaba más que yo!»","“My disco ball! It was the only thing that shone brighter than me!”","“Minha bola de espelhos! Era a única coisa que brilhava mais que eu!”"
+LOC_behind_stage_speaker,detrás del parlante del escenario,behind the stage speaker,atrás da caixa de som do palco
+LOC_at_stage_foot,al pie del escenario,at the foot of the stage,ao pé do palco
+LOC_behind_sound_console,detrás de la consola del sonidista,behind the sound guy's console,atrás da mesa de som
+LOC_by_ice_machine,al lado de la máquina de hielo,by the ice machine,ao lado da máquina de gelo
+LOC_in_karaoke_office_corner,en un rincón de la oficina de Rosaura,in a corner of Rosaura's office,num canto do escritório da Rosaura
+LOC_by_chair_stack,al lado de la pila de sillas,by the stack of chairs,ao lado da pilha de cadeiras
+LOC_on_booth_1_sofa,en el sillón de la cabina 1,on booth 1's sofa,no sofá da cabine 1
+LOC_in_booth_3,en la cabina 3,in booth 3,na cabine 3
+LOC_under_dress_rack,debajo del perchero de vestidos,under the dress rack,embaixo da arara de vestidos
+LOC_under_karaoke_table,debajo de una mesa de la sala,under a table in the room,embaixo de uma mesa do salão
+LOC_on_karaoke_bar,en la barra del bar,on the bar,no balcão do bar
+LOC_on_karaoke_desk,en el escritorio de Rosaura,on Rosaura's desk,na escrivaninha da Rosaura
+PROMPT_TALK_SINGER,E: hablar con el cliente,E: talk to the customer,E: falar com o cliente
+KARAOKE_SING_1,"«¡Y yo te amaré… o algo así!»","“And I will love you… or something like that!”","“E eu vou te amar… ou algo assim!”"
+KARAOKE_SING_2,"«¡Uooo, uooo, no me sé esta parte!»","“Whoa, whoa, I don't know this part!”","“Uooo, uooo, não sei essa parte!”"
+KARAOKE_SING_3,"«¡Tu amor es como un taxi que no para!»","“Your love is like a taxi that won't stop!”","“Seu amor é como um táxi que não para!”"
+KARAOKE_SING_4,"«¡Laaa, laaa, laaaaa!» (desafina)","“Laaa, laaa, laaaaa!” (off key)","“Láaa, láaa, láaaaa!” (desafina)"
+KARAOKE_SING_5,"«¡Esta va para mi suegra!»","“This one's for my mother-in-law!”","“Essa vai para a minha sogra!”"
+KARAOKE_SINGER_TALK_1,"«Vengo todos los jueves. Nunca gano, pero canto fuerte.»","“I come every Thursday. I never win, but I sing loud.”","“Venho toda quinta. Nunca ganho, mas canto alto.”"
+KARAOKE_SINGER_TALK_2,"«El concurso lo gana siempre la misma voz. Qué raro, ¿no?»","“The same voice always wins the contest. Strange, isn't it?”","“O concurso é sempre ganho pela mesma voz. Estranho, né?”"
+KARAOKE_SINGER_TALK_3,"«No toques el micrófono 1, que después le toca a mi tía.»","“Don't touch microphone 1, my aunt's up next.”","“Não mexa no microfone 1, que depois é a vez da minha tia.”"
+KARAOKE_SINGER_NO_MIC,"«¿Y el micrófono? ¡Me toca a mí!»","“Where's the microphone? It's my turn!”","“Cadê o microfone? É a minha vez!”"
+KARAOKE_SINGER_GRABBED,"«¡Ey! ¡Estaba en el estribillo!»","“Hey! I was in the chorus!”","“Ei! Eu estava no refrão!”"
+KARAOKE_SINGER_IN_WAY,"«¡Bájate del escenario, que no es un dueto!»","“Get off the stage, this isn't a duet!”","“Desce do palco, que não é um dueto!”"
+HINT_KARAOKE_CABLE,¡Tropezaste con el cable del micrófono!,You tripped over the microphone's cable!,Você tropeçou no fio do microfone!
+DIVA_LINE_1,"¡Gracias, gracias, mi público! ¿Vinieron por un autógrafo?","Thank you, thank you, my audience! Did you come for an autograph?","Obrigada, obrigada, meu público! Vieram por um autógrafo?"
+DIVA_LINE_2,"Mis fans siempre llegan de uniforme. Qué detalle.","My fans always arrive in uniform. How thoughtful.","Meus fãs sempre chegam de uniforme. Que gentileza."
+DIVA_LINE_3,"El concurso de los jueves es limpio, limpísimo. Como mi voz.","The Thursday contest is clean, squeaky clean. Like my voice.","O concurso de quinta é limpo, limpíssimo. Como a minha voz."
+DIVA_LINE_4,"¿El auto con forma de micrófono? Un regalo de mis fans.","The microphone-shaped car? A gift from my fans.","O carro em forma de microfone? Um presente dos meus fãs."
+DIVA_PRINTER,"¿Alguien va a cantar sin mí? ¡Ni lo sueñes!","Someone's singing without me? Not a chance!","Alguém vai cantar sem mim? Nem sonhando!"
+DIVA_FIX_1,"¡Esta es MI canción! ¡Dame el agudo!","This is MY song! Give me the high note!","Essa é a MINHA música! Me dá o agudo!"
+DIVA_FIX_2,"¡Laaaa! ¿Escuchas? Eso es una voz.","Laaaa! Hear that? That's a voice.","Láaaa! Está ouvindo? Isso é uma voz."
+DIVA_FIX_3,"Y ahora el final, con los brazos arriba.","And now the ending, arms up.","E agora o final, com os braços para cima."
+DIVA_FIX_DONE,"¡Bravo, bravo! Para mí, claro.","Bravo, bravo! For me, of course.","Bravo, bravo! Para mim, claro."
+DIVA_HURT,"¡Ay! ¡A una diva no se la empuja!","Ouch! You don't push a diva!","Ai! Não se empurra uma diva!"
+DIVA_DOOR,"¡Mi puerta! ¡Mi camarín!","My door! My dressing room!","Minha porta! Meu camarim!"
+DIVA_SAW,"¡Eso no se toca, fan!","Don't touch that, fan!","Isso não se toca, fã!"
+DIVA_NOTHING,"Yo solo canto, oficial. Y alquilo micrófonos.","I just sing, officer. And rent microphones.","Eu só canto, policial. E alugo microfones."
+DIVA_OFFENDED,"No hablo más. Me voy a cambiar de vestido.","I'm done talking. I'm off to change dresses.","Não falo mais. Vou trocar de vestido."
+DIVA_LAWYER,"¡Llamo a mi abogado! ¡Canta conmigo los jueves!","I'm calling my lawyer! He sings with me on Thursdays!","Vou ligar para o meu advogado! Ele canta comigo às quintas!"
+DIVA_CAUGHT_ON,"Tres duetos… Ustedes no son fans de verdad.","Three duets… You're not real fans.","Três duetos… Vocês não são fãs de verdade."
+DIVA_SINGER,"¡Mis clientes se quejan! ¡Respeten el turno!","My customers are complaining! Wait your turn!","Meus clientes estão reclamando! Respeitem a vez!"
+DIVA_SCREEN,"¡La pantalla! ¿Cómo leo la letra ahora?","The screen! How do I read the lyrics now?","A tela! Como eu leio a letra agora?"
+DIVA_DISCO,"¡Mi bola de espejos! ¡Brillaba casi tanto como yo!","My disco ball! It shone almost as much as I do!","Minha bola de espelhos! Brilhava quase tanto quanto eu!"
+KARAOKE_DUET_SCREEN,♪ ¡DUETO! ♪,♪ DUET! ♪,♪ DUETO! ♪
+PROMPT_TALK_TOTO,E: hablar con Toto,E: talk to Toto,E: falar com o Toto
+PROMPT_VOLUME_DOWN,E: bajar el volumen,E: turn the volume down,E: abaixar o volume
+HINT_KARAOKE_VOLUME,"Bajaste la música. Toto se sacó los auriculares, pero los clientes se van a quejar.","You turned the music down. Toto took his headphones off, but the customers are going to complain.","Você abaixou a música. O Toto tirou os fones, mas os clientes vão reclamar."
+TOTO_DEAF_1,"¿Qué? ¡No te escucho! ¡Está sonando un temazo!","What? I can't hear you! This song is a banger!","O quê? Não te escuto! Está tocando um hit!"
+TOTO_DEAF_2,"¿Eh? ¡Más fuerte! ¡No, más fuerte no, que se acopla!","Huh? Louder! No, not louder, it'll feed back!","Hã? Mais alto! Não, mais alto não, que dá microfonia!"
+TOTO_DEAF_3,"(Toto te saluda con el pulgar arriba y sigue con la música.)","(Toto gives you a thumbs up and goes on with the music.)","(Toto faz joinha e continua com a música.)"
+TOTO_IDLE_1,"¡Qué agudo! ¡Me tiembla la consola!","What a high note! My console is shaking!","Que agudo! Minha mesa está tremendo!"
+TOTO_IDLE_2,"Treinta años con los auriculares puestos. Ni me acuerdo de cómo suena el silencio.","Thirty years with my headphones on. I don't remember what silence sounds like.","Trinta anos de fone. Nem lembro como soa o silêncio."
+TOTO_IDLE_3,"(Toto sube una perilla. Después otra. Después todas.)","(Toto turns a knob up. Then another one. Then all of them.)","(Toto aumenta um botão. Depois outro. Depois todos.)"
+TOTO_THANKS,"¡Ah, qué lindo el silencio! Gracias otra vez.","Ah, silence is lovely! Thanks again.","Ah, que lindo o silêncio! Obrigado de novo."
+TOTO_NOTHING,"¡Ah, el silencio! Qué alivio… No vi nada raro, pero gracias.","Ah, silence! What a relief… I didn't see anything strange, but thanks.","Ah, o silêncio! Que alívio… Não vi nada estranho, mas obrigado."
+KARAOKE_SINGER_QUIET,"«¿Y la música? ¡Así no se puede cantar!»","“Where's the music? Nobody can sing like this!”","“Cadê a música? Assim não dá para cantar!”"
+BRIEF_KARAOKE_TIP_B,"Llegó una denuncia anónima: en el «Karaoke El Desafine» gana siempre la misma voz, y la dueña se compró un auto con forma de micrófono.","We got an anonymous tip: at the «Karaoke El Desafine» the same voice always wins, and the owner just bought a microphone-shaped car.","Chegou uma denúncia anônima: no «Karaokê Desafinado» sempre ganha a mesma voz, e a dona comprou um carro em forma de microfone."
+BRIEF_KARAOKE_TIP_D,"El karaoke sigue abierto y los clientes cantan por turno. Rosaura, la dueña, no deja que nadie cante sin ella. La oficina está cerrada con llave.","The karaoke is still open and the customers take turns singing. Rosaura, the owner, won't let anyone sing without her. The office is locked.","O karaokê continua aberto e os clientes cantam por vez. Rosaura, a dona, não deixa ninguém cantar sem ela. O escritório está trancado."
+BRIEF_KARAOKE_TIP_E,"Y no rompan nada: la pantalla de las letras y la bola de espejos se las descuento del sueldo. Con Q ven la planilla de lo que tienen que hacer.","And don't break anything: the lyrics screen and the disco ball come out of your pay. Press Q to see your checklist.","E não quebrem nada: a tela das letras e a bola de espelhos saem do salário de vocês. Com Q vocês veem a lista do que têm que fazer."
+SUSPECT_karaoke_applause,La máquina de aplausos,The applause machine,A máquina de aplausos
+SUSPECT_karaoke_tuner,El micrófono afinador,The tuning microphone,O microfone afinador
+SUSPECT_karaoke_lyrics,Las letras con mensajes,The lyrics with messages,As letras com mensagens
+SUSPECT_karaoke_watches,El parlante de los relojes,The speaker full of watches,A caixa de som dos relógios
+SUSPECT_karaoke_helium,El jugo de la inspiración,The inspiration juice,O suco da inspiração
+SUSPECT_karaoke_booth4,La cabina 4,Booth 4,A cabine 4
+CLUE_SUSPECT_karaoke_applause,"Un pedido a una tienda de sonido: «Grabación de 500 personas aplaudiendo de pie. Que suene a público de verdad».","An order to a sound shop: «Recording of 500 people giving a standing ovation. It must sound like a real audience».","Um pedido a uma loja de som: «Gravação de 500 pessoas aplaudindo de pé. Que pareça público de verdade»."
+CLUE_SUSPECT_karaoke_tuner,"Un folleto: «¡Afinador de bolsillo! Cabe dentro de un micrófono. Hasta un gato canta como un tenor».","A leaflet: «Pocket tuner! It fits inside a microphone. Even a cat sings like a tenor».","Um folheto: «Afinador de bolso! Cabe dentro de um microfone. Até um gato canta como um tenor»."
+CLUE_SUSPECT_karaoke_lyrics,"Una hoja con la letra de una canción. Cada tanto, una palabra subrayada: «camión», «jueves», «galpón».","A sheet with a song's lyrics. Every now and then, an underlined word: «truck», «Thursday», «warehouse».","Uma folha com a letra de uma música. De vez em quando, uma palavra sublinhada: «caminhão», «quinta», «galpão»."
+CLUE_SUSPECT_karaoke_watches,"Un recibo de un barco: «Una caja de parlante, 20 kg. Contenido: música». Alguien tachó «música» y escribió «tic-tac».","A ship's receipt: «One speaker box, 20 kg. Contents: music». Someone crossed out «music» and wrote «tick-tock».","Um recibo de um navio: «Uma caixa de som, 20 kg. Conteúdo: música». Alguém riscou «música» e escreveu «tique-taque»."
+CLUE_SUSPECT_karaoke_helium,"Una boleta de una casa de cumpleaños: «Un tanque de gas para globos. No es para globos».","A party shop receipt: «One balloon gas tank. It's not for balloons».","Um recibo de uma loja de festas: «Um tanque de gás para balões. Não é para balões»."
+CLUE_SUSPECT_karaoke_booth4,"Un plano del karaoke con 3 cabinas. Alguien dibujó una cuarta con lápiz, al lado de la tercera.","A map of the karaoke with 3 booths. Someone drew a fourth in pencil, next to the third.","Uma planta do karaokê com 3 cabines. Alguém desenhou uma quarta a lápis, ao lado da terceira."
+BRIEF_KARAOKE_APPLAUSE_B,"Rosaura tiene una máquina de aplausos grabados. Los jueves la prende cuando canta su sobrino, y el sobrino gana siempre.","Rosaura has a machine of recorded applause. On Thursdays she turns it on when her nephew sings, and the nephew always wins.","Rosaura tem uma máquina de aplausos gravados. Às quintas ela liga quando o sobrinho canta, e o sobrinho sempre ganha."
+BRIEF_KARAOKE_APPLAUSE_C,"Traigan la máquina de aplausos en el baúl del patrullero. Sin eso no hay caso.","Bring the applause machine in the patrol car's trunk. Without it there's no case.","Tragam a máquina de aplausos no porta-malas da viatura. Sem ela não há caso."
+BRIEF_KARAOKE_APPLAUSE_D,"Si encuentran los casetes de aplausos o la lista de ganadores, mejor: todo suma.","If you find the applause tapes or the list of winners, even better: it all adds up.","Se acharem as fitas de aplausos ou a lista de vencedores, melhor: tudo soma."
+OBJ_FIND_APPLAUSE_MACHINE,Llevarse la máquina de aplausos,Take the applause machine,Levar a máquina de aplausos
+OBJ_EXTRA_APPLAUSE_TAPES,Extra: los casetes de aplausos,Extra: the applause tapes,Extra: as fitas de aplausos
+OBJ_EXTRA_WINNERS_LIST,Extra: la lista de ganadores,Extra: the list of winners,Extra: a lista de vencedores
+OBJ_ENTER_KARAOKE,Entrar al karaoke (está abierto),Get into the karaoke (it's open),Entrar no karaokê (está aberto)
+OBJ_GUESS_KARAOKE,"Averiguar qué pasa en el karaoke (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the karaoke (with Q open, hold 1, 2 or 3)","Descobrir o que acontece no karaokê (com Q aberto, segure 1, 2 ou 3)"
+OBJ_BROKEN_KARAOKE,Cosas rotas: %d (multa: %d),Broken things: %d (fines: %d),Coisas quebradas: %d (multa: %d)
+OBJ_COMPLAINT_KARAOKE,Queja de Rosaura: %d%%,Rosaura's complaint: %d%%,Queixa da Rosaura: %d%%
+DIVA_SLIP,"«¡Yo no guardé nada %s!... Digo, ¿quieren un autógrafo?»","“I didn't put anything %s!... I mean, would you like an autograph?”","“Eu não guardei nada %s!... Quer dizer, querem um autógrafo?”"
+CLUE_TOTO,Toto vio a Rosaura esconder algo %s,Toto saw Rosaura hide something %s,O Toto viu a Rosaura esconder algo %s
+TOTO_CLUE_karaoke_applause,"«¡Silencio! ¡Por fin! Te cuento: vi a la jefa esconder algo %s. Y los aplausos no salen de la gente: salen del techo.»","“Silence! At last! Here's one: I saw the boss hide something %s. And the applause doesn't come from the people: it comes from the ceiling.”","“Silêncio! Finalmente! Te conto: vi a chefe esconder algo %s. E os aplausos não vêm do público: vêm do teto.”"
+KARAOKE_APPLAUSE,👏 ¡CLAP CLAP CLAP! 👏,👏 CLAP CLAP CLAP! 👏,👏 CLAP CLAP CLAP! 👏
+KARAOKE_APPLAUSE_CLUE,"Los aplausos salen de un parlante escondido en el techo, aunque nadie aplauda.","The applause comes out of a speaker hidden in the ceiling, even when nobody claps.","Os aplausos saem de uma caixa de som escondida no teto, mesmo quando ninguém aplaude."
+KARAOKE_NEPHEW_FRAME,"Campeón de los jueves: el sobrino de Rosaura (10 años seguidos)","Thursday champion: Rosaura's nephew (10 years in a row)","Campeão das quintas: o sobrinho da Rosaura (10 anos seguidos)"
+CRIME_owner_karaoke,"¡Novatos! Ayer se trajeron a Rosaura, la dueña del Karaoke El Desafine, y la tenemos en la sala de interrogatorio. Algo escondió en el karaoke que no encontraron.","Rookies! Yesterday you brought in Rosaura, the owner of the Karaoke El Desafine, and we have her in the interrogation room. She hid something in the karaoke that you didn't find.","Novatos! Ontem vocês trouxeram a Rosaura, a dona do Karaokê Desafinado, e ela está na sala de interrogatório. Ela escondeu algo no karaokê que vocês não acharam."
+CONFESS_owner_karaoke,"¡Está bien! ¡Fui yo! Pero admitan que el público me ama.","Fine! It was me! But admit the audience loves me.","Tá bom! Fui eu! Mas admitam que o público me ama."
+BRIEF_KARAOKE_TUNER_B,"Rosaura canta con un micrófono dorado que tiene un afinador adentro. Sin él, desafina como una tetera hirviendo.","Rosaura sings with a golden microphone that has a tuner inside. Without it, she's as off key as a boiling kettle.","Rosaura canta com um microfone dourado que tem um afinador dentro. Sem ele, desafina como uma chaleira fervendo."
+BRIEF_KARAOKE_TUNER_C,Traigan el micrófono dorado en el baúl del patrullero. Sin eso no hay caso.,Bring the golden microphone in the patrol car's trunk. Without it there's no case.,Tragam o microfone dourado no porta-malas da viatura. Sem ele não há caso.
+BRIEF_KARAOKE_TUNER_D,"Si encuentran el chip afinador de repuesto o el manual de la diva, mejor: todo suma.","If you find the spare tuner chip or the diva's manual, even better: it all adds up.","Se acharem o chip afinador de reserva ou o manual da diva, melhor: tudo soma."
+OBJ_FIND_GOLDEN_MIC,Llevarse el micrófono dorado,Take the golden microphone,Levar o microfone dourado
+OBJ_EXTRA_TUNER_CHIP,Extra: el chip afinador de repuesto,Extra: the spare tuner chip,Extra: o chip afinador de reserva
+OBJ_EXTRA_DIVA_MANUAL,Extra: el manual «Canta como una diva sin saber cantar»,Extra: the manual “Sing like a diva without knowing how to sing”,Extra: o manual «Cante como uma diva sem saber cantar»
+TOTO_CLUE_karaoke_tuner,"«¡Silencio! ¡Por fin! Te cuento: vi a la jefa esconder algo %s. Y un micrófono de las cabinas canta solo, mejor que ella.»","“Silence! At last! Here's one: I saw the boss hide something %s. And one of the booths' microphones sings by itself, better than her.”","“Silêncio! Finalmente! Te conto: vi a chefe esconder algo %s. E um microfone das cabines canta sozinho, melhor que ela.”"
+KARAOKE_TUNER_SING,"♪ ¡Do re mi fa sol, perfecto! ♪","♪ Do re mi fa sol, perfect! ♪","♪ Dó ré mi fá sol, perfeito! ♪"
+KARAOKE_TUNER_CLUE,Un micrófono de las cabinas hace cantar perfecto a cualquiera: tiene un afinador adentro.,One of the booths' microphones makes anyone sing perfectly: it has a tuner inside.,Um microfone das cabines faz qualquer um cantar perfeito: tem um afinador dentro.
+DIVA_OFF_KEY,♪ ¡Aaaa-uuuuu-iiii! ♪ (Rosaura desafina),♪ Aaaa-ooooo-eeee! ♪ (Rosaura is off key),♪ Aaaa-uuuuu-iiii! ♪ (Rosaura desafina)
+BRIEF_KARAOKE_LYRICS_B,Rosaura les pasa mensajes a unos contrabandistas escondidos en las letras de las canciones. La computadora de las letras es la prueba.,"Rosaura passes messages to some smugglers, hidden in the songs' lyrics. The lyrics computer is the proof.",Rosaura passa mensagens para uns contrabandistas escondidas nas letras das músicas. O computador das letras é a prova.
+BRIEF_KARAOKE_LYRICS_C,Traigan la computadora de las letras en el baúl del patrullero. Sin eso no hay caso.,Bring the lyrics computer in the patrol car's trunk. Without it there's no case.,Tragam o computador das letras no porta-malas da viatura. Sem ele não há caso.
+BRIEF_KARAOKE_LYRICS_D,"Si encuentran la libreta de claves o el recibo de «mercadería», mejor: todo suma.","If you find the notebook of codes or the receipt for “goods”, even better: it all adds up.","Se acharem a caderneta de códigos ou o recibo de «mercadoria», melhor: tudo soma."
+OBJ_FIND_LYRICS_PC,Llevarse la computadora de las letras,Take the lyrics computer,Levar o computador das letras
+OBJ_EXTRA_KARAOKE_CODES,Extra: la libreta de claves,Extra: the notebook of codes,Extra: a caderneta de códigos
+OBJ_EXTRA_GOODS_RECEIPT,Extra: el recibo de «mercadería»,Extra: the receipt for “goods”,Extra: o recibo de «mercadoria»
+TOTO_CLUE_karaoke_lyrics,«¡Silencio! ¡Por fin! Te cuento: vi a la jefa esconder algo %s. Y la pantalla pone letras que no son de ninguna canción.»,“Silence! At last! Here's one: I saw the boss hide something %s. And the screen shows lyrics that aren't from any song.”,“Silêncio! Finalmente! Te conto: vi a chefe esconder algo %s. E a tela mostra letras que não são de nenhuma música.”
+KARAOKE_LYRIC_1,♪ Tus ojos son dos luceros… ♪,♪ Your eyes are two bright stars… ♪,♪ Teus olhos são duas estrelas… ♪
+KARAOKE_LYRIC_2,♪ …y mi corazón un sombrero ♪,♪ …and my heart is a hat ♪,♪ …e meu coração um chapéu ♪
+KARAOKE_LYRIC_3,♪ Bailemos bajo la luna llena… ♪,♪ Let's dance under the full moon… ♪,♪ Vamos dançar sob a lua cheia… ♪
+KARAOKE_LYRIC_4,♪ …aunque mañana haya que trabajar ♪,♪ …even if tomorrow we have to work ♪,♪ …mesmo que amanhã tenha que trabalhar ♪
+KARAOKE_CODE_1,♪ Y el camión llega a las tres ♪,♪ And the truck gets there at three ♪,♪ E o caminhão chega às três ♪
+KARAOKE_CODE_2,"♪ Galpón 7, la puerta de atrás ♪","♪ Shed 7, the back door ♪","♪ Galpão 7, a porta dos fundos ♪"
+KARAOKE_CODE_3,♪ Que nadie toque la mercadería del galpón 7 ♪,♪ Nobody touch the goods in shed 7 ♪,♪ Que ninguém toque na mercadoria do galpão 7 ♪
+KARAOKE_LYRICS_CLUE,"En la pantalla de las letras aparecen frases que no son de ninguna canción, con la hora de un camión y un galpón.","On the lyrics screen there are lines from no song at all, with a truck's time and a shed.","Na tela das letras aparecem frases que não são de nenhuma música, com a hora de um caminhão e um galpão."
+BRIEF_KARAOKE_WATCHES_B,Rosaura mete relojes de contrabando dentro de uno de los parlantes del escenario. Por eso ese parlante no suena.,Rosaura smuggles watches inside one of the stage speakers. That's why that speaker makes no sound.,Rosaura esconde relógios contrabandeados dentro de uma das caixas de som do palco. Por isso aquela caixa não toca.
+BRIEF_KARAOKE_WATCHES_C,Traigan ese parlante en el baúl del patrullero. Pesa mucho: entre dos. Sin eso no hay caso.,Bring that speaker in the patrol car's trunk. It's heavy: two of you. Without it there's no case.,Tragam essa caixa de som no porta-malas da viatura. Pesa muito: entre dois. Sem ela não há caso.
+BRIEF_KARAOKE_WATCHES_D,"Si encuentran un reloj de oro falso o la factura del barco, mejor: todo suma.","If you find a fake gold watch or the ship's invoice, even better: it all adds up.","Se acharem um relógio de ouro falso ou a nota do navio, melhor: tudo soma."
+OBJ_FIND_WATCH_SPEAKER,Llevarse el parlante de los relojes,Take the speaker full of watches,Levar a caixa de som dos relógios
+OBJ_EXTRA_FAKE_WATCH,Extra: el reloj de oro falso,Extra: the fake gold watch,Extra: o relógio de ouro falso
+OBJ_EXTRA_SHIP_INVOICE,Extra: la factura del barco,Extra: the ship's invoice,Extra: a nota do navio
+TOTO_CLUE_karaoke_watches,"«¡Silencio! ¡Por fin! Te cuento: vi a la jefa esconder algo %s. Y uno de mis parlantes no suena hace meses, pero no me deja arreglarlo.»","“Silence! At last! Here's one: I saw the boss hide something %s. And one of my speakers hasn't played for months, but she won't let me fix it.”","“Silêncio! Finalmente! Te conto: vi a chefe esconder algo %s. E uma das minhas caixas não toca há meses, mas ela não me deixa consertar.”"
+KARAOKE_TICK,tic… tac… tic… tac…,tick… tock… tick… tock…,tic… tac… tic… tac…
+KARAOKE_TICK_CLUE,"Un parlante del escenario no suena, y de cerca hace tic-tac, como si estuviera lleno de relojes.","One of the stage speakers makes no sound, and up close it goes tick-tock, as if it were full of watches.","Uma caixa de som do palco não toca, e de perto faz tic-tac, como se estivesse cheia de relógios."
+BRIEF_KARAOKE_HELIUM_B,"Rosaura le pone gas de los globos al jugo del bar. Los clientes cantan con voz finita, se ríen solos y vuelven todas las noches.","Rosaura puts balloon gas in the bar's juice. The customers sing in squeaky voices, laugh by themselves and come back every night.","Rosaura coloca gás de balão no suco do bar. Os clientes cantam com voz fininha, riem sozinhos e voltam todas as noites."
+BRIEF_KARAOKE_HELIUM_C,Traigan el tanque de gas para globos en el baúl del patrullero. Pesa: mejor entre dos. Sin eso no hay caso.,Bring the balloon gas tank in the patrol car's trunk. It's heavy: better two of you. Without it there's no case.,Tragam o tanque de gás de balão no porta-malas da viatura. Pesa: melhor entre dois. Sem ele não há caso.
+BRIEF_KARAOKE_HELIUM_D,"Si encuentran la caja de globos vacíos o la receta del jugo, mejor: todo suma.","If you find the box of empty balloons or the juice's recipe, even better: it all adds up.","Se acharem a caixa de balões vazios ou a receita do suco, melhor: tudo soma."
+OBJ_FIND_HELIUM_TANK,Llevarse el tanque de gas para globos,Take the balloon gas tank,Levar o tanque de gás de balão
+OBJ_EXTRA_BALLOON_BOX,Extra: la caja de globos vacíos,Extra: the box of empty balloons,Extra: a caixa de balões vazios
+OBJ_EXTRA_JUICE_RECIPE,Extra: la receta del jugo,Extra: the juice's recipe,Extra: a receita do suco
+TOTO_CLUE_karaoke_helium,«¡Silencio! ¡Por fin! Te cuento: vi a la jefa esconder algo %s. Y no tomes el jugo del bar: después hablas como un pollito.»,“Silence! At last! Here's one: I saw the boss hide something %s. And don't drink the bar's juice: afterwards you talk like a chick.”,“Silêncio! Finalmente! Te conto: vi a chefe esconder algo %s. E não tome o suco do bar: depois você fala como um pintinho.”
+KARAOKE_SQUEAK,"«¡Hola, soy la ley!» (con voz de pito)","“Hello, I'm the law!” (in a squeaky voice)","“Olá, eu sou a lei!” (com voz de apito)"
+KARAOKE_SQUEAK_CLUE,El jugo del bar te deja la voz finita: tiene gas de globos.,The bar's juice leaves you with a squeaky voice: it has balloon gas in it.,O suco do bar deixa a voz fininha: tem gás de balão.
+KARAOKE_HELIUM_SING,«¡Jiji! ♪ Mi amor ♪ ¡jijiji!» (con voz finita),“Hee hee! ♪ My love ♪ hee hee hee!” (in a squeaky voice),“Hihi! ♪ Meu amor ♪ hihihi!” (com voz fininha)
+BRIEF_KARAOKE_BOOTH4_B,Rosaura graba a escondidas a sus clientes cantando y vende los discos como si fueran de una discográfica. Lo hace en una cabina que no está en el plano.,Rosaura secretly records her customers singing and sells the records as if they were from a record label. She does it in a booth that isn't on the plan.,Rosaura grava escondido os clientes cantando e vende os discos como se fossem de uma gravadora. Faz isso numa cabine que não está na planta.
+BRIEF_KARAOKE_BOOTH4_C,Traigan la caja de discos piratas en el baúl del patrullero. Sin eso no hay caso.,Bring the box of pirated records in the patrol car's trunk. Without it there's no case.,Tragam a caixa de discos piratas no porta-malas da viatura. Sem ela não há caso.
+BRIEF_KARAOKE_BOOTH4_D,"Si encuentran el sello falso de la discográfica o la lista de compradores, mejor: todo suma.","If you find the record label's fake stamp or the list of buyers, even better: it all adds up.","Se acharem o carimbo falso da gravadora ou a lista de compradores, melhor: tudo soma."
+OBJ_FIND_PIRATE_DISCS,Llevarse la caja de discos piratas,Take the box of pirated records,Levar a caixa de discos piratas
+OBJ_EXTRA_KARAOKE_STAMP,Extra: el sello falso de la discográfica,Extra: the record label's fake stamp,Extra: o carimbo falso da gravadora
+OBJ_EXTRA_DISC_CLIENTS,Extra: la lista de compradores del disco,Extra: the list of the record's buyers,Extra: a lista de compradores do disco
+TOTO_CLUE_karaoke_booth4,"«¡Silencio! ¡Por fin! Te cuento: vi a la jefa esconder algo %s. Y aquí hay tres cabinas, pero los cables de mi consola van a cuatro.»","“Silence! At last! Here's one: I saw the boss hide something %s. And there are three booths here, but my console's cables go to four.”","“Silêncio! Finalmente! Te conto: vi a chefe esconder algo %s. E aqui tem três cabines, mas os cabos da minha mesa vão para quatro.”"
+KARAOKE_BOOTH_4,Cabina 4,Booth 4,Cabine 4
+KARAOKE_BOOTH4_VOICE,♪ …la la laaa… ♪ (alguien canta del otro lado),♪ …la la laaa… ♪ (someone sings on the other side),♪ …lá lá láaa… ♪ (alguém canta do outro lado)
+KARAOKE_BOOTH4_CLUE,"Al lado de la cabina 3 hay una puerta «4» pintada en la pared, y del otro lado alguien canta aunque no hay nadie.","Next to booth 3 there's a door “4” painted on the wall, and someone sings on the other side though nobody's there.","Ao lado da cabine 3 há uma porta «4» pintada na parede, e do outro lado alguém canta mesmo sem ninguém lá."
+HINT_ESCAPE_karaoke,¡Rosaura vio la prueba y se escapa en el auto! Tienen un minuto para agarrarla.,Rosaura saw the evidence and is getting away in the car! You have one minute to catch her.,A Rosaura viu a prova e está fugindo no carro! Vocês têm um minuto para pegá-la.
+CHASE_KARAOKE_LINE_1,¡Cuidado con el peinado! ¡Tardé tres horas!,Careful with my hair! It took me three hours!,Cuidado com o penteado! Levei três horas!
+CHASE_KARAOKE_LINE_2,¡No me escapaba! ¡Era mi gira mundial!,I wasn't running away! It was my world tour!,Eu não estava fugindo! Era minha turnê mundial!
+CHASE_KARAOKE_LINE_3,¡Mis fans no se van a olvidar de esto!,My fans won't forget this!,Meus fãs não vão esquecer disso!
