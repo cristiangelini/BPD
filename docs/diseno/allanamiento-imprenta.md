@@ -141,6 +141,11 @@ suman 500.
   "LA TINTA LOCA" (una vez). Lo de más de 10 kg traba la máquina 5 s, vuelve a la cinta y esa corrida termina. Las
   hojas son solo para mirar: suben desde la bandeja, planean y desaparecen a los 6 s (30 como mucho). Captura en
   `imprenta/paso2-rotativa.png`.
+- **Paso 3 (la tinta):** `InkSpills` (`scripts/case/print_shop/ink_spills.gd`) lleva los charcos y las huellas. El
+  "empujón" que vuelca un tacho es un policía que lo choca corriendo (caminando no). El tacho volcado queda acostado
+  sin colisión, y el charco aparece del lado hacia donde cayó. Mientras el policía está parado en el charco, sus 20 s
+  vuelven a empezar. Las huellas son una cada 60 cm, izquierda y derecha, y duran 40 s en el piso (160 como mucho).
+  El frasco roto deja un charco azul en el piso, delante de la estantería. Captura en `imprenta/paso3-tinta.png`.
 
 ## Preguntas abiertas para Cristian
 1. ¿La cinta de la rotativa lleva también a los policías (frenados por la baranda), o solo a las cosas?

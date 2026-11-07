@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Print shop raid, step 3: an ink barrel hit hard or bumped by a running cop tips over and leaves a puddle of its color for 30 s (a broken ink jar leaves one too), and a cop who steps in a puddle leaves footprints of that color for 20 s.
 - Print shop raid, step 2: the rotativa runs 12 s every 45 s or with its red lever; its belt carries things and cops (a railing stops cops before the rollers), what goes through comes out on the tray with the run's ink and the "LA TINTA LOCA" stamp, anything over 10 kg jams it 5 s, and it throws sheets of paper into the air while it runs.
 - Print shop raid, step 1: the print shop La Tinta Loca on block (2, 5), a brick shed with its door open: the counter with the office key in the till, the display of invitations (its four panes break when hit hard, 30 each), the rotativa (still), the four ink barrels and the empty one, the chibalete, the paper guillotine, the paper store, the fax, the shelf of ink jars (10 each) and the locked office, with 12 hiding spots.
 - Gym raid, step 7: online: the host runs el profe and the guests follow him; the stereo, Lula, the shake and the punching bags work from any PC; the mirror, the broken treadmills and the knocked-over dummies the host decides show on every PC; and the treadmills that start on their own only throw off each PC's own cop.
