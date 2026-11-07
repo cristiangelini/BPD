@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Print shop raid, step 8: Play's raid draw now includes the print shop, and Don Renglón gets away in his car when he sees the evidence, like the other owners.
 - Print shop raid, step 7e: the fake fines story: the fake station stamp, the pad of fines and the toy police cap are hidden, the patrol car arrives with a fake fine on its windshield (the clue), and the press throws fines with the cops' names instead of sheets.
 - Print shop raid, step 7d: the fake stickers story: the plate of the goalkeeper sticker, the full album and a pack are hidden, the floor around where the plate was hidden is covered in repeated stickers (the clue), and while the press runs it sticks stickers on the faces of the cops near its tray.
 - Print shop raid, step 7c: the stolen book story: the writer's manuscript, her typewriter and the cover with his name are hidden, the posters out front ("Don Renglón's new book" with a lady's photo) are the clue, and the piles of the book fall over each time the press starts.

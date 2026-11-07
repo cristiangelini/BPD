@@ -189,6 +189,9 @@ suman 500.
   delante del auto y no donde se baja) la lee, y es pista una vez. La rotativa tira multas amarillas en vez de hojas,
   y cada una lleva "MULTA para" con el nombre de un policía, por turno. Capturas en `imprenta/paso7e-parabrisas.png` e
   `imprenta/paso7e-multas.png`.
+- **Paso 8 (sorteo y fuga):** la imprenta entra en `PlaceDraw.ORDER`, así que Jugar la sortea entre los allanamientos
+  en partes iguales. Si Don Renglón ve la prueba, se escapa en su auto (`RaidEscape`, "night") desde delante del
+  patrullero, igual que los otros dueños. Al bajarse dice una de sus 3 frases (`CHASE_PRINT_SHOP_LINE_1..3`).
 
 ## Preguntas abiertas para Cristian
 1. ¿La cinta de la rotativa lleva también a los policías (frenados por la baranda), o solo a las cosas?
