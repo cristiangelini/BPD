@@ -215,7 +215,48 @@ export function buildTipito() {
 	return b.build();
 }
 
+// The fake bills' printing plate, 0.5 x 0.05 x 0.35 m: a heavy steel plate with a bill engraved in relief, Don
+// Renglón's face in the middle (round, with the visor) and the number 1000 in two corners. Origin at its middle.
+export function buildBillsPlate() {
+	const b = new Builder('bills_plate');
+	const plate = mat('plate_steel', 0x8a9098, { metalness: 0.7, roughness: 0.35 }), relief = mat('plate_relief', 0xb8c0c8, { metalness: 0.7, roughness: 0.3 });
+	b.add('plate', plate, new THREE.BoxGeometry(0.5, 0.04, 0.35), { pos: V(0, 0, 0) });
+	b.add('relief', relief, new THREE.BoxGeometry(0.44, 0.01, 0.26), { pos: V(0, 0.022, 0) });
+	b.add('face', plate, new THREE.CylinderGeometry(0.07, 0.07, 0.02, 12), { pos: V(0, 0.03, 0) });
+	b.add('face', mat('plate_visor', 0x2fa860), new THREE.BoxGeometry(0.12, 0.015, 0.03), { pos: V(0, 0.04, -0.06) });
+	for (const [x, z] of [[-0.17, -0.09], [0.17, 0.09]]) {
+		for (let i = 0; i < 4; i++) {
+			b.add('number', plate, new THREE.BoxGeometry(0.012, 0.012, 0.05), { pos: V(x - 0.03 + i * 0.02, 0.032, z) });
+		}
+	}
+	return b.build();
+}
+
+// The bill magnifier, 0.2 m long: a brass loupe with its handle. Origin at its middle, lying flat.
+export function buildBillLoupe() {
+	const b = new Builder('bill_loupe');
+	const brass = mat('loupe_brass', 0xd8b048, { metalness: 0.7, roughness: 0.3 });
+	const lens = mat('loupe_lens', 0xbfe6ff, { transparent: true, opacity: 0.6, roughness: 0.05 });
+	b.add('ring', brass, new THREE.TorusGeometry(0.05, 0.008, 6, 16), { pos: V(-0.04, 0, 0), rot: [Math.PI / 2, 0, 0] });
+	b.add('lens', lens, new THREE.CylinderGeometry(0.048, 0.048, 0.006, 16), { pos: V(-0.04, 0, 0) });
+	b.add('handle', mat('loupe_handle', 0x3a2618), new THREE.CylinderGeometry(0.012, 0.014, 0.11, 8), { pos: V(0.06, 0, 0), rot: [0, 0, Math.PI / 2] });
+	return b.build();
+}
+
+// The tin of green ink for bills, 0.16 m across and 0.14 m tall: a tin with a green lid and a dollar-green drip.
+// Origin at its middle.
+export function buildGreenInkTin() {
+	const b = new Builder('green_ink_tin');
+	const green = mat('tin_green', 0x2f8a4a);
+	b.add('tin', steel(), new THREE.CylinderGeometry(0.08, 0.08, 0.13, 14), { pos: V(0, -0.005, 0) });
+	b.add('label', green, new THREE.CylinderGeometry(0.082, 0.082, 0.06, 14), { pos: V(0, -0.01, 0) });
+	b.add('lid', green, new THREE.CylinderGeometry(0.081, 0.081, 0.015, 14), { pos: V(0, 0.065, 0) });
+	b.add('drip', green, new THREE.BoxGeometry(0.03, 0.06, 0.01), { pos: V(0.03, 0.03, 0.08) });
+	return b.build();
+}
+
 export const models = {
+	bills_plate: buildBillsPlate, bill_loupe: buildBillLoupe, green_ink_tin: buildGreenInkTin,
 	npc_don_renglon: buildDonRenglon, npc_tipito: buildTipito,
 	printing_press: buildPrintingPress, empty_ink_barrel: buildEmptyBarrel, type_case: buildTypeCase,
 	paper_guillotine: buildPaperGuillotine, paper_roll: buildPaperRoll, fax_machine: buildFax, ink_jar: buildInkJar,
@@ -235,6 +276,8 @@ export const views = {
 			{ name: 'smiling_inkwell', pos: [5.0, 0, 1.6], rotY: -0.3 },
 			{ name: 'npc_don_renglon', pos: [6.2, 0, 1.8], rotY: -0.3 },
 			{ name: 'npc_tipito', pos: [7.3, 0, 2.0], rotY: -0.4 },
+			{ name: 'bills_plate', pos: [0.2, 0.04, 3.2] }, { name: 'bill_loupe', pos: [0.9, 0.01, 3.3] },
+			{ name: 'green_ink_tin', pos: [1.4, 0.07, 3.2] },
 		],
 		cam: { pos: [0, 3.2, 9.5], target: [0.4, 0.9, 0], fov: 50 },
 	},

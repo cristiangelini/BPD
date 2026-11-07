@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.0 (unreleased)
+- Print shop raid, step 6: the print shop is now a raid case like the nursery (the comisario's tip, 3 suspicions among its 6 stories, Don Renglón's slips and lawyer, Tipito's clue, the interrogation) with its first story, the fake bills: the 8 kg plate with his face, the bill magnifier and the tin of green ink are hidden, a badly cut bill in the recycling basket is the clue, and the press throws bills instead of sheets.
 - Print shop raid, step 5: Tipito, the apprentice, stands by the chibalete missing one of the six wooden letters lying around the shop (drawn by the seed); the cop who brings him the right one gets told what he saw (once per cop), any other gets "Esa no, esa es la Q".
 - Print shop raid, step 4: Don Renglón walks between the counter and the press, adds 5 to his complaint for each cop he sees leaving footprints (once per cop) and 10 for each barrel he sees tip over, and the fax's "enviar prueba" sends him to set an urgent order at the chibalete for 20 s, twice; the third time he catches on.
 - Print shop raid, step 3: an ink barrel hit hard or bumped by a running cop tips over and leaves a puddle of its color for 30 s (a broken ink jar leaves one too), and a cop who steps in a puddle leaves footprints of that color for 20 s.
