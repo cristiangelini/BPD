@@ -91,6 +91,8 @@ const PLACES := [
 	{"id": "karaoke", "block": Vector2i(6, 3), "side": "n", "along": 0.0, "size": Vector3(24, 6, 20), "color": Color(0.45, 0.25, 0.6), "sign": "PLACE_KARAOKE"},
 	# The car wash "La Espuma Loca" on the east edge (allanamiento-lavadero.md).
 	{"id": "carwash", "block": Vector2i(8, 4), "side": "n", "along": 0.0, "size": Vector3(40, 6, 22), "color": Color(0.55, 0.8, 0.95), "sign": "PLACE_CARWASH"},
+	# The dental office to raid (allanamiento-dentista.md).
+	{"id": "dentist", "block": Vector2i(3, 5), "side": "n", "along": 0.0, "size": Vector3(22, 4, 16), "color": Color(0.92, 0.95, 0.97), "sign": "PLACE_DENTIST"},
 ]
 
 ## The plaza fills its block.

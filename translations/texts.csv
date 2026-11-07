@@ -8552,3 +8552,132 @@ HINT_ESCAPE_carwash,¡Don Chorro vio la prueba y se escapa en el auto! Tienen un
 CHASE_CARWASH_LINE_1,"¡Me voy recién lavado y encerado! ¡No me alcanzan!","I'm off freshly washed and waxed! You'll never catch me!","Vou embora recém-lavado e encerado! Não me alcançam!"
 CHASE_CARWASH_LINE_2,"¡Cuidado con los charcos, que me salpican el auto!","Watch the puddles, they'll splash my car!","Cuidado com as poças, que respingam no meu carro!"
 CHASE_CARWASH_LINE_3,"¡Está bien, me rindo! Pero el lavado premium no se los devuelvo.","Fine, I give up! But I'm not refunding the premium wash.","Tá bom, eu me rendo! Mas a lavagem premium eu não devolvo."
+PLACE_DENTIST,Consultorio Dental Sonrisa Total,Total Smile Dental Office,Consultório Dentário Sorriso Total
+MENU_DENTIST_RAID,Dentista (allanamiento) (prueba),Dentist (raid) (test),Dentista (batida) (teste)
+CASE_FAILED_LAWYER_DENTIST,El doctor Molina llamó al abogado del consultorio. Caso perdido.,Dr. Molina called the dental office's lawyer. Case lost.,O doutor Molina ligou para o advogado do consultório. Caso perdido.
+LOC_dentist_under_chair_1,debajo del sillón del consultorio 1,under the chair in consulting room 1,debaixo da cadeira do consultório 1
+LOC_dentist_under_chair_2,debajo del sillón del consultorio 2,under the chair in consulting room 2,debaixo da cadeira do consultório 2
+LOC_dentist_behind_fish_tank,detrás de la pecera,behind the fish tank,atrás do aquário
+LOC_dentist_under_reception,debajo de la recepción,under the reception desk,debaixo da recepção
+LOC_dentist_in_storeroom,en el depósito,in the storeroom,no depósito
+LOC_dentist_under_lab_table,debajo de la mesa del laboratorio,under the lab table,debaixo da mesa do laboratório
+LOC_dentist_in_cupboard_1,en el armario del consultorio 1,in the cupboard in consulting room 1,no armário do consultório 1
+LOC_dentist_in_cupboard_2,en el armario del consultorio 2,in the cupboard in consulting room 2,no armário do consultório 2
+LOC_dentist_in_kiln,en el horno del laboratorio,in the lab's kiln,no forno do laboratório
+LOC_dentist_in_magazine_rack,en el revistero,in the magazine rack,no porta-revistas
+LOC_dentist_on_office_desk,en el escritorio del doctor,on the doctor's desk,na mesa do doutor
+LOC_dentist_on_office_shelf,en el estante de la oficina,on the office shelf,na estante do escritório
+PROMPT_NEXT_BELL,E: tocar el timbre de turnos,E: ring the next-patient bell,E: tocar a campainha de senhas
+DING_BELL,¡Ding!,Ding!,Plim!
+HINT_BELL_BUSY,El doctor ya está atendiendo.,The doctor is already with a patient.,O doutor já está atendendo.
+HINT_BELL_RESTING,"El doctor dice que ahora no atiende a nadie. Espera un poco.","The doctor says he's not seeing anyone right now. Wait a bit.","O doutor diz que agora não atende ninguém. Espere um pouco."
+MOLINA_LINE_1,"♪ Lalalá… cepillo, hilo y enjuague ♪","♪ La-la-la… brush, floss and rinse ♪","♪ Lalalá… escova, fio e enxágue ♪"
+MOLINA_LINE_2,"¡Sonrían, oficiales! Una sonrisa no cuesta nada… bueno, casi nada.","Smile, officers! A smile costs nothing… well, almost nothing.","Sorriam, policiais! Um sorriso não custa nada… bom, quase nada."
+MOLINA_LINE_3,"¿Cuándo fue la última vez que usaron hilo dental? Se nota.","When did you last floss? It shows.","Quando foi a última vez que usaram fio dental? Dá pra notar."
+MOLINA_LINE_4,"No toquen nada sin guantes. Ni con guantes.","Don't touch anything without gloves. Not even with gloves.","Não toquem em nada sem luvas. Nem com luvas."
+MOLINA_PRINTER,"¡Siguiente! Pase, pase, abra grande.","Next! Come in, come in, open wide.","Próximo! Entre, entre, abra bem a boca."
+MOLINA_FIX_1,"Bzzzzz… Esto no le va a doler nada.","Bzzzzz… This won't hurt a bit.","Bzzzzz… Isso não vai doer nada."
+MOLINA_FIX_2,"Bzzzzz… Bueno, un poquito.","Bzzzzz… Well, a little.","Bzzzzz… Bom, um pouquinho."
+MOLINA_FIX_3,"Bzzzzz… Escupa, por favor. Ahí no.","Bzzzzz… Spit, please. Not there.","Bzzzzz… Cuspa, por favor. Aí não."
+MOLINA_FIX_DONE,"¡Listo! Nada de caramelos por una semana.","Done! No candy for a week.","Pronto! Nada de balas por uma semana."
+MOLINA_HURT,"¡Cuidado! ¡Estas manos valen oro!","Careful! These hands are worth gold!","Cuidado! Estas mãos valem ouro!"
+MOLINA_DOOR,"¿Una puerta rota? ¡Esto es un consultorio, no un aserradero!","A broken door? This is a dental office, not a sawmill!","Uma porta quebrada? Isto é um consultório, não uma serraria!"
+MOLINA_SAW,"¡Eso no es estéril!","That's not sterile!","Isso não é estéril!"
+MOLINA_NOTHING,"Yo solo arreglo dientes, oficial.","I just fix teeth, officer.","Eu só conserto dentes, policial."
+MOLINA_OFFENDED,"No hablo más. Tengo pacientes. Bueno, voy a tener.","I'm done talking. I have patients. Well, I will.","Não falo mais. Tenho pacientes. Bom, vou ter."
+MOLINA_LAWYER,"¡Llamo a mi abogado! Es paciente mío, me debe una muela.","I'm calling my lawyer! He's my patient, he owes me a molar.","Vou ligar para o meu advogado! Ele é meu paciente, me deve um dente."
+MOLINA_MOLD,"¡Mis moldes! ¡Eran sonrisas únicas!","My molds! Those were one-of-a-kind smiles!","Meus moldes! Eram sorrisos únicos!"
+MOLINA_CHAIR,"¡Bájese de mi sillón! ¡Eso no es estéril!","Get off my chair! That's not sterile!","Desça da minha cadeira! Isso não é estéril!"
+MOLINA_TANK,"¡Mi pecera! ¡Los peces eran lo único que sonreía aquí!","My fish tank! The fish were the only ones smiling here!","Meu aquário! Os peixes eram os únicos que sorriam aqui!"
+HINT_LAUGHING_GAS,"¡Jajaja! El gas de la risa no te deja agarrar nada.","Ha ha ha! The laughing gas won't let you grab anything.","Hahaha! O gás do riso não deixa você pegar nada."
+PROMPT_LUCHO,E: hablar con Lucho,E: talk to Lucho,E: falar com o Lucho
+PROMPT_LUCHO_CANDY,E: darle el caramelo a Lucho,E: give Lucho the candy,E: dar a bala para o Lucho
+LUCHO_IDLE_1,"Llevo tres horas esperando. Ya me sé todas las revistas.","I've been waiting three hours. I know every magazine by heart.","Estou esperando há três horas. Já sei todas as revistas de cor."
+LUCHO_IDLE_2,"Mis brackets brillan en la oscuridad. Mira. Bueno, ahora no se nota.","My braces glow in the dark. Look. Well, you can't tell now.","Meu aparelho brilha no escuro. Olha. Bom, agora não dá pra ver."
+LUCHO_IDLE_3,"Ese frasco de caramelos es solo de adorno. Qué crueldad.","That candy jar is just for show. How cruel.","Esse pote de balas é só enfeite. Que crueldade."
+LUCHO_WANTS_CANDY,"No hablo con policías… salvo que traigan un caramelo del frasco.","I don't talk to cops… unless they bring a candy from the jar.","Não falo com policiais… a não ser que tragam uma bala do pote."
+LUCHO_AGAIN,"Ya te conté todo. Bueno, por otro caramelo te cuento un chiste.","I already told you everything. Well, for another candy I'll tell you a joke.","Já te contei tudo. Bom, por outra bala te conto uma piada."
+LUCHO_THANKS,"¡Gracias! ¿Qué le dijo un diente al otro? Nada, los dientes no hablan.","Thanks! What did one tooth say to the other? Nothing, teeth don't talk.","Valeu! O que um dente disse pro outro? Nada, dente não fala."
+LUCHO_NOTHING,"Mmm, rico. No vi nada raro, pero gracias igual.","Mmm, yummy. I didn't see anything weird, but thanks anyway.","Hum, gostoso. Não vi nada estranho, mas obrigado mesmo assim."
+MOLINA_CANDY,"¡Nada de caramelos en mi consultorio! ¿Saben lo que cuestan unos brackets?","No candy in my office! Do you know what braces cost?","Nada de balas no meu consultório! Sabem quanto custa um aparelho?"
+BRIEF_DENTIST_TIP_B,"Llegó una denuncia anónima: el doctor Molina cobra poco, no tiene pacientes y estrena consultorio cada año.","We got an anonymous tip: Dr. Molina charges little, has no patients and gets a brand-new office every year.","Chegou uma denúncia anônima: o doutor Molina cobra pouco, não tem pacientes e estreia consultório todo ano."
+BRIEF_DENTIST_TIP_D,"La sala de espera está abierta y el doctor no soporta nada fuera de lugar. El depósito está cerrado con llave: usen el ariete.","The waiting room is open and the doctor can't stand anything out of place. The storeroom is locked: use the ram.","A sala de espera está aberta e o doutor não suporta nada fora do lugar. O depósito está trancado: usem o aríete."
+BRIEF_DENTIST_TIP_E,"Y no rompan nada: la pecera se la descuento del sueldo. Ni toquen los tubos de gas. Con Q ven la planilla.","And don't break anything: the fish tank comes out of your pay. And don't touch the gas tanks. Press Q to see your checklist.","E não quebrem nada: o aquário sai do salário de vocês. Nem toquem nos tubos de gás. Com Q vocês veem a lista."
+BRIEF_GOLD_TEETH_B,"El doctor les cambia las coronas de oro a los pacientes por unas de lata, y funde el oro en lingotes chiquitos.","The doctor swaps his patients' gold crowns for tin ones, and melts the gold into tiny ingots.","O doutor troca as coroas de ouro dos pacientes por umas de lata, e derrete o ouro em lingotes pequenininhos."
+BRIEF_GOLD_TEETH_C,"Traigan la caja de los lingotes en el baúl del patrullero. Pesa 5 kilos y vale una fortuna.","Bring the box of ingots in the patrol car's trunk. It weighs 5 kilos and is worth a fortune.","Tragam a caixa dos lingotes no porta-malas da viatura. Pesa 5 quilos e vale uma fortuna."
+BRIEF_GOLD_TEETH_D,"Si encuentran el crisol o la lista de precios «Coronas de oro 2x1», mejor: todo suma.","If you find the crucible or the «Gold crowns 2 for 1» price list, even better: it all counts.","Se acharem o cadinho ou a lista de preços «Coroas de ouro 2 por 1», melhor: tudo conta."
+OBJ_FIND_GOLD_CROWN_BOX,Llevarse la caja de lingotes de oro,Take the box of gold ingots,Levar a caixa de lingotes de ouro
+OBJ_EXTRA_GOLD_CRUCIBLE,Extra: el crisol con restos de oro,Extra: the crucible with gold left in it,Extra: o cadinho com restos de ouro
+OBJ_EXTRA_CROWN_PRICE_LIST,Extra: la lista «Coronas de oro 2x1»,Extra: the «Gold crowns 2 for 1» list,Extra: a lista «Coroas de ouro 2 por 1»
+SUSPECT_gold_teeth,Los dientes de oro,The gold teeth,Os dentes de ouro
+SUSPECT_laughing_gas,El gas de la risa,The laughing gas,O gás do riso
+SUSPECT_tooth_mouse,El ratón de los dientes,The tooth mouse,O ratinho dos dentes
+SUSPECT_famous_dentures,Las dentaduras famosas,The famous dentures,As dentaduras famosas
+SUSPECT_rising_chair,El sillón que sube,The rising chair,A cadeira que sobe
+SUSPECT_dental_floss,El hilo dental,The dental floss,O fio dental
+CLUE_SUSPECT_gold_teeth,"Una factura de una fundición: «Fundir 40 coronas. Que salgan lingotes chiquitos».","A foundry invoice: «Melt 40 crowns. Make them into tiny ingots».","Uma nota de uma fundição: «Fundir 40 coroas. Que saiam lingotes pequenininhos»."
+CLUE_SUSPECT_laughing_gas,"Un pedido: «200 tubos de gas de la risa para fiestas. Pagar en efectivo».","An order: «200 laughing gas tanks for parties. Pay in cash».","Um pedido: «200 tubos de gás do riso para festas. Pagar em dinheiro»."
+CLUE_SUSPECT_tooth_mouse,"Un recibo: «500 monedas de chocolate envueltas en papel dorado».","A receipt: «500 chocolate coins wrapped in gold foil».","Um recibo: «500 moedas de chocolate embrulhadas em papel dourado»."
+CLUE_SUSPECT_famous_dentures,"Una nota: «Molde de la sonrisa del cantante. No decirle a nadie».","A note: «Mold of the singer's smile. Don't tell anyone».","Um bilhete: «Molde do sorriso do cantor. Não contar para ninguém»."
+CLUE_SUSPECT_rising_chair,"Una factura: «Arreglar el pedal del sillón. Que suba más alto que lo normal».","An invoice: «Fix the chair's pedal. Make it go higher than normal».","Uma nota: «Consertar o pedal da cadeira. Que suba mais alto que o normal»."
+CLUE_SUSPECT_dental_floss,"Un pedido: «3 km de hilo dental reforzado. Que aguante a un adulto».","An order: «3 km of reinforced dental floss. Strong enough to hold an adult».","Um pedido: «3 km de fio dental reforçado. Que aguente um adulto»."
+OBJ_ENTER_DENTIST,Entrar al consultorio (la sala de espera está abierta),Get into the dental office (the waiting room is open),Entrar no consultório (a sala de espera está aberta)
+OBJ_GUESS_DENTIST,"Averiguar qué pasa en el consultorio (con Q abierta, mantén 1, 2 o 3)","Find out what is going on in the dental office (with Q open, hold 1, 2 or 3)","Descobrir o que acontece no consultório (com Q aberto, segure 1, 2 ou 3)"
+OBJ_BROKEN_DENTIST,Cosas rotas: %d (multa: %d),Broken things: %d (fines: %d),Coisas quebradas: %d (multa: %d)
+OBJ_COMPLAINT_DENTIST,Queja del doctor Molina: %d%%,Dr. Molina's complaint: %d%%,Queixa do doutor Molina: %d%%
+MOLINA_SLIP,"«¡Yo no guardé nada %s!... Digo, ¡abra grande y no pregunte!»","“I didn't put anything %s!... I mean, open wide and don't ask!”","“Eu não guardei nada %s!... Quer dizer, abra bem e não pergunte!”"
+CLUE_LUCHO,Lucho vio al doctor esconder algo %s,Lucho saw the doctor hide something %s,O Lucho viu o doutor esconder algo %s
+LUCHO_CLUE_gold_teeth,"«Mmm… Vi al doctor esconder algo %s. Y a la señora de antes le sacó un diente de oro y le puso uno gris.»","“Mmm… I saw the doctor hide something %s. And he took a gold tooth out of the lady before me and put in a grey one.”","“Hum… Vi o doutor esconder algo %s. E da senhora de antes ele tirou um dente de ouro e pôs um cinza.”"
+CLUE_XRAY_INGOT,Una placa de rayos X muestra un lingote adentro de una muela,An X-ray shows an ingot inside a molar,Uma radiografia mostra um lingote dentro de um dente
+XRAY_INGOT,¡Un lingote adentro de la muela!,An ingot inside the molar!,Um lingote dentro do dente!
+PROMPT_XRAY_NEXT,E: cambiar la placa,E: change the film,E: trocar a chapa
+BRIEF_LAUGHING_GAS_B,"El doctor compra gas de la risa como para dormir a una ciudad entera y lo revende para fiestas.","The doctor buys enough laughing gas to put a whole city to sleep and resells it for parties.","O doutor compra gás do riso para fazer dormir uma cidade inteira e revende para festas."
+BRIEF_LAUGHING_GAS_C,"Traigan los tubos de contrabando en el baúl del patrullero. Pesan 30 kilos: entre dos. Y no se rían.","Bring the contraband tanks in the patrol car's trunk. They weigh 30 kilos: two of you. And don't laugh.","Tragam os tubos de contrabando no porta-malas da viatura. Pesam 30 quilos: em dupla. E não riam."
+BRIEF_LAUGHING_GAS_D,"Si encuentran los globos inflados con gas o la factura de «Fiestas La Carcajada», mejor: todo suma.","If you find the gas-filled balloons or the «La Carcajada Parties» invoice, even better: it all counts.","Se acharem os balões cheios de gás ou a nota da «Festas La Carcajada», melhor: tudo conta."
+OBJ_FIND_GAS_BUNDLE,Llevarse los tubos de gas de contrabando (entre dos),Take the contraband gas tanks (two of you),Levar os tubos de gás de contrabando (em dupla)
+OBJ_EXTRA_GAS_BALLOONS,Extra: los globos inflados con gas,Extra: the gas-filled balloons,Extra: os balões cheios de gás
+OBJ_EXTRA_CARCAJADA_INVOICE,Extra: la factura de «Fiestas La Carcajada»,Extra: the «La Carcajada Parties» invoice,Extra: a nota da «Festas La Carcajada»
+LUCHO_CLUE_laughing_gas,"«Mmm… Vi al doctor esconder algo %s. Y cuando me atendió no me dolió nada: me reí tanto que me caí del sillón.»","“Mmm… I saw the doctor hide something %s. And when he saw me it didn't hurt at all: I laughed so hard I fell off the chair.”","“Hum… Vi o doutor esconder algo %s. E quando ele me atendeu não doeu nada: ri tanto que caí da cadeira.”"
+CLUE_TANK_GIGGLES,Las burbujas de la pecera se ríen solas,The fish tank's bubbles giggle on their own,As bolhas do aquário riem sozinhas
+TANK_GIGGLE,○ jijiji ○,○ hee hee ○,○ hihihi ○
+BRIEF_TOOTH_MOUSE_B,"De noche, el doctor se disfraza de ratón, se lleva los dientes de leche de abajo de las almohadas y deja monedas falsas.","At night, the doctor dresses up as a mouse, takes the baby teeth from under the pillows and leaves fake coins.","À noite, o doutor se fantasia de ratinho, leva os dentes de leite de debaixo dos travesseiros e deixa moedas falsas."
+BRIEF_TOOTH_MOUSE_C,"Traigan el frasco con los 500 dientes de leche en el baúl del patrullero. Con cuidado: es de vidrio.","Bring the jar with the 500 baby teeth in the patrol car's trunk. Carefully: it's glass.","Tragam o pote com os 500 dentes de leite no porta-malas da viatura. Com cuidado: é de vidro."
+BRIEF_TOOTH_MOUSE_D,"Si encuentran el disfraz de ratón o el mapa del barrio con las almohadas marcadas, mejor: todo suma.","If you find the mouse costume or the neighborhood map with the pillows marked, even better: it all counts.","Se acharem a fantasia de ratinho ou o mapa do bairro com os travesseiros marcados, melhor: tudo conta."
+OBJ_FIND_TEETH_JAR,Llevarse el frasco de dientes de leche,Take the jar of baby teeth,Levar o pote de dentes de leite
+OBJ_EXTRA_MOUSE_COSTUME,Extra: el disfraz de ratón,Extra: the mouse costume,Extra: a fantasia de ratinho
+OBJ_EXTRA_PILLOW_MAP,Extra: el mapa de las almohadas,Extra: the pillow map,Extra: o mapa dos travesseiros
+LUCHO_CLUE_tooth_mouse,"«Mmm… Vi al doctor esconder algo %s. Y se me cayó un diente, lo puse bajo la almohada y me dejaron una moneda de chocolate. Sin chocolate.»","“Mmm… I saw the doctor hide something %s. And I lost a tooth, put it under my pillow and got a chocolate coin. With no chocolate.”","“Hum… Vi o doutor esconder algo %s. E caiu um dente meu, pus debaixo do travesseiro e me deixaram uma moeda de chocolate. Sem chocolate.”"
+CLUE_TALC_PRINTS,Huellitas de ratón de talco que van a la oficina,Little talc mouse prints leading to the office,Pegadinhas de ratinho de talco que vão até o escritório
+BRIEF_FAMOUS_DENTURES_B,"El doctor les copia la dentadura a sus pacientes famosos y les vende las copias a los fans. «Sonríe como tu ídolo».","The doctor copies his famous patients' dentures and sells the copies to their fans. «Smile like your idol».","O doutor copia a dentadura dos pacientes famosos e vende as cópias para os fãs. «Sorria como o seu ídolo»."
+BRIEF_FAMOUS_DENTURES_C,"Traigan el maletín con las dentaduras copiadas en el baúl del patrullero. Y cuidado con los tobillos.","Bring the briefcase of copied dentures in the patrol car's trunk. And watch your ankles.","Tragam a maleta com as dentaduras copiadas no porta-malas da viatura. E cuidado com os tornozelos."
+BRIEF_FAMOUS_DENTURES_D,"Si encuentran la foto firmada «Gracias por mi sonrisa» o el molde a medio terminar, mejor: todo suma.","If you find the photo signed «Thanks for my smile» or the half-finished mold, even better: it all counts.","Se acharem a foto autografada «Obrigado pelo meu sorriso» ou o molde pela metade, melhor: tudo conta."
+OBJ_FIND_DENTURES_CASE,Llevarse el maletín de dentaduras copiadas,Take the briefcase of copied dentures,Levar a maleta de dentaduras copiadas
+OBJ_EXTRA_SMILE_PHOTO,Extra: la foto «Gracias por mi sonrisa»,Extra: the «Thanks for my smile» photo,Extra: a foto «Obrigado pelo meu sorriso»
+OBJ_EXTRA_HALF_MOLD,Extra: el molde a medio terminar,Extra: the half-finished mold,Extra: o molde pela metade
+LUCHO_CLUE_famous_dentures,"«Mmm… Vi al doctor esconder algo %s. Y el otro día salió un señor con la sonrisa igualita a la del cantante de la tele. Pero no era él.»","“Mmm… I saw the doctor hide something %s. And the other day a man came out with a smile just like the TV singer's. But it wasn't him.”","“Hum… Vi o doutor esconder algo %s. E outro dia saiu um senhor com o sorriso igualzinho ao do cantor da TV. Mas não era ele.”"
+CLUE_DESK_CHATTER,Una dentadura castañetea sola en el escritorio del doctor,A denture chatters by itself on the doctor's desk,Uma dentadura bate os dentes sozinha na mesa do doutor
+DESK_CLACK,¡clac clac clac!,clack clack clack!,clac clac clac!
+HINT_DENTURE_BITE,¡Una dentadura te muerde el zapato! Caminas lento un rato.,A denture bites your shoe! You walk slowly for a while.,Uma dentadura morde o seu sapato! Você anda devagar por um tempo.
+BRIEF_RISING_CHAIR_B,"El doctor le guarda el botín a una banda de ladrones. Dicen que lo esconde donde nadie mira: arriba.","The doctor keeps a gang of robbers' loot for them. They say he hides it where nobody looks: up.","O doutor guarda o dinheiro roubado de uma quadrilha. Dizem que esconde onde ninguém olha: em cima."
+BRIEF_RISING_CHAIR_C,"Traigan la bolsa del botín en el baúl del patrullero. Pesa 6 kilos.","Bring the loot bag in the patrol car's trunk. It weighs 6 kilos.","Tragam o saco do dinheiro roubado no porta-malas da viatura. Pesa 6 quilos."
+BRIEF_RISING_CHAIR_D,"Si encuentran la llave del falso techo o el plano del techo, mejor: todo suma.","If you find the false ceiling's key or the ceiling plan, even better: it all counts.","Se acharem a chave do forro ou a planta do teto, melhor: tudo conta."
+OBJ_FIND_LOOT_BAG,Llevarse la bolsa del botín,Take the loot bag,Levar o saco do roubo
+OBJ_EXTRA_HATCH_KEY,Extra: la llave del falso techo,Extra: the false ceiling's key,Extra: a chave do forro
+OBJ_EXTRA_CEILING_PLAN,Extra: el plano del techo,Extra: the ceiling plan,Extra: a planta do teto
+LUCHO_CLUE_rising_chair,"«Mmm… Vi al doctor esconder algo %s. Y una vez lo vi subir en el sillón hasta el techo, parado, como en un ascensor.»","“Mmm… I saw the doctor hide something %s. And once I saw him ride the chair up to the ceiling, standing, like in an elevator.”","“Hum… Vi o doutor esconder algo %s. E uma vez vi ele subir na cadeira até o teto, em pé, como num elevador.”"
+CLUE_CHAIR_MARKS,El sillón 2 tiene marcas de zapatos en el respaldo,Chair 2 has shoe prints on its backrest,A cadeira 2 tem marcas de sapato no encosto
+PROMPT_CHAIR_PEDAL,E: pisar el pedal del sillón,E: press the chair's pedal,E: pisar no pedal da cadeira
+PROMPT_CEILING_HATCH,E: abrir la tapa del falso techo,E: open the false ceiling's hatch,E: abrir a tampa do forro
+HINT_HATCH_TOO_HIGH,"No llegas. Súbete al sillón y que suba hasta arriba.","You can't reach it. Stand on the chair and raise it all the way.","Você não alcança. Suba na cadeira e faça ela subir até o alto."
+BRIEF_DENTAL_FLOSS_B,"El doctor le vende hilo dental reforzado a una banda que planea una fuga de la cárcel. Cuidado por dónde corren.","The doctor sells reinforced dental floss to a gang planning a jailbreak. Watch where you run.","O doutor vende fio dental reforçado para uma quadrilha que planeja uma fuga da cadeia. Cuidado por onde correm."
+BRIEF_DENTAL_FLOSS_C,"Traigan el cajón de bobinas en el baúl del patrullero. Pesa 6 kilos.","Bring the crate of reels in the patrol car's trunk. It weighs 6 kilos.","Tragam o caixote de bobinas no porta-malas da viatura. Pesa 6 quilos."
+BRIEF_DENTAL_FLOSS_D,"Si encuentran el gancho de escalar o el plano de la cárcel, mejor: todo suma.","If you find the climbing hook or the jail's plan, even better: it all counts.","Se acharem o gancho de escalada ou a planta da cadeia, melhor: tudo conta."
+OBJ_FIND_FLOSS_REELS,Llevarse el cajón de bobinas de hilo dental,Take the crate of floss reels,Levar o caixote de bobinas de fio dental
+OBJ_EXTRA_CLIMBING_HOOK,Extra: el gancho de escalar,Extra: the climbing hook,Extra: o gancho de escalada
+OBJ_EXTRA_PRISON_PLAN,Extra: el plano de la cárcel,Extra: the jail's plan,Extra: a planta da cadeia
+LUCHO_CLUE_dental_floss,"«Mmm… Vi al doctor esconder algo %s. Y me regaló hilo dental de menta, pero era tan duro que no se cortaba con nada.»","“Mmm… I saw the doctor hide something %s. And he gave me mint floss, but it was so tough nothing could cut it.”","“Hum… Vi o doutor esconder algo %s. E ele me deu fio dental de menta, mas era tão duro que nada cortava.”"
+CLUE_FLOSS_ROPE,Una soga de hilo dental cuelga de la ventanita del pasillo,A rope of dental floss hangs from the corridor's little window,Uma corda de fio dental pendurada na janelinha do corredor
+HINT_FLOSS_TRIP,¡Un hilo dental tenso! Te tropiezas y se te cae todo.,A taut dental floss! You trip and drop everything.,Um fio dental esticado! Você tropeça e derruba tudo.
+HINT_ESCAPE_dentist,¡El doctor Molina vio la prueba y se escapa en el auto! Tienen un minuto para agarrarlo.,Dr. Molina saw the evidence and is getting away in his car! You have one minute to catch him.,O doutor Molina viu a prova e está fugindo de carro! Vocês têm um minuto para pegá-lo.
+CRIME_owner_dentist,"¡Novatos! Ayer se trajeron al doctor Molina, el dentista de Sonrisa Total, y lo tenemos en la sala de interrogatorio. Algo escondió en el consultorio que no encontraron.","Rookies! Yesterday you brought in Dr. Molina, Total Smile's dentist, and he's in the interrogation room. He hid something in the dental office you never found.","Novatos! Ontem vocês trouxeram o doutor Molina, o dentista da Sorriso Total, e ele está na sala de interrogatório. Ele escondeu algo no consultório que vocês não acharam."
+CONFESS_owner_dentist,"¡Está bien! ¡Fui yo! Pero abre la boca… tienes una caries.","Fine! It was me! But open wide… you've got a cavity.","Tá bom! Fui eu! Mas abre a boca… você tem uma cárie."
